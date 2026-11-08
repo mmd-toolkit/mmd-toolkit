@@ -507,16 +507,18 @@ xychart
 
 ### Quotes
 
-A string is printed as written: its quotes, its text, the whitespace inside it,
-and the line breaks inside it stay. A quote is never added or removed. `"Sales"`
-and `Sales` have the same Db, but `"a b"` and `a b` do not (`ab` is the text of
-the second), and the empty string is read as no token by mermaid.js though it is
-the author's text; so the choice of the quotes is left to the author, as in a
-sankey diagram (see [Quotes](./sankey.md#quotes)). An empty string stands where
-the grammar takes one: as the title of a plot, as the title of an axis before
-data, and as the label of a value. [fixture: quotes/strings-as-written]
-[fixture: quotes/quotes-not-removed] [fixture: quotes/quotes-not-added]
-[fixture: quotes/keywords-and-markup-in-strings] [fixture:
+A string is printed as written: its quotes, its text, and the line breaks inside
+it stay, and a run of spaces and tabs inside it is printed as one space (see
+[Runs of whitespace in a text that are drawn the same](./compatibility.md#runs-of-whitespace-in-a-text-that-are-drawn-the-same)).
+A quote is never added or removed. `"Sales"` and `Sales` have the same Db, but
+`"a b"` and `a b` do not (`ab` is the text of the second), and the empty string
+is read as no token by mermaid.js though it is the author's text; so the choice
+of the quotes is left to the author, as in a sankey diagram (see
+[Quotes](./sankey.md#quotes)). An empty string stands where the grammar takes
+one: as the title of a plot, as the title of an axis before data, and as the
+label of a value. [fixture: quotes/strings-runs-collapsed] [fixture:
+quotes/quotes-not-removed] [fixture: quotes/quotes-not-added] [fixture:
+quotes/keywords-and-markup-in-strings] [fixture:
 quotes/comment-mark-in-a-string] [fixture:
 quotes/empty-strings-where-the-grammar-takes-them]
 
@@ -565,16 +567,17 @@ xychart
 The `:` of `accTitle` and `accDescr` touches the keyword and has one space after
 it, as in the other diagrams (see
 [Accessibility statements](./journey.md#accessibility-statements)). The text has
-no whitespace at its ends and keeps the whitespace inside it, which is in the Db
-(`accTitle: a   b` has the title `a   b`). A text written on a later line, a
-colon written on a later line than the keyword, and whitespace before the colon
-are printed on one line: the line breaks are whitespace to the lexer, and the
-text of the statement is the same. An `accTitle:` or `accDescr:` without text,
-at the end of the text, is printed as the keyword and the colon with nothing
-after them. [fixture: accessibility-statements/colon-touches-keyword] [fixture:
+no whitespace at its ends, and a run of spaces and tabs inside it is printed as
+one space, which the Db keeps (`accTitle: a   b` has the title `a   b` and is
+printed `accTitle: a b`). A text written on a later line, a colon written on a
+later line than the keyword, and whitespace before the colon are printed on one
+line: the line breaks are whitespace to the lexer, and the text of the statement
+is the same. An `accTitle:` or `accDescr:` without text, at the end of the text,
+is printed as the keyword and the colon with nothing after them. [fixture:
+accessibility-statements/colon-touches-keyword] [fixture:
 accessibility-statements/colon-without-space-after] [fixture:
 accessibility-statements/text-whitespace-dropped] [fixture:
-accessibility-statements/text-inner-whitespace-kept] [fixture:
+accessibility-statements/text-inner-runs-collapsed] [fixture:
 accessibility-statements/special-characters-in-text] [fixture:
 accessibility-statements/text-on-the-next-line-joined] [fixture:
 accessibility-statements/colon-on-the-next-line-joined] [fixture:

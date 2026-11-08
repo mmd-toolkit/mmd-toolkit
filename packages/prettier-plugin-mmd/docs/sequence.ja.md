@@ -386,21 +386,24 @@ sequenceDiagram
   END
 ```
 
-値の中の空白は値の一部なので、残します。
-メッセージ、ノート、ブロック、`box` のテキスト、`as` の後の説明、
-`links` と `properties` の JSON がそうです。
-[fixture: whitespace-between-tokens/values-kept]
-[fixture: whitespace-between-tokens/values-of-other-statements-kept]
+メッセージ、ノート、ブロック、`box` のテキストと `as` の後の説明の、
+空白とタブの連なりは空白 1 つで印字します。
+（[同じに描かれるテキスト中の空白の連なり](./compatibility.ja.md#同じに描かれるテキスト中の空白の連なり)）。
+`links` と `properties` の JSON の中の空白は、値の一部なので残します。
+ここでも、`<` を含むテキストや `white-space` を含む図は、書かれたまま残します。
+[fixture: whitespace-between-tokens/values-runs-collapsed]
+[fixture: whitespace-between-tokens/values-of-other-statements-runs-collapsed]
+[fixture: whitespace-between-tokens/html-tag-runs-kept]
 `box` のテキストは全体を残します。
 最初の語が色でないとき、mermaid.js はテキスト全体を box の名前にするからです。
-[fixture: whitespace-between-tokens/values-kept]
-[fixture: whitespace-between-tokens/box-text-kept]
+[fixture: whitespace-between-tokens/values-runs-collapsed]
+[fixture: whitespace-between-tokens/box-text-runs-collapsed]
 参加者のデータブロック `@{ ... }` は id に接します。
 mermaid.js は、間に空白があっても、ないときと同じ図を読むので、
 空白は取り除きます。
 NBSP、全角空白、BOM も同じです。
-[test: byte order mark between the id of a participant and its data block]
 [test: no-break space between the id of a participant and its data block]
+[test: byte order mark between the id of a participant and its data block]
 [test: ideographic space between the id of a participant and its data block]
 データブロックが 1 行でも複数行でも、後ろに `as` が続いても同じです。
 [fixture: whitespace-between-tokens/data-block-space-before-removed]
@@ -437,7 +440,7 @@ id と `@{` の間のディレクティブは、
 [fixture: whitespace-between-tokens/ignored-line-in-block-kept]
 
 入力
-([whitespace-between-tokens/values-kept-input.mmd](../tests/fixtures/sequence/whitespace-between-tokens/values-kept-input.mmd)):
+([whitespace-between-tokens/values-runs-collapsed-input.mmd](../tests/fixtures/sequence/whitespace-between-tokens/values-runs-collapsed-input.mmd)):
 
 ```mmd
 sequenceDiagram
@@ -452,7 +455,7 @@ end
 ```
 
 出力
-([whitespace-between-tokens/values-kept-output.mmd](../tests/fixtures/sequence/whitespace-between-tokens/values-kept-output.mmd)):
+([whitespace-between-tokens/values-runs-collapsed-output.mmd](../tests/fixtures/sequence/whitespace-between-tokens/values-runs-collapsed-output.mmd)):
 
 ```mmd
 sequenceDiagram
@@ -679,6 +682,9 @@ sequenceDiagram
 `title` と `title:` の後には空白を 1 つ置き、
 行の残りは先頭と末尾の空白を除いて書かれたまま残します。
 `title   My diagram  ` は `title My diagram` と印字します。
+テキストの中の空白とタブの連なりも、空白 1 つで印字します。
+`accTitle` と `accDescr` も同じです。
+[fixture: title/accessibility-runs-collapsed]
 [fixture: title/text-padding-dropped]
 [fixture: title/text-padding-dropped-colon]
 半角空白とタブだけのタイトルは、書かれたままにします。
@@ -768,7 +774,10 @@ sequenceDiagram
 [fixture: comments/text-whitespace-kept]
 文の後のコメントはその行に残し、印の前に空白が書かれているかどうかを保ちます。
 mermaid.js は `autonumber 5%% c` を数 5 なしで読み、
-`%%` の前に空白を入れると数を読むからです。 [fixture: comments/kept]
+`%%` の前に空白を入れると数を読むからです。
+印の前の空白の連なりは、空白 1 つで印字します。
+（[同じに描かれるテキスト中の空白の連なり](./compatibility.ja.md#同じに描かれるテキスト中の空白の連なり)）。
+[fixture: comments/mark-run-one-space] [fixture: comments/kept]
 [corpus fixture: sequence/lex-percent-comment-takes-number]
 [fixture: comments/mark-whitespace-kept]
 [fixture: comments/after-last-statement-without-line-break]
@@ -896,6 +905,10 @@ mermaid.js の読み方のいくつかがそれに左右されるため、
   `title`、U+2028、` ;` は、`;` ごと書かれたまま残します。
   [test: U+2028 as the whitespace character after `title`, with a `;` after it]
   [test: U+2029 as the whitespace character after `title`]
+- タイトルの末尾。
+  空白やタブではなくテキストの文字なので、
+  その後の空白はタイトル末尾のほかの空白と一緒に除き、前の空白は残します。
+  [test: U+2028 and spaces at the end of a title]
 - ブロックの `end` の後（残しません）。
   `end`、U+2028、改行は `end` と印字します。
   mermaid.js はそこでこの文字を空白として読むからです。
@@ -1210,6 +1223,6 @@ sequenceDiagram
 
 次のテキストは、どちらの形でも Db が同じなので、選択として書かれたまま残します。
 キーワードの大文字小文字で、作者のものだからです。
-上に挙げたコメントの印の前の空白は、
+上に挙げたコメントの印の前に空白があるかどうかは、
 `autonumber 5` のような文の後では mermaid.js の読みを決めます。
-ほかの文の後では Db が同じですが、規則を 1 つにするために書かれたまま残します。
+ほかの文の後では Db が同じですが、規則を 1 つにするために空白の有無を保ちます。

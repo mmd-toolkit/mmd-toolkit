@@ -46,7 +46,7 @@ const kept: readonly DbPair[] = [
   },
   {
     name: "a run in a diagram type that has no listed text",
-    diagramType: "sequence",
+    diagramType: "sankey",
     before: { title: "a  b" },
     after: { title: "a b" },
   },

@@ -725,6 +725,104 @@ timeline の event と state の説明は、末尾の空白とタブだけが違
 それぞれの種類の両方のテキストを描き直し、SVG と画素を比べてから、
 例外を残します。
 
+## 同じに描かれるテキスト中の空白の連なり
+
+テキスト中の空白とタブの連なりは、
+mermaid.js がその連なりを描かずにテキストを描く場合に、空白 1 つで印字します。
+`title Sales   report` は `title Sales report` と印字し、`accTitle: A`、タブ、
+`B` は `accTitle: A B` と印字し、
+`quadrant-1 a    b` は `quadrant-1 a b` と印字します。
+対象は、すべての図種の `title`、`accTitle`、`accDescr` と、
+次の図種が SVG のテキストとして描くテキストです。
+architecture 図、ブロック図、象限チャート、radar チャートのラベル、
+class 図のメンバーと注釈、ER 図の属性の型、
+requirement 図のフィールドとクラスの並び、sequence 図のテキスト（メッセージ、
+ノート、ブロック、box、`as` の後の説明）、Cynefin 図と ishikawa 図のリテラル、
+packet 図と Venn 図のラベル、Wardley マップのリンク、treemap の名前、
+railroad 図の文字列と special sequence です。
+[fixture: pie/title/title-inner-text]
+[fixture: pie/accessibility-lines/accessibility-inner-tab]
+[fixture: quadrant/keywords-and-texts/inner-runs-collapsed]
+[fixture: sequence/whitespace-between-tokens/values-runs-collapsed]
+[fixture: class/member-lines/runs-collapsed]
+[fixture: block/shapes/label-runs-collapsed]
+[fixture: er/attribute-spacing/tilde-word-runs-collapsed]
+[fixture: requirement/fields/value-inner-runs-collapsed]
+[fixture: radar/quotes/padding-label]
+[fixture: railroad/quotes/ebnf-empty-and-text]
+
+次のものは、書かれたまま残します。
+
+- 空白とタブだけのテキスト。
+  [fixture: gantt/titles-and-sections/title-blank-kept]
+- 複数行のテキストと、コメント、ディレクティブ、
+  U+2028 か U+2029 を含むテキスト。
+  mermaid.js は、それらの行や印を置かれた場所によって読むからです。
+  [fixture: pie/directives-and-semicolons/global-value]
+- `<` を含むテキスト。
+  空白を保つ HTML タグ（`<pre>`）を始めるかもしれないからです。
+  どこかに `white-space` を含む図の、すべてのテキストも残します。
+  `style` や `classDef` が、それを使ってラベルの連なりを保てるからです。
+  [fixture: sequence/whitespace-between-tokens/html-tag-runs-kept]
+  [fixture: pie/title/white-space-property-kept]
+- mermaid.js が HTML として描くラベル。
+  flowchart と agentflow 図のノードと辺、state 図の説明、遷移、ノート、
+  mindmap のノード、class 図の関係のラベル、usecase 図のすべてのテキストです。
+  最大幅に達したラベルは `white-space: break-spaces` で配置され、
+  連なりを描きます。
+  （[`createText`](https://github.com/mermaid-js/mermaid/blob/2086904e76c692331e34a45d7cc3bc30860d040e/packages/mermaid/src/rendering-util/createText.ts#L61-L77)）。
+  ラベルがその幅に達するかどうかは、フォントと幅の設定によりますが、
+  フォーマッターはそれらを知りません。
+  連なりを持つ長いラベルを、連なりがある形とない形で描くと、画素が異なりました。
+  [fixture: flowchart/label-inner-whitespace/inner-whitespace-kept]
+  [fixture: agentflow/labels/labels-padding]
+  [fixture: state/descriptions-and-labels/text-kept]
+  [fixture: mindmap/node-text/inner-whitespace-kept]
+  [fixture: usecase/labels/label-interior-kept] [fixture: class/labels/spaced]
+- ほかの文が参照する名前。
+  連なりで異なる 2 つの名前は別のもので、連なりがなくなると 1 つになります。
+  円グラフのラベル、Sankey 図のノード、requirement 図の名前、
+  ER 図のエンティティ、class 図の名前、state 図の id、C4 図の別名、
+  user journey の人、Wardley マップのコンポーネントで、
+  そのような名前の対を描くと、図は異なりました。
+  gitgraph の重複するブランチは拒否されます。 [fixture: pie/labels/label-quotes]
+  [fixture: requirement/names/inner-whitespace-kept]
+  [fixture: state/aliases/id-kept]
+
+mermaid.js は連なりを Db に残します。
+レンダラーは、これらのテキストを SVG の `text` 要素に入れ、
+その空白をブラウザーが詰めます。
+（[`drawText`](https://github.com/mermaid-js/mermaid/blob/2086904e76c692331e34a45d7cc3bc30860d040e/packages/mermaid/src/diagrams/sequence/svgDraw.js#L259-L303)
+など）。
+アクセシビリティのテキストは `title` と `desc` 要素に入れ、
+アクセシブルな名前でも連なりを詰めます。
+各場合の両方のテキストを mermaid.js 12.3.0 で Chromium に描きました。
+書かれた形で 1 回、
+折り返しを見るために連なりの後に約 140 文字を足して 1 回です。
+画素は同じで、生成された id、ランダムに描かれる曲線、
+テキストノードの空白を除いた SVG も同じでした。
+Chromium のアクセシビリティツリーで、両方のテキストの `title`、`desc`、
+`aria-label` のアクセシブルな名前も同じでした。
+ブロック図と requirement 図のクラスの並び（`class="node c   d"`）と、
+sequence 図の色の引数（`fill="rgb(1,   2, 3)"`）だけは、
+SVG の 1 つの属性のテキストが異なります。
+ブラウザーは `class` 属性を語として読み、CSS の色の引数の空白を無視します。
+これは、AGENTS.md が比べない CSS の宣言の周りの空白と同じです。
+[fixture: block/styles/class-name-runs-collapsed]
+[fixture: requirement/class-lists/classes-with-spaces]
+[fixture: sequence/whitespace-between-tokens/values-of-other-statements-runs-collapsed]
+
+テストは、印字したテキストの Db に、
+書かれたテキストの Db から連なりを戻して比べます。
+`tests/text-run-margins.ts` の `textRunDbForFormattingComparison` を使います。
+そのファイルが図種ごとに列挙する場所のテキストが、
+書かれたものと連なりだけが違うときは、書かれた方を採ります。
+両端の空白も除かれたテキストも同じです。
+（[同じに描かれるキーワードの後のテキスト](#同じに描かれるキーワードの後のテキスト)）。
+ほかの文が参照する名前は一覧に含まれないので、その違いは失敗とします。
+固定している mermaid.js の版を上げるときは、それぞれの種類の両方のテキストを、
+短いものと長いものの両方で描き直し、SVG と画素を比べてから、例外を残します。
+
 ## 同じに描かれる呼び出しの引数
 
 flowchart、agentflow、class、Gantt の図の `click` の呼び出しの引数は、
@@ -784,6 +882,8 @@ mindmap のノードのテキスト、形のテキスト、icon、class は、
 `a (x)` は `a(x)`、`b[ y ]` は `b[y]`、`::icon( fa )` は `::icon(fa)`、
 `::: big ` は `:::big` と印字します。
 テキストの中の空白は残します。
+折り返すノードは連なりを描くからです。
+（[同じに描かれるテキスト中の空白の連なり](#同じに描かれるテキスト中の空白の連なり)）。
 余白を除くと引用符で始まる形のテキスト（`a[ "x" ]` は引用符を含むテキストで、
 `a["x"]` は文字列）、文字列、markdown 文字列、空白とタブだけのテキスト、
 複数行にまたがるテキスト、行の中か後ろにコメントやディレクティブがある行は、
@@ -1229,9 +1329,9 @@ class の属性、annotation、メソッドの各値とジェネリック型の�
 trivia、無視されたテキスト、行区切り、
 semicolon の保護があるメソッドは原文を保ちます。
 [fixture: class/member-lines/method-padding]
-[fixture: class/member-lines/method-values-and-classifiers-kept]
+[fixture: class/member-lines/method-values-and-classifiers-runs-collapsed]
 [fixture: class/member-lines/method-trivia-and-semicolon-kept]
-[fixture: class/member-lines/kept] [fixture: class/generic-types/kept]
+[fixture: class/member-lines/runs-collapsed] [fixture: class/generic-types/kept]
 空白だけのラベルは、行末の、`:` の後の空白を残します。
 `A --> B : ` は空の題を持ち、`A --> B` は題を持ちません。
 [fixture: class/labels/blank-kept]
@@ -1521,12 +1621,14 @@ mermaid.js は、requirement 図の名前や値の一部の空白を持ち、一
 [スタイルとクラス](./requirement.ja.md#スタイルとクラス)、
 [1 行に 1 文](./requirement.ja.md#1-行に-1-文)を参照してください。
 
-- 引用符のない名前、値、クラスの中の空白と、文字列の引用符の間のすべて。
-  Db が持つので、空白 2 つの `requirement spaced  name` や `id: a  b` は、
-  空白 1 つの形とは別のものです。
-  両端の空白は Db に入らないので落とします。
+- 引用符のない名前の中の空白。
+  Db が持ち、図にも描かれるので、空白 2 つの `requirement spaced  name` は、
+  空白 1 つのものとは別の requirement です。
+  名前、値、クラスの両端の空白は Db に入らないので落とし、値、クラス、
+  文字列の中の連なりは空白 1 つで印字します。
+  （[同じに描かれるテキスト中の空白の連なり](#同じに描かれるテキスト中の空白の連なり)）。
   [fixture: requirement/names/inner-whitespace-kept]
-  [fixture: requirement/fields/value-inner-whitespace-kept]
+  [fixture: requirement/fields/value-inner-runs-collapsed]
   [fixture: requirement/class-lists/classes-with-spaces]
 - 引用符のない名前や値の後ろの `#` と `%`。
   テキストの文字なので、`id: 1 #c` の値は `1 #c` で、
@@ -1703,9 +1805,10 @@ Db や字句解析器が読むものは変えません。
   大文字小文字は Db に入っています。
   [fixture: header-and-orientation/orientation-case-kept]
 - 文字列。
-  中の空白と改行は Db に入り、引用符は書き手のものです。
+  中の改行は Db に入り、引用符は書き手のものです。
   `"a b"` と `a b` は同じテキストではありません。
-  [fixture: quotes/strings-as-written]
+  文字列の中の空白とタブの連なりは、空白 1 つで印字します。
+  [fixture: quotes/strings-runs-collapsed]
   [fixture: multi-line-values/string-with-line-breaks-kept]
 - 分類と title の数字はテキストなので、`007` や `.5` は書かれたままです。
   範囲の数とプロットの値も、書き手のテキストとして残します。
@@ -1750,14 +1853,17 @@ Db や字句解析器が読むものは変えません。
 [キーワードとテキスト](./quadrant.ja.md#キーワードとテキスト)と
 [引用符](./quadrant.ja.md#引用符)を参照してください。
 
-- 引用符なしのテキスト、名前、title、アクセシビリティのテキストの中の空白。
-  2 つの単語の間の空白の連なり、タブ、改ページは、テキストの文字です。
+- 2 つの単語の間の改ページ。
+  空白やタブではなく、テキストの文字です。
   文字列とその後の単語は、間の空白を保ちます。
   `"a" b` と `"a"b` は別のテキストだからです。
-  [fixture: keywords-and-texts/inner-whitespace-kept]
+  引用符なしのテキスト、名前、title、アクセシビリティのテキストの中の、
+  空白とタブの連なりは、空白 1 つで印字します。
+  （[同じに描かれるテキスト中の空白の連なり](#同じに描かれるテキスト中の空白の連なり)）。
+  [fixture: keywords-and-texts/inner-runs-collapsed]
   [fixture: keywords-and-texts/string-then-text-whitespace-kept]
-  [fixture: points/name-inner-whitespace-kept]
-  [fixture: titles-and-accessibility-statements/text-inner-whitespace-kept]
+  [fixture: points/name-inner-runs-collapsed]
+  [fixture: titles-and-accessibility-statements/text-inner-runs-collapsed]
 - キーワード `title` や `classDef` の後に、空白なしで続く単語は、
   それ自身が単語です。
   `title1: [0.3, 0.6]` は名前 `title1` の点で、空白を置くと title になります。
@@ -1767,9 +1873,10 @@ Db や字句解析器が読むものは変えません。
 - 後ろにテキストのない軸の矢印は、Db が左のテキストの一部として読みます。
   [fixture: axes/arrow-only]
 - 文字列。
-  中の空白と改行は Db に入り、引用符は書き手が選びます。
+  中の改行を保ち、引用符は書き手が選びます。
+  中の空白とタブの連なりは、空白 1 つで印字します。
   文字列は引用符なしのテキストが持てないものを持てるので、引用符は外しません。
-  [fixture: quotes/strings-as-written]
+  [fixture: quotes/strings-runs-collapsed]
   [fixture: quotes/keywords-and-arrows-in-strings]
   [fixture: multi-line-values/string-with-line-breaks-kept]
 - title とアクセシビリティのテキストの中の `;` はその文字で、
@@ -1826,8 +1933,8 @@ Db や字句解析器が読むものは変えません。
   [fixture: shapes/block-arrow-directions-whitespace-kept]
 - `class` の空白。
   id とクラス名の空白です。 [fixture: styles/class-ids-as-written]
-  [fixture: styles/class-name-as-written]
-  [fixture: styles/class-name-with-a-comma-as-written]
+  [fixture: styles/class-name-runs-collapsed]
+  [fixture: styles/class-name-with-a-comma-runs-collapsed]
 - `%%` で始まる文。
   mermaid.js は node の後の `%%x` を id として読み、
   `%%x` で始まる行をコメント行として読むので、
@@ -2680,10 +2787,10 @@ subnormal、underflow、overflow を保ちます。
 double 値から再出力しません。
 option の値は作者のままです。
 ticks の制限、min・max の並べ替え、描画設定からの置換はしません。
-ラベルの StringLiteral は引用符、空・空白だけの文字列、escape、HTML、entity、
-内部の空白を保ち、singleQuote でも書き換えません。
+ラベルの StringLiteral は引用符、空・空白だけの文字列、escape、HTML、
+entity を保ち、ラベルの中の空白とタブの連なりは空白 1 つで印字します。
+singleQuote でも書き換えません。
 空ラベルの削除は ID への fallback を変えます。
-内部の空白の書き換えでも Db が変わりえます。
 [fixture: radar/source-order/declaration-order-kept]
 [fixture: radar/source-order/mixed-curve-forms]
 [fixture: radar/header/join-separated-inline-alternative]
@@ -2798,7 +2905,8 @@ semicolon が保護する行の境界は、本文の原文を保ちます。
 
 数は comma、underscore、dot、精度を含む source の綴りを保ちます。
 数値から印字し直すと、読みが変わったり拒否される構文になったりします。
-名前は引用符、空名、空白、backslash、entity、HTML、物理継続列を保ちます。
+名前は引用符、空名、backslash、entity、HTML、物理継続列を保ち、
+名前の中の空白とタブの連なりは空白 1 つで印字します。
 class style は内部と末尾の padding を含め、作者の literal 全体として保ちます。
 CSS としては整形しません。
 class の再定義、空代入、未解決の selector、元順を保ちます。
@@ -3157,7 +3265,8 @@ ABNF は backslash を普通の文字として読み、他の3方言は escape �
 ABNF の repeat は先頭ゼロ、上下限の省略、exact 形、巨大な整数を保ちます。
 numeric value は base letter の大小、数字、dot、
 hyphen を raw text として保ちます。
-EBNF の special sequence は外端と内部の空白も含め、span 全体を保ちます。
+EBNF の special sequence は外端の空白も含め、span 全体を保ち、
+内部の空白とタブの連なりは空白 1 つで印字します。
 これらの表記の変換や値の reflow で Db が変わることがあります。
 PEG predicate は公開 label から再構築せず、書かれた operand 全体を残します。
 [fixture: railroad/quotes/ir-escape] [fixture:

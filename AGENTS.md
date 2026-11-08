@@ -107,6 +107,10 @@ Correctness is defined by the pinned mermaid.js.
      and at the end of the last event of a line of a timeline and of the second
      description of an alias of a state diagram, defined in
      [Texts after a keyword that are drawn the same](packages/prettier-plugin-mmd/docs/compatibility.md#texts-after-a-keyword-that-are-drawn-the-same);
+   - the runs of spaces and tabs inside the texts that mermaid.js draws without
+     them: titles, accessibility texts, and the labels of the diagram types that
+     draw them as SVG text, defined in
+     [Runs of whitespace in a text that are drawn the same](packages/prettier-plugin-mmd/docs/compatibility.md#runs-of-whitespace-in-a-text-that-are-drawn-the-same);
    - the whitespace around the arguments of a `click` call in flowchart,
      agentflow, class, and Gantt diagrams, defined in
      [Call arguments that are drawn the same](packages/prettier-plugin-mmd/docs/compatibility.md#call-arguments-that-are-drawn-the-same);

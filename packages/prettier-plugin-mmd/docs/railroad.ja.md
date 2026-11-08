@@ -645,9 +645,10 @@ railroad-ebnf-beta
 ### special sequence の内容
 
 EBNF の special sequence は source span 全体を保ちます。
-両端の疑問符、外端と内部の空白、引用符、backslash、継続行の列も対象です。
+両端の疑問符、外端の空白、引用符、backslash、継続行の列も対象です。
+テキストの中の空白とタブの連なりは、空白 1 つにして印字します。
+（[同じに描かれるテキスト中の空白の連なり](./compatibility.ja.md#同じに描かれるテキスト中の空白の連なり)）。
 外端だけの trim で Db が同じでも、原文の保持により再解釈を避けます。
-内部空白の圧縮は Db を変えることがあります。
 
 [fixture: railroad/special-sequences/ebnf-content]
 
@@ -666,8 +667,9 @@ railroad-ebnf-beta
 ### 文字列
 
 StringLiteral の source span を保ちます。
-引用符、escape、空文字列、空白だけの値、内部 padding、HTML、entity、
+引用符、escape、空文字列、空白だけの値、HTML、entity、
 hidden やコメントに見える文字も対象です。
+文字列の中の空白とタブの連なりは空白 1 つにして印字します。
 singleQuote で値を書き換えません。
 IR、EBNF、PEG は両方の引用符と backslash escape を認めます。
 ABNF は二重引用符だけを認め、backslash を普通の文字として読みます。
@@ -1016,7 +1018,9 @@ last";
 共有の common-line 配置を使います。
 非空値の通常の外端だけを trim して `title value` にし、
 null と空白だけの値は裸の `title` にします。
-引用符に見える内容、escape、内部空白は保ち、次の物理行から値を取りません。
+引用符に見える内容と escape は保ち、
+値の中の空白とタブの連なりは空白 1 つにして印字します。
+次の物理行から値を取りません。
 裸の title prefix と後続の規則は別の文にし、規則を値に取り込みません。
 比較 Db は本文の title を除きますが、内容を書き換える理由にはなりません。
 

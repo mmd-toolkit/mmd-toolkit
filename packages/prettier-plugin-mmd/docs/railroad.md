@@ -633,10 +633,11 @@ railroad-ebnf-beta
 ### Special sequences
 
 Keep the entire EBNF special-sequence source span, including both question
-marks, exterior and internal whitespace, quotes, backslashes and physical
-continuation columns. Trimming just its edges may keep the Db, but preserving
-the authored text avoids a second lexical interpretation; collapsing internal
-whitespace can change the Db.
+marks, exterior whitespace, quotes, backslashes and physical continuation
+columns, with a run of spaces and tabs inside the text printed as one space (see
+[Runs of whitespace in a text that are drawn the same](./compatibility.md#runs-of-whitespace-in-a-text-that-are-drawn-the-same)).
+Trimming just its edges may keep the Db, but preserving the authored text avoids
+a second lexical interpretation.
 
 [fixture: railroad/special-sequences/ebnf-content]
 
@@ -655,11 +656,12 @@ railroad-ebnf-beta
 ### Quotes
 
 Keep StringLiteral source spans unchanged: quotes, escapes, empty and
-whitespace-only strings, internal padding, HTML, entities and
-hidden/comment-looking text. singleQuote does not rewrite these values. IR, EBNF
-and PEG allow both quote forms and backslash escapes; ABNF allows double quotes
-only and treats backslash as ordinary text. Requoting adds no formatting
-benefit, while trimming content or using the wrong escape model changes the Db.
+whitespace-only strings, HTML, entities and hidden/comment-looking text, with a
+run of spaces and tabs inside a string printed as one space. singleQuote does
+not rewrite these values. IR, EBNF and PEG allow both quote forms and backslash
+escapes; ABNF allows double quotes only and treats backslash as ordinary text.
+Requoting adds no formatting benefit, while trimming content or using the wrong
+escape model changes the Db.
 
 [fixture: railroad/quotes/abnf-backslash]
 
@@ -999,11 +1001,11 @@ last";
 
 Use the shared common-line layout: trim ordinary exterior whitespace around a
 nonempty value and print `title value`; null or whitespace-only values print
-bare `title`. Keep quote-looking content, escape spelling and internal
-whitespace. Do not read a value from the next physical line. A bare title prefix
-followed by a rule becomes two statements, keeping the rule out of the title.
-The comparison Db omits body titles, which gives no permission to rewrite their
-contents.
+bare `title`. Keep quote-looking content and escape spelling, and print a run of
+spaces and tabs inside the value as one space. Do not read a value from the next
+physical line. A bare title prefix followed by a rule becomes two statements,
+keeping the rule out of the title. The comparison Db omits body titles, which
+gives no permission to rewrite their contents.
 
 [fixture: railroad/title/abnf-next-line]
 

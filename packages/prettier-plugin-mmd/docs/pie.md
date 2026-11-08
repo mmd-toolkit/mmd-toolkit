@@ -179,8 +179,10 @@ pie showData
 Reuse the compact common-value reason of
 [C4 accessibility lines](./c4.md#accessibility-lines): equivalent exterior
 whitespace gets one form. Print `title`, one space, and a trimmed nonempty
-value; a null/empty/whitespace-only value prints bare `title`. Preserve internal
-words, tabs, quotes and backslashes, and all repeated assignments, including
+value; a null/empty/whitespace-only value prints bare `title`. Print a run of
+spaces and tabs inside the value as one space (see
+[Runs of whitespace in a text that are drawn the same](./compatibility.md#runs-of-whitespace-in-a-text-that-are-drawn-the-same)),
+and preserve quotes and backslashes, and all repeated assignments, including
 frontmatter fallback. Pie never joins the next physical line into a title: even
 across blank/comment/directive gaps, a following section is a separate
 statement. Protected trivia and semicolon groups take precedence.
@@ -206,11 +208,12 @@ pie
 Reuse [C4 accessibility lines](./c4.md#accessibility-lines), with the same
 compact exterior-whitespace reason: `accTitle: value` and `accDescr: value`,
 with the colon touching the keyword and one space before a trimmed nonempty
-value. Empty values end at the colon. Interior tabs, quotes and line-form braces
-remain text; repeated assignments and percent comment attachment remain. Pie
-never joins next-line values, including after blank/comment/directive gaps,
-because its composite line forms stop at physical EOL. Hidden forms and
-protected textual groups retain their gaps.
+value. Empty values end at the colon. A run of spaces and tabs inside the value
+is printed as one space; quotes and line-form braces remain text; repeated
+assignments and percent comment attachment remain. Pie never joins next-line
+values, including after blank/comment/directive gaps, because its composite line
+forms stop at physical EOL. Hidden forms and protected textual groups retain
+their gaps.
 
 Fixed cases: [fixture: pie/accessibility-lines/a11y-lines] [fixture:
 pie/accessibility-lines/a11y-empty] [fixture:

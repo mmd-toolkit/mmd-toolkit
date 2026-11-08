@@ -226,10 +226,12 @@ packet
 
 ### Label content
 
-Keep label padding, repeated spaces, tabs, escapes, HTML, entities and
-hidden-looking text as the complete source range, including internal common
-trivia. Trimming, collapsing or decoding this text can change the Db. Physical
-line endings alone follow the shared host policy.
+Keep label padding, escapes, HTML, entities and hidden-looking text as the
+complete source range, including internal common trivia. A run of spaces and
+tabs inside the label is printed as one space (see
+[Runs of whitespace in a text that are drawn the same](./compatibility.md#runs-of-whitespace-in-a-text-that-are-drawn-the-same)).
+Decoding this text can change the Db. Physical line endings alone follow the
+shared host policy.
 
 [fixture: packet/label-content/label-padding]
 

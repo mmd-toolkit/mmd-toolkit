@@ -283,8 +283,10 @@ cynefin-beta
 ### Strings
 
 項目と遷移ラベルの StringLiteral は source span のまま印字します。
-引用符、escape、空の値、内部の padding、HTML・entity、
-native form に見える文字を保ち、singleQuote でも引用符は変えません。
+引用符、escape、空の値、HTML・entity、native form に見える文字を保ちますが、
+項目の中の空白とタブの連なりは、空白 1 つにして印字します。
+（[同じに描かれるテキスト中の空白の連なり](./compatibility.ja.md#同じに描かれるテキスト中の空白の連なり)）。
+singleQuote でも引用符は変えません。
 Db が等しい引用符の変更も書かれた形を失い、
 trim や escape の decode は値を変え得るためです。
 

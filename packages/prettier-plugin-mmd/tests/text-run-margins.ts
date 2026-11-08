@@ -24,7 +24,7 @@ const textRunPaths: ReadonlyMap<string, ReadonlySet<string>> = new Map([
     ]),
   ],
   ["block", new Set(["root.children.classes", "root.children.label"])],
-  ["c4", new Set(["accDescr"])],
+  ["c4", new Set(["accDescr", "accTitle", "title"])],
   [
     "classDiagram",
     new Set([
@@ -35,30 +35,47 @@ const textRunPaths: ReadonlyMap<string, ReadonlySet<string>> = new Map([
       "classes.methods.parameters",
     ]),
   ],
-  ["cynefin", new Set(["accDescr", "domains.items.label"])],
-  ["er", new Set(["accTitle", "entities.attributes.type"])],
+  [
+    "cynefin",
+    new Set(["accDescr", "accTitle", "domains.items.label", "title"]),
+  ],
+  ["er", new Set(["accDescr", "accTitle", "entities.attributes.type"])],
   ["flowchart-v2", new Set(["accDescr", "accTitle", "subgraphs.title"])],
-  ["gantt", new Set(["accDescr", "title"])],
+  ["gantt", new Set(["accDescr", "accTitle", "title"])],
   ["ishikawa", new Set(["root.children.text", "root.text", "title"])],
-  ["journey", new Set(["accDescr", "title"])],
-  ["packet", new Set(["packet.label"])],
+  ["journey", new Set(["accDescr", "accTitle", "title"])],
+  ["packet", new Set(["accDescr", "accTitle", "packet.label", "title"])],
+  ["info", new Set(["accDescr", "accTitle", "title"])],
+  ["gitGraph", new Set(["accDescr", "accTitle", "title"])],
   ["pie", new Set(["accDescr", "accTitle", "title"])],
   [
     "quadrantChart",
     new Set([
+      "accDescr",
       "accTitle",
       "points.text",
       "quadrants",
       "title",
       "xAxis.left",
       "xAxis.right",
+      "yAxis.bottom",
+      "yAxis.top",
     ]),
   ],
-  ["radar", new Set(["axes.label", "curves.label"])],
+  [
+    "radar",
+    new Set(["accDescr", "accTitle", "axes.label", "curves.label", "title"]),
+  ],
   ...["railroad", "railroadAbnf", "railroadEbnf", "railroadPeg"].map(
     (type): [string, ReadonlySet<string>] => [
       type,
-      new Set(["rules.definition.elements.value", "rules.definition.text"]),
+      new Set([
+        "accDescr",
+        "accTitle",
+        "rules.definition.elements.value",
+        "rules.definition.text",
+        "title",
+      ]),
     ],
   ),
   [
@@ -75,6 +92,8 @@ const textRunPaths: ReadonlyMap<string, ReadonlySet<string>> = new Map([
   [
     "sequence",
     new Set([
+      "accDescr",
+      "accTitle",
       "actors.description",
       "boxes.fill",
       "boxes.name",
@@ -83,10 +102,21 @@ const textRunPaths: ReadonlyMap<string, ReadonlySet<string>> = new Map([
     ]),
   ],
   ["stateDiagram", new Set(["accDescr", "accTitle"])],
-  ["timeline", new Set(["accDescr"])],
-  ["treemap", new Set(["nodes.name"])],
+  ["timeline", new Set(["accDescr", "accTitle", "title"])],
+  [
+    "treemap",
+    new Set([
+      "accDescr",
+      "accTitle",
+      "nodes.children.name",
+      "nodes.name",
+      "title",
+    ]),
+  ],
+  ["treeView", new Set(["accDescr", "accTitle", "title"])],
+  ["usecase", new Set(["accDescr", "accTitle"])],
   ["venn", new Set(["subsets.label", "title"])],
-  ["wardley", new Set(["links.label"])],
+  ["wardley", new Set(["accDescr", "accTitle", "links.label", "title"])],
   ["xychart", new Set(["accDescr", "accTitle", "title"])],
 ])
 
@@ -94,6 +124,14 @@ const textRunPaths: ReadonlyMap<string, ReadonlySet<string>> = new Map([
 export const textRunDiagramTypes: ReadonlySet<string> = new Set(
   textRunPaths.keys(),
 )
+
+/**
+ * The path as a string, with the keys of a tree that repeat once: the name of a
+ * node at any depth is `nodes.children.name`.
+ */
+function withoutRepeats(path: readonly string[]): string {
+  return path.filter((key, index) => key !== path[index - 1]).join(".")
+}
 
 /** The text with each run of spaces and tabs replaced by one space. */
 function withoutRuns(text: string): string {
@@ -126,7 +164,7 @@ export function textRunDbForFormattingComparison(
   const paths = textRunPaths.get(diagramType)
   if (before === null || after === null || paths === undefined) return after
   return restoreStrings(before, after, (written, printed, path) => {
-    if (!paths.has(path.join("."))) return printed
+    if (!paths.has(withoutRepeats(path))) return printed
     if (withoutRuns(written) === printed) return written
     // A text that also lost the whitespace at its ends gets its runs back; the
     // ends are another exception (keyword-text-margins.ts).

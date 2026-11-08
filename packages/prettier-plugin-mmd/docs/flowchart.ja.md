@@ -1135,7 +1135,7 @@ flowchart LR
 ```
 
 入力
-([label-inner-whitespace/inner-whitespace-kept-input.mmd](../tests/fixtures/flowchart/label-inner-whitespace/inner-runs-collapsed-input.mmd)):
+([label-inner-whitespace/inner-whitespace-kept-input.mmd](../tests/fixtures/flowchart/label-inner-whitespace/inner-whitespace-kept-input.mmd)):
 
 ```mmd
 flowchart LR
@@ -1143,11 +1143,11 @@ flowchart LR
 ```
 
 出力
-([label-inner-whitespace/inner-whitespace-kept-output.mmd](../tests/fixtures/flowchart/label-inner-whitespace/inner-runs-collapsed-output.mmd)):
+([label-inner-whitespace/inner-whitespace-kept-output.mmd](../tests/fixtures/flowchart/label-inner-whitespace/inner-whitespace-kept-output.mmd)):
 
 ```mmd
 flowchart LR
-  A[hello world]
+  A[hello   world]
 ```
 
 入力
@@ -1299,7 +1299,11 @@ flowchartの通常のアクセシビリティ行に固有の理由はないの�
 [C4](./c4.ja.md#アクセシビリティの行)、[class](./class.ja.md#ラベル)、
 [usecase](./usecase.ja.md#direction-and-accessibility)と同じ短い形にします。
 
-値の内部の空白、インラインの`%%`と`#`は値の文字として保ちます。
+値の中の空白とタブの連なりは、空白 1 つで印字します。
+（[同じに描かれるテキスト中の空白の連なり](./compatibility.ja.md#同じに描かれるテキスト中の空白の連なり)）。
+インラインの`%%`と`#`は値の文字として保ちます。
+[fixture: accessibility-lines/value-runs-collapsed]
+[fixture: accessibility-lines/block-runs-collapsed]
 [fixture: accessibility-lines/inline-percent-hash]
 値が空または空白だけでも文の形を保ち、`accTitle:`または`accDescr:`とし、
 後ろに空白を足しません。 [fixture: accessibility-lines/empty-title]

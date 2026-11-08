@@ -426,6 +426,11 @@ padding を足したり trim したりしません。; の後が空白なら、
 空白だけのラベルとして受理され、裸の ; は拒否されます。
 後続のセミコロンには共有の prefix 保護を使います。
 native に見える形と percent テキストもラベルのままです。
+リンクのラベルでは、`;` の後や flow の引用符の間の空白とタブの連なりは、
+空白 1 つにして印字します。
+（[同じに描かれるテキスト中の空白の連なり](./compatibility.ja.md#同じに描かれるテキスト中の空白の連なり)）。
+component の名前はそのままです。 [fixture: wardley/flows/flow-padding-escapes]
+[fixture: wardley/flows/flow-ports-and-label]
 
 [fixture: wardley/semicolon-labels/label-exterior]
 

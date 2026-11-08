@@ -386,7 +386,9 @@ U+2028 や U+2029 を含む空白は、書かれたまま残します。
 [test: U+2028 inside the brackets of a venn label with a semicolon]
 [test: U+2029 inside the brackets of a venn label with a semicolon]
 [fixture: labels/bare-label-padding-dropped]
-引用符の中の空白は値の一部なので、保ちます。
+ラベルの中の空白とタブの連なりは、引用符の中でも、空白 1 つにして印字します。
+（[同じに描かれるテキスト中の空白の連なり](./compatibility.ja.md#同じに描かれるテキスト中の空白の連なり)）。
+引用符つきの空白だけのラベルは保ちます。
 空の引用符つきラベルと裸の空白ラベルは Db のラベルを省き、
 引用符内の空白は空のラベルを保存します。
 内部の項目はラベル内に保ち、隙間の項目は接触関係を優先します。
@@ -653,6 +655,9 @@ mermaid.js はそれらを Db に残しますが、それらがなくても同�
 （[同じに描かれるキーワードの後のテキスト](./compatibility.ja.md#同じに描かれるキーワードの後のテキスト)）。
 それより後の値の全ての文字は、文に見える単語も含めて保ちます。
 最初の区切りの後は全て title の値で、木でも Db でもそうだからです。
+タイトルの末尾の U+2028 と U+2029 は、空白やタブではなくタイトルの文字なので、
+その後の空白は除き、その前の空白は残します。
+[test: venn: title-line-separator-spaces]
 次のソース行の字下げは値の一部なので、
 `title` の LF と `  T` は `title T` と印字されます。
 [fixture: venn/title/text-padding-dropped]
@@ -792,10 +797,11 @@ set A
 完結したヘッダーと title 以外の文の後の外側の ASCII 空白とタブは除き、
 行末をそろえます。
 保持部分と安全な接尾部の後も同じです。
-名前、ラベル、色、style の文字列、
+名前、色、style の文字列、
 コメントとディレクティブ内の空白は書かれたテキストとして保ちます。
-title の値の中の空白も同じですが、
-両端の空白は除きます（[Title](#title)を参照）。
+ラベルや title の値の中の空白とタブの連なりは空白 1 つにして印字し、
+タイトルの末尾の空白は除きます（[Title](#title)、
+[同じに描かれるテキスト中の空白の連なり](./compatibility.ja.md#同じに描かれるテキスト中の空白の連なり)）。
 [fixture: venn/trailing-whitespace/continuation-spaces]
 [corpus fixture: venn/db-after-set-label-size-space]
 [corpus fixture: venn/db-title-padding] [corpus fixture: venn/lex-tab-line-end]

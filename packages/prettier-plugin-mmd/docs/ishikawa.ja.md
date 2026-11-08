@@ -421,7 +421,9 @@ Mermaid が literal を trim するので、除いても Db と図は同じで�
 [test: ishikawa: trailing-nbsp] [test: ishikawa: trailing-unicode-separators]
 [test: ishikawa: trailing-unicode-kept-line]
 
-内部の空白、directive の両側の隙間、結合した継続列も保ちます。
+literal の中の空白とタブの連なりは、空白 1 つにして印字します。
+（[同じに描かれるテキスト中の空白の連なり](./compatibility.ja.md#同じに描かれるテキスト中の空白の連なり)）。
+directive の両側の隙間、結合した継続列は保ちます。
 コメントの空白と directive の内容も同じです。
 literal の後に続く directive の前の隙間は directive に属するので、
 そこでの literal の末尾は保ちます。
@@ -452,8 +454,9 @@ literal の後に続く directive の前の隙間は directive に属するの�
 
 ### Node text
 
-節点テキストは、末尾の空白とタブを除いて書かれた綴りを保ちます。
-（[Trailing whitespace](#trailing-whitespace)を参照）。
+節点テキストは、末尾の空白とタブを除き、
+内部の空白とタブの連なりを空白 1 つにするほかは、
+書かれた綴りを保ちます（[Trailing whitespace](#trailing-whitespace)を参照）。
 引用符、backtick、空に見える文字列や括弧や call、閉じ忘れ、数、句読点、entity、
 HTML、prototype の名前も literal です。
 title、accessibility、style、装飾、データらしい形も同じです。
@@ -642,6 +645,8 @@ LS と PS は別の文脈による規則に従います。
 
 literal や directive 内の LS (`\u2028`) と PS (`\u2029`) は文字です。
 literal の末尾でも保ちます。
+その後の空白とタブは除き、その前の空白とタブは残します。
+[test: ishikawa: spaces after a trailing line separator]
 LF は [Physical lines](#physical-lines) の規則で、普通の節点の行を分けます。
 [fixture: ishikawa/line-separators/lf-root-and-cause]
 [fixture: ishikawa/line-separators/lf-sibling-causes]

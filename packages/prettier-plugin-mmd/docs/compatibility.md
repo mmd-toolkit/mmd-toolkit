@@ -667,6 +667,96 @@ them one in the name of a section, in a tick interval, or in a today marker,
 fails. When the pinned mermaid.js is updated, draw both texts of each kind again
 and compare the SVG and the pixels before the exception stays.
 
+## Runs of whitespace in a text that are drawn the same
+
+A run of spaces and tabs inside a text is printed as one space where mermaid.js
+draws the text without the run: `title Sales   report` is printed
+`title Sales report`, `accTitle: A`, a tab, and `B` is printed `accTitle: A B`,
+and `quadrant-1 a    b` is printed `quadrant-1 a b`. The texts are the `title`,
+the `accTitle`, and the `accDescr` of every diagram type, and the texts that
+these diagram types draw as SVG text: the labels of an architecture diagram, a
+block diagram, a quadrant chart, and a radar chart, the members and annotations
+of a class diagram, the types of the attributes of an ER diagram, the fields and
+class lists of a requirement diagram, the texts of a sequence diagram (the
+messages, notes, blocks, boxes, and descriptions after `as`), the literals of a
+Cynefin diagram and an ishikawa diagram, the labels of a packet and a Venn
+diagram, the links of a Wardley map, the names of a treemap, and the strings and
+special sequences of a railroad diagram. [fixture: pie/title/title-inner-text]
+[fixture: pie/accessibility-lines/accessibility-inner-tab] [fixture:
+quadrant/keywords-and-texts/inner-runs-collapsed] [fixture:
+sequence/whitespace-between-tokens/values-runs-collapsed] [fixture:
+class/member-lines/runs-collapsed] [fixture: block/shapes/label-runs-collapsed]
+[fixture: er/attribute-spacing/tilde-word-runs-collapsed] [fixture:
+requirement/fields/value-inner-runs-collapsed] [fixture:
+radar/quotes/padding-label] [fixture: railroad/quotes/ebnf-empty-and-text]
+
+These stay as written:
+
+- A text of spaces and tabs only. [fixture:
+  gantt/titles-and-sections/title-blank-kept]
+- A text over several lines, and a text with a comment, a directive, or a U+2028
+  or U+2029 in it, whose lines and marks mermaid.js reads by their place.
+  [fixture: pie/directives-and-semicolons/global-value]
+- A text with a `<`, which may start an HTML tag that keeps the whitespace
+  (`<pre>`), and every text of a diagram that holds `white-space` anywhere,
+  which a `style` or a `classDef` can use to keep the runs of a label. [fixture:
+  sequence/whitespace-between-tokens/html-tag-runs-kept] [fixture:
+  pie/title/white-space-property-kept]
+- The labels that mermaid.js draws as HTML: the nodes and the edges of a
+  flowchart and an agentflow diagram, the descriptions, transitions, and notes
+  of a state diagram, the nodes of a mindmap, the labels of a relation of a
+  class diagram, and all texts of a use case diagram. A label that reaches its
+  maximum width is laid out with `white-space: break-spaces`, which draws the
+  runs
+  ([`createText`](https://github.com/mermaid-js/mermaid/blob/2086904e76c692331e34a45d7cc3bc30860d040e/packages/mermaid/src/rendering-util/createText.ts#L61-L77)),
+  and whether a label does depends on the font and on the width setting, which
+  the formatter does not know. A long label with runs was drawn with and without
+  them, and the pixels differed. [fixture:
+  flowchart/label-inner-whitespace/inner-whitespace-kept] [fixture:
+  agentflow/labels/labels-padding] [fixture:
+  state/descriptions-and-labels/text-kept] [fixture:
+  mindmap/node-text/inner-whitespace-kept] [fixture:
+  usecase/labels/label-interior-kept] [fixture: class/labels/spaced]
+- The names that other statements refer to: two names that differ by a run are
+  two things, and are one once the run is gone. A pair of such names was drawn
+  for the labels of a pie chart, the nodes of a Sankey diagram, the names of a
+  requirement diagram, the entities of an ER diagram, the names of a class
+  diagram, the ids of a state diagram, the aliases of a C4 diagram, the people
+  of a user journey, and the components of a Wardley map, and the figures
+  differ; a repeated branch of a gitgraph is rejected. [fixture:
+  pie/labels/label-quotes] [fixture: requirement/names/inner-whitespace-kept]
+  [fixture: state/aliases/id-kept]
+
+mermaid.js keeps the runs in the Db. The renderers put these texts into `text`
+elements of the SVG, whose whitespace the browser collapses
+([`drawText`](https://github.com/mermaid-js/mermaid/blob/2086904e76c692331e34a45d7cc3bc30860d040e/packages/mermaid/src/diagrams/sequence/svgDraw.js#L259-L303)
+is one of them), and the accessibility texts into the `title` and `desc`
+elements, whose runs the accessible name also collapses. Both texts of each case
+were drawn with mermaid.js 12.3.0 in Chromium, once as written and once with
+about 140 characters after the run to see the wrap, and the pixels were the
+same, and so was the SVG without the generated ids, the curves drawn at random,
+and the whitespace in text nodes. The accessible names of the `title`, `desc`,
+and `aria-label` of both texts were the same in the accessibility tree of
+Chromium. The SVG differs in the text of one attribute only for the class list
+of a block diagram and a requirement diagram (`class="node c   d"`) and for the
+arguments of a color of a sequence diagram (`fill="rgb(1,   2, 3)"`): the
+browser reads the `class` attribute as words and ignores whitespace in the
+arguments of a CSS color, like the whitespace around a CSS declaration, which
+AGENTS.md does not compare. [fixture: block/styles/class-name-runs-collapsed]
+[fixture: requirement/class-lists/classes-with-spaces] [fixture:
+sequence/whitespace-between-tokens/values-of-other-statements-runs-collapsed]
+
+The tests compare the Db of the printed text with the runs restored from the Db
+of the written text (`textRunDbForFormattingComparison` in
+`tests/text-run-margins.ts`): a text of a place that the file lists for the
+diagram type, which differs from the written one only by the runs, takes the
+written text, and so does a text that also lost the whitespace at its ends (see
+[Texts after a keyword that are drawn the same](#texts-after-a-keyword-that-are-drawn-the-same)).
+The names that other statements refer to are not in the lists, so a difference
+in one of them fails. When the pinned mermaid.js is updated, draw both texts of
+each kind again, with a short text and a long one, and compare the SVG and the
+pixels before the exception stays.
+
 ## Call arguments that are drawn the same
 
 The arguments of a `click` call in flowchart, agentflow, class, and Gantt
@@ -722,11 +812,13 @@ updated, click both texts of each kind again before the exception stays.
 The text of a node of a mindmap, the text of its shape, its icon, and its class
 are printed without the spaces and tabs at their ends: `a (x)` is printed
 `a(x)`, `b[ y ]` is printed `b[y]`, `::icon( fa )` is printed `::icon(fa)`, and
-`::: big ` is printed `:::big`. The whitespace inside a text stays. A shape text
-that would start with a quote once its padding is gone (`a[ "x" ]` is a text
-with its quotes, `a["x"]` a string), a string, a markdown string, a text of
-nothing but spaces and tabs, a text over lines, and a line with a comment or a
-directive in it or after it stay as written. [fixture:
+`::: big ` is printed `:::big`. The whitespace inside a text stays, since a node
+that wraps draws its runs (see
+[Runs of whitespace in a text that are drawn the same](#runs-of-whitespace-in-a-text-that-are-drawn-the-same)).
+A shape text that would start with a quote once its padding is gone (`a[ "x" ]`
+is a text with its quotes, `a["x"]` a string), a string, a markdown string, a
+text of nothing but spaces and tabs, a text over lines, and a line with a
+comment or a directive in it or after it stay as written. [fixture:
 mindmap/node-text/trailing-whitespace-dropped] [fixture:
 mindmap/node-text/space-before-a-shape-dropped] [fixture:
 mindmap/shapes/inner-padding-dropped] [fixture:
@@ -1152,10 +1244,10 @@ be part of the Db. Ordinary methods remove padding around their parentheses and
 use one space before a nonempty return type. Methods with trivia, ignored text,
 line separators or semicolon protection keep their source. [fixture:
 class/member-lines/method-padding] [fixture:
-class/member-lines/method-values-and-classifiers-kept] [fixture:
+class/member-lines/method-values-and-classifiers-runs-collapsed] [fixture:
 class/member-lines/method-trivia-and-semicolon-kept] [fixture:
-class/member-lines/kept] [fixture: class/generic-types/kept] A label of only
-whitespace keeps the whitespace after its `:`, at the end of its line:
+class/member-lines/runs-collapsed] [fixture: class/generic-types/kept] A label
+of only whitespace keeps the whitespace after its `:`, at the end of its line:
 `A --> B : ` has an empty title and `A --> B` none. [fixture:
 class/labels/blank-kept] On a line that holds a `;`, whether whitespace follows
 the `:` of a label is kept as written, since the line rule of mermaid.js reads a
@@ -1427,12 +1519,14 @@ them as they are written. See [Names](./requirement.md#names),
 [Styles and classes](./requirement.md#styles-and-classes), and
 [Statements one per line](./requirement.md#statements-one-per-line).
 
-- The whitespace inside an unquoted name, value, or class, and everything
-  between the quotes of a string. The Db keeps it, so `requirement spaced  name`
-  with two spaces and `id: a  b` are not the same as their forms with one space.
-  The whitespace at their ends is not in the Db, and is dropped. [fixture:
-  requirement/names/inner-whitespace-kept] [fixture:
-  requirement/fields/value-inner-whitespace-kept] [fixture:
+- The whitespace inside an unquoted name. The Db keeps it, and it is drawn:
+  `requirement spaced  name` with two spaces is not the same requirement as the
+  one with one space. The whitespace at the ends of a name, a value, or a class
+  is not in the Db, and is dropped, and a run inside a value, a class, or a
+  string is printed as one space (see
+  [Runs of whitespace in a text that are drawn the same](#runs-of-whitespace-in-a-text-that-are-drawn-the-same)).
+  [fixture: requirement/names/inner-whitespace-kept] [fixture:
+  requirement/fields/value-inner-runs-collapsed] [fixture:
   requirement/class-lists/classes-with-spaces]
 - A `#` or a `%` after an unquoted name or value. It is a character of the text,
   so `id: 1 #c` has the value `1 #c`, and the comment is not moved or touched.
@@ -1604,9 +1698,10 @@ the Db or the lexer reads stays. See [Text units](./xychart.md#text-units) and
 - The case of the orientation. Only `horizontal` in lower case makes the chart
   horizontal, and `Horizontal` makes it vertical, so the case is in the Db.
   [fixture: header-and-orientation/orientation-case-kept]
-- A string, with the whitespace and the line breaks in it, which are in the Db,
-  and the quotes, which are the author's: `"a b"` and `a b` are not the same
-  text. [fixture: quotes/strings-as-written] [fixture:
+- A string, with the line breaks in it, which are in the Db, and the quotes,
+  which are the author's: `"a b"` and `a b` are not the same text. A run of
+  spaces and tabs in a string is printed as one space. [fixture:
+  quotes/strings-runs-collapsed] [fixture:
   multi-line-values/string-with-line-breaks-kept]
 - The digits of a category and of a title, which are text, so `007` and `.5`
   stay as written, and the numbers of a range and of a plot, which are the
@@ -1651,14 +1746,16 @@ around them. What the Db or the lexer reads stays. See
 [Keywords and texts](./quadrant.md#keywords-and-texts) and
 [Quotes](./quadrant.md#quotes).
 
-- The whitespace inside a text without quotes, a name, a title, and an
-  accessibility text: a run of spaces, a tab, and a form feed between two words
-  are characters of the text. A string and the words after it keep the
-  whitespace between them, since `"a" b` and `"a"b` are different texts.
-  [fixture: keywords-and-texts/inner-whitespace-kept] [fixture:
+- A form feed between two words, which is a character of the text and no space
+  or tab. A string and the words after it keep the whitespace between them,
+  since `"a" b` and `"a"b` are different texts. A run of spaces and tabs inside
+  a text without quotes, a name, a title, or an accessibility text is printed as
+  one space (see
+  [Runs of whitespace in a text that are drawn the same](#runs-of-whitespace-in-a-text-that-are-drawn-the-same)).
+  [fixture: keywords-and-texts/inner-runs-collapsed] [fixture:
   keywords-and-texts/string-then-text-whitespace-kept] [fixture:
-  points/name-inner-whitespace-kept] [fixture:
-  titles-and-accessibility-statements/text-inner-whitespace-kept]
+  points/name-inner-runs-collapsed] [fixture:
+  titles-and-accessibility-statements/text-inner-runs-collapsed]
 - A word after the keyword `title` or `classDef` with no whitespace between them
   is a word of its own: `title1: [0.3, 0.6]` is a point named `title1`, and a
   space would make a title. [fixture:
@@ -1667,9 +1764,10 @@ around them. What the Db or the lexer reads stays. See
   points/coordinates-as-written]
 - The arrow of an axis with no second text, which the Db reads as part of the
   left text. [fixture: axes/arrow-only]
-- A string, with the whitespace and the line breaks in it, and the quotes, which
-  the author chooses: a string can hold what a text without quotes cannot, so
-  the quotes are not removed. [fixture: quotes/strings-as-written] [fixture:
+- A string, with the line breaks in it, and the quotes, which the author
+  chooses, while a run of spaces and tabs in it is printed as one space: a
+  string can hold what a text without quotes cannot, so the quotes are not
+  removed. [fixture: quotes/strings-runs-collapsed] [fixture:
   quotes/keywords-and-arrows-in-strings] [fixture:
   multi-line-values/string-with-line-breaks-kept]
 - A `;` inside a title or an accessibility text, which is a character of it, and
@@ -1722,8 +1820,8 @@ What the Db or the lexer reads stays. See [Rows](./block.md#rows),
   shapes/block-arrow-directions-as-written] [fixture:
   shapes/block-arrow-directions-whitespace-kept]
 - The whitespace of `class`: of its ids and of its class name. [fixture:
-  styles/class-ids-as-written] [fixture: styles/class-name-as-written] [fixture:
-  styles/class-name-with-a-comma-as-written]
+  styles/class-ids-as-written] [fixture: styles/class-name-runs-collapsed]
+  [fixture: styles/class-name-with-a-comma-runs-collapsed]
 - A statement that starts with `%%`: mermaid.js reads `%%x` after a node as an
   id and a line that starts with `%%x` as a comment line, so the line that holds
   such a statement stays on one line. [fixture:
@@ -2499,11 +2597,10 @@ preserve leading/trailing decimal zeros, rounded precision, subnormals,
 underflow and overflow rather than printing converted double values. Option
 values remain authored: no tick cap, min/max reorder or replacement from drawing
 configuration. Label StringLiteral spans keep quotes, empty/whitespace-only
-text, escapes, HTML, entities and internal whitespace; singleQuote does not
-rewrite them. Deleting an empty label changes the ID fallback, and rewriting
-internal whitespace can change the Db. [fixture:
-radar/source-order/declaration-order-kept] [fixture:
-radar/source-order/mixed-curve-forms] [fixture:
+text, escapes, HTML, entities, with a run of spaces and tabs inside a label
+printed as one space; singleQuote does not rewrite them. Deleting an empty label
+changes the ID fallback. [fixture: radar/source-order/declaration-order-kept]
+[fixture: radar/source-order/mixed-curve-forms] [fixture:
 radar/header/join-separated-inline-alternative] [fixture:
 radar/numbers/raw-number-forms] [corpus fixture: radar/db-number-subnormal]
 [corpus fixture: radar/db-number-underflow] [corpus fixture:
@@ -2601,14 +2698,14 @@ treemap/semicolons/body-kept]
 
 Keep numeric source spelling, including commas, underscores, dots and precision;
 reprinting the numeric value can change its reading or produce rejected syntax.
-Names keep quotes, empty names, whitespace, backslashes, entities, HTML and
-physical continuation columns. Class styles remain whole authored literals,
-including internal and trailing padding; they are not reformatted as CSS. Retain
-repeated classes, empty assignments, unresolved selectors and source order.
-Common values and description blocks use shared exterior spacing while retaining
-internal text and trivia. Every semicolon stays, and the protected segments of a
-statement over several lines retain their columns without extra indentation
-inside them.
+Names keep quotes, empty names, backslashes, entities, HTML and physical
+continuation columns, with a run of spaces and tabs inside a name printed as one
+space. Class styles remain whole authored literals, including internal and
+trailing padding; they are not reformatted as CSS. Retain repeated classes,
+empty assignments, unresolved selectors and source order. Common values and
+description blocks use shared exterior spacing while retaining internal text and
+trivia. Every semicolon stays, and the protected segments of a statement over
+several lines retain their columns without extra indentation inside them.
 
 [fixture: treemap/numbers/underscore] [fixture: treemap/numbers/precision]
 [fixture: treemap/names/quotes] [fixture: treemap/names/physical-columns]
@@ -2958,13 +3055,14 @@ columns. singleQuote does not rewrite them. ABNF backslash is ordinary content;
 the other three dialects have backslash escapes. ABNF repeat bounds retain
 leading zeroes, omitted bounds, exact forms and large integers; numeric values
 keep base-letter case, digits, dots and hyphens as raw text. EBNF special
-sequences keep their whole span, including exterior and internal whitespace.
-Converting these spellings or reflowing values can change the Db. PEG predicates
-keep their entire authored operand rather than rebuilding it from a published
-label. [fixture: railroad/quotes/ir-escape] [fixture:
-railroad/quotes/ebnf-escape] [fixture: railroad/quotes/abnf-backslash] [fixture:
-railroad/quotes/peg-escape] [fixture: railroad/quotes/ir-empty-and-text]
-[fixture: railroad/quotes/ebnf-empty-and-text] [fixture:
+sequences keep their whole span, including exterior whitespace, with a run of
+spaces and tabs inside printed as one space. Converting these spellings or
+reflowing values can change the Db. PEG predicates keep their entire authored
+operand rather than rebuilding it from a published label. [fixture:
+railroad/quotes/ir-escape] [fixture: railroad/quotes/ebnf-escape] [fixture:
+railroad/quotes/abnf-backslash] [fixture: railroad/quotes/peg-escape] [fixture:
+railroad/quotes/ir-empty-and-text] [fixture:
+railroad/quotes/ebnf-empty-and-text] [fixture:
 railroad/quotes/abnf-empty-and-text] [fixture:
 railroad/quotes/peg-empty-and-text] [fixture: railroad/repeats/abnf-spellings]
 [fixture: railroad/repeats/abnf-zero] [fixture: railroad/repeats/abnf-large]

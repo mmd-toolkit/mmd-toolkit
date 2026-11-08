@@ -599,7 +599,10 @@ stateDiagram-v2
 `accTitle` と `accDescr` の後の `:` は、キーワードに接し、
 後に空白を 1 つ置きます。
 `accTitle  :  t` は `accTitle: t` になります。
-[fixture: descriptions-and-labels/acc-text-kept]
+テキストの中の空白とタブの連なりは、空白 1 つで印字します。
+（[同じに描かれるテキスト中の空白の連なり](./compatibility.ja.md#同じに描かれるテキスト中の空白の連なり)）。
+[fixture: descriptions-and-labels/acc-text-runs-collapsed]
+[fixture: descriptions-and-labels/acc-block-runs-collapsed]
 説明と遷移のラベルの `:` の両側には、
 mermaid.js の公式ドキュメントの主な例に合わせて、空白を 1 つずつ置きます。
 `A-->B:submit` は `A --> B : submit` になります。
@@ -608,7 +611,10 @@ mermaid.js の公式ドキュメントの主な例に合わせて、空白を 1 
 `A:::style:x` は `A:::style: x` になります。
 `:` の前に空白があると、キーワードが文を始めるからです。
 [fixture: descriptions-and-labels/class-named-style-then-description-kept]
-テキストは書かれたまま残します。 [fixture: descriptions-and-labels/text-kept]
+説明と遷移のラベルのテキストは、連なりも含めて書かれたまま残します。
+折り返すラベルは連なりを描くからです。
+（[同じに描かれるテキスト中の空白の連なり](./compatibility.ja.md#同じに描かれるテキスト中の空白の連なり)）。
+[fixture: descriptions-and-labels/text-kept]
 空白だけの説明は、`:` の後の空白を残します。
 `A : ` は説明を与えませんが、`A :` は拒否されるからです。
 [corpus fixture: state/gram-description-blank]
@@ -681,6 +687,7 @@ mermaid.js が id の直後から最初の 2 文字を除いて読み、両端�
 `note right of A: x` と `note left of A\t:\tz` は、
 `note right of A : x` と `note left of A : z` と印字します。
 本文の中の空白は残します。
+折り返すノートは連なりを描くからです。
 Db と図は同じです。 [fixture: notes/colon-and-text-spaced]
 それ以外の始まりは書かれたままにし、本文が空のノート、コメントやディレクティブ、
 ASCII 以外の文字を含むノートも書かれたままにします。
@@ -1487,6 +1494,9 @@ stateDiagram-v2
 ### 行区切り文字
 
 U+2028 か U+2029 を含む行は、書かれたまま残します。
+別名の 2 つ目の説明も、その文字の後の空白も含めて残します。
+`state "d" as A : x`、空白 2 つ、U+2028、空白 2 つは、書かれたまま残します。
+[test: a second description of an alias with spaces after a U+2028]
 ただし、空白だけの説明ブロックの内側は保護する本文がないので縮めます。
 その内側以外に区切り文字があれば、行は書かれたまま残します。
 [test: state Unicode and tab interiors] [test: state multiline Unicode interior]
@@ -1571,7 +1581,8 @@ U+2028 か U+2029 の前の無視される `;` がある行です（詳しくは
   スタイル（最初の `:` と `,` の前後の空白を除きます）、
   `class` 文の CSS クラス、`accTitle` と `accDescr` のテキスト。
   [fixture: whitespace-between-tokens/style-text-kept]
-  [fixture: descriptions-and-labels/acc-text-kept] [fixture: aliases/id-kept]
+  [fixture: descriptions-and-labels/acc-text-runs-collapsed]
+  [fixture: aliases/id-kept]
 - 1 行のノートの id の後、別名の定義の 2 つ目の説明、
   空白だけの説明の `:` の後の空白。
 - `state` の後の名前と `""`。
@@ -1593,7 +1604,10 @@ U+2028 か U+2029 の前の無視される `;` がある行です（詳しくは
 
 次のテキストは、どちらの形でも Db が同じなので、選択として書かれたまま残します。
 キーワードの大文字小文字は作者のものです。
-文の後のコメントの印の前に空白が書かれているかどうかは、
+文の後のコメントの印の前に空白が書かれているかどうかも保ち、
+その空白の連なりは空白 1 つで印字します。
+（[同じに描かれるテキスト中の空白の連なり](./compatibility.ja.md#同じに描かれるテキスト中の空白の連なり)）。
+[fixture: comments/mark-run-one-space]
 既知の差異（`comment-takes-character`、`percent-brace-after-unit`）の場所では、
 mermaid.js がコメントを、接するものによって読むからです。
 場所の一覧よりも、1 つの規則のほうが単純です。

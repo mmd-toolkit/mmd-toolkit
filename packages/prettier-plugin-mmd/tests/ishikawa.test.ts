@@ -12,6 +12,7 @@ import {
   writtenEmbeddedTexts,
   describeFrontmatterChange,
 } from "./db-reading.ts"
+import { dbForFormattingComparison } from "./db-comparison.ts"
 import { ishikawaCases } from "./ishikawa-cases.ts"
 
 describe("ishikawa escaped cases", () => {
@@ -32,9 +33,15 @@ describe("ishikawa escaped cases", () => {
     expect(await formatMermaid(output, "diagram.mmd", options)).toBe(output)
     const before = input.startsWith("\ufeff") ? input.slice(1) : input
     const after = output.startsWith("\ufeff") ? output.slice(1) : output
-    expect(dbOfText(after, defaultEmbedded())).toEqual(
-      dbOfText(before, defaultEmbedded()),
-    )
+    const dbBefore = dbOfText(before, defaultEmbedded())
+    expect(
+      dbForFormattingComparison(
+        dbBefore,
+        dbOfText(after, defaultEmbedded()),
+        before,
+        after,
+      ),
+    ).toEqual(dbBefore)
     expect(writtenEmbeddedTexts(after)).toEqual(writtenEmbeddedTexts(before))
     expect(await describeFrontmatterChange(before, after, options)).toBeNull()
     expect(treeProblemsOfText(before)).toEqual([])

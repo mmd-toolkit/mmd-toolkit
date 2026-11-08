@@ -389,10 +389,12 @@ radar-beta
 ### Quotes
 
 Keep each label's complete StringLiteral source span: single/double quotes,
-opposite quotes, empty/whitespace-only text, escapes, HTML, entities, internal
-padding and hidden-looking text. singleQuote does not re-encode it. Removing an
-empty label changes the ID fallback, and collapsing interior whitespace can
-change the Db.
+opposite quotes, empty/whitespace-only text, escapes, HTML, entities and
+hidden-looking text, with a run of spaces and tabs inside the text printed as
+one space (see
+[Runs of whitespace in a text that are drawn the same](./compatibility.md#runs-of-whitespace-in-a-text-that-are-drawn-the-same)).
+singleQuote does not re-encode it. Removing an empty label changes the ID
+fallback.
 
 [fixture: radar/quotes/quotes-and-empty]
 

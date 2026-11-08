@@ -109,6 +109,12 @@ Mermaid 記法（`.mmd`）について、mermaid.js が持つ全図種を対象�
      timeline の行の最後の event と state 図の別名の 2 つ目の説明の末尾の空白。
      [同じに描かれるキーワードの後のテキスト](packages/prettier-plugin-mmd/docs/compatibility.ja.md#同じに描かれるキーワードの後のテキスト)
      が定める。
+   - mermaid.js が連なりを描かずにテキストを描く場合の、
+     テキスト中の空白とタブの連なり。
+     タイトル、アクセシビリティのテキスト、
+     SVG のテキストとしてラベルを描く図種のラベルが対象です。
+     [同じに描かれるテキスト中の空白の連なり](packages/prettier-plugin-mmd/docs/compatibility.ja.md#同じに描かれるテキスト中の空白の連なり)
+     が定めます。
    - flowchart、agentflow、class、Gantt の `click` の呼び出しの、
      引数の周りの空白。
      [同じに描かれる呼び出しの引数](packages/prettier-plugin-mmd/docs/compatibility.ja.md#同じに描かれる呼び出しの引数)

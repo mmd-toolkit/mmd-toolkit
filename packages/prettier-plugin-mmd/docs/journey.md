@@ -516,11 +516,13 @@ of its statement; a text on the line of the `{` has one space inside each brace,
 also where the braces touched it. [fixture:
 accessibility-statements/block-lines-kept] [fixture:
 accessibility-statements/block-text-on-opening-line] [fixture:
-accessibility-statements/block-comment-and-empty-lines-kept] Whitespace inside
-the text is part of it, and stays. [fixture:
-accessibility-statements/block-inner-whitespace-kept] A directive between the
-keyword and the colon or the brace, or after them, stays where it is. [fixture:
-accessibility-statements/directive-around-colon-and-braces-kept]
+accessibility-statements/block-comment-and-empty-lines-kept] A run of spaces and
+tabs inside the text is printed as one space (see
+[Runs of whitespace in a text that are drawn the same](./compatibility.md#runs-of-whitespace-in-a-text-that-are-drawn-the-same)).
+[fixture: accessibility-statements/block-inner-runs-collapsed] [fixture:
+accessibility-statements/accessibility-lines-runs-collapsed] A directive between
+the keyword and the colon or the brace, or after them, stays where it is.
+[fixture: accessibility-statements/directive-around-colon-and-braces-kept]
 
 Input
 ([accessibility-statements/text-on-next-line-joined-input.mmd](../tests/fixtures/journey/accessibility-statements/text-on-next-line-joined-input.mmd)):

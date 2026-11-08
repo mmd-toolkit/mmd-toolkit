@@ -562,15 +562,20 @@ comes before it (see [Colons in the sequence rules](./sequence.md#colons)); each
 follows the documentation of its diagram type. The `:` after `accTitle` and
 `accDescr` touches the keyword and has one space after it, as in the other
 diagram types and in the documentation of mermaid.js. [fixture:
-labels/accessibility-text-kept] [fixture: multi-line-statements/joined]
-[fixture: multi-line-statements/acc-descr-joined] The text of a label is kept as
-written. [fixture: labels/spaced] [fixture: labels/accessibility-text-kept] The
-label in brackets of a class or a namespace has nothing between the name and the
-`[`, and nothing between the brackets and the string: `namespace Auth ["x"]` is
-printed `namespace Auth["x"]`, `namespace Auth[ "x" ]` is printed
-`namespace Auth["x"]`, and `class A["x" ]` is printed `class A["x"]`. mermaid.js
-reads every spelling as the same label, and its documentation writes the `[`
-touching the name
+labels/accessibility-text-runs-collapsed] [fixture:
+multi-line-statements/joined] [fixture: multi-line-statements/acc-descr-joined]
+The text of a label after a relation is kept as written: a label that wraps
+draws its runs, so a run is not one space (see
+[Runs of whitespace in a text that are drawn the same](./compatibility.md#runs-of-whitespace-in-a-text-that-are-drawn-the-same)).
+[fixture: labels/spaced] A run of spaces and tabs in the text of `accTitle` and
+`accDescr` is printed as one space. [fixture:
+labels/accessibility-text-runs-collapsed] [fixture:
+labels/acc-block-runs-collapsed] The label in brackets of a class or a namespace
+has nothing between the name and the `[`, and nothing between the brackets and
+the string: `namespace Auth ["x"]` is printed `namespace Auth["x"]`,
+`namespace Auth[ "x" ]` is printed `namespace Auth["x"]`, and `class A["x" ]` is
+printed `class A["x"]`. mermaid.js reads every spelling as the same label, and
+its documentation writes the `[` touching the name
 ([`namespace Auth["Authentication Service"]`](https://github.com/mermaid-js/mermaid/blob/2086904e76c692331e34a45d7cc3bc30860d040e/packages/mermaid/src/docs/syntax/classDiagram.md#L404)),
 as a flowchart subgraph and an agentflow heading print it. [fixture:
 labels/bracket-touches-name] A directive beside the string touches the bracket
@@ -597,7 +602,7 @@ Output
 ```mmd
 classDiagram
   A --> B : x
-  A --> B : x y
+  A --> B : x  y
   A : +int x
   A : -bar() int
 ```
@@ -642,31 +647,33 @@ classDiagram
 ### Member lines
 
 For an ordinary method, remove padding before and just inside its parentheses,
-and put one space before a nonempty return type. Keep whitespace within each AST
-field, including the name prefix after a visibility mark. Methods with trivia,
-ignored text, physical or Unicode line separators, or a protected semicolon line
-retain their complete source. [fixture: member-lines/method-padding] [fixture:
-member-lines/method-values-and-classifiers-kept] [fixture:
+and put one space before a nonempty return type. A run of spaces and tabs inside
+a field is printed as one space, and the one space after a visibility mark
+stays, since it is part of the name. Methods with trivia, ignored text, physical
+or Unicode line separators, or a protected semicolon line retain their complete
+source. [fixture: member-lines/method-padding] [fixture:
+member-lines/method-values-and-classifiers-runs-collapsed] [fixture:
 member-lines/method-trivia-and-semicolon-kept]
 
 The classifier of an attribute touches its text, as in the documentation of
 mermaid.js: `+attr string *` is printed `+attr string*`. [fixture:
 member-lines/attribute-classifier-touches] Attribute and annotation lines, in a
-body or after the `:` of a class name, keep their contents as written. Methods
-preserve their name, parameter and return-type contents, including generic
-spelling and classifier-related tails. [fixture: member-lines/kept] [fixture:
-member-lines/percent-text-kept] [fixture:
+body or after the `:` of a class name, keep their contents as written, apart
+from the runs of spaces and tabs inside. Methods preserve their name, parameter
+and return-type contents, including generic spelling and classifier-related
+tails, apart from the runs. [fixture: member-lines/runs-collapsed] [fixture:
+member-lines/percent-text-runs-collapsed] [fixture:
 member-lines/trailing-whitespace-dropped] [fixture:
 member-lines/directive-inside-kept] [corpus fixture: class/lex-member-percent]
 mermaid.js divides each member into its parts by its text, and the whitespace
 after a visibility mark is part of the name: `+ foo()` has the name ` foo`, with
-a space, and `+foo()` the name `foo`. [fixture: member-lines/kept] [corpus
-fixture: class/gram-member-visibility-whitespace-body-0184dca2] An annotation
-line, `<< y z >>`, keeps the whitespace around its text in the Db. [fixture:
-member-lines/kept]
+a space, and `+foo()` the name `foo`. [fixture: member-lines/runs-collapsed]
+[corpus fixture: class/gram-member-visibility-whitespace-body-0184dca2] An
+annotation line, `<< y z >>`, keeps the whitespace around its text in the Db.
+[fixture: member-lines/runs-collapsed]
 
 Input
-([member-lines/kept-input.mmd](../tests/fixtures/class/member-lines/kept-input.mmd)):
+([member-lines/runs-collapsed-input.mmd](../tests/fixtures/class/member-lines/runs-collapsed-input.mmd)):
 
 ```mmd
 classDiagram
@@ -679,7 +686,7 @@ A :  -  bar()
 ```
 
 Output
-([member-lines/kept-output.mmd](../tests/fixtures/class/member-lines/kept-output.mmd)):
+([member-lines/runs-collapsed-output.mmd](../tests/fixtures/class/member-lines/runs-collapsed-output.mmd)):
 
 ```mmd
 classDiagram
@@ -1309,7 +1316,7 @@ because changing it would change the diagram or the input would be rejected:
   style, apart from the whitespace around its first `:` and its `,`, and the
   text of `accTitle` and `accDescr`; [fixture:
   whitespace-between-tokens/style-colon-and-comma-spaced] [fixture:
-  labels/accessibility-text-kept]
+  labels/accessibility-text-runs-collapsed]
 - attribute and annotation contents, method-field contents, and a generic type
   from `~` to `~`;
 - the whitespace after the `:` of a label of only whitespace, and whether
@@ -1323,7 +1330,10 @@ because changing it would change the diagram or the input would be rejected:
   indentation/header-v2-kept]
 
 Some text is kept as written by choice, because the Db is the same either way:
-whether whitespace is written before the mark of a comment after a statement. It
-is kept because mermaid.js reads a comment by what touches it in the places of
-the known divergences (`comment-takes-character`, `percent-brace-after-unit`),
-and one rule is simpler than a list of those places.
+whether whitespace is written before the mark of a comment after a statement, a
+run of it being printed as one space (see
+[Runs of whitespace in a text that are drawn the same](./compatibility.md#runs-of-whitespace-in-a-text-that-are-drawn-the-same)).
+[fixture: comments/mark-run-one-space] It is kept because mermaid.js reads a
+comment by what touches it in the places of the known divergences
+(`comment-takes-character`, `percent-brace-after-unit`), and one rule is simpler
+than a list of those places.

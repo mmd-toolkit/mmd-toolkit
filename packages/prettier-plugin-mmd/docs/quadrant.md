@@ -6,9 +6,11 @@ How prettier-plugin-mmd formats a quadrant chart. Each rule below keeps what
 mermaid.js reads from the diagram; where a change would alter it, the text is
 kept as written, and the rule says where. A quadrant chart is a header followed
 by statements. Unlike in an XY chart, the whitespace between the words of a text
-without quotes is in the Db, so the texts are printed as written, and the rules
-choose the form of what lies around them: the indentation, the keywords, the
-arrow, the brackets, and the commas.
+without quotes is in the Db, and the figure is the same without a run of it, so
+a run is printed as one space (see
+[Runs of whitespace in a text that are drawn the same](./compatibility.md#runs-of-whitespace-in-a-text-that-are-drawn-the-same)),
+and the rules choose the form of what lies around the texts: the indentation,
+the keywords, the arrow, the brackets, and the commas.
 
 Each rule below shows its formatting with examples: the text before formatting,
 and the text that the plugin prints. The examples are the fixtures that the
@@ -247,7 +249,7 @@ keywords-and-texts/keyword-touching-spaced] [fixture:
 keywords-and-texts/string-touching-spaced] [fixture:
 keywords-and-texts/quadrant-ten-spaced] [fixture:
 keywords-and-texts/word-after-title-keyword-is-a-point-name] [fixture:
-keywords-and-texts/inner-whitespace-of-a-title-kept]
+keywords-and-texts/inner-runs-of-a-title-collapsed]
 
 A directive between the keyword and its text is placed as under
 [Directives](#directives). [fixture:
@@ -258,15 +260,16 @@ after `title` stays where it is. [test: U+2028 between an axis keyword and its
 text] [test: U+2029 between a quadrant keyword and its text] [test: U+2028 after
 a title keyword]
 
-The whitespace inside a text is in the Db and stays as written:
-`quadrant-1 a    b` has the text `a    b`, a tab between two words is a tab in
-the text, and so is a form feed. The whitespace at the ends of a text is
-dropped, since the Db drops it. A string and the words after it keep the
-whitespace between them, as `"a" b` is the text `a b` and `"a"b` the text `ab`.
-[fixture: keywords-and-texts/inner-whitespace-kept] [fixture:
+The whitespace inside a text is in the Db, and a run of spaces and tabs in it is
+printed as one space: `quadrant-1 a    b` has the text `a    b` and is printed
+`quadrant-1 a b`, and a tab between two words is a space; a form feed is no
+space or tab, and stays. The whitespace at the ends of a text is dropped, since
+the Db drops it. A string and the words after it keep the whitespace between
+them, as `"a" b` is the text `a b` and `"a"b` the text `ab`. [fixture:
+keywords-and-texts/inner-runs-collapsed] [fixture:
 keywords-and-texts/whitespace-at-the-ends-dropped] [fixture:
 keywords-and-texts/string-then-text-whitespace-kept] [fixture:
-keywords-and-texts/inner-whitespace-of-a-title-kept]
+keywords-and-texts/inner-runs-of-a-title-collapsed]
 
 Input
 ([keywords-and-texts/title-spaces-input.mmd](../tests/fixtures/quadrant/keywords-and-texts/title-spaces-input.mmd)):
@@ -316,7 +319,7 @@ ends, which the whitespace inside the texts (see
 the arrow is not in the Db, but it is what the author wrote, so `--->` stays.
 [fixture: axes/arrow-touching] [fixture: axes/arrow-with-more-whitespace]
 [fixture: axes/arrow-touching-on-one-side] [fixture: axes/arrow-length-kept]
-[fixture: axes/text-inner-whitespace-kept] [fixture: axes/strings] [fixture:
+[fixture: axes/text-inner-runs-collapsed] [fixture: axes/strings] [fixture:
 axes/markdown-string] [fixture: axes/axis-only-one-text]
 
 An axis with the arrow and no second text, as in `x-axis L -->`, is printed with
@@ -373,7 +376,7 @@ drops it. The form is the one of the documentation of mermaid.js
 (`Campaign A: [0.3, 0.6]`, `Campaign B:::class1: [0.8, 0.1]`). [fixture:
 points/colon-touches-the-name] [fixture: points/spaces-inside-the-brackets]
 [fixture: points/name-whitespace-at-the-ends-dropped] [fixture:
-points/name-inner-whitespace-kept] [fixture: points/string-names] [fixture:
+points/name-inner-runs-collapsed] [fixture: points/string-names] [fixture:
 points/class-name] [fixture: points/coordinates-as-written] [fixture:
 points/trailing-whitespace-dropped]
 
@@ -497,15 +500,16 @@ quadrantChart
 
 ### Quotes
 
-A string and a markdown string are printed as written: their quotes, their text,
-and the whitespace inside them. A quote is never added or removed. mermaid.js
-reads `"L"` and `L`, and `"a b"` and `a b`, as the same text, but a string can
-hold what a text without quotes cannot (`"a: b"` has a colon, which a text
-without quotes is rejected for), so removing the quotes is not always possible,
-and whether a text is in quotes is the author's choice. [fixture:
-quotes/strings-as-written] [fixture: quotes/quotes-not-removed] [fixture:
-quotes/quotes-not-added] [fixture: quotes/keywords-and-arrows-in-strings]
-[fixture: quotes/markdown-strings] [fixture: quotes/string-with-a-comment-mark]
+A string and a markdown string are printed as written: their quotes and their
+text, with a run of spaces and tabs inside them printed as one space. A quote is
+never added or removed. mermaid.js reads `"L"` and `L`, and `"a b"` and `a b`,
+as the same text, but a string can hold what a text without quotes cannot
+(`"a: b"` has a colon, which a text without quotes is rejected for), so removing
+the quotes is not always possible, and whether a text is in quotes is the
+author's choice. [fixture: quotes/strings-runs-collapsed] [fixture:
+quotes/quotes-not-removed] [fixture: quotes/quotes-not-added] [fixture:
+quotes/keywords-and-arrows-in-strings] [fixture: quotes/markdown-strings]
+[fixture: quotes/string-with-a-comment-mark]
 
 Input
 ([quotes/quotes-not-removed-input.mmd](../tests/fixtures/quadrant/quotes/quotes-not-removed-input.mmd)):
@@ -529,9 +533,10 @@ quadrantChart
 
 A `title` is printed as the keyword and its text, after one space, whatever
 whitespace separates them (a tab too). The text is the rest of the line without
-the whitespace at its ends. A `title` with no text is printed as the keyword
-alone. `;`, `#`, `%%`, quotes, and keywords in a title are characters of it.
-[fixture: titles-and-accessibility-statements/title-text] [fixture:
+the whitespace at its ends, and a run of spaces and tabs inside it is printed as
+one space. A `title` with no text is printed as the keyword alone. `;`, `#`,
+`%%`, quotes, and keywords in a title are characters of it. [fixture:
+titles-and-accessibility-statements/title-text] [fixture:
 titles-and-accessibility-statements/title-without-text] [fixture:
 titles-and-accessibility-statements/title-with-special-characters] [fixture:
 titles-and-accessibility-statements/title-keyword-case]
@@ -539,14 +544,15 @@ titles-and-accessibility-statements/title-keyword-case]
 The `:` of `accTitle` and `accDescr` touches the keyword and has one space after
 it, as in the other diagrams (see
 [Accessibility statements](./xychart.md#accessibility-statements)). The text has
-no whitespace at its ends and keeps the whitespace inside it, which is in the
-Db. A text written on a later line, a colon written on a later line than the
-keyword, and whitespace before the colon are printed on one line: the line
-breaks are whitespace to the lexer, and the text of the statement is the same.
-[fixture: titles-and-accessibility-statements/colon-touches-keyword] [fixture:
+no whitespace at its ends, and a run of spaces and tabs inside it is printed as
+one space, which the Db keeps. A text written on a later line, a colon written
+on a later line than the keyword, and whitespace before the colon are printed on
+one line: the line breaks are whitespace to the lexer, and the text of the
+statement is the same. [fixture:
+titles-and-accessibility-statements/colon-touches-keyword] [fixture:
 titles-and-accessibility-statements/colon-without-space-after] [fixture:
 titles-and-accessibility-statements/text-whitespace-dropped] [fixture:
-titles-and-accessibility-statements/text-inner-whitespace-kept] [fixture:
+titles-and-accessibility-statements/text-inner-runs-collapsed] [fixture:
 titles-and-accessibility-statements/text-on-the-next-line-joined] [fixture:
 titles-and-accessibility-statements/colon-on-the-next-line-joined] [fixture:
 titles-and-accessibility-statements/text-that-looks-like-a-statement]

@@ -470,6 +470,9 @@ gantt
 Db はその空白を持ちますが、図では描かれません。
 （[同じに描かれるキーワードの後のテキスト](./compatibility.ja.md#同じに描かれるキーワードの後のテキスト)）。
 `title   Plan  ` は `title Plan` と印字します。
+中の空白とタブの連なりも空白 1 つで印字するので、
+`title Plan  of   work` は `title Plan of work` と印字します。
+（[同じに描かれるテキスト中の空白の連なり](./compatibility.ja.md#同じに描かれるテキスト中の空白の連なり)）。
 `section` の名前は、先頭と末尾の空白も含めて書かれたまま印字します。
 その空白で名前が異なる 2 つのセクションは別々に描かれ、
 除くとそうならないからです。
@@ -849,8 +852,10 @@ Mermaid が説明から LF 後の字下げを除くためです。
 [fixture: accessibility-statements/block-lines-kept]
 [fixture: accessibility-statements/block-text-on-opening-line]
 [fixture: accessibility-statements/block-comment-and-empty-lines-kept]
-テキストの中の空白はテキストの一部で、残ります。
-[fixture: accessibility-statements/block-inner-whitespace-kept]
+テキストの中の空白とタブの連なりは、空白 1 つで印字します。
+（[同じに描かれるテキスト中の空白の連なり](./compatibility.ja.md#同じに描かれるテキスト中の空白の連なり)）。
+[fixture: accessibility-statements/block-inner-runs-collapsed]
+[fixture: accessibility-statements/accessibility-lines-runs-collapsed]
 キーワードとコロンや括弧の間と、その後のディレクティブはその位置に残します。
 [fixture: accessibility-statements/directive-around-colon-and-braces-kept]
 
@@ -1438,6 +1443,11 @@ U+2028 と U+2029 は、Gantt 図の単位の間の空白であり、
 [test: U+2028 between weekday and its day]
 [test: U+2028 after the colon of accTitle]
 [test: U+2028 between a click id and its part]
+タイトル、日付書式、軸の書式の末尾では、
+U+2028 と U+2029 は空白やタブではなくテキストの文字なので、
+その後の空白はテキスト末尾のほかの空白と一緒に除き、前の空白は残します。
+[test: U+2028 and spaces at the end of a title]
+[test: U+2029 and spaces at the end of a date format]
 
 ### 空白の文字
 

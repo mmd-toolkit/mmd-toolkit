@@ -352,13 +352,16 @@ labels/bracket-padding-in-style-rule-stretch] [test: U+2028 inside the brackets
 of a venn label] [test: U+2029 inside the brackets of a venn label] [test:
 U+2028 inside the brackets of a venn label with a semicolon] [test: U+2029
 inside the brackets of a venn label with a semicolon] [fixture:
-labels/bare-label-padding-dropped] Whitespace inside quotes belongs to the
-value, and stays: an empty quoted label or bare whitespace label omits the Db
-label, whereas quoted whitespace stores an empty label. Embedded trivia stays
-inside the label, and gap items retain attachment instead of applying tight
-spacing. [fixture: venn/labels/specified-c4-label-title] [fixture:
-venn/labels/all-suffixes] [corpus fixture: venn/db-form-text-string-label]
-[corpus fixture: venn/db-form-union-label] [corpus fixture:
+labels/bare-label-padding-dropped] A run of spaces and tabs inside a label is
+printed as one space (see
+[Runs of whitespace in a text that are drawn the same](./compatibility.md#runs-of-whitespace-in-a-text-that-are-drawn-the-same)),
+also inside quotes. A quoted label of whitespace only stays: an empty quoted
+label or bare whitespace label omits the Db label, whereas quoted whitespace
+stores an empty label. Embedded trivia stays inside the label, and gap items
+retain attachment instead of applying tight spacing. [fixture:
+venn/labels/specified-c4-label-title] [fixture: venn/labels/all-suffixes]
+[corpus fixture: venn/db-form-text-string-label] [corpus fixture:
+venn/db-form-union-label] [corpus fixture:
 venn/lex-directive-label-delimiter-gap] [corpus fixture:
 venn/lex-label-bare-comment-only] [corpus fixture: venn/lex-label-bare-padding]
 [corpus fixture: venn/lex-label-quoted-comment-only] [corpus fixture:
@@ -732,10 +735,12 @@ set A
 
 Exterior ASCII spaces and tabs after completed headers and non-title statements
 disappear for clean line endings, including after kept parts and safe suffixes.
-Spaces inside names, labels, colors, style strings, comments and directives
-remain authored text, and so do the spaces inside a title value; the spaces at
-its ends are left out (see [Title](#title)). [fixture:
-venn/trailing-whitespace/continuation-spaces] [corpus fixture:
+Spaces inside names, colors, style strings, comments and directives remain
+authored text. A run of spaces and tabs inside a label or a title value is
+printed as one space, and the spaces at the end of a title are left out (see
+[Title](#title) and
+[Runs of whitespace in a text that are drawn the same](./compatibility.md#runs-of-whitespace-in-a-text-that-are-drawn-the-same)).
+[fixture: venn/trailing-whitespace/continuation-spaces] [corpus fixture:
 venn/db-after-set-label-size-space] [corpus fixture: venn/db-title-padding]
 [corpus fixture: venn/lex-tab-line-end] [fixture:
 venn/trailing-whitespace/kept-prefix-exterior] [fixture:

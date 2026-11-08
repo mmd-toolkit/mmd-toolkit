@@ -8,8 +8,9 @@ prettier-plugin-mmd が象限チャートをどう整形するかを説明しま
 各規則でその条件を説明します。
 象限チャートは、ヘッダーと、その後に続く文でできています。
 XY チャートと違って、引用符なしのテキストの単語の間の空白は Db に入ります。
-そのため、テキストは書かれたままに印字し、規則が形を選ぶのは、
-その周りのものです。
+空白の連なりがなくても図は同じなので、連なりは空白 1 つにして印字します。
+（[同じに描かれるテキスト中の空白の連なり](./compatibility.ja.md#同じに描かれるテキスト中の空白の連なり)）。
+規則が形を選ぶのは、テキストの周りのものです。
 字下げ、キーワード、矢印、角括弧、コンマです。
 
 各規則では、整形前のテキストと、プラグインが出力するテキストを、例で示します。
@@ -257,7 +258,7 @@ mermaid.js の文書では、
 [fixture: keywords-and-texts/string-touching-spaced]
 [fixture: keywords-and-texts/quadrant-ten-spaced]
 [fixture: keywords-and-texts/word-after-title-keyword-is-a-point-name]
-[fixture: keywords-and-texts/inner-whitespace-of-a-title-kept]
+[fixture: keywords-and-texts/inner-runs-of-a-title-collapsed]
 
 キーワードとテキストの間のディレクティブは、[指令](#指令)のとおりに置きます。
 [fixture: keywords-and-texts/directive-beside-keyword]
@@ -268,16 +269,18 @@ mermaid.js の文書では、
 [test: U+2029 between a quadrant keyword and its text]
 [test: U+2028 after a title keyword]
 
-テキストの中の空白は Db に入るので、書かれたまま残します。
-`quadrant-1 a    b` のテキストは `a    b` で、
-2 つの単語の間のタブはテキストの中のタブで、改ページも同じです。
+テキストの中の空白は Db に入りますが、
+空白とタブの連なりは空白 1 つにして印字します。
+`quadrant-1 a    b` のテキストは `a    b` で、`quadrant-1 a b` と印字し、
+2 つの単語の間のタブは空白にします。
+改ページは空白でもタブでもないので残します。
 テキストの両端の空白は、Db が落とすので落とします。
 文字列とその後の単語は、間の空白を保ちます。
 `"a" b` のテキストは `a b` で、`"a"b` のテキストは `ab` だからです。
-[fixture: keywords-and-texts/inner-whitespace-kept]
+[fixture: keywords-and-texts/inner-runs-collapsed]
 [fixture: keywords-and-texts/whitespace-at-the-ends-dropped]
 [fixture: keywords-and-texts/string-then-text-whitespace-kept]
-[fixture: keywords-and-texts/inner-whitespace-of-a-title-kept]
+[fixture: keywords-and-texts/inner-runs-of-a-title-collapsed]
 
 入力
 ([keywords-and-texts/title-spaces-input.mmd](../tests/fixtures/quadrant/keywords-and-texts/title-spaces-input.mmd)):
@@ -328,7 +331,7 @@ mermaid.js は、矢印の周りの空白があってもなくても同じに読
 矢印の長さは Db に入りませんが、書き手が書いたものなので、`--->` は残します。
 [fixture: axes/arrow-touching] [fixture: axes/arrow-with-more-whitespace]
 [fixture: axes/arrow-touching-on-one-side] [fixture: axes/arrow-length-kept]
-[fixture: axes/text-inner-whitespace-kept] [fixture: axes/strings]
+[fixture: axes/text-inner-runs-collapsed] [fixture: axes/strings]
 [fixture: axes/markdown-string] [fixture: axes/axis-only-one-text]
 
 矢印だけで、後ろにテキストのない軸（`x-axis L -->`）は、矢印を残し、
@@ -388,7 +391,7 @@ quadrantChart
 `Campaign B:::class1: [0.8, 0.1]`）。 [fixture: points/colon-touches-the-name]
 [fixture: points/spaces-inside-the-brackets]
 [fixture: points/name-whitespace-at-the-ends-dropped]
-[fixture: points/name-inner-whitespace-kept] [fixture: points/string-names]
+[fixture: points/name-inner-runs-collapsed] [fixture: points/string-names]
 [fixture: points/class-name] [fixture: points/coordinates-as-written]
 [fixture: points/trailing-whitespace-dropped]
 
@@ -517,12 +520,13 @@ quadrantChart
 ### 引用符
 
 文字列と markdown 文字列は、書かれたまま印字します。
-引用符、テキスト、中の空白を残し、引用符は足しも取りもしません。
+引用符とテキストを残し、中の空白とタブの連なりは空白 1 つにして印字します。
+引用符は足しも取りもしません。
 mermaid.js は `"L"` と `L`、`"a b"` と `a b` を同じテキストとして読みますが、
 文字列は引用符なしのテキストが持てないものを持てます。
 `"a: b"` はコロンを持ち、引用符なしでは拒否されます。
 そのため、引用符を外せるとは限らず、引用符を付けるかどうかは書き手の選択です。
-[fixture: quotes/strings-as-written] [fixture: quotes/quotes-not-removed]
+[fixture: quotes/strings-runs-collapsed] [fixture: quotes/quotes-not-removed]
 [fixture: quotes/quotes-not-added]
 [fixture: quotes/keywords-and-arrows-in-strings]
 [fixture: quotes/markdown-strings] [fixture: quotes/string-with-a-comment-mark]
@@ -550,6 +554,7 @@ quadrantChart
 `title` は、キーワードとそのテキストを、空白 1 つで離して印字します。
 間に書かれた空白（タブも）はどれも同じです。
 テキストは行の残りで、両端の空白は落とします。
+中の空白とタブの連なりは空白 1 つにして印字します。
 テキストのない `title` は、キーワードだけを印字します。
 title の中の `;`、`#`、`%%`、引用符、キーワードは、そのテキストの文字です。
 [fixture: titles-and-accessibility-statements/title-text]
@@ -561,15 +566,16 @@ title の中の `;`、`#`、`%%`、引用符、キーワードは、そのテキ
 後ろに空白 1 つを置きます。
 ほかの図と同じです（[アクセシビリティの文](./xychart.ja.md#アクセシビリティの文)
 を参照）。
-テキストの前後に空白は置かず、中の空白は残します。
-中の空白は Db に入るからです。
+テキストの前後に空白は置かず、
+中の空白とタブの連なりは空白 1 つにして印字します。
+中の空白は Db に入ります。
 後ろの行に書かれたテキスト、キーワードより後ろの行に書かれたコロン、
 コロンの前の空白は、1 行にして印字します。
 改行は字句解析器にとって空白で、文のテキストは変わりません。
 [fixture: titles-and-accessibility-statements/colon-touches-keyword]
 [fixture: titles-and-accessibility-statements/colon-without-space-after]
 [fixture: titles-and-accessibility-statements/text-whitespace-dropped]
-[fixture: titles-and-accessibility-statements/text-inner-whitespace-kept]
+[fixture: titles-and-accessibility-statements/text-inner-runs-collapsed]
 [fixture: titles-and-accessibility-statements/text-on-the-next-line-joined]
 [fixture: titles-and-accessibility-statements/colon-on-the-next-line-joined]
 [fixture: titles-and-accessibility-statements/text-that-looks-like-a-statement]

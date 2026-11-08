@@ -423,7 +423,13 @@ everything after it through the physical line end as its source span. Choose
 attachment among Db-equal forms to show the delimiter belongs to the link. Do
 not add padding or trim it: ; followed by space is accepted with a
 whitespace-only label, whereas bare ; rejects. Further semicolons use shared
-prefix protection; native-looking forms and percent text remain label text.
+prefix protection; native-looking forms and percent text remain label text. A
+run of spaces and tabs inside the label of a link, after the `;` or between the
+quotes of a flow, is printed as one space (see
+[Runs of whitespace in a text that are drawn the same](./compatibility.md#runs-of-whitespace-in-a-text-that-are-drawn-the-same)),
+while the names of the components stay. [fixture:
+wardley/flows/flow-padding-escapes] [fixture:
+wardley/flows/flow-ports-and-label]
 
 [fixture: wardley/semicolon-labels/label-exterior]
 

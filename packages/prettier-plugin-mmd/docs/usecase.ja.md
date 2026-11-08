@@ -216,10 +216,10 @@ markdown はラベルの種類も変えます。
 
 ```mmd
 usecase-beta
-  A(unquoted words)
-  B(' single text ')
-  C(" double text ")
-  D("` markdown text `")
+  A(unquoted  words)
+  B(' single  text ')
+  C(" double  text ")
+  D("` markdown  text `")
 ```
 
 ### Stereotypes
@@ -281,7 +281,7 @@ LS、PS、NBSP は内部の内容になれます。
 
 ```mmd
 usecase-beta
-  actor User <<service user>>
+  actor User <<service  user>>
 ```
 
 ### System boundaries
@@ -750,7 +750,7 @@ class の[トークンの間の空白](./class.ja.md#トークンの間の空白
 usecase-beta
   A
   note for A 'quoted note'
-  note for A bare note %% literal
+  note for A bare  note %% literal
 ```
 
 ### Direction and accessibility

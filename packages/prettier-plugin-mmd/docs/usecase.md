@@ -201,10 +201,10 @@ Output
 
 ```mmd
 usecase-beta
-  A(unquoted words)
-  B(' single text ')
-  C(" double text ")
-  D("` markdown text `")
+  A(unquoted  words)
+  B(' single  text ')
+  C(" double  text ")
+  D("` markdown  text `")
 ```
 
 ### Stereotypes
@@ -254,7 +254,7 @@ Output
 
 ```mmd
 usecase-beta
-  actor User <<service user>>
+  actor User <<service  user>>
 ```
 
 ### System boundaries
@@ -688,7 +688,7 @@ Output
 usecase-beta
   A
   note for A 'quoted note'
-  note for A bare note %% literal
+  note for A bare  note %% literal
 ```
 
 ### Direction and accessibility

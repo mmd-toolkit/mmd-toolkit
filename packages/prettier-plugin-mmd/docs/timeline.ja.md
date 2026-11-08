@@ -593,6 +593,8 @@ timeline
 Db はその空白を持ちますが、図では描かれません。
 （[同じに描かれるキーワードの後のテキスト](./compatibility.ja.md#同じに描かれるキーワードの後のテキスト)）。
 `title   History  ` は `title History` と印字します。
+中の空白とタブの連なりも、空白 1 つで印字します。
+（[同じに描かれるテキスト中の空白の連なり](./compatibility.ja.md#同じに描かれるテキスト中の空白の連なり)）。
 `section` の名前は、先頭と末尾の空白も含めて書かれたまま印字します。
 その空白で名前が異なる 2 つのセクションは別々に描かれ、
 除くとそうならないからです。
@@ -746,8 +748,11 @@ timeline %%{init: {}}%%TD
 `accTitle` と `accDescr` の `:` はキーワードに接し、後ろに空白 1 つを置きます。
 journey と同じ形です。
 テキストの両端の空白は Db が持たないので落とします。
+中の空白とタブの連なりは、空白 1 つで印字します。
+（[同じに描かれるテキスト中の空白の連なり](./compatibility.ja.md#同じに描かれるテキスト中の空白の連なり)）。
 [fixture: accessibility-statements/colon-touches-keyword]
 [fixture: accessibility-statements/text-whitespace-dropped]
+[fixture: accessibility-statements/title-and-accessibility-runs-collapsed]
 テキストと `:` が後ろの行にあるときは、キーワードの行に寄せます。
 [fixture: accessibility-statements/text-on-next-line-joined]
 [fixture: accessibility-statements/keyword-and-colon-over-lines-joined]
@@ -762,7 +767,7 @@ journey と同じ形です。
 後ろのテキスト行はその文より 1 段深く置き、
 `}` はその文の段に置きます（[複数行の値](#複数行の値)を参照）。
 [fixture: accessibility-statements/block-text-on-opening-line]
-[fixture: accessibility-statements/block-inner-whitespace-kept]
+[fixture: accessibility-statements/block-inner-runs-collapsed]
 [fixture: accessibility-statements/block-lines-kept]
 [fixture: accessibility-statements/block-comment-and-empty-lines-kept]
 `:` や波括弧の周りの指令は、その場所に残します。
@@ -1293,6 +1298,11 @@ period、event、title、section の名前、accessibility のテキストは、
 [test: U+2029 inside a title] [test: U+2028 at the end of a section name]
 [test: U+2028 after the colon of an accessibility title]
 [test: U+2028 between the header and a direction]
+タイトルの末尾と行の最後の event の末尾では、
+U+2028 と U+2029 は空白やタブではなくテキストの文字なので、
+その後の空白はテキスト末尾のほかの空白と一緒に除き、前の空白は残します。
+[test: U+2029 and spaces at the end of a timeline title]
+[test: U+2028 and spaces at the end of the last event of a line]
 
 ### 空白文字
 

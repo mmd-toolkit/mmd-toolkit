@@ -100,10 +100,12 @@ info
 
 Print `title`, one space and a value trimmed at its common-whitespace edges; a
 null or whitespace-only value prints bare `title`. This gives equivalent
-exterior whitespace one compact form while preserving interior text. Never take
-a value from the next physical line, including across empty, comment or
-directive lines. Trivia-bearing values, hidden suffixes and semicolon protection
-retain their source boundaries.
+exterior whitespace one compact form, and a run of spaces and tabs inside the
+value is printed as one space (see
+[Runs of whitespace in a text that are drawn the same](./compatibility.md#runs-of-whitespace-in-a-text-that-are-drawn-the-same)).
+Never take a value from the next physical line, including across empty, comment
+or directive lines. Trivia-bearing values, hidden suffixes and semicolon
+protection retain their source boundaries.
 
 [fixture: info/title/title-trim]
 

@@ -607,10 +607,16 @@ sequence 図では `:` を前のものに接して書きます（詳しくは、
 どちらも、その図種のドキュメントの書き方に従っています。
 `accTitle` と `accDescr` の後の `:` は、他の図種と mermaid.js の文書と同じく、
 キーワードに接し、後に空白を 1 つ置きます。
-[fixture: labels/accessibility-text-kept]
+[fixture: labels/accessibility-text-runs-collapsed]
 [fixture: multi-line-statements/joined]
 [fixture: multi-line-statements/acc-descr-joined]
-ラベルのテキストは書かれたまま残します。 [fixture: labels/spaced]
+関係の後のラベルのテキストは書かれたまま残します。
+折り返すラベルは連なりを描くので、連なりは空白 1 つではないからです。
+（[同じに描かれるテキスト中の空白の連なり](./compatibility.ja.md#同じに描かれるテキスト中の空白の連なり)）。
+[fixture: labels/spaced]
+`accTitle` と `accDescr` のテキストの中の空白とタブの連なりは、
+空白 1 つで印字します。 [fixture: labels/accessibility-text-runs-collapsed]
+[fixture: labels/acc-block-runs-collapsed]
 クラスや namespace の角括弧の間の文字列は、括弧との間に何も置きません。
 名前と `[` の間にも何も置きません。
 `namespace Auth ["x"]` は `namespace Auth["x"]` に、
@@ -630,7 +636,6 @@ flowchart の subgraph や agentflow の見出しも同じ形で印字します
 [test: U+2029 inside the brackets of a class label]
 [test: U+2028 between a class name and its label]
 [fixture: labels/bracket-padding-dropped]
-[fixture: labels/accessibility-text-kept]
 
 入力
 ([labels/spaced-input.mmd](../tests/fixtures/class/labels/spaced-input.mmd)):
@@ -649,7 +654,7 @@ A  :  -bar() int
 ```mmd
 classDiagram
   A --> B : x
-  A --> B : x y
+  A --> B : x  y
   A : +int x
   A : -bar() int
 ```
@@ -695,33 +700,36 @@ classDiagram
 
 通常のメソッドでは、括弧の直前と内側の外周の空白を除き、
 空でない戻り値型の前に空白を 1 つ置きます。
-可視性記号の後の名前の空白を含め、各 AST フィールドの中身は保ちます。
+フィールドの中の空白とタブの連なりは、空白 1 つで印字します。
+可視性記号の後の空白 1 つは、名前の一部なので残します。
 trivia、無視される文字、物理・Unicode の改行、
 セミコロン行の保護があるメソッドは原文全体を保ちます。
 [fixture: member-lines/method-padding]
-[fixture: member-lines/method-values-and-classifiers-kept]
+[fixture: member-lines/method-values-and-classifiers-runs-collapsed]
 [fixture: member-lines/method-trivia-and-semicolon-kept]
 
 mermaid.js の文書と同じく、属性の classifier はそのテキストに接します。
 `+attr string *` は `+attr string*` と印字します。
 [fixture: member-lines/attribute-classifier-touches]
-属性と注釈の行は、本体内でもクラス名の `:` の後でも、中身を保ちます。
-メソッドの名前・引数・戻り値の中身も保ちます。
+属性と注釈の行は、本体内でもクラス名の `:` の後でも、
+内部の空白とタブの連なりを除き、中身を保ちます。
+メソッドの名前・引数・戻り値の中身も、連なりを除いて保ちます。
 generic のつづりと classifier に伴う末尾も保ちます。
-[fixture: member-lines/kept] [fixture: member-lines/percent-text-kept]
+[fixture: member-lines/runs-collapsed]
+[fixture: member-lines/percent-text-runs-collapsed]
 [fixture: member-lines/trailing-whitespace-dropped]
 [fixture: member-lines/directive-inside-kept]
 [corpus fixture: class/lex-member-percent]
 mermaid.js はメンバーの行をそのテキストで部分に分け、
 可視性の印の後の空白は名前の一部になるからです。
 `+ foo()` の名前は空白の付いた ` foo` で、`+foo()` の名前は `foo` です。
-[fixture: member-lines/kept]
+[fixture: member-lines/runs-collapsed]
 [corpus fixture: class/gram-member-visibility-whitespace-body-0184dca2]
 注釈の行 `<< y z >>` は、テキストの周りの空白も Db に残ります。
-[fixture: member-lines/kept]
+[fixture: member-lines/runs-collapsed]
 
 入力
-([member-lines/kept-input.mmd](../tests/fixtures/class/member-lines/kept-input.mmd)):
+([member-lines/runs-collapsed-input.mmd](../tests/fixtures/class/member-lines/runs-collapsed-input.mmd)):
 
 ```mmd
 classDiagram
@@ -734,7 +742,7 @@ A :  -  bar()
 ```
 
 出力
-([member-lines/kept-output.mmd](../tests/fixtures/class/member-lines/kept-output.mmd)):
+([member-lines/runs-collapsed-output.mmd](../tests/fixtures/class/member-lines/runs-collapsed-output.mmd)):
 
 ```mmd
 classDiagram
@@ -1393,7 +1401,7 @@ mermaid.js はテキストの終わりの空白と改行もその一部として
   スタイル（最初の `:` と `,` の前後の空白を除きます）、
   `accTitle` と `accDescr` のテキスト。
   [fixture: whitespace-between-tokens/style-colon-and-comma-spaced]
-  [fixture: labels/accessibility-text-kept]
+  [fixture: labels/accessibility-text-runs-collapsed]
 - 属性と注釈の中身、メソッドの各フィールドの中身、
   `~` から `~` までのジェネリック型。
 - 空白だけのラベルの `:` の後の空白と、
@@ -1409,7 +1417,10 @@ mermaid.js はテキストの終わりの空白と改行もその一部として
   `classDiagram` か `classDiagram-v2`。 [fixture: indentation/header-v2-kept]
 
 次のものは、どちらの形でも Db が同じなので、選択として書かれたまま残します。
-文の後のコメントの印の前に空白が書かれているかどうかは、
+文の後のコメントの印の前に空白が書かれているかどうかです。
+その空白の連なりは、空白 1 つで印字します。
+（[同じに描かれるテキスト中の空白の連なり](./compatibility.ja.md#同じに描かれるテキスト中の空白の連なり)）。
+[fixture: comments/mark-run-one-space]
 既知の差異（`comment-takes-character`、`percent-brace-after-unit`）の場所では、
 mermaid.js がコメントを、接するものによって読むからです。
 場所の一覧よりも、1 つの規則のほうが単純です。

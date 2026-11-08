@@ -459,11 +459,15 @@ A `title` is printed as the settings are: one space after the keyword, and the
 value without the whitespace at its start or at its end, which the Db keeps and
 which is drawn without (see
 [Texts after a keyword that are drawn the same](./compatibility.md#texts-after-a-keyword-that-are-drawn-the-same)).
-`title   Plan  ` is printed `title Plan`. The name of a `section` is printed as
-written, the whitespace at its start and at its end included: two sections whose
-names differ by it are drawn apart, and would not be once it is left out.
-`section  A` after `section A` stays so. A title of spaces and tabs only stays
-as written. [fixture: titles-and-sections/title-padding-dropped] [fixture:
+`title   Plan  ` is printed `title Plan`, and a run of spaces and tabs inside it
+is printed as one space, so `title Plan  of   work` is printed
+`title Plan of work` (see
+[Runs of whitespace in a text that are drawn the same](./compatibility.md#runs-of-whitespace-in-a-text-that-are-drawn-the-same)).
+The name of a `section` is printed as written, the whitespace at its start and
+at its end included: two sections whose names differ by it are drawn apart, and
+would not be once it is left out. `section  A` after `section A` stays so. A
+title of spaces and tabs only stays as written. [fixture:
+titles-and-sections/title-padding-dropped] [fixture:
 titles-and-sections/title-blank-kept] [fixture:
 titles-and-sections/section-padding-kept] [fixture:
 titles-and-sections/title-trailing-dropped-section-kept] [fixture:
@@ -826,11 +830,13 @@ of its statement; a text on the line of the `{` has one space inside each brace,
 also where the braces touched it. [fixture:
 accessibility-statements/block-lines-kept] [fixture:
 accessibility-statements/block-text-on-opening-line] [fixture:
-accessibility-statements/block-comment-and-empty-lines-kept] Whitespace inside
-the text is part of it, and stays. [fixture:
-accessibility-statements/block-inner-whitespace-kept] A directive between the
-keyword and the colon or the brace, or after them, stays where it is. [fixture:
-accessibility-statements/directive-around-colon-and-braces-kept]
+accessibility-statements/block-comment-and-empty-lines-kept] A run of spaces and
+tabs inside the text is printed as one space (see
+[Runs of whitespace in a text that are drawn the same](./compatibility.md#runs-of-whitespace-in-a-text-that-are-drawn-the-same)).
+[fixture: accessibility-statements/block-inner-runs-collapsed] [fixture:
+accessibility-statements/accessibility-lines-runs-collapsed] A directive between
+the keyword and the colon or the brace, or after them, stays where it is.
+[fixture: accessibility-statements/directive-around-colon-and-braces-kept]
 
 Input
 ([accessibility-statements/text-on-next-line-joined-input.mmd](../tests/fixtures/gantt/accessibility-statements/text-on-next-line-joined-input.mmd)):

@@ -540,8 +540,10 @@ Mermaid が説明から LF 後の字下げを除くためです。
 [fixture: accessibility-statements/block-lines-kept]
 [fixture: accessibility-statements/block-text-on-opening-line]
 [fixture: accessibility-statements/block-comment-and-empty-lines-kept]
-テキストの中の空白はテキストの一部で、残ります。
-[fixture: accessibility-statements/block-inner-whitespace-kept]
+テキストの中の空白とタブの連なりは、空白 1 つで印字します。
+（[同じに描かれるテキスト中の空白の連なり](./compatibility.ja.md#同じに描かれるテキスト中の空白の連なり)）。
+[fixture: accessibility-statements/block-inner-runs-collapsed]
+[fixture: accessibility-statements/accessibility-lines-runs-collapsed]
 キーワードとコロンや括弧の間と、その後のディレクティブはその位置に残します。
 [fixture: accessibility-statements/directive-around-colon-and-braces-kept]
 
@@ -1002,6 +1004,9 @@ U+2028 と U+2029 は、journey の単位の間の空白であり、
 [test: U+2028 after a title keyword] [test: U+2029 inside a title]
 [test: U+2028 at the end of a section]
 [test: U+2028 after the colon of accTitle]
+タイトルの末尾では、U+2028 と U+2029 は空白やタブではなくテキストの文字なので、
+その後の空白はタイトル末尾のほかの空白と一緒に除き、前の空白は残します。
+[test: U+2028 and spaces at the end of a journey title]
 
 ### 空白の文字
 

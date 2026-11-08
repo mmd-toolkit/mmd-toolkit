@@ -369,14 +369,18 @@ sequenceDiagram
   END
 ```
 
-The whitespace inside a value is part of the value, and is kept: in the text of
-a message, a note, a block, a `box`, and a description after `as`, and in the
-JSON of `links` and `properties`. [fixture:
-whitespace-between-tokens/values-kept] [fixture:
-whitespace-between-tokens/values-of-other-statements-kept] The text of a `box`
-is kept as a whole: when its first word is no colour, mermaid.js takes the whole
-text as the name of the box. [fixture: whitespace-between-tokens/values-kept]
-[fixture: whitespace-between-tokens/box-text-kept] The data block of a
+A run of spaces and tabs in the text of a message, a note, a block, a `box`, and
+a description after `as` is printed as one space (see
+[Runs of whitespace in a text that are drawn the same](./compatibility.md#runs-of-whitespace-in-a-text-that-are-drawn-the-same)),
+while the whitespace in the JSON of `links` and `properties` is part of the
+value, and is kept. A text with a `<` or a diagram that holds `white-space`
+stays as written there too. [fixture:
+whitespace-between-tokens/values-runs-collapsed] [fixture:
+whitespace-between-tokens/values-of-other-statements-runs-collapsed] [fixture:
+whitespace-between-tokens/html-tag-runs-kept] The text of a `box` is kept as a
+whole: when its first word is no colour, mermaid.js takes the whole text as the
+name of the box. [fixture: whitespace-between-tokens/values-runs-collapsed]
+[fixture: whitespace-between-tokens/box-text-runs-collapsed] The data block of a
 participant, `@{ ... }`, touches its id: mermaid.js reads the same diagram with
 whitespace between them as without, so the whitespace is dropped, also a
 no-break space, an ideographic space or a byte order mark. [test: no-break space
@@ -415,7 +419,7 @@ around it. [fixture: whitespace-between-tokens/data-block-and-ignored-line-kept]
 whitespace-between-tokens/ignored-line-in-block-kept]
 
 Input
-([whitespace-between-tokens/values-kept-input.mmd](../tests/fixtures/sequence/whitespace-between-tokens/values-kept-input.mmd)):
+([whitespace-between-tokens/values-runs-collapsed-input.mmd](../tests/fixtures/sequence/whitespace-between-tokens/values-runs-collapsed-input.mmd)):
 
 ```mmd
 sequenceDiagram
@@ -430,7 +434,7 @@ end
 ```
 
 Output
-([whitespace-between-tokens/values-kept-output.mmd](../tests/fixtures/sequence/whitespace-between-tokens/values-kept-output.mmd)):
+([whitespace-between-tokens/values-runs-collapsed-output.mmd](../tests/fixtures/sequence/whitespace-between-tokens/values-runs-collapsed-output.mmd)):
 
 ```mmd
 sequenceDiagram
@@ -639,7 +643,9 @@ sequenceDiagram
 
 `title` and `title:` are followed by one space, and the rest of the line is kept
 as written, except for the whitespace at its start and at its end:
-`title   My diagram  ` is printed `title My diagram`. [fixture:
+`title   My diagram  ` is printed `title My diagram`, and a run of spaces and
+tabs inside the text is printed as one space too. The `accTitle` and the
+`accDescr` follow. [fixture: title/accessibility-runs-collapsed] [fixture:
 title/text-padding-dropped] [fixture: title/text-padding-dropped-colon] A title
 of spaces and tabs only stays as written. [fixture: title/title-blank-kept] A
 directive between the keyword and the one whitespace character after it stays
@@ -724,7 +730,9 @@ comments/percent-line-kept] [fixture: comments/block-edges-kept] [fixture:
 comments/text-whitespace-kept] A comment after a statement stays on its line,
 and whether whitespace is written before its mark is kept: mermaid.js reads
 `autonumber 5%% c` without the number 5, and a space before `%%` would give it
-the number. [fixture: comments/kept] [corpus fixture:
+the number. A run of whitespace before the mark is printed as one space (see
+[Runs of whitespace in a text that are drawn the same](./compatibility.md#runs-of-whitespace-in-a-text-that-are-drawn-the-same)).
+[fixture: comments/mark-run-one-space] [fixture: comments/kept] [corpus fixture:
 sequence/lex-percent-comment-takes-number] [fixture:
 comments/mark-whitespace-kept] [fixture:
 comments/after-last-statement-without-line-break] [fixture:
@@ -1144,7 +1152,7 @@ because changing it would change the diagram or the input would be rejected:
 - the arrows.
 
 Some text is kept as written by choice, because the Db is the same either way:
-the case of keywords, which is the author's. The whitespace before the mark of a
-comment, listed above, decides what mermaid.js reads after some statements, such
-as `autonumber 5`; after the others the Db is the same either way, and it is
-kept as written so that one rule holds.
+the case of keywords, which is the author's. Whether there is whitespace before
+the mark of a comment, listed above, decides what mermaid.js reads after some
+statements, such as `autonumber 5`; after the others the Db is the same either
+way, and whether there is any is kept so that one rule holds.

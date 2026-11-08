@@ -184,11 +184,14 @@ inside the field. [fixture: fields/comment-and-directive-continuations]
 [fixture: fields/colon-touches-keyword] [fixture:
 fields/spaces-around-colon-and-value] [fixture: fields/value-after-one-space]
 The whitespace at the ends of an unquoted value is not in the Db and is dropped;
-the whitespace inside it is, and so is everything between the quotes of a
-string. [fixture: fields/value-outer-whitespace-dropped] [fixture:
-fields/value-inner-whitespace-kept] [fixture: fields/string-values-kept] A `#`,
-a `%`, and a `;` inside an unquoted value are characters of the value, not the
-start of a comment. [fixture: fields/special-characters-in-values]
+a run of spaces and tabs inside the value, or between the quotes of a string, is
+in the Db and is printed as one space (see
+[Runs of whitespace in a text that are drawn the same](./compatibility.md#runs-of-whitespace-in-a-text-that-are-drawn-the-same)).
+[fixture: fields/value-outer-whitespace-dropped] [fixture:
+fields/value-inner-runs-collapsed] [fixture:
+fields/string-values-runs-collapsed] A `#`, a `%`, and a `;` inside an unquoted
+value are characters of the value, not the start of a comment. [fixture:
+fields/special-characters-in-values]
 
 The fields keep the order in which they are written, also a field that is
 written twice, of which mermaid.js reads the first. [fixture: fields/order-kept]
@@ -237,7 +240,7 @@ requirementDiagram
 ```
 
 Input
-([fields/string-values-kept-input.mmd](../tests/fixtures/requirement/fields/string-values-kept-input.mmd)):
+([fields/string-values-runs-collapsed-input.mmd](../tests/fixtures/requirement/fields/string-values-runs-collapsed-input.mmd)):
 
 ```mmd
 requirementDiagram
@@ -252,7 +255,7 @@ docref: "http://x.test/a-b"
 ```
 
 Output
-([fields/string-values-kept-output.mmd](../tests/fixtures/requirement/fields/string-values-kept-output.mmd)):
+([fields/string-values-runs-collapsed-output.mmd](../tests/fixtures/requirement/fields/string-values-runs-collapsed-output.mmd)):
 
 ```mmd
 requirementDiagram
@@ -339,7 +342,8 @@ relationship-spacing/string-names] The direction of the arrow is kept, since
 `a - copies -> b` and `b <- copies - a` are written differently, and so is the
 case of the relation. [fixture: relationship-spacing/relation-case-kept]
 [fixture: relationship-spacing/every-relation] The whitespace inside an unquoted
-name is part of it. [fixture: relationship-spacing/multi-word-names] A directive
+name is part of it, and a name that differs by a run is another name, so it
+stays as written. [fixture: relationship-spacing/multi-word-names] A directive
 between the units stays where it is and is placed as under
 [Directives](#directives). [fixture:
 relationship-spacing/directive-between-units] [fixture:
@@ -943,14 +947,14 @@ requirementDiagram
 ### Accessibility statements
 
 The `:` of `accTitle` and `accDescr` touches the keyword and has one space after
-it; the text has no whitespace at its ends, and the whitespace inside it is part
-of it. [fixture: accessibility-statements/colon-touches-keyword] [fixture:
+it; the text has no whitespace at its ends, and a run of spaces and tabs inside
+it is printed as one space. [fixture:
+accessibility-statements/colon-touches-keyword] [fixture:
 accessibility-statements/title-and-description] [fixture:
-accessibility-statements/inner-whitespace-kept] The text holds `;`, `#`, and
-`%%` as characters. [fixture:
-accessibility-statements/special-characters-in-text] A text written on a later
-line is printed after the `:` on one line, and a comment line before it makes
-the statement kept as written. [fixture:
+accessibility-statements/inner-runs-collapsed] The text holds `;`, `#`, and `%%`
+as characters. [fixture: accessibility-statements/special-characters-in-text] A
+text written on a later line is printed after the `:` on one line, and a comment
+line before it makes the statement kept as written. [fixture:
 accessibility-statements/text-on-next-line-joined] [fixture:
 accessibility-statements/text-with-comment-line-kept]
 

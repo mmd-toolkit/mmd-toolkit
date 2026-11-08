@@ -383,10 +383,12 @@ ishikawa/trailing-whitespace/trailing-kept-semicolon] [fixture:
 ishikawa/trailing-whitespace/trailing-value-dropped] [fixture:
 ishikawa/trailing-whitespace/unpadded-values] [test: ishikawa: trailing-nbsp]
 [test: ishikawa: trailing-unicode-separators] [test: ishikawa:
-trailing-unicode-kept-line] Internal whitespace, directive-side gaps and joined
-continuation columns stay, as do comment spaces and directive contents: the gap
-before a directive that follows a literal belongs to the directive, so the
-literal keeps its end there. [fixture:
+trailing-unicode-kept-line] A run of spaces and tabs inside a literal is printed
+as one space (see
+[Runs of whitespace in a text that are drawn the same](./compatibility.md#runs-of-whitespace-in-a-text-that-are-drawn-the-same)),
+while directive-side gaps and joined continuation columns stay, as do comment
+spaces and directive contents: the gap before a directive that follows a literal
+belongs to the directive, so the literal keeps its end there. [fixture:
 ishikawa/trailing-whitespace/trailing-directive-continuation] Only exterior
 header-line padding is dropped under [Header](#header) and
 [Blank lines](#blank-lines); it is not a literal value. [fixture:
@@ -414,11 +416,11 @@ Input and output (escaped):
 ### Node text
 
 Node text keeps its written spelling, apart from the spaces and tabs at its end
-(see [Trailing whitespace](#trailing-whitespace)): quotes, backticks,
-empty-looking strings/brackets/calls, missing closers, numbers, punctuation,
-entities, HTML, prototype names and apparent
-title/accessibility/style/decoration/data syntax are literals. [fixture:
-ishikawa/node-text/values-opaque] [fixture:
+(see [Trailing whitespace](#trailing-whitespace)) and a run of spaces and tabs
+inside it, which is printed as one space: quotes, backticks, empty-looking
+strings/brackets/calls, missing closers, numbers, punctuation, entities, HTML,
+prototype names and apparent title/accessibility/style/decoration/data syntax
+are literals. [fixture: ishikawa/node-text/values-opaque] [fixture:
 ishikawa/node-text/values-quote-unsafe] [fixture:
 ishikawa/node-text/unquoted-root] [fixture:
 ishikawa/node-text/values-html-entities] No foreign token-spacing or value

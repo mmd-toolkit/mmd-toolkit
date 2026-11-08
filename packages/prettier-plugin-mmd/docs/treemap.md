@@ -293,9 +293,10 @@ treemap
 
 Keep complete StringLiteral source spans: single/double quotes, opposite quotes,
 empty/whitespace-only names, padding, backslashes, HTML, entities, percent text
-and physical continuation columns. singleQuote does not rewrite them.
-Backslashes do not escape quotes or decode `\n`; these authored choices can
-affect the name or acceptance.
+and physical continuation columns, with a run of spaces and tabs inside the name
+printed as one space. singleQuote does not rewrite them. Backslashes do not
+escape quotes or decode `\n`; these authored choices can affect the name or
+acceptance.
 
 [fixture: treemap/names/quotes]
 
@@ -550,10 +551,12 @@ treemap
 
 Use shared common-line placement: trim ordinary common-whitespace edges and
 print one space before a nonempty value, or bare `title` for
-null/whitespace-only text. This selects one Db-equivalent outer spacing without
-rewriting internal spaces or quote-looking text. Never take a value from the
-next physical line, across comments or directives. Trivia-bearing values retain
-their written boundaries.
+null/whitespace-only text. This selects one Db-equivalent outer spacing and
+prints a run of spaces and tabs inside the text as one space (see
+[Runs of whitespace in a text that are drawn the same](./compatibility.md#runs-of-whitespace-in-a-text-that-are-drawn-the-same)),
+without rewriting quote-looking text. Never take a value from the next physical
+line, across comments or directives. Trivia-bearing values retain their written
+boundaries.
 
 A comment line after an empty title aligns with the next statement without
 becoming the title's value. [fixture: treemap/title/empty-next-comment]

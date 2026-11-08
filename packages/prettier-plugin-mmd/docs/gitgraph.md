@@ -393,17 +393,19 @@ gitGraph
 ### Title and common values
 
 Print `title` plus one space and a nonempty value trimmed only at its outer
-ends; empty/whitespace-only titles print bare `title`. Shared accessibility
-layout prints `accTitle: value` / `accDescr: value` and empty blocks as `{}`.
-Put one ordinary space between `accDescr` and `{`, even when written touching;
-protected trivia and semicolon layouts keep their gaps. Text on one line stands
-between one space on each side, whether it touched the braces or not. A separate
-closer aligns with its statement. Ordinary description body and standalone
-comment lines align one level inside it: the Db removes indentation after LF.
-Keep line breaks, internal blanks and trailing whitespace. Directives and shared
-removed comment regions keep their complete source. Whitespace-only interiors
-print `{}` because there is no text for interior whitespace to surround; tabs,
-line breaks and Unicode whitespace follow the same rule. [fixture:
+ends, with a run of spaces and tabs inside it printed as one space (see
+[Runs of whitespace in a text that are drawn the same](./compatibility.md#runs-of-whitespace-in-a-text-that-are-drawn-the-same));
+empty/whitespace-only titles print bare `title`. Shared accessibility layout
+prints `accTitle: value` / `accDescr: value` and empty blocks as `{}`. Put one
+ordinary space between `accDescr` and `{`, even when written touching; protected
+trivia and semicolon layouts keep their gaps. Text on one line stands between
+one space on each side, whether it touched the braces or not. A separate closer
+aligns with its statement. Ordinary description body and standalone comment
+lines align one level inside it: the Db removes indentation after LF. Keep line
+breaks, internal blanks and trailing whitespace. Directives and shared removed
+comment regions keep their complete source. Whitespace-only interiors print `{}`
+because there is no text for interior whitespace to surround; tabs, line breaks
+and Unicode whitespace follow the same rule. [fixture:
 title-and-common-values/empty-whitespace-interiors] [test: gitgraph Unicode and
 tab interiors] Comment/directive-only blocks keep their trivia. Keep every
 repeated, empty and interleaved assignment, including frontmatter fallback. Line

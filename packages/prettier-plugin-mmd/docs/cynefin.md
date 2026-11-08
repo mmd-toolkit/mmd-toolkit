@@ -282,9 +282,11 @@ cynefin-beta
 ### Strings
 
 Print item and transition-label StringLiteral source spans unchanged, including
-quote choice, escapes, empty values, interior padding, HTML/entities and
-native-looking text. singleQuote does not requote them. Even Db-equal requoting
-loses authored spelling; trimming or decoding escapes can change the value.
+quote choice, escapes, empty values, HTML/entities and native-looking text,
+except that a run of spaces and tabs inside an item is printed as one space (see
+[Runs of whitespace in a text that are drawn the same](./compatibility.md#runs-of-whitespace-in-a-text-that-are-drawn-the-same)).
+singleQuote does not requote them. Even Db-equal requoting loses authored
+spelling; trimming or decoding escapes can change the value.
 
 [fixture: cynefin/strings/strings-quotes]
 

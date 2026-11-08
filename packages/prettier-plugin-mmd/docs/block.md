@@ -393,9 +393,11 @@ shapes/block-arrow-directions-whitespace-kept] [fixture:
 shapes/block-arrow-with-a-width]
 
 A label is a string, between the quotes of the grammar, and is printed as
-written with the whitespace and the line breaks inside it. The quotes are part
-of the syntax: mermaid.js rejects a label without them. [fixture:
-shapes/label-as-written]
+written with the line breaks inside it; a run of spaces and tabs inside it is
+printed as one space (see
+[Runs of whitespace in a text that are drawn the same](./compatibility.md#runs-of-whitespace-in-a-text-that-are-drawn-the-same)).
+The quotes are part of the syntax: mermaid.js rejects a label without them.
+[fixture: shapes/label-runs-collapsed]
 
 Input
 ([shapes/shape-touches-the-id-input.mmd](../tests/fixtures/block/shapes/shape-touches-the-id-input.mmd)):
@@ -442,7 +444,7 @@ block-beta
 ```
 
 Input
-([shapes/label-as-written-input.mmd](../tests/fixtures/block/shapes/label-as-written-input.mmd)):
+([shapes/label-runs-collapsed-input.mmd](../tests/fixtures/block/shapes/label-runs-collapsed-input.mmd)):
 
 ```mmd
 block-beta
@@ -452,7 +454,7 @@ B["a
 ```
 
 Output
-([shapes/label-as-written-output.mmd](../tests/fixtures/block/shapes/label-as-written-output.mmd)):
+([shapes/label-runs-collapsed-output.mmd](../tests/fixtures/block/shapes/label-runs-collapsed-output.mmd)):
 
 ```mmd
 block-beta
@@ -575,9 +577,11 @@ styles/class-definition-commas-spaced] [fixture:
 styles/class-definition-comma-spaced] [fixture:
 styles/class-definition-comma-beside-directive-kept] [fixture:
 styles/style-statement-commas-spaced] [test: U+2029 before the comma of a block
-classDef statement] [fixture: styles/class-ids-as-written] [fixture:
-styles/class-name-with-a-comma-as-written] [fixture:
-styles/class-name-as-written] [fixture: styles/trailing-whitespace-dropped]
+classDef statement] [fixture: styles/class-ids-as-written] The class name of a
+`class` statement is read as words: a run of spaces and tabs inside it is
+printed as one space, so `class A c   d` is printed `class A c d`. [fixture:
+styles/class-name-with-a-comma-runs-collapsed] [fixture:
+styles/class-name-runs-collapsed] [fixture: styles/trailing-whitespace-dropped]
 [fixture: styles/styles-with-a-directive]
 
 A `style` with no styles is printed as `style A`: the id stands after one space

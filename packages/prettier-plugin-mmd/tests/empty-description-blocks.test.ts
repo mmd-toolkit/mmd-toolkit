@@ -1,6 +1,7 @@
 /** Empty description interiors use one layout across diagram grammars. */
 import { describe, expect, it } from "vitest"
 import { parse } from "@mmd-toolkit/parser"
+import { dbForFormattingComparison } from "./db-comparison.ts"
 import { formatMermaid } from "./helpers.ts"
 import {
   dbOfText,
@@ -140,7 +141,7 @@ const cases = [
   {
     name: "ishikawa description-looking node keeps its text",
     input: "ishikawa-beta\naccDescr {  }\n accDescr{\t}\n",
-    output: "ishikawa-beta\n  accDescr {  }\n    accDescr{\t}\n",
+    output: "ishikawa-beta\n  accDescr { }\n    accDescr{ }\n",
   },
   {
     name: "sankey description-looking field keeps its text",
@@ -153,9 +154,15 @@ describe("empty description blocks", () => {
   it.each(cases)("$name", async ({ input, output }) => {
     expect(await formatMermaid(input)).toBe(output)
     expect(await formatMermaid(output)).toBe(output)
-    expect(dbOfText(output, defaultEmbedded())).toEqual(
-      dbOfText(input, defaultEmbedded()),
-    )
+    const dbBefore = dbOfText(input, defaultEmbedded())
+    expect(
+      dbForFormattingComparison(
+        dbBefore,
+        dbOfText(output, defaultEmbedded()),
+        input,
+        output,
+      ),
+    ).toEqual(dbBefore)
     expect(writtenEmbeddedTexts(output)).toEqual(writtenEmbeddedTexts(input))
     expect(treeProblemsOfText(input)).toEqual([])
     expect(treeProblemsOfText(output)).toEqual([])

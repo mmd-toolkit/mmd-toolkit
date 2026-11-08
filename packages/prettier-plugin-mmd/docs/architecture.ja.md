@@ -203,6 +203,8 @@ architecture-beta
 
 StringLiteral の範囲全体を保ちます。
 単引用符・二重引用符・反対側の引用符・空文字・escape・空白・継続行も保持します。
+ただし、テキストの中の空白とタブの連なりは、
+空白 1 つにして印字します（[Label content](#label-content)を参照）。
 `singleQuote` では書き換えません。
 再符号化は作者の綴りを失い、trim や decode は Db を変え得るためです。
 
@@ -340,8 +342,12 @@ mermaid.js が trim するからです。
 [test: architecture/label-content/title-u2029]
 [test: architecture/label-content/title-with-semicolon-u2028]
 [test: architecture/label-content/title-with-semicolon-u2029]
-テキストの中の連続空白、タブ、空白だけの値、quoted の空値、escape、HTML、
-entity、hidden に見える文字は保ちます。
+テキストの中の空白とタブの連なりは、図が同じなので、空白 1 つにして印字します。
+（[同じに描かれるテキスト中の空白の連なり](./compatibility.ja.md#同じに描かれるテキスト中の空白の連なり)）。
+`group labels[A  B]` は `group labels[A B]` と印字します。
+[fixture: label-content/bare-padding]
+空白だけの値、quoted の空値、escape、HTML、entity、
+hidden に見える文字は保ちます。
 Db がこれらを区別するためです。
 コメントやディレクティブのあるタイトルも、そのままです。
 物理 CR・CRLF だけは共有の host 方針に従います。

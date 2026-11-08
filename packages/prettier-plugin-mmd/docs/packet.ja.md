@@ -228,9 +228,11 @@ packet
 
 ### Label content
 
-label の padding、連続空白、タブ、escape、HTML、entity、
-hidden に見える文字列を、内部の共通 trivia を含む範囲全体として保ちます。
-trim、圧縮、decode は Db を変え得るためです。
+label の padding、escape、HTML、entity、hidden に見える文字列を、
+内部の共通 trivia を含む範囲全体として保ちます。
+label の中の空白とタブの連なりは、空白 1 つにして印字します。
+（[同じに描かれるテキスト中の空白の連なり](./compatibility.ja.md#同じに描かれるテキスト中の空白の連なり)）。
+このテキストの decode は Db を変え得ます。
 物理改行だけは共有の host 方針に従います。
 
 [fixture: packet/label-content/label-padding]

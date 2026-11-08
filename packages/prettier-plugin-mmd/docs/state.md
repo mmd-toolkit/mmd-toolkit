@@ -570,25 +570,30 @@ stateDiagram-v2
 ### Descriptions and labels
 
 The `:` after `accTitle` and `accDescr` touches the keyword and has one space
-after it: `accTitle  :  t` becomes `accTitle: t`. [fixture:
-descriptions-and-labels/acc-text-kept] The `:` of a description and of a
-transition label has one space on each side, as mermaid.js's documentation
+after it: `accTitle  :  t` becomes `accTitle: t`, and a run of spaces and tabs
+in the text is printed as one space (see
+[Runs of whitespace in a text that are drawn the same](./compatibility.md#runs-of-whitespace-in-a-text-that-are-drawn-the-same)).
+[fixture: descriptions-and-labels/acc-text-runs-collapsed] [fixture:
+descriptions-and-labels/acc-block-runs-collapsed] The `:` of a description and
+of a transition label has one space on each side, as mermaid.js's documentation
 writes most of its labels: `A-->B:submit` becomes `A --> B : submit`. [fixture:
 descriptions-and-labels/spaced] The `:` of a description after a class spelled
 as a keyword stays touching it: `A:::style:x` becomes `A:::style: x`, because a
 space before the `:` would let the keyword start a statement. [fixture:
-descriptions-and-labels/class-named-style-then-description-kept] The text is
-kept as written. [fixture: descriptions-and-labels/text-kept] A description of
-only whitespace keeps the whitespace after its `:`: `A : ` gives no description,
-while `A :` is rejected. [corpus fixture: state/gram-description-blank] [corpus
-fixture: state/gram-description-colon-only] [fixture:
-descriptions-and-labels/blank-kept] A description or a label that ends with `:`
-keeps the whitespace after it too: `A : x: ` is accepted, while `A : x:` is
-rejected, since a description cannot end with `:`. [fixture:
-descriptions-and-labels/ending-colon-kept] The whitespace is at the end of a
-line, so the examples are written as strings, in which `\n` is a line break:
-`"stateDiagram-v2\nA : \n"` is printed as `"stateDiagram-v2\n  A : \n"`, and
-`"stateDiagram-v2\nA : x: \nA-->B:y:  \n"` as
+descriptions-and-labels/class-named-style-then-description-kept] The text of a
+description and of a transition label is kept as written, with its runs: a label
+that wraps draws them (see
+[Runs of whitespace in a text that are drawn the same](./compatibility.md#runs-of-whitespace-in-a-text-that-are-drawn-the-same)).
+[fixture: descriptions-and-labels/text-kept] A description of only whitespace
+keeps the whitespace after its `:`: `A : ` gives no description, while `A :` is
+rejected. [corpus fixture: state/gram-description-blank] [corpus fixture:
+state/gram-description-colon-only] [fixture: descriptions-and-labels/blank-kept]
+A description or a label that ends with `:` keeps the whitespace after it too:
+`A : x: ` is accepted, while `A : x:` is rejected, since a description cannot
+end with `:`. [fixture: descriptions-and-labels/ending-colon-kept] The
+whitespace is at the end of a line, so the examples are written as strings, in
+which `\n` is a line break: `"stateDiagram-v2\nA : \n"` is printed as
+`"stateDiagram-v2\n  A : \n"`, and `"stateDiagram-v2\nA : x: \nA-->B:y:  \n"` as
 `"stateDiagram-v2\n  A : x: \n  A --> B : y:  \n"` (the fixtures are in the
 [folder](../tests/fixtures/state/descriptions-and-labels): `blank-kept` and
 `ending-colon-kept`).
@@ -645,16 +650,17 @@ Where the first two characters are a `:` and a space or a tab, in either order,
 the note is printed with the `:` after one space and the text after one space,
 whatever whitespace was written there: `note right of A: x` and
 `note left of A\t:\tz` are printed `note right of A : x` and
-`note left of A : z`. The whitespace inside the text stays. The Db and the
-figure are the same. [fixture: notes/colon-and-text-spaced] Any other start
-stays as written, and so does a note with an empty text, with a comment or a
-directive, or with a character other than an ASCII one. [fixture:
-notes/colon-and-text-kept] In `note left of A:h` the `:` and the `h` are the two
-characters that mermaid.js drops, so the note has no text, and the whitespace
-after the `h` is dropped. [fixture: notes/one-character-text-kept] [corpus
-fixture: state/lex-note-colon-then-one-character] The whitespace before the id
-becomes one space. A text that mermaid.js does not read right after the
-position, as in `note left of%%x A`, keeps touching the position.
+`note left of A : z`. The whitespace inside the text stays, since a note that
+wraps draws its runs. The Db and the figure are the same. [fixture:
+notes/colon-and-text-spaced] Any other start stays as written, and so does a
+note with an empty text, with a comment or a directive, or with a character
+other than an ASCII one. [fixture: notes/colon-and-text-kept] In
+`note left of A:h` the `:` and the `h` are the two characters that mermaid.js
+drops, so the note has no text, and the whitespace after the `h` is dropped.
+[fixture: notes/one-character-text-kept] [corpus fixture:
+state/lex-note-colon-then-one-character] The whitespace before the id becomes
+one space. A text that mermaid.js does not read right after the position, as in
+`note left of%%x A`, keeps touching the position.
 
 The pinned Mermaid renders `stateDiagram-v2` notes as Markdown labels, setting
 `labelType` to `markdown` in
@@ -1471,7 +1477,7 @@ diagram or the input would be rejected:
   pseudostate name, a style, apart from the whitespace around its first `:` and
   its `,`, the CSS class of a `class` statement, and the text of `accTitle` and
   `accDescr`; [fixture: whitespace-between-tokens/style-text-kept] [fixture:
-  descriptions-and-labels/acc-text-kept] [fixture: aliases/id-kept]
+  descriptions-and-labels/acc-text-runs-collapsed] [fixture: aliases/id-kept]
 - what follows the id of a note on one line, the second description of an alias
   definition, and the whitespace after the `:` of a description of only
   whitespace;
@@ -1491,7 +1497,10 @@ diagram or the input would be rejected:
 
 Some text is kept as written by choice, because the Db is the same either way:
 the case of keywords, which is the author's, and whether whitespace is written
-before the mark of a comment after a statement. The second is kept because
-mermaid.js reads a comment by what touches it in the places of the known
-divergences (`comment-takes-character`, `percent-brace-after-unit`), and one
-rule is simpler than a list of those places.
+before the mark of a comment after a statement, a run of it being printed as one
+space (see
+[Runs of whitespace in a text that are drawn the same](./compatibility.md#runs-of-whitespace-in-a-text-that-are-drawn-the-same)).
+[fixture: comments/mark-run-one-space] The second is kept because mermaid.js
+reads a comment by what touches it in the places of the known divergences
+(`comment-takes-character`, `percent-brace-after-unit`), and one rule is simpler
+than a list of those places.

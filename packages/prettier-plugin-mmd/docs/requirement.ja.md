@@ -187,10 +187,12 @@ mermaid.js の文書がフィールドをそう書き、journey も値の前に�
 [fixture: fields/spaces-around-colon-and-value]
 [fixture: fields/value-after-one-space]
 引用符のない値の両端の空白は Db に入らないので落とします。
-値の中の空白は Db に入り、文字列は引用符の間のすべてが Db に入ります。
+値の中や文字列の引用符の間の空白とタブの連なりは Db に入りますが、
+空白 1 つにして印字します。
+（[同じに描かれるテキスト中の空白の連なり](./compatibility.ja.md#同じに描かれるテキスト中の空白の連なり)）。
 [fixture: fields/value-outer-whitespace-dropped]
-[fixture: fields/value-inner-whitespace-kept]
-[fixture: fields/string-values-kept]
+[fixture: fields/value-inner-runs-collapsed]
+[fixture: fields/string-values-runs-collapsed]
 引用符のない値の中の `#`、`%`、`;` は値の文字で、
 コメントの始まりではありません。 [fixture: fields/special-characters-in-values]
 
@@ -243,7 +245,7 @@ requirementDiagram
 ```
 
 入力
-([fields/string-values-kept-input.mmd](../tests/fixtures/requirement/fields/string-values-kept-input.mmd)):
+([fields/string-values-runs-collapsed-input.mmd](../tests/fixtures/requirement/fields/string-values-runs-collapsed-input.mmd)):
 
 ```mmd
 requirementDiagram
@@ -258,7 +260,7 @@ docref: "http://x.test/a-b"
 ```
 
 出力
-([fields/string-values-kept-output.mmd](../tests/fixtures/requirement/fields/string-values-kept-output.mmd)):
+([fields/string-values-runs-collapsed-output.mmd](../tests/fixtures/requirement/fields/string-values-runs-collapsed-output.mmd)):
 
 ```mmd
 requirementDiagram
@@ -350,6 +352,7 @@ ER 図の関係文も単位の間は空白 1 つです。
 [fixture: relationship-spacing/relation-case-kept]
 [fixture: relationship-spacing/every-relation]
 引用符のない名前の中の空白は名前の一部です。
+空白の連なりが違うと別の名前になるので、書かれたまま残します。
 [fixture: relationship-spacing/multi-word-names]
 単位の間のディレクティブは、その場に残し、
 [ディレクティブ](#ディレクティブ)のとおりに置きます。
@@ -973,10 +976,11 @@ requirementDiagram
 ### アクセシビリティの文
 
 `accTitle` と `accDescr` の `:` はキーワードに接し、後ろに空白 1 つを置きます。
-テキストの両端の空白は落とし、中の空白はテキストの一部なので残します。
+テキストの両端の空白は落とし、
+中の空白とタブの連なりは空白 1 つにして印字します。
 [fixture: accessibility-statements/colon-touches-keyword]
 [fixture: accessibility-statements/title-and-description]
-[fixture: accessibility-statements/inner-whitespace-kept]
+[fixture: accessibility-statements/inner-runs-collapsed]
 テキストの中の `;`、`#`、`%%` は文字です。
 [fixture: accessibility-statements/special-characters-in-text]
 後の行に書かれたテキストは、`:` の後ろに寄せて 1 行にします。

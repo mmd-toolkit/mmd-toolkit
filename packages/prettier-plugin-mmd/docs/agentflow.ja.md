@@ -187,6 +187,10 @@ mermaid.js が名前を trim するので Db は同じであり、
 空白が続く `flow F` と `flow F` は 1 つの flow になります。
 ディレクティブやコメントを含む名前、複数の部分からなる名前、空白だけの名前は、
 上に書いたとおり書かれたまま残します。
+名前の末尾では、U+2028 と U+2029 は空白やタブではなく名前の文字なので、
+その後の空白は落とし、前の空白は残します。
+[test: agentflow: U+2028 and spaces at the end of a flow name]
+[test: agentflow: U+2029 and spaces at the end of a connector name]
 [fixture: trailing-whitespace/trailing-name-dropped]
 [fixture: containers/end-name-not-greedy]
 [fixture: names-and-headings/heading-word-gap-before-semicolon]
@@ -224,7 +228,15 @@ connectorにも名前がありますが、閉じる`end`はありません。
 [fixture: names-and-headings/directive-after-erased-string]
 
 名前をclickのIDとして読んだ後は、空白1文字だけでその読みを終えます。
-タイトル、データ、区切り、EOFの前でも、そのタブやLFを保ちます。
+タイトル、データ、後続の文の前では、そのタブや LF も含めて保ちます。
+改行になる `;` の後に文が続く場合も同じです。
+その文字がないと、改行が id を終わらせ、次の文が名前の一部として読まれるので、
+Db が異なるからです。
+後ろに空白、改行、区切りだけが続く空白やタブは落とします。
+その文字のない EOF と同じく、テキストが id を終わらせ、Db も図も同じだからです。
+[fixture: names-and-headings/name-exit-space-before-statement-kept]
+[fixture: names-and-headings/name-exit-space-before-separator-statement-kept]
+[fixture: names-and-headings/name-exit-space-before-blank-end-dropped]
 追加の空白は次の名前の断片です。
 空の文字列と空のmarkdown文字列も、この終了文字を消しません。
 消される形と後続の名前の文字の間に空白がすでにあれば、

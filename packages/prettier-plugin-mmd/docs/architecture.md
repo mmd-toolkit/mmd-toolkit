@@ -202,9 +202,10 @@ architecture-beta
 ### Text icons
 
 Keep each StringLiteral source span, including single/double quotes, opposite
-quotes, empty text, escapes, padding and physical continuation lines.
-`singleQuote` does not rewrite it: re-encoding loses authored spelling, and
-trimming or decoding can change the Db.
+quotes, empty text, escapes, padding and physical continuation lines, except
+that a run of spaces and tabs inside the text is printed as one space (see
+[Label content](#label-content)). `singleQuote` does not rewrite it: re-encoding
+loses authored spelling, and trimming or decoding can change the Db.
 
 [fixture: architecture/text-icons/double-quote]
 
@@ -333,11 +334,14 @@ label-content/title-padding-after-colon-without-style] [test:
 architecture/label-content/title-u2028] [test:
 architecture/label-content/title-u2029] [test:
 architecture/label-content/title-with-semicolon-u2028] [test:
-architecture/label-content/title-with-semicolon-u2029] Repeated spaces, tabs
-inside the text, whitespace-only and quoted-empty content, escapes, HTML,
-entities and hidden-looking text stay: the Db can distinguish these values, and
-a title with a comment or a directive stays as written. Physical CR/CRLF alone
-follow the shared host policy.
+architecture/label-content/title-with-semicolon-u2029] A run of spaces and tabs
+inside the text is printed as one space, since the figure is the same (see
+[Runs of whitespace in a text that are drawn the same](./compatibility.md#runs-of-whitespace-in-a-text-that-are-drawn-the-same)):
+`group labels[A  B]` is printed `group labels[A B]`. [fixture:
+label-content/bare-padding] Whitespace-only and quoted-empty content, escapes,
+HTML, entities and hidden-looking text stay: the Db can distinguish these
+values, and a title with a comment or a directive stays as written. Physical
+CR/CRLF alone follow the shared host policy.
 
 [fixture: architecture/label-content/bare-padding]
 

@@ -221,10 +221,12 @@ since the Db keeps it. [fixture: attribute-spacing/keys-comma-space] [fixture:
 attribute-spacing/keys-case-kept] A comment stands after one space, also where
 it was written touching its name or its keys. [fixture:
 attribute-spacing/comment-one-space] The text of a type or a name is kept as
-written: the whitespace inside a tilde word or a backquoted word is part of the
-type, and so is the text of a comment. [fixture:
-attribute-spacing/tilde-word-kept] [fixture:
-attribute-spacing/backquoted-word-kept]
+written, except that a run of spaces and tabs inside a tilde word or a
+backquoted word is printed as one space (see
+[Runs of whitespace in a text that are drawn the same](./compatibility.md#runs-of-whitespace-in-a-text-that-are-drawn-the-same)),
+and the text of a comment is kept. [fixture:
+attribute-spacing/tilde-word-runs-collapsed] [fixture:
+attribute-spacing/backquoted-word-runs-collapsed]
 
 An attribute written over several lines is printed on one, since the attribute
 block is read without regard to line breaks. [fixture:

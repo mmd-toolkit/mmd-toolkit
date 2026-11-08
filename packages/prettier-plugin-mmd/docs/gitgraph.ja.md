@@ -403,6 +403,8 @@ gitGraph
 ### Title and common values
 
 `title` は空白 1 個と外端だけ trim した非空値を印字します。
+値の中の空白とタブの連なりは、空白 1 つにして印字します。
+（[同じに描かれるテキスト中の空白の連なり](./compatibility.ja.md#同じに描かれるテキスト中の空白の連なり)）。
 空や空白のみなら裸の `title` です。
 共通の accessibility 配置で `accTitle: value`・`accDescr: value`、
 空 block は `{}` と印字します。

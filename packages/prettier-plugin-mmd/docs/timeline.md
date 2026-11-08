@@ -572,11 +572,13 @@ A `title` is printed with one space after the keyword, as in a user journey, and
 the value without the whitespace at its start or at its end, which the Db keeps
 and which is drawn without (see
 [Texts after a keyword that are drawn the same](./compatibility.md#texts-after-a-keyword-that-are-drawn-the-same)).
-`title   History  ` is printed `title History`. The name of a `section` is
-printed as written, the whitespace at its start and at its end included: two
-sections whose names differ by it are drawn apart, and would not be once it is
-left out. A title of spaces and tabs only stays as written. [fixture:
-titles-and-sections/title-padding-dropped] [fixture:
+`title   History  ` is printed `title History`, and a run of spaces and tabs
+inside it is printed as one space (see
+[Runs of whitespace in a text that are drawn the same](./compatibility.md#runs-of-whitespace-in-a-text-that-are-drawn-the-same)).
+The name of a `section` is printed as written, the whitespace at its start and
+at its end included: two sections whose names differ by it are drawn apart, and
+would not be once it is left out. A title of spaces and tabs only stays as
+written. [fixture: titles-and-sections/title-padding-dropped] [fixture:
 titles-and-sections/title-blank-kept] [fixture:
 titles-and-sections/section-padding-kept] [fixture:
 titles-and-sections/title-trailing-dropped-section-kept] [fixture:
@@ -719,9 +721,13 @@ timeline %%{init: {}}%%TD
 
 The `:` of `accTitle` and `accDescr` touches the keyword and has one space after
 it, as in a user journey; the text has no whitespace at its ends, which the Db
-does not keep. [fixture: accessibility-statements/colon-touches-keyword]
-[fixture: accessibility-statements/text-whitespace-dropped] The text and the
-colon may stand on later lines, and are printed on the line of the keyword.
+does not keep, and a run of spaces and tabs inside it is printed as one space
+(see
+[Runs of whitespace in a text that are drawn the same](./compatibility.md#runs-of-whitespace-in-a-text-that-are-drawn-the-same)).
+[fixture: accessibility-statements/colon-touches-keyword] [fixture:
+accessibility-statements/text-whitespace-dropped] [fixture:
+accessibility-statements/title-and-accessibility-runs-collapsed] The text and
+the colon may stand on later lines, and are printed on the line of the keyword.
 [fixture: accessibility-statements/text-on-next-line-joined] [fixture:
 accessibility-statements/keyword-and-colon-over-lines-joined] The text holds
 `:`, `;`, `#`, `%`, and `%%` as characters. [fixture:
@@ -734,7 +740,7 @@ side, also where the braces touched it, and the `}` after it; later text lines
 stand one level inside the statement and the `}` stands at its level (see
 [Multi-line values](#multi-line-values)). [fixture:
 accessibility-statements/block-text-on-opening-line] [fixture:
-accessibility-statements/block-inner-whitespace-kept] [fixture:
+accessibility-statements/block-inner-runs-collapsed] [fixture:
 accessibility-statements/block-lines-kept] [fixture:
 accessibility-statements/block-comment-and-empty-lines-kept] A directive around
 the colon or the braces stays where it is. [fixture:

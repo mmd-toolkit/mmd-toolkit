@@ -1613,7 +1613,9 @@ treeview/branch-prefixes/box-redraw-prefix-trivia-and-value-protection]
 
 共通文は最初のノードの前で原順に保ちます。
 共有の `title value` を使い、外側の共通の空白だけを trim します。
-null と空白だけの値は bare の `title` とし、内部の文字は保ちます。
+null と空白だけの値は bare の `title` とします。
+テキストの中の空白とタブの連なりは、空白 1 つにして印字します。
+（[同じに描かれるテキスト中の空白の連なり](./compatibility.ja.md#同じに描かれるテキスト中の空白の連なり)）。
 次の行から値を取らず、Db の等しい一定の外側の配置を選ぶためです。
 `titlex` と `title"node"` は AST の境界に従い、
 summary に出ない title も残します。
@@ -1680,9 +1682,9 @@ treeView-beta
 共有の `accTitle: value` と `accDescr: value` を使います。
 colon は keyword に付け、trim した非空値の前は space 1 個、
 空なら colon までです。
-内部の空白、brace らしい行値と trivia の境界を保ちます。
-共通の converter が許す同等の外側の gap を選び、
-Db が等しくても内部まで正規化しません。
+値の中の空白とタブの連なりは空白 1 つにして印字します。
+brace らしい行値と trivia の境界を保ちます。
+共通の converter が許す同等の外側の gap を選びます。
 次の行の文字を値に取りません。
 
 [fixture: treeview/accessibility-lines/acctitle-padding]
@@ -2426,6 +2428,11 @@ mermaid.js は節点の名前と description を trim するので、
 空白とタブだけの description、引用符で囲む名前の中の空白、
 独立した comment のテキスト、それ以外の空白文字は、書かれたまま保ちます。
 節点の後に続く directive の前の gap も directive に属するので保ちます。
+名前や description の末尾の U+2028 と U+2029 は、
+空白やタブではなくテキストの文字なので、その後の空白は除き、
+その前の空白は残します。
+[test: treeview/trailing-whitespace/spaces-after-trailing-line-separator]
+[test: treeview/trailing-whitespace/description-spaces-after-trailing-line-separator]
 構造の持ち越し run は 1 回だけ移し、共通の行値は共有の外側の trim に従います。
 branch 行で値から除外された末尾は削り、持ち越しません。
 枝の追加で値の末尾が新たに trim される図は本文を保ちます。

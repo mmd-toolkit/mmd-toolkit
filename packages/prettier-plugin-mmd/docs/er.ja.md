@@ -224,14 +224,16 @@ Db が保つからです。 [fixture: attribute-spacing/keys-comma-space]
 コメントは、名前やキーに接して書かれていても、空白 1 つの後に置きます。
 [fixture: attribute-spacing/comment-one-space]
 型や名前のテキストは書かれたまま残します。
-チルダの語やバッククォートの語の中の空白は型の一部で、
-コメントのテキストもそうです。
+ただし、チルダの語やバッククォートの語の中の空白とタブの連なりは、
+空白 1 つにして印字します。
+（[同じに描かれるテキスト中の空白の連なり](./compatibility.ja.md#同じに描かれるテキスト中の空白の連なり)）。
+コメントのテキストは保ちます。
 属性は列にそろえません。
 そろえると、属性を 1 つ変えただけでブロックの全行が変わり、
 名前の幅は文字数で数えられず、mermaid.js の文書の例もそろえていないからです。
 空白 1 つと、型に接する `?` は、その例の形です。
-[fixture: attribute-spacing/tilde-word-kept]
-[fixture: attribute-spacing/backquoted-word-kept]
+[fixture: attribute-spacing/tilde-word-runs-collapsed]
+[fixture: attribute-spacing/backquoted-word-runs-collapsed]
 
 複数行に書かれた属性は 1 行に印字します。
 属性ブロックは改行に関係なく読まれるからです。

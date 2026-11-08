@@ -417,9 +417,12 @@ U+2028 と U+2029 はそのまま残します。 [fixture: shapes/block-arrow-co
 [fixture: shapes/block-arrow-with-a-width]
 
 ラベルは文字列で、文法の引用符の間にあり、
-中の空白と改行を含めて書かれたまま印字します。
+中の改行を含めて書かれたまま印字しますが、中の空白とタブの連なりは、
+空白 1 つにして印字します。
+（[同じに描かれるテキスト中の空白の連なり](./compatibility.ja.md#同じに描かれるテキスト中の空白の連なり)）。
 引用符は構文の一部です。
-mermaid.js は引用符のないラベルを拒否します。 [fixture: shapes/label-as-written]
+mermaid.js は引用符のないラベルを拒否します。
+[fixture: shapes/label-runs-collapsed]
 
 入力
 ([shapes/shape-touches-the-id-input.mmd](../tests/fixtures/block/shapes/shape-touches-the-id-input.mmd)):
@@ -466,7 +469,7 @@ block-beta
 ```
 
 入力
-([shapes/label-as-written-input.mmd](../tests/fixtures/block/shapes/label-as-written-input.mmd)):
+([shapes/label-runs-collapsed-input.mmd](../tests/fixtures/block/shapes/label-runs-collapsed-input.mmd)):
 
 ```mmd
 block-beta
@@ -476,7 +479,7 @@ B["a
 ```
 
 出力
-([shapes/label-as-written-output.mmd](../tests/fixtures/block/shapes/label-as-written-output.mmd)):
+([shapes/label-runs-collapsed-output.mmd](../tests/fixtures/block/shapes/label-runs-collapsed-output.mmd)):
 
 ```mmd
 block-beta
@@ -613,8 +616,11 @@ flowchart の [スタイルの行末の空白](./flowchart.ja.md#スタイルの
 [fixture: styles/style-statement-commas-spaced]
 [test: U+2029 before the comma of a block classDef statement]
 [fixture: styles/class-ids-as-written]
-[fixture: styles/class-name-with-a-comma-as-written]
-[fixture: styles/class-name-as-written]
+`class` 文のクラス名は語として読むので、
+中の空白とタブの連なりは空白 1 つにして印字します。
+`class A c   d` は `class A c d` と印字します。
+[fixture: styles/class-name-with-a-comma-runs-collapsed]
+[fixture: styles/class-name-runs-collapsed]
 [fixture: styles/trailing-whitespace-dropped]
 [fixture: styles/styles-with-a-directive]
 

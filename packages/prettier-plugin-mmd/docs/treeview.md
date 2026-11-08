@@ -1639,12 +1639,14 @@ treeview/branch-prefixes/box-redraw-prefix-trivia-and-value-protection]
 
 Keep common statements in their preamble and source order. Use shared
 `title value` with trimmed exterior common whitespace, or bare `title` for
-null/whitespace-only values, preserving internal text. This chooses consistent
-Db-equivalent outer spacing without taking a next-line value. Follow AST
-boundaries for `titlex` and `title"node"`; title still stays written when the
-summary omits it. A `;` that the line rule ignores before the first character of
-the value is a gap item whether one whitespace character or more comes before
-it: `title  ;T` and `title ;T` are printed alike. [fixture:
+null/whitespace-only values, printing a run of spaces and tabs inside the text
+as one space (see
+[Runs of whitespace in a text that are drawn the same](./compatibility.md#runs-of-whitespace-in-a-text-that-are-drawn-the-same)).
+This chooses consistent Db-equivalent outer spacing without taking a next-line
+value. Follow AST boundaries for `titlex` and `title"node"`; title still stays
+written when the summary omits it. A `;` that the line rule ignores before the
+first character of the value is a gap item whether one whitespace character or
+more comes before it: `title  ;T` and `title ;T` are printed alike. [fixture:
 treeview/semicolons/ignored-semicolon-title-value-second-space]
 
 [fixture: treeview/title/title-shared]
@@ -1704,9 +1706,9 @@ treeView-beta
 
 Use shared `accTitle: value` and `accDescr: value`: colon touching the keyword,
 one space before trimmed nonempty values, no trailing space for empty values.
-Retain internal whitespace, brace-looking line values and trivia boundaries. The
-common converter permits these equivalent outer gaps; internal Db-equal
-normalization is unnecessary. Never borrow text from the next line.
+Print a run of spaces and tabs inside the value as one space, and retain
+brace-looking line values and trivia boundaries. The common converter permits
+these equivalent outer gaps. Never borrow text from the next line.
 
 [fixture: treeview/accessibility-lines/acctitle-padding]
 

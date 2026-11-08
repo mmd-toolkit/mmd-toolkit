@@ -716,10 +716,10 @@ statement] [test: U+2029 after the comma of a flowchart style statement] The
 text of a `direction` statement before `direction` and after the value is the
 exception, kept as written (see [Direction](#direction)). [fixture:
 whitespace-between-tokens/class-def-and-link-style-spaced] [fixture:
-whitespace-between-tokens/subgraph-quoted-name-runs-collapsed] In a `style`, `classDef`,
-or `linkStyle` statement, the whitespace before the first style, which the
-statement rule of mermaid.js reads, becomes one space, which stands before a
-directive there, as under [Directives](#directives):
+whitespace-between-tokens/subgraph-quoted-name-runs-collapsed] In a `style`,
+`classDef`, or `linkStyle` statement, the whitespace before the first style,
+which the statement rule of mermaid.js reads, becomes one space, which stands
+before a directive there, as under [Directives](#directives):
 `style A %%{init: {}}%%  fill:red` is printed `style A %%{init: {}}%%fill:red`,
 and the two give the same Db. The whitespace between the words of a style value
 stays as written. [fixture:
@@ -1092,7 +1092,7 @@ flowchart LR
 ```
 
 Input
-([label-inner-whitespace/inner-whitespace-kept-input.mmd](../tests/fixtures/flowchart/label-inner-whitespace/inner-runs-collapsed-input.mmd)):
+([label-inner-whitespace/inner-whitespace-kept-input.mmd](../tests/fixtures/flowchart/label-inner-whitespace/inner-whitespace-kept-input.mmd)):
 
 ```mmd
 flowchart LR
@@ -1100,11 +1100,11 @@ flowchart LR
 ```
 
 Output
-([label-inner-whitespace/inner-whitespace-kept-output.mmd](../tests/fixtures/flowchart/label-inner-whitespace/inner-runs-collapsed-output.mmd)):
+([label-inner-whitespace/inner-whitespace-kept-output.mmd](../tests/fixtures/flowchart/label-inner-whitespace/inner-whitespace-kept-output.mmd)):
 
 ```mmd
 flowchart LR
-  A[hello world]
+  A[hello   world]
 ```
 
 Input
@@ -1248,13 +1248,17 @@ An ordinary accessibility line prints `accTitle: value` or `accDescr: value`:
 the colon touches the keyword, one ASCII space precedes the value, and
 whitespace at both ends of the value is dropped. [fixture:
 accessibility-lines/tight-colon] [fixture: accessibility-lines/spaced-colon]
-[fixture: accessibility-lines/value-runs-collapsed] Among Db-equal forms, follow the
-sibling diagram types unless the diagram has a reason of its own. Flowchart has
-none for an ordinary accessibility line, so it uses the same compact form as
+[fixture: accessibility-lines/value-runs-collapsed] Among Db-equal forms, follow
+the sibling diagram types unless the diagram has a reason of its own. Flowchart
+has none for an ordinary accessibility line, so it uses the same compact form as
 [C4](./c4.md#accessibility-lines), [class](./class.md#labels) and
 [usecase](./usecase.md#direction-and-accessibility).
 
-Internal whitespace and inline `%%` and `#` remain value text. [fixture:
+A run of spaces and tabs inside the value is printed as one space (see
+[Runs of whitespace in a text that are drawn the same](./compatibility.md#runs-of-whitespace-in-a-text-that-are-drawn-the-same)),
+and inline `%%` and `#` remain value text. [fixture:
+accessibility-lines/value-runs-collapsed] [fixture:
+accessibility-lines/block-runs-collapsed] [fixture:
 accessibility-lines/inline-percent-hash] An empty or whitespace-only value keeps
 the statement form, `accTitle:` or `accDescr:`, without a following space.
 [fixture: accessibility-lines/empty-title] [fixture:

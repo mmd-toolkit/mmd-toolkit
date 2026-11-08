@@ -536,7 +536,9 @@ xychart
 ### 引用符
 
 文字列は書かれたままに印字します。
-引用符、テキスト、中の空白、中の改行を残します。
+引用符、テキスト、中の改行を残し、
+中の空白とタブの連なりは空白 1 つにして印字します。
+（[同じに描かれるテキスト中の空白の連なり](./compatibility.ja.md#同じに描かれるテキスト中の空白の連なり)）。
 引用符は、足しも取りもしません。
 `"Sales"` と `Sales` は Db が同じですが、
 `"a b"` と `a b` は違います（後者のテキストは `ab` です）。
@@ -546,7 +548,7 @@ xychart
 sankey と同じです（[引用符](./sankey.ja.md#引用符)を参照）。
 空の文字列は、文法が受け入れる位置にだけ置かれます。
 プロットの title、データの前の軸の title、値のラベルです。
-[fixture: quotes/strings-as-written] [fixture: quotes/quotes-not-removed]
+[fixture: quotes/strings-runs-collapsed] [fixture: quotes/quotes-not-removed]
 [fixture: quotes/quotes-not-added]
 [fixture: quotes/keywords-and-markup-in-strings]
 [fixture: quotes/comment-mark-in-a-string]
@@ -598,8 +600,10 @@ xychart
 後ろに空白 1 つを置きます。
 ほかの図と同じです（[アクセシビリティの文](./journey.ja.md#アクセシビリティの文)
 を参照）。
-テキストの前後に空白は置かず、中の空白は残します。
-中の空白は Db に入るからです（`accTitle: a   b` の title は `a   b`）。
+テキストの前後に空白は置かず、
+中の空白とタブの連なりは空白 1 つにして印字します。
+中の空白は Db に入り、`accTitle: a   b` の title は `a   b` で、
+`accTitle: a b` と印字します。
 後ろの行に書かれたテキスト、キーワードより後ろの行に書かれたコロン、
 コロンの前の空白は、1 行にして印字します。
 改行は字句解析器にとって空白で、文のテキストは変わりません。
@@ -608,7 +612,7 @@ xychart
 [fixture: accessibility-statements/colon-touches-keyword]
 [fixture: accessibility-statements/colon-without-space-after]
 [fixture: accessibility-statements/text-whitespace-dropped]
-[fixture: accessibility-statements/text-inner-whitespace-kept]
+[fixture: accessibility-statements/text-inner-runs-collapsed]
 [fixture: accessibility-statements/special-characters-in-text]
 [fixture: accessibility-statements/text-on-the-next-line-joined]
 [fixture: accessibility-statements/colon-on-the-next-line-joined]
