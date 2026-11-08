@@ -235,6 +235,7 @@ export function layoutStatement(
       joinsStyles: isLinkStyle,
       keepsGapAfterStroke: statement.type !== "FlowchartStyleStatement",
       escapesComma: statement.type === "FlowchartClassDefStatement",
+      collapsesWordGaps: true,
     })
   }
   if (statement.type !== "FlowchartAccDescrBlockStatement") return layout

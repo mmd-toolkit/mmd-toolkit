@@ -469,6 +469,7 @@ function addStyledStatementRules(
     normalizeStyleList(source, atoms, statement, {
       joinsStyles,
       splitsLabelStyles: statement.type === "BlockStyleStatement",
+      collapsesWordGaps: true,
     })
   }
   const doc =

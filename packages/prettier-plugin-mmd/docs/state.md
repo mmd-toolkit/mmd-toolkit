@@ -450,10 +450,17 @@ one space after it where the value is not empty. The `,` between styles has no
 whitespace before it and one space after it, as in ER and requirement (see
 [Styles and classes](./er.md#styles-and-classes)):
 `classDef c fill:#f00 , color:white` is printed
-`classDef c fill: #f00, color: white`. The whitespace between the words of a
-value stays as written. mermaid.js reads the whitespace around the `,` as
-nothing in a state diagram, but keeps the whitespace around the `:` in the Db;
-the figure is the same (see
+`classDef c fill: #f00, color: white`. A run of spaces and tabs between the
+words of a style is printed as one space, and whether whitespace stands between
+two words stays as written; a run inside a string, a comment, or the parentheses
+of `url(`, and a run after a backslash, stay as written, since CSS reads them as
+part of the value. [fixture: whitespace-between-tokens/style-words-run-spaced]
+[fixture: whitespace-between-tokens/style-string-runs-kept] [fixture:
+whitespace-between-tokens/style-url-runs-kept] [fixture:
+whitespace-between-tokens/style-comment-runs-kept] [fixture:
+whitespace-between-tokens/style-backslash-run-kept] mermaid.js reads the
+whitespace around the `,` as nothing in a state diagram, but keeps the
+whitespace around the `:` in the Db; the figure is the same (see
 [Styles that are drawn the same](./compatibility.md#styles-that-are-drawn-the-same)).
 [fixture: whitespace-between-tokens/style-colon-spaced] A backslash does not
 escape a `,` here: `fill:a\,b ,stroke:c` is printed `fill: a\, b, stroke: c`. A
@@ -1538,8 +1545,9 @@ diagram or the input would be rejected:
 
 - the text of a value: a description, a label, a note, an id after `as`, a
   pseudostate name, a style, apart from the whitespace around its first `:` and
-  its `,`, the CSS class of a `class` statement, and the text of `accTitle`;
-  [fixture: whitespace-between-tokens/style-text-kept] [fixture:
+  its `,` and the runs between its words outside strings, comments, and `url(`,
+  the CSS class of a `class` statement, and the text of `accTitle`; [fixture:
+  whitespace-between-tokens/style-string-runs-kept] [fixture:
   descriptions-and-labels/acc-text-runs-collapsed] [fixture: aliases/id-kept]
 - what follows the id of a note on one line, the second description of an alias
   definition, and the whitespace after the `:` of a description of only

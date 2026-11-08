@@ -562,13 +562,18 @@ whitespace before it and one space after it, as in ER and requirement (see
 [Styles and classes](./er.md#styles-and-classes)):
 `classDef c fill:#f00 , color:white` is printed
 `classDef c fill: #f00, color: white`, and the styles of a `style` statement use
-the same form. The whitespace between the words of a value stays as written. The
-Db changes, but mermaid.js draws the same figure (see
+the same form. A run of spaces and tabs between the words of a style is printed
+as one space, and whether whitespace stands between two words stays as written;
+a run inside a string, a comment, or the parentheses of `url(`, and a run after
+a backslash, stay as written, since CSS reads them as part of the value. The Db
+changes, but mermaid.js draws the same figure (see
 [Styles that are drawn the same](./compatibility.md#styles-that-are-drawn-the-same)).
-[fixture: styles/style-colon-spaced] A backslash does not escape a `,` here:
-`fill:a\,b ,stroke:c` is printed `fill: a\, b, stroke: c`. A space after a
-backslash before the `:` stays, since taking it away would escape the `:`.
-[fixture: styles/style-backslash-before-comma] [fixture:
+[fixture: styles/style-colon-spaced] [fixture: styles/style-words-run-spaced]
+[fixture: styles/style-string-runs-kept] [fixture: styles/style-url-runs-kept] A
+backslash does not escape a `,` here: `fill:a\,b ,stroke:c` is printed
+`fill: a\, b, stroke: c`. A space after a backslash before the `:` stays, since
+taking it away would escape the `:`. [fixture:
+styles/style-backslash-before-comma] [fixture:
 styles/style-colon-escaped-space-kept] A `style` whose last style ends with a
 backslash keeps whether whitespace stands after it, a run of whitespace becoming
 its first character, also at the end of the statement, since the shapes of a

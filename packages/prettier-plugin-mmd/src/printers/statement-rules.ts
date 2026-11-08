@@ -9,7 +9,7 @@ import {
   keptAsWritten,
   replaceInAtoms,
 } from "./layout.ts"
-import { collapseRunEdits, runEdits } from "./text-runs.ts"
+import { collapseRunEdits } from "./text-runs.ts"
 import {
   findLinesWithOwnSemicolons,
   isInsideStyleRuleStretch,
@@ -157,18 +157,85 @@ export function printStyleUnitSpacing(source: Source, style: Node): Doc {
 }
 
 /**
- * The text at `[start, end)`, with each run of spaces and tabs printed as one
- * space.
+ * The text at `[start, end)`, with each run of spaces and tabs that
+ * `styleRunEdits` lists printed as one space.
  */
 function printWordGaps(source: Source, start: number, end: number): Doc {
   const parts: Doc[] = []
   let position = start
-  for (const { range } of runEdits(source, start, end)) {
+  for (const { range } of styleRunEdits(source, start, end)) {
     parts.push(printAsWritten(source, position, range[0]), " ")
     position = range[1]
   }
   parts.push(printAsWritten(source, position, end))
   return parts
+}
+
+/**
+ * The edits that print each run of spaces and tabs inside the text of a style,
+ * at `[start, end)`, as one space. CSS reads a run as one whitespace, so the
+ * figure is the same, except where the run is a character of the value: inside
+ * a string (`"…"` or `'…'`), inside a comment, inside the parentheses of
+ * `url(`, and where a backslash escapes the first character of the run. A
+ * string, a comment, or `url(` that is not closed runs to the end of the text.
+ * The runs at the ends of the text are the business of the caller.
+ */
+export function styleRunEdits(
+  source: Source,
+  start: number,
+  end: number,
+): TextEdit[] {
+  const { text } = source
+  const edits: TextEdit[] = []
+  let position = start
+  while (position < end) {
+    const character = text[position]
+    if (character === "\\") {
+      position++
+      if (isSpaceOrTab(text[position])) {
+        while (position < end && isSpaceOrTab(text[position])) position++
+      } else position++
+    } else if (character === '"' || character === "'") {
+      position = endOfQuoted(text, position, end)
+    } else if (text.startsWith("/*", position)) {
+      const close = text.indexOf("*/", position + "/*".length)
+      position = close === -1 || close + "*/".length > end ? end : close + 2
+    } else if (text.slice(position, position + 4).toLowerCase() === "url(") {
+      position = endOfUrl(text, position + "url(".length, end)
+    } else if (isSpaceOrTab(character)) {
+      let runEnd = position
+      while (runEnd < end && isSpaceOrTab(text[runEnd])) runEnd++
+      if (
+        position > start &&
+        runEnd < end &&
+        !(runEnd - position === 1 && character === " ")
+      )
+        edits.push({ range: [position, runEnd], replacement: " " })
+      position = runEnd
+    } else position++
+  }
+  return edits
+}
+
+/** The offset after the string that starts with the quote at `quoteAt`. */
+function endOfQuoted(text: string, quoteAt: number, end: number): number {
+  for (let index = quoteAt + 1; index < end; index++) {
+    if (text[index] === "\\") index++
+    else if (text[index] === text[quoteAt]) return index + 1
+  }
+  return end
+}
+
+/** The offset after the `)` that closes the `url(` whose text starts at `from`. */
+function endOfUrl(text: string, from: number, end: number): number {
+  for (let index = from; index < end; index++) {
+    const character = text[index]
+    if (character === "\\") index++
+    else if (character === '"' || character === "'")
+      index = endOfQuoted(text, index, end) - 1
+    else if (character === ")") return index + 1
+  }
+  return end
 }
 
 /**
@@ -178,9 +245,9 @@ function printWordGaps(source: Source, start: number, end: number): Doc {
  * draws the figure without it (docs/compatibility.md, Styles that are drawn
  * the same). The whitespace around the first `:` is the business of
  * `addColonEdit`, called before this, and a style with a `:` that edit leaves
- * as written stays as written. Only the runs inside the text of `range` change:
- * the whitespace at its ends is the business of the caller, which keeps the
- * whitespace after a backslash that ends a style.
+ * as written stays as written. The runs that `styleRunEdits` lists change, and
+ * not the whitespace at the ends of `range`, which is the business of the
+ * caller, which keeps the whitespace after a backslash that ends a style.
  */
 export function addWordGapEdits(
   source: Source,
@@ -188,19 +255,16 @@ export function addWordGapEdits(
   edits: TextEdit[],
 ): void {
   const colon = source.text.indexOf(":", start)
-  const edited = (offset: number): boolean =>
-    edits.some((edit) => edit.range[0] <= offset && offset < edit.range[1])
-  if (colon !== -1 && colon < end && !edited(colon)) return
-  for (const edit of runEdits(source, start, end)) {
+  if (
+    colon !== -1 &&
+    colon < end &&
+    !edits.some((edit) => edit.range[0] <= colon && colon < edit.range[1])
+  )
+    return
+  for (const edit of styleRunEdits(source, start, end)) {
     const [from, to] = edit.range
-    if (
-      from === start ||
-      to === end ||
-      (to - from === 1 && source.text[from] === " ") ||
-      edits.some((other) => other.range[0] < to && from < other.range[1])
-    )
-      continue
-    edits.push(edit)
+    if (!edits.some((other) => other.range[0] < to && from < other.range[1]))
+      edits.push(edit)
   }
 }
 

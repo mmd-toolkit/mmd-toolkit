@@ -398,7 +398,7 @@ export function layoutStateStatement(
     // of the styles (docs/state.md, Styles). A statement with a kept line break
     // keeps its styles as written: printing them changes whether joining its
     // lines is safe, so a second pass would join them.
-    normalizeStyleList(source, atoms, statement)
+    normalizeStyleList(source, atoms, statement, { collapsesWordGaps: true })
   }
   return {
     atoms: keepFirstGapLineTails(source, atoms, (from, to) =>

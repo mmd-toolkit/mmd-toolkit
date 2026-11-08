@@ -1,7 +1,6 @@
 import type { DbSummary } from "@mmd-toolkit/tests"
 import type { DbPath } from "./db-restore.ts"
 import { restoreStrings } from "./db-restore.ts"
-import { withoutRuns } from "./text-run-margins.ts"
 
 /** The diagram types whose styles the formatter prints in one form. */
 export const styleDiagramTypes: ReadonlySet<string> = new Set([
@@ -13,6 +12,21 @@ export const styleDiagramTypes: ReadonlySet<string> = new Set([
   "stateDiagram",
   "swimlane",
   "treemap",
+  "usecase",
+])
+
+/**
+ * The diagram types whose printer prints a run of spaces and tabs between the
+ * words of a style as one space.
+ */
+const runCollapsingDiagramTypes: ReadonlySet<string> = new Set([
+  "agentflow",
+  "block",
+  "classDiagram",
+  "flowchart-elk",
+  "flowchart-v2",
+  "stateDiagram",
+  "swimlane",
   "usecase",
 ])
 
@@ -55,10 +69,11 @@ interface StyleReading {
    */
   readonly splitsLabelStyles: boolean
   /**
-   * The style is one of a class of a class diagram, which keeps the runs of
-   * spaces and tabs between the words of a style in the Db and draws the
-   * figure without them, so a run is no margin; whether whitespace stands
-   * there is.
+   * The printer prints a run of spaces and tabs between the words of a style
+   * as one space, and mermaid.js keeps the run in the Db and draws the figure
+   * without it, so a run is no margin, except inside a string, a comment, or
+   * the parentheses of `url(`, and after a backslash; whether whitespace
+   * stands between two words is.
    */
   readonly collapsesWordGaps: boolean
 }
@@ -79,7 +94,7 @@ function withoutStyleMargins(
     collapsesWordGaps,
   }: StyleReading,
 ): string {
-  const style = collapsesWordGaps ? withoutRuns(written) : written
+  const style = collapsesWordGaps ? withoutWordRuns(written) : written
   const trimmed = style.trim()
   const escapedTail =
     joinsStyles && escapesNext(trimmed) && style !== style.trimEnd()
@@ -105,6 +120,59 @@ function withoutStyleMargins(
     value === "" &&
     writtenValue !== ""
   return `${start ? " " : ""}${name}${gap ? " " : ""}:${blank ? " " : value}${tail}`
+}
+
+/**
+ * The text of a style with each run of spaces and tabs replaced by one space,
+ * except inside a string (`"…"` or `'…'`), a comment (`/*…*\/`), or the
+ * parentheses of `url(`, and after a backslash, where CSS reads the whitespace
+ * as part of the value. What is not closed runs to the end of the text.
+ */
+function withoutWordRuns(text: string): string {
+  let result = ""
+  let position = 0
+  while (position < text.length) {
+    const character = text[position]
+    let next = position + 1
+    if (character === "\\") {
+      next = position + 2
+      if (text[position + 1] === " " || text[position + 1] === "\t") {
+        next = position + 1
+        while (text[next] === " " || text[next] === "\t") next++
+      }
+    } else if (character === '"' || character === "'") {
+      next = endOfString(text, position)
+    } else if (text.startsWith("/*", position)) {
+      const close = text.indexOf("*/", position + 2)
+      next = close === -1 ? text.length : close + 2
+    } else if (text.slice(position, position + 4).toLowerCase() === "url(") {
+      next = position + 4
+      while (next < text.length && text[next] !== ")") {
+        if (text[next] === "\\") next++
+        else if (text[next] === '"' || text[next] === "'")
+          next = endOfString(text, next) - 1
+        next++
+      }
+      next = Math.min(next + 1, text.length)
+    } else if (character === " " || character === "\t") {
+      while (text[next] === " " || text[next] === "\t") next++
+      result += " "
+      position = next
+      continue
+    }
+    result += text.slice(position, next)
+    position = next
+  }
+  return result
+}
+
+/** The offset after the string that starts at the quote at `start`. */
+function endOfString(text: string, start: number): number {
+  for (let index = start + 1; index < text.length; index++) {
+    if (text[index] === "\\") index++
+    else if (text[index] === text[start]) return index + 1
+  }
+  return text.length
 }
 
 /** Whether a backslash at the end of a text escapes the next character. */
@@ -188,7 +256,7 @@ export function styleDbForFormattingComparison(
         diagramType === "block" &&
         key === "styles" &&
         path.at(-2) === "children",
-      collapsesWordGaps: diagramType === "classDiagram",
+      collapsesWordGaps: runCollapsingDiagramTypes.has(diagramType),
     }
     return key !== undefined &&
       isStyleKey(key) &&

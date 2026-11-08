@@ -356,12 +356,11 @@ flowchart, agentflow, class, state, block, and usecase diagrams, as it does in
 ER and requirement diagrams: no whitespace before the first `:` of a style, one
 space after it where the value is not empty, no whitespace before the `,`
 between two styles, and one space after it. `style A fill :#f00,stroke:  #333`
-is printed `style A fill: #f00, stroke: #333`. In flowchart, agentflow, state,
-block, and usecase diagrams the whitespace between the words of a value stays as
-written; class, ER, and requirement diagrams print a run of it as one space (see
-below). [fixture: flowchart/whitespace-between-tokens/style-colon-spaced]
-[fixture: flowchart/whitespace-between-tokens/style-colon-empty-value-kept]
-[fixture: agentflow/single-space-gaps/style-colon-spaced] [fixture:
+is printed `style A fill: #f00, stroke: #333`. A run of spaces and tabs between
+the words of a style is printed as one space (see below). [fixture:
+flowchart/whitespace-between-tokens/style-colon-spaced] [fixture:
+flowchart/whitespace-between-tokens/style-colon-empty-value-kept] [fixture:
+agentflow/single-space-gaps/style-colon-spaced] [fixture:
 class/whitespace-between-tokens/style-colon-spaced] [fixture:
 state/whitespace-between-tokens/style-colon-spaced] [fixture:
 block/styles/style-colon-spaced] [fixture:
@@ -589,28 +588,61 @@ of a block diagram make the style of their label again from their styles with
 spellings were the same for them and for a `classDef`. [fixture:
 block/styles/style-label-styles-kept]
 
-In class, ER, and requirement diagrams a run of spaces and tabs between the
-words of a style is printed as one space, in a style with a `:` and in one
-without, and whether whitespace stands between two words stays as written:
-`style A fill   #f00` is printed `style A fill #f00`, and `style A fill#f00`
-stays. mermaid.js joins the words of a style that has no `:` in a class diagram,
-and the native style units of ER and requirement diagrams in every style, so the
-Db does not change there: `stroke-dasharray: 5   5` and `stroke-dasharray: 5 5`
-are both read as `stroke-dasharray:55` in an ER or a requirement diagram. A
-class diagram keeps the runs of a style with a `:` in the Db, as it keeps the
-whitespace around the `:`, and draws the same figure. Each of
-`style A border:2px   solid   red`, `style A font:20px   serif`,
-`style A fill:#f00   stroke:blue`, `style A fill:#f00,   x   y`, and
-`style A border:2px solid red` written with tabs between its words was drawn
-with mermaid.js 12.3.0 in Chromium, with the runs as written and printed as one
-space: the pixels were the same, and so was the SVG, without the generated ids
-and without the runs in its `style` and `fill` attributes. The same holds for a
-`classDef` put on a class. [fixture:
+A run of spaces and tabs between the words of a style is printed as one space in
+flowchart, agentflow, class, state, block, usecase, ER, and requirement
+diagrams, in a style with a `:` and in one without, and whether whitespace
+stands between two words stays as written: `style A fill   #f00` is printed
+`style A fill #f00`, and `style A fill#f00` stays. CSS reads a run as one
+whitespace, so the figure is the same, except where the run is a character of
+the value, and there it stays as written: inside a string (`"…"` or `'…'`),
+inside a comment (`/* … */`), inside the parentheses of `url(`, and after a
+backslash, where CSS reads the first character of the run as escaped. A string,
+a comment, or `url(` that is not closed runs to the end of the style. [fixture:
+flowchart/whitespace-between-tokens/style-string-runs-kept] [fixture:
+flowchart/whitespace-between-tokens/style-backslash-run-kept] [fixture:
+state/whitespace-between-tokens/style-string-runs-kept] [fixture:
+state/whitespace-between-tokens/style-url-runs-kept] [fixture:
+state/whitespace-between-tokens/style-comment-runs-kept] [fixture:
+block/styles/style-string-runs-kept] [fixture: block/styles/style-url-runs-kept]
+[fixture: usecase/classes-and-styles/css-string-runs-kept] [fixture:
+usecase/classes-and-styles/css-url-runs-kept] [fixture:
+class/whitespace-between-tokens/style-url-runs-kept]
+
+mermaid.js joins the words of a style that has no `:` in a class diagram, and
+the native style units of ER and requirement diagrams in every style, so the Db
+does not change there: `stroke-dasharray: 5   5` and `stroke-dasharray: 5 5` are
+both read as `stroke-dasharray:55` in an ER or a requirement diagram. The other
+diagram types, and the styles with a `:` of a class diagram, keep the runs in
+the Db, as they keep the whitespace around the `:`, and draw the same figure.
+Both texts of each of these were drawn with mermaid.js 12.3.0 in Chromium, with
+the runs as written and printed as one space, and the pixels were the same, and
+so was the SVG, without the generated ids and without the runs in its `style`
+and `fill` attributes: in a class diagram `style A border:2px   solid   red`,
+`style A font:20px   serif`, `style A fill:#f00   stroke:blue`,
+`style A fill:#f00,   x   y`, and `style A border:2px solid red` written with
+tabs between its words, and a `classDef` put on a class; in a flowchart and in
+an agentflow diagram a `style`, a `classDef`, and a `linkStyle` with words, with
+and without a `:`; in a state and in a block diagram a `style` and a `classDef`
+with the same values, a string, a comment, and `url(` beside the runs; and in a
+usecase diagram a `style` and a `classDef` with the same values. Beyond these,
+the statements of the corpus and of the fixtures of this package whose styles
+change by formatting were drawn the same way: 1,355 texts hold a `style`, a
+`classDef`, or a `linkStyle`; of the 769 of them whose Db changes, 754 have the
+same pixels, 10 cannot be drawn before or after (mermaid.js stops with an
+error), and 5 are use case diagrams with an animated link, whose pixels differ
+by the frame of the animation and whose SVG is the same without the whitespace
+in the `style` attribute. [fixture:
 class/whitespace-between-tokens/style-value-words-spaced] [fixture:
 class/whitespace-between-tokens/style-words-run-spaced] [fixture:
+flowchart/whitespace-between-tokens/style-words-run-spaced] [fixture:
+agentflow/single-space-gaps/style-words-run-spaced] [fixture:
+state/whitespace-between-tokens/style-words-run-spaced] [fixture:
+block/styles/style-words-run-spaced] [fixture:
+usecase/classes-and-styles/css-words-run-spaced] [fixture:
 er/styles-and-classes/style-words-run-spaced] [fixture:
 requirement/styles-and-classes/style-words-run-spaced] [fixture:
-class/whitespace-between-tokens/style-words-directive-kept]
+class/whitespace-between-tokens/style-words-directive-kept] [fixture:
+flowchart/whitespace-between-tokens/style-words-directive-kept]
 
 A statement stays as written where a style holds a line break or a U+2028 or
 U+2029, where the statement holds a comment or a directive, where a style is all
@@ -624,18 +656,20 @@ flowchart/whitespace-between-tokens/style-comma-with-kept-semicolon-kept]
 The tests compare the Db of the printed text with the margins of its styles
 restored from the Db of the written text (`styleDbForFormattingComparison` in
 `tests/style-margins.ts`): a style that differs from the written one only by the
-whitespace at its ends and around its first `:`, and in a class diagram by the
-runs between its words, takes the written text, and any other difference, among
-them the presence of whitespace between two words of a style in a class diagram,
-the number of styles of a link, the presence of whitespace before the `:` of a
-`stroke` in a style that can reach a link, the presence of whitespace before a
-style of a link that starts with `stroke:`, and the presence of whitespace in
-the value of a `stroke` of a link that is whitespace only, the presence of
-whitespace after a backslash that ends a style that mermaid.js joins as it is,
-and the presence of whitespace before a style of a block that starts with
-`color:` or `text-align:`, or between such a name and the `:`, fails. When the
-pinned mermaid.js is updated, draw the statements of each of these kinds again
-and compare the SVG and the pixels before the exception stays.
+whitespace at its ends and around its first `:`, and in the diagram types above
+by the runs between its words outside strings, comments, `url(`, and after a
+backslash, takes the written text, and any other difference, among them the
+presence of whitespace between two words of a style, a changed run inside a
+string, a comment, or `url(`, the number of styles of a link, the presence of
+whitespace before the `:` of a `stroke` in a style that can reach a link, the
+presence of whitespace before a style of a link that starts with `stroke:`, and
+the presence of whitespace in the value of a `stroke` of a link that is
+whitespace only, the presence of whitespace after a backslash that ends a style
+that mermaid.js joins as it is, and the presence of whitespace before a style of
+a block that starts with `color:` or `text-align:`, or between such a name and
+the `:`, fails. When the pinned mermaid.js is updated, draw the statements of
+each of these kinds again and compare the SVG and the pixels before the
+exception stays.
 
 ## Texts after a keyword that are drawn the same
 
@@ -2954,13 +2988,13 @@ margins follow [JSON tables](./usecase.md#json-tables). Formatting fixtures
 without supplied effects use the shared null Db comparison and written-source
 check; the corpus uses recorded effects where available. The padding of a CSS
 declaration around its first colon follows
-[Styles that are drawn the same](#styles-that-are-drawn-the-same); the `--` name
-gap of a custom property stays, which Mermaid stores. [fixture:
+[Styles that are drawn the same](#styles-that-are-drawn-the-same); the runs in a
+declaration are printed as one space as well. [fixture:
 usecase/native-metadata/metadata-inline] [fixture:
 usecase/native-metadata/metadata-blank-lines-kept] [fixture:
 usecase/json-tables/json-opaque] [fixture:
 usecase/classes-and-styles/css-colon-padding] [fixture:
-usecase/classes-and-styles/css-custom-gap]
+usecase/classes-and-styles/css-custom-gap-run-collapsed]
 
 After common comment-region and line-terminator handling, the optional trailing
 comma and physical line breaks between the last property and `}` total at most

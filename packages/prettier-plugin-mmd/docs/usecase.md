@@ -640,12 +640,18 @@ draws the same figure. A name that ends with `stroke` is the exception, since a
 mermaid.js colours its arrowheads from `stroke:` only: such a name keeps whether
 whitespace stands before the colon, a run becoming one space. The text of a
 declaration from its name's start through its last value component otherwise
-stays as written: the `--  color` gap of a custom property, tabs, directives in
-the dash gap, quoted or escaped commas, empty string components, functions,
-order and repetition. [fixture: classes-and-styles/css-name-multiline-directive]
-Only exterior HWS after the last component can disappear; prefixes with kept
-semicolons, a comment or a directive in the statement, and a declaration over
-lines override ordinary list layout.
+stays as written: directives in the dash gap, quoted or escaped commas, empty
+string components, functions, order and repetition, except that a run of spaces
+and tabs between its words is printed as one space, as in the other diagram
+types (see
+[Styles that are drawn the same](./compatibility.md#styles-that-are-drawn-the-same)):
+`style A --  color:red` is printed `style A -- color: red`, and
+`translate(1  2)` is printed `translate(1 2)`. A run inside a string, a comment,
+or the parentheses of `url(`, and a run after a backslash, stay as written.
+[fixture: classes-and-styles/css-name-multiline-directive] Only exterior HWS
+after the last component can disappear; prefixes with kept semicolons, a comment
+or a directive in the statement, and a declaration over lines override ordinary
+list layout.
 
 [fixture: classes-and-styles/class-lists] [fixture:
 classes-and-styles/css-colon-padding] [fixture:
@@ -653,8 +659,11 @@ classes-and-styles/css-post-colon-run-collapsed] [fixture:
 classes-and-styles/css-stroke-before-colon-kept] [fixture:
 classes-and-styles/css-stroke-before-colon-run-collapsed] [fixture:
 classes-and-styles/css-stroke-before-colon-touching] [fixture:
-classes-and-styles/css-custom-gap] [fixture:
-classes-and-styles/css-custom-gap-remove-kept] [fixture:
+classes-and-styles/css-custom-gap-run-collapsed] [fixture:
+classes-and-styles/css-custom-gap-touching-run-collapsed] [fixture:
+classes-and-styles/css-words-run-spaced] [fixture:
+classes-and-styles/css-string-runs-kept] [fixture:
+classes-and-styles/css-url-runs-kept] [fixture:
 classes-and-styles/css-value-internal] [corpus fixture:
 usecase/gram-css-empty-string-component] [fixture:
 classes-and-styles/css-gap-directive] [fixture:

@@ -39,6 +39,7 @@ import {
   addClassListRules,
   addColonEdit,
   addNameListRules,
+  addWordGapEdits,
   classStatementRules,
   collectTextEndEdits,
   endsWithDirectives,
@@ -368,8 +369,10 @@ function styleColonEdits(
   const styles = statement.styles.filter((style) => style.range[1] <= end)
   if (!styleUnitsCanCompact(source, statement.range[0], end, styles)) return []
   const edits: TextEdit[] = []
-  for (const style of styles)
+  for (const style of styles) {
     addColonEdit(source, style.range, edits, { keepsGapAfterStroke: true })
+    addWordGapEdits(source, style.range, edits)
+  }
   return edits
 }
 

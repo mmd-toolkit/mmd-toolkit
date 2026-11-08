@@ -132,6 +132,43 @@ const restored: readonly DbPair[] = [
     before: { relationships: [{ id: "e1", styles: ["stroke\t :#d33"] }] },
     after: { relationships: [{ id: "e1", styles: ["stroke : #d33"] }] },
   },
+  {
+    name: "a run of spaces and tabs between the words of a style of a vertex",
+    before: { vertices: [{ id: "A", styles: ["border:2px   solid\tred"] }] },
+    after: { vertices: [{ id: "A", styles: ["border: 2px solid red"] }] },
+  },
+  {
+    name: "a run between the words of a style that has no colon",
+    diagramType: "classDiagram",
+    before: { classes: [{ id: "A", styles: ["fill   #f00"] }] },
+    after: { classes: [{ id: "A", styles: ["fill #f00"] }] },
+  },
+  {
+    name: "a run beside a string, a comment, and a url in a style of a state",
+    diagramType: "stateDiagram",
+    before: {
+      states: [
+        {
+          id: "A",
+          styles: ['font:12px   "A   B"   /* c   d */   url(a   b.png)   x'],
+        },
+      ],
+    },
+    after: {
+      states: [
+        {
+          id: "A",
+          styles: ['font: 12px "A   B" /* c   d */ url(a   b.png) x'],
+        },
+      ],
+    },
+  },
+  {
+    name: "a run between the words of a style of a usecase actor",
+    diagramType: "usecase",
+    before: { actors: [{ id: "A", styles: ["border:2px   solid"] }] },
+    after: { actors: [{ id: "A", styles: ["border: 2px solid"] }] },
+  },
 ]
 
 const kept: readonly DbPair[] = [
@@ -238,11 +275,6 @@ const kept: readonly DbPair[] = [
     after: { vertices: [{ id: "A", styles: ["stroke: #f00"] }] },
   },
   {
-    name: "whitespace inside a value",
-    before: { vertices: [{ id: "A", styles: ["font-family:a  b"] }] },
-    after: { vertices: [{ id: "A", styles: ["font-family: a b"] }] },
-  },
-  {
     name: "the fill:none that a link gets where no style starts with fill",
     before: { edges: [{ id: "L", style: ["stroke:#f00", "fill:red"] }] },
     after: {
@@ -265,6 +297,41 @@ const kept: readonly DbPair[] = [
     diagramType: "usecase",
     before: { relationships: [{ id: "e1", styles: ["stroke:#d33"] }] },
     after: { relationships: [{ id: "e1", styles: ["stroke : #d33"] }] },
+  },
+  {
+    name: "a run changed inside a string of a style",
+    diagramType: "stateDiagram",
+    before: { states: [{ id: "A", styles: ['font-family:"A   B"'] }] },
+    after: { states: [{ id: "A", styles: ['font-family: "A B"'] }] },
+  },
+  {
+    name: "a run changed inside a comment of a style",
+    diagramType: "stateDiagram",
+    before: { states: [{ id: "A", styles: ["border:1px /* a   b */"] }] },
+    after: { states: [{ id: "A", styles: ["border: 1px /* a b */"] }] },
+  },
+  {
+    name: "a run changed inside the parentheses of url",
+    diagramType: "classDiagram",
+    before: { classes: [{ id: "A", styles: ["background:url(a   b.png)"] }] },
+    after: { classes: [{ id: "A", styles: ["background: url(a b.png)"] }] },
+  },
+  {
+    name: "a run changed after a backslash",
+    before: { vertices: [{ id: "A", styles: ["font-family:a\\   b"] }] },
+    after: { vertices: [{ id: "A", styles: ["font-family: a\\ b"] }] },
+  },
+  {
+    name: "whitespace added between two words of a style",
+    diagramType: "classDiagram",
+    before: { classes: [{ id: "A", styles: ["fill#f00"] }] },
+    after: { classes: [{ id: "A", styles: ["fill #f00"] }] },
+  },
+  {
+    name: "a run changed between the words of a style of a diagram type that keeps it",
+    diagramType: "treemap",
+    before: { classDefs: [{ id: "c", styles: ["border:2px   solid"] }] },
+    after: { classDefs: [{ id: "c", styles: ["border: 2px solid"] }] },
   },
 ]
 

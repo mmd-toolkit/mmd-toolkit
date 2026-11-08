@@ -735,9 +735,16 @@ whitespace-between-tokens/subgraph-quoted-name-runs-collapsed] In a `style`,
 which the statement rule of mermaid.js reads, becomes one space, which stands
 before a directive there, as under [Directives](#directives):
 `style A %%{init: {}}%%  fill:red` is printed `style A %%{init: {}}%%fill:red`,
-and the two give the same Db. The whitespace between the words of a style value
-stays as written. [fixture:
-whitespace-between-tokens/style-inner-whitespace-kept] `linkStyle default`,
+and the two give the same Db. A run of spaces and tabs between the words of a
+style is printed as one space, and whether whitespace stands between two words
+stays as written: `classDef c fill:#f00    stroke:#333` is printed
+`classDef c fill: #f00 stroke:#333`. A run inside a single-quoted string, and a
+run after a backslash, stay as written, since CSS reads them as part of the
+value. [fixture: whitespace-between-tokens/style-inner-whitespace-collapsed]
+[fixture: whitespace-between-tokens/style-words-run-spaced] [fixture:
+whitespace-between-tokens/style-string-runs-kept] [fixture:
+whitespace-between-tokens/style-backslash-run-kept] [fixture:
+whitespace-between-tokens/style-words-directive-kept] `linkStyle default`,
 `classDef`, and `style` use the same form as ER and requirement (see
 [Styles that are drawn the same](./compatibility.md#styles-that-are-drawn-the-same)).
 

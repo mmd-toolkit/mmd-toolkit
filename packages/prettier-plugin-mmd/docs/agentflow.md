@@ -312,22 +312,28 @@ style/classDef/class/linkStyle, before class values and interpolation names, or
 before tooltips. The grammar consumes exactly one whitespace character;
 following whitespace is value text, and a second character where a token is
 expected can reject. Tabs used as that character remain tabs. Preserve
-first-style leading whitespace even across directives, the whitespace between
-the words of a style value, empty style-list items, escaped classDef commas,
-order and repetition. The first-style whitespace does not collapse as in
-flowchart. Each style has no whitespace before its first `:` and one space after
-it where the value is not empty. The `,` between styles has no whitespace before
-it and one space after it: `style A fill :#f00,stroke:  #333` is printed
+first-style leading whitespace even across directives, empty style-list items,
+escaped classDef commas, order and repetition. The first-style whitespace does
+not collapse as in flowchart. Each style has no whitespace before its first `:`
+and one space after it where the value is not empty. The `,` between styles has
+no whitespace before it and one space after it:
+`style A fill :#f00,stroke:  #333` is printed
 `style A fill: #f00, stroke: #333`. [fixture:
-single-space-gaps/style-colon-spaced] A `linkStyle` with link numbers keeps
-whether whitespace follows the `,` before a style that starts with `fill`, a run
-of whitespace becoming one space; `fill-opacity` counts, as mermaid.js reads
-only the start. [fixture: single-space-gaps/link-style-fill-after-comma-kept]
-[fixture: single-space-gaps/link-style-fill-opacity-after-comma-kept] A
-`linkStyle`, with link numbers or `default`, keeps it for a style that starts
-with `stroke:` too, which mermaid.js reads at the start where the look is
-`handDrawn`. [fixture: single-space-gaps/link-style-stroke-after-comma-kept] The
-other styles of such a statement, and `linkStyle default`, use the one form (see
+single-space-gaps/style-colon-spaced] A run of spaces and tabs between the words
+of a style is printed as one space, and whether whitespace stands between two
+words stays as written, as in
+[flowchart](./flowchart.md#whitespace-between-tokens): a run inside a
+single-quoted string stays. [fixture: single-space-gaps/style-words-run-spaced]
+[fixture: single-space-gaps/style-string-runs-kept] A `linkStyle` with link
+numbers keeps whether whitespace follows the `,` before a style that starts with
+`fill`, a run of whitespace becoming one space; `fill-opacity` counts, as
+mermaid.js reads only the start. [fixture:
+single-space-gaps/link-style-fill-after-comma-kept] [fixture:
+single-space-gaps/link-style-fill-opacity-after-comma-kept] A `linkStyle`, with
+link numbers or `default`, keeps it for a style that starts with `stroke:` too,
+which mermaid.js reads at the start where the look is `handDrawn`. [fixture:
+single-space-gaps/link-style-stroke-after-comma-kept] The other styles of such a
+statement, and `linkStyle default`, use the one form (see
 [Styles that are drawn the same](./compatibility.md#styles-that-are-drawn-the-same)).
 In a `linkStyle` or a `classDef`, which can reach a link, a name that ends with
 `stroke` keeps whether whitespace stands between it and the `:`, a run of
