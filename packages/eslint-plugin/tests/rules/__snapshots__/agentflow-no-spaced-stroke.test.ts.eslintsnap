@@ -1069,6 +1069,26 @@ Output:
 ---
 
 
+Test: agentflow-no-spaced-stroke >> invalid >>> invalid/agentflow/link-style-directive-before-space
+Filename: tests/fixtures/rules/agentflow-no-spaced-stroke/invalid/agentflow/link-style-directive-before-space-input.mmd
+
+Code:
+  1 | agentflow-beta TB
+  2 |   A --> B
+  3 |   linkStyle 0 stroke%%{init: {}}%% :#f00
+    |                                   ^ [1]
+  4 |
+
+Output:
+  1 | agentflow-beta TB
+  2 |   A --> B
+  3 |   linkStyle 0 stroke%%{init: {}}%%:#f00
+  4 |
+
+[1] `stroke` written with whitespace before `:` is not a form that the mermaid.js documentation shows, and mermaid.js does not read it for the colour of an arrowhead.
+---
+
+
 Test: agentflow-no-spaced-stroke >> invalid >>> invalid/agentflow/link-style-directive-before-style
 Filename: tests/fixtures/rules/agentflow-no-spaced-stroke/invalid/agentflow/link-style-directive-before-style-input.mmd
 
@@ -1455,6 +1475,26 @@ Output:
   1 | agentflow-beta TB
   2 |   A --> B
   3 |   linkStyle 0 stroke:#f00  
+  4 |
+
+[1] `stroke` written with whitespace before `:` is not a form that the mermaid.js documentation shows, and mermaid.js does not read it for the colour of an arrowhead.
+---
+
+
+Test: agentflow-no-spaced-stroke >> invalid >>> invalid/agentflow/link-style-two-directives-in-space
+Filename: tests/fixtures/rules/agentflow-no-spaced-stroke/invalid/agentflow/link-style-two-directives-in-space-input.mmd
+
+Code:
+  1 | agentflow-beta TB
+  2 |   A --> B
+  3 |   linkStyle 0 stroke %%{init: {}}%% %%{init: {}}%% :#f00
+    |                     ^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ [1]
+  4 |
+
+Output:
+  1 | agentflow-beta TB
+  2 |   A --> B
+  3 |   linkStyle 0 stroke%%{init: {}}%%%%{init: {}}%%:#f00
   4 |
 
 [1] `stroke` written with whitespace before `:` is not a form that the mermaid.js documentation shows, and mermaid.js does not read it for the colour of an arrowhead.

@@ -8,7 +8,10 @@ import type {
 import type { MermaidRuleDefinition } from "../rule-types.ts"
 import type { MermaidSourceCode } from "../source-code.ts"
 import { ruleDocsUrl } from "../rule-docs-url.ts"
-import { positionsOfValue } from "../utils/directive-free-text.ts"
+import {
+  directiveStartingAt,
+  positionsOfValue,
+} from "../utils/directive-free-text.ts"
 import { styleOf, type QuadrantStyle } from "../utils/quadrant-styles.ts"
 
 /** Three or six hexadecimal digits, which `validateHexCode` of mermaid.js accepts without a `#`. */
@@ -55,9 +58,7 @@ function hasBorder(
  * the diagram is rejected.
  */
 function semicolonFollows(sourceCode: MermaidSourceCode, at: number): boolean {
-  const directive = sourceCode.ast.directives.find(
-    (candidate) => candidate.range[0] === at,
-  )
+  const directive = directiveStartingAt(sourceCode, at)
   return directive === undefined
     ? sourceCode.text[at] === ";"
     : semicolonFollows(sourceCode, directive.range[1])

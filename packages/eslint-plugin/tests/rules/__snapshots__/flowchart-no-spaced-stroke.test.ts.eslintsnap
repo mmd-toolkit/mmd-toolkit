@@ -1135,6 +1135,26 @@ Output:
 ---
 
 
+Test: flowchart-no-spaced-stroke >> invalid >>> invalid/flowchart/link-style-directive-before-space
+Filename: tests/fixtures/rules/flowchart-no-spaced-stroke/invalid/flowchart/link-style-directive-before-space-input.mmd
+
+Code:
+  1 | flowchart LR
+  2 |   A --> B
+  3 |   linkStyle 0 stroke%%{init: {}}%% :#f00
+    |                                   ^ [1]
+  4 |
+
+Output:
+  1 | flowchart LR
+  2 |   A --> B
+  3 |   linkStyle 0 stroke%%{init: {}}%%:#f00
+  4 |
+
+[1] `stroke` written with whitespace before `:` is not a form that the mermaid.js documentation shows, and mermaid.js does not read it for the colour of an arrowhead.
+---
+
+
 Test: flowchart-no-spaced-stroke >> invalid >>> invalid/flowchart/link-style-directive-before-style
 Filename: tests/fixtures/rules/flowchart-no-spaced-stroke/invalid/flowchart/link-style-directive-before-style-input.mmd
 
@@ -1521,6 +1541,26 @@ Output:
   1 | flowchart LR
   2 |   A --> B
   3 |   linkStyle 0 stroke:#f00  
+  4 |
+
+[1] `stroke` written with whitespace before `:` is not a form that the mermaid.js documentation shows, and mermaid.js does not read it for the colour of an arrowhead.
+---
+
+
+Test: flowchart-no-spaced-stroke >> invalid >>> invalid/flowchart/link-style-two-directives-in-space
+Filename: tests/fixtures/rules/flowchart-no-spaced-stroke/invalid/flowchart/link-style-two-directives-in-space-input.mmd
+
+Code:
+  1 | flowchart LR
+  2 |   A --> B
+  3 |   linkStyle 0 stroke %%{init: {}}%% %%{init: {}}%% :#f00
+    |                     ^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ [1]
+  4 |
+
+Output:
+  1 | flowchart LR
+  2 |   A --> B
+  3 |   linkStyle 0 stroke%%{init: {}}%%%%{init: {}}%%:#f00
   4 |
 
 [1] `stroke` written with whitespace before `:` is not a form that the mermaid.js documentation shows, and mermaid.js does not read it for the colour of an arrowhead.
