@@ -66,6 +66,23 @@ describe("From a script: formatting text", () => {
     ).toEqual(expected)
   })
 
+  it("throws a SyntaxError with no loc.end for an error that ends at the start of a line", async () => {
+    const text = 'C4Context\nRel\n(a, b, "Uses")\n'
+    const expected = await thrownBy(
+      prettier.format(text, { parser: "mermaid", plugins: [plugin] }),
+    )
+    expect(expected).toMatchObject({
+      class: SyntaxError,
+      loc: { start: { line: 2, column: 4 } },
+    })
+    expect(expected).not.toHaveProperty("loc.end")
+    expect(
+      await thrownBy(
+        format(text, { filepath: path.join(project.cwd, "a.mmd") }),
+      ),
+    ).toEqual(expected)
+  })
+
   it("leaves a rejected diagram as written after formatting an earlier one", async () => {
     const input = lines(
       "> ```mermaid",
