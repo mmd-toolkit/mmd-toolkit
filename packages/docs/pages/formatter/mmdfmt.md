@@ -553,10 +553,13 @@ its option: `--no-check --list-different` is an error, as
 With `--check` or `--list-different` on standard input, Prettier exits with `0`
 for a text it cannot parse; `mmdfmt` exits with `2` for a rejected diagram, as
 everywhere else ([Errors and exit codes](#errors-and-exit-codes)). `mmdfmt`
-reports a rejected diagram on one line with its position, such as
-`docs/flow.mmd:3:1: error: Unexpected end of text`, while Prettier writes
-`[error] docs/flow.mmd: SyntaxError: Unexpected end of text` and then the lines
-around the place, each after `[error]`.
+reports a rejected diagram of a `.mmd` or `.mermaid` file on one line with its
+position, such as `docs/flow.mmd:3:1: error: Unexpected end of text`, while
+Prettier writes `[error] docs/flow.mmd: SyntaxError: Unexpected end of text` and
+then the lines around the place, each after `[error]`. For a rejected diagram in
+a Markdown file, `mmdfmt` writes a warning on one line, such as
+`notes.md:6:1: warning: Unexpected end of text`, while Prettier writes nothing
+about it; neither treats it as an error.
 
 Prettier also colors the word `warn` yellow and the name of an unchanged file
 gray where its output is not a terminal, if the `CI` environment variable is set

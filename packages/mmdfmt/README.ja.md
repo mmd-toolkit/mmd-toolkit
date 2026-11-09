@@ -650,11 +650,15 @@ Prettier は `--no-check --list-different` を受け付けます。
 Prettier は読めないテキストでも `0` で終了しますが、`mmdfmt` は、
 ほかの場合と同じく、
 拒否された図では `2` で終了します（[エラーと終了コード](#エラーと終了コード)）。
-`mmdfmt` は、拒否された図を、
+`.mmd` や `.mermaid` のファイルの拒否された図を、`mmdfmt` は、
 `docs/flow.mmd:3:1: error: Unexpected end of text` のように、
 位置を付けた 1 行で報告します。
 Prettier は `[error] docs/flow.mmd: SyntaxError: Unexpected end of text`
 を書き、続けてその場所の前後の行を、それぞれ `[error]` の後に書きます。
+Markdown のファイルの中の拒否された図では、
+`mmdfmt` は `notes.md:6:1: warning: Unexpected end of text` のような警告を 1
+行書き、Prettier は何も書きません。
+どちらも、これをエラーとはしません。
 
 Prettier は、`CI` の環境変数があるときや Windows では、
 出力先が端末でなくても `warn` の語を黄色にし、
