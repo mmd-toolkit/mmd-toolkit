@@ -30,7 +30,8 @@ both diagrams, reformatted indentation uses the character selected by `useTabs`.
 
 - A data block `@{ … }` on one line in a flowchart, an agentflow, or a kanban
   board is printed on several lines, one entry on each line, when its line is
-  wider than `printWidth`.
+  wider than `printWidth` and the conditions of [Data blocks][data-blocks] hold;
+  a block of one entry, for example, stays on its line.
 - The colons of the tasks of a Gantt section are lined up unless that would make
   a line wider than `printWidth` and wider than it is.
 
@@ -46,3 +47,5 @@ Everywhere else `printWidth` does not control diagram line breaks.
 `railroad-beta` composite calls always use nested lines to show the grammar
 structure. Quoted contents remain as written. Prettier's formatting of Markdown
 and YAML frontmatter can still use `printWidth`.
+
+[data-blocks]: ../../../prettier-plugin-mmd/docs/flowchart.md#data-blocks

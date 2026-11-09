@@ -1280,8 +1280,8 @@ flowchart LR
 ### Line wrapping
 
 Lines are not wrapped, whatever Prettier's `printWidth` option says, except that
-a data block `@{ … }` on one line prints on several lines where its line is
-wider than `printWidth` (see [Data blocks](#data-blocks)). [fixture:
+a data block `@{ … }` on one line whose line is wider than `printWidth` prints
+on several lines under the conditions of [Data blocks](#data-blocks). [fixture:
 line-wrapping/print-width-ignored] Where else a line is broken is the author's
 choice, as with chains.
 

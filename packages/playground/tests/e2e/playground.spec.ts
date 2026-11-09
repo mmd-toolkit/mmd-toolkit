@@ -116,6 +116,26 @@ test("formats with the print width and preserves it in shared links and reloads"
   await expect.poll(() => savedSource(page)).toBe(formatted)
 })
 
+test("keeps the print width in use while the field holds no print width", async ({
+  page,
+}) => {
+  await edit(page, 'flowchart LR\nA@{ shape: rect, label: "Process step" }\n')
+  await page.getByRole("tab", { name: "Formatted", exact: true }).click()
+  const printWidth = page.getByLabel("Print width", { exact: true })
+  await printWidth.fill("30")
+  for (const text of ["", "-5", "2.5"]) {
+    await printWidth.fill(text)
+    await printWidth.blur()
+    await expect(printWidth).toHaveValue("30")
+  }
+  await page.getByRole("button", { name: "Apply to source" }).click()
+  await expect
+    .poll(() => savedSource(page))
+    .toBe(
+      'flowchart LR\n  A@{\n    shape: rect\n    label: "Process step"\n  }\n',
+    )
+})
+
 test("distinguishes rejected input, including empty EOF errors", async ({
   page,
 }) => {

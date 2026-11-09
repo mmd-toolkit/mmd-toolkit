@@ -182,6 +182,65 @@ describe("Code blocks in detail: the line width left in a container, as in Prett
   )
 })
 
+describe("If you know Prettier: a tab after the `>` of a block quote", () => {
+  /** A block quote whose `>` is followed by `separator`, holding `wideDiagram`. */
+  function quoted(separator: string): string {
+    return lines(
+      `>${separator}\`\`\`mermaid`,
+      ...wideDiagram.map((line) => `>${separator}${line}`),
+      `>${separator}\`\`\``,
+    )
+  }
+
+  /** The text with the tab after each `>` turned into the one space that Prettier prints. */
+  function withPrettiersSpace(text: string): string {
+    return text.replaceAll(">\t", "> ")
+  }
+
+  it("leaves the width Prettier leaves where the tab reaches the column of Prettier's space", async () => {
+    // tabWidth 2: the tab after `>` reaches column 2, as `> ` is 2 wide.
+    for (const [printWidth, splits] of [
+      [wideDiagram[1].length + 1, true],
+      [wideDiagram[1].length + 2, false],
+    ] as const) {
+      const options = { printWidth, tabWidth: 2 }
+      const byPrettier = await format(quoted("\t"), {
+        parser: "markdown",
+        plugins: [plugin],
+        ...options,
+      })
+      const byTool = await formatMarkdown(quoted("\t"), options, "output")
+      expect(byPrettier.includes("label: x,")).toBe(!splits)
+      expect(withPrettiersSpace(byTool.text)).toBe(byPrettier)
+    }
+  })
+
+  it("leaves less than Prettier leaves where the tab reaches a column beyond Prettier's space", async () => {
+    // tabWidth 4: the tab after `>` reaches column 4, `> ` is 2 wide, and the
+    // block is indented by 4, so the data block is 40 wide.
+    const options = { printWidth: 42, tabWidth: 4 }
+    const byPrettier = await format(quoted("\t"), {
+      parser: "markdown",
+      plugins: [plugin],
+      ...options,
+    })
+    const byTool = await formatMarkdown(quoted("\t"), options, "output")
+    expect(byPrettier).toContain("    A@{ shape: rect, label: x, icon: y }\n")
+    expect(byTool.text).toBe(
+      lines(
+        ">\t```mermaid",
+        ">\tflowchart LR",
+        ">\t    A@{",
+        ">\t        shape: rect",
+        ">\t        label: x",
+        ">\t        icon: y",
+        ">\t    }",
+        ">\t```",
+      ),
+    )
+  })
+})
+
 describe("If you know Prettier: the colons of a Gantt section in a container", () => {
   const gantt = [
     "gantt",
@@ -210,6 +269,12 @@ describe("If you know Prettier: the colons of a Gantt section in a container", (
       const byTool = await formatMarkdown(inList, { printWidth }, "output")
       expect(byPrettier).toContain(alignedRow)
       expect(byTool.text).not.toContain(alignedRow)
+      // The colons stay where they were written; only the section's tasks get
+      // the printer's indentation.
+      expect(byTool.text).toContain(
+        "    Task name long enough to matter :a1, 2014-01-01, 1d\n",
+      )
+      expect(byTool.text).toContain("    T  :a2, after a1, 1d\n")
     }
   })
 

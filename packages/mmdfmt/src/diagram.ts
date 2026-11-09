@@ -1,6 +1,6 @@
 import { parse, ParseError } from "@mmd-toolkit/parser"
 import type { Options } from "prettier"
-import { format, getSupportInfo } from "prettier"
+import { format, getSupportInfo, util } from "prettier"
 import plugin from "prettier-plugin-mmd"
 import type { LineEnding } from "./lines.ts"
 
@@ -20,8 +20,9 @@ async function defaultNumberOption(name: string): Promise<number> {
  * Code blocks in detail). Prettier formats a diagram in a list or a block quote
  * inside the container, so the width of what stands before the diagram is no
  * longer left; here the diagram is formatted alone and the prefix is put in
- * front of its lines. A tab in the prefix counts as `tabWidth`. The width is at
- * least 1.
+ * front of its lines. The width of the prefix is counted as Prettier counts the
+ * indentation that stands before a range it formats (`util.getAlignmentSize`),
+ * a tab reaching the next multiple of `tabWidth`. The width is at least 1.
  */
 export async function printWidthAfter(
   prefix: string,
@@ -29,11 +30,9 @@ export async function printWidthAfter(
 ): Promise<number | undefined> {
   if (prefix === "") return options.printWidth
   const tabWidth = options.tabWidth ?? (await defaultNumberOption("tabWidth"))
-  let used = 0
-  for (const character of prefix) used += character === "\t" ? tabWidth : 1
   const printWidth =
     options.printWidth ?? (await defaultNumberOption("printWidth"))
-  return Math.max(1, printWidth - used)
+  return Math.max(1, printWidth - util.getAlignmentSize(prefix, tabWidth))
 }
 
 /** What formatting the text of a diagram gives. */

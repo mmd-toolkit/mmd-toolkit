@@ -5,6 +5,24 @@ export interface FormatOptions {
   useTabs: boolean
 }
 
+/**
+ * The formatting options of a new input and of a link made before the print
+ * width was kept: Prettier's defaults.
+ */
+export const defaultFormatOptions: Readonly<FormatOptions> = {
+  printWidth: 80,
+  tabWidth: 2,
+  useTabs: false,
+}
+
+/**
+ * Whether a value is a print width that the formatter and a link accept: an
+ * integer of at least 0, as Prettier's definition of the option says.
+ */
+export function isPrintWidth(value: unknown): value is number {
+  return typeof value === "number" && Number.isInteger(value) && value >= 0
+}
+
 /** Version 1 of the URL state; derived results and appearance are excluded. */
 export interface SharedState extends FormatOptions {
   source: string
@@ -55,7 +73,7 @@ function decodeBytes(value: string): Uint8Array<ArrayBuffer> {
  * Validates the complete payload before it can replace editor state. The
  * option ranges match the UI controls; source is accepted as arbitrary text,
  * including empty input and syntax the parser rejects. Older links without a
- * print width use Prettier's default of 80.
+ * print width use the default.
  */
 function validateState(value: unknown): SharedState {
   if (
@@ -72,13 +90,9 @@ function validateState(value: unknown): SharedState {
     typeof value.useTabs !== "boolean"
   )
     throw new Error("Invalid shared input or formatting options.")
-  const printWidth = "printWidth" in value ? value.printWidth : 80
-  if (
-    !Number.isInteger(printWidth) ||
-    typeof printWidth !== "number" ||
-    printWidth < 0
-  )
-    throw new Error("Invalid shared print width.")
+  const printWidth =
+    "printWidth" in value ? value.printWidth : defaultFormatOptions.printWidth
+  if (!isPrintWidth(printWidth)) throw new Error("Invalid shared print width.")
   return {
     source: value.source,
     printWidth,
