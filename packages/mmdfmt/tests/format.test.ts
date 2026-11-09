@@ -1,6 +1,7 @@
 import { existsSync } from "node:fs"
 import path from "node:path"
 import { pathToFileURL } from "node:url"
+import { stripVTControlCharacters } from "node:util"
 import * as prettier from "prettier"
 import plugin from "prettier-plugin-mmd"
 import { afterEach, beforeEach, describe, expect, it } from "vitest"
@@ -24,13 +25,20 @@ const markdown = "# T\n\n```mermaid\nflowchart LR\nA-->B\n```\n"
 /**
  * What a promise rejects with: the class and the message of the error, and its
  * own fields, such as the `loc` and the `codeFrame` of Prettier's errors.
+ * Prettier colors words of the message of an invalid option where the
+ * environment asks for colors, as on CI, so the colors are taken off the
+ * message: they are not what a test compares.
  */
 async function thrownBy(promise: Promise<unknown>): Promise<object> {
   try {
     await promise
   } catch (error) {
     if (!(error instanceof Error)) throw error
-    return { ...error, class: error.constructor, message: error.message }
+    return {
+      ...error,
+      class: error.constructor,
+      message: stripVTControlCharacters(error.message),
+    }
   }
   throw new Error("the promise was not rejected")
 }
@@ -143,37 +151,37 @@ describe("From a script: formatting text", () => {
   it.each([
     [
       "a list",
-      "- item\n\n  ```mermaid\n  flowchart LR\n  A-->B\n  ```\n",
       { printWidth: "wide" },
+      "- item\n\n  ```mermaid\n  flowchart LR\n  A-->B\n  ```\n",
       'Invalid printWidth value. Expected an integer, but received "wide".',
     ],
     [
       "a list",
-      "- item\n\n  ```mermaid\n  flowchart LR\n  A-->B\n  ```\n",
       { printWidth: 79.5 },
+      "- item\n\n  ```mermaid\n  flowchart LR\n  A-->B\n  ```\n",
       "Invalid printWidth value. Expected an integer, but received 79.5.",
     ],
     [
       "a list",
-      "- item\n\n  ```mermaid\n  flowchart LR\n  A-->B\n  ```\n",
       { tabWidth: "x" },
+      "- item\n\n  ```mermaid\n  flowchart LR\n  A-->B\n  ```\n",
       'Invalid tabWidth value. Expected an integer, but received "x".',
     ],
     [
       "a block quote",
-      "> ```mermaid\n> flowchart LR\n> A-->B\n> ```\n",
       { printWidth: "wide" },
+      "> ```mermaid\n> flowchart LR\n> A-->B\n> ```\n",
       'Invalid printWidth value. Expected an integer, but received "wide".',
     ],
     [
       "a block quote",
-      "> ```mermaid\n> flowchart LR\n> A-->B\n> ```\n",
       { tabWidth: "x" },
+      "> ```mermaid\n> flowchart LR\n> A-->B\n> ```\n",
       'Invalid tabWidth value. Expected an integer, but received "x".',
     ],
   ])(
     "rejects, for a diagram in %s, %j with the value that was written",
-    async (_place, text, refused, message) => {
+    async (_place, refused, text, message) => {
       const error = await thrownBy(
         // @ts-expect-error -- Prettier refuses these values.
         format(text, { filepath: path.join(project.cwd, "a.md"), ...refused }),

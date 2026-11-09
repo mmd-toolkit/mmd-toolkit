@@ -1,3 +1,4 @@
+import { stripVTControlCharacters } from "node:util"
 import { describe, expect, it } from "vitest"
 import type { Options } from "prettier"
 import type { FormatResult } from "../src/diagnostic.ts"
@@ -725,13 +726,20 @@ describe("If you know Prettier: the rules of the plugin apply to the text of a b
 
 describe("Errors and exit codes: a warning with its position in the file", () => {
   it("rethrows an option error for a rejected diagram", async () => {
-    await expect(
-      formatMarkdown(
-        lines("```mermaid", "flowchart LR", "A-->B)", "```"),
-        { tabWidth: 1.5, useTabs: undefined },
-        "output",
-      ),
-    ).rejects.toThrow("tabWidth")
+    const error: unknown = await formatMarkdown(
+      lines("```mermaid", "flowchart LR", "A-->B)", "```"),
+      { tabWidth: 1.5, useTabs: undefined },
+      "output",
+    ).then(
+      () => undefined,
+      (rejection: unknown) => rejection,
+    )
+    expect(error).toBeInstanceOf(Error)
+    // Prettier colors words of this message where the environment asks for
+    // colors, as on CI; the colors are not what the test compares.
+    expect(stripVTControlCharacters((error as Error).message)).toBe(
+      "Invalid tabWidth value. Expected an integer, but received 1.5.",
+    )
   })
 
   it("leaves a rejected block and formats the other blocks", async () => {
