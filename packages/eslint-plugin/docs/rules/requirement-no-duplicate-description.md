@@ -69,9 +69,7 @@ requirementDiagram
 %% eslint @mmd-toolkit/requirement-no-duplicate-description: error
 requirementDiagram
   accDescr: first
-  accDescr {
-    first
-  }
+  accDescr: first
   requirement r {
     id: 1
   }

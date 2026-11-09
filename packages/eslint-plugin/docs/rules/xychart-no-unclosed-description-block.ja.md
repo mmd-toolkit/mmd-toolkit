@@ -48,7 +48,7 @@ xychart
     Monthly sales
     by region
   }
-  title Sales
+  title "Sales"
   line [1, 2]
 ```
 

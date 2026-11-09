@@ -66,9 +66,7 @@ gantt
 %% eslint @mmd-toolkit/gantt-no-duplicate-description: error
 gantt
   accDescr: first
-  accDescr {
-    first
-  }
+  accDescr: first
   dateFormat YYYY-MM-DD
   Design :2024-01-06, 3d
 ```

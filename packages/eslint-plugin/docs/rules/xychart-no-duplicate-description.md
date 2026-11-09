@@ -45,9 +45,7 @@ Examples of **incorrect** code for this rule:
 %% eslint @mmd-toolkit/xychart-no-duplicate-description: error
 xychart
   accDescr: first
-  accDescr {
-    second
-  }
+  accDescr: second
   line [1, 2]
 ```
 
@@ -64,9 +62,7 @@ xychart
 %% eslint @mmd-toolkit/xychart-no-duplicate-description: error
 xychart
   accDescr: first
-  accDescr {
-    first
-  }
+  accDescr: first
   line [1, 2]
 ```
 

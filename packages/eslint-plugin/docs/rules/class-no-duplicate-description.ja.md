@@ -45,9 +45,7 @@ classDiagram
 ```mmd
 %% eslint @mmd-toolkit/class-no-duplicate-description: error
 classDiagram
-  accDescr {
-    first
-  }
+  accDescr: first
   accDescr: second
   class A
 ```
@@ -65,9 +63,7 @@ classDiagram
 %% eslint @mmd-toolkit/class-no-duplicate-description: error
 classDiagram
   accDescr: first
-  accDescr {
-    first
-  }
+  accDescr: first
 ```
 
 ## オプション

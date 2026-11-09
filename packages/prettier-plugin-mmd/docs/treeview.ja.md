@@ -1784,9 +1784,8 @@ treeView-beta
 [1 行の説明ブロック](./compatibility.ja.md#1-行の説明ブロック) に従います。
 その場合、キーワードの前と、キーワードと `{` の間にある罫線の文字は、
 印字せずに描き直します。
-本文が罫線の文字を含むブロックと、
-罫線モードで opener の gap を保つブロックは、ブロックのままにします。
-[fixture: treeview/modes/ordinary-block]
+本文が罫線の文字を含むブロックと、罫線モードで opener の gap を保つブロックは、
+ブロックのままにします。 [fixture: treeview/modes/ordinary-block]
 [fixture: treeview/modes/box-common-block-zero-column]
 [fixture: treeview/modes/block-interior-active]
 [fixture: treeview/description-blocks/box-redraw-remove-opener-prefixes]

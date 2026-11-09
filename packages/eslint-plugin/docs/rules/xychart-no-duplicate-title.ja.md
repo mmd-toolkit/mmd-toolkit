@@ -43,13 +43,16 @@ since: v0.1.0
 `accTitle: a` と `accTitle: b` の後の 3 つ目の `accTitle: a` は、
 `b` を置き換えるので報告する。
 
+整形ツールは、`title` を引用符つきで書く。
+最後の例は、同じタイトルを引用符なしと引用符つきで書くので、書いたまま示している。
+
 この規則に**反する**コードの例:
 
 ```mmd
 %% eslint @mmd-toolkit/xychart-no-duplicate-title: error
 xychart
-  title first
-  title second
+  title "first"
+  title "second"
   line [1, 2]
 ```
 
@@ -66,11 +69,12 @@ xychart
 ```mmd
 %% eslint @mmd-toolkit/xychart-no-duplicate-title: error
 xychart
-  title first
+  title "first"
   accTitle: second
   line [1, 2]
 ```
 
+<!-- prettier-ignore -->
 ```mmd
 %% eslint @mmd-toolkit/xychart-no-duplicate-title: error
 xychart

@@ -84,9 +84,7 @@ flowchart LR
 flowchart LR
   A
   accDescr: first
-  accDescr {
-    first
-  }
+  accDescr: first
 ```
 
 ## Options

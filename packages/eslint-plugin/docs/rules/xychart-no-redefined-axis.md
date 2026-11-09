@@ -42,15 +42,15 @@ Examples of **incorrect** code for this rule:
 ```mmd
 %% eslint @mmd-toolkit/xychart-no-redefined-axis: error
 xychart
-  x-axis Month [jan, feb]
-  x-axis Year [2023, 2024]
+  x-axis "Month" [jan, feb]
+  x-axis "Year" [2023, 2024]
   line [1, 2]
 ```
 
 ```mmd
 %% eslint @mmd-toolkit/xychart-no-redefined-axis: error
 xychart
-  y-axis Revenue
+  y-axis "Revenue"
   y-axis 0 --> 100
   line [1, 2]
 ```
@@ -60,8 +60,8 @@ Examples of **correct** code for this rule:
 ```mmd
 %% eslint @mmd-toolkit/xychart-no-redefined-axis: error
 xychart
-  x-axis Month [jan, feb]
-  y-axis Revenue 0 --> 100
+  x-axis "Month" [jan, feb]
+  y-axis "Revenue" 0 --> 100
   line [1, 2]
 ```
 
@@ -69,7 +69,7 @@ xychart
 %% eslint @mmd-toolkit/xychart-no-redefined-axis: error
 xychart
   x-axis [jan, feb]
-  x-axis Month
+  x-axis "Month"
   line [1, 2]
 ```
 

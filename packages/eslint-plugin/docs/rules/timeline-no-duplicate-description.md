@@ -64,9 +64,7 @@ timeline
 %% eslint @mmd-toolkit/timeline-no-duplicate-description: error
 timeline
   accDescr: first
-  accDescr {
-    first
-  }
+  accDescr: first
   2020 : Launch
 ```
 

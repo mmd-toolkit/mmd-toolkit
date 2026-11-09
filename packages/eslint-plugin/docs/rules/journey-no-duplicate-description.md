@@ -66,9 +66,7 @@ journey
 %% eslint @mmd-toolkit/journey-no-duplicate-description: error
 journey
   accDescr: first
-  accDescr {
-    first
-  }
+  accDescr: first
   section Work
     Make tea: 5: Me
 ```

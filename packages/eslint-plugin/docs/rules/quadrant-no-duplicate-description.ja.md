@@ -47,9 +47,7 @@ LF、CRLF、CR の改行は、LF として比べる。
 %% eslint @mmd-toolkit/quadrant-no-duplicate-description: error
 quadrantChart
   accDescr: first
-  accDescr {
-    second
-  }
+  accDescr: second
   A: [0.3, 0.6]
 ```
 
@@ -66,9 +64,7 @@ quadrantChart
 %% eslint @mmd-toolkit/quadrant-no-duplicate-description: error
 quadrantChart
   accDescr: first
-  accDescr {
-    first
-  }
+  accDescr: first
   A: [0.3, 0.6]
 ```
 

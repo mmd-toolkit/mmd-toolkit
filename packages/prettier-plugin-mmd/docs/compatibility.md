@@ -933,7 +933,8 @@ requirement/fields/value-inner-runs-collapsed] [fixture:
 radar/quotes/padding-label] [fixture: railroad/quotes/ebnf-empty-and-text]
 [fixture: radar/quotes/whitespace-only-labels] [fixture:
 treemap/names/whitespace] [fixture:
-c4/argument-forms/text-places-element-runs-collapsed]
+c4/argument-forms/text-places-element-runs-collapsed] [fixture:
+flowchart/accessibility-lines/swimlane-description-runs-collapsed]
 
 These stay as written:
 
@@ -1745,43 +1746,43 @@ least twice as often as the other, and a text is printed in it when both forms
 read it the same; any other text stays as written. The fields, with the number
 of the examples that write each in each form, are:
 
-| Diagram type | Field                                 | Without quotes | In quotes |
-| ------------ | ------------------------------------- | -------------: | --------: |
-| sankey       | the source of a link                  |             87 |         0 |
-| sankey       | the target of a link                  |             83 |         4 |
-| sankey       | the value of a link, in its own shape |             87 |         0 |
-| ER           | the name of an entity                 |             39 |         2 |
-| ER           | the role of a relationship            |             43 |         2 |
-| ER           | the left name of a relationship       |             45 |         0 |
-| ER           | the right name of a relationship      |             45 |         0 |
-| ER           | the id of a subgraph                  |             11 |         1 |
-| requirement  | the name of a requirement             |             15 |         1 |
-| requirement  | the name of an element                |             10 |         0 |
-| requirement  | the id of a requirement               |             16 |         0 |
-| requirement  | the text of a requirement             |             13 |         3 |
-| requirement  | the type of an element                |              9 |         1 |
-| requirement  | the docRef of an element              |              2 |         0 |
-| requirement  | the names of a relationship           |             14 |         0 |
-| requirement  | a class, and the names of `style`     |              9 |         0 |
-| Wardley map  | the name of a component               |             46 |         7 |
-| Wardley map  | the name of an anchor                 |              5 |         0 |
-| Wardley map  | the names of a link                   |             50 |        12 |
-| Wardley map  | the name of an evolve, a pipeline     |              5 |         2 |
-| Wardley map  | the name of a stage of an evolution   |             20 |         0 |
-| Wardley map  | the name of an accelerator, a deaccel |              0 |         4 |
-| Wardley map  | the name of a pipeline component      |              0 |         4 |
-| gitGraph     | the name of a branch                  |             85 |         0 |
-| gitGraph     | the branch of a checkout or a switch  |            161 |         0 |
-| gitGraph     | the branch of a merge                 |             50 |         0 |
-| quadrant     | the text of an x-axis                 |              4 |         0 |
-| quadrant     | the start of a y-axis                 |              2 |         0 |
-| quadrant     | the text of a quadrant                |              8 |         0 |
-| quadrant     | the name of a point                   |              6 |         0 |
-| XY chart     | the title of a chart                  |              0 |         8 |
-| XY chart     | the title of an x axis                |              0 |         2 |
-| XY chart     | the title of a y axis                 |              0 |         8 |
-| XY chart     | the title of a line                   |              0 |         3 |
-| XY chart     | a category                            |             38 |        17 |
+| Diagram type | Field                                         | Without quotes | In quotes |
+| ------------ | --------------------------------------------- | -------------: | --------: |
+| sankey       | the source of a link                          |             87 |         0 |
+| sankey       | the target of a link                          |             83 |         4 |
+| sankey       | the value of a link, in its own shape         |             87 |         0 |
+| ER           | the name of an entity                         |             39 |         2 |
+| ER           | the role of a relationship                    |             43 |         2 |
+| ER           | the left name of a relationship               |             45 |         0 |
+| ER           | the right name of a relationship              |             45 |         0 |
+| ER           | the id of a subgraph                          |             11 |         1 |
+| requirement  | the name of a requirement                     |             15 |         1 |
+| requirement  | the name of an element                        |             10 |         0 |
+| requirement  | the id of a requirement                       |             16 |         0 |
+| requirement  | the text of a requirement                     |             13 |         3 |
+| requirement  | the type of an element                        |              9 |         1 |
+| requirement  | the docRef of an element                      |              2 |         0 |
+| requirement  | the names of a relationship                   |             14 |         0 |
+| requirement  | a class, and the names of `style`             |              9 |         0 |
+| Wardley map  | the name of a component                       |             46 |         7 |
+| Wardley map  | the name of an anchor                         |              5 |         0 |
+| Wardley map  | the names of a link                           |             50 |        12 |
+| Wardley map  | the name of an evolve, a pipeline             |              5 |         2 |
+| Wardley map  | the name of a stage of an evolution           |             20 |         0 |
+| Wardley map  | the name of an accelerator or a deaccelerator |              0 |         4 |
+| Wardley map  | the name of a pipeline component              |              0 |         4 |
+| gitGraph     | the name of a branch                          |             85 |         0 |
+| gitGraph     | the branch of a checkout or a switch          |            161 |         0 |
+| gitGraph     | the branch of a merge                         |             50 |         0 |
+| quadrant     | the text of an x-axis                         |              4 |         0 |
+| quadrant     | the start of a y-axis                         |              2 |         0 |
+| quadrant     | the text of a quadrant                        |              8 |         0 |
+| quadrant     | the name of a point                           |              6 |         0 |
+| XY chart     | the title of a chart                          |              0 |         8 |
+| XY chart     | the title of an x axis                        |              0 |         2 |
+| XY chart     | the title of a y axis                         |              0 |         8 |
+| XY chart     | the title of a line                           |              0 |         3 |
+| XY chart     | a category                                    |             38 |        17 |
 
 A text is printed without quotes where it is plain: ASCII letters, digits, `_`,
 `-`, and `.`, with spaces between them, and, in a sankey diagram, with spaces at

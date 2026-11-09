@@ -1,0 +1,42 @@
+{
+  "source": {
+    "kind": "authored",
+    "note": "xychart.md Accessibility statements; db-summaries.md xychart: a description block with two lines of text replaces an earlier description line with `second\\nthird`."
+  },
+  "accepted": true,
+  "diagramType": "xychart",
+  "db": {
+    "orientation": "vertical",
+    "title": "",
+    "accTitle": "",
+    "accDescr": "second\nthird",
+    "xAxis": {
+      "type": "linear",
+      "title": "",
+      "min": 1,
+      "max": 2
+    },
+    "yAxis": {
+      "type": "linear",
+      "title": "",
+      "min": 1,
+      "max": 2
+    },
+    "plots": [
+      {
+        "type": "line",
+        "title": "",
+        "data": [
+          [
+            "1",
+            1
+          ],
+          [
+            "2",
+            2
+          ]
+        ]
+      }
+    ]
+  }
+}

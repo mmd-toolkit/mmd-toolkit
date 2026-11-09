@@ -83,9 +83,7 @@ sequenceDiagram
 %% eslint @mmd-toolkit/sequence-no-duplicate-description: error
 sequenceDiagram
   accDescr: first
-  accDescr {
-    first
-  }
+  accDescr: first
   A ->> B: x
 ```
 
