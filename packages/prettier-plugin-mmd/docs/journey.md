@@ -510,8 +510,8 @@ line. [fixture: accessibility-statements/text-on-next-line-joined] [fixture:
 accessibility-statements/keyword-and-colon-over-lines-joined]
 
 A block on one line follows
-[A description block on one line](./compatibility.md#a-description-block-on-one-line). [fixture:
-accessibility-statements/block-text-on-opening-line]
+[A description block on one line](./compatibility.md#a-description-block-on-one-line).
+[fixture: accessibility-statements/block-text-on-opening-line]
 
 In a block over several lines, indent the body one level inside the statement
 and align a separate `}` with the statement: mermaid.js discards indentation
@@ -732,8 +732,8 @@ Where no rule above applies, a run of whitespace between two tokens of a
 statement becomes one space, and tokens that touch keep touching. A description
 block on one line follows
 [A description block on one line](./compatibility.md#a-description-block-on-one-line).
-[fixture: whitespace-between-tokens/description-block-braces] The whitespace at the end of
-the header's line is dropped. [fixture:
+[fixture: whitespace-between-tokens/description-block-braces] The whitespace at
+the end of the header's line is dropped. [fixture:
 whitespace-between-tokens/trailing-whitespace-after-header] The values are not
 formatted: see [Task data](#task-data) and
 [Titles and sections](#titles-and-sections).

@@ -802,29 +802,31 @@ Db が同じになる外側の空白を、兄弟の図種と同じ形に揃え�
 本文行を文より 1 段深くし、独立した `}` を文の字下げに揃えます。
 コメント行だけが入ったブロックも同じ配置です。
 Mermaid が説明から LF 後の字下げを除くためです。
+構造の字下げは、幅 0 やタブでも同じ配置を保ちます。
+[fixture: direction-and-accessibility/a11y-closer-aligned]
+[fixture: direction-and-accessibility/a11y-closer-tabs]
+[fixture: direction-and-accessibility/a11y-closer-zero]
+[fixture: direction-and-accessibility/a11y-directive-padding]
+[fixture: direction-and-accessibility/a11y-comment-empty-tabs]
+1 行の本文を独立した行に置くブロックは、書かれた改行を保ちます。
+[fixture: direction-and-accessibility/block-text-on-its-own-line]
+
+1 行のブロックは、
+[A description block on one line](./compatibility.ja.md#a-description-block-on-one-line)
+に従います。 [fixture: direction-and-accessibility/keyword-brace-touching]
+[fixture: direction-and-accessibility/keyword-brace-space]
+[fixture: direction-and-accessibility/keyword-brace-run]
+[test: accessibility revisions: usecase keyword-brace-tab]
+空と空白だけの内側は `{}` にします。
+[fixture: direction-and-accessibility/empty-block-lines]
+書かれた原文を保つ共有コメント領域とセミコロンの規則は、そのまま優先します。
+
 `accTitle` か `accDescr` の値の最後にある directive は、
 タイトルの最後にある directive と同じに印字します。
 （[同じに描かれるキーワードの後のテキスト](./compatibility.ja.md#同じに描かれるキーワードの後のテキスト)）。
 `accTitle: Column zero  %%{x}%%  ` も `accTitle: Column zero  %%{x}%%` も、
 `accTitle: Column zero %%{x}%%` と印字します。
 [fixture: direction-and-accessibility/acctitle-trailing-directive-blanks-dropped]
-`accDescr` と `{` の間は、元が接していても空白 1 個にします。
-keyword と本文の開始を見分けやすくするためです。
-1 行のブロックの文字は、括弧に接して書かれていても、
-両側に空白を 1 つずつ置きます（`{ a }`）。
-[fixture: direction-and-accessibility/keyword-brace-touching]
-[fixture: direction-and-accessibility/keyword-brace-space]
-[fixture: direction-and-accessibility/keyword-brace-run]
-[test: accessibility revisions: usecase keyword-brace-tab]
-空と空白だけの内部は`{}`にします。
-書かれた原文を保つ共有コメント領域とセミコロンの規則は、そのまま優先します。
-usecase の字下げは構造の表示なので、幅 0 とタブにも同じ配置を使います。
-[fixture: direction-and-accessibility/a11y-closer-aligned]
-[fixture: direction-and-accessibility/a11y-closer-tabs]
-[fixture: direction-and-accessibility/a11y-closer-zero]
-[fixture: direction-and-accessibility/a11y-directive-padding]
-
-[fixture: direction-and-accessibility/a11y-comment-empty-tabs]
 
 [fixture: direction-and-accessibility/direction-values]
 [fixture: direction-and-accessibility/a11y-padding]

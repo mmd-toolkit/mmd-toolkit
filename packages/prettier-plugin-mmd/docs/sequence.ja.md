@@ -1127,18 +1127,9 @@ sequenceDiagram
 [fixture: multi-line-values/empty-whitespace-interiors]
 [test: sequence Unicode and tab interiors]
 コメントや directive があるブロックの内容と改行は保ちます。
-1 行のブロックの文字は、両側に空白を 1 つずつ置きます。
-これは、
-[flowchart のアクセシビリティの行](./flowchart.ja.md#アクセシビリティの行)
-と同じ形です。
-`accDescr {a b}`、`accDescr {  a b  }`、`accDescr {  a b}`、
-`accDescr {a b  }` は、どれも `accDescr { a b }` になります。
-mermaid.js は文字を trim するので、両端の空白に意味はありません。
-文字の中にディレクティブがあるブロックは、書かれたままにします。
-`;` を残す行にあるブロックは、空白を足しませんが、
-端の空白の連なりは空白 1
-つにします（[セミコロン](./flowchart.ja.md#セミコロン)を参照）。
-[fixture: multi-line-values/block-text-on-one-line-padded]
+1 行のブロックは、
+[A description block on one line](./compatibility.ja.md#a-description-block-on-one-line)
+に従います。 [fixture: multi-line-values/block-text-on-one-line-padded]
 
 `accDescr { ... }` の本文行は文より 1 段深くそろえ、
 独立した `}` は文と同じ段に置きます。

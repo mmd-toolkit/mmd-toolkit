@@ -1231,11 +1231,11 @@ and, with the Db only, in the inputs of the conformance corpus:
 | The colon of a header (removed)    |        6 |                   6 |    646 |     643 |
 | The colon of a header (line break) |        0 |                   0 |     22 |      21 |
 | The label of a link                |       19 |                  19 |    170 |     162 |
-| A description block on one line    |        3 |                   3 |    188 |     159 |
+| A description block on one line    |        3 |                   3 |    282 |     245 |
 
 A corpus pair that is not counted in the last column is a pair of which
 mermaid.js rejects the other spelling, except two pairs of the label of a link,
-which have a `%%` in the label and a different Db, and 29 pairs of a description
+which have a `%%` in the label and a different Db, and 37 pairs of a description
 block, of which mermaid.js rejects both spellings (the known divergence
 `c4-keyword-anywhere`). The printer does not rewrite a range of a packet diagram
 next to a hidden YAML block, a colon that a `;` or the `---` of a hidden YAML
@@ -1565,7 +1565,9 @@ block holds:
   it, such as a no-break space: the form with the colon is one line. Whitespace
   at the ends that is not a space or a tab, such as a no-break space, is dropped
   by mermaid.js like a space, and the block is printed in the form with the
-  colon. [fixture: pie/description-blocks/block-inline-leading-lines] [test: a
+  colon. [fixture: pie/description-blocks/block-inline-leading-lines] [fixture:
+  pie/description-blocks/block-text-on-its-own-line] [fixture:
+  usecase/direction-and-accessibility/block-text-on-its-own-line] [test: a
   no-break space inside the text of a flowchart description block] [test: U+2028
   before the text of a flowchart description block] [test: U+2028 after the text
   of a flowchart description block] [test: U+2028 in the text of a flowchart
@@ -1584,10 +1586,15 @@ block holds:
   flowchart/accessibility-lines/empty-block-spaced]
 - The block is not closed. [fixture:
   flowchart/accessibility-lines/block-unclosed]
-- The line is one that keeps its `;` (see
-  [Lines that hold a `;`](#lines-that-hold-a-)). [fixture:
+- The line is one that keeps its statements together, such as a line that keeps
+  its `;` (see [Lines that hold a `;`](#lines-that-hold-a-)), or a C4 line that
+  keeps a block beside an empty block. The block keeps its braces and its text,
+  with no space added: `{a;b}` stays `{a;b}`, and `{  a;b  }` is printed
+  `{ a;b }`. [fixture:
   flowchart/accessibility-lines/block-text-with-semicolon-kept] [fixture:
-  flowchart/accessibility-lines/block-on-style-line-kept]
+  flowchart/accessibility-lines/block-text-with-semicolon-ends-collapsed]
+  [fixture: flowchart/accessibility-lines/block-on-style-line-kept] [fixture:
+  c4/statements-one-per-line/description-null-adjacency]
 - The text holds a `%%`, in an architecture, cynefin, gitGraph, info, packet,
   pie, radar, railroad, treemap, treeView, or wardley diagram. These diagram
   types read the description with
@@ -1601,7 +1608,11 @@ block holds:
   [fixture: flowchart/accessibility-lines/block-text-with-percent]
 
 A description block in an event modeling diagram is kept whole, as
-[Description blocks](./eventmodeling.md#description-blocks) says.
+[Description blocks](./eventmodeling.md#description-blocks) says. In a treeView
+diagram drawn with branch characters (a box), a block on one line keeps its
+braces: the characters of the drawing can stand between the tokens of the block,
+and the printer redraws them in the same pass. [fixture:
+treeview/modes/box-common-block-zero-column]
 
 mermaid.js 12.3.0 read both spellings of each of the 3 examples that write a
 description after a colon, written again as a block: both were accepted, with
@@ -1614,9 +1625,9 @@ and in the 5 pairs of the gitGraph once the numbers, the commit ids, and the
 element ids were taken away. A text with a `%%` in it was inserted the same way
 into examples of 13 of the diagram types that take the `%%` as part of the text,
 which makes 26 pairs, and the SVGs were the same in all of them. In the
-conformance corpus, formatting writes the form with the colon for 220 blocks in
-211 fixtures. A block that stands alone on its line was written in the form with
-the colon in place, in 188 of the fixtures; a block on a line with another
+conformance corpus, formatting writes the form with the colon for 319 blocks in
+310 fixtures. A block that stands alone on its line was written in the form with
+the colon in place, in 282 of the fixtures; a block on a line with another
 statement was not, since the form with the colon would run to the end of the
 line. No railroad diagram was drawn; those were compared by Db only.
 

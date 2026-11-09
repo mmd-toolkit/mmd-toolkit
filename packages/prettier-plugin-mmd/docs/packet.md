@@ -373,18 +373,19 @@ packet
 
 ### Description blocks
 
-Reuse shared `layoutDescriptionBlock`: separate the keyword and opening brace
-with one space so the block boundary is clear. Text on one line stands between
-one space on each side, whether it touched the braces or not. Plain opener
-whitespace can join across physical or Unicode lines; real opener trivia keeps
-its break. Whitespace-only interiors become `{}` because no text needs
-surrounding whitespace. Comment/directive-only interiors keep their trivia.
-Ordinary description body and standalone comment lines align one level inside
-the statement, since the Db removes indentation after LF. Keep line breaks,
-blank lines and trailing whitespace; a separate closer aligns with the
-statement. Directives and shared removed comment regions keep their complete
-source. Quotes, backslashes and hidden-looking text do not protect the first
-closing brace.
+Description blocks on one line follow
+[A description block on one line](./compatibility.md#a-description-block-on-one-line).
+For blocks that keep their braces, separate the keyword and opening brace with
+one space so the block boundary is clear. Plain opener whitespace can join
+across physical or Unicode lines; real opener trivia keeps its break.
+Whitespace-only interiors become `{}` because no text needs surrounding
+whitespace. Comment/directive-only interiors keep their trivia. Ordinary
+description body and standalone comment lines align one level inside the
+statement, since the Db removes indentation after LF. Keep line breaks, blank
+lines and trailing whitespace; a separate closer aligns with the statement.
+Directives and shared removed comment regions keep their complete source.
+Quotes, backslashes and hidden-looking text do not protect the first closing
+brace.
 
 [fixture: packet/description-blocks/description-gaps]
 

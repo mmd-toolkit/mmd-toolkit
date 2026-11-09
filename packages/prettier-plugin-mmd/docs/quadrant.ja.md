@@ -584,18 +584,15 @@ Db はどちらの連なりも保持します。
 [fixture: titles-and-accessibility-statements/colon-on-the-next-line-joined]
 [fixture: titles-and-accessibility-statements/text-that-looks-like-a-statement]
 
-`accDescr` と `{` を同じ印字行に置く場合は、
-接して書かれていても間に空白 1 つを置きます。
-既存の開始行の改行は、それぞれの規則を保ちます。
-保護対象の trivia やセミコロンの配置では、その gap を保ちます。
-`accDescr { ... }` の本文行は、文より 1 段深くそろえます。
-Mermaid が説明から LF 後の字下げを除くためです。
-`}` は文と同じ段に置きます。
-`{` と同じ行のテキストは、括弧に接して書かれていても、
-括弧の内側に空白を 1 つずつ置きます。
+1 行のブロックは、
+[A description block on one line](./compatibility.ja.md#a-description-block-on-one-line)
+に従います。
+[fixture: titles-and-accessibility-statements/block-text-on-the-opening-line]
+
+複数行のブロックの本文は文より 1 段深くし、独立した `}` は文と同じ段に置きます。
+mermaid.js が説明から LF 後の字下げを除くためです。
 閉じていないブロックは拒否されるので、印字しません。
 [fixture: titles-and-accessibility-statements/block-lines-kept]
-[fixture: titles-and-accessibility-statements/block-text-on-the-opening-line]
 [fixture: titles-and-accessibility-statements/block-closing-brace-at-the-level-of-the-statement]
 [fixture: titles-and-accessibility-statements/block-comment-and-empty-lines-kept]
 [fixture: titles-and-accessibility-statements/directive-around-colon-and-braces]

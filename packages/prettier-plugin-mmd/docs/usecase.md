@@ -736,28 +736,32 @@ direction-and-accessibility/a11y-trimmed] [test: usecase: a11y-unicode-exterior]
 Description blocks reuse [class multiline values](./class.md#multi-line-values):
 align body lines one step inside the statement and a separate `}` with the
 statement, including a block whose only content is a comment line. Mermaid
-discards indentation after LF from the description. The directives that end the
-value of an `accTitle` or an `accDescr` are printed as those that end a title
-(see
+discards indentation after LF from the description. Structural indentation keeps
+the same layout with zero width or tabs. [fixture:
+direction-and-accessibility/a11y-closer-aligned] [fixture:
+direction-and-accessibility/a11y-closer-tabs] [fixture:
+direction-and-accessibility/a11y-closer-zero] [fixture:
+direction-and-accessibility/a11y-directive-padding] [fixture:
+direction-and-accessibility/a11y-comment-empty-tabs] A block with one line of
+text on a line of its own keeps its lines. [fixture:
+direction-and-accessibility/block-text-on-its-own-line]
+
+Blocks on one line follow
+[A description block on one line](./compatibility.md#a-description-block-on-one-line).
+[fixture: direction-and-accessibility/keyword-brace-touching] [fixture:
+direction-and-accessibility/keyword-brace-space] [fixture:
+direction-and-accessibility/keyword-brace-run] [test: accessibility revisions:
+usecase keyword-brace-tab] Empty and whitespace-only interiors print `{}`.
+[fixture: direction-and-accessibility/empty-block-lines] The source retention
+rules for protected common comment regions and semicolon prefixes still take
+priority.
+
+The directives that end the value of an `accTitle` or an `accDescr` are printed
+as those that end a title (see
 [Texts after a keyword that are drawn the same](./compatibility.md#texts-after-a-keyword-that-are-drawn-the-same)):
 `accTitle: Column zero  %%{x}%%  ` and `accTitle: Column zero  %%{x}%%` are both
 printed `accTitle: Column zero %%{x}%%`. [fixture:
-direction-and-accessibility/acctitle-trailing-directive-blanks-dropped] Put one
-space between `accDescr` and `{`, including when they originally touched, so the
-keyword and body opener have a visible boundary, and put the text of a block on
-one line between one space on each side, as `{ a }`. [fixture:
-direction-and-accessibility/keyword-brace-touching] [fixture:
-direction-and-accessibility/keyword-brace-space] [fixture:
-direction-and-accessibility/keyword-brace-run] [test: accessibility revisions:
-usecase keyword-brace-tab] Empty and whitespace-only interiors print `{}`. The
-source retention rules for protected common comment regions and semicolon
-prefixes still take priority. Structural indentation keeps the same layout with
-zero width or tabs. [fixture: direction-and-accessibility/a11y-closer-aligned]
-[fixture: direction-and-accessibility/a11y-closer-tabs] [fixture:
-direction-and-accessibility/a11y-closer-zero] [fixture:
-direction-and-accessibility/a11y-directive-padding]
-
-[fixture: direction-and-accessibility/a11y-comment-empty-tabs]
+direction-and-accessibility/acctitle-trailing-directive-blanks-dropped]
 
 [fixture: direction-and-accessibility/direction-values] [fixture:
 direction-and-accessibility/a11y-padding] [fixture:

@@ -950,8 +950,8 @@ line. [fixture: accessibility-statements/text-on-next-line-joined] [fixture:
 accessibility-statements/keyword-and-colon-over-lines-joined]
 
 A block on one line follows
-[A description block on one line](./compatibility.md#a-description-block-on-one-line). [fixture:
-accessibility-statements/block-text-on-opening-line]
+[A description block on one line](./compatibility.md#a-description-block-on-one-line).
+[fixture: accessibility-statements/block-text-on-opening-line]
 
 In a block over several lines, indent the body one level inside the statement
 and align a separate `}` with the statement: mermaid.js discards indentation

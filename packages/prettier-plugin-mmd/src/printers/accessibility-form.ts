@@ -52,12 +52,14 @@ const lineBreakCharacters = "\n\r\u2028\u2029"
  */
 export function printAccessibilityLine(
   source: Source,
-  statement: {
-    readonly type?: string
-    readonly range: readonly [number, number]
-  },
+  statement:
+    | {
+        readonly type?: string
+        readonly range: readonly [number, number]
+      }
+    | undefined,
 ): string | undefined {
-  if (statement.type?.endsWith("AccDescrBlockStatement") !== true) {
+  if (statement?.type?.endsWith("AccDescrBlockStatement") !== true) {
     return undefined
   }
   const { value, closed } = statement as typeof statement & {
@@ -81,9 +83,8 @@ export function printAccessibilityLine(
     parts[2].range[1] !== value.range[1] ||
     textOf(source, parts[3]) !== "}" ||
     parts[3].range[1] !== statement.range[1] ||
-    !isWhitespaceBetween(source, parts[0], parts[1], true) ||
-    !isWhitespaceBetween(source, parts[1], parts[2], false) ||
-    !isWhitespaceBetween(source, parts[2], parts[3], false) ||
+    !isWhitespaceBetween(source, parts[0], parts[1]) ||
+    holdsLineBreak(source.text.slice(parts[1].range[1], parts[3].range[0])) ||
     findTriviaBetween(source, statement.range[0], statement.range[1]).length >
       0 ||
     endsWithTrailingTrivia(source, statement.range[1])
@@ -130,20 +131,22 @@ function textOf(source: Source, token: Token): string {
   return source.text.slice(...token.range)
 }
 
-/**
- * Whether only whitespace lies between two tokens: any whitespace where
- * `breaks` is true, otherwise whitespace that is no line break (LF, CR,
- * U+2028, and U+2029).
- */
+/** Whether only whitespace lies between two tokens. */
 function isWhitespaceBetween(
   source: Source,
   before: Token,
   after: Token,
-  breaks: boolean,
 ): boolean {
   return [...source.text.slice(before.range[1], after.range[0])].every(
-    (character) =>
-      isWhitespace(character) &&
-      (breaks || !lineBreakCharacters.includes(character)),
+    isWhitespace,
   )
+}
+
+/**
+ * Whether a text holds a line break (LF, CR, U+2028, or U+2029). The text
+ * between the braces is tested whole, since a diagram type puts the whitespace
+ * around the text into the token of the text, or leaves it between the tokens.
+ */
+function holdsLineBreak(text: string): boolean {
+  return [...text].some((character) => lineBreakCharacters.includes(character))
 }

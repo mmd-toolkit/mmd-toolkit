@@ -624,22 +624,17 @@ xychart
 [fixture: accessibility-statements/without-text-at-the-end]
 [fixture: accessibility-statements/without-text-and-trailing-whitespace]
 
-`accDescr` と `{` を同じ印字行に置く場合は、
-接して書かれていても間に空白 1 つを置きます。
-既存の開始行の改行は、それぞれの規則を保ちます。
-保護対象の trivia やセミコロンの配置では、その gap を保ちます。
-`accDescr { ... }` の本文行は、文より 1 段深くそろえます。
-Mermaid が説明から LF 後の字下げを除くためです。
-`}` は文と同じ段に置きます。
-`{` と同じ行のテキストは、括弧に接して書かれていても、
-括弧の内側に空白を 1 つずつ置きます。
-閉じていないブロックはテキストの最後まで続き、`}` を足さず、
-EOF の末尾を保ちます。
+1 行のブロックは、
+[A description block on one line](./compatibility.ja.md#a-description-block-on-one-line)
+に従います。 [fixture: accessibility-statements/block-text-on-the-opening-line]
+
+複数行のブロックの本文は文より 1 段深くし、独立した `}` は文と同じ段に置きます。
+mermaid.js が説明から LF 後の字下げを除くためです。
+閉じていないブロックはテキストの最後まで続き、`}` を足しません。
 mermaid.js はそのブロックのテキストを読まず、印字が `}` を足すと、
 ブロックが説明になってしまうからです（テキストの最後の `accDescr {` と、
 `abc` の説明は Db では空で、`}` を足すと `abc` になります）。
 [fixture: accessibility-statements/block-lines-kept]
-[fixture: accessibility-statements/block-text-on-the-opening-line]
 [fixture: accessibility-statements/block-closing-brace-at-the-level-of-the-statement]
 [fixture: accessibility-statements/block-then-statement-on-the-closing-line]
 [fixture: accessibility-statements/block-comment-and-empty-lines-kept]

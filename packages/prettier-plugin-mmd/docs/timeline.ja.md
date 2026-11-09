@@ -777,15 +777,13 @@ journey と同じ形です。
 テキストは `:`、`;`、`#`、`%`、`%%` を文字として持ちます。
 [fixture: accessibility-statements/special-characters-in-text]
 
-テキストのある `accDescr` ブロックは、入力でキーワードに接していても、
-通常の gap では `{` の前に空白 1 つを置きます。
-保護対象の trivia やセミコロンの配置では、その gap を保ちます。
-`{` の行にあるテキストは、括弧に接して書かれていても両側に空白 1 つ、
-その後ろに `}` を置きます。
-後ろのテキスト行はその文より 1 段深く置き、
-`}` はその文の段に置きます（[複数行の値](#複数行の値)を参照）。
-[fixture: accessibility-statements/block-text-on-opening-line]
+1 行のブロックは、
+[A description block on one line](./compatibility.ja.md#a-description-block-on-one-line)
+に従います。 [fixture: accessibility-statements/block-text-on-opening-line]
 [fixture: accessibility-statements/block-inner-runs-collapsed]
+
+複数行のブロックでは、後ろのテキスト行はその文より 1 段深く置き、
+独立した `}` はその文の段に置きます（[複数行の値](#複数行の値)を参照）。
 [fixture: accessibility-statements/block-lines-kept]
 [fixture: accessibility-statements/block-comment-and-empty-lines-kept]
 `:` や波括弧の周りの指令は、その場所に残します。
@@ -1049,9 +1047,9 @@ timeline
 上のどの規則も当てはまらないところでは、
 文のトークンの間の空白の並びを空白 1 つにし、
 接しているトークンは接したままにします。
-1 行の説明ブロックの文字は、括弧に接して書かれていても、
-両側に空白を 1 つずつ置きます。
-[fixture: whitespace-between-tokens/description-block-braces]
+1 行の説明ブロックは、
+[A description block on one line](./compatibility.ja.md#a-description-block-on-one-line)
+に従います。 [fixture: whitespace-between-tokens/description-block-braces]
 ヘッダーの行末の空白は落とします。
 [fixture: whitespace-between-tokens/trailing-whitespace-after-header]
 値は整形しません。

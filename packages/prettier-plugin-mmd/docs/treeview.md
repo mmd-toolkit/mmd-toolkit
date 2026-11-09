@@ -1801,12 +1801,14 @@ treeView-beta
 
 ### Description blocks
 
-Use shared description-block layout for ordinary blocks: whitespace-only
-interiors become `{}`. Put one space between `accDescr` and `{`, even when
-originally touching, to distinguish the keyword from its body. Text on one line
-stands between one space on each side, whether it touched the braces or not.
-Join plain opener whitespace, align ordinary body lines one step inside the
-statement, preserve trivia contents, and align separate closers with the
+Description blocks on one line follow
+[A description block on one line](./compatibility.md#a-description-block-on-one-line),
+except in a box, where a block on one line keeps its braces. [fixture:
+treeview/modes/box-common-block-zero-column] Ordinary whitespace-only interiors
+become `{}`. For blocks that keep their braces, put one space between `accDescr`
+and `{`, even when originally touching, to distinguish the keyword from its
+body. Join plain opener whitespace, align ordinary body lines one step inside
+the statement, preserve trivia contents, and align separate closers with the
 statement. Mermaid discards indentation after LF from the description. The body
 uses the configured indentation, including tabs and the positive minimum step at
 width zero. In box mode remove ordinary keyword/opener prefixes and place the

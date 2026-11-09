@@ -1066,18 +1066,9 @@ Mermaid が説明からこの字下げを除くためです。
 [fixture: multi-line-values/label-string-kept]
 [fixture: multi-line-values/generic-in-relation-kept]
 
-1 行のブロックの文字は、両側に空白を 1 つずつ置きます。
-これは、
-[flowchart のアクセシビリティの行](./flowchart.ja.md#アクセシビリティの行)
-と同じ形です。
-`accDescr {a b}`、`accDescr {  a b  }`、`accDescr {  a b}`、
-`accDescr {a b  }` は、どれも `accDescr { a b }` になります。
-mermaid.js は文字を trim するので、両端の空白に意味はありません。
-文字の中にディレクティブがあるブロックは、書かれたままにします。
-`;` を残す行にあるブロックは、空白を足しませんが、
-端の空白の連なりは空白 1
-つにします（[セミコロン](./flowchart.ja.md#セミコロン)を参照）。
-[fixture: multi-line-values/block-text-on-one-line-padded]
+1 行のブロックは、
+[A description block on one line](./compatibility.ja.md#a-description-block-on-one-line)
+に従います。 [fixture: multi-line-values/block-text-on-one-line-padded]
 
 入力
 ([multi-line-values/kept-input.mmd](../tests/fixtures/class/multi-line-values/kept-input.mmd)):

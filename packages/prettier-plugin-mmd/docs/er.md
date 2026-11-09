@@ -1116,16 +1116,18 @@ description setter drops that indentation; line breaks, trailing whitespace and
 directive interiors stay written. Inside a subgraph, keep the original body
 columns because the raw description also participates in its membership reading.
 [corpus fixture: er/db-subgraph-nodes-acc-descr-block-lines] Its `}` stands at
-the level of its statement; a text on the line of the `{` has one space inside
-each brace, also where the braces touched it. [fixture:
-accessibility-statements/block-lines-kept] [fixture:
-accessibility-statements/block-comment-and-empty-lines-kept] [fixture:
-accessibility-statements/block-text-on-opening-line] An empty block is a
-statement of its own that keeps any prior description in the Db. It prints `{}`
-internally: `accDescr { }` becomes `accDescr {}`, including whitespace runs,
-line breaks and an NBSP-only interior. An already empty interior stays empty,
-and the keyword and opening brace have one space between them. No text needs
-surrounding whitespace, so the Db-equal choice follows
+the level of its statement. [fixture: accessibility-statements/block-lines-kept]
+[fixture: accessibility-statements/block-comment-and-empty-lines-kept]
+
+Blocks on one line follow
+[A description block on one line](./compatibility.md#a-description-block-on-one-line).
+[fixture: accessibility-statements/block-text-on-opening-line]
+
+An empty block is a statement of its own that keeps any prior description in the
+Db. It prints `{}` internally: `accDescr { }` becomes `accDescr {}`, including
+whitespace runs, line breaks and an NBSP-only interior. An already empty
+interior stays empty, and the keyword and opening brace have one space between
+them. No text needs surrounding whitespace, so the Db-equal choice follows
 [flowchart's accessibility lines](./flowchart.md#accessibility-lines), agentflow
 and usecase. [test: accessibility revisions: er empty-description-nbsp] Blocks
 with comments or directives keep their line breaks and complete contents, while

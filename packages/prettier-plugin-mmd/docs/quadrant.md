@@ -562,8 +562,8 @@ titles-and-accessibility-statements/colon-on-the-next-line-joined] [fixture:
 titles-and-accessibility-statements/text-that-looks-like-a-statement]
 
 A block on one line follows
-[A description block on one line](./compatibility.md#a-description-block-on-one-line). [fixture:
-titles-and-accessibility-statements/block-text-on-the-opening-line]
+[A description block on one line](./compatibility.md#a-description-block-on-one-line).
+[fixture: titles-and-accessibility-statements/block-text-on-the-opening-line]
 
 In a block over several lines, indent the body one level inside the statement
 and align a separate `}` with the statement: mermaid.js discards indentation

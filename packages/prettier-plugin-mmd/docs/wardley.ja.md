@@ -602,35 +602,30 @@ accTitle: Value と accDescr: Value は共有の行 layout を使います。
 最後のディレクティブの後の空白を除いて印字します。
 （[同じに描かれるキーワードの後のテキスト](./compatibility.ja.md#同じに描かれるキーワードの後のテキスト)）。
 [fixture: accessibility/acc-directives-end-blanks-dropped]
-説明ブロックは共有の description layout を通します。
-通常の gap では、接して書かれていても語と { の間に空白 1 つを置きます。
-1 行のテキストは、括弧に接して書かれていても、両側に空白 1 つずつを置きます。
-空白だけの内部は {} にします。
-保護対象の trivia やセミコロンの配置では、その gap を保ちます。
-普通の opener 前の空白は結び、独立した closer を揃えます。
-通常の説明本文と独立したコメント行は文より1段内側に揃えます。
-Db で LF 後の字下げが取り除かれるためです。
-改行、内部の空行、行末空白を保ちます。
-directive と共有の除去対象となるコメント領域は原文全体を保ちます。
-trivia は共有の継続行 layout を使います。
-Db が同じ共通の形を選び、空白だけの内部には囲むテキストがありません。
-
 [fixture: wardley/accessibility/access-lines]
-
 [fixture: wardley/accessibility/access-empty]
 
-[fixture: wardley/accessibility/description-tight]
-
+1 行の説明ブロックは、
+[A description block on one line](./compatibility.ja.md#a-description-block-on-one-line)
+に従います。 [fixture: wardley/accessibility/description-tight]
 [fixture: wardley/accessibility/description-edges]
-
-[fixture: wardley/accessibility/description-empty]
-
 [fixture: wardley/accessibility/description-opener-newline]
 
+波括弧を保つブロックでは、キーワードと `{` が接して書かれていても、
+間を通常の空白 1 つで区切ります。
+空白だけの内部は、囲むテキストがないため `{}` にします。
+キーワードと開始括弧の間が空白だけなら同じ行にまとめ、
+独立した閉じ括弧を文と同じ段にそろえます。
+[fixture: wardley/accessibility/description-empty]
+保護された trivia とセミコロンの配置では、隙間を保ちます。
+通常の説明本文と独立したコメント行は文より 1 段深くそろえます。
+Db で LF 後の字下げが取り除かれるためです。
+改行、内部の空行、行末空白を保ちます。
+ディレクティブと共有処理で取り除かれるコメント領域は、
+ディレクティブだけを含むブロックでも原文全体を保ちます。
+trivia は共有の継続行の配置を保ちます。
 [fixture: wardley/accessibility/description-closer]
-
 [fixture: wardley/accessibility/description-comment-only]
-
 [fixture: wardley/accessibility/description-directive-only]
 
 入力（escape 表記）:

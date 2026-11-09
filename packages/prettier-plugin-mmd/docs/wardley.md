@@ -600,35 +600,29 @@ Value, retaining empty assignments. The directives that end the value are
 printed with one space before each that has whitespace before it, and the
 whitespace after the last one is left out (see
 [Texts after a keyword that are drawn the same](./compatibility.md#texts-after-a-keyword-that-are-drawn-the-same)).
-[fixture: accessibility/acc-directives-end-blanks-dropped] Description blocks go
-through the shared description layout: separate the keyword and { by one
-ordinary space even when written touching, put text on one line between one
-space on each side, compact whitespace-only interiors to {}, join plain opener
-whitespace and align a separate closer. Protected trivia and semicolon layouts
+[fixture: accessibility/acc-directives-end-blanks-dropped] [fixture:
+wardley/accessibility/access-lines] [fixture:
+wardley/accessibility/access-empty]
+
+A description block on one line follows
+[A description block on one line](./compatibility.md#a-description-block-on-one-line).
+[fixture: wardley/accessibility/description-tight] [fixture:
+wardley/accessibility/description-edges] [fixture:
+wardley/accessibility/description-opener-newline]
+
+In a block that keeps its braces, separate the keyword and `{` by one ordinary
+space even when written touching, compact whitespace-only interiors to `{}`
+because there is no text for the whitespace to surround, join plain opener
+whitespace and align a separate closer. [fixture:
+wardley/accessibility/description-empty] Protected trivia and semicolon layouts
 keep their gaps. Ordinary description body and standalone comment lines align
 one level inside the statement: the Db removes indentation after LF. Keep line
 breaks, internal blanks and trailing whitespace. Directives and shared removed
-comment regions keep their complete source. Trivia keeps its shared continuation
-layout. These are the common Db-equal forms; there is no text for
-whitespace-only block interiors to surround.
-
-[fixture: wardley/accessibility/access-lines]
-
-[fixture: wardley/accessibility/access-empty]
-
-[fixture: wardley/accessibility/description-tight]
-
-[fixture: wardley/accessibility/description-edges]
-
-[fixture: wardley/accessibility/description-empty]
-
-[fixture: wardley/accessibility/description-opener-newline]
-
-[fixture: wardley/accessibility/description-closer]
-
-[fixture: wardley/accessibility/description-comment-only]
-
-[fixture: wardley/accessibility/description-directive-only]
+comment regions keep their complete source, including in a block that contains
+only a directive, and trivia keeps its shared continuation layout. [fixture:
+wardley/accessibility/description-closer] [fixture:
+wardley/accessibility/description-comment-only] [fixture:
+wardley/accessibility/description-directive-only]
 
 Input (escaped): `"wardley-beta\naccTitle \t:  A  B \t\naccDescr\t:  C  D \t"`.
 

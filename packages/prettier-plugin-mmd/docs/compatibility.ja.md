@@ -1325,12 +1325,12 @@ mermaid.js は Db から描くので、同じ Db が同じ描画の根拠です�
 | ヘッダーのコロン（除去） |   6 |              6 |      646 |     643 |
 | ヘッダーのコロン（改行） |   0 |              0 |       22 |      21 |
 | リンクのラベル           |  19 |             19 |      170 |     162 |
-| 1 行の説明ブロック       |   3 |              3 |      188 |     159 |
+| 1 行の説明ブロック       |   3 |              3 |      282 |     245 |
 
 最後の列に数えないコーパスの対は、mermaid.js が別の綴りを拒否する対です。
 ただし、リンクのラベルの 2 対は例外で、ラベルに `%%` があり、Db が異なります。
-説明ブロックの 29 対も例外で、mermaid.js は両方の綴りを拒否します
-（既知の相違 `c4-keyword-anywhere`）。
+説明ブロックの 37 対も例外で、
+mermaid.js は両方の綴りを拒否します（既知の相違 `c4-keyword-anywhere`）。
 印字は、hidden YAML ブロックに隣接する packet 図の範囲、
 `;` や hidden YAML ブロックの `---` が接するコロン、
 `%%` を含むリンクのラベルを書き換えません。
@@ -1643,21 +1643,21 @@ flowchart は最初の形が 14 個、もう一方が 8 個で、2 倍以上で�
 mermaid.js は、`accDescr {text}` と `accDescr: text` を、
 両端の空白を除いた同じアクセシビリティの説明として読み、同じ図を描きます。
 （[flowchart の文法](https://github.com/mermaid-js/mermaid/blob/2086904e76c692331e34a45d7cc3bc30860d040e/packages/mermaid/src/diagrams/flowchart/parser/flow.jison#L33-L37)
-には両方の形の規則があり、どちらも[両端の空白を除きます](https://github.com/mermaid-js/mermaid/blob/2086904e76c692331e34a45d7cc3bc30860d040e/packages/mermaid/src/diagrams/flowchart/parser/flow.jison#L390-L391)）。
+には両方の形の規則があり、
+どちらも
+[両端の空白を除きます](https://github.com/mermaid-js/mermaid/blob/2086904e76c692331e34a45d7cc3bc30860d040e/packages/mermaid/src/diagrams/flowchart/parser/flow.jison#L390-L391)）。
 例は、コロンの後の説明を 3 回（swimlane 図 1 つと状態遷移図 2 つ）、
-複数行のブロックを 2 回（ユースケース図 2 つ）書き、
-1 行のブロックは書きません。
+複数行のブロックを 2 回（ユースケース図 2 つ）書き、1 行のブロックは書きません。
 本文のあるブロックを受理するすべての図種は、コロンの形も受理し、
 文はどの図種でも同じなので、文字列や数と同じく、例を合わせて数えます。
 ブロック図は、空のブロックだけを受理し、コロンの形は受理しません。
 1 行のブロックは、コロンの形で独立した行に印字します。
-`accDescr {a}`、`accDescr { a }`、`accDescr{ a }` は、
-`accDescr: a` になります。
-キーワードと `{` の間は、改行を含めてどの空白でもよく、
-`}` の後の `;` は、文を区切るほかの `;` と同じく除きます。
+`accDescr {a}`、`accDescr { a }`、`accDescr{ a }` は、`accDescr: a` になります。
+キーワードと `{` の間は、改行を含めてどの空白でもよく、`}` の後の `;` は、
+文を区切るほかの `;` と同じく除きます。
 本文は `{`、`:`、`#` を含んでよく、本文の空白とタブの連なりは、
-[同じに描かれるテキスト中の空白の連なり](#同じに描かれるテキスト中の空白の連なり)の規則で印字します。
-[fixture: flowchart/accessibility-lines/block-tight-text]
+[同じに描かれるテキスト中の空白の連なり](#同じに描かれるテキスト中の空白の連なり)
+の規則で印字します。 [fixture: flowchart/accessibility-lines/block-tight-text]
 [fixture: flowchart/accessibility-lines/block-spaced-text]
 [fixture: flowchart/accessibility-lines/block-left-padding-only]
 [fixture: flowchart/accessibility-lines/block-right-padding-only]
@@ -1678,6 +1678,8 @@ mermaid.js は、`accDescr {text}` と `accDescr: text` を、
   両端にある改行しない空白など、空白やタブ以外の空白は、
   mermaid.js が空白と同じく除くので、コロンの形で印字します。
   [fixture: pie/description-blocks/block-inline-leading-lines]
+  [fixture: pie/description-blocks/block-text-on-its-own-line]
+  [fixture: usecase/direction-and-accessibility/block-text-on-its-own-line]
   [test: a no-break space inside the text of a flowchart description block]
   [test: U+2028 before the text of a flowchart description block]
   [test: U+2028 after the text of a flowchart description block]
@@ -1692,22 +1694,28 @@ mermaid.js は、`accDescr {text}` と `accDescr: text` を、
   [fixture: pie/description-blocks/block-then-comment-kept]
   [fixture: pie/description-blocks/block-trailing-comment]
 - 本文がない場合です。
-  [Accessibility lines](./flowchart.ja.md#accessibility-lines)のとおり、
+  [アクセシビリティの行](./flowchart.ja.md#アクセシビリティの行)のとおり、
   `accDescr {}` と印字します。
   [fixture: flowchart/accessibility-lines/empty-block-tight]
   [fixture: flowchart/accessibility-lines/empty-block-spaced]
 - ブロックが閉じていない場合です。
   [fixture: flowchart/accessibility-lines/block-unclosed]
-- `;` を残す行の場合です（[`;` を含む行](#-を含む行)を参照）。
+- `;` を残す行（[`;` を含む行](#-を含む行)を参照）や、
+  空のブロックの隣にブロックを残す C4 の行のように、文を同じ行に保つ場合です。
+  ブロックは波かっこと本文を保ち、空白は足しません。
+  `{a;b}` は `{a;b}` のまま、`{  a;b  }` は `{ a;b }` と印字します。
   [fixture: flowchart/accessibility-lines/block-text-with-semicolon-kept]
+  [fixture: flowchart/accessibility-lines/block-text-with-semicolon-ends-collapsed]
   [fixture: flowchart/accessibility-lines/block-on-style-line-kept]
+  [fixture: c4/statements-one-per-line/description-null-adjacency]
 - architecture、cynefin、gitGraph、info、packet、pie、radar、railroad、treemap、
   treeView、wardley の図で、本文に `%%` がある場合です。
-  これらの図種は、[共通文法の 1 つの終端記号](https://github.com/mermaid-js/mermaid/blob/2086904e76c692331e34a45d7cc3bc30860d040e/packages/parser/src/language/common/common.langium#L14)で説明を読みます。
+  これらの図種は、
+  [共通文法の 1 つの終端記号](https://github.com/mermaid-js/mermaid/blob/2086904e76c692331e34a45d7cc3bc30860d040e/packages/parser/src/language/common/common.langium#L14)
+  で説明を読みます。
   コロンの形の本文は `%%` の前で終わり、行の残りはコメントとして読みますが、
   ブロックの中の `%%` は本文の一部として読みます。
-  `accDescr: a %% b` の説明は `a`、
-  `accDescr {a %% b}` の説明は `a %% b` です。
+  `accDescr: a %% b` の説明は `a`、`accDescr {a %% b}` の説明は `a %% b` です。
   ほかの図種は、両方の形で `%%` を本文の一部として読むので、
   本文に `%%` があっても、ブロックをコロンの形で印字します。
   [fixture: pie/description-blocks/block-text-with-percent-kept]
@@ -1716,22 +1724,27 @@ mermaid.js は、`accDescr {text}` と `accDescr: text` を、
 イベントモデリング図の説明ブロックは、
 [Description blocks](./eventmodeling.ja.md#description-blocks)のとおり、
 全体を書かれたまま残します。
+枝の文字で描く treeView 図（箱）では、1 行のブロックも波かっこを保ちます。
+描画の文字がブロックのトークンの間に入り得て、
+印字は同じ処理でそれらを描き直すためです。
+[fixture: treeview/modes/box-common-block-zero-column]
 
 mermaid.js 12.3.0 は、コロンの後に説明を書く 3 つの例を、
 ブロックでも書いた両方の綴りを受理し、Db と SVG は同じでした。
-さらに、22 図種でそれぞれ 2 つの例、info とユーザージャーニーでそれぞれ 1 つの例、
-gitGraph でさらに 3 つの例に、両方の綴りで説明を挿入し、49 対を比べました。
-ほかの図種の 44 対は、両方の SVG が同じでした
-（そのうち 6 対は、生成された id を除いて比べました）。
+さらに、22 図種でそれぞれ 2 つの例、
+info とユーザージャーニーでそれぞれ 1 つの例、gitGraph でさらに 3 つの例に、
+両方の綴りで説明を挿入し、49 対を比べました。
+ほかの図種の 44 対は、両方の SVG が同じでした（そのうち 6 対は、
+生成された id を除いて比べました）。
 gitGraph の 5 対も、数、コミット id、要素の id を除くと同じでした。
 `%%` を本文の一部として読む図種のうち 13 図種の例に、
 `%%` を含む本文を同じように挿入した 26 対も、すべて SVG が同じでした。
-適合性コーパスでは、211 個の fixture の 220 個のブロックを、
+適合性コーパスでは、310 個の fixture の 319 個のブロックを、
 コロンの形で印字します。
-188 個の fixture では、独立した行にあるブロックを、
+282 個の fixture では、独立した行にあるブロックを、
 その位置でコロンの形に書き直しました。
-別の文と同じ行のブロックは、
-コロンの形だと行末までが本文になるので、書き直しませんでした。
+別の文と同じ行のブロックは、コロンの形だと行末までが本文になるので、
+書き直しませんでした。
 railroad 図は描画せず、Db だけを比べました。
 
 ### mermaid.js の版

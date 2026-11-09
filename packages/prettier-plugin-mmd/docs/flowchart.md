@@ -1384,37 +1384,16 @@ accessibility-lines/empty-block-semicolon-kept] [fixture:
 accessibility-lines/empty-block-directive-kept] [fixture:
 multi-line-values/accdescr-block-comment-only]
 
-Nonempty blocks follow [Multi-line values](#multi-line-values): the text of a
-block on one line stands between one space on each side, so `{a}`, `{ a }`,
-`{  a  }`, `{  a}`, and `{a  }` all become `{ a }`. mermaid.js trims the text,
-so the whitespace at its ends carries no meaning, and the `@{ ... }` blocks of
-[Data blocks](#data-blocks) are printed the same way. The documentation of
-mermaid.js has no example of a block on one line. [fixture:
-accessibility-lines/block-tight-text] [fixture:
+Blocks on one line follow
+[A description block on one line](./compatibility.md#a-description-block-on-one-line).
+[fixture: accessibility-lines/block-tight-text] [fixture:
 accessibility-lines/block-spaced-text] [fixture:
 accessibility-lines/block-padded-text] [fixture:
 accessibility-lines/block-left-padding-only] [fixture:
-accessibility-lines/block-right-padding-only] A block stays as written when it
-holds a comment or a directive, or a line break, and so does a block whose text
-holds a `%%{`, as in `accDescr {A%%{}%% B`, where the first `}` closes the block
-and padding it would change the directive. [fixture:
-accessibility-lines/block-text-beside-directive] [fixture:
-pie/description-blocks/block-first-brace] A block on a line that keeps its `;`
-gets no added space, whatever its text is, since the line rule of mermaid.js
-reads the whole line (see [Semicolons](#semicolons)): `{a;b}` and `{a; b}` stay
-as written, and so does a block in `A[style];accDescr {b:c;}D#z;`, where the
-added space would break the `:` and `#` that the rule pairs. A run of spaces at
-an end of such a block still becomes one space: `{  a;b  }` is printed
-`{ a;b }`. [fixture: accessibility-lines/block-text-with-semicolon-kept]
-[fixture: accessibility-lines/block-on-style-line-kept] A `;` that only
-separates statements is dropped, and the block is padded. [fixture:
-accessibility-lines/block-text-with-semicolons-padded] A U+2028 or U+2029 in the
-text makes it several lines, and stays. [test: U+2028 in the text of a flowchart
-description block] [test: U+2029 in the text of a flowchart description block]
-Whitespace at the ends that is not an ASCII space or tab, such as a no-break
-space, is trimmed by mermaid.js too and prints as one space. [test: no-break
-spaces at the ends of the text of a flowchart description block] Multiline body
-columns follow the top-level or subgraph rules in
+accessibility-lines/block-right-padding-only] The documentation of mermaid.js
+has no example of a block on one line.
+
+Multiline body columns follow the top-level or subgraph rules in
 [Multi-line values](#multi-line-values), and a closing brace on its own line
 aligns with `accDescr`, whether written at column zero or indented. This is the
 same form as the sibling diagrams, with no flowchart-specific reason to differ.
@@ -1948,16 +1927,19 @@ multi-line-values/accdescr-block-subgraph-raw-membership-kept] The `}` of the
 block stands at the level of the `accDescr` it closes. [fixture:
 multi-line-values/accdescr-block-kept] Comment contents inside such a block are
 kept, with their columns following the same top-level or subgraph rule.
-[fixture: multi-line-values/accdescr-block-comment-line-in-subgraph-kept] When
-the text starts on the line of the `{`, it stands between one space on each side
-(see [Accessibility lines](#accessibility-lines)). Empty blocks without trivia
-instead follow [Accessibility lines](#accessibility-lines). [fixture:
-multi-line-values/accdescr-block-text-starts-on-brace-line] A block without
-text, whose lines are only comment lines, holds no value: its comment lines
-stand one level deeper than the `accDescr`, as comment lines inside a statement
-do (see [Comments](#comments)), and its `}` at the level of the `accDescr`.
-[fixture: multi-line-values/accdescr-block-comment-only-several-comments]
-[fixture: multi-line-values/accdescr-block-comment-only-in-subgraph]
+[fixture: multi-line-values/accdescr-block-comment-line-in-subgraph-kept] In a
+multiline block whose text starts on the line of the `{`, one space stands
+inside each brace. [fixture:
+multi-line-values/accdescr-block-text-starts-on-brace-line] Blocks on one line
+follow
+[A description block on one line](./compatibility.md#a-description-block-on-one-line),
+and empty blocks without trivia follow
+[Accessibility lines](#accessibility-lines). A block without text, whose lines
+are only comment lines, holds no value: its comment lines stand one level deeper
+than the `accDescr`, as comment lines inside a statement do (see
+[Comments](#comments)), and its `}` at the level of the `accDescr`. [fixture:
+multi-line-values/accdescr-block-comment-only-several-comments] [fixture:
+multi-line-values/accdescr-block-comment-only-in-subgraph]
 
 Input
 ([multi-line-values/string-kept-input.mmd](../tests/fixtures/flowchart/multi-line-values/string-kept-input.mmd)):

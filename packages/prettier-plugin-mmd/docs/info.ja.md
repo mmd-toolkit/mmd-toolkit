@@ -181,9 +181,12 @@ info
 
 ### Description blocks
 
+1 行の説明ブロックは、
+[A description block on one line](./compatibility.ja.md#a-description-block-on-one-line)
+に従います。
+波括弧を残すブロックは、
 [共有の description 配置](./pie.ja.md#description-blocks)を使います。
-ブロックの境界がわかるよう、keyword と opener の間に空白を1個置きます。
-1 行のテキストは、括弧に接して書かれていても、両側に空白を 1 つずつ置きます。
+ブロックの境界がわかるよう、キーワードと開始波括弧の間に空白を 1 つ置きます。
 通常の opener 空白は物理改行や Unicode 境界を越えて結合します。
 実際の opener trivia は改行を保ち、共有の継続字下げを使います。
 空白だけの block は、囲む本文がないため `{}` にします。

@@ -1780,11 +1780,15 @@ treeView-beta
 
 ### Description blocks
 
-普通の block は共有の description layout を通します。
-空白だけの内部は `{}` です。
-`accDescr` と `{` の間は、元が接していても space 1 個にします。
-keyword と本文の開始を見分けやすくするためです。
-1 行のテキストは、括弧に接して書かれていても、両側に space 1 個を置きます。
+1 行の説明ブロックは、
+[A description block on one line](./compatibility.ja.md#a-description-block-on-one-line)
+に従います。
+ただし罫線モードでは、1 行のブロックも波括弧を残します。
+[fixture: treeview/modes/box-common-block-zero-column]
+普通の空白だけの内部は `{}` です。
+波括弧を残すブロックは、`accDescr` と `{` の間を、
+元が接していても空白 1 つにします。
+キーワードと本文の開始を見分けやすくするためです。
 普通の opener の前の空白は寄せ、本文行を文より 1 段深くそろえます。
 trivia の内容は保ちます。
 別行の closer は文の段に揃えます。

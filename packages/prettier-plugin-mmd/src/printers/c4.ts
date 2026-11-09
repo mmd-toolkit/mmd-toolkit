@@ -155,6 +155,8 @@ function blockRules(
         (statement) => classifyC4Statement(statement).kind === "boundary",
       ),
     isDroppedAtTopLevel: () => false,
+    onlyStatementOf: (unit) =>
+      unit.statements.length === 1 ? unit.statements[0] : undefined,
     keepsWhitespaceLineAfterComment: false,
     keepsDirectiveLinesUnindented: true,
     keptGapEnd: (start, end, before) =>

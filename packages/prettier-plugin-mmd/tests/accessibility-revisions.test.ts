@@ -12,7 +12,7 @@ const cases = [
   {
     name: "accessibility revisions: c4 keyword-brace-tab",
     input: 'C4Context\naccDescr\t{ a }\nPerson(p,"Keyword tab")',
-    output: 'C4Context\n  accDescr { a }\n  Person(p, "Keyword tab")\n',
+    output: 'C4Context\n  accDescr: a\n  Person(p, "Keyword tab")\n',
   },
   {
     name: "accessibility revisions: usecase keyword-brace-tab",

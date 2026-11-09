@@ -996,13 +996,9 @@ flowchartと同じ理由で同じ規則を使います。
 [fixture: accessibility/empty-block-semicolon-kept]
 [fixture: accessibility/empty-block-directive-kept]
 
-空でない 1 行のブロックの文字は、両側に空白を 1 つずつ置きます。
-兄弟の図種と同じ形です。
-詳しくは、
-[アクセシビリティの行](./flowchart.ja.md#アクセシビリティの行)
-を参照してください。
-`{a}`、`{ a }`、`{  a  }`、`{  a}`、`{a  }` は、どれも `{ a }` になります。
-[fixture: accessibility/block-tight-text]
+1 行のブロックは、
+[A description block on one line](./compatibility.ja.md#a-description-block-on-one-line)
+に従います。 [fixture: accessibility/block-tight-text]
 [fixture: accessibility/block-spaced-text]
 [fixture: accessibility/block-padded-text]
 [fixture: accessibility/block-left-padding-only]

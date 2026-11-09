@@ -1156,11 +1156,13 @@ subgraph 内では、生の説明がその所属の読みにも使われるた�
 本文の元の列を保ちます。
 [corpus fixture: er/db-subgraph-nodes-acc-descr-block-lines]
 `}` は文と同じ段に置きます。
-`{` の行にあるテキストは、括弧に接して書かれていても、
-波括弧の内側に空白を 1 つずつ置きます。
 [fixture: accessibility-statements/block-lines-kept]
 [fixture: accessibility-statements/block-comment-and-empty-lines-kept]
-[fixture: accessibility-statements/block-text-on-opening-line]
+
+1 行のブロックは、
+[A description block on one line](./compatibility.ja.md#a-description-block-on-one-line)
+に従います。 [fixture: accessibility-statements/block-text-on-opening-line]
+
 空のブロックは文の 1 つで、前の説明を Db に残します。
 内側は `{}` と印字し、`accDescr { }` は `accDescr {}` になります。
 空白の連続、改行、NBSP だけの内側も同じです。

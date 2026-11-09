@@ -924,13 +924,11 @@ empty-block-unicode] Kept lines and directive interiors retain their authored
 layout. [fixture: accessibility/empty-block-semicolon-kept] [fixture:
 accessibility/empty-block-directive-kept]
 
-For nonempty blocks on one line, the text stands between one space on each side,
-as in the sibling diagrams (see
-[Accessibility lines](./flowchart.md#accessibility-lines)): `{a}`, `{ a }`,
-`{  a  }`, `{  a}`, and `{a  }` all become `{ a }`. [fixture:
-accessibility/block-tight-text] [fixture: accessibility/block-spaced-text]
-[fixture: accessibility/block-padded-text] [fixture:
-accessibility/block-left-padding-only] [fixture:
+Blocks on one line follow
+[A description block on one line](./compatibility.md#a-description-block-on-one-line).
+[fixture: accessibility/block-tight-text] [fixture:
+accessibility/block-spaced-text] [fixture: accessibility/block-padded-text]
+[fixture: accessibility/block-left-padding-only] [fixture:
 accessibility/block-right-padding-only] At the top level, align the body lines
 of a closed description block one step inside its statement: Mermaid discards
 this indentation from the accessibility description. Inside a flow or global

@@ -424,10 +424,13 @@ gitGraph
 題の終わりのディレクティブと同じように印字します。
 （[同じに描かれるキーワードの後のテキスト](./compatibility.ja.md#同じに描かれるキーワードの後のテキスト)）。
 [fixture: title-and-common-values/acc-directives-end-blanks-dropped]
-通常の gap では、
+
+1 行の説明ブロックは、
+[A description block on one line](./compatibility.ja.md#a-description-block-on-one-line)
+に従います。
+波括弧を残すブロックは、通常の gap では、
 接して書かれていても `accDescr` と `{` の間に空白 1 つを置きます。
 保護対象の trivia やセミコロンの配置では、その gap を保ちます。
-1 行のテキストは、括弧に接して書かれていても、両側に空白を 1 つずつ置きます。
 別行の閉じは文に揃えます。
 通常の説明本文と独立したコメント行は、文より1段内側に揃えます。
 Db で LF 後の字下げが取り除かれるためです。

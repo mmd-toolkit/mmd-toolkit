@@ -618,16 +618,17 @@ architecture-beta
 
 ### Description blocks
 
-Reuse shared `layoutDescriptionBlock`: separate the keyword and opening brace
-with one space so the block boundary is clear. Text on one line stands between
-one space on each side, whether it touched the braces or not. Whitespace-only
-interiors become `{}` because no text needs surrounding space. Plain opener
-whitespace can join; real trivia keeps its break. Keep comment/directive-only
-interiors. Ordinary description body and standalone comment lines align one
-level inside the statement, since the Db removes indentation after LF. Keep line
-breaks, internal blank lines and trailing whitespace. Directives and shared
-removed comment regions keep their complete source. A separate closer aligns
-with the statement; the first closing brace still ends the value.
+Description blocks on one line follow
+[A description block on one line](./compatibility.md#a-description-block-on-one-line).
+For blocks that keep their braces, separate the keyword and opening brace with
+one space so the block boundary is clear. Whitespace-only interiors become `{}`
+because no text needs surrounding space. Plain opener whitespace can join; real
+trivia keeps its break. Keep comment/directive-only interiors. Ordinary
+description body and standalone comment lines align one level inside the
+statement, since the Db removes indentation after LF. Keep line breaks, internal
+blank lines and trailing whitespace. Directives and shared removed comment
+regions keep their complete source. A separate closer aligns with the statement;
+the first closing brace still ends the value.
 
 [fixture: architecture/description-blocks/asymmetric]
 

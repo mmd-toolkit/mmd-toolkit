@@ -259,25 +259,23 @@ pie
 
 ### Description blocks
 
-Reuse [flowchart multiline values](./flowchart.md#multi-line-values):
-indentation after LF is absent from the description Db. Among the Db-equal forms
-(`accDescr{a}` and `accDescr {a}`; `{a}` and `{ a }`), pie takes the shared
-accessibility decision of its sibling diagrams
-([flowchart](./flowchart.md#accessibility-lines) and
-[C4](./c4.md#description-blocks)) rather than a form of its own. The keyword and
-opener use one ordinary space, even when written touching. Text on one line
-stands between one space on each side, whether it touched the braces or not.
-Protected trivia and semicolon layouts keep their gaps. Plain whitespace before
-the opener can join, including across physical or Unicode line boundaries; a
-real comment/directive keeps its break. Empty whitespace-only interiors print
-`{}` because no text needs surrounding whitespace. Keep comment-only blocks with
-comments one level inside and a separate closer at statement level. Ordinary
-later-line text and standalone comment lines align one level inside the
-statement, making the body readable. Keep line breaks, blank lines and trailing
-whitespace; a separate `}` aligns with the statement. Directives and shared
-removed comment regions keep their complete source. Trivia-bearing interiors
-keep their trivia. The first closing brace still closes the block, even inside
-quote/backslash/hidden-looking text.
+Description blocks on one line follow
+[A description block on one line](./compatibility.md#a-description-block-on-one-line).
+For blocks that keep their braces, reuse
+[flowchart multiline values](./flowchart.md#multi-line-values): indentation
+after LF is absent from the description Db. The keyword and opener use one
+ordinary space, even when written touching. Protected trivia and semicolon
+layouts keep their gaps. Plain whitespace before the opener can join, including
+across physical or Unicode line boundaries; a real comment/directive keeps its
+break. Empty whitespace-only interiors print `{}` because no text needs
+surrounding whitespace. Keep comment-only blocks with comments one level inside
+and a separate closer at statement level. Ordinary later-line text and
+standalone comment lines align one level inside the statement, making the body
+readable. Keep line breaks, blank lines and trailing whitespace; a separate `}`
+aligns with the statement. Directives and shared removed comment regions keep
+their complete source. Trivia-bearing interiors keep their trivia. The first
+closing brace still closes the block, even inside quote/backslash/hidden-looking
+text.
 
 Fixed cases: [fixture: pie/description-blocks/block-runs] [fixture:
 pie/description-blocks/block-empty] [fixture:

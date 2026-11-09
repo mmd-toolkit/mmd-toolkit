@@ -97,6 +97,13 @@ export interface BlockRules<Statement extends Positioned> {
   readonly kept: KeptLines
   /** Overrides ordinary blank placement before a statement, when supplied. */
   readonly blankBeforeStatement?: (statement: Statement, gap: Gap) => boolean
+  /**
+   * The statement of the tree that a unit holds, for a diagram type whose
+   * printer makes units: the one statement of a unit that holds nothing else
+   * on its line. A unit of several statements, or one with directives before
+   * it, has none. A statement of the tree is its own.
+   */
+  readonly onlyStatementOf?: (unit: Statement) => Positioned | undefined
   /** A moved owned blank joins the next gap's ordinary blank-line placement. */
   readonly blankAfterStatement?: (statement: Statement) => boolean
   /**
@@ -880,7 +887,12 @@ export function printBlock<Statement extends Positioned>(
       pushLine({
         doc: withLeading(
           gap.leading,
-          printAccessibilityLine(source, statement) ?? docs[index],
+          printAccessibilityLine(
+            source,
+            rules.onlyStatementOf === undefined
+              ? statement
+              : rules.onlyStatementOf(statement),
+          ) ?? docs[index],
         ),
         ...writtenBreak,
         ...(writtenIndentation === undefined ? {} : { writtenIndentation }),

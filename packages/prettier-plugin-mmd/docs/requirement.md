@@ -990,11 +990,13 @@ accessibility-statements/text-with-comment-line-kept]
 Later text lines of an `accDescr { ... }` block stand one level inside its
 statement, replacing only ASCII spaces and tabs immediately after LF. The
 description setter drops that indentation; line breaks, trailing whitespace and
-directive interiors stay written. Its `}` stands at the level of its statement;
-a text on the line of the `{` has one space inside each brace, also where the
-braces touched it. [fixture: accessibility-statements/block-lines-kept]
-[fixture: accessibility-statements/block-text-on-opening-line] [fixture:
+directive interiors stay written. Its `}` stands at the level of its statement.
+[fixture: accessibility-statements/block-lines-kept] [fixture:
 accessibility-statements/block-comment-and-empty-lines-kept]
+
+Blocks on one line follow
+[A description block on one line](./compatibility.md#a-description-block-on-one-line).
+[fixture: accessibility-statements/block-text-on-opening-line]
 
 The lexer reads a line as a direction line before it reads the statements that
 follow it, but after `accTitle` and `accDescr`: `accTitle: direction LR` at the

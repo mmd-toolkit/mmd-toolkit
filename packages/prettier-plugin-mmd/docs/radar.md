@@ -510,17 +510,17 @@ radar-beta
 
 ### Description blocks
 
-Route descriptions through shared `layoutDescriptionBlock`. Separate the keyword
-and opening brace with one space so the block boundary is clear. Text on one
-line stands between one space on each side, whether it touched the braces or
-not. Whitespace-only interiors become `{}` because no text needs surrounding
-space. Plain opener whitespace joins; real trivia keeps its break. Preserve
-comment/directive-only interiors. Ordinary description body and standalone
-comment lines align one level inside the statement: the Db removes indentation
-after LF. Keep line breaks, internal blanks and trailing whitespace; align a
-separate opener or closer with the statement. Directives and shared removed
-comment regions keep their complete source. The first closing brace still ends
-the value.
+Description blocks on one line follow
+[A description block on one line](./compatibility.md#a-description-block-on-one-line).
+For blocks that keep their braces, separate the keyword and opening brace with
+one space so the block boundary is clear. Whitespace-only interiors become `{}`
+because no text needs surrounding space. Plain opener whitespace joins; real
+trivia keeps its break. Preserve comment/directive-only interiors. Ordinary
+description body and standalone comment lines align one level inside the
+statement: the Db removes indentation after LF. Keep line breaks, internal
+blanks and trailing whitespace; align a separate opener or closer with the
+statement. Directives and shared removed comment regions keep their complete
+source. The first closing brace still ends the value.
 
 [fixture: radar/description-blocks/block-empty-fixed]
 

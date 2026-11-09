@@ -374,9 +374,11 @@ packet
 
 ### Description blocks
 
-共有の `layoutDescriptionBlock` を使います。
-ブロックの境界がわかるよう、keyword と opener の間に空白を1個置きます。
-1 行のテキストは、括弧に接して書かれていても、両側に空白を 1 つずつ置きます。
+1 行の説明ブロックは、
+[A description block on one line](./compatibility.ja.md#a-description-block-on-one-line)
+に従います。
+波括弧を残すブロックは、境界がわかるよう、
+キーワードと開始波括弧の間に空白を 1 つ置きます。
 通常の opener 空白は物理・Unicode 行を越えて結合します。
 実際の trivia があれば改行を保ちます。
 囲む文字列がないため、空白だけの内側は `{}` にします。

@@ -631,9 +631,11 @@ architecture-beta
 
 ### Description blocks
 
-共有の `layoutDescriptionBlock` を使います。
-ブロックの境界がわかるよう、keyword と開始波括弧の間に空白を1個置きます。
-1 行のテキストは、括弧に接して書かれていても、両側に空白を 1 つずつ置きます。
+1 行の説明ブロックは、
+[A description block on one line](./compatibility.ja.md#a-description-block-on-one-line)
+に従います。
+波括弧を残すブロックは、境界がわかるよう、
+キーワードと開始波括弧の間に空白を 1 つ置きます。
 空白だけの内側は囲む文字がないため `{}` にします。
 開始前の単なる空白は結合し、実際の trivia は改行を保ちます。
 comment・directive だけの内側を保ちます。

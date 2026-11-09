@@ -216,6 +216,10 @@ export function printTreeview(
           : findLayoutEnd(layouts.get(line)!),
       holdsStatements: () => false,
       isDroppedAtTopLevel: () => false,
+      // In a box, the characters of the drawing stand between the tokens of a
+      // block, and one pass removes them (docs/treeview.md, Branch prefixes).
+      onlyStatementOf: (line) =>
+        line.leading === null && !boxMode ? line.item : undefined,
       keepsWhitespaceLineAfterComment: false,
       keepsDirectiveLinesUnindented: false,
       keepsTrailingWhitespaceInKeptTrivia: true,

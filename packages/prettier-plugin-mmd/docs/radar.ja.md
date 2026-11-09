@@ -519,9 +519,11 @@ radar-beta
 
 ### Description blocks
 
-説明は共有の `layoutDescriptionBlock` を通します。
-ブロックの境界がわかるよう、keyword と opener の間に空白を1個置きます。
-1 行のテキストは、括弧に接して書かれていても、両側に空白を 1 つずつ置きます。
+1 行の説明ブロックは、
+[A description block on one line](./compatibility.ja.md#a-description-block-on-one-line)
+に従います。
+波括弧を残すブロックは、境界がわかるよう、
+キーワードと開始波括弧の間に空白を 1 つ置きます。
 空白だけの内部は、空白で囲む文字がないため `{}` にします。
 opener 前の普通の空白は結合し、実際の trivia のある改行は残します。
 コメント・directive だけの内部を保ちます。

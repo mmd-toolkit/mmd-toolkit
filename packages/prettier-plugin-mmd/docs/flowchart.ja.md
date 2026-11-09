@@ -1434,41 +1434,15 @@ usecaseのDbが同じ形に従います。 [fixture: accessibility-lines/empty-b
 [fixture: accessibility-lines/empty-block-directive-kept]
 [fixture: multi-line-values/accdescr-block-comment-only]
 
-空でないブロックは[複数行の値](#複数行の値)に従います。
-1 行のブロックの文字は、両側に空白を 1 つずつ置きます。
-`{a}`、`{ a }`、`{  a  }`、`{  a}`、`{a  }` は、どれも `{ a }` になります。
-mermaid.js は文字を trim するので、両端の空白に意味はありません。
-[データブロック](#データブロック)の `@{ ... }` も同じ形で印字します。
-mermaid.js の文書には、1 行のブロックの例がありません。
-[fixture: accessibility-lines/block-tight-text]
+1 行のブロックは、
+[A description block on one line](./compatibility.ja.md#a-description-block-on-one-line)
+に従います。 [fixture: accessibility-lines/block-tight-text]
 [fixture: accessibility-lines/block-spaced-text]
 [fixture: accessibility-lines/block-padded-text]
 [fixture: accessibility-lines/block-left-padding-only]
 [fixture: accessibility-lines/block-right-padding-only]
-コメントやディレクティブ、改行があるブロックは、書かれたままにします。
-文字に `%%{` があるブロックも同じです。
-`accDescr {A%%{}%% B` では最初の `}` がブロックを閉じるので、
-空白を足すとディレクティブが変わります。
-[fixture: accessibility-lines/block-text-beside-directive]
-[fixture: pie/description-blocks/block-first-brace]
-`;` を残す行にあるブロックは、文字が何であっても、空白を足しません。
-mermaid.js の line rule
-が行全体を読むからです（[セミコロン](#セミコロン)を参照）。
-`{a;b}` と `{a; b}` はそのままです。
-`A[style];accDescr {b:c;}D#z;` のブロックも、空白を足すと、
-line rule が組にする `:` と `#` を壊すので、そのままです。
-端の空白の連なりは、空白 1 つにします。
-`{  a;b  }` は `{ a;b }` になります。
-[fixture: accessibility-lines/block-text-with-semicolon-kept]
-[fixture: accessibility-lines/block-on-style-line-kept]
-文を区切るだけの `;` は落とされ、ブロックは整えます。
-[fixture: accessibility-lines/block-text-with-semicolons-padded]
-文字の中の U+2028 と U+2029 は、文字を複数行にするので、そのまま残します。
-[test: U+2028 in the text of a flowchart description block]
-[test: U+2029 in the text of a flowchart description block]
-ASCII の空白とタブでない端の空白（no-break space など）も、
-mermaid.js が trim するので、空白 1 つで印字します。
-[test: no-break spaces at the ends of the text of a flowchart description block]
+mermaid.js の文書には、1 行のブロックの例がありません。
+
 複数行の本文は、
 [複数行の値](#複数行の値)のトップレベルと subgraph の規則に従い、
 単独行の閉じ括弧を `accDescr` に揃えます。
@@ -2041,11 +2015,13 @@ subgraph の中では、本文があるブロックの原文が字下げごと�
 そうしたブロックのコメントの内容も保ち、
 列は同じトップレベルまたは subgraph の規則に従います。
 [fixture: multi-line-values/accdescr-block-comment-line-in-subgraph-kept]
-テキストが `{` と同じ行から始まるときは、その両側に空白を 1 つずつ置きます。
-詳しくは、[アクセシビリティの行](#アクセシビリティの行)を参照してください。
-triviaのない空ブロックは、
-[アクセシビリティの行](#アクセシビリティの行)に従います。
+複数行のブロックのテキストが `{` と同じ行から始まるときは、
+波括弧の内側に空白を 1 つずつ置きます。
 [fixture: multi-line-values/accdescr-block-text-starts-on-brace-line]
+1 行のブロックは、
+[A description block on one line](./compatibility.ja.md#a-description-block-on-one-line)
+に従い、trivia のない空ブロックは、
+[アクセシビリティの行](#アクセシビリティの行)に従います。
 テキストがなく、コメント行だけを持つブロックは、値を持ちません。
 そのコメント行は、文の中のコメント行と同じく、
 `accDescr` より 1 段深く置き（[コメント](#コメント)を参照）、

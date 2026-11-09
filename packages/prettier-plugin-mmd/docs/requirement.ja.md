@@ -1020,11 +1020,12 @@ LF 直後の ASCII 空白とタブだけを置き換えます。
 説明の setter がこの字下げを捨てるためです。
 改行、行末空白、ディレクティブの内部は保ちます。
 `}` は文と同じ段に置きます。
-`{` と同じ行にテキストがあるときは、
-括弧に接して書かれていても波括弧の内側に空白 1 つずつを置きます。
 [fixture: accessibility-statements/block-lines-kept]
-[fixture: accessibility-statements/block-text-on-opening-line]
 [fixture: accessibility-statements/block-comment-and-empty-lines-kept]
+
+1 行のブロックは、
+[A description block on one line](./compatibility.ja.md#a-description-block-on-one-line)
+に従います。 [fixture: accessibility-statements/block-text-on-opening-line]
 
 字句解析器は、続く文の規則より前に、
 `accTitle` と `accDescr` の後に方向の行を読みます。
