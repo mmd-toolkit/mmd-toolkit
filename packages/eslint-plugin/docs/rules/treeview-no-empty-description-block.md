@@ -51,6 +51,7 @@ Examples of **correct** code for this rule:
 treeView-beta
   accDescr {
     Project files
+    and folders
   }
   root/
 ```

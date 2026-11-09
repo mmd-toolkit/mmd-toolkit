@@ -47,6 +47,7 @@ journey
   accDescr: first
   accDescr {
     second
+    third
   }
   section Work
     Make tea: 5: Me

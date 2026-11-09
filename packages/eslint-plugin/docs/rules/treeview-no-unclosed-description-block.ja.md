@@ -28,11 +28,6 @@ since: v0.1.0
 後の行の `}` は、`a}b` のようなファイル名の中でもブロックを閉じ、
 そこまでの行を説明にするので、そのようなブロックは報告しない。
 
-整形ツールは、テキストが 1 行のブロック `accDescr { text }` を、
-`accDescr: text` と書く。
-`{` と同じ行で閉じたブロックの例は、`}` が立つ行を示すので、
-書いたまま示している。
-
 この規則に**反する**コードの例:
 
 ```mmd
@@ -45,13 +40,14 @@ treeView-beta
 
 この規則に**従う**コードの例:
 
-<!-- prettier-ignore -->
 ```mmd
 %% eslint @mmd-toolkit/treeview-no-unclosed-description-block: error
 treeView-beta
-  accDescr { Project files }
+  accDescr {
+    Project files
+    and folders
+  }
   root/
-    file
 ```
 
 ## オプション

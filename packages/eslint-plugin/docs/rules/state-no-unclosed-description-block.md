@@ -36,10 +36,6 @@ A description that intentionally includes a `{` on a later line is reported too,
 because the rule cannot distinguish its closer from a composite state's. A
 closer on the opening line, as in `accDescr { a { b }`, is not reported.
 
-The formatter prints a block with its text on one line, `accDescr { text }`, as
-`accDescr: text`. The example of a block closed on the line of its `{` is shown
-as written, because the line of the `}` is what it shows.
-
 Examples of **incorrect** code for this rule:
 
 ```mmd
@@ -61,12 +57,14 @@ stateDiagram-v2
 
 Examples of **correct** code for this rule:
 
-<!-- prettier-ignore -->
 ```mmd
 %% eslint @mmd-toolkit/state-no-unclosed-description-block: error
 stateDiagram-v2
   A --> B
-  accDescr { x }
+  accDescr {
+    first line
+    second line
+  }
 ```
 
 ## Options

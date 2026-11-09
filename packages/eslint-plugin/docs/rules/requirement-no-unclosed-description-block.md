@@ -30,10 +30,6 @@ own closing `}`: the rule cannot tell its `}` from the `}` of a body. A block
 whose closing `}` is on the opening line is not reported, even if that line
 contains another `{`.
 
-The formatter prints a block with its text on one line, `accDescr { text }`, as
-`accDescr: text`. The example of a block closed on the line of its `{` is shown
-as written, because the line of the `}` is what it shows.
-
 Examples of **incorrect** code for this rule:
 
 ```mmd
@@ -50,11 +46,13 @@ requirementDiagram
 
 Examples of **correct** code for this rule:
 
-<!-- prettier-ignore -->
 ```mmd
 %% eslint @mmd-toolkit/requirement-no-unclosed-description-block: error
 requirementDiagram
-  accDescr { x }
+  accDescr {
+    first line
+    second line
+  }
   requirement r {
     id: 1
   }

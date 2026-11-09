@@ -54,8 +54,9 @@ stateDiagram-v2
 stateDiagram-v2
   accDescr {
     first
+    second
   }
-  accDescr: second
+  accDescr: third
   A --> B
 ```
 

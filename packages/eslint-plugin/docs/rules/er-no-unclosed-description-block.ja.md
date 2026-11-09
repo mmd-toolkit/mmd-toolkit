@@ -32,11 +32,6 @@ mermaid.js はそこで説明のブロックを閉じ、
 後の行に `{` があるブロックは、
 属性ブロックの終わりのように閉じる `}` が自分の行にひとりでも報告する。
 
-整形ツールは、テキストが 1 行のブロック `accDescr { text }` を、
-`accDescr: text` と書く。
-`{` と同じ行で閉じたブロックの例は、`}` が立つ行を示すので、
-書いたまま示している。
-
 この規則に**反する**コードの例:
 
 ```mmd
@@ -51,11 +46,13 @@ erDiagram
 
 この規則に**従う**コードの例:
 
-<!-- prettier-ignore -->
 ```mmd
 %% eslint @mmd-toolkit/er-no-unclosed-description-block: error
 erDiagram
-  accDescr { x }
+  accDescr {
+    first line
+    second line
+  }
   A {
     string name
   }

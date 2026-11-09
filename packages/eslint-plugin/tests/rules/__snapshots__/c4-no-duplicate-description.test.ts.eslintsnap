@@ -25,11 +25,13 @@ Code:
     |   ^~~~~~~~~~\ [1]
   4 |     Administrators
     | ~~~~~~~~~~~~~~~~~~\ [1]
-  5 |   }
+  5 |     Auditors
+    | ~~~~~~~~~~~~\ [1]
+  6 |   }
     | ~~~ [1]
-  6 |   accDescr: Customers
+  7 |   accDescr: Customers
     |   ^~~~~~~~~~~~~~~~~~~ [2]
-  7 |
+  8 |
 
 [1] mermaid.js replaces the earlier description with this description.
 [2] mermaid.js replaces the earlier description with this description.

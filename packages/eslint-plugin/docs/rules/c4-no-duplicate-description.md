@@ -55,6 +55,7 @@ C4Context
   accDescription Customers
   accDescr {
     Administrators
+    Auditors
   }
   accDescr: Customers
 ```
@@ -65,9 +66,6 @@ Examples of **correct** code for this rule:
 %% eslint @mmd-toolkit/c4-no-duplicate-description: error
 C4Context
   accDescription Customers
-  accDescr {
-    Customers
-  }
   accDescr: Customers
 ```
 

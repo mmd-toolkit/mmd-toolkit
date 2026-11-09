@@ -46,6 +46,7 @@ gantt
   accDescr: first
   accDescr {
     second
+    third
   }
   dateFormat YYYY-MM-DD
   Design :2024-01-06, 3d

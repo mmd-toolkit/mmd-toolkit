@@ -11,12 +11,14 @@ Code:
     |   ^~~~~~~~~~\ [1]
   4 |     second
     | ~~~~~~~~~~\ [1]
-  5 |   }
+  5 |     third
+    | ~~~~~~~~~\ [1]
+  6 |   }
     | ~~~ [1]
-  6 |   requirement r {
-  7 |     id: 1
-  8 |   }
-  9 |
+  7 |   requirement r {
+  8 |     id: 1
+  9 |   }
+ 10 |
 
 [1] mermaid.js replaces the earlier description with the one of this `accDescr`.
     Suggestions:
@@ -33,11 +35,12 @@ Code:
           1 | requirementDiagram
           2 |   accDescr {
           3 |     second
-          4 |   }
-          5 |   requirement r {
-          6 |     id: 1
-          7 |   }
-          8 |
+          4 |     third
+          5 |   }
+          6 |   requirement r {
+          7 |     id: 1
+          8 |   }
+          9 |
 ---
 
 

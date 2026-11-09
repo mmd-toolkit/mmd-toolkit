@@ -42,11 +42,6 @@ JSON オブジェクト、メッセージの `}` が、誤ってブロックを�
 説明がそのデータブロックのテキストを取り込んでも報告しない。
 規則は、それらの `}` を見分けられない。
 
-整形ツールは、テキストが 1 行のブロック `accDescr { text }` を、
-`accDescr: text` と書く。
-`{` と同じ行で閉じたブロックの例は、`}` が立つ行を示すので、
-書いたまま示している。
-
 この規則に**反する**コードの例:
 
 ```mmd
@@ -66,20 +61,24 @@ sequenceDiagram
 
 この規則に**従う**コードの例:
 
-<!-- prettier-ignore -->
 ```mmd
 %% eslint @mmd-toolkit/sequence-no-unclosed-description-block: error
 sequenceDiagram
   A ->> B: x
-  accDescr { y }
+  accDescr {
+    first line
+    second line
+  }
 ```
 
-<!-- prettier-ignore -->
 ```mmd
 %% eslint @mmd-toolkit/sequence-no-unclosed-description-block: error
 sequenceDiagram
   A ->> B: x
-  accDescr { y }
+  accDescr {
+    first line
+    second line
+  }
   B ->> A: z
 ```
 

@@ -57,6 +57,7 @@ treeView-beta
   accDescr: First
   accDescr {
     Second
+    Third
   }
   root/
 ```
@@ -68,6 +69,7 @@ Examples of **correct** code for this rule:
 treeView-beta
   accDescr {
     Project files
+    and folders
   }
   root/
 ```

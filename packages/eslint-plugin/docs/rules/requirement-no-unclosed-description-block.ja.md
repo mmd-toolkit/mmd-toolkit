@@ -29,11 +29,6 @@ since: v0.1.0
 規則がその `}` を本体の `}` と見分けられないので報告する。
 開く行に閉じる `}` があるブロックは、その行に別の `{` があっても報告しない。
 
-整形ツールは、テキストが 1 行のブロック `accDescr { text }` を、
-`accDescr: text` と書く。
-`{` と同じ行で閉じたブロックの例は、`}` が立つ行を示すので、
-書いたまま示している。
-
 この規則に**反する**コードの例:
 
 ```mmd
@@ -50,11 +45,13 @@ requirementDiagram
 
 この規則に**従う**コードの例:
 
-<!-- prettier-ignore -->
 ```mmd
 %% eslint @mmd-toolkit/requirement-no-unclosed-description-block: error
 requirementDiagram
-  accDescr { x }
+  accDescr {
+    first line
+    second line
+  }
   requirement r {
     id: 1
   }

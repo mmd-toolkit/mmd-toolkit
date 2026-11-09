@@ -36,10 +36,6 @@ when it closes the description by mistake.
 An intentional description such as `accDescr {` followed by `a {b }` is reported
 because the rule cannot distinguish its brace from metadata.
 
-The formatter prints a block with its text on one line, `accDescr { text }`, as
-`accDescr: text`. The example of a block closed on the line of its `{` is shown
-as written, because the line of the `}` is what it shows.
-
 Examples of **incorrect** code for this rule:
 
 ```mmd
@@ -53,11 +49,13 @@ usecase-beta
 
 Examples of **correct** code for this rule:
 
-<!-- prettier-ignore -->
 ```mmd
 %% eslint @mmd-toolkit/usecase-no-unclosed-description-block: error
 usecase-beta
-  accDescr { first }
+  accDescr {
+    first line
+    second line
+  }
   A --> B
   actor C@{ type: hollow }
   D

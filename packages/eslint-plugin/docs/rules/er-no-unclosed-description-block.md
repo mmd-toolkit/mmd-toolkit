@@ -34,10 +34,6 @@ line contains another `{`. A block with a `{` on a later line is reported also
 when its closing `}` stands alone on its line, as the end of an attribute block
 does.
 
-The formatter prints a block with its text on one line, `accDescr { text }`, as
-`accDescr: text`. The example of a block closed on the line of its `{` is shown
-as written, because the line of the `}` is what it shows.
-
 Examples of **incorrect** code for this rule:
 
 ```mmd
@@ -52,11 +48,13 @@ erDiagram
 
 Examples of **correct** code for this rule:
 
-<!-- prettier-ignore -->
 ```mmd
 %% eslint @mmd-toolkit/er-no-unclosed-description-block: error
 erDiagram
-  accDescr { x }
+  accDescr {
+    first line
+    second line
+  }
   A {
     string name
   }

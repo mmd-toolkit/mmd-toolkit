@@ -65,7 +65,8 @@ Examples of **correct** code for this rule:
 stateDiagram-v2
   A --> B
   accDescr {
-    y
+    first line
+    second line
   }
 ```
 

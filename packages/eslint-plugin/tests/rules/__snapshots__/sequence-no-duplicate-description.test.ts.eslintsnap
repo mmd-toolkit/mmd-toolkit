@@ -37,10 +37,11 @@ Code:
   2 |   A ->> B: x
   3 |   accDescr {
   4 |     first
-  5 |   }
-  6 |   accDescr: second
-    |   ^~~~~~~~~~~~~~~~ [1]
-  7 |
+  5 |     second
+  6 |   }
+  7 |   accDescr: third
+    |   ^~~~~~~~~~~~~~~ [1]
+  8 |
 
 [1] mermaid.js replaces the earlier description with the one of this `accDescr`.
     Suggestions:
@@ -50,13 +51,14 @@ Code:
           2 |   A ->> B: x
           3 |   accDescr {
           4 |     first
-          5 |   }
-          6 |
+          5 |     second
+          6 |   }
+          7 |
       - Remove the earlier statement that sets the description.
         Output:
           1 | sequenceDiagram
           2 |   A ->> B: x
-          3 |   accDescr: second
+          3 |   accDescr: third
           4 |
 ---
 

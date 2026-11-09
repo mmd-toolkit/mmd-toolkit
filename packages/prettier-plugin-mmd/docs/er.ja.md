@@ -779,8 +779,14 @@ erDiagram
 [fixture: entities/classes-tight] [fixture: entities/alias-and-classes]
 属性ブロックの `{` は空白 1
 つの後に置きます（[属性ブロック](#属性ブロック)を参照）。
-名前は、引用符の有無も数も含めて、書かれたまま残します。
-[fixture: entities/names-kept]
+引用符で囲まれた名前、役割、subgraph の id が平易な 1 語なら、
+mermaid.js の文書の例に合わせて引用符なしで印字します。
+[The quotes of a text](./compatibility.ja.md#the-quotes-of-a-text)
+を参照してください。
+`"A"[B]` は `A[B]` に、`C ||--o{ D : "has"` は `C ||--o{ D : has` にします。
+ほかの名前は、引用符の有無も数も含めて、書かれたまま残します。
+[fixture: entities/plain-names-without-quotes]
+[fixture: entities/names-that-need-quotes] [fixture: entities/names-kept]
 実体の部分の間にあるディレクティブは、
 [ディレクティブ](#ディレクティブ)のとおりに置きます。
 [fixture: entities/directive-between-parts]

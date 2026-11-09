@@ -56,6 +56,7 @@ erDiagram
   accDescr: first
   accDescr {
     second
+    third
   }
   A
 ```

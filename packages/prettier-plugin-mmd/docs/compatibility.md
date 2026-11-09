@@ -1233,8 +1233,9 @@ and, with the Db only, in the inputs of the conformance corpus:
 | The colon of a header (line break) |        0 |                   0 |     22 |      21 |
 | The label of a link                |       19 |                  19 |    170 |     162 |
 | A description block on one line    |        3 |                   3 |    282 |     245 |
-| The quotes of a field of a sankey  |        6 |                   6 |     11 |      11 |
-| The quotes of a name of an ER      |        0 |                   0 |     15 |      15 |
+| Quotes of a sankey field           |        6 |                   6 |     11 |      11 |
+| Quotes of an ER name               |        0 |                   0 |     14 |      14 |
+| Quotes of a requirement name       |        0 |                   0 |     11 |      11 |
 
 A corpus pair that is not counted in the last column is a pair of which
 mermaid.js rejects the other spelling, except two pairs of the label of a link,
@@ -1655,6 +1656,14 @@ without quotes:
 | ER           | the left name of a relationship       |             45 |         0 |
 | ER           | the right name of a relationship      |             45 |         0 |
 | ER           | the id of a subgraph                  |             11 |         1 |
+| requirement  | the name of a requirement             |             15 |         1 |
+| requirement  | the name of an element                |             10 |         0 |
+| requirement  | the id of a requirement               |             16 |         0 |
+| requirement  | the text of a requirement             |             13 |         3 |
+| requirement  | the type of an element                |              9 |         1 |
+| requirement  | the docRef of an element              |              2 |         0 |
+| requirement  | the names of a relationship           |             14 |         0 |
+| requirement  | a class, and the names of `style`     |              9 |         0 |
 
 A text is printed without quotes where it is plain: ASCII letters, digits, `_`,
 `-`, and `.`, with spaces between them, and, in a sankey diagram, with spaces at
@@ -1690,11 +1699,37 @@ er/statements-one-per-line/relationships] [fixture:
 er/statements-one-per-line/role-then-entity] [fixture:
 er/subgraphs/quoted-and-number-ids]
 
+In a requirement diagram a name, a class, and the names of a `style`,
+`classDef`, or `class` statement are printed without quotes where they are one
+word of ASCII letters, digits, and `_` that is none of the words that the lexer
+reads as a unit of its own (the keywords, the kinds of a requirement and of a
+relationship, the risks, the verification methods, the directions, in any case),
+and the id, the text, the type, and the docRef where they are words with spaces
+between them whose first word is none of those words: `text: "the test text"` is
+printed `text: the test text`, and `text: "risk high"` stays in quotes, since a
+text that starts with `risk` is read as the field `risk`. [fixture:
+requirement/names/plain-names-without-quotes] [fixture:
+requirement/names/names-that-need-quotes] [fixture:
+requirement/fields/plain-values-without-quotes] [fixture:
+requirement/class-lists/string-classes] [fixture:
+requirement/styles-and-classes/style-names]
+
+A string that a `#`, a `%`, a `;`, or a `:` follows on its line keeps its quotes
+in every diagram type: a text without quotes can run to the end of the line, and
+then takes that character and what follows into the text, as `b #c` in
+`a - satisfies -> "b" #c`. So does a string on a line that the printer writes as
+it is, such as one with a `;` that the line rule keeps. [fixture:
+requirement/comments/after-string-name] [fixture:
+requirement/comments/after-keyword-and-string-values] [fixture:
+requirement/multi-line-statements/class-last-line-semicolon-kept]
+
 mermaid.js 12.3.0 read both forms of the inputs of the conformance corpus whose
-quotes the printer leaves out, with the same Db: 11 inputs of sankey diagrams
-and 15 of ER diagrams. It read both forms of the 6 sankey examples that were
-written again with every plain field in quotes, with the same Db and the same
-SVG, and the 15 ER inputs were drawn the same as their formatted text.
+quotes the printer leaves out, with the same Db: 11 inputs of sankey diagrams,
+14 of ER diagrams, and 11 of requirement diagrams. It read both forms of the 6
+sankey examples that were written again with every plain field in quotes, with
+the same Db and the same SVG, and the 14 ER inputs and 8 of the 11 requirement
+inputs (the other 3 are drawn by mermaid.js in neither form) were drawn the same
+as their formatted text.
 
 ### Versions of mermaid.js
 
@@ -1720,6 +1755,12 @@ mermaid.js, show which form each version reads:
   them have the same text. The words that these grammars read as units of their
   own (`erDiagram`, `one`, `many`, `only one`, `to`, `optionally to`, and the
   others of the lexer) are among the words that the printer leaves in quotes.
+- The names and the values of a requirement diagram: the grammars of 9.1.0,
+  10.9.0, and 12.3.0 give a requirement name, an id, a text, an element name, a
+  type, and a reference the same production for a string in quotes and for a
+  string without quotes (`unqString | qString`), and read the keywords of the
+  lexer as whole words in any case, so that a word that is none of them is read
+  as a name in every one of these versions.
 - An accessibility description in a block on one line: the grammar of the
   flowchart in 9.0.0 and 9.0.1 has no rule for `accDescr`, and the grammar in
   9.1.0, the first with the rule, has the form with the colon and the form with

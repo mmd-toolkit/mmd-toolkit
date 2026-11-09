@@ -193,7 +193,12 @@ in the Db and is printed as one space (see
 [Runs of whitespace in a text that are drawn the same](./compatibility.md#runs-of-whitespace-in-a-text-that-are-drawn-the-same)).
 [fixture: fields/value-outer-whitespace-dropped] [fixture:
 fields/value-inner-runs-collapsed] [fixture:
-fields/string-values-runs-collapsed] A `#`, a `%`, and a `;` inside an unquoted
+fields/string-values-runs-collapsed] The value of an `id`, a `text`, a `type`,
+and a `docRef` in quotes is printed without them where it is words of letters,
+digits, and `_` with spaces between them and its first word is not a keyword of
+the diagram: `text: "the test text"` is printed `text: the test text`, and
+`text: "risk high"` stays in quotes. [fixture:
+fields/plain-values-without-quotes] A `#`, a `%`, and a `;` inside an unquoted
 value are characters of the value, not the start of a comment. [fixture:
 fields/special-characters-in-values]
 
@@ -267,29 +272,34 @@ Output
 ```mmd
 requirementDiagram
   requirement r {
-    id: "1"
+    id: 1
     text: " a: b, c "
   }
   element e {
-    type: "a b"
+    type: a b
     docRef: "http://x.test/a-b"
   }
 ```
 
 ### Names
 
-A name is printed as written, quoted or not: mermaid.js reads `"r"` and `r` as
-the same name, and the quotes are kept. [fixture:
-names/quoted-and-unquoted-kept] An unquoted name may hold whitespace between its
-words, which is part of the name and stays as written; the whitespace at its
-ends is not, and is dropped. [fixture: names/inner-whitespace-kept] [fixture:
-names/outer-whitespace-dropped] A string holds any character, such as `-`, `:`,
-`,`, and `{`, and an unquoted name holds `#`, `.`, and `}` after its first
-character. [fixture: names/string-names-with-special-characters] [fixture:
+A name in quotes that is one plain word is printed without them: mermaid.js
+reads `"r"` and `r` as the same name, and the examples in its documentation
+write the names without quotes (see
+[The quotes of a text](./compatibility.md#the-quotes-of-a-text)). A name that is
+a keyword of the diagram, or holds a `-` or another character that is not a
+letter, a digit, or `_`, stays in quotes. [fixture:
+names/plain-names-without-quotes] [fixture: names/names-that-need-quotes] An
+unquoted name may hold whitespace between its words, which is part of the name
+and stays as written; the whitespace at its ends is not, and is dropped.
+[fixture: names/inner-whitespace-kept] [fixture: names/outer-whitespace-dropped]
+A string holds any character, such as `-`, `:`, `,`, and `{`, and an unquoted
+name holds `#`, `.`, and `}` after its first character. [fixture:
+names/string-names-with-special-characters] [fixture:
 names/special-characters-in-unquoted-names]
 
 Input
-([names/quoted-and-unquoted-kept-input.mmd](../tests/fixtures/requirement/names/quoted-and-unquoted-kept-input.mmd)):
+([names/plain-names-without-quotes-input.mmd](../tests/fixtures/requirement/names/plain-names-without-quotes-input.mmd)):
 
 ```mmd
 requirementDiagram
@@ -303,17 +313,17 @@ style "r" fill:red
 ```
 
 Output
-([names/quoted-and-unquoted-kept-output.mmd](../tests/fixtures/requirement/names/quoted-and-unquoted-kept-output.mmd)):
+([names/plain-names-without-quotes-output.mmd](../tests/fixtures/requirement/names/plain-names-without-quotes-output.mmd)):
 
 ```mmd
 requirementDiagram
-  requirement "r" {
+  requirement r {
   }
   requirement s {
   }
-  "r" - satisfies -> s
-  s - satisfies -> "r"
-  style "r" fill: red
+  r - satisfies -> s
+  s - satisfies -> r
+  style r fill: red
 ```
 
 Input
@@ -333,7 +343,7 @@ Output
 requirementDiagram
   requirement "a - b: c, d {" {
   }
-  "x  y" - satisfies -> "z"
+  "x  y" - satisfies -> z
 ```
 
 ### Relationship spacing
@@ -468,7 +478,7 @@ Output
 
 ```mmd
 requirementDiagram
-  requirement r:::"a b","c" {
+  requirement r:::"a b",c {
   }
   r:::"d"
 ```
@@ -556,7 +566,7 @@ Output
 requirementDiagram
   classDef a,b,c fill: red
   classDef default fill: #f9f, stroke-width: 4px
-  classDef "d" fill: red
+  classDef d fill: red
 ```
 
 Input
@@ -798,7 +808,7 @@ requirementDiagram
   classDef c fill: red
   "r":::c
   class r c
-  "r" - satisfies -> b
+  r - satisfies -> b
   class r c
   "r":::d
 ```
@@ -939,7 +949,7 @@ Output
 requirementDiagram
   requirement r {
     accDescr {}
-    id: "1"
+    id: 1
     accDescr {}
     accDescr {}
     text: t
@@ -1194,7 +1204,7 @@ requirementDiagram
   style r fill: red
   "r":::c
   class r c
-  "r" - satisfies -> b
+  r - satisfies -> b
 ```
 
 Input

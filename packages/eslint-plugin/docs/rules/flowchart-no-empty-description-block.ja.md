@@ -72,7 +72,8 @@ flowchart LR
 flowchart LR
   A
   accDescr {
-    y
+    first line
+    second line
   }
 ```
 

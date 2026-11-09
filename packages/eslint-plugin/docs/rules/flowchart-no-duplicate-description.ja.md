@@ -54,8 +54,9 @@ flowchart LR
 flowchart LR
   accDescr {
     first
+    second
   }
-  accDescr: second
+  accDescr: third
 ```
 
 ```mmd

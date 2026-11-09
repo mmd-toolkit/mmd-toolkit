@@ -41,11 +41,6 @@ mermaid.js がエラーを出すので、この規則は報告しない。
 閉じる `}` がその例外に当たらなければ報告する。
 規則はそれを形と見分けられない。
 
-整形ツールは、テキストが 1 行のブロック `accDescr { text }` を、
-`accDescr: text` と書く。
-`{` と同じ行で閉じたブロックの例は、`}` が立つ行を示すので、
-書いたまま示している。
-
 この規則に**反する**コードの例:
 
 ```mmd
@@ -67,12 +62,14 @@ agentflow-beta TB
 
 この規則に**従う**コードの例:
 
-<!-- prettier-ignore -->
 ```mmd
 %% eslint @mmd-toolkit/agentflow-no-unclosed-description-block: error
 agentflow-beta TB
   A --> B
-  accDescr { x }
+  accDescr {
+    first line
+    second line
+  }
   B --> C
 ```
 

@@ -59,6 +59,7 @@ treeView-beta
   accDescr: First
   accDescr {
     Second
+    Third
   }
   root/
 ```
@@ -70,6 +71,7 @@ treeView-beta
 treeView-beta
   accDescr {
     Project files
+    and folders
   }
   root/
 ```

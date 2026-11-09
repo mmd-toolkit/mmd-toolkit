@@ -38,11 +38,6 @@ mermaid.js はエラーなしにそこでブロックを閉じ、
 
 閉じる `}` のないブロックは、mermaid.js がエラーを出すので報告しない。
 
-整形ツールは、テキストが 1 行のブロック `accDescr { text }` を、
-`accDescr: text` と書く。
-`{` と同じ行で閉じたブロックの例は、`}` が立つ行を示すので、
-書いたまま示している。
-
 この規則に**反する**コードの例:
 
 ```mmd
@@ -55,11 +50,13 @@ radar-beta
 
 この規則に**従う**コードの例:
 
-<!-- prettier-ignore -->
 ```mmd
 %% eslint @mmd-toolkit/radar-no-unclosed-description-block: error
 radar-beta
-  accDescr { first }
+  accDescr {
+    first line
+    second line
+  }
   axis A, B, C
   curve sales{1, 2, 3}
 ```

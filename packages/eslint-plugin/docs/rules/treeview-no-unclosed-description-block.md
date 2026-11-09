@@ -27,10 +27,6 @@ such as `"accDescr { Project files"` is written as a name and is not reported. A
 `}` on a later line, even in a file name such as `a}b`, closes the block and
 makes the preceding lines its description; such a block is not reported.
 
-The formatter prints a block with its text on one line, `accDescr { text }`, as
-`accDescr: text`. The example of a block closed on the line of its `{` is shown
-as written, because the line of the `}` is what it shows.
-
 Examples of **incorrect** code for this rule:
 
 ```mmd
@@ -43,13 +39,14 @@ treeView-beta
 
 Examples of **correct** code for this rule:
 
-<!-- prettier-ignore -->
 ```mmd
 %% eslint @mmd-toolkit/treeview-no-unclosed-description-block: error
 treeView-beta
-  accDescr { Project files }
+  accDescr {
+    Project files
+    and folders
+  }
   root/
-    file
 ```
 
 ## Options

@@ -44,10 +44,12 @@ LF、CRLF、CR の改行は、LF として比べる。
 ```mmd
 %% eslint @mmd-toolkit/timeline-no-duplicate-description: error
 timeline
-  accDescr: D
+  accDescr: first
   accDescr {
-    E
+    second
+    third
   }
+  2020 : Launch
 ```
 
 この規則に**従う**コードの例:

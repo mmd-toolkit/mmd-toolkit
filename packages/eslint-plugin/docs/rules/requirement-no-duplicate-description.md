@@ -47,6 +47,7 @@ requirementDiagram
   accDescr: first
   accDescr {
     second
+    third
   }
   requirement r {
     id: 1

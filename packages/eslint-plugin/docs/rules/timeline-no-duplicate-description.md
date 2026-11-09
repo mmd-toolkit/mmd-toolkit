@@ -43,10 +43,12 @@ Examples of **incorrect** code for this rule:
 ```mmd
 %% eslint @mmd-toolkit/timeline-no-duplicate-description: error
 timeline
-  accDescr: D
+  accDescr: first
   accDescr {
-    E
+    second
+    third
   }
+  2020 : Launch
 ```
 
 Examples of **correct** code for this rule:

@@ -52,6 +52,7 @@ treeView-beta
 treeView-beta
   accDescr {
     Project files
+    and folders
   }
   root/
 ```

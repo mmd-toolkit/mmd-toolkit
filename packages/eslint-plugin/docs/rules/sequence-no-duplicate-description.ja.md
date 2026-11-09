@@ -55,8 +55,9 @@ sequenceDiagram
   A ->> B: x
   accDescr {
     first
+    second
   }
-  accDescr: second
+  accDescr: third
 ```
 
 ```mmd

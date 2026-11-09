@@ -65,7 +65,8 @@ stateDiagram-v2
 stateDiagram-v2
   A --> B
   accDescr {
-    y
+    first line
+    second line
   }
 ```
 

@@ -39,10 +39,6 @@ A description that intentionally includes a `{` on a later line is also reported
 when its closer does not meet that exception: the rule cannot distinguish it
 from a shape.
 
-The formatter prints a block with its text on one line, `accDescr { text }`, as
-`accDescr: text`. The example of a block closed on the line of its `{` is shown
-as written, because the line of the `}` is what it shows.
-
 Examples of **incorrect** code for this rule:
 
 ```mmd
@@ -64,12 +60,14 @@ agentflow-beta TB
 
 Examples of **correct** code for this rule:
 
-<!-- prettier-ignore -->
 ```mmd
 %% eslint @mmd-toolkit/agentflow-no-unclosed-description-block: error
 agentflow-beta TB
   A --> B
-  accDescr { x }
+  accDescr {
+    first line
+    second line
+  }
   B --> C
 ```
 

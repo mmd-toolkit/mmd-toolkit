@@ -71,7 +71,8 @@ Examples of **correct** code for this rule:
 flowchart LR
   A
   accDescr {
-    y
+    first line
+    second line
   }
 ```
 

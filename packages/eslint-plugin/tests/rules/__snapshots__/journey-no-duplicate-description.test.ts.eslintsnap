@@ -11,11 +11,13 @@ Code:
     |   ^~~~~~~~~~\ [1]
   4 |     second
     | ~~~~~~~~~~\ [1]
-  5 |   }
+  5 |     third
+    | ~~~~~~~~~\ [1]
+  6 |   }
     | ~~~ [1]
-  6 |   section Work
-  7 |     Make tea: 5: Me
-  8 |
+  7 |   section Work
+  8 |     Make tea: 5: Me
+  9 |
 
 [1] mermaid.js replaces the earlier description with the one of this `accDescr`.
     Suggestions:
@@ -31,10 +33,11 @@ Code:
           1 | journey
           2 |   accDescr {
           3 |     second
-          4 |   }
-          5 |   section Work
-          6 |     Make tea: 5: Me
-          7 |
+          4 |     third
+          5 |   }
+          6 |   section Work
+          7 |     Make tea: 5: Me
+          8 |
 ---
 
 

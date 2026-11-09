@@ -196,6 +196,12 @@ mermaid.js の文書がフィールドをそう書き、journey も値の前に�
 [fixture: fields/value-outer-whitespace-dropped]
 [fixture: fields/value-inner-runs-collapsed]
 [fixture: fields/string-values-runs-collapsed]
+引用符で囲まれた `id`、`text`、`type`、`docRef` の値が、英字、数字、
+`_` からなる語を空白で区切ったもので、最初の語が図のキーワードでなければ、
+引用符なしで印字します。
+`text: "the test text"` は `text: the test text` と印字し、
+`text: "risk high"` は引用符を残します。
+[fixture: fields/plain-values-without-quotes]
 引用符のない値の中の `#`、`%`、`;` は値の文字で、
 コメントの始まりではありません。 [fixture: fields/special-characters-in-values]
 
@@ -269,20 +275,24 @@ docref: "http://x.test/a-b"
 ```mmd
 requirementDiagram
   requirement r {
-    id: "1"
+    id: 1
     text: " a: b, c "
   }
   element e {
-    type: "a b"
+    type: a b
     docRef: "http://x.test/a-b"
   }
 ```
 
 ### 名前
 
-名前は、引用符の有無を含め、書かれたまま印字します。
-mermaid.js は `"r"` と `r` を同じ名前として読みますが、引用符は書き換えません。
-[fixture: names/quoted-and-unquoted-kept]
+引用符で囲まれた名前が平易な 1 語なら、引用符なしで印字します。
+mermaid.js は `"r"` と `r` を同じ名前として読み、
+その文書の例は名前を引用符なしで書いています。
+（[The quotes of a text](./compatibility.ja.md#the-quotes-of-a-text)を参照）。
+図のキーワードである名前や、`-` など、英字、数字、`_` 以外の文字を含む名前は、
+引用符を残します。 [fixture: names/plain-names-without-quotes]
+[fixture: names/names-that-need-quotes]
 引用符のない名前は、語の間に空白を持てます。
 それは名前の一部なので書かれたまま残し、
 両端の空白は名前に入らないので落とします。
@@ -293,7 +303,7 @@ mermaid.js は `"r"` と `r` を同じ名前として読みますが、引用符
 [fixture: names/special-characters-in-unquoted-names]
 
 入力
-([names/quoted-and-unquoted-kept-input.mmd](../tests/fixtures/requirement/names/quoted-and-unquoted-kept-input.mmd)):
+([names/plain-names-without-quotes-input.mmd](../tests/fixtures/requirement/names/plain-names-without-quotes-input.mmd)):
 
 ```mmd
 requirementDiagram
@@ -307,17 +317,17 @@ style "r" fill:red
 ```
 
 出力
-([names/quoted-and-unquoted-kept-output.mmd](../tests/fixtures/requirement/names/quoted-and-unquoted-kept-output.mmd)):
+([names/plain-names-without-quotes-output.mmd](../tests/fixtures/requirement/names/plain-names-without-quotes-output.mmd)):
 
 ```mmd
 requirementDiagram
-  requirement "r" {
+  requirement r {
   }
   requirement s {
   }
-  "r" - satisfies -> s
-  s - satisfies -> "r"
-  style "r" fill: red
+  r - satisfies -> s
+  s - satisfies -> r
+  style r fill: red
 ```
 
 入力
@@ -337,7 +347,7 @@ requirement "a - b: c, d {" {
 requirementDiagram
   requirement "a - b: c, d {" {
   }
-  "x  y" - satisfies -> "z"
+  "x  y" - satisfies -> z
 ```
 
 ### 関係文の空白
@@ -478,7 +488,7 @@ r ::: "d"
 
 ```mmd
 requirementDiagram
-  requirement r:::"a b","c" {
+  requirement r:::"a b",c {
   }
   r:::"d"
 ```
@@ -574,7 +584,7 @@ classDef "d" fill:red
 requirementDiagram
   classDef a,b,c fill: red
   classDef default fill: #f9f, stroke-width: 4px
-  classDef "d" fill: red
+  classDef d fill: red
 ```
 
 入力
@@ -819,7 +829,7 @@ requirementDiagram
   classDef c fill: red
   "r":::c
   class r c
-  "r" - satisfies -> b
+  r - satisfies -> b
   class r c
   "r":::d
 ```
@@ -965,7 +975,7 @@ risk: low accDescr {   }
 requirementDiagram
   requirement r {
     accDescr {}
-    id: "1"
+    id: 1
     accDescr {}
     accDescr {}
     text: t
@@ -1228,7 +1238,7 @@ requirementDiagram
   style r fill: red
   "r":::c
   class r c
-  "r" - satisfies -> b
+  r - satisfies -> b
 ```
 
 入力

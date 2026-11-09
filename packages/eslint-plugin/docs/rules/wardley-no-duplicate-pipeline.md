@@ -39,10 +39,10 @@ Examples of **incorrect** code for this rule:
 wardley-beta
   component Database [0.4, 0.8]
   pipeline Database {
-    component SQL [0.5]
+    component "SQL" [0.5]
   }
   pipeline Database {
-    component Cloud [0.9]
+    component "Cloud" [0.9]
   }
 ```
 
@@ -53,8 +53,8 @@ Examples of **correct** code for this rule:
 wardley-beta
   component Database [0.4, 0.8]
   pipeline Database {
-    component SQL [0.5]
-    component Cloud [0.9]
+    component "SQL" [0.5]
+    component "Cloud" [0.9]
   }
 ```
 
