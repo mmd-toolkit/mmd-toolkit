@@ -283,7 +283,7 @@ pie/description-blocks/block-columns] [fixture:
 pie/description-blocks/block-opener-newline] [fixture:
 pie/description-blocks/block-comment-only] [fixture:
 pie/description-blocks/block-directive-only] [fixture:
-pie/description-blocks/block-inner-collapse-kept] [fixture:
+pie/description-blocks/block-inner-runs-collapsed] [fixture:
 pie/description-blocks/block-opener-trivia] [fixture:
 pie/description-blocks/block-asymmetric] [fixture:
 pie/description-blocks/block-inline-leading-lines] [fixture:

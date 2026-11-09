@@ -1300,7 +1300,7 @@ stateDiagram-v2
 `accDescr { ... }` の本文行は文より 1 段深くそろえ、
 独立した `}` は文と同じ段に置きます。
 Mermaid が説明からこの字下げを除くためです。 [fixture: multi-line-values/kept]
-[fixture: multi-line-values/accdescr-block-single-line-kept]
+[fixture: multi-line-values/accdescr-block-single-line]
 [fixture: multi-line-values/accdescr-block-empty-and-comment-lines-kept]
 閉じたブロックに本文がなければ、内側を `{}` と印字します。
 `accDescr { }` は `accDescr {}` になり、空白の連続、改行、
@@ -1328,8 +1328,8 @@ agentflow、usecase に合わせます。
 [fixture: multi-line-values/floating-note-empty-line-kept]
 
 1 行のブロックは、
-[A description block on one line](./compatibility.ja.md#a-description-block-on-one-line)
-に従います。 [fixture: multi-line-values/block-text-on-one-line-padded]
+[1 行の説明ブロック](./compatibility.ja.md#1-行の説明ブロック) に従います。
+[fixture: multi-line-values/block-text-on-one-line-padded]
 
 入力
 ([multi-line-values/kept-input.mmd](../tests/fixtures/state/multi-line-values/kept-input.mmd)):

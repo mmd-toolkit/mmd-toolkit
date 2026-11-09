@@ -192,7 +192,7 @@ style:#x;y,b,1
 mermaid.js は引用符の有無に関わらず欄の両端の空白を落とし、
 mermaid.js の文書の例では、source と value はすべて引用符なしで、
 link の target は引用符なしが 83 回、引用符付きが 4 回です。
-（[The quotes of a text](./compatibility.ja.md#the-quotes-of-a-text)を参照）。
+（[テキストの引用符](./compatibility.ja.md#テキストの引用符)を参照）。
 そのため、`"a",b,"1"` は `a,b,1`、`"a b"` は `a b`、
 `" a "` は `a` と印字します。
 テキストが平易でない欄は、引用符を残します。

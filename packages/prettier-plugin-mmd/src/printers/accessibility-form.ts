@@ -74,7 +74,7 @@ function isDescriptionBlock(
     statement?.type?.endsWith("AccDescrBlockStatement") === true &&
     "value" in statement &&
     (statement.value === null ||
-      (typeof statement.value === "object" && "range" in statement.value!)) &&
+      (typeof statement.value === "object" && "range" in statement.value)) &&
     (!("closed" in statement) || typeof statement.closed === "boolean")
   )
 }
@@ -138,30 +138,39 @@ export function printAccessibilityLine(
   )
   const end = tokens.findIndex((token) => token.range[1] === statement.range[1])
   const parts = index === -1 || end === -1 ? [] : tokens.slice(index, end + 1)
+  // A directive after the text and before the `}` is printed after the text,
+  // as the form with the `:` prints it in every diagram type. A directive
+  // before the `{` or between the `{` and the text stays where it is: the form
+  // with the `:` prints the whitespace around it by a rule of the diagram type.
+  const close = parts.at(-1)
   const inner = parts.slice(2, -1)
+  const last = inner.findLastIndex((token) => token.type === "RawText")
+  const afterText = inner.slice(last + 1)
   if (
-    parts.length < 4 ||
+    close === undefined ||
     textOf(source, parts[1]) !== "{" ||
-    textOf(source, parts.at(-1)!) !== "}" ||
+    textOf(source, close) !== "}" ||
+    inner[0]?.type !== "RawText" ||
     inner.some(
       (token) => token.type !== "RawText" && token.type !== "Directive",
     ) ||
-    inner[0]?.type !== "RawText" ||
+    afterText.some((token) => token.type !== "Directive") ||
     inner[0].range[0] !== value.range[0] ||
-    inner.at(-1)?.type !== "RawText" ||
-    inner.at(-1)!.range[1] !== value.range[1] ||
-    !isWhitespaceBetween(
-      source,
-      parts[0].range[1],
-      parts[1].range[0],
-      omitted,
-    ) ||
-    !isWhitespaceBetween(source, parts[1].range[1], value.range[0], omitted) ||
-    !isWhitespaceBetween(
-      source,
-      value.range[1],
-      parts.at(-1)!.range[0],
-      omitted,
+    inner[last].range[1] !== value.range[1] ||
+    ![
+      [parts[0], parts[1], inner[0]],
+      [inner[last], ...afterText, close],
+    ].every((run) =>
+      run.every(
+        (token, at) =>
+          at === 0 ||
+          isWhitespaceBetween(
+            source,
+            run[at - 1].range[1],
+            token.range[0],
+            omitted,
+          ),
+      ),
     )
   ) {
     return undefined
@@ -174,13 +183,12 @@ export function printAccessibilityLine(
     return undefined
   }
   const text = source.text.slice(...value.range).trim()
-  // A text on a line of its own in a block is read line by line: a line that
-  // starts with `%%` is a comment, and a line with `direction` is read as the
-  // direction of the diagram by some lexers, which the form with the `:` does
-  // not do.
+  // A text on a line of its own in a block is read line by line: some lexers
+  // read a line with `direction` as the direction of the diagram, which they
+  // do not do for the text of the form with the `:`.
   const onLinesOfItsOwn =
     holdsLineBreak(source.text.slice(parts[1].range[1], value.range[0])) ||
-    holdsLineBreak(source.text.slice(value.range[1], parts.at(-1)!.range[0]))
+    holdsLineBreak(source.text.slice(value.range[1], close.range[0]))
   if (
     text === "" ||
     !inner.some(
@@ -188,8 +196,7 @@ export function printAccessibilityLine(
         token.type === "RawText" && textOf(source, token).trim() !== "",
     ) ||
     holdsLineBreak(text) ||
-    (onLinesOfItsOwn &&
-      (text.startsWith("%%") || text.toLowerCase().includes("direction"))) ||
+    (onLinesOfItsOwn && text.toLowerCase().includes("direction")) ||
     (diagramTypesEndingTextAtPercent.has(source.root.diagramType) &&
       (text.includes("\u2028") || text.includes("\u2029"))) ||
     (diagramTypesEndingTextAtPercent.has(source.root.diagramType) &&
@@ -212,9 +219,18 @@ export function printAccessibilityLine(
   ) {
     return undefined
   }
+  // Whitespace before a directive that follows the text is kept as one space,
+  // or none where the source has none.
+  const trailingDirectives = afterText
+    .map(
+      (token) =>
+        (isWhitespace(source.text[token.range[0] - 1]) ? " " : "") +
+        textOf(source, token),
+    )
+    .join("")
   return `${printedToken(source, parts[0])}: ${
     staysAsWritten(source, ...value.range) ? text : collapseRuns(text)
-  }`
+  }${trailingDirectives}`
 }
 
 /**

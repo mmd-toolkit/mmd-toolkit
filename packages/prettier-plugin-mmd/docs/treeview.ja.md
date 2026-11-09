@@ -1780,11 +1780,17 @@ treeView-beta
 
 ### Description blocks
 
-1 行の説明ブロックは、
-[A description block on one line](./compatibility.ja.md#a-description-block-on-one-line)
-に従います。
-ただし罫線モードでは、1 行のブロックも波括弧を残します。
+1 行の説明ブロックは、罫線モードでも、
+[1 行の説明ブロック](./compatibility.ja.md#1-行の説明ブロック) に従います。
+その場合、キーワードの前と、キーワードと `{` の間にある罫線の文字は、
+印字せずに描き直します。
+本文が罫線の文字を含むブロックと、
+罫線モードで opener の gap を保つブロックは、ブロックのままにします。
+[fixture: treeview/modes/ordinary-block]
 [fixture: treeview/modes/box-common-block-zero-column]
+[fixture: treeview/modes/block-interior-active]
+[fixture: treeview/description-blocks/box-redraw-remove-opener-prefixes]
+[fixture: treeview/description-blocks/block-after-directive]
 普通の空白だけの内部は `{}` です。
 波括弧を残すブロックは、`accDescr` と `{` の間を、
 元が接していても空白 1 つにします。

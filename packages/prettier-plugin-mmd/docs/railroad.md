@@ -1214,10 +1214,10 @@ railroad/description-blocks/ebnf-edges] [fixture:
 railroad/description-blocks/ir-edges] [fixture:
 railroad/description-blocks/peg-edges]
 
-In a block over several lines, ordinary description body and standalone comment
-lines align one level inside the statement: the Db removes indentation after LF.
-Keep line breaks, internal blank lines and trailing whitespace, and align a
-separate closing brace with the statement. [fixture:
+In a block with a text over several lines, ordinary description body and
+standalone comment lines align one level inside the statement: the Db removes
+indentation after LF. Keep line breaks, internal blank lines and trailing
+whitespace, and align a separate closing brace with the statement. [fixture:
 railroad/description-blocks/abnf-lines] [fixture:
 railroad/description-blocks/ebnf-lines] [fixture:
 railroad/description-blocks/ir-lines] [fixture:

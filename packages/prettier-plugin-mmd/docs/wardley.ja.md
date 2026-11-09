@@ -152,7 +152,7 @@ component、anchor、link、`evolve` 文、pipeline、evolution の stage の名
 引用符なしで読める場合に引用符なしで印字し、accelerator、deaccelerator、
 pipeline の component の名前は、
 mermaid.js の文書の例と同じく引用符で囲んで印字します。
-（[The quotes of a text](./compatibility.ja.md#the-quotes-of-a-text)を参照）。
+（[テキストの引用符](./compatibility.ja.md#テキストの引用符)を参照）。
 `component "Customer"` は `component Customer` と印字し、
 `accelerator Market` は `accelerator "Market"` と印字します。
 引用符なしで読める名前は、ASCII の英字で始まり、ASCII の英字、数字、
@@ -622,8 +622,8 @@ accTitle: Value と accDescr: Value は共有の行 layout を使います。
 [fixture: wardley/accessibility/access-empty]
 
 1 行の説明ブロックは、
-[A description block on one line](./compatibility.ja.md#a-description-block-on-one-line)
-に従います。 [fixture: wardley/accessibility/description-tight]
+[1 行の説明ブロック](./compatibility.ja.md#1-行の説明ブロック) に従います。
+[fixture: wardley/accessibility/description-tight]
 [fixture: wardley/accessibility/description-edges]
 [fixture: wardley/accessibility/description-opener-newline]
 

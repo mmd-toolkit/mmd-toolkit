@@ -1646,7 +1646,7 @@ flowchart は最初の形が 14 個、もう一方が 8 個で、2 倍以上で�
 [fixture: flowchart/link-label-form/flowchart-header-both-forms-kept]
 [fixture: flowchart/link-label-form/kept]
 
-### A description block on one line
+### 1 行の説明ブロック
 
 mermaid.js は、`accDescr {text}` と `accDescr: text` を、
 両端の空白を除いた同じアクセシビリティの説明として読み、同じ図を描きます。
@@ -1699,7 +1699,7 @@ mermaid.js は、`accDescr {text}` と `accDescr: text` を、
   コロンの形の本文の後のコメントは、本文の一部になってしまいます。
   規則はどの図種でも同じで、ディレクティブも同じです。
   [fixture: flowchart/accessibility-lines/block-text-beside-directive]
-  [fixture: pie/description-blocks/block-then-comment-kept]
+  [fixture: pie/description-blocks/block-then-comment]
   [fixture: pie/description-blocks/block-trailing-comment]
 - 本文がない場合です。
   [アクセシビリティの行](./flowchart.ja.md#アクセシビリティの行)のとおり、
@@ -1712,7 +1712,7 @@ mermaid.js は、`accDescr {text}` と `accDescr: text` を、
   空のブロックの隣にブロックを残す C4 の行のように、文を同じ行に保つ場合です。
   ブロックは波かっこと本文を保ち、空白は足しません。
   `{a;b}` は `{a;b}` のまま、`{  a;b  }` は `{ a;b }` と印字します。
-  [fixture: flowchart/accessibility-lines/block-text-with-semicolon-kept]
+  [fixture: flowchart/accessibility-lines/block-text-with-semicolon]
   [fixture: flowchart/accessibility-lines/block-text-with-semicolon-ends-collapsed]
   [fixture: flowchart/accessibility-lines/block-on-style-line-kept]
   [fixture: c4/statements-one-per-line/description-null-adjacency]
@@ -1755,7 +1755,7 @@ gitGraph の 5 対も、数、コミット id、要素の id を除くと同じ�
 書き直しませんでした。
 railroad 図は描画せず、Db だけを比べました。
 
-### The quotes of a text
+### テキストの引用符
 
 mermaid.js は、一部のテキストを引用符がある形とない形で同じに読みます。
 sankey 図のリンクの source は、`"a b",c,1` と `a b,c,1` で同じ id です。
@@ -3059,7 +3059,7 @@ Db や字句解析器が読むものは変えません。
   `"a b"` と `a b` は同じテキストではないので、書かれたまま残します。
   文字列の中の空白とタブの連なりは、空白 1 つで印字します。
   1 語のテキストの引用符は、
-  [The quotes of a text](#the-quotes-of-a-text)に従う場合だけ変えます。
+  [テキストの引用符](#テキストの引用符)に従う場合だけ変えます。
   [fixture: quotes/strings-runs-collapsed]
   [fixture: quotes/texts-of-several-words]
   [fixture: multi-line-values/string-with-line-breaks-kept]
@@ -3131,7 +3131,7 @@ Db や字句解析器が読むものは変えません。
   `"a: b"` にはコロンがあり、引用符のないテキストはコロンがあると拒否されます。
   中の空白とタブの連なりは、空白 1 つで印字します。
   平易なテキストの引用符は、
-  [The quotes of a text](#the-quotes-of-a-text)に従って外します。
+  [テキストの引用符](#テキストの引用符)に従って外します。
   [fixture: quotes/strings-runs-collapsed]
   [fixture: quotes/texts-that-need-quotes]
   [fixture: quotes/keywords-and-arrows-in-strings]

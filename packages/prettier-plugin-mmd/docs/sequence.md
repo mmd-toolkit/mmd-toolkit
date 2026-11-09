@@ -1073,7 +1073,7 @@ with a separate `}` at the statement's level, as in
 [flowchart's top-level descriptions](./flowchart.md#multi-line-values). Mermaid
 discards this indentation from the description. [fixture:
 multi-line-values/description-and-data-indented] [fixture:
-multi-line-values/accdescr-block-closing-brace-after-text-kept] [fixture:
+multi-line-values/accdescr-block-closing-brace-after-text] [fixture:
 multi-line-values/accdescr-block-blank-and-comment-lines-kept] [fixture:
 multi-line-values/data-block-in-block-indented] A block without text, whose
 lines are only comment lines, holds no value: its comment lines stand one level

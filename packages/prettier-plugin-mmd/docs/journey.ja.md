@@ -530,10 +530,11 @@ journey
 [fixture: accessibility-statements/keyword-and-colon-over-lines-joined]
 
 1 行のブロックは、
-[A description block on one line](./compatibility.ja.md#a-description-block-on-one-line)
-に従います。 [fixture: accessibility-statements/block-text-on-opening-line]
+[1 行の説明ブロック](./compatibility.ja.md#1-行の説明ブロック) に従います。
+[fixture: accessibility-statements/block-text-on-opening-line]
 
-複数行のブロックの本文は文より 1 段深くし、独立した `}` は文と同じ段に置きます。
+本文が複数行のブロックでは、本文を文より 1 段深くし、
+独立した `}` は文と同じ段に置きます。
 mermaid.js が説明から LF 後の字下げを除くためです。
 [fixture: accessibility-statements/block-lines-kept]
 [fixture: accessibility-statements/block-comment-and-empty-lines-kept]
@@ -754,8 +755,8 @@ journey
 上の規則が当てはまらない所では、文のトークンの間の空白の連続は空白 1 つにし、
 接しているトークンは接したままにします。
 1 行の説明ブロックは、
-[A description block on one line](./compatibility.ja.md#a-description-block-on-one-line)
-に従います。 [fixture: whitespace-between-tokens/description-block-braces]
+[1 行の説明ブロック](./compatibility.ja.md#1-行の説明ブロック) に従います。
+[fixture: whitespace-between-tokens/description-block-braces]
 ヘッダーの行末の空白は落とします。
 [fixture: whitespace-between-tokens/trailing-whitespace-after-header]
 値は整形しません（[タスクのデータ](#タスクのデータ)、

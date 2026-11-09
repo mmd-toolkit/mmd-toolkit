@@ -639,13 +639,14 @@ A block on one line follows
 [A description block on one line](./compatibility.md#a-description-block-on-one-line).
 [fixture: accessibility-statements/block-text-on-the-opening-line]
 
-In a block over several lines, indent the body one level inside the statement
-and align a separate `}` with the statement: mermaid.js discards indentation
-after LF from the description. A block that is not closed runs to the end of the
-text without adding a `}`: mermaid.js reads no text for it, and a `}` that the
-printer wrote would make the block a description (`accDescr {` and `abc` at the
-end of the text have an empty description in the Db, and the same with a `}`
-have `abc`). [fixture: accessibility-statements/block-lines-kept] [fixture:
+In a block with a text over several lines, indent the body one level inside the
+statement and align a separate `}` with the statement: mermaid.js discards
+indentation after LF from the description. A block that is not closed runs to
+the end of the text without adding a `}`: mermaid.js reads no text for it, and a
+`}` that the printer wrote would make the block a description (`accDescr {` and
+`abc` at the end of the text have an empty description in the Db, and the same
+with a `}` have `abc`). [fixture: accessibility-statements/block-lines-kept]
+[fixture:
 accessibility-statements/block-closing-brace-at-the-level-of-the-statement]
 [fixture: accessibility-statements/block-then-statement-on-the-closing-line]
 [fixture: accessibility-statements/block-comment-and-empty-lines-kept] [fixture:

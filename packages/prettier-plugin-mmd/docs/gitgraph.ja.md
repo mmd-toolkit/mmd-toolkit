@@ -266,7 +266,7 @@ gitGraph
 branch・checkout・merge の引用符で囲んだ参照は、
 字句解析器が引用符なしでも全体を読む場合、
 mermaid.js の文書の例と同じく引用符なしで印字します。
-（[The quotes of a text](./compatibility.ja.md#the-quotes-of-a-text)を参照）。
+（[テキストの引用符](./compatibility.ja.md#テキストの引用符)を参照）。
 `branch "dev"` は `branch dev` と印字します。
 引用符なしで読める参照は、ASCII の英字、数字、`_` と、その間の `-`、`.`、
 `/` からなり、ASCII の英字か `_` で始まるものです。
@@ -437,8 +437,7 @@ gitGraph
 [fixture: title-and-common-values/acc-directives-end-blanks-dropped]
 
 1 行の説明ブロックは、
-[A description block on one line](./compatibility.ja.md#a-description-block-on-one-line)
-に従います。
+[1 行の説明ブロック](./compatibility.ja.md#1-行の説明ブロック) に従います。
 波括弧を残すブロックは、通常の gap では、
 接して書かれていても `accDescr` と `{` の間に空白 1 つを置きます。
 保護対象の trivia やセミコロンの配置では、その gap を保ちます。

@@ -522,7 +522,7 @@ quadrantChart
 
 軸、象限、点の引用符で囲まれたテキストは、平易なものなら、
 mermaid.js の文書の例のとおりに、引用符なしで印字します。
-（[The quotes of a text](./compatibility.ja.md#the-quotes-of-a-text)）。
+（[テキストの引用符](./compatibility.ja.md#テキストの引用符)）。
 `quadrant-1 "A"` は `quadrant-1 A` と印字します。
 平易なテキストは、ASCII 英字の単語でできていて、各単語の末尾には数字も使え、
 単語の間は空白 1 つで、
@@ -602,11 +602,11 @@ Db はどちらの連なりも保持します。
 [fixture: titles-and-accessibility-statements/text-that-looks-like-a-statement]
 
 1 行のブロックは、
-[A description block on one line](./compatibility.ja.md#a-description-block-on-one-line)
-に従います。
+[1 行の説明ブロック](./compatibility.ja.md#1-行の説明ブロック) に従います。
 [fixture: titles-and-accessibility-statements/block-text-on-the-opening-line]
 
-複数行のブロックの本文は文より 1 段深くし、独立した `}` は文と同じ段に置きます。
+本文が複数行のブロックでは、本文を文より 1 段深くし、
+独立した `}` は文と同じ段に置きます。
 mermaid.js が説明から LF 後の字下げを除くためです。
 閉じていないブロックは拒否されるので、印字しません。
 [fixture: titles-and-accessibility-statements/block-lines-kept]

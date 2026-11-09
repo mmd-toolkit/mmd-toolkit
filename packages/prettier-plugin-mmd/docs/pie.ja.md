@@ -276,8 +276,7 @@ pie
 ### Description blocks
 
 1 行の説明ブロックは、
-[A description block on one line](./compatibility.ja.md#a-description-block-on-one-line)
-に従います。
+[1 行の説明ブロック](./compatibility.ja.md#1-行の説明ブロック) に従います。
 波括弧を残すブロックは、
 flowchart の[複数行の値](./flowchart.ja.md#複数行の値)を再利用します。
 説明の Db では LF 後の字下げが取り除かれるためです。
@@ -300,7 +299,7 @@ trivia のある内部は残します。
 [fixture: pie/description-blocks/block-opener-newline]
 [fixture: pie/description-blocks/block-comment-only]
 [fixture: pie/description-blocks/block-directive-only]
-[fixture: pie/description-blocks/block-inner-collapse-kept]
+[fixture: pie/description-blocks/block-inner-runs-collapsed]
 [fixture: pie/description-blocks/block-opener-trivia]
 [fixture: pie/description-blocks/block-asymmetric]
 [fixture: pie/description-blocks/block-inline-leading-lines]

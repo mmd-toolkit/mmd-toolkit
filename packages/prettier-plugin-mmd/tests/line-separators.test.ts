@@ -610,12 +610,12 @@ const flowchartExamples: readonly (readonly [string, string, string])[] = [
   [
     "U+2028 in the text of a flowchart description block",
     "flowchart LR\naccDescr {a\u2028b}\nA\n",
-    "flowchart LR\n  accDescr {a\u2028b}\n  A\n",
+    "flowchart LR\n  accDescr: a\u2028b\n  A\n",
   ],
   [
     "U+2029 in the text of a flowchart description block",
     "flowchart LR\naccDescr {a\u2029b}\nA\n",
-    "flowchart LR\n  accDescr {a\u2029b}\n  A\n",
+    "flowchart LR\n  accDescr: a\u2029b\n  A\n",
   ],
   [
     "no-break spaces at the ends of the text of a flowchart description block",
@@ -625,17 +625,37 @@ const flowchartExamples: readonly (readonly [string, string, string])[] = [
   [
     "a no-break space inside the text of a flowchart description block",
     "flowchart LR\naccDescr {a\u00a0b}\nA\n",
-    "flowchart LR\n  accDescr { a\u00a0b }\n  A\n",
+    "flowchart LR\n  accDescr: a\u00a0b\n  A\n",
+  ],
+  [
+    "U+3000 inside the text of a flowchart description block",
+    "flowchart LR\naccDescr {a\u3000b}\nA\n",
+    "flowchart LR\n  accDescr: a\u3000b\n  A\n",
+  ],
+  [
+    "a vertical tab inside the text of a flowchart description block",
+    "flowchart LR\naccDescr {a\u000bb}\nA\n",
+    "flowchart LR\n  accDescr: a\u000bb\n  A\n",
+  ],
+  [
+    "a form feed inside the text of a flowchart description block",
+    "flowchart LR\naccDescr {a\u000cb}\nA\n",
+    "flowchart LR\n  accDescr: a\u000cb\n  A\n",
+  ],
+  [
+    "U+FEFF inside the text of a flowchart description block",
+    "flowchart LR\naccDescr {a\ufeffb}\nA\n",
+    "flowchart LR\n  accDescr: a\ufeffb\n  A\n",
   ],
   [
     "U+2028 before the text of a flowchart description block",
     "flowchart LR\naccDescr {\u2028a}\nA\n",
-    "flowchart LR\n  accDescr {\u2028a}\n  A\n",
+    "flowchart LR\n  accDescr: a\n  A\n",
   ],
   [
     "U+2028 after the text of a flowchart description block",
     "flowchart LR\naccDescr {a\u2028}\nA\n",
-    "flowchart LR\n  accDescr {a\u2028}\n  A\n",
+    "flowchart LR\n  accDescr: a\n  A\n",
   ],
   [
     "U+2028 between the keyword and the brace of a flowchart description block",
@@ -3534,7 +3554,7 @@ const c4Examples: readonly (readonly [string, string, string])[] = [
   [
     "c4: ls-description-block",
     'C4Context\naccDescr { A\u2028B }Person(a,"A")',
-    'C4Context\n  accDescr { A\u2028B }\n  Person(a, "A")\n',
+    'C4Context\n  accDescr: A\u2028B\n  Person(a, "A")\n',
   ],
   [
     "c4: ps-empty-block-gap",

@@ -953,9 +953,9 @@ A block on one line follows
 [A description block on one line](./compatibility.md#a-description-block-on-one-line).
 [fixture: accessibility-statements/block-text-on-opening-line]
 
-In a block over several lines, indent the body one level inside the statement
-and align a separate `}` with the statement: mermaid.js discards indentation
-after LF from the description. [fixture:
+In a block with a text over several lines, indent the body one level inside the
+statement and align a separate `}` with the statement: mermaid.js discards
+indentation after LF from the description. [fixture:
 accessibility-statements/block-lines-kept] [fixture:
 accessibility-statements/block-comment-and-empty-lines-kept] A run of spaces and
 tabs inside the text is printed as one space (see

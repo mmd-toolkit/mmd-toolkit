@@ -1067,8 +1067,8 @@ Mermaid が説明からこの字下げを除くためです。
 [fixture: multi-line-values/generic-in-relation-kept]
 
 1 行のブロックは、
-[A description block on one line](./compatibility.ja.md#a-description-block-on-one-line)
-に従います。 [fixture: multi-line-values/block-text-on-one-line-padded]
+[1 行の説明ブロック](./compatibility.ja.md#1-行の説明ブロック) に従います。
+[fixture: multi-line-values/block-text-on-one-line-padded]
 
 入力
 ([multi-line-values/kept-input.mmd](../tests/fixtures/class/multi-line-values/kept-input.mmd)):

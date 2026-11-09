@@ -1239,9 +1239,7 @@ erDiagram
     two
   }
   subgraph S
-    accDescr {
-  three
-    }
+    accDescr: three
   end
 ```
 
@@ -1266,7 +1264,7 @@ Output
 erDiagram
 accTitle: direction LR
 accDescr: a direction TB
-accDescr { direction RL }
+accDescr: direction RL
   subgraph S
 accTitle: direction BT
     A

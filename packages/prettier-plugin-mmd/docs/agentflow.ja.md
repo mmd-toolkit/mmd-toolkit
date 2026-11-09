@@ -997,8 +997,8 @@ flowchartと同じ理由で同じ規則を使います。
 [fixture: accessibility/empty-block-directive-kept]
 
 1 行のブロックは、
-[A description block on one line](./compatibility.ja.md#a-description-block-on-one-line)
-に従います。 [fixture: accessibility/block-tight-text]
+[1 行の説明ブロック](./compatibility.ja.md#1-行の説明ブロック) に従います。
+[fixture: accessibility/block-tight-text]
 [fixture: accessibility/block-spaced-text]
 [fixture: accessibility/block-padded-text]
 [fixture: accessibility/block-left-padding-only]

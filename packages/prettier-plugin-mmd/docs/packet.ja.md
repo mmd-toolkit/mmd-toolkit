@@ -375,8 +375,7 @@ packet
 ### Description blocks
 
 1 行の説明ブロックは、
-[A description block on one line](./compatibility.ja.md#a-description-block-on-one-line)
-に従います。
+[1 行の説明ブロック](./compatibility.ja.md#1-行の説明ブロック) に従います。
 波括弧を残すブロックは、境界がわかるよう、
 キーワードと開始波括弧の間に空白を 1 つ置きます。
 通常の opener 空白は物理・Unicode 行を越えて結合します。

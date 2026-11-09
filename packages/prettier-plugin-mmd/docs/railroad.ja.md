@@ -1225,8 +1225,7 @@ railroad-peg-beta
 ### 説明ブロック
 
 1 行の説明ブロックは、
-[A description block on one line](./compatibility.ja.md#a-description-block-on-one-line)
-に従います。
+[1 行の説明ブロック](./compatibility.ja.md#1-行の説明ブロック) に従います。
 波括弧を保つブロックでは、`accDescr` と `{` の間に空白 1 つを置きます。
 キーワードと開始括弧の間が空白だけなら、同じ行にまとめます。
 空白だけの内部は、囲む内容がないため `{}` にします。
@@ -1235,7 +1234,7 @@ railroad-peg-beta
 [fixture: railroad/description-blocks/ir-edges]
 [fixture: railroad/description-blocks/peg-edges]
 
-複数行のブロックでは、
+本文が複数行のブロックでは、
 通常の説明本文と独立したコメント行を文より 1 段深くします。
 Db で LF 後の字下げが取り除かれるためです。
 改行、内部の空行、行末空白を保ち、独立した閉じ括弧を文と同じ段にそろえます。

@@ -121,7 +121,7 @@ export const usecaseCases: readonly UsecaseCase[] = [
     name: "usecase: unicode-a11y",
     id: "usecase/line-terminators/unicode-a11y",
     input: "usecase-beta\naccTitle: x\u2028y\naccDescr {x\u2029y}",
-    output: "usecase-beta\n  accTitle: x\u2028y\n  accDescr {x\u2029y}\n",
+    output: "usecase-beta\n  accTitle: x\u2028y\n  accDescr: x\u2029y\n",
     options: {},
   },
   {

@@ -289,7 +289,7 @@ requirementDiagram
 引用符で囲まれた名前が平易な 1 語なら、引用符なしで印字します。
 mermaid.js は `"r"` と `r` を同じ名前として読み、
 その文書の例は名前を引用符なしで書いています。
-（[The quotes of a text](./compatibility.ja.md#the-quotes-of-a-text)を参照）。
+（[テキストの引用符](./compatibility.ja.md#テキストの引用符)を参照）。
 図のキーワードである名前や、`-` など、英字、数字、`_` 以外の文字を含む名前は、
 引用符を残します。 [fixture: names/plain-names-without-quotes]
 [fixture: names/names-that-need-quotes]
@@ -1034,8 +1034,8 @@ LF 直後の ASCII 空白とタブだけを置き換えます。
 [fixture: accessibility-statements/block-comment-and-empty-lines-kept]
 
 1 行のブロックは、
-[A description block on one line](./compatibility.ja.md#a-description-block-on-one-line)
-に従います。 [fixture: accessibility-statements/block-text-on-opening-line]
+[1 行の説明ブロック](./compatibility.ja.md#1-行の説明ブロック) に従います。
+[fixture: accessibility-statements/block-text-on-opening-line]
 
 字句解析器は、続く文の規則より前に、
 `accTitle` と `accDescr` の後に方向の行を読みます。
@@ -1114,7 +1114,7 @@ accDescr {
 requirementDiagram
 accTitle: direction LR
 accDescr: direction TB
-accDescr { direction RL }
+accDescr: direction RL
   accDescr {
     direction BT
   }

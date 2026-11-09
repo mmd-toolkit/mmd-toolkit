@@ -1435,8 +1435,8 @@ usecaseのDbが同じ形に従います。 [fixture: accessibility-lines/empty-b
 [fixture: multi-line-values/accdescr-block-comment-only]
 
 1 行のブロックは、
-[A description block on one line](./compatibility.ja.md#a-description-block-on-one-line)
-に従います。 [fixture: accessibility-lines/block-tight-text]
+[1 行の説明ブロック](./compatibility.ja.md#1-行の説明ブロック) に従います。
+[fixture: accessibility-lines/block-tight-text]
 [fixture: accessibility-lines/block-spaced-text]
 [fixture: accessibility-lines/block-padded-text]
 [fixture: accessibility-lines/block-left-padding-only]
@@ -2019,8 +2019,8 @@ subgraph の中では、本文があるブロックの原文が字下げごと�
 波括弧の内側に空白を 1 つずつ置きます。
 [fixture: multi-line-values/accdescr-block-text-starts-on-brace-line]
 1 行のブロックは、
-[A description block on one line](./compatibility.ja.md#a-description-block-on-one-line)
-に従い、trivia のない空ブロックは、
+[1 行の説明ブロック](./compatibility.ja.md#1-行の説明ブロック) に従い、
+trivia のない空ブロックは、
 [アクセシビリティの行](#アクセシビリティの行)に従います。
 テキストがなく、コメント行だけを持つブロックは、値を持ちません。
 そのコメント行は、文の中のコメント行と同じく、

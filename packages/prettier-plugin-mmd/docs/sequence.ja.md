@@ -1128,15 +1128,15 @@ sequenceDiagram
 [test: sequence Unicode and tab interiors]
 コメントや directive があるブロックの内容と改行は保ちます。
 1 行のブロックは、
-[A description block on one line](./compatibility.ja.md#a-description-block-on-one-line)
-に従います。 [fixture: multi-line-values/block-text-on-one-line-padded]
+[1 行の説明ブロック](./compatibility.ja.md#1-行の説明ブロック) に従います。
+[fixture: multi-line-values/block-text-on-one-line-padded]
 
 `accDescr { ... }` の本文行は文より 1 段深くそろえ、
 独立した `}` は文と同じ段に置きます。
 [flowchart のトップレベルの説明](./flowchart.ja.md#複数行の値)と同じく、
 Mermaid が説明からこの字下げを除くためです。
 [fixture: multi-line-values/description-and-data-indented]
-[fixture: multi-line-values/accdescr-block-closing-brace-after-text-kept]
+[fixture: multi-line-values/accdescr-block-closing-brace-after-text]
 [fixture: multi-line-values/accdescr-block-blank-and-comment-lines-kept]
 [fixture: multi-line-values/data-block-in-block-indented]
 テキストがなく、コメント行だけを持つブロックは、値を持ちません。

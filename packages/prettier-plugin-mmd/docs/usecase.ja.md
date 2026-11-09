@@ -812,8 +812,8 @@ Mermaid が説明から LF 後の字下げを除くためです。
 [fixture: direction-and-accessibility/block-text-on-its-own-line]
 
 1 行のブロックは、
-[A description block on one line](./compatibility.ja.md#a-description-block-on-one-line)
-に従います。 [fixture: direction-and-accessibility/keyword-brace-touching]
+[1 行の説明ブロック](./compatibility.ja.md#1-行の説明ブロック) に従います。
+[fixture: direction-and-accessibility/keyword-brace-touching]
 [fixture: direction-and-accessibility/keyword-brace-space]
 [fixture: direction-and-accessibility/keyword-brace-run]
 [test: accessibility revisions: usecase keyword-brace-tab]

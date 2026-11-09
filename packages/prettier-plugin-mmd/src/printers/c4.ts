@@ -1,6 +1,7 @@
 import type { AstPath, Doc, ParserOptions } from "prettier"
 import type { C4Statement } from "@mmd-toolkit/ast"
 import type { MermaidAst } from "../parser.ts"
+import { printAccessibilityLine } from "./accessibility-form.ts"
 import { printAtoms } from "./atoms.ts"
 import type { AtomLayout } from "./atoms.ts"
 import {
@@ -12,7 +13,11 @@ import {
 } from "./blocks.ts"
 import type { BlockBounds, BlockRules, PrintedBlock } from "./blocks.ts"
 import { c4KeptGapEnd, findC4KeptLines } from "./c4-kept-lines.ts"
-import { semicolonSegmentEnd, styleRuleStretchEnd } from "./kept-lines.ts"
+import {
+  lineStartOf,
+  semicolonSegmentEnd,
+  styleRuleStretchEnd,
+} from "./kept-lines.ts"
 import {
   c4BoundaryBraces,
   classifyC4Statement,
@@ -73,6 +78,7 @@ function printStatements(
   keepsOpeningLine = true,
 ): PrintedBlock {
   const units = groupC4Units(source, statements)
+  const kept = findC4KeptLines(source)
   return printBlock(
     units.map((unit) =>
       unit.statements.map((statement, index) => {
@@ -92,6 +98,18 @@ function printStatements(
                   (start) => styleRuleStretchEnd(source, start),
                 )
         const classified = classifyC4Statement(statement)
+        // The last statement of a line that holds an empty block and a block
+        // before it (`accDescr {}accDescr {D}`) is printed with the colon too.
+        const lineStart = lineStartOf(source, statement.range[0])
+        const line =
+          unit.statements.length > 1 && index === unit.statements.length - 1
+            ? printAccessibilityLine(
+                source,
+                statement,
+                kept.joined.has(lineStart) || kept.verbatim.has(lineStart),
+              )
+            : undefined
+        if (line !== undefined) return [before, line]
         if (classified.kind !== "boundary")
           return [
             before,

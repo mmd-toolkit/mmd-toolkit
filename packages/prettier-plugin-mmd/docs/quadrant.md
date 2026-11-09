@@ -580,10 +580,10 @@ A block on one line follows
 [A description block on one line](./compatibility.md#a-description-block-on-one-line).
 [fixture: titles-and-accessibility-statements/block-text-on-the-opening-line]
 
-In a block over several lines, indent the body one level inside the statement
-and align a separate `}` with the statement: mermaid.js discards indentation
-after LF from the description. A block that is not closed makes the input
-rejected, so it is not printed. [fixture:
+In a block with a text over several lines, indent the body one level inside the
+statement and align a separate `}` with the statement: mermaid.js discards
+indentation after LF from the description. A block that is not closed makes the
+input rejected, so it is not printed. [fixture:
 titles-and-accessibility-statements/block-lines-kept] [fixture:
 titles-and-accessibility-statements/block-closing-brace-at-the-level-of-the-statement]
 [fixture:

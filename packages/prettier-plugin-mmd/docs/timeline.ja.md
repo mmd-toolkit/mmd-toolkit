@@ -778,11 +778,11 @@ journey と同じ形です。
 [fixture: accessibility-statements/special-characters-in-text]
 
 1 行のブロックは、
-[A description block on one line](./compatibility.ja.md#a-description-block-on-one-line)
-に従います。 [fixture: accessibility-statements/block-text-on-opening-line]
+[1 行の説明ブロック](./compatibility.ja.md#1-行の説明ブロック) に従います。
+[fixture: accessibility-statements/block-text-on-opening-line]
 [fixture: accessibility-statements/block-inner-runs-collapsed]
 
-複数行のブロックでは、後ろのテキスト行はその文より 1 段深く置き、
+本文が複数行のブロックでは、後ろのテキスト行はその文より 1 段深く置き、
 独立した `}` はその文の段に置きます（[複数行の値](#複数行の値)を参照）。
 [fixture: accessibility-statements/block-lines-kept]
 [fixture: accessibility-statements/block-comment-and-empty-lines-kept]
@@ -1048,8 +1048,8 @@ timeline
 文のトークンの間の空白の並びを空白 1 つにし、
 接しているトークンは接したままにします。
 1 行の説明ブロックは、
-[A description block on one line](./compatibility.ja.md#a-description-block-on-one-line)
-に従います。 [fixture: whitespace-between-tokens/description-block-braces]
+[1 行の説明ブロック](./compatibility.ja.md#1-行の説明ブロック) に従います。
+[fixture: whitespace-between-tokens/description-block-braces]
 ヘッダーの行末の空白は落とします。
 [fixture: whitespace-between-tokens/trailing-whitespace-after-header]
 値は整形しません。

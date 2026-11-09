@@ -83,11 +83,13 @@ const cases: readonly MarkdownCase[] = [
   },
   {
     name: "treeview Markdown: description",
-    input: "```mermaid\ntreeView-beta\naccDescr {\n text\n}\nBlock\n```\n",
+    input:
+      "```mermaid\ntreeView-beta\naccDescr {\n text\n more\n}\nBlock\n```\n",
     output:
-      "```mermaid\ntreeView-beta\n  accDescr {\n    text\n  }\n  Block\n```\n",
-    payloadInput: "treeView-beta\naccDescr {\n text\n}\nBlock",
-    payloadOutput: "treeView-beta\n  accDescr {\n    text\n  }\n  Block\n",
+      "```mermaid\ntreeView-beta\n  accDescr {\n    text\n    more\n  }\n  Block\n```\n",
+    payloadInput: "treeView-beta\naccDescr {\n text\n more\n}\nBlock",
+    payloadOutput:
+      "treeView-beta\n  accDescr {\n    text\n    more\n  }\n  Block\n",
     options: {},
   },
   {

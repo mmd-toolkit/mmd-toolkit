@@ -754,8 +754,8 @@ A block on one line follows
 [fixture: accessibility-statements/block-text-on-opening-line] [fixture:
 accessibility-statements/block-inner-runs-collapsed]
 
-In a block over several lines, later text lines stand one level inside the
-statement and a separate `}` stands at its level (see
+In a block with a text over several lines, later text lines stand one level
+inside the statement and a separate `}` stands at its level (see
 [Multi-line values](#multi-line-values)). [fixture:
 accessibility-statements/block-lines-kept] [fixture:
 accessibility-statements/block-comment-and-empty-lines-kept] A directive around

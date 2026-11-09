@@ -1226,7 +1226,7 @@ As in [flowchart's top-level descriptions](./flowchart.md#multi-line-values),
 align the lines of an `accDescr { ... }` body one step inside its statement,
 with a separate `}` at the statement's level. Mermaid discards this indentation
 from the description. [fixture: multi-line-values/kept] [fixture:
-multi-line-values/accdescr-block-single-line-kept] [fixture:
+multi-line-values/accdescr-block-single-line] [fixture:
 multi-line-values/accdescr-block-empty-and-comment-lines-kept] A closed block
 with no text prints `{}` internally: `accDescr { }` becomes `accDescr {}`,
 including whitespace runs, line breaks and Unicode whitespace (also U+2028 and

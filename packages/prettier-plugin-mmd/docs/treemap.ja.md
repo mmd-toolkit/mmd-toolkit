@@ -672,8 +672,7 @@ treemap
 ### Description blocks
 
 1 行の説明ブロックは、
-[A description block on one line](./compatibility.ja.md#a-description-block-on-one-line)
-に従います。
+[1 行の説明ブロック](./compatibility.ja.md#1-行の説明ブロック) に従います。
 波括弧を残すブロックは、`accDescr` と `{` の間を、
 元が接していても空白 1 つにします。
 キーワードと本文の開始を見分けやすくするためです。

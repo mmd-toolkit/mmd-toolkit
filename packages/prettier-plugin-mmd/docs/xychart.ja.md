@@ -541,7 +541,7 @@ xychart
 チャートの title、軸の title、line の title は、1 語なら引用符で囲んで印字し、
 分類は、1 語なら引用符なしで印字します。
 mermaid.js の文書の例が使う形です（詳しくは、
-[The quotes of a text](./compatibility.ja.md#the-quotes-of-a-text)を参照）。
+[テキストの引用符](./compatibility.ja.md#テキストの引用符)を参照）。
 `title Sales` は `title "Sales"` と印字し、
 `x-axis ["a", "b"]` は `x-axis [a, b]` と印字します。
 1 語とは、ASCII の英字、数字、`_`、`-` だけが、空白なしで続くものです。
@@ -673,10 +673,11 @@ xychart
 [fixture: accessibility-statements/without-text-and-trailing-whitespace]
 
 1 行のブロックは、
-[A description block on one line](./compatibility.ja.md#a-description-block-on-one-line)
-に従います。 [fixture: accessibility-statements/block-text-on-the-opening-line]
+[1 行の説明ブロック](./compatibility.ja.md#1-行の説明ブロック) に従います。
+[fixture: accessibility-statements/block-text-on-the-opening-line]
 
-複数行のブロックの本文は文より 1 段深くし、独立した `}` は文と同じ段に置きます。
+本文が複数行のブロックでは、本文を文より 1 段深くし、
+独立した `}` は文と同じ段に置きます。
 mermaid.js が説明から LF 後の字下げを除くためです。
 閉じていないブロックはテキストの最後まで続き、`}` を足しません。
 mermaid.js はそのブロックのテキストを読まず、印字が `}` を足すと、

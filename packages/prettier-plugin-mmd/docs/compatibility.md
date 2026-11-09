@@ -1232,7 +1232,7 @@ and, with the Db only, in the inputs of the conformance corpus:
 | The colon of a header (removed)    |        6 |                   6 |    646 |     643 |
 | The colon of a header (line break) |        0 |                   0 |     22 |      21 |
 | The label of a link                |       19 |                  19 |    170 |     162 |
-| A description block on one line    |        3 |                   3 |    282 |     245 |
+| A description block on one line    |        3 |                   3 |    521 |     471 |
 | Quotes of a sankey field           |        6 |                   6 |     11 |      11 |
 | Quotes of an ER name               |        0 |                   0 |     14 |      14 |
 | Quotes of a requirement name       |        0 |                   0 |     11 |      11 |
@@ -1243,13 +1243,18 @@ and, with the Db only, in the inputs of the conformance corpus:
 
 A corpus pair that is not counted in the last column is a pair of which
 mermaid.js rejects the other spelling, except two pairs of the label of a link,
-which have a `%%` in the label and a different Db, and 37 pairs of a description
+which have a `%%` in the label and a different Db, 37 pairs of a description
 block, of which mermaid.js rejects both spellings (the known divergence
-`c4-keyword-anywhere`). The printer does not rewrite a range of a packet diagram
-next to a hidden YAML block, a colon that a `;` or the `---` of a hidden YAML
-block touches, or the label of a link with a `%%` in it. When the pinned
-mermaid.js is updated, the examples are counted again and each kind is compared
-again.
+`c4-keyword-anywhere`), 4 pairs of an XY chart, of which it rejects both (the
+known divergence `title-digit-after-axis-statement`), and 9 pairs of a
+description block whose Db differs in the whitespace of a title, a description,
+or a style (see
+[Runs of whitespace in a text that are drawn the same](#runs-of-whitespace-in-a-text-that-are-drawn-the-same)
+and [Styles that are drawn the same](#styles-that-are-drawn-the-same)). The
+printer does not rewrite a range of a packet diagram next to a hidden YAML
+block, a colon that a `;` or the `---` of a hidden YAML block touches, or the
+label of a link with a `%%` in it. When the pinned mermaid.js is updated, the
+examples are counted again and each kind is compared again.
 
 ### Keywords in one case
 
@@ -1542,17 +1547,27 @@ has a rule for each form and
 of both). The examples write a description after the colon 3 times (a swimlane
 diagram and two state diagrams), in a block over several lines twice (two use
 case diagrams), and in a block on one line never. Every diagram type that
-accepts a block with text accepts the form with the colon as well (a block
-diagram accepts only an empty block, and no form with the colon), and the
+accepts a block with text accepts the form with the colon as well, and the
 statement is the same in all of them, so their examples are counted together, as
-they are for strings and numbers. A block on one line is printed in the form
-with the colon, on a line of its own: `accDescr {a}`, `accDescr { a }`, and
-`accDescr{ a }` become `accDescr: a`. The keyword and the `{` can stand apart in
-any whitespace, a line break included, and a `;` after the `}` is dropped like
-any `;` that separates statements. The text can hold a `{`, a `:`, and a `#`,
-and a run of spaces and tabs in it is printed by the rule of
+they are for strings and numbers. Three diagram types are not among them: a
+block diagram accepts only an empty block, an ishikawa diagram reads both forms
+as nodes and gives the description no text, and an event modeling diagram stores
+the token as it is written, so that the description is ` accDescr {a}` in one
+form and ` accDescr: a` in the other. A block with a text of one line is printed
+in the form with the colon, on a line of its own: `accDescr {a}`,
+`accDescr { a }`, and `accDescr{ a }` become `accDescr: a`. The keyword and the
+`{` can stand apart in any whitespace, a line break included, and so can the
+text and the braces: `accDescr {`, `a`, and `}` on three lines are `accDescr: a`
+too. A `;` after the `}` is dropped like any `;` that separates statements. The
+text can hold a `{`, a `:`, a `#`, a directive, and any whitespace character
+that is no line break (a no-break space, U+3000, a vertical tab, a form feed,
+U+FEFF, U+2028, or U+2029), and a run of spaces and tabs in it is printed by the
+rule of
 [Runs of whitespace in a text that are drawn the same](#runs-of-whitespace-in-a-text-that-are-drawn-the-same).
-[fixture: flowchart/accessibility-lines/block-tight-text] [fixture:
+A directive after the text, inside the braces or after the `}`, and a directive
+before the statement on its line, stay where they are, with one space before
+them where the source has whitespace there. [fixture:
+flowchart/accessibility-lines/block-tight-text] [fixture:
 flowchart/accessibility-lines/block-spaced-text] [fixture:
 flowchart/accessibility-lines/block-left-padding-only] [fixture:
 flowchart/accessibility-lines/block-right-padding-only] [fixture:
@@ -1560,67 +1575,131 @@ flowchart/accessibility-lines/block-text-with-semicolons-padded] [fixture:
 flowchart/accessibility-lines/block-text-starts-with-brace] [fixture:
 flowchart/accessibility-lines/block-text-with-colon-and-hash] [fixture:
 flowchart/accessibility-lines/block-runs-collapsed] [fixture:
+flowchart/accessibility-lines/block-text-with-line-break-before-the-brace]
+[fixture: flowchart/accessibility-lines/block-directive-inside-text] [fixture:
+flowchart/accessibility-lines/block-text-beside-directive] [fixture:
 pie/description-blocks/block-asymmetric] [fixture:
 pie/description-blocks/block-keyword-tab] [fixture:
-pie/description-blocks/block-opener-newline] [test: U+2028 between the keyword
-and the brace of a flowchart description block]
+pie/description-blocks/block-opener-newline] [fixture:
+pie/description-blocks/block-text-on-its-own-line] [fixture:
+pie/description-blocks/block-with-directive-after-the-text] [fixture:
+usecase/direction-and-accessibility/block-text-on-its-own-line] [fixture:
+sequence/multi-line-values/accdescr-block-closing-brace-after-text] [fixture:
+c4/description-blocks/opener-whitespace-dropped] [fixture:
+c4/description-blocks/block-after-directive] [fixture:
+treemap/description-blocks/block-after-directive] [fixture:
+treeview/description-blocks/block-after-directive] [test: U+2028 between the
+keyword and the brace of a flowchart description block] [test: a no-break space
+inside the text of a flowchart description block] [test: U+3000 inside the text
+of a flowchart description block] [test: a vertical tab inside the text of a
+flowchart description block] [test: a form feed inside the text of a flowchart
+description block] [test: U+FEFF inside the text of a flowchart description
+block] [test: U+2028 in the text of a flowchart description block] [test: U+2029
+in the text of a flowchart description block] [test: U+2028 before the text of a
+flowchart description block] [test: U+2028 after the text of a flowchart
+description block]
+
+A comment after the `}` stays after the text in the diagram types that end the
+text of the form with the colon before a `%%`, as the next sentence of the list
+says. A block on a line that keeps its statements together is printed in the
+form with the colon where it is the last statement of the line and only
+whitespace, comments, and directives follow it: `A --> B; accDescr {a;b}` is
+`A --> B; accDescr: a;b`, and in a C4 diagram a block after an empty block,
+`accDescr {}accDescr {D}`, is `accDescr {}accDescr: D`. In a treeView diagram
+drawn with branch characters (a box), the characters of the drawing before the
+keyword and between the keyword and the `{` are redrawn, not printed, so they do
+not keep the block. [fixture:
+flowchart/accessibility-lines/block-last-on-a-line-with-a-semicolon] [fixture:
+flowchart/accessibility-lines/block-text-with-semicolon] [fixture:
+c4/description-blocks/block-after-an-empty-block] [fixture:
+treeview/modes/ordinary-block] [fixture:
+treeview/modes/box-common-block-zero-column] [fixture:
+treeview/description-blocks/box-redraw-remove-opener-prefixes]
 
 The block stays as written where the form with the colon would not hold what the
-block holds:
+block holds, or would not be read as the block is:
 
-- The text is over several lines, or has a line break, U+2028, or U+2029 before
-  or after it, or has a whitespace character other than a space or a tab inside
-  it, such as a no-break space: the form with the colon is one line. Whitespace
-  at the ends that is not a space or a tab, such as a no-break space, is dropped
-  by mermaid.js like a space, and the block is printed in the form with the
-  colon. [fixture: pie/description-blocks/block-inline-leading-lines] [fixture:
-  pie/description-blocks/block-text-on-its-own-line] [fixture:
-  usecase/direction-and-accessibility/block-text-on-its-own-line] [test: a
-  no-break space inside the text of a flowchart description block] [test: U+2028
-  before the text of a flowchart description block] [test: U+2028 after the text
-  of a flowchart description block] [test: U+2028 in the text of a flowchart
-  description block] [test: no-break spaces at the ends of the text of a
-  flowchart description block]
-- A comment or a directive stands inside the block, or stands after the `}` and
-  ends its line. Most diagram types take a `%%` as part of the text, so a
-  comment after the text of the form with the colon would become part of the
-  text; the rule is the same in every diagram type, and for a directive.
+- The text is over several lines: the form with the colon is one line. [fixture:
+  er/accessibility-statements/block-lines-kept] [fixture:
+  pie/description-blocks/block-inline-leading-lines] [fixture:
+  pie/description-blocks/block-columns]
+- The text stands on a line of its own (a line break follows the `{` or precedes
+  the `}`) and holds `direction`. A lexer that reads lines reads such a line as
+  a direction line: in a class diagram and a state diagram the block
+  `accDescr {`, `direction RL`, `}` has the description `direction RL`, while
+  `accDescr: direction RL` sets the direction and has an empty description, and
+  a C4 diagram rejects `accDescr: direction RL`. In a flowchart, an ER diagram,
+  and a requirement diagram, `accDescr: direction RL` is the description at the
+  start of a line and a direction line when the line is indented, which the
+  printer does for the statements of a body. [fixture:
+  class/multi-line-values/block-direction-on-its-own-line-kept] [fixture:
+  state/multi-line-values/block-direction-on-its-own-line-kept] [fixture:
+  c4/description-blocks/acc-block-direction-keep] [fixture:
+  requirement/accessibility-statements/first-column-kept]
+- A comment, or a directive, stands before the `{` or between the `{` and the
+  text. The form with the colon prints the whitespace next to a directive by a
+  rule of its diagram type: `accDescr: %%{init: {}}%% a` is printed
+  `accDescr: %%{init: {}}%%a` in a flowchart and a class diagram, and keeps the
+  space in a pie chart; `accDescr:%%{init: {}}%%a` stays in a flowchart and gets
+  a space after the colon in a pie chart; `accDescr %%{init: {}}%%: a` keeps the
+  space before the directive in a flowchart and loses it in a pie chart. A
+  conversion would have to follow the rule of each diagram type for the
+  directive, which the printer does not do, so it leaves the block as it is.
   [fixture: flowchart/accessibility-lines/block-text-beside-directive] [fixture:
-  pie/description-blocks/block-then-comment-kept] [fixture:
-  pie/description-blocks/block-trailing-comment]
-- The block has no text: it is printed `accDescr {}`, as
+  journey/empty-description-blocks/with-directive-or-comment-line-kept]
+- A comment follows the `}` on its line, in an agentflow, C4, Gantt, user
+  journey, quadrant, requirement, sequence, state, timeline, or XY chart
+  diagram. These diagram types take the `%%` as part of the text of the form
+  with the colon, so `accDescr: a %% c` has the description `a %% c`, while the
+  block `accDescr {a} %% c` has `a`. In the diagram types that end the text of
+  the form with the colon before a `%%` (the next but one sentence), both forms
+  have `a`, and the block is printed in the form with the colon. A class, ER,
+  flowchart, or use case diagram rejects a block with a comment after it.
+  [fixture: sequence/multi-line-values/block-then-comment-kept] [fixture:
+  pie/description-blocks/block-then-comment] [fixture:
+  pie/description-blocks/block-trailing-comment] [fixture:
+  info/comments/comments-inline]
+- The block has no text, or only a directive: it is printed `accDescr {}`, as
   [Accessibility lines](./flowchart.md#accessibility-lines) says. [fixture:
   flowchart/accessibility-lines/empty-block-tight] [fixture:
-  flowchart/accessibility-lines/empty-block-spaced]
+  flowchart/accessibility-lines/empty-block-spaced] [fixture:
+  flowchart/accessibility-lines/empty-block-directive-kept]
 - The block is not closed. [fixture:
   flowchart/accessibility-lines/block-unclosed]
-- The line is one that keeps its statements together, such as a line that keeps
-  its `;` (see [Lines that hold a `;`](#lines-that-hold-a-)), or a C4 line that
-  keeps a block beside an empty block. The block keeps its braces and its text,
-  with no space added: `{a;b}` stays `{a;b}`, and `{  a;b  }` is printed
-  `{ a;b }`. [fixture:
-  flowchart/accessibility-lines/block-text-with-semicolon-kept] [fixture:
-  flowchart/accessibility-lines/block-text-with-semicolon-ends-collapsed]
+- The block is on a line that keeps its statements together, and a statement, or
+  a `;`, follows it on that line, or the line is one that the line rule of
+  mermaid.js reads (see [Lines that hold a `;`](#lines-that-hold-a-)). The form
+  with the colon runs to the end of the line, so a statement after it would
+  become part of its text. [fixture:
+  flowchart/accessibility-lines/block-before-another-statement-on-a-kept-line]
   [fixture: flowchart/accessibility-lines/block-on-style-line-kept] [fixture:
   c4/statements-one-per-line/description-null-adjacency]
-- The text holds a `%%`, in an architecture, cynefin, gitGraph, info, packet,
-  pie, radar, railroad, treemap, treeView, or wardley diagram. These diagram
-  types read the description with
+- The text holds a `%%`, or a U+2028 or U+2029, in an architecture, cynefin,
+  gitGraph, info, packet, pie, radar, railroad, treemap, treeView, or wardley
+  diagram. These diagram types read the description with
   [one terminal of the common grammar](https://github.com/mermaid-js/mermaid/blob/2086904e76c692331e34a45d7cc3bc30860d040e/packages/parser/src/language/common/common.langium#L14),
   which ends the text of the form with the colon before a `%%` and reads the
   rest of the line as a comment, but takes a `%%` in a block as part of the
   text: `accDescr: a %% b` has the description `a`, and `accDescr {a %% b}` has
-  `a %% b`. The other diagram types take the `%%` as part of the text in both
-  forms, and the block is printed in the form with the colon also when the text
-  holds one. [fixture: pie/description-blocks/block-text-with-percent-kept]
-  [fixture: flowchart/accessibility-lines/block-text-with-percent]
-
-A description block in an event modeling diagram is kept whole, as
-[Description blocks](./eventmodeling.md#description-blocks) says. In a treeView
-diagram drawn with branch characters (a box), a block on one line keeps its
-braces: the characters of the drawing can stand between the tokens of the block,
-and the printer redraws them in the same pass. [fixture:
-treeview/modes/box-common-block-zero-column]
+  `a %% b`. A block there also drops the whitespace around a line separator:
+  `accDescr { A<U+2028> B }` has the description `A<U+2028>B` in a pie chart and
+  a gitGraph, and `accDescr: A<U+2028> B` has `A<U+2028> B`. The other diagram
+  types take the `%%` and the line separator as part of the text in both forms,
+  and the block is printed in the form with the colon also when the text holds
+  one. [fixture: pie/description-blocks/block-text-with-percent-kept] [fixture:
+  flowchart/accessibility-lines/block-text-with-percent] [test:
+  pie/line-terminators-and-unicode/unicode-values]
+- The diagram is an event modeling diagram, whose description is kept whole (see
+  [Description blocks](./eventmodeling.md#description-blocks)), or an ishikawa
+  diagram, which reads `accDescr {a}` and `accDescr: a` as nodes with no
+  description (the Db of both has an empty `accDescr`): the printer does not
+  change the form. [corpus fixture: ishikawa/db-accdescr-block-is-nodes] [corpus
+  fixture: ishikawa/db-accdescr-is-node] [fixture:
+  ishikawa/node-text/values-opaque]
+- In a treeView diagram drawn with branch characters (a box), the text holds a
+  character of the drawing, such as `x─`, which the diagram reads as the box, or
+  the box keeps the characters between the keyword and the `{`. [fixture:
+  treeview/modes/block-interior-active]
 
 mermaid.js 12.3.0 read both spellings of each of the 3 examples that write a
 description after a colon, written again as a block: both were accepted, with
@@ -1632,12 +1711,28 @@ the other diagram types (in 6 of them once the generated ids were taken away),
 and in the 5 pairs of the gitGraph once the numbers, the commit ids, and the
 element ids were taken away. A text with a `%%` in it was inserted the same way
 into examples of 13 of the diagram types that take the `%%` as part of the text,
-which makes 26 pairs, and the SVGs were the same in all of them. In the
-conformance corpus, formatting writes the form with the colon for 319 blocks in
-310 fixtures. A block that stands alone on its line was written in the form with
-the colon in place, in 282 of the fixtures; a block on a line with another
-statement was not, since the form with the colon would run to the end of the
-line. No railroad diagram was drawn; those were compared by Db only.
+which makes 26 pairs, and the SVGs were the same in all of them. No railroad
+diagram was drawn; those were compared by Db only.
+
+The rules of the second list were found by inserting the block and the form with
+the colon into one accepted example of each of 25 diagram types (every type with
+a description block but the block diagram and the event modeling diagram), 3
+examples for most. With a text of a no-break space, U+3000, a vertical tab, a
+form feed, U+FEFF, U+2028 (alone), U+2029 (alone), a tab, a run of spaces, or a
+`;` in it, and with a directive inside the text, the Db was the same in all 25
+types. With the text on a line of its own it was the same in all 25 types, but
+for a `direction` in a class diagram, a state diagram, and a C4 diagram, and for
+a line that starts with `%%`, which 11 of the types read as a comment, so that
+the block has no text. A comment after the `}` made the Db differ in 10 types,
+none in the 11 types that end the text before a `%%`, and mermaid.js rejected it
+in 4. In the conformance corpus, formatting writes the form with the colon for
+532 blocks in 521 fixtures. In 471 of them the Db of mermaid.js is the same, 41
+are inputs that mermaid.js rejects, and 9 differ in the whitespace of a title, a
+description, or a style, which the sections
+[Runs of whitespace in a text that are drawn the same](#runs-of-whitespace-in-a-text-that-are-drawn-the-same)
+and [Styles that are drawn the same](#styles-that-are-drawn-the-same) define. 62
+pairs of the fixtures of the formatter that change were drawn, and the SVGs were
+the same in the 56 that mermaid.js draws.
 
 ### The quotes of a text
 

@@ -1085,7 +1085,7 @@ Output
 requirementDiagram
 accTitle: direction LR
 accDescr: direction TB
-accDescr { direction RL }
+accDescr: direction RL
   accDescr {
     direction BT
   }

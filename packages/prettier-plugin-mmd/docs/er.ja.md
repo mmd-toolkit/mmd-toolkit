@@ -781,8 +781,7 @@ erDiagram
 つの後に置きます（[属性ブロック](#属性ブロック)を参照）。
 引用符で囲まれた名前、役割、subgraph の id が平易な 1 語なら、
 mermaid.js の文書の例に合わせて引用符なしで印字します。
-[The quotes of a text](./compatibility.ja.md#the-quotes-of-a-text)
-を参照してください。
+[テキストの引用符](./compatibility.ja.md#テキストの引用符) を参照してください。
 `"A"[B]` は `A[B]` に、`C ||--o{ D : "has"` は `C ||--o{ D : has` にします。
 ほかの名前は、引用符の有無も数も含めて、書かれたまま残します。
 [fixture: entities/plain-names-without-quotes]
@@ -1166,8 +1165,8 @@ subgraph 内では、生の説明がその所属の読みにも使われるた�
 [fixture: accessibility-statements/block-comment-and-empty-lines-kept]
 
 1 行のブロックは、
-[A description block on one line](./compatibility.ja.md#a-description-block-on-one-line)
-に従います。 [fixture: accessibility-statements/block-text-on-opening-line]
+[1 行の説明ブロック](./compatibility.ja.md#1-行の説明ブロック) に従います。
+[fixture: accessibility-statements/block-text-on-opening-line]
 
 空のブロックは文の 1 つで、前の説明を Db に残します。
 内側は `{}` と印字し、`accDescr { }` は `accDescr {}` になります。
@@ -1280,9 +1279,7 @@ erDiagram
     two
   }
   subgraph S
-    accDescr {
-  three
-    }
+    accDescr: three
   end
 ```
 
@@ -1307,7 +1304,7 @@ end
 erDiagram
 accTitle: direction LR
 accDescr: a direction TB
-accDescr { direction RL }
+accDescr: direction RL
   subgraph S
 accTitle: direction BT
     A
