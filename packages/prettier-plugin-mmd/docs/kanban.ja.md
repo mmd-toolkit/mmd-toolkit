@@ -1216,10 +1216,12 @@ kanban
 移動できる余白だけを一定量動かして、改行と内容を保ちます。
 [fixture: data-blocks/data-multiline]
 
-`printWidth` は効きません。
-長い裸のノード（`This is a deliberately long kanban item ...`）も、
-長いラベルも、その行に残します。
+`printWidth` は、長い裸のノードにも長いラベルにも効かず、その行に残します。
+長い裸のノードは、たとえば `This is a deliberately long kanban item ...` です。
 裸のノードを折り返すと別のノードになり、値はテキストだからです。
+例外は 1 行に書いたデータブロックで、その行が `printWidth` より広いときに、
+複数行で印字します。
+詳しくは、[データブロック](#データブロック)を参照してください。
 [fixture: multi-line-values/long-line-kept]
 [fixture: multi-line-values/small-print-width]
 

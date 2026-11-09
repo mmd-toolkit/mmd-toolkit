@@ -17,7 +17,7 @@ describe("official samples for implemented diagrams", () => {
       expect(parseSource(example.source).diagramType, example.name).toBe(
         diagramType,
       )
-      const options = { tabWidth: 2, useTabs: false }
+      const options = { printWidth: 80, tabWidth: 2, useTabs: false }
       const formatted = await formatSource(example.source, options)
       expect(parseSource(formatted).diagramType, example.name).toBe(diagramType)
       expect(await formatSource(formatted, options), example.name).toBe(
@@ -25,4 +25,16 @@ describe("official samples for implemented diagrams", () => {
       )
     }
   })
+})
+
+it("formats data blocks with the selected print width", async () => {
+  const source = 'flowchart LR\nA@{ shape: rect, label: "Process step" }\n'
+  expect(
+    await formatSource(source, { printWidth: 80, tabWidth: 2, useTabs: false }),
+  ).toBe('flowchart LR\n  A@{ shape: rect, label: "Process step" }\n')
+  expect(
+    await formatSource(source, { printWidth: 30, tabWidth: 2, useTabs: false }),
+  ).toBe(
+    'flowchart LR\n  A@{\n    shape: rect\n    label: "Process step"\n  }\n',
+  )
 })

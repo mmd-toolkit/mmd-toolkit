@@ -1048,11 +1048,13 @@ cb
 
 Reuse [Chains](./flowchart.md#chains) and
 [Line wrapping](./flowchart.md#line-wrapping): author-chosen statement
-boundaries stay, and printWidth never redistributes links. Keep long lines,
-explicit split statements, repetitions and source order. Agentflow routing,
-generated ids and completion-order containers make that order observable. Domain
-shapes, numeric/prototype operands, entities, HTML and diagnostic-related
-spelling remain authored even when a Db-normalized alternative exists. [fixture:
+boundaries stay, and `printWidth` never redistributes links. Keep long lines,
+except that a data block on one line prints on lines where its line is wider
+than `printWidth` (see [Metadata blocks](#metadata-blocks)); keep explicit split
+statements, repetitions and source order. Agentflow routing, generated ids and
+completion-order containers make that order observable. Domain shapes,
+numeric/prototype operands, entities, HTML and diagnostic-related spelling
+remain authored even when a Db-normalized alternative exists. [fixture:
 chains-and-line-wrapping/long-chain] [fixture:
 chains-and-line-wrapping/order-repeated]
 

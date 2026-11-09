@@ -364,7 +364,7 @@ even when a file would change.
 ## If you know Prettier
 
 The diagrams are formatted by Prettier with `prettier-plugin-mmd`, so the rules
-of the plugin apply. Three results differ from running Prettier with the plugin
+of the plugin apply. Four results differ from running Prettier with the plugin
 on Markdown:
 
 - Prettier removes the whitespace at the end of the last line of a code block,
@@ -380,6 +380,12 @@ on Markdown:
   content another column, the line width left for a diagram in the item differs
   by that, and a block of one line near the width can be split by one and not by
   the other.
+- In a list item or a block quote, Prettier gives the plugin the line width as
+  it is, without the width of what stands before the lines, and the plugin
+  counts the lines of a Gantt section with it, to line up their colons. `mmdfmt`
+  gives the plugin the width less what it writes before the lines, so near the
+  width a Gantt section can be lined up by Prettier and not by `mmdfmt`, whose
+  lines then stay within the line width.
 
 The command differs from Prettier's CLI too: it does not read `.prettierignore`,
 has no `--ignore-path`, `--ignore-unknown`, or formatting options, and uses only
@@ -445,10 +451,12 @@ A diagram that is empty or only whitespace between its fences becomes empty.
 
 The line width of a diagram in a list item or a block quote is the line width of
 the file less the width of what `mmdfmt` writes before each of its lines, a tab
-counting as `tabWidth` and the width being at least 1, as Prettier gives the
-width to a diagram inside the container. For example, with a line width of 40, a
-diagram in a list item whose lines start with two spaces is formatted for 38
-columns.
+counting as `tabWidth` and the width being at least 1. Prettier measures a data
+block `@{ … }` inside the container in the same way. For example, with a line
+width of 40, a diagram in a list item whose lines start with two spaces is
+formatted for 38 columns. The colons of a Gantt section are the exception:
+Prettier gives the plugin the line width as it is, so it does not count what
+stands before the lines (see [If you know Prettier](#if-you-know-prettier)).
 
 A file keeps its line endings. Each line that `mmdfmt` writes ends as the first
 line of the file ends, or with `\n` in a file of one line, except the last,

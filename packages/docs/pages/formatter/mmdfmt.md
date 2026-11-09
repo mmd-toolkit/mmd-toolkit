@@ -356,7 +356,7 @@ even when a file would change.
 ## If you know Prettier
 
 The diagrams are formatted by Prettier with `prettier-plugin-mmd`, so the rules
-of the plugin apply. Three results differ from running Prettier with the plugin
+of the plugin apply. Four results differ from running Prettier with the plugin
 on Markdown:
 
 - Prettier removes the whitespace at the end of the last line of a code block,
@@ -371,6 +371,12 @@ on Markdown:
   give the content another column, the line width left for a diagram in the item
   differs by that, and a block of one line near the width can be split by one
   and not by the other.
+- In a list item or a block quote, Prettier gives the plugin the line width as
+  it is, without the width of what stands before the lines, and the plugin
+  counts the lines of a Gantt section with it, to line up their colons. `mmdfmt`
+  gives the plugin the width less what it writes before the lines, so near the
+  width a Gantt section can be lined up by Prettier and not by `mmdfmt`, whose
+  lines then stay within the line width.
 
 The command differs from Prettier's CLI too: it does not read `.prettierignore`,
 has no `--ignore-path`, `--ignore-unknown`, or formatting options, and uses only

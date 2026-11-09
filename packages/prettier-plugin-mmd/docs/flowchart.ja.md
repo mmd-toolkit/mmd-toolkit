@@ -1332,8 +1332,11 @@ flowchart LR
 ### 折り返し
 
 Prettier の `printWidth` オプションにかかわらず、行を折り返しません。
+ただし、1 行に書いたデータブロック `@{ … }` は、
+その行が `printWidth` より広いときに、
+複数行で印字します（[データブロック](#データブロック)を参照）。
 [fixture: line-wrapping/print-width-ignored]
-連鎖と同じく、行をどこで分けるかは書き手が決めます。
+それ以外で行をどこで分けるかは、連鎖と同じく書き手が決めます。
 
 入力
 ([line-wrapping/long-line-kept-input.mmd](../tests/fixtures/flowchart/line-wrapping/long-line-kept-input.mmd)):

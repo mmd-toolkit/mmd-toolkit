@@ -55,3 +55,52 @@ describe("printWidth: Infinity", () => {
     expect(await format(gantt, 80)).toBe(aligned)
   })
 })
+
+/**
+ * Prettier passes the plugin `printWidth` as it is for a diagram in a Markdown
+ * code block in a list, without the width of what stands before the lines
+ * (docs/gantt.md, Task data), while it measures a data block with it.
+ */
+describe("printWidth in a Markdown list item", () => {
+  const gantt = [
+    "gantt",
+    "  dateFormat YYYY-MM-DD",
+    "  section A",
+    "  Task name long enough to matter :a1, 2014-01-01, 1d",
+    "  T  :a2, after a1, 1d",
+  ]
+  const inList = [
+    "- item",
+    "",
+    "  ```mermaid",
+    ...gantt.map((line) => `  ${line}`),
+    "  ```",
+    "",
+  ].join("\n")
+  const alignedRow = "  T                               :a2, after a1, 1d"
+
+  /** Formats Markdown with the plugin at a line width. */
+  async function formatMarkdown(text: string, width: number): Promise<string> {
+    return prettier.format(text, {
+      parser: "markdown",
+      plugins: [plugin],
+      printWidth: width,
+    })
+  }
+
+  it("Gantt in a list item: the width is that of the diagram alone", async () => {
+    const widest = Math.max(...gantt.map((line) => line.length))
+    expect(await formatMarkdown(inList, widest - 1)).not.toContain(alignedRow)
+    expect(await formatMarkdown(inList, widest)).toContain(`  ${alignedRow}`)
+    // The aligned line of the diagram stands two columns right in the list item.
+    expect(`  ${alignedRow}`.length + 2 > widest).toBe(true)
+  })
+
+  it("splits a block of one line with the width left in the list item", async () => {
+    const block = "flowchart LR\n  A@{ shape: rect, label: x, icon: y }\n"
+    const inItem = `- item\n\n  \`\`\`mermaid\n  ${block.split("\n").join("\n  ").trimEnd()}\n  \`\`\`\n`
+    const line = "  A@{ shape: rect, label: x, icon: y }".length
+    expect(await formatMarkdown(inItem, line + 1)).not.toContain("label: x,")
+    expect(await formatMarkdown(inItem, line + 2)).toContain("label: x,")
+  })
+})

@@ -383,6 +383,15 @@ Prettier が数えるどの幅でもコロンをそろえられないからで�
 名前と行の残りの幅は、書かれたままの幅です。
 コロンをテキスト上でそろえるので、名前の中のディレクティブも幅に数え、
 データの後のコメントやディレクティブも `printWidth` に数えます。
+プラグインが数えるのは、図の行だけです。
+リストや引用の中の Markdown のコードブロックでは、
+Prettier は行の前にあるものの幅を引かずに `printWidth` をそのまま渡すので、
+そこでは行が画面で `printWidth` より広くなることがあります。
+`mmdfmt` は、各行の前に書くものの幅を引いた幅を渡します。
+詳しくは、
+[コードブロックの詳細](../../mmdfmt/README.ja.md#コードブロックの詳細)
+を参照してください。
+[test: Gantt in a list item: the width is that of the diagram alone]
 [fixture: task-data/colon-column-name-with-semicolon]
 [fixture: task-data/colon-column-style-rule-line]
 [fixture: task-data/colon-column-directive-inside-name]

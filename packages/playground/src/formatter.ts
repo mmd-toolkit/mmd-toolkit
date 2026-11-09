@@ -18,6 +18,7 @@ export function formatSource(
   return format(source, {
     parser: "mermaid",
     plugins: [plugin, yaml],
+    printWidth: options.printWidth,
     tabWidth: options.tabWidth,
     useTabs: options.useTabs,
     endOfLine: "lf",
