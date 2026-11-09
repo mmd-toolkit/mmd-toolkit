@@ -39,6 +39,61 @@ describe("classifyExpectedChange", () => {
     expect(changeOf(previous, previous)).toBe("file format only")
   })
 
+  it("ignores object key order throughout the Db", () => {
+    expect(
+      changeOf(
+        accepted({ direction: "LR", vertices: [{ id: "A", text: "a" }] }),
+        accepted({ vertices: [{ text: "a", id: "A" }], direction: "LR" }),
+      ),
+    ).toBe("file format only")
+  })
+
+  it("ignores object key order throughout the embedded values", () => {
+    const previous: Expectation = {
+      accepted: true,
+      diagramType: "flowchart-v2",
+      db: { direction: "LR" },
+      embedded: {
+        title: "a",
+        config: { flowchart: { curve: "linear", inheritDir: true } },
+        dataBlockEffects: [{ id: "A", set: { label: "a", shape: "rect" } }],
+      },
+    }
+    const next: Expectation = {
+      accepted: true,
+      diagramType: "flowchart-v2",
+      db: { direction: "LR" },
+      embedded: {
+        dataBlockEffects: [{ set: { shape: "rect", label: "a" }, id: "A" }],
+        config: { flowchart: { inheritDir: true, curve: "linear" } },
+        title: "a",
+      },
+    }
+    expect(changeOf(previous, next)).toBe("file format only")
+  })
+
+  it("keeps array item order significant", () => {
+    expect(
+      changeOf(
+        accepted({ vertices: [{ id: "A" }, { id: "B" }] }),
+        accepted({ vertices: [{ id: "B" }, { id: "A" }] }),
+      ),
+    ).toBe("Db values")
+    const previous: Expectation = {
+      accepted: true,
+      diagramType: "flowchart-v2",
+      db: { direction: "LR" },
+      embedded: { config: { themeCSS: ["a", "b"] } },
+    }
+    const next: Expectation = {
+      accepted: true,
+      diagramType: "flowchart-v2",
+      db: { direction: "LR" },
+      embedded: { config: { themeCSS: ["b", "a"] } },
+    }
+    expect(changeOf(previous, next)).toBe("embedded values")
+  })
+
   it("reports a change of acceptance with both outcomes", () => {
     expect(
       changeOf(accepted({ direction: "LR" }), rejected("Error", "Parse error")),

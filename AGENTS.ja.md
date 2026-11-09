@@ -213,7 +213,7 @@ Mermaid 記法（`.mmd`）について、mermaid.js が持つ全図種を対象�
 | トークンと位置（`docs/tokens.md` ほか）      | parser          | tests、prettier-plugin、eslint-plugin           |
 | 木の型（`src/ast.ts`、`src/ast/*.ts`）       | ast             | parser、prettier-plugin、eslint-plugin          |
 | parser の API（`parse()`、エラー、木の走査） | parser          | prettier-plugin、eslint-plugin、mmdfmt          |
-| プラグインとその言語（`src/index.ts`）       | prettier-plugin | mmdfmt                                          |
+| プラグインとその言語、構文エラー             | prettier-plugin | mmdfmt                                          |
 | 規則の文書の例の印字される形                 | prettier-plugin | eslint-plugin                                   |
 
 ## 行動原則

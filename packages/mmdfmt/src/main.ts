@@ -1,8 +1,9 @@
 import { readFile, writeFile } from "node:fs/promises"
 import path from "node:path"
+import { styleText } from "node:util"
 import { cli, define, isArgsValidationError } from "gunshi"
 import packageJson from "../package.json" with { type: "json" }
-import type { Diagnostic } from "./diagnostic.ts"
+import type { Diagnostic, FormatResult } from "./diagnostic.ts"
 import { endingsInWords, formatFile, kindOf } from "./format-file.ts"
 import { isSkipped, selectFiles } from "./patterns.ts"
 
@@ -13,6 +14,15 @@ export interface Io {
   readonly readStdin: () => Promise<string>
   readonly stdout: (text: string) => void
   readonly stderr: (text: string) => void
+  /**
+   * The streams behind `stdout` and `stderr`, if there are any. Prettier's
+   * logger colors some words (the name of an unchanged file in gray, the word
+   * `warn` in yellow); the tool colors them where Node's `util.styleText`
+   * colors text for the stream: a terminal, or `FORCE_COLOR` (README, If you
+   * know Prettier).
+   */
+  readonly stdoutStream?: NodeJS.WritableStream
+  readonly stderrStream?: NodeJS.WritableStream
 }
 
 /** The exit codes (README, Errors and exit codes). */
@@ -30,22 +40,41 @@ export async function main(args: readonly string[], io: Io): Promise<number> {
     toKebab: true,
     // gunshi adds --help and --version, draws the usage from the descriptions,
     // and rejects the options that conflict.
+    //
+    // The options follow Prettier's as far as gunshi reads them so (README, If
+    // you know Prettier). gunshi 0.37 reads an option that takes no value
+    // without a value written after `=` (`--write=false` is `--write`), takes
+    // a word after it as a pattern (`--write false`), and counts a `--no-`
+    // form as giving the option, also for `conflicts`; Prettier reads these
+    // otherwise. gunshi 0.37 also needs Node.js 22 or later (its `engines`),
+    // so the `engines` of this package leave out Node.js 20.
     args: {
       write: {
         type: "boolean",
-        description: "Rewrite the files that change, and list them",
-        conflicts: ["check", "stdinFilepath"],
+        short: "w",
+        negatable: true,
+        description:
+          "Rewrite the files that change, and list each file with its time",
       },
       check: {
         type: "boolean",
+        short: "c",
+        negatable: true,
+        description:
+          "Check whether the files are formatted, and print a summary and the files that are not",
+        conflicts: ["listDifferent"],
+      },
+      listDifferent: {
+        type: "boolean",
+        short: "l",
+        negatable: true,
         description: "List the files that --write would change",
-        conflicts: ["write", "stdinFilepath"],
+        conflicts: ["check"],
       },
       stdinFilepath: {
         type: "string",
         description:
           "Format standard input as the file at this path, and write the result to standard output",
-        conflicts: ["write", "check"],
       },
       patterns: {
         type: "positional",
@@ -65,24 +94,41 @@ export async function main(args: readonly string[], io: Io): Promise<number> {
         code = exitCodes.error
         return
       }
-      const { write, check, stdinFilepath } = ctx.values
+      const { write, check, listDifferent, stdinFilepath } = ctx.values
       // gunshi puts the arguments after `--` in rest rather than in patterns.
       const patterns = [...(ctx.values.patterns ?? []), ...ctx.rest]
       if (stdinFilepath !== undefined) {
         code =
           patterns.length > 0
             ? argumentError(io, ["--stdin-filepath takes no patterns"])
-            : await formatStandardInput(stdinFilepath, io)
+            : await formatStandardInput(
+                stdinFilepath,
+                {
+                  write: Boolean(write),
+                  listsDifference: Boolean(check) || Boolean(listDifferent),
+                },
+                io,
+              )
       } else if (ctx.explicit.stdinFilepath) {
         // gunshi gives no value for an empty path, as in --stdin-filepath=,
         // though the option is given (README, Usage).
         code = argumentError(io, ["--stdin-filepath needs a path"])
       } else if (patterns.length === 0) {
         code = argumentError(io, ["no patterns of the files to format"])
-      } else if (!write && !check) {
-        code = argumentError(io, ["give --write or --check with the patterns"])
+      } else if (!write && !check && !listDifferent) {
+        code = argumentError(io, [
+          "give --write, --check, or --list-different with the patterns",
+        ])
       } else {
-        code = await formatFiles(patterns, write ? "write" : "check", io)
+        code = await formatFiles(
+          patterns,
+          {
+            write: Boolean(write),
+            check: Boolean(check),
+            listDifferent: Boolean(listDifferent),
+          },
+          io,
+        )
       }
     },
   })
@@ -133,26 +179,32 @@ export async function main(args: readonly string[], io: Io): Promise<number> {
 }
 
 /**
- * Formats the files that the patterns select. With `write`, a file that
- * changes is rewritten; with `check`, it is only listed.
+ * Formats the files that the patterns select, following Prettier's counts
+ * and reports for `write`, `check`, and `listDifferent`.
  */
 async function formatFiles(
   patterns: readonly string[],
-  mode: "write" | "check",
+  mode: {
+    readonly write: boolean
+    readonly check: boolean
+    readonly listDifferent: boolean
+  },
   io: Io,
 ): Promise<number> {
+  if (mode.check) io.stdout("Checking formatting...\n")
   const { files, noSelectingPattern, skipped, unmatched, excluded } =
     await selectFiles(patterns, io.cwd)
+  let failed = noSelectingPattern || unmatched.length > 0 || excluded.length > 0
+  let numberOfUnformattedFilesFound = 0
+  let numberOfFilesWithError = 0
   // As in Prettier's CLI, patterns that leave nothing to select are an error.
   if (noSelectingPattern) {
-    return argumentError(io, [
+    argumentError(io, [
       skipped.length > 0
         ? "no patterns of the files to format; a pattern in node_modules or a directory of version control is skipped"
         : "no patterns of the files to format; a pattern that starts with ! only excludes files",
     ])
   }
-  let failed = unmatched.length > 0 || excluded.length > 0
-  let changed = false
   for (const pattern of unmatched) {
     io.stderr(
       `mmdfmt: error: no file ending in ${endingsInWords} matches ${JSON.stringify(pattern)}\n`,
@@ -164,40 +216,111 @@ async function formatFiles(
     )
   }
   for (const file of files) {
-    const name = path.relative(io.cwd, file.path)
+    const name = displayName(file.path, io.cwd)
+    let text: string, result: FormatResult
     try {
       if (await isSkipped(file.path, io.cwd)) continue
-      const text = await readFile(file.path, "utf8")
-      const result = await formatFile(
+      text = await readFile(file.path, "utf8")
+    } catch (error) {
+      io.stderr(`${name}: error: ${messageOf(error)}\n`)
+      failed = true
+      continue
+    }
+    // Prettier times the formatting of a file from here.
+    const start = performance.now()
+    try {
+      result = await formatFile(
         text,
         file.path,
         file.kind,
-        mode === "write" ? "output" : "input",
+        mode.write ? "output" : "input",
       )
       report(io, name, result.diagnostics)
       if (result.diagnostics.some(isError)) {
         failed = true
+        numberOfFilesWithError += 1
         continue
       }
-      if (result.text === text) continue
-      if (mode === "write") await writeFile(file.path, result.text)
-      changed = true
-      io.stdout(`${name}\n`)
     } catch (error) {
       io.stderr(`${name}: error: ${messageOf(error)}\n`)
       failed = true
+      numberOfFilesWithError += 1
+      continue
+    }
+    // `--write` alone lists every file with the time it took, as Prettier
+    // does; with `--check` or `--list-different`, their own lists replace it.
+    const listsTimes = mode.write && !mode.check && !mode.listDifferent
+    const time = `${Math.round(performance.now() - start)}ms`
+    if (result.text === text) {
+      if (listsTimes) {
+        io.stdout(
+          `${style(io.stdoutStream, "gray", name)} ${time} (unchanged)\n`,
+        )
+      }
+      continue
+    }
+    if (mode.write) {
+      if (listsTimes) io.stdout(`${name} ${time}\n`)
+      try {
+        await writeFile(file.path, result.text)
+      } catch (error) {
+        io.stderr(`${name}: error: ${messageOf(error)}\n`)
+        failed = true
+      }
+    }
+    if (mode.check) {
+      warn(io, name)
+    } else if (mode.listDifferent) {
+      io.stdout(`${name}\n`)
+    }
+    numberOfUnformattedFilesFound += 1
+  }
+  if (mode.check) {
+    if (numberOfFilesWithError > 0) {
+      const filesDescription =
+        numberOfFilesWithError === 1
+          ? "the above file"
+          : `${numberOfFilesWithError} files`
+      io.stdout(
+        `Error occurred when checking code style in ${filesDescription}.\n`,
+      )
+    } else if (numberOfUnformattedFilesFound === 0) {
+      // Only the diagrams of a Markdown file are checked, not its other text.
+      io.stdout("All diagrams in the matched files use Prettier code style!\n")
+    } else {
+      const filesDescription =
+        numberOfUnformattedFilesFound === 1
+          ? "the above file"
+          : `${numberOfUnformattedFilesFound} files`
+      // Prettier would format the whole Markdown file and needs the plugin
+      // configured to format its diagrams, so the repair command names mmdfmt.
+      warn(
+        io,
+        mode.write
+          ? `Code style issues fixed in ${filesDescription}.`
+          : `Code style issues found in ${filesDescription}. Run mmdfmt with --write to fix.`,
+      )
     }
   }
   if (failed) return exitCodes.error
-  return mode === "check" && changed ? exitCodes.changed : exitCodes.ok
+  return numberOfUnformattedFilesFound > 0 && !mode.write
+    ? exitCodes.changed
+    : exitCodes.ok
 }
 
 /**
  * Formats standard input as the file at `filepath`, and writes the result to
  * standard output. A skipped path gets its input back unchanged, and a
- * rejected diagram file gets nothing.
+ * rejected diagram file gets nothing. With `listsDifference` (`--check` or
+ * `--list-different`), the result is not written: `(stdin)` is listed when it
+ * differs from the input, unless `write` is given too, as Prettier lists it.
+ * `write` alone changes nothing: no file is written.
  */
-async function formatStandardInput(filepath: string, io: Io): Promise<number> {
+async function formatStandardInput(
+  filepath: string,
+  mode: { readonly write: boolean; readonly listsDifference: boolean },
+  io: Io,
+): Promise<number> {
   const file = path.resolve(io.cwd, filepath)
   const kind = kindOf(file)
   if (kind === undefined) {
@@ -212,15 +335,60 @@ async function formatStandardInput(filepath: string, io: Io): Promise<number> {
       io.stdout(text)
       return exitCodes.ok
     }
-    const result = await formatFile(text, file, kind, "output")
+    const result = await formatFile(
+      text,
+      file,
+      kind,
+      mode.listsDifference ? "input" : "output",
+    )
     report(io, filepath, result.diagnostics)
     if (result.diagnostics.some(isError)) return exitCodes.error
-    io.stdout(result.text)
-    return exitCodes.ok
+    if (!mode.listsDifference) {
+      io.stdout(result.text)
+      return exitCodes.ok
+    }
+    if (result.text === text || mode.write) return exitCodes.ok
+    io.stdout("(stdin)\n")
+    return exitCodes.changed
   } catch (error) {
     io.stderr(`${filepath}: error: ${messageOf(error)}\n`)
     return exitCodes.error
   }
+}
+
+/**
+ * Writes a warning of `--check` to standard error, as Prettier's logger
+ * writes one: `[warn] ` before the text, with the word `warn` in yellow where
+ * the stream shows colors.
+ */
+function warn(io: Io, text: string): void {
+  io.stderr(`[${style(io.stderrStream, "yellow", "warn")}] ${text}\n`)
+}
+
+/**
+ * `text` in `color` where Node's `util.styleText` colors text for `stream`,
+ * and as it is without a stream.
+ */
+function style(
+  stream: NodeJS.WritableStream | undefined,
+  color: "gray" | "yellow",
+  text: string,
+): string {
+  return stream === undefined ? text : styleText(color, text, { stream })
+}
+
+/**
+ * The name of a file in what the tool prints: its path relative to `cwd`, with
+ * `/` between its parts on every system, as Prettier's CLI writes the name of a
+ * file (README, Usage). `pathOf` is `node:path` of the system the tool runs on;
+ * a test gives `path.win32` or `path.posix`.
+ */
+export function displayName(
+  file: string,
+  cwd: string,
+  pathOf: typeof path = path,
+): string {
+  return pathOf.relative(cwd, file).replaceAll(pathOf.sep, "/")
 }
 
 /** Writes the diagnostics of a file to standard error. */

@@ -1,28 +1,14 @@
 // Shared Markdown source ranges, Japanese widths and break constraints.
+import { util } from "prettier"
+
 const LIMIT = 80
 
-/** The East Asian wide and fullwidth ranges, by code point. */
-const wideRanges = [
-  [0x1100, 0x115f],
-  [0x2e80, 0x303e],
-  [0x3041, 0x33ff],
-  [0x3400, 0x4dbf],
-  [0x4e00, 0x9fff],
-  [0xa000, 0xa4cf],
-  [0xac00, 0xd7a3],
-  [0xf900, 0xfaff],
-  [0xfe30, 0xfe4f],
-  [0xff00, 0xff60],
-  [0xffe0, 0xffe6],
-  [0x1f300, 0x1f64f],
-  [0x1f900, 0x1f9ff],
-  [0x20000, 0x3fffd],
-]
-
-/** Whether a character is East Asian wide or fullwidth. */
+/**
+ * Whether a character is wide: Prettier's `util.getStringWidth`, with which
+ * Prettier wraps the English documents, gives it two columns.
+ */
 function isWide(character) {
-  const codePoint = character.codePointAt(0)
-  return wideRanges.some(([from, to]) => codePoint >= from && codePoint <= to)
+  return util.getStringWidth(character) === 2
 }
 
 /** The characters that may not start a line. */
@@ -164,11 +150,9 @@ function breakAllowed(
   )
 }
 
-/** The columns of a whole line. */
+/** The columns of a whole line, as Prettier's `util.getStringWidth` counts them. */
 function widthOf(line) {
-  let width = 0
-  for (const character of line) width += isWide(character) ? 2 : 1
-  return width
+  return util.getStringWidth(line)
 }
 
 /** Whether the whole line is one overlong word with inseparable punctuation and emphasis. */

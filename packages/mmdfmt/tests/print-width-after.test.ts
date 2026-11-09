@@ -16,6 +16,18 @@ describe("Code blocks in detail: the line width left after the prefix of a line"
     expect(await printWidthAfter("", options(undefined))).toBeUndefined()
   })
 
+  it("gives the line width as it is where Prettier refuses the line width or the tab width", async () => {
+    const refusedWidth = { printWidth: "wide" } as unknown as ReadOptions
+    expect(await printWidthAfter("  ", refusedWidth)).toBe("wide")
+    const fractionalWidth = options(79.5)
+    expect(await printWidthAfter("  ", fractionalWidth)).toBe(79.5)
+    const refusedTab = {
+      printWidth: 40,
+      tabWidth: "x",
+    } as unknown as ReadOptions
+    expect(await printWidthAfter("\t", refusedTab)).toBe(40)
+  })
+
   it("takes the width of the prefix off", async () => {
     expect(await printWidthAfter("  ", options(40))).toBe(38)
     expect(await printWidthAfter("> ", options(40))).toBe(38)

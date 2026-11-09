@@ -282,9 +282,10 @@ pnpm --filter @mmd-toolkit/eslint-plugin run check:docs
   section, with links to the source and the test of the rule.
 
 The first released version is stored as `since: v0.1.0` in the YAML frontmatter
-of the English document. `update` copies it to the Japanese document when one
-exists and generates the Version section in both languages. Leave `since` out
-when adding a rule: ordinary updates keep it unreleased. During a release,
+of the English document. The value must start with `v` and pass `semver.valid`;
+its written form is preserved. `update` copies it to the Japanese document when
+one exists and generates the Version section in both languages. Leave `since`
+out when adding a rule: ordinary updates keep it unreleased. During a release,
 `pnpm run version:ci` runs `changeset version` first, then passes `--release` to
 the update. Only in that mode does a rule without `since` receive the plugin's
 new package version. An existing `since` is preserved through later releases.
@@ -329,11 +330,13 @@ fails when `src/rules/index.ts`, a generated part, or an example is out of date,
 when a rule has no English document or no test file, when a document belongs to
 no rule (a Japanese document without its English original is one), when the
 first paragraph of an English document is not `meta.docs.description` of its
-rule, when a rule document links to a document of the same directory that does
-not exist (a Japanese document that links to the Japanese version of a rule that
-has none), when the `mmd` code blocks of a Japanese document are not those of
-the English one, in the same order, when a code block does not start with its
-rule's enabling comment. Line breaks inside a first paragraph do not matter.
+rule, when the `mmd` code blocks of a Japanese document are not those of the
+English one, in the same order, when a code block does not start with its rule's
+enabling comment. Line breaks inside a first paragraph do not matter.
+
+Relative links in both languages, including the generated indexes, are checked
+by `markdown-links/no-missing-path` in `pnpm run lint:md`. It checks that target
+files and heading fragments exist.
 
 When the rules and the documents do not match in one of these ways, `update`
 writes `src/rules/index.ts` but none of the generated parts of the documents,

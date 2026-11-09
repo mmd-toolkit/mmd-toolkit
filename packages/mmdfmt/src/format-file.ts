@@ -112,7 +112,7 @@ async function formatDiagramFile(
     }
   } catch (error) {
     const { normalized } = readText(text)
-    const rejection = rejectionOf(normalized, error)
+    const rejection = rejectionOf(error)
     return {
       text,
       diagnostics: [

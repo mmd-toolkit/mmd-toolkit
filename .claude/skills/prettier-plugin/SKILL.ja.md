@@ -563,7 +563,8 @@ printer の規則は、項目ごとに選ばれた選択肢で決まる。
   Markdown のコードブロックを Prettier の Markdown
   のパーサー（`prettier/plugins/markdown`）で見つけ、
   その中身の行だけを置き換える（`src/markdown.ts`）。
-  構文エラーは、オフセットを得るためにパーサーで読み直す（`src/diagram.ts`）。
+  構文エラーのメッセージとオフセットは、
+  その `cause` に保持されたパーサーのエラーから読む（`src/diagram.ts`）。
 - 整形する情報文字列（`src/markdown.ts` の `diagramLanguages`）は、
   プラグインの言語の `aliases` である。
   プラグインの `languages`、拒否したテキストの扱い、オプションを変えるときは、

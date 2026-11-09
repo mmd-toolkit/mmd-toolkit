@@ -1,4 +1,3 @@
-import { parse, ParseError } from "@mmd-toolkit/parser"
 import type { Options } from "prettier"
 import { format, getSupportInfo, util } from "prettier"
 import plugin from "prettier-plugin-mmd"
@@ -25,7 +24,9 @@ async function defaultNumberOption(name: string): Promise<number> {
  * indentation that stands before a range it formats (`util.getAlignmentSize`),
  * a tab reaching the next multiple of `tabWidth`; where `tabWidth` is 0, which
  * `util.getAlignmentSize` turns into NaN for a tab, a tab has no width. The
- * width is at least 1.
+ * width is at least 1. Prettier refuses a `printWidth` or a `tabWidth` that is
+ * not an integer; then `printWidth` is given as it is, so that Prettier
+ * refuses the value that was written, as it does for a diagram with no prefix.
  */
 export async function printWidthAfter(
   prefix: string,
@@ -35,11 +36,21 @@ export async function printWidthAfter(
   const tabWidth = options.tabWidth ?? (await defaultNumberOption("tabWidth"))
   const printWidth =
     options.printWidth ?? (await defaultNumberOption("printWidth"))
+  if (!Number.isInteger(tabWidth) || !Number.isInteger(printWidth)) {
+    return options.printWidth
+  }
   const used =
     tabWidth === 0
       ? prefix.replaceAll("\t", "").length
       : util.getAlignmentSize(prefix, tabWidth)
   return Math.max(1, printWidth - used)
+}
+
+/** The fields of the parser's syntax error that the tool reads. */
+interface ParseError {
+  readonly name: "ParseError"
+  readonly message: string
+  readonly range: readonly [number, number]
 }
 
 /** What formatting the text of a diagram gives. */
@@ -75,7 +86,7 @@ export async function formatDiagram(
       text: await formatDiagramText(text, options, lineEnding),
     }
   } catch (error) {
-    return { kind: "rejected", ...rejectionOf(text, error) }
+    return { kind: "rejected", ...rejectionOf(error) }
   }
 }
 
@@ -103,28 +114,26 @@ export async function formatDiagramText(
 }
 
 /**
- * A text that the plugin rejects is parsed again with the parser that the
- * plugin uses, for the message and the offset of the syntax error: the error
- * that Prettier throws has a line and a column counted for Prettier's code
- * frame, which also ends lines at U+2028 and U+2029, and no offset. If the
- * parser accepts the text, the original error is thrown again.
+ * The message and the offset of the syntax error of a text that the plugin
+ * rejected, from the error that formatting it threw. That error keeps the
+ * parser's error as its `cause`, which gives the message without Prettier's
+ * code frame and the offset in the text that was formatted. Any other error is
+ * thrown again.
  */
-export function rejectionOf(
-  text: string,
-  error: unknown,
-): { message: string; offset: number } {
-  const syntaxError = syntaxErrorOf(text)
-  if (syntaxError === undefined) throw error
-  return { message: syntaxError.message, offset: syntaxError.range[0] }
+export function rejectionOf(error: unknown): {
+  message: string
+  offset: number
+} {
+  const cause = error instanceof Error ? error.cause : undefined
+  if (!isParseError(cause)) throw error
+  return { message: cause.message, offset: cause.range[0] }
 }
 
-/** The syntax error of a text, or `undefined` when the parser accepts it. */
-function syntaxErrorOf(text: string): ParseError | undefined {
-  try {
-    parse(text)
-  } catch (error) {
-    if (error instanceof ParseError) return error
-    throw error
-  }
-  return undefined
+/**
+ * Whether a value is the parser's syntax error. It is checked by name, as the
+ * plugin checks it, so that the check also holds when two copies of the parser
+ * are installed.
+ */
+function isParseError(error: unknown): error is ParseError {
+  return error instanceof Error && error.name === "ParseError"
 }

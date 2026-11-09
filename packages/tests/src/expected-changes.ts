@@ -3,6 +3,7 @@
  * so that a change of the pinned mermaid.js can be sorted by what it concerns.
  * The generator prints one line per changed fixture with this classification.
  */
+import { isDeepStrictEqual } from "node:util"
 import type { Expectation } from "./index.ts"
 import type { JsonValue } from "./types.ts"
 
@@ -75,10 +76,10 @@ export function classifyExpectedChange(
     if (added.length || removed.length) {
       return { kind: "summary-fields", added, removed }
     }
-    if (JSON.stringify(previous.db) !== JSON.stringify(next.db)) {
+    if (!isDeepStrictEqual(previous.db, next.db)) {
       return { kind: "db-values" }
     }
-    if (JSON.stringify(previous.embedded) !== JSON.stringify(next.embedded)) {
+    if (!isDeepStrictEqual(previous.embedded, next.embedded)) {
       return { kind: "embedded" }
     }
     return { kind: "format" }

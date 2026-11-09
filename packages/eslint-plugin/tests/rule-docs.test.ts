@@ -192,13 +192,40 @@ describe("the first released version of a rule", () => {
     )
   })
 
-  it("rejects malformed persisted version metadata", async () => {
+  it.each([
+    // semver.valid would return "1.2.3-alpha.1" and "1.2.3" for these.
+    "v1.2.3-alpha.1",
+    "v1.2.3+build.001",
+  ])(
+    "preserves the valid persisted version %s in both languages",
+    async (version) => {
+      writeFileSync(
+        englishPath,
+        `---\nsince: ${version}\n---\n\n${readFileSync(englishPath, "utf8")}`,
+      )
+      const documents = await renderDocuments(directory, [name])
+      for (const path of [englishPath, japanesePath]) {
+        expect(documents.get(path)).toContain(`since: ${version}\n`)
+        expect(oneLine(documents.get(path) ?? "")).toContain(
+          `\`@mmd-toolkit/eslint-plugin\` ${version}`,
+        )
+      }
+    },
+  )
+
+  it.each([
+    "next",
+    // The leading v is required.
+    "1.2.3",
+    // A version that semver does not accept.
+    "v01.2.3",
+  ])("rejects the invalid persisted version %s", async (version) => {
     writeFileSync(
       englishPath,
-      `---\nsince: next\n---\n\n${readFileSync(englishPath, "utf8")}`,
+      `---\nsince: ${version}\n---\n\n${readFileSync(englishPath, "utf8")}`,
     )
     await expect(renderDocuments(directory, [name])).rejects.toThrow(
-      "Invalid rule version: since: next",
+      `Invalid rule version: since: ${version}`,
     )
   })
 })
@@ -384,79 +411,23 @@ describe("a rule without a Japanese document", () => {
 
   afterEach(() => rmSync(directory, { recursive: true, force: true }))
 
-  /** The English document without the line that links to the Japanese one. */
-  function withoutJapaneseLink(document: string): string {
-    const start = document.indexOf("Japanese version:")
-    const end = document.indexOf(".ja.md)", start) + ".ja.md)".length
-    return document.slice(0, start) + document.slice(end).trimStart()
-  }
-
-  it("is reported when a document links to the missing one", () => {
-    const missing = ruleDocumentPath(`${directory}/`, name, "ja")
-    const problems = mismatches(`${directory}/`)
-    expect(problems).toContain(
-      `${ruleDocumentPath(`${directory}/`, name, "en")} links to ${missing}, which does not exist`,
+  it("has no generated Japanese document, and its row of the Japanese index links to the English one with the English description", async () => {
+    const documents = await renderDocuments(`${directory}/`, [
+      name,
+      "flowchart-no-redefined-vertex",
+      "no-unclosed-directive",
+    ])
+    expect([...documents.keys()]).not.toContain(
+      ruleDocumentPath(`${directory}/`, name, "ja"),
     )
-    expect(problems).toContain(
-      `${ruleDocumentPath(`${directory}/`, "class-no-undef", "ja")} links to ${missing}, which does not exist`,
+    const description = rules[name]?.meta?.docs?.description
+    const japaneseRow = rowOf(
+      documents.get(`${directory}/index.ja.md`),
+      `[${name}](./${name}.md)`,
     )
-  })
-
-  describe("whose English document links to no Japanese one", () => {
-    beforeEach(() => {
-      const englishPath = ruleDocumentPath(`${directory}/`, name, "en")
-      writeFileSync(
-        englishPath,
-        withoutJapaneseLink(readFileSync(englishPath, "utf8")),
-      )
-    })
-
-    it("is reported while a Japanese document links to its missing Japanese version", () => {
-      expect(mismatches(`${directory}/`)).toEqual(
-        expect.arrayContaining([
-          expect.stringContaining(
-            `class-no-undef.ja.md links to ${ruleDocumentPath(`${directory}/`, name, "ja")}`,
-          ),
-        ]),
-      )
-    })
-
-    it("is accepted when the Japanese documents link to its English one", () => {
-      for (const ruleName of Object.keys(rules)) {
-        const path = ruleDocumentPath(`${directory}/`, ruleName, "ja")
-        if (!existsSync(path)) continue
-        writeFileSync(
-          path,
-          readFileSync(path, "utf8").replaceAll(
-            `./${name}.ja.md`,
-            `./${name}.md`,
-          ),
-        )
-      }
-      expect(mismatches(`${directory}/`)).toEqual([])
-    })
-
-    it("has no generated Japanese document, and its row of the Japanese index links to the English one with the English description", async () => {
-      const documents = await renderDocuments(`${directory}/`, [
-        name,
-        "flowchart-no-redefined-vertex",
-        "no-unclosed-directive",
-      ])
-      expect([...documents.keys()]).not.toContain(
-        ruleDocumentPath(`${directory}/`, name, "ja"),
-      )
-      const description = rules[name]?.meta?.docs?.description
-      const japaneseRow = rowOf(
-        documents.get(`${directory}/index.ja.md`),
-        `[${name}](./${name}.md)`,
-      )
-      expect(japaneseRow).toContain(String(description))
-      expect(
-        rowOf(
-          documents.get(`${directory}/index.md`),
-          `[${name}](./${name}.md)`,
-        ),
-      ).toContain(String(description))
-    })
+    expect(japaneseRow).toContain(String(description))
+    expect(
+      rowOf(documents.get(`${directory}/index.md`), `[${name}](./${name}.md)`),
+    ).toContain(String(description))
   })
 })

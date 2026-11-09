@@ -41,8 +41,17 @@ export class Project {
     return readFileSync(path.join(this.cwd, name), "utf8")
   }
 
-  /** Runs the tool in the project, with `stdin` as its standard input. */
-  public async run(args: readonly string[], stdin = ""): Promise<Run> {
+  /**
+   * Runs the tool in the project, with `stdin` as its standard input, and
+   * `stderrStream` and `stdoutStream` as the streams behind standard error
+   * and standard output, if any.
+   */
+  public async run(
+    args: readonly string[],
+    stdin = "",
+    stderrStream?: NodeJS.WritableStream,
+    stdoutStream?: NodeJS.WritableStream,
+  ): Promise<Run> {
     let stdout = ""
     let stderr = ""
     const code = await main(args, {
@@ -54,6 +63,8 @@ export class Project {
       stderr: (text) => {
         stderr += text
       },
+      stderrStream,
+      stdoutStream,
     })
     return { code, stdout, stderr }
   }
@@ -69,7 +80,31 @@ export function lines(...texts: readonly string[]): string {
   return texts.map((text) => `${text}\n`).join("")
 }
 
-/** The lines of a list that the tool prints, from paths written with `/`. */
+/** The lines of a list that the tool prints, from names written with `/`, as the tool writes them. */
 export function listed(...names: readonly string[]): string {
-  return names.map((name) => `${path.join(...name.split("/"))}\n`).join("")
+  return names.map((name) => `${name}\n`).join("")
+}
+
+/**
+ * Replaces the digits followed by `ms` at the time position of each
+ * `--write` output line with `<time>`, leaving other output unchanged.
+ */
+export function fixedWriteTimes(run: Run): Run {
+  return {
+    ...run,
+    stdout: run.stdout.replaceAll(
+      /^(.+) \d+ms( \(unchanged\))?$/gmu,
+      "$1 <time>$2",
+    ),
+  }
+}
+
+/** The changed-file time lines of `--write`, from names written with `/`. */
+export function written(...names: readonly string[]): string {
+  return names.map((name) => `${name} <time>\n`).join("")
+}
+
+/** The unchanged-file time lines of `--write`, from names written with `/`. */
+export function unchanged(...names: readonly string[]): string {
+  return names.map((name) => `${name} <time> (unchanged)\n`).join("")
 }

@@ -130,6 +130,7 @@ pin した mermaid.js の更新を扱う。
   | `src/fixture-shapes.ts`                                     | `fixture-shapes.test.ts`                                       |
   | `src/db-from-tree/`                                         | `db-from-tree.test.ts`、`converted-text.test.ts`               |
   | `src/source-scan.ts`                                        | `source-scan.test.ts`                                          |
+  | `src/ordered-json.ts`                                       | `ordered-json.test.ts`, `tools-fixture-store.test.ts`          |
   | `src/check-tree/`                                           | `check-tree-corpus.test.ts`、`check-tree*.test.ts`             |
   | `tools/src/diagrams.ts`                                     | `tools-diagrams.test.ts`                                       |
   | `tools/src/fixture-store.ts`                                | `tools-fixture-store.test.ts`                                  |

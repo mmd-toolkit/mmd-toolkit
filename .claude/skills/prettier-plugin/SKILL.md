@@ -548,8 +548,8 @@ When the machine is under load or the workspace has unrelated failures:
 - The tool calls Prettier with the plugin on the text of each diagram, finds the
   code blocks of Markdown with Prettier's Markdown parser
   (`prettier/plugins/markdown`), and replaces only their content lines
-  (`src/markdown.ts`). A syntax error is read again from the parser, for its
-  offset (`src/diagram.ts`).
+  (`src/markdown.ts`). A syntax error's message and offset are read from the
+  parser's error kept as its `cause` (`src/diagram.ts`).
 - The info strings it formats (`diagramLanguages` in `src/markdown.ts`) are the
   `aliases` of the plugin's language. A change to the plugin's `languages`, to
   its handling of rejected text, or to its options is a change to the tool in

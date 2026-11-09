@@ -1,31 +1,15 @@
-import { fileURLToPath } from "node:url"
 import type { ViteUserConfig } from "vitest/config"
 import { defineConfig } from "vitest/config"
 
-/** Resolves a path relative to this file. */
-function local(path: string): string {
-  return fileURLToPath(new URL(path, import.meta.url))
-}
-
 const config: ViteUserConfig = defineConfig({
   resolve: {
-    // Test against the sources of the workspace packages, as the root
-    // tsconfig `paths` do, so that the tests do not depend on stale builds.
-    // The first entry that matches wins, so each subpath comes before the
-    // package itself. The tests that render rule documents are the exception:
-    // Prettier loads the plugin for Mermaid natively, through
-    // `docs/prettier.config.js`, so they read the built parser
+    // Test against the sources of the workspace packages through the root
+    // tsconfig `paths`, so that the tests do not depend on stale builds.
+    // The tests that render rule documents are the exception: Prettier loads
+    // the plugin for Mermaid natively, through `docs/prettier.config.js`,
+    // outside Vite's resolution, so they read the built parser
     // (`pnpm run build:parser`).
-    alias: [
-      {
-        find: "@mmd-toolkit/parser",
-        replacement: local("../parser/src/index.ts"),
-      },
-      {
-        find: "@mmd-toolkit/tests",
-        replacement: local("../tests/src/index.ts"),
-      },
-    ],
+    tsconfigPaths: true,
   },
   test: {
     name: "@mmd-toolkit/eslint-plugin",

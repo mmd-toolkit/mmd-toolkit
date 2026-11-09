@@ -198,7 +198,7 @@ same change.
 | Tokens and positions (`docs/tokens.md`, …)       | parser          | tests, prettier-plugin, eslint-plugin           |
 | Types of the tree (`src/ast.ts`, `src/ast/*.ts`) | ast             | parser, prettier-plugin, eslint-plugin          |
 | The parser API (`parse()`, errors, traversal)    | parser          | prettier-plugin, eslint-plugin, mmdfmt          |
-| The plugin and its language (`src/index.ts`)     | prettier-plugin | mmdfmt                                          |
+| The plugin, its language, and its syntax errors  | prettier-plugin | mmdfmt                                          |
 | The printed form of the rule documents' examples | prettier-plugin | eslint-plugin                                   |
 
 ## Principles

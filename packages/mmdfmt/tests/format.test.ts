@@ -1,6 +1,7 @@
 import { existsSync } from "node:fs"
 import path from "node:path"
 import { pathToFileURL } from "node:url"
+import { stripVTControlCharacters } from "node:util"
 import * as prettier from "prettier"
 import plugin from "prettier-plugin-mmd"
 import { afterEach, beforeEach, describe, expect, it } from "vitest"
@@ -24,13 +25,20 @@ const markdown = "# T\n\n```mermaid\nflowchart LR\nA-->B\n```\n"
 /**
  * What a promise rejects with: the class and the message of the error, and its
  * own fields, such as the `loc` and the `codeFrame` of Prettier's errors.
+ * Prettier colors words of the message of an invalid option where the
+ * environment asks for colors, as on CI, so the colors are taken off the
+ * message: they are not what a test compares.
  */
 async function thrownBy(promise: Promise<unknown>): Promise<object> {
   try {
     await promise
   } catch (error) {
     if (!(error instanceof Error)) throw error
-    return { ...error, class: error.constructor, message: error.message }
+    return {
+      ...error,
+      class: error.constructor,
+      message: stripVTControlCharacters(error.message),
+    }
   }
   throw new Error("the promise was not rejected")
 }
@@ -98,6 +106,121 @@ describe("From a script: formatting text", () => {
       ),
     ).toEqual(expected)
   })
+
+  it.each([
+    ["an accepted .mmd diagram", "a.mmd", diagram],
+    ["a .mmd diagram that mermaid.js rejects", "a.mmd", "flowchart TD\nA-->\n"],
+    ["Markdown with an accepted diagram", "a.md", markdown],
+    [
+      "Markdown with only a diagram that mermaid.js rejects",
+      "a.md",
+      "# T\n\n```mermaid\nflowchart TD\nA-->\n```\n",
+    ],
+    [
+      "Markdown with a diagram after a prettier-ignore-start with no end",
+      "a.md",
+      "<!-- prettier-ignore-start -->\n\n```mermaid\nflowchart TD\nA-->B\n```\n",
+    ],
+  ])(
+    "rejects a value that Prettier refuses for %s with Prettier's error",
+    async (_case, file, text) => {
+      const expected = await thrownBy(
+        prettier.format("", {
+          parser: "mermaid",
+          plugins: [plugin],
+          // @ts-expect-error -- Prettier refuses a string for `printWidth`.
+          printWidth: "wide",
+        }),
+      )
+      expect(expected).toMatchObject({
+        message:
+          'Invalid printWidth value. Expected an integer, but received "wide".',
+      })
+      expect(
+        await thrownBy(
+          format(text, {
+            filepath: path.join(project.cwd, file),
+            // @ts-expect-error -- Prettier refuses a string for `printWidth`.
+            printWidth: "wide",
+          }),
+        ),
+      ).toEqual(expected)
+    },
+  )
+
+  it.each([
+    [
+      "a list",
+      { printWidth: "wide" },
+      "- item\n\n  ```mermaid\n  flowchart LR\n  A-->B\n  ```\n",
+      'Invalid printWidth value. Expected an integer, but received "wide".',
+    ],
+    [
+      "a list",
+      { printWidth: 79.5 },
+      "- item\n\n  ```mermaid\n  flowchart LR\n  A-->B\n  ```\n",
+      "Invalid printWidth value. Expected an integer, but received 79.5.",
+    ],
+    [
+      "a list",
+      { tabWidth: "x" },
+      "- item\n\n  ```mermaid\n  flowchart LR\n  A-->B\n  ```\n",
+      'Invalid tabWidth value. Expected an integer, but received "x".',
+    ],
+    [
+      "a block quote",
+      { printWidth: "wide" },
+      "> ```mermaid\n> flowchart LR\n> A-->B\n> ```\n",
+      'Invalid printWidth value. Expected an integer, but received "wide".',
+    ],
+    [
+      "a block quote",
+      { tabWidth: "x" },
+      "> ```mermaid\n> flowchart LR\n> A-->B\n> ```\n",
+      'Invalid tabWidth value. Expected an integer, but received "x".',
+    ],
+  ])(
+    "rejects, for a diagram in %s, %j with the value that was written",
+    async (_place, refused, text, message) => {
+      const error = await thrownBy(
+        // @ts-expect-error -- Prettier refuses these values.
+        format(text, { filepath: path.join(project.cwd, "a.md"), ...refused }),
+      )
+      expect(error).toMatchObject({ message })
+    },
+  )
+
+  it.each([
+    ["no code block", "# T\n\ntext\n"],
+    ["only a code block of another language", "```js\nlet a\n```\n"],
+    [
+      "a mermaid block after <!-- prettier-ignore -->",
+      "<!-- prettier-ignore -->\n```mermaid\nflowchart TD\nA-->B\n```\n",
+    ],
+    [
+      "a mermaid block between prettier-ignore-start and prettier-ignore-end",
+      "<!-- prettier-ignore-start -->\n\n```mermaid\nflowchart TD\nA-->B\n```\n\n<!-- prettier-ignore-end -->\n",
+    ],
+    [
+      "a mermaid block on the line of a footnote label",
+      "Text[^1].\n\n[^1]: ```mermaid\n    flowchart TD\n    A-->B\n    ```\n",
+    ],
+    [
+      "a mermaid block with a tab read partly as the diagram",
+      "-  ```mermaid\n\tflowchart TD\n   ```\n",
+    ],
+  ])(
+    "returns Markdown with %s as it is, whatever the options",
+    async (_case, text) => {
+      expect(
+        await format(text, {
+          filepath: path.join(project.cwd, "a.md"),
+          // @ts-expect-error -- Prettier refuses a string for `printWidth`.
+          printWidth: "wide",
+        }),
+      ).toBe(text)
+    },
+  )
 
   it("leaves a rejected diagram as written after formatting an earlier one", async () => {
     const input = lines(

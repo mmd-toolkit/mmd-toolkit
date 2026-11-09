@@ -1,5 +1,5 @@
 import type { Node, Range, Token } from "@mmd-toolkit/ast"
-import { visitorKeys } from "@mmd-toolkit/parser"
+import { traverseNodes, visitorKeys } from "@mmd-toolkit/parser"
 import type { Doc } from "prettier"
 import type { Atom, AtomLayout } from "./atoms.ts"
 import { readGapElement } from "./gap.ts"
@@ -60,15 +60,14 @@ export function childrenOf(node: Node): Node[] {
  * order of the parser's `visitorKeys`. Value nodes have no child fields.
  */
 export function walk(node: Node, visit: (node: Node) => void): void {
-  for (const key of visitorKeys[node.type]) {
-    const value = (node as unknown as Record<string, unknown>)[key]
-    const children = Array.isArray(value) ? value : [value]
-    for (const child of children as (Node | null)[]) {
-      if (child === null) continue
-      visit(child)
-      walk(child, visit)
-    }
-  }
+  traverseNodes(node, {
+    enterNode(child, parent) {
+      if (parent !== null) visit(child)
+    },
+    leaveNode() {
+      // The caller visits descendants on the way down only.
+    },
+  })
 }
 
 /**

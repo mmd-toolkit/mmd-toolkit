@@ -113,33 +113,46 @@ npm install --global mmdfmt
 ## 使い方
 
 ```sh
-mmdfmt --write <pattern>...
+mmdfmt --write [--check | --list-different] <pattern>...
 mmdfmt --check <pattern>...
+mmdfmt --list-different <pattern>...
 mmdfmt --stdin-filepath <path>
 ```
 
-| オプション                | 動作                                                             |
-| ------------------------- | ---------------------------------------------------------------- |
-| `--write`                 | ファイルを直接整形し、変わったものを標準出力に挙げます。         |
-| `--check`                 | 何も変えず、`--write` が変えるファイルを標準出力に挙げます。     |
-| `--stdin-filepath <path>` | 標準入力を `<path>` のファイルとして整形し、標準出力に書きます。 |
-| `-h`, `--help`            | 使い方を標準出力に書きます。                                     |
-| `-v`, `--version`         | バージョンを標準出力に書きます。                                 |
+| オプション                | 動作                                                                           |
+| ------------------------- | ------------------------------------------------------------------------------ |
+| `-w`, `--write`           | ファイルを直接整形し、整形した各ファイルを所要時間とともに標準出力に挙げます。 |
+| `-c`, `--check`           | 整形済みか確認し、要約と整形されていないファイルを報告します。                 |
+| `-l`, `--list-different`  | 何も変えず、`--write` が変えるファイルを標準出力に挙げます。                   |
+| `--stdin-filepath <path>` | 標準入力を `<path>` のファイルとして整形し、標準出力に書きます。               |
+| `-h`, `--help`            | 使い方を標準出力に書きます。                                                   |
+| `-v`, `--version`         | バージョンを標準出力に書きます。                                               |
 
-`--write` か `--check` のどちらかにパターンを付けるか、
-`--stdin-filepath` を単独で指定します。
+`--write`、`--check`、`--list-different` の少なくとも 1 つにパターンを付けます。
+`--write` は `--check` か `--list-different` のどちらかと組み合わせられます。
+`--write --check` はファイルを書き換え、チェックの要約と警告を出力します。
+`--write --list-different` はファイルを書き換えて、変わったものだけを挙げます。
+`--check` と `--list-different` は組み合わせられません。
+`--no-write`、`--no-check`、`--no-list-different` は、そのオプションを外します。
+`--stdin-filepath` はパターンを取らず、
+一緒に使うと `--write` はファイルを書きません。
 `--help` と `--version` は、
 表のほかのオプションを一緒に付けても出力するだけです。
-ほかの組み合わせはエラーです。
 引数がまったくないときは、`mmdfmt` は使い方を標準エラー出力に書き、
 `2` で終了します。
+
+`--write` 単独では Prettier と同じく、整形したファイルごとに 1 行出力します。
+その名前と整形にかかった時間を、`docs/flow.mmd 12ms` のように書き、
+変わらなかったファイルには、その後ろに `(unchanged)` を付けます。
+色を出せる端末では、変わらなかったファイルの名前は灰色です。
+変わったファイルだけを挙げるには、`--write --list-different` を付けます。
+`mmdfmt` が出力するファイルの名前は、実行するディレクトリからの相対パスで、
+Windows でも Prettier と同じく、区切りは `/` です。
 
 ほかのオプションはありません。
 整形オプションも、独自の設定ファイルも、
 無視ファイルを指定するオプションもありません。
-値を取らないオプションでは、
-引数のライブラリ [gunshi](https://gunshi.dev) の読み方に従い、
-`=` の後ろの値を無視します。
+値を取らないオプションは、`=` の後ろの値を無視します。
 `--write=false` は `--write` と同じに読みます。
 
 `head` が必要な行数を読み終えたときのように、標準出力の読み手がいなくなると、
@@ -213,10 +226,31 @@ CI で依存パッケージをインストールして（`npm ci`）、次を実
 npx mmdfmt --check .
 ```
 
-整形されていないファイルがあると、`--check` は標準出力に挙げ、`1` で終了します。
-すべて整形済みなら、何も出力せず `0` で終了します。
 依存パッケージをインストールしていないと、
 `npx` は固定したバージョンではなく最新版を実行してしまいます。
+
+`--check` は、`Checking formatting...` を標準出力に書き、
+変わるファイルごとに `[warn] <name>` を標準エラー出力に書き、
+最後に要約を 1 つ書きます。
+変わるファイルがあれば、要約は標準エラー出力に書き、終了コードは `1` です。
+
+```txt
+[warn] Code style issues found in the above file. Run mmdfmt with --write to fix.
+```
+
+該当するファイルが複数なら、`in the above file` は `in <n> files` になります。
+色を出せる端末では、`warn` の語は黄色です。
+変わるファイルがなければ、
+要約は標準出力の `All diagrams in the matched files use Prettier code style!`
+で、終了コードは `0` です。
+`--list-different` は、変わるファイルの名前だけを標準出力に書き、
+終了コードは同じです。
+
+`--write --check` では、ファイルを書き換え、
+要約は `[warn] Code style issues fixed in the above file.` で、
+複数なら末尾が `in <n> files.` になり、終了コードは `0` です。
+エラーがあれば、終了コードは `2` です。
+そのときの要約は、[エラーと終了コード](#エラーと終了コード)に書いてあります。
 
 mermaid.js が拒否する図のある `.mmd` や `.mermaid` ファイルは、
 `2` でチェックに失敗します。
@@ -273,6 +307,11 @@ mmdfmt --stdin-filepath docs/guide.md
 - `node_modules` やバージョン管理のディレクトリの下にあるパス、
   または `mmdfmt` を実行するディレクトリの `.gitignore` が挙げるパスでは、
   テキストをそのまま返します。
+- `--check` や `--list-different` では、テキストを出力しません。
+  変わるなら、`--write` も付けたときを除き、標準出力に `(stdin)` を書き、
+  終了コードは `1` です。
+  それ以外は何も書かず、終了コードは `0` です。
+  警告の位置は、読んだときのテキストの中の位置です。
 - ほかの拡張子のパスはエラーです。
 
 ## スクリプトから使う
@@ -405,6 +444,26 @@ Promise は、次のときに拒否されます。
   `line` と `column` は、どちらも 1 から数えます。
   改行の位置のエラーのように、エラーの範囲が後の行の始まりまで続くときは、
   `loc.end` はありません。
+- オプションに Prettier が受け付けない値があるときは、
+  Prettier のエラーで拒否されます。
+  たとえば `printWidth: "wide"` なら、
+  エラーは `Invalid printWidth value. …` です。
+  `.mmd` か `.mermaid` のテキストでは、
+  mermaid.js が図を拒否するかどうかにかかわらず、そうなります。
+  Markdown のテキストでも、
+  `mmdfmt` が図を整形するコードブロックを 1 つでも持てば、
+  その図を mermaid.js が拒否するかどうかにかかわらず、そうなります。
+  どのブロックの図を整形するかは、
+  [コードブロックの詳細](#コードブロックの詳細) にあります。
+  そのようなブロックのない Markdown のテキストは、そのまま返します。
+  `mermaid` や `mmd` のコードブロックがないものと、
+  そのようなブロックがどれも書かれたまま残されるものです。
+  書かれたまま残されるのは、次のブロックです。
+  - `<!-- prettier-ignore -->` の後のブロック。
+  - `<!-- prettier-ignore-start -->` と、
+    `<!-- prettier-ignore-end -->` の間のブロック。
+  - 開きフェンスが脚注のラベルの行にあるブロック。
+  - 字下げのタブの一部が図と読まれるブロック。
 - `options.filepath` の拡張子が `.md`、`.markdown`、`.mmd`、
   `.mermaid` のどれでもないときは、エラーで拒否されます。
 
@@ -488,23 +547,35 @@ notes.md:6:1: warning: Unexpected end of text
 Markdown のコードブロックでは警告です。
 `--write` と `--stdin-filepath` では、警告の位置は整形後のテキストの位置です。
 それより前の図の行が増減していても、実行後に開くテキストのブロックを指します。
-何も書き換えない `--check` では、整形前のファイル内の位置です。
+`--write` のない `--check` と `--list-different` では、
+整形前のファイル内の位置です。
 行と桁は 1 から数え、
 桁は多くのエディターと同じく UTF-16 のコード単位で数えます。
 どの図が拒否されるかは、
 [フォーマッターの互換性](https://mmd-toolkit.github.io/mmd-toolkit/ja/formatter/compatibility.html)
 で説明しています。
 
-| コード | 意味                                                     |
-| ------ | -------------------------------------------------------- |
-| `0`    | エラーがなく、`--check` ではどのファイルも整形済みです。 |
-| `1`    | `--check` で、変わるファイルがあり、エラーはありません。 |
-| `2`    | エラーです。                                             |
+| コード | 意味                                                                                                 |
+| ------ | ---------------------------------------------------------------------------------------------------- |
+| `0`    | エラーがなく、`--check` と `--list-different` では変わるファイルがないか、`--write` が付いています。 |
+| `1`    | `--write` のない `--check` か `--list-different` で、変わるファイルがあり、エラーはありません。      |
+| `2`    | エラーです。                                                                                         |
 
 エラーとは、`.mmd` や `.mermaid` ファイル内の拒否された図、
 読めないか書けないファイル、ファイルを選ばないパターン、読めない設定、
 オプションの誤った使い方です。
 エラーがあれば、変わるファイルがあっても終了コードは `2` です。
+
+`.mmd` や `.mermaid` ファイルの図を mermaid.js が拒否するときのように、
+ファイルを整形できないとき、`--check` の要約は、
+標準出力の `Error occurred when checking code style in the above file.` で、
+複数なら末尾が `in <n> files.` になります。
+Prettier の `--check` と同じく、要約は整形できないファイルだけを数えます。
+読めないファイルと、ファイルを選ばないパターンは、エラーとして報告しますが、
+要約はそれらがないときと同じです。
+パターンがファイルを 1 つも選ばないときもそうです。
+書けないファイルは、問題を修正したファイルとして数え、
+`--write` と `--write --list-different` でも名前を挙げます。
 
 ## Prettier を知っている方へ
 
@@ -563,6 +634,57 @@ Markdown と `.mmd` ファイルに Prettier とプラグインを使う場合�
 ここではエラーになりません。
 Prettier の CLI はそれをエラーにします。
 たとえば、`semi: "yes"` です。
+
+チェックの成功時には、
+Prettier の `All matched files use Prettier code style!` の代わりに、
+`All diagrams in the matched files use Prettier code style!` と書きます。
+`mmdfmt` は図のほかを整形しないので、
+Markdown ファイルの残りの部分はその形式とは限らないためです。
+警告は `mmdfmt --write` の実行を案内します。
+`prettier --write` では Markdown ファイル全体が整形され、
+プラグインが設定されていないと図は整形されないためです。
+
+Prettier は `--write=false` を false と読みます。
+`mmdfmt` は、値を取らないオプションでは `=` の後ろの値を無視し、
+`--write` と読みます。
+`--check=false` と `--list-different=false` も同じです。
+また、
+Prettier は `--write` の後ろに書いた `true` や `false` をその値と読みますが、
+`mmdfmt` はパターンと読みます。
+そのため、`mmdfmt --write false notes.md` は `notes.md` を整形し、
+`false` に合うファイルがないと報告します。
+
+`--check --list-different` はどちらでもエラーです。
+`mmdfmt` は、ほかのオプションの誤った使い方と同じく `2` で終了し、
+書く誤りの文は、
+`mmdfmt: error: Optional argument '--check' conflicts with '--list-different'`。
+Prettier は `[error] Cannot use --check and --list-different together.` を書き、
+`1` で終了します。
+`mmdfmt` は、一緒に使えるオプションかを確かめるとき、
+`--no-` の形もそのオプションを付けたと数えます。
+そのため、`--check --list-different` と同じく、
+`--no-check --list-different` もエラーになります。
+Prettier は `--no-check --list-different` を受け付けます。
+
+標準入力で `--check` や `--list-different` を使うとき、
+Prettier は読めないテキストでも `0` で終了しますが、`mmdfmt` は、
+ほかの場合と同じく、
+拒否された図では `2` で終了します（[エラーと終了コード](#エラーと終了コード)）。
+`.mmd` や `.mermaid` のファイルの拒否された図を、`mmdfmt` は、
+`docs/flow.mmd:3:1: error: Unexpected end of text` のように、
+位置を付けた 1 行で報告します。
+Prettier は `[error] docs/flow.mmd: SyntaxError: Unexpected end of text`
+を書き、続けてその場所の前後の行を、それぞれ `[error]` の後に書きます。
+Markdown のファイルの中の拒否された図では、
+`mmdfmt` は `notes.md:6:1: warning: Unexpected end of text` のような警告を 1
+行書き、Prettier は何も書きません。
+どちらも、これをエラーとはしません。
+
+Prettier は、`CI` の環境変数があるときや Windows では、
+出力先が端末でなくても `warn` の語を黄色にし、
+変わらなかったファイルの名前を灰色にします。
+`mmdfmt` がそれらに色を付けるのは、色を出せる端末か、
+`FORCE_COLOR` があるときだけで、`--color` や `--no-color` はありません。
 
 ## コードブロックの詳細
 

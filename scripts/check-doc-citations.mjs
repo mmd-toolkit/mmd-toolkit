@@ -9,6 +9,7 @@
 // English, which is not an error.
 import { existsSync, readFileSync, readdirSync } from "node:fs"
 import path from "node:path"
+import markdown from "@eslint/markdown"
 
 const documentRoots = [
   "packages/spec",
@@ -33,24 +34,18 @@ function markdownFiles(directory) {
 }
 
 /**
- * The heading lines of a document, without the lines of its code blocks.
- */
-function headingLines(file) {
-  const headings = []
-  let inCodeBlock = false
-  for (const line of readFileSync(file, "utf8").split("\n")) {
-    if (line.startsWith("```")) inCodeBlock = !inCodeBlock
-    if (!inCodeBlock && line.startsWith("#")) headings.push(line)
-  }
-  return headings
-}
-
-/**
- * The heading levels of a document, in order, as one string to compare.
+ * The levels of the headings at the top level of a document, as
+ * `@eslint/markdown` reads them, in order, as one string to compare.
  */
 function headingLevels(file) {
-  return headingLines(file)
-    .map((heading) => heading.split(" ")[0])
+  const parsed = markdown.languages.gfm.parse(
+    { body: readFileSync(file, "utf8") },
+    { languageOptions: { frontmatter: "yaml" } },
+  )
+  if (!parsed.ok) throw new Error(`${file}: cannot be read as Markdown`)
+  return parsed.ast.children
+    .filter((node) => node.type === "heading")
+    .map((node) => "#".repeat(node.depth))
     .join(" ")
 }
 
