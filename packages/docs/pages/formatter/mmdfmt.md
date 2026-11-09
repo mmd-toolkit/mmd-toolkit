@@ -357,7 +357,10 @@ format its diagrams.
 Prettier reads `--write=false` as false. `mmdfmt` reads it as `--write`, because
 [gunshi](https://gunshi.dev), the library that reads its arguments, ignores a
 value written after `=` on an option that takes no value. The same difference
-applies to `--check=false` and `--list-different=false`.
+applies to `--check=false` and `--list-different=false`. Prettier also takes a
+`true` or `false` written after `--write` as its value; gunshi reads it as a
+pattern, so `mmdfmt --write false notes.md` formats `notes.md` and reports that
+no file matches `false`.
 
 The [README of `mmdfmt`](../../../mmdfmt/README.md#code-blocks-in-detail)
 describes the code blocks in detail: which blocks are formatted, blocks in lists

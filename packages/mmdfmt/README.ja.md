@@ -401,6 +401,11 @@ Prettier は `--write=false` を false と読みます。
 `mmdfmt` は、引数を読むライブラリ [gunshi](https://gunshi.dev) が、
 値を取らないオプションでは `=` の後ろの値を無視するため、`--write` と読みます。
 `--check=false` と `--list-different=false` も同じ違いがあります。
+また、
+Prettier は `--write` の後ろに書いた `true` や `false` をその値と読みますが、
+gunshi はパターンと読みます。
+そのため、`mmdfmt --write false notes.md` は `notes.md` を整形し、
+`false` に合うファイルがないと報告します。
 
 ## コードブロックの詳細
 

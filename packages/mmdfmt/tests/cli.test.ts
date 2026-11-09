@@ -86,6 +86,15 @@ describe("Usage: --write, --check, and --list-different", () => {
     expect(project.read("a.mmd")).toBe(formattedDiagram)
   })
 
+  it("reads false after --write as a pattern", async () => {
+    expect(await project.run(["--write", "false", "a.mmd"])).toEqual({
+      code: 2,
+      stdout: listed("a.mmd"),
+      stderr: noFileMatches("false"),
+    })
+    expect(project.read("a.mmd")).toBe(formattedDiagram)
+  })
+
   it("--list-different changes nothing, lists the files that --write would change, and exits with 1", async () => {
     expect(await project.run(["--list-different", "*.mmd", "*.md"])).toEqual({
       code: 1,
