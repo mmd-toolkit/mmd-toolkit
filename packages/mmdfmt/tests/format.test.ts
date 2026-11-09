@@ -1,5 +1,8 @@
 import { existsSync } from "node:fs"
 import path from "node:path"
+import * as prettier from "prettier"
+import { resolveConfig } from "prettier"
+import plugin from "prettier-plugin-mmd"
 import { afterEach, beforeEach, describe, expect, it } from "vitest"
 import { format } from "../src/index.ts"
 import { Project, lines } from "./helpers.ts"
@@ -17,43 +20,52 @@ afterEach(() => {
 const diagram = "flowchart LR\nA-->B\n"
 const markdown = "# T\n\n```mermaid\nflowchart LR\nA-->B\n```\n"
 
+/**
+ * What a promise rejects with: the class and the message of the error, and its
+ * own fields, such as the `loc` and the `codeFrame` of Prettier's errors.
+ */
+async function thrownBy(promise: Promise<unknown>): Promise<object> {
+  try {
+    await promise
+  } catch (error) {
+    if (!(error instanceof Error)) throw error
+    return { ...error, class: error.constructor, message: error.message }
+  }
+  throw new Error("the promise was not rejected")
+}
+
 describe("From a script: formatting text", () => {
   it("formats Markdown at a path that does not exist without creating a file", async () => {
     const filepath = path.join(project.cwd, "docs/notes.md")
-    expect(await format(markdown, { filepath })).toEqual({
-      text: "# T\n\n```mermaid\nflowchart LR\n  A --> B\n```\n",
-      diagnostics: [],
-    })
+    expect(await format(markdown, { filepath })).toEqual(
+      "# T\n\n```mermaid\nflowchart LR\n  A --> B\n```\n",
+    )
     expect(existsSync(filepath)).toEqual(false)
   })
 
   it("formats a diagram", async () => {
     expect(
       await format(diagram, { filepath: path.join(project.cwd, "a.mmd") }),
-    ).toEqual({
-      text: "flowchart LR\n  A --> B\n",
-      diagnostics: [],
-    })
+    ).toEqual("flowchart LR\n  A --> B\n")
   })
 
-  it("returns a rejected diagram unchanged with an error", async () => {
+  it("throws the SyntaxError that Prettier throws for a rejected diagram", async () => {
+    const text = "flowchart LR\nA-->B)\n"
+    const expected = await thrownBy(
+      prettier.format(text, { parser: "mermaid", plugins: [plugin] }),
+    )
+    expect(expected).toMatchObject({
+      class: SyntaxError,
+      loc: { start: { line: 2, column: 6 }, end: { line: 2, column: 7 } },
+    })
     expect(
-      await format("flowchart LR\nA-->B)\n", {
-        filepath: path.join(project.cwd, "a.mmd"),
-      }),
-    ).toEqual({
-      text: "flowchart LR\nA-->B)\n",
-      diagnostics: [
-        {
-          severity: "error",
-          message: "Unexpected character",
-          position: { line: 2, column: 6 },
-        },
-      ],
-    })
+      await thrownBy(
+        format(text, { filepath: path.join(project.cwd, "a.mmd") }),
+      ),
+    ).toEqual(expected)
   })
 
-  it("gives a warning its position in the returned text after earlier diagrams gain lines", async () => {
+  it("leaves a rejected diagram as written after formatting an earlier one", async () => {
     const input = lines(
       "> ```mermaid",
       "> flowchart LR",
@@ -72,8 +84,8 @@ describe("From a script: formatting text", () => {
     )
     expect(
       await format(input, { filepath: path.join(project.cwd, "b.md") }),
-    ).toEqual({
-      text: lines(
+    ).toEqual(
+      lines(
         "> ```mermaid",
         "> flowchart LR",
         ">   A --> B",
@@ -92,65 +104,89 @@ describe("From a script: formatting text", () => {
         ">   B --> C",
         "> ```",
       ),
-      diagnostics: [
-        {
-          severity: "warning",
-          message: "Unexpected end of text",
-          position: { line: 11, column: 1 },
-        },
-      ],
-    })
+    )
+  })
+
+  it("leaves a block as written when a tab is read partly as indentation", async () => {
+    const text = lines("> ```mermaid", "> flowchart LR", ">\tA-->B", "> ```")
+    expect(
+      await format(text, { filepath: path.join(project.cwd, "a.md") }),
+    ).toEqual(text)
   })
 
   it("uses the given text and leaves an existing file unchanged", async () => {
     project.write({ "a.md": "other content\n" })
     expect(
       await format(markdown, { filepath: path.join(project.cwd, "a.md") }),
-    ).toEqual({
-      text: "# T\n\n```mermaid\nflowchart LR\n  A --> B\n```\n",
-      diagnostics: [],
-    })
+    ).toEqual("# T\n\n```mermaid\nflowchart LR\n  A --> B\n```\n")
     expect(project.read("a.md")).toEqual("other content\n")
+  })
+
+  it("keeps a byte order mark and CRLF line endings", async () => {
+    expect(
+      await format("\uFEFFflowchart LR\r\nA-->B\r\n", {
+        filepath: path.join(project.cwd, "a.mmd"),
+      }),
+    ).toEqual("\uFEFFflowchart LR\r\n  A --> B\r\n")
   })
 })
 
-describe("From a script: the configuration of the path's directory", () => {
-  it("uses four spaces from .editorconfig", async () => {
+describe("From a script: indentation and configuration", () => {
+  it("uses four spaces with tabWidth: 4", async () => {
+    expect(
+      await format(diagram, {
+        filepath: path.join(project.cwd, "a.mmd"),
+        tabWidth: 4,
+      }),
+    ).toEqual("flowchart LR\n    A --> B\n")
+  })
+
+  it("uses a tab with useTabs: true", async () => {
+    expect(
+      await format(diagram, {
+        filepath: path.join(project.cwd, "a.mmd"),
+        useTabs: true,
+      }),
+    ).toEqual("flowchart LR\n\tA --> B\n")
+  })
+
+  it("reads neither .editorconfig nor a Prettier configuration", async () => {
+    project.write({
+      ".editorconfig":
+        "root = true\n\n[*]\nindent_style = space\nindent_size = 4\n",
+      ".prettierrc.json": '{ "tabWidth": 3 }',
+    })
+    expect(
+      await format(diagram, { filepath: path.join(project.cwd, "a.mmd") }),
+    ).toEqual("flowchart LR\n  A --> B\n")
+  })
+
+  it("uses configuration resolved by the caller as in the README", async () => {
     project.write({
       ".editorconfig":
         "root = true\n\n[*]\nindent_style = space\nindent_size = 4\n",
     })
+    const filepath = path.join(project.cwd, "a.mmd")
+    const config = await resolveConfig(filepath, { editorconfig: true })
     expect(
-      await format(diagram, { filepath: path.join(project.cwd, "a.mmd") }),
-    ).toEqual({
-      text: "flowchart LR\n    A --> B\n",
-      diagnostics: [],
-    })
+      await format(diagram, {
+        filepath,
+        tabWidth: config?.tabWidth,
+        useTabs: config?.useTabs,
+      }),
+    ).toEqual("flowchart LR\n    A --> B\n")
   })
 
-  it("uses three spaces from a Prettier configuration", async () => {
-    project.write({ ".prettierrc.json": '{ "tabWidth": 3 }' })
+  it("takes no other option of Prettier, and keeps the line endings of the text", async () => {
+    const filepath = path.join(project.cwd, "a.mmd")
     expect(
-      await format(diagram, { filepath: path.join(project.cwd, "a.mmd") }),
-    ).toEqual({
-      text: "flowchart LR\n   A --> B\n",
-      diagnostics: [],
-    })
-  })
-
-  it("resolves a relative path against the current directory", async () => {
-    project.write({
-      ".editorconfig":
-        "root = true\n\n[*]\nindent_style = space\nindent_size = 4\n",
-    })
-    const filepath = path.relative(
-      process.cwd(),
-      path.join(project.cwd, "a.mmd"),
-    )
-    expect(await format(diagram, { filepath })).toEqual({
-      text: "flowchart LR\n    A --> B\n",
-      diagnostics: [],
-    })
+      // @ts-expect-error -- `semi` is not an option of `format`.
+      await format(diagram, { filepath, semi: false }),
+    ).toEqual("flowchart LR\n  A --> B\n")
+    expect(
+      // @ts-expect-error -- `endOfLine` is not an option of `format`.
+      await format(diagram, { filepath, endOfLine: "crlf" }),
+    ).toEqual("flowchart LR\n  A --> B\n")
   })
 })
 
@@ -168,10 +204,15 @@ describe("From a script: selecting paths", () => {
       await format(diagram, {
         filepath: path.join(project.cwd, "node_modules/pkg/a.mmd"),
       }),
-    ).toEqual({
-      text: "flowchart LR\n  A --> B\n",
-      diagnostics: [],
-    })
+    ).toEqual("flowchart LR\n  A --> B\n")
+  })
+
+  it("formats a path under a directory of version control", async () => {
+    expect(
+      await format(diagram, {
+        filepath: path.join(project.cwd, ".git/a.mmd"),
+      }),
+    ).toEqual("flowchart LR\n  A --> B\n")
   })
 
   it("formats a path listed in .gitignore", async () => {
@@ -180,9 +221,6 @@ describe("From a script: selecting paths", () => {
       await format(diagram, {
         filepath: path.join(project.cwd, "ignored.mmd"),
       }),
-    ).toEqual({
-      text: "flowchart LR\n  A --> B\n",
-      diagnostics: [],
-    })
+    ).toEqual("flowchart LR\n  A --> B\n")
   })
 })

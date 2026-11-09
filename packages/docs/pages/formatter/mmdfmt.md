@@ -244,36 +244,53 @@ whether the text is a diagram or Markdown, and its directory says which
 
 ## From a script
 
-A tool written for Node.js, such as a language server that formats the diagrams
-of a file open in an editor, can call `mmdfmt` as a function instead of running
-the command:
+`format` formats a text as Prettier's `format` does, except that in Markdown it
+formats only the Mermaid code blocks and leaves the rest as written. A tool
+written for Node.js, such as a language server that formats the diagrams of a
+file open in an editor, can call it instead of running the command:
 
 ```js
 import { readFile } from "node:fs/promises"
 import { format } from "mmdfmt"
+import { resolveConfig } from "prettier"
 
 const filepath = "docs/notes.md"
 const source = await readFile(filepath, "utf8")
-const { text, diagnostics } = await format(source, { filepath })
+const config = await resolveConfig(filepath, { editorconfig: true })
+const formatted = await format(source, {
+  filepath,
+  tabWidth: config?.tabWidth,
+  useTabs: config?.useTabs,
+})
 ```
 
-`format` does with the text and the path what `--stdin-filepath` does with
-standard input: it reads and writes no file, resolves a relative path against
-the current directory, and takes from the path whether the text is a diagram or
-Markdown and which `.editorconfig` and Prettier configuration apply. It returns:
+`format(source, options)` returns a promise of the formatted text. It takes
+three of Prettier's options: `filepath`, whose ending says whether the text is a
+diagram or Markdown, and `tabWidth` and `useTabs`; another option is a type
+error. Like Prettier's `format`, it reads no file and no configuration. The
+caller resolves the configuration with Prettier's `resolveConfig`, as above,
+with the path that it gives `format`, since the `overrides` of a configuration
+apply by path, and with `editorconfig: true` for an `.editorconfig` to be read.
+Given the options that the command finds for a path (see
+[Indentation](#indentation)), `format` returns the text that `--stdin-filepath`
+writes for it.
 
-- `text`: the formatted text. A `.mmd` or `.mermaid` diagram that mermaid.js
-  rejects comes back as it was.
-- `diagnostics`: an entry for each rejected diagram and each block left as
-  written, with `severity` (`"error"` in a `.mmd` or `.mermaid` file,
-  `"warning"` in Markdown), `message`, and `position`, the `line` and `column`
-  in the returned `text`, counted as in
-  [Errors and exit codes](#errors-and-exit-codes).
+- The line endings stay as they are in the text, and so does a byte order mark;
+  `format` takes no `endOfLine`.
+- A `.mmd` or `.mermaid` diagram that mermaid.js rejects makes `format` throw
+  the `SyntaxError` that Prettier's `format` throws for it with
+  `prettier-plugin-mmd`, with its `loc`.
+- In Markdown, a diagram that mermaid.js rejects, and a block that the command
+  leaves as written with a warning, stay as written without an error, as
+  Prettier leaves an embedded code block that it cannot format. A tool that
+  needs to know which diagrams are rejected can parse them with
+  [`@mmd-toolkit/parser`](../parser/index.md) or lint them with
+  [`@mmd-toolkit/eslint-plugin`](../linter/index.md).
+- A path with another ending throws an error.
 
-A path with another ending throws an error. Unlike the command, `format` skips
-no path: a path under `node_modules` or a directory of version control, or
-listed in a `.gitignore`, is formatted all the same, since the caller chooses
-which files to format.
+Unlike the command, `format` skips no path: a path under `node_modules` or a
+directory of version control, or listed in a `.gitignore`, is formatted all the
+same, since the caller chooses which files to format.
 
 ## Indentation
 

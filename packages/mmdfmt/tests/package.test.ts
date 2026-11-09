@@ -42,10 +42,7 @@ describe("From a script: the package entry", () => {
     )
     expect(JSON.parse(stdout)).toEqual({
       exports: ["format"],
-      result: {
-        text: "# Notes\n\n```mermaid\nflowchart LR\n  A --> B\n```\n",
-        diagnostics: [],
-      },
+      result: "# Notes\n\n```mermaid\nflowchart LR\n  A --> B\n```\n",
     })
   })
 

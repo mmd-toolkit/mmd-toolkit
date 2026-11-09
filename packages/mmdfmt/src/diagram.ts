@@ -36,11 +36,6 @@ const endOfLineOptions = {
  * Prettier formats a `.mmd` file with the plugin. The text has no byte order
  * mark and its lines end with `\n`, as Prettier leaves a text before parsing
  * it; the lines of the result end with `lineEnding`.
- *
- * A text that the plugin rejects is parsed again with the parser that the
- * plugin uses, for the message and the offset of the syntax error: the error
- * that Prettier throws has a line and a column counted for Prettier's code
- * frame, which also ends lines at U+2028 and U+2029, and no offset.
  */
 export async function formatDiagram(
   text: string,
@@ -48,23 +43,44 @@ export async function formatDiagram(
   lineEnding: LineEnding,
 ): Promise<DiagramResult> {
   try {
-    const formatted = await format(text, {
-      parser: "mermaid",
-      plugins: [plugin],
-      tabWidth: indentation.tabWidth,
-      useTabs: indentation.useTabs,
-      endOfLine: endOfLineOptions[lineEnding],
-    })
-    return { kind: "formatted", text: formatted }
-  } catch (error) {
-    const syntaxError = syntaxErrorOf(text)
-    if (syntaxError === undefined) throw error
     return {
-      kind: "rejected",
-      message: syntaxError.message,
-      offset: syntaxError.range[0],
+      kind: "formatted",
+      text: await formatDiagramText(text, indentation, lineEnding),
     }
+  } catch (error) {
+    return { kind: "rejected", ...rejectionOf(text, error) }
   }
+}
+
+/** Formats a diagram, throwing the error that Prettier throws on failure. */
+export async function formatDiagramText(
+  text: string,
+  indentation: Indentation,
+  lineEnding: LineEnding,
+): Promise<string> {
+  return format(text, {
+    parser: "mermaid",
+    plugins: [plugin],
+    tabWidth: indentation.tabWidth,
+    useTabs: indentation.useTabs,
+    endOfLine: endOfLineOptions[lineEnding],
+  })
+}
+
+/**
+ * A text that the plugin rejects is parsed again with the parser that the
+ * plugin uses, for the message and the offset of the syntax error: the error
+ * that Prettier throws has a line and a column counted for Prettier's code
+ * frame, which also ends lines at U+2028 and U+2029, and no offset. If the
+ * parser accepts the text, the original error is thrown again.
+ */
+export function rejectionOf(
+  text: string,
+  error: unknown,
+): { message: string; offset: number } {
+  const syntaxError = syntaxErrorOf(text)
+  if (syntaxError === undefined) throw error
+  return { message: syntaxError.message, offset: syntaxError.range[0] }
 }
 
 /** The syntax error of a text, or `undefined` when the parser accepts it. */

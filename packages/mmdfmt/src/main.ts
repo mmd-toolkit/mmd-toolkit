@@ -4,7 +4,6 @@ import { cli, define, isArgsValidationError } from "gunshi"
 import packageJson from "../package.json" with { type: "json" }
 import type { Diagnostic } from "./diagnostic.ts"
 import { endingsInWords, formatFile, kindOf } from "./format-file.ts"
-import { format } from "./index.ts"
 import { isSkipped, selectFiles } from "./patterns.ts"
 
 /** What the tool reads from and writes to, apart from the files. */
@@ -213,7 +212,7 @@ async function formatStandardInput(filepath: string, io: Io): Promise<number> {
       io.stdout(text)
       return exitCodes.ok
     }
-    const result = await format(text, { filepath: file })
+    const result = await formatFile(text, file, kind, "output")
     report(io, filepath, result.diagnostics)
     if (result.diagnostics.some(isError)) return exitCodes.error
     io.stdout(result.text)

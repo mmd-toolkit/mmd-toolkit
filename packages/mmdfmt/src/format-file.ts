@@ -1,7 +1,7 @@
 import path from "node:path"
 import { resolveConfig } from "prettier"
 import type { Indentation } from "./diagram.ts"
-import { formatDiagram } from "./diagram.ts"
+import { formatDiagramText, rejectionOf } from "./diagram.ts"
 import type { FormatResult, PositionsIn } from "./diagnostic.ts"
 import { lineEndingOf, positionIn, readText } from "./lines.ts"
 import { formatMarkdown } from "./markdown.ts"
@@ -58,31 +58,47 @@ export async function formatFile(
 
 /**
  * Formats a `.mmd` or `.mermaid` file as a whole. Prettier keeps a byte order
- * mark apart from the text it formats and puts it back; so does this. A
- * rejected diagram leaves the text as it was read, so its position is the same
- * in the text as read and after formatting.
+ * mark apart from the text it formats and puts it back; so does this. The lines
+ * end as the first line of the source does. A failure throws Prettier's error.
+ */
+export async function formatDiagramSource(
+  text: string,
+  indentation: Indentation,
+): Promise<string> {
+  const { byteOrderMark, normalized } = readText(text)
+  const formatted = await formatDiagramText(
+    normalized,
+    indentation,
+    lineEndingOf(text),
+  )
+  return byteOrderMark + formatted
+}
+
+/**
+ * Formats a diagram file for the command. A rejected diagram leaves the text
+ * as it was read, so its position is the same before and after formatting.
  */
 async function formatDiagramFile(
   text: string,
   indentation: Indentation,
 ): Promise<FormatResult> {
-  const { byteOrderMark, normalized } = readText(text)
-  const result = await formatDiagram(
-    normalized,
-    indentation,
-    lineEndingOf(text),
-  )
-  if (result.kind === "rejected") {
+  try {
+    return {
+      text: await formatDiagramSource(text, indentation),
+      diagnostics: [],
+    }
+  } catch (error) {
+    const { normalized } = readText(text)
+    const rejection = rejectionOf(normalized, error)
     return {
       text,
       diagnostics: [
         {
           severity: "error",
-          message: result.message,
-          position: positionIn(normalized, result.offset),
+          message: rejection.message,
+          position: positionIn(normalized, rejection.offset),
         },
       ],
     }
   }
-  return { text: byteOrderMark + result.text, diagnostics: [] }
 }

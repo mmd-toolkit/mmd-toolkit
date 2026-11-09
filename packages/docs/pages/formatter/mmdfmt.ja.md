@@ -264,37 +264,54 @@ mmdfmt --stdin-filepath docs/guide.md
 
 ## スクリプトから使う
 
+`format`はPrettierの`format`と同じようにテキストを整形しますが、
+MarkdownではMermaidのコードブロックだけを整形し、ほかは書いたまま残します。
 エディターで開いているファイルの図を整形する言語サーバーなど、
-Node.js向けのツールでは、コマンドを実行する代わりに、
-`mmdfmt`を関数として呼び出せます。
+Node.js向けのツールでは、コマンドを実行する代わりに呼び出せます。
 
 ```js
 import { readFile } from "node:fs/promises"
 import { format } from "mmdfmt"
+import { resolveConfig } from "prettier"
 
 const filepath = "docs/notes.md"
 const source = await readFile(filepath, "utf8")
-const { text, diagnostics } = await format(source, { filepath })
+const config = await resolveConfig(filepath, { editorconfig: true })
+const formatted = await format(source, {
+  filepath,
+  tabWidth: config?.tabWidth,
+  useTabs: config?.useTabs,
+})
 ```
 
-`format`は、`--stdin-filepath`が標準入力に対して行うことを、
-テキストとパスに対して行います。
-ファイルは読み書きせず、相対パスを現在のディレクトリを基準に解決し、
-テキストを図として読むかMarkdownとして読むかと、
-どの`.editorconfig`とPrettierの設定を適用するかをパスから決めます。
-戻り値には次が含まれます。
+`format(source, options)`は、整形したテキストを返すPromiseを返します。
+Prettierのオプションのうち、
+語尾でテキストを図として読むかMarkdownとして読むかを決める`filepath`と、
+`tabWidth`、`useTabs`の3つを受け取り、ほかのオプションは型エラーになります。
+Prettierの`format`と同じく、ファイルも設定も読みません。
+呼び出し元は、上のようにPrettierの`resolveConfig`で設定を解決し、
+設定の`overrides`はパスごとに適用されるため、
+`format`に渡すのと同じパスを指定し、
+`.editorconfig`を読むために`editorconfig: true`を指定します。
+コマンドがパスについて見つけるオプション（[インデント](#インデント)）を渡すと、
+`format`は`--stdin-filepath`がそのパスについて書き出すテキストを返します。
 
-- `text`: 整形したテキストです。
-  mermaid.jsが拒否した`.mmd`または`.mermaid`の図は、そのまま返します。
-- `diagnostics`: 拒否した図と、書いたまま残したブロックごとの診断です。
-  `severity`（`.mmd`または`.mermaid`ファイルでは`"error"`、
-  Markdownでは`"warning"`）、`message`、`position`を持ちます。
-  `position`は戻り値の`text`内の`line`と`column`で、
-  [エラーと終了コード](#エラーと終了コード)と同じように数えます。
+- 改行コードとバイトオーダーマークはテキストに書かれたまま保ち、
+  `format`は`endOfLine`を受け取りません。
+- mermaid.jsが拒否する`.mmd`や`.mermaid`の図では、`format`は、
+  Prettierの`format`が`prettier-plugin-mmd`を使って投げる`SyntaxError`を、
+  その`loc`とともに投げます。
+- Markdownでは、mermaid.jsが拒否する図も、
+  コマンドが警告してそのまま残すブロックも、
+  Prettierが整形できない埋め込みのコードブロックを残すのと同じく、
+  エラーを投げずにそのまま残します。
+  どの図が拒否されるか知る必要のあるツールでは、
+  [`@mmd-toolkit/parser`](../parser/index.ja.md)で解析するか、
+  [`@mmd-toolkit/eslint-plugin`](../linter/index.ja.md)でlintできます。
+- ほかの語尾のパスではエラーを投げます。
 
-ほかの語尾のパスではエラーを投げます。
-`format`はコマンドと異なり、どのパスも飛ばしません。
-整形するファイルは呼び出し元が選ぶため、
+コマンドと異なり、整形するファイルは呼び出し元が選ぶため、
+`format`はどのパスも飛ばさず、
 `node_modules`やバージョン管理のディレクトリの下にあるパスも、
 `.gitignore`が挙げるパスも同じように整形します。
 
