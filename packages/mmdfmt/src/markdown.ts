@@ -1,5 +1,5 @@
 import { parsers } from "prettier/plugins/markdown"
-import type { LayoutOptions } from "./diagram.ts"
+import type { Options } from "prettier"
 import { formatDiagram, printWidthAfter } from "./diagram.ts"
 import type { Diagnostic, FormatResult, PositionsIn } from "./diagnostic.ts"
 import type { Line, LineEnding } from "./lines.ts"
@@ -47,7 +47,7 @@ const diagramLanguages: ReadonlySet<string> = new Set(["mermaid", "mmd"])
  */
 export async function formatMarkdown(
   text: string,
-  layout: LayoutOptions,
+  config: Options,
   positionsIn: PositionsIn,
 ): Promise<FormatResult> {
   const { byteOrderMark, lines, normalized } = readText(text)
@@ -60,7 +60,7 @@ export async function formatMarkdown(
   // removed where it is negative.
   let addedLines = 0
   for (const block of diagramBlocksOf(await parseMarkdown(normalized))) {
-    const result = await formatBlock(block, lines, layout, lineEnding)
+    const result = await formatBlock(block, lines, config, lineEnding)
     if (result.kind === "warning") {
       // A block with a warning is left as written, so in the text after
       // formatting only the blocks before it have moved its lines, and its
@@ -221,7 +221,7 @@ type BlockResult =
 async function formatBlock(
   block: DiagramBlock,
   lines: readonly Line[],
-  layout: LayoutOptions,
+  config: Options,
   lineEnding: LineEnding,
 ): Promise<BlockResult> {
   // The parser's line numbers are 1-based, so the 1-based number of the
@@ -281,7 +281,7 @@ async function formatBlock(
   )
   const result = await formatDiagram(
     text,
-    { ...layout, printWidth: await printWidthAfter(prefix, layout) },
+    { ...config, printWidth: await printWidthAfter(prefix, config) },
     "\n",
   )
   if (result.kind === "rejected") {

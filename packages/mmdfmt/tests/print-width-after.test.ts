@@ -1,12 +1,13 @@
 import { describe, expect, it } from "vitest"
+import type { Options } from "prettier"
 import { printWidthAfter } from "../src/diagram.ts"
 
-/** The layout options with only a line width and a tab width set. */
+/** A configuration with only a line width and a tab width set. */
 function options(
   printWidth: number | undefined,
   tabWidth: number | undefined = undefined,
-): Parameters<typeof printWidthAfter>[1] {
-  return { printWidth, tabWidth, useTabs: undefined }
+): Options {
+  return { printWidth, tabWidth }
 }
 
 describe("Code blocks in detail: the line width left after the prefix of a line", () => {
