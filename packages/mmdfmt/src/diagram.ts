@@ -24,7 +24,9 @@ async function defaultNumberOption(name: string): Promise<number> {
  * indentation that stands before a range it formats (`util.getAlignmentSize`),
  * a tab reaching the next multiple of `tabWidth`; where `tabWidth` is 0, which
  * `util.getAlignmentSize` turns into NaN for a tab, a tab has no width. The
- * width is at least 1.
+ * width is at least 1. Prettier refuses a `printWidth` or a `tabWidth` that is
+ * not an integer; then `printWidth` is given as it is, so that Prettier
+ * refuses the value that was written, as it does for a diagram with no prefix.
  */
 export async function printWidthAfter(
   prefix: string,
@@ -34,6 +36,9 @@ export async function printWidthAfter(
   const tabWidth = options.tabWidth ?? (await defaultNumberOption("tabWidth"))
   const printWidth =
     options.printWidth ?? (await defaultNumberOption("printWidth"))
+  if (!Number.isInteger(tabWidth) || !Number.isInteger(printWidth)) {
+    return options.printWidth
+  }
   const used =
     tabWidth === 0
       ? prefix.replaceAll("\t", "").length

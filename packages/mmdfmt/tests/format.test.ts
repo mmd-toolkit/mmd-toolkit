@@ -141,6 +141,48 @@ describe("From a script: formatting text", () => {
   )
 
   it.each([
+    [
+      "a list",
+      "- item\n\n  ```mermaid\n  flowchart LR\n  A-->B\n  ```\n",
+      { printWidth: "wide" },
+      'Invalid printWidth value. Expected an integer, but received "wide".',
+    ],
+    [
+      "a list",
+      "- item\n\n  ```mermaid\n  flowchart LR\n  A-->B\n  ```\n",
+      { printWidth: 79.5 },
+      "Invalid printWidth value. Expected an integer, but received 79.5.",
+    ],
+    [
+      "a list",
+      "- item\n\n  ```mermaid\n  flowchart LR\n  A-->B\n  ```\n",
+      { tabWidth: "x" },
+      'Invalid tabWidth value. Expected an integer, but received "x".',
+    ],
+    [
+      "a block quote",
+      "> ```mermaid\n> flowchart LR\n> A-->B\n> ```\n",
+      { printWidth: "wide" },
+      'Invalid printWidth value. Expected an integer, but received "wide".',
+    ],
+    [
+      "a block quote",
+      "> ```mermaid\n> flowchart LR\n> A-->B\n> ```\n",
+      { tabWidth: "x" },
+      'Invalid tabWidth value. Expected an integer, but received "x".',
+    ],
+  ])(
+    "rejects, for a diagram in %s, %j with the value that was written",
+    async (_place, text, refused, message) => {
+      const error = await thrownBy(
+        // @ts-expect-error -- Prettier refuses these values.
+        format(text, { filepath: path.join(project.cwd, "a.md"), ...refused }),
+      )
+      expect(error).toMatchObject({ message })
+    },
+  )
+
+  it.each([
     ["no code block", "# T\n\ntext\n"],
     ["only a code block of another language", "```js\nlet a\n```\n"],
     [
