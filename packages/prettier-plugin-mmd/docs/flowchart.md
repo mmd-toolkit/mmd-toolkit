@@ -1825,20 +1825,22 @@ The whitespace written at the start of a line is the indentation of the first
 statement of the line, so it is the indentation of a statement of the same depth
 only. The header of a container before the statement on its line, as in
 `subgraph s; A@{ … }`, makes the statement a statement inside the container, one
-level deeper, and the `end` of a container before it, as in `end; A@{ … }`,
-makes it a statement after the container, shallower than the lines before it.
-The written indentation is that of the header or of the `end`, and nothing was
-written for the depth of the statement. The printer then sets the indentation of
-the node line, and the lines of the block move with it, as in the next
-paragraph. [fixture: data-blocks/use-tabs-subgraph-header-moved] [fixture:
-data-blocks/use-tabs-nested-subgraph-header-moved] [fixture:
-data-blocks/use-tabs-end-moved]
+level deeper than the line. The written indentation is that of the header, and
+nothing was written for the depth of the statement. The printer then sets the
+indentation of the node line, and the lines of the block move with it, as in the
+next paragraph. [fixture: data-blocks/use-tabs-subgraph-header-moved] [fixture:
+data-blocks/use-tabs-nested-subgraph-header-moved] The `end` of a container
+before the statement on its line, as in `end; A@{ … }`, is no such boundary: the
+printer prints an `end` at the depth of its container, and a statement after the
+container is at that depth too, so the whitespace written at the start of the
+line is the indentation of the statement, and the statement is printed as
+written, as `C; A@{ … }` is. [fixture: data-blocks/use-tabs-after-end-on-line]
 
 Where the printer must set the indentation of the node line itself, the lines of
 the block move with it, as without `useTabs`, indented with spaces: the header
 of an agentflow container, whose `end` stands at the indentation of the header,
-a statement after the header or the `end` of a container on its line (see
-above), and a kanban node, whose indentation mermaid.js reads as its level (see
+a statement inside a container whose header is on its line (see above), and a
+kanban node, whose indentation mermaid.js reads as its level (see
 [Metadata blocks](./agentflow.md#metadata-blocks) and
 [Data blocks](./kanban.md#data-blocks)). The lines then stand right where a tab
 is as wide as `tabWidth`, whatever the author wrote, and off by the difference

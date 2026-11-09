@@ -443,10 +443,11 @@ of the alias. [fixture: whitespace-between-tokens/css-class-in-definition-kept]
 A directive in the gap is placed as under [Directives](#directives), and a
 U+2028 or U+2029 stays where it is. [test: U+2028 before the `:::` of a state]
 [test: U+2029 after the `:::` of a state] This holds for the `""` that
-mermaid.js does not read; the quotes of a floating note are kept as written.
-[fixture: whitespace-between-tokens/floating-note-quotes-kept] In a `classDef`
-or a `style` statement, each style has no whitespace before its first `:` and
-one space after it where the value is not empty. The `,` between styles has no
+mermaid.js does not read; the quotes of a floating note (`note "..." as ...`)
+are kept as written. [fixture:
+whitespace-between-tokens/floating-note-quotes-kept] In a `classDef` or a
+`style` statement, each style has no whitespace before its first `:` and one
+space after it where the value is not empty. The `,` between styles has no
 whitespace before it and one space after it, as in ER and requirement (see
 [Styles and classes](./er.md#styles-and-classes)):
 `classDef c fill:#f00 , color:white` is printed

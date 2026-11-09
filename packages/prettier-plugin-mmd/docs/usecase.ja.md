@@ -5,7 +5,7 @@
 [書かれた構文の木](../../spec/docs/ast/usecase.ja.md)から、
 [usecase の仕様](../../spec/docs/diagrams/usecase.ja.md)に従い、
 `usecase-beta` を整形します。
-各規則は選択の理由を説明し、共有の理由を参照し、
+各規則は選択の理由を説明し、共有の規則をその理由とともに参照し、
 規則の文から作った fixture を引用します。
 入力はエスケープした JSON 文字列で示し、
 出力ブロックは各規則の fixture 一つを写します。

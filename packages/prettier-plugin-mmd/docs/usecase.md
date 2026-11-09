@@ -5,9 +5,10 @@ Japanese version: [usecase.ja.md](./usecase.ja.md)
 These rules format `usecase-beta` from its written
 [syntax tree](../../spec/docs/ast/usecase.md), following the
 [usecase specification](../../spec/docs/diagrams/usecase.md). Each rule explains
-its choice, links shared rules with their reasons, and cites fixed sentence-led
-fixtures. Inputs use escaped JSON strings; each output block copies one fixture.
-Unicode/control/CR cases are escaped in `usecase-cases.ts`.
+its choice, links shared rules with their reasons, and cites the fixtures that
+are written from its sentences. Inputs use escaped JSON strings; each output
+block copies one fixture. Unicode/control/CR cases are escaped in
+`usecase-cases.ts`.
 
 HWS means ASCII horizontal whitespace: U+0020 SPACE and U+0009 TAB. LS means
 U+2028 LINE SEPARATOR; PS means U+2029 PARAGRAPH SEPARATOR.

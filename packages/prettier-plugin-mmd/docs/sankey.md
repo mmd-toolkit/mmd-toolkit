@@ -106,13 +106,13 @@ blank-lines/after-a-value-of-spaces-only] The whitespace at the end of a record
 is dropped. [fixture: commas/trailing-whitespace-dropped]
 
 A `;` is a character of a field. The line rule of mermaid.js ignores the last
-`;` of a line that holds `style` or `classDef`, a `:`, a `#` after it, and a `;`
-after that, but only when no whitespace lies between the `:` and the `#`. So the
-whitespace between a `:` and a later `#` of such a line keeps whether it is
-there, even where it lies around a comma, and is one space where it is there,
-since the rule asks only whether some is there and not how much. The whitespace
-elsewhere on the line does not change which `;` is ignored. [fixture:
-commas/style-line-colon-and-hash-in-two-fields-kept] [fixture:
+`;` of a line that holds `style` or `classDef`, a `:` after it, a `#` after
+that, and a `;` after that, but only when no whitespace lies between the `:` and
+the `#`. So the whitespace between a `:` and a later `#` of such a line keeps
+whether it is there, even where it lies around a comma, and is one space where
+it is there, since the rule asks only whether some is there and not how much.
+The whitespace elsewhere on the line does not change which `;` is ignored.
+[fixture: commas/style-line-colon-and-hash-in-two-fields-kept] [fixture:
 commas/style-line-colon-and-hash-touching-kept] [fixture:
 commas/style-line-spaces-between-colon-and-hash-become-one] [fixture:
 commas/semicolon-fields] [fixture: commas/style-line] [fixture:
@@ -359,7 +359,7 @@ a,b,1
 
 A comment is a line that starts with `%%`, and it is removed before mermaid.js
 reads the text. Its text and mark are kept as written, and it stands at the
-first column, like every other line (see Indentation). [fixture:
+first column, like every other line (see [Indentation](#indentation)). [fixture:
 comments/lines-at-the-first-column] [fixture: comments/text-kept] [fixture:
 comments/comment-line-only-in-the-body] A `%%` or a `#` inside a record is a
 character of a field, not a comment, and stays with the field. [fixture:

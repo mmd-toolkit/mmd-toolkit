@@ -93,13 +93,18 @@ function containersOf(
 }
 
 /**
- * Whether the header of a statement that holds statements, or its `end`, stands
- * on the line of the statement in `range`, before it: the printer puts the
- * statement on a line of its own at its own depth, which is not the depth of
- * the first statement of the line, where the whitespace at the start of the
- * line was written (`subgraph s; A@{`, and `end; A@{`).
+ * Whether the statement in `range` stands inside a statement that holds
+ * statements, such as a subgraph, whose header is on the line of the statement,
+ * before it. The whitespace at the start of that line was written for the first
+ * statement of the line, which is not at the depth of the statement: the
+ * printer puts the statement on a line of its own, one level deeper
+ * (`subgraph s; A@{`). The `end` of a container before the statement on its
+ * line is no such boundary: the printer prints it at the depth of the
+ * container, and a statement after the container is at that depth too, so the
+ * whitespace written at the start of the line is the indentation for the
+ * statement (`end; A@{`).
  */
-function followsContainerBoundary(
+function opensContainerOnItsLine(
   source: Source,
   range: Range,
   holdsStatements: (node: Node) => boolean,
@@ -107,8 +112,9 @@ function followsContainerBoundary(
   const lineStart = lineStartOf(source, range[0])
   return containersOf(source, holdsStatements).some(
     (container) =>
-      (lineStart <= container.range[0] && container.range[0] < range[0]) ||
-      (lineStart < container.range[1] && container.range[1] <= range[0]),
+      lineStart <= container.range[0] &&
+      container.range[0] < range[0] &&
+      range[0] < container.range[1],
   )
 }
 
@@ -134,7 +140,7 @@ export interface DataBlockPlacement {
   readonly decidesIndentation?: boolean
   /**
    * Whether a node of the tree is a statement that holds statements, such as a
-   * subgraph (see `followsContainerBoundary`).
+   * subgraph (see `opensContainerOnItsLine`).
    */
   readonly holdsStatements: (node: Node) => boolean
   /**
@@ -362,8 +368,8 @@ function splitsBlocks(placement: DataBlockPlacement): boolean {
  * stand right of the content and the closing `}` wherever they were written no
  * deeper than the node line (docs/flowchart.md, Data blocks). A statement whose
  * indentation the printer decides (see `DataBlockPlacement.decidesIndentation`),
- * or that follows the header or the `end` of a container on its line (see
- * `followsContainerBoundary`), prints as usual, and the lines of its block move
+ * or that stands in a container whose header is on its line (see
+ * `opensContainerOnItsLine`), prints as usual, and the lines of its block move
  * with the node line, as without tabs (see `movesLines`).
  */
 function keepsStatementAsWritten(
@@ -374,7 +380,7 @@ function keepsStatementAsWritten(
 ): boolean {
   if (
     useTabs !== true ||
-    followsContainerBoundary(source, range, holdsStatements)
+    opensContainerOnItsLine(source, range, holdsStatements)
   )
     return false
   const all = dataBlocksOf(source)
