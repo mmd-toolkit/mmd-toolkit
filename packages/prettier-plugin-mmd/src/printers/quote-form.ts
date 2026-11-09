@@ -4,10 +4,13 @@ import { findErKeptLines } from "./er-kept-lines.ts"
 import type { KeptLines } from "./kept-lines.ts"
 import { lineEndOf, lineStartOf } from "./kept-lines.ts"
 import { shortestNumber } from "./number-form.ts"
+import { findQuadrantKeptLines } from "./quadrant-kept-lines.ts"
 import { findRequirementKeptLines } from "./requirement-kept-lines.ts"
 import { findSankeyKeptLines } from "./sankey-kept-lines.ts"
 import type { Source } from "./source.ts"
+import { isWhitespace } from "./source.ts"
 import { collapseRuns } from "./text-runs.ts"
+import { findXychartKeptLines } from "./xychart-kept-lines.ts"
 
 /**
  * The text that a printer writes for a text in the form of the examples, or
@@ -506,8 +509,10 @@ const quoteRules: Readonly<
 /** The kept lines of the diagram types that have fields in `bareFields`. */
 const keptLinesOf: Readonly<Record<string, (source: Source) => KeptLines>> = {
   er: findErKeptLines,
+  quadrant: findQuadrantKeptLines,
   requirement: findRequirementKeptLines,
   sankey: findSankeyKeptLines,
+  xychart: findXychartKeptLines,
 }
 
 /**
@@ -524,6 +529,28 @@ function isKept(source: Source, offset: number): boolean {
     ? source.text.slice(line, lineEndOf(source, offset)).includes(";") ||
         source.text.slice(line, lineEndOf(source, offset)).includes("%%")
     : kept.joined.has(line) || kept.verbatim.has(line)
+}
+
+/**
+ * Whether the character at a side of a text without quotes touches another
+ * unit, so that a space would come between them once the text is in quotes
+ * (the `a` and the `-1` of `a-1`). A keyword is no such unit: the printer
+ * writes a space after it in any case.
+ */
+function touchesToken(
+  source: Source,
+  offset: number,
+  before: boolean,
+): boolean {
+  const character = source.text[before ? offset - 1 : offset]
+  return (
+    character !== undefined &&
+    !isWhitespace(character) &&
+    !";[".includes(character) &&
+    source.root.tokens.find((token) =>
+      before ? token.range[1] === offset : token.range[0] === offset,
+    )?.type !== "Keyword"
+  )
 }
 
 /**
@@ -583,9 +610,11 @@ export function findQuoteFormRespellings(
         .trimStart()[0]
       if (
         printed !== undefined &&
-        (rule.form === "quoted" ||
-          (!"#%;".includes(after ?? "\n") &&
-            !(after === ":" && endsLikeStyleKeyword(printed)))) &&
+        (rule.form === "quoted"
+          ? !touchesToken(source, item.range[0], true) &&
+            !touchesToken(source, item.range[1], false)
+          : !"#%;".includes(after ?? "\n") &&
+            !(after === ":" && endsLikeStyleKeyword(printed))) &&
         rule.joins?.(
           source.text.slice(line, item.range[0]),
           source.text.slice(item.range[1], lineEndOf(source, item.range[1])),

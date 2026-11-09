@@ -1956,12 +1956,12 @@ const xychartLineSeparatorExamples: readonly (readonly [
   [
     "U+2028 between the header and a statement",
     "xychart\u2028title T\n",
-    "xychart\n  title T\n",
+    'xychart\n  title "T"\n',
   ],
   [
     "U+2028 between two statements",
     "xychart\ntitle T\u2028line [1]\n",
-    "xychart\n  title T\n  line [1]\n",
+    'xychart\n  title "T"\n  line [1]\n',
   ],
   [
     "U+2028 between the header and the orientation",
@@ -1981,7 +1981,7 @@ const xychartLineSeparatorExamples: readonly (readonly [
   [
     "U+2028 after a title keyword",
     "xychart\ntitle\u2028T\n",
-    "xychart\n  title\u2028T\n",
+    'xychart\n  title\u2028"T"\n',
   ],
   [
     "U+2028 between the words of a category",
@@ -2026,17 +2026,17 @@ const xychartLineSeparatorExamples: readonly (readonly [
   [
     "U+2028 after a description block",
     "xychart\naccDescr { d }\u2028title T\n",
-    "xychart\n  accDescr: d\n  title T\n",
+    'xychart\n  accDescr: d\n  title "T"\n',
   ],
   [
     "U+2028 at the end of a statement",
     "xychart\ntitle T\u2028\nline [1]\n",
-    "xychart\n  title T\n  line [1]\n",
+    'xychart\n  title "T"\n  line [1]\n',
   ],
   [
     "U+2028 at the end of the text",
     "xychart\ntitle T\u2028",
-    "xychart\n  title T\n",
+    'xychart\n  title "T"\n',
   ],
 ]
 
@@ -2064,7 +2064,7 @@ const xychartWhitespaceExamples: readonly (readonly [
   [
     "U+00A0 after a title keyword",
     "xychart\ntitle\u00a0T\n",
-    "xychart\n  title T\n",
+    'xychart\n  title "T"\n',
   ],
   [
     "U+00A0 around the values of a plot",
@@ -2089,22 +2089,22 @@ const xychartWhitespaceExamples: readonly (readonly [
   [
     "U+3000 before a statement",
     "xychart\n\u3000title T\n",
-    "xychart\n  title T\n",
+    'xychart\n  title "T"\n',
   ],
   [
     "U+FEFF before a statement",
     "xychart\ntitle T\n\ufeffline [1]\n",
-    "xychart\n  title T\n  line [1]\n",
+    'xychart\n  title "T"\n  line [1]\n',
   ],
   [
     "U+00A0 between two statements",
     "xychart\ntitle T\u00a0line [1]\n",
-    "xychart\n  title T\n  line [1]\n",
+    'xychart\n  title "T"\n  line [1]\n',
   ],
   [
     "U+00A0 at the end of a statement",
     "xychart\ntitle T\u00a0\nline [1]\n",
-    "xychart\n  title T\n  line [1]\n",
+    'xychart\n  title "T"\n  line [1]\n',
   ],
   [
     "U+00A0 in a string",
