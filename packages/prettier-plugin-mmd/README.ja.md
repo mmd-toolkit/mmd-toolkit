@@ -17,7 +17,7 @@ MultiMarkdown や MikuMikuDance ではありません。
 ## Playground
 
 ブラウザーで、このプラグインによる整形結果を確認できます。
-**Formatted**タブは編集に合わせて更新され、
+**Formatted**タブは編集に合わせて更新され、**Print width**で行幅を、
 **Indent**と**Use tabs**で字下げを設定できます。
 **Apply to source**で、入力を整形結果に置き換えられます。
 
@@ -112,8 +112,9 @@ flowchart LR
 - `endOfLine` で改行コードを決めます。
 - `printWidth` は 2 つのことを決めます。
   flowchart、agentflow、kanban で 1 行に書いたデータブロック `@{ … }` は、
-  その行が `printWidth` より広いときに、複数行で印字します。
-  詳しくは、
+  その行が `printWidth` より広く、条件を満たすときに、複数行で印字します。
+  たとえば、項目が 1 つのブロックは 1 行のままです。
+  条件は、
   [データブロック](./docs/flowchart.ja.md#データブロック)を参照してください。
   Gantt のセクションのタスクの `:` は、行が `printWidth` より広くなり、
   しかも今より広くなるときを除いて、そろえます。

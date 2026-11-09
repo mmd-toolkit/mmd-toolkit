@@ -361,7 +361,7 @@ before it calls `format`.
 
 A diagram is indented by two spaces, and its line width is Prettier's 80. When
 an `.editorconfig` or a Prettier configuration applies to the file, `mmdfmt`
-gives it to Prettier as it is, found as Prettier's CLI finds it, `overrides`
+reads eight options of it, found as Prettier's CLI finds it, `overrides`
 included: `indent_style`, `indent_size`, `tab_width`, and `max_line_length` of
 `.editorconfig`, or the options of a
 [Prettier configuration file](https://prettier.io/docs/configuration). For a
@@ -376,22 +376,30 @@ indent_size = 4
 max_line_length = 100
 ```
 
-`tabWidth`, `useTabs`, and `printWidth` decide how a diagram is printed. The
-line width decides two things in a diagram: whether a data block `@{ … }` on one
-line is printed on several lines, and whether the colons of the tasks of a Gantt
-section are lined up (see [Formatter options](./options.md#line-width)).
-`max_line_length = off` is no limit. The options for the YAML frontmatter of a
-diagram, such as `singleQuote`, apply to it, and
-`embeddedLanguageFormatting: "off"` leaves it as written, as with Prettier and
-`prettier-plugin-mmd`.
+The eight options are:
 
-`mmdfmt` sets four options itself. The parser is the plugin's, and the only
-plugin is `prettier-plugin-mmd`, so a plugin that the configuration names is not
-loaded. `endOfLine` is not used, since a file keeps its line endings (see
-[Code blocks in detail](../../../mmdfmt/README.md#code-blocks-in-detail)). In a
-code block in a list or a block quote, `printWidth` is less the width of what
-`mmdfmt` writes before the lines (see the same section). `rangeStart` and
-`rangeEnd` are not used, since `mmdfmt` formats whole diagrams.
+- `printWidth` is the line width. It decides two things in a diagram: whether a
+  data block `@{ … }` on one line is printed on several lines, and whether the
+  colons of the tasks of a Gantt section are lined up (see
+  [Formatter options](./options.md#line-width)). `max_line_length = off` is no
+  limit. In a code block in a list or a block quote, `printWidth` is less the
+  width of what `mmdfmt` writes before the lines (see
+  [Code blocks in detail](../../../mmdfmt/README.md#code-blocks-in-detail)).
+- `tabWidth` and `useTabs` set the indentation of a diagram.
+- `embeddedLanguageFormatting`, `singleQuote`, `bracketSpacing`, `proseWrap`,
+  and `trailingComma` apply to the YAML frontmatter of a diagram, as they do
+  when Prettier formats it with `prettier-plugin-mmd`.
+  `embeddedLanguageFormatting: "off"` leaves the frontmatter as written.
+
+`mmdfmt` reads no other option, so that an option that a later version of
+Prettier adds does not change what it does. The range (`rangeStart` and
+`rangeEnd`), `cursorOffset`, the pragma options (`requirePragma`,
+`insertPragma`, and `checkIgnorePragma`), `filepath`, and the options of other
+languages are not used. `mmdfmt` sets three options itself. The parser is the
+plugin's, and the only plugin is `prettier-plugin-mmd`, so a plugin that the
+configuration names is not loaded. `endOfLine` is not used, since a file keeps
+its line endings (see
+[Code blocks in detail](../../../mmdfmt/README.md#code-blocks-in-detail)).
 
 ## Errors and exit codes
 
@@ -427,7 +435,7 @@ even when a file would change.
 ## If you know Prettier
 
 The diagrams are formatted by Prettier with `prettier-plugin-mmd`, so the rules
-of the plugin apply. Four results differ from running Prettier with the plugin
+of the plugin apply. Five results differ from running Prettier with the plugin
 on Markdown:
 
 - Prettier removes the whitespace at the end of the last line of a code block,
@@ -437,21 +445,35 @@ on Markdown:
 - Prettier formats a code block of Markdown, such as one marked `md`, as a
   Markdown document, and with it the diagrams in its code blocks. `mmdfmt`
   leaves every other code block as it is.
-- Prettier prints the marker of a list item itself and aligns the content of the
-  item to `tabWidth`, while `mmdfmt` keeps the marker as written. Where the two
-  give the content another column, the line width left for a diagram in the item
-  differs by that, and a block of one line near the width can be split by one
-  and not by the other.
+- Prettier prints what stands before the lines of a list item or a block quote
+  itself, while `mmdfmt` keeps it as written. For a list item, Prettier prints
+  the marker and aligns the content to `tabWidth`. For a block quote, it prints
+  `> ` and drops the spaces and tabs between the `>` and the fence. Where the
+  two give the content another column, the line width left for a diagram in the
+  item or the quote differs by that, and a block of one line near the width can
+  be split by one and not by the other.
 - In a list item or a block quote, Prettier gives the plugin the line width as
   it is, without the width of what stands before the lines, and the plugin
   counts the lines of a Gantt section with it, to line up their colons. `mmdfmt`
   gives the plugin the width less what it writes before the lines, so near the
-  width a Gantt section can be lined up by Prettier and not by `mmdfmt`, whose
-  lines then stay within the line width.
+  width a Gantt section can be lined up by Prettier and not by `mmdfmt`, which
+  then leaves the colons of the section where they are: no line gets wider, and
+  a line written wider than the line width stays so.
+- Prettier leaves a diagram in a Markdown file as written under four settings:
+  `requirePragma: true` with no `<!-- @format -->` comment at the top of the
+  file, `checkIgnorePragma: true` with a `<!-- @noformat -->` comment there, a
+  range that does not cover the whole file, and
+  `embeddedLanguageFormatting: "off"`, which leaves every code block as written.
+  `mmdfmt` reads none of them. It decides itself which files it formats (the
+  patterns, and `.gitignore`) and formats the diagrams of the files it is given.
+  With `embeddedLanguageFormatting: "off"` it leaves only the frontmatter of a
+  diagram as written.
 
 The command differs from Prettier's CLI too: it does not read `.prettierignore`,
 has no `--ignore-path`, `--ignore-unknown`, or formatting options of its own,
-and reads the configuration for the diagrams only.
+and reads the configuration for the diagrams only. A value that Prettier refuses
+for an option that `mmdfmt` does not read, such as `semi: "yes"`, is not an
+error here, while Prettier's CLI reports it.
 
 The [README of `mmdfmt`](../../../mmdfmt/README.md#code-blocks-in-detail)
 describes the code blocks in detail: which blocks are formatted, blocks in lists

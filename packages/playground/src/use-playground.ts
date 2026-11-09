@@ -11,7 +11,7 @@ import type * as Formatter from "./formatter.ts"
 import type { Range, Root } from "@mmd-toolkit/ast"
 import { onParserUpdate, parseSource, visitNodes } from "./engine.ts"
 import { defaultSource } from "./examples.ts"
-import { decodeState, encodeState } from "./share.ts"
+import { decodeState, defaultFormatOptions, encodeState } from "./share.ts"
 import type { TreeSelection } from "./ast.ts"
 import type { SharedState } from "./share.ts"
 
@@ -65,9 +65,9 @@ interface Playground {
  */
 export function usePlayground(): Playground {
   const source = ref(defaultSource)
-  const printWidth = ref(80)
-  const tabWidth = ref(2)
-  const useTabs = ref(false)
+  const printWidth = ref(defaultFormatOptions.printWidth)
+  const tabWidth = ref(defaultFormatOptions.tabWidth)
+  const useTabs = ref(defaultFormatOptions.useTabs)
   const tab = ref<"ast" | "formatted">("ast")
   const astView = ref("tree")
   // Treat parser objects as snapshots: observe replacements, not their fields.
@@ -305,7 +305,7 @@ export function usePlayground(): Playground {
     try {
       const state = window.location.hash
         ? await decodeState(window.location.hash)
-        : { source: defaultSource, printWidth: 80, tabWidth: 2, useTabs: false }
+        : { source: defaultSource, ...defaultFormatOptions }
       if (
         disposed ||
         request !== navigation ||

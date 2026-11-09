@@ -1,12 +1,12 @@
 import { describe, expect, it } from "vitest"
-import type { Options } from "prettier"
 import { printWidthAfter } from "../src/diagram.ts"
+import type { ReadOptions } from "../src/options.ts"
 
 /** A configuration with only a line width and a tab width set. */
 function options(
   printWidth: number | undefined,
   tabWidth: number | undefined = undefined,
-): Options {
+): ReadOptions {
   return { printWidth, tabWidth }
 }
 
@@ -25,9 +25,19 @@ describe("Code blocks in detail: the line width left after the prefix of a line"
     expect(await printWidthAfter("    ", options(undefined))).toBe(76)
   })
 
-  it("counts a tab as tabWidth, which is 2 where the configuration sets none", async () => {
+  it("counts a tab as reaching the next multiple of tabWidth, which is 2 where the configuration sets none", async () => {
     expect(await printWidthAfter("\t", options(40, 4))).toBe(36)
     expect(await printWidthAfter("\t", options(40))).toBe(38)
+    expect(await printWidthAfter("\t\t", options(40, 4))).toBe(32)
+  })
+
+  it("counts the characters before a tab as part of the column the tab starts from", async () => {
+    expect(await printWidthAfter(">\t", options(40, 4))).toBe(36)
+    expect(await printWidthAfter("   \t", options(40, 4))).toBe(36)
+    expect(await printWidthAfter("    \t", options(40, 4))).toBe(32)
+    expect(await printWidthAfter("> \t", options(40, 3))).toBe(37)
+    expect(await printWidthAfter(">\t", options(40, 2))).toBe(38)
+    expect(await printWidthAfter(">\t", options(40, 8))).toBe(32)
   })
 
   it("leaves at least 1", async () => {

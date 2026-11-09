@@ -1,5 +1,4 @@
 import path from "node:path"
-import type { Options } from "prettier"
 import {
   clearConfigCache as clearPrettierConfigCache,
   resolveConfig as resolvePrettierConfig,
@@ -8,35 +7,8 @@ import { formatDiagramText, rejectionOf } from "./diagram.ts"
 import type { FormatResult, PositionsIn } from "./diagnostic.ts"
 import { lineEndingOf, positionIn, readText } from "./lines.ts"
 import { formatMarkdown } from "./markdown.ts"
-
-/**
- * The options of a Prettier configuration that the command does not read: those
- * that it sets itself for each diagram (the parser, the plugins, and the line
- * endings), the path, which `format` takes as an option of its own, and the
- * range of a file to format, since the command formats whole diagrams (README,
- * Configuration).
- */
-type UnreadOption =
-  "parser" | "plugins" | "endOfLine" | "filepath" | "rangeStart" | "rangeEnd"
-
-/**
- * The options that Prettier names. Its `Options` also takes any other name, for
- * the options of plugins, through an index signature, which `Omit` would turn
- * into the whole type; the only plugin is prettier-plugin-mmd, which has no
- * options, so a value under another name changes nothing.
- */
-type NamedOptions = {
-  [
-    Name in keyof Options as string extends Name
-      ? never
-      : number extends Name
-        ? never
-        : Name
-  ]: Options[Name]
-}
-
-/** The options that the command reads from a Prettier configuration. */
-export type ConfigOptions = Omit<NamedOptions, UnreadOption>
+import type { ReadOptions } from "./options.ts"
+import { readOptions } from "./options.ts"
 
 /** How the tool reads a file: as one diagram, or as Markdown with code blocks. */
 export type FileKind = "diagram" | "markdown"
@@ -69,28 +41,16 @@ export function kindOf(file: string): FileKind | undefined {
 /**
  * Resolves the configuration of a path or a file URL as the command does,
  * `.editorconfig` included, and returns the options that the command reads
- * from it, or `null` when no configuration applies (README, From a script). It
- * takes no options: the command has none for how it finds a configuration.
+ * from it (README, Configuration), or `null` when no configuration applies
+ * (README, From a script).
  */
 export async function resolveConfig(
   fileUrlOrPath: string | URL,
-): Promise<ConfigOptions | null> {
+): Promise<ReadOptions | null> {
   const config = await resolvePrettierConfig(fileUrlOrPath, {
     editorconfig: true,
   })
-  if (config === null) return null
-  // The options that the command does not read are left out by name; the
-  // names start with `_`, as unused names do.
-  const {
-    parser: _parser,
-    plugins: _plugins,
-    endOfLine: _endOfLine,
-    filepath: _filepath,
-    rangeStart: _rangeStart,
-    rangeEnd: _rangeEnd,
-    ...read
-  } = config
-  return read
+  return config === null ? null : readOptions(config)
 }
 
 /**
@@ -103,9 +63,8 @@ export async function clearConfigCache(): Promise<void> {
 }
 
 /**
- * Formats a file of the given kind. The Prettier configuration of the file,
- * found as `resolveConfig` finds it, is given to Prettier as it is (README,
- * Configuration). The diagnostics give their positions in the text that
+ * Formats a file of the given kind, with the options that `resolveConfig`
+ * returns for it. The diagnostics give their positions in the text that
  * `positionsIn` names.
  */
 export async function formatFile(
@@ -114,10 +73,10 @@ export async function formatFile(
   kind: FileKind,
   positionsIn: PositionsIn,
 ): Promise<FormatResult> {
-  const config = (await resolveConfig(file)) ?? {}
+  const options = (await resolveConfig(file)) ?? {}
   return kind === "diagram"
-    ? formatDiagramFile(text, config)
-    : formatMarkdown(text, config, positionsIn)
+    ? formatDiagramFile(text, options)
+    : formatMarkdown(text, options, positionsIn)
 }
 
 /**
@@ -127,12 +86,12 @@ export async function formatFile(
  */
 export async function formatDiagramSource(
   text: string,
-  config: Options,
+  options: ReadOptions,
 ): Promise<string> {
   const { byteOrderMark, normalized } = readText(text)
   const formatted = await formatDiagramText(
     normalized,
-    config,
+    options,
     lineEndingOf(text),
   )
   return byteOrderMark + formatted
@@ -144,11 +103,11 @@ export async function formatDiagramSource(
  */
 async function formatDiagramFile(
   text: string,
-  config: Options,
+  options: ReadOptions,
 ): Promise<FormatResult> {
   try {
     return {
-      text: await formatDiagramSource(text, config),
+      text: await formatDiagramSource(text, options),
       diagnostics: [],
     }
   } catch (error) {

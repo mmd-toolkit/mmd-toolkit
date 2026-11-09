@@ -405,7 +405,7 @@ Promise は次の場合に拒否されます。
 
 図のインデントは空白 2 つで、行の幅は Prettier の 80 です。
 ファイルに `.editorconfig` や Prettier の設定が適用されるときは、
-`mmdfmt` はそれを Prettier にそのまま渡します。
+`mmdfmt` はそのうち 8 つのオプションを読みます。
 `overrides` も含めて Prettier の CLI と同じように探します。
 `.editorconfig` の `indent_style`、`indent_size`、`tab_width`、
 `max_line_length` と、Prettier の設定ファイルのオプションです。
@@ -423,29 +423,36 @@ indent_size = 4
 max_line_length = 100
 ```
 
-図の印字を決めるのは、`tabWidth`、`useTabs`、`printWidth` です。
-行の幅が図の中で決めるのは、2 つです。
-1 行に書いたデータブロック `@{ … }` を複数行で印字するかどうかと、
-Gantt のセクションのタスクの `:` をそろえるかどうかです。
-詳しくは、
-[フォーマッターのオプション](https://mmd-toolkit.github.io/mmd-toolkit/ja/formatter/options.html#行の長さ)
-を参照してください。
-`max_line_length = off` は制限なしです。
-図の YAML frontmatter のオプションである `singleQuote` などはそこに効き、
-`embeddedLanguageFormatting: "off"` は frontmatter を書かれたまま残します。
-Prettier と `prettier-plugin-mmd` を使う場合と同じです。
+読む 8 つのオプションは次のとおりです。
 
-`mmdfmt` が自分で決めるオプションは 4 つあります。
+- `printWidth` は行の幅です。
+  行の幅が図の中で決めるのは、2 つです。
+  1 行に書いたデータブロック `@{ … }` を複数行で印字するかどうかと、
+  Gantt のセクションのタスクの `:` をそろえるかどうかです。
+  詳しくは、
+  [フォーマッターのオプション](https://mmd-toolkit.github.io/mmd-toolkit/ja/formatter/options.html#行の長さ)
+  を参照してください。
+  `max_line_length = off` は制限なしです。
+  リスト項目や引用の中のコードブロックでは、`printWidth` は、
+  各行の前に `mmdfmt` が書くものの幅を引いた幅です。
+  詳しくは、[コードブロックの詳細](#コードブロックの詳細)を参照してください。
+- `tabWidth` と `useTabs` は、図のインデントを決めます。
+- `embeddedLanguageFormatting`、`singleQuote`、`bracketSpacing`、`proseWrap`、
+  `trailingComma` は、図の YAML frontmatter に効きます。
+  Prettier が `prettier-plugin-mmd` で整形する場合と同じです。
+  `embeddedLanguageFormatting: "off"` は frontmatter を書かれたまま残します。
+
+`mmdfmt` はこれ以外のオプションを読みません。
+後の版の Prettier が足すオプションで、動作が変わらないようにするためです。
+範囲（`rangeStart` と `rangeEnd`）、`cursorOffset`、
+プラグマのオプション（`requirePragma`、`insertPragma`、`checkIgnorePragma`）、
+`filepath`、ほかの言語のオプションは使いません。
+`mmdfmt` が自分で決めるオプションは 3 つあります。
 パーサーはプラグインのもので、プラグインは `prettier-plugin-mmd` だけなので、
 設定が挙げるプラグインは読み込みません。
 `endOfLine` は使いません。
 ファイルの改行コードを残すからです。
 詳しくは、[コードブロックの詳細](#コードブロックの詳細)を参照してください。
-リスト項目や引用の中のコードブロックでは、`printWidth` は、
-各行の前に `mmdfmt` が書くものの幅を引いた幅です。
-こちらも同じ節を参照してください。
-`rangeStart` と `rangeEnd` は使いません。
-`mmdfmt` は図全体を整形するからです。
 
 ## エラーと終了コード
 
@@ -484,7 +491,7 @@ Markdown のコードブロックでは警告です。
 
 図は Prettier と `prettier-plugin-mmd` で整形するので、
 プラグインの規則が適用されます。
-Markdown に Prettier とプラグインを使う場合とは、結果が 4 点で異なります。
+Markdown に Prettier とプラグインを使う場合とは、結果が 5 点で異なります。
 
 - Prettier は、コードブロックの最後の行の末尾の空白を、
   mermaid.js が図の一部として読む場合も、
@@ -494,22 +501,39 @@ Markdown に Prettier とプラグインを使う場合とは、結果が 4 点�
   Markdown のコードブロックを Markdown 文書として整形し、
   その中のコードブロックの図も整形します。
   `mmdfmt` はほかのコードブロックをすべてそのまま残します。
-- Prettier はリスト項目のマーカーを自分で印字し、
-  項目の内容を `tabWidth` にそろえますが、
-  `mmdfmt` はマーカーを書かれたまま残します。
+- Prettier はリスト項目や引用で行の前にあるものを自分で印字しますが、
+  `mmdfmt` は書かれたまま残します。
   詳しくは[コードブロックの詳細](#コードブロックの詳細)を参照してください。
-  内容の桁が違うと、項目の中の図に残る行の幅がその差だけ違い、
+  リスト項目では、Prettier はマーカーを印字して内容を `tabWidth` にそろえます。
+  引用では、`> ` を印字し、`>` とフェンスの間の空白とタブを取り除きます。
+  内容の桁が違うと、項目や引用の中の図に残る行の幅がその差だけ違い、
   幅の近くにある 1 行のブロックを、一方は分け、他方は分けないことがあります。
 - リスト項目や引用の中では、Prettier は行の前にあるものの幅を引かずに、
   行の幅をそのままプラグインに渡し、
   プラグインはそれで Gantt のセクションの行を数えて、コロンをそろえます。
   `mmdfmt` は、各行の前に書くものの幅を引いた幅を渡すので、幅の近くでは、
-  Prettier はセクションをそろえ、`mmdfmt` はそろえないことがあり、
-  その行は行の幅に収まります。
+  Prettier はセクションをそろえ、`mmdfmt` はそろえないことがあります。
+  そのとき `mmdfmt` はセクションのコロンを今の位置に残すので、行は広がらず、
+  行の幅より広く書かれた行はそのままです。
+- Markdown ファイルでは、Prettier は次の 4 つの設定のもとで、
+  図を書かれたまま残します。
+  先頭に `<!-- @format -->` のコメントがない `requirePragma: true`、
+  先頭に `<!-- @noformat -->` のコメントがある `checkIgnorePragma: true`、
+  ファイル全体を覆わない範囲、そして `embeddedLanguageFormatting: "off"` です。
+  この設定は、すべてのコードブロックを書かれたまま残します。
+  `mmdfmt` はこれらを読みません。
+  どのファイルを整形するかは自分で決め（パターンと `.gitignore`）、
+  渡されたファイルの図を整形します。
+  `embeddedLanguageFormatting: "off"` のときも、
+  残すのは図の frontmatter だけです。
 
 コマンドも Prettier の CLI とは異なります。
 `.prettierignore` は読まず、`--ignore-path`、`--ignore-unknown`、
 独自の整形オプションはなく、設定は図のためだけに読みます。
+`mmdfmt` が読まないオプションに、Prettier が拒む値を書いても、
+ここではエラーになりません。
+Prettier の CLI はそれをエラーにします。
+たとえば、`semi: "yes"` です。
 
 ## コードブロックの詳細
 
@@ -553,15 +577,21 @@ Markdown に Prettier とプラグインを使う場合とは、結果が 4 点�
 空白で始まる図の行がその空白を失います。
 
 リスト項目や引用の中の図の行の幅は、ファイルの行の幅から、
-`mmdfmt` が各行の前に書くものの幅を引いた幅です。
-タブは `tabWidth` として数え、幅は 1 以上です。
-Prettier がコンテナの中のデータブロックを測るのと同じ決め方です。
-Gantt のセクションのコロンは例外で、
-Prettier はプラグインに行の幅をそのまま渡し、行の前にあるものを数えません。
-詳しくは、
-[Prettier を知っている方へ](#prettier-を知っている方へ)を参照してください。
+`mmdfmt` が各行の前に書くものの幅を引いた幅で、幅は 1 以上です。
+前に書くものは、1 文字を 1 桁と数えます。
+Prettier が整形する範囲の前のインデントを数えるのと同じ方法で、
+タブだけは次の `tabWidth` の倍数の桁まで進みます。
 たとえば、行の幅が 40 のとき、行が空白 2 つで始まるリスト項目の中の図は、
 38 桁として整形します。
+`tabWidth` が 4 のとき、行が `>` とタブで始まる引用の中の図は、
+タブが 4 桁目まで進むので、36 桁として整形します。
+Prettier は、コンテナの中のデータブロックから、
+自分が行の前に印字するものの幅を同じように引きますが、
+印字するものが `mmdfmt` の書くものと違うことがあります。
+詳しくは、
+[Prettier を知っている方へ](#prettier-を知っている方へ)を参照してください。
+Gantt のセクションのコロンは例外で、
+Prettier はプラグインに行の幅をそのまま渡し、行の前にあるものを数えません。
 
 閉じていないブロックは、リスト項目、引用、またはファイルの終わりまで続き、
 ほかと同じく整形します。

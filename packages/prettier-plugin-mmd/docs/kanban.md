@@ -1126,9 +1126,9 @@ data-blocks/data-multiline]
 `printWidth` has no effect on a long bare node
 (`This is a deliberately long kanban item ...`) or a long label: they stay on
 their lines, since a bare node cannot be wrapped without becoming other nodes,
-and a value is text. A data block on one line is the exception, which prints on
-lines where its line is wider than `printWidth` (see
-[Data blocks](#data-blocks)). [fixture: multi-line-values/long-line-kept]
+and a value is text. A data block on one line is the exception: where its line
+is wider than `printWidth`, it prints on lines under the conditions of
+[Data blocks](#data-blocks). [fixture: multi-line-values/long-line-kept]
 [fixture: multi-line-values/small-print-width]
 
 Input

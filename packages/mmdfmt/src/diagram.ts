@@ -1,8 +1,9 @@
 import { parse, ParseError } from "@mmd-toolkit/parser"
 import type { Options } from "prettier"
-import { format, getSupportInfo } from "prettier"
+import { format, getSupportInfo, util } from "prettier"
 import plugin from "prettier-plugin-mmd"
 import type { LineEnding } from "./lines.ts"
+import type { ReadOptions } from "./options.ts"
 
 /** The default of a Prettier option that is a number, as Prettier states it. */
 async function defaultNumberOption(name: string): Promise<number> {
@@ -20,20 +21,19 @@ async function defaultNumberOption(name: string): Promise<number> {
  * Code blocks in detail). Prettier formats a diagram in a list or a block quote
  * inside the container, so the width of what stands before the diagram is no
  * longer left; here the diagram is formatted alone and the prefix is put in
- * front of its lines. A tab in the prefix counts as `tabWidth`. The width is at
- * least 1.
+ * front of its lines. The width of the prefix is counted as Prettier counts the
+ * indentation that stands before a range it formats (`util.getAlignmentSize`),
+ * a tab reaching the next multiple of `tabWidth`. The width is at least 1.
  */
 export async function printWidthAfter(
   prefix: string,
-  options: Options,
+  options: ReadOptions,
 ): Promise<number | undefined> {
   if (prefix === "") return options.printWidth
   const tabWidth = options.tabWidth ?? (await defaultNumberOption("tabWidth"))
-  let used = 0
-  for (const character of prefix) used += character === "\t" ? tabWidth : 1
   const printWidth =
     options.printWidth ?? (await defaultNumberOption("printWidth"))
-  return Math.max(1, printWidth - used)
+  return Math.max(1, printWidth - util.getAlignmentSize(prefix, tabWidth))
 }
 
 /** What formatting the text of a diagram gives. */
@@ -60,13 +60,13 @@ const endOfLineOptions = {
  */
 export async function formatDiagram(
   text: string,
-  config: Options,
+  options: ReadOptions,
   lineEnding: LineEnding,
 ): Promise<DiagramResult> {
   try {
     return {
       kind: "formatted",
-      text: await formatDiagramText(text, config, lineEnding),
+      text: await formatDiagramText(text, options, lineEnding),
     }
   } catch (error) {
     return { kind: "rejected", ...rejectionOf(text, error) }
@@ -76,28 +76,23 @@ export async function formatDiagram(
 /**
  * Formats the text of a diagram with Prettier and prettier-plugin-mmd, as
  * Prettier formats a `.mmd` file with the plugin, and throws what Prettier
- * throws for a text that the plugin rejects. `config` is the Prettier
- * configuration of the file, given to Prettier as it is (README,
- * Configuration), except for the options that the tool sets itself: the
- * parser, the plugins, the line endings, and the range, which is the whole
- * text. The text has no byte order mark and its lines end with `\n`, as
- * Prettier leaves a text before parsing it; the lines of the result end with
- * `lineEnding`.
+ * throws for a text that the plugin rejects. `options` are the options that
+ * the tool reads of the Prettier configuration of the file (README,
+ * Configuration), given to Prettier together with the three that the tool sets
+ * itself: the parser, the plugins, and the line endings. The text has no byte
+ * order mark and its lines end with `\n`, as Prettier leaves a text before
+ * parsing it; the lines of the result end with `lineEnding`.
  */
 export async function formatDiagramText(
   text: string,
-  config: Options,
+  options: ReadOptions,
   lineEnding: LineEnding,
 ): Promise<string> {
   return format(text, {
-    ...config,
+    ...options,
     parser: "mermaid",
     plugins: [plugin],
     endOfLine: endOfLineOptions[lineEnding],
-    // The tool formats whole diagrams: Prettier leaves a text that is not
-    // JavaScript-like unformatted when a range is set (README, Configuration).
-    rangeStart: 0,
-    rangeEnd: Number.POSITIVE_INFINITY,
   })
 }
 

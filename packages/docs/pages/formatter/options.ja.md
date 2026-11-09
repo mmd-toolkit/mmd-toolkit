@@ -27,7 +27,10 @@ Kanbanでは各ノードのインデントの文字数を保持するため、
 `printWidth`は図の中で2つのことを決めます。
 
 - flowchart、agentflow、kanbanで1行に書いたデータブロック`@{ … }`は、
-  その行が`printWidth`より広いときに、1行に1つの項目で複数行に印字します。
+  その行が`printWidth`より広く、条件を満たすときに、
+  1行に1つの項目で複数行に印字します。
+  たとえば、項目が1つのブロックは1行のままです。
+  条件は[データブロック][data-blocks]を参照してください。
 - Ganttのセクションのタスクの`:`は、行が`printWidth`より広くなり、
   しかも今より広くなるときを除いて、そろえます。
 
@@ -51,3 +54,4 @@ Prettierが`printWidth`を使う場合があります。
 [tabs]: https://prettier.io/docs/options#tabs
 [end-of-line]: https://prettier.io/docs/options#end-of-line
 [print-width]: https://prettier.io/docs/options#print-width
+[data-blocks]: ../../../prettier-plugin-mmd/docs/flowchart.ja.md#データブロック

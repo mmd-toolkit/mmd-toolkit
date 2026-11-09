@@ -80,7 +80,7 @@ VS Codeでは、公式の[Prettier拡張機能][vscode]をインストールし�
 
 ## 関連ページ
 
-- [オプション](./options.ja.md): インデントと改行コード。
+- [オプション](./options.ja.md): インデント、行の幅、改行コード。
 - [互換性][compatibility]: 整形の保証と例外、Markdown内のエラーの扱い。
 
 [plugins]: https://prettier.io/docs/plugins#using-plugins

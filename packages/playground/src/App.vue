@@ -5,6 +5,7 @@ import ExamplesMenu from "./components/ExamplesMenu.vue"
 import TreeItem from "./components/TreeItem.vue"
 import { selectionAtOffset } from "./ast.ts"
 import type { TreeSelection } from "./ast.ts"
+import { isPrintWidth } from "./share.ts"
 import { usePlayground } from "./use-playground.ts"
 
 const brandIcon = `${import.meta.env.BASE_URL}mmd-toolkit.svg`
@@ -57,6 +58,22 @@ const recordView = computed(() => {
 const characterCount = computed(() =>
   source.value.length.toLocaleString("en-US"),
 )
+
+/**
+ * Takes the print width as it is typed, when it is one the formatter and a link
+ * accept. Another text (empty, negative, fractional) leaves the setting as it
+ * was, and leaving the field shows the setting again.
+ */
+function inputPrintWidth(event: Event): void {
+  const value = (event.target as HTMLInputElement).valueAsNumber
+  if (isPrintWidth(value)) printWidth.value = value
+}
+
+/** Shows the print width in use once the field is left. */
+function showPrintWidth(event: Event): void {
+  const field = event.target as HTMLInputElement
+  field.value = String(printWidth.value)
+}
 
 /** Synchronizes the current view with the source cursor without changing the AST. */
 function synchronizeSelection(): void {
@@ -357,10 +374,12 @@ function tabKey(event: KeyboardEvent): void {
             <label for="print-width">Print width</label
             ><input
               id="print-width"
-              v-model.number="printWidth"
+              :value="printWidth"
               type="number"
               min="0"
               step="1"
+              @input="inputPrintWidth"
+              @change="showPrintWidth"
             /><label for="tab-width">Indent</label
             ><select id="tab-width" v-model.number="tabWidth">
               <option v-for="width in 8" :key="width" :value="width">

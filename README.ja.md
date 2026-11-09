@@ -34,8 +34,8 @@ Prettierによる整形結果を確認できます。
 
 **Examples**でサンプルを選ぶか、**Source**にテキストを貼り付けます。
 編集に合わせて、**AST**と**Formatted**の表示が更新されます。
-**Share**を開き、**Copy Link**で、
-入力と字下げ設定を復元できるURLをコピーできます。
+**Share**を開き、**Copy Link**で、入力と行幅、
+字下げ設定を復元できるURLをコピーできます。
 
 ツリーの操作、整形の設定、整形結果の適用については、
 [Playgroundの使い方](./packages/playground/README.ja.md)を参照してください。
