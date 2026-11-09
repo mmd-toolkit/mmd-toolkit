@@ -66,7 +66,7 @@ describe("From a script: formatting text", () => {
     ).toEqual(expected)
   })
 
-  it("throws a SyntaxError with no loc.end for an error that ends at the start of a line", async () => {
+  it("throws a SyntaxError with no loc.end for an error whose range runs on to the start of a later line", async () => {
     const text = 'C4Context\nRel\n(a, b, "Uses")\n'
     const expected = await thrownBy(
       prettier.format(text, { parser: "mermaid", plugins: [plugin] }),
@@ -76,6 +76,22 @@ describe("From a script: formatting text", () => {
       loc: { start: { line: 2, column: 4 } },
     })
     expect(expected).not.toHaveProperty("loc.end")
+    expect(
+      await thrownBy(
+        format(text, { filepath: path.join(project.cwd, "a.mmd") }),
+      ),
+    ).toEqual(expected)
+  })
+
+  it("throws a SyntaxError with loc.end for an empty range at the start of a line", async () => {
+    const text = "flowchart TD\nA-->\n"
+    const expected = await thrownBy(
+      prettier.format(text, { parser: "mermaid", plugins: [plugin] }),
+    )
+    expect(expected).toMatchObject({
+      class: SyntaxError,
+      loc: { start: { line: 3, column: 1 }, end: { line: 3, column: 1 } },
+    })
     expect(
       await thrownBy(
         format(text, { filepath: path.join(project.cwd, "a.mmd") }),
