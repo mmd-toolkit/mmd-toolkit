@@ -1,0 +1,29 @@
+{
+  "source": {
+    "kind": "authored",
+    "note": "requirement.md Styles and classes; db-summaries.md requirement: a description block whose text stands on a line of its own replaces an earlier description line with `second`."
+  },
+  "accepted": true,
+  "diagramType": "requirement",
+  "db": {
+    "direction": "TB",
+    "title": "",
+    "accTitle": "",
+    "accDescr": "second",
+    "requirements": [
+      {
+        "name": "r",
+        "type": "Requirement",
+        "requirementId": "1",
+        "text": "",
+        "risk": "",
+        "verifyMethod": "",
+        "cssStyles": [],
+        "classes": []
+      }
+    ],
+    "elements": [],
+    "relationships": [],
+    "classes": []
+  }
+}

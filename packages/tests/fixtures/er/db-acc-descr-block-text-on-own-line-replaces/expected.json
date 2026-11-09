@@ -1,0 +1,27 @@
+{
+  "source": {
+    "kind": "authored",
+    "note": "er.md Other statements; db-summaries.md er, Direction, title and accessibility texts: a description block whose text stands on a line of its own replaces an earlier description line with `second`."
+  },
+  "accepted": true,
+  "diagramType": "er",
+  "db": {
+    "direction": "TB",
+    "title": "",
+    "accTitle": "",
+    "accDescr": "second",
+    "entities": [
+      {
+        "id": "entity-A-0",
+        "attributes": [],
+        "alias": "",
+        "cssStyles": [],
+        "name": "A",
+        "classes": []
+      }
+    ],
+    "relationships": [],
+    "classes": [],
+    "subGraphs": []
+  }
+}

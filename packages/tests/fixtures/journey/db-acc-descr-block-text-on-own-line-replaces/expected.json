@@ -1,0 +1,26 @@
+{
+  "source": {
+    "kind": "authored",
+    "note": "A description block whose text stands on a line of its own replaces an earlier description line with `second`."
+  },
+  "accepted": true,
+  "diagramType": "journey",
+  "db": {
+    "title": "",
+    "accTitle": "",
+    "accDescr": "second",
+    "sections": [
+      "Work"
+    ],
+    "tasks": [
+      {
+        "section": "Work",
+        "task": "Make tea",
+        "people": [
+          "Me"
+        ],
+        "score": 5
+      }
+    ]
+  }
+}

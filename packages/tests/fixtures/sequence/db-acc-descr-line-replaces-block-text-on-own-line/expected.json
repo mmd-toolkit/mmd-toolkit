@@ -1,0 +1,47 @@
+{
+  "source": {
+    "kind": "authored",
+    "note": "A later description line replaces a block whose text stands on a line of its own with the description `second`."
+  },
+  "accepted": true,
+  "diagramType": "sequence",
+  "db": {
+    "title": "",
+    "accTitle": "",
+    "accDescr": "second",
+    "actors": [
+      {
+        "name": "A",
+        "description": "A",
+        "wrap": false,
+        "links": {},
+        "properties": {},
+        "type": "participant",
+        "nextActor": "B"
+      },
+      {
+        "name": "B",
+        "description": "B",
+        "wrap": false,
+        "prevActor": "A",
+        "links": {},
+        "properties": {},
+        "type": "participant"
+      }
+    ],
+    "boxes": [],
+    "createdActors": [],
+    "destroyedActors": [],
+    "messages": [
+      {
+        "from": "A",
+        "to": "B",
+        "message": "x",
+        "wrap": false,
+        "type": 0,
+        "activate": false,
+        "centralConnection": 0
+      }
+    ]
+  }
+}

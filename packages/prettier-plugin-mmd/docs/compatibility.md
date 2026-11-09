@@ -1179,13 +1179,14 @@ mermaid.js reads some different spellings of a token as the same token and draws
 the same figure from them: a keyword in another case, a string between `'`
 instead of `"`, a number with a zero at the end, the words of a relationship of
 an ER diagram instead of its symbols, an accessibility description in a block on
-one line instead of after a colon. The printer writes such a spelling in one
-form. For the whitespace between tokens the form is the one that the other
-diagram types print for the same kind of gap (see the sections above). For a
-spelling, the form is the one that the examples in the documentation of the
-pinned mermaid.js use at least twice as often as any other form. Where no form
-is used that often, or the examples use none, the spelling is kept as written.
-The examples are the 541 fenced `mermaid-example` and `mermaid` blocks of the
+one line instead of after a colon, a text in quotes instead of without them. The
+printer writes such a spelling in one form. For the whitespace between tokens
+the form is the one that the other diagram types print for the same kind of gap
+(see the sections above). For a spelling, the form is the one that the examples
+in the documentation of the pinned mermaid.js use at least twice as often as any
+other form. Where no form is used that often, or the examples use none, the
+spelling is kept as written. The examples are the 541 fenced `mermaid-example`
+and `mermaid` blocks of the
 [syntax pages](https://github.com/mermaid-js/mermaid/tree/2086904e76c692331e34a45d7cc3bc30860d040e/packages/mermaid/src/docs/syntax);
 the parser reads 524 of them, and the counts below are counts in those 524.
 
@@ -1232,6 +1233,7 @@ and, with the Db only, in the inputs of the conformance corpus:
 | The colon of a header (line break) |        0 |                   0 |     22 |      21 |
 | The label of a link                |       19 |                  19 |    170 |     162 |
 | A description block on one line    |        3 |                   3 |    282 |     245 |
+| The quotes of a field of a sankey  |        6 |                   6 |     11 |      11 |
 
 A corpus pair that is not counted in the last column is a pair of which
 mermaid.js rejects the other spelling, except two pairs of the label of a link,
@@ -1631,6 +1633,47 @@ the colon in place, in 282 of the fixtures; a block on a line with another
 statement was not, since the form with the colon would run to the end of the
 line. No railroad diagram was drawn; those were compared by Db only.
 
+### The quotes of a text
+
+mermaid.js reads some texts the same with and without quotes: the source of a
+link of a sankey diagram has the same id in `"a b",c,1` and in `a b,c,1`, since
+[the action of a record](https://github.com/mermaid-js/mermaid/blob/2086904e76c692331e34a45d7cc3bc30860d040e/packages/mermaid/src/diagrams/sankey/parser/sankey.jison#L53-L55)
+drops the spaces at the ends of a field and reads `""` as `"` for a field of
+both forms. The form is the one that the examples of the diagram type use at
+least twice as often as the other, and a text is printed in it when both forms
+read it the same; any other text stays as written. These fields are printed
+without quotes:
+
+| Diagram type | Field                                 | Without quotes | In quotes |
+| ------------ | ------------------------------------- | -------------: | --------: |
+| sankey       | the source of a link                  |             87 |         0 |
+| sankey       | the target of a link                  |             83 |         4 |
+| sankey       | the value of a link, in its own shape |             87 |         0 |
+
+A text is printed without quotes where it is plain: ASCII letters, digits, `_`,
+`-`, and `.`, with spaces between them, and, in a sankey diagram, with spaces at
+its ends, which the field drops. The sankey lexer takes any printable character
+of ASCII but `"` and `,` into a field without quotes, but a character of another
+kind is not one that every stage reads the same: `%%` starts a comment or a
+directive, `#` starts an entity, `;` takes part in the line rule of `style` and
+`classDef` lines, and a line break ends the record, while `&`, `<`, `>`, `'`,
+`\`, and `/` were not compared in every position. So a text with any of them, or
+with a `,` or a `"`, stays in quotes, and so does a string with a directive or a
+comment region inside it. [fixture: sankey/quotes/plain-text-without-quotes]
+[fixture: sankey/quotes/plain-text-with-spaces-without-quotes] [fixture:
+sankey/quotes/spaces-at-the-ends-left-out] [fixture:
+sankey/quotes/comma-and-doubled-quotes-kept] [fixture:
+sankey/quotes/other-characters-keep-the-quotes] [fixture:
+sankey/values/forms-kept] [fixture:
+sankey/quotes/values-in-quotes-without-quotes] [fixture:
+sankey/directives/inside-fields-kept] [fixture:
+sankey/multi-line-strings/string-over-lines]
+
+mermaid.js 12.3.0 read both forms of 11 inputs of the conformance corpus whose
+quotes the printer leaves out, with the same Db, and of the 6 examples that were
+written again with every plain field in quotes, with the same Db and the same
+SVG.
+
 ### Versions of mermaid.js
 
 The CHANGELOG.md of the pinned mermaid.js has no entry about the case of
@@ -1643,6 +1686,11 @@ mermaid.js, show which form each version reads:
   `gitGraph:` only, and the grammar of 9.0.0 reads the header with the colon and
   without it. A text printed without the colon is not read by 8.14.0, so the
   colon stays as written.
+- The quotes of a field of a sankey diagram: the grammars of 10.3.0, 10.9.0,
+  11.0.0, and 12.3.0 have the same rules for a field without quotes and a field
+  in quotes, and the same action of a record, which drops the spaces at the ends
+  of the source and the target, reads `""` as `"`, and reads the value with
+  `parseFloat` of the field without its spaces at the ends.
 - An accessibility description in a block on one line: the grammar of the
   flowchart in 9.0.0 and 9.0.1 has no rule for `accDescr`, and the grammar in
   9.1.0, the first with the rule, has the form with the colon and the form with
