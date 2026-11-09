@@ -1822,25 +1822,30 @@ data-blocks/use-tabs-not-first-on-line] [fixture:
 data-blocks/use-tabs-two-statements-before]
 
 The whitespace written at the start of a line is the indentation of the first
-statement of the line, so it is the indentation of a statement of the same depth
-only. The header of a container before the statement on its line, as in
-`subgraph s; A@{ … }`, makes the statement a statement inside the container, one
-level deeper than the line. The written indentation is that of the header, and
-nothing was written for the depth of the statement. The printer then sets the
-indentation of the node line, and the lines of the block move with it, as in the
-next paragraph. [fixture: data-blocks/use-tabs-subgraph-header-moved] [fixture:
-data-blocks/use-tabs-nested-subgraph-header-moved] The `end` of a container
-before the statement on its line, as in `end; A@{ … }`, is no such boundary: the
-printer prints an `end` at the depth of its container, and a statement after the
-container is at that depth too, so the whitespace written at the start of the
-line is the indentation of the statement, and the statement is printed as
-written, as `C; A@{ … }` is. [fixture: data-blocks/use-tabs-after-end-on-line]
+thing on the line, which is a statement, the header of a container, a section
+keyword, or an `end`, so it is the indentation of a statement at the depth of
+that thing only. The printer prints a header, a section keyword, and an `end` at
+the depth of their container. A statement is deeper than the first thing when
+the header of a container comes first, as in `subgraph s; A@{ … }`, where the
+statement is inside the container. It is shallower when a statement inside a
+container comes first, or an `end` of an inner container, as in
+`B; end; A@{ … }` and `end; end; A@{ … }`, where the statement is after the
+container. Nothing was written for the depth of the statement then. The printer
+sets the indentation of the node line, and the lines of the block move with it,
+as in the next paragraph. [fixture: data-blocks/use-tabs-subgraph-header-moved]
+[fixture: data-blocks/use-tabs-nested-subgraph-header-moved] [fixture:
+data-blocks/use-tabs-statement-before-end-moved] [fixture:
+data-blocks/use-tabs-end-before-end-moved] A statement at the depth of the first
+thing is printed as written, as `C; A@{ … }` is, and so is the statement in
+`end; A@{ … }`, where the `end` comes first: the printer prints it at the depth
+of its container, and a statement after the container is at that depth too.
+[fixture: data-blocks/use-tabs-after-end-on-line]
 
 Where the printer must set the indentation of the node line itself, the lines of
 the block move with it, as without `useTabs`, indented with spaces: the header
 of an agentflow container, whose `end` stands at the indentation of the header,
-a statement inside a container whose header is on its line (see above), and a
-kanban node, whose indentation mermaid.js reads as its level (see
+a statement that is not at the depth of the first thing on its line (see above),
+and a kanban node, whose indentation mermaid.js reads as its level (see
 [Metadata blocks](./agentflow.md#metadata-blocks) and
 [Data blocks](./kanban.md#data-blocks)). The lines then stand right where a tab
 is as wide as `tabWidth`, whatever the author wrote, and off by the difference

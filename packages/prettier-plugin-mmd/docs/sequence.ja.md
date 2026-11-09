@@ -1167,12 +1167,18 @@ participant と actor のデータブロックには、
 トップレベルと `loop` 内で適用しますが、`useTabs` のときは、
 文を書かれたまま印字します（詳しくは、
 [データブロック](./flowchart.ja.md#データブロック)を参照）。
-ただし、文と同じ行でその前に `box` かブロックの見出しがあって、
-文がその中にある場合は、書かれた字下げは見出しの字下げです。
-その場合は文を通常の字下げで印字し、ブロックの行も文と一緒に動かします。
-文と同じ行でその前にある `end` は、この見出しには当たらず、
-文を書かれたまま印字します。
+ただし、文が、その行の最初にあるものと同じ深さでない場合は別です。
+`box Aqua G; participant A@{ … }` のように `box`
+やブロックの見出しが先にある場合、
+`else z; participant P@{ … }` のようにセクションのキーワードが先にある場合、
+`participant B; end; participant A@{ … }` のように、
+box やブロックの中の文が `end` の前にある場合が当たります。
+書かれた字下げはその先にあるもののものなので、文は通常の字下げで印字し、
+ブロックの行も文と一緒に動かします。
+`end` が先にある文は、その行と同じ深さなので、書かれたまま印字します。
 [fixture: multi-line-values/data-use-tabs-box-header-moved]
+[fixture: multi-line-values/data-use-tabs-section-keyword-moved]
+[fixture: multi-line-values/data-use-tabs-statement-before-end-moved]
 [fixture: multi-line-values/data-use-tabs-after-end-on-line]
 [fixture: multi-line-values/data-zero-and-shallow]
 [fixture: multi-line-values/data-deep-inline-closer]

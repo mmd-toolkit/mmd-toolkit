@@ -6,6 +6,7 @@ import type {
 } from "@mmd-toolkit/ast"
 import type { MermaidAst } from "../parser.ts"
 import { printAtoms } from "./atoms.ts"
+import type { StatementListsOf } from "./data-blocks.ts"
 import { formatDataBlocks, writtenIndentationRule } from "./data-blocks.ts"
 import { lineEndOf } from "./kept-lines.ts"
 import type { BlockRules } from "./blocks.ts"
@@ -97,7 +98,7 @@ export function printFlowchart(
           statement: indentationOf(bodyOptions, depth),
           tabWidth: options.tabWidth,
           useTabs: options.useTabs,
-          holdsStatements,
+          statementListsOf,
         },
       )
       return printAtoms(source, layout, {
@@ -184,9 +185,14 @@ function printSubgraph(
   return printClosedBlock(header, block, endKeyword.value, depth, options)
 }
 
+/** The lists of statements that the node holds. */
+function statementListsOf(node: MermaidAst): ReturnType<StatementListsOf> {
+  return node.type === "FlowchartSubgraphStatement" ? [node.body] : []
+}
+
 /** Whether the node is a statement that holds statements of its own. */
 function holdsStatements(node: MermaidAst): boolean {
-  return node.type === "FlowchartSubgraphStatement"
+  return statementListsOf(node).length > 0
 }
 
 /**
@@ -205,7 +211,7 @@ function flowchartBlockRules(
     writtenIndentationOf: writtenIndentationRule(
       source,
       options.useTabs,
-      holdsStatements,
+      statementListsOf,
     ),
     isDroppedAtTopLevel: (statement) =>
       statement.type === "FlowchartEmptyStatement",

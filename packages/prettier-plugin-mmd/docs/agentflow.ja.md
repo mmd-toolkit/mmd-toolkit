@@ -646,7 +646,10 @@ agentflow の後の振り分けや別名解決を根拠に YAML を書き換え�
 コンテナの中の文です。
 行頭に書かれた字下げは見出しの字下げなので、その文も書かれたまま印字しません。
 [データブロック](./flowchart.ja.md#データブロック)を参照してください。
+`B; end; A@{ … }` の `A@{ … }` のように、
+コンテナの中の文が先にある `end` の後の文も同じです。
 [fixture: metadata-blocks/use-tabs-container-header-statement-moved]
+[fixture: metadata-blocks/use-tabs-statement-before-end-moved]
 
 矢印の改行後のブロックは、文の最初の行より後から始まるため桁を残し、
 1 行でも複数行でも、ブロックを 2 つ持つ文は、どちらも桁を残します。

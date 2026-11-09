@@ -1099,12 +1099,16 @@ text. Move that line one level inside the statement and align a separate `}`
 with the statement; a closer after text stays with that line. This applies at
 the top level and inside `loop`, except with `useTabs`, where the statement is
 printed as written (see [Data blocks](./flowchart.md#data-blocks)), unless the
-header of a `box` or a block stands before it on its line, so that the statement
-is inside it: the written indentation is then that of the header, and the
-statement is printed with the usual indentation, the lines of its block moving
-with it. An `end` before the statement on its line is no such header: the
-statement is printed as written. [fixture:
-multi-line-values/data-use-tabs-box-header-moved] [fixture:
+statement is not at the depth of the first thing on its line: the header of a
+`box` or a block, as in `box Aqua G; participant A@{ … }`, a section keyword, as
+in `else z; participant P@{ … }`, or a statement inside the box or block before
+an `end`, as in `participant B; end; participant A@{ … }`. The written
+indentation is then that of that thing, and the statement is printed with the
+usual indentation, the lines of its block moving with it. A statement after an
+`end` that comes first is at the depth of the line and is printed as written.
+[fixture: multi-line-values/data-use-tabs-box-header-moved] [fixture:
+multi-line-values/data-use-tabs-section-keyword-moved] [fixture:
+multi-line-values/data-use-tabs-statement-before-end-moved] [fixture:
 multi-line-values/data-use-tabs-after-end-on-line] [fixture:
 multi-line-values/data-zero-and-shallow] [fixture:
 multi-line-values/data-deep-inline-closer] [fixture:

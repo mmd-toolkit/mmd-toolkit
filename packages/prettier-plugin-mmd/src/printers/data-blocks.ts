@@ -11,6 +11,7 @@ import type { Source } from "./source.ts"
 import {
   findDirectiveEndingAt,
   findFirstIndex,
+  findTriviaBetween,
   isSpaceOrTab,
   isWhitespace,
 } from "./source.ts"
@@ -74,48 +75,87 @@ function dataBlocksOf(source: Source): readonly Node[] {
   return blocks
 }
 
-/** The statements of each source that hold statements, found once. */
-const containersBySource = new WeakMap<Source, readonly Node[]>()
+/**
+ * The lists of statements that a node holds: one for a subgraph, one for each
+ * section of an `alt`, and none for a node that holds no statements.
+ */
+export type StatementListsOf = (node: Node) => readonly (readonly Node[])[]
 
 /**
- * The statements of the source that hold statements, such as the subgraphs of a
- * flowchart, in source order. One diagram type has one `holdsStatements`.
+ * The text from the first statement of a list that a node holds to the end of
+ * its last statement. A statement is in it, and so is anything between two
+ * statements of the list. The header of the node, the keyword of a section, and
+ * the `end` are not: they are at the depth of the node.
  */
-function containersOf(
+interface StatementSpan {
+  readonly start: number
+  readonly end: number
+}
+
+/** The spans of the statement lists of each source, found once. */
+const spansBySource = new WeakMap<Source, readonly StatementSpan[]>()
+
+/**
+ * The spans of the statement lists that the nodes of the source hold, in source
+ * order of their nodes. One diagram type has one `statementListsOf`.
+ */
+function statementSpansOf(
   source: Source,
-  holdsStatements: (node: Node) => boolean,
-): readonly Node[] {
-  const cached = containersBySource.get(source)
+  statementListsOf: StatementListsOf,
+): readonly StatementSpan[] {
+  const cached = spansBySource.get(source)
   if (cached !== undefined) return cached
-  const containers = findNodes(source.root.body, holdsStatements)
-  containersBySource.set(source, containers)
-  return containers
+  const spans = findNodes(
+    source.root.body,
+    (node) => statementListsOf(node).length > 0,
+  ).flatMap((node) =>
+    statementListsOf(node).flatMap((statements) => {
+      const first = statements.at(0)
+      const last = statements.at(-1)
+      return first === undefined || last === undefined
+        ? []
+        : [{ start: first.range[0], end: last.range[1] }]
+    }),
+  )
+  spansBySource.set(source, spans)
+  return spans
 }
 
 /**
- * Whether the statement in `range` stands inside a statement that holds
- * statements, such as a subgraph, whose header is on the line of the statement,
- * before it. The whitespace at the start of that line was written for the first
- * statement of the line, which is not at the depth of the statement: the
- * printer puts the statement on a line of its own, one level deeper
- * (`subgraph s; A@{`). The `end` of a container before the statement on its
- * line is no such boundary: the printer prints it at the depth of the
- * container, and a statement after the container is at that depth too, so the
- * whitespace written at the start of the line is the indentation for the
- * statement (`end; A@{`).
+ * Whether the whitespace at the start of the line of the statement in `range`
+ * was written for the depth of the statement. It is the indentation of the
+ * first thing on the line after the directives, a statement, the header of a
+ * container, a section keyword, or an `end`, so it fits the statement only if
+ * the statement is at the depth of that thing. The statement is deeper in
+ * `subgraph s; A@{`, where the header comes first, and shallower in
+ * `B; end; A@{`, where the statement `B` inside the container comes first; the
+ * printer then puts the statement on a line of its own at its own depth. The
+ * statement is at the depth of the line in `C; A@{` and in `end; A@{`, where
+ * the printer prints the `end` at the depth of its container and the statement
+ * after the container is at that depth too.
  */
-function opensContainerOnItsLine(
+function standsAtDepthOfItsLine(
   source: Source,
   range: Range,
-  holdsStatements: (node: Node) => boolean,
+  statementListsOf: StatementListsOf,
 ): boolean {
-  const lineStart = lineStartOf(source, range[0])
-  return containersOf(source, holdsStatements).some(
-    (container) =>
-      lineStart <= container.range[0] &&
-      container.range[0] < range[0] &&
-      range[0] < container.range[1],
-  )
+  let first = lineStartOf(source, range[0])
+  for (;;) {
+    while (first < range[0] && isSpaceOrTab(source.text[first])) first++
+    const directive = findTriviaBetween(source, first, first + 1).find(
+      (item) => item.type === "Directive",
+    )
+    if (directive === undefined || directive.range[1] > range[0]) break
+    first = directive.range[1]
+  }
+  const spans = statementSpansOf(source, statementListsOf)
+  return depthAt(spans, first) === depthAt(spans, range[0])
+}
+
+/** The number of statement lists that hold the text at `offset`. */
+function depthAt(spans: readonly StatementSpan[], offset: number): number {
+  return spans.filter((span) => span.start <= offset && offset < span.end)
+    .length
 }
 
 /** Where the statement that holds the block stands, and what is read. */
@@ -139,10 +179,10 @@ export interface DataBlockPlacement {
    */
   readonly decidesIndentation?: boolean
   /**
-   * Whether a node of the tree is a statement that holds statements, such as a
-   * subgraph (see `opensContainerOnItsLine`).
+   * The lists of statements that a node of the tree holds, for a subgraph or a
+   * section of an `alt` (see `standsAtDepthOfItsLine`).
    */
-  readonly holdsStatements: (node: Node) => boolean
+  readonly statementListsOf: StatementListsOf
   /**
    * Whether the layout holds the statement as one atom that is printed as
    * written, as a kanban node is, so the blocks lie inside it and not in atoms
@@ -368,19 +408,19 @@ function splitsBlocks(placement: DataBlockPlacement): boolean {
  * stand right of the content and the closing `}` wherever they were written no
  * deeper than the node line (docs/flowchart.md, Data blocks). A statement whose
  * indentation the printer decides (see `DataBlockPlacement.decidesIndentation`),
- * or that stands in a container whose header is on its line (see
- * `opensContainerOnItsLine`), prints as usual, and the lines of its block move
+ * or that is not at the depth of the first thing on its line (see
+ * `standsAtDepthOfItsLine`), prints as usual, and the lines of its block move
  * with the node line, as without tabs (see `movesLines`).
  */
 function keepsStatementAsWritten(
   source: Source,
   range: Range,
   useTabs: boolean | undefined,
-  holdsStatements: (node: Node) => boolean,
+  statementListsOf: StatementListsOf,
 ): boolean {
   if (
     useTabs !== true ||
-    opensContainerOnItsLine(source, range, holdsStatements)
+    !standsAtDepthOfItsLine(source, range, statementListsOf)
   )
     return false
   const all = dataBlocksOf(source)
@@ -404,9 +444,9 @@ export function writtenIndentationOfBlockStatement(
   source: Source,
   range: Range,
   useTabs: boolean | undefined,
-  holdsStatements: (node: Node) => boolean,
+  statementListsOf: StatementListsOf,
 ): string | undefined {
-  if (!keepsStatementAsWritten(source, range, useTabs, holdsStatements))
+  if (!keepsStatementAsWritten(source, range, useTabs, statementListsOf))
     return undefined
   const start = lineStartOf(source, range[0])
   let end = start
@@ -424,16 +464,16 @@ export function writtenIndentationOfBlockStatement(
 export function writtenIndentationRule(
   source: Source,
   useTabs: boolean | undefined,
-  holdsStatements: (node: Node) => boolean,
+  statementListsOf: StatementListsOf,
 ): (statement: Node) => string | undefined {
   return (statement) =>
-    holdsStatements(statement)
+    statementListsOf(statement).length > 0
       ? undefined
       : writtenIndentationOfBlockStatement(
           source,
           statement.range,
           useTabs,
-          holdsStatements,
+          statementListsOf,
         )
 }
 
@@ -458,7 +498,7 @@ function printStatementAsWritten(
       source,
       range,
       placement.useTabs,
-      placement.holdsStatements,
+      placement.statementListsOf,
     )
   )
     return undefined

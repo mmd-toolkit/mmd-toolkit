@@ -8,6 +8,7 @@ import type {
 import type { MermaidAst } from "../parser.ts"
 import { printedToken } from "./spelling.ts"
 import { printAtoms } from "./atoms.ts"
+import type { StatementListsOf } from "./data-blocks.ts"
 import { formatDataBlocks, writtenIndentationRule } from "./data-blocks.ts"
 import type { BlockRules, PrintedBlock } from "./blocks.ts"
 import {
@@ -95,7 +96,7 @@ export function printSequence(
             statement: indentationOf(options, depth),
             tabWidth: options.tabWidth,
             useTabs: options.useTabs,
-            holdsStatements,
+            statementListsOf,
           },
         ),
         {
@@ -270,10 +271,22 @@ function openBlock(
   return { header, block }
 }
 
+/** The lists of statements that the node holds. */
+function statementListsOf(node: MermaidAst): ReturnType<StatementListsOf> {
+  const classified = classifySequenceStatement(node)
+  switch (classified?.kind) {
+    case "body":
+      return [classified.statement.body]
+    case "sections":
+      return classified.statement.sections.map((section) => section.body)
+    default:
+      return []
+  }
+}
+
 /** Whether the node is a statement that holds statements of its own. */
 function holdsStatements(node: MermaidAst): boolean {
-  const classified = classifySequenceStatement(node)
-  return classified !== null && classified.kind !== "simple"
+  return statementListsOf(node).length > 0
 }
 
 /**
@@ -291,7 +304,7 @@ function sequenceBlockRules(
     writtenIndentationOf: writtenIndentationRule(
       source,
       options.useTabs,
-      holdsStatements,
+      statementListsOf,
     ),
     isDroppedAtTopLevel: () => false,
     keepsWhitespaceLineAfterComment: false,

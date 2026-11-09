@@ -3,6 +3,7 @@ import type { UsecaseStatement } from "@mmd-toolkit/ast"
 import type { MermaidAst } from "../parser.ts"
 import type { AtomLayout } from "./atoms.ts"
 import { printAtoms } from "./atoms.ts"
+import type { StatementListsOf } from "./data-blocks.ts"
 import { formatDataBlocks, writtenIndentationRule } from "./data-blocks.ts"
 import type { BlockBounds, BlockRules, PrintedBlock } from "./blocks.ts"
 import {
@@ -70,9 +71,15 @@ function printLine(
   }).doc
 }
 
+/** The lists of statements that the node holds. */
+function statementListsOf(node: MermaidAst): ReturnType<StatementListsOf> {
+  const classified = classifyUsecaseStatement(node)
+  return classified?.kind === "boundary" ? [classified.statement.body] : []
+}
+
 /** Whether the node is a statement that holds statements of its own. */
 function holdsStatements(node: MermaidAst): boolean {
-  return classifyUsecaseStatement(node)?.kind === "boundary"
+  return statementListsOf(node).length > 0
 }
 
 /** Only system boundaries contain declaration bodies (docs/usecase.md). */
@@ -90,7 +97,7 @@ function printStatements(
     writtenIndentationOf: writtenIndentationRule(
       source,
       options.useTabs,
-      holdsStatements,
+      statementListsOf,
     ),
     isDroppedAtTopLevel: () => false,
     keepsWhitespaceLineAfterComment: false,
@@ -114,7 +121,7 @@ function printStatements(
               statement: indentationOf(options, depth),
               tabWidth: options.tabWidth,
               useTabs: options.useTabs,
-              holdsStatements,
+              statementListsOf,
             },
           ),
           depth,
