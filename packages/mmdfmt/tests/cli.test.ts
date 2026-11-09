@@ -763,7 +763,7 @@ describe("Excluding files: patterns that start with !", () => {
   })
 })
 
-describe("Indentation and line width", () => {
+describe("Configuration", () => {
   it("indents by two spaces without a Prettier configuration", async () => {
     project.write({ "a.mmd": diagram })
     await project.run(["--write", "a.mmd"])
@@ -816,7 +816,7 @@ describe("Indentation and line width", () => {
     )
   })
 
-  it("uses no plugin and no other option of the configuration", async () => {
+  it("sets the plugins, the line endings, and the text of the Markdown itself", async () => {
     const prose = `${"word ".repeat(30)}\n\n`
     project.write({
       ".prettierrc": JSON.stringify({
@@ -869,6 +869,33 @@ describe("Indentation and line width", () => {
     })
     await project.run(["--write", "a.mmd"])
     expect(project.read("a.mmd")).toBe(longBlock)
+  })
+
+  it("gives the rest of the configuration to Prettier as it is: singleQuote reaches the frontmatter", async () => {
+    const withFrontmatter = '---\ntitle: "T"\n---\nflowchart LR\nA-->B\n'
+    project.write({
+      ".prettierrc": JSON.stringify({ singleQuote: true }),
+      "a.mmd": withFrontmatter,
+      "b.md": `# T\n\n\`\`\`mermaid\n${withFrontmatter}\`\`\`\n`,
+    })
+    await project.run(["--write", "a.mmd", "b.md"])
+    const formatted = "---\ntitle: 'T'\n---\nflowchart LR\n  A --> B\n"
+    expect(project.read("a.mmd")).toBe(formatted)
+    expect(project.read("b.md")).toBe(
+      `# T\n\n\`\`\`mermaid\n${formatted}\`\`\`\n`,
+    )
+  })
+
+  it("gives the rest of the configuration to Prettier as it is: embeddedLanguageFormatting off leaves the frontmatter as written", async () => {
+    const withFrontmatter = '---\ntitle:   "T"\n---\nflowchart LR\nA-->B\n'
+    project.write({
+      ".prettierrc": JSON.stringify({ embeddedLanguageFormatting: "off" }),
+      "a.mmd": withFrontmatter,
+    })
+    await project.run(["--write", "a.mmd"])
+    expect(project.read("a.mmd")).toBe(
+      '---\ntitle:   "T"\n---\nflowchart LR\n  A --> B\n',
+    )
   })
 
   it("is an error when the configuration cannot be read", async () => {

@@ -300,7 +300,7 @@ Prettier の `resolveConfig` と同じ引数を受け取り、
 そのパスの設定からコマンドが読むオプションを返す Promise を返します。
 設定で指定されている `tabWidth`、`useTabs`、`printWidth` だけを返し、
 適用する設定がなければ `null` を返します。
-詳しくは[インデントと行の幅](#インデントと行の幅)を参照してください。
+詳しくは[設定](#設定)を参照してください。
 Prettier のものと異なり、コマンドと同じく、
 `editorconfig: false` を渡さないかぎり `.editorconfig` を読みます。
 
@@ -336,16 +336,16 @@ Prettier の `format` と同じく、ファイルも設定も読みません。
 `node_modules` やバージョン管理のディレクトリの下にあるパスも、
 `.gitignore` が挙げるパスも同じように整形します。
 
-## インデントと行の幅
+## 設定
 
 図のインデントは空白 2 つで、行の幅は Prettier の 80 です。
 ファイルに `.editorconfig` や Prettier の設定が適用されるときは、
-そのインデントと行の幅を使います。
-`.editorconfig` の `indent_style`、`indent_size`、`tab_width`、
-`max_line_length`、
-または [Prettier の設定ファイル](https://prettier.io/docs/configuration)の
-`useTabs`、`tabWidth`、`printWidth` で、
+`mmdfmt` はそれを Prettier にそのまま渡します。
 `overrides` も含めて Prettier の CLI と同じように探します。
+`.editorconfig` の `indent_style`、`indent_size`、`tab_width`、
+`max_line_length` と、Prettier の設定ファイルのオプションです。
+設定ファイルについては、
+[Prettier の文書](https://prettier.io/docs/configuration) を参照してください。
 コードブロックでは、そのファイルは Markdown ファイルです。
 読めない設定ファイルはエラーです。
 たとえば、この `.editorconfig` は図に空白 4 つのインデントを付け、
@@ -358,6 +358,7 @@ indent_size = 4
 max_line_length = 100
 ```
 
+図の印字を決めるのは、`tabWidth`、`useTabs`、`printWidth` です。
 行の幅が図の中で決めるのは、2 つです。
 1 行に書いたデータブロック `@{ … }` を複数行で印字するかどうかと、
 Gantt のセクションのタスクの `:` をそろえるかどうかです。
@@ -365,7 +366,19 @@ Gantt のセクションのタスクの `:` をそろえるかどうかです。
 [フォーマッターのオプション](https://mmd-toolkit.github.io/mmd-toolkit/ja/formatter/options.html#行の長さ)
 を参照してください。
 `max_line_length = off` は制限なしです。
-設定のほかの項目は使いません。
+図の YAML frontmatter のオプションである `singleQuote` などはそこに効き、
+`embeddedLanguageFormatting: "off"` は frontmatter を書かれたまま残します。
+Prettier と `prettier-plugin-mmd` を使う場合と同じです。
+
+`mmdfmt` が自分で決めるオプションは 4 つあります。
+パーサーはプラグインのもので、プラグインは `prettier-plugin-mmd` だけなので、
+設定が挙げるプラグインは読み込みません。
+`endOfLine` は使いません。
+ファイルの改行コードを残すからです。
+詳しくは、[コードブロックの詳細](#コードブロックの詳細)を参照してください。
+リスト項目や引用の中のコードブロックでは、`printWidth` は、
+各行の前に `mmdfmt` が書くものの幅を引いた幅です。
+こちらも同じ節を参照してください。
 
 ## エラーと終了コード
 
@@ -429,7 +442,7 @@ Markdown に Prettier とプラグインを使う場合とは、結果が 4 点�
 
 コマンドも Prettier の CLI とは異なります。
 `.prettierignore` は読まず、`--ignore-path`、`--ignore-unknown`、
-整形オプションはなく、設定からはインデントと行の幅だけを使います。
+独自の整形オプションはなく、設定は図のためだけに読みます。
 
 ## コードブロックの詳細
 
