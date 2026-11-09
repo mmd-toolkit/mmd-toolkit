@@ -88,6 +88,7 @@ describe("Code blocks in detail: the same blocks as the plugin", () => {
       {
         tabWidth: undefined,
         useTabs: undefined,
+        printWidth: undefined,
       },
       "output",
     )
@@ -113,6 +114,7 @@ describe("If you know Prettier: two results differ from the plugin in Markdown",
       {
         tabWidth: undefined,
         useTabs: undefined,
+        printWidth: undefined,
       },
       "output",
     )
@@ -147,10 +149,63 @@ describe("If you know Prettier: two results differ from the plugin in Markdown",
       {
         tabWidth: undefined,
         useTabs: undefined,
+        printWidth: undefined,
       },
       "output",
     )
     expect(formattedDiagrams(byPrettier)).toBe(1)
     expect(byTool).toEqual({ text, diagnostics: [] })
   })
+})
+
+/** A node with a data block on one line, 38 wide, split where printWidth is less. */
+const wideDiagram = ["flowchart LR", "  A@{ shape: rect, label: x, icon: y }"]
+
+describe("Code blocks in detail: the line width left in a container, as in Prettier", () => {
+  it.each([
+    { container: "the top level", before: "", fence: "", width: 0 },
+    { container: "a list item", before: "- item\n\n", fence: "  ", width: 2 },
+    {
+      container: "an ordered list item",
+      before: "1. item\n\n",
+      fence: "   ",
+      width: 3,
+    },
+    { container: "a block quote", before: "", fence: "> ", width: 2 },
+    {
+      container: "a list item in a list item",
+      before: "- a\n  - b\n\n",
+      fence: "    ",
+      width: 4,
+    },
+  ])(
+    "splits a block in $container where Prettier does",
+    async ({ before, fence, width }) => {
+      const text = `${before}${[
+        `${fence}\`\`\`mermaid`,
+        ...wideDiagram.map((line) => `${fence}${line}`),
+        `${fence}\`\`\``,
+      ]
+        .map((line) => `${line}\n`)
+        .join("")}`
+      const lineWidth = wideDiagram[1].length
+      for (const [printWidth, splits] of [
+        [lineWidth + width - 1, true],
+        [lineWidth + width, false],
+      ] as const) {
+        const byPrettier = await format(text, {
+          parser: "markdown",
+          plugins: [plugin],
+          printWidth,
+        })
+        const byTool = await formatMarkdown(
+          text,
+          { tabWidth: undefined, useTabs: undefined, printWidth },
+          "output",
+        )
+        expect(byPrettier.includes("label: x,")).toBe(!splits)
+        expect(byTool.text).toBe(byPrettier)
+      }
+    },
+  )
 })

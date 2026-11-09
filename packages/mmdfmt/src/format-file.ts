@@ -1,6 +1,6 @@
 import path from "node:path"
 import { resolveConfig } from "prettier"
-import type { Indentation } from "./diagram.ts"
+import type { LayoutOptions } from "./diagram.ts"
 import { formatDiagram } from "./diagram.ts"
 import type { FormatResult, PositionsIn } from "./diagnostic.ts"
 import { lineEndingOf, positionIn, readText } from "./lines.ts"
@@ -29,9 +29,10 @@ export function kindOf(file: string): FileKind | undefined {
 }
 
 /**
- * Formats a file of the given kind. The indentation comes from the Prettier
- * configuration of the file, found as Prettier's CLI finds it,
- * `.editorconfig` included (README, Indentation). The diagnostics give their
+ * Formats a file of the given kind. The indentation and the line width come
+ * from the Prettier configuration of the file, found as Prettier's CLI finds
+ * it, `.editorconfig` included (README, Indentation and line width). The
+ * diagnostics give their
  * positions in the text that `positionsIn` names.
  */
 export async function formatFile(
@@ -41,13 +42,14 @@ export async function formatFile(
   positionsIn: PositionsIn,
 ): Promise<FormatResult> {
   const config = await resolveConfig(file, { editorconfig: true })
-  const indentation: Indentation = {
+  const layout: LayoutOptions = {
     tabWidth: config?.tabWidth,
     useTabs: config?.useTabs,
+    printWidth: config?.printWidth,
   }
   return kind === "diagram"
-    ? formatDiagramFile(text, indentation)
-    : formatMarkdown(text, indentation, positionsIn)
+    ? formatDiagramFile(text, layout)
+    : formatMarkdown(text, layout, positionsIn)
 }
 
 /**
@@ -58,14 +60,10 @@ export async function formatFile(
  */
 async function formatDiagramFile(
   text: string,
-  indentation: Indentation,
+  layout: LayoutOptions,
 ): Promise<FormatResult> {
   const { byteOrderMark, normalized } = readText(text)
-  const result = await formatDiagram(
-    normalized,
-    indentation,
-    lineEndingOf(text),
-  )
+  const result = await formatDiagram(normalized, layout, lineEndingOf(text))
   if (result.kind === "rejected") {
     return {
       text,

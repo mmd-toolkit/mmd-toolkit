@@ -12,7 +12,7 @@ Markdown ファイルのほかの部分は、1 バイトも変えません。
 Prettier の Mermaid プラグインである
 [`prettier-plugin-mmd`](../prettier-plugin-mmd) を使って
 [Prettier](https://prettier.io/) で整形するため、
-[Prettier を知っている方へ](#prettier-を知っている方へ)の 2 つの場合を除き、
+[Prettier を知っている方へ](#prettier-を知っている方へ)の場合を除き、
 プラグインと同じ結果になります。
 
 [mermaid-js](https://mermaid.js.org/) とは関係のない第三者のプロジェクトです。
@@ -275,25 +275,35 @@ mmdfmt --stdin-filepath docs/guide.md
   テキストをそのまま返します。
 - ほかの語尾のパスはエラーです。
 
-## インデント
+## インデントと行の幅
 
-図のインデントは空白 2 つです。
+図のインデントは空白 2 つで、行の幅は Prettier の 80 です。
 ファイルに `.editorconfig` や Prettier の設定が適用されるときは、
-そのインデントを使います。
+そのインデントと行の幅を使います。
 `.editorconfig` の `indent_style`、`indent_size`、`tab_width`、
+`max_line_length`、
 または [Prettier の設定ファイル](https://prettier.io/docs/configuration)の
-`useTabs` と `tabWidth` で、
+`useTabs`、`tabWidth`、`printWidth` で、
 `overrides` も含めて Prettier の CLI と同じように探します。
 コードブロックでは、そのファイルは Markdown ファイルです。
 読めない設定ファイルはエラーです。
-たとえば、この `.editorconfig` は図に空白 4 つのインデントを付けます。
+たとえば、この `.editorconfig` は図に空白 4 つのインデントを付け、
+行を 100 桁まで許します。
 
 ```ini
 [*.{md,mmd,mermaid}]
 indent_style = space
 indent_size = 4
+max_line_length = 100
 ```
 
+行の幅が図の中で決めるのは、2 つです。
+1 行に書いたデータブロック `@{ … }` を複数行で印字するかどうかと、
+Gantt のセクションのタスクの `:` をそろえるかどうかです。
+詳しくは、
+[フォーマッターのオプション](https://mmd-toolkit.github.io/mmd-toolkit/ja/formatter/options.html#行の長さ)
+を参照してください。
+`max_line_length = off` は制限なしです。
 設定のほかの項目は使いません。
 
 ## エラーと終了コード
@@ -333,7 +343,7 @@ Markdown のコードブロックでは警告です。
 
 図は Prettier と `prettier-plugin-mmd` で整形するので、
 プラグインの規則が適用されます。
-Markdown に Prettier とプラグインを使う場合とは、結果が 2 点で異なります。
+Markdown に Prettier とプラグインを使う場合とは、結果が 3 点で異なります。
 
 - Prettier は、コードブロックの最後の行の末尾の空白を、
   mermaid.js が図の一部として読む場合も、
@@ -343,10 +353,16 @@ Markdown に Prettier とプラグインを使う場合とは、結果が 2 点�
   Markdown のコードブロックを Markdown 文書として整形し、
   その中のコードブロックの図も整形します。
   `mmdfmt` はほかのコードブロックをすべてそのまま残します。
+- Prettier はリスト項目のマーカーを自分で印字し、
+  項目の内容を `tabWidth` にそろえますが、
+  `mmdfmt` はマーカーを書かれたまま残します。
+  詳しくは[コードブロックの詳細](#コードブロックの詳細)を参照してください。
+  内容の桁が違うと、項目の中の図に残る行の幅がその差だけ違い、
+  幅の近くにある 1 行のブロックを、一方は分け、他方は分けないことがあります。
 
 コマンドも Prettier の CLI とは異なります。
 `.prettierignore` は読まず、`--ignore-path`、`--ignore-unknown`、
-整形オプションはなく、設定からはインデントだけを使います。
+整形オプションはなく、設定からはインデントと行の幅だけを使います。
 
 ## コードブロックの詳細
 
@@ -389,6 +405,13 @@ Markdown に Prettier とプラグインを使う場合とは、結果が 2 点�
 引用は `>` の後ろの空白 1 つをマーカーの一部として読むので、そうしないと、
 空白で始まる図の行がその空白を失います。
 
+リスト項目や引用の中の図の行の幅は、ファイルの行の幅から、
+`mmdfmt` が各行の前に書くものの幅を引いた幅です。
+タブは `tabWidth` として数え、幅は 1 以上です。
+Prettier がコンテナの中の図に幅を渡すのと同じ決め方です。
+たとえば、行の幅が 40 のとき、行が空白 2 つで始まるリスト項目の中の図は、
+38 桁として整形します。
+
 閉じていないブロックは、リスト項目、引用、またはファイルの終わりまで続き、
 ほかと同じく整形します。
 改行なしでファイルを終えるときは、最後の行も改行なしのままです。
@@ -422,7 +445,7 @@ Markdown ファイルでは、変わる図の行だけを書きます。
 ## 文書
 
 - [フォーマッターのオプション](https://mmd-toolkit.github.io/mmd-toolkit/ja/formatter/options.html):
-  図にインデントをどう適用するか。
+  図にインデントと行の幅をどう適用するか。
 - [フォーマッターの互換性](https://mmd-toolkit.github.io/mmd-toolkit/ja/formatter/compatibility.html):
   拒否される図、mermaid.js との違い、整形が保証すること。
 
