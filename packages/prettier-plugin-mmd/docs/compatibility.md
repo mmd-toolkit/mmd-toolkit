@@ -1238,6 +1238,7 @@ and, with the Db only, in the inputs of the conformance corpus:
 | Quotes of a requirement name       |        0 |                   0 |     11 |      11 |
 | Quotes of a Wardley map name       |        0 |                   0 |     34 |      34 |
 | Quotes of a gitGraph branch        |        0 |                   0 |     23 |      23 |
+| Quotes of a quadrant text          |        0 |                   0 |     12 |      12 |
 
 A corpus pair that is not counted in the last column is a pair of which
 mermaid.js rejects the other spelling, except two pairs of the label of a link,
@@ -1676,6 +1677,10 @@ without quotes:
 | gitGraph     | the name of a branch                  |             85 |         0 |
 | gitGraph     | the branch of a checkout or a switch  |            161 |         0 |
 | gitGraph     | the branch of a merge                 |             50 |         0 |
+| quadrant     | the text of an x-axis                 |              4 |         0 |
+| quadrant     | the start of a y-axis                 |              2 |         0 |
+| quadrant     | the text of a quadrant                |              8 |         0 |
+| quadrant     | the name of a point                   |              6 |         0 |
 
 A text is printed without quotes where it is plain: ASCII letters, digits, `_`,
 `-`, and `.`, with spaces between them, and, in a sankey diagram, with spaces at
@@ -1754,6 +1759,17 @@ gitgraph/references/plain-names-without-quotes] [fixture:
 gitgraph/references/names-that-need-quotes] [fixture:
 gitgraph/references/reference-forms]
 
+In a quadrant chart a text is printed without quotes where it is words of ASCII
+letters that end in digits, with one space between them, and none of the words
+is `title`, `classDef`, `accTitle`, `accDescr`, or a word that starts with
+`quadrant` (in any case): the lexer reads a letter after a digit or a `_` as the
+start of a word again, so a text with a `-`, a `_`, a digit in the middle of a
+word, or a number at its start stays in quotes. The end of a y axis, which the
+examples write in quotes as often as without, stays as written. [fixture:
+quadrant/quotes/plain-texts-without-quotes] [fixture:
+quadrant/quotes/texts-that-need-quotes] [fixture: quadrant/points/string-names]
+[fixture: quadrant/axes/strings]
+
 A string that a `#`, a `%`, a `;`, or a `:` follows on its line keeps its quotes
 in every diagram type: a text without quotes can run to the end of the line, and
 then takes that character and what follows into the text, as `b #c` in
@@ -1765,13 +1781,13 @@ requirement/multi-line-statements/class-last-line-semicolon-kept]
 
 mermaid.js 12.3.0 read both forms of the inputs of the conformance corpus whose
 quotes the printer changes, with the same Db: 11 inputs of sankey diagrams, 14
-of ER diagrams, 11 of requirement diagrams, 34 of Wardley maps, and 23 of
-gitGraphs. It read both forms of the 6 sankey examples that were written again
-with every plain field in quotes, with the same Db and the same SVG, and the 14
-ER inputs, 8 of the 11 requirement inputs (the other 3 are drawn by mermaid.js
-in neither form), and the 34 Wardley inputs, and the 23 gitGraph inputs (with
-their numbers, commit ids, and element ids taken away) were drawn the same as
-their formatted text.
+of ER diagrams, 11 of requirement diagrams, 34 of Wardley maps, 23 of gitGraphs,
+and 12 of quadrant charts. It read both forms of the 6 sankey examples that were
+written again with every plain field in quotes, with the same Db and the same
+SVG, and the 14 ER inputs, 8 of the 11 requirement inputs (the other 3 are drawn
+by mermaid.js in neither form), the 34 Wardley inputs, the 23 gitGraph inputs
+(with their numbers, commit ids, and element ids taken away), and the 12
+quadrant inputs were drawn the same as their formatted text.
 
 ### Versions of mermaid.js
 
@@ -1814,6 +1830,11 @@ mermaid.js, show which form each version reads:
   string, and the lexers of these grammars compare their keywords in any case;
   the grammar of 12.3.0 compares them as written, and reads a name that is
   longer than a keyword as a name.
+- The texts of a quadrant chart: the grammars of 10.9.0, 11.0.0, and 12.3.0 read
+  a text without quotes (`ALPHA` and the tokens that follow it) and a string
+  with the same `text` rule, and the lexers of these grammars read `x-axis`,
+  `quadrant-1` to `quadrant-4`, and `quadrantChart` without a boundary after
+  them.
 - An accessibility description in a block on one line: the grammar of the
   flowchart in 9.0.0 and 9.0.1 has no rule for `accDescr`, and the grammar in
   9.1.0, the first with the rule, has the form with the colon and the form with

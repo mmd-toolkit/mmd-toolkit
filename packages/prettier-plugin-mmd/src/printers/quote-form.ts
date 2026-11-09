@@ -7,6 +7,7 @@ import { shortestNumber } from "./number-form.ts"
 import { findRequirementKeptLines } from "./requirement-kept-lines.ts"
 import { findSankeyKeptLines } from "./sankey-kept-lines.ts"
 import type { Source } from "./source.ts"
+import { collapseRuns } from "./text-runs.ts"
 
 /**
  * The text that a printer writes for a text in the form of the examples, or
@@ -40,8 +41,11 @@ function bare(
 }
 
 /** A field that the examples write in quotes. */
-function quoted(text: Bare): QuoteRule {
-  return { form: "quoted", text }
+function quoted(
+  text: Bare,
+  options: Pick<QuoteRule, "when" | "joins"> = {},
+): QuoteRule {
+  return { form: "quoted", text, ...options }
 }
 
 /**
@@ -303,6 +307,95 @@ function gitgraphReference(text: string): string | undefined {
     : undefined
 }
 
+/**
+ * The words of a quadrant chart that its lexer reads as a unit of its own at
+ * the start of a word, in lower case: a word of a text that is one of the
+ * first four, or starts with `quadrant` (the header and `quadrant-1` to
+ * `quadrant-4`), would be read as the unit.
+ */
+const quadrantReserved: ReadonlySet<string> = new Set([
+  "title",
+  "classdef",
+  "acctitle",
+  "accdescr",
+])
+
+/**
+ * A text of a quadrant chart that the lexer reads whole without quotes: words
+ * of ASCII letters that end with digits, with one space between them, none of
+ * them a word that the lexer reads as a unit of its own. A letter after a digit
+ * or a `_` would start a word again, so none follows one.
+ */
+function quadrantLabel(written: string): string | undefined {
+  // The printer writes a run of spaces and tabs inside a text as one space.
+  const text = collapseRuns(written)
+  return text.split(" ").every((word) => {
+    const letters = [...word].findIndex(
+      (character) => character >= "0" && character <= "9",
+    )
+    const head = letters === -1 ? word : word.slice(0, letters)
+    const tail = letters === -1 ? "" : word.slice(letters)
+    return (
+      head !== "" &&
+      [...head].every(
+        (character) =>
+          (character >= "a" && character <= "z") ||
+          (character >= "A" && character <= "Z"),
+      ) &&
+      [...tail].every((character) => character >= "0" && character <= "9") &&
+      !quadrantReserved.has(word.toLowerCase()) &&
+      !word.toLowerCase().startsWith("quadrant")
+    )
+  })
+    ? text
+    : undefined
+}
+
+/**
+ * The words of an XY chart that its lexer reads as a unit of its own at the
+ * start of a word, in lower case: a text that starts with one of them is read
+ * as the unit.
+ */
+const xychartReserved: readonly string[] = [
+  "title",
+  "xychart",
+  "x-axis",
+  "y-axis",
+  "line",
+  "bar",
+  "vertical",
+  "horizontal",
+  "acctitle",
+  "accdescr",
+]
+
+/**
+ * One word of an XY chart of ASCII letters, digits, `_`, and `-` that does not
+ * start with a word that the lexer reads as a unit of its own. A text with
+ * spaces is no word: mermaid.js drops the spaces of a text without quotes, so
+ * the text in quotes would not be the same.
+ */
+function xychartWord(text: string): string | undefined {
+  const lower = text.toLowerCase()
+  return text !== "" &&
+    [...text].every(
+      (character) => isWordCharacter(character) || character === "-",
+    ) &&
+    !xychartReserved.some((word) => lower.startsWith(word))
+    ? text
+    : undefined
+}
+
+/** Whether a plot of an XY chart is a line. */
+function isLine(node: Node): boolean {
+  return (node as Node & { kind?: string }).kind === "line"
+}
+
+/** Whether the axis of an axis statement of a quadrant chart is the x axis. */
+function isXAxis(node: Node): boolean {
+  return (node as Node & { axis?: string }).axis === "x"
+}
+
 /** Whether a link of a Wardley map has an arrow between its names. */
 function hasArrow(node: Node): boolean {
   return (node as Node & { arrow?: unknown }).arrow !== null
@@ -315,7 +408,8 @@ function hasArrow(node: Node): boolean {
  * (docs/compatibility.md, Spellings that are drawn the same): the three fields
  * of a link of a sankey diagram, the names and the roles of an ER diagram, the
  * names, the values, and the classes of a requirement diagram, the names of a
- * Wardley map, and the branches of a gitGraph.
+ * Wardley map, the branches of a gitGraph, the texts of a quadrant chart, and
+ * the titles and the categories of an XY chart.
  */
 const quoteRules: Readonly<
   Record<string, Readonly<Record<string, QuoteRule>>>
@@ -324,6 +418,17 @@ const quoteRules: Readonly<
   ErEntityStatement: { name: bare(wordWithout(erReserved)) },
   ErRelationshipStatement: { role: bare(wordWithout(erReserved)) },
   ErSubgraphStatement: { id: bare(wordWithout(erReserved)) },
+  QuadrantAxisStatement: {
+    end: bare(quadrantLabel, { when: isXAxis }),
+    start: bare(quadrantLabel),
+  },
+  QuadrantPointStatement: { name: bare(quadrantLabel) },
+  QuadrantQuadrantStatement: { text: bare(quadrantLabel) },
+  XychartBand: { categories: bare(xychartWord) },
+  XychartPlotStatement: { title: quoted(xychartWord, { when: isLine }) },
+  XychartTitleStatement: { value: quoted(xychartWord) },
+  XychartXAxisStatement: { title: quoted(xychartWord) },
+  XychartYAxisStatement: { title: quoted(xychartWord) },
   RequirementClassDefStatement: {
     cssClasses: bare(wordWithout(requirementReserved, { digits: true })),
   },
@@ -422,12 +527,22 @@ function isKept(source: Source, offset: number): boolean {
 }
 
 /**
+ * Whether a text ends with `style` or `classDef` in any case: followed by a
+ * `:` and a `#`, and by a `;` on the line, it would start the line rule that
+ * ignores the `;` (docs/compatibility.md, Lines that hold a `;`).
+ */
+function endsLikeStyleKeyword(text: string): boolean {
+  const lower = text.toLowerCase()
+  return lower.endsWith("style") || lower.endsWith("classdef")
+}
+
+/**
  * Records, for each field of `quoteRules` that is written in the other form
  * and holds a text that is read the same in the form of the examples, the
- * field in that form. A field that a `#`, a `%`, a `;`, or a `:` follows on
- * its line keeps its form: a text without quotes can run to the end of the
- * line and take the character, and the text after it, into the field. So does
- * a field on a kept line.
+ * field in that form. A field that a `#`, a `%`, or a `;` follows on its line
+ * keeps its form: a text without quotes can run to the end of the line and take
+ * the character, and the text after it, into the field. So does a text that a
+ * `:` follows and that ends like a `style` keyword, and a field on a kept line.
  */
 export function findQuoteFormRespellings(
   source: Source,
@@ -445,23 +560,22 @@ export function findQuoteFormRespellings(
         findQuoteFormRespellings(source, found, item)
         continue
       }
-      const isString = item.type === "StringLiteral"
-      if (isString !== (rule.form === "bare")) continue
+      const { kind } = item as Node & { kind?: string }
+      // A string is a StringLiteral, or a node of the kind `string`.
+      const isString = item.type === "StringLiteral" || kind === "string"
+      if (isString !== (rule.form === "bare") || kind === "markdown") continue
       if (rule.when?.(node) === false) continue
       const line = lineStartOf(source, item.range[0])
-      let text: string
+      const written = source.text.slice(...item.range)
+      let text = written
       if (isString) {
-        const { value: content, raw } = item as Node & {
-          value: string
-          raw: string
-        }
-        // A directive or a comment region inside the string is part of `raw`
-        // and no part of `value`. A string between `'` is the same string,
-        // which the printer writes between `"` (Strings between `"`).
-        if (raw !== `"${content}"` && raw !== `'${content}'`) continue
+        const { value: content } = item as Node & { value: string }
+        // A directive or a comment region inside the string, or a text that
+        // follows it, is no part of the content. A string between `'` is the
+        // same string, which the printer writes between `"` (Strings between
+        // `"`).
+        if (written !== `"${content}"` && written !== `'${content}'`) continue
         text = content
-      } else {
-        text = source.text.slice(...item.range)
       }
       const printed = rule.text(text)
       const after = source.text
@@ -469,7 +583,9 @@ export function findQuoteFormRespellings(
         .trimStart()[0]
       if (
         printed !== undefined &&
-        !"#%;:".includes(after ?? "\n") &&
+        (rule.form === "quoted" ||
+          (!"#%;".includes(after ?? "\n") &&
+            !(after === ":" && endsLikeStyleKeyword(printed)))) &&
         rule.joins?.(
           source.text.slice(line, item.range[0]),
           source.text.slice(item.range[1], lineEndOf(source, item.range[1])),

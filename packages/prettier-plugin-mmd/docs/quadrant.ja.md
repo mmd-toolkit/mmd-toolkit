@@ -527,27 +527,35 @@ mermaid.js は `"L"` と `L`、`"a b"` と `a b` を同じテキストとして�
 文字列は引用符なしのテキストが持てないものを持てます。
 `"a: b"` はコロンを持ち、引用符なしでは拒否されます。
 そのため、引用符を外せるとは限らず、引用符を付けるかどうかは書き手の選択です。
-[fixture: quotes/strings-runs-collapsed] [fixture: quotes/quotes-not-removed]
+[fixture: quotes/strings-runs-collapsed] [fixture: quotes/plain-texts-without-quotes]
 [fixture: quotes/quotes-not-added]
 [fixture: quotes/keywords-and-arrows-in-strings]
 [fixture: quotes/markdown-strings] [fixture: quotes/string-with-a-comment-mark]
 
 入力
-([quotes/quotes-not-removed-input.mmd](../tests/fixtures/quadrant/quotes/quotes-not-removed-input.mmd)):
+([quotes/plain-texts-without-quotes-input.mmd](../tests/fixtures/quadrant/quotes/plain-texts-without-quotes-input.mmd)):
 
 ```mmd
 quadrantChart
-quadrant-1 "A"
-"B": [0.3, 0.6]
+x-axis "Low Reach" --> "High Reach"
+y-axis "Low" --> "High"
+quadrant-1 "We should expand"
+quadrant-2 "Need to promote"
+"Campaign A": [0.3, 0.6]
+"Q1 results": [0.5, 0.5]
 ```
 
 出力
-([quotes/quotes-not-removed-output.mmd](../tests/fixtures/quadrant/quotes/quotes-not-removed-output.mmd)):
+([quotes/plain-texts-without-quotes-output.mmd](../tests/fixtures/quadrant/quotes/plain-texts-without-quotes-output.mmd)):
 
 ```mmd
 quadrantChart
-  quadrant-1 "A"
-  "B": [0.3, 0.6]
+  x-axis Low Reach --> High Reach
+  y-axis Low --> "High"
+  quadrant-1 We should expand
+  quadrant-2 Need to promote
+  Campaign A: [0.3, 0.6]
+  Q1 results: [0.5, 0.5]
 ```
 
 ### title とアクセシビリティの文
