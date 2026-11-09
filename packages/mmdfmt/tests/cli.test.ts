@@ -1,4 +1,5 @@
 import { chmodSync } from "node:fs"
+import { PassThrough } from "node:stream"
 import path from "node:path"
 import { afterEach, beforeEach, describe, expect, it, vi } from "vitest"
 import packageJson from "../package.json" with { type: "json" }
@@ -173,6 +174,45 @@ describe("Usage: --write, --check, and --list-different", () => {
     },
   )
 
+  it.each([
+    [["--write", "--no-write", "--list-different"]],
+    [["--no-write", "--list-different"]],
+  ])("%j reads --no-write as Prettier does: no --write", async (args) => {
+    expect(await project.run([...args, "a.mmd"])).toEqual({
+      code: 1,
+      stdout: listed("a.mmd"),
+      stderr: "",
+    })
+    expect(project.read("a.mmd")).toBe(diagram)
+  })
+
+  it.each([
+    [["--check", "--no-check", "--write"]],
+    [["--no-list-different", "--write"]],
+  ])(
+    "%j reads --no-check and --no-list-different as Prettier does",
+    async (args) => {
+      expect(await project.run([...args, "a.mmd"])).toEqual({
+        code: 0,
+        stdout: listed("a.mmd"),
+        stderr: "",
+      })
+    },
+  )
+
+  it("colors the word warn where Node colors text for standard error", async () => {
+    vi.stubEnv("FORCE_COLOR", "1")
+    vi.stubEnv("NO_COLOR", undefined)
+    try {
+      const run = await project.run(["--check", "a.mmd"], "", new PassThrough())
+      expect(run.stderr).toBe(
+        "[\u001B[33mwarn\u001B[39m] a.mmd\n[\u001B[33mwarn\u001B[39m] Code style issues found in the above file. Run mmdfmt with --write to fix.\n",
+      )
+    } finally {
+      vi.unstubAllEnvs()
+    }
+  })
+
   it("--write --check counts the files it changed", async () => {
     expect(await project.run(["--write", "--check", "a.mmd", "b.md"])).toEqual({
       code: 0,
@@ -261,6 +301,54 @@ describe("From an editor or another tool: --stdin-filepath", () => {
       stdout: "",
       stderr: "a.mmd:2:6: error: Unexpected character\n",
     })
+  })
+
+  it.each([[["--check"]], [["-c"]], [["--list-different"]], [["-l"]]])(
+    "lists (stdin) with %j when the text would change, and exits with 1",
+    async (options) => {
+      expect(
+        await project.run([...options, "--stdin-filepath", "a.mmd"], diagram),
+      ).toEqual({ code: 1, stdout: "(stdin)\n", stderr: "" })
+      expect(
+        await project.run(
+          [...options, "--stdin-filepath", "a.mmd"],
+          formattedDiagram,
+        ),
+      ).toEqual({ code: 0, stdout: "", stderr: "" })
+    },
+  )
+
+  it("gives a warning with --check its position in the text as it was read", async () => {
+    const text = `\`\`\`mermaid\nflowchart LR\nA-->B\n\`\`\`\n\n\`\`\`mermaid\nflowchart LR\nA-->B)\n\`\`\`\n`
+    expect(
+      await project.run(["--check", "--stdin-filepath", "doc.md"], text),
+    ).toEqual({
+      code: 1,
+      stdout: "(stdin)\n",
+      stderr: "doc.md:8:6: warning: Unexpected character\n",
+    })
+  })
+
+  it("exits with 2 with --check for a rejected diagram", async () => {
+    expect(
+      await project.run(
+        ["--check", "--stdin-filepath", "a.mmd"],
+        "flowchart LR\nA-->B)\n",
+      ),
+    ).toEqual({
+      code: 2,
+      stdout: "",
+      stderr: "a.mmd:2:6: error: Unexpected character\n",
+    })
+  })
+
+  it("writes back with --check the input of a path that the patterns would skip", async () => {
+    expect(
+      await project.run(
+        ["--check", "--stdin-filepath", "node_modules/x/a.mmd"],
+        diagram,
+      ),
+    ).toEqual({ code: 0, stdout: diagram, stderr: "" })
   })
 
   it("is an error with a path of another ending", async () => {
@@ -401,22 +489,12 @@ describe("Usage: anything else is an error with exit 2", () => {
       ["Optional argument '--write' conflicts with '--stdin-filepath'"],
     ],
     [
-      ["--stdin-filepath", "a.mmd", "--list-different"],
-      [
-        "Optional argument '--list-different' conflicts with '--stdin-filepath'",
-      ],
+      ["--no-write", "--stdin-filepath", "a.mmd"],
+      ["Optional argument '--no-write' conflicts with '--stdin-filepath'"],
     ],
     [
-      ["--stdin-filepath", "a.mmd", "--check"],
-      ["Optional argument '--check' conflicts with '--stdin-filepath'"],
-    ],
-    [
-      ["--stdin-filepath", "a.mmd", "-l"],
-      ["Optional argument '-l' conflicts with '--stdin-filepath'"],
-    ],
-    [
-      ["-c", "--stdin-filepath", "a.mmd"],
-      ["Optional argument '-c' conflicts with '--stdin-filepath'"],
+      ["--no-check", "--list-different", "a.mmd"],
+      ["Optional argument '--no-check' conflicts with '--list-different'"],
     ],
     [
       ["--stdin-filepath=", "--write", "a.mmd"],
@@ -428,15 +506,16 @@ describe("Usage: anything else is an error with exit 2", () => {
     ],
     [
       ["--stdin-filepath=", "--list-different", "a.mmd"],
-      [
-        "Optional argument '--list-different' conflicts with '--stdin-filepath'",
-      ],
+      ["--stdin-filepath needs a path"],
     ],
     [["--stdin-filepath="], ["--stdin-filepath needs a path"]],
     [["--stdin-filepath", ""], ["--stdin-filepath needs a path"]],
     [["--stdin-filepath=", "a.mmd"], ["--stdin-filepath needs a path"]],
     [["-x", "a.mmd"], ["Unknown option: -x"]],
-    [["--no-write", "a.mmd"], ["Unknown option: --no-write"]],
+    [
+      ["--no-write", "a.mmd"],
+      ["give --write, --check, or --list-different with the patterns"],
+    ],
     [["-cl", "a.mmd"], ["Optional argument '-c' conflicts with '-l'"]],
     [["--fix", "a.mmd"], ["Unknown option: --fix"]],
     [["--help", "--fix"], ["Unknown option: --fix"]],

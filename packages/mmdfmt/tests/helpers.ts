@@ -41,8 +41,15 @@ export class Project {
     return readFileSync(path.join(this.cwd, name), "utf8")
   }
 
-  /** Runs the tool in the project, with `stdin` as its standard input. */
-  public async run(args: readonly string[], stdin = ""): Promise<Run> {
+  /**
+   * Runs the tool in the project, with `stdin` as its standard input, and
+   * `stderrStream` as the stream behind standard error, if any.
+   */
+  public async run(
+    args: readonly string[],
+    stdin = "",
+    stderrStream?: NodeJS.WritableStream,
+  ): Promise<Run> {
     let stdout = ""
     let stderr = ""
     const code = await main(args, {
@@ -54,6 +61,7 @@ export class Project {
       stderr: (text) => {
         stderr += text
       },
+      stderrStream,
     })
     return { code, stdout, stderr }
   }

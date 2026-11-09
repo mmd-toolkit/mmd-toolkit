@@ -136,7 +136,8 @@ mmdfmt --stdin-filepath <path>
 `--write --list-different` は `--write` 単独と同じく、
 ファイルを書き換えて変わったものを挙げます。
 `--check` と `--list-different` は組み合わせられません。
-`--stdin-filepath` はパターンを取らず、この 3 つとは組み合わせられません。
+`--no-write`、`--no-check`、`--no-list-different` は、そのオプションを外します。
+`--stdin-filepath` はパターンを取らず、`--write` とは組み合わせられません。
 `--help` と `--version` は、
 表のほかのオプションを一緒に付けても出力するだけです。
 引数がまったくないときは、`mmdfmt` は使い方を標準エラー出力に書き、
@@ -234,6 +235,7 @@ npx mmdfmt --check .
 ```
 
 該当するファイルが複数なら、`in the above file` は `in <n> files` になります。
+色を出せる端末では、`warn` の語は黄色です。
 変わるファイルがなければ、
 要約は標準出力の `All diagrams in the matched files use Prettier code style!`
 で、終了コードは `0` です。
@@ -301,6 +303,10 @@ mmdfmt --stdin-filepath docs/guide.md
 - `node_modules` やバージョン管理のディレクトリの下にあるパス、
   または `mmdfmt` を実行するディレクトリの `.gitignore` が挙げるパスでは、
   テキストをそのまま返します。
+- `--check` や `--list-different` では、テキストを出力しません。
+  変わるなら標準出力に `(stdin)` を書き、終了コードは `1` です。
+  変わらなければ何も書かず、終了コードは `0` です。
+  警告の位置は、読んだときのテキストの中の位置です。
 - ほかの語尾のパスはエラーです。
 
 ## インデント
@@ -406,6 +412,23 @@ Prettier は `--write` の後ろに書いた `true` や `false` をその値と�
 gunshi はパターンと読みます。
 そのため、`mmdfmt --write false notes.md` は `notes.md` を整形し、
 `false` に合うファイルがないと報告します。
+
+また、gunshi は `--no-` の形もそのオプションを付けたと数えるので、
+`--no-check --list-different` も、
+`--no-write --stdin-filepath` もエラーになります。
+Prettier はどちらも受け付けます。
+
+標準入力で `--check` や `--list-different` を使うとき、
+Prettier は読めないテキストでも `0` で終了しますが、`mmdfmt` は、
+ほかの場合と同じく、
+拒否された図では `2` で終了します（[エラーと終了コード](#エラーと終了コード)）。
+
+Prettier は、`CI` の環境変数があるときや Windows では、
+標準エラー出力が端末でなくても `warn` の語に色を付けます。
+`mmdfmt` が色を付けるのは、Node の `util.styleText` が付けるとき、
+つまり色を出せる端末か、`FORCE_COLOR` があるときです。
+Prettier 自身の判定を写さず Node に任せているので、
+`--color` や `--no-color` はありません。
 
 ## コードブロックの詳細
 

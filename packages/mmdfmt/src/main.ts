@@ -1,5 +1,6 @@
 import { readFile, writeFile } from "node:fs/promises"
 import path from "node:path"
+import { styleText } from "node:util"
 import { cli, define, isArgsValidationError } from "gunshi"
 import packageJson from "../package.json" with { type: "json" }
 import type { Diagnostic, FormatResult } from "./diagnostic.ts"
@@ -13,6 +14,12 @@ export interface Io {
   readonly readStdin: () => Promise<string>
   readonly stdout: (text: string) => void
   readonly stderr: (text: string) => void
+  /**
+   * The stream behind `stderr`, if there is one. The word `warn` of a warning
+   * is yellow when Node's `util.styleText` colors text for this stream: a
+   * terminal, or `FORCE_COLOR` (README, If you know Prettier).
+   */
+  readonly stderrStream?: NodeJS.WritableStream
 }
 
 /** The exit codes (README, Errors and exit codes). */
@@ -37,27 +44,30 @@ export async function main(args: readonly string[], io: Io): Promise<number> {
       write: {
         type: "boolean",
         short: "w",
+        negatable: true,
         description: "Rewrite the files that change, and list them",
         conflicts: ["stdinFilepath"],
       },
       check: {
         type: "boolean",
         short: "c",
+        negatable: true,
         description:
           "Check whether the files are formatted, and print a summary and the files that are not",
-        conflicts: ["listDifferent", "stdinFilepath"],
+        conflicts: ["listDifferent"],
       },
       listDifferent: {
         type: "boolean",
         short: "l",
+        negatable: true,
         description: "List the files that --write would change",
-        conflicts: ["check", "stdinFilepath"],
+        conflicts: ["check"],
       },
       stdinFilepath: {
         type: "string",
         description:
           "Format standard input as the file at this path, and write the result to standard output",
-        conflicts: ["write", "check", "listDifferent"],
+        conflicts: ["write"],
       },
       patterns: {
         type: "positional",
@@ -84,7 +94,11 @@ export async function main(args: readonly string[], io: Io): Promise<number> {
         code =
           patterns.length > 0
             ? argumentError(io, ["--stdin-filepath takes no patterns"])
-            : await formatStandardInput(stdinFilepath, io)
+            : await formatStandardInput(
+                stdinFilepath,
+                Boolean(check) || Boolean(listDifferent),
+                io,
+              )
       } else if (ctx.explicit.stdinFilepath) {
         // gunshi gives no value for an empty path, as in --stdin-filepath=,
         // though the option is given (README, Usage).
@@ -233,7 +247,7 @@ async function formatFiles(
       }
     }
     if (mode.check) {
-      io.stderr(`[warn] ${name}\n`)
+      warn(io, name)
     } else if (mode.listDifferent) {
       io.stdout(`${name}\n`)
     }
@@ -258,10 +272,11 @@ async function formatFiles(
           : `${numberOfUnformattedFilesFound} files`
       // Prettier would format the whole Markdown file and needs the plugin
       // configured to format its diagrams, so the repair command names mmdfmt.
-      io.stderr(
+      warn(
+        io,
         mode.write
-          ? `[warn] Code style issues fixed in ${filesDescription}.\n`
-          : `[warn] Code style issues found in ${filesDescription}. Run mmdfmt with --write to fix.\n`,
+          ? `Code style issues fixed in ${filesDescription}.`
+          : `Code style issues found in ${filesDescription}. Run mmdfmt with --write to fix.`,
       )
     }
   }
@@ -274,9 +289,15 @@ async function formatFiles(
 /**
  * Formats standard input as the file at `filepath`, and writes the result to
  * standard output. A skipped path gets its input back unchanged, and a
- * rejected diagram file gets nothing.
+ * rejected diagram file gets nothing. With `listsDifference` (`--check` or
+ * `--list-different`), the result is not written: `(stdin)` is listed when it
+ * differs from the input, as Prettier lists it.
  */
-async function formatStandardInput(filepath: string, io: Io): Promise<number> {
+async function formatStandardInput(
+  filepath: string,
+  listsDifference: boolean,
+  io: Io,
+): Promise<number> {
   const file = path.resolve(io.cwd, filepath)
   const kind = kindOf(file)
   if (kind === undefined) {
@@ -291,15 +312,38 @@ async function formatStandardInput(filepath: string, io: Io): Promise<number> {
       io.stdout(text)
       return exitCodes.ok
     }
-    const result = await formatFile(text, file, kind, "output")
+    const result = await formatFile(
+      text,
+      file,
+      kind,
+      listsDifference ? "input" : "output",
+    )
     report(io, filepath, result.diagnostics)
     if (result.diagnostics.some(isError)) return exitCodes.error
-    io.stdout(result.text)
-    return exitCodes.ok
+    if (!listsDifference) {
+      io.stdout(result.text)
+      return exitCodes.ok
+    }
+    if (result.text === text) return exitCodes.ok
+    io.stdout("(stdin)\n")
+    return exitCodes.changed
   } catch (error) {
     io.stderr(`${filepath}: error: ${messageOf(error)}\n`)
     return exitCodes.error
   }
+}
+
+/**
+ * Writes a warning of `--check` to standard error, as Prettier's logger
+ * writes one: `[warn] ` before the text, with the word `warn` in yellow where
+ * the stream shows colors.
+ */
+function warn(io: Io, text: string): void {
+  const label =
+    io.stderrStream === undefined
+      ? "warn"
+      : styleText("yellow", "warn", { stream: io.stderrStream })
+  io.stderr(`[${label}] ${text}\n`)
 }
 
 /** Writes the diagnostics of a file to standard error. */

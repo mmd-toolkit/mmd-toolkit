@@ -130,7 +130,8 @@ Give patterns with at least one of `--write`, `--check`, or `--list-different`.
 `--write --check` rewrites files and prints the check's summary and warnings;
 `--write --list-different` rewrites files and lists the ones that changed, as
 `--write` alone does. `--check` and `--list-different` cannot be combined.
-`--stdin-filepath` takes no patterns and cannot be combined with these three.
+`--no-write`, `--no-check`, and `--no-list-different` turn the option off.
+`--stdin-filepath` takes no patterns and cannot be combined with `--write`.
 `--help` and `--version` only print, whatever else of this table is given with
 them. With no argument at all, `mmdfmt` prints the usage on standard error and
 exits with `2`.
@@ -215,7 +216,8 @@ the exit code is `1`:
 ```
 
 With more than one such file, it says `in <n> files` instead of
-`in the above file`. When no file would change, the summary is
+`in the above file`. On a terminal that shows colors, the word `warn` is yellow.
+When no file would change, the summary is
 `All diagrams in the matched files use Prettier code style!` on standard output,
 and the exit code is `0`. `--list-different` prints only the names of the files
 that would change, on standard output, with the same exit codes.
@@ -275,6 +277,10 @@ whether the text is a diagram or Markdown, and its directory says which
 - A path under `node_modules` or a directory of version control, or listed in
   the `.gitignore` of the directory where `mmdfmt` runs, gets its text back
   unchanged.
+- With `--check` or `--list-different`, the text is not written out: when it
+  would change, `(stdin)` goes to standard output and the exit code is `1`;
+  otherwise nothing is written and the exit code is `0`. The position of a
+  warning is in the text as it was read.
 - A path with another ending is an error.
 
 ## Indentation
@@ -370,6 +376,20 @@ applies to `--check=false` and `--list-different=false`. Prettier also takes a
 `true` or `false` written after `--write` as its value; gunshi reads it as a
 pattern, so `mmdfmt --write false notes.md` formats `notes.md` and reports that
 no file matches `false`.
+
+gunshi also counts a `--no-` form as giving its option, so
+`--no-check --list-different` and `--no-write --stdin-filepath` are errors,
+which Prettier accepts.
+
+With `--check` or `--list-different` on standard input, Prettier exits with `0`
+for a text it cannot parse; `mmdfmt` exits with `2` for a rejected diagram, as
+everywhere else ([Errors and exit codes](#errors-and-exit-codes)).
+
+Prettier colors the word `warn` also when the `CI` environment variable is set,
+or on Windows, where standard error is not a terminal. `mmdfmt` colors it where
+Node's `util.styleText` does: on a terminal that shows colors, or with
+`FORCE_COLOR`. It leaves this to Node rather than copying Prettier's own checks,
+and so has no `--color` or `--no-color`.
 
 ## Code blocks in detail
 
