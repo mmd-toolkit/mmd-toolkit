@@ -40,6 +40,14 @@ export async function main(args: readonly string[], io: Io): Promise<number> {
     toKebab: true,
     // gunshi adds --help and --version, draws the usage from the descriptions,
     // and rejects the options that conflict.
+    //
+    // The options follow Prettier's as far as gunshi reads them so (README, If
+    // you know Prettier). gunshi 0.37 reads an option that takes no value
+    // without a value written after `=` (`--write=false` is `--write`), takes
+    // a word after it as a pattern (`--write false`), and counts a `--no-`
+    // form as giving the option, also for `conflicts`; Prettier reads these
+    // otherwise. gunshi 0.37 also needs Node.js 22 or later (its `engines`),
+    // so the `engines` of this package leave out Node.js 20.
     args: {
       write: {
         type: "boolean",

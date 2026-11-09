@@ -35,7 +35,6 @@ Markdownファイルのほかの部分は、1バイトも変えません。
 ## まず使ってみる
 
 `mmdfmt`にはNode.js `^22.13.0 || >=24`が必要です。
-引数を読むgunshiがNode.js 22以上を必要とするため、Node.js 20には対応しません。
 `--write`はファイルを直接書き換えるので、先に作業をコミットするか、
 `npx mmdfmt --check .`でどのファイルが変わるか確認してください。
 現在のディレクトリの下にある図をすべて整形するには、次を実行します。
@@ -135,7 +134,6 @@ mmdfmt --stdin-filepath <path>
 整形オプションも、独自の設定ファイルも、
 無視ファイルを指定するオプションもありません。
 値を取らないオプションは、`=`の後ろの値を無視します。
-引数のライブラリ[gunshi](https://gunshi.dev)が読むとおり、
 `--write=false`は`--write`と同じに読みます。
 
 `head`が必要な行数を読み終えたときのように、標準出力の読み手がいなくなると、
@@ -231,8 +229,8 @@ npx mmdfmt --check .
 `--write --check`では、ファイルを書き換え、
 要約は`[warn] Code style issues fixed in the above file.`で、
 複数なら末尾が`in <n> files.`になり、終了コードは`0`です。
-エラーがあれば、終了コードは`2`で、
-要約は「エラーと終了コード」に書いたものです。
+エラーがあれば、終了コードは`2`です。
+そのときの要約は、[エラーと終了コード](#エラーと終了コード)に書いてあります。
 
 mermaid.jsが拒否する図のある`.mmd`や`.mermaid`ファイルは、
 `2`でチェックに失敗します。
@@ -350,8 +348,8 @@ Markdownのコードブロックでは警告です。
 標準出力の`Error occurred when checking code style in the above file.`で、
 複数なら末尾が`in <n> files.`になります。
 Prettierの`--check`と同じく、要約は整形できないファイルだけを数えます。
-読めないファイルと、ファイルを選ばないパターンは、報告しますが、
-要約はそれらがないときと同じで、
+読めないファイルと、ファイルを選ばないパターンは、エラーとして報告しますが、
+要約はそれらがないときと同じです。
 パターンがファイルを1つも選ばないときもそうです。
 書けないファイルは、問題を修正したファイルとして数え、
 `--write`と`--write --list-different`でも名前を挙げます。
@@ -385,18 +383,19 @@ Markdownファイルの残りの部分はその形式とは限らないためで
 プラグインが設定されていないと図は整形されないためです。
 
 Prettierは`--write=false`をfalseと読みます。
-`mmdfmt`は、引数を読むライブラリ[gunshi](https://gunshi.dev)が、
-値を取らないオプションでは`=`の後ろの値を無視するため、`--write`と読みます。
-`--check=false`と`--list-different=false`も同じ違いがあります。
+`mmdfmt`は、値を取らないオプションでは`=`の後ろの値を無視し、
+`--write`と読みます。
+`--check=false`と`--list-different=false`も同じです。
 また、Prettierは`--write`の後ろに書いた`true`や`false`をその値と読みますが、
-gunshiはパターンと読みます。
+`mmdfmt`はパターンと読みます。
 そのため、`mmdfmt --write false notes.md`は`notes.md`を整形し、
 `false`に合うファイルがないと報告します。
 
-また、gunshiは`--no-`の形もそのオプションを付けたと数えるので、
-`--no-check --list-different`も、
-`--no-write --stdin-filepath`もエラーになります。
-Prettierはどちらも受け付けます。
+`mmdfmt`は、一緒に使えるオプションかを確かめるとき、
+`--no-`の形もそのオプションを付けたと数えます。
+そのため、`--check --list-different`や`--write --stdin-filepath`と同じく、
+`--no-check --list-different`と`--no-write --stdin-filepath`もエラーになります。
+Prettierは、この2つの`--no-`の組み合わせを受け付けます。
 
 標準入力で`--check`や`--list-different`を使うとき、
 Prettierは読めないテキストでも`0`で終了しますが、`mmdfmt`は、
@@ -405,9 +404,7 @@ Prettierは読めないテキストでも`0`で終了しますが、`mmdfmt`は�
 
 Prettierは、`CI`の環境変数があるときやWindowsでは、
 標準エラー出力が端末でなくても`warn`の語に色を付けます。
-`mmdfmt`が色を付けるのは、Nodeの`util.styleText`が付けるとき、
-つまり色を出せる端末か、`FORCE_COLOR`があるときです。
-Prettier自身の判定を写さずNodeに任せているので、
+`mmdfmt`が色を付けるのは、色を出せる端末か、`FORCE_COLOR`があるときだけで、
 `--color`や`--no-color`はありません。
 
 [`mmdfmt`のREADME](../../../mmdfmt/README.ja.md#コードブロックの詳細)では、

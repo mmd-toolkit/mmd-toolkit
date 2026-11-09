@@ -42,11 +42,9 @@ instead: Prettier then formats the diagrams in the same run, and you do not need
 
 ## Quick start
 
-`mmdfmt` needs Node.js `^22.13.0 || >=24`. Node.js 20 is not supported because
-gunshi, which reads the arguments, requires Node.js 22 or later. `--write`
-rewrites files in place, so commit your work first, or see which files would
-change with `npx mmdfmt --check .`. To format every diagram under the current
-directory:
+`mmdfmt` needs Node.js `^22.13.0 || >=24`. `--write` rewrites files in place, so
+commit your work first, or see which files would change with
+`npx mmdfmt --check .`. To format every diagram under the current directory:
 
 ```sh
 npx mmdfmt --write .
@@ -138,8 +136,7 @@ exits with `2`.
 
 There are no other options: no formatting options, no configuration file of its
 own, and no option for an ignore file. An option that takes no value ignores a
-value written after `=`: `--write=false` is read as `--write`, as the argument
-library [gunshi](https://gunshi.dev) reads it.
+value written after `=`: `--write=false` is read as `--write`.
 
 When the reader of standard output goes away, as `head` does once it has its
 lines, `mmdfmt` writes no more there and says nothing, and finishes the run:
@@ -224,8 +221,8 @@ that would change, on standard output, with the same exit codes.
 
 With `--write --check`, the files are rewritten, the summary is
 `[warn] Code style issues fixed in the above file.` (or `in <n> files.`), and
-the exit code is `0`. With an error, the exit code is `2`, and the summary is
-the one in Errors and exit codes.
+the exit code is `0`. With an error, the exit code is `2`;
+[Errors and exit codes](#errors-and-exit-codes) says which summary then follows.
 
 A `.mmd` or `.mermaid` file whose diagram mermaid.js rejects fails the check
 with `2`. A diagram in Markdown that mermaid.js rejects gives only a warning,
@@ -337,11 +334,11 @@ When a file cannot be formatted, such as a `.mmd` or `.mermaid` file whose
 diagram mermaid.js rejects, the summary of `--check` is
 `Error occurred when checking code style in the above file.` (or
 `in <n> files.`) on standard output. As in Prettier's `--check`, the summary
-counts only the files that cannot be formatted: a file that cannot be read and a
-pattern that selects no file are reported, but leave the summary as it would be
-without them, also when no pattern selects any file; a file that cannot be
-written still counts among the files whose issues were fixed, and is still
-listed by `--write` and by `--write --list-different`.
+counts only the files that cannot be formatted. A file that cannot be read, and
+a pattern that selects no file, are reported as errors, but the summary is the
+one it would be without them, also when no pattern selects any file. A file that
+cannot be written counts among the files whose issues were fixed, and `--write`
+and `--write --list-different` still list it.
 
 ## If you know Prettier
 
@@ -369,27 +366,26 @@ warning asks you to run `mmdfmt --write`, because `prettier --write` would
 format the whole Markdown file and, without the plugin configured, would not
 format its diagrams.
 
-Prettier reads `--write=false` as false. `mmdfmt` reads it as `--write`, because
-[gunshi](https://gunshi.dev), the library that reads its arguments, ignores a
-value written after `=` on an option that takes no value. The same difference
-applies to `--check=false` and `--list-different=false`. Prettier also takes a
-`true` or `false` written after `--write` as its value; gunshi reads it as a
-pattern, so `mmdfmt --write false notes.md` formats `notes.md` and reports that
-no file matches `false`.
+Prettier reads `--write=false` as false; `mmdfmt` ignores a value written after
+`=` on an option that takes no value, and reads it as `--write`. The same holds
+for `--check=false` and `--list-different=false`. Prettier also takes a `true`
+or `false` written after `--write` as its value; `mmdfmt` reads it as a pattern,
+so `mmdfmt --write false notes.md` formats `notes.md` and reports that no file
+matches `false`.
 
-gunshi also counts a `--no-` form as giving its option, so
-`--no-check --list-different` and `--no-write --stdin-filepath` are errors,
-which Prettier accepts.
+When `mmdfmt` checks which options go together, a `--no-` form counts as giving
+its option: `--no-check --list-different` and `--no-write --stdin-filepath` are
+errors, as `--check --list-different` and `--write --stdin-filepath` are.
+Prettier accepts both `--no-` combinations.
 
 With `--check` or `--list-different` on standard input, Prettier exits with `0`
 for a text it cannot parse; `mmdfmt` exits with `2` for a rejected diagram, as
 everywhere else ([Errors and exit codes](#errors-and-exit-codes)).
 
-Prettier colors the word `warn` also when the `CI` environment variable is set,
-or on Windows, where standard error is not a terminal. `mmdfmt` colors it where
-Node's `util.styleText` does: on a terminal that shows colors, or with
-`FORCE_COLOR`. It leaves this to Node rather than copying Prettier's own checks,
-and so has no `--color` or `--no-color`.
+Prettier also colors the word `warn` when standard error is not a terminal, if
+the `CI` environment variable is set or the system is Windows. `mmdfmt` colors
+it only on a terminal that shows colors, or when `FORCE_COLOR` is set, and has
+no `--color` or `--no-color`.
 
 ## Code blocks in detail
 
