@@ -38,10 +38,10 @@ both diagrams, reformatted indentation uses the character selected by `useTabs`.
 The width is the one Prettier measures: a full-width character counts as two
 columns and a tab as none, so a line with tabs can be wider on the screen than
 it measures. In a Markdown code block in a list or a block quote, Prettier
-measures a data block with what stands before its lines, but gives the plugin
-the line width as it is, and the plugin counts the lines of a Gantt section
-alone. `max_line_length = off` of `.editorconfig`, which Prettier reads as an
-infinite width, never splits a block and always lines the colons up.
+measures a data block with what stands before its lines, but does not count it
+when it lines up the colons of a Gantt section. `max_line_length = off` of
+`.editorconfig`, which Prettier reads as an infinite width, never splits a block
+and always lines the colons up.
 
 Everywhere else `printWidth` does not control diagram line breaks.
 `railroad-beta` composite calls always use nested lines to show the grammar
