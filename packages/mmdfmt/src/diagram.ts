@@ -23,7 +23,9 @@ async function defaultNumberOption(name: string): Promise<number> {
  * longer left; here the diagram is formatted alone and the prefix is put in
  * front of its lines. The width of the prefix is counted as Prettier counts the
  * indentation that stands before a range it formats (`util.getAlignmentSize`),
- * a tab reaching the next multiple of `tabWidth`. The width is at least 1.
+ * a tab reaching the next multiple of `tabWidth`; where `tabWidth` is 0, which
+ * `util.getAlignmentSize` turns into NaN for a tab, a tab has no width. The
+ * width is at least 1.
  */
 export async function printWidthAfter(
   prefix: string,
@@ -33,7 +35,11 @@ export async function printWidthAfter(
   const tabWidth = options.tabWidth ?? (await defaultNumberOption("tabWidth"))
   const printWidth =
     options.printWidth ?? (await defaultNumberOption("printWidth"))
-  return Math.max(1, printWidth - util.getAlignmentSize(prefix, tabWidth))
+  const used =
+    tabWidth === 0
+      ? prefix.replaceAll("\t", "").length
+      : util.getAlignmentSize(prefix, tabWidth)
+  return Math.max(1, printWidth - used)
 }
 
 /** What formatting the text of a diagram gives. */

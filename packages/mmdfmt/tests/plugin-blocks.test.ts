@@ -1,7 +1,9 @@
+import { stripVTControlCharacters } from "node:util"
 import type { Options } from "prettier"
 import { format } from "prettier"
 import plugin from "prettier-plugin-mmd"
 import { describe, expect, it } from "vitest"
+import { formatDiagram } from "../src/diagram.ts"
 import { formatMarkdown } from "../src/markdown.ts"
 import { readOptions } from "../src/options.ts"
 import { lines } from "./helpers.ts"
@@ -9,6 +11,21 @@ import { lines } from "./helpers.ts"
 /** How many times a Markdown text holds the formatted form of `A-->B`. */
 function formattedDiagrams(text: string): number {
   return text.split("A --> B").length - 1
+}
+
+/**
+ * The message of the error that `promise` rejects with. Prettier colors the
+ * words of a message where the environment asks for colors, as on CI, so the
+ * colors are taken off: they are not what a test compares.
+ */
+async function rejectionMessage(promise: Promise<unknown>): Promise<string> {
+  try {
+    await promise
+  } catch (error) {
+    if (error instanceof Error) return stripVTControlCharacters(error.message)
+    throw error
+  }
+  throw new Error("The promise did not reject")
 }
 
 /** The diagram block `A-->B`, unformatted, with its fences. */
@@ -220,6 +237,13 @@ describe("If you know Prettier: the settings under which Prettier leaves a diagr
       options: { checkIgnorePragma: true },
     },
     {
+      setting:
+        "checkIgnorePragma with the other spelling of the ignore comment",
+      text: lines("<!-- @noprettier -->", "", diagramBlock),
+      formatted: lines("<!-- @noprettier -->", "", formattedBlock),
+      options: { checkIgnorePragma: true },
+    },
+    {
       setting: "a range that does not cover the whole file",
       text: diagramBlock,
       formatted: formattedBlock,
@@ -245,18 +269,40 @@ describe("If you know Prettier: the settings under which Prettier leaves a diagr
     },
   )
 
+  it("does not leave a Markdown file whose pragma comment follows the frontmatter, under requirePragma", async () => {
+    const before = lines("---", "title: x", "---", "", "<!-- @prettier -->", "")
+    const byPrettier = await format(before + diagramBlock, {
+      parser: "markdown",
+      plugins: [plugin],
+      requirePragma: true,
+    })
+    expect(byPrettier).toBe(before + formattedBlock)
+  })
+
+  it("leaves a .mmd file as written under a range that does not cover it, while mmdfmt formats it", async () => {
+    const text = lines("flowchart LR", "A-->B")
+    const options = { rangeStart: 0, rangeEnd: 5 }
+    expect(
+      await format(text, { parser: "mermaid", plugins: [plugin], ...options }),
+    ).toBe(text)
+    expect(await formatDiagram(text, readOptions(options), "\n")).toEqual({
+      kind: "formatted",
+      text: lines("flowchart LR", "  A --> B"),
+    })
+  })
+
   it("refuses a value of an option of another language, which mmdfmt does not read", async () => {
     // A configuration file holds JSON, whose values the type checker cannot know.
     const refused: Options = JSON.parse('{ "semi": "yes" }')
-    await expect(
-      format(diagramBlock, {
-        parser: "markdown",
-        plugins: [plugin],
-        ...refused,
-      }),
-    ).rejects.toThrow(
-      'Invalid semi value. Expected true or false, but received "yes".',
-    )
+    expect(
+      await rejectionMessage(
+        format(diagramBlock, {
+          parser: "markdown",
+          plugins: [plugin],
+          ...refused,
+        }),
+      ),
+    ).toBe('Invalid semi value. Expected true or false, but received "yes".')
     expect(
       await formatMarkdown(diagramBlock, readOptions(refused), "output"),
     ).toEqual({ text: formattedBlock, diagnostics: [] })

@@ -1,5 +1,6 @@
 import { chmodSync } from "node:fs"
 import path from "node:path"
+import { stripVTControlCharacters } from "node:util"
 import { afterEach, beforeEach, describe, expect, it, vi } from "vitest"
 import packageJson from "../package.json" with { type: "json" }
 import { ignoreBrokenPipe } from "../src/broken-pipe.ts"
@@ -783,6 +784,44 @@ describe("Configuration", () => {
     )
   })
 
+  it("formats a code block behind a tab where tabWidth is 0", async () => {
+    project.write({
+      ".prettierrc": JSON.stringify({ tabWidth: 0 }),
+      "a.md": lines(
+        ">\t```mermaid",
+        ">\tflowchart LR",
+        ">\tA-->B",
+        ">\t```",
+        "",
+        "-\t```mermaid",
+        "\tflowchart LR",
+        "\tA-->B",
+        "\t```",
+      ),
+    })
+    expect(await project.run(["--write", "a.md"])).toEqual({
+      code: 0,
+      stdout: listed("a.md"),
+      stderr: "",
+    })
+    // The lines that are written start with what stands before the fence, the
+    // marker of the list item turned into a space, and the plugin indents by
+    // one space where tabWidth is 0.
+    expect(project.read("a.md")).toBe(
+      lines(
+        ">\t```mermaid",
+        ">\tflowchart LR",
+        ">\t A --> B",
+        ">\t```",
+        "",
+        "-\t```mermaid",
+        " \tflowchart LR",
+        " \t A --> B",
+        "\t```",
+      ),
+    )
+  })
+
   it("takes useTabs from a Prettier configuration", async () => {
     project.write({
       ".prettierrc": JSON.stringify({ useTabs: true }),
@@ -1002,7 +1041,9 @@ describe("Configuration", () => {
     const run = await project.run(["--write", "a.mmd"])
     expect(run.code).toBe(2)
     expect(run.stdout).toBe("")
-    expect(run.stderr).toBe(
+    // Prettier colors the words of its message where the environment asks for
+    // colors, as on CI; the colors are not what the test is about.
+    expect(stripVTControlCharacters(run.stderr)).toBe(
       'a.mmd: error: Invalid printWidth value. Expected an integer, but received "wide".\n',
     )
     expect(project.read("a.mmd")).toBe(diagram)

@@ -2,9 +2,11 @@ import type { Options } from "prettier"
 
 /**
  * The Prettier options that the tool reads, and the only ones that it gives to
- * Prettier from a configuration (README, Configuration). The types are the
- * tool's own: an option that Prettier adds, or a value that Prettier adds to
- * one of these, reaches the tool only when it is written here.
+ * Prettier from a configuration (README, Configuration). An option that
+ * Prettier adds is not read until it is written here. The types are the tool's
+ * own: where the types of Prettier gain a value for one of these options, as
+ * they may in a later version, the type checker fails in `readOptions` until
+ * the type here is widened on purpose.
  */
 export interface ReadOptions {
   /**

@@ -365,7 +365,8 @@ Markdown のコードブロックでは警告です。
 
 図は Prettier と `prettier-plugin-mmd` で整形するので、
 プラグインの規則が適用されます。
-Markdown に Prettier とプラグインを使う場合とは、結果が 5 点で異なります。
+Markdown と `.mmd` ファイルに Prettier とプラグインを使う場合とは、
+結果が 5 点で異なります。
 
 - Prettier は、コードブロックの最後の行の末尾の空白を、
   mermaid.js が図の一部として読む場合も、
@@ -387,19 +388,25 @@ Markdown に Prettier とプラグインを使う場合とは、結果が 5 点�
   プラグインはそれで Gantt のセクションの行を数えて、コロンをそろえます。
   `mmdfmt` は、各行の前に書くものの幅を引いた幅を渡すので、幅の近くでは、
   Prettier はセクションをそろえ、`mmdfmt` はそろえないことがあります。
-  そのとき `mmdfmt` はセクションのコロンを今の位置に残すので、行は広がらず、
+  そのとき `mmdfmt` はセクションのコロンを今の位置に残し、
   行の幅より広く書かれた行はそのままです。
-- Markdown ファイルでは、Prettier は次の 4 つの設定のもとで、
-  図を書かれたまま残します。
-  先頭に `<!-- @format -->` のコメントがない `requirePragma: true`、
-  先頭に `<!-- @noformat -->` のコメントがある `checkIgnorePragma: true`、
-  ファイル全体を覆わない範囲、そして `embeddedLanguageFormatting: "off"` です。
-  この設定は、すべてのコードブロックを書かれたまま残します。
-  `mmdfmt` はこれらを読みません。
+- Prettier は、次の 4 つの設定のもとで、図を書かれたまま残します。
+  `requirePragma: true` は、ファイルの先頭に、
+  `<!-- @format -->` か `<!-- @prettier -->` のコメントがない Markdown
+  ファイルを残します。
+  frontmatter があるときは、その後ろが先頭です。
+  `checkIgnorePragma: true` は、そこに、
+  `<!-- @noformat -->` か `<!-- @noprettier -->` のコメントがある Markdown
+  ファイルを残します。
+  ファイル全体を覆わない範囲は、Markdown ファイルも `.mmd` ファイルも残します。
+  `embeddedLanguageFormatting: "off"` は、
+  Markdown ファイルのすべてのコードブロックを残します。
+  `mmdfmt` は、この 4 つのどれのもとでも図を整形します。
+  最初の 3 つは読みません。
   どのファイルを整形するかは自分で決め（パターンと `.gitignore`）、
-  渡されたファイルの図を整形します。
-  `embeddedLanguageFormatting: "off"` のときも、
-  残すのは図の frontmatter だけです。
+  図全体を整形するからです。
+  `embeddedLanguageFormatting` は図の frontmatter にだけ読み、
+  そのときは frontmatter を書かれたまま残します。
 
 コマンドも Prettier の CLI とは異なります。
 `.prettierignore` は読まず、`--ignore-path`、`--ignore-unknown`、
@@ -454,7 +461,8 @@ Prettier の CLI はそれをエラーにします。
 `mmdfmt` が各行の前に書くものの幅を引いた幅で、幅は 1 以上です。
 前に書くものは、1 文字を 1 桁と数えます。
 Prettier が整形する範囲の前のインデントを数えるのと同じ方法で、
-タブだけは次の `tabWidth` の倍数の桁まで進みます。
+タブだけは次の `tabWidth` の倍数の桁まで進み、
+`tabWidth` が 0 のときは幅を持ちません。
 たとえば、行の幅が 40 のとき、行が空白 2 つで始まるリスト項目の中の図は、
 38 桁として整形します。
 `tabWidth` が 4 のとき、行が `>` とタブで始まる引用の中の図は、

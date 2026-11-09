@@ -328,7 +328,7 @@ even when a file would change.
 
 The diagrams are formatted by Prettier with `prettier-plugin-mmd`, so the rules
 of the plugin apply. Five results differ from running Prettier with the plugin
-on Markdown:
+on Markdown and `.mmd` files:
 
 - Prettier removes the whitespace at the end of the last line of a code block,
   even where mermaid.js treats it as part of the diagram
@@ -350,17 +350,20 @@ on Markdown:
   counts the lines of a Gantt section with it, to line up their colons. `mmdfmt`
   gives the plugin the width less what it writes before the lines, so near the
   width a Gantt section can be lined up by Prettier and not by `mmdfmt`, which
-  then leaves the colons of the section where they are: no line gets wider, and
-  a line written wider than the line width stays so.
-- Prettier leaves a diagram in a Markdown file as written under four settings:
-  `requirePragma: true` with no `<!-- @format -->` comment at the top of the
-  file, `checkIgnorePragma: true` with a `<!-- @noformat -->` comment there, a
-  range that does not cover the whole file, and
-  `embeddedLanguageFormatting: "off"`, which leaves every code block as written.
-  `mmdfmt` reads none of them. It decides itself which files it formats (the
-  patterns, and `.gitignore`) and formats the diagrams of the files it is given.
-  With `embeddedLanguageFormatting: "off"` it leaves only the frontmatter of a
-  diagram as written.
+  then leaves the colons of the section where they are, and a line written wider
+  than the line width stays so.
+- Prettier leaves a diagram as written under four settings.
+  `requirePragma: true` leaves a Markdown file that has no `<!-- @format -->` or
+  `<!-- @prettier -->` comment at its top, after the frontmatter if there is
+  one. `checkIgnorePragma: true` leaves a Markdown file that has a
+  `<!-- @noformat -->` or `<!-- @noprettier -->` comment there. A range that
+  does not cover the whole file leaves a Markdown file or a `.mmd` file.
+  `embeddedLanguageFormatting: "off"` leaves every code block of a Markdown
+  file. `mmdfmt` formats the diagrams under all four. It does not read the first
+  three: it decides itself which files it formats (the patterns, and
+  `.gitignore`), and it formats whole diagrams. It reads
+  `embeddedLanguageFormatting` for the frontmatter of a diagram only, which it
+  then leaves as written.
 
 The command differs from Prettier's CLI too: it does not read `.prettierignore`,
 has no `--ignore-path`, `--ignore-unknown`, or formatting options of its own,
@@ -430,15 +433,16 @@ The line width of a diagram in a list item or a block quote is the line width of
 the file less the width of what `mmdfmt` writes before each of its lines, the
 width being at least 1. Each character of it counts as one column, as Prettier
 counts the indentation before a range it formats, except that a tab reaches the
-next multiple of `tabWidth`. For example, with a line width of 40, a diagram in
-a list item whose lines start with two spaces is formatted for 38 columns, and
-with a `tabWidth` of 4, a diagram in a block quote whose lines start with `>`
-and a tab is formatted for 36 columns, as the tab reaches column 4. Prettier
-takes off the width of what it prints before the lines from a data block
-`@{ … }` in the same way, but what it prints can differ from what `mmdfmt`
-writes (see [If you know Prettier](#if-you-know-prettier)). The colons of a
-Gantt section are the exception: Prettier gives the plugin the line width as it
-is, so it does not count what stands before the lines (see the same section).
+next multiple of `tabWidth`, and counts for nothing where `tabWidth` is 0. For
+example, with a line width of 40, a diagram in a list item whose lines start
+with two spaces is formatted for 38 columns, and with a `tabWidth` of 4, a
+diagram in a block quote whose lines start with `>` and a tab is formatted for
+36 columns, as the tab reaches column 4. Prettier takes off the width of what it
+prints before the lines from a data block `@{ … }` in the same way, but what it
+prints can differ from what `mmdfmt` writes (see
+[If you know Prettier](#if-you-know-prettier)). The colons of a Gantt section
+are the exception: Prettier gives the plugin the line width as it is, so it does
+not count what stands before the lines (see the same section).
 
 A file keeps its line endings. Each line that `mmdfmt` writes ends as the first
 line of the file ends, or with `\n` in a file of one line, except the last,
