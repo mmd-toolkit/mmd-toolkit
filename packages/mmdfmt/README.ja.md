@@ -294,21 +294,29 @@ const formatted = await format(source, {
   filepath,
   tabWidth: config?.tabWidth,
   useTabs: config?.useTabs,
+  printWidth: config?.printWidth,
 })
 ```
 
 `format(source, options)` は、整形したテキストを返す Promise を返します。
 Prettier のオプションのうち、
 語尾でテキストを図として読むか Markdown として読むかを決める `filepath` と、
-`tabWidth`、`useTabs` の 3 つを受け取り、ほかのオプションは型エラーになります。
+`tabWidth`、`useTabs`、`printWidth` の 4 つを受け取り、
+ほかのオプションは型エラーになります。
 Prettier の `format` と同じく、ファイルも設定も読みません。
 呼び出し元は、上のように Prettier の `resolveConfig` で設定を解決し、
 設定の `overrides` はパスごとに適用されるため、
 `format` に渡すのと同じパスを指定し、
 `.editorconfig` を読むために `editorconfig: true` を指定します。
-コマンドがパスについて見つけるオプション（[インデントと行の幅](#インデントと行の幅)）を渡すと、
+コマンドがパスについて見つけるオプションは、
+[インデントと行の幅](#インデントと行の幅)のとおりです。
+そのオプションを渡すと、
 `format` は `--stdin-filepath` がそのパスについて書き出すテキストを返します。
 
+- Markdown では、`printWidth` はファイルの行の幅で、
+  [コードブロックの詳細](#コードブロックの詳細)のとおり、
+  リスト項目や引用の中の図には、
+  その幅から図の各行の前にあるものの幅を引いた幅を渡します。
 - 改行コードとバイトオーダーマークはテキストに書かれたまま保ち、
   `format` は `endOfLine` を受け取りません。
 - mermaid.js が拒否する `.mmd` や `.mermaid` の図では、`format` は、

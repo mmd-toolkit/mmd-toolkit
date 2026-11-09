@@ -173,6 +173,7 @@ describe("From a script: indentation and configuration", () => {
         filepath,
         tabWidth: config?.tabWidth,
         useTabs: config?.useTabs,
+        printWidth: config?.printWidth,
       }),
     ).toEqual("flowchart LR\n    A --> B\n")
   })
@@ -187,6 +188,132 @@ describe("From a script: indentation and configuration", () => {
       // @ts-expect-error -- `endOfLine` is not an option of `format`.
       await format(diagram, { filepath, endOfLine: "crlf" }),
     ).toEqual("flowchart LR\n  A --> B\n")
+  })
+})
+
+describe("From a script: the line width", () => {
+  const wideDiagram = "flowchart LR\n  A@{ shape: rect, label: x, icon: y }\n"
+  const listDiagram = lines(
+    "- item",
+    "",
+    "  ```mermaid",
+    "  flowchart LR",
+    "    A@{ shape: rect, label: x, icon: y }",
+    "  ```",
+  )
+
+  it("keeps a data block on one line at printWidth: 38", async () => {
+    const result = await format(wideDiagram, {
+      filepath: path.join(project.cwd, "a.mmd"),
+      printWidth: 38,
+    })
+    expect(result).toEqual(
+      await prettier.format(wideDiagram, {
+        parser: "mermaid",
+        plugins: [plugin],
+        printWidth: 38,
+      }),
+    )
+    expect(result).toEqual(
+      "flowchart LR\n  A@{ shape: rect, label: x, icon: y }\n",
+    )
+  })
+
+  it("splits a data block at printWidth: 37", async () => {
+    const result = await format(wideDiagram, {
+      filepath: path.join(project.cwd, "a.mmd"),
+      printWidth: 37,
+    })
+    expect(result).toEqual(
+      await prettier.format(wideDiagram, {
+        parser: "mermaid",
+        plugins: [plugin],
+        printWidth: 37,
+      }),
+    )
+    expect(result).toEqual(
+      "flowchart LR\n  A@{\n    shape: rect\n    label: x\n    icon: y\n  }\n",
+    )
+  })
+
+  it("keeps a data block in a list item on one line at printWidth: 40", async () => {
+    const result = await format(listDiagram, {
+      filepath: path.join(project.cwd, "a.md"),
+      printWidth: 40,
+    })
+    expect(result).toEqual(
+      await prettier.format(listDiagram, {
+        parser: "markdown",
+        plugins: [plugin],
+        printWidth: 40,
+      }),
+    )
+    expect(result).toEqual(
+      lines(
+        "- item",
+        "",
+        "  ```mermaid",
+        "  flowchart LR",
+        "    A@{ shape: rect, label: x, icon: y }",
+        "  ```",
+      ),
+    )
+  })
+
+  it("splits a data block in a list item at printWidth: 39", async () => {
+    const result = await format(listDiagram, {
+      filepath: path.join(project.cwd, "a.md"),
+      printWidth: 39,
+    })
+    expect(result).toEqual(
+      await prettier.format(listDiagram, {
+        parser: "markdown",
+        plugins: [plugin],
+        printWidth: 39,
+      }),
+    )
+    expect(result).toEqual(
+      lines(
+        "- item",
+        "",
+        "  ```mermaid",
+        "  flowchart LR",
+        "    A@{",
+        "      shape: rect",
+        "      label: x",
+        "      icon: y",
+        "    }",
+        "  ```",
+      ),
+    )
+  })
+
+  it("uses the line width resolved from .editorconfig as in the README", async () => {
+    project.write({
+      ".editorconfig": "root = true\n\n[*.mmd]\nmax_line_length = 37\n",
+    })
+    const filepath = path.join(project.cwd, "a.mmd")
+    const config = await resolveConfig(filepath, { editorconfig: true })
+    expect(config?.printWidth).toEqual(37)
+    expect(
+      await format(wideDiagram, {
+        filepath,
+        tabWidth: config?.tabWidth,
+        useTabs: config?.useTabs,
+        printWidth: config?.printWidth,
+      }),
+    ).toEqual(
+      "flowchart LR\n  A@{\n    shape: rect\n    label: x\n    icon: y\n  }\n",
+    )
+  })
+
+  it("keeps a data block on one line at printWidth: Infinity", async () => {
+    expect(
+      await format(wideDiagram, {
+        filepath: path.join(project.cwd, "a.mmd"),
+        printWidth: Infinity,
+      }),
+    ).toEqual("flowchart LR\n  A@{ shape: rect, label: x, icon: y }\n")
   })
 })
 

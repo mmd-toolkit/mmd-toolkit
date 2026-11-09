@@ -269,20 +269,24 @@ const formatted = await format(source, {
   filepath,
   tabWidth: config?.tabWidth,
   useTabs: config?.useTabs,
+  printWidth: config?.printWidth,
 })
 ```
 
-`format(source, options)` returns a promise of the formatted text. It takes
-three of Prettier's options: `filepath`, whose ending says whether the text is a
-diagram or Markdown, and `tabWidth` and `useTabs`; another option is a type
-error. Like Prettier's `format`, it reads no file and no configuration. The
-caller resolves the configuration with Prettier's `resolveConfig`, as above,
-with the path that it gives `format`, since the `overrides` of a configuration
-apply by path, and with `editorconfig: true` for an `.editorconfig` to be read.
-Given the options that the command finds for a path (see
-[Indentation and line width](#indentation-and-line-width)), `format` returns the
-text that `--stdin-filepath` writes for it.
+`format(source, options)` returns a promise of the formatted text. It takes four
+of Prettier's options: `filepath`, whose ending says whether the text is a
+diagram or Markdown, and `tabWidth`, `useTabs`, and `printWidth`; another option
+is a type error. Like Prettier's `format`, it reads no file and no
+configuration. The caller resolves the configuration with Prettier's
+`resolveConfig`, as above, with the path that it gives `format`, since the
+`overrides` of a configuration apply by path, and with `editorconfig: true` for
+an `.editorconfig` to be read. Given the options that the command finds for a
+path (see [Indentation and line width](#indentation-and-line-width)), `format`
+returns the text that `--stdin-filepath` writes for it.
 
+- In Markdown, `printWidth` is the width of the lines of the file: a diagram in
+  a list item or a block quote gets that width less what stands before its
+  lines, as in [Code blocks in detail](#code-blocks-in-detail).
 - The line endings stay as they are in the text, and so does a byte order mark;
   `format` takes no `endOfLine`.
 - A `.mmd` or `.mermaid` diagram that mermaid.js rejects makes `format` throw
