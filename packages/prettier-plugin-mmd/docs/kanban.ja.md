@@ -522,7 +522,6 @@ mermaid.js は拒否します（既知の差異
 [test: data blocks: kanban one line with U+2028 inside]
 [test: data blocks: kanban one line with U+2029 inside]
 [test: data blocks: kanban one line with no-break spaces at the ends]
-[test: data blocks: kanban one line with U+2028 inside]
 
 [データブロック](./flowchart.ja.md#データブロック)の移動と安全条件を適用します。
 `@{` の直後が改行なら、本文の全行を同じ数の半角空白だけ動かし、
@@ -542,15 +541,23 @@ literal block scalar は末尾空白と空白行の幅を読むため、
 
 共有の条件を満たさない場合は桁を保ちます。
 開きの行の本文は最初の桁を `@{` から数え、内部の directive は桁を保ち、
-行全体を保つ行は一部だけ動かせず、`tabWidth: 0` では内側の段がなく、
-タブで字下げしたノード（`useTabs`）には、
-すべてのタブ幅で正しくなる深さがありません。
+行全体を保つ行は一部だけ動かせず、`tabWidth: 0` では内側の段がありません。
 Mermaid はタブで字下げした YAML を拒否し、
 0 桁の文書の印を動かしても拒否される場合があります。
 [fixture: data-blocks/inline-opening-kept]
 [fixture: data-blocks/directive-inside-kept]
 [fixture: data-blocks/kept-body-line] [fixture: data-blocks/zero-width-kept]
 [fixture: data-blocks/document-start-kept]
+
+`useTabs` では、使わないときと同じく、ブロックの行を空白で字下げして動かします。
+ノードの行は、その役割に応じた字下げにします。
+mermaid.js は字下げをノードの段として読むため、
+書かれたままにはしません（[インデント](#インデント)を参照）。
+そのため、ほかの種類の図のように文を書かれたまま印字できません。
+[データブロック](./flowchart.ja.md#データブロック)を参照してください。
+このとき、タブ幅が `tabWidth` と同じなら正しくそろい、
+異なるタブ幅ではその差の分だけずれます。
+ブロックの行を書かれたまま残すと、どのタブ幅でもノードより左に出ます。
 [fixture: data-blocks/tab-statement-space-body]
 [fixture: data-blocks/use-tabs-empty-lines-kept]
 [fixture: data-blocks/use-tabs-folded-empty-lines-kept]

@@ -496,13 +496,21 @@ data-blocks/scalar-blank-lines-outdent]
 
 Keep columns when the shared conditions fail: inline-opening text counts its
 first margin from `@{`, embedded directives keep their columns, kept lines must
-stay whole, `tabWidth: 0` supplies no inner step, and a node indented with a tab
-(`useTabs`) has no depth that is right for every width of a tab. Tab-indented
-YAML is rejected by Mermaid; moving column-zero document markers can also make
-it fail. [fixture: data-blocks/inline-opening-kept] [fixture:
+stay whole, and `tabWidth: 0` supplies no inner step. Tab-indented YAML is
+rejected by Mermaid; moving column-zero document markers can also make it fail.
+[fixture: data-blocks/inline-opening-kept] [fixture:
 data-blocks/directive-inside-kept] [fixture: data-blocks/kept-body-line]
 [fixture: data-blocks/zero-width-kept] [fixture:
-data-blocks/document-start-kept] [fixture: data-blocks/tab-statement-space-body]
+data-blocks/document-start-kept]
+
+With `useTabs`, the lines of the block move as without it, indented with spaces.
+The node line takes the indentation that its role gives it, which is not printed
+as written because mermaid.js reads it as the level of the node (see
+[Indentation](#indentation)), so the statement cannot be printed as written as
+in the other diagram types (see [Data blocks](./flowchart.md#data-blocks)). The
+lines then stand right where a tab is as wide as `tabWidth`, and off by the
+difference at any other width, while lines left as written would stand left of
+the node at every width. [fixture: data-blocks/tab-statement-space-body]
 [fixture: data-blocks/use-tabs-empty-lines-kept] [fixture:
 data-blocks/use-tabs-folded-empty-lines-kept]
 

@@ -1714,8 +1714,10 @@ mermaid.js は、1 行のブロックのテキストを、
   [fixture: usecase/native-metadata/long-block-kept]
 - 複数行のブロックと同じく、`tabWidth` が 0 でないこと。
   [fixture: data-blocks/long-zero-width-kept]
-- 複数行のブロックと同じく、文がタブ（`useTabs`）で字下げされていないこと。
-  分けたブロックの行も空白で字下げするためです。
+- 整形器がタブ（`useTabs`）で字下げしないこと。
+  分けたブロックの行は空白で字下げするため、
+  タブの幅が特定の値のときだけ正しくそろいます。
+  一方、1 行のままのブロックは、どのタブ幅でも同じに読めます。
   1 行のブロックは 1 行のままにします。
   [fixture: data-blocks/long-use-tabs-kept]
 - 文の最初の行にあり、その文の唯一のブロックで、文の最後にあること。
@@ -1822,22 +1824,6 @@ flowchart LR
   [test: data blocks: flowchart U+2029 before the closer]
 - `tabWidth` が 0 でないこと。
   0 では内側の字下げの段がありません。 [fixture: data-blocks/zero-width-kept]
-- 文がタブ（`useTabs`）で字下げされていないこと。
-  mermaid.js はブロックの行の前のタブを拒否するので、
-  整形器が行を字下げするなら、文の字下げに関係なく空白を使うことになります。
-  タブで字下げしたノードの下では、
-  タブの幅が特定の値のときだけ行の深さが正しく見え、
-  タブが `tabWidth` より広いと、行と `}` がノードより左に出ます。
-  単独行の `}` の前をタブにしても解決しません。
-  その行はブロックのテキストの最後の行です。
-  空行を残すスカラー（`|+`、`>+`）がその行を読むので、
-  そこにタブがあると値が変わります。
-  そのため、ブロックも `}` も書かれた桁を保ちます。
-  作者がすでにノードにそろえていたブロックは、そろったままにします。
-  [fixture: data-blocks/tab-statement-space-body]
-  [fixture: data-blocks/tab-statement-aligned-body-kept]
-  [fixture: data-blocks/use-tabs-empty-lines-kept]
-  [fixture: data-blocks/use-tabs-folded-empty-lines-kept]
 - ブロックの行と開始行が、行全体を残す行でないこと。
   セミコロンの行規則による保持も含みます。
   一部だけ動かすと、その行の保持に反します。
@@ -1856,6 +1842,38 @@ flowchart LR
   [fixture: data-blocks/adjacent-single-line-before-kept]
   [fixture: data-blocks/separate-single-line-block-kept]
   [fixture: data-blocks/edge-adjacent-single-line-kept]
+
+`useTabs` では、複数行のブロックを持つ文は、
+最初の行の字下げも含めて書かれたまま印字します。
+mermaid.js はブロックの行の前のタブを拒否するので、
+ブロックの行は空白で字下げし、タブの幅が特定の値のときだけ正しくそろいます。
+ブロックの行を元の位置に残して、ノードの行だけを文の深さまで字下げすると、
+どのタブ幅でもブロックの中身と `}` より右に置かれ、
+ブロックの内外が逆に見えます。
+文は作者が置いた位置に残すため、入力と同じく周りの文より浅いこともあり、
+作者がすでにノードにそろえていたブロックは、そろったままにします。
+単独行の `}` の前にタブを置いて動かすこともできません。
+その行はブロックのテキストの最後の行で、空行を残すスカラー（`|+`、
+`>+`）が読むため、そこにタブを置くと値が変わります。
+[fixture: data-blocks/tab-statement-space-body]
+[fixture: data-blocks/tab-statement-aligned-body-kept]
+[fixture: data-blocks/use-tabs-statement-kept]
+[fixture: data-blocks/use-tabs-comment-line-before-kept]
+[fixture: data-blocks/use-tabs-empty-lines-kept]
+[fixture: data-blocks/use-tabs-folded-empty-lines-kept]
+
+ノードの行自体の字下げを整形器が整える必要がある場合は、
+`useTabs` でないときと同じく、ブロックの行も空白で字下げして一緒に動かします。
+該当するのは、前に `;` や directive があり、行の先頭から始まらない文、
+`end` がヘッダーと同じ字下げに置かれる agentflow の container のヘッダー、
+mermaid.js が字下げをノードの段として読む kanban のノードです。
+[Metadata blocks](./agentflow.ja.md#metadata-blocks)と
+[データブロック](./kanban.ja.md#データブロック)を参照してください。
+このとき、タブ幅が `tabWidth` と同じなら正しくそろい、
+異なるタブ幅ではその差の分だけずれます。
+ブロックの行を書かれたまま残すと、どのタブ幅でもノードの行より左に出ます。
+[fixture: data-blocks/use-tabs-not-first-on-line]
+[fixture: data-blocks/use-tabs-directive-before-on-line]
 
 本文に文字がないブロックには最も浅い文字のある行がないため、
 書かれたまま残します。 [fixture: usecase/json-tables/empty-body-kept]

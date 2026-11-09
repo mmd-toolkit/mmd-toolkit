@@ -92,6 +92,7 @@ export function printFlowchart(
           kept: findFlowchartKeptLines(source),
           statement: indentationOf(bodyOptions, depth),
           tabWidth: options.tabWidth,
+          useTabs: options.useTabs,
         },
       )
       return printAtoms(source, layout, {

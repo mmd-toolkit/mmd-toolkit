@@ -4,7 +4,8 @@ import { builders } from "prettier/doc"
 import type { AtomLayout } from "./atoms.ts"
 import { findNodes, minOf } from "./collections.ts"
 import type { KeptLines } from "./kept-lines.ts"
-import { lineStartOf } from "./kept-lines.ts"
+import { isFirstOnItsLine, lineStartOf } from "./kept-lines.ts"
+import { keptAsWritten } from "./layout.ts"
 import { printAsWritten } from "./lines.ts"
 import type { Source } from "./source.ts"
 import {
@@ -14,7 +15,7 @@ import {
   isWhitespace,
 } from "./source.ts"
 
-const { conditionalGroup, literalline, literallineWithoutBreakParent } =
+const { conditionalGroup, literalline, literallineWithoutBreakParent, trim } =
   builders
 
 /**
@@ -82,6 +83,18 @@ export interface DataBlockPlacement {
   /** The width of one level of indentation (see `movesLines`). */
   readonly tabWidth: number
   /**
+   * Whether the printer indents with tabs (`useTabs`; see `splitsBlocks` and
+   * `printStatementAsWritten`).
+   */
+  readonly useTabs: boolean | undefined
+  /**
+   * Whether the printer decides the indentation of the statement and never
+   * prints it as written (see `printStatementAsWritten`): mermaid.js reads the
+   * indentation of a line of a kanban board, and the closing `end` of an
+   * agentflow container that the header opens stands at the same indentation.
+   */
+  readonly decidesIndentation?: boolean
+  /**
    * Whether the layout holds the statement as one atom that is printed as
    * written, as a kanban node is, so the blocks lie inside it and not in atoms
    * of their own.
@@ -95,8 +108,11 @@ export interface DataBlockPlacement {
  * `padDataBlock`), and, where the statement holds no other block and the lines
  * can move (see `movesLines`), a block of several lines printed one level
  * inside the statement, with its closing `}` on a line of its own at the column
- * of the statement, in spaces (see `moveDataBlock`). The `{` of a JSON table of a use case diagram is printed
- * right after its `@` (see `findJsonTableBrace`).
+ * of the statement, in spaces (see `moveDataBlock`). The `{` of a JSON table
+ * of a use case diagram is printed right after its `@` (see
+ * `findJsonTableBrace`). Where the printer indents with tabs, a statement that
+ * holds a block of several lines is printed as written (see
+ * `printStatementAsWritten`).
  */
 export function formatDataBlocks(
   source: Source,
@@ -108,6 +124,13 @@ export function formatDataBlocks(
   // The blocks do not overlap, so those inside the range follow one another.
   const first = findFirstIndex(all, (block) => block.range[0] >= range[0])
   const afterLast = findFirstIndex(all, (block) => block.range[1] > range[1])
+  const asWritten = printStatementAsWritten(
+    source,
+    layout,
+    all.slice(first, afterLast),
+    placement,
+  )
+  if (asWritten !== undefined) return asWritten
   const atoms = [...layout.atoms]
   let changed = false
   for (let index = first; index < afterLast; index++) {
@@ -272,16 +295,73 @@ function startsWithYamlMark(text: string): boolean {
 }
 
 /**
- * Whether the printer may set the indentation of the lines of a block: the
- * lines of a block of several lines are indented with spaces, since mermaid.js
- * rejects a tab before them, so they are moved only if `tabWidth` is not 0 and
- * the statement is not indented with a tab, as under a node indented with tabs
- * the spaces would stand at a depth that is right for one width of a tab only.
- * A block of several lines that cannot move stays as written, and so does a
- * block of one line that would split (docs/flowchart.md, Data blocks).
+ * Whether the printer may set the indentation of the lines of a block of
+ * several lines: it indents them with spaces, since mermaid.js rejects a tab
+ * before them, and only if `tabWidth` is not 0, which supplies no step. Under a
+ * node indented with tabs the spaces stand right where a tab is as wide as
+ * `tabWidth`, and a statement that can be printed as written never gets here
+ * (see `printStatementAsWritten`; docs/flowchart.md, Data blocks).
  */
 function movesLines(placement: DataBlockPlacement): boolean {
-  return placement.tabWidth !== 0 && !placement.statement.includes("\t")
+  return placement.tabWidth !== 0
+}
+
+/**
+ * Whether the printer may print a block of one line on several lines: its
+ * lines can move (see `movesLines`), and it does not indent with tabs, since
+ * under a node indented with tabs the lines would stand right for one width of
+ * a tab only, while the block on its line is read the same at every width.
+ */
+function splitsBlocks(placement: DataBlockPlacement): boolean {
+  return movesLines(placement) && placement.useTabs !== true
+}
+
+/**
+ * The statement printed as written, the indentation of its first line
+ * included, or undefined where it prints as usual: the printer indents with
+ * tabs and the statement holds a block of several lines. The lines of the block
+ * are indented with spaces, which stand right for one width of a tab only, and
+ * the node line alone, indented to the depth of the statement, would leave the
+ * content and the closing `}` left of it at every width (docs/flowchart.md,
+ * Data blocks). The indentation is the whitespace written before the
+ * statement, put where the statement starts by `trim` and the text, as the
+ * indentation of the block is written before the statement is printed. A
+ * statement that does not start its line, or whose indentation the printer
+ * decides (see `DataBlockPlacement.decidesIndentation`), prints as usual, and
+ * the lines of its block move with the node line, as without tabs (see
+ * `movesLines`).
+ */
+function printStatementAsWritten(
+  source: Source,
+  layout: AtomLayout,
+  blocks: readonly Node[],
+  placement: DataBlockPlacement,
+): AtomLayout | undefined {
+  const first = layout.atoms.at(0)
+  const last = layout.atoms.at(-1)
+  if (
+    first === undefined ||
+    last === undefined ||
+    placement.useTabs !== true ||
+    placement.decidesIndentation === true ||
+    blocks.every((block) => isOneLine(source.text.slice(...block.range))) ||
+    !isFirstOnItsLine(source, first.start)
+  )
+    return undefined
+  const indentation = source.text.slice(
+    lineStartOf(source, first.start),
+    first.start,
+  )
+  return {
+    ...keptAsWritten(first.start, last.end),
+    atoms: [
+      {
+        start: first.start,
+        end: last.end,
+        doc: [trim, indentation, printAsWritten(source, first.start, last.end)],
+      },
+    ],
+  }
 }
 
 /**
@@ -297,8 +377,8 @@ function movesLines(placement: DataBlockPlacement): boolean {
  * same where each entry is a key and a value that read the same in both (see
  * `splitEntries`) (docs/flowchart.md, Data blocks). A block splits only if
  *
- * - it is one of `splitTypes` and the lines of a block can move (see
- *   `movesLines`), as the lines of a block mapping are what the split prints;
+ * - it is one of `splitTypes` and the printer may split a block (see
+ *   `splitsBlocks`), as the lines of a block mapping are what the split prints;
  * - it is the only block of its statement, and the last thing in it, on the
  *   first line of the statement: the text after its `}` would stand after the
  *   `}` on a line of its own, and the statement level is the level of that
@@ -317,7 +397,7 @@ function splitDataBlock(
   if (
     !splitTypes.has(block.type) ||
     !alone ||
-    !movesLines(placement) ||
+    !splitsBlocks(placement) ||
     block.range[1] !== statement[1] ||
     source.text.slice(statement[0], block.range[0]).includes("\n")
   )

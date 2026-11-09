@@ -1646,10 +1646,10 @@ the spaces and tabs at their ends: only the whitespace, the line breaks and the
   usecase/native-metadata/long-block-kept]
 - `tabWidth` is not zero, as for a block of several lines; [fixture:
   data-blocks/long-zero-width-kept]
-- the statement is not indented with a tab (`useTabs`), as for a block of
-  several lines, since the lines of a split block are indented with spaces too.
-  A block on one line stays on its line; [fixture:
-  data-blocks/long-use-tabs-kept]
+- the printer does not indent with tabs (`useTabs`): the lines of a split block
+  are indented with spaces, which stand right for one width of a tab only, while
+  a block on its line reads the same at every width. A block on one line stays
+  on its line; [fixture: data-blocks/long-use-tabs-kept]
 - it is the only block of its statement and the last thing in it, on the first
   line of the statement: text after its `}` would stand after the `}` on a line
   of its own, which reads worse than the block on its line, and the first line
@@ -1743,20 +1743,6 @@ written:
   [test: data blocks: flowchart U+2029 before the closer]
 - `tabWidth` is not zero: zero supplies no inner indentation step. [fixture:
   data-blocks/zero-width-kept]
-- The statement is not indented with a tab (`useTabs`). mermaid.js rejects a tab
-  before the lines of a block, so the printer would indent them with spaces
-  whatever the statement is indented with, and under a node that a tab indents
-  they would stand at a depth that reads right for one width of a tab only:
-  where the tab is wider than `tabWidth`, the lines and the `}` would stand left
-  of the node. A tab before a `}` alone on its line is no way out, since that
-  line is the last line of the block text, which a scalar that keeps its empty
-  lines (`|+`, `>+`) reads, and a tab there changes the value. So the block
-  keeps its columns, and so does the `}`; a block that the author has already
-  aligned with the node stays aligned. [fixture:
-  data-blocks/tab-statement-space-body] [fixture:
-  data-blocks/tab-statement-aligned-body-kept] [fixture:
-  data-blocks/use-tabs-empty-lines-kept] [fixture:
-  data-blocks/use-tabs-folded-empty-lines-kept]
 - Neither a block line nor its opening line belongs to a line kept in full,
   including one protected by the semicolon line rule. Moving part of that line
   would violate its preservation. [fixture: data-blocks/kept-body-line]
@@ -1774,6 +1760,36 @@ written:
   data-blocks/adjacent-single-line-before-kept] [fixture:
   data-blocks/separate-single-line-block-kept] [fixture:
   data-blocks/edge-adjacent-single-line-kept]
+
+With `useTabs`, a statement that holds a block of several lines is printed as
+written, the indentation of its first line included. mermaid.js rejects a tab
+before the lines of a block, so they are indented with spaces, which stand right
+for one width of a tab only, and a node line alone, indented to the depth of the
+statement while the lines stay where they are, would stand right of the content
+and the `}` of the block at every width, and the block would read inside out.
+The statement stays where the author put it, which may be shallower than the
+statements around it, as it was in the input, and a block that the author has
+aligned with the node stays aligned. A tab before a `}` alone on its line is no
+way to move it: that line is the last line of the block text, which a scalar
+that keeps its empty lines (`|+`, `>+`) reads, and a tab there changes the
+value. [fixture: data-blocks/tab-statement-space-body] [fixture:
+data-blocks/tab-statement-aligned-body-kept] [fixture:
+data-blocks/use-tabs-statement-kept] [fixture:
+data-blocks/use-tabs-comment-line-before-kept] [fixture:
+data-blocks/use-tabs-empty-lines-kept] [fixture:
+data-blocks/use-tabs-folded-empty-lines-kept]
+
+Where the printer must set the indentation of the node line itself, the lines of
+the block move with it, as without `useTabs`, indented with spaces: a statement
+that does not start its line, because a `;` or a directive stands before it, the
+header of an agentflow container, whose `end` stands at the indentation of the
+header, and a kanban node, whose indentation mermaid.js reads as its level (see
+[Metadata blocks](./agentflow.md#metadata-blocks) and
+[Data blocks](./kanban.md#data-blocks)). The lines then stand right where a tab
+is as wide as `tabWidth`, and off by the difference at any other width, while
+lines left as written would stand left of the node line at every width.
+[fixture: data-blocks/use-tabs-not-first-on-line] [fixture:
+data-blocks/use-tabs-directive-before-on-line]
 
 A block without body text has no shallowest text line and stays as written.
 [fixture: usecase/json-tables/empty-body-kept]

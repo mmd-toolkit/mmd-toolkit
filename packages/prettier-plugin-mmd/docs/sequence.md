@@ -1097,8 +1097,8 @@ For participant and actor data blocks, apply
 [Data blocks](./flowchart.md#data-blocks) only when exactly one body line holds
 text. Move that line one level inside the statement and align a separate `}`
 with the statement; a closer after text stays with that line. This applies at
-the top level and inside `loop`, except under a statement indented with a tab
-(`useTabs`), where the block keeps its columns. [fixture:
+the top level and inside `loop`, except with `useTabs`, where the statement is
+printed as written (see [Data blocks](./flowchart.md#data-blocks)). [fixture:
 multi-line-values/data-zero-and-shallow] [fixture:
 multi-line-values/data-deep-inline-closer] [fixture:
 multi-line-values/data-block-in-block-indented] [fixture:

@@ -560,9 +560,9 @@ metadata-blocks/deep-nested-yaml] [fixture: metadata-blocks/closing-after-text]
 The other shared movement conditions and their reasons are in
 [Data blocks](./flowchart.md#data-blocks): keep inline-opening blocks, embedded
 directives, kept lines, zero-width indentation, blocks starting after the
-statement's first line and blocks under a statement indented with a tab
-(`useTabs`) as written. Surrounding comments, directives, empty descriptions,
-blank lines and separators follow their own rules. [fixture:
+statement's first line as written, and, with `useTabs`, the statement that holds
+a block of several lines as a whole. Surrounding comments, directives, empty
+descriptions, blank lines and separators follow their own rules. [fixture:
 metadata-blocks/inline-and-directive-kept] [fixture:
 metadata-blocks/kept-body-line] [fixture: metadata-blocks/zero-width-kept]
 [fixture: metadata-blocks/tab-statement-space-body] [fixture:
@@ -572,7 +572,11 @@ metadata-blocks/surrounding-trivia] [test: data blocks: agentflow U+2029] [test:
 data blocks: agentflow CRLF]
 
 The header of a `flow` or `global` container moves its block in the same way.
-[fixture: metadata-blocks/container-header]
+[fixture: metadata-blocks/container-header] With `useTabs` the header is not
+printed as written, unlike a statement: the `end` of the container stands at the
+indentation that the printer gives the header, so the header takes it, and the
+lines of its block move with it, as without `useTabs`. [fixture:
+metadata-blocks/use-tabs-container-header-indented]
 
 A block after an arrow's newline retains its columns because it starts after the
 statement's first line, and a statement with two blocks, of one line or of

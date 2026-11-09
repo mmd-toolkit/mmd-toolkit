@@ -604,7 +604,8 @@ Mermaid が `Bad control character in string literal` として拒否するた�
 共有の移動条件と理由は、
 [データブロック](./flowchart.ja.md#データブロック)に従います。
 特に、開きの行から始まる JSON、内部の directive、行全体を保つ行、行頭のタブ、
-タブで字下げした文（`useTabs`）と `tabWidth: 0` は書かれたまま残します。
+`tabWidth: 0` は書かれたまま残し、
+`useTabs` のときは JSON を持つ文全体を書かれたまま残します。
 外側のコメント、directive、空行、空の説明ブロックはそれぞれの規則に従います。
 CR と LF は `endOfLine` に従い、
 文字列の Unicode separator は文字として保ちます。

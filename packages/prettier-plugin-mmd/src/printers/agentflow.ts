@@ -103,6 +103,7 @@ export function printAgentflow(
       kept: findAgentflowKeptLines(source),
       statement: indentationOf(bodyOptions, depth),
       tabWidth: options.tabWidth,
+      useTabs: options.useTabs,
     },
   )
   return printAtoms(source, layout, {
@@ -182,6 +183,8 @@ function printContainer(
         kept: findAgentflowKeptLines(source),
         statement: indentationOf(options, depth),
         tabWidth,
+        useTabs: options.useTabs,
+        decidesIndentation: true,
       },
     ),
     {

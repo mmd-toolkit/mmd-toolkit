@@ -104,6 +104,7 @@ function printStatements(
               kept: rules.kept,
               statement: indentationOf(options, depth),
               tabWidth: options.tabWidth,
+              useTabs: options.useTabs,
             },
           ),
           depth,

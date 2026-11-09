@@ -61,6 +61,8 @@ export function printKanban(
             significantIndentationOf(options, 1).length * line.depth,
           ),
           tabWidth: options.tabWidth,
+          useTabs: options.useTabs,
+          decidesIndentation: true,
           wholeLine: true,
         }),
         {

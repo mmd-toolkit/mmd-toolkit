@@ -94,6 +94,7 @@ export function printSequence(
             kept: findSequenceKeptLines(source),
             statement: indentationOf(options, depth),
             tabWidth: options.tabWidth,
+            useTabs: options.useTabs,
           },
         ),
         {

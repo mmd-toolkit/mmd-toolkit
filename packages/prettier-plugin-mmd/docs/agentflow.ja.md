@@ -595,8 +595,8 @@ agentflow の後の振り分けや別名解決を根拠に YAML を書き換え�
 [fixture: metadata-blocks/one-line-padded-zero-width]
 [fixture: metadata-blocks/one-line-surrounding-trivia]
 [test: data blocks: agentflow one line with U+2028 inside]
-[test: data blocks: agentflow one line with no-break spaces at the ends]
 [test: data blocks: agentflow one line with U+2029 inside]
+[test: data blocks: agentflow one line with no-break spaces at the ends]
 
 開きの直後が改行のブロックでは、本文の全行を同じ数の半角空白だけ動かし、
 文字がある最も浅い行を文の 1 段内側に置きます。
@@ -611,8 +611,8 @@ agentflow の後の振り分けや別名解決を根拠に YAML を書き換え�
 ほかの移動条件と理由は、
 [データブロック](./flowchart.ja.md#データブロック)に従います。
 開きの行に本文があるブロック、内部の directive、行全体を保つ行、幅 0 の字下げ、
-文の最初の行より後から始まるブロックと、
-タブで字下げした文（`useTabs`）の下のブロックは、書かれたまま残します。
+文の最初の行より後から始まるブロックは、書かれたまま残します。
+`useTabs` では、複数行のブロックを持つ文全体を書かれたまま印字します。
 前後のコメント、directive、空の説明、空行、区切りはそれぞれの規則に従います。
 [fixture: metadata-blocks/inline-and-directive-kept]
 [fixture: metadata-blocks/kept-body-line]
@@ -625,6 +625,11 @@ agentflow の後の振り分けや別名解決を根拠に YAML を書き換え�
 
 `flow` や `global` のコンテナの見出しにあるブロックも、同じように動かします。
 [fixture: metadata-blocks/container-header]
+`useTabs` では、文と違い、見出しを書かれたまま印字しません。
+コンテナの `end` は、プリンタが見出しに与える字下げに置かれるので、
+見出しもその字下げにし、`useTabs` でないときと同じく、
+ブロックの行も見出しと一緒に動かします。
+[fixture: metadata-blocks/use-tabs-container-header-indented]
 
 矢印の改行後のブロックは、文の最初の行より後から始まるため桁を残し、
 1 行でも複数行でも、ブロックを 2 つ持つ文は、どちらも桁を残します。

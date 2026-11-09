@@ -84,11 +84,11 @@ agentflow, kanban and sequence, and usecase JSON tables, move their body lines
 by one uniform number of ASCII spaces, preserving relative indentation and
 trailing whitespace; a separate `}` aligns with its statement. Inline-opening
 blocks, leading non-space whitespace, embedded directives, column-zero YAML
-markers, kept lines, blocks after the statement's first line, statements
-indented with a tab and `tabWidth: 0` prevent movement. Sequence additionally
-requires a single text-bearing body line because Mermaid trims the whole block.
-The conditions and their reasons are in
-[Data blocks](./flowchart.md#data-blocks); other blocks keep their columns.
+markers, kept lines, blocks after the statement's first line and `tabWidth: 0`
+prevent movement; with `useTabs` the statement that holds the block is printed
+as written instead. Sequence additionally requires a single text-bearing body
+line because Mermaid trims the whole block. The conditions and their reasons are
+in [Data blocks](./flowchart.md#data-blocks); other blocks keep their columns.
 [fixture: flowchart/data-blocks/deep-nested-yaml] [fixture:
 flowchart/data-blocks/scalar-blank-lines] [fixture:
 sequence/multi-line-values/data-multiple-lines-kept] [fixture:
