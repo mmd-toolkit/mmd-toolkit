@@ -1,5 +1,87 @@
 # prettier-plugin-mmd
 
+## 0.7.0
+
+### Minor Changes
+
+- [#72](https://github.com/mmd-toolkit/mmd-toolkit/pull/72) [`a8d4172`](https://github.com/mmd-toolkit/mmd-toolkit/commit/a8d4172fb7f48e1d9c6eb5ff6703a4484c05c58a) Thanks [@ota-meshi](https://github.com/ota-meshi)! - Print the `,` between the styles of a class `style` or `classDef` that are words
+  without a `:` with no space before it and one space after it:
+  `style A bold ,italic` becomes `style A bold, italic`.
+
+- [#72](https://github.com/mmd-toolkit/mmd-toolkit/pull/72) [`a8d4172`](https://github.com/mmd-toolkit/mmd-toolkit/commit/a8d4172fb7f48e1d9c6eb5ff6703a4484c05c58a) Thanks [@ota-meshi](https://github.com/ota-meshi)! - Leave out the whitespace after the `{` of a multi-line `accDescr` block, in
+  every diagram type that has one: the line `accDescr { ` (a space after the
+  brace) is printed `accDescr {`.
+
+- [#72](https://github.com/mmd-toolkit/mmd-toolkit/pull/72) [`a8d4172`](https://github.com/mmd-toolkit/mmd-toolkit/commit/a8d4172fb7f48e1d9c6eb5ff6703a4484c05c58a) Thanks [@ota-meshi](https://github.com/ota-meshi)! - Put the colons of the tasks of a Gantt `section` one space after its longest
+  name when some names are padded. `Short   :a1, 2014-01-01, 3d` above
+  `Another long task          :a2, after a1, 2d` becomes:
+  
+  ```mmd
+  Short             :a1, 2014-01-01, 3d
+  Another long task :a2, after a1, 2d
+  ```
+
+- [#72](https://github.com/mmd-toolkit/mmd-toolkit/pull/72) [`a8d4172`](https://github.com/mmd-toolkit/mmd-toolkit/commit/a8d4172fb7f48e1d9c6eb5ff6703a4484c05c58a) Thanks [@ota-meshi](https://github.com/ota-meshi)! - Print the `@{ ... }` block of a flowchart, agentflow or kanban node on lines of
+  its own, one entry on each line, when the block is on one line that is longer
+  than `printWidth`. A one-line
+  `A@{ shape: rect, label: "A process step with a long label", pos: "t", h: 60, constraint: "on" }`
+  becomes:
+  
+  ```mmd
+  A@{
+    shape: rect
+    label: "A process step with a long label"
+    pos: "t"
+    h: 60
+    constraint: "on"
+  }
+  ```
+
+- [#72](https://github.com/mmd-toolkit/mmd-toolkit/pull/72) [`a8d4172`](https://github.com/mmd-toolkit/mmd-toolkit/commit/a8d4172fb7f48e1d9c6eb5ff6703a4484c05c58a) Thanks [@ota-meshi](https://github.com/ota-meshi)! - Type `parsers` and `printers` of the plugin with the name `mermaid`, as the
+  plugins of Prettier do, so that `parsers.mermaid` and `printers.mermaid` are
+  known to exist. Indexing them with a string variable, as in `parsers[name]`, is
+  now a type error: index `plugin.parsers?.[name]` of the default export instead.
+
+- [#72](https://github.com/mmd-toolkit/mmd-toolkit/pull/72) [`a8d4172`](https://github.com/mmd-toolkit/mmd-toolkit/commit/a8d4172fb7f48e1d9c6eb5ff6703a4484c05c58a) Thanks [@ota-meshi](https://github.com/ota-meshi)! - Print a run of spaces or tabs between the words of a `style`, a `classDef`, or a
+  `linkStyle` as one space in flowchart, agentflow, class, state, block, usecase,
+  ER, requirement, treemap, and venn diagrams, except where CSS reads it as part
+  of the value (inside a string, a comment, or `url(`, or the space that ends an
+  escape such as `\20 `) or mermaid.js keeps it (inside `rgb(…)` of a venn
+  diagram): `style A fill   #f00` becomes `style A fill #f00`, and
+  `classDef c stroke-dasharray: 5    5` becomes
+  `classDef c stroke-dasharray: 5 5`. A style that starts with a `:`, or whose `:`
+  follows an escaped space, is printed like the others: `style A :  red   x`
+  becomes `style A : red x`.
+
+- [#72](https://github.com/mmd-toolkit/mmd-toolkit/pull/72) [`a8d4172`](https://github.com/mmd-toolkit/mmd-toolkit/commit/a8d4172fb7f48e1d9c6eb5ff6703a4484c05c58a) Thanks [@ota-meshi](https://github.com/ota-meshi)! - Leave out the whitespace at the end of the line of a flowchart `subgraph` whose
+  name has several words, and print the whitespace between the name and a
+  directive after it as one space, also in a swimlane diagram: `subgraph S1 S2 `
+  becomes `subgraph S1 S2`, and `subgraph S1 S2   %%{init: {}}%%` becomes
+  `subgraph S1 S2 %%{init: {}}%%`. A name of one word keeps it, since that
+  whitespace changes the id of the subgraph.
+
+- [#72](https://github.com/mmd-toolkit/mmd-toolkit/pull/72) [`a8d4172`](https://github.com/mmd-toolkit/mmd-toolkit/commit/a8d4172fb7f48e1d9c6eb5ff6703a4484c05c58a) Thanks [@ota-meshi](https://github.com/ota-meshi)! - Print the styles of a treemap `classDef` with no whitespace before the first `:`
+  of a style, one space after it, and one space after each `,`, as the other
+  diagram types do: `classDef zz fill : #f00   ,stroke:#00f` becomes
+  `classDef zz fill: #f00, stroke: #00f`.
+
+- [#72](https://github.com/mmd-toolkit/mmd-toolkit/pull/72) [`a8d4172`](https://github.com/mmd-toolkit/mmd-toolkit/commit/a8d4172fb7f48e1d9c6eb5ff6703a4484c05c58a) Thanks [@ota-meshi](https://github.com/ota-meshi)! - Print the styles of a usecase `classDef` and `style` with no space before the
+  first `:` and one space after it, as in the other diagram types:
+  `style A fill   :  red` becomes `style A fill: red`. A name that ends with
+  `stroke` keeps a space before the `:` if one was written
+  (`classDef c stroke :#d33` becomes `classDef c stroke : #d33`), since mermaid.js
+  colours the arrowheads of a relationship from `stroke:` only.
+
+### Patch Changes
+
+- [#72](https://github.com/mmd-toolkit/mmd-toolkit/pull/72) [`a8d4172`](https://github.com/mmd-toolkit/mmd-toolkit/commit/a8d4172fb7f48e1d9c6eb5ff6703a4484c05c58a) Thanks [@ota-meshi](https://github.com/ota-meshi)! - Print a statement with a multi-line `@{ ... }` block as written under `useTabs`,
+  the indentation of its line included, instead of moving the lines of the block
+  with spaces to a depth that is right for one width of a tab only. A kanban node,
+  the header of an agentflow container, and a statement that is not at the depth
+  of the first thing on its line (`subgraph s; A@{`, `B; end; A@{`), or on a line
+  that starts with anything but a statement, a header, an `end`, or the `}` of a
+  data block, still move the lines with the node.
+
 ## 0.6.0
 
 ### Minor Changes
