@@ -16,8 +16,24 @@ import { formatMarkdown } from "./markdown.ts"
 type UnreadOption =
   "parser" | "plugins" | "endOfLine" | "filepath" | "rangeStart" | "rangeEnd"
 
+/**
+ * The options that Prettier names. Its `Options` also takes any other name, for
+ * the options of plugins, through an index signature, which `Omit` would turn
+ * into the whole type; the only plugin is prettier-plugin-mmd, which has no
+ * options, so a value under another name changes nothing.
+ */
+type NamedOptions = {
+  [
+    Name in keyof Options as string extends Name
+      ? never
+      : number extends Name
+        ? never
+        : Name
+  ]: Options[Name]
+}
+
 /** The options that the command reads from a Prettier configuration. */
-export type ConfigOptions = Omit<Options, UnreadOption>
+export type ConfigOptions = Omit<NamedOptions, UnreadOption>
 
 /** How the tool reads a file: as one diagram, or as Markdown with code blocks. */
 export type FileKind = "diagram" | "markdown"

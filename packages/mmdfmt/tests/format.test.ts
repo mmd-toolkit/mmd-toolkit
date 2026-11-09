@@ -175,16 +175,31 @@ describe("From a script: indentation and configuration", () => {
     ).toEqual("flowchart LR\n    A --> B\n")
   })
 
-  it("takes no other option of Prettier, and keeps the line endings of the text", async () => {
+  it("takes no option that the command does not read, and keeps the line endings of the text", async () => {
     const filepath = path.join(project.cwd, "a.mmd")
     expect(
-      // @ts-expect-error -- `semi` is not an option of `format`.
-      await format(diagram, { filepath, semi: false }),
+      // @ts-expect-error -- `parser` is not an option of `format`.
+      await format(diagram, { filepath, parser: "babel" }),
+    ).toEqual("flowchart LR\n  A --> B\n")
+    expect(
+      // @ts-expect-error -- `plugins` is not an option of `format`.
+      await format(diagram, { filepath, plugins: [] }),
     ).toEqual("flowchart LR\n  A --> B\n")
     expect(
       // @ts-expect-error -- `endOfLine` is not an option of `format`.
       await format(diagram, { filepath, endOfLine: "crlf" }),
     ).toEqual("flowchart LR\n  A --> B\n")
+    expect(
+      // @ts-expect-error -- `rangeStart` is not an option of `format`.
+      await format(diagram, { filepath, rangeStart: 1 }),
+    ).toEqual("flowchart LR\nA-->B\n")
+    expect(
+      // @ts-expect-error -- `rangeEnd` is not an option of `format`.
+      await format(diagram, { filepath, rangeEnd: 1 }),
+    ).toEqual("flowchart LR\nA-->B\n")
+    expect(await format(diagram, { filepath, semi: false })).toEqual(
+      "flowchart LR\n  A --> B\n",
+    )
   })
 })
 
@@ -201,10 +216,38 @@ describe("From a script: resolveConfig", () => {
     })
   })
 
-  it("returns only the options that the command reads from a Prettier configuration", async () => {
+  it("returns the whole Prettier configuration except the options that the command does not read", async () => {
     project.write({ ".prettierrc.json": '{ "tabWidth": 3, "semi": false }' })
     expect(await resolveConfig(path.join(project.cwd, "a.mmd"))).toStrictEqual({
       tabWidth: 3,
+      semi: false,
+    })
+  })
+
+  it("leaves out the parser, plugins, line endings, and range of a Prettier configuration", async () => {
+    project.write({
+      ".prettierrc.json": JSON.stringify({
+        parser: "babel",
+        plugins: [],
+        endOfLine: "crlf",
+        rangeStart: 0,
+        rangeEnd: 1,
+        semi: false,
+      }),
+    })
+    expect(await resolveConfig(path.join(project.cwd, "a.mmd"))).toStrictEqual({
+      semi: false,
+    })
+  })
+
+  it("formats the whole diagram when the configuration sets rangeStart and rangeEnd", async () => {
+    project.write({
+      ".prettierrc.json": '{ "rangeStart": 0, "rangeEnd": 1 }',
+    })
+    expect(await project.run(["--stdin-filepath", "a.mmd"], diagram)).toEqual({
+      code: 0,
+      stdout: "flowchart LR\n  A --> B\n",
+      stderr: "",
     })
   })
 
@@ -250,7 +293,7 @@ describe("From a script: resolveConfig", () => {
     project.write({ ".prettierrc.json": '{ "tabWidth": 3, "semi": false }' })
     const filepath = path.join(project.cwd, "a.mmd")
     const config = await resolveConfig(filepath)
-    expect(config).toStrictEqual({ tabWidth: 3 })
+    expect(config).toStrictEqual({ tabWidth: 3, semi: false })
     expect(await resolveConfig(pathToFileURL(filepath))).toStrictEqual(config)
   })
 
@@ -309,6 +352,38 @@ describe("From a script: resolveConfig", () => {
       code: 0,
       stdout:
         "flowchart LR\n    A@{\n        shape: rect\n        label: x\n        icon: y\n    }\n",
+      stderr: "",
+    })
+    expect(
+      await format(source, { ...(await resolveConfig(filepath)), filepath }),
+    ).toEqual(result.stdout)
+  })
+
+  it("applies singleQuote to frontmatter as the command does with the resolved configuration", async () => {
+    project.write({ ".prettierrc.json": '{ "singleQuote": true }' })
+    const source = '---\ntitle: "T"\n---\nflowchart LR\nA-->B\n'
+    const filepath = path.join(project.cwd, "a.mmd")
+    const result = await project.run(["--stdin-filepath", "a.mmd"], source)
+    expect(result).toEqual({
+      code: 0,
+      stdout: "---\ntitle: 'T'\n---\nflowchart LR\n  A --> B\n",
+      stderr: "",
+    })
+    expect(
+      await format(source, { ...(await resolveConfig(filepath)), filepath }),
+    ).toEqual(result.stdout)
+  })
+
+  it("leaves frontmatter as written as the command does with embeddedLanguageFormatting off", async () => {
+    project.write({
+      ".prettierrc.json": '{ "embeddedLanguageFormatting": "off" }',
+    })
+    const source = '---\ntitle:   "T"\n---\nflowchart LR\nA-->B\n'
+    const filepath = path.join(project.cwd, "a.mmd")
+    const result = await project.run(["--stdin-filepath", "a.mmd"], source)
+    expect(result).toEqual({
+      code: 0,
+      stdout: '---\ntitle:   "T"\n---\nflowchart LR\n  A --> B\n',
       stderr: "",
     })
     expect(

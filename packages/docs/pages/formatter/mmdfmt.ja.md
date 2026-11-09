@@ -285,16 +285,17 @@ const formatted = await format(source, {
 `resolveConfig(fileUrlOrPath, options)`は、
 Prettierの`resolveConfig`と同じ引数を受け取り、
 そのパスの設定からコマンドが読むオプションを返すPromiseを返します。
-設定で指定されている`tabWidth`、`useTabs`、`printWidth`だけを返し、
 適用する設定がなければ`null`を返します。
-詳しくは[設定](#設定)を参照してください。
+[設定](#設定)のオプションから、コマンドが設定から読まないものを除いて返します。
+コマンドが自分で決める`parser`、`plugins`、`endOfLine`と、
+図全体を整形するために使わない`rangeStart`、`rangeEnd`です。
 Prettierのものと異なり、コマンドと同じく、
 `editorconfig: false`を渡さないかぎり`.editorconfig`を読みます。
 
 `format(source, options)`は、整形したテキストを返すPromiseを返します。
-オプションは`resolveConfig`が返すものと、
+オプションは`resolveConfig`が返せるものと、
 語尾でテキストを図として読むかMarkdownとして読むかを決める`filepath`で、
-ほかのオプションは型エラーになります。
+コマンドが読まないオプションは型エラーになります。
 Prettierの`format`と同じく、ファイルも設定も読みません。
 設定の`overrides`はパスごとに適用されるため、
 同じパスについて`resolveConfig`が返すものを渡してください。
@@ -367,6 +368,8 @@ Prettierと`prettier-plugin-mmd`を使う場合と同じです。
 リスト項目や引用の中のコードブロックでは、`printWidth`は、
 各行の前に`mmdfmt`が書くものの幅を引いた幅です。
 こちらも同じ節を参照してください。
+`rangeStart`と`rangeEnd`は使いません。
+`mmdfmt`は図全体を整形するからです。
 
 ## エラーと終了コード
 
