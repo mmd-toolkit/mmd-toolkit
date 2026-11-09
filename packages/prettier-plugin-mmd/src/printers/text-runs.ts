@@ -90,7 +90,11 @@ export function collapsedRunsAtom(
  * start an HTML tag that keeps the whitespace (`<pre>`), or the diagram holds
  * `white-space`.
  */
-function staysAsWritten(source: Source, start: number, end: number): boolean {
+export function staysAsWritten(
+  source: Source,
+  start: number,
+  end: number,
+): boolean {
   const text = source.text.slice(start, end)
   return (
     text.includes("<") ||
