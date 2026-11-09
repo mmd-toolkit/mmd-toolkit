@@ -55,6 +55,14 @@ export interface Positioned {
   readonly type?: string
 }
 
+/** The only statement of a unit, with what the printer puts before it. */
+export interface OnlyStatement {
+  readonly statement: Positioned
+  readonly head: Doc
+  /** The ranges of the source that the printer does not print. */
+  readonly omitted?: readonly Range[]
+}
+
 /**
  * What a diagram printer tells the printing of its blocks about its
  * statements. Everything else about a block is the same for every diagram
@@ -100,10 +108,11 @@ export interface BlockRules<Statement extends Positioned> {
   /**
    * The statement of the tree that a unit holds, for a diagram type whose
    * printer makes units: the one statement of a unit that holds nothing else
-   * on its line. A unit of several statements, or one with directives before
-   * it, has none. A statement of the tree is its own.
+   * on its line, and what the printer puts before it on its line (the
+   * directives before it). A unit of several statements has none. A statement
+   * of the tree is its own, with nothing before it.
    */
-  readonly onlyStatementOf?: (unit: Statement) => Positioned | undefined
+  readonly onlyStatementOf?: (unit: Statement) => OnlyStatement | undefined
   /** A moved owned blank joins the next gap's ordinary blank-line placement. */
   readonly blankAfterStatement?: (statement: Statement) => boolean
   /**
@@ -606,6 +615,31 @@ export function printBlock<Statement extends Positioned>(
     return source.root.comments[index]?.range[1] === trimmed
   }
 
+  /**
+   * The line `accDescr: text` that stands for a unit that is a description
+   * block on one line (see `printAccessibilityLine`), with what the printer
+   * puts before the statement, or undefined. `endsItsLine` is true where the
+   * unit is the last of the statements that stay together on a line.
+   */
+  function accessibilityLineOf(
+    unit: Statement,
+    endsItsLine: boolean,
+  ): Doc | undefined {
+    const only: OnlyStatement | undefined =
+      rules.onlyStatementOf === undefined
+        ? { statement: unit, head: "" }
+        : rules.onlyStatementOf(unit)
+    if (only === undefined) return undefined
+    const line = printAccessibilityLine(
+      source,
+      only.statement,
+      endsItsLine,
+      only.omitted,
+    )
+    if (line === undefined) return undefined
+    return only.head === "" ? line : [only.head, line]
+  }
+
   /** Whether the line that holds `position` keeps its statements together. */
   function isKept(position: number): boolean {
     const line = lineStartOf(source, position)
@@ -730,7 +764,9 @@ export function printBlock<Statement extends Positioned>(
               rules.inlineGapBefore?.(statement),
               rules.omittedRanges,
             ),
-        docs[stretch.first + index],
+        (index === covered.length - 1
+          ? accessibilityLineOf(statement, true)
+          : undefined) ?? docs[stretch.first + index],
       )
       position = rules.printedEnd(statement)
     }
@@ -887,12 +923,7 @@ export function printBlock<Statement extends Positioned>(
       pushLine({
         doc: withLeading(
           gap.leading,
-          printAccessibilityLine(
-            source,
-            rules.onlyStatementOf === undefined
-              ? statement
-              : rules.onlyStatementOf(statement),
-          ) ?? docs[index],
+          accessibilityLineOf(statement, false) ?? docs[index],
         ),
         ...writtenBreak,
         ...(writtenIndentation === undefined ? {} : { writtenIndentation }),

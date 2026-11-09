@@ -15,6 +15,7 @@ import { printAsWritten, significantIndentationOf } from "./lines.ts"
 import type { Source } from "./source.ts"
 import { findTokenStartingAt } from "./source.ts"
 import { planTreeviewBox } from "./treeview-box.ts"
+import { treeviewBoxCharacters } from "./treeview-characters.ts"
 import type { TreeviewLine } from "./treeview-layout.ts"
 import {
   layoutTreeviewStatement,
@@ -216,10 +217,22 @@ export function printTreeview(
           : findLayoutEnd(layouts.get(line)!),
       holdsStatements: () => false,
       isDroppedAtTopLevel: () => false,
-      // In a box, the characters of the drawing stand between the tokens of a
-      // block, and one pass removes them (docs/treeview.md, Branch prefixes).
+      // The drawing of a box stands between the tokens of a block where
+      // the box keeps the characters between the keyword and the brace; the
+      // other characters are redrawn, not printed (docs/treeview.md, Branch
+      // prefixes).
       onlyStatementOf: (line) =>
-        line.leading === null && !boxMode ? line.item : undefined,
+        line.item.type === "TreeviewAccDescrBlockStatement" &&
+        (drawing?.keptOpenerGaps.has(line.item) === true ||
+          [...source.text.slice(...(line.item.value?.range ?? [0, 0]))].some(
+            (character) => treeviewBoxCharacters.includes(character),
+          ))
+          ? undefined
+          : {
+              statement: line.item,
+              head: placements.get(line)!.head,
+              omitted: drawing?.omitted,
+            },
       keepsWhitespaceLineAfterComment: false,
       keepsDirectiveLinesUnindented: false,
       keepsTrailingWhitespaceInKeptTrivia: true,

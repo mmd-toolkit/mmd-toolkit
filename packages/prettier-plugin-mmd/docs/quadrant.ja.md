@@ -520,15 +520,24 @@ quadrantChart
 
 ### 引用符
 
-文字列と markdown 文字列は、書かれたまま印字します。
+軸、象限、点の引用符で囲まれたテキストは、平易なものなら、
+mermaid.js の文書の例のとおりに、引用符なしで印字します。
+（[The quotes of a text](./compatibility.ja.md#the-quotes-of-a-text)）。
+`quadrant-1 "A"` は `quadrant-1 A` と印字します。
+平易なテキストは、ASCII 英字の単語でできていて、各単語の末尾には数字も使え、
+単語の間は空白 1 つで、
+字句解析器が独立した単位として読む単語を含まないものです。
+`y-axis` の終わりのテキストは、引用符ありとなしの例が同数なので、
+書かれたままにします。
+それ以外の文字列と markdown 文字列は、書かれたまま印字します。
 引用符とテキストを残し、中の空白とタブの連なりは空白 1 つにして印字します。
-引用符は足しも取りもしません。
 mermaid.js は `"L"` と `L`、`"a b"` と `a b` を同じテキストとして読みますが、
 文字列は引用符なしのテキストが持てないものを持てます。
 `"a: b"` はコロンを持ち、引用符なしでは拒否されます。
-そのため、引用符を外せるとは限らず、引用符を付けるかどうかは書き手の選択です。
-[fixture: quotes/strings-runs-collapsed] [fixture: quotes/plain-texts-without-quotes]
-[fixture: quotes/quotes-not-added]
+そのようなテキストの引用符は残し、引用符を付け加えることはありません。
+[fixture: quotes/strings-runs-collapsed]
+[fixture: quotes/plain-texts-without-quotes]
+[fixture: quotes/texts-that-need-quotes] [fixture: quotes/quotes-not-added]
 [fixture: quotes/keywords-and-arrows-in-strings]
 [fixture: quotes/markdown-strings] [fixture: quotes/string-with-a-comment-mark]
 

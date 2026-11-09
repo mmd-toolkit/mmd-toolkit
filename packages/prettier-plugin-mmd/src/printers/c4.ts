@@ -156,7 +156,9 @@ function blockRules(
       ),
     isDroppedAtTopLevel: () => false,
     onlyStatementOf: (unit) =>
-      unit.statements.length === 1 ? unit.statements[0] : undefined,
+      unit.statements.length === 1
+        ? { statement: unit.statements[0], head: "" }
+        : undefined,
     keepsWhitespaceLineAfterComment: false,
     keepsDirectiveLinesUnindented: true,
     keptGapEnd: (start, end, before) =>

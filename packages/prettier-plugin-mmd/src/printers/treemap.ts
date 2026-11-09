@@ -138,8 +138,11 @@ export function printTreemap(
       holdsStatements: () => false,
       isDroppedAtTopLevel: () => false,
       onlyStatementOf: (line) =>
-        line.leading === null && line.statements.length === 1
-          ? line.statements[0]
+        line.statements.length === 1
+          ? {
+              statement: line.statements[0],
+              head: placements.get(line)!.head,
+            }
           : undefined,
       joiningRegionsPrintedAsWritten: true,
       keepsWhitespaceLineAfterComment: false,
