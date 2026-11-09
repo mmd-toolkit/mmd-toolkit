@@ -285,10 +285,11 @@ read, and need not exist.
 
 It returns a promise of an object of Prettier options to pass to `format`, or of
 `null` when no configuration applies to the file. Spreading `null` adds nothing,
-so `{ ...config, filepath }` works in both cases. The object holds the options
-of the configuration except `parser`, `plugins`, `endOfLine`, `filepath`,
-`rangeStart`, and `rangeEnd`, which `mmdfmt` does not take from a configuration.
-The promise is rejected when a configuration file cannot be read.
+so `{ ...config, filepath }` works in both cases. The object holds the eight
+options that `mmdfmt` reads from a configuration, listed in
+[Configuration](#configuration); an option that the configuration does not set
+is `undefined`. With TypeScript, its type is `ReadOptions`. The promise is
+rejected when a configuration file cannot be read.
 
 `resolveConfig` reads `.editorconfig` as the command does, and as Prettier's CLI
 does by default; Prettier's `resolveConfig` reads it only when it is given
@@ -314,15 +315,14 @@ file and no configuration.
   the text is read as one diagram for `.mmd` and `.mermaid`, and as Markdown for
   `.md` and `.markdown`. The file need not exist.
 - The other options: what `resolveConfig` returns for the same path, since the
-  `overrides` of a configuration apply by path. They are Prettier's options,
-  such as `tabWidth`, `useTabs`, `printWidth`, and `singleQuote`. For Markdown,
-  `printWidth` is the width for the whole file: a diagram in a list item or a
-  block quote is formatted to that width less the width of what stands before
-  its lines (see
+  `overrides` of a configuration apply by path. They are the eight options
+  listed in [Configuration](#configuration). For Markdown, `printWidth` is the
+  width for the whole file: a diagram in a list item or a block quote is
+  formatted to that width less the width of what stands before its lines (see
   [Code blocks in detail](../../../mmdfmt/README.md#code-blocks-in-detail)).
-- `parser`, `plugins`, `endOfLine`, `rangeStart`, and `rangeEnd` are not options
-  of `format`: with TypeScript they are a type error, and in JavaScript they are
-  ignored.
+- Another option, such as `parser`, `endOfLine`, or `semi`, is not an option of
+  `format`: with TypeScript it is a type error, and in JavaScript it is ignored.
+  With TypeScript, the type of the options is `FormatOptions`.
 
 It returns a promise of the formatted text. The line endings and a byte order
 mark stay as they are in the text (see
@@ -349,13 +349,13 @@ The promise is rejected:
 
 ### Which files to format
 
-`format` formats the text of any path that it is given. The command formats only
-the files that end in `.md`, `.markdown`, `.mmd`, or `.mermaid`, and skips a
-path under `node_modules` or a directory of version control, or a path that the
-`.gitignore` of the directory where it runs lists (see
-[Excluding files](#excluding-files)). `format` rejects the other endings, but
-skips nothing: a tool that should skip the same files as the command checks them
-before it calls `format`.
+The command formats only the files that end in `.md`, `.markdown`, `.mmd`, or
+`.mermaid`, and skips a path under `node_modules` or a directory of version
+control, or a path that the `.gitignore` of the directory where it runs lists
+(see [Excluding files](#excluding-files)). `format` rejects the other endings,
+but formats the text of any other path that it is given, wherever the path is: a
+tool that should skip the same files as the command checks them before it calls
+`format`.
 
 ## Configuration
 
