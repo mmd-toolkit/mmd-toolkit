@@ -1080,7 +1080,6 @@ stateDiagram-v2
 別名の定義の文字列、`as`、id の間は、接して書かれていても、空白 1 つにします。
 mermaid.js は `"d"as A` を `"d" as A` と同じに読み Db が同じなので、
 文の語を 1 つの形で離します（`asA` は `as` ではありません）。
-mermaid.js は `"d"as A` を `"d" as A` と同じに読むからです。
 [fixture: aliases/second-description-kept] [fixture: aliases/tabs-between-parts]
 [fixture: aliases/id-kept]
 文字列の前後の、mermaid.js が読まない `""` も、同じように離します。

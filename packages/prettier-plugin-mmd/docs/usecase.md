@@ -291,7 +291,7 @@ usecase: U+2028 inside the brackets of a boundary title] [test: usecase: U+2029
 inside the brackets of a boundary title] [test: usecase: U+2028 inside the
 brackets of a boundary title with a semicolon] [test: usecase: U+2029 inside the
 brackets of a boundary title with a semicolon] A directive in the gap is placed
-as under flowchart's Directives. [fixture:
+as under [flowchart's Directives](./flowchart.md#directives). [fixture:
 system-boundaries/boundary-id-title-directed-gap] [fixture:
 system-boundaries/boundary-id-title-directed-gap-runs] Preserve native
 metadata/classes and repeated declarations; body membership comes from the AST's
@@ -858,7 +858,7 @@ usecase-beta
 Reuse [shared directive attachment](./class.md#directives): removal supplies no
 separator. Keep directive contents, order and multiline columns; align
 standalone directives, and place a directive within a printed line as under
-flowchart's Directives. [fixture:
+[flowchart's Directives](./flowchart.md#directives). [fixture:
 system-boundaries/boundary-id-title-directed-gap] [fixture:
 arrows/semantic-operator-directives] [fixture:
 arrow-id-boundaries/arrow-marker-both-gap-sides] Header-line directives remain

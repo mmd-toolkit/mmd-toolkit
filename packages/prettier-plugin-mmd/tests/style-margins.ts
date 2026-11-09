@@ -27,6 +27,7 @@ const runCollapsingDiagramTypes: ReadonlySet<string> = new Set([
   "flowchart-v2",
   "stateDiagram",
   "swimlane",
+  "treemap",
   "usecase",
 ])
 

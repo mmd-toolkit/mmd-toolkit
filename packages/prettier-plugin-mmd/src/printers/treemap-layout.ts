@@ -3,6 +3,7 @@ import type {
   Node,
   Range,
   TreemapBodyItem,
+  TreemapClassDefStatement,
   TreemapDiagram,
   TreemapLeaf,
   TreemapSection,
@@ -21,11 +22,17 @@ import {
 import {
   endingSemicolonOf,
   isDroppedSemicolon,
+  lineEndOf,
   lineStartOf,
 } from "./kept-lines.ts"
 import { printAsWrittenTrimmed } from "./lines.ts"
 import type { Source } from "./source.ts"
-import { findTokenStartingAt, findTriviaBetween } from "./source.ts"
+import {
+  findTokenStartingAt,
+  findTriviaBetween,
+  isWhitespace,
+} from "./source.ts"
+import { normalizeStyleList } from "./statement-rules.ts"
 
 /** Authored leaves preserve names, numeric spelling, selectors and styles. */
 export const treemapValueNodeTypes: ReadonlySet<Node["type"]> = new Set([
@@ -182,7 +189,19 @@ function findDroppedSemicolonStretches(
   const semicolon = endingSemicolonOf(source, statement.range, statement.style)
   if (semicolon === undefined || !isDroppedSemicolon(source, semicolon))
     return []
-  return [{ start, end, doc: printAsWrittenTrimmed(source, start, semicolon) }]
+  // The style is printed as in a statement without that `;` (see
+  // `normalizeTreemapStyle`), so that a second formatting finds the same text.
+  let styleEnd = semicolon
+  while (styleEnd > start && isWhitespace(source.text[styleEnd - 1])) styleEnd--
+  const style: Atom[] = [{ start, end: styleEnd }]
+  normalizeTreemapStyle(source, style, statement, styleEnd)
+  return [
+    {
+      start,
+      end,
+      doc: style[0].doc ?? printAsWrittenTrimmed(source, start, semicolon),
+    },
+  ]
 }
 
 /**
@@ -336,17 +355,59 @@ export function layoutTreemapStatement(
         `prettier-plugin-mmd: unknown treemap item ${JSON.stringify(statement satisfies never)}`,
       )
   }
-  return {
-    ...layout,
-    atoms: protectSemicolonPrefixes(
-      source,
-      start,
-      end,
-      layout.atoms.map((atom) =>
-        layout.outdented.has(atom.start)
-          ? { ...atom, writtenIndentation: column }
-          : atom,
-      ),
+  const atoms = protectSemicolonPrefixes(
+    source,
+    start,
+    end,
+    layout.atoms.map((atom) =>
+      layout.outdented.has(atom.start)
+        ? { ...atom, writtenIndentation: column }
+        : atom,
     ),
-  }
+  )
+  // mermaid.js splits the style at the commas that no backslash escapes, and
+  // takes the whitespace around the name and the value of each style away
+  // before it draws, so the styles are printed as in the other diagram types
+  // (docs/treemap.md, Styles; docs/compatibility.md, Styles that are drawn the
+  // same).
+  if (statement.type === "TreemapClassDefStatement")
+    normalizeTreemapStyle(source, atoms, statement)
+  return { ...layout, atoms }
+}
+
+/**
+ * Prints the style of a `classDef` in the atoms as the styles of the other
+ * diagram types are printed: the whitespace around the first `:` and the `,` of
+ * each style, between the words of a style, and at the end of the style are
+ * set. mermaid.js splits the style at the commas that no backslash escapes, and
+ * takes the whitespace around the name and the value of each style away before
+ * it draws (docs/treemap.md, Styles; docs/compatibility.md, Styles that are
+ * drawn the same). An empty style between two commas, or after the last one,
+ * stays as written (see `normalizeStyleList`), and so does a style that holds a
+ * `;`, or that has a comment or a directive on its line: they may take part in
+ * the line rule, and a second formatting must find the same. `styleEnd` is
+ * where the style ends when a `;` that the printer drops ends it (see
+ * `findDroppedSemicolonStretches`), so that the whitespace before that `;` and
+ * what is dropped with it decide nothing.
+ */
+function normalizeTreemapStyle(
+  source: Source,
+  atoms: Atom[],
+  statement: TreemapClassDefStatement,
+  styleEnd = statement.style?.range[1],
+): void {
+  const { style } = statement
+  if (style === null || styleEnd === undefined) return
+  const range: Range = [style.range[0], styleEnd]
+  if (
+    source.text.slice(...range).includes(";") ||
+    findTriviaBetween(source, range[0], lineEndOf(source, range[0])).length > 0
+  )
+    return
+  normalizeStyleList(
+    source,
+    atoms,
+    { range: [statement.range[0], styleEnd], styles: [{ ...style, range }] },
+    { escapesComma: true, collapsesWordGaps: true, trimsEnd: true },
+  )
 }

@@ -590,7 +590,7 @@ spellings were the same for them and for a `classDef`. [fixture:
 block/styles/style-label-styles-kept]
 
 A run of spaces and tabs between the words of a style is printed as one space in
-flowchart, agentflow, class, state, block, usecase, ER, and requirement
+flowchart, agentflow, class, state, block, usecase, treemap, ER, and requirement
 diagrams, in a style with a `:` and in one without, and whether whitespace
 stands between two words stays as written: `style A fill   #f00` is printed
 `style A fill #f00`, and `style A fill#f00` stays. CSS reads a run as one
@@ -627,14 +627,23 @@ tabs between its words, and a `classDef` put on a class; in a flowchart and in
 an agentflow diagram a `style`, a `classDef`, and a `linkStyle` with words, with
 and without a `:`; in a state and in a block diagram a `style` and a `classDef`
 with the same values, a string, a comment, and `url(` beside the runs; and in a
-usecase diagram a `style` and a `classDef` with the same values. Beyond these,
-the statements of the corpus and of the fixtures of this package whose styles
-change by formatting were drawn the same way: 1,355 texts hold a `style`, a
-`classDef`, or a `linkStyle`; of the 769 of them whose Db changes, 754 have the
-same pixels, 10 cannot be drawn before or after (mermaid.js stops with an
+usecase diagram a `style` and a `classDef` with the same values; and in a
+treemap a `classDef` with the whitespace around the `:` and the `,`, runs
+between words, a string, an escaped `,`, and whitespace at its end. Beyond
+these, the statements of the corpus and of the fixtures of this package whose
+styles change by formatting were drawn the same way: 1,355 texts hold a `style`,
+a `classDef`, or a `linkStyle`; of the 769 of them whose Db changes, 754 have
+the same pixels, 10 cannot be drawn before or after (mermaid.js stops with an
 error), and 5 are use case diagrams with an animated link, whose pixels differ
 by the frame of the animation and whose SVG is the same without the whitespace
-in the `style` attribute. [fixture:
+in the `style` attribute. The `classDef` statements of a treemap in the corpus,
+in the fixtures of this package, and in the documents of mermaid.js whose styles
+change by formatting were drawn the same way: of the 78 texts, all have the same
+pixels, and the SVG is the same without the whitespace in the `style` attribute.
+mermaid.js keeps the text of each style of a treemap in the Db, and before it
+draws it takes the text before the first `:` as the name and the text up to the
+next `:` as the value, with the whitespace around each taken away. [fixture:
+treemap/styles/spaced] [fixture: treemap/styles/escaped-comma-spaced] [fixture:
 class/whitespace-between-tokens/style-value-words-spaced] [fixture:
 class/whitespace-between-tokens/style-words-run-spaced] [fixture:
 flowchart/whitespace-between-tokens/style-words-run-spaced] [fixture:
@@ -660,19 +669,19 @@ The tests compare the Db of the printed text with the margins of its styles
 restored from the Db of the written text (`styleDbForFormattingComparison` in
 `tests/style-margins.ts`): a style that differs from the written one only by the
 whitespace at its ends and around its first `:`, and in the diagram types above
-by the runs between its words outside strings, comments, `url(`, and after a
-backslash, takes the written text, and any other difference, among them the
-presence of whitespace between two words of a style, a changed run inside a
-string, a comment, or `url(`, the number of styles of a link, the presence of
-whitespace before the `:` of a `stroke` in a style that can reach a link, the
-presence of whitespace before a style of a link that starts with `stroke:`, and
-the presence of whitespace in the value of a `stroke` of a link that is
-whitespace only, the presence of whitespace after a backslash that ends a style
-that mermaid.js joins as it is, and the presence of whitespace before a style of
-a block that starts with `color:` or `text-align:`, or between such a name and
-the `:`, fails. When the pinned mermaid.js is updated, draw the statements of
-each of these kinds again and compare the SVG and the pixels before the
-exception stays.
+by the runs between its words outside strings, comments, `url(`, and the first
+character after a backslash, takes the written text, and any other difference,
+among them the presence of whitespace between two words of a style, a changed
+run inside a string, a comment, or `url(`, the number of styles of a link, the
+presence of whitespace before the `:` of a `stroke` in a style that can reach a
+link, the presence of whitespace before a style of a link that starts with
+`stroke:`, and the presence of whitespace in the value of a `stroke` of a link
+that is whitespace only, the presence of whitespace after a backslash that ends
+a style that mermaid.js joins as it is, and the presence of whitespace before a
+style of a block that starts with `color:` or `text-align:`, or between such a
+name and the `:`, fails. When the pinned mermaid.js is updated, draw the
+statements of each of these kinds again and compare the SVG and the pixels
+before the exception stays.
 
 ## Texts after a keyword that are drawn the same
 
@@ -2896,8 +2905,9 @@ Unicode separators inside comments or directives do not cut the kept part: Venn
 diagram comments continue to LF/EOF.
 
 [fixture: venn/name-lists/empty-quoted-targets] [fixture:
-venn/labels/labels-empty-kept] [fixture: venn/style-properties/style-atoms-kept]
-[fixture: venn/comments/ignored-fragment] [fixture:
+venn/labels/labels-empty-kept] [fixture:
+venn/style-properties/style-atoms-spaced] [fixture:
+venn/comments/ignored-fragment] [fixture:
 venn/line-rule-and-kept-lines/line-rule-suffix-spacing] [test: venn:
 ls-kept-comment-whitespace-line] [test: venn: ps-kept-directive]
 

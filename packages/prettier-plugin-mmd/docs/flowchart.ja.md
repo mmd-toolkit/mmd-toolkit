@@ -947,7 +947,8 @@ flowchart LR
 
 ### 矢印の前後の空白
 
-辺の前と後に空白を 1 つずつ置きます。 [fixture: arrow-spacing/other-link-kinds]
+辺の前と後に、mermaid.js のドキュメントの書き方のとおり、
+空白を 1 つずつ置きます。 [fixture: arrow-spacing/other-link-kinds]
 [fixture: arrow-spacing/ampersand-spacing-kept]
 [fixture: arrow-spacing/arrow-length-kept]
 2 つの矢印の間に書いたテキストは、両側に空白を 1 つずつ置きます。
@@ -1847,7 +1848,8 @@ flowchart LR
   [fixture: data-blocks/later-statement-line-kept]
 - 文に、1 行でも複数行でも、ほかのブロックがないこと。
   1 つ動かすと、次のブロックは文の最初でない行から始まることになり、
-  `}@{` のように接するブロックは 1 つのテキストとして読まれます。
+  `}@{` のように接するブロックは 1 つのテキストとして読まれるので、
+  移動するとその桁が分断されます。
   ブロックを 2 つ持つ文は、複数行のブロックを書かれたまま残します。
   1 行のブロックは、もう一方と接していなければ整えます。
   [fixture: data-blocks/second-block-kept]
@@ -1973,8 +1975,8 @@ subgraph の中では、本文があるブロックの原文が字下げごと�
 そうしたブロックのコメントの内容も保ち、
 列は同じトップレベルまたは subgraph の規則に従います。
 [fixture: multi-line-values/accdescr-block-comment-line-in-subgraph-kept]
-テキストが`{`と同じ行から始まるときは、その前後の空白列を、
-トークンの間と同じく空白1つにし、空白がなければ足しません。
+テキストが `{` と同じ行から始まるときは、その両側に空白を 1 つずつ置きます。
+詳しくは、[アクセシビリティの行](#アクセシビリティの行)を参照してください。
 triviaのない空ブロックは、
 [アクセシビリティの行](#アクセシビリティの行)に従います。
 [fixture: multi-line-values/accdescr-block-text-starts-on-brace-line]

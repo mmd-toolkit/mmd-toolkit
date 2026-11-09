@@ -324,8 +324,9 @@ periods-and-events/semicolon-in-a-later-line]
 The text of an event stands after one space after its colon. That character is
 the separator that the lexer reads after the colon, whatever it is, and it is
 not in the Db; the whitespace after it is the text. A space is written whatever
-the separator was, as after `title` and `section` (see Titles and sections), so
-that the separator has one form. [fixture: periods-and-events/separator-tab]
+the separator was, as after `title` and `section` (see
+[Titles and sections](#titles-and-sections)), so that the separator has one
+form. [fixture: periods-and-events/separator-tab]
 
 An event stays on the line on which it was written: events after the period on
 its line stay on that line, and an event written on a later line, or after a
@@ -681,8 +682,9 @@ its line. It is printed on the line of the header after one space, `td` as `TD`,
 as the examples in the documentation of mermaid.js write it (see
 [Spellings that are drawn the same](./compatibility.md#spellings-that-are-drawn-the-same)),
 and `lr` in the case in which it was written; the Db reads it in upper case. The
-space is the one of the whitespace between tokens (see Whitespace between
-tokens). [fixture: header-and-direction/direction-kept] [fixture:
+space is the one of the whitespace between tokens (see
+[Whitespace between tokens](#whitespace-between-tokens)). [fixture:
+header-and-direction/direction-kept] [fixture:
 header-and-direction/direction-case-kept] [fixture:
 header-and-direction/spaces-before-the-direction] A second word is a period and
 goes to a line of its own, and so is a direction on a line of its own. [fixture:

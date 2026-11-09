@@ -548,15 +548,13 @@ sequenceDiagram
 [fixture: arrow-spacing/parentheses-touching]
 空白があってもなくても、mermaid.js は同じメッセージとして読みます。
 例外は、矢印として読まれる始まりの宛先の前の `-` だけです（下記）。
+ほかにこの形を強いる条件はありません。
 整形は `A->>+B` をすでに `A ->> +B` にしています。
 mermaid.js の文書で `+` か `-` のあるメッセージ 12 件のうち、
-10 件は記号が宛先に接しています（`->>+John`、`-->>-Alice`）。
-そのうち 6 件は、
-[有効化の例](https://github.com/mermaid-js/mermaid/blob/2086904e76c692331e34a45d7cc3bc30860d040e/packages/mermaid/src/docs/syntax/sequenceDiagram.md#L413-L424)
-にあります。
-残る 4 件は、
-[入れ子の例](https://github.com/mermaid-js/mermaid/blob/2086904e76c692331e34a45d7cc3bc30860d040e/packages/mermaid/src/docs/syntax/sequenceDiagram.md#L664-L669)
-にあります。
+10 件は記号が宛先に接しています（`->>+John`、
+`-->>-Alice`；
+[有効化の例](https://github.com/mermaid-js/mermaid/blob/2086904e76c692331e34a45d7cc3bc30860d040e/packages/mermaid/src/docs/syntax/sequenceDiagram.md#L413-L424)、
+[入れ子の例](https://github.com/mermaid-js/mermaid/blob/2086904e76c692331e34a45d7cc3bc30860d040e/packages/mermaid/src/docs/syntax/sequenceDiagram.md#L664-L669)）。
 残る 2 件は記号が矢印に接していて（`->>+ John`）、
 これも記号が宛先に接する形に整形します。
 その 2 件は

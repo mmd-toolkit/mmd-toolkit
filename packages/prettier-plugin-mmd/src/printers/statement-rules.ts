@@ -329,6 +329,12 @@ export interface StyleListUse {
    * `addWordGapEdits`).
    */
   readonly collapsesWordGaps?: boolean
+  /**
+   * The text of the last style reaches over the whitespace after it, as in a
+   * treemap, where the style runs to the end of the line: that whitespace is
+   * left out too.
+   */
+  readonly trimsEnd?: boolean
 }
 
 /**
@@ -396,7 +402,8 @@ export interface StyleListUse {
  *
  * Where `collapsesWordGaps` is set, a run of spaces and tabs between the words
  * of a style is printed as one space, whether the style has a `:` or not
- * (`addWordGapEdits`).
+ * (`addWordGapEdits`). Where `trimsEnd` is set, the whitespace after the last
+ * style is left out.
  *
  * Where `escapesComma` is set, a `,` after a backslash is part of a style, and
  * so is a space after a backslash at the end of one: taking that space away
@@ -421,6 +428,7 @@ export function normalizeStyleList(
     keepsGapAfterStroke = false,
     escapesComma = false,
     collapsesWordGaps = false,
+    trimsEnd = false,
   }: StyleListUse = {},
 ): void {
   const styles = statement.styles.filter((style) => style !== null)
@@ -466,6 +474,16 @@ export function normalizeStyleList(
         keepsGapAfterLabelName: splitsLabelStyles,
       })
       if (collapsesWordGaps) addWordGapEdits(source, core, edits)
+    }
+    if (trimsEnd && comma === to && core[1] < comma) {
+      // A directive right after the whitespace keeps whether whitespace stands
+      // before it, a run becoming one space, as at the end of any line.
+      const beforeDirective =
+        findTriviaBetween(source, comma, comma + 1).length > 0
+      edits.push({
+        range: [core[1], comma],
+        replacement: beforeDirective ? " " : "",
+      })
     }
     if (previousEnd !== -1) {
       const touchesWord =

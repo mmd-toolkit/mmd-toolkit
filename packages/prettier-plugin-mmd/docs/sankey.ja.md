@@ -118,11 +118,11 @@ mermaid.js の行の規則は、`style` か `classDef` と、その後ろの `:`
 コンマの周りにあっても、あるかないかを保ち、あるところは空白 1 つにします。
 規則が問うのは空白があるかどうかで、いくつあるかではないからです。
 行のそれ以外の空白は、どの `;` が無視されるかを変えません。
-[fixture: commas/semicolon-fields] [fixture: commas/style-line]
-[fixture: commas/style-line-in-another-field]
 [fixture: commas/style-line-colon-and-hash-in-two-fields-kept]
 [fixture: commas/style-line-colon-and-hash-touching-kept]
 [fixture: commas/style-line-spaces-between-colon-and-hash-become-one]
+[fixture: commas/semicolon-fields] [fixture: commas/style-line]
+[fixture: commas/style-line-in-another-field]
 行の最後の `;` を規則が無視しているときは、その `;` を残します。
 落とすと行の最後の `;` が別の `;` になり、
 `style:#x,b;c,1;` の右は `b;c` ですが、`style:#x,b;c,1` の右は `bc` だからです。
@@ -370,7 +370,8 @@ a,b,1
 ### コメント
 
 コメントは `%%` で始まる行で、mermaid.js がテキストを読む前に取り除かれます。
-テキストと印は書かれたまま残し、ほかの行と同じく 1 列目に置きます。
+テキストと印は書かれたまま残し、
+ほかの行と同じく 1 列目に置きます（[インデント](#インデント)を参照）。
 [fixture: comments/lines-at-the-first-column] [fixture: comments/text-kept]
 [fixture: comments/comment-line-only-in-the-body]
 記録の中の `%%` や `#` は、コメントではなく欄の文字で、欄と一緒に残します。

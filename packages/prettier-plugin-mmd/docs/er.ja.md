@@ -848,13 +848,6 @@ mermaid.js は、どちらの書き方も同じ subgraph として読みます�
 mermaid.js が空白 1 つで結ぶからです。 [fixture: subgraphs/header-spacing]
 [fixture: subgraphs/title-touches-name] [fixture: subgraphs/title-names-spaced]
 [fixture: subgraphs/quoted-and-number-ids]
-名前と `[` の間のディレクティブは、
-[ディレクティブ](#ディレクティブ)のとおりに置きます。
-[fixture: subgraphs/title-beside-directive]
-[fixture: subgraphs/title-beside-directive-runs]
-そこにある U+2028 と U+2029 は、そのまま残します。
-[test: U+2028 between an ER subgraph name and its title]
-[test: U+2029 between an ER subgraph name and its title]
 本体の文は 1 段深く置き、`end` は、subgraph と同じ段に行に単独で置き、
 どの大文字小文字でも `end` と印字します。
 本体の `class`、`classDef`、`style` 文のキーワードは、subgraph の外と同じく、
@@ -866,6 +859,14 @@ mermaid.js は、それを書かれたまま subgraph のノードに並べま�
 [fixture: subgraphs/end-case-one-form] [fixture: subgraphs/entity-after-end]
 文のない subgraph は、`end` を次の行に置いて印字します。
 [fixture: subgraphs/empty]
+
+名前と `[` の間のディレクティブは、
+[ディレクティブ](#ディレクティブ)のとおりに置きます。
+[fixture: subgraphs/title-beside-directive]
+[fixture: subgraphs/title-beside-directive-runs]
+そこにある U+2028 と U+2029 は、そのまま残します。
+[test: U+2028 between an ER subgraph name and its title]
+[test: U+2029 between an ER subgraph name and its title]
 
 名前やタイトルの後、見出しの行にある空の説明ブロックは、本体の最初の文で、
 見出しの行に書かれたまま残します。

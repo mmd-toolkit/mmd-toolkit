@@ -12,6 +12,16 @@ interface DbPair {
 
 const restored: readonly DbPair[] = [
   {
+    name: "a run between the words of a style of a treemap",
+    diagramType: "treemap",
+    before: {
+      classDefs: [{ id: "c", styles: ["border:2px   solid", "fill :red "] }],
+    },
+    after: {
+      classDefs: [{ id: "c", styles: ["border: 2px solid", "fill: red"] }],
+    },
+  },
+  {
     name: "the whitespace before the colon of stroke in a style of a vertex",
     before: { vertices: [{ id: "A", styles: ["stroke :#f00"] }] },
     after: { vertices: [{ id: "A", styles: ["stroke: #f00"] }] },
@@ -329,7 +339,7 @@ const kept: readonly DbPair[] = [
   },
   {
     name: "a run changed between the words of a style of a diagram type that keeps it",
-    diagramType: "treemap",
+    diagramType: "kanban",
     before: { classDefs: [{ id: "c", styles: ["border:2px   solid"] }] },
     after: { classDefs: [{ id: "c", styles: ["border: 2px solid"] }] },
   },

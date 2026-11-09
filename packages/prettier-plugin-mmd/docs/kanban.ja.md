@@ -418,7 +418,8 @@ mermaid.js は `:::` の後のテキストをノードのクラスとして持�
 [fixture: icons-and-classes/gram-whitespace-class]
 行のどこかにディレクティブがあるクラス行（`::: hot %%{x}%%`、`::: h%%{x}%%ot`、
 `%%{x}%%::: hot`）は、書かれたまま残します。
-ディレクティブのある行は書かれたまま印字するからです（Directives を参照）。
+ディレクティブのある行は、
+書かれたまま印字するからです（[ディレクティブ](#ディレクティブ)を参照）。
 落とすのは空白とタブだけで、`:::` の後の空白と U+00A0 は、
 U+00A0 が `:::` に接する形で印字され、U+00A0 は残ります。
 [fixture: icons-and-classes/class-padding-after-marker-dropped]

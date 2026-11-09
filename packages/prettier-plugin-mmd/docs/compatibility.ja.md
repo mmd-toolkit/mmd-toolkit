@@ -640,8 +640,8 @@ block 図のほかの形は、スタイルから `styles2String` で、
 これらの形でも `classDef` でも、両方の書き方の画素は同じでした。
 [fixture: block/styles/style-label-styles-kept]
 
-flowchart、agentflow、class、state、block、usecase、ER、requirement の図では、
-`:` のあるスタイルでも、ないスタイルでも、
+flowchart、agentflow、class、state、block、usecase、treemap、ER、
+requirement の図では、`:` のあるスタイルでも、ないスタイルでも、
 語と語の間の空白とタブの連続を空白 1 つで印字し、
 語と語の間に空白があるかどうかは、書かれたまま残します。
 `style A fill   #f00` は `style A fill #f00` と印字し、
@@ -686,6 +686,8 @@ flowchart と agentflow の図では、語を持つ `style`、`classDef`、`link
 state と block の図では、同じ値を持ち、連なりの隣に文字列、コメント、
 `url(` がある `style` と `classDef` です。
 usecase 図では、同じ値を持つ `style` と `classDef` です。
+treemap では、`:` と `,` の前後の空白、語の間の連続、文字列、
+エスケープされた `,`、末尾の空白を持つ `classDef` です。
 このほかに、コーパスとこのパッケージの fixture の文のうち、
 整形でスタイルが変わるものも同じ方法で描きました。
 1,355 個のテキストが `style`、`classDef`、`linkStyle` のいずれかを持ちます。
@@ -694,6 +696,14 @@ usecase 図では、同じ値を持つ `style` と `classDef` です。
 5 個はアニメーションするリンクを持つユースケース図で、
 アニメーションのフレームによって画素が異なりますが、
 `style` 属性の空白を除くと SVG は同じです。
+コーパス、このパッケージの fixture、
+mermaid.js の文書にある treemap の `classDef` の文で、
+整形でスタイルが変わるものも同じ方法で描きました。
+78 個のテキストすべてで画素は同じで、`style` 属性の空白を除くと SVG も同じです。
+mermaid.js は treemap の各スタイルのテキストを Db に保ち、
+描く前に最初の `:` の前のテキストを名前、次の `:` までのテキストを値として取り、
+それぞれの前後の空白を取り除きます。 [fixture: treemap/styles/spaced]
+[fixture: treemap/styles/escaped-comma-spaced]
 [fixture: class/whitespace-between-tokens/style-value-words-spaced]
 [fixture: class/whitespace-between-tokens/style-words-run-spaced]
 [fixture: flowchart/whitespace-between-tokens/style-words-run-spaced]
@@ -721,7 +731,7 @@ usecase 図では、同じ値を持つ `style` と `classDef` です。
 `styleDbForFormattingComparison`）。
 スタイルが書かれたものと、両端と最初の `:` の前後の空白や、
 上の図種での語の間の空白の連続（文字列、コメント、`url(` の中と、
-バックスラッシュの後を除く）だけが違うときは、書かれた方を採ります。
+バックスラッシュの直後の 1 文字を除く）だけが違うときは、書かれた方を採ります。
 ほかの違いは、スタイルの語と語の間の空白の有無、文字列、コメント、
 `url(` の中の連なりの変化、リンクのスタイルの数や、
 リンクにも適用されるスタイルの `stroke` の `:` の前の空白の有無、
@@ -2527,13 +2537,13 @@ mindmap の Db は、ノードの字下げを level として読みます。
 - 行頭のディレクティブの後ろの空白。
   ノードの字下げに数えられるので、ディレクティブから書かれたまま印字します。
   [fixture: mindmap/directives/before-a-node-on-its-line]
-- U+2028 か U+2029 で終わる診断コメント。
+- U+2028 か U+2029 で終わる図のコメント。
   その後ろのテキストは新しい行なので、そこに改行を書きます。
   [test: U+2028 after a comment after a shape]
 - mermaid.js が拒否する空行（既知の差異
   [`blank-line-after-header-or-comments`](../../spec/docs/known-divergences/blank-line-after-header-or-comments.ja.md)）。
   ヘッダーの後のものは落とすので、出力は受理されます。
-  ノードの間の診断コメントの後のものは、入力と同じく 1 つ残ります。
+  ノードの間の図のコメントの後のものは、入力と同じく 1 つ残ります。
   [fixture: mindmap/blank-lines/after-the-header-dropped]
   [fixture: mindmap/blank-lines/after-a-comment-between-nodes-kept]
 
@@ -3083,7 +3093,7 @@ Venn の図コメントは LF か末尾まで続きます。
 
 [fixture: venn/name-lists/empty-quoted-targets]
 [fixture: venn/labels/labels-empty-kept]
-[fixture: venn/style-properties/style-atoms-kept]
+[fixture: venn/style-properties/style-atoms-spaced]
 [fixture: venn/comments/ignored-fragment]
 [fixture: venn/line-rule-and-kept-lines/line-rule-suffix-spacing]
 [test: venn: ls-kept-comment-whitespace-line] [test: venn: ps-kept-directive]

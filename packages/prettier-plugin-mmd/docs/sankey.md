@@ -106,12 +106,12 @@ blank-lines/after-a-value-of-spaces-only] The whitespace at the end of a record
 is dropped. [fixture: commas/trailing-whitespace-dropped]
 
 A `;` is a character of a field. The line rule of mermaid.js ignores the last
-`;` of a line that holds `style`, a `:`, a `#` after it, and a `;` after that,
-but only when no whitespace lies between the `:` and the `#`. So the whitespace
-between a `:` and a later `#` of such a line keeps whether it is there, even
-where it lies around a comma, and is one space where it is there, since the rule
-asks only whether some is there and not how much. The whitespace elsewhere on
-the line does not change which `;` is ignored. [fixture:
+`;` of a line that holds `style` or `classDef`, a `:`, a `#` after it, and a `;`
+after that, but only when no whitespace lies between the `:` and the `#`. So the
+whitespace between a `:` and a later `#` of such a line keeps whether it is
+there, even where it lies around a comma, and is one space where it is there,
+since the rule asks only whether some is there and not how much. The whitespace
+elsewhere on the line does not change which `;` is ignored. [fixture:
 commas/style-line-colon-and-hash-in-two-fields-kept] [fixture:
 commas/style-line-colon-and-hash-touching-kept] [fixture:
 commas/style-line-spaces-between-colon-and-hash-become-one] [fixture:
