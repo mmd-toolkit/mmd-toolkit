@@ -366,10 +366,15 @@ in the background and write its output to a file.
    `<!-- prettier-ignore -->` stands directly before its code block, in both
    languages, and a sentence of Rule Details says that the example is shown as
    written and why: the formatter prints an empty `accDescr` block as
-   `accDescr {}`, so an example with whitespace between the braces is kept.
-   `check:docs` reads neither that sentence nor whether the mark is still
-   needed; a review does. Check that the `expected.json` of each fixture used
-   says what the document claims, and use only fixtures whose `accepted` is
+   `accDescr {}`, so an example with whitespace between the braces is kept. So
+   is the example of a block closed on the line of its `{` in the rules about an
+   unclosed block: the formatter prints a block with its text on one line,
+   `accDescr { text }`, as `accDescr: text`, and the line on which the `}`
+   stands is what the example shows. An example that shows only the block form
+   writes a block over several lines instead, which the formatter keeps as
+   written. `check:docs` reads neither that sentence nor whether the mark is
+   still needed; a review does. Check that the `expected.json` of each fixture
+   used says what the document claims, and use only fixtures whose `accepted` is
    true, also for the correct examples. For every example and claim without a
    fixture, add one by the steps of the skill `tests`: give the smallest input
    that shows it and the claim of the rule document that the fixture answers,

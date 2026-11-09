@@ -38,18 +38,15 @@ An `accDescr:` with no text on its line also sets the description and is
 counted: it takes the next line that holds text. A block with no description is
 not counted.
 
-The formatter prints a block with its text on one line, `accDescr { text }`, as
-`accDescr: text`. The example of such a block is shown as written.
-
 Examples of **incorrect** code for this rule:
 
-<!-- prettier-ignore -->
 ```mmd
 %% eslint @mmd-toolkit/timeline-no-duplicate-description: error
 timeline
-  accDescr: first
-  accDescr { second }
-  2020 : Launch
+  accDescr: D
+  accDescr {
+    E
+  }
 ```
 
 Examples of **correct** code for this rule:

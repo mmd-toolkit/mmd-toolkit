@@ -49,27 +49,26 @@ description. mermaid.js also removes box-drawing characters at the start of
 block lines in a tree view drawn with them. Descriptions differing only in these
 ways may be the same for mermaid.js and different for this rule.
 
-The formatter prints a block with its text on one line, `accDescr { text }`, as
-`accDescr: text`. The examples of such a block are shown as written.
-
 Examples of **incorrect** code for this rule:
 
-<!-- prettier-ignore -->
 ```mmd
 %% eslint @mmd-toolkit/treeview-no-duplicate-description: error
 treeView-beta
   accDescr: First
-  accDescr { Second }
+  accDescr {
+    Second
+  }
   root/
 ```
 
 Examples of **correct** code for this rule:
 
-<!-- prettier-ignore -->
 ```mmd
 %% eslint @mmd-toolkit/treeview-no-duplicate-description: error
 treeView-beta
-  accDescr { Second }
+  accDescr {
+    Project files
+  }
   root/
 ```
 

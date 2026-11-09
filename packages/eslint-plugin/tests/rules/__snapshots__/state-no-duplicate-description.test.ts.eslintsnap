@@ -34,20 +34,24 @@ Filename: state-no-duplicate-description-incorrect-2.mmd
 
 Code:
   1 | stateDiagram-v2
-  2 |   accDescr { first }
-  3 |   accDescr: second
+  2 |   accDescr {
+  3 |     first
+  4 |   }
+  5 |   accDescr: second
     |   ^~~~~~~~~~~~~~~~ [1]
-  4 |   A --> B
-  5 |
+  6 |   A --> B
+  7 |
 
 [1] mermaid.js replaces the earlier description with the one of this `accDescr`.
     Suggestions:
       - Remove this statement.
         Output:
           1 | stateDiagram-v2
-          2 |   accDescr { first }
-          3 |   A --> B
-          4 |
+          2 |   accDescr {
+          3 |     first
+          4 |   }
+          5 |   A --> B
+          6 |
       - Remove the earlier statement that sets the description.
         Output:
           1 | stateDiagram-v2

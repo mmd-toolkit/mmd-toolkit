@@ -51,28 +51,26 @@ mermaid.js は、罫線の文字で描いたツリービューでは、
 ブロックの行の先頭の罫線の文字を取り除く。
 それらだけが違う説明は、mermaid.js には同じでも、この規則には違うことがある。
 
-整形ツールは、テキストが 1 行のブロック `accDescr { text }` を、
-`accDescr: text` と書く。
-テキストが 1 行のブロックの例は、書いたまま示している。
-
 この規則に**反する**コードの例:
 
-<!-- prettier-ignore -->
 ```mmd
 %% eslint @mmd-toolkit/treeview-no-duplicate-description: error
 treeView-beta
   accDescr: First
-  accDescr { Second }
+  accDescr {
+    Second
+  }
   root/
 ```
 
 この規則に**従う**コードの例:
 
-<!-- prettier-ignore -->
 ```mmd
 %% eslint @mmd-toolkit/treeview-no-duplicate-description: error
 treeView-beta
-  accDescr { Second }
+  accDescr {
+    Project files
+  }
   root/
 ```
 

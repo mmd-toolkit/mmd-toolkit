@@ -37,10 +37,8 @@ An empty block is reported also where it shares a line with a statement, before
 it or after its last part, where it follows the header on its line, and inside a
 box.
 
-The formatter prints an empty block as `accDescr {}` and a block with its text
-on one line, `accDescr { text }`, as `accDescr: text`. The examples with
-whitespace inside the braces and the example of a block with its text on one
-line are shown as written.
+The formatter prints an empty block as `accDescr {}`. The examples with
+whitespace inside the braces are shown as written.
 
 Examples of **incorrect** code for this rule:
 
@@ -70,12 +68,13 @@ sequenceDiagram
 
 Examples of **correct** code for this rule:
 
-<!-- prettier-ignore -->
 ```mmd
 %% eslint @mmd-toolkit/sequence-no-empty-description-block: error
 sequenceDiagram
-  A ->> B: x
-  accDescr { y }
+  accDescr {
+    a
+    b
+  }
 ```
 
 ```mmd

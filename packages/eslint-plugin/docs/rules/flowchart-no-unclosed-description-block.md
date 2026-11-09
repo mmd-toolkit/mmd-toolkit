@@ -41,7 +41,8 @@ the description takes the shape's text. The rule cannot tell these closers
 apart.
 
 The formatter prints a block with its text on one line, `accDescr { text }`, as
-`accDescr: text`. The examples of such a block are shown as written.
+`accDescr: text`. The examples of a block closed on the line of its `{` are
+shown as written, because the line of the `}` is what they show.
 
 Examples of **incorrect** code for this rule:
 

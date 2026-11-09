@@ -21,11 +21,15 @@ Filename: c4-no-duplicate-description-incorrect-2.mmd
 Code:
   1 | C4Context
   2 |   accDescription Customers
-  3 |   accDescr { Administrators }
-    |   ^~~~~~~~~~~~~~~~~~~~~~~~~~~ [1]
-  4 |   accDescr: Customers
+  3 |   accDescr {
+    |   ^~~~~~~~~~\ [1]
+  4 |     Administrators
+    | ~~~~~~~~~~~~~~~~~~\ [1]
+  5 |   }
+    | ~~~ [1]
+  6 |   accDescr: Customers
     |   ^~~~~~~~~~~~~~~~~~~ [2]
-  5 |
+  7 |
 
 [1] mermaid.js replaces the earlier description with this description.
 [2] mermaid.js replaces the earlier description with this description.

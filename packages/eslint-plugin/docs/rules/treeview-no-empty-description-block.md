@@ -35,9 +35,6 @@ nonempty description, a block holding only comment lines clears it, and
 reports that block. A comment before the `{` or after the `}` is not in the
 block, so the block is still reported.
 
-The formatter prints a block with its text on one line, `accDescr { text }`, as
-`accDescr: text`. The example of such a block is shown as written.
-
 Examples of **incorrect** code for this rule:
 
 ```mmd
@@ -49,11 +46,12 @@ treeView-beta
 
 Examples of **correct** code for this rule:
 
-<!-- prettier-ignore -->
 ```mmd
 %% eslint @mmd-toolkit/treeview-no-empty-description-block: error
 treeView-beta
-  accDescr { Project files }
+  accDescr {
+    Project files
+  }
   root/
 ```
 

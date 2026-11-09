@@ -39,19 +39,15 @@ LF、CRLF、CR の改行は、LF として比べる。
 その文は、テキストを持つ次の行を取る。
 説明を持たないブロックは数えない。
 
-整形ツールは、テキストが 1 行のブロック `accDescr { text }` を、
-`accDescr: text` と書く。
-テキストが 1 行のブロックの例は、書いたまま示している。
-
 この規則に**反する**コードの例:
 
-<!-- prettier-ignore -->
 ```mmd
 %% eslint @mmd-toolkit/timeline-no-duplicate-description: error
 timeline
-  accDescr: first
-  accDescr { second }
-  2020 : Launch
+  accDescr: D
+  accDescr {
+    E
+  }
 ```
 
 この規則に**従う**コードの例:

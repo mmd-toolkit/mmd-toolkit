@@ -37,9 +37,7 @@ since: v0.1.0
 そのテキストの一部なので報告しない。
 
 整形ツールは、空のブロックを `accDescr {}` と書く。
-テキストが 1 行のブロック `accDescr { text }` は、`accDescr: text` と書く。
-波括弧の中に空白がある例と、テキストが 1 行のブロックの例は、
-書いたまま示している。
+波括弧の中に空白がある例は、書いたまま示している。
 
 この規則に**反する**コードの例:
 
@@ -60,12 +58,13 @@ timeline
 
 この規則に**従う**コードの例:
 
-<!-- prettier-ignore -->
 ```mmd
 %% eslint @mmd-toolkit/timeline-no-empty-description-block: error
 timeline
-  accDescr { y }
-  2020 : Launch
+  accDescr {
+    line1
+    line2
+  }
 ```
 
 ```mmd

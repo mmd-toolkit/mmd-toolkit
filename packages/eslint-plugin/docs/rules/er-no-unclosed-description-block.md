@@ -35,7 +35,8 @@ when its closing `}` stands alone on its line, as the end of an attribute block
 does.
 
 The formatter prints a block with its text on one line, `accDescr { text }`, as
-`accDescr: text`. The example of such a block is shown as written.
+`accDescr: text`. The example of a block closed on the line of its `{` is shown
+as written, because the line of the `}` is what it shows.
 
 Examples of **incorrect** code for this rule:
 

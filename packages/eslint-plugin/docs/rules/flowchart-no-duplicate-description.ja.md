@@ -40,10 +40,6 @@ subgraph の中の文も、図全体の説明を設定するので数える。
 両端と各改行の後の空白を除いて比べるので、ブロックの字下げと空行は数えず、LF、
 CRLF、CR はどれも LF として比べる。
 
-整形ツールは、テキストが 1 行のブロック `accDescr { text }` を、
-`accDescr: text` と書く。
-テキストが 1 行のブロックの例は、書いたまま示している。
-
 この規則に**反する**コードの例:
 
 ```mmd
@@ -53,11 +49,12 @@ flowchart LR
   accDescr: second
 ```
 
-<!-- prettier-ignore -->
 ```mmd
 %% eslint @mmd-toolkit/flowchart-no-duplicate-description: error
 flowchart LR
-  accDescr { first }
+  accDescr {
+    first
+  }
   accDescr: second
 ```
 

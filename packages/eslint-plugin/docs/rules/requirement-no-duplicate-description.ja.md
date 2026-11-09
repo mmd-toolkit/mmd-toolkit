@@ -41,18 +41,15 @@ LF、CRLF、CR の改行は、LF として比べる。
 数えない。
 requirement や element の中の空のブロックも数えない。
 
-整形ツールは、テキストが 1 行のブロック `accDescr { text }` を、
-`accDescr: text` と書く。
-テキストが 1 行のブロックの例は、書いたまま示している。
-
 この規則に**反する**コードの例:
 
-<!-- prettier-ignore -->
 ```mmd
 %% eslint @mmd-toolkit/requirement-no-duplicate-description: error
 requirementDiagram
   accDescr: first
-  accDescr { second }
+  accDescr {
+    second
+  }
   requirement r {
     id: 1
   }

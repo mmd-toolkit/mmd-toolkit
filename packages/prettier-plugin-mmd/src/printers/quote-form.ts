@@ -34,13 +34,75 @@ function sankeyField(text: string): string | undefined {
 }
 
 /**
+ * A word of ASCII letters, digits, and `_` that starts with a letter or `_`
+ * and is none of the `reserved` words, which are compared in lower case: the
+ * lexer of a diagram type reads a reserved word as a unit of its own, and a
+ * text of other characters has a meaning in the stages before the lexer.
+ */
+function wordWithout(reserved: ReadonlySet<string>): Bare {
+  return (text) => {
+    const first = text[0]
+    return first !== undefined &&
+      !(first >= "0" && first <= "9") &&
+      [...text].every(
+        (character) =>
+          (character >= "a" && character <= "z") ||
+          (character >= "A" && character <= "Z") ||
+          (character >= "0" && character <= "9") ||
+          character === "_",
+      ) &&
+      !reserved.has(text.toLowerCase())
+      ? text
+      : undefined
+  }
+}
+
+/**
+ * The words of an ER diagram that its lexer reads as a unit of its own:
+ * keywords, the words of the cardinalities and of the relationship lines, the
+ * names of the directions and of the keys of an attribute, and the letters
+ * `u` and `o`, which begin the symbols `u.`, `u-`, `u|`, `o|` and `o{`.
+ */
+const erReserved: ReadonlySet<string> = new Set([
+  "erdiagram",
+  "style",
+  "classdef",
+  "class",
+  "subgraph",
+  "end",
+  "one",
+  "many",
+  "only",
+  "zero",
+  "optionally",
+  "or",
+  "to",
+  "acctitle",
+  "accdescr",
+  "direction",
+  "tb",
+  "bt",
+  "rl",
+  "lr",
+  "pk",
+  "fk",
+  "uk",
+  "u",
+  "o",
+])
+
+/**
  * The fields that are written without quotes, by the type of the node and the
  * field, in the form that the examples in the documentation of the pinned
  * mermaid.js use at least twice as often as the form in quotes
  * (docs/compatibility.md, Spellings that are drawn the same): the three fields
- * of a link of a sankey diagram.
+ * of a link of a sankey diagram, and the names and the roles of an ER diagram.
  */
 const bareFields: Readonly<Record<string, Readonly<Record<string, Bare>>>> = {
+  ErEntityReference: { name: wordWithout(erReserved) },
+  ErEntityStatement: { name: wordWithout(erReserved) },
+  ErRelationshipStatement: { role: wordWithout(erReserved) },
+  ErSubgraphStatement: { id: wordWithout(erReserved) },
   SankeyLinkStatement: {
     source: sankeyField,
     target: sankeyField,

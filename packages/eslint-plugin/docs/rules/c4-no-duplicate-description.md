@@ -40,9 +40,6 @@ The last correct example is shown as written: its two descriptions are indented
 differently on the second line, which the formatter would print the same way,
 and that difference is what the example shows.
 
-The formatter prints a block with its text on one line, `accDescr { text }`, as
-`accDescr: text`. The examples of such a block are shown as written.
-
 Examples of **incorrect** code for this rule:
 
 ```mmd
@@ -52,23 +49,25 @@ C4Context
   accDescr: Administrators
 ```
 
-<!-- prettier-ignore -->
 ```mmd
 %% eslint @mmd-toolkit/c4-no-duplicate-description: error
 C4Context
   accDescription Customers
-  accDescr { Administrators }
+  accDescr {
+    Administrators
+  }
   accDescr: Customers
 ```
 
 Examples of **correct** code for this rule:
 
-<!-- prettier-ignore -->
 ```mmd
 %% eslint @mmd-toolkit/c4-no-duplicate-description: error
 C4Context
   accDescription Customers
-  accDescr { Customers }
+  accDescr {
+    Customers
+  }
   accDescr: Customers
 ```
 

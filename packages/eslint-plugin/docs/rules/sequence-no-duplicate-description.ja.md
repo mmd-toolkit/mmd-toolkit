@@ -39,10 +39,6 @@ mermaid.js はエラーなしに前の説明を置き換え、前のものは失
 両端と各改行の後の空白を除いて比べるので、ブロックの字下げと空行は数えず、LF、
 CRLF、CR はどれも LF として比べる。
 
-整形ツールは、テキストが 1 行のブロック `accDescr { text }` を、
-`accDescr: text` と書く。
-テキストが 1 行のブロックの例は、書いたまま示している。
-
 この規則に**反する**コードの例:
 
 ```mmd
@@ -53,12 +49,13 @@ sequenceDiagram
   accDescr: second
 ```
 
-<!-- prettier-ignore -->
 ```mmd
 %% eslint @mmd-toolkit/sequence-no-duplicate-description: error
 sequenceDiagram
   A ->> B: x
-  accDescr { first }
+  accDescr {
+    first
+  }
   accDescr: second
 ```
 

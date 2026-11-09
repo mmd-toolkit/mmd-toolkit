@@ -40,10 +40,6 @@ CR と CRLF は LF として比べ、改行の後の空白は無視する。
 2 つの説明の 2 行目は字下げが違い、整形ツールは同じ字下げにするが、
 その違いがこの例の示すことだからである。
 
-整形ツールは、テキストが 1 行のブロック `accDescr { text }` を、
-`accDescr: text` と書く。
-テキストが 1 行のブロックの例は、書いたまま示している。
-
 この規則に**反する**コードの例:
 
 ```mmd
@@ -53,23 +49,25 @@ C4Context
   accDescr: Administrators
 ```
 
-<!-- prettier-ignore -->
 ```mmd
 %% eslint @mmd-toolkit/c4-no-duplicate-description: error
 C4Context
   accDescription Customers
-  accDescr { Administrators }
+  accDescr {
+    Administrators
+  }
   accDescr: Customers
 ```
 
 この規則に**従う**コードの例:
 
-<!-- prettier-ignore -->
 ```mmd
 %% eslint @mmd-toolkit/c4-no-duplicate-description: error
 C4Context
   accDescription Customers
-  accDescr { Customers }
+  accDescr {
+    Customers
+  }
   accDescr: Customers
 ```
 
