@@ -342,8 +342,8 @@ on Markdown and `.mmd` files:
   counts the lines of a Gantt section with it, to line up their colons. `mmdfmt`
   gives the plugin the width less what it writes before the lines, so near the
   width a Gantt section can be lined up by Prettier and not by `mmdfmt`, which
-  then leaves the colons of the section where they are, and a line written wider
-  than the line width stays so.
+  then pads no name to line the colons up: the whitespace before each colon
+  stays as written, and a line written wider than the line width stays so.
 - Prettier leaves a diagram as written under four settings.
   `requirePragma: true` leaves a Markdown file that has no `<!-- @format -->` or
   `<!-- @prettier -->` comment at its top, after the frontmatter if there is

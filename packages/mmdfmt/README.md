@@ -350,8 +350,8 @@ on Markdown and `.mmd` files:
   counts the lines of a Gantt section with it, to line up their colons. `mmdfmt`
   gives the plugin the width less what it writes before the lines, so near the
   width a Gantt section can be lined up by Prettier and not by `mmdfmt`, which
-  then leaves the colons of the section where they are, and a line written wider
-  than the line width stays so.
+  then pads no name to line the colons up: the whitespace before each colon
+  stays as written, and a line written wider than the line width stays so.
 - Prettier leaves a diagram as written under four settings.
   `requirePragma: true` leaves a Markdown file that has no `<!-- @format -->` or
   `<!-- @prettier -->` comment at its top, after the frontmatter if there is
@@ -433,9 +433,11 @@ The line width of a diagram in a list item or a block quote is the line width of
 the file less the width of what `mmdfmt` writes before each of its lines, the
 width being at least 1. Each character of it counts as one column, as Prettier
 counts the indentation before a range it formats, except that a tab reaches the
-next multiple of `tabWidth`, and counts for nothing where `tabWidth` is 0. For
-example, with a line width of 40, a diagram in a list item whose lines start
-with two spaces is formatted for 38 columns, and with a `tabWidth` of 4, a
+next multiple of `tabWidth`. Where `tabWidth` is 0, a tab counts for nothing and
+the other characters still count one column each, while Prettier counts the
+whole indentation as nothing, since `util.getAlignmentSize` gives NaN for the
+tab. For example, with a line width of 40, a diagram in a list item whose lines
+start with two spaces is formatted for 38 columns, and with a `tabWidth` of 4, a
 diagram in a block quote whose lines start with `>` and a tab is formatted for
 36 columns, as the tab reaches column 4. Prettier takes off the width of what it
 prints before the lines from a data block `@{ … }` in the same way, but what it
