@@ -1,4 +1,6 @@
+import { util } from "prettier"
 import { parsers } from "prettier/plugins/markdown"
+import { languages } from "prettier-plugin-mmd"
 import type { Indentation } from "./diagram.ts"
 import { formatDiagram } from "./diagram.ts"
 import type { Diagnostic, FormatResult, PositionsIn } from "./diagnostic.ts"
@@ -35,10 +37,14 @@ type PrettierIgnore = "next" | "start" | "end"
 
 /**
  * The first words of an info string that mark a diagram: the `aliases` of the
- * language of prettier-plugin-mmd, which are the code blocks that Prettier
- * formats with the plugin. Prettier compares them case-sensitively.
+ * language of prettier-plugin-mmd. Prettier compares them case-sensitively. It
+ * also matches the language's name in lower case and its extensions without the
+ * dot, which for this plugin are among its aliases;
+ * `tests/plugin-blocks.test.ts` compares the blocks with those Prettier formats.
  */
-const diagramLanguages: ReadonlySet<string> = new Set(["mermaid", "mmd"])
+const diagramLanguages: ReadonlySet<string> = new Set(
+  languages.flatMap((language) => language.aliases ?? []),
+)
 
 /**
  * Formats the diagrams in the code blocks of a Markdown file and changes
@@ -393,10 +399,7 @@ function withoutTrailingBlankLines(values: readonly string[]): string[] {
 
 /** Whether a line is empty or holds only spaces and tabs. */
 function isBlank(text: string): boolean {
-  for (const character of text) {
-    if (character !== " " && character !== "\t") return false
-  }
-  return true
+  return util.skipSpaces(text, 0) === text.length
 }
 
 /**

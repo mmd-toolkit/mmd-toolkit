@@ -34,9 +34,11 @@ instead: Prettier then formats the diagrams in the same run, and you do not need
 
 ## Quick start
 
-`mmdfmt` needs Node.js `^22.13.0 || >=24`. `--write` rewrites files in place, so
-commit your work first, or see which files would change with
-`npx mmdfmt --check .`. To format every diagram under the current directory:
+`mmdfmt` needs Node.js `^22.13.0 || >=24`. Node.js 20 is not supported because
+gunshi, which reads the arguments, requires Node.js 22 or later. `--write`
+rewrites files in place, so commit your work first, or see which files would
+change with `npx mmdfmt --check .`. To format every diagram under the current
+directory:
 
 ```sh
 npx mmdfmt --write .
@@ -100,23 +102,30 @@ diagram differently.
 ## Usage
 
 ```sh
-mmdfmt --write <pattern>...
+mmdfmt --write [--check | --list-different] <pattern>...
 mmdfmt --check <pattern>...
+mmdfmt --list-different <pattern>...
 mmdfmt --stdin-filepath <path>
 ```
 
 | Option                    | What it does                                                                                 |
 | ------------------------- | -------------------------------------------------------------------------------------------- |
-| `--write`                 | Formats the files in place, and lists on standard output the ones that changed.              |
-| `--check`                 | Changes nothing. Lists on standard output the files that `--write` would change.             |
+| `-w`, `--write`           | Formats the files in place, and lists on standard output the ones that changed.              |
+| `-c`, `--check`           | Checks whether the files are formatted, and prints a summary and the files that are not.     |
+| `-l`, `--list-different`  | Changes nothing. Lists on standard output the files that `--write` would change.             |
 | `--stdin-filepath <path>` | Formats standard input as if it were the file at `<path>`, and writes it to standard output. |
 | `-h`, `--help`            | Prints the usage on standard output.                                                         |
 | `-v`, `--version`         | Prints the version on standard output.                                                       |
 
-Give patterns with either `--write` or `--check`, or give `--stdin-filepath`
-alone. `--help` and `--version` only print, whatever else of this table is given
-with them. Any other combination is an error. With no argument at all, `mmdfmt`
-prints the usage on standard error and exits with `2`.
+Give patterns with at least one of `--write`, `--check`, or `--list-different`.
+`--write` can be combined with either `--check` or `--list-different`:
+`--write --check` rewrites files and prints the check's summary and warnings;
+`--write --list-different` rewrites files and lists the ones that changed, as
+`--write` alone does. `--check` and `--list-different` cannot be combined.
+`--stdin-filepath` takes no patterns and cannot be combined with these three.
+`--help` and `--version` only print, whatever else of this table is given with
+them. With no argument at all, `mmdfmt` prints the usage on standard error and
+exits with `2`.
 
 There are no other options: no formatting options, no configuration file of its
 own, and no option for an ignore file. An option that takes no value ignores a
@@ -185,10 +194,28 @@ run:
 npx mmdfmt --check .
 ```
 
-When a file is not formatted, `--check` lists it on standard output and exits
-with `1`. When every file is formatted, it prints nothing and exits with `0`.
 Without the dependencies installed, `npx` would run the latest version instead
 of the pinned one.
+
+`--check` prints `Checking formatting...` on standard output, then
+`[warn] <name>` on standard error for each file that would change, and at the
+end one summary. When a file would change, the summary is on standard error, and
+the exit code is `1`:
+
+```txt
+[warn] Code style issues found in the above file. Run mmdfmt with --write to fix.
+```
+
+With more than one such file, it says `in <n> files` instead of
+`in the above file`. When no file would change, the summary is
+`All diagrams in the matched files use Prettier code style!` on standard output,
+and the exit code is `0`. `--list-different` prints only the names of the files
+that would change, on standard output, with the same exit codes.
+
+With `--write --check`, the files are rewritten, the summary is
+`[warn] Code style issues fixed in the above file.` (or `in <n> files.`), and
+the exit code is `0`. With an error, the exit code is `2`, and the summary is
+the one in Errors and exit codes.
 
 A `.mmd` or `.mermaid` file whose diagram mermaid.js rejects fails the check
 with `2`. A diagram in Markdown that mermaid.js rejects gives only a warning,
@@ -275,21 +302,31 @@ In a `.mmd` or `.mermaid` file, it is an error. In a Markdown code block, it is
 a warning. With `--write` and `--stdin-filepath`, the position of a warning is
 in the text after formatting, where the diagrams above it may have gained or
 lost lines, so that it points at the block in what you open after the run. With
-`--check`, which writes nothing, it is in the file as it is. Lines and columns
-count from 1, and a column counts UTF-16 code units, as most editors do.
-[Formatter compatibility](./compatibility.md) explains which diagrams are
-rejected.
+`--check` or `--list-different` without `--write`, it is in the file as it is.
+Lines and columns count from 1, and a column counts UTF-16 code units, as most
+editors do. [Formatter compatibility](./compatibility.md) explains which
+diagrams are rejected.
 
-| Code | Meaning                                                       |
-| ---- | ------------------------------------------------------------- |
-| `0`  | No errors, and with `--check`, every file is formatted.       |
-| `1`  | With `--check`, a file would change, and there are no errors. |
-| `2`  | An error.                                                     |
+| Code | Meaning                                                                                               |
+| ---- | ----------------------------------------------------------------------------------------------------- |
+| `0`  | No errors; with `--check` or `--list-different`, no file would change or `--write` is given.          |
+| `1`  | With `--check` or `--list-different` without `--write`, a file would change, and there are no errors. |
+| `2`  | An error.                                                                                             |
 
 An error is a rejected diagram in a `.mmd` or `.mermaid` file, a file that
 cannot be read or written, a pattern that selects no file, a configuration that
 cannot be read, or a wrong use of the options. With an error, the code is `2`
 even when a file would change.
+
+When a file cannot be formatted, such as a `.mmd` or `.mermaid` file whose
+diagram mermaid.js rejects, the summary of `--check` is
+`Error occurred when checking code style in the above file.` (or
+`in <n> files.`) on standard output. As in Prettier's `--check`, the summary
+counts only the files that cannot be formatted: a file that cannot be read and a
+pattern that selects no file are reported, but leave the summary as it would be
+without them, also when no pattern selects any file; a file that cannot be
+written still counts among the files whose issues were fixed, and is still
+listed by `--write` and by `--write --list-different`.
 
 ## If you know Prettier
 
@@ -308,6 +345,19 @@ Markdown:
 The command differs from Prettier's CLI too: it does not read `.prettierignore`,
 has no `--ignore-path`, `--ignore-unknown`, or formatting options, and uses only
 the indentation of a configuration.
+
+The check's success line says
+`All diagrams in the matched files use Prettier code style!`, rather than
+Prettier's `All matched files use Prettier code style!`: `mmdfmt` formats
+nothing but diagrams, so the rest of a Markdown file may not use that style. The
+warning asks you to run `mmdfmt --write`, because `prettier --write` would
+format the whole Markdown file and, without the plugin configured, would not
+format its diagrams.
+
+Prettier reads `--write=false` as false. `mmdfmt` reads it as `--write`, because
+[gunshi](https://gunshi.dev), the library that reads its arguments, ignores a
+value written after `=` on an option that takes no value. The same difference
+applies to `--check=false` and `--list-different=false`.
 
 The [README of `mmdfmt`](../../../mmdfmt/README.md#code-blocks-in-detail)
 describes the code blocks in detail: which blocks are formatted, blocks in lists

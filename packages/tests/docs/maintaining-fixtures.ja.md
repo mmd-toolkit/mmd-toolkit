@@ -240,6 +240,10 @@ pnpm run fixtures:set-note notes.json --dry-run
   - `error name`: 拒否のまま、エラーの名前が違う。
   - `error message only`: 拒否のまま、名前も同じ。
   - `file format only`: 期待は同じで、ファイルが正準形で書かれていなかった。
+
+  Db と `embedded` の値では、オブジェクトのキーの順序は変更とみなさず、
+  配列の要素の順序は変更とみなす。
+
 - fixture の `specified.json` の変更は、それだけの 1 行で出す。
   `specified.json added`、`specified.json removed`、
   または `specified.json:` に続けて、読みがどう変わったかを上のどれかで示す。
@@ -288,9 +292,11 @@ pin した mermaid.js のタグにある mermaid.js のチェックアウトを�
   拒否されるものも含めてすべて取る。
   行は呼び出しの行（`tools/src/spec-recorder.ts`）。
   検出器がほかの図種を与えるテキストは除く。
-- 文書: `packages/mermaid/src/docs` の `mermaid`、`mermaid-example`、
-  `mermaid-nocode` のブロックのうち、
+- 文書: `packages/mermaid/src/docs` の文書の一番上の階層にある、
+  Markdown として読んだコードブロックのうち、言語が `mermaid`、
+  `mermaid-example`、`mermaid-nocode` のどれかで、
   mermaid.js の検出器がその図種の ID のどれかを与えるもの。
+  HTML のコメントの中や、ほかのコードブロックの中のブロックは含まない。
 - デモのページ: `demos/*.html` の `<pre class="mermaid">` のうち、
   検出器がその図種の ID のどれかを与えるもの。
   テキストは `mermaid.run()` が読むもの、つまり文字参照を解決し、

@@ -217,6 +217,10 @@ pnpm run fixtures:set-note notes.json --dry-run
   - `error message only`: still rejected, with the same name;
   - `file format only`: the same expectation in a file that was not written in
     the canonical form.
+
+  Object key order does not count as a change in the Db or `embedded` values;
+  array item order does.
+
 - A change of the `specified.json` of a fixture is printed on a line of its own:
   `specified.json added`, `specified.json removed`, or `specified.json:`
   followed by one of the kinds above for how the reading changed.
@@ -258,9 +262,11 @@ files the test's title path.
   and every text it passes to mermaid.js is kept, rejected or not; the line is
   that of the call (`tools/src/spec-recorder.ts`). A text the detectors give
   another diagram type is left out.
-- Documentation: the `mermaid`, `mermaid-example` and `mermaid-nocode` blocks of
-  `packages/mermaid/src/docs` that mermaid.js's detectors give one of the
-  diagram type's ids.
+- Documentation: the code blocks at the top level of the documents of
+  `packages/mermaid/src/docs`, as Markdown reads them, whose language is
+  `mermaid`, `mermaid-example` or `mermaid-nocode`, and that mermaid.js's
+  detectors give one of the diagram type's ids. A block inside an HTML comment
+  or inside another code block is not one of them.
 - Demo pages: the `<pre class="mermaid">` blocks of `demos/*.html` that the
   detectors give one of the diagram type's ids. The text is what `mermaid.run()`
   reads: character references decoded, then `dedent()`, then trimmed. `run()`

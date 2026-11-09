@@ -39,6 +39,7 @@ import { createRequire } from "node:module"
 import os from "node:os"
 import path from "node:path"
 import { parseArgs } from "node:util"
+import markdown from "@eslint/markdown"
 import type { FixtureSource } from "../packages/tests/src/index.ts"
 import {
   detectDiagramType,
@@ -451,11 +452,11 @@ const ERRORS_AFTER_THEIR_INPUT: Readonly<
   ],
 }
 
-/** The fence lines that open a mermaid block in the documentation. */
-const DOC_FENCES: readonly string[] = [
-  "```mermaid",
-  "```mermaid-example",
-  "```mermaid-nocode",
+/** The code-block languages collected from the documentation. */
+const DOC_LANGUAGES: readonly string[] = [
+  "mermaid",
+  "mermaid-example",
+  "mermaid-nocode",
 ]
 
 /** The HTML character references found in the demo pages. */
@@ -650,8 +651,10 @@ async function specCandidates(
 }
 
 /**
- * The blocks of the documentation that belong to `diagram`. A block's text is
- * its lines, each ending in a line feed.
+ * The blocks of the documentation that belong to `diagram`: the code blocks at
+ * the top level of each document, as `@eslint/markdown` reads them, whose
+ * language is one of `DOC_LANGUAGES`. A block's text is its lines, each ending
+ * in a line feed. The line of a block is that of its first line.
  */
 async function docCandidates(
   diagram: CollectedDiagram,
@@ -663,21 +666,25 @@ async function docCandidates(
   for (const file of markdownFiles(docsDir)) {
     const relative = path.relative(docsDir, file)
     const prefix = `docs-${kebab(relative.replace(/\.md$/u, ""))}`
-    const lines = readFileSync(file, "utf8").split("\n")
-    for (let index = 0; index < lines.length; index++) {
-      if (!DOC_FENCES.includes(lines[index]?.trimEnd() ?? "")) continue
-      const start = index + 1
-      let end = start
-      while (end < lines.length && !lines[end]?.startsWith("```")) end++
-      if (end === lines.length) {
-        throw new Error(`${file}:${index + 1}: the block is not closed`)
+    const parsed = markdown.languages.gfm.parse(
+      {
+        body: readFileSync(file, "utf8"),
+        path: file,
+        physicalPath: file,
+        bom: false,
+      },
+      { languageOptions: { frontmatter: "yaml" } },
+    )
+    if (!parsed.ok) throw new Error(`${file}: cannot be read as Markdown`)
+    for (const node of parsed.ast.children) {
+      if (node.type !== "code" || !DOC_LANGUAGES.includes(node.lang ?? "")) {
+        continue
       }
-      const input = lines
-        .slice(start, end)
-        .map((line) => `${line}\n`)
-        .join("")
-      index = end
+      // The value has no line feed after its last line.
+      const input = `${node.value}\n`
       if (!(await isOf(diagram, input))) continue
+      // The parser gives every node of the tree its position.
+      const { line } = node.position!.start
       candidates.push({
         prefix,
         input,
@@ -685,7 +692,7 @@ async function docCandidates(
           kind: "mermaid",
           ref,
           path: relativeWithSlashes(checkout, file),
-          line: start + 1,
+          line: line + 1,
         },
       })
     }

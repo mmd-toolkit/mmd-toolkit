@@ -16,8 +16,8 @@ export interface Diagnostic {
  * text after formatting. A person opens the file after the run to fix what is
  * reported, so a diagnostic gives its position in the text that the run leaves:
  * the text after formatting with `--write` and `--stdin-filepath`, and the text
- * as it was read with `--check`, which writes nothing (README, Errors and exit
- * codes).
+ * as it was read with `--check` or `--list-different` alone (README, Errors
+ * and exit codes).
  */
 export type PositionsIn = "input" | "output"
 

@@ -1,6 +1,7 @@
 import type { Node, Range, Token } from "@mmd-toolkit/ast"
 import { visitorKeys } from "@mmd-toolkit/parser"
 import type { Atom } from "./atoms.ts"
+import { findNodes } from "./collections.ts"
 import { keywordSpellings } from "./keyword-spellings.ts"
 import { childrenOf } from "./layout.ts"
 import { findLinkLabelRespellings } from "./link-label-form.ts"
@@ -251,7 +252,7 @@ function respellingsOf(source: Source): SourceRespellings {
       findRelationshipRespellings(source, map)
     }
     if (source.root.diagramType === "packet") {
-      findEqualRangeRespellings(source, source.root, map)
+      findEqualRangeRespellings(source, map)
     }
     findLinkLabelRespellings(source, map)
     collectNumbers(source, source.root, map)
@@ -331,14 +332,6 @@ function isTouchedAfter(source: Source, offset: number): boolean {
   return source.text[offset] === ";" || source.text[offset] === "-"
 }
 
-/** The relationships of an ER diagram under a node, in source order. */
-function collectRelationships(node: Node, relationships: Node[]): void {
-  for (const child of childrenOf(node)) {
-    if (child.type === "ErRelationship") relationships.push(child)
-    else collectRelationships(child, relationships)
-  }
-}
-
 /**
  * Records the respelling of the three units of each relationship of an ER
  * diagram as symbols: `only one to zero or more` is `||--o{`.
@@ -347,8 +340,11 @@ function findRelationshipRespellings(
   source: Source,
   found: Map<number, Respelling>,
 ): void {
-  const relationships: Node[] = []
-  collectRelationships(source.root, relationships)
+  // ErRelationship has no children, so a match cannot contain another match.
+  const relationships = findNodes(
+    source.root,
+    (node) => node.type === "ErRelationship",
+  )
   for (const relationship of relationships) {
     if (relationship.type !== "ErRelationship") continue
     const units = source.root.tokens.filter(
@@ -376,14 +372,16 @@ function findRelationshipRespellings(
  */
 function findEqualRangeRespellings(
   source: Source,
-  node: Node,
   found: Map<number, Respelling>,
 ): void {
-  for (const child of childrenOf(node)) {
-    if (child.type !== "PacketRangeBlockStatement") {
-      findEqualRangeRespellings(source, child, found)
-      continue
-    }
+  // A packet range has only literal and ignored-text leaves as children, so
+  // traversing below a match cannot select another range.
+  const ranges = findNodes(
+    source.root,
+    (node) => node.type === "PacketRangeBlockStatement",
+  )
+  for (const child of ranges) {
+    if (child.type !== "PacketRangeBlockStatement") continue
     const { start, end } = child
     const between = source.text.slice(start.range[1], end.range[0])
     if (

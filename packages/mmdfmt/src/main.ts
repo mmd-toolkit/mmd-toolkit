@@ -2,7 +2,7 @@ import { readFile, writeFile } from "node:fs/promises"
 import path from "node:path"
 import { cli, define, isArgsValidationError } from "gunshi"
 import packageJson from "../package.json" with { type: "json" }
-import type { Diagnostic } from "./diagnostic.ts"
+import type { Diagnostic, FormatResult } from "./diagnostic.ts"
 import { fileEndings, formatFile, kindOf } from "./format-file.ts"
 import { isSkipped, selectFiles } from "./patterns.ts"
 
@@ -36,19 +36,28 @@ export async function main(args: readonly string[], io: Io): Promise<number> {
     args: {
       write: {
         type: "boolean",
+        short: "w",
         description: "Rewrite the files that change, and list them",
-        conflicts: ["check", "stdinFilepath"],
+        conflicts: ["stdinFilepath"],
       },
       check: {
         type: "boolean",
+        short: "c",
+        description:
+          "Check whether the files are formatted, and print a summary and the files that are not",
+        conflicts: ["listDifferent", "stdinFilepath"],
+      },
+      listDifferent: {
+        type: "boolean",
+        short: "l",
         description: "List the files that --write would change",
-        conflicts: ["write", "stdinFilepath"],
+        conflicts: ["check", "stdinFilepath"],
       },
       stdinFilepath: {
         type: "string",
         description:
           "Format standard input as the file at this path, and write the result to standard output",
-        conflicts: ["write", "check"],
+        conflicts: ["write", "check", "listDifferent"],
       },
       patterns: {
         type: "positional",
@@ -68,7 +77,7 @@ export async function main(args: readonly string[], io: Io): Promise<number> {
         code = exitCodes.error
         return
       }
-      const { write, check, stdinFilepath } = ctx.values
+      const { write, check, listDifferent, stdinFilepath } = ctx.values
       // gunshi puts the arguments after `--` in rest rather than in patterns.
       const patterns = [...(ctx.values.patterns ?? []), ...ctx.rest]
       if (stdinFilepath !== undefined) {
@@ -82,10 +91,20 @@ export async function main(args: readonly string[], io: Io): Promise<number> {
         code = argumentError(io, ["--stdin-filepath needs a path"])
       } else if (patterns.length === 0) {
         code = argumentError(io, ["no patterns of the files to format"])
-      } else if (!write && !check) {
-        code = argumentError(io, ["give --write or --check with the patterns"])
+      } else if (!write && !check && !listDifferent) {
+        code = argumentError(io, [
+          "give --write, --check, or --list-different with the patterns",
+        ])
       } else {
-        code = await formatFiles(patterns, write ? "write" : "check", io)
+        code = await formatFiles(
+          patterns,
+          {
+            write: Boolean(write),
+            check: Boolean(check),
+            listDifferent: Boolean(listDifferent),
+          },
+          io,
+        )
       }
     },
   })
@@ -136,26 +155,32 @@ export async function main(args: readonly string[], io: Io): Promise<number> {
 }
 
 /**
- * Formats the files that the patterns select. With `write`, a file that
- * changes is rewritten; with `check`, it is only listed.
+ * Formats the files that the patterns select, following Prettier's counts
+ * and reports for `write`, `check`, and `listDifferent`.
  */
 async function formatFiles(
   patterns: readonly string[],
-  mode: "write" | "check",
+  mode: {
+    readonly write: boolean
+    readonly check: boolean
+    readonly listDifferent: boolean
+  },
   io: Io,
 ): Promise<number> {
+  if (mode.check) io.stdout("Checking formatting...\n")
   const { files, noSelectingPattern, skipped, unmatched, excluded } =
     await selectFiles(patterns, io.cwd)
+  let failed = noSelectingPattern || unmatched.length > 0 || excluded.length > 0
+  let numberOfUnformattedFilesFound = 0
+  let numberOfFilesWithError = 0
   // As in Prettier's CLI, patterns that leave nothing to select are an error.
   if (noSelectingPattern) {
-    return argumentError(io, [
+    argumentError(io, [
       skipped.length > 0
         ? "no patterns of the files to format; a pattern in node_modules or a directory of version control is skipped"
         : "no patterns of the files to format; a pattern that starts with ! only excludes files",
     ])
   }
-  let failed = unmatched.length > 0 || excluded.length > 0
-  let changed = false
   for (const pattern of unmatched) {
     io.stderr(
       `mmdfmt: error: no file ending in ${endingsInWords} matches ${JSON.stringify(pattern)}\n`,
@@ -168,31 +193,82 @@ async function formatFiles(
   }
   for (const file of files) {
     const name = path.relative(io.cwd, file.path)
+    let text: string, result: FormatResult
     try {
       if (await isSkipped(file.path, io.cwd)) continue
-      const text = await readFile(file.path, "utf8")
-      const result = await formatFile(
+      text = await readFile(file.path, "utf8")
+    } catch (error) {
+      io.stderr(`${name}: error: ${messageOf(error)}\n`)
+      failed = true
+      continue
+    }
+    try {
+      result = await formatFile(
         text,
         file.path,
         file.kind,
-        mode === "write" ? "output" : "input",
+        mode.write ? "output" : "input",
       )
       report(io, name, result.diagnostics)
       if (result.diagnostics.some(isError)) {
         failed = true
+        numberOfFilesWithError += 1
         continue
       }
-      if (result.text === text) continue
-      if (mode === "write") await writeFile(file.path, result.text)
-      changed = true
-      io.stdout(`${name}\n`)
     } catch (error) {
       io.stderr(`${name}: error: ${messageOf(error)}\n`)
       failed = true
+      numberOfFilesWithError += 1
+      continue
+    }
+    if (result.text === text) continue
+    if (mode.write) {
+      // The tool lists only changed file names (README, Usage).
+      if (!mode.check && !mode.listDifferent) io.stdout(`${name}\n`)
+      try {
+        await writeFile(file.path, result.text)
+      } catch (error) {
+        io.stderr(`${name}: error: ${messageOf(error)}\n`)
+        failed = true
+      }
+    }
+    if (mode.check) {
+      io.stderr(`[warn] ${name}\n`)
+    } else if (mode.listDifferent) {
+      io.stdout(`${name}\n`)
+    }
+    numberOfUnformattedFilesFound += 1
+  }
+  if (mode.check) {
+    if (numberOfFilesWithError > 0) {
+      const filesDescription =
+        numberOfFilesWithError === 1
+          ? "the above file"
+          : `${numberOfFilesWithError} files`
+      io.stdout(
+        `Error occurred when checking code style in ${filesDescription}.\n`,
+      )
+    } else if (numberOfUnformattedFilesFound === 0) {
+      // Only the diagrams of a Markdown file are checked, not its other text.
+      io.stdout("All diagrams in the matched files use Prettier code style!\n")
+    } else {
+      const filesDescription =
+        numberOfUnformattedFilesFound === 1
+          ? "the above file"
+          : `${numberOfUnformattedFilesFound} files`
+      // Prettier would format the whole Markdown file and needs the plugin
+      // configured to format its diagrams, so the repair command names mmdfmt.
+      io.stderr(
+        mode.write
+          ? `[warn] Code style issues fixed in ${filesDescription}.\n`
+          : `[warn] Code style issues found in ${filesDescription}. Run mmdfmt with --write to fix.\n`,
+      )
     }
   }
   if (failed) return exitCodes.error
-  return mode === "check" && changed ? exitCodes.changed : exitCodes.ok
+  return numberOfUnformattedFilesFound > 0 && !mode.write
+    ? exitCodes.changed
+    : exitCodes.ok
 }
 
 /**

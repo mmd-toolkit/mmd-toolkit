@@ -724,6 +724,16 @@ describe("If you know Prettier: the rules of the plugin apply to the text of a b
 })
 
 describe("Errors and exit codes: a warning with its position in the file", () => {
+  it("rethrows an option error for a rejected diagram", async () => {
+    await expect(
+      formatMarkdown(
+        lines("```mermaid", "flowchart LR", "A-->B)", "```"),
+        { tabWidth: 1.5, useTabs: undefined },
+        "output",
+      ),
+    ).rejects.toThrow("tabWidth")
+  })
+
   it("leaves a rejected block and formats the other blocks", async () => {
     const text = lines(
       "```mermaid",

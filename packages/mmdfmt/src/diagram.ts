@@ -1,4 +1,3 @@
-import { parse, ParseError } from "@mmd-toolkit/parser"
 import type { Options } from "prettier"
 import { format } from "prettier"
 import plugin from "prettier-plugin-mmd"
@@ -12,6 +11,13 @@ import type { LineEnding } from "./lines.ts"
 export interface Indentation {
   readonly tabWidth: number | undefined
   readonly useTabs: boolean | undefined
+}
+
+/** The fields of the parser's syntax error that the tool reads. */
+interface ParseError {
+  readonly name: "ParseError"
+  readonly message: string
+  readonly range: readonly [number, number]
 }
 
 /** What formatting the text of a diagram gives. */
@@ -37,10 +43,9 @@ const endOfLineOptions = {
  * mark and its lines end with `\n`, as Prettier leaves a text before parsing
  * it; the lines of the result end with `lineEnding`.
  *
- * A text that the plugin rejects is parsed again with the parser that the
- * plugin uses, for the message and the offset of the syntax error: the error
- * that Prettier throws has a line and a column counted for Prettier's code
- * frame, which also ends lines at U+2028 and U+2029, and no offset.
+ * For a text that the plugin rejects, its syntax error keeps the parser's
+ * error as its `cause`. The cause gives the message without Prettier's code
+ * frame and the offset in the text.
  */
 export async function formatDiagram(
   text: string,
@@ -57,23 +62,21 @@ export async function formatDiagram(
     })
     return { kind: "formatted", text: formatted }
   } catch (error) {
-    const syntaxError = syntaxErrorOf(text)
-    if (syntaxError === undefined) throw error
+    const cause = error instanceof Error ? error.cause : undefined
+    if (!isParseError(cause)) throw error
     return {
       kind: "rejected",
-      message: syntaxError.message,
-      offset: syntaxError.range[0],
+      message: cause.message,
+      offset: cause.range[0],
     }
   }
 }
 
-/** The syntax error of a text, or `undefined` when the parser accepts it. */
-function syntaxErrorOf(text: string): ParseError | undefined {
-  try {
-    parse(text)
-  } catch (error) {
-    if (error instanceof ParseError) return error
-    throw error
-  }
-  return undefined
+/**
+ * Whether a value is the parser's syntax error. It is checked by name, as the
+ * plugin checks it, so that the check also holds when two copies of the parser
+ * are installed.
+ */
+function isParseError(error: unknown): error is ParseError {
+  return error instanceof Error && error.name === "ParseError"
 }

@@ -139,16 +139,16 @@ the optional sections. The English rule document:
 
 The line `Japanese version: …` is written only when the Japanese document
 exists; an English document without one has no such line, since the site would
-fail on a link to a missing page (`check:docs` reports the link). The Japanese
-document has the same parts: `英語版: [<name>.md](./<name>.md)`,
+fail on a link to a missing page (`pnpm run lint:md` reports the link). The
+Japanese document has the same parts: `英語版: [<name>.md](./<name>.md)`,
 `…を禁止する。`, `## 規則の詳細`, `この規則に**反する**コードの例:`,
 `この規則に**従う**コードの例:`, `## オプション` with
 `この規則にはオプションがない。`, `## 使わないとき`, `## 関連する規則`, and
 `## 参考`. Links from a Japanese document to another document point to its
 Japanese version (`.ja.md`), or to its English document when it has no Japanese
-version (`check:docs` reports a link whose target does not exist). When the line
-with the link to the English version is wider than 80 columns, break it after
-`英語版:`.
+version (`pnpm run lint:md` reports a link whose target does not exist). When
+the line with the link to the English version is wider than 80 columns, break it
+after `英語版:`.
 
 How each part is written:
 

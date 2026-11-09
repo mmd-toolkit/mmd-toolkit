@@ -295,6 +295,9 @@ importers:
       '@mmd-toolkit/tests':
         specifier: workspace:*
         version: link:../tests
+      '@types/semver':
+        specifier: ^7.8.0
+        version: 7.8.0
       eslint:
         specifier: ^10.0.0
         version: 10.11.0
@@ -304,12 +307,12 @@ importers:
       prettier:
         specifier: ^3.9.0
         version: 3.9.9
+      semver:
+        specifier: ^7.8.5
+        version: 7.8.5
 
   packages/mmdfmt:
     dependencies:
-      '@mmd-toolkit/parser':
-        specifier: workspace:^
-        version: link:../parser
       gunshi:
         specifier: ^0.37.3
         version: 0.37.3
@@ -1186,6 +1189,9 @@ packages:
 
   '@types/node@26.6.3':
     resolution: {integrity: sha512-dsqMQQoeTLqu9wynDD00q573mNzso3IdQOAfHRJqLCcmCFPoGo9A1bDpUcv/9tnKpErQWv9uKeGfl37EIS02Yg==}
+
+  '@types/semver@7.8.0':
+    resolution: {integrity: sha512-1mAINjtQCXXeLkJ9ehXkwOcBpqtLxiVtKhpUf83DdRNdQKV0iXZpaHYqRr7nj+wvxuJzoAmAwXI+sCNMv1CzLQ==}
 
   '@types/trusted-types@2.0.7':
     resolution: {integrity: sha512-ScaPdn1dQczgbl0QFTeTOmVHFULt394XJgOQNoyVhZ6r2vLnMLJfBPd53SB52T/3G36VI1/g2MZaX0cwDuXsfw==}
@@ -4219,6 +4225,8 @@ snapshots:
   '@types/node@26.6.3':
     dependencies:
       undici-types: 8.9.0
+
+  '@types/semver@7.8.0': {}
 
   '@types/trusted-types@2.0.7':
     optional: true

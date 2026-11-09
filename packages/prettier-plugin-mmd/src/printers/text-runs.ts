@@ -10,7 +10,7 @@ import type {
   Range,
 } from "@mmd-toolkit/ast"
 import type { Doc } from "prettier"
-import { visitorKeys } from "@mmd-toolkit/parser"
+import { traverseNodes, visitorKeys } from "@mmd-toolkit/parser"
 import type { Atom } from "./atoms.ts"
 import type { TextEdit } from "./layout.ts"
 import type { Source } from "./source.ts"
@@ -133,7 +133,14 @@ export function collapseRunEdits(
   return edits
 }
 
-/** The doc with the runs of spaces and tabs in its strings printed as one. */
+/**
+ * The doc with the runs of spaces and tabs in its strings printed as one. It
+ * reaches the strings and the arrays of the doc only, and not the contents of
+ * its commands, which `utils.mapDoc` of `prettier/doc` would also reach: a
+ * layout puts text that stays as written inside a command, such as the text
+ * that a railroad-beta call ignores (`terminal(%%{!  }%% "a")` keeps both
+ * spaces).
+ */
 function collapseDoc(doc: Doc): Doc {
   if (typeof doc === "string") {
     const collapsed = collapseRuns(doc)
@@ -269,20 +276,19 @@ function isGeneratedSubgraphId(id: string): boolean {
 
 /** Records the ids of the vertices that carry a data block. */
 function collectDataIds(source: Source, node: Node, ids: Set<string>): void {
-  if (node.type === "FlowchartVertex" || node.type === "AgentflowVertex") {
-    const data = (node as { readonly data?: unknown }).data
-    if (Array.isArray(data) ? data.length > 0 : data != null) {
-      ids.add(source.text.slice(...node.id.range))
-    }
-  }
-  for (const key of visitorKeys[node.type]) {
-    const value = (node as unknown as Record<string, unknown>)[key]
-    for (const child of Array.isArray(value) ? value : [value]) {
-      if (child !== null && child !== undefined) {
-        collectDataIds(source, child as Node, ids)
+  traverseNodes(node, {
+    enterNode(item) {
+      if (item.type === "FlowchartVertex" || item.type === "AgentflowVertex") {
+        const data = (item as { readonly data?: unknown }).data
+        if (Array.isArray(data) ? data.length > 0 : data != null) {
+          ids.add(source.text.slice(...item.id.range))
+        }
       }
-    }
-  }
+    },
+    leaveNode() {
+      // The ids are collected on the way down.
+    },
+  })
 }
 
 /**

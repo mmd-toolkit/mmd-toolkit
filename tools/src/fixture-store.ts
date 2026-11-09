@@ -27,6 +27,7 @@ import type {
 } from "../../packages/tests/src/index.ts"
 import { runMermaidWithEmbeddedData } from "../../packages/tests/src/mermaid.ts"
 import type { MermaidRun } from "../../packages/tests/src/mermaid.ts"
+import { orderJsonKeys } from "../../packages/tests/src/ordered-json.ts"
 import { recordEmbedded } from "../../packages/tests/src/recorded-embedded.ts"
 import { belongsIn } from "./diagrams.ts"
 import { specifiedRunOf } from "./specified-reading.ts"
@@ -107,7 +108,7 @@ const baselines: Map<string, Promise<MermaidConfig>> = new Map()
 export function baselineConfigOf(
   config: MermaidConfig | undefined,
 ): Promise<MermaidConfig> {
-  const key = JSON.stringify(canonicalJson(config ?? {}))
+  const key = JSON.stringify(config ?? {}, orderJsonKeys)
   let baseline = baselines.get(key)
   if (baseline === undefined) {
     baseline = runMermaidWithEmbeddedData(
@@ -252,23 +253,5 @@ export function fixtureKey(
   input: string,
   config: MermaidConfig | undefined,
 ): string {
-  return JSON.stringify([input, canonicalJson(config ?? {})])
-}
-
-/**
- * Sorts object keys recursively, for comparing configurations.
- */
-function canonicalJson(value: unknown): unknown {
-  if (Array.isArray(value)) return value.map(canonicalJson)
-  if (typeof value === "object" && value !== null) {
-    return Object.fromEntries(
-      Object.keys(value)
-        .sort()
-        .map((key) => [
-          key,
-          canonicalJson((value as Record<string, unknown>)[key]),
-        ]),
-    )
-  }
-  return value
+  return JSON.stringify([input, config ?? {}], orderJsonKeys)
 }

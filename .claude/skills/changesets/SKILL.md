@@ -37,9 +37,11 @@ change is left out of the next version's changelog and its version bump.
   CI.
 
 Check before the pull request: `pnpm exec changeset status --since=origin/main`
-fails when a package changed on the branch has no changeset, and lists the bumps
-otherwise. It reads changeset files that are staged or committed; an untracked
-file is not seen.
+lists the bumps that the changesets of the branch give. It fails only when a
+package changed on the branch and the branch has no changeset at all; it does
+not check that each changed package has one, so compare its list with the
+packages the branch changes. It reads changeset files that are staged or
+committed; an untracked file is not seen.
 
 ## How to write it
 
