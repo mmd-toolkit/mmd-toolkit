@@ -1234,6 +1234,7 @@ and, with the Db only, in the inputs of the conformance corpus:
 | The label of a link                |       19 |                  19 |    170 |     162 |
 | A description block on one line    |        3 |                   3 |    282 |     245 |
 | The quotes of a field of a sankey  |        6 |                   6 |     11 |      11 |
+| The quotes of a name of an ER      |        0 |                   0 |     15 |      15 |
 
 A corpus pair that is not counted in the last column is a pair of which
 mermaid.js rejects the other spelling, except two pairs of the label of a link,
@@ -1649,6 +1650,11 @@ without quotes:
 | sankey       | the source of a link                  |             87 |         0 |
 | sankey       | the target of a link                  |             83 |         4 |
 | sankey       | the value of a link, in its own shape |             87 |         0 |
+| ER           | the name of an entity                 |             39 |         2 |
+| ER           | the role of a relationship            |             43 |         2 |
+| ER           | the left name of a relationship       |             45 |         0 |
+| ER           | the right name of a relationship      |             45 |         0 |
+| ER           | the id of a subgraph                  |             11 |         1 |
 
 A text is printed without quotes where it is plain: ASCII letters, digits, `_`,
 `-`, and `.`, with spaces between them, and, in a sankey diagram, with spaces at
@@ -1669,10 +1675,26 @@ sankey/quotes/values-in-quotes-without-quotes] [fixture:
 sankey/directives/inside-fields-kept] [fixture:
 sankey/multi-line-strings/string-over-lines]
 
-mermaid.js 12.3.0 read both forms of 11 inputs of the conformance corpus whose
-quotes the printer leaves out, with the same Db, and of the 6 examples that were
+In an ER diagram a text is printed without quotes where it is one word of ASCII
+letters, digits, and `_` that starts with a letter or a `_` and is none of the
+words that the lexer reads as a unit of its own, in any case: `erDiagram`,
+`style`, `classDef`, `class`, `subgraph`, `end`, `one`, `many`, `only`, `zero`,
+`optionally`, `or`, `to`, `accTitle`, `accDescr`, `direction`, `TB`, `BT`, `RL`,
+`LR`, `PK`, `FK`, `UK`, `u`, and `o`. A name of other characters, such as a
+space, a `-`, or a letter outside ASCII, a name that starts with a digit, which
+the lexer can read as a number or a cardinality, and a title of a subgraph,
+whose names mermaid.js joins with one space, stay as written. [fixture:
+er/entities/plain-names-without-quotes] [fixture:
+er/entities/names-that-need-quotes] [fixture: er/entities/alias-tight] [fixture:
+er/statements-one-per-line/relationships] [fixture:
+er/statements-one-per-line/role-then-entity] [fixture:
+er/subgraphs/quoted-and-number-ids]
+
+mermaid.js 12.3.0 read both forms of the inputs of the conformance corpus whose
+quotes the printer leaves out, with the same Db: 11 inputs of sankey diagrams
+and 15 of ER diagrams. It read both forms of the 6 sankey examples that were
 written again with every plain field in quotes, with the same Db and the same
-SVG.
+SVG, and the 15 ER inputs were drawn the same as their formatted text.
 
 ### Versions of mermaid.js
 
@@ -1691,6 +1713,13 @@ mermaid.js, show which form each version reads:
   in quotes, and the same action of a record, which drops the spaces at the ends
   of the source and the target, reads `""` as `"`, and reads the value with
   `parseFloat` of the field without its spaces at the ends.
+- The names and the roles of an ER diagram: the grammar of 8.14.0 has no name in
+  quotes, and the grammars of 9.4.3, 10.9.0, 11.0.0, and 12.3.0 read a name and
+  a role in quotes with a rule of their own and drop the quotes
+  (`$1.replace(/"/g, '')`), so that a name in quotes and the same name without
+  them have the same text. The words that these grammars read as units of their
+  own (`erDiagram`, `one`, `many`, `only one`, `to`, `optionally to`, and the
+  others of the lexer) are among the words that the printer leaves in quotes.
 - An accessibility description in a block on one line: the grammar of the
   flowchart in 9.0.0 and 9.0.1 has no rule for `accDescr`, and the grammar in
   9.1.0, the first with the rule, has the form with the colon and the form with

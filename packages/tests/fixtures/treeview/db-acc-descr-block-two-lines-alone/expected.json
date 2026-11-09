@@ -1,0 +1,19 @@
+{
+  "source": {
+    "kind": "authored",
+    "note": "A description block with two lines of text publishes the description `Project files\\nand folders`."
+  },
+  "accepted": true,
+  "diagramType": "treeView",
+  "db": {
+    "accTitle": "",
+    "accDescr": "Project files\nand folders",
+    "nodes": [
+      {
+        "name": "root",
+        "nodeType": "directory",
+        "children": []
+      }
+    ]
+  }
+}

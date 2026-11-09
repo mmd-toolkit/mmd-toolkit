@@ -426,7 +426,7 @@ Output
 erDiagram
   A ||--o{ B : x
   C ||--o{ D : y
-  E }|..|{ F : "z"
+  E }|..|{ F : z
   G
 ```
 
@@ -757,10 +757,16 @@ in most examples of the documentation of mermaid.js: `p [ Person ]` is printed
 and are separated by a `,` that touches the classes on both sides:
 `A ::: c1 , c2` is printed `A:::c1,c2`. [fixture: entities/classes-tight]
 [fixture: entities/alias-and-classes] The `{` of an attribute block stands after
-one space (see [Attribute blocks](#attribute-blocks)). The names are kept as
-written, quoted or not, numbers included. [fixture: entities/names-kept] A
-directive between the parts of an entity is placed as under
-[Directives](#directives). [fixture: entities/directive-between-parts] [fixture:
+one space (see [Attribute blocks](#attribute-blocks)). A name, a role, or the id
+of a subgraph in quotes that is one plain word is printed without them, as the
+examples in the documentation of mermaid.js write it (see
+[The quotes of a text](./compatibility.md#the-quotes-of-a-text)): `"A"[B]` is
+printed `A[B]`, and `C ||--o{ D : "has"` is `C ||--o{ D : has`. The other names
+are kept as written, quoted or not, numbers included. [fixture:
+entities/plain-names-without-quotes] [fixture: entities/names-that-need-quotes]
+[fixture: entities/names-kept] A directive between the parts of an entity is
+placed as under [Directives](#directives). [fixture:
+entities/directive-between-parts] [fixture:
 entities/directive-between-parts-runs]
 
 Input
@@ -787,7 +793,7 @@ erDiagram
     int a
   }
   12[P]
-  "A"[B]
+  A[B]
   p[Person]
 ```
 

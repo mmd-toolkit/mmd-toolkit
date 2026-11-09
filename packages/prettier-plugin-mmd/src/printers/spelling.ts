@@ -228,7 +228,7 @@ function respellingsOf(source: Source): SourceRespellings {
       findEqualRangeRespellings(source, source.root, map)
     }
     findLinkLabelRespellings(source, map)
-    findQuoteFormRespellings(map, source.root)
+    findQuoteFormRespellings(source, map)
     collectNumbers(source, source.root, map)
     found = { byStart: map, starts: [...map.keys()].sort((a, b) => a - b) }
     respellingsOfSource.set(source, found)

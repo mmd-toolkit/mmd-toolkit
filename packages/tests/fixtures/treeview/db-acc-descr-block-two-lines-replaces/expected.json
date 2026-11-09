@@ -1,0 +1,19 @@
+{
+  "source": {
+    "kind": "authored",
+    "note": "A description block with two lines of text replaces an earlier description line with `Second\\nThird`."
+  },
+  "accepted": true,
+  "diagramType": "treeView",
+  "db": {
+    "accTitle": "",
+    "accDescr": "Second\nThird",
+    "nodes": [
+      {
+        "name": "root",
+        "nodeType": "directory",
+        "children": []
+      }
+    ]
+  }
+}

@@ -438,7 +438,7 @@ E }|..|{ F : "z" G
 erDiagram
   A ||--o{ B : x
   C ||--o{ D : y
-  E }|..|{ F : "z"
+  E }|..|{ F : z
   G
 ```
 
@@ -810,7 +810,7 @@ erDiagram
     int a
   }
   12[P]
-  "A"[B]
+  A[B]
   p[Person]
 ```
 
