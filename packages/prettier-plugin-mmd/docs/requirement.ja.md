@@ -505,6 +505,10 @@ style の文脈が LF で終わる場合、文の末尾の空白は落としま�
 Mermaid は、区切る空白にかかわらずスタイルの単位をつなげて読むため、
 `stroke-dasharray: 5 5` は引き続き `stroke-dasharray:55` で、Db は変わりません。
 `fill   : navy, stroke  : black` は `fill: navy, stroke: black` にします。
+`:` で始まるスタイルも、ほかのスタイルと同じく、`:` の前に空白を置かず、
+後ろに空白を 1 つ置きます。
+`style r :  red   x` は `style r : red x` と印字します。
+[fixture: styles-and-classes/style-colon-first-run-spaced]
 通常はつなげる見出しや外側の改行があっても、最初の整形で同じ間隔にします。
 スタイル内部の改行区切り、所有する trivia、
 同じ物理行に保持するセミコロンがある場合は、既存のスタイルの配置を保ちます。

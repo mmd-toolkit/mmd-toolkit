@@ -467,13 +467,17 @@ mermaid.js が読まない `""` も同じです。
 `classDef c fill: #f00, color: white` になります。
 スタイルの語と語の間の空白とタブの連続は、空白 1 つで印字し、
 語と語の間に空白があるかどうかは、書かれたまま残します。
-文字列、コメント、`url(` の括弧の中の連続と、バックスラッシュの直後の 1 文字は、
-CSS が値の一部として読むので、書かれたまま残します。
+文字列、コメント、`url(` の括弧の中の連続と、
+バックスラッシュの後ろのエスケープは、CSS が値の一部として読むので、
+書かれたまま残します。
+エスケープは、16 進数字とその直後の空白かタブ 1 文字、
+または 16 進数字が続かないときの次の 1 文字です。
 [fixture: whitespace-between-tokens/style-words-run-spaced]
 [fixture: whitespace-between-tokens/style-string-runs-kept]
 [fixture: whitespace-between-tokens/style-url-runs-kept]
 [fixture: whitespace-between-tokens/style-comment-runs-kept]
 [fixture: whitespace-between-tokens/style-backslash-run-spaced]
+[fixture: whitespace-between-tokens/style-hex-escape-run-spaced]
 mermaid.js は state 図では `,` の前後の空白を何もないものとして読むので、
 その空白では Db は変わりませんが、`:` の前後の空白は Db に残します。
 描かれる図は同じです。
@@ -483,12 +487,14 @@ mermaid.js は state 図では `,` の前後の空白を何もないものとし
 `fill:a\,b ,stroke:c` は `fill: a\, b, stroke: c` と印字します。
 バックスラッシュの後で `:` の前にある空白は、
 除くと `:` がエスケープされるので残します。
+その空白の後ろの空白は除きます。
 [fixture: whitespace-between-tokens/style-backslash-before-comma]
 ここでは、スタイルの末尾のバックスラッシュの後の空白は読まれません。
 `style S1 stroke-width:3px\ ,stroke:#0f0` は、
 `style S1 stroke-width: 3px\, stroke: #0f0` と印字し、画素は同じでした。
 [fixture: whitespace-between-tokens/style-backslash-space-dropped]
 [fixture: whitespace-between-tokens/style-colon-escaped-space-kept]
+[fixture: whitespace-between-tokens/style-colon-escaped-space-run-dropped]
 コメントやディレクティブがある文、空白だけのスタイルがある文、
 スタイルに改行があるか、行に保つ `;` がある文は、書かれたままにします。
 [fixture: whitespace-between-tokens/comma-kept]
@@ -518,7 +524,9 @@ Db が書かれたまま保つからです。
 [fixture: keyword-case/accessibility-alias-direction-one-form]
 
 `:` で始まるスタイルと、バックスラッシュと空白の後に `:` があるスタイルも、
-語の間の連続を空白 1 つで印字します。
+ほかのスタイルと同じく、`:` の後ろに空白を 1 つ置き、
+語と語の間の連続は空白 1 つで印字します。
+`style A :  red   x` は `style A : red x` と印字します。
 [fixture: whitespace-between-tokens/style-colon-first-run-spaced]
 [fixture: whitespace-between-tokens/style-escaped-space-run-spaced]
 閉じられていない文字列や `url(` はスタイルの末尾まで続き、
@@ -1659,7 +1667,7 @@ U+2028 か U+2029 の前の無視される `;` がある行です（詳しくは
 - 値のテキスト。
   説明、ラベル、ノート、`as` の後の id、擬似状態の名前、
   スタイル（最初の `:` と `,` の前後の空白と、文字列、コメント、`url(` の外で、
-  バックスラッシュの直後の 1 文字でもない所の語の間の連続を除きます）、
+  バックスラッシュの後ろのエスケープでもない所の語の間の連続を除きます）、
   `class` 文の CSS クラス、`accTitle` のテキスト。
   [fixture: whitespace-between-tokens/style-string-runs-kept]
   [fixture: descriptions-and-labels/acc-text-runs-collapsed]

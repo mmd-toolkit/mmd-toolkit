@@ -347,9 +347,12 @@ classDefのエスケープしたコンマ、順序と反復を保ちます。
 スタイルの語と語の間の空白とタブの連続は、空白 1 つで印字し、
 語と語の間に空白があるかどうかは、書かれたまま残します。
 一重引用符の文字列の中と閉じていないコメントの中の連続と、
-バックスラッシュの直後の 1 文字は残します。
+バックスラッシュの後ろのエスケープは残します。
+エスケープは、16 進数字とその直後の空白かタブ 1 文字、
+または 16 進数字が続かないときの次の 1 文字です。
 [fixture: single-space-gaps/style-words-run-spaced]
 [fixture: single-space-gaps/style-string-runs-kept]
+[fixture: single-space-gaps/style-hex-escape-run-spaced]
 番号を指定した `linkStyle` では、`fill` で始まるスタイルの前の `,` の後ろに、
 空白があるかないかを保ち、空白の連続は空白 1 つにします。
 mermaid.js は先頭だけを読むので、`fill-opacity` も含みます。
@@ -388,9 +391,12 @@ look が `handDrawn` のときは、mermaid.js が先頭の `stroke:` を読む�
 `style` と `linkStyle` では、`,` は前に何があってもスタイルを終えます。
 バックスラッシュの後で `:` の前にある空白も、
 除くと `:` がエスケープされるので残します。
+その空白の後ろの空白は、
+[flowchart](./flowchart.ja.md#トークンの間の空白)と同じく除きます。
 [fixture: single-space-gaps/style-escaped-space-before-comma]
 [fixture: single-space-gaps/style-backslash-before-comma]
 [fixture: single-space-gaps/style-colon-escaped-space-kept]
+[fixture: single-space-gaps/style-colon-escaped-space-run-dropped]
 ディレクティブやコメントがある文、空白だけのスタイルがある文、
 スタイルに改行か U+2028・U+2029 があるか、行に保つ `;` がある文は、
 書かれたままにします。 [fixture: single-space-gaps/classdef-first-tab]
@@ -402,7 +408,9 @@ look が `handDrawn` のときは、mermaid.js が先頭の `stroke:` を読む�
 [fixture: single-space-gaps/style-comma-beside-directive-kept]
 [test: agentflow: U+2028 before the comma of a style statement]
 
-`:` で始まるスタイルも、語と語の間の空白とタブの連続は空白 1 つで印字します。
+`:` で始まるスタイルも、ほかのスタイルと同じく、`:` の後ろに空白を 1 つ置き、
+語と語の間の連続は空白 1 つで印字します。
+`style A :  red   x` は `style A : red x` と印字します。
 [fixture: single-space-gaps/style-colon-first-run-spaced]
 
 linkStyleの後とinterpolate名の前のタブは、
@@ -634,6 +642,11 @@ agentflow の後の振り分けや別名解決を根拠に YAML を書き換え�
 見出しもその字下げにし、`useTabs` でないときと同じく、
 ブロックの行も見出しと一緒に動かします。
 [fixture: metadata-blocks/use-tabs-container-header-indented]
+`flow G; A@{ … }` の `A@{ … }` のように、見出しと同じ行でその後ろにある文は、
+コンテナの中の文です。
+行頭に書かれた字下げは見出しの字下げなので、その文も書かれたまま印字しません。
+[データブロック](./flowchart.ja.md#データブロック)を参照してください。
+[fixture: metadata-blocks/use-tabs-container-header-statement-moved]
 
 矢印の改行後のブロックは、文の最初の行より後から始まるため桁を残し、
 1 行でも複数行でも、ブロックを 2 つ持つ文は、どちらも桁を残します。

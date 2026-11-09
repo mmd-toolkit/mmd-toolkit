@@ -658,13 +658,14 @@ a state, a block, an agentflow, and a swimlane diagram
 `style A font-family:\41   rial,font-size:30px` and the printed
 `font-family: \41  rial, font-size: 30px` have the same pixels, while the
 `\41 rial` that collapsing the whole run after the escape would print draws
-another figure. A style that starts with the `:`, and one whose `:` follows a
-backslash and a space, were drawn as written and as printed in these diagram
-types and in a class and an ER diagram: `style A :  red   x` and
-`style A : red x`, and `style A fill\   :red   x` and `style A fill\ : red x`
-have the same pixels. [fixture: treemap/styles/spaced] [fixture:
-treemap/styles/escaped-comma-spaced] [fixture:
-class/whitespace-between-tokens/style-value-words-spaced] [fixture:
+another figure. A style that starts with the `:` was drawn as written and as
+printed in these diagram types and in a class, an ER, and a requirement diagram,
+and so was one whose `:` follows a backslash and a space, in the diagram types
+that accept a backslash in a style (flowchart, agentflow, swimlane, state, and
+block): `style A :  red   x` and `style A : red x`, and
+`style A fill\   :red   x` and `style A fill\ : red x`, have the same pixels.
+[fixture: treemap/styles/spaced] [fixture: treemap/styles/escaped-comma-spaced]
+[fixture: class/whitespace-between-tokens/style-value-words-spaced] [fixture:
 class/whitespace-between-tokens/style-words-run-spaced] [fixture:
 flowchart/whitespace-between-tokens/style-words-run-spaced] [fixture:
 agentflow/single-space-gaps/style-words-run-spaced] [fixture:

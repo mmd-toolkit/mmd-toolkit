@@ -1036,7 +1036,9 @@ Mermaid は、区切る空白にかかわらずスタイルの単位をつなげ
 [fixture: styles-and-classes/style-words-touching-kept]
 [fixture: styles-and-classes/style-words-directive-kept]
 
-`:` で始まるスタイルも、語と語の間の空白とタブの連続は空白 1 つで印字します。
+`:` で始まるスタイルも、ほかのスタイルと同じく、`:` の後に空白を 1 つ置き、
+語と語の間の空白とタブの連続は空白 1 つで印字します。
+`style A :  red   x` は `style A : red x` と印字します。
 [fixture: styles-and-classes/style-colon-first-run-spaced]
 
 [fixture: styles-and-classes/keyword-case-kept]

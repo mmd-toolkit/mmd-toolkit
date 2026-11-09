@@ -215,9 +215,9 @@ export function styleRunEdits(
  * The offset after the escape that starts with the backslash at `backslashAt`.
  * CSS reads one to six hexadecimal digits after a backslash, and one space or
  * tab after them, as the escape; any other character after a backslash, a
- * space or a tab included, is the escaped character. A run of whitespace goes
- * on after the escape (`Arial\20  Black` is `Arial`, the escape `\20 `, a space,
- * and `Black`).
+ * space or a tab included, is the escaped character. The whitespace after the
+ * escape is a run like any other (`Arial\20  Black` is `Arial`, the escape
+ * `\20 `, one space, and `Black`).
  */
 function endOfEscape(text: string, backslashAt: number, end: number): number {
   let digits = 0

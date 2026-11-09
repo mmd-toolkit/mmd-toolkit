@@ -746,11 +746,14 @@ mermaid.js はリンクのスタイルを書かれたまま `;` でつなぐの�
 `style` と `linkStyle` では、`,` は前に何があってもスタイルを終えます。
 [fixture: whitespace-between-tokens/style-backslash-before-comma]
 バックスラッシュの後で `:` の前にある空白も、
-除くと `:` がエスケープされるので残します。
+除くと `:` がエスケープされるので残し、その空白の後ろの空白は、
+ほかの `:` の前と同じく除きます。
+`style A fill\   :#f00` は `style A fill\ : #f00` と印字します。
 コメントやディレクティブがある文、空白だけのスタイルがある文、
 スタイルに改行があるか、行に保つ `;` がある文は、書かれたまま残します。
 [fixture: whitespace-between-tokens/style-blank-style-kept]
 [fixture: whitespace-between-tokens/style-colon-escaped-space-kept]
+[fixture: whitespace-between-tokens/style-colon-escaped-space-run-dropped]
 [fixture: whitespace-between-tokens/style-escaped-space-before-comma]
 [fixture: whitespace-between-tokens/style-comma-beside-directive-kept]
 [fixture: whitespace-between-tokens/style-comma-with-kept-semicolon-kept]
@@ -772,21 +775,34 @@ mermaid.js の文の規則が読むものなので、空白 1 つにします。
 `classDef c fill:#f00    stroke:#333` は、
 `classDef c fill: #f00 stroke:#333` と印字します。
 一重引用符の文字列の中と閉じていないコメントの中の連続と、
-バックスラッシュの直後の 1 文字は、CSS が値の一部として読むので、
+バックスラッシュの後ろのエスケープは、CSS が値の一部として読むので、
 書かれたまま残します。
+エスケープは、最大 6 桁の 16 進数字とその直後の空白かタブ 1 文字、
+または 16 進数字が続かないときの次の 1 文字です。
+エスケープの後ろの連続は、ほかと同じ連続です。
 `font-family:a\   b` は `font-family: a\  b` と印字します。
+`font-family:Arial\20   Black` は、`font-family: Arial\20  Black` と印字します。
+`font-family:Arial\0000201   Black` では、エスケープは 6 桁の数字の後で終わり、
+`font-family: Arial\0000201 Black` と印字します。
 [fixture: whitespace-between-tokens/style-inner-whitespace-collapsed]
 [fixture: whitespace-between-tokens/style-words-run-spaced]
 [fixture: whitespace-between-tokens/style-string-runs-kept]
 [fixture: whitespace-between-tokens/style-backslash-run-spaced]
+[fixture: whitespace-between-tokens/style-hex-escape-run-spaced]
+[fixture: whitespace-between-tokens/style-hex-escape-tab-run-spaced]
+[fixture: whitespace-between-tokens/style-hex-escape-seven-digits-run-spaced]
 [fixture: whitespace-between-tokens/style-words-directive-kept]
 `linkStyle default`、`classDef`、`style` の形は、ER と requirement と同じです。
 [同じに描かれるスタイル](./compatibility.ja.md#同じに描かれるスタイル)
 を参照してください。
 
 `:` で始まるスタイルと、`:` の前にバックスラッシュと空白があるスタイルも、
-CSS がどちらの書き方も捨てるので、語と語の間の連続を空白 1 つで印字します。
-`style A :red   x` は `style A :red x` と印字します。
+ほかのスタイルと同じく、
+バックスラッシュがエスケープする空白のほかは `:` の前に空白を置かず、
+後ろに空白 1 つを置き、語と語の間の連続を空白 1 つで印字します。
+CSS が `:` の前後の空白を捨て、連続を 1 つとして読むためです。
+`style A :  red   x` は `style A : red x` と印字し、
+`style A fill\ :red   x` は `style A fill\ : red x` と印字します。
 [fixture: whitespace-between-tokens/style-colon-first-run-spaced]
 [fixture: whitespace-between-tokens/style-escaped-space-run-spaced]
 閉じていないコメントはスタイルの終わりまで続き、中の連続は残します。
@@ -1881,6 +1897,8 @@ mermaid.js は単独行の `}` の前のタブを受理しますが、
 その行の字下げは、文が始まる行の先頭に書かれた空白です。
 同じ行で文の前にあるディレクティブは文と一緒に残し、
 その行は先頭から書かれたまま印字します。
+ただし、ディレクティブと文の間の空白の連なりは、
+[ディレクティブ](#ディレクティブ)のとおり空白 1 つにします。
 `C; A@{ … }` の `A@{ … }` のように、同じ行のほかの文に続く文は、
 整形器が文を 1 行ずつ印字するため、独立した行に置き、
 その行は元の行の先頭に書かれた字下げで始めます。
@@ -1890,10 +1908,24 @@ mermaid.js は単独行の `}` の前のタブを受理しますが、
 [fixture: data-blocks/use-tabs-not-first-on-line]
 [fixture: data-blocks/use-tabs-two-statements-before]
 
+行頭に書かれた空白は、その行の最初の文の字下げなので、
+同じ深さの文にだけ当てはまります。
+`subgraph s; A@{ … }` のように同じ行で文の前にコンテナの見出しがあると、
+その文はコンテナの中の文となり、1 段深くなります。
+`end; A@{ … }` のように前にコンテナの `end` があると、
+その文はコンテナの後の文となり、前の行より浅くなります。
+書かれた字下げは見出しか `end` のもので、文の深さに当たるものはありません。
+その場合は、整形器がノードの行の字下げを整え、
+次の段落のとおりブロックの行も一緒に動かします。
+[fixture: data-blocks/use-tabs-subgraph-header-moved]
+[fixture: data-blocks/use-tabs-nested-subgraph-header-moved]
+[fixture: data-blocks/use-tabs-end-moved]
+
 ノードの行自体の字下げを整形器が整える必要がある場合は、
 `useTabs` でないときと同じく、ブロックの行も空白で字下げして一緒に動かします。
 該当するのは、
 `end` がヘッダーと同じ字下げに置かれる agentflow の container のヘッダー、
+同じ行のコンテナの見出しか `end` の後の文（前述）、
 mermaid.js が字下げをノードの段として読む kanban のノードです。
 [Metadata blocks](./agentflow.ja.md#metadata-blocks)と
 [データブロック](./kanban.ja.md#データブロック)を参照してください。
@@ -2429,12 +2461,22 @@ mermaid.js は、名前のテキストに空白がないときだけ名前を id
 後ろに空白があってもなくても id が生成されるため、行末の空白を除きます。
 ただし、名前をブロック、保持する `;`、
 または同じ行のディレクティブから区切る空白は残します。
-ディレクティブの前は、空白があるかどうかを保ち、連続は空白 1 つにします。
+その空白は、あるかどうかを保ち、連続は空白 1 つにします。
 [トークンの間のディレクティブ](./compatibility.ja.md#トークンの間のディレクティブ)
 を参照してください。
 ディレクティブの後の空白によって、
 mermaid.js がディレクティブを名前の一部として読む場合も同じです。
+markdown 文字列や swimlane 図でも同じで、
+名前の中の連続は mermaid.js が描くため残しますが、
+名前の末尾の空白は幅にかかわらず同じに描かれます。
+``subgraph "`o p`"   %%{init: {}}%%`` は、
+``subgraph "`o p`" %%{init: {}}%%`` と印字します。
+`end` で終わる名前が取り込む次の行の字下げは、この空白には当たりません（後述）。
 [fixture: subgraph-header/name-several-words-directive-run-collapsed]
+[fixture: subgraph-header/name-markdown-directive-run-collapsed]
+[fixture: subgraph-header/name-swimlane-directive-run-collapsed]
+[fixture: subgraph-header/name-swimlane-quoted-directive-run-collapsed]
+[fixture: subgraph-header/name-swimlane-before-block-run-collapsed]
 [fixture: subgraph-header/name-several-words-directive-trailing-dropped]
 [fixture: subgraph-header/name-several-words-two-directives-run-collapsed]
 [fixture: subgraph-header/name-trailing-run-collapsed]

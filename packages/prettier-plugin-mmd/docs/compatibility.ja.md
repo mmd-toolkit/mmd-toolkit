@@ -550,7 +550,8 @@ flowchart と agentflow の `classDef` では、
 `style A fill:#f00\,stroke:#00f` は、
 `fill:#f00\` と `stroke:#00f` の 2 つのスタイルを持ちます。
 バックスラッシュの後で `:` の前にある空白は、どの図種でも、
-除くと `:` がエスケープされるので残します。
+除くと `:` がエスケープされるので残し、その空白の後ろの空白は除きます。
+[fixture: flowchart/whitespace-between-tokens/style-colon-escaped-space-run-dropped]
 [fixture: flowchart/whitespace-between-tokens/style-escaped-space-before-comma]
 [fixture: flowchart/whitespace-between-tokens/style-backslash-before-comma]
 [fixture: agentflow/single-space-gaps/style-escaped-space-before-comma]
@@ -649,11 +650,20 @@ requirement の図では、`:` のあるスタイルでも、ないスタイル�
 CSS は連なりを 1 つの空白として読むので、描かれる図は同じですが、
 連なりが値の文字になる所は、書かれたまま残します。
 文字列（`"…"` や `'…'`）の中、コメント（`/* … */`）の中、`url(` の括弧の中と、
-CSS がエスケープされた文字として読む、バックスラッシュの直後の 1 文字です。
-そのため、`a\   b` は `a\  b` と印字します。
+CSS が値の一部として読む、バックスラッシュの後ろのエスケープです。
+エスケープは、最大 6 桁の 16 進数字とその直後の空白かタブ 1 文字、
+または 16 進数字が続かないときの次の 1 文字です。
+そのため、`a\   b` は `a\  b` と印字し、
+`Arial\20   Black` は `Arial\20  Black` と印字します。
 閉じていない文字列、コメント、`url(` は、スタイルの末尾まで続きます。
 [fixture: flowchart/whitespace-between-tokens/style-string-runs-kept]
 [fixture: flowchart/whitespace-between-tokens/style-backslash-run-spaced]
+[fixture: flowchart/whitespace-between-tokens/style-hex-escape-run-spaced]
+[fixture: flowchart/whitespace-between-tokens/style-hex-escape-tab-run-spaced]
+[fixture: flowchart/whitespace-between-tokens/style-hex-escape-seven-digits-run-spaced]
+[fixture: state/whitespace-between-tokens/style-hex-escape-run-spaced]
+[fixture: agentflow/single-space-gaps/style-hex-escape-run-spaced]
+[fixture: block/styles/style-hex-escape-run-spaced]
 [fixture: state/whitespace-between-tokens/style-string-runs-kept]
 [fixture: state/whitespace-between-tokens/style-url-runs-kept]
 [fixture: state/whitespace-between-tokens/style-comment-runs-kept]
@@ -702,7 +712,20 @@ mermaid.js の文書にある treemap の `classDef` の文で、
 78 個のテキストすべてで画素は同じで、`style` 属性の空白を除くと SVG も同じです。
 mermaid.js は treemap の各スタイルのテキストを Db に保ち、
 描く前に最初の `:` の前のテキストを名前、次の `:` までのテキストを値として取り、
-それぞれの前後の空白を取り除きます。 [fixture: treemap/styles/spaced]
+それぞれの前後の空白を取り除きます。
+16 進のエスケープがフォント名を決める場合も描きました。
+flowchart、state、block、agentflow、swimlane の図で、
+`style A font-family:\41   rial,font-size:30px` と、
+印字した `font-family: \41  rial, font-size: 30px` の画素は同じですが、
+エスケープの後ろの連続をすべて縮めた `\41 rial` は別の図を描きます。
+`:` で始まる style は、これらの図と class、ER、requirement の図で、
+書かれたままの形と印字した形を描きました。
+`:` がバックスラッシュと空白の後ろにある style も同じで、
+style の中のバックスラッシュを受け付ける、flowchart、agentflow、swimlane、
+state、block の図で描きました。
+`style A :  red   x` と `style A : red x`、
+`style A fill\   :red   x` と `style A fill\ : red x` の画素は、
+それぞれ同じです。 [fixture: treemap/styles/spaced]
 [fixture: treemap/styles/escaped-comma-spaced]
 [fixture: class/whitespace-between-tokens/style-value-words-spaced]
 [fixture: class/whitespace-between-tokens/style-words-run-spaced]
@@ -731,7 +754,8 @@ mermaid.js は treemap の各スタイルのテキストを Db に保ち、
 `styleDbForFormattingComparison`）。
 スタイルが書かれたものと、両端と最初の `:` の前後の空白や、
 上の図種での語の間の空白の連続（文字列、コメント、`url(` の中と、
-バックスラッシュの直後の 1 文字を除く）だけが違うときは、書かれた方を採ります。
+バックスラッシュの後ろのエスケープを除く）だけが違うときは、
+書かれた方を採ります。
 ほかの違いは、スタイルの語と語の間の空白の有無、文字列、コメント、
 `url(` の中の連なりの変化、リンクのスタイルの数や、
 リンクにも適用されるスタイルの `stroke` の `:` の前の空白の有無、

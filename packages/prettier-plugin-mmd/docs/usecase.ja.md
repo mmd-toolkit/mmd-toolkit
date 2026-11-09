@@ -711,11 +711,12 @@ mermaid.js は `stroke:` だけでその矢印の先端を着色するため、
 （[同じに描かれるスタイル](./compatibility.ja.md#同じに描かれるスタイル)）。
 `style A --  color:red` は `style A -- color: red` と印字し、
 `translate(1  2)` は `translate(1 2)` と印字します。
-文字列、コメント、`url(` の括弧の中の連続と、バックスラッシュの直後の 1 文字は、
-書かれたまま残します。
+文字列、コメント、`url(` の括弧の中の連続と、
+バックスラッシュの後ろのエスケープは、書かれたまま残します。
 [fixture: classes-and-styles/css-name-multiline-directive]
-最後の成分の外側の水平空白だけを除き、保持するセミコロンを含む接頭部、
-文中のコメントや directive、複数行にわたる宣言は通常の一覧配置より優先します。
+最後の成分の後ろの外側の水平空白だけが消えることがあります。
+保持するセミコロンを含む接頭部、文中のコメントや directive、
+複数行にわたる宣言は、通常の一覧の配置より優先します。
 
 [fixture: classes-and-styles/class-lists]
 [fixture: classes-and-styles/css-colon-padding]

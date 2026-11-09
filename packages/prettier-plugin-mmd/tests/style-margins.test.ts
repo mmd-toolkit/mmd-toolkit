@@ -179,6 +179,34 @@ const restored: readonly DbPair[] = [
     before: { actors: [{ id: "A", styles: ["border:2px   solid"] }] },
     after: { actors: [{ id: "A", styles: ["border: 2px solid"] }] },
   },
+  {
+    name: "a run after the space that ends a hexadecimal escape",
+    before: {
+      vertices: [{ id: "A", styles: ["font-family:Arial\\20   Black"] }],
+    },
+    after: {
+      vertices: [{ id: "A", styles: ["font-family: Arial\\20  Black"] }],
+    },
+  },
+  {
+    name: "a run after the seventh digit that follows a hexadecimal escape",
+    before: {
+      vertices: [{ id: "A", styles: ["font-family:Arial\\0000201   Black"] }],
+    },
+    after: {
+      vertices: [{ id: "A", styles: ["font-family: Arial\\0000201 Black"] }],
+    },
+  },
+  {
+    name: "the whitespace around the colon of a style that starts with it",
+    before: { vertices: [{ id: "A", styles: [":  red   x"] }] },
+    after: { vertices: [{ id: "A", styles: [": red x"] }] },
+  },
+  {
+    name: "a run between an escaped space and the colon",
+    before: { vertices: [{ id: "A", styles: ["fill\\   :red   x"] }] },
+    after: { vertices: [{ id: "A", styles: ["fill\\ : red x"] }] },
+  },
 ]
 
 const kept: readonly DbPair[] = [
@@ -330,6 +358,20 @@ const kept: readonly DbPair[] = [
     name: "a run changed after a backslash",
     before: { vertices: [{ id: "A", styles: ["font-family:a\\   b"] }] },
     after: { vertices: [{ id: "A", styles: ["font-family: a\\ b"] }] },
+  },
+  {
+    name: "a run collapsed after the space that ends a hexadecimal escape",
+    before: {
+      vertices: [{ id: "A", styles: ["font-family:Arial\\20  Black"] }],
+    },
+    after: {
+      vertices: [{ id: "A", styles: ["font-family: Arial\\20 Black"] }],
+    },
+  },
+  {
+    name: "the escaped space before the colon taken away",
+    before: { vertices: [{ id: "A", styles: ["fill\\ :red"] }] },
+    after: { vertices: [{ id: "A", styles: ["fill\\:red"] }] },
   },
   {
     name: "whitespace added between two words of a style",

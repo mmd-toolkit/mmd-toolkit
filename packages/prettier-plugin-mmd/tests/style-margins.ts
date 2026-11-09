@@ -73,8 +73,8 @@ interface StyleReading {
    * The printer prints a run of spaces and tabs between the words of a style
    * as one space, and mermaid.js keeps the run in the Db and draws the figure
    * without it, so a run is no margin, except inside a string, a comment, or
-   * the parentheses of `url(`, and the first character after a backslash;
-   * whether whitespace stands between two words is.
+   * the parentheses of `url(`, and the escape after a backslash; whether
+   * whitespace stands between two words is.
    */
   readonly collapsesWordGaps: boolean
 }

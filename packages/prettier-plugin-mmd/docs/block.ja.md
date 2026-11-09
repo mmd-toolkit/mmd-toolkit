@@ -598,19 +598,24 @@ block-beta
 `style` 文のスタイルも、同じ形で印字します。
 スタイルの語と語の間の空白とタブの連続は、空白 1 つで印字し、
 語と語の間に空白があるかどうかは、書かれたまま残します。
-文字列、コメント、`url(` の括弧の中の連続と、バックスラッシュの直後の 1 文字は、
-CSS が値の一部として読むので、書かれたまま残します。
+文字列、コメント、`url(` の括弧の中の連続と、
+バックスラッシュの後ろのエスケープは、CSS が値の一部として読むので、
+書かれたまま残します。
+エスケープは、16 進数字とその直後の空白かタブ 1 文字、
+または 16 進数字が続かないときの次の 1 文字です。
 Db は変わりますが、mermaid.js が描く図は同じです。
 詳しくは [同じに描かれるスタイル](./compatibility.ja.md#同じに描かれるスタイル)
 を参照してください。 [fixture: styles/style-colon-spaced]
 [fixture: styles/style-words-run-spaced]
 [fixture: styles/style-string-runs-kept] [fixture: styles/style-url-runs-kept]
+[fixture: styles/style-hex-escape-run-spaced]
 ここではバックスラッシュは `,` をエスケープしません。
 `fill:a\,b ,stroke:c` は `fill: a\, b, stroke: c` と印字します。
 バックスラッシュの後で `:` の前にある空白は、
 除くと `:` がエスケープされるので残します。
-[fixture: styles/style-backslash-before-comma]
+その空白の後ろの空白は除きます。 [fixture: styles/style-backslash-before-comma]
 [fixture: styles/style-colon-escaped-space-kept]
+[fixture: styles/style-colon-escaped-space-run-dropped]
 最後のスタイルがバックスラッシュで終わる `style` は、
 その後に空白があるかないかを保ち、空白の連続は最初の 1 文字にします。
 文末でも同じです。
@@ -653,7 +658,9 @@ flowchart の [スタイルの行末の空白](./flowchart.ja.md#スタイルの
 [fixture: styles/trailing-whitespace-dropped]
 [fixture: styles/styles-with-a-directive]
 
-`:` で始まるスタイルも、語と語の間の空白とタブの連続は空白 1 つで印字します。
+`:` で始まるスタイルも、ほかのスタイルと同じく、`:` の後ろに空白を 1 つ置き、
+語と語の間の連続は空白 1 つで印字します。
+`style A :  red   x` は `style A : red x` と印字します。
 [fixture: styles/style-colon-first-run-spaced]
 
 スタイルのない `style` は `style A` と出力し、id は 1 つの空白の後に置き、
