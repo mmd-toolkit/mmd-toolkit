@@ -661,6 +661,7 @@ CSS が連なりの最初の文字をエスケープされた文字として読�
 [fixture: usecase/classes-and-styles/css-string-runs-kept]
 [fixture: usecase/classes-and-styles/css-url-runs-kept]
 [fixture: class/whitespace-between-tokens/style-url-runs-kept]
+[fixture: class/whitespace-between-tokens/style-comment-runs-kept]
 
 mermaid.js は、class 図では `:` のないスタイルの語を、
 ER と requirement の図ではすべてのスタイルの単位をつなげて読むため、

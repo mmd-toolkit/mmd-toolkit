@@ -606,7 +606,8 @@ state/whitespace-between-tokens/style-comment-runs-kept] [fixture:
 block/styles/style-string-runs-kept] [fixture: block/styles/style-url-runs-kept]
 [fixture: usecase/classes-and-styles/css-string-runs-kept] [fixture:
 usecase/classes-and-styles/css-url-runs-kept] [fixture:
-class/whitespace-between-tokens/style-url-runs-kept]
+class/whitespace-between-tokens/style-url-runs-kept] [fixture:
+class/whitespace-between-tokens/style-comment-runs-kept]
 
 mermaid.js joins the words of a style that has no `:` in a class diagram, and
 the native style units of ER and requirement diagrams in every style, so the Db

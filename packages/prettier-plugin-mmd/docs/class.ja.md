@@ -364,12 +364,14 @@ mermaid.js の文書にある例 1 件は、接する形で書かれています
 `style C fill: #f9f, stroke: #333` になります。
 スタイルの語と語の間の空白とタブの連続は、空白 1 つで印字します。
 `style C border:1px   solid` は `style C border: 1px solid` と印字します。
-`url(` の括弧の中の連続は、CSS が値の一部として読むので、書かれたまま残します。
+コメントの中と `url(` の括弧の中の連続は、CSS が値の一部として読むので、
+書かれたまま残します。
 mermaid.js は余白と語の間の空白の連続を Db に残しますが、描かれる図は同じです。
 詳しくは [同じに描かれるスタイル](./compatibility.ja.md#同じに描かれるスタイル)
 を参照してください。 [fixture: whitespace-between-tokens/style-colon-spaced]
 [fixture: whitespace-between-tokens/style-value-words-spaced]
 [fixture: whitespace-between-tokens/style-url-runs-kept]
+[fixture: whitespace-between-tokens/style-comment-runs-kept]
 `:` のない語だけのスタイルでも同じです。
 mermaid.js はこれらを独立したトークンとして読み、
 `style A bold ,italic` は `style A bold, italic` と印字し、

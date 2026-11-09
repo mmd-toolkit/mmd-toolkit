@@ -326,14 +326,15 @@ styles has no whitespace before it and one space after it:
 `style C fill:#f9f  ,  stroke:#333` is printed
 `style C fill: #f9f, stroke: #333`. A run of spaces and tabs between the words
 of a style is printed as one space: `style C border:1px   solid` is printed
-`style C border: 1px solid`. A run inside the parentheses of `url(` stays as
-written, since CSS reads it as part of the value. mermaid.js keeps the margins
-and the runs in the Db but draws the same figure (see
+`style C border: 1px solid`. A run inside a comment or the parentheses of `url(`
+stays as written, since CSS reads it as part of the value. mermaid.js keeps the
+margins and the runs in the Db but draws the same figure (see
 [Styles that are drawn the same](./compatibility.md#styles-that-are-drawn-the-same)).
 [fixture: whitespace-between-tokens/style-colon-spaced] [fixture:
 whitespace-between-tokens/style-value-words-spaced] [fixture:
-whitespace-between-tokens/style-url-runs-kept] The same holds for styles that
-are words without a `:`, which mermaid.js reads as tokens of their own:
+whitespace-between-tokens/style-url-runs-kept] [fixture:
+whitespace-between-tokens/style-comment-runs-kept] The same holds for styles
+that are words without a `:`, which mermaid.js reads as tokens of their own:
 `style A bold ,italic` is printed `style A bold, italic`, and
 `style A fill   #f00` is printed `style A fill #f00`. Whether whitespace stands
 between two words stays as written: mermaid.js joins the words, so `fill #f00`
