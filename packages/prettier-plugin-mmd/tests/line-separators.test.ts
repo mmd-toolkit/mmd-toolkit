@@ -623,6 +623,26 @@ const flowchartExamples: readonly (readonly [string, string, string])[] = [
     "flowchart LR\n  accDescr: a\n  A\n",
   ],
   [
+    "a no-break space inside the text of a flowchart description block",
+    "flowchart LR\naccDescr {a\u00a0b}\nA\n",
+    "flowchart LR\n  accDescr { a\u00a0b }\n  A\n",
+  ],
+  [
+    "U+2028 before the text of a flowchart description block",
+    "flowchart LR\naccDescr {\u2028a}\nA\n",
+    "flowchart LR\n  accDescr {\u2028a}\n  A\n",
+  ],
+  [
+    "U+2028 after the text of a flowchart description block",
+    "flowchart LR\naccDescr {a\u2028}\nA\n",
+    "flowchart LR\n  accDescr {a\u2028}\n  A\n",
+  ],
+  [
+    "U+2028 between the keyword and the brace of a flowchart description block",
+    "flowchart LR\naccDescr\u2028{a}\nA\n",
+    "flowchart LR\n  accDescr: a\n  A\n",
+  ],
+  [
     "U+2028 between a subgraph name and its title",
     "flowchart LR\nsubgraph S\u2028[t]\nA\nend\n",
     "flowchart LR\n  subgraph S\u2028[t]\n    A\n  end\n",

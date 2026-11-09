@@ -749,14 +749,14 @@ accessibility-statements/keyword-and-colon-over-lines-joined] The text holds
 `:`, `;`, `#`, `%`, and `%%` as characters. [fixture:
 accessibility-statements/special-characters-in-text]
 
-An `accDescr` block with text has the `{` after one ordinary space, even when it
-touched the keyword in the input. Protected trivia and semicolon layouts keep
-their gaps. The text on the line of the `{` stands between one space on each
-side, also where the braces touched it, and the `}` after it; later text lines
-stand one level inside the statement and the `}` stands at its level (see
+A block on one line follows
+[A description block on one line](./compatibility.md#a-description-block-on-one-line).
+[fixture: accessibility-statements/block-text-on-opening-line] [fixture:
+accessibility-statements/block-inner-runs-collapsed]
+
+In a block over several lines, later text lines stand one level inside the
+statement and a separate `}` stands at its level (see
 [Multi-line values](#multi-line-values)). [fixture:
-accessibility-statements/block-text-on-opening-line] [fixture:
-accessibility-statements/block-inner-runs-collapsed] [fixture:
 accessibility-statements/block-lines-kept] [fixture:
 accessibility-statements/block-comment-and-empty-lines-kept] A directive around
 the colon or the braces stays where it is. [fixture:
@@ -1013,10 +1013,10 @@ timeline
 ### Whitespace between tokens
 
 Where no rule above applies, a run of whitespace between two tokens of a
-statement becomes one space, and tokens that touch keep touching; the text of a
-description block on one line stands between one space on each side, also where
-the braces touched it. [fixture:
-whitespace-between-tokens/description-block-braces] The whitespace at the end of
+statement becomes one space, and tokens that touch keep touching. A description
+block on one line follows
+[A description block on one line](./compatibility.md#a-description-block-on-one-line).
+[fixture: whitespace-between-tokens/description-block-braces] The whitespace at the end of
 the header's line is dropped. [fixture:
 whitespace-between-tokens/trailing-whitespace-after-header] The values are not
 formatted: see [Periods and events](#periods-and-events) and

@@ -6,11 +6,32 @@ import { printedToken } from "./spelling.ts"
 import { collapseRuns, staysAsWritten } from "./text-runs.ts"
 
 /**
- * The diagram types whose accessibility description stays in the form it is
- * written in: the columns of the lines of an event modeling diagram are part
- * of its grammar, and the colon form was not compared there.
+ * The diagram types whose form with the `:` ends the text before a `%%` and
+ * reads the rest of the line as a comment, since their grammars are built on
+ * the terminal `ACC_DESCR` of the common grammar of mermaid.js. A block reads
+ * the `%%` as part of the text, so in these types the two forms differ where
+ * the text holds a `%%`. The other types read the `%%` as part of the text in
+ * both forms.
  */
-const diagramTypesKept: ReadonlySet<string> = new Set(["eventmodeling"])
+const diagramTypesEndingTextAtPercent: ReadonlySet<string> = new Set([
+  "architecture",
+  "cynefin",
+  "gitGraph",
+  "info",
+  "packet",
+  "pie",
+  "radar",
+  "railroad",
+  "railroadAbnf",
+  "railroadEbnf",
+  "railroadPeg",
+  "treeView",
+  "treemap",
+  "wardley",
+])
+
+/** The characters that end a line in a text that the printer reads. */
+const lineBreakCharacters = "\n\r\u2028\u2029"
 
 /**
  * The accessibility description `accDescr: text` that stands for a statement
@@ -22,15 +43,12 @@ const diagramTypesKept: ReadonlySet<string> = new Set(["eventmodeling"])
  * The statement is the block on one line: the keyword, the `{`, a text of one
  * line, and the `}`, with whitespace that holds no line break around the
  * text. The keyword and the `{` may stand apart, in any whitespace, since the
- * printer joins them. It stays as written where the text holds a `%%` (a
- * diagram of some types reads the rest of the line after it differently in the
- * form with the `:`), starts with a `{`, or holds whitespace other than a
- * space or a tab,
- * where the block is not closed, or has no text, where a comment or a
- * directive stands after the `}` on its line, where it holds one, and in the
- * diagram types of `diagramTypesKept`. The caller prints the statement on a
- * line of its own, where no statement stays with it on its line, as the form
- * with the `:` runs to the end of the line.
+ * printer joins them. It stays as written where the text holds a `%%` in a
+ * diagram type of `diagramTypesEndingTextAtPercent`, or whitespace other than a
+ * space or a tab, where the block is not closed or has no text, and where a
+ * comment or a directive stands inside it or after the `}` on its line. The
+ * caller prints the statement on a line of its own, where no statement stays
+ * with it on its line, as the form with the `:` runs to the end of the line.
  */
 export function printAccessibilityLine(
   source: Source,
@@ -39,10 +57,7 @@ export function printAccessibilityLine(
     readonly range: readonly [number, number]
   },
 ): string | undefined {
-  if (
-    diagramTypesKept.has(source.root.diagramType) ||
-    statement.type?.endsWith("AccDescrBlockStatement") !== true
-  ) {
+  if (statement.type?.endsWith("AccDescrBlockStatement") !== true) {
     return undefined
   }
   const { value, closed } = statement as typeof statement & {
@@ -78,8 +93,8 @@ export function printAccessibilityLine(
   const text = source.text.slice(...value.range).trim()
   if (
     text === "" ||
-    text.startsWith("{") ||
-    text.includes("%%") ||
+    (text.includes("%%") &&
+      diagramTypesEndingTextAtPercent.has(source.root.diagramType)) ||
     [...text].some(
       (character) => isWhitespace(character) && !isSpaceOrTab(character),
     )
@@ -132,6 +147,3 @@ function isWhitespaceBetween(
       (breaks || !lineBreakCharacters.includes(character)),
   )
 }
-
-/** The characters that end a line in a text that the printer reads. */
-const lineBreakCharacters = "\n\r\u2028\u2029"

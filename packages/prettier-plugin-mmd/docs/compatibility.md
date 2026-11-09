@@ -1178,7 +1178,8 @@ and the pixels before the exception stays.
 mermaid.js reads some different spellings of a token as the same token and draws
 the same figure from them: a keyword in another case, a string between `'`
 instead of `"`, a number with a zero at the end, the words of a relationship of
-an ER diagram instead of its symbols. The printer writes such a spelling in one
+an ER diagram instead of its symbols, an accessibility description in a block on
+one line instead of after a colon. The printer writes such a spelling in one
 form. For the whitespace between tokens the form is the one that the other
 diagram types print for the same kind of gap (see the sections above). For a
 spelling, the form is the one that the examples in the documentation of the
@@ -1230,14 +1231,17 @@ and, with the Db only, in the inputs of the conformance corpus:
 | The colon of a header (removed)    |        6 |                   6 |    646 |     643 |
 | The colon of a header (line break) |        0 |                   0 |     22 |      21 |
 | The label of a link                |       19 |                  19 |    170 |     162 |
+| A description block on one line    |        3 |                   3 |    188 |     159 |
 
 A corpus pair that is not counted in the last column is a pair of which
 mermaid.js rejects the other spelling, except two pairs of the label of a link,
-which have a `%%` in the label and a different Db. The printer does not rewrite
-a range of a packet diagram next to a hidden YAML block, a colon that a `;` or
-the `---` of a hidden YAML block touches, or the label of a link with a `%%` in
-it. When the pinned mermaid.js is updated, the examples are counted again and
-each kind is compared again.
+which have a `%%` in the label and a different Db, and 29 pairs of a description
+block, of which mermaid.js rejects both spellings (the known divergence
+`c4-keyword-anywhere`). The printer does not rewrite a range of a packet diagram
+next to a hidden YAML block, a colon that a `;` or the `---` of a hidden YAML
+block touches, or the label of a link with a `%%` in it. When the pinned
+mermaid.js is updated, the examples are counted again and each kind is compared
+again.
 
 ### Keywords in one case
 
@@ -1519,6 +1523,103 @@ flowchart/link-label-form/swimlane-arrows-to-pipes] [fixture:
 flowchart/link-label-form/flowchart-header-both-forms-kept] [fixture:
 flowchart/link-label-form/kept]
 
+### A description block on one line
+
+mermaid.js reads `accDescr {text}` and `accDescr: text` as the same accessible
+description, the text without the whitespace at its ends, and draws the same
+figure from both
+([the grammar of the flowchart](https://github.com/mermaid-js/mermaid/blob/2086904e76c692331e34a45d7cc3bc30860d040e/packages/mermaid/src/diagrams/flowchart/parser/flow.jison#L33-L37)
+has a rule for each form and
+[trims the text](https://github.com/mermaid-js/mermaid/blob/2086904e76c692331e34a45d7cc3bc30860d040e/packages/mermaid/src/diagrams/flowchart/parser/flow.jison#L390-L391)
+of both). The examples write a description after the colon 3 times (a swimlane
+diagram and two state diagrams), in a block over several lines twice (two use
+case diagrams), and in a block on one line never. Every diagram type that
+accepts a block with text accepts the form with the colon as well (a block
+diagram accepts only an empty block, and no form with the colon), and the
+statement is the same in all of them, so their examples are counted together, as
+they are for strings and numbers. A block on one line is printed in the form
+with the colon, on a line of its own: `accDescr {a}`, `accDescr { a }`, and
+`accDescr{ a }` become `accDescr: a`. The keyword and the `{` can stand apart in
+any whitespace, a line break included, and a `;` after the `}` is dropped like
+any `;` that separates statements. The text can hold a `{`, a `:`, and a `#`,
+and a run of spaces and tabs in it is printed by the rule of
+[Runs of whitespace in a text that are drawn the same](#runs-of-whitespace-in-a-text-that-are-drawn-the-same).
+[fixture: flowchart/accessibility-lines/block-tight-text] [fixture:
+flowchart/accessibility-lines/block-spaced-text] [fixture:
+flowchart/accessibility-lines/block-left-padding-only] [fixture:
+flowchart/accessibility-lines/block-right-padding-only] [fixture:
+flowchart/accessibility-lines/block-text-with-semicolons-padded] [fixture:
+flowchart/accessibility-lines/block-text-starts-with-brace] [fixture:
+flowchart/accessibility-lines/block-text-with-colon-and-hash] [fixture:
+flowchart/accessibility-lines/block-runs-collapsed] [fixture:
+pie/description-blocks/block-asymmetric] [fixture:
+pie/description-blocks/block-keyword-tab] [fixture:
+pie/description-blocks/block-opener-newline] [test: U+2028 between the keyword
+and the brace of a flowchart description block]
+
+The block stays as written where the form with the colon would not hold what the
+block holds:
+
+- The text is over several lines, or has a line break, U+2028, or U+2029 before
+  or after it, or has a whitespace character other than a space or a tab inside
+  it, such as a no-break space: the form with the colon is one line. Whitespace
+  at the ends that is not a space or a tab, such as a no-break space, is dropped
+  by mermaid.js like a space, and the block is printed in the form with the
+  colon. [fixture: pie/description-blocks/block-inline-leading-lines] [test: a
+  no-break space inside the text of a flowchart description block] [test: U+2028
+  before the text of a flowchart description block] [test: U+2028 after the text
+  of a flowchart description block] [test: U+2028 in the text of a flowchart
+  description block] [test: no-break spaces at the ends of the text of a
+  flowchart description block]
+- A comment or a directive stands inside the block, or stands after the `}` and
+  ends its line. Most diagram types take a `%%` as part of the text, so a
+  comment after the text of the form with the colon would become part of the
+  text; the rule is the same in every diagram type, and for a directive.
+  [fixture: flowchart/accessibility-lines/block-text-beside-directive] [fixture:
+  pie/description-blocks/block-then-comment-kept] [fixture:
+  pie/description-blocks/block-trailing-comment]
+- The block has no text: it is printed `accDescr {}`, as
+  [Accessibility lines](./flowchart.md#accessibility-lines) says. [fixture:
+  flowchart/accessibility-lines/empty-block-tight] [fixture:
+  flowchart/accessibility-lines/empty-block-spaced]
+- The block is not closed. [fixture:
+  flowchart/accessibility-lines/block-unclosed]
+- The line is one that keeps its `;` (see
+  [Lines that hold a `;`](#lines-that-hold-a-)). [fixture:
+  flowchart/accessibility-lines/block-text-with-semicolon-kept] [fixture:
+  flowchart/accessibility-lines/block-on-style-line-kept]
+- The text holds a `%%`, in an architecture, cynefin, gitGraph, info, packet,
+  pie, radar, railroad, treemap, treeView, or wardley diagram. These diagram
+  types read the description with
+  [one terminal of the common grammar](https://github.com/mermaid-js/mermaid/blob/2086904e76c692331e34a45d7cc3bc30860d040e/packages/parser/src/language/common/common.langium#L14),
+  which ends the text of the form with the colon before a `%%` and reads the
+  rest of the line as a comment, but takes a `%%` in a block as part of the
+  text: `accDescr: a %% b` has the description `a`, and `accDescr {a %% b}` has
+  `a %% b`. The other diagram types take the `%%` as part of the text in both
+  forms, and the block is printed in the form with the colon also when the text
+  holds one. [fixture: pie/description-blocks/block-text-with-percent-kept]
+  [fixture: flowchart/accessibility-lines/block-text-with-percent]
+
+A description block in an event modeling diagram is kept whole, as
+[Description blocks](./eventmodeling.md#description-blocks) says.
+
+mermaid.js 12.3.0 read both spellings of each of the 3 examples that write a
+description after a colon, written again as a block: both were accepted, with
+the same Db and the same SVG. A description was also inserted, in both
+spellings, into 2 examples of each of 22 diagram types, into 1 example of the
+info and of the user journey diagram types, and into 3 more examples of the
+gitGraph, which makes 49 pairs. The two SVGs were the same in the 44 pairs of
+the other diagram types (in 6 of them once the generated ids were taken away),
+and in the 5 pairs of the gitGraph once the numbers, the commit ids, and the
+element ids were taken away. A text with a `%%` in it was inserted the same way
+into examples of 13 of the diagram types that take the `%%` as part of the text,
+which makes 26 pairs, and the SVGs were the same in all of them. In the
+conformance corpus, formatting writes the form with the colon for 220 blocks in
+211 fixtures. A block that stands alone on its line was written in the form with
+the colon in place, in 188 of the fixtures; a block on a line with another
+statement was not, since the form with the colon would run to the end of the
+line. No railroad diagram was drawn; those were compared by Db only.
+
 ### Versions of mermaid.js
 
 The CHANGELOG.md of the pinned mermaid.js has no entry about the case of
@@ -1531,6 +1632,16 @@ mermaid.js, show which form each version reads:
   `gitGraph:` only, and the grammar of 9.0.0 reads the header with the colon and
   without it. A text printed without the colon is not read by 8.14.0, so the
   colon stays as written.
+- An accessibility description in a block on one line: the grammar of the
+  flowchart in 9.0.0 and 9.0.1 has no rule for `accDescr`, and the grammar in
+  9.1.0, the first with the rule, has the form with the colon and the form with
+  the block. In every file of the grammars of 9.1.0, 9.4.3, 10.9.0, 11.0.0,
+  12.0.0, and 12.3.0 that has a rule for the block, the same file has the rule
+  for the colon, and in 9.1.0, 10.9.0, and 12.3.0 the rule for the colon takes
+  the rest of the line, `(?!\n|;|#)*[^\n]*`, in every such file. The grammars of
+  the diagram types that use the Langium parser, from 11.0.0, read both forms
+  with one terminal of the common grammar. So a text printed with the colon is
+  read by every version that reads the block.
 - `switch` of a gitGraph: the grammar of 10.9.0 has `checkout` and no `switch`,
   and the grammar of 11.0.0 has both. A text printed with `checkout` is read by
   every version that reads `switch`.

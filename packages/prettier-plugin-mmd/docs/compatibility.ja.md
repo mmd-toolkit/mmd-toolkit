@@ -1269,7 +1269,8 @@ SVG と画素を比べてから、例外を残します。
 mermaid.js は、トークンの異なる綴りの一部を同じトークンとして読み、
 そこから同じ図を描きます。
 キーワードの別の大文字小文字、`"` の代わりに `'` で囲む文字列、
-末尾にゼロを付けた数、ER 図の関係の記号の代わりの語です。
+末尾にゼロを付けた数、ER 図の関係の記号の代わりの語、
+コロンの後の代わりに 1 行のブロックに書くアクセシビリティの説明です。
 印字は、そのような綴りを 1 つの形にします。
 トークンの間の空白は、
 ほかの図種が同じ種類の隙間に印字する形にします（上の各節を参照してください）。
@@ -1324,9 +1325,12 @@ mermaid.js は Db から描くので、同じ Db が同じ描画の根拠です�
 | ヘッダーのコロン（除去） |   6 |              6 |      646 |     643 |
 | ヘッダーのコロン（改行） |   0 |              0 |       22 |      21 |
 | リンクのラベル           |  19 |             19 |      170 |     162 |
+| 1 行の説明ブロック       |   3 |              3 |      188 |     159 |
 
 最後の列に数えないコーパスの対は、mermaid.js が別の綴りを拒否する対です。
 ただし、リンクのラベルの 2 対は例外で、ラベルに `%%` があり、Db が異なります。
+説明ブロックの 29 対も例外で、mermaid.js は両方の綴りを拒否します
+（既知の相違 `c4-keyword-anywhere`）。
 印字は、hidden YAML ブロックに隣接する packet 図の範囲、
 `;` や hidden YAML ブロックの `---` が接するコロン、
 `%%` を含むリンクのラベルを書き換えません。
@@ -1634,6 +1638,102 @@ flowchart は最初の形が 14 個、もう一方が 8 個で、2 倍以上で�
 [fixture: flowchart/link-label-form/flowchart-header-both-forms-kept]
 [fixture: flowchart/link-label-form/kept]
 
+### A description block on one line
+
+mermaid.js は、`accDescr {text}` と `accDescr: text` を、
+両端の空白を除いた同じアクセシビリティの説明として読み、同じ図を描きます。
+（[flowchart の文法](https://github.com/mermaid-js/mermaid/blob/2086904e76c692331e34a45d7cc3bc30860d040e/packages/mermaid/src/diagrams/flowchart/parser/flow.jison#L33-L37)
+には両方の形の規則があり、どちらも[両端の空白を除きます](https://github.com/mermaid-js/mermaid/blob/2086904e76c692331e34a45d7cc3bc30860d040e/packages/mermaid/src/diagrams/flowchart/parser/flow.jison#L390-L391)）。
+例は、コロンの後の説明を 3 回（swimlane 図 1 つと状態遷移図 2 つ）、
+複数行のブロックを 2 回（ユースケース図 2 つ）書き、
+1 行のブロックは書きません。
+本文のあるブロックを受理するすべての図種は、コロンの形も受理し、
+文はどの図種でも同じなので、文字列や数と同じく、例を合わせて数えます。
+ブロック図は、空のブロックだけを受理し、コロンの形は受理しません。
+1 行のブロックは、コロンの形で独立した行に印字します。
+`accDescr {a}`、`accDescr { a }`、`accDescr{ a }` は、
+`accDescr: a` になります。
+キーワードと `{` の間は、改行を含めてどの空白でもよく、
+`}` の後の `;` は、文を区切るほかの `;` と同じく除きます。
+本文は `{`、`:`、`#` を含んでよく、本文の空白とタブの連なりは、
+[同じに描かれるテキスト中の空白の連なり](#同じに描かれるテキスト中の空白の連なり)の規則で印字します。
+[fixture: flowchart/accessibility-lines/block-tight-text]
+[fixture: flowchart/accessibility-lines/block-spaced-text]
+[fixture: flowchart/accessibility-lines/block-left-padding-only]
+[fixture: flowchart/accessibility-lines/block-right-padding-only]
+[fixture: flowchart/accessibility-lines/block-text-with-semicolons-padded]
+[fixture: flowchart/accessibility-lines/block-text-starts-with-brace]
+[fixture: flowchart/accessibility-lines/block-text-with-colon-and-hash]
+[fixture: flowchart/accessibility-lines/block-runs-collapsed]
+[fixture: pie/description-blocks/block-asymmetric]
+[fixture: pie/description-blocks/block-keyword-tab]
+[fixture: pie/description-blocks/block-opener-newline]
+[test: U+2028 between the keyword and the brace of a flowchart description block]
+
+コロンの形ではブロックの内容を保てない場合は、ブロックのまま残します。
+
+- 本文が複数行にまたがるか、本文の前後に改行、U+2028、U+2029 があるか、
+  本文の中に改行しない空白など、空白やタブ以外の空白文字がある場合です。
+  コロンの形は 1 行だからです。
+  両端にある改行しない空白など、空白やタブ以外の空白は、
+  mermaid.js が空白と同じく除くので、コロンの形で印字します。
+  [fixture: pie/description-blocks/block-inline-leading-lines]
+  [test: a no-break space inside the text of a flowchart description block]
+  [test: U+2028 before the text of a flowchart description block]
+  [test: U+2028 after the text of a flowchart description block]
+  [test: U+2028 in the text of a flowchart description block]
+  [test: no-break spaces at the ends of the text of a flowchart description block]
+- ブロックの中か、`}` の後で行を終える位置に、
+  コメントやディレクティブがある場合です。
+  ほとんどの図種は `%%` を本文の一部として読むので、
+  コロンの形の本文の後のコメントは、本文の一部になってしまいます。
+  規則はどの図種でも同じで、ディレクティブも同じです。
+  [fixture: flowchart/accessibility-lines/block-text-beside-directive]
+  [fixture: pie/description-blocks/block-then-comment-kept]
+  [fixture: pie/description-blocks/block-trailing-comment]
+- 本文がない場合です。
+  [Accessibility lines](./flowchart.ja.md#accessibility-lines)のとおり、
+  `accDescr {}` と印字します。
+  [fixture: flowchart/accessibility-lines/empty-block-tight]
+  [fixture: flowchart/accessibility-lines/empty-block-spaced]
+- ブロックが閉じていない場合です。
+  [fixture: flowchart/accessibility-lines/block-unclosed]
+- `;` を残す行の場合です（[`;` を含む行](#-を含む行)を参照）。
+  [fixture: flowchart/accessibility-lines/block-text-with-semicolon-kept]
+  [fixture: flowchart/accessibility-lines/block-on-style-line-kept]
+- architecture、cynefin、gitGraph、info、packet、pie、radar、railroad、treemap、
+  treeView、wardley の図で、本文に `%%` がある場合です。
+  これらの図種は、[共通文法の 1 つの終端記号](https://github.com/mermaid-js/mermaid/blob/2086904e76c692331e34a45d7cc3bc30860d040e/packages/parser/src/language/common/common.langium#L14)で説明を読みます。
+  コロンの形の本文は `%%` の前で終わり、行の残りはコメントとして読みますが、
+  ブロックの中の `%%` は本文の一部として読みます。
+  `accDescr: a %% b` の説明は `a`、
+  `accDescr {a %% b}` の説明は `a %% b` です。
+  ほかの図種は、両方の形で `%%` を本文の一部として読むので、
+  本文に `%%` があっても、ブロックをコロンの形で印字します。
+  [fixture: pie/description-blocks/block-text-with-percent-kept]
+  [fixture: flowchart/accessibility-lines/block-text-with-percent]
+
+イベントモデリング図の説明ブロックは、
+[Description blocks](./eventmodeling.ja.md#description-blocks)のとおり、
+全体を書かれたまま残します。
+
+mermaid.js 12.3.0 は、コロンの後に説明を書く 3 つの例を、
+ブロックでも書いた両方の綴りを受理し、Db と SVG は同じでした。
+さらに、22 図種でそれぞれ 2 つの例、info とユーザージャーニーでそれぞれ 1 つの例、
+gitGraph でさらに 3 つの例に、両方の綴りで説明を挿入し、49 対を比べました。
+ほかの図種の 44 対は、両方の SVG が同じでした
+（そのうち 6 対は、生成された id を除いて比べました）。
+gitGraph の 5 対も、数、コミット id、要素の id を除くと同じでした。
+`%%` を本文の一部として読む図種のうち 13 図種の例に、
+`%%` を含む本文を同じように挿入した 26 対も、すべて SVG が同じでした。
+適合性コーパスでは、211 個の fixture の 220 個のブロックを、
+コロンの形で印字します。
+188 個の fixture では、独立した行にあるブロックを、
+その位置でコロンの形に書き直しました。
+別の文と同じ行のブロックは、
+コロンの形だと行末までが本文になるので、書き直しませんでした。
+railroad 図は描画せず、Db だけを比べました。
+
 ### mermaid.js の版
 
 固定している mermaid.js の CHANGELOG.md には、
@@ -1647,6 +1747,16 @@ flowchart は最初の形が 14 個、もう一方が 8 個で、2 倍以上で�
   9.0.0 の文法は、コロンがあるヘッダーとないヘッダーを読みます。
   コロンなしで印字したテキストは 8.14.0 で読めないので、
   コロンは書かれたまま残します。
+- 1 行のブロックのアクセシビリティの説明: flowchart の 9.0.0 と 9.0.1 の文法に、
+  `accDescr` の規則はありません。
+  最初に規則がある 9.1.0 の文法には、コロンの形とブロックの形があります。
+  9.1.0、9.4.3、10.9.0、11.0.0、12.0.0、12.3.0 の文法では、
+  ブロックの規則があるすべてのファイルに、コロンの規則もあります。
+  9.1.0、10.9.0、12.3.0 の各ファイルで、
+  コロンの規則は行の残り `(?!\n|;|#)*[^\n]*` を読みます。
+  11.0.0 以降の Langium パーサーを使う図種の文法は、
+  共通文法の 1 つの終端記号で両方の形を読みます。
+  そのため、コロンで印字したテキストは、ブロックを読むすべての版で読めます。
 - gitGraph の `switch`: 10.9.0 の文法は `checkout` があり、`switch` はなく、
   11.0.0 の文法は両方があります。
   `checkout` で印字したテキストは、`switch` を読むすべての版で読めます。

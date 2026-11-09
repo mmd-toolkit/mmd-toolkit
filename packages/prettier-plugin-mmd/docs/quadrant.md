@@ -561,16 +561,15 @@ titles-and-accessibility-statements/text-on-the-next-line-joined] [fixture:
 titles-and-accessibility-statements/colon-on-the-next-line-joined] [fixture:
 titles-and-accessibility-statements/text-that-looks-like-a-statement]
 
-Where `accDescr` and `{` print on the same line, separate them by one space,
-including when they were written touching. Existing opener-line breaks retain
-their own rules. Protected trivia and semicolon layouts keep their gaps. Align
-the lines of an `accDescr { ... }` body one step inside its statement. Mermaid
-discards indentation after LF from the description. Its `}` stands at the level
-of its statement; a text on the line of the `{` has one space inside each brace,
-also where the braces touched it. A block that is not closed makes the input
+A block on one line follows
+[A description block on one line](./compatibility.md#a-description-block-on-one-line). [fixture:
+titles-and-accessibility-statements/block-text-on-the-opening-line]
+
+In a block over several lines, indent the body one level inside the statement
+and align a separate `}` with the statement: mermaid.js discards indentation
+after LF from the description. A block that is not closed makes the input
 rejected, so it is not printed. [fixture:
 titles-and-accessibility-statements/block-lines-kept] [fixture:
-titles-and-accessibility-statements/block-text-on-the-opening-line] [fixture:
 titles-and-accessibility-statements/block-closing-brace-at-the-level-of-the-statement]
 [fixture:
 titles-and-accessibility-statements/block-comment-and-empty-lines-kept]
