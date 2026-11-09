@@ -192,11 +192,11 @@ describe("From a script: indentation and configuration", () => {
     expect(
       // @ts-expect-error -- `rangeStart` is not an option of `format`.
       await format(diagram, { filepath, rangeStart: 1 }),
-    ).toEqual("flowchart LR\nA-->B\n")
+    ).toEqual("flowchart LR\n  A --> B\n")
     expect(
       // @ts-expect-error -- `rangeEnd` is not an option of `format`.
       await format(diagram, { filepath, rangeEnd: 1 }),
-    ).toEqual("flowchart LR\nA-->B\n")
+    ).toEqual("flowchart LR\n  A --> B\n")
     expect(await format(diagram, { filepath, semi: false })).toEqual(
       "flowchart LR\n  A --> B\n",
     )
