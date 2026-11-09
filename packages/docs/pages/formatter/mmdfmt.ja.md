@@ -262,15 +262,16 @@ mmdfmt --stdin-filepath docs/guide.md
   テキストをそのまま返します。
 - ほかの語尾のパスはエラーです。
 
-## インデントと行の幅
+## 設定
 
 図のインデントは空白2つで、行の幅はPrettierの80です。
 ファイルに`.editorconfig`やPrettierの設定が適用されるときは、
-そのインデントと行の幅を使います。
-`.editorconfig`の`indent_style`、`indent_size`、`tab_width`、`max_line_length`、
-または[Prettierの設定ファイル](https://prettier.io/docs/configuration)の
-`useTabs`、`tabWidth`、`printWidth`で、
+`mmdfmt`はそれをPrettierにそのまま渡します。
 `overrides`も含めてPrettierのCLIと同じように探します。
+`.editorconfig`の`indent_style`、`indent_size`、`tab_width`、
+`max_line_length`と、Prettierの設定ファイルのオプションです。
+設定ファイルについては、
+[Prettierの文書](https://prettier.io/docs/configuration)を参照してください。
 コードブロックでは、そのファイルはMarkdownファイルです。
 読めない設定ファイルはエラーです。
 たとえば、この`.editorconfig`は図に空白4つのインデントを付け、
@@ -283,13 +284,28 @@ indent_size = 4
 max_line_length = 100
 ```
 
+図の印字を決めるのは、`tabWidth`、`useTabs`、`printWidth`です。
 行の幅が図の中で決めるのは、2つです。
 1行に書いたデータブロック`@{ … }`を複数行で印字するかどうかと、
 Ganttのセクションのタスクの`:`をそろえるかどうかです。
 詳しくは、
 [フォーマッターのオプション](./options.ja.md#行の長さ)を参照してください。
 `max_line_length = off`は制限なしです。
-設定のほかの項目は使いません。
+図のYAML frontmatterのオプションである`singleQuote`などはそこに効き、
+`embeddedLanguageFormatting: "off"`はfrontmatterを書かれたまま残します。
+Prettierと`prettier-plugin-mmd`を使う場合と同じです。
+
+`mmdfmt`が自分で決めるオプションは4つあります。
+パーサーはプラグインのもので、プラグインは`prettier-plugin-mmd`だけなので、
+設定が挙げるプラグインは読み込みません。
+`endOfLine`は使いません。
+ファイルの改行コードを残すからです。
+詳しくは、
+[`mmdfmt`のREADME](../../../mmdfmt/README.ja.md#コードブロックの詳細)
+を参照してください。
+リスト項目や引用の中のコードブロックでは、`printWidth`は、
+各行の前に`mmdfmt`が書くものの幅を引いた幅です。
+こちらも同じ節を参照してください。
 
 ## エラーと終了コード
 
@@ -349,7 +365,7 @@ MarkdownにPrettierとプラグインを使う場合とは、結果が4点で異
 
 コマンドもPrettierのCLIとは異なります。
 `.prettierignore`は読まず、`--ignore-path`、`--ignore-unknown`、
-整形オプションはなく、設定からはインデントと行の幅だけを使います。
+独自の整形オプションはなく、設定は図のためだけに読みます。
 
 [`mmdfmt`のREADME](../../../mmdfmt/README.ja.md#コードブロックの詳細)では、
 コードブロックを詳しく説明しています。

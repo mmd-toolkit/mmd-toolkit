@@ -250,18 +250,17 @@ whether the text is a diagram or Markdown, and its directory says which
   unchanged.
 - A path with another ending is an error.
 
-## Indentation and line width
+## Configuration
 
 A diagram is indented by two spaces, and its line width is Prettier's 80. When
-an `.editorconfig` or a Prettier configuration applies to the file, its
-indentation and its line width are used: `indent_style`, `indent_size`,
-`tab_width`, and `max_line_length` of `.editorconfig`, or `useTabs`, `tabWidth`,
-and `printWidth` of a
-[Prettier configuration file](https://prettier.io/docs/configuration), found as
-Prettier's CLI finds them, `overrides` included. For a code block, the file is
-the Markdown file. A configuration file that cannot be read is an error. For
-example, this `.editorconfig` indents diagrams by four spaces and lets a line
-stay up to 100 columns wide:
+an `.editorconfig` or a Prettier configuration applies to the file, `mmdfmt`
+gives it to Prettier as it is, found as Prettier's CLI finds it, `overrides`
+included: `indent_style`, `indent_size`, `tab_width`, and `max_line_length` of
+`.editorconfig`, or the options of a
+[Prettier configuration file](https://prettier.io/docs/configuration). For a
+code block, the file is the Markdown file. A configuration file that cannot be
+read is an error. For example, this `.editorconfig` indents diagrams by four
+spaces and lets a line stay up to 100 columns wide:
 
 ```ini
 [*.{md,mmd,mermaid}]
@@ -270,11 +269,22 @@ indent_size = 4
 max_line_length = 100
 ```
 
-The line width decides two things in a diagram: whether a data block `@{ … }` on
-one line is printed on several lines, and whether the colons of the tasks of a
-Gantt section are lined up (see
+`tabWidth`, `useTabs`, and `printWidth` decide how a diagram is printed. The
+line width decides two things in a diagram: whether a data block `@{ … }` on one
+line is printed on several lines, and whether the colons of the tasks of a Gantt
+section are lined up (see
 [Formatter options](https://mmd-toolkit.github.io/mmd-toolkit/formatter/options.html#line-width)).
-`max_line_length = off` is no limit. Nothing else of a configuration is used.
+`max_line_length = off` is no limit. The options for the YAML frontmatter of a
+diagram, such as `singleQuote`, apply to it, and
+`embeddedLanguageFormatting: "off"` leaves it as written, as with Prettier and
+`prettier-plugin-mmd`.
+
+`mmdfmt` sets four options itself. The parser is the plugin's, and the only
+plugin is `prettier-plugin-mmd`, so a plugin that the configuration names is not
+loaded. `endOfLine` is not used, since a file keeps its line endings (see
+[Code blocks in detail](#code-blocks-in-detail)). In a code block in a list or a
+block quote, `printWidth` is less the width of what `mmdfmt` writes before the
+lines (see the same section).
 
 ## Errors and exit codes
 
@@ -334,8 +344,8 @@ on Markdown:
   lines then stay within the line width.
 
 The command differs from Prettier's CLI too: it does not read `.prettierignore`,
-has no `--ignore-path`, `--ignore-unknown`, or formatting options, and uses only
-the indentation and the line width of a configuration.
+has no `--ignore-path`, `--ignore-unknown`, or formatting options of its own,
+and reads the configuration for the diagrams only.
 
 ## Code blocks in detail
 
