@@ -51,6 +51,7 @@ Examples of **correct** code for this rule:
 packet
   accDescr {
     Fields of a TCP header
+    from the first bit
   }
   0-15: "Source Port"
 ```

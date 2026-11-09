@@ -60,9 +60,9 @@ Examples of **correct** code for this rule:
 %% eslint @mmd-toolkit/quadrant-no-empty-description-block: error
 quadrantChart
   accDescr {
-    Campaigns by reach
+    D
+    E
   }
-  A: [0.3, 0.6]
 ```
 
 ```mmd

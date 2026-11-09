@@ -51,6 +51,7 @@ Examples of **correct** code for this rule:
 treemap-beta
   accDescr {
     Revenue by product
+    in the last quarter
   }
   "Revenue": 10
 ```

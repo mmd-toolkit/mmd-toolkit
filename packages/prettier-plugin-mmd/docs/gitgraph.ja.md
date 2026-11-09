@@ -263,10 +263,21 @@ gitGraph
 
 ### References
 
-branch・checkout・merge の Identifier と、StringLiteral の書き方を保持します。
+branch・checkout・merge の引用符で囲んだ参照は、
+字句解析器が引用符なしでも全体を読む場合、
+mermaid.js の文書の例と同じく引用符なしで印字します。
+（[The quotes of a text](./compatibility.ja.md#the-quotes-of-a-text)を参照）。
+`branch "dev"` は `branch dev` と印字します。
+引用符なしで読める参照は、ASCII の英字、数字、`_` と、その間の `-`、`.`、
+`/` からなり、ASCII の英字か `_` で始まるものです。
+ただし、語の一部でない文字の前で、
+字句解析器が独立した単位として読む語（`commit`、`branch`、`merge`、`LR`、
+`NORMAL` などで、大文字小文字は問いません）か、`title` で始まる参照を除きます。
+ほかの参照は引用符を残します。
 文字列は Quotes のとおり `"` で囲んで印字します。
 空・空白のみ・Unicode・予約語・数字風の引用名もそのままです。
-木が形を区別しているので、printer が引用符の除去を判断しません。
+[fixture: references/plain-names-without-quotes]
+[fixture: references/names-that-need-quotes]
 
 固定例: [fixture: gitgraph/references/reference-forms]
 [corpus fixture: gitgraph/lex-reference-reserved-quoted]

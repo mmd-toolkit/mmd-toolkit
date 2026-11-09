@@ -136,7 +136,7 @@ export const wardleyCases: readonly WardleyCase[] = [
     input:
       "wardley-beta pipeline Parent { %%{!L\u2028R}%%\n\ncomponent Child[0.5]\n}\ncomponent Parent[0.3,0.6]\n",
     output:
-      "wardley-beta pipeline Parent { %%{!L\u2028R}%%\n\n    component \"Child\" [0.5]\n  }\n  component Parent [0.3, 0.6]\n",
+      'wardley-beta pipeline Parent { %%{!L\u2028R}%%\n\n    component "Child" [0.5]\n  }\n  component Parent [0.3, 0.6]\n',
     options: {},
   },
   {
@@ -144,7 +144,7 @@ export const wardleyCases: readonly WardleyCase[] = [
     input:
       "wardley-beta pipeline Parent { ---\nL\u2028R\n---\n\ncomponent Child[0.5]\n}\ncomponent Parent[0.3,0.6]\n",
     output:
-      "wardley-beta pipeline Parent { ---\nL\u2028R\n---\n\n    component \"Child\" [0.5]\n  }\n  component Parent [0.3, 0.6]\n",
+      'wardley-beta pipeline Parent { ---\nL\u2028R\n---\n\n    component "Child" [0.5]\n  }\n  component Parent [0.3, 0.6]\n',
     options: {},
   },
   {
@@ -152,7 +152,7 @@ export const wardleyCases: readonly WardleyCase[] = [
     input:
       "wardley-beta pipeline Parent { %%{!L\u2029R}%%\n\ncomponent Child[0.5]\n}\ncomponent Parent[0.3,0.6]\n",
     output:
-      "wardley-beta pipeline Parent { %%{!L\u2029R}%%\n\n    component \"Child\" [0.5]\n  }\n  component Parent [0.3, 0.6]\n",
+      'wardley-beta pipeline Parent { %%{!L\u2029R}%%\n\n    component "Child" [0.5]\n  }\n  component Parent [0.3, 0.6]\n',
     options: {},
   },
   {
@@ -160,7 +160,7 @@ export const wardleyCases: readonly WardleyCase[] = [
     input:
       "wardley-beta pipeline Parent { ---\nL\u2029R\n---\n\ncomponent Child[0.5]\n}\ncomponent Parent[0.3,0.6]\n",
     output:
-      "wardley-beta pipeline Parent { ---\nL\u2029R\n---\n\n    component \"Child\" [0.5]\n  }\n  component Parent [0.3, 0.6]\n",
+      'wardley-beta pipeline Parent { ---\nL\u2029R\n---\n\n    component "Child" [0.5]\n  }\n  component Parent [0.3, 0.6]\n',
     options: {},
   },
 ]

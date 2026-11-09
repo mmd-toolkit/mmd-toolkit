@@ -282,13 +282,17 @@ function isWordCharacter(character: string | undefined): boolean {
  * letters, digits, `_`, and `-`, `.`, `/` between them, starting with a letter
  * or `_` (a digit can start a number), ending with a letter, a digit, or `_`,
  * and not starting with one of the words that it reads as a unit of its own,
- * in any case, before a character that is no part of a word.
+ * in any case, before a character that is no part of a word, or with `title`.
  */
 function gitgraphReference(text: string): string | undefined {
   const lower = text.toLowerCase()
-  const startsWithReserved = gitgraphReserved.some(
-    (word) => lower.startsWith(word) && !isWordCharacter(lower[word.length]),
-  )
+  // The line of a title is read before a name, so a name that starts with
+  // `title` cannot be written without quotes.
+  const startsWithReserved =
+    lower.startsWith("title") ||
+    gitgraphReserved.some(
+      (word) => lower.startsWith(word) && !isWordCharacter(lower[word.length]),
+    )
   return !(text[0] >= "0" && text[0] <= "9") &&
     !startsWithReserved &&
     isWordCharacter(text.at(-1)) &&

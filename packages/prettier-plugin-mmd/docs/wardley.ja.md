@@ -148,7 +148,23 @@ wardley-beta
 
 ### 名前と引用
 
-WardleyIdentifier と StringLiteral は source span のまま印字します。
+component、anchor、link、`evolve` 文、pipeline、evolution の stage の名前は、
+引用符なしで読める場合に引用符なしで印字し、accelerator、deaccelerator、
+pipeline の component の名前は、
+mermaid.js の文書の例と同じく引用符で囲んで印字します。
+（[The quotes of a text](./compatibility.ja.md#the-quotes-of-a-text)を参照）。
+`component "Customer"` は `component Customer` と印字し、
+`accelerator Market` は `accelerator "Market"` と印字します。
+引用符なしで読める名前は、ASCII の英字で始まり、ASCII の英字、数字、
+`_` からなる語を空白 1 つで区切った形で、
+字句解析器が命令か strategy として読む小文字の語（`build`、`component`、
+`title` など）で始まらないものです。
+矢印のない link（`"A" "B"`）の名前と、
+hidden YAML block の `---` に接する名前は、引用符を残します。
+[fixture: names-and-quotes/plain-names-without-quotes]
+[fixture: names-and-quotes/names-that-need-quotes]
+それ以外では、
+WardleyIdentifier と StringLiteral を source span のまま印字します。
 内部の空白とタブ、ハイフン、括弧、ampersand、escape、
 空と空白だけの文字列も保ちます。
 ただし、link の label は除き、

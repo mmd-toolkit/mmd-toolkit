@@ -253,11 +253,19 @@ gitGraph
 
 ### References
 
-Keep Identifier and StringLiteral reference forms in branch, checkout and merge
-(a string is printed between `"` as under Quotes). Preserve empty,
-whitespace-only, Unicode, reserved-word and numeric-looking quoted names. The
-AST already distinguishes these forms; the printer need not decide whether
-unquoting would parse.
+A branch, checkout and merge reference in quotes that the lexer reads whole
+without them is printed without quotes, as the examples in the documentation of
+mermaid.js write it (see
+[The quotes of a text](./compatibility.md#the-quotes-of-a-text)): `branch "dev"`
+is printed `branch dev`. The reference is plain where it is ASCII letters,
+digits, and `_`, with `-`, `.`, and `/` between them, it starts with a letter or
+`_`, and it does not start with one of the words that the lexer reads as a unit
+of its own (`commit`, `branch`, `merge`, `LR`, `NORMAL`, and the others, in any
+case) before a character that is no part of a word, or with `title`. Other
+references keep their quotes, a string is printed between `"` as under Quotes,
+and empty, whitespace-only, Unicode, reserved-word, and numeric-looking quoted
+names are preserved. [fixture: references/plain-names-without-quotes] [fixture:
+references/names-that-need-quotes]
 
 Fixed cases: [fixture: gitgraph/references/reference-forms] [corpus fixture:
 gitgraph/lex-reference-reserved-quoted] [corpus fixture:

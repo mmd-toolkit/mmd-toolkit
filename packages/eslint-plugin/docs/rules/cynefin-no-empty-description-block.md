@@ -52,6 +52,7 @@ Examples of **correct** code for this rule:
 cynefin-beta
   accDescr {
     Responses by domain
+    for the team
   }
   complex
     "Investigate"

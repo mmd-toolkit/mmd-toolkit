@@ -64,6 +64,7 @@ usecase-beta
 usecase-beta
   accDescr {
     uses { here
+    and there
   }
   A
 ```

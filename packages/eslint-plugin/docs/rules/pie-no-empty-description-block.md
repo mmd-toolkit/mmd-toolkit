@@ -48,6 +48,7 @@ Examples of **correct** code for this rule:
 pie
   accDescr {
     Revenue by product
+    in the last quarter
   }
   "A" : 1
 ```

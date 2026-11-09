@@ -62,10 +62,11 @@ agentflow-beta TB
 ```mmd
 %% eslint @mmd-toolkit/agentflow-no-empty-description-block: error
 agentflow-beta TB
-  A
   accDescr {
-    The steps of the review
+    first
+    second
   }
+  A
 ```
 
 ## オプション

@@ -52,6 +52,7 @@ treemap-beta
 treemap-beta
   accDescr {
     Revenue by product
+    in the last quarter
   }
   "Revenue": 10
 ```

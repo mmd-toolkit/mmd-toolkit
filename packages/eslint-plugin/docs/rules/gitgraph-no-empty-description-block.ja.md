@@ -50,7 +50,8 @@ gitGraph
 %% eslint @mmd-toolkit/gitgraph-no-empty-description-block: error
 gitGraph
   accDescr {
-    Release history
+    Detailed description
+    across multiple lines
   }
   commit
 ```

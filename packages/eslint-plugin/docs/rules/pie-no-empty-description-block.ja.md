@@ -49,6 +49,7 @@ pie
 pie
   accDescr {
     Revenue by product
+    in the last quarter
   }
   "A" : 1
 ```

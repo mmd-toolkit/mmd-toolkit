@@ -78,6 +78,7 @@ agentflow-beta TB
 agentflow-beta TB
   accDescr {
     uses { here
+    and there
   }
   A
 ```

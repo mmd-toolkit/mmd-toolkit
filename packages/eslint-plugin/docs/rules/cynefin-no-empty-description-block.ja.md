@@ -53,6 +53,7 @@ cynefin-beta
 cynefin-beta
   accDescr {
     Responses by domain
+    for the team
   }
   complex
     "Investigate"

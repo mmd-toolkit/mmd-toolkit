@@ -18,7 +18,7 @@ describe("a sankey diagram in a Markdown code block", () => {
       await formatTwice(
         '# Title\n\n```mermaid\n  sankey-beta\n\n  a , b , 1\n"c", d ,2\n```\n',
       ),
-    ).toBe('# Title\n\n```mermaid\nsankey-beta\na,b,1\nc,d,2\n```\n')
+    ).toBe("# Title\n\n```mermaid\nsankey-beta\na,b,1\nc,d,2\n```\n")
   })
 
   it("is formatted in a list item, with the lines at the first column of the item", async () => {

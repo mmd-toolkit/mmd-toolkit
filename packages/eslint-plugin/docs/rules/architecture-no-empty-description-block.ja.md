@@ -52,6 +52,7 @@ architecture-beta
 architecture-beta
   accDescr {
     The services of the shop
+    and how they connect
   }
   service api(server)[API]
 ```

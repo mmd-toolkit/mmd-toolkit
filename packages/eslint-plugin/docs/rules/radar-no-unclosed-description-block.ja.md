@@ -66,6 +66,7 @@ radar-beta
 radar-beta
   accDescr {
     uses { here
+    and there
   }
   axis A, B, C
   curve sales{1, 2, 3}

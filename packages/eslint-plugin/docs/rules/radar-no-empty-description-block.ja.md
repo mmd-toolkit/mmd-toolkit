@@ -53,7 +53,8 @@ radar-beta
 %% eslint @mmd-toolkit/radar-no-empty-description-block: error
 radar-beta
   accDescr {
-    Sales by region
+    first line
+    second line
   }
   axis A, B, C
   curve sales{1, 2, 3}

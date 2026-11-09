@@ -1317,19 +1317,21 @@ mermaid.js は Db から描くので、同じ Db が同じ描画の根拠です�
 そのテキストを 2 回描いてもすでに異なる対は数えませんでした。
 以下の種類は、例と、Db だけを比べる適合性コーパスの入力で比較しました。
 
-| 種類                       |  例 | 同じ Db と描画 | コーパス | 同じ Db |
-| -------------------------- | --: | -------------: | -------: | ------: |
-| ER 図の関係                |   4 |              4 |       66 |      66 |
-| C4 の `Rel_Up` など        |   1 |              1 |        7 |       7 |
-| EBNF 記法の `::=`          |   9 |              9 |       91 |      91 |
-| 両端が同じ packet の範囲   |   2 |              2 |      133 |     131 |
-| ヘッダーのコロン（除去）   |   6 |              6 |      646 |     643 |
-| ヘッダーのコロン（改行）   |   0 |              0 |       22 |      21 |
-| リンクのラベル             |  19 |             19 |      170 |     162 |
-| 1 行の説明ブロック         |   3 |              3 |      282 |     245 |
-| sankey の欄の引用符        |   6 |              6 |       11 |      11 |
-| ER の名前の引用符          |   0 |              0 |       14 |      14 |
-| requirement の名前の引用符 |   0 |              0 |       11 |      11 |
+| 種類                         |  例 | 同じ Db と描画 | コーパス | 同じ Db |
+| ---------------------------- | --: | -------------: | -------: | ------: |
+| ER 図の関係                  |   4 |              4 |       66 |      66 |
+| C4 の `Rel_Up` など          |   1 |              1 |        7 |       7 |
+| EBNF 記法の `::=`            |   9 |              9 |       91 |      91 |
+| 両端が同じ packet の範囲     |   2 |              2 |      133 |     131 |
+| ヘッダーのコロン（除去）     |   6 |              6 |      646 |     643 |
+| ヘッダーのコロン（改行）     |   0 |              0 |       22 |      21 |
+| リンクのラベル               |  19 |             19 |      170 |     162 |
+| 1 行の説明ブロック           |   3 |              3 |      282 |     245 |
+| sankey の欄の引用符          |   6 |              6 |       11 |      11 |
+| ER の名前の引用符            |   0 |              0 |       14 |      14 |
+| requirement の名前の引用符   |   0 |              0 |       11 |      11 |
+| Wardley マップの名前の引用符 |   0 |              0 |       34 |      34 |
+| gitGraph のブランチの引用符  |   0 |              0 |       23 |      23 |
 
 最後の列に数えないコーパスの対は、mermaid.js が別の綴りを拒否する対です。
 ただし、リンクのラベルの 2 対は例外で、ラベルに `%%` があり、Db が異なります。
@@ -1761,24 +1763,34 @@ sankey 図のリンクの source は、`"a b",c,1` と `a b,c,1` で同じ id �
 両方の形で同じに読むテキストはその形で印字し、ほかは書かれたまま残します。
 以下の欄は引用符なしで印字します。
 
-| 図種        | 欄                         | 引用符なし | 引用符あり |
-| ----------- | -------------------------- | ---------: | ---------: |
-| sankey      | リンクの source            |         87 |          0 |
-| sankey      | リンクの target            |         83 |          4 |
-| sankey      | リンクの値（値の形に従う） |         87 |          0 |
-| ER          | 実体の名前                 |         39 |          2 |
-| ER          | 関係の役割                 |         43 |          2 |
-| ER          | 関係の左の名前             |         45 |          0 |
-| ER          | 関係の右の名前             |         45 |          0 |
-| ER          | subgraph の id             |         11 |          1 |
-| requirement | requirement の名前         |         15 |          1 |
-| requirement | element の名前             |         10 |          0 |
-| requirement | requirement の id          |         16 |          0 |
-| requirement | requirement の text        |         13 |          3 |
-| requirement | element の type            |          9 |          1 |
-| requirement | element の docRef          |          2 |          0 |
-| requirement | 関係の名前                 |         14 |          0 |
-| requirement | クラスと `style` の名前    |          9 |          0 |
+| 図種           | 欄                                  | 引用符なし | 引用符あり |
+| -------------- | ----------------------------------- | ---------: | ---------: |
+| sankey         | リンクの source                     |         87 |          0 |
+| sankey         | リンクの target                     |         83 |          4 |
+| sankey         | リンクの値（値の形に従う）          |         87 |          0 |
+| ER             | 実体の名前                          |         39 |          2 |
+| ER             | 関係の役割                          |         43 |          2 |
+| ER             | 関係の左の名前                      |         45 |          0 |
+| ER             | 関係の右の名前                      |         45 |          0 |
+| ER             | subgraph の id                      |         11 |          1 |
+| requirement    | requirement の名前                  |         15 |          1 |
+| requirement    | element の名前                      |         10 |          0 |
+| requirement    | requirement の id                   |         16 |          0 |
+| requirement    | requirement の text                 |         13 |          3 |
+| requirement    | element の type                     |          9 |          1 |
+| requirement    | element の docRef                   |          2 |          0 |
+| requirement    | 関係の名前                          |         14 |          0 |
+| requirement    | クラスと `style` の名前             |          9 |          0 |
+| Wardley マップ | component の名前                    |         46 |          7 |
+| Wardley マップ | anchor の名前                       |          5 |          0 |
+| Wardley マップ | リンクの名前                        |         50 |         12 |
+| Wardley マップ | evolve と pipeline の名前           |          5 |          2 |
+| Wardley マップ | evolution の stage の名前           |         20 |          0 |
+| Wardley マップ | accelerator と deaccelerator の名前 |          0 |          4 |
+| Wardley マップ | pipeline の component の名前        |          0 |          4 |
+| gitGraph       | ブランチの名前                      |         85 |          0 |
+| gitGraph       | checkout または switch のブランチ   |        161 |          0 |
+| gitGraph       | merge のブランチ                    |         50 |          0 |
 
 テキストが平易なら、引用符なしで印字します。
 平易なテキストは、ASCII の英字、数字、`_`、`-`、`.` と、それらの間の空白です。
@@ -1834,6 +1846,42 @@ id、text、type、docRef は、同じ文字からなる語を空白で区切っ
 [fixture: requirement/class-lists/string-classes]
 [fixture: requirement/styles-and-classes/style-names]
 
+Wardley マップでは、ASCII の英字、数字、`_` からなり、
+英字で始まる語を空白 1 つで区切ったテキストを、以下の語で始まらない場合に、
+引用符なしで印字します。
+字句解析器は、これらを小文字で、語の境界を求めず独立した単位として読みます。
+`build`、`buy`、`outsource`、`market`、`size`、`evolution`、`anchor`、
+`component`、`label`、`inertia`、`evolve`、`pipeline`、`note`、`annotation`、
+`accelerator`、`deaccelerator`、`title`、`accTitle`、`accDescr` です。
+そのため、`"buyer"` は引用符で囲んだまま残し、`"title x"` も同じですが、
+`"Title x"` の引用符は除きます。
+accelerator と deaccelerator、pipeline の component の名前は、
+引用符で囲んで印字します。
+矢印のないリンクの 2 つの名前 `"A" "B"` は、
+引用符を外すと 1 つの名前として読まれ、
+名前に隣接する hidden YAML ブロックの `---` は名前に結合されるので、
+これらは引用符を残します。
+[fixture: wardley/names-and-quotes/plain-names-without-quotes]
+[fixture: wardley/names-and-quotes/names-that-need-quotes]
+[fixture: wardley/links/link-no-arrow]
+[fixture: wardley/pipeline/pipeline-depth]
+
+gitGraph では、ASCII の英字、数字、`_` と、その間の `-`、`.`、`/` からなり、
+英字か `_` で始まり、英字、数字、`_` で終わるブランチを、
+タイトルの行が取り込む `title` で始まらず、語の一部でない文字の前で、
+字句解析器が独立した単位として読む語でも始まらない場合に、
+引用符なしで印字します。
+数字は数の始まりになり得ます。
+独立した単位として読む語の判定では、大文字小文字を問いません。
+古い版の mermaid.js は、これらを大文字小文字を問わず比較し、
+`commit-x` を語 `commit` と `-x` として読むためです。
+そのため、`"develop"` と `"feature/login"` の引用符は除き、`"commit"`、
+`"Merge"`、`"titleA"`、`"1st"`、`"release/1."`、
+空白を含む名前は引用符で囲んだまま残します。
+[fixture: gitgraph/references/plain-names-without-quotes]
+[fixture: gitgraph/references/names-that-need-quotes]
+[fixture: gitgraph/references/reference-forms]
+
 同じ行で `#`、`%`、`;`、`:` が後に続く文字列は、どの図種でも引用符を残します。
 引用符のないテキストは行末まで続くことがあり、
 `a - satisfies -> "b" #c` の `b #c` のように、
@@ -1843,14 +1891,16 @@ id、text、type、docRef は、同じ文字からなる語を空白で区切っ
 [fixture: requirement/comments/after-keyword-and-string-values]
 [fixture: requirement/multi-line-statements/class-last-line-semicolon-kept]
 
-mermaid.js 12.3.0 は、印字が引用符を除く適合性コーパスの入力を両方の形で読み、
+mermaid.js 12.3.0 は、印字が引用符を変える適合性コーパスの入力を両方の形で読み、
 Db は同じでした。
-入力は sankey 図が 11 個、ER 図が 14 個、requirement 図が 11 個です。
+入力は sankey 図が 11 個、ER 図が 14 個、requirement 図が 11 個、
+Wardley マップが 34 個、gitGraph が 23 個です。
 平易な欄をすべて引用符で囲む形でも書き直した sankey の 6 つの例も、
 両方の形で読み、Db と SVG は同じでした。
-ER の 14 個の入力と requirement の 11 個のうち 8 個の入力も、
-整形後のテキストと同じに描かれました。
-残りの 3 個は、mermaid.js がどちらの形でも描きません。
+ER の 14 個、requirement の 11 個のうち 8 個、Wardley の 34 個、
+gitGraph の 23 個の入力も、整形後のテキストと同じに描かれました。
+requirement の残りの 3 個は、mermaid.js がどちらの形でも描きません。
+gitGraph の比較では、数、コミット id、要素の id を除いています。
 
 ### mermaid.js の版
 
@@ -1882,6 +1932,17 @@ ER の 14 個の入力と requirement の 11 個のうち 8 個の入力も、
   引用符で囲む文字列と引用符のない文字列の同じ生成規則 `unqString | qString`
   を使い、字句解析器のキーワードを大文字小文字を問わず語全体として読みます。
   そのため、それらのいずれでもない語は、これらのすべての版で名前として読めます。
+- Wardley マップの名前: この図種が初めて加わった 11.14.0 の文法は、
+  引用符のない名前を終端記号 `NAME_WITH_SPACES` で読みます。
+  ASCII の英字、数字、`_`、`(`、`)`、`&` からなり、
+  英字で始まる語を空白で区切った形です。
+  11.15.0（名前に `-` を加えた版）、12.0.0、12.3.0 の文法も同じ語を読みます。
+  引用符で囲む名前は、引用符のない名前と同じテキストです。
+- gitGraph のブランチ: 9.4.3、10.9.0、11.0.0 の文法は、参照 `ref` を、
+  引用符のない名前 `\w([-\./\w]*[-\w])?` か文字列として読み、
+  これらの文法の字句解析器は、キーワードを大文字小文字を問わず比較します。
+  12.3.0 の文法は、書かれたとおりに比較し、
+  キーワードより長い名前を名前として読みます。
 - 1 行のブロックのアクセシビリティの説明: flowchart の 9.0.0 と 9.0.1 の文法に、
   `accDescr` の規則はありません。
   最初に規則がある 9.1.0 の文法には、コロンの形とブロックの形があります。
