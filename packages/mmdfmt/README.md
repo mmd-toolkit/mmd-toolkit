@@ -345,15 +345,14 @@ on Markdown and `.mmd` files:
   the two give the content another column, the line width left for a diagram in
   the item or the quote differs by that, and a block of one line near the width
   can be split by one and not by the other.
-- In a list item or a block quote, Prettier gives the plugin the line width as
-  it is, without the width of what stands before the lines, and the plugin
-  counts the lines of a Gantt section with it, to line up their colons. `mmdfmt`
-  gives the plugin the width less what it writes before the lines, so near the
-  width a Gantt section can be lined up by Prettier and not by `mmdfmt`, which
-  then pads no name to line the colons up: the whitespace before each colon
-  stays as written, and a line written wider than the line width stays so. The
-  tasks are still indented as the printer indents them, so a colon moves along
-  with its line where the written indentation differs.
+- In a list item or a block quote, Prettier lines up the colons of a Gantt
+  section without counting what stands before the lines, so a lined-up line can
+  be wider than the line width. `mmdfmt` counts it, so near the width a Gantt
+  section can be lined up by Prettier and not by `mmdfmt`, which then pads no
+  name to line the colons up: the whitespace before each colon stays as written,
+  and a line written wider than the line width stays so. `mmdfmt` still indents
+  the tasks as it does in any Gantt chart, so a colon moves along with its line
+  where the written indentation differs.
 - Prettier leaves a diagram as written under four settings.
   `requirePragma: true` leaves a Markdown file that has no `<!-- @format -->` or
   `<!-- @prettier -->` comment at its top, after the frontmatter if there is
@@ -434,19 +433,16 @@ A diagram that is empty or only whitespace between its fences becomes empty.
 The line width of a diagram in a list item or a block quote is the line width of
 the file less the width of what `mmdfmt` writes before each of its lines, the
 width being at least 1. Each character of it counts as one column, except that a
-tab reaches the next multiple of `tabWidth`, as in the indentation that Prettier
-counts before the text it formats. Where `tabWidth` is 0, a tab counts for
-nothing and `mmdfmt` counts each other character as one column, while Prettier
-counts the whole indentation as nothing. For example, with a line width of 40, a
-diagram in a list item whose lines start with two spaces is formatted for 38
-columns, and with a `tabWidth` of 4, a diagram in a block quote whose lines
-start with `>` and a tab is formatted for 36 columns, as the tab reaches
-column 4. Prettier takes off the width of what it prints before the lines from a
-data block `@{ … }` in the same way, but what it prints can differ from what
-`mmdfmt` writes (see [If you know Prettier](#if-you-know-prettier)). The colons
-of a Gantt section are the exception: Prettier gives the plugin the line width
-as it is, so it does not count what stands before the lines (see the same
-section).
+tab reaches the next multiple of `tabWidth`, and counts for nothing where
+`tabWidth` is 0. For example, with a line width of 40, a diagram in a list item
+whose lines start with two spaces is formatted for 38 columns, and with a
+`tabWidth` of 4, a diagram in a block quote whose lines start with `>` and a tab
+is formatted for 36 columns, as the tab reaches column 4. Prettier takes off the
+width of what it prints before the lines from a data block `@{ … }` in the same
+way, but what it prints can differ from what `mmdfmt` writes (see
+[If you know Prettier](#if-you-know-prettier)). The colons of a Gantt section
+are the exception: Prettier does not count what stands before the lines when it
+lines them up (see the same section).
 
 A file keeps its line endings. Each line that `mmdfmt` writes ends as the first
 line of the file ends, or with `\n` in a file of one line, except the last,

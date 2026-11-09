@@ -369,75 +369,144 @@ describe("If you know Prettier: a tab after the `>` of a block quote", () => {
 })
 
 describe("If you know Prettier: the colons of a Gantt section in a container", () => {
-  const gantt = [
-    "gantt",
-    "  dateFormat YYYY-MM-DD",
-    "  section A",
-    "  Task name long enough to matter :a1, 2014-01-01, 1d",
-    "  T  :a2, after a1, 1d",
-  ]
-  const inList = lines(
-    "- item",
-    "",
-    "  ```mermaid",
-    ...gantt.map((line) => `  ${line}`),
-    "  ```",
-  )
-  const alignedRow = "T                               :a2, after a1, 1d"
-  const widest = Math.max(...gantt.map((line) => line.length))
+  /** The lines of a diagram, as the content of a code block in a list item. */
+  function inListItem(diagram: readonly string[]): string {
+    return lines(
+      "- item",
+      "",
+      "  ```mermaid",
+      ...diagram.map((line) => `  ${line}`),
+      "  ```",
+    )
+  }
 
-  it("is lined up by Prettier and not by mmdfmt where the lines fit only without the container", async () => {
-    for (const printWidth of [widest, widest + 1]) {
-      const byPrettier = await format(inList, {
-        parser: "markdown",
-        plugins: [plugin],
-        printWidth,
-      })
-      const byTool = await formatMarkdown(inList, { printWidth }, "output")
-      expect(byPrettier).toContain(alignedRow)
-      expect(byTool.text).not.toContain(alignedRow)
-      // The colons stay where they were written; only the section's tasks get
-      // the printer's indentation.
-      expect(byTool.text).toContain(
-        "    Task name long enough to matter :a1, 2014-01-01, 1d\n",
+  /** The lines of a diagram, as the content of a code block in a block quote. */
+  function inBlockQuote(diagram: readonly string[]): string {
+    return lines("> ```mermaid", ...diagram.map((line) => `> ${line}`), "> ```")
+  }
+
+  /** The lines of a diagram, as the content of a code block in an ordered list item whose number is `number`, such as `1.`. */
+  function inOrderedListItem(
+    number: string,
+  ): (diagram: readonly string[]) => string {
+    const indentation = " ".repeat(number.length + 1)
+    return (diagram) =>
+      lines(
+        `${number} item`,
+        "",
+        `${indentation}\`\`\`mermaid`,
+        ...diagram.map((line) => `${indentation}${line}`),
+        `${indentation}\`\`\``,
       )
-      expect(byTool.text).toContain("    T  :a2, after a1, 1d\n")
-    }
-  })
+  }
 
-  /** A gantt in a list item, with each task after `margin` and `gaps` before the colons. */
-  function ganttInListItem(margin: string, gaps: readonly string[]): string {
+  /**
+   * A gantt chart with three tasks, each after `margin`, with `gaps` before the
+   * colons, and a `section` line before them unless `withSection` is false.
+   */
+  function ganttLines(
+    margin: string,
+    gaps: readonly string[],
+    withSection = true,
+  ): string[] {
     const tasks = [
       ["Task name long enough to matter", ":a1, 2014-01-01, 1d"],
       ["T", ":a2, after a1, 1d"],
       ["Mid name", ":a3, after a2, 1d"],
     ].map(([name, rest], index) => `${margin}${name}${gaps[index]}${rest}`)
-    return lines(
-      "- item",
-      "",
-      "  ```mermaid",
-      ...["gantt", "  dateFormat YYYY-MM-DD", "  section A", ...tasks].map(
-        (line) => `  ${line}`,
-      ),
-      "  ```",
-    )
+    return [
+      "gantt",
+      "  dateFormat YYYY-MM-DD",
+      ...(withSection ? ["  section A"] : []),
+      ...tasks,
+    ]
   }
+
+  /** The row of the second task once the colons are lined up under the longest name. */
+  const alignedRow = "T                               :a2, after a1, 1d"
+  /** The tasks of a section are one level deeper than `section`, and the tasks before it one level deeper than `gantt`. */
+  const sectionMargin = "    "
+  const noSectionMargin = "  "
+  const padded = ["  ", "   ", " "]
+
+  it.each([
+    {
+      container: "a list item",
+      inContainer: inListItem,
+      prettierOnly: [53, 54],
+      both: 55,
+    },
+    {
+      container: "a block quote",
+      inContainer: inBlockQuote,
+      prettierOnly: [53, 54],
+      both: 55,
+    },
+    {
+      container: "an ordered list item",
+      inContainer: inOrderedListItem("1."),
+      prettierOnly: [53, 54, 55],
+      both: 56,
+    },
+    {
+      container: "an ordered list item with a number of two digits",
+      inContainer: inOrderedListItem("10."),
+      prettierOnly: [53, 54, 55, 56],
+      both: 57,
+    },
+  ])(
+    "in $container, is lined up by Prettier where the lines fit without what stands before them, and by mmdfmt only where they fit with it",
+    async ({ inContainer, prettierOnly, both }) => {
+      // The lined-up rows are 53 columns wide without what stands before the
+      // lines, and 53 plus the width of that with it: 55 in a list item and in
+      // a block quote, 56 after `1.`, and 57 after `10.`.
+      const text = inContainer(ganttLines(sectionMargin, padded))
+      for (const { printWidth, prettierLinesUp, toolLinesUp } of [
+        { printWidth: 52, prettierLinesUp: false, toolLinesUp: false },
+        ...prettierOnly.map((width) => ({
+          printWidth: width,
+          prettierLinesUp: true,
+          toolLinesUp: false,
+        })),
+        { printWidth: both, prettierLinesUp: true, toolLinesUp: true },
+      ]) {
+        const byPrettier = await format(text, {
+          parser: "markdown",
+          plugins: [plugin],
+          printWidth,
+        })
+        const byTool = await formatMarkdown(text, { printWidth }, "output")
+        expect(byPrettier.includes(alignedRow)).toBe(prettierLinesUp)
+        expect(byTool.text.includes(alignedRow)).toBe(toolLinesUp)
+        if (prettierLinesUp && !toolLinesUp) {
+          // A lined-up line is wider than the line width, with the container.
+          const widest = Math.max(
+            ...byPrettier.split("\n").map((line) => line.length),
+          )
+          expect(widest).toBeGreaterThan(printWidth)
+        }
+        // Not lined up, the text stays as written, which is printed already.
+        if (!toolLinesUp) expect(byTool).toEqual({ text, diagnostics: [] })
+        if (toolLinesUp) expect(byTool.text).toBe(byPrettier)
+      }
+    },
+  )
 
   it.each([
     {
       written: "tasks as the printer indents them",
       indentation: 4,
-      gaps: ["  ", "   ", " "],
+      gaps: padded,
     },
     {
       written: "tasks less deep than the printer indents them",
       indentation: 2,
-      gaps: ["  ", "   ", " "],
+      gaps: padded,
     },
     {
       written: "tasks deeper than the printer indents them",
       indentation: 6,
-      gaps: ["  ", "   ", " "],
+      gaps: padded,
     },
     {
       written: "one, two, and five spaces before the colons",
@@ -445,11 +514,10 @@ describe("If you know Prettier: the colons of a Gantt section in a container", (
       gaps: [" ", "  ", "     "],
     },
   ])(
-    "is lined up by Prettier and by mmdfmt only with the whitespace before each colon as written, for $written",
+    "leaves the whitespace before each colon as written and indents the tasks as in any chart, for $written",
     async ({ indentation, gaps }) => {
-      const text = ganttInListItem(" ".repeat(indentation), gaps)
-      // The printer indents the tasks of a section by two levels.
-      const printed = ganttInListItem("    ", gaps)
+      const text = inListItem(ganttLines(" ".repeat(indentation), gaps))
+      const printed = inListItem(ganttLines(sectionMargin, gaps))
       const printWidth = 53
       const byPrettier = await format(text, {
         parser: "markdown",
@@ -457,22 +525,23 @@ describe("If you know Prettier: the colons of a Gantt section in a container", (
         printWidth,
       })
       const byTool = await formatMarkdown(text, { printWidth }, "output")
-      expect(byPrettier).toContain(
-        "      T                               :a2, after a1, 1d\n",
-      )
+      expect(byPrettier).toContain(`      ${alignedRow}\n`)
       expect(byTool).toEqual({ text: printed, diagnostics: [] })
     },
   )
 
-  it("is lined up by both where the lines fit in the container", async () => {
-    const printWidth = widest + 2
-    const byPrettier = await format(inList, {
+  it("indents the tasks before the first section one level deeper than gantt, and leaves the whitespace before each colon as written", async () => {
+    // The lined-up rows are 51 columns wide without what stands before the lines.
+    const text = inListItem(ganttLines("      ", padded, false))
+    const printed = inListItem(ganttLines(noSectionMargin, padded, false))
+    const printWidth = 51
+    const byPrettier = await format(text, {
       parser: "markdown",
       plugins: [plugin],
       printWidth,
     })
-    const byTool = await formatMarkdown(inList, { printWidth }, "output")
-    expect(byTool.text).toBe(byPrettier)
-    expect(byTool.text).toContain(alignedRow)
+    const byTool = await formatMarkdown(text, { printWidth }, "output")
+    expect(byPrettier).toContain(`    ${alignedRow}\n`)
+    expect(byTool).toEqual({ text: printed, diagnostics: [] })
   })
 })

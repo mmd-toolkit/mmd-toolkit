@@ -336,15 +336,14 @@ on Markdown and `.mmd` files:
   two give the content another column, the line width left for a diagram in the
   item or the quote differs by that, and a block of one line near the width can
   be split by one and not by the other.
-- In a list item or a block quote, Prettier gives the plugin the line width as
-  it is, without the width of what stands before the lines, and the plugin
-  counts the lines of a Gantt section with it, to line up their colons. `mmdfmt`
-  gives the plugin the width less what it writes before the lines, so near the
-  width a Gantt section can be lined up by Prettier and not by `mmdfmt`, which
-  then pads no name to line the colons up: the whitespace before each colon
-  stays as written, and a line written wider than the line width stays so. The
-  tasks are still indented as the printer indents them, so a colon moves along
-  with its line where the written indentation differs.
+- In a list item or a block quote, Prettier lines up the colons of a Gantt
+  section without counting what stands before the lines, so a lined-up line can
+  be wider than the line width. `mmdfmt` counts it, so near the width a Gantt
+  section can be lined up by Prettier and not by `mmdfmt`, which then pads no
+  name to line the colons up: the whitespace before each colon stays as written,
+  and a line written wider than the line width stays so. `mmdfmt` still indents
+  the tasks as it does in any Gantt chart, so a colon moves along with its line
+  where the written indentation differs.
 - Prettier leaves a diagram as written under four settings.
   `requirePragma: true` leaves a Markdown file that has no `<!-- @format -->` or
   `<!-- @prettier -->` comment at its top, after the frontmatter if there is
