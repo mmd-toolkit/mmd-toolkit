@@ -50,7 +50,7 @@ treeView-beta
 ```mmd
 %% eslint @mmd-toolkit/treeview-no-empty-description-block: error
 treeView-beta
-  accDescr { Project files }
+  accDescr: Project files
   root/
 ```
 

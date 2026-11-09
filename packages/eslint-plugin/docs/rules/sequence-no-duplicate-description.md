@@ -52,7 +52,7 @@ sequenceDiagram
 %% eslint @mmd-toolkit/sequence-no-duplicate-description: error
 sequenceDiagram
   A ->> B: x
-  accDescr { first }
+  accDescr: first
   accDescr: second
 ```
 

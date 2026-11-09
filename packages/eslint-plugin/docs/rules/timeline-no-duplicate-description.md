@@ -44,7 +44,7 @@ Examples of **incorrect** code for this rule:
 %% eslint @mmd-toolkit/timeline-no-duplicate-description: error
 timeline
   accDescr: first
-  accDescr { second }
+  accDescr: second
   2020 : Launch
 ```
 

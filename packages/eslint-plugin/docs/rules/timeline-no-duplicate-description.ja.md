@@ -45,7 +45,7 @@ LF、CRLF、CR の改行は、LF として比べる。
 %% eslint @mmd-toolkit/timeline-no-duplicate-description: error
 timeline
   accDescr: first
-  accDescr { second }
+  accDescr: second
   2020 : Launch
 ```
 

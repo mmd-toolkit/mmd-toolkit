@@ -50,7 +50,7 @@ usecase-beta
 ```mmd
 %% eslint @mmd-toolkit/usecase-no-unclosed-description-block: error
 usecase-beta
-  accDescr { first }
+  accDescr: first
   A --> B
   actor C@{ type: hollow }
   D

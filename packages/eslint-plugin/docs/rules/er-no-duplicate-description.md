@@ -40,6 +40,8 @@ mermaid.js gives an error. A statement inside a subgraph sets the description of
 the whole diagram and is counted too. A block with no description, including one
 with only comments or directives, is not counted.
 
+The formatter prints a block with its text on one line, `accDescr { text }`, as `accDescr: text`. The example that shows such a block is shown as written.
+
 Examples of **incorrect** code for this rule:
 
 ```mmd
@@ -50,6 +52,7 @@ erDiagram
   A
 ```
 
+<!-- prettier-ignore -->
 ```mmd
 %% eslint @mmd-toolkit/er-no-duplicate-description: error
 erDiagram

@@ -43,6 +43,10 @@ mermaid.js は、閉じる `}` のない `accDescr {` のブロックをエラ�
 説明がその形のテキストを取り込んでも報告しない。
 規則は、それらの `}` を見分けられない。
 
+整形ツールは、テキストが 1 行のブロック `accDescr { text }` を、
+`accDescr: text` と書く。
+そのブロックを示す例は、書いたまま示している。
+
 この規則に**反する**コードの例:
 
 ```mmd
@@ -62,6 +66,7 @@ flowchart LR
 
 この規則に**従う**コードの例:
 
+<!-- prettier-ignore -->
 ```mmd
 %% eslint @mmd-toolkit/flowchart-no-unclosed-description-block: error
 flowchart LR
@@ -69,6 +74,7 @@ flowchart LR
   accDescr { y }
 ```
 
+<!-- prettier-ignore -->
 ```mmd
 %% eslint @mmd-toolkit/flowchart-no-unclosed-description-block: error
 flowchart LR

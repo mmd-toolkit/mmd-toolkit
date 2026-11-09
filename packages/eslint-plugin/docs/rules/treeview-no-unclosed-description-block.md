@@ -42,7 +42,7 @@ Examples of **correct** code for this rule:
 ```mmd
 %% eslint @mmd-toolkit/treeview-no-unclosed-description-block: error
 treeView-beta
-  accDescr { Project files }
+  accDescr: Project files
   root/
     file
 ```

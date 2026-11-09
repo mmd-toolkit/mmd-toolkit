@@ -57,7 +57,7 @@ mermaid.js は、罫線の文字で描いたツリービューでは、
 %% eslint @mmd-toolkit/treeview-no-duplicate-description: error
 treeView-beta
   accDescr: First
-  accDescr { Second }
+  accDescr: Second
   root/
 ```
 
@@ -66,7 +66,7 @@ treeView-beta
 ```mmd
 %% eslint @mmd-toolkit/treeview-no-duplicate-description: error
 treeView-beta
-  accDescr { Second }
+  accDescr: Second
   root/
 ```
 

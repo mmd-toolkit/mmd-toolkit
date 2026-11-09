@@ -41,6 +41,10 @@ subgraph の中の文も、図全体の説明を設定するので、数える�
 説明を持たないブロックは、コメントだけかディレクティブだけのものも含めて、
 数えない。
 
+整形ツールは、テキストが 1 行のブロック `accDescr { text }` を、
+`accDescr: text` と書く。
+そのブロックを示す例は、書いたまま示している。
+
 この規則に**反する**コードの例:
 
 ```mmd
@@ -51,6 +55,7 @@ erDiagram
   A
 ```
 
+<!-- prettier-ignore -->
 ```mmd
 %% eslint @mmd-toolkit/er-no-duplicate-description: error
 erDiagram

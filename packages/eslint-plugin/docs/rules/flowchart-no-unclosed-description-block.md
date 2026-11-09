@@ -40,6 +40,8 @@ when its closer does not meet that exception. Conversely, a shape whose closing
 the description takes the shape's text. The rule cannot tell these closers
 apart.
 
+The formatter prints a block with its text on one line, `accDescr { text }`, as `accDescr: text`. The examples that show such a block are shown as written.
+
 Examples of **incorrect** code for this rule:
 
 ```mmd
@@ -59,6 +61,7 @@ flowchart LR
 
 Examples of **correct** code for this rule:
 
+<!-- prettier-ignore -->
 ```mmd
 %% eslint @mmd-toolkit/flowchart-no-unclosed-description-block: error
 flowchart LR
@@ -66,6 +69,7 @@ flowchart LR
   accDescr { y }
 ```
 
+<!-- prettier-ignore -->
 ```mmd
 %% eslint @mmd-toolkit/flowchart-no-unclosed-description-block: error
 flowchart LR

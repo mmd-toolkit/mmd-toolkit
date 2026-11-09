@@ -52,7 +52,7 @@ stateDiagram-v2
 ```mmd
 %% eslint @mmd-toolkit/state-no-duplicate-description: error
 stateDiagram-v2
-  accDescr { first }
+  accDescr: first
   accDescr: second
   A --> B
 ```

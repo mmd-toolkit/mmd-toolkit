@@ -71,7 +71,7 @@ sequenceDiagram
 %% eslint @mmd-toolkit/sequence-no-empty-description-block: error
 sequenceDiagram
   A ->> B: x
-  accDescr { y }
+  accDescr: y
 ```
 
 ```mmd

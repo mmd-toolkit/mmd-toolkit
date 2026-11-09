@@ -37,6 +37,8 @@ from the `}` of a curve.
 A block with no closing `}` is not reported, because mermaid.js gives an error
 for it.
 
+The formatter prints a block with its text on one line, `accDescr { text }`, as `accDescr: text`. The example that shows such a block is shown as written.
+
 Examples of **incorrect** code for this rule:
 
 ```mmd
@@ -49,6 +51,7 @@ radar-beta
 
 Examples of **correct** code for this rule:
 
+<!-- prettier-ignore -->
 ```mmd
 %% eslint @mmd-toolkit/radar-no-unclosed-description-block: error
 radar-beta

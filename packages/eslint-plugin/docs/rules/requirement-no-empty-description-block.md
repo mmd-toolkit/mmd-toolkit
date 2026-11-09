@@ -66,7 +66,7 @@ Examples of **correct** code for this rule:
 ```mmd
 %% eslint @mmd-toolkit/requirement-no-empty-description-block: error
 requirementDiagram
-  accDescr { y }
+  accDescr: y
   requirement r {
     id: 1
   }

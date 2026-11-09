@@ -38,8 +38,13 @@ LF、CRLF、CR の改行は、LF として比べる。
 その文は、テキストを持つ次の行を取る。
 説明を持たないブロックは数えない。
 
+整形ツールは、テキストが 1 行のブロック `accDescr { text }` を、
+`accDescr: text` と書く。
+そのブロックを示す例は、書いたまま示している。
+
 この規則に**反する**コードの例:
 
+<!-- prettier-ignore -->
 ```mmd
 %% eslint @mmd-toolkit/gantt-no-duplicate-description: error
 gantt

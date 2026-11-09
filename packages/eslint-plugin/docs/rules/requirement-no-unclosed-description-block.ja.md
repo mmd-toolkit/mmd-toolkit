@@ -48,7 +48,7 @@ requirementDiagram
 ```mmd
 %% eslint @mmd-toolkit/requirement-no-unclosed-description-block: error
 requirementDiagram
-  accDescr { x }
+  accDescr: x
   requirement r {
     id: 1
   }
