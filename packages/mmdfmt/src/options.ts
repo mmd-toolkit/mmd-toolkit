@@ -30,31 +30,35 @@ export interface ReadOptions {
 }
 
 /**
- * Every option of `ReadOptions`, as a record so that the type checker fails
- * where the interface has an option that this lacks, or this has one that the
- * interface lacks.
+ * The names of the options in `ReadOptions`. `tests/options.test.ts` ties this
+ * list to the options that `readOptions` takes.
  */
-const readOptionRecord = {
-  printWidth: true,
-  tabWidth: true,
-  useTabs: true,
-  embeddedLanguageFormatting: true,
-  singleQuote: true,
-  bracketSpacing: true,
-  proseWrap: true,
-  trailingComma: true,
-} as const satisfies Record<keyof ReadOptions, true>
-
-/** The names of the options in `ReadOptions`. */
-export const readOptionNames: readonly (keyof ReadOptions)[] = Object.keys(
-  readOptionRecord,
-) as (keyof ReadOptions)[]
+export const readOptionNames: readonly (keyof ReadOptions)[] = [
+  "printWidth",
+  "tabWidth",
+  "useTabs",
+  "embeddedLanguageFormatting",
+  "singleQuote",
+  "bracketSpacing",
+  "proseWrap",
+  "trailingComma",
+]
 
 /**
  * The options that the tool reads of a configuration that Prettier resolved for
  * a file, in `config`; the others, such as the range, the pragmas, and the
- * options of other languages, are not read.
+ * options of other languages, are not read. An option that the configuration
+ * lacks is `undefined`, which Prettier takes as its default.
  */
 export function readOptions(config: Options): ReadOptions {
-  return Object.fromEntries(readOptionNames.map((name) => [name, config[name]]))
+  return {
+    printWidth: config.printWidth,
+    tabWidth: config.tabWidth,
+    useTabs: config.useTabs,
+    embeddedLanguageFormatting: config.embeddedLanguageFormatting,
+    singleQuote: config.singleQuote,
+    bracketSpacing: config.bracketSpacing,
+    proseWrap: config.proseWrap,
+    trailingComma: config.trailingComma,
+  }
 }

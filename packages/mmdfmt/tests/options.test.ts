@@ -53,17 +53,20 @@ describe("The options that the tool reads", () => {
     )
   })
 
-  it("are the only options taken from a configuration", () => {
+  it("are the only options taken from a configuration, and the names listed are those options", () => {
+    const read = {
+      printWidth: 40,
+      tabWidth: 4,
+      useTabs: true,
+      embeddedLanguageFormatting: "off",
+      singleQuote: true,
+      bracketSpacing: false,
+      proseWrap: "never",
+      trailingComma: "none",
+    } as const
     expect(
       readOptions({
-        printWidth: 40,
-        tabWidth: 4,
-        useTabs: true,
-        embeddedLanguageFormatting: "off",
-        singleQuote: true,
-        bracketSpacing: false,
-        proseWrap: "never",
-        trailingComma: "none",
+        ...read,
         parser: "babel",
         plugins: ["prettier-plugin-x"],
         endOfLine: "crlf",
@@ -73,28 +76,13 @@ describe("The options that the tool reads", () => {
         requirePragma: true,
         semi: false,
       }),
-    ).toStrictEqual({
-      printWidth: 40,
-      tabWidth: 4,
-      useTabs: true,
-      embeddedLanguageFormatting: "off",
-      singleQuote: true,
-      bracketSpacing: false,
-      proseWrap: "never",
-      trailingComma: "none",
-    })
+    ).toStrictEqual(read)
+    expect(readOptionNames.toSorted(byName)).toEqual(
+      Object.keys(read).toSorted(byName),
+    )
   })
 
-  it("are the eight that the README names", () => {
-    expect(readOptionNames.toSorted(byName)).toEqual([
-      "bracketSpacing",
-      "embeddedLanguageFormatting",
-      "printWidth",
-      "proseWrap",
-      "singleQuote",
-      "tabWidth",
-      "trailingComma",
-      "useTabs",
-    ])
+  it("are all undefined for a configuration that sets none of them", () => {
+    expect(readOptions({ semi: false, rangeEnd: 2 })).toEqual({})
   })
 })
