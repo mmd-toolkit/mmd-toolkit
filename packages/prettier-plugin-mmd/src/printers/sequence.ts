@@ -271,8 +271,9 @@ function openBlock(
   return { header, block }
 }
 
-/** The lists of statements that the node holds. */
+/** The lists of statements that the node holds, the diagram included. */
 function statementListsOf(node: MermaidAst): ReturnType<StatementListsOf> {
+  if (node.type === "SequenceDiagram") return [node.body]
   const classified = classifySequenceStatement(node)
   switch (classified?.kind) {
     case "body":
@@ -284,7 +285,7 @@ function statementListsOf(node: MermaidAst): ReturnType<StatementListsOf> {
   }
 }
 
-/** Whether the node is a statement that holds statements of its own. */
+/** Whether the node holds statements of its own. */
 function holdsStatements(node: MermaidAst): boolean {
   return statementListsOf(node).length > 0
 }

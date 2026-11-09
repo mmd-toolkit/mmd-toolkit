@@ -185,12 +185,15 @@ function printSubgraph(
   return printClosedBlock(header, block, endKeyword.value, depth, options)
 }
 
-/** The lists of statements that the node holds. */
+/** The lists of statements that the node holds, the diagram included. */
 function statementListsOf(node: MermaidAst): ReturnType<StatementListsOf> {
-  return node.type === "FlowchartSubgraphStatement" ? [node.body] : []
+  return node.type === "FlowchartDiagram" ||
+    node.type === "FlowchartSubgraphStatement"
+    ? [node.body]
+    : []
 }
 
-/** Whether the node is a statement that holds statements of its own. */
+/** Whether the node holds statements of its own. */
 function holdsStatements(node: MermaidAst): boolean {
   return statementListsOf(node).length > 0
 }

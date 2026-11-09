@@ -71,13 +71,14 @@ function printLine(
   }).doc
 }
 
-/** The lists of statements that the node holds. */
+/** The lists of statements that the node holds, the diagram included. */
 function statementListsOf(node: MermaidAst): ReturnType<StatementListsOf> {
+  if (node.type === "UsecaseDiagram") return [node.body]
   const classified = classifyUsecaseStatement(node)
   return classified?.kind === "boundary" ? [classified.statement.body] : []
 }
 
-/** Whether the node is a statement that holds statements of its own. */
+/** Whether the node holds statements of its own. */
 function holdsStatements(node: MermaidAst): boolean {
   return statementListsOf(node).length > 0
 }

@@ -1909,9 +1909,10 @@ mermaid.js は単独行の `}` の前のタブを受理しますが、
 [fixture: data-blocks/use-tabs-two-statements-before]
 
 行頭に書かれた空白は、その行の最初にあるものの字下げです。
-最初にあるものは、文、コンテナの見出し、セクションのキーワード、
-`end` のどれかで、整形器は見出し、セクションのキーワード、
-`end` をコンテナと同じ深さに印字します。
+最初にあるものは、文、コンテナの見出し、セクションのキーワード、`end`、
+前の行から始まった文のブロックを閉じる `}` のどれかです。
+整形器は見出し、セクションのキーワード、`end` をコンテナと同じ深さに、
+ブロックの `}` をその文の列に印字します。
 そのため、その空白は、最初にあるものと同じ深さの文の字下げにしかなりません。
 `subgraph s; A@{ … }` のように見出しが先にあると、文はコンテナの中にあり、
 最初にあるものより深くなります。
@@ -1925,17 +1926,28 @@ mermaid.js は単独行の `}` の前のタブを受理しますが、
 [fixture: data-blocks/use-tabs-nested-subgraph-header-moved]
 [fixture: data-blocks/use-tabs-statement-before-end-moved]
 [fixture: data-blocks/use-tabs-end-before-end-moved]
+[fixture: data-blocks/use-tabs-block-closer-before-end-moved]
+前の行から始まった文の、ほかの部分で行が始まる場合は、
+この種の最初にあるものがありません。
+`B -->` の次の行の `C; A@{ … }` の行や、
+改行で分かれたラベルの残りの行がそうです。
+その空白はどの文の字下げでもないので、その文も書かれたまま印字しません。
+[fixture: data-blocks/use-tabs-edge-continuation-moved]
+[fixture: data-blocks/use-tabs-label-continuation-moved]
 最初にあるものと同じ深さの文は、`C; A@{ … }` のように書かれたまま印字します。
 `end; A@{ … }` のように `end` が先にある文も同じです。
 整形器は `end` をコンテナと同じ深さに印字し、
 コンテナの後の文もその深さだからです。
+同じ深さの文のブロックを閉じる `}` が先にある `}; A@{ … }` の文も同じです。
 [fixture: data-blocks/use-tabs-after-end-on-line]
+[fixture: data-blocks/use-tabs-after-block-closer-on-line]
 
 ノードの行自体の字下げを整形器が整える必要がある場合は、
 `useTabs` でないときと同じく、ブロックの行も空白で字下げして一緒に動かします。
 該当するのは、
 `end` がヘッダーと同じ字下げに置かれる agentflow の container のヘッダー、
-その行の最初にあるものと同じ深さでない文（前述）、
+その行の最初にあるものと同じ深さでない文や、
+前の文の途中から始まる行の文（前述）、
 mermaid.js が字下げをノードの段として読む kanban のノードです。
 [Metadata blocks](./agentflow.ja.md#metadata-blocks)と
 [データブロック](./kanban.ja.md#データブロック)を参照してください。

@@ -594,9 +594,11 @@ statement inside the container, and the indentation written at the start of the
 line is that of the header, so the statement is not printed as written either
 (see [Data blocks](./flowchart.md#data-blocks)). So is a statement after an
 `end` when a statement of the container comes first, as `A@{ … }` in
-`B; end; A@{ … }`. [fixture:
+`B; end; A@{ … }`, and a statement on a line that starts with another part of an
+earlier statement, as `C; A@{ … }` does after `B -->`. [fixture:
 metadata-blocks/use-tabs-container-header-statement-moved] [fixture:
-metadata-blocks/use-tabs-statement-before-end-moved]
+metadata-blocks/use-tabs-statement-before-end-moved] [fixture:
+metadata-blocks/use-tabs-edge-continuation-moved]
 
 A block after an arrow's newline retains its columns because it starts after the
 statement's first line, and a statement with two blocks, of one line or of
