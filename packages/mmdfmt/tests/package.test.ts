@@ -22,7 +22,7 @@ afterEach(() => {
 })
 
 describe("From a script: the package entry", () => {
-  it("exports format and resolveConfig when Node imports the package by its name", async () => {
+  it("exports clearConfigCache, format, and resolveConfig when Node imports the package by its name", async () => {
     // Node resolves `mmdfmt` through the package's own `exports`, from code
     // that runs in the package's directory. The path of the text is in a
     // project outside the repository, so that no configuration of the
@@ -42,7 +42,7 @@ describe("From a script: the package entry", () => {
       { cwd: packageDirectory },
     )
     expect(JSON.parse(stdout)).toEqual({
-      exports: ["format", "resolveConfig"],
+      exports: ["clearConfigCache", "format", "resolveConfig"],
       result: "# Notes\n\n```mermaid\nflowchart LR\n  A --> B\n```\n",
       config: null,
     })

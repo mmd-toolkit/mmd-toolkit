@@ -3,7 +3,7 @@ import type { ConfigOptions } from "./format-file.ts"
 import { endingsInWords, formatDiagramSource, kindOf } from "./format-file.ts"
 import { formatMarkdown } from "./markdown.ts"
 
-export { resolveConfig } from "./format-file.ts"
+export { clearConfigCache, resolveConfig } from "./format-file.ts"
 
 /**
  * The options that `resolveConfig` returns, and `filepath`, required, whose

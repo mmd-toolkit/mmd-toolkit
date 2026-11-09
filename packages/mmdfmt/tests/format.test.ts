@@ -4,7 +4,7 @@ import { pathToFileURL } from "node:url"
 import * as prettier from "prettier"
 import plugin from "prettier-plugin-mmd"
 import { afterEach, beforeEach, describe, expect, it } from "vitest"
-import { format, resolveConfig } from "../src/index.ts"
+import { clearConfigCache, format, resolveConfig } from "../src/index.ts"
 import { Project, lines } from "./helpers.ts"
 
 let project: Project
@@ -393,6 +393,23 @@ describe("From a script: resolveConfig", () => {
     expect(
       await format(source, { ...(await resolveConfig(filepath)), filepath }),
     ).toEqual(result.stdout)
+  })
+})
+
+describe("From a script: clearConfigCache", () => {
+  it("reads a changed configuration after clearing the cache", async () => {
+    // Prettier's cache is shared by every test in the process, so clear it
+    // first to avoid depending on what other tests have read.
+    await clearConfigCache()
+    const filepath = path.join(project.cwd, "a.mmd")
+    project.write({ ".prettierrc.json": '{ "tabWidth": 3 }' })
+    expect(await resolveConfig(filepath)).toStrictEqual({ tabWidth: 3 })
+
+    project.write({ ".prettierrc.json": '{ "tabWidth": 5 }' })
+    expect(await resolveConfig(filepath)).toStrictEqual({ tabWidth: 3 })
+
+    expect(await clearConfigCache()).toEqual(undefined)
+    expect(await resolveConfig(filepath)).toStrictEqual({ tabWidth: 5 })
   })
 })
 

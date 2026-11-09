@@ -2,7 +2,7 @@
 "mmdfmt": minor
 ---
 
-Add `format` and `resolveConfig`, shaped as Prettier's functions of the same
-names, so that a tool such as a language server can find the configuration of a
-file as `mmdfmt` does and format only its diagrams, as `mmdfmt --stdin-filepath`
-does, without running the command.
+Add `resolveConfig(fileUrlOrPath)`, which finds the configuration of a file as
+`mmdfmt` does, `format(source, options)`, which given it returns the text that
+`mmdfmt` writes for the file, and `clearConfigCache()`, so that a tool such as a
+language server can format the diagrams of a file without running the command.

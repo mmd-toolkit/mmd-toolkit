@@ -1,6 +1,9 @@
 import path from "node:path"
 import type { Options } from "prettier"
-import { resolveConfig as resolvePrettierConfig } from "prettier"
+import {
+  clearConfigCache as clearPrettierConfigCache,
+  resolveConfig as resolvePrettierConfig,
+} from "prettier"
 import { formatDiagramText, rejectionOf } from "./diagram.ts"
 import type { FormatResult, PositionsIn } from "./diagnostic.ts"
 import { lineEndingOf, positionIn, readText } from "./lines.ts"
@@ -88,6 +91,15 @@ export async function resolveConfig(
     ...read
   } = config
   return read
+}
+
+/**
+ * Forgets the configuration files that `resolveConfig` has read, so that the
+ * next call reads them again: Prettier keeps them for the life of the process
+ * (README, From a script).
+ */
+export async function clearConfigCache(): Promise<void> {
+  await clearPrettierConfigCache()
 }
 
 /**
