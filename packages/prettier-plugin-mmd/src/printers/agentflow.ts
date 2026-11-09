@@ -151,9 +151,13 @@ function printDiagram(
 
 /** The lists of statements that the node holds, the diagram included. */
 function statementListsOf(node: MermaidAst): ReturnType<StatementListsOf> {
-  if (node.type === "AgentflowDiagram") return [node.body]
+  if (node.type === "AgentflowDiagram") {
+    return [{ head: node.range[0], statements: node.body }]
+  }
   const classified = classifyAgentflowStatement(node)
-  return classified?.kind === "container" ? [classified.statement.body] : []
+  return classified?.kind === "container"
+    ? [{ head: node.range[0], statements: classified.statement.body }]
+    : []
 }
 
 /** Whether the node holds statements of its own. */

@@ -189,7 +189,7 @@ function printSubgraph(
 function statementListsOf(node: MermaidAst): ReturnType<StatementListsOf> {
   return node.type === "FlowchartDiagram" ||
     node.type === "FlowchartSubgraphStatement"
-    ? [node.body]
+    ? [{ head: node.range[0], statements: node.body }]
     : []
 }
 

@@ -11,6 +11,7 @@ import type { Source } from "./source.ts"
 import {
   findDirectiveEndingAt,
   findFirstIndex,
+  findTokenEndingBefore,
   findTriviaBetween,
   isSpaceOrTab,
   isWhitespace,
@@ -76,11 +77,20 @@ function dataBlocksOf(source: Source): readonly Node[] {
 }
 
 /**
+ * A list of statements that a node holds, and where its head starts: the
+ * header of the diagram or of a container, or the keyword of a section.
+ */
+export interface StatementList {
+  readonly head: number
+  readonly statements: readonly Node[]
+}
+
+/**
  * The lists of statements that a node holds: the body of a diagram or of a
  * subgraph, one for each section of an `alt`, and none for a statement that
  * holds no statements.
  */
-export type StatementListsOf = (node: Node) => readonly (readonly Node[])[]
+export type StatementListsOf = (node: Node) => readonly StatementList[]
 
 /** A stretch of the source text: from `start` up to, not including, `end`. */
 interface Stretch {
@@ -89,15 +99,24 @@ interface Stretch {
 }
 
 /**
- * The text that a list of statements covers, from the start of its first
- * statement to the end of its last, and the text of the statements that hold no
- * statements. A statement is in the first, and so is anything between two
- * statements of the list. The header of a container, the keyword of a section,
- * and the `end` are not: they are at the depth of the container.
+ * What the depth of a statement is counted from, and where the whitespace at
+ * the start of a line can be written for.
  */
 interface StatementStretches {
+  /**
+   * The text that each list of statements covers, from the start of its first
+   * statement to the end of its last. A statement is in it, and so is anything
+   * between two statements of the list. The header of a container, the keyword
+   * of a section, and the `end` are not: they are at the depth of the
+   * container.
+   */
   readonly lists: readonly Stretch[]
-  readonly leaves: readonly Stretch[]
+  /**
+   * The offsets where the things start that the whitespace at the start of a
+   * line is written for: a statement, the head of a list, and the `end` of a
+   * container.
+   */
+  readonly starts: ReadonlySet<number>
 }
 
 /** The stretches of the statements of each source, found once. */
@@ -105,8 +124,8 @@ const stretchesBySource = new WeakMap<Source, StatementStretches>()
 
 /**
  * The stretches of the lists of statements that the nodes of the source hold,
- * and of the statements that hold none. One diagram type has one
- * `statementListsOf`.
+ * and the offsets where things start (see {@link StatementStretches}). One
+ * diagram type has one `statementListsOf`.
  */
 function statementStretchesOf(
   source: Source,
@@ -114,25 +133,32 @@ function statementStretchesOf(
 ): StatementStretches {
   const cached = stretchesBySource.get(source)
   if (cached !== undefined) return cached
-  const lists = findNodes(
+  const holders = findNodes(
     source.root.body,
     (node) => statementListsOf(node).length > 0,
-  ).flatMap(statementListsOf)
+  )
+  const lists = holders.flatMap(statementListsOf)
+  const starts = new Set<number>()
+  for (const list of lists) {
+    starts.add(list.head)
+    for (const statement of list.statements) starts.add(statement.range[0])
+  }
+  // The diagram itself has no `end`.
+  for (const holder of holders) {
+    const end = findTokenEndingBefore(source, holder.range[1])
+    if (holder !== source.root.body && end !== undefined) {
+      starts.add(end.range[0])
+    }
+  }
   const stretches = {
-    lists: lists.flatMap((statements) => {
+    lists: lists.flatMap(({ statements }) => {
       const first = statements.at(0)
       const last = statements.at(-1)
       return first === undefined || last === undefined
         ? []
         : [{ start: first.range[0], end: last.range[1] }]
     }),
-    leaves: lists
-      .flat()
-      .filter((statement) => statementListsOf(statement).length === 0)
-      .map((statement) => ({
-        start: statement.range[0],
-        end: statement.range[1],
-      })),
+    starts,
   }
   stretchesBySource.set(source, stretches)
   return stretches
@@ -141,28 +167,32 @@ function statementStretchesOf(
 /**
  * Whether the whitespace at the start of the line of the statement in `range`
  * was written for the depth of the statement. It is the indentation of the
- * first thing on the line after the directives, so it fits the statement only
- * if the statement is at the depth of that thing. The first thing is a
- * statement that starts on the line, the header of a container, a section
- * keyword, an `end`, or the `}` that closes a block of a statement from an
- * earlier line; the printer prints a header, a section keyword, and an `end` at
- * the depth of their container, and the `}` of a block at the column of its
- * statement. A line that starts with another continuation of a statement from
- * an earlier line has no such thing: its whitespace is the indentation of no
- * statement. The statement is deeper than
- * the first thing in `subgraph s; A@{`, where the header comes first, and
- * shallower in `B; end; A@{`, where the statement `B` inside the container
- * comes first; the printer then puts the statement on a line of its own at its
- * own depth. The statement is at the depth of the line in `C; A@{` and in
- * `end; A@{`, where the printer prints the `end` at the depth of its container
- * and the statement after the container is at that depth too.
+ * first thing on the line, after the directives that start on it, so it fits the
+ * statement only if the statement is at the depth of that thing. Only these
+ * things have a depth that the whitespace is written for: a statement that
+ * starts on the line, the header of a container, a section keyword, an `end`,
+ * and the `}` that closes a data block of a statement from an earlier line.
+ * The printer prints a header, a section keyword, and an `end` at the depth of
+ * their container, and the `}` of a data block at the column of its statement,
+ * where it moves the block; an author puts it there in a statement that stays
+ * as written. Anything else that a line can start with, the rest of a
+ * statement from an earlier line, of a directive, or of a comment, or a kind
+ * that is not listed, is a thing the whitespace was not written for, and the
+ * statement is moved. The line is the physical line, since a directive that
+ * runs over lines holds the rest of it. The statement is deeper than the first
+ * thing in `subgraph s; A@{`, where the header comes first, and shallower in
+ * `B; end; A@{`, where the statement `B` inside the container comes first; the
+ * printer then puts the statement on a line of its own at its own depth. The
+ * statement is at the depth of the line in `C; A@{` and in `end; A@{`, where
+ * the printer prints the `end` at the depth of its container and the statement
+ * after the container is at that depth too.
  */
 function standsAtDepthOfItsLine(
   source: Source,
   range: Range,
   statementListsOf: StatementListsOf,
 ): boolean {
-  const lineStart = lineStartOf(source, range[0])
+  const lineStart = source.text.lastIndexOf("\n", range[0] - 1) + 1
   let first = lineStart
   for (;;) {
     while (first < range[0] && isSpaceOrTab(source.text[first])) first++
@@ -172,15 +202,17 @@ function standsAtDepthOfItsLine(
     if (directive === undefined || directive.range[1] > range[0]) break
     first = directive.range[1]
   }
-  const { lists, leaves } = statementStretchesOf(source, statementListsOf)
+  if (first === range[0]) return true
+  const { lists, starts } = statementStretchesOf(source, statementListsOf)
   const closed = closedBlockStartingBefore(source, first, lineStart)
-  if (
-    closed === undefined &&
-    first < range[0] &&
-    leaves.some((leaf) => leaf.start < lineStart && first < leaf.end)
-  )
-    return false
+  if (closed === undefined && !starts.has(first)) return false
   return depthAt(lists, closed ?? first) === depthAt(lists, range[0])
+}
+
+/** The number of lists of statements whose text holds `offset`. */
+function depthAt(lists: readonly Stretch[], offset: number): number {
+  return lists.filter((list) => list.start <= offset && offset < list.end)
+    .length
 }
 
 /**
@@ -198,12 +230,6 @@ function closedBlockStartingBefore(
   return dataBlocksOf(source).find(
     (block) => block.range[1] === offset + 1 && block.range[0] < lineStart,
   )?.range[0]
-}
-
-/** The number of lists of statements whose text holds `offset`. */
-function depthAt(lists: readonly Stretch[], offset: number): number {
-  return lists.filter((list) => list.start <= offset && offset < list.end)
-    .length
 }
 
 /** Where the statement that holds the block stands, and what is read. */

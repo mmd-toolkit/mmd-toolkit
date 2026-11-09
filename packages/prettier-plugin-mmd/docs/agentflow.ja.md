@@ -649,10 +649,12 @@ agentflow の後の振り分けや別名解決を根拠に YAML を書き換え�
 `B; end; A@{ … }` の `A@{ … }` のように、
 コンテナの中の文が先にある `end` の後の文も同じです。
 `B -->` の次の行の `C; A@{ … }` のように、
-前の文の途中から始まる行の文も同じです。
+そこに挙げたもの以外で始まる行の文も同じです。
+複数行にわたるディレクティブの残りで始まる行の文も、そうです。
 [fixture: metadata-blocks/use-tabs-container-header-statement-moved]
 [fixture: metadata-blocks/use-tabs-statement-before-end-moved]
 [fixture: metadata-blocks/use-tabs-edge-continuation-moved]
+[fixture: metadata-blocks/use-tabs-directive-continuation-moved]
 
 矢印の改行後のブロックは、文の最初の行より後から始まるため桁を残し、
 1 行でも複数行でも、ブロックを 2 つ持つ文は、どちらも桁を残します。

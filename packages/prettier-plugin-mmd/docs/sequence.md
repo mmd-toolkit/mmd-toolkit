@@ -1104,11 +1104,15 @@ statement is not at the depth of the first thing on its line: the header of a
 in `else z; participant P@{ … }`, or a statement inside the box or block before
 an `end`, as in `participant B; end; participant A@{ … }`. The written
 indentation is then that of that thing, and the statement is printed with the
-usual indentation, the lines of its block moving with it. A statement after an
-`end` that comes first is at the depth of the line and is printed as written.
-[fixture: multi-line-values/data-use-tabs-box-header-moved] [fixture:
+usual indentation, the lines of its block moving with it. So is a statement on a
+line that starts with anything else than the things listed under
+[Data blocks](./flowchart.md#data-blocks), such as the rest of a directive that
+runs over lines. A statement after an `end` that comes first is at the depth of
+the line and is printed as written. [fixture:
+multi-line-values/data-use-tabs-box-header-moved] [fixture:
 multi-line-values/data-use-tabs-section-keyword-moved] [fixture:
 multi-line-values/data-use-tabs-statement-before-end-moved] [fixture:
+multi-line-values/data-use-tabs-directive-continuation-moved] [fixture:
 multi-line-values/data-use-tabs-after-end-on-line] [fixture:
 multi-line-values/data-zero-and-shallow] [fixture:
 multi-line-values/data-deep-inline-closer] [fixture:

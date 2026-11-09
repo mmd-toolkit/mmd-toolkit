@@ -273,13 +273,18 @@ function openBlock(
 
 /** The lists of statements that the node holds, the diagram included. */
 function statementListsOf(node: MermaidAst): ReturnType<StatementListsOf> {
-  if (node.type === "SequenceDiagram") return [node.body]
+  if (node.type === "SequenceDiagram") {
+    return [{ head: node.range[0], statements: node.body }]
+  }
   const classified = classifySequenceStatement(node)
   switch (classified?.kind) {
     case "body":
-      return [classified.statement.body]
+      return [{ head: node.range[0], statements: classified.statement.body }]
     case "sections":
-      return classified.statement.sections.map((section) => section.body)
+      return classified.statement.sections.map((section) => ({
+        head: section.range[0],
+        statements: section.body,
+      }))
     default:
       return []
   }

@@ -1175,10 +1175,13 @@ participant と actor のデータブロックには、
 box やブロックの中の文が `end` の前にある場合が当たります。
 書かれた字下げはその先にあるもののものなので、文は通常の字下げで印字し、
 ブロックの行も文と一緒に動かします。
+複数行にわたるディレクティブの残りなど、
+データブロックの節に挙げたもの以外で始まる行の文も同じです。
 `end` が先にある文は、その行と同じ深さなので、書かれたまま印字します。
 [fixture: multi-line-values/data-use-tabs-box-header-moved]
 [fixture: multi-line-values/data-use-tabs-section-keyword-moved]
 [fixture: multi-line-values/data-use-tabs-statement-before-end-moved]
+[fixture: multi-line-values/data-use-tabs-directive-continuation-moved]
 [fixture: multi-line-values/data-use-tabs-after-end-on-line]
 [fixture: multi-line-values/data-zero-and-shallow]
 [fixture: multi-line-values/data-deep-inline-closer]
