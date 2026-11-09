@@ -355,36 +355,67 @@ function quadrantLabel(written: string): string | undefined {
 }
 
 /**
- * The words of an XY chart that its lexer reads as a unit of its own at the
- * start of a word, in lower case: a text that starts with one of them is read
- * as the unit.
+ * The words of an XY chart that its lexer reads as a unit of its own where a
+ * run of letters starts, in lower case. They are read only where no letter,
+ * digit, or `_` follows them.
  */
-const xychartReserved: readonly string[] = [
+const xychartKeywords: readonly string[] = [
   "title",
+  "xychart-beta",
   "xychart",
   "x-axis",
   "y-axis",
   "line",
   "bar",
-  "vertical",
-  "horizontal",
-  "acctitle",
-  "accdescr",
 ]
 
+/** The words of an XY chart that its lexer reads wherever they start. */
+const xychartOrientations: readonly string[] = ["vertical", "horizontal"]
+
+/** Whether a character is an ASCII letter. */
+function isLetter(character: string | undefined): boolean {
+  return (
+    character !== undefined &&
+    ((character >= "a" && character <= "z") ||
+      (character >= "A" && character <= "Z"))
+  )
+}
+
 /**
- * One word of an XY chart of ASCII letters, digits, `_`, and `-` that does not
- * start with a word that the lexer reads as a unit of its own. A text with
- * spaces is no word: mermaid.js drops the spaces of a text without quotes, so
- * the text in quotes would not be the same.
+ * A text of an XY chart of ASCII letters, digits, `_`, and `-` with no space:
+ * mermaid.js drops the spaces of a text without quotes, so a text with spaces
+ * is not the same in quotes.
  */
-function xychartWord(text: string): string | undefined {
-  const lower = text.toLowerCase()
+function xychartText(text: string): string | undefined {
   return text !== "" &&
     [...text].every(
       (character) => isWordCharacter(character) || character === "-",
-    ) &&
-    !xychartReserved.some((word) => lower.startsWith(word))
+    )
+    ? text
+    : undefined
+}
+
+/**
+ * A text of an XY chart (see `xychartText`) that the lexer reads whole without
+ * quotes: none of the words that it reads as a unit of its own starts where a
+ * run of letters starts (at the start of the text, and after a digit, `_`, or
+ * `-`), in any case.
+ */
+function xychartCategory(text: string): string | undefined {
+  const lower = text.toLowerCase()
+  return xychartText(text) !== undefined &&
+    [...lower].every(
+      (_character, index) =>
+        isLetter(lower[index - 1]) ||
+        !(
+          xychartOrientations.some((word) => lower.startsWith(word, index)) ||
+          xychartKeywords.some(
+            (word) =>
+              lower.startsWith(word, index) &&
+              !isWordCharacter(lower[index + word.length]),
+          )
+        ),
+    )
     ? text
     : undefined
 }
@@ -427,11 +458,11 @@ const quoteRules: Readonly<
   },
   QuadrantPointStatement: { name: bare(quadrantLabel) },
   QuadrantQuadrantStatement: { text: bare(quadrantLabel) },
-  XychartBand: { categories: bare(xychartWord) },
-  XychartPlotStatement: { title: quoted(xychartWord, { when: isLine }) },
-  XychartTitleStatement: { value: quoted(xychartWord) },
-  XychartXAxisStatement: { title: quoted(xychartWord) },
-  XychartYAxisStatement: { title: quoted(xychartWord) },
+  XychartBand: { categories: bare(xychartCategory) },
+  XychartPlotStatement: { title: quoted(xychartText, { when: isLine }) },
+  XychartTitleStatement: { value: quoted(xychartText) },
+  XychartXAxisStatement: { title: quoted(xychartText) },
+  XychartYAxisStatement: { title: quoted(xychartText) },
   RequirementClassDefStatement: {
     cssClasses: bare(wordWithout(requirementReserved, { digits: true })),
   },

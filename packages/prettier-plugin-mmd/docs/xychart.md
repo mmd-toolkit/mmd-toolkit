@@ -52,7 +52,7 @@ Output
 
 ```mmd
 xychart
-  title T
+  title "T"
   x-axis [a]
   line [1]
 ```
@@ -133,7 +133,7 @@ Output
 
 ```mmd
 xychart horizontal
-  title T
+  title "T"
   line [1]
 ```
 
@@ -203,7 +203,7 @@ Output
 
 ```mmd
 xychart
-  title A
+  title "A"
 
   line [1]
 ```
@@ -445,7 +445,7 @@ Output
 
 ```mmd
 xychart
-  y-axis Revenue 4000 --> 11000
+  y-axis "Revenue" 4000 --> 11000
   x-axis 0 --> 10
 ```
 
@@ -484,13 +484,14 @@ xychart
 A number of a range or of a plot is read by value and printed in the shortest
 form: `+3` is `3`, `1.50` is `1.5`, and `.5` is `0.5` (see
 [Spellings that are drawn the same](./compatibility.md#spellings-that-are-drawn-the-same)).
-The same digits in a category or in a title without quotes are text
-(`x-axis [007, .5]` has the categories `007` and `.5`), and stay as written, as
-the values of a sankey diagram do (see [Values](./sankey.md#values)); so do a
-number with a zero at the start of its integer part (`007`) and `-0`. [fixture:
-numbers/range-numbers-one-form] [fixture: numbers/values-one-form] [fixture:
-numbers/forms-kept] [fixture: numbers/categories-are-texts] [fixture:
-numbers/titles-are-texts]
+The same digits in a category or in a title are text (`x-axis [007, .5]` has the
+categories `007` and `.5`), and stay as written, as the values of a sankey
+diagram do (see [Values](./sankey.md#values)); so do a number with a zero at the
+start of its integer part (`007`) and `-0`. A title of one word gets quotes
+around its digits (`title 007` is printed `title "007"`), as any title of one
+word does (see [Quotes](#quotes)). [fixture: numbers/range-numbers-one-form]
+[fixture: numbers/values-one-form] [fixture: numbers/forms-kept] [fixture:
+numbers/categories-are-texts] [fixture: numbers/titles-are-texts]
 
 Input
 ([numbers/values-one-form-input.mmd](../tests/fixtures/xychart/numbers/values-one-form-input.mmd)):
@@ -510,37 +511,80 @@ xychart
 
 ### Quotes
 
-A string is printed as written: its quotes, its text, and the line breaks inside
-it stay, and a run of spaces and tabs inside it is printed as one space (see
+The title of a chart, the title of an axis, and the title of a line are printed
+in quotes where they are one word, and a category is printed without quotes
+where it is one word, as the examples in the documentation of mermaid.js write
+them (see [The quotes of a text](./compatibility.md#the-quotes-of-a-text)):
+`title Sales` is printed `title "Sales"`, and `x-axis ["a", "b"]` is printed
+`x-axis [a, b]`. A word is ASCII letters, digits, `_`, and `-` with no space.
+mermaid.js drops the spaces of a text without quotes (`a b` is the text `ab`),
+so `"a b"` and `a b` are not the same text, and a text of several words stays as
+written, with quotes or without. A category in quotes keeps its quotes where the
+lexer would read part of the text as a unit of its own: a keyword (`title`,
+`xychart-beta`, `xychart`, `x-axis`, `y-axis`, `line`, `bar`, where no letter,
+digit, or `_` follows it) or an orientation (`vertical`, `horizontal`) that
+starts the text or follows a digit, a `_`, or a `-`, in any case. So `"line"`
+and `"a-line"` stay in quotes, and `"line1"` and `"Barcelona"` lose them. The
+title of a bar stays as written, since the examples write none, and so does a
+title that touches a unit other than its keyword (the `a` of `x-axis a-1 --> 2`,
+whose `-1` is the start of the range), and a text on a line that the printer
+writes as it is. Any other string and a markdown string are printed as written:
+their quotes, their text, and the line breaks inside them stay, and a run of
+spaces and tabs inside them is printed as one space (see
 [Runs of whitespace in a text that are drawn the same](./compatibility.md#runs-of-whitespace-in-a-text-that-are-drawn-the-same)).
-A quote is never added or removed. `"Sales"` and `Sales` have the same Db, but
-`"a b"` and `a b` do not (`ab` is the text of the second), and the empty string
-is read as no token by mermaid.js though it is the author's text; so the choice
-of the quotes is left to the author, as in a sankey diagram (see
-[Quotes](./sankey.md#quotes)). An empty string stands where the grammar takes
-one: as the title of a plot, as the title of an axis before data, and as the
-label of a value. [fixture: quotes/strings-runs-collapsed] [fixture:
-quotes/quotes-not-removed] [fixture: quotes/quotes-not-added] [fixture:
+The empty string is read as no token by mermaid.js though it is the author's
+text, so it stays, and no quotes are added to nothing. An empty string stands
+where the grammar takes one: as the title of a plot, as the title of an axis
+before data, and as the label of a value. [fixture:
+quotes/strings-runs-collapsed] [fixture: quotes/titles-in-quotes] [fixture:
+quotes/categories-without-quotes] [fixture: quotes/categories-that-need-quotes]
+[fixture: quotes/texts-of-several-words] [fixture: quotes/bar-titles-as-written]
+[fixture: quotes/texts-on-a-kept-line-as-written] [fixture:
+text-units/hyphen-and-number-touching-kept] [fixture:
 quotes/keywords-and-markup-in-strings] [fixture:
 quotes/comment-mark-in-a-string] [fixture:
 quotes/empty-strings-where-the-grammar-takes-them]
 
 Input
-([quotes/quotes-not-removed-input.mmd](../tests/fixtures/xychart/quotes/quotes-not-removed-input.mmd)):
+([quotes/titles-in-quotes-input.mmd](../tests/fixtures/xychart/quotes/titles-in-quotes-input.mmd)):
 
 ```mmd
 xychart
-title "Sales"
-x-axis ["a", "b"]
+title Sales
+x-axis Region [a, b]
+y-axis Revenue 0 --> 10
+line Plan [1, 2]
+title "Plan"
+line "Cost" [3]
 ```
 
 Output
-([quotes/quotes-not-removed-output.mmd](../tests/fixtures/xychart/quotes/quotes-not-removed-output.mmd)):
+([quotes/titles-in-quotes-output.mmd](../tests/fixtures/xychart/quotes/titles-in-quotes-output.mmd)):
 
 ```mmd
 xychart
   title "Sales"
-  x-axis ["a", "b"]
+  x-axis "Region" [a, b]
+  y-axis "Revenue" 0 --> 10
+  line "Plan" [1, 2]
+  title "Plan"
+  line "Cost" [3]
+```
+
+Input
+([quotes/categories-without-quotes-input.mmd](../tests/fixtures/xychart/quotes/categories-without-quotes-input.mmd)):
+
+```mmd
+xychart
+x-axis ["a", b, "Q-1", "2024", "Barcelona", "line1", "ax-axis"]
+```
+
+Output
+([quotes/categories-without-quotes-output.mmd](../tests/fixtures/xychart/quotes/categories-without-quotes-output.mmd)):
+
+```mmd
+xychart
+  x-axis [a, b, Q-1, 2024, Barcelona, line1, ax-axis]
 ```
 
 Input
@@ -868,7 +912,7 @@ Output
 
 ```mmd
 xychart
-  title T
+  title "T"
   x-axis [a]
   y-axis 0 --> 1
   line [1]
@@ -923,7 +967,7 @@ Output
 ```mmd
 xychart
   %% a
-  title T
+  title "T"
   %% b
   line [1]
 ```
@@ -988,7 +1032,7 @@ Output
 ```mmd
 xychart
   %%{init: {}}%%
-  title T
+  title "T"
 ```
 
 Input
@@ -1045,7 +1089,7 @@ config:
     width: 900
 ---
 xychart
-  title X
+  title "X"
 ```
 
 ### Line separators

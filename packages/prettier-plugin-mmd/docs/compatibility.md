@@ -1239,6 +1239,7 @@ and, with the Db only, in the inputs of the conformance corpus:
 | Quotes of a Wardley map name       |        0 |                   0 |     34 |      34 |
 | Quotes of a gitGraph branch        |        0 |                   0 |     23 |      23 |
 | Quotes of a quadrant text          |        0 |                   0 |     12 |      12 |
+| Quotes of an XY chart text         |        0 |                   0 |    191 |     191 |
 
 A corpus pair that is not counted in the last column is a pair of which
 mermaid.js rejects the other spelling, except two pairs of the label of a link,
@@ -1646,8 +1647,8 @@ link of a sankey diagram has the same id in `"a b",c,1` and in `a b,c,1`, since
 drops the spaces at the ends of a field and reads `""` as `"` for a field of
 both forms. The form is the one that the examples of the diagram type use at
 least twice as often as the other, and a text is printed in it when both forms
-read it the same; any other text stays as written. These fields are printed
-without quotes:
+read it the same; any other text stays as written. The fields, with the number
+of the examples that write each in each form, are:
 
 | Diagram type | Field                                 | Without quotes | In quotes |
 | ------------ | ------------------------------------- | -------------: | --------: |
@@ -1681,6 +1682,11 @@ without quotes:
 | quadrant     | the start of a y-axis                 |              2 |         0 |
 | quadrant     | the text of a quadrant                |              8 |         0 |
 | quadrant     | the name of a point                   |              6 |         0 |
+| XY chart     | the title of a chart                  |              0 |         8 |
+| XY chart     | the title of an x axis                |              0 |         2 |
+| XY chart     | the title of a y axis                 |              0 |         8 |
+| XY chart     | the title of a line                   |              0 |         3 |
+| XY chart     | a category                            |             38 |        17 |
 
 A text is printed without quotes where it is plain: ASCII letters, digits, `_`,
 `-`, and `.`, with spaces between them, and, in a sankey diagram, with spaces at
@@ -1770,6 +1776,25 @@ quadrant/quotes/plain-texts-without-quotes] [fixture:
 quadrant/quotes/texts-that-need-quotes] [fixture: quadrant/points/string-names]
 [fixture: quadrant/axes/strings]
 
+In an XY chart a text is one word of ASCII letters, digits, `_`, and `-`, with
+no space: mermaid.js drops the spaces of a text without quotes, so a text of
+several words is not the same in quotes. The title of a chart, of an axis, and
+of a line is printed in quotes, and a category without quotes where none of the
+words that the lexer reads as a unit of its own starts where a run of letters
+starts (at the start of the text, and after a digit, a `_`, or a `-`), in any
+case: `title`, `xychart-beta`, `xychart`, `x-axis`, `y-axis`, `line`, and `bar`
+where no letter, digit, or `_` follows them, and `vertical` and `horizontal`
+wherever they start. So `"a-line"` and `"Line"` keep their quotes, and `"line1"`
+and `"Barcelona"` lose them. The title of a bar, which the examples do not
+write, stays as written, and so does a title that touches a unit other than its
+keyword. [fixture: xychart/quotes/titles-in-quotes] [fixture:
+xychart/quotes/categories-without-quotes] [fixture:
+xychart/quotes/categories-that-need-quotes] [fixture:
+xychart/quotes/texts-of-several-words] [fixture:
+xychart/quotes/bar-titles-as-written] [fixture:
+xychart/quotes/texts-on-a-kept-line-as-written] [fixture:
+xychart/text-units/hyphen-and-number-touching-kept]
+
 A string that a `#`, a `%`, a `;`, or a `:` follows on its line keeps its quotes
 in every diagram type: a text without quotes can run to the end of the line, and
 then takes that character and what follows into the text, as `b #c` in
@@ -1782,12 +1807,14 @@ requirement/multi-line-statements/class-last-line-semicolon-kept]
 mermaid.js 12.3.0 read both forms of the inputs of the conformance corpus whose
 quotes the printer changes, with the same Db: 11 inputs of sankey diagrams, 14
 of ER diagrams, 11 of requirement diagrams, 34 of Wardley maps, 23 of gitGraphs,
-and 12 of quadrant charts. It read both forms of the 6 sankey examples that were
-written again with every plain field in quotes, with the same Db and the same
-SVG, and the 14 ER inputs, 8 of the 11 requirement inputs (the other 3 are drawn
-by mermaid.js in neither form), the 34 Wardley inputs, the 23 gitGraph inputs
-(with their numbers, commit ids, and element ids taken away), and the 12
-quadrant inputs were drawn the same as their formatted text.
+12 of quadrant charts, and 191 of XY charts. It read both forms of the 6 sankey
+examples that were written again with every plain field in quotes, with the same
+Db and the same SVG, and the 14 ER inputs, 8 of the 11 requirement inputs (the
+other 3 are drawn by mermaid.js in neither form), the 34 Wardley inputs, the 23
+gitGraph inputs (with their numbers, commit ids, and element ids taken away),
+the 12 quadrant inputs, and 74 of the 191 XY chart inputs (the other 117 have no
+plot, and mermaid.js draws no chart without one, in either form) were drawn the
+same as their formatted text.
 
 ### Versions of mermaid.js
 
@@ -1835,6 +1862,13 @@ mermaid.js, show which form each version reads:
   with the same `text` rule, and the lexers of these grammars read `x-axis`,
   `quadrant-1` to `quadrant-4`, and `quadrantChart` without a boundary after
   them.
+- The titles and the categories of an XY chart: the grammars of 10.6.0, 10.9.0,
+  11.0.0, 12.0.0, and 12.3.0 read a title, the title of an axis or of a plot,
+  and a category with the same `text` rule, which takes a string as its text and
+  a text without quotes as its tokens joined without the whitespace between
+  them. Their lexers read `title`, `x-axis`, `y-axis`, `line`, and `bar` in any
+  case, where no letter, digit, or `_` follows, and `vertical` and `horizontal`
+  wherever they start.
 - An accessibility description in a block on one line: the grammar of the
   flowchart in 9.0.0 and 9.0.1 has no rule for `accDescr`, and the grammar in
   9.1.0, the first with the rule, has the form with the colon and the form with
@@ -2844,11 +2878,13 @@ the Db or the lexer reads stays. See [Text units](./xychart.md#text-units) and
 - The case of the orientation. Only `horizontal` in lower case makes the chart
   horizontal, and `Horizontal` makes it vertical, so the case is in the Db.
   [fixture: header-and-orientation/orientation-case-kept]
-- A string, with the line breaks in it, which are in the Db, and the quotes,
-  which are the author's: `"a b"` and `a b` are not the same text. A run of
-  spaces and tabs in a string is printed as one space. [fixture:
-  quotes/strings-runs-collapsed] [fixture:
-  multi-line-values/string-with-line-breaks-kept]
+- A string, with the line breaks in it, which are in the Db, and the quotes of a
+  text of several words: `"a b"` and `a b` are not the same text, so they stay
+  as written. A run of spaces and tabs in a string is printed as one space. A
+  text of one word changes its quotes only as
+  [The quotes of a text](#the-quotes-of-a-text) says. [fixture:
+  quotes/strings-runs-collapsed] [fixture: quotes/texts-of-several-words]
+  [fixture: multi-line-values/string-with-line-breaks-kept]
 - The digits of a category and of a title, which are text, so `007` and `.5`
   stay as written; the numbers of a range and of a plot are printed in the
   shortest form (see
@@ -2912,11 +2948,13 @@ around them. What the Db or the lexer reads stays. See
   points/coordinates-as-written]
 - The arrow of an axis with no second text, which the Db reads as part of the
   left text. [fixture: axes/arrow-only]
-- A string, with the line breaks in it, and the quotes, which the author
-  chooses, while a run of spaces and tabs in it is printed as one space: a
-  string can hold what a text without quotes cannot, so the quotes are not
-  removed. [fixture: quotes/strings-runs-collapsed] [fixture:
-  quotes/keywords-and-arrows-in-strings] [fixture:
+- A string, with the line breaks in it, and the quotes of a string that holds
+  what a text without quotes cannot (`"a: b"` has a colon, which a text without
+  quotes is rejected for), which stay, while a run of spaces and tabs in it is
+  printed as one space. A plain text loses its quotes, as
+  [The quotes of a text](#the-quotes-of-a-text) says. [fixture:
+  quotes/strings-runs-collapsed] [fixture: quotes/texts-that-need-quotes]
+  [fixture: quotes/keywords-and-arrows-in-strings] [fixture:
   multi-line-values/string-with-line-breaks-kept]
 - A `;` inside a title or an accessibility text, which is a character of it, and
   an empty description block inside a title, which is part of it. [fixture:
