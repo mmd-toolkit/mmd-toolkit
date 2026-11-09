@@ -40,6 +40,12 @@ describe("Code blocks in detail: the line width left after the prefix of a line"
     expect(await printWidthAfter(">\t", options(40, 8))).toBe(32)
   })
 
+  it("counts a tab as no column where tabWidth is 0", async () => {
+    expect(await printWidthAfter("\t", options(40, 0))).toBe(40)
+    expect(await printWidthAfter(">\t", options(40, 0))).toBe(39)
+    expect(await printWidthAfter("  \t- \t", options(40, 0))).toBe(36)
+  })
+
   it("leaves at least 1", async () => {
     expect(await printWidthAfter("          ", options(5))).toBe(1)
   })

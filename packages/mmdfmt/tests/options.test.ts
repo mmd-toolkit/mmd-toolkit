@@ -53,17 +53,20 @@ describe("The options that the tool reads", () => {
     )
   })
 
-  it("are the only options taken from a configuration", () => {
+  it("are the only options taken from a configuration, and the names listed are those options", () => {
+    const read = {
+      printWidth: 40,
+      tabWidth: 4,
+      useTabs: true,
+      embeddedLanguageFormatting: "off",
+      singleQuote: true,
+      bracketSpacing: false,
+      proseWrap: "never",
+      trailingComma: "none",
+    } as const
     expect(
       readOptions({
-        printWidth: 40,
-        tabWidth: 4,
-        useTabs: true,
-        embeddedLanguageFormatting: "off",
-        singleQuote: true,
-        bracketSpacing: false,
-        proseWrap: "never",
-        trailingComma: "none",
+        ...read,
         parser: "babel",
         plugins: ["prettier-plugin-x"],
         endOfLine: "crlf",
@@ -73,28 +76,22 @@ describe("The options that the tool reads", () => {
         requirePragma: true,
         semi: false,
       }),
-    ).toStrictEqual({
-      printWidth: 40,
+    ).toStrictEqual(read)
+    expect(readOptionNames.toSorted(byName)).toEqual(
+      Object.keys(read).toSorted(byName),
+    )
+  })
+
+  it("are left out of the result where the configuration lacks them", () => {
+    expect(readOptions({ semi: false, rangeEnd: 2 })).toStrictEqual({})
+    expect(readOptions({ tabWidth: 4, semi: false })).toStrictEqual({
       tabWidth: 4,
-      useTabs: true,
-      embeddedLanguageFormatting: "off",
-      singleQuote: true,
-      bracketSpacing: false,
-      proseWrap: "never",
-      trailingComma: "none",
     })
   })
 
-  it("are the eight that the README names", () => {
-    expect(readOptionNames.toSorted(byName)).toEqual([
-      "bracketSpacing",
-      "embeddedLanguageFormatting",
-      "printWidth",
-      "proseWrap",
-      "singleQuote",
-      "tabWidth",
-      "trailingComma",
-      "useTabs",
-    ])
+  it("leave the defaults of a caller as they are, when the result is spread over them", () => {
+    expect({ tabWidth: 4, ...readOptions({ semi: false }) }).toStrictEqual({
+      tabWidth: 4,
+    })
   })
 })

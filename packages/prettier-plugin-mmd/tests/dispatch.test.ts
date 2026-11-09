@@ -1,3 +1,4 @@
+import { stripVTControlCharacters } from "node:util"
 import { beforeEach, describe, expect, it, vi } from "vitest"
 import {
   formatMarkdown,
@@ -345,9 +346,11 @@ describe("parse errors", () => {
     // The error is at the line feed, which ends at the start of the next
     // line: the position has a start only (see `toPrettierError`).
     expect(loc).toEqual({ start: { line: 2, column: 9 } })
-    expect(message).toContain("Expecting a node")
+    // Prettier colors the code frame where the environment asks for colors.
+    const plainMessage = stripVTControlCharacters(message)
+    expect(plainMessage).toContain("Expecting a node")
     // The caret sits under the 0-based column 8 reported by the parser.
-    expect(message).toContain(`> 2 |   A --> \n    | ${" ".repeat(8)}^`)
+    expect(plainMessage).toContain(`> 2 |   A --> \n    | ${" ".repeat(8)}^`)
     expect(cause).toBe(original)
   })
 

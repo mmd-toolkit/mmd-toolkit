@@ -454,12 +454,12 @@ max_line_length = 100
   `embeddedLanguageFormatting: "off"`はfrontmatterを書かれたまま残します。
 
 `mmdfmt`はこれ以外のオプションを読みません。
-後の版のPrettierが足すオプションで、動作が変わらないようにするためです。
+後の版のPrettierが足すオプションも読みません。
 範囲（`rangeStart`と`rangeEnd`）、`cursorOffset`、
 プラグマのオプション（`requirePragma`、`insertPragma`、`checkIgnorePragma`）、
 `filepath`、ほかの言語のオプションは使いません。
-`mmdfmt`が自分で決めるオプションは3つあります。
-パーサーはプラグインのもので、プラグインは`prettier-plugin-mmd`だけなので、
+`plugins`と`parser`も使いません。
+`mmdfmt`は常に`prettier-plugin-mmd`で整形するので、
 設定が挙げるプラグインは読み込みません。
 `endOfLine`は使いません。
 ファイルの改行コードを残すからです。
@@ -501,7 +501,8 @@ Markdownのコードブロックでは警告です。
 
 図はPrettierと`prettier-plugin-mmd`で整形するので、
 プラグインの規則が適用されます。
-MarkdownにPrettierとプラグインを使う場合とは、結果が5点で異なります。
+Markdownと`.mmd`ファイルにPrettierとプラグインを使う場合とは、
+結果が5点で異なります。
 
 - Prettierは、コードブロックの最後の行の末尾の空白を、
   mermaid.jsが図の一部として読む場合も、
@@ -522,18 +523,28 @@ MarkdownにPrettierとプラグインを使う場合とは、結果が5点で異
   プラグインはそれでGanttのセクションの行を数えて、コロンをそろえます。
   `mmdfmt`は、各行の前に書くものの幅を引いた幅を渡すので、幅の近くでは、
   Prettierはセクションをそろえ、`mmdfmt`はそろえないことがあります。
-  そのとき`mmdfmt`はセクションのコロンを今の位置に残すので、行は広がらず、
-  行の幅より広く書かれた行はそのままです。
-- Markdownファイルでは、Prettierは次の4つの設定のもとで、
-  図を書かれたまま残します。
-  先頭に`<!-- @format -->`のコメントがない`requirePragma: true`、
-  先頭に`<!-- @noformat -->`のコメントがある`checkIgnorePragma: true`、
-  ファイル全体を覆わない範囲、そして`embeddedLanguageFormatting: "off"`です。
-  この設定は、すべてのコードブロックを書かれたまま残します。
-  `mmdfmt`はこれらを読みません。
+  そのとき`mmdfmt`はコロンをそろえるために名前を空白で埋めず、
+  各コロンの前の空白は書かれたままです。
+  行の幅より広く書かれた行も、そのままです。
+  タスクは印字の字下げに直すので、書かれた字下げが違うと、
+  コロンは行といっしょに動きます。
+- Prettierは、次の4つの設定のもとで、図を書かれたまま残します。
+  `requirePragma: true`は、ファイルの先頭に、
+  `<!-- @format -->`か`<!-- @prettier -->`のコメントがない、
+  Markdownファイルを残します。
+  frontmatterがあるときは、その後ろが先頭です。
+  `checkIgnorePragma: true`は、そこに、
+  `<!-- @noformat -->`か`<!-- @noprettier -->`のコメントがある、
+  Markdownファイルを残します。
+  ファイル全体を覆わない範囲は、Markdownファイルも`.mmd`ファイルも残します。
+  `embeddedLanguageFormatting: "off"`は、
+  Markdownファイルのすべてのコードブロックを残します。
+  `mmdfmt`は、この4つのどれのもとでも図を整形します。
+  最初の3つは読みません。
   どのファイルを整形するかは自分で決め（パターンと`.gitignore`）、
-  渡されたファイルの図を整形します。
-  `embeddedLanguageFormatting: "off"`のときも、残すのは図のfrontmatterだけです。
+  図全体を整形するからです。
+  `embeddedLanguageFormatting`は図のfrontmatterにだけ読み、
+  そのときはfrontmatterを書かれたまま残します。
 
 コマンドもPrettierのCLIとは異なります。
 `.prettierignore`は読まず、`--ignore-path`、`--ignore-unknown`、

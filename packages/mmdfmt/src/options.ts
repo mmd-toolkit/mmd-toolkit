@@ -2,9 +2,11 @@ import type { Options } from "prettier"
 
 /**
  * The Prettier options that the tool reads, and the only ones that it gives to
- * Prettier from a configuration (README, Configuration). The types are the
- * tool's own: an option that Prettier adds, or a value that Prettier adds to
- * one of these, reaches the tool only when it is written here.
+ * Prettier from a configuration (README, Configuration). An option that
+ * Prettier adds is not read until it is written here. The types are the tool's
+ * own: where the types of Prettier gain a value for one of these options, as
+ * they may in a later version, the type checker fails in `readOptions` until
+ * the type here is widened on purpose.
  */
 export interface ReadOptions {
   /**
@@ -30,31 +32,41 @@ export interface ReadOptions {
 }
 
 /**
- * Every option of `ReadOptions`, as a record so that the type checker fails
- * where the interface has an option that this lacks, or this has one that the
- * interface lacks.
+ * The names of the options in `ReadOptions`. `tests/options.test.ts` ties this
+ * list to the options that `readOptions` takes.
  */
-const readOptionRecord = {
-  printWidth: true,
-  tabWidth: true,
-  useTabs: true,
-  embeddedLanguageFormatting: true,
-  singleQuote: true,
-  bracketSpacing: true,
-  proseWrap: true,
-  trailingComma: true,
-} as const satisfies Record<keyof ReadOptions, true>
-
-/** The names of the options in `ReadOptions`. */
-export const readOptionNames: readonly (keyof ReadOptions)[] = Object.keys(
-  readOptionRecord,
-) as (keyof ReadOptions)[]
+export const readOptionNames: readonly (keyof ReadOptions)[] = [
+  "printWidth",
+  "tabWidth",
+  "useTabs",
+  "embeddedLanguageFormatting",
+  "singleQuote",
+  "bracketSpacing",
+  "proseWrap",
+  "trailingComma",
+]
 
 /**
  * The options that the tool reads of a configuration that Prettier resolved for
  * a file, in `config`; the others, such as the range, the pragmas, and the
- * options of other languages, are not read.
+ * options of other languages, are not read. An option that the configuration
+ * lacks is not in the result, as in what Prettier resolves, so that a caller
+ * can spread the result over its own defaults.
  */
 export function readOptions(config: Options): ReadOptions {
-  return Object.fromEntries(readOptionNames.map((name) => [name, config[name]]))
+  // Each option is named, so that the type checker compares it with the type
+  // here; the ones that the configuration lacks are then left out.
+  const named: ReadOptions = {
+    printWidth: config.printWidth,
+    tabWidth: config.tabWidth,
+    useTabs: config.useTabs,
+    embeddedLanguageFormatting: config.embeddedLanguageFormatting,
+    singleQuote: config.singleQuote,
+    bracketSpacing: config.bracketSpacing,
+    proseWrap: config.proseWrap,
+    trailingComma: config.trailingComma,
+  }
+  return Object.fromEntries(
+    Object.entries(named).filter(([, value]) => value !== undefined),
+  )
 }

@@ -392,14 +392,13 @@ The eight options are:
   when Prettier formats it with `prettier-plugin-mmd`.
   `embeddedLanguageFormatting: "off"` leaves the frontmatter as written.
 
-`mmdfmt` reads no other option, so that an option that a later version of
-Prettier adds does not change what it does. The range (`rangeStart` and
-`rangeEnd`), `cursorOffset`, the pragma options (`requirePragma`,
-`insertPragma`, and `checkIgnorePragma`), `filepath`, and the options of other
-languages are not used. `mmdfmt` sets three options itself. The parser is the
-plugin's, and the only plugin is `prettier-plugin-mmd`, so a plugin that the
-configuration names is not loaded. `endOfLine` is not used, since a file keeps
-its line endings (see
+`mmdfmt` reads no other option, not even one that a later version of Prettier
+adds. The range (`rangeStart` and `rangeEnd`), `cursorOffset`, the pragma
+options (`requirePragma`, `insertPragma`, and `checkIgnorePragma`), `filepath`,
+and the options of other languages are not used. `plugins` and `parser` are not
+used either: `mmdfmt` always formats with `prettier-plugin-mmd`, so a plugin
+that the configuration names is not loaded. `endOfLine` is not used, since a
+file keeps its line endings (see
 [Code blocks in detail](../../../mmdfmt/README.md#code-blocks-in-detail)).
 
 ## Errors and exit codes
@@ -437,7 +436,7 @@ even when a file would change.
 
 The diagrams are formatted by Prettier with `prettier-plugin-mmd`, so the rules
 of the plugin apply. Five results differ from running Prettier with the plugin
-on Markdown:
+on Markdown and `.mmd` files:
 
 - Prettier removes the whitespace at the end of the last line of a code block,
   even where mermaid.js treats it as part of the diagram
@@ -458,17 +457,22 @@ on Markdown:
   counts the lines of a Gantt section with it, to line up their colons. `mmdfmt`
   gives the plugin the width less what it writes before the lines, so near the
   width a Gantt section can be lined up by Prettier and not by `mmdfmt`, which
-  then leaves the colons of the section where they are: no line gets wider, and
-  a line written wider than the line width stays so.
-- Prettier leaves a diagram in a Markdown file as written under four settings:
-  `requirePragma: true` with no `<!-- @format -->` comment at the top of the
-  file, `checkIgnorePragma: true` with a `<!-- @noformat -->` comment there, a
-  range that does not cover the whole file, and
-  `embeddedLanguageFormatting: "off"`, which leaves every code block as written.
-  `mmdfmt` reads none of them. It decides itself which files it formats (the
-  patterns, and `.gitignore`) and formats the diagrams of the files it is given.
-  With `embeddedLanguageFormatting: "off"` it leaves only the frontmatter of a
-  diagram as written.
+  then pads no name to line the colons up: the whitespace before each colon
+  stays as written, and a line written wider than the line width stays so. The
+  tasks are still indented as the printer indents them, so a colon moves along
+  with its line where the written indentation differs.
+- Prettier leaves a diagram as written under four settings.
+  `requirePragma: true` leaves a Markdown file that has no `<!-- @format -->` or
+  `<!-- @prettier -->` comment at its top, after the frontmatter if there is
+  one. `checkIgnorePragma: true` leaves a Markdown file that has a
+  `<!-- @noformat -->` or `<!-- @noprettier -->` comment there. A range that
+  does not cover the whole file leaves a Markdown file or a `.mmd` file.
+  `embeddedLanguageFormatting: "off"` leaves every code block of a Markdown
+  file. `mmdfmt` formats the diagrams under all four. It does not read the first
+  three: it decides itself which files it formats (the patterns, and
+  `.gitignore`), and it formats whole diagrams. It reads
+  `embeddedLanguageFormatting` for the frontmatter of a diagram only, which it
+  then leaves as written.
 
 The command differs from Prettier's CLI too: it does not read `.prettierignore`,
 has no `--ignore-path`, `--ignore-unknown`, or formatting options of its own,
