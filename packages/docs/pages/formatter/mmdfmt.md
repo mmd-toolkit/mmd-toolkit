@@ -342,8 +342,9 @@ The promise is rejected:
 
 - with the `SyntaxError` that Prettier throws for a `.mmd` or `.mermaid` text
   that mermaid.js rejects, when it formats the text with `prettier-plugin-mmd`.
-  Its `loc.start` and `loc.end` give the `line` and the `column` of the error,
-  both counted from 1;
+  Its `loc.start` and `loc.end` give the `line` and the `column` where the error
+  starts and where it ends, both counted from 1. An error that ends at the start
+  of a line, such as an error at a line break, has no `loc.end`;
 - with an error, when `options.filepath` does not end in `.md`, `.markdown`,
   `.mmd`, or `.mermaid`.
 
