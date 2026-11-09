@@ -41,6 +41,7 @@ export interface SectionedDiagram<Statement extends Node> {
     source: Source,
     statement: Statement,
     end: number,
+    options: ParserOptions<MermaidAst>,
   ) => AtomLayout
   /**
    * Whether the comments that the diagram reads by the whitespace before them
@@ -146,7 +147,7 @@ function printStatement<Statement extends Node>(
   const printed = printLine(
     source,
     options,
-    diagram.layoutStatement(source, statement, statement.range[1]),
+    diagram.layoutStatement(source, statement, statement.range[1], options),
     isDeeper ? 2 : 1,
   )
   // The line breaks inside the statement stand at the level of the statement,

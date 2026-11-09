@@ -406,7 +406,9 @@ stay written except for the eligible margins in
 block on one line, which become one space each, as in
 [Data blocks](./flowchart.md#data-blocks): `participant A@{"type":"queue"}`
 becomes `participant A@{ "type":"queue" }`. [fixture:
-whitespace-between-tokens/data-block-padded] The block stays as written where
+whitespace-between-tokens/data-block-padded] A long block is not split over
+lines, since mermaid.js rejects the lines of a block mapping there. [fixture:
+whitespace-between-tokens/data-block-long-kept] The block stays as written where
 that rule says so. [fixture:
 whitespace-between-tokens/data-block-space-only-padded] [fixture:
 whitespace-between-tokens/data-block-directive-kept] [fixture:
@@ -1095,8 +1097,23 @@ For participant and actor data blocks, apply
 [Data blocks](./flowchart.md#data-blocks) only when exactly one body line holds
 text. Move that line one level inside the statement and align a separate `}`
 with the statement; a closer after text stays with that line. This applies at
-the top level and inside `loop`, with body spaces even under `useTabs` and the
-statement's indentation for a separate closer. [fixture:
+the top level and inside `loop`, except with `useTabs`, where the statement is
+printed as written (see [Data blocks](./flowchart.md#data-blocks)), unless the
+statement is not at the depth of the first thing on its line: the header of a
+`box` or a block, as in `box Aqua G; participant A@{ … }`, a section keyword, as
+in `else z; participant P@{ … }`, or a statement inside the box or block before
+an `end`, as in `participant B; end; participant A@{ … }`. The written
+indentation is then that of that thing, and the statement is printed with the
+usual indentation, the lines of its block moving with it. So is a statement on a
+line that starts with anything else than the things listed under
+[Data blocks](./flowchart.md#data-blocks), such as the rest of a directive that
+runs over lines. A statement after an `end` that comes first is at the depth of
+the line and is printed as written. [fixture:
+multi-line-values/data-use-tabs-box-header-moved] [fixture:
+multi-line-values/data-use-tabs-section-keyword-moved] [fixture:
+multi-line-values/data-use-tabs-statement-before-end-moved] [fixture:
+multi-line-values/data-use-tabs-directive-continuation-moved] [fixture:
+multi-line-values/data-use-tabs-after-end-on-line] [fixture:
 multi-line-values/data-zero-and-shallow] [fixture:
 multi-line-values/data-deep-inline-closer] [fixture:
 multi-line-values/data-block-in-block-indented] [fixture:

@@ -254,11 +254,13 @@ printer の規則は、項目ごとに選ばれた選択肢で決まる。
 - 整形されるが比べる Db のない場合はテストと報告に明示し、
   共有の冪等と原文の検査はその場合にも当てる。
 - `tests/format.test.ts` と共有の `tests/corpus.ts` は、
-  全図種に `tests/db-reading.ts` の `writtenTextKeptUpToSemicolons` を当て、
-  フロントマターと空白の外のテキストを、入力の `;` の削除だけを認めて比べ、
+  全図種に `tests/db-reading.ts` の `writtenTextKeptUpToSeparators` を当て、
+  フロントマターと空白の外のテキストを、入力の `;` と、
+  複数行に印字するデータブロックの項目間の `,` の削除だけを認めて比べ、
   Db を比べられない場合も確かめる。
-  この共有の検査は値の中の空白や `;` の保持を証明しないので、
-  その規則には出力全体を比べる fixture を置く。
+  この共有の検査は値の中の空白や `;` の保持と、
+  削除された `,` が項目の区切りで文字列の一部でないことを証明しないので、
+  その規則には出力全体を比べる fixture を置き、mermaid.js で確かめる。
 - unit 形式: dispatch、失敗の扱い、Markdown のコードブロック。
   ファイルは `tests/dispatch.test.ts`、`failure.test.ts`、`markdown.test.ts`、
   `markdown-flowchart.test.ts`。

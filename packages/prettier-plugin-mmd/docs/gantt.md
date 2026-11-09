@@ -285,15 +285,93 @@ gantt
 
 ### Task data
 
-A task is printed as its description, the colon, and its items. The description
-is printed as written, with the whitespace between its text and the colon: that
-whitespace is part of the description, which the Db keeps, so
-`A task           :a1` and `A task :a1` are different tasks, and the padding
-that aligns the colons of a chart stays. [fixture:
-task-data/description-padding-kept] [fixture:
-task-data/colon-after-description-as-written] A description that starts with `#`
-or `;` is a task text like any other. [fixture:
+A task is printed as its description, the colon, and its items. The text of the
+description is printed as written, and the whitespace between it and the colon
+is part of the description, which the Db keeps, so `A task           :a1` and
+`A task :a1` are two descriptions to mermaid.js. It draws the same chart
+whatever that whitespace is (see
+[Texts after a keyword that are drawn the same](./compatibility.md#texts-after-a-keyword-that-are-drawn-the-same)),
+so the printer sets it where a name has padding, as the next paragraphs say.
+[fixture: task-data/description-padding-tightened] A description that starts
+with `#` or `;` is a task text like any other. [fixture:
 task-data/hash-and-semicolon-descriptions]
+
+Where a name of a section has padding before its colon (more than one whitespace
+character, or a tab), the printer puts the colons of the section one space after
+its longest name, whether the colons were in one column or not. A column wider
+than the longest name needs is a gap between the names and the data that makes
+the lines harder to read, so it does not stay, and the author can add a longer
+name and let the printer pad the others. The width of a name is the width
+Prettier gives a text, so a full-width character counts 2, and the whitespace
+that is set is spaces, which replace a tab. [fixture:
+task-data/colon-column-new-longest-name] [fixture:
+task-data/description-padding-tightened] [fixture:
+task-data/colon-column-wide-characters] [fixture:
+task-data/colon-column-use-tabs]
+
+The sections with padding whose colons are all in one and the same column go on
+sharing a column: it is one space after the longest of their longest names, so
+that only the excess whitespace goes. The column is counted from the start of
+the names, since the printer indents the tasks of every section alike, and that
+is the column the colons stand in once the chart is printed. A section whose
+colons are not all in one column is on its own, with the column of its longest
+name. A section whose names are all followed by one space, with its colons in
+the column of a group, counts for the longest name of the group and is not
+changed. The tasks before the first `section` stand one level less deep, so they
+are a section of their own that shares nothing. [fixture:
+task-data/colon-column-sections-share-one-column] [fixture:
+task-data/colon-column-one-task-sections] [fixture:
+task-data/colon-column-uniform-section-shares] [fixture:
+task-data/colon-column-sections-in-one-column-and-others] [fixture:
+task-data/colon-column-sections-not-sharing] [fixture:
+task-data/colon-column-sections-in-different-columns] [fixture:
+task-data/colon-column-before-first-section] [fixture:
+task-data/colon-column-sections-and-preamble]
+
+The colons stay where they are in these cases, since moving them would not make
+the chart easier to read or could change the figure. A section in which no name
+has more than one space before its colon, or none, is left, because the author
+chose to put the colon next to the text. A section is left where the aligned
+lines would be longer than `printWidth` and longer than they are, since one long
+name would push every colon of the section far right. A chart that holds
+`white-space` is left, since the CSS of the chart may draw the whitespace at the
+end of a name, and the figure then depends on it. A section where a name holds a
+tab is left too, since a tab reaches the next tab stop of the editor, and no
+width that Prettier counts lines the colons up. [fixture:
+task-data/colon-column-tab-in-name-kept] [fixture:
+task-data/colon-column-single-space-kept] [fixture:
+task-data/colon-column-too-wide-kept] [fixture:
+task-data/colon-column-white-space-kept]
+
+A task is left as written, and is not one of the tasks that the others are
+aligned with, so its padding does not decide their column, where the printer
+prints its line as written (see
+[Statements one per line](#statements-one-per-line) and the data of whitespace
+only below), where it runs over lines, where its name ends with a directive,
+since the whitespace beside a directive stays (see [Directives](#directives)),
+and where something stands before it on its line. Its name then does not start
+the line, so its colon would not line up with the others, and the whitespace
+before its colon could lie where the line rule of mermaid.js reads it: the rule
+reads the whitespace after a `:` that follows `style` or `classDef`, a name
+holds no `:`, and so a `:` before the colon of the task can only come from a
+statement before it (see [Statements one per line](#statements-one-per-line)).
+[fixture: task-data/colon-column-line-as-written-kept] [fixture:
+task-data/colon-column-task-over-lines-kept] [fixture:
+task-data/colon-column-task-after-statement-kept] [fixture:
+task-data/colon-column-name-ending-with-directive-kept]
+
+Nothing else on the line keeps a task from being aligned: a `;` in the name or
+elsewhere on the line, a comment, a directive inside the name or after the data,
+and a line that the line rule reads leave the task aligned, as the padding of a
+task that starts its line lies before the first `:` of the line, and the rule
+reads only the whitespace after it. The width of a name, and of the rest of the
+line, is the width as written, so a directive inside the name counts, as the
+colons are lined up in the text, and a comment or a directive after the data
+counts toward `printWidth`. [fixture:
+task-data/colon-column-name-with-semicolon] [fixture:
+task-data/colon-column-style-rule-line] [fixture:
+task-data/colon-column-directive-inside-name] [fixture:
+task-data/colon-column-comment-after-data]
 
 The first item touches the colon, and a `,` touches the item before it and is
 followed by one space where an item follows: whitespace around the colon and the
@@ -323,7 +401,7 @@ task-data/whitespace-only-data-then-directive] A directive between the parts of
 a task stays where it is (see [Directives](#directives)).
 
 Input
-([task-data/description-padding-kept-input.mmd](../tests/fixtures/gantt/task-data/description-padding-kept-input.mmd)):
+([task-data/description-padding-tightened-input.mmd](../tests/fixtures/gantt/task-data/description-padding-tightened-input.mmd)):
 
 ```mmd
 gantt
@@ -333,13 +411,49 @@ Future task               :         des3, after des2, 5d
 ```
 
 Output
-([task-data/description-padding-kept-output.mmd](../tests/fixtures/gantt/task-data/description-padding-kept-output.mmd)):
+([task-data/description-padding-tightened-output.mmd](../tests/fixtures/gantt/task-data/description-padding-tightened-output.mmd)):
 
 ```mmd
 gantt
-  Completed task            :done, des1, 2014-01-06, 2014-01-08
-  Active task               :active, des2, 2014-01-09, 3d
-  Future task               :des3, after des2, 5d
+  Completed task :done, des1, 2014-01-06, 2014-01-08
+  Active task    :active, des2, 2014-01-09, 3d
+  Future task    :des3, after des2, 5d
+```
+
+Input
+([task-data/colon-column-sections-in-one-column-and-others-input.mmd](../tests/fixtures/gantt/task-data/colon-column-sections-in-one-column-and-others-input.mmd)):
+
+```mmd
+gantt
+  section A
+    Task A                    :a1, 2014-01-01, 3d
+    Task B long               :a2, after a1, 2d
+  section B
+    Other                     :a3, after a2, 1d
+  section C
+    Single   :a4, after a3, 1d
+    Quite a long name :a5, after a4, 1d
+  section D
+    Alone :a6, after a5, 1d
+    Brief :a7, after a6, 1d
+```
+
+Output
+([task-data/colon-column-sections-in-one-column-and-others-output.mmd](../tests/fixtures/gantt/task-data/colon-column-sections-in-one-column-and-others-output.mmd)):
+
+```mmd
+gantt
+  section A
+    Task A      :a1, 2014-01-01, 3d
+    Task B long :a2, after a1, 2d
+  section B
+    Other       :a3, after a2, 1d
+  section C
+    Single            :a4, after a3, 1d
+    Quite a long name :a5, after a4, 1d
+  section D
+    Alone :a6, after a5, 1d
+    Brief :a7, after a6, 1d
 ```
 
 Input

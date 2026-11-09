@@ -1,11 +1,15 @@
 import { describe, expect, it } from "vitest"
-import type { Indentation } from "../src/diagram.ts"
+import type { LayoutOptions } from "../src/diagram.ts"
 import type { FormatResult } from "../src/diagnostic.ts"
 import { formatMarkdown } from "../src/markdown.ts"
 import { lines } from "./helpers.ts"
 
-/** The indentation without a Prettier configuration. */
-const noConfiguration: Indentation = { tabWidth: undefined, useTabs: undefined }
+/** The layout options without a Prettier configuration. */
+const noConfiguration: LayoutOptions = {
+  tabWidth: undefined,
+  useTabs: undefined,
+  printWidth: undefined,
+}
 
 /**
  * Formats a Markdown text without a Prettier configuration, with the positions

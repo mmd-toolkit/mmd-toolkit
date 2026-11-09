@@ -8,7 +8,7 @@ Markdownと`.mmd`ファイルの[Mermaid](https://mermaid.js.org/)の図を整�
 Markdownファイルのほかの部分は、1バイトも変えません。
 図は、[Prettier](https://prettier.io/)と、
 そのMermaidプラグインの[`prettier-plugin-mmd`](./index.ja.md)で整形します。
-[Prettierを知っている方へ](#prettierを知っている方へ)の2つの場合を除き、
+[Prettierを知っている方へ](#prettierを知っている方へ)の場合を除き、
 プラグインと同じ結果になります。
 
 ## どんなときに使うか
@@ -293,7 +293,7 @@ Prettierの`format`と同じく、ファイルも設定も読みません。
 設定の`overrides`はパスごとに適用されるため、
 `format`に渡すのと同じパスを指定し、
 `.editorconfig`を読むために`editorconfig: true`を指定します。
-コマンドがパスについて見つけるオプション（[インデント](#インデント)）を渡すと、
+コマンドがパスについて見つけるオプション（[インデントと行の幅](#インデントと行の幅)）を渡すと、
 `format`は`--stdin-filepath`がそのパスについて書き出すテキストを返します。
 
 - 改行コードとバイトオーダーマークはテキストに書かれたまま保ち、
@@ -315,24 +315,33 @@ Prettierの`format`と同じく、ファイルも設定も読みません。
 `node_modules`やバージョン管理のディレクトリの下にあるパスも、
 `.gitignore`が挙げるパスも同じように整形します。
 
-## インデント
+## インデントと行の幅
 
-図のインデントは空白2つです。
+図のインデントは空白2つで、行の幅はPrettierの80です。
 ファイルに`.editorconfig`やPrettierの設定が適用されるときは、
-そのインデントを使います。
-`.editorconfig`の`indent_style`、`indent_size`、`tab_width`、
+そのインデントと行の幅を使います。
+`.editorconfig`の`indent_style`、`indent_size`、`tab_width`、`max_line_length`、
 または[Prettierの設定ファイル](https://prettier.io/docs/configuration)の
-`useTabs`と`tabWidth`で、`overrides`も含めてPrettierのCLIと同じように探します。
+`useTabs`、`tabWidth`、`printWidth`で、
+`overrides`も含めてPrettierのCLIと同じように探します。
 コードブロックでは、そのファイルはMarkdownファイルです。
 読めない設定ファイルはエラーです。
-たとえば、この`.editorconfig`は図に空白4つのインデントを付けます。
+たとえば、この`.editorconfig`は図に空白4つのインデントを付け、
+行を100桁まで許します。
 
 ```ini
 [*.{md,mmd,mermaid}]
 indent_style = space
 indent_size = 4
+max_line_length = 100
 ```
 
+行の幅が図の中で決めるのは、2つです。
+1行に書いたデータブロック`@{ … }`を複数行で印字するかどうかと、
+Ganttのセクションのタスクの`:`をそろえるかどうかです。
+詳しくは、
+[フォーマッターのオプション](./options.ja.md#行の長さ)を参照してください。
+`max_line_length = off`は制限なしです。
 設定のほかの項目は使いません。
 
 ## エラーと終了コード
@@ -369,7 +378,7 @@ Markdownのコードブロックでは警告です。
 
 図はPrettierと`prettier-plugin-mmd`で整形するので、
 プラグインの規則が適用されます。
-MarkdownにPrettierとプラグインを使う場合とは、結果が2点で異なります。
+MarkdownにPrettierとプラグインを使う場合とは、結果が3点で異なります。
 
 - Prettierは、コードブロックの最後の行の末尾の空白を、
   mermaid.jsが図の一部として読む場合も、
@@ -379,12 +388,17 @@ MarkdownにPrettierとプラグインを使う場合とは、結果が2点で異
   MarkdownのコードブロックをMarkdown文書として整形し、
   その中のコードブロックの図も整形します。
   `mmdfmt`はほかのコードブロックをすべてそのまま残します。
+- Prettierはリスト項目のマーカーを自分で印字し、
+  項目の内容を`tabWidth`にそろえますが、
+  `mmdfmt`はマーカーを書かれたまま残します。
+  内容の桁が違うと、項目の中の図に残る行の幅がその差だけ違い、
+  幅の近くにある1行のブロックを、一方は分け、他方は分けないことがあります。
 
 コマンドもPrettierのCLIとは異なります。
 `.prettierignore`は読まず、`--ignore-path`、`--ignore-unknown`、
-整形オプションはなく、設定からはインデントだけを使います。
+整形オプションはなく、設定からはインデントと行の幅だけを使います。
 
 [`mmdfmt`のREADME](../../../mmdfmt/README.ja.md#コードブロックの詳細)では、
 コードブロックを詳しく説明しています。
-整形するブロック、リストや引用の中のブロック、警告してそのまま残すブロック、
-改行コードについてです。
+整形するブロック、リストや引用の中のブロックと残る行の幅、
+警告してそのまま残すブロック、改行コードについてです。

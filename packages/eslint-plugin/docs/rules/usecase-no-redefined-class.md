@@ -43,8 +43,8 @@ Examples of **incorrect** code for this rule:
 %% eslint @mmd-toolkit/usecase-no-redefined-class: error
 usecase-beta
   A:::hot
-  classDef hot fill:red
-  classDef hot stroke:blue
+  classDef hot fill: red
+  classDef hot stroke: blue
 ```
 
 Examples of **correct** code for this rule:
@@ -53,7 +53,7 @@ Examples of **correct** code for this rule:
 %% eslint @mmd-toolkit/usecase-no-redefined-class: error
 usecase-beta
   A:::hot
-  classDef hot fill:red, stroke:blue
+  classDef hot fill: red, stroke: blue
 ```
 
 ## Options

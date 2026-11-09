@@ -110,7 +110,17 @@ flowchart LR
 - `useTabs` と `tabWidth` で字下げを決めます。
   既定は空白 2 つです。
 - `endOfLine` で改行コードを決めます。
-- `printWidth` は図の改行位置を決めません。
+- `printWidth` は 2 つのことを決めます。
+  flowchart、agentflow、kanban で 1 行に書いたデータブロック `@{ … }` は、
+  その行が `printWidth` より広いときに、複数行で印字します。
+  詳しくは、
+  [データブロック](./docs/flowchart.ja.md#データブロック)を参照してください。
+  Gantt のセクションのタスクの `:` は、行が `printWidth` より広くなり、
+  しかも今より広くなるときを除いて、そろえます。
+  詳しくは、
+  [タスクのデータ](./docs/gantt.ja.md#タスクのデータ)を参照してください。
+  幅は Prettier が測る幅で、全角文字は 2 桁、タブは 0 桁と数えます。
+  それ以外では、`printWidth` は図の改行位置を決めません。
   `railroad-beta` の呼び出しは文法の構造に従います。
   詳細は[長い行](./docs/railroad.ja.md#長い行)を参照してください。
   Markdown と YAML frontmatter には、Prettier が使う場合があります。

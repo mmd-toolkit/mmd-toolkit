@@ -8,7 +8,7 @@ blocks of `.md` and `.markdown` files. The rest of a Markdown file stays byte
 for byte as it is. The diagrams are formatted by
 [Prettier](https://prettier.io/) with [`prettier-plugin-mmd`](./index.md), the
 Mermaid plugin for Prettier, so they come out as that plugin prints them, apart
-from the two cases in [If you know Prettier](#if-you-know-prettier).
+from the cases in [If you know Prettier](#if-you-know-prettier).
 
 ## When to use it
 
@@ -272,8 +272,8 @@ caller resolves the configuration with Prettier's `resolveConfig`, as above,
 with the path that it gives `format`, since the `overrides` of a configuration
 apply by path, and with `editorconfig: true` for an `.editorconfig` to be read.
 Given the options that the command finds for a path (see
-[Indentation](#indentation)), `format` returns the text that `--stdin-filepath`
-writes for it.
+[Indentation and line width](#indentation-and-line-width)), `format` returns the
+text that `--stdin-filepath` writes for it.
 
 - The line endings stay as they are in the text, and so does a byte order mark;
   `format` takes no `endOfLine`.
@@ -292,23 +292,30 @@ Unlike the command, `format` skips no path: a path under `node_modules` or a
 directory of version control, or listed in a `.gitignore`, is formatted all the
 same, since the caller chooses which files to format.
 
-## Indentation
+## Indentation and line width
 
-A diagram is indented by two spaces. When an `.editorconfig` or a Prettier
-configuration applies to the file, its indentation is used: `indent_style`,
-`indent_size`, and `tab_width` of `.editorconfig`, or `useTabs` and `tabWidth`
-of a [Prettier configuration file](https://prettier.io/docs/configuration),
-found as Prettier's CLI finds them, `overrides` included. For a code block, the
-file is the Markdown file. A configuration file that cannot be read is an error.
-For example, this `.editorconfig` indents diagrams by four spaces:
+A diagram is indented by two spaces, and its line width is Prettier's 80. When
+an `.editorconfig` or a Prettier configuration applies to the file, its
+indentation and its line width are used: `indent_style`, `indent_size`,
+`tab_width`, and `max_line_length` of `.editorconfig`, or `useTabs`, `tabWidth`,
+and `printWidth` of a
+[Prettier configuration file](https://prettier.io/docs/configuration), found as
+Prettier's CLI finds them, `overrides` included. For a code block, the file is
+the Markdown file. A configuration file that cannot be read is an error. For
+example, this `.editorconfig` indents diagrams by four spaces and lets a line
+stay up to 100 columns wide:
 
 ```ini
 [*.{md,mmd,mermaid}]
 indent_style = space
 indent_size = 4
+max_line_length = 100
 ```
 
-Nothing else of a configuration is used.
+The line width decides two things in a diagram: whether a data block `@{ … }` on
+one line is printed on several lines, and whether the colons of the tasks of a
+Gantt section are lined up (see [Formatter options](./options.md#line-width)).
+`max_line_length = off` is no limit. Nothing else of a configuration is used.
 
 ## Errors and exit codes
 
@@ -344,8 +351,8 @@ even when a file would change.
 ## If you know Prettier
 
 The diagrams are formatted by Prettier with `prettier-plugin-mmd`, so the rules
-of the plugin apply. Two results differ from running Prettier with the plugin on
-Markdown:
+of the plugin apply. Three results differ from running Prettier with the plugin
+on Markdown:
 
 - Prettier removes the whitespace at the end of the last line of a code block,
   even where mermaid.js treats it as part of the diagram
@@ -354,11 +361,17 @@ Markdown:
 - Prettier formats a code block of Markdown, such as one marked `md`, as a
   Markdown document, and with it the diagrams in its code blocks. `mmdfmt`
   leaves every other code block as it is.
+- Prettier prints the marker of a list item itself and aligns the content of the
+  item to `tabWidth`, while `mmdfmt` keeps the marker as written. Where the two
+  give the content another column, the line width left for a diagram in the item
+  differs by that, and a block of one line near the width can be split by one
+  and not by the other.
 
 The command differs from Prettier's CLI too: it does not read `.prettierignore`,
 has no `--ignore-path`, `--ignore-unknown`, or formatting options, and uses only
-the indentation of a configuration.
+the indentation and the line width of a configuration.
 
 The [README of `mmdfmt`](../../../mmdfmt/README.md#code-blocks-in-detail)
 describes the code blocks in detail: which blocks are formatted, blocks in lists
-and block quotes, the blocks left as written with a warning, and line endings.
+and block quotes and the line width left in them, the blocks left as written
+with a warning, and line endings.

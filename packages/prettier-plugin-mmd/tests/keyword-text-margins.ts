@@ -14,7 +14,9 @@ type Ends = "both" | "end"
  * whitespace at both ends the formatter leaves out; the events of a timeline
  * and the second description of a state, whose whitespace at the end it leaves
  * out, since the whitespace at their start is the padding that aligns colons
- * or is the text after a separator. The name of a section is not one: two
+ * or is the text after a separator, and the name of a task of a Gantt chart,
+ * whose whitespace at the end the formatter sets so that the colons of the
+ * tasks of a section stand in one column. The name of a section is not one: two
  * sections that differ by their whitespace are two sections
  * (docs/compatibility.md, Texts after a keyword that are drawn the same).
  */
@@ -25,6 +27,7 @@ const keywordTextKeys: ReadonlyMap<string, ReadonlyMap<string, Ends>> = new Map(
       new Map<string, Ends>([
         ["axisFormat", "both"],
         ["dateFormat", "both"],
+        ["task", "end"],
         ["title", "both"],
       ]),
     ],

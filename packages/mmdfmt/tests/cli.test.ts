@@ -19,6 +19,12 @@ const diagram = "flowchart LR\nA-->B\n"
 const formattedDiagram = "flowchart LR\n  A --> B\n"
 const markdown = "# T\n\n```mermaid\nflowchart LR\nA-->B\n```\n"
 const formattedMarkdown = "# T\n\n```mermaid\nflowchart LR\n  A --> B\n```\n"
+/** The width of the line of the node below, which stays on it at this width. */
+const blockWidth = 38
+/** A node with a data block on one line, which the plugin splits into lines where the line is wider than printWidth. */
+const block = "flowchart LR\n  A@{ shape: rect, label: x, icon: y }\n"
+const blockOnLines =
+  "flowchart LR\n  A@{\n    shape: rect\n    label: x\n    icon: y\n  }\n"
 
 /** The message for a pattern that selects no file to format. */
 function noFileMatches(pattern: string): string {
@@ -757,7 +763,7 @@ describe("Excluding files: patterns that start with !", () => {
   })
 })
 
-describe("Indentation", () => {
+describe("Indentation and line width", () => {
   it("indents by two spaces without a Prettier configuration", async () => {
     project.write({ "a.mmd": diagram })
     await project.run(["--write", "a.mmd"])
@@ -816,7 +822,6 @@ describe("Indentation", () => {
       ".prettierrc": JSON.stringify({
         plugins: ["prettier-plugin-that-is-not-installed"],
         endOfLine: "crlf",
-        printWidth: 20,
         proseWrap: "always",
       }),
       "a.mmd": diagram,
@@ -829,6 +834,41 @@ describe("Indentation", () => {
     })
     expect(project.read("a.mmd")).toBe(formattedDiagram)
     expect(project.read("b.md")).toBe(prose + formattedMarkdown)
+  })
+
+  it("takes printWidth from a Prettier configuration, in a file", async () => {
+    project.write({
+      ".prettierrc": JSON.stringify({
+        overrides: [
+          { files: "wide.mmd", options: { printWidth: blockWidth } },
+          { files: "narrow.mmd", options: { printWidth: blockWidth - 1 } },
+        ],
+      }),
+      "wide.mmd": block,
+      "narrow.mmd": block,
+    })
+    await project.run(["--write", "wide.mmd", "narrow.mmd"])
+    expect(project.read("wide.mmd")).toBe(block)
+    expect(project.read("narrow.mmd")).toBe(blockOnLines)
+  })
+
+  it("takes printWidth from max_line_length of .editorconfig", async () => {
+    project.write({
+      ".editorconfig": `root = true\n\n[*]\nmax_line_length = ${blockWidth - 1}\n`,
+      "a.mmd": block,
+    })
+    await project.run(["--write", "a.mmd"])
+    expect(project.read("a.mmd")).toBe(blockOnLines)
+  })
+
+  it("reads max_line_length = off as no limit on the width", async () => {
+    const longBlock = `flowchart LR\n  A@{ label: ${"x".repeat(300)}, shape: rect }\n`
+    project.write({
+      ".editorconfig": "root = true\n\n[*]\nmax_line_length = off\n",
+      "a.mmd": longBlock,
+    })
+    await project.run(["--write", "a.mmd"])
+    expect(project.read("a.mmd")).toBe(longBlock)
   })
 
   it("is an error when the configuration cannot be read", async () => {

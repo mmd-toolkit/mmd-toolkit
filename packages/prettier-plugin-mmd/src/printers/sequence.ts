@@ -8,7 +8,8 @@ import type {
 import type { MermaidAst } from "../parser.ts"
 import { printedToken } from "./spelling.ts"
 import { printAtoms } from "./atoms.ts"
-import { formatDataBlocks } from "./data-blocks.ts"
+import type { StatementListsOf } from "./data-blocks.ts"
+import { formatDataBlocks, writtenIndentationRule } from "./data-blocks.ts"
 import type { BlockRules, PrintedBlock } from "./blocks.ts"
 import {
   openingLine,
@@ -94,6 +95,8 @@ export function printSequence(
             kept: findSequenceKeptLines(source),
             statement: indentationOf(options, depth),
             tabWidth: options.tabWidth,
+            useTabs: options.useTabs,
+            statementListsOf,
           },
         ),
         {
@@ -134,7 +137,7 @@ function printDiagram(
       end: source.text.length,
       isTopLevel: true,
     },
-    sequenceBlockRules(source),
+    sequenceBlockRules(source, options),
   )
   const header = openingLine(
     printAtoms(source, layoutSequenceHeader(source, keyword), {
@@ -251,7 +254,7 @@ function openBlock(
     docs,
     source,
     { statements, start: headerEnd, end: opening.end, isTopLevel: false },
-    sequenceBlockRules(source),
+    sequenceBlockRules(source, options),
   )
   const header = openingLine(
     printAtoms(
@@ -268,16 +271,47 @@ function openBlock(
   return { header, block }
 }
 
+/** The lists of statements that the node holds, the diagram included. */
+function statementListsOf(node: MermaidAst): ReturnType<StatementListsOf> {
+  if (node.type === "SequenceDiagram") {
+    return [{ head: node.range[0], statements: node.body }]
+  }
+  const classified = classifySequenceStatement(node)
+  switch (classified?.kind) {
+    case "body":
+      return [{ head: node.range[0], statements: classified.statement.body }]
+    case "sections":
+      return classified.statement.sections.map((section) => ({
+        head: section.range[0],
+        statements: section.body,
+      }))
+    default:
+      return []
+  }
+}
+
+/** Whether the node holds statements of its own. */
+function holdsStatements(node: MermaidAst): boolean {
+  return statementListsOf(node).length > 0
+}
+
 /**
  * The block rules of a sequence diagram (see `BlockRules`): the blocks and
  * boxes hold statements, and no statement is dropped.
  */
-function sequenceBlockRules(source: Source): BlockRules<SequenceStatement> {
+function sequenceBlockRules(
+  source: Source,
+  options: ParserOptions<MermaidAst>,
+): BlockRules<SequenceStatement> {
   return {
     kept: findSequenceKeptLines(source),
     printedEnd: (statement) => findSequencePrintedEnd(source, statement),
-    holdsStatements: (statement) =>
-      classifySequenceStatement(statement).kind !== "simple",
+    holdsStatements,
+    writtenIndentationOf: writtenIndentationRule(
+      source,
+      options.useTabs,
+      statementListsOf,
+    ),
     isDroppedAtTopLevel: () => false,
     keepsWhitespaceLineAfterComment: false,
     keepsDirectiveLinesUnindented: false,

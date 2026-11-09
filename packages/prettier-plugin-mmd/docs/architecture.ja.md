@@ -302,7 +302,7 @@ architecture-beta
 mermaid.js が trim するからです。
 `group a(cloud)[ API ]` は `group a(cloud)[API]` に、
 `service s(server)["x" ]` は `service s(server)["x"]` になります。
-[fixture: architecture/label-content/title-edge-whitespace-dropped]
+[fixture: label-content/title-edge-whitespace-dropped]
 保つ `;` のある行でも同じです。
 ただし、行の規則が読む範囲は除きます（[Semicolons](#semicolons)を参照）。
 その範囲の外の空白を落としても `;` は動かず、増えも減りもしないので、
@@ -321,23 +321,23 @@ mermaid.js が trim するからです。
 `service %%{style}%%s0(logos:aws)[#y;]` に、
 `service style1(logos:aws)[ #y ]%%{init:{"a":";"}}%%` は `[#y]` になります。
 `;` がディレクティブの外にある `[ #y; ]` は、空白を残します。
-[fixture: architecture/label-content/title-padding-line-rule-chars-in-directive]
+[fixture: label-content/title-padding-line-rule-chars-in-directive]
 行の途中の `%%` はコメント行ではないので、規則はそのテキストを読みます。
 `service style3(logos:aws)[ #y ] %% note;` は
 `service style3(logos:aws)[ #y] %% note;` になります。
 注の `;` があるので、規則は `logos:aws` の `:` から合うからです。
 `service classDef(logos:aws)[#a;style: ]%%#c;` は、
 `%%` の後の `#` と `;` も規則に加わるので、変わりません。
-[fixture: architecture/label-content/title-padding-line-rule-chars-in-comment]
+[fixture: label-content/title-padding-line-rule-chars-in-comment]
 ディレクティブにもコメントにも含まれない U+2028 と U+2029 は、
 規則が読む行を終わらせるので、その前の `:` とその後の `;` は区間を作りません。
 [test: architecture/label-content/title-style-rule-ends-at-u2028]
 [test: architecture/label-content/title-style-rule-ends-at-u2029]
 コメントやディレクティブを含むタイトルと、U+2028 や U+2029 を含む空白は、
 書かれたまま残します。
-[fixture: architecture/label-content/title-padding-with-directive-or-semicolon]
-[fixture: architecture/label-content/title-padding-in-style-rule-stretch]
-[fixture: architecture/label-content/title-padding-after-colon-without-style]
+[fixture: label-content/title-padding-with-directive-or-semicolon]
+[fixture: label-content/title-padding-in-style-rule-stretch]
+[fixture: label-content/title-padding-after-colon-without-style]
 [test: architecture/label-content/title-u2028]
 [test: architecture/label-content/title-u2029]
 [test: architecture/label-content/title-with-semicolon-u2028]

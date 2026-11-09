@@ -1,0 +1,39 @@
+import { describe, expect, it } from "vitest"
+import { printWidthAfter } from "../src/diagram.ts"
+
+/** The layout options with only a line width and a tab width set. */
+function options(
+  printWidth: number | undefined,
+  tabWidth: number | undefined = undefined,
+): Parameters<typeof printWidthAfter>[1] {
+  return { printWidth, tabWidth, useTabs: undefined }
+}
+
+describe("Code blocks in detail: the line width left after the prefix of a line", () => {
+  it("leaves the line width as it is where nothing stands before the lines", async () => {
+    expect(await printWidthAfter("", options(40))).toBe(40)
+    expect(await printWidthAfter("", options(undefined))).toBeUndefined()
+  })
+
+  it("takes the width of the prefix off", async () => {
+    expect(await printWidthAfter("  ", options(40))).toBe(38)
+    expect(await printWidthAfter("> ", options(40))).toBe(38)
+  })
+
+  it("takes it off Prettier's default of 80 where the configuration sets no width", async () => {
+    expect(await printWidthAfter("    ", options(undefined))).toBe(76)
+  })
+
+  it("counts a tab as tabWidth, which is 2 where the configuration sets none", async () => {
+    expect(await printWidthAfter("\t", options(40, 4))).toBe(36)
+    expect(await printWidthAfter("\t", options(40))).toBe(38)
+  })
+
+  it("leaves at least 1", async () => {
+    expect(await printWidthAfter("          ", options(5))).toBe(1)
+  })
+
+  it("leaves an infinite width infinite", async () => {
+    expect(await printWidthAfter("  ", options(Infinity))).toBe(Infinity)
+  })
+})

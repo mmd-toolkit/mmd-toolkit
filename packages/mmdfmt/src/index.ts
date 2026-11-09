@@ -1,5 +1,5 @@
 import type { Options } from "prettier"
-import type { Indentation } from "./diagram.ts"
+import type { LayoutOptions } from "./diagram.ts"
 import { endingsInWords, formatDiagramSource, kindOf } from "./format-file.ts"
 import { formatMarkdown } from "./markdown.ts"
 
@@ -32,11 +32,12 @@ export async function format(
       `the path does not end in ${endingsInWords}: ${JSON.stringify(options.filepath)}`,
     )
   }
-  const indentation: Indentation = {
+  const layout: LayoutOptions = {
     tabWidth: options.tabWidth,
     useTabs: options.useTabs,
+    printWidth: undefined,
   }
   return kind === "diagram"
-    ? formatDiagramSource(source, indentation)
-    : (await formatMarkdown(source, indentation, "output")).text
+    ? formatDiagramSource(source, layout)
+    : (await formatMarkdown(source, layout, "output")).text
 }

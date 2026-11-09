@@ -44,6 +44,11 @@ const restored: readonly DbPair[] = [
     after: { tasks: [{ task: "2020 ", events: ["e   ", "f"] }] },
   },
   {
+    name: "the whitespace at the end of the name of a task of a Gantt chart",
+    before: { tasks: [{ task: "A task\t", id: "a1" }] },
+    after: { tasks: [{ task: "A task     ", id: "a1" }] },
+  },
+  {
     name: "the whitespace at the end of a description of a state",
     diagramType: "stateDiagram",
     before: { states: [{ id: "A", description: [" x   "] }] },
@@ -120,6 +125,21 @@ const kept: readonly DbPair[] = [
     diagramType: "gantt",
     before: { tasks: [{ task: "a", events: ["e  "] }] },
     after: { tasks: [{ task: "a", events: ["e"] }] },
+  },
+  {
+    name: "a changed name of a task of a Gantt chart",
+    before: { tasks: [{ task: "A task  ", id: "a1" }] },
+    after: { tasks: [{ task: "B task  ", id: "a1" }] },
+  },
+  {
+    name: "whitespace added at the start of the name of a task of a Gantt chart",
+    before: { tasks: [{ task: "A task", id: "a1" }] },
+    after: { tasks: [{ task: " A task", id: "a1" }] },
+  },
+  {
+    name: "whitespace changed inside the name of a task of a Gantt chart",
+    before: { tasks: [{ task: "A  task ", id: "a1" }] },
+    after: { tasks: [{ task: "A task ", id: "a1" }] },
   },
 ]
 

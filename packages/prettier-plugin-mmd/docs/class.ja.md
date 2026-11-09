@@ -362,10 +362,30 @@ mermaid.js の文書にある例 1 件は、接する形で書かれています
 スタイルの間の `,` の前に空白を置かず、後ろに空白を 1 つ置きます。
 `style C fill:#f9f  ,  stroke:#333` は、
 `style C fill: #f9f, stroke: #333` になります。
-値の中の語と語の間の空白は、書かれたまま残します。
-mermaid.js は余白を Db に残しますが、描かれる図は同じです。
+スタイルの語と語の間の空白とタブの連続は、空白 1 つで印字します。
+`style C border:1px   solid` は `style C border: 1px solid` と印字します。
+コメントの中と `url(` の括弧の中の連続は、CSS が値の一部として読むので、
+書かれたまま残します。
+mermaid.js は余白と語の間の空白の連続を Db に残しますが、描かれる図は同じです。
 詳しくは [同じに描かれるスタイル](./compatibility.ja.md#同じに描かれるスタイル)
 を参照してください。 [fixture: whitespace-between-tokens/style-colon-spaced]
+[fixture: whitespace-between-tokens/style-value-words-spaced]
+[fixture: whitespace-between-tokens/style-url-runs-kept]
+[fixture: whitespace-between-tokens/style-comment-runs-kept]
+`:` のない語だけのスタイルでも同じです。
+mermaid.js はこれらを独立したトークンとして読み、
+`style A bold ,italic` は `style A bold, italic` と印字し、
+`style A fill   #f00` は `style A fill #f00` と印字します。
+語と語の間に空白があるかどうかは、書かれたまま残します。
+mermaid.js は語をつなぐので、`fill #f00` と `fill#f00` は同じスタイルです。
+接する語は、ほかの隙間と同じように接したままです。
+[ディレクティブ](#ディレクティブ)を参照してください。
+語をつなぐと、どこで語が終わるかが見えなくなるからです。
+[fixture: whitespace-between-tokens/style-words-comma-spaced]
+[fixture: whitespace-between-tokens/style-words-as-written]
+[fixture: whitespace-between-tokens/style-words-run-spaced]
+語の間にコメントやディレクティブがある文は、書かれたまま残します。
+[fixture: whitespace-between-tokens/style-words-directive-kept]
 ここではバックスラッシュは `,` をエスケープしません。
 `fill:a\,b ,stroke:c` は `fill: a\, b, stroke: c` と印字します。
 [fixture: whitespace-between-tokens/style-backslash-before-comma]
@@ -395,6 +415,11 @@ mermaid.js はスタイルをクラスのスタイルへ書かれたまま足し
 [fixture: whitespace-between-tokens/style-colon-and-comma-spaced]
 スタイルの間に U+2028 や U+2029 があれば、文を書かれたままにします。
 [test: U+2028 before the comma of a class style statement]
+
+`:` で始まるスタイルも、ほかのスタイルと同じく、`:` の後に空白を 1 つ置き、
+語と語の間の空白とタブの連続は空白 1 つで印字します。
+`style A :  red   x` は `style A : red x` と印字します。
+[fixture: whitespace-between-tokens/style-colon-first-run-spaced]
 
 クラスの本体や namespace を閉じる `}` の後の U+2028 と U+2029 は、
 mermaid.js にとって空白なので、行末の空白と一緒に落とします。
@@ -534,6 +559,7 @@ classDiagram
   C ..> D
 ```
 
+矢印は、構文木が読み取ったとおりに印字します。
 出力を見ると、mermaid.js が名前に接した矢印をどう解釈するか分かります。
 `o` は、後に語の文字が続かないときだけ関係の端です。
 `A --oB` は、矢印の終端記号を持たない、クラス `oB` への関係として扱われ、

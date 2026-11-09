@@ -334,8 +334,8 @@ tooltipの前の必須の空白1文字の隙間は決して揃えません。
 文法が空白1文字だけを取り、その後の空白は値の文字で、
 トークンを期待する場所に空白が2文字あると拒否されることもあるためです。
 この1文字として使うタブも保ちます。
-directiveを挟む最初のstyleの先頭空白、スタイルの値の中の語と語の間の空白、
-空のstyleリスト項目、classDefのエスケープしたコンマ、順序と反復を保ちます。
+directiveを挟む最初のstyleの先頭空白、空のstyleリスト項目、
+classDefのエスケープしたコンマ、順序と反復を保ちます。
 最初のstyleの空白は、flowchart と同じには揃えません。
 各スタイルの最初の `:` の前に空白を置かず、値が空でなければ、
 後ろに空白を 1 つ置きます。
@@ -343,6 +343,16 @@ directiveを挟む最初のstyleの先頭空白、スタイルの値の中の語
 `style A fill :#f00,stroke:  #333` は、
 `style A fill: #f00, stroke: #333` になります。
 [fixture: single-space-gaps/style-colon-spaced]
+[flowchart](./flowchart.ja.md#トークンの間の空白)と同じく、
+スタイルの語と語の間の空白とタブの連続は、空白 1 つで印字し、
+語と語の間に空白があるかどうかは、書かれたまま残します。
+一重引用符の文字列の中と閉じていないコメントの中の連続と、
+バックスラッシュの後ろのエスケープは残します。
+エスケープは、16 進数字とその直後の空白かタブ 1 文字、
+または 16 進数字が続かないときの次の 1 文字です。
+[fixture: single-space-gaps/style-words-run-spaced]
+[fixture: single-space-gaps/style-string-runs-kept]
+[fixture: single-space-gaps/style-hex-escape-run-spaced]
 番号を指定した `linkStyle` では、`fill` で始まるスタイルの前の `,` の後ろに、
 空白があるかないかを保ち、空白の連続は空白 1 つにします。
 mermaid.js は先頭だけを読むので、`fill-opacity` も含みます。
@@ -381,9 +391,12 @@ look が `handDrawn` のときは、mermaid.js が先頭の `stroke:` を読む�
 `style` と `linkStyle` では、`,` は前に何があってもスタイルを終えます。
 バックスラッシュの後で `:` の前にある空白も、
 除くと `:` がエスケープされるので残します。
+その空白の後ろの空白は、
+[flowchart](./flowchart.ja.md#トークンの間の空白)と同じく除きます。
 [fixture: single-space-gaps/style-escaped-space-before-comma]
 [fixture: single-space-gaps/style-backslash-before-comma]
 [fixture: single-space-gaps/style-colon-escaped-space-kept]
+[fixture: single-space-gaps/style-colon-escaped-space-run-dropped]
 ディレクティブやコメントがある文、空白だけのスタイルがある文、
 スタイルに改行か U+2028・U+2029 があるか、行に保つ `;` がある文は、
 書かれたままにします。 [fixture: single-space-gaps/classdef-first-tab]
@@ -394,6 +407,11 @@ look が `handDrawn` のときは、mermaid.js が先頭の `stroke:` を読む�
 [fixture: single-space-gaps/style-comma-before-dropped]
 [fixture: single-space-gaps/style-comma-beside-directive-kept]
 [test: agentflow: U+2028 before the comma of a style statement]
+
+`:` で始まるスタイルも、ほかのスタイルと同じく、`:` の後ろに空白を 1 つ置き、
+語と語の間の連続は空白 1 つで印字します。
+`style A :  red   x` は `style A : red x` と印字します。
+[fixture: single-space-gaps/style-colon-first-run-spaced]
 
 linkStyleの後とinterpolate名の前のタブは、
 それぞれ文法が要求する空白1文字なので、両方とも保ちます。
@@ -576,7 +594,9 @@ agentflow の後の振り分けや別名解決を根拠に YAML を書き換え�
 1 行のブロックは、両端の内側に空白を 1 つずつ置いて印字します。
 書かれたままにする場合は、
 [データブロック](./flowchart.ja.md#データブロック)に挙げたとおりです。
-[fixture: metadata-blocks/one-line-padded]
+行が長すぎるときは、そこに挙げた条件のもとで、
+1 行に 1 項目ずつ複数行に分けて印字します。
+[fixture: metadata-blocks/long-split] [fixture: metadata-blocks/one-line-padded]
 [fixture: metadata-blocks/one-line-space-only-padded]
 [fixture: metadata-blocks/one-line-directive-kept]
 [fixture: metadata-blocks/one-line-kept-line-kept]
@@ -587,8 +607,8 @@ agentflow の後の振り分けや別名解決を根拠に YAML を書き換え�
 [fixture: metadata-blocks/one-line-padded-zero-width]
 [fixture: metadata-blocks/one-line-surrounding-trivia]
 [test: data blocks: agentflow one line with U+2028 inside]
-[test: data blocks: agentflow one line with no-break spaces at the ends]
 [test: data blocks: agentflow one line with U+2029 inside]
+[test: data blocks: agentflow one line with no-break spaces at the ends]
 
 開きの直後が改行のブロックでは、本文の全行を同じ数の半角空白だけ動かし、
 文字がある最も浅い行を文の 1 段内側に置きます。
@@ -603,18 +623,38 @@ agentflow の後の振り分けや別名解決を根拠に YAML を書き換え�
 ほかの移動条件と理由は、
 [データブロック](./flowchart.ja.md#データブロック)に従います。
 開きの行に本文があるブロック、内部の directive、行全体を保つ行、幅 0 の字下げ、
-文の最初の行より後から始まるブロックは書かれたまま残します。
-`useTabs` でも本文と単独行の閉じ括弧は半角空白とし、閉じ括弧は文の桁に置きます。
+文の最初の行より後から始まるブロックは、書かれたまま残します。
+`useTabs` では、複数行のブロックを持つ文全体を書かれたまま印字します。
 前後のコメント、directive、空の説明、空行、区切りはそれぞれの規則に従います。
 [fixture: metadata-blocks/inline-and-directive-kept]
 [fixture: metadata-blocks/kept-body-line]
 [fixture: metadata-blocks/zero-width-kept]
 [fixture: metadata-blocks/tab-statement-space-body]
+[fixture: metadata-blocks/use-tabs-empty-lines-kept]
+[fixture: metadata-blocks/use-tabs-folded-empty-lines-kept]
 [fixture: metadata-blocks/surrounding-trivia]
 [test: data blocks: agentflow U+2029] [test: data blocks: agentflow CRLF]
 
 `flow` や `global` のコンテナの見出しにあるブロックも、同じように動かします。
 [fixture: metadata-blocks/container-header]
+`useTabs` では、文と違い、見出しを書かれたまま印字しません。
+コンテナの `end` は、プリンタが見出しに与える字下げに置かれるので、
+見出しもその字下げにし、`useTabs` でないときと同じく、
+ブロックの行も見出しと一緒に動かします。
+[fixture: metadata-blocks/use-tabs-container-header-indented]
+`flow G; A@{ … }` の `A@{ … }` のように、見出しと同じ行でその後ろにある文は、
+コンテナの中の文です。
+行頭に書かれた字下げは見出しの字下げなので、その文も書かれたまま印字しません。
+[データブロック](./flowchart.ja.md#データブロック)を参照してください。
+`B; end; A@{ … }` の `A@{ … }` のように、
+コンテナの中の文が先にある `end` の後の文も同じです。
+`B -->` の次の行の `C; A@{ … }` のように、
+そこに挙げたもの以外で始まる行の文も同じです。
+複数行にわたるディレクティブの残りで始まる行の文も、そうです。
+[fixture: metadata-blocks/use-tabs-container-header-statement-moved]
+[fixture: metadata-blocks/use-tabs-statement-before-end-moved]
+[fixture: metadata-blocks/use-tabs-edge-continuation-moved]
+[fixture: metadata-blocks/use-tabs-directive-continuation-moved]
 
 矢印の改行後のブロックは、文の最初の行より後から始まるため桁を残し、
 1 行でも複数行でも、ブロックを 2 つ持つ文は、どちらも桁を残します。

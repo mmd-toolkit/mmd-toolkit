@@ -7,6 +7,7 @@ import type {
   GanttTaskStatement,
   Node,
 } from "@mmd-toolkit/ast"
+import { util } from "prettier"
 import type { Atom, AtomLayout, GapRule } from "./atoms.ts"
 import type { MermaidAst } from "../parser.ts"
 import {
@@ -17,6 +18,7 @@ import {
   keepFirstGapLineTails,
   keptAsWritten,
   layoutDescriptionBlock,
+  replaceInAtoms,
 } from "./layout.ts"
 import {
   findKeptBreaks,
@@ -31,7 +33,11 @@ import {
   trimTextAfterKeyword,
 } from "./statement-rules.ts"
 import type { Source } from "./source.ts"
-import { findTokenEndingBefore, findTokensBetween } from "./source.ts"
+import {
+  findTokenEndingBefore,
+  findTokensBetween,
+  isSpaceOrTab,
+} from "./source.ts"
 
 /**
  * The node types of a Gantt chart whose text is a value, printed as written:
@@ -177,11 +183,14 @@ function isAtLineEnd(source: Source, offset: number): boolean {
  *   (docs/gantt.md, Multi-line statements).
  * - The rules of the gaps are those of docs/gantt.md: Task data, Settings,
  *   Lists, Click statements, and Accessibility statements.
+ * - The whitespace after the name of a task is printed so that its colon
+ *   stands in the column that `colonColumns` gives (see `findColonColumns`).
  */
 export function layoutGanttStatement(
   source: Source,
   statement: GanttStatement,
   end: number,
+  colonColumns: ReadonlyMap<GanttTaskStatement, number>,
 ): AtomLayout {
   const start = statement.range[0]
   if (statement.type === "GanttAccDescrBlockStatement") {
@@ -222,6 +231,9 @@ export function layoutGanttStatement(
   if (statement.type === "GanttClickStatement") {
     normalizeCallArguments(source, atoms, statement.call?.args?.range ?? null)
   }
+  if (statement.type === "GanttTaskStatement") {
+    alignColon(source, statement, atoms, colonColumns)
+  }
   const remainder = findBlankRemainder(source, statement)
   if (remainder !== null) atoms.push(remainder)
   return {
@@ -232,6 +244,28 @@ export function layoutGanttStatement(
     outdented: new Set(),
     lineBreaks: "joined",
   }
+}
+
+/**
+ * Prints the whitespace between the name of a task and its colon as the spaces
+ * that put the colon in its column, where `colonColumns` has one for the task
+ * (docs/gantt.md, Task data).
+ */
+function alignColon(
+  source: Source,
+  task: GanttTaskStatement,
+  atoms: Atom[],
+  colonColumns: ReadonlyMap<GanttTaskStatement, number>,
+): void {
+  const column = colonColumns.get(task)
+  if (column === undefined) return
+  const [from, colon] = task.description.range
+  let nameEnd = colon
+  while (nameEnd > from && isSpaceOrTab(source.text[nameEnd - 1])) nameEnd--
+  const nameWidth = util.getStringWidth(source.text.slice(from, nameEnd))
+  replaceInAtoms(source, atoms, [
+    { range: [nameEnd, colon], replacement: " ".repeat(column - nameWidth) },
+  ])
 }
 
 /**
