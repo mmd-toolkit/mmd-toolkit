@@ -429,6 +429,10 @@ stateDiagram-v2
 
 行の中で、2 つのトークンの間の空白とタブの連続は空白 1 つにし、
 接しているトークンは接したまま残します。
+flowchart と同じです。
+（[トークンの間の空白](./flowchart.ja.md#トークンの間の空白)）。
+ただし、別名の定義の語と擬似状態の印は、
+空白 1 つを置きます（[別名](#別名)と[擬似状態](#擬似状態)を参照）。
 [fixture: whitespace-between-tokens/collapsed]
 [fixture: whitespace-between-tokens/tabs-collapsed]
 [fixture: whitespace-between-tokens/touching-class-kept]
@@ -439,9 +443,8 @@ ER 図と同じです。
 mermaid.js はどの書き方も同じ状態として読むので、形を強いるものはありません。
 ER 図の `:::` はすでにこの形で印字しており、mermaid.js の文書の例 5 件も、
 この書き方です。
-その範囲は、
-[ここ](https://github.com/mermaid-js/mermaid/blob/2086904e76c692331e34a45d7cc3bc30860d040e/packages/mermaid/src/docs/syntax/stateDiagram.md#L448-L470)
-にあります。 [fixture: whitespace-between-tokens/css-class-touches-separator]
+（[`Still:::notMoving` など](https://github.com/mermaid-js/mermaid/blob/2086904e76c692331e34a45d7cc3bc30860d040e/packages/mermaid/src/docs/syntax/stateDiagram.md#L448-L470)）。
+[fixture: whitespace-between-tokens/css-class-touches-separator]
 `state` 定義の `:::` は動かしません。
 `state A :::c`、`state "x" as B ::: c`、`state C ::: c {` は、
 空白が書かれていた隙間を空白 1 つのまま残します。
@@ -451,10 +454,6 @@ ER 図の `:::` はすでにこの形で印字しており、mermaid.js の文�
 U+2028 と U+2029 は、そのまま残します。
 [test: U+2028 before the `:::` of a state]
 [test: U+2029 after the `:::` of a state]
-flowchart
-と同じです（[トークンの間の空白](./flowchart.ja.md#トークンの間の空白)を参照）。
-ただし、別名の定義の語と擬似状態の印は、
-空白 1 つを置きます（[別名](#別名)と[擬似状態](#擬似状態)を参照）。
 mermaid.js が読まない `""` も同じです。
 状態に結び付けない独立したノート（`note "..." as ...`）の引用符は、
 書かれたまま残します。
@@ -468,13 +467,13 @@ mermaid.js が読まない `""` も同じです。
 `classDef c fill: #f00, color: white` になります。
 スタイルの語と語の間の空白とタブの連続は、空白 1 つで印字し、
 語と語の間に空白があるかどうかは、書かれたまま残します。
-文字列、コメント、`url(` の括弧の中の連続と、バックスラッシュの後の連続は、
+文字列、コメント、`url(` の括弧の中の連続と、バックスラッシュの直後の 1 文字は、
 CSS が値の一部として読むので、書かれたまま残します。
 [fixture: whitespace-between-tokens/style-words-run-spaced]
 [fixture: whitespace-between-tokens/style-string-runs-kept]
 [fixture: whitespace-between-tokens/style-url-runs-kept]
 [fixture: whitespace-between-tokens/style-comment-runs-kept]
-[fixture: whitespace-between-tokens/style-backslash-run-kept]
+[fixture: whitespace-between-tokens/style-backslash-run-spaced]
 mermaid.js は state 図では `,` の前後の空白を何もないものとして読むので、
 その空白では Db は変わりませんが、`:` の前後の空白は Db に残します。
 描かれる図は同じです。
@@ -850,8 +849,8 @@ HTML や Markdown があっても raw Db は完全に一致します。
 たとえば `<pre>` の内側の字下げを変えると、描画も変わる場合があるためです。
 最初の行が空か、
 先頭に ASCII 空白と tab 以外の空白文字がある場合は原文を保ちます。
-[fixture: notes/whitespace-only-body] [fixture: notes/html-note-kept]
-[fixture: notes/html-pre-first-line] [fixture: notes/html-break-first-line]
+[fixture: notes/html-note-kept] [fixture: notes/html-pre-first-line]
+[fixture: notes/whitespace-only-body] [fixture: notes/html-break-first-line]
 [fixture: notes/html-first-line-tabs]
 [fixture: notes/html-first-line-zero-width]
 [fixture: notes/first-tab-markup-margin]
@@ -943,7 +942,7 @@ Mermaid がブロックの原文を文字どおりに表示する場合は、
 [fixture: notes/code-spanning-lines-kept]
 [fixture: notes/strikethrough-spanning-lines-kept]
 [fixture: notes/link-spanning-lines-kept]
-[fixture: notes/angle-link-margins-kept] [fixture: notes/backslash-margins-kept]
+[fixture: notes/backslash-margins-kept] [fixture: notes/angle-link-margins-kept]
 [fixture: notes/markdown-empty-ordered-dot-kept]
 [fixture: notes/markdown-empty-ordered-parenthesis-kept]
 [test: U+00A0 at the start of a later note row]
@@ -1315,6 +1314,11 @@ agentflow、usecase に合わせます。
 閉じられていないブロックの行も、テキストの終わりまで、
 閉じたブロックと同じようにそろえ、`}` は加えません。
 [fixture: multi-line-values/unclosed-block-aligned]
+ブロックノートの段落は、[ノート](#ノート)の限定規則に従います。
+[fixture: notes/payment-prose]
+複数行に書かれた独立したノートの本文は、書かれたまま残します。
+[fixture: multi-line-values/kept]
+[fixture: multi-line-values/floating-note-empty-line-kept]
 
 1 行のブロックの文字は、両側に空白を 1 つずつ置きます。
 これは、
@@ -1328,12 +1332,6 @@ mermaid.js は文字を trim するので、両端の空白に意味はありま
 端の空白の連なりは空白 1
 つにします（[セミコロン](./flowchart.ja.md#セミコロン)を参照）。
 [fixture: multi-line-values/block-text-on-one-line-padded]
-
-ブロックノートの段落は、[ノート](#ノート)の限定規則に従います。
-[fixture: notes/payment-prose]
-複数行に書かれた独立したノートの本文は、書かれたまま残します。
-[fixture: multi-line-values/kept]
-[fixture: multi-line-values/floating-note-empty-line-kept]
 
 入力
 ([multi-line-values/kept-input.mmd](../tests/fixtures/state/multi-line-values/kept-input.mmd)):
@@ -1662,7 +1660,7 @@ U+2028 か U+2029 の前の無視される `;` がある行です（詳しくは
 - 値のテキスト。
   説明、ラベル、ノート、`as` の後の id、擬似状態の名前、
   スタイル（最初の `:` と `,` の前後の空白と、文字列、コメント、`url(` の外で、
-  バックスラッシュの後でもない所の語の間の連続を除きます）、
+  バックスラッシュの直後の 1 文字でもない所の語の間の連続を除きます）、
   `class` 文の CSS クラス、`accTitle` のテキスト。
   [fixture: whitespace-between-tokens/style-string-runs-kept]
   [fixture: descriptions-and-labels/acc-text-runs-collapsed]

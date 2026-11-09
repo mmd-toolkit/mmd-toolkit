@@ -277,8 +277,11 @@ function sequenceBlockRules(
   source: Source,
   options: ParserOptions<MermaidAst>,
 ): BlockRules<SequenceStatement> {
-  const holdsStatements = (statement: SequenceStatement): boolean =>
-    classifySequenceStatement(statement).kind !== "simple"
+  /** Whether the statement holds statements of its own. */
+  function holdsStatements(statement: SequenceStatement): boolean {
+    return classifySequenceStatement(statement).kind !== "simple"
+  }
+
   return {
     kept: findSequenceKeptLines(source),
     printedEnd: (statement) => findSequencePrintedEnd(source, statement),

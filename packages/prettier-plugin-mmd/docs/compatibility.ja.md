@@ -649,11 +649,11 @@ flowchart、agentflow、class、state、block、usecase、ER、requirement の�
 CSS は連なりを 1 つの空白として読むので、描かれる図は同じですが、
 連なりが値の文字になる所は、書かれたまま残します。
 文字列（`"…"` や `'…'`）の中、コメント（`/* … */`）の中、`url(` の括弧の中と、
-CSS が連なりの最初の文字をエスケープされた文字として読む、
-バックスラッシュの後です。
+CSS がエスケープされた文字として読む、バックスラッシュの直後の 1 文字です。
+そのため、`a\   b` は `a\  b` と印字します。
 閉じていない文字列、コメント、`url(` は、スタイルの末尾まで続きます。
 [fixture: flowchart/whitespace-between-tokens/style-string-runs-kept]
-[fixture: flowchart/whitespace-between-tokens/style-backslash-run-kept]
+[fixture: flowchart/whitespace-between-tokens/style-backslash-run-spaced]
 [fixture: state/whitespace-between-tokens/style-string-runs-kept]
 [fixture: state/whitespace-between-tokens/style-url-runs-kept]
 [fixture: state/whitespace-between-tokens/style-comment-runs-kept]

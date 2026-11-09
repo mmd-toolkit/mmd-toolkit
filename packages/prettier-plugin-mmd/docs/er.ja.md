@@ -215,6 +215,10 @@ erDiagram
 型、名前、キー、コメントの間は空白 1 つで、
 2 つの部分の間の空白とタブの連続は空白 1 つにします。
 [fixture: attribute-spacing/parts-collapsed]
+属性は列にそろえません。
+そろえると、属性を 1 つ変えただけでブロックの全行が変わり、
+名前の幅は文字数で数えられず、mermaid.js の文書の例もそろえていないからです。
+空白 1 つと、型に接する `?` は、その例の形です。
 省略可能な型の `?` は、どう書かれていても型に接します。
 [fixture: attribute-spacing/optional-touching]
 キーは、前に空白を置かない `,` と空白 1 つで区切り、
@@ -228,10 +232,6 @@ Db が保つからです。 [fixture: attribute-spacing/keys-comma-space]
 空白 1 つにして印字します。
 （[同じに描かれるテキスト中の空白の連なり](./compatibility.ja.md#同じに描かれるテキスト中の空白の連なり)）。
 コメントのテキストは保ちます。
-属性は列にそろえません。
-そろえると、属性を 1 つ変えただけでブロックの全行が変わり、
-名前の幅は文字数で数えられず、mermaid.js の文書の例もそろえていないからです。
-空白 1 つと、型に接する `?` は、その例の形です。
 [fixture: attribute-spacing/tilde-word-runs-collapsed]
 [fixture: attribute-spacing/backquoted-word-runs-collapsed]
 
@@ -254,11 +254,11 @@ Db が保つからです。 [fixture: attribute-spacing/keys-comma-space]
 [test: er/attribute-spacing/comment-region-continuation-kept]
 属性の部分の間にあるディレクティブは、同じ印字行での接触を保ち、
 2 つの属性の間で行に単独で置かれたディレクティブは、その間に残します。
-[fixture: attribute-spacing/directive-inside-kept]
-[fixture: attribute-spacing/directive-and-line-break-kept]
 同じ行に書かれた 2 つの属性の間のディレクティブは、各属性が単独の行に立つので、
 後ろの属性と一緒に次の行へ移ります。
 [fixture: attribute-spacing/directive-between-attributes-on-a-line]
+[fixture: attribute-spacing/directive-inside-kept]
+[fixture: attribute-spacing/directive-and-line-break-kept]
 
 入力
 ([attribute-spacing/keys-comma-space-input.mmd](../tests/fixtures/er/attribute-spacing/keys-comma-space-input.mmd)):

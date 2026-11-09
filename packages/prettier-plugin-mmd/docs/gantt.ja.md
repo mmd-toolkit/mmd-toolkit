@@ -315,10 +315,13 @@ mermaid.js にとって 2 つの説明です。
 [fixture: task-data/colon-column-wide-characters]
 [fixture: task-data/colon-column-use-tabs]
 
-桁そろえの空白があり、名前の先頭から数えて、
-コロンがすべて同じ 1 つの桁にあるセクションどうしは、桁を共有し続けます。
+桁そろえの空白があり、コロンがすべて同じ 1 つの桁にあるセクションどうしは、
+桁を共有し続けます。
 それぞれの最長の名前の中で最も長い名前の後に空白 1 つを置いた桁にし、
 余分な空白だけを除きます。
+桁は名前の先頭から数えます。
+すべてのセクションのタスクを同じように字下げし、
+図を印字したときにコロンが並ぶのが、その桁だからです。
 コロンがすべて同じ桁にはないセクションは、それだけで、
 自分の最長の名前から桁を決めます。
 すべての名前の後ろに空白が 1 つあり、
@@ -343,6 +346,10 @@ mermaid.js にとって 2 つの説明です。
 長い名前 1 つがすべてのコロンを大きく右に押すので、そのままにします。
 `white-space` を含む図は、図の CSS が名前の末尾の空白を描くことがあり、
 そのときは空白で図が変わるので、そのままにします。
+名前の中にタブがあるセクションも、そのままにします。
+タブはエディターの次のタブ位置まで進むので、
+Prettier が数えるどの幅でもコロンをそろえられないからです。
+[fixture: task-data/colon-column-tab-in-name-kept]
 [fixture: task-data/colon-column-single-space-kept]
 [fixture: task-data/colon-column-too-wide-kept]
 [fixture: task-data/colon-column-white-space-kept]
@@ -356,8 +363,6 @@ mermaid.js にとって 2 つの説明です。
 - 名前がディレクティブで終わるとき。
   ディレクティブの隣の空白は、
   残すからです（[ディレクティブ](#ディレクティブ)を参照）。
-- 名前がタブを含むとき。
-  タブの幅はエディターが決めるもので、Prettier が数える幅ではないからです。
 - 同じ行でその前に何かがあるとき。
   名前が行頭から始まらず、ほかのタスクとコロンがそろわないからです。
   また、コロンの前の空白が、行の規則の読む所に入りえます。
@@ -367,7 +372,6 @@ mermaid.js にとって 2 つの説明です。
 
 [fixture: task-data/colon-column-line-as-written-kept]
 [fixture: task-data/colon-column-task-over-lines-kept]
-[fixture: task-data/colon-column-tab-in-name-kept]
 [fixture: task-data/colon-column-task-after-statement-kept]
 [fixture: task-data/colon-column-name-ending-with-directive-kept]
 

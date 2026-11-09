@@ -192,8 +192,11 @@ function flowchartBlockRules(
   source: Source,
   options: ParserOptions<MermaidAst>,
 ): BlockRules<FlowchartStatement> {
-  const holdsStatements = (statement: FlowchartStatement): boolean =>
-    statement.type === "FlowchartSubgraphStatement"
+  /** Whether the statement holds statements of its own. */
+  function holdsStatements(statement: FlowchartStatement): boolean {
+    return statement.type === "FlowchartSubgraphStatement"
+  }
+
   return {
     kept: findFlowchartKeptLines(source),
     printedEnd: (statement) => findPrintedEnd(source, statement),

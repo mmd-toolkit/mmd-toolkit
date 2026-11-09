@@ -157,9 +157,9 @@ accDescr: d ; direction LR
 文を別の行に分けず、`;` はその位置に残し、両側に空白があるかどうかは変えず、
 空白の連なりは空白 1 つにします。
 [fixture: statements-one-per-line/kept-semicolon-runs-collapsed]
+[fixture: statements-one-per-line/compat-semicolon-in-label-without-style-kept]
 [fixture: statements-one-per-line/inner-semicolon-kept]
 [fixture: statements-one-per-line/comment-semicolon-not-separator]
-[fixture: statements-one-per-line/compat-semicolon-in-label-without-style-kept]
 文そのものは、ほかと同じように整形します。
 残す `;` の両側の空白は揃えません。
 そうした行の `;` は mermaid.js が無視するものであることがあり、そのときは、
@@ -451,16 +451,16 @@ mermaid.js はそれを subgraph のメンバーに入れます。
 閉じていないディレクティブの後の `;`、別の `;` に接する無視される `;`、
 U+2028 か U+2029 の前の無視される `;` がある行です（詳しくは、
 [`;` が終わらせる行](./compatibility.ja.md#-が終わらせる行)を参照）。
-[fixture: semicolons/kept-after-unclosed-directive]
-[fixture: semicolons/ignored-next-to-another-kept]
-[fixture: statements-one-per-line/compat-unclosed-directive-semicolon-kept]
-[fixture: statements-one-per-line/compat-ignored-semicolon-next-to-semicolon-kept]
 [corpus fixture: flowchart/ignored-semicolon-after-directive-1abc682b]
 [corpus fixture: flowchart/style-line-separator-semicolon-2a0f3253]
 この種の `style` や `classDef` の行は、文の先頭から書かれたまま印字するので、
 文の前のインデントだけが変わります。
 [test: a `classDef` line with a `;`, U+2028, and a `;`]
 [test: a `style` line with a `;`, U+2029, and a `;`]
+[fixture: statements-one-per-line/compat-unclosed-directive-semicolon-kept]
+[fixture: statements-one-per-line/compat-ignored-semicolon-next-to-semicolon-kept]
+[fixture: semicolons/kept-after-unclosed-directive]
+[fixture: semicolons/ignored-next-to-another-kept]
 `style` か `classDef` を `:` の前に持ち、`#` の後に `;` がある行で、
 `:` とその後の `#` の間の空白は、あるかないかを保ちます。
 行の規則は、その間に空白がないときだけ、行の最後の `;` を無視するので、
@@ -669,8 +669,8 @@ flowchart LR
 mermaid.js には、接しているときだけ読むトークンがあります。
 `A%%{init: {}}%%B-->C` は id `AB` です。
 接するトークンの間に空白を書く規則は、その場所ごとの例外を要するからです。
-[fixture: whitespace-between-tokens/header-and-tabs-collapsed]
 [fixture: whitespace-between-tokens/compat-empty-description-block-own-line]
+[fixture: whitespace-between-tokens/header-and-tabs-collapsed]
 subgraph の名前（タイトルになる）の中の空白とタブの連なりは、
 mermaid.js がタイトルを幅なしで描くときは空白 1 つにして印字し、
 タイトルを折り返すときは書かれたまま残します。
@@ -771,12 +771,14 @@ mermaid.js の文の規則が読むものなので、空白 1 つにします。
 語と語の間に空白があるかどうかは、書かれたまま残します。
 `classDef c fill:#f00    stroke:#333` は、
 `classDef c fill: #f00 stroke:#333` と印字します。
-一重引用符の文字列の中、閉じていないコメントの中、バックスラッシュの後の連続は、
-CSS が値の一部として読むので、書かれたまま残します。
+一重引用符の文字列の中と閉じていないコメントの中の連続と、
+バックスラッシュの直後の 1 文字は、CSS が値の一部として読むので、
+書かれたまま残します。
+`font-family:a\   b` は `font-family: a\  b` と印字します。
 [fixture: whitespace-between-tokens/style-inner-whitespace-collapsed]
 [fixture: whitespace-between-tokens/style-words-run-spaced]
 [fixture: whitespace-between-tokens/style-string-runs-kept]
-[fixture: whitespace-between-tokens/style-backslash-run-kept]
+[fixture: whitespace-between-tokens/style-backslash-run-spaced]
 [fixture: whitespace-between-tokens/style-words-directive-kept]
 `linkStyle default`、`classDef`、`style` の形は、ER と requirement と同じです。
 [同じに描かれるスタイル](./compatibility.ja.md#同じに描かれるスタイル)
@@ -1121,9 +1123,9 @@ U+2028、U+2029 は残します。
 空白 1 つとして残します。
 ラベルが `/`、`\`、`-`、`"` のどれかで始まるときと、
 `>` の形のラベルの最初の語（空白か `"` まで）が `@` を含むときです。
+[fixture: label-inner-whitespace/compat-leading-backslash-kept]
 [fixture: label-inner-whitespace/leading-whitespace-trimmed-without-trigger]
 [fixture: label-inner-whitespace/leading-whitespace-run-becomes-one]
-[fixture: label-inner-whitespace/compat-leading-backslash-kept]
 空白がないと、`A[ /x/]` はラベル `x` の lean-right の形に、
 `A( -x-)` は ellipse になり、`A>x@ ]` は拒否されます。
 辺の id の並びが `>` で止まらず、`A>x` を辺の id として読むからです。
@@ -1366,11 +1368,11 @@ Mermaidはコロンの次行の通常の文字を値と読むので、語と同�
 コメントやdirectiveの文字と、著者が文を区切った改行を保ちます。
 flowchartはコロンの後のコメントを読み飛ばして後の値を読みます。
 通常の結合が使えない場合も、従来の継続行の規則を保つためです。
-[fixture: accessibility-lines/description-comment-continuation]
-[fixture: accessibility-lines/title-directive-continuation]
 [fixture: accessibility-lines/next-line-comment-kept]
+[fixture: accessibility-lines/description-comment-continuation]
 [fixture: accessibility-lines/inline-directive-kept]
 [fixture: accessibility-lines/next-line-directive-kept]
+[fixture: accessibility-lines/title-directive-continuation]
 
 この短い形は[1行に1文](#1-行に-1-文)の規則に優先しません。
 値や別の文にある非区切りの`;`を含む行では、
@@ -1874,9 +1876,21 @@ mermaid.js は単独行の `}` の前のタブを受理しますが、
 [fixture: data-blocks/use-tabs-empty-lines-kept]
 [fixture: data-blocks/use-tabs-folded-empty-lines-kept]
 
+その行の字下げは、文が始まる行の先頭に書かれた空白です。
+同じ行で文の前にあるディレクティブは文と一緒に残し、
+その行は先頭から書かれたまま印字します。
+`C; A@{ … }` の `A@{ … }` のように、同じ行のほかの文に続く文は、
+整形器が文を 1 行ずつ印字するため、独立した行に置き、
+その行は元の行の先頭に書かれた字下げで始めます。
+その前にあるブロックを持たない文は通常どおり字下げし、ブロックを持つ文だけ、
+その行をブロックの行と一緒に残す必要があります。
+[fixture: data-blocks/use-tabs-directive-before-on-line]
+[fixture: data-blocks/use-tabs-not-first-on-line]
+[fixture: data-blocks/use-tabs-two-statements-before]
+
 ノードの行自体の字下げを整形器が整える必要がある場合は、
 `useTabs` でないときと同じく、ブロックの行も空白で字下げして一緒に動かします。
-該当するのは、前に `;` や directive があり、行の先頭から始まらない文、
+該当するのは、
 `end` がヘッダーと同じ字下げに置かれる agentflow の container のヘッダー、
 mermaid.js が字下げをノードの段として読む kanban のノードです。
 [Metadata blocks](./agentflow.ja.md#metadata-blocks)と
@@ -1886,8 +1900,6 @@ mermaid.js が字下げをノードの段として読む kanban のノードで�
 ブロックの行を書かれたまま残すと、
 作者の字下げがたまたまタブ幅に合う場合だけ正しくそろい、
 作者がノードの行より浅く書いていた場合には、その左に出ます。
-[fixture: data-blocks/use-tabs-not-first-on-line]
-[fixture: data-blocks/use-tabs-directive-before-on-line]
 
 本文に文字がないブロックには最も浅い文字のある行がないため、
 書かれたまま残します。 [fixture: usecase/json-tables/empty-body-kept]
@@ -2176,8 +2188,9 @@ U+2028 か U+2029 を含む隙間は、書かれたまま残します。
 `A[style:#x] --> B %%{init: {}}%% ; --> C` は、
 `A[style:#x] --> B %%{init: {}}%%;--> C` と印字します。
 [fixture: directives/ignored-semicolon-and-directive-in-gap]
-ディレクティブの中身は書かれたまま残します。 [fixture: directives/content-kept]
+ディレクティブの中身は書かれたまま残します。
 [fixture: directives/compat-malformed-directive-kept]
+[fixture: directives/content-kept]
 
 元は同じ行にあった単位を別の行へ分けるときは、
 間の directive を次の単位に付けます。
@@ -2264,8 +2277,8 @@ flowchart %%{init: {}}%%LR
 
 閉じていないディレクティブは、mermaid.js が読むとおり、
 テキストの終わりまで続きます。
-[fixture: directives/unclosed-after-statement-on-same-line]
 [fixture: directives/compat-unclosed-directive-joins-next-line]
+[fixture: directives/unclosed-after-statement-on-same-line]
 その範囲は、
 空白でない最後の文字で終わります（仕様の
 [コメント、ディレクティブ、フロントマター](../../spec/docs/ast.ja.md#ディレクティブとフロントマター)）。
@@ -2745,9 +2758,10 @@ flowchart LR
 - ディレクティブの中身と、
   [データブロック](#データブロック)の一定量の字下げと 1 行のブロックの両端を除く
   `@{ ... }` の中身。
-  パーサーは読みません。 [fixture: whitespace-between-tokens/data-block-kept]
-  [fixture: directives/content-kept]
+  パーサーは読みません。
   [fixture: whitespace-between-tokens/compat-unknown-shape-data-block-kept]
+  [fixture: whitespace-between-tokens/data-block-kept]
+  [fixture: directives/content-kept]
 - 複数行に書かれた文字列と Markdown 文字列の行。
   行頭の空白が値の一部です。 [fixture: multi-line-values/markdown-string-kept]
   [fixture: multi-line-values/string-kept]

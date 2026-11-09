@@ -209,8 +209,11 @@ function agentflowBlockRules(
   source: Source,
   options: ParserOptions<MermaidAst>,
 ): BlockRules<AgentflowStatement> {
-  const holdsStatements = (statement: AgentflowStatement): boolean =>
-    classifyAgentflowStatement(statement).kind === "container"
+  /** Whether the statement holds statements of its own. */
+  function holdsStatements(statement: AgentflowStatement): boolean {
+    return classifyAgentflowStatement(statement).kind === "container"
+  }
+
   return {
     kept: findAgentflowKeptLines(source),
     printedEnd: (statement) => findPrintedEnd(source, statement),

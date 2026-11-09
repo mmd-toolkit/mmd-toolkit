@@ -78,8 +78,11 @@ function printStatements(
   depth: number,
   bounds: Omit<BlockBounds<UsecaseStatement>, "statements">,
 ): PrintedBlock {
-  const holdsStatements = (statement: UsecaseStatement): boolean =>
-    classifyUsecaseStatement(statement).kind === "boundary"
+  /** Whether the statement holds statements of its own. */
+  function holdsStatements(statement: UsecaseStatement): boolean {
+    return classifyUsecaseStatement(statement).kind === "boundary"
+  }
+
   const rules: BlockRules<UsecaseStatement> = {
     kept: findUsecaseKeptLines(source),
     printedEnd: (statement) => findUsecasePrintedEnd(source, statement),

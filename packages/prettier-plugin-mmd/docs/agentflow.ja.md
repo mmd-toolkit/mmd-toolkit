@@ -346,8 +346,8 @@ classDefのエスケープしたコンマ、順序と反復を保ちます。
 [flowchart](./flowchart.ja.md#トークンの間の空白)と同じく、
 スタイルの語と語の間の空白とタブの連続は、空白 1 つで印字し、
 語と語の間に空白があるかどうかは、書かれたまま残します。
-一重引用符の文字列の中、閉じていないコメントの中、
-バックスラッシュの後にある連続は残します。
+一重引用符の文字列の中と閉じていないコメントの中の連続と、
+バックスラッシュの直後の 1 文字は残します。
 [fixture: single-space-gaps/style-words-run-spaced]
 [fixture: single-space-gaps/style-string-runs-kept]
 番号を指定した `linkStyle` では、`fill` で始まるスタイルの前の `,` の後ろに、
