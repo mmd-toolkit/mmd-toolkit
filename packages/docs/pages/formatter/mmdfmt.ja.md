@@ -167,7 +167,7 @@ WindowsでもPrettierと同じく、区切りは`/`です。
 `.mermaid`で終わるものを、いくつのパターンが選んでも1回ずつ整形します。
 そのどれも選ばないパターンはエラーです。
 そのようなファイルのないプロジェクトでは`mmdfmt --check .`は失敗し、
-ほかの語尾のファイルを名前で指定しても同じです。
+ほかの拡張子のファイルを名前で指定しても同じです。
 PrettierのCLIと同じく、
 `!`のパターンによって選んだファイルがすべて取り除かれるパターンもエラーです。
 `.gitignore`が挙げるファイルだけを選ぶパターンはエラーではありません。
@@ -266,9 +266,9 @@ huskyやsimple-git-hooksなどのGitフックマネージャーがコミット�
 }
 ```
 
-globはこの4つの語尾に限ってください。
+globはこの4つの拡張子に限ってください。
 `mmdfmt`にはPrettierの`--ignore-unknown`のようなオプションはなく、
-ほかの語尾のファイルはエラーです。
+ほかの拡張子のファイルはエラーです。
 lint-stagedが渡す絶対パスを、`mmdfmt`は受け付けます。
 
 ## エディターやほかのツールから使う
@@ -284,7 +284,7 @@ mmdfmt --stdin-filepath docs/guide.md
 
 そのパスのファイルは、読み書きしません。
 相対パスは`mmdfmt`を実行するディレクトリを基準に解決します。
-パスの語尾がテキストを図として読むかMarkdownとして読むかを決め、
+パスの拡張子がテキストを図として読むかMarkdownとして読むかを決め、
 ディレクトリがどの`.editorconfig`とPrettierの設定を適用するかを決めます。
 
 - Markdownのテキストは、整形したか、すでに整形済みかにかかわらず全体を出力し、
@@ -300,7 +300,158 @@ mmdfmt --stdin-filepath docs/guide.md
   終了コードは`1`です。
   それ以外は何も書かず、終了コードは`0`です。
   警告の位置は、読んだときのテキストの中の位置です。
-- ほかの語尾のパスはエラーです。
+- ほかの拡張子のパスはエラーです。
+
+## スクリプトから使う
+
+エディターの拡張機能や言語サーバーなど、Node.js向けに書かれたツールは、
+`mmdfmt`コマンドを実行しなくても、
+コマンドと同じようにファイルの図を整形できます。
+Node.js向けに書かれていないツールは、
+[`--stdin-filepath`](#エディターやほかのツールから使う)を付けて、
+コマンドを実行できます。
+新しいバージョンでは図の整形が少し変わることがあるため、
+ツールの依存パッケージに`mmdfmt`を追加するときは、
+[インストール](#インストール)と同じようにバージョンを固定します。
+
+```sh
+npm install --save-exact mmdfmt
+```
+
+Node.js `^22.13.0 || >=24`が必要です。
+`mmdfmt`から、関数`resolveConfig`、`format`、
+`clearConfigCache`をインポートして使います。
+引数と戻り値はPrettierの同じ名前の関数にそろえてあり、
+違う点は関数ごとの節で説明します。
+次の例は、`docs/notes.md`の図を整形します。
+
+```js
+import { readFile } from "node:fs/promises"
+import { format, resolveConfig } from "mmdfmt"
+
+const filepath = "docs/notes.md"
+const source = await readFile(filepath, "utf8")
+const config = await resolveConfig(filepath)
+const formatted = await format(source, { ...config, filepath })
+```
+
+`formatted`には、
+コマンドが`docs/notes.md`を整形して書き出すのと同じテキストが入ります。
+図は整形され、ほかの部分は書かれたままです。
+ファイルに書き込むかどうかは、ツールが決めます。
+
+### `resolveConfig(fileUrlOrPath)`
+
+`resolveConfig`は、
+ファイルに適用されるPrettierの設定ファイルと`.editorconfig`を、
+コマンドと同じように`overrides`も含めて探します（[設定](#設定)を参照）。
+引数には、ファイルのパスかファイルURLを渡します。
+相対パスは現在のディレクトリを基準に解決されるため、
+言語サーバーでは絶対パスかURLを渡します。
+ファイルそのものは読まないので、存在しないファイルのパスでもかまいません。
+
+`resolveConfig`はPromiseを返します。
+ファイルに適用される設定があれば、
+Promiseは`format`に渡すオプションのオブジェクトで解決され、
+なければ`null`で解決されます。
+`null`を展開しても何も加わらないため、
+`{ ...config, filepath }`はどちらの場合にも使えます。
+オブジェクトが持つのは、`mmdfmt`が設定から読む8つのオプションのうち、
+設定が指定しているものだけです。
+8つのオプションの一覧は、[設定](#設定)にあります。
+たとえば、設定が`tabWidth`を指定していなければ、
+`{ tabWidth: 4, ...config, filepath }`の`tabWidth`は4のままです。
+TypeScriptでは、このオブジェクトの型は`ReadOptions`です。
+設定ファイルを読めないときは、Promiseは拒否されます。
+
+`resolveConfig`は、コマンドと同じく`.editorconfig`も読みます。
+PrettierのCLIも既定では読みますが、Prettierの`resolveConfig`が読むのは、
+`editorconfig: true`を渡したときだけです。
+
+### `clearConfigCache()`
+
+`resolveConfig`は、Prettierの`resolveConfig`と同じく、
+一度読んだ設定ファイルの内容をプロセスが終わるまで覚えています。
+そのため、後で設定ファイルが変わっても、`resolveConfig`の結果は変わりません。
+エディターのファイル監視などで、
+Prettierの設定ファイルや`.editorconfig`が変わったことをツールが知ったときは、
+`clearConfigCache`を呼び出します。
+すると、次に`resolveConfig`を呼び出したときに、設定ファイルを読み直します。
+`clearConfigCache`は、
+覚えていた内容を消し終えたときに解決されるPromiseを返します。
+
+### `format(source, options)`
+
+`format`は、Prettierの`format`と同じようにテキストを整形します。
+ただしMarkdownでは、Mermaidのコードブロックだけを整形し、
+ほかは書かれたまま残します。
+ファイルも設定も読みません。
+
+- `source`: ファイルのテキスト。
+- `options.filepath`: ファイルのパスで、必須です。
+  パスのうち使うのは拡張子だけで、
+  拡張子が`.mmd`か`.mermaid`ならテキストを1つの図として、
+  `.md`か`.markdown`ならMarkdownとして読みます。
+  ファイルは存在しなくてもかまいません。
+- ほかのオプション: 同じパスについて`resolveConfig`が返したものを渡します。
+  設定の`overrides`は、パスによって適用されるかどうかが変わるためです。
+  使えるのは、[設定](#設定)に挙げた8つのオプションです。
+  Markdownでは、`printWidth`はファイル全体の行の幅です。
+  リスト項目や引用の中の図は、その幅から、
+  図の各行の前にあるものの幅を引いた幅で整形します。
+  詳しくは、
+  [コードブロックの詳細](../../../mmdfmt/README.ja.md#コードブロックの詳細)
+  を参照してください。
+- `filepath`とこの8つ以外のオプション（`parser`、`endOfLine`、`semi`など）は、
+  TypeScriptでは型エラーになり、JavaScriptでは無視されます。
+  TypeScriptでは、`format`のオプションの型は`FormatOptions`です。
+
+`format`は、整形したテキストで解決されるPromiseを返します。
+改行コードとバイトオーダーマークは、テキストに書かれたまま残ります。
+詳しくは、
+[コードブロックの詳細](../../../mmdfmt/README.ja.md#コードブロックの詳細)
+を参照してください。
+
+Markdownでは、`format`は次の3種類のブロックを書かれたまま残し、
+どれも報告しません。
+
+- mermaid.jsが拒否する図。
+- インデントにあるタブの一部がインデント、残りが図と読まれるブロック。
+- 開きフェンスが脚注のラベルの行にあるブロック。
+
+後の2種類は、
+[コードブロックの詳細](../../../mmdfmt/README.ja.md#コードブロックの詳細)
+で説明しています。
+Prettierも、整形できない埋め込みのコードブロックを同じように残します。
+mermaid.jsが拒否する図を見つけるには、
+[`@mmd-toolkit/parser`](../parser/index.ja.md)で解析するか、
+[`@mmd-toolkit/eslint-plugin`](../linter/index.ja.md)でファイルをlintします。
+
+Promiseは、次のときに拒否されます。
+
+- `.mmd`か`.mermaid`のテキストをmermaid.jsが拒否するときは、
+  `SyntaxError`で拒否されます。
+  このエラーは、
+  Prettierが`prettier-plugin-mmd`でテキストを整形するときに投げるものです。
+  エラーの`loc.start`と`loc.end`は、
+  エラーの範囲の始まりと終わりを`line`と`column`で示します。
+  `line`と`column`は、どちらも1から数えます。
+  改行の位置のエラーのように、エラーの範囲が後の行の始まりまで続くときは、
+  `loc.end`はありません。
+- `options.filepath`の拡張子が`.md`、`.markdown`、`.mmd`、
+  `.mermaid`のどれでもないときは、エラーで拒否されます。
+
+### 整形するファイル
+
+コマンドが整形するのは、拡張子が`.md`、`.markdown`、`.mmd`、
+`.mermaid`のファイルだけです。
+また、`node_modules`やバージョン管理のディレクトリの下にあるパスと、
+実行するディレクトリの`.gitignore`が挙げるパスは飛ばします。
+詳しくは、[ファイルの除外](#ファイルの除外)を参照してください。
+`format`は、ほかの拡張子のパスを拒否しますが、それ以外は、
+パスがどこにあっても整形します。
+コマンドと同じファイルを飛ばしたいツールは、
+`format`を呼び出す前にパスを調べます。
 
 ## 設定
 

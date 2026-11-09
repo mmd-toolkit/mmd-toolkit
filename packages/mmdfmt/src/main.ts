@@ -4,7 +4,7 @@ import { styleText } from "node:util"
 import { cli, define, isArgsValidationError } from "gunshi"
 import packageJson from "../package.json" with { type: "json" }
 import type { Diagnostic, FormatResult } from "./diagnostic.ts"
-import { fileEndings, formatFile, kindOf } from "./format-file.ts"
+import { endingsInWords, formatFile, kindOf } from "./format-file.ts"
 import { isSkipped, selectFiles } from "./patterns.ts"
 
 /** What the tool reads from and writes to, apart from the files. */
@@ -32,9 +32,6 @@ const exitCodes = { ok: 0, changed: 1, error: 2 } as const
 const examples = `mmdfmt --write "**/*.{md,mmd,mermaid}"
 mmdfmt --check "**/*.{md,mmd,mermaid}"
 mmdfmt --stdin-filepath diagram.mmd < diagram.mmd`
-
-/** The endings of the files that the tool formats, as a message names them. */
-const endingsInWords = `${fileEndings.slice(0, -1).join(", ")}, or ${fileEndings.at(-1)}`
 
 /** Runs the tool with its arguments, and returns the exit code (README, Usage). */
 export async function main(args: readonly string[], io: Io): Promise<number> {

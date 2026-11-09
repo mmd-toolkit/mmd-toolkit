@@ -66,17 +66,9 @@ const endOfLineOptions = {
 } as const satisfies Record<LineEnding, Options["endOfLine"]>
 
 /**
- * Formats the text of a diagram with Prettier and prettier-plugin-mmd, as
- * Prettier formats a `.mmd` file with the plugin. `options` are the options
- * that the tool reads of the Prettier configuration of the file (README,
- * Configuration), given to Prettier together with the three that the tool sets
- * itself: the parser, the plugins, and the line endings. The text has no byte
- * order mark and its lines end with `\n`, as Prettier leaves a text before
- * parsing it; the lines of the result end with `lineEnding`.
- *
- * For a text that the plugin rejects, its syntax error keeps the parser's
- * error as its `cause`. The cause gives the message without Prettier's code
- * frame and the offset in the text.
+ * Formats the text of a diagram as {@link formatDiagramText} does, and gives
+ * a text that the plugin rejects as the message and the offset of its syntax
+ * error.
  */
 export async function formatDiagram(
   text: string,
@@ -84,22 +76,52 @@ export async function formatDiagram(
   lineEnding: LineEnding,
 ): Promise<DiagramResult> {
   try {
-    const formatted = await format(text, {
-      ...options,
-      parser: "mermaid",
-      plugins: [plugin],
-      endOfLine: endOfLineOptions[lineEnding],
-    })
-    return { kind: "formatted", text: formatted }
-  } catch (error) {
-    const cause = error instanceof Error ? error.cause : undefined
-    if (!isParseError(cause)) throw error
     return {
-      kind: "rejected",
-      message: cause.message,
-      offset: cause.range[0],
+      kind: "formatted",
+      text: await formatDiagramText(text, options, lineEnding),
     }
+  } catch (error) {
+    return { kind: "rejected", ...rejectionOf(error) }
   }
+}
+
+/**
+ * Formats the text of a diagram with Prettier and prettier-plugin-mmd, as
+ * Prettier formats a `.mmd` file with the plugin, and throws what Prettier
+ * throws for a text that the plugin rejects. `options` are the options that
+ * the tool reads of the Prettier configuration of the file (README,
+ * Configuration), given to Prettier together with the three that the tool sets
+ * itself: the parser, the plugins, and the line endings. The text has no byte
+ * order mark and its lines end with `\n`, as Prettier leaves a text before
+ * parsing it; the lines of the result end with `lineEnding`.
+ */
+export async function formatDiagramText(
+  text: string,
+  options: ReadOptions,
+  lineEnding: LineEnding,
+): Promise<string> {
+  return format(text, {
+    ...options,
+    parser: "mermaid",
+    plugins: [plugin],
+    endOfLine: endOfLineOptions[lineEnding],
+  })
+}
+
+/**
+ * The message and the offset of the syntax error of a text that the plugin
+ * rejected, from the error that formatting it threw. That error keeps the
+ * parser's error as its `cause`, which gives the message without Prettier's
+ * code frame and the offset in the text that was formatted. Any other error is
+ * thrown again.
+ */
+export function rejectionOf(error: unknown): {
+  message: string
+  offset: number
+} {
+  const cause = error instanceof Error ? error.cause : undefined
+  if (!isParseError(cause)) throw error
+  return { message: cause.message, offset: cause.range[0] }
 }
 
 /**
