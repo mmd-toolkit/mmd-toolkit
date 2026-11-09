@@ -418,7 +418,8 @@ mermaid.js は `:::` の後のテキストをノードのクラスとして持�
 [fixture: icons-and-classes/gram-whitespace-class]
 行のどこかにディレクティブがあるクラス行（`::: hot %%{x}%%`、`::: h%%{x}%%ot`、
 `%%{x}%%::: hot`）は、書かれたまま残します。
-ディレクティブのある行は書かれたまま印字するからです（Directives を参照）。
+ディレクティブのある行は、
+書かれたまま印字するからです（[ディレクティブ](#ディレクティブ)を参照）。
 落とすのは空白とタブだけで、`:::` の後の空白と U+00A0 は、
 U+00A0 が `:::` に接する形で印字され、U+00A0 は残ります。
 [fixture: icons-and-classes/class-padding-after-marker-dropped]
@@ -478,10 +479,11 @@ kanban
 データブロック `@{ ... }` は、
 mermaid.js がノードの属性（`ticket` や `assigned`）の YAML として読む、
 埋め込みのテキストです。
-印字は、これを不透明なものとして、以下の一定量の字下げと、
-1 行のブロックの両端の空白を除き、区切り、中身、改行を保ちます。
-YAML を整形することも、ブロックをまとめることも、分けることも、
-並べ替えることも、折り返すことも、直すこともしません。
+印字は、これを不透明なものとして、以下の一定量の字下げ、
+1 行のブロックの両端の空白、
+行が長すぎる 1 行のブロックを複数行に分ける場合を除き、区切りと中身を保ちます。
+YAML を整形することも、ブロックをまとめることも、並べ替えることも、
+直すこともしません。
 ブロックが空（`A@{}`）でも、キーが未知か重複（`A@{ticket: X, ticket: Y}`）でも、
 YAML として正しくなくても（`A@{assigned: [a}`）、複数行にわたっても同じです。
 パーサーは YAML として正しくないブロックも受理します。
@@ -503,7 +505,12 @@ mermaid.js は拒否します（既知の差異
 1 行のブロックは、[データブロック](./flowchart.ja.md#データブロック)と同じく、
 両端の内側に空白を 1 つずつ置いて印字します。
 `A@{ticket: X}` は `A@{ ticket: X }` になります。
+行が長すぎるときは、そこに挙げた条件のもとで、
+1 行に 1 項目ずつ複数行に分けて印字します。
+ブロックの前のノードのテキストだけで行が埋まる場合は、その条件を満たしません。
 書かれたままにする場合は、そこに挙げたとおりです。
+[fixture: data-blocks/long-split]
+[fixture: data-blocks/long-prefix-too-long-kept]
 [fixture: data-blocks/one-line-padded]
 [fixture: data-blocks/one-line-space-only-padded]
 [fixture: data-blocks/one-line-directive-kept]
@@ -516,7 +523,6 @@ mermaid.js は拒否します（既知の差異
 [test: data blocks: kanban one line with U+2028 inside]
 [test: data blocks: kanban one line with U+2029 inside]
 [test: data blocks: kanban one line with no-break spaces at the ends]
-[test: data blocks: kanban one line with U+2028 inside]
 
 [データブロック](./flowchart.ja.md#データブロック)の移動と安全条件を適用します。
 `@{` の直後が改行なら、本文の全行を同じ数の半角空白だけ動かし、
@@ -544,11 +550,22 @@ Mermaid はタブで字下げした YAML を拒否し、
 [fixture: data-blocks/kept-body-line] [fixture: data-blocks/zero-width-kept]
 [fixture: data-blocks/document-start-kept]
 
-`useTabs` でも本文と単独行の閉じ括弧は半角空白とし、
-閉じ括弧はノードの桁に置きます。
+`useTabs` では、使わないときと同じく、ブロックの行を空白で字下げして動かします。
+ノードの行は、その役割に応じた字下げにします。
+mermaid.js は字下げをノードの段として読むため、
+書かれたままにはしません（[インデント](#インデント)を参照）。
+そのため、ほかの種類の図のように文を書かれたまま印字できません。
+[データブロック](./flowchart.ja.md#データブロック)を参照してください。
+このとき、作者の書き方によらず、タブ幅が `tabWidth` と同じなら正しくそろい、
+異なるタブ幅ではその差の分だけずれます。
+ブロックの行を書かれたまま残すと、
+作者の字下げがタブ幅にたまたま合うときだけ正しくそろいます。
+[fixture: data-blocks/tab-statement-space-body]
+[fixture: data-blocks/use-tabs-empty-lines-kept]
+[fixture: data-blocks/use-tabs-folded-empty-lines-kept]
+
 外側のコメント、directive、空行はそれぞれの規則に従います。
 CRLF と CR は `endOfLine` に従い、値の Unicode separator は文字として保ちます。
-[fixture: data-blocks/tab-statement-space-body]
 [fixture: data-blocks/surrounding-trivia] [test: kanban: multiline-data-crlf]
 [test: kanban: multiline-data-cr] [test: data blocks: kanban U+2028]
 
@@ -1199,10 +1216,11 @@ kanban
 移動できる余白だけを一定量動かして、改行と内容を保ちます。
 [fixture: data-blocks/data-multiline]
 
-`printWidth` は効きません。
-長い裸のノード（`This is a deliberately long kanban item ...`）も、
-長いラベルも、その行に残します。
+`printWidth` は、長い裸のノードにも長いラベルにも効かず、その行に残します。
+長い裸のノードは、たとえば `This is a deliberately long kanban item ...` です。
 裸のノードを折り返すと別のノードになり、値はテキストだからです。
+例外は 1 行に書いたデータブロックで、その行が `printWidth` より広く、
+[データブロック](#データブロック)の条件を満たすときに、複数行で印字します。
 [fixture: multi-line-values/long-line-kept]
 [fixture: multi-line-values/small-print-width]
 

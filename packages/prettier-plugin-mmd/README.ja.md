@@ -17,7 +17,7 @@ MultiMarkdown や MikuMikuDance ではありません。
 ## Playground
 
 ブラウザーで、このプラグインによる整形結果を確認できます。
-**Formatted**タブは編集に合わせて更新され、
+**Formatted**タブは編集に合わせて更新され、**Print width**で行幅を、
 **Indent**と**Use tabs**で字下げを設定できます。
 **Apply to source**で、入力を整形結果に置き換えられます。
 
@@ -110,7 +110,20 @@ flowchart LR
 - `useTabs` と `tabWidth` で字下げを決めます。
   既定は空白 2 つです。
 - `endOfLine` で改行コードを決めます。
-- `printWidth` は図の改行位置を決めません。
+- `printWidth` は 2 つのことを決めます。
+  flowchart、agentflow、kanban で 1 行に書いたデータブロック `@{ … }` は、
+  その行が `printWidth` より広く、条件を満たすときに、複数行で印字します。
+  たとえば、項目が 1 つのブロックは 1 行のままです。
+  条件は、
+  [データブロック](./docs/flowchart.ja.md#データブロック)を参照してください。
+  Gantt のセクションのタスクの `:` は、行が `printWidth` より広くなり、
+  しかも今より広くなるときを除いて、そろえます。
+  詳しくは、
+  [タスクのデータ](./docs/gantt.ja.md#タスクのデータ)を参照してください。
+  幅は Prettier が測る幅で、全角文字は 2 桁、タブは 0 桁と数えます。
+  Gantt のセクションは、Markdown のリストや引用が行の前に置くものを数えず、
+  行だけの幅で数えます。
+  それ以外では、`printWidth` は図の改行位置を決めません。
   `railroad-beta` の呼び出しは文法の構造に従います。
   詳細は[長い行](./docs/railroad.ja.md#長い行)を参照してください。
   Markdown と YAML frontmatter には、Prettier が使う場合があります。

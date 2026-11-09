@@ -179,8 +179,10 @@ export interface BlockRules<Statement extends Positioned> {
   /**
    * Indentation of an ordinary statement line that the printer decides apart
    * from the other lines, when its inline directives make the whitespace
-   * around them part of its indentation. Gap items still use
-   * `extraIndentationOf` (docs/kanban.md, Directives).
+   * around them part of its indentation, or when the statement is printed as
+   * written with the indentation of its line (a statement with a block of
+   * several lines under `useTabs`; docs/flowchart.md, Data blocks). Gap items
+   * still use `extraIndentationOf` (docs/kanban.md, Directives).
    */
   readonly writtenIndentationOf?: (statement: Statement) => string | undefined
   /**

@@ -31,7 +31,7 @@ Open the [Playground](https://mmd-toolkit.github.io/mmd-toolkit/playground/).
 
 Choose a sample from **Examples** or paste text into **Source**. The **AST** and
 **Formatted** tabs update as you edit. Choose **Share**, then **Copy Link**, to
-copy a URL that restores the input and indentation settings.
+copy a URL that restores the input, print width, and indentation settings.
 
 See the [Playground guide](./packages/playground/README.md) for tree navigation,
 formatting options, and applying the formatted result.

@@ -427,6 +427,9 @@ id と `@{` の間のディレクティブは、
 空白 1 つずつにします。
 `participant A@{"type":"queue"}` は `participant A@{ "type":"queue" }`
 になります。 [fixture: whitespace-between-tokens/data-block-padded]
+長いブロックも複数行には分けません。
+mermaid.js がその位置で block mapping の行を拒否するためです。
+[fixture: whitespace-between-tokens/data-block-long-kept]
 その規則が書かれたままにする場合は、このブロックも書かれたままにします。
 [fixture: whitespace-between-tokens/data-block-space-only-padded]
 [fixture: whitespace-between-tokens/data-block-directive-kept]
@@ -545,15 +548,13 @@ sequenceDiagram
 [fixture: arrow-spacing/parentheses-touching]
 空白があってもなくても、mermaid.js は同じメッセージとして読みます。
 例外は、矢印として読まれる始まりの宛先の前の `-` だけです（下記）。
+ほかにこの形を強いる条件はありません。
 整形は `A->>+B` をすでに `A ->> +B` にしています。
 mermaid.js の文書で `+` か `-` のあるメッセージ 12 件のうち、
-10 件は記号が宛先に接しています（`->>+John`、`-->>-Alice`）。
-そのうち 6 件は、
-[有効化の例](https://github.com/mermaid-js/mermaid/blob/2086904e76c692331e34a45d7cc3bc30860d040e/packages/mermaid/src/docs/syntax/sequenceDiagram.md#L413-L424)
-にあります。
-残る 4 件は、
-[入れ子の例](https://github.com/mermaid-js/mermaid/blob/2086904e76c692331e34a45d7cc3bc30860d040e/packages/mermaid/src/docs/syntax/sequenceDiagram.md#L664-L669)
-にあります。
+10 件は記号が宛先に接しています（`->>+John`、
+`-->>-Alice`；
+[有効化の例](https://github.com/mermaid-js/mermaid/blob/2086904e76c692331e34a45d7cc3bc30860d040e/packages/mermaid/src/docs/syntax/sequenceDiagram.md#L413-L424)、
+[入れ子の例](https://github.com/mermaid-js/mermaid/blob/2086904e76c692331e34a45d7cc3bc30860d040e/packages/mermaid/src/docs/syntax/sequenceDiagram.md#L664-L669)）。
 残る 2 件は記号が矢印に接していて（`->>+ John`）、
 これも記号が宛先に接する形に整形します。
 その 2 件は
@@ -1163,8 +1164,25 @@ participant と actor のデータブロックには、
 [データブロック](./flowchart.ja.md#データブロック)を適用します。
 その行を文の 1 段内側に動かし、単独行の `}` は文の段に揃えます。
 本文の後の閉じ括弧はその行と一緒に動かします。
-トップレベルと `loop` 内で適用し、`useTabs` でも本文は半角空白とし、
-単独行の閉じ括弧は文の字下げを使います。
+トップレベルと `loop` 内で適用しますが、`useTabs` のときは、
+文を書かれたまま印字します（詳しくは、
+[データブロック](./flowchart.ja.md#データブロック)を参照）。
+ただし、文が、その行の最初にあるものと同じ深さでない場合は別です。
+`box Aqua G; participant A@{ … }` のように `box`
+やブロックの見出しが先にある場合、
+`else z; participant P@{ … }` のようにセクションのキーワードが先にある場合、
+`participant B; end; participant A@{ … }` のように、
+box やブロックの中の文が `end` の前にある場合が当たります。
+書かれた字下げはその先にあるもののものなので、文は通常の字下げで印字し、
+ブロックの行も文と一緒に動かします。
+複数行にわたるディレクティブの残りなど、
+データブロックの節に挙げたもの以外で始まる行の文も同じです。
+`end` が先にある文は、その行と同じ深さなので、書かれたまま印字します。
+[fixture: multi-line-values/data-use-tabs-box-header-moved]
+[fixture: multi-line-values/data-use-tabs-section-keyword-moved]
+[fixture: multi-line-values/data-use-tabs-statement-before-end-moved]
+[fixture: multi-line-values/data-use-tabs-directive-continuation-moved]
+[fixture: multi-line-values/data-use-tabs-after-end-on-line]
 [fixture: multi-line-values/data-zero-and-shallow]
 [fixture: multi-line-values/data-deep-inline-closer]
 [fixture: multi-line-values/data-block-in-block-indented]

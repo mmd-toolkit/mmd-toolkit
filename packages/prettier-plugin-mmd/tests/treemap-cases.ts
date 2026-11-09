@@ -56,7 +56,7 @@ export const treemapCases: readonly TreemapCase[] = [
   {
     name: "treemap/class-definitions/unicode-gap",
     input: "treemap\nclassDef\u00a0zz color:navy",
-    output: "treemap\n  classDef zz color:navy\n",
+    output: "treemap\n  classDef zz color: navy\n",
     options: {},
   },
   {
@@ -113,7 +113,7 @@ export const treemapCases: readonly TreemapCase[] = [
     input:
       'treemap\nclassDef aa fill:red\u00a0;\nclassDef bb fill:blue\u2028;\nclassDef cc fill:blue\ufeff;\n"Leaf":1\n',
     output:
-      'treemap\n  classDef aa fill:red\n  classDef bb fill:blue\n  classDef cc fill:blue\n  "Leaf": 1\n',
+      'treemap\n  classDef aa fill: red\n  classDef bb fill: blue\n  classDef cc fill: blue\n  "Leaf": 1\n',
     options: {},
   },
   {

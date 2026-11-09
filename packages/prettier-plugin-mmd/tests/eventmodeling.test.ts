@@ -9,7 +9,7 @@ import {
   describeFrontmatterChange,
   treeProblemsOfText,
   writtenEmbeddedTexts,
-  writtenTextKeptUpToSemicolons,
+  writtenTextKeptUpToSeparators,
 } from "./db-reading.ts"
 import { eventmodelingCases } from "./eventmodeling-cases.ts"
 import { loadFormatFixtures } from "./fixtures.ts"
@@ -72,7 +72,7 @@ describe("eventmodeling escaped cases", () => {
       ),
     ).toEqual(writtenBefore)
     expect(await describeFrontmatterChange(before, after, options)).toBeNull()
-    expect(writtenTextKeptUpToSemicolons(before, after)).toBe(true)
+    expect(writtenTextKeptUpToSeparators(before, after)).toBe(true)
     expect(treeProblemsOfText(before)).toEqual([])
     expect(treeProblemsOfText(after)).toEqual([])
     expect(hiddenOwners(output)).toEqual(hiddenOwners(input))

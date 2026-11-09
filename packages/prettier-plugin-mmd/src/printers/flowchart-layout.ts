@@ -1,4 +1,5 @@
 import type {
+  FlowchartLabel,
   FlowchartStatement,
   FlowchartSubgraphStatement,
   Node,
@@ -23,11 +24,22 @@ import {
   findAccDescrBlockStretches,
   formatDescriptionBlock,
   keptAsWritten,
+  replaceInAtoms,
   walk,
 } from "./layout.ts"
-import { holdsJoiningRegion } from "./kept-lines.ts"
+import {
+  holdsJoiningRegion,
+  isDroppedSemicolon,
+  lineStartOf,
+} from "./kept-lines.ts"
 import type { Source } from "./source.ts"
-import { findStructuralToken, findTokensBetween } from "./source.ts"
+import {
+  findDirectiveEndingAt,
+  findStructuralToken,
+  findTokensBetween,
+  isSpaceOrTab,
+  isWhitespace,
+} from "./source.ts"
 import {
   normalizeBlankLabels,
   normalizeCallArguments,
@@ -64,8 +76,82 @@ function startsInside(kept: readonly Atom[], atom: Atom): boolean {
 }
 
 /**
- * The layout of the `subgraph` line. A name without a title is printed
- * with the whitespace after it, which mermaid.js reads as part of the name.
+ * Whether the name of a subgraph without a title is one word: mermaid.js makes
+ * the name the id of the subgraph, unless the text of the name holds
+ * whitespace, which it reads with the trailing whitespace of the name. So the
+ * whitespace after a name of one word decides whether the subgraph has the
+ * name as its id or a generated id, while a name of several words has a
+ * generated id either way (docs/flowchart.md, Subgraph header).
+ */
+function isOneWord(name: FlowchartLabel): boolean {
+  return ![...name.value.trimEnd()].some((character) => character.trim() === "")
+}
+
+/**
+ * The end of the header of a subgraph without a title whose name has several
+ * words, when its line ends at `end`: the start of the directives that end the
+ * line, if there are any, and `end` otherwise. Whitespace after a directive
+ * makes mermaid.js read the directive as part of the name, so the token of the
+ * name reaches over `S1 S2  %%{x}%%  `, while without that whitespace the name
+ * ends before the directive. The whitespace at the end of the name of several
+ * words decides nothing, so both are laid out as a name that ends before the
+ * directives, and a second formatting finds the text it has printed (docs/
+ * flowchart.md, Subgraph header). A name of one word keeps its whitespace.
+ */
+export function findSeveralWordsHeaderEnd(
+  source: Source,
+  subgraph: FlowchartSubgraphStatement,
+  end: number,
+): number {
+  if (subgraph.title !== null || isOneWord(subgraph.name)) return end
+  let position = end
+  let directivesStart = end
+  while (position > subgraph.name.range[0]) {
+    while (
+      position > subgraph.name.range[0] &&
+      isSpaceOrTab(source.text[position - 1])
+    )
+      position--
+    const directive = findDirectiveEndingAt(source, position)
+    if (directive === undefined) break
+    position = directive.range[0]
+    directivesStart = position
+  }
+  return directivesStart
+}
+
+/**
+ * Whether the line of the header of `subgraph` ends at `offset`, apart from a
+ * `;` that is dropped: an ignored one, or the one that ends the header, on a
+ * line that is not kept with its `;` (see `findFlowchartKeptLines`).
+ */
+function endsLine(
+  source: Source,
+  subgraph: FlowchartSubgraphStatement,
+  offset: number,
+): boolean {
+  let next = offset
+  while (isSpaceOrTab(source.text[next])) next++
+  const character = source.text[next]
+  if (character === undefined || character === "\n" || character === "\r")
+    return true
+  if (character !== ";") return false
+  const kept = findFlowchartKeptLines(source)
+  const line = lineStartOf(source, next)
+  return (
+    !kept.joined.has(line) &&
+    !kept.verbatim.has(line) &&
+    (isDroppedSemicolon(source, next) ||
+      subgraph.body[0] === undefined ||
+      next < subgraph.body[0].range[0])
+  )
+}
+
+/**
+ * The layout of the `subgraph` line. A name of one word without a title is
+ * printed with the whitespace after it, which mermaid.js reads as part of the
+ * name; the whitespace at the end of the line of a name of several words
+ * decides nothing and is left out.
  */
 export function layoutSubgraphHeader(
   source: Source,
@@ -75,9 +161,28 @@ export function layoutSubgraphHeader(
   if (holdsJoiningRegion(source, subgraph.range[0], headerEnd)) {
     return keptAsWritten(subgraph.range[0], headerEnd)
   }
+  // A block, a `;` that stays or a directive on the line stands after the
+  // whitespace, which then separates them from the name: only the whitespace
+  // at the end of the line is left out, before a `;` that is dropped too.
+  // The run of that whitespace is one space, as in a name that mermaid.js
+  // draws without its runs, unless it is the indentation of a line that the
+  // name takes (docs/flowchart.md, Subgraph header).
+  let keptEnd = headerEnd
+  let runStart: number | undefined
+  if (subgraph.title === null && !isOneWord(subgraph.name)) {
+    let position = headerEnd
+    while (
+      position > subgraph.name.range[0] &&
+      isSpaceOrTab(source.text[position - 1])
+    )
+      position--
+    if (endsLine(source, subgraph, headerEnd)) keptEnd = position
+    else if (position < headerEnd && !isWhitespace(source.text[position - 1]))
+      runStart = position
+  }
   const kept: Atom[] =
     subgraph.title === null
-      ? [{ start: subgraph.name.range[0], end: headerEnd }]
+      ? [{ start: subgraph.name.range[0], end: keptEnd }]
       : []
   const values: Node[] =
     subgraph.title === null ? [] : [subgraph.name, subgraph.title]
@@ -93,18 +198,19 @@ export function layoutSubgraphHeader(
     )
     addHeadingTitleRules(source, subgraph.title, rules)
   }
-  return {
-    atoms: collectAtoms(
-      source,
-      subgraph.range[0],
-      headerEnd,
-      values,
-      kept,
-    ).filter((atom) => kept.includes(atom) || !startsInside(kept, atom)),
-    rules,
-    outdented: new Set(),
-    lineBreaks: "kept",
+  const atoms = collectAtoms(
+    source,
+    subgraph.range[0],
+    keptEnd,
+    values,
+    kept,
+  ).filter((atom) => kept.includes(atom) || !startsInside(kept, atom))
+  if (runStart !== undefined) {
+    replaceInAtoms(source, atoms, [
+      { range: [runStart, keptEnd], replacement: " " },
+    ])
   }
+  return { atoms, rules, outdented: new Set(), lineBreaks: "kept" }
 }
 
 /**
@@ -170,6 +276,7 @@ export function layoutStatement(
       joinsStyles: isLinkStyle,
       keepsGapAfterStroke: statement.type !== "FlowchartStyleStatement",
       escapesComma: statement.type === "FlowchartClassDefStatement",
+      collapsesWordGaps: true,
     })
   }
   if (statement.type !== "FlowchartAccDescrBlockStatement") return layout

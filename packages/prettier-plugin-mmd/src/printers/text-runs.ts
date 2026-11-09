@@ -27,7 +27,7 @@ import {
 const holdsProperty = new WeakMap<Source, boolean>()
 
 /** Whether the text of the diagram holds `white-space`, in any case. */
-function holdsWhiteSpaceProperty(source: Source): boolean {
+export function holdsWhiteSpaceProperty(source: Source): boolean {
   let holds = holdsProperty.get(source)
   if (holds === undefined) {
     holds = source.text.toLowerCase().includes("white-space")

@@ -562,18 +562,26 @@ whitespace before it and one space after it, as in ER and requirement (see
 [Styles and classes](./er.md#styles-and-classes)):
 `classDef c fill:#f00 , color:white` is printed
 `classDef c fill: #f00, color: white`, and the styles of a `style` statement use
-the same form. The whitespace between the words of a value stays as written. The
-Db changes, but mermaid.js draws the same figure (see
+the same form. A run of spaces and tabs between the words of a style is printed
+as one space, and whether whitespace stands between two words stays as written;
+a run inside a string, a comment, or the parentheses of `url(`, and the escape
+after a backslash, stay as written, since CSS reads them as part of the value:
+the hexadecimal digits and the one space or tab that follows them, or else the
+next character. The Db changes, but mermaid.js draws the same figure (see
 [Styles that are drawn the same](./compatibility.md#styles-that-are-drawn-the-same)).
-[fixture: styles/style-colon-spaced] A backslash does not escape a `,` here:
-`fill:a\,b ,stroke:c` is printed `fill: a\, b, stroke: c`. A space after a
-backslash before the `:` stays, since taking it away would escape the `:`.
-[fixture: styles/style-backslash-before-comma] [fixture:
-styles/style-colon-escaped-space-kept] A `style` whose last style ends with a
-backslash keeps whether whitespace stands after it, a run of whitespace becoming
-its first character, also at the end of the statement, since the shapes of a
-block arrow and of a group put the styles into their `style` attribute joined
-with `;` as they are, and the backslash would escape the `;` (see
+[fixture: styles/style-colon-spaced] [fixture: styles/style-words-run-spaced]
+[fixture: styles/style-string-runs-kept] [fixture: styles/style-url-runs-kept]
+[fixture: styles/style-hex-escape-run-spaced] A backslash does not escape a `,`
+here: `fill:a\,b ,stroke:c` is printed `fill: a\, b, stroke: c`. A space after a
+backslash before the `:` stays, since taking it away would escape the `:`, and
+the whitespace after that space goes. [fixture:
+styles/style-backslash-before-comma] [fixture:
+styles/style-colon-escaped-space-kept] [fixture:
+styles/style-colon-escaped-space-run-dropped] A `style` whose last style ends
+with a backslash keeps whether whitespace stands after it, a run of whitespace
+becoming its first character, also at the end of the statement, since the shapes
+of a block arrow and of a group put the styles into their `style` attribute
+joined with `;` as they are, and the backslash would escape the `;` (see
 [Styles that are drawn the same](./compatibility.md#styles-that-are-drawn-the-same)):
 `style A stroke-width:3px\ ,stroke:#0f0` is printed
 `style A stroke-width: 3px\ , stroke: #0f0`. [fixture:
@@ -604,6 +612,10 @@ printed as one space, so `class A c   d` is printed `class A c d`. [fixture:
 styles/class-name-with-a-comma-runs-collapsed] [fixture:
 styles/class-name-runs-collapsed] [fixture: styles/trailing-whitespace-dropped]
 [fixture: styles/styles-with-a-directive]
+
+A style that starts with the `:` is printed as any other: one space after the
+`:`, and the runs between its words as one space. `style A :  red   x` is
+printed `style A : red x`. [fixture: styles/style-colon-first-run-spaced]
 
 A `style` with no styles is printed as `style A`: the id stands after one space
 and nothing follows it. [fixture: styles/style-without-styles] [corpus fixture:

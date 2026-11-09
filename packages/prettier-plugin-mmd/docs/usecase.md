@@ -5,9 +5,10 @@ Japanese version: [usecase.ja.md](./usecase.ja.md)
 These rules format `usecase-beta` from its written
 [syntax tree](../../spec/docs/ast/usecase.md), following the
 [usecase specification](../../spec/docs/diagrams/usecase.md). Each rule explains
-its choice, links shared rules with their reasons, and cites fixed sentence-led
-fixtures. Inputs use escaped JSON strings; each output block copies one fixture.
-Unicode/control/CR cases are escaped in `usecase-cases.ts`.
+its choice, links shared rules with their reasons, and cites the fixtures that
+are written from its sentences. Inputs use escaped JSON strings; each output
+block copies one fixture. Unicode/control/CR cases are escaped in
+`usecase-cases.ts`.
 
 HWS means ASCII horizontal whitespace: U+0020 SPACE and U+0009 TAB. LS means
 U+2028 LINE SEPARATOR; PS means U+2029 PARAGRAPH SEPARATOR.
@@ -291,7 +292,7 @@ usecase: U+2028 inside the brackets of a boundary title] [test: usecase: U+2029
 inside the brackets of a boundary title] [test: usecase: U+2028 inside the
 brackets of a boundary title with a semicolon] [test: usecase: U+2029 inside the
 brackets of a boundary title with a semicolon] A directive in the gap is placed
-as under flowchart's Directives. [fixture:
+as under [flowchart's Directives](./flowchart.md#directives). [fixture:
 system-boundaries/boundary-id-title-directed-gap] [fixture:
 system-boundaries/boundary-id-title-directed-gap-runs] Preserve native
 metadata/classes and repeated declarations; body membership comes from the AST's
@@ -550,15 +551,15 @@ json-tables/closing-after-text]
 Apply all the shared movement conditions and their reasons from
 [Data blocks](./flowchart.md#data-blocks). In particular, keep inline-opening
 JSON, embedded directives, kept lines, leading tabs and `tabWidth: 0` as
-written. With `useTabs`, body margins and a separate `}` still use spaces, the
-`}` at the column of the statement. Comments, directives, blank lines and empty
-description blocks outside the JSON keep their own rules; CR/LF follows
-`endOfLine` and Unicode separators inside strings remain characters. [fixture:
-json-tables/inline-opening-kept] [fixture: json-tables/directive-inside-kept]
-[fixture: json-tables/kept-body-line] [fixture: json-tables/zero-width-kept]
-[fixture: json-tables/tab-statement-space-body] [fixture:
-json-tables/surrounding-trivia] [test: data blocks: JSON leading tab kept]
-[test: data blocks: usecase U+2029] [test: data blocks: usecase CRLF]
+written, and, with `useTabs`, the statement that holds the JSON as a whole.
+Comments, directives, blank lines and empty description blocks outside the JSON
+keep their own rules; CR/LF follows `endOfLine` and Unicode separators inside
+strings remain characters. [fixture: json-tables/inline-opening-kept] [fixture:
+json-tables/directive-inside-kept] [fixture: json-tables/kept-body-line]
+[fixture: json-tables/zero-width-kept] [fixture:
+json-tables/tab-statement-space-body] [fixture: json-tables/surrounding-trivia]
+[test: data blocks: JSON leading tab kept] [test: data blocks: usecase U+2029]
+[test: data blocks: usecase CRLF]
 
 A JSON table on one line stays as written, apart from the whitespace between the
 `@` and the `{`: its `{` and `}` are the braces of the JSON itself, not the ends
@@ -621,36 +622,55 @@ Output
 ```mmd
 usecase-beta
   A
-  classDef c fill:#f00
-  style A fill:#f00
-  classDef d fill:#0f0, stroke:#00f
-  style A fill:#0f0, stroke:#00f
+  classDef c fill: #f00
+  style A fill: #f00
+  classDef d fill: #0f0, stroke: #00f
+  style A fill: #0f0, stroke: #00f
 ```
 
 ### Classes and styles
 
 Reuse [ER's tight class lists](./er.md#styles-and-classes): commas touch target
 and class names, with one gap between lists and before the first declaration;
-CSS declarations use comma-space. Each CSS declaration stays exactly as written
-from its name's start through its last value component. Mermaid stores padding
-before and after the colon and inside `--  color`, so this is not ER's
-whitespace-discarding CSS reading. Tabs, directives in the dash gap, quoted or
-escaped commas, empty string components, functions, order and repetition stay.
+CSS declarations use comma-space. A declaration has no whitespace before its
+first colon and one space after it, as in the other diagram types (see
+[Styles that are drawn the same](./compatibility.md#styles-that-are-drawn-the-same)).
+Mermaid stores the padding before and after the colon, so the Db changes, but it
+draws the same figure. A name that ends with `stroke` is the exception, since a
+`classDef` or a `style` can reach a relationship with an explicit id, and
+mermaid.js colours its arrowheads from `stroke:` only: such a name keeps whether
+whitespace stands before the colon, a run becoming one space. The text of a
+declaration from its name's start through its last value component otherwise
+stays as written: directives in the dash gap, quoted or escaped commas, empty
+string components, functions, order and repetition, except that a run of spaces
+and tabs between its words is printed as one space, as in the other diagram
+types (see
+[Styles that are drawn the same](./compatibility.md#styles-that-are-drawn-the-same)):
+`style A --  color:red` is printed `style A -- color: red`, and
+`translate(1  2)` is printed `translate(1 2)`. A run inside a string, a comment,
+or the parentheses of `url(`, and the escape after a backslash, stay as written.
 [fixture: classes-and-styles/css-name-multiline-directive] Only exterior HWS
-after the last component can disappear; prefixes with kept semicolons override
-ordinary list layout.
+after the last component can disappear; prefixes with kept semicolons, a comment
+or a directive in the statement, and a declaration over lines override ordinary
+list layout.
 
 [fixture: classes-and-styles/class-lists] [fixture:
 classes-and-styles/css-colon-padding] [fixture:
-classes-and-styles/css-post-colon-trim-kept] [fixture:
-classes-and-styles/css-custom-gap] [fixture:
-classes-and-styles/css-custom-gap-remove-kept] [fixture:
+classes-and-styles/css-post-colon-run-collapsed] [fixture:
+classes-and-styles/css-stroke-before-colon-kept] [fixture:
+classes-and-styles/css-stroke-before-colon-run-collapsed] [fixture:
+classes-and-styles/css-stroke-before-colon-touching] [fixture:
+classes-and-styles/css-custom-gap-run-collapsed] [fixture:
+classes-and-styles/css-custom-gap-touching-run-collapsed] [fixture:
+classes-and-styles/css-words-run-spaced] [fixture:
+classes-and-styles/css-string-runs-kept] [fixture:
+classes-and-styles/css-url-runs-kept] [fixture:
 classes-and-styles/css-value-internal] [corpus fixture:
 usecase/gram-css-empty-string-component] [fixture:
 classes-and-styles/css-gap-directive] [fixture:
 classes-and-styles/css-semicolon-gap] [corpus fixture:
 usecase/lex-style-hash-semicolon] [fixture:
-classes-and-styles/css-pre-colon-trim-kept] [fixture:
+classes-and-styles/css-pre-colon-whitespace-dropped] [fixture:
 classes-and-styles/css-classdef-gap] [fixture:
 classes-and-styles/css-line-rule-colon-gap-kept] [fixture:
 classes-and-styles/css-both-passes] [test: usecase: css-other-case-segment]
@@ -668,7 +688,7 @@ Output
 ```mmd
 usecase-beta
   A
-  style A fill   :  red, stroke-width : 2px
+  style A fill: red, stroke-width: 2px
 ```
 
 ### Notes
@@ -839,7 +859,7 @@ usecase-beta
 Reuse [shared directive attachment](./class.md#directives): removal supplies no
 separator. Keep directive contents, order and multiline columns; align
 standalone directives, and place a directive within a printed line as under
-flowchart's Directives. [fixture:
+[flowchart's Directives](./flowchart.md#directives). [fixture:
 system-boundaries/boundary-id-title-directed-gap] [fixture:
 arrows/semantic-operator-directives] [fixture:
 arrow-id-boundaries/arrow-marker-both-gap-sides] Header-line directives remain
@@ -914,8 +934,9 @@ usecase-beta
 ### Trailing whitespace
 
 Reuse [exterior cleanup](./c4.md#trailing-whitespace): remove harmless ASCII
-spaces/tabs after completed structural forms and final CSS components. CSS colon
-padding is inside its declaration and stays. Accessibility lines and stereotype
+spaces/tabs after completed structural forms and final CSS components. The
+padding around the colon of a CSS declaration follows
+[Classes and styles](#classes-and-styles). Accessibility lines and stereotype
 boundaries normalize exterior whitespace by their sibling rules. [fixture:
 stereotypes/side-padding] Quoted/markdown values, JSON, native property strings,
 comments and directive contents keep their trailing characters. [test: usecase:
@@ -938,7 +959,7 @@ usecase-beta
   actor U
   A --> B
   A@{ }
-  style A fill:red
+  style A fill: red
 ```
 
 ### Line terminators

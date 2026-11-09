@@ -19,7 +19,7 @@ import {
   dbOfText,
   describeFrontmatterChange,
   writtenEmbeddedTexts,
-  writtenTextKeptUpToSemicolons,
+  writtenTextKeptUpToSeparators,
 } from "./db-reading.ts"
 import { dataBlockEmbeddedForFormattingComparison } from "./data-block-margins.ts"
 import { dbForFormattingComparison } from "./db-comparison.ts"
@@ -107,7 +107,7 @@ export async function testCorpus(diagram: DiagramType): Promise<void> {
         output,
       ).toEqual(writtenBefore)
       expect(await describeFrontmatterChange(input, formatted)).toBeNull()
-      expect(writtenTextKeptUpToSemicolons(input, formatted), output).toBe(true)
+      expect(writtenTextKeptUpToSeparators(input, formatted), output).toBe(true)
       const recorded = fixture.specified ?? fixture.expected
       const embedded = embeddedValuesOf(fixture, recorded)
       if (!recorded.accepted || recorded.db === null || embedded === undefined)

@@ -1,17 +1,45 @@
 import { parse, ParseError } from "@mmd-toolkit/parser"
 import type { Options } from "prettier"
-import { format } from "prettier"
+import { format, getSupportInfo, util } from "prettier"
 import plugin from "prettier-plugin-mmd"
 import type { LineEnding } from "./lines.ts"
+import type { ReadOptions } from "./options.ts"
+
+/** The default of a Prettier option that is a number, as Prettier states it. */
+async function defaultNumberOption(name: string): Promise<number> {
+  const { options } = await getSupportInfo()
+  const option = options.find((candidate) => candidate.name === name)
+  if (typeof option?.default !== "number") {
+    throw new Error(`Prettier states no numeric default for ${name}`)
+  }
+  return option.default
+}
 
 /**
- * The options of a Prettier configuration that the tool uses (README,
- * Indentation). An option that the configuration does not set is
- * `undefined`, and Prettier then uses its default.
+ * The line width left for the lines of a diagram that the tool writes after
+ * `prefix`, which stands before each of them in a Markdown code block (README,
+ * Code blocks in detail). Prettier formats a diagram in a list or a block quote
+ * inside the container, so the width of what stands before the diagram is no
+ * longer left; here the diagram is formatted alone and the prefix is put in
+ * front of its lines. The width of the prefix is counted as Prettier counts the
+ * indentation that stands before a range it formats (`util.getAlignmentSize`),
+ * a tab reaching the next multiple of `tabWidth`; where `tabWidth` is 0, which
+ * `util.getAlignmentSize` turns into NaN for a tab, a tab has no width. The
+ * width is at least 1.
  */
-export interface Indentation {
-  readonly tabWidth: number | undefined
-  readonly useTabs: boolean | undefined
+export async function printWidthAfter(
+  prefix: string,
+  options: ReadOptions,
+): Promise<number | undefined> {
+  if (prefix === "") return options.printWidth
+  const tabWidth = options.tabWidth ?? (await defaultNumberOption("tabWidth"))
+  const printWidth =
+    options.printWidth ?? (await defaultNumberOption("printWidth"))
+  const used =
+    tabWidth === 0
+      ? prefix.replaceAll("\t", "").length
+      : util.getAlignmentSize(prefix, tabWidth)
+  return Math.max(1, printWidth - used)
 }
 
 /** What formatting the text of a diagram gives. */
@@ -33,9 +61,12 @@ const endOfLineOptions = {
 
 /**
  * Formats the text of a diagram with Prettier and prettier-plugin-mmd, as
- * Prettier formats a `.mmd` file with the plugin. The text has no byte order
- * mark and its lines end with `\n`, as Prettier leaves a text before parsing
- * it; the lines of the result end with `lineEnding`.
+ * Prettier formats a `.mmd` file with the plugin. `options` are the options
+ * that the tool reads of the Prettier configuration of the file (README,
+ * Configuration), given to Prettier together with the three that the tool sets
+ * itself: the parser, the plugins, and the line endings. The text has no byte
+ * order mark and its lines end with `\n`, as Prettier leaves a text before
+ * parsing it; the lines of the result end with `lineEnding`.
  *
  * A text that the plugin rejects is parsed again with the parser that the
  * plugin uses, for the message and the offset of the syntax error: the error
@@ -44,15 +75,14 @@ const endOfLineOptions = {
  */
 export async function formatDiagram(
   text: string,
-  indentation: Indentation,
+  options: ReadOptions,
   lineEnding: LineEnding,
 ): Promise<DiagramResult> {
   try {
     const formatted = await format(text, {
+      ...options,
       parser: "mermaid",
       plugins: [plugin],
-      tabWidth: indentation.tabWidth,
-      useTabs: indentation.useTabs,
       endOfLine: endOfLineOptions[lineEnding],
     })
     return { kind: "formatted", text: formatted }

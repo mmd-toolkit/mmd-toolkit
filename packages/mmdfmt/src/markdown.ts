@@ -1,9 +1,9 @@
 import { parsers } from "prettier/plugins/markdown"
-import type { Indentation } from "./diagram.ts"
-import { formatDiagram } from "./diagram.ts"
+import { formatDiagram, printWidthAfter } from "./diagram.ts"
 import type { Diagnostic, FormatResult, PositionsIn } from "./diagnostic.ts"
 import type { Line, LineEnding } from "./lines.ts"
 import { lineEndingOf, positionIn, readText, splitLines } from "./lines.ts"
+import type { ReadOptions } from "./options.ts"
 
 /** A line and a column of Prettier's Markdown tree, both 1-based. */
 interface Point {
@@ -47,7 +47,7 @@ const diagramLanguages: ReadonlySet<string> = new Set(["mermaid", "mmd"])
  */
 export async function formatMarkdown(
   text: string,
-  indentation: Indentation,
+  options: ReadOptions,
   positionsIn: PositionsIn,
 ): Promise<FormatResult> {
   const { byteOrderMark, lines, normalized } = readText(text)
@@ -60,7 +60,7 @@ export async function formatMarkdown(
   // removed where it is negative.
   let addedLines = 0
   for (const block of diagramBlocksOf(await parseMarkdown(normalized))) {
-    const result = await formatBlock(block, lines, indentation, lineEnding)
+    const result = await formatBlock(block, lines, options, lineEnding)
     if (result.kind === "warning") {
       // A block with a warning is left as written, so in the text after
       // formatting only the blocks before it have moved its lines, and its
@@ -221,7 +221,7 @@ type BlockResult =
 async function formatBlock(
   block: DiagramBlock,
   lines: readonly Line[],
-  indentation: Indentation,
+  options: ReadOptions,
   lineEnding: LineEnding,
 ): Promise<BlockResult> {
   // The parser's line numbers are 1-based, so the 1-based number of the
@@ -273,7 +273,17 @@ async function formatBlock(
     values.length > 0 && lines[start + values.length - 1].ending !== ""
   const text = values.join("\n") + (endsWithLineEnding ? "\n" : "")
 
-  const result = await formatDiagram(text, indentation, "\n")
+  // What starts each line that is written: what stands before the opening
+  // fence takes room of the line width.
+  const fenceLine = lines[start - 1]
+  const prefix = newLinePrefixOf(
+    fenceLine.text.slice(0, block.position.start.column - 1),
+  )
+  const result = await formatDiagram(
+    text,
+    { ...options, printWidth: await printWidthAfter(prefix, options) },
+    "\n",
+  )
   if (result.kind === "rejected") {
     const { line, column } = positionIn(text, result.offset)
     return {
@@ -297,10 +307,6 @@ async function formatBlock(
       : result.text
   if (formatted === text) return { kind: "unchanged" }
 
-  const fenceLine = lines[start - 1]
-  const prefix = newLinePrefixOf(
-    fenceLine.text.slice(0, block.position.start.column - 1),
-  )
   // The lines written: the line of the opening fence, and after it each
   // formatted line with the prefix and the line ending of the file.
   const written: Line[] = [fenceLine]

@@ -11,7 +11,7 @@ import type * as Formatter from "./formatter.ts"
 import type { Range, Root } from "@mmd-toolkit/ast"
 import { onParserUpdate, parseSource, visitNodes } from "./engine.ts"
 import { defaultSource } from "./examples.ts"
-import { decodeState, encodeState } from "./share.ts"
+import { decodeState, defaultFormatOptions, encodeState } from "./share.ts"
 import type { TreeSelection } from "./ast.ts"
 import type { SharedState } from "./share.ts"
 
@@ -24,6 +24,7 @@ interface Diagnostic {
 /** Reactive application state and the actions exposed to the root view. */
 interface Playground {
   source: Ref<string>
+  printWidth: Ref<number>
   tabWidth: Ref<number>
   useTabs: Ref<boolean>
   tab: Ref<"ast" | "formatted">
@@ -58,14 +59,15 @@ interface Playground {
 
 /**
  * Coordinates source revisions, lazy formatting, sharing and the immutable AST.
- * Source and indentation are persisted in the URL; view and theme choices stay
+ * Source and formatting options persist in the URL; view and theme choices stay
  * local. Parser and formatter hot updates invalidate results without editing
  * the input or remounting its editor.
  */
 export function usePlayground(): Playground {
   const source = ref(defaultSource)
-  const tabWidth = ref(2)
-  const useTabs = ref(false)
+  const printWidth = ref(defaultFormatOptions.printWidth)
+  const tabWidth = ref(defaultFormatOptions.tabWidth)
+  const useTabs = ref(defaultFormatOptions.useTabs)
   const tab = ref<"ast" | "formatted">("ast")
   const astView = ref("tree")
   // Treat parser objects as snapshots: observe replacements, not their fields.
@@ -160,7 +162,11 @@ export function usePlayground(): Playground {
     const request = ++formatRequest
     const currentRevision = revision
     const text = source.value
-    const options = { tabWidth: tabWidth.value, useTabs: useTabs.value }
+    const options = {
+      printWidth: printWidth.value,
+      tabWidth: tabWidth.value,
+      useTabs: useTabs.value,
+    }
     formatStatus.value = "pending"
     formatMessage.value = ""
     const start = performance.now()
@@ -211,6 +217,7 @@ export function usePlayground(): Playground {
   function sharedState(): SharedState {
     return {
       source: source.value,
+      printWidth: printWidth.value,
       tabWidth: tabWidth.value,
       useTabs: useTabs.value,
     }
@@ -298,7 +305,7 @@ export function usePlayground(): Playground {
     try {
       const state = window.location.hash
         ? await decodeState(window.location.hash)
-        : { source: defaultSource, tabWidth: 2, useTabs: false }
+        : { source: defaultSource, ...defaultFormatOptions }
       if (
         disposed ||
         request !== navigation ||
@@ -306,6 +313,7 @@ export function usePlayground(): Playground {
       )
         return
       source.value = state.source
+      printWidth.value = state.printWidth
       tabWidth.value = state.tabWidth
       useTabs.value = state.useTabs
       shareUrl.value = window.location.href
@@ -366,7 +374,9 @@ export function usePlayground(): Playground {
     { immediate: true },
   )
   // Clear stale ranges synchronously; only the expensive recomputation waits.
-  watch([source, tabWidth, useTabs], inputChanged, { flush: "sync" })
+  watch([source, printWidth, tabWidth, useTabs], inputChanged, {
+    flush: "sync",
+  })
   watch(tab, (value) => {
     clearTimeout(formatTimer)
     if (value === "formatted" && formatStatus.value !== "ready")
@@ -393,6 +403,7 @@ export function usePlayground(): Playground {
 
   return {
     source,
+    printWidth,
     tabWidth,
     useTabs,
     tab,

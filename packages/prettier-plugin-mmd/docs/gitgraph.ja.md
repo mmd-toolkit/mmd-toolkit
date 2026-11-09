@@ -2,7 +2,7 @@
 
 English version: [gitgraph.md](./gitgraph.md)
 
-決定した 26 項目に従う整形規則です。
+決定した 26 項目を、書かれた AST から実装する整形規則です。
 実行時に Mermaid を呼ばず、出力を再解析しません。
 不可視文字は escape した固定テストに置きます。
 
@@ -872,7 +872,7 @@ standalone の解析失敗は構文エラーを報告し、
 Markdown は埋め込みを辞退して payload を host に返します。
 語内の directive と選ばれた semicolon を結合して修復しません。
 frontmatter の HTML は本文だけの読み、
-不正な opaque YAML は架空の設定や受理 Db を補わない扱いです。
+不正な opaque YAML は架空の設定や raw Db を補わない扱いです。
 C4 検出と bare percent line の差異も新設せず既存の識別子に従います。
 raw の拒否には raw Db がありません。
 空の quoted option と空の description block は受理したままです。

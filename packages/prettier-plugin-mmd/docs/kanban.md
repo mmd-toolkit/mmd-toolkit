@@ -441,13 +441,14 @@ kanban
 
 A data block `@{ ... }` is embedded text that mermaid.js reads as YAML for the
 properties of a node, such as `ticket` and `assigned`. The printer keeps it
-opaque, with its delimiters, its content and its line breaks retained, apart
-from the uniform indentation below and the spaces at the ends of a block on one
-line: it does not format the YAML, and it does not merge, split, reorder, wrap,
-or repair blocks, whether a block is empty (`A@{}`), has an unknown or duplicate
-key (`A@{ticket: X, ticket: Y}`), is not valid YAML (`A@{assigned: [a}`), or
-runs over several lines. The parser accepts a block whose YAML is invalid,
-although mermaid.js rejects it (known divergence
+opaque, with its delimiters and its content retained, apart from the uniform
+indentation below, the spaces at the ends of a block on one line, and the
+printing of a block on one line on lines where its line is too long: it does not
+format the YAML, and it does not merge, reorder, or repair blocks, whether a
+block is empty (`A@{}`), has an unknown or duplicate key
+(`A@{ticket: X, ticket: Y}`), is not valid YAML (`A@{assigned: [a}`), or runs
+over several lines. The parser accepts a block whose YAML is invalid, although
+mermaid.js rejects it (known divergence
 [`embedded-data-opaque`](../../spec/docs/known-divergences/embedded-data-opaque.md)),
 because the block is embedded text that the specification reads as opaque.
 [fixture: data-blocks/data-opaque] [fixture: data-blocks/empty-data] [fixture:
@@ -461,9 +462,12 @@ data-blocks/db-metadata-quoted-brace] [fixture: data-blocks/data-line-rule-gap]
 
 A block on one line is printed with one space inside each end, as in
 [Data blocks](./flowchart.md#data-blocks): `A@{ticket: X}` becomes
-`A@{ ticket: X }`. The block stays as written in the cases listed there.
-[fixture: data-blocks/one-line-padded] [fixture:
-data-blocks/one-line-space-only-padded] [fixture:
+`A@{ ticket: X }`. Where its line is too long it prints on lines, one entry on
+each, under the conditions listed there, which a node text that fills the line
+before the block does not meet. The block stays as written in the cases listed
+there. [fixture: data-blocks/long-split] [fixture:
+data-blocks/long-prefix-too-long-kept] [fixture: data-blocks/one-line-padded]
+[fixture: data-blocks/one-line-space-only-padded] [fixture:
 data-blocks/one-line-directive-kept] [fixture:
 data-blocks/one-line-kept-line-kept] [fixture:
 data-blocks/one-line-touching-blocks-kept] [fixture:
@@ -499,12 +503,23 @@ data-blocks/directive-inside-kept] [fixture: data-blocks/kept-body-line]
 [fixture: data-blocks/zero-width-kept] [fixture:
 data-blocks/document-start-kept]
 
-With `useTabs`, body margins and a separate closer still use spaces, the closer
-at the column of the node. Comments, directives and blank lines outside the
-block retain their own rules. CRLF and CR follow `endOfLine`; Unicode separators
-inside values remain characters. [fixture: data-blocks/tab-statement-space-body]
-[fixture: data-blocks/surrounding-trivia] [test: kanban: multiline-data-crlf]
-[test: kanban: multiline-data-cr] [test: data blocks: kanban U+2028]
+With `useTabs`, the lines of the block move as without it, indented with spaces.
+The node line takes the indentation that its role gives it, which is not printed
+as written because mermaid.js reads it as the level of the node (see
+[Indentation](#indentation)), so the statement cannot be printed as written as
+in the other diagram types (see [Data blocks](./flowchart.md#data-blocks)). The
+lines then stand right where a tab is as wide as `tabWidth`, whatever the author
+wrote, and off by the difference at any other width, while lines left as written
+would stand right only where the indentation of the author happens to fit the
+width of a tab. [fixture: data-blocks/tab-statement-space-body] [fixture:
+data-blocks/use-tabs-empty-lines-kept] [fixture:
+data-blocks/use-tabs-folded-empty-lines-kept]
+
+Comments, directives and blank lines outside the block retain their own rules.
+CRLF and CR follow `endOfLine`; Unicode separators inside values remain
+characters. [fixture: data-blocks/surrounding-trivia] [test: kanban:
+multiline-data-crlf] [test: kanban: multiline-data-cr] [test: data blocks:
+kanban U+2028]
 
 Where a block is attached is part of the syntax. The block touches the closing
 of a shape (`A[x]@{ticket: X}`), and a space there is rejected. After a bare id,
@@ -1108,11 +1123,13 @@ Multiline data blocks instead follow [Data blocks](#data-blocks): preserve their
 line breaks and contents with only the eligible uniform margin change. [fixture:
 data-blocks/data-multiline]
 
-`printWidth` has no effect: a long bare node
-(`This is a deliberately long kanban item ...`) and a long label stay on their
-lines, since a bare node cannot be wrapped without becoming other nodes, and a
-value is text. [fixture: multi-line-values/long-line-kept] [fixture:
-multi-line-values/small-print-width]
+`printWidth` has no effect on a long bare node
+(`This is a deliberately long kanban item ...`) or a long label: they stay on
+their lines, since a bare node cannot be wrapped without becoming other nodes,
+and a value is text. A data block on one line is the exception: where its line
+is wider than `printWidth`, it prints on lines under the conditions of
+[Data blocks](#data-blocks). [fixture: multi-line-values/long-line-kept]
+[fixture: multi-line-values/small-print-width]
 
 Input
 ([multi-line-values/labels-and-icon-input.mmd](../tests/fixtures/kanban/multi-line-values/labels-and-icon-input.mmd)):

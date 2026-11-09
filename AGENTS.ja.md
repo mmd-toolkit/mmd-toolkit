@@ -119,11 +119,14 @@ Mermaid 記法（`.mmd`）について、mermaid.js が持つ全図種を対象�
      が定める。
    - state のノートの対象となる段落に対する margin の変更。
      [ノート](packages/prettier-plugin-mmd/docs/state.ja.md#ノート) が定める。
-   - スタイルの最初の `:` と `,` の周りの空白と、スタイルの末尾の空白。
+   - スタイルの最初の `:` と `,` の周りの空白、
+     スタイルの語の間の空白とタブの連なり（1 つの空白にする）、
+     スタイルの末尾の空白。
      [同じに描かれるスタイル](packages/prettier-plugin-mmd/docs/compatibility.ja.md#同じに描かれるスタイル)
      が定める。
    - title、Gantt の日付形式と軸形式、C4 図の説明の先頭と末尾の空白と、
-     timeline の行の最後の event と state 図の別名の 2 つ目の説明の末尾の空白。
+     timeline の行の最後の event、state 図の別名の 2 つ目の説明、
+     Gantt の task 名の末尾の空白。
      [同じに描かれるキーワードの後のテキスト](packages/prettier-plugin-mmd/docs/compatibility.ja.md#同じに描かれるキーワードの後のテキスト)
      が定める。
    - mermaid.js が連なりを描かずにテキストを描く場合の、

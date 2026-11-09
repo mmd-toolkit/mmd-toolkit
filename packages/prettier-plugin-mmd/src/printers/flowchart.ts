@@ -6,7 +6,8 @@ import type {
 } from "@mmd-toolkit/ast"
 import type { MermaidAst } from "../parser.ts"
 import { printAtoms } from "./atoms.ts"
-import { formatDataBlocks } from "./data-blocks.ts"
+import type { StatementListsOf } from "./data-blocks.ts"
+import { formatDataBlocks, writtenIndentationRule } from "./data-blocks.ts"
 import { lineEndOf } from "./kept-lines.ts"
 import type { BlockRules } from "./blocks.ts"
 import {
@@ -19,7 +20,11 @@ import {
   findFlowchartKeptLines,
   findSemicolonOnLaterLine,
 } from "./flowchart-kept-lines.ts"
-import { layoutStatement, layoutSubgraphHeader } from "./flowchart-layout.ts"
+import {
+  findSeveralWordsHeaderEnd,
+  layoutStatement,
+  layoutSubgraphHeader,
+} from "./flowchart-layout.ts"
 import { endsWithSpaceOrTab } from "./gap.ts"
 import {
   layoutGraphHeader as layoutHeader,
@@ -92,6 +97,8 @@ export function printFlowchart(
           kept: findFlowchartKeptLines(source),
           statement: indentationOf(bodyOptions, depth),
           tabWidth: options.tabWidth,
+          useTabs: options.useTabs,
+          statementListsOf,
         },
       )
       return printAtoms(source, layout, {
@@ -124,7 +131,7 @@ function printDiagram(
       end: source.text.length,
       isTopLevel: true,
     },
-    flowchartBlockRules(source),
+    flowchartBlockRules(source, options),
   )
   const header = openingLine(
     printAtoms(source, layoutHeader(source, diagram, headerEnd), {
@@ -160,7 +167,7 @@ function printSubgraph(
       end: endKeyword.range[0],
       isTopLevel: false,
     },
-    flowchartBlockRules(source),
+    flowchartBlockRules(source, options),
   )
   const headerDoc = printAtoms(
     source,
@@ -178,17 +185,37 @@ function printSubgraph(
   return printClosedBlock(header, block, endKeyword.value, depth, options)
 }
 
+/** The lists of statements that the node holds, the diagram included. */
+function statementListsOf(node: MermaidAst): ReturnType<StatementListsOf> {
+  return node.type === "FlowchartDiagram" ||
+    node.type === "FlowchartSubgraphStatement"
+    ? [{ head: node.range[0], statements: node.body }]
+    : []
+}
+
+/** Whether the node holds statements of its own. */
+function holdsStatements(node: MermaidAst): boolean {
+  return statementListsOf(node).length > 0
+}
+
 /**
  * The block rules of a flowchart (see `BlockRules`): a subgraph holds
  * statements, and a `;` of its own is dropped at the top level, where the
  * Db does not list it.
  */
-function flowchartBlockRules(source: Source): BlockRules<FlowchartStatement> {
+function flowchartBlockRules(
+  source: Source,
+  options: ParserOptions<MermaidAst>,
+): BlockRules<FlowchartStatement> {
   return {
     kept: findFlowchartKeptLines(source),
     printedEnd: (statement) => findPrintedEnd(source, statement),
-    holdsStatements: (statement) =>
-      statement.type === "FlowchartSubgraphStatement",
+    holdsStatements,
+    writtenIndentationOf: writtenIndentationRule(
+      source,
+      options.useTabs,
+      statementListsOf,
+    ),
     isDroppedAtTopLevel: (statement) =>
       statement.type === "FlowchartEmptyStatement",
     keepsWhitespaceLineAfterComment: false,
@@ -245,7 +272,11 @@ function findSubgraphHeaderEnd(
   const semicolon = findSemicolonOnLaterLine(source, subgraph)
   if (semicolon !== undefined) return semicolon.range[1]
   const { range } = subgraph.name
-  return Math.min(range[1], lineEndOf(source, range[1] - 1))
+  return findSeveralWordsHeaderEnd(
+    source,
+    subgraph,
+    Math.min(range[1], lineEndOf(source, range[1] - 1)),
+  )
 }
 
 /**

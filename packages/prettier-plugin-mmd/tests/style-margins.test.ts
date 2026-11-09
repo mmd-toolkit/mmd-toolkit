@@ -12,6 +12,16 @@ interface DbPair {
 
 const restored: readonly DbPair[] = [
   {
+    name: "a run between the words of a style of a treemap",
+    diagramType: "treemap",
+    before: {
+      classDefs: [{ id: "c", styles: ["border:2px   solid", "fill :red "] }],
+    },
+    after: {
+      classDefs: [{ id: "c", styles: ["border: 2px solid", "fill: red"] }],
+    },
+  },
+  {
     name: "the whitespace before the colon of stroke in a style of a vertex",
     before: { vertices: [{ id: "A", styles: ["stroke :#f00"] }] },
     after: { vertices: [{ id: "A", styles: ["stroke: #f00"] }] },
@@ -120,6 +130,83 @@ const restored: readonly DbPair[] = [
       root: { children: [{ id: "K", styles: ["fill: #ff0", " stroke: red"] }] },
     },
   },
+  {
+    name: "the whitespace around the first colon of a style of a usecase actor",
+    diagramType: "usecase",
+    before: { actors: [{ id: "A", styles: ["fill   :  red"] }] },
+    after: { actors: [{ id: "A", styles: ["fill: red"] }] },
+  },
+  {
+    name: "a run of whitespace before the colon of stroke in a usecase relationship",
+    diagramType: "usecase",
+    before: { relationships: [{ id: "e1", styles: ["stroke\t :#d33"] }] },
+    after: { relationships: [{ id: "e1", styles: ["stroke : #d33"] }] },
+  },
+  {
+    name: "a run of spaces and tabs between the words of a style of a vertex",
+    before: { vertices: [{ id: "A", styles: ["border:2px   solid\tred"] }] },
+    after: { vertices: [{ id: "A", styles: ["border: 2px solid red"] }] },
+  },
+  {
+    name: "a run between the words of a style that has no colon",
+    diagramType: "classDiagram",
+    before: { classes: [{ id: "A", styles: ["fill   #f00"] }] },
+    after: { classes: [{ id: "A", styles: ["fill #f00"] }] },
+  },
+  {
+    name: "a run beside a string, a comment, and a url in a style of a state",
+    diagramType: "stateDiagram",
+    before: {
+      states: [
+        {
+          id: "A",
+          styles: ['font:12px   "A   B"   /* c   d */   url(a   b.png)   x'],
+        },
+      ],
+    },
+    after: {
+      states: [
+        {
+          id: "A",
+          styles: ['font: 12px "A   B" /* c   d */ url(a   b.png) x'],
+        },
+      ],
+    },
+  },
+  {
+    name: "a run between the words of a style of a usecase actor",
+    diagramType: "usecase",
+    before: { actors: [{ id: "A", styles: ["border:2px   solid"] }] },
+    after: { actors: [{ id: "A", styles: ["border: 2px solid"] }] },
+  },
+  {
+    name: "a run after the space that ends a hexadecimal escape",
+    before: {
+      vertices: [{ id: "A", styles: ["font-family:Arial\\20   Black"] }],
+    },
+    after: {
+      vertices: [{ id: "A", styles: ["font-family: Arial\\20  Black"] }],
+    },
+  },
+  {
+    name: "a run after the seventh digit that follows a hexadecimal escape",
+    before: {
+      vertices: [{ id: "A", styles: ["font-family:Arial\\0000201   Black"] }],
+    },
+    after: {
+      vertices: [{ id: "A", styles: ["font-family: Arial\\0000201 Black"] }],
+    },
+  },
+  {
+    name: "the whitespace around the colon of a style that starts with it",
+    before: { vertices: [{ id: "A", styles: [":  red   x"] }] },
+    after: { vertices: [{ id: "A", styles: [": red x"] }] },
+  },
+  {
+    name: "a run between an escaped space and the colon",
+    before: { vertices: [{ id: "A", styles: ["fill\\   :red   x"] }] },
+    after: { vertices: [{ id: "A", styles: ["fill\\ : red x"] }] },
+  },
 ]
 
 const kept: readonly DbPair[] = [
@@ -226,11 +313,6 @@ const kept: readonly DbPair[] = [
     after: { vertices: [{ id: "A", styles: ["stroke: #f00"] }] },
   },
   {
-    name: "whitespace inside a value",
-    before: { vertices: [{ id: "A", styles: ["font-family:a  b"] }] },
-    after: { vertices: [{ id: "A", styles: ["font-family: a b"] }] },
-  },
-  {
     name: "the fill:none that a link gets where no style starts with fill",
     before: { edges: [{ id: "L", style: ["stroke:#f00", "fill:red"] }] },
     after: {
@@ -241,6 +323,67 @@ const kept: readonly DbPair[] = [
     name: "the whitespace of a text that is no style",
     before: { vertices: [{ id: "A", text: "a:b" }] },
     after: { vertices: [{ id: "A", text: "a: b" }] },
+  },
+  {
+    name: "the whitespace before the colon of stroke in a usecase class",
+    diagramType: "usecase",
+    before: { classDefs: [{ id: "c", styles: ["stroke:#d33"] }] },
+    after: { classDefs: [{ id: "c", styles: ["stroke : #d33"] }] },
+  },
+  {
+    name: "the whitespace before the colon of stroke in a usecase relationship",
+    diagramType: "usecase",
+    before: { relationships: [{ id: "e1", styles: ["stroke:#d33"] }] },
+    after: { relationships: [{ id: "e1", styles: ["stroke : #d33"] }] },
+  },
+  {
+    name: "a run changed inside a string of a style",
+    diagramType: "stateDiagram",
+    before: { states: [{ id: "A", styles: ['font-family:"A   B"'] }] },
+    after: { states: [{ id: "A", styles: ['font-family: "A B"'] }] },
+  },
+  {
+    name: "a run changed inside a comment of a style",
+    diagramType: "stateDiagram",
+    before: { states: [{ id: "A", styles: ["border:1px /* a   b */"] }] },
+    after: { states: [{ id: "A", styles: ["border: 1px /* a b */"] }] },
+  },
+  {
+    name: "a run changed inside the parentheses of url",
+    diagramType: "classDiagram",
+    before: { classes: [{ id: "A", styles: ["background:url(a   b.png)"] }] },
+    after: { classes: [{ id: "A", styles: ["background: url(a b.png)"] }] },
+  },
+  {
+    name: "a run changed after a backslash",
+    before: { vertices: [{ id: "A", styles: ["font-family:a\\   b"] }] },
+    after: { vertices: [{ id: "A", styles: ["font-family: a\\ b"] }] },
+  },
+  {
+    name: "a run collapsed after the space that ends a hexadecimal escape",
+    before: {
+      vertices: [{ id: "A", styles: ["font-family:Arial\\20  Black"] }],
+    },
+    after: {
+      vertices: [{ id: "A", styles: ["font-family: Arial\\20 Black"] }],
+    },
+  },
+  {
+    name: "the escaped space before the colon taken away",
+    before: { vertices: [{ id: "A", styles: ["fill\\ :red"] }] },
+    after: { vertices: [{ id: "A", styles: ["fill\\:red"] }] },
+  },
+  {
+    name: "whitespace added between two words of a style",
+    diagramType: "classDiagram",
+    before: { classes: [{ id: "A", styles: ["fill#f00"] }] },
+    after: { classes: [{ id: "A", styles: ["fill #f00"] }] },
+  },
+  {
+    name: "a run changed between the words of a style of a diagram type that keeps it",
+    diagramType: "kanban",
+    before: { classDefs: [{ id: "c", styles: ["border:2px   solid"] }] },
+    after: { classDefs: [{ id: "c", styles: ["border: 2px solid"] }] },
   },
 ]
 

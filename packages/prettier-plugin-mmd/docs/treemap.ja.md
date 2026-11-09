@@ -406,28 +406,42 @@ style がその定義に属することを見分けやすくするためです�
 
 ```mmd
 treemap
-  classDef zz "Apparent":2
+  classDef zz "Apparent": 2
 ```
 
 ### Styles
 
-TreemapLiteral の style span 全体を保ちます。
-comma、colon の空白、escaped comma、引用符、percent、空 entry、
-末尾の space と tab も残します。
-CSS として分割、統合、整形しません。
-綴りや entry の先頭空白は Db を変えうるためです。
-末尾の空白も作者の値の文字として保ちます。
-ただし、消す `;` の前の空白は除きます([Semicolons](#semicolons)を参照)。
-
-[fixture: treemap/styles/written]
-
+`classDef` のスタイルは、ほかの図種のスタイルと同じ形で印字します。
+（[同じに描かれるスタイル](./compatibility.ja.md#同じに描かれるスタイル)）。
+mermaid.js は、バックスラッシュでエスケープされていないコンマで分割し、
+描く前に各スタイルの名前と値の前後の空白を取り除きます。
+CSS は空白の連続を 1 つとして読みます。
+そのため、スタイルの最初の `:` の前には空白を置きません。
+値が空でなければ、後に空白を 1 つ置きます。
+`,` の前には空白を置かず、後に 1 つ置きます。
+スタイルの語と語の間の空白とタブの連続は空白 1 つにし、末尾の空白は除きます。
+Db は各スタイルの空白を保つので変わりますが、描かれる図は同じです。
+これは整形前後の図を描いて確かめました。 [fixture: treemap/styles/spaced]
 [fixture: treemap/styles/trailing]
-
 [fixture: treemap/styles/trailing-before-semicolon]
+[fixture: treemap/styles/escaped-comma-spaced]
+バックスラッシュでエスケープされた `,` はスタイルの一部です。
+文字列の引用符と percent のテキストは書かれた値の一部で、文字列、コメント、
+`url(` の括弧の中の連続は保ちます。 [fixture: treemap/styles/percent-owned]
+[fixture: treemap/styles/quotes] [fixture: treemap/styles/string-runs-kept]
 
-[fixture: treemap/styles/percent-owned]
-
-[fixture: treemap/styles/quotes]
+名前と値の前後の空白以外も変わりうる場合は、スタイルを書かれたままにします。
+2 つのコンマの間や最後のコンマの後の空のスタイルは、
+スタイルの数が Db に入るため保ちます。
+`;` を含むスタイルや、同じ行にコメントかディレクティブがあるスタイルも保ちます。
+その `;` は mermaid.js の行の規則で無視されることがあり、
+その規則は `:` と後の `#` の間の空白を読むため、
+2 回目の整形でも同じテキストである必要があります。
+スタイルとクラス名を隔てる空白は、
+スタイルの一部ではありません（[Style gaps](#style-gaps)を参照）。
+[fixture: treemap/styles/written] [fixture: treemap/styles/empty-entry-kept]
+[fixture: treemap/styles/directive-line-kept]
+[fixture: semicolons/protected-class-column]
 
 入力（escape 表記）:
 `"treemap\nclassDef zz color:red , fill:blue,stroke:rgb(1\\,2\\,3),;"`
@@ -1079,8 +1093,8 @@ treemap
   "Top"
     "Right": 2
     "Left": 1
-  classDef zz color:red
-  classDef zz fill:blue
+  classDef zz color: red
+  classDef zz fill: blue
   title Earlier
   title
 ```

@@ -437,6 +437,7 @@ export function layoutStatement(
         joinsStyles: isLinkStyle,
         keepsGapAfterStroke: statement.type !== "AgentflowStyleStatement",
         escapesComma: statement.type === "AgentflowClassDefStatement",
+        collapsesWordGaps: true,
       })
       return { ...keptAsWritten(start, end), atoms }
     }

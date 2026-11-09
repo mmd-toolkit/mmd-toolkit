@@ -179,7 +179,7 @@ export const usecaseCases: readonly UsecaseCase[] = [
     input:
       "usecase-beta\ractor U@{\rtype:normal\rbusiness:false\r}\rsystemBoundary Box\rA(Work)\rend\rU-->A\rnote for A 'text'\rjson T@{\r \"a\": 1\r}\rclassDef hot fill: red\rclass A hot\rstyle A -- color : blue\raccTitle: title\raccDescr {\rfirst\r second\r}\rdirection TD\r",
     output:
-      'usecase-beta\n  actor U@{\n    type: normal\n    business: false\n  }\n  systemBoundary Box\n    A(Work)\n  end\n  U --> A\n  note for A "text"\n  json T @{\n    "a": 1\n  }\n  classDef hot fill: red\n  class A hot\n  style A -- color : blue\n  accTitle: title\n  accDescr {\n    first\n    second\n  }\n  direction TD\n',
+      'usecase-beta\n  actor U@{\n    type: normal\n    business: false\n  }\n  systemBoundary Box\n    A(Work)\n  end\n  U --> A\n  note for A "text"\n  json T @{\n    "a": 1\n  }\n  classDef hot fill: red\n  class A hot\n  style A -- color: blue\n  accTitle: title\n  accDescr {\n    first\n    second\n  }\n  direction TD\n',
     options: {},
   },
   {
@@ -217,7 +217,7 @@ export const usecaseCases: readonly UsecaseCase[] = [
     name: "usecase: nbsp-css-string",
     id: "usecase/line-terminators/nbsp-css-string",
     input: "usecase-beta\nTask\nstyle Task content:'one\u00a0two'",
-    output: "usecase-beta\n  Task\n  style Task content:'one\u00a0two'\n",
+    output: "usecase-beta\n  Task\n  style Task content: 'one\u00a0two'\n",
     options: {},
   },
   {

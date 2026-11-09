@@ -6,13 +6,16 @@ import {
   collectValueNodes,
   keptAsWritten,
   protectSemicolonPrefixes,
+  replaceInAtoms,
   trimBracketedText,
 } from "./layout.ts"
+import type { TextEdit } from "./layout.ts"
 import { trimTextAfterKeyword } from "./statement-rules.ts"
 import type { Source } from "./source.ts"
 import {
   findTriviaBetween,
   hasTriviaBesidesTrailingDirectives,
+  isSpaceOrTab,
 } from "./source.ts"
 
 /** Written leaves, including complete bare styles (docs/venn.md, Style properties). */
@@ -68,6 +71,35 @@ export function groupVennUnits(
   return units
 }
 
+/**
+ * The edits that print each run of spaces and tabs between the words of an
+ * unquoted value as one space. A run inside parentheses stays: mermaid.js keeps
+ * it in the Db (`rgb(1,  2,3)`), where it joins the words outside them.
+ */
+function findWordRunEdits(source: Source, [start, end]: Range): TextEdit[] {
+  const edits: TextEdit[] = []
+  let depth = 0
+  for (let position = start; position < end;) {
+    const character = source.text[position]
+    if (character === "(") depth++
+    else if (character === ")" && depth > 0) depth--
+    if (depth > 0 || !isSpaceOrTab(character)) {
+      position++
+      continue
+    }
+    let runEnd = position
+    while (runEnd < end && isSpaceOrTab(source.text[runEnd])) runEnd++
+    if (
+      position > start &&
+      runEnd < end &&
+      !(runEnd - position === 1 && character === " ")
+    )
+      edits.push({ range: [position, runEnd], replacement: " " })
+    position = runEnd
+  }
+  return edits
+}
+
 /** Only targetless text uses positive indentation; it is a marker, not nesting. */
 export function isImplicitVennUnit(unit: VennUnit): boolean {
   const first = unit.statements[0]
@@ -103,6 +135,20 @@ export function layoutVennStatement(
   }
   if (statement.type === "VennTitleStatement") {
     trimTextAfterKeyword(source, atoms, statement.value.range, true)
+  }
+  // mermaid.js joins the words of a value that is not a string with one space,
+  // so a run between them is no part of the Db (docs/venn.md, Style
+  // properties).
+  if (statement.type === "VennStyleStatement") {
+    replaceInAtoms(
+      source,
+      atoms,
+      statement.properties.flatMap((property) =>
+        property.value.type === "VennLiteral"
+          ? findWordRunEdits(source, property.value.range)
+          : [],
+      ),
+    )
   }
   const rules = new Map<number, GapRule>()
   for (let index = 1; index < atoms.length; index++) {

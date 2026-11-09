@@ -17,11 +17,11 @@ export const languages: SupportLanguage[] = [
   },
 ]
 
-export const parsers: Record<string, Parser<MermaidAst>> = {
+export const parsers: { mermaid: Parser<MermaidAst> } = {
   mermaid: mermaidParser,
 }
 
-export const printers: Record<string, Printer<MermaidAst>> = {
+export const printers: { mermaid: Printer<MermaidAst> } = {
   mermaid: mermaidPrinter,
 }
 
