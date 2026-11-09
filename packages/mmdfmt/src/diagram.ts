@@ -79,9 +79,10 @@ export async function formatDiagram(
  * throws for a text that the plugin rejects. `config` is the Prettier
  * configuration of the file, given to Prettier as it is (README,
  * Configuration), except for the options that the tool sets itself: the
- * parser, the plugins, and the line endings. The text has no byte order
- * mark and its lines end with `\n`, as Prettier leaves a text before parsing
- * it; the lines of the result end with `lineEnding`.
+ * parser, the plugins, the line endings, and the range, which is the whole
+ * text. The text has no byte order mark and its lines end with `\n`, as
+ * Prettier leaves a text before parsing it; the lines of the result end with
+ * `lineEnding`.
  */
 export async function formatDiagramText(
   text: string,
@@ -93,6 +94,10 @@ export async function formatDiagramText(
     parser: "mermaid",
     plugins: [plugin],
     endOfLine: endOfLineOptions[lineEnding],
+    // The tool formats whole diagrams: Prettier leaves a text that is not
+    // JavaScript-like unformatted when a range is set (README, Configuration).
+    rangeStart: 0,
+    rangeEnd: Number.POSITIVE_INFINITY,
   })
 }
 

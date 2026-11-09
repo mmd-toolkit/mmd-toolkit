@@ -655,9 +655,13 @@ describe("pruning in the background", () => {
     expect(existsSync(path.join(directory, ".full"))).toBe(false)
     utimesSync(marker, new Date(now - tenMinutes), new Date(now - tenMinutes))
     store.pruneInBackground()
+    // The marker is there from the start, so it does not show the end of the
+    // prune (see `pruneEnded`). The process takes the lock before it marks the
+    // store full, and removes the lock last.
     await vi.waitFor(
       () => {
         expect(existsSync(path.join(directory, ".full"))).toBe(true)
+        expect(existsSync(path.join(directory, ".pruning"))).toBe(false)
       },
       { timeout: 20_000 },
     )
