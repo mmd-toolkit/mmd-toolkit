@@ -47,8 +47,11 @@ classDiagram
 ```mmd
 %% eslint @mmd-toolkit/class-no-duplicate-description: error
 classDiagram
-  accDescr: first
-  accDescr: second
+  accDescr {
+    first
+    second
+  }
+  accDescr: third
   class A
 ```
 

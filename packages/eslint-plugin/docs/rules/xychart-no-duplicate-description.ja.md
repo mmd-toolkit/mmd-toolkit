@@ -46,7 +46,10 @@ LF、CRLF、CR の改行は、LF として比べる。
 %% eslint @mmd-toolkit/xychart-no-duplicate-description: error
 xychart
   accDescr: first
-  accDescr: second
+  accDescr {
+    second
+    third
+  }
   line [1, 2]
 ```
 

@@ -45,7 +45,10 @@ Examples of **incorrect** code for this rule:
 %% eslint @mmd-toolkit/quadrant-no-duplicate-description: error
 quadrantChart
   accDescr: first
-  accDescr: second
+  accDescr {
+    second
+    third
+  }
   A: [0.3, 0.6]
 ```
 

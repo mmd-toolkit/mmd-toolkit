@@ -45,7 +45,10 @@ Examples of **incorrect** code for this rule:
 %% eslint @mmd-toolkit/xychart-no-duplicate-description: error
 xychart
   accDescr: first
-  accDescr: second
+  accDescr {
+    second
+    third
+  }
   line [1, 2]
 ```
 

@@ -6,9 +6,9 @@ Filename: xychart-no-duplicate-title-incorrect-1.mmd
 
 Code:
   1 | xychart
-  2 |   title first
-  3 |   title second
-    |   ^~~~~~~~~~~~ [1]
+  2 |   title "first"
+  3 |   title "second"
+    |   ^~~~~~~~~~~~~~ [1]
   4 |   line [1, 2]
   5 |
 
