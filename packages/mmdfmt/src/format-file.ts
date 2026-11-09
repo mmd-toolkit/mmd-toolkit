@@ -1,10 +1,11 @@
 import path from "node:path"
-import type { Options } from "prettier"
 import { resolveConfig } from "prettier"
 import { formatDiagram } from "./diagram.ts"
 import type { FormatResult, PositionsIn } from "./diagnostic.ts"
 import { lineEndingOf, positionIn, readText } from "./lines.ts"
 import { formatMarkdown } from "./markdown.ts"
+import type { ReadOptions } from "./options.ts"
+import { readOptions } from "./options.ts"
 
 /** How the tool reads a file: as one diagram, or as Markdown with code blocks. */
 export type FileKind = "diagram" | "markdown"
@@ -29,10 +30,10 @@ export function kindOf(file: string): FileKind | undefined {
 }
 
 /**
- * Formats a file of the given kind. The Prettier configuration of the file,
- * found as Prettier's CLI finds it, `.editorconfig` included, is given to
- * Prettier as it is (README, Configuration). The diagnostics give their
- * positions in the text that `positionsIn` names.
+ * Formats a file of the given kind. The options that the tool reads (README,
+ * Configuration) are taken from the Prettier configuration of the file, found
+ * as Prettier's CLI finds it, `.editorconfig` included. The diagnostics give
+ * their positions in the text that `positionsIn` names.
  */
 export async function formatFile(
   text: string,
@@ -40,10 +41,12 @@ export async function formatFile(
   kind: FileKind,
   positionsIn: PositionsIn,
 ): Promise<FormatResult> {
-  const config = (await resolveConfig(file, { editorconfig: true })) ?? {}
+  const options = readOptions(
+    (await resolveConfig(file, { editorconfig: true })) ?? {},
+  )
   return kind === "diagram"
-    ? formatDiagramFile(text, config)
-    : formatMarkdown(text, config, positionsIn)
+    ? formatDiagramFile(text, options)
+    : formatMarkdown(text, options, positionsIn)
 }
 
 /**
@@ -54,10 +57,10 @@ export async function formatFile(
  */
 async function formatDiagramFile(
   text: string,
-  config: Options,
+  options: ReadOptions,
 ): Promise<FormatResult> {
   const { byteOrderMark, normalized } = readText(text)
-  const result = await formatDiagram(normalized, config, lineEndingOf(text))
+  const result = await formatDiagram(normalized, options, lineEndingOf(text))
   if (result.kind === "rejected") {
     return {
       text,

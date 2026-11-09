@@ -266,7 +266,7 @@ mmdfmt --stdin-filepath docs/guide.md
 
 図のインデントは空白2つで、行の幅はPrettierの80です。
 ファイルに`.editorconfig`やPrettierの設定が適用されるときは、
-`mmdfmt`はそれをPrettierにそのまま渡します。
+`mmdfmt`はそのうち8つのオプションを読みます。
 `overrides`も含めてPrettierのCLIと同じように探します。
 `.editorconfig`の`indent_style`、`indent_size`、`tab_width`、
 `max_line_length`と、Prettierの設定ファイルのオプションです。
@@ -284,18 +284,32 @@ indent_size = 4
 max_line_length = 100
 ```
 
-図の印字を決めるのは、`tabWidth`、`useTabs`、`printWidth`です。
-行の幅が図の中で決めるのは、2つです。
-1行に書いたデータブロック`@{ … }`を複数行で印字するかどうかと、
-Ganttのセクションのタスクの`:`をそろえるかどうかです。
-詳しくは、
-[フォーマッターのオプション](./options.ja.md#行の長さ)を参照してください。
-`max_line_length = off`は制限なしです。
-図のYAML frontmatterのオプションである`singleQuote`などはそこに効き、
-`embeddedLanguageFormatting: "off"`はfrontmatterを書かれたまま残します。
-Prettierと`prettier-plugin-mmd`を使う場合と同じです。
+読む8つのオプションは次のとおりです。
 
-`mmdfmt`が自分で決めるオプションは4つあります。
+- `printWidth`は行の幅です。
+  行の幅が図の中で決めるのは、2つです。
+  1行に書いたデータブロック`@{ … }`を複数行で印字するかどうかと、
+  Ganttのセクションのタスクの`:`をそろえるかどうかです。
+  詳しくは、
+  [フォーマッターのオプション](./options.ja.md#行の長さ)を参照してください。
+  `max_line_length = off`は制限なしです。
+  リスト項目や引用の中のコードブロックでは、`printWidth`は、
+  各行の前に`mmdfmt`が書くものの幅を引いた幅です。
+  詳しくは、
+  [`mmdfmt`のREADME](../../../mmdfmt/README.ja.md#コードブロックの詳細)
+  を参照してください。
+- `tabWidth`と`useTabs`は、図のインデントを決めます。
+- `embeddedLanguageFormatting`、`singleQuote`、`bracketSpacing`、`proseWrap`、
+  `trailingComma`は、図のYAML frontmatterに効きます。
+  Prettierが`prettier-plugin-mmd`で整形する場合と同じです。
+  `embeddedLanguageFormatting: "off"`はfrontmatterを書かれたまま残します。
+
+`mmdfmt`はこれ以外のオプションを読みません。
+後の版のPrettierが足すオプションで、動作が変わらないようにするためです。
+範囲（`rangeStart`と`rangeEnd`）、`cursorOffset`、
+プラグマのオプション（`requirePragma`、`insertPragma`、`checkIgnorePragma`）、
+`filepath`、ほかの言語のオプションは使いません。
+`mmdfmt`が自分で決めるオプションは3つあります。
 パーサーはプラグインのもので、プラグインは`prettier-plugin-mmd`だけなので、
 設定が挙げるプラグインは読み込みません。
 `endOfLine`は使いません。
@@ -303,11 +317,6 @@ Prettierと`prettier-plugin-mmd`を使う場合と同じです。
 詳しくは、
 [`mmdfmt`のREADME](../../../mmdfmt/README.ja.md#コードブロックの詳細)
 を参照してください。
-リスト項目や引用の中のコードブロックでは、`printWidth`は、
-各行の前に`mmdfmt`が書くものの幅を引いた幅です。
-こちらも同じ節を参照してください。
-`rangeStart`と`rangeEnd`は使いません。
-`mmdfmt`は図全体を整形するからです。
 
 ## エラーと終了コード
 
@@ -343,7 +352,7 @@ Markdownのコードブロックでは警告です。
 
 図はPrettierと`prettier-plugin-mmd`で整形するので、
 プラグインの規則が適用されます。
-MarkdownにPrettierとプラグインを使う場合とは、結果が4点で異なります。
+MarkdownにPrettierとプラグインを使う場合とは、結果が5点で異なります。
 
 - Prettierは、コードブロックの最後の行の末尾の空白を、
   mermaid.jsが図の一部として読む場合も、
@@ -366,10 +375,24 @@ MarkdownにPrettierとプラグインを使う場合とは、結果が4点で異
   Prettierはセクションをそろえ、`mmdfmt`はそろえないことがあります。
   そのとき`mmdfmt`はセクションのコロンを今の位置に残すので、行は広がらず、
   行の幅より広く書かれた行はそのままです。
+- Markdownファイルでは、Prettierは次の4つの設定のもとで、
+  図を書かれたまま残します。
+  先頭に`<!-- @format -->`のコメントがない`requirePragma: true`、
+  先頭に`<!-- @noformat -->`のコメントがある`checkIgnorePragma: true`、
+  ファイル全体を覆わない範囲、そして`embeddedLanguageFormatting: "off"`です。
+  この設定は、すべてのコードブロックを書かれたまま残します。
+  `mmdfmt`はこれらを読みません。
+  どのファイルを整形するかは自分で決め（パターンと`.gitignore`）、
+  渡されたファイルの図を整形します。
+  `embeddedLanguageFormatting: "off"`のときも、残すのは図のfrontmatterだけです。
 
 コマンドもPrettierのCLIとは異なります。
 `.prettierignore`は読まず、`--ignore-path`、`--ignore-unknown`、
 独自の整形オプションはなく、設定は図のためだけに読みます。
+`mmdfmt`が読まないオプションに、Prettierが拒む値を書いても、
+ここではエラーになりません。
+PrettierのCLIはそれをエラーにします。
+たとえば、`semi: "yes"`です。
 
 [`mmdfmt`のREADME](../../../mmdfmt/README.ja.md#コードブロックの詳細)では、
 コードブロックを詳しく説明しています。

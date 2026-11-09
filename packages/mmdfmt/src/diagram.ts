@@ -3,6 +3,7 @@ import type { Options } from "prettier"
 import { format, getSupportInfo, util } from "prettier"
 import plugin from "prettier-plugin-mmd"
 import type { LineEnding } from "./lines.ts"
+import type { ReadOptions } from "./options.ts"
 
 /** The default of a Prettier option that is a number, as Prettier states it. */
 async function defaultNumberOption(name: string): Promise<number> {
@@ -26,7 +27,7 @@ async function defaultNumberOption(name: string): Promise<number> {
  */
 export async function printWidthAfter(
   prefix: string,
-  options: Options,
+  options: ReadOptions,
 ): Promise<number | undefined> {
   if (prefix === "") return options.printWidth
   const tabWidth = options.tabWidth ?? (await defaultNumberOption("tabWidth"))
@@ -54,13 +55,12 @@ const endOfLineOptions = {
 
 /**
  * Formats the text of a diagram with Prettier and prettier-plugin-mmd, as
- * Prettier formats a `.mmd` file with the plugin. `config` is the Prettier
- * configuration of the file, given to Prettier as it is (README,
- * Configuration), except for the options that the tool sets itself: the
- * parser, the plugins, the line endings, and the range, which is the whole
- * text. The text has no byte order
- * mark and its lines end with `\n`, as Prettier leaves a text before parsing
- * it; the lines of the result end with `lineEnding`.
+ * Prettier formats a `.mmd` file with the plugin. `options` are the options
+ * that the tool reads of the Prettier configuration of the file (README,
+ * Configuration), given to Prettier together with the three that the tool sets
+ * itself: the parser, the plugins, and the line endings. The text has no byte
+ * order mark and its lines end with `\n`, as Prettier leaves a text before
+ * parsing it; the lines of the result end with `lineEnding`.
  *
  * A text that the plugin rejects is parsed again with the parser that the
  * plugin uses, for the message and the offset of the syntax error: the error
@@ -69,19 +69,15 @@ const endOfLineOptions = {
  */
 export async function formatDiagram(
   text: string,
-  config: Options,
+  options: ReadOptions,
   lineEnding: LineEnding,
 ): Promise<DiagramResult> {
   try {
     const formatted = await format(text, {
-      ...config,
+      ...options,
       parser: "mermaid",
       plugins: [plugin],
       endOfLine: endOfLineOptions[lineEnding],
-      // The tool formats whole diagrams: Prettier leaves a text that is not
-      // JavaScript-like unformatted when a range is set (README, Configuration).
-      rangeStart: 0,
-      rangeEnd: Number.POSITIVE_INFINITY,
     })
     return { kind: "formatted", text: formatted }
   } catch (error) {

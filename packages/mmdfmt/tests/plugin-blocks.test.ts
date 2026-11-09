@@ -1,7 +1,9 @@
+import type { Options } from "prettier"
 import { format } from "prettier"
 import plugin from "prettier-plugin-mmd"
 import { describe, expect, it } from "vitest"
 import { formatMarkdown } from "../src/markdown.ts"
+import { readOptions } from "../src/options.ts"
 import { lines } from "./helpers.ts"
 
 /** How many times a Markdown text holds the formatted form of `A-->B`. */
@@ -180,6 +182,85 @@ describe("Code blocks in detail: the line width left in a container, as in Prett
       }
     },
   )
+})
+
+describe("If you know Prettier: the settings under which Prettier leaves a diagram in Markdown as written", () => {
+  const diagramBlock = lines("```mermaid", "flowchart LR", "A-->B", "```")
+  const formattedBlock = lines("```mermaid", "flowchart LR", "  A --> B", "```")
+  const frontmatterBlock = lines(
+    "```mermaid",
+    "---",
+    'title:   "T"',
+    "---",
+    "flowchart LR",
+    "A-->B",
+    "```",
+  )
+  const formattedFrontmatterBlock = lines(
+    "```mermaid",
+    "---",
+    'title:   "T"',
+    "---",
+    "flowchart LR",
+    "  A --> B",
+    "```",
+  )
+
+  it.each([
+    {
+      setting: "requirePragma without the pragma comment",
+      text: diagramBlock,
+      formatted: formattedBlock,
+      options: { requirePragma: true },
+    },
+    {
+      setting: "checkIgnorePragma with the ignore comment",
+      text: lines("<!-- @noformat -->", "", diagramBlock),
+      formatted: lines("<!-- @noformat -->", "", formattedBlock),
+      options: { checkIgnorePragma: true },
+    },
+    {
+      setting: "a range that does not cover the whole file",
+      text: diagramBlock,
+      formatted: formattedBlock,
+      options: { rangeStart: 0, rangeEnd: 5 },
+    },
+    {
+      setting: "embeddedLanguageFormatting off, which leaves the frontmatter",
+      text: frontmatterBlock,
+      formatted: formattedFrontmatterBlock,
+      options: { embeddedLanguageFormatting: "off" as const },
+    },
+  ])(
+    "leaves a diagram as written under $setting, while mmdfmt formats it",
+    async ({ text, formatted, options }) => {
+      const byPrettier = await format(text, {
+        parser: "markdown",
+        plugins: [plugin],
+        ...options,
+      })
+      const byTool = await formatMarkdown(text, readOptions(options), "output")
+      expect(byPrettier).toBe(text)
+      expect(byTool).toEqual({ text: formatted, diagnostics: [] })
+    },
+  )
+
+  it("refuses a value of an option of another language, which mmdfmt does not read", async () => {
+    // A configuration file holds JSON, whose values the type checker cannot know.
+    const refused: Options = JSON.parse('{ "semi": "yes" }')
+    await expect(
+      format(diagramBlock, {
+        parser: "markdown",
+        plugins: [plugin],
+        ...refused,
+      }),
+    ).rejects.toThrow(
+      'Invalid semi value. Expected true or false, but received "yes".',
+    )
+    expect(
+      await formatMarkdown(diagramBlock, readOptions(refused), "output"),
+    ).toEqual({ text: formattedBlock, diagnostics: [] })
+  })
 })
 
 describe("If you know Prettier: a tab after the `>` of a block quote", () => {

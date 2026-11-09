@@ -871,36 +871,108 @@ describe("Configuration", () => {
     expect(project.read("a.mmd")).toBe(longBlock)
   })
 
-  it("gives the rest of the configuration to Prettier as it is: singleQuote reaches the frontmatter", async () => {
-    const withFrontmatter = '---\ntitle: "T"\n---\nflowchart LR\nA-->B\n'
+  /** A diagram with the frontmatter that `text` holds, and the code block that holds the same. */
+  function withFrontmatter(frontmatter: string): Record<string, string> {
+    const text = `---\n${frontmatter}---\nflowchart LR\nA-->B\n`
+    return { "a.mmd": text, "b.md": `# T\n\n\`\`\`mermaid\n${text}\`\`\`\n` }
+  }
+
+  /** What `withFrontmatter` gives back once formatted, with `frontmatter` in place of the frontmatter. */
+  function formattedWithFrontmatter(frontmatter: string): {
+    mmd: string
+    md: string
+  } {
+    const text = `---\n${frontmatter}---\nflowchart LR\n  A --> B\n`
+    return { mmd: text, md: `# T\n\n\`\`\`mermaid\n${text}\`\`\`\n` }
+  }
+
+  it("reads singleQuote: it reaches the frontmatter", async () => {
     project.write({
       ".prettierrc": JSON.stringify({ singleQuote: true }),
-      "a.mmd": withFrontmatter,
-      "b.md": `# T\n\n\`\`\`mermaid\n${withFrontmatter}\`\`\`\n`,
+      ...withFrontmatter('title: "T"\n'),
     })
     await project.run(["--write", "a.mmd", "b.md"])
-    const formatted = "---\ntitle: 'T'\n---\nflowchart LR\n  A --> B\n"
-    expect(project.read("a.mmd")).toBe(formatted)
-    expect(project.read("b.md")).toBe(
-      `# T\n\n\`\`\`mermaid\n${formatted}\`\`\`\n`,
-    )
+    const formatted = formattedWithFrontmatter("title: 'T'\n")
+    expect(project.read("a.mmd")).toBe(formatted.mmd)
+    expect(project.read("b.md")).toBe(formatted.md)
   })
 
-  it("gives the rest of the configuration to Prettier as it is: embeddedLanguageFormatting off leaves the frontmatter as written", async () => {
-    const withFrontmatter = '---\ntitle:   "T"\n---\nflowchart LR\nA-->B\n'
+  it("reads embeddedLanguageFormatting: off leaves the frontmatter as written", async () => {
     project.write({
       ".prettierrc": JSON.stringify({ embeddedLanguageFormatting: "off" }),
-      "a.mmd": withFrontmatter,
+      ...withFrontmatter('title:   "T"\n'),
+    })
+    await project.run(["--write", "a.mmd", "b.md"])
+    const formatted = formattedWithFrontmatter('title:   "T"\n')
+    expect(project.read("a.mmd")).toBe(formatted.mmd)
+    expect(project.read("b.md")).toBe(formatted.md)
+  })
+
+  it("reads bracketSpacing: it reaches the frontmatter", async () => {
+    project.write({
+      ".prettierrc": JSON.stringify({ bracketSpacing: false }),
+      ...withFrontmatter("config:\n  themeVariables: { primaryColor: red }\n"),
+    })
+    await project.run(["--write", "a.mmd", "b.md"])
+    const formatted = formattedWithFrontmatter(
+      "config:\n  themeVariables: {primaryColor: red}\n",
+    )
+    expect(project.read("a.mmd")).toBe(formatted.mmd)
+    expect(project.read("b.md")).toBe(formatted.md)
+  })
+
+  it("reads proseWrap: it reaches the frontmatter", async () => {
+    project.write({
+      ".prettierrc": JSON.stringify({ proseWrap: "never" }),
+      ...withFrontmatter("title: one two three\n  four five six\n"),
+    })
+    await project.run(["--write", "a.mmd", "b.md"])
+    const formatted = formattedWithFrontmatter(
+      "title: one two three four five six\n",
+    )
+    expect(project.read("a.mmd")).toBe(formatted.mmd)
+    expect(project.read("b.md")).toBe(formatted.md)
+  })
+
+  it("reads trailingComma: it reaches a flow collection of the frontmatter that breaks", async () => {
+    const frontmatter =
+      "config:\n  themeVariables: { primaryColor: red, lineColor: blue, textColor: green }\n"
+    project.write({
+      ".prettierrc": JSON.stringify({ printWidth: 40, trailingComma: "none" }),
+      ...withFrontmatter(frontmatter),
     })
     await project.run(["--write", "a.mmd"])
     expect(project.read("a.mmd")).toBe(
-      '---\ntitle:   "T"\n---\nflowchart LR\n  A --> B\n',
+      formattedWithFrontmatter(
+        "config:\n  themeVariables:\n    {\n      primaryColor: red,\n      lineColor: blue,\n      textColor: green\n    }\n",
+      ).mmd,
     )
   })
 
-  it("formats whole diagrams whatever range the configuration sets", async () => {
+  it("formats a file whose lines end with \\r\\n whatever range the configuration sets", async () => {
+    const crlfDiagram = "flowchart LR\r\nA-->B\r\n"
     project.write({
-      ".prettierrc.json": JSON.stringify({ rangeStart: 0, rangeEnd: 1 }),
+      ".prettierrc.json": JSON.stringify({ rangeEnd: 0 }),
+      "a.mmd": crlfDiagram,
+      "b.md": markdown,
+    })
+    await project.run(["--write", "a.mmd", "b.md"])
+    expect(project.read("a.mmd")).toBe("flowchart LR\r\n  A --> B\r\n")
+    expect(project.read("b.md")).toBe(formattedMarkdown)
+  })
+
+  it.each([
+    {
+      name: "a range that selects no text",
+      option: { rangeStart: 4, rangeEnd: 4 },
+    },
+    { name: "cursorOffset", option: { cursorOffset: 5 } },
+    { name: "requirePragma", option: { requirePragma: true } },
+    { name: "insertPragma", option: { insertPragma: true } },
+    { name: "checkIgnorePragma", option: { checkIgnorePragma: true } },
+  ])("does not read $name from the configuration", async ({ option }) => {
+    project.write({
+      ".prettierrc.json": JSON.stringify(option),
       "a.mmd": diagram,
       "b.md": markdown,
     })
@@ -909,20 +981,31 @@ describe("Configuration", () => {
     expect(project.read("b.md")).toBe(formattedMarkdown)
   })
 
-  it("does not let the cursor or the pragma options of the configuration change the output", async () => {
+  it("does not read the options of other languages, even with a value Prettier would refuse", async () => {
     project.write({
-      ".prettierrc.json": JSON.stringify({
-        cursorOffset: 5,
-        requirePragma: true,
-        insertPragma: true,
-        checkIgnorePragma: true,
-      }),
+      ".prettierrc.json": JSON.stringify({ semi: "yes", arrowParens: 3 }),
       "a.mmd": diagram,
-      "b.md": markdown,
     })
-    await project.run(["--write", "a.mmd", "b.md"])
+    expect(await project.run(["--write", "a.mmd"])).toEqual({
+      code: 0,
+      stdout: listed("a.mmd"),
+      stderr: "",
+    })
     expect(project.read("a.mmd")).toBe(formattedDiagram)
-    expect(project.read("b.md")).toBe(formattedMarkdown)
+  })
+
+  it("is an error for a value of a read option that Prettier refuses", async () => {
+    project.write({
+      ".prettierrc.json": JSON.stringify({ printWidth: "wide" }),
+      "a.mmd": diagram,
+    })
+    const run = await project.run(["--write", "a.mmd"])
+    expect(run.code).toBe(2)
+    expect(run.stdout).toBe("")
+    expect(run.stderr).toBe(
+      'a.mmd: error: Invalid printWidth value. Expected an integer, but received "wide".\n',
+    )
+    expect(project.read("a.mmd")).toBe(diagram)
   })
 
   it("is an error when the configuration cannot be read", async () => {

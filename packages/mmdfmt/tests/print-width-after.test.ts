@@ -1,12 +1,12 @@
 import { describe, expect, it } from "vitest"
-import type { Options } from "prettier"
 import { printWidthAfter } from "../src/diagram.ts"
+import type { ReadOptions } from "../src/options.ts"
 
 /** A configuration with only a line width and a tab width set. */
 function options(
   printWidth: number | undefined,
   tabWidth: number | undefined = undefined,
-): Options {
+): ReadOptions {
   return { printWidth, tabWidth }
 }
 
