@@ -17,7 +17,7 @@ import {
   dbOfText,
   defaultEmbedded,
   writtenEmbeddedTexts,
-  writtenTextKeptUpToSemicolons,
+  writtenTextKeptUpToSeparators,
   describeFrontmatterChange,
 } from "./db-reading.ts"
 
@@ -4014,7 +4014,7 @@ describe("style semicolons", () => {
       ),
     ).toEqual(dbBefore)
     expect(writtenEmbeddedTexts(output)).toEqual(writtenEmbeddedTexts(input))
-    expect(writtenTextKeptUpToSemicolons(input, output)).toBe(true)
+    expect(writtenTextKeptUpToSeparators(input, output)).toBe(true)
     expect(await describeFrontmatterChange(input, output)).toBeNull()
   })
 })

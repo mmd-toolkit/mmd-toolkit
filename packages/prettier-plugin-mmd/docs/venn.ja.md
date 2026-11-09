@@ -166,8 +166,8 @@ set A
 規則は構文に対して局所的で、正規化後の最終状態を探すものではないためです。
 title は行の残りを値として取るので、title の後の文に見える語は分けられません。
 飲み込まれる断片は書かれた行の隣とともに保ちます。
-[fixture: venn/statements-one-per-line/directive-in-declaration-group]
 [corpus fixture: venn/db-indent-after-same-line-explicit-text]
+[fixture: venn/statements-one-per-line/directive-in-declaration-group]
 [corpus fixture: venn/db-indent-after-same-line-style]
 [corpus fixture: venn/db-indent-after-same-line-title]
 [corpus fixture: venn/header-statement-on-line]
@@ -477,10 +477,10 @@ union A, B:007
 
 プロパティは `key:value`、区切りはコンマと空白1つにします。
 短い句読点と値の空白を区別するためです。
-裸の値は1つの `VennLiteral` として、
-Db が単位を空白で結ぶ場合も隣接する単位と空白を保ちます。
-隙間を整えても Db は変わりませんが、木は裸の値を書かれた綴りのまま持つので、
-それを保てばプリンターに第二の字句解析器が要りません。
+裸の値は、書かれた 1 つの `VennLiteral` です。
+単位の間の空白とタブの連続は、rgb・rgba の括弧の外では空白 1 つにします。
+mermaid.js は単位を空白 1 つで結ぶので、Db は同じです。
+単位と単位の間に空白があるかどうかは、書かれたまま保ちます。
 rgb・rgba の内部の空白は別で、成分の隙間を変えると Db が変わり、
 結んだ裸の値を引用符で囲んでも変わります。
 引用符つきの値、rgb・rgba 全体、キーの大小文字、重複と別々の文も保ちます。
@@ -499,7 +499,8 @@ rgb・rgba の内部の空白は別で、成分の隙間を変えると Db が�
 [corpus fixture: venn/lex-style-single-number-whole-spelling]
 [fixture: venn/style-properties/property-directives]
 [fixture: venn/style-properties/prototype-repeat]
-[fixture: venn/style-properties/style-atoms-kept]
+[fixture: venn/style-properties/style-atoms-spaced]
+[fixture: venn/style-properties/style-words-run-spaced]
 [fixture: venn/style-properties/style-atoms-normalize-equal-control]
 [fixture: venn/style-properties/style-color-kept]
 [corpus fixture: venn/db-form-style-rgb]
@@ -713,15 +714,16 @@ title T
 先頭のディレクティブは暗黙と明示の text を分ける、
 論理的な字下げの正とゼロを保ちます。
 内部の隙間の関係を保ち、最初のディレクティブの前の字下げを決めます。
+埋め込み、複数行、セミコロンで止まるもの、末尾のものの境界を保ちます。
+埋め込みデータは整形しません。
+
+[fixture: venn/directives/unclosed-after-doubled-semicolon]
+
 先行する複数のディレクティブの間の空白も正の印です。
 内部の隙間が印にならない暗黙の行だけ、
 最初のディレクティブの前に設定の1段を足します。
 通常行と保持行で同じ規則を使います。
 除去が全ての隙間を結ぶためです。
-埋め込み、複数行、セミコロンで止まるもの、末尾のものの境界を保ちます。
-埋め込みデータは整形しません。
-
-[fixture: venn/directives/unclosed-after-doubled-semicolon]
 
 ヘッダーや文の行では、
 後の文を別の行へ移すときもディレクティブを前のテキストと同じ行に保ちます。

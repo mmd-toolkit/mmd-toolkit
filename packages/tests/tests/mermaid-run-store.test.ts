@@ -239,6 +239,27 @@ function storeAt(
   })
 }
 
+/** The names of the directories in `root` that a process is deleting. */
+function removedIn(root: string): string[] {
+  return directoriesIn(root).filter((name) => name.startsWith(".removed-"))
+}
+
+/**
+ * Waits for the processes that delete directories of the store to end. Each
+ * renames its directory to `.removed-` and then deletes it, so the other
+ * directories of the store are final before the deleting is over; removing the
+ * directory of the test then fails on Windows while a process still deletes
+ * files in it. The name is gone once the process has deleted everything.
+ */
+async function deletionsEnded(root: string): Promise<void> {
+  await vi.waitFor(
+    () => {
+      expect(removedIn(root)).toEqual([])
+    },
+    { timeout: 10_000 },
+  )
+}
+
 describe("removing what is no longer needed", () => {
   const first = "2026-01-01"
 
@@ -308,6 +329,7 @@ describe("removing what is no longer needed", () => {
       },
       { timeout: 10_000 },
     )
+    await deletionsEnded(directory)
   })
 
   it("removes the directory of a past day left with no result", async () => {
@@ -323,6 +345,7 @@ describe("removing what is no longer needed", () => {
       },
       { timeout: 10_000 },
     )
+    await deletionsEnded(directory)
     expect(isDeepStrictEqual(storeAt("code", later).read("t", {}), RUN)).toBe(
       true,
     )
@@ -402,6 +425,9 @@ describe("removing what is no longer needed", () => {
       { timeout: 10_000 },
     )
     expect(existsSync(going)).toBe(true)
+    // No process deletes `going`, so it would stay in the wait below.
+    rmSync(going, { recursive: true })
+    await deletionsEnded(directory)
   })
 })
 
@@ -629,9 +655,13 @@ describe("pruning in the background", () => {
     expect(existsSync(path.join(directory, ".full"))).toBe(false)
     utimesSync(marker, new Date(now - tenMinutes), new Date(now - tenMinutes))
     store.pruneInBackground()
+    // The marker is there from the start, so it does not show the end of the
+    // prune (see `pruneEnded`). The process takes the lock before it marks the
+    // store full, and removes the lock last.
     await vi.waitFor(
       () => {
         expect(existsSync(path.join(directory, ".full"))).toBe(true)
+        expect(existsSync(path.join(directory, ".pruning"))).toBe(false)
       },
       { timeout: 20_000 },
     )
@@ -703,11 +733,7 @@ describe("a process that cannot be started", () => {
         expect(existsSync(path.join(directory, ".pruned"))).toBe(true)
         expect(existsSync(path.join(directory, ".pruning"))).toBe(false)
         expect(existsSync(path.join(directory, otherCode))).toBe(false)
-        expect(
-          directoriesIn(directory).filter((name) =>
-            name.startsWith(".removed-"),
-          ),
-        ).toEqual([])
+        expect(removedIn(directory)).toEqual([])
       },
       { timeout: 20_000 },
     )

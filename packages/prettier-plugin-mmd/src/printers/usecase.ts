@@ -3,7 +3,8 @@ import type { UsecaseStatement } from "@mmd-toolkit/ast"
 import type { MermaidAst } from "../parser.ts"
 import type { AtomLayout } from "./atoms.ts"
 import { printAtoms } from "./atoms.ts"
-import { formatDataBlocks } from "./data-blocks.ts"
+import type { StatementListsOf } from "./data-blocks.ts"
+import { formatDataBlocks, writtenIndentationRule } from "./data-blocks.ts"
 import type { BlockBounds, BlockRules, PrintedBlock } from "./blocks.ts"
 import {
   openingLine,
@@ -70,6 +71,22 @@ function printLine(
   }).doc
 }
 
+/** The lists of statements that the node holds, the diagram included. */
+function statementListsOf(node: MermaidAst): ReturnType<StatementListsOf> {
+  if (node.type === "UsecaseDiagram") {
+    return [{ head: node.range[0], statements: node.body }]
+  }
+  const classified = classifyUsecaseStatement(node)
+  return classified?.kind === "boundary"
+    ? [{ head: node.range[0], statements: classified.statement.body }]
+    : []
+}
+
+/** Whether the node holds statements of its own. */
+function holdsStatements(node: MermaidAst): boolean {
+  return statementListsOf(node).length > 0
+}
+
 /** Only system boundaries contain declaration bodies (docs/usecase.md). */
 function printStatements(
   source: Source,
@@ -81,8 +98,12 @@ function printStatements(
   const rules: BlockRules<UsecaseStatement> = {
     kept: findUsecaseKeptLines(source),
     printedEnd: (statement) => findUsecasePrintedEnd(source, statement),
-    holdsStatements: (statement) =>
-      classifyUsecaseStatement(statement).kind === "boundary",
+    holdsStatements,
+    writtenIndentationOf: writtenIndentationRule(
+      source,
+      options.useTabs,
+      statementListsOf,
+    ),
     isDroppedAtTopLevel: () => false,
     keepsWhitespaceLineAfterComment: false,
     keepsDirectiveLinesUnindented: false,
@@ -104,6 +125,8 @@ function printStatements(
               kept: rules.kept,
               statement: indentationOf(options, depth),
               tabWidth: options.tabWidth,
+              useTabs: options.useTabs,
+              statementListsOf,
             },
           ),
           depth,

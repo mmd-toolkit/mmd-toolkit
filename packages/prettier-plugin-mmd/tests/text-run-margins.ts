@@ -143,7 +143,7 @@ function withoutRepeats(path: readonly string[]): string {
 }
 
 /** The text with each run of spaces and tabs replaced by one space. */
-function withoutRuns(text: string): string {
+export function withoutRuns(text: string): string {
   let collapsed = ""
   let inRun = false
   for (const character of text) {

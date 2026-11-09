@@ -1,3 +1,4 @@
+import { stripVTControlCharacters } from "node:util"
 import { describe, expect, it } from "vitest"
 import {
   formatMarkdown,
@@ -99,7 +100,10 @@ describe("input rejected because a directive lies inside a keyword", () => {
     const error: unknown = await formatMermaid(input).catch((e: unknown) => e)
     expect(error).toBeInstanceOf(SyntaxError)
     expect((error as Error).cause).toMatchObject({ name: "ParseError" })
-    expect((error as Error).message).toContain("> 2 | sub%%{init: {}}%%graph S")
+    // Prettier colors the code frame where the environment asks for colors.
+    expect(stripVTControlCharacters((error as Error).message)).toContain(
+      "> 2 | sub%%{init: {}}%%graph S",
+    )
   })
 
   it("is left to Prettier inside Markdown", async () => {

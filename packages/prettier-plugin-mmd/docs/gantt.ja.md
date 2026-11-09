@@ -291,13 +291,111 @@ gantt
 ### タスクのデータ
 
 タスクは、説明、コロン、項目の順に印字します。
-説明は、テキストとコロンの間の空白も含めて、書かれたまま印字します。
-その空白は説明の一部で Db が持つので、
-`A task           :a1` と `A task :a1` は別のタスクであり、
-コロンをそろえる空白も残ります。 [fixture: task-data/description-padding-kept]
-[fixture: task-data/colon-after-description-as-written]
+説明のテキストは書かれたまま印字し、テキストとコロンの間の空白は説明の一部で、
+Db が持つので、`A task           :a1` と `A task :a1` は、
+mermaid.js にとって 2 つの説明です。
+その空白がどう書かれていても同じ図を描くので、次の段落のとおり、
+名前の後ろに桁そろえの空白がある所で、その空白を整えます。
+（[同じに描かれるキーワードの後のテキスト](./compatibility.ja.md#同じに描かれるキーワードの後のテキスト)）。
+[fixture: task-data/description-padding-tightened]
 `#` や `;` で始まる説明も、ほかと同じタスクのテキストです。
 [fixture: task-data/hash-and-semicolon-descriptions]
+
+セクションの名前のどれかで、
+コロンの前に桁そろえの空白（空白が 2 文字以上かタブ）があるときは、
+コロンがすでに 1 つの桁にそろっているかどうかによらず、
+セクションのコロンを最長の名前の後に空白 1 つを置いた所にそろえます。
+最長の名前に必要な桁より後ろにそろえると、名前とデータの間が広がり、
+読みにくくなるので、その桁は残しません。
+作者は長い名前を足し、ほかの名前の空白を整形に任せられます。
+名前の幅は Prettier がテキストに与える幅なので、全角文字は 2 と数え、
+整える空白には半角空白を使い、タブも置き換えます。
+[fixture: task-data/colon-column-new-longest-name]
+[fixture: task-data/description-padding-tightened]
+[fixture: task-data/colon-column-wide-characters]
+[fixture: task-data/colon-column-use-tabs]
+
+桁そろえの空白があり、コロンがすべて同じ 1 つの桁にあるセクションどうしは、
+桁を共有し続けます。
+それぞれの最長の名前の中で最も長い名前の後に空白 1 つを置いた桁にし、
+余分な空白だけを除きます。
+桁は名前の先頭から数えます。
+すべてのセクションのタスクを同じように字下げし、
+図を印字したときにコロンが並ぶのが、その桁だからです。
+コロンがすべて同じ桁にはないセクションは、それだけで、
+自分の最長の名前から桁を決めます。
+すべての名前の後ろに空白が 1 つあり、
+コロンが桁を共有する組と同じ桁にあるセクションは、
+その組の最長の名前を決める対象に含め、書かれたまま残します。
+最初の `section` より前のタスクは、1 段浅い所にあるので、
+それだけで 1 つのセクションとし、ほかのセクションと桁を共有しません。
+[fixture: task-data/colon-column-sections-share-one-column]
+[fixture: task-data/colon-column-one-task-sections]
+[fixture: task-data/colon-column-uniform-section-shares]
+[fixture: task-data/colon-column-sections-in-one-column-and-others]
+[fixture: task-data/colon-column-sections-not-sharing]
+[fixture: task-data/colon-column-sections-in-different-columns]
+[fixture: task-data/colon-column-before-first-section]
+[fixture: task-data/colon-column-sections-and-preamble]
+
+次の場合は、コロンを動かしても読みやすくならないか、図が変わりうるので、
+コロンをその位置に残します。
+どの名前もコロンの前の空白が 1 つ以下か、空白がないセクションは、
+作者がテキストの隣にコロンを置いたので、そのままにします。
+そろえた行が `printWidth` より長く、元の行よりも長くなるセクションは、
+長い名前 1 つがすべてのコロンを大きく右に押すので、そのままにします。
+`white-space` を含む図は、図の CSS が名前の末尾の空白を描くことがあり、
+そのときは空白で図が変わるので、そのままにします。
+名前の中にタブがあるセクションも、そのままにします。
+タブはエディターの次のタブ位置まで進むので、
+Prettier が数えるどの幅でもコロンをそろえられないからです。
+[fixture: task-data/colon-column-tab-in-name-kept]
+[fixture: task-data/colon-column-single-space-kept]
+[fixture: task-data/colon-column-too-wide-kept]
+[fixture: task-data/colon-column-white-space-kept]
+
+次の場合、タスクは書かれたまま残し、ほかのタスクがそろえる対象に含めないので、
+その空白はほかのタスクの桁を決めません。
+
+- 行を書かれたまま印字するとき（[1 行に 1 文](#1-行に-1-文)と、
+  後述する空白だけのデータを参照）。
+- 複数行にわたるとき。
+- 名前がディレクティブで終わるとき。
+  ディレクティブの隣の空白は、
+  残すからです（[ディレクティブ](#ディレクティブ)を参照）。
+- 同じ行でその前に何かがあるとき。
+  名前が行頭から始まらず、ほかのタスクとコロンがそろわないからです。
+  また、コロンの前の空白が、行の規則の読む所に入りえます。
+  規則は、`style` や `classDef` の後の `:` より後ろの空白を読み、
+  名前は `:` を含まないので、タスクのコロンより前の `:` は、
+  その前にある文からしか来ないからです（[1 行に 1 文](#1-行に-1-文)を参照）。
+
+[fixture: task-data/colon-column-line-as-written-kept]
+[fixture: task-data/colon-column-task-over-lines-kept]
+[fixture: task-data/colon-column-task-after-statement-kept]
+[fixture: task-data/colon-column-name-ending-with-directive-kept]
+
+行にあるそれ以外のものは、タスクをそろえる妨げになりません。
+名前の中やほかの場所にある `;`、コメント、名前の中やデータの後のディレクティブ、
+行の規則が読む行があっても、タスクはそろえます。
+行頭から始まるタスクの桁そろえの空白は、その行の最初の `:` より前にあり、
+規則が読むのは、その後ろの空白だけだからです。
+名前と行の残りの幅は、書かれたままの幅です。
+コロンをテキスト上でそろえるので、名前の中のディレクティブも幅に数え、
+データの後のコメントやディレクティブも `printWidth` に数えます。
+プラグインが数えるのは、図の行だけです。
+リストや引用の中の Markdown のコードブロックでは、
+Prettier は行の前にあるものの幅を引かずに `printWidth` をそのまま渡すので、
+そこでは行が画面で `printWidth` より広くなることがあります。
+`mmdfmt` は、各行の前に書くものの幅を引いた幅を渡します。
+詳しくは、
+[コードブロックの詳細](../../mmdfmt/README.ja.md#コードブロックの詳細)
+を参照してください。
+[test: Gantt in a list item: the width is that of the diagram alone]
+[fixture: task-data/colon-column-name-with-semicolon]
+[fixture: task-data/colon-column-style-rule-line]
+[fixture: task-data/colon-column-directive-inside-name]
+[fixture: task-data/colon-column-comment-after-data]
 
 最初の項目はコロンに接し、`,` は前の項目に接して、
 後ろに項目があれば空白 1 つを置きます。
@@ -331,7 +429,7 @@ mermaid.js はコロンの後に 1 文字を要求します。
 その位置に残します（[ディレクティブ](#ディレクティブ) を参照）。
 
 入力
-([task-data/description-padding-kept-input.mmd](../tests/fixtures/gantt/task-data/description-padding-kept-input.mmd)):
+([task-data/description-padding-tightened-input.mmd](../tests/fixtures/gantt/task-data/description-padding-tightened-input.mmd)):
 
 ```mmd
 gantt
@@ -341,13 +439,49 @@ Future task               :         des3, after des2, 5d
 ```
 
 出力
-([task-data/description-padding-kept-output.mmd](../tests/fixtures/gantt/task-data/description-padding-kept-output.mmd)):
+([task-data/description-padding-tightened-output.mmd](../tests/fixtures/gantt/task-data/description-padding-tightened-output.mmd)):
 
 ```mmd
 gantt
-  Completed task            :done, des1, 2014-01-06, 2014-01-08
-  Active task               :active, des2, 2014-01-09, 3d
-  Future task               :des3, after des2, 5d
+  Completed task :done, des1, 2014-01-06, 2014-01-08
+  Active task    :active, des2, 2014-01-09, 3d
+  Future task    :des3, after des2, 5d
+```
+
+入力
+([task-data/colon-column-sections-in-one-column-and-others-input.mmd](../tests/fixtures/gantt/task-data/colon-column-sections-in-one-column-and-others-input.mmd)):
+
+```mmd
+gantt
+  section A
+    Task A                    :a1, 2014-01-01, 3d
+    Task B long               :a2, after a1, 2d
+  section B
+    Other                     :a3, after a2, 1d
+  section C
+    Single   :a4, after a3, 1d
+    Quite a long name :a5, after a4, 1d
+  section D
+    Alone :a6, after a5, 1d
+    Brief :a7, after a6, 1d
+```
+
+出力
+([task-data/colon-column-sections-in-one-column-and-others-output.mmd](../tests/fixtures/gantt/task-data/colon-column-sections-in-one-column-and-others-output.mmd)):
+
+```mmd
+gantt
+  section A
+    Task A      :a1, 2014-01-01, 3d
+    Task B long :a2, after a1, 2d
+  section B
+    Other       :a3, after a2, 1d
+  section C
+    Single            :a4, after a3, 1d
+    Quite a long name :a5, after a4, 1d
+  section D
+    Alone :a6, after a5, 1d
+    Brief :a7, after a6, 1d
 ```
 
 入力

@@ -240,11 +240,13 @@ built is in `docs/development.md`.
 - Formatted cases without a comparison Db remain explicit in the tests and
   report, and still receive the shared idempotence and written-text checks.
 - `tests/format.test.ts` and the shared `tests/corpus.ts` apply
-  `writtenTextKeptUpToSemicolons` from `tests/db-reading.ts` to every diagram,
+  `writtenTextKeptUpToSeparators` from `tests/db-reading.ts` to every diagram,
   comparing text outside frontmatter and whitespace and allowing only removal of
-  input `;`, even when Db comparison is unavailable. This shared check does not
-  prove preservation of whitespace or semicolons inside values; keep
-  exact-output fixtures for their rules.
+  input `;` and of the `,` between the entries of a data block that is printed
+  on lines, even when Db comparison is unavailable. This shared check does not
+  prove preservation of whitespace or semicolons inside values, or that a
+  removed `,` separates entries and is not text of a string; keep exact-output
+  fixtures for their rules, checked against mermaid.js.
 - Unit tests: dispatch, failures, and Markdown code blocks
   (`tests/dispatch.test.ts`, `failure.test.ts`, `markdown.test.ts`,
   `markdown-flowchart.test.ts`). For a new diagram type, add an example that is

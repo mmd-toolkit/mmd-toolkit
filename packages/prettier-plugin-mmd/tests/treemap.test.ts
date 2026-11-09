@@ -7,7 +7,7 @@ import {
   describeFrontmatterChange,
   treeProblemsOfText,
   writtenEmbeddedTexts,
-  writtenTextKeptUpToSemicolons,
+  writtenTextKeptUpToSeparators,
 } from "./db-reading.ts"
 import { dbForFormattingComparison } from "./db-comparison.ts"
 import { treemapCases } from "./treemap-cases.ts"
@@ -36,7 +36,7 @@ describe("treemap escaped cases", () => {
     ).toEqual(dbBefore)
     expect(writtenEmbeddedTexts(after)).toEqual(writtenEmbeddedTexts(before))
     expect(await describeFrontmatterChange(before, after, options)).toBeNull()
-    expect(writtenTextKeptUpToSemicolons(before, after)).toBe(true)
+    expect(writtenTextKeptUpToSeparators(before, after)).toBe(true)
     expect(treeProblemsOfText(before)).toEqual([])
     expect(treeProblemsOfText(after)).toEqual([])
   })

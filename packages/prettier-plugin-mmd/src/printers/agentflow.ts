@@ -7,7 +7,8 @@ import type {
 } from "@mmd-toolkit/ast"
 import type { MermaidAst } from "../parser.ts"
 import { printAtoms } from "./atoms.ts"
-import { formatDataBlocks } from "./data-blocks.ts"
+import type { StatementListsOf } from "./data-blocks.ts"
+import { formatDataBlocks, writtenIndentationRule } from "./data-blocks.ts"
 import { findAgentflowKeptLines } from "./agentflow-kept-lines.ts"
 import type { BlockRules } from "./blocks.ts"
 import {
@@ -103,6 +104,8 @@ export function printAgentflow(
       kept: findAgentflowKeptLines(source),
       statement: indentationOf(bodyOptions, depth),
       tabWidth: options.tabWidth,
+      useTabs: options.useTabs,
+      statementListsOf,
     },
   )
   return printAtoms(source, layout, {
@@ -133,7 +136,7 @@ function printDiagram(
       end: source.text.length,
       isTopLevel: true,
     },
-    agentflowBlockRules(source),
+    agentflowBlockRules(source, options),
   )
   const header = openingLine(
     printAtoms(source, layoutHeader(source, diagram, headerEnd), {
@@ -144,6 +147,22 @@ function printDiagram(
     false,
   )
   return printDiagramBlock(source, header, block, options)
+}
+
+/** The lists of statements that the node holds, the diagram included. */
+function statementListsOf(node: MermaidAst): ReturnType<StatementListsOf> {
+  if (node.type === "AgentflowDiagram") {
+    return [{ head: node.range[0], statements: node.body }]
+  }
+  const classified = classifyAgentflowStatement(node)
+  return classified?.kind === "container"
+    ? [{ head: node.range[0], statements: classified.statement.body }]
+    : []
+}
+
+/** Whether the node holds statements of its own. */
+function holdsStatements(node: MermaidAst): boolean {
+  return statementListsOf(node).length > 0
 }
 
 /**
@@ -170,7 +189,7 @@ function printContainer(
       end: endKeyword.range[0],
       isTopLevel: false,
     },
-    agentflowBlockRules(source),
+    agentflowBlockRules(source, options),
   )
   const headerDoc = printAtoms(
     source,
@@ -182,6 +201,9 @@ function printContainer(
         kept: findAgentflowKeptLines(source),
         statement: indentationOf(options, depth),
         tabWidth,
+        useTabs: options.useTabs,
+        decidesIndentation: true,
+        statementListsOf,
       },
     ),
     {
@@ -202,12 +224,19 @@ function printContainer(
  * statements, and a `;` of its own is dropped at the top level, where the
  * Db does not list it.
  */
-function agentflowBlockRules(source: Source): BlockRules<AgentflowStatement> {
+function agentflowBlockRules(
+  source: Source,
+  options: ParserOptions<MermaidAst>,
+): BlockRules<AgentflowStatement> {
   return {
     kept: findAgentflowKeptLines(source),
     printedEnd: (statement) => findPrintedEnd(source, statement),
-    holdsStatements: (statement) =>
-      classifyAgentflowStatement(statement).kind === "container",
+    holdsStatements,
+    writtenIndentationOf: writtenIndentationRule(
+      source,
+      options.useTabs,
+      statementListsOf,
+    ),
     isDroppedAtTopLevel: (statement) =>
       statement.type === "AgentflowEmptyStatement",
     keepsWhitespaceLineAfterComment: false,

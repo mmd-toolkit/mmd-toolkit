@@ -1,6 +1,7 @@
 /** Escaped usecase Unicode/control/EOL cases keep their contextual reading. */
 import { describe, expect, it } from "vitest"
 import { formatMermaid } from "./helpers.ts"
+import { dbForFormattingComparison } from "./db-comparison.ts"
 import { dataBlockEmbeddedForFormattingComparison } from "./data-block-margins.ts"
 import {
   dbOfText,
@@ -19,7 +20,15 @@ describe("usecase escaped cases", () => {
     const before = input.startsWith("\ufeff") ? input.slice(1) : input
     const after = output.startsWith("\ufeff") ? output.slice(1) : output
     const embedded = defaultEmbedded()
-    expect(dbOfText(after, embedded)).toEqual(dbOfText(before, embedded))
+    const dbBefore = dbOfText(before, embedded)
+    expect(
+      dbForFormattingComparison(
+        dbBefore,
+        dbOfText(after, embedded),
+        before,
+        after,
+      ),
+    ).toEqual(dbBefore)
     expect(
       dataBlockEmbeddedForFormattingComparison(
         writtenEmbeddedTexts(before),

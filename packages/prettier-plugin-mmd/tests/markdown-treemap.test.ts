@@ -138,8 +138,8 @@ const cases: readonly MarkdownCase[] = [
     payloadInput: "treemap\nclassDef zz color:navy  ",
     options: {},
     hostTrims: true,
-    output: "```mermaid\ntreemap\n  classDef zz color:navy\n```\n",
-    payloadOutput: "treemap\n  classDef zz color:navy\n",
+    output: "```mermaid\ntreemap\n  classDef zz color: navy\n```\n",
+    payloadOutput: "treemap\n  classDef zz color: navy\n",
   },
   {
     name: "treemap Markdown: rejected",

@@ -18,7 +18,7 @@ import {
   defaultEmbedded,
   describeFrontmatterChange,
   writtenEmbeddedTexts,
-  writtenTextKeptUpToSemicolons,
+  writtenTextKeptUpToSeparators,
 } from "./db-reading.ts"
 import { dataBlockEmbeddedForFormattingComparison } from "./data-block-margins.ts"
 import { dbForFormattingComparison } from "./db-comparison.ts"
@@ -52,7 +52,7 @@ describe("formatting fixtures", () => {
       const twice = await format(fixture, output)
       expect(twice).toBe(output)
       expect(await format(fixture, twice)).toBe(twice)
-      expect(writtenTextKeptUpToSemicolons(fixture.input, output), output).toBe(
+      expect(writtenTextKeptUpToSeparators(fixture.input, output), output).toBe(
         true,
       )
       const embedded = defaultEmbedded()
@@ -82,7 +82,7 @@ describe("formatting fixtures", () => {
   )
 })
 
-describe("written semicolon boundaries", () => {
+describe("written separator boundaries", () => {
   it.each([
     [
       "style terminator after a directive",
@@ -132,7 +132,37 @@ describe("written semicolon boundaries", () => {
       "classDiagram\nclass A\n%% keep\n",
       false,
     ],
+    [
+      "comma between the entries of a split data block",
+      'flowchart LR\nA@{ shape: rect, label: "x" , pos: "t" }\n',
+      'flowchart LR\n  A@{\n    shape: rect\n    label: "x"\n    pos: "t"\n  }\n',
+      true,
+    ],
+    [
+      "comma inside a string of a data block on one line",
+      'flowchart LR\nA@{ label: "a, b" }\n',
+      'flowchart LR\n  A@{ label: "a b" }\n',
+      false,
+    ],
+    [
+      "comma of a label beside a split data block",
+      'flowchart LR\nA["a,b"]@{ shape: rect, pos: "t" }\n',
+      'flowchart LR\n  A["ab"]@{\n    shape: rect\n    pos: "t"\n  }\n',
+      false,
+    ],
+    [
+      "trailing comma of a data block printed on lines",
+      "flowchart LR\nA@{ shape: rect, pos: t, }\n",
+      "flowchart LR\n  A@{\n    shape: rect\n    pos: t\n  }\n",
+      false,
+    ],
+    [
+      "entry changed by a split data block",
+      "flowchart LR\nA@{ shape: rect, pos: t }\n",
+      "flowchart LR\n  A@{\n    shape: rect\n    pos: b\n  }\n",
+      false,
+    ],
   ])("%s", (_title, before, after, kept) => {
-    expect(writtenTextKeptUpToSemicolons(before, after)).toBe(kept)
+    expect(writtenTextKeptUpToSeparators(before, after)).toBe(kept)
   })
 })

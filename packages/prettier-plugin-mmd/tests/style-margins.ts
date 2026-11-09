@@ -12,6 +12,23 @@ export const styleDiagramTypes: ReadonlySet<string> = new Set([
   "stateDiagram",
   "swimlane",
   "treemap",
+  "usecase",
+])
+
+/**
+ * The diagram types whose printer prints a run of spaces and tabs between the
+ * words of a style as one space.
+ */
+const runCollapsingDiagramTypes: ReadonlySet<string> = new Set([
+  "agentflow",
+  "block",
+  "classDiagram",
+  "flowchart-elk",
+  "flowchart-v2",
+  "stateDiagram",
+  "swimlane",
+  "treemap",
+  "usecase",
 ])
 
 /** The diagram types whose styles can reach a link. */
@@ -20,6 +37,7 @@ const linkStyleDiagramTypes: ReadonlySet<string> = new Set([
   "flowchart-elk",
   "flowchart-v2",
   "swimlane",
+  "usecase",
 ])
 
 /** What mermaid.js reads of a style besides its text. */
@@ -51,6 +69,14 @@ interface StyleReading {
    * `:`, is no margin; its amount is.
    */
   readonly splitsLabelStyles: boolean
+  /**
+   * The printer prints a run of spaces and tabs between the words of a style
+   * as one space, and mermaid.js keeps the run in the Db and draws the figure
+   * without it, so a run is no margin, except inside a string, a comment, or
+   * the parentheses of `url(`, and the escape after a backslash; whether
+   * whitespace stands between two words is.
+   */
+  readonly collapsesWordGaps: boolean
 }
 
 /**
@@ -60,16 +86,29 @@ interface StyleReading {
  * `StyleReading`.
  */
 function withoutStyleMargins(
-  style: string,
-  { readsStroke, readsLinkStyle, joinsStyles, splitsLabelStyles }: StyleReading,
+  written: string,
+  {
+    readsStroke,
+    readsLinkStyle,
+    joinsStyles,
+    splitsLabelStyles,
+    collapsesWordGaps,
+  }: StyleReading,
 ): string {
+  const style = collapsesWordGaps ? withoutWordRuns(written) : written
   const trimmed = style.trim()
   const escapedTail =
     joinsStyles && escapesNext(trimmed) && style !== style.trimEnd()
   const tail = escapedTail ? " " : ""
   const colon = trimmed.indexOf(":")
-  if (colon <= 0) return `${trimmed}${tail}`
-  const name = trimmed.slice(0, colon).trimEnd()
+  if (colon < 0) return `${trimmed}${tail}`
+  const beforeColon = trimmed.slice(0, colon)
+  const nameText = beforeColon.trimEnd()
+  // CSS reads the space that a backslash escapes as part of the name.
+  const name =
+    nameText !== beforeColon && escapesNext(nameText)
+      ? `${nameText} `
+      : nameText
   const gap =
     name.length < colon &&
     ((readsStroke && name.endsWith("stroke")) ||
@@ -88,6 +127,66 @@ function withoutStyleMargins(
     value === "" &&
     writtenValue !== ""
   return `${start ? " " : ""}${name}${gap ? " " : ""}:${blank ? " " : value}${tail}`
+}
+
+/**
+ * The text of a style with each run of spaces and tabs replaced by one space,
+ * except inside a string (`"…"` or `'…'`), a comment (`/*…*\/`), or the
+ * parentheses of `url(`, and the escape after a backslash, where CSS reads it
+ * as part of the value: the hexadecimal digits (at most six) and the one space
+ * or tab after them, or else the next character. What is not closed runs to
+ * the end of the text.
+ */
+function withoutWordRuns(text: string): string {
+  let result = ""
+  let position = 0
+  while (position < text.length) {
+    const character = text[position]
+    let next = position + 1
+    if (character === "\\") {
+      next = endOfEscape(text, position)
+    } else if (character === '"' || character === "'") {
+      next = endOfString(text, position)
+    } else if (text.startsWith("/*", position)) {
+      const close = text.indexOf("*/", position + 2)
+      next = close === -1 ? text.length : close + 2
+    } else if (text.slice(position, position + 4).toLowerCase() === "url(") {
+      next = position + 4
+      while (next < text.length && text[next] !== ")") {
+        if (text[next] === "\\") next++
+        else if (text[next] === '"' || text[next] === "'")
+          next = endOfString(text, next) - 1
+        next++
+      }
+      next = Math.min(next + 1, text.length)
+    } else if (character === " " || character === "\t") {
+      while (text[next] === " " || text[next] === "\t") next++
+      result += " "
+      position = next
+      continue
+    }
+    result += text.slice(position, next)
+    position = next
+  }
+  return result
+}
+
+/** The offset after the escape that starts at the backslash at `start`. */
+function endOfEscape(text: string, start: number): number {
+  let end = start + 1
+  while (end < start + 7 && "0123456789abcdefABCDEF".includes(text[end] ?? "-"))
+    end++
+  if (end === start + 1) return Math.min(start + 2, text.length)
+  return text[end] === " " || text[end] === "\t" ? end + 1 : end
+}
+
+/** The offset after the string that starts at the quote at `start`. */
+function endOfString(text: string, start: number): number {
+  for (let index = start + 1; index < text.length; index++) {
+    if (text[index] === "\\") index++
+    else if (text[index] === text[start]) return index + 1
+  }
+  return text.length
 }
 
 /** Whether a backslash at the end of a text escapes the next character. */
@@ -109,7 +208,10 @@ function isStyleKey(key: string): boolean {
  */
 function reachesLink(path: DbPath): boolean {
   const [key, owner] = [path.at(-1), path.at(-2)]
-  return key === "style" || (key === "styles" && owner === "classDefs")
+  return (
+    key === "style" ||
+    (key === "styles" && (owner === "classDefs" || owner === "relationships"))
+  )
 }
 
 /**
@@ -147,7 +249,9 @@ function joinsStylesAt(
  * margin there, and neither is the whitespace before a style of a link that
  * starts with `stroke:`, or the value of a `stroke` that is whitespace only,
  * and where mermaid.js joins the styles as they are, neither is the
- * whitespace after a backslash that ends a style (see `StyleReading`).
+ * whitespace after a backslash that ends a style, and in the diagram types of
+ * `runCollapsingDiagramTypes` a run of spaces and tabs between the words of a
+ * style is no margin (see `StyleReading`).
  */
 export function styleDbForFormattingComparison(
   before: DbSummary | null,
@@ -166,6 +270,7 @@ export function styleDbForFormattingComparison(
         diagramType === "block" &&
         key === "styles" &&
         path.at(-2) === "children",
+      collapsesWordGaps: runCollapsingDiagramTypes.has(diagramType),
     }
     return key !== undefined &&
       isStyleKey(key) &&

@@ -8,7 +8,7 @@ Markdownと`.mmd`ファイルの[Mermaid](https://mermaid.js.org/)の図を整�
 Markdownファイルのほかの部分は、1バイトも変えません。
 図は、[Prettier](https://prettier.io/)と、
 そのMermaidプラグインの[`prettier-plugin-mmd`](./index.ja.md)で整形します。
-[Prettierを知っている方へ](#prettierを知っている方へ)の2つの場合を除き、
+[Prettierを知っている方へ](#prettierを知っている方へ)の場合を除き、
 プラグインと同じ結果になります。
 
 ## どんなときに使うか
@@ -302,25 +302,61 @@ mmdfmt --stdin-filepath docs/guide.md
   警告の位置は、読んだときのテキストの中の位置です。
 - ほかの語尾のパスはエラーです。
 
-## インデント
+## 設定
 
-図のインデントは空白2つです。
+図のインデントは空白2つで、行の幅はPrettierの80です。
 ファイルに`.editorconfig`やPrettierの設定が適用されるときは、
-そのインデントを使います。
+`mmdfmt`はそのうち8つのオプションを読みます。
+`overrides`も含めてPrettierのCLIと同じように探します。
 `.editorconfig`の`indent_style`、`indent_size`、`tab_width`、
-または[Prettierの設定ファイル](https://prettier.io/docs/configuration)の
-`useTabs`と`tabWidth`で、`overrides`も含めてPrettierのCLIと同じように探します。
+`max_line_length`と、Prettierの設定ファイルのオプションです。
+設定ファイルについては、
+[Prettierの文書](https://prettier.io/docs/configuration)を参照してください。
 コードブロックでは、そのファイルはMarkdownファイルです。
 読めない設定ファイルはエラーです。
-たとえば、この`.editorconfig`は図に空白4つのインデントを付けます。
+たとえば、この`.editorconfig`は図に空白4つのインデントを付け、
+行を100桁まで許します。
 
 ```ini
 [*.{md,mmd,mermaid}]
 indent_style = space
 indent_size = 4
+max_line_length = 100
 ```
 
-設定のほかの項目は使いません。
+読む8つのオプションは次のとおりです。
+
+- `printWidth`は行の幅です。
+  行の幅が図の中で決めるのは、2つです。
+  1行に書いたデータブロック`@{ … }`を複数行で印字するかどうかと、
+  Ganttのセクションのタスクの`:`をそろえるかどうかです。
+  詳しくは、
+  [フォーマッターのオプション](./options.ja.md#行の長さ)を参照してください。
+  `max_line_length = off`は制限なしです。
+  リスト項目や引用の中のコードブロックでは、`printWidth`は、
+  各行の前に`mmdfmt`が書くものの幅を引いた幅です。
+  詳しくは、
+  [`mmdfmt`のREADME](../../../mmdfmt/README.ja.md#コードブロックの詳細)
+  を参照してください。
+- `tabWidth`と`useTabs`は、図のインデントを決めます。
+- `embeddedLanguageFormatting`、`singleQuote`、`bracketSpacing`、`proseWrap`、
+  `trailingComma`は、図のYAML frontmatterに効きます。
+  Prettierが`prettier-plugin-mmd`で整形する場合と同じです。
+  `embeddedLanguageFormatting: "off"`はfrontmatterを書かれたまま残します。
+
+`mmdfmt`はこれ以外のオプションを読みません。
+後の版のPrettierが足すオプションも読みません。
+範囲（`rangeStart`と`rangeEnd`）、`cursorOffset`、
+プラグマのオプション（`requirePragma`、`insertPragma`、`checkIgnorePragma`）、
+`filepath`、ほかの言語のオプションは使いません。
+`plugins`と`parser`も使いません。
+`mmdfmt`は常に`prettier-plugin-mmd`で整形するので、
+設定が挙げるプラグインは読み込みません。
+`endOfLine`は使いません。
+ファイルの改行コードを残すからです。
+詳しくは、
+[`mmdfmt`のREADME](../../../mmdfmt/README.ja.md#コードブロックの詳細)
+を参照してください。
 
 ## エラーと終了コード
 
@@ -367,7 +403,8 @@ Prettierの`--check`と同じく、要約は整形できないファイルだけ
 
 図はPrettierと`prettier-plugin-mmd`で整形するので、
 プラグインの規則が適用されます。
-MarkdownにPrettierとプラグインを使う場合とは、結果が2点で異なります。
+Markdownと`.mmd`ファイルにPrettierとプラグインを使う場合とは、
+結果が5点で異なります。
 
 - Prettierは、コードブロックの最後の行の末尾の空白を、
   mermaid.jsが図の一部として読む場合も、
@@ -377,10 +414,47 @@ MarkdownにPrettierとプラグインを使う場合とは、結果が2点で異
   MarkdownのコードブロックをMarkdown文書として整形し、
   その中のコードブロックの図も整形します。
   `mmdfmt`はほかのコードブロックをすべてそのまま残します。
+- Prettierはリスト項目や引用で行の前にあるものを自分で印字しますが、
+  `mmdfmt`は書かれたまま残します。
+  リスト項目では、Prettierはマーカーを印字して内容を`tabWidth`にそろえます。
+  引用では、`> `を印字し、`>`とフェンスの間の空白とタブを取り除きます。
+  内容の桁が違うと、項目や引用の中の図に残る行の幅がその差だけ違い、
+  幅の近くにある1行のブロックを、一方は分け、他方は分けないことがあります。
+- リスト項目や引用の中では、PrettierはGanttのセクションのコロンを、
+  行の前にあるものを数えずにそろえるので、
+  そろえた行が行の幅を超えることがあります。
+  `mmdfmt`はそれを数えるので、幅の近くでは、Prettierはセクションをそろえ、
+  `mmdfmt`はそろえないことがあります。
+  そのとき`mmdfmt`はコロンをそろえるために名前を空白で埋めず、
+  各コロンの前の空白は書かれたままです。
+  行の幅より広く書かれた行も、そのままです。
+  タスクは、どのGanttの図でも同じ字下げに直すので、書かれた字下げが違うと、
+  コロンは行といっしょに動きます。
+- Prettierは、次の4つの設定のもとで、図を書かれたまま残します。
+  `requirePragma: true`は、ファイルの先頭に、
+  `<!-- @format -->`か`<!-- @prettier -->`のコメントがない、
+  Markdownファイルを残します。
+  frontmatterがあるときは、その後ろが先頭です。
+  `checkIgnorePragma: true`は、そこに、
+  `<!-- @noformat -->`か`<!-- @noprettier -->`のコメントがある、
+  Markdownファイルを残します。
+  ファイル全体を覆わない範囲は、Markdownファイルも`.mmd`ファイルも残します。
+  `embeddedLanguageFormatting: "off"`は、
+  Markdownファイルのすべてのコードブロックを残します。
+  `mmdfmt`は、この4つのどれのもとでも図を整形します。
+  最初の3つは読みません。
+  どのファイルを整形するかは自分で決め（パターンと`.gitignore`）、
+  図全体を整形するからです。
+  `embeddedLanguageFormatting`は図のfrontmatterにだけ読み、
+  そのときはfrontmatterを書かれたまま残します。
 
 コマンドもPrettierのCLIとは異なります。
 `.prettierignore`は読まず、`--ignore-path`、`--ignore-unknown`、
-整形オプションはなく、設定からはインデントだけを使います。
+独自の整形オプションはなく、設定は図のためだけに読みます。
+`mmdfmt`が読まないオプションに、Prettierが拒む値を書いても、
+ここではエラーになりません。
+PrettierのCLIはそれをエラーにします。
+たとえば、`semi: "yes"`です。
 
 チェックの成功時には、
 Prettierの`All matched files use Prettier code style!`の代わりに、
@@ -419,5 +493,5 @@ Prettierは、`CI`の環境変数があるときやWindowsでは、
 
 [`mmdfmt`のREADME](../../../mmdfmt/README.ja.md#コードブロックの詳細)では、
 コードブロックを詳しく説明しています。
-整形するブロック、リストや引用の中のブロック、警告してそのまま残すブロック、
-改行コードについてです。
+整形するブロック、リストや引用の中のブロックと残る行の幅、
+警告してそのまま残すブロック、改行コードについてです。

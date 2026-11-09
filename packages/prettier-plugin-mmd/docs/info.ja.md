@@ -773,7 +773,7 @@ info
 を使います。
 keyword 内の atomic directive・selected-semicolon cut は修復せず拒否します。
 opaque embedded data、C4 keyword の検出、
-裸 percent 後の Unicode は識別子の付いた読みを使います。
+ヘッダーより前の裸 percent 後の Unicode は識別子の付いた読みを使います。
 raw 拒否には raw Db や架空の embedded 効果を補いません。
 単体ファイルの解析失敗は出力せず構文エラーを報告し、
 Markdown は共有経路で embedding を辞退します。

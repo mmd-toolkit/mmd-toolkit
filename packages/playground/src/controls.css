@@ -28,7 +28,8 @@ button:disabled {
   outline: 2px solid var(--accent);
   outline-offset: 3px;
 }
-:where(select) {
+:where(select),
+:where(input[type="number"]) {
   background: var(--surface);
   color: var(--text);
   border: 1px solid var(--border);

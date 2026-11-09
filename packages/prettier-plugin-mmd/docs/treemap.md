@@ -400,26 +400,40 @@ Output
 
 ```mmd
 treemap
-  classDef zz "Apparent":2
+  classDef zz "Apparent": 2
 ```
 
 ### Styles
 
-Keep the whole TreemapLiteral style span, including comma/colon spacing, escaped
-commas, quotes, percent text, empty entries and trailing spaces/tabs. Do not
-split, merge or format it as CSS. Style spelling and leading entry padding can
-affect the Db; trailing padding is retained as authored value text, except the
-whitespace before a `;` that is dropped (see [Semicolons](#semicolons)).
+The style of a `classDef` is printed as the styles of the other diagram types
+are (see
+[Styles that are drawn the same](./compatibility.md#styles-that-are-drawn-the-same)).
+mermaid.js splits it at the commas that no backslash escapes, and takes the
+whitespace around the name and the value of each style away before it draws; CSS
+reads a run of whitespace as one. So a style has no whitespace before its first
+`:` and one space after it where the value is not empty, a `,` has none before
+it and one space after it, a run of spaces and tabs between two words of a style
+is one space, and the style has no whitespace at its end. The Db keeps the
+whitespace in each style, so it changes, but the figure is the same, which was
+checked by drawing the chart before and after. [fixture: treemap/styles/spaced]
+[fixture: treemap/styles/trailing] [fixture:
+treemap/styles/trailing-before-semicolon] [fixture:
+treemap/styles/escaped-comma-spaced] A `,` that a backslash escapes is part of
+its style, the quotes of a string and percent text are part of the value as
+written, and the runs inside a string, a comment, and the parentheses of `url(`
+stay. [fixture: treemap/styles/percent-owned] [fixture: treemap/styles/quotes]
+[fixture: treemap/styles/string-runs-kept]
 
-[fixture: treemap/styles/written]
-
-[fixture: treemap/styles/trailing]
-
-[fixture: treemap/styles/trailing-before-semicolon]
-
-[fixture: treemap/styles/percent-owned]
-
-[fixture: treemap/styles/quotes]
+The style stays as written where printing it could change more than the
+whitespace around the names and the values. An empty style between two commas,
+or after the last one, stays, since the number of styles is in the Db. A style
+that holds a `;`, or that has a comment or a directive on its line, stays too: a
+`;` there may be ignored by the line rule of mermaid.js, which reads the
+whitespace between a `:` and a later `#`, and a second formatting must find the
+same text. The whitespace that separates the style from the name of the class is
+not part of the style (see [Style gaps](#style-gaps)). [fixture:
+treemap/styles/written] [fixture: treemap/styles/empty-entry-kept] [fixture:
+treemap/styles/directive-line-kept] [fixture: semicolons/protected-class-column]
 
 Input (escaped):
 `"treemap\nclassDef zz color:red , fill:blue,stroke:rgb(1\\,2\\,3),;"`.
@@ -1042,8 +1056,8 @@ treemap
   "Top"
     "Right": 2
     "Left": 1
-  classDef zz color:red
-  classDef zz fill:blue
+  classDef zz color: red
+  classDef zz fill: blue
   title Earlier
   title
 ```

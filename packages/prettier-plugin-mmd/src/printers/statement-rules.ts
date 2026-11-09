@@ -134,29 +134,155 @@ export function styleStatementRules(
   return rules
 }
 
-/** Keep property and value text, changing only the first colon's padding. */
+/**
+ * Keep property and value text, changing only the first colon's padding and
+ * the runs of spaces and tabs between the words of a style, which are printed
+ * as one space (docs/er.md and docs/requirement.md, Styles and classes). A
+ * style with a `:` at its start has no padding to set before it.
+ */
 export function printStyleUnitSpacing(source: Source, style: Node): Doc {
-  const colon = source.text.indexOf(":", style.range[0])
-  if (colon <= style.range[0] || colon >= style.range[1])
-    return printAsWritten(source, ...style.range)
-  let propertyEnd = colon
-  while (
-    source.text[propertyEnd - 1] === " " ||
-    source.text[propertyEnd - 1] === "\t"
-  )
-    propertyEnd--
-  if (propertyEnd === style.range[0])
-    return printAsWritten(source, ...style.range)
-  let valueStart = colon + 1
-  while (source.text[valueStart] === " " || source.text[valueStart] === "\t")
-    valueStart++
+  const [start, end] = style.range
+  const gap = findColonGap(source.text, start, end)
+  if (gap === undefined) return printWordGaps(source, start, end)
   return [
-    printAsWritten(source, style.range[0], propertyEnd),
+    printWordGaps(source, start, gap.nameEnd),
     ":",
-    valueStart < style.range[1]
-      ? [" ", printAsWritten(source, valueStart, style.range[1])]
+    gap.valueStart < end
+      ? [" ", printWordGaps(source, gap.valueStart, end)]
       : "",
   ]
+}
+
+/**
+ * The text at `[start, end)`, with each run of spaces and tabs that
+ * `styleRunEdits` lists printed as one space.
+ */
+function printWordGaps(source: Source, start: number, end: number): Doc {
+  const parts: Doc[] = []
+  let position = start
+  for (const { range } of styleRunEdits(source, start, end)) {
+    parts.push(printAsWritten(source, position, range[0]), " ")
+    position = range[1]
+  }
+  parts.push(printAsWritten(source, position, end))
+  return parts
+}
+
+/**
+ * The edits that print each run of spaces and tabs inside the text of a style,
+ * at `[start, end)`, as one space. CSS reads a run as one whitespace, so the
+ * figure is the same, except where the run is a character of the value: inside
+ * a string (`"…"` or `'…'`), inside a comment, inside the parentheses of
+ * `url(`, and the escape after a backslash (see `endOfEscape`). A string, a
+ * comment, or `url(` that is not closed runs to the end of the text.
+ * The runs at the ends of the text are the business of the caller.
+ */
+export function styleRunEdits(
+  source: Source,
+  start: number,
+  end: number,
+): TextEdit[] {
+  const { text } = source
+  const edits: TextEdit[] = []
+  let position = start
+  while (position < end) {
+    const character = text[position]
+    if (character === "\\") {
+      position = endOfEscape(text, position, end)
+    } else if (character === '"' || character === "'") {
+      position = endOfQuoted(text, position, end)
+    } else if (text.startsWith("/*", position)) {
+      const close = text.indexOf("*/", position + "/*".length)
+      position = close === -1 || close + "*/".length > end ? end : close + 2
+    } else if (text.slice(position, position + 4).toLowerCase() === "url(") {
+      position = endOfUrl(text, position + "url(".length, end)
+    } else if (isSpaceOrTab(character)) {
+      let runEnd = position
+      while (runEnd < end && isSpaceOrTab(text[runEnd])) runEnd++
+      if (
+        position > start &&
+        runEnd < end &&
+        !(runEnd - position === 1 && character === " ")
+      )
+        edits.push({ range: [position, runEnd], replacement: " " })
+      position = runEnd
+    } else position++
+  }
+  return edits
+}
+
+/**
+ * The offset after the escape that starts with the backslash at `backslashAt`.
+ * CSS reads one to six hexadecimal digits after a backslash, and one space or
+ * tab after them, as the escape; any other character after a backslash, a
+ * space or a tab included, is the escaped character. The whitespace after the
+ * escape is a run like any other (`Arial\20  Black` is `Arial`, the escape
+ * `\20 `, one space, and `Black`).
+ */
+function endOfEscape(text: string, backslashAt: number, end: number): number {
+  let digits = 0
+  while (
+    digits < 6 &&
+    backslashAt + 1 + digits < end &&
+    isHexDigit(text[backslashAt + 1 + digits])
+  )
+    digits++
+  if (digits === 0) return backslashAt + 2
+  const after = backslashAt + 1 + digits
+  return after < end && isSpaceOrTab(text[after]) ? after + 1 : after
+}
+
+/** Whether a character is a hexadecimal digit. */
+function isHexDigit(character: string | undefined): boolean {
+  return character !== undefined && "0123456789abcdefABCDEF".includes(character)
+}
+
+/** The offset after the string that starts with the quote at `quoteAt`. */
+function endOfQuoted(text: string, quoteAt: number, end: number): number {
+  for (let index = quoteAt + 1; index < end; index++) {
+    if (text[index] === "\\") index++
+    else if (text[index] === text[quoteAt]) return index + 1
+  }
+  return end
+}
+
+/** The offset after the `)` that closes the `url(` whose text starts at `from`. */
+function endOfUrl(text: string, from: number, end: number): number {
+  for (let index = from; index < end; index++) {
+    const character = text[index]
+    if (character === "\\") index++
+    else if (character === '"' || character === "'")
+      index = endOfQuoted(text, index, end) - 1
+    else if (character === ")") return index + 1
+  }
+  return end
+}
+
+/**
+ * Adds the edits that print each run of spaces and tabs between the words of a
+ * style as one space, where the Db of mermaid.js either does not hold the
+ * whitespace (it joins the words of a style that has no `:`) or holds it and
+ * draws the figure without it (docs/compatibility.md, Styles that are drawn
+ * the same). The whitespace next to the first `:` is the business of
+ * `addColonEdit`, called before this, and stays as that edit leaves it. The
+ * other runs that `styleRunEdits` lists change, also in a style where that edit
+ * leaves the colon as written, as in one that starts with the `:`. Not the
+ * whitespace at the ends of `range`, which is the business of the caller, which
+ * keeps the whitespace after a backslash that ends a style.
+ */
+export function addWordGapEdits(
+  source: Source,
+  [start, end]: Range,
+  edits: TextEdit[],
+): void {
+  const colon = source.text.indexOf(":", start)
+  const hasColon = colon !== -1 && colon < end
+  for (const edit of styleRunEdits(source, start, end)) {
+    const [from, to] = edit.range
+    if (hasColon && (to === colon || from === colon + 1)) continue
+    if (!edits.some((other) => other.range[0] < to && from < other.range[1]))
+      edits.push(edit)
+  }
 }
 
 /**
@@ -216,6 +342,18 @@ export interface StyleListUse {
    * `,`.
    */
   readonly escapesComma?: boolean
+  /**
+   * The statement is a `style` or a `classDef` of a class diagram: a run of
+   * spaces and tabs between the words of a style is printed as one space (see
+   * `addWordGapEdits`).
+   */
+  readonly collapsesWordGaps?: boolean
+  /**
+   * The text of the last style reaches over the whitespace after it, as in a
+   * treemap, where the style runs to the end of the line: that whitespace is
+   * left out too.
+   */
+  readonly trimsEnd?: boolean
 }
 
 /**
@@ -281,6 +419,11 @@ export interface StyleListUse {
  * `style` of a node of the other diagram types and their `classDef` are not
  * joined so: mermaid.js takes the whitespace at their ends away first.
  *
+ * Where `collapsesWordGaps` is set, a run of spaces and tabs between the words
+ * of a style is printed as one space, whether the style has a `:` or not
+ * (`addWordGapEdits`). Where `trimsEnd` is set, the whitespace after the last
+ * style is left out.
+ *
  * Where `escapesComma` is set, a `,` after a backslash is part of a style, and
  * so is a space after a backslash at the end of one: taking that space away
  * would make the `,` part of the style. A space after a backslash before the
@@ -303,6 +446,8 @@ export function normalizeStyleList(
     splitsLabelStyles = false,
     keepsGapAfterStroke = false,
     escapesComma = false,
+    collapsesWordGaps = false,
+    trimsEnd = false,
   }: StyleListUse = {},
 ): void {
   const styles = statement.styles.filter((style) => style !== null)
@@ -346,6 +491,17 @@ export function normalizeStyleList(
       addColonEdit(source, core, edits, {
         keepsGapAfterStroke,
         keepsGapAfterLabelName: splitsLabelStyles,
+      })
+      if (collapsesWordGaps) addWordGapEdits(source, core, edits)
+    }
+    if (trimsEnd && comma === to && core[1] < comma) {
+      // A directive right after the whitespace keeps whether whitespace stands
+      // before it, a run becoming one space, as at the end of any line.
+      const beforeDirective =
+        findTriviaBetween(source, comma, comma + 1).length > 0
+      edits.push({
+        range: [core[1], comma],
+        replacement: beforeDirective ? " " : "",
       })
     }
     if (previousEnd !== -1) {
@@ -738,24 +894,27 @@ function trimStyle(
 /**
  * Adds the edit that takes the whitespace before the first `:` of a style away
  * and puts one space after it, where the value is not empty. A style without
- * a name before the `:`, or with an escaped space before it, stays. Where
+ * a name before the `:` has no whitespace before it to take away. The space
+ * that a backslash before the `:` escapes stays, and the whitespace after it
+ * goes: CSS reads the escaped space as part of the name. Where
  * `keepsGapAfterStroke` is set and the name ends with `stroke`, one space
  * stays before the `:` if whitespace stood there.
  */
-function addColonEdit(
+export function addColonEdit(
   source: Source,
   [start, end]: Range,
   edits: TextEdit[],
-  { keepsGapAfterStroke = false, keepsGapAfterLabelName = false } = {},
+  {
+    keepsGapAfterStroke = false,
+    keepsGapAfterLabelName = false,
+  }: {
+    readonly keepsGapAfterStroke?: boolean
+    readonly keepsGapAfterLabelName?: boolean
+  } = {},
 ): void {
-  const colon = source.text.indexOf(":", start)
-  if (colon <= start || colon >= end) return
-  let nameEnd = colon
-  while (nameEnd > start && isSpaceOrTab(source.text[nameEnd - 1])) nameEnd--
-  if (nameEnd === start) return
-  if (nameEnd < colon && source.text[nameEnd - 1] === "\\") return
-  let valueStart = colon + 1
-  while (valueStart < end && isSpaceOrTab(source.text[valueStart])) valueStart++
+  const gap = findColonGap(source.text, start, end)
+  if (gap === undefined) return
+  const { nameEnd, colon, valueStart } = gap
   const name = source.text.slice(start, nameEnd)
   const spaceBeforeColon =
     nameEnd < colon &&
@@ -765,6 +924,43 @@ function addColonEdit(
     range: [nameEnd, valueStart],
     replacement: `${spaceBeforeColon ? " " : ""}:${valueStart < end ? " " : ""}`,
   })
+}
+
+/** Where the first `:` of a style stands, and the text around it. */
+interface ColonGap {
+  /**
+   * The end of the name that stays: where the whitespace before the `:` that
+   * goes away starts, after the space that a backslash escapes.
+   */
+  readonly nameEnd: number
+  /** The offset of the `:`. */
+  readonly colon: number
+  /** The offset of the first character after the whitespace after the `:`. */
+  readonly valueStart: number
+}
+
+/**
+ * The first `:` of the style at `[start, end)` and the whitespace around it,
+ * or undefined where the style has no `:`. A style that starts with the `:`
+ * has no name before it. A backslash directly before the whitespace before the
+ * `:` escapes its first space, which CSS reads as a character of the name, so
+ * that space stays and the whitespace after it goes.
+ */
+function findColonGap(
+  text: string,
+  start: number,
+  end: number,
+): ColonGap | undefined {
+  const colon = text.indexOf(":", start)
+  if (colon === -1 || colon >= end) return undefined
+  let valueStart = colon + 1
+  while (valueStart < end && isSpaceOrTab(text[valueStart])) valueStart++
+  let nameEnd = colon
+  while (nameEnd > start && isSpaceOrTab(text[nameEnd - 1])) nameEnd--
+  if (nameEnd === start && colon > start) return undefined
+  const escapesSpace =
+    nameEnd < colon && endsWithEscape(text.slice(start, nameEnd))
+  return { nameEnd: escapesSpace ? nameEnd + 1 : nameEnd, colon, valueStart }
 }
 
 /**

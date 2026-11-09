@@ -85,11 +85,18 @@ flowchart、agentflow、kanban、sequence の 1 行のデータブロックは�
 [fixture: flowchart/data-blocks/one-line-space-only-padded]
 [fixture: flowchart/data-blocks/one-line-touching-blocks-kept]
 [fixture: flowchart/data-blocks/one-line-separate-blocks-padded]
+flowchart、agentflow、kanban では、
+その行が `printWidth` より長い 1 行のデータブロックは、
+すべての項目が単純なキーと値なら、1 行に 1 項目ずつ複数行に分けて印字します。
+変わるのは、空白、改行、項目の間の `,` だけで、キーと値の文字は保ちます。
+条件は[データブロック](./flowchart.ja.md#データブロック)にあります。
+[fixture: flowchart/data-blocks/long-split]
 flowchart、agentflow、kanban、sequence の対象となる複数行のデータブロックと、
 usecase の JSON table は、本文の全行を一定数の半角空白だけ動かします。
 行どうしの字下げの差と末尾空白を保ち、単独行の `}` は文の段に揃えます。
 開きの行の本文、半角空白以外の行頭空白、内部の directive、0 桁の YAML の印、
 行全体を保つ行、文の最初の行より後のブロック、`tabWidth: 0` は移動を妨げます。
+`useTabs` のときは、ブロックを持つ文を書かれたまま印字します。
 sequence では、Mermaid がブロック全体を trim するため、
 文字のある本文行が 1 行であることも必要です。
 条件と理由は[データブロック](./flowchart.ja.md#データブロック)に従い、
@@ -386,20 +393,21 @@ eventmodeling の [Data blocks](./eventmodeling.ja.md#data-blocks)
 
 ## 同じに描かれるスタイル
 
-flowchart、agentflow、class、state、block の `style`、`classDef`、
+flowchart、agentflow、class、state、block、usecase の `style`、`classDef`、
 `linkStyle` の文は、ER や requirement と同じ形でスタイルを印字します。
 スタイルの最初の `:` の前に空白を置かず、値が空でなければ、
 後ろに空白を 1 つ置きます。
 スタイルの間の `,` の前にも空白を置かず、後ろに空白を 1 つ置きます。
 `style A fill :#f00,stroke:  #333` は `style A fill: #f00, stroke: #333`
 になります。
-値の中の語と語の間の空白は、書かれたままです。
+スタイルの語と語の間の空白とタブの連なりは、空白 1 つで印字します（後述）。
 [fixture: flowchart/whitespace-between-tokens/style-colon-spaced]
 [fixture: flowchart/whitespace-between-tokens/style-colon-empty-value-kept]
 [fixture: agentflow/single-space-gaps/style-colon-spaced]
 [fixture: class/whitespace-between-tokens/style-colon-spaced]
 [fixture: state/whitespace-between-tokens/style-colon-spaced]
 [fixture: block/styles/style-colon-spaced]
+[fixture: usecase/classes-and-styles/css-colon-padding]
 
 mermaid.js はこの空白を Db に残すので、印字したテキストの Db は、
 書かれたテキストの Db と違いますが、描かれる図は同じです。
@@ -414,6 +422,29 @@ class の図形と flowchart のリンクは、スタイルを CSS の `style` �
 対象は、5 つの図種の `style` と `classDef`、
 それに番号か `default` を指定した `linkStyle` のスタイルですが、
 次の場合を除きます。
+
+usecase 図も同じ仕組みで図を描きます。
+actor、use case、境界、JSON の表のスタイルは、`cssStyles` として図形に届きます。
+（[`usecaseDb`](https://github.com/mermaid-js/mermaid/blob/2086904e76c692331e34a45d7cc3bc30860d040e/packages/mermaid/src/diagrams/usecase/usecaseDb.ts#L354-L355)）。
+図形は、それらとクラスのスタイルから `styles2String` で CSS を作り、
+`styles2Map` を通してスタイルの名前と値の前後の空白を取り除きます。
+（[`usecaseEllipse`](https://github.com/mermaid-js/mermaid/blob/2086904e76c692331e34a45d7cc3bc30860d040e/packages/mermaid/src/rendering-util/rendering-elements/shapes/usecaseEllipse.ts#L14)、
+[`usecaseActor`](https://github.com/mermaid-js/mermaid/blob/2086904e76c692331e34a45d7cc3bc30860d040e/packages/mermaid/src/rendering-util/rendering-elements/shapes/usecaseActor.ts#L160)、
+[`usecaseJsonTable`](https://github.com/mermaid-js/mermaid/blob/2086904e76c692331e34a45d7cc3bc30860d040e/packages/mermaid/src/rendering-util/rendering-elements/shapes/usecaseJsonTable.ts#L62-L63)）。
+クラスのスタイルは、その前に前後の空白を取り除きます。
+（[`getCompiledStyles`](https://github.com/mermaid-js/mermaid/blob/2086904e76c692331e34a45d7cc3bc30860d040e/packages/mermaid/src/diagrams/usecase/usecaseDb.ts#L118-L135)）。
+関係のスタイルは `style` として辺に渡り、path の `style` 属性に入ります。
+（[`usecaseDb`](https://github.com/mermaid-js/mermaid/blob/2086904e76c692331e34a45d7cc3bc30860d040e/packages/mermaid/src/diagrams/usecase/usecaseDb.ts#L472-L473)）。
+actor に付けた `style A stroke:#d33,fill:#fee` と
+`style A   stroke  :  #d33 ,  fill : #fee` の両方のテキストを、use case、境界、
+JSON の表に付けたものも含め、mermaid.js 12.3.0 で Chromium に描いたところ、
+SVG は同じでした。
+actor に付けた `classDef c stroke:#d33,fill:#fee` と
+`classDef c stroke: #d33, fill  :  #fee` も同じでした。
+関係に付けた `style e1 stroke-width:3px,fill:none` と
+`style e1 stroke-width: 3px, fill  :  none`、
+それに関係に付けた `classDef` では、画素が同じで、
+path の `style` 属性の `:` と `;` の前後の空白を除いた SVG も同じでした。
 
 treemap の `classDef` は、スタイルの末尾の空白を落とします。
 `classDef zz color:red  ` は `classDef zz color:red` と印字します。
@@ -462,6 +493,19 @@ mermaid.js はその空白を Db に残しますが、同じ図を描きます�
 [fixture: flowchart/whitespace-between-tokens/style-stroke-before-colon-spaced]
 [fixture: agentflow/single-space-gaps/link-style-stroke-before-colon-kept]
 
+usecase 図の `style` と `classDef` は、明示的な id を持つ関係に適用できるため、
+どちらもこの空白の有無を保ちます。
+`A e1@--> B` の `e1` に `classDef c stroke:#d33` を付けると矢印の頭が赤になり、
+`classDef c stroke :#d33` を付けるとテーマの色を保ちます。
+`style e1 stroke :#d33` も同じで、画素が異なります。
+`style` でも、`stroke` で終わる名前と `:` の間の空白の有無を保ち、
+空白の連続は空白 1 つにします。
+`style A stroke  :#d33` は `style A stroke : #d33` と印字し、
+`style A stroke:#d33` は `style A stroke: #d33` と印字します。
+[fixture: usecase/classes-and-styles/css-stroke-before-colon-kept]
+[fixture: usecase/classes-and-styles/css-stroke-before-colon-run-collapsed]
+[fixture: usecase/classes-and-styles/css-stroke-before-colon-touching]
+
 look が `handDrawn` のときは、リンクのスタイルの先頭も読まれます。
 [`insertEdge`](https://github.com/mermaid-js/mermaid/blob/2086904e76c692331e34a45d7cc3bc30860d040e/packages/mermaid/src/rendering-util/rendering-elements/edges.js#L899)
 は、リンクのスタイルのうち、
@@ -506,7 +550,8 @@ flowchart と agentflow の `classDef` では、
 `style A fill:#f00\,stroke:#00f` は、
 `fill:#f00\` と `stroke:#00f` の 2 つのスタイルを持ちます。
 バックスラッシュの後で `:` の前にある空白は、どの図種でも、
-除くと `:` がエスケープされるので残します。
+除くと `:` がエスケープされるので残し、その空白の後ろの空白は除きます。
+[fixture: flowchart/whitespace-between-tokens/style-colon-escaped-space-run-dropped]
 [fixture: flowchart/whitespace-between-tokens/style-escaped-space-before-comma]
 [fixture: flowchart/whitespace-between-tokens/style-backslash-before-comma]
 [fixture: agentflow/single-space-gaps/style-escaped-space-before-comma]
@@ -596,6 +641,104 @@ block 図のほかの形は、スタイルから `styles2String` で、
 これらの形でも `classDef` でも、両方の書き方の画素は同じでした。
 [fixture: block/styles/style-label-styles-kept]
 
+flowchart、agentflow、class、state、block、usecase、treemap、ER、
+requirement の図では、`:` のあるスタイルでも、ないスタイルでも、
+語と語の間の空白とタブの連続を空白 1 つで印字し、
+語と語の間に空白があるかどうかは、書かれたまま残します。
+`style A fill   #f00` は `style A fill #f00` と印字し、
+`style A fill#f00` はそのままです。
+CSS は連なりを 1 つの空白として読むので、描かれる図は同じですが、
+連なりが値の文字になる所は、書かれたまま残します。
+文字列（`"…"` や `'…'`）の中、コメント（`/* … */`）の中、`url(` の括弧の中と、
+CSS が値の一部として読む、バックスラッシュの後ろのエスケープです。
+エスケープは、最大 6 桁の 16 進数字とその直後の空白かタブ 1 文字、
+または 16 進数字が続かないときの次の 1 文字です。
+そのため、`a\   b` は `a\  b` と印字し、
+`Arial\20   Black` は `Arial\20  Black` と印字します。
+閉じていない文字列、コメント、`url(` は、スタイルの末尾まで続きます。
+[fixture: flowchart/whitespace-between-tokens/style-string-runs-kept]
+[fixture: flowchart/whitespace-between-tokens/style-backslash-run-spaced]
+[fixture: flowchart/whitespace-between-tokens/style-hex-escape-run-spaced]
+[fixture: flowchart/whitespace-between-tokens/style-hex-escape-tab-run-spaced]
+[fixture: flowchart/whitespace-between-tokens/style-hex-escape-seven-digits-run-spaced]
+[fixture: state/whitespace-between-tokens/style-hex-escape-run-spaced]
+[fixture: agentflow/single-space-gaps/style-hex-escape-run-spaced]
+[fixture: block/styles/style-hex-escape-run-spaced]
+[fixture: state/whitespace-between-tokens/style-string-runs-kept]
+[fixture: state/whitespace-between-tokens/style-url-runs-kept]
+[fixture: state/whitespace-between-tokens/style-comment-runs-kept]
+[fixture: block/styles/style-string-runs-kept]
+[fixture: block/styles/style-url-runs-kept]
+[fixture: usecase/classes-and-styles/css-string-runs-kept]
+[fixture: usecase/classes-and-styles/css-url-runs-kept]
+[fixture: class/whitespace-between-tokens/style-url-runs-kept]
+[fixture: class/whitespace-between-tokens/style-comment-runs-kept]
+
+mermaid.js は、class 図では `:` のないスタイルの語を、
+ER と requirement の図ではすべてのスタイルの単位をつなげて読むため、
+そこで Db は変わりません。
+`stroke-dasharray: 5   5` と `stroke-dasharray: 5 5` は、
+ER と requirement の図では、どちらも `stroke-dasharray:55` と読みます。
+ほかの図種と、class 図の `:` のあるスタイルは、`:` の前後の空白と同じように、
+空白の連続を Db に残しますが、描かれる図は同じです。
+次のそれぞれについて、両方のテキストを、
+空白の連続を書かれたままにした形と空白 1 つで印字した形で、
+mermaid.js 12.3.0 を使い Chromium に描きました。
+画素は同じでした。
+生成された id と `style` 属性・`fill` 属性の空白の連続を除くと、
+SVG も同じでした。
+class 図では、`style A border:2px   solid   red`、`style A font:20px   serif`、
+`style A fill:#f00   stroke:blue`、`style A fill:#f00,   x   y`、
+語の間をタブで区切った `style A border:2px solid red` と、
+クラスに適用した `classDef` です。
+flowchart と agentflow の図では、語を持つ `style`、`classDef`、`linkStyle` の、
+`:` があるものとないものです。
+state と block の図では、同じ値を持ち、連なりの隣に文字列、コメント、
+`url(` がある `style` と `classDef` です。
+usecase 図では、同じ値を持つ `style` と `classDef` です。
+treemap では、`:` と `,` の前後の空白、語の間の連続、文字列、
+エスケープされた `,`、末尾の空白を持つ `classDef` です。
+このほかに、コーパスとこのパッケージの fixture の文のうち、
+整形でスタイルが変わるものも同じ方法で描きました。
+1,355 個のテキストが `style`、`classDef`、`linkStyle` のいずれかを持ちます。
+そのうち Db が変わる 769 個では、754 個は画素が同じで、
+10 個は整形前も整形後も描けません（mermaid.js がエラーで止まります）。
+5 個はアニメーションするリンクを持つユースケース図で、
+アニメーションのフレームによって画素が異なりますが、
+`style` 属性の空白を除くと SVG は同じです。
+コーパス、このパッケージの fixture、
+mermaid.js の文書にある treemap の `classDef` の文で、
+整形でスタイルが変わるものも同じ方法で描きました。
+78 個のテキストすべてで画素は同じで、`style` 属性の空白を除くと SVG も同じです。
+mermaid.js は treemap の各スタイルのテキストを Db に保ち、
+描く前に最初の `:` の前のテキストを名前、次の `:` までのテキストを値として取り、
+それぞれの前後の空白を取り除きます。
+16 進のエスケープがフォント名を決める場合も描きました。
+flowchart、state、block、agentflow、swimlane の図で、
+`style A font-family:\41   rial,font-size:30px` と、
+印字した `font-family: \41  rial, font-size: 30px` の画素は同じですが、
+エスケープの後ろの連続をすべて縮めた `\41 rial` は別の図を描きます。
+`:` で始まる style は、これらの図と class、ER、requirement の図で、
+書かれたままの形と印字した形を描きました。
+`:` がバックスラッシュと空白の後ろにある style も同じで、
+style の中のバックスラッシュを受け付ける、flowchart、agentflow、swimlane、
+state、block の図で描きました。
+`style A :  red   x` と `style A : red x`、
+`style A fill\   :red   x` と `style A fill\ : red x` の画素は、
+それぞれ同じです。 [fixture: treemap/styles/spaced]
+[fixture: treemap/styles/escaped-comma-spaced]
+[fixture: class/whitespace-between-tokens/style-value-words-spaced]
+[fixture: class/whitespace-between-tokens/style-words-run-spaced]
+[fixture: flowchart/whitespace-between-tokens/style-words-run-spaced]
+[fixture: agentflow/single-space-gaps/style-words-run-spaced]
+[fixture: state/whitespace-between-tokens/style-words-run-spaced]
+[fixture: block/styles/style-words-run-spaced]
+[fixture: usecase/classes-and-styles/css-words-run-spaced]
+[fixture: er/styles-and-classes/style-words-run-spaced]
+[fixture: requirement/styles-and-classes/style-words-run-spaced]
+[fixture: class/whitespace-between-tokens/style-words-directive-kept]
+[fixture: flowchart/whitespace-between-tokens/style-words-directive-kept]
+
 次の場合は、文を書かれたまま残します。
 スタイルが改行か U+2028・U+2029 を含む場合、
 文がコメントかディレクティブを含む場合、スタイルが全部空白の場合、
@@ -609,9 +752,12 @@ block 図のほかの形は、スタイルから `styles2String` で、
 書かれたテキストの Db
 からスタイルの余白を戻して比べます（`tests/style-margins.ts` の
 `styleDbForFormattingComparison`）。
-スタイルが書かれたものと、両端と最初の `:` の前後の空白だけが違うときは、
+スタイルが書かれたものと、両端と最初の `:` の前後の空白や、
+上の図種での語の間の空白の連続（文字列、コメント、`url(` の中と、
+バックスラッシュの後ろのエスケープを除く）だけが違うときは、
 書かれた方を採ります。
-ほかの違いは、リンクのスタイルの数や、
+ほかの違いは、スタイルの語と語の間の空白の有無、文字列、コメント、
+`url(` の中の連なりの変化、リンクのスタイルの数や、
 リンクにも適用されるスタイルの `stroke` の `:` の前の空白の有無、
 `stroke:` で始まるリンクのスタイルの前の空白の有無、
 リンクの `stroke` の空白だけの値の中の空白の有無、
@@ -780,6 +926,44 @@ Gantt 図の 3 つの設定は、値の前後に空白があると描かれる�
 [fixture: gantt/settings/format-padding-kept-where-drawn-differently]
 [fixture: gantt/settings/trailing-whitespace-by-setting]
 
+Gantt 図のタスクの名前は、テキストとコロンの間の空白で終わり、
+印字はその空白を整えて、名前に桁そろえの空白があるセクション、
+または桁を共有するセクションどうしのコロンを、
+それらの最長の名前の後に空白 1 つを置いた所にそろえます。
+（[タスクのデータ](./gantt.ja.md#タスクのデータ)）。
+文法の規則は、コロンより前のすべてを、空白も含めて名前として読みます。
+（[`gantt.jison`](https://github.com/mermaid-js/mermaid/blob/2086904e76c692331e34a45d7cc3bc30860d040e/packages/mermaid/src/diagrams/gantt/parser/gantt.jison#L93)）。
+`addTask` は、それをタスクの `task` に残します。
+（[`addTask`](https://github.com/mermaid-js/mermaid/blob/2086904e76c692331e34a45d7cc3bc30860d040e/packages/mermaid/src/diagrams/gantt/ganttDb.js#L596-L606)）。
+レンダラーは `task` を SVG の `text` 要素に入れ、幅を測って、
+テキストを置く位置と与えるクラスを決めます。
+（[`draw`](https://github.com/mermaid-js/mermaid/blob/2086904e76c692331e34a45d7cc3bc30860d040e/packages/mermaid/src/diagrams/gantt/ganttRenderer.js#L394-L429)、
+[クラス](https://github.com/mermaid-js/mermaid/blob/2086904e76c692331e34a45d7cc3bc30860d040e/packages/mermaid/src/diagrams/gantt/ganttRenderer.js#L449-L509)）。
+名前の末尾の空白は描かれず、測る幅も増やさないので、Db は異なりますが、
+描かれる図は同じです。
+8 個の図の両方のテキストを、mermaid.js 12.3.0 を使い Chromium に描きました。
+コロンの前に空白がない名前と空白が 1 つある名前、
+空白が 1 つある名前と 30 個ある名前、タブがある名前と空白がある名前、
+棒の中に収まる名前と棒より長い名前、図の右端に近い名前、状態 `done`、`crit`、
+`active`、`milestone`、2 つのセクションです。
+画素は同じで、生成された id とタスクのテキストの末尾の空白を除くと、
+SVG も同じでした。
+コーパス、mermaid.js の文書、このパッケージの fixture のうち、
+印字がタスクの名前を変える 39 個のテキストの中で、
+mermaid.js が描ける 36 個も同じでした。
+残りの 3 個は、整形前も整形後もエラーで止まります。
+描けるテキストのうち 2 個の SVG は、タイトルの先頭の空白も異なり、
+これは前述のタイトルの例外に当たります。
+図の CSS が空白を残すときは、描かれる図が異なります。
+`%%{init: {"themeCSS": ".taskText{white-space:pre}"}}%%` があると、
+2 つのテキストの画素は異なります。
+そのため、`white-space` を含む図では、ほかのテキストの空白の連なりと同じく、
+コロンを書かれたままにします。
+（[同じに描かれるテキスト中の空白の連なり](#同じに描かれるテキスト中の空白の連なり)）。
+[fixture: gantt/task-data/colon-column-new-longest-name]
+[fixture: gantt/task-data/description-padding-tightened]
+[fixture: gantt/task-data/colon-column-white-space-kept]
+
 テストは、印字したテキストの Db に、
 書かれたテキストの Db から各テキストの両端の空白を戻して比べます。
 `tests/keyword-text-margins.ts` の関数、
@@ -787,8 +971,8 @@ Gantt 図の 3 つの設定は、値の前後に空白があると描かれる�
 タイトル、日付書式、軸の書式が、書かれたものと、
 両端の空白とタブだけが違うときは、書かれた方を採ります。
 C4 図のタイトルと説明も同じです。
-timeline の event と state の説明は、末尾の空白とタブだけが違うときに、
-書かれた方を採ります。
+timeline の event、state の説明、Gantt 図のタスクの名前は、
+末尾の空白とタブだけが違うときに、書かれた方を採ります。
 ほかの違いは、セクション名、目盛りの間隔、今日のマーカーの違いも含めて、
 失敗とします。
 固定している mermaid.js の版を上げるときは、
@@ -1719,7 +1903,9 @@ clause keyword は 1 段、item は 2 段の字下げを保ちます。
 
 通常の ER と requirement のスタイル単位は `property: value` とし、
 スタイル同士はカンマと空白1個で区切ります。
-プロパティと値の内容は、値の単語間の空白も含めて保ちます。
+プロパティと値の内容は、書かれたまま保ちますが、値の単語間の空白の連なりは、
+空白 1 つで印字します。
+（[同じに描かれるスタイル](#同じに描かれるスタイル)を参照）。
 単なる改行を結合する見出しでも、初回からこの空白にそろえます。
 trivia、複数行のスタイル値、semicolon の影響がある行は既存の配置を保ちます。
 [fixture: er/styles-and-classes/style-unit-padding]
@@ -2034,6 +2220,31 @@ Mermaid が説明から LF 後の先頭の空白とタブを除くためです�
 引用符付きの文字列と不透明なデータブロックは、それぞれの値の保持規則に従います。
 [fixture: flowchart/multi-line-values/accdescr-block-kept]
 
+本文が `{` の次の行以降で始まる場合は、本文の列を原文のまま保つときも、
+`{` とその改行の間の空白を落とします。
+mermaid.js は `{` の後の空白を改行も含めて `{` と一緒に読むため、
+本文はその後で始まり、Db は同じです。
+`accDescr { ` の後に改行が続くときは、`accDescr {` と印字します。
+`{` の後のコメントやディレクティブは残し、その前の隙間は、
+[トークンの間のディレクティブ](#トークンの間のディレクティブ)に従います。
+ここでは、空白の連続やタブを空白 1 つにします。
+行末のディレクティブの後の空白は、`{` の後の空白と同じく落とします。
+コメントの後の空白はコメントの一部なので残します。
+`{` の行にある本文は、ほかのトークンと同じように空白を整えます。
+これは、このブロックを持つすべての図種に適用します。
+[fixture: flowchart/multi-line-values/accdescr-block-opener-whitespace-dropped]
+[fixture: flowchart/multi-line-values/accdescr-block-opener-tab-dropped]
+[fixture: flowchart/multi-line-values/accdescr-block-opener-directive-trailing-dropped]
+[fixture: flowchart/multi-line-values/accdescr-block-opener-directive-run-collapsed]
+[fixture: flowchart/multi-line-values/accdescr-block-opener-directive-tab-collapsed]
+[fixture: usecase/direction-and-accessibility/accdescr-block-opener-directive-trailing-dropped]
+[fixture: treeview/description-blocks/opener-directive-trailing-dropped]
+[fixture: flowchart/multi-line-values/accdescr-block-opener-comment-trailing-kept]
+[fixture: flowchart/multi-line-values/accdescr-block-subgraph-opener-whitespace-dropped]
+[fixture: pie/description-blocks/opener-whitespace-dropped]
+[fixture: c4/description-blocks/opener-whitespace-dropped]
+[fixture: agentflow/accessibility/global-description-opener-whitespace-dropped]
+
 原文がメンバーの決定にも使われる場合は、説明本文の列を保ちます。
 flowchart の subgraph、Agentflow の flow/global 本文、
 ER の subgraph が対象です。
@@ -2193,17 +2404,18 @@ mermaid.js は、Gantt 図の一部の値の空白を持ち、一部の行を、
 [タイトルとセクション](./gantt.ja.md#タイトルとセクション)、
 [リスト](./gantt.ja.md#リスト)を参照してください。
 
-- `tickInterval`、`todayMarker`、`section` の値の両端の空白と、
-  タスクの説明のテキストとコロンの間の空白。
+- `tickInterval`、`todayMarker`、`section` の値の両端の空白。
   Db が持ち、図にも描かれるので、空白 2 つの `tickInterval  1week` は、
-  目盛りが既定のものになり、`section  A` は `section A` とは別のセクションで、
-  桁をそろえた `A task           :a1` は、空白を落とした形とは別のものです。
-  コロンをそろえる空白も残ります。
+  目盛りが既定のものになり、`section  A` は `section A` とは別のセクションです。
   `dateFormat`、`axisFormat`、`title` の両端の空白は除きます。
+  タスクの説明のテキストとコロンの間の空白は、
+  名前に桁そろえの空白があるセクション、
+  または桁を共有するセクションどうしのコロンを、
+  それらの最長の名前の後に空白 1 つを置いた所にそろえるように整えます。
   （[同じに描かれるキーワードの後のテキスト](#同じに描かれるキーワードの後のテキスト)）。
   [fixture: gantt/settings/trailing-whitespace-by-setting]
   [fixture: gantt/titles-and-sections/title-trailing-dropped-section-kept]
-  [fixture: gantt/task-data/description-padding-kept]
+  [fixture: gantt/task-data/description-padding-tightened]
 - タスクのデータの項目の中の空白、項目の数、タグの大文字小文字。
   `after   a1` は書かれたままの 1 つの項目で、
   `a : 1d,` は `a : 1d` にない空の項目を持ち、`Done` はタグではありません。
@@ -2349,13 +2561,13 @@ mindmap の Db は、ノードの字下げを level として読みます。
 - 行頭のディレクティブの後ろの空白。
   ノードの字下げに数えられるので、ディレクティブから書かれたまま印字します。
   [fixture: mindmap/directives/before-a-node-on-its-line]
-- U+2028 か U+2029 で終わる診断コメント。
+- U+2028 か U+2029 で終わる図のコメント。
   その後ろのテキストは新しい行なので、そこに改行を書きます。
   [test: U+2028 after a comment after a shape]
 - mermaid.js が拒否する空行（既知の差異
   [`blank-line-after-header-or-comments`](../../spec/docs/known-divergences/blank-line-after-header-or-comments.ja.md)）。
   ヘッダーの後のものは落とすので、出力は受理されます。
-  ノードの間の診断コメントの後のものは、入力と同じく 1 つ残ります。
+  ノードの間の図のコメントの後のものは、入力と同じく 1 つ残ります。
   [fixture: mindmap/blank-lines/after-the-header-dropped]
   [fixture: mindmap/blank-lines/after-a-comment-between-nodes-kept]
 
@@ -2905,7 +3117,7 @@ Venn の図コメントは LF か末尾まで続きます。
 
 [fixture: venn/name-lists/empty-quoted-targets]
 [fixture: venn/labels/labels-empty-kept]
-[fixture: venn/style-properties/style-atoms-kept]
+[fixture: venn/style-properties/style-atoms-spaced]
 [fixture: venn/comments/ignored-fragment]
 [fixture: venn/line-rule-and-kept-lines/line-rule-suffix-spacing]
 [test: venn: ls-kept-comment-whitespace-line] [test: venn: ps-kept-directive]
@@ -3052,12 +3264,14 @@ JSON の表データは不透明で、数とエスケープの綴り、プロパ
 対象となる余白は [JSON tables](./usecase.ja.md#json-tables) に従います。
 効果を渡さない整形 fixture では、共有の Db 比較を null とし、原文を比較します。
 コーパスは存在する記録済みの効果を使います。
-CSS 宣言全体は、Mermaid が保存するコロンの両側と `--` の隙間を保ちます。
+CSS 宣言の最初のコロンの前後の空白は、
+[同じに描かれるスタイル](#同じに描かれるスタイル)に従います。
+宣言の中の空白の連なりも、空白 1 つで印字します。
 [fixture: usecase/native-metadata/metadata-inline]
 [fixture: usecase/native-metadata/metadata-blank-lines-kept]
 [fixture: usecase/json-tables/json-opaque]
 [fixture: usecase/classes-and-styles/css-colon-padding]
-[fixture: usecase/classes-and-styles/css-custom-gap]
+[fixture: usecase/classes-and-styles/css-custom-gap-run-collapsed]
 
 共通コメント領域と改行の処理後、最後のプロパティから `}` までの、
 末尾コンマと物理改行の合計は 2 個以下で、コンマは改行の前にだけ置けます。

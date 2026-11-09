@@ -5,8 +5,9 @@ import { treeviewBoxCharacters } from "../src/printers/treeview-characters.ts"
 /**
  * What formatting must keep, checked without mermaid.js: the Db that the tree
  * of a text denotes, the texts of the embedded data, and the written source
- * apart from whitespace, frontmatter, removed semicolons and redrawn outer
- * box structure.
+ * apart from whitespace, frontmatter, removed semicolons, the commas between
+ * the entries of a data block printed on lines, and redrawn outer box
+ * structure.
  *
  * The Db is built from the tree by `dbFromTree` of `@mmd-toolkit/tests`, with
  * the values that mermaid.js derives from the embedded data of the input (the
@@ -44,6 +45,7 @@ import type {
 } from "@mmd-toolkit/ast"
 import { parse, visitorKeys } from "@mmd-toolkit/parser"
 import { significantIndentationWidth } from "../src/printers/lines.ts"
+import { splitSeparatorOffsets } from "./data-block-margins.ts"
 
 /** Whether a node is a data block, whose written text is embedded data. */
 function isDataBlock(node: { type: string }): boolean {
@@ -112,16 +114,12 @@ function walk(node: unknown, visit: (node: { type: string }) => void): void {
 }
 
 /**
- * The text of each piece of embedded data of a text other than the
- * frontmatter, as written, in source order: the directives and the data
- * blocks (the nodes of `DATA_BLOCK_NODE_TYPES`). Eventmodeling's comparison
- * checks its permitted body-margin changes separately from this raw list.
+ * The range of each piece of embedded data of a text other than the
+ * frontmatter, in source order: the directives and the data blocks (the nodes
+ * of `DATA_BLOCK_NODE_TYPES`).
  */
-export function writtenEmbeddedTexts(
-  text: string,
-  root: Root = parse(text),
-): string[] {
-  const ranges: [number, number][] = []
+function embeddedRangesOf(root: Root): Range[] {
+  const ranges: Range[] = []
   for (const directive of root.directives) ranges.push(directive.range)
   walk(root.body, (node) => {
     if (isDataBlock(node)) {
@@ -142,9 +140,22 @@ export function writtenEmbeddedTexts(
       } else ranges.push((node as unknown as { range: [number, number] }).range)
     }
   })
-  return ranges
-    .sort((a, b) => a[0] - b[0])
-    .map(([start, end]) => withLineFeeds(text.slice(start, end)))
+  return ranges.sort((a, b) => a[0] - b[0])
+}
+
+/**
+ * The text of each piece of embedded data of a text other than the
+ * frontmatter, as written, in source order: the directives and the data
+ * blocks (the nodes of `DATA_BLOCK_NODE_TYPES`). Eventmodeling's comparison
+ * checks its permitted body-margin changes separately from this raw list.
+ */
+export function writtenEmbeddedTexts(
+  text: string,
+  root: Root = parse(text),
+): string[] {
+  return embeddedRangesOf(root).map(([start, end]) =>
+    withLineFeeds(text.slice(start, end)),
+  )
 }
 
 /**
@@ -288,16 +299,46 @@ function droppableSemicolonsOf(text: string, root: Root): ReadonlySet<number> {
 }
 
 /**
- * Compare authored text while allowing treeview's explicitly redrawn outer
- * box structure. Only the `;` of `droppableSemicolonsOf` may be removed from
- * the input. Ignore common.md's whitespace (including BOM) and frontmatter;
- * describeFrontmatterChange checks its YAML separately.
+ * The offsets of the `,` of a text that formatting may drop: the `,` between
+ * the entries of a data block of one line that `after` prints with one entry
+ * on each line (`splitSeparatorOffsets`). The blocks of the two texts are
+ * paired by their order, as the comparison of the embedded data does.
  */
-export function writtenTextKeptUpToSemicolons(
+function droppableEntryCommasOf(
+  before: string,
+  root: Root,
+  after: string,
+): ReadonlySet<number> {
+  const written = embeddedRangesOf(root)
+  const printed = writtenEmbeddedTexts(after)
+  const offsets = new Set<number>()
+  if (written.length !== printed.length) return offsets
+  for (const [index, [start, end]] of written.entries()) {
+    for (const offset of splitSeparatorOffsets(
+      before.slice(start, end),
+      printed[index],
+    ) ?? [])
+      offsets.add(start + offset)
+  }
+  return offsets
+}
+
+/**
+ * Compare authored text while allowing treeview's explicitly redrawn outer
+ * box structure. Only the `;` of `droppableSemicolonsOf` and the `,` of
+ * `droppableEntryCommasOf` may be removed from the input. Ignore common.md's
+ * whitespace (including BOM) and frontmatter; describeFrontmatterChange checks
+ * its YAML separately.
+ */
+export function writtenTextKeptUpToSeparators(
   before: string,
   after: string,
 ): boolean {
-  const droppable = droppableSemicolonsOf(before, parse(before))
+  const beforeRoot = parse(before)
+  const droppable = new Set([
+    ...droppableSemicolonsOf(before, beforeRoot),
+    ...droppableEntryCommasOf(before, beforeRoot, after),
+  ])
   const [input, output] = [before, after].map((text, side) => {
     const root = parse(text)
     // The spellings that are printed in one form change in the input, not in
@@ -358,7 +399,8 @@ export function writtenTextKeptUpToSemicolons(
   for (let inputIndex = 0; inputIndex < input.written.length; inputIndex++) {
     if (input.written[inputIndex] === output.written[outputIndex]) outputIndex++
     else if (
-      input.written[inputIndex] !== ";" ||
+      (input.written[inputIndex] !== ";" &&
+        input.written[inputIndex] !== ",") ||
       !droppable.has(input.offsets[inputIndex])
     )
       return false

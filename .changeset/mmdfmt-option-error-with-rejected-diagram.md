@@ -2,6 +2,6 @@
 "mmdfmt": patch
 ---
 
-Report an invalid `tabWidth` or `useTabs` of a Prettier configuration also for a
-diagram that mermaid.js rejects, where the diagram's syntax error was reported
-instead.
+Report an invalid value of an option that `mmdfmt` reads from a Prettier
+configuration, such as `printWidth: "wide"`, also for a diagram that mermaid.js
+rejects, where the diagram's syntax error was reported instead.

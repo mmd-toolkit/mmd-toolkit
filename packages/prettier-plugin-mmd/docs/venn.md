@@ -436,17 +436,17 @@ union A, B:007
 ### Style properties
 
 Properties use `key:value` and comma plus one space, distinguishing compact
-punctuation from value whitespace. Each bare value is one written `VennLiteral`,
-retaining adjacent atoms and their spacing even where the Db joins atoms with
-spaces. Normalizing those gaps would keep the Db, but the tree holds the bare
-value with its written spelling, and keeping it avoids a second lexer in the
-printer. Space inside an rgb/rgba token is different: changing a component gap
-changes the Db, and so does quoting a joined bare value; quoted values, whole
-rgb/rgba tokens, key case, repetitions and separate statements stay as written.
-A kept prefix overrides punctuation spacing so colon-to-hash gaps cannot change
-semicolon selection. [corpus fixture: venn/div-c4-bare-style-value] [corpus
-fixture: venn/db-style-case-and-order] [corpus fixture:
-venn/db-style-colon-value-inline-directive] [corpus fixture:
+punctuation from value whitespace. Each bare value is one written `VennLiteral`.
+A run of spaces and tabs between its atoms, outside the parentheses of an
+rgb/rgba token, is printed as one space: mermaid.js joins the atoms with one
+space, so the Db is the same, and whether whitespace stands between two atoms
+stays as written. Space inside an rgb/rgba token is different: changing a
+component gap changes the Db, and so does quoting a joined bare value; quoted
+values, whole rgb/rgba tokens, key case, repetitions and separate statements
+stay as written. A kept prefix overrides punctuation spacing so colon-to-hash
+gaps cannot change semicolon selection. [corpus fixture:
+venn/div-c4-bare-style-value] [corpus fixture: venn/db-style-case-and-order]
+[corpus fixture: venn/db-style-colon-value-inline-directive] [corpus fixture:
 venn/db-style-property-colon-inline-directive] [corpus fixture:
 venn/db-style-prototype-keys] [corpus fixture: venn/db-style-unknown] [corpus
 fixture: venn/lex-directive-style-value-color] [corpus fixture:
@@ -456,7 +456,8 @@ venn/lex-style-rgb-ignored-semicolon] [corpus fixture:
 venn/lex-style-single-number-whole-spelling] [fixture:
 venn/style-properties/property-directives] [fixture:
 venn/style-properties/prototype-repeat] [fixture:
-venn/style-properties/style-atoms-kept] [fixture:
+venn/style-properties/style-atoms-spaced] [fixture:
+venn/style-properties/style-words-run-spaced] [fixture:
 venn/style-properties/style-atoms-normalize-equal-control] [fixture:
 venn/style-properties/style-color-kept] [corpus fixture: venn/db-form-style-rgb]
 [fixture: venn/style-properties/style-color-space-differs] [fixture:

@@ -73,16 +73,23 @@ written where [Data blocks](./flowchart.md#data-blocks) says so. [fixture:
 flowchart/data-blocks/one-line-padded] [fixture:
 flowchart/data-blocks/one-line-space-only-padded] [fixture:
 flowchart/data-blocks/one-line-touching-blocks-kept] [fixture:
-flowchart/data-blocks/one-line-separate-blocks-padded] Eligible multiline data
-blocks in flowchart, agentflow, kanban and sequence, and usecase JSON tables,
-move their body lines by one uniform number of ASCII spaces, preserving relative
-indentation and trailing whitespace; a separate `}` aligns with its statement.
-Inline-opening blocks, leading non-space whitespace, embedded directives,
-column-zero YAML markers, kept lines, blocks after the statement's first line
-and `tabWidth: 0` prevent movement. Sequence additionally requires a single
-text-bearing body line because Mermaid trims the whole block. The conditions and
-their reasons are in [Data blocks](./flowchart.md#data-blocks); other blocks
-keep their columns. [fixture: flowchart/data-blocks/deep-nested-yaml] [fixture:
+flowchart/data-blocks/one-line-separate-blocks-padded] In flowchart, agentflow
+and kanban, a data block on one line whose line is longer than `printWidth`
+prints on lines, one entry on each, where every entry is a simple key and value:
+only the whitespace, the line breaks and the `,` between its entries change, and
+the characters of the keys and values stay. The conditions are in
+[Data blocks](./flowchart.md#data-blocks). [fixture:
+flowchart/data-blocks/long-split] Eligible multiline data blocks in flowchart,
+agentflow, kanban and sequence, and usecase JSON tables, move their body lines
+by one uniform number of ASCII spaces, preserving relative indentation and
+trailing whitespace; a separate `}` aligns with its statement. Inline-opening
+blocks, leading non-space whitespace, embedded directives, column-zero YAML
+markers, kept lines, blocks after the statement's first line and `tabWidth: 0`
+prevent movement; with `useTabs` the statement that holds the block is printed
+as written instead. Sequence additionally requires a single text-bearing body
+line because Mermaid trims the whole block. The conditions and their reasons are
+in [Data blocks](./flowchart.md#data-blocks); other blocks keep their columns.
+[fixture: flowchart/data-blocks/deep-nested-yaml] [fixture:
 flowchart/data-blocks/scalar-blank-lines] [fixture:
 sequence/multi-line-values/data-multiple-lines-kept] [fixture:
 usecase/json-tables/tab-statement-space-body]
@@ -346,18 +353,19 @@ statement: after a `,` at the end of the list, as in `style A fill:#f00, `.
 ## Styles that are drawn the same
 
 A `style`, `classDef`, or `linkStyle` statement prints its styles in one form in
-flowchart, agentflow, class, state, and block diagrams, as it does in ER and
-requirement diagrams: no whitespace before the first `:` of a style, one space
-after it where the value is not empty, no whitespace before the `,` between two
-styles, and one space after it. `style A fill :#f00,stroke:  #333` is printed
-`style A fill: #f00, stroke: #333`. The whitespace between the words of a value
-stays as written. [fixture:
+flowchart, agentflow, class, state, block, and usecase diagrams, as it does in
+ER and requirement diagrams: no whitespace before the first `:` of a style, one
+space after it where the value is not empty, no whitespace before the `,`
+between two styles, and one space after it. `style A fill :#f00,stroke:  #333`
+is printed `style A fill: #f00, stroke: #333`. A run of spaces and tabs between
+the words of a style is printed as one space (see below). [fixture:
 flowchart/whitespace-between-tokens/style-colon-spaced] [fixture:
 flowchart/whitespace-between-tokens/style-colon-empty-value-kept] [fixture:
 agentflow/single-space-gaps/style-colon-spaced] [fixture:
 class/whitespace-between-tokens/style-colon-spaced] [fixture:
 state/whitespace-between-tokens/style-colon-spaced] [fixture:
-block/styles/style-colon-spaced]
+block/styles/style-colon-spaced] [fixture:
+usecase/classes-and-styles/css-colon-padding]
 
 mermaid.js keeps this whitespace in the Db, so the Db of the printed text
 differs from the Db of the written text, but it draws the same figure.
@@ -371,6 +379,29 @@ mermaid.js 12.3.0 in Chromium, and the pixels were the same, and so was the SVG,
 without the generated ids and without that whitespace: for `style` and
 `classDef` in the five diagram types, and for the styles of a `linkStyle`, with
 link numbers or `default`, except for the cases below.
+
+A usecase diagram makes its figure the same way. The styles of an actor, a use
+case, a boundary, and a JSON table reach their shape as `cssStyles`
+([`usecaseDb`](https://github.com/mermaid-js/mermaid/blob/2086904e76c692331e34a45d7cc3bc30860d040e/packages/mermaid/src/diagrams/usecase/usecaseDb.ts#L354-L355)),
+and the shapes make their CSS from them and from the styles of their classes
+with `styles2String`, which takes the whitespace around the name and the value
+of a style away through `styles2Map`
+([`usecaseEllipse`](https://github.com/mermaid-js/mermaid/blob/2086904e76c692331e34a45d7cc3bc30860d040e/packages/mermaid/src/rendering-util/rendering-elements/shapes/usecaseEllipse.ts#L14),
+[`usecaseActor`](https://github.com/mermaid-js/mermaid/blob/2086904e76c692331e34a45d7cc3bc30860d040e/packages/mermaid/src/rendering-util/rendering-elements/shapes/usecaseActor.ts#L160),
+[`usecaseJsonTable`](https://github.com/mermaid-js/mermaid/blob/2086904e76c692331e34a45d7cc3bc30860d040e/packages/mermaid/src/rendering-util/rendering-elements/shapes/usecaseJsonTable.ts#L62-L63)).
+The styles of a class are trimmed first
+([`getCompiledStyles`](https://github.com/mermaid-js/mermaid/blob/2086904e76c692331e34a45d7cc3bc30860d040e/packages/mermaid/src/diagrams/usecase/usecaseDb.ts#L118-L135)).
+The styles of a relationship go to its edge as `style`
+([`usecaseDb`](https://github.com/mermaid-js/mermaid/blob/2086904e76c692331e34a45d7cc3bc30860d040e/packages/mermaid/src/diagrams/usecase/usecaseDb.ts#L472-L473)),
+which puts them into the `style` attribute of its path. Both texts of
+`style A stroke:#d33,fill:#fee` and `style A   stroke  :  #d33 ,  fill : #fee`
+on an actor, and likewise on a use case, a boundary, and a JSON table, and of
+`classDef c stroke:#d33,fill:#fee` and `classDef c stroke: #d33, fill  :  #fee`
+put on an actor, were drawn with mermaid.js 12.3.0 in Chromium, and the SVG was
+the same. For a relationship (`style e1 stroke-width:3px,fill:none` and
+`style e1 stroke-width: 3px, fill  :  none`, and a `classDef` put on it) the
+pixels were the same, and so was the SVG without the whitespace around `:` and
+`;` in the `style` attribute of its path.
 
 A `classDef` in a treemap drops the whitespace at the end of its styles:
 `classDef zz color:red  ` is printed `classDef zz color:red`. mermaid.js keeps
@@ -419,6 +450,18 @@ flowchart/whitespace-between-tokens/class-def-stroke-before-colon-kept]
 [fixture: flowchart/whitespace-between-tokens/style-stroke-before-colon-spaced]
 [fixture: agentflow/single-space-gaps/link-style-stroke-before-colon-kept]
 
+In a usecase diagram a `style` and a `classDef` can reach a relationship that
+has an explicit id, so both keep it. The arrowheads of `A e1@--> B` with
+`classDef c stroke:#d33` put on `e1` are red, and with `classDef c stroke :#d33`
+they keep their theme colour, and so it is for `style e1 stroke :#d33`; the
+pixels differ. A name that ends with `stroke` keeps whether whitespace stands
+between it and the `:`, a run of whitespace becoming one space, in a `style`
+too: `style A stroke  :#d33` is printed `style A stroke : #d33`, while
+`style A stroke:#d33` is printed `style A stroke: #d33`. [fixture:
+usecase/classes-and-styles/css-stroke-before-colon-kept] [fixture:
+usecase/classes-and-styles/css-stroke-before-colon-run-collapsed] [fixture:
+usecase/classes-and-styles/css-stroke-before-colon-touching]
+
 Where the look is `handDrawn`, the start of a style of a link is read too.
 [`insertEdge`](https://github.com/mermaid-js/mermaid/blob/2086904e76c692331e34a45d7cc3bc30860d040e/packages/mermaid/src/rendering-util/rendering-elements/edges.js#L899)
 takes the first style of the link that starts with `stroke:` whole as the colour
@@ -460,11 +503,13 @@ instead of ending it. In a `style` and a `linkStyle` of these diagram types, and
 in the other diagram types, the `,` always ends a style, and a backslash before
 it does not escape it: `style A fill:#f00\,stroke:#00f` has the two styles
 `fill:#f00\` and `stroke:#00f`. A space after a backslash before the `:` stays
-in all of them, since taking it away would escape the `:`. [fixture:
-flowchart/whitespace-between-tokens/style-escaped-space-before-comma] [fixture:
-flowchart/whitespace-between-tokens/style-backslash-before-comma] [fixture:
-agentflow/single-space-gaps/style-escaped-space-before-comma] [fixture:
-agentflow/single-space-gaps/style-backslash-before-comma] [fixture:
+in all of them, since taking it away would escape the `:`, and the whitespace
+after that space goes. [fixture:
+flowchart/whitespace-between-tokens/style-colon-escaped-space-run-dropped]
+[fixture: flowchart/whitespace-between-tokens/style-escaped-space-before-comma]
+[fixture: flowchart/whitespace-between-tokens/style-backslash-before-comma]
+[fixture: agentflow/single-space-gaps/style-escaped-space-before-comma]
+[fixture: agentflow/single-space-gaps/style-backslash-before-comma] [fixture:
 block/styles/style-backslash-before-comma] [fixture:
 class/whitespace-between-tokens/style-backslash-before-comma] [fixture:
 state/whitespace-between-tokens/style-backslash-before-comma]
@@ -546,6 +591,92 @@ of a block diagram make the style of their label again from their styles with
 spellings were the same for them and for a `classDef`. [fixture:
 block/styles/style-label-styles-kept]
 
+A run of spaces and tabs between the words of a style is printed as one space in
+flowchart, agentflow, class, state, block, usecase, treemap, ER, and requirement
+diagrams, in a style with a `:` and in one without, and whether whitespace
+stands between two words stays as written: `style A fill   #f00` is printed
+`style A fill #f00`, and `style A fill#f00` stays. CSS reads a run as one
+whitespace, so the figure is the same, except where the run is a character of
+the value, and there it stays as written: inside a string (`"…"` or `'…'`),
+inside a comment (`/* … */`), inside the parentheses of `url(`, and the escape
+after a backslash, which CSS reads as part of the value: the hexadecimal digits
+(at most six) and the one space or tab that follows them, or else the next
+character, so that `a\   b` is printed `a\  b`, and `Arial\20   Black` is
+printed `Arial\20  Black`. A string, a comment, or `url(` that is not closed
+runs to the end of the style. [fixture:
+flowchart/whitespace-between-tokens/style-string-runs-kept] [fixture:
+flowchart/whitespace-between-tokens/style-backslash-run-spaced] [fixture:
+flowchart/whitespace-between-tokens/style-hex-escape-run-spaced] [fixture:
+flowchart/whitespace-between-tokens/style-hex-escape-tab-run-spaced] [fixture:
+flowchart/whitespace-between-tokens/style-hex-escape-seven-digits-run-spaced]
+[fixture: state/whitespace-between-tokens/style-hex-escape-run-spaced] [fixture:
+agentflow/single-space-gaps/style-hex-escape-run-spaced] [fixture:
+block/styles/style-hex-escape-run-spaced] [fixture:
+state/whitespace-between-tokens/style-string-runs-kept] [fixture:
+state/whitespace-between-tokens/style-url-runs-kept] [fixture:
+state/whitespace-between-tokens/style-comment-runs-kept] [fixture:
+block/styles/style-string-runs-kept] [fixture: block/styles/style-url-runs-kept]
+[fixture: usecase/classes-and-styles/css-string-runs-kept] [fixture:
+usecase/classes-and-styles/css-url-runs-kept] [fixture:
+class/whitespace-between-tokens/style-url-runs-kept] [fixture:
+class/whitespace-between-tokens/style-comment-runs-kept]
+
+mermaid.js joins the words of a style that has no `:` in a class diagram, and
+the native style units of ER and requirement diagrams in every style, so the Db
+does not change there: `stroke-dasharray: 5   5` and `stroke-dasharray: 5 5` are
+both read as `stroke-dasharray:55` in an ER or a requirement diagram. The other
+diagram types, and the styles with a `:` of a class diagram, keep the runs in
+the Db, as they keep the whitespace around the `:`, and draw the same figure.
+Both texts of each of these were drawn with mermaid.js 12.3.0 in Chromium, with
+the runs as written and printed as one space, and the pixels were the same, and
+so was the SVG, without the generated ids and without the runs in its `style`
+and `fill` attributes: in a class diagram `style A border:2px   solid   red`,
+`style A font:20px   serif`, `style A fill:#f00   stroke:blue`,
+`style A fill:#f00,   x   y`, and `style A border:2px solid red` written with
+tabs between its words, and a `classDef` put on a class; in a flowchart and in
+an agentflow diagram a `style`, a `classDef`, and a `linkStyle` with words, with
+and without a `:`; in a state and in a block diagram a `style` and a `classDef`
+with the same values, a string, a comment, and `url(` beside the runs; and in a
+usecase diagram a `style` and a `classDef` with the same values; and in a
+treemap a `classDef` with the whitespace around the `:` and the `,`, runs
+between words, a string, an escaped `,`, and whitespace at its end. Beyond
+these, the statements of the corpus and of the fixtures of this package whose
+styles change by formatting were drawn the same way: 1,355 texts hold a `style`,
+a `classDef`, or a `linkStyle`; of the 769 of them whose Db changes, 754 have
+the same pixels, 10 cannot be drawn before or after (mermaid.js stops with an
+error), and 5 are use case diagrams with an animated link, whose pixels differ
+by the frame of the animation and whose SVG is the same without the whitespace
+in the `style` attribute. The `classDef` statements of a treemap in the corpus,
+in the fixtures of this package, and in the documents of mermaid.js whose styles
+change by formatting were drawn the same way: of the 78 texts, all have the same
+pixels, and the SVG is the same without the whitespace in the `style` attribute.
+mermaid.js keeps the text of each style of a treemap in the Db, and before it
+draws it takes the text before the first `:` as the name and the text up to the
+next `:` as the value, with the whitespace around each taken away. A hexadecimal
+escape was drawn too, with a font name that the escape decides: in a flowchart,
+a state, a block, an agentflow, and a swimlane diagram
+`style A font-family:\41   rial,font-size:30px` and the printed
+`font-family: \41  rial, font-size: 30px` have the same pixels, while the
+`\41 rial` that collapsing the whole run after the escape would print draws
+another figure. A style that starts with the `:` was drawn as written and as
+printed in these diagram types and in a class, an ER, and a requirement diagram,
+and so was one whose `:` follows a backslash and a space, in the diagram types
+that accept a backslash in a style (flowchart, agentflow, swimlane, state, and
+block): `style A :  red   x` and `style A : red x`, and
+`style A fill\   :red   x` and `style A fill\ : red x`, have the same pixels.
+[fixture: treemap/styles/spaced] [fixture: treemap/styles/escaped-comma-spaced]
+[fixture: class/whitespace-between-tokens/style-value-words-spaced] [fixture:
+class/whitespace-between-tokens/style-words-run-spaced] [fixture:
+flowchart/whitespace-between-tokens/style-words-run-spaced] [fixture:
+agentflow/single-space-gaps/style-words-run-spaced] [fixture:
+state/whitespace-between-tokens/style-words-run-spaced] [fixture:
+block/styles/style-words-run-spaced] [fixture:
+usecase/classes-and-styles/css-words-run-spaced] [fixture:
+er/styles-and-classes/style-words-run-spaced] [fixture:
+requirement/styles-and-classes/style-words-run-spaced] [fixture:
+class/whitespace-between-tokens/style-words-directive-kept] [fixture:
+flowchart/whitespace-between-tokens/style-words-directive-kept]
+
 A statement stays as written where a style holds a line break or a U+2028 or
 U+2029, where the statement holds a comment or a directive, where a style is all
 whitespace, and where its line holds a `;` of its own (see
@@ -558,8 +689,11 @@ flowchart/whitespace-between-tokens/style-comma-with-kept-semicolon-kept]
 The tests compare the Db of the printed text with the margins of its styles
 restored from the Db of the written text (`styleDbForFormattingComparison` in
 `tests/style-margins.ts`): a style that differs from the written one only by the
-whitespace at its ends and around its first `:` takes the written text, and any
-other difference, among them the number of styles of a link, the presence of
+whitespace at its ends and around its first `:`, and in the diagram types above
+by the runs between its words outside strings, comments, `url(`, and the escape
+after a backslash, takes the written text, and any other difference, among them
+the presence of whitespace between two words of a style, a changed run inside a
+string, a comment, or `url(`, the number of styles of a link, the presence of
 whitespace before the `:` of a `stroke` in a style that can reach a link, the
 presence of whitespace before a style of a link that starts with `stroke:`, and
 the presence of whitespace in the value of a `stroke` of a link that is
@@ -724,16 +858,52 @@ today, and the pixels differ. [fixture:
 gantt/settings/format-padding-kept-where-drawn-differently] [fixture:
 gantt/settings/trailing-whitespace-by-setting]
 
+The name of a task of a Gantt chart ends with the whitespace between its text
+and the colon, which the printer sets one space after the longest name of a
+section whose names have padding, or of the sections that share a column (see
+[Task data](./gantt.md#task-data)). The rule of the grammar takes everything
+before the colon as the name, whitespace included
+([`gantt.jison`](https://github.com/mermaid-js/mermaid/blob/2086904e76c692331e34a45d7cc3bc30860d040e/packages/mermaid/src/diagrams/gantt/parser/gantt.jison#L93)),
+`addTask` keeps it in the `task` of the task
+([`addTask`](https://github.com/mermaid-js/mermaid/blob/2086904e76c692331e34a45d7cc3bc30860d040e/packages/mermaid/src/diagrams/gantt/ganttDb.js#L596-L606)),
+and the renderer puts `task` into an SVG `text` element and measures its width
+to decide where the text stands and which class it gets
+([`draw`](https://github.com/mermaid-js/mermaid/blob/2086904e76c692331e34a45d7cc3bc30860d040e/packages/mermaid/src/diagrams/gantt/ganttRenderer.js#L394-L429),
+[the class](https://github.com/mermaid-js/mermaid/blob/2086904e76c692331e34a45d7cc3bc30860d040e/packages/mermaid/src/diagrams/gantt/ganttRenderer.js#L449-L509)).
+The whitespace at the end of the name is drawn as nothing and adds nothing to
+the measured width, so the Db differs and the figure is the same. Both texts of
+eight charts were drawn with mermaid.js 12.3.0 in Chromium: a name with no
+whitespace before the colon and one with a space, with a space and with thirty,
+with tabs and with spaces, a name that fits in its bar and one wider than it, a
+name near the right edge of the chart, the states `done`, `crit`, `active`, and
+`milestone`, and two sections. The pixels were the same, and so was the SVG,
+without the generated ids and without the whitespace at the end of the text of a
+task. The same holds for the 36 of the 39 texts of the corpus, of the documents
+of mermaid.js, and of the fixtures of this package whose task names the printer
+changes that mermaid.js can draw (it stops with an error on the other three,
+before and after); the SVG of two of them differs also in the whitespace at the
+start of the title, which is the exception of the title above. Where the CSS of
+the chart keeps whitespace, the figure differs: with
+`%%{init: {"themeCSS": ".taskText{white-space:pre}"}}%%` the pixels of the two
+texts differ. So the printer leaves the colons of a chart that holds
+`white-space` as written, as it leaves the runs of whitespace in the other texts
+(see
+[Runs of whitespace in a text that are drawn the same](#runs-of-whitespace-in-a-text-that-are-drawn-the-same)).
+[fixture: gantt/task-data/colon-column-new-longest-name] [fixture:
+gantt/task-data/description-padding-tightened] [fixture:
+gantt/task-data/colon-column-white-space-kept]
+
 The tests compare the Db of the printed text with the whitespace at the ends of
 its texts restored from the Db of the written text
 (`keywordTextDbForFormattingComparison` in `tests/keyword-text-margins.ts`): a
 title, a date format, or an axis format that differs from the written one only
 by the spaces and tabs at its ends takes the written text, and so does the title
-and the description of a C4 diagram; an event of a timeline and a description of
-a state, only by the spaces and tabs at their end. Any other difference, among
-them one in the name of a section, in a tick interval, or in a today marker,
-fails. When the pinned mermaid.js is updated, draw both texts of each kind again
-and compare the SVG and the pixels before the exception stays.
+and the description of a C4 diagram; an event of a timeline, a description of a
+state, and the name of a task of a Gantt chart, only by the spaces and tabs at
+their end. Any other difference, among them one in the name of a section, in a
+tick interval, or in a today marker, fails. When the pinned mermaid.js is
+updated, draw both texts of each kind again and compare the SVG and the pixels
+before the exception stays.
 
 ## Runs of whitespace in a text that are drawn the same
 
@@ -1603,9 +1773,10 @@ eventmodeling/gwt-clauses-and-items/header-directive-continuation]
 
 Ordinary ER and requirement style units use `property: value`, with styles
 separated by a comma and one space. Property and value contents stay written,
-including spaces between value words. A plain joined header gets this spacing on
-the first pass too. Trivia, multiline style literals and semicolon-sensitive
-lines retain their existing layout. [fixture:
+except that a run of spaces between value words is printed as one space (see
+[Styles that are drawn the same](#styles-that-are-drawn-the-same)). A plain
+joined header gets this spacing on the first pass too. Trivia, multiline style
+literals and semicolon-sensitive lines retain their existing layout. [fixture:
 er/styles-and-classes/style-unit-padding] [fixture:
 er/styles-and-classes/over-lines-joined] [fixture:
 requirement/styles-and-classes/style-unit-padding]
@@ -1909,6 +2080,35 @@ line breaks, trailing whitespace and directive contents. Quoted strings and
 opaque data blocks retain their separate value-preservation rules. [fixture:
 flowchart/multi-line-values/accdescr-block-kept]
 
+Where the text starts on a line after the `{`, the whitespace between the `{`
+and that line break is left out, also where the raw body columns stay:
+mermaid.js reads the whitespace after the `{`, line breaks included, with the
+`{`, so the text starts after it and the Db is the same. `accDescr { ` followed
+by a line break is printed `accDescr {`. A comment or a directive after the `{`
+stays, with the gap before it as under
+[Directives between tokens](#directives-between-tokens), where a run or a tab
+becomes one space; the whitespace after a directive at the end of the line is
+left out like the whitespace after the `{`, and the whitespace after a comment
+is part of the comment, so it stays. Text on the line of the `{` is spaced as
+any other token. This holds in every diagram type that has the block. [fixture:
+flowchart/multi-line-values/accdescr-block-opener-whitespace-dropped] [fixture:
+flowchart/multi-line-values/accdescr-block-opener-tab-dropped] [fixture:
+flowchart/multi-line-values/accdescr-block-opener-directive-trailing-dropped]
+[fixture:
+flowchart/multi-line-values/accdescr-block-opener-directive-run-collapsed]
+[fixture:
+flowchart/multi-line-values/accdescr-block-opener-directive-tab-collapsed]
+[fixture:
+usecase/direction-and-accessibility/accdescr-block-opener-directive-trailing-dropped]
+[fixture: treeview/description-blocks/opener-directive-trailing-dropped]
+[fixture:
+flowchart/multi-line-values/accdescr-block-opener-comment-trailing-kept]
+[fixture:
+flowchart/multi-line-values/accdescr-block-subgraph-opener-whitespace-dropped]
+[fixture: pie/description-blocks/opener-whitespace-dropped] [fixture:
+c4/description-blocks/opener-whitespace-dropped] [fixture:
+agentflow/accessibility/global-description-opener-whitespace-dropped]
+
 Keep authored description columns when the raw text also determines membership:
 inside flowchart subgraphs, Agentflow flow/global bodies and ER subgraphs.
 Changing a global body's text can change a later flow's members. Treeview box
@@ -2056,16 +2256,16 @@ See [Task data](./gantt.md#task-data), [Settings](./gantt.md#settings),
 [Lists](./gantt.md#lists).
 
 - The whitespace at the ends of the value of `tickInterval`, `todayMarker`, and
-  `section`, and between the text of a task description and its colon. The Db
-  keeps it, and it is drawn: `tickInterval  1week` with two spaces turns the
-  ticks into the default ones, `section  A` is another section than `section A`,
-  and `A task           :a1` with padding is not the same as its trimmed form,
-  and the padding that aligns the colons stays. The whitespace at the ends of
-  `dateFormat`, `axisFormat`, and `title` is left out (see
+  `section`. The Db keeps it, and it is drawn: `tickInterval  1week` with two
+  spaces turns the ticks into the default ones, and `section  A` is another
+  section than `section A`. The whitespace at the ends of `dateFormat`,
+  `axisFormat`, and `title` is left out, and the whitespace between the text of
+  a task description and its colon is set one space after the longest name of a
+  section whose names have padding, or of the sections that share a column (see
   [Texts after a keyword that are drawn the same](#texts-after-a-keyword-that-are-drawn-the-same)).
   [fixture: gantt/settings/trailing-whitespace-by-setting] [fixture:
   gantt/titles-and-sections/title-trailing-dropped-section-kept] [fixture:
-  gantt/task-data/description-padding-kept]
+  gantt/task-data/description-padding-tightened]
 - The whitespace inside an item of task data, the number of its items, and the
   case of its tags: `after   a1` is one item as written, `a : 1d,` has an empty
   item that `a : 1d` does not, and `Done` is no tag. [fixture:
@@ -2726,8 +2926,9 @@ Unicode separators inside comments or directives do not cut the kept part: Venn
 diagram comments continue to LF/EOF.
 
 [fixture: venn/name-lists/empty-quoted-targets] [fixture:
-venn/labels/labels-empty-kept] [fixture: venn/style-properties/style-atoms-kept]
-[fixture: venn/comments/ignored-fragment] [fixture:
+venn/labels/labels-empty-kept] [fixture:
+venn/style-properties/style-atoms-spaced] [fixture:
+venn/comments/ignored-fragment] [fixture:
 venn/line-rule-and-kept-lines/line-rule-suffix-spacing] [test: venn:
 ls-kept-comment-whitespace-line] [test: venn: ps-kept-directive]
 
@@ -2863,13 +3064,15 @@ and duplicates retained. JSON table data is opaque, including its number/escape
 spelling and property order, but the `{` of its head touches the `@`; eligible
 margins follow [JSON tables](./usecase.md#json-tables). Formatting fixtures
 without supplied effects use the shared null Db comparison and written-source
-check; the corpus uses recorded effects where available. Full CSS declarations
-keep both colon padding sides and the `--` name gap, which Mermaid stores.
-[fixture: usecase/native-metadata/metadata-inline] [fixture:
+check; the corpus uses recorded effects where available. The padding of a CSS
+declaration around its first colon follows
+[Styles that are drawn the same](#styles-that-are-drawn-the-same); the runs in a
+declaration are printed as one space as well. [fixture:
+usecase/native-metadata/metadata-inline] [fixture:
 usecase/native-metadata/metadata-blank-lines-kept] [fixture:
 usecase/json-tables/json-opaque] [fixture:
 usecase/classes-and-styles/css-colon-padding] [fixture:
-usecase/classes-and-styles/css-custom-gap]
+usecase/classes-and-styles/css-custom-gap-run-collapsed]
 
 After common comment-region and line-terminator handling, the optional trailing
 comma and physical line breaks between the last property and `}` total at most

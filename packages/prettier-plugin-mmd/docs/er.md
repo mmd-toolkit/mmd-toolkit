@@ -977,21 +977,35 @@ Name and class lists use commas without surrounding spaces. The first style
 stands after one space. For ordinary single-line property/value styles in
 `style` or `classDef`, put no space before the first colon of each style and one
 before its nonempty value; separate styles with a comma and one following space.
-Keep property and value interiors, including repeated spaces between value
-words. Mermaid concatenates the native style units: `stroke-dasharray: 5 5`
-still means `stroke-dasharray:55`. For example, `fill   : navy, stroke  : black`
-becomes `fill: navy, stroke: black`, while `stroke-dasharray:  5    5` keeps the
-four spaces between its values. A header or exterior line break that ordinarily
-joins does not delay this spacing until another formatting. Style interiors
-containing line separators, owned trivia, and statements with a kept semicolon
-on their physical line retain the existing style layout. The keywords `style`
-and `classDef` keep the case in which they are written (see
+Print a run of spaces or tabs between two words of a style as one space, in a
+style with a `:` and in one without: `stroke-dasharray:  5    5` becomes
+`stroke-dasharray: 5 5`, and `4px    wide` becomes `4px wide`. Whether
+whitespace stands between two words stays as written: `fill #f00` and `fill#f00`
+are kept apart, since a word that touches the next stays touching, as a gap does
+elsewhere (see [Directives](#directives)), and joining the words would hide
+where one word ends. Mermaid concatenates the native style units whatever
+whitespace separates them: `stroke-dasharray: 5 5` still means
+`stroke-dasharray:55`, so the Db does not change. For example,
+`fill   : navy, stroke  : black` becomes `fill: navy, stroke: black`. A header
+or exterior line break that ordinarily joins does not delay this spacing until
+another formatting. Style interiors containing line separators, owned trivia,
+and statements with a kept semicolon on their physical line retain the existing
+style layout. The keywords `style` and `classDef` keep the case in which they
+are written (see
 [Keywords in one case](./compatibility.md#keywords-in-one-case)). [fixture:
 styles-and-classes/style-unit-padding] [fixture:
 styles-and-classes/class-def-names] [fixture: styles-and-classes/style-names]
 [fixture: styles-and-classes/class-lists] [fixture:
 styles-and-classes/styles-as-written] [fixture:
-styles-and-classes/style-inner-whitespace-kept]
+styles-and-classes/style-inner-whitespace-collapsed] [fixture:
+styles-and-classes/style-words-run-spaced] [fixture:
+styles-and-classes/style-words-touching-kept] [fixture:
+styles-and-classes/style-words-directive-kept]
+
+A style that starts with the `:` is printed as any other: one space after the
+`:`, and the runs between its words as one space. `style A :  red   x` is
+printed `style A : red x`. [fixture:
+styles-and-classes/style-colon-first-run-spaced]
 
 [fixture: styles-and-classes/keyword-case-kept] [fixture:
 styles-and-classes/keyword-case-semicolon-line-kept]

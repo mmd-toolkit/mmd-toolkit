@@ -51,14 +51,14 @@ ishikawa
 
 字下げは木の深さ × 設定の 1 段です。
 見出しは深さ 0、根は 1、子は親より 1 段深くします。
-深さごとの一様な字下げで、書かれた幅や clamp の数を持ち込まず、
+深さごとの一様な字下げで、書かれた幅や捨てた clamp と base の数を持ち込まず、
 同じ順序付きの木を作るためです。 [fixture: ishikawa/indentation/indent-depth]
 [fixture: ishikawa/indentation/indent-flatten-unsafe]
 [fixture: ishikawa/indentation/indent-sibling-causes]
 [fixture: ishikawa/indentation/indent-unindented-causes]
 [fixture: ishikawa/indentation/indent-zero-unclamped-unsafe]
 
-clamp された原因や相対レベル 0 の原因も、普通の根の子にします。
+clamp された原因、相対レベル 0 の原因、より浅い原因も、普通の根の子にします。
 [fixture: ishikawa/indentation/indent-clamped]
 [fixture: ishikawa/indentation/indent-relative-zero]
 

@@ -758,7 +758,7 @@ cynefin-beta
 ### Retained prefix
 
 textBeforeHeader があれば共有の keepsPrefix で、
-見出し keyword の直前まで prefix 全体を保ちます。
+見出し keyword を含む prefix 全体を保ちます。
 先頭 LF、passed trivia、second-scan directive、
 real・retained YAML の順を保ちます。
 掃除すると無視された YAML が有効な frontmatter になり、title、設定、

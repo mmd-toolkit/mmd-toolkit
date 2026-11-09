@@ -35,7 +35,7 @@ Comments, Directives and Frontmatter.
 ## Preview formatting
 
 Select **Formatted** to see the Prettier result. The preview updates as you edit
-Source or change **Indent** and **Use tabs**.
+Source or change **Print width** (80 by default), **Indent**, and **Use tabs**.
 
 **Apply to source** replaces the source with the preview, using LF line endings.
 You can undo the replacement with the editor's normal Undo command. Loading a
@@ -52,11 +52,11 @@ keeps its colors while you edit.
 ## Share an input
 
 Choose **Share**, then **Copy Link**, or copy the displayed URL manually. The
-link contains the source and indentation settings, including input that the
-parser rejects.
+link contains the source, print width, and indentation settings. You can share
+input that the parser rejects.
 
 The address bar also updates automatically as you edit. Reloading or opening the
-URL restores the saved source and indentation settings.
+URL restores the saved source, print width, and indentation settings.
 
 ## Documentation
 
