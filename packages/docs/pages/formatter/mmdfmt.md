@@ -257,7 +257,8 @@ npm install --save-exact mmdfmt
 
 It needs Node.js `^22.13.0 || >=24`. Import its functions `resolveConfig`,
 `format`, and `clearConfigCache`. Their arguments and results follow Prettier's
-functions of the same names, with the differences below:
+functions of the same names, and each section below says where they differ. This
+formats the diagrams of `docs/notes.md`:
 
 ```js
 import { readFile } from "node:fs/promises"
@@ -330,10 +331,12 @@ mark stay as they are in the text (see
 In Markdown, `format` leaves three kinds of block as written and reports none of
 them: a diagram that mermaid.js rejects, a block with a tab in its indentation
 that is read partly as the diagram, and a block whose opening fence stands on
-the line of a footnote label. Prettier leaves an embedded code block that it
-cannot format in the same way. To find the diagrams that mermaid.js rejects,
-parse them with [`@mmd-toolkit/parser`](../parser/index.md) or lint the file
-with [`@mmd-toolkit/eslint-plugin`](../linter/index.md).
+the line of a footnote label (see
+[Code blocks in detail](../../../mmdfmt/README.md#code-blocks-in-detail)).
+Prettier leaves an embedded code block that it cannot format in the same way. To
+find the diagrams that mermaid.js rejects, parse them with
+[`@mmd-toolkit/parser`](../parser/index.md) or lint the file with
+[`@mmd-toolkit/eslint-plugin`](../linter/index.md).
 
 The promise is rejected:
 

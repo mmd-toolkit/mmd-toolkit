@@ -279,7 +279,8 @@ npm install --save-exact mmdfmt
 
 Node.js `^22.13.0 || >=24`が必要です。
 関数`resolveConfig`、`format`、`clearConfigCache`をインポートします。
-引数と結果は、次の違いを除き、Prettierの同名の関数に従います。
+引数と結果はPrettierの同名の関数に従い、違う所は下の各関数の節に書きます。
+次の例は`docs/notes.md`の図を整形します。
 
 ```js
 import { readFile } from "node:fs/promises"
@@ -361,6 +362,9 @@ Markdownでは、`format`は、mermaid.jsが拒否する図、
 インデントにあるタブの一部が図と読まれるブロック、
 開きフェンスが脚注のラベルの行にあるブロックの3種類を、書かれたまま残し、
 どれも報告しません。
+後の2種類は、
+[コードブロックの詳細](../../../mmdfmt/README.ja.md#コードブロックの詳細)
+で説明しています。
 Prettierが整形できない埋め込みのコードブロックを残すのと同じです。
 mermaid.jsが拒否する図を見つけるには、
 [`@mmd-toolkit/parser`](../parser/index.ja.md)で解析するか、
