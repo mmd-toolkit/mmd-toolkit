@@ -1,5 +1,6 @@
 import type { Node, Range } from "@mmd-toolkit/ast"
 import type { Doc } from "prettier"
+import { util } from "prettier"
 import { builders } from "prettier/doc"
 import type { AtomLayout } from "./atoms.ts"
 import { findNodes, minOf } from "./collections.ts"
@@ -622,7 +623,7 @@ function splitDataBlock(
     source.text.slice(block.range[0] + 2, -1 + block.range[1]),
   )
   if (entries === null) return undefined
-  const column = columnsOf(placement.statement, placement.tabWidth)
+  const column = util.getAlignmentSize(placement.statement, placement.tabWidth)
   const lines: Doc[] = []
   for (const entry of entries)
     lines.push(
@@ -884,7 +885,8 @@ function moveDataBlock(
     if (closing > shallowest) return undefined
   }
   const target =
-    columnsOf(placement.statement, placement.tabWidth) + placement.tabWidth
+    util.getAlignmentSize(placement.statement, placement.tabWidth) +
+    placement.tabWidth
   const shift = target - shallowest
   // A line of only spaces is moved too, so that it keeps its width beyond the
   // indentation of a literal block scalar; one that the shift leaves without
@@ -905,20 +907,13 @@ function moveDataBlock(
     // with text in a scalar that keeps its empty lines (`|+`, `>+`).
     docs.push(
       literalline,
-      " ".repeat(columnsOf(placement.statement, placement.tabWidth)),
+      " ".repeat(
+        util.getAlignmentSize(placement.statement, placement.tabWidth),
+      ),
       "}",
     )
   }
   return docs
-}
-
-/** The columns of an indentation, in which a tab is `tabWidth` columns. */
-function columnsOf(indentation: string, tabWidth: number): number {
-  let columns = 0
-  for (const character of indentation) {
-    columns += character === "\t" ? tabWidth : 1
-  }
-  return columns
 }
 
 /** Whether the line of a range's start or one of its lines is a kept line. */

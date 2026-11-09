@@ -83,15 +83,7 @@ describe("Code blocks in detail: the same blocks as the plugin", () => {
       parser: "markdown",
       plugins: [plugin],
     })
-    const byTool = await formatMarkdown(
-      text,
-      {
-        tabWidth: undefined,
-        useTabs: undefined,
-        printWidth: undefined,
-      },
-      "output",
-    )
+    const byTool = await formatMarkdown(text, {}, "output")
     expect(formattedDiagrams(byTool.text)).toBe(formattedDiagrams(byPrettier))
   })
 })
@@ -109,15 +101,7 @@ describe("If you know Prettier: two results differ from the plugin in Markdown",
       parser: "markdown",
       plugins: [plugin],
     })
-    const byTool = await formatMarkdown(
-      text,
-      {
-        tabWidth: undefined,
-        useTabs: undefined,
-        printWidth: undefined,
-      },
-      "output",
-    )
+    const byTool = await formatMarkdown(text, {}, "output")
     expect(byPrettier).toContain("  style A fill:#f00,\n")
     expect(byTool).toEqual({
       text: lines(
@@ -144,15 +128,7 @@ describe("If you know Prettier: two results differ from the plugin in Markdown",
       parser: "markdown",
       plugins: [plugin],
     })
-    const byTool = await formatMarkdown(
-      text,
-      {
-        tabWidth: undefined,
-        useTabs: undefined,
-        printWidth: undefined,
-      },
-      "output",
-    )
+    const byTool = await formatMarkdown(text, {}, "output")
     expect(formattedDiagrams(byPrettier)).toBe(1)
     expect(byTool).toEqual({ text, diagnostics: [] })
   })
@@ -198,11 +174,7 @@ describe("Code blocks in detail: the line width left in a container, as in Prett
           plugins: [plugin],
           printWidth,
         })
-        const byTool = await formatMarkdown(
-          text,
-          { tabWidth: undefined, useTabs: undefined, printWidth },
-          "output",
-        )
+        const byTool = await formatMarkdown(text, { printWidth }, "output")
         expect(byPrettier.includes("label: x,")).toBe(!splits)
         expect(byTool.text).toBe(byPrettier)
       }
@@ -229,18 +201,13 @@ describe("If you know Prettier: the colons of a Gantt section in a container", (
   const widest = Math.max(...gantt.map((line) => line.length))
 
   it("is lined up by Prettier and not by mmdfmt where the lines fit only without the container", async () => {
-    const options = { tabWidth: undefined, useTabs: undefined }
     for (const printWidth of [widest, widest + 1]) {
       const byPrettier = await format(inList, {
         parser: "markdown",
         plugins: [plugin],
         printWidth,
       })
-      const byTool = await formatMarkdown(
-        inList,
-        { ...options, printWidth },
-        "output",
-      )
+      const byTool = await formatMarkdown(inList, { printWidth }, "output")
       expect(byPrettier).toContain(alignedRow)
       expect(byTool.text).not.toContain(alignedRow)
     }
@@ -253,11 +220,7 @@ describe("If you know Prettier: the colons of a Gantt section in a container", (
       plugins: [plugin],
       printWidth,
     })
-    const byTool = await formatMarkdown(
-      inList,
-      { tabWidth: undefined, useTabs: undefined, printWidth },
-      "output",
-    )
+    const byTool = await formatMarkdown(inList, { printWidth }, "output")
     expect(byTool.text).toBe(byPrettier)
     expect(byTool.text).toContain(alignedRow)
   })

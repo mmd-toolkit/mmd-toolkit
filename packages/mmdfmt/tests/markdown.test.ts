@@ -1,15 +1,11 @@
 import { describe, expect, it } from "vitest"
-import type { LayoutOptions } from "../src/diagram.ts"
+import type { Options } from "prettier"
 import type { FormatResult } from "../src/diagnostic.ts"
 import { formatMarkdown } from "../src/markdown.ts"
 import { lines } from "./helpers.ts"
 
-/** The layout options without a Prettier configuration. */
-const noConfiguration: LayoutOptions = {
-  tabWidth: undefined,
-  useTabs: undefined,
-  printWidth: undefined,
-}
+/** No Prettier configuration. */
+const noConfiguration: Options = {}
 
 /**
  * Formats a Markdown text without a Prettier configuration, with the positions

@@ -1,17 +1,23 @@
 import path from "node:path"
 import type { Options, ResolveConfigOptions } from "prettier"
 import { resolveConfig as resolvePrettierConfig } from "prettier"
-import type { LayoutOptions } from "./diagram.ts"
 import { formatDiagramText, rejectionOf } from "./diagram.ts"
 import type { FormatResult, PositionsIn } from "./diagnostic.ts"
 import { lineEndingOf, positionIn, readText } from "./lines.ts"
 import { formatMarkdown } from "./markdown.ts"
 
 /**
- * The options that the command reads from a configuration (README, Indentation
- * and line width).
+ * The options of a Prettier configuration that the command does not read: those
+ * that it sets itself for each diagram (the parser, the plugins, and the line
+ * endings), the path, which `format` takes as an option of its own, and the
+ * range of a file to format, since the command formats whole diagrams (README,
+ * Configuration).
  */
-export type ConfigOptions = Pick<Options, "tabWidth" | "useTabs" | "printWidth">
+type UnreadOption =
+  "parser" | "plugins" | "endOfLine" | "filepath" | "rangeStart" | "rangeEnd"
+
+/** The options that the command reads from a Prettier configuration. */
+export type ConfigOptions = Omit<Options, UnreadOption>
 
 /** How the tool reads a file: as one diagram, or as Markdown with code blocks. */
 export type FileKind = "diagram" | "markdown"
@@ -43,10 +49,9 @@ export function kindOf(file: string): FileKind | undefined {
 
 /**
  * Resolves the configuration of a path with Prettier's arguments, reading
- * `.editorconfig` unless `editorconfig: false` is given (README, From a
- * script). Returns only the options that the command reads and that the
- * configuration sets, or `null` when no configuration applies (README,
- * Indentation and line width).
+ * `.editorconfig` unless `editorconfig: false` is given, as the command reads
+ * it, and returns the options that the command reads from it, or `null` when no
+ * configuration applies (README, From a script).
  */
 export async function resolveConfig(
   fileUrlOrPath: string | URL,
@@ -57,18 +62,25 @@ export async function resolveConfig(
     editorconfig: options?.editorconfig ?? true,
   })
   if (config === null) return null
-  const result: ConfigOptions = {}
-  if (config.tabWidth !== undefined) result.tabWidth = config.tabWidth
-  if (config.useTabs !== undefined) result.useTabs = config.useTabs
-  if (config.printWidth !== undefined) result.printWidth = config.printWidth
-  return result
+  // The options that the command does not read are left out by name; the
+  // names start with `_`, as unused names do.
+  const {
+    parser: _parser,
+    plugins: _plugins,
+    endOfLine: _endOfLine,
+    filepath: _filepath,
+    rangeStart: _rangeStart,
+    rangeEnd: _rangeEnd,
+    ...read
+  } = config
+  return read
 }
 
 /**
- * Formats a file of the given kind. The indentation and the line width come
- * from the Prettier configuration of the file, found as Prettier's CLI finds
- * it, `.editorconfig` included (README, Indentation and line width). The
- * diagnostics give their positions in the text that `positionsIn` names.
+ * Formats a file of the given kind. The Prettier configuration of the file,
+ * found as `resolveConfig` finds it, is given to Prettier as it is (README,
+ * Configuration). The diagnostics give their positions in the text that
+ * `positionsIn` names.
  */
 export async function formatFile(
   text: string,
@@ -76,15 +88,10 @@ export async function formatFile(
   kind: FileKind,
   positionsIn: PositionsIn,
 ): Promise<FormatResult> {
-  const config = await resolveConfig(file)
-  const layout: LayoutOptions = {
-    tabWidth: config?.tabWidth,
-    useTabs: config?.useTabs,
-    printWidth: config?.printWidth,
-  }
+  const config = (await resolveConfig(file)) ?? {}
   return kind === "diagram"
-    ? formatDiagramFile(text, layout)
-    : formatMarkdown(text, layout, positionsIn)
+    ? formatDiagramFile(text, config)
+    : formatMarkdown(text, config, positionsIn)
 }
 
 /**
@@ -94,12 +101,12 @@ export async function formatFile(
  */
 export async function formatDiagramSource(
   text: string,
-  layout: LayoutOptions,
+  config: Options,
 ): Promise<string> {
   const { byteOrderMark, normalized } = readText(text)
   const formatted = await formatDiagramText(
     normalized,
-    layout,
+    config,
     lineEndingOf(text),
   )
   return byteOrderMark + formatted
@@ -111,11 +118,11 @@ export async function formatDiagramSource(
  */
 async function formatDiagramFile(
   text: string,
-  layout: LayoutOptions,
+  config: Options,
 ): Promise<FormatResult> {
   try {
     return {
-      text: await formatDiagramSource(text, layout),
+      text: await formatDiagramSource(text, config),
       diagnostics: [],
     }
   } catch (error) {

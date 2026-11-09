@@ -367,8 +367,8 @@ task that starts its line lies before the first `:` of the line, and the rule
 reads only the whitespace after it. The width of a name, and of the rest of the
 line, is the width as written, so a directive inside the name counts, as the
 colons are lined up in the text, and a comment or a directive after the data
-counts toward `printWidth`. The plugin counts the lines of the diagram alone:
-in a Markdown code block in a list or a block quote, Prettier passes it the
+counts toward `printWidth`. The plugin counts the lines of the diagram alone: in
+a Markdown code block in a list or a block quote, Prettier passes it the
 `printWidth` as it is, without the width of what stands before the lines, so
 there the lines can be wider than `printWidth` on the screen, while `mmdfmt`
 passes the width less what it writes before the lines (see

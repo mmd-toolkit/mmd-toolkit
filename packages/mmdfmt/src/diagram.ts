@@ -4,18 +4,6 @@ import { format, getSupportInfo } from "prettier"
 import plugin from "prettier-plugin-mmd"
 import type { LineEnding } from "./lines.ts"
 
-/**
- * The options of a Prettier configuration that the tool uses (README,
- * Indentation and line width). An option that the configuration does not set
- * is `undefined`, and Prettier then uses its default.
- */
-export interface LayoutOptions {
-  readonly tabWidth: number | undefined
-  readonly useTabs: boolean | undefined
-  /** The line width; `Infinity` where `.editorconfig` says `off`. */
-  readonly printWidth: number | undefined
-}
-
 /** The default of a Prettier option that is a number, as Prettier states it. */
 async function defaultNumberOption(name: string): Promise<number> {
   const { options } = await getSupportInfo()
@@ -37,7 +25,7 @@ async function defaultNumberOption(name: string): Promise<number> {
  */
 export async function printWidthAfter(
   prefix: string,
-  options: LayoutOptions,
+  options: Options,
 ): Promise<number | undefined> {
   if (prefix === "") return options.printWidth
   const tabWidth = options.tabWidth ?? (await defaultNumberOption("tabWidth"))
@@ -66,38 +54,44 @@ const endOfLineOptions = {
 } as const satisfies Record<LineEnding, Options["endOfLine"]>
 
 /**
- * Formats the text of a diagram with Prettier and prettier-plugin-mmd, as
- * Prettier formats a `.mmd` file with the plugin. The text has no byte order
- * mark and its lines end with `\n`, as Prettier leaves a text before parsing
- * it; the lines of the result end with `lineEnding`.
+ * Formats the text of a diagram as {@link formatDiagramText} does, and gives
+ * a text that the plugin rejects as the message and the offset of its syntax
+ * error.
  */
 export async function formatDiagram(
   text: string,
-  layout: LayoutOptions,
+  config: Options,
   lineEnding: LineEnding,
 ): Promise<DiagramResult> {
   try {
     return {
       kind: "formatted",
-      text: await formatDiagramText(text, layout, lineEnding),
+      text: await formatDiagramText(text, config, lineEnding),
     }
   } catch (error) {
     return { kind: "rejected", ...rejectionOf(text, error) }
   }
 }
 
-/** Formats a diagram, throwing the error that Prettier throws on failure. */
+/**
+ * Formats the text of a diagram with Prettier and prettier-plugin-mmd, as
+ * Prettier formats a `.mmd` file with the plugin, and throws what Prettier
+ * throws for a text that the plugin rejects. `config` is the Prettier
+ * configuration of the file, given to Prettier as it is (README,
+ * Configuration), except for the options that the tool sets itself: the
+ * parser, the plugins, and the line endings. The text has no byte order
+ * mark and its lines end with `\n`, as Prettier leaves a text before parsing
+ * it; the lines of the result end with `lineEnding`.
+ */
 export async function formatDiagramText(
   text: string,
-  layout: LayoutOptions,
+  config: Options,
   lineEnding: LineEnding,
 ): Promise<string> {
   return format(text, {
+    ...config,
     parser: "mermaid",
     plugins: [plugin],
-    tabWidth: layout.tabWidth,
-    useTabs: layout.useTabs,
-    printWidth: layout.printWidth,
     endOfLine: endOfLineOptions[lineEnding],
   })
 }
