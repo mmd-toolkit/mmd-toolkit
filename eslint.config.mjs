@@ -267,14 +267,18 @@ export default [
   {
     // Code blocks in Markdown documents illustrate types and APIs; they are not
     // programs, so unused declarations are expected there, an example shows a
-    // result by printing it, and its functions carry no JSDoc. This comes
-    // after the rules for source files, which match these code blocks too.
+    // result by printing it, and its functions carry no JSDoc. An example is
+    // written as code in its reader's project: it imports the packages that
+    // the reader installs, which the package that holds the document need not
+    // depend on or have built. This comes after the rules for source files,
+    // which match these code blocks too.
     files: ["**/*.md/*.{js,ts,mjs,mts,cjs,cts,jsx,tsx}"],
     rules: {
       "@typescript-eslint/no-unused-vars": "off",
       "no-unused-vars": "off",
       "no-console": "off",
       "jsdoc/require-jsdoc": "off",
+      "n/no-missing-import": "off",
     },
   },
 ]

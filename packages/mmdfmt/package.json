@@ -1,7 +1,7 @@
 {
   "name": "mmdfmt",
   "version": "0.1.0",
-  "description": "Command-line formatter for Mermaid diagrams in .mmd files and in Markdown code blocks, which changes nothing else",
+  "description": "Formatter for Mermaid diagrams in .mmd files and in Markdown code blocks, which changes nothing else, as a command and as a function",
   "license": "MIT",
   "repository": {
     "type": "git",
@@ -17,6 +17,10 @@
     "mmdfmt": "./lib/cli.mjs"
   },
   "exports": {
+    ".": {
+      "types": "./lib/index.d.mts",
+      "default": "./lib/index.mjs"
+    },
     "./package.json": "./package.json"
   },
   "files": [

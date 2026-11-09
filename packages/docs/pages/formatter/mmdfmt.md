@@ -242,6 +242,123 @@ whether the text is a diagram or Markdown, and its directory says which
   unchanged.
 - A path with another ending is an error.
 
+## From a script
+
+An editor extension, a language server, or another tool written for Node.js can
+format the diagrams of a file as the `mmdfmt` command does, without running it.
+(A tool that is not written for Node.js can run the command with
+[`--stdin-filepath`](#from-an-editor-or-another-tool).) Add `mmdfmt` to the
+dependencies of the tool, pinned as in [Installation](#installation), since a
+new version can format a diagram a little differently:
+
+```sh
+npm install --save-exact mmdfmt
+```
+
+It needs Node.js `^22.13.0 || >=24`. Import its functions `resolveConfig`,
+`format`, and `clearConfigCache`. Their arguments and results follow Prettier's
+functions of the same names, and each section below says where they differ. This
+formats the diagrams of `docs/notes.md`:
+
+```js
+import { readFile } from "node:fs/promises"
+import { format, resolveConfig } from "mmdfmt"
+
+const filepath = "docs/notes.md"
+const source = await readFile(filepath, "utf8")
+const config = await resolveConfig(filepath)
+const formatted = await format(source, { ...config, filepath })
+```
+
+`formatted` is the text that the command writes for `docs/notes.md`: its
+diagrams formatted, and the rest as written. Writing it to the file is up to the
+tool.
+
+### `resolveConfig(fileUrlOrPath)`
+
+`resolveConfig` finds the configuration of a file as the command finds it: the
+Prettier configuration files and the `.editorconfig` that apply to the file,
+`overrides` included (see [Configuration](#configuration)). Pass the path of the
+file or a file URL; a relative path is resolved against the current directory,
+so a language server passes an absolute path or a URL. The file itself is not
+read, and need not exist.
+
+It returns a promise of an object of Prettier options to pass to `format`, or of
+`null` when no configuration applies to the file. Spreading `null` adds nothing,
+so `{ ...config, filepath }` works in both cases. The object holds only the
+options that the configuration sets, of the eight that `mmdfmt` reads, listed in
+[Configuration](#configuration): with a configuration that sets no `tabWidth`,
+`{ tabWidth: 4, ...config, filepath }` keeps a `tabWidth` of 4. With TypeScript,
+its type is `ReadOptions`. The promise is rejected when a configuration file
+cannot be read.
+
+`resolveConfig` reads `.editorconfig` as the command does, and as Prettier's CLI
+does by default; Prettier's `resolveConfig` reads it only when it is given
+`editorconfig: true`.
+
+### `clearConfigCache()`
+
+`resolveConfig` keeps the configuration files that it has read for the life of
+the process, as Prettier's does, so a later call does not see a change to them.
+Call `clearConfigCache` when the tool learns that a Prettier configuration file
+or an `.editorconfig` has changed, for example from the editor's file watcher:
+the next call of `resolveConfig` reads the files again. It returns a promise
+that is resolved once the files are forgotten.
+
+### `format(source, options)`
+
+`format` formats a text as Prettier's `format` does, except that in Markdown it
+formats only the Mermaid code blocks and leaves the rest as written. It reads no
+file and no configuration.
+
+- `source`: the text of the file.
+- `options.filepath`: the path of the file, required. Only its ending is used:
+  the text is read as one diagram for `.mmd` and `.mermaid`, and as Markdown for
+  `.md` and `.markdown`. The file need not exist.
+- The other options: what `resolveConfig` returns for the same path, since the
+  `overrides` of a configuration apply by path. They are the eight options
+  listed in [Configuration](#configuration). For Markdown, `printWidth` is the
+  width for the whole file: a diagram in a list item or a block quote is
+  formatted to that width less the width of what stands before its lines (see
+  [Code blocks in detail](../../../mmdfmt/README.md#code-blocks-in-detail)).
+- Another option, such as `parser`, `endOfLine`, or `semi`, is not an option of
+  `format`: with TypeScript it is a type error, and in JavaScript it is ignored.
+  With TypeScript, the type of the options is `FormatOptions`.
+
+It returns a promise of the formatted text. The line endings and a byte order
+mark stay as they are in the text (see
+[Code blocks in detail](../../../mmdfmt/README.md#code-blocks-in-detail)).
+
+In Markdown, `format` leaves three kinds of block as written and reports none of
+them: a diagram that mermaid.js rejects, a block with a tab in its indentation
+that is read partly as the diagram, and a block whose opening fence stands on
+the line of a footnote label (see
+[Code blocks in detail](../../../mmdfmt/README.md#code-blocks-in-detail)).
+Prettier leaves an embedded code block that it cannot format in the same way. To
+find the diagrams that mermaid.js rejects, parse them with
+[`@mmd-toolkit/parser`](../parser/index.md) or lint the file with
+[`@mmd-toolkit/eslint-plugin`](../linter/index.md).
+
+The promise is rejected:
+
+- with the `SyntaxError` that Prettier throws for a `.mmd` or `.mermaid` text
+  that mermaid.js rejects, when it formats the text with `prettier-plugin-mmd`.
+  Its `loc.start` and `loc.end` give the `line` and the `column` where the error
+  starts and where it ends, both counted from 1. An error whose range runs on to
+  the start of a later line, such as an error at a line break, has no `loc.end`;
+- with an error, when `options.filepath` does not end in `.md`, `.markdown`,
+  `.mmd`, or `.mermaid`.
+
+### Which files to format
+
+The command formats only the files that end in `.md`, `.markdown`, `.mmd`, or
+`.mermaid`, and skips a path under `node_modules` or a directory of version
+control, or a path that the `.gitignore` of the directory where it runs lists
+(see [Excluding files](#excluding-files)). `format` rejects the other endings,
+but formats the text of any other path that it is given, wherever the path is: a
+tool that should skip the same files as the command checks them before it calls
+`format`.
+
 ## Configuration
 
 A diagram is indented by two spaces, and its line width is Prettier's 80. When
