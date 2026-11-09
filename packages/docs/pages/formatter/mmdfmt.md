@@ -276,14 +276,13 @@ The eight options are:
   when Prettier formats it with `prettier-plugin-mmd`.
   `embeddedLanguageFormatting: "off"` leaves the frontmatter as written.
 
-`mmdfmt` reads no other option, so that an option that a later version of
-Prettier adds does not change what it does. The range (`rangeStart` and
-`rangeEnd`), `cursorOffset`, the pragma options (`requirePragma`,
-`insertPragma`, and `checkIgnorePragma`), `filepath`, and the options of other
-languages are not used. `mmdfmt` sets three options itself. The parser is the
-plugin's, and the only plugin is `prettier-plugin-mmd`, so a plugin that the
-configuration names is not loaded. `endOfLine` is not used, since a file keeps
-its line endings (see
+`mmdfmt` reads no other option, not even one that a later version of Prettier
+adds. The range (`rangeStart` and `rangeEnd`), `cursorOffset`, the pragma
+options (`requirePragma`, `insertPragma`, and `checkIgnorePragma`), `filepath`,
+and the options of other languages are not used. `plugins` and `parser` are not
+used either: `mmdfmt` always formats with `prettier-plugin-mmd`, so a plugin
+that the configuration names is not loaded. `endOfLine` is not used, since a
+file keeps its line endings (see
 [Code blocks in detail](../../../mmdfmt/README.md#code-blocks-in-detail)).
 
 ## Errors and exit codes
@@ -343,7 +342,9 @@ on Markdown and `.mmd` files:
   gives the plugin the width less what it writes before the lines, so near the
   width a Gantt section can be lined up by Prettier and not by `mmdfmt`, which
   then pads no name to line the colons up: the whitespace before each colon
-  stays as written, and a line written wider than the line width stays so.
+  stays as written, and a line written wider than the line width stays so. The
+  tasks are still indented as the printer indents them, so a colon moves along
+  with its line where the written indentation differs.
 - Prettier leaves a diagram as written under four settings.
   `requirePragma: true` leaves a Markdown file that has no `<!-- @format -->` or
   `<!-- @prettier -->` comment at its top, after the frontmatter if there is

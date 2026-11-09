@@ -50,10 +50,13 @@ export const readOptionNames: readonly (keyof ReadOptions)[] = [
  * The options that the tool reads of a configuration that Prettier resolved for
  * a file, in `config`; the others, such as the range, the pragmas, and the
  * options of other languages, are not read. An option that the configuration
- * lacks is `undefined`, which Prettier takes as its default.
+ * lacks is not in the result, as in what Prettier resolves, so that a caller
+ * can spread the result over its own defaults.
  */
 export function readOptions(config: Options): ReadOptions {
-  return {
+  // Each option is named, so that the type checker compares it with the type
+  // here; the ones that the configuration lacks are then left out.
+  const named: ReadOptions = {
     printWidth: config.printWidth,
     tabWidth: config.tabWidth,
     useTabs: config.useTabs,
@@ -63,4 +66,7 @@ export function readOptions(config: Options): ReadOptions {
     proseWrap: config.proseWrap,
     trailingComma: config.trailingComma,
   }
+  return Object.fromEntries(
+    Object.entries(named).filter(([, value]) => value !== undefined),
+  )
 }

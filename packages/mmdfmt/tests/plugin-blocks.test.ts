@@ -405,6 +405,65 @@ describe("If you know Prettier: the colons of a Gantt section in a container", (
     }
   })
 
+  /** A gantt in a list item, with each task after `margin` and `gaps` before the colons. */
+  function ganttInListItem(margin: string, gaps: readonly string[]): string {
+    const tasks = [
+      ["Task name long enough to matter", ":a1, 2014-01-01, 1d"],
+      ["T", ":a2, after a1, 1d"],
+      ["Mid name", ":a3, after a2, 1d"],
+    ].map(([name, rest], index) => `${margin}${name}${gaps[index]}${rest}`)
+    return lines(
+      "- item",
+      "",
+      "  ```mermaid",
+      ...["gantt", "  dateFormat YYYY-MM-DD", "  section A", ...tasks].map(
+        (line) => `  ${line}`,
+      ),
+      "  ```",
+    )
+  }
+
+  it.each([
+    {
+      written: "tasks as the printer indents them",
+      indentation: 4,
+      gaps: ["  ", "   ", " "],
+    },
+    {
+      written: "tasks less deep than the printer indents them",
+      indentation: 2,
+      gaps: ["  ", "   ", " "],
+    },
+    {
+      written: "tasks deeper than the printer indents them",
+      indentation: 6,
+      gaps: ["  ", "   ", " "],
+    },
+    {
+      written: "one, two, and five spaces before the colons",
+      indentation: 4,
+      gaps: [" ", "  ", "     "],
+    },
+  ])(
+    "is lined up by Prettier and by mmdfmt only with the whitespace before each colon as written, for $written",
+    async ({ indentation, gaps }) => {
+      const text = ganttInListItem(" ".repeat(indentation), gaps)
+      // The printer indents the tasks of a section by two levels.
+      const printed = ganttInListItem("    ", gaps)
+      const printWidth = 53
+      const byPrettier = await format(text, {
+        parser: "markdown",
+        plugins: [plugin],
+        printWidth,
+      })
+      const byTool = await formatMarkdown(text, { printWidth }, "output")
+      expect(byPrettier).toContain(
+        "      T                               :a2, after a1, 1d\n",
+      )
+      expect(byTool).toEqual({ text: printed, diagnostics: [] })
+    },
+  )
+
   it("is lined up by both where the lines fit in the container", async () => {
     const printWidth = widest + 2
     const byPrettier = await format(inList, {

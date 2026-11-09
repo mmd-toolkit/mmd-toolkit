@@ -82,7 +82,16 @@ describe("The options that the tool reads", () => {
     )
   })
 
-  it("are all undefined for a configuration that sets none of them", () => {
-    expect(readOptions({ semi: false, rangeEnd: 2 })).toEqual({})
+  it("are left out of the result where the configuration lacks them", () => {
+    expect(readOptions({ semi: false, rangeEnd: 2 })).toStrictEqual({})
+    expect(readOptions({ tabWidth: 4, semi: false })).toStrictEqual({
+      tabWidth: 4,
+    })
+  })
+
+  it("leave the defaults of a caller as they are, when the result is spread over them", () => {
+    expect({ tabWidth: 4, ...readOptions({ semi: false }) }).toStrictEqual({
+      tabWidth: 4,
+    })
   })
 })

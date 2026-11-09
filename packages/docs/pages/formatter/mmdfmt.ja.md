@@ -305,12 +305,12 @@ max_line_length = 100
   `embeddedLanguageFormatting: "off"`はfrontmatterを書かれたまま残します。
 
 `mmdfmt`はこれ以外のオプションを読みません。
-後の版のPrettierが足すオプションで、動作が変わらないようにするためです。
+後の版のPrettierが足すオプションも読みません。
 範囲（`rangeStart`と`rangeEnd`）、`cursorOffset`、
 プラグマのオプション（`requirePragma`、`insertPragma`、`checkIgnorePragma`）、
 `filepath`、ほかの言語のオプションは使いません。
-`mmdfmt`が自分で決めるオプションは3つあります。
-パーサーはプラグインのもので、プラグインは`prettier-plugin-mmd`だけなので、
+`plugins`と`parser`も使いません。
+`mmdfmt`は常に`prettier-plugin-mmd`で整形するので、
 設定が挙げるプラグインは読み込みません。
 `endOfLine`は使いません。
 ファイルの改行コードを残すからです。
@@ -377,6 +377,8 @@ Markdownと`.mmd`ファイルにPrettierとプラグインを使う場合とは�
   そのとき`mmdfmt`はコロンをそろえるために名前を空白で埋めず、
   各コロンの前の空白は書かれたままです。
   行の幅より広く書かれた行も、そのままです。
+  タスクは印字の字下げに直すので、書かれた字下げが違うと、
+  コロンは行といっしょに動きます。
 - Prettierは、次の4つの設定のもとで、図を書かれたまま残します。
   `requirePragma: true`は、ファイルの先頭に、
   `<!-- @format -->`か`<!-- @prettier -->`のコメントがない、

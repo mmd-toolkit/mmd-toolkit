@@ -317,12 +317,12 @@ max_line_length = 100
   `embeddedLanguageFormatting: "off"` は frontmatter を書かれたまま残します。
 
 `mmdfmt` はこれ以外のオプションを読みません。
-後の版の Prettier が足すオプションで、動作が変わらないようにするためです。
+後の版の Prettier が足すオプションも読みません。
 範囲（`rangeStart` と `rangeEnd`）、`cursorOffset`、
 プラグマのオプション（`requirePragma`、`insertPragma`、`checkIgnorePragma`）、
 `filepath`、ほかの言語のオプションは使いません。
-`mmdfmt` が自分で決めるオプションは 3 つあります。
-パーサーはプラグインのもので、プラグインは `prettier-plugin-mmd` だけなので、
+`plugins` と `parser` も使いません。
+`mmdfmt` は常に `prettier-plugin-mmd` で整形するので、
 設定が挙げるプラグインは読み込みません。
 `endOfLine` は使いません。
 ファイルの改行コードを残すからです。
@@ -391,6 +391,8 @@ Markdown と `.mmd` ファイルに Prettier とプラグインを使う場合�
   そのとき `mmdfmt` はコロンをそろえるために名前を空白で埋めず、
   各コロンの前の空白は書かれたままです。
   行の幅より広く書かれた行も、そのままです。
+  タスクは印字の字下げに直すので、書かれた字下げが違うと、
+  コロンは行といっしょに動きます。
 - Prettier は、次の 4 つの設定のもとで、図を書かれたまま残します。
   `requirePragma: true` は、ファイルの先頭に、
   `<!-- @format -->` か `<!-- @prettier -->` のコメントがない Markdown
@@ -461,12 +463,11 @@ Prettier の CLI はそれをエラーにします。
 リスト項目や引用の中の図の行の幅は、ファイルの行の幅から、
 `mmdfmt` が各行の前に書くものの幅を引いた幅で、幅は 1 以上です。
 前に書くものは、1 文字を 1 桁と数えます。
-Prettier が整形する範囲の前のインデントを数えるのと同じ方法で、
 タブだけは次の `tabWidth` の倍数の桁まで進みます。
+これは、Prettier が整形するテキストの前のインデントを数える方法と同じです。
 `tabWidth` が 0 のときは、タブは幅を持たず、
-ほかの文字は 1 文字を 1 桁と数えます。
-Prettier は、`util.getAlignmentSize` がタブで NaN を返すので、
-インデント全体を幅なしと数えます。
+`mmdfmt` はほかの文字を 1 文字ずつ 1 桁と数えますが、
+Prettier はインデント全体を幅なしと数えます。
 たとえば、行の幅が 40 のとき、行が空白 2 つで始まるリスト項目の中の図は、
 38 桁として整形します。
 `tabWidth` が 4 のとき、行が `>` とタブで始まる引用の中の図は、
