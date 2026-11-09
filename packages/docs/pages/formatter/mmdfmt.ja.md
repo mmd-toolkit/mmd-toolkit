@@ -474,6 +474,11 @@ Prettierは`--write=false`をfalseと読みます。
 そのため、`mmdfmt --write false notes.md`は`notes.md`を整形し、
 `false`に合うファイルがないと報告します。
 
+`--check --list-different`はどちらでもエラーです。
+`mmdfmt`は、ほかのオプションの誤った使い方と同じく`2`で終了し、書く誤りの文は、
+`mmdfmt: error: Optional argument '--check' conflicts with '--list-different'`。
+Prettierは`[error] Cannot use --check and --list-different together.`を書き、
+`1`で終了します。
 `mmdfmt`は、一緒に使えるオプションかを確かめるとき、
 `--no-`の形もそのオプションを付けたと数えます。
 そのため、`--check --list-different`と同じく、
@@ -484,6 +489,11 @@ Prettierは`--no-check --list-different`を受け付けます。
 Prettierは読めないテキストでも`0`で終了しますが、`mmdfmt`は、
 ほかの場合と同じく、
 拒否された図では`2`で終了します（[エラーと終了コード](#エラーと終了コード)）。
+`mmdfmt`は、拒否された図を、
+`docs/flow.mmd:3:1: error: Unexpected end of text`のように、
+位置を付けた1行で報告します。
+Prettierは`[error] docs/flow.mmd: SyntaxError: Unexpected end of text`を書き、
+続けてその場所の前後の行を、それぞれ`[error]`の後に書きます。
 
 Prettierは、`CI`の環境変数があるときやWindowsでは、
 出力先が端末でなくても`warn`の語を黄色にし、

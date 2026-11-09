@@ -435,13 +435,21 @@ or `false` written after `--write` as its value; `mmdfmt` reads it as a pattern,
 so `mmdfmt --write false notes.md` formats `notes.md` and reports that no file
 matches `false`.
 
+`--check --list-different` is an error in both, but `mmdfmt` prints
+`mmdfmt: error: Optional argument '--check' conflicts with '--list-different'`
+and exits with `2`, as for any wrong use of the options, while Prettier prints
+`[error] Cannot use --check and --list-different together.` and exits with `1`.
 When `mmdfmt` checks which options go together, a `--no-` form counts as giving
 its option: `--no-check --list-different` is an error, as
 `--check --list-different` is. Prettier accepts `--no-check --list-different`.
 
 With `--check` or `--list-different` on standard input, Prettier exits with `0`
 for a text it cannot parse; `mmdfmt` exits with `2` for a rejected diagram, as
-everywhere else ([Errors and exit codes](#errors-and-exit-codes)).
+everywhere else ([Errors and exit codes](#errors-and-exit-codes)). `mmdfmt`
+reports a rejected diagram on one line with its position, such as
+`docs/flow.mmd:3:1: error: Unexpected end of text`, while Prettier writes
+`[error] docs/flow.mmd: SyntaxError: Unexpected end of text` and then the lines
+around the place, each after `[error]`.
 
 Prettier also colors the word `warn` yellow and the name of an unchanged file
 gray where its output is not a terminal, if the `CI` environment variable is set
