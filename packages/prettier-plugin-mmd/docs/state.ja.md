@@ -466,7 +466,15 @@ mermaid.js が読まない `""` も同じです。
 後に空白 1 つを置きます。
 `classDef c fill:#f00 , color:white` は、
 `classDef c fill: #f00, color: white` になります。
-値の中の語と語の間の空白は、書かれたまま残します。
+スタイルの語と語の間の空白とタブの連続は、空白 1 つで印字し、
+語と語の間に空白があるかどうかは、書かれたまま残します。
+文字列、コメント、`url(` の括弧の中の連続と、バックスラッシュの後の連続は、
+CSS が値の一部として読むので、書かれたまま残します。
+[fixture: whitespace-between-tokens/style-words-run-spaced]
+[fixture: whitespace-between-tokens/style-string-runs-kept]
+[fixture: whitespace-between-tokens/style-url-runs-kept]
+[fixture: whitespace-between-tokens/style-comment-runs-kept]
+[fixture: whitespace-between-tokens/style-backslash-run-kept]
 mermaid.js は state 図では `,` の前後の空白を何もないものとして読むので、
 その空白では Db は変わりませんが、`:` の前後の空白は Db に残します。
 描かれる図は同じです。
@@ -1644,9 +1652,10 @@ U+2028 か U+2029 の前の無視される `;` がある行です（詳しくは
 
 - 値のテキスト。
   説明、ラベル、ノート、`as` の後の id、擬似状態の名前、
-  スタイル（最初の `:` と `,` の前後の空白を除きます）、
-  `class` 文の CSS クラス、`accTitle` のテキスト。
-  [fixture: whitespace-between-tokens/style-text-kept]
+  スタイル（最初の `:` と `,` の前後の空白と、文字列、コメント、
+  `url(` の外の語の間の連続を除きます）、`class` 文の CSS クラス、
+  `accTitle` のテキスト。
+  [fixture: whitespace-between-tokens/style-string-runs-kept]
   [fixture: descriptions-and-labels/acc-text-runs-collapsed]
   [fixture: aliases/id-kept]
 - 1 行のノートの id の後、別名の定義の 2 つ目の説明、

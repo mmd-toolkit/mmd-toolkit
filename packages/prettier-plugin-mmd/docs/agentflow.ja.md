@@ -334,8 +334,8 @@ tooltipの前の必須の空白1文字の隙間は決して揃えません。
 文法が空白1文字だけを取り、その後の空白は値の文字で、
 トークンを期待する場所に空白が2文字あると拒否されることもあるためです。
 この1文字として使うタブも保ちます。
-directiveを挟む最初のstyleの先頭空白、スタイルの値の中の語と語の間の空白、
-空のstyleリスト項目、classDefのエスケープしたコンマ、順序と反復を保ちます。
+directiveを挟む最初のstyleの先頭空白、空のstyleリスト項目、
+classDefのエスケープしたコンマ、順序と反復を保ちます。
 最初のstyleの空白は、flowchart と同じには揃えません。
 各スタイルの最初の `:` の前に空白を置かず、値が空でなければ、
 後ろに空白を 1 つ置きます。
@@ -343,6 +343,12 @@ directiveを挟む最初のstyleの先頭空白、スタイルの値の中の語
 `style A fill :#f00,stroke:  #333` は、
 `style A fill: #f00, stroke: #333` になります。
 [fixture: single-space-gaps/style-colon-spaced]
+[flowchart](./flowchart.ja.md#トークンの間の空白)と同じく、
+スタイルの語と語の間の空白とタブの連続は、空白 1 つで印字し、
+語と語の間に空白があるかどうかは、書かれたまま残します。
+一重引用符の文字列の中の連続は残します。
+[fixture: single-space-gaps/style-words-run-spaced]
+[fixture: single-space-gaps/style-string-runs-kept]
 番号を指定した `linkStyle` では、`fill` で始まるスタイルの前の `,` の後ろに、
 空白があるかないかを保ち、空白の連続は空白 1 つにします。
 mermaid.js は先頭だけを読むので、`fill-opacity` も含みます。

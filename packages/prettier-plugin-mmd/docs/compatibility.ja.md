@@ -399,9 +399,7 @@ flowchart、agentflow、class、state、block、usecase の `style`、`classDef`
 スタイルの間の `,` の前にも空白を置かず、後ろに空白を 1 つ置きます。
 `style A fill :#f00,stroke:  #333` は `style A fill: #f00, stroke: #333`
 になります。
-flowchart、agentflow、state、block、usecase では、値の中の語と語の間の空白は、
-書かれたままです。
-class、ER、requirement では、その連続を空白 1 つで印字します（後述）。
+スタイルの語と語の間の空白とタブの連なりは、空白 1 つで印字します（後述）。
 [fixture: flowchart/whitespace-between-tokens/style-colon-spaced]
 [fixture: flowchart/whitespace-between-tokens/style-colon-empty-value-kept]
 [fixture: agentflow/single-space-gaps/style-colon-spaced]
@@ -641,32 +639,70 @@ block 図のほかの形は、スタイルから `styles2String` で、
 これらの形でも `classDef` でも、両方の書き方の画素は同じでした。
 [fixture: block/styles/style-label-styles-kept]
 
-class、ER、requirement の図では、`:` のあるスタイルでも、ないスタイルでも、
+flowchart、agentflow、class、state、block、usecase、ER、requirement の図では、
+`:` のあるスタイルでも、ないスタイルでも、
 語と語の間の空白とタブの連続を空白 1 つで印字し、
 語と語の間に空白があるかどうかは、書かれたまま残します。
 `style A fill   #f00` は `style A fill #f00` と印字し、
 `style A fill#f00` はそのままです。
+CSS は連なりを 1 つの空白として読むので、描かれる図は同じですが、
+連なりが値の文字になる所は、書かれたまま残します。
+文字列（`"…"` や `'…'`）の中、コメント（`/* … */`）の中、`url(` の括弧の中と、
+CSS が連なりの最初の文字をエスケープされた文字として読む、
+バックスラッシュの後です。
+閉じていない文字列、コメント、`url(` は、スタイルの末尾まで続きます。
+[fixture: flowchart/whitespace-between-tokens/style-string-runs-kept]
+[fixture: flowchart/whitespace-between-tokens/style-backslash-run-kept]
+[fixture: state/whitespace-between-tokens/style-string-runs-kept]
+[fixture: state/whitespace-between-tokens/style-url-runs-kept]
+[fixture: state/whitespace-between-tokens/style-comment-runs-kept]
+[fixture: block/styles/style-string-runs-kept]
+[fixture: block/styles/style-url-runs-kept]
+[fixture: usecase/classes-and-styles/css-string-runs-kept]
+[fixture: usecase/classes-and-styles/css-url-runs-kept]
+[fixture: class/whitespace-between-tokens/style-url-runs-kept]
+
 mermaid.js は、class 図では `:` のないスタイルの語を、
 ER と requirement の図ではすべてのスタイルの単位をつなげて読むため、
 そこで Db は変わりません。
 `stroke-dasharray: 5   5` と `stroke-dasharray: 5 5` は、
 ER と requirement の図では、どちらも `stroke-dasharray:55` と読みます。
-class 図は、`:` の前後の空白と同じように、
-`:` のあるスタイルの空白の連続を Db に残しますが、描かれる図は同じです。
-`style A border:2px   solid   red`、`style A font:20px   serif`、
-`style A fill:#f00   stroke:blue`、`style A fill:#f00,   x   y` と、
-語の間をタブで区切った `style A border:2px solid red` のそれぞれを、
+ほかの図種と、class 図の `:` のあるスタイルは、`:` の前後の空白と同じように、
+空白の連続を Db に残しますが、描かれる図は同じです。
+次のそれぞれについて、両方のテキストを、
 空白の連続を書かれたままにした形と空白 1 つで印字した形で、
 mermaid.js 12.3.0 を使い Chromium に描きました。
 画素は同じでした。
 生成された id と `style` 属性・`fill` 属性の空白の連続を除くと、
 SVG も同じでした。
-クラスに適用した `classDef` も同じです。
+class 図では、`style A border:2px   solid   red`、`style A font:20px   serif`、
+`style A fill:#f00   stroke:blue`、`style A fill:#f00,   x   y`、
+語の間をタブで区切った `style A border:2px solid red` と、
+クラスに適用した `classDef` です。
+flowchart と agentflow の図では、語を持つ `style`、`classDef`、`linkStyle` の、
+`:` があるものとないものです。
+state と block の図では、同じ値を持ち、連なりの隣に文字列、コメント、
+`url(` がある `style` と `classDef` です。
+usecase 図では、同じ値を持つ `style` と `classDef` です。
+このほかに、コーパスとこのパッケージの fixture の文のうち、
+整形でスタイルが変わるものも同じ方法で描きました。
+1,355 個のテキストが `style`、`classDef`、`linkStyle` のいずれかを持ちます。
+そのうち Db が変わる 769 個では、754 個は画素が同じで、
+10 個は整形前も整形後も描けません（mermaid.js がエラーで止まります）。
+5 個はアニメーションするリンクを持つユースケース図で、
+アニメーションのフレームによって画素が異なりますが、
+`style` 属性の空白を除くと SVG は同じです。
 [fixture: class/whitespace-between-tokens/style-value-words-spaced]
 [fixture: class/whitespace-between-tokens/style-words-run-spaced]
+[fixture: flowchart/whitespace-between-tokens/style-words-run-spaced]
+[fixture: agentflow/single-space-gaps/style-words-run-spaced]
+[fixture: state/whitespace-between-tokens/style-words-run-spaced]
+[fixture: block/styles/style-words-run-spaced]
+[fixture: usecase/classes-and-styles/css-words-run-spaced]
 [fixture: er/styles-and-classes/style-words-run-spaced]
 [fixture: requirement/styles-and-classes/style-words-run-spaced]
 [fixture: class/whitespace-between-tokens/style-words-directive-kept]
+[fixture: flowchart/whitespace-between-tokens/style-words-directive-kept]
 
 次の場合は、文を書かれたまま残します。
 スタイルが改行か U+2028・U+2029 を含む場合、
@@ -682,9 +718,10 @@ SVG も同じでした。
 からスタイルの余白を戻して比べます（`tests/style-margins.ts` の
 `styleDbForFormattingComparison`）。
 スタイルが書かれたものと、両端と最初の `:` の前後の空白や、
-class 図での語の間の空白の連続だけが違うときは、書かれた方を採ります。
-ほかの違いは、class 図のスタイルの語と語の間の空白の有無、
-リンクのスタイルの数や、
+上の図種での語の間の空白の連続（文字列、コメント、`url(` の中と、
+バックスラッシュの後を除く）だけが違うときは、書かれた方を採ります。
+ほかの違いは、スタイルの語と語の間の空白の有無、文字列、コメント、
+`url(` の中の連なりの変化、リンクのスタイルの数や、
 リンクにも適用されるスタイルの `stroke` の `:` の前の空白の有無、
 `stroke:` で始まるリンクのスタイルの前の空白の有無、
 リンクの `stroke` の空白だけの値の中の空白の有無、
@@ -853,6 +890,39 @@ Gantt 図の 3 つの設定は、値の前後に空白があると描かれる�
 [fixture: gantt/settings/format-padding-kept-where-drawn-differently]
 [fixture: gantt/settings/trailing-whitespace-by-setting]
 
+Gantt 図のタスクの名前は、テキストとコロンの間の空白で終わり、
+印字はその空白を整えて、セクションのコロンを 1 つの桁にそろえます。
+（[タスクのデータ](./gantt.ja.md#タスクのデータ)）。
+文法の規則は、コロンより前のすべてを、空白も含めて名前として読みます。
+（[`gantt.jison`](https://github.com/mermaid-js/mermaid/blob/2086904e76c692331e34a45d7cc3bc30860d040e/packages/mermaid/src/diagrams/gantt/parser/gantt.jison#L93)）。
+`addTask` は、それをタスクの `task` に残します。
+（[`addTask`](https://github.com/mermaid-js/mermaid/blob/2086904e76c692331e34a45d7cc3bc30860d040e/packages/mermaid/src/diagrams/gantt/ganttDb.js#L596-L606)）。
+レンダラーは `task` を SVG の `text` 要素に入れ、幅を測って、
+テキストを置く位置と与えるクラスを決めます。
+（[`draw`](https://github.com/mermaid-js/mermaid/blob/2086904e76c692331e34a45d7cc3bc30860d040e/packages/mermaid/src/diagrams/gantt/ganttRenderer.js#L394-L429)、
+[クラス](https://github.com/mermaid-js/mermaid/blob/2086904e76c692331e34a45d7cc3bc30860d040e/packages/mermaid/src/diagrams/gantt/ganttRenderer.js#L449-L509)）。
+名前の末尾の空白は描かれず、測る幅も増やさないので、Db は異なりますが、
+描かれる図は同じです。
+8 個の図の両方のテキストを、mermaid.js 12.3.0 を使い Chromium に描きました。
+コロンの前に空白がない名前と空白が 1 つある名前、
+空白が 1 つある名前と 30 個ある名前、タブがある名前と空白がある名前、
+棒の中に収まる名前と棒より長い名前、図の右端に近い名前、状態 `done`、`crit`、
+`active`、`milestone`、2 つのセクションです。
+画素は同じで、生成された id とタスクのテキストの末尾の空白を除くと、
+SVG も同じでした。
+コーパス、mermaid.js の文書、このパッケージの fixture のうち、
+印字がタスクの名前を変え、mermaid.js が描ける 17 個のテキストも同じでした。
+18 個のうち 1 個は、整形前も整形後もエラーで止まります。
+図の CSS が空白を残すときは、描かれる図が異なります。
+`%%{init: {"themeCSS": ".taskText{white-space:pre}"}}%%` があると、
+2 つのテキストの画素は異なります。
+そのため、`white-space` を含む図では、ほかのテキストの空白の連なりと同じく、
+コロンを書かれたままにします。
+（[同じに描かれるテキスト中の空白の連なり](#同じに描かれるテキスト中の空白の連なり)）。
+[fixture: gantt/task-data/colon-column-new-longest-name]
+[fixture: gantt/task-data/colon-column-follows-other-sections]
+[fixture: gantt/task-data/colon-column-white-space-kept]
+
 テストは、印字したテキストの Db に、
 書かれたテキストの Db から各テキストの両端の空白を戻して比べます。
 `tests/keyword-text-margins.ts` の関数、
@@ -860,8 +930,8 @@ Gantt 図の 3 つの設定は、値の前後に空白があると描かれる�
 タイトル、日付書式、軸の書式が、書かれたものと、
 両端の空白とタブだけが違うときは、書かれた方を採ります。
 C4 図のタイトルと説明も同じです。
-timeline の event と state の説明は、末尾の空白とタブだけが違うときに、
-書かれた方を採ります。
+timeline の event、state の説明、Gantt 図のタスクの名前は、
+末尾の空白とタブだけが違うときに、書かれた方を採ります。
 ほかの違いは、セクション名、目盛りの間隔、今日のマーカーの違いも含めて、
 失敗とします。
 固定している mermaid.js の版を上げるときは、
@@ -1792,7 +1862,9 @@ clause keyword は 1 段、item は 2 段の字下げを保ちます。
 
 通常の ER と requirement のスタイル単位は `property: value` とし、
 スタイル同士はカンマと空白1個で区切ります。
-プロパティと値の内容は、値の単語間の空白も含めて保ちます。
+プロパティと値の内容は、書かれたまま保ちますが、値の単語間の空白の連なりは、
+空白 1 つで印字します。
+（[同じに描かれるスタイル](#同じに描かれるスタイル)を参照）。
 単なる改行を結合する見出しでも、初回からこの空白にそろえます。
 trivia、複数行のスタイル値、semicolon の影響がある行は既存の配置を保ちます。
 [fixture: er/styles-and-classes/style-unit-padding]
@@ -2286,13 +2358,12 @@ mermaid.js は、Gantt 図の一部の値の空白を持ち、一部の行を、
 [タイトルとセクション](./gantt.ja.md#タイトルとセクション)、
 [リスト](./gantt.ja.md#リスト)を参照してください。
 
-- `tickInterval`、`todayMarker`、`section` の値の両端の空白と、
-  タスクの説明のテキストとコロンの間の空白。
+- `tickInterval`、`todayMarker`、`section` の値の両端の空白。
   Db が持ち、図にも描かれるので、空白 2 つの `tickInterval  1week` は、
-  目盛りが既定のものになり、`section  A` は `section A` とは別のセクションで、
-  桁をそろえた `A task           :a1` は、空白を落とした形とは別のものです。
-  コロンをそろえる空白も残ります。
+  目盛りが既定のものになり、`section  A` は `section A` とは別のセクションです。
   `dateFormat`、`axisFormat`、`title` の両端の空白は除きます。
+  タスクの説明のテキストとコロンの間の空白は、作者がそろえようとした所で、
+  セクションのコロンを 1 つの桁にそろえるように整えます。
   （[同じに描かれるキーワードの後のテキスト](#同じに描かれるキーワードの後のテキスト)）。
   [fixture: gantt/settings/trailing-whitespace-by-setting]
   [fixture: gantt/titles-and-sections/title-trailing-dropped-section-kept]
@@ -3147,12 +3218,12 @@ JSON の表データは不透明で、数とエスケープの綴り、プロパ
 コーパスは存在する記録済みの効果を使います。
 CSS 宣言の最初のコロンの前後の空白は、
 [同じに描かれるスタイル](#同じに描かれるスタイル)に従います。
-カスタムプロパティの `--` の名前の隙間は、Mermaid が保存するため保ちます。
+宣言の中の空白の連なりも、空白 1 つで印字します。
 [fixture: usecase/native-metadata/metadata-inline]
 [fixture: usecase/native-metadata/metadata-blank-lines-kept]
 [fixture: usecase/json-tables/json-opaque]
 [fixture: usecase/classes-and-styles/css-colon-padding]
-[fixture: usecase/classes-and-styles/css-custom-gap]
+[fixture: usecase/classes-and-styles/css-custom-gap-run-collapsed]
 
 共通コメント領域と改行の処理後、最後のプロパティから `}` までの、
 末尾コンマと物理改行の合計は 2 個以下で、コンマは改行の前にだけ置けます。

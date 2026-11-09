@@ -596,10 +596,15 @@ block-beta
 `classDef c fill:#f00 , color:white` は、
 `classDef c fill: #f00, color: white` になります。
 `style` 文のスタイルも、同じ形で印字します。
-値の中の語と語の間の空白は、書かれたまま残します。
+スタイルの語と語の間の空白とタブの連続は、空白 1 つで印字し、
+語と語の間に空白があるかどうかは、書かれたまま残します。
+文字列、コメント、`url(` の括弧の中の連続と、バックスラッシュの後の連続は、
+CSS が値の一部として読むので、書かれたまま残します。
 Db は変わりますが、mermaid.js が描く図は同じです。
 詳しくは [同じに描かれるスタイル](./compatibility.ja.md#同じに描かれるスタイル)
 を参照してください。 [fixture: styles/style-colon-spaced]
+[fixture: styles/style-words-run-spaced]
+[fixture: styles/style-string-runs-kept] [fixture: styles/style-url-runs-kept]
 ここではバックスラッシュは `,` をエスケープしません。
 `fill:a\,b ,stroke:c` は `fill: a\, b, stroke: c` と印字します。
 バックスラッシュの後で `:` の前にある空白は、

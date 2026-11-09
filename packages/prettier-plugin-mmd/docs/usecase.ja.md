@@ -704,8 +704,15 @@ mermaid.js は `stroke:` だけでその矢印の先端を着色するため、
 連続する空白を 1 つにします。
 宣言の名前の始まりから最後の値の成分までのテキストは、
 それ以外は書かれたままです。
-カスタムプロパティの `--  color` の隙間、タブ、ダッシュの隙間の directive、
-引用またはエスケープしたコンマ、空文字の成分、関数、順序、繰り返しを保ちます。
+ダッシュの隙間の directive、引用またはエスケープしたコンマ、空文字の成分、関数、
+順序、繰り返しを保ちます。
+ただし、ほかの図種と同じく、
+語と語の間の空白とタブの連続は空白 1 つで印字します。
+（[同じに描かれるスタイル](./compatibility.ja.md#同じに描かれるスタイル)）。
+`style A --  color:red` は `style A -- color: red` と印字し、
+`translate(1  2)` は `translate(1 2)` と印字します。
+文字列、コメント、`url(` の括弧の中の連続と、バックスラッシュの後の連続は、
+書かれたまま残します。
 [fixture: classes-and-styles/css-name-multiline-directive]
 最後の成分の外側の水平空白だけを除き、保持するセミコロンを含む接頭部、
 文中のコメントや directive、複数行にわたる宣言は通常の一覧配置より優先します。
@@ -716,8 +723,11 @@ mermaid.js は `stroke:` だけでその矢印の先端を着色するため、
 [fixture: classes-and-styles/css-stroke-before-colon-kept]
 [fixture: classes-and-styles/css-stroke-before-colon-run-collapsed]
 [fixture: classes-and-styles/css-stroke-before-colon-touching]
-[fixture: classes-and-styles/css-custom-gap]
-[fixture: classes-and-styles/css-custom-gap-remove-kept]
+[fixture: classes-and-styles/css-custom-gap-run-collapsed]
+[fixture: classes-and-styles/css-custom-gap-touching-run-collapsed]
+[fixture: classes-and-styles/css-words-run-spaced]
+[fixture: classes-and-styles/css-string-runs-kept]
+[fixture: classes-and-styles/css-url-runs-kept]
 [fixture: classes-and-styles/css-value-internal]
 [corpus fixture: usecase/gram-css-empty-string-component]
 [fixture: classes-and-styles/css-gap-directive]

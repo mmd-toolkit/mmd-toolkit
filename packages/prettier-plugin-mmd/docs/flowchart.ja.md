@@ -767,8 +767,17 @@ mermaid.js の文の規則が読むものなので、空白 1 つにします。
 その空白をディレクティブの前に置きます。
 `style A %%{init: {}}%%  fill:red` は、
 `style A %%{init: {}}%%fill:red` と印字し、両者の Db は同じです。
-スタイルの値の中の語と語の間の空白は、書かれたまま残します。
-[fixture: whitespace-between-tokens/style-inner-whitespace-kept]
+スタイルの語と語の間の空白とタブの連続は、空白 1 つで印字し、
+語と語の間に空白があるかどうかは、書かれたまま残します。
+`classDef c fill:#f00    stroke:#333` は、
+`classDef c fill: #f00 stroke:#333` と印字します。
+一重引用符の文字列の中の連続と、バックスラッシュの後の連続は、
+CSS が値の一部として読むので、書かれたまま残します。
+[fixture: whitespace-between-tokens/style-inner-whitespace-collapsed]
+[fixture: whitespace-between-tokens/style-words-run-spaced]
+[fixture: whitespace-between-tokens/style-string-runs-kept]
+[fixture: whitespace-between-tokens/style-backslash-run-kept]
+[fixture: whitespace-between-tokens/style-words-directive-kept]
 `linkStyle default`、`classDef`、`style` の形は、ER と requirement と同じです。
 [同じに描かれるスタイル](./compatibility.ja.md#同じに描かれるスタイル)
 を参照してください。

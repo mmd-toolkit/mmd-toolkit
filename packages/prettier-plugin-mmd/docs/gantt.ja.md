@@ -291,13 +291,62 @@ gantt
 ### タスクのデータ
 
 タスクは、説明、コロン、項目の順に印字します。
-説明は、テキストとコロンの間の空白も含めて、書かれたまま印字します。
-その空白は説明の一部で Db が持つので、
-`A task           :a1` と `A task :a1` は別のタスクであり、
-コロンをそろえる空白も残ります。 [fixture: task-data/description-padding-kept]
-[fixture: task-data/colon-after-description-as-written]
+説明のテキストは書かれたまま印字し、テキストとコロンの間の空白は説明の一部で、
+Db が持つので、`A task           :a1` と `A task :a1` は、
+mermaid.js にとって 2 つの説明です。
+その空白がどう書かれていても同じ図を描くので、次の段落のとおり、
+作者の桁そろえが崩れている所だけ、その空白を整えます。
+（[同じに描かれるキーワードの後のテキスト](./compatibility.ja.md#同じに描かれるキーワードの後のテキスト)）。
+[fixture: task-data/description-padding-kept]
 `#` や `;` で始まる説明も、ほかと同じタスクのテキストです。
 [fixture: task-data/hash-and-semicolon-descriptions]
+
+セクションのタスクのコロンを作者が 1 つの桁にそろえているときは、
+その空白を残します。
+作者がそろえようとしてそろっていないときは、コロンをそろえます。
+セクションの名前のどれかで、
+テキストとコロンの間に空白が 2 文字以上かタブがあり、
+セクションのコロンがすべて同じ桁にはないときです。
+各名前に、そのセクションの桁へコロンを置くのに必要な数の空白を足すので、
+作者は長い名前を足し、ほかの名前の空白を整形に任せられます。
+桁は、最長の名前の後に空白 1 つを置いた所にします。
+ただし、図のほかのすべてのセクションでコロンがすべて同じ 1 つの桁にそろい、
+その桁が対象のセクションの最長の名前より後ろなら、その桁にします。
+同じ桁を使うセクションが、同じ桁を使い続けるためです。
+最初の `section` より前のタスクは、それだけで 1 つのセクションとし、
+1 段浅い所にあるので、ほかのセクションの桁を使いません。
+名前の幅は Prettier がテキストに与える幅なので、全角文字は 2 と数え、
+整える空白には半角空白を使い、タブも置き換えます。
+[fixture: task-data/colon-column-new-longest-name]
+[fixture: task-data/colon-column-follows-other-sections]
+[fixture: task-data/colon-column-other-sections-too-narrow]
+[fixture: task-data/colon-column-other-sections-differ]
+[fixture: task-data/colon-column-one-task-sections]
+[fixture: task-data/colon-column-before-first-section]
+[fixture: task-data/colon-column-sections-and-preamble]
+[fixture: task-data/colon-column-wide-characters]
+[fixture: task-data/colon-column-use-tabs]
+
+次の場合は、コロンを動かしても読みやすくならないか、図が変わりうるので、
+コロンをその位置に残します。
+コロンがすでに 1 つの桁にそろっているセクションは、作者がその桁を選んだので、
+どの桁でもそのままにします。
+どの名前もコロンの前の空白が 1 つ以下か、空白がないセクションは、
+作者がテキストの隣にコロンを置いたので、そのままにします。
+そろえた行が `printWidth` より長く、元の行よりも長くなるセクションは、
+長い名前 1 つがすべてのコロンを大きく右に押すので、そのままにします。
+`white-space` を含む図は、図の CSS が名前の末尾の空白を描くことがあり、
+そのときは空白で図が変わるので、そのままにします。
+行にコメント、ディレクティブ、独自の `;` があるタスクと、
+複数行にわたるタスクは、書かれたまま印字し、
+ほかのタスクがそろえる対象に含めないので、
+その空白はほかのタスクの桁を決めません。
+[fixture: task-data/colon-column-aligned-kept]
+[fixture: task-data/colon-column-single-space-kept]
+[fixture: task-data/colon-column-too-wide-kept]
+[fixture: task-data/colon-column-white-space-kept]
+[fixture: task-data/colon-column-line-with-directive-kept]
+[fixture: task-data/colon-column-line-with-semicolon-kept]
 
 最初の項目はコロンに接し、`,` は前の項目に接して、
 後ろに項目があれば空白 1 つを置きます。
@@ -348,6 +397,36 @@ gantt
   Completed task            :done, des1, 2014-01-06, 2014-01-08
   Active task               :active, des2, 2014-01-09, 3d
   Future task               :des3, after des2, 5d
+```
+
+入力
+([task-data/colon-column-follows-other-sections-input.mmd](../tests/fixtures/gantt/task-data/colon-column-follows-other-sections-input.mmd)):
+
+```mmd
+gantt
+  dateFormat YYYY-MM-DD
+  section A
+    A task          :a1, 2014-01-01, 30d
+    Another task    :after a1, 20d
+  section B
+    Task in    :2014-01-12, 12d
+    other task :24d
+    x   :1d
+```
+
+出力
+([task-data/colon-column-follows-other-sections-output.mmd](../tests/fixtures/gantt/task-data/colon-column-follows-other-sections-output.mmd)):
+
+```mmd
+gantt
+  dateFormat YYYY-MM-DD
+  section A
+    A task          :a1, 2014-01-01, 30d
+    Another task    :after a1, 20d
+  section B
+    Task in         :2014-01-12, 12d
+    other task      :24d
+    x               :1d
 ```
 
 入力

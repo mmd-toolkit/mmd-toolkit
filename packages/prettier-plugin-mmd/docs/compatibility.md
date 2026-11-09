@@ -825,16 +825,49 @@ today, and the pixels differ. [fixture:
 gantt/settings/format-padding-kept-where-drawn-differently] [fixture:
 gantt/settings/trailing-whitespace-by-setting]
 
+The name of a task of a Gantt chart ends with the whitespace between its text
+and the colon, which the printer sets so that the colons of a section stand in
+one column (see [Task data](./gantt.md#task-data)). The rule of the grammar
+takes everything before the colon as the name, whitespace included
+([`gantt.jison`](https://github.com/mermaid-js/mermaid/blob/2086904e76c692331e34a45d7cc3bc30860d040e/packages/mermaid/src/diagrams/gantt/parser/gantt.jison#L93)),
+`addTask` keeps it in the `task` of the task
+([`addTask`](https://github.com/mermaid-js/mermaid/blob/2086904e76c692331e34a45d7cc3bc30860d040e/packages/mermaid/src/diagrams/gantt/ganttDb.js#L596-L606)),
+and the renderer puts `task` into an SVG `text` element and measures its width
+to decide where the text stands and which class it gets
+([`draw`](https://github.com/mermaid-js/mermaid/blob/2086904e76c692331e34a45d7cc3bc30860d040e/packages/mermaid/src/diagrams/gantt/ganttRenderer.js#L394-L429),
+[the class](https://github.com/mermaid-js/mermaid/blob/2086904e76c692331e34a45d7cc3bc30860d040e/packages/mermaid/src/diagrams/gantt/ganttRenderer.js#L449-L509)).
+The whitespace at the end of the name is drawn as nothing and adds nothing to
+the measured width, so the Db differs and the figure is the same. Both texts of
+eight charts were drawn with mermaid.js 12.3.0 in Chromium: a name with no
+whitespace before the colon and one with a space, with a space and with thirty,
+with tabs and with spaces, a name that fits in its bar and one wider than it, a
+name near the right edge of the chart, the states `done`, `crit`, `active`, and
+`milestone`, and two sections. The pixels were the same, and so was the SVG,
+without the generated ids and without the whitespace at the end of the text of a
+task. The same holds for the 17 texts of the corpus, of the documents of
+mermaid.js, and of the fixtures of this package whose task names the printer
+changes and that mermaid.js can draw (it stops with an error on one of the 18,
+before and after). Where the CSS of the chart keeps whitespace, the figure
+differs: with `%%{init: {"themeCSS": ".taskText{white-space:pre}"}}%%` the
+pixels of the two texts differ. So the printer leaves the colons of a chart that
+holds `white-space` as written, as it leaves the runs of whitespace in the other
+texts (see
+[Runs of whitespace in a text that are drawn the same](#runs-of-whitespace-in-a-text-that-are-drawn-the-same)).
+[fixture: gantt/task-data/colon-column-new-longest-name] [fixture:
+gantt/task-data/colon-column-follows-other-sections] [fixture:
+gantt/task-data/colon-column-white-space-kept]
+
 The tests compare the Db of the printed text with the whitespace at the ends of
 its texts restored from the Db of the written text
 (`keywordTextDbForFormattingComparison` in `tests/keyword-text-margins.ts`): a
 title, a date format, or an axis format that differs from the written one only
 by the spaces and tabs at its ends takes the written text, and so does the title
-and the description of a C4 diagram; an event of a timeline and a description of
-a state, only by the spaces and tabs at their end. Any other difference, among
-them one in the name of a section, in a tick interval, or in a today marker,
-fails. When the pinned mermaid.js is updated, draw both texts of each kind again
-and compare the SVG and the pixels before the exception stays.
+and the description of a C4 diagram; an event of a timeline, a description of a
+state, and the name of a task of a Gantt chart, only by the spaces and tabs at
+their end. Any other difference, among them one in the name of a section, in a
+tick interval, or in a today marker, fails. When the pinned mermaid.js is
+updated, draw both texts of each kind again and compare the SVG and the pixels
+before the exception stays.
 
 ## Runs of whitespace in a text that are drawn the same
 
@@ -1704,9 +1737,10 @@ eventmodeling/gwt-clauses-and-items/header-directive-continuation]
 
 Ordinary ER and requirement style units use `property: value`, with styles
 separated by a comma and one space. Property and value contents stay written,
-including spaces between value words. A plain joined header gets this spacing on
-the first pass too. Trivia, multiline style literals and semicolon-sensitive
-lines retain their existing layout. [fixture:
+except that a run of spaces between value words is printed as one space (see
+[Styles that are drawn the same](#styles-that-are-drawn-the-same)). A plain
+joined header gets this spacing on the first pass too. Trivia, multiline style
+literals and semicolon-sensitive lines retain their existing layout. [fixture:
 er/styles-and-classes/style-unit-padding] [fixture:
 er/styles-and-classes/over-lines-joined] [fixture:
 requirement/styles-and-classes/style-unit-padding]
@@ -2179,12 +2213,12 @@ See [Task data](./gantt.md#task-data), [Settings](./gantt.md#settings),
 [Lists](./gantt.md#lists).
 
 - The whitespace at the ends of the value of `tickInterval`, `todayMarker`, and
-  `section`, and between the text of a task description and its colon. The Db
-  keeps it, and it is drawn: `tickInterval  1week` with two spaces turns the
-  ticks into the default ones, `section  A` is another section than `section A`,
-  and `A task           :a1` with padding is not the same as its trimmed form,
-  and the padding that aligns the colons stays. The whitespace at the ends of
-  `dateFormat`, `axisFormat`, and `title` is left out (see
+  `section`. The Db keeps it, and it is drawn: `tickInterval  1week` with two
+  spaces turns the ticks into the default ones, and `section  A` is another
+  section than `section A`. The whitespace at the ends of `dateFormat`,
+  `axisFormat`, and `title` is left out, and the whitespace between the text of
+  a task description and its colon is set so that the colons of a section stand
+  in one column, where the author meant to align them (see
   [Texts after a keyword that are drawn the same](#texts-after-a-keyword-that-are-drawn-the-same)).
   [fixture: gantt/settings/trailing-whitespace-by-setting] [fixture:
   gantt/titles-and-sections/title-trailing-dropped-section-kept] [fixture:
