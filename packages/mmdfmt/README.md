@@ -284,7 +284,8 @@ plugin is `prettier-plugin-mmd`, so a plugin that the configuration names is not
 loaded. `endOfLine` is not used, since a file keeps its line endings (see
 [Code blocks in detail](#code-blocks-in-detail)). In a code block in a list or a
 block quote, `printWidth` is less the width of what `mmdfmt` writes before the
-lines (see the same section).
+lines (see the same section). `rangeStart` and `rangeEnd` are not used, since
+`mmdfmt` formats whole diagrams.
 
 ## Errors and exit codes
 

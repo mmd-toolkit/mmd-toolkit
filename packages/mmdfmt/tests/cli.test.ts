@@ -898,6 +898,33 @@ describe("Configuration", () => {
     )
   })
 
+  it("formats whole diagrams whatever range the configuration sets", async () => {
+    project.write({
+      ".prettierrc.json": JSON.stringify({ rangeStart: 0, rangeEnd: 1 }),
+      "a.mmd": diagram,
+      "b.md": markdown,
+    })
+    await project.run(["--write", "a.mmd", "b.md"])
+    expect(project.read("a.mmd")).toBe(formattedDiagram)
+    expect(project.read("b.md")).toBe(formattedMarkdown)
+  })
+
+  it("does not let the cursor or the pragma options of the configuration change the output", async () => {
+    project.write({
+      ".prettierrc.json": JSON.stringify({
+        cursorOffset: 5,
+        requirePragma: true,
+        insertPragma: true,
+        checkIgnorePragma: true,
+      }),
+      "a.mmd": diagram,
+      "b.md": markdown,
+    })
+    await project.run(["--write", "a.mmd", "b.md"])
+    expect(project.read("a.mmd")).toBe(formattedDiagram)
+    expect(project.read("b.md")).toBe(formattedMarkdown)
+  })
+
   it("is an error when the configuration cannot be read", async () => {
     project.write({ ".prettierrc": "{", "a.mmd": diagram })
     const run = await project.run(["--write", "a.mmd"])

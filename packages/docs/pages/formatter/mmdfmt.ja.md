@@ -306,6 +306,8 @@ Prettierと`prettier-plugin-mmd`を使う場合と同じです。
 リスト項目や引用の中のコードブロックでは、`printWidth`は、
 各行の前に`mmdfmt`が書くものの幅を引いた幅です。
 こちらも同じ節を参照してください。
+`rangeStart`と`rangeEnd`は使いません。
+`mmdfmt`は図全体を整形するからです。
 
 ## エラーと終了コード
 
