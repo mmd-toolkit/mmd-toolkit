@@ -383,6 +383,11 @@ The promise is rejected:
   Its `loc.start` and `loc.end` give the `line` and the `column` where the error
   starts and where it ends, both counted from 1. An error whose range runs on to
   the start of a later line, such as an error at a line break, has no `loc.end`;
+- with Prettier's error, when an option has a value that Prettier refuses, such
+  as `printWidth: "wide"` (`Invalid printWidth value. …`), for a `.mmd` or
+  `.mermaid` text and for a Markdown text with a `mermaid` or `mmd` code block,
+  whether or not mermaid.js rejects a diagram in it. A Markdown text with no
+  such code block is not formatted by Prettier, and is returned as it is;
 - with an error, when `options.filepath` does not end in `.md`, `.markdown`,
   `.mmd`, or `.mermaid`.
 

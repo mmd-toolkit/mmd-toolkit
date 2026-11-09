@@ -444,6 +444,15 @@ Promise は、次のときに拒否されます。
   `line` と `column` は、どちらも 1 から数えます。
   改行の位置のエラーのように、エラーの範囲が後の行の始まりまで続くときは、
   `loc.end` はありません。
+- オプションに Prettier が受け付けない値があるときは、
+  Prettier のエラーで拒否されます。
+  たとえば `printWidth: "wide"` なら、
+  エラーは `Invalid printWidth value. …` です。
+  `.mmd` か `.mermaid` のテキストでも、
+  `mermaid` か `mmd` のコードブロックを持つ Markdown のテキストでも、
+  mermaid.js が拒否する図があるかどうかにかかわらず、そうなります。
+  そのようなコードブロックのない Markdown のテキストは、
+  Prettier で整形しないので、そのまま返します。
 - `options.filepath` の拡張子が `.md`、`.markdown`、`.mmd`、
   `.mermaid` のどれでもないときは、エラーで拒否されます。
 

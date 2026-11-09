@@ -99,6 +99,53 @@ describe("From a script: formatting text", () => {
     ).toEqual(expected)
   })
 
+  it.each([
+    ["an accepted .mmd diagram", "a.mmd", diagram],
+    ["a .mmd diagram that mermaid.js rejects", "a.mmd", "flowchart TD\nA-->\n"],
+    ["Markdown with an accepted diagram", "a.md", markdown],
+    [
+      "Markdown with only a diagram that mermaid.js rejects",
+      "a.md",
+      "# T\n\n```mermaid\nflowchart TD\nA-->\n```\n",
+    ],
+  ])(
+    "rejects a value that Prettier refuses for %s with Prettier's error",
+    async (_case, file, text) => {
+      const expected = await thrownBy(
+        prettier.format("", {
+          parser: "mermaid",
+          plugins: [plugin],
+          // @ts-expect-error -- Prettier refuses a string for `printWidth`.
+          printWidth: "wide",
+        }),
+      )
+      expect(expected).toMatchObject({
+        message:
+          'Invalid printWidth value. Expected an integer, but received "wide".',
+      })
+      expect(
+        await thrownBy(
+          format(text, {
+            filepath: path.join(project.cwd, file),
+            // @ts-expect-error -- Prettier refuses a string for `printWidth`.
+            printWidth: "wide",
+          }),
+        ),
+      ).toEqual(expected)
+    },
+  )
+
+  it("returns Markdown with no mermaid or mmd code block as it is, whatever the options", async () => {
+    const text = "# T\n\ntext\n"
+    expect(
+      await format(text, {
+        filepath: path.join(project.cwd, "a.md"),
+        // @ts-expect-error -- Prettier refuses a string for `printWidth`.
+        printWidth: "wide",
+      }),
+    ).toBe(text)
+  })
+
   it("leaves a rejected diagram as written after formatting an earlier one", async () => {
     const input = lines(
       "> ```mermaid",
