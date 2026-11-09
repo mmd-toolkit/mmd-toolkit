@@ -285,7 +285,10 @@ function startsWithYamlMark(text: string): boolean {
  * `splitEntries`) (docs/flowchart.md, Data blocks). A block splits only if
  *
  * - it is one of `splitTypes` and `tabWidth` is not 0, as a block of several
- *   lines moves only then;
+ *   lines moves only then, and the statement is not indented with a tab: the
+ *   lines of a block mapping are indented with spaces, since mermaid.js rejects
+ *   a tab before them, so under a node indented with tabs they would stand at
+ *   a depth that is right for one width of a tab only;
  * - it is the only block of its statement, and the last thing in it, on the
  *   first line of the statement: the text after its `}` would stand after the
  *   `}` on a line of its own, and the statement level is the level of that
@@ -305,6 +308,7 @@ function splitDataBlock(
     !splitTypes.has(block.type) ||
     !alone ||
     placement.tabWidth === 0 ||
+    placement.statement.includes("\t") ||
     block.range[1] !== statement[1] ||
     source.text.slice(statement[0], block.range[0]).includes("\n")
   )

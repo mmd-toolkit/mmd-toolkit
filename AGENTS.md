@@ -114,13 +114,14 @@ Correctness is defined by the pinned mermaid.js.
      [Data blocks](packages/prettier-plugin-mmd/docs/eventmodeling.md#data-blocks);
    - the margin changes to eligible state note paragraphs, defined in
      [Notes](packages/prettier-plugin-mmd/docs/state.md#notes);
-   - the whitespace around the first `:` and the `,` of styles, and at the end
-     of a style, defined in
+   - the whitespace around the first `:` and the `,` of styles, between the
+     words of a style, and at the end of a style, defined in
      [Styles that are drawn the same](packages/prettier-plugin-mmd/docs/compatibility.md#styles-that-are-drawn-the-same);
    - the whitespace at the start and at the end of a title, of the date format
      and the axis format of a Gantt chart, and of a description of a C4 diagram,
-     and at the end of the last event of a line of a timeline and of the second
-     description of an alias of a state diagram, defined in
+     and at the end of the last event of a line of a timeline, of the second
+     description of an alias of a state diagram, and of the name of a task of a
+     Gantt chart, defined in
      [Texts after a keyword that are drawn the same](packages/prettier-plugin-mmd/docs/compatibility.md#texts-after-a-keyword-that-are-drawn-the-same);
    - the runs of spaces and tabs inside the texts that mermaid.js draws without
      them: titles, accessibility descriptions, and the labels of the diagram

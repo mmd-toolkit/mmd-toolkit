@@ -1628,15 +1628,14 @@ block of several lines that moves (see below). Prettier chooses between the two
 forms: the block stays on its line where the line fits, and where the line would
 still be too long up to the `{` (a long text of the node stands before it), the
 lines would not shorten what is too long, so the block stays. [fixture:
-data-blocks/long-split] [fixture: data-blocks/long-split-use-tabs] [fixture:
-data-blocks/long-prefix-too-long-kept] mermaid.js reads the text of a block on
-one line as a YAML flow mapping, whose entries a `,` separates, and the text of
-a block of several lines as a block mapping, whose entries stand on lines of
-their own (the sources above). Both read the same where every entry is a key and
-a value that the two readings read alike, which the conditions below ensure. The
-entries print as written, without the spaces and tabs at their ends: only the
-whitespace, the line breaks and the `,` between entries change, and the Db is
-the same. The block splits only if
+data-blocks/long-split] [fixture: data-blocks/long-prefix-too-long-kept]
+mermaid.js reads the text of a block on one line as a YAML flow mapping, whose
+entries a `,` separates, and the text of a block of several lines as a block
+mapping, whose entries stand on lines of their own (the sources above). Both
+read the same where every entry is a key and a value that the two readings read
+alike, which the conditions below ensure. The entries print as written, without
+the spaces and tabs at their ends: only the whitespace, the line breaks and the
+`,` between entries change, and the Db is the same. The block splits only if
 
 - it belongs to a flowchart, an agentflow or a kanban diagram. A sequence
   diagram rejects the lines of a block mapping, and the `@{` of a use case
@@ -1647,6 +1646,13 @@ the same. The block splits only if
   usecase/native-metadata/long-block-kept]
 - `tabWidth` is not zero, as for a block of several lines; [fixture:
   data-blocks/long-zero-width-kept]
+- the statement is not indented with a tab (`useTabs`). mermaid.js rejects a tab
+  before the lines of a block mapping, so the lines of a split block are
+  indented with spaces whatever the statement is indented with, and under a node
+  that a tab indents they stand at a depth that reads right for one width of a
+  tab only: where the tab is wider than `tabWidth`, the entries and the `}`
+  stand left of the node. A block on one line stays on its line; [fixture:
+  data-blocks/long-use-tabs-kept]
 - it is the only block of its statement and the last thing in it, on the first
   line of the statement: text after its `}` would stand after the `}` on a line
   of its own, which reads worse than the block on its line, and the first line

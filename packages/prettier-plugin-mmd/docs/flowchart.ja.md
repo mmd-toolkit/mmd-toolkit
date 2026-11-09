@@ -1694,7 +1694,7 @@ CRLF と CR は `endOfLine` に従います。
 Prettier が 2 つの形から選び、行が収まる場合は 1 行のままにします。
 `{` までの行も長すぎる場合（前にノードの長いテキストがある場合）は、
 複数行にしても長すぎる部分は短くならないので、1 行のままにします。
-[fixture: data-blocks/long-split] [fixture: data-blocks/long-split-use-tabs]
+[fixture: data-blocks/long-split]
 [fixture: data-blocks/long-prefix-too-long-kept]
 mermaid.js は、1 行のブロックのテキストを、
 `,` で項目を区切る YAML の flow mapping として読み、
@@ -1714,6 +1714,13 @@ mermaid.js は、1 行のブロックのテキストを、
   [fixture: usecase/native-metadata/long-block-kept]
 - 複数行のブロックと同じく、`tabWidth` が 0 でないこと。
   [fixture: data-blocks/long-zero-width-kept]
+- 文がタブで字下げされていない（`useTabs` でない）こと。
+  mermaid.js は block mapping の行の前のタブを拒否するので、
+  分けたブロックの行は、文の字下げに関係なく空白で字下げします。
+  タブで字下げしたノードの下では、行の深さがタブ 1 つの幅が 1 通りのときだけ
+  正しく見え、タブが `tabWidth` より広いと、項目と `}` がノードより左に出ます。
+  1 行のブロックは 1 行のままにします。
+  [fixture: data-blocks/long-use-tabs-kept]
 - 文の最初の行にあり、その文の唯一のブロックで、文の最後にあること。
   `}` の後にテキストがあると、単独行の `}` の後にそのテキストが置かれ、
   ブロックが 1 行のときより読みづらくなります。
