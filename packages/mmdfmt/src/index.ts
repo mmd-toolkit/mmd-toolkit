@@ -1,16 +1,17 @@
 import type { Options } from "prettier"
 import type { LayoutOptions } from "./diagram.ts"
+import type { ConfigOptions } from "./format-file.ts"
 import { endingsInWords, formatDiagramSource, kindOf } from "./format-file.ts"
 import { formatMarkdown } from "./markdown.ts"
 
+export { resolveConfig } from "./format-file.ts"
+
 /**
- * The options of Prettier that `format` takes: `filepath`, required, whose
- * ending says whether the text is a diagram or Markdown, the indentation, and
- * the line width. Another option of Prettier is a type error rather than
- * ignored.
+ * The options that `resolveConfig` returns, and `filepath`, required, whose
+ * ending says whether the text is a diagram or Markdown. Another option of
+ * Prettier is a type error rather than ignored.
  */
-type FormatOptions = Required<Pick<Options, "filepath">> &
-  Pick<Options, "tabWidth" | "useTabs" | "printWidth">
+type FormatOptions = ConfigOptions & Required<Pick<Options, "filepath">>
 
 /**
  * Formats a text as Prettier's `format` does, except that in Markdown only the

@@ -266,39 +266,39 @@ mmdfmt --stdin-filepath docs/guide.md
 
 `format`はPrettierの`format`と同じようにテキストを整形しますが、
 MarkdownではMermaidのコードブロックだけを整形し、ほかは書いたまま残します。
+コマンドと同じようにパスの設定を探す`resolveConfig`と組み合わせると、
 エディターで開いているファイルの図を整形する言語サーバーなど、
-Node.js向けのツールでは、コマンドを実行する代わりに呼び出せます。
+Node.js向けのツールでは、コマンドを実行せずに同じことができます。
 
 ```js
 import { readFile } from "node:fs/promises"
-import { format } from "mmdfmt"
-import { resolveConfig } from "prettier"
+import { format, resolveConfig } from "mmdfmt"
 
 const filepath = "docs/notes.md"
 const source = await readFile(filepath, "utf8")
-const config = await resolveConfig(filepath, { editorconfig: true })
 const formatted = await format(source, {
+  ...(await resolveConfig(filepath)),
   filepath,
-  tabWidth: config?.tabWidth,
-  useTabs: config?.useTabs,
-  printWidth: config?.printWidth,
 })
 ```
 
+`resolveConfig(fileUrlOrPath, options)`は、
+Prettierの`resolveConfig`と同じ引数を受け取り、
+そのパスの設定からコマンドが読むオプションを返すPromiseを返します。
+設定で指定されている`tabWidth`、`useTabs`、`printWidth`だけを返し、
+適用する設定がなければ`null`を返します。
+詳しくは[インデントと行の幅](#インデントと行の幅)を参照してください。
+Prettierのものと異なり、コマンドと同じく、
+`editorconfig: false`を渡さないかぎり`.editorconfig`を読みます。
+
 `format(source, options)`は、整形したテキストを返すPromiseを返します。
-Prettierのオプションのうち、
-語尾でテキストを図として読むかMarkdownとして読むかを決める`filepath`と、
-`tabWidth`、`useTabs`、`printWidth`の4つを受け取り、
+オプションは`resolveConfig`が返すものと、
+語尾でテキストを図として読むかMarkdownとして読むかを決める`filepath`で、
 ほかのオプションは型エラーになります。
 Prettierの`format`と同じく、ファイルも設定も読みません。
-呼び出し元は、上のようにPrettierの`resolveConfig`で設定を解決し、
 設定の`overrides`はパスごとに適用されるため、
-`format`に渡すのと同じパスを指定し、
-`.editorconfig`を読むために`editorconfig: true`を指定します。
-コマンドがパスについて見つけるオプションは、
-[インデントと行の幅](#インデントと行の幅)のとおりです。
-そのオプションを渡すと、
-`format`は`--stdin-filepath`がそのパスについて書き出すテキストを返します。
+同じパスについて`resolveConfig`が返すものを渡してください。
+すると、`--stdin-filepath`がそのパスについて書き出すテキストを返します。
 
 - Markdownでは、`printWidth`はファイルの行の幅で、
   [コードブロックの詳細](../../../mmdfmt/README.ja.md#コードブロックの詳細)

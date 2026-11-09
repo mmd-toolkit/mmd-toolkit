@@ -1,10 +1,10 @@
 import { existsSync } from "node:fs"
 import path from "node:path"
+import { pathToFileURL } from "node:url"
 import * as prettier from "prettier"
-import { resolveConfig } from "prettier"
 import plugin from "prettier-plugin-mmd"
 import { afterEach, beforeEach, describe, expect, it } from "vitest"
-import { format } from "../src/index.ts"
+import { format, resolveConfig } from "../src/index.ts"
 import { Project, lines } from "./helpers.ts"
 
 let project: Project
@@ -167,13 +167,10 @@ describe("From a script: indentation and configuration", () => {
         "root = true\n\n[*]\nindent_style = space\nindent_size = 4\n",
     })
     const filepath = path.join(project.cwd, "a.mmd")
-    const config = await resolveConfig(filepath, { editorconfig: true })
     expect(
       await format(diagram, {
+        ...(await resolveConfig(filepath)),
         filepath,
-        tabWidth: config?.tabWidth,
-        useTabs: config?.useTabs,
-        printWidth: config?.printWidth,
       }),
     ).toEqual("flowchart LR\n    A --> B\n")
   })
@@ -188,6 +185,135 @@ describe("From a script: indentation and configuration", () => {
       // @ts-expect-error -- `endOfLine` is not an option of `format`.
       await format(diagram, { filepath, endOfLine: "crlf" }),
     ).toEqual("flowchart LR\n  A --> B\n")
+  })
+})
+
+describe("From a script: resolveConfig", () => {
+  it("reads the indentation and the line width from .editorconfig by default", async () => {
+    project.write({
+      ".editorconfig":
+        "[*]\nindent_style = space\nindent_size = 4\nmax_line_length = 100\n",
+    })
+    expect(await resolveConfig(path.join(project.cwd, "a.mmd"))).toStrictEqual({
+      tabWidth: 4,
+      useTabs: false,
+      printWidth: 100,
+    })
+  })
+
+  it("returns only the options that the command reads from a Prettier configuration", async () => {
+    project.write({ ".prettierrc.json": '{ "tabWidth": 3, "semi": false }' })
+    expect(await resolveConfig(path.join(project.cwd, "a.mmd"))).toStrictEqual({
+      tabWidth: 3,
+    })
+  })
+
+  it("applies the override for a .mmd path", async () => {
+    project.write({
+      ".prettierrc.json":
+        '{ "overrides": [{ "files": "*.mmd", "options": { "tabWidth": 4 } }, { "files": "*.md", "options": { "tabWidth": 6 } }] }',
+    })
+    expect(await resolveConfig(path.join(project.cwd, "a.mmd"))).toStrictEqual({
+      tabWidth: 4,
+    })
+  })
+
+  it("applies the override for a .md path", async () => {
+    project.write({
+      ".prettierrc.json":
+        '{ "overrides": [{ "files": "*.mmd", "options": { "tabWidth": 4 } }, { "files": "*.md", "options": { "tabWidth": 6 } }] }',
+    })
+    expect(await resolveConfig(path.join(project.cwd, "a.md"))).toStrictEqual({
+      tabWidth: 6,
+    })
+  })
+
+  it("returns null when no configuration applies", async () => {
+    expect(await resolveConfig(path.join(project.cwd, "a.mmd"))).toStrictEqual(
+      null,
+    )
+  })
+
+  it("does not read .editorconfig with editorconfig: false", async () => {
+    project.write({
+      ".editorconfig":
+        "[*]\nindent_style = space\nindent_size = 4\nmax_line_length = 100\n",
+    })
+    expect(
+      await resolveConfig(path.join(project.cwd, "a.mmd"), {
+        editorconfig: false,
+      }),
+    ).toStrictEqual(null)
+  })
+
+  it("resolves a file URL the same way as its path", async () => {
+    project.write({ ".prettierrc.json": '{ "tabWidth": 3, "semi": false }' })
+    const filepath = path.join(project.cwd, "a.mmd")
+    const config = await resolveConfig(filepath)
+    expect(config).toStrictEqual({ tabWidth: 3 })
+    expect(await resolveConfig(pathToFileURL(filepath))).toStrictEqual(config)
+  })
+
+  it("formats a Markdown list diagram as the command does with the resolved configuration", async () => {
+    project.write({
+      ".editorconfig": "[*]\nindent_size = 4\nmax_line_length = 37\n",
+      ".prettierrc.json":
+        '{ "overrides": [{ "files": "*.md", "options": { "useTabs": true } }] }',
+    })
+    const source = lines(
+      "- item",
+      "",
+      "  ```mermaid",
+      "  flowchart LR",
+      "    A@{ shape: rect, label: x, icon: y }",
+      "  ```",
+    )
+    const filepath = path.join(project.cwd, "a.md")
+    expect(await resolveConfig(filepath)).toStrictEqual({
+      tabWidth: 4,
+      useTabs: true,
+      printWidth: 37,
+    })
+    const result = await project.run(["--stdin-filepath", "a.md"], source)
+    expect(result).toEqual({
+      code: 0,
+      stdout: lines(
+        "- item",
+        "",
+        "  ```mermaid",
+        "  flowchart LR",
+        "  \tA@{ shape: rect, label: x, icon: y }",
+        "  ```",
+      ),
+      stderr: "",
+    })
+    expect(
+      await format(source, { ...(await resolveConfig(filepath)), filepath }),
+    ).toEqual(result.stdout)
+  })
+
+  it("formats a .mmd diagram as the command does with the resolved configuration", async () => {
+    project.write({
+      ".editorconfig": "[*]\nindent_size = 4\nmax_line_length = 37\n",
+      ".prettierrc.json":
+        '{ "overrides": [{ "files": "*.md", "options": { "useTabs": true } }] }',
+    })
+    const source = "flowchart LR\n  A@{ shape: rect, label: x, icon: y }\n"
+    const filepath = path.join(project.cwd, "a.mmd")
+    expect(await resolveConfig(filepath)).toStrictEqual({
+      tabWidth: 4,
+      printWidth: 37,
+    })
+    const result = await project.run(["--stdin-filepath", "a.mmd"], source)
+    expect(result).toEqual({
+      code: 0,
+      stdout:
+        "flowchart LR\n    A@{\n        shape: rect\n        label: x\n        icon: y\n    }\n",
+      stderr: "",
+    })
+    expect(
+      await format(source, { ...(await resolveConfig(filepath)), filepath }),
+    ).toEqual(result.stdout)
   })
 })
 
@@ -293,14 +419,10 @@ describe("From a script: the line width", () => {
       ".editorconfig": "root = true\n\n[*.mmd]\nmax_line_length = 37\n",
     })
     const filepath = path.join(project.cwd, "a.mmd")
-    const config = await resolveConfig(filepath, { editorconfig: true })
-    expect(config?.printWidth).toEqual(37)
     expect(
       await format(wideDiagram, {
+        ...(await resolveConfig(filepath)),
         filepath,
-        tabWidth: config?.tabWidth,
-        useTabs: config?.useTabs,
-        printWidth: config?.printWidth,
       }),
     ).toEqual(
       "flowchart LR\n  A@{\n    shape: rect\n    label: x\n    icon: y\n  }\n",

@@ -22,7 +22,7 @@ afterEach(() => {
 })
 
 describe("From a script: the package entry", () => {
-  it("exports format alone when Node imports the package by its name", async () => {
+  it("exports format and resolveConfig when Node imports the package by its name", async () => {
     // Node resolves `mmdfmt` through the package's own `exports`, from code
     // that runs in the package's directory. The path of the text is in a
     // project outside the repository, so that no configuration of the
@@ -33,7 +33,8 @@ describe("From a script: the package entry", () => {
         "# Notes\\n\\n\`\`\`mermaid\\nflowchart LR\\nA-->B\\n\`\`\`\\n",
         { filepath: process.argv[1] },
       )
-      console.log(JSON.stringify({ exports: Object.keys(mmdfmt), result }))
+      const config = await mmdfmt.resolveConfig(process.argv[1])
+      console.log(JSON.stringify({ exports: Object.keys(mmdfmt), result, config }))
     `
     const { stdout } = await promisify(execFile)(
       process.execPath,
@@ -41,8 +42,9 @@ describe("From a script: the package entry", () => {
       { cwd: packageDirectory },
     )
     expect(JSON.parse(stdout)).toEqual({
-      exports: ["format"],
+      exports: ["format", "resolveConfig"],
       result: "# Notes\n\n```mermaid\nflowchart LR\n  A --> B\n```\n",
+      config: null,
     })
   })
 

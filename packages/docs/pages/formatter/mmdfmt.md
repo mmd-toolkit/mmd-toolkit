@@ -245,36 +245,38 @@ whether the text is a diagram or Markdown, and its directory says which
 ## From a script
 
 `format` formats a text as Prettier's `format` does, except that in Markdown it
-formats only the Mermaid code blocks and leaves the rest as written. A tool
-written for Node.js, such as a language server that formats the diagrams of a
-file open in an editor, can call it instead of running the command:
+formats only the Mermaid code blocks and leaves the rest as written. With
+`resolveConfig`, which finds the configuration of a path as the command does, a
+tool written for Node.js, such as a language server that formats the diagrams of
+a file open in an editor, can do what the command does without running it:
 
 ```js
 import { readFile } from "node:fs/promises"
-import { format } from "mmdfmt"
-import { resolveConfig } from "prettier"
+import { format, resolveConfig } from "mmdfmt"
 
 const filepath = "docs/notes.md"
 const source = await readFile(filepath, "utf8")
-const config = await resolveConfig(filepath, { editorconfig: true })
 const formatted = await format(source, {
+  ...(await resolveConfig(filepath)),
   filepath,
-  tabWidth: config?.tabWidth,
-  useTabs: config?.useTabs,
-  printWidth: config?.printWidth,
 })
 ```
 
-`format(source, options)` returns a promise of the formatted text. It takes four
-of Prettier's options: `filepath`, whose ending says whether the text is a
-diagram or Markdown, and `tabWidth`, `useTabs`, and `printWidth`; another option
-is a type error. Like Prettier's `format`, it reads no file and no
-configuration. The caller resolves the configuration with Prettier's
-`resolveConfig`, as above, with the path that it gives `format`, since the
-`overrides` of a configuration apply by path, and with `editorconfig: true` for
-an `.editorconfig` to be read. Given the options that the command finds for a
-path (see [Indentation and line width](#indentation-and-line-width)), `format`
-returns the text that `--stdin-filepath` writes for it.
+`resolveConfig(fileUrlOrPath, options)` takes the arguments of Prettier's
+`resolveConfig` and returns a promise of the options that the command reads from
+the configuration of that path (see
+[Indentation and line width](#indentation-and-line-width)): those of `tabWidth`,
+`useTabs`, and `printWidth` that the configuration sets, or `null` where no
+configuration applies. Unlike Prettier's, it reads `.editorconfig` unless it is
+given `editorconfig: false`, as the command reads it.
+
+`format(source, options)` returns a promise of the formatted text. Its options
+are those that `resolveConfig` returns, and `filepath`, whose ending says
+whether the text is a diagram or Markdown; another option is a type error. Like
+Prettier's `format`, it reads no file and no configuration: give it what
+`resolveConfig` returns for the same path, since the `overrides` of a
+configuration apply by path. It then returns the text that `--stdin-filepath`
+writes for that path.
 
 - In Markdown, `printWidth` is the width of the lines of the file: a diagram in
   a list item or a block quote gets that width less what stands before its

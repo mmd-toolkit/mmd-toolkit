@@ -1,10 +1,17 @@
 import path from "node:path"
-import { resolveConfig } from "prettier"
+import type { Options, ResolveConfigOptions } from "prettier"
+import { resolveConfig as resolvePrettierConfig } from "prettier"
 import type { LayoutOptions } from "./diagram.ts"
 import { formatDiagramText, rejectionOf } from "./diagram.ts"
 import type { FormatResult, PositionsIn } from "./diagnostic.ts"
 import { lineEndingOf, positionIn, readText } from "./lines.ts"
 import { formatMarkdown } from "./markdown.ts"
+
+/**
+ * The options that the command reads from a configuration (README, Indentation
+ * and line width).
+ */
+export type ConfigOptions = Pick<Options, "tabWidth" | "useTabs" | "printWidth">
 
 /** How the tool reads a file: as one diagram, or as Markdown with code blocks. */
 export type FileKind = "diagram" | "markdown"
@@ -35,6 +42,29 @@ export function kindOf(file: string): FileKind | undefined {
 }
 
 /**
+ * Resolves the configuration of a path with Prettier's arguments, reading
+ * `.editorconfig` unless `editorconfig: false` is given (README, From a
+ * script). Returns only the options that the command reads and that the
+ * configuration sets, or `null` when no configuration applies (README,
+ * Indentation and line width).
+ */
+export async function resolveConfig(
+  fileUrlOrPath: string | URL,
+  options?: ResolveConfigOptions,
+): Promise<ConfigOptions | null> {
+  const config = await resolvePrettierConfig(fileUrlOrPath, {
+    ...options,
+    editorconfig: options?.editorconfig ?? true,
+  })
+  if (config === null) return null
+  const result: ConfigOptions = {}
+  if (config.tabWidth !== undefined) result.tabWidth = config.tabWidth
+  if (config.useTabs !== undefined) result.useTabs = config.useTabs
+  if (config.printWidth !== undefined) result.printWidth = config.printWidth
+  return result
+}
+
+/**
  * Formats a file of the given kind. The indentation and the line width come
  * from the Prettier configuration of the file, found as Prettier's CLI finds
  * it, `.editorconfig` included (README, Indentation and line width). The
@@ -46,7 +76,7 @@ export async function formatFile(
   kind: FileKind,
   positionsIn: PositionsIn,
 ): Promise<FormatResult> {
-  const config = await resolveConfig(file, { editorconfig: true })
+  const config = await resolveConfig(file)
   const layout: LayoutOptions = {
     tabWidth: config?.tabWidth,
     useTabs: config?.useTabs,
