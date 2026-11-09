@@ -219,7 +219,7 @@ async function formatFiles(
     )
   }
   for (const file of files) {
-    const name = path.relative(io.cwd, file.path)
+    const name = displayName(file.path, io.cwd)
     let text: string, result: FormatResult
     try {
       if (await isSkipped(file.path, io.cwd)) continue
@@ -378,6 +378,20 @@ function style(
   text: string,
 ): string {
   return stream === undefined ? text : styleText(color, text, { stream })
+}
+
+/**
+ * The name of a file in what the tool prints: its path relative to `cwd`, with
+ * `/` between its parts on every system, as Prettier's CLI writes the name of a
+ * file (README, Usage). `pathOf` is `node:path` of the system the tool runs on;
+ * a test gives `path.win32` or `path.posix`.
+ */
+export function displayName(
+  file: string,
+  cwd: string,
+  pathOf: typeof path = path,
+): string {
+  return pathOf.relative(cwd, file).replaceAll(pathOf.sep, "/")
 }
 
 /** Writes the diagnostics of a file to standard error. */

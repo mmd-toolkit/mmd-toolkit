@@ -137,7 +137,9 @@ print, whatever else of this table is given with them. With no argument at all,
 name and the time that formatting it took, such as `docs/flow.mmd 12ms`,
 followed by `(unchanged)` for a file that did not change. On a terminal that
 shows colors, the name of an unchanged file is gray. To list only the files that
-changed, give `--write --list-different`.
+changed, give `--write --list-different`. The name of a file in what `mmdfmt`
+prints is its path relative to the directory where it runs, with `/` between its
+parts also on Windows, as Prettier writes it.
 
 There are no other options: no formatting options, no configuration file of its
 own, and no option for an ignore file. An option that takes no value ignores a

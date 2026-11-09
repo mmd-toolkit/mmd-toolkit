@@ -80,9 +80,9 @@ export function lines(...texts: readonly string[]): string {
   return texts.map((text) => `${text}\n`).join("")
 }
 
-/** The lines of a list that the tool prints, from paths written with `/`. */
+/** The lines of a list that the tool prints, from names written with `/`, as the tool writes them. */
 export function listed(...names: readonly string[]): string {
-  return names.map((name) => `${path.join(...name.split("/"))}\n`).join("")
+  return names.map((name) => `${name}\n`).join("")
 }
 
 /**
@@ -99,16 +99,12 @@ export function fixedWriteTimes(run: Run): Run {
   }
 }
 
-/** The changed-file time lines of `--write`, from paths written with `/`. */
+/** The changed-file time lines of `--write`, from names written with `/`. */
 export function written(...names: readonly string[]): string {
-  return names
-    .map((name) => `${path.join(...name.split("/"))} <time>\n`)
-    .join("")
+  return names.map((name) => `${name} <time>\n`).join("")
 }
 
-/** The unchanged-file time lines of `--write`, from paths written with `/`. */
+/** The unchanged-file time lines of `--write`, from names written with `/`. */
 export function unchanged(...names: readonly string[]): string {
-  return names
-    .map((name) => `${path.join(...name.split("/"))} <time> (unchanged)\n`)
-    .join("")
+  return names.map((name) => `${name} <time> (unchanged)\n`).join("")
 }

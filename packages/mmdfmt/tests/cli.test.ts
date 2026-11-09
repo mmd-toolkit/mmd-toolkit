@@ -4,7 +4,7 @@ import path from "node:path"
 import { afterEach, beforeEach, describe, expect, it, vi } from "vitest"
 import packageJson from "../package.json" with { type: "json" }
 import { ignoreBrokenPipe } from "../src/broken-pipe.ts"
-import { main } from "../src/main.ts"
+import { displayName, main } from "../src/main.ts"
 import {
   Project,
   fixedWriteTimes,
@@ -304,6 +304,26 @@ describe("Usage: --write, --check, and --list-different", () => {
         "[warn] a.mmd\n[warn] b.md\n[warn] Code style issues fixed in 2 files.\n",
     })
     expect(project.read("b.md")).toBe(formattedMarkdown)
+  })
+})
+
+describe("Usage: the name of a file, with / between its parts", () => {
+  it.each([
+    [path.win32, "C:\\p\\docs\\a.mmd", "C:\\p", "docs/a.mmd"],
+    [path.posix, "/p/docs/a.mmd", "/p", "docs/a.mmd"],
+    // On a system whose separator is /, a \ is part of a name.
+    [path.posix, "/p/a\\b.mmd", "/p", "a\\b.mmd"],
+  ])("names %#: %s relative to %s", (pathOf, file, cwd, name) => {
+    expect(displayName(file, cwd, pathOf)).toBe(name)
+  })
+
+  it("lists a file in a directory with / on the system it runs on", async () => {
+    project.write({ "docs/a.mmd": diagram })
+    expect(await project.run(["--list-different", "docs"])).toEqual({
+      code: 1,
+      stdout: "docs/a.mmd\n",
+      stderr: "",
+    })
   })
 })
 
