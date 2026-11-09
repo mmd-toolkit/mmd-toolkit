@@ -892,7 +892,8 @@ Gantt 図の 3 つの設定は、値の前後に空白があると描かれる�
 [fixture: gantt/settings/trailing-whitespace-by-setting]
 
 Gantt 図のタスクの名前は、テキストとコロンの間の空白で終わり、
-印字はその空白を整えて、セクションのコロンを 1 つの桁にそろえます。
+印字はその空白を整えて、名前に桁そろえの空白があるセクションのコロンを、
+最長の名前の後に空白 1 つを置いた所にそろえます。
 （[タスクのデータ](./gantt.ja.md#タスクのデータ)）。
 文法の規則は、コロンより前のすべてを、空白も含めて名前として読みます。
 （[`gantt.jison`](https://github.com/mermaid-js/mermaid/blob/2086904e76c692331e34a45d7cc3bc30860d040e/packages/mermaid/src/diagrams/gantt/parser/gantt.jison#L93)）。
@@ -912,8 +913,11 @@ Gantt 図のタスクの名前は、テキストとコロンの間の空白で�
 画素は同じで、生成された id とタスクのテキストの末尾の空白を除くと、
 SVG も同じでした。
 コーパス、mermaid.js の文書、このパッケージの fixture のうち、
-印字がタスクの名前を変え、mermaid.js が描ける 17 個のテキストも同じでした。
-18 個のうち 1 個は、整形前も整形後もエラーで止まります。
+印字がタスクの名前を変える 34 個のテキストの中で、
+mermaid.js が描ける 31 個も同じでした。
+残りの 3 個は、整形前も整形後もエラーで止まります。
+描けるテキストのうち 2 個の SVG は、タイトルの先頭の空白も異なり、
+これは前述のタイトルの例外に当たります。
 図の CSS が空白を残すときは、描かれる図が異なります。
 `%%{init: {"themeCSS": ".taskText{white-space:pre}"}}%%` があると、
 2 つのテキストの画素は異なります。
@@ -921,7 +925,7 @@ SVG も同じでした。
 コロンを書かれたままにします。
 （[同じに描かれるテキスト中の空白の連なり](#同じに描かれるテキスト中の空白の連なり)）。
 [fixture: gantt/task-data/colon-column-new-longest-name]
-[fixture: gantt/task-data/colon-column-follows-other-sections]
+[fixture: gantt/task-data/description-padding-tightened]
 [fixture: gantt/task-data/colon-column-white-space-kept]
 
 テストは、印字したテキストの Db に、
@@ -2363,12 +2367,13 @@ mermaid.js は、Gantt 図の一部の値の空白を持ち、一部の行を、
   Db が持ち、図にも描かれるので、空白 2 つの `tickInterval  1week` は、
   目盛りが既定のものになり、`section  A` は `section A` とは別のセクションです。
   `dateFormat`、`axisFormat`、`title` の両端の空白は除きます。
-  タスクの説明のテキストとコロンの間の空白は、作者がそろえようとした所で、
-  セクションのコロンを 1 つの桁にそろえるように整えます。
+  タスクの説明のテキストとコロンの間の空白は、
+  名前に桁そろえの空白があるセクションのコロンを、
+  最長の名前の後に空白 1 つを置いた所にそろえるように整えます。
   （[同じに描かれるキーワードの後のテキスト](#同じに描かれるキーワードの後のテキスト)）。
   [fixture: gantt/settings/trailing-whitespace-by-setting]
   [fixture: gantt/titles-and-sections/title-trailing-dropped-section-kept]
-  [fixture: gantt/task-data/description-padding-kept]
+  [fixture: gantt/task-data/description-padding-tightened]
 - タスクのデータの項目の中の空白、項目の数、タグの大文字小文字。
   `after   a1` は書かれたままの 1 つの項目で、
   `a : 1d,` は `a : 1d` にない空の項目を持ち、`Done` はタグではありません。

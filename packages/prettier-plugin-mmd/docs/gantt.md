@@ -291,48 +291,52 @@ is part of the description, which the Db keeps, so `A task           :a1` and
 `A task :a1` are two descriptions to mermaid.js. It draws the same chart
 whatever that whitespace is (see
 [Texts after a keyword that are drawn the same](./compatibility.md#texts-after-a-keyword-that-are-drawn-the-same)),
-so the printer sets it only where the author's alignment is broken, as the next
-paragraphs say. [fixture: task-data/description-padding-kept] A description that
-starts with `#` or `;` is a task text like any other. [fixture:
+so the printer sets it where a name has padding, as the next paragraphs say.
+[fixture: task-data/description-padding-tightened] A description that starts
+with `#` or `;` is a task text like any other. [fixture:
 task-data/hash-and-semicolon-descriptions]
 
-The colons of the tasks of a section stand in one column where their author
-aligned them, and the padding that does it stays. The printer aligns them where
-the author meant to and did not succeed: where a name of the section has more
-than one whitespace character, or a tab, between its text and the colon, and the
-colons of the section are not all in one column. Each name then gets as many
-spaces as put its colon in the column of the section, so that the author can add
-a longer name and let the printer pad the others. The column is the one after
-the longest name, one space after it, or, where every other section of the chart
-has all its colons in one and the same column, and that column is after the
-longest name of the section, that column, so that the sections that share a
-column go on sharing it. The tasks before the first `section` are a section of
-their own and take no column from another one, since they stand one level less
-deep. The width of a name is the width Prettier gives a text, so a full-width
-character counts 2, and the whitespace that is set is spaces, which replace a
-tab. [fixture: task-data/colon-column-new-longest-name] [fixture:
-task-data/colon-column-follows-other-sections] [fixture:
-task-data/colon-column-other-sections-too-narrow] [fixture:
-task-data/colon-column-other-sections-differ] [fixture:
-task-data/colon-column-one-task-sections] [fixture:
-task-data/colon-column-before-first-section] [fixture:
-task-data/colon-column-sections-and-preamble] [fixture:
+Where a name of a section has padding before its colon (more than one whitespace
+character, or a tab), the printer puts the colons of the section one space after
+its longest name, whether the colons were in one column or not. A column wider
+than the longest name needs is a gap between the names and the data that makes
+the lines harder to read, so it does not stay, and the author can add a longer
+name and let the printer pad the others. The width of a name is the width
+Prettier gives a text, so a full-width character counts 2, and the whitespace
+that is set is spaces, which replace a tab. [fixture:
+task-data/colon-column-new-longest-name] [fixture:
+task-data/description-padding-tightened] [fixture:
 task-data/colon-column-wide-characters] [fixture:
 task-data/colon-column-use-tabs]
 
+Where all the sections of a chart that have padding have their colons in one and
+the same column, they go on sharing a column: it is one space after the longest
+of their longest names, so that only the excess whitespace goes. A section whose
+names are all followed by one space, with its colons in that column, counts for
+the longest name and is not changed. Where the colons of the sections with
+padding are not all in one column, each section has the column of its own
+longest name. The tasks before the first `section` stand one level less deep, so
+they are a section of their own that shares nothing. [fixture:
+task-data/colon-column-sections-share-one-column] [fixture:
+task-data/colon-column-one-task-sections] [fixture:
+task-data/colon-column-uniform-section-shares] [fixture:
+task-data/colon-column-sections-not-sharing] [fixture:
+task-data/colon-column-sections-in-different-columns] [fixture:
+task-data/colon-column-before-first-section] [fixture:
+task-data/colon-column-sections-and-preamble]
+
 The colons stay where they are in these cases, since moving them would not make
-the chart easier to read or could change the figure. A section whose colons are
-already in one column is left, whatever the column is, because the author chose
-it. A section in which no name has more than one space before its colon, or
-none, is left, because the author chose to put the colon next to the text. A
-section is left where the aligned lines would be longer than `printWidth` and
-longer than they are, since one long name would push every colon of the section
-far right. A chart that holds `white-space` is left, since the CSS of the chart
-may draw the whitespace at the end of a name, and the figure then depends on it.
-A task whose line holds a comment, a directive, or a `;` of its own, or runs
-over lines, is printed as written and is not one of the tasks that the others
-are aligned with, so its padding does not decide the column of the others.
-[fixture: task-data/colon-column-aligned-kept] [fixture:
+the chart easier to read or could change the figure. A section in which no name
+has more than one space before its colon, or none, is left, because the author
+chose to put the colon next to the text. A section is left where the aligned
+lines would be longer than `printWidth` and longer than they are, since one long
+name would push every colon of the section far right, and so are all the
+sections that share a column where any of them would. A chart that holds
+`white-space` is left, since the CSS of the chart may draw the whitespace at the
+end of a name, and the figure then depends on it. A task whose line holds a
+comment, a directive, or a `;` of its own, or runs over lines, is printed as
+written and is not one of the tasks that the others are aligned with, so its
+padding does not decide the column of the others. [fixture:
 task-data/colon-column-single-space-kept] [fixture:
 task-data/colon-column-too-wide-kept] [fixture:
 task-data/colon-column-white-space-kept] [fixture:
@@ -367,7 +371,7 @@ task-data/whitespace-only-data-then-directive] A directive between the parts of
 a task stays where it is (see [Directives](#directives)).
 
 Input
-([task-data/description-padding-kept-input.mmd](../tests/fixtures/gantt/task-data/description-padding-kept-input.mmd)):
+([task-data/description-padding-tightened-input.mmd](../tests/fixtures/gantt/task-data/description-padding-tightened-input.mmd)):
 
 ```mmd
 gantt
@@ -377,17 +381,17 @@ Future task               :         des3, after des2, 5d
 ```
 
 Output
-([task-data/description-padding-kept-output.mmd](../tests/fixtures/gantt/task-data/description-padding-kept-output.mmd)):
+([task-data/description-padding-tightened-output.mmd](../tests/fixtures/gantt/task-data/description-padding-tightened-output.mmd)):
 
 ```mmd
 gantt
-  Completed task            :done, des1, 2014-01-06, 2014-01-08
-  Active task               :active, des2, 2014-01-09, 3d
-  Future task               :des3, after des2, 5d
+  Completed task :done, des1, 2014-01-06, 2014-01-08
+  Active task    :active, des2, 2014-01-09, 3d
+  Future task    :des3, after des2, 5d
 ```
 
 Input
-([task-data/colon-column-follows-other-sections-input.mmd](../tests/fixtures/gantt/task-data/colon-column-follows-other-sections-input.mmd)):
+([task-data/colon-column-sections-not-sharing-input.mmd](../tests/fixtures/gantt/task-data/colon-column-sections-not-sharing-input.mmd)):
 
 ```mmd
 gantt
@@ -402,18 +406,18 @@ gantt
 ```
 
 Output
-([task-data/colon-column-follows-other-sections-output.mmd](../tests/fixtures/gantt/task-data/colon-column-follows-other-sections-output.mmd)):
+([task-data/colon-column-sections-not-sharing-output.mmd](../tests/fixtures/gantt/task-data/colon-column-sections-not-sharing-output.mmd)):
 
 ```mmd
 gantt
   dateFormat YYYY-MM-DD
   section A
-    A task          :a1, 2014-01-01, 30d
-    Another task    :after a1, 20d
+    A task       :a1, 2014-01-01, 30d
+    Another task :after a1, 20d
   section B
-    Task in         :2014-01-12, 12d
-    other task      :24d
-    x               :1d
+    Task in    :2014-01-12, 12d
+    other task :24d
+    x          :1d
 ```
 
 Input

@@ -295,53 +295,58 @@ gantt
 Db が持つので、`A task           :a1` と `A task :a1` は、
 mermaid.js にとって 2 つの説明です。
 その空白がどう書かれていても同じ図を描くので、次の段落のとおり、
-作者の桁そろえが崩れている所だけ、その空白を整えます。
+名前の後ろに桁そろえの空白がある所で、その空白を整えます。
 （[同じに描かれるキーワードの後のテキスト](./compatibility.ja.md#同じに描かれるキーワードの後のテキスト)）。
-[fixture: task-data/description-padding-kept]
+[fixture: task-data/description-padding-tightened]
 `#` や `;` で始まる説明も、ほかと同じタスクのテキストです。
 [fixture: task-data/hash-and-semicolon-descriptions]
 
-セクションのタスクのコロンを作者が 1 つの桁にそろえているときは、
-その空白を残します。
-作者がそろえようとしてそろっていないときは、コロンをそろえます。
 セクションの名前のどれかで、
-テキストとコロンの間に空白が 2 文字以上かタブがあり、
-セクションのコロンがすべて同じ桁にはないときです。
-各名前に、そのセクションの桁へコロンを置くのに必要な数の空白を足すので、
+コロンの前に桁そろえの空白（空白が 2 文字以上かタブ）があるときは、
+コロンがすでに 1 つの桁にそろっているかどうかによらず、
+セクションのコロンを最長の名前の後に空白 1 つを置いた所にそろえます。
+最長の名前に必要な桁より後ろにそろえると、名前とデータの間が広がり、
+読みにくくなるので、その桁は残しません。
 作者は長い名前を足し、ほかの名前の空白を整形に任せられます。
-桁は、最長の名前の後に空白 1 つを置いた所にします。
-ただし、図のほかのすべてのセクションでコロンがすべて同じ 1 つの桁にそろい、
-その桁が対象のセクションの最長の名前より後ろなら、その桁にします。
-同じ桁を使うセクションが、同じ桁を使い続けるためです。
-最初の `section` より前のタスクは、それだけで 1 つのセクションとし、
-1 段浅い所にあるので、ほかのセクションの桁を使いません。
 名前の幅は Prettier がテキストに与える幅なので、全角文字は 2 と数え、
 整える空白には半角空白を使い、タブも置き換えます。
 [fixture: task-data/colon-column-new-longest-name]
-[fixture: task-data/colon-column-follows-other-sections]
-[fixture: task-data/colon-column-other-sections-too-narrow]
-[fixture: task-data/colon-column-other-sections-differ]
-[fixture: task-data/colon-column-one-task-sections]
-[fixture: task-data/colon-column-before-first-section]
-[fixture: task-data/colon-column-sections-and-preamble]
+[fixture: task-data/description-padding-tightened]
 [fixture: task-data/colon-column-wide-characters]
 [fixture: task-data/colon-column-use-tabs]
 
+図の中で桁そろえの空白があるすべてのセクションのコロンが、
+同じ 1 つの桁にそろっているときは、セクション間で桁を共有し続けます。
+それぞれの最長の名前の中で最も長い名前の後に空白 1 つを置いた桁にし、
+余分な空白だけを除きます。
+すべての名前の後ろに空白が 1 つあり、コロンがその桁にあるセクションは、
+最長の名前を決める対象に含め、書かれたまま残します。
+桁そろえの空白があるセクションのコロンがすべて同じ桁にはないときは、
+各セクションで、自分の最長の名前から桁を決めます。
+最初の `section` より前のタスクは、1 段浅い所にあるので、
+それだけで 1 つのセクションとし、ほかのセクションと桁を共有しません。
+[fixture: task-data/colon-column-sections-share-one-column]
+[fixture: task-data/colon-column-one-task-sections]
+[fixture: task-data/colon-column-uniform-section-shares]
+[fixture: task-data/colon-column-sections-not-sharing]
+[fixture: task-data/colon-column-sections-in-different-columns]
+[fixture: task-data/colon-column-before-first-section]
+[fixture: task-data/colon-column-sections-and-preamble]
+
 次の場合は、コロンを動かしても読みやすくならないか、図が変わりうるので、
 コロンをその位置に残します。
-コロンがすでに 1 つの桁にそろっているセクションは、作者がその桁を選んだので、
-どの桁でもそのままにします。
 どの名前もコロンの前の空白が 1 つ以下か、空白がないセクションは、
 作者がテキストの隣にコロンを置いたので、そのままにします。
 そろえた行が `printWidth` より長く、元の行よりも長くなるセクションは、
 長い名前 1 つがすべてのコロンを大きく右に押すので、そのままにします。
+同じ桁を共有するセクションのどれかでそうなるときは、
+それらのセクションをすべてそのままにします。
 `white-space` を含む図は、図の CSS が名前の末尾の空白を描くことがあり、
 そのときは空白で図が変わるので、そのままにします。
 行にコメント、ディレクティブ、独自の `;` があるタスクと、
 複数行にわたるタスクは、書かれたまま印字し、
 ほかのタスクがそろえる対象に含めないので、
 その空白はほかのタスクの桁を決めません。
-[fixture: task-data/colon-column-aligned-kept]
 [fixture: task-data/colon-column-single-space-kept]
 [fixture: task-data/colon-column-too-wide-kept]
 [fixture: task-data/colon-column-white-space-kept]
@@ -380,7 +385,7 @@ mermaid.js はコロンの後に 1 文字を要求します。
 その位置に残します（[ディレクティブ](#ディレクティブ) を参照）。
 
 入力
-([task-data/description-padding-kept-input.mmd](../tests/fixtures/gantt/task-data/description-padding-kept-input.mmd)):
+([task-data/description-padding-tightened-input.mmd](../tests/fixtures/gantt/task-data/description-padding-tightened-input.mmd)):
 
 ```mmd
 gantt
@@ -390,17 +395,17 @@ Future task               :         des3, after des2, 5d
 ```
 
 出力
-([task-data/description-padding-kept-output.mmd](../tests/fixtures/gantt/task-data/description-padding-kept-output.mmd)):
+([task-data/description-padding-tightened-output.mmd](../tests/fixtures/gantt/task-data/description-padding-tightened-output.mmd)):
 
 ```mmd
 gantt
-  Completed task            :done, des1, 2014-01-06, 2014-01-08
-  Active task               :active, des2, 2014-01-09, 3d
-  Future task               :des3, after des2, 5d
+  Completed task :done, des1, 2014-01-06, 2014-01-08
+  Active task    :active, des2, 2014-01-09, 3d
+  Future task    :des3, after des2, 5d
 ```
 
 入力
-([task-data/colon-column-follows-other-sections-input.mmd](../tests/fixtures/gantt/task-data/colon-column-follows-other-sections-input.mmd)):
+([task-data/colon-column-sections-not-sharing-input.mmd](../tests/fixtures/gantt/task-data/colon-column-sections-not-sharing-input.mmd)):
 
 ```mmd
 gantt
@@ -415,18 +420,18 @@ gantt
 ```
 
 出力
-([task-data/colon-column-follows-other-sections-output.mmd](../tests/fixtures/gantt/task-data/colon-column-follows-other-sections-output.mmd)):
+([task-data/colon-column-sections-not-sharing-output.mmd](../tests/fixtures/gantt/task-data/colon-column-sections-not-sharing-output.mmd)):
 
 ```mmd
 gantt
   dateFormat YYYY-MM-DD
   section A
-    A task          :a1, 2014-01-01, 30d
-    Another task    :after a1, 20d
+    A task       :a1, 2014-01-01, 30d
+    Another task :after a1, 20d
   section B
-    Task in         :2014-01-12, 12d
-    other task      :24d
-    x               :1d
+    Task in    :2014-01-12, 12d
+    other task :24d
+    x          :1d
 ```
 
 入力
