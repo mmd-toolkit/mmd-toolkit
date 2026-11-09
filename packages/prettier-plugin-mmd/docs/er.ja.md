@@ -1008,7 +1008,7 @@ erDiagram
 `style` と `classDef` の、通常の 1 行のプロパティと値からなるスタイルでは、
 最初の `:` の前を詰め、空でない値の前に空白を 1 つ置きます。
 スタイル間は `,` とその後の空白 1 つで区切ります。
-`:` のあるスタイルでも、ないスタイルでも、語と語の間の空白の連続は、
+`:` のあるスタイルでも、ないスタイルでも、語と語の間の空白かタブの連続は、
 空白 1 つで印字します。
 `stroke-dasharray:  5    5` は `stroke-dasharray: 5 5` に、
 `4px    wide` は `4px wide` になります。
@@ -1034,6 +1034,9 @@ Mermaid は、区切る空白にかかわらずスタイルの単位をつなげ
 [fixture: styles-and-classes/style-words-run-spaced]
 [fixture: styles-and-classes/style-words-touching-kept]
 [fixture: styles-and-classes/style-words-directive-kept]
+
+`:` で始まるスタイルも、語と語の間の空白とタブの連続は空白 1 つで印字します。
+[fixture: styles-and-classes/style-colon-first-run-spaced]
 
 [fixture: styles-and-classes/keyword-case-kept]
 [fixture: styles-and-classes/keyword-case-semicolon-line-kept]

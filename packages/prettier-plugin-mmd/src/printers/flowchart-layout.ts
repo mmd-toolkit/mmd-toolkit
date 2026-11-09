@@ -33,6 +33,7 @@ import {
 } from "./kept-lines.ts"
 import type { Source } from "./source.ts"
 import {
+  findDirectiveEndingAt,
   findStructuralToken,
   findTokensBetween,
   isSpaceOrTab,
@@ -82,6 +83,39 @@ function startsInside(kept: readonly Atom[], atom: Atom): boolean {
  */
 function isOneWord(name: FlowchartLabel): boolean {
   return ![...name.value.trimEnd()].some((character) => character.trim() === "")
+}
+
+/**
+ * The end of the header of a subgraph without a title whose name has several
+ * words, when its line ends at `end`: the start of the directives that end the
+ * line, if there are any, and `end` otherwise. Whitespace after a directive
+ * makes mermaid.js read the directive as part of the name, so the token of the
+ * name reaches over `S1 S2  %%{x}%%  `, while without that whitespace the name
+ * ends before the directive. The whitespace at the end of the name of several
+ * words decides nothing, so both are laid out as a name that ends before the
+ * directives, and a second formatting finds the text it has printed (docs/
+ * flowchart.md, Subgraph header). A name of one word keeps its whitespace.
+ */
+export function findSeveralWordsHeaderEnd(
+  source: Source,
+  subgraph: FlowchartSubgraphStatement,
+  end: number,
+): number {
+  if (subgraph.title !== null || isOneWord(subgraph.name)) return end
+  let position = end
+  let directivesStart = end
+  while (position > subgraph.name.range[0]) {
+    while (
+      position > subgraph.name.range[0] &&
+      isSpaceOrTab(source.text[position - 1])
+    )
+      position--
+    const directive = findDirectiveEndingAt(source, position)
+    if (directive === undefined) break
+    position = directive.range[0]
+    directivesStart = position
+  }
+  return directivesStart
 }
 
 /**

@@ -8,7 +8,7 @@ import type {
 import type { MermaidAst } from "../parser.ts"
 import { printedToken } from "./spelling.ts"
 import { printAtoms } from "./atoms.ts"
-import { formatDataBlocks } from "./data-blocks.ts"
+import { formatDataBlocks, writtenIndentationRule } from "./data-blocks.ts"
 import type { BlockRules, PrintedBlock } from "./blocks.ts"
 import {
   openingLine,
@@ -135,7 +135,7 @@ function printDiagram(
       end: source.text.length,
       isTopLevel: true,
     },
-    sequenceBlockRules(source),
+    sequenceBlockRules(source, options),
   )
   const header = openingLine(
     printAtoms(source, layoutSequenceHeader(source, keyword), {
@@ -252,7 +252,7 @@ function openBlock(
     docs,
     source,
     { statements, start: headerEnd, end: opening.end, isTopLevel: false },
-    sequenceBlockRules(source),
+    sequenceBlockRules(source, options),
   )
   const header = openingLine(
     printAtoms(
@@ -273,12 +273,21 @@ function openBlock(
  * The block rules of a sequence diagram (see `BlockRules`): the blocks and
  * boxes hold statements, and no statement is dropped.
  */
-function sequenceBlockRules(source: Source): BlockRules<SequenceStatement> {
+function sequenceBlockRules(
+  source: Source,
+  options: ParserOptions<MermaidAst>,
+): BlockRules<SequenceStatement> {
+  const holdsStatements = (statement: SequenceStatement): boolean =>
+    classifySequenceStatement(statement).kind !== "simple"
   return {
     kept: findSequenceKeptLines(source),
     printedEnd: (statement) => findSequencePrintedEnd(source, statement),
-    holdsStatements: (statement) =>
-      classifySequenceStatement(statement).kind !== "simple",
+    holdsStatements,
+    writtenIndentationOf: writtenIndentationRule(
+      source,
+      options.useTabs,
+      holdsStatements,
+    ),
     isDroppedAtTopLevel: () => false,
     keepsWhitespaceLineAfterComment: false,
     keepsDirectiveLinesUnindented: false,

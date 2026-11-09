@@ -771,7 +771,7 @@ mermaid.js の文の規則が読むものなので、空白 1 つにします。
 語と語の間に空白があるかどうかは、書かれたまま残します。
 `classDef c fill:#f00    stroke:#333` は、
 `classDef c fill: #f00 stroke:#333` と印字します。
-一重引用符の文字列の中の連続と、バックスラッシュの後の連続は、
+一重引用符の文字列の中、閉じていないコメントの中、バックスラッシュの後の連続は、
 CSS が値の一部として読むので、書かれたまま残します。
 [fixture: whitespace-between-tokens/style-inner-whitespace-collapsed]
 [fixture: whitespace-between-tokens/style-words-run-spaced]
@@ -781,6 +781,14 @@ CSS が値の一部として読むので、書かれたまま残します。
 `linkStyle default`、`classDef`、`style` の形は、ER と requirement と同じです。
 [同じに描かれるスタイル](./compatibility.ja.md#同じに描かれるスタイル)
 を参照してください。
+
+`:` で始まるスタイルと、`:` の前にバックスラッシュと空白があるスタイルも、
+CSS がどちらの書き方も捨てるので、語と語の間の連続を空白 1 つで印字します。
+`style A :red   x` は `style A :red x` と印字します。
+[fixture: whitespace-between-tokens/style-colon-first-run-spaced]
+[fixture: whitespace-between-tokens/style-escaped-space-run-spaced]
+閉じていないコメントはスタイルの終わりまで続き、中の連続は残します。
+[fixture: whitespace-between-tokens/style-unclosed-comment-runs-kept]
 
 subgraph の `end` の後の U+2028 と U+2029 は mermaid.js にとって空白なので、
 行末の空白と一緒に落とします。
@@ -1696,6 +1704,9 @@ Prettier が 2 つの形から選び、行が収まる場合は 1 行のまま�
 複数行にしても長すぎる部分は短くならないので、1 行のままにします。
 [fixture: data-blocks/long-split]
 [fixture: data-blocks/long-prefix-too-long-kept]
+行の幅には Prettier が測る幅を使い、タブは幅に数えないため、
+タブがある行は測った幅より画面上で広くても、1 行のままになることがあります。
+[fixture: data-blocks/long-tabs-not-counted]
 mermaid.js は、1 行のブロックのテキストを、
 `,` で項目を区切る YAML の flow mapping として読み、
 複数行のブロックのテキストを、
@@ -1848,13 +1859,14 @@ flowchart LR
 mermaid.js はブロックの行の前のタブを拒否するので、
 ブロックの行は空白で字下げし、タブの幅が特定の値のときだけ正しくそろいます。
 ブロックの行を元の位置に残して、ノードの行だけを文の深さまで字下げすると、
-どのタブ幅でもブロックの中身と `}` より右に置かれ、
-ブロックの内外が逆に見えます。
+作者がブロックの中身と `}` をノードの行より深く書いていない場合には、
+その中身と `}` より右にノードの行が置かれ、ブロックの内外が逆に見えます。
 文は作者が置いた位置に残すため、入力と同じく周りの文より浅いこともあり、
 作者がすでにノードにそろえていたブロックは、そろったままにします。
-単独行の `}` の前にタブを置いて動かすこともできません。
+mermaid.js は単独行の `}` の前のタブを受理しますが、
 その行はブロックのテキストの最後の行で、空行を残すスカラー（`|+`、
 `>+`）が読むため、そこにタブを置くと値が変わります。
+そのため、整形器はそこにタブを置きません。
 [fixture: data-blocks/tab-statement-space-body]
 [fixture: data-blocks/tab-statement-aligned-body-kept]
 [fixture: data-blocks/use-tabs-statement-kept]
@@ -1869,9 +1881,11 @@ mermaid.js はブロックの行の前のタブを拒否するので、
 mermaid.js が字下げをノードの段として読む kanban のノードです。
 [Metadata blocks](./agentflow.ja.md#metadata-blocks)と
 [データブロック](./kanban.ja.md#データブロック)を参照してください。
-このとき、タブ幅が `tabWidth` と同じなら正しくそろい、
+このとき、作者の書き方にかかわらず、タブ幅が `tabWidth` と同じなら正しくそろい、
 異なるタブ幅ではその差の分だけずれます。
-ブロックの行を書かれたまま残すと、どのタブ幅でもノードの行より左に出ます。
+ブロックの行を書かれたまま残すと、
+作者の字下げがたまたまタブ幅に合う場合だけ正しくそろい、
+作者がノードの行より浅く書いていた場合には、その左に出ます。
 [fixture: data-blocks/use-tabs-not-first-on-line]
 [fixture: data-blocks/use-tabs-directive-before-on-line]
 
@@ -2400,6 +2414,14 @@ mermaid.js は、名前のテキストに空白がないときだけ名前を id
 後ろに空白があってもなくても id が生成されるため、行末の空白を除きます。
 ただし、名前をブロック、保持する `;`、
 または同じ行のディレクティブから区切る空白は残します。
+ディレクティブの前は、空白があるかどうかを保ち、連続は空白 1 つにします。
+[トークンの間のディレクティブ](./compatibility.ja.md#トークンの間のディレクティブ)
+を参照してください。
+ディレクティブの後の空白によって、
+mermaid.js がディレクティブを名前の一部として読む場合も同じです。
+[fixture: subgraph-header/name-several-words-directive-run-collapsed]
+[fixture: subgraph-header/name-several-words-directive-trailing-dropped]
+[fixture: subgraph-header/name-several-words-two-directives-run-collapsed]
 [fixture: subgraph-header/name-trailing-run-collapsed]
 [fixture: subgraph-header/name-trailing-whitespace-kept]
 [fixture: subgraph-header/name-quoted-trailing-whitespace-kept]

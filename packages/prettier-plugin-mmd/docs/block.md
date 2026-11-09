@@ -564,9 +564,9 @@ whitespace before it and one space after it, as in ER and requirement (see
 `classDef c fill: #f00, color: white`, and the styles of a `style` statement use
 the same form. A run of spaces and tabs between the words of a style is printed
 as one space, and whether whitespace stands between two words stays as written;
-a run inside a string, a comment, or the parentheses of `url(`, and a run after
-a backslash, stay as written, since CSS reads them as part of the value. The Db
-changes, but mermaid.js draws the same figure (see
+a run inside a string, a comment, or the parentheses of `url(`, and the first
+character after a backslash, stay as written, since CSS reads them as part of
+the value. The Db changes, but mermaid.js draws the same figure (see
 [Styles that are drawn the same](./compatibility.md#styles-that-are-drawn-the-same)).
 [fixture: styles/style-colon-spaced] [fixture: styles/style-words-run-spaced]
 [fixture: styles/style-string-runs-kept] [fixture: styles/style-url-runs-kept] A
@@ -609,6 +609,9 @@ printed as one space, so `class A c   d` is printed `class A c d`. [fixture:
 styles/class-name-with-a-comma-runs-collapsed] [fixture:
 styles/class-name-runs-collapsed] [fixture: styles/trailing-whitespace-dropped]
 [fixture: styles/styles-with-a-directive]
+
+A style that starts with the `:` has the runs between its words printed as one
+space too. [fixture: styles/style-colon-first-run-spaced]
 
 A `style` with no styles is printed as `style A`: the id stands after one space
 and nothing follows it. [fixture: styles/style-without-styles] [corpus fixture:

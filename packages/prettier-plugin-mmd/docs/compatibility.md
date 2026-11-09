@@ -596,11 +596,12 @@ stands between two words stays as written: `style A fill   #f00` is printed
 `style A fill #f00`, and `style A fill#f00` stays. CSS reads a run as one
 whitespace, so the figure is the same, except where the run is a character of
 the value, and there it stays as written: inside a string (`"…"` or `'…'`),
-inside a comment (`/* … */`), inside the parentheses of `url(`, and after a
-backslash, where CSS reads the first character of the run as escaped. A string,
-a comment, or `url(` that is not closed runs to the end of the style. [fixture:
+inside a comment (`/* … */`), inside the parentheses of `url(`, and the first
+character after a backslash, which CSS reads as escaped, so that `a\   b` is
+printed `a\  b`. A string, a comment, or `url(` that is not closed runs to the
+end of the style. [fixture:
 flowchart/whitespace-between-tokens/style-string-runs-kept] [fixture:
-flowchart/whitespace-between-tokens/style-backslash-run-kept] [fixture:
+flowchart/whitespace-between-tokens/style-backslash-run-spaced] [fixture:
 state/whitespace-between-tokens/style-string-runs-kept] [fixture:
 state/whitespace-between-tokens/style-url-runs-kept] [fixture:
 state/whitespace-between-tokens/style-comment-runs-kept] [fixture:
@@ -2055,14 +2056,21 @@ mermaid.js reads the whitespace after the `{`, line breaks included, with the
 `{`, so the text starts after it and the Db is the same. `accDescr { ` followed
 by a line break is printed `accDescr {`. A comment or a directive after the `{`
 stays, with the gap before it as under
-[Directives between tokens](#directives-between-tokens); the whitespace after a
-directive at the end of the line is left out like the whitespace after the `{`,
-and the whitespace after a comment is part of the comment, so it stays. Text on
-the line of the `{` is spaced as any other token. This holds in every diagram
-type that has the block. [fixture:
+[Directives between tokens](#directives-between-tokens), where a run or a tab
+becomes one space; the whitespace after a directive at the end of the line is
+left out like the whitespace after the `{`, and the whitespace after a comment
+is part of the comment, so it stays. Text on the line of the `{` is spaced as
+any other token. This holds in every diagram type that has the block. [fixture:
 flowchart/multi-line-values/accdescr-block-opener-whitespace-dropped] [fixture:
 flowchart/multi-line-values/accdescr-block-opener-tab-dropped] [fixture:
 flowchart/multi-line-values/accdescr-block-opener-directive-trailing-dropped]
+[fixture:
+flowchart/multi-line-values/accdescr-block-opener-directive-run-collapsed]
+[fixture:
+flowchart/multi-line-values/accdescr-block-opener-directive-tab-collapsed]
+[fixture:
+usecase/direction-and-accessibility/accdescr-block-opener-directive-trailing-dropped]
+[fixture: treeview/description-blocks/opener-directive-trailing-dropped]
 [fixture:
 flowchart/multi-line-values/accdescr-block-opener-comment-trailing-kept]
 [fixture:

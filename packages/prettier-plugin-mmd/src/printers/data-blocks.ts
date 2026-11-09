@@ -4,7 +4,7 @@ import { builders } from "prettier/doc"
 import type { AtomLayout } from "./atoms.ts"
 import { findNodes, minOf } from "./collections.ts"
 import type { KeptLines } from "./kept-lines.ts"
-import { isFirstOnItsLine, lineStartOf } from "./kept-lines.ts"
+import { lineStartOf } from "./kept-lines.ts"
 import { keptAsWritten } from "./layout.ts"
 import { printAsWritten } from "./lines.ts"
 import type { Source } from "./source.ts"
@@ -15,7 +15,7 @@ import {
   isWhitespace,
 } from "./source.ts"
 
-const { conditionalGroup, literalline, literallineWithoutBreakParent, trim } =
+const { conditionalGroup, literalline, literallineWithoutBreakParent } =
   builders
 
 /**
@@ -124,12 +124,7 @@ export function formatDataBlocks(
   // The blocks do not overlap, so those inside the range follow one another.
   const first = findFirstIndex(all, (block) => block.range[0] >= range[0])
   const afterLast = findFirstIndex(all, (block) => block.range[1] > range[1])
-  const asWritten = printStatementAsWritten(
-    source,
-    layout,
-    all.slice(first, afterLast),
-    placement,
-  )
+  const asWritten = printStatementAsWritten(source, layout, range, placement)
   if (asWritten !== undefined) return asWritten
   const atoms = [...layout.atoms]
   let changed = false
@@ -317,24 +312,80 @@ function splitsBlocks(placement: DataBlockPlacement): boolean {
 }
 
 /**
- * The statement printed as written, the indentation of its first line
- * included, or undefined where it prints as usual: the printer indents with
- * tabs and the statement holds a block of several lines. The lines of the block
- * are indented with spaces, which stand right for one width of a tab only, and
- * the node line alone, indented to the depth of the statement, would leave the
- * content and the closing `}` left of it at every width (docs/flowchart.md,
- * Data blocks). The indentation is the whitespace written before the
- * statement, put where the statement starts by `trim` and the text, as the
- * indentation of the block is written before the statement is printed. A
- * statement that does not start its line, or whose indentation the printer
- * decides (see `DataBlockPlacement.decidesIndentation`), prints as usual, and
- * the lines of its block move with the node line, as without tabs (see
- * `movesLines`).
+ * Whether the statement in `range` is printed as written: the printer indents
+ * with tabs and the statement holds a block of several lines. The lines of the
+ * block are indented with spaces, which stand right for one width of a tab
+ * only, and the node line alone, indented to the depth of the statement, would
+ * stand right of the content and the closing `}` wherever they were written no
+ * deeper than the node line (docs/flowchart.md, Data blocks). A statement whose
+ * indentation the printer decides (see `DataBlockPlacement.decidesIndentation`)
+ * prints as usual, and the lines of its block move with the node line, as
+ * without tabs (see `movesLines`).
+ */
+function keepsStatementAsWritten(
+  source: Source,
+  range: Range,
+  useTabs: boolean | undefined,
+): boolean {
+  if (useTabs !== true) return false
+  const all = dataBlocksOf(source)
+  const first = findFirstIndex(all, (block) => block.range[0] >= range[0])
+  const afterLast = findFirstIndex(all, (block) => block.range[1] > range[1])
+  return all
+    .slice(first, afterLast)
+    .some((block) => !isOneLine(source.text.slice(...block.range)))
+}
+
+/**
+ * The indentation that a statement printed as written (see
+ * `keepsStatementAsWritten`) starts its line with: the whitespace written at
+ * the start of the line where the statement starts, also where a directive
+ * stands before it on the line, which goes with it, or a statement that the
+ * printer puts on a line of its own, as after `C;` in `C; A@{`. The caller
+ * puts it in `BlockRules.writtenIndentationOf`; undefined where the statement
+ * prints as usual. A statement that holds statements is not one.
+ */
+export function writtenIndentationOfBlockStatement(
+  source: Source,
+  range: Range,
+  useTabs: boolean | undefined,
+): string | undefined {
+  if (!keepsStatementAsWritten(source, range, useTabs)) return undefined
+  const start = lineStartOf(source, range[0])
+  let end = start
+  while (end < range[0] && isSpaceOrTab(source.text[end])) end++
+  return source.text.slice(start, end)
+}
+
+/**
+ * The `BlockRules.writtenIndentationOf` of a diagram type with data blocks: a
+ * statement printed as written (see `keepsStatementAsWritten`) stands at the
+ * indentation written at the start of its line. A statement that holds
+ * statements, such as a subgraph, is no such statement: its range holds the
+ * blocks of the statements inside it.
+ */
+export function writtenIndentationRule<
+  Statement extends { readonly range: Range },
+>(
+  source: Source,
+  useTabs: boolean | undefined,
+  holdsStatements: (statement: Statement) => boolean,
+): (statement: Statement) => string | undefined {
+  return (statement) =>
+    holdsStatements(statement)
+      ? undefined
+      : writtenIndentationOfBlockStatement(source, statement.range, useTabs)
+}
+
+/**
+ * The layout with the statement printed as written, or undefined where it
+ * prints as usual (see `keepsStatementAsWritten`). The indentation of its line
+ * is set by `writtenIndentationOfBlockStatement`.
  */
 function printStatementAsWritten(
   source: Source,
   layout: AtomLayout,
-  blocks: readonly Node[],
+  range: Range,
   placement: DataBlockPlacement,
 ): AtomLayout | undefined {
   const first = layout.atoms.at(0)
@@ -342,26 +393,11 @@ function printStatementAsWritten(
   if (
     first === undefined ||
     last === undefined ||
-    placement.useTabs !== true ||
     placement.decidesIndentation === true ||
-    blocks.every((block) => isOneLine(source.text.slice(...block.range))) ||
-    !isFirstOnItsLine(source, first.start)
+    !keepsStatementAsWritten(source, range, placement.useTabs)
   )
     return undefined
-  const indentation = source.text.slice(
-    lineStartOf(source, first.start),
-    first.start,
-  )
-  return {
-    ...keptAsWritten(first.start, last.end),
-    atoms: [
-      {
-        start: first.start,
-        end: last.end,
-        doc: [trim, indentation, printAsWritten(source, first.start, last.end)],
-      },
-    ],
-  }
+  return keptAsWritten(first.start, last.end)
 }
 
 /**

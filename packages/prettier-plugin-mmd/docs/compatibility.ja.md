@@ -2193,6 +2193,7 @@ mermaid.js は `{` の後の空白を改行も含めて `{` と一緒に読む�
 `accDescr { ` の後に改行が続くときは、`accDescr {` と印字します。
 `{` の後のコメントやディレクティブは残し、その前の隙間は、
 [トークンの間のディレクティブ](#トークンの間のディレクティブ)に従います。
+ここでは、空白の連続やタブを空白 1 つにします。
 行末のディレクティブの後の空白は、`{` の後の空白と同じく落とします。
 コメントの後の空白はコメントの一部なので残します。
 `{` の行にある本文は、ほかのトークンと同じように空白を整えます。
@@ -2200,6 +2201,10 @@ mermaid.js は `{` の後の空白を改行も含めて `{` と一緒に読む�
 [fixture: flowchart/multi-line-values/accdescr-block-opener-whitespace-dropped]
 [fixture: flowchart/multi-line-values/accdescr-block-opener-tab-dropped]
 [fixture: flowchart/multi-line-values/accdescr-block-opener-directive-trailing-dropped]
+[fixture: flowchart/multi-line-values/accdescr-block-opener-directive-run-collapsed]
+[fixture: flowchart/multi-line-values/accdescr-block-opener-directive-tab-collapsed]
+[fixture: usecase/direction-and-accessibility/accdescr-block-opener-directive-trailing-dropped]
+[fixture: treeview/description-blocks/opener-directive-trailing-dropped]
 [fixture: flowchart/multi-line-values/accdescr-block-opener-comment-trailing-kept]
 [fixture: flowchart/multi-line-values/accdescr-block-subgraph-opener-whitespace-dropped]
 [fixture: pie/description-blocks/opener-whitespace-dropped]

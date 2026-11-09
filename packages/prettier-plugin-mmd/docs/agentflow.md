@@ -323,17 +323,18 @@ single-space-gaps/style-colon-spaced] A run of spaces and tabs between the words
 of a style is printed as one space, and whether whitespace stands between two
 words stays as written, as in
 [flowchart](./flowchart.md#whitespace-between-tokens): a run inside a
-single-quoted string stays. [fixture: single-space-gaps/style-words-run-spaced]
-[fixture: single-space-gaps/style-string-runs-kept] A `linkStyle` with link
-numbers keeps whether whitespace follows the `,` before a style that starts with
-`fill`, a run of whitespace becoming one space; `fill-opacity` counts, as
-mermaid.js reads only the start. [fixture:
-single-space-gaps/link-style-fill-after-comma-kept] [fixture:
-single-space-gaps/link-style-fill-opacity-after-comma-kept] A `linkStyle`, with
-link numbers or `default`, keeps it for a style that starts with `stroke:` too,
-which mermaid.js reads at the start where the look is `handDrawn`. [fixture:
-single-space-gaps/link-style-stroke-after-comma-kept] The other styles of such a
-statement, and `linkStyle default`, use the one form (see
+single-quoted string, inside a comment that is not closed, and the first
+character after a backslash stay. [fixture:
+single-space-gaps/style-words-run-spaced] [fixture:
+single-space-gaps/style-string-runs-kept] A `linkStyle` with link numbers keeps
+whether whitespace follows the `,` before a style that starts with `fill`, a run
+of whitespace becoming one space; `fill-opacity` counts, as mermaid.js reads
+only the start. [fixture: single-space-gaps/link-style-fill-after-comma-kept]
+[fixture: single-space-gaps/link-style-fill-opacity-after-comma-kept] A
+`linkStyle`, with link numbers or `default`, keeps it for a style that starts
+with `stroke:` too, which mermaid.js reads at the start where the look is
+`handDrawn`. [fixture: single-space-gaps/link-style-stroke-after-comma-kept] The
+other styles of such a statement, and `linkStyle default`, use the one form (see
 [Styles that are drawn the same](./compatibility.md#styles-that-are-drawn-the-same)).
 In a `linkStyle` or a `classDef`, which can reach a link, a name that ends with
 `stroke` keeps whether whitespace stands between it and the `:`, a run of
@@ -370,6 +371,9 @@ single-space-gaps/styles-inner-gaps] [fixture:
 single-space-gaps/style-comma-before-dropped] [fixture:
 single-space-gaps/style-comma-beside-directive-kept] [test: agentflow: U+2028
 before the comma of a style statement]
+
+A style that starts with the `:` has the runs between its words printed as one
+space too. [fixture: single-space-gaps/style-colon-first-run-spaced]
 
 The tab after linkStyle and the tab before an interpolation name each supply the
 grammar's required single whitespace character; both remain written. [fixture:

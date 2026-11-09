@@ -346,7 +346,8 @@ classDefのエスケープしたコンマ、順序と反復を保ちます。
 [flowchart](./flowchart.ja.md#トークンの間の空白)と同じく、
 スタイルの語と語の間の空白とタブの連続は、空白 1 つで印字し、
 語と語の間に空白があるかどうかは、書かれたまま残します。
-一重引用符の文字列の中の連続は残します。
+一重引用符の文字列の中、閉じていないコメントの中、
+バックスラッシュの後にある連続は残します。
 [fixture: single-space-gaps/style-words-run-spaced]
 [fixture: single-space-gaps/style-string-runs-kept]
 番号を指定した `linkStyle` では、`fill` で始まるスタイルの前の `,` の後ろに、
@@ -400,6 +401,9 @@ look が `handDrawn` のときは、mermaid.js が先頭の `stroke:` を読む�
 [fixture: single-space-gaps/style-comma-before-dropped]
 [fixture: single-space-gaps/style-comma-beside-directive-kept]
 [test: agentflow: U+2028 before the comma of a style statement]
+
+`:` で始まるスタイルも、語と語の間の空白とタブの連続は空白 1 つで印字します。
+[fixture: single-space-gaps/style-colon-first-run-spaced]
 
 linkStyleの後とinterpolate名の前のタブは、
 それぞれ文法が要求する空白1文字なので、両方とも保ちます。

@@ -686,12 +686,16 @@ export function formatDescriptionBlock(
 }
 
 /**
- * Leaves out the whitespace at the end of the line of the `{` of an `accDescr`
- * block whose text starts on a later line: after the `{`, or after a directive
- * that follows it. mermaid.js reads the whitespace after the `{`, line feeds
- * included, with the `{`, so the text starts after it and the Db is the same
- * (docs/compatibility.md, Description block indentation). The whitespace after
- * a comment is part of the comment and stays, as does a removed line feed.
+ * Sets the whitespace on the line of the `{` of an `accDescr` block whose text
+ * starts on a later line. The whitespace at the end of the line is left out,
+ * after the `{` or after a directive that follows it: mermaid.js reads the
+ * whitespace after the `{`, line feeds included, with the `{`, so the text
+ * starts after it and the Db is the same. The whitespace before a comment or a
+ * directive on the line is one space where it is a run or a tab, as a gap
+ * before a directive at the end of a printed line is (docs/compatibility.md,
+ * Description block indentation and Directives between tokens). The whitespace
+ * after a comment is part of the comment and stays, as does a removed line
+ * feed.
  */
 function dropOpeningLineWhitespace(
   source: Source,
@@ -706,30 +710,33 @@ function dropOpeningLineWhitespace(
     findDescriptionOpening(source, keyword, block.opening),
     "the description opener",
   )
+  const edits: TextEdit[] = []
   let lineEnd = opening.range[1]
   let itemEnd = opening.range[1]
   for (;;) {
+    const runStart = lineEnd
     while (isSpaceOrTab(source.text[lineEnd])) lineEnd++
     const item = findTriviaAt(source, lineEnd)
     if (item === undefined) break
+    if (lineEnd > runStart && source.text.slice(runStart, lineEnd) !== " ")
+      edits.push({ range: [runStart, lineEnd], replacement: " " })
     lineEnd = itemEnd = item.range[1]
   }
   let dropFrom = lineEnd
   while (dropFrom > itemEnd && isSpaceOrTab(source.text[dropFrom - 1]))
     dropFrom--
-  if (
-    dropFrom === lineEnd ||
-    source.text[lineEnd] !== "\n" ||
-    source.removedLineFeeds.has(lineEnd) ||
-    !layout.atoms.some(
-      (atom) => atom.start <= opening.range[0] && lineEnd <= atom.end,
-    )
-  )
+  if (dropFrom < lineEnd)
+    edits.push({ range: [dropFrom, lineEnd], replacement: "" })
+  if (source.text[lineEnd] !== "\n" || source.removedLineFeeds.has(lineEnd))
     return layout
+  const inAtoms = edits.filter((edit) =>
+    layout.atoms.some(
+      (atom) => atom.start <= edit.range[0] && edit.range[1] <= atom.end,
+    ),
+  )
+  if (inAtoms.length === 0) return layout
   const atoms = [...layout.atoms]
-  replaceInAtoms(source, atoms, [
-    { range: [dropFrom, lineEnd], replacement: "" },
-  ])
+  replaceInAtoms(source, atoms, inAtoms)
   return { ...layout, atoms }
 }
 

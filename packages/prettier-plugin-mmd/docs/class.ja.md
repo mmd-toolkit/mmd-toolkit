@@ -416,6 +416,9 @@ mermaid.js はスタイルをクラスのスタイルへ書かれたまま足し
 スタイルの間に U+2028 や U+2029 があれば、文を書かれたままにします。
 [test: U+2028 before the comma of a class style statement]
 
+`:` で始まるスタイルも、語と語の間の空白とタブの連続は空白 1 つで印字します。
+[fixture: whitespace-between-tokens/style-colon-first-run-spaced]
+
 クラスの本体や namespace を閉じる `}` の後の U+2028 と U+2029 は、
 mermaid.js にとって空白なので、行末の空白と一緒に落とします。
 [test: U+2029 after the `}` of a class body]

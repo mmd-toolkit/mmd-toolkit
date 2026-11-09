@@ -738,15 +738,25 @@ before a directive there, as under [Directives](#directives):
 and the two give the same Db. A run of spaces and tabs between the words of a
 style is printed as one space, and whether whitespace stands between two words
 stays as written: `classDef c fill:#f00    stroke:#333` is printed
-`classDef c fill: #f00 stroke:#333`. A run inside a single-quoted string, and a
-run after a backslash, stay as written, since CSS reads them as part of the
-value. [fixture: whitespace-between-tokens/style-inner-whitespace-collapsed]
-[fixture: whitespace-between-tokens/style-words-run-spaced] [fixture:
+`classDef c fill: #f00 stroke:#333`. A run inside a single-quoted string and
+inside a comment that is not closed stays as written, and so does the first
+character after a backslash, since CSS reads them as part of the value:
+`font-family:a\   b` is printed `font-family: a\  b`. [fixture:
+whitespace-between-tokens/style-inner-whitespace-collapsed] [fixture:
+whitespace-between-tokens/style-words-run-spaced] [fixture:
 whitespace-between-tokens/style-string-runs-kept] [fixture:
-whitespace-between-tokens/style-backslash-run-kept] [fixture:
+whitespace-between-tokens/style-backslash-run-spaced] [fixture:
 whitespace-between-tokens/style-words-directive-kept] `linkStyle default`,
 `classDef`, and `style` use the same form as ER and requirement (see
 [Styles that are drawn the same](./compatibility.md#styles-that-are-drawn-the-same)).
+
+A style that starts with the `:`, and one whose `:` follows a backslash and a
+space, have the runs between their words printed as one space too, as CSS drops
+both writings. `style A :red   x` is printed `style A :red x`. [fixture:
+whitespace-between-tokens/style-colon-first-run-spaced] [fixture:
+whitespace-between-tokens/style-escaped-space-run-spaced] A comment that is not
+closed runs to the end of the style, and the runs in it stay. [fixture:
+whitespace-between-tokens/style-unclosed-comment-runs-kept]
 
 U+2028 and U+2029 after the `end` of a subgraph are whitespace to mermaid.js,
 and are dropped with the whitespace at the end of the line: `end`, U+2028, and a
@@ -1628,14 +1638,17 @@ block of several lines that moves (see below). Prettier chooses between the two
 forms: the block stays on its line where the line fits, and where the line would
 still be too long up to the `{` (a long text of the node stands before it), the
 lines would not shorten what is too long, so the block stays. [fixture:
-data-blocks/long-split] [fixture: data-blocks/long-prefix-too-long-kept]
-mermaid.js reads the text of a block on one line as a YAML flow mapping, whose
-entries a `,` separates, and the text of a block of several lines as a block
-mapping, whose entries stand on lines of their own (the sources above). Both
-read the same where every entry is a key and a value that the two readings read
-alike, which the conditions below ensure. The entries print as written, without
-the spaces and tabs at their ends: only the whitespace, the line breaks and the
-`,` between entries change, and the Db is the same. The block splits only if
+data-blocks/long-split] [fixture: data-blocks/long-prefix-too-long-kept] The
+width of the line is the width that Prettier measures, in which a tab counts for
+nothing, so a line with tabs can be wider on the screen than it measures and
+stay on its line. [fixture: data-blocks/long-tabs-not-counted] mermaid.js reads
+the text of a block on one line as a YAML flow mapping, whose entries a `,`
+separates, and the text of a block of several lines as a block mapping, whose
+entries stand on lines of their own (the sources above). Both read the same
+where every entry is a key and a value that the two readings read alike, which
+the conditions below ensure. The entries print as written, without the spaces
+and tabs at their ends: only the whitespace, the line breaks and the `,` between
+entries change, and the Db is the same. The block splits only if
 
 - it belongs to a flowchart, an agentflow or a kanban diagram. A sequence
   diagram rejects the lines of a block mapping, and the `@{` of a use case
@@ -1764,32 +1777,44 @@ written:
 With `useTabs`, a statement that holds a block of several lines is printed as
 written, the indentation of its first line included. mermaid.js rejects a tab
 before the lines of a block, so they are indented with spaces, which stand right
-for one width of a tab only, and a node line alone, indented to the depth of the
+for one width of a tab only. A node line alone, indented to the depth of the
 statement while the lines stay where they are, would stand right of the content
-and the `}` of the block at every width, and the block would read inside out.
-The statement stays where the author put it, which may be shallower than the
-statements around it, as it was in the input, and a block that the author has
-aligned with the node stays aligned. A tab before a `}` alone on its line is no
-way to move it: that line is the last line of the block text, which a scalar
-that keeps its empty lines (`|+`, `>+`) reads, and a tab there changes the
-value. [fixture: data-blocks/tab-statement-space-body] [fixture:
+and the `}` of the block wherever the author wrote them no deeper than the node
+line, and the block would read inside out. The statement stays where the author
+put it, which may be shallower than the statements around it, as it was in the
+input, and a block that the author has aligned with the node stays aligned.
+mermaid.js accepts a tab before a `}` alone on its line, but that line is the
+last line of the block text, which a scalar that keeps its empty lines (`|+`,
+`>+`) reads, and a tab there changes the value, so the printer sets no tab
+there. [fixture: data-blocks/tab-statement-space-body] [fixture:
 data-blocks/tab-statement-aligned-body-kept] [fixture:
 data-blocks/use-tabs-statement-kept] [fixture:
 data-blocks/use-tabs-comment-line-before-kept] [fixture:
 data-blocks/use-tabs-empty-lines-kept] [fixture:
 data-blocks/use-tabs-folded-empty-lines-kept]
 
+The indentation of that line is the whitespace written at the start of the line
+where the statement starts. A directive that stands before the statement on its
+line goes with it, and the line is printed as it was written from its start. A
+statement that follows others on its line, as `A@{ … }` does in `C; A@{ … }`,
+goes on a line of its own, since the printer puts a statement on a line of its
+own, and that line starts with the indentation written at the start of the
+source line; the statements before it, which hold no block, are indented as
+usual, and only the statement that has the block needs its line to stay with its
+lines. [fixture: data-blocks/use-tabs-directive-before-on-line] [fixture:
+data-blocks/use-tabs-not-first-on-line] [fixture:
+data-blocks/use-tabs-two-statements-before]
+
 Where the printer must set the indentation of the node line itself, the lines of
-the block move with it, as without `useTabs`, indented with spaces: a statement
-that does not start its line, because a `;` or a directive stands before it, the
-header of an agentflow container, whose `end` stands at the indentation of the
-header, and a kanban node, whose indentation mermaid.js reads as its level (see
+the block move with it, as without `useTabs`, indented with spaces: the header
+of an agentflow container, whose `end` stands at the indentation of the header,
+and a kanban node, whose indentation mermaid.js reads as its level (see
 [Metadata blocks](./agentflow.md#metadata-blocks) and
 [Data blocks](./kanban.md#data-blocks)). The lines then stand right where a tab
-is as wide as `tabWidth`, and off by the difference at any other width, while
-lines left as written would stand left of the node line at every width.
-[fixture: data-blocks/use-tabs-not-first-on-line] [fixture:
-data-blocks/use-tabs-directive-before-on-line]
+is as wide as `tabWidth`, whatever the author wrote, and off by the difference
+at any other width. Lines left as written would stand right only where the
+indentation of the author happens to fit the width of a tab, and left of the
+node line wherever the author wrote them shallower than it.
 
 A block without body text has no shallowest text line and stays as written.
 [fixture: usecase/json-tables/empty-body-kept]
@@ -2279,8 +2304,15 @@ generated id, since mermaid.js makes the name the id only where the text of the
 name holds no whitespace. A name of several words, as `subgraph S1 S2` or
 `subgraph "o p"`, has a generated id with or without whitespace after it, so the
 whitespace at the end of its line is left out, but not the whitespace that
-separates it from a block, a `;` that stays or a directive on its line.
-[fixture: subgraph-header/name-trailing-run-collapsed] [fixture:
+separates it from a block, a `;` that stays or a directive on its line. Before a
+directive it keeps whether it holds whitespace, a run becoming one space (see
+[Directives between tokens](./compatibility.md#directives-between-tokens)), also
+where whitespace after the directive makes mermaid.js read the directive as part
+of the name. [fixture:
+subgraph-header/name-several-words-directive-run-collapsed] [fixture:
+subgraph-header/name-several-words-directive-trailing-dropped] [fixture:
+subgraph-header/name-several-words-two-directives-run-collapsed] [fixture:
+subgraph-header/name-trailing-run-collapsed] [fixture:
 subgraph-header/name-trailing-whitespace-kept] [fixture:
 subgraph-header/name-quoted-trailing-whitespace-kept] [fixture:
 subgraph-header/name-several-words-trailing-dropped] [fixture:

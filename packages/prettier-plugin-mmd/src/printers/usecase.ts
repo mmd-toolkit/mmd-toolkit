@@ -3,7 +3,7 @@ import type { UsecaseStatement } from "@mmd-toolkit/ast"
 import type { MermaidAst } from "../parser.ts"
 import type { AtomLayout } from "./atoms.ts"
 import { printAtoms } from "./atoms.ts"
-import { formatDataBlocks } from "./data-blocks.ts"
+import { formatDataBlocks, writtenIndentationRule } from "./data-blocks.ts"
 import type { BlockBounds, BlockRules, PrintedBlock } from "./blocks.ts"
 import {
   openingLine,
@@ -78,11 +78,17 @@ function printStatements(
   depth: number,
   bounds: Omit<BlockBounds<UsecaseStatement>, "statements">,
 ): PrintedBlock {
+  const holdsStatements = (statement: UsecaseStatement): boolean =>
+    classifyUsecaseStatement(statement).kind === "boundary"
   const rules: BlockRules<UsecaseStatement> = {
     kept: findUsecaseKeptLines(source),
     printedEnd: (statement) => findUsecasePrintedEnd(source, statement),
-    holdsStatements: (statement) =>
-      classifyUsecaseStatement(statement).kind === "boundary",
+    holdsStatements,
+    writtenIndentationOf: writtenIndentationRule(
+      source,
+      options.useTabs,
+      holdsStatements,
+    ),
     isDroppedAtTopLevel: () => false,
     keepsWhitespaceLineAfterComment: false,
     keepsDirectiveLinesUnindented: false,

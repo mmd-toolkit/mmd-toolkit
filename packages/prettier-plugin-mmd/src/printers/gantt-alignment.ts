@@ -20,6 +20,8 @@ interface TaskRow {
   readonly nameWidth: number
   readonly column: number
   readonly padded: boolean
+  /** Whether the name holds a tab, whose width is up to the editor. */
+  readonly holdsTab: boolean
   readonly widthFromColon: number
 }
 
@@ -59,7 +61,9 @@ const alignmentBySource = new WeakMap<Source, Alignment>()
  *
  * A task is no part of a section's tasks where the printer prints its line as
  * written, where it runs over lines, where something stands before it on its
- * line, or where its name ends with a directive. The width of a name, and of
+ * line, or where its name ends with a directive. A section where a name holds a
+ * tab is left as it is: a tab reaches the next tab stop of the editor, so no
+ * width that Prettier counts lines the colons up. The width of a name, and of
  * the rest of the line, is the width as written, so a directive in the name
  * counts, as the colons are lined up in the text.
  */
@@ -158,8 +162,8 @@ function commonColumn(rows: readonly TaskRow[]): number | null {
 /**
  * The task lines of the chart that the printer may align, in groups: the tasks
  * before the first `section`, and the tasks of each `section` (a group with no
- * such task is left out, but the first group is kept in its place when it is
- * not empty).
+ * such task, or where a name holds a tab, is left out, but the first group is
+ * kept in its place, empty).
  */
 function findSections(
   source: Source,
@@ -174,7 +178,9 @@ function findSections(
       if (row !== null) sections.at(-1)!.push(row)
     }
   }
-  return sections.filter((rows, index) => index === 0 || rows.length > 0)
+  return sections
+    .map((rows) => (rows.some((row) => row.holdsTab) ? [] : rows))
+    .filter((rows, index) => index === 0 || rows.length > 0)
 }
 
 /** The row of a task whose line the printer may align, or null. */
@@ -201,7 +207,8 @@ function toRow(
   if (source.text[colon] !== ":") return null
   let nameEnd = colon
   while (nameEnd > from && isSpaceOrTab(source.text[nameEnd - 1])) nameEnd--
-  // The whitespace beside a directive stays as it is (docs/gantt.md, Directives).
+  // The whitespace beside a directive stays as it is (docs/gantt.md,
+  // Directives).
   if (
     nameEnd === from ||
     findTriviaBetween(source, from, nameEnd).some(
@@ -218,6 +225,7 @@ function toRow(
     nameWidth,
     column: nameWidth + padding.length,
     padded: padding !== "" && padding !== " ",
+    holdsTab: source.text.slice(from, nameEnd).includes("\t"),
     widthFromColon: util.getStringWidth(source.text.slice(colon, dataEnd)),
   }
 }

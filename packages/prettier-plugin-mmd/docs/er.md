@@ -977,8 +977,8 @@ Name and class lists use commas without surrounding spaces. The first style
 stands after one space. For ordinary single-line property/value styles in
 `style` or `classDef`, put no space before the first colon of each style and one
 before its nonempty value; separate styles with a comma and one following space.
-Print a run of spaces between two words of a style as one space, in a style with
-a `:` and in one without: `stroke-dasharray:  5    5` becomes
+Print a run of spaces or tabs between two words of a style as one space, in a
+style with a `:` and in one without: `stroke-dasharray:  5    5` becomes
 `stroke-dasharray: 5 5`, and `4px    wide` becomes `4px wide`. Whether
 whitespace stands between two words stays as written: `fill #f00` and `fill#f00`
 are kept apart, since a word that touches the next stays touching, as a gap does
@@ -1001,6 +1001,9 @@ styles-and-classes/style-inner-whitespace-collapsed] [fixture:
 styles-and-classes/style-words-run-spaced] [fixture:
 styles-and-classes/style-words-touching-kept] [fixture:
 styles-and-classes/style-words-directive-kept]
+
+A style that starts with the `:` has the runs between its words printed as one
+space too. [fixture: styles-and-classes/style-colon-first-run-spaced]
 
 [fixture: styles-and-classes/keyword-case-kept] [fixture:
 styles-and-classes/keyword-case-semicolon-line-kept]

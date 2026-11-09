@@ -653,6 +653,9 @@ flowchart の [スタイルの行末の空白](./flowchart.ja.md#スタイルの
 [fixture: styles/trailing-whitespace-dropped]
 [fixture: styles/styles-with-a-directive]
 
+`:` で始まるスタイルも、語と語の間の空白とタブの連続は空白 1 つで印字します。
+[fixture: styles/style-colon-first-run-spaced]
+
 スタイルのない `style` は `style A` と出力し、id は 1 つの空白の後に置き、
 その後ろには何も置きません。 [fixture: styles/style-without-styles]
 [corpus fixture: block/db-style-none]

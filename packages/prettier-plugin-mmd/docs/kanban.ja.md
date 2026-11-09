@@ -555,9 +555,10 @@ mermaid.js は字下げをノードの段として読むため、
 書かれたままにはしません（[インデント](#インデント)を参照）。
 そのため、ほかの種類の図のように文を書かれたまま印字できません。
 [データブロック](./flowchart.ja.md#データブロック)を参照してください。
-このとき、タブ幅が `tabWidth` と同じなら正しくそろい、
+このとき、作者の書き方によらず、タブ幅が `tabWidth` と同じなら正しくそろい、
 異なるタブ幅ではその差の分だけずれます。
-ブロックの行を書かれたまま残すと、どのタブ幅でもノードより左に出ます。
+ブロックの行を書かれたまま残すと、
+作者の字下げがタブ幅にたまたま合うときだけ正しくそろいます。
 [fixture: data-blocks/tab-statement-space-body]
 [fixture: data-blocks/use-tabs-empty-lines-kept]
 [fixture: data-blocks/use-tabs-folded-empty-lines-kept]

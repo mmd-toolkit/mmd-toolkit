@@ -72,8 +72,8 @@ interface StyleReading {
    * The printer prints a run of spaces and tabs between the words of a style
    * as one space, and mermaid.js keeps the run in the Db and draws the figure
    * without it, so a run is no margin, except inside a string, a comment, or
-   * the parentheses of `url(`, and after a backslash; whether whitespace
-   * stands between two words is.
+   * the parentheses of `url(`, and the first character after a backslash;
+   * whether whitespace stands between two words is.
    */
   readonly collapsesWordGaps: boolean
 }
@@ -125,7 +125,7 @@ function withoutStyleMargins(
 /**
  * The text of a style with each run of spaces and tabs replaced by one space,
  * except inside a string (`"…"` or `'…'`), a comment (`/*…*\/`), or the
- * parentheses of `url(`, and after a backslash, where CSS reads the whitespace
+ * parentheses of `url(`, and the first character after a backslash, where CSS reads it
  * as part of the value. What is not closed runs to the end of the text.
  */
 function withoutWordRuns(text: string): string {
@@ -136,10 +136,6 @@ function withoutWordRuns(text: string): string {
     let next = position + 1
     if (character === "\\") {
       next = position + 2
-      if (text[position + 1] === " " || text[position + 1] === "\t") {
-        next = position + 1
-        while (text[next] === " " || text[next] === "\t") next++
-      }
     } else if (character === '"' || character === "'") {
       next = endOfString(text, position)
     } else if (text.startsWith("/*", position)) {
@@ -235,9 +231,9 @@ function joinsStylesAt(
  * margin there, and neither is the whitespace before a style of a link that
  * starts with `stroke:`, or the value of a `stroke` that is whitespace only,
  * and where mermaid.js joins the styles as they are, neither is the
- * whitespace after a backslash that ends a style, and in a class diagram a
- * run of spaces and tabs between the words of a style is no margin (see
- * `StyleReading`).
+ * whitespace after a backslash that ends a style, and in the diagram types of
+ * `runCollapsingDiagramTypes` a run of spaces and tabs between the words of a
+ * style is no margin (see `StyleReading`).
  */
 export function styleDbForFormattingComparison(
   before: DbSummary | null,

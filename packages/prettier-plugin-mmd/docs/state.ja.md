@@ -518,6 +518,15 @@ Db が書かれたまま保つからです。
 [fixture: keyword-case/pseudo-states-one-form]
 [fixture: keyword-case/accessibility-alias-direction-one-form]
 
+`:` で始まるスタイルと、バックスラッシュと空白の後に `:` があるスタイルも、
+語の間の連続を空白 1 つで印字します。
+[fixture: whitespace-between-tokens/style-colon-first-run-spaced]
+[fixture: whitespace-between-tokens/style-escaped-space-run-spaced]
+閉じられていない文字列や `url(` はスタイルの末尾まで続き、
+その中の連続は残します。
+[fixture: whitespace-between-tokens/style-unclosed-string-runs-kept]
+[fixture: whitespace-between-tokens/style-unclosed-url-runs-kept]
+
 `class` 文の id を区切る `,` は、後ろの id に接します。
 `class A, B c` は `class A,B c` になります。
 ER、requirement、
@@ -1652,9 +1661,9 @@ U+2028 か U+2029 の前の無視される `;` がある行です（詳しくは
 
 - 値のテキスト。
   説明、ラベル、ノート、`as` の後の id、擬似状態の名前、
-  スタイル（最初の `:` と `,` の前後の空白と、文字列、コメント、
-  `url(` の外の語の間の連続を除きます）、`class` 文の CSS クラス、
-  `accTitle` のテキスト。
+  スタイル（最初の `:` と `,` の前後の空白と、文字列、コメント、`url(` の外で、
+  バックスラッシュの後でもない所の語の間の連続を除きます）、
+  `class` 文の CSS クラス、`accTitle` のテキスト。
   [fixture: whitespace-between-tokens/style-string-runs-kept]
   [fixture: descriptions-and-labels/acc-text-runs-collapsed]
   [fixture: aliases/id-kept]

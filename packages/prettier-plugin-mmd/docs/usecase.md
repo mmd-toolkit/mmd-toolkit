@@ -647,11 +647,11 @@ types (see
 [Styles that are drawn the same](./compatibility.md#styles-that-are-drawn-the-same)):
 `style A --  color:red` is printed `style A -- color: red`, and
 `translate(1  2)` is printed `translate(1 2)`. A run inside a string, a comment,
-or the parentheses of `url(`, and a run after a backslash, stay as written.
-[fixture: classes-and-styles/css-name-multiline-directive] Only exterior HWS
-after the last component can disappear; prefixes with kept semicolons, a comment
-or a directive in the statement, and a declaration over lines override ordinary
-list layout.
+or the parentheses of `url(`, and the first character after a backslash, stay as
+written. [fixture: classes-and-styles/css-name-multiline-directive] Only
+exterior HWS after the last component can disappear; prefixes with kept
+semicolons, a comment or a directive in the statement, and a declaration over
+lines override ordinary list layout.
 
 [fixture: classes-and-styles/class-lists] [fixture:
 classes-and-styles/css-colon-padding] [fixture:

@@ -7,7 +7,7 @@ import type {
 } from "@mmd-toolkit/ast"
 import type { MermaidAst } from "../parser.ts"
 import { printAtoms } from "./atoms.ts"
-import { formatDataBlocks } from "./data-blocks.ts"
+import { formatDataBlocks, writtenIndentationRule } from "./data-blocks.ts"
 import { findAgentflowKeptLines } from "./agentflow-kept-lines.ts"
 import type { BlockRules } from "./blocks.ts"
 import {
@@ -134,7 +134,7 @@ function printDiagram(
       end: source.text.length,
       isTopLevel: true,
     },
-    agentflowBlockRules(source),
+    agentflowBlockRules(source, options),
   )
   const header = openingLine(
     printAtoms(source, layoutHeader(source, diagram, headerEnd), {
@@ -171,7 +171,7 @@ function printContainer(
       end: endKeyword.range[0],
       isTopLevel: false,
     },
-    agentflowBlockRules(source),
+    agentflowBlockRules(source, options),
   )
   const headerDoc = printAtoms(
     source,
@@ -205,12 +205,21 @@ function printContainer(
  * statements, and a `;` of its own is dropped at the top level, where the
  * Db does not list it.
  */
-function agentflowBlockRules(source: Source): BlockRules<AgentflowStatement> {
+function agentflowBlockRules(
+  source: Source,
+  options: ParserOptions<MermaidAst>,
+): BlockRules<AgentflowStatement> {
+  const holdsStatements = (statement: AgentflowStatement): boolean =>
+    classifyAgentflowStatement(statement).kind === "container"
   return {
     kept: findAgentflowKeptLines(source),
     printedEnd: (statement) => findPrintedEnd(source, statement),
-    holdsStatements: (statement) =>
-      classifyAgentflowStatement(statement).kind === "container",
+    holdsStatements,
+    writtenIndentationOf: writtenIndentationRule(
+      source,
+      options.useTabs,
+      holdsStatements,
+    ),
     isDroppedAtTopLevel: (statement) =>
       statement.type === "AgentflowEmptyStatement",
     keepsWhitespaceLineAfterComment: false,

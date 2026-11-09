@@ -138,13 +138,14 @@ export function styleStatementRules(
  * Keep property and value text, changing only the first colon's padding and
  * the runs of spaces and tabs between the words of a style, which are printed
  * as one space (docs/er.md and docs/requirement.md, Styles and classes). A
- * style with a `:` at its start stays as written.
+ * style with a `:` at its start has no padding to set before it, and only the
+ * runs change.
  */
 export function printStyleUnitSpacing(source: Source, style: Node): Doc {
   const [start, end] = style.range
   const colon = source.text.indexOf(":", start)
-  if (colon === -1 || colon >= end) return printWordGaps(source, start, end)
-  if (colon === start) return printAsWritten(source, start, end)
+  if (colon === -1 || colon >= end || colon === start)
+    return printWordGaps(source, start, end)
   let propertyEnd = colon
   while (isSpaceOrTab(source.text[propertyEnd - 1])) propertyEnd--
   let valueStart = colon + 1
@@ -176,8 +177,9 @@ function printWordGaps(source: Source, start: number, end: number): Doc {
  * at `[start, end)`, as one space. CSS reads a run as one whitespace, so the
  * figure is the same, except where the run is a character of the value: inside
  * a string (`"…"` or `'…'`), inside a comment, inside the parentheses of
- * `url(`, and where a backslash escapes the first character of the run. A
- * string, a comment, or `url(` that is not closed runs to the end of the text.
+ * `url(`, and the first character after a backslash, which CSS reads as escaped,
+ * whether it is a space or not. A string, a comment, or `url(` that is not
+ * closed runs to the end of the text.
  * The runs at the ends of the text are the business of the caller.
  */
 export function styleRunEdits(
@@ -191,10 +193,9 @@ export function styleRunEdits(
   while (position < end) {
     const character = text[position]
     if (character === "\\") {
-      position++
-      if (isSpaceOrTab(text[position])) {
-        while (position < end && isSpaceOrTab(text[position])) position++
-      } else position++
+      // CSS reads the first character after a backslash as escaped, also a
+      // space or a tab; a run goes on after it.
+      position += 2
     } else if (character === '"' || character === "'") {
       position = endOfQuoted(text, position, end)
     } else if (text.startsWith("/*", position)) {
@@ -243,11 +244,12 @@ function endOfUrl(text: string, from: number, end: number): number {
  * style as one space, where the Db of mermaid.js either does not hold the
  * whitespace (it joins the words of a style that has no `:`) or holds it and
  * draws the figure without it (docs/compatibility.md, Styles that are drawn
- * the same). The whitespace around the first `:` is the business of
- * `addColonEdit`, called before this, and a style with a `:` that edit leaves
- * as written stays as written. The runs that `styleRunEdits` lists change, and
- * not the whitespace at the ends of `range`, which is the business of the
- * caller, which keeps the whitespace after a backslash that ends a style.
+ * the same). The whitespace next to the first `:` is the business of
+ * `addColonEdit`, called before this, and stays as that edit leaves it. The
+ * other runs that `styleRunEdits` lists change, also in a style where that edit
+ * leaves the colon as written, as in one that starts with the `:`. Not the
+ * whitespace at the ends of `range`, which is the business of the caller, which
+ * keeps the whitespace after a backslash that ends a style.
  */
 export function addWordGapEdits(
   source: Source,
@@ -255,14 +257,10 @@ export function addWordGapEdits(
   edits: TextEdit[],
 ): void {
   const colon = source.text.indexOf(":", start)
-  if (
-    colon !== -1 &&
-    colon < end &&
-    !edits.some((edit) => edit.range[0] <= colon && colon < edit.range[1])
-  )
-    return
+  const hasColon = colon !== -1 && colon < end
   for (const edit of styleRunEdits(source, start, end)) {
     const [from, to] = edit.range
+    if (hasColon && (to === colon || from === colon + 1)) continue
     if (!edits.some((other) => other.range[0] < to && from < other.range[1]))
       edits.push(edit)
   }

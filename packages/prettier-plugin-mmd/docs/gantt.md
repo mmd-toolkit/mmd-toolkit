@@ -311,13 +311,16 @@ task-data/colon-column-use-tabs]
 
 The sections with padding whose colons are all in one and the same column go on
 sharing a column: it is one space after the longest of their longest names, so
-that only the excess whitespace goes. A section whose colons are not all in one
-column is on its own, with the column of its longest name. A section whose names
-are all followed by one space, with its colons in the column of a group, counts
-for the longest name of the group and is not changed. The tasks before the first
-`section` stand one level less deep, so they are a section of their own that
-shares nothing. [fixture: task-data/colon-column-sections-share-one-column]
-[fixture: task-data/colon-column-one-task-sections] [fixture:
+that only the excess whitespace goes. The column is counted from the start of
+the names, since the printer indents the tasks of every section alike, and that
+is the column the colons stand in once the chart is printed. A section whose
+colons are not all in one column is on its own, with the column of its longest
+name. A section whose names are all followed by one space, with its colons in
+the column of a group, counts for the longest name of the group and is not
+changed. The tasks before the first `section` stand one level less deep, so they
+are a section of their own that shares nothing. [fixture:
+task-data/colon-column-sections-share-one-column] [fixture:
+task-data/colon-column-one-task-sections] [fixture:
 task-data/colon-column-uniform-section-shares] [fixture:
 task-data/colon-column-sections-in-one-column-and-others] [fixture:
 task-data/colon-column-sections-not-sharing] [fixture:
@@ -332,7 +335,10 @@ chose to put the colon next to the text. A section is left where the aligned
 lines would be longer than `printWidth` and longer than they are, since one long
 name would push every colon of the section far right. A chart that holds
 `white-space` is left, since the CSS of the chart may draw the whitespace at the
-end of a name, and the figure then depends on it. [fixture:
+end of a name, and the figure then depends on it. A section where a name holds a
+tab is left too, since a tab reaches the next tab stop of the editor, and no
+width that Prettier counts lines the colons up. [fixture:
+task-data/colon-column-tab-in-name-kept] [fixture:
 task-data/colon-column-single-space-kept] [fixture:
 task-data/colon-column-too-wide-kept] [fixture:
 task-data/colon-column-white-space-kept]

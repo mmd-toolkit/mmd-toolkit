@@ -481,8 +481,8 @@ dropped where the style context ends at LF. The first style stands after one
 space. For ordinary single-line property/value styles in `style` or `classDef`,
 put no space before the first colon of each style and one before its nonempty
 value; separate styles with a comma and one following space. [fixture:
-styles-and-classes/empty-style-value] Print a run of spaces between two words of
-a style as one space, in a style with a `:` and in one without:
+styles-and-classes/empty-style-value] Print a run of spaces or tabs between two
+words of a style as one space, in a style with a `:` and in one without:
 `stroke-dasharray:  5    5` becomes `stroke-dasharray: 5 5`, and `4px    wide`
 becomes `4px wide`. Whether whitespace stands between two words stays as
 written: `fill #f00` and `fill#f00` are kept apart, since a word that touches
