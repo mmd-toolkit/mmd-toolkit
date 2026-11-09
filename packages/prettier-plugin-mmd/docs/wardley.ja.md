@@ -943,7 +943,7 @@ hidden の内部、必須の closer padding、保護区間は保ちます。
 ```mmd
 wardley-beta
   component Tail [0.3, 0.6]
-  accDescr { End }
+  accDescr: End
 ```
 
 ### セミコロン

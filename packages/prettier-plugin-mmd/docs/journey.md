@@ -137,7 +137,7 @@ Output
 
 ```mmd
 journey
-  accDescr { d }
+  accDescr: d
   A: 5
 ```
 
@@ -494,7 +494,7 @@ journey
   section S
     ACCTITLE: T
     AccDescr: d
-    ACCDESCR { d }
+    ACCDESCR: d
 ```
 
 ### Accessibility statements
@@ -754,9 +754,9 @@ Output
 
 ```mmd
 journey
-  accDescr { d }
-  accDescr { e }
-  accDescr { f }
+  accDescr: d
+  accDescr: e
+  accDescr: f
 ```
 
 ### Comments

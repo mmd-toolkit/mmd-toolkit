@@ -741,7 +741,7 @@ Output
 gitGraph
   commit id: "A"
   branch b order: 2
-  accDescr { D }
+  accDescr: D
 ```
 
 ### Line terminators and unicode

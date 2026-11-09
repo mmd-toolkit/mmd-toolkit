@@ -54,7 +54,7 @@ export const architectureCases: readonly ArchitectureCase[] = [
   {
     name: "architecture/description-blocks/unicode-opener",
     input: "architecture-beta\naccDescr\n\n\u2028{ Detail }\n",
-    output: "architecture-beta\n  accDescr { Detail }\n",
+    output: "architecture-beta\n  accDescr: Detail\n",
     options: {},
   },
   {

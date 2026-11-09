@@ -219,10 +219,10 @@ Output
 
 ```mmd
 info
-  accDescr { D }
-  accDescr { D }
-  accDescr { D }
-  accDescr { D }
+  accDescr: D
+  accDescr: D
+  accDescr: D
+  accDescr: D
 ```
 
 ### Authored values
@@ -595,7 +595,7 @@ Output
 
 ```mmd
 info showInfo
-  accDescr { D }
+  accDescr: D
 ```
 
 ### Frontmatter yaml

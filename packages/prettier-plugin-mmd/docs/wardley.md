@@ -937,7 +937,7 @@ Output
 ```mmd
 wardley-beta
   component Tail [0.3, 0.6]
-  accDescr { End }
+  accDescr: End
 ```
 
 ### Semicolons

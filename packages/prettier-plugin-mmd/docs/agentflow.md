@@ -977,7 +977,7 @@ Output
 
 ```mmd
 agentflow-beta TB
-  accDescr { a }
+  accDescr: a
   A[Block spacing]
 ```
 

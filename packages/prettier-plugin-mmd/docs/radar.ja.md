@@ -560,10 +560,10 @@ directive と共有の除去対象となるコメント領域は原文全体を�
 
 ```mmd
 radar-beta
-  accDescr { Word }
-  accDescr { Word }
-  accDescr { Left }
-  accDescr { Right }
+  accDescr: Word
+  accDescr: Word
+  accDescr: Left
+  accDescr: Right
 ```
 
 ### Multiline values
@@ -1003,7 +1003,7 @@ radar-beta
   axis North
   curve trial{4}
   ticks 7
-  accDescr { Detail }
+  accDescr: Detail
 ```
 
 ### Frontmatter yaml

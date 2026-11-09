@@ -1247,8 +1247,8 @@ Output
 
 ```mmd
 railroad-beta
-  accDescr { Text }
-  accDescr { Text }
+  accDescr: Text
+  accDescr: Text
   accDescr {}
   r = terminal("block");
 ```
@@ -1261,8 +1261,8 @@ Output
 
 ```mmd
 railroad-ebnf-beta
-  accDescr { Text }
-  accDescr { Text }
+  accDescr: Text
+  accDescr: Text
   accDescr {}
   r = "block";
 ```
@@ -1275,8 +1275,8 @@ Output
 
 ```mmd
 railroad-abnf-beta
-  accDescr { Text }
-  accDescr { Text }
+  accDescr: Text
+  accDescr: Text
   accDescr {}
   r = "block";
 ```
@@ -1289,8 +1289,8 @@ Output
 
 ```mmd
 railroad-peg-beta
-  accDescr { Text }
-  accDescr { Text }
+  accDescr: Text
+  accDescr: Text
   accDescr {}
   r <- "block";
 ```
@@ -1697,7 +1697,7 @@ Output
 
 ```mmd
 railroad-beta
-  accDescr { moved }
+  accDescr: moved
   %%{!after metadata}%%
 
   r = terminal("after moved");
@@ -1711,7 +1711,7 @@ Output
 
 ```mmd
 railroad-ebnf-beta
-  accDescr { moved }
+  accDescr: moved
   %%{!after metadata}%%
 
   r = "after moved";
@@ -1725,7 +1725,7 @@ Output
 
 ```mmd
 railroad-abnf-beta
-  accDescr { moved }
+  accDescr: moved
   %%{!after metadata}%%
 
   r = "after moved";
@@ -1739,7 +1739,7 @@ Output
 
 ```mmd
 railroad-peg-beta
-  accDescr { moved }
+  accDescr: moved
   %%{!after metadata}%%
 
   r <- "after moved";
@@ -2849,7 +2849,7 @@ Output
 
 ```mmd
 railroad-ebnf-beta
-  accDescr { old }
+  accDescr: old
   accDescr {}
   z = later;
   a = "first";
@@ -2881,7 +2881,7 @@ Output
 
 ```mmd
 railroad-peg-beta
-  accDescr { old }
+  accDescr: old
   accDescr {}
   z <- later;
   a <- "first";

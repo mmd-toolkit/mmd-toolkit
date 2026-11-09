@@ -565,7 +565,7 @@ Output
 erDiagram
   A:::c
   p[P]
-  accDescr { D }
+  accDescr: D
   A ||--u-B : x
   1 ||--|| B : x
 ```
@@ -605,7 +605,7 @@ erDiagram
   direction LR
   ACCTITLE: T
   ACCDESCR: D
-  ACCDESCR { D }
+  ACCDESCR: D
   A }|--o{ B : x
   A {
     int a PK

@@ -61,7 +61,7 @@ Output
 pie
 "Zero" : 0
 accTitle: direction LR
-accDescr { direction TB }
+accDescr: direction TB
 ```
 
 ### Statements one per line
@@ -619,7 +619,7 @@ Output
 ```mmd
 pie showData
   "Data" : 2
-  accDescr { a }
+  accDescr: a
 ```
 
 ### Multiline values and order

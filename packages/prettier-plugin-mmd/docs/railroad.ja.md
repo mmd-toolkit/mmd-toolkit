@@ -1267,8 +1267,8 @@ directive と共有の除去対象となるコメント領域は原文全体を�
 
 ```mmd
 railroad-beta
-  accDescr { Text }
-  accDescr { Text }
+  accDescr: Text
+  accDescr: Text
   accDescr {}
   r = terminal("block");
 ```
@@ -1281,8 +1281,8 @@ railroad-beta
 
 ```mmd
 railroad-ebnf-beta
-  accDescr { Text }
-  accDescr { Text }
+  accDescr: Text
+  accDescr: Text
   accDescr {}
   r = "block";
 ```
@@ -1295,8 +1295,8 @@ railroad-ebnf-beta
 
 ```mmd
 railroad-abnf-beta
-  accDescr { Text }
-  accDescr { Text }
+  accDescr: Text
+  accDescr: Text
   accDescr {}
   r = "block";
 ```
@@ -1309,8 +1309,8 @@ railroad-abnf-beta
 
 ```mmd
 railroad-peg-beta
-  accDescr { Text }
-  accDescr { Text }
+  accDescr: Text
+  accDescr: Text
   accDescr {}
   r <- "block";
 ```
@@ -1725,7 +1725,7 @@ closer 後の space と tab、inline の接触を共有の hidden-gap 保護で�
 
 ```mmd
 railroad-beta
-  accDescr { moved }
+  accDescr: moved
   %%{!after metadata}%%
 
   r = terminal("after moved");
@@ -1739,7 +1739,7 @@ railroad-beta
 
 ```mmd
 railroad-ebnf-beta
-  accDescr { moved }
+  accDescr: moved
   %%{!after metadata}%%
 
   r = "after moved";
@@ -1753,7 +1753,7 @@ railroad-ebnf-beta
 
 ```mmd
 railroad-abnf-beta
-  accDescr { moved }
+  accDescr: moved
   %%{!after metadata}%%
 
   r = "after moved";
@@ -1767,7 +1767,7 @@ railroad-abnf-beta
 
 ```mmd
 railroad-peg-beta
-  accDescr { moved }
+  accDescr: moved
   %%{!after metadata}%%
 
   r <- "after moved";
@@ -2891,7 +2891,7 @@ railroad-beta
 
 ```mmd
 railroad-ebnf-beta
-  accDescr { old }
+  accDescr: old
   accDescr {}
   z = later;
   a = "first";
@@ -2923,7 +2923,7 @@ railroad-abnf-beta
 
 ```mmd
 railroad-peg-beta
-  accDescr { old }
+  accDescr: old
   accDescr {}
   z <- later;
   a <- "first";

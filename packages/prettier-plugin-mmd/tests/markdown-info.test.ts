@@ -100,11 +100,11 @@ const cases: readonly MarkdownCase[] = [
   {
     name: "info Markdown: global-and-semicolons",
     payloadInput: "%%{wrap}%%\ninfo title style:#a;b\naccDescr {D}",
-    payloadOutput: "%%{wrap}%%\ninfo title style:#a;b\n  accDescr { D }\n",
+    payloadOutput: "%%{wrap}%%\ninfo title style:#a;b\n  accDescr: D\n",
     options: {},
     input: "```mermaid\n%%{wrap}%%\ninfo title style:#a;b\naccDescr {D}\n```\n",
     output:
-      "```mermaid\n%%{wrap}%%\ninfo title style:#a;b\n  accDescr { D }\n```\n",
+      "```mermaid\n%%{wrap}%%\ninfo title style:#a;b\n  accDescr: D\n```\n",
   },
   {
     name: "info Markdown: final-comment",

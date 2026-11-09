@@ -669,10 +669,10 @@ Output
 
 ```mmd
 architecture-beta
-  accDescr { A }
-  accDescr { B }
-  accDescr { C }
-  accDescr { D }
+  accDescr: A
+  accDescr: B
+  accDescr: C
+  accDescr: D
 ```
 
 ### Multiline values
@@ -1014,7 +1014,7 @@ architecture-beta
   junction j
   a:R -- L:j
   align row a j
-  accDescr { D }
+  accDescr: D
 ```
 
 ### Frontmatter yaml
@@ -1293,7 +1293,7 @@ architecture-beta
   title
   accTitle: First
   accTitle:
-  accDescr { First }
+  accDescr: First
   accDescr {}
 ```
 

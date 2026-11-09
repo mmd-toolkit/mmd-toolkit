@@ -849,7 +849,7 @@ gantt
     weekend friday
     ACCTITLE: T
     AccDescr: d
-    ACCDESCR { d }
+    ACCDESCR: d
 ```
 
 ### click 文

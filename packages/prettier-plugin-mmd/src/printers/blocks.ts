@@ -3,6 +3,7 @@ import { builders, utils } from "prettier/doc"
 import type { Range } from "@mmd-toolkit/ast"
 import type { MermaidAst } from "../parser.ts"
 import type { Gap, ItemRun } from "./gap.ts"
+import { printAccessibilityLine } from "./accessibility-form.ts"
 import type { GapRule } from "./atoms.ts"
 import {
   endsWithSpaceOrTab,
@@ -50,6 +51,8 @@ const { replaceEndOfLine } = utils
  */
 export interface Positioned {
   readonly range: Range
+  /** The type of a node of the tree; a unit that a printer makes has none. */
+  readonly type?: string
 }
 
 /**
@@ -875,7 +878,10 @@ export function printBlock<Statement extends Positioned>(
     if (!startsStretch) {
       const writtenIndentation = rules.writtenIndentationOf?.(statement)
       pushLine({
-        doc: withLeading(gap.leading, docs[index]),
+        doc: withLeading(
+          gap.leading,
+          printAccessibilityLine(source, statement) ?? docs[index],
+        ),
         ...writtenBreak,
         ...(writtenIndentation === undefined ? {} : { writtenIndentation }),
         blankBefore:

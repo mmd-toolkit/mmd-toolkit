@@ -791,7 +791,7 @@ Output
 
 ```mmd
 usecase-beta
-  accDescr { a }
+  accDescr: a
   A[Keyword gap]
 ```
 

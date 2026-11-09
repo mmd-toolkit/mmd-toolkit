@@ -178,7 +178,7 @@ Output
 
 ```mmd
 timeline
-  accDescr { d }
+  accDescr: d
   2002 : x
 ```
 
@@ -672,7 +672,7 @@ timeline
   section S
     ACCTITLE: T
     AccDescr: d
-    ACCDESCR { d }
+    ACCDESCR: d
 ```
 
 ### Header and direction
@@ -1037,9 +1037,9 @@ Output
 
 ```mmd
 timeline
-  accDescr { d }
-  accDescr { e }
-  accDescr { f }
+  accDescr: d
+  accDescr: e
+  accDescr: f
 ```
 
 ### Comments

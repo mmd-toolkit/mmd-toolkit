@@ -419,10 +419,10 @@ directive と共有の除去対象となるコメント領域は原文全体を�
 
 ```mmd
 packet
-  accDescr { A }
-  accDescr { B }
-  accDescr { C }
-  accDescr { D }
+  accDescr: A
+  accDescr: B
+  accDescr: C
+  accDescr: D
 ```
 
 ### Multiline values
@@ -808,7 +808,7 @@ hidden の閉じの padding は EOF でも残します。
 ```mmd
 packet
   0: "Exterior"
-  accDescr { Detail }
+  accDescr: Detail
 ```
 
 ### Frontmatter yaml

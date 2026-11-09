@@ -1054,7 +1054,7 @@ agentflow-beta TB
 
 ```mmd
 agentflow-beta TB
-  accDescr { a }
+  accDescr: a
   A[Block spacing]
 ```
 

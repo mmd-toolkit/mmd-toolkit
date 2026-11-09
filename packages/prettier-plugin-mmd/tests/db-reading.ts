@@ -323,6 +323,60 @@ function droppableEntryCommasOf(
   return offsets
 }
 
+/** The nodes of an accessibility description, in source order. */
+function accessibilityNodesOf(root: Root): { type: string; range: Range }[] {
+  const nodes: { type: string; range: Range }[] = []
+  walk(root.body, (node) => {
+    if (
+      node.type.endsWith("AccDescrBlockStatement") ||
+      node.type.endsWith("AccDescrStatement")
+    )
+      nodes.push(node as { type: string; range: Range })
+  })
+  return nodes
+}
+
+/**
+ * The offsets of the `{` and of the `}` of the accessibility descriptions
+ * written between `{` and `}` on one line that the formatted text has in the
+ * form `accDescr: text`. The descriptions of the two texts are paired by their
+ * order, as formatting keeps their order (docs/compatibility.md, Spellings
+ * that are drawn the same).
+ */
+function convertedAccessibilityBlocksOf(
+  before: Root,
+  after: Root,
+): {
+  readonly openings: ReadonlySet<number>
+  readonly closings: ReadonlySet<number>
+} {
+  const openings = new Set<number>()
+  const closings = new Set<number>()
+  const [written, printed] = [
+    accessibilityNodesOf(before),
+    accessibilityNodesOf(after),
+  ]
+  if (written.length !== printed.length) return { openings, closings }
+  for (const [index, node] of written.entries()) {
+    if (
+      !node.type.endsWith("AccDescrBlockStatement") ||
+      printed[index].type.endsWith("AccDescrBlockStatement")
+    )
+      continue
+    const braces = before.tokens.filter(
+      (token) =>
+        token.type === "Punctuator" &&
+        node.range[0] <= token.range[0] &&
+        token.range[1] <= node.range[1],
+    )
+    if (braces.length === 2) {
+      openings.add(braces[0].range[0])
+      closings.add(braces[1].range[0])
+    }
+  }
+  return { openings, closings }
+}
+
 /**
  * Compare authored text while allowing treeview's explicitly redrawn outer
  * box structure. Only the `;` of `droppableSemicolonsOf` and the `,` of
@@ -335,9 +389,11 @@ export function writtenTextKeptUpToSeparators(
   after: string,
 ): boolean {
   const beforeRoot = parse(before)
+  const accessibility = convertedAccessibilityBlocksOf(beforeRoot, parse(after))
   const droppable = new Set([
     ...droppableSemicolonsOf(before, beforeRoot),
     ...droppableEntryCommasOf(before, beforeRoot, after),
+    ...accessibility.closings,
   ])
   const [input, output] = [before, after].map((text, side) => {
     const root = parse(text)
@@ -363,6 +419,12 @@ export function writtenTextKeptUpToSeparators(
     let written = ""
     const offsets: number[] = []
     for (let offset = 0; offset < text.length; offset++) {
+      if (side === 0 && accessibility.openings.has(offset)) {
+        // The `{` of an accessibility description printed with a `:`.
+        written += ":"
+        offsets.push(offset)
+        continue
+      }
       const respelling = respellings.get(offset)
       if (respelling !== undefined) {
         for (const character of respelling.text) {
@@ -400,7 +462,8 @@ export function writtenTextKeptUpToSeparators(
     if (input.written[inputIndex] === output.written[outputIndex]) outputIndex++
     else if (
       (input.written[inputIndex] !== ";" &&
-        input.written[inputIndex] !== ",") ||
+        input.written[inputIndex] !== "," &&
+        input.written[inputIndex] !== "}") ||
       !droppable.has(input.offsets[inputIndex])
     )
       return false

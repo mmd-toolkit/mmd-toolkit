@@ -219,10 +219,10 @@ directive と共有の除去対象となるコメント領域は原文全体を�
 
 ```mmd
 info
-  accDescr { D }
-  accDescr { D }
-  accDescr { D }
-  accDescr { D }
+  accDescr: D
+  accDescr: D
+  accDescr: D
+  accDescr: D
 ```
 
 ### Authored values
@@ -601,7 +601,7 @@ hidden の閉じの padding は EOF でも保持します。
 
 ```mmd
 info showInfo
-  accDescr { D }
+  accDescr: D
 ```
 
 ### Frontmatter yaml

@@ -66,7 +66,7 @@ YAML だけは共有の最小幅を使います。
 pie
 "Zero" : 0
 accTitle: direction LR
-accDescr { direction TB }
+accDescr: direction TB
 ```
 
 ### Statements one per line
@@ -650,7 +650,7 @@ EOF も含め残します。
 ```mmd
 pie showData
   "Data" : 2
-  accDescr { a }
+  accDescr: a
 ```
 
 ### Multiline values and order

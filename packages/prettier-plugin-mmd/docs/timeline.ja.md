@@ -188,7 +188,7 @@ accDescr { d } 2002 : x
 
 ```mmd
 timeline
-  accDescr { d }
+  accDescr: d
   2002 : x
 ```
 
@@ -696,7 +696,7 @@ timeline
   section S
     ACCTITLE: T
     AccDescr: d
-    ACCDESCR { d }
+    ACCDESCR: d
 ```
 
 ### ヘッダーと方向
@@ -1073,9 +1073,9 @@ accDescr {f}
 
 ```mmd
 timeline
-  accDescr { d }
-  accDescr { e }
-  accDescr { f }
+  accDescr: d
+  accDescr: e
+  accDescr: f
 ```
 
 ### コメント

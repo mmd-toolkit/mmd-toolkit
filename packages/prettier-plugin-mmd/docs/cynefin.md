@@ -921,7 +921,7 @@ cynefin-beta
   complex
     "StructuralTail"
   clear --> chaotic
-  accDescr { Done }
+  accDescr: Done
 ```
 
 ### Semicolons

@@ -418,10 +418,10 @@ Output
 
 ```mmd
 packet
-  accDescr { A }
-  accDescr { B }
-  accDescr { C }
-  accDescr { D }
+  accDescr: A
+  accDescr: B
+  accDescr: C
+  accDescr: D
 ```
 
 ### Multiline values
@@ -800,7 +800,7 @@ Output
 ```mmd
 packet
   0: "Exterior"
-  accDescr { Detail }
+  accDescr: Detail
 ```
 
 ### Frontmatter yaml

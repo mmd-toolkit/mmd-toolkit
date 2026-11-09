@@ -1500,7 +1500,7 @@ flowchart LR
 
 ```mmd
 flowchart LR
-  accDescr { a }
+  accDescr: a
   A[Block spacing]
 ```
 
@@ -2104,7 +2104,7 @@ flowchart LR
     }
     A
   end
-  accDescr { one line }
+  accDescr: one line
   accDescr {
     text
     %% note

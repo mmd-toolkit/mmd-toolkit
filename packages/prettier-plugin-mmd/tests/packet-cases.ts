@@ -18,7 +18,7 @@ export const packetCases: readonly PacketCase[] = [
   {
     name: "packet/description-blocks/description-opener",
     input: "packet\naccDescr\n\n\u2028{ Open }\n",
-    output: "packet\n  accDescr { Open }\n",
+    output: "packet\n  accDescr: Open\n",
     options: {},
   },
   {

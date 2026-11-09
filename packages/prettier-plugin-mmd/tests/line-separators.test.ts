@@ -620,7 +620,7 @@ const flowchartExamples: readonly (readonly [string, string, string])[] = [
   [
     "no-break spaces at the ends of the text of a flowchart description block",
     "flowchart LR\naccDescr {\u00a0a\u00a0}\nA\n",
-    "flowchart LR\n  accDescr { a }\n  A\n",
+    "flowchart LR\n  accDescr: a\n  A\n",
   ],
   [
     "U+2028 between a subgraph name and its title",
@@ -1150,7 +1150,7 @@ const journeyLineSeparatorExamples: readonly (readonly [
   [
     "U+2028 between a description block and a task",
     "journey\naccDescr { d }\u2028A: 5\n",
-    "journey\n  accDescr { d }\n  A: 5\n",
+    "journey\n  accDescr: d\n  A: 5\n",
   ],
   [
     "U+2028 inside a task description",
@@ -1259,7 +1259,7 @@ const journeyWhitespaceExamples: readonly (readonly [
   [
     "U+00A0 between a description block and a task",
     "journey\naccDescr { d }\u00a0A: 5\n",
-    "journey\n  accDescr { d }\n  A: 5\n",
+    "journey\n  accDescr: d\n  A: 5\n",
   ],
   [
     "U+FEFF before a task",
@@ -1718,7 +1718,7 @@ const timelineLineSeparatorExamples: readonly (readonly [
   [
     "U+2028 between a description block and a period",
     "timeline\naccDescr { d }\u2028a : e\n",
-    "timeline\n  accDescr { d }\n  a : e\n",
+    "timeline\n  accDescr: d\n  a : e\n",
   ],
   [
     "U+2028 inside a period",
@@ -1837,7 +1837,7 @@ const timelineWhitespaceExamples: readonly (readonly [
   [
     "U+00A0 after a description block",
     "timeline\naccDescr { d }\u00a0a : e\n",
-    "timeline\n  accDescr { d }\n  a : e\n",
+    "timeline\n  accDescr: d\n  a : e\n",
   ],
   [
     "U+3000 in the indentation before a period",
@@ -2006,7 +2006,7 @@ const xychartLineSeparatorExamples: readonly (readonly [
   [
     "U+2028 after a description block",
     "xychart\naccDescr { d }\u2028title T\n",
-    "xychart\n  accDescr { d }\n  title T\n",
+    "xychart\n  accDescr: d\n  title T\n",
   ],
   [
     "U+2028 at the end of a statement",
@@ -2104,7 +2104,7 @@ const xychartWhitespaceExamples: readonly (readonly [
   [
     "U+00A0 inside a description block",
     "xychart\naccDescr {\u00a0d\u00a0}\n",
-    "xychart\n  accDescr { d }\n",
+    "xychart\n  accDescr: d\n",
   ],
   [
     "U+00A0 inside an empty description block",
@@ -2267,7 +2267,7 @@ const quadrantWhitespaceExamples: readonly (readonly [
   [
     "U+00A0 inside a description block",
     "quadrantChart\naccDescr\u00a0{\u00a0d\u00a0}\n",
-    "quadrantChart\n  accDescr { d }\n",
+    "quadrantChart\n  accDescr: d\n",
   ],
   [
     "U+00A0 inside an empty description block",

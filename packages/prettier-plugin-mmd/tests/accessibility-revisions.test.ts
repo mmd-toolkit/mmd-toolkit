@@ -17,7 +17,7 @@ const cases = [
   {
     name: "accessibility revisions: usecase keyword-brace-tab",
     input: "usecase-beta\naccDescr\t{ a }\nA[Keyword tab]",
-    output: "usecase-beta\n  accDescr { a }\n  A[Keyword tab]\n",
+    output: "usecase-beta\n  accDescr: a\n  A[Keyword tab]\n",
   },
   {
     name: "accessibility revisions: class direction-value-cr",

@@ -1,6 +1,5 @@
 import type { Node, Range, Token } from "@mmd-toolkit/ast"
 import { visitorKeys } from "@mmd-toolkit/parser"
-import { findAccessibilityRespellings } from "./accessibility-form.ts"
 import type { Atom } from "./atoms.ts"
 import { keywordSpellings } from "./keyword-spellings.ts"
 import { childrenOf } from "./layout.ts"
@@ -255,7 +254,6 @@ function respellingsOf(source: Source): SourceRespellings {
       findEqualRangeRespellings(source, source.root, map)
     }
     findLinkLabelRespellings(source, map)
-    findAccessibilityRespellings(source, map)
     collectNumbers(source, source.root, map)
     found = { byStart: map, starts: [...map.keys()].sort((a, b) => a - b) }
     respellingsOfSource.set(source, found)

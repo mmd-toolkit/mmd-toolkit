@@ -821,7 +821,7 @@ gantt
     weekend friday
     ACCTITLE: T
     AccDescr: d
-    ACCDESCR { d }
+    ACCDESCR: d
 ```
 
 ### Click statements

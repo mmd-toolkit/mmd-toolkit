@@ -769,7 +769,7 @@ hidden の閉じの padding は必要な EOL を可視に保つため、EOF で�
 gitGraph
   commit id: "A"
   branch b order: 2
-  accDescr { D }
+  accDescr: D
 ```
 
 ### Line terminators and unicode
