@@ -63,6 +63,7 @@ export function printKanban(
           tabWidth: options.tabWidth,
           useTabs: options.useTabs,
           decidesIndentation: true,
+          holdsStatements: () => false,
           wholeLine: true,
         }),
         {

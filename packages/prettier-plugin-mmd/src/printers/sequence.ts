@@ -95,6 +95,7 @@ export function printSequence(
             statement: indentationOf(options, depth),
             tabWidth: options.tabWidth,
             useTabs: options.useTabs,
+            holdsStatements,
           },
         ),
         {
@@ -269,6 +270,12 @@ function openBlock(
   return { header, block }
 }
 
+/** Whether the node is a statement that holds statements of its own. */
+function holdsStatements(node: MermaidAst): boolean {
+  const classified = classifySequenceStatement(node)
+  return classified !== null && classified.kind !== "simple"
+}
+
 /**
  * The block rules of a sequence diagram (see `BlockRules`): the blocks and
  * boxes hold statements, and no statement is dropped.
@@ -277,11 +284,6 @@ function sequenceBlockRules(
   source: Source,
   options: ParserOptions<MermaidAst>,
 ): BlockRules<SequenceStatement> {
-  /** Whether the statement holds statements of its own. */
-  function holdsStatements(statement: SequenceStatement): boolean {
-    return classifySequenceStatement(statement).kind !== "simple"
-  }
-
   return {
     kept: findSequenceKeptLines(source),
     printedEnd: (statement) => findSequencePrintedEnd(source, statement),

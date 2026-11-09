@@ -70,6 +70,11 @@ function printLine(
   }).doc
 }
 
+/** Whether the node is a statement that holds statements of its own. */
+function holdsStatements(node: MermaidAst): boolean {
+  return classifyUsecaseStatement(node)?.kind === "boundary"
+}
+
 /** Only system boundaries contain declaration bodies (docs/usecase.md). */
 function printStatements(
   source: Source,
@@ -78,11 +83,6 @@ function printStatements(
   depth: number,
   bounds: Omit<BlockBounds<UsecaseStatement>, "statements">,
 ): PrintedBlock {
-  /** Whether the statement holds statements of its own. */
-  function holdsStatements(statement: UsecaseStatement): boolean {
-    return classifyUsecaseStatement(statement).kind === "boundary"
-  }
-
   const rules: BlockRules<UsecaseStatement> = {
     kept: findUsecaseKeptLines(source),
     printedEnd: (statement) => findUsecasePrintedEnd(source, statement),
@@ -114,6 +114,7 @@ function printStatements(
               statement: indentationOf(options, depth),
               tabWidth: options.tabWidth,
               useTabs: options.useTabs,
+              holdsStatements,
             },
           ),
           depth,

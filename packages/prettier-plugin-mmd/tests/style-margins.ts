@@ -101,8 +101,14 @@ function withoutStyleMargins(
     joinsStyles && escapesNext(trimmed) && style !== style.trimEnd()
   const tail = escapedTail ? " " : ""
   const colon = trimmed.indexOf(":")
-  if (colon <= 0) return `${trimmed}${tail}`
-  const name = trimmed.slice(0, colon).trimEnd()
+  if (colon < 0) return `${trimmed}${tail}`
+  const beforeColon = trimmed.slice(0, colon)
+  const nameText = beforeColon.trimEnd()
+  // CSS reads the space that a backslash escapes as part of the name.
+  const name =
+    nameText !== beforeColon && escapesNext(nameText)
+      ? `${nameText} `
+      : nameText
   const gap =
     name.length < colon &&
     ((readsStroke && name.endsWith("stroke")) ||
@@ -126,8 +132,10 @@ function withoutStyleMargins(
 /**
  * The text of a style with each run of spaces and tabs replaced by one space,
  * except inside a string (`"…"` or `'…'`), a comment (`/*…*\/`), or the
- * parentheses of `url(`, and the first character after a backslash, where CSS reads it
- * as part of the value. What is not closed runs to the end of the text.
+ * parentheses of `url(`, and the escape after a backslash, where CSS reads it
+ * as part of the value: the hexadecimal digits (at most six) and the one space
+ * or tab after them, or else the next character. What is not closed runs to
+ * the end of the text.
  */
 function withoutWordRuns(text: string): string {
   let result = ""
@@ -136,7 +144,7 @@ function withoutWordRuns(text: string): string {
     const character = text[position]
     let next = position + 1
     if (character === "\\") {
-      next = position + 2
+      next = endOfEscape(text, position)
     } else if (character === '"' || character === "'") {
       next = endOfString(text, position)
     } else if (text.startsWith("/*", position)) {
@@ -161,6 +169,15 @@ function withoutWordRuns(text: string): string {
     position = next
   }
   return result
+}
+
+/** The offset after the escape that starts at the backslash at `start`. */
+function endOfEscape(text: string, start: number): number {
+  let end = start + 1
+  while (end < start + 7 && "0123456789abcdefABCDEF".includes(text[end] ?? "-"))
+    end++
+  if (end === start + 1) return Math.min(start + 2, text.length)
+  return text[end] === " " || text[end] === "\t" ? end + 1 : end
 }
 
 /** The offset after the string that starts at the quote at `start`. */

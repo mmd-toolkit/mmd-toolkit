@@ -503,11 +503,13 @@ instead of ending it. In a `style` and a `linkStyle` of these diagram types, and
 in the other diagram types, the `,` always ends a style, and a backslash before
 it does not escape it: `style A fill:#f00\,stroke:#00f` has the two styles
 `fill:#f00\` and `stroke:#00f`. A space after a backslash before the `:` stays
-in all of them, since taking it away would escape the `:`. [fixture:
-flowchart/whitespace-between-tokens/style-escaped-space-before-comma] [fixture:
-flowchart/whitespace-between-tokens/style-backslash-before-comma] [fixture:
-agentflow/single-space-gaps/style-escaped-space-before-comma] [fixture:
-agentflow/single-space-gaps/style-backslash-before-comma] [fixture:
+in all of them, since taking it away would escape the `:`, and the whitespace
+after that space goes. [fixture:
+flowchart/whitespace-between-tokens/style-colon-escaped-space-run-dropped]
+[fixture: flowchart/whitespace-between-tokens/style-escaped-space-before-comma]
+[fixture: flowchart/whitespace-between-tokens/style-backslash-before-comma]
+[fixture: agentflow/single-space-gaps/style-escaped-space-before-comma]
+[fixture: agentflow/single-space-gaps/style-backslash-before-comma] [fixture:
 block/styles/style-backslash-before-comma] [fixture:
 class/whitespace-between-tokens/style-backslash-before-comma] [fixture:
 state/whitespace-between-tokens/style-backslash-before-comma]
@@ -596,12 +598,20 @@ stands between two words stays as written: `style A fill   #f00` is printed
 `style A fill #f00`, and `style A fill#f00` stays. CSS reads a run as one
 whitespace, so the figure is the same, except where the run is a character of
 the value, and there it stays as written: inside a string (`"…"` or `'…'`),
-inside a comment (`/* … */`), inside the parentheses of `url(`, and the first
-character after a backslash, which CSS reads as escaped, so that `a\   b` is
-printed `a\  b`. A string, a comment, or `url(` that is not closed runs to the
-end of the style. [fixture:
+inside a comment (`/* … */`), inside the parentheses of `url(`, and the escape
+after a backslash, which CSS reads as part of the value: the hexadecimal digits
+(at most six) and the one space or tab that follows them, or else the next
+character, so that `a\   b` is printed `a\  b`, and `Arial\20   Black` is
+printed `Arial\20  Black`. A string, a comment, or `url(` that is not closed
+runs to the end of the style. [fixture:
 flowchart/whitespace-between-tokens/style-string-runs-kept] [fixture:
 flowchart/whitespace-between-tokens/style-backslash-run-spaced] [fixture:
+flowchart/whitespace-between-tokens/style-hex-escape-run-spaced] [fixture:
+flowchart/whitespace-between-tokens/style-hex-escape-tab-run-spaced] [fixture:
+flowchart/whitespace-between-tokens/style-hex-escape-seven-digits-run-spaced]
+[fixture: state/whitespace-between-tokens/style-hex-escape-run-spaced] [fixture:
+agentflow/single-space-gaps/style-hex-escape-run-spaced] [fixture:
+block/styles/style-hex-escape-run-spaced] [fixture:
 state/whitespace-between-tokens/style-string-runs-kept] [fixture:
 state/whitespace-between-tokens/style-url-runs-kept] [fixture:
 state/whitespace-between-tokens/style-comment-runs-kept] [fixture:
@@ -642,8 +652,18 @@ change by formatting were drawn the same way: of the 78 texts, all have the same
 pixels, and the SVG is the same without the whitespace in the `style` attribute.
 mermaid.js keeps the text of each style of a treemap in the Db, and before it
 draws it takes the text before the first `:` as the name and the text up to the
-next `:` as the value, with the whitespace around each taken away. [fixture:
-treemap/styles/spaced] [fixture: treemap/styles/escaped-comma-spaced] [fixture:
+next `:` as the value, with the whitespace around each taken away. A hexadecimal
+escape was drawn too, with a font name that the escape decides: in a flowchart,
+a state, a block, an agentflow, and a swimlane diagram
+`style A font-family:\41   rial,font-size:30px` and the printed
+`font-family: \41  rial, font-size: 30px` have the same pixels, while the
+`\41 rial` that collapsing the whole run after the escape would print draws
+another figure. A style that starts with the `:`, and one whose `:` follows a
+backslash and a space, were drawn as written and as printed in these diagram
+types and in a class and an ER diagram: `style A :  red   x` and
+`style A : red x`, and `style A fill\   :red   x` and `style A fill\ : red x`
+have the same pixels. [fixture: treemap/styles/spaced] [fixture:
+treemap/styles/escaped-comma-spaced] [fixture:
 class/whitespace-between-tokens/style-value-words-spaced] [fixture:
 class/whitespace-between-tokens/style-words-run-spaced] [fixture:
 flowchart/whitespace-between-tokens/style-words-run-spaced] [fixture:
@@ -669,19 +689,19 @@ The tests compare the Db of the printed text with the margins of its styles
 restored from the Db of the written text (`styleDbForFormattingComparison` in
 `tests/style-margins.ts`): a style that differs from the written one only by the
 whitespace at its ends and around its first `:`, and in the diagram types above
-by the runs between its words outside strings, comments, `url(`, and the first
-character after a backslash, takes the written text, and any other difference,
-among them the presence of whitespace between two words of a style, a changed
-run inside a string, a comment, or `url(`, the number of styles of a link, the
-presence of whitespace before the `:` of a `stroke` in a style that can reach a
-link, the presence of whitespace before a style of a link that starts with
-`stroke:`, and the presence of whitespace in the value of a `stroke` of a link
-that is whitespace only, the presence of whitespace after a backslash that ends
-a style that mermaid.js joins as it is, and the presence of whitespace before a
-style of a block that starts with `color:` or `text-align:`, or between such a
-name and the `:`, fails. When the pinned mermaid.js is updated, draw the
-statements of each of these kinds again and compare the SVG and the pixels
-before the exception stays.
+by the runs between its words outside strings, comments, `url(`, and the escape
+after a backslash, takes the written text, and any other difference, among them
+the presence of whitespace between two words of a style, a changed run inside a
+string, a comment, or `url(`, the number of styles of a link, the presence of
+whitespace before the `:` of a `stroke` in a style that can reach a link, the
+presence of whitespace before a style of a link that starts with `stroke:`, and
+the presence of whitespace in the value of a `stroke` of a link that is
+whitespace only, the presence of whitespace after a backslash that ends a style
+that mermaid.js joins as it is, and the presence of whitespace before a style of
+a block that starts with `color:` or `text-align:`, or between such a name and
+the `:`, fails. When the pinned mermaid.js is updated, draw the statements of
+each of these kinds again and compare the SVG and the pixels before the
+exception stays.
 
 ## Texts after a keyword that are drawn the same
 

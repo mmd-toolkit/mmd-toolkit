@@ -1098,7 +1098,12 @@ For participant and actor data blocks, apply
 text. Move that line one level inside the statement and align a separate `}`
 with the statement; a closer after text stays with that line. This applies at
 the top level and inside `loop`, except with `useTabs`, where the statement is
-printed as written (see [Data blocks](./flowchart.md#data-blocks)). [fixture:
+printed as written (see [Data blocks](./flowchart.md#data-blocks)), unless the
+header of a `box` or a block, or an `end`, stands before it on its line: the
+written indentation is then that of the header or of the `end`, and the
+statement is printed with the usual indentation, the lines of its block moving
+with it. [fixture: multi-line-values/data-use-tabs-box-header-moved] [fixture:
+multi-line-values/data-use-tabs-end-moved] [fixture:
 multi-line-values/data-zero-and-shallow] [fixture:
 multi-line-values/data-deep-inline-closer] [fixture:
 multi-line-values/data-block-in-block-indented] [fixture:

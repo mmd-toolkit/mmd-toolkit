@@ -373,8 +373,10 @@ whitespace-between-tokens/style-colon-and-comma-spaced] A U+2028 or U+2029 among
 the styles keeps the statement as written. [test: U+2028 before the comma of a
 class style statement]
 
-A style that starts with the `:` has the runs between its words printed as one
-space too. [fixture: whitespace-between-tokens/style-colon-first-run-spaced]
+A style that starts with the `:` is printed as any other: one space after the
+`:`, and the runs between its words as one space. `style A :  red   x` is
+printed `style A : red x`. [fixture:
+whitespace-between-tokens/style-colon-first-run-spaced]
 
 U+2028 and U+2029 after the `}` that closes a class body or a namespace are
 whitespace to mermaid.js, and are dropped with the whitespace at the end of the

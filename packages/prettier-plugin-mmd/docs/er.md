@@ -1002,8 +1002,10 @@ styles-and-classes/style-words-run-spaced] [fixture:
 styles-and-classes/style-words-touching-kept] [fixture:
 styles-and-classes/style-words-directive-kept]
 
-A style that starts with the `:` has the runs between its words printed as one
-space too. [fixture: styles-and-classes/style-colon-first-run-spaced]
+A style that starts with the `:` is printed as any other: one space after the
+`:`, and the runs between its words as one space. `style A :  red   x` is
+printed `style A : red x`. [fixture:
+styles-and-classes/style-colon-first-run-spaced]
 
 [fixture: styles-and-classes/keyword-case-kept] [fixture:
 styles-and-classes/keyword-case-semicolon-line-kept]

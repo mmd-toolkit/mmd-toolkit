@@ -104,6 +104,7 @@ export function printAgentflow(
       statement: indentationOf(bodyOptions, depth),
       tabWidth: options.tabWidth,
       useTabs: options.useTabs,
+      holdsStatements,
     },
   )
   return printAtoms(source, layout, {
@@ -147,6 +148,11 @@ function printDiagram(
   return printDiagramBlock(source, header, block, options)
 }
 
+/** Whether the node is a statement that holds statements of its own. */
+function holdsStatements(node: MermaidAst): boolean {
+  return classifyAgentflowStatement(node)?.kind === "container"
+}
+
 /**
  * Prints a container: the `flow` or `global` line, the statements one level deeper,
  * and the `end` line.
@@ -185,6 +191,7 @@ function printContainer(
         tabWidth,
         useTabs: options.useTabs,
         decidesIndentation: true,
+        holdsStatements,
       },
     ),
     {
@@ -209,11 +216,6 @@ function agentflowBlockRules(
   source: Source,
   options: ParserOptions<MermaidAst>,
 ): BlockRules<AgentflowStatement> {
-  /** Whether the statement holds statements of its own. */
-  function holdsStatements(statement: AgentflowStatement): boolean {
-    return classifyAgentflowStatement(statement).kind === "container"
-  }
-
   return {
     kept: findAgentflowKeptLines(source),
     printedEnd: (statement) => findPrintedEnd(source, statement),

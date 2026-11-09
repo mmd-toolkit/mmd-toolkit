@@ -10,6 +10,7 @@ import type {
   UsecaseStyleStatement,
   UsecaseSystemBoundaryStatement,
 } from "@mmd-toolkit/ast"
+import type { MermaidAst } from "../parser.ts"
 import type { Atom, AtomLayout, GapRule } from "./atoms.ts"
 import { holdsJoiningRegion } from "./kept-lines.ts"
 import {
@@ -62,8 +63,8 @@ interface StereotypeLayout {
   readonly range: Range
 }
 
-/** Exhaustively separates the one body-bearing statement from ordinary lines. */
-export function classifyUsecaseStatement(statement: UsecaseStatement):
+/** What `classifyUsecaseStatement` tells of a statement. */
+type ClassifiedUsecaseStatement =
   | {
       readonly kind: "boundary"
       readonly statement: UsecaseSystemBoundaryStatement
@@ -74,7 +75,21 @@ export function classifyUsecaseStatement(statement: UsecaseStatement):
         UsecaseStatement,
         UsecaseSystemBoundaryStatement
       >
-    } {
+    }
+
+/**
+ * Exhaustively separates the one body-bearing statement from ordinary lines.
+ * A node that is no statement of a use case diagram has no kind.
+ */
+export function classifyUsecaseStatement(
+  statement: UsecaseStatement,
+): ClassifiedUsecaseStatement
+export function classifyUsecaseStatement(
+  statement: MermaidAst,
+): ClassifiedUsecaseStatement | null
+export function classifyUsecaseStatement(
+  statement: MermaidAst,
+): ClassifiedUsecaseStatement | null {
   switch (statement.type) {
     case "UsecaseSystemBoundaryStatement":
       return { kind: "boundary", statement }
@@ -93,9 +108,8 @@ export function classifyUsecaseStatement(statement: UsecaseStatement):
     case "UsecaseAccDescrBlockStatement":
       return { kind: "simple", statement }
     default:
-      throw new Error(
-        `prettier-plugin-mmd: unknown usecase statement ${JSON.stringify(statement satisfies never)}`,
-      )
+      statement satisfies Exclude<MermaidAst, UsecaseStatement>
+      return null
   }
 }
 

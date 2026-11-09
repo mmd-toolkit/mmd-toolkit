@@ -97,6 +97,7 @@ export function printFlowchart(
           statement: indentationOf(bodyOptions, depth),
           tabWidth: options.tabWidth,
           useTabs: options.useTabs,
+          holdsStatements,
         },
       )
       return printAtoms(source, layout, {
@@ -183,6 +184,11 @@ function printSubgraph(
   return printClosedBlock(header, block, endKeyword.value, depth, options)
 }
 
+/** Whether the node is a statement that holds statements of its own. */
+function holdsStatements(node: MermaidAst): boolean {
+  return node.type === "FlowchartSubgraphStatement"
+}
+
 /**
  * The block rules of a flowchart (see `BlockRules`): a subgraph holds
  * statements, and a `;` of its own is dropped at the top level, where the
@@ -192,11 +198,6 @@ function flowchartBlockRules(
   source: Source,
   options: ParserOptions<MermaidAst>,
 ): BlockRules<FlowchartStatement> {
-  /** Whether the statement holds statements of its own. */
-  function holdsStatements(statement: FlowchartStatement): boolean {
-    return statement.type === "FlowchartSubgraphStatement"
-  }
-
   return {
     kept: findFlowchartKeptLines(source),
     printedEnd: (statement) => findPrintedEnd(source, statement),

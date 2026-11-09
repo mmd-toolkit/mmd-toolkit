@@ -24,6 +24,7 @@ import {
   findAccDescrBlockStretches,
   formatDescriptionBlock,
   keptAsWritten,
+  replaceInAtoms,
   walk,
 } from "./layout.ts"
 import {
@@ -37,6 +38,7 @@ import {
   findStructuralToken,
   findTokensBetween,
   isSpaceOrTab,
+  isWhitespace,
 } from "./source.ts"
 import {
   normalizeBlankLabels,
@@ -162,17 +164,21 @@ export function layoutSubgraphHeader(
   // A block, a `;` that stays or a directive on the line stands after the
   // whitespace, which then separates them from the name: only the whitespace
   // at the end of the line is left out, before a `;` that is dropped too.
+  // The run of that whitespace is one space, as in a name that mermaid.js
+  // draws without its runs, unless it is the indentation of a line that the
+  // name takes (docs/flowchart.md, Subgraph header).
   let keptEnd = headerEnd
-  if (
-    subgraph.title === null &&
-    !isOneWord(subgraph.name) &&
-    endsLine(source, subgraph, headerEnd)
-  ) {
+  let runStart: number | undefined
+  if (subgraph.title === null && !isOneWord(subgraph.name)) {
+    let position = headerEnd
     while (
-      keptEnd > subgraph.name.range[0] &&
-      isSpaceOrTab(source.text[keptEnd - 1])
+      position > subgraph.name.range[0] &&
+      isSpaceOrTab(source.text[position - 1])
     )
-      keptEnd--
+      position--
+    if (endsLine(source, subgraph, headerEnd)) keptEnd = position
+    else if (position < headerEnd && !isWhitespace(source.text[position - 1]))
+      runStart = position
   }
   const kept: Atom[] =
     subgraph.title === null
@@ -192,18 +198,19 @@ export function layoutSubgraphHeader(
     )
     addHeadingTitleRules(source, subgraph.title, rules)
   }
-  return {
-    atoms: collectAtoms(
-      source,
-      subgraph.range[0],
-      keptEnd,
-      values,
-      kept,
-    ).filter((atom) => kept.includes(atom) || !startsInside(kept, atom)),
-    rules,
-    outdented: new Set(),
-    lineBreaks: "kept",
+  const atoms = collectAtoms(
+    source,
+    subgraph.range[0],
+    keptEnd,
+    values,
+    kept,
+  ).filter((atom) => kept.includes(atom) || !startsInside(kept, atom))
+  if (runStart !== undefined) {
+    replaceInAtoms(source, atoms, [
+      { range: [runStart, keptEnd], replacement: " " },
+    ])
   }
+  return { atoms, rules, outdented: new Set(), lineBreaks: "kept" }
 }
 
 /**

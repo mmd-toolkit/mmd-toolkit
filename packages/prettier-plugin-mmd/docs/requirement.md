@@ -491,11 +491,14 @@ the next stays touching, as a gap does elsewhere (see
 ends. Mermaid concatenates the native style units whatever whitespace separates
 them: `stroke-dasharray: 5 5` still means `stroke-dasharray:55`, so the Db does
 not change. For example, `fill   : navy, stroke  : black` becomes
-`fill: navy, stroke: black`. A header or exterior line break that ordinarily
-joins does not delay this spacing until another formatting. Style interiors
-containing line separators, owned trivia, and statements with a kept semicolon
-on their physical line retain the existing style layout. The keywords `style`
-and `classDef` keep the case in which they are written (see
+`fill: navy, stroke: black`. A style that starts with the `:` has no whitespace
+before it and one space after it, as any other: `style r :  red   x` is printed
+`style r : red x`. [fixture: styles-and-classes/style-colon-first-run-spaced] A
+header or exterior line break that ordinarily joins does not delay this spacing
+until another formatting. Style interiors containing line separators, owned
+trivia, and statements with a kept semicolon on their physical line retain the
+existing style layout. The keywords `style` and `classDef` keep the case in
+which they are written (see
 [Keywords in one case](./compatibility.md#keywords-in-one-case)). [fixture:
 styles-and-classes/style-unit-padding] [fixture:
 styles-and-classes/class-def-names] [fixture: styles-and-classes/style-names]

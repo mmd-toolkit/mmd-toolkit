@@ -718,10 +718,13 @@ style: `classDef c fill:a\ ,stroke:b` is printed
 style whatever stands before it. [fixture:
 whitespace-between-tokens/style-backslash-before-comma] A space after a
 backslash before the `:` stays as well, since taking it away would escape the
-`:`. A statement stays as written where it holds a comment or a directive, where
-a style is all whitespace, or where a style holds a line break or its line holds
-a kept `;`. [fixture: whitespace-between-tokens/style-blank-style-kept]
-[fixture: whitespace-between-tokens/style-colon-escaped-space-kept] [fixture:
+`:`, and the whitespace after that space goes, as before any `:`:
+`style A fill\   :#f00` is printed `style A fill\ : #f00`. A statement stays as
+written where it holds a comment or a directive, where a style is all
+whitespace, or where a style holds a line break or its line holds a kept `;`.
+[fixture: whitespace-between-tokens/style-blank-style-kept] [fixture:
+whitespace-between-tokens/style-colon-escaped-space-kept] [fixture:
+whitespace-between-tokens/style-colon-escaped-space-run-dropped] [fixture:
 whitespace-between-tokens/style-escaped-space-before-comma] [fixture:
 whitespace-between-tokens/style-comma-beside-directive-kept] [fixture:
 whitespace-between-tokens/style-comma-with-kept-semicolon-kept] A U+2028 or
@@ -739,20 +742,31 @@ and the two give the same Db. A run of spaces and tabs between the words of a
 style is printed as one space, and whether whitespace stands between two words
 stays as written: `classDef c fill:#f00    stroke:#333` is printed
 `classDef c fill: #f00 stroke:#333`. A run inside a single-quoted string and
-inside a comment that is not closed stays as written, and so does the first
-character after a backslash, since CSS reads them as part of the value:
-`font-family:a\   b` is printed `font-family: a\  b`. [fixture:
+inside a comment that is not closed stays as written, and so does the escape
+after a backslash, since CSS reads it as part of the value: the hexadecimal
+digits (at most six) and the one space or tab that follows them, or else the
+next character. The run after the escape is a run like any other:
+`font-family:a\   b` is printed `font-family: a\  b`,
+`font-family:Arial\20   Black` is printed `font-family: Arial\20  Black`, and
+`font-family:Arial\0000201   Black`, where the escape ends after six digits, is
+printed `font-family: Arial\0000201 Black`. [fixture:
 whitespace-between-tokens/style-inner-whitespace-collapsed] [fixture:
 whitespace-between-tokens/style-words-run-spaced] [fixture:
 whitespace-between-tokens/style-string-runs-kept] [fixture:
 whitespace-between-tokens/style-backslash-run-spaced] [fixture:
+whitespace-between-tokens/style-hex-escape-run-spaced] [fixture:
+whitespace-between-tokens/style-hex-escape-tab-run-spaced] [fixture:
+whitespace-between-tokens/style-hex-escape-seven-digits-run-spaced] [fixture:
 whitespace-between-tokens/style-words-directive-kept] `linkStyle default`,
 `classDef`, and `style` use the same form as ER and requirement (see
 [Styles that are drawn the same](./compatibility.md#styles-that-are-drawn-the-same)).
 
 A style that starts with the `:`, and one whose `:` follows a backslash and a
-space, have the runs between their words printed as one space too, as CSS drops
-both writings. `style A :red   x` is printed `style A :red x`. [fixture:
+space, are printed as any other style: no whitespace before the `:` besides the
+space that the backslash escapes, one space after it, and the runs between their
+words as one space, as CSS drops the whitespace around the `:` and reads a run
+as one. `style A :  red   x` is printed `style A : red x`, and
+`style A fill\ :red   x` is printed `style A fill\ : red x`. [fixture:
 whitespace-between-tokens/style-colon-first-run-spaced] [fixture:
 whitespace-between-tokens/style-escaped-space-run-spaced] A comment that is not
 closed runs to the end of the style, and the runs in it stay. [fixture:
@@ -1795,20 +1809,36 @@ data-blocks/use-tabs-folded-empty-lines-kept]
 
 The indentation of that line is the whitespace written at the start of the line
 where the statement starts. A directive that stands before the statement on its
-line goes with it, and the line is printed as it was written from its start. A
-statement that follows others on its line, as `A@{ … }` does in `C; A@{ … }`,
-goes on a line of its own, since the printer puts a statement on a line of its
-own, and that line starts with the indentation written at the start of the
-source line; the statements before it, which hold no block, are indented as
-usual, and only the statement that has the block needs its line to stay with its
-lines. [fixture: data-blocks/use-tabs-directive-before-on-line] [fixture:
+line goes with it, and the line is printed as it was written from its start,
+except that the run of whitespace between the directive and the statement
+becomes one space, as under [Directives](#directives). A statement that follows
+others on its line, as `A@{ … }` does in `C; A@{ … }`, goes on a line of its
+own, since the printer puts a statement on a line of its own, and that line
+starts with the indentation written at the start of the source line; the
+statements before it, which hold no block, are indented as usual, and only the
+statement that has the block needs its line to stay with its lines. [fixture:
+data-blocks/use-tabs-directive-before-on-line] [fixture:
 data-blocks/use-tabs-not-first-on-line] [fixture:
 data-blocks/use-tabs-two-statements-before]
+
+The whitespace written at the start of a line is the indentation of the first
+statement of the line, so it is the indentation of a statement of the same depth
+only. The header of a container before the statement on its line, as in
+`subgraph s; A@{ … }`, makes the statement a statement inside the container, one
+level deeper, and the `end` of a container before it, as in `end; A@{ … }`,
+makes it a statement after the container, shallower than the lines before it.
+The written indentation is that of the header or of the `end`, and nothing was
+written for the depth of the statement. The printer then sets the indentation of
+the node line, and the lines of the block move with it, as in the next
+paragraph. [fixture: data-blocks/use-tabs-subgraph-header-moved] [fixture:
+data-blocks/use-tabs-nested-subgraph-header-moved] [fixture:
+data-blocks/use-tabs-end-moved]
 
 Where the printer must set the indentation of the node line itself, the lines of
 the block move with it, as without `useTabs`, indented with spaces: the header
 of an agentflow container, whose `end` stands at the indentation of the header,
-and a kanban node, whose indentation mermaid.js reads as its level (see
+a statement after the header or the `end` of a container on its line (see
+above), and a kanban node, whose indentation mermaid.js reads as its level (see
 [Metadata blocks](./agentflow.md#metadata-blocks) and
 [Data blocks](./kanban.md#data-blocks)). The lines then stand right where a tab
 is as wide as `tabWidth`, whatever the author wrote, and off by the difference
@@ -2304,12 +2334,21 @@ generated id, since mermaid.js makes the name the id only where the text of the
 name holds no whitespace. A name of several words, as `subgraph S1 S2` or
 `subgraph "o p"`, has a generated id with or without whitespace after it, so the
 whitespace at the end of its line is left out, but not the whitespace that
-separates it from a block, a `;` that stays or a directive on its line. Before a
-directive it keeps whether it holds whitespace, a run becoming one space (see
+separates it from a block, a `;` that stays or a directive on its line. That
+whitespace keeps whether it is there, a run becoming one space (see
 [Directives between tokens](./compatibility.md#directives-between-tokens)), also
 where whitespace after the directive makes mermaid.js read the directive as part
-of the name. [fixture:
+of the name. It is so for a markdown string and in a swimlane diagram too, where
+the runs inside the name stay, since mermaid.js draws them there, while the
+whitespace at the end of the name is drawn the same whatever its width:
+``subgraph "`o p`"   %%{init: {}}%%`` is printed
+``subgraph "`o p`" %%{init: {}}%%``. The indentation of the next line that a
+name ending with `end` takes is no such whitespace (see below). [fixture:
 subgraph-header/name-several-words-directive-run-collapsed] [fixture:
+subgraph-header/name-markdown-directive-run-collapsed] [fixture:
+subgraph-header/name-swimlane-directive-run-collapsed] [fixture:
+subgraph-header/name-swimlane-quoted-directive-run-collapsed] [fixture:
+subgraph-header/name-swimlane-before-block-run-collapsed] [fixture:
 subgraph-header/name-several-words-directive-trailing-dropped] [fixture:
 subgraph-header/name-several-words-two-directives-run-collapsed] [fixture:
 subgraph-header/name-trailing-run-collapsed] [fixture:

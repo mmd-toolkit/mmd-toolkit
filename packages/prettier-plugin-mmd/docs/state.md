@@ -453,26 +453,30 @@ whitespace before it and one space after it, as in ER and requirement (see
 `classDef c fill: #f00, color: white`. A run of spaces and tabs between the
 words of a style is printed as one space, and whether whitespace stands between
 two words stays as written; a run inside a string, a comment, or the parentheses
-of `url(`, and the first character after a backslash, stay as written, since CSS
-reads them as part of the value. [fixture:
+of `url(`, and the escape after a backslash, stay as written, since CSS reads
+them as part of the value: the hexadecimal digits and the one space or tab that
+follows them, or else the next character. [fixture:
 whitespace-between-tokens/style-words-run-spaced] [fixture:
 whitespace-between-tokens/style-string-runs-kept] [fixture:
 whitespace-between-tokens/style-url-runs-kept] [fixture:
 whitespace-between-tokens/style-comment-runs-kept] [fixture:
-whitespace-between-tokens/style-backslash-run-spaced] mermaid.js reads the
+whitespace-between-tokens/style-backslash-run-spaced] [fixture:
+whitespace-between-tokens/style-hex-escape-run-spaced] mermaid.js reads the
 whitespace around the `,` as nothing in a state diagram, but keeps the
 whitespace around the `:` in the Db; the figure is the same (see
 [Styles that are drawn the same](./compatibility.md#styles-that-are-drawn-the-same)).
 [fixture: whitespace-between-tokens/style-colon-spaced] A backslash does not
 escape a `,` here: `fill:a\,b ,stroke:c` is printed `fill: a\, b, stroke: c`. A
 space after a backslash before the `:` stays, since taking it away would escape
-the `:`. [fixture: whitespace-between-tokens/style-backslash-before-comma] A
-space after a backslash that ends a style is read as nothing here:
+the `:`, and the whitespace after that space goes. [fixture:
+whitespace-between-tokens/style-backslash-before-comma] A space after a
+backslash that ends a style is read as nothing here:
 `style S1 stroke-width:3px\ ,stroke:#0f0` is printed
 `style S1 stroke-width: 3px\, stroke: #0f0`, and the pixels were the same.
 [fixture: whitespace-between-tokens/style-backslash-space-dropped] [fixture:
-whitespace-between-tokens/style-colon-escaped-space-kept] A statement stays as
-written where it holds a comment or a directive, where a style is all
+whitespace-between-tokens/style-colon-escaped-space-kept] [fixture:
+whitespace-between-tokens/style-colon-escaped-space-run-dropped] A statement
+stays as written where it holds a comment or a directive, where a style is all
 whitespace, or where a style holds a line break or its line holds a kept `;`.
 [fixture: whitespace-between-tokens/comma-kept] [fixture:
 whitespace-between-tokens/style-comma-spaced] [fixture:
@@ -498,7 +502,9 @@ keyword-case/pseudo-states-one-form] [fixture:
 keyword-case/accessibility-alias-direction-one-form]
 
 A style that starts with the `:`, and one whose `:` follows a backslash and a
-space, have the runs between their words printed as one space too. [fixture:
+space, are printed as any other style: one space after the `:`, and the runs
+between their words as one space. `style A :  red   x` is printed
+`style A : red x`. [fixture:
 whitespace-between-tokens/style-colon-first-run-spaced] [fixture:
 whitespace-between-tokens/style-escaped-space-run-spaced] A string or `url(`
 that is not closed runs to the end of the style, and the runs in it stay.
@@ -1555,8 +1561,8 @@ diagram or the input would be rejected:
 - the text of a value: a description, a label, a note, an id after `as`, a
   pseudostate name, a style, apart from the whitespace around its first `:` and
   its `,` and the runs between its words outside strings, comments, `url(`, and
-  the first character after a backslash, the CSS class of a `class` statement,
-  and the text of `accTitle`; [fixture:
+  the escape after a backslash, the CSS class of a `class` statement, and the
+  text of `accTitle`; [fixture:
   whitespace-between-tokens/style-string-runs-kept] [fixture:
   descriptions-and-labels/acc-text-runs-collapsed] [fixture: aliases/id-kept]
 - what follows the id of a note on one line, the second description of an alias

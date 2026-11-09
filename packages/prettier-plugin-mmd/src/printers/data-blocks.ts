@@ -74,6 +74,44 @@ function dataBlocksOf(source: Source): readonly Node[] {
   return blocks
 }
 
+/** The statements of each source that hold statements, found once. */
+const containersBySource = new WeakMap<Source, readonly Node[]>()
+
+/**
+ * The statements of the source that hold statements, such as the subgraphs of a
+ * flowchart, in source order. One diagram type has one `holdsStatements`.
+ */
+function containersOf(
+  source: Source,
+  holdsStatements: (node: Node) => boolean,
+): readonly Node[] {
+  const cached = containersBySource.get(source)
+  if (cached !== undefined) return cached
+  const containers = findNodes(source.root.body, holdsStatements)
+  containersBySource.set(source, containers)
+  return containers
+}
+
+/**
+ * Whether the header of a statement that holds statements, or its `end`, stands
+ * on the line of the statement in `range`, before it: the printer puts the
+ * statement on a line of its own at its own depth, which is not the depth of
+ * the first statement of the line, where the whitespace at the start of the
+ * line was written (`subgraph s; A@{`, and `end; A@{`).
+ */
+function followsContainerBoundary(
+  source: Source,
+  range: Range,
+  holdsStatements: (node: Node) => boolean,
+): boolean {
+  const lineStart = lineStartOf(source, range[0])
+  return containersOf(source, holdsStatements).some(
+    (container) =>
+      (lineStart <= container.range[0] && container.range[0] < range[0]) ||
+      (lineStart < container.range[1] && container.range[1] <= range[0]),
+  )
+}
+
 /** Where the statement that holds the block stands, and what is read. */
 export interface DataBlockPlacement {
   /** The kept lines of the diagram: a block on one of them stays as written. */
@@ -94,6 +132,11 @@ export interface DataBlockPlacement {
    * agentflow container that the header opens stands at the same indentation.
    */
   readonly decidesIndentation?: boolean
+  /**
+   * Whether a node of the tree is a statement that holds statements, such as a
+   * subgraph (see `followsContainerBoundary`).
+   */
+  readonly holdsStatements: (node: Node) => boolean
   /**
    * Whether the layout holds the statement as one atom that is printed as
    * written, as a kanban node is, so the blocks lie inside it and not in atoms
@@ -318,16 +361,22 @@ function splitsBlocks(placement: DataBlockPlacement): boolean {
  * only, and the node line alone, indented to the depth of the statement, would
  * stand right of the content and the closing `}` wherever they were written no
  * deeper than the node line (docs/flowchart.md, Data blocks). A statement whose
- * indentation the printer decides (see `DataBlockPlacement.decidesIndentation`)
- * prints as usual, and the lines of its block move with the node line, as
- * without tabs (see `movesLines`).
+ * indentation the printer decides (see `DataBlockPlacement.decidesIndentation`),
+ * or that follows the header or the `end` of a container on its line (see
+ * `followsContainerBoundary`), prints as usual, and the lines of its block move
+ * with the node line, as without tabs (see `movesLines`).
  */
 function keepsStatementAsWritten(
   source: Source,
   range: Range,
   useTabs: boolean | undefined,
+  holdsStatements: (node: Node) => boolean,
 ): boolean {
-  if (useTabs !== true) return false
+  if (
+    useTabs !== true ||
+    followsContainerBoundary(source, range, holdsStatements)
+  )
+    return false
   const all = dataBlocksOf(source)
   const first = findFirstIndex(all, (block) => block.range[0] >= range[0])
   const afterLast = findFirstIndex(all, (block) => block.range[1] > range[1])
@@ -349,8 +398,10 @@ export function writtenIndentationOfBlockStatement(
   source: Source,
   range: Range,
   useTabs: boolean | undefined,
+  holdsStatements: (node: Node) => boolean,
 ): string | undefined {
-  if (!keepsStatementAsWritten(source, range, useTabs)) return undefined
+  if (!keepsStatementAsWritten(source, range, useTabs, holdsStatements))
+    return undefined
   const start = lineStartOf(source, range[0])
   let end = start
   while (end < range[0] && isSpaceOrTab(source.text[end])) end++
@@ -364,17 +415,20 @@ export function writtenIndentationOfBlockStatement(
  * statements, such as a subgraph, is no such statement: its range holds the
  * blocks of the statements inside it.
  */
-export function writtenIndentationRule<
-  Statement extends { readonly range: Range },
->(
+export function writtenIndentationRule(
   source: Source,
   useTabs: boolean | undefined,
-  holdsStatements: (statement: Statement) => boolean,
-): (statement: Statement) => string | undefined {
+  holdsStatements: (node: Node) => boolean,
+): (statement: Node) => string | undefined {
   return (statement) =>
     holdsStatements(statement)
       ? undefined
-      : writtenIndentationOfBlockStatement(source, statement.range, useTabs)
+      : writtenIndentationOfBlockStatement(
+          source,
+          statement.range,
+          useTabs,
+          holdsStatements,
+        )
 }
 
 /**
@@ -394,7 +448,12 @@ function printStatementAsWritten(
     first === undefined ||
     last === undefined ||
     placement.decidesIndentation === true ||
-    !keepsStatementAsWritten(source, range, placement.useTabs)
+    !keepsStatementAsWritten(
+      source,
+      range,
+      placement.useTabs,
+      placement.holdsStatements,
+    )
   )
     return undefined
   return keptAsWritten(first.start, last.end)

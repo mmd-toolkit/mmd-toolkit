@@ -323,18 +323,21 @@ single-space-gaps/style-colon-spaced] A run of spaces and tabs between the words
 of a style is printed as one space, and whether whitespace stands between two
 words stays as written, as in
 [flowchart](./flowchart.md#whitespace-between-tokens): a run inside a
-single-quoted string, inside a comment that is not closed, and the first
-character after a backslash stay. [fixture:
+single-quoted string, inside a comment that is not closed, and the escape after
+a backslash stay: the hexadecimal digits and the one space or tab that follows
+them, or else the next character. [fixture:
 single-space-gaps/style-words-run-spaced] [fixture:
-single-space-gaps/style-string-runs-kept] A `linkStyle` with link numbers keeps
-whether whitespace follows the `,` before a style that starts with `fill`, a run
-of whitespace becoming one space; `fill-opacity` counts, as mermaid.js reads
-only the start. [fixture: single-space-gaps/link-style-fill-after-comma-kept]
-[fixture: single-space-gaps/link-style-fill-opacity-after-comma-kept] A
-`linkStyle`, with link numbers or `default`, keeps it for a style that starts
-with `stroke:` too, which mermaid.js reads at the start where the look is
-`handDrawn`. [fixture: single-space-gaps/link-style-stroke-after-comma-kept] The
-other styles of such a statement, and `linkStyle default`, use the one form (see
+single-space-gaps/style-string-runs-kept] [fixture:
+single-space-gaps/style-hex-escape-run-spaced] A `linkStyle` with link numbers
+keeps whether whitespace follows the `,` before a style that starts with `fill`,
+a run of whitespace becoming one space; `fill-opacity` counts, as mermaid.js
+reads only the start. [fixture:
+single-space-gaps/link-style-fill-after-comma-kept] [fixture:
+single-space-gaps/link-style-fill-opacity-after-comma-kept] A `linkStyle`, with
+link numbers or `default`, keeps it for a style that starts with `stroke:` too,
+which mermaid.js reads at the start where the look is `handDrawn`. [fixture:
+single-space-gaps/link-style-stroke-after-comma-kept] The other styles of such a
+statement, and `linkStyle default`, use the one form (see
 [Styles that are drawn the same](./compatibility.md#styles-that-are-drawn-the-same)).
 In a `linkStyle` or a `classDef`, which can reach a link, a name that ends with
 `stroke` keeps whether whitespace stands between it and the `:`, a run of
@@ -358,12 +361,15 @@ backslash is part of its style, and a space between the backslash and the `,`
 stays, since taking it away would make the `,` part of the style; in a `style`
 and a `linkStyle` the `,` ends a style whatever stands before it. A space after
 a backslash before the `:` stays as well, since taking it away would escape the
-`:`. [fixture: single-space-gaps/style-escaped-space-before-comma] [fixture:
+`:`, and the whitespace after that space goes, as in
+[flowchart](./flowchart.md#whitespace-between-tokens). [fixture:
+single-space-gaps/style-escaped-space-before-comma] [fixture:
 single-space-gaps/style-backslash-before-comma] [fixture:
-single-space-gaps/style-colon-escaped-space-kept] A statement stays as written
-where it holds a directive or a comment, where a style is all whitespace, or
-where a style holds a line break, U+2028, or U+2029, or its line holds a kept
-`;`. [fixture: single-space-gaps/classdef-first-tab] [fixture:
+single-space-gaps/style-colon-escaped-space-kept] [fixture:
+single-space-gaps/style-colon-escaped-space-run-dropped] A statement stays as
+written where it holds a directive or a comment, where a style is all
+whitespace, or where a style holds a line break, U+2028, or U+2029, or its line
+holds a kept `;`. [fixture: single-space-gaps/classdef-first-tab] [fixture:
 single-space-gaps/linkstyle-first-spaces] [fixture:
 single-space-gaps/style-directive-gap] [fixture:
 single-space-gaps/style-first-spaces] [fixture:
@@ -372,8 +378,10 @@ single-space-gaps/style-comma-before-dropped] [fixture:
 single-space-gaps/style-comma-beside-directive-kept] [test: agentflow: U+2028
 before the comma of a style statement]
 
-A style that starts with the `:` has the runs between its words printed as one
-space too. [fixture: single-space-gaps/style-colon-first-run-spaced]
+A style that starts with the `:` is printed as any other: one space after the
+`:`, and the runs between its words as one space. `style A :  red   x` is
+printed `style A : red x`. [fixture:
+single-space-gaps/style-colon-first-run-spaced]
 
 The tab after linkStyle and the tab before an interpolation name each supply the
 grammar's required single whitespace character; both remain written. [fixture:
@@ -580,7 +588,12 @@ The header of a `flow` or `global` container moves its block in the same way.
 printed as written, unlike a statement: the `end` of the container stands at the
 indentation that the printer gives the header, so the header takes it, and the
 lines of its block move with it, as without `useTabs`. [fixture:
-metadata-blocks/use-tabs-container-header-indented]
+metadata-blocks/use-tabs-container-header-indented] A statement that stands
+after the header on its line, as `A@{ … }` does in `flow G; A@{ … }`, is a
+statement inside the container, and the indentation written at the start of the
+line is that of the header, so the statement is not printed as written either
+(see [Data blocks](./flowchart.md#data-blocks)). [fixture:
+metadata-blocks/use-tabs-container-header-statement-moved]
 
 A block after an arrow's newline retains its columns because it starts after the
 statement's first line, and a statement with two blocks, of one line or of

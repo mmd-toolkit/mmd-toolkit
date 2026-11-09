@@ -138,22 +138,18 @@ export function styleStatementRules(
  * Keep property and value text, changing only the first colon's padding and
  * the runs of spaces and tabs between the words of a style, which are printed
  * as one space (docs/er.md and docs/requirement.md, Styles and classes). A
- * style with a `:` at its start has no padding to set before it, and only the
- * runs change.
+ * style with a `:` at its start has no padding to set before it.
  */
 export function printStyleUnitSpacing(source: Source, style: Node): Doc {
   const [start, end] = style.range
-  const colon = source.text.indexOf(":", start)
-  if (colon === -1 || colon >= end || colon === start)
-    return printWordGaps(source, start, end)
-  let propertyEnd = colon
-  while (isSpaceOrTab(source.text[propertyEnd - 1])) propertyEnd--
-  let valueStart = colon + 1
-  while (isSpaceOrTab(source.text[valueStart])) valueStart++
+  const gap = findColonGap(source.text, start, end)
+  if (gap === undefined) return printWordGaps(source, start, end)
   return [
-    printWordGaps(source, start, propertyEnd),
+    printWordGaps(source, start, gap.nameEnd),
     ":",
-    valueStart < end ? [" ", printWordGaps(source, valueStart, end)] : "",
+    gap.valueStart < end
+      ? [" ", printWordGaps(source, gap.valueStart, end)]
+      : "",
   ]
 }
 
@@ -177,9 +173,8 @@ function printWordGaps(source: Source, start: number, end: number): Doc {
  * at `[start, end)`, as one space. CSS reads a run as one whitespace, so the
  * figure is the same, except where the run is a character of the value: inside
  * a string (`"…"` or `'…'`), inside a comment, inside the parentheses of
- * `url(`, and the first character after a backslash, which CSS reads as escaped,
- * whether it is a space or not. A string, a comment, or `url(` that is not
- * closed runs to the end of the text.
+ * `url(`, and the escape after a backslash (see `endOfEscape`). A string, a
+ * comment, or `url(` that is not closed runs to the end of the text.
  * The runs at the ends of the text are the business of the caller.
  */
 export function styleRunEdits(
@@ -193,9 +188,7 @@ export function styleRunEdits(
   while (position < end) {
     const character = text[position]
     if (character === "\\") {
-      // CSS reads the first character after a backslash as escaped, also a
-      // space or a tab; a run goes on after it.
-      position += 2
+      position = endOfEscape(text, position, end)
     } else if (character === '"' || character === "'") {
       position = endOfQuoted(text, position, end)
     } else if (text.startsWith("/*", position)) {
@@ -216,6 +209,32 @@ export function styleRunEdits(
     } else position++
   }
   return edits
+}
+
+/**
+ * The offset after the escape that starts with the backslash at `backslashAt`.
+ * CSS reads one to six hexadecimal digits after a backslash, and one space or
+ * tab after them, as the escape; any other character after a backslash, a
+ * space or a tab included, is the escaped character. A run of whitespace goes
+ * on after the escape (`Arial\20  Black` is `Arial`, the escape `\20 `, a space,
+ * and `Black`).
+ */
+function endOfEscape(text: string, backslashAt: number, end: number): number {
+  let digits = 0
+  while (
+    digits < 6 &&
+    backslashAt + 1 + digits < end &&
+    isHexDigit(text[backslashAt + 1 + digits])
+  )
+    digits++
+  if (digits === 0) return backslashAt + 2
+  const after = backslashAt + 1 + digits
+  return after < end && isSpaceOrTab(text[after]) ? after + 1 : after
+}
+
+/** Whether a character is a hexadecimal digit. */
+function isHexDigit(character: string | undefined): boolean {
+  return character !== undefined && "0123456789abcdefABCDEF".includes(character)
 }
 
 /** The offset after the string that starts with the quote at `quoteAt`. */
@@ -875,7 +894,9 @@ function trimStyle(
 /**
  * Adds the edit that takes the whitespace before the first `:` of a style away
  * and puts one space after it, where the value is not empty. A style without
- * a name before the `:`, or with an escaped space before it, stays. Where
+ * a name before the `:` has no whitespace before it to take away. The space
+ * that a backslash before the `:` escapes stays, and the whitespace after it
+ * goes: CSS reads the escaped space as part of the name. Where
  * `keepsGapAfterStroke` is set and the name ends with `stroke`, one space
  * stays before the `:` if whitespace stood there.
  */
@@ -891,14 +912,9 @@ export function addColonEdit(
     readonly keepsGapAfterLabelName?: boolean
   } = {},
 ): void {
-  const colon = source.text.indexOf(":", start)
-  if (colon <= start || colon >= end) return
-  let nameEnd = colon
-  while (nameEnd > start && isSpaceOrTab(source.text[nameEnd - 1])) nameEnd--
-  if (nameEnd === start) return
-  if (nameEnd < colon && source.text[nameEnd - 1] === "\\") return
-  let valueStart = colon + 1
-  while (valueStart < end && isSpaceOrTab(source.text[valueStart])) valueStart++
+  const gap = findColonGap(source.text, start, end)
+  if (gap === undefined) return
+  const { nameEnd, colon, valueStart } = gap
   const name = source.text.slice(start, nameEnd)
   const spaceBeforeColon =
     nameEnd < colon &&
@@ -908,6 +924,43 @@ export function addColonEdit(
     range: [nameEnd, valueStart],
     replacement: `${spaceBeforeColon ? " " : ""}:${valueStart < end ? " " : ""}`,
   })
+}
+
+/** Where the first `:` of a style stands, and the text around it. */
+interface ColonGap {
+  /**
+   * The end of the name that stays: where the whitespace before the `:` that
+   * goes away starts, after the space that a backslash escapes.
+   */
+  readonly nameEnd: number
+  /** The offset of the `:`. */
+  readonly colon: number
+  /** The offset of the first character after the whitespace after the `:`. */
+  readonly valueStart: number
+}
+
+/**
+ * The first `:` of the style at `[start, end)` and the whitespace around it,
+ * or undefined where the style has no `:`. A style that starts with the `:`
+ * has no name before it. A backslash directly before the whitespace before the
+ * `:` escapes its first space, which CSS reads as a character of the name, so
+ * that space stays and the whitespace after it goes.
+ */
+function findColonGap(
+  text: string,
+  start: number,
+  end: number,
+): ColonGap | undefined {
+  const colon = text.indexOf(":", start)
+  if (colon === -1 || colon >= end) return undefined
+  let valueStart = colon + 1
+  while (valueStart < end && isSpaceOrTab(text[valueStart])) valueStart++
+  let nameEnd = colon
+  while (nameEnd > start && isSpaceOrTab(text[nameEnd - 1])) nameEnd--
+  if (nameEnd === start && colon > start) return undefined
+  const escapesSpace =
+    nameEnd < colon && endsWithEscape(text.slice(start, nameEnd))
+  return { nameEnd: escapesSpace ? nameEnd + 1 : nameEnd, colon, valueStart }
 }
 
 /**
