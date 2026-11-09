@@ -295,15 +295,16 @@ const formatted = await format(source, {
 })
 ```
 
-`resolveConfig(fileUrlOrPath, options)` は、
-Prettier の `resolveConfig` と同じ引数を受け取り、
+`resolveConfig(fileUrlOrPath)` は、
+Prettier の `resolveConfig` と同じくパスかファイル URL を受け取り、
+`.editorconfig` も含めてコマンドと同じように設定を探し、
 そのパスの設定からコマンドが読むオプションを返す Promise を返します。
 適用する設定がなければ `null` を返します。
 [設定](#設定)のオプションから、コマンドが設定から読まないものを除いて返します。
 コマンドが自分で決める `parser`、`plugins`、`endOfLine` と、
 図全体を整形するために使わない `rangeStart`、`rangeEnd` です。
-Prettier のものと異なり、コマンドと同じく、
-`editorconfig: false` を渡さないかぎり `.editorconfig` を読みます。
+コマンドには設定の探し方を変えるオプションがないため、
+`resolveConfig` もオプションを受け取りません。
 
 `format(source, options)` は、整形したテキストを返す Promise を返します。
 オプションは `resolveConfig` が返せるものと、

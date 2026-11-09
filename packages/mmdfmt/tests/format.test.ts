@@ -277,16 +277,20 @@ describe("From a script: resolveConfig", () => {
     )
   })
 
-  it("does not read .editorconfig with editorconfig: false", async () => {
+  it("takes no options, and reads .editorconfig as the command does", async () => {
     project.write({
       ".editorconfig":
         "[*]\nindent_style = space\nindent_size = 4\nmax_line_length = 100\n",
     })
-    expect(
-      await resolveConfig(path.join(project.cwd, "a.mmd"), {
-        editorconfig: false,
-      }),
-    ).toStrictEqual(null)
+    const filepath = path.join(project.cwd, "a.mmd")
+    // @ts-expect-error -- resolveConfig takes no options.
+    const config = await resolveConfig(filepath, { editorconfig: false })
+    expect(config).toStrictEqual({
+      useTabs: false,
+      tabWidth: 4,
+      printWidth: 100,
+    })
+    expect(await resolveConfig(filepath)).toStrictEqual(config)
   })
 
   it("resolves a file URL the same way as its path", async () => {

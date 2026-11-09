@@ -1,5 +1,5 @@
 import path from "node:path"
-import type { Options, ResolveConfigOptions } from "prettier"
+import type { Options } from "prettier"
 import { resolveConfig as resolvePrettierConfig } from "prettier"
 import { formatDiagramText, rejectionOf } from "./diagram.ts"
 import type { FormatResult, PositionsIn } from "./diagnostic.ts"
@@ -64,18 +64,16 @@ export function kindOf(file: string): FileKind | undefined {
 }
 
 /**
- * Resolves the configuration of a path with Prettier's arguments, reading
- * `.editorconfig` unless `editorconfig: false` is given, as the command reads
- * it, and returns the options that the command reads from it, or `null` when no
- * configuration applies (README, From a script).
+ * Resolves the configuration of a path or a file URL as the command does,
+ * `.editorconfig` included, and returns the options that the command reads
+ * from it, or `null` when no configuration applies (README, From a script). It
+ * takes no options: the command has none for how it finds a configuration.
  */
 export async function resolveConfig(
   fileUrlOrPath: string | URL,
-  options?: ResolveConfigOptions,
 ): Promise<ConfigOptions | null> {
   const config = await resolvePrettierConfig(fileUrlOrPath, {
-    ...options,
-    editorconfig: options?.editorconfig ?? true,
+    editorconfig: true,
   })
   if (config === null) return null
   // The options that the command does not read are left out by name; the

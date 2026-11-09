@@ -262,14 +262,15 @@ const formatted = await format(source, {
 })
 ```
 
-`resolveConfig(fileUrlOrPath, options)` takes the arguments of Prettier's
-`resolveConfig` and returns a promise of the options that the command reads from
-the configuration of that path, or `null` where no configuration applies. They
-are the options of the configuration (see [Configuration](#configuration))
-without those that the command does not read from it: `parser`, `plugins`, and
-`endOfLine`, which it sets itself, and `rangeStart` and `rangeEnd`, since it
-formats whole diagrams. Unlike Prettier's, it reads `.editorconfig` unless it is
-given `editorconfig: false`, as the command reads it.
+`resolveConfig(fileUrlOrPath)` takes a path or a file URL, as Prettier's
+`resolveConfig` does, and returns a promise of the options that the command
+reads from the configuration of that path, found as the command finds it,
+`.editorconfig` included, or `null` where no configuration applies. They are the
+options of the configuration (see [Configuration](#configuration)) without those
+that the command does not read from it: `parser`, `plugins`, and `endOfLine`,
+which it sets itself, and `rangeStart` and `rangeEnd`, since it formats whole
+diagrams. It takes no options, since the command has none for how it finds a
+configuration.
 
 `format(source, options)` returns a promise of the formatted text. Its options
 are those that `resolveConfig` can return, and `filepath`, whose ending says
