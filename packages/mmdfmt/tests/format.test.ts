@@ -232,15 +232,10 @@ describe("From a script: resolveConfig", () => {
       printWidth: 100,
       tabWidth: 4,
       useTabs: false,
-      embeddedLanguageFormatting: undefined,
-      singleQuote: undefined,
-      bracketSpacing: undefined,
-      proseWrap: undefined,
-      trailingComma: undefined,
     })
   })
 
-  it("returns only the eight options that mmdfmt reads", async () => {
+  it("returns only the options of the eight that the configuration sets", async () => {
     project.write({
       ".prettierrc.json": JSON.stringify({
         tabWidth: 3,
@@ -254,15 +249,23 @@ describe("From a script: resolveConfig", () => {
       }),
     })
     expect(await resolveConfig(path.join(project.cwd, "a.mmd"))).toStrictEqual({
-      printWidth: undefined,
       tabWidth: 3,
-      useTabs: undefined,
-      embeddedLanguageFormatting: undefined,
       singleQuote: true,
-      bracketSpacing: undefined,
-      proseWrap: undefined,
-      trailingComma: undefined,
     })
+  })
+
+  it("keeps a default that the caller spreads before the configuration", async () => {
+    project.write({ ".prettierrc.json": '{ "singleQuote": true }' })
+    const filepath = path.join(project.cwd, "a.mmd")
+    const options = {
+      tabWidth: 4,
+      ...(await resolveConfig(filepath)),
+      filepath,
+    }
+    expect(options).toStrictEqual({ tabWidth: 4, singleQuote: true, filepath })
+    expect(await format(diagram, options)).toEqual(
+      "flowchart LR\n    A --> B\n",
+    )
   })
 
   it("formats the whole diagram when the configuration sets rangeStart and rangeEnd", async () => {
@@ -282,14 +285,7 @@ describe("From a script: resolveConfig", () => {
         '{ "overrides": [{ "files": "*.mmd", "options": { "tabWidth": 4 } }, { "files": "*.md", "options": { "tabWidth": 6 } }] }',
     })
     expect(await resolveConfig(path.join(project.cwd, "a.mmd"))).toStrictEqual({
-      printWidth: undefined,
       tabWidth: 4,
-      useTabs: undefined,
-      embeddedLanguageFormatting: undefined,
-      singleQuote: undefined,
-      bracketSpacing: undefined,
-      proseWrap: undefined,
-      trailingComma: undefined,
     })
   })
 
@@ -299,14 +295,7 @@ describe("From a script: resolveConfig", () => {
         '{ "overrides": [{ "files": "*.mmd", "options": { "tabWidth": 4 } }, { "files": "*.md", "options": { "tabWidth": 6 } }] }',
     })
     expect(await resolveConfig(path.join(project.cwd, "a.md"))).toStrictEqual({
-      printWidth: undefined,
       tabWidth: 6,
-      useTabs: undefined,
-      embeddedLanguageFormatting: undefined,
-      singleQuote: undefined,
-      bracketSpacing: undefined,
-      proseWrap: undefined,
-      trailingComma: undefined,
     })
   })
 
@@ -328,11 +317,6 @@ describe("From a script: resolveConfig", () => {
       printWidth: 100,
       tabWidth: 4,
       useTabs: false,
-      embeddedLanguageFormatting: undefined,
-      singleQuote: undefined,
-      bracketSpacing: undefined,
-      proseWrap: undefined,
-      trailingComma: undefined,
     })
     expect(await resolveConfig(filepath)).toStrictEqual(config)
   })
@@ -342,14 +326,7 @@ describe("From a script: resolveConfig", () => {
     const filepath = path.join(project.cwd, "a.mmd")
     const config = await resolveConfig(filepath)
     expect(config).toStrictEqual({
-      printWidth: undefined,
       tabWidth: 3,
-      useTabs: undefined,
-      embeddedLanguageFormatting: undefined,
-      singleQuote: undefined,
-      bracketSpacing: undefined,
-      proseWrap: undefined,
-      trailingComma: undefined,
     })
     expect(await resolveConfig(pathToFileURL(filepath))).toStrictEqual(config)
   })
@@ -373,11 +350,6 @@ describe("From a script: resolveConfig", () => {
       printWidth: 37,
       tabWidth: 4,
       useTabs: true,
-      embeddedLanguageFormatting: undefined,
-      singleQuote: undefined,
-      bracketSpacing: undefined,
-      proseWrap: undefined,
-      trailingComma: undefined,
     })
     const result = await project.run(["--stdin-filepath", "a.md"], source)
     expect(result).toEqual({
@@ -408,12 +380,6 @@ describe("From a script: resolveConfig", () => {
     expect(await resolveConfig(filepath)).toStrictEqual({
       printWidth: 37,
       tabWidth: 4,
-      useTabs: undefined,
-      embeddedLanguageFormatting: undefined,
-      singleQuote: undefined,
-      bracketSpacing: undefined,
-      proseWrap: undefined,
-      trailingComma: undefined,
     })
     const result = await project.run(["--stdin-filepath", "a.mmd"], source)
     expect(result).toEqual({
@@ -468,38 +434,17 @@ describe("From a script: clearConfigCache", () => {
     const filepath = path.join(project.cwd, "a.mmd")
     project.write({ ".prettierrc.json": '{ "tabWidth": 3 }' })
     expect(await resolveConfig(filepath)).toStrictEqual({
-      printWidth: undefined,
       tabWidth: 3,
-      useTabs: undefined,
-      embeddedLanguageFormatting: undefined,
-      singleQuote: undefined,
-      bracketSpacing: undefined,
-      proseWrap: undefined,
-      trailingComma: undefined,
     })
 
     project.write({ ".prettierrc.json": '{ "tabWidth": 5 }' })
     expect(await resolveConfig(filepath)).toStrictEqual({
-      printWidth: undefined,
       tabWidth: 3,
-      useTabs: undefined,
-      embeddedLanguageFormatting: undefined,
-      singleQuote: undefined,
-      bracketSpacing: undefined,
-      proseWrap: undefined,
-      trailingComma: undefined,
     })
 
     expect(await clearConfigCache()).toEqual(undefined)
     expect(await resolveConfig(filepath)).toStrictEqual({
-      printWidth: undefined,
       tabWidth: 5,
-      useTabs: undefined,
-      embeddedLanguageFormatting: undefined,
-      singleQuote: undefined,
-      bracketSpacing: undefined,
-      proseWrap: undefined,
-      trailingComma: undefined,
     })
   })
 })
