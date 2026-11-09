@@ -37,6 +37,10 @@ mermaid.js は、閉じる `}` のない `accDescr {` のブロックをエラ�
 規則がその `}` を合成状態のものと見分けられないので報告する。
 `accDescr { a { b }` のように、開く `{` の行で閉じるものは報告しない。
 
+整形ツールは、テキストが 1 行のブロック `accDescr { text }` を、
+`accDescr: text` と書く。
+テキストが 1 行のブロックの例は、書いたまま示している。
+
 この規則に**反する**コードの例:
 
 ```mmd
@@ -58,11 +62,12 @@ stateDiagram-v2
 
 この規則に**従う**コードの例:
 
+<!-- prettier-ignore -->
 ```mmd
 %% eslint @mmd-toolkit/state-no-unclosed-description-block: error
 stateDiagram-v2
   A --> B
-  accDescr: x
+  accDescr { x }
 ```
 
 ## オプション

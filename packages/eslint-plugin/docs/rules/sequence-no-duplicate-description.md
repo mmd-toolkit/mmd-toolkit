@@ -38,6 +38,9 @@ Repeating the current description is not reported. Comparisons ignore whitespace
 at the ends and after each line break, including indentation and empty lines in
 blocks, and treat LF, CRLF, and CR as LF.
 
+The formatter prints a block with its text on one line, `accDescr { text }`, as
+`accDescr: text`. The example of such a block is shown as written.
+
 Examples of **incorrect** code for this rule:
 
 ```mmd
@@ -48,11 +51,12 @@ sequenceDiagram
   accDescr: second
 ```
 
+<!-- prettier-ignore -->
 ```mmd
 %% eslint @mmd-toolkit/sequence-no-duplicate-description: error
 sequenceDiagram
   A ->> B: x
-  accDescr: first
+  accDescr { first }
   accDescr: second
 ```
 

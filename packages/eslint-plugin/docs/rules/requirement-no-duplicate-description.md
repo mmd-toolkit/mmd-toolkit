@@ -39,7 +39,8 @@ counted: it takes the next line that holds text. A block with no description,
 including one with only comments or directives, is not counted. An empty block
 inside a requirement or an element is not counted either.
 
-The formatter prints a block with its text on one line, `accDescr { text }`, as `accDescr: text`. The example that shows such a block is shown as written.
+The formatter prints a block with its text on one line, `accDescr { text }`, as
+`accDescr: text`. The example of such a block is shown as written.
 
 Examples of **incorrect** code for this rule:
 

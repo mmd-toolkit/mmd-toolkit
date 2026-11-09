@@ -29,6 +29,10 @@ mermaid.js はエラーなしに受理する。
 閉じる `}` のない `accDescr {` のブロックを、
 テキストの終わりで後に何もない `accDescr {` も含めて報告する。
 
+整形ツールは、テキストが 1 行のブロック `accDescr { text }` を、
+`accDescr: text` と書く。
+テキストが 1 行のブロックの例は、書いたまま示している。
+
 この規則に**反する**コードの例:
 
 ```mmd
@@ -41,10 +45,11 @@ xychart
 
 この規則に**従う**コードの例:
 
+<!-- prettier-ignore -->
 ```mmd
 %% eslint @mmd-toolkit/xychart-no-unclosed-description-block: error
 xychart
-  accDescr: Monthly sales
+  accDescr { Monthly sales }
   title Sales
   line [1, 2]
 ```

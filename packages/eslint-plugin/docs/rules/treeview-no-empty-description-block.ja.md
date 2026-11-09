@@ -36,6 +36,10 @@ mermaid.js は、何もない `accDescr {}` のブロックをエラーなしに
 が報告する。
 `{` の前や `}` の後のコメントはブロックの中にないので、そのブロックは報告する。
 
+整形ツールは、テキストが 1 行のブロック `accDescr { text }` を、
+`accDescr: text` と書く。
+テキストが 1 行のブロックの例は、書いたまま示している。
+
 この規則に**反する**コードの例:
 
 ```mmd
@@ -47,10 +51,11 @@ treeView-beta
 
 この規則に**従う**コードの例:
 
+<!-- prettier-ignore -->
 ```mmd
 %% eslint @mmd-toolkit/treeview-no-empty-description-block: error
 treeView-beta
-  accDescr: Project files
+  accDescr { Project files }
   root/
 ```
 

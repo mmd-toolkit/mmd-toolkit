@@ -39,7 +39,8 @@ A description that intentionally includes a `{` on a later line is also reported
 when its closer does not meet that exception: the rule cannot distinguish it
 from a shape.
 
-The formatter prints a block with its text on one line, `accDescr { text }`, as `accDescr: text`. The example that shows such a block is shown as written.
+The formatter prints a block with its text on one line, `accDescr { text }`, as
+`accDescr: text`. The example of such a block is shown as written.
 
 Examples of **incorrect** code for this rule:
 

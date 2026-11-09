@@ -40,6 +40,9 @@ closing `}` has only whitespace and directives before it is not reported, even
 though the description takes the data block's text. The rule cannot tell these
 closers apart.
 
+The formatter prints a block with its text on one line, `accDescr { text }`, as
+`accDescr: text`. The examples of such a block are shown as written.
+
 Examples of **incorrect** code for this rule:
 
 ```mmd
@@ -59,18 +62,20 @@ sequenceDiagram
 
 Examples of **correct** code for this rule:
 
+<!-- prettier-ignore -->
 ```mmd
 %% eslint @mmd-toolkit/sequence-no-unclosed-description-block: error
 sequenceDiagram
   A ->> B: x
-  accDescr: y
+  accDescr { y }
 ```
 
+<!-- prettier-ignore -->
 ```mmd
 %% eslint @mmd-toolkit/sequence-no-unclosed-description-block: error
 sequenceDiagram
   A ->> B: x
-  accDescr: y
+  accDescr { y }
   B ->> A: z
 ```
 

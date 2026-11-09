@@ -41,6 +41,9 @@ Inside the text of `accTitle:`, `accDescr {}` is part of that text and is not
 reported. After a direction,
 [requirement-no-ignored-text](./requirement-no-ignored-text.md) reports it.
 
+The formatter prints a block with its text on one line, `accDescr { text }`, as
+`accDescr: text`. The example of such a block is shown as written.
+
 Examples of **incorrect** code for this rule:
 
 ```mmd
@@ -63,10 +66,11 @@ requirementDiagram
 
 Examples of **correct** code for this rule:
 
+<!-- prettier-ignore -->
 ```mmd
 %% eslint @mmd-toolkit/requirement-no-empty-description-block: error
 requirementDiagram
-  accDescr: y
+  accDescr { y }
   requirement r {
     id: 1
   }

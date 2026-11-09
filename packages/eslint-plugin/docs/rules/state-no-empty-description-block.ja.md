@@ -38,7 +38,9 @@ since: v0.1.0
 代わりに [state-no-ignored-text](./state-no-ignored-text.ja.md) が報告する。
 
 整形ツールは、空のブロックを `accDescr {}` と書く。
-波括弧の中に空白がある例は、書いたまま示している。
+テキストが 1 行のブロック `accDescr { text }` は、`accDescr: text` と書く。
+波括弧の中に空白がある例と、テキストが 1 行のブロックの例は、
+書いたまま示している。
 
 この規則に**反する**コードの例:
 
@@ -60,11 +62,12 @@ stateDiagram-v2
 
 この規則に**従う**コードの例:
 
+<!-- prettier-ignore -->
 ```mmd
 %% eslint @mmd-toolkit/state-no-empty-description-block: error
 stateDiagram-v2
   A --> B
-  accDescr: y
+  accDescr { y }
 ```
 
 ```mmd

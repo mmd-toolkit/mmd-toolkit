@@ -34,6 +34,10 @@ since: v0.1.0
 `accDescr {` の後の `a {b }` のように意図して書いた説明も、
 この規則がその括弧をメタデータと見分けられないため報告する。
 
+整形ツールは、テキストが 1 行のブロック `accDescr { text }` を、
+`accDescr: text` と書く。
+テキストが 1 行のブロックの例は、書いたまま示している。
+
 この規則に**反する**コードの例:
 
 ```mmd
@@ -47,10 +51,11 @@ usecase-beta
 
 この規則に**従う**コードの例:
 
+<!-- prettier-ignore -->
 ```mmd
 %% eslint @mmd-toolkit/usecase-no-unclosed-description-block: error
 usecase-beta
-  accDescr: first
+  accDescr { first }
   A --> B
   actor C@{ type: hollow }
   D

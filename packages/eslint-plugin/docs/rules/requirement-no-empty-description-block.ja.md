@@ -42,6 +42,10 @@ requirement や element の中では、行に単独のもの、同じ行のフ�
 方向の後のものは、
 [requirement-no-ignored-text](./requirement-no-ignored-text.ja.md) が報告する。
 
+整形ツールは、テキストが 1 行のブロック `accDescr { text }` を、
+`accDescr: text` と書く。
+テキストが 1 行のブロックの例は、書いたまま示している。
+
 この規則に**反する**コードの例:
 
 ```mmd
@@ -64,10 +68,11 @@ requirementDiagram
 
 この規則に**従う**コードの例:
 
+<!-- prettier-ignore -->
 ```mmd
 %% eslint @mmd-toolkit/requirement-no-empty-description-block: error
 requirementDiagram
-  accDescr: y
+  accDescr { y }
   requirement r {
     id: 1
   }

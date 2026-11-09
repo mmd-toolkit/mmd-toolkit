@@ -36,7 +36,10 @@ An empty block on the line of another statement, as in `accDescr {} A: 5`, is
 reported too. Inside the text of a title, a section, or a task, or in task data,
 `accDescr {}` is part of that text and is not reported.
 
-The formatter prints an empty block as `accDescr {}` and a block with its text on one line, `accDescr { text }`, as `accDescr: text`. The example with whitespace inside the braces and the example of a block with its text on one line are shown as written.
+The formatter prints an empty block as `accDescr {}` and a block with its text
+on one line, `accDescr { text }`, as `accDescr: text`. The example with
+whitespace inside the braces and the example of a block with its text on one
+line are shown as written.
 
 Examples of **incorrect** code for this rule:
 

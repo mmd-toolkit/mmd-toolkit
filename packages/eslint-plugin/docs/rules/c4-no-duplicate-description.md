@@ -40,7 +40,8 @@ The last correct example is shown as written: its two descriptions are indented
 differently on the second line, which the formatter would print the same way,
 and that difference is what the example shows.
 
-The formatter prints a block with its text on one line, `accDescr { text }`, as `accDescr: text`. The examples that show such a block are shown as written.
+The formatter prints a block with its text on one line, `accDescr { text }`, as
+`accDescr: text`. The examples of such a block are shown as written.
 
 Examples of **incorrect** code for this rule:
 

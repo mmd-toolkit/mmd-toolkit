@@ -28,6 +28,9 @@ This rule applies to XY charts (`xychart` and `xychart-beta`). It reports an
 `accDescr {` block without a closing `}`, also `accDescr {` with nothing after
 it at the end of the text.
 
+The formatter prints a block with its text on one line, `accDescr { text }`, as
+`accDescr: text`. The example of such a block is shown as written.
+
 Examples of **incorrect** code for this rule:
 
 ```mmd
@@ -40,10 +43,11 @@ xychart
 
 Examples of **correct** code for this rule:
 
+<!-- prettier-ignore -->
 ```mmd
 %% eslint @mmd-toolkit/xychart-no-unclosed-description-block: error
 xychart
-  accDescr: Monthly sales
+  accDescr { Monthly sales }
   title Sales
   line [1, 2]
 ```

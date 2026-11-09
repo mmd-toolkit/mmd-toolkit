@@ -34,7 +34,8 @@ line contains another `{`. A block with a `{` on a later line is reported also
 when its closing `}` stands alone on its line, as the end of an attribute block
 does.
 
-The formatter prints a block with its text on one line, `accDescr { text }`, as `accDescr: text`. The example that shows such a block is shown as written.
+The formatter prints a block with its text on one line, `accDescr { text }`, as
+`accDescr: text`. The example of such a block is shown as written.
 
 Examples of **incorrect** code for this rule:
 
