@@ -385,9 +385,15 @@ The promise is rejected:
   the start of a later line, such as an error at a line break, has no `loc.end`;
 - with Prettier's error, when an option has a value that Prettier refuses, such
   as `printWidth: "wide"` (`Invalid printWidth value. …`), for a `.mmd` or
-  `.mermaid` text and for a Markdown text with a `mermaid` or `mmd` code block,
-  whether or not mermaid.js rejects a diagram in it. A Markdown text with no
-  such code block is not formatted by Prettier, and is returned as it is;
+  `.mermaid` text, and for a Markdown text with a code block whose diagram
+  `mmdfmt` formats
+  ([Code blocks in detail](../../../mmdfmt/README.md#code-blocks-in-detail)),
+  whether or not mermaid.js rejects the diagram. A Markdown text with no such
+  block is returned as it is: one with no `mermaid` or `mmd` code block, or one
+  whose `mermaid` and `mmd` blocks are all left as written, after
+  `<!-- prettier-ignore -->`, between `<!-- prettier-ignore-start -->` and
+  `<!-- prettier-ignore-end -->`, on the line of a footnote label, or with a tab
+  in their indentation read partly as the diagram;
 - with an error, when `options.filepath` does not end in `.md`, `.markdown`,
   `.mmd`, or `.mermaid`.
 

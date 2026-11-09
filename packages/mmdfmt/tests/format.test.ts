@@ -108,6 +108,11 @@ describe("From a script: formatting text", () => {
       "a.md",
       "# T\n\n```mermaid\nflowchart TD\nA-->\n```\n",
     ],
+    [
+      "Markdown with a diagram after a prettier-ignore-start with no end",
+      "a.md",
+      "<!-- prettier-ignore-start -->\n\n```mermaid\nflowchart TD\nA-->B\n```\n",
+    ],
   ])(
     "rejects a value that Prettier refuses for %s with Prettier's error",
     async (_case, file, text) => {
@@ -135,16 +140,37 @@ describe("From a script: formatting text", () => {
     },
   )
 
-  it("returns Markdown with no mermaid or mmd code block as it is, whatever the options", async () => {
-    const text = "# T\n\ntext\n"
-    expect(
-      await format(text, {
-        filepath: path.join(project.cwd, "a.md"),
-        // @ts-expect-error -- Prettier refuses a string for `printWidth`.
-        printWidth: "wide",
-      }),
-    ).toBe(text)
-  })
+  it.each([
+    ["no code block", "# T\n\ntext\n"],
+    ["only a code block of another language", "```js\nlet a\n```\n"],
+    [
+      "a mermaid block after <!-- prettier-ignore -->",
+      "<!-- prettier-ignore -->\n```mermaid\nflowchart TD\nA-->B\n```\n",
+    ],
+    [
+      "a mermaid block between prettier-ignore-start and prettier-ignore-end",
+      "<!-- prettier-ignore-start -->\n\n```mermaid\nflowchart TD\nA-->B\n```\n\n<!-- prettier-ignore-end -->\n",
+    ],
+    [
+      "a mermaid block on the line of a footnote label",
+      "Text[^1].\n\n[^1]: ```mermaid\n    flowchart TD\n    A-->B\n    ```\n",
+    ],
+    [
+      "a mermaid block with a tab read partly as the diagram",
+      "-  ```mermaid\n\tflowchart TD\n   ```\n",
+    ],
+  ])(
+    "returns Markdown with %s as it is, whatever the options",
+    async (_case, text) => {
+      expect(
+        await format(text, {
+          filepath: path.join(project.cwd, "a.md"),
+          // @ts-expect-error -- Prettier refuses a string for `printWidth`.
+          printWidth: "wide",
+        }),
+      ).toBe(text)
+    },
+  )
 
   it("leaves a rejected diagram as written after formatting an earlier one", async () => {
     const input = lines(

@@ -441,11 +441,22 @@ Promiseは、次のときに拒否されます。
 - オプションにPrettierが受け付けない値があるときは、
   Prettierのエラーで拒否されます。
   たとえば`printWidth: "wide"`なら、エラーは`Invalid printWidth value. …`です。
-  `.mmd`か`.mermaid`のテキストでも、
-  `mermaid`か`mmd`のコードブロックを持つMarkdownのテキストでも、
-  mermaid.jsが拒否する図があるかどうかにかかわらず、そうなります。
-  そのようなコードブロックのないMarkdownのテキストは、Prettierで整形しないので、
-  そのまま返します。
+  `.mmd`か`.mermaid`のテキストでは、
+  mermaid.jsが図を拒否するかどうかにかかわらず、そうなります。
+  Markdownのテキストでも、`mmdfmt`が図を整形するコードブロックを1つでも持てば、
+  その図をmermaid.jsが拒否するかどうかにかかわらず、そうなります。
+  どのブロックの図を整形するかは、
+  [コードブロックの詳細](../../../mmdfmt/README.ja.md#コードブロックの詳細)
+  にあります。
+  そのようなブロックのないMarkdownのテキストは、そのまま返します。
+  `mermaid`や`mmd`のコードブロックがないものと、
+  そのようなブロックがどれも書かれたまま残されるものです。
+  書かれたまま残されるのは、次のブロックです。
+  - `<!-- prettier-ignore -->`の後のブロック。
+  - `<!-- prettier-ignore-start -->`と、
+    `<!-- prettier-ignore-end -->`の間のブロック。
+  - 開きフェンスが脚注のラベルの行にあるブロック。
+  - 字下げのタブの一部が図と読まれるブロック。
 - `options.filepath`の拡張子が`.md`、`.markdown`、`.mmd`、
   `.mermaid`のどれでもないときは、エラーで拒否されます。
 
