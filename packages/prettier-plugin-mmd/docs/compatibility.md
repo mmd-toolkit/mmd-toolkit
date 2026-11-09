@@ -84,9 +84,10 @@ agentflow, kanban and sequence, and usecase JSON tables, move their body lines
 by one uniform number of ASCII spaces, preserving relative indentation and
 trailing whitespace; a separate `}` aligns with its statement. Inline-opening
 blocks, leading non-space whitespace, embedded directives, column-zero YAML
-markers, kept lines, blocks after the statement's first line and `tabWidth: 0`
-prevent movement. Sequence additionally requires a single text-bearing body line
-because Mermaid trims the whole block. The conditions and their reasons are in
+markers, kept lines, blocks after the statement's first line, statements
+indented with a tab and `tabWidth: 0` prevent movement. Sequence additionally
+requires a single text-bearing body line because Mermaid trims the whole block.
+The conditions and their reasons are in
 [Data blocks](./flowchart.md#data-blocks); other blocks keep their columns.
 [fixture: flowchart/data-blocks/deep-nested-yaml] [fixture:
 flowchart/data-blocks/scalar-blank-lines] [fixture:
@@ -828,9 +829,9 @@ gantt/settings/trailing-whitespace-by-setting]
 
 The name of a task of a Gantt chart ends with the whitespace between its text
 and the colon, which the printer sets one space after the longest name of a
-section whose names have padding (see [Task data](./gantt.md#task-data)). The
-rule of the grammar takes everything before the colon as the name, whitespace
-included
+section whose names have padding, or of the sections that share a column (see
+[Task data](./gantt.md#task-data)). The rule of the grammar takes everything
+before the colon as the name, whitespace included
 ([`gantt.jison`](https://github.com/mermaid-js/mermaid/blob/2086904e76c692331e34a45d7cc3bc30860d040e/packages/mermaid/src/diagrams/gantt/parser/gantt.jison#L93)),
 `addTask` keeps it in the `task` of the task
 ([`addTask`](https://github.com/mermaid-js/mermaid/blob/2086904e76c692331e34a45d7cc3bc30860d040e/packages/mermaid/src/diagrams/gantt/ganttDb.js#L596-L606)),
@@ -846,7 +847,7 @@ with tabs and with spaces, a name that fits in its bar and one wider than it, a
 name near the right edge of the chart, the states `done`, `crit`, `active`, and
 `milestone`, and two sections. The pixels were the same, and so was the SVG,
 without the generated ids and without the whitespace at the end of the text of a
-task. The same holds for the 31 of the 34 texts of the corpus, of the documents
+task. The same holds for the 36 of the 39 texts of the corpus, of the documents
 of mermaid.js, and of the fixtures of this package whose task names the printer
 changes that mermaid.js can draw (it stops with an error on the other three,
 before and after); the SVG of two of them differs also in the whitespace at the
@@ -2222,7 +2223,7 @@ See [Task data](./gantt.md#task-data), [Settings](./gantt.md#settings),
   section than `section A`. The whitespace at the ends of `dateFormat`,
   `axisFormat`, and `title` is left out, and the whitespace between the text of
   a task description and its colon is set one space after the longest name of a
-  section whose names have padding (see
+  section whose names have padding, or of the sections that share a column (see
   [Texts after a keyword that are drawn the same](#texts-after-a-keyword-that-are-drawn-the-same)).
   [fixture: gantt/settings/trailing-whitespace-by-setting] [fixture:
   gantt/titles-and-sections/title-trailing-dropped-section-kept] [fixture:

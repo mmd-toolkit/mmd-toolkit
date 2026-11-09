@@ -348,6 +348,18 @@ function isNextToSemicolon(source: Source, offset: number): boolean {
 }
 
 /**
+ * Whether nothing but whitespace precedes `offset` on its line: no token,
+ * comment, or directive starts between the start of the line and `offset`.
+ */
+export function isFirstOnItsLine(source: Source, offset: number): boolean {
+  const lineStart = lineStartOf(source, offset)
+  return (
+    findTokensBetween(source, lineStart, offset).length === 0 &&
+    findTriviaBetween(source, lineStart, offset).length === 0
+  )
+}
+
+/**
  * Whether nothing but whitespace follows the `;` at `offset` on its line: no
  * token that holds more than whitespace, comment, or directive starts after it
  * before the line ends (a style holds the whitespace after an ignored `;`). A

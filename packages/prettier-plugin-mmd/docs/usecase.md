@@ -549,16 +549,16 @@ json-tables/closing-after-text]
 
 Apply all the shared movement conditions and their reasons from
 [Data blocks](./flowchart.md#data-blocks). In particular, keep inline-opening
-JSON, embedded directives, kept lines, leading tabs and `tabWidth: 0` as
-written. With `useTabs`, body margins and a separate `}` still use spaces, the
-`}` at the column of the statement. Comments, directives, blank lines and empty
-description blocks outside the JSON keep their own rules; CR/LF follows
-`endOfLine` and Unicode separators inside strings remain characters. [fixture:
-json-tables/inline-opening-kept] [fixture: json-tables/directive-inside-kept]
-[fixture: json-tables/kept-body-line] [fixture: json-tables/zero-width-kept]
-[fixture: json-tables/tab-statement-space-body] [fixture:
-json-tables/surrounding-trivia] [test: data blocks: JSON leading tab kept]
-[test: data blocks: usecase U+2029] [test: data blocks: usecase CRLF]
+JSON, embedded directives, kept lines, leading tabs, a statement indented with a
+tab (`useTabs`) and `tabWidth: 0` as written. Comments, directives, blank lines
+and empty description blocks outside the JSON keep their own rules; CR/LF
+follows `endOfLine` and Unicode separators inside strings remain characters.
+[fixture: json-tables/inline-opening-kept] [fixture:
+json-tables/directive-inside-kept] [fixture: json-tables/kept-body-line]
+[fixture: json-tables/zero-width-kept] [fixture:
+json-tables/tab-statement-space-body] [fixture: json-tables/surrounding-trivia]
+[test: data blocks: JSON leading tab kept] [test: data blocks: usecase U+2029]
+[test: data blocks: usecase CRLF]
 
 A JSON table on one line stays as written, apart from the whitespace between the
 `@` and the `{`: its `{` and `}` are the braces of the JSON itself, not the ends

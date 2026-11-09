@@ -611,13 +611,15 @@ agentflow の後の振り分けや別名解決を根拠に YAML を書き換え�
 ほかの移動条件と理由は、
 [データブロック](./flowchart.ja.md#データブロック)に従います。
 開きの行に本文があるブロック、内部の directive、行全体を保つ行、幅 0 の字下げ、
-文の最初の行より後から始まるブロックは書かれたまま残します。
-`useTabs` でも本文と単独行の閉じ括弧は半角空白とし、閉じ括弧は文の桁に置きます。
+文の最初の行より後から始まるブロックと、
+タブで字下げした文（`useTabs`）の下のブロックは、書かれたまま残します。
 前後のコメント、directive、空の説明、空行、区切りはそれぞれの規則に従います。
 [fixture: metadata-blocks/inline-and-directive-kept]
 [fixture: metadata-blocks/kept-body-line]
 [fixture: metadata-blocks/zero-width-kept]
 [fixture: metadata-blocks/tab-statement-space-body]
+[fixture: metadata-blocks/use-tabs-empty-lines-kept]
+[fixture: metadata-blocks/use-tabs-folded-empty-lines-kept]
 [fixture: metadata-blocks/surrounding-trivia]
 [test: data blocks: agentflow U+2029] [test: data blocks: agentflow CRLF]
 

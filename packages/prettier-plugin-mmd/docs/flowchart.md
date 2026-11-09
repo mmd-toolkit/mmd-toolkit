@@ -1646,12 +1646,9 @@ the spaces and tabs at their ends: only the whitespace, the line breaks and the
   usecase/native-metadata/long-block-kept]
 - `tabWidth` is not zero, as for a block of several lines; [fixture:
   data-blocks/long-zero-width-kept]
-- the statement is not indented with a tab (`useTabs`). mermaid.js rejects a tab
-  before the lines of a block mapping, so the lines of a split block are
-  indented with spaces whatever the statement is indented with, and under a node
-  that a tab indents they stand at a depth that reads right for one width of a
-  tab only: where the tab is wider than `tabWidth`, the entries and the `}`
-  stand left of the node. A block on one line stays on its line; [fixture:
+- the statement is not indented with a tab (`useTabs`), as for a block of
+  several lines, since the lines of a split block are indented with spaces too.
+  A block on one line stays on its line; [fixture:
   data-blocks/long-use-tabs-kept]
 - it is the only block of its statement and the last thing in it, on the first
   line of the statement: text after its `}` would stand after the `}` on a line
@@ -1746,6 +1743,20 @@ written:
   [test: data blocks: flowchart U+2029 before the closer]
 - `tabWidth` is not zero: zero supplies no inner indentation step. [fixture:
   data-blocks/zero-width-kept]
+- The statement is not indented with a tab (`useTabs`). mermaid.js rejects a tab
+  before the lines of a block, so the printer would indent them with spaces
+  whatever the statement is indented with, and under a node that a tab indents
+  they would stand at a depth that reads right for one width of a tab only:
+  where the tab is wider than `tabWidth`, the lines and the `}` would stand left
+  of the node. A tab before a `}` alone on its line is no way out, since that
+  line is the last line of the block text, which a scalar that keeps its empty
+  lines (`|+`, `>+`) reads, and a tab there changes the value. So the block
+  keeps its columns, and so does the `}`; a block that the author has already
+  aligned with the node stays aligned. [fixture:
+  data-blocks/tab-statement-space-body] [fixture:
+  data-blocks/tab-statement-aligned-body-kept] [fixture:
+  data-blocks/use-tabs-empty-lines-kept] [fixture:
+  data-blocks/use-tabs-folded-empty-lines-kept]
 - Neither a block line nor its opening line belongs to a line kept in full,
   including one protected by the semicolon line rule. Moving part of that line
   would violate its preservation. [fixture: data-blocks/kept-body-line]
@@ -1781,13 +1792,6 @@ body line: literal block scalars read both blank-line widths and trailing
 spaces, and changing them can change the Db. [fixture:
 data-blocks/scalar-blank-lines] [fixture:
 data-blocks/scalar-blank-lines-outdent]
-
-Body margins and a separate `}` use ASCII spaces, even with `useTabs`: the `}`
-stands at the column of the statement. A tab before the `}` makes the last line
-of the block a line with text in a scalar that keeps its empty lines (`|+`,
-`>+`), and changes the value. [fixture: data-blocks/tab-statement-space-body]
-[fixture: data-blocks/closing-with-tabs-keeps-empty-lines] [fixture:
-data-blocks/closing-with-tabs-keeps-folded-empty-lines]
 
 Directives, comments, blank lines, empty description blocks and a discarded
 statement `;` beside the block keep their own rules. CRLF and CR follow

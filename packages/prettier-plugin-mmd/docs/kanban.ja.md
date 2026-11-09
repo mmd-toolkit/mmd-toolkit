@@ -542,19 +542,21 @@ literal block scalar は末尾空白と空白行の幅を読むため、
 
 共有の条件を満たさない場合は桁を保ちます。
 開きの行の本文は最初の桁を `@{` から数え、内部の directive は桁を保ち、
-行全体を保つ行は一部だけ動かせず、`tabWidth: 0` では内側の段がありません。
+行全体を保つ行は一部だけ動かせず、`tabWidth: 0` では内側の段がなく、
+タブで字下げしたノード（`useTabs`）には、
+すべてのタブ幅で正しくなる深さがありません。
 Mermaid はタブで字下げした YAML を拒否し、
 0 桁の文書の印を動かしても拒否される場合があります。
 [fixture: data-blocks/inline-opening-kept]
 [fixture: data-blocks/directive-inside-kept]
 [fixture: data-blocks/kept-body-line] [fixture: data-blocks/zero-width-kept]
 [fixture: data-blocks/document-start-kept]
+[fixture: data-blocks/tab-statement-space-body]
+[fixture: data-blocks/use-tabs-empty-lines-kept]
+[fixture: data-blocks/use-tabs-folded-empty-lines-kept]
 
-`useTabs` でも本文と単独行の閉じ括弧は半角空白とし、
-閉じ括弧はノードの桁に置きます。
 外側のコメント、directive、空行はそれぞれの規則に従います。
 CRLF と CR は `endOfLine` に従い、値の Unicode separator は文字として保ちます。
-[fixture: data-blocks/tab-statement-space-body]
 [fixture: data-blocks/surrounding-trivia] [test: kanban: multiline-data-crlf]
 [test: kanban: multiline-data-cr] [test: data blocks: kanban U+2028]
 

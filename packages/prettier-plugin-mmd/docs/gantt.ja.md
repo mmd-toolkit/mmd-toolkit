@@ -315,19 +315,21 @@ mermaid.js にとって 2 つの説明です。
 [fixture: task-data/colon-column-wide-characters]
 [fixture: task-data/colon-column-use-tabs]
 
-図の中で桁そろえの空白があるすべてのセクションのコロンが、
-同じ 1 つの桁にそろっているときは、セクション間で桁を共有し続けます。
+桁そろえの空白があり、コロンがすべて同じ 1 つの桁にあるセクションどうしは、
+桁を共有し続けます。
 それぞれの最長の名前の中で最も長い名前の後に空白 1 つを置いた桁にし、
 余分な空白だけを除きます。
-すべての名前の後ろに空白が 1 つあり、コロンがその桁にあるセクションは、
-最長の名前を決める対象に含め、書かれたまま残します。
-桁そろえの空白があるセクションのコロンがすべて同じ桁にはないときは、
-各セクションで、自分の最長の名前から桁を決めます。
+コロンがすべて同じ桁にはないセクションは、それだけで、
+自分の最長の名前から桁を決めます。
+すべての名前の後ろに空白が 1 つあり、
+コロンが桁を共有する組と同じ桁にあるセクションは、
+その組の最長の名前を決める対象に含め、書かれたまま残します。
 最初の `section` より前のタスクは、1 段浅い所にあるので、
 それだけで 1 つのセクションとし、ほかのセクションと桁を共有しません。
 [fixture: task-data/colon-column-sections-share-one-column]
 [fixture: task-data/colon-column-one-task-sections]
 [fixture: task-data/colon-column-uniform-section-shares]
+[fixture: task-data/colon-column-sections-in-one-column-and-others]
 [fixture: task-data/colon-column-sections-not-sharing]
 [fixture: task-data/colon-column-sections-in-different-columns]
 [fixture: task-data/colon-column-before-first-section]
@@ -339,19 +341,45 @@ mermaid.js にとって 2 つの説明です。
 作者がテキストの隣にコロンを置いたので、そのままにします。
 そろえた行が `printWidth` より長く、元の行よりも長くなるセクションは、
 長い名前 1 つがすべてのコロンを大きく右に押すので、そのままにします。
-同じ桁を共有するセクションのどれかでそうなるときは、
-それらのセクションをすべてそのままにします。
 `white-space` を含む図は、図の CSS が名前の末尾の空白を描くことがあり、
 そのときは空白で図が変わるので、そのままにします。
-行にコメント、ディレクティブ、独自の `;` があるタスクと、
-複数行にわたるタスクは、書かれたまま印字し、
-ほかのタスクがそろえる対象に含めないので、
-その空白はほかのタスクの桁を決めません。
 [fixture: task-data/colon-column-single-space-kept]
 [fixture: task-data/colon-column-too-wide-kept]
 [fixture: task-data/colon-column-white-space-kept]
-[fixture: task-data/colon-column-line-with-directive-kept]
-[fixture: task-data/colon-column-line-with-semicolon-kept]
+
+次の場合、タスクは書かれたまま残し、ほかのタスクがそろえる対象に含めないので、
+その空白はほかのタスクの桁を決めません。
+
+- 行を書かれたまま印字するとき（[1 行に 1 文](#1-行に-1-文)と、
+  後述する空白だけのデータを参照）。
+- 複数行にわたるとき。
+- 名前がディレクティブで終わるとき。
+  ディレクティブの隣の空白は、
+  残すからです（[ディレクティブ](#ディレクティブ)を参照）。
+- 同じ行でその前に何かがあるとき。
+  名前が行頭から始まらず、ほかのタスクとコロンがそろわないからです。
+  また、コロンの前の空白が、行の規則の読む所に入りえます。
+  規則は、`style` や `classDef` の後の `:` より後ろの空白を読み、
+  名前は `:` を含まないので、タスクのコロンより前の `:` は、
+  その前にある文からしか来ないからです（[1 行に 1 文](#1-行に-1-文)を参照）。
+
+[fixture: task-data/colon-column-line-as-written-kept]
+[fixture: task-data/colon-column-task-over-lines-kept]
+[fixture: task-data/colon-column-task-after-statement-kept]
+[fixture: task-data/colon-column-name-ending-with-directive-kept]
+
+行にあるそれ以外のものは、タスクをそろえる妨げになりません。
+名前の中やほかの場所にある `;`、コメント、名前の中やデータの後のディレクティブ、
+行の規則が読む行があっても、タスクはそろえます。
+行頭から始まるタスクの桁そろえの空白は、その行の最初の `:` より前にあり、
+規則が読むのは、その後ろの空白だけだからです。
+名前と行の残りの幅は、書かれたままの幅です。
+コロンをテキスト上でそろえるので、名前の中のディレクティブも幅に数え、
+データの後のコメントやディレクティブも `printWidth` に数えます。
+[fixture: task-data/colon-column-name-with-semicolon]
+[fixture: task-data/colon-column-style-rule-line]
+[fixture: task-data/colon-column-directive-inside-name]
+[fixture: task-data/colon-column-comment-after-data]
 
 最初の項目はコロンに接し、`,` は前の項目に接して、
 後ろに項目があれば空白 1 つを置きます。
@@ -405,33 +433,39 @@ gantt
 ```
 
 入力
-([task-data/colon-column-sections-not-sharing-input.mmd](../tests/fixtures/gantt/task-data/colon-column-sections-not-sharing-input.mmd)):
+([task-data/colon-column-sections-in-one-column-and-others-input.mmd](../tests/fixtures/gantt/task-data/colon-column-sections-in-one-column-and-others-input.mmd)):
 
 ```mmd
 gantt
-  dateFormat YYYY-MM-DD
   section A
-    A task          :a1, 2014-01-01, 30d
-    Another task    :after a1, 20d
+    Task A                    :a1, 2014-01-01, 3d
+    Task B long               :a2, after a1, 2d
   section B
-    Task in    :2014-01-12, 12d
-    other task :24d
-    x   :1d
+    Other                     :a3, after a2, 1d
+  section C
+    Single   :a4, after a3, 1d
+    Quite a long name :a5, after a4, 1d
+  section D
+    Alone :a6, after a5, 1d
+    Brief :a7, after a6, 1d
 ```
 
 出力
-([task-data/colon-column-sections-not-sharing-output.mmd](../tests/fixtures/gantt/task-data/colon-column-sections-not-sharing-output.mmd)):
+([task-data/colon-column-sections-in-one-column-and-others-output.mmd](../tests/fixtures/gantt/task-data/colon-column-sections-in-one-column-and-others-output.mmd)):
 
 ```mmd
 gantt
-  dateFormat YYYY-MM-DD
   section A
-    A task       :a1, 2014-01-01, 30d
-    Another task :after a1, 20d
+    Task A      :a1, 2014-01-01, 3d
+    Task B long :a2, after a1, 2d
   section B
-    Task in    :2014-01-12, 12d
-    other task :24d
-    x          :1d
+    Other       :a3, after a2, 1d
+  section C
+    Single            :a4, after a3, 1d
+    Quite a long name :a5, after a4, 1d
+  section D
+    Alone :a6, after a5, 1d
+    Brief :a7, after a6, 1d
 ```
 
 入力

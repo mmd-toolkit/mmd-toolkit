@@ -1714,12 +1714,8 @@ mermaid.js は、1 行のブロックのテキストを、
   [fixture: usecase/native-metadata/long-block-kept]
 - 複数行のブロックと同じく、`tabWidth` が 0 でないこと。
   [fixture: data-blocks/long-zero-width-kept]
-- 文がタブで字下げされていない（`useTabs` でない）こと。
-  mermaid.js は block mapping の行の前のタブを拒否するので、
-  分けたブロックの行は、文の字下げに関係なく空白で字下げします。
-  タブで字下げしたノードの下では、
-  行の深さがタブ 1 つの幅が 1 通りのときだけ正しく見え、
-  タブが `tabWidth` より広いと、項目と `}` がノードより左に出ます。
+- 複数行のブロックと同じく、文がタブ（`useTabs`）で字下げされていないこと。
+  分けたブロックの行も空白で字下げするためです。
   1 行のブロックは 1 行のままにします。
   [fixture: data-blocks/long-use-tabs-kept]
 - 文の最初の行にあり、その文の唯一のブロックで、文の最後にあること。
@@ -1826,6 +1822,22 @@ flowchart LR
   [test: data blocks: flowchart U+2029 before the closer]
 - `tabWidth` が 0 でないこと。
   0 では内側の字下げの段がありません。 [fixture: data-blocks/zero-width-kept]
+- 文がタブ（`useTabs`）で字下げされていないこと。
+  mermaid.js はブロックの行の前のタブを拒否するので、
+  整形器が行を字下げするなら、文の字下げに関係なく空白を使うことになります。
+  タブで字下げしたノードの下では、
+  タブの幅が特定の値のときだけ行の深さが正しく見え、
+  タブが `tabWidth` より広いと、行と `}` がノードより左に出ます。
+  単独行の `}` の前をタブにしても解決しません。
+  その行はブロックのテキストの最後の行です。
+  空行を残すスカラー（`|+`、`>+`）がその行を読むので、
+  そこにタブがあると値が変わります。
+  そのため、ブロックも `}` も書かれた桁を保ちます。
+  作者がすでにノードにそろえていたブロックは、そろったままにします。
+  [fixture: data-blocks/tab-statement-space-body]
+  [fixture: data-blocks/tab-statement-aligned-body-kept]
+  [fixture: data-blocks/use-tabs-empty-lines-kept]
+  [fixture: data-blocks/use-tabs-folded-empty-lines-kept]
 - ブロックの行と開始行が、行全体を残す行でないこと。
   セミコロンの行規則による保持も含みます。
   一部だけ動かすと、その行の保持に反します。
@@ -1864,14 +1876,6 @@ Mermaid はブロック全体を trim して最初の行の字下げだけを除
 literal block scalar は空白行の幅と末尾空白を読むため、
 変えると Db が変わる場合があります。 [fixture: data-blocks/scalar-blank-lines]
 [fixture: data-blocks/scalar-blank-lines-outdent]
-
-`useTabs` でも本文の字下げと単独行の `}` は半角空白にし、
-`}` は文の桁に置きます。
-`}` の前のタブは、空行を残すスカラー（`|+`、`>+`）で、
-ブロックの最後の行を文字のある行にし、値を変えます。
-[fixture: data-blocks/tab-statement-space-body]
-[fixture: data-blocks/closing-with-tabs-keeps-empty-lines]
-[fixture: data-blocks/closing-with-tabs-keeps-folded-empty-lines]
 
 前後の directive、コメント、空行、空の説明ブロック、
 捨てる文区切りの `;` はそれぞれの規則に従います。

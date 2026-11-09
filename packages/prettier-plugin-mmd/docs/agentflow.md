@@ -559,14 +559,15 @@ metadata-blocks/deep-nested-yaml] [fixture: metadata-blocks/closing-after-text]
 
 The other shared movement conditions and their reasons are in
 [Data blocks](./flowchart.md#data-blocks): keep inline-opening blocks, embedded
-directives, kept lines, zero-width indentation and blocks starting after the
-statement's first line as written. Body margins use spaces even with `useTabs`,
-while a separate closer uses spaces too, at the column of the statement.
-Surrounding comments, directives, empty descriptions, blank lines and separators
-follow their own rules. [fixture: metadata-blocks/inline-and-directive-kept]
-[fixture: metadata-blocks/kept-body-line] [fixture:
-metadata-blocks/zero-width-kept] [fixture:
-metadata-blocks/tab-statement-space-body] [fixture:
+directives, kept lines, zero-width indentation, blocks starting after the
+statement's first line and blocks under a statement indented with a tab
+(`useTabs`) as written. Surrounding comments, directives, empty descriptions,
+blank lines and separators follow their own rules. [fixture:
+metadata-blocks/inline-and-directive-kept] [fixture:
+metadata-blocks/kept-body-line] [fixture: metadata-blocks/zero-width-kept]
+[fixture: metadata-blocks/tab-statement-space-body] [fixture:
+metadata-blocks/use-tabs-empty-lines-kept] [fixture:
+metadata-blocks/use-tabs-folded-empty-lines-kept] [fixture:
 metadata-blocks/surrounding-trivia] [test: data blocks: agentflow U+2029] [test:
 data blocks: agentflow CRLF]
 

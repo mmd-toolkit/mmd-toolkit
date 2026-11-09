@@ -496,19 +496,21 @@ data-blocks/scalar-blank-lines-outdent]
 
 Keep columns when the shared conditions fail: inline-opening text counts its
 first margin from `@{`, embedded directives keep their columns, kept lines must
-stay whole, and `tabWidth: 0` supplies no inner step. Tab-indented YAML is
-rejected by Mermaid; moving column-zero document markers can also make it fail.
-[fixture: data-blocks/inline-opening-kept] [fixture:
+stay whole, `tabWidth: 0` supplies no inner step, and a node indented with a tab
+(`useTabs`) has no depth that is right for every width of a tab. Tab-indented
+YAML is rejected by Mermaid; moving column-zero document markers can also make
+it fail. [fixture: data-blocks/inline-opening-kept] [fixture:
 data-blocks/directive-inside-kept] [fixture: data-blocks/kept-body-line]
 [fixture: data-blocks/zero-width-kept] [fixture:
-data-blocks/document-start-kept]
+data-blocks/document-start-kept] [fixture: data-blocks/tab-statement-space-body]
+[fixture: data-blocks/use-tabs-empty-lines-kept] [fixture:
+data-blocks/use-tabs-folded-empty-lines-kept]
 
-With `useTabs`, body margins and a separate closer still use spaces, the closer
-at the column of the node. Comments, directives and blank lines outside the
-block retain their own rules. CRLF and CR follow `endOfLine`; Unicode separators
-inside values remain characters. [fixture: data-blocks/tab-statement-space-body]
-[fixture: data-blocks/surrounding-trivia] [test: kanban: multiline-data-crlf]
-[test: kanban: multiline-data-cr] [test: data blocks: kanban U+2028]
+Comments, directives and blank lines outside the block retain their own rules.
+CRLF and CR follow `endOfLine`; Unicode separators inside values remain
+characters. [fixture: data-blocks/surrounding-trivia] [test: kanban:
+multiline-data-crlf] [test: kanban: multiline-data-cr] [test: data blocks:
+kanban U+2028]
 
 Where a block is attached is part of the syntax. The block touches the closing
 of a shape (`A[x]@{ticket: X}`), and a space there is rejected. After a bare id,

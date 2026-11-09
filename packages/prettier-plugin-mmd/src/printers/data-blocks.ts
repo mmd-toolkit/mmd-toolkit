@@ -79,7 +79,7 @@ export interface DataBlockPlacement {
   readonly kept: KeptLines
   /** The indentation of the line that the statement starts on, as printed. */
   readonly statement: string
-  /** The width of one level of indentation; a block moves only if not 0. */
+  /** The width of one level of indentation (see `movesLines`). */
   readonly tabWidth: number
   /**
    * Whether the layout holds the statement as one atom that is printed as
@@ -92,10 +92,10 @@ export interface DataBlockPlacement {
 /**
  * The layout with the data blocks of the statement in `range` formatted: a
  * block of one line printed with one space inside each end (see
- * `padDataBlock`), and, where the statement holds no other block, a block of
- * several lines printed one level inside the statement, with its closing `}`
- * on a line of its own at the column of the statement, in spaces (see
- * `moveDataBlock`). The `{` of a JSON table of a use case diagram is printed
+ * `padDataBlock`), and, where the statement holds no other block and the lines
+ * can move (see `movesLines`), a block of several lines printed one level
+ * inside the statement, with its closing `}` on a line of its own at the column
+ * of the statement, in spaces (see `moveDataBlock`). The `{` of a JSON table of a use case diagram is printed
  * right after its `@` (see `findJsonTableBrace`).
  */
 export function formatDataBlocks(
@@ -128,7 +128,7 @@ export function formatDataBlocks(
           ) ?? padded)
         : isOneLine(source.text.slice(...block.range))
           ? undefined
-          : afterLast - first === 1 && placement.tabWidth !== 0
+          : afterLast - first === 1 && movesLines(placement)
             ? moveDataBlock(source, block, range, placement, brace)
             : undefined) ??
       (brace === null
@@ -272,6 +272,19 @@ function startsWithYamlMark(text: string): boolean {
 }
 
 /**
+ * Whether the printer may set the indentation of the lines of a block: the
+ * lines of a block of several lines are indented with spaces, since mermaid.js
+ * rejects a tab before them, so they are moved only if `tabWidth` is not 0 and
+ * the statement is not indented with a tab, as under a node indented with tabs
+ * the spaces would stand at a depth that is right for one width of a tab only.
+ * A block of several lines that cannot move stays as written, and so does a
+ * block of one line that would split (docs/flowchart.md, Data blocks).
+ */
+function movesLines(placement: DataBlockPlacement): boolean {
+  return placement.tabWidth !== 0 && !placement.statement.includes("\t")
+}
+
+/**
  * The block of one line, `@{ a: 1, b: 2 }`, printed as the lines of a block
  * mapping where its line is too long, one entry on each line, one level inside
  * the statement, with the `}` alone on a line at the column of the statement
@@ -284,11 +297,8 @@ function startsWithYamlMark(text: string): boolean {
  * same where each entry is a key and a value that read the same in both (see
  * `splitEntries`) (docs/flowchart.md, Data blocks). A block splits only if
  *
- * - it is one of `splitTypes` and `tabWidth` is not 0, as a block of several
- *   lines moves only then, and the statement is not indented with a tab: the
- *   lines of a block mapping are indented with spaces, since mermaid.js rejects
- *   a tab before them, so under a node indented with tabs they would stand at
- *   a depth that is right for one width of a tab only;
+ * - it is one of `splitTypes` and the lines of a block can move (see
+ *   `movesLines`), as the lines of a block mapping are what the split prints;
  * - it is the only block of its statement, and the last thing in it, on the
  *   first line of the statement: the text after its `}` would stand after the
  *   `}` on a line of its own, and the statement level is the level of that
@@ -307,8 +317,7 @@ function splitDataBlock(
   if (
     !splitTypes.has(block.type) ||
     !alone ||
-    placement.tabWidth === 0 ||
-    placement.statement.includes("\t") ||
+    !movesLines(placement) ||
     block.range[1] !== statement[1] ||
     source.text.slice(statement[0], block.range[0]).includes("\n")
   )

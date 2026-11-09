@@ -1166,8 +1166,8 @@ participant と actor のデータブロックには、
 [データブロック](./flowchart.ja.md#データブロック)を適用します。
 その行を文の 1 段内側に動かし、単独行の `}` は文の段に揃えます。
 本文の後の閉じ括弧はその行と一緒に動かします。
-トップレベルと `loop` 内で適用し、`useTabs` でも本文は半角空白とし、
-単独行の閉じ括弧は文の字下げを使います。
+トップレベルと `loop` 内で適用しますが、
+タブで字下げした文（`useTabs`）の下では、ブロックの桁を保ちます。
 [fixture: multi-line-values/data-zero-and-shallow]
 [fixture: multi-line-values/data-deep-inline-closer]
 [fixture: multi-line-values/data-block-in-block-indented]

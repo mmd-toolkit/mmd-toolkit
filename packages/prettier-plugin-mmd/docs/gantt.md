@@ -309,17 +309,17 @@ task-data/description-padding-tightened] [fixture:
 task-data/colon-column-wide-characters] [fixture:
 task-data/colon-column-use-tabs]
 
-Where all the sections of a chart that have padding have their colons in one and
-the same column, they go on sharing a column: it is one space after the longest
-of their longest names, so that only the excess whitespace goes. A section whose
-names are all followed by one space, with its colons in that column, counts for
-the longest name and is not changed. Where the colons of the sections with
-padding are not all in one column, each section has the column of its own
-longest name. The tasks before the first `section` stand one level less deep, so
-they are a section of their own that shares nothing. [fixture:
-task-data/colon-column-sections-share-one-column] [fixture:
-task-data/colon-column-one-task-sections] [fixture:
+The sections with padding whose colons are all in one and the same column go on
+sharing a column: it is one space after the longest of their longest names, so
+that only the excess whitespace goes. A section whose colons are not all in one
+column is on its own, with the column of its longest name. A section whose names
+are all followed by one space, with its colons in the column of a group, counts
+for the longest name of the group and is not changed. The tasks before the first
+`section` stand one level less deep, so they are a section of their own that
+shares nothing. [fixture: task-data/colon-column-sections-share-one-column]
+[fixture: task-data/colon-column-one-task-sections] [fixture:
 task-data/colon-column-uniform-section-shares] [fixture:
+task-data/colon-column-sections-in-one-column-and-others] [fixture:
 task-data/colon-column-sections-not-sharing] [fixture:
 task-data/colon-column-sections-in-different-columns] [fixture:
 task-data/colon-column-before-first-section] [fixture:
@@ -330,18 +330,42 @@ the chart easier to read or could change the figure. A section in which no name
 has more than one space before its colon, or none, is left, because the author
 chose to put the colon next to the text. A section is left where the aligned
 lines would be longer than `printWidth` and longer than they are, since one long
-name would push every colon of the section far right, and so are all the
-sections that share a column where any of them would. A chart that holds
+name would push every colon of the section far right. A chart that holds
 `white-space` is left, since the CSS of the chart may draw the whitespace at the
-end of a name, and the figure then depends on it. A task whose line holds a
-comment, a directive, or a `;` of its own, or runs over lines, is printed as
-written and is not one of the tasks that the others are aligned with, so its
-padding does not decide the column of the others. [fixture:
+end of a name, and the figure then depends on it. [fixture:
 task-data/colon-column-single-space-kept] [fixture:
 task-data/colon-column-too-wide-kept] [fixture:
-task-data/colon-column-white-space-kept] [fixture:
-task-data/colon-column-line-with-directive-kept] [fixture:
-task-data/colon-column-line-with-semicolon-kept]
+task-data/colon-column-white-space-kept]
+
+A task is left as written, and is not one of the tasks that the others are
+aligned with, so its padding does not decide their column, where the printer
+prints its line as written (see
+[Statements one per line](#statements-one-per-line) and the data of whitespace
+only below), where it runs over lines, where its name ends with a directive,
+since the whitespace beside a directive stays (see [Directives](#directives)),
+and where something stands before it on its line. Its name then does not start
+the line, so its colon would not line up with the others, and the whitespace
+before its colon could lie where the line rule of mermaid.js reads it: the rule
+reads the whitespace after a `:` that follows `style` or `classDef`, a name
+holds no `:`, and so a `:` before the colon of the task can only come from a
+statement before it (see [Statements one per line](#statements-one-per-line)).
+[fixture: task-data/colon-column-line-as-written-kept] [fixture:
+task-data/colon-column-task-over-lines-kept] [fixture:
+task-data/colon-column-task-after-statement-kept] [fixture:
+task-data/colon-column-name-ending-with-directive-kept]
+
+Nothing else on the line keeps a task from being aligned: a `;` in the name or
+elsewhere on the line, a comment, a directive inside the name or after the data,
+and a line that the line rule reads leave the task aligned, as the padding of a
+task that starts its line lies before the first `:` of the line, and the rule
+reads only the whitespace after it. The width of a name, and of the rest of the
+line, is the width as written, so a directive inside the name counts, as the
+colons are lined up in the text, and a comment or a directive after the data
+counts toward `printWidth`. [fixture:
+task-data/colon-column-name-with-semicolon] [fixture:
+task-data/colon-column-style-rule-line] [fixture:
+task-data/colon-column-directive-inside-name] [fixture:
+task-data/colon-column-comment-after-data]
 
 The first item touches the colon, and a `,` touches the item before it and is
 followed by one space where an item follows: whitespace around the colon and the
@@ -391,33 +415,39 @@ gantt
 ```
 
 Input
-([task-data/colon-column-sections-not-sharing-input.mmd](../tests/fixtures/gantt/task-data/colon-column-sections-not-sharing-input.mmd)):
+([task-data/colon-column-sections-in-one-column-and-others-input.mmd](../tests/fixtures/gantt/task-data/colon-column-sections-in-one-column-and-others-input.mmd)):
 
 ```mmd
 gantt
-  dateFormat YYYY-MM-DD
   section A
-    A task          :a1, 2014-01-01, 30d
-    Another task    :after a1, 20d
+    Task A                    :a1, 2014-01-01, 3d
+    Task B long               :a2, after a1, 2d
   section B
-    Task in    :2014-01-12, 12d
-    other task :24d
-    x   :1d
+    Other                     :a3, after a2, 1d
+  section C
+    Single   :a4, after a3, 1d
+    Quite a long name :a5, after a4, 1d
+  section D
+    Alone :a6, after a5, 1d
+    Brief :a7, after a6, 1d
 ```
 
 Output
-([task-data/colon-column-sections-not-sharing-output.mmd](../tests/fixtures/gantt/task-data/colon-column-sections-not-sharing-output.mmd)):
+([task-data/colon-column-sections-in-one-column-and-others-output.mmd](../tests/fixtures/gantt/task-data/colon-column-sections-in-one-column-and-others-output.mmd)):
 
 ```mmd
 gantt
-  dateFormat YYYY-MM-DD
   section A
-    A task       :a1, 2014-01-01, 30d
-    Another task :after a1, 20d
+    Task A      :a1, 2014-01-01, 3d
+    Task B long :a2, after a1, 2d
   section B
-    Task in    :2014-01-12, 12d
-    other task :24d
-    x          :1d
+    Other       :a3, after a2, 1d
+  section C
+    Single            :a4, after a3, 1d
+    Quite a long name :a5, after a4, 1d
+  section D
+    Alone :a6, after a5, 1d
+    Brief :a7, after a6, 1d
 ```
 
 Input
