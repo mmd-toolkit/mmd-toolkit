@@ -20,5 +20,6 @@ process.exitCode = await main(process.argv.slice(2), {
   stderr: (output) => {
     process.stderr.write(output)
   },
+  stdoutStream: process.stdout,
   stderrStream: process.stderr,
 })

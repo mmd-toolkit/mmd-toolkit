@@ -138,8 +138,8 @@ export function collapseRunEdits(
  * reaches the strings and the arrays of the doc only, and not the contents of
  * its commands, which `utils.mapDoc` of `prettier/doc` would also reach: a
  * layout puts text that stays as written inside a command, such as the text
- * that a railroad-beta call ignores (`terminal(%%{!  }%% "a")` keeps both
- * spaces).
+ * that a railroad-beta call ignores: `r = terminal(%%{!  }%% "a");` keeps both
+ * spaces of `%%{!  }%%`, which `mapDoc` would print as one.
  */
 function collapseDoc(doc: Doc): Doc {
   if (typeof doc === "string") {

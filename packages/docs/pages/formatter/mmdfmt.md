@@ -106,25 +106,30 @@ mmdfmt --list-different <pattern>...
 mmdfmt --stdin-filepath <path>
 ```
 
-| Option                    | What it does                                                                                 |
-| ------------------------- | -------------------------------------------------------------------------------------------- |
-| `-w`, `--write`           | Formats the files in place, and lists on standard output the ones that changed.              |
-| `-c`, `--check`           | Checks whether the files are formatted, and prints a summary and the files that are not.     |
-| `-l`, `--list-different`  | Changes nothing. Lists on standard output the files that `--write` would change.             |
-| `--stdin-filepath <path>` | Formats standard input as if it were the file at `<path>`, and writes it to standard output. |
-| `-h`, `--help`            | Prints the usage on standard output.                                                         |
-| `-v`, `--version`         | Prints the version on standard output.                                                       |
+| Option                    | What it does                                                                                  |
+| ------------------------- | --------------------------------------------------------------------------------------------- |
+| `-w`, `--write`           | Formats the files in place, and lists each file it formats on standard output, with its time. |
+| `-c`, `--check`           | Checks whether the files are formatted, and prints a summary and the files that are not.      |
+| `-l`, `--list-different`  | Changes nothing. Lists on standard output the files that `--write` would change.              |
+| `--stdin-filepath <path>` | Formats standard input as if it were the file at `<path>`, and writes it to standard output.  |
+| `-h`, `--help`            | Prints the usage on standard output.                                                          |
+| `-v`, `--version`         | Prints the version on standard output.                                                        |
 
 Give patterns with at least one of `--write`, `--check`, or `--list-different`.
 `--write` can be combined with either `--check` or `--list-different`:
 `--write --check` rewrites files and prints the check's summary and warnings;
-`--write --list-different` rewrites files and lists the ones that changed, as
-`--write` alone does. `--check` and `--list-different` cannot be combined.
-`--no-write`, `--no-check`, and `--no-list-different` turn the option off.
-`--stdin-filepath` takes no patterns and cannot be combined with `--write`.
-`--help` and `--version` only print, whatever else of this table is given with
-them. With no argument at all, `mmdfmt` prints the usage on standard error and
-exits with `2`.
+`--write --list-different` rewrites files and lists only the ones that changed.
+`--check` and `--list-different` cannot be combined. `--no-write`, `--no-check`,
+and `--no-list-different` turn the option off. `--stdin-filepath` takes no
+patterns, and with it `--write` writes no file. `--help` and `--version` only
+print, whatever else of this table is given with them. With no argument at all,
+`mmdfmt` prints the usage on standard error and exits with `2`.
+
+`--write` alone prints a line for each file it formats, as Prettier does: the
+name and the time that formatting it took, such as `docs/flow.mmd 12ms`,
+followed by `(unchanged)` for a file that did not change. On a terminal that
+shows colors, the name of an unchanged file is gray. To list only the files that
+changed, give `--write --list-different`.
 
 There are no other options: no formatting options, no configuration file of its
 own, and no option for an ignore file. An option that takes no value ignores a
@@ -267,9 +272,9 @@ whether the text is a diagram or Markdown, and its directory says which
   the `.gitignore` of the directory where `mmdfmt` runs, gets its text back
   unchanged.
 - With `--check` or `--list-different`, the text is not written out: when it
-  would change, `(stdin)` goes to standard output and the exit code is `1`;
-  otherwise nothing is written and the exit code is `0`. The position of a
-  warning is in the text as it was read.
+  would change, `(stdin)` goes to standard output and the exit code is `1`,
+  unless `--write` is given too; otherwise nothing is written and the exit code
+  is `0`. The position of a warning is in the text as it was read.
 - A path with another ending is an error.
 
 ## Indentation
@@ -365,18 +370,17 @@ so `mmdfmt --write false notes.md` formats `notes.md` and reports that no file
 matches `false`.
 
 When `mmdfmt` checks which options go together, a `--no-` form counts as giving
-its option: `--no-check --list-different` and `--no-write --stdin-filepath` are
-errors, as `--check --list-different` and `--write --stdin-filepath` are.
-Prettier accepts both `--no-` combinations.
+its option: `--no-check --list-different` is an error, as
+`--check --list-different` is. Prettier accepts `--no-check --list-different`.
 
 With `--check` or `--list-different` on standard input, Prettier exits with `0`
 for a text it cannot parse; `mmdfmt` exits with `2` for a rejected diagram, as
 everywhere else ([Errors and exit codes](#errors-and-exit-codes)).
 
-Prettier also colors the word `warn` when standard error is not a terminal, if
-the `CI` environment variable is set or the system is Windows. `mmdfmt` colors
-it only on a terminal that shows colors, or when `FORCE_COLOR` is set, and has
-no `--color` or `--no-color`.
+Prettier also colors the word `warn` yellow and the name of an unchanged file
+gray where its output is not a terminal, if the `CI` environment variable is set
+or the system is Windows. `mmdfmt` colors them only on a terminal that shows
+colors, or when `FORCE_COLOR` is set, and has no `--color` or `--no-color`.
 
 The [README of `mmdfmt`](../../../mmdfmt/README.md#code-blocks-in-detail)
 describes the code blocks in detail: which blocks are formatted, blocks in lists

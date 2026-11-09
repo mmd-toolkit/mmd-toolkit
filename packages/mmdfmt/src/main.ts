@@ -15,10 +15,13 @@ export interface Io {
   readonly stdout: (text: string) => void
   readonly stderr: (text: string) => void
   /**
-   * The stream behind `stderr`, if there is one. The word `warn` of a warning
-   * is yellow when Node's `util.styleText` colors text for this stream: a
-   * terminal, or `FORCE_COLOR` (README, If you know Prettier).
+   * The streams behind `stdout` and `stderr`, if there are any. Prettier's
+   * logger colors some words (the name of an unchanged file in gray, the word
+   * `warn` in yellow); the tool colors them where Node's `util.styleText`
+   * colors text for the stream: a terminal, or `FORCE_COLOR` (README, If you
+   * know Prettier).
    */
+  readonly stdoutStream?: NodeJS.WritableStream
   readonly stderrStream?: NodeJS.WritableStream
 }
 
@@ -53,8 +56,8 @@ export async function main(args: readonly string[], io: Io): Promise<number> {
         type: "boolean",
         short: "w",
         negatable: true,
-        description: "Rewrite the files that change, and list them",
-        conflicts: ["stdinFilepath"],
+        description:
+          "Rewrite the files that change, and list each file with its time",
       },
       check: {
         type: "boolean",
@@ -75,7 +78,6 @@ export async function main(args: readonly string[], io: Io): Promise<number> {
         type: "string",
         description:
           "Format standard input as the file at this path, and write the result to standard output",
-        conflicts: ["write"],
       },
       patterns: {
         type: "positional",
@@ -104,7 +106,10 @@ export async function main(args: readonly string[], io: Io): Promise<number> {
             ? argumentError(io, ["--stdin-filepath takes no patterns"])
             : await formatStandardInput(
                 stdinFilepath,
-                Boolean(check) || Boolean(listDifferent),
+                {
+                  write: Boolean(write),
+                  listsDifference: Boolean(check) || Boolean(listDifferent),
+                },
                 io,
               )
       } else if (ctx.explicit.stdinFilepath) {
@@ -224,6 +229,8 @@ async function formatFiles(
       failed = true
       continue
     }
+    // Prettier times the formatting of a file from here.
+    const start = performance.now()
     try {
       result = await formatFile(
         text,
@@ -243,10 +250,20 @@ async function formatFiles(
       numberOfFilesWithError += 1
       continue
     }
-    if (result.text === text) continue
+    // `--write` alone lists every file with the time it took, as Prettier
+    // does; with `--check` or `--list-different`, their own lists replace it.
+    const listsTimes = mode.write && !mode.check && !mode.listDifferent
+    const time = `${Math.round(performance.now() - start)}ms`
+    if (result.text === text) {
+      if (listsTimes) {
+        io.stdout(
+          `${style(io.stdoutStream, "gray", name)} ${time} (unchanged)\n`,
+        )
+      }
+      continue
+    }
     if (mode.write) {
-      // The tool lists only changed file names (README, Usage).
-      if (!mode.check && !mode.listDifferent) io.stdout(`${name}\n`)
+      if (listsTimes) io.stdout(`${name} ${time}\n`)
       try {
         await writeFile(file.path, result.text)
       } catch (error) {
@@ -299,11 +316,12 @@ async function formatFiles(
  * standard output. A skipped path gets its input back unchanged, and a
  * rejected diagram file gets nothing. With `listsDifference` (`--check` or
  * `--list-different`), the result is not written: `(stdin)` is listed when it
- * differs from the input, as Prettier lists it.
+ * differs from the input, unless `write` is given too, as Prettier lists it.
+ * `write` alone changes nothing: no file is written.
  */
 async function formatStandardInput(
   filepath: string,
-  listsDifference: boolean,
+  mode: { readonly write: boolean; readonly listsDifference: boolean },
   io: Io,
 ): Promise<number> {
   const file = path.resolve(io.cwd, filepath)
@@ -324,15 +342,15 @@ async function formatStandardInput(
       text,
       file,
       kind,
-      listsDifference ? "input" : "output",
+      mode.listsDifference ? "input" : "output",
     )
     report(io, filepath, result.diagnostics)
     if (result.diagnostics.some(isError)) return exitCodes.error
-    if (!listsDifference) {
+    if (!mode.listsDifference) {
       io.stdout(result.text)
       return exitCodes.ok
     }
-    if (result.text === text) return exitCodes.ok
+    if (result.text === text || mode.write) return exitCodes.ok
     io.stdout("(stdin)\n")
     return exitCodes.changed
   } catch (error) {
@@ -347,11 +365,19 @@ async function formatStandardInput(
  * the stream shows colors.
  */
 function warn(io: Io, text: string): void {
-  const label =
-    io.stderrStream === undefined
-      ? "warn"
-      : styleText("yellow", "warn", { stream: io.stderrStream })
-  io.stderr(`[${label}] ${text}\n`)
+  io.stderr(`[${style(io.stderrStream, "yellow", "warn")}] ${text}\n`)
+}
+
+/**
+ * `text` in `color` where Node's `util.styleText` colors text for `stream`,
+ * and as it is without a stream.
+ */
+function style(
+  stream: NodeJS.WritableStream | undefined,
+  color: "gray" | "yellow",
+  text: string,
+): string {
+  return stream === undefined ? text : styleText(color, text, { stream })
 }
 
 /** Writes the diagnostics of a file to standard error. */

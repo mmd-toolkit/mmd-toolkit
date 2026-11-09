@@ -43,12 +43,14 @@ export class Project {
 
   /**
    * Runs the tool in the project, with `stdin` as its standard input, and
-   * `stderrStream` as the stream behind standard error, if any.
+   * `stderrStream` and `stdoutStream` as the streams behind standard error
+   * and standard output, if any.
    */
   public async run(
     args: readonly string[],
     stdin = "",
     stderrStream?: NodeJS.WritableStream,
+    stdoutStream?: NodeJS.WritableStream,
   ): Promise<Run> {
     let stdout = ""
     let stderr = ""
@@ -62,6 +64,7 @@ export class Project {
         stderr += text
       },
       stderrStream,
+      stdoutStream,
     })
     return { code, stdout, stderr }
   }
@@ -80,4 +83,32 @@ export function lines(...texts: readonly string[]): string {
 /** The lines of a list that the tool prints, from paths written with `/`. */
 export function listed(...names: readonly string[]): string {
   return names.map((name) => `${path.join(...name.split("/"))}\n`).join("")
+}
+
+/**
+ * Replaces the digits followed by `ms` at the time position of each
+ * `--write` output line with `<time>`, leaving other output unchanged.
+ */
+export function fixedWriteTimes(run: Run): Run {
+  return {
+    ...run,
+    stdout: run.stdout.replaceAll(
+      /^(.+) \d+ms( \(unchanged\))?$/gmu,
+      "$1 <time>$2",
+    ),
+  }
+}
+
+/** The changed-file time lines of `--write`, from paths written with `/`. */
+export function written(...names: readonly string[]): string {
+  return names
+    .map((name) => `${path.join(...name.split("/"))} <time>\n`)
+    .join("")
+}
+
+/** The unchanged-file time lines of `--write`, from paths written with `/`. */
+export function unchanged(...names: readonly string[]): string {
+  return names
+    .map((name) => `${path.join(...name.split("/"))} <time> (unchanged)\n`)
+    .join("")
 }

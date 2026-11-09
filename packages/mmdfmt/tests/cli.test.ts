@@ -5,7 +5,14 @@ import { afterEach, beforeEach, describe, expect, it, vi } from "vitest"
 import packageJson from "../package.json" with { type: "json" }
 import { ignoreBrokenPipe } from "../src/broken-pipe.ts"
 import { main } from "../src/main.ts"
-import { Project, lines, listed } from "./helpers.ts"
+import {
+  Project,
+  fixedWriteTimes,
+  lines,
+  listed,
+  unchanged,
+  written,
+} from "./helpers.ts"
 
 let project: Project
 
@@ -33,7 +40,7 @@ function noFileMatches(pattern: string): string {
  * compare the usage, whose layout gunshi decides.
  */
 const usageTexts = [
-  "Rewrite the files that change, and list them",
+  "Rewrite the files that change, and list each file with its time",
   "List the files that --write would change",
   "Check whether the files are formatted, and print a summary and the files that are not",
   "Format standard input as the file at this path, and write the result to standard output",
@@ -62,35 +69,62 @@ describe("Usage: --write, --check, and --list-different", () => {
     })
   })
 
-  it.each([
-    [["--write"]],
-    [["-w"]],
-    [["--write", "--list-different"]],
-    [["-wl"]],
-  ])("%j rewrites the files that change, and lists them", async (args) => {
-    expect(await project.run([...args, "*.mmd", "*.md"])).toEqual({
+  it.each([[["--write"]], [["-w"]]])(
+    "%j rewrites changed files and lists every formatted file with its time in file order",
+    async (args) => {
+      expect(
+        fixedWriteTimes(await project.run([...args, "*.mmd", "*.md"])),
+      ).toEqual({
+        code: 0,
+        stdout: written("a.mmd") + unchanged("c.mmd") + written("b.md"),
+        stderr: "",
+      })
+      expect(project.read("a.mmd")).toBe(formattedDiagram)
+      expect(project.read("b.md")).toBe(formattedMarkdown)
+      expect(project.read("c.mmd")).toBe(formattedDiagram)
+    },
+  )
+
+  it("--write lists an unchanged file with its time and (unchanged)", async () => {
+    expect(fixedWriteTimes(await project.run(["--write", "c.mmd"]))).toEqual({
       code: 0,
-      stdout: listed("a.mmd", "b.md"),
+      stdout: unchanged("c.mmd"),
       stderr: "",
     })
-    expect(project.read("a.mmd")).toBe(formattedDiagram)
-    expect(project.read("b.md")).toBe(formattedMarkdown)
     expect(project.read("c.mmd")).toBe(formattedDiagram)
   })
 
+  it.each([[["--write", "--list-different"]], [["-wl"]]])(
+    "%j rewrites files and lists only changed names without times",
+    async (args) => {
+      expect(await project.run([...args, "*.mmd", "*.md"])).toEqual({
+        code: 0,
+        stdout: listed("a.mmd", "b.md"),
+        stderr: "",
+      })
+      expect(project.read("a.mmd")).toBe(formattedDiagram)
+      expect(project.read("b.md")).toBe(formattedMarkdown)
+      expect(project.read("c.mmd")).toBe(formattedDiagram)
+    },
+  )
+
   it("reads --write=false as --write", async () => {
-    expect(await project.run(["--write=false", "a.mmd"])).toEqual({
+    expect(
+      fixedWriteTimes(await project.run(["--write=false", "a.mmd"])),
+    ).toEqual({
       code: 0,
-      stdout: listed("a.mmd"),
+      stdout: written("a.mmd"),
       stderr: "",
     })
     expect(project.read("a.mmd")).toBe(formattedDiagram)
   })
 
   it("reads false after --write as a pattern", async () => {
-    expect(await project.run(["--write", "false", "a.mmd"])).toEqual({
+    expect(
+      fixedWriteTimes(await project.run(["--write", "false", "a.mmd"])),
+    ).toEqual({
       code: 2,
-      stdout: listed("a.mmd"),
+      stdout: written("a.mmd"),
       stderr: noFileMatches("false"),
     })
     expect(project.read("a.mmd")).toBe(formattedDiagram)
@@ -192,9 +226,9 @@ describe("Usage: --write, --check, and --list-different", () => {
   ])(
     "%j reads --no-check and --no-list-different as Prettier does",
     async (args) => {
-      expect(await project.run([...args, "a.mmd"])).toEqual({
+      expect(fixedWriteTimes(await project.run([...args, "a.mmd"]))).toEqual({
         code: 0,
-        stdout: listed("a.mmd"),
+        stdout: written("a.mmd"),
         stderr: "",
       })
     },
@@ -213,6 +247,55 @@ describe("Usage: --write, --check, and --list-different", () => {
     }
   })
 
+  it("colors only the unchanged name gray where Node colors text for standard output", async () => {
+    vi.stubEnv("FORCE_COLOR", "1")
+    vi.stubEnv("NO_COLOR", undefined)
+    try {
+      const run = await project.run(
+        ["--write", "a.mmd", "c.mmd"],
+        "",
+        undefined,
+        new PassThrough(),
+      )
+      expect(fixedWriteTimes(run)).toEqual({
+        code: 0,
+        stdout: written("a.mmd") + unchanged("\u001B[90mc.mmd\u001B[39m"),
+        stderr: "",
+      })
+    } finally {
+      vi.unstubAllEnvs()
+    }
+  })
+
+  it("does not color warn or an unchanged name on a nonterminal with CI alone", async () => {
+    vi.stubEnv("CI", "1")
+    vi.stubEnv("FORCE_COLOR", undefined)
+    vi.stubEnv("NO_COLOR", undefined)
+    try {
+      const checked = await project.run(
+        ["--check", "a.mmd"],
+        "",
+        new PassThrough(),
+      )
+      expect(checked.stderr).toBe(
+        "[warn] a.mmd\n[warn] Code style issues found in the above file. Run mmdfmt with --write to fix.\n",
+      )
+      const writtenRun = await project.run(
+        ["--write", "c.mmd"],
+        "",
+        undefined,
+        new PassThrough(),
+      )
+      expect(fixedWriteTimes(writtenRun)).toEqual({
+        code: 0,
+        stdout: unchanged("c.mmd"),
+        stderr: "",
+      })
+    } finally {
+      vi.unstubAllEnvs()
+    }
+  })
+
   it("--write --check counts the files it changed", async () => {
     expect(await project.run(["--write", "--check", "a.mmd", "b.md"])).toEqual({
       code: 0,
@@ -225,6 +308,45 @@ describe("Usage: --write, --check, and --list-different", () => {
 })
 
 describe("From an editor or another tool: --stdin-filepath", () => {
+  it.each([
+    [["--write", "--stdin-filepath", "a.mmd"]],
+    [["--stdin-filepath", "a.mmd", "--write"]],
+    [["--no-write", "--stdin-filepath", "a.mmd"]],
+  ])(
+    "%j formats standard input without reading or writing the file",
+    async (args) => {
+      project.write({ "a.mmd": "a file that is not a diagram\n" })
+      expect(await project.run(args, diagram)).toEqual({
+        code: 0,
+        stdout: formattedDiagram,
+        stderr: "",
+      })
+      expect(await project.run(args, formattedDiagram)).toEqual({
+        code: 0,
+        stdout: formattedDiagram,
+        stderr: "",
+      })
+      expect(project.read("a.mmd")).toBe("a file that is not a diagram\n")
+    },
+  )
+
+  it.each([[["--write", "--check"]], [["--write", "--list-different"]]])(
+    "%j prints nothing for standard input and exits with 0, whether it differs or not",
+    async (options) => {
+      project.write({ "a.mmd": "a file that is not a diagram\n" })
+      expect(
+        await project.run([...options, "--stdin-filepath", "a.mmd"], diagram),
+      ).toEqual({ code: 0, stdout: "", stderr: "" })
+      expect(
+        await project.run(
+          [...options, "--stdin-filepath", "a.mmd"],
+          formattedDiagram,
+        ),
+      ).toEqual({ code: 0, stdout: "", stderr: "" })
+      expect(project.read("a.mmd")).toBe("a file that is not a diagram\n")
+    },
+  )
+
   it("keeps a byte order mark in standard input", async () => {
     expect(
       await project.run(["--stdin-filepath", "a.mmd"], `\uFEFF${diagram}`),
@@ -318,16 +440,24 @@ describe("From an editor or another tool: --stdin-filepath", () => {
     },
   )
 
-  it("gives a warning with --check its position in the text as it was read", async () => {
-    const text = `\`\`\`mermaid\nflowchart LR\nA-->B\n\`\`\`\n\n\`\`\`mermaid\nflowchart LR\nA-->B)\n\`\`\`\n`
-    expect(
-      await project.run(["--check", "--stdin-filepath", "doc.md"], text),
-    ).toEqual({
-      code: 1,
-      stdout: "(stdin)\n",
-      stderr: "doc.md:8:6: warning: Unexpected character\n",
-    })
-  })
+  it.each([
+    [["--check"]],
+    [["--list-different"]],
+    [["--write", "--check"]],
+    [["--write", "--list-different"]],
+  ])(
+    "gives a warning with %j its position in the text as it was read",
+    async (options) => {
+      const text = `\`\`\`mermaid\nflowchart LR\nA-->B; B-->C\n\`\`\`\n\n\`\`\`mermaid\nflowchart LR\nA-->B)\n\`\`\`\n`
+      expect(
+        await project.run([...options, "--stdin-filepath", "doc.md"], text),
+      ).toEqual({
+        code: options.includes("--write") ? 0 : 1,
+        stdout: options.includes("--write") ? "" : "(stdin)\n",
+        stderr: "doc.md:8:6: warning: Unexpected character\n",
+      })
+    },
+  )
 
   it("exits with 2 with --check for a rejected diagram", async () => {
     expect(
@@ -481,16 +611,8 @@ describe("Usage: anything else is an error with exit 2", () => {
       ["--stdin-filepath takes no patterns"],
     ],
     [
-      ["--stdin-filepath", "a.mmd", "--write"],
-      ["Optional argument '--write' conflicts with '--stdin-filepath'"],
-    ],
-    [
-      ["--write", "--stdin-filepath", "a.mmd"],
-      ["Optional argument '--write' conflicts with '--stdin-filepath'"],
-    ],
-    [
-      ["--no-write", "--stdin-filepath", "a.mmd"],
-      ["Optional argument '--no-write' conflicts with '--stdin-filepath'"],
+      ["--write", "--stdin-filepath", "a.mmd", "a.mmd"],
+      ["--stdin-filepath takes no patterns"],
     ],
     [
       ["--no-check", "--list-different", "a.mmd"],
@@ -498,11 +620,11 @@ describe("Usage: anything else is an error with exit 2", () => {
     ],
     [
       ["--stdin-filepath=", "--write", "a.mmd"],
-      ["Optional argument '--write' conflicts with '--stdin-filepath'"],
+      ["--stdin-filepath needs a path"],
     ],
     [
       ["--stdin-filepath", "", "--write", "a.mmd"],
-      ["Optional argument '--write' conflicts with '--stdin-filepath'"],
+      ["--stdin-filepath needs a path"],
     ],
     [
       ["--stdin-filepath=", "--list-different", "a.mmd"],
@@ -571,9 +693,11 @@ describe("Patterns", () => {
 
   it("formats a file whose name starts with - after --", async () => {
     project.write({ "-a.mmd": diagram })
-    expect(await project.run(["--write", "--", "-a.mmd"])).toEqual({
+    expect(
+      fixedWriteTimes(await project.run(["--write", "--", "-a.mmd"])),
+    ).toEqual({
       code: 0,
-      stdout: listed("-a.mmd"),
+      stdout: written("-a.mmd"),
       stderr: "",
     })
     expect(project.read("-a.mmd")).toBe(formattedDiagram)
@@ -659,9 +783,11 @@ describe("Patterns", () => {
 
   it("formats a file once, however many patterns select it", async () => {
     project.write({ "a.mmd": diagram })
-    expect(await project.run(["--write", "a.mmd", "*.mmd", "."])).toEqual({
+    expect(
+      fixedWriteTimes(await project.run(["--write", "a.mmd", "*.mmd", "."])),
+    ).toEqual({
       code: 0,
-      stdout: listed("a.mmd"),
+      stdout: written("a.mmd"),
       stderr: "",
     })
   })
@@ -669,10 +795,12 @@ describe("Patterns", () => {
   it("is an error for a pattern that selects no file of the four endings, and formats the rest", async () => {
     project.write({ "a.mmd": diagram, "notes.txt": diagram })
     expect(
-      await project.run(["--write", "notes.txt", "missing/*.md", "a.mmd"]),
+      fixedWriteTimes(
+        await project.run(["--write", "notes.txt", "missing/*.md", "a.mmd"]),
+      ),
     ).toEqual({
       code: 2,
-      stdout: listed("a.mmd"),
+      stdout: written("a.mmd"),
       stderr: noFileMatches("notes.txt") + noFileMatches("missing/*.md"),
     })
     expect(project.read("a.mmd")).toBe(formattedDiagram)
@@ -767,8 +895,10 @@ describe("Excluding files: node_modules, version control, and .gitignore", () =>
       "docs/b.md": markdown,
     })
     expect(
-      await project.run(["--write", "node_modules/x/a.md", "docs"]),
-    ).toEqual({ code: 0, stdout: listed("docs/b.md"), stderr: "" })
+      fixedWriteTimes(
+        await project.run(["--write", "node_modules/x/a.md", "docs"]),
+      ),
+    ).toEqual({ code: 0, stdout: written("docs/b.md"), stderr: "" })
     expect(project.read("node_modules/x/a.md")).toBe(markdown)
     expect(project.read("docs/b.md")).toBe(formattedMarkdown)
   })
@@ -1019,9 +1149,11 @@ describe("Indentation", () => {
       "a.mmd": diagram,
       "b.md": prose + markdown,
     })
-    expect(await project.run(["--write", "a.mmd", "b.md"])).toEqual({
+    expect(
+      fixedWriteTimes(await project.run(["--write", "a.mmd", "b.md"])),
+    ).toEqual({
       code: 0,
-      stdout: listed("a.mmd", "b.md"),
+      stdout: written("a.mmd", "b.md"),
       stderr: "",
     })
     expect(project.read("a.mmd")).toBe(formattedDiagram)
@@ -1065,9 +1197,9 @@ describe("Code blocks in detail: a .mmd or .mermaid file, as a whole", () => {
 
   it("formats a file of only blank lines as an empty file", async () => {
     project.write({ "a.mmd": "  \n\n" })
-    expect(await project.run(["--write", "a.mmd"])).toEqual({
+    expect(fixedWriteTimes(await project.run(["--write", "a.mmd"]))).toEqual({
       code: 0,
-      stdout: listed("a.mmd"),
+      stdout: written("a.mmd"),
       stderr: "",
     })
     expect(project.read("a.mmd")).toBe("")
@@ -1127,9 +1259,11 @@ describe("Errors and exit codes: an error in a .mmd or .mermaid file", () => {
 
   it("reports the position, leaves the file, formats the others, and exits with 2", async () => {
     project.write({ "a.mmd": "flowchart LR\nA-->B)\n", "b.mmd": diagram })
-    expect(await project.run(["--write", "a.mmd", "b.mmd"])).toEqual({
+    expect(
+      fixedWriteTimes(await project.run(["--write", "a.mmd", "b.mmd"])),
+    ).toEqual({
       code: 2,
-      stdout: listed("b.mmd"),
+      stdout: written("b.mmd"),
       stderr: "a.mmd:2:6: error: Unexpected character\n",
     })
     expect(project.read("a.mmd")).toBe("flowchart LR\nA-->B)\n")
@@ -1214,9 +1348,9 @@ describe("Errors and exit codes: a warning with its position in the file", () =>
 
   it("--write gives the position of a warning in the file it wrote", async () => {
     project.write({ "b.md": input })
-    expect(await project.run(["--write", "b.md"])).toEqual({
+    expect(fixedWriteTimes(await project.run(["--write", "b.md"]))).toEqual({
       code: 0,
-      stdout: listed("b.md"),
+      stdout: written("b.md"),
       stderr: "b.md:11:1: warning: Unexpected end of text\n",
     })
     expect(project.read("b.md")).toBe(formatted)
@@ -1285,9 +1419,9 @@ describe("Errors and exit codes: a warning with its position in the file", () =>
 
   it("--write gives the position of a warning in the file it wrote, whose lines end in two ways", async () => {
     project.write({ "b.md": mixedInput })
-    expect(await project.run(["--write", "b.md"])).toEqual({
+    expect(fixedWriteTimes(await project.run(["--write", "b.md"]))).toEqual({
       code: 0,
-      stdout: listed("b.md"),
+      stdout: written("b.md"),
       stderr: "b.md:11:6: warning: Unexpected character\n",
     })
     expect(project.read("b.md")).toBe(mixedFormatted)
@@ -1315,7 +1449,7 @@ describe("Errors and exit codes: a file that cannot be read or written", () => {
       const run = await project.run(["--write", "a.mmd", "b.mmd"])
       chmodSync(path.join(project.cwd, "a.mmd"), 0o644)
       expect(run.code).toBe(2)
-      expect(run.stdout).toBe(listed("b.mmd"))
+      expect(fixedWriteTimes(run).stdout).toBe(written("b.mmd"))
       expect(run.stderr.startsWith("a.mmd: error: EACCES")).toBe(true)
     },
   )
@@ -1328,7 +1462,7 @@ describe("Errors and exit codes: a file that cannot be read or written", () => {
       const run = await project.run(["--write", "a.mmd"])
       chmodSync(path.join(project.cwd, "a.mmd"), 0o644)
       expect(run.code).toBe(2)
-      expect(run.stdout).toBe(listed("a.mmd"))
+      expect(fixedWriteTimes(run).stdout).toBe(written("a.mmd"))
       expect(
         ["EACCES", "EPERM"].some((code) =>
           run.stderr.startsWith(`a.mmd: error: ${code}`),
