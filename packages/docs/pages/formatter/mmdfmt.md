@@ -285,11 +285,12 @@ read, and need not exist.
 
 It returns a promise of an object of Prettier options to pass to `format`, or of
 `null` when no configuration applies to the file. Spreading `null` adds nothing,
-so `{ ...config, filepath }` works in both cases. The object holds the eight
-options that `mmdfmt` reads from a configuration, listed in
-[Configuration](#configuration); an option that the configuration does not set
-is `undefined`. With TypeScript, its type is `ReadOptions`. The promise is
-rejected when a configuration file cannot be read.
+so `{ ...config, filepath }` works in both cases. The object holds only the
+options that the configuration sets, of the eight that `mmdfmt` reads, listed in
+[Configuration](#configuration): with a configuration that sets no `tabWidth`,
+`{ tabWidth: 4, ...config, filepath }` keeps a `tabWidth` of 4. With TypeScript,
+its type is `ReadOptions`. The promise is rejected when a configuration file
+cannot be read.
 
 `resolveConfig` reads `.editorconfig` as the command does, and as Prettier's CLI
 does by default; Prettier's `resolveConfig` reads it only when it is given
