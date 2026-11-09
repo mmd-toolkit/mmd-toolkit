@@ -217,9 +217,10 @@ function depthAt(lists: readonly Stretch[], offset: number): number {
 
 /**
  * The start of the data block that the `}` at `offset` closes, if that block
- * starts before `lineStart`: the printer puts the `}` of a block at the column
- * of the statement that holds it, so the whitespace before it, where it
- * starts a line, is written for the depth of that statement.
+ * starts before `lineStart`. The printer puts the `}` of a block that it moves
+ * at the column of the statement that holds it, and an author writes it there
+ * too, so the whitespace before it, where it starts a line, is taken as written
+ * for the depth of that statement.
  */
 function closedBlockStartingBefore(
   source: Source,
