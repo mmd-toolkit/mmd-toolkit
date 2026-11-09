@@ -80,6 +80,42 @@ test("formats automatically, follows indentation, and retains state on theme cha
   expect(page.url()).toBe(url)
 })
 
+test("formats with the print width and preserves it in shared links and reloads", async ({
+  page,
+}) => {
+  const source = 'flowchart LR\nA@{ shape: rect, label: "Process step" }\n'
+  await edit(page, source)
+  await page.getByRole("tab", { name: "Formatted", exact: true }).click()
+  const printWidth = page.getByLabel("Print width", { exact: true })
+  await expect(printWidth).toHaveValue("80")
+  await page.getByRole("button", { name: "Apply to source" }).click()
+  await expect
+    .poll(() => savedSource(page))
+    .toBe('flowchart LR\n  A@{ shape: rect, label: "Process step" }\n')
+  await printWidth.fill("30")
+  await page.getByRole("button", { name: "Apply to source" }).click()
+  const formatted =
+    'flowchart LR\n  A@{\n    shape: rect\n    label: "Process step"\n  }\n'
+  await expect.poll(() => savedSource(page)).toBe(formatted)
+  await page.getByRole("button", { name: "Share", exact: true }).click()
+  await expect(
+    page.getByRole("button", { name: "Copy Link", exact: true }),
+  ).toBeEnabled()
+  const shareLink = await page
+    .getByLabel("Share this input", { exact: true })
+    .inputValue()
+  expect(await decodeState(new URL(shareLink).hash)).toEqual({
+    source: formatted,
+    printWidth: 30,
+    tabWidth: 2,
+    useTabs: false,
+  })
+  await page.reload()
+  await page.getByRole("tab", { name: "Formatted", exact: true }).click()
+  await expect(printWidth).toHaveValue("30")
+  await expect.poll(() => savedSource(page)).toBe(formatted)
+})
+
 test("distinguishes rejected input, including empty EOF errors", async ({
   page,
 }) => {
@@ -108,6 +144,7 @@ test("restores Unicode and options, handles hash navigation and a damaged link",
 }) => {
   const state = {
     source: 'flowchart LR\n A["日本語 😀"]-->B\n',
+    printWidth: 100,
     tabWidth: 3,
     useTabs: true,
   }
@@ -115,6 +152,9 @@ test("restores Unicode and options, handles hash navigation and a damaged link",
   await expect(page.locator(".type-badge")).toHaveText("flowchart-v2")
   await expect.poll(() => savedSource(page)).toBe(state.source)
   await page.getByRole("tab", { name: "Formatted", exact: true }).click()
+  await expect(page.getByLabel("Print width", { exact: true })).toHaveValue(
+    "100",
+  )
   await expect(page.getByLabel("Indent", { exact: true })).toHaveValue("3")
   await expect(page.getByLabel("Use tabs")).toBeChecked()
   await page.evaluate(() => {
@@ -128,12 +168,16 @@ test("restores Unicode and options, handles hash navigation and a damaged link",
   )
   const hash = await encodeState({
     source: "sequenceDiagram\n A->>B: Hi\n",
+    printWidth: 80,
     tabWidth: 2,
     useTabs: false,
   })
   await page.evaluate((fragment) => {
     window.location.hash = fragment
   }, hash)
+  await expect(page.getByLabel("Print width", { exact: true })).toHaveValue(
+    "80",
+  )
   await page.getByRole("tab", { name: "AST", exact: true }).click()
   await expect(page.locator(".type-badge")).toHaveText("sequence")
 })
@@ -143,7 +187,12 @@ test("shares and reloads large input with a long URL", async ({ page }) => {
     index.toString(36),
   ).join(" ")
   const source = `flowchart LR\n%% ${comment}${"a".repeat(1_048_576)}\nA-->B\n`
-  const hash = await encodeState({ source, tabWidth: 2, useTabs: false })
+  const hash = await encodeState({
+    source,
+    printWidth: 80,
+    tabWidth: 2,
+    useTabs: false,
+  })
   expect(hash.length).toBeGreaterThan(65_536)
   await page.goto(`./${hash}`)
   const characterCount = `${source.length.toLocaleString("en-US")} UTF-16 units`
@@ -520,7 +569,7 @@ test("loads only local browser assets at the Pages path", async ({ page }) => {
 test("Apply and Undo preserve the previous CRLF source", async ({ page }) => {
   const source = "flowchart LR\r\nA-->B\r\n"
   await page.goto(
-    `./${await encodeState({ source, tabWidth: 2, useTabs: false })}`,
+    `./${await encodeState({ source, printWidth: 80, tabWidth: 2, useTabs: false })}`,
   )
   await expect(
     page.getByRole("textbox", {
@@ -559,7 +608,12 @@ test("preserves navigation before an older URL compression finishes", async ({
 }) => {
   await expect.poll(() => savedSource(page)).toBe(defaultSource)
   const source = "flowchart LR\r\nA-->B\r\n"
-  const hash = await encodeState({ source, tabWidth: 2, useTabs: false })
+  const hash = await encodeState({
+    source,
+    printWidth: 80,
+    tabWidth: 2,
+    useTabs: false,
+  })
   await page.evaluate((fragment) => {
     const nativeResponse = Response
     window.Response = class extends nativeResponse {
@@ -583,7 +637,12 @@ test("preserves navigation before an older URL save starts", async ({
   page,
 }) => {
   const source = "flowchart LR\r\nA-->B\r\n"
-  const hash = await encodeState({ source, tabWidth: 2, useTabs: false })
+  const hash = await encodeState({
+    source,
+    printWidth: 80,
+    tabWidth: 2,
+    useTabs: false,
+  })
   await page.addInitScript((fragment) => {
     const setTimeout = window.setTimeout.bind(window)
     Object.defineProperty(window, "setTimeout", {
@@ -687,7 +746,7 @@ test("scrolls to source selections after expanding and reparsing without moving 
     "",
   ].join("\n")
   await page.goto(
-    `./${await encodeState({ source, tabWidth: 2, useTabs: false })}`,
+    `./${await encodeState({ source, printWidth: 80, tabWidth: 2, useTabs: false })}`,
   )
   await expect(page.locator(".source-pane .view-lines")).toContainText("A0")
   const editor = page.getByRole("textbox", {
@@ -762,7 +821,7 @@ test("follows source selections in every record view and on view changes", async
     "",
   ].join("\n")
   await page.goto(
-    `./${await encodeState({ source, tabWidth: 2, useTabs: false })}`,
+    `./${await encodeState({ source, printWidth: 80, tabWidth: 2, useTabs: false })}`,
   )
   const editor = page.getByRole("textbox", {
     name: "Mermaid source",

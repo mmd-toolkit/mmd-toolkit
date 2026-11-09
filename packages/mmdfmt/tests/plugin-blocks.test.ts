@@ -209,3 +209,56 @@ describe("Code blocks in detail: the line width left in a container, as in Prett
     },
   )
 })
+
+describe("If you know Prettier: the colons of a Gantt section in a container", () => {
+  const gantt = [
+    "gantt",
+    "  dateFormat YYYY-MM-DD",
+    "  section A",
+    "  Task name long enough to matter :a1, 2014-01-01, 1d",
+    "  T  :a2, after a1, 1d",
+  ]
+  const inList = lines(
+    "- item",
+    "",
+    "  ```mermaid",
+    ...gantt.map((line) => `  ${line}`),
+    "  ```",
+  )
+  const alignedRow = "T                               :a2, after a1, 1d"
+  const widest = Math.max(...gantt.map((line) => line.length))
+
+  it("is lined up by Prettier and not by mmdfmt where the lines fit only without the container", async () => {
+    const options = { tabWidth: undefined, useTabs: undefined }
+    for (const printWidth of [widest, widest + 1]) {
+      const byPrettier = await format(inList, {
+        parser: "markdown",
+        plugins: [plugin],
+        printWidth,
+      })
+      const byTool = await formatMarkdown(
+        inList,
+        { ...options, printWidth },
+        "output",
+      )
+      expect(byPrettier).toContain(alignedRow)
+      expect(byTool.text).not.toContain(alignedRow)
+    }
+  })
+
+  it("is lined up by both where the lines fit in the container", async () => {
+    const printWidth = widest + 2
+    const byPrettier = await format(inList, {
+      parser: "markdown",
+      plugins: [plugin],
+      printWidth,
+    })
+    const byTool = await formatMarkdown(
+      inList,
+      { tabWidth: undefined, useTabs: undefined, printWidth },
+      "output",
+    )
+    expect(byTool.text).toBe(byPrettier)
+    expect(byTool.text).toContain(alignedRow)
+  })
+})

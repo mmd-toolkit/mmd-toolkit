@@ -18,7 +18,22 @@ describe("shared URL state", () => {
     "\uD800 lone \uDC00",
     "not a diagram",
   ])("round trips %j exactly", async (source) => {
-    const state = { source, tabWidth: 8, useTabs: true }
+    const state = { source, printWidth: 120, tabWidth: 8, useTabs: true }
+    expect(await decodeState(await encodeState(state))).toEqual(state)
+  })
+  it("restores older links without a print width at 80", async () => {
+    const state = {
+      source: "flowchart LR\nA-->B\n",
+      tabWidth: 4,
+      useTabs: true,
+    }
+    expect(await decodeState(await fragment(JSON.stringify(state)))).toEqual({
+      ...state,
+      printWidth: 80,
+    })
+  })
+  it.each([0, 10_000])("round trips print width %j", async (printWidth) => {
+    const state = { source: "a", printWidth, tabWidth: 2, useTabs: false }
     expect(await decodeState(await encodeState(state))).toEqual(state)
   })
   it.each([
@@ -40,6 +55,11 @@ describe("shared URL state", () => {
     { source: "a", tabWidth: 2.5, useTabs: false },
     { source: "a", tabWidth: "2", useTabs: false },
     { source: "a", tabWidth: 2, useTabs: "false" },
+    { source: "a", printWidth: -1, tabWidth: 2, useTabs: false },
+    { source: "a", printWidth: 2.5, tabWidth: 2, useTabs: false },
+    { source: "a", printWidth: "80", tabWidth: 2, useTabs: false },
+    { source: "a", printWidth: null, tabWidth: 2, useTabs: false },
+    { source: "a", printWidth: false, tabWidth: 2, useTabs: false },
   ])("rejects invalid state %j", async (state) => {
     await expect(
       decodeState(await fragment(JSON.stringify(state))),
@@ -48,6 +68,7 @@ describe("shared URL state", () => {
   it("round trips large compressible input", async () => {
     const state = {
       source: "a".repeat(1_048_576),
+      printWidth: 80,
       tabWidth: 2,
       useTabs: false,
     }
@@ -58,6 +79,7 @@ describe("shared URL state", () => {
       source: Array.from({ length: 50_000 }, (_, index) =>
         index.toString(36),
       ).join(" "),
+      printWidth: 80,
       tabWidth: 2,
       useTabs: false,
     }
@@ -71,6 +93,7 @@ describe("shared URL state", () => {
     )
     const valid = await encodeState({
       source: "a",
+      printWidth: 80,
       tabWidth: 2,
       useTabs: false,
     })

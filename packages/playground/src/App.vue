@@ -10,6 +10,7 @@ import { usePlayground } from "./use-playground.ts"
 const brandIcon = `${import.meta.env.BASE_URL}mmd-toolkit.svg`
 const {
   source,
+  printWidth,
   tabWidth,
   useTabs,
   tab,
@@ -353,7 +354,14 @@ function tabKey(event: KeyboardEvent): void {
           aria-labelledby="tab-formatted"
         >
           <div class="sub-toolbar format-toolbar">
-            <label for="tab-width">Indent</label
+            <label for="print-width">Print width</label
+            ><input
+              id="print-width"
+              v-model.number="printWidth"
+              type="number"
+              min="0"
+              step="1"
+            /><label for="tab-width">Indent</label
             ><select id="tab-width" v-model.number="tabWidth">
               <option v-for="width in 8" :key="width" :value="width">
                 {{ width }}
@@ -613,9 +621,16 @@ h2 {
   background: var(--subtle);
   font-size: 11px;
 }
-.sub-toolbar select {
+.sub-toolbar select,
+.sub-toolbar input[type="number"] {
   font-size: 11px;
   padding: 4px 7px;
+}
+.sub-toolbar input[type="number"] {
+  width: 60px;
+}
+.format-toolbar {
+  flex-wrap: wrap;
 }
 .type-badge {
   margin-left: auto;

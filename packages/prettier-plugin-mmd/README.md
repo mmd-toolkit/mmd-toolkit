@@ -109,9 +109,10 @@ The formatting rules of each diagram type are in its document:
   Gantt section are lined up unless that would make a line wider than
   `printWidth` and wider than it is (see
   [Task data](./docs/gantt.md#task-data)). The width is the one Prettier
-  measures: a full-width character counts as two columns and a tab as none.
-  Everywhere else `printWidth` does not control diagram line breaks.
-  `railroad-beta` calls follow their grammar structure; see
+  measures: a full-width character counts as two columns and a tab as none. A
+  Gantt section counts its lines alone, without what a Markdown list or block
+  quote puts before them. Everywhere else `printWidth` does not control diagram
+  line breaks. `railroad-beta` calls follow their grammar structure; see
   [Long lines](./docs/railroad.md#long-lines). Prettier can still use it for
   Markdown and YAML frontmatter.
 

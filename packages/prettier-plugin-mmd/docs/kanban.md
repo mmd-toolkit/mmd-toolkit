@@ -1123,11 +1123,13 @@ Multiline data blocks instead follow [Data blocks](#data-blocks): preserve their
 line breaks and contents with only the eligible uniform margin change. [fixture:
 data-blocks/data-multiline]
 
-`printWidth` has no effect: a long bare node
-(`This is a deliberately long kanban item ...`) and a long label stay on their
-lines, since a bare node cannot be wrapped without becoming other nodes, and a
-value is text. [fixture: multi-line-values/long-line-kept] [fixture:
-multi-line-values/small-print-width]
+`printWidth` has no effect on a long bare node
+(`This is a deliberately long kanban item ...`) or a long label: they stay on
+their lines, since a bare node cannot be wrapped without becoming other nodes,
+and a value is text. A data block on one line is the exception, which prints on
+lines where its line is wider than `printWidth` (see
+[Data blocks](#data-blocks)). [fixture: multi-line-values/long-line-kept]
+[fixture: multi-line-values/small-print-width]
 
 Input
 ([multi-line-values/labels-and-icon-input.mmd](../tests/fixtures/kanban/multi-line-values/labels-and-icon-input.mmd)):

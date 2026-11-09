@@ -1,5 +1,6 @@
-/** The indentation options stored with shared source text. */
+/** The formatting options stored with shared source text. */
 export interface FormatOptions {
+  printWidth: number
   tabWidth: number
   useTabs: boolean
 }
@@ -52,8 +53,9 @@ function decodeBytes(value: string): Uint8Array<ArrayBuffer> {
 
 /**
  * Validates the complete payload before it can replace editor state. The
- * indentation range matches the UI choices; source is accepted as arbitrary
- * text, including empty input and syntax the parser rejects.
+ * option ranges match the UI controls; source is accepted as arbitrary text,
+ * including empty input and syntax the parser rejects. Older links without a
+ * print width use Prettier's default of 80.
  */
 function validateState(value: unknown): SharedState {
   if (
@@ -69,9 +71,17 @@ function validateState(value: unknown): SharedState {
     !("useTabs" in value) ||
     typeof value.useTabs !== "boolean"
   )
-    throw new Error("Invalid shared input or indentation options.")
+    throw new Error("Invalid shared input or formatting options.")
+  const printWidth = "printWidth" in value ? value.printWidth : 80
+  if (
+    !Number.isInteger(printWidth) ||
+    typeof printWidth !== "number" ||
+    printWidth < 0
+  )
+    throw new Error("Invalid shared print width.")
   return {
     source: value.source,
+    printWidth,
     tabWidth: value.tabWidth,
     useTabs: value.useTabs,
   }
