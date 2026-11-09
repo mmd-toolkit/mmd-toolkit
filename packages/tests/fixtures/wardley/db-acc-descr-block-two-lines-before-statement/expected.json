@@ -1,0 +1,31 @@
+{
+  "source": {
+    "kind": "authored",
+    "note": "wardley.md Common metadata values; db-from-tree/wardley.md Converted values and common assignments: a closed description block with two lines of text before a component sets the description to `The parts of a service\\non the value chain`."
+  },
+  "accepted": true,
+  "diagramType": "wardley",
+  "db": {
+    "title": "",
+    "accTitle": "",
+    "accDescr": "The parts of a service\non the value chain",
+    "nodes": [
+      {
+        "id": "API",
+        "label": "API",
+        "x": 70,
+        "y": 60,
+        "className": "component",
+        "inertia": false
+      }
+    ],
+    "links": [],
+    "trends": [],
+    "pipelines": [],
+    "annotations": [],
+    "notes": [],
+    "accelerators": [],
+    "deaccelerators": [],
+    "axes": {}
+  }
+}

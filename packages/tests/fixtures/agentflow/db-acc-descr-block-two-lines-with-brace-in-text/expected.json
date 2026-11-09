@@ -1,0 +1,32 @@
+{
+  "source": {
+    "kind": "authored",
+    "note": "agentflow.md Direction and accessibility statements; db-from-tree/agentflow.md Building the summary from the tree, Clicks and accessibility: a closed description block with two lines of text and an opening brace in its first line sets the description to `uses { here\\nand there`."
+  },
+  "accepted": true,
+  "diagramType": "agentflow",
+  "db": {
+    "direction": "TB",
+    "title": "",
+    "accTitle": "",
+    "accDescr": "uses { here\nand there",
+    "vertices": [
+      {
+        "id": "A",
+        "labelType": "text",
+        "styles": [],
+        "classes": [],
+        "text": "A",
+        "props": {}
+      }
+    ],
+    "edges": [],
+    "edgeDefaults": {
+      "interpolate": null,
+      "style": null
+    },
+    "classDefs": [],
+    "subgraphs": [],
+    "tooltips": []
+  }
+}

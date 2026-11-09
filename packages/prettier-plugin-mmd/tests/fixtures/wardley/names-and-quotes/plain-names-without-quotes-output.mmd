@@ -1,0 +1,12 @@
+wardley-beta
+  component Customer [0.9, 0.2]
+  component Cup of tea [0.8, 0.3]
+  anchor Business [0.95, 0.63]
+  Business -> Customer
+  Customer -> Cup of tea
+  evolve Cup of tea 0.5
+  accelerator "Market" [0.2, 0.3]
+  deaccelerator "Rules" [0.3, 0.4]
+  pipeline Customer {
+    component "Step" [0.5]
+  }

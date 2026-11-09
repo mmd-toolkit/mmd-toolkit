@@ -1,0 +1,24 @@
+{
+  "source": {
+    "kind": "authored",
+    "note": "cynefin.md Strings and common values; db-from-tree/cynefin.md Building the summary from the tree, Common assignments: a closed description block with two lines of text before a domain sets the description to `Responses by domain\\nfor the team`."
+  },
+  "accepted": true,
+  "diagramType": "cynefin",
+  "db": {
+    "title": "",
+    "accTitle": "",
+    "accDescr": "Responses by domain\nfor the team",
+    "domains": [
+      {
+        "name": "complex",
+        "items": [
+          {
+            "label": "Investigate"
+          }
+        ]
+      }
+    ],
+    "transitions": []
+  }
+}

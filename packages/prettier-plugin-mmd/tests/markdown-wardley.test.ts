@@ -37,11 +37,11 @@ const cases: readonly MarkdownCase[] = [
     input:
       "- item\n\n  ```mermaid\n  wardley-beta\n  component Host[0.3,0.6]\n  pipelineHost{\n  component Child[0.4]\n  }\n  ```\n",
     output:
-      "- item\n\n  ```mermaid\n  wardley-beta\n    component Host [0.3, 0.6]\n    pipeline Host {\n      component Child [0.4]\n    }\n  ```\n",
+      "- item\n\n  ```mermaid\n  wardley-beta\n    component Host [0.3, 0.6]\n    pipeline Host {\n      component \"Child\" [0.4]\n    }\n  ```\n",
     payloadInput:
       "wardley-beta\ncomponent Host[0.3,0.6]\npipelineHost{\ncomponent Child[0.4]\n}",
     payloadOutput:
-      "wardley-beta\n  component Host [0.3, 0.6]\n  pipeline Host {\n    component Child [0.4]\n  }\n",
+      "wardley-beta\n  component Host [0.3, 0.6]\n  pipeline Host {\n    component \"Child\" [0.4]\n  }\n",
     options: {},
   },
   {
@@ -59,11 +59,11 @@ const cases: readonly MarkdownCase[] = [
     input:
       "```mermaid\nwardley-beta\ncomponent HostZero[0.3,0.6]\npipelineHostZero{\ncomponent Child[0.4]\n}\n```\n",
     output:
-      "```mermaid\nwardley-beta\ncomponent HostZero [0.3, 0.6]\npipeline HostZero {\ncomponent Child [0.4]\n}\n```\n",
+      "```mermaid\nwardley-beta\ncomponent HostZero [0.3, 0.6]\npipeline HostZero {\ncomponent \"Child\" [0.4]\n}\n```\n",
     payloadInput:
       "wardley-beta\ncomponent HostZero[0.3,0.6]\npipelineHostZero{\ncomponent Child[0.4]\n}",
     payloadOutput:
-      "wardley-beta\ncomponent HostZero [0.3, 0.6]\npipeline HostZero {\ncomponent Child [0.4]\n}\n",
+      "wardley-beta\ncomponent HostZero [0.3, 0.6]\npipeline HostZero {\ncomponent \"Child\" [0.4]\n}\n",
     options: { tabWidth: 0 },
   },
   {

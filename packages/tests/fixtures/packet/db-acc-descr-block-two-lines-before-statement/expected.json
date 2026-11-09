@@ -1,0 +1,22 @@
+{
+  "source": {
+    "kind": "authored",
+    "note": "packet.md Composite common forms; db-from-tree/packet.md Building the summary from the tree, Common assignments: a closed description block with two lines of text before a packet block sets the description to `Fields of a TCP header\\nfrom the first bit`."
+  },
+  "accepted": true,
+  "diagramType": "packet",
+  "db": {
+    "title": "",
+    "accTitle": "",
+    "accDescr": "Fields of a TCP header\nfrom the first bit",
+    "packet": [
+      [
+        {
+          "start": 0,
+          "end": 15,
+          "label": "Source Port"
+        }
+      ]
+    ]
+  }
+}

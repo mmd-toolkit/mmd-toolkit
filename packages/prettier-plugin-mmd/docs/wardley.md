@@ -84,7 +84,7 @@ Output
 wardley-beta
   component Parent [0.4, 0.5]
   pipeline Parent {
-    component Child [0.6] label [-1, 2]
+    component "Child" [0.6] label [-1, 2]
   }
 ```
 
@@ -149,13 +149,26 @@ wardley-beta
 
 ### Names and quotes
 
-Keep WardleyIdentifier and StringLiteral source spans, including internal
-spaces/tabs, hyphens, parentheses, ampersands, escapes, empty strings and
-whitespace-only strings, except for the label of a link, which prints a run of
-spaces and tabs as one space (see [Semicolon labels](#semicolon-labels)). A
-string of a name between `'` is printed between `"` unless its text holds a `'`,
-a `"`, a backslash, a line break, U+2028, U+2029, a backquote, `&`, `#`, or `<`
-(see
+The name of a component, an anchor, a link, an `evolve` statement, a pipeline,
+and a stage of an evolution is printed without quotes where it is plain, and the
+name of an accelerator, a deaccelerator, and a component of a pipeline is
+printed in quotes, as the examples in the documentation of mermaid.js write them
+(see [The quotes of a text](./compatibility.md#the-quotes-of-a-text)):
+`component "Customer"` is printed `component Customer`, and `accelerator Market`
+is printed `accelerator "Market"`. A name is plain where it is words of ASCII
+letters, digits, and `_` that start with a letter, with a space between them,
+and it does not start with a word that the lexer reads as a command or a
+strategy (`build`, `component`, `title`, and the others, in lower case). The
+name of a link without an arrow, `"A" "B"`, and a name that touches the `---` of
+a hidden YAML block keep their quotes. [fixture:
+names-and-quotes/plain-names-without-quotes] [fixture:
+names-and-quotes/names-that-need-quotes] Keep WardleyIdentifier and
+StringLiteral source spans otherwise, including internal spaces/tabs, hyphens,
+parentheses, ampersands, escapes, empty strings and whitespace-only strings,
+except for the label of a link, which prints a run of spaces and tabs as one
+space (see [Semicolon labels](#semicolon-labels)). A string of a name between
+`'` is printed between `"` unless its text holds a `'`, a `"`, a backslash, a
+line break, U+2028, U+2029, a backquote, `&`, `#`, or `<` (see
 [Spellings that are drawn the same](./compatibility.md#spellings-that-are-drawn-the-same)),
 and `singleQuote` is not read. The label of a link (`+'moving'>`) stays between
 `'`, the only quote that mermaid.js reads there. [fixture:

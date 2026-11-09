@@ -85,7 +85,7 @@ pipeline Parent { と印字し、
 wardley-beta
   component Parent [0.4, 0.5]
   pipeline Parent {
-    component Child [0.6] label [-1, 2]
+    component "Child" [0.6] label [-1, 2]
   }
 ```
 

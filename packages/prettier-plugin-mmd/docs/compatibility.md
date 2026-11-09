@@ -1236,6 +1236,7 @@ and, with the Db only, in the inputs of the conformance corpus:
 | Quotes of a sankey field           |        6 |                   6 |     11 |      11 |
 | Quotes of an ER name               |        0 |                   0 |     14 |      14 |
 | Quotes of a requirement name       |        0 |                   0 |     11 |      11 |
+| Quotes of a Wardley map name       |        0 |                   0 |     34 |      34 |
 
 A corpus pair that is not counted in the last column is a pair of which
 mermaid.js rejects the other spelling, except two pairs of the label of a link,
@@ -1664,6 +1665,13 @@ without quotes:
 | requirement  | the docRef of an element              |              2 |         0 |
 | requirement  | the names of a relationship           |             14 |         0 |
 | requirement  | a class, and the names of `style`     |              9 |         0 |
+| Wardley map  | the name of a component               |             46 |         7 |
+| Wardley map  | the name of an anchor                 |              5 |         0 |
+| Wardley map  | the names of a link                   |             50 |        12 |
+| Wardley map  | the name of an evolve, a pipeline     |              5 |         2 |
+| Wardley map  | the name of a stage of an evolution   |             20 |         0 |
+| Wardley map  | the name of an accelerator, a deaccel |              0 |         4 |
+| Wardley map  | the name of a pipeline component      |              0 |         4 |
 
 A text is printed without quotes where it is plain: ASCII letters, digits, `_`,
 `-`, and `.`, with spaces between them, and, in a sankey diagram, with spaces at
@@ -1714,6 +1722,21 @@ requirement/fields/plain-values-without-quotes] [fixture:
 requirement/class-lists/string-classes] [fixture:
 requirement/styles-and-classes/style-names]
 
+In a Wardley map a text is printed without quotes where it is words of ASCII
+letters, digits, and `_` that start with a letter, with one space between them,
+and it does not start with a word that the lexer reads as a unit of its own,
+without a boundary and in lower case: `build`, `buy`, `outsource`, `market`,
+`size`, `evolution`, `anchor`, `component`, `label`, `inertia`, `evolve`,
+`pipeline`, `note`, `annotation`, `accelerator`, `deaccelerator`, `title`,
+`accTitle`, and `accDescr`, so that `"buyer"` stays in quotes, as does
+`"title x"` but not `"Title x"`. The names of an accelerator, a deaccelerator,
+and a component of a pipeline are printed in quotes. Two names of a link without
+an arrow, `"A" "B"`, would be read as one name without quotes, and the `---` of
+a hidden YAML block next to a name would join the name, so these keep their
+quotes. [fixture: wardley/names-and-quotes/plain-names-without-quotes] [fixture:
+wardley/names-and-quotes/names-that-need-quotes] [fixture:
+wardley/links/link-no-arrow] [fixture: wardley/pipeline/pipeline-depth]
+
 A string that a `#`, a `%`, a `;`, or a `:` follows on its line keeps its quotes
 in every diagram type: a text without quotes can run to the end of the line, and
 then takes that character and what follows into the text, as `b #c` in
@@ -1724,12 +1747,12 @@ requirement/comments/after-keyword-and-string-values] [fixture:
 requirement/multi-line-statements/class-last-line-semicolon-kept]
 
 mermaid.js 12.3.0 read both forms of the inputs of the conformance corpus whose
-quotes the printer leaves out, with the same Db: 11 inputs of sankey diagrams,
-14 of ER diagrams, and 11 of requirement diagrams. It read both forms of the 6
-sankey examples that were written again with every plain field in quotes, with
-the same Db and the same SVG, and the 14 ER inputs and 8 of the 11 requirement
-inputs (the other 3 are drawn by mermaid.js in neither form) were drawn the same
-as their formatted text.
+quotes the printer changes, with the same Db: 11 inputs of sankey diagrams, 14
+of ER diagrams, 11 of requirement diagrams, and 34 of Wardley maps. It read both
+forms of the 6 sankey examples that were written again with every plain field in
+quotes, with the same Db and the same SVG, and the 14 ER inputs, 8 of the 11
+requirement inputs (the other 3 are drawn by mermaid.js in neither form), and
+the 34 Wardley inputs were drawn the same as their formatted text.
 
 ### Versions of mermaid.js
 
@@ -1761,6 +1784,12 @@ mermaid.js, show which form each version reads:
   string without quotes (`unqString | qString`), and read the keywords of the
   lexer as whole words in any case, so that a word that is none of them is read
   as a name in every one of these versions.
+- The names of a Wardley map: the grammar of 11.14.0, the first with the diagram
+  type, reads a name without quotes with the terminal `NAME_WITH_SPACES`, words
+  of ASCII letters, digits, `_`, `(`, `)`, and `&` that start with a letter and
+  have spaces between them; the grammars of 11.15.0 (which adds the `-` to a
+  name), 12.0.0, and 12.3.0 read the same words. A name in quotes has the same
+  text as the name without them.
 - An accessibility description in a block on one line: the grammar of the
   flowchart in 9.0.0 and 9.0.1 has no rule for `accDescr`, and the grammar in
   9.1.0, the first with the rule, has the form with the colon and the form with

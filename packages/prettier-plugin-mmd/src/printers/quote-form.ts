@@ -45,10 +45,10 @@ function quoted(text: Bare): QuoteRule {
 }
 
 /**
- * Whether the `---` of a hidden YAML block touches a name of a Wardley map: a
- * name without quotes would take the dashes into the name.
+ * Whether the `---` of a hidden YAML block touches a name: a name without
+ * quotes would take the dashes into the name.
  */
-function touchesWardleyDashes(before: string, after: string): boolean {
+function touchesDashes(before: string, after: string): boolean {
   return before.endsWith("---") || after.startsWith("---")
 }
 
@@ -243,6 +243,62 @@ function wardleyName(text: string): string | undefined {
     : undefined
 }
 
+/**
+ * The words of a gitGraph that its lexer reads as a unit of its own, in lower
+ * case: the lexers of older versions of mermaid.js compare them in any case.
+ */
+const gitgraphReserved: readonly string[] = [
+  "cherry-pick",
+  "gitgraph",
+  "highlight",
+  "checkout",
+  "reverse",
+  "commit",
+  "normal",
+  "branch",
+  "switch",
+  "merge",
+  "lr",
+  "tb",
+  "bt",
+  "title",
+  "acctitle",
+  "accdescr",
+]
+
+/** Whether a character is an ASCII letter, a digit, or `_`. */
+function isWordCharacter(character: string | undefined): boolean {
+  return (
+    character !== undefined &&
+    ((character >= "a" && character <= "z") ||
+      (character >= "A" && character <= "Z") ||
+      (character >= "0" && character <= "9") ||
+      character === "_")
+  )
+}
+
+/**
+ * A branch of a gitGraph that the lexer reads whole without quotes: ASCII
+ * letters, digits, `_`, and `-`, `.`, `/` between them, starting with a letter
+ * or `_` (a digit can start a number), ending with a letter, a digit, or `_`,
+ * and not starting with one of the words that it reads as a unit of its own,
+ * in any case, before a character that is no part of a word.
+ */
+function gitgraphReference(text: string): string | undefined {
+  const lower = text.toLowerCase()
+  const startsWithReserved = gitgraphReserved.some(
+    (word) => lower.startsWith(word) && !isWordCharacter(lower[word.length]),
+  )
+  return !(text[0] >= "0" && text[0] <= "9") &&
+    !startsWithReserved &&
+    isWordCharacter(text.at(-1)) &&
+    [...text].every(
+      (character) => isWordCharacter(character) || "-./".includes(character),
+    )
+    ? text
+    : undefined
+}
+
 /** Whether a link of a Wardley map has an arrow between its names. */
 function hasArrow(node: Node): boolean {
   return (node as Node & { arrow?: unknown }).arrow !== null
@@ -254,8 +310,8 @@ function hasArrow(node: Node): boolean {
  * pinned mermaid.js use at least twice as often as the other
  * (docs/compatibility.md, Spellings that are drawn the same): the three fields
  * of a link of a sankey diagram, the names and the roles of an ER diagram, the
- * names, the values, and the classes of a requirement diagram, and the names of
- * a Wardley map.
+ * names, the values, and the classes of a requirement diagram, the names of a
+ * Wardley map, and the branches of a gitGraph.
  */
 const quoteRules: Readonly<
   Record<string, Readonly<Record<string, QuoteRule>>>
@@ -295,6 +351,15 @@ const quoteRules: Readonly<
       wordWithout(requirementReserved, { spaces: true, digits: true }),
     ),
   },
+  GitgraphBranchStatement: {
+    name: bare(gitgraphReference, { joins: touchesDashes }),
+  },
+  GitgraphCheckoutStatement: {
+    branch: bare(gitgraphReference, { joins: touchesDashes }),
+  },
+  GitgraphMergeStatement: {
+    branch: bare(gitgraphReference, { joins: touchesDashes }),
+  },
   SankeyLinkStatement: {
     source: bare(sankeyField),
     target: bare(sankeyField),
@@ -305,27 +370,27 @@ const quoteRules: Readonly<
   },
   WardleyAcceleratorStatement: { name: quoted(wardleyName) },
   WardleyAnchorStatement: {
-    name: bare(wardleyName, { joins: touchesWardleyDashes }),
+    name: bare(wardleyName, { joins: touchesDashes }),
   },
   WardleyComponentStatement: {
-    name: bare(wardleyName, { joins: touchesWardleyDashes }),
+    name: bare(wardleyName, { joins: touchesDashes }),
   },
   WardleyDeacceleratorStatement: { name: quoted(wardleyName) },
   WardleyEvolutionStage: {
-    name: bare(wardleyName, { joins: touchesWardleyDashes }),
-    secondName: bare(wardleyName, { joins: touchesWardleyDashes }),
+    name: bare(wardleyName, { joins: touchesDashes }),
+    secondName: bare(wardleyName, { joins: touchesDashes }),
   },
   WardleyEvolveStatement: {
-    component: bare(wardleyName, { joins: touchesWardleyDashes }),
+    component: bare(wardleyName, { joins: touchesDashes }),
   },
   // Two names without an arrow between them, `A B`, read as one name.
   WardleyLinkStatement: {
-    from: bare(wardleyName, { when: hasArrow, joins: touchesWardleyDashes }),
-    to: bare(wardleyName, { when: hasArrow, joins: touchesWardleyDashes }),
+    from: bare(wardleyName, { when: hasArrow, joins: touchesDashes }),
+    to: bare(wardleyName, { when: hasArrow, joins: touchesDashes }),
   },
   WardleyPipelineComponent: { name: quoted(wardleyName) },
   WardleyPipelineStatement: {
-    parent: bare(wardleyName, { joins: touchesWardleyDashes }),
+    parent: bare(wardleyName, { joins: touchesDashes }),
   },
 }
 
@@ -387,8 +452,9 @@ export function findQuoteFormRespellings(
           raw: string
         }
         // A directive or a comment region inside the string is part of `raw`
-        // and no part of `value`.
-        if (raw !== `"${content}"`) continue
+        // and no part of `value`. A string between `'` is the same string,
+        // which the printer writes between `"` (Strings between `"`).
+        if (raw !== `"${content}"` && raw !== `'${content}'`) continue
         text = content
       } else {
         text = source.text.slice(...item.range)
