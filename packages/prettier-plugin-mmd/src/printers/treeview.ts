@@ -15,7 +15,6 @@ import { printAsWritten, significantIndentationOf } from "./lines.ts"
 import type { Source } from "./source.ts"
 import { findTokenStartingAt } from "./source.ts"
 import { planTreeviewBox } from "./treeview-box.ts"
-import { treeviewBoxCharacters } from "./treeview-characters.ts"
 import type { TreeviewLine } from "./treeview-layout.ts"
 import {
   layoutTreeviewStatement,
@@ -223,10 +222,7 @@ export function printTreeview(
       // prefixes).
       onlyStatementOf: (line) =>
         line.item.type === "TreeviewAccDescrBlockStatement" &&
-        (drawing?.keptOpenerGaps.has(line.item) === true ||
-          [...source.text.slice(...(line.item.value?.range ?? [0, 0]))].some(
-            (character) => treeviewBoxCharacters.includes(character),
-          ))
+        drawing?.keptOpenerGaps.has(line.item) === true
           ? undefined
           : {
               statement: line.item,
