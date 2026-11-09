@@ -36,7 +36,7 @@ const lineBreakCharacters = "\n\r\u2028\u2029"
 /**
  * The accessibility description `accDescr: text` that stands for a statement
  * `accDescr { text }`, or undefined where the statement stays as written
- * (docs/compatibility.md, Spellings that are drawn the same). mermaid.js reads
+ * (docs/compatibility.md, A description block on one line). mermaid.js reads
  * the two forms the same, and the examples in its documentation use the form
  * with the `:` and never the block on one line.
  *
