@@ -20,8 +20,14 @@ const fileKinds: ReadonlyMap<string, FileKind> = new Map([
   [".mermaid", "diagram"],
 ])
 
-/** The endings of the names of the files that the tool formats, for messages. */
-export const fileEndings: readonly string[] = [...fileKinds.keys()]
+/** The endings of the names of the files that the tool formats. */
+const fileEndings: readonly string[] = [...fileKinds.keys()]
+
+/** The endings of the files that the tool formats, as a message names them. */
+export const endingsInWords: string = [
+  ...fileEndings.slice(0, -1),
+  `or ${fileEndings.at(-1)}`,
+].join(", ")
 
 /** How the tool reads a file, or `undefined` for a file it does not format. */
 export function kindOf(file: string): FileKind | undefined {

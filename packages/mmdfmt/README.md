@@ -250,6 +250,39 @@ whether the text is a diagram or Markdown, and its directory says which
   unchanged.
 - A path with another ending is an error.
 
+## From a script
+
+A tool written for Node.js, such as a language server that formats the diagrams
+of a file open in an editor, can call `mmdfmt` as a function instead of running
+the command:
+
+```js
+import { readFile } from "node:fs/promises"
+import { format } from "mmdfmt"
+
+const filepath = "docs/notes.md"
+const source = await readFile(filepath, "utf8")
+const { text, diagnostics } = await format(source, { filepath })
+```
+
+`format` does with the text and the path what `--stdin-filepath` does with
+standard input: it reads and writes no file, resolves a relative path against
+the current directory, and takes from the path whether the text is a diagram or
+Markdown and which `.editorconfig` and Prettier configuration apply. It returns:
+
+- `text`: the formatted text. A `.mmd` or `.mermaid` diagram that mermaid.js
+  rejects comes back as it was.
+- `diagnostics`: an entry for each rejected diagram and each block left as
+  written, with `severity` (`"error"` in a `.mmd` or `.mermaid` file,
+  `"warning"` in Markdown), `message`, and `position`, the `line` and `column`
+  in the returned `text`, counted as in
+  [Errors and exit codes](#errors-and-exit-codes).
+
+A path with another ending throws an error. Unlike the command, `format` skips
+no path: a path under `node_modules` or a directory of version control, or
+listed in a `.gitignore`, is formatted all the same, since the caller chooses
+which files to format.
+
 ## Indentation
 
 A diagram is indented by two spaces. When an `.editorconfig` or a Prettier

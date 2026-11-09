@@ -275,6 +275,42 @@ mmdfmt --stdin-filepath docs/guide.md
   テキストをそのまま返します。
 - ほかの語尾のパスはエラーです。
 
+## スクリプトから使う
+
+エディターで開いているファイルの図を整形する言語サーバーなど、
+Node.js 向けのツールでは、コマンドを実行する代わりに、
+`mmdfmt` を関数として呼び出せます。
+
+```js
+import { readFile } from "node:fs/promises"
+import { format } from "mmdfmt"
+
+const filepath = "docs/notes.md"
+const source = await readFile(filepath, "utf8")
+const { text, diagnostics } = await format(source, { filepath })
+```
+
+`format` は、`--stdin-filepath` が標準入力に対して行うことを、
+テキストとパスに対して行います。
+ファイルは読み書きせず、相対パスを現在のディレクトリを基準に解決し、
+テキストを図として読むか Markdown として読むかと、
+どの `.editorconfig` と Prettier の設定を適用するかをパスから決めます。
+戻り値には次が含まれます。
+
+- `text`: 整形したテキストです。
+  mermaid.js が拒否した `.mmd` または `.mermaid` の図は、そのまま返します。
+- `diagnostics`: 拒否した図と、書いたまま残したブロックごとの診断です。
+  `severity`（`.mmd` または `.mermaid` ファイルでは `"error"`、
+  Markdown では `"warning"`）、`message`、`position` を持ちます。
+  `position` は戻り値の `text` 内の `line` と `column` で、
+  [エラーと終了コード](#エラーと終了コード)と同じように数えます。
+
+ほかの語尾のパスではエラーを投げます。
+`format` はコマンドと異なり、どのパスも飛ばしません。
+整形するファイルは呼び出し元が選ぶため、
+`node_modules` やバージョン管理のディレクトリの下にあるパスも、
+`.gitignore` が挙げるパスも同じように整形します。
+
 ## インデント
 
 図のインデントは空白 2 つです。
