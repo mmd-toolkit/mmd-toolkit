@@ -10,6 +10,7 @@ import { findSankeyKeptLines } from "./sankey-kept-lines.ts"
 import type { Source } from "./source.ts"
 import { isBracketPadding, isWhitespace } from "./source.ts"
 import { collapseRuns } from "./text-runs.ts"
+import { findUsecaseKeptLines } from "./usecase-kept-lines.ts"
 import { findVennKeptLines } from "./venn-kept-lines.ts"
 import { findXychartKeptLines } from "./xychart-kept-lines.ts"
 
@@ -40,12 +41,19 @@ interface QuoteRule {
    * inside them, and the text must be the whole of what they hold.
    */
   readonly wrapped?: readonly [string, string]
+  /**
+   * Whether a text in quotes joins none of the units that touch it, since they
+   * are delimiters or the printer sets a space between them and the text: such
+   * a field is put in quotes also where it touches a unit in the source
+   * (`A--b-->C`, `icon:1`).
+   */
+  readonly standsAlone?: boolean
 }
 
 /** A field that the examples write without quotes. */
 function bare(
   text: Bare,
-  options: Pick<QuoteRule, "when" | "joins" | "wrapped"> = {},
+  options: Pick<QuoteRule, "when" | "joins" | "wrapped" | "standsAlone"> = {},
 ): QuoteRule {
   return { form: "bare", text, ...options }
 }
@@ -53,7 +61,7 @@ function bare(
 /** A field that the examples write in quotes. */
 function quoted(
   text: Bare,
-  options: Pick<QuoteRule, "when" | "joins" | "wrapped"> = {},
+  options: Pick<QuoteRule, "when" | "joins" | "wrapped" | "standsAlone"> = {},
 ): QuoteRule {
   return { form: "quoted", text, ...options }
 }
@@ -536,6 +544,143 @@ function isImplicitText(node: Node): boolean {
   return (node as Node & { targets?: unknown }).targets === null
 }
 
+/**
+ * The words of a use case diagram that its lexer reads as a unit of its own,
+ * written in these cases: a name of the same letters is read as the unit.
+ */
+const usecaseKeywords: ReadonlySet<string> = new Set([
+  "actor",
+  "systemBoundary",
+  "end",
+  "direction",
+  "TD",
+  "TB",
+  "BT",
+  "LR",
+  "RL",
+  "note",
+  "for",
+  "json",
+  "classDef",
+  "class",
+  "style",
+  "true",
+  "false",
+])
+
+/**
+ * The words of a use case diagram that its lexer reads as a unit of its own in
+ * any case: a word of the same letters is read as the unit.
+ */
+const usecaseKeywordsInAnyCase: ReadonlySet<string> = new Set([
+  "include",
+  "extend",
+])
+
+/**
+ * The words that a name cannot be at the start of a statement, in any case:
+ * the grammar refuses the first four and `skinparam` as the name that starts a
+ * statement, and an accessibility title and description are lines, which a `:`
+ * after the word would start.
+ */
+const usecaseWordsAtStatementStart: ReadonlySet<string> = new Set([
+  "allowmixing",
+  "newpage",
+  "package",
+  "rectangle",
+  "skinparam",
+  "acctitle",
+  "accdescr",
+])
+
+/**
+ * A word of a use case diagram that the lexer reads whole without quotes:
+ * ASCII letters, digits, and `_`, none of the words that it reads as a unit of
+ * its own.
+ */
+function usecaseWord(text: string): string | undefined {
+  return text !== "" &&
+    [...text].every(isWordCharacter) &&
+    !usecaseKeywords.has(text) &&
+    !usecaseKeywordsInAnyCase.has(text.toLowerCase())
+    ? text
+    : undefined
+}
+
+/** A name of a use case diagram: a word that is none of the words that start a statement. */
+function usecaseName(text: string): string | undefined {
+  return usecaseWord(text) !== undefined &&
+    !usecaseWordsAtStatementStart.has(text.toLowerCase())
+    ? text
+    : undefined
+}
+
+/**
+ * The text of a label of a use case diagram that the lexer reads whole in
+ * quotes: any text but one that starts with a backquote, which a quote and a
+ * backquote start a markdown string with.
+ */
+function usecaseLabel(text: string): string | undefined {
+  return text !== "" && !text.startsWith("`") ? text : undefined
+}
+
+/**
+ * The text of a label in square brackets that the lexer reads whole without
+ * quotes: words of ASCII letters, digits, and `_`, with one space between
+ * them. Any other character may be one that the lexer reads as an operator, a
+ * delimiter, or a number.
+ */
+function usecaseBracketLabel(text: string): string | undefined {
+  return text !== "" &&
+    text
+      .split(" ")
+      .every((word) => word !== "" && [...word].every(isWordCharacter))
+    ? text
+    : undefined
+}
+
+/** Whether a node of a use case diagram has no id: its name is quoted. */
+function hasNoId(node: Node): boolean {
+  return (node as Node & { id?: unknown }).id === null
+}
+
+/** Whether a node of a use case diagram has an id: its label is a display text. */
+function hasId(node: Node): boolean {
+  return !hasNoId(node)
+}
+
+/** Whether a use case, or its label, is drawn as an ellipse (between parentheses). */
+function isInParentheses(node: Node): boolean {
+  return (
+    hasId(node) && (node as Node & { shape?: unknown }).shape !== "rectangle"
+  )
+}
+
+/** Whether a use case has a label between square brackets. */
+function isInSquareBrackets(node: Node): boolean {
+  return (
+    hasId(node) && (node as Node & { shape?: unknown }).shape === "rectangle"
+  )
+}
+
+/** The text of the key of a property of the native metadata of a use case. */
+function metadataKeyOf(node: Node): string | undefined {
+  const { key } = node as Node & {
+    key?: Node & { name?: string; value?: string }
+  }
+  return key?.type === "Identifier" ? key.name : key?.value
+}
+
+/** Whether a property of the native metadata is the icon of an actor. */
+function isIcon(node: Node): boolean {
+  return metadataKeyOf(node) === "icon"
+}
+
+/** Whether a property of the native metadata is no icon. */
+function isNoIcon(node: Node): boolean {
+  return !isIcon(node)
+}
+
 /** Whether a plot of an XY chart is a line. */
 function isLine(node: Node): boolean {
   return (node as Node & { kind?: string }).kind === "line"
@@ -574,17 +719,52 @@ const quoteRules: Readonly<
   },
   QuadrantPointStatement: { name: bare(quadrantLabel) },
   QuadrantQuadrantStatement: { text: bare(quadrantLabel) },
+  UsecaseActor: {
+    label: [
+      bare(usecaseName, { when: hasNoId }),
+      quoted(usecaseLabel, { when: hasId, standsAlone: true }),
+    ],
+  },
+  UsecaseEntity: {
+    label: [
+      bare(usecaseName, { when: hasNoId }),
+      quoted(usecaseLabel, { when: isInParentheses, standsAlone: true }),
+      bare(usecaseBracketLabel, { when: isInSquareBrackets }),
+    ],
+  },
+  UsecaseMetadataAssignmentStatement: { target: bare(usecaseName) },
+  UsecaseMetadataProperty: {
+    key: bare(usecaseWord),
+    value: [
+      quoted(usecaseWord, { when: isIcon, standsAlone: true }),
+      bare(usecaseWord, { when: isNoIcon }),
+    ],
+  },
+  UsecaseNoteStatement: { label: quoted(usecaseLabel, { standsAlone: true }) },
+  UsecaseRelationshipStatement: {
+    label: quoted(usecaseLabel, { standsAlone: true }),
+  },
+  UsecaseSystemBoundaryStatement: {
+    title: [
+      bare(usecaseName, { when: hasNoId }),
+      quoted(usecaseLabel, { when: hasId, standsAlone: true }),
+    ],
+  },
   VennStyleProperty: {
     value: bare(vennStyleValue),
   },
   VennStyleStatement: { targets: bare(vennName) },
   VennSubsetStatement: {
-    label: quoted(vennLabel, { wrapped: ["[", "]"] }),
+    label: quoted(vennLabel, { wrapped: ["[", "]"], standsAlone: true }),
     sets: bare(vennName),
   },
   VennTextStatement: {
     id: bare(vennName, { when: isImplicitText }),
-    label: quoted(vennLabel, { when: isImplicitText, wrapped: ["[", "]"] }),
+    label: quoted(vennLabel, {
+      when: isImplicitText,
+      wrapped: ["[", "]"],
+      standsAlone: true,
+    }),
   },
   XychartBand: { categories: bare(xychartCategory) },
   XychartPlotStatement: { title: quoted(xychartText, { when: isLine }) },
@@ -671,6 +851,7 @@ const keptLinesOf: Readonly<Record<string, (source: Source) => KeptLines>> = {
   quadrant: findQuadrantKeptLines,
   requirement: findRequirementKeptLines,
   sankey: findSankeyKeptLines,
+  usecase: findUsecaseKeptLines,
   venn: findVennKeptLines,
   xychart: findXychartKeptLines,
 }
@@ -801,7 +982,7 @@ function respell(
   if (
     printed !== undefined &&
     (rule.form === "quoted"
-      ? rule.wrapped !== undefined ||
+      ? rule.standsAlone === true ||
         (!touchesToken(source, start, true) &&
           !touchesToken(source, end, false))
       : !"#%;".includes(after ?? "\n") &&

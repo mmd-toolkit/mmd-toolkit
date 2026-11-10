@@ -98,7 +98,7 @@ Output
 usecase-beta
   systemBoundary Portal
     actor User
-    Task(Work)
+    Task("Work")
   end
   User --> Task
 ```
@@ -142,7 +142,7 @@ Output
 ```mmd
 usecase-beta
   actor Reader
-  Read(Inspect)
+  Read("Inspect")
   Reader --> Read
 ```
 
@@ -173,7 +173,7 @@ Output
 
 ```mmd
 usecase-beta
-  actor User(Person), Clerk("Desk"), "Guest"
+  actor User("Person"), Clerk("Desk"), Guest
 ```
 
 ### Labels
@@ -205,7 +205,7 @@ Output
 
 ```mmd
 usecase-beta
-  A(unquoted  words)
+  A("unquoted  words")
   B(" single  text ")
   C(" double  text ")
   D("` markdown  text `")
@@ -313,7 +313,7 @@ Output
 
 ```mmd
 usecase-beta
-  systemBoundary Box[Display]@{ type: "package" }:::box,group
+  systemBoundary Box["Display"]@{ type: package }:::box,group
     actor User
     A@{ business: true }
   end
@@ -415,9 +415,9 @@ Output
 
 ```mmd
 usecase-beta
-  A -- likes --> B
+  A -- "likes" --> B
   B <-- "uses" -- C
-  C o-- part --- D
+  C o-- "part" --- D
   D x-- "`blocks`" ---- E
 ```
 
@@ -713,7 +713,7 @@ Output
 usecase-beta
   A
   note for A "quoted note"
-  note for A bare  note %% literal
+  note for A "bare  note %% literal"
 ```
 
 ### Direction and accessibility
@@ -939,7 +939,7 @@ Output
 
 ```mmd
 usecase-beta
-  VeryLongSourceIdentifier -- a deliberately long label --> VeryLongTargetIdentifier
+  VeryLongSourceIdentifier -- "a deliberately long label" --> VeryLongTargetIdentifier
 ```
 
 ### Trailing whitespace

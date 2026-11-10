@@ -107,7 +107,7 @@ YAML は共有の最小幅 1 を保ちます。
 usecase-beta
   systemBoundary Portal
     actor User
-    Task(Work)
+    Task("Work")
   end
   User --> Task
 ```
@@ -153,7 +153,7 @@ usecase-beta
 ```mmd
 usecase-beta
   actor Reader
-  Read(Inspect)
+  Read("Inspect")
   Reader --> Read
 ```
 
@@ -184,7 +184,7 @@ stereotype の隙間は、[class に揃えた規則](#stereotypes)に従いま�
 
 ```mmd
 usecase-beta
-  actor User(Person), Clerk("Desk"), "Guest"
+  actor User("Person"), Clerk("Desk"), Guest
 ```
 
 ### Labels
@@ -219,7 +219,7 @@ U+2029、バッククォート、`&`、`#`、`<` を含む場合を除き、`"` 
 
 ```mmd
 usecase-beta
-  A(unquoted  words)
+  A("unquoted  words")
   B(" single  text ")
   C(" double  text ")
   D("` markdown  text `")
@@ -350,7 +350,7 @@ native metadata、class、繰り返しの宣言を保ち、
 
 ```mmd
 usecase-beta
-  systemBoundary Box[Display]@{ type: "package" }:::box,group
+  systemBoundary Box["Display"]@{ type: package }:::box,group
     actor User
     A@{ business: true }
   end
@@ -459,9 +459,9 @@ actor の開始キーワード、二つの端点の出現を保ちます。
 
 ```mmd
 usecase-beta
-  A -- likes --> B
+  A -- "likes" --> B
   B <-- "uses" -- C
-  C o-- part --- D
+  C o-- "part" --- D
   D x-- "`blocks`" ---- E
 ```
 
@@ -778,7 +778,7 @@ class の[トークンの間の空白](./class.ja.md#トークンの間の空白
 usecase-beta
   A
   note for A "quoted note"
-  note for A bare  note %% literal
+  note for A "bare  note %% literal"
 ```
 
 ### Direction and accessibility
@@ -1020,7 +1020,7 @@ native metadata の構造は専用の規則に従います。
 
 ```mmd
 usecase-beta
-  VeryLongSourceIdentifier -- a deliberately long label --> VeryLongTargetIdentifier
+  VeryLongSourceIdentifier -- "a deliberately long label" --> VeryLongTargetIdentifier
 ```
 
 ### Trailing whitespace

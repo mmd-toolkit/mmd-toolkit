@@ -28,14 +28,14 @@ export const usecaseCases: readonly UsecaseCase[] = [
     name: "usecase: U+2028 inside the brackets of a boundary title",
     id: "usecase/line-terminators/boundary-title-u2028",
     input: "usecase-beta\nsystemBoundary S[ T\u2028]\nTask\nend\n",
-    output: "usecase-beta\n  systemBoundary S[T\u2028]\n    Task\n  end\n",
+    output: 'usecase-beta\n  systemBoundary S["T\u2028"]\n    Task\n  end\n',
     options: {},
   },
   {
     name: "usecase: U+2029 inside the brackets of a boundary title",
     id: "usecase/line-terminators/boundary-title-u2029",
     input: "usecase-beta\nsystemBoundary S[ T\u2029]\nTask\nend\n",
-    output: "usecase-beta\n  systemBoundary S[T\u2029]\n    Task\n  end\n",
+    output: 'usecase-beta\n  systemBoundary S["T\u2029"]\n    Task\n  end\n',
     options: {},
   },
   {
@@ -93,7 +93,7 @@ export const usecaseCases: readonly UsecaseCase[] = [
     input:
       "usecase-beta\nA('x\u2028y')\nB(\"`x\u2029y`\")\nC(bare\u2028text)\nC -- edge\u2029label --> D",
     output:
-      "usecase-beta\n  A('x\u2028y')\n  B(\"`x\u2029y`\")\n  C(bare\u2028text)\n  C -- edge\u2029label --> D\n",
+      'usecase-beta\n  A(\'x\u2028y\')\n  B("`x\u2029y`")\n  C("bare\u2028text")\n  C -- "edge\u2029label" --> D\n',
     options: {},
   },
   {
@@ -156,7 +156,7 @@ export const usecaseCases: readonly UsecaseCase[] = [
     name: "usecase: label-unicode-padding",
     id: "usecase/labels/label-unicode-padding",
     input: "usecase-beta\nA(\u00a0Work\u00a0)\nB[\ufeffPanel\ufeff]",
-    output: "usecase-beta\n  A(\u00a0Work\u00a0)\n  B[\ufeffPanel\ufeff]\n",
+    output: 'usecase-beta\n  A("\u00a0Work\u00a0")\n  B[\ufeffPanel\ufeff]\n',
     options: {},
   },
   {
@@ -179,7 +179,7 @@ export const usecaseCases: readonly UsecaseCase[] = [
     input:
       "usecase-beta\ractor U@{\rtype:normal\rbusiness:false\r}\rsystemBoundary Box\rA(Work)\rend\rU-->A\rnote for A 'text'\rjson T@{\r \"a\": 1\r}\rclassDef hot fill: red\rclass A hot\rstyle A -- color : blue\raccTitle: title\raccDescr {\rfirst\r second\r}\rdirection TD\r",
     output:
-      'usecase-beta\n  actor U@{\n    type: normal\n    business: false\n  }\n  systemBoundary Box\n    A(Work)\n  end\n  U --> A\n  note for A "text"\n  json T @{\n    "a": 1\n  }\n  classDef hot fill: red\n  class A hot\n  style A -- color: blue\n  accTitle: title\n  accDescr {\n    first\n    second\n  }\n  direction TD\n',
+      'usecase-beta\n  actor U@{\n    type: normal\n    business: false\n  }\n  systemBoundary Box\n    A("Work")\n  end\n  U --> A\n  note for A "text"\n  json T @{\n    "a": 1\n  }\n  classDef hot fill: red\n  class A hot\n  style A -- color: blue\n  accTitle: title\n  accDescr {\n    first\n    second\n  }\n  direction TD\n',
     options: {},
   },
   {
@@ -203,7 +203,7 @@ export const usecaseCases: readonly UsecaseCase[] = [
     input:
       "usecase-beta\nTask(Style:#abc;x\u2028classDef: #def;y)\nOther(one\u2029two)",
     output:
-      "usecase-beta\n  Task(Style:#abc;x\u2028classDef: #def;y)\n  Other(one\u2029two)\n",
+      'usecase-beta\n  Task(Style:#abc;x\u2028classDef: #def;y)\n  Other("one\u2029two")\n',
     options: {},
   },
   {
@@ -226,7 +226,7 @@ export const usecaseCases: readonly UsecaseCase[] = [
     input:
       "usecase-beta\nsystemBoundary Scope [\u00a0 Display\ufeff ]\nTask\nend",
     output:
-      "usecase-beta\n  systemBoundary Scope[\u00a0 Display\ufeff]\n    Task\n  end\n",
+      'usecase-beta\n  systemBoundary Scope["\u00a0 Display\ufeff"]\n    Task\n  end\n',
     options: {},
   },
   {

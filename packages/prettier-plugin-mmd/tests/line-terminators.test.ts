@@ -252,6 +252,6 @@ describe("configured Venn line endings", () => {
         "diagram.mmd",
         { endOfLine: "cr" },
       ),
-    ).toBe('venn-beta\rset "A\r B"[\"L\r M\"]\r  text item\r')
+    ).toBe('venn-beta\rset "A\r B"["L\r M"]\r  text item\r')
   })
 })
