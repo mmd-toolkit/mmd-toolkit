@@ -19,7 +19,6 @@ import {
 import { collapseRuns } from "./text-runs.ts"
 import { findUsecaseKeptLines } from "./usecase-kept-lines.ts"
 import { findVennKeptLines } from "./venn-kept-lines.ts"
-import { treeviewBoxCharacters } from "./treeview-characters.ts"
 import { findXychartKeptLines } from "./xychart-kept-lines.ts"
 
 /**
@@ -695,18 +694,18 @@ function holdsLineTerminator(text: string): boolean {
 }
 
 /**
- * The text of a label in square brackets of an architecture diagram that the
- * lexer reads whole without quotes: none of `[` and `]`, no line break, and no
- * whitespace at its ends, which the printer drops from a label without quotes
- * only.
+ * The text of a label in square brackets of an architecture diagram that every
+ * version of mermaid.js that reads the label in quotes reads without them:
+ * ASCII letters, digits, `_`, and spaces, with none at its ends. The grammars
+ * of 11.16.0 and 11.16.1, the first that read a label in quotes, read a label
+ * without quotes of these characters only.
  */
 function architectureLabel(text: string): string | undefined {
   return text !== "" &&
     text.trim() === text &&
-    !text.includes("[") &&
-    !text.includes("]") &&
-    !text.includes("\\'") &&
-    !holdsLineTerminator(text)
+    [...text].every(
+      (character) => isWordCharacter(character) || character === " ",
+    )
     ? text
     : undefined
 }
@@ -727,52 +726,12 @@ function shapeText(text: string): string | undefined {
 }
 
 /**
- * A name of a treeView diagram that the lexer reads whole without quotes: ASCII
- * letters, digits, `_`, `-`, `.`, and `/`, with one space between words,
- * starting with a letter, a digit, or `_`. The lexer reads `title` in lower case
- * at the start of a name as the title, and `treeView-beta` as the header. The
- * characters that start a suffix after a space (`:::`, `icon(`, `##`) are no
- * part of such a name.
- */
-function treeviewName(text: string): string | undefined {
-  return text
-    .split(" ")
-    .every(
-      (word) =>
-        word !== "" &&
-        [...word].every(
-          (character) =>
-            isWordCharacter(character) || "-./".includes(character),
-        ),
-    ) &&
-    isWordCharacter(text[0]) &&
-    !text.startsWith("title") &&
-    text !== "treeView-beta"
-    ? text
-    : undefined
-}
-
-/**
  * Whether a dash stands next to a text in a shape of a mindmap or a kanban
  * board: the closer `-)` follows only a string, and `(-` opens a shape in which
  * a text without quotes would be read with it.
  */
 function nextToDash(before: string, after: string): boolean {
   return before.endsWith("-") || after.startsWith("-")
-}
-
-/**
- * Whether the names of a treeView diagram keep their quotes: a name without
- * quotes goes on over a U+2028 or U+2029, which end no line, and over the
- * characters that follow it in a diagram drawn with branch characters.
- */
-function treeviewKeepsQuotes(source: Source): boolean {
-  return [...source.text].some(
-    (character) =>
-      character === "\u2028" ||
-      character === "\u2029" ||
-      treeviewBoxCharacters.includes(character),
-  )
 }
 
 /** Whether a plot of an XY chart is a line. */
@@ -810,7 +769,6 @@ const quoteRules: Readonly<
   },
   KanbanShape: { label: bare(shapeText, { joins: nextToDash }) },
   MindmapShape: { label: bare(shapeText, { joins: nextToDash }) },
-  TreeviewNode: { name: bare(treeviewName) },
   ErEntityReference: { name: bare(wordWithout(erReserved)) },
   ErEntityStatement: { name: bare(wordWithout(erReserved)) },
   ErRelationshipStatement: { role: bare(wordWithout(erReserved)) },
@@ -947,26 +905,6 @@ const quoteRules: Readonly<
   },
 }
 
-/**
- * The lines of a treeView diagram that hold a comment or a `;`, which a name
- * without quotes would take into its text: a directive is taken away before the
- * text is read, and the `;` of a directive is no such `;`.
- */
-function findTreeviewKeptLines(source: Source): KeptLines {
-  const lines = new Set<number>()
-  for (const item of source.trivia) {
-    if (item.type === "Comment") lines.add(lineStartOf(source, item.range[0]))
-  }
-  for (let offset = 0; offset < source.text.length; offset++) {
-    if (
-      source.text[offset] === ";" &&
-      findTriviaAt(source, offset)?.type !== "Directive"
-    )
-      lines.add(lineStartOf(source, offset))
-  }
-  return { joined: lines, verbatim: new Set(), ownIndentation: new Set() }
-}
-
 /** The kept lines of the diagram types that have fields in `bareFields`. */
 const keptLinesOf: Readonly<Record<string, (source: Source) => KeptLines>> = {
   er: findErKeptLines,
@@ -975,7 +913,6 @@ const keptLinesOf: Readonly<Record<string, (source: Source) => KeptLines>> = {
   quadrantChart: findQuadrantKeptLines,
   requirement: findRequirementKeptLines,
   sankey: findSankeyKeptLines,
-  treeView: findTreeviewKeptLines,
   usecase: findUsecaseKeptLines,
   venn: findVennKeptLines,
   xychart: findXychartKeptLines,
@@ -1042,12 +979,6 @@ export function findQuoteFormRespellings(
   found: Map<number, { readonly end: number; readonly text: string }>,
   node: Node = source.root,
 ): void {
-  if (
-    node === source.root &&
-    source.root.diagramType === "treeView" &&
-    treeviewKeepsQuotes(source)
-  )
-    return
   const fields = quoteRules[node.type]
   for (const key of visitorKeys[node.type]) {
     const value = (node as unknown as Record<string, unknown>)[key]

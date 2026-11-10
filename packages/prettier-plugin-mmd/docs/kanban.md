@@ -308,11 +308,12 @@ kanban
 
 ### Labels
 
-A label is printed in the form written: bare (`A[x y]`), quoted (`B["x y"]`), or
-markdown (`C["`x y`"]`). The whitespace inside a label is in the Db and stays,
-and so do whitespace-only labels (`S[ ]`, `A[" "]`). The spaces and tabs at the
-ends of a bare label are dropped: `S[  x  ]` is printed `S[x]`, since mermaid.js
-draws the same node without them (see
+A label is printed bare (`A[x y]`; a plain string `B["x y"]` loses its quotes,
+see [Quotes](#quotes)) or as markdown (`C["`x y`"]`). The whitespace inside a
+label is in the Db and stays, and so do whitespace-only labels (`S[ ]`,
+`A[" "]`). The spaces and tabs at the ends of a bare label are dropped:
+`S[  x  ]` is printed `S[x]`, since mermaid.js draws the same node without them
+(see
 [Mindmap texts that are drawn the same](./compatibility.md#mindmap-texts-that-are-drawn-the-same)).
 A quote is the start of a string only right after the opener, so `D[ "x" ]` has
 the bare text `"x"` with its quotes and the spaces around it, and the printer
@@ -324,10 +325,10 @@ labels/bare-empty-spellings] [fixture: labels/lex-style-entity-two-semicolons]
 [fixture: labels/db-grid-html-attribute-item-label-quoted] [fixture:
 labels/db-grid-entity-item-label-quoted]
 
-The printer does not quote, unquote, pad, encode, or decode a label, and trims
-only the spaces and tabs at the ends of a bare label. `A[x y]` and `A["x y"]`
-have the same Db, but the form is the author's. A space after the closing quote
-of a string (`S["x" ]`) is rejected, so it is never a form to print (see
+The printer does not quote, pad, encode, or decode a label, and trims only the
+spaces and tabs at the ends of a bare label. `A[x y]` and `A["x y"]` have the
+same Db, and the form is the one of [Quotes](#quotes). A space after the closing
+quote of a string (`S["x" ]`) is rejected, so it is never a form to print (see
 [When a diagram is not formatted](../README.md#when-a-diagram-is-not-formatted)).
 [fixture: labels/bare-to-quoted] [fixture: labels/space-after-string-invalid]
 
@@ -353,6 +354,40 @@ kanban
     B[x y]
     C["`x y`"]
     D[ "x" ]
+```
+
+### Quotes
+
+The label of a shape in quotes is printed without them, as the examples in the
+documentation of mermaid.js write it (see
+[The quotes of a text](./compatibility.md#the-quotes-of-a-text)):
+`col["Todo list"]` is printed `col[Todo list]`. The label keeps its quotes where
+a label without quotes would end earlier or be read as a closer: a label with a
+`)`, a `]`, a `(`, or a `}`; a string next to a dash of the dash form
+(`card4(-"x"-)`); a label with padding or a line break. A markdown string stays
+as written. [fixture: quotes/labels-without-quotes] [fixture:
+quotes/labels-that-need-quotes]
+
+Input
+([quotes/labels-without-quotes-input.mmd](../tests/fixtures/kanban/quotes/labels-without-quotes-input.mmd)):
+
+```mmd
+kanban
+  col["Todo list"]
+    card1["Write docs"]
+    card2["x"]
+    card3[x]
+```
+
+Output
+([quotes/labels-without-quotes-output.mmd](../tests/fixtures/kanban/quotes/labels-without-quotes-output.mmd)):
+
+```mmd
+kanban
+  col[Todo list]
+    card1[Write docs]
+    card2[x]
+    card3[x]
 ```
 
 ### Icons and classes

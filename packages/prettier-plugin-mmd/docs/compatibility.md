@@ -1243,6 +1243,9 @@ and, with the Db only, in the inputs of the conformance corpus:
 | Quotes of an XY chart text         |        0 |                   0 |    191 |     191 |
 | Quotes of a venn name or label     |        0 |                   0 |    170 |     168 |
 | Quotes of a use case name or label |        0 |                   0 |     93 |      90 |
+| Quotes of an architecture label    |        0 |                   0 |      2 |       2 |
+| Quotes of a mindmap shape text     |        0 |                   0 |      7 |       7 |
+| Quotes of a kanban shape text      |        0 |                   0 |    114 |     114 |
 
 A corpus pair that is not counted in the last column is a pair of which
 mermaid.js rejects the other spelling, except two pairs of the label of a link,
@@ -1863,6 +1866,10 @@ of the examples that write each in each form, are:
 | use case     | the label of a note                           |              0 |         1 |
 | use case     | the icon of an actor                          |              0 |         2 |
 | use case     | the label of a use case, between brackets     |              6 |         0 |
+| architecture | the label of a group                          |              6 |         0 |
+| architecture | the label of a service                        |             30 |         0 |
+| mindmap      | the text of a shape                           |             21 |         0 |
+| kanban       | the text of a shape                           |             19 |         0 |
 
 A text is printed without quotes where it is plain: ASCII letters, digits, `_`,
 `-`, and `.`, with spaces between them, and, in a sankey diagram, with spaces at
@@ -2016,6 +2023,27 @@ usecase/quotes/labels-in-quotes] [fixture: usecase/quotes/labels-as-written]
 usecase/quotes/metadata] [fixture: usecase/quotes/touching-units] [fixture:
 usecase/quotes/texts-on-a-kept-line-as-written]
 
+In an architecture diagram a label in quotes is printed without them where it is
+ASCII letters, digits, `_`, and spaces, with no space at its ends: the grammars
+of 11.16.0 and 11.16.1, the first that read a label in quotes, read a label
+without quotes of these characters only. In a mindmap and a kanban board the
+text of a shape in quotes is printed without them where it holds none of `)`,
+`]`, `(`, and `}`, which end a text without quotes or are read as a closer, has
+no padding or line break, and does not stand next to a dash of the dash form
+(`(-"x"-)`, whose closer `-)` follows only a string). A markdown string stays.
+[fixture: architecture/quotes/labels-without-quotes] [fixture:
+architecture/quotes/labels-that-need-quotes] [fixture:
+mindmap/quotes/labels-without-quotes] [fixture:
+mindmap/quotes/labels-that-need-quotes] [fixture:
+kanban/quotes/labels-without-quotes] [fixture:
+kanban/quotes/labels-that-need-quotes]
+
+The name of a treeView node in quotes stays as written, though the examples
+write a name without quotes 58 times and in quotes 8 times: the grammars of
+11.14.0 and 11.15.0 read a name in quotes only, and a name without quotes is
+read from 11.16.0, so a text printed without quotes would not be read by a
+version that reads the text as it is written.
+
 A string that a `#` or a `%` follows on its line keeps its quotes in every
 diagram type: a text without quotes can run to the end of the line, and then
 takes that character and what follows into the text, as `b #c` in
@@ -2041,18 +2069,20 @@ read both forms of these inputs with the same Db: 11 inputs of sankey diagrams,
 gitGraphs, 13 of the 19 quadrant charts (the other 6 hold a tab inside a text,
 which the printer also changes), 191 of XY charts, 168 of the 170 venn diagrams
 (the 2 others differ in a run of spaces or tabs in a label, which the printer
-also changes), and 90 of the 93 use case diagrams (the 3 others differ in the
+also changes), 90 of the 93 use case diagrams (the 3 others differ in the
 whitespace of a style, which
-[Styles that are drawn the same](#styles-that-are-drawn-the-same) defines). It
-read both forms of the 6 sankey examples that were written again with every
-plain field in quotes, with the same Db and the same SVG, and drew the same SVG
-from the input and the formatted text of the 11 sankey inputs, the 15 ER inputs,
-8 of the 11 requirement inputs (the other 3 are drawn by mermaid.js in neither
-form), the 35 Wardley inputs, the 2 gitGraph inputs, the 19 quadrant inputs, 73
-of the 191 XY chart inputs (the other 118 have no plot, and mermaid.js draws no
-chart without one, in either form), and 163 of the 170 venn inputs (the other 7
-are drawn in neither form), and the 93 use case inputs (once the whitespace of
-one style was taken away).
+[Styles that are drawn the same](#styles-that-are-drawn-the-same) defines), 2
+architecture diagrams, 7 mindmaps, and 114 kanban boards. It read both forms of
+the 6 sankey examples that were written again with every plain field in quotes,
+with the same Db and the same SVG, and drew the same SVG from the input and the
+formatted text of the 11 sankey inputs, the 15 ER inputs, 8 of the 11
+requirement inputs (the other 3 are drawn by mermaid.js in neither form), the 35
+Wardley inputs, the 2 gitGraph inputs, the 19 quadrant inputs, 73 of the 191 XY
+chart inputs (the other 118 have no plot, and mermaid.js draws no chart without
+one, in either form), and 163 of the 170 venn inputs (the other 7 are drawn in
+neither form), the 93 use case inputs (once the whitespace of one style was
+taken away), 1 of the 2 architecture inputs (the other is drawn in neither
+form), the 7 mindmap inputs, and the 114 kanban inputs.
 
 ### Versions of mermaid.js
 
@@ -2107,6 +2137,24 @@ mermaid.js, show which form each version reads:
   them. Their lexers read `title`, `x-axis`, `y-axis`, `line`, and `bar` in any
   case, where no letter, digit, or `_` follows, and `vertical` and `horizontal`
   wherever they start.
+- The labels of an architecture diagram: the grammars of 11.1.0 to 11.15.0 read
+  a label of ASCII letters, digits, `_`, and spaces in brackets and no label in
+  quotes. The grammars of 11.16.0 and 11.16.1 read such a label or a label in
+  quotes, and the grammars of 11.17.0 to 12.3.0 read a label in quotes or any
+  text without `[`, `]`, and a line break. So a label in quotes is printed
+  without them only where it is of those characters, which every version that
+  reads the quotes reads.
+- The texts of the shapes of a mindmap: the grammars of v9.4.0 (the first with
+  the rule), v10.1.0, and v10.3.0 to 12.3.0 read a string in a shape and a text
+  without `)`, `]`, `(`, and `}` as the same `NODE_DESCR`, with the rule of the
+  string before the rule of the text. The texts of the shapes of a kanban board:
+  the grammar of 11.4.0, the first with the diagram type, is the grammar of
+  every later release to 12.3.0.
+- The names of a treeView diagram: the grammar of 11.14.0, the first with the
+  diagram type, and of 11.15.0 reads the name of a node as a string in quotes
+  only (`name=STRING2`), and the grammar of 11.16.0 added the name without
+  quotes (`BARE_NAME`). A name in quotes stays as written, as the text above
+  says.
 - The names, the labels, and the metadata of a use case diagram: the lexer, the
   parser, the visitor, and the model builder of 12.0.0, the first release with
   the diagram type, 12.1.0, 12.2.0, and 12.3.0 are the same files. The visitor

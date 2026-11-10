@@ -350,10 +350,11 @@ mindmap
 mermaid.js はその空白を Db に残しますが、同じノードを描きます。
 文字列は開きの直後だけが文字列で、
 `a[ "x" ]` のテキストは引用符を含む `"x"` です。
-`a["x"]` と `a[x]` のテキストは同じですが、どちらも書き換えません。
+`a["x"]` と `a[x]` のテキストは同じなので、テキストが平易な文字列は、
+引用符なしで印字します（[Quotes](#quotes)を参照）。
 余白を除くと引用符で始まるテキストは、その余白を残します。
-文字列、markdown 文字列、複数行にまたがるテキストは、書かれたままにし、
-空白とタブだけのテキストは空白 1 つで印字します。
+markdown 文字列、平易でない文字列、複数行にまたがるテキストは、
+書かれたままにし、空白とタブだけのテキストは空白 1 つで印字します。
 [fixture: shapes/inner-padding-dropped] [fixture: shapes/text-and-string-forms]
 [fixture: shapes/markdown-string]
 [fixture: shapes/padding-kept-where-drawn-differently]
@@ -404,6 +405,52 @@ mindmap
     b[x y]
     c[ "x" ]
     d[x]
+```
+
+### Quotes
+
+引用符で囲んだ形のテキストは、mermaid.js の文書の例のとおり、
+引用符なしで印字します。
+（[テキストの引用符](./compatibility.ja.md#テキストの引用符)）。
+`a["x y"]` は `a[x y]`、`c(("x"))` は `c((x))`、
+`d))"x"((` は `d))x((` と印字します。
+引用符を外すとテキストが途中で終わるか閉じとして読まれる場合は、
+引用符を残します。
+これに当たるのは、`)`、`]`、`(`、`}` を含むテキスト、
+ダッシュの形のダッシュに接する文字列（`f(-"x"-)` で、
+閉じの `-)` は文字列の後ろだけに続く形）、余白か改行のあるテキスト、
+空の文字列です。
+markdown 文字列は書かれたまま残します。 [fixture: quotes/labels-without-quotes]
+[fixture: quotes/labels-that-need-quotes]
+
+入力
+([quotes/labels-without-quotes-input.mmd](../tests/fixtures/mindmap/quotes/labels-without-quotes-input.mmd)):
+
+```mmd
+mindmap
+  root["Root text"]
+    a["x y"]
+    b("x")
+    c(("x"))
+    d))"x"((
+    e{{"x"}}
+    f)"x"(
+    g[x]
+```
+
+出力
+([quotes/labels-without-quotes-output.mmd](../tests/fixtures/mindmap/quotes/labels-without-quotes-output.mmd)):
+
+```mmd
+mindmap
+  root[Root text]
+    a[x y]
+    b(x)
+    c((x))
+    d))x((
+    e{{x}}
+    f)x(
+    g[x]
 ```
 
 ### 複数行のテキスト

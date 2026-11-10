@@ -236,9 +236,9 @@ architecture-beta
 
 ### Label forms
 
-ArchitectureLabel の全範囲と、bare・quoted の形、引用符の綴りを保ちます。
+ArchitectureLabel の全範囲と引用符の綴りを保ちますが、
+引用符つきの平易なラベルは引用符なしで印字します（[Quotes](#quotes)を参照）。
 `[ "x" ]` は bare であり、詰めてよい quoted ラベルではありません。
-Db が等しい引用符変更でも、選ばれた kind と原形を失うため行いません。
 引用符に見える fallback は bare のままにし、
 変換後の文字から kind を推測しません。
 
@@ -292,6 +292,46 @@ Db が等しい引用符変更でも、選ばれた kind と原形を失うた�
 ```mmd
 architecture-beta
   service padded[x]
+```
+
+### Quotes
+
+引用符つきの平易なラベルは、mermaid.js の文書の例のとおり、
+引用符なしで印字します。
+（[テキストの引用符](./compatibility.ja.md#テキストの引用符)）。
+`group api(cloud)["API Group"]` は `group api(cloud)[API Group]` と印字し、
+`service s(server)['Plain Single']` は `service s(server)[Plain Single]`
+と印字します。
+平易なラベルとは、ASCII 英字、数字、`_`、空白からなり、
+両端に空白がないものです。
+引用符つきのラベルを初めて読む 11.16.0 と 11.16.1 の文法は、
+引用符なしのラベルではこれらの文字だけを読むので、`"a-b"`、`"A.B"`、`"日本語"`、
+`"a[b"`、空のラベル、バックスラッシュは引用符を保ちます。
+引用符の内側に余白があるラベル（`[" padded "]`）も同じです。
+引用符なしのラベルを引用符で囲むことはありません。
+[fixture: quotes/labels-without-quotes]
+[fixture: quotes/labels-that-need-quotes]
+
+入力
+([quotes/labels-without-quotes-input.mmd](../tests/fixtures/architecture/quotes/labels-without-quotes-input.mmd)):
+
+```mmd
+architecture-beta
+group api(cloud)["API Group"]
+service db(database)["Database_1"] in api
+service s(server)['Plain Single']
+service t(server)[Already bare]
+```
+
+出力
+([quotes/labels-without-quotes-output.mmd](../tests/fixtures/architecture/quotes/labels-without-quotes-output.mmd)):
+
+```mmd
+architecture-beta
+  group api(cloud)[API Group]
+  service db(database)[Database_1] in api
+  service s(server)[Plain Single]
+  service t(server)[Already bare]
 ```
 
 ### Label content

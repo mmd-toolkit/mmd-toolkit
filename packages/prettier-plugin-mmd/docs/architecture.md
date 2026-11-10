@@ -235,10 +235,10 @@ architecture-beta
 
 ### Label forms
 
-Keep the whole ArchitectureLabel range and its authored bare/quoted form and
-quote spelling. `[ "x" ]` is bare, not a quoted label to compact. Even Db-equal
-requoting would lose the chosen kind and source form. Fallback quote-looking
-text stays bare; never infer kind from converted text.
+Keep the whole ArchitectureLabel range and its quote spelling, except that a
+label in quotes is printed without them where it is plain (see
+[Quotes](#quotes)). `[ "x" ]` is bare, not a quoted label to compact. Fallback
+quote-looking text stays bare; never infer kind from converted text.
 
 [fixture: architecture/label-forms/backslash-fallback]
 
@@ -290,6 +290,44 @@ Output
 ```mmd
 architecture-beta
   service padded[x]
+```
+
+### Quotes
+
+A label in quotes is printed without them where it is plain, as the examples in
+the documentation of mermaid.js write it (see
+[The quotes of a text](./compatibility.md#the-quotes-of-a-text)):
+`group api(cloud)["API Group"]` is printed `group api(cloud)[API Group]`, and
+`service s(server)['Plain Single']` is printed
+`service s(server)[Plain Single]`. A label is plain where it is ASCII letters,
+digits, `_`, and spaces, with no space at its ends: the grammars of 11.16.0 and
+11.16.1, the first that read a label in quotes, read a label without quotes of
+these characters only, so `"a-b"`, `"A.B"`, `"日本語"`, `"a[b"`, the empty
+label, and a backslash keep their quotes, and so does a label with padding
+inside the quotes (`[" padded "]`). A label without quotes is never put in
+quotes. [fixture: quotes/labels-without-quotes] [fixture:
+quotes/labels-that-need-quotes]
+
+Input
+([quotes/labels-without-quotes-input.mmd](../tests/fixtures/architecture/quotes/labels-without-quotes-input.mmd)):
+
+```mmd
+architecture-beta
+group api(cloud)["API Group"]
+service db(database)["Database_1"] in api
+service s(server)['Plain Single']
+service t(server)[Already bare]
+```
+
+Output
+([quotes/labels-without-quotes-output.mmd](../tests/fixtures/architecture/quotes/labels-without-quotes-output.mmd)):
+
+```mmd
+architecture-beta
+  group api(cloud)[API Group]
+  service db(database)[Database_1] in api
+  service s(server)[Plain Single]
+  service t(server)[Already bare]
 ```
 
 ### Label content

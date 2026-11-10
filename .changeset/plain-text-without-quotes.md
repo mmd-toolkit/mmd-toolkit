@@ -5,26 +5,28 @@
 Print a text in the form that the documentation of mermaid.js uses, where both
 forms are read the same, in a `sankey` link, in an `er` diagram, in a
 `requirementDiagram`, in a Wardley map, in a `gitGraph`, in a `quadrantChart`,
-in an `xychart`, in a `venn` diagram, and in a `usecase-beta` diagram:
-`"a b",c,"1.0"` becomes `a b,c,1`, `"CUSTOMER" ||--o{ "ORDER" : "places"`
-becomes `CUSTOMER ||--o{ ORDER : places`, `branch "dev"` becomes `branch dev`,
+in an `xychart`, in a `venn` diagram, in a `usecase-beta` diagram, and in an
+`architecture-beta`, a `mindmap`, and a `kanban` diagram: `"a b",c,"1.0"`
+becomes `a b,c,1`, `"CUSTOMER" ||--o{ "ORDER" : "places"` becomes
+`CUSTOMER ||--o{ ORDER : places`, `branch "dev"` becomes `branch dev`,
 `quadrant-1 "A"` becomes `quadrant-1 A`, `x-axis ["a", "b"]` becomes
 `x-axis [a, b]`, `set "A"[Alpha]` becomes `set A["Alpha"]`, `actor "Alice"`
-becomes `actor Alice`, and the other way, `Login(Log in)` becomes
-`Login("Log in")`, `accelerator Market` becomes `accelerator "Market"` and
-`title Sales` becomes `title "Sales"`. Before, the formatter printed the quotes
-as written, because a string can hold what a word without quotes cannot (a
-comma, a line break, a keyword, a space where the diagram type drops it); so one
-name was printed in two forms depending on how its author wrote it, although
-mermaid.js reads both forms the same and its documentation writes each of these
-texts in one of them. The form of a field is the one that its examples use at
-least twice as often as the other (without quotes / in quotes), and the quotes
-stay on every text for which the other form would be read otherwise: a text with
-a comma, a doubled quote, a line break, or a `%%`, a word that is a keyword of
-the diagram type (`"end"`, `"one"`, `"commit"`, `"line"`), a name with a space
-or a `-` where the diagram type does not read it, a text of several words in an
-`xychart`, a string with a directive inside it, and a text that a `#` or a `%`
-follows. The numbers of the examples are:
+becomes `actor Alice`, `a["x y"]` becomes `a[x y]`, and the other way,
+`Login(Log in)` becomes `Login("Log in")`, `accelerator Market` becomes
+`accelerator "Market"` and `title Sales` becomes `title "Sales"`. Before, the
+formatter printed the quotes as written, because a string can hold what a word
+without quotes cannot (a comma, a line break, a keyword, a space where the
+diagram type drops it); so one name was printed in two forms depending on how
+its author wrote it, although mermaid.js reads both forms the same and its
+documentation writes each of these texts in one of them. The form of a field is
+the one that its examples use at least twice as often as the other (without
+quotes / in quotes), and the quotes stay on every text for which the other form
+would be read otherwise: a text with a comma, a doubled quote, a line break, or
+a `%%`, a word that is a keyword of the diagram type (`"end"`, `"one"`,
+`"commit"`, `"line"`), a name with a space or a `-` where the diagram type does
+not read it, a text of several words in an `xychart`, a string with a directive
+inside it, and a text that a `#` or a `%` follows. The numbers of the examples
+are:
 
 - `sankey`: the source of a link 87 / 0, the target 83 / 4, the value 87 / 0.
 - `er`: the name of an entity 39 / 2, the role of a relationship 43 / 2, the
@@ -58,3 +60,8 @@ follows. The numbers of the examples are:
   of an actor between parentheses 1 / 12, of a use case 1 / 27, the title of a
   system boundary with an id 0 / 2, the label of a split association 1 / 3, of a
   note 0 / 1, and the icon of an actor 0 / 2, which go into quotes.
+- `architecture-beta`: the label of a group 6 / 0 and of a service 30 / 0;
+  `mindmap`: the text of a shape 21 / 0; `kanban`: the text of a shape 19 / 0.
+  The names of a `treeView` stay as written: the examples write 58 without
+  quotes and 8 in quotes, but the versions before 11.16.0 read a name in quotes
+  only.
