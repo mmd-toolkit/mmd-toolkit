@@ -40,9 +40,9 @@ mermaid.js は `set` と `union` の重複する宣言をエラーなしに受�
 ```mmd
 %% eslint @mmd-toolkit/venn-no-duplicate-subset: error
 venn-beta
-set A[Alpha]:20
-set B[Beta]
-set A[Gamma]:5
+set A["Alpha"]:20
+set B["Beta"]
+set A["Gamma"]:5
 ```
 
 ```mmd
@@ -50,8 +50,8 @@ set A[Gamma]:5
 venn-beta
 set A
 set B
-union A, B[Shared]
-union B, A[Both]
+union A, B["Shared"]
+union B, A["Both"]
 ```
 
 ```mmd
@@ -69,9 +69,9 @@ set A
 ```mmd
 %% eslint @mmd-toolkit/venn-no-duplicate-subset: error
 venn-beta
-set A[Alpha]:20
-set B[Beta]
-union A, B[Shared]
+set A["Alpha"]:20
+set B["Beta"]
+union A, B["Shared"]
 ```
 
 ```mmd
