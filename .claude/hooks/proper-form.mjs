@@ -49,10 +49,18 @@ function git(cwd, args) {
   })
 }
 
-/** Return the paths of additions relative to the baseline commit. */
+/**
+ * Return the paths of additions relative to the baseline commit: the tracked
+ * ones from the index, the others from the untracked files. The index is
+ * compared, not the work tree, because comparing the work tree reads every
+ * tracked file's metadata (136k files in this repository) and, on a loaded
+ * machine, ran past the hook's timeout. A path registered with `git add -N`
+ * counts only once it is staged.
+ */
 function newPaths(topLevel, head) {
   const added = git(topLevel, [
     "diff",
+    "--cached",
     "--name-status",
     "-z",
     "--diff-filter=A",
