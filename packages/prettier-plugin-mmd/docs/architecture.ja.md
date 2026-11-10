@@ -291,7 +291,7 @@ Db が等しい引用符変更でも、選ばれた kind と原形を失うた�
 
 ```mmd
 architecture-beta
-  service padded["x"]
+  service padded[x]
 ```
 
 ### Label content

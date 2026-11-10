@@ -68,9 +68,9 @@ const cases: readonly MarkdownCase[] = [
   {
     name: "treeview Markdown: carried-indent",
     input: '```mermaid\ntreeView-beta\n"Carry"  \n"Child"\n```\n',
-    output: '```mermaid\ntreeView-beta\n  "Carry"\n    "Child"\n```\n',
+    output: "```mermaid\ntreeView-beta\n  Carry\n    Child\n```\n",
     payloadInput: 'treeView-beta\n"Carry"  \n"Child"',
-    payloadOutput: 'treeView-beta\n  "Carry"\n    "Child"\n',
+    payloadOutput: "treeView-beta\n  Carry\n    Child\n",
     options: {},
   },
   {

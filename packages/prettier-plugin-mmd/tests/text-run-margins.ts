@@ -99,6 +99,7 @@ const textRunPaths: ReadonlyMap<string, ReadonlySet<string>> = new Map([
     "requirement",
     new Set([
       "accDescr",
+      "elements.docRef",
       "elements.type",
       "requirements.classes",
       "requirements.requirementId",

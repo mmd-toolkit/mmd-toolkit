@@ -350,7 +350,7 @@ Output
 kanban
   S
     A[x y]
-    B["x y"]
+    B[x y]
     C["`x y`"]
     D[ "x" ]
 ```

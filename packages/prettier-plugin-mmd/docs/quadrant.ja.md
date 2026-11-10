@@ -527,8 +527,10 @@ mermaid.js の文書の例のとおりに、引用符なしで印字します。
 平易なテキストは、ASCII 英字の単語でできていて、各単語の末尾には数字も使え、
 単語の間は空白 1 つで、
 字句解析器が独立した単位として読む単語を含まないものです。
-`y-axis` の終わりのテキストは、引用符ありとなしの例が同数なので、
-書かれたままにします。
+テキストと同じ行でその後に続く `;` は、改行に置き換えて落とし、
+テキストの引用符は、`;` がない場合と同じに外します。
+`quadrant-1 "A";` は `quadrant-1 A` と印字します。
+[fixture: quotes/texts-before-a-semicolon]
 それ以外の文字列と markdown 文字列は、書かれたまま印字します。
 引用符とテキストを残し、中の空白とタブの連なりは空白 1 つにして印字します。
 mermaid.js は `"L"` と `L`、`"a b"` と `a b` を同じテキストとして読みますが、
@@ -560,7 +562,7 @@ quadrant-2 "Need to promote"
 ```mmd
 quadrantChart
   x-axis Low Reach --> High Reach
-  y-axis Low --> "High"
+  y-axis Low --> High
   quadrant-1 We should expand
   quadrant-2 Need to promote
   Campaign A: [0.3, 0.6]

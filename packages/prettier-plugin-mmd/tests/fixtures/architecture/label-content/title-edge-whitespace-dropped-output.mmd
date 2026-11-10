@@ -1,7 +1,7 @@
 architecture-beta
   group a(cloud)[API]
-  group b(cloud)["x"]
+  group b(cloud)[x]
   group c(cloud)[A B]
   service s(server)[x] in a
-  service t(server)["y"] in b
+  service t(server)[y] in b
   service u(server)[ API %%{init: {}}%% ]

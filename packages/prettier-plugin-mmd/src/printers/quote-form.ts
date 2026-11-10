@@ -5,13 +5,21 @@ import type { KeptLines } from "./kept-lines.ts"
 import { lineEndOf, lineStartOf } from "./kept-lines.ts"
 import { shortestNumber } from "./number-form.ts"
 import { findQuadrantKeptLines } from "./quadrant-kept-lines.ts"
+import { findKanbanKeptLines } from "./kanban-kept-lines.ts"
+import { findMindmapKeptLines } from "./mindmap-kept-lines.ts"
 import { findRequirementKeptLines } from "./requirement-kept-lines.ts"
 import { findSankeyKeptLines } from "./sankey-kept-lines.ts"
 import type { Source } from "./source.ts"
-import { isBracketPadding, isWhitespace } from "./source.ts"
+import {
+  findTriviaAt,
+  isBracketPadding,
+  isSpaceOrTab,
+  isWhitespace,
+} from "./source.ts"
 import { collapseRuns } from "./text-runs.ts"
 import { findUsecaseKeptLines } from "./usecase-kept-lines.ts"
 import { findVennKeptLines } from "./venn-kept-lines.ts"
+import { treeviewBoxCharacters } from "./treeview-characters.ts"
 import { findXychartKeptLines } from "./xychart-kept-lines.ts"
 
 /**
@@ -315,7 +323,7 @@ function gitgraphReference(text: string): string | undefined {
     gitgraphReserved.some(
       (word) => lower.startsWith(word) && !isWordCharacter(lower[word.length]),
     )
-  return !(text[0] >= "0" && text[0] <= "9") &&
+  return (isLetter(text[0]) || text.startsWith("_")) &&
     !startsWithReserved &&
     isWordCharacter(text.at(-1)) &&
     [...text].every(
@@ -566,6 +574,10 @@ const usecaseKeywords: ReadonlySet<string> = new Set([
   "style",
   "true",
   "false",
+  // At the start of a statement, a `:` after them makes a line of an
+  // accessibility title or description.
+  "accTitle",
+  "accDescr",
 ])
 
 /**
@@ -579,9 +591,7 @@ const usecaseKeywordsInAnyCase: ReadonlySet<string> = new Set([
 
 /**
  * The words that a name cannot be at the start of a statement, in any case:
- * the grammar refuses the first four and `skinparam` as the name that starts a
- * statement, and an accessibility title and description are lines, which a `:`
- * after the word would start.
+ * the grammar refuses them as the name that starts a statement.
  */
 const usecaseWordsAtStatementStart: ReadonlySet<string> = new Set([
   "allowmixing",
@@ -589,8 +599,6 @@ const usecaseWordsAtStatementStart: ReadonlySet<string> = new Set([
   "package",
   "rectangle",
   "skinparam",
-  "acctitle",
-  "accdescr",
 ])
 
 /**
@@ -681,14 +689,95 @@ function isNoIcon(node: Node): boolean {
   return !isIcon(node)
 }
 
+/** Whether a text holds a line terminator (LF, CR, U+2028, or U+2029). */
+function holdsLineTerminator(text: string): boolean {
+  return [...text].some((character) => "\n\r\u2028\u2029".includes(character))
+}
+
+/**
+ * The text of a label in square brackets of an architecture diagram that the
+ * lexer reads whole without quotes: none of `[` and `]`, no line break, and no
+ * whitespace at its ends, which the printer drops from a label without quotes
+ * only.
+ */
+function architectureLabel(text: string): string | undefined {
+  return text !== "" &&
+    text.trim() === text &&
+    !text.includes("[") &&
+    !text.includes("]") &&
+    !text.includes("\\'") &&
+    !holdsLineTerminator(text)
+    ? text
+    : undefined
+}
+
+/**
+ * The text of the label of a shape of a mindmap or a kanban board that the
+ * lexer reads whole without quotes: none of `)`, `]`, `(`, and `}`, which end
+ * the text or are read as a closer, no line break, and no whitespace at its
+ * ends.
+ */
+function shapeText(text: string): string | undefined {
+  return text !== "" &&
+    text.trim() === text &&
+    ![...text].some((character) => ")](}".includes(character)) &&
+    !holdsLineTerminator(text)
+    ? text
+    : undefined
+}
+
+/**
+ * A name of a treeView diagram that the lexer reads whole without quotes: ASCII
+ * letters, digits, `_`, `-`, `.`, and `/`, with one space between words,
+ * starting with a letter, a digit, or `_`. The lexer reads `title` in lower case
+ * at the start of a name as the title, and `treeView-beta` as the header. The
+ * characters that start a suffix after a space (`:::`, `icon(`, `##`) are no
+ * part of such a name.
+ */
+function treeviewName(text: string): string | undefined {
+  return text
+    .split(" ")
+    .every(
+      (word) =>
+        word !== "" &&
+        [...word].every(
+          (character) =>
+            isWordCharacter(character) || "-./".includes(character),
+        ),
+    ) &&
+    isWordCharacter(text[0]) &&
+    !text.startsWith("title") &&
+    text !== "treeView-beta"
+    ? text
+    : undefined
+}
+
+/**
+ * Whether a dash stands next to a text in a shape of a mindmap or a kanban
+ * board: the closer `-)` follows only a string, and `(-` opens a shape in which
+ * a text without quotes would be read with it.
+ */
+function nextToDash(before: string, after: string): boolean {
+  return before.endsWith("-") || after.startsWith("-")
+}
+
+/**
+ * Whether the names of a treeView diagram keep their quotes: a name without
+ * quotes goes on over a U+2028 or U+2029, which end no line, and over the
+ * characters that follow it in a diagram drawn with branch characters.
+ */
+function treeviewKeepsQuotes(source: Source): boolean {
+  return [...source.text].some(
+    (character) =>
+      character === "\u2028" ||
+      character === "\u2029" ||
+      treeviewBoxCharacters.includes(character),
+  )
+}
+
 /** Whether a plot of an XY chart is a line. */
 function isLine(node: Node): boolean {
   return (node as Node & { kind?: string }).kind === "line"
-}
-
-/** Whether the axis of an axis statement of a quadrant chart is the x axis. */
-function isXAxis(node: Node): boolean {
-  return (node as Node & { axis?: string }).axis === "x"
 }
 
 /** Whether a link of a Wardley map has an arrow between its names. */
@@ -703,18 +792,31 @@ function hasArrow(node: Node): boolean {
  * (docs/compatibility.md, Spellings that are drawn the same): the three fields
  * of a link of a sankey diagram, the names and the roles of an ER diagram, the
  * names, the values, and the classes of a requirement diagram, the names of a
- * Wardley map, the branches of a gitGraph, the texts of a quadrant chart, and
- * the titles and the categories of an XY chart.
+ * Wardley map, the branches of a gitGraph, the texts of a quadrant chart, the
+ * titles and the categories of an XY chart, the names, the labels, and the
+ * values of a venn diagram, and the names, the labels, and the metadata of a
+ * use case diagram. A field may have several rules, which tell the roles of
+ * the field apart by the node (the name of an actor without an id, the label of
+ * an actor with one).
  */
 const quoteRules: Readonly<
   Record<string, Readonly<Record<string, QuoteRule | readonly QuoteRule[]>>>
 > = {
+  ArchitectureGroupStatement: {
+    title: bare(architectureLabel, { wrapped: ["[", "]"] }),
+  },
+  ArchitectureServiceStatement: {
+    title: bare(architectureLabel, { wrapped: ["[", "]"] }),
+  },
+  KanbanShape: { label: bare(shapeText, { joins: nextToDash }) },
+  MindmapShape: { label: bare(shapeText, { joins: nextToDash }) },
+  TreeviewNode: { name: bare(treeviewName) },
   ErEntityReference: { name: bare(wordWithout(erReserved)) },
   ErEntityStatement: { name: bare(wordWithout(erReserved)) },
   ErRelationshipStatement: { role: bare(wordWithout(erReserved)) },
   ErSubgraphStatement: { id: bare(wordWithout(erReserved)) },
   QuadrantAxisStatement: {
-    end: bare(quadrantLabel, { when: isXAxis }),
+    end: bare(quadrantLabel),
     start: bare(quadrantLabel),
   },
   QuadrantPointStatement: { name: bare(quadrantLabel) },
@@ -845,12 +947,35 @@ const quoteRules: Readonly<
   },
 }
 
+/**
+ * The lines of a treeView diagram that hold a comment or a `;`, which a name
+ * without quotes would take into its text: a directive is taken away before the
+ * text is read, and the `;` of a directive is no such `;`.
+ */
+function findTreeviewKeptLines(source: Source): KeptLines {
+  const lines = new Set<number>()
+  for (const item of source.trivia) {
+    if (item.type === "Comment") lines.add(lineStartOf(source, item.range[0]))
+  }
+  for (let offset = 0; offset < source.text.length; offset++) {
+    if (
+      source.text[offset] === ";" &&
+      findTriviaAt(source, offset)?.type !== "Directive"
+    )
+      lines.add(lineStartOf(source, offset))
+  }
+  return { joined: lines, verbatim: new Set(), ownIndentation: new Set() }
+}
+
 /** The kept lines of the diagram types that have fields in `bareFields`. */
 const keptLinesOf: Readonly<Record<string, (source: Source) => KeptLines>> = {
   er: findErKeptLines,
-  quadrant: findQuadrantKeptLines,
+  kanban: findKanbanKeptLines,
+  mindmap: findMindmapKeptLines,
+  quadrantChart: findQuadrantKeptLines,
   requirement: findRequirementKeptLines,
   sankey: findSankeyKeptLines,
+  treeView: findTreeviewKeptLines,
   usecase: findUsecaseKeptLines,
   venn: findVennKeptLines,
   xychart: findXychartKeptLines,
@@ -917,6 +1042,12 @@ export function findQuoteFormRespellings(
   found: Map<number, { readonly end: number; readonly text: string }>,
   node: Node = source.root,
 ): void {
+  if (
+    node === source.root &&
+    source.root.diagramType === "treeView" &&
+    treeviewKeepsQuotes(source)
+  )
+    return
   const fields = quoteRules[node.type]
   for (const key of visitorKeys[node.type]) {
     const value = (node as unknown as Record<string, unknown>)[key]
@@ -948,9 +1079,7 @@ function respell(
   rule: QuoteRule,
 ): void {
   const { kind } = item as Node & { kind?: string }
-  // A string is a StringLiteral, or a node of the kind `string`.
-  const isString = item.type === "StringLiteral" || kind === "string"
-  if (isString !== (rule.form === "bare") || kind === "markdown") return
+  if (kind === "markdown") return
   if (rule.when?.(node) === false) return
   // The characters around the text, such as the brackets of a label, stay.
   const [open, close] = rule.wrapped ?? ["", ""]
@@ -962,30 +1091,67 @@ function respell(
   )
     return
   const line = lineStartOf(source, start)
-  const written = source.text.slice(start, end)
   const content = (item as Node & { value?: unknown }).value
+  // The spaces, tabs, and no-break spaces next to the brackets are left out of
+  // the text of a label that is printed without quotes, which mermaid.js trims.
+  let written = source.text.slice(start, end)
+  if (rule.wrapped !== undefined && rule.form === "bare") {
+    let from = 0
+    let to = written.length
+    while (from < to && isBracketPadding(written[from])) from++
+    while (to > from && isBracketPadding(written[to - 1])) to--
+    written = written.slice(from, to)
+  }
+  // A string is a StringLiteral, or a node of the kind `string`. A label with
+  // padding before a quote is a text that holds the quotes, but the printer
+  // drops the padding, and then the label is a string.
+  const isString =
+    item.type === "StringLiteral" ||
+    kind === "string" ||
+    (rule.wrapped !== undefined &&
+      rule.form === "bare" &&
+      kind === "text" &&
+      written.length >= 2 &&
+      written.startsWith('"') &&
+      written.endsWith('"') &&
+      !written.slice(1, -1).includes('"'))
+  if (isString !== (rule.form === "bare")) return
   let text = written
   if (isString) {
     // A directive or a comment region inside the string, or a text that
     // follows it, is no part of the content. A string between `'` is the
     // same string, which the printer writes between `"` (Strings between
     // `"`).
-    if (written !== `"${content}"` && written !== `'${content}'`) return
-    text = content as string
+    if (kind === "text") {
+      text = written.slice(1, -1)
+    } else {
+      if (written !== `"${content}"` && written !== `'${content}'`) return
+      text = content as string
+    }
   } else if (typeof content === "string" && written !== content) {
     // A directive or a comment region inside the text is no part of its
     // value.
     return
   }
   const printed = rule.text(text)
-  const after = source.text.slice(end, lineEndOf(source, end)).trimStart()[0]
+  // mermaid.js takes the directives away before it reads the text, so what
+  // follows is the first character after the spaces, tabs, and directives.
+  const lineEnd = lineEndOf(source, end)
+  let next = end
+  for (;;) {
+    while (next < lineEnd && isSpaceOrTab(source.text[next])) next++
+    const directive = findTriviaAt(source, next)
+    if (directive?.type !== "Directive" || directive.range[0] !== next) break
+    next = directive.range[1]
+  }
+  const after = next < lineEnd ? source.text[next] : undefined
   if (
     printed !== undefined &&
     (rule.form === "quoted"
       ? rule.standsAlone === true ||
         (!touchesToken(source, start, true) &&
           !touchesToken(source, end, false))
-      : !"#%;".includes(after ?? "\n") &&
+      : !"#%".includes(after ?? "\n") &&
         !(after === ":" && endsLikeStyleKeyword(printed))) &&
     rule.joins?.(
       source.text.slice(line, start),

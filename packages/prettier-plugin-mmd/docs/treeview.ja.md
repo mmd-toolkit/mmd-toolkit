@@ -50,7 +50,7 @@ Output
 
 ```mmd
 treeView-beta
-  "plain"
+  plain
   ICON(logos:react)
 ```
 
@@ -1146,9 +1146,9 @@ directive 間の space と tab を消します。
 
 ```mmd
 treeView-beta
-  "A"
-  "B"
-  "C"
+  A
+  B
+  C
 ```
 
 [fixture: treeview/branch-prefixes/rounding-half]

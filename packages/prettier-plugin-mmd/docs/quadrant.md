@@ -506,14 +506,16 @@ them where it is plain, as the examples in the documentation of mermaid.js write
 it (see [The quotes of a text](./compatibility.md#the-quotes-of-a-text)):
 `quadrant-1 "A"` is printed `quadrant-1 A`. A text is plain where it is words of
 ASCII letters, ending in digits, with one space between them, and none of the
-words is one that the lexer reads as a unit of its own. The end of the `y-axis`
-stays as written, since the examples write it in quotes as often as without. Any
-other string and a markdown string are printed as written: their quotes and
-their text, with a run of spaces and tabs inside them printed as one space.
-mermaid.js reads `"L"` and `L`, and `"a b"` and `a b`, as the same text, but a
-string can hold what a text without quotes cannot (`"a: b"` has a colon, which a
-text without quotes is rejected for), so the quotes of such a text stay, and a
-quote is never added. [fixture: quotes/strings-runs-collapsed] [fixture:
+words is one that the lexer reads as a unit of its own. A `;` that follows the
+text on its line is dropped with the line break that replaces it, and the text
+loses its quotes as it does without the `;`: `quadrant-1 "A";` is printed
+`quadrant-1 A`. [fixture: quotes/texts-before-a-semicolon] Any other string and
+a markdown string are printed as written: their quotes and their text, with a
+run of spaces and tabs inside them printed as one space. mermaid.js reads `"L"`
+and `L`, and `"a b"` and `a b`, as the same text, but a string can hold what a
+text without quotes cannot (`"a: b"` has a colon, which a text without quotes is
+rejected for), so the quotes of such a text stay, and a quote is never added.
+[fixture: quotes/strings-runs-collapsed] [fixture:
 quotes/plain-texts-without-quotes] [fixture: quotes/texts-that-need-quotes]
 [fixture: quotes/quotes-not-added] [fixture:
 quotes/keywords-and-arrows-in-strings] [fixture: quotes/markdown-strings]
@@ -538,7 +540,7 @@ Output
 ```mmd
 quadrantChart
   x-axis Low Reach --> High Reach
-  y-axis Low --> "High"
+  y-axis Low --> High
   quadrant-1 We should expand
   quadrant-2 Need to promote
   Campaign A: [0.3, 0.6]

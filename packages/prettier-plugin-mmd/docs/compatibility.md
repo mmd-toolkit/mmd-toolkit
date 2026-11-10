@@ -1235,13 +1235,14 @@ and, with the Db only, in the inputs of the conformance corpus:
 | The label of a link                |       19 |                  19 |    170 |     162 |
 | A description block on one line    |        3 |                   3 |    533 |     483 |
 | Quotes of a sankey field           |        6 |                   6 |     11 |      11 |
-| Quotes of an ER name               |        0 |                   0 |     14 |      14 |
+| Quotes of an ER name               |        0 |                   0 |     15 |      15 |
 | Quotes of a requirement name       |        0 |                   0 |     11 |      11 |
-| Quotes of a Wardley map name       |        0 |                   0 |     34 |      34 |
-| Quotes of a gitGraph branch        |        0 |                   0 |     23 |      23 |
-| Quotes of a quadrant text          |        0 |                   0 |     12 |      12 |
+| Quotes of a Wardley map name       |        0 |                   0 |     35 |      35 |
+| Quotes of a gitGraph branch        |        0 |                   0 |      2 |       2 |
+| Quotes of a quadrant text          |        0 |                   0 |     19 |      13 |
 | Quotes of an XY chart text         |        0 |                   0 |    191 |     191 |
-| Quotes of a venn name or label     |        0 |                   0 |    160 |     158 |
+| Quotes of a venn name or label     |        0 |                   0 |    170 |     168 |
+| Quotes of a use case name or label |        0 |                   0 |     93 |      90 |
 
 A corpus pair that is not counted in the last column is a pair of which
 mermaid.js rejects the other spelling, except two pairs of the label of a link,
@@ -1252,9 +1253,11 @@ known divergence `title-digit-after-axis-statement`), and 9 pairs of a
 description block whose Db differs in the whitespace of a title, a description,
 or a style (see
 [Runs of whitespace in a text that are drawn the same](#runs-of-whitespace-in-a-text-that-are-drawn-the-same)
-and [Styles that are drawn the same](#styles-that-are-drawn-the-same)), and 2
-pairs of a venn label whose Db differs in a run of spaces or tabs (see
-[Runs of whitespace in a text that are drawn the same](#runs-of-whitespace-in-a-text-that-are-drawn-the-same)).
+and [Styles that are drawn the same](#styles-that-are-drawn-the-same)), 6 pairs
+of a quadrant chart with a tab inside a text (see the same section), 2 pairs of
+a venn label whose Db differs in a run of spaces or tabs (see
+[Runs of whitespace in a text that are drawn the same](#runs-of-whitespace-in-a-text-that-are-drawn-the-same)),
+and 3 pairs of a use case diagram whose Db differs in the whitespace of a style.
 The printer does not rewrite a range of a packet diagram next to a hidden YAML
 block, a colon that a `;` or the `---` of a hidden YAML block touches, or the
 label of a link with a `%%` in it. When the pinned mermaid.js is updated, the
@@ -1576,19 +1579,20 @@ between the `{` and the text gets the whitespace that the form with the colon of
 the diagram type prints next to a directive, which differs by diagram type:
 `accDescr { %%{init: {}}%% a }` is printed `accDescr: %%{init: {}}%%a` in an
 agentflow, C4, class, ER, flowchart, Gantt, user journey, quadrant, requirement,
-sequence, state, timeline, and XY chart diagram (13 diagram types), and
-`accDescr: %%{init: {}}%% a` in an architecture, cynefin, gitGraph, info,
+sequence, state, swimlane, timeline, and XY chart diagram (14 diagram types),
+and `accDescr: %%{init: {}}%% a` in an architecture, cynefin, gitGraph, info,
 packet, pie, radar, railroad, treemap, treeView, use case, and wardley diagram
 (the other 12); `accDescr %%{init: {}}%% {c}` is printed
-`accDescr %%{init: {}}%%: c` in a flowchart and `accDescr%%{init: {}}%%: c` in
-the others. Each of these is the output of the same text written with the colon.
-[fixture: class/multi-line-values/block-with-directive-before-the-text]
-[fixture: class/multi-line-values/colon-with-directive-before-the-text]
-[fixture: pie/accessibility-lines/block-with-directive-before-the-text]
-[fixture: pie/accessibility-lines/colon-with-directive-before-the-text]
-[fixture: flowchart/accessibility-lines/block-with-directive-before-the-text]
-[fixture: flowchart/accessibility-lines/colon-with-directive-before-the-text]
-[fixture: flowchart/accessibility-lines/block-tight-text] [fixture:
+`accDescr %%{init: {}}%%: c` in a flowchart, an agentflow, and a swimlane
+diagram and `accDescr%%{init: {}}%%: c` in the other 23. Each of these is the
+output of the same text written with the colon. [fixture:
+class/multi-line-values/block-with-directive-before-the-text] [fixture:
+class/multi-line-values/colon-with-directive-before-the-text] [fixture:
+pie/accessibility-lines/block-with-directive-before-the-text] [fixture:
+pie/accessibility-lines/colon-with-directive-before-the-text] [fixture:
+flowchart/accessibility-lines/block-with-directive-before-the-text] [fixture:
+flowchart/accessibility-lines/colon-with-directive-before-the-text] [fixture:
+flowchart/accessibility-lines/block-tight-text] [fixture:
 flowchart/accessibility-lines/block-spaced-text] [fixture:
 flowchart/accessibility-lines/block-left-padding-only] [fixture:
 flowchart/accessibility-lines/block-right-padding-only] [fixture:
@@ -1655,11 +1659,11 @@ block holds, or would not be read as the block is:
   pie/description-blocks/block-inline-leading-lines] [fixture:
   pie/description-blocks/block-columns]
 - The diagram type reads a line with `direction` as the direction of the diagram
-  (a flowchart, agentflow, class, state, ER, requirement, C4, or use case
-  diagram), and the text holds `direction` out of the reach of that rule. The
-  lexer reads a line from its start with `.*direction\s+RL[^\n]*`, and the rule
-  does not reach past a line terminator (LF, CR, U+2028, or U+2029). A block
-  whose text stands after a line terminator that follows the keyword, or
+  (a flowchart, swimlane, agentflow, class, state, ER, requirement, C4, or use
+  case diagram), and the text holds `direction` out of the reach of that rule.
+  The lexer reads a line from its start with `.*direction\s+RL[^\n]*`, and the
+  rule does not reach past a line terminator (LF, CR, U+2028, or U+2029). A
+  block whose text stands after a line terminator that follows the keyword, or
   precedes the `}`, has the description `direction RL`, as has a block whose
   word `direction` a directive splits (mermaid.js removes a directive before it
   reads the line); the form with the colon puts the text on the line of the
@@ -1814,7 +1818,8 @@ of the examples that write each in each form, are:
 | requirement  | the text of a requirement                     |             13 |         3 |
 | requirement  | the type of an element                        |              9 |         1 |
 | requirement  | the docRef of an element                      |              2 |         0 |
-| requirement  | the names of a relationship                   |             14 |         0 |
+| requirement  | the left name of a relationship               |             14 |         0 |
+| requirement  | the right name of a relationship              |             14 |         0 |
 | requirement  | a class, and the names of `style`             |              9 |         0 |
 | Wardley map  | the name of a component                       |             46 |         7 |
 | Wardley map  | the name of an anchor                         |              5 |         0 |
@@ -1823,13 +1828,14 @@ of the examples that write each in each form, are:
 | Wardley map  | the name of a stage of an evolution           |             20 |         0 |
 | Wardley map  | the name of an accelerator or a deaccelerator |              0 |         4 |
 | Wardley map  | the name of a pipeline component              |              0 |         4 |
-| gitGraph     | the name of a branch                          |             85 |         0 |
-| gitGraph     | the branch of a checkout or a switch          |            161 |         0 |
-| gitGraph     | the branch of a merge                         |             50 |         0 |
-| quadrant     | the text of an x-axis                         |              4 |         0 |
-| quadrant     | the start of a y-axis                         |              2 |         0 |
-| quadrant     | the text of a quadrant                        |              8 |         0 |
-| quadrant     | the name of a point                           |              6 |         0 |
+| gitGraph     | the name of a branch                          |             84 |         0 |
+| gitGraph     | the branch of a checkout or a switch          |            160 |         0 |
+| gitGraph     | the branch of a merge                         |             49 |         0 |
+| quadrant     | the text of an x-axis                         |              6 |         0 |
+| quadrant     | the start of a y-axis                         |              3 |         0 |
+| quadrant     | the end of a y-axis                           |              2 |         1 |
+| quadrant     | the text of a quadrant                        |             12 |         0 |
+| quadrant     | the name of a point                           |             12 |         0 |
 | XY chart     | the title of a chart                          |              0 |         8 |
 | XY chart     | the title of an x axis                        |              0 |         2 |
 | XY chart     | the title of a y axis                         |              0 |         8 |
@@ -1841,6 +1847,22 @@ of the examples that write each in each form, are:
 | venn         | the label of a text without targets           |              0 |         6 |
 | venn         | the target of a style                         |              4 |         0 |
 | venn         | the value of a style property                 |              3 |         0 |
+| use case     | the name of an actor                          |             21 |         0 |
+| use case     | the name of a use case                        |              8 |         1 |
+| use case     | the source of a relationship                  |             66 |         0 |
+| use case     | the target of a relationship                  |             66 |         0 |
+| use case     | the name of a system boundary                 |              7 |         2 |
+| use case     | the target of a metadata update               |              4 |         0 |
+| use case     | the key of a metadata property                |             16 |         0 |
+| use case     | the type of an actor, a boundary, an update   |              7 |         0 |
+| use case     | the animation of an edge                      |              2 |         0 |
+| use case     | the label of an actor, between parentheses    |              1 |        12 |
+| use case     | the label of a use case, between parentheses  |              1 |        27 |
+| use case     | the title of a system boundary with an id     |              0 |         2 |
+| use case     | the label of a split association              |              1 |         3 |
+| use case     | the label of a note                           |              0 |         1 |
+| use case     | the icon of an actor                          |              0 |         2 |
+| use case     | the label of a use case, between brackets     |              6 |         0 |
 
 A text is printed without quotes where it is plain: ASCII letters, digits, `_`,
 `-`, and `.`, with spaces between them, and, in a sankey diagram, with spaces at
@@ -1924,8 +1946,7 @@ letters that end in digits, with one space between them, and none of the words
 is `title`, `classDef`, `accTitle`, `accDescr`, or a word that starts with
 `quadrant` (in any case): the lexer reads a letter after a digit or a `_` as the
 start of a word again, so a text with a `-`, a `_`, a digit in the middle of a
-word, or a number at its start stays in quotes. The end of a y axis, which the
-examples write in quotes as often as without, stays as written. [fixture:
+word, or a number at its start stays in quotes. [fixture:
 quadrant/quotes/plain-texts-without-quotes] [fixture:
 quadrant/quotes/texts-that-need-quotes] [fixture: quadrant/points/string-names]
 [fixture: quadrant/axes/strings]
@@ -1974,28 +1995,64 @@ venn/quotes/explicit-text-as-written] [fixture:
 venn/quotes/names-before-a-comment-as-written] [fixture:
 venn/quotes/texts-on-a-kept-line-as-written]
 
-A string that a `#`, a `%`, a `;`, or a `:` follows on its line keeps its quotes
-in every diagram type: a text without quotes can run to the end of the line, and
-then takes that character and what follows into the text, as `b #c` in
-`a - satisfies -> "b" #c`. So does a string on a line that the printer writes as
-it is, such as one with a `;` that the line rule keeps. [fixture:
+In a use case diagram a name that stands alone in quotes is printed without
+quotes where it is ASCII letters, digits, and `_`, since mermaid.js makes its id
+by replacing the other characters with `_`, and none of the words that the lexer
+reads as a unit of its own (`actor`, `systemBoundary`, `end`, `direction`, `TD`,
+`TB`, `BT`, `LR`, `RL`, `note`, `for`, `json`, `classDef`, `class`, `style`,
+`true`, `false`, `accTitle`, and `accDescr` as written; `include`, `extend`,
+`allowmixing`, `newpage`, `package`, `rectangle`, and `skinparam` in any case).
+A label between parentheses, the title of a system boundary, the label of a
+split association, and the label of a note are printed in quotes, except a label
+that starts with a backquote, which a quote and a backquote would make a
+markdown string. A label between square brackets of a use case is printed
+without quotes where it is words of ASCII letters, digits, and `_` with one
+space between them. In the native metadata a key and a scalar are printed
+without quotes where they are a word, but the scalar of `icon`, which is printed
+in quotes. [fixture: usecase/quotes/names-without-quotes] [fixture:
+usecase/quotes/names-that-need-quotes] [fixture:
+usecase/quotes/labels-in-quotes] [fixture: usecase/quotes/labels-as-written]
+[fixture: usecase/quotes/square-bracket-labels] [fixture:
+usecase/quotes/metadata] [fixture: usecase/quotes/touching-units] [fixture:
+usecase/quotes/texts-on-a-kept-line-as-written]
+
+A string that a `#` or a `%` follows on its line keeps its quotes in every
+diagram type: a text without quotes can run to the end of the line, and then
+takes that character and what follows into the text, as `b #c` in
+`a - satisfies -> "b" #c`. So does a string that a `:` follows when the text
+ends with `style` or `classDef`, in any case, since the line rule of mermaid.js
+reads such a line (see [Lines that hold a `;`](#lines-that-hold-a-)). A `;` that
+follows the string is no such character: the printer drops a `;` that separates
+statements, and the quotes go with it as they go without it (`quadrant-1 "A";`
+is printed `quadrant-1 A`). A string on a line that the printer writes as it is,
+such as one with a `;` that the line rule keeps, keeps its quotes. [fixture:
 requirement/comments/after-string-name] [fixture:
 requirement/comments/after-keyword-and-string-values] [fixture:
-requirement/multi-line-statements/class-last-line-semicolon-kept]
+requirement/multi-line-statements/class-last-line-semicolon-kept] [fixture:
+quadrant/quotes/texts-that-need-quotes] [fixture:
+quadrant/quotes/texts-before-a-semicolon]
 
-mermaid.js 12.3.0 read both forms of the inputs of the conformance corpus whose
-quotes the printer changes, with the same Db: 11 inputs of sankey diagrams, 14
-of ER diagrams, 11 of requirement diagrams, 34 of Wardley maps, 23 of gitGraphs,
-12 of quadrant charts, 191 of XY charts, and 158 of venn diagrams (the 2 others
-differ in a run of spaces or tabs in a label, which the printer also changes).
-It read both forms of the 6 sankey examples that were written again with every
-plain field in quotes, with the same Db and the same SVG, and the 14 ER inputs,
+The inputs of the conformance corpus that are counted for a diagram type are
+those that mermaid.js accepts, that no declared divergence makes it read
+otherwise than the specification does, and whose formatted text changes when the
+table `quoteRules` of `src/printers/quote-form.ts` is empty. mermaid.js 12.3.0
+read both forms of these inputs with the same Db: 11 inputs of sankey diagrams,
+15 of ER diagrams, 11 of requirement diagrams, 35 of Wardley maps, 2 of
+gitGraphs, 13 of the 19 quadrant charts (the other 6 hold a tab inside a text,
+which the printer also changes), 191 of XY charts, 168 of the 170 venn diagrams
+(the 2 others differ in a run of spaces or tabs in a label, which the printer
+also changes), and 90 of the 93 use case diagrams (the 3 others differ in the
+whitespace of a style, which
+[Styles that are drawn the same](#styles-that-are-drawn-the-same) defines). It
+read both forms of the 6 sankey examples that were written again with every
+plain field in quotes, with the same Db and the same SVG, and drew the same SVG
+from the input and the formatted text of the 11 sankey inputs, the 15 ER inputs,
 8 of the 11 requirement inputs (the other 3 are drawn by mermaid.js in neither
-form), the 34 Wardley inputs, the 23 gitGraph inputs (with their numbers, commit
-ids, and element ids taken away), the 12 quadrant inputs, 74 of the 191 XY chart
-inputs (the other 117 have no plot, and mermaid.js draws no chart without one,
-in either form), and 153 of the 160 venn inputs (the other 7 are drawn in
-neither form) were drawn the same as their formatted text.
+form), the 35 Wardley inputs, the 2 gitGraph inputs, the 19 quadrant inputs, 73
+of the 191 XY chart inputs (the other 118 have no plot, and mermaid.js draws no
+chart without one, in either form), and 163 of the 170 venn inputs (the other 7
+are drawn in neither form), and the 93 use case inputs (once the whitespace of
+one style was taken away).
 
 ### Versions of mermaid.js
 
@@ -2050,6 +2107,12 @@ mermaid.js, show which form each version reads:
   them. Their lexers read `title`, `x-axis`, `y-axis`, `line`, and `bar` in any
   case, where no letter, digit, or `_` follows, and `vertical` and `horizontal`
   wherever they start.
+- The names, the labels, and the metadata of a use case diagram: the lexer, the
+  parser, the visitor, and the model builder of 12.0.0, the first release with
+  the diagram type, 12.1.0, 12.2.0, and 12.3.0 are the same files. The visitor
+  makes the id of a name in quotes with the characters other than an ASCII
+  letter, a digit, and `_` replaced by `_`, and the id of a name without quotes
+  from the name itself.
 - The names, the labels, and the values of a venn diagram: the grammars of
   11.13.0, the first with the diagram type, 12.0.0, and 12.3.0 are the same, and
   so is the `vennDB.ts` of each. A name in quotes and the same name without them
@@ -2510,7 +2573,13 @@ flowchart/lex-direction-line-acc-title-column-zero] [corpus fixture:
 flowchart/lex-direction-line-acc-title-indented] Such a line that is not a
 direction statement is kept as written, with its indentation. [fixture:
 flowchart/indentation/direction-text-kept] [fixture:
-flowchart/indentation/direction-text-with-directive-kept] See
+flowchart/indentation/direction-text-with-directive-kept] mermaid.js takes the
+directives away before the lexer reads the text, so a `direction` that a
+directive splits (`accDescr: direc%%{init: {}}%%tion RL`) is a direction text as
+well, in a description in a block or after a colon, in a title, after a `;`, and
+inside a subgraph, in a flowchart and in a swimlane diagram. [fixture:
+flowchart/indentation/direction-text-split-by-a-directive-kept] [fixture:
+flowchart/indentation/swimlane-direction-text-split-by-a-directive-kept] See
 [Indentation](./flowchart.md#indentation).
 
 Flowchart bodies use the shared significant indentation minimum, at least one

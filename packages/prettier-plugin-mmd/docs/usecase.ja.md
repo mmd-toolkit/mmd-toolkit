@@ -164,8 +164,9 @@ ER の[実体](./er.ja.md#実体)を再利用します。
 ラベルの外側の ASCII 空白を除き、actor の項目はコンマと空白で区切ります。
 一つの `actor` キーワードの下にある別々の actor の出現を見える形にするためです。
 stereotype の隙間は、[class に揃えた規則](#stereotypes)に従います。
-明示 id、引用だけの名前、楕円と長方形の綴り、ラベルの種類、接尾辞の順序、
+明示 id、楕円と長方形の綴り、markdown ラベル、接尾辞の順序、
 宣言と参照のすべての出現を保ちます。
+名前とラベルは、例で使われている形で印字します（[Quotes](#quotes) を参照）。
 生成 id や解決後の actor を、書かれた端点の代わりにはしません。
 境界内の metadata 形式は宣言、最上位の形式は更新のままです。
 別名や形を作らず、書かれた構文を見える形にします。
@@ -189,12 +190,10 @@ usecase-beta
 
 ### Labels
 
-C4 の[引数の形](./c4.ja.md#引数の形)と同じく、裸、一重引用、二重引用、
-markdown のラベルは種類と内部の文字を保ちます。
-空の引用値も残します。
-通常の引用と裸の文字列で Db が等しくても、
-作者の形式を保つことで不要な書き換えを避けます。
-markdown はラベルの種類も変えます。
+C4 の[引数の形](./c4.ja.md#引数の形)を再利用します。
+markdown はラベルの種類を変えるため、markdown ラベルは種類を保ちます。
+どのラベルも、空の引用値を含め、内部の文字を保ちます。
+通常のラベルは、例で使われている形で印字します（[Quotes](#quotes) を参照）。
 裸のラベルを構成する単位の外側にある ASCII の水平空白だけを除きます。
 内部の空白、Unicode の余白、バックスラッシュ、entity、HTML は保ちます。
 `'` で囲まれた文字列は、テキストに `'`、`"`、バックスラッシュ、改行、U+2028、
@@ -223,6 +222,94 @@ usecase-beta
   B(" single  text ")
   C(" double  text ")
   D("` markdown  text `")
+```
+
+### Quotes
+
+名前、ラベル、native metadata の語は、
+mermaid.js の文書の例で使われている形で印字します。
+（[テキストの引用符](./compatibility.ja.md#テキストの引用符)）。
+mermaid.js は、単独で引用符に囲まれた名前の、ASCII の英字、数字、
+`_` 以外の各文字を `_` に置き換えて id を作ります。
+（[the id of a name in quotes](https://github.com/mermaid-js/mermaid/blob/2086904e76c692331e34a45d7cc3bc30860d040e/packages/mermaid/src/diagrams/usecase/parser/usecase.visitor.ts#L197-L221)、
+[the function](https://github.com/mermaid-js/mermaid/blob/2086904e76c692331e34a45d7cc3bc30860d040e/packages/mermaid/src/diagrams/usecase/parser/usecase.visitor.ts#L876-L878)）。
+そのため、`actor "Alice"` の id とラベルは、`actor Alice` と同じ `Alice` です。
+
+単独で引用符に囲まれた名前（`actor "Alice"` の actor、
+`"Login" --> "Logout"` の use case、systemBoundary、metadata 更新の対象）は、
+ASCII の英字、数字、`_` からなり、
+字句解析器が独立した単位として読む次の語のいずれでもない場合に、
+引用符なしで印字します。
+`actor`、`systemBoundary`、`end`、`direction`、`TD`、`TB`、`BT`、`LR`、`RL`、
+`note`、`for`、`json`、`classDef`、`class`、`style`、`true`、`false`、
+`accTitle`、`accDescr` は、この綴りが対象です。
+文の先頭の `accTitle` または `accDescr` の後ろに `:` があると、
+accessibility のタイトルまたは説明の行になります。
+`include` と `extend` は、大文字小文字を問いません。
+`allowmixing`、`newpage`、`package`、`rectangle`、`skinparam` は、
+文法が文の先頭の名前として拒否する語であり、大文字小文字を問いません。
+したがって、`"Alice"`、`"1a"`、`"td"`、`"Package2"` は引用符を外し、`"a b"`、
+`"a-b"`、`"日本語"`、`"actor"`、`"Extend"`、`"TD"`、`"package"`、
+`"accTitle"` は引用符を保ちます。 [fixture: quotes/names-without-quotes]
+[fixture: quotes/names-that-need-quotes]
+
+actor または use case の丸括弧内のラベル、id がある systemBoundary のタイトル、
+分割した association のラベル、note のラベルは、引用符で囲んで印字します。
+`actor Bob(Display B)` は `actor Bob("Display B")`、
+`A -- likes --> B` は `A -- "likes" --> B`、
+`note for A text` は `note for A "text"` と印字します。
+バッククォートで始まるラベルは、
+引用符とバッククォートが markdown 文字列を開始するため、書かれたままにします。
+use case の角括弧内のラベルは、ASCII の英字、数字、
+`_` からなる語が空白 1 つずつで区切られている場合に、引用符なしで印字します。
+`Panel["Display"]` は `Panel[Display]` と印字し、
+`Dash["a-b"]` と `Num["Costs 19.95"]` はそのままにします。
+[fixture: quotes/labels-in-quotes] [fixture: quotes/labels-as-written]
+[fixture: quotes/square-bracket-labels]
+
+native metadata では、引用符に囲まれたキーと、
+`icon` 以外のプロパティのスカラーは、そのような語であれば、
+引用符なしで印字します。
+`"type": "hollow"` は `type: hollow` と印字します。
+`icon` のスカラーは、そのような語であれば、引用符で囲んで印字します。
+`icon: user` は `icon: "user"` と印字します。
+`"fa:user"` のような、語ではないスカラーはそのままにします。
+[fixture: quotes/metadata]
+
+原文で単位に接している名前やラベルも、印字でその間に空白か区切りを置くため、
+同じように印字します。
+`A--important-->B` は `A -- "important" --> B`、
+`actor A@{icon:1}` は `actor A@{ icon: "1" }` と印字します。
+`;` を含む行など、行を書かれたままにする場合は、名前やラベルもその形を保ちます。
+[fixture: quotes/touching-units]
+[fixture: quotes/texts-on-a-kept-line-as-written]
+
+入力
+([quotes/names-without-quotes-input.mmd](../tests/fixtures/usecase/quotes/names-without-quotes-input.mmd)):
+
+```mmd
+usecase-beta
+actor "Alice", "Bob_2"
+"Login" --> "Logout"
+systemBoundary "Sys"
+  "Inner"
+end
+"Alice"@{ icon: "user" }
+Alice --> Inner
+```
+
+出力
+([quotes/names-without-quotes-output.mmd](../tests/fixtures/usecase/quotes/names-without-quotes-output.mmd)):
+
+```mmd
+usecase-beta
+  actor Alice, Bob_2
+  Login --> Logout
+  systemBoundary Sys
+    Inner
+  end
+  Alice@{ icon: "user" }
+  Alice --> Inner
 ```
 
 ### Stereotypes
@@ -295,18 +382,18 @@ usecase-beta
 flowchart の [subgraph のヘッダー](./flowchart.ja.md#subgraph-のヘッダー)
 の見出しの形を再利用します。
 タイトルの開き `[` または `(` は id に接します。
-`systemBoundary S [t]` は `systemBoundary S[t]` に、
-`systemBoundary S (t)` は `systemBoundary S(t)` になります。
+`systemBoundary S [t]` は `systemBoundary S["t"]` に、
+`systemBoundary S (t)` は `systemBoundary S("t")` になります。
 mermaid.js は、空白のある書き方も接する書き方も同じ境界として読みます。
 括弧の内側の空白とタブは落とします。
 mermaid.js がそれらを trim するからです（no-break space は trim
 しないので残ります）。
-`systemBoundary S[ x ]` は `systemBoundary S[x]` に、
+`systemBoundary S[ x ]` は `systemBoundary S["x"]` に、
 `S("x" )` は `S("x")` になります。
 [fixture: system-boundaries/boundary-title-padding-dropped]
 [fixture: system-boundaries/boundary-title-opener-touches-id]
 タイトルの端にディレクティブがあれば、隙間に空白を置かないので、
-括弧とタイトルに接します（`S[ %%{x}%% T ]` は `S[%%{x}%%T]` になります）。
+括弧とタイトルに接します（`S[ %%{x}%% T ]` は `S[%%{x}%%"T"]` になります）。
 保つ `;` のある行でも空白は落とします。
 ただし、[Statements and semicolons](#statements-and-semicolons)のとおり、
 行の規則が読む範囲は除きます。
@@ -438,8 +525,9 @@ flowchart
 の[辺のラベルの書き方](./flowchart.ja.md#辺のラベルの書き方)を保つ考え方と、
 辺 id を詰める配置を再利用します。
 分割ラベルの外側は空白 1 個とし、明示 id は `@` と開始側の矢印に接して置きます。
-usecase が許す矢印の半分、書かれたラベルの種類、空の引用ラベル、
+usecase が許す矢印の半分、markdown ラベル、空の引用ラベル、
 actor の開始キーワード、二つの端点の出現を保ちます。
+通常のラベルは、引用符で囲んで印字します（[Quotes](#quotes) を参照）。
 明示 id は、後の metadata、class、style の対象のままです。
 パイプや class 風のコロンラベルは別の文法であり、
 連鎖を有効な関係へ分割することもしません。
@@ -471,9 +559,9 @@ native metadata は解析と検証を行う構文です。
 構造の空白だけを整え、対象と `@{` は詰め、プロパティのコロンの前は詰め、
 後は空白 1 個、同じ行のコンマの後と波括弧の内側も空白 1 個にします。
 空の場合は `@{ }` です。
-キーと値の綴り、引用の種類、整数風の文字列、真偽値、順序、重複、独立した更新、
-区切り、末尾コンマを保ちます。
-綴り、順序、重複は、
+整数風の文字列、真偽値、順序、重複、独立した更新、区切り、末尾コンマを保ちます。
+キーとスカラーの引用符は、[Quotes](#quotes) のとおりに印字します。
+順序と重複は、
 最終的な形状を変えたり競合で拒否されたりする場合があるため保ちます。
 `U@{icon:'x',icon:''}` を `icon: '', icon: 'x'` の順にすると最終的な icon
 が変わり、真偽値が必要な位置の `business: "true"` は拒否されます。
@@ -759,7 +847,8 @@ usecase-beta
 ### Notes
 
 `note for <target> <label>` の各部分の間を通常の空白 1 個にします。
-対象、書かれた裸、通常引用、markdown、空のラベル、および note の順序を保ちます。
+対象、markdown または空のラベル、および note の順序を保ちます。
+通常のラベルは、引用符で囲んで印字します（[Quotes](#quotes) を参照）。
 class の[トークンの間の空白](./class.ja.md#トークンの間の空白)と同じ、
 値の原文と読みやすいキーワード間隔を保つ理由です。
 前方参照の解決で id、位置、宣言を作りません。

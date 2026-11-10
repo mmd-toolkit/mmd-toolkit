@@ -289,7 +289,7 @@ Output
 
 ```mmd
 architecture-beta
-  service padded["x"]
+  service padded[x]
 ```
 
 ### Label content

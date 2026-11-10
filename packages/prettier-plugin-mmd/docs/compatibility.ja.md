@@ -1318,24 +1318,25 @@ mermaid.js は Db から描くので、同じ Db が同じ描画の根拠です�
 そのテキストを 2 回描いてもすでに異なる対は数えませんでした。
 以下の種類は、例と、Db だけを比べる適合性コーパスの入力で比較しました。
 
-| 種類                           |  例 | 同じ Db と描画 | コーパス | 同じ Db |
-| ------------------------------ | --: | -------------: | -------: | ------: |
-| ER 図の関係                    |   4 |              4 |       66 |      66 |
-| C4 の `Rel_Up` など            |   1 |              1 |        7 |       7 |
-| EBNF 記法の `::=`              |   9 |              9 |       91 |      91 |
-| 両端が同じ packet の範囲       |   2 |              2 |      133 |     131 |
-| ヘッダーのコロン（除去）       |   6 |              6 |      646 |     643 |
-| ヘッダーのコロン（改行）       |   0 |              0 |       22 |      21 |
-| リンクのラベル                 |  19 |             19 |      170 |     162 |
-| 1 行の説明ブロック             |   3 |              3 |      533 |     483 |
-| sankey の欄の引用符            |   6 |              6 |       11 |      11 |
-| ER の名前の引用符              |   0 |              0 |       14 |      14 |
-| requirement の名前の引用符     |   0 |              0 |       11 |      11 |
-| Wardley マップの名前の引用符   |   0 |              0 |       34 |      34 |
-| gitGraph のブランチの引用符    |   0 |              0 |       23 |      23 |
-| 象限チャートのテキストの引用符 |   0 |              0 |       12 |      12 |
-| XY チャートのテキストの引用符  |   0 |              0 |      191 |     191 |
-| Venn の名前やラベルの引用符    |   0 |              0 |      160 |     158 |
+| 種類                            |  例 | 同じ Db と描画 | コーパス | 同じ Db |
+| ------------------------------- | --: | -------------: | -------: | ------: |
+| ER 図の関係                     |   4 |              4 |       66 |      66 |
+| C4 の `Rel_Up` など             |   1 |              1 |        7 |       7 |
+| EBNF 記法の `::=`               |   9 |              9 |       91 |      91 |
+| 両端が同じ packet の範囲        |   2 |              2 |      133 |     131 |
+| ヘッダーのコロン（除去）        |   6 |              6 |      646 |     643 |
+| ヘッダーのコロン（改行）        |   0 |              0 |       22 |      21 |
+| リンクのラベル                  |  19 |             19 |      170 |     162 |
+| 1 行の説明ブロック              |   3 |              3 |      533 |     483 |
+| sankey の欄の引用符             |   6 |              6 |       11 |      11 |
+| ER の名前の引用符               |   0 |              0 |       15 |      15 |
+| requirement の名前の引用符      |   0 |              0 |       11 |      11 |
+| Wardley マップの名前の引用符    |   0 |              0 |       35 |      35 |
+| gitGraph のブランチの引用符     |   0 |              0 |        2 |       2 |
+| 象限チャートのテキストの引用符  |   0 |              0 |       19 |      13 |
+| XY チャートのテキストの引用符   |   0 |              0 |      191 |     191 |
+| Venn の名前やラベルの引用符     |   0 |              0 |      170 |     168 |
+| use case の名前やラベルの引用符 |   0 |              0 |       93 |      90 |
 
 最後の列に数えないコーパスの対は、mermaid.js が別の綴りを拒否する対です。
 ただし、リンクのラベルの 2 対は例外で、ラベルに `%%` があり、Db が異なります。
@@ -1346,8 +1347,10 @@ XY チャートの 4 対も、
 説明ブロックの 9 対は、タイトル、説明、スタイルの空白で Db が異なります。
 [同じに描かれるテキスト中の空白の連なり](#同じに描かれるテキスト中の空白の連なり)
 と、[同じに描かれるスタイル](#同じに描かれるスタイル)を参照してください。
+象限チャートの 6 対は、テキスト内にタブがあります（同じ節を参照してください）。
 Venn のラベルの 2 対も、空白やタブの連なりで Db が異なります。
 （[同じに描かれるテキスト中の空白の連なり](#同じに描かれるテキスト中の空白の連なり)）。
+use case 図の 3 対は、スタイルの空白で Db が異なります。
 印字は、hidden YAML ブロックに隣接する packet 図の範囲、
 `;` や hidden YAML ブロックの `---` が接するコロン、
 `%%` を含むリンクのラベルを書き換えません。
@@ -1691,13 +1694,14 @@ U+FEFF、U+2028、U+2029）を含んでよく、本文の空白とタブの連�
 その図種のコロンの形がディレクティブの隣に印字する空白を置きます。
 この空白は図種によって異なります。
 `accDescr { %%{init: {}}%% a }` は、agentflow、C4、class、ER、flowchart、Gantt、
-ユーザージャーニー、quadrant、requirement、sequence、state、timeline、
-XY チャートの図（13 図種）では、`accDescr: %%{init: {}}%%a` と印字し、
+ユーザージャーニー、quadrant、requirement、sequence、state、swimlane、timeline、
+XY チャートの図（14 図種）では、`accDescr: %%{init: {}}%%a` と印字し、
 architecture、cynefin、gitGraph、info、packet、pie、radar、railroad、treemap、
 treeView、ユースケース、wardley の図（残りの 12 図種）では、
 `accDescr: %%{init: {}}%% a` と印字します。
-`accDescr %%{init: {}}%% {c}` は、flowchart では `accDescr %%{init: {}}%%: c`、
-ほかの図種では `accDescr%%{init: {}}%%: c` と印字します。
+`accDescr %%{init: {}}%% {c}` は、flowchart、agentflow、swimlane の図では、
+`accDescr %%{init: {}}%%: c`、
+ほかの 23 図種では `accDescr%%{init: {}}%%: c` と印字します。
 どれも、同じ本文をコロンの形で書いた場合の出力です。
 [fixture: class/multi-line-values/block-with-directive-before-the-text]
 [fixture: class/multi-line-values/colon-with-directive-before-the-text]
@@ -1772,8 +1776,8 @@ C4 図で空のブロックの後にあるブロック `accDescr {}accDescr {D}`
   [fixture: er/accessibility-statements/block-lines-kept]
   [fixture: pie/description-blocks/block-inline-leading-lines]
   [fixture: pie/description-blocks/block-columns]
-- `direction` を含む行を図の方向として読む図種（flowchart、agentflow、class、
-  state、ER、requirement、C4、ユースケースの図）で、
+- `direction` を含む行を図の方向として読む図種（flowchart、swimlane、agentflow、
+  class、state、ER、requirement、C4、ユースケースの図）で、
   本文の `direction` にその規則が届かない場合です。
   字句解析器は、行の先頭から `.*direction\s+RL[^\n]*` で行を読み、
   この規則は行終端（LF、CR、U+2028、U+2029）を越えては届きません。
@@ -1921,49 +1925,67 @@ sankey 図のリンクの source は、`"a b",c,1` と `a b,c,1` で同じ id �
 両方の形で同じに読むテキストはその形で印字し、ほかは書かれたまま残します。
 対象の欄と、各欄をそれぞれの形で書く例の数は、以下のとおりです。
 
-| 図種           | 欄                                  | 引用符なし | 引用符あり |
-| -------------- | ----------------------------------- | ---------: | ---------: |
-| sankey         | リンクの source                     |         87 |          0 |
-| sankey         | リンクの target                     |         83 |          4 |
-| sankey         | リンクの値（値の形に従う）          |         87 |          0 |
-| ER             | 実体の名前                          |         39 |          2 |
-| ER             | 関係の役割                          |         43 |          2 |
-| ER             | 関係の左の名前                      |         45 |          0 |
-| ER             | 関係の右の名前                      |         45 |          0 |
-| ER             | subgraph の id                      |         11 |          1 |
-| requirement    | requirement の名前                  |         15 |          1 |
-| requirement    | element の名前                      |         10 |          0 |
-| requirement    | requirement の id                   |         16 |          0 |
-| requirement    | requirement の text                 |         13 |          3 |
-| requirement    | element の type                     |          9 |          1 |
-| requirement    | element の docRef                   |          2 |          0 |
-| requirement    | 関係の名前                          |         14 |          0 |
-| requirement    | クラスと `style` の名前             |          9 |          0 |
-| Wardley マップ | component の名前                    |         46 |          7 |
-| Wardley マップ | anchor の名前                       |          5 |          0 |
-| Wardley マップ | リンクの名前                        |         50 |         12 |
-| Wardley マップ | evolve と pipeline の名前           |          5 |          2 |
-| Wardley マップ | evolution の stage の名前           |         20 |          0 |
-| Wardley マップ | accelerator と deaccelerator の名前 |          0 |          4 |
-| Wardley マップ | pipeline の component の名前        |          0 |          4 |
-| gitGraph       | ブランチの名前                      |         85 |          0 |
-| gitGraph       | checkout または switch のブランチ   |        161 |          0 |
-| gitGraph       | merge のブランチ                    |         50 |          0 |
-| quadrant       | x 軸のテキスト                      |          4 |          0 |
-| quadrant       | y 軸の始まり                        |          2 |          0 |
-| quadrant       | 象限のテキスト                      |          8 |          0 |
-| quadrant       | 点の名前                            |          6 |          0 |
-| XY チャート    | チャートのタイトル                  |          0 |          8 |
-| XY チャート    | x 軸のタイトル                      |          0 |          2 |
-| XY チャート    | y 軸のタイトル                      |          0 |          8 |
-| XY チャート    | line のタイトル                     |          0 |          3 |
-| XY チャート    | 分類                                |         38 |         17 |
-| Venn           | 集合の一覧にある集合の名前          |         50 |          0 |
-| Venn           | 集合または union のラベル           |          0 |         22 |
-| Venn           | 対象のない text の id               |          6 |          0 |
-| Venn           | 対象のない text のラベル            |          0 |          6 |
-| Venn           | style の対象                        |          4 |          0 |
-| Venn           | style のプロパティの値              |          3 |          0 |
+| 図種           | 欄                                   | 引用符なし | 引用符あり |
+| -------------- | ------------------------------------ | ---------: | ---------: |
+| sankey         | リンクの source                      |         87 |          0 |
+| sankey         | リンクの target                      |         83 |          4 |
+| sankey         | リンクの値（値の形に従う）           |         87 |          0 |
+| ER             | 実体の名前                           |         39 |          2 |
+| ER             | 関係の役割                           |         43 |          2 |
+| ER             | 関係の左の名前                       |         45 |          0 |
+| ER             | 関係の右の名前                       |         45 |          0 |
+| ER             | subgraph の id                       |         11 |          1 |
+| requirement    | requirement の名前                   |         15 |          1 |
+| requirement    | element の名前                       |         10 |          0 |
+| requirement    | requirement の id                    |         16 |          0 |
+| requirement    | requirement の text                  |         13 |          3 |
+| requirement    | element の type                      |          9 |          1 |
+| requirement    | element の docRef                    |          2 |          0 |
+| requirement    | 関係の左の名前                       |         14 |          0 |
+| requirement    | 関係の右の名前                       |         14 |          0 |
+| requirement    | クラスと `style` の名前              |          9 |          0 |
+| Wardley マップ | component の名前                     |         46 |          7 |
+| Wardley マップ | anchor の名前                        |          5 |          0 |
+| Wardley マップ | リンクの名前                         |         50 |         12 |
+| Wardley マップ | evolve と pipeline の名前            |          5 |          2 |
+| Wardley マップ | evolution の stage の名前            |         20 |          0 |
+| Wardley マップ | accelerator と deaccelerator の名前  |          0 |          4 |
+| Wardley マップ | pipeline の component の名前         |          0 |          4 |
+| gitGraph       | ブランチの名前                       |         84 |          0 |
+| gitGraph       | checkout または switch のブランチ    |        160 |          0 |
+| gitGraph       | merge のブランチ                     |         49 |          0 |
+| quadrant       | x 軸のテキスト                       |          6 |          0 |
+| quadrant       | y 軸の始まり                         |          3 |          0 |
+| quadrant       | y 軸の終わり                         |          2 |          1 |
+| quadrant       | 象限のテキスト                       |         12 |          0 |
+| quadrant       | 点の名前                             |         12 |          0 |
+| XY チャート    | チャートのタイトル                   |          0 |          8 |
+| XY チャート    | x 軸のタイトル                       |          0 |          2 |
+| XY チャート    | y 軸のタイトル                       |          0 |          8 |
+| XY チャート    | line のタイトル                      |          0 |          3 |
+| XY チャート    | 分類                                 |         38 |         17 |
+| Venn           | 集合の一覧にある集合の名前           |         50 |          0 |
+| Venn           | 集合または union のラベル            |          0 |         22 |
+| Venn           | 対象のない text の id                |          6 |          0 |
+| Venn           | 対象のない text のラベル             |          0 |          6 |
+| Venn           | style の対象                         |          4 |          0 |
+| Venn           | style のプロパティの値               |          3 |          0 |
+| use case       | actor の名前                         |         21 |          0 |
+| use case       | use case の名前                      |          8 |          1 |
+| use case       | 関係の source                        |         66 |          0 |
+| use case       | 関係の target                        |         66 |          0 |
+| use case       | system boundary の名前               |          7 |          2 |
+| use case       | metadata 更新の対象                  |          4 |          0 |
+| use case       | metadata のプロパティのキー          |         16 |          0 |
+| use case       | actor、境界、更新の type             |          7 |          0 |
+| use case       | エッジの animation                   |          2 |          0 |
+| use case       | 丸括弧内の actor のラベル            |          1 |         12 |
+| use case       | 丸括弧内の use case のラベル         |          1 |         27 |
+| use case       | id のある system boundary のタイトル |          0 |          2 |
+| use case       | 分割した association のラベル        |          1 |          3 |
+| use case       | note のラベル                        |          0 |          1 |
+| use case       | actor の icon                        |          0 |          2 |
+| use case       | 角括弧内の use case のラベル         |          6 |          0 |
 
 テキストが平易なら、引用符なしで印字します。
 平易なテキストは、ASCII の英字、数字、`_`、`-`、`.` と、それらの間の空白です。
@@ -2062,8 +2084,7 @@ gitGraph では、ASCII の英字、数字、`_` と、その間の `-`、`.`、
 大文字小文字は問いません。
 字句解析器は、数字や `_` の後の英字を再び単語の始まりとして読むので、`-`、`_`、
 単語の途中の数字や、先頭の数を含むテキストは、引用符で囲んだまま残します。
-y 軸の終わりは、例が引用符ありとなしで同じ回数だけ書くので、
-書かれたまま残します。 [fixture: quadrant/quotes/plain-texts-without-quotes]
+[fixture: quadrant/quotes/plain-texts-without-quotes]
 [fixture: quadrant/quotes/texts-that-need-quotes]
 [fixture: quadrant/points/string-names] [fixture: quadrant/axes/strings]
 
@@ -2122,32 +2143,75 @@ mermaid.js が引用符の有無によらず除くので、印字でも除きま
 [fixture: venn/quotes/names-before-a-comment-as-written]
 [fixture: venn/quotes/texts-on-a-kept-line-as-written]
 
-同じ行で `#`、`%`、`;`、`:` が後に続く文字列は、どの図種でも引用符を残します。
+use case 図では、単独で引用符に囲まれた名前が ASCII の英字、数字、`_` からなり、
+字句解析器が独立した単位として読む以下の語のいずれでもない場合に、
+引用符なしで印字します。
+mermaid.js は、ほかの文字を `_` に置き換えて id を作るためです。
+`actor`、`systemBoundary`、`end`、`direction`、`TD`、`TB`、`BT`、`LR`、`RL`、
+`note`、`for`、`json`、`classDef`、`class`、`style`、`true`、`false`、
+`accTitle`、`accDescr` は、書かれた大文字小文字で判定します。
+`include`、`extend`、`allowmixing`、`newpage`、`package`、`rectangle`、
+`skinparam` は、大文字小文字を問いません。
+丸括弧内のラベル、system boundary のタイトル、分割した association のラベル、
+note のラベルは、引用符で囲んで印字します。
+ただし、バッククォートで始まるラベルは例外です。
+引用符とバッククォートで markdown 文字列になるためです。
+use case の角括弧内のラベルは、ASCII の英字、数字、`_` からなる語を、
+空白 1 つで区切った形なら、引用符なしで印字します。
+native metadata のキーとスカラーは、1 語なら引用符なしで印字します。
+ただし、`icon` のスカラーは引用符で囲んで印字します。
+[fixture: usecase/quotes/names-without-quotes]
+[fixture: usecase/quotes/names-that-need-quotes]
+[fixture: usecase/quotes/labels-in-quotes]
+[fixture: usecase/quotes/labels-as-written]
+[fixture: usecase/quotes/square-bracket-labels]
+[fixture: usecase/quotes/metadata] [fixture: usecase/quotes/touching-units]
+[fixture: usecase/quotes/texts-on-a-kept-line-as-written]
+
+同じ行で `#` か `%` が後に続く文字列は、どの図種でも引用符を残します。
 引用符のないテキストは行末まで続くことがあり、
 `a - satisfies -> "b" #c` の `b #c` のように、
 その文字と後続の部分を取り込みます。
-行の規則が残す `;` がある行など、印字が書かれたまま残す行の文字列も同じです。
-[fixture: requirement/comments/after-string-name]
+テキストが大文字小文字を問わず `style` か `classDef` で終わり、
+後ろに `:` が続く文字列も同じです。
+mermaid.js の行の規則がそのような行を読むためです。
+（[`;` を含む行](#-を含む行)）。
+文字列の後に続く `;` は、そのような文字ではありません。
+印字は文を区切る `;` を除き、引用符も、`;` がない場合と同じように除きます。
+`quadrant-1 "A";` は `quadrant-1 A` と印字します。
+行の規則が残す `;` がある行など、印字が書かれたまま残す行の文字列は、
+引用符を残します。 [fixture: requirement/comments/after-string-name]
 [fixture: requirement/comments/after-keyword-and-string-values]
 [fixture: requirement/multi-line-statements/class-last-line-semicolon-kept]
+[fixture: quadrant/quotes/texts-that-need-quotes]
+[fixture: quadrant/quotes/texts-before-a-semicolon]
 
-mermaid.js 12.3.0 は、印字が引用符を変える適合性コーパスの入力を両方の形で読み、
-Db は同じでした。
-入力は sankey 図が 11 個、ER 図が 14 個、requirement 図が 11 個、
-Wardley マップが 34 個、gitGraph が 23 個、象限チャートが 12 個、
-XY チャートが 191 個、Venn 図が 158 個です。
-Venn の残りの 2 個は、ラベルの空白やタブの連なりで Db が異なり、
+各図種で数える適合性コーパスの入力は、mermaid.js が受理し、
+宣言された相違によって仕様と異なる読みにならず、
+`src/printers/quote-form.ts` の表 `quoteRules` を空にすると、
+整形後のテキストが変わるものです。
+mermaid.js 12.3.0 は、これらの入力を両方の形で読み、Db は同じでした。
+入力は sankey 図が 11 個、ER 図が 15 個、requirement 図が 11 個、
+Wardley マップが 35 個、gitGraph が 2 個、象限チャートが 19 個のうち 13 個、
+XY チャートが 191 個、Venn 図が 170 個のうち 168 個、
+use case 図が 93 個のうち 90 個です。
+象限チャートの残りの 6 個はテキスト内にタブがあり、印字はこのタブも変えます。
+Venn の残りの 2 個はラベルの空白やタブの連なりで異なり、
 印字はこの連なりも変えます。
+use case の残りの 3 個はスタイルの空白で異なります。
+（[同じに描かれるスタイル](#同じに描かれるスタイル)）。
 平易な欄をすべて引用符で囲む形でも書き直した sankey の 6 つの例も、
 両方の形で読み、Db と SVG は同じでした。
-ER の 14 個、requirement の 11 個のうち 8 個、Wardley の 34 個、
-gitGraph の 23 個、象限チャートの 12 個、XY チャートの 191 個のうち 74 個、
-Venn の 160 個のうち 153 個の入力も、整形後のテキストと同じに描かれました。
+sankey の 11 個、ER の 15 個、requirement の 11 個のうち 8 個、
+Wardley の 35 個、gitGraph の 2 個、象限チャートの 19 個、
+XY チャートの 191 個のうち 73 個、Venn の 170 個のうち 163 個の入力も、
+整形後のテキストと同じ SVG が描かれました。
 requirement の残りの 3 個は、mermaid.js がどちらの形でも描きません。
-gitGraph の比較では、数、コミット id、要素の id を除いています。
-XY チャートの残りの 117 個はプロットがなく、
+XY チャートの残りの 118 個はプロットがなく、
 mermaid.js はどちらの形でもプロットのないチャートを描きません。
 Venn の残りの 7 個は、どちらの形でも描かれません。
+use case の 93 個の入力も、1 つのスタイルの空白を除くと、
+整形後のテキストと同じ SVG が描かれました。
 
 ### mermaid.js の版
 
@@ -2202,6 +2266,12 @@ Venn の残りの 7 個は、どちらの形でも描かれません。
   これらの字句解析器は、`title`、`x-axis`、`y-axis`、`line`、`bar` を、
   後ろに英字、数字、`_` がない場合に、大文字小文字を問わず読み、
   `vertical` と `horizontal` は、どこで始まる場合も読みます。
+- use case 図の名前、ラベル、metadata: この図種が初めて加わった 12.0.0 と、
+  12.1.0、12.2.0、12.3.0 の字句解析器、パーサー、visitor、model builder は、
+  同じファイルです。
+  visitor は、引用符で囲まれた名前の id を、ASCII の英字、数字、
+  `_` 以外の文字を、`_` に置き換えて作り、引用符のない名前の id は、
+  名前自体から作ります。
 - Venn 図の名前、ラベル、値: この図種が初めて加わった 11.13.0、12.0.0、
   12.3.0 の文法は同じで、各版の `vennDB.ts` も同じです。
   引用符で囲む名前と、同じ名前を引用符なしで書いたものは、
@@ -2681,6 +2751,13 @@ mermaid.js は、行の中で単位が始まる最初の位置で、
 方向の文ではないそうした行は、字下げも含めて書かれたまま残します。
 [fixture: flowchart/indentation/direction-text-kept]
 [fixture: flowchart/indentation/direction-text-with-directive-kept]
+mermaid.js は字句解析器がテキストを読む前にディレクティブを除くので、
+ディレクティブが分割する
+`direction`（`accDescr: direc%%{init: {}}%%tion RL`）も、方向のテキストです。
+flowchart と swimlane の図の、ブロック内かコロンの後の説明、タイトル、`;` の後、
+サブグラフ内でも同じです。
+[fixture: flowchart/indentation/direction-text-split-by-a-directive-kept]
+[fixture: flowchart/indentation/swimlane-direction-text-split-by-a-directive-kept]
 [字下げ](./flowchart.ja.md#字下げ)を参照してください。
 
 flowchart本文は共有の意味を持つ字下げの下限を使い、

@@ -1,5 +1,6 @@
 import type { Respelling } from "../src/printers/spelling.ts"
 import { findRespellings } from "../src/printers/spelling.ts"
+import { diagramTextRules } from "../src/printers/index.ts"
 import { createSource } from "../src/printers/source.ts"
 import { treeviewBoxCharacters } from "../src/printers/treeview-characters.ts"
 /**
@@ -401,7 +402,13 @@ export function writtenTextKeptUpToSeparators(
     // the output (docs/compatibility.md, Spellings that are drawn the same).
     const respellings =
       side === 0
-        ? findRespellings(createSource(text, root))
+        ? findRespellings(
+            createSource(
+              text,
+              root,
+              diagramTextRules[root.body.type]?.keepsCommentLines,
+            ),
+          )
         : new Map<number, Respelling>()
     const structural: Range[] = []
     // Only authored outer box forms may be redrawn. Value-owned box text,

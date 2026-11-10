@@ -49,7 +49,7 @@ Output
 
 ```mmd
 treeView-beta
-  "plain"
+  plain
   ICON(logos:react)
 ```
 
@@ -1164,9 +1164,9 @@ Output
 
 ```mmd
 treeView-beta
-  "A"
-  "B"
-  "C"
+  A
+  B
+  C
 ```
 
 [fixture: treeview/branch-prefixes/rounding-half]

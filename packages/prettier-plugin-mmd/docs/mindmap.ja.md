@@ -401,9 +401,9 @@ mindmap
 mindmap
   root
     a[x y]
-    b["x y"]
+    b[x y]
     c[ "x" ]
-    d["x"]
+    d[x]
 ```
 
 ### 複数行のテキスト
