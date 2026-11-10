@@ -3784,32 +3784,32 @@ const vennExamples: readonly (readonly [string, string, string])[] = [
   [
     "U+2028 inside the brackets of a venn label",
     "venn-beta\nset A[ T\u2028]\n",
-    "venn-beta\nset A[T\u2028]\n",
+    'venn-beta\nset A["T\u2028"]\n',
   ],
   [
     "U+2029 inside the brackets of a venn label",
     "venn-beta\nset A[ T\u2029]\n",
-    "venn-beta\nset A[T\u2029]\n",
+    'venn-beta\nset A["T\u2029"]\n',
   ],
   [
     "venn: crlf-values",
     'venn-beta\r\nset "A\r\n B"[L\r\n M]\r\nstyle A fill:rgb(1,\r\n 2,3)\r\n',
-    'venn-beta\nset "A\n B"[L\n M]\nstyle A fill:rgb(1,\n 2,3)\n',
+    'venn-beta\nset "A\n B"["L\n M"]\nstyle A fill:rgb(1,\n 2,3)\n',
   ],
   [
     "venn: cr-values",
     'venn-beta\rset "A\r B"[L\r M]\rstyle A fill:rgb(1,\r 2,3)\r',
-    'venn-beta\nset "A\n B"[L\n M]\nstyle A fill:rgb(1,\n 2,3)\n',
+    'venn-beta\nset "A\n B"["L\n M"]\nstyle A fill:rgb(1,\n 2,3)\n',
   ],
   [
     "venn: ls-values",
     'venn-beta\nset "A\u2028 B"[L\u2028 M]\nstyle A fill:rgb(1,\u2028 2,3)',
-    'venn-beta\nset "A\u2028 B"[L\u2028 M]\nstyle A fill:rgb(1,\u2028 2,3)\n',
+    'venn-beta\nset "A\u2028 B"["L\u2028 M"]\nstyle A fill:rgb(1,\u2028 2,3)\n',
   ],
   [
     "venn: ps-values",
     'venn-beta\nset "A\u2029 B"[L\u2029 M]\nstyle A fill:rgba(1,\u2029 2,3,.5)',
-    'venn-beta\nset "A\u2029 B"[L\u2029 M]\nstyle A fill:rgba(1,\u2029 2,3,.5)\n',
+    'venn-beta\nset "A\u2029 B"["L\u2029 M"]\nstyle A fill:rgba(1,\u2029 2,3,.5)\n',
   ],
   [
     "venn: ls-comment-kept",
@@ -3845,7 +3845,7 @@ const vennExamples: readonly (readonly [string, string, string])[] = [
   [
     "venn: nbsp-value-kept",
     'venn-beta\nset " A\u00a0B "[ L\u00a0M ]\nstyle A fill:rgb(1,\u00a02,3)',
-    'venn-beta\nset " A\u00a0B "[L\u00a0M]\nstyle A fill:rgb(1,\u00a02,3)\n',
+    'venn-beta\nset " A\u00a0B "["L\u00a0M"]\nstyle A fill:rgb(1,\u00a02,3)\n',
   ],
   ["venn: ff-title-separator", "venn-beta\ntitle\fT", "venn-beta\ntitle T\n"],
   [
@@ -3856,7 +3856,7 @@ const vennExamples: readonly (readonly [string, string, string])[] = [
   [
     "venn: vt-value-kept",
     'venn-beta\nset "A\u000bB"[L\fM]',
-    'venn-beta\nset "A\u000bB"[L\fM]\n',
+    'venn-beta\nset "A\u000bB"["L\fM"]\n',
   ],
   [
     "venn: nbsp-title-separator",
@@ -3896,7 +3896,7 @@ const vennExamples: readonly (readonly [string, string, string])[] = [
   [
     "venn: unicode-role-whitespace",
     '\u3000venn-beta\nset "A\ufeffB"[L\u3000M]\ntext A "x\u2028y"\nstyle A fill:"a\u2029b"',
-    'venn-beta\nset "A\ufeffB"[L\u3000M]\ntext A "x\u2028y"\nstyle A fill:"a\u2029b"\n',
+    'venn-beta\nset "A\ufeffB"["L\u3000M"]\ntext A "x\u2028y"\nstyle A fill:"a\u2029b"\n',
   ],
   [
     "venn: ls-kept-overlapping-value",

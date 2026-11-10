@@ -464,7 +464,7 @@ Output
 ```mmd
 info
   accTitle%%{wrap}%%: Access
-  accDescr %%{wrap}%%{ D }
+  accDescr%%{wrap}%%: D
 ```
 
 ### Semicolons

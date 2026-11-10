@@ -29,7 +29,7 @@ const diagrams: readonly (readonly [string, readonly string[], string])[] = [
       "%%{init: {",
       "}}%%",
     ],
-    'venn-beta\nset "A\n B"[L\n M]\ntext A "id\n next"\nstyle A fill:"red\n blue", stroke:rgb(1,\n 2,3)\nset C\n  text item\n  %% c\n  %%{init: {\n}}%%\n',
+    'venn-beta\nset "A\n B"["L\n M"]\ntext A "id\n next"\nstyle A fill:"red\n blue", stroke:rgb(1,\n 2,3)\nset C\n  text item\n  %% c\n  %%{init: {\n}}%%\n',
   ],
   [
     "c4",
@@ -252,6 +252,6 @@ describe("configured Venn line endings", () => {
         "diagram.mmd",
         { endOfLine: "cr" },
       ),
-    ).toBe('venn-beta\rset "A\r B"[L\r M]\r  text item\r')
+    ).toBe('venn-beta\rset "A\r B"[\"L\r M\"]\r  text item\r')
   })
 })

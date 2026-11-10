@@ -1327,7 +1327,7 @@ mermaid.js は Db から描くので、同じ Db が同じ描画の根拠です�
 | ヘッダーのコロン（除去）       |   6 |              6 |      646 |     643 |
 | ヘッダーのコロン（改行）       |   0 |              0 |       22 |      21 |
 | リンクのラベル                 |  19 |             19 |      170 |     162 |
-| 1 行の説明ブロック             |   3 |              3 |      521 |     471 |
+| 1 行の説明ブロック             |   3 |              3 |      533 |     483 |
 | sankey の欄の引用符            |   6 |              6 |       11 |      11 |
 | ER の名前の引用符              |   0 |              0 |       14 |      14 |
 | requirement の名前の引用符     |   0 |              0 |       11 |      11 |
@@ -1335,6 +1335,7 @@ mermaid.js は Db から描くので、同じ Db が同じ描画の根拠です�
 | gitGraph のブランチの引用符    |   0 |              0 |       23 |      23 |
 | 象限チャートのテキストの引用符 |   0 |              0 |       12 |      12 |
 | XY チャートのテキストの引用符  |   0 |              0 |      191 |     191 |
+| Venn の名前やラベルの引用符    |   0 |              0 |      160 |     158 |
 
 最後の列に数えないコーパスの対は、mermaid.js が別の綴りを拒否する対です。
 ただし、リンクのラベルの 2 対は例外で、ラベルに `%%` があり、Db が異なります。
@@ -1345,6 +1346,8 @@ XY チャートの 4 対も、
 説明ブロックの 9 対は、タイトル、説明、スタイルの空白で Db が異なります。
 [同じに描かれるテキスト中の空白の連なり](#同じに描かれるテキスト中の空白の連なり)
 と、[同じに描かれるスタイル](#同じに描かれるスタイル)を参照してください。
+Venn のラベルの 2 対も、空白やタブの連なりで Db が異なります。
+（[同じに描かれるテキスト中の空白の連なり](#同じに描かれるテキスト中の空白の連なり)）。
 印字は、hidden YAML ブロックに隣接する packet 図の範囲、
 `;` や hidden YAML ブロックの `---` が接するコロン、
 `%%` を含むリンクのラベルを書き換えません。
@@ -1679,9 +1682,29 @@ mermaid.js は、`accDescr {text}` と `accDescr: text` を、
 U+FEFF、U+2028、U+2029）を含んでよく、本文の空白とタブの連なりは、
 [同じに描かれるテキスト中の空白の連なり](#同じに描かれるテキスト中の空白の連なり)
 の規則で印字します。
+ディレクティブはその位置に残し、ブロックは、
+同じ本文をコロンの形で書いた場合と同じに印字します。
 本文の後の、波かっこの内側か `}` の後にあるディレクティブと、
-同じ行で文の前にあるディレクティブは、その位置に残し、
-原文で直前に空白がある場合は、その前に空白を 1 つ置きます。
+同じ行で文の前にあるディレクティブは、原文で直前に空白がある場合は、
+その前に空白を 1 つ置きます。
+`{` の前か `{` と本文の間のディレクティブには、
+その図種のコロンの形がディレクティブの隣に印字する空白を置きます。
+この空白は図種によって異なります。
+`accDescr { %%{init: {}}%% a }` は、agentflow、C4、class、ER、flowchart、Gantt、
+ユーザージャーニー、quadrant、requirement、sequence、state、timeline、
+XY チャートの図（13 図種）では、`accDescr: %%{init: {}}%%a` と印字し、
+architecture、cynefin、gitGraph、info、packet、pie、radar、railroad、treemap、
+treeView、ユースケース、wardley の図（残りの 12 図種）では、
+`accDescr: %%{init: {}}%% a` と印字します。
+`accDescr %%{init: {}}%% {c}` は、flowchart では `accDescr %%{init: {}}%%: c`、
+ほかの図種では `accDescr%%{init: {}}%%: c` と印字します。
+どれも、同じ本文をコロンの形で書いた場合の出力です。
+[fixture: class/multi-line-values/block-with-directive-before-the-text]
+[fixture: class/multi-line-values/colon-with-directive-before-the-text]
+[fixture: pie/accessibility-lines/block-with-directive-before-the-text]
+[fixture: pie/accessibility-lines/colon-with-directive-before-the-text]
+[fixture: flowchart/accessibility-lines/block-with-directive-before-the-text]
+[fixture: flowchart/accessibility-lines/colon-with-directive-before-the-text]
 [fixture: flowchart/accessibility-lines/block-tight-text]
 [fixture: flowchart/accessibility-lines/block-spaced-text]
 [fixture: flowchart/accessibility-lines/block-left-padding-only]
@@ -1717,6 +1740,10 @@ U+FEFF、U+2028、U+2029）を含んでよく、本文の空白とタブの連�
 
 後の箇条書きで述べるとおり、コロンの形の本文を `%%` の前で終える図種では、
 `}` の後のコメントは本文の後に残します。
+同じ行でブロックの後に続く文は、その行が文を同じ行に保つ行でなければ、
+ほかの文と同じく独立した行に移します。
+`accDescr { %%{init: {}}%% a } A` は、
+`accDescr: %%{init: {}}%%a` と `A` の 2 行になります。
 文を同じ行に保つ行のブロックは、その行の最後の文で、後ろに空白、コメント、
 ディレクティブだけが続く場合に、コロンの形で印字します。
 `A --> B; accDescr {a;b}` は `A --> B; accDescr: a;b` になり、
@@ -1731,6 +1758,11 @@ C4 図で空のブロックの後にあるブロック `accDescr {}accDescr {D}`
 [fixture: treeview/modes/ordinary-block]
 [fixture: treeview/modes/box-common-block-zero-column]
 [fixture: treeview/description-blocks/box-redraw-remove-opener-prefixes]
+[fixture: flowchart/accessibility-lines/block-with-directive-before-the-text-then-statement]
+[fixture: usecase/direction-and-accessibility/block-text-on-its-own-line-runs-collapsed]
+[fixture: treeview/description-blocks/block-text-on-its-own-line-runs-collapsed]
+[fixture: usecase/direction-and-accessibility/block-directive-line-after-the-text]
+[test: accessibility blocks: pie brace-after-ls-direction-converted]
 
 コロンの形ではブロックの内容を保てないか、ブロックと同じに読まれない場合は、
 ブロックを書かれたまま残します。
@@ -1740,32 +1772,46 @@ C4 図で空のブロックの後にあるブロック `accDescr {}accDescr {D}`
   [fixture: er/accessibility-statements/block-lines-kept]
   [fixture: pie/description-blocks/block-inline-leading-lines]
   [fixture: pie/description-blocks/block-columns]
-- 本文が独立した行にあり（`{` の後か `}` の前に改行があり）、
-  `direction` を含む場合です。
-  行を読む字句解析器は、そのような行を方向の行として読みます。
-  class 図と state 図では、`accDescr {`、`direction RL`、
-  `}` のブロックの説明は、`direction RL` ですが、
-  `accDescr: direction RL` は方向を設定し、説明は空になり、
-  C4 図は `accDescr: direction RL` を拒否します。
-  flowchart、ER 図、requirement 図では、`accDescr: direction RL` は、
-  行頭では説明ですが、行を字下げすると方向の行になり、
-  印字は本文の文を字下げします。
+- `direction` を含む行を図の方向として読む図種（flowchart、agentflow、class、
+  state、ER、requirement、C4、ユースケースの図）で、
+  本文の `direction` にその規則が届かない場合です。
+  字句解析器は、行の先頭から `.*direction\s+RL[^\n]*` で行を読み、
+  この規則は行終端（LF、CR、U+2028、U+2029）を越えては届きません。
+  キーワードの後か `}` の前に行終端があるブロックも、
+  語 `direction` がディレクティブで分割されているブロックも、
+  説明は `direction RL` です（mermaid.js
+  は行を読む前にディレクティブを除きます）。
+  コロンの形は、本文をキーワードの行に置きます。
+  class 図、state 図、C4 図では、この規則が `accDescr` より前にあるため、
+  `accDescr: direction RL` は方向を設定し、説明が空になるか、
+  C4 図では拒否されます。
+  flowchart、agentflow 図、ER 図、requirement 図では、
+  この規則が `accDescr` より後にあるため、
+  `accDescr: direction RL` は行頭では説明で、
+  行を字下げすると方向の行になります。
+  印字は、本文の文を字下げします。
   [fixture: class/multi-line-values/block-direction-on-its-own-line-kept]
+  [fixture: class/multi-line-values/block-brace-on-the-next-line-direction-kept]
   [fixture: state/multi-line-values/block-direction-on-its-own-line-kept]
+  [fixture: state/multi-line-values/block-on-a-line-with-a-semicolon-brace-on-the-next-line-direction-kept]
   [fixture: c4/description-blocks/acc-block-direction-keep]
+  [fixture: c4/description-blocks/block-after-an-empty-block-brace-on-the-next-line-direction-kept]
+  [fixture: er/accessibility-statements/block-direction-split-by-a-directive-kept]
   [fixture: requirement/accessibility-statements/first-column-kept]
-- `{` の前か、`{` と本文の間に、コメントかディレクティブがある場合です。
-  コロンの形では、ディレクティブに隣接する空白を図種ごとの規則で印字します。
-  `accDescr: %%{init: {}}%% a` は、flowchart と class 図では、
-  `accDescr: %%{init: {}}%%a` と印字し、円グラフでは空白を保ちます。
-  `accDescr:%%{init: {}}%%a` は、flowchart ではそのままにし、
-  円グラフではコロンの後に空白を置きます。
-  `accDescr %%{init: {}}%%: a` は、
-  flowchart ではディレクティブの前の空白を保ち、円グラフでは除きます。
-  変換には、図種ごとのディレクティブの規則に従う必要がありますが、
-  印字はそうしないため、ブロックをそのまま残します。
-  [fixture: flowchart/accessibility-lines/block-text-beside-directive]
-  [fixture: journey/empty-description-blocks/with-directive-or-comment-line-kept]
+  [fixture: requirement/accessibility-statements/block-brace-on-the-next-line-direction-kept]
+  [test: accessibility blocks: class brace-after-ls-direction-kept]
+  [test: accessibility blocks: class text-between-ls-direction-kept]
+  [test: accessibility blocks: er text-between-ps-direction-kept]
+  [test: accessibility blocks: requirement brace-after-ps-direction-kept]
+- `{` の前か `{` と本文の間にディレクティブがあり、
+  ブロックが複数行にまたがるか、文を同じ行に保つ行で後ろに別の文が続く場合です。
+  [`;` を含む行](#-を含む行)を参照してください。
+  C4 でブロックが空のブロックの隣にある行も、そのような行です。
+  このようなブロックをコロンの形で印字するのは、ブロックが 1 行にあり、
+  その行が文を同じ行に保つ行でない場合だけです。
+  それ以外ではブロックの形で印字し、2 回目の整形でも変わりません。
+  [fixture: flowchart/accessibility-lines/block-with-directive-before-the-text-over-lines]
+  [fixture: flowchart/accessibility-lines/block-with-directive-before-the-text-on-a-kept-line]
 - agentflow、C4、Gantt、ユーザージャーニー、quadrant、requirement、sequence、
   state、timeline、XY チャートの図で、
   同じ行の `}` の後にコメントがある場合です。
@@ -1774,7 +1820,7 @@ C4 図で空のブロックの後にあるブロック `accDescr {}accDescr {D}`
   ブロック `accDescr {a} %% c` の説明は `a` です。
   コロンの形の本文を `%%` の前で終える図種（後述）では、
   両方の形の説明が `a` になり、ブロックをコロンの形で印字します。
-  class、ER、flowchart、ユースケースの図は、
+  class、ER、flowchart、swimlane、ユースケースの図は、
   後ろにコメントがあるブロックを拒否します。
   [fixture: sequence/multi-line-values/block-then-comment-kept]
   [fixture: pie/description-blocks/block-then-comment]
@@ -1811,6 +1857,10 @@ C4 図で空のブロックの後にあるブロック `accDescr {}accDescr {D}`
   [fixture: pie/description-blocks/block-text-with-percent-kept]
   [fixture: flowchart/accessibility-lines/block-text-with-percent]
   [test: pie/line-terminators-and-unicode/unicode-values]
+- state 図で、ブロックに U+2028 か U+2029 がある場合です。
+  state 図は、どちらかを含む行を書かれたまま印字します。
+  （[行区切り文字を含む state の行](#行区切り文字を含む-state-の行)）。
+  [test: accessibility blocks: state text-with-ls-kept]
 - イベントモデリング図か、ishikawa 図の場合です。
   イベントモデリング図は、
   [Description blocks](./eventmodeling.ja.md#description-blocks)のとおり、
@@ -1842,8 +1892,8 @@ railroad 図は描画せず、Db だけを比べました。
 受理される例を 1 つずつ使い、ブロックとコロンの形を挿入して見つけました。
 ほとんどの図種では 3 つの例を使いました。
 本文にノーブレークスペース、U+3000、垂直タブ、改ページ、U+FEFF、U+2028（単独）、
-U+2029（単独）、タブ、空白の連なり、`;` を含む場合と、
-本文の中にディレクティブがある場合は、25 図種すべてで Db が同じでした。
+U+2029（単独）、タブ、空白の連なり、`;` を含む場合と、本文の中、`{` の前、
+`{` と本文の間にディレクティブがある場合は、25 図種すべてで Db が同じでした。
 本文が独立した行にある場合も、class 図、state 図、C4 図の `direction` と、
 `%%` で始まる行を除き、25 図種すべてで同じでした。
 11 図種は `%%` で始まる行をコメントとして読むため、
@@ -1851,15 +1901,15 @@ U+2029（単独）、タブ、空白の連なり、`;` を含む場合と、
 `}` の後にコメントを置くと、10 図種で Db が異なり、
 本文を `%%` の前で終える 11 図種ではすべて同じで、
 4 図種では mermaid.js が拒否しました。
-適合性コーパスでは、521 個の fixture の 532 個のブロックを、
+適合性コーパスでは、533 個の fixture の 544 個のブロックを、
 コロンの形で印字します。
-471 個では mermaid.js の Db が同じで、41 個は mermaid.js が拒否する入力で、
+483 個では mermaid.js の Db が同じで、41 個は mermaid.js が拒否する入力で、
 9 個はタイトル、説明、スタイルの空白が異なります。
 この違いは、
 [同じに描かれるテキスト中の空白の連なり](#同じに描かれるテキスト中の空白の連なり)
 と、[同じに描かれるスタイル](#同じに描かれるスタイル)の節で定めています。
-整形ツールの fixture のうち、整形で変わる 62 対を描画し、
-mermaid.js が描画する 56 対では SVG が同じでした。
+整形ツールの fixture のうち、整形で変わる 71 対を描画し、
+mermaid.js が描画する 68 対では SVG が同じでした。
 
 ### テキストの引用符
 
@@ -1908,6 +1958,12 @@ sankey 図のリンクの source は、`"a b",c,1` と `a b,c,1` で同じ id �
 | XY チャート    | y 軸のタイトル                      |          0 |          8 |
 | XY チャート    | line のタイトル                     |          0 |          3 |
 | XY チャート    | 分類                                |         38 |         17 |
+| Venn           | 集合の一覧にある集合の名前          |         50 |          0 |
+| Venn           | 集合または union のラベル           |          0 |         22 |
+| Venn           | 対象のない text の id               |          6 |          0 |
+| Venn           | 対象のない text のラベル            |          0 |          6 |
+| Venn           | style の対象                        |          4 |          0 |
+| Venn           | style のプロパティの値              |          3 |          0 |
 
 テキストが平易なら、引用符なしで印字します。
 平易なテキストは、ASCII の英字、数字、`_`、`-`、`.` と、それらの間の空白です。
@@ -2035,6 +2091,37 @@ bar のタイトルは例にないので書かれたまま残し、
 [fixture: xychart/quotes/texts-on-a-kept-line-as-written]
 [fixture: xychart/text-units/hyphen-and-number-touching-kept]
 
+Venn 図では、ASCII の英字、数字、`_`、`-` からなり、英字か `_` で始まる名前を、
+字句解析器が独立した単位として読む以下の語で始まらず、`title` でもない場合に、
+引用符なしで印字します。
+独立した単位として読む語の判定では、大文字小文字を問わず、その後の文字が英字、
+数字、`_` のいずれでもないことを求めます。
+語は `venn-beta`、`set`、`union`、`text`、`style` です。
+`-` はそのような文字なので、`set-a` は `set` で始まります。
+`title` は、同じ行の後にテキストが続くとタイトルを始めます。
+そのため、`"A"` と `"xset"` の引用符は除き、`"set"`、`"set-a"`、`"title"`、
+`"a b"`、`"1a"`、`"007"` は引用符を残します。
+style のプロパティの値は、そのような名前、数、
+`#` と 3 桁から 8 桁の十六進数字からなる色を空白 1 つで区切った形なら、
+引用符なしで印字します。
+mermaid.js はそのような値の語を空白 1 つでつなぐので、
+`"red  blue"` は引用符を外すと同じではなく、`"1a"` は数と名前として読まれます。
+ラベルは、括弧の間のテキストを引用符で囲んで印字します。
+ただし、括弧に接する空白、タブ、ノーブレークスペースは、
+mermaid.js が引用符の有無によらず除くので、印字でも除きます。
+空白だけのラベル（Db にはラベルがなく、`[" "]` には空のラベルがあります）、
+`%%` を含むラベル、内部にディレクティブやコメントがあるラベルは、
+書かれたまま残します。
+対象のある text は、例にないので書かれたまま残します。
+[fixture: venn/quotes/names-without-quotes]
+[fixture: venn/quotes/names-that-need-quotes]
+[fixture: venn/quotes/style-values-without-quotes]
+[fixture: venn/quotes/labels-in-quotes]
+[fixture: venn/quotes/labels-that-stay-as-written]
+[fixture: venn/quotes/explicit-text-as-written]
+[fixture: venn/quotes/names-before-a-comment-as-written]
+[fixture: venn/quotes/texts-on-a-kept-line-as-written]
+
 同じ行で `#`、`%`、`;`、`:` が後に続く文字列は、どの図種でも引用符を残します。
 引用符のないテキストは行末まで続くことがあり、
 `a - satisfies -> "b" #c` の `b #c` のように、
@@ -2048,16 +2135,19 @@ mermaid.js 12.3.0 は、印字が引用符を変える適合性コーパスの�
 Db は同じでした。
 入力は sankey 図が 11 個、ER 図が 14 個、requirement 図が 11 個、
 Wardley マップが 34 個、gitGraph が 23 個、象限チャートが 12 個、
-XY チャートが 191 個です。
+XY チャートが 191 個、Venn 図が 158 個です。
+Venn の残りの 2 個は、ラベルの空白やタブの連なりで Db が異なり、
+印字はこの連なりも変えます。
 平易な欄をすべて引用符で囲む形でも書き直した sankey の 6 つの例も、
 両方の形で読み、Db と SVG は同じでした。
 ER の 14 個、requirement の 11 個のうち 8 個、Wardley の 34 個、
-gitGraph の 23 個、象限チャートの 12 個、
-XY チャートの 191 個のうち 74 個の入力も、整形後のテキストと同じに描かれました。
+gitGraph の 23 個、象限チャートの 12 個、XY チャートの 191 個のうち 74 個、
+Venn の 160 個のうち 153 個の入力も、整形後のテキストと同じに描かれました。
 requirement の残りの 3 個は、mermaid.js がどちらの形でも描きません。
 gitGraph の比較では、数、コミット id、要素の id を除いています。
 XY チャートの残りの 117 個はプロットがなく、
 mermaid.js はどちらの形でもプロットのないチャートを描きません。
+Venn の残りの 7 個は、どちらの形でも描かれません。
 
 ### mermaid.js の版
 
@@ -2112,6 +2202,15 @@ mermaid.js はどちらの形でもプロットのないチャートを描きま
   これらの字句解析器は、`title`、`x-axis`、`y-axis`、`line`、`bar` を、
   後ろに英字、数字、`_` がない場合に、大文字小文字を問わず読み、
   `vertical` と `horizontal` は、どこで始まる場合も読みます。
+- Venn 図の名前、ラベル、値: この図種が初めて加わった 11.13.0、12.0.0、
+  12.3.0 の文法は同じで、各版の `vennDB.ts` も同じです。
+  引用符で囲む名前と、同じ名前を引用符なしで書いたものは、
+  同じテキストになります。
+  `normalizeText` が文字列の引用符を外し、
+  すべてのテキストの両端の空白を除くためです。
+  角括弧のラベルは、引用符の有無によらず両端の空白を除き、
+  字句解析器は `venn-beta`、`set`、`union`、`text`、`style` を、
+  大文字小文字を問わず読みます。
 - 1 行のブロックのアクセシビリティの説明: flowchart の 9.0.0 と 9.0.1 の文法に、
   `accDescr` の規則はありません。
   最初に規則がある 9.1.0 の文法には、コロンの形とブロックの形があります。

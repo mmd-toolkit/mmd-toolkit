@@ -1808,6 +1808,13 @@ Mermaid が説明から LF 後の字下げを除くためです。
 共通値の tab など、安全に外せない形は Branch prefixes の本文保持に従います。
 opener の gap の唯一のモードの選び手は、
 Decorations に従って gap だけを保ちます。
+`}` の前の空白はテキストではないので、コメント行の後でも、
+毎回の整形で `}` を文と同じ段にそろえます。
+[fixture: treeview/description-blocks/block-comment-line-after-the-text]
+1 行の本文を独立した行に置くブロックも、
+本文に空白とタブの連なりがある場合を含め、1 行の説明ブロックの規則に従います。
+（[1 行の説明ブロック](./compatibility.ja.md#1-行の説明ブロック)）。
+[fixture: treeview/description-blocks/block-text-on-its-own-line-runs-collapsed]
 
 [fixture: treeview/description-blocks/geometry-with-opener-directive]
 

@@ -519,7 +519,7 @@ native hidden DIRECTIVE は別の所有ノードのままです。
 packet
   0%%{wrap}%%: "Global"
   accTitle%%{wrap}%%: Access
-  accDescr %%{wrap}%%{ Detail }
+  accDescr%%{wrap}%%: Detail
 ```
 
 ### Hidden yaml

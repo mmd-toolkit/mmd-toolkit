@@ -1,7 +1,7 @@
 {
   "source": {
     "kind": "authored",
-    "note": "A closed description block with two lines of text between vertex statements sets the description to `first line\\nsecond line`."
+    "note": "db-from-tree/flowchart.md Building the summary from the tree, Accessibility statements: A closed description block with two lines of text between vertex statements sets the description to `first line\\nsecond line`."
   },
   "accepted": true,
   "diagramType": "flowchart-v2",

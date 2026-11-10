@@ -1206,6 +1206,10 @@ subgraph の中でも 1 桁目を保ちます（diagrams/er.md、方向の行）
 字句解析器がそれらなしにテキストを読むので、飛ばし（diagrams/er.md、
 単位の間のトリビア）、空行も同じです。
 方向が続かなければ、その文はほかの文と同じに字下げします。
+行全体で判断します。
+同じ行にほかの文が続く場合（`accDescr {x}; accDescr {direction RL}`）も、
+字句解析器は行頭から行全体を読むので、その文にある `direction` も数えます。
+[fixture: accessibility-statements/semicolon-line-with-direction-text-first-column]
 [fixture: accessibility-statements/first-column-for-direction-text]
 [fixture: accessibility-statements/first-column-direction-case-insensitive]
 [fixture: accessibility-statements/first-column-value-touching-text]

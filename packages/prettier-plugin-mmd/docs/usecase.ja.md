@@ -808,8 +808,15 @@ Mermaid が説明から LF 後の字下げを除くためです。
 [fixture: direction-and-accessibility/a11y-closer-zero]
 [fixture: direction-and-accessibility/a11y-directive-padding]
 [fixture: direction-and-accessibility/a11y-comment-empty-tabs]
-1 行の本文を独立した行に置くブロックは、書かれた改行を保ちます。
+`}` の前の空白はテキストではないので、コメント行の後でも、
+毎回の整形で `}` を文と同じ段にそろえます。
+[fixture: direction-and-accessibility/block-comment-line-after-the-text]
+1 行の本文を独立した行に置くブロックも、本文に空白とタブの連なりがある場合や、
+本文の後にディレクティブが続く場合を含め、1 行の説明ブロックの規則に従います。
+（[1 行の説明ブロック](./compatibility.ja.md#1-行の説明ブロック)）。
 [fixture: direction-and-accessibility/block-text-on-its-own-line]
+[fixture: direction-and-accessibility/block-text-on-its-own-line-runs-collapsed]
+[fixture: direction-and-accessibility/block-directive-line-after-the-text]
 
 1 行のブロックは、
 [1 行の説明ブロック](./compatibility.ja.md#1-行の説明ブロック) に従います。

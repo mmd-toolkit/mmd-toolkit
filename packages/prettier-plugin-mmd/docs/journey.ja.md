@@ -542,8 +542,10 @@ mermaid.js が説明から LF 後の字下げを除くためです。
 （[同じに描かれるテキスト中の空白の連なり](./compatibility.ja.md#同じに描かれるテキスト中の空白の連なり)）。
 [fixture: accessibility-statements/block-inner-runs-collapsed]
 [fixture: accessibility-statements/accessibility-lines-runs-collapsed]
-キーワードとコロンや括弧の間と、その後のディレクティブはその位置に残します。
-[fixture: accessibility-statements/directive-around-colon-and-braces-kept]
+キーワードとコロンや波括弧の間と、その後のディレクティブはその位置に残し、
+波括弧の隣にディレクティブがある 1 行のブロックは、コロンを先に書く形にします。
+（[1 行の説明ブロック](./compatibility.ja.md#1-行の説明ブロック)）。
+[fixture: accessibility-statements/directive-around-colon-and-braces]
 
 入力
 ([accessibility-statements/text-on-next-line-joined-input.mmd](../tests/fixtures/journey/accessibility-statements/text-on-next-line-joined-input.mmd)):

@@ -962,8 +962,11 @@ tabs inside the text is printed as one space (see
 [Runs of whitespace in a text that are drawn the same](./compatibility.md#runs-of-whitespace-in-a-text-that-are-drawn-the-same)).
 [fixture: accessibility-statements/block-inner-runs-collapsed] [fixture:
 accessibility-statements/accessibility-lines-runs-collapsed] A directive between
-the keyword and the colon or the brace, or after them, stays where it is.
-[fixture: accessibility-statements/directive-around-colon-and-braces-kept]
+the keyword and the colon or the brace, or after them, stays where it is, and a
+block on one line with a directive beside its braces is written with the colon
+first (see
+[A description block on one line](./compatibility.md#a-description-block-on-one-line)).
+[fixture: accessibility-statements/directive-around-colon-and-braces]
 
 Input
 ([accessibility-statements/text-on-next-line-joined-input.mmd](../tests/fixtures/gantt/accessibility-statements/text-on-next-line-joined-input.mmd)):

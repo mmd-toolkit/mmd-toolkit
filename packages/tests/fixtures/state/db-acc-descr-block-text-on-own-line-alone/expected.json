@@ -1,7 +1,7 @@
 {
   "source": {
     "kind": "authored",
-    "note": "A description block whose text stands on a line of its own sets the description to `y`."
+    "note": "db-from-tree/state.md Building the summary from the tree, Accessibility statements: A description block whose text stands on a line of its own sets the description to `y`."
   },
   "accepted": true,
   "diagramType": "stateDiagram",

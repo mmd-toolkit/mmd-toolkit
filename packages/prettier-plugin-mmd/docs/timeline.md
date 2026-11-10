@@ -759,8 +759,10 @@ inside the statement and a separate `}` stands at its level (see
 [Multi-line values](#multi-line-values)). [fixture:
 accessibility-statements/block-lines-kept] [fixture:
 accessibility-statements/block-comment-and-empty-lines-kept] A directive around
-the colon or the braces stays where it is. [fixture:
-accessibility-statements/directive-around-colon-and-braces-kept]
+the colon or the braces stays where it is, and a block on one line with a
+directive beside its braces is written with the colon first (see
+[A description block on one line](./compatibility.md#a-description-block-on-one-line)).
+[fixture: accessibility-statements/directive-around-colon-and-braces]
 
 Input
 ([accessibility-statements/colon-touches-keyword-input.mmd](../tests/fixtures/timeline/accessibility-statements/colon-touches-keyword-input.mmd)):

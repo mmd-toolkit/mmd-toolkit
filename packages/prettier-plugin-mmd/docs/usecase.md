@@ -742,9 +742,16 @@ direction-and-accessibility/a11y-closer-aligned] [fixture:
 direction-and-accessibility/a11y-closer-tabs] [fixture:
 direction-and-accessibility/a11y-closer-zero] [fixture:
 direction-and-accessibility/a11y-directive-padding] [fixture:
-direction-and-accessibility/a11y-comment-empty-tabs] A block with one line of
-text on a line of its own keeps its lines. [fixture:
-direction-and-accessibility/block-text-on-its-own-line]
+direction-and-accessibility/a11y-comment-empty-tabs] The whitespace before the
+`}` is no text, so the `}` stays aligned with the statement in every pass, also
+after a comment line. [fixture:
+direction-and-accessibility/block-comment-line-after-the-text] A block with one
+line of text on a line of its own follows
+[A description block on one line](./compatibility.md#a-description-block-on-one-line)
+too, also where the text has runs of spaces and tabs or a directive follows it.
+[fixture: direction-and-accessibility/block-text-on-its-own-line] [fixture:
+direction-and-accessibility/block-text-on-its-own-line-runs-collapsed] [fixture:
+direction-and-accessibility/block-directive-line-after-the-text]
 
 Blocks on one line follow
 [A description block on one line](./compatibility.md#a-description-block-on-one-line).

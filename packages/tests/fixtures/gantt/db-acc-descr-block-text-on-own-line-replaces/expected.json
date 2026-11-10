@@ -1,7 +1,7 @@
 {
   "source": {
     "kind": "authored",
-    "note": "A description block whose text stands on a line of its own replaces an earlier description line with `second`."
+    "note": "db-from-tree/gantt.md Building the summary from the tree, Accessibility: A description block whose text stands on a line of its own replaces an earlier description line with `second`."
   },
   "accepted": true,
   "diagramType": "gantt",

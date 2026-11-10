@@ -516,7 +516,7 @@ Output
 packet
   0%%{wrap}%%: "Global"
   accTitle%%{wrap}%%: Access
-  accDescr %%{wrap}%%{ Detail }
+  accDescr%%{wrap}%%: Detail
 ```
 
 ### Hidden yaml

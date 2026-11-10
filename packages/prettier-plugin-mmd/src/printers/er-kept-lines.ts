@@ -7,7 +7,7 @@ import {
   lineEndOf,
   lineStartOf,
 } from "./kept-lines.ts"
-import { holdsDirection } from "./accessibility-lines.ts"
+import { holdsDirection, holdsStatementAfter } from "./accessibility-lines.ts"
 import type { Source } from "./source.ts"
 import { findTriviaBetween } from "./source.ts"
 
@@ -185,9 +185,10 @@ function findAccessibilityLines(
         statement.type === "ErAccDescrStatement" ||
         statement.type === "ErAccDescrBlockStatement") &&
       holdsDirection(source, {
-        range: statement.range,
+        range: [statement.range[0], lineEndOf(source, statement.range[1])],
         text:
-          statement.type === "ErAccDescrBlockStatement"
+          statement.type === "ErAccDescrBlockStatement" ||
+          holdsStatementAfter(source, statement.range[1])
             ? null
             : statement.value.value,
       })

@@ -1,7 +1,7 @@
 {
   "source": {
     "kind": "authored",
-    "note": "A later description line replaces a block whose text stands on a line of its own with the description `second`."
+    "note": "db-from-tree/sequence.md Building the summary from the tree, Titles: A later description line replaces a block whose text stands on a line of its own with the description `second`."
   },
   "accepted": true,
   "diagramType": "sequence",

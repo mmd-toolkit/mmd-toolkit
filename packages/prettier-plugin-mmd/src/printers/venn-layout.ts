@@ -12,6 +12,7 @@ import {
 import type { TextEdit } from "./layout.ts"
 import { trimTextAfterKeyword } from "./statement-rules.ts"
 import type { Source } from "./source.ts"
+import { findRespellings } from "./spelling.ts"
 import {
   findTriviaBetween,
   hasTriviaBesidesTrailingDirectives,
@@ -129,8 +130,13 @@ export function layoutVennStatement(
   // (common.md, Style and classDef lines; docs/venn.md, Line rule and kept lines).
   atoms = protectSemicolonPrefixes(source, start, end, atoms)
   // mermaid.js trims the text of a label in brackets: `[ L ]` is printed `[L]`
-  // (docs/venn.md, Labels).
-  if ("label" in statement && statement.label !== null) {
+  // (docs/venn.md, Labels). A label that is printed in quotes is respelled
+  // whole, without the padding.
+  if (
+    "label" in statement &&
+    statement.label !== null &&
+    findRespellings(source).get(statement.label.range[0]) === undefined
+  ) {
     trimBracketedText(source, atoms, statement.label.range)
   }
   if (statement.type === "VennTitleStatement") {

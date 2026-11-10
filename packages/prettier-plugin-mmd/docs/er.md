@@ -1162,9 +1162,13 @@ and `direction LR` are printed `accTitle: direction LR` at the first column. The
 comment lines and the directives between `direction` and the value are skipped,
 as the lexer reads the text without them (diagrams/er.md, Trivia between units),
 and so are empty lines. Where no direction follows, the statement is indented as
-any other. [fixture: accessibility-statements/first-column-for-direction-text]
-[fixture: accessibility-statements/first-column-direction-case-insensitive]
-[fixture: accessibility-statements/first-column-value-touching-text] [fixture:
+any other. The line counts as a whole: where other statements follow on it
+(`accDescr {x}; accDescr {direction RL}`), the `direction` in them counts too,
+as the lexer reads the whole line from its start. [fixture:
+accessibility-statements/semicolon-line-with-direction-text-first-column]
+[fixture: accessibility-statements/first-column-for-direction-text] [fixture:
+accessibility-statements/first-column-direction-case-insensitive] [fixture:
+accessibility-statements/first-column-value-touching-text] [fixture:
 accessibility-statements/first-column-tab-before-value] [fixture:
 accessibility-statements/first-column-value-on-next-line] [fixture:
 accessibility-statements/first-column-value-after-comment-line] [fixture:

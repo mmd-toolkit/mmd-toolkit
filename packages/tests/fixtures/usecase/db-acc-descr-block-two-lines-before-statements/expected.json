@@ -1,7 +1,7 @@
 {
   "source": {
     "kind": "authored",
-    "note": "A closed description block with two lines of text before the diagram statements sets the description to `first line\\nsecond line`."
+    "note": "db-from-tree/usecase.md Building the summary from the tree, Direction and common strings: A closed description block with two lines of text before the diagram statements sets the description to `first line\\nsecond line`."
   },
   "accepted": true,
   "diagramType": "usecase",

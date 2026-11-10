@@ -1,7 +1,7 @@
 {
   "source": {
     "kind": "authored",
-    "note": "A description block with two lines of text replaces an earlier description line with `Second\\nThird`."
+    "note": "db-from-tree/treeview.md Building the summary, step 2: the last assignment wins, so a description block with two lines of text replaces an earlier description line with `Second\\nThird`."
   },
   "accepted": true,
   "diagramType": "treeView",

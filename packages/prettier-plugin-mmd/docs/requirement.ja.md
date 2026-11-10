@@ -1048,6 +1048,10 @@ LF 直後の ASCII 空白とタブだけを置き換えます。
 [fixture: accessibility-statements/first-column-kept]
 そのような方向を含まない行は、ほかの文と同じに字下げします。
 [fixture: accessibility-statements/first-column-not-needed]
+行全体で判断します。
+同じ行にほかの文が続く場合（`accDescr {x}; title direction RL`）も、
+字句解析器は行頭から行全体を読むので、その文にある `direction` も数えます。
+[fixture: accessibility-statements/semicolon-line-with-direction-text-first-column]
 
 入力
 ([accessibility-statements/colon-touches-keyword-input.mmd](../tests/fixtures/requirement/accessibility-statements/colon-touches-keyword-input.mmd)):

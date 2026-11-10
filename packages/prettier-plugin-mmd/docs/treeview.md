@@ -1823,7 +1823,13 @@ columns: indenting a plain physical line can make box syntax reject it.
 Value-owned box geometry still keeps its complete brace span. The first
 effective `}` remains the closer. Unsafe removal follows Branch prefixes,
 including common-value tabs. A sole mode selector in the opener gap keeps just
-that gap, as described in Decorations.
+that gap, as described in Decorations. The whitespace before the `}` is no text,
+so the `}` stays aligned with the statement in every pass, also after a comment
+line. [fixture: treeview/description-blocks/block-comment-line-after-the-text] A
+block with one line of text on a line of its own follows
+[A description block on one line](./compatibility.md#a-description-block-on-one-line)
+too, also where the text has runs of spaces and tabs. [fixture:
+treeview/description-blocks/block-text-on-its-own-line-runs-collapsed]
 
 [fixture: treeview/description-blocks/geometry-with-opener-directive]
 

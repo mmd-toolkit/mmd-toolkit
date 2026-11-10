@@ -786,8 +786,10 @@ journey と同じ形です。
 独立した `}` はその文の段に置きます（[複数行の値](#複数行の値)を参照）。
 [fixture: accessibility-statements/block-lines-kept]
 [fixture: accessibility-statements/block-comment-and-empty-lines-kept]
-`:` や波括弧の周りの指令は、その場所に残します。
-[fixture: accessibility-statements/directive-around-colon-and-braces-kept]
+`:` や波括弧の周りの指令は、その場所に残し、
+波括弧の隣に指令がある 1 行のブロックは、コロンを先に書く形にします。
+（[1 行の説明ブロック](./compatibility.ja.md#1-行の説明ブロック)）。
+[fixture: accessibility-statements/directive-around-colon-and-braces]
 
 入力
 ([accessibility-statements/colon-touches-keyword-input.mmd](../tests/fixtures/timeline/accessibility-statements/colon-touches-keyword-input.mmd)):

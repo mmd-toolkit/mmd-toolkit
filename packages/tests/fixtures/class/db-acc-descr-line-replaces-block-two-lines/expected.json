@@ -1,7 +1,7 @@
 {
   "source": {
     "kind": "authored",
-    "note": "A later description line replaces a block with two lines of text with the description `third`."
+    "note": "db-from-tree/class.md Building the summary from the tree, Other statements: a later `accDescr:` line replaces a block, so a description block with two lines of text followed by `accDescr: third` gives the description `third`."
   },
   "accepted": true,
   "diagramType": "classDiagram",

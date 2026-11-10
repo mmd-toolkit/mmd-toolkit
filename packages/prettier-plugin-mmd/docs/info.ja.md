@@ -468,7 +468,7 @@ info の Db が空でも init は設定を変えうるためです。
 ```mmd
 info
   accTitle%%{wrap}%%: Access
-  accDescr %%{wrap}%%{ D }
+  accDescr%%{wrap}%%: D
 ```
 
 ### Semicolons

@@ -1,7 +1,7 @@
 {
   "source": {
     "kind": "authored",
-    "note": "A later `accDescr:` line replaces the descriptions from `accDescription` and a block whose text stands on a line of its own, leaving `Customers`."
+    "note": "db-from-tree/c4.md Building the summary from the tree, Titles and accessibility: A later `accDescr:` line replaces the descriptions from `accDescription` and a block whose text stands on a line of its own, leaving `Customers`."
   },
   "accepted": true,
   "diagramType": "c4",

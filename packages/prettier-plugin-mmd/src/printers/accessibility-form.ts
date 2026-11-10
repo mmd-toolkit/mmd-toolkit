@@ -1,8 +1,14 @@
 import type { Node, Range, Token } from "@mmd-toolkit/ast"
 import { visitorKeys } from "@mmd-toolkit/parser"
-import { lineEndOf } from "./kept-lines.ts"
+import {
+  findLinesEndedBySemicolon,
+  findLinesWithOwnSemicolons,
+  lineEndOf,
+  lineStartOf,
+} from "./kept-lines.ts"
 import type { Source } from "./source.ts"
 import { findTriviaBetween, isWhitespace } from "./source.ts"
+import { holdsStatementAfter } from "./accessibility-lines.ts"
 import { printedToken } from "./spelling.ts"
 import { treeviewBoxCharacters } from "./treeview-characters.ts"
 import { collapseRuns, staysAsWritten } from "./text-runs.ts"
@@ -42,6 +48,21 @@ const diagramTypesEndingTextAtPercent: ReadonlySet<string> = new Set([
  */
 const diagramTypesStoringTheToken: ReadonlySet<string> = new Set([
   "eventmodeling",
+])
+
+/**
+ * The bodies of the diagram types whose lexers read a line with `direction` as
+ * the direction of the diagram (`.*direction\s+RL[^\n]*`).
+ */
+const bodiesReadingDirectionLines: ReadonlySet<string> = new Set([
+  "FlowchartDiagram",
+  "AgentflowDiagram",
+  "ClassDiagram",
+  "StateDiagram",
+  "ErDiagram",
+  "RequirementDiagram",
+  "C4Diagram",
+  "UsecaseDiagram",
 ])
 
 /**
@@ -95,6 +116,7 @@ interface DescriptionBlockParts {
   readonly beforeText: readonly Token[]
   /** The directives between the text and the `}`. */
   readonly afterText: readonly Token[]
+  /** The range of the text, without the whitespace around it. */
   readonly value: Range
   readonly text: string
 }
@@ -106,12 +128,13 @@ interface DescriptionBlockParts {
  * whitespace around it, also a line break (the form with the `:` has the text
  * on the line of the keyword); directives may stand inside the text and beside
  * the braces, and nothing else may. It stays as written where the text has a
- * line break, where it holds a `%%` or a line separator in a diagram type of
- * `diagramTypesEndingTextAtPercent`, where it is on lines of its own and holds
- * `direction`, where a treeView text holds a character of the drawing of a box,
- * and where the block is not closed or has no text. The characters
- * in the `omitted` ranges are not printed (the drawing of a box in a treeView),
- * and count as whitespace.
+ * line break; where it holds a `%%` or a line separator in a diagram type of
+ * `diagramTypesEndingTextAtPercent`; where a treeView text holds a character of
+ * the drawing of a box; where a line terminator separates the text from the
+ * keyword or from the `}` and a diagram type of `bodiesReadingDirectionLines`
+ * holds `direction` in it (also split by a directive); and where the block is
+ * not closed or has no text. The characters in the `omitted` ranges are not
+ * printed (the drawing of a box in a treeView), and count as whitespace.
  */
 function readDescriptionBlock(
   source: Source,
@@ -150,8 +173,17 @@ function readDescriptionBlock(
   )
   const close = parts.at(-1)
   const inner = parts.slice(open + 1, -1)
-  const first = inner.findIndex((token) => token.type === "RawText")
-  const last = inner.findLastIndex((token) => token.type === "RawText")
+  // A diagram type may put the whitespace around the text, and the line breaks
+  // there, into the first and the last token of the text; a token of
+  // whitespace only is no text.
+  const first = inner.findIndex(
+    (token) => token.type === "RawText" && !isBlank(token),
+  )
+  const last = inner.findLastIndex(
+    (token) => token.type === "RawText" && !isBlank(token),
+  )
+  const firstToken = inner.findIndex((token) => token.type === "RawText")
+  const lastToken = inner.findLastIndex((token) => token.type === "RawText")
   if (
     open < 1 ||
     close === undefined ||
@@ -162,14 +194,14 @@ function readDescriptionBlock(
       (token) => token.type !== "RawText" && token.type !== "Directive",
     ) ||
     parts.slice(1, open).some((token) => token.type !== "Directive") ||
-    inner[first].range[0] !== value.range[0] ||
-    inner[last].range[1] !== value.range[1]
+    inner[firstToken].range[0] !== value.range[0] ||
+    inner[lastToken].range[1] !== value.range[1]
   ) {
     return undefined
   }
   const beforeBrace = parts.slice(1, open)
-  const beforeText = inner.slice(0, first)
-  const afterText = inner.slice(last + 1)
+  const beforeText = inner.slice(0, first).filter((token) => !isBlank(token))
+  const afterText = inner.slice(last + 1).filter((token) => !isBlank(token))
   if (
     ![
       [parts[0], ...beforeBrace, parts[open], ...beforeText, inner[first]],
@@ -192,24 +224,37 @@ function readDescriptionBlock(
   ) {
     return undefined
   }
-  const text = source.text.slice(...value.range).trim()
-  // A text on a line of its own in a block is read line by line: some lexers
-  // read a line with `direction` as the direction of the diagram, which they
-  // do not do for the text of the form with the `:`.
-  const onLinesOfItsOwn =
-    holdsLineBreak(source.text.slice(parts[open].range[1], value.range[0])) ||
-    holdsLineBreak(source.text.slice(value.range[1], close.range[0]))
+  const textRange: Range = [
+    inner[first].range[0] +
+      textOf(source, inner[first]).length -
+      textOf(source, inner[first]).trimStart().length,
+    inner[last].range[1] -
+      (textOf(source, inner[last]).length -
+        textOf(source, inner[last]).trimEnd().length),
+  ]
+  const text = source.text.slice(...textRange)
+  // The text without the directives that lie inside it.
+  const spelled = inner
+    .filter((token) => token.type === "RawText")
+    .map((token) => textOf(source, token))
+    .join("")
+  // A lexer that reads a whole line starting at its beginning reads a line
+  // with `direction` as the direction of the diagram, before or after the rule
+  // of `accDescr`, so the form with the `:` reads the description as a
+  // direction where the text of the block stood out of the reach of that rule:
+  // after a line terminator that is no part of a line (LF, CR, U+2028, U+2029),
+  // or with a directive inside the word, which mermaid.js takes away first.
+  const apart =
+    holdsLineTerminator(source.text.slice(statement.range[0], textRange[0])) ||
+    holdsLineTerminator(source.text.slice(textRange[1], statement.range[1]))
   const endsAtPercent = diagramTypesEndingTextAtPercent.has(
     source.root.diagramType,
   )
   if (
-    text === "" ||
-    !inner.some(
-      (token) =>
-        token.type === "RawText" && textOf(source, token).trim() !== "",
-    ) ||
     holdsLineBreak(text) ||
-    (onLinesOfItsOwn && text.toLowerCase().includes("direction")) ||
+    (apart &&
+      bodiesReadingDirectionLines.has(source.root.body.type) &&
+      spelled.toLowerCase().includes("direction")) ||
     (source.root.diagramType === "treeView" &&
       [...text].some((character) =>
         treeviewBoxCharacters.includes(character),
@@ -217,10 +262,7 @@ function readDescriptionBlock(
     (endsAtPercent &&
       (text.includes("\u2028") ||
         text.includes("\u2029") ||
-        inner.some(
-          (token) =>
-            token.type === "RawText" && textOf(source, token).includes("%%"),
-        )))
+        spelled.includes("%%")))
   ) {
     return undefined
   }
@@ -231,25 +273,34 @@ function readDescriptionBlock(
     beforeBrace,
     beforeText,
     afterText,
-    value: [value.range[0], value.range[1]],
+    value: textRange,
     text,
   }
 }
 
 /**
- * Whether what follows a block on its line lets it be written with the `:`:
- * only whitespace and directives follow, and, in a diagram type that ends the
- * text of the form with the `:` before a `%%`, comments too (the other types
- * read a comment after the `}` as part of the text of the form with the `:`).
+ * What a block on one line may be followed by on its line, so that it is
+ * written with the `:` first, as "trivia" (whitespace, directives, and, in a
+ * diagram type that ends the text of the form with the `:` before a `%%`,
+ * comments) or as "statements" (another statement follows, and the printer
+ * moves it to a line of its own): the line must then be one that does not keep
+ * its statements together, and the diagram type is no C4 diagram, which keeps
+ * the statements next to an empty block on their line. The result is undefined
+ * where the block stays as written.
  */
-function followedOnlyByTrivia(source: Source, end: number): boolean {
-  return (
-    endsWithTrivia(source, end) &&
-    (diagramTypesEndingTextAtPercent.has(source.root.diagramType) ||
-      findTriviaBetween(source, end, lineEndOf(source, end)).every(
-        (item) => item.type === "Directive",
-      ))
-  )
+function followingOf(
+  source: Source,
+  end: number,
+): "trivia" | "statements" | undefined {
+  if (!holdsStatementAfter(source, end)) {
+    return commentsAfterAllowed(source, end) ? "trivia" : undefined
+  }
+  const line = lineStartOf(source, end - 1)
+  return source.root.diagramType !== "c4" &&
+    !findLinesWithOwnSemicolons(source).has(line) &&
+    !findLinesEndedBySemicolon(source).has(line)
+    ? "statements"
+    : undefined
 }
 
 /**
@@ -285,7 +336,7 @@ export function printAccessibilityLine(
     statement === undefined ||
     block.beforeBrace.length > 0 ||
     block.beforeText.length > 0 ||
-    (endsItsLine && !endsWithTrivia(source, statement.range[1])) ||
+    (endsItsLine && holdsStatementAfter(source, statement.range[1])) ||
     !commentsAfterAllowed(source, statement.range[1])
   ) {
     return undefined
@@ -323,14 +374,14 @@ function commentsAfterAllowed(source: Source, end: number): boolean {
 /**
  * The text of the document with every description block that has a directive
  * before its text, or before its `{`, written with the `:` as the author would
- * write it: the whitespace before the `{` is left out, the `{` becomes the `:`,
- * and the `}` is left out. The form with the `:` is then printed by the rules
+ * write it: `keyword: text`, with the directives where they stand, no
+ * whitespace before the `:`, one space after it, and no `}`. The form with the `:` is then printed by the rules
  * of the diagram type, so that the whitespace next to the directive is the one
  * that the same text written with the `:` gets (docs/compatibility.md, A
  * description block on one line). The result is undefined where there is no
- * such block. A block is rewritten where it stands on one line, and only
- * whitespace, directives, and, in a diagram type that ends the text before a
- * `%%`, comments follow it.
+ * such block. A block is rewritten where it stands on one line and what
+ * follows it is allowed by `followingOf`: then the `}` is left out, or becomes
+ * a line break before the statements that follow it.
  */
 export function rewriteDirectiveBlocks(source: Source): string | undefined {
   const edits: [number, number, string][] = []
@@ -339,16 +390,21 @@ export function rewriteDirectiveBlocks(source: Source): string | undefined {
     if (
       block === undefined ||
       (block.beforeBrace.length === 0 && block.beforeText.length === 0) ||
-      holdsLineBreak(source.text.slice(...node.range)) ||
-      !followedOnlyByTrivia(source, node.range[1])
+      holdsLineBreak(source.text.slice(...node.range))
     ) {
       return
     }
+    const following = followingOf(source, node.range[1])
+    if (following === undefined) return
     let gapStart = block.open.range[0]
     while (isWhitespace(source.text[gapStart - 1])) gapStart--
+    let textStart = block.open.range[1]
+    while (isWhitespace(source.text[textStart])) textStart++
+    let textEnd = block.close.range[0]
+    while (isWhitespace(source.text[textEnd - 1])) textEnd--
     edits.push(
-      [gapStart, block.open.range[1], ":"],
-      [block.close.range[0], block.close.range[1], ""],
+      [gapStart, textStart, ": "],
+      [textEnd, block.close.range[1], following === "trivia" ? "" : "\n"],
     )
   })
   if (edits.length === 0) return undefined
@@ -369,20 +425,6 @@ function forEachNode(node: Node, visit: (node: Node) => void): void {
         forEachNode(child as Node, visit)
     }
   }
-}
-
-/**
- * Whether only whitespace, comments, and directives stand between `end` and
- * the end of its line.
- */
-function endsWithTrivia(source: Source, end: number): boolean {
-  const lineEnd = lineEndOf(source, end)
-  let position = end
-  for (const item of findTriviaBetween(source, end, lineEnd)) {
-    if (!isWhitespaceBetween(source, position, item.range[0])) return false
-    position = Math.max(position, item.range[1])
-  }
-  return isWhitespaceBetween(source, position, lineEnd)
 }
 
 /** The text of a token. */
@@ -409,6 +451,19 @@ function isWhitespaceBetween(
     }
   }
   return true
+}
+
+/** Whether a token is a text of whitespace only. */
+function isBlank(token: Token): boolean {
+  return token.type === "RawText" && token.value.trim() === ""
+}
+
+/**
+ * Whether a text holds a character that ends a line for a rule that reads from
+ * the start of a line to its end: LF, CR, U+2028, or U+2029.
+ */
+function holdsLineTerminator(text: string): boolean {
+  return [...text].some((character) => "\n\r\u2028\u2029".includes(character))
 }
 
 /**

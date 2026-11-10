@@ -1018,7 +1018,11 @@ the first column. The line is judged as the lexer reads it, without the
 directives and the comment lines. [fixture:
 accessibility-statements/first-column-kept] A line that holds no such direction
 is indented as any statement is. [fixture:
-accessibility-statements/first-column-not-needed]
+accessibility-statements/first-column-not-needed] The line counts as a whole:
+where other statements follow on it (`accDescr {x}; title direction RL`), the
+`direction` in them counts too, as the lexer reads the whole line from its
+start. [fixture:
+accessibility-statements/semicolon-line-with-direction-text-first-column]
 
 Input
 ([accessibility-statements/colon-touches-keyword-input.mmd](../tests/fixtures/requirement/accessibility-statements/colon-touches-keyword-input.mmd)):

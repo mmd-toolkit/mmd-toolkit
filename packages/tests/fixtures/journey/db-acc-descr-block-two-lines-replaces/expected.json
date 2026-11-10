@@ -1,7 +1,7 @@
 {
   "source": {
     "kind": "authored",
-    "note": "A description block with two lines of text replaces an earlier description line with `second\\nthird`."
+    "note": "db-from-tree/journey.md Building the summary from the tree, Accessibility: A description block with two lines of text replaces an earlier description line with `second\\nthird`."
   },
   "accepted": true,
   "diagramType": "journey",
