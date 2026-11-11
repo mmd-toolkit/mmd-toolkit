@@ -761,9 +761,10 @@ function hasArrow(node: Node): boolean {
 /**
  * The words that the lexer of a class diagram reads as a unit of its own where
  * they stand as a name, which a name between backquotes is not: the keywords of
- * the statements, the targets of a link, `o` of the aggregation, and the words
- * that start a line of accessibility. A name of one of them is rejected, or is
- * read as another statement, without the backquotes.
+ * the statements, the header word `classDiagram`, the targets of a link, `o` of
+ * the aggregation, and the words that start a line of accessibility. A name of
+ * one of them is rejected, or is read as another statement, without the
+ * backquotes.
  */
 const classNameReserved: ReadonlySet<string> = new Set([
   "_blank",
@@ -776,6 +777,7 @@ const classNameReserved: ReadonlySet<string> = new Set([
   "callback",
   "class",
   "classDef",
+  "classDiagram",
   "click",
   "cssClass",
   "href",

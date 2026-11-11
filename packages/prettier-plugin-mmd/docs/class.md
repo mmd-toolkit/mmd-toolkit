@@ -955,12 +955,12 @@ relationship, a member, an annotation, a note, a `click` and a `link` statement,
 and a namespace. mermaid.js reads both forms as the same name. A name is printed
 without backquotes where it is a word of ASCII letters, digits, and `_` that is
 none of `_blank`, `_parent`, `_self`, `_top`, `accDescr`, `accTitle`, `call`,
-`callback`, `class`, `classDef`, `click`, `cssClass`, `href`, `link`,
-`namespace`, `note`, `o`, and `style`, which the lexer reads as a unit of its
-own where they stand as a name. A name of two words (`` `A B` ``) is the two
-words joined without the space, so it keeps its backquotes, as does a name with
-another character (`` `a-b` ``, `` `Animal Class!` ``, `` `é` ``) and a name on
-a line that holds a comment or a directive. [fixture:
+`callback`, `class`, `classDef`, `classDiagram`, `click`, `cssClass`, `href`,
+`link`, `namespace`, `note`, `o`, and `style`, which the lexer reads as a unit
+of its own where they stand as a name. A name of two words (`` `A B` ``) is the
+two words joined without the space, so it keeps its backquotes, as does a name
+with another character (`` `a-b` ``, `` `Animal Class!` ``, `` `é` ``) and a
+name on a line that holds a comment or a directive. [fixture:
 quotes/names-without-quotes] [fixture: quotes/names-that-need-quotes] [fixture:
 quotes/names-on-a-kept-line-as-written]
 

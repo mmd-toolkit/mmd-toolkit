@@ -2121,12 +2121,12 @@ agentflow/quotes/names-and-titles-before-a-comment]
 In a class diagram the name of a class or of a namespace between backquotes is
 printed without them where it is a word of ASCII letters, digits, and `_` that
 is none of `_blank`, `_parent`, `_self`, `_top`, `accDescr`, `accTitle`, `call`,
-`callback`, `class`, `classDef`, `click`, `cssClass`, `href`, `link`,
-`namespace`, `note`, `o`, and `style`, the words that the lexer reads as a unit
-of its own where they stand as a name. A name of two words is the two words
-joined without the space, a name with another character is not read the same,
-and a name on a line that holds a comment or a directive keeps its backquotes.
-[fixture: class/quotes/names-without-quotes] [fixture:
+`callback`, `class`, `classDef`, `classDiagram`, `click`, `cssClass`, `href`,
+`link`, `namespace`, `note`, `o`, and `style`, the words that the lexer reads as
+a unit of its own where they stand as a name. A name of two words is the two
+words joined without the space, a name with another character is not read the
+same, and a name on a line that holds a comment or a directive keeps its
+backquotes. [fixture: class/quotes/names-without-quotes] [fixture:
 class/quotes/names-that-need-quotes] [fixture:
 class/quotes/names-on-a-kept-line-as-written]
 
@@ -2310,10 +2310,13 @@ mermaid.js, show which form each version reads:
   agentflow diagram is the same file in 12.0.0, 12.1.0, 12.2.0, and 12.3.0.
 - The names of the classes of a class diagram: the grammars of 9.0.0 to 12.3.0
   read a name between backquotes (`classLiteralName`: `BQUOTE_STR`) and a name
-  of letters and digits (`alphaNumToken`: `ALPHA`, `NUM`) as a `className`, and
-  the words of the lexer are strings that the jison lexer reads as whole words.
-  So a name of letters, digits, and `_` is the same name in both forms in every
-  version.
+  of letters and digits (`alphaNumToken`: `ALPHA`, `NUM`) as a `className`. The
+  words that the jison lexers of these versions read as whole words are the
+  words that [The quotes of a text](#the-quotes-of-a-text) lists for a class
+  diagram; the rule for the header `classDiagram` is in the lexer of each of
+  them. Every other string of letters, digits, and `_` is read as `ALPHA` or
+  `NUM`. So a name of letters, digits, and `_` that is none of these words is
+  the same name in both forms in every version.
 - The names, the labels, and the metadata of a use case diagram: the lexer, the
   parser, the visitor, and the model builder of 12.0.0, the first release with
   the diagram type, 12.1.0, 12.2.0, and 12.3.0 are the same files. The visitor

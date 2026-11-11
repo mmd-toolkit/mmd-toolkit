@@ -1028,8 +1028,8 @@ mermaid.js は両方の形を同じ名前として読みます。
 ASCII の英字、数字、`_` からなる 1 語で、
 次のいずれでもない名前からバッククォートを外します。
 `_blank`、`_parent`、`_self`、`_top`、`accDescr`、`accTitle`、`call`、
-`callback`、`class`、`classDef`、`click`、`cssClass`、`href`、`link`、
-`namespace`、`note`、`o`、`style` です。
+`callback`、`class`、`classDef`、`classDiagram`、`click`、`cssClass`、`href`、
+`link`、`namespace`、`note`、`o`、`style` です。
 字句解析器は、これらが名前の位置にあると、独立した単位として読みます。
 2 語の名前（`` `A B` ``）は、2 語を空白なしで結合したものになるので、
 バッククォートを保ちます。

@@ -2279,8 +2279,8 @@ connector のタイトルは、mermaid.js が引用符の有無によらず同�
 
 class 図では、バッククォートで囲んだ class または namespace の名前が、
 ASCII の英字、数字、`_` からなる 1 語で、`_blank`、`_parent`、`_self`、`_top`、
-`accDescr`、`accTitle`、`call`、`callback`、`class`、`classDef`、`click`、
-`cssClass`、`href`、`link`、`namespace`、`note`、`o`、
+`accDescr`、`accTitle`、`call`、`callback`、`class`、`classDef`、
+`classDiagram`、`click`、`cssClass`、`href`、`link`、`namespace`、`note`、`o`、
 `style` のいずれでもない場合に、バッククォートなしで印字します。
 字句解析器は、名前の位置にあるこれらの語を独立した単位として読みます。
 2 語の名前は、バッククォートを外すと空白なしで結ばれた 2 語になり、
@@ -2494,8 +2494,12 @@ class の 7 個の入力も、整形後のテキストと同じ SVG が描かれ
   バッククォートで囲んだ名前（`classLiteralName`: `BQUOTE_STR`）と、
   英字と数字の名前（`alphaNumToken`: `ALPHA`、`NUM`）を、
   `className` として読みます。
-  字句解析器の語は、jison の字句解析器が語全体として読む文字列です。
-  そのため、英字、数字、`_` からなる名前は、どの版でも両方の形で同じ名前です。
+  これらの版の jison の字句解析器が語全体として読む語は、
+  [テキストの引用符](#テキストの引用符)が class 図について挙げる語です。
+  ヘッダーの `classDiagram` の規則は、どの版の字句解析器にもあります。
+  それ以外の英字、数字、`_` の文字列は、`ALPHA` か `NUM` として読まれます。
+  そのため、英字、数字、`_` からなる名前は、これらの語のどれでもなければ、
+  どの版でも両方の形で同じ名前です。
 - use case 図の名前、ラベル、metadata: この図種が初めて加わった 12.0.0 と、
   12.1.0、12.2.0、12.3.0 の字句解析器、パーサー、visitor、model builder は、
   同じファイルです。
