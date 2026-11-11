@@ -1,6 +1,6 @@
 {
   "name": "mmdfmt",
-  "version": "0.2.0",
+  "version": "0.2.1",
   "description": "Formatter for Mermaid diagrams in .mmd files and in Markdown code blocks, which changes nothing else, as a command and as a function",
   "license": "MIT",
   "repository": {
