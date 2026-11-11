@@ -139,7 +139,7 @@ Correctness is defined by the pinned mermaid.js.
      defined in
      [Labels that are drawn the same](packages/prettier-plugin-mmd/docs/compatibility.md#labels-that-are-drawn-the-same);
    - the case of the hexadecimal digits of a color in a style, which the
-     formatter prints in lower case as Prettier prints them in CSS, defined in
+     formatter prints in lower case, defined in
      [Colors that are drawn the same](packages/prettier-plugin-mmd/docs/compatibility.md#colors-that-are-drawn-the-same).
 
 ## What each package is responsible for

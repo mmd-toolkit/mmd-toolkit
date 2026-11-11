@@ -147,7 +147,7 @@ Mermaid 記法（`.mmd`）について、mermaid.js が持つ全図種を対象�
      [同じに描かれるラベル](packages/prettier-plugin-mmd/docs/compatibility.ja.md#同じに描かれるラベル)
      が定める。
    - スタイルの色の 16 進数の大文字と小文字。
-     フォーマッターは、Prettier が CSS で印字するのと同じく小文字で印字する。
+     フォーマッターは小文字で印字する。
      [同じに描かれる色](packages/prettier-plugin-mmd/docs/compatibility.ja.md#同じに描かれる色)
      が定める。
 
