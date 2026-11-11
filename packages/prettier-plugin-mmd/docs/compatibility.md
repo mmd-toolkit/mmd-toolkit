@@ -1349,8 +1349,11 @@ to 12.3.0 for `style`; an ER diagram with 11.12.3 to 12.3.0; a requirement
 diagram with 11.12.3 to 12.3.0; a block diagram with 10.9.0 to 12.3.0; a usecase
 diagram with 12.0.0 and 12.3.0; a quadrant chart with 11.0.0 to 12.3.0; and a
 Venn diagram with 11.13.0 to 12.3.0). Of the 14 versions, the others reject the
-statement or the diagram type, except 9.0.0 for an ER diagram, which reads the
-lines of a `style` as entity names.
+statement or the diagram type, except 9.0.0 for an ER diagram, which accepts a
+`style` or `classDef` line and draws the words `style` or `classDef` and the ids
+after it as entities, without a style, and draws the text with the color in
+upper case and in lower case as the same SVG, so that the formatter's change
+draws the same there too.
 
 The tests compare the Db with the colors of the styles restored from the Db of
 the written text (`colorCaseDbForFormattingComparison` in
