@@ -77,16 +77,28 @@ How it reads:
 
 - At most two sentences. The first starts with what changes, as a verb (`Print`,
   `Report`, `Accept`, `Fix`). The second, only if it is needed, says what the
-  user has to do.
-- A change of what the formatter prints shows one example, before and after. A
-  change of what a lint rule reports names the rule and shows one reported form.
-- Leave out the forms that stay as they were and the conditions of a rule: the
-  rules documents hold them. Name one only when a user would take it for a bug
-  or has to act on it.
+  user has to do. The entry is kept short by leaving things out, not by joining
+  sentences with a semicolon or a comma.
+- A change of what the formatter prints shows one example, before and after; a
+  change that goes both ways, such as quotes added to some texts and removed
+  from others, shows one of each. A change of what a lint rule reports names the
+  rule and shows one reported form.
+- A change of what the formatter prints that overturns a decision of a released
+  version, so that an input it printed one way on purpose now prints another
+  way, adds two sentences after the first: what the earlier rule did and why,
+  and what was wrong with it as a user sees it; then how the new rule fixes that
+  and keeps what the earlier rule was for, naming one kept case at most, for
+  example `such as a text with a comma`. Such an entry has three sentences, or
+  four with the one of what the user has to do.
+- Leave out the forms that stay as they were, the conditions of a rule, and the
+  counts behind it, such as how many times the documentation of mermaid.js
+  writes each form: the rules documents hold them. Name one only when a user
+  would take it for a bug or has to act on it.
 - Use the words of a user of the package. A word from the rules documents or the
   specification (`Db`, a kept line, the tree) and a comparison with what another
   diagram type does tell that user nothing. Say what changed, not how it was
-  implemented or reviewed, and why only if the user can act on it.
+  implemented or reviewed, and why only if the user can act on it or the change
+  overturns a decision of a released version.
 - A change that makes code of a user stop working says first what to change in
   that code.
 - Name the rule, the option, or the diagram type concerned in backticks. For the
@@ -102,5 +114,6 @@ the detection of a diagram type, a diagram type added or removed), `patch` for
 any other change (wording, examples, links, fixture citations).
 
 Before the pull request, read the files in `.changeset/` for each package
-together, as its changelog will show them: an entry that repeats another is
-merged with it, and one that holds two changes is split.
+together, as its changelog will show them, against this section: an entry that
+repeats another is merged with it, one that holds two changes is split, and one
+that breaks a rule above is rewritten.
