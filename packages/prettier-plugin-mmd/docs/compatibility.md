@@ -1261,16 +1261,17 @@ case: `style A fill:#F9F,stroke:#ABCDEF` is printed
 | quadrant     | `color` and `stroke-color` of a point and of a `classDef`        |                                          7 / 0 |
 | Venn         | the properties of `style`                                        |                                          1 / 0 |
 
-The counts are the colors of those places in the examples of the documentation
-of mermaid.js, read with the parser; the examples write 64 colors in lower case
-and none in upper case or in both. The colors of other places are texts of
-another kind and stay as written: the labels and the titles (a `<span>` with
-`style='color:#F00'` in a label is a label), the notes, the arguments of a call
-of a C4 diagram (`$bgColor="#FFF"`), the colors of the boxes and the rectangles
-of a sequence diagram, and the settings of the frontmatter and of the
-directives. The `classDef` of a treemap has none, since its lexer rejects a `#`.
-[fixture: flowchart/colors/colors-in-lower-case] [fixture:
-flowchart/colors/swimlane-colors-in-lower-case] [fixture:
+The counts are the colors with a hexadecimal letter (`#F9F`) in those places in
+the examples of the documentation of mermaid.js, read with the parser; the
+examples write 64 of them in lower case and none in upper case or in both. A
+color of digits only (`#333`, 30 more) has no case and is not counted. The
+colors of other places are texts of another kind and stay as written: the labels
+and the titles (a `<span>` with `style='color:#F00'` in a label is a label), the
+notes, the arguments of a call of a C4 diagram (`$bgColor="#FFF"`), the colors
+of the boxes and the rectangles of a sequence diagram, and the settings of the
+frontmatter and of the directives. The `classDef` of a treemap has none, since
+its lexer rejects a `#`. [fixture: flowchart/colors/colors-in-lower-case]
+[fixture: flowchart/colors/swimlane-colors-in-lower-case] [fixture:
 agentflow/colors/colors-in-lower-case] [fixture:
 class/colors/colors-in-lower-case] [fixture: state/colors/colors-in-lower-case]
 [fixture: er/colors/colors-in-lower-case] [fixture:
@@ -1341,12 +1342,15 @@ hand drawn shapes, or the pixels were the same (`style`, `classDef`, and
 `linkStyle` of a flowchart with the 14 versions 9.0.0, 9.1.7, 9.4.3, 10.3.1,
 10.9.0, 11.0.0, 11.4.1, 11.12.3, 11.13.0, 11.14.0, 11.15.0, 11.16.1, 12.0.0, and
 12.3.0; a swimlane diagram with 11.16.1, 12.0.0, and 12.3.0; an agentflow
-diagram with 12.0.0 and 12.3.0; a class diagram with 11.4.1 to 12.3.0; a state
-diagram with 11.0.0 to 12.3.0; an ER diagram with 11.12.3 to 12.3.0; a
-requirement diagram with 11.12.3 to 12.3.0; a block diagram with 10.9.0 to
-12.3.0; a usecase diagram with 12.0.0 and 12.3.0; a quadrant chart with 11.0.0
-to 12.3.0; and a Venn diagram with 11.13.0 to 12.3.0; the versions that are not
-listed for a type reject the statement or the diagram type).
+diagram with 12.0.0 and 12.3.0; a class diagram with 10.9.0, 11.0.0, and 11.4.1
+to 12.3.0 for `style`, and with 11.4.1 to 12.3.0 for `classDef`; a state diagram
+with 9.4.3, 10.3.1, 10.9.0, and 11.0.0 to 12.3.0 for `classDef`, and with 11.0.0
+to 12.3.0 for `style`; an ER diagram with 11.12.3 to 12.3.0; a requirement
+diagram with 11.12.3 to 12.3.0; a block diagram with 10.9.0 to 12.3.0; a usecase
+diagram with 12.0.0 and 12.3.0; a quadrant chart with 11.0.0 to 12.3.0; and a
+Venn diagram with 11.13.0 to 12.3.0). Of the 14 versions, the others reject the
+statement or the diagram type, except 9.0.0 for an ER diagram, which reads the
+lines of a `style` as entity names.
 
 The tests compare the Db with the colors of the styles restored from the Db of
 the written text (`colorCaseDbForFormattingComparison` in
