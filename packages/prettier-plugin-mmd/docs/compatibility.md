@@ -2335,7 +2335,7 @@ mermaid.js, show which form each version reads:
   them. Every other string of letters, digits, and `_` is read as `ALPHA` or
   `NUM`. So a name of letters, digits, and `_` that is none of these words is
   the same name in both forms in every version, unless it joins a line that
-  starts with `direction` (the next item).
+  holds `direction` (the next item).
 - The names that end with `direction` and that start with the name of a
   direction, in a class, a flowchart, an agentflow, an ER, and a requirement
   diagram: the lexers of the class grammars and of the flowchart grammars of
