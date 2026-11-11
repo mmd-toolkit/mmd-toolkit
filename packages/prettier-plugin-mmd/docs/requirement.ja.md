@@ -201,7 +201,12 @@ mermaid.js の文書がフィールドをそう書き、journey も値の前に�
 引用符なしで印字します。
 `text: "the test text"` は `text: the test text` と印字し、
 `text: "risk high"` は引用符を残します。
+値は印字される形で判定するので、
+文字の間にタブがある `text: "a b"` は `text: a b` と印字しますが、
+図に `white-space` がある場合は値の連なりを保つので、引用符も残します。
 [fixture: fields/plain-values-without-quotes]
+[fixture: fields/string-values-tabs-collapsed]
+[fixture: fields/string-values-tabs-kept-with-white-space]
 引用符のない値の中の `#`、`%`、`;` は値の文字で、
 コメントの始まりではありません。 [fixture: fields/special-characters-in-values]
 

@@ -463,8 +463,12 @@ mermaid.js が trim する括弧に接する空白、タブ、no-break space を
 
 対象のある text は、文書の例にないため、対象、id、ラベルを書かれたまま保ちます。
 ほかのラベルと同じく、ラベルの括弧に接する空白だけは除きます。
-同じ行で後ろに `%` がある名前は引用符を保ちます。
+名前の後に `%` が続く場合は引用符を保ちます。
+ここで後に続く文字とは、名前の後の空白、タブ、
+ディレクティブを除いた最初の文字です。
 （[テキストの引用符](./compatibility.ja.md#テキストの引用符)）。
+`set "B"%%{init: {}}%%` は `set B%%{init: {}}%%` と印字し、
+`set "B" %% c` は引用符を保ちます。
 `;` のある行など、プリンターが書かれたまま印字する行の名前とラベルも同じです。
 [fixture: quotes/explicit-text-as-written]
 [fixture: quotes/names-before-a-comment-as-written]

@@ -362,11 +362,12 @@ The label of a shape in quotes is printed without them, as the examples in the
 documentation of mermaid.js write it (see
 [The quotes of a text](./compatibility.md#the-quotes-of-a-text)):
 `col["Todo list"]` is printed `col[Todo list]`. The label keeps its quotes where
-a label without quotes would end earlier or be read as a closer: a label with a
-`)`, a `]`, a `(`, or a `}`; a string next to a dash of the dash form
-(`card4(-"x"-)`); a label with padding or a line break. A markdown string stays
-as written. [fixture: quotes/labels-without-quotes] [fixture:
-quotes/labels-that-need-quotes]
+a label without quotes would end earlier or be read as a closer or an opener: a
+label with a `)`, a `]`, a `(`, or a `}`; a label that starts with a `-`
+(`card6("-x")`, since `(-` opens another shape, and a `-` before a `)` closes
+one); a string next to a dash of the dash form (`card4(-"x"-)`); a label with
+padding or a line break. A markdown string stays as written. [fixture:
+quotes/labels-without-quotes] [fixture: quotes/labels-that-need-quotes]
 
 Input
 ([quotes/labels-without-quotes-input.mmd](../tests/fixtures/kanban/quotes/labels-without-quotes-input.mmd)):

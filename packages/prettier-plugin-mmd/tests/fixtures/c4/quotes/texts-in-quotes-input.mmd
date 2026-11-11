@@ -1,0 +1,16 @@
+C4Dynamic
+Person(a, Alice, A person,)
+System(b, Bank, The bank,)
+Container(c, Web, Java, Serves pages,)
+Component(d, Part, Rust, A part,)
+Boundary(e, Group, Kind,) {
+Person(f, F,)
+}
+Deployment_Node(g, Node, VM, Runs it,) {
+Person(h, H,)
+}
+Rel(a, b, Uses, HTTPS, Over the net,)
+Rel_U(b, a, Answers,)
+RelIndex(1, a, b, Mails, SMTP,)
+Person(k,   K (the key)  ,	1 + 1 = 2 , $tags="x")
+Person(l,$descr="D",L,)

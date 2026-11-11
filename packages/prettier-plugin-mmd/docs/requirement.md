@@ -197,10 +197,14 @@ fields/string-values-runs-collapsed] The value of an `id`, a `text`, a `type`,
 and a `docRef` in quotes is printed without them where it is words of letters,
 digits, and `_` with spaces between them and its first word is not a keyword of
 the diagram: `text: "the test text"` is printed `text: the test text`, and
-`text: "risk high"` stays in quotes. [fixture:
-fields/plain-values-without-quotes] A `#`, a `%`, and a `;` inside an unquoted
-value are characters of the value, not the start of a comment. [fixture:
-fields/special-characters-in-values]
+`text: "risk high"` stays in quotes. A value is judged as it is printed, so
+`text: "a b"` with a tab between the letters is printed `text: a b`, unless the
+diagram holds `white-space`, which keeps the runs of the value and so the
+quotes. [fixture: fields/plain-values-without-quotes] [fixture:
+fields/string-values-tabs-collapsed] [fixture:
+fields/string-values-tabs-kept-with-white-space] A `#`, a `%`, and a `;` inside
+an unquoted value are characters of the value, not the start of a comment.
+[fixture: fields/special-characters-in-values]
 
 The fields keep the order in which they are written, also a field that is
 written twice, of which mermaid.js reads the first. [fixture: fields/order-kept]

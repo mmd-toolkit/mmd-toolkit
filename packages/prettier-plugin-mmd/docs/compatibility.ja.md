@@ -1330,16 +1330,17 @@ mermaid.js は Db から描くので、同じ Db が同じ描画の根拠です�
 | 1 行の説明ブロック              |   3 |              3 |      533 |     483 |
 | sankey の欄の引用符             |   6 |              6 |       11 |      11 |
 | ER の名前の引用符               |   0 |              0 |       15 |      15 |
-| requirement の名前の引用符      |   0 |              0 |       11 |      11 |
+| requirement の名前の引用符      |   0 |              0 |       12 |      12 |
 | Wardley マップの名前の引用符    |   0 |              0 |       35 |      35 |
 | gitGraph のブランチの引用符     |   0 |              0 |        2 |       2 |
 | 象限チャートのテキストの引用符  |   0 |              0 |       19 |      13 |
 | XY チャートのテキストの引用符   |   0 |              0 |      191 |     191 |
-| Venn の名前やラベルの引用符     |   0 |              0 |      170 |     168 |
+| Venn の名前やラベルの引用符     |   0 |              0 |      176 |     174 |
 | use case の名前やラベルの引用符 |   0 |              0 |       93 |      90 |
 | architecture のラベルの引用符   |   0 |              0 |        2 |       2 |
 | mindmap の形のテキストの引用符  |   0 |              0 |        7 |       7 |
 | kanban の形のテキストの引用符   |   0 |              0 |      114 |     114 |
+| C4 の引数の引用符               |   0 |              0 |       71 |      69 |
 
 最後の列に数えないコーパスの対は、mermaid.js が別の綴りを拒否する対です。
 ただし、リンクのラベルの 2 対は例外で、ラベルに `%%` があり、Db が異なります。
@@ -1354,6 +1355,7 @@ XY チャートの 4 対も、
 Venn のラベルの 2 対も、空白やタブの連なりで Db が異なります。
 （[同じに描かれるテキスト中の空白の連なり](#同じに描かれるテキスト中の空白の連なり)）。
 use case 図の 3 対は、スタイルの空白で Db が異なります。
+C4 図の 2 対は、テキスト中の空白やタブの連なりで Db が異なります。
 印字は、hidden YAML ブロックに隣接する packet 図の範囲、
 `;` や hidden YAML ブロックの `---` が接するコロン、
 `%%` を含むリンクのラベルを書き換えません。
@@ -1993,6 +1995,22 @@ sankey 図のリンクの source は、`"a b",c,1` と `a b,c,1` で同じ id �
 | architecture   | service のラベル                     |         30 |          0 |
 | mindmap        | 形のテキスト                         |         21 |          0 |
 | kanban         | 形のテキスト                         |         19 |          0 |
+| C4             | 要素または境界の alias               |         73 |          0 |
+| C4             | 更新での要素の alias                 |          2 |          0 |
+| C4             | 関係の source                        |         35 |          0 |
+| C4             | 関係の target                        |         35 |          0 |
+| C4             | 更新での関係の source                |         31 |          0 |
+| C4             | 更新での関係の target                |         31 |          0 |
+| C4             | ラベル                               |          1 |        107 |
+| C4             | technology                           |          0 |         43 |
+| C4             | 境界またはノードの type              |          0 |         14 |
+| C4             | 要素の description                   |          0 |         46 |
+
+actor、use case、system boundary の名前は、
+それ自体のラベルやタイトルがない場合を数えます。
+引用符で囲んだ名前には、それらを付けられないためです。
+すべての名前を数えると、actor は 35 / 0、use case は 44 / 1、
+system boundary は 9 / 2 です。
 
 テキストが平易なら、引用符なしで印字します。
 平易なテキストは、ASCII の英字、数字、`_`、`-`、`.` と、それらの間の空白です。
@@ -2179,10 +2197,17 @@ architecture 図では、引用符で囲んだラベルが ASCII の英字、数
 空白からなり、両端に空白がなければ、引用符なしで印字します。
 引用符で囲むラベルを初めて読めるようになった 11.16.0 と 11.16.1 の文法は、
 引用符のないラベルではこれらの文字だけを読むためです。
+また、バックスラッシュや引用符を含むラベルは、引用符を外すと、
+mermaid.js が読むタイトルが変わります。
+mermaid.js はタイトルの外側の引用符 1 組を除き、
+引用符があったタイトルでだけ `\"` と `\'` を `"` と `'` に戻すためです。
+そのため、`"a\"b"` を `a\"b` と、`"'x'"` を `'x'` と印字すると、
+別のタイトルとして読まれます。
 mindmap と kanban のボードでは、引用符で囲んだ形のテキストを、
 引用符のないテキストを終えるか閉じとして読まれる `)`、`]`、`(`、`}` を含まず、
-余白も改行もなく、ダッシュの形のダッシュに隣接しない場合に、
+余白も改行もなく、`-` で始まらず、ダッシュの形のダッシュに隣接しない場合に、
 引用符なしで印字します。
+`(` と `-` は開き `(-` になり、`)` の前の `-` は閉じ `-)` になるためです。
 ダッシュの形は `(-"x"-)` で、その閉じ `-)` は文字列の後にだけ続きます。
 markdown 文字列は残します。 [fixture: architecture/quotes/labels-without-quotes]
 [fixture: architecture/quotes/labels-that-need-quotes]
@@ -2191,16 +2216,60 @@ markdown 文字列は残します。 [fixture: architecture/quotes/labels-withou
 [fixture: kanban/quotes/labels-without-quotes]
 [fixture: kanban/quotes/labels-that-need-quotes]
 
+C4 図では、要素や境界の alias と、関係や `UpdateRelStyle` の両端は、
+ASCII の英字、数字、`_`、`-`、`.` と、それらの間の空白からなり、
+直後に `,` が続く場合に、引用符なしで印字します。
+label、technology、type、description は、引用符で囲んで印字します。
+引用符のない引数は次の `,` まで続き、
+mermaid.js は ASCII の空白の後でだけ文字列を読むため、空白、タブ、改行、
+別の文字列が後に続く alias と、呼び出しの最後の引数は引用符を残します。
+最後の引数は、引用符がないと `)` をテキストに取り込むためです。
+`"` や改行を含むテキスト、タブ、改行、ASCII の空白以外の空白の後のテキスト、
+同じ行の後ろに `,` がないテキストは、引用符なしのまま残します。
+`RelIndex` の index、sprite、tags、link、更新の設定と、`Enterprise_Boundary`、
+`System_Boundary`、`Container_Boundary` の 3 番目の tags は、
+例では名前付き属性で書かれるか、まったく書かれないので、書かれたまま残します。
+名前付き属性も、どの形でも値が文字列で、キーに引用符が含まれるので、
+書かれたまま残します。
+例にないノードと関係の description は、要素の description と同じく、
+引用符で囲んで印字します。 [fixture: c4/quotes/names-without-quotes]
+[fixture: c4/quotes/names-that-need-quotes]
+[fixture: c4/quotes/names-before-a-gap-as-written]
+[fixture: c4/quotes/texts-in-quotes]
+[fixture: c4/quotes/texts-that-stay-without-quotes]
+[fixture: c4/quotes/other-arguments-as-written]
+[fixture: c4/quotes/names-and-texts-on-a-kept-line-as-written]
+
 treeView のノードの名前は、例では引用符なしが 58 回、引用符ありが 8 回ですが、
 引用符で囲まれていれば、書かれたまま残します。
 11.14.0 と 11.15.0 の文法は引用符で囲む名前だけを読み、
 引用符のない名前は 11.16.0 から読むためです。
 そのため、引用符なしで印字すると、書かれたテキストを読む版で読めなくなります。
 
-同じ行で `#` か `%` が後に続く文字列は、どの図種でも引用符を残します。
+テキストの空白とタブの連なりを空白 1 つで印字する欄では、
+テキストをその印字された形で判定し、
+2 回目の整形が 1 回目の印字したものを読むようにします。
+（[同じに描かれるテキスト中の空白の連なり](#同じに描かれるテキスト中の空白の連なり)）。
+そのため、文字の間にタブがある requirement 図の `text: "a b"` は、
+`text: a b` と印字し、象限チャートの `quadrant-2 "c d"` と、
+architecture 図の `service s(server)["a b"]` も同じように印字します。
+`white-space` を含む図のテキストなど、書かれたまま残すテキストは、
+書かれた形で判定し、タブがあれば引用符を残します。
+[fixture: requirement/fields/string-values-tabs-collapsed]
+[fixture: requirement/fields/string-values-tabs-kept-with-white-space]
+[fixture: quadrant/quotes/strings-runs-collapsed]
+[fixture: architecture/quotes/labels-with-runs-without-quotes]
+
+`#` か `%` が後に続く文字列は、どの図種でも引用符を残します。
+後続の文字は、文字列の後にある空白、タブ、
+ディレクティブを除いた最初の文字で判定します。
+mermaid.js はテキストを読む前にディレクティブを取り除くためです。
 引用符のないテキストは行末まで続くことがあり、
 `a - satisfies -> "b" #c` の `b #c` のように、
 その文字と後続の部分を取り込みます。
+そのため、その直後にテキストが終わる `quadrant-1 "A"%%{init: {}}%%` は、
+`quadrant-1 A%%{init: {}}%%` と印字し、
+`quadrant-1 "A" %% c` は引用符を残します。
 テキストが大文字小文字を問わず `style` か `classDef` で終わり、
 後ろに `:` が続く文字列も同じです。
 mermaid.js の行の規則がそのような行を読むためです。
@@ -2213,6 +2282,7 @@ mermaid.js の行の規則がそのような行を読むためです。
 [fixture: requirement/comments/after-keyword-and-string-values]
 [fixture: requirement/multi-line-statements/class-last-line-semicolon-kept]
 [fixture: quadrant/quotes/texts-that-need-quotes]
+[fixture: quadrant/quotes/texts-before-a-directive]
 [fixture: quadrant/quotes/texts-before-a-semicolon]
 
 各図種で数える適合性コーパスの入力は、mermaid.js が受理し、
@@ -2220,31 +2290,35 @@ mermaid.js の行の規則がそのような行を読むためです。
 `src/printers/quote-form.ts` の表 `quoteRules` を空にすると、
 整形後のテキストが変わるものです。
 mermaid.js 12.3.0 は、これらの入力を両方の形で読み、Db は同じでした。
-入力は sankey 図が 11 個、ER 図が 15 個、requirement 図が 11 個、
+入力は sankey 図が 11 個、ER 図が 15 個、requirement 図が 12 個、
 Wardley マップが 35 個、gitGraph が 2 個、象限チャートが 19 個のうち 13 個、
-XY チャートが 191 個、Venn 図が 170 個のうち 168 個、
+XY チャートが 191 個、Venn 図が 176 個のうち 174 個、
 use case 図が 93 個のうち 90 個、architecture 図が 2 個、mindmap が 7 個、
-kanban のボードが 114 個です。
+kanban のボードが 114 個、C4 図が 71 個のうち 69 個です。
 象限チャートの残りの 6 個はテキスト内にタブがあり、印字はこのタブも変えます。
 Venn の残りの 2 個はラベルの空白やタブの連なりで異なり、
 印字はこの連なりも変えます。
 use case の残りの 3 個はスタイルの空白で異なります。
 （[同じに描かれるスタイル](#同じに描かれるスタイル)）。
+C4 の残りの 2 個はテキスト中の空白やタブの連なりで異なり、
+印字はこの連なりも変えます。
 平易な欄をすべて引用符で囲む形でも書き直した sankey の 6 つの例も、
 両方の形で読み、Db と SVG は同じでした。
-sankey の 11 個、ER の 15 個、requirement の 11 個のうち 8 個、
+sankey の 11 個、ER の 15 個、requirement の 12 個のうち 9 個、
 Wardley の 35 個、gitGraph の 2 個、象限チャートの 19 個、
-XY チャートの 191 個のうち 73 個、Venn の 170 個のうち 163 個の入力も、
+XY チャートの 191 個のうち 73 個、Venn の 176 個のうち 166 個の入力も、
 整形後のテキストと同じ SVG が描かれました。
 requirement の残りの 3 個は、mermaid.js がどちらの形でも描きません。
 XY チャートの残りの 118 個はプロットがなく、
 mermaid.js はどちらの形でもプロットのないチャートを描きません。
-Venn の残りの 7 個は、どちらの形でも描かれません。
+Venn の残りの 10 個は、どちらの形でも描かれません。
 use case の 93 個の入力も、1 つのスタイルの空白を除くと、
 整形後のテキストと同じ SVG が描かれました。
 architecture の 2 個の入力のうち 1 個、mindmap の 7 個、kanban の 114 個も、
 整形後のテキストと同じ SVG が描かれました。
 architecture の残りの 1 個は、どちらの形でも描かれません。
+C4 の 71 個の入力のうち 67 個も、整形後のテキストと同じ SVG が描かれました。
+残りの 4 個は、どちらの形でも描かれません。
 
 ### mermaid.js の版
 
@@ -2318,6 +2392,15 @@ architecture の残りの 1 個は、どちらの形でも描かれません。
   ノードの名前を引用符で囲む文字列だけとして読み（`name=STRING2`）、
   11.16.0 の文法で引用符のない名前（`BARE_NAME`）が加わりました。
   引用符で囲む名前は、上のテキストのとおり、書かれたまま残します。
+- C4 図の引数: 引数の文脈の字句解析器の規則（`<attribute>[ ]*["]`、
+  `<string>[^"]*` と、どちらも `STR` を返す `<attribute>[^,]+`）と、
+  アクション `attribute: STR { $$ = $1.trim(); }` は、
+  C4 の文法がある最初のタグ 9.1.2（名前付き属性 `$key="value"` が、
+  9.1.3 で加わる前）、9.1.3、9.2.0、10.3.0、10.5.0、11.0.0、11.13.0、
+  12.3.0 の文法で同じです。
+  9.1.x の文法は、規則を console に記録するだけです。
+  そのため、この図種があるどの版でも、文字列と引用符のない引数は、
+  同じ引数になります。
 - use case 図の名前、ラベル、metadata: この図種が初めて加わった 12.0.0 と、
   12.1.0、12.2.0、12.3.0 の字句解析器、パーサー、visitor、model builder は、
   同じファイルです。
@@ -3734,7 +3817,8 @@ CR・LF の変換は他図種と共通の設定に従います。
 
 C4 は書かれた引数の単位と位置をすべて保ちます。
 空項目、空文字列、使われない添字と sprite、余分な引数、隣接する単位も対象です。
-裸と引用符付きの形は作者のままにし、
+裸と引用符付きの形は、
+[テキストの引用符](#テキストの引用符)のとおりに印字します。
 裸の引用符または `$` の前の非 ASCII 空白も保ちます。
 その空白が裸の単位を選ぶためです。
 引用符付き引数の後の空白だけの単位も残します。

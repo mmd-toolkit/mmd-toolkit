@@ -306,11 +306,17 @@ architecture-beta
 両端に空白がないものです。
 引用符つきのラベルを初めて読む 11.16.0 と 11.16.1 の文法は、
 引用符なしのラベルではこれらの文字だけを読むので、`"a-b"`、`"A.B"`、`"日本語"`、
-`"a[b"`、空のラベル、バックスラッシュは引用符を保ちます。
-引用符の内側に余白があるラベル（`[" padded "]`）も同じです。
+`"a[b"`、空のラベル、引用符の内側に余白があるラベル（`[" padded "]`）は、
+引用符を保ちます。
+バックスラッシュや引用符があるラベルも同じです。
+mermaid.js は、読むタイトルの外側の `"` か `'` の引用符 1 組を外し、
+外側に引用符があったタイトルだけで `\"` と `\'` を `"` と `'` に戻すので、
+`"a\"b"` を `a\"b` と、`"'x'"` を `'x'` と印字すると、
+別のタイトルとして読まれます。
 引用符なしのラベルを引用符で囲むことはありません。
 [fixture: quotes/labels-without-quotes]
 [fixture: quotes/labels-that-need-quotes]
+[fixture: quotes/labels-with-runs-without-quotes]
 
 入力
 ([quotes/labels-without-quotes-input.mmd](../tests/fixtures/architecture/quotes/labels-without-quotes-input.mmd)):

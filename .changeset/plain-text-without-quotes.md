@@ -6,27 +6,29 @@ Print a text in the form that the documentation of mermaid.js uses, where both
 forms are read the same, in a `sankey` link, in an `er` diagram, in a
 `requirementDiagram`, in a Wardley map, in a `gitGraph`, in a `quadrantChart`,
 in an `xychart`, in a `venn` diagram, in a `usecase-beta` diagram, and in an
-`architecture-beta`, a `mindmap`, and a `kanban` diagram: `"a b",c,"1.0"`
+`architecture-beta`, a `mindmap`, a `kanban`, and a C4 diagram: `"a b",c,"1.0"`
 becomes `a b,c,1`, `"CUSTOMER" ||--o{ "ORDER" : "places"` becomes
 `CUSTOMER ||--o{ ORDER : places`, `branch "dev"` becomes `branch dev`,
 `quadrant-1 "A"` becomes `quadrant-1 A`, `x-axis ["a", "b"]` becomes
 `x-axis [a, b]`, `set "A"[Alpha]` becomes `set A["Alpha"]`, `actor "Alice"`
-becomes `actor Alice`, `a["x y"]` becomes `a[x y]`, and the other way,
-`Login(Log in)` becomes `Login("Log in")`, `accelerator Market` becomes
-`accelerator "Market"` and `title Sales` becomes `title "Sales"`. Before, the
-formatter printed the quotes as written, because a string can hold what a word
-without quotes cannot (a comma, a line break, a keyword, a space where the
-diagram type drops it); so one name was printed in two forms depending on how
-its author wrote it, although mermaid.js reads both forms the same and its
-documentation writes each of these texts in one of them. The form of a field is
-the one that its examples use at least twice as often as the other (without
-quotes / in quotes), and the quotes stay on every text for which the other form
-would be read otherwise: a text with a comma, a doubled quote, a line break, or
-a `%%`, a word that is a keyword of the diagram type (`"end"`, `"one"`,
-`"commit"`, `"line"`), a name with a space or a `-` where the diagram type does
-not read it, a text of several words in an `xychart`, a string with a directive
-inside it, and a text that a `#` or a `%` follows. The numbers of the examples
-are:
+becomes `actor Alice`, `a["x y"]` becomes `a[x y]`, `Rel("a", "b", "Uses")`
+becomes `Rel(a, b, "Uses")`, and the other way, `Login(Log in)` becomes
+`Login("Log in")`, `Person(a, Alice,)` becomes `Person(a, "Alice",)`,
+`accelerator Market` becomes `accelerator "Market"` and `title Sales` becomes
+`title "Sales"`. Before, the formatter printed the quotes as written, because a
+string can hold what a word without quotes cannot (a comma, a line break, a
+keyword, a space where the diagram type drops it); so one name was printed in
+two forms depending on how its author wrote it, although mermaid.js reads both
+forms the same and its documentation writes each of these texts in one of them.
+The form of a field is the one that its examples use at least twice as often as
+the other (without quotes / in quotes), and the quotes stay on every text for
+which the other form would be read otherwise: a text with a comma, a doubled
+quote, a line break, or a `%%`, a word that is a keyword of the diagram type
+(`"end"`, `"one"`, `"commit"`, `"line"`), a name with a space or a `-` where the
+diagram type does not read it, a text of several words in an `xychart`, a string
+with a directive inside it, and a text that a `#` or a `%` follows once the
+spaces, tabs, and directives after it are taken away. The numbers of the
+examples are:
 
 - `sankey`: the source of a link 87 / 0, the target 83 / 4, the value 87 / 0.
 - `er`: the name of an entity 39 / 2, the role of a relationship 43 / 2, the
@@ -65,3 +67,8 @@ are:
   The names of a `treeView` stay as written: the examples write 58 without
   quotes and 8 in quotes, but the versions before 11.16.0 read a name in quotes
   only.
+- C4: the alias of an element or a boundary 73 / 0, the source and the target of
+  a relationship 35 / 0 each, the alias of an element in an update 2 / 0, the
+  source and the target of a relationship in an update 31 / 0 each; the label 1
+  / 107, the technology 0 / 43, the type of a boundary or a node 0 / 14, and the
+  description of an element 0 / 46, which go into quotes.

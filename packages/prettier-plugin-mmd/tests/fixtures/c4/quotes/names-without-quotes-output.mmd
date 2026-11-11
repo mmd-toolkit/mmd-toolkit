@@ -1,0 +1,22 @@
+C4Dynamic
+  Person(customer, "Customer", "A customer")
+  System_Ext(mail, "Mail", "Sends mail")
+  Container(web, "Web", "Java", "Serves pages")
+  Container_Boundary(b1, "Internet", $tags = "v1") {
+    Component(part-1.0, "Part", "Java", "A part")
+  }
+  Boundary(b2, "Plain", "type") {
+    Person(two  spaces, "Two")
+  }
+  Enterprise_Boundary(b3, "Enterprise") {
+    Person(p3, "P3")
+  }
+  Deployment_Node(n1, "Node", "VM", "Runs it") {
+    Person(p4, "P4")
+  }
+  Rel(customer, web, "Uses", "HTTPS")
+  Rel_Back(web, customer, "Answers")
+  BiRel(customer, mail, "Talks")
+  RelIndex(1, customer, mail, "Mails")
+  UpdateElementStyle(customer, $bgColor = "red")
+  UpdateRelStyle(customer, web, $textColor = "red")

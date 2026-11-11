@@ -3464,7 +3464,7 @@ const c4Examples: readonly (readonly [string, string, string])[] = [
   [
     "c4: harmless-bare-exterior",
     "C4Context\nPerson(\t a\t,\u00a0A\ufeff,)",
-    "C4Context\n  Person(a, A,)\n",
+    'C4Context\n  Person(a, "A",)\n',
   ],
   [
     "c4: null-tab-unit",

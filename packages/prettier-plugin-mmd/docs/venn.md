@@ -427,11 +427,14 @@ quotes/labels-that-stay-as-written]
 
 A text with targets stays as written in its targets, its id, and its label,
 since the examples write none; only the spaces next to the brackets of its label
-are dropped, as in any label. A name that a `%` follows on its line keeps its
-quotes (see [The quotes of a text](./compatibility.md#the-quotes-of-a-text)),
-and so does a name and a label on a line that the printer writes as it is, such
-as one with a `;`. [fixture: quotes/explicit-text-as-written] [fixture:
-quotes/names-before-a-comment-as-written] [fixture:
+are dropped, as in any label. A name that a `%` follows keeps its quotes, where
+what follows is the first character after the spaces, tabs, and directives that
+come after the name (see
+[The quotes of a text](./compatibility.md#the-quotes-of-a-text)):
+`set "B"%%{init: {}}%%` is printed `set B%%{init: {}}%%`, and `set "B" %% c`
+keeps its quotes. So does a name and a label on a line that the printer writes
+as it is, such as one with a `;`. [fixture: quotes/explicit-text-as-written]
+[fixture: quotes/names-before-a-comment-as-written] [fixture:
 quotes/texts-on-a-kept-line-as-written]
 
 Input

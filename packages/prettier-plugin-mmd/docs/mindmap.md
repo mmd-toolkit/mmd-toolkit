@@ -402,11 +402,12 @@ documentation of mermaid.js write it (see
 [The quotes of a text](./compatibility.md#the-quotes-of-a-text)): `a["x y"]` is
 printed `a[x y]`, `c(("x"))` is printed `c((x))`, and `d))"x"((` is printed
 `d))x((`. The text keeps its quotes where a text without quotes would end
-earlier or be read as a closer: a text with a `)`, a `]`, a `(`, or a `}`; a
-string next to a dash of the dash form (`f(-"x"-)`, whose closer `-)` follows a
-string only); a text with padding or a line break; and an empty string. A
-markdown string stays as written. [fixture: quotes/labels-without-quotes]
-[fixture: quotes/labels-that-need-quotes]
+earlier or be read as a closer or an opener: a text with a `)`, a `]`, a `(`, or
+a `}`; a text that starts with a `-` (`a("-x")`, since `(-` opens another shape,
+and a `-` before a `)` closes one); a string next to a dash of the dash form
+(`f(-"x"-)`, whose closer `-)` follows a string only); a text with padding or a
+line break; and an empty string. A markdown string stays as written. [fixture:
+quotes/labels-without-quotes] [fixture: quotes/labels-that-need-quotes]
 
 Input
 ([quotes/labels-without-quotes-input.mmd](../tests/fixtures/mindmap/quotes/labels-without-quotes-input.mmd)):

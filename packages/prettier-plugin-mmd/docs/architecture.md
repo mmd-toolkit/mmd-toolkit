@@ -303,10 +303,14 @@ the documentation of mermaid.js write it (see
 digits, `_`, and spaces, with no space at its ends: the grammars of 11.16.0 and
 11.16.1, the first that read a label in quotes, read a label without quotes of
 these characters only, so `"a-b"`, `"A.B"`, `"日本語"`, `"a[b"`, the empty
-label, and a backslash keep their quotes, and so does a label with padding
-inside the quotes (`[" padded "]`). A label without quotes is never put in
-quotes. [fixture: quotes/labels-without-quotes] [fixture:
-quotes/labels-that-need-quotes]
+label, and a label with padding inside the quotes (`[" padded "]`) keep their
+quotes. So do a backslash and a quote: mermaid.js takes one pair of outer
+quotes, `"` or `'`, off the title that it reads, and turns `\"` and `\'` into
+`"` and `'` only in a title that had them, so `"a\"b"` printed `a\"b`, and
+`"'x'"` printed `'x'`, would be read as other titles. A label without quotes is
+never put in quotes. [fixture: quotes/labels-without-quotes] [fixture:
+quotes/labels-that-need-quotes] [fixture:
+quotes/labels-with-runs-without-quotes]
 
 Input
 ([quotes/labels-without-quotes-input.mmd](../tests/fixtures/architecture/quotes/labels-without-quotes-input.mmd)):

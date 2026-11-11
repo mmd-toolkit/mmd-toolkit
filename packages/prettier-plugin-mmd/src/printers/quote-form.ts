@@ -1,4 +1,10 @@
-import type { Node } from "@mmd-toolkit/ast"
+import type {
+  C4BoundaryStatement,
+  C4ElementStatement,
+  C4RelationshipStatement,
+  C4UpdateStatement,
+  Node,
+} from "@mmd-toolkit/ast"
 import { visitorKeys } from "@mmd-toolkit/parser"
 import { findErKeptLines } from "./er-kept-lines.ts"
 import type { KeptLines } from "./kept-lines.ts"
@@ -16,7 +22,8 @@ import {
   isSpaceOrTab,
   isWhitespace,
 } from "./source.ts"
-import { collapseRuns } from "./text-runs.ts"
+import { c4ArgumentFields, c4NameFields, c4TextFields } from "./text-slots.ts"
+import { collapseRuns, printsRunsAsOne } from "./text-runs.ts"
 import { findUsecaseKeptLines } from "./usecase-kept-lines.ts"
 import { findVennKeptLines } from "./venn-kept-lines.ts"
 import { findXychartKeptLines } from "./xychart-kept-lines.ts"
@@ -34,12 +41,16 @@ type Bare = (text: string) => string | undefined
 interface QuoteRule {
   readonly form: "bare" | "quoted"
   readonly text: Bare
-  /** The nodes whose field has the form, when it is not every node of the type. */
-  readonly when?: (node: Node) => boolean
+  /**
+   * The values of the field that have the form, when it is not every value of
+   * every node of the type: `item` is a value of the field of `node`, and
+   * `index` its place among the values of a field that holds several.
+   */
+  readonly when?: (node: Node, item: Node, index: number) => boolean
   /**
    * Whether the text before and after the field on its line, which the printer
    * does not separate from it, would join a text without quotes into a longer
-   * name.
+   * name, or make the field another unit in the form that it would be given.
    */
   readonly joins?: (before: string, after: string) => boolean
   /**
@@ -57,19 +68,19 @@ interface QuoteRule {
   readonly standsAlone?: boolean
 }
 
+/** The options of a rule, besides its form and its text. */
+type QuoteOptions = Pick<
+  QuoteRule,
+  "when" | "joins" | "wrapped" | "standsAlone"
+>
+
 /** A field that the examples write without quotes. */
-function bare(
-  text: Bare,
-  options: Pick<QuoteRule, "when" | "joins" | "wrapped" | "standsAlone"> = {},
-): QuoteRule {
+function bare(text: Bare, options: QuoteOptions = {}): QuoteRule {
   return { form: "bare", text, ...options }
 }
 
 /** A field that the examples write in quotes. */
-function quoted(
-  text: Bare,
-  options: Pick<QuoteRule, "when" | "joins" | "wrapped" | "standsAlone"> = {},
-): QuoteRule {
+function quoted(text: Bare, options: QuoteOptions = {}): QuoteRule {
   return { form: "quoted", text, ...options }
 }
 
@@ -351,9 +362,7 @@ const quadrantReserved: ReadonlySet<string> = new Set([
  * them a word that the lexer reads as a unit of its own. A letter after a digit
  * or a `_` would start a word again, so none follows one.
  */
-function quadrantLabel(written: string): string | undefined {
-  // The printer writes a run of spaces and tabs inside a text as one space.
-  const text = collapseRuns(written)
+function quadrantLabel(text: string): string | undefined {
   return text.split(" ").every((word) => {
     const letters = [...word].findIndex(
       (character) => character >= "0" && character <= "9",
@@ -713,12 +722,14 @@ function architectureLabel(text: string): string | undefined {
 /**
  * The text of the label of a shape of a mindmap or a kanban board that the
  * lexer reads whole without quotes: none of `)`, `]`, `(`, and `}`, which end
- * the text or are read as a closer, no line break, and no whitespace at its
- * ends.
+ * the text or are read as a closer, no line break, no whitespace at its ends,
+ * and not a `-` at its start, which `(` makes the opener `(-` and a `)` after
+ * it makes the closer `-)`.
  */
 function shapeText(text: string): string | undefined {
   return text !== "" &&
     text.trim() === text &&
+    !text.startsWith("-") &&
     ![...text].some((character) => ")](}".includes(character)) &&
     !holdsLineTerminator(text)
     ? text
@@ -744,6 +755,131 @@ function hasArrow(node: Node): boolean {
   return (node as Node & { arrow?: unknown }).arrow !== null
 }
 
+/** The statements of a C4 diagram that are calls with arguments. */
+type C4Call =
+  | C4BoundaryStatement
+  | C4ElementStatement
+  | C4RelationshipStatement
+  | C4UpdateStatement
+
+/**
+ * What a value of the arguments of a C4 statement is, from its keyword and its
+ * place (`c4ArgumentFields`). A named attribute is no string or text without
+ * quotes, and is left out.
+ */
+function c4ArgumentOf(
+  node: Node,
+  item: Node,
+  index: number,
+): string | undefined {
+  return item.type === "C4Literal" || item.type === "StringLiteral"
+    ? c4ArgumentFields[(node as C4Call).keyword][index]
+    : undefined
+}
+
+/** Whether a value of the arguments of a C4 statement is a name. */
+function isC4Name(node: Node, item: Node, index: number): boolean {
+  return c4NameFields.has(c4ArgumentOf(node, item, index) ?? "")
+}
+
+/** Whether a value of the arguments of a C4 statement is a text. */
+function isC4Text(node: Node, item: Node, index: number): boolean {
+  return c4TextFields.has(c4ArgumentOf(node, item, index) ?? "")
+}
+
+/**
+ * A name of a C4 diagram that every version of mermaid.js reads the same
+ * without quotes: ASCII letters, digits, `_`, `-`, and `.`, with spaces between
+ * them. The lexer takes any character but a `,` into an argument without
+ * quotes, but a `"` or a `$` at its start begins a string or a key, a `)`
+ * there ends the call, and the stages before the lexer give `%%`, `#`, and `;`
+ * a meaning.
+ */
+function c4Name(text: string): string | undefined {
+  return text !== "" &&
+    text.trim() === text &&
+    [...text].every(
+      (character) => isWordCharacter(character) || "-. ".includes(character),
+    )
+    ? text
+    : undefined
+}
+
+/**
+ * A text of a C4 diagram that can be put in quotes: one without a `"`, which
+ * would end the string, and without a line break, which the printer keeps
+ * where it is written.
+ */
+function c4Text(text: string): string | undefined {
+  return text !== "" && !text.includes('"') && !holdsLineTerminator(text)
+    ? text
+    : undefined
+}
+
+/**
+ * Whether a name in quotes of a C4 call is not followed by a `,` right away:
+ * a text without quotes would take a space after it into its value, and a
+ * string after it into its text, where the string is a unit of its own.
+ */
+function c4NameIsNotBeforeComma(_before: string, after: string): boolean {
+  return !after.startsWith(",")
+}
+
+/**
+ * Whether a character is whitespace that the printer replaces in a C4 call: any
+ * but a line terminator. A gap with a line break or with a U+2028 or U+2029 is
+ * written as it is (docs/c4.md, Argument spacing).
+ */
+function isReplacedGapSpace(character: string | undefined): boolean {
+  return (
+    character !== undefined &&
+    isWhitespace(character) &&
+    !"\n\r\u2028\u2029".includes(character)
+  )
+}
+
+/**
+ * Whether a text without quotes of a C4 call does not stand right after a `,`
+ * or a `(` and right before a `,` on its line, once the whitespace that the
+ * printer replaces is taken away. mermaid.js reads a string only after ASCII
+ * spaces, so a tab, a line break, or any other space before it makes the quotes
+ * part of the text, and a string followed by anything but a `,` is followed by
+ * a unit of its own. The printer sets one space after a `,`, none after a `(`,
+ * and none before a `,` that follows a text without quotes, and writes any
+ * other gap as it is (docs/c4.md, Argument spacing).
+ */
+function c4TextIsNotBetweenCommas(before: string, after: string): boolean {
+  let gap = before.length
+  while (gap > 0 && isReplacedGapSpace(before[gap - 1])) gap--
+  const previous = before[gap - 1]
+  let next = 0
+  while (next < after.length && isReplacedGapSpace(after[next])) next++
+  return (
+    after[next] !== "," ||
+    previous === undefined ||
+    "\r\u2028\u2029".includes(previous) ||
+    (previous !== "," &&
+      previous !== "(" &&
+      [...before.slice(gap)].some((character) => character !== " "))
+  )
+}
+
+/**
+ * The rules of the arguments of the calls of a C4 diagram: a name without
+ * quotes, which the examples write so, and a text in quotes. The other
+ * arguments (the sprite, the tags, the link, the index of `RelIndex`, and the
+ * settings of a style) are written as named attributes in the examples, or not
+ * at all, and stay as written.
+ */
+const c4Arguments: readonly QuoteRule[] = [
+  bare(c4Name, { when: isC4Name, joins: c4NameIsNotBeforeComma }),
+  quoted(c4Text, {
+    when: isC4Text,
+    joins: c4TextIsNotBetweenCommas,
+    standsAlone: true,
+  }),
+]
+
 /**
  * The fields that are written with or without quotes, by the type of the node
  * and the field, in the form that the examples in the documentation of the
@@ -753,8 +889,9 @@ function hasArrow(node: Node): boolean {
  * names, the values, and the classes of a requirement diagram, the names of a
  * Wardley map, the branches of a gitGraph, the texts of a quadrant chart, the
  * titles and the categories of an XY chart, the names, the labels, and the
- * values of a venn diagram, and the names, the labels, and the metadata of a
- * use case diagram. A field may have several rules, which tell the roles of
+ * values of a venn diagram, the names, the labels, and the metadata of a use
+ * case diagram, and the names and the texts of the calls of a C4 diagram. A
+ * field may have several rules, which tell the roles of
  * the field apart by the node (the name of an actor without an id, the label of
  * an actor with one).
  */
@@ -767,6 +904,10 @@ const quoteRules: Readonly<
   ArchitectureServiceStatement: {
     title: bare(architectureLabel, { wrapped: ["[", "]"] }),
   },
+  C4BoundaryStatement: { arguments: c4Arguments },
+  C4ElementStatement: { arguments: c4Arguments },
+  C4RelationshipStatement: { arguments: c4Arguments },
+  C4UpdateStatement: { arguments: c4Arguments },
   KanbanShape: { label: bare(shapeText, { joins: nextToDash }) },
   MindmapShape: { label: bare(shapeText, { joins: nextToDash }) },
   ErEntityReference: { name: bare(wordWithout(erReserved)) },
@@ -918,6 +1059,22 @@ const keptLinesOf: Readonly<Record<string, (source: Source) => KeptLines>> = {
   xychart: findXychartKeptLines,
 }
 
+const keptLinesOfSources = new WeakMap<Source, KeptLines | null>()
+
+/**
+ * The lines of a source that the printer writes as they are, from the function
+ * of its diagram type in `keptLinesOf`, or null where the type has none. The
+ * lines are found once for a source, since a field asks for them.
+ */
+function keptLinesOfSource(source: Source): KeptLines | null {
+  let kept = keptLinesOfSources.get(source)
+  if (kept === undefined) {
+    kept = keptLinesOf[source.root.diagramType]?.(source) ?? null
+    keptLinesOfSources.set(source, kept)
+  }
+  return kept
+}
+
 /**
  * Whether the line of an offset is one that the printer writes as it is, or
  * keeps whole, because of a `;` or a number that the lexer reads with what
@@ -926,9 +1083,9 @@ const keptLinesOf: Readonly<Record<string, (source: Source) => KeptLines>> = {
  * its own is told by a `;` or a `%%` on the line.
  */
 function isKept(source: Source, offset: number): boolean {
-  const kept = keptLinesOf[source.root.diagramType]?.(source)
+  const kept = keptLinesOfSource(source)
   const line = lineStartOf(source, offset)
-  return kept === undefined
+  return kept === null
     ? source.text.slice(line, lineEndOf(source, offset)).includes(";") ||
         source.text.slice(line, lineEndOf(source, offset)).includes("%%")
     : kept.joined.has(line) || kept.verbatim.has(line)
@@ -982,18 +1139,20 @@ export function findQuoteFormRespellings(
   const fields = quoteRules[node.type]
   for (const key of visitorKeys[node.type]) {
     const value = (node as unknown as Record<string, unknown>)[key]
-    for (const child of Array.isArray(value) ? value : [value]) {
-      if (child === null || child === undefined) continue
+    const children: readonly unknown[] = Array.isArray(value) ? value : [value]
+    children.forEach((child, index) => {
+      // A written empty entry (`null`) holds a place, but no text.
+      if (child === null || child === undefined) return
       const item = child as Node
       const rules = fields?.[key]
       if (rules === undefined) {
         findQuoteFormRespellings(source, found, item)
-        continue
+        return
       }
       for (const rule of Array.isArray(rules) ? rules : [rules]) {
-        respell(source, found, node, item, rule)
+        respell(source, found, node, item, index, rule)
       }
-    }
+    })
   }
 }
 
@@ -1007,11 +1166,12 @@ function respell(
   found: Map<number, { readonly end: number; readonly text: string }>,
   node: Node,
   item: Node,
+  index: number,
   rule: QuoteRule,
 ): void {
   const { kind } = item as Node & { kind?: string }
   if (kind === "markdown") return
-  if (rule.when?.(node) === false) return
+  if (rule.when?.(node, item, index) === false) return
   // The characters around the text, such as the brackets of a label, stay.
   const [open, close] = rule.wrapped ?? ["", ""]
   const start = item.range[0] + open.length
@@ -1064,7 +1224,13 @@ function respell(
     // value.
     return
   }
-  const printed = rule.text(text)
+  // The printer writes the runs of spaces and tabs of some texts as one space,
+  // and the second formatting reads the text that the first one wrote.
+  const printed = rule.text(
+    printsRunsAsOne(source, item.range[0], item.range[1])
+      ? collapseRuns(text)
+      : text,
+  )
   // mermaid.js takes the directives away before it reads the text, so what
   // follows is the first character after the spaces, tabs, and directives.
   const lineEnd = lineEndOf(source, end)
