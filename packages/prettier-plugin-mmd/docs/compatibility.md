@@ -1997,22 +1997,23 @@ sankey/directives/inside-fields-kept] [fixture:
 sankey/multi-line-strings/string-over-lines]
 
 In an ER diagram a text is printed without quotes where it is one word of ASCII
-letters, digits, and `_` that starts with a letter or a `_`, or parts of such a
-word joined by a single `-` (`LINE-ITEM`) in a word that starts with a letter,
-and the word, or the part before its first `-`, is none of the words that the
-lexer reads as a unit of its own, in any case: `erDiagram`, `style`, `classDef`,
-`class`, `subgraph`, `end`, `one`, `many`, `only`, `zero`, `optionally`, `or`,
-`to`, `accTitle`, `accDescr`, `direction`, `TB`, `BT`, `RL`, `LR`, `PK`, `FK`,
-`UK`, `u`, and `o`. A `-` ends a keyword, so `end-x` is `end` and `-x`. A name
-of other characters, such as a space, a `.`, or a letter outside ASCII, a name
-with a `-` at its start or its end, two together, or after a `_` at its start
-(`-a`, `a-`, `a--b`, `_a-b`), a name that starts with a digit, which the lexer
-can read as a number or a cardinality, and a title of a subgraph, whose names
-mermaid.js joins with one space, stay as written. So does a name that ends with
-`direction` or starts with `TB`, `BT`, `RL`, or `LR`, in any case, since the
-lexer reads `direction`, white space (a line break too), and the name of a
-direction as one line, which a name without quotes would join with the line
-before or after it. [fixture: er/entities/plain-names-without-quotes] [fixture:
+letters, digits, and `_` that starts with a letter, or parts of such a word
+joined by a single `-` (`LINE-ITEM`), and the word, or the part before its first
+`-`, is none of the words that the lexer reads as a unit of its own, in any
+case: `erDiagram`, `style`, `classDef`, `class`, `subgraph`, `end`, `one`,
+`many`, `only`, `zero`, `optionally`, `or`, `to`, `accTitle`, `accDescr`,
+`direction`, `TB`, `BT`, `RL`, `LR`, `PK`, `FK`, `UK`, `u`, and `o`. A `-` ends
+a keyword, so `end-x` is `end` and `-x`. A name of other characters, such as a
+space, a `.`, or a letter outside ASCII, a name with a `-` at its start or its
+end or two together (`-a`, `a-`, `a--b`), a name that starts with a `_` (`_x`,
+`_a-b`), which the lexers before 10.5.0 reject without quotes, a name that
+starts with a digit, which the lexer can read as a number or a cardinality, and
+a title of a subgraph, whose names mermaid.js joins with one space, stay as
+written. So does a name that ends with `direction` or starts with `TB`, `BT`,
+`RL`, or `LR`, in any case, since the lexer reads `direction`, white space (a
+line break too), and the name of a direction as one line, which a name without
+quotes would join with the line before or after it. [fixture:
+er/entities/plain-names-without-quotes] [fixture:
 er/entities/hyphenated-names-without-quotes] [fixture:
 er/entities/names-that-need-quotes] [fixture:
 er/entities/names-next-to-a-direction-line] [fixture: er/entities/alias-tight]
@@ -2383,8 +2384,7 @@ mermaid.js, show which form each version reads:
   `_`, and `-` that starts with a letter is read in every version that reads a
   name in quotes, and a name that starts with a `_` is not read before 10.5.0:
   9.4.3 and 10.3.1 draw `LINE-ITEM` the same with and without quotes, and reject
-  `_x` without them, so a name with a `-` that starts with a `_` stays in
-  quotes.
+  `_x` without them, so a name that starts with a `_` stays in quotes.
 - The names and the values of a requirement diagram: the grammars of 9.1.0,
   10.9.0, and 12.3.0 give a requirement name, an id, a text, an element name, a
   type, and a reference the same production for a string in quotes and for a

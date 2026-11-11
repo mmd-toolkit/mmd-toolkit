@@ -768,11 +768,12 @@ none in quotes: `"LINE-ITEM"` is printed `LINE-ITEM`. The part before the first
 `-` is compared with the words that the lexer reads as a unit of its own, since
 a `-` ends a keyword (`"end-x"` is `end` and `-x`). The other names are kept as
 written, quoted or not, numbers included, and so are a name with a `-` at its
-start or its end, two together, or after a `_` at its start, and a name that
-ends with `direction` or starts with `TB`, `BT`, `RL`, or `LR`, in any case: the
-lexer reads `direction`, white space (a line break too), and the name of a
-direction as one line, which a name without quotes would join with the line
-before or after it. [fixture: entities/plain-names-without-quotes] [fixture:
+start or its end or two together, a name that starts with a `_` (`"_x"`, which
+the lexers before 10.5.0 reject without quotes), and a name that ends with
+`direction` or starts with `TB`, `BT`, `RL`, or `LR`, in any case: the lexer
+reads `direction`, white space (a line break too), and the name of a direction
+as one line, which a name without quotes would join with the line before or
+after it. [fixture: entities/plain-names-without-quotes] [fixture:
 entities/hyphenated-names-without-quotes] [fixture:
 entities/names-that-need-quotes] [fixture:
 entities/names-next-to-a-direction-line] [fixture: entities/names-kept] A

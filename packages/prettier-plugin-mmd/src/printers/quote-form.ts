@@ -167,28 +167,33 @@ function joinsDirectionLine(
 /**
  * A word of ASCII letters, digits, and `_`, or, where `spaces` is true, words
  * with spaces between them, that starts with a letter or `_` (or, where
- * `digits` is true, with any of these characters) and whose first word is none
- * of the `reserved` words, which are compared in lower case: the lexer of a
- * diagram type reads a reserved word as a unit of its own, and a text of other
+ * `digits` is true, with any of these characters; or, where `startsWithLetter`
+ * is true, with a letter only: the lexers before 10.5.0 read no `_` at the
+ * start of a name without quotes) and whose first word is none of the
+ * `reserved` words, which are compared in lower case: the lexer of a diagram
+ * type reads a reserved word as a unit of its own, and a text of other
  * characters has a meaning in the stages before the lexer. Where `hyphens` is
- * true, the parts of a word may be joined by a single `-`, a word with a `-`
- * starts with a letter (the lexers before 10.5.0 read no `_` at the start of a
- * name without quotes), and the part before the first `-` is the one compared
- * with the reserved words, since a `-` ends a keyword (`end-x` is `end` and
- * `-x`). The text joins no line of a direction either (`joinsDirectionLine`, in
- * any case, since the lexers of an ER and a requirement diagram read in any
- * case).
+ * true, the parts of a word may be joined by a single `-`, and the part before
+ * the first `-` is the one compared with the reserved words, since a `-` ends a
+ * keyword (`end-x` is `end` and `-x`). The text joins no line of a direction
+ * either (`joinsDirectionLine`, in any case, since the lexers of an ER and a
+ * requirement diagram read in any case).
  */
 function wordWithout(
   reserved: ReadonlySet<string>,
-  { spaces = false, digits = false, hyphens = false } = {},
+  {
+    spaces = false,
+    digits = false,
+    hyphens = false,
+    startsWithLetter = false,
+  } = {},
 ): Bare {
   return (text) => {
     const first = text[0]
     const parts = hyphens ? text.split("-") : [text]
     return first !== undefined &&
       (digits || !(first >= "0" && first <= "9")) &&
-      (!text.includes("-") || isLetter(first)) &&
+      (!startsWithLetter || isLetter(first)) &&
       first !== " " &&
       !text.endsWith(" ") &&
       parts.every(
@@ -242,11 +247,16 @@ const erReserved: ReadonlySet<string> = new Set([
 
 /**
  * A name or a role of an ER diagram that every version of mermaid.js that
- * reads it in quotes reads the same without them: a word of `wordWithout`, which
- * may have a single `-` between its parts (the lexers of 9.4.3 to 12.3.0 read
- * the `-` inside a name without quotes).
+ * reads it in quotes reads the same without them: a word of `wordWithout` that
+ * starts with a letter (the lexers of 9.4.3 and 10.3.1 reject a `_` at the
+ * start of a name without quotes), which may have a single `-` between its
+ * parts (the lexers of 9.4.3 to 12.3.0 read the `-` inside a name without
+ * quotes).
  */
-const erName: Bare = wordWithout(erReserved, { hyphens: true })
+const erName: Bare = wordWithout(erReserved, {
+  hyphens: true,
+  startsWithLetter: true,
+})
 
 /**
  * The words of a requirement diagram that its lexer reads as a unit of its own:
@@ -951,20 +961,42 @@ function dottedLinkLabelText(text: string): string | undefined {
   return text.includes(".") ? undefined : labelText(text)
 }
 
+/**
+ * The text of a label between the arrows of a solid link (`-- text -->`), which
+ * a `--` in the text ends, or reads as an arrow with the letters around it
+ * (`go--on` has the arrow `--o`): a text of `labelText` without a `--`.
+ */
+function solidLinkLabelText(text: string): string | undefined {
+  return text.includes("--") ? undefined : labelText(text)
+}
+
+/** The line of the opening arrow of a link, or undefined for a label between `|`. */
+function openingLineOf(node: Node): string | undefined {
+  return (node as Node & { opening?: { line?: string } | null }).opening?.line
+}
+
 /** Whether a link of a flowchart has its label between two dotted arrows. */
 function isDottedArrowLabel(node: Node): boolean {
-  return (
-    (node as Node & { opening?: { line?: string } | null }).opening?.line ===
-    "dotted"
-  )
+  return openingLineOf(node) === "dotted"
+}
+
+/** Whether a link has its label between two solid arrows. */
+function isSolidArrowLabel(node: Node): boolean {
+  return openingLineOf(node) === "solid"
 }
 
 /**
- * Whether a link has its label between `|`, or between two arrows that are not
- * dotted.
+ * Whether a link has its label between `|`, or between two thick arrows: the
+ * labels between dotted and solid arrows end at a `.` and a `--`.
  */
-function isNotDottedArrowLabel(node: Node): boolean {
-  return !isDottedArrowLabel(node)
+function isPipedOrThickLabel(node: Node): boolean {
+  const line = openingLineOf(node)
+  return line === undefined || line === "thick"
+}
+
+/** Whether a link of an agentflow diagram has its label between `|`. */
+function isPipedLabel(node: Node): boolean {
+  return openingLineOf(node) === undefined
 }
 
 /**
@@ -1148,7 +1180,12 @@ const quoteRules: Readonly<
   AgentflowFlowStatement: {
     title: quoted(labelText, { standsAlone: true, afterTextOnItsLine: true }),
   },
-  AgentflowLink: { label: bare(labelText) },
+  AgentflowLink: {
+    label: [
+      bare(labelText, { when: isPipedLabel }),
+      bare(solidLinkLabelText, { when: isSolidArrowLabel }),
+    ],
+  },
   AgentflowName: {
     parts: bare(headingName, { when: hasOnePart, joins: wordFollows }),
   },
@@ -1163,8 +1200,9 @@ const quoteRules: Readonly<
   C4UpdateStatement: { arguments: c4Arguments },
   FlowchartLink: {
     label: [
-      bare(labelText, { when: isNotDottedArrowLabel }),
+      bare(labelText, { when: isPipedOrThickLabel }),
       bare(dottedLinkLabelText, { when: isDottedArrowLabel }),
+      bare(solidLinkLabelText, { when: isSolidArrowLabel }),
     ],
   },
   FlowchartShape: { label: bare(labelText) },
