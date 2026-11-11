@@ -981,6 +981,41 @@ sequenceDiagram
   end
 ```
 
+### Quotes
+
+The printer neither adds nor removes quotes: sequence diagrams have no string,
+and a quote is a character of the text. `participant A as "Alice"` has the
+description `"Alice"`, with its quotes, and `participant B as Bob` has `Bob`;
+`A->>B: "Hello"` is a message with the text `"Hello"`, and `B-->>A: Hello` one
+with `Hello`; a note takes its quotes in the same way. Taking the quotes off
+would change the text that mermaid.js draws. [fixture: quotes/texts-as-written]
+
+Input
+([quotes/texts-as-written-input.mmd](../tests/fixtures/sequence/quotes/texts-as-written-input.mmd)):
+
+```mmd
+sequenceDiagram
+participant A as "Alice"
+participant B as Bob
+A->>B: "Hello"
+B-->>A: Hello
+Note over A: "Quoted"
+Note over A: Plain
+```
+
+Output
+([quotes/texts-as-written-output.mmd](../tests/fixtures/sequence/quotes/texts-as-written-output.mmd)):
+
+```mmd
+sequenceDiagram
+  participant A as "Alice"
+  participant B as Bob
+  A ->> B: "Hello"
+  B -->> A: Hello
+  Note over A: "Quoted"
+  Note over A: Plain
+```
+
 ### Frontmatter YAML
 
 As in a flowchart: the YAML between the `---` lines is formatted with Prettier's

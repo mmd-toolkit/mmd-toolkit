@@ -2609,6 +2609,93 @@ flowchart LR
   end
 ```
 
+### Quotes
+
+引用符付きの subgraph の名前は、mermaid.js の文書の例が引用符なしで 53 回、
+引用符付きで 1 回書いているとおり、引用符なしで印字します。
+（[テキストの引用符](./compatibility.ja.md#テキストの引用符)）。
+`subgraph "Group A"` は `subgraph Group A` と印字します。
+mermaid.js はどちらの形の名前も同じテキストとして読み、
+複数の語からなる名前の id はどちらでも生成されます。
+名前が ASCII の英字、数字、`_` からなる語を空白 1 つで区切ったもので、
+どの語も `_blank`、`_parent`、`_self`、`_top`、`call`、`click`、`default`、
+`direction`、`end`、`href`、`interpolate` でない場合に、引用符なしで印字します。
+これらの語は、字句解析器がそれぞれ独立した単位として読むためです。
+そのため、`"a-b"`、`"end"`、`"x end"`、`"click"`、`"x _self"`、`"direction"`、
+`.` や ASCII 以外の文字を含む名前と、markdown 文字列は書かれたままにします。
+同じ行で語が接する名前（`subgraph "S"accDescr {}`）と、
+コメントが続く名前（`subgraph "C" %% note`）は、
+引用符なしのテキストが語やコメントを取り込んでしまうため、引用符を保ちます。
+タイトルのある subgraph では、空白 2 つの連なりを持つ名前も引用符を保ちます。
+そこでは名前が id であり、空白の連なりが異なる 2 つの id は別の id だからです。
+（[同じに描かれるテキスト中の空白の連なり](./compatibility.ja.md#同じに描かれるテキスト中の空白の連なり)）。
+名前の後の `;` やディレクティブは何も取り込まないので、名前は引用符を失います。
+`subgraph "D"%%{init: {}}%%` は `subgraph D%%{init: {}}%%` と印字します。
+[fixture: quotes/subgraph-names-without-quotes]
+[fixture: quotes/swimlane-lane-names-without-quotes]
+[fixture: quotes/subgraph-names-that-need-quotes]
+[fixture: quotes/subgraph-names-with-runs-without-quotes]
+[fixture: quotes/subgraph-names-before-a-comment]
+[fixture: subgraph-header/whitespace-before-block-kept]
+
+角括弧の中の subgraph のタイトルと、shape のラベル、link のラベルは、
+書かれたままにします。
+mermaid.js は `A["x"]` を文字列として、`A[x]` をテキストとして読み、
+Db の `labelType` に前者では `string`、後者では `text` を持ちます。
+そのため、例では shape のラベルを引用符なしで 109 回、
+引用符付きで 8 回書いていても、この 2 つの形は同じには読まれません。
+[fixture: quotes/labels-as-written] [fixture: quotes/subgraph-titles-as-written]
+
+入力
+([quotes/subgraph-names-without-quotes-input.mmd](../tests/fixtures/flowchart/quotes/subgraph-names-without-quotes-input.mmd)):
+
+```mmd
+flowchart TD
+subgraph "One"
+A --> B
+end
+subgraph "Group A"
+C --> D
+end
+subgraph "g_2" [Title]
+E --> F
+end
+subgraph "G3"[Title]
+G --> H
+end
+subgraph 'Single'
+I --> J
+end
+subgraph Already
+K --> L
+end
+```
+
+出力
+([quotes/subgraph-names-without-quotes-output.mmd](../tests/fixtures/flowchart/quotes/subgraph-names-without-quotes-output.mmd)):
+
+```mmd
+flowchart TD
+  subgraph One
+    A --> B
+  end
+  subgraph Group A
+    C --> D
+  end
+  subgraph g_2[Title]
+    E --> F
+  end
+  subgraph G3[Title]
+    G --> H
+  end
+  subgraph 'Single'
+    I --> J
+  end
+  subgraph Already
+    K --> L
+  end
+```
+
 ### スタイルの行末の空白
 
 `style`、`classDef`、`linkStyle` の文の末尾の空白は取り除きます。

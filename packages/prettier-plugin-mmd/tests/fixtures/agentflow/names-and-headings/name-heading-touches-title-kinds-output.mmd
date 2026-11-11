@@ -2,7 +2,7 @@ agentflow-beta TB
   flow F[T]
     A
   end
-  flow "F"[T]
+  flow F[T]
     B
   end
   flow F G[T]
@@ -17,7 +17,7 @@ agentflow-beta TB
   flow F["T U"]
     G
   end
-  connector F[T]
-  connector "F"[T]
-  connector F G[T]
-  connector " "[T]
+  connector F["T"]
+  connector F["T"]
+  connector F G["T"]
+  connector " "["T"]

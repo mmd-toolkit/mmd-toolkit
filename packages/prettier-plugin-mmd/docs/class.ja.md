@@ -1015,6 +1015,37 @@ classDiagram
 [fixture: directives/semicolon-after-unclosed-directive-kept]
 [fixture: directives/semicolon-on-next-line-after-unclosed-directive-kept]
 
+### Quotes
+
+printer は引用符を付けたり外したりしません。
+文法が文字列を要求する箇所では、mermaid.js は引用符のないテキストを拒否します。
+`class A["Label"]` は読まれ、`class A[Label]` は拒否されます。
+`note for B Text` と引用符のない多重度（`A 1 --> * B`）も拒否されるので、
+その位置の文字列を引用符なしにする選択肢はありません。
+[fixture: quotes/strings-as-written]
+
+入力
+([quotes/strings-as-written-input.mmd](../tests/fixtures/class/quotes/strings-as-written-input.mmd)):
+
+```mmd
+classDiagram
+class A["Label"]
+class B
+note for B "Text"
+A "1" --> "*" B
+```
+
+出力
+([quotes/strings-as-written-output.mmd](../tests/fixtures/class/quotes/strings-as-written-output.mmd)):
+
+```mmd
+classDiagram
+  class A["Label"]
+  class B
+  note for B "Text"
+  A "1" --> "*" B
+```
+
 ### フロントマターの YAML
 
 flowchart と同じです。

@@ -944,6 +944,36 @@ part of it: the lines it joins are printed as written. [fixture:
 directives/semicolon-after-unclosed-directive-kept] [fixture:
 directives/semicolon-on-next-line-after-unclosed-directive-kept]
 
+### Quotes
+
+The printer neither adds nor removes quotes. Where the grammar needs a string,
+mermaid.js rejects the text without quotes: `class A["Label"]` is read and
+`class A[Label]` is rejected, and so are `note for B Text` and a cardinality
+without quotes (`A 1 --> * B`), so a string there is no choice. [fixture:
+quotes/strings-as-written]
+
+Input
+([quotes/strings-as-written-input.mmd](../tests/fixtures/class/quotes/strings-as-written-input.mmd)):
+
+```mmd
+classDiagram
+class A["Label"]
+class B
+note for B "Text"
+A "1" --> "*" B
+```
+
+Output
+([quotes/strings-as-written-output.mmd](../tests/fixtures/class/quotes/strings-as-written-output.mmd)):
+
+```mmd
+classDiagram
+  class A["Label"]
+  class B
+  note for B "Text"
+  A "1" --> "*" B
+```
+
 ### Frontmatter YAML
 
 As in a flowchart: the YAML between the `---` lines is formatted with Prettier's

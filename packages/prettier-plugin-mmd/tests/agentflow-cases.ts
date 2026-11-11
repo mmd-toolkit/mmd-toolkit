@@ -74,12 +74,32 @@ export const agentflowCases: readonly AgentflowCase[] = [
   {
     name: "agentflow: U+2029 between a connector name and its title",
     input: "agentflow-beta TB\nconnector G \u2029[T]",
-    output: "agentflow-beta TB\n  connector G \u2029[T]\n",
+    output: 'agentflow-beta TB\n  connector G \u2029["T"]\n',
   },
   {
     name: "agentflow: U+2028 between the header keyword and its direction",
     input: "agentflow-beta\u2028<\nA",
     output: "agentflow-beta\u2028<\n  A\n",
+  },
+  {
+    name: "agentflow: U+2028 in the name of a flow in quotes",
+    input: 'agentflow-beta TB\nflow "A\u2028B"\nA\nend\n',
+    output: 'agentflow-beta TB\n  flow "A\u2028B"\n    A\n  end\n',
+  },
+  {
+    name: "agentflow: U+2029 after the name of a flow in quotes",
+    input: 'agentflow-beta TB\nflow "F"\u2029\nA\nend\n',
+    output: 'agentflow-beta TB\n  flow "F"\u2029\n    A\n  end\n',
+  },
+  {
+    name: "agentflow: U+2029 between the name of a flow in quotes and its title",
+    input: 'agentflow-beta TB\nflow "F" \u2029[T]\nA\nend\n',
+    output: 'agentflow-beta TB\n  flow "F" \u2029[T]\n    A\n  end\n',
+  },
+  {
+    name: "agentflow: U+2028 after the title of a connector",
+    input: "agentflow-beta TB\nconnector C[ T\u2028]\n",
+    output: 'agentflow-beta TB\n  connector C["T"\u2028]\n',
   },
   {
     name: "agentflow: U+2029 between a connector name and its data block",

@@ -568,6 +568,21 @@ const flowchartExamples: readonly (readonly [string, string, string])[] = [
     "flowchart LR\n  subgraph S[T\u2028]\n    A\n  end\n",
   ],
   [
+    "U+2028 in the name of a flowchart subgraph in quotes",
+    'flowchart TD\nsubgraph "A\u2028B"\nA\nend\n',
+    'flowchart TD\n  subgraph "A\u2028B"\n    A\n  end\n',
+  ],
+  [
+    "U+2029 after the name of a flowchart subgraph in quotes",
+    'flowchart TD\nsubgraph "S"\u2029\nA\nend\n',
+    'flowchart TD\n  subgraph "S"\u2029\n    A\n  end\n',
+  ],
+  [
+    "U+2029 between the name of a flowchart subgraph in quotes and its title",
+    'flowchart TD\nsubgraph "S" \u2029[T]\nA\nend\n',
+    "flowchart TD\n  subgraph S \u2029[T]\n    A\n  end\n",
+  ],
+  [
     "U+2028 after the string of a flowchart click statement with a string over lines",
     'flowchart LR\nA\nclick   A "x\ny"   \u2028  "t"\n',
     'flowchart LR\n  A\n  click A "x\ny"   \u2028  "t"\n',

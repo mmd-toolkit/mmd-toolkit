@@ -1,0 +1,19 @@
+agentflow-beta TB
+  flow Main
+    A --> B
+  end
+  flow My Flow[T]
+    C --> D
+  end
+  flow F3["T"]
+    E --> F
+  end
+  flow F4@{ x: 1 }
+    G --> H
+  end
+  connector Join
+  connector Join2["Merge results"]
+  connector J3@{ x: 1 }
+  flow Already
+    I --> J
+  end

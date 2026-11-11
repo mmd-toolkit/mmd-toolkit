@@ -1340,7 +1340,9 @@ mermaid.js は Db から描くので、同じ Db が同じ描画の根拠です�
 | architecture のラベルの引用符   |   0 |              0 |        2 |       2 |
 | mindmap の形のテキストの引用符  |   0 |              0 |        7 |       7 |
 | kanban の形のテキストの引用符   |   0 |              0 |      114 |     114 |
-| C4 の引数の引用符               |   0 |              0 |       71 |      69 |
+| C4 の引数の引用符               |   0 |              0 |       67 |      65 |
+| 見出しの名前の引用符            |   0 |              0 |        7 |       7 |
+| agentflow の名前の引用符        |   0 |              0 |       23 |      21 |
 
 最後の列に数えないコーパスの対は、mermaid.js が別の綴りを拒否する対です。
 ただし、リンクのラベルの 2 対は例外で、ラベルに `%%` があり、Db が異なります。
@@ -1354,7 +1356,7 @@ XY チャートの 4 対も、
 象限チャートの 6 対は、テキスト内にタブがあります（同じ節を参照してください）。
 Venn のラベルの 2 対も、空白やタブの連なりで Db が異なります。
 （[同じに描かれるテキスト中の空白の連なり](#同じに描かれるテキスト中の空白の連なり)）。
-use case 図の 3 対は、スタイルの空白で Db が異なります。
+use case 図の 3 対と agentflow 図の 2 対は、スタイルの空白で Db が異なります。
 C4 図の 2 対は、テキスト中の空白やタブの連なりで Db が異なります。
 印字は、hidden YAML ブロックに隣接する packet 図の範囲、
 `;` や hidden YAML ブロックの `---` が接するコロン、
@@ -2005,6 +2007,10 @@ sankey 図のリンクの source は、`"a b",c,1` と `a b,c,1` で同じ id �
 | C4             | technology                           |          0 |         43 |
 | C4             | 境界またはノードの type              |          0 |         14 |
 | C4             | 要素の description                   |          0 |         46 |
+| flowchart      | subgraph の名前                      |         53 |          1 |
+| agentflow      | flow の名前                          |         17 |          0 |
+| agentflow      | connector の名前                     |          2 |          0 |
+| agentflow      | connector のタイトル                 |          0 |          2 |
 
 actor、use case、system boundary の名前は、
 それ自体のラベルやタイトルがない場合を数えます。
@@ -2195,7 +2201,7 @@ native metadata のキーとスカラーは、1 語なら引用符なしで印�
 
 architecture 図では、引用符で囲んだラベルが ASCII の英字、数字、`_`、
 空白からなり、両端に空白がなければ、引用符なしで印字します。
-引用符で囲むラベルを初めて読めるようになった 11.16.0 と 11.16.1 の文法は、
+引用符で囲むラベルを読む 11.13.0 から 11.16.1 までの文法は、
 引用符のないラベルではこれらの文字だけを読むためです。
 また、バックスラッシュや引用符を含むラベルは、引用符を外すと、
 mermaid.js が読むタイトルが変わります。
@@ -2219,26 +2225,75 @@ markdown 文字列は残します。 [fixture: architecture/quotes/labels-withou
 C4 図では、要素や境界の alias と、関係や `UpdateRelStyle` の両端は、
 ASCII の英字、数字、`_`、`-`、`.` と、それらの間の空白からなり、
 直後に `,` が続く場合に、引用符なしで印字します。
-label、technology、type、description は、引用符で囲んで印字します。
+label、technology、type、要素の description は、引用符で囲んで印字します。
 引用符のない引数は次の `,` まで続き、
 mermaid.js は ASCII の空白の後でだけ文字列を読むため、空白、タブ、改行、
 別の文字列が後に続く alias と、呼び出しの最後の引数は引用符を残します。
 最後の引数は、引用符がないと `)` をテキストに取り込むためです。
-`"` や改行を含むテキスト、タブ、改行、ASCII の空白以外の空白の後のテキスト、
+`"` や改行を含むテキスト、文字列の後にタブ、改行、
+ASCII の空白以外の空白を挟んで立つテキスト、行の頭にあるテキスト、
 同じ行の後ろに `,` がないテキストは、引用符なしのまま残します。
-`RelIndex` の index、sprite、tags、link、更新の設定と、`Enterprise_Boundary`、
-`System_Boundary`、`Container_Boundary` の 3 番目の tags は、
-例では名前付き属性で書かれるか、まったく書かれないので、書かれたまま残します。
+`,` や `(` の後のタブやほかの空白は空白 1 つに置き換えるので、
+引用符を付けるのを妨げません。
+ノードと関係の description、`RelIndex` のすべての引数、sprite、tags、link、
+更新の設定と、`Enterprise_Boundary`、`System_Boundary`、
+`Container_Boundary` の 3 番目の tags は、例では名前付き属性で書かれるか、
+まったく書かれないので、書かれたまま残します。
 名前付き属性も、どの形でも値が文字列で、キーに引用符が含まれるので、
-書かれたまま残します。
-例にないノードと関係の description は、要素の description と同じく、
-引用符で囲んで印字します。 [fixture: c4/quotes/names-without-quotes]
+書かれたまま残します。 [fixture: c4/quotes/names-without-quotes]
 [fixture: c4/quotes/names-that-need-quotes]
 [fixture: c4/quotes/names-before-a-gap-as-written]
 [fixture: c4/quotes/texts-in-quotes]
 [fixture: c4/quotes/texts-that-stay-without-quotes]
 [fixture: c4/quotes/other-arguments-as-written]
 [fixture: c4/quotes/names-and-texts-on-a-kept-line-as-written]
+
+flowchart、swimlane 図、agentflow 図では、引用符で囲んだ subgraph、flow、
+connector の名前が、ASCII の英字、数字、`_` の語を空白 1 つで区切ったもので、
+どの語も `_blank`、`_parent`、`_self`、`_top`、`call`、`click`、`default`、
+`direction`、`end`、`href`、`interpolate` でなければ、引用符なしで印字します。
+字句解析器はこれらを独立した単位として読むので、`"end"`、`"click"`、
+`"x _self"` は引用符を残します。
+agentflow 図の字句解析器は `end` を名前として読みますが、
+印字はこれも引用符を残します。
+同じ行で語が接する名前（`subgraph "S"accDescr {}`）、コメントが続く名前、
+空白 2 つの連なりを持ち、subgraph にタイトルがあるため id になる名前は、
+引用符を残します。
+connector のタイトルは、mermaid.js が引用符の有無によらず同じに読むので、
+英字または数字で始まり、ASCII の英字、数字、空白、`_`、`-`、`.`、`,`、`:`、`!`、
+`?` からなる場合に、引用符で囲んで印字します。
+[fixture: flowchart/quotes/subgraph-names-without-quotes]
+[fixture: flowchart/quotes/swimlane-lane-names-without-quotes]
+[fixture: flowchart/quotes/subgraph-names-that-need-quotes]
+[fixture: flowchart/quotes/subgraph-names-with-runs-without-quotes]
+[fixture: flowchart/quotes/subgraph-names-before-a-comment]
+[fixture: flowchart/subgraph-header/whitespace-before-block-kept]
+[fixture: agentflow/quotes/names-without-quotes]
+[fixture: agentflow/quotes/names-that-need-quotes]
+[fixture: agentflow/quotes/connector-titles-in-quotes]
+[fixture: agentflow/quotes/connector-titles-as-written]
+[fixture: agentflow/quotes/names-and-titles-before-a-comment]
+
+flowchart、swimlane 図、agentflow 図では、subgraph や flow のタイトル、
+図形のラベル、リンクのラベルは、書かれたまま残します。
+mermaid.js は `A["x"]` を文字列、`A[x]` をテキストとして読み、
+Db は前者の `labelType` に `string`、後者に `text` を持つので、
+両方の形は同じに読まれないためです。
+sequence 図に文字列はなく、参加者の説明（`participant A as "Alice"`）、
+メッセージ、ノートの引用符はテキストの文字です。
+class 図の文法は、クラスのラベル、ノートのテキスト、多重度に文字列を必要とし、
+引用符のないテキスト（`class A[Label]`、`note for B Text`、
+`A 1 --> * B`）を拒否します。
+eventmodeling 図の名前に引用符で囲む形はなく、frame のデータ、タイトル、
+アクセシビリティの値の引用符はテキストの文字です。
+Db はデータ `{"x"}` に `{"x"}` を、`{x}` に `{x}` を持ちます。
+[fixture: flowchart/quotes/labels-as-written]
+[fixture: flowchart/quotes/subgraph-titles-as-written]
+[fixture: agentflow/quotes/labels-as-written]
+[fixture: agentflow/quotes/flow-titles-as-written]
+[fixture: sequence/quotes/texts-as-written]
+[fixture: class/quotes/strings-as-written]
+[fixture: eventmodeling/quotes/quotes-as-written]
 
 treeView のノードの名前は、例では引用符なしが 58 回、引用符ありが 8 回ですが、
 引用符で囲まれていれば、書かれたまま残します。
@@ -2294,7 +2349,8 @@ mermaid.js 12.3.0 は、これらの入力を両方の形で読み、Db は同�
 Wardley マップが 35 個、gitGraph が 2 個、象限チャートが 19 個のうち 13 個、
 XY チャートが 191 個、Venn 図が 176 個のうち 174 個、
 use case 図が 93 個のうち 90 個、architecture 図が 2 個、mindmap が 7 個、
-kanban のボードが 114 個、C4 図が 71 個のうち 69 個です。
+kanban のボードが 114 個、C4 図が 67 個のうち 65 個、flowchart が 7 個、
+agentflow 図が 23 個のうち 21 個です。
 象限チャートの残りの 6 個はテキスト内にタブがあり、印字はこのタブも変えます。
 Venn の残りの 2 個はラベルの空白やタブの連なりで異なり、
 印字はこの連なりも変えます。
@@ -2302,6 +2358,8 @@ use case の残りの 3 個はスタイルの空白で異なります。
 （[同じに描かれるスタイル](#同じに描かれるスタイル)）。
 C4 の残りの 2 個はテキスト中の空白やタブの連なりで異なり、
 印字はこの連なりも変えます。
+agentflow の残りの 2 個はスタイルの空白で異なります。
+（[同じに描かれるスタイル](#同じに描かれるスタイル)）。
 平易な欄をすべて引用符で囲む形でも書き直した sankey の 6 つの例も、
 両方の形で読み、Db と SVG は同じでした。
 sankey の 11 個、ER の 15 個、requirement の 12 個のうち 9 個、
@@ -2317,8 +2375,10 @@ use case の 93 個の入力も、1 つのスタイルの空白を除くと、
 architecture の 2 個の入力のうち 1 個、mindmap の 7 個、kanban の 114 個も、
 整形後のテキストと同じ SVG が描かれました。
 architecture の残りの 1 個は、どちらの形でも描かれません。
-C4 の 71 個の入力のうち 67 個も、整形後のテキストと同じ SVG が描かれました。
-残りの 4 個は、どちらの形でも描かれません。
+C4 の 67 個の入力、flowchart の 7 個の入力も、
+整形後のテキストと同じ SVG が描かれました。
+agentflow の 23 個の入力も、スタイルの空白を除くと、
+整形後のテキストと同じ SVG が描かれました。
 
 ### mermaid.js の版
 
@@ -2373,10 +2433,10 @@ C4 の 71 個の入力のうち 67 個も、整形後のテキストと同じ SV
   これらの字句解析器は、`title`、`x-axis`、`y-axis`、`line`、`bar` を、
   後ろに英字、数字、`_` がない場合に、大文字小文字を問わず読み、
   `vertical` と `horizontal` は、どこで始まる場合も読みます。
-- architecture 図のラベル: 11.1.0 から 11.15.0 の文法は、
+- architecture 図のラベル: 11.1.0 から 11.12.3 の文法は、
   角括弧内の ASCII の英字、数字、`_`、空白からなるラベルを読み、
   引用符で囲むラベルは読みません。
-  11.16.0 と 11.16.1 の文法は、そのようなラベルか引用符で囲むラベルを読み、
+  11.13.0 から 11.16.1 の文法は、そのようなラベルか引用符で囲むラベルを読み、
   11.17.0 から 12.3.0 の文法は、引用符で囲むラベルか、`[`、`]`、
   改行を含まない任意のテキストを読みます。
   そのため、引用符で囲んだラベルは、
@@ -2401,6 +2461,15 @@ C4 の 71 個の入力のうち 67 個も、整形後のテキストと同じ SV
   9.1.x の文法は、規則を console に記録するだけです。
   そのため、この図種があるどの版でも、文字列と引用符のない引数は、
   同じ引数になります。
+- flowchart の subgraph と agentflow 図の flow の名前: 9.0.0 から 10.3.0
+  の文法は、subgraph の名前を `text` 規則で読み、
+  この規則では文字列は型が `string` のテキストになり、
+  10.3.1 から 12.3.0 の文法は `textNoTags` 規則で読み、
+  この規則では文字列は型が `text` のテキストになります。
+  10.2.4 と 10.3.0 のソースは、ラベルの型を `markdown` とだけ比べ、
+  ほかの型同士を比べないので（`flowRenderer-v2.js`、`clusters.js`、
+  `shapes/util.js`）、これらの版でも、両方の形の名前は同じに描かれます。
+  agentflow 図の文法は、12.0.0、12.1.0、12.2.0、12.3.0 で同じファイルです。
 - use case 図の名前、ラベル、metadata: この図種が初めて加わった 12.0.0 と、
   12.1.0、12.2.0、12.3.0 の字句解析器、パーサー、visitor、model builder は、
   同じファイルです。

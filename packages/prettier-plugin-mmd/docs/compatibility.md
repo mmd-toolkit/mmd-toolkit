@@ -1246,7 +1246,9 @@ and, with the Db only, in the inputs of the conformance corpus:
 | Quotes of an architecture label    |        0 |                   0 |      2 |       2 |
 | Quotes of a mindmap shape text     |        0 |                   0 |      7 |       7 |
 | Quotes of a kanban shape text      |        0 |                   0 |    114 |     114 |
-| Quotes of a C4 argument            |        0 |                   0 |     71 |      69 |
+| Quotes of a C4 argument            |        0 |                   0 |     67 |      65 |
+| Quotes of a heading name           |        0 |                   0 |      7 |       7 |
+| Quotes of an agentflow name        |        0 |                   0 |     23 |      21 |
 
 A corpus pair that is not counted in the last column is a pair of which
 mermaid.js rejects the other spelling, except two pairs of the label of a link,
@@ -1261,12 +1263,13 @@ and [Styles that are drawn the same](#styles-that-are-drawn-the-same)), 6 pairs
 of a quadrant chart with a tab inside a text (see the same section), 2 pairs of
 a venn label whose Db differs in a run of spaces or tabs (see
 [Runs of whitespace in a text that are drawn the same](#runs-of-whitespace-in-a-text-that-are-drawn-the-same)),
-3 pairs of a use case diagram whose Db differs in the whitespace of a style, and
-2 pairs of a C4 diagram whose Db differs in a run of spaces or tabs in a text.
-The printer does not rewrite a range of a packet diagram next to a hidden YAML
-block, a colon that a `;` or the `---` of a hidden YAML block touches, or the
-label of a link with a `%%` in it. When the pinned mermaid.js is updated, the
-examples are counted again and each kind is compared again.
+3 pairs of a use case diagram and 2 pairs of an agentflow diagram whose Db
+differs in the whitespace of a style, and 2 pairs of a C4 diagram whose Db
+differs in a run of spaces or tabs in a text. The printer does not rewrite a
+range of a packet diagram next to a hidden YAML block, a colon that a `;` or the
+`---` of a hidden YAML block touches, or the label of a link with a `%%` in it.
+When the pinned mermaid.js is updated, the examples are counted again and each
+kind is compared again.
 
 ### Keywords in one case
 
@@ -1882,6 +1885,10 @@ of the examples that write each in each form, are:
 | C4           | the technology                                |              0 |        43 |
 | C4           | the type of a boundary or a node              |              0 |        14 |
 | C4           | the description of an element                 |              0 |        46 |
+| flowchart    | the name of a subgraph                        |             53 |         1 |
+| agentflow    | the name of a flow                            |             17 |         0 |
+| agentflow    | the name of a connector                       |              2 |         0 |
+| agentflow    | the title of a connector                      |              0 |         2 |
 
 The name of an actor, of a use case, and of a system boundary is counted where
 it has no label or title of its own, since a name in quotes cannot have one;
@@ -2042,19 +2049,18 @@ usecase/quotes/texts-on-a-kept-line-as-written]
 
 In an architecture diagram a label in quotes is printed without them where it is
 ASCII letters, digits, `_`, and spaces, with no space at its ends: the grammars
-of 11.16.0 and 11.16.1, the first that read a label in quotes, read a label
-without quotes of these characters only, and a backslash or a quote would change
-the title that mermaid.js reads, since it takes one pair of outer quotes off a
-title and turns `\"` and `\'` into `"` and `'` only in a title that had them
-(`"a\"b"` printed `a\"b`, and `"'x'"` printed `'x'`). In a mindmap and a kanban
-board the text of a shape in quotes is printed without them where it holds none
-of `)`, `]`, `(`, and `}`, which end a text without quotes or are read as a
-closer, has no padding or line break, does not start with a `-` (`(` and a `-`
-make the opener `(-`, and a `-` before a `)` makes the closer `-)`), and does
-not stand next to a dash of the dash form (`(-"x"-)`, whose closer `-)` follows
-only a string). A markdown string stays. [fixture:
-architecture/quotes/labels-without-quotes] [fixture:
-architecture/quotes/labels-that-need-quotes] [fixture:
+of 11.13.0 to 11.16.1, which read a label in quotes, read a label without quotes
+of these characters only, and a backslash or a quote would change the title that
+mermaid.js reads, since it takes one pair of outer quotes off a title and turns
+`\"` and `\'` into `"` and `'` only in a title that had them (`"a\"b"` printed
+`a\"b`, and `"'x'"` printed `'x'`). In a mindmap and a kanban board the text of
+a shape in quotes is printed without them where it holds none of `)`, `]`, `(`,
+and `}`, which end a text without quotes or are read as a closer, has no padding
+or line break, does not start with a `-` (`(` and a `-` make the opener `(-`,
+and a `-` before a `)` makes the closer `-)`), and does not stand next to a dash
+of the dash form (`(-"x"-)`, whose closer `-)` follows only a string). A
+markdown string stays. [fixture: architecture/quotes/labels-without-quotes]
+[fixture: architecture/quotes/labels-that-need-quotes] [fixture:
 mindmap/quotes/labels-without-quotes] [fixture:
 mindmap/quotes/labels-that-need-quotes] [fixture:
 kanban/quotes/labels-without-quotes] [fixture:
@@ -2064,25 +2070,69 @@ In a C4 diagram the alias of an element or a boundary, and the two ends of a
 relationship and of `UpdateRelStyle`, are printed without quotes where they are
 ASCII letters, digits, `_`, `-`, and `.`, with spaces between them, and a `,`
 follows them right away; the label, the technology, the type, and the
-description are printed in quotes. An argument without quotes runs to the next
-`,`, and mermaid.js reads a string only after ASCII spaces, so an alias that a
-space, a tab, a line break, or another string follows, and the last argument of
-a call (which without quotes takes the `)` into its text), stay in quotes, and a
-text that holds a `"` or a line break, that follows a tab, a line break, or a
-space other than the ASCII space, or that is not followed by a `,` on its line,
-stays without them. The index of `RelIndex`, the sprite, the tags, the link, the
-settings of an update, and the tags that stand at the third place of
-`Enterprise_Boundary`, `System_Boundary`, and `Container_Boundary` are written
-as named attributes in the examples, or not at all, and stay as written, and so
-does a named attribute, whose value is a string in every form and whose key
-holds the quotes. The description of a node and of a relationship, which the
-examples never write, is printed in quotes like the description of an element.
-[fixture: c4/quotes/names-without-quotes] [fixture:
-c4/quotes/names-that-need-quotes] [fixture:
-c4/quotes/names-before-a-gap-as-written] [fixture: c4/quotes/texts-in-quotes]
-[fixture: c4/quotes/texts-that-stay-without-quotes] [fixture:
-c4/quotes/other-arguments-as-written] [fixture:
+description of an element are printed in quotes. An argument without quotes runs
+to the next `,`, and mermaid.js reads a string only after ASCII spaces, so an
+alias that a space, a tab, a line break, or another string follows, and the last
+argument of a call (which without quotes takes the `)` into its text), stay in
+quotes, and a text that holds a `"` or a line break, that stands after a string
+with a tab, a line break, or a space other than the ASCII space between them or
+at the start of its line, or that is not followed by a `,` on its line, stays
+without them; a tab or another space after a `,` or a `(` is replaced by one
+space and does not stop it. The description of a node and of a relationship, the
+arguments of `RelIndex`, the sprite, the tags, the link, the settings of an
+update, and the tags that stand at the third place of `Enterprise_Boundary`,
+`System_Boundary`, and `Container_Boundary` are written as named attributes in
+the examples, or not at all, and stay as written, and so does a named attribute,
+whose value is a string in every form and whose key holds the quotes. [fixture:
+c4/quotes/names-without-quotes] [fixture: c4/quotes/names-that-need-quotes]
+[fixture: c4/quotes/names-before-a-gap-as-written] [fixture:
+c4/quotes/texts-in-quotes] [fixture: c4/quotes/texts-that-stay-without-quotes]
+[fixture: c4/quotes/other-arguments-as-written] [fixture:
 c4/quotes/names-and-texts-on-a-kept-line-as-written]
+
+In a flowchart, a swimlane diagram, and an agentflow diagram the name of a
+subgraph, a flow, and a connector in quotes is printed without them where it is
+words of ASCII letters, digits, and `_` with one space between them, none of
+them `_blank`, `_parent`, `_self`, `_top`, `call`, `click`, `default`,
+`direction`, `end`, `href`, and `interpolate`: the lexer reads these as a unit
+of its own, so `"end"`, `"click"`, and `"x _self"` stay in quotes (the lexer of
+an agentflow diagram reads `end` as a name, and the printer leaves it in quotes
+too). A name that a word touches on its line (`subgraph "S"accDescr {}`), a name
+that a comment follows, and a name of two spaces that is an id, since the
+subgraph has a title, keep their quotes. The title of a connector, which
+mermaid.js reads the same in quotes and without them, is printed in quotes where
+it starts with a letter or a digit and holds ASCII letters, digits, spaces, `_`,
+`-`, `.`, `,`, `:`, `!`, and `?`. [fixture:
+flowchart/quotes/subgraph-names-without-quotes] [fixture:
+flowchart/quotes/swimlane-lane-names-without-quotes] [fixture:
+flowchart/quotes/subgraph-names-that-need-quotes] [fixture:
+flowchart/quotes/subgraph-names-with-runs-without-quotes] [fixture:
+flowchart/quotes/subgraph-names-before-a-comment] [fixture:
+flowchart/subgraph-header/whitespace-before-block-kept] [fixture:
+agentflow/quotes/names-without-quotes] [fixture:
+agentflow/quotes/names-that-need-quotes] [fixture:
+agentflow/quotes/connector-titles-in-quotes] [fixture:
+agentflow/quotes/connector-titles-as-written] [fixture:
+agentflow/quotes/names-and-titles-before-a-comment]
+
+In a flowchart, a swimlane diagram, and an agentflow diagram, the title of a
+subgraph or a flow, the label of a shape, and the label of a link stay as
+written: mermaid.js reads `A["x"]` as a string and `A[x]` as a text, and the Db
+holds the `labelType` `string` for the first and `text` for the second, so the
+two forms are not read the same. In a sequence diagram there is no string: the
+quotes of the description of a participant (`participant A as "Alice"`), of a
+message, and of a note are characters of the text. In a class diagram the
+grammar needs a string for the label of a class, the text of a note, and a
+cardinality, and rejects the text without quotes (`class A[Label]`,
+`note for B Text`, `A 1 --> * B`). In an eventmodeling diagram a name has no
+form in quotes, and the quotes in the data of a frame, in a title, and in an
+accessibility value are characters of the text (the Db holds `{"x"}` for the
+data `{"x"}` and `{x}` for `{x}`). [fixture: flowchart/quotes/labels-as-written]
+[fixture: flowchart/quotes/subgraph-titles-as-written] [fixture:
+agentflow/quotes/labels-as-written] [fixture:
+agentflow/quotes/flow-titles-as-written] [fixture:
+sequence/quotes/texts-as-written] [fixture: class/quotes/strings-as-written]
+[fixture: eventmodeling/quotes/quotes-as-written]
 
 The name of a treeView node in quotes stays as written, though the examples
 write a name without quotes 58 times and in quotes 8 times: the grammars of
@@ -2136,20 +2186,23 @@ which the printer also changes), 191 of XY charts, 174 of the 176 venn diagrams
 also changes), 90 of the 93 use case diagrams (the 3 others differ in the
 whitespace of a style, which
 [Styles that are drawn the same](#styles-that-are-drawn-the-same) defines), 2
-architecture diagrams, 7 mindmaps, 114 kanban boards, and 69 of the 71 C4
-diagrams (the 2 others differ in a run of spaces or tabs in a text, which the
-printer also changes). It read both forms of the 6 sankey examples that were
-written again with every plain field in quotes, with the same Db and the same
-SVG, and drew the same SVG from the input and the formatted text of the 11
-sankey inputs, the 15 ER inputs, 9 of the 12 requirement inputs (the other 3 are
-drawn by mermaid.js in neither form), the 35 Wardley inputs, the 2 gitGraph
-inputs, the 19 quadrant inputs, 73 of the 191 XY chart inputs (the other 118
-have no plot, and mermaid.js draws no chart without one, in either form), and
-166 of the 176 venn inputs (the other 10 are drawn in neither form), the 93 use
-case inputs (once the whitespace of one style was taken away), 1 of the 2
-architecture inputs (the other is drawn in neither form), the 7 mindmap inputs,
-the 114 kanban inputs, and 67 of the 71 C4 inputs (the other 4 are drawn in
-neither form).
+architecture diagrams, 7 mindmaps, 114 kanban boards, 65 of the 67 C4 diagrams
+(the 2 others differ in a run of spaces or tabs in a text, which the printer
+also changes), 7 flowcharts, and 21 of the 23 agentflow diagrams (the 2 others
+differ in the whitespace of a style, which
+[Styles that are drawn the same](#styles-that-are-drawn-the-same) defines). It
+read both forms of the 6 sankey examples that were written again with every
+plain field in quotes, with the same Db and the same SVG, and drew the same SVG
+from the input and the formatted text of the 11 sankey inputs, the 15 ER inputs,
+9 of the 12 requirement inputs (the other 3 are drawn by mermaid.js in neither
+form), the 35 Wardley inputs, the 2 gitGraph inputs, the 19 quadrant inputs, 73
+of the 191 XY chart inputs (the other 118 have no plot, and mermaid.js draws no
+chart without one, in either form), and 166 of the 176 venn inputs (the other 10
+are drawn in neither form), the 93 use case inputs (once the whitespace of one
+style was taken away), 1 of the 2 architecture inputs (the other is drawn in
+neither form), the 7 mindmap inputs, the 114 kanban inputs, the 67 C4 inputs,
+the 7 flowchart inputs, and the 23 agentflow inputs (once the whitespace of a
+style was taken away).
 
 ### Versions of mermaid.js
 
@@ -2204,9 +2257,9 @@ mermaid.js, show which form each version reads:
   them. Their lexers read `title`, `x-axis`, `y-axis`, `line`, and `bar` in any
   case, where no letter, digit, or `_` follows, and `vertical` and `horizontal`
   wherever they start.
-- The labels of an architecture diagram: the grammars of 11.1.0 to 11.15.0 read
+- The labels of an architecture diagram: the grammars of 11.1.0 to 11.12.3 read
   a label of ASCII letters, digits, `_`, and spaces in brackets and no label in
-  quotes. The grammars of 11.16.0 and 11.16.1 read such a label or a label in
+  quotes. The grammars of 11.13.0 to 11.16.1 read such a label or a label in
   quotes, and the grammars of 11.17.0 to 12.3.0 read a label in quotes or any
   text without `[`, `]`, and a line break. So a label in quotes is printed
   without them only where it is of those characters, which every version that
@@ -2230,6 +2283,15 @@ mermaid.js, show which form each version reads:
   11.0.0, 11.13.0, and 12.3.0; the grammars of 9.1.x only log the rules to the
   console. So a string and an argument without quotes are the same argument in
   every version that has the diagram type.
+- The names of the subgraphs of a flowchart and of the flows of an agentflow
+  diagram: the grammars of 9.0.0 to 10.3.0 read the name of a subgraph with the
+  rule `text`, in which a string is a text of the type `string`, and the
+  grammars of 10.3.1 to 12.3.0 with the rule `textNoTags`, in which a string is
+  a text of the type `text`. The sources of 10.2.4 and 10.3.0 compare the type
+  of a label with `markdown` only (`flowRenderer-v2.js`, `clusters.js`, and
+  `shapes/util.js`) and no other type with another, so the name in both forms is
+  drawn the same in these versions too. The grammar of the agentflow diagram is
+  the same file in 12.0.0, 12.1.0, 12.2.0, and 12.3.0.
 - The names, the labels, and the metadata of a use case diagram: the lexer, the
   parser, the visitor, and the model builder of 12.0.0, the first release with
   the diagram type, 12.1.0, 12.2.0, and 12.3.0 are the same files. The visitor

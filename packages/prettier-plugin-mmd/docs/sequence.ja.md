@@ -1040,6 +1040,44 @@ sequenceDiagram
   end
 ```
 
+### Quotes
+
+printer は引用符を付けたり外したりしません。
+sequence 図には文字列がなく、引用符はテキストの文字です。
+`participant A as "Alice"` の説明は引用符を含む `"Alice"` で、
+`participant B as Bob` の説明は `Bob` です。
+`A->>B: "Hello"` はテキストが `"Hello"` のメッセージで、
+`B-->>A: Hello` はテキストが `Hello` のメッセージです。
+ノートも同じように引用符をテキストに含みます。
+引用符を外すと、mermaid.js が描くテキストが変わります。
+[fixture: quotes/texts-as-written]
+
+入力
+([quotes/texts-as-written-input.mmd](../tests/fixtures/sequence/quotes/texts-as-written-input.mmd)):
+
+```mmd
+sequenceDiagram
+participant A as "Alice"
+participant B as Bob
+A->>B: "Hello"
+B-->>A: Hello
+Note over A: "Quoted"
+Note over A: Plain
+```
+
+出力
+([quotes/texts-as-written-output.mmd](../tests/fixtures/sequence/quotes/texts-as-written-output.mmd)):
+
+```mmd
+sequenceDiagram
+  participant A as "Alice"
+  participant B as Bob
+  A ->> B: "Hello"
+  B -->> A: Hello
+  Note over A: "Quoted"
+  Note over A: Plain
+```
+
 ### フロントマターの YAML
 
 flowchart と同じです。

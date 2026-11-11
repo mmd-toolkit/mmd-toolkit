@@ -6,9 +6,9 @@ Filename: agentflow-no-redefined-connector-incorrect-1.mmd
 
 Code:
   1 | agentflow-beta TB
-  2 |   connector C[First]
-  3 |   connector C[Second]
-    |   ^~~~~~~~~~~~~~~~~~~ [1]
+  2 |   connector C["First"]
+  3 |   connector C["Second"]
+    |   ^~~~~~~~~~~~~~~~~~~~~ [1]
   4 |
 
 [1] mermaid.js replaces the label of `C` written earlier with that of this connector.

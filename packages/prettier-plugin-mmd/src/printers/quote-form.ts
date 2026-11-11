@@ -1,4 +1,5 @@
 import type {
+  AgentflowName,
   C4BoundaryStatement,
   C4ElementStatement,
   C4RelationshipStatement,
@@ -6,7 +7,9 @@ import type {
   Node,
 } from "@mmd-toolkit/ast"
 import { visitorKeys } from "@mmd-toolkit/parser"
+import { findAgentflowKeptLines } from "./agentflow-kept-lines.ts"
 import { findErKeptLines } from "./er-kept-lines.ts"
+import { findFlowchartKeptLines } from "./flowchart-kept-lines.ts"
 import type { KeptLines } from "./kept-lines.ts"
 import { lineEndOf, lineStartOf } from "./kept-lines.ts"
 import { shortestNumber } from "./number-form.ts"
@@ -706,8 +709,8 @@ function holdsLineTerminator(text: string): boolean {
  * The text of a label in square brackets of an architecture diagram that every
  * version of mermaid.js that reads the label in quotes reads without them:
  * ASCII letters, digits, `_`, and spaces, with none at its ends. The grammars
- * of 11.16.0 and 11.16.1, the first that read a label in quotes, read a label
- * without quotes of these characters only.
+ * of 11.13.0 to 11.16.1, which read a label in quotes, read a label without
+ * quotes of these characters only.
  */
 function architectureLabel(text: string): string | undefined {
   return text !== "" &&
@@ -755,6 +758,81 @@ function hasArrow(node: Node): boolean {
   return (node as Node & { arrow?: unknown }).arrow !== null
 }
 
+/**
+ * The words that the lexer of a flowchart reads as a unit of its own where they
+ * stand as a whole word in the name of a subgraph or of a flow, and `direction`,
+ * which starts a direction where a direction follows it on its line: a name
+ * with one of them is not read as a name without quotes.
+ */
+const headingNameReserved: ReadonlySet<string> = new Set([
+  "_blank",
+  "_parent",
+  "_self",
+  "_top",
+  "call",
+  "click",
+  "default",
+  "direction",
+  "end",
+  "href",
+  "interpolate",
+])
+
+/**
+ * The name of a subgraph, a flow, or a connector that every version of
+ * mermaid.js reads the same without quotes: words of ASCII letters, digits, and
+ * `_` with one space between them, none of them a word of `headingNameReserved`.
+ * The names of the same kind with other characters are not read the same in
+ * every position: `end`, `~~~`, `--`, and a `"` in a name differ.
+ */
+function headingName(text: string): string | undefined {
+  return text
+    .split(" ")
+    .every(
+      (word) =>
+        word !== "" &&
+        [...word].every(isWordCharacter) &&
+        !headingNameReserved.has(word),
+    )
+    ? text
+    : undefined
+}
+
+/**
+ * The title of a connector of an agentflow diagram, which mermaid.js reads the
+ * same in quotes and without them: it starts with a letter or a digit, so that
+ * the padding inside its brackets is dropped, and holds ASCII letters, digits,
+ * spaces, and `_`, `-`, `.`, `,`, `:`, `!`, and `?`. A text with another
+ * character, such as a backquote that would start a markdown string, stays as
+ * written.
+ */
+function connectorTitle(text: string): string | undefined {
+  const first = text[0]
+  return first !== undefined &&
+    isWordCharacter(first) &&
+    first !== "_" &&
+    [...text].every(
+      (character) =>
+        isWordCharacter(character) || " -.,:!?".includes(character),
+    )
+    ? text
+    : undefined
+}
+
+/**
+ * Whether a word follows a name at once, with no space between them (an empty
+ * description block, `accDescr {}`, that the line holds after it): a name
+ * without quotes would take the word into itself.
+ */
+function wordFollows(_before: string, after: string): boolean {
+  return isWordCharacter(after[0])
+}
+
+/** Whether the name of a flow or a connector is one label. */
+function hasOnePart(node: Node): boolean {
+  return (node as AgentflowName).parts.length === 1
+}
+
 /** The statements of a C4 diagram that are calls with arguments. */
 type C4Call =
   | C4BoundaryStatement
@@ -765,15 +843,18 @@ type C4Call =
 /**
  * What a value of the arguments of a C4 statement is, from its keyword and its
  * place (`c4ArgumentFields`). A named attribute is no string or text without
- * quotes, and is left out.
+ * quotes, and is left out, and so is every argument of `RelIndex`: the
+ * examples write none.
  */
 function c4ArgumentOf(
   node: Node,
   item: Node,
   index: number,
 ): string | undefined {
-  return item.type === "C4Literal" || item.type === "StringLiteral"
-    ? c4ArgumentFields[(node as C4Call).keyword][index]
+  const { keyword } = node as C4Call
+  return (item.type === "C4Literal" || item.type === "StringLiteral") &&
+    keyword !== "RelIndex"
+    ? c4ArgumentFields[keyword][index]
     : undefined
 }
 
@@ -782,9 +863,16 @@ function isC4Name(node: Node, item: Node, index: number): boolean {
   return c4NameFields.has(c4ArgumentOf(node, item, index) ?? "")
 }
 
-/** Whether a value of the arguments of a C4 statement is a text. */
+/**
+ * Whether a value of the arguments of a C4 statement is a text that the
+ * examples write in quotes. The examples write the description of an element
+ * only: the description of a node and of a relationship stays as written.
+ */
 function isC4Text(node: Node, item: Node, index: number): boolean {
-  return c4TextFields.has(c4ArgumentOf(node, item, index) ?? "")
+  const role = c4ArgumentOf(node, item, index)
+  return role === "descr"
+    ? node.type === "C4ElementStatement"
+    : c4TextFields.has(role ?? "")
 }
 
 /**
@@ -867,9 +955,10 @@ function c4TextIsNotBetweenCommas(before: string, after: string): boolean {
 /**
  * The rules of the arguments of the calls of a C4 diagram: a name without
  * quotes, which the examples write so, and a text in quotes. The other
- * arguments (the sprite, the tags, the link, the index of `RelIndex`, and the
- * settings of a style) are written as named attributes in the examples, or not
- * at all, and stay as written.
+ * arguments (the sprite, the tags, the link, the description of a node and of a
+ * relationship, the arguments of `RelIndex`, and the settings of a style) are
+ * written as named attributes in the examples, or not at all, and stay as
+ * written.
  */
 const c4Arguments: readonly QuoteRule[] = [
   bare(c4Name, { when: isC4Name, joins: c4NameIsNotBeforeComma }),
@@ -890,8 +979,9 @@ const c4Arguments: readonly QuoteRule[] = [
  * Wardley map, the branches of a gitGraph, the texts of a quadrant chart, the
  * titles and the categories of an XY chart, the names, the labels, and the
  * values of a venn diagram, the names, the labels, and the metadata of a use
- * case diagram, and the names and the texts of the calls of a C4 diagram. A
- * field may have several rules, which tell the roles of
+ * case diagram, the names and the texts of the calls of a C4 diagram, and the
+ * names of the subgraphs, flows, and connectors of a flowchart and an
+ * agentflow. A field may have several rules, which tell the roles of
  * the field apart by the node (the name of an actor without an id, the label of
  * an actor with one).
  */
@@ -904,10 +994,19 @@ const quoteRules: Readonly<
   ArchitectureServiceStatement: {
     title: bare(architectureLabel, { wrapped: ["[", "]"] }),
   },
+  AgentflowConnectorStatement: {
+    title: quoted(connectorTitle, { standsAlone: true }),
+  },
+  AgentflowName: {
+    parts: bare(headingName, { when: hasOnePart, joins: wordFollows }),
+  },
   C4BoundaryStatement: { arguments: c4Arguments },
   C4ElementStatement: { arguments: c4Arguments },
   C4RelationshipStatement: { arguments: c4Arguments },
   C4UpdateStatement: { arguments: c4Arguments },
+  FlowchartSubgraphStatement: {
+    name: bare(headingName, { joins: wordFollows }),
+  },
   KanbanShape: { label: bare(shapeText, { joins: nextToDash }) },
   MindmapShape: { label: bare(shapeText, { joins: nextToDash }) },
   ErEntityReference: { name: bare(wordWithout(erReserved)) },
@@ -1048,12 +1147,16 @@ const quoteRules: Readonly<
 
 /** The kept lines of the diagram types that have fields in `bareFields`. */
 const keptLinesOf: Readonly<Record<string, (source: Source) => KeptLines>> = {
+  agentflow: findAgentflowKeptLines,
   er: findErKeptLines,
+  "flowchart-elk": findFlowchartKeptLines,
+  "flowchart-v2": findFlowchartKeptLines,
   kanban: findKanbanKeptLines,
   mindmap: findMindmapKeptLines,
   quadrantChart: findQuadrantKeptLines,
   requirement: findRequirementKeptLines,
   sankey: findSankeyKeptLines,
+  swimlane: findFlowchartKeptLines,
   usecase: findUsecaseKeptLines,
   venn: findVennKeptLines,
   xychart: findXychartKeptLines,
@@ -1208,6 +1311,9 @@ function respell(
       !written.slice(1, -1).includes('"'))
   if (isString !== (rule.form === "bare")) return
   let text = written
+  // Where the string ends: the label of a name that a space and a bracket
+  // follow holds that space, which the printer drops (the tail of the string).
+  let stringEnd = item.range[1]
   if (isString) {
     // A directive or a comment region inside the string, or a text that
     // follows it, is no part of the content. A string between `'` is the
@@ -1215,9 +1321,21 @@ function respell(
     // `"`).
     if (kind === "text") {
       text = written.slice(1, -1)
-    } else {
+    } else if (rule.wrapped !== undefined) {
       if (written !== `"${content}"` && written !== `'${content}'`) return
       text = content as string
+    } else {
+      const closing = written.lastIndexOf(written[0])
+      const tail = written.slice(closing + 1)
+      if (
+        !(written.startsWith('"') || written.startsWith("'")) ||
+        closing < 1 ||
+        ![...tail].every(isSpaceOrTab) ||
+        content !== written.slice(1, closing) + tail
+      )
+        return
+      text = written.slice(1, closing)
+      stringEnd = start + closing + 1
     }
   } else if (typeof content === "string" && written !== content) {
     // A directive or a comment region inside the text is no part of its
@@ -1233,8 +1351,9 @@ function respell(
   )
   // mermaid.js takes the directives away before it reads the text, so what
   // follows is the first character after the spaces, tabs, and directives.
-  const lineEnd = lineEndOf(source, end)
-  let next = end
+  const textEnd = rule.wrapped === undefined ? stringEnd : end
+  const lineEnd = lineEndOf(source, textEnd)
+  let next = textEnd
   for (;;) {
     while (next < lineEnd && isSpaceOrTab(source.text[next])) next++
     const directive = findTriviaAt(source, next)
@@ -1252,12 +1371,12 @@ function respell(
         !(after === ":" && endsLikeStyleKeyword(printed))) &&
     rule.joins?.(
       source.text.slice(line, start),
-      source.text.slice(end, lineEndOf(source, end)),
+      source.text.slice(textEnd, lineEndOf(source, textEnd)),
     ) !== true &&
     !isKept(source, start)
   ) {
     found.set(item.range[0], {
-      end: item.range[1],
+      end: stringEnd,
       text: `${open}${isString ? printed : `"${printed}"`}${close}`,
     })
   }

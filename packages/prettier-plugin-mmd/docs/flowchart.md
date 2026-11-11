@@ -2483,6 +2483,91 @@ flowchart LR
   end
 ```
 
+### Quotes
+
+The name of a subgraph in quotes is printed without them, as the examples in the
+documentation of mermaid.js write it, 53 times without quotes and once in quotes
+(see [The quotes of a text](./compatibility.md#the-quotes-of-a-text)):
+`subgraph "Group A"` is printed `subgraph Group A`. mermaid.js reads the name in
+both forms as the same text, and the id of a name of several words is generated
+in both. A name is printed without quotes where it is words of ASCII letters,
+digits, and `_` with one space between them, none of them one of `_blank`,
+`_parent`, `_self`, `_top`, `call`, `click`, `default`, `direction`, `end`,
+`href`, and `interpolate`, which the lexer reads as a unit of its own. So
+`"a-b"`, `"end"`, `"x end"`, `"click"`, `"x _self"`, `"direction"`, a name with
+a `.` or a letter outside ASCII, and a markdown string stay as written. A name
+that a word touches on its line (`subgraph "S"accDescr {}`) and a name that a
+comment follows (`subgraph "C" %% note`) keep their quotes, since a text without
+quotes would take the word or the comment into itself, as does a name of two
+spaces in a subgraph that has a title, since there the name is an id, and two
+ids that differ by a run are two ids (see
+[Runs of whitespace in a text that are drawn the same](./compatibility.md#runs-of-whitespace-in-a-text-that-are-drawn-the-same)).
+A `;` or a directive after a name takes nothing into it, and the name loses its
+quotes: `subgraph "D"%%{init: {}}%%` is printed `subgraph D%%{init: {}}%%`.
+[fixture: quotes/subgraph-names-without-quotes] [fixture:
+quotes/swimlane-lane-names-without-quotes] [fixture:
+quotes/subgraph-names-that-need-quotes] [fixture:
+quotes/subgraph-names-with-runs-without-quotes] [fixture:
+quotes/subgraph-names-before-a-comment] [fixture:
+subgraph-header/whitespace-before-block-kept]
+
+The title of a subgraph in brackets, the label of a shape, and the label of a
+link stay as written. mermaid.js reads `A["x"]` as a string and `A[x]` as a
+text, and its Db holds the `labelType` `string` for the first and `text` for the
+second, so the two forms are not read the same, although the examples write the
+labels of shapes without quotes 109 times and in quotes 8 times. [fixture:
+quotes/labels-as-written] [fixture: quotes/subgraph-titles-as-written]
+
+Input
+([quotes/subgraph-names-without-quotes-input.mmd](../tests/fixtures/flowchart/quotes/subgraph-names-without-quotes-input.mmd)):
+
+```mmd
+flowchart TD
+subgraph "One"
+A --> B
+end
+subgraph "Group A"
+C --> D
+end
+subgraph "g_2" [Title]
+E --> F
+end
+subgraph "G3"[Title]
+G --> H
+end
+subgraph 'Single'
+I --> J
+end
+subgraph Already
+K --> L
+end
+```
+
+Output
+([quotes/subgraph-names-without-quotes-output.mmd](../tests/fixtures/flowchart/quotes/subgraph-names-without-quotes-output.mmd)):
+
+```mmd
+flowchart TD
+  subgraph One
+    A --> B
+  end
+  subgraph Group A
+    C --> D
+  end
+  subgraph g_2[Title]
+    E --> F
+  end
+  subgraph G3[Title]
+    G --> H
+  end
+  subgraph 'Single'
+    I --> J
+  end
+  subgraph Already
+    K --> L
+  end
+```
+
 ### Style trailing whitespace
 
 Whitespace at the end of a `style`, `classDef`, or `linkStyle` statement is

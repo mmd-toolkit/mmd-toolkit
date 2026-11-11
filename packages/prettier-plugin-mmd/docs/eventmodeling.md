@@ -1185,6 +1185,42 @@ eventmodeling
 tf 001 evt VeryLongNamespace.VeryLongEventName ->> 002 ->> 003 ->> 004 [[LongDataName]] `text` {a very long authored payload}
 ```
 
+### Quotes
+
+The printer neither adds nor removes quotes. A name has no form in quotes:
+`tf 01 evt "Alpha"` is rejected. A quote in the body of the data of a frame, in
+braces on the line or in a block of a `data` declaration, in a title, and in an
+accessibility value is a character of the text: the Db holds `{"x"}` for the
+data `{"x"}` and `{x}` for `{x}`, and `accTitle: "T"` for the title written so.
+So no text can be written with or without quotes as the same text, and none is
+changed. [fixture: quotes/quotes-as-written]
+
+Input
+([quotes/quotes-as-written-input.mmd](../tests/fixtures/eventmodeling/quotes/quotes-as-written-input.mmd)):
+
+```mmd
+eventmodeling
+tf 01 evt Alpha {"x"}
+tf 02 evt Beta {x}
+tf 03 evt Gamma [[D]]
+data D {
+  "y"
+}
+```
+
+Output
+([quotes/quotes-as-written-output.mmd](../tests/fixtures/eventmodeling/quotes/quotes-as-written-output.mmd)):
+
+```mmd
+eventmodeling
+tf 01 evt Alpha {"x"}
+tf 02 evt Beta {x}
+tf 03 evt Gamma [[D]]
+data D {
+  "y"
+}
+```
+
 ### Frontmatter yaml
 
 Use the shared YAML formatter only for safe real leading frontmatter. Malformed
