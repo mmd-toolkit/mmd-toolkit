@@ -1560,6 +1560,89 @@ requirementDiagram
   }
 ```
 
+### 色
+
+スタイルの色は、mermaid.js の文書の例と Prettier の CSS 整形と同じく、
+小文字で印字します。
+`style r fill:#F9F,stroke:#ABCDEF` は `style r fill: #f9f, stroke: #abcdef`
+と印字します。
+requirement 図の `style`、`classDef` 文のスタイルの色が対象です。
+色は、スタイルの値の中で単独で立つ、`#` と 3、4、6、8 桁の 16 進数です。
+色を短くすることはなく、色でないテキストは書かれたままにします。
+（[同じに描かれる色](./compatibility.ja.md#同じに描かれる色)を参照）。
+[fixture: colors/colors-in-lower-case]
+[fixture: colors/words-that-are-not-colors-as-written]
+
+入力
+([colors/colors-in-lower-case-input.mmd](../tests/fixtures/requirement/colors/colors-in-lower-case-input.mmd)):
+
+```mmd
+requirementDiagram
+requirement r {
+id: 1
+text: t
+risk: low
+verifymethod: test
+}
+requirement q {
+id: 2
+text: u
+risk: low
+verifymethod: test
+}
+r - satisfies -> q
+style r fill:#F9F,stroke:#ABCDEF,color:#C0FFEE
+classDef c fill:#DEADBE,stroke:#ABCDEF
+class q c
+```
+
+出力
+([colors/colors-in-lower-case-output.mmd](../tests/fixtures/requirement/colors/colors-in-lower-case-output.mmd)):
+
+```mmd
+requirementDiagram
+  requirement r {
+    id: 1
+    text: t
+    risk: low
+    verifymethod: test
+  }
+  requirement q {
+    id: 2
+    text: u
+    risk: low
+    verifymethod: test
+  }
+  r - satisfies -> q
+  style r fill: #f9f, stroke: #abcdef, color: #c0ffee
+  classDef c fill: #deadbe, stroke: #abcdef
+  class q c
+```
+
+入力
+([colors/words-that-are-not-colors-as-written-input.mmd](../tests/fixtures/requirement/colors/words-that-are-not-colors-as-written-input.mmd)):
+
+```mmd
+requirementDiagram
+requirement r {
+id: 1
+}
+style r fill:#ABCDE,stroke:#ABCDEF1
+classDef c fill:#ABC-x,stroke:x#ABC
+```
+
+出力
+([colors/words-that-are-not-colors-as-written-output.mmd](../tests/fixtures/requirement/colors/words-that-are-not-colors-as-written-output.mmd)):
+
+```mmd
+requirementDiagram
+  requirement r {
+    id: 1
+  }
+  style r fill: #ABCDE, stroke: #ABCDEF1
+  classDef c fill: #ABC-x, stroke: x#ABC
+```
+
 ### フロントマターの YAML
 
 フローチャートと同じです。

@@ -2483,6 +2483,74 @@ flowchart LR
   end
 ```
 
+### Colors
+
+A color in a style is printed in lower case, as the examples in the
+documentation of mermaid.js write it and as the CSS formatter of Prettier prints
+it: `style A fill:#F9F,stroke:#ABCDEF` is printed
+`style A fill: #f9f, stroke: #abcdef`. The colors in the styles of the `style`,
+`classDef`, and `linkStyle` statements of a flowchart and of a swimlane diagram
+are printed so. A color is a `#` and 3, 4, 6, or 8 hexadecimal digits that stand
+alone in the value of a style; it is never shortened, and a text that is no
+color stays as written (see
+[Colors that are drawn the same](./compatibility.md#colors-that-are-drawn-the-same)).
+[fixture: colors/colors-in-lower-case] [fixture:
+colors/words-that-are-not-colors-as-written]
+
+Input
+([colors/colors-in-lower-case-input.mmd](../tests/fixtures/flowchart/colors/colors-in-lower-case-input.mmd)):
+
+```mmd
+flowchart LR
+A --> B
+C:::c
+style A fill:#F9F,stroke:#ABCDEF,color:#C0FFEE
+style B fill:#ABCD,stroke:#ABCDEF12
+classDef c fill:#DEADBE,stroke:#ABCDEF
+linkStyle 0 stroke:#FF0000,color:#00FF00
+linkStyle default stroke:#ABCDEF
+```
+
+Output
+([colors/colors-in-lower-case-output.mmd](../tests/fixtures/flowchart/colors/colors-in-lower-case-output.mmd)):
+
+```mmd
+flowchart LR
+  A --> B
+  C:::c
+  style A fill: #f9f, stroke: #abcdef, color: #c0ffee
+  style B fill: #abcd, stroke: #abcdef12
+  classDef c fill: #deadbe, stroke: #abcdef
+  linkStyle 0 stroke: #ff0000, color: #00ff00
+  linkStyle default stroke: #abcdef
+```
+
+Input
+([colors/words-that-are-not-colors-as-written-input.mmd](../tests/fixtures/flowchart/colors/words-that-are-not-colors-as-written-input.mmd)):
+
+```mmd
+flowchart LR
+A --> B
+style A fill:#ABCDE,stroke:#ABCDEF1
+style B fill:#AB,stroke:#GGG
+classDef c fill:x#ABC,stroke:#ABC-x
+classDef d fill:#ABC.5,stroke:#ABC#DEF
+classDef e stroke:#ABC/#DEF
+```
+
+Output
+([colors/words-that-are-not-colors-as-written-output.mmd](../tests/fixtures/flowchart/colors/words-that-are-not-colors-as-written-output.mmd)):
+
+```mmd
+flowchart LR
+  A --> B
+  style A fill: #ABCDE, stroke: #ABCDEF1
+  style B fill: #AB, stroke: #GGG
+  classDef c fill: x#ABC, stroke: #ABC-x
+  classDef d fill: #ABC.5, stroke: #ABC#DEF
+  classDef e stroke: #ABC/#DEF
+```
+
 ### Quotes
 
 The name of a subgraph in quotes is printed without them, as the examples in the
@@ -2547,11 +2615,11 @@ which a `.` ends, and a `--` in a label between two solid arrows
 to 10.3.0 reads with the tokens of a statement, a label also stays in quotes
 where it holds a `-` at its end (`("go-")`), an arrow (`---`, `--x`, `--o`,
 `.-`), `:::`, `_self`, `_blank`, `_parent`, `_top`, `interpolate`, `click` or
-`call` before a space, or `accTitle` or `accDescr`; a swimlane diagram prints
-them without quotes. Any other text stays in quotes (`"x (y)"`, `"a/b"`,
-`"a & b"`, `"_x"`, `"x "`, `" x"`), and so does a markdown string, and a label
-on a line that the printer writes as it is, such as a line that the line rule of
-mermaid.js reads whole (see
+`call` before a space or the end of the label, or `accTitle` or `accDescr`; a
+swimlane diagram prints them without quotes. Any other text stays in quotes
+(`"x (y)"`, `"a/b"`, `"a & b"`, `"_x"`, `"x "`, `" x"`), and so does a markdown
+string, and a label on a line that the printer writes as it is, such as a line
+that the line rule of mermaid.js reads whole (see
 [Lines that hold a `;`](./compatibility.md#lines-that-hold-a-)). A label written
 without quotes stays without them. [fixture: quotes/shape-labels-without-quotes]
 [fixture: quotes/link-labels-without-quotes] [fixture:

@@ -1194,6 +1194,44 @@ BOMとfrontmatterの共通の制限も適用します。
 出力`"agentflow-beta TB\n  A[\"a\n b\"]\n"`になります。
 [test: agentflow: eol-crlf]
 
+### 色
+
+スタイルの色は、mermaid.js の文書の例と Prettier の CSS 整形と同じく、
+小文字で印字します。
+`style A fill:#F9F,stroke:#ABCDEF` は `style A fill: #f9f, stroke: #abcdef`
+と印字します。
+agentflow 図の `style`、`classDef`、`linkStyle` 文のスタイルの色が対象です。
+色は、スタイルの値の中で単独で立つ、`#` と 3、4、6、8 桁の 16 進数です。
+色を短くすることはなく、色でないテキストは書かれたままにします。
+（[同じに描かれる色](./compatibility.ja.md#同じに描かれる色)を参照）。
+[fixture: colors/colors-in-lower-case]
+
+入力
+([colors/colors-in-lower-case-input.mmd](../tests/fixtures/agentflow/colors/colors-in-lower-case-input.mmd)):
+
+```mmd
+agentflow-beta TB
+A --> B
+C:::c
+style A fill:#F9F,stroke:#ABCDEF
+classDef c fill:#DEADBE
+linkStyle 0 stroke:#FF0000
+linkStyle default stroke:#ABCDEF
+```
+
+出力
+([colors/colors-in-lower-case-output.mmd](../tests/fixtures/agentflow/colors/colors-in-lower-case-output.mmd)):
+
+```mmd
+agentflow-beta TB
+  A --> B
+  C:::c
+  style A fill: #f9f, stroke: #abcdef
+  classDef c fill: #deadbe
+  linkStyle 0 stroke: #ff0000
+  linkStyle default stroke: #abcdef
+```
+
 ### Quotes
 
 引用符で囲まれた flow と connector の名前は、

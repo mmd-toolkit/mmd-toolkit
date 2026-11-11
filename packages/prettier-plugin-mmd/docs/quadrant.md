@@ -499,6 +499,44 @@ quadrantChart
   classDef c1 radius: 5, color: #f00
 ```
 
+### Colors
+
+A color in a style is printed in lower case, as the examples in the
+documentation of mermaid.js write it and as the CSS formatter of Prettier prints
+it: `A: [0.3, 0.6] color: #FF3300` is printed `A: [0.3, 0.6] color: #ff3300`.
+The colors in the `color` and the `stroke-color` of a point and of a `classDef`
+statement of a quadrant chart are printed so. A color is a `#` and 3, 4, 6, or 8
+hexadecimal digits that stand alone in the value of a style; it is never
+shortened, and a text that is no color stays as written (see
+[Colors that are drawn the same](./compatibility.md#colors-that-are-drawn-the-same)).
+[fixture: colors/colors-in-lower-case]
+
+Input
+([colors/colors-in-lower-case-input.mmd](../tests/fixtures/quadrant/colors/colors-in-lower-case-input.mmd)):
+
+```mmd
+quadrantChart
+x-axis L --> R
+y-axis L --> H
+quadrant-1 Q1
+P: [0.3, 0.6] radius: 12, color: #FF3300, stroke-color: #ABCDEF
+Q:::c1: [0.6, 0.3]
+classDef c1 color: #DEADBE, stroke-color: #C0FFEE
+```
+
+Output
+([colors/colors-in-lower-case-output.mmd](../tests/fixtures/quadrant/colors/colors-in-lower-case-output.mmd)):
+
+```mmd
+quadrantChart
+  x-axis L --> R
+  y-axis L --> H
+  quadrant-1 Q1
+  P: [0.3, 0.6] radius: 12, color: #ff3300, stroke-color: #abcdef
+  Q:::c1: [0.6, 0.3]
+  classDef c1 color: #deadbe, stroke-color: #c0ffee
+```
+
 ### Quotes
 
 The text of an axis, of a quadrant, and of a point in quotes is printed without

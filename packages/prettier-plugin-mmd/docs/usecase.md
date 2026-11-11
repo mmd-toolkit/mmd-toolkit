@@ -212,6 +212,63 @@ usecase-beta
   D("` markdown  text `")
 ```
 
+### Colors
+
+A color in a style is printed in lower case, as the examples in the
+documentation of mermaid.js write it and as the CSS formatter of Prettier prints
+it: `style A stroke:#ABCDEF,fill:#F9F` is printed
+`style A stroke: #abcdef, fill: #f9f`. The colors in the styles of the `style`
+and `classDef` statements of a use case diagram are printed so. A color is a `#`
+and 3, 4, 6, or 8 hexadecimal digits that stand alone in the value of a style;
+it is never shortened, and a text that is no color stays as written (see
+[Colors that are drawn the same](./compatibility.md#colors-that-are-drawn-the-same)).
+[fixture: colors/colors-in-lower-case] [fixture:
+colors/words-that-are-not-colors-as-written]
+
+Input
+([colors/colors-in-lower-case-input.mmd](../tests/fixtures/usecase/colors/colors-in-lower-case-input.mmd)):
+
+```mmd
+usecase-beta
+actor A
+B(Use)
+A --> B
+style A stroke:#ABCDEF,fill:#F9F
+classDef c fill:#DEADBE
+```
+
+Output
+([colors/colors-in-lower-case-output.mmd](../tests/fixtures/usecase/colors/colors-in-lower-case-output.mmd)):
+
+```mmd
+usecase-beta
+  actor A
+  B("Use")
+  A --> B
+  style A stroke: #abcdef, fill: #f9f
+  classDef c fill: #deadbe
+```
+
+Input
+([colors/words-that-are-not-colors-as-written-input.mmd](../tests/fixtures/usecase/colors/words-that-are-not-colors-as-written-input.mmd)):
+
+```mmd
+usecase-beta
+actor A
+style A stroke:#ABCDE,fill:#ABCDEF1
+classDef c fill:url(#ABC),stroke:#ABC-x
+```
+
+Output
+([colors/words-that-are-not-colors-as-written-output.mmd](../tests/fixtures/usecase/colors/words-that-are-not-colors-as-written-output.mmd)):
+
+```mmd
+usecase-beta
+  actor A
+  style A stroke: #ABCDE, fill: #ABCDEF1
+  classDef c fill: url(#ABC), stroke: #ABC-x
+```
+
 ### Quotes
 
 A name, a label, and a word of the native metadata are printed in the form that

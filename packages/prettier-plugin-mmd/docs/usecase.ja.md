@@ -224,6 +224,63 @@ usecase-beta
   D("` markdown  text `")
 ```
 
+### 色
+
+スタイルの色は、mermaid.js の文書の例と Prettier の CSS 整形と同じく、
+小文字で印字します。
+`style A stroke:#ABCDEF,fill:#F9F` は `style A stroke: #abcdef, fill: #f9f`
+と印字します。
+usecase 図の `style`、`classDef` 文のスタイルの色が対象です。
+色は、スタイルの値の中で単独で立つ、`#` と 3、4、6、8 桁の 16 進数です。
+色を短くすることはなく、色でないテキストは書かれたままにします。
+（[同じに描かれる色](./compatibility.ja.md#同じに描かれる色)を参照）。
+[fixture: colors/colors-in-lower-case]
+[fixture: colors/words-that-are-not-colors-as-written]
+
+入力
+([colors/colors-in-lower-case-input.mmd](../tests/fixtures/usecase/colors/colors-in-lower-case-input.mmd)):
+
+```mmd
+usecase-beta
+actor A
+B(Use)
+A --> B
+style A stroke:#ABCDEF,fill:#F9F
+classDef c fill:#DEADBE
+```
+
+出力
+([colors/colors-in-lower-case-output.mmd](../tests/fixtures/usecase/colors/colors-in-lower-case-output.mmd)):
+
+```mmd
+usecase-beta
+  actor A
+  B("Use")
+  A --> B
+  style A stroke: #abcdef, fill: #f9f
+  classDef c fill: #deadbe
+```
+
+入力
+([colors/words-that-are-not-colors-as-written-input.mmd](../tests/fixtures/usecase/colors/words-that-are-not-colors-as-written-input.mmd)):
+
+```mmd
+usecase-beta
+actor A
+style A stroke:#ABCDE,fill:#ABCDEF1
+classDef c fill:url(#ABC),stroke:#ABC-x
+```
+
+出力
+([colors/words-that-are-not-colors-as-written-output.mmd](../tests/fixtures/usecase/colors/words-that-are-not-colors-as-written-output.mmd)):
+
+```mmd
+usecase-beta
+  actor A
+  style A stroke: #ABCDE, fill: #ABCDEF1
+  classDef c fill: url(#ABC), stroke: #ABC-x
+```
+
 ### Quotes
 
 名前、ラベル、native metadata の語は、

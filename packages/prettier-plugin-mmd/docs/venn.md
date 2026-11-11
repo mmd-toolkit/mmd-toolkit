@@ -391,6 +391,60 @@ set A["L"]:002.00
   text item[" Label "]
 ```
 
+### Colors
+
+A color in a style is printed in lower case, as the examples in the
+documentation of mermaid.js write it and as the CSS formatter of Prettier prints
+it: `style A fill:#F9F` is printed `style A fill:#f9f`. The colors in the
+properties of a `style` statement of a Venn diagram are printed so. A color is a
+`#` and 3, 4, 6, or 8 hexadecimal digits that stand alone in the value of a
+style; it is never shortened, and a text that is no color stays as written (see
+[Colors that are drawn the same](./compatibility.md#colors-that-are-drawn-the-same)).
+[fixture: colors/colors-in-lower-case] [fixture:
+colors/words-that-are-not-colors-as-written]
+
+Input
+([colors/colors-in-lower-case-input.mmd](../tests/fixtures/venn/colors/colors-in-lower-case-input.mmd)):
+
+```mmd
+venn-beta
+set A
+set B
+union A,B
+style A fill:#F9F,color:#ABCDEF
+style B fill:#C0FFEE
+```
+
+Output
+([colors/colors-in-lower-case-output.mmd](../tests/fixtures/venn/colors/colors-in-lower-case-output.mmd)):
+
+```mmd
+venn-beta
+set A
+set B
+union A, B
+style A fill:#f9f, color:#abcdef
+style B fill:#c0ffee
+```
+
+Input
+([colors/words-that-are-not-colors-as-written-input.mmd](../tests/fixtures/venn/colors/words-that-are-not-colors-as-written-input.mmd)):
+
+```mmd
+venn-beta
+set A
+style A fill:#ABCDE,color:#ABCDEF1
+```
+
+Output
+([colors/words-that-are-not-colors-as-written-output.mmd](../tests/fixtures/venn/colors/words-that-are-not-colors-as-written-output.mmd)):
+
+```mmd
+venn-beta
+set A
+style A fill:#ABCDE, color:#ABCDEF1
+```
+
 ### Quotes
 
 The names of sets, the id of a text without targets, the targets of a `style`,

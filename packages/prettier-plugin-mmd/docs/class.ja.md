@@ -1015,6 +1015,67 @@ classDiagram
 [fixture: directives/semicolon-after-unclosed-directive-kept]
 [fixture: directives/semicolon-on-next-line-after-unclosed-directive-kept]
 
+### 色
+
+スタイルの色は、mermaid.js の文書の例と Prettier の CSS 整形と同じく、
+小文字で印字します。
+`style A fill:#F9F,stroke:#ABCDEF` は `style A fill: #f9f, stroke: #abcdef`
+と印字します。
+class 図の `style`、`classDef` 文のスタイルの色が対象です。
+色は、スタイルの値の中で単独で立つ、`#` と 3、4、6、8 桁の 16 進数です。
+色を短くすることはなく、色でないテキストは書かれたままにします。
+（[同じに描かれる色](./compatibility.ja.md#同じに描かれる色)を参照）。
+[fixture: colors/colors-in-lower-case]
+[fixture: colors/words-that-are-not-colors-as-written]
+
+入力
+([colors/colors-in-lower-case-input.mmd](../tests/fixtures/class/colors/colors-in-lower-case-input.mmd)):
+
+```mmd
+classDiagram
+class A
+class B
+A --> B
+style A fill:#F9F,stroke:#ABCDEF,color:#C0FFEE
+classDef c fill:#DEADBE,stroke:#ABCDEF
+cssClass "B" c
+```
+
+出力
+([colors/colors-in-lower-case-output.mmd](../tests/fixtures/class/colors/colors-in-lower-case-output.mmd)):
+
+```mmd
+classDiagram
+  class A
+  class B
+  A --> B
+  style A fill: #f9f, stroke: #abcdef, color: #c0ffee
+  classDef c fill: #deadbe, stroke: #abcdef
+  cssClass "B" c
+```
+
+入力
+([colors/words-that-are-not-colors-as-written-input.mmd](../tests/fixtures/class/colors/words-that-are-not-colors-as-written-input.mmd)):
+
+```mmd
+classDiagram
+class A
+style A fill:#ABCDE,stroke:#ABCDEF1
+classDef c fill:url(#ABC),stroke:#ABC-x
+classDef d fill:"#ABC",stroke:/* #ABC */ red
+```
+
+出力
+([colors/words-that-are-not-colors-as-written-output.mmd](../tests/fixtures/class/colors/words-that-are-not-colors-as-written-output.mmd)):
+
+```mmd
+classDiagram
+  class A
+  style A fill: #ABCDE, stroke: #ABCDEF1
+  classDef c fill: url(#ABC), stroke: #ABC-x
+  classDef d fill: "#ABC", stroke: /* #ABC */ red
+```
+
 ### Quotes
 
 バッククォートで囲んだクラスの名前は、バッククォートなしで印字します。

@@ -1330,6 +1330,134 @@ markdown でなくなったラベルも含めて失敗とします。
 固定している mermaid.js の版を上げるときは、各場合の両方のテキストを描き直し、
 SVG と画素を比べてから、例外を残します。
 
+## 同じに描かれる色
+
+flowchart、swimlane、agentflow、class、state、ER、requirement、block、usecase、
+quadrant、Venn の図のスタイルの色は、小文字で印字します。
+`style A fill:#F9F,stroke:#ABCDEF` は `style A fill: #f9f, stroke: #abcdef`
+と印字します。
+色があるのは次の場所です。
+
+| 図の種類    | 色がある場所                                         | 例の色の数（小文字 / それ以外） |
+| ----------- | ---------------------------------------------------- | ------------------------------: |
+| flowchart   | `style`、`classDef`、番号と `default` の `linkStyle` |                          10 / 0 |
+| swimlane    | 同じ文                                               |                           2 / 0 |
+| agentflow   | 同じ文                                               |                           0 / 0 |
+| class       | `style`、`classDef`                                  |                           8 / 0 |
+| state       | `style`、`classDef`                                  |                           2 / 0 |
+| ER          | `style`、`classDef`                                  |                          12 / 0 |
+| requirement | `style`、`classDef`                                  |                           5 / 0 |
+| block       | `style`、`classDef`                                  |                           7 / 0 |
+| usecase     | `style`、`classDef`                                  |                          10 / 0 |
+| quadrant    | 点と `classDef` の `color` と `stroke-color`         |                           7 / 0 |
+| Venn        | `style` のプロパティ                                 |                           1 / 0 |
+
+数は、mermaid.js の文書の例にあるこれらの場所の色を、
+パーサーで読んで数えたものです。
+例は、64 個の色を小文字で書き、大文字や混在で書いたものはありません。
+ほかの場所の色は、別の種類のテキストなので、書かれたまま残します。
+その場所は、
+ラベルとタイトル（ラベルの `<span>` の `style='color:#F00'` はラベルです）、
+ノート、C4 図の呼び出しの引数（`$bgColor="#FFF"`）、
+sequence 図の box と rect の色、frontmatter とディレクティブの設定です。
+treemap の `classDef` には色がありません。
+字句解析器が `#` を拒否するためです。
+[fixture: flowchart/colors/colors-in-lower-case]
+[fixture: flowchart/colors/swimlane-colors-in-lower-case]
+[fixture: agentflow/colors/colors-in-lower-case]
+[fixture: class/colors/colors-in-lower-case]
+[fixture: state/colors/colors-in-lower-case]
+[fixture: er/colors/colors-in-lower-case]
+[fixture: requirement/colors/colors-in-lower-case]
+[fixture: block/colors/colors-in-lower-case]
+[fixture: usecase/colors/colors-in-lower-case]
+[fixture: quadrant/colors/colors-in-lower-case]
+[fixture: venn/colors/colors-in-lower-case]
+
+テキストは、色以外に読めない場所でだけ色として扱い、
+Prettier の CSS 整形と同じに印字します。
+Prettier 3.9.9 で、以下の各値を `fill: <値>` として整形し、
+整形ツールは同じテキストを出しました。
+違いは `#fff 10PX` の単位の大文字小文字だけで、整形ツールはこれを変えません。
+色は、スタイルのテキストの中で単独の語になる、`#` と 3、4、6、
+8 桁の 16 進数です。
+テキストの先頭か、空白、`:`、`,`、`(` の後にあり、テキストの末尾か、空白、`,`、
+`)`、`!`、文を終える `;` の前にあります。
+そのため、`#F9F`、`#ABCD`、`#ABCDEF`、`#ABCDEF12`、`#FFF !important`、
+`#FFF!important`、`1px solid #FFF`、`rgb(#FFF)`、`calc(#ABC)`、
+`var(--x, #ABC)`、`fn(#FFF, #000)`、
+`/* #ABC */ #DEF`（コメントの後の色）は小文字で印字します。
+色を短くすることはありません（`#FFFFFF` は 6 桁のままです）。
+次のものは書かれたまま残します。
+2、5、7、9 桁の連なり（`#AB`、`#ABCDE`、`#ABCDEF1`、`#ABCDEF123`）、
+`#` の後がほかの文字のもの（`#GGG`）、ほかの文字が接する語（`#ABC-x`、`x#ABC`、
+`#ABC.5`、`#ABC#DEF`、`#ABC/#DEF`）、文字列（`'#ABC'`）、コメント、
+`url(` の括弧の中（`url(#ABC)` は要素への参照です）、
+バックスラッシュの後（`\#ABC`）にある `#` です。
+スタイルのテキストの中にある `;` は、色を実体のプレースホルダにするか、
+`;` の後の語と結びます。
+例えば、`classDef c fill:#F9F;stroke:red` のスタイルは、
+`fill:#F9Fstroke:red` です。
+詳しくは、
+[mermaid.js の行の規則](../../spec/docs/common.ja.md#style-行と-classdef-行)
+を参照してください。
+そのため、その色は書かれたまま残します。
+文を終える `;` は整形ツールが除くので、その前の色は小文字で印字します。
+色に接するディレクティブ（`fill:#ABCDEF%%{init: {}}%%`）は、
+mermaid.js が取り除いた後で、その前の語を後の語と結ぶことがあるので、
+その色も書かれたまま残します。
+[fixture: flowchart/colors/words-that-are-not-colors-as-written]
+[fixture: flowchart/colors/colors-in-quotes-and-after-a-backslash-as-written]
+[fixture: flowchart/colors/color-before-the-final-semicolon]
+[fixture: flowchart/colors/colors-before-a-semicolon-as-written]
+[fixture: flowchart/colors/colors-next-to-comments-and-directives]
+[fixture: class/colors/words-that-are-not-colors-as-written]
+[fixture: state/colors/words-that-are-not-colors-as-written]
+[fixture: er/colors/words-that-are-not-colors-as-written]
+[fixture: requirement/colors/words-that-are-not-colors-as-written]
+[fixture: block/colors/words-that-are-not-colors-as-written]
+[fixture: usecase/colors/words-that-are-not-colors-as-written]
+[fixture: venn/colors/words-that-are-not-colors-as-written]
+
+mermaid.js は、色を書かれたままの大文字小文字で Db と図に残し、
+同じ図を描きます。
+ノードのスタイルは、そのまま `!important` を付けて、
+図形の CSS `style` 属性に入れ、CSS は色の桁を大文字小文字によらず読みます。
+（[`styles2Map`](https://github.com/mermaid-js/mermaid/blob/2086904e76c692331e34a45d7cc3bc30860d040e/packages/mermaid/src/rendering-util/rendering-elements/shapes/handDrawnShapeStyles.ts#L44-L51)、
+[`styles2String`](https://github.com/mermaid-js/mermaid/blob/2086904e76c692331e34a45d7cc3bc30860d040e/packages/mermaid/src/rendering-util/rendering-elements/shapes/handDrawnShapeStyles.ts#L75-L106)）。
+リンクのスタイルは、パスの `style` 属性に入り、
+その `stroke` が矢印の先の色になります。
+（[スタイルの `stroke:`](https://github.com/mermaid-js/mermaid/blob/2086904e76c692331e34a45d7cc3bc30860d040e/packages/mermaid/src/rendering-util/rendering-elements/edges.js#L899)、
+[パスの `stroke:`](https://github.com/mermaid-js/mermaid/blob/2086904e76c692331e34a45d7cc3bc30860d040e/packages/mermaid/src/rendering-util/rendering-elements/edges.js#L957)）。
+[`addEdgeMarkers`](https://github.com/mermaid-js/mermaid/blob/2086904e76c692331e34a45d7cc3bc30860d040e/packages/mermaid/src/rendering-util/rendering-elements/edgeMarker.ts#L104-L136)
+は、それを色の id（`…pointEnd-margin__ABCDEF`）を持つマーカーに写します。
+この id は mermaid.js が生成するものです。
+quadrant 図は、点の色を `fill` と `stroke` の属性にそのまま入れます。
+（[`quadrantBuilder.ts`](https://github.com/mermaid-js/mermaid/blob/2086904e76c692331e34a45d7cc3bc30860d040e/packages/mermaid/src/diagrams/quadrant-chart/quadrantBuilder.ts#L496-L508)）。
+各場所の両方のテキストを Chromium に描き、SVG が、色の大文字小文字と、
+生成された id と、手描き風の図形のランダムな path を除いて同じか、
+画素が同じでした。
+flowchart の `style`、`classDef`、`linkStyle` は 9.0.0、9.1.7、9.4.3、10.3.1、
+10.9.0、11.0.0、11.4.1、11.12.3、11.13.0、11.14.0、11.15.0、11.16.1、12.0.0、
+12.3.0 の 14 版、swimlane 図は 11.16.1、12.0.0、12.3.0、
+agentflow 図は 12.0.0 と 12.3.0、class 図は 11.4.1 から 12.3.0、
+state 図は 11.0.0 から 12.3.0、ER 図は 11.12.3 から 12.3.0、
+requirement 図は 11.12.3 から 12.3.0、block 図は 10.9.0 から 12.3.0、
+usecase 図は 12.0.0 と 12.3.0、quadrant 図は 11.0.0 から 12.3.0、
+Venn 図は 11.13.0 から 12.3.0 です。
+ほかの版は、その文か図の種類を拒否します。
+
+テストは、印字したテキストの Db に、
+書かれたテキストの Db から色を戻して比べます。
+`tests/color-case-differences.ts` の `colorCaseDbForFormattingComparison`
+を使います。
+スタイルを持つ Db の場所で、書かれた色を小文字にしたものになっている色は、
+書かれた大文字小文字を採ります。
+ほかの違いは、上の定義で色でないのに小文字で印字されたテキスト、
+別の色になった色、失われた色も含めて、失敗とします。
+固定している mermaid.js の版を上げるときは、各場所の両方のテキストを描き直し、
+SVG と画素を比べてから、例外を残します。
+
 ## 同じに描かれる綴り
 
 mermaid.js は、トークンの異なる綴りの一部を同じトークンとして読み、
@@ -2414,8 +2542,8 @@ flowchart では、9.0.0 から 10.3.0 の字句解析器がラベルを文の�
 次の部分を別のトークンとして読みます。
 そのため、ラベルの末尾の `-`、矢印（`---`、`--x`、`--o`、`.-`）、`:::`、
 `_self`、`_blank`、`_parent`、`_top`、`interpolate`、
-空白が続く `click` と `call`、`accTitle` と `accDescr` を含むラベルも、
-引用符を残します。
+空白かラベルの末尾が続く `click` と `call`、
+`accTitle` と `accDescr` を含むラベルも、引用符を残します。
 swimlane 図と agentflow 図は、これらを引用符なしで印字します。
 ほかのテキストは、書かれたまま残します。
 markdown 文字列、`_`、`/`、`\`、`-`、空白で始まるテキスト、括弧、`|`、`&`、`"`、

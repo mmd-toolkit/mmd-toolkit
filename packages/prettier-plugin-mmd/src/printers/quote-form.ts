@@ -1015,9 +1015,11 @@ function isFollowedBySpace(character: string | undefined): boolean {
  * - an arrow: three or more dashes, two dashes and an `x` or an `o`, and `.-`;
  * - the separator `:::`;
  * - a target of a link (`_self`, `_blank`, `_parent`, `_top`), wherever it
- *   stands, and the word `interpolate`, where a run of letters starts;
+ *   stands, and the word `interpolate`, where a run of letters starts and no
+ *   letter, digit, or `_` follows;
  * - `click` and `call` with a space after them, where a run of letters starts,
- *   which start the states of an interactive statement;
+ *   which start the states of an interactive statement; at the end of the
+ *   text too, since between two arrows a space and an arrow follow the label;
  * - `accTitle` and `accDescr`, which start the states of an accessibility line.
  */
 function startsOtherTokens(text: string): boolean {
@@ -1028,7 +1030,7 @@ function startsOtherTokens(text: string): boolean {
     text.includes(".-") ||
     text.includes(":::") ||
     linkTargets.some((target) => text.includes(target)) ||
-    startsWord(text, "interpolate", () => true) ||
+    startsWord(text, "interpolate", endsKeyword) ||
     startsWord(text, "click", isFollowedBySpace) ||
     startsWord(text, "call", isFollowedBySpace) ||
     lower.includes("acctitle") ||

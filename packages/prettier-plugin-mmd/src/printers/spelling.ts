@@ -2,6 +2,7 @@ import type { Node, Range, Token } from "@mmd-toolkit/ast"
 import { visitorKeys } from "@mmd-toolkit/parser"
 import type { Atom } from "./atoms.ts"
 import { findNodes } from "./collections.ts"
+import { findColorRespellings } from "./color-form.ts"
 import { keywordSpellings } from "./keyword-spellings.ts"
 import { childrenOf } from "./layout.ts"
 import { findLinkLabelRespellings } from "./link-label-form.ts"
@@ -208,7 +209,8 @@ function collectNumbers(
  * What the printer writes in place of a spelling that is printed in one form
  * (docs/compatibility.md, Spellings that are drawn the same): a keyword in the
  * case of the examples of the pinned mermaid.js, the direction of a header,
- * a string between `"`, and a number in its shortest form.
+ * a string between `"`, a number in its shortest form, and a color of a style
+ * in lower case.
  */
 export function findRespellings(
   source: Source,
@@ -233,6 +235,7 @@ function respellingsOf(source: Source): SourceRespellings {
     findQuoteFormRespellings(source, map)
     findLinkLabelRespellings(source, map)
     collectNumbers(source, source.root, map)
+    findColorRespellings(source, map)
     found = { byStart: map, starts: [...map.keys()].sort((a, b) => a - b) }
     respellingsOfSource.set(source, found)
   }

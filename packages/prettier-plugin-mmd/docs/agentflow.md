@@ -1114,6 +1114,45 @@ them literally in package fixtures.
 Input `"agentflow-beta TB\r\nA[\"a\r\n b\"]\r\n"` becomes output
 `"agentflow-beta TB\n  A[\"a\n b\"]\n"`. [test: agentflow: eol-crlf]
 
+### Colors
+
+A color in a style is printed in lower case, as the examples in the
+documentation of mermaid.js write it and as the CSS formatter of Prettier prints
+it: `style A fill:#F9F,stroke:#ABCDEF` is printed
+`style A fill: #f9f, stroke: #abcdef`. The colors in the styles of the `style`,
+`classDef`, and `linkStyle` statements of an agentflow diagram are printed so. A
+color is a `#` and 3, 4, 6, or 8 hexadecimal digits that stand alone in the
+value of a style; it is never shortened, and a text that is no color stays as
+written (see
+[Colors that are drawn the same](./compatibility.md#colors-that-are-drawn-the-same)).
+[fixture: colors/colors-in-lower-case]
+
+Input
+([colors/colors-in-lower-case-input.mmd](../tests/fixtures/agentflow/colors/colors-in-lower-case-input.mmd)):
+
+```mmd
+agentflow-beta TB
+A --> B
+C:::c
+style A fill:#F9F,stroke:#ABCDEF
+classDef c fill:#DEADBE
+linkStyle 0 stroke:#FF0000
+linkStyle default stroke:#ABCDEF
+```
+
+Output
+([colors/colors-in-lower-case-output.mmd](../tests/fixtures/agentflow/colors/colors-in-lower-case-output.mmd)):
+
+```mmd
+agentflow-beta TB
+  A --> B
+  C:::c
+  style A fill: #f9f, stroke: #abcdef
+  classDef c fill: #deadbe
+  linkStyle 0 stroke: #ff0000
+  linkStyle default stroke: #abcdef
+```
+
 ### Quotes
 
 The name of a flow and of a connector in quotes is printed without them, under

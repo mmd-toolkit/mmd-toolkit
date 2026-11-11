@@ -944,6 +944,67 @@ part of it: the lines it joins are printed as written. [fixture:
 directives/semicolon-after-unclosed-directive-kept] [fixture:
 directives/semicolon-on-next-line-after-unclosed-directive-kept]
 
+### Colors
+
+A color in a style is printed in lower case, as the examples in the
+documentation of mermaid.js write it and as the CSS formatter of Prettier prints
+it: `style A fill:#F9F,stroke:#ABCDEF` is printed
+`style A fill: #f9f, stroke: #abcdef`. The colors in the styles of the `style`
+and `classDef` statements of a class diagram are printed so. A color is a `#`
+and 3, 4, 6, or 8 hexadecimal digits that stand alone in the value of a style;
+it is never shortened, and a text that is no color stays as written (see
+[Colors that are drawn the same](./compatibility.md#colors-that-are-drawn-the-same)).
+[fixture: colors/colors-in-lower-case] [fixture:
+colors/words-that-are-not-colors-as-written]
+
+Input
+([colors/colors-in-lower-case-input.mmd](../tests/fixtures/class/colors/colors-in-lower-case-input.mmd)):
+
+```mmd
+classDiagram
+class A
+class B
+A --> B
+style A fill:#F9F,stroke:#ABCDEF,color:#C0FFEE
+classDef c fill:#DEADBE,stroke:#ABCDEF
+cssClass "B" c
+```
+
+Output
+([colors/colors-in-lower-case-output.mmd](../tests/fixtures/class/colors/colors-in-lower-case-output.mmd)):
+
+```mmd
+classDiagram
+  class A
+  class B
+  A --> B
+  style A fill: #f9f, stroke: #abcdef, color: #c0ffee
+  classDef c fill: #deadbe, stroke: #abcdef
+  cssClass "B" c
+```
+
+Input
+([colors/words-that-are-not-colors-as-written-input.mmd](../tests/fixtures/class/colors/words-that-are-not-colors-as-written-input.mmd)):
+
+```mmd
+classDiagram
+class A
+style A fill:#ABCDE,stroke:#ABCDEF1
+classDef c fill:url(#ABC),stroke:#ABC-x
+classDef d fill:"#ABC",stroke:/* #ABC */ red
+```
+
+Output
+([colors/words-that-are-not-colors-as-written-output.mmd](../tests/fixtures/class/colors/words-that-are-not-colors-as-written-output.mmd)):
+
+```mmd
+classDiagram
+  class A
+  style A fill: #ABCDE, stroke: #ABCDEF1
+  classDef c fill: url(#ABC), stroke: #ABC-x
+  classDef d fill: "#ABC", stroke: /* #ABC */ red
+```
+
 ### Quotes
 
 The name of a class between backquotes is printed without them, as the examples

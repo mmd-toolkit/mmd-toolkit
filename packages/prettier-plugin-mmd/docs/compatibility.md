@@ -1240,6 +1240,123 @@ that became markdown or stopped being it, fails. When the pinned mermaid.js is
 updated, draw both texts of each case again and compare the SVG and the pixels
 before the exception stays.
 
+## Colors that are drawn the same
+
+The colors in the styles of flowchart, swimlane, agentflow, class, state, ER,
+requirement, block, usecase, quadrant, and Venn diagrams are printed in lower
+case: `style A fill:#F9F,stroke:#ABCDEF` is printed
+`style A fill: #f9f, stroke: #abcdef`. The colors are in these places:
+
+| Diagram type | Where the colors are                                             | Colors of the examples, lower case / otherwise |
+| ------------ | ---------------------------------------------------------------- | ---------------------------------------------: |
+| flowchart    | `style`, `classDef`, `linkStyle` with link numbers and `default` |                                         10 / 0 |
+| swimlane     | the same statements                                              |                                          2 / 0 |
+| agentflow    | the same statements                                              |                                          0 / 0 |
+| class        | `style`, `classDef`                                              |                                          8 / 0 |
+| state        | `style`, `classDef`                                              |                                          2 / 0 |
+| ER           | `style`, `classDef`                                              |                                         12 / 0 |
+| requirement  | `style`, `classDef`                                              |                                          5 / 0 |
+| block        | `style`, `classDef`                                              |                                          7 / 0 |
+| usecase      | `style`, `classDef`                                              |                                         10 / 0 |
+| quadrant     | `color` and `stroke-color` of a point and of a `classDef`        |                                          7 / 0 |
+| Venn         | the properties of `style`                                        |                                          1 / 0 |
+
+The counts are the colors of those places in the examples of the documentation
+of mermaid.js, read with the parser; the examples write 64 colors in lower case
+and none in upper case or in both. The colors of other places are texts of
+another kind and stay as written: the labels and the titles (a `<span>` with
+`style='color:#F00'` in a label is a label), the notes, the arguments of a call
+of a C4 diagram (`$bgColor="#FFF"`), the colors of the boxes and the rectangles
+of a sequence diagram, and the settings of the frontmatter and of the
+directives. The `classDef` of a treemap has none, since its lexer rejects a `#`.
+[fixture: flowchart/colors/colors-in-lower-case] [fixture:
+flowchart/colors/swimlane-colors-in-lower-case] [fixture:
+agentflow/colors/colors-in-lower-case] [fixture:
+class/colors/colors-in-lower-case] [fixture: state/colors/colors-in-lower-case]
+[fixture: er/colors/colors-in-lower-case] [fixture:
+requirement/colors/colors-in-lower-case] [fixture:
+block/colors/colors-in-lower-case] [fixture:
+usecase/colors/colors-in-lower-case] [fixture:
+quadrant/colors/colors-in-lower-case] [fixture:
+venn/colors/colors-in-lower-case]
+
+A text is a color only where it cannot be anything else, and the formatter
+prints it as the CSS formatter of Prettier does (3.9.9, run on `fill: <value>`
+for each value below; the formatter gave the same text, apart from the case of
+the unit in `#fff 10PX`, which it does not change). A color is a `#` and 3, 4,
+6, or 8 hexadecimal digits that is a word of its own in the text of a style: it
+starts the text or follows whitespace, a `:`, a `,`, or a `(`, and it ends the
+text or is followed by whitespace, a `,`, a `)`, a `!`, or the `;` that ends the
+statement. So `#F9F`, `#ABCD`, `#ABCDEF`, `#ABCDEF12`, `#FFF !important`,
+`#FFF!important`, `1px solid #FFF`, `rgb(#FFF)`, `calc(#ABC)`, `var(--x, #ABC)`,
+`fn(#FFF, #000)`, and `/* #ABC */ #DEF` (the color after the comment) are
+printed in lower case, and a color is never shortened (`#FFFFFF` stays six
+digits). These stay as written: a run of 2, 5, 7, or 9 digits (`#AB`, `#ABCDE`,
+`#ABCDEF1`, `#ABCDEF123`), a `#` followed by other letters (`#GGG`), a word that
+more characters touch (`#ABC-x`, `x#ABC`, `#ABC.5`, `#ABC#DEF`, `#ABC/#DEF`),
+and a `#` inside a string (`'#ABC'`), a comment, the parentheses of `url(`
+(`url(#ABC)` is a reference to an element), or after a backslash (`\#ABC`). A
+`;` inside the text of a style makes the color the placeholder of an entity, or
+joins it to the word after the `;` (`classDef c fill:#F9F;stroke:red` has the
+style `fill:#F9Fstroke:red`,
+[`style` and `classDef` lines](../../spec/docs/common.md#style-and-classdef-lines)),
+so it stays; the `;` that ends the statement is dropped by the formatter, and
+the color before it is printed in lower case. A directive that touches the color
+(`fill:#ABCDEF%%{init: {}}%%`) can join the word before it to the word after it
+once mermaid.js has taken it away, so that color stays as written too. [fixture:
+flowchart/colors/words-that-are-not-colors-as-written] [fixture:
+flowchart/colors/colors-in-quotes-and-after-a-backslash-as-written] [fixture:
+flowchart/colors/color-before-the-final-semicolon] [fixture:
+flowchart/colors/colors-before-a-semicolon-as-written] [fixture:
+flowchart/colors/colors-next-to-comments-and-directives] [fixture:
+class/colors/words-that-are-not-colors-as-written] [fixture:
+state/colors/words-that-are-not-colors-as-written] [fixture:
+er/colors/words-that-are-not-colors-as-written] [fixture:
+requirement/colors/words-that-are-not-colors-as-written] [fixture:
+block/colors/words-that-are-not-colors-as-written] [fixture:
+usecase/colors/words-that-are-not-colors-as-written] [fixture:
+venn/colors/words-that-are-not-colors-as-written]
+
+mermaid.js keeps the colors in the case in which they are written, in its Db and
+in the figure, and draws the same figure. It puts the style of a node into the
+CSS `style` attribute of its shape as it is, with `!important`, where CSS reads
+the digits of a color in any case
+([`styles2Map`](https://github.com/mermaid-js/mermaid/blob/2086904e76c692331e34a45d7cc3bc30860d040e/packages/mermaid/src/rendering-util/rendering-elements/shapes/handDrawnShapeStyles.ts#L44-L51)
+and
+[`styles2String`](https://github.com/mermaid-js/mermaid/blob/2086904e76c692331e34a45d7cc3bc30860d040e/packages/mermaid/src/rendering-util/rendering-elements/shapes/handDrawnShapeStyles.ts#L75-L106)).
+The style of a link goes into the `style` attribute of its path, and its
+`stroke` is the color of the arrowheads
+([`stroke:` of the styles](https://github.com/mermaid-js/mermaid/blob/2086904e76c692331e34a45d7cc3bc30860d040e/packages/mermaid/src/rendering-util/rendering-elements/edges.js#L899)
+and
+[of the path](https://github.com/mermaid-js/mermaid/blob/2086904e76c692331e34a45d7cc3bc30860d040e/packages/mermaid/src/rendering-util/rendering-elements/edges.js#L957)),
+which
+[`addEdgeMarkers`](https://github.com/mermaid-js/mermaid/blob/2086904e76c692331e34a45d7cc3bc30860d040e/packages/mermaid/src/rendering-util/rendering-elements/edgeMarker.ts#L104-L136)
+copies into a marker with the id of the color (`…pointEnd-margin__ABCDEF`), an
+id that mermaid.js generates. A quadrant chart puts the color of a point into
+the attributes `fill` and `stroke` as it is
+([`quadrantBuilder.ts`](https://github.com/mermaid-js/mermaid/blob/2086904e76c692331e34a45d7cc3bc30860d040e/packages/mermaid/src/diagrams/quadrant-chart/quadrantBuilder.ts#L496-L508)).
+Both texts of each place were drawn in Chromium: the SVG was the same apart from
+the case of the colors and from the generated ids and the random paths of the
+hand drawn shapes, or the pixels were the same (`style`, `classDef`, and
+`linkStyle` of a flowchart with the 14 versions 9.0.0, 9.1.7, 9.4.3, 10.3.1,
+10.9.0, 11.0.0, 11.4.1, 11.12.3, 11.13.0, 11.14.0, 11.15.0, 11.16.1, 12.0.0, and
+12.3.0; a swimlane diagram with 11.16.1, 12.0.0, and 12.3.0; an agentflow
+diagram with 12.0.0 and 12.3.0; a class diagram with 11.4.1 to 12.3.0; a state
+diagram with 11.0.0 to 12.3.0; an ER diagram with 11.12.3 to 12.3.0; a
+requirement diagram with 11.12.3 to 12.3.0; a block diagram with 10.9.0 to
+12.3.0; a usecase diagram with 12.0.0 and 12.3.0; a quadrant chart with 11.0.0
+to 12.3.0; and a Venn diagram with 11.13.0 to 12.3.0; the versions that are not
+listed for a type reject the statement or the diagram type).
+
+The tests compare the Db with the colors of the styles restored from the Db of
+the written text (`colorCaseDbForFormattingComparison` in
+`tests/color-case-differences.ts`): a color that is the written color in lower
+case takes the written case, in the places of the Db that hold a style, and any
+other difference, among them a text that is no color by the definition above and
+was printed in lower case, a color that became another color, and a color that
+was lost, fails. When the pinned mermaid.js is updated, draw both texts of each
+place again and compare the SVG and the pixels before the exception stays.
+
 ## Spellings that are drawn the same
 
 mermaid.js reads some different spellings of a token as the same token and draws
@@ -2247,7 +2364,8 @@ the lexer ends the text at a `--`, and reads `go--on` as the arrow `--o`. In a
 flowchart a label also stays in quotes where the lexer of 9.0.0 to 10.3.0 reads
 a part of it as another token, since it has no state for the text of a label: a
 `-` at its end, an arrow (`---`, `--x`, `--o`, `.-`), `:::`, `_self`, `_blank`,
-`_parent`, `_top`, `interpolate`, `click` and `call` with a space after them,
+`_parent`, `_top`, `interpolate`, `click` and `call` with a space or the end of
+the label after them (a space and an arrow follow a label between two arrows),
 and `accTitle` and `accDescr`. A swimlane diagram and an agentflow diagram print
 them without quotes. Any other text stays as written: a markdown string, a text
 that starts with `_`, a `/`, a `\`, a `-`, or a space, a text with a bracket, a

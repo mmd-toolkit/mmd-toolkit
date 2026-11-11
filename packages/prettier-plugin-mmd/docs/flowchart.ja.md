@@ -2609,6 +2609,74 @@ flowchart LR
   end
 ```
 
+### 色
+
+スタイルの色は、mermaid.js の文書の例と Prettier の CSS 整形と同じく、
+小文字で印字します。
+`style A fill:#F9F,stroke:#ABCDEF` は `style A fill: #f9f, stroke: #abcdef`
+と印字します。
+flowchart と swimlane 図の `style`、`classDef`、
+`linkStyle` 文のスタイルの色が対象です。
+色は、スタイルの値の中で単独で立つ、`#` と 3、4、6、8 桁の 16 進数です。
+色を短くすることはなく、色でないテキストは書かれたままにします。
+（[同じに描かれる色](./compatibility.ja.md#同じに描かれる色)を参照）。
+[fixture: colors/colors-in-lower-case]
+[fixture: colors/words-that-are-not-colors-as-written]
+
+入力
+([colors/colors-in-lower-case-input.mmd](../tests/fixtures/flowchart/colors/colors-in-lower-case-input.mmd)):
+
+```mmd
+flowchart LR
+A --> B
+C:::c
+style A fill:#F9F,stroke:#ABCDEF,color:#C0FFEE
+style B fill:#ABCD,stroke:#ABCDEF12
+classDef c fill:#DEADBE,stroke:#ABCDEF
+linkStyle 0 stroke:#FF0000,color:#00FF00
+linkStyle default stroke:#ABCDEF
+```
+
+出力
+([colors/colors-in-lower-case-output.mmd](../tests/fixtures/flowchart/colors/colors-in-lower-case-output.mmd)):
+
+```mmd
+flowchart LR
+  A --> B
+  C:::c
+  style A fill: #f9f, stroke: #abcdef, color: #c0ffee
+  style B fill: #abcd, stroke: #abcdef12
+  classDef c fill: #deadbe, stroke: #abcdef
+  linkStyle 0 stroke: #ff0000, color: #00ff00
+  linkStyle default stroke: #abcdef
+```
+
+入力
+([colors/words-that-are-not-colors-as-written-input.mmd](../tests/fixtures/flowchart/colors/words-that-are-not-colors-as-written-input.mmd)):
+
+```mmd
+flowchart LR
+A --> B
+style A fill:#ABCDE,stroke:#ABCDEF1
+style B fill:#AB,stroke:#GGG
+classDef c fill:x#ABC,stroke:#ABC-x
+classDef d fill:#ABC.5,stroke:#ABC#DEF
+classDef e stroke:#ABC/#DEF
+```
+
+出力
+([colors/words-that-are-not-colors-as-written-output.mmd](../tests/fixtures/flowchart/colors/words-that-are-not-colors-as-written-output.mmd)):
+
+```mmd
+flowchart LR
+  A --> B
+  style A fill: #ABCDE, stroke: #ABCDEF1
+  style B fill: #AB, stroke: #GGG
+  classDef c fill: x#ABC, stroke: #ABC-x
+  classDef d fill: #ABC.5, stroke: #ABC#DEF
+  classDef e stroke: #ABC/#DEF
+```
+
 ### Quotes
 
 引用符付きの subgraph の名前は、mermaid.js の文書の例が引用符なしで 53 回、
@@ -2681,8 +2749,8 @@ Db の `labelType` に前者では `string`、後者では `text` を持ちま�
 ラベルを文のトークンで読みます。
 そのため、末尾の `-`（`("go-")`）、矢印（`---`、`--x`、`--o`、`.-`）、`:::`、
 `_self`、`_blank`、`_parent`、`_top`、`interpolate`、
-空白が続く `click` と `call`、`accTitle` と `accDescr` を含むラベルも、
-引用符を残します。
+空白かラベルの末尾が続く `click` と `call`、
+`accTitle` と `accDescr` を含むラベルも、引用符を残します。
 swimlane 図は、これらを引用符なしで印字します。
 それ以外のテキスト（`"x (y)"`、`"a/b"`、`"a & b"`、`"_x"`、`"x "`、`" x"`）と、
 markdown 文字列は引用符を残します。
