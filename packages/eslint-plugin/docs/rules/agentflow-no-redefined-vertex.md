@@ -47,11 +47,13 @@ order in which the flows end (a flow inside another one ends first): mermaid.js
 leaves it in the first and the later one does not get it. A vertex statement in
 the later flow is reported when it has no link, no class, and no data block, and
 writes only the id, or the label and the shape that the element has with the
-same property of the shape, the label being markdown only if the element's label
-is: it says nothing new about the element. A label in quotes and a label without
-them are the same here, since mermaid.js draws them alike. A connector
-declaration counts as an earlier occurrence, and a connector declaration in a
-later flow is reported by
+same property of the shape, and with both labels markdown or neither: it says
+nothing new about the element. A label in quotes and a label without them are
+the same here, since mermaid.js draws them alike. The title of a connector is
+never a markdown label, however it is written, and declaring a connector again
+with a title changes neither whether its label is markdown nor the property of
+its shape. A connector declaration counts as an earlier occurrence, and a
+connector declaration in a later flow is reported by
 [agentflow-no-redefined-connector](./agentflow-no-redefined-connector.md). In a
 group such as `A & B`, each vertex is reported for itself. It is not reported
 when the earlier flow is inside the later one, or has the same id, since nothing

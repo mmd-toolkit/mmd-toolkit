@@ -1,5 +1,5 @@
 ---
-"@mmd-toolkit/eslint-plugin": patch
+"@mmd-toolkit/eslint-plugin": minor
 ---
 
 Report a vertex written again in a later `subgraph` or `flow`, which does not

@@ -45,16 +45,16 @@ which the subgraphs end (a subgraph inside another one ends first): mermaid.js
 leaves the vertex in the first and the later one does not get it. A statement in
 the later subgraph that writes the vertex again is reported when it has no link,
 no class, and no data block, and writes only the id, or the shape that the
-vertex has with the same label and property of the shape, the label being
-markdown only if the vertex's label is: it says nothing new about the vertex. A
-label in quotes and a label without them are the same here, since mermaid.js
-draws them alike. In a group such as `A & B`, each vertex is reported for
-itself. It is not reported when the earlier subgraph is inside the later one, or
-has the same id, since nothing is lost; nor when the vertex was not written
-before (an id that only names an earlier subgraph writes a new vertex), or when
-the statement says something new: a link, a class, a data block, the first shape
-of the vertex, a markdown label where the vertex's label is not markdown or the
-reverse, or another property. A different shape or label is reported as above.
+vertex has with the same label and property of the shape, and with both labels
+markdown or neither: it says nothing new about the vertex. A label in quotes and
+a label without them are the same here, since mermaid.js draws them alike. In a
+group such as `A & B`, each vertex is reported for itself. It is not reported
+when the earlier subgraph is inside the later one, or has the same id, since
+nothing is lost; nor when the vertex was not written before (an id that only
+names an earlier subgraph writes a new vertex), or when the statement says
+something new: a link, a class, a data block, the first shape of the vertex, a
+markdown label where the vertex's label is not markdown or the reverse, or
+another property. A different shape or label is reported as above.
 
 Examples of **incorrect** code for this rule:
 

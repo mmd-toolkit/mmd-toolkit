@@ -44,8 +44,8 @@ function sameForm(previous: FlowchartShape, shape: FlowchartShape): boolean {
  * because a subgraph that ended before has it (`flowchartLostMembers`), when
  * the vertex was written before and this occurrence has no link, class, or data
  * block and writes only the id, or the shape that the vertex has: the label and
- * the property of the shape the same, and the label markdown only if the
- * vertex's label is (`sameForm`).
+ * the property of the shape the same, and both labels markdown or neither
+ * (`sameForm`).
  */
 export const flowchartNoRedefinedVertex: MermaidRuleDefinition<{
   RuleOptions: []
