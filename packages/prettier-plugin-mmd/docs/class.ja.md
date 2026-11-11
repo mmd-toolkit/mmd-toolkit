@@ -1017,12 +1017,79 @@ classDiagram
 
 ### Quotes
 
-printer は引用符を付けたり外したりしません。
+バッククォートで囲んだクラスの名前は、バッククォートなしで印字します。
+mermaid.js の文書の例は、バッククォートなしが 178 件、ありが 4 件で、
+namespace の名前はバッククォートなしが 11 件です。
+（[テキストの引用符](./compatibility.ja.md#テキストの引用符)）。
+`` class `Animal` `` は `class Animal` と印字します。
+関係、メンバー、注釈、ノート、`click` 文、
+`link` 文と namespace の名前も同じです。
+mermaid.js は両方の形を同じ名前として読みます。
+ASCII の英字、数字、`_` からなる 1 語で、
+次のいずれでもない名前からバッククォートを外します。
+`_blank`、`_parent`、`_self`、`_top`、`accDescr`、`accTitle`、`call`、
+`callback`、`class`、`classDef`、`click`、`cssClass`、`href`、`link`、
+`namespace`、`note`、`o`、`style` です。
+字句解析器は、これらが名前の位置にあると、独立した単位として読みます。
+2 語の名前（`` `A B` ``）は、2 語を空白なしで結合したものになるので、
+バッククォートを保ちます。
+ほかの文字を含む名前（`` `a-b` ``、`` `Animal Class!` ``、`` `é` ``）と、
+コメントやディレクティブのある行の名前も、バッククォートを保ちます。
+[fixture: quotes/names-without-quotes] [fixture: quotes/names-that-need-quotes]
+[fixture: quotes/names-on-a-kept-line-as-written]
+
+printer は引用符を付けません。
 文法が文字列を要求する箇所では、mermaid.js は引用符のないテキストを拒否します。
 `class A["Label"]` は読まれ、`class A[Label]` は拒否されます。
 `note for B Text` と引用符のない多重度（`A 1 --> * B`）も拒否されるので、
 その位置の文字列を引用符なしにする選択肢はありません。
 [fixture: quotes/strings-as-written]
+
+入力
+([quotes/names-without-quotes-input.mmd](../tests/fixtures/class/quotes/names-without-quotes-input.mmd)):
+
+```mmd
+classDiagram
+class `Animal`
+class `Duck` {
++swim()
+}
+class `Zebra`~T~
+class `Fish`:::css
+`Animal` <|-- `Duck`
+`Animal` "1" --> "*" `Zebra` : eats
+`Animal` : +name
+<<interface>> `Animal`
+note for `Animal` "text"
+click `Animal` call f()
+link `Animal` "https://example.com"
+namespace `Zoo` {
+class Cat
+}
+```
+
+出力
+([quotes/names-without-quotes-output.mmd](../tests/fixtures/class/quotes/names-without-quotes-output.mmd)):
+
+```mmd
+classDiagram
+  class Animal
+  class Duck {
+    +swim()
+  }
+  class Zebra~T~
+  class Fish:::css
+  Animal <|-- Duck
+  Animal "1" --> "*" Zebra : eats
+  Animal : +name
+  <<interface>> Animal
+  note for Animal "text"
+  click Animal call f()
+  link Animal "https://example.com"
+  namespace Zoo {
+    class Cat
+  }
+```
 
 入力
 ([quotes/strings-as-written-input.mmd](../tests/fixtures/class/quotes/strings-as-written-input.mmd)):

@@ -1341,8 +1341,9 @@ mermaid.js は Db から描くので、同じ Db が同じ描画の根拠です�
 | mindmap の形のテキストの引用符  |   0 |              0 |        7 |       7 |
 | kanban の形のテキストの引用符   |   0 |              0 |      114 |     114 |
 | C4 の引数の引用符               |   0 |              0 |       67 |      65 |
-| 見出しの名前の引用符            |   0 |              0 |        7 |       7 |
-| agentflow の名前の引用符        |   0 |              0 |       23 |      21 |
+| 見出しの名前の引用符            |   0 |              0 |       11 |      11 |
+| agentflow の名前の引用符        |   0 |              0 |       26 |      24 |
+| class の名前の引用符            |   0 |              0 |        7 |       7 |
 
 最後の列に数えないコーパスの対は、mermaid.js が別の綴りを拒否する対です。
 ただし、リンクのラベルの 2 対は例外で、ラベルに `%%` があり、Db が異なります。
@@ -2011,6 +2012,8 @@ sankey 図のリンクの source は、`"a b",c,1` と `a b,c,1` で同じ id �
 | agentflow      | flow の名前                          |         17 |          0 |
 | agentflow      | connector の名前                     |          2 |          0 |
 | agentflow      | connector のタイトル                 |          0 |          2 |
+| class          | class の名前                         |        178 |          4 |
+| class          | namespace の名前                     |         11 |          0 |
 
 actor、use case、system boundary の名前は、
 それ自体のラベルやタイトルがない場合を数えます。
@@ -2274,6 +2277,19 @@ connector のタイトルは、mermaid.js が引用符の有無によらず同�
 [fixture: agentflow/quotes/connector-titles-as-written]
 [fixture: agentflow/quotes/names-and-titles-before-a-comment]
 
+class 図では、バッククォートで囲んだ class または namespace の名前が、
+ASCII の英字、数字、`_` からなる 1 語で、`_blank`、`_parent`、`_self`、`_top`、
+`accDescr`、`accTitle`、`call`、`callback`、`class`、`classDef`、`click`、
+`cssClass`、`href`、`link`、`namespace`、`note`、`o`、
+`style` のいずれでもない場合に、バッククォートなしで印字します。
+字句解析器は、名前の位置にあるこれらの語を独立した単位として読みます。
+2 語の名前は、バッククォートを外すと空白なしで結ばれた 2 語になり、
+ほかの文字を含む名前は同じに読まれません。
+コメントやディレクティブのある行の名前は、バッククォートを残します。
+[fixture: class/quotes/names-without-quotes]
+[fixture: class/quotes/names-that-need-quotes]
+[fixture: class/quotes/names-on-a-kept-line-as-written]
+
 flowchart、swimlane 図、agentflow 図では、subgraph や flow のタイトル、
 図形のラベル、リンクのラベルは、書かれたまま残します。
 mermaid.js は `A["x"]` を文字列、`A[x]` をテキストとして読み、
@@ -2349,8 +2365,8 @@ mermaid.js 12.3.0 は、これらの入力を両方の形で読み、Db は同�
 Wardley マップが 35 個、gitGraph が 2 個、象限チャートが 19 個のうち 13 個、
 XY チャートが 191 個、Venn 図が 176 個のうち 174 個、
 use case 図が 93 個のうち 90 個、architecture 図が 2 個、mindmap が 7 個、
-kanban のボードが 114 個、C4 図が 67 個のうち 65 個、flowchart が 7 個、
-agentflow 図が 23 個のうち 21 個です。
+kanban のボードが 114 個、C4 図が 67 個のうち 65 個、flowchart が 11 個、
+agentflow 図が 26 個のうち 24 個、class 図が 7 個です。
 象限チャートの残りの 6 個はテキスト内にタブがあり、印字はこのタブも変えます。
 Venn の残りの 2 個はラベルの空白やタブの連なりで異なり、
 印字はこの連なりも変えます。
@@ -2375,10 +2391,11 @@ use case の 93 個の入力も、1 つのスタイルの空白を除くと、
 architecture の 2 個の入力のうち 1 個、mindmap の 7 個、kanban の 114 個も、
 整形後のテキストと同じ SVG が描かれました。
 architecture の残りの 1 個は、どちらの形でも描かれません。
-C4 の 67 個の入力、flowchart の 7 個の入力も、
+C4 の 67 個の入力、flowchart の 11 個の入力も、
 整形後のテキストと同じ SVG が描かれました。
-agentflow の 23 個の入力も、スタイルの空白を除くと、
+agentflow の 26 個の入力も、スタイルの空白を除くと、
 整形後のテキストと同じ SVG が描かれました。
+class の 7 個の入力も、整形後のテキストと同じ SVG が描かれました。
 
 ### mermaid.js の版
 
@@ -2461,15 +2478,24 @@ agentflow の 23 個の入力も、スタイルの空白を除くと、
   9.1.x の文法は、規則を console に記録するだけです。
   そのため、この図種があるどの版でも、文字列と引用符のない引数は、
   同じ引数になります。
-- flowchart の subgraph と agentflow 図の flow の名前: 9.0.0 から 10.3.0
-  の文法は、subgraph の名前を `text` 規則で読み、
-  この規則では文字列は型が `string` のテキストになり、
+- flowchart の subgraph と agentflow 図の flow の名前: 9.0.0 から 10.0.2
+  の文法は、subgraph の名前を `text` 規則で読みます。
+  この規則は文字列をそのまま取り、型を持ちません（`$$ = $1`）。
+  10.1.0 から 10.3.0 の文法も `text` 規則で読み、
+  語と同じく文字列も型が `text` になります。
   10.3.1 から 12.3.0 の文法は `textNoTags` 規則で読み、
-  この規則では文字列は型が `text` のテキストになります。
-  10.2.4 と 10.3.0 のソースは、ラベルの型を `markdown` とだけ比べ、
-  ほかの型同士を比べないので（`flowRenderer-v2.js`、`clusters.js`、
-  `shapes/util.js`）、これらの版でも、両方の形の名前は同じに描かれます。
+  この規則では文字列は型が `text` になります。
+  型 `string` は、10.3.1 から `text` 規則にあります。
+  この規則は角括弧の中のタイトルと形のラベルを読み、名前は読みません。
+  そのため、どの版でも、
+  subgraph の名前は両方の形で同じテキストと同じ型になります。
   agentflow 図の文法は、12.0.0、12.1.0、12.2.0、12.3.0 で同じファイルです。
+- class 図の class の名前: 9.0.0 から 12.3.0 の文法は、
+  バッククォートで囲んだ名前（`classLiteralName`: `BQUOTE_STR`）と、
+  英字と数字の名前（`alphaNumToken`: `ALPHA`、`NUM`）を、
+  `className` として読みます。
+  字句解析器の語は、jison の字句解析器が語全体として読む文字列です。
+  そのため、英字、数字、`_` からなる名前は、どの版でも両方の形で同じ名前です。
 - use case 図の名前、ラベル、metadata: この図種が初めて加わった 12.0.0 と、
   12.1.0、12.2.0、12.3.0 の字句解析器、パーサー、visitor、model builder は、
   同じファイルです。

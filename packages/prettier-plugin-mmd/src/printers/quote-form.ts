@@ -759,6 +759,49 @@ function hasArrow(node: Node): boolean {
 }
 
 /**
+ * The words that the lexer of a class diagram reads as a unit of its own where
+ * they stand as a name, which a name between backquotes is not: the keywords of
+ * the statements, the targets of a link, `o` of the aggregation, and the words
+ * that start a line of accessibility. A name of one of them is rejected, or is
+ * read as another statement, without the backquotes.
+ */
+const classNameReserved: ReadonlySet<string> = new Set([
+  "_blank",
+  "_parent",
+  "_self",
+  "_top",
+  "accDescr",
+  "accTitle",
+  "call",
+  "callback",
+  "class",
+  "classDef",
+  "click",
+  "cssClass",
+  "href",
+  "link",
+  "namespace",
+  "note",
+  "o",
+  "style",
+])
+
+/**
+ * The name of a class or of a namespace that every version of mermaid.js that
+ * reads a name between backquotes reads the same without them: a word of ASCII
+ * letters, digits, and `_` that is none of `classNameReserved`. Spaces and
+ * other characters are not read the same: a name of two words is the two words
+ * joined without the space.
+ */
+function className(text: string): string | undefined {
+  return text !== "" &&
+    [...text].every(isWordCharacter) &&
+    !classNameReserved.has(text)
+    ? text
+    : undefined
+}
+
+/**
  * The words that the lexer of a flowchart reads as a unit of its own where they
  * stand as a whole word in the name of a subgraph or of a flow, and `direction`,
  * which starts a direction where a direction follows it on its line: a name
@@ -1001,6 +1044,8 @@ const quoteRules: Readonly<
     parts: bare(headingName, { when: hasOnePart, joins: wordFollows }),
   },
   C4BoundaryStatement: { arguments: c4Arguments },
+  ClassName: { name: bare(className) },
+  ClassNamespaceStatement: { name: bare(className) },
   C4ElementStatement: { arguments: c4Arguments },
   C4RelationshipStatement: { arguments: c4Arguments },
   C4UpdateStatement: { arguments: c4Arguments },
@@ -1328,7 +1373,11 @@ function respell(
       const closing = written.lastIndexOf(written[0])
       const tail = written.slice(closing + 1)
       if (
-        !(written.startsWith('"') || written.startsWith("'")) ||
+        !(
+          written.startsWith('"') ||
+          written.startsWith("'") ||
+          written.startsWith("`")
+        ) ||
         closing < 1 ||
         ![...tail].every(isSpaceOrTab) ||
         content !== written.slice(1, closing) + tail

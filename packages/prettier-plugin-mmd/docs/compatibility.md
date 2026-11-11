@@ -1247,8 +1247,9 @@ and, with the Db only, in the inputs of the conformance corpus:
 | Quotes of a mindmap shape text     |        0 |                   0 |      7 |       7 |
 | Quotes of a kanban shape text      |        0 |                   0 |    114 |     114 |
 | Quotes of a C4 argument            |        0 |                   0 |     67 |      65 |
-| Quotes of a heading name           |        0 |                   0 |      7 |       7 |
-| Quotes of an agentflow name        |        0 |                   0 |     23 |      21 |
+| Quotes of a heading name           |        0 |                   0 |     11 |      11 |
+| Quotes of an agentflow name        |        0 |                   0 |     26 |      24 |
+| Quotes of a class name             |        0 |                   0 |      7 |       7 |
 
 A corpus pair that is not counted in the last column is a pair of which
 mermaid.js rejects the other spelling, except two pairs of the label of a link,
@@ -1889,6 +1890,8 @@ of the examples that write each in each form, are:
 | agentflow    | the name of a flow                            |             17 |         0 |
 | agentflow    | the name of a connector                       |              2 |         0 |
 | agentflow    | the title of a connector                      |              0 |         2 |
+| class        | the name of a class                           |            178 |         4 |
+| class        | the name of a namespace                       |             11 |         0 |
 
 The name of an actor, of a use case, and of a system boundary is counted where
 it has no label or title of its own, since a name in quotes cannot have one;
@@ -2115,6 +2118,18 @@ agentflow/quotes/connector-titles-in-quotes] [fixture:
 agentflow/quotes/connector-titles-as-written] [fixture:
 agentflow/quotes/names-and-titles-before-a-comment]
 
+In a class diagram the name of a class or of a namespace between backquotes is
+printed without them where it is a word of ASCII letters, digits, and `_` that
+is none of `_blank`, `_parent`, `_self`, `_top`, `accDescr`, `accTitle`, `call`,
+`callback`, `class`, `classDef`, `click`, `cssClass`, `href`, `link`,
+`namespace`, `note`, `o`, and `style`, the words that the lexer reads as a unit
+of its own where they stand as a name. A name of two words is the two words
+joined without the space, a name with another character is not read the same,
+and a name on a line that holds a comment or a directive keeps its backquotes.
+[fixture: class/quotes/names-without-quotes] [fixture:
+class/quotes/names-that-need-quotes] [fixture:
+class/quotes/names-on-a-kept-line-as-written]
+
 In a flowchart, a swimlane diagram, and an agentflow diagram, the title of a
 subgraph or a flow, the label of a shape, and the label of a link stay as
 written: mermaid.js reads `A["x"]` as a string and `A[x]` as a text, and the Db
@@ -2188,21 +2203,21 @@ whitespace of a style, which
 [Styles that are drawn the same](#styles-that-are-drawn-the-same) defines), 2
 architecture diagrams, 7 mindmaps, 114 kanban boards, 65 of the 67 C4 diagrams
 (the 2 others differ in a run of spaces or tabs in a text, which the printer
-also changes), 7 flowcharts, and 21 of the 23 agentflow diagrams (the 2 others
+also changes), 11 flowcharts, 24 of the 26 agentflow diagrams (the 2 others
 differ in the whitespace of a style, which
-[Styles that are drawn the same](#styles-that-are-drawn-the-same) defines). It
-read both forms of the 6 sankey examples that were written again with every
-plain field in quotes, with the same Db and the same SVG, and drew the same SVG
-from the input and the formatted text of the 11 sankey inputs, the 15 ER inputs,
-9 of the 12 requirement inputs (the other 3 are drawn by mermaid.js in neither
-form), the 35 Wardley inputs, the 2 gitGraph inputs, the 19 quadrant inputs, 73
-of the 191 XY chart inputs (the other 118 have no plot, and mermaid.js draws no
-chart without one, in either form), and 166 of the 176 venn inputs (the other 10
-are drawn in neither form), the 93 use case inputs (once the whitespace of one
-style was taken away), 1 of the 2 architecture inputs (the other is drawn in
-neither form), the 7 mindmap inputs, the 114 kanban inputs, the 67 C4 inputs,
-the 7 flowchart inputs, and the 23 agentflow inputs (once the whitespace of a
-style was taken away).
+[Styles that are drawn the same](#styles-that-are-drawn-the-same) defines), and
+7 class diagrams. It read both forms of the 6 sankey examples that were written
+again with every plain field in quotes, with the same Db and the same SVG, and
+drew the same SVG from the input and the formatted text of the 11 sankey inputs,
+the 15 ER inputs, 9 of the 12 requirement inputs (the other 3 are drawn by
+mermaid.js in neither form), the 35 Wardley inputs, the 2 gitGraph inputs, the
+19 quadrant inputs, 73 of the 191 XY chart inputs (the other 118 have no plot,
+and mermaid.js draws no chart without one, in either form), and 166 of the 176
+venn inputs (the other 10 are drawn in neither form), the 93 use case inputs
+(once the whitespace of one style was taken away), 1 of the 2 architecture
+inputs (the other is drawn in neither form), the 7 mindmap inputs, the 114
+kanban inputs, the 67 C4 inputs, the 11 flowchart inputs, the 26 agentflow
+inputs (once the whitespace of a style was taken away), and the 7 class inputs.
 
 ### Versions of mermaid.js
 
@@ -2284,14 +2299,21 @@ mermaid.js, show which form each version reads:
   console. So a string and an argument without quotes are the same argument in
   every version that has the diagram type.
 - The names of the subgraphs of a flowchart and of the flows of an agentflow
-  diagram: the grammars of 9.0.0 to 10.3.0 read the name of a subgraph with the
-  rule `text`, in which a string is a text of the type `string`, and the
-  grammars of 10.3.1 to 12.3.0 with the rule `textNoTags`, in which a string is
-  a text of the type `text`. The sources of 10.2.4 and 10.3.0 compare the type
-  of a label with `markdown` only (`flowRenderer-v2.js`, `clusters.js`, and
-  `shapes/util.js`) and no other type with another, so the name in both forms is
-  drawn the same in these versions too. The grammar of the agentflow diagram is
-  the same file in 12.0.0, 12.1.0, 12.2.0, and 12.3.0.
+  diagram: the grammars of 9.0.0 to 10.0.2 read the name of a subgraph with the
+  rule `text`, which takes a string as it is and has no type (`$$ = $1`); the
+  grammars of 10.1.0 to 10.3.0 read it with `text` too, where a string has the
+  type `text`, as words have; and the grammars of 10.3.1 to 12.3.0 read it with
+  the rule `textNoTags`, where a string has the type `text`. The type `string`
+  belongs to the rule `text` from 10.3.1, which reads the title in brackets and
+  the label of a shape, not the name. So the name of a subgraph has the same
+  text and the same type in both forms in every version. The grammar of the
+  agentflow diagram is the same file in 12.0.0, 12.1.0, 12.2.0, and 12.3.0.
+- The names of the classes of a class diagram: the grammars of 9.0.0 to 12.3.0
+  read a name between backquotes (`classLiteralName`: `BQUOTE_STR`) and a name
+  of letters and digits (`alphaNumToken`: `ALPHA`, `NUM`) as a `className`, and
+  the words of the lexer are strings that the jison lexer reads as whole words.
+  So a name of letters, digits, and `_` is the same name in both forms in every
+  version.
 - The names, the labels, and the metadata of a use case diagram: the lexer, the
   parser, the visitor, and the model builder of 12.0.0, the first release with
   the diagram type, 12.1.0, 12.2.0, and 12.3.0 are the same files. The visitor

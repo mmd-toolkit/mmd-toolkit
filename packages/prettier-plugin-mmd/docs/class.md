@@ -946,11 +946,75 @@ directives/semicolon-on-next-line-after-unclosed-directive-kept]
 
 ### Quotes
 
-The printer neither adds nor removes quotes. Where the grammar needs a string,
-mermaid.js rejects the text without quotes: `class A["Label"]` is read and
-`class A[Label]` is rejected, and so are `note for B Text` and a cardinality
-without quotes (`A 1 --> * B`), so a string there is no choice. [fixture:
+The name of a class between backquotes is printed without them, as the examples
+in the documentation of mermaid.js write it (178 times without backquotes and 4
+times with them; the name of a namespace 11 times without; see
+[The quotes of a text](./compatibility.md#the-quotes-of-a-text)):
+`` class `Animal` `` is printed `class Animal`, and so is the name in a
+relationship, a member, an annotation, a note, a `click` and a `link` statement,
+and a namespace. mermaid.js reads both forms as the same name. A name is printed
+without backquotes where it is a word of ASCII letters, digits, and `_` that is
+none of `_blank`, `_parent`, `_self`, `_top`, `accDescr`, `accTitle`, `call`,
+`callback`, `class`, `classDef`, `click`, `cssClass`, `href`, `link`,
+`namespace`, `note`, `o`, and `style`, which the lexer reads as a unit of its
+own where they stand as a name. A name of two words (`` `A B` ``) is the two
+words joined without the space, so it keeps its backquotes, as does a name with
+another character (`` `a-b` ``, `` `Animal Class!` ``, `` `é` ``) and a name on
+a line that holds a comment or a directive. [fixture:
+quotes/names-without-quotes] [fixture: quotes/names-that-need-quotes] [fixture:
+quotes/names-on-a-kept-line-as-written]
+
+The printer adds no quotes. Where the grammar needs a string, mermaid.js rejects
+the text without quotes: `class A["Label"]` is read and `class A[Label]` is
+rejected, and so are `note for B Text` and a cardinality without quotes
+(`A 1 --> * B`), so a string there is no choice. [fixture:
 quotes/strings-as-written]
+
+Input
+([quotes/names-without-quotes-input.mmd](../tests/fixtures/class/quotes/names-without-quotes-input.mmd)):
+
+```mmd
+classDiagram
+class `Animal`
+class `Duck` {
++swim()
+}
+class `Zebra`~T~
+class `Fish`:::css
+`Animal` <|-- `Duck`
+`Animal` "1" --> "*" `Zebra` : eats
+`Animal` : +name
+<<interface>> `Animal`
+note for `Animal` "text"
+click `Animal` call f()
+link `Animal` "https://example.com"
+namespace `Zoo` {
+class Cat
+}
+```
+
+Output
+([quotes/names-without-quotes-output.mmd](../tests/fixtures/class/quotes/names-without-quotes-output.mmd)):
+
+```mmd
+classDiagram
+  class Animal
+  class Duck {
+    +swim()
+  }
+  class Zebra~T~
+  class Fish:::css
+  Animal <|-- Duck
+  Animal "1" --> "*" Zebra : eats
+  Animal : +name
+  <<interface>> Animal
+  note for Animal "text"
+  click Animal call f()
+  link Animal "https://example.com"
+  namespace Zoo {
+    class Cat
+  }
+```
 
 Input
 ([quotes/strings-as-written-input.mmd](../tests/fixtures/class/quotes/strings-as-written-input.mmd)):
