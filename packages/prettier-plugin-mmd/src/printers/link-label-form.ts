@@ -62,7 +62,9 @@ type Label = AgentflowLabel | FlowchartLabel
 
 /**
  * Records, for each link whose label is plain text (letters, digits, spaces,
- * `_`, `,`, `?`, and `!`), the label in the form of the diagram type: the
+ * `_`, `,`, `?`, and `!`; a label in quotes counts when the printer writes it
+ * without them, which `found` holds already), the label in the form of the
+ * diagram type: the
  * stretch from the arrow to the second `|` becomes the stretch from the
  * opening arrow to the closing arrow, or the other way round, with the arrows
  * that mermaid.js reads the same. Only whitespace lies between the tokens of
@@ -103,8 +105,17 @@ export function findLinkLabelRespellings(
         label = child
       }
     }
-    if (arrow === null || label === null || label.kind !== "text") continue
-    const text = source.text.slice(...label.range)
+    if (arrow === null || label === null || label.kind === "markdown") continue
+    // A label in quotes that is printed without them is a text here, in the
+    // form that the printer writes (quote-form.ts).
+    const unquoted =
+      label.kind === "string" ? found.get(label.range[0]) : undefined
+    if (
+      label.kind === "string" &&
+      (unquoted === undefined || unquoted.end !== label.range[1])
+    )
+      continue
+    const text = unquoted?.text ?? source.text.slice(...label.range)
     if (
       text.trim() === "" ||
       [...text].some((character) => !plainLabelCharacters.includes(character))
@@ -131,6 +142,7 @@ export function findLinkLabelRespellings(
       ) {
         continue
       }
+      found.delete(label.range[0])
       found.set(parts[0].range[0], {
         end: parts[3].range[1],
         text: `${arrows.opening} ${text} ${arrows.closing}`,
@@ -154,6 +166,7 @@ export function findLinkLabelRespellings(
       ) {
         continue
       }
+      found.delete(label.range[0])
       found.set(parts[0].range[0], {
         end: parts[2].range[1],
         text: `${pipeArrow}|${text}|`,

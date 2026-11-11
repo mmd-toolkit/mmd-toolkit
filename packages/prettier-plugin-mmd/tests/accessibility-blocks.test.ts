@@ -17,7 +17,7 @@ const cases = [
   {
     name: "accessibility blocks: agentflow empty-block-unicode",
     input: "agentflow-beta TB\naccDescr {\u00a0\u2028\u2029}\nA[Unicode empty]",
-    output: "agentflow-beta TB\n  accDescr {}\n  A[Unicode empty]\n",
+    output: 'agentflow-beta TB\n  accDescr {}\n  A["Unicode empty"]\n',
   },
   {
     name: "accessibility blocks: class brace-after-ls-direction-kept",

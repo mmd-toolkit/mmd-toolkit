@@ -228,8 +228,10 @@ function respellingsOf(source: Source): SourceRespellings {
     if (source.root.diagramType === "packet") {
       findEqualRangeRespellings(source, map)
     }
-    findLinkLabelRespellings(source, map)
+    // A link respells its label in the form of the diagram type, also a label
+    // in quotes that the printer writes without them, so the quotes come first.
     findQuoteFormRespellings(source, map)
+    findLinkLabelRespellings(source, map)
     collectNumbers(source, source.root, map)
     found = { byStart: map, starts: [...map.keys()].sort((a, b) => a - b) }
     respellingsOfSource.set(source, found)

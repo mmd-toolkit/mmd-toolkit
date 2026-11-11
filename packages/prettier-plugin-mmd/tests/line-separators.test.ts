@@ -560,7 +560,7 @@ const flowchartExamples: readonly (readonly [string, string, string])[] = [
   [
     "U+2028 between the closing quote and the bracket of a flowchart label",
     'flowchart LR\nA["x"\u2028]\n',
-    'flowchart LR\n  A["x"\u2028]\n',
+    "flowchart LR\n  A[x\u2028]\n",
   ],
   [
     "U+2028 in the title of a flowchart subgraph header",
@@ -590,7 +590,7 @@ const flowchartExamples: readonly (readonly [string, string, string])[] = [
   [
     "U+2029 between the closing quote and the bracket of a flowchart label",
     'flowchart LR\nA["x"\u2029]\n',
-    'flowchart LR\n  A["x"\u2029]\n',
+    "flowchart LR\n  A[x\u2029]\n",
   ],
   [
     "U+2029 in the title of a flowchart subgraph header",
@@ -765,7 +765,7 @@ const flowchartExamples: readonly (readonly [string, string, string])[] = [
   [
     "U+2028 between the closing quote and the `|` of a flowchart edge label",
     'flowchart TD\nA-->|"x"\u2028|B\n',
-    'flowchart TD\n  A -->|"x"\u2028| B\n',
+    "flowchart TD\n  A -->|x\u2028| B\n",
   ],
   [
     "U+2029 between the graph keyword and its direction",

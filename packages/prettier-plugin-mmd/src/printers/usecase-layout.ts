@@ -251,7 +251,7 @@ export function layoutUsecaseStatement(
           statement.arrow.range[1],
           statement.target.range[0],
         ))
-          if (isStructural(source, token)) rules.set(token.range[0], "none")
+          if (isStructural(source, token)) rules.set(token.range[0], "space")
       }
       break
     }

@@ -6,6 +6,10 @@ import {
 } from "./click-call-margins.ts"
 import { eventmodelingDbForFormattingComparison } from "./eventmodeling-data-margins.ts"
 import {
+  labelTypeDbForFormattingComparison,
+  labelTypeDiagramTypes,
+} from "./label-type-differences.ts"
+import {
   keywordTextDbForFormattingComparison,
   keywordTextDiagramTypes,
 } from "./keyword-text-margins.ts"
@@ -64,5 +68,7 @@ export function dbForFormattingComparison(
     compared = mindmapDbForFormattingComparison(before, compared)
   if (kanbanTextDiagramTypes.has(type))
     compared = kanbanDbForFormattingComparison(before, compared)
+  if (labelTypeDiagramTypes.has(type))
+    compared = labelTypeDbForFormattingComparison(before, compared)
   return compared
 }
