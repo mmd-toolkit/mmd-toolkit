@@ -1032,6 +1032,16 @@ const erExamples: readonly (readonly [string, string, string])[] = [
     "erDiagram\nA {\n int a\u2028b\n}\n",
     "erDiagram\n  A {\n    int a\u2028b\n  }\n",
   ],
+  [
+    "U+2028 after the role of an ER relationship in quotes that ends with `direction`, before a line that starts with a direction",
+    'erDiagram\nA ||--o{ B : "my_direction"\u2028LR ||--o{ C : has\n',
+    'erDiagram\n  A ||--o{ B : "my_direction"\n  \u2028LR ||--o{ C : has\n',
+  ],
+  [
+    "U+2029 after the role of an ER relationship in quotes that ends with `Direction`, in any case, before a line that starts with a direction",
+    'erDiagram\nA ||--o{ B : "myDirection"\u2029BT ||--o{ C : has\n',
+    'erDiagram\n  A ||--o{ B : "myDirection"\n  \u2029BT ||--o{ C : has\n',
+  ],
 ]
 
 /**

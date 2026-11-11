@@ -296,8 +296,14 @@ mermaid.js は `"r"` と `r` を同じ名前として読み、
 その文書の例は名前を引用符なしで書いています。
 （[テキストの引用符](./compatibility.ja.md#テキストの引用符)を参照）。
 図のキーワードである名前や、`-` など、英字、数字、`_` 以外の文字を含む名前は、
-引用符を残します。 [fixture: names/plain-names-without-quotes]
+引用符を残します。
+`direction` で終わる名前と、`TB`、`BT`、`RL`、`LR` で始まる名前も、
+大文字小文字を問わず引用符を残します。
+字句解析器は、`direction`、空白（改行も含みます）、向きの名前を 1 行として読み、
+引用符を外した名前は、前の行か後の行と結ばれるためです。
+[fixture: names/plain-names-without-quotes]
 [fixture: names/names-that-need-quotes]
+[fixture: names/names-next-to-a-direction-line]
 引用符のない名前は、語の間に空白を持てます。
 それは名前の一部なので書かれたまま残し、
 両端の空白は名前に入らないので落とします。

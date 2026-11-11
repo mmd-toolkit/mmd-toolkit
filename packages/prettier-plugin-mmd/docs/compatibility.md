@@ -1925,10 +1925,14 @@ words that the lexer reads as a unit of its own, in any case: `erDiagram`,
 `LR`, `PK`, `FK`, `UK`, `u`, and `o`. A name of other characters, such as a
 space, a `-`, or a letter outside ASCII, a name that starts with a digit, which
 the lexer can read as a number or a cardinality, and a title of a subgraph,
-whose names mermaid.js joins with one space, stay as written. [fixture:
-er/entities/plain-names-without-quotes] [fixture:
-er/entities/names-that-need-quotes] [fixture: er/entities/alias-tight] [fixture:
-er/statements-one-per-line/relationships] [fixture:
+whose names mermaid.js joins with one space, stay as written. So does a name
+that ends with `direction` or starts with `TB`, `BT`, `RL`, or `LR`, in any
+case, since the lexer reads `direction`, white space (a line break too), and the
+name of a direction as one line, which a name without quotes would join with the
+line before or after it. [fixture: er/entities/plain-names-without-quotes]
+[fixture: er/entities/names-that-need-quotes] [fixture:
+er/entities/names-next-to-a-direction-line] [fixture: er/entities/alias-tight]
+[fixture: er/statements-one-per-line/relationships] [fixture:
 er/statements-one-per-line/role-then-entity] [fixture:
 er/subgraphs/quoted-and-number-ids]
 
@@ -1940,9 +1944,14 @@ relationship, the risks, the verification methods, the directions, in any case),
 and the id, the text, the type, and the docRef where they are words with spaces
 between them whose first word is none of those words: `text: "the test text"` is
 printed `text: the test text`, and `text: "risk high"` stays in quotes, since a
-text that starts with `risk` is read as the field `risk`. [fixture:
+text that starts with `risk` is read as the field `risk`. A name that ends with
+`direction` or starts with `TB`, `BT`, `RL`, or `LR`, in any case, stays in
+quotes too, since the lexer reads `direction`, white space (a line break too),
+and the name of a direction as one line, which a name without quotes would join
+with the line before or after it. [fixture:
 requirement/names/plain-names-without-quotes] [fixture:
 requirement/names/names-that-need-quotes] [fixture:
+requirement/names/names-next-to-a-direction-line] [fixture:
 requirement/fields/plain-values-without-quotes] [fixture:
 requirement/class-lists/string-classes] [fixture:
 requirement/styles-and-classes/style-names]
@@ -2102,18 +2111,23 @@ of its own, so `"end"`, `"click"`, and `"x _self"` stay in quotes (the lexer of
 an agentflow diagram reads `end` as a name, and the printer leaves it in quotes
 too). A name that a word touches on its line (`subgraph "S"accDescr {}`), a name
 that a comment follows, and a name of two spaces that is an id, since the
-subgraph has a title, keep their quotes. The title of a connector, which
-mermaid.js reads the same in quotes and without them, is printed in quotes where
-it starts with a letter or a digit and holds ASCII letters, digits, spaces, `_`,
-`-`, `.`, `,`, `:`, `!`, and `?`. [fixture:
+subgraph has a title, keep their quotes, and so does a name that ends with
+`direction`, whatever follows it: the lexer reads `direction`, white space (a
+line break too), and the name of a direction (`TB`, `BT`, `RL`, `LR`, or `TD`)
+as one line, which `subgraph xdirection` and a next line `TB --> C` would form.
+The title of a connector, which mermaid.js reads the same in quotes and without
+them, is printed in quotes where it starts with a letter or a digit and holds
+ASCII letters, digits, spaces, `_`, `-`, `.`, `,`, `:`, `!`, and `?`. [fixture:
 flowchart/quotes/subgraph-names-without-quotes] [fixture:
 flowchart/quotes/swimlane-lane-names-without-quotes] [fixture:
 flowchart/quotes/subgraph-names-that-need-quotes] [fixture:
+flowchart/quotes/subgraph-names-next-to-a-direction-line] [fixture:
 flowchart/quotes/subgraph-names-with-runs-without-quotes] [fixture:
 flowchart/quotes/subgraph-names-before-a-comment] [fixture:
 flowchart/subgraph-header/whitespace-before-block-kept] [fixture:
 agentflow/quotes/names-without-quotes] [fixture:
 agentflow/quotes/names-that-need-quotes] [fixture:
+agentflow/quotes/names-next-to-a-direction-line] [fixture:
 agentflow/quotes/connector-titles-in-quotes] [fixture:
 agentflow/quotes/connector-titles-as-written] [fixture:
 agentflow/quotes/names-and-titles-before-a-comment]
@@ -2123,11 +2137,15 @@ printed without them where it is a word of ASCII letters, digits, and `_` that
 is none of `_blank`, `_parent`, `_self`, `_top`, `accDescr`, `accTitle`, `call`,
 `callback`, `class`, `classDef`, `classDiagram`, `click`, `cssClass`, `href`,
 `link`, `namespace`, `note`, `o`, and `style`, the words that the lexer reads as
-a unit of its own where they stand as a name. A name of two words is the two
-words joined without the space, a name with another character is not read the
-same, and a name on a line that holds a comment or a directive keeps its
-backquotes. [fixture: class/quotes/names-without-quotes] [fixture:
-class/quotes/names-that-need-quotes] [fixture:
+a unit of its own where they stand as a name, and that neither ends with
+`direction` nor starts with `TB`, `BT`, `RL`, or `LR`: the lexer reads
+`direction`, white space (a line break too), and the name of a direction as one
+line, which a name without quotes would join with the line before or after it. A
+name of two words is the two words joined without the space, a name with another
+character is not read the same, and a name on a line that holds a comment or a
+directive keeps its backquotes. [fixture: class/quotes/names-without-quotes]
+[fixture: class/quotes/names-that-need-quotes] [fixture:
+class/quotes/names-next-to-a-direction-line] [fixture:
 class/quotes/names-on-a-kept-line-as-written]
 
 In a flowchart, a swimlane diagram, and an agentflow diagram, the title of a
@@ -2316,7 +2334,20 @@ mermaid.js, show which form each version reads:
   diagram; the rule for the header `classDiagram` is in the lexer of each of
   them. Every other string of letters, digits, and `_` is read as `ALPHA` or
   `NUM`. So a name of letters, digits, and `_` that is none of these words is
-  the same name in both forms in every version.
+  the same name in both forms in every version, unless it joins a line that
+  starts with `direction` (the next item).
+- The names that end with `direction` and that start with the name of a
+  direction, in a class, a flowchart, an agentflow, an ER, and a requirement
+  diagram: the lexers of the class grammars and of the flowchart grammars of
+  9.0.0 to 12.3.0 try the rules `.*direction\s+TB[^\n]*`, and the same for `BT`,
+  `RL`, and `LR`, before their other rules, and `\s+` reads a line break. The
+  flowchart grammars of 11.13.0 to 12.3.0 and the agentflow grammars of 12.0.0
+  to 12.3.0 have the rule for `TD` too, and the ER and the requirement grammars
+  of 11.5.0 to 12.3.0 have the four rules, which the grammars before them do
+  not. The ER and the requirement lexers read in any case in all these versions,
+  the others in the case written. A version without the rules reads a name the
+  same with and without quotes, so the names that the printer leaves in quotes
+  are read the same in every version.
 - The names, the labels, and the metadata of a use case diagram: the lexer, the
   parser, the visitor, and the model builder of 12.0.0, the first release with
   the diagram type, 12.1.0, 12.2.0, and 12.3.0 are the same files. The visitor

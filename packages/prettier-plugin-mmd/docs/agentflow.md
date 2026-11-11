@@ -1123,7 +1123,10 @@ mermaid.js write them, 17 and 2 times without quotes and never in quotes (see
 [The quotes of a text](./compatibility.md#the-quotes-of-a-text)):
 `flow "My Flow"` is printed `flow My Flow`, and `connector "Join"` is printed
 `connector Join`. A name that is more than one label (`connector I "" J`) stays
-as written.
+as written, and so does a name that ends with `direction`, since the lexer reads
+`direction`, white space (a line break too), and `TB`, `BT`, `RL`, `LR`, or `TD`
+as one line (`flow "xdirection"` followed by a line `TB --> B`). [fixture:
+quotes/names-next-to-a-direction-line]
 
 The title of a connector in brackets is printed in quotes, as the examples write
 the 2 titles: `connector C [Merge results]` is printed

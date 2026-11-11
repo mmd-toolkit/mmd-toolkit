@@ -1205,6 +1205,10 @@ mermaid.js の文書の例は引用符なしでそれぞれ 17 回と 2 回書�
 `flow "My Flow"` は `flow My Flow` と、
 `connector "Join"` は `connector Join` と印字します。
 複数のラベルからなる名前（`connector I "" J`）は書かれたままにします。
+`direction` で終わる名前も書かれたままにします。
+字句解析器は、`direction`、空白（改行も含みます）、`TB`、`BT`、`RL`、`LR`、
+`TD` を 1 行として読むためです（`flow "xdirection"` と次の行の `TB --> B`）。
+[fixture: quotes/names-next-to-a-direction-line]
 
 角括弧の中の connector のタイトルは、2 つの例と同じく引用符つきで印字します。
 `connector C [Merge results]` は `connector C["Merge results"]` と印字します。

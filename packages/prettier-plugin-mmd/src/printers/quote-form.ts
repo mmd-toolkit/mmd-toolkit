@@ -121,12 +121,44 @@ function sankeyField(text: string): string | undefined {
 }
 
 /**
+ * The names of the directions that the lexers of a class, an ER, and a
+ * requirement diagram read after `direction`.
+ */
+const directionNames: readonly string[] = ["TB", "BT", "RL", "LR"]
+
+/**
+ * Whether a name without quotes would join the line before or the line after
+ * it. The lexers of a class, a flowchart, an agentflow, an ER, and a
+ * requirement diagram try the rule `.*direction\s+TB[^\n]*` (and the same for
+ * `BT`, `RL`, `LR`, and, in a flowchart and an agentflow diagram, `TD`) before
+ * their other rules, and `\s+` reads a line break too. A quote inside the line
+ * does not matter, but a name that ends with `direction` is followed by the
+ * line after it, and a name that starts with the name of a direction follows
+ * the line before it, once its quotes are dropped. The name alone decides it,
+ * since the lines that touch a name change when the lines are printed.
+ */
+function joinsDirectionLine(
+  text: string,
+  { starts = directionNames, ignoreCase = false } = {},
+): boolean {
+  const compared = ignoreCase ? text.toLowerCase() : text
+  return (
+    compared.endsWith("direction") ||
+    starts.some((direction) =>
+      compared.startsWith(ignoreCase ? direction.toLowerCase() : direction),
+    )
+  )
+}
+
+/**
  * A word of ASCII letters, digits, and `_`, or, where `spaces` is true, words
  * with spaces between them, that starts with a letter or `_` (or, where
  * `digits` is true, with any of these characters) and whose first word is none
  * of the `reserved` words, which are compared in lower case: the lexer of a
  * diagram type reads a reserved word as a unit of its own, and a text of other
- * characters has a meaning in the stages before the lexer.
+ * characters has a meaning in the stages before the lexer. The text joins no
+ * line of a direction either (`joinsDirectionLine`, in any case, since the
+ * lexers of an ER and a requirement diagram read in any case).
  */
 function wordWithout(
   reserved: ReadonlySet<string>,
@@ -146,7 +178,8 @@ function wordWithout(
           character === "_" ||
           (spaces && character === " "),
       ) &&
-      !reserved.has(text.split(" ")[0].toLowerCase())
+      !reserved.has(text.split(" ")[0].toLowerCase()) &&
+      !joinsDirectionLine(text, { ignoreCase: true })
       ? text
       : undefined
   }
@@ -791,14 +824,16 @@ const classNameReserved: ReadonlySet<string> = new Set([
 /**
  * The name of a class or of a namespace that every version of mermaid.js that
  * reads a name between backquotes reads the same without them: a word of ASCII
- * letters, digits, and `_` that is none of `classNameReserved`. Spaces and
- * other characters are not read the same: a name of two words is the two words
- * joined without the space.
+ * letters, digits, and `_` that is none of `classNameReserved` and joins no
+ * line of a direction (`joinsDirectionLine`). Spaces and other characters are
+ * not read the same: a name of two words is the two words joined without the
+ * space.
  */
 function className(text: string): string | undefined {
   return text !== "" &&
     [...text].every(isWordCharacter) &&
-    !classNameReserved.has(text)
+    !classNameReserved.has(text) &&
+    !joinsDirectionLine(text)
     ? text
     : undefined
 }
@@ -826,9 +861,11 @@ const headingNameReserved: ReadonlySet<string> = new Set([
 /**
  * The name of a subgraph, a flow, or a connector that every version of
  * mermaid.js reads the same without quotes: words of ASCII letters, digits, and
- * `_` with one space between them, none of them a word of `headingNameReserved`.
- * The names of the same kind with other characters are not read the same in
- * every position: `end`, `~~~`, `--`, and a `"` in a name differ.
+ * `_` with one space between them, none of them a word of `headingNameReserved`
+ * and the last not ending with `direction`, which the line after the name would
+ * join (a name stands after a keyword, so no line before it can). The names of
+ * the same kind with other characters are not read the same in every position:
+ * `end`, `~~~`, `--`, and a `"` in a name differ.
  */
 function headingName(text: string): string | undefined {
   return text
@@ -838,7 +875,7 @@ function headingName(text: string): string | undefined {
         word !== "" &&
         [...word].every(isWordCharacter) &&
         !headingNameReserved.has(word),
-    )
+    ) && !joinsDirectionLine(text, { starts: [] })
     ? text
     : undefined
 }

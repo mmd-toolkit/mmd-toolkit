@@ -784,8 +784,14 @@ mermaid.js の文書の例に合わせて引用符なしで印字します。
 [テキストの引用符](./compatibility.ja.md#テキストの引用符) を参照してください。
 `"A"[B]` は `A[B]` に、`C ||--o{ D : "has"` は `C ||--o{ D : has` にします。
 ほかの名前は、引用符の有無も数も含めて、書かれたまま残します。
+`direction` で終わる名前と、`TB`、`BT`、`RL`、`LR` で始まる名前も、
+大文字小文字を問わず書かれたまま残します。
+字句解析器は、`direction`、空白（改行も含みます）、向きの名前を 1 行として読み、
+引用符を外した名前は、前の行か後の行と結ばれるためです。
 [fixture: entities/plain-names-without-quotes]
-[fixture: entities/names-that-need-quotes] [fixture: entities/names-kept]
+[fixture: entities/names-that-need-quotes]
+[fixture: entities/names-next-to-a-direction-line]
+[fixture: entities/names-kept]
 実体の部分の間にあるディレクティブは、
 [ディレクティブ](#ディレクティブ)のとおりに置きます。
 [fixture: entities/directive-between-parts]

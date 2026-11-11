@@ -2496,17 +2496,22 @@ digits, and `_` with one space between them, none of them one of `_blank`,
 `href`, and `interpolate`, which the lexer reads as a unit of its own. So
 `"a-b"`, `"end"`, `"x end"`, `"click"`, `"x _self"`, `"direction"`, a name with
 a `.` or a letter outside ASCII, and a markdown string stay as written. A name
-that a word touches on its line (`subgraph "S"accDescr {}`) and a name that a
-comment follows (`subgraph "C" %% note`) keep their quotes, since a text without
-quotes would take the word or the comment into itself, as does a name of two
-spaces in a subgraph that has a title, since there the name is an id, and two
-ids that differ by a run are two ids (see
+that ends with `direction`, such as `"xdirection"` or `"my xdirection"`, stays
+in quotes whatever follows it: the lexer reads `direction`, white space (a line
+break too), and `TB`, `BT`, `RL`, `LR`, or `TD` as one line, which
+`subgraph xdirection` and a next line `TB --> C` would form. A name that a word
+touches on its line (`subgraph "S"accDescr {}`) and a name that a comment
+follows (`subgraph "C" %% note`) keep their quotes, since a text without quotes
+would take the word or the comment into itself, as does a name of two spaces in
+a subgraph that has a title, since there the name is an id, and two ids that
+differ by a run are two ids (see
 [Runs of whitespace in a text that are drawn the same](./compatibility.md#runs-of-whitespace-in-a-text-that-are-drawn-the-same)).
 A `;` or a directive after a name takes nothing into it, and the name loses its
 quotes: `subgraph "D"%%{init: {}}%%` is printed `subgraph D%%{init: {}}%%`.
 [fixture: quotes/subgraph-names-without-quotes] [fixture:
 quotes/swimlane-lane-names-without-quotes] [fixture:
 quotes/subgraph-names-that-need-quotes] [fixture:
+quotes/subgraph-names-next-to-a-direction-line] [fixture:
 quotes/subgraph-names-with-runs-without-quotes] [fixture:
 quotes/subgraph-names-before-a-comment] [fixture:
 subgraph-header/whitespace-before-block-kept]

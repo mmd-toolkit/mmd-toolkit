@@ -2623,6 +2623,11 @@ mermaid.js はどちらの形の名前も同じテキストとして読み、
 これらの語は、字句解析器がそれぞれ独立した単位として読むためです。
 そのため、`"a-b"`、`"end"`、`"x end"`、`"click"`、`"x _self"`、`"direction"`、
 `.` や ASCII 以外の文字を含む名前と、markdown 文字列は書かれたままにします。
+`direction` で終わる名前（`"xdirection"`、`"my xdirection"`）は、
+後に何が続いても引用符を残します。
+字句解析器は、`direction`、空白（改行も含みます）、`TB`、`BT`、`RL`、`LR`、
+`TD` を 1 行として読みます。
+`subgraph xdirection` と次の行の `TB --> C` が、この 1 行になるためです。
 同じ行で語が接する名前（`subgraph "S"accDescr {}`）と、
 コメントが続く名前（`subgraph "C" %% note`）は、
 引用符なしのテキストが語やコメントを取り込んでしまうため、引用符を保ちます。
@@ -2634,6 +2639,7 @@ mermaid.js はどちらの形の名前も同じテキストとして読み、
 [fixture: quotes/subgraph-names-without-quotes]
 [fixture: quotes/swimlane-lane-names-without-quotes]
 [fixture: quotes/subgraph-names-that-need-quotes]
+[fixture: quotes/subgraph-names-next-to-a-direction-line]
 [fixture: quotes/subgraph-names-with-runs-without-quotes]
 [fixture: quotes/subgraph-names-before-a-comment]
 [fixture: subgraph-header/whitespace-before-block-kept]

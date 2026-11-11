@@ -960,9 +960,14 @@ none of `_blank`, `_parent`, `_self`, `_top`, `accDescr`, `accTitle`, `call`,
 of its own where they stand as a name. A name of two words (`` `A B` ``) is the
 two words joined without the space, so it keeps its backquotes, as does a name
 with another character (`` `a-b` ``, `` `Animal Class!` ``, `` `é` ``) and a
-name on a line that holds a comment or a directive. [fixture:
-quotes/names-without-quotes] [fixture: quotes/names-that-need-quotes] [fixture:
-quotes/names-on-a-kept-line-as-written]
+name on a line that holds a comment or a directive. A name that ends with
+`direction` or starts with `TB`, `BT`, `RL`, or `LR` keeps its backquotes too,
+since the lexer reads `direction`, white space (a line break too), and the name
+of a direction as one line, which a name without backquotes would join with the
+line before or after it: ``A --> `direction` `` followed by a line `TB --> C`
+keeps its backquotes. [fixture: quotes/names-without-quotes] [fixture:
+quotes/names-that-need-quotes] [fixture: quotes/names-next-to-a-direction-line]
+[fixture: quotes/names-on-a-kept-line-as-written]
 
 The printer adds no quotes. Where the grammar needs a string, mermaid.js rejects
 the text without quotes: `class A["Label"]` is read and `class A[Label]` is

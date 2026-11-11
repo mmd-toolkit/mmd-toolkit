@@ -2053,8 +2053,14 @@ ER 図では、ASCII の英字か `_` で始まる、ASCII の英字、数字、
 空白、`-`、ASCII 外の文字など、ほかの文字を含む名前や、
 字句解析器が数や多重度として読める数字で始まる名前、
 mermaid.js が名前を空白 1 つで結ぶ subgraph のタイトルは、書かれたまま残します。
+`direction` で終わる名前と、`TB`、`BT`、`RL`、`LR` で始まる名前も、
+大文字小文字を問わず引用符を残します。
+字句解析器は、`direction`、空白（改行も含みます）、向きの名前を 1 行として読み、
+引用符を外した名前は、前の行か後の行と結ばれるためです。
 [fixture: er/entities/plain-names-without-quotes]
-[fixture: er/entities/names-that-need-quotes] [fixture: er/entities/alias-tight]
+[fixture: er/entities/names-that-need-quotes]
+[fixture: er/entities/names-next-to-a-direction-line]
+[fixture: er/entities/alias-tight]
 [fixture: er/statements-one-per-line/relationships]
 [fixture: er/statements-one-per-line/role-then-entity]
 [fixture: er/subgraphs/quoted-and-number-ids]
@@ -2069,8 +2075,13 @@ id、text、type、docRef は、同じ文字からなる語を空白で区切っ
 `text: "the test text"` は `text: the test text` と印字し、
 `text: "risk high"` は引用符で囲んだまま残します。
 `risk` で始まるテキストは、フィールド `risk` として読まれるためです。
+`direction` で終わる名前と、`TB`、`BT`、`RL`、`LR` で始まる名前も、
+大文字小文字を問わず引用符を残します。
+字句解析器は、`direction`、空白（改行も含みます）、向きの名前を 1 行として読み、
+引用符を外した名前は、前の行か後の行と結ばれるためです。
 [fixture: requirement/names/plain-names-without-quotes]
 [fixture: requirement/names/names-that-need-quotes]
+[fixture: requirement/names/names-next-to-a-direction-line]
 [fixture: requirement/fields/plain-values-without-quotes]
 [fixture: requirement/class-lists/string-classes]
 [fixture: requirement/styles-and-classes/style-names]
@@ -2262,17 +2273,23 @@ agentflow 図の字句解析器は `end` を名前として読みますが、
 同じ行で語が接する名前（`subgraph "S"accDescr {}`）、コメントが続く名前、
 空白 2 つの連なりを持ち、subgraph にタイトルがあるため id になる名前は、
 引用符を残します。
+`direction` で終わる名前も、後に何が続いても引用符を残します。
+字句解析器は、`direction`、空白（改行も含みます）、向きの名前（`TB`、`BT`、
+`RL`、`LR`、`TD`）を 1 行として読みます。
+`subgraph xdirection` と次の行の `TB --> C` が、この 1 行になるためです。
 connector のタイトルは、mermaid.js が引用符の有無によらず同じに読むので、
 英字または数字で始まり、ASCII の英字、数字、空白、`_`、`-`、`.`、`,`、`:`、`!`、
 `?` からなる場合に、引用符で囲んで印字します。
 [fixture: flowchart/quotes/subgraph-names-without-quotes]
 [fixture: flowchart/quotes/swimlane-lane-names-without-quotes]
 [fixture: flowchart/quotes/subgraph-names-that-need-quotes]
+[fixture: flowchart/quotes/subgraph-names-next-to-a-direction-line]
 [fixture: flowchart/quotes/subgraph-names-with-runs-without-quotes]
 [fixture: flowchart/quotes/subgraph-names-before-a-comment]
 [fixture: flowchart/subgraph-header/whitespace-before-block-kept]
 [fixture: agentflow/quotes/names-without-quotes]
 [fixture: agentflow/quotes/names-that-need-quotes]
+[fixture: agentflow/quotes/names-next-to-a-direction-line]
 [fixture: agentflow/quotes/connector-titles-in-quotes]
 [fixture: agentflow/quotes/connector-titles-as-written]
 [fixture: agentflow/quotes/names-and-titles-before-a-comment]
@@ -2281,13 +2298,17 @@ class 図では、バッククォートで囲んだ class または namespace �
 ASCII の英字、数字、`_` からなる 1 語で、`_blank`、`_parent`、`_self`、`_top`、
 `accDescr`、`accTitle`、`call`、`callback`、`class`、`classDef`、
 `classDiagram`、`click`、`cssClass`、`href`、`link`、`namespace`、`note`、`o`、
-`style` のいずれでもない場合に、バッククォートなしで印字します。
+`style` のいずれでもなく、`direction` で終わらず、`TB`、`BT`、`RL`、
+`LR` でも始まらない場合に、バッククォートなしで印字します。
 字句解析器は、名前の位置にあるこれらの語を独立した単位として読みます。
+また、`direction`、空白（改行も含みます）、向きの名前を 1 行として読み、
+バッククォートを外した名前は、前の行か後の行と結ばれます。
 2 語の名前は、バッククォートを外すと空白なしで結ばれた 2 語になり、
 ほかの文字を含む名前は同じに読まれません。
 コメントやディレクティブのある行の名前は、バッククォートを残します。
 [fixture: class/quotes/names-without-quotes]
 [fixture: class/quotes/names-that-need-quotes]
+[fixture: class/quotes/names-next-to-a-direction-line]
 [fixture: class/quotes/names-on-a-kept-line-as-written]
 
 flowchart、swimlane 図、agentflow 図では、subgraph や flow のタイトル、
@@ -2500,6 +2521,21 @@ class の 7 個の入力も、整形後のテキストと同じ SVG が描かれ
   それ以外の英字、数字、`_` の文字列は、`ALPHA` か `NUM` として読まれます。
   そのため、英字、数字、`_` からなる名前は、これらの語のどれでもなければ、
   どの版でも両方の形で同じ名前です。
+  ただし、`direction` で始まる行に結ばれる場合は除きます（次の項目）。
+- `direction` で終わる名前と、向きの名前で始まる名前: class 図、flowchart、
+  agentflow 図、ER 図、requirement 図では、
+  class と flowchart の 9.0.0 から 12.3.0 の文法の字句解析器は、
+  ほかの規則より先に、規則 `.*direction\s+TB[^\n]*` と、`BT`、`RL`、
+  `LR` の同じ規則を試し、`\s+` は改行も読みます。
+  flowchart の 11.13.0 から 12.3.0 の文法と、
+  agentflow 図の 12.0.0 から 12.3.0 の文法には、`TD` の規則もあります。
+  ER 図と requirement 図の 11.5.0 から 12.3.0 の文法には 4 つの規則があり、
+  それより前の文法にはありません。
+  ER 図と requirement 図の字句解析器は、
+  これらの版のすべてで大文字小文字を問わずに読み、
+  ほかは書かれた大文字小文字で読みます。
+  規則のない版は、引用符の有無によらず名前を同じに読みます。
+  そのため、印字が引用符を残す名前は、どの版でも同じに読まれます。
 - use case 図の名前、ラベル、metadata: この図種が初めて加わった 12.0.0 と、
   12.1.0、12.2.0、12.3.0 の字句解析器、パーサー、visitor、model builder は、
   同じファイルです。

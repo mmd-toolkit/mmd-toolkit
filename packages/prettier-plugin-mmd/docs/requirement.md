@@ -292,8 +292,12 @@ reads `"r"` and `r` as the same name, and the examples in its documentation
 write the names without quotes (see
 [The quotes of a text](./compatibility.md#the-quotes-of-a-text)). A name that is
 a keyword of the diagram, or holds a `-` or another character that is not a
-letter, a digit, or `_`, stays in quotes. [fixture:
-names/plain-names-without-quotes] [fixture: names/names-that-need-quotes] An
+letter, a digit, or `_`, stays in quotes, and so does a name that ends with
+`direction` or starts with `TB`, `BT`, `RL`, or `LR`, in any case: the lexer
+reads `direction`, white space (a line break too), and the name of a direction
+as one line, which a name without quotes would join with the line before or
+after it. [fixture: names/plain-names-without-quotes] [fixture:
+names/names-that-need-quotes] [fixture: names/names-next-to-a-direction-line] An
 unquoted name may hold whitespace between its words, which is part of the name
 and stays as written; the whitespace at its ends is not, and is dropped.
 [fixture: names/inner-whitespace-kept] [fixture: names/outer-whitespace-dropped]

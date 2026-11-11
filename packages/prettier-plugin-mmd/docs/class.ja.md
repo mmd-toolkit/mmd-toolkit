@@ -1035,7 +1035,13 @@ ASCII の英字、数字、`_` からなる 1 語で、
 バッククォートを保ちます。
 ほかの文字を含む名前（`` `a-b` ``、`` `Animal Class!` ``、`` `é` ``）と、
 コメントやディレクティブのある行の名前も、バッククォートを保ちます。
+`direction` で終わる名前と、`TB`、`BT`、`RL`、`LR` で始まる名前も、
+バッククォートを保ちます。
+字句解析器は、`direction`、空白（改行も含みます）、向きの名前を 1 行として読み、
+バッククォートを外した名前は、前の行か後の行と結ばれるためです。
+``A --> `direction` `` の次の行が `TB --> C` なら、バッククォートを保ちます。
 [fixture: quotes/names-without-quotes] [fixture: quotes/names-that-need-quotes]
+[fixture: quotes/names-next-to-a-direction-line]
 [fixture: quotes/names-on-a-kept-line-as-written]
 
 printer は引用符を付けません。
