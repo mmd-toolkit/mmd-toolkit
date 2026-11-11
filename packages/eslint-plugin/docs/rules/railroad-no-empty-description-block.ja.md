@@ -53,6 +53,7 @@ railroad-ebnf-beta
 railroad-ebnf-beta
   accDescr {
     The words of the grammar
+    as a railroad diagram
   }
   word = "a";
 ```

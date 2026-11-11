@@ -64,7 +64,10 @@ Examples of **correct** code for this rule:
 %% eslint @mmd-toolkit/state-no-empty-description-block: error
 stateDiagram-v2
   A --> B
-  accDescr { y }
+  accDescr {
+    first line
+    second line
+  }
 ```
 
 ```mmd

@@ -90,7 +90,11 @@ export function collapsedRunsAtom(
  * start an HTML tag that keeps the whitespace (`<pre>`), or the diagram holds
  * `white-space`.
  */
-function staysAsWritten(source: Source, start: number, end: number): boolean {
+export function staysAsWritten(
+  source: Source,
+  start: number,
+  end: number,
+): boolean {
   const text = source.text.slice(start, end)
   return (
     text.includes("<") ||
@@ -371,6 +375,28 @@ function collectTexts(
       collectTexts(source, item, found)
     }
   }
+}
+
+/**
+ * Whether the printer writes the runs of spaces and tabs of the text at
+ * `[start, end)` as one space: the text lies in a text of `textSlots`, or of
+ * the C4 and subgraph texts, and does not stay as written (see
+ * `staysAsWritten`). A text of `blankTextSlots` keeps its inner runs. A
+ * decision about the text, such as whether it is read the same without quotes,
+ * is about the text as it is printed.
+ */
+export function printsRunsAsOne(
+  source: Source,
+  start: number,
+  end: number,
+): boolean {
+  const { ranges, blanks } = findTexts(source)
+  const text = findCoveringRange(ranges, start, end)
+  return (
+    text !== undefined &&
+    !blanks.has(text[0]) &&
+    !staysAsWritten(source, start, end)
+  )
 }
 
 /**

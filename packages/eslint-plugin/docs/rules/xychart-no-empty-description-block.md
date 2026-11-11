@@ -60,7 +60,9 @@ Examples of **correct** code for this rule:
 xychart
   accDescr {
     Monthly sales
+    by region
   }
+  title "Sales"
   line [1, 2]
 ```
 

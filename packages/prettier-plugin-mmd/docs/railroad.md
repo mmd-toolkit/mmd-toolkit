@@ -1204,40 +1204,30 @@ railroad-peg-beta
 
 ### Description blocks
 
-Use shared layoutDescriptionBlock through the common-description layout.
-Whitespace-only interiors become `{}` because no content needs surrounding
-padding. Put one space between `accDescr` and `{`, and print `{Text}` as
-`{ Text }`. Join a plain keyword-to-opener gap. Ordinary description body and
+Description blocks on one line follow
+[A description block on one line](./compatibility.md#a-description-block-on-one-line).
+In a block that keeps its braces, put one space between `accDescr` and `{` and
+join a plain keyword-to-opener gap. Whitespace-only interiors become `{}`
+because no content needs surrounding padding. [fixture:
+railroad/description-blocks/abnf-edges] [fixture:
+railroad/description-blocks/ebnf-edges] [fixture:
+railroad/description-blocks/ir-edges] [fixture:
+railroad/description-blocks/peg-edges]
+
+In a block with a text over several lines, ordinary description body and
 standalone comment lines align one level inside the statement: the Db removes
 indentation after LF. Keep line breaks, internal blank lines and trailing
-whitespace, and align a separate closing brace with the statement. Directives
-and shared removed comment regions keep their complete source.
-Comment/directive-only blocks retain their contents through the shared fallback,
-rather than being emptied.
+whitespace, and align a separate closing brace with the statement. [fixture:
+railroad/description-blocks/abnf-lines] [fixture:
+railroad/description-blocks/ebnf-lines] [fixture:
+railroad/description-blocks/ir-lines] [fixture:
+railroad/description-blocks/peg-lines]
 
-[fixture: railroad/description-blocks/abnf-edges]
-
-[fixture: railroad/description-blocks/abnf-lines]
-
-[fixture: railroad/description-blocks/abnf-trivia]
-
-[fixture: railroad/description-blocks/ebnf-edges]
-
-[fixture: railroad/description-blocks/ebnf-lines]
-
-[fixture: railroad/description-blocks/ebnf-trivia]
-
-[fixture: railroad/description-blocks/ir-edges]
-
-[fixture: railroad/description-blocks/ir-lines]
-
-[fixture: railroad/description-blocks/ir-trivia]
-
-[fixture: railroad/description-blocks/peg-edges]
-
-[fixture: railroad/description-blocks/peg-lines]
-
-[fixture: railroad/description-blocks/peg-trivia]
+Directives keep their complete source. A block with only a comment or a
+directive keeps its contents. [fixture: railroad/description-blocks/abnf-trivia]
+[fixture: railroad/description-blocks/ebnf-trivia] [fixture:
+railroad/description-blocks/ir-trivia] [fixture:
+railroad/description-blocks/peg-trivia]
 
 Input (escaped):
 `"railroad-beta\naccDescr{Text}\naccDescr { Text }\naccDescr { \n\t }\nr=terminal(\"block\");"`.
@@ -1247,8 +1237,8 @@ Output
 
 ```mmd
 railroad-beta
-  accDescr { Text }
-  accDescr { Text }
+  accDescr: Text
+  accDescr: Text
   accDescr {}
   r = terminal("block");
 ```
@@ -1261,8 +1251,8 @@ Output
 
 ```mmd
 railroad-ebnf-beta
-  accDescr { Text }
-  accDescr { Text }
+  accDescr: Text
+  accDescr: Text
   accDescr {}
   r = "block";
 ```
@@ -1275,8 +1265,8 @@ Output
 
 ```mmd
 railroad-abnf-beta
-  accDescr { Text }
-  accDescr { Text }
+  accDescr: Text
+  accDescr: Text
   accDescr {}
   r = "block";
 ```
@@ -1289,8 +1279,8 @@ Output
 
 ```mmd
 railroad-peg-beta
-  accDescr { Text }
-  accDescr { Text }
+  accDescr: Text
+  accDescr: Text
   accDescr {}
   r <- "block";
 ```
@@ -1697,7 +1687,7 @@ Output
 
 ```mmd
 railroad-beta
-  accDescr { moved }
+  accDescr: moved
   %%{!after metadata}%%
 
   r = terminal("after moved");
@@ -1711,7 +1701,7 @@ Output
 
 ```mmd
 railroad-ebnf-beta
-  accDescr { moved }
+  accDescr: moved
   %%{!after metadata}%%
 
   r = "after moved";
@@ -1725,7 +1715,7 @@ Output
 
 ```mmd
 railroad-abnf-beta
-  accDescr { moved }
+  accDescr: moved
   %%{!after metadata}%%
 
   r = "after moved";
@@ -1739,7 +1729,7 @@ Output
 
 ```mmd
 railroad-peg-beta
-  accDescr { moved }
+  accDescr: moved
   %%{!after metadata}%%
 
   r <- "after moved";
@@ -2849,7 +2839,7 @@ Output
 
 ```mmd
 railroad-ebnf-beta
-  accDescr { old }
+  accDescr: old
   accDescr {}
   z = later;
   a = "first";
@@ -2881,7 +2871,7 @@ Output
 
 ```mmd
 railroad-peg-beta
-  accDescr { old }
+  accDescr: old
   accDescr {}
   z <- later;
   a <- "first";

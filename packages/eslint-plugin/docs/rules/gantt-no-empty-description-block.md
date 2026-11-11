@@ -63,9 +63,10 @@ Examples of **correct** code for this rule:
 ```mmd
 %% eslint @mmd-toolkit/gantt-no-empty-description-block: error
 gantt
-  accDescr { y }
-  dateFormat YYYY-MM-DD
-  Design :2024-01-06, 3d
+  accDescr {
+    line one
+    line two
+  }
 ```
 
 ```mmd

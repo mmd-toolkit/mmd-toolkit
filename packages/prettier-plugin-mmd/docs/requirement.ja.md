@@ -196,6 +196,17 @@ mermaid.js の文書がフィールドをそう書き、journey も値の前に�
 [fixture: fields/value-outer-whitespace-dropped]
 [fixture: fields/value-inner-runs-collapsed]
 [fixture: fields/string-values-runs-collapsed]
+引用符で囲まれた `id`、`text`、`type`、`docRef` の値が、英字、数字、
+`_` からなる語を空白で区切ったもので、最初の語が図のキーワードでなければ、
+引用符なしで印字します。
+`text: "the test text"` は `text: the test text` と印字し、
+`text: "risk high"` は引用符を残します。
+値は印字される形で判定するので、
+文字の間にタブがある `text: "a b"` は `text: a b` と印字しますが、
+図に `white-space` がある場合は値の連なりを保つので、引用符も残します。
+[fixture: fields/plain-values-without-quotes]
+[fixture: fields/string-values-tabs-collapsed]
+[fixture: fields/string-values-tabs-kept-with-white-space]
 引用符のない値の中の `#`、`%`、`;` は値の文字で、
 コメントの始まりではありません。 [fixture: fields/special-characters-in-values]
 
@@ -269,20 +280,30 @@ docref: "http://x.test/a-b"
 ```mmd
 requirementDiagram
   requirement r {
-    id: "1"
+    id: 1
     text: " a: b, c "
   }
   element e {
-    type: "a b"
+    type: a b
     docRef: "http://x.test/a-b"
   }
 ```
 
 ### 名前
 
-名前は、引用符の有無を含め、書かれたまま印字します。
-mermaid.js は `"r"` と `r` を同じ名前として読みますが、引用符は書き換えません。
-[fixture: names/quoted-and-unquoted-kept]
+引用符で囲まれた名前が平易な 1 語なら、引用符なしで印字します。
+mermaid.js は `"r"` と `r` を同じ名前として読み、
+その文書の例は名前を引用符なしで書いています。
+（[テキストの引用符](./compatibility.ja.md#テキストの引用符)を参照）。
+図のキーワードである名前や、`-` など、英字、数字、`_` 以外の文字を含む名前は、
+引用符を残します。
+`direction` で終わる名前と、`TB`、`BT`、`RL`、`LR` で始まる名前も、
+大文字小文字を問わず引用符を残します。
+字句解析器は、`direction`、空白（改行も含みます）、向きの名前を 1 行として読み、
+引用符を外した名前は、前の行か後の行と結ばれるためです。
+[fixture: names/plain-names-without-quotes]
+[fixture: names/names-that-need-quotes]
+[fixture: names/names-next-to-a-direction-line]
 引用符のない名前は、語の間に空白を持てます。
 それは名前の一部なので書かれたまま残し、
 両端の空白は名前に入らないので落とします。
@@ -293,7 +314,7 @@ mermaid.js は `"r"` と `r` を同じ名前として読みますが、引用符
 [fixture: names/special-characters-in-unquoted-names]
 
 入力
-([names/quoted-and-unquoted-kept-input.mmd](../tests/fixtures/requirement/names/quoted-and-unquoted-kept-input.mmd)):
+([names/plain-names-without-quotes-input.mmd](../tests/fixtures/requirement/names/plain-names-without-quotes-input.mmd)):
 
 ```mmd
 requirementDiagram
@@ -307,17 +328,17 @@ style "r" fill:red
 ```
 
 出力
-([names/quoted-and-unquoted-kept-output.mmd](../tests/fixtures/requirement/names/quoted-and-unquoted-kept-output.mmd)):
+([names/plain-names-without-quotes-output.mmd](../tests/fixtures/requirement/names/plain-names-without-quotes-output.mmd)):
 
 ```mmd
 requirementDiagram
-  requirement "r" {
+  requirement r {
   }
   requirement s {
   }
-  "r" - satisfies -> s
-  s - satisfies -> "r"
-  style "r" fill: red
+  r - satisfies -> s
+  s - satisfies -> r
+  style r fill: red
 ```
 
 入力
@@ -337,7 +358,7 @@ requirement "a - b: c, d {" {
 requirementDiagram
   requirement "a - b: c, d {" {
   }
-  "x  y" - satisfies -> "z"
+  "x  y" - satisfies -> z
 ```
 
 ### 関係文の空白
@@ -478,7 +499,7 @@ r ::: "d"
 
 ```mmd
 requirementDiagram
-  requirement r:::"a b","c" {
+  requirement r:::"a b",c {
   }
   r:::"d"
 ```
@@ -574,7 +595,7 @@ classDef "d" fill:red
 requirementDiagram
   classDef a,b,c fill: red
   classDef default fill: #f9f, stroke-width: 4px
-  classDef "d" fill: red
+  classDef d fill: red
 ```
 
 入力
@@ -819,7 +840,7 @@ requirementDiagram
   classDef c fill: red
   "r":::c
   class r c
-  "r" - satisfies -> b
+  r - satisfies -> b
   class r c
   "r":::d
 ```
@@ -965,7 +986,7 @@ risk: low accDescr {   }
 requirementDiagram
   requirement r {
     accDescr {}
-    id: "1"
+    id: 1
     accDescr {}
     accDescr {}
     text: t
@@ -1020,11 +1041,12 @@ LF 直後の ASCII 空白とタブだけを置き換えます。
 説明の setter がこの字下げを捨てるためです。
 改行、行末空白、ディレクティブの内部は保ちます。
 `}` は文と同じ段に置きます。
-`{` と同じ行にテキストがあるときは、
-括弧に接して書かれていても波括弧の内側に空白 1 つずつを置きます。
 [fixture: accessibility-statements/block-lines-kept]
-[fixture: accessibility-statements/block-text-on-opening-line]
 [fixture: accessibility-statements/block-comment-and-empty-lines-kept]
+
+1 行のブロックは、
+[1 行の説明ブロック](./compatibility.ja.md#1-行の説明ブロック) に従います。
+[fixture: accessibility-statements/block-text-on-opening-line]
 
 字句解析器は、続く文の規則より前に、
 `accTitle` と `accDescr` の後に方向の行を読みます。
@@ -1037,6 +1059,10 @@ LF 直後の ASCII 空白とタブだけを置き換えます。
 [fixture: accessibility-statements/first-column-kept]
 そのような方向を含まない行は、ほかの文と同じに字下げします。
 [fixture: accessibility-statements/first-column-not-needed]
+行全体で判断します。
+同じ行にほかの文が続く場合（`accDescr {x}; title direction RL`）も、
+字句解析器は行頭から行全体を読むので、その文にある `direction` も数えます。
+[fixture: accessibility-statements/semicolon-line-with-direction-text-first-column]
 
 入力
 ([accessibility-statements/colon-touches-keyword-input.mmd](../tests/fixtures/requirement/accessibility-statements/colon-touches-keyword-input.mmd)):
@@ -1103,7 +1129,7 @@ accDescr {
 requirementDiagram
 accTitle: direction LR
 accDescr: direction TB
-accDescr { direction RL }
+accDescr: direction RL
   accDescr {
     direction BT
   }
@@ -1227,7 +1253,7 @@ requirementDiagram
   style r fill: red
   "r":::c
   class r c
-  "r" - satisfies -> b
+  r - satisfies -> b
 ```
 
 入力

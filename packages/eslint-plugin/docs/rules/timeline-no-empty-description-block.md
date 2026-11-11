@@ -61,8 +61,10 @@ Examples of **correct** code for this rule:
 ```mmd
 %% eslint @mmd-toolkit/timeline-no-empty-description-block: error
 timeline
-  accDescr { y }
-  2020 : Launch
+  accDescr {
+    line1
+    line2
+  }
 ```
 
 ```mmd

@@ -87,7 +87,7 @@ Output
 
 ```mmd
 venn-beta
-set "C4Container"
+set C4Container
 ```
 
 ### Indentation
@@ -287,24 +287,23 @@ set A Q%% note
 ### Name lists
 
 Keywords and operands use one separator; name commas touch the preceding name
-and take one following space for readable lists. Bare and quoted names, quoted
-padding, empty names, source order and repeated members stay as written, even
-where the Db sorts targets. A quote is the author's choice even where removing
-it has the same Db (`set "A"` and `set A`), padding inside quotes belongs to the
-name (`" A "` and `"A"` differ in the Db), the Db sorting the targets is no
-permission to reorder the written list, and a repeated member keeps a union's
-arity. Venn accepts spaces beside quoted names, so, unlike a sankey list, a
-space after each comma is safe. Directives and ignored semicolons override
-ordinary gap spacing. [corpus fixture: venn/db-case-distinct-ids] [corpus
-fixture: venn/db-empty-identifiers] [corpus fixture:
-venn/db-union-repeated-member] [corpus fixture:
+and take one following space for readable lists. Quoted padding, empty names,
+source order and repeated members stay as written, even where the Db sorts
+targets. A name is printed with or without quotes as [Quotes](#quotes) says,
+padding inside quotes belongs to the name (`" A "` and `"A"` differ in the Db),
+the Db sorting the targets is no permission to reorder the written list, and a
+repeated member keeps a union's arity. Venn accepts spaces beside quoted names,
+so, unlike a sankey list, a space after each comma is safe. Directives and
+ignored semicolons override ordinary gap spacing. [corpus fixture:
+venn/db-case-distinct-ids] [corpus fixture: venn/db-empty-identifiers] [corpus
+fixture: venn/db-union-repeated-member] [corpus fixture:
 venn/lex-name-list-comma-directive] [corpus fixture:
 venn/lex-union-empty-quoted-members] [corpus fixture:
 venn/lex-union-matching-quoted-padding] [fixture:
 venn/name-lists/empty-quoted-targets] [fixture: venn/name-lists/name-order-keep]
-[fixture: venn/name-lists/names-quotes-equivalent] [fixture:
-venn/name-lists/name-quoted-padding] [fixture: venn/name-lists/names-comma]
-[corpus fixture: venn/db-form-set] [fixture: venn/name-lists/quoted-keyword]
+[fixture: venn/name-lists/name-quoted-padding] [fixture:
+venn/name-lists/names-comma] [corpus fixture: venn/db-form-set] [fixture:
+venn/name-lists/quoted-keyword]
 
 Input (escaped):
 
@@ -318,20 +317,20 @@ Output
 ```mmd
 venn-beta
 set A
-set "B"
-union A, "B", A
+set B
+union A, B, A
 text A, "B" item
-style A, "B" fill:red
+style A, B fill:red
 ```
 
 ### Labels
 
-A bracket label touches its name or text id for a compact suffix; its
-bare/quoted form and every interior character stay as written, except the
-spaces, tabs, and no-break spaces next to the brackets, which mermaid.js trims:
-`set A[ L ]` is printed `set A[L]`. A label that holds a directive stays as
-written. The padding is dropped on a line with a kept `;` too, apart from the
-stretch read by the line rule (see
+A bracket label touches its name or text id for a compact suffix; every interior
+character stays as written, except the spaces, tabs, and no-break spaces next to
+the brackets, which mermaid.js trims, and a label is printed in quotes as
+[Quotes](#quotes) says: `set A[ L ]` is printed `set A["L"]`. A label that holds
+a directive stays as written. The padding is dropped on a line with a kept `;`
+too, apart from the stretch read by the line rule (see
 [Line rule and kept lines](#line-rule-and-kept-lines)): dropping it outside that
 stretch moves no `;`, so the line rule selects the same one. `set A[ a; ]` is
 printed `set A[a;]` and `set B[ a;b ]` is printed `set B[a;b]`. One space stays
@@ -370,11 +369,11 @@ venn/lex-label-quoted-ignored-semicolon-only] [fixture:
 venn/labels/directive-attachment] [fixture:
 venn/labels/labels-empty-form-differs-control] [fixture:
 venn/labels/labels-empty-form-differs] [fixture: venn/labels/labels-empty-kept]
-[fixture: venn/labels/labels-form-equal-control] [corpus fixture:
-venn/db-set-label-eof] [fixture: venn/labels/labels-padding-trim-equal-control]
-[fixture: venn/labels/labels-padding-trim-equal] [fixture:
-venn/labels/multiline-padding] [fixture: venn/labels/quoted-delimiter-directive]
-[fixture: venn/labels/quoted-label-padding-trim-equal] [fixture:
+[corpus fixture: venn/db-set-label-eof] [fixture:
+venn/labels/labels-padding-trim-equal-control] [fixture:
+venn/labels/labels-padding-trim-equal] [fixture: venn/labels/multiline-padding]
+[fixture: venn/labels/quoted-delimiter-directive] [fixture:
+venn/labels/quoted-label-padding-trim-equal] [fixture:
 venn/labels/suffix-spacing]
 
 Input (escaped):
@@ -388,8 +387,88 @@ Output
 
 ```mmd
 venn-beta
-set A[L]:002.00
+set A["L"]:002.00
   text item[" Label "]
+```
+
+### Quotes
+
+The names of sets, the id of a text without targets, the targets of a `style`,
+and the value of a style property are printed without quotes, and a bracket
+label is printed in quotes, as the examples in the documentation of mermaid.js
+write them (see
+[The quotes of a text](./compatibility.md#the-quotes-of-a-text)): `set "A"` is
+printed `set A`, `union "A","B"` is printed `union A, B`, `style A fill:"red"`
+is printed `style A fill:red`, and `set A[Alpha]` is printed `set A["Alpha"]`.
+
+A name is ASCII letters, digits, `_`, and `-` that starts with a letter or a
+`_`. It keeps its quotes where the lexer would read it as something else: a name
+that starts with `venn-beta`, `set`, `union`, `text`, or `style`, in any case,
+before a character that is no letter, digit, or `_` (`-` is such a character, so
+`set-a` starts with `set`), and `title`, which starts a title where text follows
+it on its line. So `"a b"`, `"a.b"`, `"1a"`, `"日本語"`, `"set"`, `"Set-a"`, and
+`"title"` stay in quotes, and `"xset"`, `"set1"`, and `"a-b"` lose them. A name
+that is a number, such as the id `"007"`, stays as written. The value of a style
+property is such names, numbers, and colors of `#` and three to eight
+hexadecimal digits, with one space between them, since mermaid.js joins the
+words of a value without quotes with one space: `"red blue"` and `"-1.5"` lose
+their quotes, and `"1a"`, `"red  blue"`, `" red "`, `"rgb(1,2,3)"`,
+`"#abcdefg"`, and `"a.b"` stay in quotes. [fixture: quotes/names-without-quotes]
+[fixture: quotes/names-that-need-quotes] [fixture:
+quotes/style-values-without-quotes]
+
+The text of a label is the text between the brackets without the spaces, tabs,
+and no-break spaces next to them, which mermaid.js trims: `set A[ Alpha ]` is
+printed `set A["Alpha"]`, and `set D[" Padded "]` stays as written. A label of
+whitespace only (`[ ]`, whose Db has no label, where `[" "]` has an empty one),
+a label with a `%%` in it, and a label with a directive or a comment inside it
+stay as written. [fixture: quotes/labels-in-quotes] [fixture:
+quotes/labels-that-stay-as-written]
+
+A text with targets stays as written in its targets, its id, and its label,
+since the examples write none; only the spaces next to the brackets of its label
+are dropped, as in any label. A name that a `%` follows keeps its quotes, where
+what follows is the first character after the spaces, tabs, and directives that
+come after the name (see
+[The quotes of a text](./compatibility.md#the-quotes-of-a-text)):
+`set "B"%%{init: {}}%%` is printed `set B%%{init: {}}%%`, and `set "B" %% c`
+keeps its quotes. So does a name and a label on a line that the printer writes
+as it is, such as one with a `;`. [fixture: quotes/explicit-text-as-written]
+[fixture: quotes/names-before-a-comment-as-written] [fixture:
+quotes/texts-on-a-kept-line-as-written]
+
+Input
+([quotes/names-without-quotes-input.mmd](../tests/fixtures/venn/quotes/names-without-quotes-input.mmd)):
+
+```mmd
+venn-beta
+set "A"
+set "B_2"[Beta]
+set "c-d":3
+set "xset"
+set "set1"
+union "A","B_2"["Both"]
+style "A","c-d" fill:red
+set "A1"
+  text "item"
+  text "item-2"[Note]
+```
+
+Output
+([quotes/names-without-quotes-output.mmd](../tests/fixtures/venn/quotes/names-without-quotes-output.mmd)):
+
+```mmd
+venn-beta
+set A
+set B_2["Beta"]
+set c-d:3
+set xset
+set set1
+union A, B_2["Both"]
+style A, c-d fill:red
+set A1
+  text item
+  text item-2["Note"]
 ```
 
 ### Sizes and numbers
@@ -441,12 +520,13 @@ A run of spaces and tabs between its atoms, outside the parentheses of an
 rgb/rgba token, is printed as one space: mermaid.js joins the atoms with one
 space, so the Db is the same, and whether whitespace stands between two atoms
 stays as written. Space inside an rgb/rgba token is different: changing a
-component gap changes the Db, and so does quoting a joined bare value; quoted
-values, whole rgb/rgba tokens, key case, repetitions and separate statements
-stay as written. A kept prefix overrides punctuation spacing so colon-to-hash
-gaps cannot change semicolon selection. [corpus fixture:
-venn/div-c4-bare-style-value] [corpus fixture: venn/db-style-case-and-order]
-[corpus fixture: venn/db-style-colon-value-inline-directive] [corpus fixture:
+component gap changes the Db, and so does quoting a joined bare value; a quoted
+value is printed without quotes as [Quotes](#quotes) says, and whole rgb/rgba
+tokens, key case, repetitions and separate statements stay as written. A kept
+prefix overrides punctuation spacing so colon-to-hash gaps cannot change
+semicolon selection. [corpus fixture: venn/div-c4-bare-style-value] [corpus
+fixture: venn/db-style-case-and-order] [corpus fixture:
+venn/db-style-colon-value-inline-directive] [corpus fixture:
 venn/db-style-property-colon-inline-directive] [corpus fixture:
 venn/db-style-prototype-keys] [corpus fixture: venn/db-style-unknown] [corpus
 fixture: venn/lex-directive-style-value-color] [corpus fixture:
@@ -726,7 +806,7 @@ Output
 
 ```mmd
 venn-beta
-set A%%{init: {}}%%[L]:2
+set A%%{init: {}}%%["L"]:2
 ```
 
 Input (escaped):
@@ -796,8 +876,8 @@ Output
 ```mmd
 venn-beta
 set "A
- B"[L
-  M]
+ B"["L
+  M"]
 text A "x
  y"[N
  O]

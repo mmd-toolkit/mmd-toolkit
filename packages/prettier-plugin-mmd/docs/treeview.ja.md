@@ -1780,11 +1780,20 @@ treeView-beta
 
 ### Description blocks
 
-普通の block は共有の description layout を通します。
-空白だけの内部は `{}` です。
-`accDescr` と `{` の間は、元が接していても space 1 個にします。
-keyword と本文の開始を見分けやすくするためです。
-1 行のテキストは、括弧に接して書かれていても、両側に space 1 個を置きます。
+1 行の説明ブロックは、罫線モードでも、
+[1 行の説明ブロック](./compatibility.ja.md#1-行の説明ブロック) に従います。
+その場合、キーワードの前と、キーワードと `{` の間にある罫線の文字は、
+印字せずに描き直します。
+本文が罫線の文字を含むブロックと、罫線モードで opener の gap を保つブロックは、
+ブロックのままにします。 [fixture: treeview/modes/ordinary-block]
+[fixture: treeview/modes/box-common-block-zero-column]
+[fixture: treeview/modes/block-interior-active]
+[fixture: treeview/description-blocks/box-redraw-remove-opener-prefixes]
+[fixture: treeview/description-blocks/block-after-directive]
+普通の空白だけの内部は `{}` です。
+波括弧を残すブロックは、`accDescr` と `{` の間を、
+元が接していても空白 1 つにします。
+キーワードと本文の開始を見分けやすくするためです。
 普通の opener の前の空白は寄せ、本文行を文より 1 段深くそろえます。
 trivia の内容は保ちます。
 別行の closer は文の段に揃えます。
@@ -1799,6 +1808,13 @@ Mermaid が説明から LF 後の字下げを除くためです。
 共通値の tab など、安全に外せない形は Branch prefixes の本文保持に従います。
 opener の gap の唯一のモードの選び手は、
 Decorations に従って gap だけを保ちます。
+`}` の前の空白はテキストではないので、コメント行の後でも、
+毎回の整形で `}` を文と同じ段にそろえます。
+[fixture: treeview/description-blocks/block-comment-line-after-the-text]
+1 行の本文を独立した行に置くブロックも、
+本文に空白とタブの連なりがある場合を含め、1 行の説明ブロックの規則に従います。
+（[1 行の説明ブロック](./compatibility.ja.md#1-行の説明ブロック)）。
+[fixture: treeview/description-blocks/block-text-on-its-own-line-runs-collapsed]
 
 [fixture: treeview/description-blocks/geometry-with-opener-directive]
 

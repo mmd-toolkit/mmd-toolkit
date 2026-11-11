@@ -1,0 +1,20 @@
+{
+  "source": {
+    "kind": "authored",
+    "note": "pie.md Composite common forms; db-from-tree/pie.md Building the summary from the tree, Final common assignments: a closed description block with two lines of text before a section sets the description to `Revenue by product\\nin the last quarter`."
+  },
+  "accepted": true,
+  "diagramType": "pie",
+  "db": {
+    "title": "",
+    "accTitle": "",
+    "accDescr": "Revenue by product\nin the last quarter",
+    "showData": false,
+    "sections": [
+      {
+        "label": "A",
+        "value": 1
+      }
+    ]
+  }
+}

@@ -328,8 +328,8 @@ kanban
 
 ### ラベル
 
-ラベルは、書かれた形のまま印字します。
-裸（`A[x y]`）、引用符つき（`B["x y"]`）、markdown（`C["`x y`"]`）です。
+ラベルは、裸（`A[x y]`）か markdown（`C["`x y`"]`）で印字します。
+平易な文字列 `B["x y"]` は引用符を外します（[Quotes](#quotes)を参照）。
 ラベルの中の空白は Db に入るので残します。
 空白だけのラベル（`S[ ]`、`A[" "]`）も同じです。
 裸のラベルの両端の空白とタブは落とし、`S[  x  ]` は `S[x]` と印字します。
@@ -346,10 +346,9 @@ mermaid.js はそれらがなくても同じノードを描くからです（詳
 [fixture: labels/db-grid-html-attribute-item-label-quoted]
 [fixture: labels/db-grid-entity-item-label-quoted]
 
-印字は、ラベルに引用符をつけることも、外すことも、足すことも、符号化することも、
-戻すこともしません。
-削るのは、裸のラベルの両端の空白とタブだけです。
-`A[x y]` と `A["x y"]` の Db は同じですが、書き方は書き手のものです。
+印字は、ラベルに引用符や余白を足すことも、符号化することも、戻すこともしません。
+裸のラベルの両端では、空白とタブだけを取り除きます。
+`A[x y]` と `A["x y"]` の Db は同じで、書き方は [Quotes](#quotes) に従います。
 文字列の閉じ引用符の後の空白（`S["x" ]`）は拒否されるので、
 印字する形にはなりません（[整形しない場合](../README.ja.md#整形しない場合)
 を参照）。 [fixture: labels/bare-to-quoted]
@@ -374,9 +373,46 @@ kanban
 kanban
   S
     A[x y]
-    B["x y"]
+    B[x y]
     C["`x y`"]
     D[ "x" ]
+```
+
+### Quotes
+
+引用符つきの形のラベルは、mermaid.js の文書の例のとおり、
+引用符なしで印字します。
+（[テキストの引用符](./compatibility.ja.md#テキストの引用符)）。
+`col["Todo list"]` は `col[Todo list]` と印字します。
+引用符なしでは途中で終わるか、閉じや開きとして読まれるラベルは、
+引用符を残します。
+`)`、`]`、`(`、`}` を含むラベル、`-` で始まるラベル（`card6("-x")` で、
+`(-` が別の形の開きになり、`)` の前の `-` が閉じになるため）、
+ダッシュの形のダッシュに接する文字列（`card4(-"x"-)`）、
+余白や改行を持つラベルです。
+markdown 文字列は書かれたまま残します。 [fixture: quotes/labels-without-quotes]
+[fixture: quotes/labels-that-need-quotes]
+
+入力
+([quotes/labels-without-quotes-input.mmd](../tests/fixtures/kanban/quotes/labels-without-quotes-input.mmd)):
+
+```mmd
+kanban
+  col["Todo list"]
+    card1["Write docs"]
+    card2["x"]
+    card3[x]
+```
+
+出力
+([quotes/labels-without-quotes-output.mmd](../tests/fixtures/kanban/quotes/labels-without-quotes-output.mmd)):
+
+```mmd
+kanban
+  col[Todo list]
+    card1[Write docs]
+    card2[x]
+    card3[x]
 ```
 
 ### アイコンとクラス

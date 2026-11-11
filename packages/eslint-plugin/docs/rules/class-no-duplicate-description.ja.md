@@ -47,8 +47,9 @@ classDiagram
 classDiagram
   accDescr {
     first
+    second
   }
-  accDescr: second
+  accDescr: third
   class A
 ```
 
@@ -65,9 +66,7 @@ classDiagram
 %% eslint @mmd-toolkit/class-no-duplicate-description: error
 classDiagram
   accDescr: first
-  accDescr {
-    first
-  }
+  accDescr: first
 ```
 
 ## オプション

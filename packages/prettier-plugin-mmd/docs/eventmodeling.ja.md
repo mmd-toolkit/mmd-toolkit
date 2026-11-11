@@ -1188,6 +1188,43 @@ eventmodeling
 tf 001 evt VeryLongNamespace.VeryLongEventName ->> 002 ->> 003 ->> 004 [[LongDataName]] `text` {a very long authored payload}
 ```
 
+### Quotes
+
+printer は引用符を付けたり外したりしません。
+名前には引用符で囲む形がなく、`tf 01 evt "Alpha"` は拒否されます。
+frame のデータの本文（行内の波括弧の中か、`data` 宣言のブロック内）、タイトル、
+アクセシビリティの値にある引用符は、テキストの文字です。
+Db は、データ `{"x"}` には `{"x"}` を、`{x}` には `{x}` を保持し、
+`accTitle: "T"` と書かれたタイトルには `accTitle: "T"` を保持します。
+そのため、引用符の有無を変えて同じテキストとして書けるものはなく、
+どのテキストも変えません。 [fixture: quotes/quotes-as-written]
+
+入力
+([quotes/quotes-as-written-input.mmd](../tests/fixtures/eventmodeling/quotes/quotes-as-written-input.mmd)):
+
+```mmd
+eventmodeling
+tf 01 evt Alpha {"x"}
+tf 02 evt Beta {x}
+tf 03 evt Gamma [[D]]
+data D {
+  "y"
+}
+```
+
+出力
+([quotes/quotes-as-written-output.mmd](../tests/fixtures/eventmodeling/quotes/quotes-as-written-output.mmd)):
+
+```mmd
+eventmodeling
+tf 01 evt Alpha {"x"}
+tf 02 evt Beta {x}
+tf 03 evt Gamma [[D]]
+data D {
+  "y"
+}
+```
+
 ### Frontmatter yaml
 
 安全な本物の先頭 frontmatter だけに共有 YAML formatter を使います。

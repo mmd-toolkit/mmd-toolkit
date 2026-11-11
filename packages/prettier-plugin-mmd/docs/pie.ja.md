@@ -66,7 +66,7 @@ YAML だけは共有の最小幅を使います。
 pie
 "Zero" : 0
 accTitle: direction LR
-accDescr { direction TB }
+accDescr: direction TB
 ```
 
 ### Statements one per line
@@ -275,15 +275,12 @@ pie
 
 ### Description blocks
 
-flowchart の[複数行の値](./flowchart.ja.md#複数行の値) を再利用します。
+1 行の説明ブロックは、
+[1 行の説明ブロック](./compatibility.ja.md#1-行の説明ブロック) に従います。
+波括弧を残すブロックは、
+flowchart の[複数行の値](./flowchart.ja.md#複数行の値)を再利用します。
 説明の Db では LF 後の字下げが取り除かれるためです。
-Db が同じ形（`accDescr{a}` と `accDescr {a}`、`{a}` と `{ a }`）のうち、
-pie は独自の形を選ばず、
-兄弟の図の共通の accessibility
-の決定（[flowchart](./flowchart.ja.md#アクセシビリティの行)、
-[C4](./c4.ja.md#説明ブロック)）に従います。
 通常の gap では、接して書かれていても語と開き括弧の間に空白 1 つを置きます。
-1 行のテキストは、括弧に接して書かれていても、両側に空白を 1 つずつ置きます。
 保護対象の trivia やセミコロンの配置では、その gap を保ちます。
 開き括弧の前が空白だけなら改行や Unicode の境界も結合できます。
 コメント・directive の改行は残します。
@@ -302,7 +299,7 @@ trivia のある内部は残します。
 [fixture: pie/description-blocks/block-opener-newline]
 [fixture: pie/description-blocks/block-comment-only]
 [fixture: pie/description-blocks/block-directive-only]
-[fixture: pie/description-blocks/block-inner-collapse-kept]
+[fixture: pie/description-blocks/block-inner-runs-collapsed]
 [fixture: pie/description-blocks/block-opener-trivia]
 [fixture: pie/description-blocks/block-asymmetric]
 [fixture: pie/description-blocks/block-inline-leading-lines]
@@ -650,7 +647,7 @@ EOF も含め残します。
 ```mmd
 pie showData
   "Data" : 2
-  accDescr { a }
+  accDescr: a
 ```
 
 ### Multiline values and order

@@ -236,9 +236,14 @@ architecture-beta
 
 ### Label forms
 
-ArchitectureLabel の全範囲と、bare・quoted の形、引用符の綴りを保ちます。
-`[ "x" ]` は bare であり、詰めてよい quoted ラベルではありません。
-Db が等しい引用符変更でも、選ばれた kind と原形を失うため行いません。
+ArchitectureLabel の全範囲と引用符の綴りを保ちますが、
+引用符つきの平易なラベルは引用符なしで印字します（[Quotes](#quotes)を参照）。
+引用符の前に余白があるラベル（`[ "x" ]`）は、
+木では引用符を含む bare ラベルですが、
+mermaid.js は余白を除いて引用符を外し `x` と読むので、
+`["x"]` や `[x]` と同じに読みます。
+印字は引用符つきのラベルと同じで、
+`service padded [ "x" ]` は `service padded[x]` になります。
 引用符に見える fallback は bare のままにし、
 変換後の文字から kind を推測しません。
 
@@ -291,7 +296,53 @@ Db が等しい引用符変更でも、選ばれた kind と原形を失うた�
 
 ```mmd
 architecture-beta
-  service padded["x"]
+  service padded[x]
+```
+
+### Quotes
+
+引用符つきの平易なラベルは、mermaid.js の文書の例のとおり、
+引用符なしで印字します。
+（[テキストの引用符](./compatibility.ja.md#テキストの引用符)）。
+`group api(cloud)["API Group"]` は `group api(cloud)[API Group]` と印字し、
+`service s(server)['Plain Single']` は `service s(server)[Plain Single]`
+と印字します。
+平易なラベルとは、ASCII 英字、数字、`_`、空白からなり、
+両端に空白がないものです。
+引用符つきのラベルを読む 11.13.0 から 11.16.1 までの文法は、
+引用符なしのラベルではこれらの文字だけを読むので、`"a-b"`、`"A.B"`、`"日本語"`、
+`"a[b"`、空のラベル、引用符の内側に余白があるラベル（`[" padded "]`）は、
+引用符を保ちます。
+バックスラッシュや引用符があるラベルも同じです。
+mermaid.js は、読むタイトルの外側の `"` か `'` の引用符 1 組を外し、
+外側に引用符があったタイトルだけで `\"` と `\'` を `"` と `'` に戻すので、
+`"a\"b"` を `a\"b` と、`"'x'"` を `'x'` と印字すると、
+別のタイトルとして読まれます。
+引用符なしのラベルを引用符で囲むことはありません。
+[fixture: quotes/labels-without-quotes]
+[fixture: quotes/labels-that-need-quotes]
+[fixture: quotes/labels-with-runs-without-quotes]
+
+入力
+([quotes/labels-without-quotes-input.mmd](../tests/fixtures/architecture/quotes/labels-without-quotes-input.mmd)):
+
+```mmd
+architecture-beta
+group api(cloud)["API Group"]
+service db(database)["Database_1"] in api
+service s(server)['Plain Single']
+service t(server)[Already bare]
+```
+
+出力
+([quotes/labels-without-quotes-output.mmd](../tests/fixtures/architecture/quotes/labels-without-quotes-output.mmd)):
+
+```mmd
+architecture-beta
+  group api(cloud)[API Group]
+  service db(database)[Database_1] in api
+  service s(server)[Plain Single]
+  service t(server)[Already bare]
 ```
 
 ### Label content
@@ -631,9 +682,10 @@ architecture-beta
 
 ### Description blocks
 
-共有の `layoutDescriptionBlock` を使います。
-ブロックの境界がわかるよう、keyword と開始波括弧の間に空白を1個置きます。
-1 行のテキストは、括弧に接して書かれていても、両側に空白を 1 つずつ置きます。
+1 行の説明ブロックは、
+[1 行の説明ブロック](./compatibility.ja.md#1-行の説明ブロック) に従います。
+波括弧を残すブロックは、境界がわかるよう、
+キーワードと開始波括弧の間に空白を 1 つ置きます。
 空白だけの内側は囲む文字がないため `{}` にします。
 開始前の単なる空白は結合し、実際の trivia は改行を保ちます。
 comment・directive だけの内側を保ちます。
@@ -683,10 +735,10 @@ directive と共有の除去対象となるコメント領域は原文全体を�
 
 ```mmd
 architecture-beta
-  accDescr { A }
-  accDescr { B }
-  accDescr { C }
-  accDescr { D }
+  accDescr: A
+  accDescr: B
+  accDescr: C
+  accDescr: D
 ```
 
 ### Multiline values
@@ -1032,7 +1084,7 @@ architecture-beta
   junction j
   a:R -- L:j
   align row a j
-  accDescr { D }
+  accDescr: D
 ```
 
 ### Frontmatter yaml
@@ -1316,7 +1368,7 @@ architecture-beta
   title
   accTitle: First
   accTitle:
-  accDescr { First }
+  accDescr: First
   accDescr {}
 ```
 

@@ -1801,21 +1801,35 @@ treeView-beta
 
 ### Description blocks
 
-Use shared description-block layout for ordinary blocks: whitespace-only
-interiors become `{}`. Put one space between `accDescr` and `{`, even when
-originally touching, to distinguish the keyword from its body. Text on one line
-stands between one space on each side, whether it touched the braces or not.
-Join plain opener whitespace, align ordinary body lines one step inside the
-statement, preserve trivia contents, and align separate closers with the
-statement. Mermaid discards indentation after LF from the description. The body
-uses the configured indentation, including tabs and the positive minimum step at
-width zero. In box mode remove ordinary keyword/opener prefixes and place the
-common statement at column one, while keeping the body's authored columns:
-indenting a plain physical line can make box syntax reject it. Value-owned box
-geometry still keeps its complete brace span. The first effective `}` remains
-the closer. Unsafe removal follows Branch prefixes, including common-value tabs.
-A sole mode selector in the opener gap keeps just that gap, as described in
-Decorations.
+Description blocks on one line follow
+[A description block on one line](./compatibility.md#a-description-block-on-one-line),
+also in a box, where the characters of the drawing before the keyword and
+between the keyword and the `{` are redrawn, not printed. A block whose text
+holds a character of the drawing, or whose opener gap the box keeps, stays a
+block. [fixture: treeview/modes/ordinary-block] [fixture:
+treeview/modes/box-common-block-zero-column] [fixture:
+treeview/modes/block-interior-active] [fixture:
+treeview/description-blocks/box-redraw-remove-opener-prefixes] [fixture:
+treeview/description-blocks/block-after-directive] Ordinary whitespace-only
+interiors become `{}`. For blocks that keep their braces, put one space between
+`accDescr` and `{`, even when originally touching, to distinguish the keyword
+from its body. Join plain opener whitespace, align ordinary body lines one step
+inside the statement, preserve trivia contents, and align separate closers with
+the statement. Mermaid discards indentation after LF from the description. The
+body uses the configured indentation, including tabs and the positive minimum
+step at width zero. In box mode remove ordinary keyword/opener prefixes and
+place the common statement at column one, while keeping the body's authored
+columns: indenting a plain physical line can make box syntax reject it.
+Value-owned box geometry still keeps its complete brace span. The first
+effective `}` remains the closer. Unsafe removal follows Branch prefixes,
+including common-value tabs. A sole mode selector in the opener gap keeps just
+that gap, as described in Decorations. The whitespace before the `}` is no text,
+so the `}` stays aligned with the statement in every pass, also after a comment
+line. [fixture: treeview/description-blocks/block-comment-line-after-the-text] A
+block with one line of text on a line of its own follows
+[A description block on one line](./compatibility.md#a-description-block-on-one-line)
+too, also where the text has runs of spaces and tabs. [fixture:
+treeview/description-blocks/block-text-on-its-own-line-runs-collapsed]
 
 [fixture: treeview/description-blocks/geometry-with-opener-directive]
 

@@ -85,7 +85,7 @@ pipeline Parent { と印字し、
 wardley-beta
   component Parent [0.4, 0.5]
   pipeline Parent {
-    component Child [0.6] label [-1, 2]
+    component "Child" [0.6] label [-1, 2]
   }
 ```
 
@@ -148,7 +148,23 @@ wardley-beta
 
 ### 名前と引用
 
-WardleyIdentifier と StringLiteral は source span のまま印字します。
+component、anchor、link、`evolve` 文、pipeline、evolution の stage の名前は、
+引用符なしで読める場合に引用符なしで印字し、accelerator、deaccelerator、
+pipeline の component の名前は、
+mermaid.js の文書の例と同じく引用符で囲んで印字します。
+（[テキストの引用符](./compatibility.ja.md#テキストの引用符)を参照）。
+`component "Customer"` は `component Customer` と印字し、
+`accelerator Market` は `accelerator "Market"` と印字します。
+引用符なしで読める名前は、ASCII の英字で始まり、ASCII の英字、数字、
+`_` からなる語を空白 1 つで区切った形で、
+字句解析器が命令か strategy として読む小文字の語（`build`、`component`、
+`title` など）で始まらないものです。
+矢印のない link（`"A" "B"`）の名前と、
+hidden YAML block の `---` に接する名前は、引用符を残します。
+[fixture: names-and-quotes/plain-names-without-quotes]
+[fixture: names-and-quotes/names-that-need-quotes]
+それ以外では、
+WardleyIdentifier と StringLiteral を source span のまま印字します。
 内部の空白とタブ、ハイフン、括弧、ampersand、escape、
 空と空白だけの文字列も保ちます。
 ただし、link の label は除き、
@@ -602,35 +618,30 @@ accTitle: Value と accDescr: Value は共有の行 layout を使います。
 最後のディレクティブの後の空白を除いて印字します。
 （[同じに描かれるキーワードの後のテキスト](./compatibility.ja.md#同じに描かれるキーワードの後のテキスト)）。
 [fixture: accessibility/acc-directives-end-blanks-dropped]
-説明ブロックは共有の description layout を通します。
-通常の gap では、接して書かれていても語と { の間に空白 1 つを置きます。
-1 行のテキストは、括弧に接して書かれていても、両側に空白 1 つずつを置きます。
-空白だけの内部は {} にします。
-保護対象の trivia やセミコロンの配置では、その gap を保ちます。
-普通の opener 前の空白は結び、独立した closer を揃えます。
-通常の説明本文と独立したコメント行は文より1段内側に揃えます。
-Db で LF 後の字下げが取り除かれるためです。
-改行、内部の空行、行末空白を保ちます。
-directive と共有の除去対象となるコメント領域は原文全体を保ちます。
-trivia は共有の継続行 layout を使います。
-Db が同じ共通の形を選び、空白だけの内部には囲むテキストがありません。
-
 [fixture: wardley/accessibility/access-lines]
-
 [fixture: wardley/accessibility/access-empty]
 
+1 行の説明ブロックは、
+[1 行の説明ブロック](./compatibility.ja.md#1-行の説明ブロック) に従います。
 [fixture: wardley/accessibility/description-tight]
-
 [fixture: wardley/accessibility/description-edges]
-
-[fixture: wardley/accessibility/description-empty]
-
 [fixture: wardley/accessibility/description-opener-newline]
 
+波括弧を保つブロックでは、キーワードと `{` が接して書かれていても、
+間を通常の空白 1 つで区切ります。
+空白だけの内部は、囲むテキストがないため `{}` にします。
+キーワードと開始括弧の間が空白だけなら同じ行にまとめ、
+独立した閉じ括弧を文と同じ段にそろえます。
+[fixture: wardley/accessibility/description-empty]
+保護された trivia とセミコロンの配置では、隙間を保ちます。
+通常の説明本文と独立したコメント行は文より 1 段深くそろえます。
+Db で LF 後の字下げが取り除かれるためです。
+改行、内部の空行、行末空白を保ちます。
+ディレクティブと共有処理で取り除かれるコメント領域は、
+ディレクティブだけを含むブロックでも原文全体を保ちます。
+trivia は共有の継続行の配置を保ちます。
 [fixture: wardley/accessibility/description-closer]
-
 [fixture: wardley/accessibility/description-comment-only]
-
 [fixture: wardley/accessibility/description-directive-only]
 
 入力（escape 表記）:
@@ -943,7 +954,7 @@ hidden の内部、必須の closer padding、保護区間は保ちます。
 ```mmd
 wardley-beta
   component Tail [0.3, 0.6]
-  accDescr { End }
+  accDescr: End
 ```
 
 ### セミコロン

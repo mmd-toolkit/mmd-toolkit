@@ -426,7 +426,7 @@ Output
 erDiagram
   A ||--o{ B : x
   C ||--o{ D : y
-  E }|..|{ F : "z"
+  E }|..|{ F : z
   G
 ```
 
@@ -565,7 +565,7 @@ Output
 erDiagram
   A:::c
   p[P]
-  accDescr { D }
+  accDescr: D
   A ||--u-B : x
   1 ||--|| B : x
 ```
@@ -605,7 +605,7 @@ erDiagram
   direction LR
   ACCTITLE: T
   ACCDESCR: D
-  ACCDESCR { D }
+  ACCDESCR: D
   A }|--o{ B : x
   A {
     int a PK
@@ -757,8 +757,18 @@ in most examples of the documentation of mermaid.js: `p [ Person ]` is printed
 and are separated by a `,` that touches the classes on both sides:
 `A ::: c1 , c2` is printed `A:::c1,c2`. [fixture: entities/classes-tight]
 [fixture: entities/alias-and-classes] The `{` of an attribute block stands after
-one space (see [Attribute blocks](#attribute-blocks)). The names are kept as
-written, quoted or not, numbers included. [fixture: entities/names-kept] A
+one space (see [Attribute blocks](#attribute-blocks)). A name, a role, or the id
+of a subgraph in quotes that is one plain word is printed without them, as the
+examples in the documentation of mermaid.js write it (see
+[The quotes of a text](./compatibility.md#the-quotes-of-a-text)): `"A"[B]` is
+printed `A[B]`, and `C ||--o{ D : "has"` is `C ||--o{ D : has`. The other names
+are kept as written, quoted or not, numbers included, and so is a name that ends
+with `direction` or starts with `TB`, `BT`, `RL`, or `LR`, in any case: the
+lexer reads `direction`, white space (a line break too), and the name of a
+direction as one line, which a name without quotes would join with the line
+before or after it. [fixture: entities/plain-names-without-quotes] [fixture:
+entities/names-that-need-quotes] [fixture:
+entities/names-next-to-a-direction-line] [fixture: entities/names-kept] A
 directive between the parts of an entity is placed as under
 [Directives](#directives). [fixture: entities/directive-between-parts] [fixture:
 entities/directive-between-parts-runs]
@@ -787,7 +797,7 @@ erDiagram
     int a
   }
   12[P]
-  "A"[B]
+  A[B]
   p[Person]
 ```
 
@@ -1116,16 +1126,18 @@ description setter drops that indentation; line breaks, trailing whitespace and
 directive interiors stay written. Inside a subgraph, keep the original body
 columns because the raw description also participates in its membership reading.
 [corpus fixture: er/db-subgraph-nodes-acc-descr-block-lines] Its `}` stands at
-the level of its statement; a text on the line of the `{` has one space inside
-each brace, also where the braces touched it. [fixture:
-accessibility-statements/block-lines-kept] [fixture:
-accessibility-statements/block-comment-and-empty-lines-kept] [fixture:
-accessibility-statements/block-text-on-opening-line] An empty block is a
-statement of its own that keeps any prior description in the Db. It prints `{}`
-internally: `accDescr { }` becomes `accDescr {}`, including whitespace runs,
-line breaks and an NBSP-only interior. An already empty interior stays empty,
-and the keyword and opening brace have one space between them. No text needs
-surrounding whitespace, so the Db-equal choice follows
+the level of its statement. [fixture: accessibility-statements/block-lines-kept]
+[fixture: accessibility-statements/block-comment-and-empty-lines-kept]
+
+Blocks on one line follow
+[A description block on one line](./compatibility.md#a-description-block-on-one-line).
+[fixture: accessibility-statements/block-text-on-opening-line]
+
+An empty block is a statement of its own that keeps any prior description in the
+Db. It prints `{}` internally: `accDescr { }` becomes `accDescr {}`, including
+whitespace runs, line breaks and an NBSP-only interior. An already empty
+interior stays empty, and the keyword and opening brace have one space between
+them. No text needs surrounding whitespace, so the Db-equal choice follows
 [flowchart's accessibility lines](./flowchart.md#accessibility-lines), agentflow
 and usecase. [test: accessibility revisions: er empty-description-nbsp] Blocks
 with comments or directives keep their line breaks and complete contents, while
@@ -1154,9 +1166,13 @@ and `direction LR` are printed `accTitle: direction LR` at the first column. The
 comment lines and the directives between `direction` and the value are skipped,
 as the lexer reads the text without them (diagrams/er.md, Trivia between units),
 and so are empty lines. Where no direction follows, the statement is indented as
-any other. [fixture: accessibility-statements/first-column-for-direction-text]
-[fixture: accessibility-statements/first-column-direction-case-insensitive]
-[fixture: accessibility-statements/first-column-value-touching-text] [fixture:
+any other. The line counts as a whole: where other statements follow on it
+(`accDescr {x}; accDescr {direction RL}`), the `direction` in them counts too,
+as the lexer reads the whole line from its start. [fixture:
+accessibility-statements/semicolon-line-with-direction-text-first-column]
+[fixture: accessibility-statements/first-column-for-direction-text] [fixture:
+accessibility-statements/first-column-direction-case-insensitive] [fixture:
+accessibility-statements/first-column-value-touching-text] [fixture:
 accessibility-statements/first-column-tab-before-value] [fixture:
 accessibility-statements/first-column-value-on-next-line] [fixture:
 accessibility-statements/first-column-value-after-comment-line] [fixture:
@@ -1231,9 +1247,7 @@ erDiagram
     two
   }
   subgraph S
-    accDescr {
-  three
-    }
+    accDescr: three
   end
 ```
 
@@ -1258,7 +1272,7 @@ Output
 erDiagram
 accTitle: direction LR
 accDescr: a direction TB
-accDescr { direction RL }
+accDescr: direction RL
   subgraph S
 accTitle: direction BT
     A

@@ -29,7 +29,7 @@ const diagrams: readonly (readonly [string, readonly string[], string])[] = [
       "%%{init: {",
       "}}%%",
     ],
-    'venn-beta\nset "A\n B"[L\n M]\ntext A "id\n next"\nstyle A fill:"red\n blue", stroke:rgb(1,\n 2,3)\nset C\n  text item\n  %% c\n  %%{init: {\n}}%%\n',
+    'venn-beta\nset "A\n B"["L\n M"]\ntext A "id\n next"\nstyle A fill:"red\n blue", stroke:rgb(1,\n 2,3)\nset C\n  text item\n  %% c\n  %%{init: {\n}}%%\n',
   ],
   [
     "c4",
@@ -150,11 +150,12 @@ const diagrams: readonly (readonly [string, readonly string[], string])[] = [
       "A:[0.3,0.6]radius: 9,color: #f00",
       "accDescr {",
       "d",
+      "e",
       "}",
       "%% c",
       "%%{init: {}}%%",
     ],
-    "quadrantChart\n  title Reach\n  x-axis Low --> High\n  quadrant-1 We should expand\n  A: [0.3, 0.6] radius: 9, color: #f00\n  accDescr {\n    d\n  }\n  %% c\n  %%{init: {}}%%\n",
+    "quadrantChart\n  title Reach\n  x-axis Low --> High\n  quadrant-1 We should expand\n  A: [0.3, 0.6] radius: 9, color: #f00\n  accDescr {\n    d\n    e\n  }\n  %% c\n  %%{init: {}}%%\n",
   ],
   [
     "xychart",
@@ -165,11 +166,12 @@ const diagrams: readonly (readonly [string, readonly string[], string])[] = [
       'line [1 , 2 "x"]',
       "accDescr {",
       "d",
+      "e",
       "}",
       "%% c",
       "%%{init: {}}%%",
     ],
-    'xychart-beta horizontal\n  title Two words\n  x-axis [a, b]\n  line [1, 2 "x"]\n  accDescr {\n    d\n  }\n  %% c\n  %%{init: {}}%%\n',
+    'xychart-beta horizontal\n  title Two words\n  x-axis [a, b]\n  line [1, 2 "x"]\n  accDescr {\n    d\n    e\n  }\n  %% c\n  %%{init: {}}%%\n',
   ],
   [
     "kanban",
@@ -232,11 +234,13 @@ describe("configured C4 line endings", () => {
   it("uses lone CR outside and inside description values", async () => {
     expect(
       await formatMermaid(
-        'C4Context\naccDescr {\n first\n}\nPerson(a,"A")',
+        'C4Context\naccDescr {\n first\n second\n}\nPerson(a,"A")',
         "diagram.mmd",
         { endOfLine: "cr" },
       ),
-    ).toBe('C4Context\r  accDescr {\r    first\r  }\r  Person(a, "A")\r')
+    ).toBe(
+      'C4Context\r  accDescr {\r    first\r    second\r  }\r  Person(a, "A")\r',
+    )
   })
 })
 
@@ -248,6 +252,6 @@ describe("configured Venn line endings", () => {
         "diagram.mmd",
         { endOfLine: "cr" },
       ),
-    ).toBe('venn-beta\rset "A\r B"[L\r M]\r  text item\r')
+    ).toBe('venn-beta\rset "A\r B"["L\r M"]\r  text item\r')
   })
 })

@@ -45,7 +45,10 @@ LF、CRLF、CR の改行は、LF として比べる。
 %% eslint @mmd-toolkit/journey-no-duplicate-description: error
 journey
   accDescr: first
-  accDescr { second }
+  accDescr {
+    second
+    third
+  }
   section Work
     Make tea: 5: Me
 ```
@@ -64,9 +67,7 @@ journey
 %% eslint @mmd-toolkit/journey-no-duplicate-description: error
 journey
   accDescr: first
-  accDescr {
-    first
-  }
+  accDescr: first
   section Work
     Make tea: 5: Me
 ```

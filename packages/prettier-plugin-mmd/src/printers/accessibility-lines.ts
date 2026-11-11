@@ -1,4 +1,5 @@
 import type { Range } from "@mmd-toolkit/ast"
+import { lineEndOf } from "./kept-lines.ts"
 import { spansLinesThatCannotJoin, toAsciiLowerCase } from "./layout.ts"
 import type { Source } from "./source.ts"
 import {
@@ -6,6 +7,21 @@ import {
   findTriviaBetween,
   isWhitespace,
 } from "./source.ts"
+
+/**
+ * Whether anything but whitespace, comments, and directives follows `end` on
+ * its line: another statement, or a `;`.
+ */
+export function holdsStatementAfter(source: Source, end: number): boolean {
+  const lineEnd = lineEndOf(source, end)
+  let position = end
+  for (const item of findTriviaBetween(source, end, lineEnd)) {
+    if (![...source.text.slice(position, item.range[0])].every(isWhitespace))
+      return true
+    position = Math.max(position, item.range[1])
+  }
+  return ![...source.text.slice(position, lineEnd)].every(isWhitespace)
+}
 
 /**
  * Whether the first line that is printed for an accessibility statement holds

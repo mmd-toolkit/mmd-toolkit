@@ -193,9 +193,18 @@ in the Db and is printed as one space (see
 [Runs of whitespace in a text that are drawn the same](./compatibility.md#runs-of-whitespace-in-a-text-that-are-drawn-the-same)).
 [fixture: fields/value-outer-whitespace-dropped] [fixture:
 fields/value-inner-runs-collapsed] [fixture:
-fields/string-values-runs-collapsed] A `#`, a `%`, and a `;` inside an unquoted
-value are characters of the value, not the start of a comment. [fixture:
-fields/special-characters-in-values]
+fields/string-values-runs-collapsed] The value of an `id`, a `text`, a `type`,
+and a `docRef` in quotes is printed without them where it is words of letters,
+digits, and `_` with spaces between them and its first word is not a keyword of
+the diagram: `text: "the test text"` is printed `text: the test text`, and
+`text: "risk high"` stays in quotes. A value is judged as it is printed, so
+`text: "a b"` with a tab between the letters is printed `text: a b`, unless the
+diagram holds `white-space`, which keeps the runs of the value and so the
+quotes. [fixture: fields/plain-values-without-quotes] [fixture:
+fields/string-values-tabs-collapsed] [fixture:
+fields/string-values-tabs-kept-with-white-space] A `#`, a `%`, and a `;` inside
+an unquoted value are characters of the value, not the start of a comment.
+[fixture: fields/special-characters-in-values]
 
 The fields keep the order in which they are written, also a field that is
 written twice, of which mermaid.js reads the first. [fixture: fields/order-kept]
@@ -267,29 +276,38 @@ Output
 ```mmd
 requirementDiagram
   requirement r {
-    id: "1"
+    id: 1
     text: " a: b, c "
   }
   element e {
-    type: "a b"
+    type: a b
     docRef: "http://x.test/a-b"
   }
 ```
 
 ### Names
 
-A name is printed as written, quoted or not: mermaid.js reads `"r"` and `r` as
-the same name, and the quotes are kept. [fixture:
-names/quoted-and-unquoted-kept] An unquoted name may hold whitespace between its
-words, which is part of the name and stays as written; the whitespace at its
-ends is not, and is dropped. [fixture: names/inner-whitespace-kept] [fixture:
-names/outer-whitespace-dropped] A string holds any character, such as `-`, `:`,
-`,`, and `{`, and an unquoted name holds `#`, `.`, and `}` after its first
-character. [fixture: names/string-names-with-special-characters] [fixture:
+A name in quotes that is one plain word is printed without them: mermaid.js
+reads `"r"` and `r` as the same name, and the examples in its documentation
+write the names without quotes (see
+[The quotes of a text](./compatibility.md#the-quotes-of-a-text)). A name that is
+a keyword of the diagram, or holds a `-` or another character that is not a
+letter, a digit, or `_`, stays in quotes, and so does a name that ends with
+`direction` or starts with `TB`, `BT`, `RL`, or `LR`, in any case: the lexer
+reads `direction`, white space (a line break too), and the name of a direction
+as one line, which a name without quotes would join with the line before or
+after it. [fixture: names/plain-names-without-quotes] [fixture:
+names/names-that-need-quotes] [fixture: names/names-next-to-a-direction-line] An
+unquoted name may hold whitespace between its words, which is part of the name
+and stays as written; the whitespace at its ends is not, and is dropped.
+[fixture: names/inner-whitespace-kept] [fixture: names/outer-whitespace-dropped]
+A string holds any character, such as `-`, `:`, `,`, and `{`, and an unquoted
+name holds `#`, `.`, and `}` after its first character. [fixture:
+names/string-names-with-special-characters] [fixture:
 names/special-characters-in-unquoted-names]
 
 Input
-([names/quoted-and-unquoted-kept-input.mmd](../tests/fixtures/requirement/names/quoted-and-unquoted-kept-input.mmd)):
+([names/plain-names-without-quotes-input.mmd](../tests/fixtures/requirement/names/plain-names-without-quotes-input.mmd)):
 
 ```mmd
 requirementDiagram
@@ -303,17 +321,17 @@ style "r" fill:red
 ```
 
 Output
-([names/quoted-and-unquoted-kept-output.mmd](../tests/fixtures/requirement/names/quoted-and-unquoted-kept-output.mmd)):
+([names/plain-names-without-quotes-output.mmd](../tests/fixtures/requirement/names/plain-names-without-quotes-output.mmd)):
 
 ```mmd
 requirementDiagram
-  requirement "r" {
+  requirement r {
   }
   requirement s {
   }
-  "r" - satisfies -> s
-  s - satisfies -> "r"
-  style "r" fill: red
+  r - satisfies -> s
+  s - satisfies -> r
+  style r fill: red
 ```
 
 Input
@@ -333,7 +351,7 @@ Output
 requirementDiagram
   requirement "a - b: c, d {" {
   }
-  "x  y" - satisfies -> "z"
+  "x  y" - satisfies -> z
 ```
 
 ### Relationship spacing
@@ -468,7 +486,7 @@ Output
 
 ```mmd
 requirementDiagram
-  requirement r:::"a b","c" {
+  requirement r:::"a b",c {
   }
   r:::"d"
 ```
@@ -556,7 +574,7 @@ Output
 requirementDiagram
   classDef a,b,c fill: red
   classDef default fill: #f9f, stroke-width: 4px
-  classDef "d" fill: red
+  classDef d fill: red
 ```
 
 Input
@@ -798,7 +816,7 @@ requirementDiagram
   classDef c fill: red
   "r":::c
   class r c
-  "r" - satisfies -> b
+  r - satisfies -> b
   class r c
   "r":::d
 ```
@@ -939,7 +957,7 @@ Output
 requirementDiagram
   requirement r {
     accDescr {}
-    id: "1"
+    id: 1
     accDescr {}
     accDescr {}
     text: t
@@ -990,11 +1008,13 @@ accessibility-statements/text-with-comment-line-kept]
 Later text lines of an `accDescr { ... }` block stand one level inside its
 statement, replacing only ASCII spaces and tabs immediately after LF. The
 description setter drops that indentation; line breaks, trailing whitespace and
-directive interiors stay written. Its `}` stands at the level of its statement;
-a text on the line of the `{` has one space inside each brace, also where the
-braces touched it. [fixture: accessibility-statements/block-lines-kept]
-[fixture: accessibility-statements/block-text-on-opening-line] [fixture:
+directive interiors stay written. Its `}` stands at the level of its statement.
+[fixture: accessibility-statements/block-lines-kept] [fixture:
 accessibility-statements/block-comment-and-empty-lines-kept]
+
+Blocks on one line follow
+[A description block on one line](./compatibility.md#a-description-block-on-one-line).
+[fixture: accessibility-statements/block-text-on-opening-line]
 
 The lexer reads a line as a direction line before it reads the statements that
 follow it, but after `accTitle` and `accDescr`: `accTitle: direction LR` at the
@@ -1006,7 +1026,11 @@ the first column. The line is judged as the lexer reads it, without the
 directives and the comment lines. [fixture:
 accessibility-statements/first-column-kept] A line that holds no such direction
 is indented as any statement is. [fixture:
-accessibility-statements/first-column-not-needed]
+accessibility-statements/first-column-not-needed] The line counts as a whole:
+where other statements follow on it (`accDescr {x}; title direction RL`), the
+`direction` in them counts too, as the lexer reads the whole line from its
+start. [fixture:
+accessibility-statements/semicolon-line-with-direction-text-first-column]
 
 Input
 ([accessibility-statements/colon-touches-keyword-input.mmd](../tests/fixtures/requirement/accessibility-statements/colon-touches-keyword-input.mmd)):
@@ -1073,7 +1097,7 @@ Output
 requirementDiagram
 accTitle: direction LR
 accDescr: direction TB
-accDescr { direction RL }
+accDescr: direction RL
   accDescr {
     direction BT
   }
@@ -1192,7 +1216,7 @@ requirementDiagram
   style r fill: red
   "r":::c
   class r c
-  "r" - satisfies -> b
+  r - satisfies -> b
 ```
 
 Input

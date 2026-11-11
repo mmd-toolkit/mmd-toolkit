@@ -1,0 +1,24 @@
+requirementDiagram
+requirement r1 {
+id: 1
+text: t
+risk: high
+verifymethod: test
+}
+r1 - satisfies -> "xdirection"
+TB - satisfies -> r1
+r1 - satisfies -> "Direction"
+LR - satisfies -> r1
+r1 - satisfies -> "directions"
+"tbx" - satisfies -> r1
+r1 - satisfies -> "Order"
+"td" - satisfies -> r1
+r1 - satisfies -> "xdirection"
+
+TB - satisfies -> r1
+r1 - satisfies -> "xdirection"
+%% note
+TB - satisfies -> r1
+r1 - satisfies -> "xdirection"
+%%{init: {}}%%
+TB - satisfies -> r1

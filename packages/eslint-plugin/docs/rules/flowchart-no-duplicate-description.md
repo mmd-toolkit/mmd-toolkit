@@ -53,8 +53,11 @@ flowchart LR
 ```mmd
 %% eslint @mmd-toolkit/flowchart-no-duplicate-description: error
 flowchart LR
-  accDescr { first }
-  accDescr: second
+  accDescr {
+    first
+    second
+  }
+  accDescr: third
 ```
 
 ```mmd
@@ -81,9 +84,7 @@ flowchart LR
 flowchart LR
   A
   accDescr: first
-  accDescr {
-    first
-  }
+  accDescr: first
 ```
 
 ## Options

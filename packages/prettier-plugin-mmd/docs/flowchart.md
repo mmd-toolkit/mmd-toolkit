@@ -1384,37 +1384,16 @@ accessibility-lines/empty-block-semicolon-kept] [fixture:
 accessibility-lines/empty-block-directive-kept] [fixture:
 multi-line-values/accdescr-block-comment-only]
 
-Nonempty blocks follow [Multi-line values](#multi-line-values): the text of a
-block on one line stands between one space on each side, so `{a}`, `{ a }`,
-`{  a  }`, `{  a}`, and `{a  }` all become `{ a }`. mermaid.js trims the text,
-so the whitespace at its ends carries no meaning, and the `@{ ... }` blocks of
-[Data blocks](#data-blocks) are printed the same way. The documentation of
-mermaid.js has no example of a block on one line. [fixture:
-accessibility-lines/block-tight-text] [fixture:
+Blocks on one line follow
+[A description block on one line](./compatibility.md#a-description-block-on-one-line).
+[fixture: accessibility-lines/block-tight-text] [fixture:
 accessibility-lines/block-spaced-text] [fixture:
 accessibility-lines/block-padded-text] [fixture:
 accessibility-lines/block-left-padding-only] [fixture:
-accessibility-lines/block-right-padding-only] A block stays as written when it
-holds a comment or a directive, or a line break, and so does a block whose text
-holds a `%%{`, as in `accDescr {A%%{}%% B`, where the first `}` closes the block
-and padding it would change the directive. [fixture:
-accessibility-lines/block-text-beside-directive] [fixture:
-pie/description-blocks/block-first-brace] A block on a line that keeps its `;`
-gets no added space, whatever its text is, since the line rule of mermaid.js
-reads the whole line (see [Semicolons](#semicolons)): `{a;b}` and `{a; b}` stay
-as written, and so does a block in `A[style];accDescr {b:c;}D#z;`, where the
-added space would break the `:` and `#` that the rule pairs. A run of spaces at
-an end of such a block still becomes one space: `{  a;b  }` is printed
-`{ a;b }`. [fixture: accessibility-lines/block-text-with-semicolon-kept]
-[fixture: accessibility-lines/block-on-style-line-kept] A `;` that only
-separates statements is dropped, and the block is padded. [fixture:
-accessibility-lines/block-text-with-semicolons-padded] A U+2028 or U+2029 in the
-text makes it several lines, and stays. [test: U+2028 in the text of a flowchart
-description block] [test: U+2029 in the text of a flowchart description block]
-Whitespace at the ends that is not an ASCII space or tab, such as a no-break
-space, is trimmed by mermaid.js too and prints as one space. [test: no-break
-spaces at the ends of the text of a flowchart description block] Multiline body
-columns follow the top-level or subgraph rules in
+accessibility-lines/block-right-padding-only] The documentation of mermaid.js
+has no example of a block on one line.
+
+Multiline body columns follow the top-level or subgraph rules in
 [Multi-line values](#multi-line-values), and a closing brace on its own line
 aligns with `accDescr`, whether written at column zero or indented. This is the
 same form as the sibling diagrams, with no flowchart-specific reason to differ.
@@ -1444,7 +1423,7 @@ Output
 
 ```mmd
 flowchart LR
-  accDescr { a }
+  accDescr: a
   A[Block spacing]
 ```
 
@@ -1948,16 +1927,19 @@ multi-line-values/accdescr-block-subgraph-raw-membership-kept] The `}` of the
 block stands at the level of the `accDescr` it closes. [fixture:
 multi-line-values/accdescr-block-kept] Comment contents inside such a block are
 kept, with their columns following the same top-level or subgraph rule.
-[fixture: multi-line-values/accdescr-block-comment-line-in-subgraph-kept] When
-the text starts on the line of the `{`, it stands between one space on each side
-(see [Accessibility lines](#accessibility-lines)). Empty blocks without trivia
-instead follow [Accessibility lines](#accessibility-lines). [fixture:
-multi-line-values/accdescr-block-text-starts-on-brace-line] A block without
-text, whose lines are only comment lines, holds no value: its comment lines
-stand one level deeper than the `accDescr`, as comment lines inside a statement
-do (see [Comments](#comments)), and its `}` at the level of the `accDescr`.
-[fixture: multi-line-values/accdescr-block-comment-only-several-comments]
-[fixture: multi-line-values/accdescr-block-comment-only-in-subgraph]
+[fixture: multi-line-values/accdescr-block-comment-line-in-subgraph-kept] In a
+multiline block whose text starts on the line of the `{`, one space stands
+inside each brace. [fixture:
+multi-line-values/accdescr-block-text-starts-on-brace-line] Blocks on one line
+follow
+[A description block on one line](./compatibility.md#a-description-block-on-one-line),
+and empty blocks without trivia follow
+[Accessibility lines](#accessibility-lines). A block without text, whose lines
+are only comment lines, holds no value: its comment lines stand one level deeper
+than the `accDescr`, as comment lines inside a statement do (see
+[Comments](#comments)), and its `}` at the level of the `accDescr`. [fixture:
+multi-line-values/accdescr-block-comment-only-several-comments] [fixture:
+multi-line-values/accdescr-block-comment-only-in-subgraph]
 
 Input
 ([multi-line-values/string-kept-input.mmd](../tests/fixtures/flowchart/multi-line-values/string-kept-input.mmd)):
@@ -2010,7 +1992,7 @@ flowchart LR
     }
     A
   end
-  accDescr { one line }
+  accDescr: one line
   accDescr {
     text
     %% note
@@ -2498,6 +2480,96 @@ Output
 flowchart LR
   subgraph S %%{init: {}}%%
     A
+  end
+```
+
+### Quotes
+
+The name of a subgraph in quotes is printed without them, as the examples in the
+documentation of mermaid.js write it, 53 times without quotes and once in quotes
+(see [The quotes of a text](./compatibility.md#the-quotes-of-a-text)):
+`subgraph "Group A"` is printed `subgraph Group A`. mermaid.js reads the name in
+both forms as the same text, and the id of a name of several words is generated
+in both. A name is printed without quotes where it is words of ASCII letters,
+digits, and `_` with one space between them, none of them one of `_blank`,
+`_parent`, `_self`, `_top`, `call`, `click`, `default`, `direction`, `end`,
+`href`, and `interpolate`, which the lexer reads as a unit of its own. So
+`"a-b"`, `"end"`, `"x end"`, `"click"`, `"x _self"`, `"direction"`, a name with
+a `.` or a letter outside ASCII, and a markdown string stay as written. A name
+that ends with `direction`, such as `"xdirection"` or `"my xdirection"`, stays
+in quotes whatever follows it: the lexer reads `direction`, white space (a line
+break too), and `TB`, `BT`, `RL`, `LR`, or `TD` as one line, which
+`subgraph xdirection` and a next line `TB --> C` would form. A name that a word
+touches on its line (`subgraph "S"accDescr {}`) and a name that a comment
+follows (`subgraph "C" %% note`) keep their quotes, since a text without quotes
+would take the word or the comment into itself, as does a name of two spaces in
+a subgraph that has a title, since there the name is an id, and two ids that
+differ by a run are two ids (see
+[Runs of whitespace in a text that are drawn the same](./compatibility.md#runs-of-whitespace-in-a-text-that-are-drawn-the-same)).
+A `;` or a directive after a name takes nothing into it, and the name loses its
+quotes: `subgraph "D"%%{init: {}}%%` is printed `subgraph D%%{init: {}}%%`.
+[fixture: quotes/subgraph-names-without-quotes] [fixture:
+quotes/swimlane-lane-names-without-quotes] [fixture:
+quotes/subgraph-names-that-need-quotes] [fixture:
+quotes/subgraph-names-next-to-a-direction-line] [fixture:
+quotes/subgraph-names-with-runs-without-quotes] [fixture:
+quotes/subgraph-names-before-a-comment] [fixture:
+subgraph-header/whitespace-before-block-kept]
+
+The title of a subgraph in brackets, the label of a shape, and the label of a
+link stay as written. mermaid.js reads `A["x"]` as a string and `A[x]` as a
+text, and its Db holds the `labelType` `string` for the first and `text` for the
+second, so the two forms are not read the same, although the examples write the
+labels of shapes without quotes 109 times and in quotes 8 times. [fixture:
+quotes/labels-as-written] [fixture: quotes/subgraph-titles-as-written]
+
+Input
+([quotes/subgraph-names-without-quotes-input.mmd](../tests/fixtures/flowchart/quotes/subgraph-names-without-quotes-input.mmd)):
+
+```mmd
+flowchart TD
+subgraph "One"
+A --> B
+end
+subgraph "Group A"
+C --> D
+end
+subgraph "g_2" [Title]
+E --> F
+end
+subgraph "G3"[Title]
+G --> H
+end
+subgraph 'Single'
+I --> J
+end
+subgraph Already
+K --> L
+end
+```
+
+Output
+([quotes/subgraph-names-without-quotes-output.mmd](../tests/fixtures/flowchart/quotes/subgraph-names-without-quotes-output.mmd)):
+
+```mmd
+flowchart TD
+  subgraph One
+    A --> B
+  end
+  subgraph Group A
+    C --> D
+  end
+  subgraph g_2[Title]
+    E --> F
+  end
+  subgraph G3[Title]
+    G --> H
+  end
+  subgraph 'Single'
+    I --> J
+  end
+  subgraph Already
+    K --> L
   end
 ```
 

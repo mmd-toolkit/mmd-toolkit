@@ -51,6 +51,7 @@ Examples of **correct** code for this rule:
 wardley-beta
   accDescr {
     The parts of a service
+    on the value chain
   }
   component API [0.6, 0.7]
 ```

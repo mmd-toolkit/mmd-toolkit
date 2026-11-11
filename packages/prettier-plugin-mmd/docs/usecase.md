@@ -98,7 +98,7 @@ Output
 usecase-beta
   systemBoundary Portal
     actor User
-    Task(Work)
+    Task("Work")
   end
   User --> Task
 ```
@@ -142,7 +142,7 @@ Output
 ```mmd
 usecase-beta
   actor Reader
-  Read(Inspect)
+  Read("Inspect")
   Reader --> Read
 ```
 
@@ -152,10 +152,11 @@ Reuse [ER's compact entity layout](./er.md#entities): one gap after `actor`,
 tight id/shape delimiters and metadata/class suffixes, no exterior ASCII label
 padding, and comma-space between actor items, which shows the separate actor
 occurrences that one `actor` keyword introduces. Stereotype spacing follows
-[its class-based rule](#stereotypes). Keep explicit ids, quoted-only names,
-ellipse/rectangle spelling, label kinds, suffix order and every
-declaration/reference occurrence. Generated ids and resolved actor endpoints
-never replace authored nodes; boundary metadata forms remain declarations while
+[its class-based rule](#stereotypes). Keep explicit ids, ellipse/rectangle
+spelling, markdown labels, suffix order and every declaration/reference
+occurrence; a name and a label are printed in the form that the examples use
+(see [Quotes](#quotes)). Generated ids and resolved actor endpoints never
+replace authored nodes; boundary metadata forms remain declarations while
 top-level forms remain updates. This shows written syntax without inventing
 aliases or geometry.
 
@@ -173,19 +174,19 @@ Output
 
 ```mmd
 usecase-beta
-  actor User(Person), Clerk("Desk"), "Guest"
+  actor User("Person"), Clerk("Desk"), Guest
 ```
 
 ### Labels
 
-Reuse [C4's authored value forms](./c4.md#argument-forms): bare, single-quoted,
-double-quoted and markdown labels keep their kind and interior characters,
-including empty quoted values. Plain quotes can be Db-equal to bare text, but
-retaining the author's form avoids unnecessary rewriting; markdown changes the
-label type. Only exterior ASCII HWS outside a bare label's contributing units is
-trimmed. Internal gaps, Unicode padding, backslashes, entities and HTML stay; a
-string between `'` is printed between `"`, unless its text holds a `'`, a `"`, a
-backslash, a line break, U+2028, U+2029, a backquote, `&`, `#`, or `<` (see
+Reuse [C4's authored value forms](./c4.md#argument-forms): a markdown label
+keeps its kind, since markdown changes the label type, and every label keeps its
+interior characters, including empty quoted values. A plain label is printed in
+the form that the examples use (see [Quotes](#quotes)). Only exterior ASCII HWS
+outside a bare label's contributing units is trimmed. Internal gaps, Unicode
+padding, backslashes, entities and HTML stay; a string between `'` is printed
+between `"`, unless its text holds a `'`, a `"`, a backslash, a line break,
+U+2028, U+2029, a backquote, `&`, `#`, or `<` (see
 [Spellings that are drawn the same](./compatibility.md#spellings-that-are-drawn-the-same)),
 and `singleQuote` is not read. [fixture: labels/single-quote-sensitive-kept]
 
@@ -205,10 +206,89 @@ Output
 
 ```mmd
 usecase-beta
-  A(unquoted  words)
+  A("unquoted  words")
   B(" single  text ")
   C(" double  text ")
   D("` markdown  text `")
+```
+
+### Quotes
+
+A name, a label, and a word of the native metadata are printed in the form that
+the examples in the documentation of mermaid.js write them (see
+[The quotes of a text](./compatibility.md#the-quotes-of-a-text)). mermaid.js
+makes the id of a name that stands alone in quotes by replacing each character
+other than an ASCII letter, a digit, and `_` with `_`
+([the id of a name in quotes](https://github.com/mermaid-js/mermaid/blob/2086904e76c692331e34a45d7cc3bc30860d040e/packages/mermaid/src/diagrams/usecase/parser/usecase.visitor.ts#L197-L221),
+[the function](https://github.com/mermaid-js/mermaid/blob/2086904e76c692331e34a45d7cc3bc30860d040e/packages/mermaid/src/diagrams/usecase/parser/usecase.visitor.ts#L876-L878)),
+so `actor "Alice"` has the id and the label `Alice` of `actor Alice`.
+
+A name that stands alone in quotes (the actor of `actor "Alice"`, the use case
+of `"Login" --> "Logout"`, a system boundary, and the target of a metadata
+update) is printed without quotes where it is ASCII letters, digits, and `_`,
+and none of the words that the lexer reads as a unit of its own: `actor`,
+`systemBoundary`, `end`, `direction`, `TD`, `TB`, `BT`, `LR`, `RL`, `note`,
+`for`, `json`, `classDef`, `class`, `style`, `true`, `false`, `accTitle`, and
+`accDescr` as written (a `:` after `accTitle` or `accDescr` at the start of a
+statement makes a line of an accessibility title or description); `include` and
+`extend` in any case; and `allowmixing`, `newpage`, `package`, `rectangle`, and
+`skinparam`, which the grammar refuses as the name that starts a statement, in
+any case. So `"Alice"`, `"1a"`, `"td"`, and `"Package2"` lose their quotes, and
+`"a b"`, `"a-b"`, `"日本語"`, `"actor"`, `"Extend"`, `"TD"`, `"package"`, and
+`"accTitle"` keep them. [fixture: quotes/names-without-quotes] [fixture:
+quotes/names-that-need-quotes]
+
+A label between parentheses of an actor or of a use case, the title of a system
+boundary that has an id, the label of a split association, and the label of a
+note are printed in quotes: `actor Bob(Display B)` is printed
+`actor Bob("Display B")`, `A -- likes --> B` is printed `A -- "likes" --> B`,
+and `note for A text` is printed `note for A "text"`. A label that starts with a
+backquote stays as it is, since a quote and a backquote start a markdown string.
+A label between square brackets of a use case is printed without quotes where it
+is words of ASCII letters, digits, and `_` with one space between them:
+`Panel["Display"]` is printed `Panel[Display]`, and `Dash["a-b"]` and
+`Num["Costs 19.95"]` stay. [fixture: quotes/labels-in-quotes] [fixture:
+quotes/labels-as-written] [fixture: quotes/square-bracket-labels]
+
+In the native metadata, a key in quotes and the scalar of a property but `icon`
+are printed without quotes where they are such a word (`"type": "hollow"` is
+printed `type: hollow`), and the scalar of `icon` is printed in quotes where it
+is such a word (`icon: user` is printed `icon: "user"`). A scalar that is not a
+word, such as `"fa:user"`, stays. [fixture: quotes/metadata]
+
+A name or a label that touches a unit in the source is printed in the same way,
+since the printer sets a space or a delimiter between them: `A--important-->B`
+is printed `A -- "important" --> B`, and `actor A@{icon:1}` is printed
+`actor A@{ icon: "1" }`. A name or a label on a line that the printer writes as
+it is, such as one with a `;`, keeps its form. [fixture: quotes/touching-units]
+[fixture: quotes/texts-on-a-kept-line-as-written]
+
+Input
+([quotes/names-without-quotes-input.mmd](../tests/fixtures/usecase/quotes/names-without-quotes-input.mmd)):
+
+```mmd
+usecase-beta
+actor "Alice", "Bob_2"
+"Login" --> "Logout"
+systemBoundary "Sys"
+  "Inner"
+end
+"Alice"@{ icon: "user" }
+Alice --> Inner
+```
+
+Output
+([quotes/names-without-quotes-output.mmd](../tests/fixtures/usecase/quotes/names-without-quotes-output.mmd)):
+
+```mmd
+usecase-beta
+  actor Alice, Bob_2
+  Login --> Logout
+  systemBoundary Sys
+    Inner
+  end
+  Alice@{ icon: "user" }
+  Alice --> Inner
 ```
 
 ### Stereotypes
@@ -268,15 +348,16 @@ empty boundaries and empty quoted names. [fixture:
 system-boundaries/boundary-header-comment-empty] Reuse the heading form of
 [flowchart subgraphs](./flowchart.md#subgraph-header): the opener of the title,
 `[` or `(`, touches the id, so `systemBoundary S [t]` is printed
-`systemBoundary S[t]` and `systemBoundary S (t)` is printed
-`systemBoundary S(t)`. mermaid.js reads the spaced and the touching spellings as
-the same boundary. The spaces and tabs inside the brackets or the parentheses
+`systemBoundary S["t"]` and `systemBoundary S (t)` is printed
+`systemBoundary S("t")`. mermaid.js reads the spaced and the touching spellings
+as the same boundary. The spaces and tabs inside the brackets or the parentheses
 are dropped, since mermaid.js trims them (it keeps a no-break space, which
-stays): `systemBoundary S[ x ]` is printed `systemBoundary S[x]`, and `S("x" )`
-is printed `S("x")`. [fixture: system-boundaries/boundary-title-padding-dropped]
-[fixture: system-boundaries/boundary-title-opener-touches-id] A directive at an
-edge of the title touches the bracket and the title, as the gap has no space
-(`S[ %%{x}%% T ]` is printed `S[%%{x}%%T]`). The padding is dropped on a line
+stays): `systemBoundary S[ x ]` is printed `systemBoundary S["x"]`, and
+`S("x" )` is printed `S("x")`. [fixture:
+system-boundaries/boundary-title-padding-dropped] [fixture:
+system-boundaries/boundary-title-opener-touches-id] A directive at an edge of
+the title touches the bracket and the title, as the gap has no space
+(`S[ %%{x}%% T ]` is printed `S[%%{x}%%"T"]`). The padding is dropped on a line
 with a kept `;` too, apart from the stretch read by the line rule (see
 [Statements and semicolons](#statements-and-semicolons)): dropping it outside
 that stretch moves no `;`, so the line rule selects the same one. `S[ a;b ]` is
@@ -313,7 +394,7 @@ Output
 
 ```mmd
 usecase-beta
-  systemBoundary Box[Display]@{ type: "package" }:::box,group
+  systemBoundary Box["Display"]@{ type: package }:::box,group
     actor User
     A@{ business: true }
   end
@@ -395,10 +476,11 @@ Reuse
 [flowchart's authored edge-label principle](./flowchart.md#link-label-form) and
 tight edge-id attachment: keep split labels with one exterior gap, and print an
 explicit id touching `@` and its opening/sole arrow. Usecase keeps only its
-allowed split halves, written label kinds, empty quoted labels, actor source
-keywords and both endpoint occurrences. Explicit ids remain available to later
-metadata/class/style targets. A pipe or class-style colon label would be another
-grammar, and a chain is never split into valid relationships.
+allowed split halves, markdown labels, empty quoted labels, actor source
+keywords and both endpoint occurrences; a plain label is printed in quotes (see
+[Quotes](#quotes)). Explicit ids remain available to later metadata/class/style
+targets. A pipe or class-style colon label would be another grammar, and a chain
+is never split into valid relationships.
 
 [fixture: relationship-labels-and-ids/split-labels] [fixture:
 relationship-labels-and-ids/edge-id-tight] [fixture:
@@ -415,9 +497,9 @@ Output
 
 ```mmd
 usecase-beta
-  A -- likes --> B
+  A -- "likes" --> B
   B <-- "uses" -- C
-  C o-- part --- D
+  C o-- "part" --- D
   D x-- "`blocks`" ---- E
 ```
 
@@ -425,14 +507,15 @@ usecase-beta
 
 Native metadata is parsed, validated syntax. Format only structural whitespace:
 tight target/`@{`, no gap before a property colon, one after it, comma-space on
-one line and one space inside inline braces, including `@{ }`. Preserve key and
-scalar spelling, quote kinds, integer-looking text, booleans, order, duplicates,
-separate updates, separators and trailing commas. Spelling, order and duplicates
-stay because they can change the final geometry or reject conflicts: reordering
-`U@{icon:'x',icon:''}` to `icon: '', icon: 'x'` changes the final icon, and
-`business: "true"` is rejected where Mermaid requires a boolean. `@{` stays one
-touching opener because `@ {` is rejected, and no newline is inserted inside a
-key, colon and value, because a newline cannot split one property. [fixture:
+one line and one space inside inline braces, including `@{ }`. Preserve
+integer-looking text, booleans, order, duplicates, separate updates, separators
+and trailing commas; the quotes of a key and of a scalar are printed as
+[Quotes](#quotes) says. Order and duplicates stay because they can change the
+final geometry or reject conflicts: reordering `U@{icon:'x',icon:''}` to
+`icon: '', icon: 'x'` changes the final icon, and `business: "true"` is rejected
+where Mermaid requires a boolean. `@{` stays one touching opener because `@ {`
+is rejected, and no newline is inserted inside a key, colon and value, because a
+newline cannot split one property. [fixture:
 native-metadata/metadata-key-multiline-directive] [fixture:
 native-metadata/metadata-scalar-multiline-directive] Neither YAML nor opaque
 flowchart/Agentflow metadata supplies a formatting model here.
@@ -694,11 +777,11 @@ usecase-beta
 ### Notes
 
 Print `note for <target> <label>` with one ordinary gap between parts, keeping
-the target, authored bare/plain/markdown or empty label and note order. This
-reuses the source-value and readable keyword-spacing reasons of
-[class notes](./class.md#whitespace-between-tokens). Forward resolution never
-manufactures an id, position or declaration; inline percent text remains label
-content.
+the target, markdown or empty label and note order; a plain label is printed in
+quotes (see [Quotes](#quotes)). This reuses the source-value and readable
+keyword-spacing reasons of [class notes](./class.md#whitespace-between-tokens).
+Forward resolution never manufactures an id, position or declaration; inline
+percent text remains label content.
 
 [fixture: notes/notes-forms] [fixture: notes/notes-forward] [fixture:
 notes/notes-empty-markdown] [fixture: notes/empty-and-markdown-order]
@@ -713,7 +796,7 @@ Output
 usecase-beta
   A
   note for A "quoted note"
-  note for A bare  note %% literal
+  note for A "bare  note %% literal"
 ```
 
 ### Direction and accessibility
@@ -736,28 +819,39 @@ direction-and-accessibility/a11y-trimmed] [test: usecase: a11y-unicode-exterior]
 Description blocks reuse [class multiline values](./class.md#multi-line-values):
 align body lines one step inside the statement and a separate `}` with the
 statement, including a block whose only content is a comment line. Mermaid
-discards indentation after LF from the description. The directives that end the
-value of an `accTitle` or an `accDescr` are printed as those that end a title
-(see
+discards indentation after LF from the description. Structural indentation keeps
+the same layout with zero width or tabs. [fixture:
+direction-and-accessibility/a11y-closer-aligned] [fixture:
+direction-and-accessibility/a11y-closer-tabs] [fixture:
+direction-and-accessibility/a11y-closer-zero] [fixture:
+direction-and-accessibility/a11y-directive-padding] [fixture:
+direction-and-accessibility/a11y-comment-empty-tabs] The whitespace before the
+`}` is no text, so the `}` stays aligned with the statement in every pass, also
+after a comment line. [fixture:
+direction-and-accessibility/block-comment-line-after-the-text] A block with one
+line of text on a line of its own follows
+[A description block on one line](./compatibility.md#a-description-block-on-one-line)
+too, also where the text has runs of spaces and tabs or a directive follows it.
+[fixture: direction-and-accessibility/block-text-on-its-own-line] [fixture:
+direction-and-accessibility/block-text-on-its-own-line-runs-collapsed] [fixture:
+direction-and-accessibility/block-directive-line-after-the-text]
+
+Blocks on one line follow
+[A description block on one line](./compatibility.md#a-description-block-on-one-line).
+[fixture: direction-and-accessibility/keyword-brace-touching] [fixture:
+direction-and-accessibility/keyword-brace-space] [fixture:
+direction-and-accessibility/keyword-brace-run] [test: accessibility revisions:
+usecase keyword-brace-tab] Empty and whitespace-only interiors print `{}`.
+[fixture: direction-and-accessibility/empty-block-lines] The source retention
+rules for protected common comment regions and semicolon prefixes still take
+priority.
+
+The directives that end the value of an `accTitle` or an `accDescr` are printed
+as those that end a title (see
 [Texts after a keyword that are drawn the same](./compatibility.md#texts-after-a-keyword-that-are-drawn-the-same)):
 `accTitle: Column zero  %%{x}%%  ` and `accTitle: Column zero  %%{x}%%` are both
 printed `accTitle: Column zero %%{x}%%`. [fixture:
-direction-and-accessibility/acctitle-trailing-directive-blanks-dropped] Put one
-space between `accDescr` and `{`, including when they originally touched, so the
-keyword and body opener have a visible boundary, and put the text of a block on
-one line between one space on each side, as `{ a }`. [fixture:
-direction-and-accessibility/keyword-brace-touching] [fixture:
-direction-and-accessibility/keyword-brace-space] [fixture:
-direction-and-accessibility/keyword-brace-run] [test: accessibility revisions:
-usecase keyword-brace-tab] Empty and whitespace-only interiors print `{}`. The
-source retention rules for protected common comment regions and semicolon
-prefixes still take priority. Structural indentation keeps the same layout with
-zero width or tabs. [fixture: direction-and-accessibility/a11y-closer-aligned]
-[fixture: direction-and-accessibility/a11y-closer-tabs] [fixture:
-direction-and-accessibility/a11y-closer-zero] [fixture:
-direction-and-accessibility/a11y-directive-padding]
-
-[fixture: direction-and-accessibility/a11y-comment-empty-tabs]
+direction-and-accessibility/acctitle-trailing-directive-blanks-dropped]
 
 [fixture: direction-and-accessibility/direction-values] [fixture:
 direction-and-accessibility/a11y-padding] [fixture:
@@ -791,7 +885,7 @@ Output
 
 ```mmd
 usecase-beta
-  accDescr { a }
+  accDescr: a
   A[Keyword gap]
 ```
 
@@ -928,7 +1022,7 @@ Output
 
 ```mmd
 usecase-beta
-  VeryLongSourceIdentifier -- a deliberately long label --> VeryLongTargetIdentifier
+  VeryLongSourceIdentifier -- "a deliberately long label" --> VeryLongTargetIdentifier
 ```
 
 ### Trailing whitespace

@@ -55,7 +55,10 @@ Examples of **incorrect** code for this rule:
 %% eslint @mmd-toolkit/treeview-no-duplicate-description: error
 treeView-beta
   accDescr: First
-  accDescr { Second }
+  accDescr {
+    Second
+    Third
+  }
   root/
 ```
 
@@ -64,7 +67,10 @@ Examples of **correct** code for this rule:
 ```mmd
 %% eslint @mmd-toolkit/treeview-no-duplicate-description: error
 treeView-beta
-  accDescr { Second }
+  accDescr {
+    Project files
+    and folders
+  }
   root/
 ```
 

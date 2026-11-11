@@ -319,7 +319,11 @@ export function findDirectionTextLines(
   source: Source,
   statements: readonly GraphStatement[],
 ): ReadonlySet<number> {
-  const { text } = source
+  // mermaid.js takes the directives away before the lexer reads the text, so
+  // a `direction` that a directive splits (`direc%%{init: {}}%%tion RL`) is
+  // read as the direction text. `original` gives the offset in the source of
+  // a character of `text`.
+  const { text, original } = withoutDirectives(source)
   const excluded: Range[] = [
     ...collectDirectionStatementRanges(statements),
     ...source.trivia.map((item) => item.range),
@@ -331,21 +335,64 @@ export function findDirectionTextLines(
   // Keyword hits and excluded ranges advance together, visiting each range
   // once instead of testing all direction statements for every keyword.
   while (index !== -1) {
+    const start = original(index)
     while (
       nextExcluded < excluded.length &&
-      excluded[nextExcluded][0] <= index
+      excluded[nextExcluded][0] <= start
     ) {
       excludedEnd = Math.max(excludedEnd, excluded[nextExcluded][1])
       nextExcluded++
     }
     const valueStart = findDirectionValueStart(text, index + DIRECTION.length)
-    if (valueStart !== -1 && index >= excludedEnd) {
-      lines.add(lineStartOf(source, index))
-      lines.add(lineStartOf(source, valueStart))
+    if (valueStart !== -1 && start >= excludedEnd) {
+      lines.add(lineStartOf(source, start))
+      lines.add(lineStartOf(source, original(valueStart)))
     }
     index = text.indexOf(DIRECTION, index + 1)
   }
   return lines
+}
+
+/**
+ * The text of a source without its directives, and a function that gives the
+ * offset in the source of a character of that text.
+ */
+function withoutDirectives(source: Source): {
+  readonly text: string
+  readonly original: (index: number) => number
+} {
+  const directives = source.trivia.filter((item) => item.type === "Directive")
+  if (directives.length === 0) return { text: source.text, original: (i) => i }
+  const parts: string[] = []
+  // The stretches of the text that stay, with where each starts in the text
+  // without directives and in the source.
+  const stretches: { readonly visible: number; readonly source: number }[] = []
+  let at = 0
+  let visible = 0
+  for (const [from, to] of [
+    ...directives.map((item) => item.range),
+    [source.text.length, source.text.length],
+  ]) {
+    if (from > at) {
+      stretches.push({ visible, source: at })
+      parts.push(source.text.slice(at, from))
+      visible += from - at
+    }
+    at = Math.max(at, to)
+  }
+  return {
+    text: parts.join(""),
+    original: (index) => {
+      let low = 0
+      let high = stretches.length - 1
+      while (low < high) {
+        const middle = (low + high + 1) >> 1
+        if (stretches[middle].visible <= index) low = middle
+        else high = middle - 1
+      }
+      return stretches[low].source + index - stretches[low].visible
+    },
+  }
 }
 
 /**

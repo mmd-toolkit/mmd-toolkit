@@ -52,8 +52,11 @@ stateDiagram-v2
 ```mmd
 %% eslint @mmd-toolkit/state-no-duplicate-description: error
 stateDiagram-v2
-  accDescr { first }
-  accDescr: second
+  accDescr {
+    first
+    second
+  }
+  accDescr: third
   A --> B
 ```
 
@@ -71,9 +74,7 @@ stateDiagram-v2
 %% eslint @mmd-toolkit/state-no-duplicate-description: error
 stateDiagram-v2
   accDescr: first
-  accDescr {
-    first
-  }
+  accDescr: first
   A --> B
 ```
 

@@ -63,14 +63,20 @@ Examples of **correct** code for this rule:
 %% eslint @mmd-toolkit/sequence-no-unclosed-description-block: error
 sequenceDiagram
   A ->> B: x
-  accDescr { y }
+  accDescr {
+    first line
+    second line
+  }
 ```
 
 ```mmd
 %% eslint @mmd-toolkit/sequence-no-unclosed-description-block: error
 sequenceDiagram
   A ->> B: x
-  accDescr { y }
+  accDescr {
+    first line
+    second line
+  }
   B ->> A: z
 ```
 

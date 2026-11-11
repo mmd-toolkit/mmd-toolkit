@@ -52,7 +52,10 @@ Examples of **correct** code for this rule:
 ```mmd
 %% eslint @mmd-toolkit/radar-no-unclosed-description-block: error
 radar-beta
-  accDescr { first }
+  accDescr {
+    first line
+    second line
+  }
   axis A, B, C
   curve sales{1, 2, 3}
 ```
@@ -62,6 +65,7 @@ radar-beta
 radar-beta
   accDescr {
     uses { here
+    and there
   }
   axis A, B, C
   curve sales{1, 2, 3}

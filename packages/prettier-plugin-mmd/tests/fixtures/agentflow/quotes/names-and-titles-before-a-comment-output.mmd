@@ -1,0 +1,14 @@
+agentflow-beta TB
+  flow B
+    A --> B
+  end
+  flow "C" %% note
+    C --> D
+  end
+  flow D%%{init: {}}%%
+    E --> F
+  end
+  connector C1["T"]
+  connector C2["T"] %% note
+  connector C3["T"]%%{init: {}}%%
+  connector C4["T"]

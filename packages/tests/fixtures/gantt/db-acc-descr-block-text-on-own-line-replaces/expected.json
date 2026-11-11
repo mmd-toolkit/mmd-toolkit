@@ -1,0 +1,41 @@
+{
+  "source": {
+    "kind": "authored",
+    "note": "db-from-tree/gantt.md Building the summary from the tree, Accessibility: A description block whose text stands on a line of its own replaces an earlier description line with `second`."
+  },
+  "accepted": true,
+  "diagramType": "gantt",
+  "db": {
+    "dateFormat": "YYYY-MM-DD",
+    "axisFormat": "",
+    "todayMarker": "",
+    "includes": [],
+    "excludes": [],
+    "inclusiveEndDates": false,
+    "weekday": "sunday",
+    "weekend": "saturday",
+    "title": "",
+    "accTitle": "",
+    "accDescr": "second",
+    "sections": [],
+    "tasks": [
+      {
+        "section": "",
+        "raw": {
+          "startTime": {
+            "type": "getStartDate",
+            "startData": "2024-01-06"
+          },
+          "endTime": {
+            "data": "3d"
+          }
+        },
+        "task": "Design ",
+        "classes": [],
+        "id": "task1",
+        "order": 0
+      }
+    ],
+    "links": []
+  }
+}

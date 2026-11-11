@@ -1,0 +1,11 @@
+usecase-beta
+actor Bob(Display B), Carol( Spaced  gap )
+Login(Log in) <<service>>
+Logout[Log out]
+systemBoundary b1(Title)
+end
+systemBoundary b2[Title two]
+end
+Bob -- assoc label --> Login
+Carol -- l --> Logout
+note for Login remember this

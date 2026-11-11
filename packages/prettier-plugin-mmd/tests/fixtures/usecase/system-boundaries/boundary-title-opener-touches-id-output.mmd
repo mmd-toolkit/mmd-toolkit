@@ -1,13 +1,13 @@
 usecase-beta
-  systemBoundary A[t]
+  systemBoundary A["t"]
     T1
   end
-  systemBoundary B(t)
+  systemBoundary B("t")
     T2
   end
-  systemBoundary C[t]@{ type: "package" }:::box
+  systemBoundary C["t"]@{ type: package }:::box
     T3
   end
-  systemBoundary D(t)
+  systemBoundary D("t")
     T4
   end

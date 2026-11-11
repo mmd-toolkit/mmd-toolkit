@@ -25,6 +25,7 @@ import {
   findTokensBetween,
   findTriviaAt,
   findTriviaBetween,
+  isBracketPadding,
   isSpaceOrTab,
   isStructural,
   isWhitespace,
@@ -769,6 +770,15 @@ export function indentDescriptionLines(
       atoms.push(atom)
       continue
     }
+    // The whitespace before the `}` is neither in the text nor in the Db; a
+    // diagram type that makes it a token of its own leaves it out, so that the
+    // `}` is aligned the same in every pass.
+    if (
+      atom.doc === undefined &&
+      atom.end === bodyEnd &&
+      source.text.slice(atom.start, atom.end).trim() === ""
+    )
+      continue
     const trivia = findTriviaBetween(source, atom.start, atom.end)
     let start = atom.start
     for (
@@ -1055,11 +1065,6 @@ function findUncoveredText(
     }
   }
   return runs
-}
-
-/** A space, a tab, or a no-break space: what mermaid.js trims from a label. */
-function isBracketPadding(character: string): boolean {
-  return character === " " || character === "\t" || character === "\u00a0"
 }
 
 /**

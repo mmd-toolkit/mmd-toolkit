@@ -924,13 +924,11 @@ empty-block-unicode] Kept lines and directive interiors retain their authored
 layout. [fixture: accessibility/empty-block-semicolon-kept] [fixture:
 accessibility/empty-block-directive-kept]
 
-For nonempty blocks on one line, the text stands between one space on each side,
-as in the sibling diagrams (see
-[Accessibility lines](./flowchart.md#accessibility-lines)): `{a}`, `{ a }`,
-`{  a  }`, `{  a}`, and `{a  }` all become `{ a }`. [fixture:
-accessibility/block-tight-text] [fixture: accessibility/block-spaced-text]
-[fixture: accessibility/block-padded-text] [fixture:
-accessibility/block-left-padding-only] [fixture:
+Blocks on one line follow
+[A description block on one line](./compatibility.md#a-description-block-on-one-line).
+[fixture: accessibility/block-tight-text] [fixture:
+accessibility/block-spaced-text] [fixture: accessibility/block-padded-text]
+[fixture: accessibility/block-left-padding-only] [fixture:
 accessibility/block-right-padding-only] At the top level, align the body lines
 of a closed description block one step inside its statement: Mermaid discards
 this indentation from the accessibility description. Inside a flow or global
@@ -977,7 +975,7 @@ Output
 
 ```mmd
 agentflow-beta TB
-  accDescr { a }
+  accDescr: a
   A[Block spacing]
 ```
 
@@ -1115,6 +1113,122 @@ them literally in package fixtures.
 
 Input `"agentflow-beta TB\r\nA[\"a\r\n b\"]\r\n"` becomes output
 `"agentflow-beta TB\n  A[\"a\n b\"]\n"`. [test: agentflow: eol-crlf]
+
+### Quotes
+
+The name of a flow and of a connector in quotes is printed without them, under
+the conditions of the name of a subgraph of a flowchart (see
+[Quotes](./flowchart.md#quotes)), as the examples in the documentation of
+mermaid.js write them, 17 and 2 times without quotes and never in quotes (see
+[The quotes of a text](./compatibility.md#the-quotes-of-a-text)):
+`flow "My Flow"` is printed `flow My Flow`, and `connector "Join"` is printed
+`connector Join`. A name that is more than one label (`connector I "" J`) stays
+as written, and so does a name that ends with `direction`, since the lexer reads
+`direction`, white space (a line break too), and `TB`, `BT`, `RL`, `LR`, or `TD`
+as one line (`flow "xdirection"` followed by a line `TB --> B`). [fixture:
+quotes/names-next-to-a-direction-line]
+
+The title of a connector in brackets is printed in quotes, as the examples write
+the 2 titles: `connector C [Merge results]` is printed
+`connector C["Merge results"]`. mermaid.js reads the title in both forms as the
+same text. A title is put in quotes where it starts with a letter or a digit and
+holds ASCII letters, digits, spaces, `_`, `-`, `.`, `,`, `:`, `!`, and `?`, so
+that the padding inside its brackets, which the printer drops, never stands
+before a quote; a title with another character, such as `[a/b]`, `[ /x/ ]`,
+``[`md`]``, and `[日本語]`, stays as written. A title is put in quotes before a
+comment, a `;`, or a directive, which a string does not join:
+`connector C3 [T]%%{init: {}}%%` is printed `connector C3["T"]%%{init: {}}%%`. A
+name that a comment follows keeps its quotes. [fixture:
+quotes/names-without-quotes] [fixture: quotes/names-that-need-quotes] [fixture:
+quotes/connector-titles-in-quotes] [fixture: quotes/connector-titles-as-written]
+[fixture: quotes/names-and-titles-before-a-comment]
+
+The title of a flow, the label of a shape, and the label of a link stay as
+written, although the examples write the titles of the flows in quotes 17 times
+and never without: mermaid.js reads `A["x"]` as a string and `A[x]` as a text,
+and its Db holds the `labelType` `string` for the first and `text` for the
+second, so the two forms are not read the same. [fixture:
+quotes/flow-titles-as-written] [fixture: quotes/labels-as-written]
+
+Input
+([quotes/names-without-quotes-input.mmd](../tests/fixtures/agentflow/quotes/names-without-quotes-input.mmd)):
+
+```mmd
+agentflow-beta TB
+flow "Main"
+A --> B
+end
+flow "My Flow" [T]
+C --> D
+end
+flow "F3"["T"]
+E --> F
+end
+flow "F4"@{ x: 1 }
+G --> H
+end
+connector "Join"
+connector "Join2" ["Merge results"]
+connector "J3"@{ x: 1 }
+flow Already
+I --> J
+end
+```
+
+Output
+([quotes/names-without-quotes-output.mmd](../tests/fixtures/agentflow/quotes/names-without-quotes-output.mmd)):
+
+```mmd
+agentflow-beta TB
+  flow Main
+    A --> B
+  end
+  flow My Flow[T]
+    C --> D
+  end
+  flow F3["T"]
+    E --> F
+  end
+  flow F4@{ x: 1 }
+    G --> H
+  end
+  connector Join
+  connector Join2["Merge results"]
+  connector J3@{ x: 1 }
+  flow Already
+    I --> J
+  end
+```
+
+Input
+([quotes/connector-titles-in-quotes-input.mmd](../tests/fixtures/agentflow/quotes/connector-titles-in-quotes-input.mmd)):
+
+```mmd
+agentflow-beta TB
+connector C1 [Merge results]
+connector C2 [ Padded ]
+connector C3 [x-y]
+connector C4 [A,b: c!]
+connector C5 [1.5]
+connector C6[Touching]
+connector C7 ["Already"]
+connector C8 [Done?]@{ x: 1 }
+```
+
+Output
+([quotes/connector-titles-in-quotes-output.mmd](../tests/fixtures/agentflow/quotes/connector-titles-in-quotes-output.mmd)):
+
+```mmd
+agentflow-beta TB
+  connector C1["Merge results"]
+  connector C2["Padded"]
+  connector C3["x-y"]
+  connector C4["A,b: c!"]
+  connector C5["1.5"]
+  connector C6["Touching"]
+  connector C7["Already"]
+  connector C8["Done?"]@{ x: 1 }
+```
 
 ### Frontmatter YAML
 

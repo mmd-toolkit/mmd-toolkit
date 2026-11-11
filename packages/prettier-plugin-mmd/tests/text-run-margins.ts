@@ -99,6 +99,7 @@ const textRunPaths: ReadonlyMap<string, ReadonlySet<string>> = new Map([
     "requirement",
     new Set([
       "accDescr",
+      "elements.docRef",
       "elements.type",
       "requirements.classes",
       "requirements.requirementId",
@@ -117,6 +118,9 @@ const textRunPaths: ReadonlyMap<string, ReadonlySet<string>> = new Map([
     ]),
   ],
   ["stateDiagram", new Set(["accDescr"])],
+  // A swimlane diagram has the grammar of a flowchart, but the title of a
+  // subgraph keeps its runs (docs/flowchart.md, Subgraph header).
+  ["swimlane", new Set(["accDescr"])],
   ["timeline", new Set(["accDescr", "title"])],
   [
     "treemap",

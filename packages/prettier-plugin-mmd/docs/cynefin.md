@@ -502,16 +502,16 @@ cynefin-beta
 
 ### Description blocks
 
-Route accDescr blocks through the shared description layout. Whitespace-only
-interiors become `{}`. Separate the keyword and opening brace with one space so
-the block boundary is clear; text on one line stands between one space on each
-side, whether it touched the braces or not. Join plain opener whitespace and
-align a separate closer with the statement. Ordinary description body and
-standalone comment lines align one level inside it, since the Db removes
-indentation after LF. Keep line breaks, internal blanks and trailing whitespace.
-Directives and shared removed comment regions keep their complete source.
-Comments/directives inside empty blocks retain their shared layout. No content
-needs surrounding padding, and native-looking text inside a value remains value
+Description blocks on one line follow
+[A description block on one line](./compatibility.md#a-description-block-on-one-line).
+Whitespace-only interiors become `{}`. For blocks that keep their braces,
+separate the keyword and opening brace with one space so the block boundary is
+clear. Join plain opener whitespace and align a separate closer with the
+statement. Ordinary description body and standalone comment lines align one
+level inside it, since the Db removes indentation after LF. Keep line breaks,
+internal blanks and trailing whitespace. Directives and shared removed comment
+regions keep their complete source. Comments/directives inside empty blocks
+retain their shared layout. Native-looking text inside a value remains value
 text.
 
 [fixture: cynefin/description-blocks/description-empty]
@@ -921,7 +921,7 @@ cynefin-beta
   complex
     "StructuralTail"
   clear --> chaotic
-  accDescr { Done }
+  accDescr: Done
 ```
 
 ### Semicolons

@@ -235,10 +235,13 @@ architecture-beta
 
 ### Label forms
 
-Keep the whole ArchitectureLabel range and its authored bare/quoted form and
-quote spelling. `[ "x" ]` is bare, not a quoted label to compact. Even Db-equal
-requoting would lose the chosen kind and source form. Fallback quote-looking
-text stays bare; never infer kind from converted text.
+Keep the whole ArchitectureLabel range and its quote spelling, except that a
+label in quotes is printed without them where it is plain (see
+[Quotes](#quotes)). A label with padding before its quote (`[ "x" ]`) is a bare
+label in the tree, whose text holds the quote, but mermaid.js trims the padding
+and takes the quote off, so it reads `x` as it reads `["x"]` and `[x]`: it is
+printed like a label in quotes, `service padded [ "x" ]` as `service padded[x]`.
+Fallback quote-looking text stays bare; never infer kind from converted text.
 
 [fixture: architecture/label-forms/backslash-fallback]
 
@@ -289,7 +292,49 @@ Output
 
 ```mmd
 architecture-beta
-  service padded["x"]
+  service padded[x]
+```
+
+### Quotes
+
+A label in quotes is printed without them where it is plain, as the examples in
+the documentation of mermaid.js write it (see
+[The quotes of a text](./compatibility.md#the-quotes-of-a-text)):
+`group api(cloud)["API Group"]` is printed `group api(cloud)[API Group]`, and
+`service s(server)['Plain Single']` is printed
+`service s(server)[Plain Single]`. A label is plain where it is ASCII letters,
+digits, `_`, and spaces, with no space at its ends: the grammars of 11.13.0 to
+11.16.1, which read a label in quotes, read a label without quotes of these
+characters only, so `"a-b"`, `"A.B"`, `"日本語"`, `"a[b"`, the empty label, and
+a label with padding inside the quotes (`[" padded "]`) keep their quotes. So do
+a backslash and a quote: mermaid.js takes one pair of outer quotes, `"` or `'`,
+off the title that it reads, and turns `\"` and `\'` into `"` and `'` only in a
+title that had them, so `"a\"b"` printed `a\"b`, and `"'x'"` printed `'x'`,
+would be read as other titles. A label without quotes is never put in quotes.
+[fixture: quotes/labels-without-quotes] [fixture:
+quotes/labels-that-need-quotes] [fixture:
+quotes/labels-with-runs-without-quotes]
+
+Input
+([quotes/labels-without-quotes-input.mmd](../tests/fixtures/architecture/quotes/labels-without-quotes-input.mmd)):
+
+```mmd
+architecture-beta
+group api(cloud)["API Group"]
+service db(database)["Database_1"] in api
+service s(server)['Plain Single']
+service t(server)[Already bare]
+```
+
+Output
+([quotes/labels-without-quotes-output.mmd](../tests/fixtures/architecture/quotes/labels-without-quotes-output.mmd)):
+
+```mmd
+architecture-beta
+  group api(cloud)[API Group]
+  service db(database)[Database_1] in api
+  service s(server)[Plain Single]
+  service t(server)[Already bare]
 ```
 
 ### Label content
@@ -618,16 +663,17 @@ architecture-beta
 
 ### Description blocks
 
-Reuse shared `layoutDescriptionBlock`: separate the keyword and opening brace
-with one space so the block boundary is clear. Text on one line stands between
-one space on each side, whether it touched the braces or not. Whitespace-only
-interiors become `{}` because no text needs surrounding space. Plain opener
-whitespace can join; real trivia keeps its break. Keep comment/directive-only
-interiors. Ordinary description body and standalone comment lines align one
-level inside the statement, since the Db removes indentation after LF. Keep line
-breaks, internal blank lines and trailing whitespace. Directives and shared
-removed comment regions keep their complete source. A separate closer aligns
-with the statement; the first closing brace still ends the value.
+Description blocks on one line follow
+[A description block on one line](./compatibility.md#a-description-block-on-one-line).
+For blocks that keep their braces, separate the keyword and opening brace with
+one space so the block boundary is clear. Whitespace-only interiors become `{}`
+because no text needs surrounding space. Plain opener whitespace can join; real
+trivia keeps its break. Keep comment/directive-only interiors. Ordinary
+description body and standalone comment lines align one level inside the
+statement, since the Db removes indentation after LF. Keep line breaks, internal
+blank lines and trailing whitespace. Directives and shared removed comment
+regions keep their complete source. A separate closer aligns with the statement;
+the first closing brace still ends the value.
 
 [fixture: architecture/description-blocks/asymmetric]
 
@@ -669,10 +715,10 @@ Output
 
 ```mmd
 architecture-beta
-  accDescr { A }
-  accDescr { B }
-  accDescr { C }
-  accDescr { D }
+  accDescr: A
+  accDescr: B
+  accDescr: C
+  accDescr: D
 ```
 
 ### Multiline values
@@ -1014,7 +1060,7 @@ architecture-beta
   junction j
   a:R -- L:j
   align row a j
-  accDescr { D }
+  accDescr: D
 ```
 
 ### Frontmatter yaml
@@ -1293,7 +1339,7 @@ architecture-beta
   title
   accTitle: First
   accTitle:
-  accDescr { First }
+  accDescr: First
   accDescr {}
 ```
 

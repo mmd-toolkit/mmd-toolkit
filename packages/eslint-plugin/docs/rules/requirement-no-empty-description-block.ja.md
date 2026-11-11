@@ -67,9 +67,9 @@ requirementDiagram
 ```mmd
 %% eslint @mmd-toolkit/requirement-no-empty-description-block: error
 requirementDiagram
-  accDescr { y }
-  requirement r {
-    id: 1
+  accDescr {
+    line 1
+    line 2
   }
 ```
 

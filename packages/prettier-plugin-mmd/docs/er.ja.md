@@ -438,7 +438,7 @@ E }|..|{ F : "z" G
 erDiagram
   A ||--o{ B : x
   C ||--o{ D : y
-  E }|..|{ F : "z"
+  E }|..|{ F : z
   G
 ```
 
@@ -578,7 +578,7 @@ A ||--u-B : x
 erDiagram
   A:::c
   p[P]
-  accDescr { D }
+  accDescr: D
   A ||--u-B : x
   1 ||--|| B : x
 ```
@@ -618,7 +618,7 @@ erDiagram
   direction LR
   ACCTITLE: T
   ACCDESCR: D
-  ACCDESCR { D }
+  ACCDESCR: D
   A }|--o{ B : x
   A {
     int a PK
@@ -779,7 +779,18 @@ erDiagram
 [fixture: entities/classes-tight] [fixture: entities/alias-and-classes]
 属性ブロックの `{` は空白 1
 つの後に置きます（[属性ブロック](#属性ブロック)を参照）。
-名前は、引用符の有無も数も含めて、書かれたまま残します。
+引用符で囲まれた名前、役割、subgraph の id が平易な 1 語なら、
+mermaid.js の文書の例に合わせて引用符なしで印字します。
+[テキストの引用符](./compatibility.ja.md#テキストの引用符) を参照してください。
+`"A"[B]` は `A[B]` に、`C ||--o{ D : "has"` は `C ||--o{ D : has` にします。
+ほかの名前は、引用符の有無も数も含めて、書かれたまま残します。
+`direction` で終わる名前と、`TB`、`BT`、`RL`、`LR` で始まる名前も、
+大文字小文字を問わず書かれたまま残します。
+字句解析器は、`direction`、空白（改行も含みます）、向きの名前を 1 行として読み、
+引用符を外した名前は、前の行か後の行と結ばれるためです。
+[fixture: entities/plain-names-without-quotes]
+[fixture: entities/names-that-need-quotes]
+[fixture: entities/names-next-to-a-direction-line]
 [fixture: entities/names-kept]
 実体の部分の間にあるディレクティブは、
 [ディレクティブ](#ディレクティブ)のとおりに置きます。
@@ -810,7 +821,7 @@ erDiagram
     int a
   }
   12[P]
-  "A"[B]
+  A[B]
   p[Person]
 ```
 
@@ -1156,11 +1167,13 @@ subgraph 内では、生の説明がその所属の読みにも使われるた�
 本文の元の列を保ちます。
 [corpus fixture: er/db-subgraph-nodes-acc-descr-block-lines]
 `}` は文と同じ段に置きます。
-`{` の行にあるテキストは、括弧に接して書かれていても、
-波括弧の内側に空白を 1 つずつ置きます。
 [fixture: accessibility-statements/block-lines-kept]
 [fixture: accessibility-statements/block-comment-and-empty-lines-kept]
+
+1 行のブロックは、
+[1 行の説明ブロック](./compatibility.ja.md#1-行の説明ブロック) に従います。
 [fixture: accessibility-statements/block-text-on-opening-line]
+
 空のブロックは文の 1 つで、前の説明を Db に残します。
 内側は `{}` と印字し、`accDescr { }` は `accDescr {}` になります。
 空白の連続、改行、NBSP だけの内側も同じです。
@@ -1199,6 +1212,10 @@ subgraph の中でも 1 桁目を保ちます（diagrams/er.md、方向の行）
 字句解析器がそれらなしにテキストを読むので、飛ばし（diagrams/er.md、
 単位の間のトリビア）、空行も同じです。
 方向が続かなければ、その文はほかの文と同じに字下げします。
+行全体で判断します。
+同じ行にほかの文が続く場合（`accDescr {x}; accDescr {direction RL}`）も、
+字句解析器は行頭から行全体を読むので、その文にある `direction` も数えます。
+[fixture: accessibility-statements/semicolon-line-with-direction-text-first-column]
 [fixture: accessibility-statements/first-column-for-direction-text]
 [fixture: accessibility-statements/first-column-direction-case-insensitive]
 [fixture: accessibility-statements/first-column-value-touching-text]
@@ -1272,9 +1289,7 @@ erDiagram
     two
   }
   subgraph S
-    accDescr {
-  three
-    }
+    accDescr: three
   end
 ```
 
@@ -1299,7 +1314,7 @@ end
 erDiagram
 accTitle: direction LR
 accDescr: a direction TB
-accDescr { direction RL }
+accDescr: direction RL
   subgraph S
 accTitle: direction BT
     A

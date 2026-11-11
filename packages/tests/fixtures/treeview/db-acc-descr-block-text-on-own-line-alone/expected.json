@@ -1,0 +1,19 @@
+{
+  "source": {
+    "kind": "authored",
+    "note": "treeview.md Authored occurrences, configuration and normalization; db-summaries.md treeview: a description block whose text stands on a line of its own publishes the description `Project files`."
+  },
+  "accepted": true,
+  "diagramType": "treeView",
+  "db": {
+    "accTitle": "",
+    "accDescr": "Project files",
+    "nodes": [
+      {
+        "name": "root",
+        "nodeType": "directory",
+        "children": []
+      }
+    ]
+  }
+}

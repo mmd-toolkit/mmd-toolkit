@@ -181,9 +181,11 @@ info
 
 ### Description blocks
 
+1 行の説明ブロックは、
+[1 行の説明ブロック](./compatibility.ja.md#1-行の説明ブロック) に従います。
+波括弧を残すブロックは、
 [共有の description 配置](./pie.ja.md#description-blocks)を使います。
-ブロックの境界がわかるよう、keyword と opener の間に空白を1個置きます。
-1 行のテキストは、括弧に接して書かれていても、両側に空白を 1 つずつ置きます。
+ブロックの境界がわかるよう、キーワードと開始波括弧の間に空白を 1 つ置きます。
 通常の opener 空白は物理改行や Unicode 境界を越えて結合します。
 実際の opener trivia は改行を保ち、共有の継続字下げを使います。
 空白だけの block は、囲む本文がないため `{}` にします。
@@ -219,10 +221,10 @@ directive と共有の除去対象となるコメント領域は原文全体を�
 
 ```mmd
 info
-  accDescr { D }
-  accDescr { D }
-  accDescr { D }
-  accDescr { D }
+  accDescr: D
+  accDescr: D
+  accDescr: D
+  accDescr: D
 ```
 
 ### Authored values
@@ -466,7 +468,7 @@ info の Db が空でも init は設定を変えうるためです。
 ```mmd
 info
   accTitle%%{wrap}%%: Access
-  accDescr %%{wrap}%%{ D }
+  accDescr%%{wrap}%%: D
 ```
 
 ### Semicolons
@@ -601,7 +603,7 @@ hidden の閉じの padding は EOF でも保持します。
 
 ```mmd
 info showInfo
-  accDescr { D }
+  accDescr: D
 ```
 
 ### Frontmatter yaml

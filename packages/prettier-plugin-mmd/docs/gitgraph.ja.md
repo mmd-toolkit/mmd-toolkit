@@ -263,10 +263,21 @@ gitGraph
 
 ### References
 
-branch・checkout・merge の Identifier と、StringLiteral の書き方を保持します。
+branch・checkout・merge の引用符で囲んだ参照は、
+字句解析器が引用符なしでも全体を読む場合、
+mermaid.js の文書の例と同じく引用符なしで印字します。
+（[テキストの引用符](./compatibility.ja.md#テキストの引用符)を参照）。
+`branch "dev"` は `branch dev` と印字します。
+引用符なしで読める参照は、ASCII の英字、数字、`_` と、その間の `-`、`.`、
+`/` からなり、ASCII の英字か `_` で始まるものです。
+ただし、語の一部でない文字の前で、
+字句解析器が独立した単位として読む語（`commit`、`branch`、`merge`、`LR`、
+`NORMAL` などで、大文字小文字は問いません）か、`title` で始まる参照を除きます。
+ほかの参照は引用符を残します。
 文字列は Quotes のとおり `"` で囲んで印字します。
 空・空白のみ・Unicode・予約語・数字風の引用名もそのままです。
-木が形を区別しているので、printer が引用符の除去を判断しません。
+[fixture: references/plain-names-without-quotes]
+[fixture: references/names-that-need-quotes]
 
 固定例: [fixture: gitgraph/references/reference-forms]
 [corpus fixture: gitgraph/lex-reference-reserved-quoted]
@@ -424,10 +435,12 @@ gitGraph
 題の終わりのディレクティブと同じように印字します。
 （[同じに描かれるキーワードの後のテキスト](./compatibility.ja.md#同じに描かれるキーワードの後のテキスト)）。
 [fixture: title-and-common-values/acc-directives-end-blanks-dropped]
-通常の gap では、
+
+1 行の説明ブロックは、
+[1 行の説明ブロック](./compatibility.ja.md#1-行の説明ブロック) に従います。
+波括弧を残すブロックは、通常の gap では、
 接して書かれていても `accDescr` と `{` の間に空白 1 つを置きます。
 保護対象の trivia やセミコロンの配置では、その gap を保ちます。
-1 行のテキストは、括弧に接して書かれていても、両側に空白を 1 つずつ置きます。
 別行の閉じは文に揃えます。
 通常の説明本文と独立したコメント行は、文より1段内側に揃えます。
 Db で LF 後の字下げが取り除かれるためです。
@@ -769,7 +782,7 @@ hidden の閉じの padding は必要な EOL を可視に保つため、EOF で�
 gitGraph
   commit id: "A"
   branch b order: 2
-  accDescr { D }
+  accDescr: D
 ```
 
 ### Line terminators and unicode

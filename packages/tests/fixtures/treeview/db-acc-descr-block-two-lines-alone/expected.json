@@ -1,0 +1,19 @@
+{
+  "source": {
+    "kind": "authored",
+    "note": "db-from-tree/treeview.md Building the summary, step 2: a description block is read with each of its lines trimmed and one line feed kept between them, so a block with two lines of text gives the description `Project files\\nand folders`."
+  },
+  "accepted": true,
+  "diagramType": "treeView",
+  "db": {
+    "accTitle": "",
+    "accDescr": "Project files\nand folders",
+    "nodes": [
+      {
+        "name": "root",
+        "nodeType": "directory",
+        "children": []
+      }
+    ]
+  }
+}

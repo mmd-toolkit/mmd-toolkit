@@ -1011,6 +1011,7 @@ railroad 図の文字列と special sequence です。
 [fixture: radar/quotes/whitespace-only-labels]
 [fixture: treemap/names/whitespace]
 [fixture: c4/argument-forms/text-places-element-runs-collapsed]
+[fixture: flowchart/accessibility-lines/swimlane-description-runs-collapsed]
 
 次のものは、書かれたまま残します。
 
@@ -1269,7 +1270,9 @@ SVG と画素を比べてから、例外を残します。
 mermaid.js は、トークンの異なる綴りの一部を同じトークンとして読み、
 そこから同じ図を描きます。
 キーワードの別の大文字小文字、`"` の代わりに `'` で囲む文字列、
-末尾にゼロを付けた数、ER 図の関係の記号の代わりの語です。
+末尾にゼロを付けた数、ER 図の関係の記号の代わりの語、
+コロンの後の代わりに 1 行のブロックに書くアクセシビリティの説明、
+引用符なしの代わりに引用符で囲むテキストです。
 印字は、そのような綴りを 1 つの形にします。
 トークンの間の空白は、
 ほかの図種が同じ種類の隙間に印字する形にします（上の各節を参照してください）。
@@ -1315,18 +1318,47 @@ mermaid.js は Db から描くので、同じ Db が同じ描画の根拠です�
 そのテキストを 2 回描いてもすでに異なる対は数えませんでした。
 以下の種類は、例と、Db だけを比べる適合性コーパスの入力で比較しました。
 
-| 種類                     |  例 | 同じ Db と描画 | コーパス | 同じ Db |
-| ------------------------ | --: | -------------: | -------: | ------: |
-| ER 図の関係              |   4 |              4 |       66 |      66 |
-| C4 の `Rel_Up` など      |   1 |              1 |        7 |       7 |
-| EBNF 記法の `::=`        |   9 |              9 |       91 |      91 |
-| 両端が同じ packet の範囲 |   2 |              2 |      133 |     131 |
-| ヘッダーのコロン（除去） |   6 |              6 |      646 |     643 |
-| ヘッダーのコロン（改行） |   0 |              0 |       22 |      21 |
-| リンクのラベル           |  19 |             19 |      170 |     162 |
+| 種類                            |  例 | 同じ Db と描画 | コーパス | 同じ Db |
+| ------------------------------- | --: | -------------: | -------: | ------: |
+| ER 図の関係                     |   4 |              4 |       66 |      66 |
+| C4 の `Rel_Up` など             |   1 |              1 |        7 |       7 |
+| EBNF 記法の `::=`               |   9 |              9 |       91 |      91 |
+| 両端が同じ packet の範囲        |   2 |              2 |      133 |     131 |
+| ヘッダーのコロン（除去）        |   6 |              6 |      646 |     643 |
+| ヘッダーのコロン（改行）        |   0 |              0 |       22 |      21 |
+| リンクのラベル                  |  19 |             19 |      170 |     162 |
+| 1 行の説明ブロック              |   3 |              3 |      533 |     483 |
+| sankey の欄の引用符             |   6 |              6 |       11 |      11 |
+| ER の名前の引用符               |   0 |              0 |       15 |      15 |
+| requirement の名前の引用符      |   0 |              0 |       12 |      12 |
+| Wardley マップの名前の引用符    |   0 |              0 |       35 |      35 |
+| gitGraph のブランチの引用符     |   0 |              0 |        2 |       2 |
+| 象限チャートのテキストの引用符  |   0 |              0 |       19 |      13 |
+| XY チャートのテキストの引用符   |   0 |              0 |      191 |     191 |
+| Venn の名前やラベルの引用符     |   0 |              0 |      176 |     174 |
+| use case の名前やラベルの引用符 |   0 |              0 |       93 |      90 |
+| architecture のラベルの引用符   |   0 |              0 |        2 |       2 |
+| mindmap の形のテキストの引用符  |   0 |              0 |        7 |       7 |
+| kanban の形のテキストの引用符   |   0 |              0 |      114 |     114 |
+| C4 の引数の引用符               |   0 |              0 |       67 |      65 |
+| 見出しの名前の引用符            |   0 |              0 |       11 |      11 |
+| agentflow の名前の引用符        |   0 |              0 |       26 |      24 |
+| class の名前の引用符            |   0 |              0 |        7 |       7 |
 
 最後の列に数えないコーパスの対は、mermaid.js が別の綴りを拒否する対です。
 ただし、リンクのラベルの 2 対は例外で、ラベルに `%%` があり、Db が異なります。
+説明ブロックの 37 対も例外で、
+mermaid.js は両方の綴りを拒否します（既知の相違 `c4-keyword-anywhere`）。
+XY チャートの 4 対も、
+両方を拒否します（既知の相違 `title-digit-after-axis-statement`）。
+説明ブロックの 9 対は、タイトル、説明、スタイルの空白で Db が異なります。
+[同じに描かれるテキスト中の空白の連なり](#同じに描かれるテキスト中の空白の連なり)
+と、[同じに描かれるスタイル](#同じに描かれるスタイル)を参照してください。
+象限チャートの 6 対は、テキスト内にタブがあります（同じ節を参照してください）。
+Venn のラベルの 2 対も、空白やタブの連なりで Db が異なります。
+（[同じに描かれるテキスト中の空白の連なり](#同じに描かれるテキスト中の空白の連なり)）。
+use case 図の 3 対と agentflow 図の 2 対は、スタイルの空白で Db が異なります。
+C4 図の 2 対は、テキスト中の空白やタブの連なりで Db が異なります。
 印字は、hidden YAML ブロックに隣接する packet 図の範囲、
 `;` や hidden YAML ブロックの `---` が接するコロン、
 `%%` を含むリンクのラベルを書き換えません。
@@ -1634,6 +1666,758 @@ flowchart は最初の形が 14 個、もう一方が 8 個で、2 倍以上で�
 [fixture: flowchart/link-label-form/flowchart-header-both-forms-kept]
 [fixture: flowchart/link-label-form/kept]
 
+### 1 行の説明ブロック
+
+mermaid.js は、`accDescr {text}` と `accDescr: text` を、
+両端の空白を除いた同じアクセシビリティの説明として読み、同じ図を描きます。
+（[flowchart の文法](https://github.com/mermaid-js/mermaid/blob/2086904e76c692331e34a45d7cc3bc30860d040e/packages/mermaid/src/diagrams/flowchart/parser/flow.jison#L33-L37)
+には両方の形の規則があり、
+どちらも
+[両端の空白を除きます](https://github.com/mermaid-js/mermaid/blob/2086904e76c692331e34a45d7cc3bc30860d040e/packages/mermaid/src/diagrams/flowchart/parser/flow.jison#L390-L391)）。
+例は、コロンの後の説明を 3 回（swimlane 図 1 つと状態遷移図 2 つ）、
+複数行のブロックを 2 回（ユースケース図 2 つ）書き、1 行のブロックは書きません。
+本文のあるブロックを受理するすべての図種は、コロンの形も受理し、
+文はどの図種でも同じなので、文字列や数と同じく、例を合わせて数えます。
+これには 3 つの図種を含めません。
+ブロック図は空のブロックだけを受理し、ishikawa 図は両方の形をノードとして読み、
+説明に本文を与えず、イベントモデリング図はトークンを書かれたまま格納するため、
+説明が一方では ` accDescr {a}`、他方では ` accDescr: a` になります。
+本文が 1 行のブロックは、コロンの形で独立した行に印字します。
+`accDescr {a}`、`accDescr { a }`、`accDescr{ a }` は、`accDescr: a` になります。
+キーワードと `{` の間は、改行を含めてどの空白でもよく、
+本文と波かっこの間も同じです。
+`accDescr {`、`a`、`}` を 3 行に書いたものも、`accDescr: a` になります。
+`}` の後の `;` は、文を区切るほかの `;` と同じく除きます。
+本文は `{`、`:`、`#`、ディレクティブと、
+改行でない任意の空白文字（ノーブレークスペース、U+3000、垂直タブ、改ページ、
+U+FEFF、U+2028、U+2029）を含んでよく、本文の空白とタブの連なりは、
+[同じに描かれるテキスト中の空白の連なり](#同じに描かれるテキスト中の空白の連なり)
+の規則で印字します。
+ディレクティブはその位置に残し、ブロックは、
+同じ本文をコロンの形で書いた場合と同じに印字します。
+本文の後の、波かっこの内側か `}` の後にあるディレクティブと、
+同じ行で文の前にあるディレクティブは、原文で直前に空白がある場合は、
+その前に空白を 1 つ置きます。
+`{` の前か `{` と本文の間のディレクティブには、
+その図種のコロンの形がディレクティブの隣に印字する空白を置きます。
+この空白は図種によって異なります。
+`accDescr { %%{init: {}}%% a }` は、agentflow、C4、class、ER、flowchart、Gantt、
+ユーザージャーニー、quadrant、requirement、sequence、state、swimlane、timeline、
+XY チャートの図（14 図種）では、`accDescr: %%{init: {}}%%a` と印字し、
+architecture、cynefin、gitGraph、info、packet、pie、radar、railroad、treemap、
+treeView、ユースケース、wardley の図（残りの 12 図種）では、
+`accDescr: %%{init: {}}%% a` と印字します。
+`accDescr %%{init: {}}%% {c}` は、flowchart、agentflow、swimlane の図では、
+`accDescr %%{init: {}}%%: c`、
+ほかの 23 図種では `accDescr%%{init: {}}%%: c` と印字します。
+どれも、同じ本文をコロンの形で書いた場合の出力です。
+[fixture: class/multi-line-values/block-with-directive-before-the-text]
+[fixture: class/multi-line-values/colon-with-directive-before-the-text]
+[fixture: pie/accessibility-lines/block-with-directive-before-the-text]
+[fixture: pie/accessibility-lines/colon-with-directive-before-the-text]
+[fixture: flowchart/accessibility-lines/block-with-directive-before-the-text]
+[fixture: flowchart/accessibility-lines/colon-with-directive-before-the-text]
+[fixture: flowchart/accessibility-lines/block-tight-text]
+[fixture: flowchart/accessibility-lines/block-spaced-text]
+[fixture: flowchart/accessibility-lines/block-left-padding-only]
+[fixture: flowchart/accessibility-lines/block-right-padding-only]
+[fixture: flowchart/accessibility-lines/block-text-with-semicolons-padded]
+[fixture: flowchart/accessibility-lines/block-text-starts-with-brace]
+[fixture: flowchart/accessibility-lines/block-text-with-colon-and-hash]
+[fixture: flowchart/accessibility-lines/block-runs-collapsed]
+[fixture: flowchart/accessibility-lines/block-text-with-line-break-before-the-brace]
+[fixture: flowchart/accessibility-lines/block-directive-inside-text]
+[fixture: flowchart/accessibility-lines/block-text-beside-directive]
+[fixture: pie/description-blocks/block-asymmetric]
+[fixture: pie/description-blocks/block-keyword-tab]
+[fixture: pie/description-blocks/block-opener-newline]
+[fixture: pie/description-blocks/block-text-on-its-own-line]
+[fixture: pie/description-blocks/block-with-directive-after-the-text]
+[fixture: usecase/direction-and-accessibility/block-text-on-its-own-line]
+[fixture: sequence/multi-line-values/accdescr-block-closing-brace-after-text]
+[fixture: c4/description-blocks/opener-whitespace-dropped]
+[fixture: c4/description-blocks/block-after-directive]
+[fixture: treemap/description-blocks/block-after-directive]
+[fixture: treeview/description-blocks/block-after-directive]
+[test: U+2028 between the keyword and the brace of a flowchart description block]
+[test: a no-break space inside the text of a flowchart description block]
+[test: U+3000 inside the text of a flowchart description block]
+[test: a vertical tab inside the text of a flowchart description block]
+[test: a form feed inside the text of a flowchart description block]
+[test: U+FEFF inside the text of a flowchart description block]
+[test: U+2028 in the text of a flowchart description block]
+[test: U+2029 in the text of a flowchart description block]
+[test: U+2028 before the text of a flowchart description block]
+[test: U+2028 after the text of a flowchart description block]
+
+後の箇条書きで述べるとおり、コロンの形の本文を `%%` の前で終える図種では、
+`}` の後のコメントは本文の後に残します。
+同じ行でブロックの後に続く文は、その行が文を同じ行に保つ行でなければ、
+ほかの文と同じく独立した行に移します。
+`accDescr { %%{init: {}}%% a } A` は、
+`accDescr: %%{init: {}}%%a` と `A` の 2 行になります。
+文を同じ行に保つ行のブロックは、その行の最後の文で、後ろに空白、コメント、
+ディレクティブだけが続く場合に、コロンの形で印字します。
+`A --> B; accDescr {a;b}` は `A --> B; accDescr: a;b` になり、
+C4 図で空のブロックの後にあるブロック `accDescr {}accDescr {D}` は、
+`accDescr {}accDescr: D` になります。
+枝の文字で描く treeView 図（箱）では、
+キーワードの前とキーワードと `{` の間の描画の文字は、印字せずに描き直すため、
+それらの文字があることは、ブロックを残す理由になりません。
+[fixture: flowchart/accessibility-lines/block-last-on-a-line-with-a-semicolon]
+[fixture: flowchart/accessibility-lines/block-text-with-semicolon]
+[fixture: c4/description-blocks/block-after-an-empty-block]
+[fixture: treeview/modes/ordinary-block]
+[fixture: treeview/modes/box-common-block-zero-column]
+[fixture: treeview/description-blocks/box-redraw-remove-opener-prefixes]
+[fixture: flowchart/accessibility-lines/block-with-directive-before-the-text-then-statement]
+[fixture: usecase/direction-and-accessibility/block-text-on-its-own-line-runs-collapsed]
+[fixture: treeview/description-blocks/block-text-on-its-own-line-runs-collapsed]
+[fixture: usecase/direction-and-accessibility/block-directive-line-after-the-text]
+[test: accessibility blocks: pie brace-after-ls-direction-converted]
+
+コロンの形ではブロックの内容を保てないか、ブロックと同じに読まれない場合は、
+ブロックを書かれたまま残します。
+
+- 本文が複数行にまたがる場合です。
+  コロンの形は 1 行だからです。
+  [fixture: er/accessibility-statements/block-lines-kept]
+  [fixture: pie/description-blocks/block-inline-leading-lines]
+  [fixture: pie/description-blocks/block-columns]
+- `direction` を含む行を図の方向として読む図種（flowchart、swimlane、agentflow、
+  class、state、ER、requirement、C4、ユースケースの図）で、
+  本文の `direction` にその規則が届かない場合です。
+  字句解析器は、行の先頭から `.*direction\s+RL[^\n]*` で行を読み、
+  この規則は行終端（LF、CR、U+2028、U+2029）を越えては届きません。
+  キーワードの後か `}` の前に行終端があるブロックも、
+  語 `direction` がディレクティブで分割されているブロックも、
+  説明は `direction RL` です（mermaid.js
+  は行を読む前にディレクティブを除きます）。
+  コロンの形は、本文をキーワードの行に置きます。
+  class 図、state 図、C4 図では、この規則が `accDescr` より前にあるため、
+  `accDescr: direction RL` は方向を設定し、説明が空になるか、
+  C4 図では拒否されます。
+  flowchart、agentflow 図、ER 図、requirement 図では、
+  この規則が `accDescr` より後にあるため、
+  `accDescr: direction RL` は行頭では説明で、
+  行を字下げすると方向の行になります。
+  印字は、本文の文を字下げします。
+  [fixture: class/multi-line-values/block-direction-on-its-own-line-kept]
+  [fixture: class/multi-line-values/block-brace-on-the-next-line-direction-kept]
+  [fixture: state/multi-line-values/block-direction-on-its-own-line-kept]
+  [fixture: state/multi-line-values/block-on-a-line-with-a-semicolon-brace-on-the-next-line-direction-kept]
+  [fixture: c4/description-blocks/acc-block-direction-keep]
+  [fixture: c4/description-blocks/block-after-an-empty-block-brace-on-the-next-line-direction-kept]
+  [fixture: er/accessibility-statements/block-direction-split-by-a-directive-kept]
+  [fixture: requirement/accessibility-statements/first-column-kept]
+  [fixture: requirement/accessibility-statements/block-brace-on-the-next-line-direction-kept]
+  [test: accessibility blocks: class brace-after-ls-direction-kept]
+  [test: accessibility blocks: class text-between-ls-direction-kept]
+  [test: accessibility blocks: er text-between-ps-direction-kept]
+  [test: accessibility blocks: requirement brace-after-ps-direction-kept]
+- `{` の前か `{` と本文の間にディレクティブがあり、
+  ブロックが複数行にまたがるか、文を同じ行に保つ行で後ろに別の文が続く場合です。
+  [`;` を含む行](#-を含む行)を参照してください。
+  C4 でブロックが空のブロックの隣にある行も、そのような行です。
+  このようなブロックをコロンの形で印字するのは、ブロックが 1 行にあり、
+  その行が文を同じ行に保つ行でない場合だけです。
+  それ以外ではブロックの形で印字し、2 回目の整形でも変わりません。
+  [fixture: flowchart/accessibility-lines/block-with-directive-before-the-text-over-lines]
+  [fixture: flowchart/accessibility-lines/block-with-directive-before-the-text-on-a-kept-line]
+- agentflow、C4、Gantt、ユーザージャーニー、quadrant、requirement、sequence、
+  state、timeline、XY チャートの図で、
+  同じ行の `}` の後にコメントがある場合です。
+  これらの図種は、コロンの形の本文の一部として `%%` を読むため、
+  `accDescr: a %% c` の説明は `a %% c` ですが、
+  ブロック `accDescr {a} %% c` の説明は `a` です。
+  コロンの形の本文を `%%` の前で終える図種（後述）では、
+  両方の形の説明が `a` になり、ブロックをコロンの形で印字します。
+  class、ER、flowchart、swimlane、ユースケースの図は、
+  後ろにコメントがあるブロックを拒否します。
+  [fixture: sequence/multi-line-values/block-then-comment-kept]
+  [fixture: pie/description-blocks/block-then-comment]
+  [fixture: pie/description-blocks/block-trailing-comment]
+  [fixture: info/comments/comments-inline]
+- ブロックに本文がないか、ディレクティブだけがある場合です。
+  [アクセシビリティの行](./flowchart.ja.md#アクセシビリティの行)のとおり、
+  `accDescr {}` と印字します。
+  [fixture: flowchart/accessibility-lines/empty-block-tight]
+  [fixture: flowchart/accessibility-lines/empty-block-spaced]
+  [fixture: flowchart/accessibility-lines/empty-block-directive-kept]
+- ブロックが閉じていない場合です。
+  [fixture: flowchart/accessibility-lines/block-unclosed]
+- 文を同じ行に保つ行のブロックで、同じ行の後ろに文か `;` が続くか、
+  mermaid.js の行の規則が読む行の場合です（[`;` を含む行](#-を含む行)を参照）。
+  コロンの形は行末まで続くため、後ろの文が本文の一部になってしまいます。
+  [fixture: flowchart/accessibility-lines/block-before-another-statement-on-a-kept-line]
+  [fixture: flowchart/accessibility-lines/block-on-style-line-kept]
+  [fixture: c4/statements-one-per-line/description-null-adjacency]
+- architecture、cynefin、gitGraph、info、packet、pie、radar、railroad、treemap、
+  treeView、wardley の図で、本文に `%%`、U+2028、U+2029 がある場合です。
+  これらの図種は、
+  [共通文法の 1 つの終端記号](https://github.com/mermaid-js/mermaid/blob/2086904e76c692331e34a45d7cc3bc30860d040e/packages/parser/src/language/common/common.langium#L14)
+  で説明を読みます。
+  コロンの形の本文は `%%` の前で終わり、行の残りはコメントとして読みますが、
+  ブロックの中の `%%` は本文の一部として読みます。
+  `accDescr: a %% b` の説明は `a`、`accDescr {a %% b}` の説明は `a %% b` です。
+  これらの図種のブロックは、行区切り文字の前後の空白も除きます。
+  円グラフと gitGraph では、
+  `accDescr { A<U+2028> B }` の説明は `A<U+2028>B` で、
+  `accDescr: A<U+2028> B` の説明は `A<U+2028> B` です。
+  ほかの図種は、両方の形で `%%` と行区切り文字を本文の一部として読み、
+  本文にそれらがあっても、ブロックをコロンの形で印字します。
+  [fixture: pie/description-blocks/block-text-with-percent-kept]
+  [fixture: flowchart/accessibility-lines/block-text-with-percent]
+  [test: pie/line-terminators-and-unicode/unicode-values]
+- state 図で、ブロックに U+2028 か U+2029 がある場合です。
+  state 図は、どちらかを含む行を書かれたまま印字します。
+  （[行区切り文字を含む state の行](#行区切り文字を含む-state-の行)）。
+  [test: accessibility blocks: state text-with-ls-kept]
+- イベントモデリング図か、ishikawa 図の場合です。
+  イベントモデリング図は、
+  [Description blocks](./eventmodeling.ja.md#description-blocks)のとおり、
+  説明を全体として保ちます。
+  ishikawa 図は、`accDescr {a}` と `accDescr: a` を説明のないノードとして読み、
+  両方の Db の `accDescr` は空です。
+  どちらの図種も、印字は形を変えません。
+  [corpus fixture: ishikawa/db-accdescr-block-is-nodes]
+  [corpus fixture: ishikawa/db-accdescr-is-node]
+  [fixture: ishikawa/node-text/values-opaque]
+- 枝の文字で描く treeView 図（箱）で、本文に `x─` のような描画の文字があり、
+  図がそれを箱として読むか、箱がキーワードと `{` の間の文字を保つ場合です。
+  [fixture: treeview/modes/block-interior-active]
+
+mermaid.js 12.3.0 は、コロンの後に説明を書く 3 つの例を、
+ブロックでも書いた両方の綴りを受理し、Db と SVG は同じでした。
+さらに、22 図種でそれぞれ 2 つの例、
+info とユーザージャーニーでそれぞれ 1 つの例、gitGraph でさらに 3 つの例に、
+両方の綴りで説明を挿入し、49 対を比べました。
+ほかの図種の 44 対は、両方の SVG が同じでした（そのうち 6 対は、
+生成された id を除いて比べました）。
+gitGraph の 5 対も、数、コミット id、要素の id を除くと同じでした。
+`%%` を本文の一部として読む図種のうち 13 図種の例に、
+`%%` を含む本文を同じように挿入した 26 対も、すべて SVG が同じでした。
+railroad 図は描画せず、Db だけを比べました。
+
+2 つ目のリストの規則は、説明ブロックを持つ図種から、
+ブロック図とイベントモデリング図を除いた 25 図種のそれぞれで、
+受理される例を 1 つずつ使い、ブロックとコロンの形を挿入して見つけました。
+ほとんどの図種では 3 つの例を使いました。
+本文にノーブレークスペース、U+3000、垂直タブ、改ページ、U+FEFF、U+2028（単独）、
+U+2029（単独）、タブ、空白の連なり、`;` を含む場合と、本文の中、`{` の前、
+`{` と本文の間にディレクティブがある場合は、25 図種すべてで Db が同じでした。
+本文が独立した行にある場合も、class 図、state 図、C4 図の `direction` と、
+`%%` で始まる行を除き、25 図種すべてで同じでした。
+11 図種は `%%` で始まる行をコメントとして読むため、
+ブロックに本文がなくなります。
+`}` の後にコメントを置くと、10 図種で Db が異なり、
+本文を `%%` の前で終える 11 図種ではすべて同じで、
+4 図種では mermaid.js が拒否しました。
+適合性コーパスでは、533 個の fixture の 544 個のブロックを、
+コロンの形で印字します。
+483 個では mermaid.js の Db が同じで、41 個は mermaid.js が拒否する入力で、
+9 個はタイトル、説明、スタイルの空白が異なります。
+この違いは、
+[同じに描かれるテキスト中の空白の連なり](#同じに描かれるテキスト中の空白の連なり)
+と、[同じに描かれるスタイル](#同じに描かれるスタイル)の節で定めています。
+整形ツールの fixture のうち、整形で変わる 71 対を描画し、
+mermaid.js が描画する 68 対では SVG が同じでした。
+
+### テキストの引用符
+
+mermaid.js は、一部のテキストを引用符がある形とない形で同じに読みます。
+sankey 図のリンクの source は、`"a b",c,1` と `a b,c,1` で同じ id です。
+[記録のアクション](https://github.com/mermaid-js/mermaid/blob/2086904e76c692331e34a45d7cc3bc30860d040e/packages/mermaid/src/diagrams/sankey/parser/sankey.jison#L53-L55)
+が、どちらの形の欄も両端の空白を除き、`""` を `"` として読むためです。
+形は、その図種の例が、もう一方の 2 倍以上の頻度で使うものにします。
+両方の形で同じに読むテキストはその形で印字し、ほかは書かれたまま残します。
+対象の欄と、各欄をそれぞれの形で書く例の数は、以下のとおりです。
+
+| 図種           | 欄                                   | 引用符なし | 引用符あり |
+| -------------- | ------------------------------------ | ---------: | ---------: |
+| sankey         | リンクの source                      |         87 |          0 |
+| sankey         | リンクの target                      |         83 |          4 |
+| sankey         | リンクの値（値の形に従う）           |         87 |          0 |
+| ER             | 実体の名前                           |         39 |          2 |
+| ER             | 関係の役割                           |         43 |          2 |
+| ER             | 関係の左の名前                       |         45 |          0 |
+| ER             | 関係の右の名前                       |         45 |          0 |
+| ER             | subgraph の id                       |         11 |          1 |
+| requirement    | requirement の名前                   |         15 |          1 |
+| requirement    | element の名前                       |         10 |          0 |
+| requirement    | requirement の id                    |         16 |          0 |
+| requirement    | requirement の text                  |         13 |          3 |
+| requirement    | element の type                      |          9 |          1 |
+| requirement    | element の docRef                    |          2 |          0 |
+| requirement    | 関係の左の名前                       |         14 |          0 |
+| requirement    | 関係の右の名前                       |         14 |          0 |
+| requirement    | クラスと `style` の名前              |          9 |          0 |
+| Wardley マップ | component の名前                     |         46 |          7 |
+| Wardley マップ | anchor の名前                        |          5 |          0 |
+| Wardley マップ | リンクの名前                         |         50 |         12 |
+| Wardley マップ | evolve と pipeline の名前            |          5 |          2 |
+| Wardley マップ | evolution の stage の名前            |         20 |          0 |
+| Wardley マップ | accelerator と deaccelerator の名前  |          0 |          4 |
+| Wardley マップ | pipeline の component の名前         |          0 |          4 |
+| gitGraph       | ブランチの名前                       |         84 |          0 |
+| gitGraph       | checkout または switch のブランチ    |        160 |          0 |
+| gitGraph       | merge のブランチ                     |         49 |          0 |
+| quadrant       | x 軸のテキスト                       |          6 |          0 |
+| quadrant       | y 軸の始まり                         |          3 |          0 |
+| quadrant       | y 軸の終わり                         |          2 |          1 |
+| quadrant       | 象限のテキスト                       |         12 |          0 |
+| quadrant       | 点の名前                             |         12 |          0 |
+| XY チャート    | チャートのタイトル                   |          0 |          8 |
+| XY チャート    | x 軸のタイトル                       |          0 |          2 |
+| XY チャート    | y 軸のタイトル                       |          0 |          8 |
+| XY チャート    | line のタイトル                      |          0 |          3 |
+| XY チャート    | 分類                                 |         38 |         17 |
+| Venn           | 集合の一覧にある集合の名前           |         50 |          0 |
+| Venn           | 集合または union のラベル            |          0 |         22 |
+| Venn           | 対象のない text の id                |          6 |          0 |
+| Venn           | 対象のない text のラベル             |          0 |          6 |
+| Venn           | style の対象                         |          4 |          0 |
+| Venn           | style のプロパティの値               |          3 |          0 |
+| use case       | actor の名前                         |         21 |          0 |
+| use case       | use case の名前                      |          8 |          1 |
+| use case       | 関係の source                        |         66 |          0 |
+| use case       | 関係の target                        |         66 |          0 |
+| use case       | system boundary の名前               |          7 |          2 |
+| use case       | metadata 更新の対象                  |          4 |          0 |
+| use case       | metadata のプロパティのキー          |         16 |          0 |
+| use case       | actor、境界、更新の type             |          7 |          0 |
+| use case       | エッジの animation                   |          2 |          0 |
+| use case       | 丸括弧内の actor のラベル            |          1 |         12 |
+| use case       | 丸括弧内の use case のラベル         |          1 |         27 |
+| use case       | id のある system boundary のタイトル |          0 |          2 |
+| use case       | 分割した association のラベル        |          1 |          3 |
+| use case       | note のラベル                        |          0 |          1 |
+| use case       | actor の icon                        |          0 |          2 |
+| use case       | 角括弧内の use case のラベル         |          6 |          0 |
+| architecture   | group のラベル                       |          6 |          0 |
+| architecture   | service のラベル                     |         30 |          0 |
+| mindmap        | 形のテキスト                         |         21 |          0 |
+| kanban         | 形のテキスト                         |         19 |          0 |
+| C4             | 要素または境界の alias               |         73 |          0 |
+| C4             | 更新での要素の alias                 |          2 |          0 |
+| C4             | 関係の source                        |         35 |          0 |
+| C4             | 関係の target                        |         35 |          0 |
+| C4             | 更新での関係の source                |         31 |          0 |
+| C4             | 更新での関係の target                |         31 |          0 |
+| C4             | ラベル                               |          1 |        107 |
+| C4             | technology                           |          0 |         43 |
+| C4             | 境界またはノードの type              |          0 |         14 |
+| C4             | 要素の description                   |          0 |         46 |
+| flowchart      | subgraph の名前                      |         53 |          1 |
+| agentflow      | flow の名前                          |         17 |          0 |
+| agentflow      | connector の名前                     |          2 |          0 |
+| agentflow      | connector のタイトル                 |          0 |          2 |
+| class          | class の名前                         |        178 |          4 |
+| class          | namespace の名前                     |         11 |          0 |
+
+actor、use case、system boundary の名前は、
+それ自体のラベルやタイトルがない場合を数えます。
+引用符で囲んだ名前には、それらを付けられないためです。
+すべての名前を数えると、actor は 35 / 0、use case は 44 / 1、
+system boundary は 9 / 2 です。
+
+テキストが平易なら、引用符なしで印字します。
+平易なテキストは、ASCII の英字、数字、`_`、`-`、`.` と、それらの間の空白です。
+sankey 図では、欄が取り除く両端の空白も含みます。
+sankey の字句解析器は、`"` と `,` 以外の ASCII の印字可能文字をすべて、
+引用符のない欄に取り込みますが、
+ほかの種類の文字はどの処理段階でも同じに読まれるわけではありません。
+`%%` はコメントやディレクティブを始め、`#` は実体参照を始め、
+`;` は `style` と `classDef` の行の規則に関わり、改行は記録を終えます。
+`&`、`<`、`>`、`'`、`\`、`/` は、すべての位置では比較していません。
+そのため、これらの文字や `,`、`"` を含むテキストは、引用符で囲んだまま残し、
+ディレクティブやコメント領域を内部に含む文字列も同じにします。
+[fixture: sankey/quotes/plain-text-without-quotes]
+[fixture: sankey/quotes/plain-text-with-spaces-without-quotes]
+[fixture: sankey/quotes/spaces-at-the-ends-left-out]
+[fixture: sankey/quotes/comma-and-doubled-quotes-kept]
+[fixture: sankey/quotes/other-characters-keep-the-quotes]
+[fixture: sankey/values/forms-kept]
+[fixture: sankey/quotes/values-in-quotes-without-quotes]
+[fixture: sankey/directives/inside-fields-kept]
+[fixture: sankey/multi-line-strings/string-over-lines]
+
+ER 図では、ASCII の英字か `_` で始まる、ASCII の英字、数字、
+`_` からなる 1 語のテキストを、
+字句解析器が独立した単位として読む以下の語のいずれでもない場合に、
+引用符なしで印字します。
+大文字小文字は問いません。
+`erDiagram`、`style`、`classDef`、`class`、`subgraph`、`end`、`one`、`many`、
+`only`、`zero`、`optionally`、`or`、`to`、`accTitle`、`accDescr`、`direction`、
+`TB`、`BT`、`RL`、`LR`、`PK`、`FK`、`UK`、`u`、`o` です。
+空白、`-`、ASCII 外の文字など、ほかの文字を含む名前や、
+字句解析器が数や多重度として読める数字で始まる名前、
+mermaid.js が名前を空白 1 つで結ぶ subgraph のタイトルは、書かれたまま残します。
+`direction` で終わる名前と、`TB`、`BT`、`RL`、`LR` で始まる名前も、
+大文字小文字を問わず引用符を残します。
+字句解析器は、`direction`、空白（改行も含みます）、向きの名前を 1 行として読み、
+引用符を外した名前は、前の行か後の行と結ばれるためです。
+[fixture: er/entities/plain-names-without-quotes]
+[fixture: er/entities/names-that-need-quotes]
+[fixture: er/entities/names-next-to-a-direction-line]
+[fixture: er/entities/alias-tight]
+[fixture: er/statements-one-per-line/relationships]
+[fixture: er/statements-one-per-line/role-then-entity]
+[fixture: er/subgraphs/quoted-and-number-ids]
+
+requirement 図では、名前、クラス、`style`、`classDef`、`class` の文の名前は、
+ASCII の英字、数字、`_` からなる 1 語で、
+字句解析器が独立した単位として読む語（キーワード、requirement と関係の種類、
+risk、検証方法、向きで、大文字小文字は問いません）のいずれでもない場合に、
+引用符なしで印字します。
+id、text、type、docRef は、同じ文字からなる語を空白で区切った形で、
+最初の語がそれらの語のいずれでもない場合に、引用符なしで印字します。
+`text: "the test text"` は `text: the test text` と印字し、
+`text: "risk high"` は引用符で囲んだまま残します。
+`risk` で始まるテキストは、フィールド `risk` として読まれるためです。
+`direction` で終わる名前と、`TB`、`BT`、`RL`、`LR` で始まる名前も、
+大文字小文字を問わず引用符を残します。
+字句解析器は、`direction`、空白（改行も含みます）、向きの名前を 1 行として読み、
+引用符を外した名前は、前の行か後の行と結ばれるためです。
+[fixture: requirement/names/plain-names-without-quotes]
+[fixture: requirement/names/names-that-need-quotes]
+[fixture: requirement/names/names-next-to-a-direction-line]
+[fixture: requirement/fields/plain-values-without-quotes]
+[fixture: requirement/class-lists/string-classes]
+[fixture: requirement/styles-and-classes/style-names]
+
+Wardley マップでは、ASCII の英字、数字、`_` からなり、
+英字で始まる語を空白 1 つで区切ったテキストを、以下の語で始まらない場合に、
+引用符なしで印字します。
+字句解析器は、これらを小文字で、語の境界を求めず独立した単位として読みます。
+`build`、`buy`、`outsource`、`market`、`size`、`evolution`、`anchor`、
+`component`、`label`、`inertia`、`evolve`、`pipeline`、`note`、`annotation`、
+`accelerator`、`deaccelerator`、`title`、`accTitle`、`accDescr` です。
+そのため、`"buyer"` は引用符で囲んだまま残し、`"title x"` も同じですが、
+`"Title x"` の引用符は除きます。
+accelerator と deaccelerator、pipeline の component の名前は、
+引用符で囲んで印字します。
+矢印のないリンクの 2 つの名前 `"A" "B"` は、
+引用符を外すと 1 つの名前として読まれ、
+名前に隣接する hidden YAML ブロックの `---` は名前に結合されるので、
+これらは引用符を残します。
+[fixture: wardley/names-and-quotes/plain-names-without-quotes]
+[fixture: wardley/names-and-quotes/names-that-need-quotes]
+[fixture: wardley/links/link-no-arrow]
+[fixture: wardley/pipeline/pipeline-depth]
+
+gitGraph では、ASCII の英字、数字、`_` と、その間の `-`、`.`、`/` からなり、
+英字か `_` で始まり、英字、数字、`_` で終わるブランチを、
+タイトルの行が取り込む `title` で始まらず、語の一部でない文字の前で、
+字句解析器が独立した単位として読む語でも始まらない場合に、
+引用符なしで印字します。
+数字は数の始まりになり得ます。
+独立した単位として読む語の判定では、大文字小文字を問いません。
+古い版の mermaid.js は、これらを大文字小文字を問わず比較し、
+`commit-x` を語 `commit` と `-x` として読むためです。
+そのため、`"develop"` と `"feature/login"` の引用符は除き、`"commit"`、
+`"Merge"`、`"titleA"`、`"1st"`、`"release/1."`、
+空白を含む名前は引用符で囲んだまま残します。
+[fixture: gitgraph/references/plain-names-without-quotes]
+[fixture: gitgraph/references/names-that-need-quotes]
+[fixture: gitgraph/references/reference-forms]
+
+象限チャートでは、ASCII 英字の単語でできていて、各単語の末尾には数字も使え、
+単語の間は空白 1 つのテキストを、どの単語も `title`、`classDef`、`accTitle`、
+`accDescr` のいずれでもなく、`quadrant` で始まる語でもない場合に、
+引用符なしで印字します。
+大文字小文字は問いません。
+字句解析器は、数字や `_` の後の英字を再び単語の始まりとして読むので、`-`、`_`、
+単語の途中の数字や、先頭の数を含むテキストは、引用符で囲んだまま残します。
+[fixture: quadrant/quotes/plain-texts-without-quotes]
+[fixture: quadrant/quotes/texts-that-need-quotes]
+[fixture: quadrant/points/string-names] [fixture: quadrant/axes/strings]
+
+XY チャートでは、テキストは ASCII の英字、数字、`_`、`-` からなる、
+空白のない 1 語です。
+mermaid.js は引用符のないテキストの空白を落とすので、
+複数の語のテキストは引用符で囲むと同じではありません。
+チャート、軸、line のタイトルは引用符で囲んで印字します。
+分類は、英字の連なりの始まり（テキストの先頭と、数字、`_`、`-` の後）で、
+字句解析器が独立した単位として読む以下の語のいずれも始まらない場合に、
+引用符なしで印字します。
+大文字小文字は問いません。
+`title`、`xychart-beta`、`xychart`、`x-axis`、`y-axis`、`line`、`bar` は、
+後ろに英字、数字、`_` がない場合で、`vertical` と `horizontal` は、
+どこで始まる場合も該当します。
+そのため、`"a-line"` と `"Line"` は引用符を残し、
+`"line1"` と `"Barcelona"` は外します。
+bar のタイトルは例にないので書かれたまま残し、
+そのキーワード以外の単位に接するタイトルも同じにします。
+[fixture: xychart/quotes/titles-in-quotes]
+[fixture: xychart/quotes/categories-without-quotes]
+[fixture: xychart/quotes/categories-that-need-quotes]
+[fixture: xychart/quotes/texts-of-several-words]
+[fixture: xychart/quotes/bar-titles-as-written]
+[fixture: xychart/quotes/texts-on-a-kept-line-as-written]
+[fixture: xychart/text-units/hyphen-and-number-touching-kept]
+
+Venn 図では、ASCII の英字、数字、`_`、`-` からなり、英字か `_` で始まる名前を、
+字句解析器が独立した単位として読む以下の語で始まらず、`title` でもない場合に、
+引用符なしで印字します。
+独立した単位として読む語の判定では、大文字小文字を問わず、その後の文字が英字、
+数字、`_` のいずれでもないことを求めます。
+語は `venn-beta`、`set`、`union`、`text`、`style` です。
+`-` はそのような文字なので、`set-a` は `set` で始まります。
+`title` は、同じ行の後にテキストが続くとタイトルを始めます。
+そのため、`"A"` と `"xset"` の引用符は除き、`"set"`、`"set-a"`、`"title"`、
+`"a b"`、`"1a"`、`"007"` は引用符を残します。
+style のプロパティの値は、そのような名前、数、
+`#` と 3 桁から 8 桁の十六進数字からなる色を空白 1 つで区切った形なら、
+引用符なしで印字します。
+mermaid.js はそのような値の語を空白 1 つでつなぐので、
+`"red  blue"` は引用符を外すと同じではなく、`"1a"` は数と名前として読まれます。
+ラベルは、括弧の間のテキストを引用符で囲んで印字します。
+ただし、括弧に接する空白、タブ、ノーブレークスペースは、
+mermaid.js が引用符の有無によらず除くので、印字でも除きます。
+空白だけのラベル（Db にはラベルがなく、`[" "]` には空のラベルがあります）、
+`%%` を含むラベル、内部にディレクティブやコメントがあるラベルは、
+書かれたまま残します。
+対象のある text は、例にないので書かれたまま残します。
+[fixture: venn/quotes/names-without-quotes]
+[fixture: venn/quotes/names-that-need-quotes]
+[fixture: venn/quotes/style-values-without-quotes]
+[fixture: venn/quotes/labels-in-quotes]
+[fixture: venn/quotes/labels-that-stay-as-written]
+[fixture: venn/quotes/explicit-text-as-written]
+[fixture: venn/quotes/names-before-a-comment-as-written]
+[fixture: venn/quotes/texts-on-a-kept-line-as-written]
+
+use case 図では、単独で引用符に囲まれた名前が ASCII の英字、数字、`_` からなり、
+字句解析器が独立した単位として読む以下の語のいずれでもない場合に、
+引用符なしで印字します。
+mermaid.js は、ほかの文字を `_` に置き換えて id を作るためです。
+`actor`、`systemBoundary`、`end`、`direction`、`TD`、`TB`、`BT`、`LR`、`RL`、
+`note`、`for`、`json`、`classDef`、`class`、`style`、`true`、`false`、
+`accTitle`、`accDescr` は、書かれた大文字小文字で判定します。
+`include`、`extend`、`allowmixing`、`newpage`、`package`、`rectangle`、
+`skinparam` は、大文字小文字を問いません。
+丸括弧内のラベル、system boundary のタイトル、分割した association のラベル、
+note のラベルは、引用符で囲んで印字します。
+ただし、バッククォートで始まるラベルは例外です。
+引用符とバッククォートで markdown 文字列になるためです。
+use case の角括弧内のラベルは、ASCII の英字、数字、`_` からなる語を、
+空白 1 つで区切った形なら、引用符なしで印字します。
+native metadata のキーとスカラーは、1 語なら引用符なしで印字します。
+ただし、`icon` のスカラーは引用符で囲んで印字します。
+[fixture: usecase/quotes/names-without-quotes]
+[fixture: usecase/quotes/names-that-need-quotes]
+[fixture: usecase/quotes/labels-in-quotes]
+[fixture: usecase/quotes/labels-as-written]
+[fixture: usecase/quotes/square-bracket-labels]
+[fixture: usecase/quotes/metadata] [fixture: usecase/quotes/touching-units]
+[fixture: usecase/quotes/texts-on-a-kept-line-as-written]
+
+architecture 図では、引用符で囲んだラベルが ASCII の英字、数字、`_`、
+空白からなり、両端に空白がなければ、引用符なしで印字します。
+引用符で囲むラベルを読む 11.13.0 から 11.16.1 までの文法は、
+引用符のないラベルではこれらの文字だけを読むためです。
+また、バックスラッシュや引用符を含むラベルは、引用符を外すと、
+mermaid.js が読むタイトルが変わります。
+mermaid.js はタイトルの外側の引用符 1 組を除き、
+引用符があったタイトルでだけ `\"` と `\'` を `"` と `'` に戻すためです。
+そのため、`"a\"b"` を `a\"b` と、`"'x'"` を `'x'` と印字すると、
+別のタイトルとして読まれます。
+mindmap と kanban のボードでは、引用符で囲んだ形のテキストを、
+引用符のないテキストを終えるか閉じとして読まれる `)`、`]`、`(`、`}` を含まず、
+余白も改行もなく、`-` で始まらず、ダッシュの形のダッシュに隣接しない場合に、
+引用符なしで印字します。
+`(` と `-` は開き `(-` になり、`)` の前の `-` は閉じ `-)` になるためです。
+ダッシュの形は `(-"x"-)` で、その閉じ `-)` は文字列の後にだけ続きます。
+markdown 文字列は残します。 [fixture: architecture/quotes/labels-without-quotes]
+[fixture: architecture/quotes/labels-that-need-quotes]
+[fixture: mindmap/quotes/labels-without-quotes]
+[fixture: mindmap/quotes/labels-that-need-quotes]
+[fixture: kanban/quotes/labels-without-quotes]
+[fixture: kanban/quotes/labels-that-need-quotes]
+
+C4 図では、要素や境界の alias と、関係や `UpdateRelStyle` の両端は、
+ASCII の英字、数字、`_`、`-`、`.` と、それらの間の空白からなり、
+直後に `,` が続く場合に、引用符なしで印字します。
+label、technology、type、要素の description は、引用符で囲んで印字します。
+引用符のない引数は次の `,` まで続き、
+mermaid.js は ASCII の空白の後でだけ文字列を読むため、空白、タブ、改行、
+別の文字列が後に続く alias と、呼び出しの最後の引数は引用符を残します。
+最後の引数は、引用符がないと `)` をテキストに取り込むためです。
+`"` や改行を含むテキスト、文字列の後にタブ、改行、
+ASCII の空白以外の空白を挟んで立つテキスト、行の頭にあるテキスト、
+同じ行の後ろに `,` がないテキストは、引用符なしのまま残します。
+`,` や `(` の後のタブやほかの空白は空白 1 つに置き換えるので、
+引用符を付けるのを妨げません。
+ノードと関係の description、`RelIndex` のすべての引数、sprite、tags、link、
+更新の設定と、`Enterprise_Boundary`、`System_Boundary`、
+`Container_Boundary` の 3 番目の tags は、例では名前付き属性で書かれるか、
+まったく書かれないので、書かれたまま残します。
+名前付き属性も、どの形でも値が文字列で、キーに引用符が含まれるので、
+書かれたまま残します。 [fixture: c4/quotes/names-without-quotes]
+[fixture: c4/quotes/names-that-need-quotes]
+[fixture: c4/quotes/names-before-a-gap-as-written]
+[fixture: c4/quotes/texts-in-quotes]
+[fixture: c4/quotes/texts-that-stay-without-quotes]
+[fixture: c4/quotes/other-arguments-as-written]
+[fixture: c4/quotes/names-and-texts-on-a-kept-line-as-written]
+
+flowchart、swimlane 図、agentflow 図では、引用符で囲んだ subgraph、flow、
+connector の名前が、ASCII の英字、数字、`_` の語を空白 1 つで区切ったもので、
+どの語も `_blank`、`_parent`、`_self`、`_top`、`call`、`click`、`default`、
+`direction`、`end`、`href`、`interpolate` でなければ、引用符なしで印字します。
+字句解析器はこれらを独立した単位として読むので、`"end"`、`"click"`、
+`"x _self"` は引用符を残します。
+agentflow 図の字句解析器は `end` を名前として読みますが、
+印字はこれも引用符を残します。
+同じ行で語が接する名前（`subgraph "S"accDescr {}`）、コメントが続く名前、
+空白 2 つの連なりを持ち、subgraph にタイトルがあるため id になる名前は、
+引用符を残します。
+`direction` で終わる名前も、後に何が続いても引用符を残します。
+字句解析器は、`direction`、空白（改行も含みます）、向きの名前（`TB`、`BT`、
+`RL`、`LR`、`TD`）を 1 行として読みます。
+`subgraph xdirection` と次の行の `TB --> C` が、この 1 行になるためです。
+connector のタイトルは、mermaid.js が引用符の有無によらず同じに読むので、
+英字または数字で始まり、ASCII の英字、数字、空白、`_`、`-`、`.`、`,`、`:`、`!`、
+`?` からなる場合に、引用符で囲んで印字します。
+[fixture: flowchart/quotes/subgraph-names-without-quotes]
+[fixture: flowchart/quotes/swimlane-lane-names-without-quotes]
+[fixture: flowchart/quotes/subgraph-names-that-need-quotes]
+[fixture: flowchart/quotes/subgraph-names-next-to-a-direction-line]
+[fixture: flowchart/quotes/subgraph-names-with-runs-without-quotes]
+[fixture: flowchart/quotes/subgraph-names-before-a-comment]
+[fixture: flowchart/subgraph-header/whitespace-before-block-kept]
+[fixture: agentflow/quotes/names-without-quotes]
+[fixture: agentflow/quotes/names-that-need-quotes]
+[fixture: agentflow/quotes/names-next-to-a-direction-line]
+[fixture: agentflow/quotes/connector-titles-in-quotes]
+[fixture: agentflow/quotes/connector-titles-as-written]
+[fixture: agentflow/quotes/names-and-titles-before-a-comment]
+
+class 図では、バッククォートで囲んだ class または namespace の名前が、
+ASCII の英字、数字、`_` からなる 1 語で、`_blank`、`_parent`、`_self`、`_top`、
+`accDescr`、`accTitle`、`call`、`callback`、`class`、`classDef`、
+`classDiagram`、`click`、`cssClass`、`href`、`link`、`namespace`、`note`、`o`、
+`style` のいずれでもなく、`direction` で終わらず、`TB`、`BT`、`RL`、
+`LR` でも始まらない場合に、バッククォートなしで印字します。
+字句解析器は、名前の位置にあるこれらの語を独立した単位として読みます。
+また、`direction`、空白（改行も含みます）、向きの名前を 1 行として読み、
+バッククォートを外した名前は、前の行か後の行と結ばれます。
+2 語の名前は、バッククォートを外すと空白なしで結ばれた 2 語になり、
+ほかの文字を含む名前は同じに読まれません。
+コメントやディレクティブのある行の名前は、バッククォートを残します。
+[fixture: class/quotes/names-without-quotes]
+[fixture: class/quotes/names-that-need-quotes]
+[fixture: class/quotes/names-next-to-a-direction-line]
+[fixture: class/quotes/names-on-a-kept-line-as-written]
+
+flowchart、swimlane 図、agentflow 図では、subgraph や flow のタイトル、
+図形のラベル、リンクのラベルは、書かれたまま残します。
+mermaid.js は `A["x"]` を文字列、`A[x]` をテキストとして読み、
+Db は前者の `labelType` に `string`、後者に `text` を持つので、
+両方の形は同じに読まれないためです。
+sequence 図に文字列はなく、参加者の説明（`participant A as "Alice"`）、
+メッセージ、ノートの引用符はテキストの文字です。
+class 図の文法は、クラスのラベル、ノートのテキスト、多重度に文字列を必要とし、
+引用符のないテキスト（`class A[Label]`、`note for B Text`、
+`A 1 --> * B`）を拒否します。
+eventmodeling 図の名前に引用符で囲む形はなく、frame のデータ、タイトル、
+アクセシビリティの値の引用符はテキストの文字です。
+Db はデータ `{"x"}` に `{"x"}` を、`{x}` に `{x}` を持ちます。
+[fixture: flowchart/quotes/labels-as-written]
+[fixture: flowchart/quotes/subgraph-titles-as-written]
+[fixture: agentflow/quotes/labels-as-written]
+[fixture: agentflow/quotes/flow-titles-as-written]
+[fixture: sequence/quotes/texts-as-written]
+[fixture: class/quotes/strings-as-written]
+[fixture: eventmodeling/quotes/quotes-as-written]
+
+treeView のノードの名前は、例では引用符なしが 58 回、引用符ありが 8 回ですが、
+引用符で囲まれていれば、書かれたまま残します。
+11.14.0 と 11.15.0 の文法は引用符で囲む名前だけを読み、
+引用符のない名前は 11.16.0 から読むためです。
+そのため、引用符なしで印字すると、書かれたテキストを読む版で読めなくなります。
+
+テキストの空白とタブの連なりを空白 1 つで印字する欄では、
+テキストをその印字された形で判定し、
+2 回目の整形が 1 回目の印字したものを読むようにします。
+（[同じに描かれるテキスト中の空白の連なり](#同じに描かれるテキスト中の空白の連なり)）。
+そのため、文字の間にタブがある requirement 図の `text: "a b"` は、
+`text: a b` と印字し、象限チャートの `quadrant-2 "c d"` と、
+architecture 図の `service s(server)["a b"]` も同じように印字します。
+`white-space` を含む図のテキストなど、書かれたまま残すテキストは、
+書かれた形で判定し、タブがあれば引用符を残します。
+[fixture: requirement/fields/string-values-tabs-collapsed]
+[fixture: requirement/fields/string-values-tabs-kept-with-white-space]
+[fixture: quadrant/quotes/strings-runs-collapsed]
+[fixture: architecture/quotes/labels-with-runs-without-quotes]
+
+`#` か `%` が後に続く文字列は、どの図種でも引用符を残します。
+後続の文字は、文字列の後にある空白、タブ、
+ディレクティブを除いた最初の文字で判定します。
+mermaid.js はテキストを読む前にディレクティブを取り除くためです。
+引用符のないテキストは行末まで続くことがあり、
+`a - satisfies -> "b" #c` の `b #c` のように、
+その文字と後続の部分を取り込みます。
+そのため、その直後にテキストが終わる `quadrant-1 "A"%%{init: {}}%%` は、
+`quadrant-1 A%%{init: {}}%%` と印字し、
+`quadrant-1 "A" %% c` は引用符を残します。
+テキストが大文字小文字を問わず `style` か `classDef` で終わり、
+後ろに `:` が続く文字列も同じです。
+mermaid.js の行の規則がそのような行を読むためです。
+（[`;` を含む行](#-を含む行)）。
+文字列の後に続く `;` は、そのような文字ではありません。
+印字は文を区切る `;` を除き、引用符も、`;` がない場合と同じように除きます。
+`quadrant-1 "A";` は `quadrant-1 A` と印字します。
+行の規則が残す `;` がある行など、印字が書かれたまま残す行の文字列は、
+引用符を残します。 [fixture: requirement/comments/after-string-name]
+[fixture: requirement/comments/after-keyword-and-string-values]
+[fixture: requirement/multi-line-statements/class-last-line-semicolon-kept]
+[fixture: quadrant/quotes/texts-that-need-quotes]
+[fixture: quadrant/quotes/texts-before-a-directive]
+[fixture: quadrant/quotes/texts-before-a-semicolon]
+
+各図種で数える適合性コーパスの入力は、mermaid.js が受理し、
+宣言された相違によって仕様と異なる読みにならず、
+`src/printers/quote-form.ts` の表 `quoteRules` を空にすると、
+整形後のテキストが変わるものです。
+mermaid.js 12.3.0 は、これらの入力を両方の形で読み、Db は同じでした。
+入力は sankey 図が 11 個、ER 図が 15 個、requirement 図が 12 個、
+Wardley マップが 35 個、gitGraph が 2 個、象限チャートが 19 個のうち 13 個、
+XY チャートが 191 個、Venn 図が 176 個のうち 174 個、
+use case 図が 93 個のうち 90 個、architecture 図が 2 個、mindmap が 7 個、
+kanban のボードが 114 個、C4 図が 67 個のうち 65 個、flowchart が 11 個、
+agentflow 図が 26 個のうち 24 個、class 図が 7 個です。
+象限チャートの残りの 6 個はテキスト内にタブがあり、印字はこのタブも変えます。
+Venn の残りの 2 個はラベルの空白やタブの連なりで異なり、
+印字はこの連なりも変えます。
+use case の残りの 3 個はスタイルの空白で異なります。
+（[同じに描かれるスタイル](#同じに描かれるスタイル)）。
+C4 の残りの 2 個はテキスト中の空白やタブの連なりで異なり、
+印字はこの連なりも変えます。
+agentflow の残りの 2 個はスタイルの空白で異なります。
+（[同じに描かれるスタイル](#同じに描かれるスタイル)）。
+平易な欄をすべて引用符で囲む形でも書き直した sankey の 6 つの例も、
+両方の形で読み、Db と SVG は同じでした。
+sankey の 11 個、ER の 15 個、requirement の 12 個のうち 9 個、
+Wardley の 35 個、gitGraph の 2 個、象限チャートの 19 個、
+XY チャートの 191 個のうち 73 個、Venn の 176 個のうち 166 個の入力も、
+整形後のテキストと同じ SVG が描かれました。
+requirement の残りの 3 個は、mermaid.js がどちらの形でも描きません。
+XY チャートの残りの 118 個はプロットがなく、
+mermaid.js はどちらの形でもプロットのないチャートを描きません。
+Venn の残りの 10 個は、どちらの形でも描かれません。
+use case の 93 個の入力も、1 つのスタイルの空白を除くと、
+整形後のテキストと同じ SVG が描かれました。
+architecture の 2 個の入力のうち 1 個、mindmap の 7 個、kanban の 114 個も、
+整形後のテキストと同じ SVG が描かれました。
+architecture の残りの 1 個は、どちらの形でも描かれません。
+C4 の 67 個の入力、flowchart の 11 個の入力も、
+整形後のテキストと同じ SVG が描かれました。
+agentflow の 26 個の入力も、スタイルの空白を除くと、
+整形後のテキストと同じ SVG が描かれました。
+class の 7 個の入力も、整形後のテキストと同じ SVG が描かれました。
+
 ### mermaid.js の版
 
 固定している mermaid.js の CHANGELOG.md には、
@@ -1647,6 +2431,136 @@ flowchart は最初の形が 14 個、もう一方が 8 個で、2 倍以上で�
   9.0.0 の文法は、コロンがあるヘッダーとないヘッダーを読みます。
   コロンなしで印字したテキストは 8.14.0 で読めないので、
   コロンは書かれたまま残します。
+- sankey 図の欄の引用符: 10.3.0、10.9.0、11.0.0、12.3.0 の文法は、
+  引用符のない欄と引用符で囲む欄の規則も、記録のアクションも同じです。
+  このアクションは、source と target の両端の空白を除き、
+  `""` を `"` として読み、値は欄の両端の空白を除いて `parseFloat` で読みます。
+- ER 図の名前と役割: 8.14.0 の文法には、引用符で囲む名前がありません。
+  9.4.3、10.9.0、11.0.0、12.3.0 の文法は、
+  引用符で囲む名前と役割をそれぞれの規則で読み、
+  引用符を除く（`$1.replace(/"/g, '')`）ので、引用符で囲む名前と、
+  同じ名前を引用符なしで書いたものは、同じテキストになります。
+  これらの文法が独立した単位として読む語（`erDiagram`、`one`、`many`、
+  `only one`、`to`、`optionally to` と、字句解析器のほかの語）は、
+  印字が引用符で囲んだまま残す語に含まれます。
+- requirement 図の名前と値: 9.1.0、10.9.0、12.3.0 の文法は、requirement の名前、
+  id、text、element の名前、type、reference に、
+  引用符で囲む文字列と引用符のない文字列の同じ生成規則 `unqString | qString`
+  を使い、字句解析器のキーワードを大文字小文字を問わず語全体として読みます。
+  そのため、それらのいずれでもない語は、これらのすべての版で名前として読めます。
+- Wardley マップの名前: この図種が初めて加わった 11.14.0 の文法は、
+  引用符のない名前を終端記号 `NAME_WITH_SPACES` で読みます。
+  ASCII の英字、数字、`_`、`(`、`)`、`&` からなり、
+  英字で始まる語を空白で区切った形です。
+  11.15.0（名前に `-` を加えた版）、12.0.0、12.3.0 の文法も同じ語を読みます。
+  引用符で囲む名前は、引用符のない名前と同じテキストです。
+- gitGraph のブランチ: 9.4.3、10.9.0、11.0.0 の文法は、参照 `ref` を、
+  引用符のない名前 `\w([-\./\w]*[-\w])?` か文字列として読み、
+  これらの文法の字句解析器は、キーワードを大文字小文字を問わず比較します。
+  12.3.0 の文法は、書かれたとおりに比較し、
+  キーワードより長い名前を名前として読みます。
+- 象限チャートのテキスト: 10.9.0、11.0.0、12.3.0 の文法は、
+  引用符のないテキスト（`ALPHA` とその後のトークン）と文字列を、
+  同じ `text` 規則で読みます。
+  これらの文法の字句解析器は、`x-axis`、`quadrant-1` から `quadrant-4`、
+  `quadrantChart` を、その後の境界を求めずに読みます。
+- XY チャートのタイトルと分類: 10.6.0、10.9.0、11.0.0、12.0.0、12.3.0 の文法は、
+  タイトル、軸やプロットのタイトル、分類を、同じ `text` 規則で読みます。
+  この規則は文字列をそのテキストとして読み、引用符のないテキストは、
+  トークンの間の空白なしでつないだものとして読みます。
+  これらの字句解析器は、`title`、`x-axis`、`y-axis`、`line`、`bar` を、
+  後ろに英字、数字、`_` がない場合に、大文字小文字を問わず読み、
+  `vertical` と `horizontal` は、どこで始まる場合も読みます。
+- architecture 図のラベル: 11.1.0 から 11.12.3 の文法は、
+  角括弧内の ASCII の英字、数字、`_`、空白からなるラベルを読み、
+  引用符で囲むラベルは読みません。
+  11.13.0 から 11.16.1 の文法は、そのようなラベルか引用符で囲むラベルを読み、
+  11.17.0 から 12.3.0 の文法は、引用符で囲むラベルか、`[`、`]`、
+  改行を含まない任意のテキストを読みます。
+  そのため、引用符で囲んだラベルは、
+  引用符を読むどの版も読むこれらの文字からなる場合にだけ、
+  引用符なしで印字します。
+- mindmap の形のテキスト: この規則が初めて加わった v9.4.0、v10.1.0 と、
+  v10.3.0 から 12.3.0 の文法は、形の中の文字列と、`)`、`]`、`(`、
+  `}` を含まないテキストを、同じ `NODE_DESCR` として読み、
+  文字列の規則をテキストの規則よりも前に置きます。
+  kanban のボードの形のテキストは、この図種が初めて加わった 11.4.0 の文法が、
+  12.3.0 までのすべての後続のリリースの文法と同じです。
+- treeView 図の名前: この図種が初めて加わった 11.14.0 と 11.15.0 の文法は、
+  ノードの名前を引用符で囲む文字列だけとして読み（`name=STRING2`）、
+  11.16.0 の文法で引用符のない名前（`BARE_NAME`）が加わりました。
+  引用符で囲む名前は、上のテキストのとおり、書かれたまま残します。
+- C4 図の引数: 引数の文脈の字句解析器の規則（`<attribute>[ ]*["]`、
+  `<string>[^"]*` と、どちらも `STR` を返す `<attribute>[^,]+`）と、
+  アクション `attribute: STR { $$ = $1.trim(); }` は、
+  C4 の文法がある最初のタグ 9.1.2（名前付き属性 `$key="value"` が、
+  9.1.3 で加わる前）、9.1.3、9.2.0、10.3.0、10.5.0、11.0.0、11.13.0、
+  12.3.0 の文法で同じです。
+  9.1.x の文法は、規則を console に記録するだけです。
+  そのため、この図種があるどの版でも、文字列と引用符のない引数は、
+  同じ引数になります。
+- flowchart の subgraph と agentflow 図の flow の名前: 9.0.0 から 10.0.2
+  の文法は、subgraph の名前を `text` 規則で読みます。
+  この規則は文字列をそのまま取り、型を持ちません（`$$ = $1`）。
+  10.1.0 から 10.3.0 の文法も `text` 規則で読み、
+  語と同じく文字列も型が `text` になります。
+  10.3.1 から 12.3.0 の文法は `textNoTags` 規則で読み、
+  この規則では文字列は型が `text` になります。
+  型 `string` は、10.3.1 から `text` 規則にあります。
+  この規則は角括弧の中のタイトルと形のラベルを読み、名前は読みません。
+  そのため、どの版でも、
+  subgraph の名前は両方の形で同じテキストと同じ型になります。
+  agentflow 図の文法は、12.0.0、12.1.0、12.2.0、12.3.0 で同じファイルです。
+- class 図の class の名前: 9.0.0 から 12.3.0 の文法は、
+  バッククォートで囲んだ名前（`classLiteralName`: `BQUOTE_STR`）と、
+  英字と数字の名前（`alphaNumToken`: `ALPHA`、`NUM`）を、
+  `className` として読みます。
+  これらの版の jison の字句解析器が語全体として読む語は、
+  [テキストの引用符](#テキストの引用符)が class 図について挙げる語です。
+  ヘッダーの `classDiagram` の規則は、どの版の字句解析器にもあります。
+  それ以外の英字、数字、`_` の文字列は、`ALPHA` か `NUM` として読まれます。
+  そのため、英字、数字、`_` からなる名前は、これらの語のどれでもなければ、
+  どの版でも両方の形で同じ名前です。
+  ただし、`direction` を含む行に結ばれる場合は除きます（次の項目）。
+- `direction` で終わる名前と、向きの名前で始まる名前: class 図、flowchart、
+  agentflow 図、ER 図、requirement 図では、
+  class と flowchart の 9.0.0 から 12.3.0 の文法の字句解析器は、
+  ほかの規則より先に、規則 `.*direction\s+TB[^\n]*` と、`BT`、`RL`、
+  `LR` の同じ規則を試し、`\s+` は改行も読みます。
+  flowchart の 11.13.0 から 12.3.0 の文法と、
+  agentflow 図の 12.0.0 から 12.3.0 の文法には、`TD` の規則もあります。
+  ER 図と requirement 図の 11.5.0 から 12.3.0 の文法には 4 つの規則があり、
+  それより前の文法にはありません。
+  ER 図と requirement 図の字句解析器は、
+  これらの版のすべてで大文字小文字を問わずに読み、
+  ほかは書かれた大文字小文字で読みます。
+  規則のない版は、引用符の有無によらず名前を同じに読みます。
+  そのため、印字が引用符を残す名前は、どの版でも同じに読まれます。
+- use case 図の名前、ラベル、metadata: この図種が初めて加わった 12.0.0 と、
+  12.1.0、12.2.0、12.3.0 の字句解析器、パーサー、visitor、model builder は、
+  同じファイルです。
+  visitor は、引用符で囲まれた名前の id を、ASCII の英字、数字、
+  `_` 以外の文字を、`_` に置き換えて作り、引用符のない名前の id は、
+  名前自体から作ります。
+- Venn 図の名前、ラベル、値: この図種が初めて加わった 11.13.0、12.0.0、
+  12.3.0 の文法は同じで、各版の `vennDB.ts` も同じです。
+  引用符で囲む名前と、同じ名前を引用符なしで書いたものは、
+  同じテキストになります。
+  `normalizeText` が文字列の引用符を外し、
+  すべてのテキストの両端の空白を除くためです。
+  角括弧のラベルは、引用符の有無によらず両端の空白を除き、
+  字句解析器は `venn-beta`、`set`、`union`、`text`、`style` を、
+  大文字小文字を問わず読みます。
+- 1 行のブロックのアクセシビリティの説明: flowchart の 9.0.0 と 9.0.1 の文法に、
+  `accDescr` の規則はありません。
+  最初に規則がある 9.1.0 の文法には、コロンの形とブロックの形があります。
+  9.1.0、9.4.3、10.9.0、11.0.0、12.0.0、12.3.0 の文法では、
+  ブロックの規則があるすべてのファイルに、コロンの規則もあります。
+  9.1.0、10.9.0、12.3.0 の各ファイルで、
+  コロンの規則は行の残り `(?!\n|;|#)*[^\n]*` を読みます。
+  11.0.0 以降の Langium パーサーを使う図種の文法は、
+  共通文法の 1 つの終端記号で両方の形を読みます。
+  そのため、コロンで印字したテキストは、ブロックを読むすべての版で読めます。
 - gitGraph の `switch`: 10.9.0 の文法は `checkout` があり、`switch` はなく、
   11.0.0 の文法は両方があります。
   `checkout` で印字したテキストは、`switch` を読むすべての版で読めます。
@@ -2107,6 +3021,13 @@ mermaid.js は、行の中で単位が始まる最初の位置で、
 方向の文ではないそうした行は、字下げも含めて書かれたまま残します。
 [fixture: flowchart/indentation/direction-text-kept]
 [fixture: flowchart/indentation/direction-text-with-directive-kept]
+mermaid.js は字句解析器がテキストを読む前にディレクティブを除くので、
+ディレクティブが分割する
+`direction`（`accDescr: direc%%{init: {}}%%tion RL`）も、方向のテキストです。
+flowchart と swimlane の図の、ブロック内かコロンの後の説明、タイトル、`;` の後、
+サブグラフ内でも同じです。
+[fixture: flowchart/indentation/direction-text-split-by-a-directive-kept]
+[fixture: flowchart/indentation/swimlane-direction-text-split-by-a-directive-kept]
 [字下げ](./flowchart.ja.md#字下げ)を参照してください。
 
 flowchart本文は共有の意味を持つ字下げの下限を使い、
@@ -2686,11 +3607,13 @@ Db や字句解析器が読むものは変えません。
   小文字の `horizontal` だけが横向きにし、`Horizontal` は縦向きにするので、
   大文字小文字は Db に入っています。
   [fixture: header-and-orientation/orientation-case-kept]
-- 文字列。
-  中の改行は Db に入り、引用符は書き手のものです。
-  `"a b"` と `a b` は同じテキストではありません。
+- 文字列の中の改行は Db に入り、複数の語を含むテキストの引用符も保ちます。
+  `"a b"` と `a b` は同じテキストではないので、書かれたまま残します。
   文字列の中の空白とタブの連なりは、空白 1 つで印字します。
+  1 語のテキストの引用符は、
+  [テキストの引用符](#テキストの引用符)に従う場合だけ変えます。
   [fixture: quotes/strings-runs-collapsed]
+  [fixture: quotes/texts-of-several-words]
   [fixture: multi-line-values/string-with-line-breaks-kept]
 - 分類と title の数字はテキストなので、`007` や `.5` は書かれたままです。
   範囲の数とプロットの値は、最短の形で印字します。
@@ -2755,11 +3678,14 @@ Db や字句解析器が読むものは変えません。
   `0.30` は `0.3` ではありません。 [fixture: points/coordinates-as-written]
 - 後ろにテキストのない軸の矢印は、Db が左のテキストの一部として読みます。
   [fixture: axes/arrow-only]
-- 文字列。
-  中の改行を保ち、引用符は書き手が選びます。
+- 文字列の中の改行と、引用符のないテキストが持てないものを含む文字列の引用符。
+  これらは保ちます。
+  `"a: b"` にはコロンがあり、引用符のないテキストはコロンがあると拒否されます。
   中の空白とタブの連なりは、空白 1 つで印字します。
-  文字列は引用符なしのテキストが持てないものを持てるので、引用符は外しません。
+  平易なテキストの引用符は、
+  [テキストの引用符](#テキストの引用符)に従って外します。
   [fixture: quotes/strings-runs-collapsed]
+  [fixture: quotes/texts-that-need-quotes]
   [fixture: quotes/keywords-and-arrows-in-strings]
   [fixture: multi-line-values/string-with-line-breaks-kept]
 - title とアクセシビリティのテキストの中の `;` はその文字で、
@@ -3026,7 +3952,8 @@ CR・LF の変換は他図種と共通の設定に従います。
 
 C4 は書かれた引数の単位と位置をすべて保ちます。
 空項目、空文字列、使われない添字と sprite、余分な引数、隣接する単位も対象です。
-裸と引用符付きの形は作者のままにし、
+裸と引用符付きの形は、
+[テキストの引用符](#テキストの引用符)のとおりに印字します。
 裸の引用符または `$` の前の非 ASCII 空白も保ちます。
 その空白が裸の単位を選ぶためです。
 引用符付き引数の後の空白だけの単位も残します。

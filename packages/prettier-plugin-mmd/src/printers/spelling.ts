@@ -5,6 +5,8 @@ import { findNodes } from "./collections.ts"
 import { keywordSpellings } from "./keyword-spellings.ts"
 import { childrenOf } from "./layout.ts"
 import { findLinkLabelRespellings } from "./link-label-form.ts"
+import { shortestNumber } from "./number-form.ts"
+import { findQuoteFormRespellings } from "./quote-form.ts"
 import type { Source } from "./source.ts"
 
 /** The text to print in place of the token or node at an offset. */
@@ -163,34 +165,6 @@ function doubleQuoted(text: string): string | undefined {
     : `"${content}"`
 }
 
-/**
- * The number in its shortest form: no `+`, no zero at the end of the fraction,
- * no `.` at its end, and a `0` before a `.` at its start. Undefined where the
- * text is no plain decimal, has a zero at the start of its integer part, is a
- * negative zero, or has more digits than a double holds exactly.
- */
-function shortestNumber(text: string): string | undefined {
-  const negative = text.startsWith("-")
-  const unsigned = negative || text.startsWith("+") ? text.slice(1) : text
-  const dot = unsigned.indexOf(".")
-  const integer = dot === -1 ? unsigned : unsigned.slice(0, dot)
-  const fraction = dot === -1 ? "" : unsigned.slice(dot + 1)
-  const digits = integer + fraction
-  if (
-    digits.length === 0 ||
-    digits.length > 15 ||
-    [...digits].some((character) => character < "0" || character > "9") ||
-    (integer.length > 1 && integer.startsWith("0"))
-  ) {
-    return undefined
-  }
-  let kept = fraction.length
-  while (kept > 0 && fraction[kept - 1] === "0") kept--
-  const whole = integer === "" ? "0" : integer
-  const value = kept === 0 ? whole : `${whole}.${fraction.slice(0, kept)}`
-  return negative && value === "0" ? undefined : (negative ? "-" : "") + value
-}
-
 /** Records the ranges of the outermost nodes below `node` of a wanted type. */
 function collectRanges(
   node: Node,
@@ -255,6 +229,7 @@ function respellingsOf(source: Source): SourceRespellings {
       findEqualRangeRespellings(source, map)
     }
     findLinkLabelRespellings(source, map)
+    findQuoteFormRespellings(source, map)
     collectNumbers(source, source.root, map)
     found = { byStart: map, starts: [...map.keys()].sort((a, b) => a - b) }
     respellingsOfSource.set(source, found)

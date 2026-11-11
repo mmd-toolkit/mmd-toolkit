@@ -1,0 +1,32 @@
+{
+  "source": {
+    "kind": "authored",
+    "note": "c4.md Title and accessibility statements; db-summaries.md c4: `accDescription`, a description block whose text stands on a line of its own, and `accDescr:` all set the description to `Customers`."
+  },
+  "accepted": true,
+  "diagramType": "c4",
+  "db": {
+    "type": "C4Context",
+    "title": "",
+    "accTitle": "",
+    "accDescr": "Customers",
+    "shapes": [],
+    "boundaries": [
+      {
+        "alias": "global",
+        "label": {
+          "text": "global"
+        },
+        "type": {
+          "text": "global"
+        },
+        "tags": null,
+        "link": null,
+        "parentBoundary": ""
+      }
+    ],
+    "rels": [],
+    "c4ShapeInRow": 4,
+    "c4BoundaryInRow": 2
+  }
+}

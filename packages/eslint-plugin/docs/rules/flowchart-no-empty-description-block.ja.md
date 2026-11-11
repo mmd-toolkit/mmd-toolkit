@@ -71,7 +71,10 @@ flowchart LR
 %% eslint @mmd-toolkit/flowchart-no-empty-description-block: error
 flowchart LR
   A
-  accDescr { y }
+  accDescr {
+    first line
+    second line
+  }
 ```
 
 ```mmd

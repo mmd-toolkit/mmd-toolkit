@@ -62,10 +62,11 @@ Examples of **correct** code for this rule:
 ```mmd
 %% eslint @mmd-toolkit/agentflow-no-empty-description-block: error
 agentflow-beta TB
-  A
   accDescr {
-    The steps of the review
+    first
+    second
   }
+  A
 ```
 
 ## Options

@@ -43,8 +43,11 @@ Examples of **correct** code for this rule:
 ```mmd
 %% eslint @mmd-toolkit/xychart-no-unclosed-description-block: error
 xychart
-  accDescr { Monthly sales }
-  title Sales
+  accDescr {
+    Monthly sales
+    by region
+  }
+  title "Sales"
   line [1, 2]
 ```
 

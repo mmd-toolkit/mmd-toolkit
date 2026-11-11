@@ -374,9 +374,10 @@ packet
 
 ### Description blocks
 
-共有の `layoutDescriptionBlock` を使います。
-ブロックの境界がわかるよう、keyword と opener の間に空白を1個置きます。
-1 行のテキストは、括弧に接して書かれていても、両側に空白を 1 つずつ置きます。
+1 行の説明ブロックは、
+[1 行の説明ブロック](./compatibility.ja.md#1-行の説明ブロック) に従います。
+波括弧を残すブロックは、境界がわかるよう、
+キーワードと開始波括弧の間に空白を 1 つ置きます。
 通常の opener 空白は物理・Unicode 行を越えて結合します。
 実際の trivia があれば改行を保ちます。
 囲む文字列がないため、空白だけの内側は `{}` にします。
@@ -419,10 +420,10 @@ directive と共有の除去対象となるコメント領域は原文全体を�
 
 ```mmd
 packet
-  accDescr { A }
-  accDescr { B }
-  accDescr { C }
-  accDescr { D }
+  accDescr: A
+  accDescr: B
+  accDescr: C
+  accDescr: D
 ```
 
 ### Multiline values
@@ -518,7 +519,7 @@ native hidden DIRECTIVE は別の所有ノードのままです。
 packet
   0%%{wrap}%%: "Global"
   accTitle%%{wrap}%%: Access
-  accDescr %%{wrap}%%{ Detail }
+  accDescr%%{wrap}%%: Detail
 ```
 
 ### Hidden yaml
@@ -808,7 +809,7 @@ hidden の閉じの padding は EOF でも残します。
 ```mmd
 packet
   0: "Exterior"
-  accDescr { Detail }
+  accDescr: Detail
 ```
 
 ### Frontmatter yaml

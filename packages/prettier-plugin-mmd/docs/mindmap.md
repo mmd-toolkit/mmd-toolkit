@@ -339,10 +339,11 @@ shape may stand alone, without a node text. [fixture: shapes/shape-alone]
 The text of a shape is printed without the spaces and tabs at its ends: `a[ x ]`
 is printed `a[x]`. mermaid.js keeps them in the Db and draws the same node. A
 string is a string only right after the opener, so `a[ "x" ]` has the text `"x"`
-with its quotes, and `a["x"]` and `a[x]` have the same text; none is rewritten
-into another, and the padding of a text that would start with a quote once it is
-gone stays. A string, a markdown string, and a text over lines stay as written,
-and a text of nothing but spaces and tabs is printed as one space. [fixture:
+with its quotes, and `a["x"]` and `a[x]` have the same text, so a string whose
+text is plain is printed without its quotes (see [Quotes](#quotes)); the padding
+of a text that would start with a quote once it is gone stays. A markdown
+string, a string that is not plain, and a text over lines stay as written, and a
+text of nothing but spaces and tabs is printed as one space. [fixture:
 shapes/inner-padding-dropped] [fixture: shapes/text-and-string-forms] [fixture:
 shapes/markdown-string] [fixture: shapes/padding-kept-where-drawn-differently]
 The whitespace after a shape is not in the Db, and is dropped. [fixture:
@@ -389,9 +390,53 @@ Output
 mindmap
   root
     a[x y]
-    b["x y"]
+    b[x y]
     c[ "x" ]
-    d["x"]
+    d[x]
+```
+
+### Quotes
+
+The text of a shape in quotes is printed without them, as the examples in the
+documentation of mermaid.js write it (see
+[The quotes of a text](./compatibility.md#the-quotes-of-a-text)): `a["x y"]` is
+printed `a[x y]`, `c(("x"))` is printed `c((x))`, and `d))"x"((` is printed
+`d))x((`. The text keeps its quotes where a text without quotes would end
+earlier or be read as a closer or an opener: a text with a `)`, a `]`, a `(`, or
+a `}`; a text that starts with a `-` (`a("-x")`, since `(-` opens another shape,
+and a `-` before a `)` closes one); a string next to a dash of the dash form
+(`f(-"x"-)`, whose closer `-)` follows a string only); a text with padding or a
+line break; and an empty string. A markdown string stays as written. [fixture:
+quotes/labels-without-quotes] [fixture: quotes/labels-that-need-quotes]
+
+Input
+([quotes/labels-without-quotes-input.mmd](../tests/fixtures/mindmap/quotes/labels-without-quotes-input.mmd)):
+
+```mmd
+mindmap
+  root["Root text"]
+    a["x y"]
+    b("x")
+    c(("x"))
+    d))"x"((
+    e{{"x"}}
+    f)"x"(
+    g[x]
+```
+
+Output
+([quotes/labels-without-quotes-output.mmd](../tests/fixtures/mindmap/quotes/labels-without-quotes-output.mmd)):
+
+```mmd
+mindmap
+  root[Root text]
+    a[x y]
+    b(x)
+    c((x))
+    d))x((
+    e{{x}}
+    f)x(
+    g[x]
 ```
 
 ### Multi-line texts

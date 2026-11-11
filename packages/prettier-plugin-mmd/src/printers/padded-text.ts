@@ -1,6 +1,7 @@
 import type { Range } from "@mmd-toolkit/ast"
 import type { Source } from "./source.ts"
 import { isSpaceOrTab } from "./source.ts"
+import { findRespellings } from "./spelling.ts"
 
 /**
  * The printing of the texts of a mindmap or a kanban board without the spaces
@@ -92,7 +93,12 @@ export function printShapeWithoutPadding(
   shape: PaddedShape,
 ): string {
   const { label } = shape
-  const text = source.text.slice(...label.range)
+  // A string whose quotes the printer takes off is printed as the text.
+  const respelling = findRespellings(source).get(label.range[0])
+  const text =
+    respelling?.end === label.range[1]
+      ? respelling.text
+      : source.text.slice(...label.range)
   const trimmed = trimBlanks(text)
   const keepsPadding = label.kind !== "text" || trimmed.startsWith('"')
   return (

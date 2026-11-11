@@ -649,16 +649,17 @@ treemap
 
 ### Description blocks
 
-Use shared description-block layout. Put one space between `accDescr` and `{`,
+Description blocks on one line follow
+[A description block on one line](./compatibility.md#a-description-block-on-one-line).
+For blocks that keep their braces, put one space between `accDescr` and `{`,
 even when they originally touched, to distinguish the keyword from its body.
-Print text on one line between one space on each side, whether it touched the
-braces or not, while whitespace-only interiors become `{}` because no text needs
-surrounding padding. Join plain opener whitespace, keep comment/directive
-contents and their boundaries, and align body lines one step inside the
-statement while retaining internal blank lines. Mermaid discards indentation
-after LF from the description. The body uses the configured indentation,
-including tabs and the positive minimum step at width zero. Align a separate
-opener or closer with its statement. The first `}` still closes the block.
+Whitespace-only interiors become `{}` because no text needs surrounding padding.
+Join plain opener whitespace, keep comment/directive contents and their
+boundaries, and align body lines one step inside the statement while retaining
+internal blank lines. Mermaid discards indentation after LF from the
+description. The body uses the configured indentation, including tabs and the
+positive minimum step at width zero. Align a separate opener or closer with its
+statement. The first `}` still closes the block.
 
 [fixture: treemap/description-blocks/empty]
 

@@ -71,8 +71,10 @@ Examples of **correct** code for this rule:
 ```mmd
 %% eslint @mmd-toolkit/sequence-no-empty-description-block: error
 sequenceDiagram
-  A ->> B: x
-  accDescr { y }
+  accDescr {
+    a
+    b
+  }
 ```
 
 ```mmd

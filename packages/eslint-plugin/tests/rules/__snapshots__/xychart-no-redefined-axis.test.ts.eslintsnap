@@ -6,9 +6,9 @@ Filename: xychart-no-redefined-axis-incorrect-1.mmd
 
 Code:
   1 | xychart
-  2 |   x-axis Month [jan, feb]
-  3 |   x-axis Year [2023, 2024]
-    |   ^~~~~~~~~~~~~~~~~~~~~~~~ [1]
+  2 |   x-axis "Month" [jan, feb]
+  3 |   x-axis "Year" [2023, 2024]
+    |   ^~~~~~~~~~~~~~~~~~~~~~~~~~ [1]
   4 |   line [1, 2]
   5 |
 
@@ -21,7 +21,7 @@ Filename: xychart-no-redefined-axis-incorrect-2.mmd
 
 Code:
   1 | xychart
-  2 |   y-axis Revenue
+  2 |   y-axis "Revenue"
   3 |   y-axis 0 --> 100
     |   ^~~~~~~~~~~~~~~~ [1]
   4 |   line [1, 2]

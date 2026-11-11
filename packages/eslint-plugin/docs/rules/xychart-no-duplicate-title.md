@@ -41,13 +41,16 @@ set the same title.
 After `accTitle: a` and `accTitle: b`, a third `accTitle: a` is reported because
 it replaces `b`.
 
+The formatter prints a `title` with quotes. The last example writes the same
+title with and without quotes, so it is shown as written.
+
 Examples of **incorrect** code for this rule:
 
 ```mmd
 %% eslint @mmd-toolkit/xychart-no-duplicate-title: error
 xychart
-  title first
-  title second
+  title "first"
+  title "second"
   line [1, 2]
 ```
 
@@ -64,11 +67,12 @@ Examples of **correct** code for this rule:
 ```mmd
 %% eslint @mmd-toolkit/xychart-no-duplicate-title: error
 xychart
-  title first
+  title "first"
   accTitle: second
   line [1, 2]
 ```
 
+<!-- prettier-ignore -->
 ```mmd
 %% eslint @mmd-toolkit/xychart-no-duplicate-title: error
 xychart

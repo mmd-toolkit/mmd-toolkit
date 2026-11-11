@@ -996,12 +996,8 @@ flowchartと同じ理由で同じ規則を使います。
 [fixture: accessibility/empty-block-semicolon-kept]
 [fixture: accessibility/empty-block-directive-kept]
 
-空でない 1 行のブロックの文字は、両側に空白を 1 つずつ置きます。
-兄弟の図種と同じ形です。
-詳しくは、
-[アクセシビリティの行](./flowchart.ja.md#アクセシビリティの行)
-を参照してください。
-`{a}`、`{ a }`、`{  a  }`、`{  a}`、`{a  }` は、どれも `{ a }` になります。
+1 行のブロックは、
+[1 行の説明ブロック](./compatibility.ja.md#1-行の説明ブロック) に従います。
 [fixture: accessibility/block-tight-text]
 [fixture: accessibility/block-spaced-text]
 [fixture: accessibility/block-padded-text]
@@ -1054,7 +1050,7 @@ agentflow-beta TB
 
 ```mmd
 agentflow-beta TB
-  accDescr { a }
+  accDescr: a
   A[Block spacing]
 ```
 
@@ -1197,6 +1193,128 @@ BOMとfrontmatterの共通の制限も適用します。
 入力`"agentflow-beta TB\r\nA[\"a\r\n b\"]\r\n"`は、
 出力`"agentflow-beta TB\n  A[\"a\n b\"]\n"`になります。
 [test: agentflow: eol-crlf]
+
+### Quotes
+
+引用符で囲まれた flow と connector の名前は、
+flowchart の subgraph の名前の条件に従い、引用符なしで印字します。
+（[Quotes](./flowchart.ja.md#quotes)）。
+mermaid.js の文書の例は引用符なしでそれぞれ 17 回と 2 回書き、
+引用符つきでは一度も書いていないためです。
+（[テキストの引用符](./compatibility.ja.md#テキストの引用符)）。
+`flow "My Flow"` は `flow My Flow` と、
+`connector "Join"` は `connector Join` と印字します。
+複数のラベルからなる名前（`connector I "" J`）は書かれたままにします。
+`direction` で終わる名前も書かれたままにします。
+字句解析器は、`direction`、空白（改行も含みます）、`TB`、`BT`、`RL`、`LR`、
+`TD` を 1 行として読むためです（`flow "xdirection"` と次の行の `TB --> B`）。
+[fixture: quotes/names-next-to-a-direction-line]
+
+角括弧の中の connector のタイトルは、2 つの例と同じく引用符つきで印字します。
+`connector C [Merge results]` は `connector C["Merge results"]` と印字します。
+mermaid.js はどちらの形のタイトルも同じテキストとして読みます。
+タイトルを引用符で囲むのは、英字か数字で始まり、ASCII の英字、数字、空白、`_`、
+`-`、`.`、`,`、`:`、`!`、`?` からなる場合です。
+これにより、プリンタが除く角括弧の内側の空白が引用符の前に立つことはありません。
+`[a/b]`、`[ /x/ ]`、``[`md`]``、`[日本語]` のように別の文字を含むタイトルは、
+書かれたままにします。
+タイトルは、コメント、`;`、ディレクティブの前でも引用符で囲みます。
+文字列はそれらを取り込まないためです。
+`connector C3 [T]%%{init: {}}%%` を印字すると、
+`connector C3["T"]%%{init: {}}%%` になります。
+コメントが続く名前は引用符を保ちます。 [fixture: quotes/names-without-quotes]
+[fixture: quotes/names-that-need-quotes]
+[fixture: quotes/connector-titles-in-quotes]
+[fixture: quotes/connector-titles-as-written]
+[fixture: quotes/names-and-titles-before-a-comment]
+
+flow のタイトル、形のラベル、リンクのラベルは、
+例では flow のタイトルを引用符つきで 17 回書き、
+引用符なしでは一度も書いていなくても、書かれたままにします。
+mermaid.js は `A["x"]` を文字列、`A[x]` をテキストとして読み、
+Db の `labelType` は前者が `string`、後者が `text` なので、
+2 つの形は同じに読まれないためです。 [fixture: quotes/flow-titles-as-written]
+[fixture: quotes/labels-as-written]
+
+入力
+([quotes/names-without-quotes-input.mmd](../tests/fixtures/agentflow/quotes/names-without-quotes-input.mmd)):
+
+```mmd
+agentflow-beta TB
+flow "Main"
+A --> B
+end
+flow "My Flow" [T]
+C --> D
+end
+flow "F3"["T"]
+E --> F
+end
+flow "F4"@{ x: 1 }
+G --> H
+end
+connector "Join"
+connector "Join2" ["Merge results"]
+connector "J3"@{ x: 1 }
+flow Already
+I --> J
+end
+```
+
+出力
+([quotes/names-without-quotes-output.mmd](../tests/fixtures/agentflow/quotes/names-without-quotes-output.mmd)):
+
+```mmd
+agentflow-beta TB
+  flow Main
+    A --> B
+  end
+  flow My Flow[T]
+    C --> D
+  end
+  flow F3["T"]
+    E --> F
+  end
+  flow F4@{ x: 1 }
+    G --> H
+  end
+  connector Join
+  connector Join2["Merge results"]
+  connector J3@{ x: 1 }
+  flow Already
+    I --> J
+  end
+```
+
+入力
+([quotes/connector-titles-in-quotes-input.mmd](../tests/fixtures/agentflow/quotes/connector-titles-in-quotes-input.mmd)):
+
+```mmd
+agentflow-beta TB
+connector C1 [Merge results]
+connector C2 [ Padded ]
+connector C3 [x-y]
+connector C4 [A,b: c!]
+connector C5 [1.5]
+connector C6[Touching]
+connector C7 ["Already"]
+connector C8 [Done?]@{ x: 1 }
+```
+
+出力
+([quotes/connector-titles-in-quotes-output.mmd](../tests/fixtures/agentflow/quotes/connector-titles-in-quotes-output.mmd)):
+
+```mmd
+agentflow-beta TB
+  connector C1["Merge results"]
+  connector C2["Padded"]
+  connector C3["x-y"]
+  connector C4["A,b: c!"]
+  connector C5["1.5"]
+  connector C6["Touching"]
+  connector C7["Already"]
+  connector C8["Done?"]@{ x: 1 }
+```
 
 ### Frontmatter YAML
 

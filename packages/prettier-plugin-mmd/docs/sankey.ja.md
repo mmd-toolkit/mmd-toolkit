@@ -62,8 +62,8 @@ c,d,2
 
 ```mmd
 sankey
-"a",b,1
-   c,d,2
+"a,b",c,1
+   d,e,2
 ```
 
 出力
@@ -71,8 +71,8 @@ sankey
 
 ```mmd
 sankey
-"a",b,1
-c,d,2
+"a,b",c,1
+d,e,2
 ```
 
 ### コンマ
@@ -155,8 +155,8 @@ c,d,2
 
 ```mmd
 sankey
-"a", b,"1"
-a,"b",  1
+"a,b", c,"d,e"
+f,"g,h",  1
 ```
 
 出力
@@ -164,8 +164,8 @@ a,"b",  1
 
 ```mmd
 sankey
-"a",b,"1"
-a,"b",1
+"a,b",c,"d,e"
+f,"g,h",1
 ```
 
 入力
@@ -186,13 +186,25 @@ style:#x;y,b,1
 
 ### 引用符
 
-欄の引用符は、書かれたまま印字します。
-`"a"` と `a`、`" a"` と `a` は Db で同じ id ですが、作者が書いたテキストです。
-文字列には、引用符のない欄に書けないコンマや二重の引用符を書けます。
-引用符の間のテキストは値で、空白も残します。 [fixture: quotes/quotes-kept]
-[fixture: quotes/unneeded-quotes-kept]
+欄のテキストが平易なときは、引用符なしで印字します。
+平易とは、ASCII の英字、数字、`_`、`-`、`.` と、その間の空白だけのものです。
+`"a"` と `a` は Db で同じ id で、`" a"` と `a` も同じです。
+mermaid.js は引用符の有無に関わらず欄の両端の空白を落とし、
+mermaid.js の文書の例では、source と value はすべて引用符なしで、
+link の target は引用符なしが 83 回、引用符付きが 4 回です。
+（[テキストの引用符](./compatibility.ja.md#テキストの引用符)を参照）。
+そのため、`"a",b,"1"` は `a,b,1`、`"a b"` は `a b`、
+`" a "` は `a` と印字します。
+テキストが平易でない欄は、引用符を残します。
+引用符のない欄には書けないコンマや二重の引用符がある欄、改行、`;`、`#`、`%%`、
+その他の文字を含む欄、中に指令がある文字列です。
+[fixture: quotes/plain-text-without-quotes]
+[fixture: quotes/plain-text-with-spaces-without-quotes]
+[fixture: quotes/spaces-at-the-ends-left-out]
 [fixture: quotes/comma-and-doubled-quotes-kept]
-[fixture: quotes/spaces-inside-quotes-kept]
+[fixture: quotes/other-characters-keep-the-quotes]
+[fixture: directives/inside-fields-kept]
+[fixture: multi-line-strings/string-over-lines]
 
 入力
 ([quotes/comma-and-doubled-quotes-kept-input.mmd](../tests/fixtures/sankey/quotes/comma-and-doubled-quotes-kept-input.mmd)):
@@ -222,7 +234,9 @@ mermaid.js は `parseFloat` で値を数にするので、`1.0`、`+1`、`.5` �
 指数のある数（`1e0`）、整数部の先頭にゼロがある数（`007`）、15 桁より多い数、
 `-0`、mermaid.js がそれぞれ `1` と `0` として読む `1_0` と `0x1`、
 `NaN` として読む `abc` のような数でない値です。
-引用符で囲まれた値も、そのまま残します。
+引用符で囲まれた値は、テキストが平易なときは引用符を外し、値の形で印字します。
+`"1.0"` は `1` と印字し、`"+1"` は、`+` が平易な文字ではないので、
+書かれたまま残します。 [fixture: quotes/values-in-quotes-without-quotes]
 値の後ろの `%%` や `#` は、コメントではなく欄の文字で、欄と一緒に残します。
 そのため、その欄は単純な十進表記ではなく、書かれたまま残します。
 [fixture: values/shortest-form] [fixture: values/forms-kept]

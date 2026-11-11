@@ -47,9 +47,9 @@ usecase-beta
 ```mmd
 %% eslint @mmd-toolkit/usecase-no-empty-description-block: error
 usecase-beta
-  A
   accDescr {
-    The steps of a sign-in
+    Actors authenticate,
+    reset credentials, and sign out.
   }
 ```
 

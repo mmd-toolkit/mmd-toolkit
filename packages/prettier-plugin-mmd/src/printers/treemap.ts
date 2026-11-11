@@ -137,6 +137,13 @@ export function printTreemap(
       printedEnd: (line) => findTreemapPrintedEnd(source, line),
       holdsStatements: () => false,
       isDroppedAtTopLevel: () => false,
+      onlyStatementOf: (line) =>
+        line.statements.length === 1
+          ? {
+              statement: line.statements[0],
+              head: placements.get(line)!.head,
+            }
+          : undefined,
       joiningRegionsPrintedAsWritten: true,
       keepsWhitespaceLineAfterComment: false,
       keepsDirectiveLinesUnindented: false,

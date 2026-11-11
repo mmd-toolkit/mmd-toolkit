@@ -47,6 +47,7 @@ xychart
   accDescr: first
   accDescr {
     second
+    third
   }
   line [1, 2]
 ```
@@ -64,9 +65,7 @@ xychart
 %% eslint @mmd-toolkit/xychart-no-duplicate-description: error
 xychart
   accDescr: first
-  accDescr {
-    first
-  }
+  accDescr: first
   line [1, 2]
 ```
 

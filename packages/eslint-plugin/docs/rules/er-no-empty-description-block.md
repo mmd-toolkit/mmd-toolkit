@@ -62,8 +62,11 @@ Examples of **correct** code for this rule:
 ```mmd
 %% eslint @mmd-toolkit/er-no-empty-description-block: error
 erDiagram
+  accDescr {
+    line1
+    line2
+  }
   A
-  accDescr { y }
 ```
 
 ```mmd

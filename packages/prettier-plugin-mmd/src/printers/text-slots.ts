@@ -2,6 +2,7 @@ import type {
   C4BoundaryKeyword,
   C4ElementKeyword,
   C4RelationshipKeyword,
+  C4UpdateKeyword,
 } from "@mmd-toolkit/ast"
 import type { TextSlots } from "./text-runs.ts"
 
@@ -129,17 +130,25 @@ export const blankTextSlots: TextSlots = {
 const c4PersonOrSystem = ["alias", "label", "descr"]
 const c4Container = ["alias", "label", "techn", "descr"]
 const c4Boundary = ["alias", "label", "type"]
+// mermaid.js puts the type of these three boundaries in before the third
+// argument, so the third argument that is written is the tags.
+const c4FixedBoundary = ["alias", "label", "tags"]
 const c4Node = ["alias", "label", "type", "descr"]
 const c4Relationship = ["from", "to", "label", "techn", "descr"]
 
 /**
  * What each argument of a C4 statement is, by keyword and in the order of the
  * arguments: mermaid.js reads an argument by its place, whichever of the
- * arguments before it are named (docs/c4.md, Argument forms).
+ * arguments before it are named (docs/c4.md, Argument forms). Of an update
+ * statement only the names it refers to are listed, since the other arguments
+ * set a style.
  */
 export const c4ArgumentFields: Readonly<
   Record<
-    C4BoundaryKeyword | C4ElementKeyword | C4RelationshipKeyword,
+    | C4BoundaryKeyword
+    | C4ElementKeyword
+    | C4RelationshipKeyword
+    | C4UpdateKeyword,
     readonly string[]
   >
 > = {
@@ -164,9 +173,9 @@ export const c4ArgumentFields: Readonly<
   ComponentDb_Ext: c4Container,
   ComponentQueue_Ext: c4Container,
   Boundary: c4Boundary,
-  Enterprise_Boundary: c4Boundary,
-  System_Boundary: c4Boundary,
-  Container_Boundary: c4Boundary,
+  Enterprise_Boundary: c4FixedBoundary,
+  System_Boundary: c4FixedBoundary,
+  Container_Boundary: c4FixedBoundary,
   Deployment_Node: c4Node,
   Node: c4Node,
   Node_L: c4Node,
@@ -183,7 +192,21 @@ export const c4ArgumentFields: Readonly<
   Rel_Right: c4Relationship,
   Rel_Back: c4Relationship,
   RelIndex: ["index", "from", "to", "label", "techn", "descr"],
+  UpdateElementStyle: ["alias"],
+  UpdateRelStyle: ["from", "to"],
+  UpdateLayoutConfig: [],
 }
+
+/**
+ * The arguments of a C4 statement that are names, which other statements refer
+ * to: the alias of an element or a boundary, and the two ends of a
+ * relationship.
+ */
+export const c4NameFields: ReadonlySet<string> = new Set([
+  "alias",
+  "from",
+  "to",
+])
 
 /**
  * The arguments of a C4 statement that are texts, written as a string or

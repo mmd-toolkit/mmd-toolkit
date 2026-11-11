@@ -1040,6 +1040,44 @@ sequenceDiagram
   end
 ```
 
+### Quotes
+
+printer は引用符を付けたり外したりしません。
+sequence 図には文字列がなく、引用符はテキストの文字です。
+`participant A as "Alice"` の説明は引用符を含む `"Alice"` で、
+`participant B as Bob` の説明は `Bob` です。
+`A->>B: "Hello"` はテキストが `"Hello"` のメッセージで、
+`B-->>A: Hello` はテキストが `Hello` のメッセージです。
+ノートも同じように引用符をテキストに含みます。
+引用符を外すと、mermaid.js が描くテキストが変わります。
+[fixture: quotes/texts-as-written]
+
+入力
+([quotes/texts-as-written-input.mmd](../tests/fixtures/sequence/quotes/texts-as-written-input.mmd)):
+
+```mmd
+sequenceDiagram
+participant A as "Alice"
+participant B as Bob
+A->>B: "Hello"
+B-->>A: Hello
+Note over A: "Quoted"
+Note over A: Plain
+```
+
+出力
+([quotes/texts-as-written-output.mmd](../tests/fixtures/sequence/quotes/texts-as-written-output.mmd)):
+
+```mmd
+sequenceDiagram
+  participant A as "Alice"
+  participant B as Bob
+  A ->> B: "Hello"
+  B -->> A: Hello
+  Note over A: "Quoted"
+  Note over A: Plain
+```
+
 ### フロントマターの YAML
 
 flowchart と同じです。
@@ -1127,17 +1165,8 @@ sequenceDiagram
 [fixture: multi-line-values/empty-whitespace-interiors]
 [test: sequence Unicode and tab interiors]
 コメントや directive があるブロックの内容と改行は保ちます。
-1 行のブロックの文字は、両側に空白を 1 つずつ置きます。
-これは、
-[flowchart のアクセシビリティの行](./flowchart.ja.md#アクセシビリティの行)
-と同じ形です。
-`accDescr {a b}`、`accDescr {  a b  }`、`accDescr {  a b}`、
-`accDescr {a b  }` は、どれも `accDescr { a b }` になります。
-mermaid.js は文字を trim するので、両端の空白に意味はありません。
-文字の中にディレクティブがあるブロックは、書かれたままにします。
-`;` を残す行にあるブロックは、空白を足しませんが、
-端の空白の連なりは空白 1
-つにします（[セミコロン](./flowchart.ja.md#セミコロン)を参照）。
+1 行のブロックは、
+[1 行の説明ブロック](./compatibility.ja.md#1-行の説明ブロック) に従います。
 [fixture: multi-line-values/block-text-on-one-line-padded]
 
 `accDescr { ... }` の本文行は文より 1 段深くそろえ、
@@ -1145,7 +1174,7 @@ mermaid.js は文字を trim するので、両端の空白に意味はありま
 [flowchart のトップレベルの説明](./flowchart.ja.md#複数行の値)と同じく、
 Mermaid が説明からこの字下げを除くためです。
 [fixture: multi-line-values/description-and-data-indented]
-[fixture: multi-line-values/accdescr-block-closing-brace-after-text-kept]
+[fixture: multi-line-values/accdescr-block-closing-brace-after-text]
 [fixture: multi-line-values/accdescr-block-blank-and-comment-lines-kept]
 [fixture: multi-line-values/data-block-in-block-indented]
 テキストがなく、コメント行だけを持つブロックは、値を持ちません。

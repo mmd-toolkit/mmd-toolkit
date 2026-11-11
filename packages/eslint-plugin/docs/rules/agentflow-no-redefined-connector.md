@@ -65,8 +65,8 @@ Examples of **incorrect** code for this rule:
 ```mmd
 %% eslint @mmd-toolkit/agentflow-no-redefined-connector: error
 agentflow-beta TB
-  connector C[First]
-  connector C[Second]
+  connector C["First"]
+  connector C["Second"]
 ```
 
 ```mmd
@@ -92,7 +92,7 @@ Examples of **correct** code for this rule:
 ```mmd
 %% eslint @mmd-toolkit/agentflow-no-redefined-connector: error
 agentflow-beta TB
-  connector C[First]
+  connector C["First"]
   connector C
 ```
 
@@ -107,10 +107,10 @@ agentflow-beta TB
 %% eslint @mmd-toolkit/agentflow-no-redefined-connector: error
 agentflow-beta TB
   flow a
-    connector C[One]
+    connector C["One"]
   end
   flow b
-    connector C[One]@{ label: Two }
+    connector C["One"]@{ label: Two }
   end
 ```
 

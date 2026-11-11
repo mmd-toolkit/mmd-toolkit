@@ -501,33 +501,50 @@ quadrantChart
 
 ### Quotes
 
-A string and a markdown string are printed as written: their quotes and their
-text, with a run of spaces and tabs inside them printed as one space. A quote is
-never added or removed. mermaid.js reads `"L"` and `L`, and `"a b"` and `a b`,
-as the same text, but a string can hold what a text without quotes cannot
-(`"a: b"` has a colon, which a text without quotes is rejected for), so removing
-the quotes is not always possible, and whether a text is in quotes is the
-author's choice. [fixture: quotes/strings-runs-collapsed] [fixture:
-quotes/quotes-not-removed] [fixture: quotes/quotes-not-added] [fixture:
+The text of an axis, of a quadrant, and of a point in quotes is printed without
+them where it is plain, as the examples in the documentation of mermaid.js write
+it (see [The quotes of a text](./compatibility.md#the-quotes-of-a-text)):
+`quadrant-1 "A"` is printed `quadrant-1 A`. A text is plain where it is words of
+ASCII letters, ending in digits, with one space between them, and none of the
+words is one that the lexer reads as a unit of its own. A `;` that follows the
+text on its line is dropped with the line break that replaces it, and the text
+loses its quotes as it does without the `;`: `quadrant-1 "A";` is printed
+`quadrant-1 A`. [fixture: quotes/texts-before-a-semicolon] Any other string and
+a markdown string are printed as written: their quotes and their text, with a
+run of spaces and tabs inside them printed as one space. mermaid.js reads `"L"`
+and `L`, and `"a b"` and `a b`, as the same text, but a string can hold what a
+text without quotes cannot (`"a: b"` has a colon, which a text without quotes is
+rejected for), so the quotes of such a text stay, and a quote is never added.
+[fixture: quotes/strings-runs-collapsed] [fixture:
+quotes/plain-texts-without-quotes] [fixture: quotes/texts-that-need-quotes]
+[fixture: quotes/quotes-not-added] [fixture:
 quotes/keywords-and-arrows-in-strings] [fixture: quotes/markdown-strings]
 [fixture: quotes/string-with-a-comment-mark]
 
 Input
-([quotes/quotes-not-removed-input.mmd](../tests/fixtures/quadrant/quotes/quotes-not-removed-input.mmd)):
+([quotes/plain-texts-without-quotes-input.mmd](../tests/fixtures/quadrant/quotes/plain-texts-without-quotes-input.mmd)):
 
 ```mmd
 quadrantChart
-quadrant-1 "A"
-"B": [0.3, 0.6]
+x-axis "Low Reach" --> "High Reach"
+y-axis "Low" --> "High"
+quadrant-1 "We should expand"
+quadrant-2 "Need to promote"
+"Campaign A": [0.3, 0.6]
+"Q1 results": [0.5, 0.5]
 ```
 
 Output
-([quotes/quotes-not-removed-output.mmd](../tests/fixtures/quadrant/quotes/quotes-not-removed-output.mmd)):
+([quotes/plain-texts-without-quotes-output.mmd](../tests/fixtures/quadrant/quotes/plain-texts-without-quotes-output.mmd)):
 
 ```mmd
 quadrantChart
-  quadrant-1 "A"
-  "B": [0.3, 0.6]
+  x-axis Low Reach --> High Reach
+  y-axis Low --> High
+  quadrant-1 We should expand
+  quadrant-2 Need to promote
+  Campaign A: [0.3, 0.6]
+  Q1 results: [0.5, 0.5]
 ```
 
 ### Titles and accessibility statements
@@ -561,16 +578,15 @@ titles-and-accessibility-statements/text-on-the-next-line-joined] [fixture:
 titles-and-accessibility-statements/colon-on-the-next-line-joined] [fixture:
 titles-and-accessibility-statements/text-that-looks-like-a-statement]
 
-Where `accDescr` and `{` print on the same line, separate them by one space,
-including when they were written touching. Existing opener-line breaks retain
-their own rules. Protected trivia and semicolon layouts keep their gaps. Align
-the lines of an `accDescr { ... }` body one step inside its statement. Mermaid
-discards indentation after LF from the description. Its `}` stands at the level
-of its statement; a text on the line of the `{` has one space inside each brace,
-also where the braces touched it. A block that is not closed makes the input
-rejected, so it is not printed. [fixture:
+A block on one line follows
+[A description block on one line](./compatibility.md#a-description-block-on-one-line).
+[fixture: titles-and-accessibility-statements/block-text-on-the-opening-line]
+
+In a block with a text over several lines, indent the body one level inside the
+statement and align a separate `}` with the statement: mermaid.js discards
+indentation after LF from the description. A block that is not closed makes the
+input rejected, so it is not printed. [fixture:
 titles-and-accessibility-statements/block-lines-kept] [fixture:
-titles-and-accessibility-statements/block-text-on-the-opening-line] [fixture:
 titles-and-accessibility-statements/block-closing-brace-at-the-level-of-the-statement]
 [fixture:
 titles-and-accessibility-statements/block-comment-and-empty-lines-kept]

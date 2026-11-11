@@ -981,6 +981,41 @@ sequenceDiagram
   end
 ```
 
+### Quotes
+
+The printer neither adds nor removes quotes: sequence diagrams have no string,
+and a quote is a character of the text. `participant A as "Alice"` has the
+description `"Alice"`, with its quotes, and `participant B as Bob` has `Bob`;
+`A->>B: "Hello"` is a message with the text `"Hello"`, and `B-->>A: Hello` one
+with `Hello`; a note takes its quotes in the same way. Taking the quotes off
+would change the text that mermaid.js draws. [fixture: quotes/texts-as-written]
+
+Input
+([quotes/texts-as-written-input.mmd](../tests/fixtures/sequence/quotes/texts-as-written-input.mmd)):
+
+```mmd
+sequenceDiagram
+participant A as "Alice"
+participant B as Bob
+A->>B: "Hello"
+B-->>A: Hello
+Note over A: "Quoted"
+Note over A: Plain
+```
+
+Output
+([quotes/texts-as-written-output.mmd](../tests/fixtures/sequence/quotes/texts-as-written-output.mmd)):
+
+```mmd
+sequenceDiagram
+  participant A as "Alice"
+  participant B as Bob
+  A ->> B: "Hello"
+  B -->> A: Hello
+  Note over A: "Quoted"
+  Note over A: Plain
+```
+
 ### Frontmatter YAML
 
 As in a flowchart: the YAML between the `---` lines is formatted with Prettier's
@@ -1064,22 +1099,16 @@ multi-line-values/empty-whitespace-interiors] [test: sequence Unicode and tab
 interiors] Blocks with comments or directives keep their contents and line
 breaks.
 
-The text of a block on one line stands between one space on each side, as in
-[flowchart's accessibility lines](./flowchart.md#accessibility-lines):
-`accDescr {a b}`, `accDescr {  a b  }`, `accDescr {  a b}`, and
-`accDescr {a b  }` are printed `accDescr { a b }`. mermaid.js trims the text, so
-the whitespace at its ends carries no meaning. A block with a directive in its
-text stays as written. A block on a line that keeps its `;` gets no added space,
-and a run of spaces at its ends still becomes one space (see
-[Semicolons](./flowchart.md#semicolons)). [fixture:
-multi-line-values/block-text-on-one-line-padded]
+Blocks on one line follow
+[A description block on one line](./compatibility.md#a-description-block-on-one-line).
+[fixture: multi-line-values/block-text-on-one-line-padded]
 
 Align the lines of an `accDescr { ... }` body one step inside its statement,
 with a separate `}` at the statement's level, as in
 [flowchart's top-level descriptions](./flowchart.md#multi-line-values). Mermaid
 discards this indentation from the description. [fixture:
 multi-line-values/description-and-data-indented] [fixture:
-multi-line-values/accdescr-block-closing-brace-after-text-kept] [fixture:
+multi-line-values/accdescr-block-closing-brace-after-text] [fixture:
 multi-line-values/accdescr-block-blank-and-comment-lines-kept] [fixture:
 multi-line-values/data-block-in-block-indented] A block without text, whose
 lines are only comment lines, holds no value: its comment lines stand one level

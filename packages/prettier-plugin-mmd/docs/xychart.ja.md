@@ -53,7 +53,7 @@ title T
 
 ```mmd
 xychart
-  title T
+  title "T"
   x-axis [a]
   line [1]
 ```
@@ -140,7 +140,7 @@ line [1]
 
 ```mmd
 xychart horizontal
-  title T
+  title "T"
   line [1]
 ```
 
@@ -211,7 +211,7 @@ line [1]
 
 ```mmd
 xychart
-  title A
+  title "A"
 
   line [1]
 ```
@@ -468,7 +468,7 @@ x-axis 0-->10
 
 ```mmd
 xychart
-  y-axis Revenue 4000 --> 11000
+  y-axis "Revenue" 4000 --> 11000
   x-axis 0 --> 10
 ```
 
@@ -510,10 +510,12 @@ xychart
 範囲の数とプロットの値は、値として読まれ、最短の形で印字します。
 `+3` は `3`、`1.50` は `1.5`、`.5` は `0.5` にします。
 （[同じに描かれる綴り](./compatibility.ja.md#同じに描かれる綴り)を参照）。
-分類や引用符なしの title に書かれた同じ数字はテキストで、
+分類や title に書かれた同じ数字はテキストで、
 `x-axis [007, .5]` の分類は `007` と `.5` です。
 sankey の値と同じく、書かれたまま残します（[値](./sankey.ja.md#値)を参照）。
 整数部の先頭がゼロの数（`007`）と `-0` も書かれたまま残します。
+1 語の title の数字は、ほかの 1 語の title と同じに引用符で囲みます。
+`title 007` は `title "007"` と印字します（[引用符](#引用符)を参照）。
 [fixture: numbers/range-numbers-one-form] [fixture: numbers/values-one-form]
 [fixture: numbers/forms-kept] [fixture: numbers/categories-are-texts]
 [fixture: numbers/titles-are-texts]
@@ -536,41 +538,86 @@ xychart
 
 ### 引用符
 
-文字列は書かれたままに印字します。
+チャートの title、軸の title、line の title は、1 語なら引用符で囲んで印字し、
+分類は、1 語なら引用符なしで印字します。
+mermaid.js の文書の例が使う形です（詳しくは、
+[テキストの引用符](./compatibility.ja.md#テキストの引用符)を参照）。
+`title Sales` は `title "Sales"` と印字し、
+`x-axis ["a", "b"]` は `x-axis [a, b]` と印字します。
+1 語とは、ASCII の英字、数字、`_`、`-` だけが、空白なしで続くものです。
+mermaid.js は引用符なしのテキストの空白を落とすので（`a b` はテキスト `ab`）、
+`"a b"` と `a b` は同じテキストではありません。
+そのため、複数の語からなるテキストは、引用符があってもなくても、
+書かれたまま残します。
+引用符つきの分類は、字句解析器が独立した単位として読む語が、テキストの先頭か、
+数字、`_`、`-` の後から始まる場合は、引用符を残します。
+その語は、大文字小文字を問わず、キーワード（`title`、`xychart-beta`、`xychart`、
+`x-axis`、`y-axis`、`line`、`bar` で、直後に英字、数字、`_` がないもの）と、
+向き（`vertical`、`horizontal`）です。
+そのため、`"line"` と `"a-line"` は引用符を残し、
+`"line1"` と `"Barcelona"` は引用符を外します。
+bar の title は、文書の例にないので書かれたまま残します。
+キーワード以外の単位に接する title も、書かれたまま残します。
+`x-axis a-1 --> 2` の `a` がその例で、`-1` が範囲の始まりです。
+整形器がそのまま残す行のテキストも、書かれたまま残します。
+それ以外の文字列とマークダウン文字列は、書かれたままに印字します。
 引用符、テキスト、中の改行を残し、
 中の空白とタブの連なりは空白 1 つにして印字します。
 （[同じに描かれるテキスト中の空白の連なり](./compatibility.ja.md#同じに描かれるテキスト中の空白の連なり)）。
-引用符は、足しも取りもしません。
-`"Sales"` と `Sales` は Db が同じですが、
-`"a b"` と `a b` は違います（後者のテキストは `ab` です）。
 空の文字列は、mermaid.js にとってはトークンのないものですが、
-書き手のテキストです。
-そのため、引用符を付けるかどうかは書き手に任せます。
-sankey と同じです（[引用符](./sankey.ja.md#引用符)を参照）。
+書き手のテキストなので残し、何もない所に引用符は足しません。
 空の文字列は、文法が受け入れる位置にだけ置かれます。
 プロットの title、データの前の軸の title、値のラベルです。
-[fixture: quotes/strings-runs-collapsed] [fixture: quotes/quotes-not-removed]
-[fixture: quotes/quotes-not-added]
+[fixture: quotes/strings-runs-collapsed] [fixture: quotes/titles-in-quotes]
+[fixture: quotes/categories-without-quotes]
+[fixture: quotes/categories-that-need-quotes]
+[fixture: quotes/texts-of-several-words] [fixture: quotes/bar-titles-as-written]
+[fixture: quotes/texts-on-a-kept-line-as-written]
+[fixture: text-units/hyphen-and-number-touching-kept]
 [fixture: quotes/keywords-and-markup-in-strings]
 [fixture: quotes/comment-mark-in-a-string]
 [fixture: quotes/empty-strings-where-the-grammar-takes-them]
 
 入力
-([quotes/quotes-not-removed-input.mmd](../tests/fixtures/xychart/quotes/quotes-not-removed-input.mmd)):
+([quotes/titles-in-quotes-input.mmd](../tests/fixtures/xychart/quotes/titles-in-quotes-input.mmd)):
 
 ```mmd
 xychart
-title "Sales"
-x-axis ["a", "b"]
+title Sales
+x-axis Region [a, b]
+y-axis Revenue 0 --> 10
+line Plan [1, 2]
+title "Plan"
+line "Cost" [3]
 ```
 
 出力
-([quotes/quotes-not-removed-output.mmd](../tests/fixtures/xychart/quotes/quotes-not-removed-output.mmd)):
+([quotes/titles-in-quotes-output.mmd](../tests/fixtures/xychart/quotes/titles-in-quotes-output.mmd)):
 
 ```mmd
 xychart
   title "Sales"
-  x-axis ["a", "b"]
+  x-axis "Region" [a, b]
+  y-axis "Revenue" 0 --> 10
+  line "Plan" [1, 2]
+  title "Plan"
+  line "Cost" [3]
+```
+
+入力
+([quotes/categories-without-quotes-input.mmd](../tests/fixtures/xychart/quotes/categories-without-quotes-input.mmd)):
+
+```mmd
+xychart
+x-axis ["a", b, "Q-1", "2024", "Barcelona", "line1", "ax-axis"]
+```
+
+出力
+([quotes/categories-without-quotes-output.mmd](../tests/fixtures/xychart/quotes/categories-without-quotes-output.mmd)):
+
+```mmd
+xychart
+  x-axis [a, b, Q-1, 2024, Barcelona, line1, ax-axis]
 ```
 
 入力
@@ -624,22 +671,18 @@ xychart
 [fixture: accessibility-statements/without-text-at-the-end]
 [fixture: accessibility-statements/without-text-and-trailing-whitespace]
 
-`accDescr` と `{` を同じ印字行に置く場合は、
-接して書かれていても間に空白 1 つを置きます。
-既存の開始行の改行は、それぞれの規則を保ちます。
-保護対象の trivia やセミコロンの配置では、その gap を保ちます。
-`accDescr { ... }` の本文行は、文より 1 段深くそろえます。
-Mermaid が説明から LF 後の字下げを除くためです。
-`}` は文と同じ段に置きます。
-`{` と同じ行のテキストは、括弧に接して書かれていても、
-括弧の内側に空白を 1 つずつ置きます。
-閉じていないブロックはテキストの最後まで続き、`}` を足さず、
-EOF の末尾を保ちます。
+1 行のブロックは、
+[1 行の説明ブロック](./compatibility.ja.md#1-行の説明ブロック) に従います。
+[fixture: accessibility-statements/block-text-on-the-opening-line]
+
+本文が複数行のブロックでは、本文を文より 1 段深くし、
+独立した `}` は文と同じ段に置きます。
+mermaid.js が説明から LF 後の字下げを除くためです。
+閉じていないブロックはテキストの最後まで続き、`}` を足しません。
 mermaid.js はそのブロックのテキストを読まず、印字が `}` を足すと、
 ブロックが説明になってしまうからです（テキストの最後の `accDescr {` と、
 `abc` の説明は Db では空で、`}` を足すと `abc` になります）。
 [fixture: accessibility-statements/block-lines-kept]
-[fixture: accessibility-statements/block-text-on-the-opening-line]
 [fixture: accessibility-statements/block-closing-brace-at-the-level-of-the-statement]
 [fixture: accessibility-statements/block-then-statement-on-the-closing-line]
 [fixture: accessibility-statements/block-comment-and-empty-lines-kept]
@@ -912,7 +955,7 @@ Bar [2]
 
 ```mmd
 xychart
-  title T
+  title "T"
   x-axis [a]
   y-axis 0 --> 1
   line [1]
@@ -969,7 +1012,7 @@ line [1]
 ```mmd
 xychart
   %% a
-  title T
+  title "T"
   %% b
   line [1]
 ```
@@ -1035,7 +1078,7 @@ title T
 ```mmd
 xychart
   %%{init: {}}%%
-  title T
+  title "T"
 ```
 
 入力
@@ -1092,7 +1135,7 @@ config:
     width: 900
 ---
 xychart
-  title X
+  title "X"
 ```
 
 ### 行区切り文字

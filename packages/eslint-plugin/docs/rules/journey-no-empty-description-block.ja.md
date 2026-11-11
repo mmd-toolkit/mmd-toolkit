@@ -64,9 +64,10 @@ journey
 ```mmd
 %% eslint @mmd-toolkit/journey-no-empty-description-block: error
 journey
-  accDescr { y }
-  section Work
-    Make tea: 5: Me
+  accDescr {
+    line one
+    line two
+  }
 ```
 
 ```mmd

@@ -53,7 +53,10 @@ C4Context
 %% eslint @mmd-toolkit/c4-no-duplicate-description: error
 C4Context
   accDescription Customers
-  accDescr { Administrators }
+  accDescr {
+    Administrators
+    Auditors
+  }
   accDescr: Customers
 ```
 
@@ -63,7 +66,6 @@ C4Context
 %% eslint @mmd-toolkit/c4-no-duplicate-description: error
 C4Context
   accDescription Customers
-  accDescr { Customers }
   accDescr: Customers
 ```
 

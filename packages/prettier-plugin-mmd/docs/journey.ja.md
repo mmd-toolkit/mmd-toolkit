@@ -146,7 +146,7 @@ accDescr { d } A: 5
 
 ```mmd
 journey
-  accDescr { d }
+  accDescr: d
   A: 5
 ```
 
@@ -513,7 +513,7 @@ journey
   section S
     ACCTITLE: T
     AccDescr: d
-    ACCDESCR { d }
+    ACCDESCR: d
 ```
 
 ### アクセシビリティの文
@@ -529,24 +529,23 @@ journey
 1 行に合わせます。 [fixture: accessibility-statements/text-on-next-line-joined]
 [fixture: accessibility-statements/keyword-and-colon-over-lines-joined]
 
-`accDescr` と `{` を同じ印字行に置く場合は、
-接して書かれていても間に空白 1 つを置きます。
-既存の開始行の改行は、それぞれの規則を保ちます。
-保護対象の trivia やセミコロンの配置では、その gap を保ちます。
-`accDescr { ... }` の本文行は、文より 1 段深くそろえます。
-Mermaid が説明から LF 後の字下げを除くためです。
-`}` は文と同じ段に置きます。
-`{` の行にテキストがあるときは、括弧に接して書かれていても、
-括弧の内側に空白を 1 つずつ置きます。
-[fixture: accessibility-statements/block-lines-kept]
+1 行のブロックは、
+[1 行の説明ブロック](./compatibility.ja.md#1-行の説明ブロック) に従います。
 [fixture: accessibility-statements/block-text-on-opening-line]
+
+本文が複数行のブロックでは、本文を文より 1 段深くし、
+独立した `}` は文と同じ段に置きます。
+mermaid.js が説明から LF 後の字下げを除くためです。
+[fixture: accessibility-statements/block-lines-kept]
 [fixture: accessibility-statements/block-comment-and-empty-lines-kept]
 テキストの中の空白とタブの連なりは、空白 1 つで印字します。
 （[同じに描かれるテキスト中の空白の連なり](./compatibility.ja.md#同じに描かれるテキスト中の空白の連なり)）。
 [fixture: accessibility-statements/block-inner-runs-collapsed]
 [fixture: accessibility-statements/accessibility-lines-runs-collapsed]
-キーワードとコロンや括弧の間と、その後のディレクティブはその位置に残します。
-[fixture: accessibility-statements/directive-around-colon-and-braces-kept]
+キーワードとコロンや波括弧の間と、その後のディレクティブはその位置に残し、
+波括弧の隣にディレクティブがある 1 行のブロックは、コロンを先に書く形にします。
+（[1 行の説明ブロック](./compatibility.ja.md#1-行の説明ブロック)）。
+[fixture: accessibility-statements/directive-around-colon-and-braces]
 
 入力
 ([accessibility-statements/text-on-next-line-joined-input.mmd](../tests/fixtures/journey/accessibility-statements/text-on-next-line-joined-input.mmd)):
@@ -757,8 +756,8 @@ journey
 
 上の規則が当てはまらない所では、文のトークンの間の空白の連続は空白 1 つにし、
 接しているトークンは接したままにします。
-1 行の説明ブロックの文字は、括弧に接して書かれていても、
-両側に空白を 1 つずつ置きます。
+1 行の説明ブロックは、
+[1 行の説明ブロック](./compatibility.ja.md#1-行の説明ブロック) に従います。
 [fixture: whitespace-between-tokens/description-block-braces]
 ヘッダーの行末の空白は落とします。
 [fixture: whitespace-between-tokens/trailing-whitespace-after-header]
@@ -780,9 +779,9 @@ accDescr {f}
 
 ```mmd
 journey
-  accDescr { d }
-  accDescr { e }
-  accDescr { f }
+  accDescr: d
+  accDescr: e
+  accDescr: f
 ```
 
 ### コメント

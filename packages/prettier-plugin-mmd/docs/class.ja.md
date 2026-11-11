@@ -1015,6 +1015,110 @@ classDiagram
 [fixture: directives/semicolon-after-unclosed-directive-kept]
 [fixture: directives/semicolon-on-next-line-after-unclosed-directive-kept]
 
+### Quotes
+
+バッククォートで囲んだクラスの名前は、バッククォートなしで印字します。
+mermaid.js の文書の例は、バッククォートなしが 178 件、ありが 4 件で、
+namespace の名前はバッククォートなしが 11 件です。
+（[テキストの引用符](./compatibility.ja.md#テキストの引用符)）。
+`` class `Animal` `` は `class Animal` と印字します。
+関係、メンバー、注釈、ノート、`click` 文、
+`link` 文と namespace の名前も同じです。
+mermaid.js は両方の形を同じ名前として読みます。
+ASCII の英字、数字、`_` からなる 1 語で、
+次のいずれでもない名前からバッククォートを外します。
+`_blank`、`_parent`、`_self`、`_top`、`accDescr`、`accTitle`、`call`、
+`callback`、`class`、`classDef`、`classDiagram`、`click`、`cssClass`、`href`、
+`link`、`namespace`、`note`、`o`、`style` です。
+字句解析器は、これらが名前の位置にあると、独立した単位として読みます。
+2 語の名前（`` `A B` ``）は、2 語を空白なしで結合したものになるので、
+バッククォートを保ちます。
+ほかの文字を含む名前（`` `a-b` ``、`` `Animal Class!` ``、`` `é` ``）と、
+コメントやディレクティブのある行の名前も、バッククォートを保ちます。
+`direction` で終わる名前と、`TB`、`BT`、`RL`、`LR` で始まる名前も、
+バッククォートを保ちます。
+字句解析器は、`direction`、空白（改行も含みます）、向きの名前を 1 行として読み、
+バッククォートを外した名前は、前の行か後の行と結ばれるためです。
+``A --> `direction` `` の次の行が `TB --> C` なら、バッククォートを保ちます。
+[fixture: quotes/names-without-quotes] [fixture: quotes/names-that-need-quotes]
+[fixture: quotes/names-next-to-a-direction-line]
+[fixture: quotes/names-on-a-kept-line-as-written]
+
+printer は引用符を付けません。
+文法が文字列を要求する箇所では、mermaid.js は引用符のないテキストを拒否します。
+`class A["Label"]` は読まれ、`class A[Label]` は拒否されます。
+`note for B Text` と引用符のない多重度（`A 1 --> * B`）も拒否されるので、
+その位置の文字列を引用符なしにする選択肢はありません。
+[fixture: quotes/strings-as-written]
+
+入力
+([quotes/names-without-quotes-input.mmd](../tests/fixtures/class/quotes/names-without-quotes-input.mmd)):
+
+```mmd
+classDiagram
+class `Animal`
+class `Duck` {
++swim()
+}
+class `Zebra`~T~
+class `Fish`:::css
+`Animal` <|-- `Duck`
+`Animal` "1" --> "*" `Zebra` : eats
+`Animal` : +name
+<<interface>> `Animal`
+note for `Animal` "text"
+click `Animal` call f()
+link `Animal` "https://example.com"
+namespace `Zoo` {
+class Cat
+}
+```
+
+出力
+([quotes/names-without-quotes-output.mmd](../tests/fixtures/class/quotes/names-without-quotes-output.mmd)):
+
+```mmd
+classDiagram
+  class Animal
+  class Duck {
+    +swim()
+  }
+  class Zebra~T~
+  class Fish:::css
+  Animal <|-- Duck
+  Animal "1" --> "*" Zebra : eats
+  Animal : +name
+  <<interface>> Animal
+  note for Animal "text"
+  click Animal call f()
+  link Animal "https://example.com"
+  namespace Zoo {
+    class Cat
+  }
+```
+
+入力
+([quotes/strings-as-written-input.mmd](../tests/fixtures/class/quotes/strings-as-written-input.mmd)):
+
+```mmd
+classDiagram
+class A["Label"]
+class B
+note for B "Text"
+A "1" --> "*" B
+```
+
+出力
+([quotes/strings-as-written-output.mmd](../tests/fixtures/class/quotes/strings-as-written-output.mmd)):
+
+```mmd
+classDiagram
+  class A["Label"]
+  class B
+  note for B "Text"
+  A "1" --> "*" B
+```
+
 ### フロントマターの YAML
 
 flowchart と同じです。
@@ -1066,17 +1170,8 @@ Mermaid が説明からこの字下げを除くためです。
 [fixture: multi-line-values/label-string-kept]
 [fixture: multi-line-values/generic-in-relation-kept]
 
-1 行のブロックの文字は、両側に空白を 1 つずつ置きます。
-これは、
-[flowchart のアクセシビリティの行](./flowchart.ja.md#アクセシビリティの行)
-と同じ形です。
-`accDescr {a b}`、`accDescr {  a b  }`、`accDescr {  a b}`、
-`accDescr {a b  }` は、どれも `accDescr { a b }` になります。
-mermaid.js は文字を trim するので、両端の空白に意味はありません。
-文字の中にディレクティブがあるブロックは、書かれたままにします。
-`;` を残す行にあるブロックは、空白を足しませんが、
-端の空白の連なりは空白 1
-つにします（[セミコロン](./flowchart.ja.md#セミコロン)を参照）。
+1 行のブロックは、
+[1 行の説明ブロック](./compatibility.ja.md#1-行の説明ブロック) に従います。
 [fixture: multi-line-values/block-text-on-one-line-padded]
 
 入力

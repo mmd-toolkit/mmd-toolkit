@@ -61,7 +61,10 @@ Examples of **correct** code for this rule:
 %% eslint @mmd-toolkit/state-no-unclosed-description-block: error
 stateDiagram-v2
   A --> B
-  accDescr { x }
+  accDescr {
+    first line
+    second line
+  }
 ```
 
 ## Options

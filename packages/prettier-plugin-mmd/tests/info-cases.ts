@@ -25,7 +25,7 @@ export const infoCases: readonly InfoCase[] = [
   {
     name: "info/description-blocks/block-opener-multiline",
     input: "info\naccDescr\n\n\u2028\u00a0{ D }\n",
-    output: "info\n  accDescr { D }\n",
+    output: "info\n  accDescr: D\n",
     options: {},
   },
   {
@@ -102,7 +102,7 @@ export const infoCases: readonly InfoCase[] = [
   {
     name: "info/line-terminators-and-unicode/eol-output-cr",
     input: "info\naccDescr {D}\n",
-    output: "info\r  accDescr { D }\r",
+    output: "info\r  accDescr: D\r",
     options: { endOfLine: "cr" },
   },
   {

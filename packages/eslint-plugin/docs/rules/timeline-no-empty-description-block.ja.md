@@ -61,8 +61,10 @@ timeline
 ```mmd
 %% eslint @mmd-toolkit/timeline-no-empty-description-block: error
 timeline
-  accDescr { y }
-  2020 : Launch
+  accDescr {
+    line1
+    line2
+  }
 ```
 
 ```mmd

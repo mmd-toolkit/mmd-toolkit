@@ -1,0 +1,26 @@
+{
+  "source": {
+    "kind": "authored",
+    "note": "db-from-tree/journey.md Building the summary from the tree, Accessibility: A description block with two lines of text replaces an earlier description line with `second\\nthird`."
+  },
+  "accepted": true,
+  "diagramType": "journey",
+  "db": {
+    "title": "",
+    "accTitle": "",
+    "accDescr": "second\nthird",
+    "sections": [
+      "Work"
+    ],
+    "tasks": [
+      {
+        "section": "Work",
+        "task": "Make tea",
+        "people": [
+          "Me"
+        ],
+        "score": 5
+      }
+    ]
+  }
+}

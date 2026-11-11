@@ -520,34 +520,53 @@ quadrantChart
 
 ### 引用符
 
-文字列と markdown 文字列は、書かれたまま印字します。
+軸、象限、点の引用符で囲まれたテキストは、平易なものなら、
+mermaid.js の文書の例のとおりに、引用符なしで印字します。
+（[テキストの引用符](./compatibility.ja.md#テキストの引用符)）。
+`quadrant-1 "A"` は `quadrant-1 A` と印字します。
+平易なテキストは、ASCII 英字の単語でできていて、各単語の末尾には数字も使え、
+単語の間は空白 1 つで、
+字句解析器が独立した単位として読む単語を含まないものです。
+テキストと同じ行でその後に続く `;` は、改行に置き換えて落とし、
+テキストの引用符は、`;` がない場合と同じに外します。
+`quadrant-1 "A";` は `quadrant-1 A` と印字します。
+[fixture: quotes/texts-before-a-semicolon]
+それ以外の文字列と markdown 文字列は、書かれたまま印字します。
 引用符とテキストを残し、中の空白とタブの連なりは空白 1 つにして印字します。
-引用符は足しも取りもしません。
 mermaid.js は `"L"` と `L`、`"a b"` と `a b` を同じテキストとして読みますが、
 文字列は引用符なしのテキストが持てないものを持てます。
 `"a: b"` はコロンを持ち、引用符なしでは拒否されます。
-そのため、引用符を外せるとは限らず、引用符を付けるかどうかは書き手の選択です。
-[fixture: quotes/strings-runs-collapsed] [fixture: quotes/quotes-not-removed]
-[fixture: quotes/quotes-not-added]
+そのようなテキストの引用符は残し、引用符を付け加えることはありません。
+[fixture: quotes/strings-runs-collapsed]
+[fixture: quotes/plain-texts-without-quotes]
+[fixture: quotes/texts-that-need-quotes] [fixture: quotes/quotes-not-added]
 [fixture: quotes/keywords-and-arrows-in-strings]
 [fixture: quotes/markdown-strings] [fixture: quotes/string-with-a-comment-mark]
 
 入力
-([quotes/quotes-not-removed-input.mmd](../tests/fixtures/quadrant/quotes/quotes-not-removed-input.mmd)):
+([quotes/plain-texts-without-quotes-input.mmd](../tests/fixtures/quadrant/quotes/plain-texts-without-quotes-input.mmd)):
 
 ```mmd
 quadrantChart
-quadrant-1 "A"
-"B": [0.3, 0.6]
+x-axis "Low Reach" --> "High Reach"
+y-axis "Low" --> "High"
+quadrant-1 "We should expand"
+quadrant-2 "Need to promote"
+"Campaign A": [0.3, 0.6]
+"Q1 results": [0.5, 0.5]
 ```
 
 出力
-([quotes/quotes-not-removed-output.mmd](../tests/fixtures/quadrant/quotes/quotes-not-removed-output.mmd)):
+([quotes/plain-texts-without-quotes-output.mmd](../tests/fixtures/quadrant/quotes/plain-texts-without-quotes-output.mmd)):
 
 ```mmd
 quadrantChart
-  quadrant-1 "A"
-  "B": [0.3, 0.6]
+  x-axis Low Reach --> High Reach
+  y-axis Low --> High
+  quadrant-1 We should expand
+  quadrant-2 Need to promote
+  Campaign A: [0.3, 0.6]
+  Q1 results: [0.5, 0.5]
 ```
 
 ### title とアクセシビリティの文
@@ -584,18 +603,15 @@ Db はどちらの連なりも保持します。
 [fixture: titles-and-accessibility-statements/colon-on-the-next-line-joined]
 [fixture: titles-and-accessibility-statements/text-that-looks-like-a-statement]
 
-`accDescr` と `{` を同じ印字行に置く場合は、
-接して書かれていても間に空白 1 つを置きます。
-既存の開始行の改行は、それぞれの規則を保ちます。
-保護対象の trivia やセミコロンの配置では、その gap を保ちます。
-`accDescr { ... }` の本文行は、文より 1 段深くそろえます。
-Mermaid が説明から LF 後の字下げを除くためです。
-`}` は文と同じ段に置きます。
-`{` と同じ行のテキストは、括弧に接して書かれていても、
-括弧の内側に空白を 1 つずつ置きます。
+1 行のブロックは、
+[1 行の説明ブロック](./compatibility.ja.md#1-行の説明ブロック) に従います。
+[fixture: titles-and-accessibility-statements/block-text-on-the-opening-line]
+
+本文が複数行のブロックでは、本文を文より 1 段深くし、
+独立した `}` は文と同じ段に置きます。
+mermaid.js が説明から LF 後の字下げを除くためです。
 閉じていないブロックは拒否されるので、印字しません。
 [fixture: titles-and-accessibility-statements/block-lines-kept]
-[fixture: titles-and-accessibility-statements/block-text-on-the-opening-line]
 [fixture: titles-and-accessibility-statements/block-closing-brace-at-the-level-of-the-statement]
 [fixture: titles-and-accessibility-statements/block-comment-and-empty-lines-kept]
 [fixture: titles-and-accessibility-statements/directive-around-colon-and-braces]

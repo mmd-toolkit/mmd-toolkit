@@ -1,0 +1,20 @@
+{
+  "source": {
+    "kind": "authored",
+    "note": "treemap.md Common forms; db-from-tree/treemap.md Building the summary: a closed description block with two lines of text before a leaf sets the description to `Revenue by product\\nin the last quarter`."
+  },
+  "accepted": true,
+  "diagramType": "treemap",
+  "db": {
+    "title": "",
+    "accTitle": "",
+    "accDescr": "Revenue by product\nin the last quarter",
+    "nodes": [
+      {
+        "name": "Revenue",
+        "value": 10
+      }
+    ],
+    "classDefs": []
+  }
+}

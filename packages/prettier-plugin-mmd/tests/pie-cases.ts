@@ -66,7 +66,7 @@ export const pieCases: readonly PieCase[] = [
   {
     name: "pie/line-terminators-and-unicode/unicode-opener",
     input: 'pie\naccDescr\u2028\u2029{a}\n"Data":2',
-    output: 'pie\n  accDescr { a }\n  "Data" : 2\n',
+    output: 'pie\n  accDescr: a\n  "Data" : 2\n',
     options: {},
   },
   {

@@ -52,6 +52,7 @@ Examples of **correct** code for this rule:
 railroad-ebnf-beta
   accDescr {
     The words of the grammar
+    as a railroad diagram
   }
   word = "a";
 ```

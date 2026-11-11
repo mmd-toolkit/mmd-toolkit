@@ -61,8 +61,8 @@ Input
 
 ```mmd
 sankey
-"a",b,1
-   c,d,2
+"a,b",c,1
+   d,e,2
 ```
 
 Output
@@ -70,8 +70,8 @@ Output
 
 ```mmd
 sankey
-"a",b,1
-c,d,2
+"a,b",c,1
+d,e,2
 ```
 
 ### Commas
@@ -147,8 +147,8 @@ Input
 
 ```mmd
 sankey
-"a", b,"1"
-a,"b",  1
+"a,b", c,"d,e"
+f,"g,h",  1
 ```
 
 Output
@@ -156,8 +156,8 @@ Output
 
 ```mmd
 sankey
-"a",b,"1"
-a,"b",1
+"a,b",c,"d,e"
+f,"g,h",1
 ```
 
 Input
@@ -178,13 +178,23 @@ style:#x;y,b,1
 
 ### Quotes
 
-The quotes of a field are printed as written. `"a"` and `a` are the same id in
-the Db, and so are `" a"` and `a`, but they are the text that the author wrote,
-and a string may hold a comma or a doubled quote that a field without quotes
-cannot. The text between the quotes is a value: its whitespace stays. [fixture:
-quotes/quotes-kept] [fixture: quotes/unneeded-quotes-kept] [fixture:
+A field is printed without quotes when its text is plain: ASCII letters, digits,
+`_`, `-`, and `.`, with spaces between them. `"a"` and `a` are the same id in
+the Db, and so are `" a"` and `a`, since mermaid.js drops the spaces at the ends
+of a field with or without quotes, and the examples in the documentation of
+mermaid.js write every source and every value without quotes, and the target of
+a link without quotes 83 times against 4 in quotes (see
+[The quotes of a text](./compatibility.md#the-quotes-of-a-text)). So `"a",b,"1"`
+is printed `a,b,1`, `"a b"` is `a b`, and `" a "` is `a`. A field with a text
+that is not plain stays in quotes: a comma or a doubled quote, which a field
+without quotes cannot hold, a line break, a `;`, a `#`, a `%%`, or any other
+character, and a string with a directive in it. [fixture:
+quotes/plain-text-without-quotes] [fixture:
+quotes/plain-text-with-spaces-without-quotes] [fixture:
+quotes/spaces-at-the-ends-left-out] [fixture:
 quotes/comma-and-doubled-quotes-kept] [fixture:
-quotes/spaces-inside-quotes-kept]
+quotes/other-characters-keep-the-quotes] [fixture:
+directives/inside-fields-kept] [fixture: multi-line-strings/string-over-lines]
 
 Input
 ([quotes/comma-and-doubled-quotes-kept-input.mmd](../tests/fixtures/sankey/quotes/comma-and-doubled-quotes-kept-input.mmd)):
@@ -212,11 +222,14 @@ from the text. `1.0` is printed `1`, `+1` is `1`, and `.5` is `0.5` (see
 A value that is no plain decimal stays as written: an exponent (`1e0`), a zero
 at the start of the integer part (`007`), more than 15 digits, `-0`, `1_0` and
 `0x1`, which mermaid.js reads as `1` and `0`, and a value that is no number,
-such as `abc`, which is read as `NaN`. A value in quotes stays as well. A `%%`
-or a `#` after the value is a character of the field, not a comment, and stays
-with it, so the field is no plain decimal and stays as written. [fixture:
-values/shortest-form] [fixture: values/forms-kept] [fixture:
-values/shortest-form-with-trivia] [fixture: values/text-after-the-value-kept]
+such as `abc`, which is read as `NaN`. A value in quotes is printed without them
+when its text is plain, and then in the form of the value: `"1.0"` is printed
+`1`, and `"+1"` stays as written, since a `+` is not a plain character.
+[fixture: quotes/values-in-quotes-without-quotes] A `%%` or a `#` after the
+value is a character of the field, not a comment, and stays with it, so the
+field is no plain decimal and stays as written. [fixture: values/shortest-form]
+[fixture: values/forms-kept] [fixture: values/shortest-form-with-trivia]
+[fixture: values/text-after-the-value-kept]
 
 Input
 ([values/text-after-the-value-kept-input.mmd](../tests/fixtures/sankey/values/text-after-the-value-kept-input.mmd)):

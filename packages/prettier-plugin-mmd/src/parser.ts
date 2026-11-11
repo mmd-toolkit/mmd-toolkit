@@ -2,6 +2,7 @@ import type { Parser, ParserOptions } from "prettier"
 import type { Node, Position, Range, Root } from "@mmd-toolkit/ast"
 import type { ParseError } from "@mmd-toolkit/parser"
 import { parse } from "@mmd-toolkit/parser"
+import { rewriteDirectiveBlocks } from "./printers/accessibility-form.ts"
 import type { DiagramPrinter, DiagramTextRules } from "./printers/index.ts"
 import { diagramPrinters, diagramTextRules } from "./printers/index.ts"
 import type { Source } from "./printers/source.ts"
@@ -62,6 +63,24 @@ export class NotFormattedError extends Error {
  * rethrown unchanged.
  */
 export function parseDocument(text: string): FormattedDocument {
+  const document = parseText(text)
+  // A description block with a directive beside its braces is printed as the
+  // text written with the `:` is, so the document is read again with the block
+  // written so (docs/compatibility.md, A description block on one line). Text
+  // that does not parse written so is printed as it is.
+  const rewritten = rewriteDirectiveBlocks(document.source)
+  if (rewritten !== undefined) {
+    try {
+      return parseText(rewritten)
+    } catch {
+      return document
+    }
+  }
+  return document
+}
+
+/** Parses the text and chooses the printer of its diagram type. */
+function parseText(text: string): FormattedDocument {
   const range: Range = [0, text.length]
   let root: Root
   try {

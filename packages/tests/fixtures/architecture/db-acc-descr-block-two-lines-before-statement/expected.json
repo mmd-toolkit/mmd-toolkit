@@ -1,0 +1,23 @@
+{
+  "source": {
+    "kind": "authored",
+    "note": "architecture.md Composite common forms; db-from-tree/architecture.md Building the summary from the tree, Accessibility: a closed description block with two lines of text before a service sets the description to `The services of the shop\\nand how they connect`."
+  },
+  "accepted": true,
+  "diagramType": "architecture",
+  "db": {
+    "accTitle": "",
+    "accDescr": "The services of the shop\nand how they connect",
+    "nodes": [
+      {
+        "id": "api",
+        "type": "service",
+        "icon": "server",
+        "title": "API"
+      }
+    ],
+    "groups": [],
+    "edges": [],
+    "layoutHints": []
+  }
+}

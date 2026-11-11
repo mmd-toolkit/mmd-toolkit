@@ -12,7 +12,7 @@ export const gitgraphCases: readonly GitgraphCase[] = [
   {
     name: "gitgraph/title-and-common-values/block-opener-join-fixed",
     input: "gitGraph\naccDescr\n\u00a0{ A }\n",
-    output: "gitGraph\n  accDescr { A }\n",
+    output: "gitGraph\n  accDescr: A\n",
     options: {},
   },
   {

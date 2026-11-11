@@ -1,0 +1,13 @@
+flowchart TD
+subgraph "B" ;
+A --> B
+end
+subgraph "C" %% note
+C --> D
+end
+subgraph "D"%%{init: {}}%%
+E --> F
+end
+subgraph "E"
+G --> H
+end

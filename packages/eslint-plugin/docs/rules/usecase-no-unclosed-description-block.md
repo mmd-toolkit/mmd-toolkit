@@ -52,7 +52,10 @@ Examples of **correct** code for this rule:
 ```mmd
 %% eslint @mmd-toolkit/usecase-no-unclosed-description-block: error
 usecase-beta
-  accDescr { first }
+  accDescr {
+    first line
+    second line
+  }
   A --> B
   actor C@{ type: hollow }
   D
@@ -63,6 +66,7 @@ usecase-beta
 usecase-beta
   accDescr {
     uses { here
+    and there
   }
   A
 ```

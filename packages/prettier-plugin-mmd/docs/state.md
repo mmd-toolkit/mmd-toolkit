@@ -1226,7 +1226,7 @@ As in [flowchart's top-level descriptions](./flowchart.md#multi-line-values),
 align the lines of an `accDescr { ... }` body one step inside its statement,
 with a separate `}` at the statement's level. Mermaid discards this indentation
 from the description. [fixture: multi-line-values/kept] [fixture:
-multi-line-values/accdescr-block-single-line-kept] [fixture:
+multi-line-values/accdescr-block-single-line] [fixture:
 multi-line-values/accdescr-block-empty-and-comment-lines-kept] A closed block
 with no text prints `{}` internally: `accDescr { }` becomes `accDescr {}`,
 including whitespace runs, line breaks and Unicode whitespace (also U+2028 and
@@ -1247,15 +1247,9 @@ a floating note written over several lines stays as written. [fixture:
 multi-line-values/kept] [fixture:
 multi-line-values/floating-note-empty-line-kept]
 
-The text of a block on one line stands between one space on each side, as in
-[flowchart's accessibility lines](./flowchart.md#accessibility-lines):
-`accDescr {a b}`, `accDescr {  a b  }`, `accDescr {  a b}`, and
-`accDescr {a b  }` are printed `accDescr { a b }`. mermaid.js trims the text, so
-the whitespace at its ends carries no meaning. A block with a directive in its
-text stays as written. A block on a line that keeps its `;` gets no added space,
-and a run of spaces at its ends still becomes one space (see
-[Semicolons](./flowchart.md#semicolons)). [fixture:
-multi-line-values/block-text-on-one-line-padded]
+Blocks on one line follow
+[A description block on one line](./compatibility.md#a-description-block-on-one-line).
+[fixture: multi-line-values/block-text-on-one-line-padded]
 
 Input
 ([multi-line-values/kept-input.mmd](../tests/fixtures/state/multi-line-values/kept-input.mmd)):

@@ -1,11 +1,12 @@
 import type { RequirementDiagram, RequirementStatement } from "@mmd-toolkit/ast"
-import { holdsDirection } from "./accessibility-lines.ts"
+import { holdsDirection, holdsStatementAfter } from "./accessibility-lines.ts"
 import type { KeptLines } from "./kept-lines.ts"
 import {
   findKeptBreaks,
   findLinesEndedBySemicolon,
   findLinesWithOwnSemicolons,
   findSemicolonLines,
+  lineEndOf,
   lineStartOf,
   spansKeptBreaks,
 } from "./kept-lines.ts"
@@ -130,9 +131,10 @@ function findAccessibilityLines(
         statement.type === "RequirementAccDescrStatement" ||
         statement.type === "RequirementAccDescrBlockStatement") &&
       holdsDirection(source, {
-        range: statement.range,
+        range: [statement.range[0], lineEndOf(source, statement.range[1])],
         text:
-          statement.type === "RequirementAccDescrBlockStatement"
+          statement.type === "RequirementAccDescrBlockStatement" ||
+          holdsStatementAfter(source, statement.range[1])
             ? null
             : statement.value.value,
       })

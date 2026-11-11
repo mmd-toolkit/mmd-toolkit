@@ -1,0 +1,24 @@
+{
+  "source": {
+    "kind": "authored",
+    "note": "timeline.md Accessibility statements; db-summaries.md timeline: a description block with two lines of text replaces an earlier description line with `second\\nthird`."
+  },
+  "accepted": true,
+  "diagramType": "timeline",
+  "db": {
+    "direction": "LR",
+    "title": "",
+    "accTitle": "",
+    "accDescr": "second\nthird",
+    "sections": [],
+    "tasks": [
+      {
+        "section": "",
+        "task": "2020 ",
+        "events": [
+          "Launch"
+        ]
+      }
+    ]
+  }
+}

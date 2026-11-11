@@ -16,6 +16,7 @@ import {
   trimBracketedText,
 } from "./layout.ts"
 import type { Source } from "./source.ts"
+import { findRespellings } from "./spelling.ts"
 import {
   findStructuralToken,
   findTokenStartingAt,
@@ -163,6 +164,12 @@ export function layoutArchitectureStatement(
   // mermaid.js trims the title of a group or a service and the label of an
   // edge, also in the prefix of a line with a `;`, which the protected atom
   // holds (docs/architecture.md, Label content).
-  if (titleRange !== null) trimBracketedText(source, atoms, titleRange)
+  // A title that is printed without its quotes is respelled whole, without
+  // the padding.
+  if (
+    titleRange !== null &&
+    findRespellings(source).get(titleRange[0]) === undefined
+  )
+    trimBracketedText(source, atoms, titleRange)
   return protectHiddenGaps({ ...layout, atoms }, hidden)
 }

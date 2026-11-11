@@ -64,7 +64,10 @@ Examples of **correct** code for this rule:
 %% eslint @mmd-toolkit/agentflow-no-unclosed-description-block: error
 agentflow-beta TB
   A --> B
-  accDescr { x }
+  accDescr {
+    first line
+    second line
+  }
   B --> C
 ```
 
@@ -73,6 +76,7 @@ agentflow-beta TB
 agentflow-beta TB
   accDescr {
     uses { here
+    and there
   }
   A
 ```

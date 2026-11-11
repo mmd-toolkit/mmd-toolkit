@@ -95,7 +95,7 @@ set A
 
 ```mmd
 venn-beta
-set "C4Container"
+set C4Container
 ```
 
 ### Indentation
@@ -310,9 +310,8 @@ set A Q%% note
 
 キーワードと引数は空白1つで区切ります。
 名前のコンマは直前の名前に接し、後ろを空白1つにして一覧を読みやすくします。
-裸と引用符つきの名前、引用符内の余白、空の名前、
-順序と重複は Db が対象を並べ替える場合も保ちます。
-引用符は、外しても Db が同じ場合（`set "A"` と `set A`）も書き手の選択です。
+引用符内の余白、空の名前、順序と重複は、Db が対象を並べ替える場合も保ちます。
+名前は、[Quotes](#quotes)のとおり、引用符つきか引用符なしで印字します。
 引用符内の余白は名前の一部で、`" A "` と `"A"` は Db が異なります。
 Db が対象を並べ替えるのは、書かれた一覧の並べ替えを許すものではなく、
 重複したメンバーは union の項数として残します。
@@ -327,7 +326,6 @@ Venn は引用符つきの名前の隣の空白を受理するので、sankey �
 [corpus fixture: venn/lex-union-matching-quoted-padding]
 [fixture: venn/name-lists/empty-quoted-targets]
 [fixture: venn/name-lists/name-order-keep]
-[fixture: venn/name-lists/names-quotes-equivalent]
 [fixture: venn/name-lists/name-quoted-padding]
 [fixture: venn/name-lists/names-comma] [corpus fixture: venn/db-form-set]
 [fixture: venn/name-lists/quoted-keyword]
@@ -344,19 +342,18 @@ Venn は引用符つきの名前の隣の空白を受理するので、sankey �
 ```mmd
 venn-beta
 set A
-set "B"
-union A, "B", A
+set B
+union A, B, A
 text A, "B" item
-style A, "B" fill:red
+style A, B fill:red
 ```
 
 ### Labels
 
 角括弧ラベルは名前か text の id に接し、短い接尾部にします。
-裸と引用符つきの形と内部の全ての文字を保ちますが、括弧に接する空白、タブ、
-no-break space は例外です。
-mermaid.js が trim するからです。
-`set A[ L ]` は `set A[L]` になります。
+内部の全ての文字を保ちますが、mermaid.js が trim する括弧に接する空白、タブ、
+no-break space は除き、[Quotes](#quotes)のとおりに引用符つきで印字します。
+`set A[ L ]` は `set A["L"]` になります。
 ディレクティブを含むラベルは、書かれたまま残します。
 保つ `;` のある行でも空白は落とします。
 ただし、[Line rule and kept lines](#line-rule-and-kept-lines)のとおり、
@@ -405,9 +402,7 @@ U+2028 や U+2029 を含む空白は、書かれたまま残します。
 [fixture: venn/labels/directive-attachment]
 [fixture: venn/labels/labels-empty-form-differs-control]
 [fixture: venn/labels/labels-empty-form-differs]
-[fixture: venn/labels/labels-empty-kept]
-[fixture: venn/labels/labels-form-equal-control]
-[corpus fixture: venn/db-set-label-eof]
+[fixture: venn/labels/labels-empty-kept] [corpus fixture: venn/db-set-label-eof]
 [fixture: venn/labels/labels-padding-trim-equal-control]
 [fixture: venn/labels/labels-padding-trim-equal]
 [fixture: venn/labels/multiline-padding]
@@ -426,8 +421,91 @@ U+2028 や U+2029 を含む空白は、書かれたまま残します。
 
 ```mmd
 venn-beta
-set A[L]:002.00
+set A["L"]:002.00
   text item[" Label "]
+```
+
+### Quotes
+
+集合の名前、対象のない text の id、`style` の対象、style のプロパティの値は、
+引用符なしで印字し、角括弧ラベルは引用符つきで印字します。
+mermaid.js の文書の例がそう書くためです。
+（[テキストの引用符](./compatibility.ja.md#テキストの引用符)）。
+`set "A"` は `set A`、`union "A","B"` は `union A, B`、
+`style A fill:"red"` は `style A fill:red`、
+`set A[Alpha]` は `set A["Alpha"]` になります。
+
+名前は ASCII の英字、数字、`_`、`-` からなり、英字か `_` で始まります。
+字句解析が別のものとして読む場合は引用符を保ちます。
+大文字小文字を問わず `venn-beta`、`set`、`union`、`text`、`style` で始まり、
+その語に英字、数字、`_` が続かない名前と、
+同じ行にテキストが続くとタイトルを始める `title` が該当します。
+`-` はそのような文字なので、`set-a` は `set` で始まります。
+そのため、`"a b"`、`"a.b"`、`"1a"`、`"日本語"`、`"set"`、`"Set-a"`、
+`"title"` は引用符を保ち、`"xset"`、`"set1"`、`"a-b"` は引用符を外します。
+数値である名前は、id `"007"` のように、書かれたまま保ちます。
+style のプロパティの値は、そのような名前、数値、
+`#` と 3 桁から 8 桁の十六進数字からなる色を、空白 1 つで区切ったものです。
+mermaid.js が引用符のない値の語を空白 1 つで結ぶためです。
+`"red blue"` と `"-1.5"` は引用符を外し、`"1a"`、`"red  blue"`、`" red "`、
+`"rgb(1,2,3)"`、`"#abcdefg"`、`"a.b"` は引用符を保ちます。
+[fixture: quotes/names-without-quotes] [fixture: quotes/names-that-need-quotes]
+[fixture: quotes/style-values-without-quotes]
+
+ラベルのテキストは、角括弧の間のテキストから、
+mermaid.js が trim する括弧に接する空白、タブ、no-break space を除いたものです。
+`set A[ Alpha ]` は `set A["Alpha"]` になり、
+`set D[" Padded "]` は書かれたままです。
+空白だけのラベル（`[ ]` の Db にラベルはなく、
+`[" "]` には空のラベルがあります）、`%%` を含むラベル、
+内部にディレクティブかコメントのあるラベルは、書かれたまま保ちます。
+[fixture: quotes/labels-in-quotes] [fixture: quotes/labels-that-stay-as-written]
+
+対象のある text は、文書の例にないため、対象、id、ラベルを書かれたまま保ちます。
+ほかのラベルと同じく、ラベルの括弧に接する空白だけは除きます。
+名前の後に `%` が続く場合は引用符を保ちます。
+ここで後に続く文字とは、名前の後の空白、タブ、
+ディレクティブを除いた最初の文字です。
+（[テキストの引用符](./compatibility.ja.md#テキストの引用符)）。
+`set "B"%%{init: {}}%%` は `set B%%{init: {}}%%` と印字し、
+`set "B" %% c` は引用符を保ちます。
+`;` のある行など、プリンターが書かれたまま印字する行の名前とラベルも同じです。
+[fixture: quotes/explicit-text-as-written]
+[fixture: quotes/names-before-a-comment-as-written]
+[fixture: quotes/texts-on-a-kept-line-as-written]
+
+入力
+([quotes/names-without-quotes-input.mmd](../tests/fixtures/venn/quotes/names-without-quotes-input.mmd)):
+
+```mmd
+venn-beta
+set "A"
+set "B_2"[Beta]
+set "c-d":3
+set "xset"
+set "set1"
+union "A","B_2"["Both"]
+style "A","c-d" fill:red
+set "A1"
+  text "item"
+  text "item-2"[Note]
+```
+
+出力
+([quotes/names-without-quotes-output.mmd](../tests/fixtures/venn/quotes/names-without-quotes-output.mmd)):
+
+```mmd
+venn-beta
+set A
+set B_2["Beta"]
+set c-d:3
+set xset
+set set1
+union A, B_2["Both"]
+style A, c-d fill:red
+set A1
+  text item
+  text item-2["Note"]
 ```
 
 ### Sizes and numbers
@@ -483,7 +561,8 @@ mermaid.js は単位を空白 1 つで結ぶので、Db は同じです。
 単位と単位の間に空白があるかどうかは、書かれたまま保ちます。
 rgb・rgba の内部の空白は別で、成分の隙間を変えると Db が変わり、
 結んだ裸の値を引用符で囲んでも変わります。
-引用符つきの値、rgb・rgba 全体、キーの大小文字、重複と別々の文も保ちます。
+引用符つきの値は、[Quotes](#quotes)のとおり、引用符なしで印字します。
+rgb・rgba のトークン全体、キーの大小文字、重複と別々の文は書かれたまま保ちます。
 保持部分では句読点の空白を変えません。
 コロンとハッシュの隙間がセミコロンの選択を変えないためです。
 [corpus fixture: venn/div-c4-bare-style-value]
@@ -789,7 +868,7 @@ Venn のヘッダー行の文にはその役割がありません。
 
 ```mmd
 venn-beta
-set A%%{init: {}}%%[L]:2
+set A%%{init: {}}%%["L"]:2
 ```
 
 入力（escape 表記）:
@@ -863,8 +942,8 @@ set A
 ```mmd
 venn-beta
 set "A
- B"[L
-  M]
+ B"["L
+  M"]
 text A "x
  y"[N
  O]

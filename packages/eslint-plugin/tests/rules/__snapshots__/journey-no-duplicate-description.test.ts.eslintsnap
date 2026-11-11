@@ -7,11 +7,17 @@ Filename: journey-no-duplicate-description-incorrect-1.mmd
 Code:
   1 | journey
   2 |   accDescr: first
-  3 |   accDescr { second }
-    |   ^~~~~~~~~~~~~~~~~~~ [1]
-  4 |   section Work
-  5 |     Make tea: 5: Me
-  6 |
+  3 |   accDescr {
+    |   ^~~~~~~~~~\ [1]
+  4 |     second
+    | ~~~~~~~~~~\ [1]
+  5 |     third
+    | ~~~~~~~~~\ [1]
+  6 |   }
+    | ~~~ [1]
+  7 |   section Work
+  8 |     Make tea: 5: Me
+  9 |
 
 [1] mermaid.js replaces the earlier description with the one of this `accDescr`.
     Suggestions:
@@ -25,10 +31,13 @@ Code:
       - Remove the earlier statement that sets the description.
         Output:
           1 | journey
-          2 |   accDescr { second }
-          3 |   section Work
-          4 |     Make tea: 5: Me
-          5 |
+          2 |   accDescr {
+          3 |     second
+          4 |     third
+          5 |   }
+          6 |   section Work
+          7 |     Make tea: 5: Me
+          8 |
 ---
 
 

@@ -504,18 +504,18 @@ cynefin-beta
 
 ### Description blocks
 
-accDescr ブロックは共有の説明 layout を通します。
+1 行の説明ブロックは、
+[1 行の説明ブロック](./compatibility.ja.md#1-行の説明ブロック) に従います。
 空白だけの内部は `{}` にします。
-ブロックの境界がわかるよう、keyword と開始波括弧の間に空白を1個置きます。
-1 行のテキストは、括弧に接して書かれていても、両側に空白を 1 つずつ置きます。
+波括弧を残すブロックは、境界がわかるよう、
+キーワードと開始波括弧の間に空白を 1 つ置きます。
 普通の opener 前の空白は結合し、独立した closer は文の段にそろえます。
 通常の説明本文と独立したコメント行は文より1段内側に揃えます。
 Db で LF 後の字下げが取り除かれるためです。
 改行、内部の空行、行末空白を保ちます。
 directive と共有の除去対象となるコメント領域は原文全体を保ちます。
 空ブロック内のコメント・directive は共有の配置を保ちます。
-中身のない内部を padding で囲む必要はなく、
-値内の native form に見える文字も値のままにするためです。
+値内の native form に見える文字も値のままにします。
 
 [fixture: cynefin/description-blocks/description-empty]
 
@@ -931,7 +931,7 @@ cynefin-beta
   complex
     "StructuralTail"
   clear --> chaotic
-  accDescr { Done }
+  accDescr: Done
 ```
 
 ### Semicolons

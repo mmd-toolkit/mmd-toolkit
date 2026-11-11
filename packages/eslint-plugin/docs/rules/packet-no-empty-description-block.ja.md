@@ -51,6 +51,7 @@ packet
 packet
   accDescr {
     Fields of a TCP header
+    from the first bit
   }
   0-15: "Source Port"
 ```

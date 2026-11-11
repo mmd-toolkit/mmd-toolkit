@@ -519,9 +519,10 @@ radar-beta
 
 ### Description blocks
 
-説明は共有の `layoutDescriptionBlock` を通します。
-ブロックの境界がわかるよう、keyword と opener の間に空白を1個置きます。
-1 行のテキストは、括弧に接して書かれていても、両側に空白を 1 つずつ置きます。
+1 行の説明ブロックは、
+[1 行の説明ブロック](./compatibility.ja.md#1-行の説明ブロック) に従います。
+波括弧を残すブロックは、境界がわかるよう、
+キーワードと開始波括弧の間に空白を 1 つ置きます。
 空白だけの内部は、空白で囲む文字がないため `{}` にします。
 opener 前の普通の空白は結合し、実際の trivia のある改行は残します。
 コメント・directive だけの内部を保ちます。
@@ -560,10 +561,10 @@ directive と共有の除去対象となるコメント領域は原文全体を�
 
 ```mmd
 radar-beta
-  accDescr { Word }
-  accDescr { Word }
-  accDescr { Left }
-  accDescr { Right }
+  accDescr: Word
+  accDescr: Word
+  accDescr: Left
+  accDescr: Right
 ```
 
 ### Multiline values
@@ -1003,7 +1004,7 @@ radar-beta
   axis North
   curve trial{4}
   ticks 7
-  accDescr { Detail }
+  accDescr: Detail
 ```
 
 ### Frontmatter yaml

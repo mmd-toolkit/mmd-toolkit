@@ -61,6 +61,7 @@ Examples of **correct** code for this rule:
 quadrantChart
   accDescr {
     Campaigns by reach
+    and engagement
   }
   A: [0.3, 0.6]
 ```

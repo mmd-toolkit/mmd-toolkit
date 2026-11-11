@@ -49,7 +49,10 @@ erDiagram
 ```mmd
 %% eslint @mmd-toolkit/er-no-unclosed-description-block: error
 erDiagram
-  accDescr { x }
+  accDescr {
+    first line
+    second line
+  }
   A {
     string name
   }

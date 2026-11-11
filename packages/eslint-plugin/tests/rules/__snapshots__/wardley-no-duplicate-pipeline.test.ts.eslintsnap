@@ -8,12 +8,12 @@ Code:
   1 | wardley-beta
   2 |   component Database [0.4, 0.8]
   3 |   pipeline Database {
-  4 |     component SQL [0.5]
+  4 |     component "SQL" [0.5]
   5 |   }
   6 |   pipeline Database {
     |   ^~~~~~~~~~~~~~~~~~~\ [1]
-  7 |     component Cloud [0.9]
-    | ~~~~~~~~~~~~~~~~~~~~~~~~~\ [1]
+  7 |     component "Cloud" [0.9]
+    | ~~~~~~~~~~~~~~~~~~~~~~~~~~~\ [1]
   8 |   }
     | ~~~ [1]
   9 |

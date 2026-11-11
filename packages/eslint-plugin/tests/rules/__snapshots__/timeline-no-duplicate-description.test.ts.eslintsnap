@@ -7,10 +7,16 @@ Filename: timeline-no-duplicate-description-incorrect-1.mmd
 Code:
   1 | timeline
   2 |   accDescr: first
-  3 |   accDescr { second }
-    |   ^~~~~~~~~~~~~~~~~~~ [1]
-  4 |   2020 : Launch
-  5 |
+  3 |   accDescr {
+    |   ^~~~~~~~~~\ [1]
+  4 |     second
+    | ~~~~~~~~~~\ [1]
+  5 |     third
+    | ~~~~~~~~~\ [1]
+  6 |   }
+    | ~~~ [1]
+  7 |   2020 : Launch
+  8 |
 
 [1] mermaid.js replaces the earlier description with the one of this `accDescr`.
     Suggestions:
@@ -23,9 +29,12 @@ Code:
       - Remove the earlier statement that sets the description.
         Output:
           1 | timeline
-          2 |   accDescr { second }
-          3 |   2020 : Launch
-          4 |
+          2 |   accDescr {
+          3 |     second
+          4 |     third
+          5 |   }
+          6 |   2020 : Launch
+          7 |
 ---
 
 

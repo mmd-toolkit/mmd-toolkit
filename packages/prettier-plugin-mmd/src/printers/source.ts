@@ -113,6 +113,11 @@ export function isWhitespace(character: string): boolean {
   return character.trim() === ""
 }
 
+/** A space, a tab, or a no-break space: what mermaid.js trims from a label. */
+export function isBracketPadding(character: string): boolean {
+  return character === " " || character === "\t" || character === "\u00a0"
+}
+
 /** Whether a character is a space or a tab. */
 export function isSpaceOrTab(character: string): boolean {
   return character === " " || character === "\t"

@@ -55,7 +55,10 @@ erDiagram
 %% eslint @mmd-toolkit/er-no-duplicate-description: error
 erDiagram
   accDescr: first
-  accDescr { second }
+  accDescr {
+    second
+    third
+  }
   A
 ```
 
@@ -73,9 +76,7 @@ erDiagram
 %% eslint @mmd-toolkit/er-no-duplicate-description: error
 erDiagram
   accDescr: first
-  accDescr {
-    first
-  }
+  accDescr: first
   A
 ```
 

@@ -11,10 +11,12 @@ Code:
     |   ^~~~~~~~~~\ [1]
   4 |     second
     | ~~~~~~~~~~\ [1]
-  5 |   }
+  5 |     third
+    | ~~~~~~~~~\ [1]
+  6 |   }
     | ~~~ [1]
-  6 |   line [1, 2]
-  7 |
+  7 |   line [1, 2]
+  8 |
 
 [1] mermaid.js replaces the earlier description with the one of this `accDescr`.
 ---

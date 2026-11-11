@@ -1,0 +1,23 @@
+{
+  "source": {
+    "kind": "authored",
+    "note": "db-from-tree/flowchart.md Building the summary from the tree, Accessibility statements: A later description line replaces a block whose text stands on a line of its own with the description `second`."
+  },
+  "accepted": true,
+  "diagramType": "flowchart-v2",
+  "db": {
+    "direction": "LR",
+    "title": "",
+    "accTitle": "",
+    "accDescr": "second",
+    "vertices": [],
+    "edges": [],
+    "edgeDefaults": {
+      "interpolate": null,
+      "style": null
+    },
+    "classDefs": [],
+    "subgraphs": [],
+    "tooltips": []
+  }
+}

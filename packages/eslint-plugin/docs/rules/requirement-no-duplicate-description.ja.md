@@ -47,7 +47,10 @@ requirement や element の中の空のブロックも数えない。
 %% eslint @mmd-toolkit/requirement-no-duplicate-description: error
 requirementDiagram
   accDescr: first
-  accDescr { second }
+  accDescr {
+    second
+    third
+  }
   requirement r {
     id: 1
   }
@@ -68,9 +71,7 @@ requirementDiagram
 %% eslint @mmd-toolkit/requirement-no-duplicate-description: error
 requirementDiagram
   accDescr: first
-  accDescr {
-    first
-  }
+  accDescr: first
   requirement r {
     id: 1
   }

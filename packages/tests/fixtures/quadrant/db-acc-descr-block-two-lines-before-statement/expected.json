@@ -1,0 +1,36 @@
+{
+  "source": {
+    "kind": "authored",
+    "note": "quadrant.md Accessibility values, Titles and accessibility statements; db-from-tree/quadrant.md Building the summary from the tree, Accessibility: a closed description block with two lines of text before a point sets the description to `Campaigns by reach\\nand engagement`."
+  },
+  "accepted": true,
+  "diagramType": "quadrantChart",
+  "db": {
+    "title": "",
+    "accTitle": "",
+    "accDescr": "Campaigns by reach\nand engagement",
+    "quadrants": [
+      "",
+      "",
+      "",
+      ""
+    ],
+    "xAxis": {
+      "left": "",
+      "right": ""
+    },
+    "yAxis": {
+      "bottom": "",
+      "top": ""
+    },
+    "points": [
+      {
+        "text": "A",
+        "className": "",
+        "x": "0.3",
+        "y": "0.6"
+      }
+    ],
+    "classes": []
+  }
+}

@@ -3,6 +3,7 @@ import { builders, utils } from "prettier/doc"
 import type { Range } from "@mmd-toolkit/ast"
 import type { MermaidAst } from "../parser.ts"
 import type { Gap, ItemRun } from "./gap.ts"
+import { printAccessibilityLine } from "./accessibility-form.ts"
 import type { GapRule } from "./atoms.ts"
 import {
   endsWithSpaceOrTab,
@@ -50,6 +51,16 @@ const { replaceEndOfLine } = utils
  */
 export interface Positioned {
   readonly range: Range
+  /** The type of a node of the tree; a unit that a printer makes has none. */
+  readonly type?: string
+}
+
+/** The only statement of a unit, with what the printer puts before it. */
+export interface OnlyStatement {
+  readonly statement: Positioned
+  readonly head: Doc
+  /** The ranges of the source that the printer does not print. */
+  readonly omitted?: readonly Range[]
 }
 
 /**
@@ -94,6 +105,14 @@ export interface BlockRules<Statement extends Positioned> {
   readonly kept: KeptLines
   /** Overrides ordinary blank placement before a statement, when supplied. */
   readonly blankBeforeStatement?: (statement: Statement, gap: Gap) => boolean
+  /**
+   * The statement of the tree that a unit holds, for a diagram type whose
+   * printer makes units: the one statement of a unit that holds nothing else
+   * on its line, and what the printer puts before it on its line (the
+   * directives before it). A unit of several statements has none. A statement
+   * of the tree is its own, with nothing before it.
+   */
+  readonly onlyStatementOf?: (unit: Statement) => OnlyStatement | undefined
   /** A moved owned blank joins the next gap's ordinary blank-line placement. */
   readonly blankAfterStatement?: (statement: Statement) => boolean
   /**
@@ -596,6 +615,31 @@ export function printBlock<Statement extends Positioned>(
     return source.root.comments[index]?.range[1] === trimmed
   }
 
+  /**
+   * The line `accDescr: text` that stands for a unit that is a description
+   * block on one line (see `printAccessibilityLine`), with what the printer
+   * puts before the statement, or undefined. `endsItsLine` is true where the
+   * unit is the last of the statements that stay together on a line.
+   */
+  function accessibilityLineOf(
+    unit: Statement,
+    endsItsLine: boolean,
+  ): Doc | undefined {
+    const only: OnlyStatement | undefined =
+      rules.onlyStatementOf === undefined
+        ? { statement: unit, head: "" }
+        : rules.onlyStatementOf(unit)
+    if (only === undefined) return undefined
+    const line = printAccessibilityLine(
+      source,
+      only.statement,
+      endsItsLine,
+      only.omitted,
+    )
+    if (line === undefined) return undefined
+    return only.head === "" ? line : [only.head, line]
+  }
+
   /** Whether the line that holds `position` keeps its statements together. */
   function isKept(position: number): boolean {
     const line = lineStartOf(source, position)
@@ -720,7 +764,9 @@ export function printBlock<Statement extends Positioned>(
               rules.inlineGapBefore?.(statement),
               rules.omittedRanges,
             ),
-        docs[stretch.first + index],
+        (index === covered.length - 1
+          ? accessibilityLineOf(statement, true)
+          : undefined) ?? docs[stretch.first + index],
       )
       position = rules.printedEnd(statement)
     }
@@ -875,7 +921,10 @@ export function printBlock<Statement extends Positioned>(
     if (!startsStretch) {
       const writtenIndentation = rules.writtenIndentationOf?.(statement)
       pushLine({
-        doc: withLeading(gap.leading, docs[index]),
+        doc: withLeading(
+          gap.leading,
+          accessibilityLineOf(statement, false) ?? docs[index],
+        ),
         ...writtenBreak,
         ...(writtenIndentation === undefined ? {} : { writtenIndentation }),
         blankBefore:

@@ -1434,41 +1434,15 @@ usecaseのDbが同じ形に従います。 [fixture: accessibility-lines/empty-b
 [fixture: accessibility-lines/empty-block-directive-kept]
 [fixture: multi-line-values/accdescr-block-comment-only]
 
-空でないブロックは[複数行の値](#複数行の値)に従います。
-1 行のブロックの文字は、両側に空白を 1 つずつ置きます。
-`{a}`、`{ a }`、`{  a  }`、`{  a}`、`{a  }` は、どれも `{ a }` になります。
-mermaid.js は文字を trim するので、両端の空白に意味はありません。
-[データブロック](#データブロック)の `@{ ... }` も同じ形で印字します。
-mermaid.js の文書には、1 行のブロックの例がありません。
+1 行のブロックは、
+[1 行の説明ブロック](./compatibility.ja.md#1-行の説明ブロック) に従います。
 [fixture: accessibility-lines/block-tight-text]
 [fixture: accessibility-lines/block-spaced-text]
 [fixture: accessibility-lines/block-padded-text]
 [fixture: accessibility-lines/block-left-padding-only]
 [fixture: accessibility-lines/block-right-padding-only]
-コメントやディレクティブ、改行があるブロックは、書かれたままにします。
-文字に `%%{` があるブロックも同じです。
-`accDescr {A%%{}%% B` では最初の `}` がブロックを閉じるので、
-空白を足すとディレクティブが変わります。
-[fixture: accessibility-lines/block-text-beside-directive]
-[fixture: pie/description-blocks/block-first-brace]
-`;` を残す行にあるブロックは、文字が何であっても、空白を足しません。
-mermaid.js の line rule
-が行全体を読むからです（[セミコロン](#セミコロン)を参照）。
-`{a;b}` と `{a; b}` はそのままです。
-`A[style];accDescr {b:c;}D#z;` のブロックも、空白を足すと、
-line rule が組にする `:` と `#` を壊すので、そのままです。
-端の空白の連なりは、空白 1 つにします。
-`{  a;b  }` は `{ a;b }` になります。
-[fixture: accessibility-lines/block-text-with-semicolon-kept]
-[fixture: accessibility-lines/block-on-style-line-kept]
-文を区切るだけの `;` は落とされ、ブロックは整えます。
-[fixture: accessibility-lines/block-text-with-semicolons-padded]
-文字の中の U+2028 と U+2029 は、文字を複数行にするので、そのまま残します。
-[test: U+2028 in the text of a flowchart description block]
-[test: U+2029 in the text of a flowchart description block]
-ASCII の空白とタブでない端の空白（no-break space など）も、
-mermaid.js が trim するので、空白 1 つで印字します。
-[test: no-break spaces at the ends of the text of a flowchart description block]
+mermaid.js の文書には、1 行のブロックの例がありません。
+
 複数行の本文は、
 [複数行の値](#複数行の値)のトップレベルと subgraph の規則に従い、
 単独行の閉じ括弧を `accDescr` に揃えます。
@@ -1500,7 +1474,7 @@ flowchart LR
 
 ```mmd
 flowchart LR
-  accDescr { a }
+  accDescr: a
   A[Block spacing]
 ```
 
@@ -2041,11 +2015,13 @@ subgraph の中では、本文があるブロックの原文が字下げごと�
 そうしたブロックのコメントの内容も保ち、
 列は同じトップレベルまたは subgraph の規則に従います。
 [fixture: multi-line-values/accdescr-block-comment-line-in-subgraph-kept]
-テキストが `{` と同じ行から始まるときは、その両側に空白を 1 つずつ置きます。
-詳しくは、[アクセシビリティの行](#アクセシビリティの行)を参照してください。
-triviaのない空ブロックは、
-[アクセシビリティの行](#アクセシビリティの行)に従います。
+複数行のブロックのテキストが `{` と同じ行から始まるときは、
+波括弧の内側に空白を 1 つずつ置きます。
 [fixture: multi-line-values/accdescr-block-text-starts-on-brace-line]
+1 行のブロックは、
+[1 行の説明ブロック](./compatibility.ja.md#1-行の説明ブロック) に従い、
+trivia のない空ブロックは、
+[アクセシビリティの行](#アクセシビリティの行)に従います。
 テキストがなく、コメント行だけを持つブロックは、値を持ちません。
 そのコメント行は、文の中のコメント行と同じく、
 `accDescr` より 1 段深く置き（[コメント](#コメント)を参照）、
@@ -2104,7 +2080,7 @@ flowchart LR
     }
     A
   end
-  accDescr { one line }
+  accDescr: one line
   accDescr {
     text
     %% note
@@ -2630,6 +2606,99 @@ flowchart LR
 flowchart LR
   subgraph S %%{init: {}}%%
     A
+  end
+```
+
+### Quotes
+
+引用符付きの subgraph の名前は、mermaid.js の文書の例が引用符なしで 53 回、
+引用符付きで 1 回書いているとおり、引用符なしで印字します。
+（[テキストの引用符](./compatibility.ja.md#テキストの引用符)）。
+`subgraph "Group A"` は `subgraph Group A` と印字します。
+mermaid.js はどちらの形の名前も同じテキストとして読み、
+複数の語からなる名前の id はどちらでも生成されます。
+名前が ASCII の英字、数字、`_` からなる語を空白 1 つで区切ったもので、
+どの語も `_blank`、`_parent`、`_self`、`_top`、`call`、`click`、`default`、
+`direction`、`end`、`href`、`interpolate` でない場合に、引用符なしで印字します。
+これらの語は、字句解析器がそれぞれ独立した単位として読むためです。
+そのため、`"a-b"`、`"end"`、`"x end"`、`"click"`、`"x _self"`、`"direction"`、
+`.` や ASCII 以外の文字を含む名前と、markdown 文字列は書かれたままにします。
+`direction` で終わる名前（`"xdirection"`、`"my xdirection"`）は、
+後に何が続いても引用符を残します。
+字句解析器は、`direction`、空白（改行も含みます）、`TB`、`BT`、`RL`、`LR`、
+`TD` を 1 行として読みます。
+`subgraph xdirection` と次の行の `TB --> C` が、この 1 行になるためです。
+同じ行で語が接する名前（`subgraph "S"accDescr {}`）と、
+コメントが続く名前（`subgraph "C" %% note`）は、
+引用符なしのテキストが語やコメントを取り込んでしまうため、引用符を保ちます。
+タイトルのある subgraph では、空白 2 つの連なりを持つ名前も引用符を保ちます。
+そこでは名前が id であり、空白の連なりが異なる 2 つの id は別の id だからです。
+（[同じに描かれるテキスト中の空白の連なり](./compatibility.ja.md#同じに描かれるテキスト中の空白の連なり)）。
+名前の後の `;` やディレクティブは何も取り込まないので、名前は引用符を失います。
+`subgraph "D"%%{init: {}}%%` は `subgraph D%%{init: {}}%%` と印字します。
+[fixture: quotes/subgraph-names-without-quotes]
+[fixture: quotes/swimlane-lane-names-without-quotes]
+[fixture: quotes/subgraph-names-that-need-quotes]
+[fixture: quotes/subgraph-names-next-to-a-direction-line]
+[fixture: quotes/subgraph-names-with-runs-without-quotes]
+[fixture: quotes/subgraph-names-before-a-comment]
+[fixture: subgraph-header/whitespace-before-block-kept]
+
+角括弧の中の subgraph のタイトルと、shape のラベル、link のラベルは、
+書かれたままにします。
+mermaid.js は `A["x"]` を文字列として、`A[x]` をテキストとして読み、
+Db の `labelType` に前者では `string`、後者では `text` を持ちます。
+そのため、例では shape のラベルを引用符なしで 109 回、
+引用符付きで 8 回書いていても、この 2 つの形は同じには読まれません。
+[fixture: quotes/labels-as-written] [fixture: quotes/subgraph-titles-as-written]
+
+入力
+([quotes/subgraph-names-without-quotes-input.mmd](../tests/fixtures/flowchart/quotes/subgraph-names-without-quotes-input.mmd)):
+
+```mmd
+flowchart TD
+subgraph "One"
+A --> B
+end
+subgraph "Group A"
+C --> D
+end
+subgraph "g_2" [Title]
+E --> F
+end
+subgraph "G3"[Title]
+G --> H
+end
+subgraph 'Single'
+I --> J
+end
+subgraph Already
+K --> L
+end
+```
+
+出力
+([quotes/subgraph-names-without-quotes-output.mmd](../tests/fixtures/flowchart/quotes/subgraph-names-without-quotes-output.mmd)):
+
+```mmd
+flowchart TD
+  subgraph One
+    A --> B
+  end
+  subgraph Group A
+    C --> D
+  end
+  subgraph g_2[Title]
+    E --> F
+  end
+  subgraph G3[Title]
+    G --> H
+  end
+  subgraph 'Single'
+    I --> J
+  end
+  subgraph Already
+    K --> L
   end
 ```
 

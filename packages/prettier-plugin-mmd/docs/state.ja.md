@@ -1300,7 +1300,7 @@ stateDiagram-v2
 `accDescr { ... }` の本文行は文より 1 段深くそろえ、
 独立した `}` は文と同じ段に置きます。
 Mermaid が説明からこの字下げを除くためです。 [fixture: multi-line-values/kept]
-[fixture: multi-line-values/accdescr-block-single-line-kept]
+[fixture: multi-line-values/accdescr-block-single-line]
 [fixture: multi-line-values/accdescr-block-empty-and-comment-lines-kept]
 閉じたブロックに本文がなければ、内側を `{}` と印字します。
 `accDescr { }` は `accDescr {}` になり、空白の連続、改行、
@@ -1327,17 +1327,8 @@ agentflow、usecase に合わせます。
 [fixture: multi-line-values/kept]
 [fixture: multi-line-values/floating-note-empty-line-kept]
 
-1 行のブロックの文字は、両側に空白を 1 つずつ置きます。
-これは、
-[flowchart のアクセシビリティの行](./flowchart.ja.md#アクセシビリティの行)
-と同じ形です。
-`accDescr {a b}`、`accDescr {  a b  }`、`accDescr {  a b}`、
-`accDescr {a b  }` は、どれも `accDescr { a b }` になります。
-mermaid.js は文字を trim するので、両端の空白に意味はありません。
-文字の中にディレクティブがあるブロックは、書かれたままにします。
-`;` を残す行にあるブロックは、空白を足しませんが、
-端の空白の連なりは空白 1
-つにします（[セミコロン](./flowchart.ja.md#セミコロン)を参照）。
+1 行のブロックは、
+[1 行の説明ブロック](./compatibility.ja.md#1-行の説明ブロック) に従います。
 [fixture: multi-line-values/block-text-on-one-line-padded]
 
 入力

@@ -1,0 +1,17 @@
+classDiagram
+class `Animal`
+class `Duck` {
++swim()
+}
+class `Zebra`~T~
+class `Fish`:::css
+`Animal` <|-- `Duck`
+`Animal` "1" --> "*" `Zebra` : eats
+`Animal` : +name
+<<interface>> `Animal`
+note for `Animal` "text"
+click `Animal` call f()
+link `Animal` "https://example.com"
+namespace `Zoo` {
+class Cat
+}

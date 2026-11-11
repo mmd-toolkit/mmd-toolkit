@@ -63,14 +63,20 @@ Examples of **correct** code for this rule:
 %% eslint @mmd-toolkit/flowchart-no-unclosed-description-block: error
 flowchart LR
   A
-  accDescr { y }
+  accDescr {
+    first line
+    second line
+  }
 ```
 
 ```mmd
 %% eslint @mmd-toolkit/flowchart-no-unclosed-description-block: error
 flowchart LR
   A --> B
-  accDescr { x }
+  accDescr {
+    first line
+    second line
+  }
   B --> C
 ```
 

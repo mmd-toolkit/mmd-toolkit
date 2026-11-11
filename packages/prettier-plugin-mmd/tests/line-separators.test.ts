@@ -568,6 +568,21 @@ const flowchartExamples: readonly (readonly [string, string, string])[] = [
     "flowchart LR\n  subgraph S[T\u2028]\n    A\n  end\n",
   ],
   [
+    "U+2028 in the name of a flowchart subgraph in quotes",
+    'flowchart TD\nsubgraph "A\u2028B"\nA\nend\n',
+    'flowchart TD\n  subgraph "A\u2028B"\n    A\n  end\n',
+  ],
+  [
+    "U+2029 after the name of a flowchart subgraph in quotes",
+    'flowchart TD\nsubgraph "S"\u2029\nA\nend\n',
+    'flowchart TD\n  subgraph "S"\u2029\n    A\n  end\n',
+  ],
+  [
+    "U+2029 between the name of a flowchart subgraph in quotes and its title",
+    'flowchart TD\nsubgraph "S" \u2029[T]\nA\nend\n',
+    "flowchart TD\n  subgraph S \u2029[T]\n    A\n  end\n",
+  ],
+  [
     "U+2028 after the string of a flowchart click statement with a string over lines",
     'flowchart LR\nA\nclick   A "x\ny"   \u2028  "t"\n',
     'flowchart LR\n  A\n  click A "x\ny"   \u2028  "t"\n',
@@ -610,17 +625,57 @@ const flowchartExamples: readonly (readonly [string, string, string])[] = [
   [
     "U+2028 in the text of a flowchart description block",
     "flowchart LR\naccDescr {a\u2028b}\nA\n",
-    "flowchart LR\n  accDescr {a\u2028b}\n  A\n",
+    "flowchart LR\n  accDescr: a\u2028b\n  A\n",
   ],
   [
     "U+2029 in the text of a flowchart description block",
     "flowchart LR\naccDescr {a\u2029b}\nA\n",
-    "flowchart LR\n  accDescr {a\u2029b}\n  A\n",
+    "flowchart LR\n  accDescr: a\u2029b\n  A\n",
   ],
   [
     "no-break spaces at the ends of the text of a flowchart description block",
     "flowchart LR\naccDescr {\u00a0a\u00a0}\nA\n",
-    "flowchart LR\n  accDescr { a }\n  A\n",
+    "flowchart LR\n  accDescr: a\n  A\n",
+  ],
+  [
+    "a no-break space inside the text of a flowchart description block",
+    "flowchart LR\naccDescr {a\u00a0b}\nA\n",
+    "flowchart LR\n  accDescr: a\u00a0b\n  A\n",
+  ],
+  [
+    "U+3000 inside the text of a flowchart description block",
+    "flowchart LR\naccDescr {a\u3000b}\nA\n",
+    "flowchart LR\n  accDescr: a\u3000b\n  A\n",
+  ],
+  [
+    "a vertical tab inside the text of a flowchart description block",
+    "flowchart LR\naccDescr {a\u000bb}\nA\n",
+    "flowchart LR\n  accDescr: a\u000bb\n  A\n",
+  ],
+  [
+    "a form feed inside the text of a flowchart description block",
+    "flowchart LR\naccDescr {a\u000cb}\nA\n",
+    "flowchart LR\n  accDescr: a\u000cb\n  A\n",
+  ],
+  [
+    "U+FEFF inside the text of a flowchart description block",
+    "flowchart LR\naccDescr {a\ufeffb}\nA\n",
+    "flowchart LR\n  accDescr: a\ufeffb\n  A\n",
+  ],
+  [
+    "U+2028 before the text of a flowchart description block",
+    "flowchart LR\naccDescr {\u2028a}\nA\n",
+    "flowchart LR\n  accDescr: a\n  A\n",
+  ],
+  [
+    "U+2028 after the text of a flowchart description block",
+    "flowchart LR\naccDescr {a\u2028}\nA\n",
+    "flowchart LR\n  accDescr: a\n  A\n",
+  ],
+  [
+    "U+2028 between the keyword and the brace of a flowchart description block",
+    "flowchart LR\naccDescr\u2028{a}\nA\n",
+    "flowchart LR\n  accDescr: a\n  A\n",
   ],
   [
     "U+2028 between a subgraph name and its title",
@@ -977,6 +1032,16 @@ const erExamples: readonly (readonly [string, string, string])[] = [
     "erDiagram\nA {\n int a\u2028b\n}\n",
     "erDiagram\n  A {\n    int a\u2028b\n  }\n",
   ],
+  [
+    "U+2028 after the role of an ER relationship in quotes that ends with `direction`, before a line that starts with a direction",
+    'erDiagram\nA ||--o{ B : "my_direction"\u2028LR ||--o{ C : has\n',
+    'erDiagram\n  A ||--o{ B : "my_direction"\n  \u2028LR ||--o{ C : has\n',
+  ],
+  [
+    "U+2029 after the role of an ER relationship in quotes that ends with `Direction`, in any case, before a line that starts with a direction",
+    'erDiagram\nA ||--o{ B : "myDirection"\u2029BT ||--o{ C : has\n',
+    'erDiagram\n  A ||--o{ B : "myDirection"\n  \u2029BT ||--o{ C : has\n',
+  ],
 ]
 
 /**
@@ -1150,7 +1215,7 @@ const journeyLineSeparatorExamples: readonly (readonly [
   [
     "U+2028 between a description block and a task",
     "journey\naccDescr { d }\u2028A: 5\n",
-    "journey\n  accDescr { d }\n  A: 5\n",
+    "journey\n  accDescr: d\n  A: 5\n",
   ],
   [
     "U+2028 inside a task description",
@@ -1259,7 +1324,7 @@ const journeyWhitespaceExamples: readonly (readonly [
   [
     "U+00A0 between a description block and a task",
     "journey\naccDescr { d }\u00a0A: 5\n",
-    "journey\n  accDescr { d }\n  A: 5\n",
+    "journey\n  accDescr: d\n  A: 5\n",
   ],
   [
     "U+FEFF before a task",
@@ -1718,7 +1783,7 @@ const timelineLineSeparatorExamples: readonly (readonly [
   [
     "U+2028 between a description block and a period",
     "timeline\naccDescr { d }\u2028a : e\n",
-    "timeline\n  accDescr { d }\n  a : e\n",
+    "timeline\n  accDescr: d\n  a : e\n",
   ],
   [
     "U+2028 inside a period",
@@ -1837,7 +1902,7 @@ const timelineWhitespaceExamples: readonly (readonly [
   [
     "U+00A0 after a description block",
     "timeline\naccDescr { d }\u00a0a : e\n",
-    "timeline\n  accDescr { d }\n  a : e\n",
+    "timeline\n  accDescr: d\n  a : e\n",
   ],
   [
     "U+3000 in the indentation before a period",
@@ -1936,12 +2001,12 @@ const xychartLineSeparatorExamples: readonly (readonly [
   [
     "U+2028 between the header and a statement",
     "xychart\u2028title T\n",
-    "xychart\n  title T\n",
+    'xychart\n  title "T"\n',
   ],
   [
     "U+2028 between two statements",
     "xychart\ntitle T\u2028line [1]\n",
-    "xychart\n  title T\n  line [1]\n",
+    'xychart\n  title "T"\n  line [1]\n',
   ],
   [
     "U+2028 between the header and the orientation",
@@ -1961,7 +2026,7 @@ const xychartLineSeparatorExamples: readonly (readonly [
   [
     "U+2028 after a title keyword",
     "xychart\ntitle\u2028T\n",
-    "xychart\n  title\u2028T\n",
+    'xychart\n  title\u2028"T"\n',
   ],
   [
     "U+2028 between the words of a category",
@@ -2006,17 +2071,17 @@ const xychartLineSeparatorExamples: readonly (readonly [
   [
     "U+2028 after a description block",
     "xychart\naccDescr { d }\u2028title T\n",
-    "xychart\n  accDescr { d }\n  title T\n",
+    'xychart\n  accDescr: d\n  title "T"\n',
   ],
   [
     "U+2028 at the end of a statement",
     "xychart\ntitle T\u2028\nline [1]\n",
-    "xychart\n  title T\n  line [1]\n",
+    'xychart\n  title "T"\n  line [1]\n',
   ],
   [
     "U+2028 at the end of the text",
     "xychart\ntitle T\u2028",
-    "xychart\n  title T\n",
+    'xychart\n  title "T"\n',
   ],
 ]
 
@@ -2044,7 +2109,7 @@ const xychartWhitespaceExamples: readonly (readonly [
   [
     "U+00A0 after a title keyword",
     "xychart\ntitle\u00a0T\n",
-    "xychart\n  title T\n",
+    'xychart\n  title "T"\n',
   ],
   [
     "U+00A0 around the values of a plot",
@@ -2069,22 +2134,22 @@ const xychartWhitespaceExamples: readonly (readonly [
   [
     "U+3000 before a statement",
     "xychart\n\u3000title T\n",
-    "xychart\n  title T\n",
+    'xychart\n  title "T"\n',
   ],
   [
     "U+FEFF before a statement",
     "xychart\ntitle T\n\ufeffline [1]\n",
-    "xychart\n  title T\n  line [1]\n",
+    'xychart\n  title "T"\n  line [1]\n',
   ],
   [
     "U+00A0 between two statements",
     "xychart\ntitle T\u00a0line [1]\n",
-    "xychart\n  title T\n  line [1]\n",
+    'xychart\n  title "T"\n  line [1]\n',
   ],
   [
     "U+00A0 at the end of a statement",
     "xychart\ntitle T\u00a0\nline [1]\n",
-    "xychart\n  title T\n  line [1]\n",
+    'xychart\n  title "T"\n  line [1]\n',
   ],
   [
     "U+00A0 in a string",
@@ -2104,7 +2169,7 @@ const xychartWhitespaceExamples: readonly (readonly [
   [
     "U+00A0 inside a description block",
     "xychart\naccDescr {\u00a0d\u00a0}\n",
-    "xychart\n  accDescr { d }\n",
+    "xychart\n  accDescr: d\n",
   ],
   [
     "U+00A0 inside an empty description block",
@@ -2267,7 +2332,7 @@ const quadrantWhitespaceExamples: readonly (readonly [
   [
     "U+00A0 inside a description block",
     "quadrantChart\naccDescr\u00a0{\u00a0d\u00a0}\n",
-    "quadrantChart\n  accDescr { d }\n",
+    "quadrantChart\n  accDescr: d\n",
   ],
   [
     "U+00A0 inside an empty description block",
@@ -3424,7 +3489,7 @@ const c4Examples: readonly (readonly [string, string, string])[] = [
   [
     "c4: harmless-bare-exterior",
     "C4Context\nPerson(\t a\t,\u00a0A\ufeff,)",
-    "C4Context\n  Person(a, A,)\n",
+    'C4Context\n  Person(a, "A",)\n',
   ],
   [
     "c4: null-tab-unit",
@@ -3514,7 +3579,7 @@ const c4Examples: readonly (readonly [string, string, string])[] = [
   [
     "c4: ls-description-block",
     'C4Context\naccDescr { A\u2028B }Person(a,"A")',
-    'C4Context\n  accDescr { A\u2028B }\n  Person(a, "A")\n',
+    'C4Context\n  accDescr: A\u2028B\n  Person(a, "A")\n',
   ],
   [
     "c4: ps-empty-block-gap",
@@ -3744,32 +3809,32 @@ const vennExamples: readonly (readonly [string, string, string])[] = [
   [
     "U+2028 inside the brackets of a venn label",
     "venn-beta\nset A[ T\u2028]\n",
-    "venn-beta\nset A[T\u2028]\n",
+    'venn-beta\nset A["T\u2028"]\n',
   ],
   [
     "U+2029 inside the brackets of a venn label",
     "venn-beta\nset A[ T\u2029]\n",
-    "venn-beta\nset A[T\u2029]\n",
+    'venn-beta\nset A["T\u2029"]\n',
   ],
   [
     "venn: crlf-values",
     'venn-beta\r\nset "A\r\n B"[L\r\n M]\r\nstyle A fill:rgb(1,\r\n 2,3)\r\n',
-    'venn-beta\nset "A\n B"[L\n M]\nstyle A fill:rgb(1,\n 2,3)\n',
+    'venn-beta\nset "A\n B"["L\n M"]\nstyle A fill:rgb(1,\n 2,3)\n',
   ],
   [
     "venn: cr-values",
     'venn-beta\rset "A\r B"[L\r M]\rstyle A fill:rgb(1,\r 2,3)\r',
-    'venn-beta\nset "A\n B"[L\n M]\nstyle A fill:rgb(1,\n 2,3)\n',
+    'venn-beta\nset "A\n B"["L\n M"]\nstyle A fill:rgb(1,\n 2,3)\n',
   ],
   [
     "venn: ls-values",
     'venn-beta\nset "A\u2028 B"[L\u2028 M]\nstyle A fill:rgb(1,\u2028 2,3)',
-    'venn-beta\nset "A\u2028 B"[L\u2028 M]\nstyle A fill:rgb(1,\u2028 2,3)\n',
+    'venn-beta\nset "A\u2028 B"["L\u2028 M"]\nstyle A fill:rgb(1,\u2028 2,3)\n',
   ],
   [
     "venn: ps-values",
     'venn-beta\nset "A\u2029 B"[L\u2029 M]\nstyle A fill:rgba(1,\u2029 2,3,.5)',
-    'venn-beta\nset "A\u2029 B"[L\u2029 M]\nstyle A fill:rgba(1,\u2029 2,3,.5)\n',
+    'venn-beta\nset "A\u2029 B"["L\u2029 M"]\nstyle A fill:rgba(1,\u2029 2,3,.5)\n',
   ],
   [
     "venn: ls-comment-kept",
@@ -3805,7 +3870,7 @@ const vennExamples: readonly (readonly [string, string, string])[] = [
   [
     "venn: nbsp-value-kept",
     'venn-beta\nset " A\u00a0B "[ L\u00a0M ]\nstyle A fill:rgb(1,\u00a02,3)',
-    'venn-beta\nset " A\u00a0B "[L\u00a0M]\nstyle A fill:rgb(1,\u00a02,3)\n',
+    'venn-beta\nset " A\u00a0B "["L\u00a0M"]\nstyle A fill:rgb(1,\u00a02,3)\n',
   ],
   ["venn: ff-title-separator", "venn-beta\ntitle\fT", "venn-beta\ntitle T\n"],
   [
@@ -3816,7 +3881,7 @@ const vennExamples: readonly (readonly [string, string, string])[] = [
   [
     "venn: vt-value-kept",
     'venn-beta\nset "A\u000bB"[L\fM]',
-    'venn-beta\nset "A\u000bB"[L\fM]\n',
+    'venn-beta\nset "A\u000bB"["L\fM"]\n',
   ],
   [
     "venn: nbsp-title-separator",
@@ -3856,7 +3921,7 @@ const vennExamples: readonly (readonly [string, string, string])[] = [
   [
     "venn: unicode-role-whitespace",
     '\u3000venn-beta\nset "A\ufeffB"[L\u3000M]\ntext A "x\u2028y"\nstyle A fill:"a\u2029b"',
-    'venn-beta\nset "A\ufeffB"[L\u3000M]\ntext A "x\u2028y"\nstyle A fill:"a\u2029b"\n',
+    'venn-beta\nset "A\ufeffB"["L\u3000M"]\ntext A "x\u2028y"\nstyle A fill:"a\u2029b"\n',
   ],
   [
     "venn: ls-kept-overlapping-value",

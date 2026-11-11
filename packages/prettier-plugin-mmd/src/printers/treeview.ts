@@ -216,6 +216,19 @@ export function printTreeview(
           : findLayoutEnd(layouts.get(line)!),
       holdsStatements: () => false,
       isDroppedAtTopLevel: () => false,
+      // The drawing of a box stands between the tokens of a block where
+      // the box keeps the characters between the keyword and the brace; the
+      // other characters are redrawn, not printed (docs/treeview.md, Branch
+      // prefixes).
+      onlyStatementOf: (line) =>
+        line.item.type === "TreeviewAccDescrBlockStatement" &&
+        drawing?.keptOpenerGaps.has(line.item) === true
+          ? undefined
+          : {
+              statement: line.item,
+              head: placements.get(line)!.head,
+              omitted: drawing?.omitted,
+            },
       keepsWhitespaceLineAfterComment: false,
       keepsDirectiveLinesUnindented: false,
       keepsTrailingWhitespaceInKeptTrivia: true,

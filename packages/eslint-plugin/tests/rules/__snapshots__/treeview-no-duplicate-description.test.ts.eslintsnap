@@ -7,10 +7,16 @@ Filename: treeview-no-duplicate-description-incorrect-1.mmd
 Code:
   1 | treeView-beta
   2 |   accDescr: First
-  3 |   accDescr { Second }
-    |   ^~~~~~~~~~~~~~~~~~~ [1]
-  4 |   root/
-  5 |
+  3 |   accDescr {
+    |   ^~~~~~~~~~\ [1]
+  4 |     Second
+    | ~~~~~~~~~~\ [1]
+  5 |     Third
+    | ~~~~~~~~~\ [1]
+  6 |   }
+    | ~~~ [1]
+  7 |   root/
+  8 |
 
 [1] mermaid.js replaces the earlier description with the one of this `accDescr`.
     Suggestions:
@@ -23,9 +29,12 @@ Code:
       - Remove the earlier statement that sets the description.
         Output:
           1 | treeView-beta
-          2 |   accDescr { Second }
-          3 |   root/
-          4 |
+          2 |   accDescr {
+          3 |     Second
+          4 |     Third
+          5 |   }
+          6 |   root/
+          7 |
 ---
 
 

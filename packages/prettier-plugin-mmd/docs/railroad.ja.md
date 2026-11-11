@@ -1224,39 +1224,30 @@ railroad-peg-beta
 
 ### 説明ブロック
 
-共有の common-description 配置から layoutDescriptionBlock を使います。
+1 行の説明ブロックは、
+[1 行の説明ブロック](./compatibility.ja.md#1-行の説明ブロック) に従います。
+波括弧を保つブロックでは、`accDescr` と `{` の間に空白 1 つを置きます。
+キーワードと開始括弧の間が空白だけなら、同じ行にまとめます。
 空白だけの内部は、囲む内容がないため `{}` にします。
-`accDescr` と `{` の間に空白を 1 つ置き、
-`{Text}` は `{ Text }` として印字します。
-keyword と opener の間の通常の改行は join します。
-通常の説明本文と独立したコメント行は文より1段内側に揃えます。
-Db で LF 後の字下げが取り除かれるためです。
-改行、内部の空行、行末空白を保ち、別行の閉じ括弧を文の位置へ揃えます。
-directive と共有の除去対象となるコメント領域は原文全体を保ちます。
-コメントや directive だけの block は共有 fallback で内容を残します。
-
 [fixture: railroad/description-blocks/abnf-edges]
-
-[fixture: railroad/description-blocks/abnf-lines]
-
-[fixture: railroad/description-blocks/abnf-trivia]
-
 [fixture: railroad/description-blocks/ebnf-edges]
-
-[fixture: railroad/description-blocks/ebnf-lines]
-
-[fixture: railroad/description-blocks/ebnf-trivia]
-
 [fixture: railroad/description-blocks/ir-edges]
-
-[fixture: railroad/description-blocks/ir-lines]
-
-[fixture: railroad/description-blocks/ir-trivia]
-
 [fixture: railroad/description-blocks/peg-edges]
 
+本文が複数行のブロックでは、
+通常の説明本文と独立したコメント行を文より 1 段深くします。
+Db で LF 後の字下げが取り除かれるためです。
+改行、内部の空行、行末空白を保ち、独立した閉じ括弧を文と同じ段にそろえます。
+[fixture: railroad/description-blocks/abnf-lines]
+[fixture: railroad/description-blocks/ebnf-lines]
+[fixture: railroad/description-blocks/ir-lines]
 [fixture: railroad/description-blocks/peg-lines]
 
+ディレクティブは原文全体を保ちます。
+コメントかディレクティブだけのブロックも内容を残します。
+[fixture: railroad/description-blocks/abnf-trivia]
+[fixture: railroad/description-blocks/ebnf-trivia]
+[fixture: railroad/description-blocks/ir-trivia]
 [fixture: railroad/description-blocks/peg-trivia]
 
 入力（escape 表記）:
@@ -1267,8 +1258,8 @@ directive と共有の除去対象となるコメント領域は原文全体を�
 
 ```mmd
 railroad-beta
-  accDescr { Text }
-  accDescr { Text }
+  accDescr: Text
+  accDescr: Text
   accDescr {}
   r = terminal("block");
 ```
@@ -1281,8 +1272,8 @@ railroad-beta
 
 ```mmd
 railroad-ebnf-beta
-  accDescr { Text }
-  accDescr { Text }
+  accDescr: Text
+  accDescr: Text
   accDescr {}
   r = "block";
 ```
@@ -1295,8 +1286,8 @@ railroad-ebnf-beta
 
 ```mmd
 railroad-abnf-beta
-  accDescr { Text }
-  accDescr { Text }
+  accDescr: Text
+  accDescr: Text
   accDescr {}
   r = "block";
 ```
@@ -1309,8 +1300,8 @@ railroad-abnf-beta
 
 ```mmd
 railroad-peg-beta
-  accDescr { Text }
-  accDescr { Text }
+  accDescr: Text
+  accDescr: Text
   accDescr {}
   r <- "block";
 ```
@@ -1725,7 +1716,7 @@ closer 後の space と tab、inline の接触を共有の hidden-gap 保護で�
 
 ```mmd
 railroad-beta
-  accDescr { moved }
+  accDescr: moved
   %%{!after metadata}%%
 
   r = terminal("after moved");
@@ -1739,7 +1730,7 @@ railroad-beta
 
 ```mmd
 railroad-ebnf-beta
-  accDescr { moved }
+  accDescr: moved
   %%{!after metadata}%%
 
   r = "after moved";
@@ -1753,7 +1744,7 @@ railroad-ebnf-beta
 
 ```mmd
 railroad-abnf-beta
-  accDescr { moved }
+  accDescr: moved
   %%{!after metadata}%%
 
   r = "after moved";
@@ -1767,7 +1758,7 @@ railroad-abnf-beta
 
 ```mmd
 railroad-peg-beta
-  accDescr { moved }
+  accDescr: moved
   %%{!after metadata}%%
 
   r <- "after moved";
@@ -2891,7 +2882,7 @@ railroad-beta
 
 ```mmd
 railroad-ebnf-beta
-  accDescr { old }
+  accDescr: old
   accDescr {}
   z = later;
   a = "first";
@@ -2923,7 +2914,7 @@ railroad-abnf-beta
 
 ```mmd
 railroad-peg-beta
-  accDescr { old }
+  accDescr: old
   accDescr {}
   z <- later;
   a <- "first";
