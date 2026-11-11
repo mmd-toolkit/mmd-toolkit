@@ -551,6 +551,28 @@ quadrantChart
   Q1 results: [0.5, 0.5]
 ```
 
+Input
+([quotes/texts-with-hyphens-without-quotes-input.mmd](../tests/fixtures/quadrant/quotes/texts-with-hyphens-without-quotes-input.mmd)):
+
+```mmd
+quadrantChart
+x-axis "Low-Reach" --> "High-Reach"
+y-axis "low-value" --> "high-value2"
+quadrant-1 "We-should expand"
+"my-point": [0.3, 0.6]
+```
+
+Output
+([quotes/texts-with-hyphens-without-quotes-output.mmd](../tests/fixtures/quadrant/quotes/texts-with-hyphens-without-quotes-output.mmd)):
+
+```mmd
+quadrantChart
+  x-axis Low-Reach --> High-Reach
+  y-axis low-value --> high-value2
+  quadrant-1 We-should expand
+  my-point: [0.3, 0.6]
+```
+
 ### Titles and accessibility statements
 
 A `title` is printed as the keyword and its text, after one space, whatever

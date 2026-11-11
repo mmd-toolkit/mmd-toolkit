@@ -784,8 +784,9 @@ mermaid.js の文書の例に合わせて引用符なしで印字します。
 [テキストの引用符](./compatibility.ja.md#テキストの引用符) を参照してください。
 `"A"[B]` は `A[B]` に、`C ||--o{ D : "has"` は `C ||--o{ D : has` にします。
 英字で始まり、部分の間を 1 つの `-` でつないだ語も平易なものとします。
-文書の例は `LINE-ITEM` と `NAMED-DRIVER` を引用符なしで 20 回使い、
-引用符付きでは一度も使わないので、`"LINE-ITEM"` は `LINE-ITEM` と印字します。
+文書の例は、`LINE-ITEM` や `NAMED-DRIVER` などのこのような名前を、
+引用符なしで 20 回使い、引用符付きでは一度も使わないので、
+`"LINE-ITEM"` は `LINE-ITEM` と印字します。
 `-` はキーワードを終わらせるので（`"end-x"` は `end` と `-x`）、
 最初の `-` より前の部分を、字句解析器が独立した単位として読む語と比較します。
 ほかの名前は、引用符の有無も数も含めて、書かれたまま残します。
@@ -853,6 +854,36 @@ erDiagram
   "A B":::c
   A:::é,b-c
   B:::d
+```
+
+入力
+([entities/hyphenated-names-without-quotes-input.mmd](../tests/fixtures/er/entities/hyphenated-names-without-quotes-input.mmd)):
+
+```mmd
+erDiagram
+"LINE-ITEM" ||--o{ "ORDER-LINE" : "has-items"
+"A-B-C" {
+int id
+}
+"p-q"[Alias]
+subgraph "my-group"
+"x-y"
+end
+```
+
+出力
+([entities/hyphenated-names-without-quotes-output.mmd](../tests/fixtures/er/entities/hyphenated-names-without-quotes-output.mmd)):
+
+```mmd
+erDiagram
+  LINE-ITEM ||--o{ ORDER-LINE : has-items
+  A-B-C {
+    int id
+  }
+  p-q[Alias]
+  subgraph my-group
+    x-y
+  end
 ```
 
 ### subgraph

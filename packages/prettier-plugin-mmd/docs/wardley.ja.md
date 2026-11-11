@@ -161,7 +161,7 @@ mermaid.js の文書の例と同じく引用符で囲んで印字します。
 `title` など）で始まらないものです。
 `-` を含む名前は、引用符を残します。
 この図種を初めて含む版の 11.14.0 は、引用符なしでは拒否するためです。
-（[Versions of mermaid.js](./compatibility.md#versions-of-mermaidjs)を参照）。
+（[mermaid.js の版](./compatibility.ja.md#mermaidjs-の版)を参照）。
 矢印のない link（`"A" "B"`）の名前と、
 hidden YAML block の `---` に接する名前は、引用符を残します。
 [fixture: names-and-quotes/plain-names-without-quotes]

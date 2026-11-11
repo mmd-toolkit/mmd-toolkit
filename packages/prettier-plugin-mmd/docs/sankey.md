@@ -213,6 +213,34 @@ sankey
 Pumped heat,"Heating and cooling, ""homes""",193.026
 ```
 
+Input
+([quotes/symbols-without-quotes-input.mmd](../tests/fixtures/sankey/quotes/symbols-without-quotes-input.mmd)):
+
+```mmd
+sankey
+"R&D",Product,10
+Product,"AT&T",5
+"it's","a/b",2
+"x<y>","c\dir",3
+" a & b ","'x'",4
+"/","\",1
+a,b,"1&2"
+```
+
+Output
+([quotes/symbols-without-quotes-output.mmd](../tests/fixtures/sankey/quotes/symbols-without-quotes-output.mmd)):
+
+```mmd
+sankey
+R&D,Product,10
+Product,AT&T,5
+it's,a/b,2
+x<y>,c\dir,3
+a & b,'x',4
+/,\,1
+a,b,"1&2"
+```
+
 ### Values
 
 The value of a link is printed in the shortest form. mermaid.js makes the value

@@ -2596,6 +2596,84 @@ flowchart TD
   end
 ```
 
+Input
+([quotes/shape-labels-without-quotes-input.mmd](../tests/fixtures/flowchart/quotes/shape-labels-without-quotes-input.mmd)):
+
+```mmd
+flowchart LR
+A["text"]
+B("Is it ready?")
+C(["Step 1: load"])
+D[["go-on, then stop!"]]
+E[("Database v2")]
+F(("x.y"))
+G{{"Hexagon"}}
+H{"Decision"}
+I[/"Input"/]
+J[\"Output"\]
+K[/"Trapezoid"\]
+L[\"Alt trapezoid"/]
+M>"Asymmetric"]
+N((("Double circle")))
+O["a - b"]
+P[text]
+```
+
+Output
+([quotes/shape-labels-without-quotes-output.mmd](../tests/fixtures/flowchart/quotes/shape-labels-without-quotes-output.mmd)):
+
+```mmd
+flowchart LR
+  A[text]
+  B(Is it ready?)
+  C([Step 1: load])
+  D[[go-on, then stop!]]
+  E[(Database v2)]
+  F((x.y))
+  G{{Hexagon}}
+  H{Decision}
+  I[/Input/]
+  J[\Output\]
+  K[/Trapezoid\]
+  L[\Alt trapezoid/]
+  M>Asymmetric]
+  N(((Double circle)))
+  O[a - b]
+  P[text]
+```
+
+Input
+([quotes/link-labels-without-quotes-input.mmd](../tests/fixtures/flowchart/quotes/link-labels-without-quotes-input.mmd)):
+
+```mmd
+flowchart LR
+A -->|"Is it ready?"| B
+B -- "Step 1: load" --> C
+C == "go-on, then stop!" ==> D
+D -- "x" --- E
+E -.-> F
+F -. "ready?" .-> G
+G -. "a.b" .-> H
+H -->|"a.b"| I
+I -->|plain| J
+```
+
+Output
+([quotes/link-labels-without-quotes-output.mmd](../tests/fixtures/flowchart/quotes/link-labels-without-quotes-output.mmd)):
+
+```mmd
+flowchart LR
+  A -->|Is it ready?| B
+  B -- Step 1: load --> C
+  C == go-on, then stop! ==> D
+  D -- x --- E
+  E -.-> F
+  F -. ready? .-> G
+  G -. "a.b" .-> H
+  H -->|a.b| I
+  I -->|plain| J
+```
+
 ### Style trailing whitespace
 
 Whitespace at the end of a `style`, `classDef`, or `linkStyle` statement is

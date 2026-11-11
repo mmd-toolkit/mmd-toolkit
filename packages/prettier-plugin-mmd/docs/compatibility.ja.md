@@ -1268,7 +1268,7 @@ SVG と画素を比べてから、例外を残します。
 ## 同じに描かれるラベル
 
 flowchart、swimlane、agentflow の図のラベルは、例が使う形で印字します。
-（[The quotes of a text](./compatibility.md#the-quotes-of-a-text)）。
+（[テキストの引用符](#テキストの引用符)を参照）。
 flowchart と swimlane 図では `A["Start here"]` を `A[Start here]` と印字し、
 agentflow 図では `A[Start]` を `A["Start"]` と印字します。
 リンクのラベルと、subgraph や flow のタイトルも同じです。
@@ -1282,21 +1282,21 @@ agentflow 図では `A[Start]` を `A["Start"]` と印字します。
 mermaid.js は、引用符で囲んだラベルの `labelType` として `string` を、
 引用符のないラベルでは `text` を Db に残すので、印字したテキストの Db は、
 書かれたテキストの Db と違いますが、同じ図を描きます。
-Db は、頂点のテキストから型を得ます。
+Db は、頂点のテキストの型を `labelType` にします。
 （[`flowDb.ts`](https://github.com/mermaid-js/mermaid/blob/2086904e76c692331e34a45d7cc3bc30860d040e/packages/mermaid/src/diagrams/flowchart/flowDb.ts#L228)、
 [`agentflowDb.ts`](https://github.com/mermaid-js/mermaid/blob/2086904e76c692331e34a45d7cc3bc30860d040e/packages/mermaid/src/diagrams/agentflow/agentflowDb.ts#L485)）。
-辺のテキストも同じです。
+辺のテキストの型も同じです。
 （[L333](https://github.com/mermaid-js/mermaid/blob/2086904e76c692331e34a45d7cc3bc30860d040e/packages/mermaid/src/diagrams/flowchart/flowDb.ts#L333)、
 [L752](https://github.com/mermaid-js/mermaid/blob/2086904e76c692331e34a45d7cc3bc30860d040e/packages/mermaid/src/diagrams/agentflow/agentflowDb.ts#L752)）。
-subgraph や flow のタイトルも同じです。
+subgraph や flow のタイトルの型も同じです。
 （[L763](https://github.com/mermaid-js/mermaid/blob/2086904e76c692331e34a45d7cc3bc30860d040e/packages/mermaid/src/diagrams/flowchart/flowDb.ts#L763)、
 [L1245](https://github.com/mermaid-js/mermaid/blob/2086904e76c692331e34a45d7cc3bc30860d040e/packages/mermaid/src/diagrams/agentflow/agentflowDb.ts#L1245)）。
 描画処理は、その型が `markdown` かどうかだけを読みます。
-ノードのラベルが該当します。
+ノードのラベルでそうします。
 （[`labelHelper`](https://github.com/mermaid-js/mermaid/blob/2086904e76c692331e34a45d7cc3bc30860d040e/packages/mermaid/src/rendering-util/rendering-elements/shapes/util.ts#L89)）。
-辺のラベルも同じです。
+辺のラベルでもそうします。
 （[`edges.js`](https://github.com/mermaid-js/mermaid/blob/2086904e76c692331e34a45d7cc3bc30860d040e/packages/mermaid/src/rendering-util/rendering-elements/edges.js#L87)）。
-subgraph のタイトルも同じです。
+subgraph のタイトルでもそうします。
 （[`clusters.js`](https://github.com/mermaid-js/mermaid/blob/2086904e76c692331e34a45d7cc3bc30860d040e/packages/mermaid/src/rendering-util/rendering-elements/clusters.js#L41)、
 [L555](https://github.com/mermaid-js/mermaid/blob/2086904e76c692331e34a45d7cc3bc30860d040e/packages/mermaid/src/rendering-util/rendering-elements/clusters.js#L555)）。
 
@@ -2183,7 +2183,7 @@ accelerator と deaccelerator、pipeline の component の名前は、
 引用符で囲んで印字します。
 `-` のある名前は書かれたまま残します。
 この図種が初めて加わった 11.14.0 は、引用符がないと拒否するためです。
-（[Versions of mermaid.js](./compatibility.md#versions-of-mermaidjs)）。
+（[mermaid.js の版](#mermaidjs-の版)を参照）。
 矢印のないリンクの 2 つの名前 `"A" "B"` は、
 引用符を外すと 1 つの名前として読まれ、
 名前に隣接する hidden YAML ブロックの `---` は名前に結合されるので、
@@ -2405,7 +2405,7 @@ agentflow 図では、コメント行の後のようにラベルが行の最初�
 書かれたまま残します。
 mermaid.js がその位置の文字列を拒否するためです。
 印字が別の形で書くリンクのラベルは、その形では引用符なしで書きます。
-（[The label of a link](./compatibility.md#the-label-of-a-link)）。
+（[リンクのラベル](#リンクのラベル)を参照）。
 [fixture: flowchart/quotes/shape-labels-without-quotes]
 [fixture: flowchart/quotes/link-labels-without-quotes]
 [fixture: flowchart/quotes/subgraph-titles-without-quotes]

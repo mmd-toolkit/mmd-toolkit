@@ -1234,7 +1234,7 @@ flow のタイトルと形のラベルも、例と同じく引用符つきで印
 `flow F [T]` は `flow F["T"]` と、`A[Start]` は `A["Start"]` と印字します。
 リンクのラベルは、2 つの例と同じく引用符なしで印字します。
 `A -->|"text"| B` は `A -- text --> B` と印字します。
-（[Link label form](./flowchart.md#link-label-form)）。
+（[辺のラベルの書き方](./flowchart.ja.md#辺のラベルの書き方)を参照）。
 テキストを引用符で囲む条件は、connector のタイトルと同じです。
 コメント行の後など、行の最初の単位であるラベルは、
 mermaid.js がそこで文字列を拒否するので、書かれたままにします。
@@ -1331,6 +1331,52 @@ agentflow-beta TB
   connector C6["Touching"]
   connector C7["Already"]
   connector C8["Done?"]@{ x: 1 }
+```
+
+入力
+([quotes/labels-in-quotes-input.mmd](../tests/fixtures/agentflow/quotes/labels-in-quotes-input.mmd)):
+
+```mmd
+agentflow-beta TB
+A[text]
+B["text"]
+C(Is it ready?)
+D{Decision}
+E[(Database v2)]
+F[a/b]
+G[`md`]
+H -- text --> I
+H -->|"text"| I
+J -->|"a/b"| K
+flow F1[title]
+E1
+end
+flow F2["title"]
+G1
+end
+```
+
+出力
+([quotes/labels-in-quotes-output.mmd](../tests/fixtures/agentflow/quotes/labels-in-quotes-output.mmd)):
+
+```mmd
+agentflow-beta TB
+  A["text"]
+  B["text"]
+  C("Is it ready?")
+  D{"Decision"}
+  E[("Database v2")]
+  F[a/b]
+  G[`md`]
+  H -- text --> I
+  H -- text --> I
+  J -->|"a/b"| K
+  flow F1["title"]
+    E1
+  end
+  flow F2["title"]
+    G1
+  end
 ```
 
 ### Frontmatter YAML

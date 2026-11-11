@@ -2654,7 +2654,7 @@ shape のラベル、link のラベル、角括弧の中の subgraph のタイ�
 例では、shape のラベルを引用符なしで 109 回、引用符付きで 8 回、
 link のラベルを引用符なしで 32 回、引用符付きで 1 回、
 タイトルを引用符なしで 6 回、引用符付きでは一度も書いていないためです。
-（[テキストの引用符](./compatibility.md#the-quotes-of-a-text)）。
+（[テキストの引用符](./compatibility.ja.md#テキストの引用符)）。
 `A["Start here"]` は `A[Start here]` と、
 `A -->|"Is it ready?"| B` は `A -->|Is it ready?| B` と、
 `subgraph S ["Title"]` は `subgraph S[Title]` と印字します。
@@ -2670,7 +2670,7 @@ Db の `labelType` に前者では `string`、後者では `text` を持ちま�
 markdown 文字列は引用符を残します。
 mermaid.js の行の規則が丸ごと読む行など、
 プリンタが書かれたまま印字する行のラベルも同じです。
-（[Lines that hold a `;`](./compatibility.md#lines-that-hold-a-)）。
+（[`;` を含む行](./compatibility.ja.md#-を含む行)）。
 引用符なしで書かれたラベルは、引用符なしのままにします。
 [fixture: quotes/shape-labels-without-quotes]
 [fixture: quotes/link-labels-without-quotes]
@@ -2727,6 +2727,84 @@ flowchart TD
   subgraph Already
     K --> L
   end
+```
+
+入力
+([quotes/shape-labels-without-quotes-input.mmd](../tests/fixtures/flowchart/quotes/shape-labels-without-quotes-input.mmd)):
+
+```mmd
+flowchart LR
+A["text"]
+B("Is it ready?")
+C(["Step 1: load"])
+D[["go-on, then stop!"]]
+E[("Database v2")]
+F(("x.y"))
+G{{"Hexagon"}}
+H{"Decision"}
+I[/"Input"/]
+J[\"Output"\]
+K[/"Trapezoid"\]
+L[\"Alt trapezoid"/]
+M>"Asymmetric"]
+N((("Double circle")))
+O["a - b"]
+P[text]
+```
+
+出力
+([quotes/shape-labels-without-quotes-output.mmd](../tests/fixtures/flowchart/quotes/shape-labels-without-quotes-output.mmd)):
+
+```mmd
+flowchart LR
+  A[text]
+  B(Is it ready?)
+  C([Step 1: load])
+  D[[go-on, then stop!]]
+  E[(Database v2)]
+  F((x.y))
+  G{{Hexagon}}
+  H{Decision}
+  I[/Input/]
+  J[\Output\]
+  K[/Trapezoid\]
+  L[\Alt trapezoid/]
+  M>Asymmetric]
+  N(((Double circle)))
+  O[a - b]
+  P[text]
+```
+
+入力
+([quotes/link-labels-without-quotes-input.mmd](../tests/fixtures/flowchart/quotes/link-labels-without-quotes-input.mmd)):
+
+```mmd
+flowchart LR
+A -->|"Is it ready?"| B
+B -- "Step 1: load" --> C
+C == "go-on, then stop!" ==> D
+D -- "x" --- E
+E -.-> F
+F -. "ready?" .-> G
+G -. "a.b" .-> H
+H -->|"a.b"| I
+I -->|plain| J
+```
+
+出力
+([quotes/link-labels-without-quotes-output.mmd](../tests/fixtures/flowchart/quotes/link-labels-without-quotes-output.mmd)):
+
+```mmd
+flowchart LR
+  A -->|Is it ready?| B
+  B -- Step 1: load --> C
+  C == go-on, then stop! ==> D
+  D -- x --- E
+  E -.-> F
+  F -. ready? .-> G
+  G -. "a.b" .-> H
+  H -->|a.b| I
+  I -->|plain| J
 ```
 
 ### スタイルの行末の空白

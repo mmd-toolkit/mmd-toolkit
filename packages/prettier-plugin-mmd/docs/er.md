@@ -763,10 +763,10 @@ examples in the documentation of mermaid.js write it (see
 [The quotes of a text](./compatibility.md#the-quotes-of-a-text)): `"A"[B]` is
 printed `A[B]`, and `C ||--o{ D : "has"` is `C ||--o{ D : has`. A word with a
 single `-` between its parts that starts with a letter is plain too, as the
-examples write `LINE-ITEM` and `NAMED-DRIVER` without quotes 20 times and never
-in quotes: `"LINE-ITEM"` is printed `LINE-ITEM`. The part before the first `-`
-is compared with the words that the lexer reads as a unit of its own, since a
-`-` ends a keyword (`"end-x"` is `end` and `-x`). The other names are kept as
+examples write 20 such names, `LINE-ITEM` and `NAMED-DRIVER` among them, and
+none in quotes: `"LINE-ITEM"` is printed `LINE-ITEM`. The part before the first
+`-` is compared with the words that the lexer reads as a unit of its own, since
+a `-` ends a keyword (`"end-x"` is `end` and `-x`). The other names are kept as
 written, quoted or not, numbers included, and so are a name with a `-` at its
 start or its end, two together, or after a `_` at its start, and a name that
 ends with `direction` or starts with `TB`, `BT`, `RL`, or `LR`, in any case: the

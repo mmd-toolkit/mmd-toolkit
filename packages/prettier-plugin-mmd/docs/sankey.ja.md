@@ -225,6 +225,34 @@ sankey
 Pumped heat,"Heating and cooling, ""homes""",193.026
 ```
 
+入力
+([quotes/symbols-without-quotes-input.mmd](../tests/fixtures/sankey/quotes/symbols-without-quotes-input.mmd)):
+
+```mmd
+sankey
+"R&D",Product,10
+Product,"AT&T",5
+"it's","a/b",2
+"x<y>","c\dir",3
+" a & b ","'x'",4
+"/","\",1
+a,b,"1&2"
+```
+
+出力
+([quotes/symbols-without-quotes-output.mmd](../tests/fixtures/sankey/quotes/symbols-without-quotes-output.mmd)):
+
+```mmd
+sankey
+R&D,Product,10
+Product,AT&T,5
+it's,a/b,2
+x<y>,c\dir,3
+a & b,'x',4
+/,\,1
+a,b,"1&2"
+```
+
 ### 値
 
 リンクの値は、最短の形で印字します。

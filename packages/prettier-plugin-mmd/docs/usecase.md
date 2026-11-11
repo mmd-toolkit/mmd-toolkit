@@ -439,6 +439,36 @@ usecase-beta
   C --|> D
 ```
 
+Input
+([arrows/semantic-colon-gaps-input.mmd](../tests/fixtures/usecase/arrows/semantic-colon-gaps-input.mmd)):
+
+```mmd
+usecase-beta
+Browse("Browse")
+Checkout("Checkout")
+Checkout..>:include Browse
+Checkout ..> :include Browse
+Checkout ..>: include Browse
+Checkout ..>   :   extend   Browse
+Checkout	..>	:	extend	Browse
+Checkout pays@..>:include Browse
+```
+
+Output
+([arrows/semantic-colon-gaps-output.mmd](../tests/fixtures/usecase/arrows/semantic-colon-gaps-output.mmd)):
+
+```mmd
+usecase-beta
+  Browse("Browse")
+  Checkout("Checkout")
+  Checkout ..> : include Browse
+  Checkout ..> : include Browse
+  Checkout ..> : include Browse
+  Checkout ..> : extend Browse
+  Checkout ..> : extend Browse
+  Checkout pays@..> : include Browse
+```
+
 ### Arrow id boundaries
 
 Space the arrow and endpoint exactly as the AST records them: `A --order` prints

@@ -1247,6 +1247,52 @@ agentflow-beta TB
   connector C8["Done?"]@{ x: 1 }
 ```
 
+Input
+([quotes/labels-in-quotes-input.mmd](../tests/fixtures/agentflow/quotes/labels-in-quotes-input.mmd)):
+
+```mmd
+agentflow-beta TB
+A[text]
+B["text"]
+C(Is it ready?)
+D{Decision}
+E[(Database v2)]
+F[a/b]
+G[`md`]
+H -- text --> I
+H -->|"text"| I
+J -->|"a/b"| K
+flow F1[title]
+E1
+end
+flow F2["title"]
+G1
+end
+```
+
+Output
+([quotes/labels-in-quotes-output.mmd](../tests/fixtures/agentflow/quotes/labels-in-quotes-output.mmd)):
+
+```mmd
+agentflow-beta TB
+  A["text"]
+  B["text"]
+  C("Is it ready?")
+  D{"Decision"}
+  E[("Database v2")]
+  F[a/b]
+  G[`md`]
+  H -- text --> I
+  H -- text --> I
+  J -->|"a/b"| K
+  flow F1["title"]
+    E1
+  end
+  flow F2["title"]
+    G1
+  end
+```
+
 ### Frontmatter YAML
 
 Reuse [Frontmatter YAML](./flowchart.md#frontmatter-yaml) and shared

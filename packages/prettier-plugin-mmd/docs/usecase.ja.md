@@ -488,6 +488,36 @@ usecase-beta
   C --|> D
 ```
 
+入力
+([arrows/semantic-colon-gaps-input.mmd](../tests/fixtures/usecase/arrows/semantic-colon-gaps-input.mmd)):
+
+```mmd
+usecase-beta
+Browse("Browse")
+Checkout("Checkout")
+Checkout..>:include Browse
+Checkout ..> :include Browse
+Checkout ..>: include Browse
+Checkout ..>   :   extend   Browse
+Checkout	..>	:	extend	Browse
+Checkout pays@..>:include Browse
+```
+
+出力
+([arrows/semantic-colon-gaps-output.mmd](../tests/fixtures/usecase/arrows/semantic-colon-gaps-output.mmd)):
+
+```mmd
+usecase-beta
+  Browse("Browse")
+  Checkout("Checkout")
+  Checkout ..> : include Browse
+  Checkout ..> : include Browse
+  Checkout ..> : include Browse
+  Checkout ..> : extend Browse
+  Checkout ..> : extend Browse
+  Checkout pays@..> : include Browse
+```
+
 ### Arrow id boundaries
 
 矢印と端点は AST が実際に記録したとおりに空白を置きます。

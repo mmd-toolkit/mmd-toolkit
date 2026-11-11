@@ -574,6 +574,28 @@ quadrantChart
   Q1 results: [0.5, 0.5]
 ```
 
+入力
+([quotes/texts-with-hyphens-without-quotes-input.mmd](../tests/fixtures/quadrant/quotes/texts-with-hyphens-without-quotes-input.mmd)):
+
+```mmd
+quadrantChart
+x-axis "Low-Reach" --> "High-Reach"
+y-axis "low-value" --> "high-value2"
+quadrant-1 "We-should expand"
+"my-point": [0.3, 0.6]
+```
+
+出力
+([quotes/texts-with-hyphens-without-quotes-output.mmd](../tests/fixtures/quadrant/quotes/texts-with-hyphens-without-quotes-output.mmd)):
+
+```mmd
+quadrantChart
+  x-axis Low-Reach --> High-Reach
+  y-axis low-value --> high-value2
+  quadrant-1 We-should expand
+  my-point: [0.3, 0.6]
+```
+
 ### title とアクセシビリティの文
 
 `title` は、キーワードとそのテキストを、空白 1 つで離して印字します。
