@@ -49,15 +49,15 @@ vertex has with the same label and property of the shape, and with both labels
 markdown or neither: it says nothing new about the vertex. A label in quotes and
 a label without them are the same here: mermaid.js draws them alike, and the
 formatter prints one of the two forms, so formatting does not change what is
-reported. A property of the shape is not such a difference, and the formatter
-leaves it, so another property says something new. In a group such as `A & B`,
-each vertex is reported for itself. It is not reported when the earlier subgraph
-is inside the later one, or has the same id, since nothing is lost; nor when the
-vertex was not written before (an id that only names an earlier subgraph writes
-a new vertex), or when the statement says something new: a link, a class, a data
-block, the first shape of the vertex, a markdown label where the vertex's label
-is not markdown or the reverse, or another property. A different shape or label
-is reported as above.
+reported. A property of the shape changes what mermaid.js records for the
+vertex, and the formatter leaves it as written, so another property says
+something new. In a group such as `A & B`, each vertex is reported for itself.
+It is not reported when the earlier subgraph is inside the later one, or has the
+same id, since nothing is lost; nor when the vertex was not written before (an
+id that only names an earlier subgraph writes a new vertex), or when the
+statement says something new: a link, a class, a data block, the first shape of
+the vertex, a markdown label where the vertex's label is not markdown or the
+reverse, or another property. A different shape or label is reported as above.
 
 Examples of **incorrect** code for this rule:
 

@@ -1762,7 +1762,10 @@ flow title、direction、accDescr、duplicate、shape の語を加えたもの�
   (4) 要素ごとに自分の id を与える。
   2 つの規則は id ごとの 1 つの記録を共有し、報告する文で分かれる。
   agentflow-no-redefined-vertex は、flowchart-no-redefined-vertex の条件で、
+  形は上のとおり描かれるとおりに比べて、
   後の flow にもう一度書いた頂点も報告する（実行）。
+  `A[x]` の後の `A(x)` は、
+  Db の `type` が `square` と `round` で違っても報告する（実行）。
   ただし、`global` のブロックの頂点は最上位に残るので報告しない。
   文書は、flow の間で共有するノードにそのブロックを示す。
   条件は、connector のタイトルをマークダウンでないものとして読む。

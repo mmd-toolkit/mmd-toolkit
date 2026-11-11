@@ -1563,13 +1563,15 @@ duplicate, and shape: [#8443](https://github.com/mermaid-js/mermaid/pull/8443)
   shape, and kind are not reported; (4) give each element its own id. The two
   rules share one record of each id and part by the statement reported.
   agentflow-no-redefined-vertex also reports a vertex written again in a later
-  flow, under the condition of flowchart-no-redefined-vertex (run), except a
-  vertex of a `global` block, which stays at the top level: the documentation
-  gives that block for a node shared by flows. The condition reads the title of
-  a connector as not markdown, since mermaid.js records `text` for it however it
-  is written, and the markdown label and the property that a vertex statement
-  gave the element stay when the connector is declared again with a title (run).
-  A connector that an earlier flow holds counts as its member, and
+  flow, under the condition of flowchart-no-redefined-vertex (run) with the
+  shapes compared as drawn, as above (`A(x)` after `A[x]` is reported though the
+  `type` of the Db differs, `round` and `square`; run), except a vertex of a
+  `global` block, which stays at the top level: the documentation gives that
+  block for a node shared by flows. The condition reads the title of a connector
+  as not markdown, since mermaid.js records `text` for it however it is written,
+  and the markdown label and the property that a vertex statement gave the
+  element stay when the connector is declared again with a title (run). A
+  connector that an earlier flow holds counts as its member, and
   agentflow-no-redefined-connector reports in the same way a declaration in a
   later flow with no metadata, with no title or the title that the element has:
   `connector C` in `flow a`, then `connector C` in `flow b`, leaves `C` in a and
