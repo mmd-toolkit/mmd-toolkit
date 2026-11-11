@@ -1,5 +1,41 @@
 # prettier-plugin-mmd
 
+## 0.8.0
+
+### Minor Changes
+
+- [#76](https://github.com/mmd-toolkit/mmd-toolkit/pull/76) [`c7830a9`](https://github.com/mmd-toolkit/mmd-toolkit/commit/c7830a99f39f4984c6742f2161ea227f1d94240f) Thanks [@ota-meshi](https://github.com/ota-meshi)! - Print an `accDescr { ... }` block that holds one line of text as
+  `accDescr: ...`, also when the text stands on a line of its own:
+  `accDescr {a b}` becomes `accDescr: a b`. Before, a block stayed a block
+  (`accDescr { a b }`) and `accDescr: a b` stayed as written, so one description
+  was printed in two forms depending on how its author wrote it, although
+  mermaid.js draws the same figure from both and its documentation never writes a
+  description in a block on one line. A block stays a block where `accDescr: ...`
+  would not hold or read the description the same, such as a text over several
+  lines.
+
+- [#76](https://github.com/mmd-toolkit/mmd-toolkit/pull/76) [`c7830a9`](https://github.com/mmd-toolkit/mmd-toolkit/commit/c7830a99f39f4984c6742f2161ea227f1d94240f) Thanks [@ota-meshi](https://github.com/ota-meshi)! - Print a text with or without quotes in the form that the examples in the
+  documentation of mermaid.js use at least twice as often, in `sankey`, `er`,
+  `requirement`, `wardley`, `gitgraph`, `quadrant`, `xychart`, `venn`, `usecase`,
+  `architecture`, `mindmap`, `kanban`, and `c4`, and in `flowchart` and `swimlane`
+  for the name of a subgraph, in `agentflow` for the names of a flow and a
+  connector and the title of a connector, and in `class` for the names of a class
+  and a namespace: `"CUSTOMER" ||--o{ "ORDER" : "places"` in `er` becomes
+  `CUSTOMER ||--o{ ORDER : places`, and `Login(Log in)` in `usecase` becomes
+  `Login("Log in")`. Before, the formatter kept a text with or without quotes as
+  written, because a quoted text can hold what a bare one cannot, so the same text
+  came out in two forms depending on how its author wrote it, although mermaid.js
+  reads both the same. Now the form changes only where mermaid.js reads both the
+  same, so a text stays as written where the other form would be read differently,
+  such as one with a comma.
+
+### Patch Changes
+
+- [#76](https://github.com/mmd-toolkit/mmd-toolkit/pull/76) [`c7830a9`](https://github.com/mmd-toolkit/mmd-toolkit/commit/c7830a99f39f4984c6742f2161ea227f1d94240f) Thanks [@ota-meshi](https://github.com/ota-meshi)! - Fix the formatter changing the tags of `Enterprise_Boundary`, `System_Boundary`,
+  and `Container_Boundary` in a C4 diagram: it printed a run of spaces as one
+  space, so `System_Boundary(s, "S", "a  b")` came out as
+  `System_Boundary(s, "S", "a b")`, which mermaid.js reads as other tags.
+
 ## 0.7.0
 
 ### Minor Changes

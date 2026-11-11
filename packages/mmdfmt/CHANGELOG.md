@@ -1,5 +1,12 @@
 # mmdfmt
 
+## 0.2.1
+
+### Patch Changes
+
+- Updated dependencies [[`c7830a9`](https://github.com/mmd-toolkit/mmd-toolkit/commit/c7830a99f39f4984c6742f2161ea227f1d94240f), [`c7830a9`](https://github.com/mmd-toolkit/mmd-toolkit/commit/c7830a99f39f4984c6742f2161ea227f1d94240f), [`c7830a9`](https://github.com/mmd-toolkit/mmd-toolkit/commit/c7830a99f39f4984c6742f2161ea227f1d94240f)]:
+  - prettier-plugin-mmd@0.8.0
+
 ## 0.2.0
 
 ### Minor Changes
