@@ -1149,15 +1149,19 @@ way, as the examples write the 17 titles and the 47 labels, none without quotes:
 `flow F [T]` is printed `flow F["T"]`, and `A[Start]` is printed `A["Start"]`.
 The label of a link is printed without quotes, as the examples write the 2
 labels: `A -->|"text"| B` is printed `A -- text --> B` (see
-[Link label form](./flowchart.md#link-label-form)). The text is put in quotes
-under the conditions of the title of a connector, and a label that is the first
-unit of its line, as after a comment line, stays as written, since mermaid.js
-rejects a string there. mermaid.js reads `A["x"]` as a string and `A[x]` as a
-text, and its Db holds the `labelType` `string` for the first and `text` for the
-second, but it draws the same figure (see
+[Link label form](./flowchart.md#link-label-form)), except that a label with a
+`--` between two arrows keeps its quotes (`A -- "a--b" --> B`), since the lexer
+ends the text there. The text is put in quotes under the conditions of the title
+of a connector, and a label that is the first unit of its line, as after a
+comment line, a directive on a line of its own, or a U+2028 or U+2029, stays as
+written, since mermaid.js rejects a string there. mermaid.js reads `A["x"]` as a
+string and `A[x]` as a text, and its Db holds the `labelType` `string` for the
+first and `text` for the second, but it draws the same figure (see
 [Labels that are drawn the same](./compatibility.md#labels-that-are-drawn-the-same)).
 [fixture: quotes/flow-titles-in-quotes] [fixture: quotes/labels-in-quotes]
-[fixture: quotes/labels-after-a-comment-line]
+[fixture: quotes/labels-after-a-comment-line] [fixture:
+quotes/labels-after-a-directive-line] [fixture:
+quotes/edge-labels-with-two-dashes]
 
 Input
 ([quotes/names-without-quotes-input.mmd](../tests/fixtures/agentflow/quotes/names-without-quotes-input.mmd)):

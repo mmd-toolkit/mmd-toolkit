@@ -2,7 +2,7 @@
 "prettier-plugin-mmd": minor
 ---
 
-Print a name with a `-` between its parts without quotes in `erDiagram`,
+Print a name or text with a `-` between its parts without quotes in `erDiagram`,
 `flowchart`, `swimlane-beta`, `agentflow-beta`, and `quadrantChart`:
 `"LINE-ITEM" ||--o{ ORDER : has` becomes `LINE-ITEM ||--o{ ORDER : has`. Before,
 a name with a `-` kept its quotes, because only names of letters, digits, and

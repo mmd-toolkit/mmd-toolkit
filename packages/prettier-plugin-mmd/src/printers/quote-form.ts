@@ -20,6 +20,7 @@ import { findRequirementKeptLines } from "./requirement-kept-lines.ts"
 import { findSankeyKeptLines } from "./sankey-kept-lines.ts"
 import type { Source } from "./source.ts"
 import {
+  findDirectiveEndingAt,
   findTriviaAt,
   isBracketPadding,
   isSpaceOrTab,
@@ -33,9 +34,12 @@ import { findXychartKeptLines } from "./xychart-kept-lines.ts"
 
 /**
  * The text that a printer writes for a text in the form of the examples, or
- * undefined where the text must stay in the form that it is written in.
+ * undefined where the text must stay in the form that it is written in. The
+ * diagram type is the type of the diagram that holds the text, for the rules
+ * that differ between the diagram types that share a node type (flowchart,
+ * swimlane).
  */
-type Bare = (text: string) => string | undefined
+type Bare = (text: string, diagramType: string) => string | undefined
 
 /**
  * The form of the examples of a field: without quotes, or in quotes. `text` is
@@ -954,11 +958,139 @@ function labelText(text: string): string | undefined {
 }
 
 /**
- * The text of a label between the arrows of a dotted link (`-. text .->`),
- * which a `.` in the text ends: a text of `labelText` without a `.`.
+ * The diagram types whose labels are read by the lexer of the flowchart of
+ * 9.0.0 to 10.3.0, which has no state for the text of a label: it reads the
+ * text with the tokens of a statement (docs/compatibility.md, Labels that are
+ * drawn the same). The lexers of a swimlane and of an agentflow diagram, and
+ * those of 10.3.1 on, read a label in a state of its own.
  */
-function dottedLinkLabelText(text: string): string | undefined {
-  return text.includes(".") ? undefined : labelText(text)
+const statementLexerTypes: ReadonlySet<string> = new Set([
+  "flowchart-elk",
+  "flowchart-v2",
+])
+
+/**
+ * The names that the lexer before 10.3.1 reads as a token of its own wherever
+ * they stand in a text, even after a letter: the targets of a link.
+ */
+const linkTargets: readonly string[] = ["_blank", "_parent", "_self", "_top"]
+
+/**
+ * Whether `word` stands in `text` where the lexer before 10.3.1 starts a token,
+ * not in the middle of a run of letters, and the character after it, or
+ * undefined at the end of the text, is one that `follows` accepts.
+ */
+function startsWord(
+  text: string,
+  word: string,
+  follows: (character: string | undefined) => boolean,
+): boolean {
+  for (
+    let at = text.indexOf(word);
+    at !== -1;
+    at = text.indexOf(word, at + 1)
+  ) {
+    if (!isLetter(text[at - 1]) && follows(text[at + word.length])) return true
+  }
+  return false
+}
+
+/** Whether a keyword that needs a boundary after it ends before this character. */
+function endsKeyword(character: string | undefined): boolean {
+  return !isWordCharacter(character)
+}
+
+/** Whether `click` or `call` is followed by whitespace, or by the end of the text. */
+function isFollowedBySpace(character: string | undefined): boolean {
+  return character === undefined || character === " "
+}
+
+/**
+ * Whether the lexer of the flowchart before 10.3.1, which reads a label with
+ * the tokens of a statement (`statementLexerTypes`), reads a part of the text as
+ * a token that a text does not hold:
+ *
+ * - a `-` at the end of the text, which the closer `-)` of an ellipse and the
+ *   closers `)` of the other shapes take with them;
+ * - an arrow: three or more dashes, two dashes and an `x` or an `o`, and `.-`;
+ * - the separator `:::`;
+ * - a target of a link (`_self`, `_blank`, `_parent`, `_top`), wherever it
+ *   stands, and the word `interpolate`, where a run of letters starts;
+ * - `click` and `call` with a space after them, where a run of letters starts,
+ *   which start the states of an interactive statement;
+ * - `accTitle` and `accDescr`, which start the states of an accessibility line.
+ */
+function startsOtherTokens(text: string): boolean {
+  const lower = text.toLowerCase()
+  return (
+    text.endsWith("-") ||
+    holdsDashArrow(text) ||
+    text.includes(".-") ||
+    text.includes(":::") ||
+    linkTargets.some((target) => text.includes(target)) ||
+    startsWord(text, "interpolate", () => true) ||
+    startsWord(text, "click", isFollowedBySpace) ||
+    startsWord(text, "call", isFollowedBySpace) ||
+    lower.includes("acctitle") ||
+    lower.includes("accdescr")
+  )
+}
+
+/**
+ * Whether a run of `-` in the text is an arrow for the lexer before 10.3.1:
+ * three or more dashes, or two followed by an `x` or an `o`.
+ */
+function holdsDashArrow(text: string): boolean {
+  let index = 0
+  while (index < text.length) {
+    if (text[index] !== "-") {
+      index++
+      continue
+    }
+    let end = index
+    while (text[end] === "-") end++
+    if (
+      end - index >= 3 ||
+      (end - index === 2 && (text[end] === "x" || text[end] === "o"))
+    )
+      return true
+    index = end
+  }
+  return false
+}
+
+/**
+ * The text of a label of a flowchart: `labelText` and, where the lexer before
+ * 10.3.1 reads the label (`statementLexerTypes`), none of the parts that it
+ * reads as other tokens (`startsOtherTokens`).
+ */
+function flowchartLabelText(
+  text: string,
+  diagramType: string,
+): string | undefined {
+  return statementLexerTypes.has(diagramType) && startsOtherTokens(text)
+    ? undefined
+    : labelText(text)
+}
+
+/**
+ * The name of a subgraph of a flowchart: `headingName` and, where the lexer
+ * before 10.3.1 reads it (`statementLexerTypes`), no part that starts a
+ * keyword there. That lexer starts a token after a `-`, a `_`, or a digit, so
+ * `x-end`, `x_end`, and `x1end` have the keyword `end` at their end, which
+ * takes the line break after the name; `click` and `call` take the whitespace
+ * after them, `interpolate` the letters, and the targets of a link
+ * (`x_self`) are tokens of their own.
+ */
+function flowchartName(text: string, diagramType: string): string | undefined {
+  return statementLexerTypes.has(diagramType) &&
+    (linkTargets.some((target) => text.includes(target)) ||
+      startsWord(text, "end", endsKeyword) ||
+      startsWord(text, "interpolate", endsKeyword) ||
+      startsWord(text, "click", isFollowedBySpace) ||
+      startsWord(text, "call", isFollowedBySpace))
+    ? undefined
+    : headingName(text)
 }
 
 /**
@@ -968,6 +1100,22 @@ function dottedLinkLabelText(text: string): string | undefined {
  */
 function solidLinkLabelText(text: string): string | undefined {
   return text.includes("--") ? undefined : labelText(text)
+}
+
+/** The text of a label of a flowchart between the arrows of a dotted link. */
+function flowchartDottedLinkLabelText(
+  text: string,
+  diagramType: string,
+): string | undefined {
+  return text.includes(".") ? undefined : flowchartLabelText(text, diagramType)
+}
+
+/** The text of a label of a flowchart between the arrows of a solid link. */
+function flowchartSolidLinkLabelText(
+  text: string,
+  diagramType: string,
+): string | undefined {
+  return text.includes("--") ? undefined : flowchartLabelText(text, diagramType)
 }
 
 /** The line of the opening arrow of a link, or undefined for a label between `|`. */
@@ -1200,15 +1348,15 @@ const quoteRules: Readonly<
   C4UpdateStatement: { arguments: c4Arguments },
   FlowchartLink: {
     label: [
-      bare(labelText, { when: isPipedOrThickLabel }),
-      bare(dottedLinkLabelText, { when: isDottedArrowLabel }),
-      bare(solidLinkLabelText, { when: isSolidArrowLabel }),
+      bare(flowchartLabelText, { when: isPipedOrThickLabel }),
+      bare(flowchartDottedLinkLabelText, { when: isDottedArrowLabel }),
+      bare(flowchartSolidLinkLabelText, { when: isSolidArrowLabel }),
     ],
   },
-  FlowchartShape: { label: bare(labelText) },
+  FlowchartShape: { label: bare(flowchartLabelText) },
   FlowchartSubgraphStatement: {
-    name: bare(headingName, { joins: wordFollows }),
-    title: bare(labelText),
+    name: bare(flowchartName, { joins: wordFollows }),
+    title: bare(flowchartLabelText),
   },
   KanbanShape: { label: bare(shapeText, { joins: nextToDash }) },
   MindmapShape: { label: bare(shapeText, { joins: nextToDash }) },
@@ -1463,6 +1611,36 @@ export function findQuoteFormRespellings(
 }
 
 /**
+ * Whether only spaces, tabs, and directives lie between the start of the line
+ * and `offset`: the first unit of its line, which is the place where mermaid.js
+ * rejects a string in an agentflow diagram. It removes the directives before it
+ * reads the text, and ends a line at a U+2028 or a U+2029 as well as at a line
+ * feed, so a label after a directive on a line of its own, or after a line
+ * separator, is the first unit.
+ */
+function startsItsLine(source: Source, offset: number): boolean {
+  let position = offset
+  while (position > 0) {
+    const directive = findDirectiveEndingAt(source, position)
+    if (directive !== undefined) {
+      position = directive.range[0]
+      continue
+    }
+    const character = source.text[position - 1]
+    if (
+      (character === "\n" && !source.removedLineFeeds.has(position - 1)) ||
+      character === "\r" ||
+      character === "\u2028" ||
+      character === "\u2029"
+    )
+      return true
+    if (!isSpaceOrTab(character)) return false
+    position--
+  }
+  return true
+}
+
+/**
  * Records the respelling of one field of a node, when its rule applies to the
  * node and the field is written in the other form (see
  * `findQuoteFormRespellings`).
@@ -1555,6 +1733,7 @@ function respell(
     printsRunsAsOne(source, item.range[0], item.range[1])
       ? collapseRuns(text)
       : text,
+    source.root.diagramType,
   )
   // mermaid.js takes the directives away before it reads the text, so what
   // follows is the first character after the spaces, tabs, and directives.
@@ -1568,11 +1747,7 @@ function respell(
     next = directive.range[1]
   }
   const after = next < lineEnd ? source.text[next] : undefined
-  if (
-    rule.afterTextOnItsLine === true &&
-    [...source.text.slice(line, start)].every(isSpaceOrTab)
-  )
-    return
+  if (rule.afterTextOnItsLine === true && startsItsLine(source, start)) return
   if (
     printed !== undefined &&
     (rule.form === "quoted"

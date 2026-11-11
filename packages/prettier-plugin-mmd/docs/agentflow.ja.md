@@ -1235,15 +1235,21 @@ flow のタイトルと形のラベルも、例と同じく引用符つきで印
 リンクのラベルは、2 つの例と同じく引用符なしで印字します。
 `A -->|"text"| B` は `A -- text --> B` と印字します。
 （[辺のラベルの書き方](./flowchart.ja.md#辺のラベルの書き方)を参照）。
+ただし、2 つの矢印の間のラベルに `--` があるときは、
+字句解析器がそこでテキストを終えるので、
+引用符を残します（`A -- "a--b" --> B`）。
 テキストを引用符で囲む条件は、connector のタイトルと同じです。
-コメント行の後など、行の最初の単位であるラベルは、
-mermaid.js がそこで文字列を拒否するので、書かれたままにします。
+コメント行の後、単独の行にあるディレクティブの後、U+2028 や U+2029 の後など、
+行の最初の単位であるラベルは、mermaid.js がそこで文字列を拒否するので、
+書かれたままにします。
 mermaid.js は `A["x"]` を文字列、`A[x]` をテキストとして読み、
 Db の `labelType` は前者が `string`、後者が `text` ですが、
 描かれる図は同じです。
 （[同じに描かれるラベル](./compatibility.ja.md#同じに描かれるラベル)）。
 [fixture: quotes/flow-titles-in-quotes] [fixture: quotes/labels-in-quotes]
 [fixture: quotes/labels-after-a-comment-line]
+[fixture: quotes/labels-after-a-directive-line]
+[fixture: quotes/edge-labels-with-two-dashes]
 
 入力
 ([quotes/names-without-quotes-input.mmd](../tests/fixtures/agentflow/quotes/names-without-quotes-input.mmd)):

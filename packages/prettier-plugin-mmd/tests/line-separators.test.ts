@@ -598,6 +598,26 @@ const flowchartExamples: readonly (readonly [string, string, string])[] = [
     "flowchart LR\n  subgraph S[T\u2029]\n    A\n  end\n",
   ],
   [
+    "U+2028 before the label of an agentflow shape",
+    "agentflow-beta TB\nA[\u2028x]\n",
+    "agentflow-beta TB\n  A[\u2028x]\n",
+  ],
+  [
+    "U+2029 before the label of an agentflow shape",
+    "agentflow-beta TB\nA[\u2029x]\n",
+    "agentflow-beta TB\n  A[\u2029x]\n",
+  ],
+  [
+    "U+2028 before the title of an agentflow flow",
+    "agentflow-beta TB\nflow F[\u2028T]\nA\nend\n",
+    "agentflow-beta TB\n  flow F[\u2028T]\n    A\n  end\n",
+  ],
+  [
+    "U+2029 before the title of an agentflow connector",
+    "agentflow-beta TB\nconnector C[\u2029T]\n",
+    "agentflow-beta TB\n  connector C[\u2029T]\n",
+  ],
+  [
     "U+2029 after the string of a flowchart click statement with a string over lines",
     'flowchart LR\nA\nclick   A "x\ny"   \u2029  "t"\n',
     'flowchart LR\n  A\n  click A "x\ny"   \u2029  "t"\n',

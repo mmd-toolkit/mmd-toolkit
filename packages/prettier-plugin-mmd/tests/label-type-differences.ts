@@ -19,7 +19,7 @@ function isStringOrText(labelType: string): boolean {
  * label in quotes or without them. mermaid.js keeps the `labelType` `string`
  * in the Db for a label in quotes and `text` for one without, and its
  * renderers read only whether the `labelType` is `markdown`
- * (docs/compatibility.md, The quotes of a label). A `labelType` that differs
+ * (docs/compatibility.md, Labels that are drawn the same). A `labelType` that differs
  * from the written one between `string` and `text` is restored from the
  * written Db. Every other difference stays, among them a label that became
  * markdown or stopped being markdown.

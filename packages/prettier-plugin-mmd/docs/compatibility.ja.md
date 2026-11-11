@@ -2121,9 +2121,8 @@ sankey の字句解析器は、`"` と `,` 以外の ASCII の印字可能文字
 [fixture: sankey/directives/inside-fields-kept]
 [fixture: sankey/multi-line-strings/string-over-lines]
 
-ER 図では、ASCII の英字で始まる、ASCII の英字、数字、
-`_` からなる 1 語のテキストか、
-そのような語の各部分を 1 つの `-` で結んだ語（`LINE-ITEM`）を、
+ER 図では、ASCII の英字、数字、`_` からなる語で、英字で始まり、
+各部分の間に 1 つの `-` を置いてもよいもの（`LINE-ITEM`、`a-1`）を、
 その語か最初の `-` の前の部分が、
 字句解析器が独立した単位として読む以下の語のいずれでもない場合に、
 引用符なしで印字します。
@@ -2367,6 +2366,13 @@ connector の名前が、ASCII の英字、数字、`_` の語を空白 1 つで
 agentflow 図の字句解析器は `end` を名前として読みますが、
 印字はこれも引用符を残します。
 `-` が先頭か末尾にある名前や、2 つ続く名前は、引用符を残します。
+flowchart では、9.0.0 から 10.3.0 の字句解析器が `-`、`_`、
+数字の後でトークンを始めるので、
+`end` か `interpolate` が名前を終える場合（`"x-end"`、`"x_end"`）、
+空白の前に `click` か `call` がある場合（`"x-click"`、`"x1call"`）、`_self`、
+`_blank`、`_parent`、`_top` がどこかにある場合（`"x_self"`、`"a b_top"`）も、
+引用符を残します。
+swimlane 図と agentflow 図は、これらの名前を引用符なしで印字します。
 同じ行で語が接する名前（`subgraph "S"accDescr {}`）、コメントが続く名前、
 空白 2 つの連なりを持ち、subgraph にタイトルがあるため id になる名前は、
 引用符を残します。
@@ -2378,6 +2384,8 @@ agentflow 図の字句解析器は `end` を名前として読みますが、
 [fixture: flowchart/quotes/subgraph-names-with-hyphens]
 [fixture: flowchart/quotes/swimlane-lane-names-without-quotes]
 [fixture: flowchart/quotes/subgraph-names-that-need-quotes]
+[fixture: flowchart/quotes/subgraph-names-the-old-lexer-reads]
+[fixture: flowchart/quotes/swimlane-lane-names-the-old-lexer-reads]
 [fixture: flowchart/quotes/subgraph-names-next-to-a-direction-line]
 [fixture: flowchart/quotes/subgraph-names-with-runs-without-quotes]
 [fixture: flowchart/quotes/subgraph-names-before-a-comment]
@@ -2399,11 +2407,22 @@ mermaid.js は、そのテキストを引用符の有無によらず、
 （[同じに描かれるラベル](#同じに描かれるラベル) を参照してください）。
 点線のリンクの矢印の間にあるラベル（`-. "a.b" .->`）の `.` は、
 ラベルを終えるので、引用符を残します。
+実線のリンクの矢印の間にあるラベル（`-- "a--b" -->`）の `--` も、ラベルを終え、
+`go--on` は矢印 `--o` として読まれるので、flowchart、swimlane 図、
+agentflow 図のどれでも引用符を残します。
+flowchart では、9.0.0 から 10.3.0 の字句解析器がラベルを文のトークンで読み、
+次の部分を別のトークンとして読みます。
+そのため、ラベルの末尾の `-`、矢印（`---`、`--x`、`--o`、`.-`）、`:::`、
+`_self`、`_blank`、`_parent`、`_top`、`interpolate`、
+空白が続く `click` と `call`、`accTitle` と `accDescr` を含むラベルも、
+引用符を残します。
+swimlane 図と agentflow 図は、これらを引用符なしで印字します。
 ほかのテキストは、書かれたまま残します。
 markdown 文字列、`_`、`/`、`\`、`-`、空白で始まるテキスト、括弧、`|`、`&`、`"`、
 `;`、`#`、`%`、`<` を含むテキスト、末尾に空白があるテキスト、
 行全体を残す行のラベルです。
-agentflow 図では、コメント行の後のようにラベルが行の最初の単位である場合も、
+agentflow 図では、コメント行の後、単独の行にあるディレクティブの後、
+U+2028 や U+2029 の後のように、ラベルが行の最初の単位である場合も、
 書かれたまま残します。
 mermaid.js がその位置の文字列を拒否するためです。
 印字が別の形で書くリンクのラベルは、その形では引用符なしで書きます。
@@ -2413,8 +2432,14 @@ mermaid.js がその位置の文字列を拒否するためです。
 [fixture: flowchart/quotes/subgraph-titles-without-quotes]
 [fixture: flowchart/quotes/labels-that-need-quotes]
 [fixture: flowchart/quotes/labels-next-to-trivia]
+[fixture: flowchart/quotes/labels-the-old-lexer-reads]
+[fixture: flowchart/quotes/swimlane-labels-the-old-lexer-reads]
+[fixture: flowchart/quotes/labels-with-two-dashes-between-arrows]
+[fixture: flowchart/quotes/swimlane-labels-with-two-dashes-between-arrows]
 [fixture: flowchart/quotes/swimlane-labels-without-quotes]
 [fixture: flowchart/link-label-form/swimlane-arrows-to-pipes]
+[fixture: agentflow/quotes/edge-labels-with-two-dashes]
+[fixture: agentflow/quotes/labels-after-a-directive-line]
 [fixture: agentflow/quotes/labels-in-quotes]
 [fixture: agentflow/quotes/flow-titles-in-quotes]
 [fixture: agentflow/quotes/connector-titles-in-quotes]
@@ -2591,7 +2616,8 @@ class の 7 個の入力も、整形後のテキストと同じ SVG が描かれ
   これらの文法の字句解析器は、キーワードを大文字小文字を問わず比較します。
   12.3.0 の文法は、書かれたとおりに比較し、
   キーワードより長い名前を名前として読みます。
-- 象限チャートのテキスト: 10.9.0、11.0.0、12.3.0 の文法は、
+- 象限チャートのテキスト: この図種が初めて加わった 10.2.0、10.3.0、10.9.0、
+  11.0.0、12.3.0 の文法は、
   引用符のないテキスト（`ALPHA` とその後のトークン）と文字列を、
   同じ `text` 規則で読みます。
   これらの文法の字句解析器は、`x-axis`、`quadrant-1` から `quadrant-4`、
@@ -2655,6 +2681,16 @@ class の 7 個の入力も、整形後のテキストと同じ SVG が描かれ
   名前 `my-group` と `"my-group"` は、9.0.0、9.1.7、9.4.3、10.3.1、10.9.0、
   11.0.0、11.4.1、11.12.3、11.13.0、11.16.1、12.0.0、12.3.0 で、
   同じに描かれました（swimlane 図は 11.16.1 から、agentflow 図は 12.0.0 から）。
+  9.4.3 と 10.3.0 の文法が共有する 9.0.0 から 10.3.0 の字句解析器には、
+  `end`（語の境界と後続の空白を伴う）、空白が続く `click` と `call`、
+  `interpolate`、リンクの対象 `_self`、`_blank`、`_parent`、
+  `_top` の規則があり、`-`、`_`、数字の後でトークンを始めます。
+  9.0.0、9.1.7、9.4.3 は、引用符のない `subgraph x-end`、`x_end`、`x1end`、
+  `x-click`、`x-call`、`x-interpolate`、`x-_self`、`x_self`、`x_blank`、
+  `a b_top` を拒否し、引用符のある名前は描きます。
+  10.3.1 以降の版は、両方の形を同じに描きます。
+  そのため、これらの部分を持つ flowchart の名前は、引用符を残します。
+  `x-ending`、`x-clicker`、`x-calls`、`x-End` は、14 版で同じに描かれました。
 - flowchart、swimlane 図、agentflow 図の形、リンク、
   subgraph のラベル: 角括弧の中のタイトルと形のラベルを読む `text` 規則は、
   文字列に 10.3.1 から型 `string` を与え、それより前は型 `text` を与えるので、
@@ -2662,6 +2698,30 @@ class の 7 個の入力も、整形後のテキストと同じ SVG が描かれ
   10.3.1 から異なります。
   描画処理は、型が `markdown` かどうかだけを読み、平易なラベルは、
   [同じに描かれるラベル](#同じに描かれるラベル) に挙げるすべての版で、
+  引用符の有無によらず同じに描かれました。
+  ただし、次のテキストを除きます。
+  9.4.3 と 10.3.0 の文法には、ラベルのテキストのための状態がなく、
+  文のトークンでテキストを読みます。
+  テキスト規則（`textToken`）は、トークン `INTERPOLATE`、`LINK_TARGET`、
+  `STYLE_SEPARATOR`（`:::`）、`LINK`（`---`、`--x`、`--o`、`.-`）と、
+  閉じ記号 `-)` を取りません。
+  キーワード `click` と `call` は、対話的な文の状態を始め、
+  `accTitle` と `accDescr` は、アクセシビリティの行の状態を始めます。
+  9.0.0、9.1.7、9.4.3 は、引用符のない `go-`（丸い形）、`a.-b`、`a---b`、
+  `o--o`、`a:::b`、`please click here`、`call x`、`interpolate`、`x_self`、
+  `a_blank`、`x_top`、9.1.7 からは `accTitle: x` も、形の中、`|` の間、
+  2 つの矢印の間、subgraph のタイトルで拒否するか別に描き、
+  引用符のあるテキストは描きます。
+  10.3.1 以降の版は、ラベルの状態を持ち、両方の形を同じに描きます。
+  そのため、これらの部分を持つ flowchart のラベルは、引用符を残します。
+  10.3.1 以降の字句解析器は、2 つの実線の矢印の間のテキストを 1 文字ずつ、
+  `-` は後に `-` が続かないときだけ読む（`<edgeText>[^-]|\-(?!\-)`）ので、
+  テキストは `--` で終わります。
+  そのため、`--` を含むラベルは、flowchart、swimlane 図、
+  agentflow 図のどれでも引用符を残します。
+  `-- a--b -->` は拒否され、`-- go--on -->` は矢印 `--o` を持ちます。
+  `Click here`、`aclick x`、`recall x`、`interpolated x`、`direction TB x`、
+  `the end of it` は、9.0.0 から 12.3.0 の 14 版で、
   引用符の有無によらず同じに描かれました。
 - class 図の class の名前: 9.0.0 から 12.3.0 の文法は、
   バッククォートで囲んだ名前（`classLiteralName`: `BQUOTE_STR`）と、

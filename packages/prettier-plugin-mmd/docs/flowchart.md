@@ -2503,7 +2503,12 @@ markdown string stay as written. A name that ends with `direction`, such as
 `"xdirection"` or `"my xdirection"`, stays in quotes whatever follows it: the
 lexer reads `direction`, white space (a line break too), and `TB`, `BT`, `RL`,
 `LR`, or `TD` as one line, which `subgraph xdirection` and a next line
-`TB --> C` would form. A name that a word touches on its line
+`TB --> C` would form. In a `flowchart`, the lexer of 9.0.0 to 10.3.0 starts a
+token after a `-`, a `_`, and a digit, so a name also stays in quotes where
+`end` or `interpolate` ends it (`"x-end"`, `"x_end"`), where `click` or `call`
+stands before whitespace (`"x-click"`, `"x1call"`), and where `_self`, `_blank`,
+`_parent`, or `_top` stands (`"x_self"`, `"a b_top"`); a swimlane diagram prints
+these names without quotes. A name that a word touches on its line
 (`subgraph "S"accDescr {}`) and a name that a comment follows
 (`subgraph "C" %% note`) keep their quotes, since a text without quotes would
 take the word or the comment into itself, as does a name of two spaces in a
@@ -2516,6 +2521,8 @@ quotes: `subgraph "D"%%{init: {}}%%` is printed `subgraph D%%{init: {}}%%`.
 quotes/subgraph-names-with-hyphens] [fixture:
 quotes/swimlane-lane-names-without-quotes] [fixture:
 quotes/subgraph-names-that-need-quotes] [fixture:
+quotes/subgraph-names-the-old-lexer-reads] [fixture:
+quotes/swimlane-lane-names-the-old-lexer-reads] [fixture:
 quotes/subgraph-names-next-to-a-direction-line] [fixture:
 quotes/subgraph-names-with-runs-without-quotes] [fixture:
 quotes/subgraph-names-before-a-comment] [fixture:
@@ -2535,15 +2542,25 @@ a string and `A[x]` as a text, and its Db holds the `labelType` `string` for the
 first and `text` for the second, but it draws the same figure (see
 [Labels that are drawn the same](./compatibility.md#labels-that-are-drawn-the-same)).
 A `.` stays in quotes in a label between two dotted arrows (`-. "a.b" .->`),
-which a `.` ends. Any other text stays in quotes (`"x (y)"`, `"a/b"`, `"a & b"`,
-`"_x"`, `"x "`, `" x"`), and so does a markdown string, and a label on a line
-that the printer writes as it is, such as a line that the line rule of
+which a `.` ends, and a `--` in a label between two solid arrows
+(`-- "a--b" -->`), which it ends too. In a `flowchart`, which the lexer of 9.0.0
+to 10.3.0 reads with the tokens of a statement, a label also stays in quotes
+where it holds a `-` at its end (`("go-")`), an arrow (`---`, `--x`, `--o`,
+`.-`), `:::`, `_self`, `_blank`, `_parent`, `_top`, `interpolate`, `click` or
+`call` before a space, or `accTitle` or `accDescr`; a swimlane diagram prints
+them without quotes. Any other text stays in quotes (`"x (y)"`, `"a/b"`,
+`"a & b"`, `"_x"`, `"x "`, `" x"`), and so does a markdown string, and a label
+on a line that the printer writes as it is, such as a line that the line rule of
 mermaid.js reads whole (see
 [Lines that hold a `;`](./compatibility.md#lines-that-hold-a-)). A label written
 without quotes stays without them. [fixture: quotes/shape-labels-without-quotes]
 [fixture: quotes/link-labels-without-quotes] [fixture:
 quotes/subgraph-titles-without-quotes] [fixture: quotes/labels-that-need-quotes]
 [fixture: quotes/labels-next-to-trivia] [fixture:
+quotes/labels-the-old-lexer-reads] [fixture:
+quotes/swimlane-labels-the-old-lexer-reads] [fixture:
+quotes/labels-with-two-dashes-between-arrows] [fixture:
+quotes/swimlane-labels-with-two-dashes-between-arrows] [fixture:
 quotes/swimlane-labels-without-quotes]
 
 Input

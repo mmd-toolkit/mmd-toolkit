@@ -2632,6 +2632,13 @@ mermaid.js はどちらの形の名前も同じテキストとして読み、
 字句解析器は、`direction`、空白（改行も含みます）、`TB`、`BT`、`RL`、`LR`、
 `TD` を 1 行として読みます。
 `subgraph xdirection` と次の行の `TB --> C` が、この 1 行になるためです。
+`flowchart` では、9.0.0 から 10.3.0 の字句解析器が `-`、`_`、
+数字の後でトークンを始めます。
+そのため、`end` か `interpolate` が名前を終える場合（`"x-end"`、`"x_end"`）、
+空白の前に `click` か `call` がある場合（`"x-click"`、`"x1call"`）、`_self`、
+`_blank`、`_parent`、`_top` がある場合（`"x_self"`、`"a b_top"`）も、
+引用符を残します。
+swimlane 図は、これらの名前を引用符なしで印字します。
 同じ行で語が接する名前（`subgraph "S"accDescr {}`）と、
 コメントが続く名前（`subgraph "C" %% note`）は、
 引用符なしのテキストが語やコメントを取り込んでしまうため、引用符を保ちます。
@@ -2644,6 +2651,8 @@ mermaid.js はどちらの形の名前も同じテキストとして読み、
 [fixture: quotes/subgraph-names-with-hyphens]
 [fixture: quotes/swimlane-lane-names-without-quotes]
 [fixture: quotes/subgraph-names-that-need-quotes]
+[fixture: quotes/subgraph-names-the-old-lexer-reads]
+[fixture: quotes/swimlane-lane-names-the-old-lexer-reads]
 [fixture: quotes/subgraph-names-next-to-a-direction-line]
 [fixture: quotes/subgraph-names-with-runs-without-quotes]
 [fixture: quotes/subgraph-names-before-a-comment]
@@ -2666,6 +2675,15 @@ Db の `labelType` に前者では `string`、後者では `text` を持ちま�
 （[同じに描かれるラベル](./compatibility.ja.md#同じに描かれるラベル)）。
 点線の矢印 2 つの間のラベル（`-. "a.b" .->`）では、
 `.` がラベルを終わらせるので、`.` を含むテキストの引用符を残します。
+実線の矢印 2 つの間のラベル（`-- "a--b" -->`）では、
+`--` がラベルを終わらせるので、`--` を含むテキストの引用符を残します。
+`flowchart` では、9.0.0 から 10.3.0 の字句解析器が、
+ラベルを文のトークンで読みます。
+そのため、末尾の `-`（`("go-")`）、矢印（`---`、`--x`、`--o`、`.-`）、`:::`、
+`_self`、`_blank`、`_parent`、`_top`、`interpolate`、
+空白が続く `click` と `call`、`accTitle` と `accDescr` を含むラベルも、
+引用符を残します。
+swimlane 図は、これらを引用符なしで印字します。
 それ以外のテキスト（`"x (y)"`、`"a/b"`、`"a & b"`、`"_x"`、`"x "`、`" x"`）と、
 markdown 文字列は引用符を残します。
 mermaid.js の行の規則が丸ごと読む行など、
@@ -2677,6 +2695,10 @@ mermaid.js の行の規則が丸ごと読む行など、
 [fixture: quotes/subgraph-titles-without-quotes]
 [fixture: quotes/labels-that-need-quotes]
 [fixture: quotes/labels-next-to-trivia]
+[fixture: quotes/labels-the-old-lexer-reads]
+[fixture: quotes/swimlane-labels-the-old-lexer-reads]
+[fixture: quotes/labels-with-two-dashes-between-arrows]
+[fixture: quotes/swimlane-labels-with-two-dashes-between-arrows]
 [fixture: quotes/swimlane-labels-without-quotes]
 
 入力

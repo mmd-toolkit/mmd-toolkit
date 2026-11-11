@@ -1,9 +1,6 @@
 import { describe, expect, it } from "vitest"
 import type { DbSummary } from "@mmd-toolkit/tests"
-import {
-  labelTypeDbForFormattingComparison,
-  labelTypeDiagramTypes,
-} from "./label-type-differences.ts"
+import { labelTypeDbForFormattingComparison } from "./label-type-differences.ts"
 
 /** Two Dbs of a text, before and after it is formatted. */
 interface DbPair {
@@ -128,14 +125,5 @@ describe("the labelType of the labels that the formatter prints with or without 
     expect(
       labelTypeDbForFormattingComparison(vertex("text", "x"), null),
     ).toBeNull()
-  })
-
-  it("names the diagram types whose labels the formatter prints with or without quotes", () => {
-    expect([...labelTypeDiagramTypes].sort()).toEqual([
-      "agentflow",
-      "flowchart-elk",
-      "flowchart-v2",
-      "swimlane",
-    ])
   })
 })

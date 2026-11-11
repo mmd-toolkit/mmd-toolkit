@@ -1996,11 +1996,11 @@ sankey/quotes/values-in-quotes-without-quotes] [fixture:
 sankey/directives/inside-fields-kept] [fixture:
 sankey/multi-line-strings/string-over-lines]
 
-In an ER diagram a text is printed without quotes where it is one word of ASCII
-letters, digits, and `_` that starts with a letter, or parts of such a word
-joined by a single `-` (`LINE-ITEM`), and the word, or the part before its first
-`-`, is none of the words that the lexer reads as a unit of its own, in any
-case: `erDiagram`, `style`, `classDef`, `class`, `subgraph`, `end`, `one`,
+In an ER diagram a text is printed without quotes where it is a word of ASCII
+letters, digits, and `_` that starts with a letter, with a single `-` allowed
+between its parts (`LINE-ITEM`, `a-1`), and the word, or the part before its
+first `-`, is none of the words that the lexer reads as a unit of its own, in
+any case: `erDiagram`, `style`, `classDef`, `class`, `subgraph`, `end`, `one`,
 `many`, `only`, `zero`, `optionally`, `or`, `to`, `accTitle`, `accDescr`,
 `direction`, `TB`, `BT`, `RL`, `LR`, `PK`, `FK`, `UK`, `u`, and `o`. A `-` ends
 a keyword, so `end-x` is `end` and `-x`. A name of other characters, such as a
@@ -2203,17 +2203,25 @@ may be joined by a single `-` (`my-team`), none of the words `_blank`,
 a keyword: the lexer reads these as a unit of its own, so `"end"`, `"click"`,
 `"end-x"`, and `"x _self"` stay in quotes (the lexer of an agentflow diagram
 reads `end` as a name, and the printer leaves it in quotes too). A name with a
-`-` at its start or its end, or two together, stays in quotes. A name that a
-word touches on its line (`subgraph "S"accDescr {}`), a name that a comment
-follows, and a name of two spaces that is an id, since the subgraph has a title,
-keep their quotes, and so does a name that ends with `direction`, whatever
-follows it: the lexer reads `direction`, white space (a line break too), and the
-name of a direction (`TB`, `BT`, `RL`, `LR`, or `TD`) as one line, which
-`subgraph xdirection` and a next line `TB --> C` would form. [fixture:
+`-` at its start or its end, or two together, stays in quotes. In a flowchart
+the lexer of 9.0.0 to 10.3.0 starts a token after a `-`, a `_`, and a digit, so
+a name stays in quotes where `end` or `interpolate` ends it (`x-end`, `x_end`),
+where `click` or `call` stands before whitespace (`x-click`, `x1call`), and
+where `_self`, `_blank`, `_parent`, or `_top` stands anywhere (`x_self`,
+`a b_top`); a swimlane diagram and an agentflow diagram print these names
+without quotes. A name that a word touches on its line
+(`subgraph "S"accDescr {}`), a name that a comment follows, and a name of two
+spaces that is an id, since the subgraph has a title, keep their quotes, and so
+does a name that ends with `direction`, whatever follows it: the lexer reads
+`direction`, white space (a line break too), and the name of a direction (`TB`,
+`BT`, `RL`, `LR`, or `TD`) as one line, which `subgraph xdirection` and a next
+line `TB --> C` would form. [fixture:
 flowchart/quotes/subgraph-names-without-quotes] [fixture:
 flowchart/quotes/subgraph-names-with-hyphens] [fixture:
 flowchart/quotes/swimlane-lane-names-without-quotes] [fixture:
 flowchart/quotes/subgraph-names-that-need-quotes] [fixture:
+flowchart/quotes/subgraph-names-the-old-lexer-reads] [fixture:
+flowchart/quotes/swimlane-lane-names-the-old-lexer-reads] [fixture:
 flowchart/quotes/subgraph-names-next-to-a-direction-line] [fixture:
 flowchart/quotes/subgraph-names-with-runs-without-quotes] [fixture:
 flowchart/quotes/subgraph-names-before-a-comment] [fixture:
@@ -2233,21 +2241,35 @@ such a text the same in quotes and without them, in every shape and in every
 version that reads it, apart from the `labelType` that its Db keeps (see
 [Labels that are drawn the same](#labels-that-are-drawn-the-same)). A `.` stays
 in quotes in a label between the arrows of a dotted link (`-. "a.b" .->`), which
-a `.` ends. Any other text stays as written: a markdown string, a text that
-starts with `_`, a `/`, a `\`, a `-`, or a space, a text with a bracket, a `|`,
-a `&`, a `"`, a `;`, a `#`, a `%`, or a `<`, a text that ends with a space, and
-a label on a line that is kept whole. In an agentflow diagram a label also stays
-as written where it is the first unit of its line, as after a comment line,
-since mermaid.js rejects a string there. The label of a link that the printer
-writes in the other form (see [The label of a link](#the-label-of-a-link)) is
-written without quotes in that form. [fixture:
-flowchart/quotes/shape-labels-without-quotes] [fixture:
+a `.` ends, and so does a `--` in a label between the arrows of a solid link
+(`-- "a--b" -->`), in a flowchart, a swimlane diagram, and an agentflow diagram:
+the lexer ends the text at a `--`, and reads `go--on` as the arrow `--o`. In a
+flowchart a label also stays in quotes where the lexer of 9.0.0 to 10.3.0 reads
+a part of it as another token, since it has no state for the text of a label: a
+`-` at its end, an arrow (`---`, `--x`, `--o`, `.-`), `:::`, `_self`, `_blank`,
+`_parent`, `_top`, `interpolate`, `click` and `call` with a space after them,
+and `accTitle` and `accDescr`. A swimlane diagram and an agentflow diagram print
+them without quotes. Any other text stays as written: a markdown string, a text
+that starts with `_`, a `/`, a `\`, a `-`, or a space, a text with a bracket, a
+`|`, a `&`, a `"`, a `;`, a `#`, a `%`, or a `<`, a text that ends with a space,
+and a label on a line that is kept whole. In an agentflow diagram a label also
+stays as written where it is the first unit of its line, as after a comment
+line, a directive on a line of its own, or a U+2028 or U+2029, since mermaid.js
+rejects a string there. The label of a link that the printer writes in the other
+form (see [The label of a link](#the-label-of-a-link)) is written without quotes
+in that form. [fixture: flowchart/quotes/shape-labels-without-quotes] [fixture:
 flowchart/quotes/link-labels-without-quotes] [fixture:
 flowchart/quotes/subgraph-titles-without-quotes] [fixture:
 flowchart/quotes/labels-that-need-quotes] [fixture:
 flowchart/quotes/labels-next-to-trivia] [fixture:
+flowchart/quotes/labels-the-old-lexer-reads] [fixture:
+flowchart/quotes/swimlane-labels-the-old-lexer-reads] [fixture:
+flowchart/quotes/labels-with-two-dashes-between-arrows] [fixture:
+flowchart/quotes/swimlane-labels-with-two-dashes-between-arrows] [fixture:
 flowchart/quotes/swimlane-labels-without-quotes] [fixture:
 flowchart/link-label-form/swimlane-arrows-to-pipes] [fixture:
+agentflow/quotes/edge-labels-with-two-dashes] [fixture:
+agentflow/quotes/labels-after-a-directive-line] [fixture:
 agentflow/quotes/labels-in-quotes] [fixture:
 agentflow/quotes/flow-titles-in-quotes] [fixture:
 agentflow/quotes/connector-titles-in-quotes] [fixture:
@@ -2403,11 +2425,12 @@ mermaid.js, show which form each version reads:
   string, and the lexers of these grammars compare their keywords in any case;
   the grammar of 12.3.0 compares them as written, and reads a name that is
   longer than a keyword as a name.
-- The texts of a quadrant chart: the grammars of 10.9.0, 11.0.0, and 12.3.0 read
-  a text without quotes (`ALPHA` and the tokens that follow it) and a string
-  with the same `text` rule, and the lexers of these grammars read `x-axis`,
-  `quadrant-1` to `quadrant-4`, and `quadrantChart` without a boundary after
-  them. The rule takes a `-` as the token `MINUS` inside a text
+- The texts of a quadrant chart: the grammars of 10.2.0, the first version of
+  the type, 10.3.0, 10.9.0, 11.0.0, and 12.3.0 read a text without quotes
+  (`ALPHA` and the tokens that follow it) and a string with the same `text`
+  rule, and the lexers of these grammars read `x-axis`, `quadrant-1` to
+  `quadrant-4`, and `quadrantChart` without a boundary after them. The rule
+  takes a `-` as the token `MINUS` inside a text
   (`textNoTagsToken: alphaNumToken | SPACE | MINUS`), and 10.3.1 to 12.3.0 draw
   a text with a `-` the same with and without quotes.
 - The titles and the categories of an XY chart: the grammars of 10.6.0, 10.9.0,
@@ -2459,7 +2482,17 @@ mermaid.js, show which form each version reads:
   `-` ends a keyword, so `end-x` is `end` and `-x`. The names `my-group` and
   `"my-group"` were drawn the same by 9.0.0, 9.1.7, 9.4.3, 10.3.1, 10.9.0,
   11.0.0, 11.4.1, 11.12.3, 11.13.0, 11.16.1, 12.0.0, and 12.3.0 (a swimlane
-  diagram from 11.16.1, an agentflow diagram from 12.0.0).
+  diagram from 11.16.1, an agentflow diagram from 12.0.0). The lexer of 9.0.0 to
+  10.3.0, which the grammars of 9.4.3 and 10.3.0 share, has the rules `end`
+  (with a word boundary and the whitespace after it), `click` and `call` (with
+  whitespace after them), `interpolate`, and the targets of a link `_self`,
+  `_blank`, `_parent`, and `_top`, and it starts a token after a `-`, a `_`, and
+  a digit. 9.0.0, 9.1.7, and 9.4.3 reject `subgraph x-end`, `x_end`, `x1end`,
+  `x-click`, `x-call`, `x-interpolate`, `x-_self`, `x_self`, `x_blank`, and
+  `a b_top` without quotes, and draw the names with quotes; 10.3.1 and the
+  versions after it draw both forms the same. So a name of a flowchart with one
+  of these parts stays in quotes, and the names `x-ending`, `x-clicker`,
+  `x-calls`, and `x-End` were drawn the same by the 14 versions.
 - The labels of the shapes, the links, and the subgraphs of a flowchart, a
   swimlane diagram, and an agentflow diagram: the rule `text`, which reads the
   title in brackets and the label of a shape, gives a string the type `string`
@@ -2467,7 +2500,27 @@ mermaid.js, show which form each version reads:
   the same label without them differs from 10.3.1. The renderers read only
   whether the type is `markdown`, and a plain label was drawn the same in quotes
   and without them in every version listed under
-  [Labels that are drawn the same](#labels-that-are-drawn-the-same).
+  [Labels that are drawn the same](#labels-that-are-drawn-the-same), except the
+  texts below. The grammars of 9.4.3 and 10.3.0 have no state for the text of a
+  label: they read it with the tokens of a statement, and the text rule
+  (`textToken`) takes none of the tokens `INTERPOLATE`, `LINK_TARGET`,
+  `STYLE_SEPARATOR` (`:::`), `LINK` (`---`, `--x`, `--o`, `.-`), and the closer
+  `-)`; the keywords `click` and `call` start the states of an interactive
+  statement, and `accTitle` and `accDescr` those of an accessibility line.
+  9.0.0, 9.1.7, and 9.4.3 reject, or draw otherwise, the texts `go-` in a round
+  shape, `a.-b`, `a---b`, `o--o`, `a:::b`, `please click here`, `call x`,
+  `interpolate`, `x_self`, `a_blank`, `x_top`, and, from 9.1.7, `accTitle: x`,
+  without quotes in a shape, between `|`, between two arrows, and as the title
+  of a subgraph, and draw the texts with quotes; 10.3.1 and the versions after
+  it have a state for a label and draw both forms the same. So a label of a
+  flowchart with one of these parts stays in quotes. The lexers of 10.3.1 and
+  later read the text between two solid arrows one character at a time, a `-`
+  only when no `-` follows it (`<edgeText>[^-]|\-(?!\-)`), so the text ends at a
+  `--`, and a label with a `--` stays in quotes there in a flowchart, a swimlane
+  diagram, and an agentflow diagram: `-- a--b -->` is rejected and
+  `-- go--on -->` has the arrow `--o`. The texts `Click here`, `aclick x`,
+  `recall x`, `interpolated x`, `direction TB x`, and `the end of it` were drawn
+  the same by the 14 versions from 9.0.0 to 12.3.0, with and without quotes.
 - The names of the classes of a class diagram: the grammars of 9.0.0 to 12.3.0
   read a name between backquotes (`classLiteralName`: `BQUOTE_STR`) and a name
   of letters and digits (`alphaNumToken`: `ALPHA`, `NUM`) as a `className`. The
