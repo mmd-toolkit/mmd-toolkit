@@ -133,7 +133,11 @@ Correctness is defined by the pinned mermaid.js.
      [Call arguments that are drawn the same](packages/prettier-plugin-mmd/docs/compatibility.md#call-arguments-that-are-drawn-the-same);
    - the spaces and tabs at the ends of the texts of a mindmap node and of a
      kanban card, defined in
-     [Mindmap texts that are drawn the same](packages/prettier-plugin-mmd/docs/compatibility.md#mindmap-texts-that-are-drawn-the-same).
+     [Mindmap texts that are drawn the same](packages/prettier-plugin-mmd/docs/compatibility.md#mindmap-texts-that-are-drawn-the-same);
+   - the `labelType` of the labels of flowchart, swimlane, and agentflow
+     diagrams, which differs between a label in quotes and a label without them,
+     defined in
+     [Labels that are drawn the same](packages/prettier-plugin-mmd/docs/compatibility.md#labels-that-are-drawn-the-same).
 
 ## What each package is responsible for
 

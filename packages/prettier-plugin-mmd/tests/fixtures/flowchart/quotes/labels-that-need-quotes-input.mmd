@@ -1,0 +1,25 @@
+flowchart LR
+A["x (y)"]
+B["a/b"]
+C["a & b"]
+D["_x"]
+E["x "]
+F[" x"]
+G["`markdown`"]
+H["a;b"]
+I["a#b"]
+J["50%"]
+K["<b>x</b>"]
+L["a|b"]
+M["日本語"]
+N["a'b"]
+O["-x"]
+P["/x/"]
+A -->|"a/b"| B
+B -- "a & b" --> C
+C -->|"_x"| D
+D -->|"x "| E
+E -->|"(x)"| F
+subgraph S1 ["a/b"]
+G
+end

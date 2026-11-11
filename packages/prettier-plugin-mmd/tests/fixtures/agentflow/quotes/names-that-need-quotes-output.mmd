@@ -8,9 +8,19 @@ agentflow-beta TB
   flow "click"
     E --> F
   end
-  flow a-b
+  flow "-a"
     G --> H
   end
+  flow "a-"
+    W1 --> W2
+  end
+  flow "a--b"
+    W3 --> W4
+  end
+  flow "end-x"
+    W5 --> W6
+  end
+  connector "click-x"
   flow "A  B"["T"]
     I --> J
   end

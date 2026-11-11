@@ -171,9 +171,11 @@ function joinsDirectionLine(
  * of the `reserved` words, which are compared in lower case: the lexer of a
  * diagram type reads a reserved word as a unit of its own, and a text of other
  * characters has a meaning in the stages before the lexer. Where `hyphens` is
- * true, the parts of a word may be joined by a single `-`, and the part before
- * the first `-` is the one compared with the reserved words, since a `-` ends a
- * keyword (`end-x` is `end` and `-x`). The text joins no line of a direction
+ * true, the parts of a word may be joined by a single `-`, a word with a `-`
+ * starts with a letter (the lexers before 10.5.0 read no `_` at the start of a
+ * name without quotes), and the part before the first `-` is the one compared
+ * with the reserved words, since a `-` ends a keyword (`end-x` is `end` and
+ * `-x`). The text joins no line of a direction
  * either (`joinsDirectionLine`, in any case, since the lexers of an ER and a
  * requirement diagram read in any case).
  */
@@ -186,6 +188,7 @@ function wordWithout(
     const parts = hyphens ? text.split("-") : [text]
     return first !== undefined &&
       (digits || !(first >= "0" && first <= "9")) &&
+      (!text.includes("-") || isLetter(first)) &&
       first !== " " &&
       !text.endsWith(" ") &&
       parts.every(

@@ -142,6 +142,10 @@ Mermaid 記法（`.mmd`）について、mermaid.js が持つ全図種を対象�
    - mindmap の節点と kanban のカードのテキストの両端の空白とタブ。
      [同じに描かれる mindmap のテキスト](packages/prettier-plugin-mmd/docs/compatibility.ja.md#同じに描かれる-mindmap-のテキスト)
      が定める。
+   - flowchart、swimlane、agentflow のラベルの `labelType`。
+     引用符の付いたラベルと付かないラベルで違う。
+     [同じに描かれるラベル](packages/prettier-plugin-mmd/docs/compatibility.ja.md#同じに描かれるラベル)
+     が定める。
 
 ## 各パッケージの責務
 
