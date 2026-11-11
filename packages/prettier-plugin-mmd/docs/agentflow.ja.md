@@ -547,7 +547,7 @@ flowchartと同じ理由で、`[ T ]`を含め括弧の内側の空白を落と�
 
 ```mmd
 agentflow-beta TB
-  A[text]
+  A["text"]
 ```
 
 ### Vertices and lists
@@ -1051,7 +1051,7 @@ agentflow-beta TB
 ```mmd
 agentflow-beta TB
   accDescr: a
-  A[Block spacing]
+  A["Block spacing"]
 ```
 
 入力（escape 表記）:
@@ -1064,7 +1064,7 @@ agentflow-beta TB
 agentflow-beta TB
   accDescr: previous description
   accDescr {}
-  A[Empty spacing]
+  A["Empty spacing"]
 ```
 
 入力（escape 表記）:
@@ -1078,7 +1078,7 @@ agentflow-beta TB
   accTitle:
     %%{init: {}}%%
     Title after directive
-  A[Continuation]
+  A["Continuation"]
 ```
 
 ### Multiline statements and values
@@ -1140,8 +1140,8 @@ Dbの正規化で等しくても、ドメインの形、数値やプロトタイ
 
 ```mmd
 agentflow-beta TB
-  A[first]
-  A[second]
+  A["first"]
+  A["second"]
 ```
 
 ### Trailing whitespace
@@ -1203,6 +1203,7 @@ mermaid.js の文書の例は引用符なしでそれぞれ 17 回と 2 回書�
 引用符つきでは一度も書いていないためです。
 （[テキストの引用符](./compatibility.ja.md#テキストの引用符)）。
 `flow "My Flow"` は `flow My Flow` と、
+`flow "my-team"` は `flow my-team` と、
 `connector "Join"` は `connector Join` と印字します。
 複数のラベルからなる名前（`connector I "" J`）は書かれたままにします。
 `direction` で終わる名前も書かれたままにします。
@@ -1228,13 +1229,21 @@ mermaid.js はどちらの形のタイトルも同じテキストとして読み
 [fixture: quotes/connector-titles-as-written]
 [fixture: quotes/names-and-titles-before-a-comment]
 
-flow のタイトル、形のラベル、リンクのラベルは、
-例では flow のタイトルを引用符つきで 17 回書き、
-引用符なしでは一度も書いていなくても、書かれたままにします。
+flow のタイトルと形のラベルも、例と同じく引用符つきで印字します。
+例では 17 個のタイトルと 47 個のラベルを、
+いずれも引用符なしでは一度も書いていないためです。
+`flow F [T]` は `flow F["T"]` と、`A[Start]` は `A["Start"]` と印字します。
+リンクのラベルは、2 つの例と同じく引用符なしで印字します。
+`A -->|"text"| B` は `A -- text --> B` と印字します。
+（[Link label form](./flowchart.md#link-label-form)）。
+テキストを引用符で囲む条件は、connector のタイトルと同じです。
+コメント行の後など、行の最初の単位であるラベルは、
+mermaid.js がそこで文字列を拒否するので、書かれたままにします。
 mermaid.js は `A["x"]` を文字列、`A[x]` をテキストとして読み、
-Db の `labelType` は前者が `string`、後者が `text` なので、
-2 つの形は同じに読まれないためです。 [fixture: quotes/flow-titles-as-written]
-[fixture: quotes/labels-as-written]
+Db の `labelType` は前者が `string`、後者が `text` ですが、描かれる図は同じです。
+（[Labels that are drawn the same](./compatibility.md#labels-that-are-drawn-the-same)）。
+[fixture: quotes/flow-titles-in-quotes] [fixture: quotes/labels-in-quotes]
+[fixture: quotes/labels-after-a-comment-line]
 
 入力
 ([quotes/names-without-quotes-input.mmd](../tests/fixtures/agentflow/quotes/names-without-quotes-input.mmd)):
@@ -1256,6 +1265,10 @@ end
 connector "Join"
 connector "Join2" ["Merge results"]
 connector "J3"@{ x: 1 }
+flow "my-team"
+M --> N
+end
+connector "my-join"
 flow Already
 I --> J
 end
@@ -1269,7 +1282,7 @@ agentflow-beta TB
   flow Main
     A --> B
   end
-  flow My Flow[T]
+  flow My Flow["T"]
     C --> D
   end
   flow F3["T"]
@@ -1281,6 +1294,10 @@ agentflow-beta TB
   connector Join
   connector Join2["Merge results"]
   connector J3@{ x: 1 }
+  flow my-team
+    M --> N
+  end
+  connector my-join
   flow Already
     I --> J
   end

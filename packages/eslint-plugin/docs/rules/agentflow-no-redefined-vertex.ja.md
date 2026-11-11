@@ -75,8 +75,8 @@ mermaid.js が同じラベルとして読んでも報告することがある。
 ```mmd
 %% eslint @mmd-toolkit/agentflow-no-redefined-vertex: error
 agentflow-beta TB
-  A[Start] --> B
-  C --> A[End]
+  A["Start"] --> B
+  C --> A["End"]
 ```
 
 ```mmd
@@ -102,7 +102,7 @@ agentflow-beta TB
 ```mmd
 %% eslint @mmd-toolkit/agentflow-no-redefined-vertex: error
 agentflow-beta TB
-  A[Start] --> B
+  A["Start"] --> B
   A --> C
 ```
 

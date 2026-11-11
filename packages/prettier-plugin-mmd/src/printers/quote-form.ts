@@ -70,18 +70,17 @@ interface QuoteRule {
    */
   readonly standsAlone?: boolean
   /**
-   * Whether the field stands between brackets on its line, with text before it
-   * and after it: a string that starts its line, after a comment line or a line
-   * break, or ends it, is a unit that mermaid.js rejects there, where the text
-   * without quotes is read.
+   * Whether the field has text before it on its line: a string that starts its
+   * line, after a comment line or a line break, is a unit that mermaid.js
+   * rejects there, where the text without quotes is read.
    */
-  readonly betweenBrackets?: boolean
+  readonly afterTextOnItsLine?: boolean
 }
 
 /** The options of a rule, besides its form and its text. */
 type QuoteOptions = Pick<
   QuoteRule,
-  "when" | "joins" | "wrapped" | "standsAlone" | "betweenBrackets"
+  "when" | "joins" | "wrapped" | "standsAlone" | "afterTextOnItsLine"
 >
 
 /** A field that the examples write without quotes. */
@@ -114,7 +113,8 @@ function sankeyText(text: string, characters: string): string | undefined {
   const field = text.trim()
   return field !== "" &&
     [...field].every(
-      (character) => isWordCharacter(character) || characters.includes(character),
+      (character) =>
+        isWordCharacter(character) || characters.includes(character),
     )
     ? field
     : undefined
@@ -448,7 +448,9 @@ function quadrantLabel(text: string): string | undefined {
               (character >= "a" && character <= "z") ||
               (character >= "A" && character <= "Z"),
           ) &&
-          [...tail].every((character) => character >= "0" && character <= "9") &&
+          [...tail].every(
+            (character) => character >= "0" && character <= "9",
+          ) &&
           !quadrantReserved.has(part.toLowerCase()) &&
           !part.toLowerCase().startsWith("quadrant")
         )
@@ -1138,17 +1140,17 @@ const quoteRules: Readonly<
     title: bare(architectureLabel, { wrapped: ["[", "]"] }),
   },
   AgentflowConnectorStatement: {
-    title: quoted(labelText, { standsAlone: true, betweenBrackets: true }),
+    title: quoted(labelText, { standsAlone: true, afterTextOnItsLine: true }),
   },
   AgentflowFlowStatement: {
-    title: quoted(labelText, { standsAlone: true, betweenBrackets: true }),
+    title: quoted(labelText, { standsAlone: true, afterTextOnItsLine: true }),
   },
   AgentflowLink: { label: bare(labelText) },
   AgentflowName: {
     parts: bare(headingName, { when: hasOnePart, joins: wordFollows }),
   },
   AgentflowShape: {
-    label: quoted(labelText, { standsAlone: true, betweenBrackets: true }),
+    label: quoted(labelText, { standsAlone: true, afterTextOnItsLine: true }),
   },
   C4BoundaryStatement: { arguments: c4Arguments },
   ClassName: { name: bare(className) },
@@ -1526,9 +1528,8 @@ function respell(
   }
   const after = next < lineEnd ? source.text[next] : undefined
   if (
-    rule.betweenBrackets === true &&
-    (after === undefined ||
-      [...source.text.slice(line, start)].every(isSpaceOrTab))
+    rule.afterTextOnItsLine === true &&
+    [...source.text.slice(line, start)].every(isSpaceOrTab)
   )
     return
   if (

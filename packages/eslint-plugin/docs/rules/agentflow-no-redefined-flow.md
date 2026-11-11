@@ -41,10 +41,10 @@ Examples of **incorrect** code for this rule:
 ```mmd
 %% eslint @mmd-toolkit/agentflow-no-redefined-flow: error
 agentflow-beta TB
-  flow F[First]
+  flow F["First"]
     A
   end
-  flow F[Second]
+  flow F["Second"]
     B
   end
 ```
@@ -54,7 +54,7 @@ Examples of **correct** code for this rule:
 ```mmd
 %% eslint @mmd-toolkit/agentflow-no-redefined-flow: error
 agentflow-beta TB
-  flow F[First]
+  flow F["First"]
     A
   end
   flow F

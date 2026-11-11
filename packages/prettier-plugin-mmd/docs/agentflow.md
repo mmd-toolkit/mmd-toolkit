@@ -504,7 +504,7 @@ Output
 
 ```mmd
 agentflow-beta TB
-  A[text]
+  A["text"]
 ```
 
 ### Vertices and lists
@@ -976,7 +976,7 @@ Output
 ```mmd
 agentflow-beta TB
   accDescr: a
-  A[Block spacing]
+  A["Block spacing"]
 ```
 
 Input (escaped):
@@ -989,7 +989,7 @@ Output
 agentflow-beta TB
   accDescr: previous description
   accDescr {}
-  A[Empty spacing]
+  A["Empty spacing"]
 ```
 
 Input (escaped):
@@ -1003,7 +1003,7 @@ agentflow-beta TB
   accTitle:
     %%{init: {}}%%
     Title after directive
-  A[Continuation]
+  A["Continuation"]
 ```
 
 ### Multiline statements and values
@@ -1064,8 +1064,8 @@ Output
 
 ```mmd
 agentflow-beta TB
-  A[first]
-  A[second]
+  A["first"]
+  A["second"]
 ```
 
 ### Trailing whitespace
@@ -1121,11 +1121,12 @@ the conditions of the name of a subgraph of a flowchart (see
 [Quotes](./flowchart.md#quotes)), as the examples in the documentation of
 mermaid.js write them, 17 and 2 times without quotes and never in quotes (see
 [The quotes of a text](./compatibility.md#the-quotes-of-a-text)):
-`flow "My Flow"` is printed `flow My Flow`, and `connector "Join"` is printed
-`connector Join`. A name that is more than one label (`connector I "" J`) stays
-as written, and so does a name that ends with `direction`, since the lexer reads
-`direction`, white space (a line break too), and `TB`, `BT`, `RL`, `LR`, or `TD`
-as one line (`flow "xdirection"` followed by a line `TB --> B`). [fixture:
+`flow "My Flow"` is printed `flow My Flow`, `flow "my-team"` is printed
+`flow my-team`, and `connector "Join"` is printed `connector Join`. A name that
+is more than one label (`connector I "" J`) stays as written, and so does a name
+that ends with `direction`, since the lexer reads `direction`, white space (a
+line break too), and `TB`, `BT`, `RL`, `LR`, or `TD` as one line
+(`flow "xdirection"` followed by a line `TB --> B`). [fixture:
 quotes/names-next-to-a-direction-line]
 
 The title of a connector in brackets is printed in quotes, as the examples write
@@ -1143,12 +1144,20 @@ quotes/names-without-quotes] [fixture: quotes/names-that-need-quotes] [fixture:
 quotes/connector-titles-in-quotes] [fixture: quotes/connector-titles-as-written]
 [fixture: quotes/names-and-titles-before-a-comment]
 
-The title of a flow, the label of a shape, and the label of a link stay as
-written, although the examples write the titles of the flows in quotes 17 times
-and never without: mermaid.js reads `A["x"]` as a string and `A[x]` as a text,
-and its Db holds the `labelType` `string` for the first and `text` for the
-second, so the two forms are not read the same. [fixture:
-quotes/flow-titles-as-written] [fixture: quotes/labels-as-written]
+The title of a flow and the label of a shape are printed in quotes in the same
+way, as the examples write the 17 titles and the 47 labels, none without quotes:
+`flow F [T]` is printed `flow F["T"]`, and `A[Start]` is printed `A["Start"]`.
+The label of a link is printed without quotes, as the examples write the 2
+labels: `A -->|"text"| B` is printed `A -- text --> B` (see
+[Link label form](./flowchart.md#link-label-form)). The text is put in quotes
+under the conditions of the title of a connector, and a label that is the first
+unit of its line, as after a comment line, stays as written, since mermaid.js
+rejects a string there. mermaid.js reads `A["x"]` as a string and `A[x]` as a
+text, and its Db holds the `labelType` `string` for the first and `text` for the
+second, but it draws the same figure (see
+[Labels that are drawn the same](./compatibility.md#labels-that-are-drawn-the-same)).
+[fixture: quotes/flow-titles-in-quotes] [fixture: quotes/labels-in-quotes]
+[fixture: quotes/labels-after-a-comment-line]
 
 Input
 ([quotes/names-without-quotes-input.mmd](../tests/fixtures/agentflow/quotes/names-without-quotes-input.mmd)):
@@ -1170,6 +1179,10 @@ end
 connector "Join"
 connector "Join2" ["Merge results"]
 connector "J3"@{ x: 1 }
+flow "my-team"
+M --> N
+end
+connector "my-join"
 flow Already
 I --> J
 end
@@ -1183,7 +1196,7 @@ agentflow-beta TB
   flow Main
     A --> B
   end
-  flow My Flow[T]
+  flow My Flow["T"]
     C --> D
   end
   flow F3["T"]
@@ -1195,6 +1208,10 @@ agentflow-beta TB
   connector Join
   connector Join2["Merge results"]
   connector J3@{ x: 1 }
+  flow my-team
+    M --> N
+  end
+  connector my-join
   flow Already
     I --> J
   end

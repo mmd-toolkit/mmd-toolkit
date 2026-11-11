@@ -450,13 +450,18 @@ usecase-beta
 実際の usecase 演算子全体の両側を通常の空白 1 個にします。
 方向、マーカー、ダッシュと点の数を保ちます。
 Db の長さが固定される分割矢印の長い右半分も同じです。
-意味を持つ演算子は、キーワードを mermaid.js の文書の例と同じく小文字にし、
-`..>:include` と `..>:extend` と詰めて印字します。
+意味を持つ演算子は、コロンの前後に空白を 1 つ置き、キーワードを小文字にして、
+`..> : include` と `..> : extend` と印字します。
+mermaid.js の文書の例はこの形を 7 回使い、
+コロンを接して書く形は一度も使いません。
 （[同じに描かれる綴り](./compatibility.ja.md#同じに描かれる綴り)を参照）。
 その後、端点の前を空白 1 個にします。
-コロンとキーワードは演算子の構文です。
+矢印の後のコロンは、class、ER、state 図でも同じ空白を取ります。
+mermaid.js は `..>:include`、`..> :include`、`..>: include`、
+`..> : include` を同じ演算子として読みます。
 [fixture: arrows/semantic-operator-directives]
 [fixture: arrows/arrows-semantic-case-one-form]
+[fixture: arrows/semantic-colon-gaps]
 端点の交換や演算子の種類の変換はしません。
 方向、マーカー、ダッシュと点の数は書かれたままです。
 正規化した Db の演算子は出力しないためです。
@@ -478,8 +483,8 @@ Db の長さが固定される分割矢印の長い右半分も同じです。
 
 ```mmd
 usecase-beta
-  A ..>:include B
-  B ..>:extend C
+  A ..> : include B
+  B ..> : extend C
   C --|> D
 ```
 

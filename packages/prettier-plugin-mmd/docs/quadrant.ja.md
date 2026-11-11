@@ -525,8 +525,12 @@ mermaid.js の文書の例のとおりに、引用符なしで印字します。
 （[テキストの引用符](./compatibility.ja.md#テキストの引用符)）。
 `quadrant-1 "A"` は `quadrant-1 A` と印字します。
 平易なテキストは、ASCII 英字の単語でできていて、各単語の末尾には数字も使え、
-単語の間は空白 1 つで、
-字句解析器が独立した単位として読む単語を含まないものです。
+単語の間は空白 1 つで、部分の間は 1 つの `-` でつなげられます。
+`"high-value"` は `high-value` と印字します。
+どの部分も字句解析器が独立した単位として読む語ではなく、
+テキストに `x-axis` も `y-axis` も含まないものに限ります。
+字句解析器は `-` を語の終わりとして読み、その後の部分が語の始まりになるため、
+`"my-title"` と `"my-x-axis"` は引用符を保ちます。
 テキストと同じ行でその後に続く `;` は、改行に置き換えて落とし、
 テキストの引用符は、`;` がない場合と同じに外します。
 `quadrant-1 "A";` は `quadrant-1 A` と印字します。
@@ -539,6 +543,7 @@ mermaid.js は `"L"` と `L`、`"a b"` と `a b` を同じテキストとして�
 そのようなテキストの引用符は残し、引用符を付け加えることはありません。
 [fixture: quotes/strings-runs-collapsed]
 [fixture: quotes/plain-texts-without-quotes]
+[fixture: quotes/texts-with-hyphens-without-quotes]
 [fixture: quotes/texts-that-need-quotes] [fixture: quotes/quotes-not-added]
 [fixture: quotes/keywords-and-arrows-in-strings]
 [fixture: quotes/markdown-strings] [fixture: quotes/string-with-a-comment-mark]

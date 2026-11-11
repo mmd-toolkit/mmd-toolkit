@@ -2491,24 +2491,29 @@ documentation of mermaid.js write it, 53 times without quotes and once in quotes
 `subgraph "Group A"` is printed `subgraph Group A`. mermaid.js reads the name in
 both forms as the same text, and the id of a name of several words is generated
 in both. A name is printed without quotes where it is words of ASCII letters,
-digits, and `_` with one space between them, none of them one of `_blank`,
-`_parent`, `_self`, `_top`, `call`, `click`, `default`, `direction`, `end`,
-`href`, and `interpolate`, which the lexer reads as a unit of its own. So
-`"a-b"`, `"end"`, `"x end"`, `"click"`, `"x _self"`, `"direction"`, a name with
-a `.` or a letter outside ASCII, and a markdown string stay as written. A name
-that ends with `direction`, such as `"xdirection"` or `"my xdirection"`, stays
-in quotes whatever follows it: the lexer reads `direction`, white space (a line
-break too), and `TB`, `BT`, `RL`, `LR`, or `TD` as one line, which
-`subgraph xdirection` and a next line `TB --> C` would form. A name that a word
-touches on its line (`subgraph "S"accDescr {}`) and a name that a comment
-follows (`subgraph "C" %% note`) keep their quotes, since a text without quotes
-would take the word or the comment into itself, as does a name of two spaces in
-a subgraph that has a title, since there the name is an id, and two ids that
+digits, and `_` with one space between them, whose parts may be joined by a
+single `-` (`my-group`), none of them one of `_blank`, `_parent`, `_self`,
+`_top`, `call`, `click`, `default`, `direction`, `end`, `href`, and
+`interpolate`, which the lexer reads as a unit of its own and which are compared
+by the part before the first `-`, since a `-` ends a keyword (`end-x` is `end`
+and `-x`). So `"end"`, `"x end"`, `"click"`, `"end-x"`, `"x _self"`,
+`"direction"`, a name with a `-` at its start or its end or two together
+(`"-a"`, `"a-"`, `"a--b"`), a name with a `.` or a letter outside ASCII, and a
+markdown string stay as written. A name that ends with `direction`, such as
+`"xdirection"` or `"my xdirection"`, stays in quotes whatever follows it: the
+lexer reads `direction`, white space (a line break too), and `TB`, `BT`, `RL`,
+`LR`, or `TD` as one line, which `subgraph xdirection` and a next line
+`TB --> C` would form. A name that a word touches on its line
+(`subgraph "S"accDescr {}`) and a name that a comment follows
+(`subgraph "C" %% note`) keep their quotes, since a text without quotes would
+take the word or the comment into itself, as does a name of two spaces in a
+subgraph that has a title, since there the name is an id, and two ids that
 differ by a run are two ids (see
 [Runs of whitespace in a text that are drawn the same](./compatibility.md#runs-of-whitespace-in-a-text-that-are-drawn-the-same)).
 A `;` or a directive after a name takes nothing into it, and the name loses its
 quotes: `subgraph "D"%%{init: {}}%%` is printed `subgraph D%%{init: {}}%%`.
 [fixture: quotes/subgraph-names-without-quotes] [fixture:
+quotes/subgraph-names-with-hyphens] [fixture:
 quotes/swimlane-lane-names-without-quotes] [fixture:
 quotes/subgraph-names-that-need-quotes] [fixture:
 quotes/subgraph-names-next-to-a-direction-line] [fixture:
@@ -2516,12 +2521,30 @@ quotes/subgraph-names-with-runs-without-quotes] [fixture:
 quotes/subgraph-names-before-a-comment] [fixture:
 subgraph-header/whitespace-before-block-kept]
 
-The title of a subgraph in brackets, the label of a shape, and the label of a
-link stay as written. mermaid.js reads `A["x"]` as a string and `A[x]` as a
-text, and its Db holds the `labelType` `string` for the first and `text` for the
-second, so the two forms are not read the same, although the examples write the
-labels of shapes without quotes 109 times and in quotes 8 times. [fixture:
-quotes/labels-as-written] [fixture: quotes/subgraph-titles-as-written]
+The label of a shape, the label of a link, and the title of a subgraph in
+brackets are printed without quotes in the same way, as the examples write them:
+109 labels of shapes without quotes against 8 in quotes, 32 labels of links
+against 1, and 6 titles against none (see
+[The quotes of a text](./compatibility.md#the-quotes-of-a-text)).
+`A["Start here"]` is printed `A[Start here]`, `A -->|"Is it ready?"| B` is
+printed `A -->|Is it ready?| B`, and `subgraph S ["Title"]` is printed
+`subgraph S[Title]`. A text is printed without quotes where it starts with a
+letter or a digit, has no space at its end, and holds ASCII letters, digits,
+spaces, and `_`, `-`, `.`, `,`, `:`, `!`, and `?`. mermaid.js reads `A["x"]` as
+a string and `A[x]` as a text, and its Db holds the `labelType` `string` for the
+first and `text` for the second, but it draws the same figure (see
+[Labels that are drawn the same](./compatibility.md#labels-that-are-drawn-the-same)).
+A `.` stays in quotes in a label between two dotted arrows (`-. "a.b" .->`),
+which a `.` ends. Any other text stays in quotes (`"x (y)"`, `"a/b"`, `"a & b"`,
+`"_x"`, `"x "`, `" x"`), and so does a markdown string, and a label on a line
+that the printer writes as it is, such as a line that the line rule of
+mermaid.js reads whole (see
+[Lines that hold a `;`](./compatibility.md#lines-that-hold-a-)). A label written
+without quotes stays without them. [fixture: quotes/shape-labels-without-quotes]
+[fixture: quotes/link-labels-without-quotes] [fixture:
+quotes/subgraph-titles-without-quotes] [fixture: quotes/labels-that-need-quotes]
+[fixture: quotes/labels-next-to-trivia] [fixture:
+quotes/swimlane-labels-without-quotes]
 
 Input
 ([quotes/subgraph-names-without-quotes-input.mmd](../tests/fixtures/flowchart/quotes/subgraph-names-without-quotes-input.mmd)):

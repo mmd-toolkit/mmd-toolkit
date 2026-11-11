@@ -109,7 +109,7 @@ export const agentflowCases: readonly AgentflowCase[] = [
   {
     name: "agentflow: U+2028 between the closing quote and the `|` of an edge label",
     input: 'agentflow-beta TB\nA-->|"x"\u2028|B',
-    output: 'agentflow-beta TB\n  A -->|x\u2028| B\n',
+    output: "agentflow-beta TB\n  A -->|x\u2028| B\n",
   },
   {
     name: "agentflow: U+2028 before the comma of a style statement",

@@ -39,10 +39,10 @@ mermaid.js が同じタイトルとして読んでも報告することがある
 ```mmd
 %% eslint @mmd-toolkit/agentflow-no-redefined-flow: error
 agentflow-beta TB
-  flow F[First]
+  flow F["First"]
     A
   end
-  flow F[Second]
+  flow F["Second"]
     B
   end
 ```
@@ -52,7 +52,7 @@ agentflow-beta TB
 ```mmd
 %% eslint @mmd-toolkit/agentflow-no-redefined-flow: error
 agentflow-beta TB
-  flow F[First]
+  flow F["First"]
     A
   end
   flow F

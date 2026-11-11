@@ -72,8 +72,8 @@ Examples of **incorrect** code for this rule:
 ```mmd
 %% eslint @mmd-toolkit/agentflow-no-redefined-vertex: error
 agentflow-beta TB
-  A[Start] --> B
-  C --> A[End]
+  A["Start"] --> B
+  C --> A["End"]
 ```
 
 ```mmd
@@ -99,7 +99,7 @@ Examples of **correct** code for this rule:
 ```mmd
 %% eslint @mmd-toolkit/agentflow-no-redefined-vertex: error
 agentflow-beta TB
-  A[Start] --> B
+  A["Start"] --> B
   A --> C
 ```
 

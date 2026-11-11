@@ -1265,6 +1265,72 @@ kanban のボードも、カードのテキスト、列とカードのラベル�
 固定している mermaid.js の版を上げるときは、各場合の両方のテキストを描き直し、
 SVG と画素を比べてから、例外を残します。
 
+## Labels that are drawn the same
+
+flowchart、swimlane、agentflow の図のラベルは、例が使う形で印字します。
+（[The quotes of a text](#the-quotes-of-a-text)を参照してください）。
+flowchart と swimlane 図では `A["Start here"]` を `A[Start here]` と印字し、
+agentflow 図では `A[Start]` を `A["Start"]` と印字します。
+リンクのラベルと、subgraph や flow のタイトルも同じです。
+もう一方の形を mermaid.js が違って読むテキストは、書かれたまま残します。
+[fixture: flowchart/quotes/shape-labels-without-quotes]
+[fixture: flowchart/quotes/link-labels-without-quotes]
+[fixture: flowchart/quotes/subgraph-titles-without-quotes]
+[fixture: agentflow/quotes/labels-in-quotes]
+[fixture: agentflow/quotes/flow-titles-in-quotes]
+
+mermaid.js は、引用符で囲んだラベルの `labelType` として `string` を、
+引用符のないラベルでは `text` を Db に残すので、
+印字したテキストの Db は、書かれたテキストの Db と違いますが、同じ図を描きます。
+Db は、頂点のテキスト
+（[`flowDb.ts`](https://github.com/mermaid-js/mermaid/blob/2086904e76c692331e34a45d7cc3bc30860d040e/packages/mermaid/src/diagrams/flowchart/flowDb.ts#L228)と
+[`agentflowDb.ts`](https://github.com/mermaid-js/mermaid/blob/2086904e76c692331e34a45d7cc3bc30860d040e/packages/mermaid/src/diagrams/agentflow/agentflowDb.ts#L485)）、
+辺のテキスト
+（[L333](https://github.com/mermaid-js/mermaid/blob/2086904e76c692331e34a45d7cc3bc30860d040e/packages/mermaid/src/diagrams/flowchart/flowDb.ts#L333)と
+[L752](https://github.com/mermaid-js/mermaid/blob/2086904e76c692331e34a45d7cc3bc30860d040e/packages/mermaid/src/diagrams/agentflow/agentflowDb.ts#L752)）、
+subgraph や flow のタイトル
+（[L763](https://github.com/mermaid-js/mermaid/blob/2086904e76c692331e34a45d7cc3bc30860d040e/packages/mermaid/src/diagrams/flowchart/flowDb.ts#L763)と
+[L1245](https://github.com/mermaid-js/mermaid/blob/2086904e76c692331e34a45d7cc3bc30860d040e/packages/mermaid/src/diagrams/agentflow/agentflowDb.ts#L1245)）から型を得ます。
+描画処理は、その型が `markdown` かどうかだけを読みます。
+ノードのラベル
+（[`labelHelper`](https://github.com/mermaid-js/mermaid/blob/2086904e76c692331e34a45d7cc3bc30860d040e/packages/mermaid/src/rendering-util/rendering-elements/shapes/util.ts#L89)）、
+辺のラベル
+（[`edges.js`](https://github.com/mermaid-js/mermaid/blob/2086904e76c692331e34a45d7cc3bc30860d040e/packages/mermaid/src/rendering-util/rendering-elements/edges.js#L87)）、
+subgraph のタイトル
+（[`clusters.js`](https://github.com/mermaid-js/mermaid/blob/2086904e76c692331e34a45d7cc3bc30860d040e/packages/mermaid/src/rendering-util/rendering-elements/clusters.js#L41)と
+[L555](https://github.com/mermaid-js/mermaid/blob/2086904e76c692331e34a45d7cc3bc30860d040e/packages/mermaid/src/rendering-util/rendering-elements/clusters.js#L555)）が該当します。
+
+各場合の両方のテキストを Chromium に描き、SVG または画素が同じでした。
+英字、数字、空白と、`-`、`.`、`,`、`:`、`!`、`?` からなるテキストを、
+flowchart の 14 種類それぞれの形の中、`|` の間、2 つの矢印の間、
+2 つの点線の矢印の間、2 つの太い矢印の間にあるリンクのラベル、
+subgraph のタイトルとして描きました。
+flowchart は mermaid.js 9.0.0、9.1.7、9.4.3、10.3.1、10.9.0、11.0.0、
+11.4.1、11.12.3、11.13.0、11.16.1、12.0.0、12.3.0 で、
+swimlane 図は 11.16.1、12.0.0、12.3.0 で、
+agentflow 図は 12.0.0、12.3.0 で描きました。
+スタジアム形と非対称の形は線をランダムに描くので、
+同じテキストを 2 回描いても、その path のデータだけが異なります。
+10.3.1 より前は、引用符で囲んだラベルも、引用符のないラベルと同じ型 `text`
+なので、両方の形の Db は同じです。
+列挙した文字は、それぞれの形とリンクの形式で、
+テキストの先頭、途中、末尾に置き、引用符のある形とない形で比べました。
+Db は `labelType` を除いて同じでした。
+ほかの文字は場所によって読み方が異なるので、引用符を残します。
+非対称の形と agentflow 図の `@`、agentflow 図の `%`、
+点線の矢印の間の `.`、太い矢印の間の `=` は、引用符がないと拒否され、
+テキストの先頭の `/`、`\`、`-` は、別の形になるか拒否されます。
+
+テストは、印字したテキストの Db に、
+書かれたテキストの Db から `labelType` を戻して比べます。
+`tests/label-type-differences.ts` の `labelTypeDbForFormattingComparison`
+を使います。
+`labelType` が `string` と `text` の間で異なるときは、書かれた方を採ります。
+ほかの違いは、markdown になったラベルや、
+markdown でなくなったラベルも含めて失敗とします。
+固定している mermaid.js の版を上げるときは、各場合の両方のテキストを描き直し、
+SVG と画素を比べてから、例外を残します。
+
 ## 同じに描かれる綴り
 
 mermaid.js は、トークンの異なる綴りの一部を同じトークンとして読み、
@@ -2009,9 +2075,15 @@ sankey 図のリンクの source は、`"a b",c,1` と `a b,c,1` で同じ id �
 | C4             | 境界またはノードの type              |          0 |         14 |
 | C4             | 要素の description                   |          0 |         46 |
 | flowchart      | subgraph の名前                      |         53 |          1 |
+| flowchart      | 形のラベル                           |        109 |          8 |
+| flowchart      | リンクのラベル                       |         32 |          1 |
+| flowchart      | subgraph のタイトル                  |          6 |          0 |
 | agentflow      | flow の名前                          |         17 |          0 |
 | agentflow      | connector の名前                     |          2 |          0 |
 | agentflow      | connector のタイトル                 |          0 |          2 |
+| agentflow      | 形のラベル                           |          0 |         47 |
+| agentflow      | flow のタイトル                      |          0 |         17 |
+| agentflow      | リンクのラベル                       |          2 |          0 |
 | class          | class の名前                         |        178 |          4 |
 | class          | namespace の名前                     |         11 |          0 |
 
@@ -2020,21 +2092,29 @@ actor、use case、system boundary の名前は、
 引用符で囲んだ名前には、それらを付けられないためです。
 すべての名前を数えると、actor は 35 / 0、use case は 44 / 1、
 system boundary は 9 / 2 です。
+flowchart の行には、swimlane 図の例も含めて数えています。
+その例では、形のラベル 59 個、リンクのラベル 12 個、subgraph のタイトル 4 個を、
+引用符なしで書き、引用符で囲んだものはありません。
 
 テキストが平易なら、引用符なしで印字します。
 平易なテキストは、ASCII の英字、数字、`_`、`-`、`.` と、それらの間の空白です。
 sankey 図では、欄が取り除く両端の空白も含みます。
+sankey 図のリンクの source と target には、`R&D` や `it's` のように、
+`&`、`<`、`>`、`'`、`/`、`\` も使えます。
 sankey の字句解析器は、`"` と `,` 以外の ASCII の印字可能文字をすべて、
-引用符のない欄に取り込みますが、
+引用符のない欄に取り込みます。
+これらの文字を単独で、またはテキストの中に含む source と target の Db は、
+引用符の有無によらず同じです。
+リンクの値はこれらの文字で比較していないので、書かれたまま残します。
 ほかの種類の文字はどの処理段階でも同じに読まれるわけではありません。
 `%%` はコメントやディレクティブを始め、`#` は実体参照を始め、
 `;` は `style` と `classDef` の行の規則に関わり、改行は記録を終えます。
-`&`、`<`、`>`、`'`、`\`、`/` は、すべての位置では比較していません。
 そのため、これらの文字や `,`、`"` を含むテキストは、引用符で囲んだまま残し、
 ディレクティブやコメント領域を内部に含む文字列も同じにします。
 [fixture: sankey/quotes/plain-text-without-quotes]
 [fixture: sankey/quotes/plain-text-with-spaces-without-quotes]
 [fixture: sankey/quotes/spaces-at-the-ends-left-out]
+[fixture: sankey/quotes/symbols-without-quotes]
 [fixture: sankey/quotes/comma-and-doubled-quotes-kept]
 [fixture: sankey/quotes/other-characters-keep-the-quotes]
 [fixture: sankey/values/forms-kept]
@@ -2043,14 +2123,19 @@ sankey の字句解析器は、`"` と `,` 以外の ASCII の印字可能文字
 [fixture: sankey/multi-line-strings/string-over-lines]
 
 ER 図では、ASCII の英字か `_` で始まる、ASCII の英字、数字、
-`_` からなる 1 語のテキストを、
+`_` からなる 1 語のテキストか、そのような語の各部分を 1 つの `-`
+で結んだ英字で始まる語（`LINE-ITEM`）を、
+その語か最初の `-` の前の部分が、
 字句解析器が独立した単位として読む以下の語のいずれでもない場合に、
 引用符なしで印字します。
 大文字小文字は問いません。
 `erDiagram`、`style`、`classDef`、`class`、`subgraph`、`end`、`one`、`many`、
 `only`、`zero`、`optionally`、`or`、`to`、`accTitle`、`accDescr`、`direction`、
 `TB`、`BT`、`RL`、`LR`、`PK`、`FK`、`UK`、`u`、`o` です。
-空白、`-`、ASCII 外の文字など、ほかの文字を含む名前や、
+`-` はキーワードを終えるので、`end-x` は `end` と `-x` です。
+空白、`.`、ASCII 外の文字など、ほかの文字を含む名前や、
+`-` が先頭か末尾にある名前、2 つ続く名前、先頭の `_` の後にある名前
+（`-a`、`a-`、`a--b`、`_a-b`）、
 字句解析器が数や多重度として読める数字で始まる名前、
 mermaid.js が名前を空白 1 つで結ぶ subgraph のタイトルは、書かれたまま残します。
 `direction` で終わる名前と、`TB`、`BT`、`RL`、`LR` で始まる名前も、
@@ -2058,6 +2143,7 @@ mermaid.js が名前を空白 1 つで結ぶ subgraph のタイトルは、書�
 字句解析器は、`direction`、空白（改行も含みます）、向きの名前を 1 行として読み、
 引用符を外した名前は、前の行か後の行と結ばれるためです。
 [fixture: er/entities/plain-names-without-quotes]
+[fixture: er/entities/hyphenated-names-without-quotes]
 [fixture: er/entities/names-that-need-quotes]
 [fixture: er/entities/names-next-to-a-direction-line]
 [fixture: er/entities/alias-tight]
@@ -2097,6 +2183,9 @@ Wardley マップでは、ASCII の英字、数字、`_` からなり、
 `"Title x"` の引用符は除きます。
 accelerator と deaccelerator、pipeline の component の名前は、
 引用符で囲んで印字します。
+`-` のある名前は書かれたまま残します。
+この図種が初めて加わった 11.14.0 は、引用符がないと拒否するためです。
+（[Versions of mermaid.js](#versions-of-mermaidjs)を参照してください）。
 矢印のないリンクの 2 つの名前 `"A" "B"` は、
 引用符を外すと 1 つの名前として読まれ、
 名前に隣接する hidden YAML ブロックの `---` は名前に結合されるので、
@@ -2123,13 +2212,18 @@ gitGraph では、ASCII の英字、数字、`_` と、その間の `-`、`.`、
 [fixture: gitgraph/references/reference-forms]
 
 象限チャートでは、ASCII 英字の単語でできていて、各単語の末尾には数字も使え、
-単語の間は空白 1 つのテキストを、どの単語も `title`、`classDef`、`accTitle`、
-`accDescr` のいずれでもなく、`quadrant` で始まる語でもない場合に、
-引用符なしで印字します。
+単語の間は空白 1 つで、各部分を 1 つの `-` で結ぶこともできるテキストを、
+どの部分も `title`、`classDef`、`accTitle`、`accDescr` のいずれでもなく、
+`quadrant` で始まる語でもなく、テキストに `x-axis` と `y-axis`
+を含まない場合に、引用符なしで印字します。
 大文字小文字は問いません。
-字句解析器は、数字や `_` の後の英字を再び単語の始まりとして読むので、`-`、`_`、
-単語の途中の数字や、先頭の数を含むテキストは、引用符で囲んだまま残します。
+字句解析器は `-` を単語の終わりとして読むので、
+その後の部分は単語を始め、`my-x-axis` はキーワード `x-axis` を含みます。
+字句解析器は、数字や `_` の後の英字を再び単語の始まりとして読むので、
+`_`、単語の途中の数字、先頭か `-` の後の数、先頭か末尾にある `-`、
+2 つ続く `-` を含むテキストは、引用符で囲んだまま残します。
 [fixture: quadrant/quotes/plain-texts-without-quotes]
+[fixture: quadrant/quotes/texts-with-hyphens-without-quotes]
 [fixture: quadrant/quotes/texts-that-need-quotes]
 [fixture: quadrant/points/string-names] [fixture: quadrant/axes/strings]
 

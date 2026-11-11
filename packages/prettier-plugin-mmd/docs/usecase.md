@@ -405,17 +405,21 @@ usecase-beta
 Reuse readable [arrow spacing](./class.md#arrow-spacing): one ordinary gap on
 each side of the actual complete usecase operator. Keep direction, marker, and
 every dash/dot, including long split closing halves whose Db length is fixed.
-Semantic operators print compact `..>:include` and `..>:extend`, the keyword in
-lower case, as the examples in the documentation of mermaid.js write it (see
+Semantic operators print `..> : include` and `..> : extend`, with one space
+before and after the colon and the keyword in lower case, as the examples in the
+documentation of mermaid.js write it, 7 times and never with the colon touching
+(see
 [Spellings that are drawn the same](./compatibility.md#spellings-that-are-drawn-the-same)),
-then one target gap; their colon and keyword are operator syntax. [fixture:
+then one target gap; the colon after an arrow takes the same gap in a class, an
+ER, and a state diagram. mermaid.js reads `..>:include`, `..> :include`,
+`..>: include`, and `..> : include` as the same operator. [fixture:
 arrows/semantic-operator-directives] [fixture:
-arrows/arrows-semantic-case-one-form] Never swap endpoints or translate operator
-families. Direction, marker, and the dash and dot counts stay as written because
-the printer never prints a normalized Db operator: `A---->B` printed as
-`A --> B` changes the minimum length, and `A<--B` printed as `B --> A` changes
-the order of source and target. A split arrow keeps its dash counts even where
-the Db length is fixed.
+arrows/arrows-semantic-case-one-form] [fixture: arrows/semantic-colon-gaps]
+Never swap endpoints or translate operator families. Direction, marker, and the
+dash and dot counts stay as written because the printer never prints a
+normalized Db operator: `A---->B` printed as `A --> B` changes the minimum
+length, and `A<--B` printed as `B --> A` changes the order of source and target.
+A split arrow keeps its dash counts even where the Db length is fixed.
 
 [fixture: arrows/arrows-solid] [fixture: arrows/arrows-markers] [fixture:
 arrows/arrows-semantic] [fixture: arrows/arrows-length-kept] [fixture:
@@ -430,8 +434,8 @@ Output
 
 ```mmd
 usecase-beta
-  A ..>:include B
-  B ..>:extend C
+  A ..> : include B
+  B ..> : extend C
   C --|> D
 ```
 

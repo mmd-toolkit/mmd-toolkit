@@ -6,11 +6,11 @@ Filename: agentflow-no-redefined-flow-incorrect-1.mmd
 
 Code:
   1 | agentflow-beta TB
-  2 |   flow F[First]
+  2 |   flow F["First"]
   3 |     A
   4 |   end
-  5 |   flow F[Second]
-    |          ^~~~~~ [1]
+  5 |   flow F["Second"]
+    |          ^~~~~~~~ [1]
   6 |     B
   7 |   end
   8 |

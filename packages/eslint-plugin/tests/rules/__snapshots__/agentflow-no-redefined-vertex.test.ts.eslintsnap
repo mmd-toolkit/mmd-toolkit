@@ -6,9 +6,9 @@ Filename: agentflow-no-redefined-vertex-incorrect-1.mmd
 
 Code:
   1 | agentflow-beta TB
-  2 |   A[Start] --> B
-  3 |   C --> A[End]
-    |          ^~~~~ [1]
+  2 |   A["Start"] --> B
+  3 |   C --> A["End"]
+    |          ^~~~~~~ [1]
   4 |
 
 [1] mermaid.js replaces the label of `A` written earlier with that of this vertex.

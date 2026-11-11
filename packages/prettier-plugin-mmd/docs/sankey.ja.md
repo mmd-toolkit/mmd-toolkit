@@ -187,7 +187,9 @@ style:#x;y,b,1
 ### 引用符
 
 欄のテキストが平易なときは、引用符なしで印字します。
-平易とは、ASCII の英字、数字、`_`、`-`、`.` と、その間の空白だけのものです。
+平易とは、ASCII の英字、数字、`_`、`-`、`.` と、その間の空白からなるもので、
+source と target では、`&`、`<`、`>`、`'`、`/`、`\` も含みます。
+`"R&D"` は `R&D` と印字します。
 `"a"` と `a` は Db で同じ id で、`" a"` と `a` も同じです。
 mermaid.js は引用符の有無に関わらず欄の両端の空白を落とし、
 mermaid.js の文書の例では、source と value はすべて引用符なしで、
@@ -199,6 +201,7 @@ link の target は引用符なしが 83 回、引用符付きが 4 回です。
 引用符のない欄には書けないコンマや二重の引用符がある欄、改行、`;`、`#`、`%%`、
 その他の文字を含む欄、中に指令がある文字列です。
 [fixture: quotes/plain-text-without-quotes]
+[fixture: quotes/symbols-without-quotes]
 [fixture: quotes/plain-text-with-spaces-without-quotes]
 [fixture: quotes/spaces-at-the-ends-left-out]
 [fixture: quotes/comma-and-doubled-quotes-kept]

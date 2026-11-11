@@ -2618,10 +2618,14 @@ flowchart LR
 mermaid.js はどちらの形の名前も同じテキストとして読み、
 複数の語からなる名前の id はどちらでも生成されます。
 名前が ASCII の英字、数字、`_` からなる語を空白 1 つで区切ったもので、
+語の部分同士を 1 つの `-` でつないでもよく（`my-group`）、
 どの語も `_blank`、`_parent`、`_self`、`_top`、`call`、`click`、`default`、
 `direction`、`end`、`href`、`interpolate` でない場合に、引用符なしで印字します。
 これらの語は、字句解析器がそれぞれ独立した単位として読むためです。
-そのため、`"a-b"`、`"end"`、`"x end"`、`"click"`、`"x _self"`、`"direction"`、
+`-` はキーワードを終わらせるので、最初の `-` より前の部分で比較します。
+`end-x` は `end` と `-x` です。
+そのため、`"end"`、`"x end"`、`"click"`、`"end-x"`、`"x _self"`、`"direction"`、
+先頭か末尾に `-` があるか、2 つ続く名前（`"-a"`、`"a-"`、`"a--b"`）、
 `.` や ASCII 以外の文字を含む名前と、markdown 文字列は書かれたままにします。
 `direction` で終わる名前（`"xdirection"`、`"my xdirection"`）は、
 後に何が続いても引用符を残します。
@@ -2637,6 +2641,7 @@ mermaid.js はどちらの形の名前も同じテキストとして読み、
 名前の後の `;` やディレクティブは何も取り込まないので、名前は引用符を失います。
 `subgraph "D"%%{init: {}}%%` は `subgraph D%%{init: {}}%%` と印字します。
 [fixture: quotes/subgraph-names-without-quotes]
+[fixture: quotes/subgraph-names-with-hyphens]
 [fixture: quotes/swimlane-lane-names-without-quotes]
 [fixture: quotes/subgraph-names-that-need-quotes]
 [fixture: quotes/subgraph-names-next-to-a-direction-line]
@@ -2644,13 +2649,34 @@ mermaid.js はどちらの形の名前も同じテキストとして読み、
 [fixture: quotes/subgraph-names-before-a-comment]
 [fixture: subgraph-header/whitespace-before-block-kept]
 
-角括弧の中の subgraph のタイトルと、shape のラベル、link のラベルは、
-書かれたままにします。
+shape のラベル、link のラベル、角括弧の中の subgraph のタイトルも、
+例と同じく引用符なしで印字します。
+例では、shape のラベルを引用符なしで 109 回、引用符付きで 8 回、
+link のラベルを引用符なしで 32 回、引用符付きで 1 回、
+タイトルを引用符なしで 6 回、引用符付きでは一度も書いていないためです。
+（[テキストの引用符](./compatibility.md#the-quotes-of-a-text)）。
+`A["Start here"]` は `A[Start here]` と、
+`A -->|"Is it ready?"| B` は `A -->|Is it ready?| B` と、
+`subgraph S ["Title"]` は `subgraph S[Title]` と印字します。
+テキストを引用符なしで印字するのは、英字か数字で始まり、末尾に空白がなく、
+ASCII の英字、数字、空白、`_`、`-`、`.`、`,`、`:`、`!`、`?` からなる場合です。
 mermaid.js は `A["x"]` を文字列として、`A[x]` をテキストとして読み、
 Db の `labelType` に前者では `string`、後者では `text` を持ちます。
-そのため、例では shape のラベルを引用符なしで 109 回、
-引用符付きで 8 回書いていても、この 2 つの形は同じには読まれません。
-[fixture: quotes/labels-as-written] [fixture: quotes/subgraph-titles-as-written]
+ただし、描かれる図は同じです。
+（[Labels that are drawn the same](./compatibility.md#labels-that-are-drawn-the-same)）。
+点線の矢印 2 つの間のラベル（`-. "a.b" .->`）では、
+`.` がラベルを終わらせるので、`.` を含むテキストの引用符を残します。
+それ以外のテキスト（`"x (y)"`、`"a/b"`、`"a & b"`、`"_x"`、`"x "`、`" x"`）と、
+markdown 文字列は引用符を残します。
+mermaid.js の行の規則が丸ごと読む行など、
+プリンタが書かれたまま印字する行のラベルも同じです。
+（[Lines that hold a `;`](./compatibility.md#lines-that-hold-a-)）。
+引用符なしで書かれたラベルは、引用符なしのままにします。
+[fixture: quotes/shape-labels-without-quotes]
+[fixture: quotes/link-labels-without-quotes]
+[fixture: quotes/subgraph-titles-without-quotes]
+[fixture: quotes/labels-that-need-quotes] [fixture: quotes/labels-next-to-trivia]
+[fixture: quotes/swimlane-labels-without-quotes]
 
 入力
 ([quotes/subgraph-names-without-quotes-input.mmd](../tests/fixtures/flowchart/quotes/subgraph-names-without-quotes-input.mmd)):

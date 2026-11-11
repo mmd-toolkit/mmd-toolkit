@@ -761,12 +761,19 @@ one space (see [Attribute blocks](#attribute-blocks)). A name, a role, or the id
 of a subgraph in quotes that is one plain word is printed without them, as the
 examples in the documentation of mermaid.js write it (see
 [The quotes of a text](./compatibility.md#the-quotes-of-a-text)): `"A"[B]` is
-printed `A[B]`, and `C ||--o{ D : "has"` is `C ||--o{ D : has`. The other names
-are kept as written, quoted or not, numbers included, and so is a name that ends
-with `direction` or starts with `TB`, `BT`, `RL`, or `LR`, in any case: the
+printed `A[B]`, and `C ||--o{ D : "has"` is `C ||--o{ D : has`. A word with a
+single `-` between its parts that starts with a letter is plain too, as the
+examples write `LINE-ITEM` and `NAMED-DRIVER` without quotes 20 times and never
+in quotes: `"LINE-ITEM"` is printed `LINE-ITEM`. The part before the first `-`
+is compared with the words that the lexer reads as a unit of its own, since a
+`-` ends a keyword (`"end-x"` is `end` and `-x`). The other names are kept as
+written, quoted or not, numbers included, and so are a name with a `-` at its
+start or its end, two together, or after a `_` at its start, and a name that
+ends with `direction` or starts with `TB`, `BT`, `RL`, or `LR`, in any case: the
 lexer reads `direction`, white space (a line break too), and the name of a
 direction as one line, which a name without quotes would join with the line
 before or after it. [fixture: entities/plain-names-without-quotes] [fixture:
+entities/hyphenated-names-without-quotes] [fixture:
 entities/names-that-need-quotes] [fixture:
 entities/names-next-to-a-direction-line] [fixture: entities/names-kept] A
 directive between the parts of an entity is placed as under

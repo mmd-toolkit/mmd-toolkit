@@ -505,19 +505,23 @@ The text of an axis, of a quadrant, and of a point in quotes is printed without
 them where it is plain, as the examples in the documentation of mermaid.js write
 it (see [The quotes of a text](./compatibility.md#the-quotes-of-a-text)):
 `quadrant-1 "A"` is printed `quadrant-1 A`. A text is plain where it is words of
-ASCII letters, ending in digits, with one space between them, and none of the
-words is one that the lexer reads as a unit of its own. A `;` that follows the
-text on its line is dropped with the line break that replaces it, and the text
-loses its quotes as it does without the `;`: `quadrant-1 "A";` is printed
-`quadrant-1 A`. [fixture: quotes/texts-before-a-semicolon] Any other string and
-a markdown string are printed as written: their quotes and their text, with a
-run of spaces and tabs inside them printed as one space. mermaid.js reads `"L"`
-and `L`, and `"a b"` and `a b`, as the same text, but a string can hold what a
-text without quotes cannot (`"a: b"` has a colon, which a text without quotes is
-rejected for), so the quotes of such a text stay, and a quote is never added.
-[fixture: quotes/strings-runs-collapsed] [fixture:
-quotes/plain-texts-without-quotes] [fixture: quotes/texts-that-need-quotes]
-[fixture: quotes/quotes-not-added] [fixture:
+ASCII letters, ending in digits, with one space between them, whose parts may be
+joined by a single `-` (`"high-value"` is printed `high-value`), and none of the
+parts is one that the lexer reads as a unit of its own, nor is `x-axis` or
+`y-axis` in the text: the lexer reads a `-` as the end of a word, so a part
+after it starts a word (`"my-title"` and `"my-x-axis"` stay in quotes). A `;`
+that follows the text on its line is dropped with the line break that replaces
+it, and the text loses its quotes as it does without the `;`: `quadrant-1 "A";`
+is printed `quadrant-1 A`. [fixture: quotes/texts-before-a-semicolon] Any other
+string and a markdown string are printed as written: their quotes and their
+text, with a run of spaces and tabs inside them printed as one space. mermaid.js
+reads `"L"` and `L`, and `"a b"` and `a b`, as the same text, but a string can
+hold what a text without quotes cannot (`"a: b"` has a colon, which a text
+without quotes is rejected for), so the quotes of such a text stay, and a quote
+is never added. [fixture: quotes/strings-runs-collapsed] [fixture:
+quotes/plain-texts-without-quotes] [fixture:
+quotes/texts-with-hyphens-without-quotes] [fixture:
+quotes/texts-that-need-quotes] [fixture: quotes/quotes-not-added] [fixture:
 quotes/keywords-and-arrows-in-strings] [fixture: quotes/markdown-strings]
 [fixture: quotes/string-with-a-comment-mark]
 

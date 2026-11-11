@@ -158,9 +158,12 @@ printed in quotes, as the examples in the documentation of mermaid.js write them
 is printed `accelerator "Market"`. A name is plain where it is words of ASCII
 letters, digits, and `_` that start with a letter, with a space between them,
 and it does not start with a word that the lexer reads as a command or a
-strategy (`build`, `component`, `title`, and the others, in lower case). The
-name of a link without an arrow, `"A" "B"`, and a name that touches the `---` of
-a hidden YAML block keep their quotes. [fixture:
+strategy (`build`, `component`, `title`, and the others, in lower case). A name
+with a `-` keeps its quotes, since 11.14.0, the first release with the diagram
+type, rejects it without them (see
+[Versions of mermaid.js](./compatibility.md#versions-of-mermaidjs)). The name of
+a link without an arrow, `"A" "B"`, and a name that touches the `---` of a
+hidden YAML block keep their quotes. [fixture:
 names-and-quotes/plain-names-without-quotes] [fixture:
 names-and-quotes/names-that-need-quotes] Keep WardleyIdentifier and
 StringLiteral source spans otherwise, including internal spaces/tabs, hyphens,
