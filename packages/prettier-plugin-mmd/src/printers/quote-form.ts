@@ -175,9 +175,9 @@ function joinsDirectionLine(
  * starts with a letter (the lexers before 10.5.0 read no `_` at the start of a
  * name without quotes), and the part before the first `-` is the one compared
  * with the reserved words, since a `-` ends a keyword (`end-x` is `end` and
- * `-x`). The text joins no line of a direction
- * either (`joinsDirectionLine`, in any case, since the lexers of an ER and a
- * requirement diagram read in any case).
+ * `-x`). The text joins no line of a direction either (`joinsDirectionLine`, in
+ * any case, since the lexers of an ER and a requirement diagram read in any
+ * case).
  */
 function wordWithout(
   reserved: ReadonlySet<string>,
@@ -959,7 +959,10 @@ function isDottedArrowLabel(node: Node): boolean {
   )
 }
 
-/** Whether a link has its label between `|` or between two arrows that are not dotted. */
+/**
+ * Whether a link has its label between `|`, or between two arrows that are not
+ * dotted.
+ */
 function isNotDottedArrowLabel(node: Node): boolean {
   return !isDottedArrowLabel(node)
 }

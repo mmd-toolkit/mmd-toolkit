@@ -2618,9 +2618,9 @@ flowchart LR
 mermaid.js はどちらの形の名前も同じテキストとして読み、
 複数の語からなる名前の id はどちらでも生成されます。
 名前が ASCII の英字、数字、`_` からなる語を空白 1 つで区切ったもので、
-語の部分同士を 1 つの `-` でつないでもよく（`my-group`）、
-どの語も `_blank`、`_parent`、`_self`、`_top`、`call`、`click`、`default`、
-`direction`、`end`、`href`、`interpolate` でない場合に、引用符なしで印字します。
+語の部分同士を 1 つの `-` でつないでもよく（`my-group`）、どの語も `_blank`、
+`_parent`、`_self`、`_top`、`call`、`click`、`default`、`direction`、`end`、
+`href`、`interpolate` でない場合に、引用符なしで印字します。
 これらの語は、字句解析器がそれぞれ独立した単位として読むためです。
 `-` はキーワードを終わらせるので、最初の `-` より前の部分で比較します。
 `end-x` は `end` と `-x` です。
@@ -2663,7 +2663,7 @@ ASCII の英字、数字、空白、`_`、`-`、`.`、`,`、`:`、`!`、`?` か�
 mermaid.js は `A["x"]` を文字列として、`A[x]` をテキストとして読み、
 Db の `labelType` に前者では `string`、後者では `text` を持ちます。
 ただし、描かれる図は同じです。
-（[Labels that are drawn the same](./compatibility.md#labels-that-are-drawn-the-same)）。
+（[同じに描かれるラベル](./compatibility.ja.md#同じに描かれるラベル)）。
 点線の矢印 2 つの間のラベル（`-. "a.b" .->`）では、
 `.` がラベルを終わらせるので、`.` を含むテキストの引用符を残します。
 それ以外のテキスト（`"x (y)"`、`"a/b"`、`"a & b"`、`"_x"`、`"x "`、`" x"`）と、
@@ -2675,7 +2675,8 @@ mermaid.js の行の規則が丸ごと読む行など、
 [fixture: quotes/shape-labels-without-quotes]
 [fixture: quotes/link-labels-without-quotes]
 [fixture: quotes/subgraph-titles-without-quotes]
-[fixture: quotes/labels-that-need-quotes] [fixture: quotes/labels-next-to-trivia]
+[fixture: quotes/labels-that-need-quotes]
+[fixture: quotes/labels-next-to-trivia]
 [fixture: quotes/swimlane-labels-without-quotes]
 
 入力

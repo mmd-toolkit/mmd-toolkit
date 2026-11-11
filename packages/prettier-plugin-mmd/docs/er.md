@@ -830,6 +830,36 @@ erDiagram
   B:::d
 ```
 
+Input
+([entities/hyphenated-names-without-quotes-input.mmd](../tests/fixtures/er/entities/hyphenated-names-without-quotes-input.mmd)):
+
+```mmd
+erDiagram
+"LINE-ITEM" ||--o{ "ORDER-LINE" : "has-items"
+"A-B-C" {
+int id
+}
+"p-q"[Alias]
+subgraph "my-group"
+"x-y"
+end
+```
+
+Output
+([entities/hyphenated-names-without-quotes-output.mmd](../tests/fixtures/er/entities/hyphenated-names-without-quotes-output.mmd)):
+
+```mmd
+erDiagram
+  LINE-ITEM ||--o{ ORDER-LINE : has-items
+  A-B-C {
+    int id
+  }
+  p-q[Alias]
+  subgraph my-group
+    x-y
+  end
+```
+
 ### Subgraphs
 
 The name of a subgraph stands after one space, and the `[` of its title touches

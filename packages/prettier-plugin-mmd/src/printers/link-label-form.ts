@@ -64,11 +64,10 @@ type Label = AgentflowLabel | FlowchartLabel
  * Records, for each link whose label is plain text (letters, digits, spaces,
  * `_`, `,`, `?`, and `!`; a label in quotes counts when the printer writes it
  * without them, which `found` holds already), the label in the form of the
- * diagram type: the
- * stretch from the arrow to the second `|` becomes the stretch from the
- * opening arrow to the closing arrow, or the other way round, with the arrows
- * that mermaid.js reads the same. Only whitespace lies between the tokens of
- * the stretch.
+ * diagram type: the stretch from the arrow to the second `|` becomes the
+ * stretch from the opening arrow to the closing arrow, or the other way round,
+ * with the arrows that mermaid.js reads the same. Only whitespace lies between
+ * the tokens of the stretch.
  */
 export function findLinkLabelRespellings(
   source: Source,

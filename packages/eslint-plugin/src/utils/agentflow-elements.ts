@@ -21,7 +21,7 @@ interface ElementValues {
   label: string | null
   shape: string
   kind: string
-  /** The kind of the written label and the property of the written shape, which mermaid.js records apart from the drawing. */
+  /** Whether the written label is markdown, and the property of the written shape. */
   form: string
   readonly connector: boolean
 }
@@ -57,13 +57,23 @@ interface ElementObserver {
   ): void
 }
 
-/** How mermaid.js records a written label and shape, besides what is drawn. */
+/**
+ * Whether a written label is markdown, which mermaid.js draws differently, or
+ * not: a label in quotes and a label without them draw alike. No label is a
+ * form of its own.
+ */
+function labelFormOf(label: AgentflowLabel | null): string {
+  if (label === null) return ""
+  return label.kind === "markdown" ? "markdown" : "plain"
+}
+
+/** What a written label and shape say besides the drawn shape: whether the label is markdown, and the property. */
 function formOf(
   label: AgentflowLabel | null,
   shape: AgentflowShape | null,
 ): string {
   const property = shape?.property
-  return `${label?.kind ?? ""}|${
+  return `${labelFormOf(label)}|${
     property ? `${property.name.name}:${property.value.name}` : ""
   }`
 }

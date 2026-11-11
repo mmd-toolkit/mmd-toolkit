@@ -93,6 +93,42 @@ Code:
 ---
 
 
+Test: agentflow-no-redefined-vertex >> invalid >>> invalid/agentflow/flow-lost-connector-quoted-label-after-text-title
+Filename: tests/fixtures/rules/agentflow-no-redefined-vertex/invalid/agentflow/flow-lost-connector-quoted-label-after-text-title-input.mmd
+
+Code:
+  1 | agentflow-beta TB
+  2 |   flow a
+  3 |     connector C[API]
+  4 |   end
+  5 |   flow b
+  6 |     C["API"]
+    |     ^~~~~~~~ [1]
+  7 |   end
+  8 |
+
+[1] mermaid.js keeps `C` in an earlier flow, so this flow does not get it.
+---
+
+
+Test: agentflow-no-redefined-vertex >> invalid >>> invalid/agentflow/flow-lost-connector-text-label-after-quoted-title
+Filename: tests/fixtures/rules/agentflow-no-redefined-vertex/invalid/agentflow/flow-lost-connector-text-label-after-quoted-title-input.mmd
+
+Code:
+  1 | agentflow-beta TB
+  2 |   flow a
+  3 |     connector C["API"]
+  4 |   end
+  5 |   flow b
+  6 |     C[API]
+    |     ^~~~~~ [1]
+  7 |   end
+  8 |
+
+[1] mermaid.js keeps `C` in an earlier flow, so this flow does not get it.
+---
+
+
 Test: agentflow-no-redefined-vertex >> invalid >>> invalid/agentflow/flow-lost-id-and-new-label
 Filename: tests/fixtures/rules/agentflow-no-redefined-vertex/invalid/agentflow/flow-lost-id-and-new-label-input.mmd
 
@@ -284,6 +320,42 @@ Code:
 ---
 
 
+Test: agentflow-no-redefined-vertex >> invalid >>> invalid/agentflow/flow-lost-id-quoted-label-after-text-label
+Filename: tests/fixtures/rules/agentflow-no-redefined-vertex/invalid/agentflow/flow-lost-id-quoted-label-after-text-label-input.mmd
+
+Code:
+  1 | agentflow-beta TB
+  2 |   flow a
+  3 |     A[x]
+  4 |   end
+  5 |   flow b
+  6 |     A["x"]
+    |     ^~~~~~ [1]
+  7 |   end
+  8 |
+
+[1] mermaid.js keeps `A` in an earlier flow, so this flow does not get it.
+---
+
+
+Test: agentflow-no-redefined-vertex >> invalid >>> invalid/agentflow/flow-lost-id-quoted-label-same-kind
+Filename: tests/fixtures/rules/agentflow-no-redefined-vertex/invalid/agentflow/flow-lost-id-quoted-label-same-kind-input.mmd
+
+Code:
+  1 | agentflow-beta TB
+  2 |   flow a
+  3 |     A["x"]
+  4 |   end
+  5 |   flow b
+  6 |     A["x"]
+    |     ^~~~~~ [1]
+  7 |   end
+  8 |
+
+[1] mermaid.js keeps `A` in an earlier flow, so this flow does not get it.
+---
+
+
 Test: agentflow-no-redefined-vertex >> invalid >>> invalid/agentflow/flow-lost-id-same-shape-and-label
 Filename: tests/fixtures/rules/agentflow-no-redefined-vertex/invalid/agentflow/flow-lost-id-same-shape-and-label-input.mmd
 
@@ -313,6 +385,24 @@ Code:
   5 |   flow b
   6 |     A[|borders:lt|x]
     |     ^~~~~~~~~~~~~~~~ [1]
+  7 |   end
+  8 |
+
+[1] mermaid.js keeps `A` in an earlier flow, so this flow does not get it.
+---
+
+
+Test: agentflow-no-redefined-vertex >> invalid >>> invalid/agentflow/flow-lost-id-text-label-after-quoted-label
+Filename: tests/fixtures/rules/agentflow-no-redefined-vertex/invalid/agentflow/flow-lost-id-text-label-after-quoted-label-input.mmd
+
+Code:
+  1 | agentflow-beta TB
+  2 |   flow a
+  3 |     A["x"]
+  4 |   end
+  5 |   flow b
+  6 |     A[x]
+    |     ^~~~ [1]
   7 |   end
   8 |
 

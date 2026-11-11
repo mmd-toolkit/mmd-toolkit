@@ -550,6 +550,42 @@ Code:
 ---
 
 
+Test: flowchart-no-redefined-vertex >> invalid >>> invalid/flowchart/subgraph-lost-id-quoted-label-after-text-label
+Filename: tests/fixtures/rules/flowchart-no-redefined-vertex/invalid/flowchart/subgraph-lost-id-quoted-label-after-text-label-input.mmd
+
+Code:
+  1 | flowchart TD
+  2 |   subgraph a
+  3 |     A[x]
+  4 |   end
+  5 |   subgraph b
+  6 |     A["x"]
+    |     ^~~~~~ [1]
+  7 |   end
+  8 |
+
+[1] mermaid.js keeps `A` in an earlier subgraph, so this subgraph does not get it.
+---
+
+
+Test: flowchart-no-redefined-vertex >> invalid >>> invalid/flowchart/subgraph-lost-id-quoted-label-after-text-label-swimlane-beta
+Filename: tests/fixtures/rules/flowchart-no-redefined-vertex/invalid/flowchart/subgraph-lost-id-quoted-label-after-text-label-swimlane-beta-input.mmd
+
+Code:
+  1 | swimlane-beta TD
+  2 |   subgraph a
+  3 |     A[x]
+  4 |   end
+  5 |   subgraph b
+  6 |     A["x"]
+    |     ^~~~~~ [1]
+  7 |   end
+  8 |
+
+[1] mermaid.js keeps `A` in an earlier subgraph, so this subgraph does not get it.
+---
+
+
 Test: flowchart-no-redefined-vertex >> invalid >>> invalid/flowchart/subgraph-lost-id-quoted-label-same-kind
 Filename: tests/fixtures/rules/flowchart-no-redefined-vertex/invalid/flowchart/subgraph-lost-id-quoted-label-same-kind-input.mmd
 
@@ -615,6 +651,24 @@ Code:
   5 |   subgraph b
   6 |     A
     |     ^ [1]
+  7 |   end
+  8 |
+
+[1] mermaid.js keeps `A` in an earlier subgraph, so this subgraph does not get it.
+---
+
+
+Test: flowchart-no-redefined-vertex >> invalid >>> invalid/flowchart/subgraph-lost-id-text-label-after-quoted-label
+Filename: tests/fixtures/rules/flowchart-no-redefined-vertex/invalid/flowchart/subgraph-lost-id-text-label-after-quoted-label-input.mmd
+
+Code:
+  1 | flowchart TD
+  2 |   subgraph a
+  3 |     A["x"]
+  4 |   end
+  5 |   subgraph b
+  6 |     A[x]
+    |     ^~~~ [1]
   7 |   end
   8 |
 

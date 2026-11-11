@@ -1202,8 +1202,7 @@ flowchart の subgraph の名前の条件に従い、引用符なしで印字し
 mermaid.js の文書の例は引用符なしでそれぞれ 17 回と 2 回書き、
 引用符つきでは一度も書いていないためです。
 （[テキストの引用符](./compatibility.ja.md#テキストの引用符)）。
-`flow "My Flow"` は `flow My Flow` と、
-`flow "my-team"` は `flow my-team` と、
+`flow "My Flow"` は `flow My Flow` と、`flow "my-team"` は `flow my-team` と、
 `connector "Join"` は `connector Join` と印字します。
 複数のラベルからなる名前（`connector I "" J`）は書かれたままにします。
 `direction` で終わる名前も書かれたままにします。
@@ -1240,8 +1239,9 @@ flow のタイトルと形のラベルも、例と同じく引用符つきで印
 コメント行の後など、行の最初の単位であるラベルは、
 mermaid.js がそこで文字列を拒否するので、書かれたままにします。
 mermaid.js は `A["x"]` を文字列、`A[x]` をテキストとして読み、
-Db の `labelType` は前者が `string`、後者が `text` ですが、描かれる図は同じです。
-（[Labels that are drawn the same](./compatibility.md#labels-that-are-drawn-the-same)）。
+Db の `labelType` は前者が `string`、後者が `text` ですが、
+描かれる図は同じです。
+（[同じに描かれるラベル](./compatibility.ja.md#同じに描かれるラベル)）。
 [fixture: quotes/flow-titles-in-quotes] [fixture: quotes/labels-in-quotes]
 [fixture: quotes/labels-after-a-comment-line]
 
