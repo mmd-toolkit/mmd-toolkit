@@ -1006,18 +1006,26 @@ HTML attribute, which mermaid.js keeps the same, are reported, as the document
 says, because the rules compare written values. A subgraph leaves out the
 members that a subgraph ended before it has, so a statement in a later subgraph
 with no link, class, or data block that says nothing new about a vertex written
-before, only its id, or a shape of the same name, property, label, and kind of
-label, is reported: the later subgraph does not hold the vertex (run: `A` in
-`subgraph a`, then `A` in `subgraph b`, leaves `A` in a). It is not reported
+before, only its id, or a shape of the same name, property, and label, with both
+labels markdown or neither, is reported: the later subgraph does not hold the
+vertex (run: `A` in `subgraph a`, then `A` in `subgraph b`, leaves `A` in a). A
+label in quotes and a label without them count as one here: after `A[x]`,
+`A["x"]` changes only the `labelType` of the Db, from `text` to `string`, a
+difference that AGENTS.md lists among the formatting exceptions as drawn the
+same, and the formatter prints a label in one of the two forms, so formatting
+would change what is reported if they counted apart; `A["x"]` is reported as
+`A[x]` is, and ``A["`**x**`"]`` is not, since a markdown label draws differently
+(run). A property is another matter: the formatter leaves it, so
+`A[|borders:lt|x]` after `A[x]` still says something new. It is not reported
 when the earlier subgraph is nested in the later one or has its id, where
 nothing is lost. Each vertex of such a statement counts apart: `A & B` in b,
 when a has only `A`, reports `A`, which says nothing new while `B` joins b, and
 `A & B --> C` reports neither (run). `A` in b when no earlier subgraph has it
 puts it in b, `A --> B` draws its edge, `A[y]`, `A:::c`, and after `A[x]` also
-`A["x"]`, ``A["`**x**`"]``, and `A[|borders:lt|x]` change the Db, and a bare `c`
-that only names an earlier subgraph writes a new vertex, so none of them is
-reported for this (run). It is the mistake of this rule, an id written again, in
-the same statement, as in block-no-duplicate-block; (2) none: no example of the
+``A["`**x**`"]`` and `A[|borders:lt|x]` change the Db, and a bare `c` that only
+names an earlier subgraph writes a new vertex, so none of them is reported for
+this (run). It is the mistake of this rule, an id written again, in the same
+statement, as in block-no-duplicate-block; (2) none: no example of the
 documentation writes it (run on `flowchart.md` and `swimlanes.md`); (3) "node
 label overwritten", "redefine node label", "node label", "subgraph node two
 subgraphs", "node multiple subgraphs", "subgraph duplicate node", "node belongs
@@ -1557,14 +1565,18 @@ duplicate, and shape: [#8443](https://github.com/mermaid-js/mermaid/pull/8443)
   agentflow-no-redefined-vertex also reports a vertex written again in a later
   flow, under the condition of flowchart-no-redefined-vertex (run), except a
   vertex of a `global` block, which stays at the top level: the documentation
-  gives that block for a node shared by flows. A connector that an earlier flow
-  holds counts as its member, and agentflow-no-redefined-connector reports in
-  the same way a declaration in a later flow with no metadata, with no title or
-  the title that the element has: `connector C` in `flow a`, then `connector C`
-  in `flow b`, leaves `C` in a and changes nothing (run). Another title is
-  reported for the title; a declaration after a bare `C` in an earlier flow
-  takes effect, since `C` becomes a connector, and `connector C` in b when no
-  earlier flow has it puts it in b (run).
+  gives that block for a node shared by flows. The condition reads the title of
+  a connector as not markdown, since mermaid.js records `text` for it however it
+  is written, and the markdown label and the property that a vertex statement
+  gave the element stay when the connector is declared again with a title (run).
+  A connector that an earlier flow holds counts as its member, and
+  agentflow-no-redefined-connector reports in the same way a declaration in a
+  later flow with no metadata, with no title or the title that the element has:
+  `connector C` in `flow a`, then `connector C` in `flow b`, leaves `C` in a and
+  changes nothing (run). Another title is reported for the title; a declaration
+  after a bare `C` in an earlier flow takes effect, since `C` becomes a
+  connector, and `connector C` in b when no earlier flow has it puts it in b
+  (run).
 - agentflow-no-redefined-flow: (1) flows of one id are merged, and a later title
   that is not empty replaces the earlier one, in the order in which the flows
   end (run); (2) none: a flow written again without a title to add members is
