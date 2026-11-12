@@ -65,7 +65,12 @@ export function printIshikawa(
               column,
             }
           : {
-              ...placeLeadingDirectives(source, line.leading, width, character),
+              ...placeLeadingDirectives(
+                source,
+                line.leading,
+                keepsWrittenIndentation ? line.column : width,
+                character,
+              ),
               column,
             },
       ]

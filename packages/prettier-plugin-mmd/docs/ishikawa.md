@@ -46,17 +46,35 @@ ishikawa
 ### Indentation
 
 Indentation is AST depth times one configured step: the header has depth zero,
-the root depth one, and each child one greater than its parent. Uniform
-increasing indentation reproduces the same ordered tree without importing
-written widths or discarded clamp/base numbers. [fixture:
-ishikawa/indentation/indent-depth] [fixture:
+the root depth one, and each child one greater than its parent. This holds
+where the written indentation shows the tree by nesting alone: each node is
+deeper than the nearest node before it that is less deep, up to the root, and a
+root on the line of the header has the whitespace between the header and its
+text as its indentation. Such an indentation reproduces the same ordered tree
+without importing written widths. [fixture:
 ishikawa/indentation/indent-flatten-unsafe] [fixture:
 ishikawa/indentation/indent-sibling-causes] [fixture:
-ishikawa/indentation/indent-unindented-causes] [fixture:
-ishikawa/indentation/indent-zero-unclamped-unsafe] Clamped, relative-zero and
-shallower causes become ordinary root children. [fixture:
+ishikawa/indentation/indent-zero-unclamped-unsafe]
+
+Where it does not, the nodes keep the whitespace written before them, and a root
+on the line of the header stays there: a cause that is clamped to the root, a
+cause at the column of the root, or of the whitespace after the header, a cause
+not deeper than the nearest node before it that it follows, and a root deeper
+than its causes. The specification reads them as children of the root, while
+11.13.0 draws the text printed by depth differently from the written text, and
+the six later versions that have the diagram (11.14.0, 11.15.0, 11.16.1,
+11.17.2, 12.0.0, and 12.3.0) draw both the same (see
+[Forms kept for versions of mermaid.js that count](./compatibility.md#forms-kept-for-versions-of-mermaidjs-that-count)). A node that follows
+a comment-ending separator on its line is left to the ordinary rules. [fixture:
 ishikawa/indentation/indent-clamped] [fixture:
-ishikawa/indentation/indent-relative-zero] Spaces use `Math.max(1, tabWidth)`
+ishikawa/indentation/indent-depth] [fixture:
+ishikawa/indentation/indent-relative-zero] [fixture:
+ishikawa/indentation/indent-unindented-causes] [fixture:
+ishikawa/root-indentation/root-deeper] [fixture:
+ishikawa/root-indentation/root-zero-alternative] [fixture:
+ishikawa/root-on-header-line/header-root-kept]
+
+Spaces use `Math.max(1, tabWidth)`
 characters per step, including `tabWidth: 0`; `useTabs` uses one tab per step. A
 positive minimum is necessary to preserve nesting. [fixture:
 ishikawa/indentation/indent-four] [fixture: ishikawa/indentation/indent-tabs]
@@ -70,6 +88,22 @@ ishikawa/indentation/zero-tabs-leading-directives]
 Input (escaped):
 
 ```json
+"ishikawa\nR\n A\n  B"
+```
+
+Output
+([indentation/indent-flatten-unsafe-output.mmd](../tests/fixtures/ishikawa/indentation/indent-flatten-unsafe-output.mmd)):
+
+```mmd
+ishikawa
+  R
+    A
+      B
+```
+
+Input (escaped):
+
+```json
 "ishikawa\nR\n    A\n B\n  C\n      D\n E"
 ```
 
@@ -78,12 +112,12 @@ Output
 
 ```mmd
 ishikawa
-  R
+R
     A
-    B
-    C
+ B
+  C
       D
-    E
+ E
 ```
 
 ### Root on header line

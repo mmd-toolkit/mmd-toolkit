@@ -51,16 +51,30 @@ ishikawa
 
 字下げは木の深さ × 設定の 1 段です。
 見出しは深さ 0、根は 1、子は親より 1 段深くします。
-深さごとの一様な字下げで、書かれた幅や捨てた clamp と base の数を持ち込まず、
-同じ順序付きの木を作るためです。 [fixture: ishikawa/indentation/indent-depth]
+これは、書かれた字下げが入れ子だけで木を示すときに当てはまります。
+どの節も、その前にあるそれより浅い最も近い節より深く、根まで同じで、
+見出しの行にある根は、見出しとテキストの間の空白を字下げとします。
+そうした字下げは、書かれた幅を持ち込まずに、同じ順序付きの木を作ります。
 [fixture: ishikawa/indentation/indent-flatten-unsafe]
 [fixture: ishikawa/indentation/indent-sibling-causes]
-[fixture: ishikawa/indentation/indent-unindented-causes]
 [fixture: ishikawa/indentation/indent-zero-unclamped-unsafe]
 
-clamp された原因、相対レベル 0 の原因、より浅い原因も、普通の根の子にします。
+そうでないときは、各ノードが書かれた前の空白を残し、見出しの行にある根もそこに残します。
+根に clamp された原因、根か見出しの後の空白と同じ桁の原因、
+前にあるノードより深くない原因、原因より深い根です。
+仕様はこれらを根の子として読みますが、
+11.13.0 は、深さで印字したテキストを書かれたテキストと違って描き、
+この図を持つ後の 6 つの版（11.14.0、11.15.0、11.16.1、11.17.2、12.0.0、12.3.0）は
+どちらも同じに描きます。
+詳しくは [対象にする版の mermaid.js のために残す形](./compatibility.ja.md#対象にする版の-mermaidjs-のために残す形) を参照してください。
+コメントの終わりの区切りの後にあるノードは、通常の規則に従います。
 [fixture: ishikawa/indentation/indent-clamped]
+[fixture: ishikawa/indentation/indent-depth]
 [fixture: ishikawa/indentation/indent-relative-zero]
+[fixture: ishikawa/indentation/indent-unindented-causes]
+[fixture: ishikawa/root-indentation/root-deeper]
+[fixture: ishikawa/root-indentation/root-zero-alternative]
+[fixture: ishikawa/root-on-header-line/header-root-kept]
 
 空白の 1 段は `Math.max(1, tabWidth)` 文字です。
 `tabWidth: 0` でも 1 文字以上にします。
@@ -78,6 +92,22 @@ clamp された原因、相対レベル 0 の原因、より浅い原因も、�
 入力（escape 表記）:
 
 ```json
+"ishikawa\nR\n A\n  B"
+```
+
+出力
+([indentation/indent-flatten-unsafe-output.mmd](../tests/fixtures/ishikawa/indentation/indent-flatten-unsafe-output.mmd)):
+
+```mmd
+ishikawa
+  R
+    A
+      B
+```
+
+入力（escape 表記）:
+
+```json
 "ishikawa\nR\n    A\n B\n  C\n      D\n E"
 ```
 
@@ -86,12 +116,12 @@ clamp された原因、相対レベル 0 の原因、より浅い原因も、�
 
 ```mmd
 ishikawa
-  R
+R
     A
-    B
-    C
+ B
+  C
       D
-    E
+ E
 ```
 
 ### Root on header line

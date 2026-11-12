@@ -5,6 +5,7 @@ import {
   lineStartOf,
 } from "./kept-lines.ts"
 import type { IshikawaLine } from "./ishikawa-layout.ts"
+import { indentationShowsTree } from "./ishikawa-layout.ts"
 import type { Source } from "./source.ts"
 import { findTokenStartingAt } from "./source.ts"
 
@@ -26,7 +27,15 @@ export function findIshikawaKeptLines(
     ),
   )
   const root = lines[0]
-  if (root?.keepsHeaderGroup === true) joined.add(headerLine)
+  if (
+    root?.keepsHeaderGroup === true ||
+    (root?.indentation === null && !indentationShowsTree(lines))
+  ) {
+    // A root that stands on the line of the header stays there where the
+    // indentation of the nodes is kept as written (docs/ishikawa.md,
+    // Indentation).
+    joined.add(headerLine)
+  }
   const verbatim = new Set(
     [...findLinesEndedBySemicolon(source)].filter((line) =>
       source.root.directives.some(

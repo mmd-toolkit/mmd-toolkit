@@ -30,6 +30,12 @@ export interface IshikawaLine {
    * a root that stands on the line of the header.
    */
   readonly indentation: string | null
+  /**
+   * The number of whitespace characters before the node on its physical line,
+   * also the ones after a directive, which mermaid.js removes first. For a
+   * root on the line of the header, the ones between the header and its text.
+   */
+  readonly column: number
   readonly separatorWidth: 0 | 1
   readonly leading: LeadingDirectives | null
   /** A root-touching directive keeps this line with the header. */
@@ -57,6 +63,12 @@ export function ishikawaLines(
     const indentation =
       start === headerEnd ? null : source.text.slice(start, content)
     let leading = findLeadingDirectives(source, content, textStart)
+    // A root on the line of the header has the whitespace between the header
+    // and its text as its indentation.
+    const column =
+      content -
+      start +
+      countWhitespaceOutside(source, content, textStart, leading.directives)
     let keepsHeaderGroup = false
     if (start === headerEnd) {
       // A header-attached prefix stays with the header. Once whitespace
@@ -83,6 +95,7 @@ export function ishikawaLines(
       range: [content, node.text.range[1]],
       depth,
       indentation,
+      column,
       separatorWidth: isCommentEnd(source, start) ? 1 : 0,
       leading: leading.directives.length === 0 ? null : leading,
       keepsHeaderGroup,
@@ -136,12 +149,16 @@ export function layoutIshikawaLine(
  * deeper than the node before it, or deeper by less than the nodes in
  * between, as other than the specification does (a node that clamps to the
  * root, or a root deeper than its causes), so the printer keeps the written
- * indentation then (docs/ishikawa.md, Indentation).
+ * indentation then (docs/ishikawa.md, Indentation). A node that follows a
+ * comment-ending separator on its line is left to the ordinary rules: the
+ * separator is a whitespace character in the count of one reading and not in
+ * the other.
  */
 export function indentationShowsTree(lines: readonly IshikawaLine[]): boolean {
+  if (lines.some((line) => line.separatorWidth !== 0)) return true
   const columns: number[] = []
   for (const line of lines) {
-    const column = line.indentation === null ? -1 : [...line.indentation].length
+    const { column } = line
     while (columns.length > 0 && columns[columns.length - 1] >= column) {
       columns.pop()
     }
@@ -149,4 +166,25 @@ export function indentationShowsTree(lines: readonly IshikawaLine[]): boolean {
     columns.push(column)
   }
   return true
+}
+
+/** The whitespace characters between two offsets that no directive covers. */
+function countWhitespaceOutside(
+  source: Source,
+  from: number,
+  to: number,
+  directives: readonly Range[],
+): number {
+  let count = 0
+  let at = from
+  for (const [start, end] of directives) {
+    for (let offset = at; offset < start; offset++) {
+      if (isWhitespace(source.text[offset])) count++
+    }
+    at = Math.max(at, end)
+  }
+  for (let offset = at; offset < to; offset++) {
+    if (isWhitespace(source.text[offset])) count++
+  }
+  return count
 }
