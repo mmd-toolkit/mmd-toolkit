@@ -444,7 +444,8 @@ build した parser が要り、プラグインや parser が変わったら、
   閉じていないブロックのように、テキストの終わりまで続くものは、
   開く所を報告します。
 - 規則は、
-  自動修正を rule-ideas の SKILL が決めたときだけ持ち（`meta.fixable`）、
+  自動修正を、
+  rule-ideas-suggestions の SKILL が決めたときだけ持ち（`meta.fixable`）、
   提案も、その SKILL が決めたときだけ持ちます（`meta.hasSuggestions`）。
   規則の文書は、オプションがあるかを言い、規則がオプションを持つかは、
   rule-ideas の SKILL が決めます。

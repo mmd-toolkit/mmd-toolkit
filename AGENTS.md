@@ -148,8 +148,9 @@ package.
 - `packages/eslint-plugin`: the linter, an ESLint language plugin. A rule
   reports a mistake of the author that mermaid.js accepts without a word and
   reads as something other than what was meant. Which rules exist is decided
-  with the skill `rule-ideas`; their documents follow the skill `eslint-plugin`,
-  and their implementation the skill `eslint-plugin-rules`.
+  with the skill `rule-ideas`, and the suggestions and the fix of a kept rule
+  with the skill `rule-ideas-suggestions`; their documents follow the skill
+  `eslint-plugin`, and their implementation the skill `eslint-plugin-rules`.
 - `packages/textmate-grammar`: the TextMate grammar that colors Mermaid text in
   editors and on sites (Shiki, VS Code, Monaco). Its rules come from the
   specification alone, never from another grammar of Mermaid. It follows a

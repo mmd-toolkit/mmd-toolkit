@@ -159,6 +159,7 @@ Mermaid 記法（`.mmd`）について、mermaid.js が持つ全図種を対象�
   規則が報告するのは、書き手の誤りのうち、mermaid.js が黙って受理し、
   意図と違うものとして読むものである。
   どの規則を持つかは SKILL `rule-ideas` で決め、
+  残した規則の提案と自動修正は SKILL `rule-ideas-suggestions` で決める。
   規則の文書は SKILL `eslint-plugin` に、
   規則の実装は SKILL `eslint-plugin-rules` に従う。
 - `packages/textmate-grammar`: エディターやサイト（Shiki、VS Code、
