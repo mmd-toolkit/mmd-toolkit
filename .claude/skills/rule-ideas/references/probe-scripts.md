@@ -13,12 +13,9 @@ Contents:
 
 ## Running mermaid.js and parse()
 
-Put the following script in a working directory outside the repository as
-`probe.mts` (`.mts` for its top-level `await`), with `<repo>` replaced by the
-absolute path of the root of the repository: a file outside the repository does
-not resolve package names. Node removes the type annotations before running it,
-so a change to it writes an import of types only as `import type` and uses no
-`enum`, `namespace`, or parameter properties.
+Put the following script as `probe.mts`, and set it up as
+[Scripts run outside the repository](../../conventions/SKILL.md#scripts-run-outside-the-repository)
+in the skill conventions says.
 
 ```ts
 import { readFileSync } from "node:fs"
@@ -79,8 +76,6 @@ for (const input of inputs) {
 }
 ```
 
-- Write the inputs to a JSON file with `json.dump` in Python or similar, not in
-  the shell, where `\n`, quotes, and whitespace at the end of a line go wrong.
 - Run `node <working directory>/probe.mts <cases.json>`, and read the output
   from a file.
 
@@ -88,9 +83,7 @@ for (const input of inputs) {
 
 Put the following script in the working directory as `format.mts`, replace
 `<repo>`, and run it like the probe; it imports the prettier that the plugin's
-package depends on. The plugin uses the built `packages/parser/lib`, so after
-the parser's source changes, run `pnpm --filter @mmd-toolkit/parser run build`
-first.
+package depends on.
 
 ```ts
 import { readFileSync } from "node:fs"

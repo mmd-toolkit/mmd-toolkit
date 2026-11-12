@@ -55,46 +55,23 @@ pin した mermaid.js の更新は SKILL
   `packages/prettier-plugin-mmd`）を直す必要が出たら、
   そのパッケージの SKILL の手順で直す。
   ほかのパッケージのテストから入力を取るときは、読むだけにする。
-- コミットと push は、求められたときだけ行う（AGENTS.md の「行動原則」）。
-  fixture の改名は、ディレクトリごと通常の `mv` で行う。
-  `git mv` はステージも変える。
-- ルートの共有ファイルは、すべてのパッケージに効く。
-  共有ファイルは、`package.json`、`pnpm-lock.yaml`、`eslint.config.mjs`、
-  `prettier.config.js`、`tsconfig.json`、`.github/workflows/`、
-  `scripts/` である。
-  必要なときだけ変え、
-  変えたらリポジトリ全体の検査（`pnpm run lint` と全体のテスト）を通す。
-- 確かめのためのスクリプトや一時ファイルは、
-  リポジトリの外の作業用のディレクトリに置く。
+- 作業ツリーは、
+  スキル conventions の
+  [作業ツリーの扱い](../conventions/SKILL.ja.md#作業ツリーの扱い)
+  のとおりに扱う。
+- fixture の改名は、ディレクトリごと通常の `mv` で行う。
 - fixture のディレクトリを消すことは取り消せない。
   消す必要があるときは、消すものの一覧とコマンドを示して決定を求める。
-- Write ツールとシェルのヒアドキュメントは、
-  `\u00a0` のようなエスケープを実際の文字に変えることがある。
-  ソースや文書を書いたら `node scripts/check-invisible-chars.mjs` を実行する。
 - `eslint --fix` と Prettier の結果は、SKILL `conventions` のとおり必ず読む。
-- 追跡されているファイルを一時的に書き換えて試さない。
-  途中でステージされることがある。
-  試すときは、リポジトリの外の写しで行う。
-- git のステージと、チェックアウトされたファイルを変えない（`git add`、
-  `git mv`、`stash`、`checkout`、`reset`）。
-- 止めてよいプロセスは、自分で起動したものだけで、
-  名前では止めない（`pkill -f vitest` は、
-  その機械で動くほかのテストの実行もすべて止める）。
 
 ## 4. 確かめ方（すべての作業で）
 
 - 主張は、それが誰のものでも、
   mermaid.js を実際に動かして確かめてから採り入れる。
-  リポジトリの外の作業用のディレクトリに、
   次のスクリプトを `probe.mts` として置き、
-  `<repo>` をリポジトリのルートの絶対パスに置き換えて、
-  `node <作業用のディレクトリ>/probe.mts` で動かす。
-  Node は TypeScript をそのまま、どのディレクトリからでも実行する。
-  拡張子を `.mts` にすると ES モジュールになり、top-level の `await` が使える。
-  ソースファイルは絶対パスで import する。
-  リポジトリの外のファイルからは、パッケージ名が解決されないため。
-  Node は型を取り除くだけなので、型だけの import は `import type` で書き、
-  `enum`、`namespace`、引数のプロパティは使わない。
+  スキル conventions の
+  [リポジトリの外で動かすスクリプト](../conventions/SKILL.ja.md#リポジトリの外で動かすスクリプト)
+  のとおりに準備して動かす。
 
   ```ts
   import { runMermaidWithEmbeddedData } from "<repo>/packages/tests/src/mermaid.ts"

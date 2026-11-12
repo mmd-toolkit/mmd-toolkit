@@ -1,17 +1,9 @@
 # スクリプト（spec）
 
-スクリプトはリポジトリの外の作業用のディレクトリに拡張子 `.mts` で置き、
-`node <ファイル>` で動かす。
-Node は TypeScript をそのまま、どのディレクトリからでも実行する。
-リポジトリの外からはパッケージ名が解決されないので、
-スクリプトはソースファイルを絶対パスで import する。
-下のスクリプトの `<repo>` は、リポジトリのルートの絶対パスに置き換える。
-Node は消せる型だけを取り除く。
-型だけの import は `import type` で書き、`enum`、`namespace`、
-引数のプロパティは使わない。
-mermaid.js の呼び出しは直列で遅い（1 件に数十ミリ秒）。
-入力が多いときはバックグラウンドで動かし、
-出力を作業用のディレクトリのファイルに書く。
+以下のスクリプトは、
+スキル conventions の
+[リポジトリの外で動かすスクリプト](../../conventions/SKILL.ja.md#リポジトリの外で動かすスクリプト)
+のとおりに準備して動かす。
 
 ## mermaid.js で入力を確かめる
 
@@ -34,10 +26,6 @@ for (const [key, input] of Object.entries(inputs)) {
   console.log(`${key}\t${JSON.stringify(input)}\n  ${result}`)
 }
 ```
-
-入力の JSON は、手で書かずにスクリプトで書く。
-行末の空白、タブ、`\r` が正確に入る。
-書いた後、`od -c` でバイトを確かめる。
 
 木と Db の導出（parser の側）と比べるときは、
 `<repo>/packages/parser/src/index.ts` の `parse` と、

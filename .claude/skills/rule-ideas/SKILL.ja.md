@@ -25,7 +25,6 @@ description:
   [references/recommended-decisions.ja.md](references/recommended-decisions.ja.md)、
   [references/suggestion-decisions.ja.md](../rule-ideas-suggestions/references/suggestion-decisions.ja.md)
   である。
-  作業用のスクリプトとその結果は、リポジトリの外の作業用ディレクトリに置く。
 - 決めた結果は、次の手順でリポジトリに残す。
   - 規則の文書（`packages/eslint-plugin/docs/rules/`）は eslint-plugin の
     SKILL、
@@ -42,12 +41,10 @@ description:
   未確認を示す。
   誤りと分かったら、その言葉で撤回する。
 - 根拠にする前に、いまの仕様を読む。
-- 作業ツリーをほかの作業と共有しているとき:
-  - ほかの作業者が編集中のファイルに触らない。
-    片方の変更が消え、編集が止まるのを待っても防げない。
-  - 削除や置き換えの前に、対象の中身を読む。
-  - git のステージを変えない。
-    git mv、git rm も使わない。
+- 作業ツリーは、
+  スキル conventions の
+  [作業ツリーの扱い](../conventions/SKILL.ja.md#作業ツリーの扱い)
+  のとおりに扱う。
 
 ## 2. 採否の基準と、その当て方
 

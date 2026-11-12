@@ -315,8 +315,9 @@ mermaid.js を動かし、テキストを parse し、整形するスクリプ�
 rule-ideas の SKILL の
 [references/probe-scripts.ja.md](../rule-ideas/references/probe-scripts.ja.md)
 にある。
-リポジトリの外に置き、`node <ファイル>` で動かす。
-入力が多いときは、バックグラウンドで動かし、出力をファイルに書く。
+スキル conventions の
+[リポジトリの外で動かすスクリプト](../conventions/SKILL.ja.md#リポジトリの外で動かすスクリプト)
+のとおりに準備して動かす。
 
 1. mermaid.js の読み方: 各例を `packages/tests/src/mermaid.ts` の
    `runMermaid(text)` に掛ける。
@@ -478,8 +479,10 @@ rule-ideas の SKILL の
 
 ## 8. 文書を消す、移す
 
-- `rm` と普通の `mv` を使う。
-  これに git（`git mv`、`git rm`、ステージの変更）を使わない。
+- ファイルの削除と移動は、
+  スキル conventions の
+  [作業ツリーの扱い](../conventions/SKILL.ja.md#作業ツリーの扱い)
+  のとおりに行う。
 - 文書を移すときは、規則の名前が変わる（6 節）。
   当たる図種を書いた規則の詳細の文と相対リンクを直し、`update` を実行する。
   題と index の行は `update` が書く。

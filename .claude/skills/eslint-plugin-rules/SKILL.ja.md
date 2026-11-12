@@ -81,13 +81,10 @@ SKILL [eslint-plugin](../eslint-plugin/SKILL.ja.md#方針と基準)
   にある。
   下のスクリプトは、テストと同じように 1 つの規則でテキストを lint し、
   fix と提案をそれぞれ当てる。
-  それらのスクリプトと同じく、
-  `<repo>` はリポジトリのルートの絶対パスに置き換える。
-  スクリプトはリポジトリの外に置き、`node <ファイル>` で動かす。
-  `tsx` は使わない。
-  mermaid.js の呼び出しは直列で遅い。
-  長くかかる確かめはバックグラウンドで動かし、出力をファイルに書き、
-  一部ではなく、件数を読む。
+  スクリプトは、
+  スキル conventions の
+  [リポジトリの外で動かすスクリプト](../conventions/SKILL.ja.md#リポジトリの外で動かすスクリプト)
+  のとおりに準備して動かす。
 
   ```ts
   import { Linter } from "<repo>/packages/eslint-plugin/node_modules/eslint/lib/api.js"
@@ -260,10 +257,10 @@ SKILL `conventions`
     `npx eslint packages/eslint-plugin` （パッケージの中で動かす ESLint は、
     ルートの設定を読まない）、`pnpm run lint:docs`、`pnpm run lint:chars`、
     `pnpm run format:check`、`npx tsc --noEmit`。
-- コミットも push も、
-  ステージの変更もしない（`git mv` と `git rm` はステージを変える）。
-  `rm` と `mv` をそのまま使う。
-  作業用のファイルはリポジトリの外に置く。
+- 作業ツリーは、
+  スキル conventions の
+  [作業ツリーの扱い](../conventions/SKILL.ja.md#作業ツリーの扱い)
+  のとおりに扱う。
 
 ## 6. 報告
 

@@ -53,41 +53,21 @@ this skill hold for their steps too.
   (`packages/spec`, `packages/parser`, `packages/prettier-plugin-mmd`) needs a
   change, make it by the steps of that package's skill. When taking inputs from
   another package's tests, only read them.
-- Commit and push only when asked to (the "Principles" of AGENTS.md). Rename a
-  fixture by moving its directory with a plain `mv`; `git mv` also changes the
-  staging.
-- The shared files at the root (`package.json`, `pnpm-lock.yaml`,
-  `eslint.config.mjs`, `prettier.config.js`, `tsconfig.json`,
-  `.github/workflows/`, `scripts/`) act on every package. Change them only when
-  needed, and after a change run the checks of the whole repository
-  (`pnpm run lint` and the whole test suite).
-- Put scripts and temporary files for checks in a working directory outside the
-  repository.
+- The working tree is treated as
+  [The working tree](../conventions/SKILL.md#the-working-tree) in the skill
+  conventions says.
+- Rename a fixture by moving its directory with a plain `mv`.
 - Removing fixture directories is irreversible. When something must be removed,
   show the list and the commands, and ask for a decision.
-- The Write tool and shell here-documents may turn an escape such as `\u00a0`
-  into the real character. After writing source or documents, run
-  `node scripts/check-invisible-chars.mjs`.
 - Read the result of `eslint --fix` and of Prettier, as the skill `conventions`
   says.
-- Do not edit a tracked file temporarily to try something (it may be staged in
-  the middle); try it in a copy outside the repository.
-- Do not change the git staging or the checked-out files (`git add`, `git mv`,
-  `stash`, `checkout`, `reset`).
-- Stop only the processes that you started, and not by name (`pkill -f vitest`
-  also stops every other run of the tests on the machine).
 
 ## 4. How to check (in every piece of work)
 
 - Before taking in a claim, whoever makes it, check it by running mermaid.js.
-  Put the following script in the working directory outside the repository as
-  `probe.mts`, replace `<repo>` with the absolute path of the root of the
-  repository, and run it with `node <working directory>/probe.mts` (Node runs
-  TypeScript as it is, from any directory). The extension `.mts` makes it an ES
-  module, where top-level `await` is allowed. Import the source file by its
-  absolute path: from outside the repository, the package names do not resolve.
-  Node only removes types, so write a type-only import as `import type`, and do
-  not use `enum`, `namespace` or parameter properties.
+  Put the following script as `probe.mts`, and set it up and run it as
+  [Scripts run outside the repository](../conventions/SKILL.md#scripts-run-outside-the-repository)
+  in the skill conventions says.
 
   ```ts
   import { runMermaidWithEmbeddedData } from "<repo>/packages/tests/src/mermaid.ts"

@@ -60,9 +60,9 @@ configuration keys or source paths are held.
 This procedure writes only to `packages/prettier-plugin-mmd`, `packages/mmdfmt`,
 and this SKILL. When another package needs a change, make it with that package's
 SKILL (a gap in the specification with the spec SKILL, a change of the tree with
-the parser SKILL, fixtures with the tests SKILL). Commit and push only when
-asked (AGENTS.md). Do not change the staging area, and do not use `git mv`. Move
-and delete files with `mv` and `rm`.
+the parser SKILL, fixtures with the tests SKILL). The working tree is treated as
+[The working tree](../conventions/SKILL.md#the-working-tree) in the skill
+conventions says.
 
 ## 2. When to start (input)
 
@@ -343,8 +343,6 @@ When the machine is under load or the workspace has unrelated failures:
   if it passes, the failure came from the load.
 - Workspace lint or tests may fail in a file outside this package. Do not touch
   files outside this package; say so in the results.
-- Stop a run by its process id. Do not `pkill` by name (that stops other
-  processes with the same name too).
 
 ## 7. Documents
 
@@ -411,16 +409,10 @@ When the machine is under load or the workspace has unrelated failures:
     tree's `comments` in a document node.
   - `embed` returns `null` for nodes it does not handle.
   - `printDocToString` follows `endOfLine`.
-- The Write tool and bash heredocs turn `\uXXXX` into the actual characters.
-  After writing, grep for non-ASCII characters and turn them back into escapes.
-- Do not change tracked files temporarily to check something. Do not put
-  temporary test files in the working tree (a test run picks them up). Put
-  checking scripts in a scratch directory, and import with absolute paths. A
-  script run with Node that imports the plugin's sources gets
-  `@mmd-toolkit/parser` and `@mmd-toolkit/tests` from their builds in `lib/`,
-  unlike the tests, so rebuild them first:
-  `pnpm --filter @mmd-toolkit/parser run build` and
-  `pnpm --filter @mmd-toolkit/tests run build`.
+- Treat the working tree, and write the scripts of a check, as the skill
+  conventions says
+  ([The working tree](../conventions/SKILL.md#the-working-tree),
+  [Scripts run outside the repository](../conventions/SKILL.md#scripts-run-outside-the-repository)).
 - Before making a document again from its draft, check that the draft is current
   (that the document has not been edited directly).
 

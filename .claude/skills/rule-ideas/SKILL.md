@@ -23,9 +23,7 @@ its scope, and whether `recommended` enables it. The adoption criteria are in
   ([references/adoption-decisions.md](references/adoption-decisions.md) and
   [references/recommended-decisions.md](references/recommended-decisions.md))
   and the record of the skill rule-ideas-suggestions
-  ([references/suggestion-decisions.md](../rule-ideas-suggestions/references/suggestion-decisions.md));
-  keep working scripts and their output in a working directory outside the
-  repository.
+  ([references/suggestion-decisions.md](../rule-ideas-suggestions/references/suggestion-decisions.md)).
 - The decisions are recorded in the repository by these procedures:
   - The rule documents (`packages/eslint-plugin/docs/rules/`) follow the
     eslint-plugin SKILL, and the rules (`packages/eslint-plugin/src/rules/`) the
@@ -40,11 +38,9 @@ its scope, and whether `recommended` enables it. The adoption criteria are in
 - Mark each claim as run (checked by running it), read (checked by reading), or
   unchecked. Withdraw a wrong claim in those words.
 - Read the current specification before relying on it.
-- When the working tree is shared with other work:
-  - Do not touch a file that someone else is editing: the changes of one of the
-    two are lost, also when you wait until the edits stop.
-  - Read the target before deleting or replacing it.
-  - Do not change the git staging area, and do not use git mv or git rm.
+- The working tree is treated as
+  [The working tree](../conventions/SKILL.md#the-working-tree) in the skill
+  conventions says.
 
 ## 2. The adoption criteria, and how to apply them
 

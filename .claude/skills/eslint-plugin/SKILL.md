@@ -297,9 +297,9 @@ How each part is written:
 
 The scripts that run mermaid.js, parse a text, and format it are in
 [references/probe-scripts.md](../rule-ideas/references/probe-scripts.md) of the
-rule-ideas skill. Put them outside the repository and run them with
-`node <file>`; with many inputs, run the script in the background and write its
-output to a file.
+rule-ideas skill. Set them up and run them as
+[Scripts run outside the repository](../conventions/SKILL.md#scripts-run-outside-the-repository)
+in the skill conventions says.
 
 1. What mermaid.js does: run every example through `runMermaid(text)` of
    `packages/tests/src/mermaid.ts`. Every example must be accepted (a rejected
@@ -442,8 +442,9 @@ The steps are in
 
 ## 8. Removing or moving a document
 
-- Use `rm` and plain `mv`. Do not use git for this (`git mv`, `git rm`, or any
-  change to the staging area).
+- Remove and move files as
+  [The working tree](../conventions/SKILL.md#the-working-tree) in the skill
+  conventions says.
 - When a document moves, its rule is renamed (section 6): change the sentence of
   Rule Details that names the diagram types and its relative links, and run
   `update`, which writes its title and its row in the index.

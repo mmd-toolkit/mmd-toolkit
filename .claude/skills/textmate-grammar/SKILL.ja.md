@@ -120,9 +120,9 @@ description:
 この作業が書くのは、`packages/textmate-grammar`、
 その changeset（`.changeset/`）、このスキルだけです。
 仕様の抜けは spec スキルで直し、推測で書いた規則で埋めません。
-commit と push は、頼まれたときだけ行います（AGENTS.md）。
-stage は変えません。
-`git mv`、`git stash`、`git checkout`、`git restore` は使いません。
+作業ツリーは、
+スキル conventions の
+[作業ツリーの扱い](../conventions/SKILL.ja.md#作業ツリーの扱い) のとおりに扱う。
 
 ## 2. ファイルの組み立て
 

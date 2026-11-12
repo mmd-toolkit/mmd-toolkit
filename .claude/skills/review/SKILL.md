@@ -227,6 +227,7 @@ Every review has a section on proper form, also when the behavior is right:
 - A copy of code that runs mermaid.js runs with the result store disabled
   (`MMD_TOOLKIT_MERMAID_CACHE=disabled`), unless the copy reads the tree's own
   `packages/tests` and so shares its key.
-- Stop only one's own tasks, by task id or PID; never a process by name.
+- Stop processes as [The working tree](../conventions/SKILL.md#the-working-tree)
+  in the skill conventions says.
 - Do not start a long run while another long run is going; the load multiplies
   both.

@@ -71,21 +71,14 @@ type.
   They do not write the other files of a fixture, the specification, or the
   other packages; when one of those must change, change it with the steps of
   that package's skill (spec, tests, prettier-plugin).
-- The configuration at the root (`package.json`, `pnpm-lock.yaml`,
-  `tsconfig.json`, `eslint.config.mjs`, `prettier.config.js`,
-  `vitest.config.ts`, `.github/workflows/`, `scripts/`) is used by every
-  package. Before changing it, check what the change does to the other packages.
-- Do not commit, change what is staged, or use `git mv`, `stash`, `checkout`, or
-  `reset`; move and delete files with plain `mv` and `rm`.
-- Do not edit a tracked file for a while to change how a check runs, such as the
-  number of inputs of a test. A run that is cut off never restores it, and the
-  file can then be committed in that state.
-- The Write tool and shell here-documents can turn an escape such as `\u00a0`
-  into the real character. The sources and tests of `packages/parser` are ASCII
-  only (every other character is written as an escape), except a readable
-  character in a comment of `src/code-points.ts` that shows which character a
-  constant is (`// À`). So after writing, check with these two commands, at the
-  root; the first may print only those comments, and the second nothing:
+- The working tree is treated as
+  [The working tree](../conventions/SKILL.md#the-working-tree) in the skill
+  conventions says.
+- The sources and tests of `packages/parser` are ASCII only (every other
+  character is written as an escape), except a readable character in a comment
+  of `src/code-points.ts` that shows which character a constant is (`// À`). So
+  after writing, check with these two commands, at the root; the first may print
+  only those comments, and the second nothing:
 
   ```sh
   grep -rnP '[^\x00-\x7e]' packages/parser/src packages/parser/tests packages/parser/tools
@@ -96,11 +89,6 @@ type.
   comments. Turn off a lint rule with `eslint-disable` only where that is right
   by the intent of the rule, with the reason
   (`eslint-comments/require-description` asks for it).
-- The tests are heavy. Under a high load (a load average of `uptime` above the
-  number of CPUs) a test file can time out. When one does, run that file alone
-  before judging. Run long checks in the background, with the output in a file
-  outside the repository. Stop only what you started, by its task id or process
-  id; never by name (`pkill -f vitest` also stops runs that you did not start).
 
 ## 3. How to check (in every piece of work)
 

@@ -74,19 +74,11 @@ pin した mermaid.js の更新を扱う。
   fixture のほかのファイル、仕様、ほかのパッケージは書かない。
   それらを直す必要が出たら、そのパッケージの SKILL の手順で直す。
   spec、tests、prettier-plugin の SKILL である。
-- ルートの設定は、すべてのパッケージが使う。
-  変える前に、ほかのパッケージへの影響を確かめる。
-  ルートの設定とは、`package.json`、`pnpm-lock.yaml`、`tsconfig.json`、
-  `eslint.config.mjs`、`prettier.config.js`、`vitest.config.ts`、
-  `.github/workflows/`、`scripts/` である。
-- コミット、ステージの変更、`git mv`、`stash`、`checkout`、`reset` はしない。
-  ファイルの移動と削除は、通常の `mv` と `rm` で行う。
-- 確かめ方を変えるために、
-  追跡されているファイルを一時的に書き換えない（テストの入力の件数など）。
-  途中で止まった実行は元に戻さず、その状態でコミットされることがある。
-- Write ツールとシェルのヒアドキュメントは、`\u00a0` のようなエスケープを、
-  実際の文字に変えることがある。
-  `packages/parser` のソースとテストは ASCII
+- 作業ツリーは、
+  スキル conventions の
+  [作業ツリーの扱い](../conventions/SKILL.ja.md#作業ツリーの扱い)
+  のとおりに扱う。
+- `packages/parser` のソースとテストは ASCII
   だけで書かれている（それ以外の文字は、すべてエスケープで書く）。
   例外は、`src/code-points.ts` のコメントで、
   定数がどの文字かを示す読める文字（`// À`）。
@@ -103,14 +95,6 @@ pin した mermaid.js の更新を扱う。
   lint の規則を `eslint-disable` で外すのは、
   規則の意図に照らして正しい場合だけにし、
   理由を書く（`eslint-comments/require-description` が求める）。
-- テストは重い。
-  負荷が高いと（`uptime` の load average が CPU の数を超えると）、
-  テストのファイルが時間切れになることがある。
-  時間切れが出たら、そのファイルだけを単独で走らせ直してから判断する。
-  時間の長い確かめは、バックグラウンドで動かし、
-  出力をリポジトリの外のファイルに書く。
-  自分が始めたものだけを、タスクの ID か PID で止める。
-  名前で止めない（`pkill -f vitest` は、自分が始めていない実行も止める）。
 
 ## 3. 確かめ方（すべての作業で）
 

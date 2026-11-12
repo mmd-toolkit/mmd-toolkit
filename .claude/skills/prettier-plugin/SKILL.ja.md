@@ -61,9 +61,9 @@ mermaid.js の綴りを使う。
 ほかのパッケージを直す必要が出たら、そのパッケージの SKILL の手順で直す。
 仕様の欠落は spec の SKILL、木の変更は parser の SKILL、
 fixture は tests の SKILL で直す。
-コミットとプッシュは、求められたときだけ行う（AGENTS.md）。
-ステージを変えず、`git mv` を使わない。
-ファイルの移動と削除は `mv` と `rm` で行う。
+作業ツリーは、
+スキル conventions の
+[作業ツリーの扱い](../conventions/SKILL.ja.md#作業ツリーの扱い) のとおりに扱う。
 
 ## 2. 始める条件（入力）
 
@@ -368,8 +368,6 @@ fixture は tests の SKILL で直す。
 - ワークスペースの lint やテストが、
   このパッケージの外のファイルで失敗することがある。
   このパッケージの外のファイルには触らず、結果にそう書く。
-- 実行は、プロセスの id で止める。
-  名前で `pkill` しない（同じ名前のほかのプロセスも止まる）。
 
 ## 7. 文書
 
@@ -431,17 +429,11 @@ fixture は tests の SKILL で直す。
     木の `comments` は文書のノードで包んで渡す。
   - `embed` は、扱わないノードで `null` を返す。
   - `printDocToString` は `endOfLine` を見る。
-- Write ツールと bash の heredoc は `\uXXXX` を実際の文字に変える。
-  書いた後に非 ASCII の文字を grep し、エスケープに直す。
-- 追跡されているファイルを、確かめのために一時的に書き換えない。
-  作業ツリーに一時のテストファイルを置かない。
-  テストの実行に入るからである。
-  確かめのスクリプトは作業用のディレクトリに置き、絶対パスで import する。
-  plugin のソースを import して Node で動かすスクリプトは、テストと違い、
-  `@mmd-toolkit/parser` と `@mmd-toolkit/tests` を `lib/` のビルドから読む。
-  そのため、
-  先に `pnpm --filter @mmd-toolkit/parser run build` と
-  `pnpm --filter @mmd-toolkit/tests run build` で作り直す。
+- 作業ツリーの扱いと、確かめのスクリプトの書き方は、
+  スキル conventions の
+  [作業ツリーの扱い](../conventions/SKILL.ja.md#作業ツリーの扱い) と
+  [リポジトリの外で動かすスクリプト](../conventions/SKILL.ja.md#リポジトリの外で動かすスクリプト)
+  のとおりにする。
 - 文書の例を下書きから作り直すときは、
   下書きが最新か（文書に直接の修正が入っていないか）を、作り直す前に確かめる。
 

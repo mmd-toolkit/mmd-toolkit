@@ -25,6 +25,9 @@
 3. 隠れた terminal を、flag と一致の終わりを含めて優先順に読む。
    共通の前処理と区別する。
    後の LF を取るか、境界として見るだけか、EOF で足した LF を取るかを調べる。
+   共通の YAML と DIRECTIVE の terminal がすることは、パーマリンクとともに、
+   [tests-diagram-type の Langium の図種の読み方](../../tests-diagram-type/references/reading-langium.ja.md)
+   の手順 3 にある。
    同じテキストを囲む先の terminal、隠れた形の失敗後のコメントへの切り替え、
    完全な単位間の一致と原子内の一致を調べる。
    まず、読み飛ばす形をそれぞれ木のどこに持てるかを問う。
@@ -47,6 +50,9 @@
    完全な消費とすべてのエラー検査までたどる。
    回復した木に付いたものを含め、
    字句エラーや構文エラーが結果の公開を妨げるか確かめる。
+   公開の parse wrapper がすることは、パーマリンクとともに、
+   [tests-diagram-type の Langium の図種の読み方](../../tests-diagram-type/references/reading-langium.ja.md)
+   の手順 5 にある。
    変換後の model の検証と Db による拒否も読む。
    回復した木があることや文法だけから、受理を判断しない。
    最後の option の選択後に到達する意味の検査を挙げ、その検査が使う状態の更新、

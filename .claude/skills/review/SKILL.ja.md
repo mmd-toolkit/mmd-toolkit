@@ -231,7 +231,9 @@ review はそれに気づかない。
 - mermaid.js を動かすコードの写しは、
   結果の貯蔵庫を切って動かす（`MMD_TOOLKIT_MERMAID_CACHE=disabled`）。
   写しが木の `packages/tests` そのものを読み、鍵を共有するときは除く。
-- 止めるのは自分のタスクだけで、タスク id か PID による。
-  名前でプロセスを止めない。
+- プロセスは、
+  スキル conventions の
+  [作業ツリーの扱い](../conventions/SKILL.ja.md#作業ツリーの扱い)
+  のとおりに止める。
 - ほかの長い実行が動いている間に長い実行を始めない。
   負荷は両方を遅くする。

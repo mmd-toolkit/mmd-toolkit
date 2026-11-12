@@ -14,14 +14,10 @@ SKILL eslint-plugin と eslint-plugin-rules も、これを動かす。
 
 ## mermaid.js と parse() で確かめる
 
-次のスクリプトを、
-リポジトリの外の作業用ディレクトリに `probe.mts` として置き（top-level の
-`await` を使うので `.mts`）、
-`<repo>` をリポジトリのルートの絶対パスに置き換える。
-リポジトリの外のファイルからはパッケージ名が解決されないからである。
-Node は型の注記を取り除いて実行するので、スクリプトを変えるときは、
-型だけの import を `import type` で書き、`enum`、`namespace`、
-引数のプロパティを使わない。
+次のスクリプトを `probe.mts` として置き、
+スキル conventions の
+[リポジトリの外で動かすスクリプト](../../conventions/SKILL.ja.md#リポジトリの外で動かすスクリプト)
+のとおりに準備する。
 
 ```ts
 import { readFileSync } from "node:fs"
@@ -82,9 +78,6 @@ for (const input of inputs) {
 }
 ```
 
-- 入力の一覧は、
-  シェルでなく Python などの `json.dump` で JSON のファイルにする。
-  シェルでは `\n`、引用符、行末の空白を誤る。
 - `node <作業用ディレクトリ>/probe.mts <cases.json>` で実行し、
   結果はファイルから読む。
 
@@ -93,9 +86,6 @@ for (const input of inputs) {
 次のスクリプトを作業用ディレクトリに `format.mts` として置き、
 `<repo>` を置き換えて、probe と同じように実行する。
 prettier は、プラグインのパッケージが依存として持つものを import する。
-プラグインはビルド済みの `packages/parser/lib` を使うので、
-parser のソースが変わったら、
-先に `pnpm --filter @mmd-toolkit/parser run build` を実行する。
 
 ```ts
 import { readFileSync } from "node:fs"

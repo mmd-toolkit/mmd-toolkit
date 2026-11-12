@@ -111,9 +111,9 @@ mermaid.js reaches it only through a change of the specification.
 
 This work writes only to `packages/textmate-grammar`, its changesets
 (`.changeset/`), and this skill. A gap in the specification is fixed with the
-spec skill, never by a rule that guesses. Commit and push only when asked
-(AGENTS.md). Do not change the staging area; do not use `git mv`, `git stash`,
-`git checkout` or `git restore`.
+spec skill, never by a rule that guesses. The working tree is treated as
+[The working tree](../conventions/SKILL.md#the-working-tree) in the skill
+conventions says.
 
 ## 2. How the files fit together
 

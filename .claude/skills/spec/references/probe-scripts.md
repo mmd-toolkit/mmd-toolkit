@@ -1,14 +1,8 @@
 # Scripts (spec)
 
-Put scripts in a working directory outside the repository, with the extension
-`.mts`, and run them with `node <file>`: Node runs TypeScript as it is, from any
-directory. Package names do not resolve from outside the repository, so a script
-imports the source files by absolute path; replace `<repo>` in the scripts below
-with the absolute path of the root of the repository. Node only removes types
-that can be erased: write a type-only import as `import type`, and use no
-`enum`, no `namespace`, and no parameter properties. Calls to mermaid.js are
-serial and slow (tens of milliseconds each). With many inputs, run in the
-background and write the output to a file in the working directory.
+Set up and run the scripts below as
+[Scripts run outside the repository](../../conventions/SKILL.md#scripts-run-outside-the-repository)
+in the skill conventions says.
 
 ## Checking inputs with mermaid.js
 
@@ -31,10 +25,6 @@ for (const [key, input] of Object.entries(inputs)) {
   console.log(`${key}\t${JSON.stringify(input)}\n  ${result}`)
 }
 ```
-
-Write the JSON of inputs with a script, not by hand, so that whitespace at the
-end of a line, tabs, and `\r` are exact. After writing, check the bytes with
-`od -c`.
 
 To compare with the tree and the Db derivation of the parser, load `parse` from
 `<repo>/packages/parser/src/index.ts` and `dbOf` from

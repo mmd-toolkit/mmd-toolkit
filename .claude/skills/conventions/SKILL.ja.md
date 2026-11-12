@@ -4,8 +4,9 @@ description: >-
   The conventions of this repository for writing code and Markdown documents in
   any package: regular expressions, comments and autofix output, invisible
   characters, links to mermaid.js source, the English and Japanese document
-  pairs, prose wrapping, Mermaid code blocks, and which tests to run after a
-  change. Use before writing or reviewing source code, tests, or a Markdown
+  pairs, prose wrapping, Mermaid code blocks, which tests to run after a change,
+  how the working tree is treated, and how scripts run outside the repository
+  are written. Use before writing or reviewing source code, tests, or a Markdown
   document here, before running the tests, and when a check of
   `pnpm run lint` or `pnpm run format:check` fails on one of these.
 ---
@@ -220,3 +221,79 @@ AGENTS.md は、それぞれを 1 行で述べ、守らせる検査の名前を�
 だから決まりは習慣を名指す。
 文を書き、その場合を挙げ、それぞれに fixture を与え、文から引き、
 review がもう一度その文を読む。
+
+## 作業ツリーの扱い
+
+次のことは、このリポジトリに書くどの作業にも当たる。
+commit と push は、ユーザーが言ったときだけ行う。
+このことは [AGENTS.md の「行動原則」](../../../AGENTS.ja.md#行動原則) にある。
+
+- git がステージするものと、チェックアウトされたファイルを変えない。
+  `git add`、`git mv`、`git rm`、`git stash`、`git checkout`、`git restore`、
+  `git reset` を使わない。
+  ファイルの移動、名前の変更、削除は、ただの `mv` と `rm` で行う。
+- 何かを試すためや、確かめの動き方を変えるため（テストの入力の件数など）に、
+  追跡されているファイルを一時的に書き換えない。
+  途中で止まった実行は元に戻さず、ファイルはその状態でステージされたり、
+  commit されたりしうる。
+  試すときは、リポジトリの外の写しで行う。
+- 確かめのためのスクリプト、一時ファイル、probe、ログは、
+  リポジトリの外の作業用のディレクトリに置く。
+  作業ツリーに置いた一時のテストファイルは、テストの実行が拾う。
+- 作業ツリーをほかの作業と共有しているときは、
+  ほかの誰かが編集しているファイルに触れない。
+  編集が止むまで待っても、どちらかの変更が失われる。
+  消すか置き換える前に、その対象を読む。
+- ルートの共有ファイル（`package.json`、`pnpm-lock.yaml`、`tsconfig.json`、
+  `eslint.config.mjs`、`prettier.config.js`、`vitest.config.ts`、
+  `.github/workflows/`、`scripts/`）は、すべてのパッケージに効く。
+  要るときだけ変える。
+  変える前に、ほかのパッケージに何が起きるかを確かめ、変えた後は、
+  リポジトリ全体の検査（`pnpm run lint` とテスト一式）を走らせる。
+- Write ツールとシェルのヒアドキュメントは、
+  `\u00a0` のようなエスケープを実際の文字に変えることがある。
+  ソースや文書を書いた後は、
+  `node scripts/check-invisible-chars.mjs`（`pnpm run lint:chars`）を走らせる。
+  ソースを ASCII で保つパッケージでは、ほかの文字も grep で探し、
+  エスケープに戻す。
+- 止めてよいプロセスは、自分で起動したものだけで、
+  タスクの id かプロセスの id で止める。
+  名前では止めない（`pkill -f vitest` は、
+  機械の上のほかのテストの実行もすべて止める）。
+- テストは重い。
+  負荷が高いとき（`uptime` の負荷平均が CPU の数を超えるとき）は、
+  テストのファイルが時間切れになることがある。
+  そうなったら、判断する前に、そのファイルだけを回す。
+  長い確かめはバックグラウンドで回し、出力はリポジトリの外のファイルに書く。
+
+## リポジトリの外で動かすスクリプト
+
+何かを確かめるスクリプト（mermaid.js、パーサー、フォーマッターの probe）は、
+次のように書いて動かす。
+
+- リポジトリの外の作業用のディレクトリに、
+  `.mts` のファイル（top-level の `await` を書ける ES モジュール）として置き、
+  `node <ファイル>` で動かす。
+  `tsx` では動かさない。
+  Node は TypeScript をそのまま、どのディレクトリからでも動かす。
+- リポジトリの外のファイルでは、パッケージ名が解決されない。
+  ソースのファイルは絶対パスで読み込む。
+  スキルのスクリプトは、リポジトリのルートを `<repo>` と書くので、
+  その絶対パスに置き換える。
+- Node は、消せる型だけを取り除く。
+  型だけの import は `import type` と書き、`enum`、`namespace`、
+  引数プロパティを使わない。
+- スクリプトの入力（JSON のファイル）は、手やシェルで書かず、
+  Python の `json.dump` のようなスクリプトで書く。
+  行末の空白、タブ、`\r`、引用符を正確にするためである。
+  書いた後は、`od -c` でバイトを確かめる。
+- mermaid.js の呼び出しは直列で遅い（1 回に数十ミリ秒）。
+  入力が多いときは、スクリプトをバックグラウンドで動かし、
+  出力を作業用のディレクトリのファイルに書き、一部だけでなく件数を読む。
+- スクリプトが、
+  フォーマッター（`packages/prettier-plugin-mmd`）のソースを読み込むときは、
+  テストと違い、`@mmd-toolkit/parser` と `@mmd-toolkit/tests` を、
+  `lib/` にある build から得る。
+  それらのソースが変わったら、
+  先に build し直す（`pnpm --filter @mmd-toolkit/parser run build`、
+  `pnpm --filter @mmd-toolkit/tests run build`）。

@@ -107,9 +107,9 @@ The steps of this SKILL and of the skill spec-diagram-type write
 When another package has to change (its documents, the parser, the formatter),
 change it with the steps of that package's SKILL.
 
-Make no git operation (commit, stage, unstage, `git mv`) unless the user says
-so. Do not edit a tracked file to try something; edit a copy outside the
-repository.
+The working tree is treated as
+[The working tree](../conventions/SKILL.md#the-working-tree) in the skill
+conventions says.
 
 ## 2. Tools
 
@@ -199,8 +199,6 @@ script.
 - Write a file only after all its replacements are done. When the script stops
   partway, check which files were written, and remove their part before running
   it again (do not add anything twice).
-- The Write tool and shell here-documents can turn `\uXXXX` into the actual
-  character; `pnpm run lint:chars` (2.4) finds it.
 - Enclose a code span whose example contains a backtick in double backticks
   (``A["`x`"]``). With single backticks, Prettier closes up the spaces around it
   and breaks it. After writing, look once at the rendered form.

@@ -81,12 +81,9 @@ after writing it.
 - The scripts that run mermaid.js and parse a text are in
   [references/probe-scripts.md](../rule-ideas/references/probe-scripts.md) of
   the rule-ideas skill. The script below lints a text with one rule, as the
-  tests do, and applies each fix and each suggestion; replace `<repo>` with the
-  absolute path of the root of the repository, as in those scripts. Put the
-  scripts outside the repository and run them with `node <file>`, never with
-  `tsx`. Calls to mermaid.js are serialized and slow: run a check that takes
-  long in the background, write its output to a file, and read the counts, not
-  only a sample.
+  tests do, and applies each fix and each suggestion; set it up and run it as
+  [Scripts run outside the repository](../conventions/SKILL.md#scripts-run-outside-the-repository)
+  in the skill conventions says.
 
   ```ts
   import { Linter } from "<repo>/packages/eslint-plugin/node_modules/eslint/lib/api.js"
@@ -253,8 +250,9 @@ done.
     run inside the package misses the configuration of the root),
     `pnpm run lint:docs`, `pnpm run lint:chars`, `pnpm run format:check`, and
     `npx tsc --noEmit`.
-- Do not commit, push, or change the staging area (`git mv` and `git rm` change
-  it). Use plain `rm` and `mv`. Put work files outside the repository.
+- The working tree is treated as
+  [The working tree](../conventions/SKILL.md#the-working-tree) in the skill
+  conventions says.
 
 ## 6. Report
 
