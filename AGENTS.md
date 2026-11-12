@@ -223,10 +223,11 @@ same change.
     does. Every sentence that defines a behavior (in the specification, in the
     parser's documents of tokens and positions, in the documents of
     `dbFromTree`, in the formatting rules) has a fixture for each case it
-    distinguishes, and for each other rule that meets it at the place it names
-    (a directive, an ignored `;`, a comment line, an empty line, a line
-    separator, an empty description block); the fixtures are written with the
-    sentence and checked against mermaid.js once. A review checks each sentence
-    for the cases it lacks. No input is chosen by a random source or by a number
-    (a seed, a count).
+    distinguishes, and for each other rule that meets it at the place it names:
+    a directive, an ignored `;`, a comment line, an empty line, a line separator
+    (U+2028, U+2029), an empty description block, the end of the text, and
+    whatever else the sentence's own words name. The fixtures are written with
+    the sentence and checked against mermaid.js once. A review checks each
+    sentence for the cases it lacks. No input is chosen by a random source or by
+    a number (a seed, a count).
 - Commit and push only when the user says so.
