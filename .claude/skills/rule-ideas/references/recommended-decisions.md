@@ -1285,7 +1285,7 @@ validator, which the public parse does not run.
   (`accDescr { first`, `%% note }`, and a frame give the description up to that
   `}`, and the frame is read as written; run); such a block is not reported,
   since nothing after it is taken, and the comment text kept in the description
-  is the defect in the table of [adoption.md](adoption.md).
+  is the defect in the table of [adoption-decisions.md](adoption-decisions.md).
 
 The tree view rules. Searches: "treeView", "treeview annotation", "treeview
 icon", "treeview accDescr", "treeview description", "treeview trailing

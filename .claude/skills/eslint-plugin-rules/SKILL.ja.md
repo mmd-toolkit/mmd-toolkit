@@ -53,7 +53,7 @@ SKILL [eslint-plugin](../eslint-plugin/SKILL.ja.md#方針と基準)
   主張は、報告する条件、しない条件、メッセージ、fix、提案である。
   規則の文書と、
   rule-ideas の SKILL の
-  [`.claude/skills/rule-ideas/records/recommended.ja.md`](../rule-ideas/records/recommended.ja.md)
+  [`.claude/skills/rule-ideas/references/recommended-decisions.ja.md`](../rule-ideas/references/recommended-decisions.ja.md)
   にある、
   [7 節](../rule-ideas/SKILL.ja.md#7-recommended-に入れるか)
   のその規則の記録の文ごとに、その文が分ける場合（誤りがどの文の中にあるか、
@@ -130,7 +130,7 @@ SKILL [eslint-plugin](../eslint-plugin/SKILL.ja.md#方針と基準)
   規則のテストは mermaid.js を動かさない。
   候補の条件が、
   rule-ideas の [8 節](../rule-ideas/SKILL.ja.md#8-提案)と
-  [`.claude/skills/rule-ideas/records/suggestions.ja.md`](../rule-ideas/records/suggestions.ja.md)
+  [`.claude/skills/rule-ideas/references/suggestion-decisions.ja.md`](../rule-ideas/references/suggestion-decisions.ja.md)
   の記録が与える文で書けないときは、その候補を rule-ideas に戻す。
   提案を出さないことは、普通の結論である。
   条件や確かめを足して候補を守ってはならず、結果を parse したり、

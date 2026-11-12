@@ -344,7 +344,8 @@ fixture は tests の SKILL で直す。
   そのため、ほかのファイルは `-t` なしで回す。
 
   ソースのファイルごとのテストのファイルは、
-  [tests-by-changed-file.ja.md](tests-by-changed-file.ja.md) にある。
+  [references/tests-by-changed-file.ja.md](references/tests-by-changed-file.ja.md)
+  にある。
   変えたファイルの名前で検索する。
   図種のファイルはその図種の名前で始まり（`flowchart*.ts`）、共有のモジュール、
   `error.ts`、`index.ts`、テストの補助は、その名前で挙げてある。

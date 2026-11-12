@@ -65,8 +65,8 @@ Japanese pair, the wrapping, the document checks) is in the skill `conventions`.
   - Where its steps go through sections of the entry skill, it lists the steps
     in their order and names each section by its title, with a link to its
     anchor.
-- Records of past decisions, in `<skill>/records/<name>.md`
-  (`rule-ideas/records/`): the decision on each rule and what was checked for
+- Records of past decisions, in `<skill>/references/<name>.md`
+  (`rule-ideas/references/`): the decision on each rule and what was checked for
   it. A record is searched, not read whole.
   - The section of the skill that a record belongs to says what to search for:
     the name of a rule, its `<diagram>-<name>` form where a note covers a group
@@ -78,9 +78,10 @@ Japanese pair, the wrapping, the document checks) is in the skill `conventions`.
     one rule) is no record: it is in the skill, also when it stands among the
     records.
 - A list that a piece of work searches for one entry, as the test files of each
-  source file of the formatter (`prettier-plugin/tests-by-changed-file.md`): a
-  file next to the `SKILL.md`, which says, where the list is used, what to
-  search it for. Like a record, it holds no rule that decides a new case.
+  source file of the formatter
+  (`prettier-plugin/references/tests-by-changed-file.md`): a file next to the
+  `SKILL.md`, which says, where the list is used, what to search it for. Like a
+  record, it holds no rule that decides a new case.
 - AGENTS.md names, in the item of each package, every skill of its work, as the
   item of `packages/eslint-plugin` names `rule-ideas`, `eslint-plugin`, and
   `eslint-plugin-rules`.
@@ -99,7 +100,7 @@ Split when:
 - a part that only one piece of work uses is a large share of what the other
   pieces of work load without using it; or
 - a skill holds records of past decisions in its body: they move to its
-  `records/`.
+  `references/`.
 
 Do not split when:
 

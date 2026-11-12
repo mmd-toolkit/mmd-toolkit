@@ -339,7 +339,7 @@ SKILL.ja.md の 8 節の「書き換えの種類」にある、その種類の�
   no-invalid-init-directive は、報告した `'` と `\'` のそれぞれに `\u0027` を、
   報告した `"` のそれぞれに `\"` を書き、
   報告した末尾の `,` を 1 つずつ消す（報告は
-  [recommended.ja.md](recommended.ja.md) のその注のとおり。
+  [recommended-decisions.ja.md](recommended-decisions.ja.md) のその注のとおり。
   その手順を Node で実行）。
   さらに、別の大文字小文字でだけ `init` か `initialize` で終わる名前を、
   引数がないか、語か、mermaid.js が読める JSON（構造の誤りも、末尾の `,` も、

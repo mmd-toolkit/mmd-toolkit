@@ -297,7 +297,7 @@ Rule Details は、文の後に、反するコードと従うコードの例を�
   つまり mermaid.js の文書の頁、issue、PR へのリンクの一覧だけを、
   散文なしで書く。
   mermaid.js のソースの permalink は規則の文書に置かず、rule-ideas の SKILL の、
-  `.claude/skills/rule-ideas/records/` にある規則の記録に置く。
+  `.claude/skills/rule-ideas/references/` にある規則の記録に置く。
 - どの文をどこに置くか。
   mermaid.js がすることについての文を、次に順に当てる。
   - 規則を使う人が書きうる形の中で、報告するものとしないものを分ける文は、
@@ -308,7 +308,7 @@ Rule Details は、文の後に、反するコードと従うコードの例を�
     数を mermaid.js が描く上限までで比べること、などである。
   - mermaid.js の文書の頁、issue、PR は、参考にリンクとして置く。
     ソースの permalink は、rule-ideas の SKILL の、
-    `.claude/skills/rule-ideas/records/` にある規則の記録に置く。
+    `.claude/skills/rule-ideas/references/` にある規則の記録に置く。
   - ほかは消す。
     報告する形としない形を分けない mermaid.js の仕組みの説明、
     例が示すことの言い直し、規則を使う人が書かない形についての文、
@@ -465,7 +465,7 @@ rule-ideas の SKILL（`.claude/skills/rule-ideas/SKILL.md`）の
   rule-ideas の SKILL の
   [7 節](../rule-ideas/SKILL.ja.md#7-recommended-に入れるか)の判定から設定する。
   判定は
-  [`.claude/skills/rule-ideas/records/recommended.ja.md`](../rule-ideas/records/recommended.ja.md)
+  [`.claude/skills/rule-ideas/references/recommended-decisions.ja.md`](../rule-ideas/references/recommended-decisions.ja.md)
   に記録してある。
   そこの判定がいったんの案なら、先に決め直す。
 - `pnpm --filter @mmd-toolkit/eslint-plugin run update` が書くもの:

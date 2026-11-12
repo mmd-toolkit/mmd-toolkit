@@ -18,10 +18,11 @@ its scope, and whether `recommended` enables it. The adoption criteria are in
 
 - Show the decisions in the form of section 6. This procedure writes no file of
   the repository except the records of sections 2, 7, and 8
-  ([records/adoption.md](records/adoption.md),
-  [records/recommended.md](records/recommended.md), and
-  [records/suggestions.md](records/suggestions.md)); keep working scripts and
-  their output in a working directory outside the repository.
+  ([references/adoption-decisions.md](references/adoption-decisions.md),
+  [references/recommended-decisions.md](references/recommended-decisions.md),
+  and [references/suggestion-decisions.md](references/suggestion-decisions.md));
+  keep working scripts and their output in a working directory outside the
+  repository.
 - The decisions are recorded in the repository by these procedures:
   - The rule documents (`packages/eslint-plugin/docs/rules/`) follow the
     eslint-plugin SKILL, and the rules (`packages/eslint-plugin/src/rules/`) the
@@ -67,8 +68,9 @@ its scope, and whether `recommended` enables it. The adoption criteria are in
     documentation of mermaid.js does not show is avoided, so a `stroke` written
     with whitespace before its `:` in a `linkStyle` or a `classDef` of a
     flowchart or an agentflow is reported also where nothing is lost now (the
-    notes of section 7, in [records/recommended.md](records/recommended.md)). A
-    `stroke` in a `style`, which styles no link, is not reported.
+    notes of section 7, in
+    [references/recommended-decisions.md](references/recommended-decisions.md)).
+    A `stroke` in a `style`, which styles no link, is not reported.
   - A rule for text that is obscure on purpose.
   - A rule for a defect of mermaid.js: the author writes correct, meaningful
     text and mermaid.js misreads it (`subgraph Front end`, CSS in a label). The
@@ -99,7 +101,8 @@ Read them before every decision.
 ### Examples of decisions (run)
 
 The decisions made so far, the rules kept and the candidates dropped, each with
-what mermaid does, are in [records/adoption.md](records/adoption.md). Before
+what mermaid does, are in
+[references/adoption-decisions.md](references/adoption-decisions.md). Before
 proposing a candidate, search that file for a past decision on it. Many rows
 start with the diagram type in words (`In a state diagram`, `In a user journey`,
 `In every diagram type`); the others name none, so search also for the keywords
@@ -447,12 +450,12 @@ Judge each rule against its document, case by case:
 4. Criterion 4: check that the document says what to write instead.
 
 The decision of each rule, and what was checked for each criterion, are in
-[records/recommended.md](records/recommended.md). To find the decision on a
-rule, search that file for the name of the rule. Read also the paragraph that
-opens the notes of its diagram type (`The XY chart rules.`), a note on a group
-of rules that names the rule as `<diagram>-<name>` with a list of diagram types,
-and the notes that a found note refers to
-(`the notes of the title rules above`).
+[references/recommended-decisions.md](references/recommended-decisions.md). To
+find the decision on a rule, search that file for the name of the rule. Read
+also the paragraph that opens the notes of its diagram type
+(`The XY chart rules.`), a note on a group of rules that names the rule as
+`<diagram>-<name>` with a list of diagram types, and the notes that a found note
+refers to (`the notes of the title rules above`).
 
 ## 8. Suggestions
 
@@ -496,12 +499,13 @@ the others.
    no-duplicate-description reports. The tests of a rule list the rules whose
    reports its suggestions may make visible in this way, each with the mistake
    it shows, and fail on a report of any other rule on a result. This section
-   and [records/suggestions.md](records/suggestions.md) record them and the
-   fixtures show them, not the rule document.
+   and [references/suggestion-decisions.md](references/suggestion-decisions.md)
+   record them and the fixtures show them, not the rule document.
 4. **How mermaid.js reads the result is known.** This section,
-   [records/suggestions.md](records/suggestions.md), and the fixtures hold that
-   reading, checked by running an example through mermaid.js (run). The message
-   of a suggestion says only the edit, as ``Remove this `accTitle` statement.``,
+   [references/suggestion-decisions.md](references/suggestion-decisions.md), and
+   the fixtures hold that reading, checked by running an example through
+   mermaid.js (run). The message of a suggestion says only the edit, as
+   ``Remove this `accTitle` statement.``,
    ``Remove the earlier `accTitle` statement.``, `Remove the empty block.`, and
    `Close the block at the end of the text.`, not the reading: the result shows
    it, and a clause on it would be false for the second of three statements that
@@ -524,7 +528,8 @@ that only withholds a fix may read other lines when no fix can create the form
 that it looks for: the fix then comes in a later pass. A report that offers a
 fix offers no suggestion of the same edit; where the conditions of a fix do not
 hold for a report, that report offers the edit as a suggestion. Which edits are
-fixes is listed under Fixes in [records/suggestions.md](records/suggestions.md).
+fixes is listed under Fixes in
+[references/suggestion-decisions.md](references/suggestion-decisions.md).
 
 A rule document says nothing about the suggestions in its body (the skill
 `eslint-plugin`,
@@ -533,7 +538,8 @@ notice says that the rule has suggestions or a fix, and the message of each says
 its edit. What each edit changes, the conditions under which it is offered, how
 mermaid.js reads the result, what it may make visible, why a rule offers none,
 and the permalinks to the source of mermaid.js that explain it are recorded in
-this section and in [records/suggestions.md](records/suggestions.md); the
+this section and in
+[references/suggestion-decisions.md](references/suggestion-decisions.md); the
 implementation follows this record, and the tests of the rule check it. The
 readings were checked on the invalid fixtures of each rule (run).
 
@@ -600,7 +606,8 @@ without a directive (offered).
   absent). A treeview annotation on a line of its own goes with its line, under
   the condition for statements. The results are the forms that the grammar of
   each list allows, so no other check is needed; gitgraph has the conditions
-  given with its rules in [records/suggestions.md](records/suggestions.md).
+  given with its rules in
+  [references/suggestion-decisions.md](references/suggestion-decisions.md).
   Fixtures: the first, a middle, and the last part of a list (each offered, with
   its separator); a part that is the only one of its statement (the statement
   goes, or none when the statement shares its line); a treeview annotation on
@@ -664,9 +671,9 @@ without a directive (offered).
 ### The rules
 
 The edits that each rule offers, and which edits are fixes, are in
-[records/suggestions.md](records/suggestions.md). To find those of a rule,
-search that file for the name of the rule and for its name as
-`<diagram>-<name>`, which an item on a group of rules uses with a list of
+[references/suggestion-decisions.md](references/suggestion-decisions.md). To
+find those of a rule, search that file for the name of the rule and for its name
+as `<diagram>-<name>`, which an item on a group of rules uses with a list of
 diagram types, and read the item of its diagram type (`- class:`).
 
 The rules whose report is an element, a label, or a name written again for

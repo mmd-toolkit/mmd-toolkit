@@ -57,7 +57,7 @@ after writing it.
   record of
   [section 7](../rule-ideas/SKILL.md#7-whether-recommended-enables-a-rule) of
   the rule-ideas skill
-  ([`.claude/skills/rule-ideas/records/recommended.md`](../rule-ideas/records/recommended.md)),
+  ([`.claude/skills/rule-ideas/references/recommended-decisions.md`](../rule-ideas/references/recommended-decisions.md)),
   list the cases that the sentence distinguishes (which statement the mistake
   stands in, where in a line, which separator or whitespace stands next to it,
   which context it is in) and the rules of the language that meet it at the
@@ -129,7 +129,7 @@ after writing it.
   mermaid.js. When the condition of a candidate cannot be written in the
   sentences that the record of rule-ideas
   ([section 8](../rule-ideas/SKILL.md#8-suggestions) and
-  [`.claude/skills/rule-ideas/records/suggestions.md`](../rule-ideas/records/suggestions.md))
+  [`.claude/skills/rule-ideas/references/suggestion-decisions.md`](../rule-ideas/references/suggestion-decisions.md))
   gives, the candidate goes back to rule-ideas, and offering no suggestion is an
   ordinary conclusion: do not add a condition or a check to keep it, and do not
   parse the result of an edit or decide it per known divergence.

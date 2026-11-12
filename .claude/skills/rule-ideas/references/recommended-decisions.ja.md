@@ -1542,7 +1542,7 @@ frame」「eventmodeling duplicate」。
   フレームは書いたとおりに読まれる。実行）。
   そうしたブロックは、後の何も取らないので報告しない。
   説明に残るコメントの文字は、
-  [adoption.ja.md](adoption.ja.md) の表の不具合である。
+  [adoption-decisions.ja.md](adoption-decisions.ja.md) の表の不具合である。
 
 ツリービューの規則。
 検索は「treeView」「treeview annotation」「treeview icon」「treeview

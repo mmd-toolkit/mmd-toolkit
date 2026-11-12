@@ -322,10 +322,10 @@ this package):
   other files without it.
 
   Which test files go with each source file is listed in
-  [tests-by-changed-file.md](tests-by-changed-file.md). Search it for the name
-  of the changed file: the files of a diagram type start with its name
-  (`flowchart*.ts`), and a shared module, `error.ts`, `index.ts`, and a test
-  helper are named as they are.
+  [references/tests-by-changed-file.md](references/tests-by-changed-file.md).
+  Search it for the name of the changed file: the files of a diagram type start
+  with its name (`flowchart*.ts`), and a shared module, `error.ts`, `index.ts`,
+  and a test helper are named as they are.
 
 - The test that reads documents: `tests/docs.test.ts` reads the rules documents
   (`docs/<diagram>.md`, English and Japanese), the READMEs, and the fixture

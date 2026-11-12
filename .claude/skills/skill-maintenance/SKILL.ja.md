@@ -69,7 +69,7 @@ description: >-
     そうした作業をするセッションが入口のスキルも読み込むようにする。
   - 手順が入口のスキルの節を通るところでは、手順を順に挙げ、それぞれの節を題と、
     そのアンカーへのリンクで示す。
-- `<skill>/records/<name>.md`（`rule-ideas/records/`）に置く過去の判断の記録:
+- `<skill>/references/<name>.md`（`rule-ideas/references/`）に置く過去の判断の記録:
   規則ごとの判断と、そのために確かめたこと。
   記録は、全体を読むのでなく検索する。
   - 記録が属するスキルの節は、何を検索するかを述べる: 規則の名前、
@@ -83,7 +83,7 @@ description: >-
 - 作業が 1 つの項目を引くために検索する一覧は、
   `SKILL.md`
   の隣のファイルに置く（整形ツールのソースのファイルごとのテストのファイル、
-  `prettier-plugin/tests-by-changed-file.md`）。
+  `prettier-plugin/references/tests-by-changed-file.md`）。
   `SKILL.md` は、その一覧を使う所で、何で検索するかを述べる。
   記録と同じく、新しい場合を決める規則は持たない。
 - AGENTS.md は、`packages/eslint-plugin` の項目が `rule-ideas`、
@@ -105,7 +105,7 @@ description: >-
 - 1 つの作業だけが使う部分を、そのスキルのほかの作業が使わずに読み込んでいて、
   それらが読み込むもののうち、小さな割合では済まないとき。
   または、
-- 過去の判断の記録をスキルの本文に持つとき: 記録はそのスキルの `records/`
+- 過去の判断の記録をスキルの本文に持つとき: 記録はそのスキルの `references/`
   に移す。
 
 次のときは分けない。

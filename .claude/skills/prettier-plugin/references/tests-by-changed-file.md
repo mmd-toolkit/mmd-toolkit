@@ -2,7 +2,8 @@
 
 The test files that a change to each source file of
 `packages/prettier-plugin-mmd` can affect. Section 6 of
-[SKILL.md](SKILL.md#6-tests) says how to run them, and how to search this list.
+[SKILL.md](../SKILL.md#6-tests) says how to run them, and how to search this
+list.
 
 - A shared module (`blocks.ts`, `atoms.ts`, `gap.ts`, `layout.ts`, `lines.ts`,
   `source.ts`, `kept-lines.ts`, `common-layout.ts`, `hidden-forms.ts`,

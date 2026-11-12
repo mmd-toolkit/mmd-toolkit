@@ -17,11 +17,12 @@ description:
 ## 1. この手順の範囲と進め方
 
 - 決めた結果は、6 節の形で示す。
-  この手順は、2 節、7 節、
-  8 節の記録（[records/adoption.ja.md](records/adoption.ja.md)、
-  [records/recommended.ja.md](records/recommended.ja.md)、
-  [records/suggestions.ja.md](records/suggestions.ja.md)）のほか、
-  リポジトリのファイルを書かない。
+  この手順は、2 節、7 節、8 節の記録のほか、リポジトリのファイルを書かない。
+  その記録は、
+  [references/adoption-decisions.ja.md](references/adoption-decisions.ja.md)、
+  [references/recommended-decisions.ja.md](references/recommended-decisions.ja.md)、
+  [references/suggestion-decisions.ja.md](references/suggestion-decisions.ja.md)
+  である。
   作業用のスクリプトとその結果は、リポジトリの外の作業用ディレクトリに置く。
 - 決めた結果は、次の手順でリポジトリに残す。
   - 規則の文書（`packages/eslint-plugin/docs/rules/`）は eslint-plugin の
@@ -75,7 +76,7 @@ description:
     そのため、flowchart と agentflow の `linkStyle` と `classDef` で、
     `:` の前に空白を置いて書いた `stroke` は、
     いま何も失われないところでも報告する（7 節の注、
-    [records/recommended.ja.md](records/recommended.ja.md)）。
+    [references/recommended-decisions.ja.md](references/recommended-decisions.ja.md)）。
     `style` はリンクにスタイルを付けないので、その `stroke` は報告しない。
   - 意図して分かりにくく書いたテキストのための規則。
   - mermaid.js の不具合のための規則。
@@ -113,7 +114,8 @@ description:
 ### 判断の例（【実行】）
 
 これまでの判断（残した規則と落とした候補、それぞれの mermaid の結果）は、
-[records/adoption.ja.md](records/adoption.ja.md) にある。
+[references/adoption-decisions.ja.md](references/adoption-decisions.ja.md)
+にある。
 候補を出す前に、そのファイルを検索して、その候補についての過去の判断を探す。
 多くの行は図種を言葉で書いて始まる（`state の図で、`、`journey の図で、`、
 `すべての図種で、`）。
@@ -465,7 +467,8 @@ mermaid.js はそのテキストも捨て（基準 1）、
 4. 基準 4: 何に書き換えればよいかを文書が書いているかを調べる。
 
 規則ごとの判定と、基準ごとに調べたことは、
-[records/recommended.ja.md](records/recommended.ja.md) にある。
+[references/recommended-decisions.ja.md](references/recommended-decisions.ja.md)
+にある。
 規則の判定は、そのファイルを規則の名前で検索して探す。
 その図種の注の初めの段落（`XY チャートの規則。`）、
 規則を `<diagram>-<名前>` の形で図種の一覧とともに挙げる、規則のまとまりの注、
@@ -514,11 +517,14 @@ mermaid.js はそのテキストも捨て（基準 1）、
    規則のテストは、その提案がこのように見えるようにしうる規則を、
    それぞれが示す誤りとともに挙げ、結果にほかの規則の報告があれば失敗する。
    それは規則の文書でなく、
-   この節と [records/suggestions.ja.md](records/suggestions.ja.md) が記録し、
-   fixture が示す。
+   この節と
+   [references/suggestion-decisions.ja.md](references/suggestion-decisions.ja.md)
+   が記録し、fixture が示す。
 4. **結果を mermaid.js がどう読むかが分かっている。**
-   この節と [records/suggestions.ja.md](records/suggestions.ja.md) の記録、
-   fixture がその読み方を持ち、例を mermaid.js で走らせて確かめる（実行）。
+   この節と
+   [references/suggestion-decisions.ja.md](references/suggestion-decisions.ja.md)
+   の記録、fixture がその読み方を持ち、
+   例を mermaid.js で走らせて確かめる（実行）。
    提案のメッセージは、
    読み方でなく書き換えだけを言う（``Remove this `accTitle` statement.``、
    ``Remove the earlier `accTitle` statement.``、`Remove the empty block.`、
@@ -550,7 +556,8 @@ mermaid.js がそれをつもりどおりに読む。
 自動修正を出す報告は、同じ書き換えの提案を出さない。
 自動修正の条件が成り立たない報告では、その書き換えを提案として出す。
 どの書き換えを自動修正にするかは、
-[records/suggestions.ja.md](records/suggestions.ja.md) の「自動修正」に挙げる。
+[references/suggestion-decisions.ja.md](references/suggestion-decisions.ja.md)
+の「自動修正」に挙げる。
 
 規則の文書の本文は、
 提案に触れない（SKILL `eslint-plugin` の
@@ -560,7 +567,9 @@ mermaid.js がそれをつもりどおりに読む。
 書き換えごとに何を変えるか、どんな条件で出すか、結果を mermaid.js がどう読むか、
 何を見えるようにしうるか、規則が提案を付けない理由、
 それを説明する mermaid.js のソースへのパーマリンクは、
-この節と [records/suggestions.ja.md](records/suggestions.ja.md) に記録する。
+この節と
+[references/suggestion-decisions.ja.md](references/suggestion-decisions.ja.md)
+に記録する。
 実装はこの記録に従い、規則のテストがそれを確かめる。
 読み方は、各規則の invalid の fixture で確かめた（実行）。
 
@@ -633,7 +642,7 @@ fixture: 上の sankey の値（出さない）と、
   それだけの行にある treeview の注釈は、文の条件で、行ごと消す。
   結果は、それぞれの一覧の文法が許す形なので、ほかの確かめは要らない。
   gitgraph には、
-  [records/suggestions.ja.md](records/suggestions.ja.md)
+  [references/suggestion-decisions.ja.md](references/suggestion-decisions.ja.md)
   のその規則に書く条件がある。
   fixture: 一覧の最初、途中、最後の部分（どれも区切りと一緒に出す）。
   文のただ 1 つの部分（文を消すか、文が行を分け合うなら出さない）。
@@ -702,7 +711,8 @@ fixture: 上の sankey の値（出さない）と、
 ### 規則
 
 規則ごとの書き換えと、どの書き換えを自動修正にするかは、
-[records/suggestions.ja.md](records/suggestions.ja.md) にある。
+[references/suggestion-decisions.ja.md](references/suggestion-decisions.ja.md)
+にある。
 規則のものは、そのファイルを規則の名前と、
 規則のまとまりの項目が図種の一覧とともに使う `<diagram>-<名前>` の形で検索し、
 その図種の項目（`- class:`）も読む。

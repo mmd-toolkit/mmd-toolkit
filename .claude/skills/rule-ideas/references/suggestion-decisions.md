@@ -275,11 +275,12 @@ nothing.
   directive gives back the lines that it took). no-invalid-init-directive writes
   `\u0027` for each reported `'` and `\'`, writes `\"` for each reported `"`,
   and removes each reported trailing comma (the reports in its notes in
-  [recommended.md](recommended.md); the steps run in Node); and writes in lower
-  case a name that ends with `init` or `initialize` only in another case when
-  the directive has no argument, a word argument, or JSON that mermaid.js reads,
-  with no error in its structure, no trailing comma, and no quote that breaks
-  it: mermaid.js reads no JSON from a missing or a word argument (read in
+  [recommended-decisions.md](recommended-decisions.md); the steps run in Node);
+  and writes in lower case a name that ends with `init` or `initialize` only in
+  another case when the directive has no argument, a word argument, or JSON that
+  mermaid.js reads, with no error in its structure, no trailing comma, and no
+  quote that breaks it: mermaid.js reads no JSON from a missing or a word
+  argument (read in
   [`directiveRegex`](https://github.com/mermaid-js/mermaid/blob/2086904e76c692331e34a45d7cc3bc30860d040e/packages/mermaid/src/diagram-api/regexes.ts#L12-L13)),
   and with broken JSON the lower case would leave mermaid.js reading no settings
   from the directive (run). no-duplicate-init-key removes this member or the one

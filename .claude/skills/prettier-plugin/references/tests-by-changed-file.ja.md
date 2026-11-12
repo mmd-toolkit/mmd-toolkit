@@ -3,7 +3,7 @@
 `packages/prettier-plugin-mmd` のソースのファイルごとに、
 その変更が影響しうるテストのファイル。
 回し方と、この一覧の引き方は、
-[SKILL.ja.md](SKILL.ja.md#6-テスト) の 6 節にある。
+[SKILL.ja.md](../SKILL.ja.md#6-テスト) の 6 節にある。
 
 - 共有のモジュール: `blocks.ts`、`atoms.ts`、`gap.ts`、`layout.ts`、`lines.ts`、
   `source.ts`、`kept-lines.ts`、`common-layout.ts`、`hidden-forms.ts`、

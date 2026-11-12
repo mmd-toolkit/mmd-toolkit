@@ -283,7 +283,7 @@ How each part is written:
   read, the pages of the documentation of mermaid.js, its issues, and its pull
   requests, without prose. A permalink to the source of mermaid.js is kept in
   the record of the rule in the rule-ideas skill
-  (`.claude/skills/rule-ideas/records/`), not in the rule document.
+  (`.claude/skills/rule-ideas/references/`), not in the rule document.
 - Which sentence goes where. A sentence about what mermaid.js does is checked
   against these cases, in this order:
   - It stays in Rule Details when it tells apart, among forms that the people
@@ -294,7 +294,8 @@ How each part is written:
     to the limit that mermaid.js draws.
   - A page of the documentation of mermaid.js, an issue, or a pull request goes
     to Further Reading, as a link; a permalink to its source goes to the record
-    of the rule in the rule-ideas skill (`.claude/skills/rule-ideas/records/`).
+    of the rule in the rule-ideas skill
+    (`.claude/skills/rule-ideas/references/`).
   - Anything else is removed: an explanation of how mermaid.js works that tells
     apart no reported forms, a restatement of what an example shows, a sentence
     about forms that the people who use the rule do not write, and the formula
@@ -435,7 +436,7 @@ renamed, and removed together, as the section "Rules and their documents" of
 - `recommended` in the rule file is set from the decision of
   [section 7](../rule-ideas/SKILL.md#7-whether-recommended-enables-a-rule) of
   the rule-ideas SKILL, recorded in
-  [`.claude/skills/rule-ideas/records/recommended.md`](../rule-ideas/records/recommended.md);
+  [`.claude/skills/rule-ideas/references/recommended-decisions.md`](../rule-ideas/references/recommended-decisions.md);
   a provisional decision there is made again first.
 - What `pnpm --filter @mmd-toolkit/eslint-plugin run update` writes: the title
   of every document; the notice of every document; the Resources section at the
