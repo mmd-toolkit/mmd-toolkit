@@ -402,21 +402,25 @@ export function findTitleText(
   )
 }
 
+/** What stands after the bare `:` of a statement (see `scanAfterBareColon`). */
+interface ColonRemainder {
+  readonly holdsWhitespace: boolean
+  /** Whether nothing but spaces and tabs stands there. */
+  readonly isPlainRun: boolean
+}
+
 /**
- * The end of the statement together with the whitespace character that stays
- * after its `:` when no text follows it, or null when no whitespace stays:
- * `A->>B: ` is a message with an empty text, while mermaid.js before 11.7.0
- * rejects `A->>B:`, since its text rule needs a character at least. The
- * whitespace is outside the range of the statement, and its first character
- * is printed as written, as in a task of a Gantt chart or a user journey
- * (docs/sequence.md, Colons). It stays only where the line ends after it or a
- * `;` follows, which the printer drops: a comment or a directive after it is
- * placed as under Directives.
+ * What stands after the bare `:` of a message, a note, or a `links`, `link`,
+ * `properties`, or `details` statement, whose text is empty: whether it holds
+ * whitespace, and whether it is a plain run of spaces and tabs. Null when the
+ * statement has a text, or when the line goes on after the whitespace and the
+ * directives with anything else (a comment is read as text, which is no
+ * whitespace to hold). The scan stops at the end of the line or at a `;`.
  */
-export function findColonWhitespaceEnd(
+function scanAfterBareColon(
   source: Source,
   statement: SequenceStatement,
-): number | null {
+): ColonRemainder | null {
   switch (statement.type) {
     case "SequenceMessageStatement":
     case "SequenceNoteStatement":
@@ -429,11 +433,69 @@ export function findColonWhitespaceEnd(
       return null
   }
   if (statement.text !== null) return null
-  const start = statement.range[1]
-  if (!isSpaceOrTab(source.text[start])) return null
-  let end = start
-  while (isSpaceOrTab(source.text[end])) end++
-  return isAtLineEnd(source, end) || source.text[end] === ";" ? start + 1 : null
+  let end = statement.range[1]
+  let holdsWhitespace = false
+  let isPlainRun = true
+  while (!isAtLineEnd(source, end) && source.text[end] !== ";") {
+    const character = source.text.charAt(end)
+    if (isWhitespace(character)) {
+      holdsWhitespace = true
+      if (!isSpaceOrTab(character)) isPlainRun = false
+      end++
+      continue
+    }
+    const at = end
+    const directive = findTriviaBetween(source, at, at + 1).find(
+      (item) => item.type === "Directive" && item.range[0] === at,
+    )
+    if (directive === undefined) return null
+    isPlainRun = false
+    end = directive.range[1]
+  }
+  return { holdsWhitespace, isPlainRun }
+}
+
+/**
+ * The end of the statement together with the whitespace character that stays
+ * after its `:` when no text follows it, or null when no whitespace stays:
+ * `A->>B: ` is a message with an empty text, while mermaid.js before 11.7.0
+ * rejects `A->>B:`, since its text rule needs a character at least. The
+ * whitespace is outside the range of the statement, and its first character
+ * is printed as written, as in a task of a Gantt chart or a user journey
+ * (docs/sequence.md, Colons). It stays only where nothing but spaces and tabs
+ * follows the `:` up to the end of the line or to a `;`, which the printer
+ * drops. Where a directive or another whitespace character follows the `:`,
+ * the line is printed as written (see `readsItsColonWhitespace`).
+ */
+export function findColonWhitespaceEnd(
+  source: Source,
+  statement: SequenceStatement,
+): number | null {
+  const remainder = scanAfterBareColon(source, statement)
+  return remainder !== null && remainder.holdsWhitespace && remainder.isPlainRun
+    ? statement.range[1] + 1
+    : null
+}
+
+/**
+ * Whether the line of a statement with an empty text is printed as written,
+ * because the whitespace after its `:` is read with what lies around it.
+ * mermaid.js before 11.7.0 needs a character after the `:`, takes a whitespace
+ * character of any kind for it, and removes a directive before it reads the
+ * line, so the whitespace after a directive is that character too. The printer
+ * drops whitespace at the end of a line and prints another whitespace
+ * character as a space, so where the whitespace after the `:` is more than a
+ * run of spaces and tabs, the line stays as it is, as in a task of a Gantt
+ * chart or a user journey (docs/sequence.md, Colons).
+ */
+export function readsItsColonWhitespace(
+  source: Source,
+  statement: SequenceStatement,
+): boolean {
+  const remainder = scanAfterBareColon(source, statement)
+  return (
+    remainder !== null && remainder.holdsWhitespace && !remainder.isPlainRun
+  )
 }
 
 /** The gap rules of a statement: around its arrow, its `,`, and its `:`. */

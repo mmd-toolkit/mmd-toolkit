@@ -647,18 +647,38 @@ which is placed as under [Directives](#directives). [fixture: colons/spaced]
 [fixture: colons/other-statements-spaced] [fixture:
 colons/directive-around-colon] mermaid.js reads the text without the whitespace
 at its ends. When the text is empty, nothing follows the `:`, except that one
-whitespace character stays, the first one as written, where whitespace followed
-the `:` and nothing else but a `;` that the printer drops: `A->>B: ` is a
-message with an empty text, while mermaid.js before 11.7.0 rejects `A->>B:` (the
-text rule of the grammar of 11.6.0 needs a character at least, and that of
-11.7.0 does not), and so it rejects a note and a `links`, `link`, `properties`,
-or `details` statement the same way. Parsed in Chromium, 9.0.0, 9.1.7, 9.4.3,
-10.3.1, 10.9.0, 11.0.0, and 11.4.1 rejected the text without that character, and
-11.12.3 to 12.3.0 read both. [fixture: colons/spaced] [fixture:
-colons/empty-text] [fixture: colons/whitespace-only-text] A line break after the
-`:` of `accTitle` is whitespace for mermaid.js, so the next line is its text: an
-`accTitle:` with no text cannot stand before another statement. [fixture:
-colons/acc-title-colon-line-break]
+whitespace character stays, the first one as written, where spaces and tabs only
+followed the `:` up to the end of the line or to a `;` that the printer drops:
+`A->>B: ` is a message with an empty text, while mermaid.js before 11.7.0
+rejects `A->>B:` (the text rule of the grammar of 11.6.0 needs a character at
+least, and that of 11.7.0 does not), and so it rejects a note and a `links`,
+`link`, `properties`, or `details` statement the same way. Parsed in Chromium,
+9.0.0, 9.1.7, 9.4.3, 10.3.1, 10.9.0, 11.0.0, and 11.4.1 rejected the text
+without that character, and 11.12.3 to 12.3.0 read both. [fixture:
+colons/spaced] [fixture: colons/empty-text] [fixture:
+colons/whitespace-only-text] [fixture: colons/semicolon-after-whitespace-kept]
+
+Where a directive or a whitespace character other than a space and a tab (a
+no-break space, an ideographic space, a byte order mark, U+2028, U+2029) follows
+the `:`, with whitespace in the place of the text, the line is printed as
+written, as the line of a task of a [Gantt chart](./gantt.md#task-data) or a
+[user journey](./journey.md#task-data) is. mermaid.js before 11.7.0 takes a
+whitespace character of any kind for the character that it needs after the `:`,
+and removes a directive before it reads the line, so the whitespace after a
+directive is that character. The printer drops whitespace at the end of a line
+and prints another whitespace character as a space, so it would leave `A->>B:`,
+which these versions reject: `A->>B:%%{init: {}}%%` followed by two spaces is
+read by 10.9.0, 11.0.0, and 11.4.1, and the text without the spaces is not.
+[fixture: colons/directive-then-whitespace-kept] [test: U+00A0 as the entire
+text of a message] [test: U+3000 as the entire text of a note] [test: U+FEFF as
+the entire text of a `links` statement] [test: U+2029 as the entire text of a
+`link` statement] [test: a space and U+2028 as the entire text of a message]
+[test: U+00A0 as the entire text of a message, with a `;` after it] [test:
+U+00A0 as the entire text of a message in a block]
+
+A line break after the `:` of `accTitle` is whitespace for mermaid.js, so the
+next line is its text: an `accTitle:` with no text cannot stand before another
+statement. [fixture: colons/acc-title-colon-line-break]
 
 Input
 ([colons/spaced-input.mmd](../tests/fixtures/sequence/colons/spaced-input.mmd)):

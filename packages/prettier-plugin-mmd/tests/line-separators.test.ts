@@ -309,6 +309,10 @@ const semicolonExamples: readonly (readonly [string, string, string])[] = [
  * - On a line that holds a `;` that the line rule ignores and, after it, a
  *   U+2028 or U+2029, the statements are printed as written (the spaces in
  *   `participant   Z` stay), up to the end of the line that the rule reads.
+ * - A statement with an empty text, whose `:` is followed by whitespace other
+ *   than spaces and tabs (U+00A0, U+3000, U+FEFF, U+2028, U+2029), is printed
+ *   as written: mermaid.js before 11.7.0 takes that whitespace for the text
+ *   that it needs after the `:`, and the printer would drop it.
  */
 const sequenceExamples: readonly (readonly [string, string, string])[] = [
   [
@@ -520,6 +524,41 @@ const sequenceExamples: readonly (readonly [string, string, string])[] = [
     "U+2028 and spaces at the end of a title",
     "sequenceDiagram\ntitle T  \u2028  \nA->>B: x\n",
     "sequenceDiagram\n  title T  \u2028\n  A ->> B: x\n",
+  ],
+  [
+    "U+00A0 as the entire text of a message",
+    "sequenceDiagram\nA->>B:\u00a0\n",
+    "sequenceDiagram\n  A->>B:\u00a0\n",
+  ],
+  [
+    "U+3000 as the entire text of a note",
+    "sequenceDiagram\nNote left of A:\u3000\n",
+    "sequenceDiagram\n  Note left of A:\u3000\n",
+  ],
+  [
+    "U+FEFF as the entire text of a `links` statement",
+    "sequenceDiagram\nlinks A:\ufeff\n",
+    "sequenceDiagram\n  links A:\ufeff\n",
+  ],
+  [
+    "U+2029 as the entire text of a `link` statement",
+    "sequenceDiagram\nlink A:\u2029\n",
+    "sequenceDiagram\n  link A:\u2029\n",
+  ],
+  [
+    "a space and U+2028 as the entire text of a message",
+    "sequenceDiagram\nA->>B: \u2028\n",
+    "sequenceDiagram\n  A->>B: \u2028\n",
+  ],
+  [
+    "U+00A0 as the entire text of a message, with a `;` after it",
+    "sequenceDiagram\nA->>B:\u00a0;C->>D:x\n",
+    "sequenceDiagram\n  A->>B:\u00a0;C->>D:x\n",
+  ],
+  [
+    "U+00A0 as the entire text of a message in a block",
+    "sequenceDiagram\nalt a\nA->>B:\u00a0\nend\n",
+    "sequenceDiagram\n  alt a\n    A->>B:\u00a0\n  end\n",
   ],
 ]
 

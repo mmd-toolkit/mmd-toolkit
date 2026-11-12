@@ -684,9 +684,8 @@ mermaid.js の文書の sequence 図の書き方と同じです。
 [fixture: colons/directive-around-colon]
 mermaid.js はテキストを両端の空白を除いて読みます。
 テキストが空のときは、`:` の後に何も置きません。
-ただし、`:` の後に空白だけがあり、その後に書かれているものが、
-整形ツールが落とす `;` だけのときは、
-空白を 1 文字（書かれた最初の文字）残します。
+ただし、`:` の後に、行末か整形ツールが落とす `;` まで、
+空白とタブだけがあるときは、空白を 1 文字（書かれた最初の文字）残します。
 `A->>B: ` はテキストが空のメッセージですが、
 11.7.0 より前の mermaid.js は `A->>B:` を拒否するからです（11.6.0
 の文法のテキストの規則は 1 文字以上を要り、11.7.0 の規則は要りません）。
@@ -695,6 +694,30 @@ Chromium で解析すると、9.0.0、9.1.7、9.4.3、10.3.1、10.9.0、11.0.0�
 その文字のない形を拒否し、11.12.3 から 12.3.0 までは両方を読みました。
 [fixture: colons/spaced] [fixture: colons/empty-text]
 [fixture: colons/whitespace-only-text]
+[fixture: colons/semicolon-after-whitespace-kept]
+
+`:` の後にディレクティブか、空白とタブ以外の空白文字（ノーブレークスペース、
+全角の空白、バイト順マーク、U+2028、U+2029）があり、
+テキストの位置に空白があるときは、その行を書かれたまま印字します。
+Gantt 図の[タスク](./gantt.ja.md#タスクのデータ)と、
+ユーザージャーニーの[タスク](./journey.ja.md#タスクのデータ)の行と同じです。
+11.7.0 より前の mermaid.js は、どの種類の空白文字でも、
+`:` の後に要る 1 文字として受け取ります。
+また、行を読む前にディレクティブを取り除くので、ディレクティブの後の空白が、
+その 1 文字になります。
+整形ツールは、行末の空白を落とし、ほかの空白文字を空白に替えるので、
+`A->>B:` が残り、これらの版は拒否します。
+`A->>B:%%{init: {}}%%` の後に空白が 2 つ続く形は、10.9.0、11.0.0、
+11.4.1 が読み、空白のない形は読みません。
+[fixture: colons/directive-then-whitespace-kept]
+[test: U+00A0 as the entire text of a message]
+[test: U+3000 as the entire text of a note]
+[test: U+FEFF as the entire text of a `links` statement]
+[test: U+2029 as the entire text of a `link` statement]
+[test: a space and U+2028 as the entire text of a message]
+[test: U+00A0 as the entire text of a message, with a `;` after it]
+[test: U+00A0 as the entire text of a message in a block]
+
 `accTitle` の `:` の後の改行は、mermaid.js にとって空白なので、
 次の行がそのテキストになります。
 テキストのない `accTitle:` は、ほかの文の前には書けません。
