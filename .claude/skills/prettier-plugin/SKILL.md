@@ -81,7 +81,10 @@ and delete files with `mv` and `rm`.
 
 ## 3. Deciding the formatting
 
-The rules of the printer follow the choices made item by item.
+The printed form of each item is decided by the rules of AGENTS.md, item 4, in
+their order: the whitespace beside a mark, then the form that the other diagram
+types print for the same kind of gap, then a spelling, then the output of the
+released version. No case is left to a judgment of which form reads better.
 
 1. From the grammar and the tree in the specification, list what formatting
    could change. The kinds of items flowchart has (as examples; a diagram type
@@ -95,17 +98,29 @@ The rules of the printer follow the choices made item by item.
    - where comments and directives stand
    - the YAML of the frontmatter
    - what is kept as written (what affects the Db)
-2. Give each item its choices, examples (before and after formatting), and a
-   recommendation with its reason. Say which choices change the Db.
-3. For each choice, run the text before and after formatting through mermaid.js,
-   and check that the Db does not change. Each case that the choice
-   distinguishes has a fixture (section 6). Attach the results, marked as
-   checked by running.
-4. Show the list, ask for a decision, and implement the choices that are made.
+2. For each item, find the rule of item 4 that decides its form, taking the
+   rules in their order, and the facts it needs: the whitespace that Prettier
+   prints beside the same kind of mark, the form that the other diagram types
+   print for the same gap, or the count of each form in the examples of the
+   documentation of the pinned mermaid.js. Write the candidate forms with
+   examples (before and after formatting), the rule that decides, and the facts.
+   Say which forms change the Db.
+3. For each candidate form, run the text before and after formatting through the
+   pinned mermaid.js and the versions that count (item 4), and check that the Db
+   does not change and that every one of those versions accepts the form and
+   draws it the same. A form that one of them rejects or draws differently is
+   not printed. Each case that the choice distinguishes has a fixture (section
+   6). Attach the results, marked as checked by running.
+4. Implement the forms that the rules decide. A form that would change what a
+   released version printed is shown to the user first, with the input, the old
+   and the new output, the rule that gives the new form, and a recommendation;
+   the user decides it.
 5. Write each decision into the rules document `docs/<diagram>.md` (English and
-   Japanese) as a rule with its reason. Write what is kept as written because it
-   affects the Db, and the differences from mermaid.js, into
-   `docs/compatibility.md` too. Keep decisions in these two documents only.
+   Japanese) as a rule with its reason. The reason is the rule of item 4 that
+   decided the form, with the facts that rule needs; "reads better" is no
+   reason. Write what is kept as written because it affects the Db, and the
+   differences from mermaid.js, into `docs/compatibility.md` too. Keep decisions
+   in these two documents only.
 
 ## 4. Writing the printer
 
