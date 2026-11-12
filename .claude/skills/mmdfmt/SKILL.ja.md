@@ -15,6 +15,8 @@ AGENTS.md とスキル [conventions](../conventions/SKILL.ja.md) にある。
 先に読む。
 図をどう印字するかはプラグインで決め、
 それはスキル [prettier-plugin](../prettier-plugin/SKILL.ja.md) で行う。
+プラグインのどの変更がツールの変更になるかと、その後に走らせるテストは、
+そのスキルの [12 節](../prettier-plugin/SKILL.ja.md#12-mmdfmt) にある。
 
 ## 方針と基準
 
@@ -78,12 +80,9 @@ AGENTS.md とスキル [conventions](../conventions/SKILL.ja.md) にある。
 [1 節](../prettier-plugin/SKILL.ja.md#1-最初に読むもの)
 の最後の段落のとおりに行う。
 
-## 5. prettier-plugin と共有する規則
+## 5. 確かめ方と出力
 
-スキル [prettier-plugin](../prettier-plugin/SKILL.ja.md) は、
-次のものをこのツールのためにも持つ。
+報告前の確認と報告は、
+スキル prettier-plugin の
+[8 節](../prettier-plugin/SKILL.ja.md#8-確かめ方と出力) のとおりに行い、
 パッケージは `packages/mmdfmt` とする。
-
-- プラグインのどの変更がツールの変更になるかと、
-  その後に走らせるテスト: [12 節](../prettier-plugin/SKILL.ja.md#12-mmdfmt)。
-- 報告前の確認と報告: [8 節](../prettier-plugin/SKILL.ja.md#8-確かめ方と出力)。

@@ -13,7 +13,9 @@ description: >-
 What holds for every package is in AGENTS.md and in the skill
 [conventions](../conventions/SKILL.md); read them first. How a diagram is
 printed is decided in the plugin, with the skill
-[prettier-plugin](../prettier-plugin/SKILL.md).
+[prettier-plugin](../prettier-plugin/SKILL.md). Which changes of the plugin are
+changes to the tool, and the tests to run after them, are in
+[section 12 of that skill](../prettier-plugin/SKILL.md#12-mmdfmt).
 
 ## Policies and criteria
 
@@ -75,12 +77,8 @@ paragraph of
 [section 1 of the skill prettier-plugin](../prettier-plugin/SKILL.md#1-what-to-read-first)
 says.
 
-## 5. Rules shared with prettier-plugin
+## 5. Checks and output
 
-The skill [prettier-plugin](../prettier-plugin/SKILL.md) holds these for this
-tool too, with `packages/mmdfmt` as the package:
-
-- which changes of the plugin are changes to the tool, and the tests to run
-  after them: [section 12](../prettier-plugin/SKILL.md#12-mmdfmt);
-- the checks before the report, and the report:
-  [section 8](../prettier-plugin/SKILL.md#8-checks-and-output).
+The checks before the report, and the report, are as
+[section 8 of the skill prettier-plugin](../prettier-plugin/SKILL.md#8-checks-and-output)
+says, with `packages/mmdfmt` as the package.
