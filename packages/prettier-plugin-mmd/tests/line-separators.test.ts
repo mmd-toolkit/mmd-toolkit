@@ -1148,7 +1148,7 @@ const ganttLineSeparatorExamples: readonly (readonly [
   [
     "U+2028 before the colon of a task",
     "gantt\na\u2028: 1d\n",
-    "gantt\n  a\u2028:1d\n",
+    "gantt\n  a\u2028 :1d\n",
   ],
   [
     "U+2028 between the items of task data",
@@ -1235,7 +1235,7 @@ const ganttWhitespaceExamples: readonly (readonly [string, string, string])[] =
     [
       "U+00A0 before the colon of a task",
       "gantt\na\u00a0: 1d\n",
-      "gantt\n  a\u00a0:1d\n",
+      "gantt\n  a\u00a0 :1d\n",
     ],
     [
       "U+FEFF before a task",

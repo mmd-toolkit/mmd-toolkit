@@ -860,7 +860,8 @@ gantt/settings/trailing-whitespace-by-setting]
 
 The name of a task of a Gantt chart ends with the whitespace between its text
 and the colon, which the printer sets one space after the longest name of a
-section whose names have padding, or of the sections that share a column (see
+section whose names have padding, or of the sections that share a column, and
+one space after a name that touches its colon (see
 [Task data](./gantt.md#task-data)). The rule of the grammar takes everything
 before the colon as the name, whitespace included
 ([`gantt.jison`](https://github.com/mermaid-js/mermaid/blob/2086904e76c692331e34a45d7cc3bc30860d040e/packages/mermaid/src/diagrams/gantt/parser/gantt.jison#L93)),
@@ -882,8 +883,12 @@ task. The same holds for the 36 of the 39 texts of the corpus, of the documents
 of mermaid.js, and of the fixtures of this package whose task names the printer
 changes that mermaid.js can draw (it stops with an error on the other three,
 before and after); the SVG of two of them differs also in the whitespace at the
-start of the title, which is the exception of the title above. Where the CSS of
-the chart keeps whitespace, the figure differs: with
+start of the title, which is the exception of the title above. Both texts of the
+15 fixtures that the space after a name that touches its colon added or changed
+were drawn with the 14 versions of mermaid.js from 9.0.0 to 12.3.0: the pixels
+were the same in 162 drawings and the SVG in 14, and mermaid.js stopped with an
+error, before and after, in the other 34. Where the CSS of the chart keeps
+whitespace, the figure differs: with
 `%%{init: {"themeCSS": ".taskText{white-space:pre}"}}%%` the pixels of the two
 texts differ. So the printer leaves the colons of a chart that holds
 `white-space` as written, as it leaves the runs of whitespace in the other texts
@@ -3475,11 +3480,17 @@ See [Task data](./gantt.md#task-data), [Settings](./gantt.md#settings),
   section than `section A`. The whitespace at the ends of `dateFormat`,
   `axisFormat`, and `title` is left out, and the whitespace between the text of
   a task description and its colon is set one space after the longest name of a
-  section whose names have padding, or of the sections that share a column (see
+  section whose names have padding, or of the sections that share a column, and
+  one space after a name that touches its colon (see
   [Texts after a keyword that are drawn the same](#texts-after-a-keyword-that-are-drawn-the-same)).
   [fixture: gantt/settings/trailing-whitespace-by-setting] [fixture:
   gantt/titles-and-sections/title-trailing-dropped-section-kept] [fixture:
   gantt/task-data/description-padding-tightened]
+- The colon of a task named by a word that starts a statement once whitespace
+  follows it: `title:T` is a task, and `title :T` is a title, so no whitespace
+  is set before the colon of such a task (see
+  [Task data](./gantt.md#task-data)). [fixture:
+  gantt/task-data/colon-touching-keyword-name-kept]
 - The whitespace inside an item of task data, the number of its items, and the
   case of its tags: `after   a1` is one item as written, `a : 1d,` has an empty
   item that `a : 1d` does not, and `Done` is no tag. [fixture:

@@ -295,11 +295,34 @@ gantt
 Db が持つので、`A task           :a1` と `A task :a1` は、
 mermaid.js にとって 2 つの説明です。
 その空白がどう書かれていても同じ図を描くので、次の段落のとおり、
-名前の後ろに桁そろえの空白がある所で、その空白を整えます。
+その空白を整えます。
 （[同じに描かれるキーワードの後のテキスト](./compatibility.ja.md#同じに描かれるキーワードの後のテキスト)）。
 [fixture: task-data/description-padding-tightened]
 `#` や `;` で始まる説明も、ほかと同じタスクのテキストです。
 [fixture: task-data/hash-and-semicolon-descriptions]
+
+名前がコロンに接しているタスクは、コロンの前に空白を 1 つ置いて印字します。
+`Short:a1` は `Short :a1` になります。
+mermaid.js の文書の例のタスク行はこの形で、44 行がコロンの前に空白を持ち、
+コロンに接する行はありません。
+この空白は、セクションのコロンをそろえるかどうか（後述）によらず置きます。
+コロンをそろえるセクションでは、その桁までの空白になり、
+それ以外のセクションでは空白 1 つです。
+そろえた行が `printWidth` より長くなるために残すセクションや、
+名前の中にタブがあるために残すセクションでも、同じです。
+空白 1 つはほかのコロンを動かさず、幅にも頼らないからです。
+空白とタブ以外の空白文字（U+00A0 など）で終わる名前も、
+コロンに接しているとみなし、その文字の後に空白を置きます。
+行の中で文の後にあり、プラグインが別の行に移すタスクも、ほかと同じに空白か、
+セクションの桁を得ます（`axisFormat %m #a: 1d` は 2 行になり、
+2 行目は `#a :1d` です）。 [fixture: task-data/colon-touching-name-spaced]
+[fixture: task-data/colon-touching-name-aligned-with-padded]
+[fixture: task-data/colon-touching-name-too-wide-kept]
+[fixture: task-data/colon-touching-name-tab-in-name]
+[fixture: task-data/colon-touching-name-style-rule-line]
+[fixture: task-data/colon-touching-task-after-hash-ended-statement]
+[test: U+2028 before the colon of a task]
+[test: U+00A0 before the colon of a task]
 
 セクションの名前のどれかで、
 コロンの前に桁そろえの空白（空白が 2 文字以上かタブ）があるときは、
@@ -340,12 +363,12 @@ mermaid.js にとって 2 つの説明です。
 
 次の場合は、コロンを動かしても読みやすくならないか、図が変わりうるので、
 コロンをその位置に残します。
-どの名前もコロンの前の空白が 1 つ以下か、空白がないセクションは、
-作者がテキストの隣にコロンを置いたので、そのままにします。
+どの名前もコロンの前の空白が 1 つ以下のセクションは、どのコロンも動かさず、
+コロンに接する名前にだけ上の空白 1 つを置きます。
 そろえた行が `printWidth` より長く、元の行よりも長くなるセクションは、
 長い名前 1 つがすべてのコロンを大きく右に押すので、そのままにします。
 `white-space` を含む図は、図の CSS が名前の末尾の空白を描くことがあり、
-そのときは空白で図が変わるので、そのままにします。
+そのときは空白で図が変わるので、コロンに接する名前も含めて、そのままにします。
 名前の中にタブがあるセクションも、そのままにします。
 タブはエディターの次のタブ位置まで進むので、
 Prettier が数えるどの幅でもコロンをそろえられないからです。
@@ -353,9 +376,11 @@ Prettier が数えるどの幅でもコロンをそろえられないからで�
 [fixture: task-data/colon-column-single-space-kept]
 [fixture: task-data/colon-column-too-wide-kept]
 [fixture: task-data/colon-column-white-space-kept]
+[fixture: task-data/colon-touching-name-white-space-kept]
 
-次の場合、タスクは書かれたまま残し、ほかのタスクがそろえる対象に含めないので、
-その空白はほかのタスクの桁を決めません。
+次の場合、タスクは書かれたまま残し、ほかのタスクがそろえる対象に含めず、
+コロンに接する名前にも空白を置きません。
+そのタスクの空白は、ほかのタスクの桁を決めません。
 
 - 行を書かれたまま印字するとき（[1 行に 1 文](#1-行に-1-文)と、
   後述する空白だけのデータを参照）。
@@ -363,7 +388,8 @@ Prettier が数えるどの幅でもコロンをそろえられないからで�
 - 名前がディレクティブで終わるとき。
   ディレクティブの隣の空白は、
   残すからです（[ディレクティブ](#ディレクティブ)を参照）。
-- 同じ行でその前に何かがあるとき。
+- 同じ行で、その前にコメントかディレクティブがあるとき、または、
+  まとまったままの行で、その前に文があるとき。
   名前が行頭から始まらず、ほかのタスクとコロンがそろわないからです。
   また、コロンの前の空白が、行の規則の読む所に入りえます。
   規則は、`style` や `classDef` の後の `:` より後ろの空白を読み、
@@ -374,6 +400,21 @@ Prettier が数えるどの幅でもコロンをそろえられないからで�
 [fixture: task-data/colon-column-task-over-lines-kept]
 [fixture: task-data/colon-column-task-after-statement-kept]
 [fixture: task-data/colon-column-name-ending-with-directive-kept]
+[fixture: task-data/colon-touching-name-line-as-written-kept]
+[fixture: task-data/colon-touching-task-over-lines-kept]
+[fixture: task-data/colon-touching-task-after-statement-kept]
+[fixture: task-data/colon-touching-task-after-directive-kept]
+[fixture: task-data/colon-touching-name-ending-with-directive-kept]
+
+空白が後ろに続くと文を始める語を名前とするタスクも、書かれたまま残し、
+ほかのタスクもそれにそろえません。
+`title:T` はタスクで、`title :T` は title なので、コロンの前に空白を置きません。
+語は、`dateFormat`、`axisFormat`、`tickInterval`、`includes`、`excludes`、
+`todayMarker`、`title`、`accDescription`、`section`、`click`、`call` で、
+大文字小文字は問いません。
+詳しくは、
+[キーワードとその後に続くもの](../../spec/docs/diagrams/gantt.ja.md#文の文脈)
+を参照してください。 [fixture: task-data/colon-touching-keyword-name-kept]
 
 行にあるそれ以外のものは、タスクをそろえる妨げになりません。
 名前の中やほかの場所にある `;`、コメント、名前の中やデータの後のディレクティブ、
@@ -482,6 +523,42 @@ gantt
   section D
     Alone :a6, after a5, 1d
     Brief :a7, after a6, 1d
+```
+
+入力
+([task-data/colon-touching-name-spaced-input.mmd](../tests/fixtures/gantt/task-data/colon-touching-name-spaced-input.mmd)):
+
+```mmd
+gantt
+Before:a0, 2014-01-01, 3d
+Before long name:a9, after a0, 1d
+  section A
+    Short:a1, 2014-01-01, 3d
+    A longer name:a2, after a1, 2d
+  section B
+    Compact:b1, 2014-01-01, 3d
+    Single space :b2, after b1, 2d
+    Without id:3d
+    First item empty:, 2014-02-01, 3d
+    日本語:b5, 2014-02-01, 3d
+```
+
+出力
+([task-data/colon-touching-name-spaced-output.mmd](../tests/fixtures/gantt/task-data/colon-touching-name-spaced-output.mmd)):
+
+```mmd
+gantt
+  Before :a0, 2014-01-01, 3d
+  Before long name :a9, after a0, 1d
+  section A
+    Short :a1, 2014-01-01, 3d
+    A longer name :a2, after a1, 2d
+  section B
+    Compact :b1, 2014-01-01, 3d
+    Single space :b2, after b1, 2d
+    Without id :3d
+    First item empty :, 2014-02-01, 3d
+    日本語 :b5, 2014-02-01, 3d
 ```
 
 入力

@@ -7,6 +7,7 @@ import type { KeptLines } from "./kept-lines.ts"
 import { isFirstOnItsLine, lineEndOf, lineStartOf } from "./kept-lines.ts"
 import type { Source } from "./source.ts"
 import { findTriviaBetween, isSpaceOrTab } from "./source.ts"
+import { toAsciiLowerCase } from "./layout.ts"
 import { holdsWhiteSpaceProperty } from "./text-runs.ts"
 
 /**
@@ -66,6 +67,13 @@ const alignmentBySource = new WeakMap<Source, Alignment>()
  * width that Prettier counts lines the colons up. The width of a name, and of
  * the rest of the line, is the width as written, so a directive in the name
  * counts, as the colons are lined up in the text.
+ *
+ * A name that touches its colon, and is in no section whose colons are moved,
+ * gets one space before it: its column is one more than the width of its name.
+ * Whether the colons of its section are lined up is no matter to it, since the
+ * space neither moves another colon nor depends on a width (docs/gantt.md, Task
+ * data). The tasks that are left as written, and the charts that hold
+ * `white-space`, are left out as above.
  */
 export function findColonColumns(
   source: Source,
@@ -109,8 +117,9 @@ export function findColonColumns(
       for (const row of section) columns.set(row.task, column)
   }
 
+  const taskSections = findSections(source, statements, kept)
   // The tasks before the first section stand one level less deep.
-  const [before, ...after] = findSections(source, statements, kept)
+  const [before, ...after] = withoutUnalignableSections(taskSections)
   if (isPadded(before)) align([before], longestName(before) + 1, 1)
   const padded = after.filter(isPadded)
   const grouped = new Set<readonly TaskRow[]>()
@@ -133,7 +142,15 @@ export function findColonColumns(
           )
     align(group, maxOf([...group, ...unchanged].map(longestName)) + 1, 2)
   }
+  for (const row of taskSections.flat())
+    if (touchesItsColon(row) && !columns.has(row.task))
+      columns.set(row.task, row.nameWidth + 1)
   return columns
+}
+
+/** Whether the colon of a row stands right after its name. */
+function touchesItsColon(row: TaskRow): boolean {
+  return row.column === row.nameWidth
 }
 
 /** Whether a name of a section has padding before its colon. */
@@ -160,10 +177,9 @@ function commonColumn(rows: readonly TaskRow[]): number | null {
 }
 
 /**
- * The task lines of the chart that the printer may align, in groups: the tasks
- * before the first `section`, and the tasks of each `section` (a group with no
- * such task, or where a name holds a tab, is left out, but the first group is
- * kept in its place, empty).
+ * The task lines of the chart that the printer may set the whitespace of, in
+ * groups: the tasks before the first `section`, and the tasks of each `section`
+ * (the first group is kept in its place, empty or not).
  */
 function findSections(
   source: Source,
@@ -174,32 +190,81 @@ function findSections(
   for (const statement of statements) {
     if (statement.type === "GanttSectionStatement") sections.push([])
     else if (statement.type === "GanttTaskStatement") {
-      const row = toRow(source, statement, kept.verbatim)
+      const row = toRow(source, statement, kept)
       if (row !== null) sections.at(-1)!.push(row)
     }
   }
   return sections
+}
+
+/**
+ * The groups whose colons the printer may line up: a group with no such task,
+ * or where a name holds a tab, is left out, but the first group is kept in its
+ * place, empty.
+ */
+function withoutUnalignableSections(
+  sections: readonly (readonly TaskRow[])[],
+): (readonly TaskRow[])[] {
+  return sections
     .map((rows) => (rows.some((row) => row.holdsTab) ? [] : rows))
     .filter((rows, index) => index === 0 || rows.length > 0)
+}
+
+/**
+ * The words that are keywords once whitespace follows them, so that a task
+ * named by one of them has its colon against it: `title:T` is a task, and
+ * `title :T` is a title (diagrams/gantt.md, Keywords and what follows them).
+ * The lexer reads them in any case, and `href`, which needs a `"` after it, is
+ * no such word.
+ */
+const keywordsThatTakeText: ReadonlySet<string> = new Set([
+  "dateformat",
+  "axisformat",
+  "tickinterval",
+  "includes",
+  "excludes",
+  "todaymarker",
+  "title",
+  "accdescription",
+  "section",
+  "click",
+  "call",
+])
+
+/**
+ * Whether a task starts its line once the chart is printed: no comment or
+ * directive stands before it on its line, and the statements before it, which
+ * are printed on lines of their own, are not on a line whose statements stay
+ * together (see `findGanttKeptLines`).
+ */
+function startsItsPrintedLine(
+  source: Source,
+  offset: number,
+  kept: KeptLines,
+): boolean {
+  const lineStart = lineStartOf(source, offset)
+  return (
+    findTriviaBetween(source, lineStart, offset).length === 0 &&
+    (isFirstOnItsLine(source, offset) || !kept.joined.has(lineStart))
+  )
 }
 
 /** The row of a task whose line the printer may align, or null. */
 function toRow(
   source: Source,
   task: GanttTaskStatement,
-  verbatimLines: ReadonlySet<number>,
+  kept: KeptLines,
 ): TaskRow | null {
-  const lineStart = lineStartOf(source, task.range[0])
-  // A task that does not start its line is left, since its name does not stand
-  // at the start of the line and its colon would not line up with the others.
-  // This also leaves the whitespace that the line rule of mermaid.js may read
-  // (docs/gantt.md, Task data): the rule reads the whitespace after a `:` that
-  // follows `style` or `classDef`, a name holds no `:`, so a `:` before the
-  // colon of the task can only come from a statement before it on the line.
+  // A task whose name does not stand at the start of its printed line is left,
+  // since its colon would not line up with the others. This also leaves the
+  // whitespace that the line rule of mermaid.js may read (docs/gantt.md, Task
+  // data): the rule reads the whitespace after a `:` that follows `style` or
+  // `classDef`, a name holds no `:`, so a `:` before the colon of the task can
+  // only come from a statement before it on the line.
   if (
-    verbatimLines.has(lineStart) ||
+    kept.verbatim.has(lineStartOf(source, task.range[0])) ||
     source.text.slice(task.range[0], task.range[1]).includes("\n") ||
-    !isFirstOnItsLine(source, task.range[0])
+    !startsItsPrintedLine(source, task.range[0], kept)
   )
     return null
   const [from, colon] = task.description.range
@@ -214,6 +279,12 @@ function toRow(
     findTriviaBetween(source, from, nameEnd).some(
       (item) => item.range[1] === nameEnd,
     )
+  )
+    return null
+  // The name is a word that starts a statement once whitespace follows it:
+  // with whitespace before the colon, the line would be that statement.
+  if (
+    keywordsThatTakeText.has(toAsciiLowerCase(source.text.slice(from, nameEnd)))
   )
     return null
   const padding = source.text.slice(nameEnd, colon)

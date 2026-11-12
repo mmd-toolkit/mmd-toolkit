@@ -291,10 +291,31 @@ is part of the description, which the Db keeps, so `A task           :a1` and
 `A task :a1` are two descriptions to mermaid.js. It draws the same chart
 whatever that whitespace is (see
 [Texts after a keyword that are drawn the same](./compatibility.md#texts-after-a-keyword-that-are-drawn-the-same)),
-so the printer sets it where a name has padding, as the next paragraphs say.
-[fixture: task-data/description-padding-tightened] A description that starts
-with `#` or `;` is a task text like any other. [fixture:
+so the printer sets it, as the next paragraphs say. [fixture:
+task-data/description-padding-tightened] A description that starts with `#` or
+`;` is a task text like any other. [fixture:
 task-data/hash-and-semicolon-descriptions]
+
+A name that touches its colon is printed with one space before it: `Short:a1` is
+printed `Short :a1`. The task lines of the examples in the documentation of
+mermaid.js are written so: 44 of them have whitespace before the colon, and none
+touches it. The space is set whether or not the printer lines up the colons of
+the section (see below). In a section whose colons it lines up, the name gets
+the space of its column, and in any other section one space, also in a section
+that is left as it is because its lines would be longer than `printWidth` or a
+name holds a tab: one space moves no other colon and depends on no width. A name
+that ends with a whitespace character other than a space and a tab, such as
+U+00A0, touches its colon too, and the space comes after that character. A task
+that follows a statement on its line, which the printer moves to a line of its
+own, gets the space, or the column of its section, like any other
+(`axisFormat %m #a: 1d` is printed on two lines, the second `#a :1d`). [fixture:
+task-data/colon-touching-name-spaced] [fixture:
+task-data/colon-touching-name-aligned-with-padded] [fixture:
+task-data/colon-touching-name-too-wide-kept] [fixture:
+task-data/colon-touching-name-tab-in-name] [fixture:
+task-data/colon-touching-name-style-rule-line] [fixture:
+task-data/colon-touching-task-after-hash-ended-statement] [test: U+2028 before
+the colon of a task] [test: U+00A0 before the colon of a task]
 
 Where a name of a section has padding before its colon (more than one whitespace
 character, or a tab), the printer puts the colons of the section one space after
@@ -330,35 +351,52 @@ task-data/colon-column-sections-and-preamble]
 
 The colons stay where they are in these cases, since moving them would not make
 the chart easier to read or could change the figure. A section in which no name
-has more than one space before its colon, or none, is left, because the author
-chose to put the colon next to the text. A section is left where the aligned
-lines would be longer than `printWidth` and longer than they are, since one long
-name would push every colon of the section far right. A chart that holds
-`white-space` is left, since the CSS of the chart may draw the whitespace at the
-end of a name, and the figure then depends on it. A section where a name holds a
-tab is left too, since a tab reaches the next tab stop of the editor, and no
-width that Prettier counts lines the colons up. [fixture:
-task-data/colon-column-tab-in-name-kept] [fixture:
+has more than one space before its colon is left: no colon moves, and a name
+that touches its colon gets its one space as above. A section is left where the
+aligned lines would be longer than `printWidth` and longer than they are, since
+one long name would push every colon of the section far right. A chart that
+holds `white-space` is left, with its names that touch their colons, since the
+CSS of the chart may draw the whitespace at the end of a name, and the figure
+then depends on it. A section where a name holds a tab is left too, since a tab
+reaches the next tab stop of the editor, and no width that Prettier counts lines
+the colons up. [fixture: task-data/colon-column-tab-in-name-kept] [fixture:
 task-data/colon-column-single-space-kept] [fixture:
 task-data/colon-column-too-wide-kept] [fixture:
-task-data/colon-column-white-space-kept]
+task-data/colon-column-white-space-kept] [fixture:
+task-data/colon-touching-name-white-space-kept]
 
 A task is left as written, and is not one of the tasks that the others are
-aligned with, so its padding does not decide their column, where the printer
-prints its line as written (see
-[Statements one per line](#statements-one-per-line) and the data of whitespace
-only below), where it runs over lines, where its name ends with a directive,
-since the whitespace beside a directive stays (see [Directives](#directives)),
-and where something stands before it on its line. Its name then does not start
-the line, so its colon would not line up with the others, and the whitespace
-before its colon could lie where the line rule of mermaid.js reads it: the rule
-reads the whitespace after a `:` that follows `style` or `classDef`, a name
-holds no `:`, and so a `:` before the colon of the task can only come from a
-statement before it (see [Statements one per line](#statements-one-per-line)).
-[fixture: task-data/colon-column-line-as-written-kept] [fixture:
+aligned with, so its padding does not decide their column, and a name that
+touches its colon gets no space, where the printer prints its line as written
+(see [Statements one per line](#statements-one-per-line) and the data of
+whitespace only below), where it runs over lines, where its name ends with a
+directive, since the whitespace beside a directive stays (see
+[Directives](#directives)), and where a comment or a directive, or a statement
+on a line that stays together, stands before it on its line. Its name then does
+not start the line, so its colon would not line up with the others, and the
+whitespace before its colon could lie where the line rule of mermaid.js reads
+it: the rule reads the whitespace after a `:` that follows `style` or
+`classDef`, a name holds no `:`, and so a `:` before the colon of the task can
+only come from a statement before it (see
+[Statements one per line](#statements-one-per-line)). [fixture:
+task-data/colon-column-line-as-written-kept] [fixture:
 task-data/colon-column-task-over-lines-kept] [fixture:
 task-data/colon-column-task-after-statement-kept] [fixture:
-task-data/colon-column-name-ending-with-directive-kept]
+task-data/colon-column-name-ending-with-directive-kept] [fixture:
+task-data/colon-touching-name-line-as-written-kept] [fixture:
+task-data/colon-touching-task-over-lines-kept] [fixture:
+task-data/colon-touching-task-after-statement-kept] [fixture:
+task-data/colon-touching-task-after-directive-kept] [fixture:
+task-data/colon-touching-name-ending-with-directive-kept]
+
+A task named by a word that starts a statement once whitespace follows it is
+left as written too, and the others are not aligned with it: `title:T` is a
+task, and `title :T` is a title, so no whitespace is set before its colon. The
+words are `dateFormat`, `axisFormat`, `tickInterval`, `includes`, `excludes`,
+`todayMarker`, `title`, `accDescription`, `section`, `click`, and `call`, in any
+case (see
+[Keywords and what follows them](../../spec/docs/diagrams/gantt.md#the-statement-context)).
+[fixture: task-data/colon-touching-keyword-name-kept]
 
 Nothing else on the line keeps a task from being aligned: a `;` in the name or
 elsewhere on the line, a comment, a directive inside the name or after the data,
@@ -460,6 +498,42 @@ gantt
   section D
     Alone :a6, after a5, 1d
     Brief :a7, after a6, 1d
+```
+
+Input
+([task-data/colon-touching-name-spaced-input.mmd](../tests/fixtures/gantt/task-data/colon-touching-name-spaced-input.mmd)):
+
+```mmd
+gantt
+Before:a0, 2014-01-01, 3d
+Before long name:a9, after a0, 1d
+  section A
+    Short:a1, 2014-01-01, 3d
+    A longer name:a2, after a1, 2d
+  section B
+    Compact:b1, 2014-01-01, 3d
+    Single space :b2, after b1, 2d
+    Without id:3d
+    First item empty:, 2014-02-01, 3d
+    日本語:b5, 2014-02-01, 3d
+```
+
+Output
+([task-data/colon-touching-name-spaced-output.mmd](../tests/fixtures/gantt/task-data/colon-touching-name-spaced-output.mmd)):
+
+```mmd
+gantt
+  Before :a0, 2014-01-01, 3d
+  Before long name :a9, after a0, 1d
+  section A
+    Short :a1, 2014-01-01, 3d
+    A longer name :a2, after a1, 2d
+  section B
+    Compact :b1, 2014-01-01, 3d
+    Single space :b2, after b1, 2d
+    Without id :3d
+    First item empty :, 2014-02-01, 3d
+    日本語 :b5, 2014-02-01, 3d
 ```
 
 Input
