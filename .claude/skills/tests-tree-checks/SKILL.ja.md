@@ -15,10 +15,6 @@ description: >-
 SKILL [tests](../tests/SKILL.ja.md) の 1〜4 の節（方針と基準、最初に読むもの、
 作業ツリーの扱い、確かめ方）は、この手順にも当たる。
 先に読む。
-記録した木のない図種とノードの型の一覧から図種を外し、`DIAGRAMS` に足すことは、
-SKILL tests-diagram-type の
-[2 節の手順 7](../tests-diagram-type/SKILL.ja.md#2-正規化関数) にある。
-parser が木を記録したとき（ここの手順 8）に行う。
 
 SKILL [tests-diagram-type](../tests-diagram-type/SKILL.ja.md) に従い、
 その図種の挙動を抽出して固定 fixture を集める。
@@ -104,3 +100,8 @@ SKILL [tests](../tests/SKILL.ja.md) の 5.1 に従う。
    エラー記録を飛ばすのは、その印の読みが拒否するときだけとする。
    SKILL [tests](../tests/SKILL.ja.md) の 5.1 と同じく、
    比較する Db のない場合を明示する。
+   builder が記録した木で走るように、図種は、
+   記録した木のない図種とノードの型の一覧から外れ、`DIAGRAMS` に入る。
+   その手順は、
+   SKILL tests-diagram-type の
+   [2 節の手順 7](../tests-diagram-type/SKILL.ja.md#2-正規化関数) にある。

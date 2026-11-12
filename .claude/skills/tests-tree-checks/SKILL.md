@@ -14,11 +14,7 @@ description: >-
 
 Sections 1 to 4 of the skill [tests](../tests/SKILL.md) (the policies and
 criteria, what to read first, the working tree, and how to check) hold for these
-steps too. Read them first. Step 7 of
-[The normalizer](../tests-diagram-type/SKILL.md#2-the-normalizer) in the skill
-tests-diagram-type says how the diagram type leaves the lists of the diagram
-types and the node types without recorded trees and enters `DIAGRAMS`, when the
-parser has recorded its trees (step 8 here).
+steps too. Read them first.
 
 Use the skill [tests-diagram-type](../tests-diagram-type/SKILL.md) to extract
 the diagram's behavior and collect its fixed fixtures. Before generating
@@ -100,4 +96,9 @@ extraction procedure, not the rules that the tree implements.
    records, and each mismatch with its input; do not silently skip a missing
    tree or an error record for an accepting reading, and skip an error record
    only when its mark's reading rejects. Keep cases without a comparison Db
-   explicit as in section 5.1 of the skill [tests](../tests/SKILL.md).
+   explicit as in section 5.1 of the skill [tests](../tests/SKILL.md). For the
+   builder to run on the recorded trees, the diagram type leaves the lists of
+   the diagram types and the node types without recorded trees and enters
+   `DIAGRAMS`, as step 7 of
+   [The normalizer](../tests-diagram-type/SKILL.md#2-the-normalizer) in the
+   skill tests-diagram-type says.
