@@ -92,14 +92,22 @@ How it reads:
   four with the one of what the user has to do.
 - Such a change names the released version that introduced the decision it
   overturns, where that was a later version than the first one of the package
-  (`which 0.5.0 began to print without the space`). It also adds one line to the
-  entry of that version in the `CHANGELOG.md` of the package, after the text of
-  the entry and indented like it: `Overturned in the next release: ` and one
-  sentence that says what is printed now. `version:ci` replaces
-  `the next release` with the version that Changesets gives the package
-  (`scripts/stamp-overturned-notes.mjs`), so the changeset has to bump the
-  package whose `CHANGELOG.md` holds the entry. Where a version that is already
-  released overturned the decision, the line names that version itself.
+  (`which 0.5.0 began to print without the space`).
+- Where that version changed what is printed and the new change turns the output
+  back the other way (0.5.0 took the space after a comma away, and the new
+  change puts it back), the change also adds one line to the entry of that
+  version in the `CHANGELOG.md` of the package, after the text of the entry and
+  indented like it: `Overturned in the next release: ` and one sentence that
+  says what is printed now. The line tells the reader of that entry that its
+  change was reversed; it is not a history of later changes. No line is added
+  where the earlier version left a form as written and the new change prints it
+  in one form, where the new change carries the earlier one further or replaces
+  its form with a third one, or to the entry of the first release, which changed
+  nothing. `version:ci` replaces `the next release` with the version that
+  Changesets gives the package (`scripts/stamp-overturned-notes.mjs`), so the
+  changeset has to bump the package whose `CHANGELOG.md` holds the entry. Where
+  a version that is already released reversed the change, the line names that
+  version itself.
 - Leave out the forms that stay as they were, the conditions of a rule, and the
   counts behind it, such as how many times the documentation of mermaid.js
   writes each form: the rules documents hold them. Name one only when a user

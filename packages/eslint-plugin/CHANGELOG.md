@@ -58,10 +58,6 @@
   data block and says nothing new about the vertex.
   `agentflow-no-redefined-connector` reports a connector declaration in a later
   flow in the same way.
-  
-  Overturned in the next release: `A["x"]` after `A[x]` in a later subgraph or
-  flow is now reported too, because a label in quotes and one without count as
-  the same.
 
 - [#51](https://github.com/mmd-toolkit/mmd-toolkit/pull/51) [`73b1cf3`](https://github.com/mmd-toolkit/mmd-toolkit/commit/73b1cf3c2e92370094cd7d8c5ab72a2a4f6348d1) Thanks [@ota-meshi](https://github.com/ota-meshi)! - Follow mermaid.js 12.3.0, which draws the agentflow shape `[/…/]` as its own
   shape instead of a rounded rectangle. `agentflow-no-redefined-vertex` now

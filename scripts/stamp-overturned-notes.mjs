@@ -1,6 +1,6 @@
-// Writes the released version into the notes that say where a decision of an
-// earlier release was overturned. A change that overturns such a decision adds
-// the line `Overturned in the next release: ...` to the entry of that release
+// Writes the released version into the notes that say where a change of an
+// earlier release was reversed. A change that reverses one adds the line
+// `Overturned in the next release: ...` to the entry of that release
 // in the CHANGELOG.md of the package (see the changesets skill). Which version
 // the next release is, is known only when Changesets has bumped the versions,
 // so `version:ci` runs this after `changeset version` and replaces the phrase
