@@ -214,6 +214,17 @@ documentation of the pinned mermaid.js use at least twice as often as any other:
 `CUSTOMER ||--o{ ORDER : places`. Where no form is used that often, or the
 examples use none, the spelling is kept as written.
 
+The name of a header with and without `-beta` is an exception. Where every
+version that counts and has the diagram type reads both names and draws them the
+same, the name without `-beta` is printed: `treemap-beta` is printed `treemap`,
+and `ishikawa-beta` is printed `ishikawa`. The shorter name reads better, and it
+is the name that stays: mermaid.js took the suffix away from the block, sankey,
+xychart, and packet diagrams when they became stable, and the examples of its
+documentation write these four without it since
+([The names of a header](./compatibility.md#the-names-of-a-header)).
+`block-beta` stays as written, because some of the versions that count read only
+that name.
+
 ## 4. Where none of these rules gives a form
 
 Where none of these rules gives a form, it is not decided yet which form reads
