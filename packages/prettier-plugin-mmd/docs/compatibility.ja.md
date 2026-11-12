@@ -1552,6 +1552,11 @@ mermaid.js は、トークンの異なる綴りの一部を同じトークンと
 ほかのどの形よりも 2 倍以上多く使う形にします。
 そのような形がないとき、または例がその綴りを使わないときは、
 書かれたまま残します。
+書かれたまま印字する行も、これらの綴りは 1 つの形にします。
+`NOTE OVER A:%%{init: {}}%%  ;ACTOR B` は `Note over A:%%{init: {}}%%  ;actor B`
+と印字し、空白と `;` とディレクティブはそのままです。
+[fixture: sequence/keyword-case/kept-line-in-one-form]
+[fixture: gantt/keyword-case/kept-line-in-one-form]
 例は、[構文のページ][mermaid-syntax-pages]の、
 `mermaid-example` と `mermaid` のコードブロック 541 個です。
 パーサーはそのうち 524 個を読み、以下の数はその 524 個で数えたものです。

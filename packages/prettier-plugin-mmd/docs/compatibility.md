@@ -1441,8 +1441,14 @@ form. For the whitespace between tokens the form is the one that the other
 diagram types print for the same kind of gap (see the sections above). For a
 spelling, the form is the one that the examples in the documentation of the
 pinned mermaid.js use at least twice as often as any other form. Where no form
-is used that often, or the examples use none, the spelling is kept as written.
-The examples are the 541 fenced `mermaid-example` and `mermaid` blocks of the
+is used that often, or the examples use none, the spelling is kept as written. A
+line that the printer prints as written has these spellings in one form too:
+`NOTE OVER A:%%{init: {}}%%  ;ACTOR B` is printed
+`Note over A:%%{init: {}}%%  ;actor B`, the whitespace, the `;`, and the
+directive staying as they are. [fixture:
+sequence/keyword-case/kept-line-in-one-form] [fixture:
+gantt/keyword-case/kept-line-in-one-form] The examples are the 541 fenced
+`mermaid-example` and `mermaid` blocks of the
 [syntax pages](https://github.com/mermaid-js/mermaid/tree/2086904e76c692331e34a45d7cc3bc30860d040e/packages/mermaid/src/docs/syntax);
 the parser reads 524 of them, and the counts below are counts in those 524.
 

@@ -40,6 +40,7 @@ import {
   isStructural,
   isWhitespace,
 } from "./source.ts"
+import { writtenWithRespellings } from "./spelling.ts"
 
 const { indent } = builders
 const { replaceEndOfLine } = utils
@@ -709,8 +710,9 @@ export function printBlock<Statement extends Positioned>(
   }
 
   /**
-   * Prints a stretch: as written when one of its lines is verbatim or it
-   * holds a statement that holds statements, and otherwise its statements
+   * Prints a stretch: as written, with the spellings that are printed in one
+   * form (see `writtenWithRespellings`), when one of its lines is verbatim or
+   * it holds a statement that holds statements, and otherwise its statements
    * as formatted, with what lies between them (see `printInlineGap`). After
    * its last statement, the whitespace that the planned indentation of the
    * next statement supplies (`relocatedWhitespace`) is not printed in either
@@ -730,7 +732,7 @@ export function printBlock<Statement extends Positioned>(
       const tailStart =
         last === undefined ? stretch.end : rules.printedEnd(last)
       const written =
-        source.text.slice(stretch.start, tailStart) +
+        writtenWithRespellings(source, stretch.start, tailStart) +
         withoutRelocatedWhitespace(
           source,
           tailStart,
