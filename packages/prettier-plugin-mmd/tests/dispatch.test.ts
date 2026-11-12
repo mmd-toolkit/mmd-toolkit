@@ -169,7 +169,7 @@ describe("dispatch to diagram printers", () => {
     )
     parse.mockImplementation(actual.parse)
     expect(await formatMermaid("venn-beta set A\n text item")).toBe(
-      "venn-beta\nset A\n  text item\n",
+      "venn-beta\n  set A\n    text item\n",
     )
   })
   it("registers the C4 body printer", async () => {

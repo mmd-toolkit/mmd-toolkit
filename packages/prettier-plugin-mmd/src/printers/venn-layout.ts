@@ -1,6 +1,6 @@
 import type { Node, Range, VennStatement } from "@mmd-toolkit/ast"
 import type { AtomLayout, GapRule } from "./atoms.ts"
-import { lineStartOf } from "./kept-lines.ts"
+import { holdsKeptSemicolon, lineEndOf, lineStartOf } from "./kept-lines.ts"
 import {
   collectAtoms,
   collectValueNodes,
@@ -101,6 +101,12 @@ function findWordRunEdits(source: Source, [start, end]: Range): TextEdit[] {
   return edits
 }
 
+/** Whether a unit starts with a text statement that has targets. */
+export function isExplicitVennTextUnit(unit: VennUnit): boolean {
+  const first = unit.statements[0]
+  return first.type === "VennTextStatement" && first.targets !== null
+}
+
 /** Only targetless text uses positive indentation; it is a marker, not nesting. */
 export function isImplicitVennUnit(unit: VennUnit): boolean {
   const first = unit.statements[0]
@@ -157,19 +163,48 @@ export function layoutVennStatement(
     )
   }
   const rules = new Map<number, GapRule>()
+  // The commas of a list of names touch the name before them and the one
+  // after them, and the colon and the comma of a style property are followed
+  // by one space, as in the other diagram types (docs/venn.md, Name lists and
+  // Style properties).
+  const propertyStart =
+    statement.type === "VennStyleStatement" && statement.properties.length > 0
+      ? statement.properties[0].range[0]
+      : Number.POSITIVE_INFINITY
+  const propertyValueStarts = new Set(
+    statement.type === "VennStyleStatement"
+      ? statement.properties.map((property) => property.value.range[0])
+      : [],
+  )
+  // A `;` on the line is read by the line rule of mermaid.js, which ignores
+  // it or not by whether whitespace lies between a `:` and a `#`: the gap
+  // after the colon of a property keeps whether it holds whitespace
+  // (docs/venn.md, Style properties and Line rule and kept lines).
+  const keepsColonGap = holdsKeptSemicolon(
+    source,
+    start,
+    lineEndOf(source, start),
+  )
   for (let index = 1; index < atoms.length; index++) {
     const previous = atoms[index - 1]
     const atom = atoms[index]
     const before = source.text.slice(previous.start, previous.end)
     const text = source.text.slice(atom.start, atom.end)
+    const afterNameComma = before === "," && atom.start < propertyStart
+    const afterPropertyColon = propertyValueStarts.has(atom.start)
     rules.set(
       atom.start,
-      text === "," ||
-        text === ":" ||
-        before === ":" ||
-        ("label" in statement && atom.start === statement.label?.range[0])
-        ? "none"
-        : "space",
+      afterPropertyColon
+        ? keepsColonGap && atom.start === previous.end
+          ? "none"
+          : "space"
+        : text === "," ||
+            text === ":" ||
+            before === ":" ||
+            afterNameComma ||
+            ("label" in statement && atom.start === statement.label?.range[0])
+          ? "none"
+          : "space",
     )
   }
   return {

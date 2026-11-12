@@ -4089,12 +4089,13 @@ c4/trailing-whitespace/semicolon-line] [test: c4: ls-line-rule-segments]
 
 ## Venn implicit text and textual line rules
 
-Venn's body is flat: only targetless text is indented, since positive
-indentation selects implicit text while its mode is enabled. Declarations retain
-same-line style, explicit text and title followers so splitting cannot clear
-that mode. Leading directives keep the positive/zero logical marker;
-diagram-comment gaps preserve the empty versus whitespace-only line boundary
-before `%%{ }%%`. See the [Venn rules](./venn.md).
+Venn's body is one step deep, and targetless text one step deeper: positive
+indentation selects implicit text while its mode is enabled, while explicit text
+stands at the level of the header, since indenting it there can make it implicit
+text. Declarations retain same-line style, explicit text and title followers so
+splitting cannot clear that mode. Leading directives keep the positive/zero
+logical marker; diagram-comment gaps preserve the empty versus whitespace-only
+line boundary before `%%{ }%%`. See the [Venn rules](./venn.md).
 
 [fixture: venn/indentation/indent-width] [fixture:
 venn/statements-one-per-line/header-declaration-group] [fixture:

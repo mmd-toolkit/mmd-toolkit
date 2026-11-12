@@ -74,7 +74,7 @@ mermaid.js の読み方を保ち、Db が同じ複数の形から選ぶ場合は
 
 ```mmd
 venn-beta
-set A
+  set A
 ```
 
 仕様の
@@ -95,7 +95,7 @@ set A
 
 ```mmd
 venn-beta
-set C4Container
+  set C4Container
 ```
 
 ### Indentation
@@ -103,7 +103,8 @@ set C4Container
 空白の設定の1段は `tabWidth: 0` でも1文字以上にします。
 `useTabs` はタブのままです。
 整形で Db を変えてはならず、1文字が字下げの読みを保つ最小の幅だからです。
-正の印が必要なのは暗黙の text だけで、通常の文は1列目のままです。
+正の印が必要なのは暗黙の text だけで、
+ほかの文は `tabWidth` が与える字下げにします（`tabWidth: 0` では字下げなし）。
 [fixture: venn/indentation/tab-width-0]
 [fixture: venn/indentation/tab-width-0-leading-directive]
 [fixture: venn/indentation/tab-width-0-kept]
@@ -111,11 +112,24 @@ set C4Container
 [fixture: venn/indentation/tab-width-0-internal-marker]
 [fixture: venn/indentation/tab-width-0-use-tabs]
 
-通常の set、union、style、title と対象つき text は1列目に置きます。
-暗黙の text だけを設定の1段で字下げします（`tabWidth`、`useTabs`）。
+`set`、`union`、`style`、`title` の文は、
+ヘッダーより設定の1段だけ深く置きます（`tabWidth`、`useTabs`）。
+ほかの図の種類の文と同じで、mermaid.js の文書の例も同じです。
+文書の 8 つの例では、これらの文の 39 行がすべて字下げされ、
+1列目の行はありません。
+暗黙の text は、さらに1段深くします。
+mermaid.js は `set`、`union`、`style`、`title` の前の字下げを読み飛ばすので、
+字下げは読みを変えません。
+モードが有効な間は、`text` の前の空白が暗黙の text を選ぶので、
+対象つき text（`text A item`）は、モードによらずヘッダーと同じ位置に置きます。
+字下げすると読み方が変わることがあり、
+モードで形が変わらない1つの形にするためです。
 モードが有効な間は正の字下げが暗黙の構文を選び、入れ子は表しません。
-対象つき text を字下げすると読み方が変わることがあります。
 宣言がモードを有効にし、後の通常の行頭の文が解除し、次の宣言が再び有効にします。
+文の前のコメント行とディレクティブの行は、その文と同じ位置に置きます。
+[fixture: venn/indentation/ordinary-statements-stand-one-step-deep]
+[fixture: venn/indentation/explicit-text-stays-at-the-header]
+[fixture: venn/indentation/comment-and-directive-lines-follow-the-statement]
 [corpus fixture: venn/db-form-indent-id-label]
 [corpus fixture: venn/db-form-indent-number]
 [corpus fixture: venn/db-form-indent-string]
@@ -149,9 +163,9 @@ set C4Container
 
 ```mmd
 venn-beta
-set A
-  text one
-  text two
+  set A
+    text one
+    text two
 ```
 
 ### Statements one per line
@@ -199,8 +213,8 @@ title は行の残りを値として取るので、title の後の文に見え�
 
 ```mmd
 venn-beta
-set A style A fill:red
-  text item
+  set A style A fill: red
+    text item
 ```
 
 ### Blank lines
@@ -254,9 +268,9 @@ set B
 
 ```mmd
 venn-beta
-set A
+  set A
 
-set B
+  set B
 ```
 
 ### Comments
@@ -302,8 +316,8 @@ set B
 
 ```mmd
 venn-beta
-set A Q%% note
-  text item
+  set A Q%% note
+    text item
 ```
 
 ### Name lists
@@ -315,8 +329,8 @@ set A Q%% note
 引用符内の余白は名前の一部で、`" A "` と `"A"` は Db が異なります。
 Db が対象を並べ替えるのは、書かれた一覧の並べ替えを許すものではなく、
 重複したメンバーは union の項数として残します。
-Venn は引用符つきの名前の隣の空白を受理するので、sankey の一覧と違い、
-コンマごとの後ろの空白1つは安全です。
+Venn は、コンマの隣の空白があってもなくても、
+引用符つきの名前を含む一覧を同じに読むので、コンマの隣には空白を置きません。
 ディレクティブと無視されるセミコロンは通常の隙間の規則に優先します。
 [corpus fixture: venn/db-case-distinct-ids]
 [corpus fixture: venn/db-empty-identifiers]
@@ -341,11 +355,11 @@ Venn は引用符つきの名前の隣の空白を受理するので、sankey �
 
 ```mmd
 venn-beta
-set A
-set B
-union A, B, A
-text A, "B" item
-style A, B fill:red
+  set A
+  set B
+  union A,B,A
+text A,"B" item
+  style A,B fill: red
 ```
 
 ### Labels
@@ -421,15 +435,15 @@ U+2028 や U+2029 を含む空白は、書かれたまま残します。
 
 ```mmd
 venn-beta
-set A["L"]:002.00
-  text item[" Label "]
+  set A["L"]:002.00
+    text item[" Label "]
 ```
 
 ### 色
 
 スタイルの色は、mermaid.js の文書の例と Prettier の CSS 整形と同じく、
 小文字で印字します。
-`style A fill:#F9F` は `style A fill:#f9f` と印字します。
+`style A fill:#F9F` は `style A fill: #f9f` と印字します。
 Venn 図の `style` 文のプロパティの色が対象です。
 色は、スタイルの値の中で単独で立つ、`#` と 3、4、6、8 桁の 16 進数です。
 色を短くすることはなく、色でないテキストは書かれたままにします。
@@ -454,11 +468,11 @@ style B fill:#C0FFEE
 
 ```mmd
 venn-beta
-set A
-set B
-union A, B
-style A fill:#f9f, color:#abcdef
-style B fill:#c0ffee
+  set A
+  set B
+  union A,B
+  style A fill: #f9f, color: #abcdef
+  style B fill: #c0ffee
 ```
 
 入力
@@ -475,8 +489,8 @@ style A fill:#ABCDE,color:#ABCDEF1
 
 ```mmd
 venn-beta
-set A
-style A fill:#ABCDE, color:#ABCDEF1
+  set A
+  style A fill: #ABCDE, color: #ABCDEF1
 ```
 
 ### Quotes
@@ -485,8 +499,8 @@ style A fill:#ABCDE, color:#ABCDEF1
 引用符なしで印字し、角括弧ラベルは引用符つきで印字します。
 mermaid.js の文書の例がそう書くためです。
 （[テキストの引用符](./compatibility.ja.md#テキストの引用符)）。
-`set "A"` は `set A`、`union "A","B"` は `union A, B`、
-`style A fill:"red"` は `style A fill:red`、
+`set "A"` は `set A`、`union "A","B"` は `union A,B`、
+`style A fill:"red"` は `style A fill: red`、
 `set A[Alpha]` は `set A["Alpha"]` になります。
 
 名前は ASCII の英字、数字、`_`、`-` からなり、英字か `_` で始まります。
@@ -550,16 +564,16 @@ set "A1"
 
 ```mmd
 venn-beta
-set A
-set B_2["Beta"]
-set c-d:3
-set xset
-set set1
-union A, B_2["Both"]
-style A, c-d fill:red
-set A1
-  text item
-  text item-2["Note"]
+  set A
+  set B_2["Beta"]
+  set c-d:3
+  set xset
+  set set1
+  union A,B_2["Both"]
+  style A,c-d fill: red
+  set A1
+    text item
+    text item-2["Note"]
 ```
 
 ### Sizes and numbers
@@ -599,16 +613,27 @@ mermaid.js がテキストとして読むため、綴りを保ちます。
 
 ```mmd
 venn-beta
-set A:+02.50
-set B:-0.5
-union A, B:007
-  text 007
+  set A:+02.50
+  set B:-0.5
+  union A,B:007
+    text 007
 ```
 
 ### Style properties
 
-プロパティは `key:value`、区切りはコンマと空白1つにします。
-短い句読点と値の空白を区別するためです。
+プロパティは `key: value` と印字します。
+コロンの前に空白はなく、後に空白が 1 つあります。
+プロパティの区切りはコンマと空白 1 つです。
+ほかの図の種類のスタイルと同じ形で、
+`style A fill: #f00, stroke: #000` となります。
+mermaid.js の文書は、プロパティの 3 つの例を `fill:#ff6b6b` と書いていますが、
+コロンの後の隙間は、スタイルを持つほかの 10 の図の種類と同じ種類の隙間なので、
+それに合わせます。
+Db はプロパティを対応表として持ち、空白を持ちません。
+印字するセミコロンが残る行では、
+コロンの後の隙間は書かれたままにします（`style A fill:#f00;%% c`）。
+mermaid.js の行の規則は、コロンとハッシュの間に空白があるかどうかで、
+`;` を無視するかどうかを決めるからです。
 裸の値は、書かれた 1 つの `VennLiteral` です。
 単位の間の空白とタブの連続は、rgb・rgba の括弧の外では空白 1 つにします。
 mermaid.js は単位を空白 1 つで結ぶので、Db は同じです。
@@ -656,7 +681,7 @@ rgb・rgba のトークン全体、キーの大小文字、重複と別々の文
 
 ```mmd
 venn-beta
-style A, B fill:red, opacity:.50, custom:" dark blue "
+  style A,B fill: red, opacity: .50, custom: " dark blue "
 ```
 
 ### Semicolons at the end of a style statement
@@ -692,9 +717,9 @@ U+2028 と U+2029 の前も同じように保護します。
 
 ```mmd
 venn-beta
-set A
-style A fill:#f00
-style A fill:#0f0, stroke:#00f
+  set A
+  style A fill: #f00
+  style A fill: #0f0, stroke: #00f
 ```
 
 ### Line rule and kept lines
@@ -783,7 +808,7 @@ U+2029 でも同じラベルです。
 
 ```mmd
 venn-beta
-set A[style:#x;y] set B:2
+  set A[style:#x;y] set B:2
 ```
 
 ### Title
@@ -836,7 +861,7 @@ LF と title で受理する広い種類の区切りは正規化します。
 
 ```mmd
 venn-beta
-title T
+  title T
 ```
 
 ### Directives
@@ -922,7 +947,7 @@ Venn のヘッダー行の文にはその役割がありません。
 
 ```mmd
 venn-beta
-set A%%{init: {}}%%["L"]:2
+  set A%%{init: {}}%%["L"]:2
 ```
 
 入力（escape 表記）:
@@ -936,7 +961,7 @@ set A%%{init: {}}%%["L"]:2
 
 ```mmd
 venn-beta%%{init: {}}%%
-set A
+  set A
 ```
 
 ### Trailing whitespace
@@ -995,14 +1020,14 @@ set A
 
 ```mmd
 venn-beta
-set "A
+  set "A
  B"["L
   M"]
 text A "x
  y"[N
  O]
-style A fill:"red
- blue", stroke:rgb(1,
+  style A fill: "red
+ blue", stroke: rgb(1,
   2,3)
 ```
 
@@ -1041,10 +1066,10 @@ style A fill:"red
 
 ```mmd
 venn-beta
-set A
-  text item
-STYLE A fill:RED
-title T
+  set A
+    text item
+  STYLE A fill: RED
+  title T
 ```
 
 ### Line terminators
@@ -1139,7 +1164,7 @@ title: T
 config: { venn: { padding: 20 } }
 ---
 venn-beta
-set A
+  set A
 ```
 
 ### Final newline
@@ -1174,7 +1199,7 @@ Markdown は同じ Venn の規則の外側にフェンスとコンテナーの�
 
 ```mmd
 venn-beta
-set A
+  set A
 ```
 
 ## Rejected inputs
