@@ -168,7 +168,8 @@ type.
   skill).
 - The fixtures of the diagram, its Db summary
   (`packages/tests/docs/db-from-tree/<diagram>.md`), and the checks of its
-  recorded trees exist in `packages/tests` (the tests skill).
+  recorded trees exist in `packages/tests` (the skills tests-diagram-type and
+  tests-tree-checks).
 
 ### 4.2 Reading the specification, and its gaps first
 
@@ -655,8 +656,9 @@ wiring, tests and records.
 ## 7. Updating mermaid.js
 
 Input: the fixtures regenerated with the new version and their differences,
-classified (the tests skill), and the specification updated for it (the spec
-skill). The parser does not change behavior before the specification does.
+classified (the tests-mermaid-update skill), and the specification updated for
+it (the spec skill). The parser does not change behavior before the
+specification does.
 
 1. Read the changed sections of the specification, and check each changed rule
    as in 4.2, step 2.

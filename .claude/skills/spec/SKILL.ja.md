@@ -273,7 +273,7 @@ pin した commit は `packages/spec/docs/index.md` に記録してある。
 ## 3. 図種を足すとき
 
 入力: その図種の Db の正規化関数と、収集した fixture。
-tests の SKILL の 5.2 と 5.3 で作る。
+tests-diagram-type の SKILL の 2 節と 3 節で作る。
 mermaid.js を読むこと（3.1）と木の案（3.3 の項目 3）は fixture が要らないので、
 収集の間に始めてよい。
 主張は、そのために書いた入力で確かめ（2.1）、収集が済んでから fixture にする。
@@ -314,7 +314,7 @@ mermaid.js を読むこと（3.1）と木の案（3.3 の項目 3）は fixture 
    sequence の例: box の色。
    そのような値は、サイトの設定と同じく外から与えられる。
    `@mmd-toolkit/tests` の `docs/db-from-tree/<図種>.md` がそう書き、
-   それは tests のスキルの手順で書く。
+   それは tests-tree-checks のスキルの手順で書く。
 4. 前処理の順序（common.md の Reading a source）と、
    検出（detection.md）を確かめる。
 
@@ -466,7 +466,9 @@ index.md の「How to read a diagram document」の 4 節で書く。
 図種の Db の要約と、それを木から作る手順は、
 `@mmd-toolkit/tests` の文書（`docs/db-summaries.md` と
 `docs/db-from-tree/<図種>.md`）である。
-そこに要るものは、tests のスキルの手順で書く。
+そこに要るものは、
+tests-diagram-type のスキル（要約）と tests-tree-checks
+のスキル（木から作る手順）の手順で書く。
 
 ### 3.3 木のノードを足す
 
@@ -509,7 +511,7 @@ index.md の「How to read a diagram document」の 4 節で書く。
    どのトークンも持てないところだけ、`ast/<diagram>.md` の欄の説明に理由を書く。
    Db がそれをソースから読むことは、
    `@mmd-toolkit/tests` の `docs/db-from-tree/<図種>.md` が書く。
-   それは tests のスキルの手順で書く。
+   それは tests-tree-checks のスキルの手順で書く。
    flowchart の例: subgraph の名前のすぐ後の空の説明ブロックの間の空白。
 
 ### 3.4 主張と fixture を対応させる
@@ -612,7 +614,7 @@ index.md の「How to read a diagram document」の 4 節で書く。
 
 出力には、ほかのパッケージの次の手順も示す。
 
-- `checkTree` は、[tests §6](../tests/SKILL.ja.md#6-langium-の図)に従う。
+- `checkTree` は、[tests-tree-checks](../tests-tree-checks/SKILL.ja.md)に従う。
 - 差異の形の検査は、
   [parser §6](../parser/SKILL.ja.md#6-fixture-が足されたとき規則が変わったとき)
   に従う。
@@ -657,7 +659,7 @@ parser は仕様だけから書く。
    値がある、の 3 つの場合を数える。
    現れた場合は、どれも tests の `docs/db-from-tree/<図種>.md` の文で説明され、
    fixture を持つ。
-   説明する文のない場合の文は、tests のスキルの手順で書く。
+   説明する文のない場合の文は、tests-tree-checks のスキルの手順で書く。
    最初の訪れでだけ決まるもの、積み重なるもの、
    更新がそのまま残すもの（`Object.assign`
    は新しいオブジェクトにないキーを残す）を、Db のクラスで探す。
@@ -829,7 +831,7 @@ fixture の追加だけが要るとき（規則のアイディアの根拠など
 ## 6. mermaid.js を更新するとき
 
 入力: mermaid.js の pin が上がり、
-`fixtures:check` の差分が分類されている（tests の SKILL）。
+`fixtures:check` の差分が分類されている（tests-mermaid-update の SKILL）。
 
 1. index.md の pin した版と commit を直す（記録は 1 か所）。
 2. すべての permalink を新しい commit に直す。

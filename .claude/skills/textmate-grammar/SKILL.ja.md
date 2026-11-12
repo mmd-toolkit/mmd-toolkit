@@ -245,7 +245,7 @@ stage は変えません。
 ## 6. mermaid.js の更新のとき
 
 この文法は、mermaid.js から何も取りません。
-tests スキルと spec スキルの手順で仕様が更新されるのを待ち、
+tests-mermaid-update スキルと spec スキルの手順で仕様が更新されるのを待ち、
 5 節の手順を当てます。
 文法の中に、mermaid.js の版に結び付いたものはありません。
 playground の例（playground の依存の

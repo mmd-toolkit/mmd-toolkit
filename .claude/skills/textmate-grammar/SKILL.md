@@ -224,10 +224,10 @@ spec skill, never by a rule that guesses. Commit and push only when asked
 ## 6. When mermaid.js is updated
 
 The grammar takes nothing from mermaid.js. Wait until the specification is
-updated with the tests skill and the spec skill, then apply section 5. Nothing
-in the grammar is tied to the version of mermaid.js; the playground's examples
-(`@mermaid-js/examples`, a dependency of the playground) follow its releases, so
-color them again as section 7 says.
+updated with the tests-mermaid-update skill and the spec skill, then apply
+section 5. Nothing in the grammar is tied to the version of mermaid.js; the
+playground's examples (`@mermaid-js/examples`, a dependency of the playground)
+follow its releases, so color them again as section 7 says.
 
 ## 7. Checking a change
 

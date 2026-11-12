@@ -179,7 +179,8 @@ pin した mermaid.js の更新を扱う。
   `packages/spec/docs/ast/<図種>.md` がある（spec の SKILL）。
 - その図種の fixture、
   Db の要約（`packages/tests/docs/db-from-tree/<図種>.md`）、
-  記録した木の検査が、`packages/tests` にある（tests の SKILL）。
+  記録した木の検査が、
+  `packages/tests` にある（tests-diagram-type と tests-tree-checks の SKILL）。
 
 ### 4.2 仕様を読み、欠落を先に扱う
 
@@ -706,7 +707,8 @@ pnpm run format:check
 
 ## 7. mermaid.js を更新するとき
 
-入力: 新しい版で生成し直した fixture と、分類した差分（tests の SKILL）、
+入力: 新しい版で生成し直した fixture と、
+分類した差分（tests-mermaid-update の SKILL）、
 それに合わせて直した仕様（spec の SKILL）。
 パーサーは、仕様が変わる前に挙動を変えない。
 

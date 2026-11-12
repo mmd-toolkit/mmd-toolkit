@@ -260,12 +260,12 @@ script.
 
 ## 3. Adding a diagram type
 
-Input: the diagram type's Db normalizer and its collected fixtures (5.2 and 5.3
-of the tests SKILL). The reading of mermaid.js (3.1) and the proposal of the
-tree (item 3 of 3.3) do not need the fixtures and may start while they are
-collected; check the claims with inputs written for the purpose (2.1), and turn
-them into fixtures once the collection is done, so that a claim does not get a
-second fixture for an input that the collection already has.
+Input: the diagram type's Db normalizer and its collected fixtures (sections 2
+and 3 of the tests-diagram-type SKILL). The reading of mermaid.js (3.1) and the
+proposal of the tree (item 3 of 3.3) do not need the fixtures and may start
+while they are collected; check the claims with inputs written for the purpose
+(2.1), and turn them into fixtures once the collection is done, so that a claim
+does not get a second fixture for an input that the collection already has.
 
 ### 3.1 Reading mermaid.js
 
@@ -300,7 +300,7 @@ permalink to the commit recorded in `packages/spec/docs/index.md`.
    rather than on the text, such as `window.CSS` or `document` (sequence: the
    colour of a box). Such a value is supplied from outside, as a site
    configuration is; `docs/db-from-tree/<diagram>.md` of `@mmd-toolkit/tests`
-   says so, written with the steps of the tests SKILL.
+   says so, written with the steps of the tests-tree-checks SKILL.
 4. Check the order of the preprocessing (Reading a source in common.md) and the
    detection (detection.md).
 
@@ -449,7 +449,8 @@ Write `docs/diagrams/<diagram>.md` and its `.ja.md` with the four sections of
 The Db summary of a diagram type and how it is built from the tree are documents
 of `@mmd-toolkit/tests` (`docs/db-summaries.md` and
 `docs/db-from-tree/<diagram>.md`); what they need is written there with the
-steps of the tests SKILL.
+steps of the tests-diagram-type SKILL (the summary) and of the tests-tree-checks
+SKILL (how it is built from the tree).
 
 ### 3.3 Adding the nodes of the tree
 
@@ -488,9 +489,9 @@ Use the diagram names and node prefixes defined by
    where no token can hold what mermaid.js reads, because it runs across other
    nodes, say why in the field's description in `ast/<diagram>.md`;
    `docs/db-from-tree/<diagram>.md` of `@mmd-toolkit/tests` says that the Db
-   reads it from the source, written with the steps of the tests SKILL.
-   Flowchart example: the whitespace between the empty description blocks right
-   after the name of a subgraph.
+   reads it from the source, written with the steps of the tests-tree-checks
+   SKILL. Flowchart example: the whitespace between the empty description blocks
+   right after the name of a subgraph.
 
 ### 3.4 Matching claims with fixtures
 
@@ -590,7 +591,7 @@ the fixtures for which the parser needs an `ast.json`.
 
 The output also names these steps of the other packages:
 
-- For `checkTree`, follow [tests §6](../tests/SKILL.md#6-langium-diagrams).
+- For `checkTree`, follow [tests-tree-checks](../tests-tree-checks/SKILL.md).
 - For divergence-form checks, follow
   [parser §6](../parser/SKILL.md#6-when-fixtures-are-added-or-a-rule-changes).
 - For printer work, follow [prettier-plugin](../prettier-plugin/SKILL.md).
@@ -634,9 +635,10 @@ these checks for the diagram type, and write the result of each in the output
    is missing, the value is empty, the value is set. Each case that occurs is
    explained, with a fixture, by a sentence of `docs/db-from-tree/<diagram>.md`
    of the tests package; a sentence for a case that no sentence explains is
-   written with the steps of the tests SKILL. Look in the Db class for what is
-   set only on the first visit, what accumulates, and what an update leaves as
-   it was (`Object.assign` keeps the keys that the new object does not have).
+   written with the steps of the tests-tree-checks SKILL. Look in the Db class
+   for what is set only on the first visit, what accumulates, and what an update
+   leaves as it was (`Object.assign` keeps the keys that the new object does not
+   have).
 8. **What the Db reads beyond the values.** The tree holds what changes the Db:
    as values (whitespace that mermaid.js reads, also a value that is all
    whitespace), as null elements of a list (an empty item between `,`), or as
@@ -800,7 +802,7 @@ pass:
 ## 6. When mermaid.js is upgraded
 
 Input: the pin of mermaid.js is raised, and the differences of `fixtures:check`
-are sorted (the tests SKILL).
+are sorted (the tests-mermaid-update SKILL).
 
 1. Change the pinned version and commit in index.md (recorded in one place).
 2. Move every permalink to the new commit. Collect the URLs with the old commit
