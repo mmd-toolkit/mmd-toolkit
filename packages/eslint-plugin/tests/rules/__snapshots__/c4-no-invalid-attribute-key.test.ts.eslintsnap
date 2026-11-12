@@ -7,7 +7,7 @@ Filename: c4-no-invalid-attribute-key-incorrect-1.mmd
 Code:
   1 | C4Context
   2 |   Person(a, "A")
-  3 |   UpdateElementStyle(a, $BgColor = "red")
+  3 |   UpdateElementStyle(a, $BgColor="red")
     |                          ^~~~~~~ [1]
   4 |
 

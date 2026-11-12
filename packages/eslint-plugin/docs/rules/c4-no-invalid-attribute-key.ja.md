@@ -14,7 +14,7 @@ C4 のスタイル更新で、色と offset のキーの大文字小文字の誤
 
 <!-- end auto-generated rule notice -->
 
-mermaid.js は `$BgColor = "red"` をエラーなしに受理するが、
+mermaid.js は `$BgColor="red"` をエラーなしに受理するが、
 `BgColor` を `bgColor` とは別の属性として扱う。
 要素は意図した背景色を得ない。
 
@@ -44,7 +44,7 @@ mermaid.js がその値を offset として使えるので報告しない。
 %% eslint @mmd-toolkit/c4-no-invalid-attribute-key: error
 C4Context
   Person(a, "A")
-  UpdateElementStyle(a, $BgColor = "red")
+  UpdateElementStyle(a, $BgColor="red")
 ```
 
 この規則に**従う**コードの例:
@@ -53,13 +53,13 @@ C4Context
 %% eslint @mmd-toolkit/c4-no-invalid-attribute-key: error
 C4Context
   Person(a, "A")
-  UpdateElementStyle(a, $bgColor = "red")
+  UpdateElementStyle(a, $bgColor="red")
 ```
 
 ```mmd
 %% eslint @mmd-toolkit/c4-no-invalid-attribute-key: error
 C4Context
-  UpdateLayoutConfig($C4ShapeInRow = "3", $C4BoundaryInRow = "1")
+  UpdateLayoutConfig($C4ShapeInRow="3", $C4BoundaryInRow="1")
 ```
 
 ## オプション

@@ -24,7 +24,7 @@ This rule applies to C4 diagrams (`C4Context`, `C4Container`, `C4Component`,
 `C4Dynamic`, and `C4Deployment`). It reports an argument that changes a style
 attribute set by an earlier update or an earlier argument in the same update.
 Repeating a value or setting an attribute for the first time is not reported.
-After `$bgColor = "red"` and `$bgColor = "blue"`, a third `$bgColor = "red"` is
+After `$bgColor="red"` and `$bgColor="blue"`, a third `$bgColor="red"` is
 reported, because it replaces `blue`. Empty arguments set empty values; when one
 replaces an earlier value, the update is reported.
 
@@ -35,7 +35,7 @@ Named `$alias`, `$from`, and `$to` change what later updates find and are not
 compared.
 
 An argument's position or named key selects its attribute, so
-`UpdateElementStyle(a, "red", $bgColor = "blue")` sets `bgColor` twice. Keys are
+`UpdateElementStyle(a, "red", $bgColor="blue")` sets `bgColor` twice. Keys are
 compared with their case: `$BgColor` is another attribute and is not compared
 with `$bgColor`; [c4-no-invalid-attribute-key](./c4-no-invalid-attribute-key.md)
 reports it. Declaration values are not compared; a declaration resets
@@ -53,15 +53,15 @@ Examples of **incorrect** code for this rule:
 %% eslint @mmd-toolkit/c4-no-duplicate-style: error
 C4Context
   Person(a, "A")
-  UpdateElementStyle(a, $bgColor = "red")
-  UpdateElementStyle(a, $bgColor = "blue")
+  UpdateElementStyle(a, $bgColor="red")
+  UpdateElementStyle(a, $bgColor="blue")
 ```
 
 ```mmd
 %% eslint @mmd-toolkit/c4-no-duplicate-style: error
 C4Context
   Person(a, "A")
-  UpdateElementStyle(a, $bgColor = "red")
+  UpdateElementStyle(a, $bgColor="red")
   UpdateElementStyle(a, , "white")
 ```
 
@@ -71,8 +71,8 @@ Examples of **correct** code for this rule:
 %% eslint @mmd-toolkit/c4-no-duplicate-style: error
 C4Context
   Person(a, "A")
-  UpdateElementStyle(a, $bgColor = "red")
-  UpdateElementStyle(a, $fontColor = "white")
+  UpdateElementStyle(a, $bgColor="red")
+  UpdateElementStyle(a, $fontColor="white")
 ```
 
 ```mmd
@@ -81,7 +81,7 @@ C4Context
   Person(a, "A")
   Person(b, "B")
   Rel(a, b, "Uses")
-  UpdateRelStyle(a, b, $textColor = "red", $lineColor = "blue")
+  UpdateRelStyle(a, b, $textColor="red", $lineColor="blue")
 ```
 
 ## Options

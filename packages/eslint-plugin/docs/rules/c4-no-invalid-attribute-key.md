@@ -15,8 +15,8 @@ Disallow incorrect casing of the color and offset keys in C4 style updates.
 
 <!-- end auto-generated rule notice -->
 
-mermaid.js accepts `$BgColor = "red"` without an error, but treats `BgColor` as
-a separate attribute from `bgColor`. The element does not get the intended
+mermaid.js accepts `$BgColor="red"` without an error, but treats `BgColor` as a
+separate attribute from `bgColor`. The element does not get the intended
 background color.
 
 ## Rule Details
@@ -44,7 +44,7 @@ Examples of **incorrect** code for this rule:
 %% eslint @mmd-toolkit/c4-no-invalid-attribute-key: error
 C4Context
   Person(a, "A")
-  UpdateElementStyle(a, $BgColor = "red")
+  UpdateElementStyle(a, $BgColor="red")
 ```
 
 Examples of **correct** code for this rule:
@@ -53,13 +53,13 @@ Examples of **correct** code for this rule:
 %% eslint @mmd-toolkit/c4-no-invalid-attribute-key: error
 C4Context
   Person(a, "A")
-  UpdateElementStyle(a, $bgColor = "red")
+  UpdateElementStyle(a, $bgColor="red")
 ```
 
 ```mmd
 %% eslint @mmd-toolkit/c4-no-invalid-attribute-key: error
 C4Context
-  UpdateLayoutConfig($C4ShapeInRow = "3", $C4BoundaryInRow = "1")
+  UpdateLayoutConfig($C4ShapeInRow="3", $C4BoundaryInRow="1")
 ```
 
 ## Options

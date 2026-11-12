@@ -7,9 +7,9 @@ Filename: c4-no-duplicate-style-incorrect-1.mmd
 Code:
   1 | C4Context
   2 |   Person(a, "A")
-  3 |   UpdateElementStyle(a, $bgColor = "red")
-  4 |   UpdateElementStyle(a, $bgColor = "blue")
-    |                         ^~~~~~~~~~~~~~~~~ [1]
+  3 |   UpdateElementStyle(a, $bgColor="red")
+  4 |   UpdateElementStyle(a, $bgColor="blue")
+    |                         ^~~~~~~~~~~~~~~ [1]
   5 |
 
 [1] mermaid.js replaces the `bgColor` given by an earlier update with this value.
@@ -22,7 +22,7 @@ Filename: c4-no-duplicate-style-incorrect-2.mmd
 Code:
   1 | C4Context
   2 |   Person(a, "A")
-  3 |   UpdateElementStyle(a, $bgColor = "red")
+  3 |   UpdateElementStyle(a, $bgColor="red")
   4 |   UpdateElementStyle(a, , "white")
     |   ^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ [1]
   5 |

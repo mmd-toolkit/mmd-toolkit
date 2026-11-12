@@ -25,7 +25,7 @@ since: v0.1.0
 `C4Deployment`）に当てる。
 前の更新や同じ更新の前の引数が設定したスタイル属性を変える引数を報告する。
 同じ値の繰り返しや、初めて設定する属性は報告しない。
-`$bgColor = "red"`、`$bgColor = "blue"` の後の 3 つ目の `$bgColor = "red"` は、
+`$bgColor="red"`、`$bgColor="blue"` の後の 3 つ目の `$bgColor="red"` は、
 `blue` を置き換えるので報告する。
 空の引数は空の値を設定し、前の値を置き換えるときは更新を報告する。
 
@@ -35,7 +35,7 @@ since: v0.1.0
 名前付きの `$alias`、`$from`、`$to` は後の更新が見つけるものを変え、比べない。
 
 引数の位置か名前付きキーが属性を選ぶので、
-`UpdateElementStyle(a, "red", $bgColor = "blue")` は `bgColor` を 2 度設定する。
+`UpdateElementStyle(a, "red", $bgColor="blue")` は `bgColor` を 2 度設定する。
 キーは大文字小文字を区別して比べる。
 `$BgColor` は別の属性なので `$bgColor` と比べず、
 [c4-no-invalid-attribute-key](./c4-no-invalid-attribute-key.ja.md) が報告する。
@@ -54,15 +54,15 @@ since: v0.1.0
 %% eslint @mmd-toolkit/c4-no-duplicate-style: error
 C4Context
   Person(a, "A")
-  UpdateElementStyle(a, $bgColor = "red")
-  UpdateElementStyle(a, $bgColor = "blue")
+  UpdateElementStyle(a, $bgColor="red")
+  UpdateElementStyle(a, $bgColor="blue")
 ```
 
 ```mmd
 %% eslint @mmd-toolkit/c4-no-duplicate-style: error
 C4Context
   Person(a, "A")
-  UpdateElementStyle(a, $bgColor = "red")
+  UpdateElementStyle(a, $bgColor="red")
   UpdateElementStyle(a, , "white")
 ```
 
@@ -72,8 +72,8 @@ C4Context
 %% eslint @mmd-toolkit/c4-no-duplicate-style: error
 C4Context
   Person(a, "A")
-  UpdateElementStyle(a, $bgColor = "red")
-  UpdateElementStyle(a, $fontColor = "white")
+  UpdateElementStyle(a, $bgColor="red")
+  UpdateElementStyle(a, $fontColor="white")
 ```
 
 ```mmd
@@ -82,7 +82,7 @@ C4Context
   Person(a, "A")
   Person(b, "B")
   Rel(a, b, "Uses")
-  UpdateRelStyle(a, b, $textColor = "red", $lineColor = "blue")
+  UpdateRelStyle(a, b, $textColor="red", $lineColor="blue")
 ```
 
 ## オプション
