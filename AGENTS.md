@@ -91,29 +91,32 @@ Correctness is defined by the pinned mermaid.js.
    beside the same kind of mark in the languages it formats: none before a comma
    and one space after it; one space on each side of a `=`; none before the
    colon that follows a name or a key, and one space after it; one space on each
-   side of a mark that stands between two things, such as an arrow; none inside
-   parentheses and square brackets, and one space inside braces; and no padding
-   that lines columns up. It is printed wherever every version of mermaid.js
-   that counts (see below) reads the text the same with it, and is left out only
-   where mermaid.js rejects it or reads something else, as in the list of ids of
-   a flowchart `class` statement. Second, a gap of a kind that Prettier does not
-   have takes the form that the other diagram types print for the same kind of
-   gap. Third, a spelling (the case of a keyword, the quotes of a string, the
-   digits of a number, the direction of a header) takes the form that the
-   examples in the documentation of the pinned mermaid.js use at least twice as
-   often as any other; where no form is used that often, or the examples use
-   none, the spelling is kept as written. Where none of these rules gives a
-   form, the output of the released version stays. The check uses the pinned
-   mermaid.js only, while the formatted text is also drawn by other versions of
-   mermaid.js. The versions that count are those published in the 18 months
-   before the pinned version was published: of each major version, the smallest
-   and the largest minor version among them, and of a diagram type that was
-   added in that time, the first minor version that has it, each at its latest
-   patch. So a spelling is also kept as written where the form that would be
-   printed is not accepted by every one of these versions that accepts the form
-   that was written, or is drawn differently by one of them: the name of a
-   header (`block-beta` and `block`), which the versions accept differently, the
-   colon after the header of a gitGraph, which older versions require, and the
+   side of a mark that stands between two things, such as an arrow; and none
+   inside parentheses and square brackets, and one space inside braces. Padding
+   that lines a column up over several lines, as the colons of the tasks of a
+   Gantt chart are lined up, is no such whitespace: Prettier has no kind for it
+   in those languages, so this rule does not decide it. The whitespace is
+   printed wherever every version of mermaid.js that counts (see below) reads
+   the text the same with it, and is left out only where mermaid.js rejects it
+   or reads something else, as in the list of ids of a flowchart `class`
+   statement. Second, a gap of a kind that Prettier does not have takes the form
+   that the other diagram types print for the same kind of gap. Third, a
+   spelling (the case of a keyword, the quotes of a string, the digits of a
+   number, the direction of a header) takes the form that the examples in the
+   documentation of the pinned mermaid.js use at least twice as often as any
+   other; where no form is used that often, or the examples use none, the
+   spelling is kept as written. Where none of these rules gives a form, the
+   output of the released version stays. The check uses the pinned mermaid.js
+   only, while the formatted text is also drawn by other versions of mermaid.js.
+   The versions that count are those published in the 18 months before the
+   pinned version was published: of each major version, the smallest and the
+   largest minor version among them, and of a diagram type that was added in
+   that time, the first minor version that has it, each at its latest patch. So
+   a spelling is also kept as written where the form that would be printed is
+   not accepted by every one of these versions that accepts the form that was
+   written, or is drawn differently by one of them: the name of a header
+   (`block-beta` and `block`), which the versions accept differently, the colon
+   after the header of a gitGraph, which older versions require, and the
    direction of the header of a flowchart (`TB` and `TD`), which the versions
    before 11.10.0 draw differently. The CHANGELOG.md of mermaid.js, or the
    history of its grammar, shows which version added or changed a form. The
