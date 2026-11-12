@@ -407,6 +407,12 @@ interface ColonRemainder {
   readonly holdsWhitespace: boolean
   /** Whether nothing but spaces and tabs stands there. */
   readonly isPlainRun: boolean
+  /**
+   * Whether a space or a tab stands right after the `:`, and no line
+   * separator (U+2028, U+2029) follows, so that the first character is the one
+   * that is read as the text and the rest can be left out.
+   */
+  readonly startsWithSpaceOrTab: boolean
 }
 
 /**
@@ -435,11 +441,14 @@ function scanAfterBareColon(
   if (statement.text !== null) return null
   let end = statement.range[1]
   let holdsWhitespace = false
+  let holdsSeparator = false
   let isPlainRun = true
   while (!isAtLineEnd(source, end) && source.text[end] !== ";") {
     const character = source.text.charAt(end)
     if (isWhitespace(character)) {
       holdsWhitespace = true
+      if (character === "\u2028" || character === "\u2029")
+        holdsSeparator = true
       if (!isSpaceOrTab(character)) isPlainRun = false
       end++
       continue
@@ -452,7 +461,12 @@ function scanAfterBareColon(
     isPlainRun = false
     end = directive.range[1]
   }
-  return { holdsWhitespace, isPlainRun }
+  return {
+    holdsWhitespace,
+    isPlainRun,
+    startsWithSpaceOrTab:
+      isSpaceOrTab(source.text.charAt(statement.range[1])) && !holdsSeparator,
+  }
 }
 
 /**
@@ -472,7 +486,9 @@ export function findColonWhitespaceEnd(
   statement: SequenceStatement,
 ): number | null {
   const remainder = scanAfterBareColon(source, statement)
-  return remainder !== null && remainder.holdsWhitespace && remainder.isPlainRun
+  return remainder !== null &&
+    remainder.holdsWhitespace &&
+    (remainder.isPlainRun || remainder.startsWithSpaceOrTab)
     ? statement.range[1] + 1
     : null
 }
@@ -494,7 +510,10 @@ export function readsItsColonWhitespace(
 ): boolean {
   const remainder = scanAfterBareColon(source, statement)
   return (
-    remainder !== null && remainder.holdsWhitespace && !remainder.isPlainRun
+    remainder !== null &&
+    remainder.holdsWhitespace &&
+    !remainder.isPlainRun &&
+    !remainder.startsWithSpaceOrTab
   )
 }
 

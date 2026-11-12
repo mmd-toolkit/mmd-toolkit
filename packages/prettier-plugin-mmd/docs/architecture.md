@@ -304,9 +304,9 @@ the documentation of mermaid.js write it (see
 `group api(cloud)["API Group"]` is printed `group api(cloud)[API Group]`, and
 `service s(server)['Plain Single']` is printed
 `service s(server)[Plain Single]`. A label is plain where it is ASCII letters,
-digits, `_`, and spaces, with no space at its ends: four versions that count,
+digits, `_`, and spaces, with no space at its ends: some versions that count,
 which read a label in quotes, read a label without quotes of these characters
-only (two others read no label in quotes; see
+only (others read no label in quotes; see
 [Forms kept for versions of mermaid.js that count](./compatibility.md#forms-kept-for-versions-of-mermaidjs-that-count)),
 so `"a-b"`, `"A.B"`, `"日本語"`, `"a[b"`, the empty label, and a label with
 padding inside the quotes (`[" padded "]`) keep their quotes. So do a backslash

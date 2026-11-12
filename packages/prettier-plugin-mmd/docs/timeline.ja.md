@@ -638,9 +638,9 @@ Db はその空白を持ちますが、図では描かれません。
 [fixture: titles-and-sections/value-on-next-line]
 [fixture: titles-and-sections/comment-line-inside-kept]
 キーワードより後ろの行にある値が `#` で始まる title は、書かれたままにします。
-対象にする版の 1 つは、`title`、改行、`# c` を、
+対象にする版の一部は、`title`、改行、`# c` を、
 空白だけの title とコメントとして読み、`title # c` を、
-period `title` とコメントとして読みますが、残りの 9 版は、
+period `title` とコメントとして読みますが、残りの版は、
 どちらも title `# c` として読み、同じに描くためです。
 詳しくは
 [対象にする版の mermaid.js のために残す形](./compatibility.ja.md#対象にする版の-mermaidjs-のために残す形)
@@ -736,9 +736,9 @@ Db は大文字にして読みます。
 [fixture: header-and-direction/direction-case-kept]
 [fixture: header-and-direction/spaces-before-the-direction]
 
-対象にする版のうち 4 つは方向を読まず、
+対象にする版の一部は方向を読まず、
 `timeline` の後ろの語を period のテキストとして読みます。
-残りの 6 つは方向を読みます。
+残りは方向を読みます。
 詳しくは
 [対象にする mermaid.js の版](./compatibility.ja.md#対象にする-mermaidjs-の版) と
 [対象にする版の mermaid.js のために残す形](./compatibility.ja.md#対象にする版の-mermaidjs-のために残す形)

@@ -777,11 +777,15 @@ mermaid.js はメンバーの行をそのテキストで部分に分け、
 `+ foo()` の名前は空白の付いた ` foo` で、`+foo()` の名前は `foo` です。
 [fixture: member-lines/runs-collapsed]
 [corpus fixture: class/gram-member-visibility-whitespace-body-0184dca2]
-可視性の記号の後のタブはタブのまま残し、
-タブを含む空白の連続はタブ 1 つにします。
-対象にする版の 1 つは、タブを空白と同じく名前の一部として読み、
+可視性の記号の後の隙間がタブで始まるときは、member の種類で決まります。
+属性の記号の後では、タブ 1 つのまま残します。
+対象にする版の一部は、タブを空白と同じく名前の一部として読み、
 ほかの版はタブを取り除くので、
 `+\tint x` は `+int x` とも `+ int x` とも印字しません。
+メソッドの記号の後のタブは、対象にするどの版も無視するので、
+`+\tm()` は `+m()` と印字します。
+空白で始まる隙間は、対象にするどの版も空白として読むので、
+後に何が続いても空白 1 つで印字します（`+ \tint x` は `+ int x`）。
 詳しくは
 [対象にする版の mermaid.js のために残す形](./compatibility.ja.md#対象にする版の-mermaidjs-のために残す形)
 を参照してください。 [fixture: member-lines/visibility-tab-kept]

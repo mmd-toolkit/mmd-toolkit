@@ -613,8 +613,8 @@ titles-and-sections/value-on-next-line] [fixture:
 titles-and-sections/comment-line-inside-kept] A title whose value starts with a
 `#` on a later line than the keyword stays as written: one version that counts
 reads `title`, a line break, and `# c` as a title of whitespace only and a
-comment, and `title # c` as the period `title` and a comment, while the other
-nine read both as the title `# c` (drawn the same; see
+comment, and `title # c` as the period `title` and a comment, while the others
+read both as the title `# c` (drawn the same; see
 [Forms kept for versions of mermaid.js that count](./compatibility.md#forms-kept-for-versions-of-mermaidjs-that-count)).
 [fixture: titles-and-sections/title-hash-on-next-line-kept] The value holds `:`,
 `#`, `%`, and `%%` as characters, except that the name of a section ends at a
@@ -706,12 +706,12 @@ header-and-direction/direction-kept] [fixture:
 header-and-direction/direction-case-kept] [fixture:
 header-and-direction/spaces-before-the-direction]
 
-Four of the versions that count (see
+Some of the versions that count (see
 [Versions of mermaid.js that count](./compatibility.md#versions-of-mermaidjs-that-count)
 and
 [Forms kept for versions of mermaid.js that count](./compatibility.md#forms-kept-for-versions-of-mermaidjs-that-count))
 read no direction: they read the words after `timeline` as the text of a period,
-and the six others read the direction. So `timeline td` and `timeline TD` are
+and the others read the direction. So `timeline td` and `timeline TD` are
 periods that differ by their case there, and `td` is not printed `TD`, though
 the examples in the documentation of mermaid.js write `TD`. The text that
 follows a direction stays on the line of the header, after its gap as written:

@@ -7,8 +7,10 @@
  * where the examples use one form at least twice as often as any other; a
  * keyword that the examples do not use, and one that another case changes the
  * Db or the figure of (`left` and `right` of a note in a state diagram, `class`
- * in a class diagram), or that an older version reads as an entity (`direction`,
- * `subgraph`, and `end` of an ER diagram), are not listed and stay as written.
+ * in a class diagram), or that a version that counts reads as an entity
+ * (`direction`, `subgraph`, and `end` of an ER diagram; docs/compatibility.md,
+ * Forms kept for versions of mermaid.js that count), are not listed and stay
+ * as written.
  * So are `style` and `classDef`: mermaid.js removes the last `;` of a line that
  * has them in this case before it reads a `:`, a `#`, and a `;` that follow in
  * this order, and the line is read as a whole after the directives and comments

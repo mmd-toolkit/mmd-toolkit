@@ -44,6 +44,22 @@ agentflow とユースケース図は 12.0.0 から読まれます。
 期間のほかの版（11.9.0、11.10.1、11.11.0、11.12.3、12.1.0、12.2.0）は確かめず、
 それらだけが拒否するか違って描く形は印字します。
 
+表が挙げるテキストは、Chromium で、
+`mermaid.initialize({ startOnLoad: false, securityLevel: "loose", … })` と、
+図の固定した id、そのほかは各版の既定の設定で描きました。
+残す形の表が挙げるヘッダーの綴りの対（`graph` と `flowchart`、
+`stateDiagram` と `stateDiagram-v2`、`treemap` と `treemap-beta`、
+`ishikawa` と `ishikawa-beta`）は、10 版で、5 つの設定で描き直しました。
+既定の設定、
+`flowchart.defaultRenderer` と `state.defaultRenderer` を `dagre-d3`
+にした設定（テキストのディレクティブで 1 回、`mermaid.initialize` で 1 回。
+結果は同じでした）、
+バンドルが読み込まない `layout: elk` （対のテキストが同じに描かれるか、
+どちらも拒否されました）、`look: neo`、`htmlLabels: false` です。
+結果が変わったのは `defaultRenderer` だけで、
+その 2 つの対の行がそれを挙げています。
+`theme` や図種ごとの設定など、ほかの設定は描いていません。
+
 期間は、利用者が実際に使う版を基準に決めました。
 2026-11-12 の前の 1 週間の mermaid の npm のダウンロードは約 2660 万で、
 版ごとの数は
@@ -70,6 +86,9 @@ npm の版をもとに計算し直します。
 [印字する形の決め方](./printed-form.ja.md#対象にする-mermaidjs-の版)
 にあります。
 
+固定した版そのものが拒否するか違って描く形は、ほかの版が替わっても残すので、
+行を持ちません。
+
 | 図種                                                        | 書かれたまま残す形                                                                                            | 決まりが与える形                           | 決まり                                     | 要る版                                                                                                                                                             | fixture                                                                     |
 | ----------------------------------------------------------- | ------------------------------------------------------------------------------------------------------------- | ------------------------------------------ | ------------------------------------------ | ------------------------------------------------------------------------------------------------------------------------------------------------------------------ | --------------------------------------------------------------------------- |
 | [block](./block.ja.md#ヘッダー)                             | `block-beta`                                                                                                  | `block`                                    | [3](./printed-form.ja.md#3-綴り)           | 10.9.8、11.7.0、11.8.1 が `block` を拒否する                                                                                                                       | [fixture: block/header/block-beta-kept]                                     |
@@ -77,15 +96,16 @@ npm の版をもとに計算し直します。
 | [xychart](./xychart.ja.md#ヘッダーと向き)                   | `xychart-beta`                                                                                                | `xychart`                                  | [3](./printed-form.ja.md#3-綴り)           | 10.9.8、11.7.0、11.8.1 が `xychart` を拒否する                                                                                                                     | [fixture: xychart/header-and-orientation/beta-header-kept]                  |
 | [packet](./packet.ja.md#header)                             | `packet-beta`                                                                                                 | `packet`                                   | [3](./printed-form.ja.md#3-綴り)           | 11.7.0、11.8.1 が `packet` を拒否する（10.9.8 には packet 図がない）                                                                                               | [fixture: packet/header/header-beta]                                        |
 | [flowchart](./flowchart.ja.md#方向)                         | `flowchart TB`                                                                                                | `flowchart TD`                             | [3](./printed-form.ja.md#3-綴り)           | 10.9.8、11.7.0、11.8.1 が subgraph のある flowchart を違って描く                                                                                                   | [fixture: flowchart/direction/header-tb-kept]                               |
-| [flowchart](./flowchart.ja.md#方向)                         | `graph LR`                                                                                                    | `flowchart LR`                             | [3](./printed-form.ja.md#3-綴り)           | `flowchart.defaultRenderer` が `dagre-d3` のとき、11.7.0、11.8.1、11.13.0、11.14.0、11.15.0、11.16.1、11.17.2 が `graph` を読み、`flowchart` を拒否する            | [fixture: flowchart/direction/header-keyword-kept]                          |
+| [flowchart](./flowchart.ja.md#方向)                         | `graph LR`                                                                                                    | `flowchart LR`                             | [3](./printed-form.ja.md#3-綴り)           | `flowchart.defaultRenderer` が `dagre-d3` のとき、10.9.8、11.7.0、11.8.1、11.13.0、11.14.0、11.15.0、11.16.1、11.17.2 が `graph` を読み、`flowchart` を拒否する    | [fixture: flowchart/direction/header-keyword-kept]                          |
 | [state](./state.ja.md#header)                               | `stateDiagram`                                                                                                | `stateDiagram-v2`                          | [3](./printed-form.ja.md#3-綴り)           | `state.defaultRenderer` が `dagre-d3` のとき、10.9.8 が 2 つを違って描き、11.7.0、11.8.1、11.13.0、11.14.0、11.15.0、11.16.1、11.17.2 が `stateDiagram` を拒否する | [fixture: state/header/spellings-kept]                                      |
 | [flowchart、swimlane](./flowchart.ja.md#ラベルの内側の空白) | `A[ user@example.com ]`                                                                                       | `A[user@example.com]`                      | [1](./printed-form.ja.md#1-記号の横の空白) | flowchart: 11.7.0、11.8.1、11.13.0、11.14.0、11.15.0、11.16.1、11.17.2、12.0.0、swimlane: 11.16.1、11.17.2、12.0.0 が、空白のない形を拒否する                      | [fixture: flowchart/label-inner-whitespace/leading-whitespace-at-sign-kept] |
 | [flowchart、swimlane](./flowchart.ja.md#矢印の前後の空白)   | `A@{ shape: circle }e1@--> B`                                                                                 | `A@{ shape: circle } e1@--> B`             | [1](./printed-form.ja.md#1-記号の横の空白) | flowchart: 11.7.0、11.8.1、11.13.0、11.14.0、11.15.0、11.16.1、11.17.2、12.0.0、swimlane: 11.16.1、11.17.2、12.0.0 が、空白のある形を拒否する                      | [fixture: flowchart/arrow-spacing/edge-id-after-data-block-touches]         |
 | [flowchart](./flowchart.ja.md#トークンの間の空白)           | `style A fill:#f00,color:white` を `style A fill: #f00,color: white` と印字                                   | `style A fill: #f00, color: white`         | [1](./printed-form.ja.md#1-記号の横の空白) | 10.9.8 が、`color:` か `text-align:` で始まるスタイルからラベルの色を取る                                                                                          | [fixture: flowchart/whitespace-between-tokens/style-color-touching-kept]    |
 | [flowchart](./flowchart.ja.md#トークンの間の空白)           | `linkStyle 0 stroke:#f00,color:red` を `linkStyle 0 stroke: #f00,color: red` と印字                           | `linkStyle 0 stroke: #f00, color: red`     | [1](./printed-form.ja.md#1-記号の横の空白) | 10.9.8 が、辺のラベルでも同じことをする                                                                                                                            | [fixture: flowchart/whitespace-between-tokens/link-style-label-names-kept]  |
 | [flowchart](./flowchart.ja.md#トークンの間の空白)           | `style A stroke-width:3px\ ,stroke:#0f0` を `style A stroke-width: 3px\ , stroke: #0f0` と印字                | `style A stroke-width: 3px\, stroke: #0f0` | [1](./printed-form.ja.md#1-記号の横の空白) | 10.9.8 が、ノードのスタイルをそのまま `;` でつなぐ                                                                                                                 | [fixture: flowchart/whitespace-between-tokens/style-backslash-space-kept]   |
+| [flowchart](./flowchart.ja.md#スタイルの行末の空白)         | ノーブレークスペース、U+3000、垂直タブ、バイト順マークで終わる `style` か `classDef` の行                     | その文字のない行                           | [1](./printed-form.ja.md#1-記号の横の空白) | 10.9.8 が、その文字のないテキストを違って描く                                                                                                                      | [test: keeps whitespace other than a space and a tab at the end of a style] |
 | [class](./class.ja.md#トークンの間の空白)                   | `style A fill:#f00,color:white` を `style A fill: #f00,color: white` と、`color :red` を `color : red` と印字 | `style A fill: #f00, color: white`         | [1](./printed-form.ja.md#1-記号の横の空白) | 10.9.8 が、`color:` で始まるスタイルからラベルの色を取る                                                                                                           | [fixture: class/whitespace-between-tokens/style-color-touching-kept]        |
-| [class](./class.ja.md#メンバーの行)                         | `+<タブ>int x`                                                                                                | `+int x`                                   | [1](./printed-form.ja.md#1-記号の横の空白) | 10.9.8 が、タブを名前の一部として読む                                                                                                                              | [fixture: class/member-lines/visibility-tab-kept]                           |
+| [class](./class.ja.md#メンバーの行)                         | `+<タブ>int x`（属性の記号の後のタブ）                                                                        | `+int x`                                   | [1](./printed-form.ja.md#1-記号の横の空白) | 10.9.8 が、タブを名前の一部として読む                                                                                                                              | [fixture: class/member-lines/visibility-tab-kept]                           |
 | [block](./block.ja.md#辺)                                   | `A ---x B`、`A ---o B`                                                                                        | `A --x B`、`A --o B`                       | [3](./printed-form.ja.md#3-綴り)           | 10.9.8、11.7.0、11.8.1 が違って描く                                                                                                                                | [fixture: block/edges/arrow-length-kept-where-drawn-differently]            |
 | [block](./block.ja.md#辺)                                   | `A ===x B`、`A ===o B`                                                                                        | `A ==x B`、`A ==o B`                       | [3](./printed-form.ja.md#3-綴り)           | 10.9.8、11.7.0、11.8.1、11.13.0、11.14.0 が違って描く                                                                                                              | [fixture: block/edges/arrow-length-kept-where-drawn-differently]            |
 | [block](./block.ja.md#辺)                                   | `A ==== B`                                                                                                    | `A === B`                                  | [3](./printed-form.ja.md#3-綴り)           | 10.9.8、11.7.0、11.8.1、11.13.0、11.14.0 が、線を長さで違う id として読む                                                                                          | [fixture: block/edges/arrow-length-kept-where-drawn-differently]            |
@@ -504,21 +524,40 @@ block/multi-line-statements/line-rule-semicolon-after-touching-arrow-kept]
 
 ## スタイルの末尾の空白
 
-`style`、`classDef`、`linkStyle` の文の末尾の空白は取り除きます。
+`style`、`classDef`、`linkStyle` の文の末尾の空白とタブは取り除きます。
 [fixture: flowchart/style-trailing-whitespace/removed]
-mermaid.js はその空白を最後のスタイルの末尾に残すので、
+mermaid.js はそれらを最後のスタイルの末尾に残すので、
 ここでは整形が mermaid.js の保存するものを変えます。
 これとは別に、
 eventmodeling の [Data blocks](./eventmodeling.ja.md#data-blocks)
 も限定した本文の字下げの変更を認めています。
-テストは、末尾の空白を除いたスタイルを比べます。
+テストは、末尾の空白とタブを除いたスタイルを比べます。
 
-取り除くと mermaid.js が文を拒否する箇所では、空白を保ちます。
-`style A fill:#f00, ` のように、並びの末尾の `,` の後です。
-[fixture: flowchart/style-trailing-whitespace/whitespace-only-value-kept]
-[corpus fixture: flowchart/db-style-whitespace-only-value]
-[スタイルの行末の空白](./flowchart.ja.md#スタイルの行末の空白)
+末尾にあるほかの種類の空白（ノーブレークスペース、U+3000、垂直タブ、
+バイト順マーク）は、なくすと mermaid.js が違う図を描く所では取り除かず、
+その行を書かれたままにします。
+CSS は空白、タブ、改ページを空白として読みますが、これらの文字は読みません。
+mermaid.js は、図種によって、それらを最後のスタイルの値に残します。
+文字のあるテキストとないテキストを、これらの文字と改ページのそれぞれについて、
+`style`、`classDef`、`linkStyle` を持つ図種ごとに、
+対象にする 10 版で Chromium で描きました。
+図が違ったのは、固定した版を含む版で、class 図の `style`、
+クラスの後にある class 図の `classDef`、
+flowchart と agentflow 図の `linkStyle`、
+ER 図の `classDef` の垂直タブと改ページです。
+対象にする版の別の一部では、flowchart の `style` と `classDef` でも違いました。
+詳しくは
+[対象にする版の mermaid.js のために残す形](#対象にする版の-mermaidjs-のために残す形)
 を参照してください。
+これらの文は、その文字を残します。
+class 図と flowchart の改ページは、CSS で空白なので、図が同じで、
+例外ではありません。
+block 図、state 図、agentflow 図の `style` と `classDef` は、
+その文字がなくても図が同じなので、取り除きます。
+requirement 図、use case 図、Venn 図、象限チャートは、
+文字のあるテキストを拒否し、ないテキストを受理するので、
+mermaid.js が拒否するほかのテキストと同じく、文字を取り除きます。
+[test: keeps whitespace other than a space and a tab at the end of a style]
 
 ## 同じに描かれるスタイル
 
@@ -723,8 +762,7 @@ block 図の `style` と、class 図の `style` と `classDef` で、
 その空白がないものの画素は同じだったので、その後の空白は落とします。
 ほかのスタイルには影響しません。
 ほかの図種の `classDef`、agentflow と state 図のノードの `style`、
-block 図のほかの形の `style`、
-対象にする版のうち 9 つでの flowchart の `style` です。
+block 図のほかの形の `style`、対象にする版の大半での flowchart の `style` です。
 mermaid.js がスタイルを使う前に両端の空白を取り除くからです。
 （[`getCompiledStyles`](https://github.com/mermaid-js/mermaid/blob/2086904e76c692331e34a45d7cc3bc30860d040e/packages/mermaid/src/diagrams/flowchart/flowDb.ts#L1156-L1168)、
 [`styles2Map`](https://github.com/mermaid-js/mermaid/blob/2086904e76c692331e34a45d7cc3bc30860d040e/packages/mermaid/src/rendering-util/rendering-elements/shapes/handDrawnShapeStyles.ts#L44-L51)）。
@@ -771,14 +809,14 @@ block 図のほかの形は、スタイルから `styles2String` で、
 これらの形でも `classDef` でも、両方の書き方の画素は同じでした。
 [fixture: block/styles/style-label-styles-kept]
 
-対象にする版の 1 つは flowchart と class 図の `style` も同じように読み、
-ほかの 9 つの版は読みません。
+対象にする版の一部は flowchart と class 図の `style` も同じように読み、
+ほかの版は読みません。
 残す版は
 [対象にする版の mermaid.js のために残す形](#対象にする版の-mermaidjs-のために残す形)
 の表にあります。
 flowchart の `style A fill:#f00,color:white` と
-`style A fill: #f00, color: white` は、その版では画素が異なり、
-ほかの 9 つの版では SVG が同一でした。
+`style A fill: #f00, color: white` は、それらの版では画素が異なり、
+ほかの版では SVG が同一でした。
 2 行のラベルを持つノードの `text-align:right` と、`color :red` も同じです。
 class 図で画素が異なったのは `color` だけです。
 そのため、flowchart の `style` では、
@@ -1891,10 +1929,14 @@ mermaid.js は、トークンの異なる綴りの一部を同じトークンと
 
 比較は固定している mermaid.js だけで行いますが、整形したテキストは、
 ほかの版の mermaid.js でも描かれます。
-そのため、印字する形が、書かれた形を受理するすべての版では受理されないときも、
-綴りを書かれたまま残します。
+そのため、
+印字する形を[対象にする版](#対象にする-mermaidjs-の版)のどれかが拒否するか、
+違って描くときも、綴りを書かれたまま残します。
+そうした形は
+[対象にする版の mermaid.js のために残す形](#対象にする版の-mermaidjs-のために残す形)
+に 1 つずつ挙げています。
 [mermaid.js の版](#mermaidjs-の版)に、
-それぞれの種類について調べたことを示します。
+それぞれの種類について文法で調べたことを示します。
 
 印字が形をそろえる前に、それぞれの種類を mermaid.js 12.3.0 と比べました。
 綴りを含む各例を別の綴りでも書き、mermaid.js が両方のテキストを読みました。
@@ -2042,15 +2084,15 @@ Gantt 図はタスクのタグ `done` と `crit` と `after` を保ち、
 XY チャートは `horizontal` を保ち、
 treeView は `ICON(…)` を名前の一部として読みます。
 ER 図の `direction` とその値、`subgraph`、`end` も書かれたまま残します。
-対象にする版の 1 つには方向の行がなく、
-`direction tb` を 2 つのエンティティとして読み、7 つには subgraph がなく、
+対象にする版の一部には方向の行がなく、
+`direction tb` を 2 つのエンティティとして読み、一部には subgraph がなく、
 `subgraph S` と `end` を、
 大文字小文字を名前に保つエンティティとして読むためです。
-`direction tb` と `direction TB` は、その 1 つの版では異なって描かれ、
-ほかの 9 つの版では同じに描かれました。
+`direction tb` と `direction TB` は、それらの版では異なって描かれ、
+ほかの版では同じに描かれました。
 `SUBGRAPH S` か `END` があるテキストと、
-`subgraph S` か `end` がある同じテキストは、その 7 つの版では異なって描かれ、
-後の 3 つの版では同じに描かれました。
+`subgraph S` か `end` がある同じテキストは、それらの版では異なって描かれ、
+ほかの版では同じに描かれました。
 詳しくは
 [対象にする版の mermaid.js のために残す形](#対象にする版の-mermaidjs-のために残す形)
 を参照してください。
@@ -2249,9 +2291,9 @@ Chromium で、対象にする 10 版で描くと、
 整形が変えるコーパスの block の入力 4 つと象限の入力 2 つは、同じ Db で読まれ、
 読むすべての版で同じに描かれました。
 次のものは、対象にする版のどれかが違う図にするので書かれたままにします。
-`<` のない、`x` か `o` で終わる矢印は、3 つの版が `---x` と `--x`、
-`---o` と `--o` を違う図に描き、5 つの版が `===x` と `==x` を違う図に描きます。
-`>` で終わらない太線は、5 つの版が、
+`<` のない、`x` か `o` で終わる矢印は、一部の版が `---x` と `--x`、
+`---o` と `--o` を違う図に描き、一部の版が `===x` と `==x` を違う図に描きます。
+`>` で終わらない太線は、一部の版が、
 `===` と `====` を長さで違う 2 つの id として読みます。
 `~` の線は id です。
 各行の版は
@@ -2308,15 +2350,24 @@ cynefin 図と radar 図は、`cynefin-beta:` と `radar-beta:` を、
 向きの後のコロンは残します。
 対象にするすべての版が、
 コロンのない `gitGraph LR` と `gitGraph TB` を拒否するためです。
-1 つの版は、コロンの有無にかかわらず `BT` を読みません。
-ディレクティブや hidden YAML
-ブロックがキーワードとコロンの間にある場合も残します。
+一部の版は、コロンの有無にかかわらず `BT` を読みません。
+ディレクティブがキーワードとコロンの間にある場合も残します。
 例にはそのようなヘッダーがなく、対象にする版のうち、
 次の行に文が続く `gitGraph %%{x}%%` を拒否しますが、
 コロンがあれば受理するものがあるためです。
 詳しくは
 [対象にする版の mermaid.js のために残す形](#対象にする版の-mermaidjs-のために残す形)
 の gitGraph の行を参照してください。
+`gitGraph %%{}%%:` はそのようなヘッダーではありません。
+中身のないディレクティブはコメントで、コロンもその中に入ります。
+[fixture: gitgraph/header/header-hidden-before-colon]
+hidden YAML ブロックが間にある場合は、コロンを残しません。
+`gitGraph ---`、ブロック、`--- :` と文が続く形を、対象にする 10 版で、
+コロンのある形とない形に描き、ブロックを読まない版はどちらも拒否したので、
+コロンを除きます。 [fixture: gitgraph/header/header-yaml-before-colon]
+ブロックの後の、単独の行にある colon は、
+印字が hidden の形の後の改行を保つので残します。
+[corpus fixture: gitgraph/header-hidden-before-colon]
 コロンの後にディレクティブ、コメント、hidden の形があっても、
 コロンは残しません。
 `gitGraph:%%{}%% commit%%{}%%`、`gitGraph: %% note`、
@@ -2327,7 +2378,6 @@ cynefin 図と radar 図は、`cynefin-beta:` と `radar-beta:` を、
 [fixture: gitgraph/header/header-colon-hidden-statement]
 [fixture: gitgraph/header/header-colon-directive-line]
 [fixture: gitgraph/header/header-colon-tab-blank-lines]
-[fixture: gitgraph/header/header-hidden-before-colon]
 [fixture: gitgraph/header/header-lr] [fixture: gitgraph/header/header-tb]
 [fixture: gitgraph/header/header-bt]
 
@@ -2820,7 +2870,7 @@ gitGraph では、ASCII の英字、数字、`_` と、その間の `-`、`.`、
 対象にする版のどれかが別のものとして読む名前でない場合に、
 引用符なしで印字します。
 数字は数の始まりになり得ます。
-対象にする版の 1 つは、字句解析器のキーワードを大文字小文字を問わず比較します。
+対象にする版の一部は、字句解析器のキーワードを大文字小文字を問わず比較します。
 `gitGraph`、`NORMAL`、`REVERSE`、`HIGHLIGHT`、`LR`、`TB` は、
 語の一部でない文字で終わるので、`lr-x` は語 `lr` と `-x` です。
 `commit`、`branch`、`merge`、`cherry-pick`、`checkout`、`options` は、
@@ -3113,7 +3163,7 @@ Db はデータ `{"x"}` に `{"x"}` を、`{x}` に `{x}` を持ちます。
 
 treeView のノードの名前は、例では引用符なしが 58 回、引用符ありが 8 回ですが、
 引用符で囲まれていれば、書かれたまま残します。
-対象にする 2 つの版の文法は引用符で囲む名前だけを読み、引用符のない名前は、
+対象にする版の一部の文法は引用符で囲む名前だけを読み、引用符のない名前は、
 その次の版から読むためです。
 残す版は
 [対象にする版の mermaid.js のために残す形](#対象にする版の-mermaidjs-のために残す形)
@@ -3566,7 +3616,7 @@ flowchart では、12.3.0 は辺の id の並びを括弧類と `|` で止める
 `A[user@example.com]` と `A-->|x@|B` を、空白があるときと同じに読み、
 拒否するのは `A>x@]` だけです。
 agentflow 図は 12.3.0 でも `A[x@]` を拒否します。
-対象にする版のうち 8 つは、
+対象にする版の一部は、
 そこで止めないので（辺の id を持つ最初の版 11.5.0 から 12.2.0
 までの文法が同じです）、最初の語に `@` があるラベルは、空白がないと、形でも、
 `|` の間でも、subgraph の題でも拒否し、空白があれば読みます（タグ 11.4.1、
@@ -3941,9 +3991,9 @@ sequence のメッセージの `()`（`A () ->> () B`）の前後の空白は、
 有効化の `+` と `-` は対象外で、
 その前後の空白の有無は 10 の版すべてで同じに描かれました。
 `<<->>` と `<<-->>` の前の空白も、書かれたまま残します。
-対象にする版の 1 つにはこの矢印がなく、前の名前の一部として `<<` を読むので、
-`Alice<<->>Bob` と `Alice <<->> Bob` は、その版では異なって描かれ、
-ほかの 9 つの版では同じに描かれました。
+対象にする版の一部にはこの矢印がなく、前の名前の一部として `<<` を読むので、
+`Alice<<->>Bob` と `Alice <<->> Bob` は、それらの版では異なって描かれ、
+ほかの版では同じに描かれました。
 残す版は
 [対象にする版の mermaid.js のために残す形](#対象にする版の-mermaidjs-のために残す形)
 の表にあります。
@@ -4221,11 +4271,11 @@ mermaid.js は、一部の ER の行を、置かれた場所や周りの空白�
   12.3.0 の字句解析器はキーワードを `-` で終えるので、
   これらはキーワードと id `-A` や `-x` で、
   数える 10 の版はどれも書かれたテキストを受理します。
-  対象にする版の 1 つは空白を入れたテキスト（`class -A a` と
-  `subgraph -x`）を拒否し、7 つは、
+  対象にする版の一部は空白を入れたテキスト（`class -A a` と
+  `subgraph -x`）を拒否し、一部は、
   エンティティとして読む `subgraph-x` と `end-x` を、
   空白を入れたテキストとは異なって描きます。
-  ほかの 9 つの版は `class-A a` を `class -A a` と同じに描きます。
+  ほかの版は `class-A a` を `class -A a` と同じに描きます。
   そのため、キーワードの大文字小文字を問わず、
   キーワードと `-` は接したままにします。
   `classDef-x` と `style-y` は、
@@ -4509,9 +4559,9 @@ Db の setter が捨てる LF 直後の空白とタブだけを置き換えて�
 
 ## 版によって読み方が違う timeline のテキスト
 
-対象にする版のうち 4 つは、timeline のヘッダーに方向がなく、
+対象にする版の一部は、timeline のヘッダーに方向がなく、
 `timeline` の後ろの語を period のテキストとして読みます。
-残りの 6 つの版は、`LR` か `TD` を方向として読みます。
+残りの版は、`LR` か `TD` を方向として読みます。
 最も古い版は、`#` で始まる title も、
 後の版と違って描きます（最後の場合を参照）。
 以下の場合は、どれも両方のテキストを 10 版で描き、1 つの版でも違って描く形は、
@@ -5738,7 +5788,7 @@ semicolon が保護する行の境界は、本文の原文を保ちます。
 数える版のうち、2 つには treemap がなく、
 1 つは字下げされたこれらの文を拒否して、
 行頭のものとヘッダーと同じ行に続くもの（`treemaptitle T`。
-`treemap title T` は拒否）を読み、ほかの 7 つの版はこれらをすべて読みます。
+`treemap title T` は拒否）を読み、ほかの版はこれらをすべて読みます。
 残す版は
 [対象にする版の mermaid.js のために残す形](#対象にする版の-mermaidjs-のために残す形)
 の表にあります。
@@ -5746,11 +5796,11 @@ semicolon が保護する行の境界は、本文の原文を保ちます。
 title、`accTitle`、`accDescr` の 1 行、`accDescr` のブロック、
 行の後の title について、文が行頭にある文と 1 段深い文の 2 つを、
 その 7 つの版で描くと、SVG は同一でした。
-1 つの版は字下げした文を拒否します。
+最初の版は字下げした文を拒否します。
 `treemaptitle T` と、title を単独の行に置いたテキストは、
 treemap を持つ 8 つの版で同じに描かれました。
 そのため、行頭から始まる文は動かさず、ヘッダーに続く文は次の行の行頭に移し、
-書かれた時点で字下げされた文は、その 1 つの版が書かれたままでも拒否するので、
+書かれた時点で字下げされた文は、最初の版が書かれたままでも拒否するので、
 ほかの文と同じく 1 段深く印字します。 [fixture: treemap/title/line-start-kept]
 [fixture: treemap/title/line-start-after-row-kept]
 [fixture: treemap/title/line-start-tab-rows-kept]
@@ -6317,8 +6367,7 @@ evolution stage が metadata に変わることがあるためです。
 名前の直後の長い矢印 `Alpha-->Beta` を、図を持つ最初の版は、名前 `Alpha`、
 矢印 `-->`、名前 `Beta` として読みます。
 名前の中の `-` を拒否するためです。
-数える版のうち後の 5 つは、名前 `Alpha-`、矢印 `->`、
-名前 `Beta` として読みます。
+数える版のうち後の版は、名前 `Alpha-`、矢印 `->`、名前 `Beta` として読みます。
 そのため、`-` で終わる名前とその後の矢印の間に空白を入れません。
 `Alpha-->Beta` は `Alpha--> Beta` と印字し、
 最初の版が拒否する `Alpha- -> Beta` とは印字しません。
@@ -6327,8 +6376,8 @@ evolution stage が metadata に変わることがあるためです。
 の表にあります。
 component を宣言した `Alpha-->Beta` と `Alpha--> Beta` を 6 つの版で描くと、
 どの版でも SVG は同一でした。
-`Alpha- -> Beta` は後の 5 つの版で同じ SVG になり、最初の版は拒否します。
-`Alpha -->Beta` は後の 5 つの版では別の link（矢印 `-->`）なので、
+`Alpha- -> Beta` は後の版で同じ SVG になり、最初の版は拒否します。
+`Alpha -->Beta` は後の版では別の link（矢印 `-->`）なので、
 矢印を保ち `Alpha --> Beta` と印字します。
 [fixture: wardley/links/link-long-glued]
 [fixture: wardley/links/link-name-dashes-glued]

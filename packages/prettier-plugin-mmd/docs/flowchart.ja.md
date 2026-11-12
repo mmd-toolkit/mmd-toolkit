@@ -1052,7 +1052,7 @@ flowchart LR
 データブロックの後の辺の id は、ブロックに接します。
 `A@{ shape: circle } e1@--> B` は `A@{ shape: circle }e1@--> B` と印字します。
 mermaid.js 12.3.0 は、この 2 つの形を同じに読み、同じ図を描きます。
-対象にする版のうち 8 つには、
+対象にする版の一部には、
 データブロックの後で辺の id の前の空白を許す規則がないので、
 空白のある形を拒否します（1 つにはデータブロックがなく、両方を拒否します。
 詳しくは
@@ -1063,7 +1063,7 @@ mermaid.js 12.3.0 は、この 2 つの形を同じに読み、同じ図を描�
 テキストを読む前にそれが取り除かれるので、ブロック、ディレクティブか `;`、
 辺の id は互いに接します（`A@{ shape: circle }%%{init: {}}%%e1@--> B`）。
 形の閉じ括弧の後の辺の id には空白が 1 つあります（`A[x] e1@--> B`）。
-同じ 8 つの版が `A[x]e1@--> B` を拒否するからです。
+同じ版が `A[x]e1@--> B` を拒否するからです。
 swimlane 図も同じ規則です。
 [fixture: arrow-spacing/edge-id-after-data-block-touches]
 [fixture: arrow-spacing/edge-id-after-data-block-directive]
@@ -1247,7 +1247,7 @@ mermaid.js が、その空白と `?` や `=` をテキストとして読むか�
 12.3.0 は、辺の id の並びを括弧類と `|` で止めるので、
 `A[user@example.com]` と `A-->|x@|B` を、
 空白があるときと同じラベルとして読みます。
-対象にする版のうち 8 つは、そこで止めないので、空白がないこの 2 つを拒否し、
+対象にする版の一部は、そこで止めないので、空白がないこの 2 つを拒否し、
 空白がある形は受け入れます（タグの文法で確かめました。
 詳しくは
 [対象にする版の mermaid.js のために残す形](./compatibility.ja.md#対象にする版の-mermaidjs-のために残す形)
@@ -2475,7 +2475,7 @@ flowchart %%{init: {}}%%LR
 
 ヘッダーでも `direction` の文でも、方向は書かれたまま残します。
 `TD` を `TB` に変えず、`TB` も `TD` に変えません。
-mermaid.js 12.3.0 は 2 つを同じに描きますが、対象にする版のうち 3 つは、
+mermaid.js 12.3.0 は 2 つを同じに描きますが、対象にする版の一部は、
 subgraph があり、ヘッダーに `TB` がある flowchart を、
 同じテキストで `TD` があるものとは違って描きます。
 ヘッダーのキーワードも書かれたまま残します。
@@ -3031,15 +3031,20 @@ flowchart LR
 
 ### スタイルの行末の空白
 
-`style`、`classDef`、`linkStyle` の文の末尾の空白は取り除きます。
+`style`、`classDef`、`linkStyle` の文の末尾の空白とタブは取り除きます。
 [fixture: style-trailing-whitespace/removed]
 [fixture: style-trailing-whitespace/removed-tab]
 [fixture: style-trailing-whitespace/removed-after-directive]
-mermaid.js はその空白を最後のスタイルの末尾に残すので、
+mermaid.js はそれらを最後のスタイルの末尾に残すので、
 この規則は mermaid.js が保存するものを変える規則の 1
 つです（ [同じに描かれるスタイル](./compatibility.ja.md#同じに描かれるスタイル)
 を参照してください）。
-テストは、末尾の空白を除いたスタイルを比べます。
+テストは、末尾の空白とタブを除いたスタイルを比べます。
+末尾にあるノーブレークスペースなど、ほかの種類の空白は残し、
+その行を書かれたままにします。
+詳しくは [スタイルの末尾の空白](./compatibility.ja.md#スタイルの末尾の空白)
+を参照してください。
+[test: keeps whitespace other than a space and a tab at the end of a style]
 `linkStyle` の `stroke:` の後の空白も保ちます。
 （[同じに描かれるスタイル](./compatibility.ja.md#同じに描かれるスタイル)）。
 `linkStyle default stroke: ` の後に `linkStyle 0 stroke:#f00` がある場合も、

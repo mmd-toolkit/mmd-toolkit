@@ -61,7 +61,7 @@ cause at the column of the root, or of the whitespace after the header, a cause
 not deeper than the nearest node before it that it follows, and a root deeper
 than its causes. The specification reads them as children of the root, while the
 first version that has the diagram draws the text printed by depth differently
-from the written text, and the six later ones draw both the same (see
+from the written text, and the later ones draw both the same (see
 [Forms kept for versions of mermaid.js that count](./compatibility.md#forms-kept-for-versions-of-mermaidjs-that-count)).
 A node that follows a comment-ending separator on its line is left to the
 ordinary rules. [fixture: ishikawa/indentation/indent-clamped] [fixture:

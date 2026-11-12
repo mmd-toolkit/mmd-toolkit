@@ -10,7 +10,6 @@ import { findLinkLabelRespellings } from "./link-label-form.ts"
 import { shortestNumber } from "./number-form.ts"
 import { findQuoteFormRespellings } from "./quote-form.ts"
 import type { Source } from "./source.ts"
-import { isSpaceOrTab } from "./source.ts"
 
 /** The text to print in place of the token or node at an offset. */
 export interface Respelling {
@@ -22,9 +21,10 @@ export interface Respelling {
  * The header directions that name the top-to-bottom direction another way, by
  * the diagram type and the direction as written (docs/compatibility.md,
  * Spellings that are drawn the same). The diagram types listed appeared in a
- * version of mermaid.js after 11.10.0, which made `TD` behave as `TB`. The
- * header of a flowchart is not listed: a version before 11.10.0 draws it
- * differently with `TD` than with `TB`.
+ * version of mermaid.js that makes `TD` behave as `TB`. The header of a
+ * flowchart is not listed: some versions that count draw it differently with
+ * `TD` than with `TB` (docs/compatibility.md, Forms kept for versions of
+ * mermaid.js that count).
  */
 const directionSpellings: Readonly<
   Record<string, Readonly<Record<string, string>>>
@@ -71,15 +71,6 @@ const headerColonTypes: ReadonlySet<string> = new Set([
   "gitGraph",
   "radar",
 ])
-
-/**
- * The diagram types whose header colon stays where anything but spaces and
- * tabs stands between the header and the colon: a version that counts rejects
- * a gitGraph header `gitGraph %%{x}%%` that a statement follows on the next
- * line, and accepts it with the colon (docs/compatibility.md, The colon after
- * a header; Forms kept for versions of mermaid.js that count).
- */
-const headerColonNeedsBlanks: ReadonlySet<string> = new Set(["gitGraph"])
 
 /**
  * The cardinalities of a relationship of an ER diagram as symbols, by their
@@ -285,6 +276,42 @@ function findTokenRespellings(
       .trim() === ""
       ? headerIndex + 1
       : -1
+  // The colon of a header follows it. In a gitGraph, directives and a hidden
+  // YAML block, which are tokens, can stand between them. The colon stays after
+  // a directive, since a version that counts rejects `gitGraph %%{x}%%` that a
+  // statement follows on the next line, and accepts it with the colon
+  // (docs/compatibility.md, The colon after a header; Forms kept for versions
+  // of mermaid.js that count). A hidden YAML block between them does not keep
+  // it: the versions that count read the header the same with the colon and
+  // without it, or reject both.
+  const afterHeader =
+    type === "gitGraph"
+      ? tokens.findIndex(
+          (token, index) =>
+            index > headerIndex &&
+            token.type !== "Directive" &&
+            token.type !== "RawText",
+        )
+      : headerIndex + 1
+  const between = tokens.slice(headerIndex + 1, afterHeader)
+  // A colon on a line of its own after a hidden YAML block stays: the printer
+  // keeps the line break after a hidden form, so leaving the colon out would
+  // leave an empty line there (docs/gitgraph.md, Hidden yaml).
+  const colonOnItsOwnLine =
+    between.length > 0 &&
+    source.text
+      .slice(
+        between[between.length - 1].range[1],
+        tokens[afterHeader]?.range[0],
+      )
+      .includes("\n")
+  const colonIndex =
+    (between.some((token) => token.type === "Directive") &&
+      !between.some((token) => token.type === "RawText")) ||
+    colonOnItsOwnLine
+      ? -1
+      : afterHeader
+
   // The label of a flow of a Wardley map is between `'` only (`+'moving'>`).
   const arrows: Range[] = []
   collectRanges(source.root, (name) => name === "WardleyArrow", arrows)
@@ -303,13 +330,9 @@ function findTokenRespellings(
     } else if (token.type === "Punctuator") {
       respelled =
         headerColonTypes.has(type) &&
-        index === headerIndex + 1 &&
+        index === colonIndex &&
         text === ":" &&
-        !isTouchedAfter(source, token.range[1]) &&
-        (!headerColonNeedsBlanks.has(type) ||
-          [
-            ...source.text.slice(tokens[headerIndex].range[1], token.range[0]),
-          ].every(isSpaceOrTab))
+        !isTouchedAfter(source, token.range[1])
           ? ""
           : punctuationAliases[type]?.[text]
     } else if (

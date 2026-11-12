@@ -41,6 +41,20 @@ by 12.0.0. The other versions of the period (11.9.0, 11.10.1, 11.11.0, 11.12.3,
 12.1.0, and 12.2.0) are not checked, and a form that only they reject or draw
 differently is printed.
 
+The texts that the tables name were drawn in Chromium with
+`mermaid.initialize({ startOnLoad: false, securityLevel: "loose", … })`, fixed
+ids for the figure, and the default configuration of each version otherwise. The
+pairs of header spellings of the table of forms kept (`graph` and `flowchart`,
+`stateDiagram` and `stateDiagram-v2`, `treemap` and `treemap-beta`, `ishikawa`
+and `ishikawa-beta`) were drawn by the ten versions again under five
+configurations: the default one; `flowchart.defaultRenderer` and
+`state.defaultRenderer` set to `dagre-d3`, once by a directive in the text and
+once by `mermaid.initialize`, with the same result; `layout: elk`, which the
+bundles do not load, so that the two texts of a pair were drawn alike or both
+rejected; `look: neo`; and `htmlLabels: false`. Only `defaultRenderer` changed
+the result, and the rows of those two pairs name it. The other settings, such as
+`theme` and the settings of each diagram type, were not drawn.
+
 The period is about the versions that users run. Of the downloads of mermaid
 from npm in the week before 2026-11-12 (about 26.6 million, by version from
 [`api.npmjs.org/versions/mermaid/last-week`](https://api.npmjs.org/versions/mermaid/last-week)),
@@ -65,45 +79,49 @@ A row is a rule that
 [How the printed form is decided](./printed-form.md#the-versions-of-mermaidjs-that-count)
 takes out when none of the versions that the row names counts any longer.
 
-| Diagram                                                      | Kept as written                                                                                               | The rules would print                              | Rule                                                  | Needed by                                                                                                                                                            | Fixture                                                                     |
-| ------------------------------------------------------------ | ------------------------------------------------------------------------------------------------------------- | -------------------------------------------------- | ----------------------------------------------------- | -------------------------------------------------------------------------------------------------------------------------------------------------------------------- | --------------------------------------------------------------------------- |
-| [block](./block.md#header)                                   | `block-beta`                                                                                                  | `block`                                            | [3](./printed-form.md#3-a-spelling)                   | 10.9.8, 11.7.0, 11.8.1 reject `block`                                                                                                                                | [fixture: block/header/block-beta-kept]                                     |
-| [sankey](./sankey.md#header)                                 | `sankey-beta`                                                                                                 | `sankey`                                           | [3](./printed-form.md#3-a-spelling)                   | 10.9.8, 11.7.0, 11.8.1 reject `sankey`                                                                                                                               | [fixture: sankey/header/sankey-beta]                                        |
-| [xychart](./xychart.md#header-and-orientation)               | `xychart-beta`                                                                                                | `xychart`                                          | [3](./printed-form.md#3-a-spelling)                   | 10.9.8, 11.7.0, 11.8.1 reject `xychart`                                                                                                                              | [fixture: xychart/header-and-orientation/beta-header-kept]                  |
-| [packet](./packet.md#header)                                 | `packet-beta`                                                                                                 | `packet`                                           | [3](./printed-form.md#3-a-spelling)                   | 11.7.0, 11.8.1 reject `packet` (10.9.8 has no packet diagram)                                                                                                        | [fixture: packet/header/header-beta]                                        |
-| [flowchart](./flowchart.md#direction)                        | `flowchart TB`                                                                                                | `flowchart TD`                                     | [3](./printed-form.md#3-a-spelling)                   | 10.9.8, 11.7.0, 11.8.1 draw a flowchart with a subgraph differently                                                                                                  | [fixture: flowchart/direction/header-tb-kept]                               |
-| [flowchart](./flowchart.md#direction)                        | `graph LR`                                                                                                    | `flowchart LR`                                     | [3](./printed-form.md#3-a-spelling)                   | 11.7.0, 11.8.1, 11.13.0, 11.14.0, 11.15.0, 11.16.1, 11.17.2 read `graph` and reject `flowchart` where `flowchart.defaultRenderer` is `dagre-d3`                      | [fixture: flowchart/direction/header-keyword-kept]                          |
-| [state](./state.md#header)                                   | `stateDiagram`                                                                                                | `stateDiagram-v2`                                  | [3](./printed-form.md#3-a-spelling)                   | where `state.defaultRenderer` is `dagre-d3`, 10.9.8 draws the two differently, and 11.7.0, 11.8.1, 11.13.0, 11.14.0, 11.15.0, 11.16.1, 11.17.2 reject `stateDiagram` | [fixture: state/header/spellings-kept]                                      |
-| [flowchart, swimlane](./flowchart.md#label-inner-whitespace) | `A[ user@example.com ]`                                                                                       | `A[user@example.com]`                              | [1](./printed-form.md#1-the-whitespace-beside-a-mark) | flowchart: 11.7.0, 11.8.1, 11.13.0, 11.14.0, 11.15.0, 11.16.1, 11.17.2, 12.0.0; swimlane: 11.16.1, 11.17.2, 12.0.0; they reject the tight form                       | [fixture: flowchart/label-inner-whitespace/leading-whitespace-at-sign-kept] |
-| [flowchart, swimlane](./flowchart.md#arrow-spacing)          | `A@{ shape: circle }e1@--> B`                                                                                 | `A@{ shape: circle } e1@--> B`                     | [1](./printed-form.md#1-the-whitespace-beside-a-mark) | flowchart: 11.7.0, 11.8.1, 11.13.0, 11.14.0, 11.15.0, 11.16.1, 11.17.2, 12.0.0; swimlane: 11.16.1, 11.17.2, 12.0.0; they reject the form with a space                | [fixture: flowchart/arrow-spacing/edge-id-after-data-block-touches]         |
-| [flowchart](./flowchart.md#whitespace-between-tokens)        | `style A fill:#f00,color:white` printed `style A fill: #f00,color: white`                                     | `style A fill: #f00, color: white`                 | [1](./printed-form.md#1-the-whitespace-beside-a-mark) | 10.9.8 takes the label colour from a style that starts with `color:` or `text-align:`                                                                                | [fixture: flowchart/whitespace-between-tokens/style-color-touching-kept]    |
-| [flowchart](./flowchart.md#whitespace-between-tokens)        | `linkStyle 0 stroke:#f00,color:red` printed `linkStyle 0 stroke: #f00,color: red`                             | `linkStyle 0 stroke: #f00, color: red`             | [1](./printed-form.md#1-the-whitespace-beside-a-mark) | 10.9.8 does the same for the label of a link                                                                                                                         | [fixture: flowchart/whitespace-between-tokens/link-style-label-names-kept]  |
-| [flowchart](./flowchart.md#whitespace-between-tokens)        | `style A stroke-width:3px\ ,stroke:#0f0` printed `style A stroke-width: 3px\ , stroke: #0f0`                  | `style A stroke-width: 3px\, stroke: #0f0`         | [1](./printed-form.md#1-the-whitespace-beside-a-mark) | 10.9.8 joins the styles of a node with `;` as they are                                                                                                               | [fixture: flowchart/whitespace-between-tokens/style-backslash-space-kept]   |
-| [class](./class.md#whitespace-between-tokens)                | `style A fill:#f00,color:white` printed `style A fill: #f00,color: white`; `color :red` printed `color : red` | `style A fill: #f00, color: white`                 | [1](./printed-form.md#1-the-whitespace-beside-a-mark) | 10.9.8 takes the label colour from a style that starts with `color:`                                                                                                 | [fixture: class/whitespace-between-tokens/style-color-touching-kept]        |
-| [class](./class.md#member-lines)                             | `+<tab>int x`                                                                                                 | `+int x`                                           | [1](./printed-form.md#1-the-whitespace-beside-a-mark) | 10.9.8 reads the tab as part of the name                                                                                                                             | [fixture: class/member-lines/visibility-tab-kept]                           |
-| [block](./block.md#edges)                                    | `A ---x B`, `A ---o B`                                                                                        | `A --x B`, `A --o B`                               | [3](./printed-form.md#3-a-spelling)                   | 10.9.8, 11.7.0, 11.8.1 draw them differently                                                                                                                         | [fixture: block/edges/arrow-length-kept-where-drawn-differently]            |
-| [block](./block.md#edges)                                    | `A ===x B`, `A ===o B`                                                                                        | `A ==x B`, `A ==o B`                               | [3](./printed-form.md#3-a-spelling)                   | 10.9.8, 11.7.0, 11.8.1, 11.13.0, 11.14.0 draw them differently                                                                                                       | [fixture: block/edges/arrow-length-kept-where-drawn-differently]            |
-| [block](./block.md#edges)                                    | `A ==== B`                                                                                                    | `A === B`                                          | [3](./printed-form.md#3-a-spelling)                   | 10.9.8, 11.7.0, 11.8.1, 11.13.0, 11.14.0 read the line as ids that differ with its length                                                                            | [fixture: block/edges/arrow-length-kept-where-drawn-differently]            |
-| [sequence](./sequence.md#colons)                             | `A->>B: ` (one whitespace character after the `:`)                                                            | `A->>B:`                                           | [1](./printed-form.md#1-the-whitespace-beside-a-mark) | 10.9.8 rejects a `:` with nothing after it                                                                                                                           | [fixture: sequence/colons/whitespace-only-text]                             |
-| [sequence](./sequence.md#colons)                             | `A->>B:%%{init: {}}%%` and two spaces, or a no-break space after the `:`                                      | the line without the whitespace                    | [1](./printed-form.md#1-the-whitespace-beside-a-mark) | 10.9.8 rejects the line without the whitespace                                                                                                                       | [fixture: sequence/colons/directive-then-whitespace-kept]                   |
-| [sequence](./sequence.md#arrow-spacing)                      | `A () ->> () B`                                                                                               | `A() ->> ()B`                                      | [1](./printed-form.md#1-the-whitespace-beside-a-mark) | 10.9.8, 11.7.0, 11.8.1 read `()` as part of a name                                                                                                                   | [fixture: sequence/arrow-spacing/parentheses-touching]                      |
-| [sequence](./sequence.md#arrow-spacing)                      | `A<<->>B` printed `A<<->> B`                                                                                  | `A <<->> B`                                        | [1](./printed-form.md#1-the-whitespace-beside-a-mark) | 10.9.8 reads the `<<` as part of the name before it                                                                                                                  | [fixture: sequence/arrow-spacing/bidirectional-arrow-gap-before-kept]       |
-| [gitGraph](./gitgraph.md#header)                             | `gitGraph %%{x}%%:` printed `gitGraph%%{x}%%:`                                                                | `gitGraph %%{x}%%`                                 | [3](./printed-form.md#3-a-spelling)                   | 10.9.8 rejects the header without the colon after a directive                                                                                                        | [fixture: gitgraph/header/header-directive-before-colon-kept]               |
-| [gitGraph](./gitgraph.md#references)                         | `branch "Merge"`, `branch "lr-x"`                                                                             | `branch Merge`, `branch lr-x`                      | [3](./printed-form.md#3-a-spelling)                   | 10.9.8 reads the keywords in any case, and `lr-x` as `lr` and `-x`                                                                                                   | [fixture: gitgraph/references/names-that-need-quotes]                       |
-| [timeline](./timeline.md#header-and-direction)               | `timeline td`; `timeline TD title T`                                                                          | `timeline TD`; the text on a line of its own       | [3](./printed-form.md#3-a-spelling)                   | 10.9.8, 11.7.0, 11.8.1, 11.13.0 read the words as a period                                                                                                           | [fixture: timeline/header-and-direction/direction-case-kept]                |
-| [timeline](./timeline.md#titles-and-sections)                | `title`, a line break, `# c`                                                                                  | `title # c`                                        | [1](./printed-form.md#1-the-whitespace-beside-a-mark) | 10.9.8 reads them as a title of whitespace and a comment                                                                                                             | [fixture: timeline/titles-and-sections/title-hash-on-next-line-kept]        |
-| [ER](./er.md#whitespace-between-tokens)                      | `class-A a`                                                                                                   | `class -A a`                                       | [1](./printed-form.md#1-the-whitespace-beside-a-mark) | 10.9.8 rejects the form with a space                                                                                                                                 | [fixture: er/whitespace-between-tokens/keyword-then-dash-touching-kept]     |
-| [ER](./er.md#whitespace-between-tokens)                      | `subgraph-x`, `end-x`                                                                                         | `subgraph -x`; `end` and `-x` on a line of its own | [1](./printed-form.md#1-the-whitespace-beside-a-mark) | 10.9.8 rejects the form with a space; 11.7.0, 11.8.1, 11.13.0, 11.14.0, 11.15.0, 11.16.1 draw it differently                                                         | [fixture: er/whitespace-between-tokens/subgraph-then-dash-touching-kept]    |
-| [ER](./er.md#direction)                                      | `DIRECTION lr`                                                                                                | `direction LR`                                     | [3](./printed-form.md#3-a-spelling)                   | 10.9.8 reads the line as entities                                                                                                                                    | [fixture: er/direction/case-kept]                                           |
-| [ER](./er.md#subgraphs)                                      | `SUBGRAPH S` and `END`                                                                                        | `subgraph S` and `end`                             | [3](./printed-form.md#3-a-spelling)                   | 10.9.8, 11.7.0, 11.8.1, 11.13.0, 11.14.0, 11.15.0, 11.16.1 read them as entities                                                                                     | [fixture: er/subgraphs/end-case-kept]                                       |
-| [ER](./er.md#entities)                                       | `"Zoë"` in quotes                                                                                             | `Zoë`                                              | [3](./printed-form.md#3-a-spelling)                   | 10.9.8 rejects a name without quotes with a letter outside ASCII                                                                                                     | [fixture: er/entities/names-that-need-quotes]                               |
-| [ER](./er.md#entities)                                       | `"a.b"` in quotes                                                                                             | `a.b`                                              | [3](./printed-form.md#3-a-spelling)                   | 10.9.8, 11.7.0, 11.8.1 reject a `.` in a name without quotes                                                                                                         | [fixture: er/entities/name-with-dot-kept]                                   |
-| [treemap](./treemap.md#title)                                | `title T` at the start of its line                                                                            | `  title T` one step in                            | [1](./printed-form.md#1-the-whitespace-beside-a-mark) | 11.8.1 rejects a title, `accTitle`, and `accDescr` that is indented                                                                                                  | [fixture: treemap/title/line-start-kept]                                    |
-| [ishikawa](./ishikawa.md#indentation)                        | `ishikawa`, `R`, `  A`, ` B`, `  C` as written                                                                | every node at its depth                            | [1](./printed-form.md#1-the-whitespace-beside-a-mark) | 11.13.0 draws the text printed by depth differently from the written text                                                                                            | [fixture: ishikawa/indentation/indent-relative-zero]                        |
-| [Wardley](./wardley.md#links)                                | `Alpha-->Beta` printed `Alpha--> Beta`                                                                        | `Alpha- -> Beta`                                   | [1](./printed-form.md#1-the-whitespace-beside-a-mark) | 11.14.0 rejects a name with a `-`                                                                                                                                    | [fixture: wardley/links/link-long-glued]                                    |
-| [Wardley](./wardley.md#names-and-quotes)                     | `"real-time"` in quotes                                                                                       | `real-time`                                        | [3](./printed-form.md#3-a-spelling)                   | 11.14.0 rejects a name with a `-` without quotes                                                                                                                     | [fixture: wardley/names-and-quotes/names-that-need-quotes]                  |
-| [treeView](./treeview.md#names)                              | `"name"` in quotes                                                                                            | `name`                                             | [3](./printed-form.md#3-a-spelling)                   | 11.14.0, 11.15.0 read a name in quotes only                                                                                                                          | [fixture: treeview/names/quoted-name-kept]                                  |
-| [architecture](./architecture.md#quotes)                     | `["A.B"]` in quotes                                                                                           | `[A.B]`                                            | [3](./printed-form.md#3-a-spelling)                   | 11.13.0, 11.14.0, 11.15.0, 11.16.1 read a label without quotes of ASCII letters, digits, `_`, and spaces only                                                        | [fixture: architecture/quotes/labels-that-need-quotes]                      |
+A form that the pinned version itself rejects or draws differently stays
+whatever the other versions are, so it has no row.
+
+| Diagram                                                      | Kept as written                                                                                                   | The rules would print                              | Rule                                                  | Needed by                                                                                                                                                            | Fixture                                                                     |
+| ------------------------------------------------------------ | ----------------------------------------------------------------------------------------------------------------- | -------------------------------------------------- | ----------------------------------------------------- | -------------------------------------------------------------------------------------------------------------------------------------------------------------------- | --------------------------------------------------------------------------- |
+| [block](./block.md#header)                                   | `block-beta`                                                                                                      | `block`                                            | [3](./printed-form.md#3-a-spelling)                   | 10.9.8, 11.7.0, 11.8.1 reject `block`                                                                                                                                | [fixture: block/header/block-beta-kept]                                     |
+| [sankey](./sankey.md#header)                                 | `sankey-beta`                                                                                                     | `sankey`                                           | [3](./printed-form.md#3-a-spelling)                   | 10.9.8, 11.7.0, 11.8.1 reject `sankey`                                                                                                                               | [fixture: sankey/header/sankey-beta]                                        |
+| [xychart](./xychart.md#header-and-orientation)               | `xychart-beta`                                                                                                    | `xychart`                                          | [3](./printed-form.md#3-a-spelling)                   | 10.9.8, 11.7.0, 11.8.1 reject `xychart`                                                                                                                              | [fixture: xychart/header-and-orientation/beta-header-kept]                  |
+| [packet](./packet.md#header)                                 | `packet-beta`                                                                                                     | `packet`                                           | [3](./printed-form.md#3-a-spelling)                   | 11.7.0, 11.8.1 reject `packet` (10.9.8 has no packet diagram)                                                                                                        | [fixture: packet/header/header-beta]                                        |
+| [flowchart](./flowchart.md#direction)                        | `flowchart TB`                                                                                                    | `flowchart TD`                                     | [3](./printed-form.md#3-a-spelling)                   | 10.9.8, 11.7.0, 11.8.1 draw a flowchart with a subgraph differently                                                                                                  | [fixture: flowchart/direction/header-tb-kept]                               |
+| [flowchart](./flowchart.md#direction)                        | `graph LR`                                                                                                        | `flowchart LR`                                     | [3](./printed-form.md#3-a-spelling)                   | 10.9.8, 11.7.0, 11.8.1, 11.13.0, 11.14.0, 11.15.0, 11.16.1, 11.17.2 read `graph` and reject `flowchart` where `flowchart.defaultRenderer` is `dagre-d3`              | [fixture: flowchart/direction/header-keyword-kept]                          |
+| [state](./state.md#header)                                   | `stateDiagram`                                                                                                    | `stateDiagram-v2`                                  | [3](./printed-form.md#3-a-spelling)                   | where `state.defaultRenderer` is `dagre-d3`, 10.9.8 draws the two differently, and 11.7.0, 11.8.1, 11.13.0, 11.14.0, 11.15.0, 11.16.1, 11.17.2 reject `stateDiagram` | [fixture: state/header/spellings-kept]                                      |
+| [flowchart, swimlane](./flowchart.md#label-inner-whitespace) | `A[ user@example.com ]`                                                                                           | `A[user@example.com]`                              | [1](./printed-form.md#1-the-whitespace-beside-a-mark) | flowchart: 11.7.0, 11.8.1, 11.13.0, 11.14.0, 11.15.0, 11.16.1, 11.17.2, 12.0.0; swimlane: 11.16.1, 11.17.2, 12.0.0; they reject the tight form                       | [fixture: flowchart/label-inner-whitespace/leading-whitespace-at-sign-kept] |
+| [flowchart, swimlane](./flowchart.md#arrow-spacing)          | `A@{ shape: circle }e1@--> B`                                                                                     | `A@{ shape: circle } e1@--> B`                     | [1](./printed-form.md#1-the-whitespace-beside-a-mark) | flowchart: 11.7.0, 11.8.1, 11.13.0, 11.14.0, 11.15.0, 11.16.1, 11.17.2, 12.0.0; swimlane: 11.16.1, 11.17.2, 12.0.0; they reject the form with a space                | [fixture: flowchart/arrow-spacing/edge-id-after-data-block-touches]         |
+| [flowchart](./flowchart.md#whitespace-between-tokens)        | `style A fill:#f00,color:white` printed `style A fill: #f00,color: white`                                         | `style A fill: #f00, color: white`                 | [1](./printed-form.md#1-the-whitespace-beside-a-mark) | 10.9.8 takes the label colour from a style that starts with `color:` or `text-align:`                                                                                | [fixture: flowchart/whitespace-between-tokens/style-color-touching-kept]    |
+| [flowchart](./flowchart.md#whitespace-between-tokens)        | `linkStyle 0 stroke:#f00,color:red` printed `linkStyle 0 stroke: #f00,color: red`                                 | `linkStyle 0 stroke: #f00, color: red`             | [1](./printed-form.md#1-the-whitespace-beside-a-mark) | 10.9.8 does the same for the label of a link                                                                                                                         | [fixture: flowchart/whitespace-between-tokens/link-style-label-names-kept]  |
+| [flowchart](./flowchart.md#whitespace-between-tokens)        | `style A stroke-width:3px\ ,stroke:#0f0` printed `style A stroke-width: 3px\ , stroke: #0f0`                      | `style A stroke-width: 3px\, stroke: #0f0`         | [1](./printed-form.md#1-the-whitespace-beside-a-mark) | 10.9.8 joins the styles of a node with `;` as they are                                                                                                               | [fixture: flowchart/whitespace-between-tokens/style-backslash-space-kept]   |
+| [flowchart](./flowchart.md#style-trailing-whitespace)        | the line of a `style` or a `classDef` that ends in a no-break space, U+3000, a vertical tab, or a byte order mark | the line without the character                     | [1](./printed-form.md#1-the-whitespace-beside-a-mark) | 10.9.8 draws the text without the character differently                                                                                                              | [test: keeps whitespace other than a space and a tab at the end of a style] |
+| [class](./class.md#whitespace-between-tokens)                | `style A fill:#f00,color:white` printed `style A fill: #f00,color: white`; `color :red` printed `color : red`     | `style A fill: #f00, color: white`                 | [1](./printed-form.md#1-the-whitespace-beside-a-mark) | 10.9.8 takes the label colour from a style that starts with `color:`                                                                                                 | [fixture: class/whitespace-between-tokens/style-color-touching-kept]        |
+| [class](./class.md#member-lines)                             | `+<tab>int x`, the tab after the mark of an attribute                                                             | `+int x`                                           | [1](./printed-form.md#1-the-whitespace-beside-a-mark) | 10.9.8 reads the tab as part of the name                                                                                                                             | [fixture: class/member-lines/visibility-tab-kept]                           |
+| [block](./block.md#edges)                                    | `A ---x B`, `A ---o B`                                                                                            | `A --x B`, `A --o B`                               | [3](./printed-form.md#3-a-spelling)                   | 10.9.8, 11.7.0, 11.8.1 draw them differently                                                                                                                         | [fixture: block/edges/arrow-length-kept-where-drawn-differently]            |
+| [block](./block.md#edges)                                    | `A ===x B`, `A ===o B`                                                                                            | `A ==x B`, `A ==o B`                               | [3](./printed-form.md#3-a-spelling)                   | 10.9.8, 11.7.0, 11.8.1, 11.13.0, 11.14.0 draw them differently                                                                                                       | [fixture: block/edges/arrow-length-kept-where-drawn-differently]            |
+| [block](./block.md#edges)                                    | `A ==== B`                                                                                                        | `A === B`                                          | [3](./printed-form.md#3-a-spelling)                   | 10.9.8, 11.7.0, 11.8.1, 11.13.0, 11.14.0 read the line as ids that differ with its length                                                                            | [fixture: block/edges/arrow-length-kept-where-drawn-differently]            |
+| [sequence](./sequence.md#colons)                             | `A->>B: ` (one whitespace character after the `:`)                                                                | `A->>B:`                                           | [1](./printed-form.md#1-the-whitespace-beside-a-mark) | 10.9.8 rejects a `:` with nothing after it                                                                                                                           | [fixture: sequence/colons/whitespace-only-text]                             |
+| [sequence](./sequence.md#colons)                             | `A->>B:%%{init: {}}%%` and two spaces, or a no-break space after the `:`                                          | the line without the whitespace                    | [1](./printed-form.md#1-the-whitespace-beside-a-mark) | 10.9.8 rejects the line without the whitespace                                                                                                                       | [fixture: sequence/colons/directive-then-whitespace-kept]                   |
+| [sequence](./sequence.md#arrow-spacing)                      | `A () ->> () B`                                                                                                   | `A() ->> ()B`                                      | [1](./printed-form.md#1-the-whitespace-beside-a-mark) | 10.9.8, 11.7.0, 11.8.1 read `()` as part of a name                                                                                                                   | [fixture: sequence/arrow-spacing/parentheses-touching]                      |
+| [sequence](./sequence.md#arrow-spacing)                      | `A<<->>B` printed `A<<->> B`                                                                                      | `A <<->> B`                                        | [1](./printed-form.md#1-the-whitespace-beside-a-mark) | 10.9.8 reads the `<<` as part of the name before it                                                                                                                  | [fixture: sequence/arrow-spacing/bidirectional-arrow-gap-before-kept]       |
+| [gitGraph](./gitgraph.md#header)                             | `gitGraph %%{x}%%:` printed `gitGraph%%{x}%%:`                                                                    | `gitGraph %%{x}%%`                                 | [3](./printed-form.md#3-a-spelling)                   | 10.9.8 rejects the header without the colon after a directive                                                                                                        | [fixture: gitgraph/header/header-directive-before-colon-kept]               |
+| [gitGraph](./gitgraph.md#references)                         | `branch "Merge"`, `branch "lr-x"`                                                                                 | `branch Merge`, `branch lr-x`                      | [3](./printed-form.md#3-a-spelling)                   | 10.9.8 reads the keywords in any case, and `lr-x` as `lr` and `-x`                                                                                                   | [fixture: gitgraph/references/names-that-need-quotes]                       |
+| [timeline](./timeline.md#header-and-direction)               | `timeline td`; `timeline TD title T`                                                                              | `timeline TD`; the text on a line of its own       | [3](./printed-form.md#3-a-spelling)                   | 10.9.8, 11.7.0, 11.8.1, 11.13.0 read the words as a period                                                                                                           | [fixture: timeline/header-and-direction/direction-case-kept]                |
+| [timeline](./timeline.md#titles-and-sections)                | `title`, a line break, `# c`                                                                                      | `title # c`                                        | [1](./printed-form.md#1-the-whitespace-beside-a-mark) | 10.9.8 reads them as a title of whitespace and a comment                                                                                                             | [fixture: timeline/titles-and-sections/title-hash-on-next-line-kept]        |
+| [ER](./er.md#whitespace-between-tokens)                      | `class-A a`                                                                                                       | `class -A a`                                       | [1](./printed-form.md#1-the-whitespace-beside-a-mark) | 10.9.8 rejects the form with a space                                                                                                                                 | [fixture: er/whitespace-between-tokens/keyword-then-dash-touching-kept]     |
+| [ER](./er.md#whitespace-between-tokens)                      | `subgraph-x`, `end-x`                                                                                             | `subgraph -x`; `end` and `-x` on a line of its own | [1](./printed-form.md#1-the-whitespace-beside-a-mark) | 10.9.8 rejects the form with a space; 11.7.0, 11.8.1, 11.13.0, 11.14.0, 11.15.0, 11.16.1 draw it differently                                                         | [fixture: er/whitespace-between-tokens/subgraph-then-dash-touching-kept]    |
+| [ER](./er.md#direction)                                      | `DIRECTION lr`                                                                                                    | `direction LR`                                     | [3](./printed-form.md#3-a-spelling)                   | 10.9.8 reads the line as entities                                                                                                                                    | [fixture: er/direction/case-kept]                                           |
+| [ER](./er.md#subgraphs)                                      | `SUBGRAPH S` and `END`                                                                                            | `subgraph S` and `end`                             | [3](./printed-form.md#3-a-spelling)                   | 10.9.8, 11.7.0, 11.8.1, 11.13.0, 11.14.0, 11.15.0, 11.16.1 read them as entities                                                                                     | [fixture: er/subgraphs/end-case-kept]                                       |
+| [ER](./er.md#entities)                                       | `"Zoë"` in quotes                                                                                                 | `Zoë`                                              | [3](./printed-form.md#3-a-spelling)                   | 10.9.8 rejects a name without quotes with a letter outside ASCII                                                                                                     | [fixture: er/entities/names-that-need-quotes]                               |
+| [ER](./er.md#entities)                                       | `"a.b"` in quotes                                                                                                 | `a.b`                                              | [3](./printed-form.md#3-a-spelling)                   | 10.9.8, 11.7.0, 11.8.1 reject a `.` in a name without quotes                                                                                                         | [fixture: er/entities/name-with-dot-kept]                                   |
+| [treemap](./treemap.md#title)                                | `title T` at the start of its line                                                                                | `  title T` one step in                            | [1](./printed-form.md#1-the-whitespace-beside-a-mark) | 11.8.1 rejects a title, `accTitle`, and `accDescr` that is indented                                                                                                  | [fixture: treemap/title/line-start-kept]                                    |
+| [ishikawa](./ishikawa.md#indentation)                        | `ishikawa`, `R`, `  A`, ` B`, `  C` as written                                                                    | every node at its depth                            | [1](./printed-form.md#1-the-whitespace-beside-a-mark) | 11.13.0 draws the text printed by depth differently from the written text                                                                                            | [fixture: ishikawa/indentation/indent-relative-zero]                        |
+| [Wardley](./wardley.md#links)                                | `Alpha-->Beta` printed `Alpha--> Beta`                                                                            | `Alpha- -> Beta`                                   | [1](./printed-form.md#1-the-whitespace-beside-a-mark) | 11.14.0 rejects a name with a `-`                                                                                                                                    | [fixture: wardley/links/link-long-glued]                                    |
+| [Wardley](./wardley.md#names-and-quotes)                     | `"real-time"` in quotes                                                                                           | `real-time`                                        | [3](./printed-form.md#3-a-spelling)                   | 11.14.0 rejects a name with a `-` without quotes                                                                                                                     | [fixture: wardley/names-and-quotes/names-that-need-quotes]                  |
+| [treeView](./treeview.md#names)                              | `"name"` in quotes                                                                                                | `name`                                             | [3](./printed-form.md#3-a-spelling)                   | 11.14.0, 11.15.0 read a name in quotes only                                                                                                                          | [fixture: treeview/names/quoted-name-kept]                                  |
+| [architecture](./architecture.md#quotes)                     | `["A.B"]` in quotes                                                                                               | `[A.B]`                                            | [3](./printed-form.md#3-a-spelling)                   | 11.13.0, 11.14.0, 11.15.0, 11.16.1 read a label without quotes of ASCII letters, digits, `_`, and spaces only                                                        | [fixture: architecture/quotes/labels-that-need-quotes]                      |
 
 ## Inputs read differently from mermaid.js
 
@@ -457,18 +475,35 @@ block/multi-line-statements/line-rule-semicolon-after-touching-arrow-kept]
 
 ## Whitespace at the end of a style
 
-Whitespace at the end of a `style`, `classDef`, or `linkStyle` statement is
-removed. [fixture: flowchart/style-trailing-whitespace/removed] mermaid.js keeps
-it at the end of the last style, so this changes what mermaid.js stores,
+Spaces and tabs at the end of a `style`, `classDef`, or `linkStyle` statement
+are removed. [fixture: flowchart/style-trailing-whitespace/removed] mermaid.js
+keeps them at the end of the last style, so this changes what mermaid.js stores,
 separately from the permitted eventmodeling body margins in
 [Data blocks](./eventmodeling.md#data-blocks). The tests compare styles without
-their trailing whitespace.
+their trailing spaces and tabs.
 
-The whitespace is kept where removing it would make mermaid.js reject the
-statement: after a `,` at the end of the list, as in `style A fill:#f00, `.
-[fixture: flowchart/style-trailing-whitespace/whitespace-only-value-kept]
-[corpus fixture: flowchart/db-style-whitespace-only-value] See
-[Style trailing whitespace](./flowchart.md#style-trailing-whitespace).
+Whitespace of another kind at the end (a no-break space, U+3000, a vertical tab,
+a byte order mark) is not removed where mermaid.js draws another figure without
+it: the line stays as written. CSS reads a space, a tab, and a form feed as
+whitespace, but not these characters, and mermaid.js keeps them in the value of
+the last style in some diagram types. The texts with and without each of these
+characters and a form feed were drawn in Chromium by the ten versions that
+count, for the `style`, `classDef`, and `linkStyle` of each diagram type that
+has them. The figure differs, in the pinned version and in others that count,
+for the `style` of a class diagram, for the `classDef` of a class diagram that
+stands after its class, for the `linkStyle` of a flowchart and of an agentflow
+diagram, and for a vertical tab and a form feed in the `classDef` of an ER
+diagram. It differs in another version that counts for the `style` and
+`classDef` of a flowchart (see
+[Forms kept for versions of mermaid.js that count](#forms-kept-for-versions-of-mermaidjs-that-count)).
+These statements keep the character. A form feed is no exception in a class
+diagram or a flowchart, where it is whitespace in CSS and the figure is the
+same. The figure is the same without the character for a block diagram, a state
+diagram, and the `style` and `classDef` of an agentflow diagram, and a
+requirement, a use case, a Venn diagram, and a quadrant chart reject the text
+with the character and accept the text without it, so there the character is
+removed, as the formatter formats other text that mermaid.js rejects. [test:
+keeps whitespace other than a space and a tab at the end of a style]
 
 ## Styles that are drawn the same
 
@@ -667,8 +702,8 @@ backslashes at the end escape each other, and the pixels of
 were the same, so the whitespace after them is dropped. The other styles are not
 affected: the `classDef` of the other diagram types, the `style` of a node of an
 agentflow and a state diagram, and of the other shapes of a block diagram, and
-that of a flowchart in nine of the ten versions that count, since mermaid.js
-takes the whitespace at the ends of their styles away before it uses them
+that of a flowchart in most of the versions that count, since mermaid.js takes
+the whitespace at the ends of their styles away before it uses them
 ([`getCompiledStyles`](https://github.com/mermaid-js/mermaid/blob/2086904e76c692331e34a45d7cc3bc30860d040e/packages/mermaid/src/diagrams/flowchart/flowDb.ts#L1156-L1168),
 [`styles2Map`](https://github.com/mermaid-js/mermaid/blob/2086904e76c692331e34a45d7cc3bc30860d040e/packages/mermaid/src/rendering-util/rendering-elements/shapes/handDrawnShapeStyles.ts#L44-L51)),
 and the pixels of both spellings were the same. A `classDef` of a class diagram
@@ -711,12 +746,12 @@ of a block diagram make the style of their label again from their styles with
 spellings were the same for them and for a `classDef`. [fixture:
 block/styles/style-label-styles-kept]
 
-One of the versions that count reads the `style` of a flowchart and of a class
-diagram so too, and the nine others do not (see
+Some of the versions that count read the `style` of a flowchart and of a class
+diagram so too, and the others do not (see
 [Forms kept for versions of mermaid.js that count](#forms-kept-for-versions-of-mermaidjs-that-count)).
 In a flowchart, `style A fill:#f00,color:white` and
-`style A fill: #f00, color: white` were drawn with different pixels by that
-version and with the same SVG by the nine others, and the same for
+`style A fill: #f00, color: white` were drawn with different pixels by those
+versions and with the same SVG by the others, and the same for
 `text-align:right` on a node with a label of two lines, and for `color :red`. In
 a class diagram the pixels differed for `color` only. So in the `style` of a
 flowchart a style that starts with `color:` or `text-align:` keeps whether
@@ -1750,10 +1785,11 @@ the parser reads 524 of them, and the counts below are counts in those 524.
 
 The comparisons use the pinned mermaid.js only, while the formatted text is also
 drawn by other versions of mermaid.js. So a spelling is also kept as written
-where the form that would be printed is not accepted by every version that
-accepts the form that was written.
-[Versions of mermaid.js](#versions-of-mermaidjs) shows what was read for each
-kind.
+where one of the [versions that count](#versions-of-mermaidjs-that-count)
+rejects the form that would be printed or draws it differently.
+[Forms kept for versions of mermaid.js that count](#forms-kept-for-versions-of-mermaidjs-that-count)
+lists each such form, and [Versions of mermaid.js](#versions-of-mermaidjs) shows
+what was read in the grammars for each kind.
 
 Each kind was compared with mermaid.js 12.3.0 before the printer wrote its form.
 For each example that holds the spelling, the example was written again in the
@@ -1901,9 +1937,9 @@ as part of a name. An ER diagram keeps `direction`, its value, `subgraph`, and
 `end` as written too: one version that counts has no direction line and reads
 `direction tb` as two entities, and seven have no subgraph and read `subgraph S`
 and `end` as entities, whose names keep their case. `direction tb` and
-`direction TB` were drawn differently by the one and the same by the other nine.
-A text with `SUBGRAPH S` or `END` and the same text with `subgraph S` or `end`
-were drawn differently by the seven and the same by the three others (see
+`direction TB` were drawn differently by the one and the same by the others. A
+text with `SUBGRAPH S` or `END` and the same text with `subgraph S` or `end`
+were drawn differently by some and the same by the others (see
 [Forms kept for versions of mermaid.js that count](#forms-kept-for-versions-of-mermaidjs-that-count)).
 The `style` of an ER diagram, a requirement diagram, and a Venn diagram, and the
 `classDef` of an ER diagram, a state diagram, a requirement diagram, and a
@@ -2087,9 +2123,9 @@ that starts with `<` gave the same SVG in any length whatever it ends in
 quadrant inputs of the corpus that the printer changes were read with the same
 Db and drawn the same by every version that reads them. These stay as written,
 since a version that counts draws them differently: an arrow without the `<`
-that ends in `x` or `o` (three versions draw `---x` and `--x`, and `---o` and
-`--o`, differently, and five draw `===x` and `==x` differently), a thick line
-that does not end in `>` (five versions read `===` and `====` as two ids that
+that ends in `x` or `o` (some versions draw `---x` and `--x`, and `---o` and
+`--o`, differently, and some draw `===x` and `==x` differently), a thick line
+that does not end in `>` (some versions read `===` and `====` as two ids that
 differ), and a line of `~` (an id). The row for each of them in
 [Forms kept for versions of mermaid.js that count](#forms-kept-for-versions-of-mermaidjs-that-count)
 names the versions. The length of the link of a flowchart is not one of these:
@@ -2138,11 +2174,19 @@ are the key of the configuration in a frontmatter), so the colon is removed:
 `gitGraph:` is printed `gitGraph`, and what follows it on the line goes to the
 next line. The colon stays after a direction, since every version that counts
 rejects `gitGraph LR` and `gitGraph TB` without it (one of them does not read
-`BT` either way). It stays too where a directive or a hidden YAML block stands
-between the keyword and the colon: the examples write no such header, and a
-version that counts rejects `gitGraph %%{x}%%` followed by a statement on the
-next line, which it accepts with the colon (see the gitGraph row of
+`BT` either way). It stays too where a directive stands between the keyword and
+the colon: the examples write no such header, and a version that counts rejects
+`gitGraph %%{x}%%` followed by a statement on the next line, which it accepts
+with the colon (see the gitGraph row of
 [Forms kept for versions of mermaid.js that count](#forms-kept-for-versions-of-mermaidjs-that-count)).
+`gitGraph %%{}%%:` is no such header: an empty directive is a comment that takes
+the colon with it. [fixture: gitgraph/header/header-hidden-before-colon] A
+hidden YAML block between them does not keep it: `gitGraph ---`, a block, and
+`--- :` followed by a statement were drawn by the ten versions with the colon
+and without it, and the one that does not read the block rejects both, so the
+colon is left out. [fixture: gitgraph/header/header-yaml-before-colon] A colon
+on a line of its own after the block stays, since the printer keeps the line
+break after a hidden form. [corpus fixture: gitgraph/header-hidden-before-colon]
 A directive, a comment, or a hidden form after the colon does not keep it:
 `gitGraph:%%{}%% commit%%{}%%`, `gitGraph: %% note`, and `gitGraph: %%{}%%`
 followed by a statement are drawn the same by the ten versions, with and without
@@ -2152,8 +2196,8 @@ gitgraph/header/header-colon-comment] [fixture:
 gitgraph/header/header-colon-hidden-statement] [fixture:
 gitgraph/header/header-colon-directive-line] [fixture:
 gitgraph/header/header-colon-tab-blank-lines] [fixture:
-gitgraph/header/header-hidden-before-colon] [fixture: gitgraph/header/header-lr]
-[fixture: gitgraph/header/header-tb] [fixture: gitgraph/header/header-bt]
+gitgraph/header/header-lr] [fixture: gitgraph/header/header-tb] [fixture:
+gitgraph/header/header-bt]
 
 ### The label of a link
 
@@ -3278,8 +3322,8 @@ shape with the label `x`. See
 The `@` depends on the version of mermaid.js. In a flowchart, 12.3.0 stops the
 run of an edge id at a bracket and at `|`, so it reads `A[user@example.com]` and
 `A-->|x@|B` as it reads them with the whitespace, and rejects only `A>x@]`; an
-agentflow diagram rejects `A[x@]` in 12.3.0 too. Eight of the versions that
-count do not stop the run there (see
+agentflow diagram rejects `A[x@]` in 12.3.0 too. Some of the versions that count
+do not stop the run there (see
 [Forms kept for versions of mermaid.js that count](#forms-kept-for-versions-of-mermaidjs-that-count)),
 as the grammars of 11.5.0, the first with edge ids, to 12.2.0 do not (the rule
 of the edge id in `flow.jison` of the tags 11.4.1, 11.5.0, 12.2.0, and 12.3.0
@@ -3636,7 +3680,7 @@ sequence/arrow-spacing/touching-before-read-otherwise-kept] See
 ## Sequence messages with a central connection
 
 The whitespace beside the `()` of a sequence message (`A () ->> () B`) stays as
-written, touching or one space. Three of the versions that count have no central
+written, touching or one space. Some of the versions that count have no central
 connection and read the `()` as part of the name next to it, so `A ()` and `A()`
 are two names, and `A ->> () x` and `A ->> ()x` are two targets. The texts with
 and without the whitespace beside a `()` (`A () ->> B` and `A() ->> B`,
@@ -3907,10 +3951,10 @@ around them decide, so formatting keeps them as they are written. See
   and an `end` right before a statement that starts with a `-`: `class-A a`,
   `subgraph-x`, and `end-x`. The lexer of 12.3.0 ends a keyword at a `-`, so
   these are the keyword and the id `-A` or `-x`, and each of the ten versions
-  accepts the written text. One version that counts rejects the text with a
-  space (`class -A a`, and `subgraph -x`), seven draw `subgraph-x` and `end-x`,
+  accepts the written text. Some versions that count reject the text with a
+  space (`class -A a`, and `subgraph -x`), some draw `subgraph-x` and `end-x`,
   which they read as entities, differently from the text with a space, and the
-  nine others draw `class-A a` the same as `class -A a` (see
+  others draw `class-A a` the same as `class -A a` (see
   [Forms kept for versions of mermaid.js that count](#forms-kept-for-versions-of-mermaidjs-that-count)).
   So the keyword and the `-` keep touching, in any case of the keyword.
   `classDef-x` and `style-y` are drawn the same with and without a space by each
@@ -4187,9 +4231,9 @@ Of the versions that count (see
 have no direction in the header of a timeline: they read the words after
 `timeline` as the text of a period, and the six others read `LR` or `TD` as the
 direction. The oldest of the ten also draws a title that starts with a `#`
-differently from the nine others (see the last case). Both texts of each case
-below were drawn with the ten versions, and a form that one of them draws
-differently is kept as written (see
+differently from the others (see the last case). Both texts of each case below
+were drawn with the ten versions, and a form that one of them draws differently
+is kept as written (see
 [Forms kept for versions of mermaid.js that count](#forms-kept-for-versions-of-mermaidjs-that-count)).
 See [Header and direction](./timeline.md#header-and-direction) and
 [Titles and sections](./timeline.md#titles-and-sections).
@@ -5298,10 +5342,10 @@ boundaries keep the body as written.
 A `title`, `accTitle`, or `accDescr` statement, a line or a block, that was not
 written indented is printed at the start of its line. Of the versions that count
 (see [Versions of mermaid.js that count](#versions-of-mermaidjs-that-count)),
-two have no treemap diagram, one rejects these statements when they are indented
-and reads them at the start of their line and after the header on its line
-(`treemaptitle T`, but not `treemap title T`), and the seven others read all of
-these (see
+some have no treemap diagram, the first with the diagram rejects these
+statements when they are indented and reads them at the start of their line and
+after the header on its line (`treemaptitle T`, but not `treemap title T`), and
+the others read all of these (see
 [Forms kept for versions of mermaid.js that count](#forms-kept-for-versions-of-mermaidjs-that-count)).
 The two texts of a title, an `accTitle`, an `accDescr` line, an `accDescr`
 block, and a title after the rows, one with the statement at the start of its
@@ -5859,8 +5903,8 @@ wardley/name-boundaries/title-prefix-safe]
 
 A long arrow right after a name, `Alpha-->Beta`, is read by the first version
 with the diagram as the name `Alpha`, the arrow `-->`, and the name `Beta`,
-since it rejects a `-` inside a name. The five later versions that count read it
-as the name `Alpha-`, the arrow `->`, and the name `Beta`. So no space is put
+since it rejects a `-` inside a name. The later versions that count read it as
+the name `Alpha-`, the arrow `->`, and the name `Beta`. So no space is put
 between a name that ends with a `-` and the arrow after it: `Alpha-->Beta` is
 printed `Alpha--> Beta`, not `Alpha- -> Beta`, which the first version rejects
 (see

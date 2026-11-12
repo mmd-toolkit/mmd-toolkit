@@ -633,7 +633,7 @@ A message has one space before and after its arrow, as a flowchart link does:
 The `+` or `-` after the arrow touches the target: `A ->> + B` is printed
 `A ->> +B`. [fixture: arrow-spacing/plus-and-minus-touching] The whitespace
 beside a `()` stays as written, touching or one space: `A () ->> () B` is
-printed as it is, and `A()->>()B` is printed `A() ->> ()B`, since three versions
+printed as it is, and `A()->>()B` is printed `A() ->> ()B`, since some versions
 that count read the `()` as part of the name next to it (see
 [Sequence messages with a central connection](./compatibility.md#sequence-messages-with-a-central-connection)
 and
@@ -777,32 +777,35 @@ rejects `A->>B:` (its text rule needs a character at least, and that of the
 later versions does not), and so it rejects a note and a `links`, `link`,
 `properties`, or `details` statement the same way (see
 [Forms kept for versions of mermaid.js that count](./compatibility.md#forms-kept-for-versions-of-mermaidjs-that-count)).
-Parsed in Chromium, 9.0.0, 9.1.7, 9.4.3, 10.3.1, 10.9.0, 11.0.0, and 11.4.1
-rejected the text without that character too, and 11.12.3 to 12.3.0 read both.
-[fixture: colons/spaced] [fixture: colons/empty-text] [fixture:
-colons/whitespace-only-text] [fixture: colons/semicolon-after-whitespace-kept]
-The whitespace character that stays is lost at the end of the last line of a
-code block in Markdown, where Prettier removes it whatever the plugin prints
-(see [Markdown code blocks](./compatibility.md#markdown-code-blocks)); `mmdfmt`
-keeps it.
+Parsed in Chromium, one of the versions that count rejected the text without
+that character, and the nine others read both. [fixture: colons/spaced]
+[fixture: colons/empty-text] [fixture: colons/whitespace-only-text] [fixture:
+colons/semicolon-after-whitespace-kept] The whitespace character that stays is
+lost at the end of the last line of a code block in Markdown, where Prettier
+removes it whatever the plugin prints (see
+[Markdown code blocks](./compatibility.md#markdown-code-blocks)); `mmdfmt` keeps
+it.
 
 Where a directive or a whitespace character other than a space and a tab (a
 no-break space, an ideographic space, a byte order mark, U+2028, U+2029) follows
-the `:`, with whitespace in the place of the text, the line is printed as
-written, as the line of a task of a [Gantt chart](./gantt.md#task-data) or a
+the `:` directly, with whitespace in the place of the text, the line is printed
+as written, as the line of a task of a [Gantt chart](./gantt.md#task-data) or a
 [user journey](./journey.md#task-data) is. A version that counts takes a
 whitespace character of any kind for the character that it needs after the `:`,
 and removes a directive before it reads the line, so the whitespace after a
 directive is that character. The printer drops whitespace at the end of a line
 and prints another whitespace character as a space, so it would leave `A->>B:`,
 which such a version rejects: `A->>B:%%{init: {}}%%` followed by two spaces is
-read by 10.9.0, 11.0.0, and 11.4.1, and the text without the spaces is not.
-[fixture: colons/directive-then-whitespace-kept] [test: U+00A0 as the entire
-text of a message] [test: U+3000 as the entire text of a note] [test: U+FEFF as
-the entire text of a `links` statement] [test: U+2029 as the entire text of a
-`link` statement] [test: a space and U+2028 as the entire text of a message]
-[test: U+00A0 as the entire text of a message, with a `;` after it] [test:
-U+00A0 as the entire text of a message in a block]
+accepted by the ten versions that count, and the text without the spaces is
+rejected by one of them. A space or a tab right after the `:` is the character
+that such a version needs, so the line is printed as usual and the rest is left
+out: `A->>B: %%{init: {}}%%` followed by two spaces is printed
+`A ->> B: %%{init: {}}%%`. [fixture: colons/directive-then-whitespace-kept]
+[test: U+00A0 as the entire text of a message] [test: U+3000 as the entire text
+of a note] [test: U+FEFF as the entire text of a `links` statement] [test:
+U+2029 as the entire text of a `link` statement] [test: a space and U+2028 as
+the entire text of a message] [test: U+00A0 as the entire text of a message,
+with a `;` after it] [test: U+00A0 as the entire text of a message in a block]
 
 A line break after the `:` of `accTitle` is whitespace for mermaid.js, so the
 next line is its text: an `accTitle:` with no text cannot stand before another

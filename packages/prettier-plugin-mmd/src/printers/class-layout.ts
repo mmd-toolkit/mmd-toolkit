@@ -542,12 +542,15 @@ function findMemberStretches(source: Source, statement: Node): Atom[] {
 }
 
 /**
- * The visibility mark and the tab after it, as one stretch printed with the
- * tab, where the tab stands between the mark and the text of the member.
- * A version that counts reads the tab as part of the name, as it reads a
- * space, while the others trim it, so neither dropping the tab nor printing a
- * space draws the same (docs/class.md, Member lines; docs/compatibility.md,
- * Forms kept for versions of mermaid.js that count).
+ * The visibility mark and the gap after it that starts with a tab, as one
+ * stretch. A version that counts reads the tab after the mark of an attribute as
+ * part of the name, as it reads a space, while the others trim it, so neither
+ * dropping the tab nor printing a space draws the same, and the stretch is
+ * printed with the tab. Every version that counts ignores the tab after the
+ * mark of a method, so the stretch is the mark alone. A gap that starts with a
+ * space is read as a space by all of them, and the general rule prints it
+ * (docs/class.md, Member lines; docs/compatibility.md, Forms kept for versions
+ * of mermaid.js that count).
  */
 function findTabAfterVisibility(
   source: Source,
@@ -560,11 +563,11 @@ function findTabAfterVisibility(
   if (mark !== "+" && mark !== "-" && mark !== "#" && mark !== "~")
     return undefined
   const gap = source.text.slice(member.range[0] + 1, first.range[0])
-  if (!gap.includes("\t")) return undefined
+  if (!gap.startsWith("\t")) return undefined
   return {
     start: member.range[0],
     end: first.range[0],
-    doc: `${mark}\t`,
+    doc: member.type === "ClassMethod" ? mark : `${mark}\t`,
   }
 }
 

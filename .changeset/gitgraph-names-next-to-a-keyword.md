@@ -9,4 +9,4 @@ quotes, because the lexer of an older version of mermaid.js compares keywords in
 any case and ends them at a `-`, so the same branch came out in two forms
 although every version that the formatter checks now reads both the same. Now
 the quotes stay only on a name that one of those versions reads as a keyword,
-such as `"commit"`, `"Merge"`, or `"lr-x"`.
+such as `"Merge"`.

@@ -9,6 +9,7 @@ import {
   findTokenStartingAt,
   findTokensBetween,
   findTriviaBetween,
+  isAtLineEnd,
   isSpaceOrTab,
   isWhitespace,
 } from "./source.ts"
@@ -699,6 +700,85 @@ export function withJoinedLines(source: Source, kept: KeptLines): KeptLines {
     ...kept,
     verbatim: new Set([...kept.verbatim, ...joinedLines]),
   }
+}
+
+/** Whether a character is whitespace in CSS, other than a line break: a space, a tab, or a form feed. */
+function isCssWhitespace(character: string): boolean {
+  return isSpaceOrTab(character) || character === "\u000c"
+}
+
+/**
+ * The whitespace characters at the end of a statement that a version of
+ * mermaid.js that counts draws a figure differently for, with the character
+ * and without it, by the type of the statement. The statements are the
+ * `style`, `classDef`, and `linkStyle` of the diagram types that keep the
+ * character in the value of the last style. CSS reads a space, a tab, and a
+ * form feed as whitespace, so the figure is the same without them, except for
+ * the `classDef` of an ER diagram, where a vertical tab and a form feed change
+ * it. The statements that are not here, such as those of a block diagram, a
+ * state diagram, and an agentflow `style`, draw the same figure without the
+ * character, and the text that a requirement, use case, or Venn diagram or a
+ * quadrant chart rejects with the character is accepted without it
+ * (docs/compatibility.md, Whitespace at the end of a style).
+ */
+const styleEndCharactersKept: ReadonlyMap<
+  string,
+  (character: string) => boolean
+> = new Map([
+  ["ErClassDefStatement", (c) => c === "\u000b" || c === "\u000c"],
+  ["ClassStyleStatement", (c) => !isCssWhitespace(c)],
+  ["ClassClassDefStatement", (c) => !isCssWhitespace(c)],
+  ["FlowchartStyleStatement", (c) => !isCssWhitespace(c)],
+  ["FlowchartClassDefStatement", (c) => !isCssWhitespace(c)],
+  ["FlowchartLinkStyleStatement", (c) => !isCssWhitespace(c)],
+  ["FlowchartDefaultLinkStyleStatement", (c) => !isCssWhitespace(c)],
+  ["AgentflowLinkStyleStatement", (c) => !isCssWhitespace(c)],
+  ["AgentflowDefaultLinkStyleStatement", (c) => !isCssWhitespace(c)],
+])
+
+const unusualStyleEndsBySource = new WeakMap<Source, ReadonlySet<number>>()
+
+/**
+ * The lines of a `style`, `classDef`, or `linkStyle` statement whose end is
+ * followed, before the end of the line, by a whitespace character that
+ * `styleEndCharactersKept` selects. The statement holds the styles up to its
+ * last token, and the printer leaves out the whitespace after it, which these
+ * lines keep as written.
+ */
+export function findLinesWithUnusualStyleEnd(
+  source: Source,
+): ReadonlySet<number> {
+  const cached = unusualStyleEndsBySource.get(source)
+  if (cached !== undefined) return cached
+  const lines = new Set<number>()
+  for (const statement of findNodes(source.root, (node) =>
+    styleEndCharactersKept.has(node.type),
+  )) {
+    const keeps = styleEndCharactersKept.get(statement.type)
+    let end = statement.range[1]
+    let kept = false
+    while (!isAtLineEnd(source, end) && isWhitespace(source.text[end])) {
+      if (keeps?.(source.text[end]) === true) kept = true
+      end++
+    }
+    if (kept) lines.add(lineStartOf(source, statement.range[1]))
+  }
+  unusualStyleEndsBySource.set(source, lines)
+  return lines
+}
+
+/**
+ * The kept lines with the lines of the statements that end in whitespace other
+ * than a space or a tab added as verbatim lines (see
+ * `findLinesWithUnusualStyleEnd`).
+ */
+export function withUnusualStyleEnds(
+  source: Source,
+  kept: KeptLines,
+): KeptLines {
+  const lines = findLinesWithUnusualStyleEnd(source)
+  if (lines.size === 0) return kept
+  return { ...kept, verbatim: new Set([...kept.verbatim, ...lines]) }
 }
 
 /**

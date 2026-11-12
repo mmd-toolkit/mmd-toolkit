@@ -20,8 +20,7 @@ English version: [gitgraph.md](./gitgraph.md)
 この 2 つの形を同じに読み、同じに描きます。
 方向の後の colon は残します。
 mermaid.js は colon のない `gitGraph LR` を拒否するためです。
-空白とタブ以外のものが前にある colon も残します。
-ディレクティブや hidden YAML ブロックがその例です。
+ディレクティブが前にある colon も残します。
 対象にする版のうち、colon のない見出しの次の行に文が続くと拒否し、
 colon があれば受理するものがあるためです。
 詳しくは [ヘッダーの後のコロン](./compatibility.ja.md#ヘッダーの後のコロン)
@@ -34,6 +33,15 @@ colon の前の隙間に空白はないので、
 `gitGraph %%{x}%%:` は `gitGraph%%{x}%%:` と印字します。
 [ディレクティブ](./flowchart.ja.md#ディレクティブ)の規則に従います。
 [fixture: gitgraph/header/header-directive-before-colon-kept]
+hidden YAML ブロックが前にある colon は、ほかの colon と同じく除きます。
+対象にする版は、colon の有無にかかわらず見出しを同じに読むか、
+どちらも拒否するためです。
+`gitGraph ---`、ブロック、`--- :` は、`---` のまま colon なしで印字します。
+[fixture: gitgraph/header/header-yaml-before-colon]
+ブロックの後の、単独の行にある colon は残します。
+印字は hidden の形の後の改行を保つので、
+colon を除くとそこに空の行が残るためです（[Hidden yaml](#hidden-yaml)を参照）。
+[corpus fixture: gitgraph/header-hidden-before-colon]
 hidden の隙間と保護された見出し・本文の境界は保持します。
 
 `gitGraph` と方向の間にある hidden の形は、直後の改行を取り、

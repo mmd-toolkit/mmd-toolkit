@@ -17,6 +17,7 @@ import {
   lineEndOf,
   lineStartOf,
   withJoinedLines,
+  withUnusualStyleEnds,
 } from "./kept-lines.ts"
 import { toAsciiLowerCase } from "./layout.ts"
 import type { Line } from "./lines.ts"
@@ -416,10 +417,12 @@ export function printBlock<Statement extends Positioned>(
   rules: BlockRules<Statement>,
 ): PrintedBlock {
   const { statements } = bounds
-  const kept =
+  const kept = withUnusualStyleEnds(
+    source,
     rules.joiningRegionsPrintedAsWritten === true
       ? rules.kept
-      : withJoinedLines(source, rules.kept)
+      : withJoinedLines(source, rules.kept),
+  )
   const lines: Line[] = []
   let headerTrailing: ItemRun | null = null
   let offset = bounds.start

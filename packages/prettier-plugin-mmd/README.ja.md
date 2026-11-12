@@ -164,8 +164,10 @@ flowchart LR
   [対象にする版の mermaid.js のために残す形](./docs/compatibility.ja.md#対象にする版の-mermaidjs-のために残す形)
   に 1 つずつ挙げています。
 - 整形した図をもう一度整形しても、何も変わりません。
-- `style`、`classDef`、`linkStyle` の行の末尾の空白を取り除きます。
-  mermaid.js は、その空白を最後のスタイルの末尾に残します。
+- `style`、`classDef`、`linkStyle` の行の末尾の空白とタブを取り除きます。
+  mermaid.js は、それらを最後のスタイルの末尾に残します。
+  ノーブレークスペースなど、ほかの種類の空白は、
+  図が変わる所（class 図や flowchart など）では残します。
 - `eventmodeling` のデータとノートのブロックの中の行は、
   [Data blocks](./docs/eventmodeling.ja.md#data-blocks)
   の規則が許す場合に揃えます。

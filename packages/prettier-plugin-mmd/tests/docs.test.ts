@@ -3,11 +3,12 @@
  * rules document, `docs/<diagram>.md`, is a fixture folder, and each example
  * in the rules documents and the READMEs is a copy of the fixture file it
  * links to. It keeps the table of the forms kept for versions of mermaid.js
- * that count in step with the table of those versions, in
- * `docs/compatibility.md`.
+ * that count in step with the table of those versions, and that table in step
+ * with the pinned version of mermaid.js, in `docs/compatibility.md`.
  */
 import { readdir, readFile, stat } from "node:fs/promises"
 import { fileURLToPath } from "node:url"
+import { mermaidVersion } from "@mmd-toolkit/tests/mermaid"
 import { describe, expect, it } from "vitest"
 import { readRuleNames } from "./fixtures.ts"
 
@@ -726,6 +727,23 @@ function versionsIn(text: string): string[] {
 }
 
 describe("the table of forms kept for versions of mermaid.js that count", () => {
+  it.each(versionTables)(
+    "ends with the pinned version, in $document",
+    async ({ document, counted }) => {
+      const text = await readFile(new URL(document, packageRoot), "utf8")
+      const lines = text.split("\n")
+      const versions = tableRowsOf(lines, counted).map((cells) => cells[0])
+      const start = lines.indexOf(counted)
+      const table = lines.findIndex(
+        (line, index) => index > start && line.startsWith("| "),
+      )
+      const prose = lines.slice(start + 1, table).join(" ")
+      const message = `${document}: the pinned version is ${mermaidVersion}: update the versions that count and the forms kept for them (.claude/skills/prettier-plugin/references/updating-mermaid.md)`
+      expect(versions.at(-1), message).toBe(mermaidVersion)
+      expect(versionsIn(prose), message).toEqual([mermaidVersion])
+    },
+  )
+
   it.each(versionTables)(
     "names only versions that count, in $document",
     async ({ document, counted, kept }) => {

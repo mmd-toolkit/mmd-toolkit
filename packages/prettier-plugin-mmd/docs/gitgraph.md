@@ -16,17 +16,23 @@ statement moves below the header. The colon of a header without a direction is
 left out, as the documentation of mermaid.js writes it (30 headers without it, 2
 with it): `gitGraph:` is printed `gitGraph`, and every version that counts reads
 and draws the two forms the same. The colon after a direction stays, since
-mermaid.js rejects `gitGraph LR` without it. So does a colon that anything but
-spaces and tabs precedes, a directive or a hidden YAML block, since a version
-that counts rejects such a header without the colon when a statement follows on
-the next line, and accepts it with the colon (see
+mermaid.js rejects `gitGraph LR` without it. So does a colon that a directive
+precedes, since a version that counts rejects such a header without the colon
+when a statement follows on the next line, and accepts it with the colon (see
 [The colon after a header](./compatibility.md#the-colon-after-a-header) and
 [Forms kept for versions of mermaid.js that count](./compatibility.md#forms-kept-for-versions-of-mermaidjs-that-count)).
 The directive stands after the space that the gap has without it, which is none
 before a colon (see [Directives](./flowchart.md#directives)):
 `gitGraph %%{x}%%:` is printed `gitGraph%%{x}%%:`. [fixture:
-gitgraph/header/header-directive-before-colon-kept] Hidden gaps and protected
-header/body groups retain their source boundaries.
+gitgraph/header/header-directive-before-colon-kept] A colon that a hidden YAML
+block precedes is left out like any other, since the versions that count read
+the header the same with it and without it, or reject both: `gitGraph ---`, the
+block, and `--- :` are printed with `---` and no colon. [fixture:
+gitgraph/header/header-yaml-before-colon] A colon on a line of its own after the
+block stays, since the printer keeps the line break after a hidden form (see
+[Hidden yaml](#hidden-yaml)) and leaving the colon out would leave an empty line
+there. [corpus fixture: gitgraph/header-hidden-before-colon] Hidden gaps and
+protected header/body groups retain their source boundaries.
 
 A hidden form between `gitGraph` and the direction keeps the gap after it as
 written, because a hidden form consumes an immediately following line feed, and

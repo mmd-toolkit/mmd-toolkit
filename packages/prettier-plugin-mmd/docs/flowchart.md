@@ -998,16 +998,16 @@ arrow-spacing/edge-id-arrow-like-after-ignored-semicolon-runs-collapsed]
 
 An edge id after a data block touches the block: `A@{ shape: circle } e1@--> B`
 is printed `A@{ shape: circle }e1@--> B`. mermaid.js 12.3.0 reads the two forms
-the same, and draws the same figure from them. Eight of the versions that count
+the same, and draws the same figure from them. Some of the versions that count
 have no rule for a space after a data block before an edge id, so they reject
-the form with the space (one has no data block, and rejects both; see
+the form with the space (another has no data block, and rejects both; see
 [Forms kept for versions of mermaid.js that count](./compatibility.md#forms-kept-for-versions-of-mermaidjs-that-count)).
 The touching form is the one that every version that reads a data block reads. A
 directive or an ignored `;` between the block and the edge id is removed before
 the text is read, so the block, the directive or the `;`, and the edge id touch
 one another: `A@{ shape: circle }%%{init: {}}%%e1@--> B`. After the closing
 bracket of a shape the edge id has one space (`A[x] e1@--> B`), since the same
-eight versions reject `A[x]e1@--> B`. A swimlane diagram follows the same rule.
+versions reject `A[x]e1@--> B`. A swimlane diagram follows the same rule.
 [fixture: arrow-spacing/edge-id-after-data-block-touches] [fixture:
 arrow-spacing/edge-id-after-data-block-directive] [fixture:
 arrow-spacing/edge-id-after-data-block-semicolon] [fixture:
@@ -1182,16 +1182,16 @@ label-inner-whitespace/leading-whitespace-pipe-label-kept]
 The `@` in the first word depends on the version of mermaid.js. 12.3.0 stops the
 run of an edge id at a bracket and at `|`, so it reads `A[user@example.com]` and
 `A-->|x@|B` with the same labels as it reads them with the whitespace. Of the
-versions that count, eight do not stop it there (the grammars of the tags show
+versions that count, some do not stop it there (the grammars of the tags show
 it; see
 [Forms kept for versions of mermaid.js that count](./compatibility.md#forms-kept-for-versions-of-mermaidjs-that-count)),
 so they reject the two without the whitespace and accept them with it; drawn in
-Chromium, 11.12.3 and five of the eight did. A text printed without the space
-would be rejected by versions that read the text as it is written, so the space
-stays after every opening, in the title of a subgraph, and in a flowchart, a
-swimlane diagram, and an agentflow diagram alike, with one space at the end of
-the label too, except before the closing `?]` or `=]` of a slanted shape, as
-above (`A[/ x@/?]` stays as it is). [fixture:
+Chromium, 11.12.3 and some of them did. A text printed without the space would
+be rejected by versions that read the text as it is written, so the space stays
+after every opening, in the title of a subgraph, and in a flowchart, a swimlane
+diagram, and an agentflow diagram alike, with one space at the end of the label
+too, except before the closing `?]` or `=]` of a slanted shape, as above
+(`A[/ x@/?]` stays as it is). [fixture:
 label-inner-whitespace/leading-whitespace-at-sign-kept] [fixture:
 label-inner-whitespace/leading-whitespace-at-sign-every-shape-kept] [fixture:
 label-inner-whitespace/leading-whitespace-at-sign-before-question-end-kept]
@@ -2356,7 +2356,7 @@ the examples are written as strings, in which `\n` is a line break:
 
 The direction is kept as written: `TD` is not changed to `TB`, and `TB` is not
 changed to `TD`, in the header or in a `direction` statement. mermaid.js 12.3.0
-draws the two the same, but three versions that count draw a flowchart with a
+draws the two the same, but some versions that count draw a flowchart with a
 subgraph and `TB` in its header differently from the same text with `TD`, and
 the header keyword is kept as written too (see
 [Forms kept for versions of mermaid.js that count](./compatibility.md#forms-kept-for-versions-of-mermaidjs-that-count)
@@ -2873,15 +2873,19 @@ flowchart LR
 
 ### Style trailing whitespace
 
-Whitespace at the end of a `style`, `classDef`, or `linkStyle` statement is
-dropped. [fixture: style-trailing-whitespace/removed] [fixture:
+Spaces and tabs at the end of a `style`, `classDef`, or `linkStyle` statement
+are dropped. [fixture: style-trailing-whitespace/removed] [fixture:
 style-trailing-whitespace/removed-tab] [fixture:
-style-trailing-whitespace/removed-after-directive] mermaid.js keeps it at the
+style-trailing-whitespace/removed-after-directive] mermaid.js keeps them at the
 end of the last style, so this is one of the rules that change what mermaid.js
 stores (see
 [Styles that are drawn the same](./compatibility.md#styles-that-are-drawn-the-same));
-the tests compare styles without their trailing whitespace. The whitespace of a
-`linkStyle` after a `stroke:` is kept as well (see
+the tests compare styles without their trailing spaces and tabs. Whitespace of
+another kind at the end, such as a no-break space, stays, and the line is
+printed as written (see
+[Whitespace at the end of a style](./compatibility.md#whitespace-at-the-end-of-a-style)).
+[test: keeps whitespace other than a space and a tab at the end of a style] The
+whitespace of a `linkStyle` after a `stroke:` is kept as well (see
 [Styles that are drawn the same](./compatibility.md#styles-that-are-drawn-the-same)):
 `linkStyle default stroke: ` followed by `linkStyle 0 stroke:#f00` keeps the
 space. [fixture:
