@@ -85,11 +85,12 @@ The printed form of each item is decided by the rules of
 [How the printed form is decided](../../../packages/prettier-plugin-mmd/docs/printed-form.md),
 in their order: the whitespace beside a mark (for a colon, the three steps that
 say which kind it is), then the form that the other diagram types print for the
-same kind of gap, then a spelling. No case is left to a judgment of which form
-reads better. Where none of them gives a form, the output of the released
-version is not changed on such a judgment: a form that seems better is proposed
-to the user, with a text as written and both outputs, and what is decided is
-added to those rules.
+same kind of gap, then a spelling. The rules say which form reads best, which is
+what a printed form is for; they are applied in their order so that the form
+does not depend on who judges. Where none of them gives a form, the output of
+the released version is not changed on one judgment alone: a form that seems to
+read better is proposed to the user, with a text as written and both outputs,
+and what is decided is added to those rules.
 
 1. From the grammar and the tree in the specification, list what formatting
    could change. The kinds of items flowchart has (as examples; a diagram type
@@ -123,10 +124,13 @@ added to those rules.
    recommendation; the user decides it, and the decision is added to the rules.
 5. Write each decision into the rules document `docs/<diagram>.md` (English and
    Japanese) as a rule with its reason. The reason is the rule of that document
-   that decided the form, with the facts that rule needs; "reads better" is no
-   reason. Write what is kept as written because it affects the Db, and the
-   differences from mermaid.js, into `docs/compatibility.md` too. Keep decisions
-   in these two documents only.
+   that decided the form, with the facts that rule needs. A reason that says
+   only "reads better" tells a reader nothing: name the rule that says why it
+   reads better. Where a rule gives a form that reads worse than another form
+   that draws the same, say so and propose the other form, since the rule is
+   then what is wrong. Write what is kept as written because it affects the Db,
+   and the differences from mermaid.js, into `docs/compatibility.md` too. Keep
+   decisions in these two documents only.
 
 ## 4. Writing the printer
 
