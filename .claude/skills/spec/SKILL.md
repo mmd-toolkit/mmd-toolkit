@@ -237,15 +237,16 @@ Use the diagram names and node prefixes defined by
    fields, and the points that need a decision, grouped as names, node or
    rejection for text that mermaid.js does not read, candidates for a known
    divergence, and changes to the shared parts (`ast.md`, `common.md`, the
-   shared leaf nodes). Decide the shape by looking at the principles (the
-   section Policies and criteria, Design goals and Shared leaf nodes in
-   `ast.md`) and at the effect on the packages that use the tree (parser,
-   prettier-plugin, eslint-plugin) as a whole. Where the principles leave a
-   choice, present the options with examples, their grounds (the principles,
-   what mermaid.js reads, the fixtures), and a recommendation, ask for a
-   decision, and write the shape that is chosen. Then check every field against
-   the principles. When a decided shape turns out to conflict with a principle
-   or with mermaid.js, say so with the evidence before changing it.
+   shared leaf nodes). A change to the shared parts is made as
+   [section 10](#10-changing-the-shared-tree) says. Decide the shape by looking
+   at the principles (the section Policies and criteria, Design goals and Shared
+   leaf nodes in `ast.md`) and at the effect on the packages that use the tree
+   (parser, prettier-plugin, eslint-plugin) as a whole. Where the principles
+   leave a choice, present the options with examples, their grounds (the
+   principles, what mermaid.js reads, the fixtures), and a recommendation, ask
+   for a decision, and write the shape that is chosen. Then check every field
+   against the principles. When a decided shape turns out to conflict with a
+   principle or with mermaid.js, say so with the evidence before changing it.
 4. A value is the text of its range, and the tokens and the range of a value
    cover the text that mermaid.js reads as the value, whitespace included where
    mermaid.js reads it (Nodes and Tokens in ast.md): a sequence title, a class

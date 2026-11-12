@@ -159,6 +159,10 @@ pin した mermaid.js の更新は SKILL
   `generate` は `fixtures:check` で確かめる。
   `tools/collect.ts` は、`--out` をリポジトリの外に向けて動かし、
   書いたファイルを読む。
+  記録器（`tools/src/spec-recorder.ts`）を変えるときに守ることは、
+  SKILL tests-diagram-type の
+  [references/collecting-fixtures.ja.md](../tests-diagram-type/references/collecting-fixtures.ja.md)
+  の手順 3 にある。
 
   1 つのファイルは
   `pnpm --filter @mmd-toolkit/tests exec vitest run tests/<ファイル>` で回す。

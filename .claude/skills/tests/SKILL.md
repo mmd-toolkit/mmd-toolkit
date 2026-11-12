@@ -145,7 +145,10 @@ this skill hold for their steps too.
   have no test file; each command is checked by running it: `add-many`,
   `set-divergence` and `set-note` with `--dry-run`, reading what they would
   change; `generate` with `fixtures:check`; `tools/collect.ts` with `--out`
-  pointing outside the repository, reading the file it writes.
+  pointing outside the repository, reading the file it writes. What to keep when
+  the recorder (`tools/src/spec-recorder.ts`) changes is in step 3 of
+  [references/collecting-fixtures.md](../tests-diagram-type/references/collecting-fixtures.md)
+  of the skill tests-diagram-type.
 
   Run one file with
   `pnpm --filter @mmd-toolkit/tests exec vitest run tests/<file>`.

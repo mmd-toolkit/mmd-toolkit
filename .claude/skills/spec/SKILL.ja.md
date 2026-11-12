@@ -249,6 +249,7 @@ pin した commit は `packages/spec/docs/index.md` に記録してある。
    名前、mermaid.js が読まないテキストをノードにするか拒否するか、
    既知の差異の候補、共通の部分（`ast.md`、`common.md`、
    共通の葉のノード）の変更。
+   共通の部分の変更は、[10 節](#10-共通の木を変えるとき) のとおりに行う。
    原則と、木を使う側（parser、prettier-plugin、eslint-plugin）への影響を、
    全体で見て決める。
    原則は、「方針と基準」の節と、
