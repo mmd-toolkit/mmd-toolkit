@@ -31,7 +31,7 @@ Output
 
 ```mmd
 pie showData
-  "Revenue" : 8
+  "Revenue": 8
 ```
 
 ### Indentation
@@ -59,7 +59,7 @@ Output
 
 ```mmd
 pie
-"Zero" : 0
+"Zero": 0
 accTitle: direction LR
 accDescr: direction TB
 ```
@@ -84,19 +84,23 @@ Output
 
 ```mmd
 pie
-  "Line" : 2
+  "Line": 2
   accTitle: Data; title Later
-  "Next" : 3
+  "Next": 3
 ```
 
 ### Sections
 
-Print a section as `"label" : value`, with one space on both sides of the colon
-and no width alignment. This pie-specific choice follows the spelling in
-[Mermaid pie examples](https://github.com/mermaid-js/mermaid/blob/2086904e76c692331e34a45d7cc3bc30860d040e/packages/mermaid/src/docs/syntax/pie.md#L68-L73).
-Both quoted label forms and empty labels follow this rule. A gap containing a
-directive is placed as under [Directives](./flowchart.md#directives); a hidden
-form keeps its physical boundary, since these items supply no separator.
+Print a section as `"label": value`, with the colon touching the label, one
+space after it, and no width alignment. The colon of a section is the colon of a
+key: what follows it is the one value of the label before it, so the whitespace
+is the one that Prettier prints beside the colon of a key, none before it and
+one space after it, though the
+[Mermaid pie examples](https://github.com/mermaid-js/mermaid/blob/2086904e76c692331e34a45d7cc3bc30860d040e/packages/mermaid/src/docs/syntax/pie.md#L68-L73)
+write a space before it. Both quoted label forms and empty labels follow this
+rule. A gap containing a directive is placed as under
+[Directives](./flowchart.md#directives); a hidden form keeps its physical
+boundary, since these items supply no separator.
 
 Fixed cases: [fixture: pie/sections/section-colon] [fixture:
 pie/sections/section-colon-tight-authored] [fixture:
@@ -110,9 +114,9 @@ Output
 
 ```mmd
 pie
-  "Wide" : 12
-  "Narrow" : 3
-  "" : 1
+  "Wide": 12
+  "Narrow": 3
+  "": 1
 ```
 
 ### Labels
@@ -144,9 +148,9 @@ Output
 
 ```mmd
 pie
-  " single  label " : 3
-  " double  label " : 4
-  "" : 2
+  " single  label ": 3
+  " double  label ": 4
+  "": 2
 ```
 
 ### Numbers
@@ -176,9 +180,9 @@ Output
 
 ```mmd
 pie showData
-  "negative zero" : -0
-  "fraction" : 0007.2300
-  "precision" : 0.12345678901234567890123456789
+  "negative zero": -0
+  "fraction": 0007.2300
+  "precision": 0.12345678901234567890123456789
 ```
 
 ### Title
@@ -212,7 +216,7 @@ Output
 ```mmd
 pie
   title Sales report
-  "Sales" : 8
+  "Sales": 8
 ```
 
 ### Accessibility lines
@@ -254,7 +258,7 @@ Output
 pie
   accTitle: Title  words
   accDescr: Description text
-  "Line" : 1
+  "Line": 1
 ```
 
 ### Description blocks
@@ -306,7 +310,7 @@ pie
     first
     second
   }
-  "Data" : 2
+  "Data": 2
 ```
 
 ### Hidden yaml
@@ -434,7 +438,7 @@ Output
 
 ```mmd
 pie
-  "Hidden" :%%{}%%
+  "Hidden":%%{}%%
 7
 ```
 
@@ -467,7 +471,7 @@ Output
 
 ```mmd
 pie
-  "percent %% label" : 3
+  "percent %% label": 3
   accDescr { a%% text }
   accTitle: a%% real comment
 ```
@@ -582,9 +586,9 @@ Output
 
 ```mmd
 pie
-  "First" : 2
+  "First": 2
 
-  "Second" : 3
+  "Second": 3
 ```
 
 ### Trailing whitespace
@@ -616,7 +620,7 @@ Output
 
 ```mmd
 pie showData
-  "Data" : 2
+  "Data": 2
   accDescr: a
 ```
 
@@ -647,14 +651,14 @@ Output
 
 ```mmd
 pie
-  "10" : 3
-  "2" : 4
-  "__proto__" : 5
-  "constructor" : 6
-  "10" : 8
-  "a\n" : 1
+  "10": 3
+  "2": 4
+  "__proto__": 5
+  "constructor": 6
+  "10": 8
+  "a\n": 1
   "a
-" : 7
+": 7
 ```
 
 ### Line terminators and unicode
@@ -708,7 +712,7 @@ Input (escaped):
 `"pie\n\"x\u2028y\u2029z\":2\ntitle x\u2028y\naccTitle: x\u2029y\naccDescr {x\u2028y}"`.
 
 Output (escaped):
-`"pie\n  \"x\u2028y\u2029z\" : 2\n  title x\u2028y\n  accTitle: x\u2029y\n  accDescr {x\u2028y}\n"`.
+`"pie\n  \"x\u2028y\u2029z\": 2\n  title x\u2028y\n  accTitle: x\u2029y\n  accDescr {x\u2028y}\n"`.
 
 ### Frontmatter yaml
 
@@ -751,7 +755,7 @@ Output
 title: Hidden
 ---
 pie
-  "Leading" : 2
+  "Leading": 2
 ```
 
 ### Specified readings
@@ -806,7 +810,7 @@ Output
 
 ```mmd
 pie
-  "End" : 2
+  "End": 2
 ```
 
 ### Markdown fences
@@ -830,4 +834,4 @@ final-hidden-padding] [test: pie Markdown: rejected]
 
 Input (escaped): `"```mermaid\npie showData \"Fence\":2\n```\n"`.
 
-Output (escaped): `"```mermaid\npie showData\n  \"Fence\" : 2\n```\n"`.
+Output (escaped): `"```mermaid\npie showData\n  \"Fence\": 2\n```\n"`.

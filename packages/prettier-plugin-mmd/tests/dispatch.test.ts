@@ -133,7 +133,7 @@ describe("dispatch to diagram printers", () => {
     )
     parse.mockImplementation(actual.parse)
     expect(await formatMermaid('pie showData "Dispatch":2')).toBe(
-      'pie showData\n  "Dispatch" : 2\n',
+      'pie showData\n  "Dispatch": 2\n',
     )
   })
   it("registers the usecase body printer", async () => {

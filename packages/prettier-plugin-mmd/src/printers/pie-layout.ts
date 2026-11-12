@@ -101,7 +101,7 @@ export function layoutPieStatement(
         "the section colon",
       )
       expectValue(colon, ":")
-      rules.set(colon.range[0], "space")
+      rules.set(colon.range[0], "none")
       rules.set(statement.value.range[0], "space")
       layout = {
         atoms: collectAtoms(source, start, end, values, []),

@@ -44,7 +44,7 @@ const cases = [
   {
     name: "accessibility blocks: pie brace-after-ls-direction-converted",
     input: 'pie\naccDescr\u2028{direction RL}\n"A": 1',
-    output: 'pie\n  accDescr: direction RL\n  "A" : 1\n',
+    output: 'pie\n  accDescr: direction RL\n  "A": 1\n',
   },
   {
     name: "accessibility blocks: state text-with-ls-kept",

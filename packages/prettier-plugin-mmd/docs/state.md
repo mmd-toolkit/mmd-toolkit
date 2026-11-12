@@ -664,15 +664,21 @@ in the text of an `accDescr` is printed as one space (see
 [Runs of whitespace in a text that are drawn the same](./compatibility.md#runs-of-whitespace-in-a-text-that-are-drawn-the-same)),
 while that of an `accTitle` stays as written, since the browser shows it as a
 tooltip. [fixture: descriptions-and-labels/acc-text-runs-collapsed] [fixture:
-descriptions-and-labels/acc-block-runs-collapsed] The `:` of a description and
-of a transition label has one space on each side, as mermaid.js's documentation
-writes most of its labels: `A-->B:submit` becomes `A --> B : submit`. [fixture:
-descriptions-and-labels/spaced] The `:` of a description after a class spelled
-as a keyword stays touching it: `A:::style:x` becomes `A:::style: x`, because a
-space before the `:` would let the keyword start a statement. [fixture:
-descriptions-and-labels/class-named-style-then-description-kept] The text of a
-description and of a transition label is kept as written, with its runs: a label
-that wraps draws them (see
+descriptions-and-labels/acc-block-runs-collapsed] The `:` of a description
+touches the id of its state and has one space after it: `A : waiting` becomes
+`A: waiting`. The whitespace before it is the one that the examples in the
+documentation of mermaid.js write at least twice as often as any other: the
+examples write 4 descriptions without a space before the `:` and 1 with one. The
+`:` of a transition label has one space on each side, as the label stands
+between the transition and its text: `A-->B:submit` becomes `A --> B : submit`.
+The examples write 10 labels with a space before the `:` and 6 without, which is
+not twice as often, so the form that the released version printed stays.
+[fixture: descriptions-and-labels/spaced] The `:` of a description after a class
+spelled as a keyword stays touching it: `A:::style:x` becomes `A:::style: x`,
+because a space before the `:` would let the keyword start a statement.
+[fixture: descriptions-and-labels/class-named-style-then-description-kept] The
+text of a description and of a transition label is kept as written, with its
+runs: a label that wraps draws them (see
 [Runs of whitespace in a text that are drawn the same](./compatibility.md#runs-of-whitespace-in-a-text-that-are-drawn-the-same)).
 [fixture: descriptions-and-labels/text-kept] A description of only whitespace
 keeps the whitespace after its `:`: `A : ` gives no description, while `A :` is
@@ -684,7 +690,7 @@ end with `:`. [fixture: descriptions-and-labels/ending-colon-kept] The
 whitespace is at the end of a line, so the examples are written as strings, in
 which `\n` is a line break: `"stateDiagram-v2\nA : \n"` is printed as
 `"stateDiagram-v2\n  A : \n"`, and `"stateDiagram-v2\nA : x: \nA-->B:y:  \n"` as
-`"stateDiagram-v2\n  A : x: \n  A --> B : y:  \n"` (the fixtures are in the
+`"stateDiagram-v2\n  A: x: \n  A --> B : y:  \n"` (the fixtures are in the
 [folder](../tests/fixtures/state/descriptions-and-labels): `blank-kept` and
 `ending-colon-kept`).
 
@@ -703,7 +709,7 @@ Output
 
 ```mmd
 stateDiagram-v2
-  A : waiting
+  A: waiting
   A --> B : submit
   B --> C : approved
 ```
@@ -727,7 +733,7 @@ Output
 
 ```mmd
 stateDiagram-v2
-  styleA :#f00;
+  styleA:#f00;
 ```
 
 ### Notes

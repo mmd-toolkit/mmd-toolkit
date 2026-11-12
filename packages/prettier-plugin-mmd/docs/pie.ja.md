@@ -34,7 +34,7 @@ flag 前の hidden form と消費される改行は保持します。
 
 ```mmd
 pie showData
-  "Revenue" : 8
+  "Revenue": 8
 ```
 
 ### Indentation
@@ -64,7 +64,7 @@ YAML だけは共有の最小幅を使います。
 
 ```mmd
 pie
-"Zero" : 0
+"Zero": 0
 accTitle: direction LR
 accDescr: direction TB
 ```
@@ -88,18 +88,21 @@ pie のセミコロンは文の区切りではなく、ラベルや共通値の�
 
 ```mmd
 pie
-  "Line" : 2
+  "Line": 2
   accTitle: Data; title Later
-  "Next" : 3
+  "Next": 3
 ```
 
 ### Sections
 
-区分は `"label" : value` とし、コロンの両側を空白1つにします。
+区分は `"label": value` とし、コロンはラベルに接し、後ろに空白 1 つを置きます。
 幅に合わせた整列はしません。
-pie 固有の選択であり、
+区分のコロンはキーのコロンで、後ろに続くものは前のラベルのただ 1 つの値です。
+そのため、空白は Prettier がキーのコロンの隣に印字する形（前に空白なし、
+後ろに空白 1 つ）です。
+コロンの前に空白を置いて書く
 [Mermaid の pie の例](https://github.com/mermaid-js/mermaid/blob/2086904e76c692331e34a45d7cc3bc30860d040e/packages/mermaid/src/docs/syntax/pie.md#L68-L73)
-の綴りに従います。
+とは違う形です。
 両方の引用符と空ラベルにも適用します。
 directive のある gap は、
 [ディレクティブ](./flowchart.ja.md#ディレクティブ)のとおりに置きます。
@@ -119,9 +122,9 @@ hidden form は物理的な境界を保持します。
 
 ```mmd
 pie
-  "Wide" : 12
-  "Narrow" : 3
-  "" : 1
+  "Wide": 12
+  "Narrow": 3
+  "": 1
 ```
 
 ### Labels
@@ -157,9 +160,9 @@ U+2029、バッククォート、`&`、`#`、`<` がある場合を除き、`"` 
 
 ```mmd
 pie
-  " single  label " : 3
-  " double  label " : 4
-  "" : 2
+  " single  label ": 3
+  " double  label ": 4
+  "": 2
 ```
 
 ### Numbers
@@ -190,9 +193,9 @@ overflow と符号付き underflow は corpus の受理された読みを使い�
 
 ```mmd
 pie showData
-  "negative zero" : -0
-  "fraction" : 0007.2300
-  "precision" : 0.12345678901234567890123456789
+  "negative zero": -0
+  "fraction": 0007.2300
+  "precision": 0.12345678901234567890123456789
 ```
 
 ### Title
@@ -225,7 +228,7 @@ pie は次の物理行を title に結合しません。
 ```mmd
 pie
   title Sales report
-  "Sales" : 8
+  "Sales": 8
 ```
 
 ### Accessibility lines
@@ -270,7 +273,7 @@ hidden form と保持する文字 group の gap を残します。
 pie
   accTitle: Title  words
   accDescr: Description text
-  "Line" : 1
+  "Line": 1
 ```
 
 ### Description blocks
@@ -322,7 +325,7 @@ pie
     first
     second
   }
-  "Data" : 2
+  "Data": 2
 ```
 
 ### Hidden yaml
@@ -460,7 +463,7 @@ EOF の閉じた form には共有の最後の LF を加えられます。
 
 ```mmd
 pie
-  "Hidden" :%%{}%%
+  "Hidden":%%{}%%
 7
 ```
 
@@ -494,7 +497,7 @@ LS・PS は区切りではなく、
 
 ```mmd
 pie
-  "percent %% label" : 3
+  "percent %% label": 3
   accDescr { a%% text }
   accTitle: a%% real comment
 ```
@@ -611,9 +614,9 @@ hidden の境界や semicolon の保護で文が見出しの行に残っても�
 
 ```mmd
 pie
-  "First" : 2
+  "First": 2
 
-  "Second" : 3
+  "Second": 3
 ```
 
 ### Trailing whitespace
@@ -646,7 +649,7 @@ EOF も含め残します。
 
 ```mmd
 pie showData
-  "Data" : 2
+  "Data": 2
   accDescr: a
 ```
 
@@ -677,14 +680,14 @@ printWidth で長い文を折り返さず、区分の部品も別行にしませ
 
 ```mmd
 pie
-  "10" : 3
-  "2" : 4
-  "__proto__" : 5
-  "constructor" : 6
-  "10" : 8
-  "a\n" : 1
+  "10": 3
+  "2": 4
+  "__proto__": 5
+  "constructor": 6
+  "10": 8
+  "a\n": 1
   "a
-" : 7
+": 7
 ```
 
 ### Line terminators and unicode
@@ -740,7 +743,7 @@ native の colon の gap は ASCII の空白だけで、そこの NBSP は拒否
 `"pie\n\"x\u2028y\u2029z\":2\ntitle x\u2028y\naccTitle: x\u2029y\naccDescr {x\u2028y}"`
 
 出力（escape 表記）:
-`"pie\n  \"x\u2028y\u2029z\" : 2\n  title x\u2028y\n  accTitle: x\u2029y\n  accDescr {x\u2028y}\n"`
+`"pie\n  \"x\u2028y\u2029z\": 2\n  title x\u2028y\n  accTitle: x\u2029y\n  accDescr {x\u2028y}\n"`
 
 ### Frontmatter yaml
 
@@ -785,7 +788,7 @@ PieIgnoredText を YAML formatter へ渡しません。
 title: Hidden
 ---
 pie
-  "Leading" : 2
+  "Leading": 2
 ```
 
 ### Specified readings
@@ -844,7 +847,7 @@ EOF まで続く global directive と hidden の閉じの空白は残します�
 
 ```mmd
 pie
-  "End" : 2
+  "End": 2
 ```
 
 ### Markdown fences
@@ -872,4 +875,4 @@ host の出力と冪等性を、payload の Db・木・原文とは別に確認�
 
 入力（escape 表記）: `"```mermaid\npie showData \"Fence\":2\n```\n"`
 
-出力（escape 表記）: `"```mermaid\npie showData\n  \"Fence\" : 2\n```\n"`
+出力（escape 表記）: `"```mermaid\npie showData\n  \"Fence\": 2\n```\n"`

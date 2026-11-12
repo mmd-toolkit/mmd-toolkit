@@ -1079,7 +1079,7 @@ function statementRules(
         : "space"
       rules.set(arrow.range[0], arrowRule)
       rules.set(statement.to.range[0], arrowRule)
-      addDescriptionRules(source, statement.to, statement.label, rules)
+      addDescriptionRules(source, statement.to, statement.label, "space", rules)
       break
     }
     case "StateDefinitionStatement":
@@ -1087,6 +1087,7 @@ function statementRules(
         source,
         statement.reference,
         statement.description,
+        "none",
         rules,
       )
       break
@@ -1221,10 +1222,12 @@ function addClassIdListRules(
 
 /**
  * Adds the rules of the `:` of a description or a label after a state
- * reference: one space on each side (docs/state.md, Descriptions and
- * labels), except before the `:` after a reference that a space would make
- * a keyword (see `isReadOtherwiseBeforeWhitespace`). A description of only
- * whitespace is a kept stretch (see `findBlankDescriptionStretches`).
+ * reference: one space after it, and before it the space of `colonRule`, none
+ * for the description of a state and one for the label of a transition
+ * (docs/state.md, Descriptions and labels), except before the `:` after a
+ * reference that a space would make a keyword (see
+ * `isReadOtherwiseBeforeWhitespace`). A description of only whitespace is a
+ * kept stretch (see `findBlankDescriptionStretches`).
  *
  * On a line that holds a `;`, whether whitespace follows the `:` is kept as
  * written. The line rule (common.md, `style` and `classDef` lines) ignores
@@ -1236,13 +1239,14 @@ function addDescriptionRules(
   source: Source,
   reference: StateReference,
   text: Node | null,
+  colonRule: GapRule,
   rules: Map<number, GapRule>,
 ): void {
   if (text === null) return
   const colon = findStructuralToken(source, reference.range[1])
   if (colon?.value !== ":" || colon.range[0] >= text.range[0]) return
   if (!isReadOtherwiseBeforeWhitespace(reference)) {
-    rules.set(colon.range[0], "space")
+    rules.set(colon.range[0], colonRule)
   }
   if (
     findStateSemicolonLines(source).has(lineStartOf(source, colon.range[0]))

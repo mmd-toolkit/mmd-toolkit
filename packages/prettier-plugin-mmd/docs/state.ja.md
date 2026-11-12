@@ -697,9 +697,16 @@ stateDiagram-v2
 その連なりは書かれたまま残します。
 [fixture: descriptions-and-labels/acc-text-runs-collapsed]
 [fixture: descriptions-and-labels/acc-block-runs-collapsed]
-説明と遷移のラベルの `:` の両側には、
-mermaid.js の公式ドキュメントの主な例に合わせて、空白を 1 つずつ置きます。
+説明の `:` は、状態の id に接し、後に空白を 1 つ置きます。
+`A : waiting` は `A: waiting` になります。
+`:` の前の空白は、mermaid.js の文書の例が、
+ほかのどの形よりも 2 倍以上の頻度で書く形です。
+例は、`:` の前に空白のない説明を 4 件、空白のある説明を 1 件書いています。
+遷移のラベルの `:` の両側には、空白を 1 つずつ置きます。
+ラベルは遷移とそのテキストの間に立つからです。
 `A-->B:submit` は `A --> B : submit` になります。
+例は、`:` の前に空白のあるラベルを 10 件、ないラベルを 6 件書いていて、
+2 倍の頻度ではないので、公開済みの版が印字した形のままです。
 [fixture: descriptions-and-labels/spaced]
 キーワードと同じつづりのクラスの後の説明の `:` は、接したまま残します。
 `A:::style:x` は `A:::style: x` になります。
@@ -721,7 +728,7 @@ mermaid.js の公式ドキュメントの主な例に合わせて、空白を 1 
 空白が行末にあるので、例は、`\n` を改行とする文字列で書きます。
 `"stateDiagram-v2\nA : \n"` は `"stateDiagram-v2\n  A : \n"` と印字し、
 `"stateDiagram-v2\nA : x: \nA-->B:y:  \n"` は、
-`"stateDiagram-v2\n  A : x: \n  A --> B : y:  \n"` と印字します（fixture は、
+`"stateDiagram-v2\n  A: x: \n  A --> B : y:  \n"` と印字します（fixture は、
 [フォルダー](../tests/fixtures/state/descriptions-and-labels)の `blank-kept` と
 `ending-colon-kept` です）。
 
@@ -740,7 +747,7 @@ B --> C :  approved
 
 ```mmd
 stateDiagram-v2
-  A : waiting
+  A: waiting
   A --> B : submit
   B --> C : approved
 ```
@@ -765,7 +772,7 @@ styleA :#f00;
 
 ```mmd
 stateDiagram-v2
-  styleA :#f00;
+  styleA:#f00;
 ```
 
 ### ノート

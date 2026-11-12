@@ -627,10 +627,15 @@ classDiagram
 
 ### ラベル
 
-関係やクラス名の後のラベルの `:` の両側には、
-mermaid.js のドキュメントの書き方のとおり、空白を 1 つずつ置きます。
+関係やクラス名の後のラベルの `:` の両側には、空白を 1 つずつ置きます。
 `A-->B:x` は `A --> B : x` に、`A:+int x` は `A : +int x` になります。
-[fixture: labels/spaced] [fixture: labels/directive-around-colon]
+このコロンは、関係とそのラベルの間、
+またはクラスとその行が足すメンバーの間に立つ記号とも読めるので、
+コロンの前の空白は、mermaid.js の文書の例が、
+ほかのどの形よりも 2 倍以上の頻度で書く形です。
+例では、関係のラベル 21 件とメンバーの行 15 件がコロンの前に空白を持ち、
+コロンに接するものはありません。 [fixture: labels/spaced]
+[fixture: labels/directive-around-colon]
 sequence 図では `:` を前のものに接して書きます（詳しくは、
 [sequence 図の整形規則のコロン](./sequence.ja.md#コロン) を参照）。
 どちらも、その図種のドキュメントの書き方に従っています。
