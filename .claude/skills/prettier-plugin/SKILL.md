@@ -521,8 +521,8 @@ When the machine is under load or the workspace has unrelated failures:
 ## 10. When mermaid.js is updated
 
 1. Updating the pin of mermaid.js, regenerating the fixtures, and classifying
-   the differences come first, with the tests SKILL. Their results are the
-   input.
+   the differences come first, with the tests-mermaid-update SKILL. Their
+   results are the input.
 2. Run the regular tests.
 3. Classify the failures:
    - The Db of a corpus input or fixture differs before and after formatting:

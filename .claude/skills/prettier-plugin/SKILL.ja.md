@@ -537,7 +537,7 @@ fixture は tests の SKILL で直す。
 ## 10. mermaid.js の更新のとき
 
 1. mermaid.js の pin の更新、fixture の再生成、差分の分類は、
-   tests の SKILL の手順で先に行う。
+   tests-mermaid-update の SKILL の手順で先に行う。
    その結果を入力にする。
 2. 通常のテスト一式を回す。
 3. 失敗を分類する:
