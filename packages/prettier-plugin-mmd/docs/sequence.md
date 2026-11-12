@@ -657,6 +657,10 @@ least, and that of 11.7.0 does not), and so it rejects a note and a `links`,
 without that character, and 11.12.3 to 12.3.0 read both. [fixture:
 colons/spaced] [fixture: colons/empty-text] [fixture:
 colons/whitespace-only-text] [fixture: colons/semicolon-after-whitespace-kept]
+The whitespace character that stays is lost at the end of the last line of a
+code block in Markdown, where Prettier removes it whatever the plugin prints
+(see [Markdown code blocks](./compatibility.md#markdown-code-blocks)); `mmdfmt`
+keeps it.
 
 Where a directive or a whitespace character other than a space and a tab (a
 no-break space, an ideographic space, a byte order mark, U+2028, U+2029) follows

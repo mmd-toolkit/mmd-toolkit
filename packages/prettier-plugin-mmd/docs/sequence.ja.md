@@ -695,6 +695,12 @@ Chromium で解析すると、9.0.0、9.1.7、9.4.3、10.3.1、10.9.0、11.0.0�
 [fixture: colons/spaced] [fixture: colons/empty-text]
 [fixture: colons/whitespace-only-text]
 [fixture: colons/semicolon-after-whitespace-kept]
+残した空白は、Markdown のコードブロックの最後の行の末尾では失われます。
+プラグインの印字によらず、Prettier が取り除くからです。
+詳しくは、
+[Markdown のコードブロック](./compatibility.ja.md#markdown-のコードブロック)
+を参照してください。
+`mmdfmt` は残します。
 
 `:` の後にディレクティブか、空白とタブ以外の空白文字（ノーブレークスペース、
 全角の空白、バイト順マーク、U+2028、U+2029）があり、
