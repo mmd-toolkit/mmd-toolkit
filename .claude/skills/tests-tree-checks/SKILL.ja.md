@@ -19,7 +19,8 @@ SKILL [tests](../tests/SKILL.ja.md) の 1〜4 の節（方針と基準、最初�
 SKILL [tests-diagram-type](../tests-diagram-type/SKILL.ja.md) に従い、
 その図種の挙動を抽出して固定 fixture を集める。
 保持する形や不透明な埋め込みデータの指定読みを生成する前に、
-SKILL [tests](../tests/SKILL.ja.md) の 5.1 に従う。
+SKILL [tests](../tests/SKILL.ja.md#51-保持する形式と埋め込みデータの指定読み) の
+5.1 に従う。
 構文と AST の定義後は、その契約から、
 次の手順で Db builder と checker を実装する。
 以下のパスは `packages/tests` からの相対パスである。
@@ -98,8 +99,8 @@ SKILL [tests](../tests/SKILL.ja.md) の 5.1 に従う。
    木と Db の実数、記録の不足、不一致ごとの入力を報告する。
    受理の読みで木がない場合やエラー記録を黙って飛ばさず、
    エラー記録を飛ばすのは、その印の読みが拒否するときだけとする。
-   SKILL [tests](../tests/SKILL.ja.md) の 5.1 と同じく、
-   比較する Db のない場合を明示する。
+   SKILL [tests](../tests/SKILL.ja.md#51-保持する形式と埋め込みデータの指定読み)
+   の 5.1 と同じく、比較する Db のない場合を明示する。
    builder が記録した木で走るように、図種は、
    記録した木のない図種とノードの型の一覧から外れ、`DIAGRAMS` に入る。
    その手順は、

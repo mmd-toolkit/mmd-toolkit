@@ -303,8 +303,9 @@ fixture は tests の SKILL で直す。
   新しい図種にはファイルを足す。
 - 整形の失敗は、コーパスの fixture が守る。
   コーパスの fixture は `@mmd-toolkit/tests` で作る。
-  `pnpm run lint` が締め出す失敗（`conventions` の SKILL にある、
-  呼び出しの引数への配列の展開）は、代わりにその規則が守る。
+  `pnpm run lint`
+  が締め出す失敗（[`conventions`](../conventions/SKILL.ja.md#コード) の SKILL
+  にある、呼び出しの引数への配列の展開）は、代わりにその規則が守る。
 - fixture は文に答える。
   規則の文書（`docs/<図種>.md`、
   `docs/compatibility.md`）の振る舞いを定める文ごとに、
@@ -328,7 +329,8 @@ fixture は tests の SKILL で直す。
   新しい規則の文書は、そこの `ruleDocuments` に足す。
 
 どのテストを回すか。
-全パッケージの決まりは SKILL `conventions` の「テストの実行」にあり、
+全パッケージの決まりは SKILL `conventions`
+の「[テストの実行](../conventions/SKILL.ja.md#テストの実行)」にあり、
 ここにはこのパッケージに固有のことを書く。
 
 - コードの部分と、その変更が影響しうるテストのファイル。
@@ -340,112 +342,13 @@ fixture は tests の SKILL で直す。
   fixture は `tests/corpus.test.ts`）。
   `-t` を付けると、ほかのファイルは丸ごと飛ばされ、何も失敗しない。
   そのため、ほかのファイルは `-t` なしで回す。
-  - 共有のモジュール: `blocks.ts`、`atoms.ts`、`gap.ts`、`layout.ts`、
-    `lines.ts`、`source.ts`、`kept-lines.ts`、`common-layout.ts`、
-    `hidden-forms.ts`、`flat-hidden-diagram.ts`。
-    すべての図種のテスト、つまりパッケージ全体。
-  - `flowchart*.ts`: `format` と `corpus` を `-t flowchart` で。
-    `-t` なしで `markdown-flowchart`、`value-nodes`、`line-separators`、
-    `line-terminators`、`empty-description-blocks`、`accessibility-blocks`、
-    `graph-accessibility`。
-  - `sequence*.ts`: `format` と `corpus` を `-t sequence` で。
-    `-t` なしで `line-separators`、`sequence-layout`、`markdown-sequence`、
-    `value-nodes`、`line-terminators`、`empty-description-blocks`。
-  - `class*.ts`: `format` と `corpus` を `-t class` で。
-    `-t` なしで `markdown-class`、`value-nodes`、`line-separators`、
-    `line-terminators`、`empty-description-blocks`、`accessibility-revisions`。
-  - `state*.ts`: `format` と `corpus` を `-t state` で。
-    `-t` なしで `line-separators`、`markdown-state`、`value-nodes`、
-    `line-terminators`、`empty-description-blocks`、`accessibility-revisions`。
-  - `er*.ts`: `format` と `corpus` を `-t er` で。
-    `-t` なしで `line-separators`、`markdown-er`、`value-nodes`、
-    `line-terminators`、`empty-description-blocks`、`accessibility-revisions`。
-  - `gantt*.ts`: `format` と `corpus` を `-t gantt` で。
-    `-t` なしで `line-separators`、`markdown-gantt`、`value-nodes`、
-    `line-terminators`、`empty-description-blocks`。
-  - `journey*.ts`: `format` と `corpus` を `-t journey` で。
-    `-t` なしで `line-separators`、`markdown-journey`、`value-nodes`、
-    `line-terminators`、`empty-description-blocks`。
-  - `requirement*.ts`: `format` と `corpus` を `-t requirement` で。
-    `-t` なしで `line-separators`、`markdown-requirement`、`value-nodes`、
-    `line-terminators`、`empty-description-blocks`。
-  - `mindmap*.ts`: `format` と `corpus` を `-t mindmap` で。
-    `-t` なしで `line-separators`、`markdown-mindmap`、`value-nodes`、
-    `line-terminators`。
-  - `timeline*.ts`: `format` と `corpus` を `-t timeline` で。
-    `-t` なしで `line-separators`、`markdown-timeline`、`value-nodes`、
-    `line-terminators`、`empty-description-blocks`。
-  - `sankey*.ts`: `format` と `corpus` を `-t sankey` で。
-    `-t` なしで `line-separators`、`markdown-sankey`、`value-nodes`、
-    `line-terminators`、`empty-description-blocks`。
-  - `xychart*.ts`: `format` と `corpus` を `-t xychart` で。
-    `-t` なしで `line-separators`、`markdown-xychart`、`value-nodes`、
-    `line-terminators`、`empty-description-blocks`。
-  - `quadrant*.ts`: `format` と `corpus` を `-t quadrant` で。
-    `-t` なしで `line-separators`、`markdown-quadrant`、`value-nodes`、
-    `line-terminators`、`empty-description-blocks`。
-  - `block-*.ts`、`block.ts`: `format` と `corpus` を `-t block` で。
-    `-t` なしで `line-separators`、`markdown-block`、`value-nodes`、
-    `line-terminators`、`empty-description-blocks`。
-  - `kanban*.ts`: `format` と `corpus` を `-t kanban` で。
-    `-t` なしで `line-separators`、`markdown-kanban`、`value-nodes`、
-    `line-terminators`。
-  - `c4*.ts`: `format` と `corpus` を `-t c4` で。
-    `-t` なしで `line-separators`、`line-terminators`、`markdown-c4`、
-    `value-nodes`、`dispatch`、`empty-description-blocks`、
-    `accessibility-revisions`、`accessibility-blocks`。
-  - `venn*.ts`: `format` と `corpus` を `-t venn` で。
-    `-t` なしで `line-separators`、`markdown-venn`、`value-nodes`、
-    `line-terminators`、`dispatch`。
-  - `ishikawa*.ts`: `format` と `corpus` を `-t ishikawa` で。
-    `-t` なしで `ishikawa`、`markdown-ishikawa`、`value-nodes`、`dispatch`、
-    `empty-description-blocks`。
-  - `agentflow*.ts`: `format` と `corpus` を `-t agentflow` で。
-    `-t` なしで `agentflow`、`markdown-agentflow`、`value-nodes`、`dispatch`、
-    `empty-description-blocks`、`accessibility-blocks`、`graph-accessibility`。
-  - `pie*.ts`: `format` と `corpus` を `-t pie` で。
-    `-t` なしで `pie`、`markdown-pie`、`value-nodes`、`dispatch`、
-    `empty-description-blocks`。
-  - `gitgraph*.ts`: `format` と `corpus` を `-t gitgraph` で。
-    `-t` なしで `gitgraph`、`markdown-gitgraph`、`value-nodes`、`dispatch`、
-    `empty-description-blocks`。
-  - `info*.ts`: `format` と `corpus` を `-t info` で。
-    `-t` なしで `info`、`markdown-info`、`value-nodes`、`dispatch`、
-    `empty-description-blocks`。
-  - `architecture*.ts`: `format` と `corpus` を `-t architecture` で。
-    `-t` なしで `architecture`、`markdown-architecture`、`value-nodes`、
-    `dispatch`。
-  - `cynefin*.ts`: `format` と `corpus` を `-t cynefin` で。
-    `-t` なしで `cynefin`、`markdown-cynefin`、`value-nodes`、`dispatch`。
-  - `eventmodeling*.ts`: `format` と `corpus` を `-t eventmodeling` で。
-    `-t` なしで `eventmodeling`、`markdown-eventmodeling`、`value-nodes`、
-    `dispatch`。
-  - `packet*.ts`: `format` と `corpus` を `-t packet` で。
-    `-t` なしで `packet`、`markdown-packet`、`value-nodes`、`dispatch`。
-  - `radar*.ts`: `format` と `corpus` を `-t radar` で。
-    `-t` なしで `radar`、`markdown-radar`、`value-nodes`、`dispatch`。
-  - `railroad*.ts`: `format` と `corpus` を `-t railroad` で。
-    `-t` なしで `railroad`、`markdown-railroad`、`value-nodes`、`dispatch`。
-  - `treemap*.ts`: `format` と `corpus` を `-t treemap` で。
-    `-t` なしで `treemap`、`markdown-treemap`、`value-nodes`。
-  - `treeview*.ts`: `format` と `corpus` を `-t treeview` で。
-    `-t` なしで `treeview`、`markdown-treeview`、`value-nodes`。
-  - `usecase*.ts`: `format` と `corpus` を `-t usecase` で。
-    `-t` なしで `usecase`、`markdown-usecase`、`value-nodes`、`dispatch`、
-    `empty-description-blocks`、`accessibility-revisions`。
-  - `wardley*.ts`: `format` と `corpus` を `-t wardley` で。
-    `-t` なしで `wardley`、`markdown-wardley`、`value-nodes`。
-  - `error.ts`: `format` を `-t error/` で。
-    `-t` なしで `corpus`、`dispatch`、`failure`、`markdown`。
-  - `default-size.ts`: それを使う図種、agentflow と eventmodeling のテスト。
-  - `statement-rules.ts`: `common-layout.ts` が使うので、パッケージ全体。
-  - `accessibility-lines.ts`: それを使う図種、class、ER、requirement、
-    state のテスト。
-  - `index.ts`、`parser.ts`、`printer.ts`、`root.ts`、
-    `frontmatter-yaml.ts`: `dispatch`、`failure`、`markdown`、`plugin`と、
-    図種ごとのファイル。
-  - `tests/db-reading.ts`、
-    `tests/helpers.ts`: それを import するすべてのテスト。
+
+  ソースのファイルごとのテストのファイルは、
+  [tests-by-changed-file.ja.md](tests-by-changed-file.ja.md) にある。
+  変えたファイルの名前で検索する。
+  図種のファイルはその図種の名前で始まり（`flowchart*.ts`）、共有のモジュール、
+  `error.ts`、`index.ts`、テストの補助は、その名前で挙げてある。
+
 - 文書を読むテスト: `tests/docs.test.ts` は、規則の文書（`docs/<図種>.md`。
   英語と日本語）、README、fixture のフォルダーを読む。
   これらのどれかを変えたら、文書だけの変更でも回す。

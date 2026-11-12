@@ -17,8 +17,9 @@ its scope, and whether `recommended` enables it. The adoption criteria are in
 ## 1. What this procedure covers, and how to work
 
 - Show the decisions in the form of section 6. This procedure writes no file of
-  the repository except the records of sections 7 and 8
-  ([records/recommended.md](records/recommended.md) and
+  the repository except the records of sections 2, 7, and 8
+  ([records/adoption.md](records/adoption.md),
+  [records/recommended.md](records/recommended.md), and
   [records/suggestions.md](records/suggestions.md)); keep working scripts and
   their output in a working directory outside the repository.
 - The decisions are recorded in the repository by these procedures:
@@ -30,7 +31,8 @@ its scope, and whether `recommended` enables it. The adoption criteria are in
     smallest input and the claim that it answers
     (`packages/tests/docs/maintaining-fixtures.md`). The fixture is used in the
     examples of the rule document and in the tests of the rule (the
-    eslint-plugin SKILL, step 4 of section 4).
+    eslint-plugin SKILL, step 4 of
+    [section 4](../eslint-plugin/SKILL.md#4-checking-before-and-after-writing)).
 - Mark each claim as run (checked by running it), read (checked by reading), or
   unchecked. Withdraw a wrong claim in those words.
 - Read the current specification before relying on it.
@@ -231,9 +233,9 @@ for (const input of inputs) {
 - Check each claim of a condition or a suggestion with an input for each case
   that the claim distinguishes, and for each other rule that meets it at the
   place it names (a directive, an ignored `;`, a comment line, an empty line, a
-  line separator, an empty description block), as Running tests in the
-  conventions SKILL says. The inputs are chosen from these cases; none is
-  generated.
+  line separator, an empty description block), as
+  [Running tests](../conventions/SKILL.md#running-tests) in the conventions
+  SKILL says. The inputs are chosen from these cases; none is generated.
 - Before showing the table of the cases of a rule, check it against these kinds
   of case, add a row for each kind that a sentence of the document touches, and
   run it through mermaid.js before the sentence states it:
@@ -525,14 +527,15 @@ hold for a report, that report offers the edit as a suggestion. Which edits are
 fixes is listed under Fixes in [records/suggestions.md](records/suggestions.md).
 
 A rule document says nothing about the suggestions in its body (the skill
-`eslint-plugin`, section 3): the generated notice says that the rule has
-suggestions or a fix, and the message of each says its edit. What each edit
-changes, the conditions under which it is offered, how mermaid.js reads the
-result, what it may make visible, why a rule offers none, and the permalinks to
-the source of mermaid.js that explain it are recorded in this section and in
-[records/suggestions.md](records/suggestions.md); the implementation follows
-this record, and the tests of the rule check it. The readings were checked on
-the invalid fixtures of each rule (run).
+`eslint-plugin`,
+[section 3](../eslint-plugin/SKILL.md#3-the-form-of-a-document)): the generated
+notice says that the rule has suggestions or a fix, and the message of each says
+its edit. What each edit changes, the conditions under which it is offered, how
+mermaid.js reads the result, what it may make visible, why a rule offers none,
+and the permalinks to the source of mermaid.js that explain it are recorded in
+this section and in [records/suggestions.md](records/suggestions.md); the
+implementation follows this record, and the tests of the rule check it. The
+readings were checked on the invalid fixtures of each rule (run).
 
 ### The kinds of edits
 

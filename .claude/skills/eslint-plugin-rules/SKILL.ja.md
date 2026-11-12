@@ -31,7 +31,9 @@ SKILL [eslint-plugin](../eslint-plugin/SKILL.ja.md#方針と基準)
    実装してみて、決定が成り立たないと分かったら（条件が木から読めない、
    fix や提案が確かめられない、など）、その根拠を持って決定に戻る。
 2. テストが読む例を持つ、規則の英語の文書。
-3. SKILL `eslint-plugin` の「方針と基準」の節と、SKILL `conventions`。
+3. SKILL `eslint-plugin`
+   の「[方針と基準](../eslint-plugin/SKILL.ja.md#方針と基準)」の節と、
+   SKILL `conventions`。
    前者は `.claude/skills/eslint-plugin/SKILL.md` にある。
 4. 木の定義: `packages/spec/docs/ast.md` と `packages/spec/docs/ast/<図種>.md`。
 5. `packages/eslint-plugin/docs/development.md` の Writing a rule、
@@ -50,10 +52,12 @@ SKILL [eslint-plugin](../eslint-plugin/SKILL.ja.md#方針と基準)
 - 規則の主張ごとに、その主張が分ける場合ごとの入力で確かめる。
   主張は、報告する条件、しない条件、メッセージ、fix、提案である。
   規則の文書と、
-  rule-ideas の SKILL の `.claude/skills/rule-ideas/records/recommended.ja.md`
-  にある、7 節のその規則の記録の文ごとに、
-  その文が分ける場合（誤りがどの文の中にあるか、行のどこか、
-  隣に区切りや空白があるか、どの文脈の中か）と、
+  rule-ideas の SKILL の
+  [`.claude/skills/rule-ideas/records/recommended.ja.md`](../rule-ideas/records/recommended.ja.md)
+  にある、
+  [7 節](../rule-ideas/SKILL.ja.md#7-recommended-に入れるか)
+  のその規則の記録の文ごとに、その文が分ける場合（誤りがどの文の中にあるか、
+  行のどこか、隣に区切りや空白があるか、どの文脈の中か）と、
   その文が名指す場所で出会う言語の規則（ディレクティブ、無視される `;`、
   コメントの行、空の行、行区切り、空の説明ブロック）を挙げる。
   場合ごとに、規則の fixture である入力を 1 つ与え、場合の名前を付ける。
@@ -69,7 +73,8 @@ SKILL [eslint-plugin](../eslint-plugin/SKILL.ja.md#方針と基準)
   名指す文の前にある入力と後ろにある入力が要る。
   それぞれを mermaid.js で確かめる。
 - mermaid.js を動かす、テキストを parse するスクリプトは、
-  rule-ideas の SKILL の 4 節にある。
+  rule-ideas の SKILL の
+  [4 節](../rule-ideas/SKILL.ja.md#4-mermaid-と-parse-で確かめる手順)にある。
   下のスクリプトは、テストと同じように 1 つの規則でテキストを lint し、
   fix と提案をそれぞれ当てる。
   それらのスクリプトと同じく、
@@ -124,7 +129,8 @@ SKILL [eslint-plugin](../eslint-plugin/SKILL.ja.md#方針と基準)
   その読み方は、2 節のとおり、規則とは独立に確かめる。
   規則のテストは mermaid.js を動かさない。
   候補の条件が、
-  rule-ideas の 8 節と `.claude/skills/rule-ideas/records/suggestions.ja.md`
+  rule-ideas の [8 節](../rule-ideas/SKILL.ja.md#8-提案)と
+  [`.claude/skills/rule-ideas/records/suggestions.ja.md`](../rule-ideas/records/suggestions.ja.md)
   の記録が与える文で書けないときは、その候補を rule-ideas に戻す。
   提案を出さないことは、普通の結論である。
   条件や確かめを足して候補を守ってはならず、結果を parse したり、
@@ -199,7 +205,8 @@ SKILL [eslint-plugin](../eslint-plugin/SKILL.ja.md#方針と基準)
 
 ### 回すテスト
 
-SKILL `conventions` の決まり（テストの実行）に従う。
+SKILL `conventions`
+の決まり（[テストの実行](../conventions/SKILL.ja.md#テストの実行)）に従う。
 作業の途中は、
 変更が影響しうるテストのファイルだけを回し（`packages/eslint-plugin` で
 `npx vitest run <ファイル>`）、全体は、作業の完了を報告する前に 1 回だけ回す。

@@ -118,7 +118,9 @@ pin した mermaid.js の更新は SKILL
   つずつ置いて mermaid.js に通して確かめる。
   fixture の全件や、収集した入力の全件に対して、
   前後で結果が変わらないことを確かめる。
-- どのテストをいつ回すかは、SKILL `conventions` の「テストの実行」に従う。
+- どのテストをいつ回すかは、
+  SKILL `conventions`
+  の[「テストの実行」](../conventions/SKILL.ja.md#テストの実行)に従う。
   このパッケージでは次のとおり。
 
   | 変えたコード                                                | 回すテストのファイル（`tests/`）                               |
@@ -207,6 +209,10 @@ pin した mermaid.js の更新は SKILL
 
 仕様の主張を支える fixture は、
 tests の生成器（`fixtures:add-many` など）で足す（方針と手順は spec の SKILL）。
+埋め込みデータのためだけに mermaid.js が拒否した入力として `add-many`
+が挙げたものには、
+SKILL tests-diagram-type の
+[3 節の手順 7](../tests-diagram-type/SKILL.ja.md#3-fixture) のとおり印を付ける。
 この SKILL が行うのは次のこと。
 
 1. 道具と形式を保つ。
@@ -222,7 +228,9 @@ tests の生成器（`fixtures:add-many` など）で足す（方針と手順は
    `src/fixture-acceptance.ts` の `DIVERGENCE_PROPERTIES` には、
    識別子ごとの向きと指定読みの要否を明記する。
    利用側は fixture の受理に `fixtureAccepts()` を使う。
-   印の形の検査は [parser のスキル](../parser/SKILL.ja.md) の §6 に従う。
+   印の形の検査は
+   [parser のスキル](../parser/SKILL.ja.md#6-fixture-が足されたとき規則が変わったとき)
+   の §6 に従う。
    読み込みは一覧にない識別子を拒否するので、識別子を改名するときは、
    (1) 新しい識別子を一覧に足す（古いものは残す）、
    (2) `fixtures:set-divergence` で fixture を新しい識別子に付け替える、
@@ -300,8 +308,8 @@ tests の生成器（`fixtures:add-many` など）で足す（方針と手順は
    既存の共有経路を拡張する。
    図種固有の読み方を加えたり、道具が新しい保持形式を扱うと決めつけたりしない。
 4. 参照経路を確かめてから、
-   SKILL [tests-diagram-type](../tests-diagram-type/SKILL.ja.md) の 3 節の手順 8
-   の、安定した生成の手順を行う。
+   SKILL [tests-diagram-type](../tests-diagram-type/SKILL.ja.md#3-fixture) の 3
+   節の手順 8 の、安定した生成の手順を行う。
    別の所で述べられた件数を信じず、CLI の操作後の現在の corpus から、
    印と必須の読みを数え、足りない記録を報告する。
    比較する Db のない opaque-data の場合は、テストと報告で明示する。

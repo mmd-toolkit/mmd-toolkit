@@ -17,8 +17,9 @@ description:
 ## 1. この手順の範囲と進め方
 
 - 決めた結果は、6 節の形で示す。
-  この手順は、
-  7 節と 8 節の記録（[records/recommended.ja.md](records/recommended.ja.md) と
+  この手順は、2 節、7 節、
+  8 節の記録（[records/adoption.ja.md](records/adoption.ja.md)、
+  [records/recommended.ja.md](records/recommended.ja.md)、
   [records/suggestions.ja.md](records/suggestions.ja.md)）のほか、
   リポジトリのファイルを書かない。
   作業用のスクリプトとその結果は、リポジトリの外の作業用ディレクトリに置く。
@@ -31,7 +32,8 @@ description:
   - 根拠の fixture が足りなければ、最小の入力と、それが答える主張を添えて、
     tests パッケージに頼む（`packages/tests/docs/maintaining-fixtures.md`）。
     fixture は、
-    規則の文書の例と規則のテストに使う（eslint-plugin の SKILL の 4 節の手順
+    規則の文書の例と規則のテストに使う（eslint-plugin の SKILL の
+    [4 節](../eslint-plugin/SKILL.ja.md#4-書く前と書いた後に確かめること)の手順
     4）。
 - 主張ごとに、【実行】（動かして確かめた）、【読解】（読んで確かめた）、
   未確認を示す。
@@ -248,7 +250,8 @@ for (const input of inputs) {
 - 条件や提案の各主張は、その主張が分ける場合ごとの入力で確かめる。
   その場所で出会うほかの決まり（ディレクティブ、無視される `;`、コメント行、
   空行、行区切り、空の説明ブロック）ごとの入力でも確かめる。
-  conventions の SKILL の「テストの実行」のとおりで、
+  conventions の SKILL
+  の「[テストの実行](../conventions/SKILL.ja.md#テストの実行)」のとおりで、
   入力はこれらの場合から選び、生成しない。
 - 規則の場合の表を示す前に、その表を下の場合の種類に当て、
   文書の文が触れる種類ごとに行を加え、文に書く前に mermaid.js で走らせる。
@@ -549,7 +552,9 @@ mermaid.js がそれをつもりどおりに読む。
 どの書き換えを自動修正にするかは、
 [records/suggestions.ja.md](records/suggestions.ja.md) の「自動修正」に挙げる。
 
-規則の文書の本文は、提案に触れない（SKILL `eslint-plugin` の 3 節）。
+規則の文書の本文は、
+提案に触れない（SKILL `eslint-plugin` の
+[3 節](../eslint-plugin/SKILL.ja.md#3-文書の形)）。
 提案や自動修正があることは生成する告知が言い、
 それぞれのメッセージはその書き換えを言う。
 書き換えごとに何を変えるか、どんな条件で出すか、結果を mermaid.js がどう読むか、

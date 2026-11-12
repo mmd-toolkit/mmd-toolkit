@@ -32,8 +32,10 @@ every rule follows, and the tests and the fixtures are described in
    checked), take the evidence back to that decision.
 2. The English document of the rule, which holds the examples that the tests
    read.
-3. The section Policies and criteria of the eslint-plugin skill
-   (`.claude/skills/eslint-plugin/SKILL.md`), and the skill `conventions`.
+3. The section
+   [Policies and criteria](../eslint-plugin/SKILL.md#policies-and-criteria) of
+   the eslint-plugin skill (`.claude/skills/eslint-plugin/SKILL.md`), and the
+   skill `conventions`.
 4. The tree: `packages/spec/docs/ast.md` and
    `packages/spec/docs/ast/<diagram>.md`.
 5. `packages/eslint-plugin/docs/development.md`: Writing a rule, The fixtures of
@@ -52,26 +54,29 @@ after writing it.
 - Check each condition for reporting or not reporting, each message, each fix,
   and each suggestion with an input for every case it distinguishes. For each
   sentence of the document of the rule, and of the notes of the rule in the
-  record of section 7 of the rule-ideas skill
-  (`.claude/skills/rule-ideas/records/recommended.md`), list the cases that the
-  sentence distinguishes (which statement the mistake stands in, where in a
-  line, which separator or whitespace stands next to it, which context it is in)
-  and the rules of the language that meet it at the place it names (a directive,
-  an ignored `;`, a comment line, an empty line, a line separator, an empty
-  description block). Give each case an input, a fixture of the rule, named
-  after the case. Run mermaid.js once on each input, and compare the report of
-  the rule with what it does, in both directions: a mistake that is not
-  reported, and a report that is not a mistake. A case that mermaid.js rejects
-  gets no fixture. No input is chosen by a random source or by a number, and no
-  command generates inputs. A failure that the comparison finds is closed by the
-  fixture of its case (section 4), and by a sentence of the specification where
-  the specification did not state the reading.
+  record of
+  [section 7](../rule-ideas/SKILL.md#7-whether-recommended-enables-a-rule) of
+  the rule-ideas skill
+  ([`.claude/skills/rule-ideas/records/recommended.md`](../rule-ideas/records/recommended.md)),
+  list the cases that the sentence distinguishes (which statement the mistake
+  stands in, where in a line, which separator or whitespace stands next to it,
+  which context it is in) and the rules of the language that meet it at the
+  place it names (a directive, an ignored `;`, a comment line, an empty line, a
+  line separator, an empty description block). Give each case an input, a
+  fixture of the rule, named after the case. Run mermaid.js once on each input,
+  and compare the report of the rule with what it does, in both directions: a
+  mistake that is not reported, and a report that is not a mistake. A case that
+  mermaid.js rejects gets no fixture. No input is chosen by a random source or
+  by a number, and no command generates inputs. A failure that the comparison
+  finds is closed by the fixture of its case (section 4), and by a sentence of
+  the specification where the specification did not state the reading.
 - A rule whose condition depends on something defined anywhere in the diagram
   (ids, vertices that a statement creates) needs inputs where the definition
   comes after the use and where it comes before it, and a statement that creates
   the thing before or after the statement that names it. Check each with
   mermaid.js.
-- The scripts that run mermaid.js and parse a text are in section 4 of the
+- The scripts that run mermaid.js and parse a text are in
+  [section 4](../rule-ideas/SKILL.md#4-checking-with-mermaid-and-parse) of the
   rule-ideas skill. The script below lints a text with one rule, as the tests
   do, and applies each fix and each suggestion; replace `<repo>` with the
   absolute path of the root of the repository, as in those scripts. Put the
@@ -122,11 +127,12 @@ after writing it.
   the suggestion is applied, for every place where it is offered. Check that
   reading independently of the rule as in section 2; a rule test does not run
   mermaid.js. When the condition of a candidate cannot be written in the
-  sentences that the record of rule-ideas (section 8 and
-  `.claude/skills/rule-ideas/records/suggestions.md`) gives, the candidate goes
-  back to rule-ideas, and offering no suggestion is an ordinary conclusion: do
-  not add a condition or a check to keep it, and do not parse the result of an
-  edit or decide it per known divergence.
+  sentences that the record of rule-ideas
+  ([section 8](../rule-ideas/SKILL.md#8-suggestions) and
+  [`.claude/skills/rule-ideas/records/suggestions.md`](../rule-ideas/records/suggestions.md))
+  gives, the candidate goes back to rule-ideas, and offering no suggestion is an
+  ordinary conclusion: do not add a condition or a check to keep it, and do not
+  parse the result of an edit or decide it per known divergence.
 - The condition is written over the tree and the tokens: node types, fields,
   token kinds and values, and ranges. A common rule uses only the part of the
   tree that every diagram type shares (Root, its tokens, comments, and
@@ -192,8 +198,9 @@ after writing it.
 
 ### Which tests to run
 
-The rule of the skill `conventions` (Running tests) applies: while working, run
-the test files that the change can affect (`npx vitest run <files>` in
+The rule of the skill `conventions`
+([Running tests](../conventions/SKILL.md#running-tests)) applies: while working,
+run the test files that the change can affect (`npx vitest run <files>` in
 `packages/eslint-plugin`), and the whole suite once, before reporting the work
 as done.
 

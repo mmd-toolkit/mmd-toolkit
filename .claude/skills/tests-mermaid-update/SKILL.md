@@ -87,8 +87,8 @@ steps too. Read them first.
      with detection below;
    - `summary fields`: a change inside the Db, unless the keys are ones an
      author wrote. Decide, in the same table as in section 2 of the skill
-     [tests-diagram-type](../tests-diagram-type/SKILL.md), whether to change the
-     normalizer or to drop the field;
+     [tests-diagram-type](../tests-diagram-type/SKILL.md#2-the-normalizer),
+     whether to change the normalizer or to drop the field;
    - `detection`, or a diagram type that is new or gone: it concerns
      `diagramIds` and the specification's `packages/spec/docs/detection.md` (it
      is changed by the steps of the spec's skill);

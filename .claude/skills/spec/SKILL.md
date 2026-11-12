@@ -211,8 +211,9 @@ pnpm run -s fixtures:check
 
 ### 2.4 Checking the specification's documents
 
-After every change, run from the root of the repository (Running tests in the
-skill `conventions`):
+After every change, run from the root of the repository
+([Running tests](../conventions/SKILL.md#running-tests) in the skill
+`conventions`):
 
 ```sh
 npx prettier --write packages/spec

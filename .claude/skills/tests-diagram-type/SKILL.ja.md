@@ -21,7 +21,8 @@ printer（prettier-plugin の SKILL）の順に終えてから次の図種に進
 仕様と parser は要約の欄の一覧（`docs/db-summaries.ja.md`）を参照し、
 仕様の主張と parser のテストは fixture を使う。
 木から要約を作る手順は、仕様の木の文書の後に、
-ここに書く（`docs/db-from-tree/<図種>.ja.md` と `src/db-from-tree/<図種>.ts`）。
+SKILL [tests-tree-checks](../tests-tree-checks/SKILL.ja.md) のとおり、
+`docs/db-from-tree/<図種>.ja.md` と `src/db-from-tree/<図種>.ts` に書く。
 
 Chevrotain の図種にも同じ手順を適用し、トークン定義を字句規則として読む。
 単位を決めるのはトークンの順序、有効な mode、明示的な `longer_alt` であり、
@@ -233,8 +234,8 @@ terminal の順序、境界、変換、公開を図種ごとに導き直す。
    `packages/tests/src/mermaid-run-store.ts` の `RESULT_FILES` に足す。
    `codeIdentityOf` はこの一覧を使って結果の識別を作る。
    他パッケージの図種の一覧は、
-   そのパッケージのスキルの手順で変える（SKILL [tests](../tests/SKILL.ja.md) の
-   3 の節）。
+   そのパッケージのスキルの手順で変える（SKILL
+   [tests](../tests/SKILL.ja.md#3-作業ツリーの扱い) の 3 の節）。
    ここでは編集しない。
 6. `tests/` にテストを足す。
    確かめるのは、落とした欄が出ないこと、パッチが要約を変えないこと、
@@ -335,12 +336,13 @@ terminal の順序、境界、変換、公開を図種ごとに導き直す。
    Node にない機能を mermaid.js が使っている。
    2 節のとおり代役を与える（`docs/expected-results.md`）。
    正しい埋め込み設定が受理を両方向に変える場合も probe し、
-   仕様の印と必須の読みを SKILL [tests](../tests/SKILL.ja.md) の 5.1
-   で適用する。
+   仕様の印と必須の読みを SKILL
+   [tests](../tests/SKILL.ja.md#51-保持する形式と埋め込みデータの指定読み) の
+   5.1 で適用する。
    拒否の一覧だけを、差異の全件の一覧としない。
 8. `fixtures:generate` を 2 回実行し、
-   SKILL [tests](../tests/SKILL.ja.md) の 4 の節のハッシュの比較で 2
-   回目が何も変えないことを確かめる。
+   SKILL [tests](../tests/SKILL.ja.md#4-確かめ方すべての作業で) の 4
+   の節のハッシュの比較で 2 回目が何も変えないことを確かめる。
    `fixtures:check` を通す。
    収集をもう一度実行し、
    新規が 0 件であること（名前が安定していること）を確かめる。

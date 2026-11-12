@@ -110,7 +110,8 @@ this skill hold for their steps too.
   JavaScript's `\s` other than LF and CR (the line whitespace of the
   specification) there and run mermaid.js). Check that results do not change
   across every fixture, or every collected input.
-- Which tests to run, and when, follows "Running tests" in the skill
+- Which tests to run, and when, follows
+  ["Running tests"](../conventions/SKILL.md#running-tests) in the skill
   `conventions`. For this package:
 
   | Code changed                                                | Test files to run (`tests/`)                                 |
@@ -190,7 +191,10 @@ this skill hold for their steps too.
 
 The fixtures that back the claims of the specification are added with the tests
 generator (`fixtures:add-many` and the others; the policies and the steps are in
-the spec's skill). This skill does the following.
+the spec's skill). When `add-many` lists an input as rejected by mermaid.js only
+because of embedded data, mark it as step 7 of
+[The fixtures](../tests-diagram-type/SKILL.md#3-the-fixtures) in the skill
+tests-diagram-type says. This skill does the following.
 
 1. Keep the tools and the format: the generator, `add`, `add-many`,
    `set-divergence`, `set-note`, the loader and the collection tools work as
@@ -203,13 +207,13 @@ the spec's skill). This skill does the following.
    requirement explicitly in `DIVERGENCE_PROPERTIES` of
    `src/fixture-acceptance.ts`. Have consumers use `fixtureAccepts()` for
    fixture acceptance. For divergence-form checks, follow §6 of the
-   [parser skill](../parser/SKILL.md). The loader rejects an identifier outside
-   the list, so to rename an identifier: (1) add the new identifier to the list
-   (keep the old one), (2) move the fixtures to the new identifier with
-   `fixtures:set-divergence`, (3) remove the old identifier from the list. To
-   withdraw an identifier, remove the marks first, then remove it from the list.
-   A test checks the list in the README (both READMEs have an item for each
-   identifier).
+   [parser skill](../parser/SKILL.md#6-when-fixtures-are-added-or-a-rule-changes).
+   The loader rejects an identifier outside the list, so to rename an
+   identifier: (1) add the new identifier to the list (keep the old one), (2)
+   move the fixtures to the new identifier with `fixtures:set-divergence`, (3)
+   remove the old identifier from the list. To withdraw an identifier, remove
+   the marks first, then remove it from the list. A test checks the list in the
+   README (both READMEs have an item for each identifier).
 3. To rename a fixture (for example, when a change of the specification makes
    its name wrong), check with mermaid.js that the old name carries no mark and
    that the input gives the result the name says, then move the directory with a
@@ -276,8 +280,8 @@ the spec's skill). This skill does the following.
    retained form.
 4. After checking the reference path, run the stable-generation steps of step 8
    of section 3 of the skill
-   [tests-diagram-type](../tests-diagram-type/SKILL.md). Count marks and
-   required readings from the current corpus after the CLI operation rather than
-   trusting a count stated elsewhere, and report any missing record. Keep
-   opaque-data cases with no comparison Db explicit in tests and the report; do
-   not invent a specified reading or Db to make them comparable.
+   [tests-diagram-type](../tests-diagram-type/SKILL.md#3-the-fixtures). Count
+   marks and required readings from the current corpus after the CLI operation
+   rather than trusting a count stated elsewhere, and report any missing record.
+   Keep opaque-data cases with no comparison Db explicit in tests and the
+   report; do not invent a specified reading or Db to make them comparable.

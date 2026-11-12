@@ -45,7 +45,8 @@ What holds for the package `packages/eslint-plugin`:
 
 ## 1. What to read first
 
-1. The section Policies and criteria above, and the criteria of the rule-ideas
+1. The section Policies and criteria above, and the
+   [criteria](../rule-ideas/SKILL.md#policies-and-criteria) of the rule-ideas
    skill (`.claude/skills/rule-ideas/SKILL.md`): which rules the package holds
    and which it does not, and when a rule is common.
 2. The skill `conventions` (`.claude/skills/conventions/SKILL.md`): English
@@ -312,8 +313,9 @@ How each part is written:
 - Sentences are short, and a paragraph has three or four sentences at most.
 - Fixtures: the inputs written only for the rule are in the fixture directory of
   the rule, `tests/fixtures/rules/<name>/`, under `valid/` or `invalid/` (the
-  skill `eslint-plugin-rules`, section 4). A fixture file holds no character
-  that `pnpm run lint:chars` checks for (the list is in
+  skill `eslint-plugin-rules`,
+  [section 4](../eslint-plugin-rules/SKILL.md#4-tests-and-fixtures)). A fixture
+  file holds no character that `pnpm run lint:chars` checks for (the list is in
   `packages/spec/docs/index.md`): an input that a test needs with one is written
   with escapes, in the test code, never as a `.mmd` file that holds the
   character.
@@ -322,10 +324,11 @@ How each part is written:
 
 ## 4. Checking, before and after writing
 
-The scripts that run mermaid.js, parse a text, and format it are in section 4 of
-the rule-ideas skill (`.claude/skills/rule-ideas/SKILL.md`). Put them outside
-the repository and run them with `node <file>`; with many inputs, run the script
-in the background and write its output to a file.
+The scripts that run mermaid.js, parse a text, and format it are in
+[section 4](../rule-ideas/SKILL.md#4-checking-with-mermaid-and-parse) of the
+rule-ideas skill (`.claude/skills/rule-ideas/SKILL.md`). Put them outside the
+repository and run them with `node <file>`; with many inputs, run the script in
+the background and write its output to a file.
 
 1. What mermaid.js does: run every example through `runMermaid(text)` of
    `packages/tests/src/mermaid.ts`. Every example must be accepted (a rejected
@@ -340,13 +343,14 @@ in the background and write its output to a file.
    line, directives, comment lines, inside a string, inside a subgraph,
    statements separated by `;` on one line.
 3. Formatting: format every incorrect example with the formatting script, and
-   check that the output does not show how mermaid.js reads it (the criteria of
-   the rule-ideas skill exclude a rule for what the formatter already makes
-   visible). The plugin imports `@mmd-toolkit/parser`, which resolves to the
-   built `packages/parser/lib`, not to the source; when the source of the parser
-   has changed, rebuild it with `pnpm --filter @mmd-toolkit/parser run build`
-   first, or the examples are formatted by the old parser. The formatted output
-   of each incorrect example is part of the result of the work (section 9).
+   check that the output does not show how mermaid.js reads it (the
+   [criteria](../rule-ideas/SKILL.md#policies-and-criteria) of the rule-ideas
+   skill exclude a rule for what the formatter already makes visible). The
+   plugin imports `@mmd-toolkit/parser`, which resolves to the built
+   `packages/parser/lib`, not to the source; when the source of the parser has
+   changed, rebuild it with `pnpm --filter @mmd-toolkit/parser run build` first,
+   or the examples are formatted by the old parser. The formatted output of each
+   incorrect example is part of the result of the work (section 9).
 4. Examples and fixtures: the diagram content of every example is the output of
    formatting the `input.mmd` of the fixture of `packages/tests/fixtures` whose
    input is the text to show, with the formatting script (prettier-plugin-mmd,
@@ -407,14 +411,16 @@ in the background and write its output to a file.
    where its lines break.
 5. Every relative link has a target.
 6. A change to documents only runs these checks and no tests (the skill
-   `conventions`, Running tests). The exception is a change to what a test
-   reads: the examples (the code blocks after the two lines of section 3) or the
-   rule files. Then run `tests/rule-cases.test.ts` and the test of the rule,
+   `conventions`, [Running tests](../conventions/SKILL.md#running-tests)). The
+   exception is a change to what a test reads: the examples (the code blocks
+   after the two lines of section 3) or the rule files. Then run
+   `tests/rule-cases.test.ts` and the test of the rule,
    `tests/rules/<name>.test.ts`, and `pnpm run check:docs` for the first
    paragraph and the generated parts. A changed example changes its snapshot:
    update it with `pnpm --filter @mmd-toolkit/eslint-plugin run test:update` and
    read the diff. Which tests go with which change is in the skill
-   `eslint-plugin-rules`, section 4.
+   `eslint-plugin-rules`,
+   [section 4](../eslint-plugin-rules/SKILL.md#4-tests-and-fixtures).
 
 ## 6. The rule files and the generated parts
 
@@ -426,10 +432,11 @@ renamed, and removed together, as the section "Rules and their documents" of
   description (`meta.docs.description`), and whether the `recommended`
   configuration enables it. Adding, renaming, or removing a rule, or changing
   the first paragraph of an English document, also changes the rule file.
-- `recommended` in the rule file is set from the decision of section 7 of the
-  rule-ideas SKILL, recorded in
-  `.claude/skills/rule-ideas/records/recommended.md`; a provisional decision
-  there is made again first.
+- `recommended` in the rule file is set from the decision of
+  [section 7](../rule-ideas/SKILL.md#7-whether-recommended-enables-a-rule) of
+  the rule-ideas SKILL, recorded in
+  [`.claude/skills/rule-ideas/records/recommended.md`](../rule-ideas/records/recommended.md);
+  a provisional decision there is made again first.
 - What `pnpm --filter @mmd-toolkit/eslint-plugin run update` writes: the title
   of every document; the notice of every document; the Resources section at the
   end of every document, between `<!-- begin auto-generated rule resources -->`
@@ -490,10 +497,11 @@ renamed, and removed together, as the section "Rules and their documents" of
    types in its Rule Details (what happens there), and its fixture to the tests
    of the rule. When it behaves differently, or when one definition over the
    shared part of the tree no longer covers it, the rule no longer meets the
-   condition for a common rule (the criteria of the rule-ideas skill). Moving it
-   to the rules of a diagram type is a decision about the rule: make it with the
-   rule-ideas skill first, with the result of mermaid.js as the evidence, and
-   then move the document (section 8).
+   condition for a common rule (the
+   [criteria](../rule-ideas/SKILL.md#policies-and-criteria) of the rule-ideas
+   skill). Moving it to the rules of a diagram type is a decision about the
+   rule: make it with the rule-ideas skill first, with the result of mermaid.js
+   as the evidence, and then move the document (section 8).
 3. Write the documents of the rules of that diagram type with the procedure
    above.
 

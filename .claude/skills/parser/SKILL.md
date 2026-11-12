@@ -8,7 +8,8 @@ description:
   tree in ast.json, or its error in parse-error.json), finding gaps in the
   specification, and fixing the parser when the pinned mermaid.js is updated.
   Use when a diagram type is added to the parser, when fixtures are added or a
-  rule of the specification changes, or when mermaid.js is updated.
+  rule of the specification changes, or when mermaid.js is updated. A requested
+  review of its performance has a skill of its own, parser-performance-review.
 ---
 
 # Adding the parser of a diagram type (parser)
@@ -134,10 +135,11 @@ type.
 - For a requested performance review of a newly supported diagram or an existing
   parser, use
   [parser-performance-review](../parser-performance-review/SKILL.md).
-- Run what a change can affect (the skill `conventions`, Running tests). While
-  working, run the test files that go with the changed part of the code, in
-  `packages/parser` (`npx vitest run <files>`; a diagram's part of
-  `tests/fixtures.test.ts` with `-t "<diagram> fixtures"`):
+- Run what a change can affect (the skill `conventions`,
+  [Running tests](../conventions/SKILL.md#running-tests)). While working, run
+  the test files that go with the changed part of the code, in `packages/parser`
+  (`npx vitest run <files>`; a diagram's part of `tests/fixtures.test.ts` with
+  `-t "<diagram> fixtures"`):
 
   | Changed part                                                                  | Test files                                                                                                                                                           |
   | ----------------------------------------------------------------------------- | -------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
@@ -181,12 +183,12 @@ type.
    the specification and a fixture disagree, and where mermaid.js (section 3)
    disagrees with the specification, is a gap in the specification. Do not fill
    it from the source of mermaid.js; fix the specification first, with the input
-   and the result of mermaid.js (the spec skill, "When a gap in the
-   specification is found"). Examples from the flowchart of what the
-   specification has to decide: how an entity is read in a context that reads
-   one character at a time; the token kind of a `click` in a subgraph name; a
-   unit name of its own for the `,` of the click context and for the `,` of the
-   statement context.
+   and the result of mermaid.js (the spec skill,
+   "[When a gap in the specification is found](../spec/SKILL.md#9-when-a-gap-in-the-specification-is-found)").
+   Examples from the flowchart of what the specification has to decide: how an
+   entity is read in a context that reads one character at a time; the token
+   kind of a `click` in a subgraph name; a unit name of its own for the `,` of
+   the click context and for the `,` of the statement context.
 3. While a gap is open, implement what it does not touch.
 4. The specification can change while you work, also on what you have built
    already (the fields of a node can be renamed or removed). Keep a copy of the

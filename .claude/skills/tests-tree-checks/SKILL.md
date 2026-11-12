@@ -19,9 +19,10 @@ steps too. Read them first.
 Use the skill [tests-diagram-type](../tests-diagram-type/SKILL.md) to extract
 the diagram's behavior and collect its fixed fixtures. Before generating
 specified readings for retained forms or opaque embedded data, follow section
-5.1 of the skill [tests](../tests/SKILL.md). Once the syntax and AST are
-defined, implement the Db builder and tree checker from those contracts as
-follows. Paths below are relative to `packages/tests`.
+5.1 of the skill
+[tests](../tests/SKILL.md#51-specified-readings-for-retained-forms-and-embedded-data).
+Once the syntax and AST are defined, implement the Db builder and tree checker
+from those contracts as follows. Paths below are relative to `packages/tests`.
 
 `checkTree` checks tree fields, ranges, tokens and lexical invariants only;
 semantic acceptance belongs to the parser and is checked by comparing recorded
@@ -96,9 +97,10 @@ extraction procedure, not the rules that the tree implements.
    records, and each mismatch with its input; do not silently skip a missing
    tree or an error record for an accepting reading, and skip an error record
    only when its mark's reading rejects. Keep cases without a comparison Db
-   explicit as in section 5.1 of the skill [tests](../tests/SKILL.md). For the
-   builder to run on the recorded trees, the diagram type leaves the lists of
-   the diagram types and the node types without recorded trees and enters
-   `DIAGRAMS`, as step 7 of
+   explicit as in section 5.1 of the skill
+   [tests](../tests/SKILL.md#51-specified-readings-for-retained-forms-and-embedded-data).
+   For the builder to run on the recorded trees, the diagram type leaves the
+   lists of the diagram types and the node types without recorded trees and
+   enters `DIAGRAMS`, as step 7 of
    [The normalizer](../tests-diagram-type/SKILL.md#2-the-normalizer) in the
    skill tests-diagram-type says.

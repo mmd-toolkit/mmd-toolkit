@@ -18,13 +18,17 @@ proposing a known divergence) hold for these steps. Read that skill first.
 ## 1. The steps
 
 Input: the diagram type's Db normalizer and its collected fixtures (sections 2
-and 3 of the tests-diagram-type SKILL). The reading of mermaid.js (Reading
-mermaid.js in the spec skill) and the proposal of the tree (item 3 of Adding the
-nodes of the tree in the spec skill) do not need the fixtures and may start
-while they are collected; check the claims with inputs written for the purpose
-(Checking inputs with mermaid.js in the spec skill), and turn them into fixtures
-once the collection is done, so that a claim does not get a second fixture for
-an input that the collection already has.
+and 3 of the [tests-diagram-type](../tests-diagram-type/SKILL.md) SKILL). The
+reading of mermaid.js
+([Reading mermaid.js](../spec/SKILL.md#3-reading-mermaidjs) in the spec skill)
+and the proposal of the tree (item 3 of
+[Adding the nodes of the tree](../spec/SKILL.md#4-adding-the-nodes-of-the-tree)
+in the spec skill) do not need the fixtures and may start while they are
+collected; check the claims with inputs written for the purpose
+([Checking inputs with mermaid.js](../spec/SKILL.md#21-checking-inputs-with-mermaidjs)
+in the spec skill), and turn them into fixtures once the collection is done, so
+that a claim does not get a second fixture for an input that the collection
+already has.
 
 Adding a diagram type follows these sections, in this order:
 
@@ -42,8 +46,9 @@ Adding a diagram type follows these sections, in this order:
 
 ## 2. Detection, and the steps after the reading, for a Langium diagram type
 
-These items follow items 1 to 5 of Langium diagrams in Reading mermaid.js of the
-spec skill.
+These items follow items 1 to 5 of
+[Langium diagrams](../spec/SKILL.md#langium-diagrams) in Reading mermaid.js of
+the spec skill.
 
 6. Read the shared preprocessing and detection rules in
    [common.md](../../../packages/spec/docs/common.md): Reading a source,
@@ -75,21 +80,21 @@ spec skill.
      immediately before the header and on a line of its own. Record what
      detection passes or retains, which terminal boundary must match, acceptance
      and tree ownership for each case, using Matching claims with fixtures and
-     Checking a rule in the spec skill.
+     Checking a rule in the [spec](../spec/SKILL.md) skill.
    - Recheck any shared claim that other diagram types reject a form against
      their current rules and fixed fixtures. State only the scope supported by
      that evidence; do not carry forward a historical list of diagram types.
 7. Apply section 3 of this skill and Adding the nodes of the tree, Matching
-   claims with fixtures, and Checking a rule in the spec skill to the resulting
-   detection rules, ordered units, authored components, hidden forms,
-   conversions and acceptance gate. Write direct sentences and the tree before
-   considering divergences. For each sentence, probe explicit cases at its named
-   boundaries and rule intersections through the tests package's Mermaid runner;
-   cover hidden-form ownership, delimiters, consumed line feeds, EOF and the
-   reverse direction of any divergence. Add only the cases the sentence
-   distinguishes, with the fixture CLI. Do not generate inputs. Derive header,
-   flag and statement gaps and their EOL requirements from this diagram's entry
-   and fragment rules rather than a preceding diagram's layout.
+   claims with fixtures, and Checking a rule in the [spec](../spec/SKILL.md)
+   skill to the resulting detection rules, ordered units, authored components,
+   hidden forms, conversions and acceptance gate. Write direct sentences and the
+   tree before considering divergences. For each sentence, probe explicit cases
+   at its named boundaries and rule intersections through the tests package's
+   Mermaid runner; cover hidden-form ownership, delimiters, consumed line feeds,
+   EOF and the reverse direction of any divergence. Add only the cases the
+   sentence distinguishes, with the fixture CLI. Do not generate inputs. Derive
+   header, flag and statement gaps and their EOL requirements from this
+   diagram's entry and fragment rules rather than a preceding diagram's layout.
 
 ## 3. Writing the diagram document
 
@@ -110,7 +115,9 @@ Write `docs/diagrams/<diagram>.md` and its `.ja.md` with the four sections of
    decided from the tree alone.
 4. Known divergences: those of the identifiers in known-divergences.md that
    apply to the diagram type, and how they show in it. A new divergence is
-   defined as Proposing a known divergence in the spec skill says.
+   defined as
+   [Proposing a known divergence](../spec/SKILL.md#8-proposing-a-known-divergence)
+   in the spec skill says.
 
 The Db summary of a diagram type and how it is built from the tree are documents
 of `@mmd-toolkit/tests` (`docs/db-summaries.md` and
@@ -122,7 +129,7 @@ SKILL (how it is built from the tree).
 
 The parser is written from the specification alone. Before that, go through
 these checks for the diagram type, and write the result of each in the output
-(Output in the spec skill).
+([Output](../spec/SKILL.md#7-output) in the spec skill).
 
 1. **Unit names.** List every unit name of the lexical structure and the
    grammar, the names of the rules of the grammar included. One name names one
@@ -162,7 +169,9 @@ these checks for the diagram type, and write the result of each in the output
    as values (whitespace that mermaid.js reads, also a value that is all
    whitespace), as null elements of a list (an empty item between `,`), or as
    tokens (whether a `:` is there). What no node or token can hold is written as
-   item 4 of Adding the nodes of the tree in the spec skill says.
+   item 4 of
+   [Adding the nodes of the tree](../spec/SKILL.md#4-adding-the-nodes-of-the-tree)
+   in the spec skill says.
 9. **Ranges.** Every "any characters" says whether line feeds, U+2028, and
    U+2029 are included, whether as many or as few as possible are read, and
    where the rule is tried again (a rule is tried at every position of its
@@ -185,7 +194,9 @@ these checks for the diagram type, and write the result of each in the output
     one that ends with `\s+` or `\s*` does not.
 13. **Known divergences.** Every input of the diagram type that is a known
     divergence, under a new identifier or an existing one, has the four answers
-    of Proposing a known divergence in the spec skill written down.
+    of
+    [Proposing a known divergence](../spec/SKILL.md#8-proposing-a-known-divergence)
+    in the spec skill written down.
 
 The tally of item 7, over the records of the summary that are lists of objects:
 

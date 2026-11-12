@@ -8,7 +8,8 @@ description:
   tree in ast.json, or its error in parse-error.json), finding gaps in the
   specification, and fixing the parser when the pinned mermaid.js is updated.
   Use when a diagram type is added to the parser, when fixtures are added or a
-  rule of the specification changes, or when mermaid.js is updated.
+  rule of the specification changes, or when mermaid.js is updated. A requested
+  review of its performance has a skill of its own, parser-performance-review.
 ---
 
 # 図種のパーサーを足す（parser）
@@ -144,7 +145,8 @@ pin した mermaid.js の更新を扱う。
   確かめていないかを区別して示す。
 - 新しく対応した図や既存のパーサーの性能レビューを依頼されたら、
   [parser-performance-review](../parser-performance-review/SKILL.ja.md) を使う。
-- 変更が影響しうるものだけを回す（SKILL `conventions` の「テストの実行」）。
+- 変更が影響しうるものだけを回す（SKILL `conventions`
+  の「[テストの実行](../conventions/SKILL.ja.md#テストの実行)」）。
   作業の途中では、変えたコードの部分に対応するテストのファイルを、
   `packages/parser` で `npx vitest run <ファイル>` として回す。
   `tests/fixtures.test.ts` の図種の部分だけを回すなら、
@@ -193,8 +195,8 @@ pin した mermaid.js の更新を扱う。
    決まらないもの、仕様と fixture が食い違うもの、
    mermaid.js（3 節）と仕様が食い違うものは、仕様の欠落である。
    mermaid.js のソースから埋めず、入力と mermaid.js の結果を添えて、
-   先に仕様を直す（spec の SKILL の「When a gap in the specification is
-   found」）。
+   先に仕様を直す（spec の SKILL の「[When a gap in the specification is
+   found](../spec/SKILL.ja.md#9-仕様の欠落が見つかったとき)」）。
    仕様が決めなければならないことの、
    flowchart の例: 1 文字ずつ読む文脈での実体参照の読み方、
    subgraph の名前の中の `click` のトークンの種類、

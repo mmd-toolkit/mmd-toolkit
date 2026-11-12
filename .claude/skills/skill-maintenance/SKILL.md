@@ -44,9 +44,10 @@ Japanese pair, the wrapping, the document checks) is in the skill `conventions`.
   Policies and criteria, which AGENTS.md names as the place of the policies and
   criteria of the package; the rules that are wrong to miss; and the steps that
   every piece of work on the package follows. A method that several pieces of
-  work use is such a step (the sections of `spec` from Reading mermaid.js to
-  Proposing a known divergence), also when its section is titled after one piece
-  of work (in `parser`, the subsections of section 4, Adding a diagram type,
+  work use is such a step (the sections of [`spec`](../spec/SKILL.md) from
+  Reading mermaid.js to Proposing a known divergence), also when its section is
+  titled after one piece of work (in `parser`, the subsections of
+  [section 4, Adding a diagram type](../parser/SKILL.md#4-adding-a-diagram-type),
   that its other sections point to or whose rules they follow).
 - A skill of one piece of work, named `<package>-<work>` (`tests-diagram-type`,
   `spec-diagram-type`, `tests-mermaid-update`): the steps of a piece of work
@@ -76,6 +77,10 @@ Japanese pair, the wrapping, the document checks) is in the skill `conventions`.
   - A sentence that also decides new cases (a rule over a kind of rule, not over
     one rule) is no record: it is in the skill, also when it stands among the
     records.
+- A list that a piece of work searches for one entry, as the test files of each
+  source file of the formatter (`prettier-plugin/tests-by-changed-file.md`): a
+  file next to the `SKILL.md`, which says, where the list is used, what to
+  search it for. Like a record, it holds no rule that decides a new case.
 - AGENTS.md names, in the item of each package, every skill of its work, as the
   item of `packages/eslint-plugin` names `rule-ideas`, `eslint-plugin`, and
   `eslint-plugin-rules`.
@@ -99,11 +104,12 @@ Split when:
 Do not split when:
 
 - splitting would hardly reduce what the other pieces of work load, because they
-  use most of the part too (in `parser`, section 4, Adding a diagram type, holds
-  the rules of writing a lexer and a grammar, which implementing a changed rule
-  follows too, and the steps that its sections 5 to 7 use by number; only its
-  input, its wiring, the entry of the diagram's parser, and its documents are
-  for a new diagram type alone); or
+  use most of the part too (in `parser`,
+  [section 4, Adding a diagram type](../parser/SKILL.md#4-adding-a-diagram-type),
+  holds the rules of writing a lexer and a grammar, which implementing a changed
+  rule follows too, and the steps that its sections 5 to 7 use by number; only
+  its input, its wiring, the entry of the diagram's parser, and its documents
+  are for a new diagram type alone); or
 - there is no other piece of work to split off: the skill is the steps of one
   piece of work (`eslint-plugin`, `review`, `parser-performance-review`), or the
   rules that every piece of work shares (`conventions`).
@@ -111,18 +117,21 @@ Do not split when:
 When a part moves to a skill of one piece of work, a sentence in it that other
 pieces of work also need stays in the entry skill, in a section that those
 pieces of work reach (how the document of a new known divergence is written is
-in `spec`, in the section on proposing a known divergence, which fixing a gap
-reaches through item 4 of the section on checking a rule).
+in `spec`, in the
+[section on proposing a known divergence](../spec/SKILL.md#8-proposing-a-known-divergence),
+which fixing a gap reaches through item 4 of the
+[section on checking a rule](../spec/SKILL.md#6-checking-a-rule)).
 
 A step that two pieces of work share, such as a list that is filled during one
 of them and emptied during the other, is reached from the skills of both: the
 skill that does not hold the step points to it at the step of its own procedure
 at which the shared step is done (the lists of the diagram types without
-recorded trees are filled during the steps of `tests-diagram-type`, whose step
-says how to fill and empty them, and emptied once the trees are recorded, during
-step 8 of `tests-tree-checks`, which points to that step there). Where a step
-moves out of a section that other pieces of work also read, a pointer to it
-stands where it stood.
+recorded trees are filled during the steps of `tests-diagram-type`,
+[whose step](../tests-diagram-type/SKILL.md#2-the-normalizer) says how to fill
+and empty them, and emptied once the trees are recorded, during step 8 of
+[`tests-tree-checks`](../tests-tree-checks/SKILL.md), which points to that step
+there). Where a step moves out of a section that other pieces of work also read,
+a pointer to it stands where it stood.
 
 ## 3. Moving text without changing it
 
@@ -148,10 +157,10 @@ stands where it stood.
    each changed reference against a table of the old number and the new place.
    Give this comparison the sentences that moved between sections, with their
    old and new places, so that they are not counted as lost.
-5. Check each English file and its `.ja.md`: the frontmatter the same byte for
-   byte, headings that say the same at the same levels and with the same
-   numbers, the same number of code blocks (indented ones too), and new Japanese
-   text that says what the English says.
+5. Check each English file and its `.ja.md`: the same `name` and a `description`
+   that says the same (in English, or in Japanese), headings that say the same
+   at the same levels and with the same numbers, the same number of code blocks
+   (indented ones too), and new Japanese text that says what the English says.
 6. For each records file, search it as the guide of its skill says, for a few
    rules of different kinds (one named alone, one covered by a note on a group),
    and check that the search finds each decision.
@@ -183,9 +192,10 @@ every reference to the text that changes and to the text around it:
 - A reference that names only a skill ("written with the steps of the tests
   skill") still resolves after a split, but it may no longer reach the steps it
   meant: read what it refers to, and name the skill that holds those steps.
-- A reference from one skill to a section of another is a link with the anchor
+- A reference from one skill to one section of another is a link with the anchor
   of the section, so that `pnpm run lint:md` reports it when the section is
-  renamed or renumbered.
+  renamed or renumbered; a reference to several sections at once links the skill
+  and names the sections.
 - After the change, read each reference found: it points to the same text as
   before.
 
@@ -195,4 +205,5 @@ No check of the repository covers these; steps 4 to 7 of section 3 and section 4
 check them: that moved text says what it said, that a reference written in prose
 still reaches what it meant, that the guide to a records file finds what is
 searched for, that each piece of work still reaches every rule that applies to
-it, and that the frontmatter of a `.ja.md` equals that of its English file.
+it, and that the frontmatter of a `.ja.md` says what that of its English file
+says.

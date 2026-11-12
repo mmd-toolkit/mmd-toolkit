@@ -21,8 +21,9 @@ printer (the prettier-plugin's skill). Each piece of work uses the results of
 the ones before it: the specification and the parser refer to the list of
 summary fields (`docs/db-summaries.md`), and the claims of the specification and
 the tests of the parser use the fixtures. The steps that build the summary from
-a tree are written here after the tree document of the specification
-(`docs/db-from-tree/<diagram>.md` and `src/db-from-tree/<diagram>.ts`).
+a tree are written in `docs/db-from-tree/<diagram>.md` and
+`src/db-from-tree/<diagram>.ts` after the tree document of the specification, as
+the skill [tests-tree-checks](../tests-tree-checks/SKILL.md) says.
 
 For a Chevrotain diagram, apply the same procedure with the token definitions as
 lexer rules: token order, active modes and explicit `longer_alt` decide the
@@ -217,7 +218,7 @@ diagram; an imported common rule does not establish how the diagram uses it.
    `packages/tests/src/mermaid-run-store.ts`; `codeIdentityOf` uses this list to
    build the result identity. The lists of diagram types in other packages are
    changed by the steps of that package's skill (section 3 of the skill
-   [tests](../tests/SKILL.md)), not here.
+   [tests](../tests/SKILL.md#3-the-working-tree)), not here.
 6. Add tests in `tests/` (dropped fields do not appear, a patch does not change
    the summary, data block effects). In corpus-backed tests, load fixtures by
    name rather than copying their input strings, and add a missing input through
@@ -310,12 +311,13 @@ diagram; an imported common rule does not establish how the diagram uses it.
    stand-in as in section 2 (`docs/expected-results.md`). Also probe valid
    embedded settings that change acceptance in either direction, and apply the
    specification's marks and required readings through section 5.1 of the skill
-   [tests](../tests/SKILL.md) rather than treating the rejection list as the
-   whole divergence inventory.
+   [tests](../tests/SKILL.md#51-specified-readings-for-retained-forms-and-embedded-data)
+   rather than treating the rejection list as the whole divergence inventory.
 8. Run `fixtures:generate` twice, and check with the hash comparison of section
-   4 of the skill [tests](../tests/SKILL.md) that the second run changes
-   nothing. Run `fixtures:check`. Run the collection again and check that it
-   finds nothing new (the names are stable).
+   4 of the skill
+   [tests](../tests/SKILL.md#4-how-to-check-in-every-piece-of-work) that the
+   second run changes nothing. Run `fixtures:check`. Run the collection again
+   and check that it finds nothing new (the names are stable).
 9. Hand-written inputs. Each input answers one question, in one line of its
    note. Before writing them, take the kinds of cases that the earlier diagram
    types needed, and apply each kind to the sentences and the fixtures of the

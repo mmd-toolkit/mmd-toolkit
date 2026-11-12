@@ -18,13 +18,15 @@ SKILL [spec](../spec/SKILL.ja.md) の「方針と基準」と 1〜8 の節（最
 ## 1. 手順
 
 入力: その図種の Db の正規化関数と、収集した fixture。
-tests-diagram-type の SKILL の 2 節と 3 節で作る。
-mermaid.js を読むこと（spec の SKILL の「mermaid.js を読む」）と木の案（spec の
-SKILL の「木のノードを足す」の項目 3）は fixture が要らないので、
-収集の間に始めてよい。
-主張は、
-そのために書いた入力で確かめ（spec の SKILL の「mermaid.js
-で入力を確かめる」）、収集が済んでから fixture にする。
+[tests-diagram-type](../tests-diagram-type/SKILL.ja.md) の SKILL の 2 節と 3
+節で作る。
+mermaid.js を読むこと（spec の SKILL の
+[mermaid.js を読む](../spec/SKILL.ja.md#3-mermaidjs-を読む)）と木の案（spec の
+SKILL の [木のノードを足す](../spec/SKILL.ja.md#4-木のノードを足す) の項目 3）は
+fixture が要らないので、収集の間に始めてよい。
+主張は、そのために書いた入力で確かめ（spec の SKILL の「[mermaid.js
+で入力を確かめる](../spec/SKILL.ja.md#21-mermaidjs-で入力を確かめる)」）、
+収集が済んでから fixture にする。
 収集にすでにある入力に、主張のための 2 つ目の fixture を作らないためである。
 
 図種を足すときは、次の節に、この順で従う。
@@ -45,7 +47,9 @@ SKILL の「木のノードを足す」の項目 3）は fixture が要らない
 ## 2. Langium の図種の検出と、読んだ後の手順
 
 次の項目は、
-spec の SKILL の「mermaid.js を読む」の「Langium の図」の項目 1〜5 に続く。
+spec の SKILL の「mermaid.js
+を読む」の「[Langium の図](../spec/SKILL.ja.md#langium-の図)」の項目 1〜5
+に続く。
 
 6. [common.md](../../../packages/spec/docs/common.ja.md)
    の共通の前処理と検出の規則を読む。
@@ -78,14 +82,14 @@ spec の SKILL の「mermaid.js を読む」の「Langium の図」の項目 1�
      ヘッダー直前の空白と、空白だけの行を含める。
      場合ごとに、検出が通過させるものと保持するもの、
      一致すべき terminal の境界、受理と木での所有を、
-     spec の SKILL の「主張と fixture
+     [spec](../spec/SKILL.ja.md) の SKILL の「主張と fixture
      を対応させる」と「規則を確かめる」に従って記録する。
    - ほかの図種がある形を拒否するという共通の主張は、
      その図種の現在の規則と固定した fixture で確かめ直す。
      その証拠が支える範囲だけを述べ、過去の図種の一覧を引き継がない。
 7. 求めた検出規則、順序つきの単位、書かれた構成要素、隠れた形、変換、
    受理の門に、この SKILL の 3 節と、
-   spec の SKILL の「木のノードを足す」「主張と fixture
+   [spec](../spec/SKILL.ja.md) の SKILL の「木のノードを足す」「主張と fixture
    を対応させる」「規則を確かめる」を適用する。
    差異を考える前に、直接の文と木を書く。
    文ごとに、名指す境界と規則の交点の明示した場合を、
@@ -113,7 +117,10 @@ index.md の「How to read a diagram document」の 4 節で書く。
    変更された設定を持つ側がそれを適用し、残りは木だけで決めることを述べる。
 4. Known divergences: known-divergences.md の識別子のうち、
    この図種に当たるものと、それがこの図種でどう現れるか。
-   新しい差異は、spec の SKILL の「既知の差異を提案するとき」のとおり定める。
+   新しい差異は、
+   spec の SKILL の
+   [既知の差異を提案するとき](../spec/SKILL.ja.md#8-既知の差異を提案するとき)
+   のとおり定める。
 
 図種の Db の要約と、それを木から作る手順は、
 `@mmd-toolkit/tests` の文書（`docs/db-summaries.md` と
@@ -126,7 +133,8 @@ tests-diagram-type のスキル（要約）と tests-tree-checks
 
 parser は仕様だけから書く。
 その前に、図種について次の点検をし、
-各点検の結果を出力に書く（spec の SKILL の「出力」）。
+各点検の結果を出力に書く（spec の SKILL
+の「[出力](../spec/SKILL.ja.md#7-出力)」）。
 
 1. **単位の名前。**
    字句構造と文法の単位の名前を、文法の規則の名前も含めて一覧にする。
@@ -170,7 +178,9 @@ parser は仕様だけから書く。
    列の null の要素として（`,` の間の空の項目）、
    トークンとして（`:` があるかどうか）持つ。
    どのノードもトークンも持てないものは、
-   spec の SKILL の「木のノードを足す」の項目 4 のとおりに書く。
+   spec の SKILL
+   の「[木のノードを足す](../spec/SKILL.ja.md#4-木のノードを足す)」の項目 4
+   のとおりに書く。
 9. **範囲。**
    「任意の文字」は、どれも、改行、U+2028、U+2029 を含むかどうか、
    できるだけ多く読むか少なく読むか、
@@ -195,8 +205,9 @@ parser は仕様だけから書く。
     終わりに `\b` を持ち、`\s+` や `\s*` で終わる規則は持たない。
 13. **既知の差異。**
     図種の既知の差異の入力は、新しい識別子でも既存の識別子でも、
-    どれも spec の SKILL の「既知の差異を提案するとき」の 4
-    つの答えが書かれている。
+    どれも spec の SKILL の
+    [既知の差異を提案するとき](../spec/SKILL.ja.md#8-既知の差異を提案するとき)
+    の 4 つの答えが書かれている。
 
 7 の集計。
 要約の、オブジェクトのリストである記録について:

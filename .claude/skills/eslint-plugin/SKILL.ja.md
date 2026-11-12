@@ -50,7 +50,8 @@ fixture で確かめて書く手順。
 ## 1. 最初に読むもの
 
 1. 上の「方針と基準」の節と、
-   rule-ideas の SKILL （`.claude/skills/rule-ideas/SKILL.md`）の基準。
+   rule-ideas の SKILL （`.claude/skills/rule-ideas/SKILL.md`）の
+   [基準](../rule-ideas/SKILL.ja.md#方針と基準)。
    このパッケージが持つ規則と持たない規則、規則を共通にする条件。
 2. SKILL `conventions`（`.claude/skills/conventions/SKILL.md`）。
    英語の文書と日本語の対、見えない文字を書かないこと、
@@ -326,7 +327,8 @@ Rule Details は、文の後に、反するコードと従うコードの例を�
 - 文は短くし、1 段落は 3〜4 文までにする。
 - fixture: 規則のためだけに書く入力は、
   規則の fixture のディレクトリ `tests/fixtures/rules/<名前>/` の `valid/` か
-  `invalid/` の下に置く（SKILL `eslint-plugin-rules` の 4 節）。
+  `invalid/` の下に置く（SKILL `eslint-plugin-rules` の
+  [4 節](../eslint-plugin-rules/SKILL.ja.md#4-テストと-fixture)）。
   fixture のファイルに、
   `pnpm run lint:chars` が調べる文字は入れない（一覧は
   `packages/spec/docs/index.md`）。
@@ -339,7 +341,8 @@ Rule Details は、文の後に、反するコードと従うコードの例を�
 ## 4. 書く前と書いた後に確かめること
 
 mermaid.js を動かし、テキストを parse し、整形するスクリプトは、
-rule-ideas の SKILL（`.claude/skills/rule-ideas/SKILL.md`）の 4 節にある。
+rule-ideas の SKILL（`.claude/skills/rule-ideas/SKILL.md`）の
+[4 節](../rule-ideas/SKILL.ja.md#4-mermaid-と-parse-で確かめる手順)にある。
 リポジトリの外に置き、`node <ファイル>` で動かす。
 入力が多いときは、バックグラウンドで動かし、出力をファイルに書く。
 
@@ -358,7 +361,8 @@ rule-ideas の SKILL（`.claude/skills/rule-ideas/SKILL.md`）の 4 節にある
 3. 整形: 反する例をすべて、整形のスクリプトで整形し、
    出力に mermaid.js の読み方が現れないことを確かめる。
    フォーマッターがすでに見えるようにするものの規則は、
-   持たないからである（rule-ideas の SKILL の基準）。
+   持たないからである（rule-ideas の SKILL
+   の[基準](../rule-ideas/SKILL.ja.md#方針と基準)）。
    プラグインが import する `@mmd-toolkit/parser` は、ソースではなく、
    ビルドした `packages/parser/lib` に解決される。
    parser のソースが変わっていたら、
@@ -432,7 +436,8 @@ rule-ideas の SKILL（`.claude/skills/rule-ideas/SKILL.md`）の 4 節にある
    index は、行の切れ目に依らずにそれを読む。
 5. 相対リンクの先がすべてあること。
 6. 文書だけの変更では、この検査を動かし、
-   テストは回さない（SKILL `conventions` の「テストの実行」）。
+   テストは回さない（SKILL `conventions`
+   の「[テストの実行](../conventions/SKILL.ja.md#テストの実行)」）。
    例外は、テストが読むものを変えたときである。
    つまり、例（3 節の 2 行の後のコードブロック）か規則のファイルである。
    そのときは、
@@ -442,7 +447,8 @@ rule-ideas の SKILL（`.claude/skills/rule-ideas/SKILL.md`）の 4 節にある
    `pnpm --filter @mmd-toolkit/eslint-plugin run test:update` で更新し、
    差分を読む。
    どの変更にどのテストが対応するかは、
-   SKILL `eslint-plugin-rules` の 4 節にある。
+   SKILL `eslint-plugin-rules` の
+   [4 節](../eslint-plugin-rules/SKILL.ja.md#4-テストと-fixture)にある。
 
 ## 6. 規則のファイルと、生成する部分
 
@@ -456,8 +462,11 @@ rule-ideas の SKILL（`.claude/skills/rule-ideas/SKILL.md`）の 4 節にある
   規則を足す、名前を変える、消す、英語の文書の最初の段落を変える、のどれも、
   規則のファイルを変える。
 - 規則のファイルの `recommended` は、
-  rule-ideas の SKILL の 7 節の判定から設定する。
-  判定は `.claude/skills/rule-ideas/records/recommended.ja.md` に記録してある。
+  rule-ideas の SKILL の
+  [7 節](../rule-ideas/SKILL.ja.md#7-recommended-に入れるか)の判定から設定する。
+  判定は
+  [`.claude/skills/rule-ideas/records/recommended.ja.md`](../rule-ideas/records/recommended.ja.md)
+  に記録してある。
   そこの判定がいったんの案なら、先に決め直す。
 - `pnpm --filter @mmd-toolkit/eslint-plugin run update` が書くもの:
   すべての文書の題と告知。
@@ -525,7 +534,8 @@ rule-ideas の SKILL（`.claude/skills/rule-ideas/SKILL.md`）の 4 節にある
    規則の詳細の図種の箇条に 1 項目（そこで起きること）を足し、
    その fixture を規則のテストに足す。
    振る舞いが違う、または木の共通の部分の 1 つの定義で扱えなくなったなら、
-   その規則は共通の規則の条件（rule-ideas の SKILL の基準）を満たさない。
+   その規則は共通の規則の条件（rule-ideas の SKILL
+   の[基準](../rule-ideas/SKILL.ja.md#方針と基準)）を満たさない。
    図種の規則に移すのは規則についての判断なので、
    先に mermaid.js の結果を根拠に rule-ideas の SKILL で決め、
    それから文書を移す（8 節）。

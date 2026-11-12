@@ -98,8 +98,8 @@ SKILL [tests](../tests/SKILL.ja.md) の 1〜4 の節（方針と基準、最初�
    - `summary fields`: Db の内部の変化。
      ただし、キーが著者の書いたものなら、そうではない。
      正規化関数を直すか、落とす欄にするかを、
-     SKILL [tests-diagram-type](../tests-diagram-type/SKILL.ja.md) の 2
-     節の表と同じ形で決める。
+     SKILL [tests-diagram-type](../tests-diagram-type/SKILL.ja.md#2-正規化関数)
+     の 2 節の表と同じ形で決める。
    - `detection`、図種が増えたか、なくなったもの: `diagramIds` と、
      仕様の `packages/spec/docs/detection.md` に関わる（detection.md は spec の
      SKILL の手順で直す）。

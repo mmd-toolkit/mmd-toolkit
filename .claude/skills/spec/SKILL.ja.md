@@ -220,7 +220,8 @@ pnpm run -s fixtures:check
 ### 2.4 仕様の文書を確かめる
 
 書いた後に毎回、
-リポジトリのルートで次を通す（SKILL `conventions` の「テストの実行」）。
+リポジトリのルートで次を通す（SKILL `conventions`
+の「[テストの実行](../conventions/SKILL.ja.md#テストの実行)」）。
 
 ```sh
 npx prettier --write packages/spec

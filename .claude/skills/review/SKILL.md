@@ -147,10 +147,11 @@ tools, a CLI), the inputs are different and the list is this:
 - A claim in a document is checked against mermaid.js when it states a behavior,
   and against the code when it states what the code does.
 - Every changeset that the change adds or edits is read as the changelog will
-  show it, against the section How to write it of the `changesets` skill: its
-  length, its examples, the two sentences of a change that overturns a decision
-  of a released version, no conditions of a rule or counts behind it, and the
-  words of a user of the package. A missing or wrong explanation of an
+  show it, against the section
+  [How to write it](../changesets/SKILL.md#how-to-write-it) of the `changesets`
+  skill: its length, its examples, the two sentences of a change that overturns
+  a decision of a released version, no conditions of a rule or counts behind it,
+  and the words of a user of the package. A missing or wrong explanation of an
   overturned decision is a finding (major); any other break is a finding
   (minor).
 
