@@ -31,10 +31,10 @@ values are not reported. Other properties are checked by
 [venn-no-invalid-style-key](./venn-no-invalid-style-key.md).
 
 Targets are compared by their lists of names without regard to order, so
-`style B,A` and `style A,B` have the same target. Values are compared as written
-without surrounding quotes; spaces inside quotes count. Unquoted `2px` and
-`2 px` differ for this rule even though mermaid.js joins their parts into the
-same value.
+`style B, A` and `style A, B` have the same target. Values are compared as
+written without surrounding quotes; spaces inside quotes count. Unquoted `2px`
+and `2 px` differ for this rule even though mermaid.js joins their parts into
+the same value.
 
 mermaid.js converts character references and HTML attribute quotes in names and
 values. These conversions can make its matching differ from this rule's

@@ -298,20 +298,18 @@ venn-beta
 
 ### Name lists
 
-Keywords and operands use one separator; name commas touch the names on both
-sides (`union A,B`), as the documentation of mermaid.js writes them (18 commas
-of lists of names, none followed by a space) and as the diagram types that
-normalize their lists print them (ER, requirement, state, and sequence). Quoted
-padding, empty names, source order and repeated members stay as written, even
-where the Db sorts targets. A name is printed with or without quotes as
-[Quotes](#quotes) says, padding inside quotes belongs to the name (`" A "` and
-`"A"` differ in the Db), the Db sorting the targets is no permission to reorder
-the written list, and a repeated member keeps a union's arity. Venn reads a list
-the same with or without spaces beside its commas, quoted names included, so the
-commas are printed without them. Directives and ignored semicolons override
-ordinary gap spacing. [corpus fixture: venn/db-case-distinct-ids] [corpus
-fixture: venn/db-empty-identifiers] [corpus fixture:
-venn/db-union-repeated-member] [corpus fixture:
+Keywords and operands use one separator; name commas touch the preceding name
+and take one following space, as Prettier prints a comma, where mermaid.js reads
+the list the same. Quoted padding, empty names, source order and repeated
+members stay as written, even where the Db sorts targets. A name is printed with
+or without quotes as [Quotes](#quotes) says, padding inside quotes belongs to
+the name (`" A "` and `"A"` differ in the Db), the Db sorting the targets is no
+permission to reorder the written list, and a repeated member keeps a union's
+arity. Venn reads a list the same with or without spaces beside its commas,
+quoted names included, so, unlike a sankey list, a space after each comma is
+safe. Directives and ignored semicolons override ordinary gap spacing. [corpus
+fixture: venn/db-case-distinct-ids] [corpus fixture: venn/db-empty-identifiers]
+[corpus fixture: venn/db-union-repeated-member] [corpus fixture:
 venn/lex-name-list-comma-directive] [corpus fixture:
 venn/lex-union-empty-quoted-members] [corpus fixture:
 venn/lex-union-matching-quoted-padding] [fixture:
@@ -333,9 +331,9 @@ Output
 venn-beta
   set A
   set B
-  union A,B,A
-text A,"B" item
-  style A,B fill: red
+  union A, B, A
+text A, "B" item
+  style A, B fill: red
 ```
 
 ### Labels
@@ -449,7 +447,7 @@ Output
 venn-beta
   set A
   set B
-  union A,B
+  union A, B
   style A fill: #f9f, color: #abcdef
   style B fill: #c0ffee
 ```
@@ -479,8 +477,8 @@ and the value of a style property are printed without quotes, and a bracket
 label is printed in quotes, as the examples in the documentation of mermaid.js
 write them (see
 [The quotes of a text](./compatibility.md#the-quotes-of-a-text)): `set "A"` is
-printed `set A`, `union "A","B"` is printed `union A,B`, `style A fill:"red"` is
-printed `style A fill: red`, and `set A[Alpha]` is printed `set A["Alpha"]`.
+printed `set A`, `union "A","B"` is printed `union A, B`, `style A fill:"red"`
+is printed `style A fill: red`, and `set A[Alpha]` is printed `set A["Alpha"]`.
 
 A name is ASCII letters, digits, `_`, and `-` that starts with a letter or a
 `_`. It keeps its quotes where the lexer would read it as something else: a name
@@ -545,8 +543,8 @@ venn-beta
   set c-d:3
   set xset
   set set1
-  union A,B_2["Both"]
-  style A,c-d fill: red
+  union A, B_2["Both"]
+  style A, c-d fill: red
   set A1
     text item
     text item-2["Note"]
@@ -589,7 +587,7 @@ Output
 venn-beta
   set A:+02.50
   set B:-0.5
-  union A,B:007
+  union A, B:007
     text 007
 ```
 
@@ -648,7 +646,7 @@ Output
 
 ```mmd
 venn-beta
-  style A,B fill: red, opacity: .50, custom: " dark blue "
+  style A, B fill: red, opacity: .50, custom: " dark blue "
 ```
 
 ### Semicolons at the end of a style statement

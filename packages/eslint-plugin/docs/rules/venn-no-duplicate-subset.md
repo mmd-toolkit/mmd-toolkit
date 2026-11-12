@@ -24,8 +24,8 @@ earlier ones, while repeated union sizes are drawn as an overlap between them.
 
 This rule applies to Venn diagrams (`venn-beta`). It reports a `set` or `union`
 whose names an earlier declaration already has, even if the statements are
-identical. Name order does not count, but repetitions do: `union B,A` repeats
-`union A,B`, while `union A,A,B` is different.
+identical. Name order does not count, but repetitions do: `union B, A` repeats
+`union A, B`, while `union A, A, B` is different.
 
 A union of three or more sets adds pair areas to the drawing without declaring
 those pairs. Declaring such a pair before or after the larger union is not
@@ -50,8 +50,8 @@ venn-beta
 venn-beta
   set A
   set B
-  union A,B["Shared"]
-  union B,A["Both"]
+  union A, B["Shared"]
+  union B, A["Both"]
 ```
 
 ```mmd
@@ -71,7 +71,7 @@ Examples of **correct** code for this rule:
 venn-beta
   set A["Alpha"]:20
   set B["Beta"]
-  union A,B["Shared"]
+  union A, B["Shared"]
 ```
 
 ```mmd

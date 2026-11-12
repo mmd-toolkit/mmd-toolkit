@@ -373,12 +373,18 @@
   `classDef` statement without whitespace around their commas: `class A, B c` now
   prints as `class A,B c`. In `state`, whitespace before a comma ends the ids, so
   it stays as written.
+  
+  Overturned in the next release: these commas are printed with one space after
+  them, as in `class A, B c`.
 
 - [#60](https://github.com/mmd-toolkit/mmd-toolkit/pull/60) [`f41858e`](https://github.com/mmd-toolkit/mmd-toolkit/commit/f41858ef670c82de824f7a0f875b4968abdbf8b8) Thanks [@ota-meshi](https://github.com/ota-meshi)! - Print the punctuation of a `sequence` message or note one way. `+`, `-`, and
   `()` touch the participant, as in `A ->> +B` and `A() ->> ()B`, and the comma of
   a note touches both ids, as in `Note over A,B`. mermaid.js reads the same
   diagram either way. Whitespace around a directive stays as written, and so does
   the space in `A ->> - x`, where `-x` would be read as an arrow.
+  
+  Overturned in the next release: the comma of a note is printed with one space
+  after it, as in `Note over A, B`.
 
 ### Patch Changes
 

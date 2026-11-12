@@ -745,6 +745,13 @@ block-beta
   class A, B c1
 ```
 
+クラス名が複数ある `class` は、書かれたまま印字します。
+`class A x,y` はそのまま残します。
+`x, y` と書くと、`x, y` という名前の 1 つのクラスになり、
+`x,y` という名前の 1 つのクラスとは別のクラスになるので、Db が変わります。
+詳しくは [コンマで区切る一覧](./compatibility.ja.md#コンマで区切る一覧)
+を参照してください。 [fixture: styles/class-names-without-space-kept]
+
 ### スタイル文の末尾のセミコロン
 
 `classDef` または `style` 文の行末の `;` は、

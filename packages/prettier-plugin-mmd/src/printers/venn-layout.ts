@@ -163,14 +163,9 @@ export function layoutVennStatement(
     )
   }
   const rules = new Map<number, GapRule>()
-  // The commas of a list of names touch the name before them and the one
-  // after them, and the colon and the comma of a style property are followed
-  // by one space, as in the other diagram types (docs/venn.md, Name lists and
-  // Style properties).
-  const propertyStart =
-    statement.type === "VennStyleStatement" && statement.properties.length > 0
-      ? statement.properties[0].range[0]
-      : Number.POSITIVE_INFINITY
+  // A comma touches the name before it and is followed by one space, and the
+  // colon of a style property is followed by one space too (docs/venn.md, Name
+  // lists and Style properties).
   const propertyValueStarts = new Set(
     statement.type === "VennStyleStatement"
       ? statement.properties.map((property) => property.value.range[0])
@@ -190,7 +185,6 @@ export function layoutVennStatement(
     const atom = atoms[index]
     const before = source.text.slice(previous.start, previous.end)
     const text = source.text.slice(atom.start, atom.end)
-    const afterNameComma = before === "," && atom.start < propertyStart
     const afterPropertyColon = propertyValueStarts.has(atom.start)
     rules.set(
       atom.start,
@@ -201,7 +195,6 @@ export function layoutVennStatement(
         : text === "," ||
             text === ":" ||
             before === ":" ||
-            afterNameComma ||
             ("label" in statement && atom.start === statement.label?.range[0])
           ? "none"
           : "space",

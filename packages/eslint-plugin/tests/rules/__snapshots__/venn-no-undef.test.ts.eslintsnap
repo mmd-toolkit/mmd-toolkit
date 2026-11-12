@@ -22,8 +22,8 @@ Code:
   1 | venn-beta
   2 |   set A
   3 |   set B
-  4 |   style A,B fill: red
-    |         ^~~ [1]
+  4 |   style A, B fill: red
+    |         ^~~~ [1]
   5 |
 
 [1] mermaid.js applies no style for these names.

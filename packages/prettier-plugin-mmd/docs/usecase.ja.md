@@ -494,7 +494,7 @@ native metadata、class、繰り返しの宣言を保ち、
 
 ```mmd
 usecase-beta
-  systemBoundary Box["Display"]@{ type: package }:::box,group
+  systemBoundary Box["Display"]@{ type: package }:::box, group
     actor User
     A@{ business: true }
   end
@@ -820,7 +820,7 @@ mermaid.js が括弧を付けて読むブロックの両端ではないので、
 usecase-beta
   json Table @{
     "2": 2, "1": {"z":1}, "2": 3
-  }:::data,table
+  }:::data, table
 ```
 
 ### Semicolons at the end of a style statement
@@ -869,7 +869,7 @@ usecase-beta
 ### Classes and styles
 
 ER の[スタイルとクラス](./er.ja.md#スタイルとクラス)を再利用し、
-対象名と class 名の間のコンマは詰め、
+対象名と class 名の間のコンマは前の名前に接して後ろに空白 1 個を置き、
 一覧同士と最初の宣言の前は空白 1 個にします。
 CSS 宣言同士はコンマと空白で区切ります。
 宣言の最初のコロンの前には空白を置かず、後ろには空白を 1 つ置きます。

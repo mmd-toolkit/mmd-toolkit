@@ -445,9 +445,10 @@ requirementDiagram
 ### クラスの並び
 
 requirement、element、名前とクラスだけの文で、`:::` の後に書くクラスは、
-`:::` に接し、クラスを区切る `,` は両側のクラスに接します。
-`requirement r ::: a , b {` は `requirement r:::a,b {` と印字します。
-これは ER 図のクラスと同じで、mermaid.js の文書の書き方でもあります。
+最初のクラスは `:::` に接し、クラスを区切る `,` は前のクラスに接して、
+後ろに空白を 1 つ置きます。
+`requirement r ::: a , b {` は `requirement r:::a, b {` と印字します。
+これは ER 図のクラスと同じです。
 [fixture: class-lists/in-requirement-and-element]
 [fixture: class-lists/shorthand]
 クラスは、文字列か、語の間に空白を持てる引用符のない文字列です。
@@ -475,12 +476,12 @@ requirement s:::a,b,c {
 
 ```mmd
 requirementDiagram
-  requirement r:::a,b {
+  requirement r:::a, b {
     id: 1
   }
   element e:::c {
   }
-  requirement s:::a,b,c {
+  requirement s:::a, b, c {
   }
 ```
 
@@ -499,14 +500,16 @@ r ::: "d"
 
 ```mmd
 requirementDiagram
-  requirement r:::"a b",c {
+  requirement r:::"a b", c {
   }
   r:::"d"
 ```
 
 ### スタイルとクラス
 
-名前とクラスのリストでは、名前に接する comma を使います。
+名前とクラスのリストでは、
+前の名前に接して後ろに空白を 1 つ置く comma を使います。
+Prettier のコンマの印字と同じ形で、mermaid.js が一覧を同じに読むからです。
 `class` の 2 つのリストは、空白 1 つで区切ります。
 style の文脈が LF で終わる場合、文の末尾の空白は落とします。
 最初のスタイルは空白 1 つの後に置きます。
@@ -593,7 +596,7 @@ classDef "d" fill:red
 
 ```mmd
 requirementDiagram
-  classDef a,b,c fill: red
+  classDef a, b, c fill: red
   classDef default fill: #f9f, stroke-width: 4px
   classDef d fill: red
 ```
@@ -647,9 +650,9 @@ requirementDiagram
     id: 1
   }
   class r c
-  class r c,d
-  class r c,d
-  class r c,d
+  class r c, d
+  class r c, d
+  class r c, d
 ```
 
 入力

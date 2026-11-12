@@ -483,7 +483,7 @@ const sequenceExamples: readonly (readonly [string, string, string])[] = [
   [
     "U+2029 between an id of a note and the `,`",
     "sequenceDiagram\nNote over A\u2029 , B: x\n",
-    "sequenceDiagram\n  Note over A\u2029 ,B: x\n",
+    "sequenceDiagram\n  Note over A\u2029 , B: x\n",
   ],
   [
     "U+2028 between the `,` of a note and an id",
@@ -1118,12 +1118,12 @@ const ganttLineSeparatorExamples: readonly (readonly [
   [
     "U+2028 between the parentheses of a blank Gantt callback",
     "gantt\na : id1, 1d\nclick id1 call f(\u2028)",
-    "gantt\n  a :id1, 1d\n  click id1 call f(\u2028)\n",
+    "gantt\n  a : id1, 1d\n  click id1 call f(\u2028)\n",
   ],
   [
     "U+2029 between the parentheses of a blank Gantt callback",
     "gantt\na : id1, 1d\nclick id1 call f(\u2029)",
-    "gantt\n  a :id1, 1d\n  click id1 call f(\u2029)\n",
+    "gantt\n  a : id1, 1d\n  click id1 call f(\u2029)\n",
   ],
   [
     "U+2028 between the header and a statement",
@@ -1143,17 +1143,17 @@ const ganttLineSeparatorExamples: readonly (readonly [
   [
     "U+2028 inside a task description",
     "gantt\na\u2028b : 1d\n",
-    "gantt\n  a\u2028b :1d\n",
+    "gantt\n  a\u2028b : 1d\n",
   ],
   [
     "U+2028 before the colon of a task",
     "gantt\na\u2028: 1d\n",
-    "gantt\n  a\u2028 :1d\n",
+    "gantt\n  a\u2028 : 1d\n",
   ],
   [
     "U+2028 between the items of task data",
     "gantt\na : 1d,\u20282d\n",
-    "gantt\n  a :1d,\u20282d\n",
+    "gantt\n  a : 1d,\u20282d\n",
   ],
   [
     "U+2028 after a title keyword",
@@ -1183,7 +1183,7 @@ const ganttLineSeparatorExamples: readonly (readonly [
   [
     "U+2028 between a click id and its part",
     'gantt\na : id1, 1d\nclick id1\u2028href "u"\n',
-    'gantt\n  a :id1, 1d\n  click id1\u2028href "u"\n',
+    'gantt\n  a : id1, 1d\n  click id1\u2028href "u"\n',
   ],
   [
     "U+2028 and spaces at the end of a title",
@@ -1225,22 +1225,22 @@ const ganttWhitespaceExamples: readonly (readonly [string, string, string])[] =
     [
       "U+00A0 around an item of task data",
       "gantt\na :\u00a01d\u00a0\n",
-      "gantt\n  a :1d\n",
+      "gantt\n  a : 1d\n",
     ],
     [
       "U+00A0 between the items of task data",
       "gantt\na : id1,\u00a0\u00a01d\n",
-      "gantt\n  a :id1, 1d\n",
+      "gantt\n  a : id1, 1d\n",
     ],
     [
       "U+00A0 before the colon of a task",
       "gantt\na\u00a0: 1d\n",
-      "gantt\n  a\u00a0 :1d\n",
+      "gantt\n  a\u00a0 : 1d\n",
     ],
     [
       "U+FEFF before a task",
       "gantt\ntitle T\n\ufeffa : 1d\n",
-      "gantt\n  title T\n  a :1d\n",
+      "gantt\n  title T\n  a : 1d\n",
     ],
     [
       "U+FEFF between the items of a list",
@@ -1511,7 +1511,7 @@ const requirementWhitespaceExamples: readonly (readonly [
   [
     "U+00A0 around the comma of a list of classes",
     "requirementDiagram\nrequirement r:::a\u00a0,\u00a0b {\n}\n",
-    "requirementDiagram\n  requirement r:::a,b {\n  }\n",
+    "requirementDiagram\n  requirement r:::a, b {\n  }\n",
   ],
   [
     "U+00A0 inside a name",

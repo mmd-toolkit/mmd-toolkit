@@ -323,17 +323,16 @@ venn-beta
 ### Name lists
 
 キーワードと引数は空白1つで区切ります。
-名前のコンマは前後の名前に接します（`union A,B`）。
-mermaid.js の文書は一覧をこのように書き、名前の一覧の 18 個のコンマの後ろには、
-空白がありません。
-一覧を正規化する図種（ER、requirement、state、sequence）も、同じ形で印字します。
+名前のコンマは直前の名前に接し、後ろを空白1つにします。
+Prettier がコンマを印字する形で、mermaid.js が一覧を同じに読むからです。
 引用符内の余白、空の名前、順序と重複は、Db が対象を並べ替える場合も保ちます。
 名前は、[Quotes](#quotes)のとおり、引用符つきか引用符なしで印字します。
 引用符内の余白は名前の一部で、`" A "` と `"A"` は Db が異なります。
 Db が対象を並べ替えるのは、書かれた一覧の並べ替えを許すものではなく、
 重複したメンバーは union の項数として残します。
 Venn は、コンマの隣の空白があってもなくても、
-引用符つきの名前を含む一覧を同じに読むので、コンマの隣には空白を置きません。
+引用符つきの名前を含む一覧を同じに読むので、sankey の一覧と違って、
+コンマの後ろの空白は安全です。
 ディレクティブと無視されるセミコロンは通常の隙間の規則に優先します。
 [corpus fixture: venn/db-case-distinct-ids]
 [corpus fixture: venn/db-empty-identifiers]
@@ -360,9 +359,9 @@ Venn は、コンマの隣の空白があってもなくても、
 venn-beta
   set A
   set B
-  union A,B,A
-text A,"B" item
-  style A,B fill: red
+  union A, B, A
+text A, "B" item
+  style A, B fill: red
 ```
 
 ### Labels
@@ -486,7 +485,7 @@ style B fill:#C0FFEE
 venn-beta
   set A
   set B
-  union A,B
+  union A, B
   style A fill: #f9f, color: #abcdef
   style B fill: #c0ffee
 ```
@@ -515,7 +514,7 @@ venn-beta
 引用符なしで印字し、角括弧ラベルは引用符つきで印字します。
 mermaid.js の文書の例がそう書くためです。
 （[テキストの引用符](./compatibility.ja.md#テキストの引用符)）。
-`set "A"` は `set A`、`union "A","B"` は `union A,B`、
+`set "A"` は `set A`、`union "A","B"` は `union A, B`、
 `style A fill:"red"` は `style A fill: red`、
 `set A[Alpha]` は `set A["Alpha"]` になります。
 
@@ -585,8 +584,8 @@ venn-beta
   set c-d:3
   set xset
   set set1
-  union A,B_2["Both"]
-  style A,c-d fill: red
+  union A, B_2["Both"]
+  style A, c-d fill: red
   set A1
     text item
     text item-2["Note"]
@@ -631,7 +630,7 @@ mermaid.js がテキストとして読むため、綴りを保ちます。
 venn-beta
   set A:+02.50
   set B:-0.5
-  union A,B:007
+  union A, B:007
     text 007
 ```
 
@@ -697,7 +696,7 @@ rgb・rgba のトークン全体、キーの大小文字、重複と別々の文
 
 ```mmd
 venn-beta
-  style A,B fill: red, opacity: .50, custom: " dark blue "
+  style A, B fill: red, opacity: .50, custom: " dark blue "
 ```
 
 ### Semicolons at the end of a style statement

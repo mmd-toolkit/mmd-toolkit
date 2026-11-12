@@ -25,7 +25,7 @@ mermaid.js は `set` と `union` の重複する宣言をエラーなしに受�
 この規則は、ベン図（`venn-beta`）に当てる。
 前の宣言と同じ名前を持つ `set` や `union` を、文が同じときも報告する。
 名前の順は数えず、繰り返しは数えるので、
-`union B,A` は `union A,B` の重複であり、`union A,A,B` は別である。
+`union B, A` は `union A, B` の重複であり、`union A, A, B` は別である。
 
 3 つ以上の集合の和は、各組を宣言せずに、その領域を描画に足す。
 大きな和の前か後で、そのような組を宣言しても報告しない。
@@ -50,8 +50,8 @@ venn-beta
 venn-beta
   set A
   set B
-  union A,B["Shared"]
-  union B,A["Both"]
+  union A, B["Shared"]
+  union B, A["Both"]
 ```
 
 ```mmd
@@ -71,7 +71,7 @@ venn-beta
 venn-beta
   set A["Alpha"]:20
   set B["Beta"]
-  union A,B["Shared"]
+  union A, B["Shared"]
 ```
 
 ```mmd

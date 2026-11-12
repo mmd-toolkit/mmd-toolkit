@@ -534,8 +534,8 @@ Db が書かれたまま保つからです。
 [fixture: whitespace-between-tokens/style-unclosed-string-runs-kept]
 [fixture: whitespace-between-tokens/style-unclosed-url-runs-kept]
 
-`class` 文の id を区切る `,` は、後ろの id に接します。
-`class A, B c` は `class A,B c` になります。
+`class` 文の id を区切る `,` は、前の id に接して、後ろに空白を 1 つ置きます。
+`class A,B c` は `class A, B c` になります。
 ER、requirement、
 usecase
 の一覧と同じです（[スタイルとクラス](./er.ja.md#スタイルとクラス)を参照）。
@@ -545,16 +545,16 @@ mermaid.js の文書は、この文の例 2 件を `,` の後ろに空白を置�
 その 1 件は、
 [`class Moving, Crash movement`](https://github.com/mermaid-js/mermaid/blob/2086904e76c692331e34a45d7cc3bc30860d040e/packages/mermaid/src/docs/syntax/stateDiagram.md#L397)
 です。
-これは形を決める根拠にはなりません。
-[fixture: whitespace-between-tokens/class-ids-touching]
+これが印字する形です。 [fixture: whitespace-between-tokens/class-ids-touching]
 `,` の前に空白が書かれていると、そこで id が終わり、残りがクラス名になります。
 `class A ,B c` は状態 `A` とクラス `,B c` です。
 その形は、`,` の後ろの空白も含めて、書かれたまま残します。
 [fixture: whitespace-between-tokens/class-ids-space-before-comma-kept]
 [fixture: whitespace-between-tokens/comma-kept]
 `,` の後ろの改行は結ぶので、
-`class A,` と次の行の `B c` は `class A,B c` になります。
-`,` の前にディレクティブがあっても同じで、`,` の後ろの id は `,` に接します。
+`class A,` と次の行の `B c` は `class A, B c` になります。
+`,` の前にディレクティブがあっても同じで、
+`,` の後ろの id は空白 1 つの後に置きます。
 [fixture: whitespace-between-tokens/class-ids-line-break-and-directive]
 `,` の後ろの隙間のディレクティブは、
 [ディレクティブ](#ディレクティブ)のとおりに置きます。
@@ -565,6 +565,15 @@ mermaid.js の文書は、この文の例 2 件を `,` の後ろに空白を置�
 `,` の後ろの U+2028 と U+2029 は、そのまま残します。
 [test: U+2028 after the comma of a state class statement]
 [test: U+2029 after the comma of a state class statement]
+
+ids の後ろのクラス（`class A x,y`）と、
+`style` 文の id（`style A,B fill:red`）は、書かれたまま印字します。
+`x, y` と書くと、`x, y` という名前の 1 つのクラスになり、
+`style A, B fill:red` は `A` にスタイル `B fill:red` を付けるので、
+Db が変わります。
+詳しくは [コンマで区切る一覧](./compatibility.ja.md#コンマで区切る一覧)
+を参照してください。
+[fixture: whitespace-between-tokens/comma-lists-without-space-kept]
 
 入力
 ([whitespace-between-tokens/collapsed-input.mmd](../tests/fixtures/state/whitespace-between-tokens/collapsed-input.mmd)):
@@ -589,7 +598,7 @@ stateDiagram-v2
   state f1 <<fork>>
   state "" x
   classDef c fill: red, stroke: blue
-  class A,B c
+  class A, B c
   scale 350 width
   hide empty description
 ```

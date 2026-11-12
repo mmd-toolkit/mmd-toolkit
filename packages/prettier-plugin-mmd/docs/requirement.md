@@ -433,10 +433,10 @@ requirementDiagram
 ### Class lists
 
 The classes after `:::`, in a requirement, in an element, and in a statement of
-a name and its classes, touch the `:::`, and the `,` between them touches the
-classes on both sides: `requirement r ::: a , b {` is printed
-`requirement r:::a,b {`, as the classes of an ER diagram and the documentation
-of mermaid.js are written. [fixture: class-lists/in-requirement-and-element]
+a name and its classes, the first class touches the `:::`, and the `,` between
+them touches the class before it and has one space after it:
+`requirement r ::: a , b {` is printed `requirement r:::a, b {`, as the classes
+of an ER diagram are. [fixture: class-lists/in-requirement-and-element]
 [fixture: class-lists/shorthand] A class is a string, or an unquoted text that
 may hold whitespace between its words, which is part of the class. [fixture:
 class-lists/string-classes] [fixture: class-lists/classes-with-spaces] A
@@ -462,12 +462,12 @@ Output
 
 ```mmd
 requirementDiagram
-  requirement r:::a,b {
+  requirement r:::a, b {
     id: 1
   }
   element e:::c {
   }
-  requirement s:::a,b,c {
+  requirement s:::a, b, c {
   }
 ```
 
@@ -486,25 +486,26 @@ Output
 
 ```mmd
 requirementDiagram
-  requirement r:::"a b",c {
+  requirement r:::"a b", c {
   }
   r:::"d"
 ```
 
 ### Styles and classes
 
-Name and class lists use commas without surrounding spaces. The two lists of a
-`class` statement remain separated by one space. Statement-ending whitespace is
-dropped where the style context ends at LF. The first style stands after one
-space. For ordinary single-line property/value styles in `style` or `classDef`,
-put no space before the first colon of each style and one before its nonempty
-value; separate styles with a comma and one following space. [fixture:
-styles-and-classes/empty-style-value] Print a run of spaces or tabs between two
-words of a style as one space, in a style with a `:` and in one without:
-`stroke-dasharray:  5    5` becomes `stroke-dasharray: 5 5`, and `4px    wide`
-becomes `4px wide`. Whether whitespace stands between two words stays as
-written: `fill #f00` and `fill#f00` are kept apart, since a word that touches
-the next stays touching, as a gap does elsewhere (see
+Name and class lists use a comma that touches the name before it and has one
+space after it, as Prettier prints a comma where mermaid.js reads the list the
+same. The two lists of a `class` statement remain separated by one space.
+Statement-ending whitespace is dropped where the style context ends at LF. The
+first style stands after one space. For ordinary single-line property/value
+styles in `style` or `classDef`, put no space before the first colon of each
+style and one before its nonempty value; separate styles with a comma and one
+following space. [fixture: styles-and-classes/empty-style-value] Print a run of
+spaces or tabs between two words of a style as one space, in a style with a `:`
+and in one without: `stroke-dasharray:  5    5` becomes `stroke-dasharray: 5 5`,
+and `4px    wide` becomes `4px wide`. Whether whitespace stands between two
+words stays as written: `fill #f00` and `fill#f00` are kept apart, since a word
+that touches the next stays touching, as a gap does elsewhere (see
 [Directives](#directives)), and joining the words would hide where one word
 ends. Mermaid concatenates the native style units whatever whitespace separates
 them: `stroke-dasharray: 5 5` still means `stroke-dasharray:55`, so the Db does
@@ -572,7 +573,7 @@ Output
 
 ```mmd
 requirementDiagram
-  classDef a,b,c fill: red
+  classDef a, b, c fill: red
   classDef default fill: #f9f, stroke-width: 4px
   classDef d fill: red
 ```
@@ -626,9 +627,9 @@ requirementDiagram
     id: 1
   }
   class r c
-  class r c,d
-  class r c,d
-  class r c,d
+  class r c, d
+  class r c, d
+  class r c, d
 ```
 
 Input

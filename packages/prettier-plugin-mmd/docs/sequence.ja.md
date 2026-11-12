@@ -312,12 +312,13 @@ U+2028 と U+2029 はそのまま残します。
 [test: U+2028 between a block keyword and its text]
 [test: U+2029 between a wrap prefix and its text]
 2 人の参加者にまたがるノートの id の間の `,` は、
-`note over A,B` のように両側の id に接します。
-`note over A , B` は `note over A,B` になります。
+`Note over A, B` のように前の id に接して、後ろに空白を 1 つ置きます。
+`note over A , B` は `Note over A, B` になります。
 mermaid.js が受け付ける書き方は、どれも同じ Db になるので、
 形を強いるものはありません。
 mermaid.js の文書にある、2 人の参加者にまたがるノート 5 件は、
-すべて `A,B` と書かれています。
+すべて `A,B` と書かれていますが、Prettier はコンマの後ろに空白を置くので、
+形を決める根拠にはなりません。
 そのうち 2 件は、
 [ここ](https://github.com/mermaid-js/mermaid/blob/2086904e76c692331e34a45d7cc3bc30860d040e/packages/mermaid/src/docs/syntax/sequenceDiagram.md#L49-L77)
 にあります。
@@ -360,7 +361,7 @@ sequenceDiagram
   autonumber 10 5
   create participant C
   A ->> C: x
-  Note over A,C: n
+  Note over A, C: n
   A ->> B: wrap: x
   A ->> B: wrap: y
 ```
@@ -531,7 +532,7 @@ sequenceDiagram
   box Group
     participant C
   end
-  Note over A,B: together
+  Note over A, B: together
   Note right of A: side
   link A: Docs @ https://example.com
   links B: {"Docs":"https://example.com"}

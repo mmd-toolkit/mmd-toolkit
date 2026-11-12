@@ -772,6 +772,14 @@ whitespace-between-tokens/style-escaped-space-run-spaced] A comment that is not
 closed runs to the end of the style, and the runs in it stay. [fixture:
 whitespace-between-tokens/style-unclosed-comment-runs-kept]
 
+The `,` of a `class`, `click`, and `linkStyle` statement stays as written,
+without a space after it, since mermaid.js rejects `class A, B c` and the like.
+In a `classDef`, a space after the `,` between the names would move the name
+after it into the style (`classDef a, b fill:red` gives `a` the style
+`b fill:red`), so those names stay as written too (see
+[Lists separated by commas](./compatibility.md#lists-separated-by-commas)).
+[fixture: whitespace-between-tokens/comma-lists-without-space-kept]
+
 U+2028 and U+2029 after the `end` of a subgraph are whitespace to mermaid.js,
 and are dropped with the whitespace at the end of the line: `end`, U+2028, and a
 line break is printed as `end`. [test: U+2028 after the `end` of a subgraph]

@@ -302,16 +302,18 @@ target of a link] [test: U+2028 between the cssClass keyword and its string]
 [test: U+2029 between a callback and its tooltip] [test: U+2028 between a
 generic type and the call of a callback]
 
-The names of a `classDef` statement are separated by a `,` that touches both
-names: `classDef c1 , c2 fill:#f00` is printed `classDef c1,c2 fill: #f00`, as
-the lists of ER, requirement, and usecase are (see
-[Styles and classes](./er.md#styles-and-classes)). mermaid.js reads every
+The names of a `classDef` statement are separated by a `,` that touches the name
+before it and has one space after it: `classDef c1 , c2 fill:#f00` is printed
+`classDef c1, c2 fill: #f00`, as the lists of ER, requirement, and usecase are
+(see [Styles and classes](./er.md#styles-and-classes)). mermaid.js reads every
 spelling as the same statement, so nothing forces the form, and its
-documentation writes the one example touching
+documentation writes the one example without the space, which does not decide
+the form: Prettier prints a space after a comma
 ([`classDef firstClassName,secondClassName`](https://github.com/mermaid-js/mermaid/blob/2086904e76c692331e34a45d7cc3bc30860d040e/packages/mermaid/src/docs/syntax/classDiagram.md#L761)).
 [fixture: whitespace-between-tokens/classdef-names-touching] A directive in the
-gap is placed as under [Directives](#directives): the gaps beside a `,` have no
-space, so the directive touches the names and the `,`. [fixture:
+gap is placed as under [Directives](#directives): the gap before the `,` has no
+space, so the directive touches the name and the `,`, and the gap after it has
+one, which stands before the directive. [fixture:
 whitespace-between-tokens/classdef-names-beside-directive] [fixture:
 whitespace-between-tokens/classdef-names-beside-directive-runs] A `;` or a `#`
 that ends the statement follows

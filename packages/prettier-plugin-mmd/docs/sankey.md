@@ -79,17 +79,21 @@ d,e,2
 A field without quotes is read without the whitespace at its ends, so the Db is
 the same wherever the spaces around a comma stand, except between a `:` and a
 later `#` of a line that the line rule reads (see below). The comma touches the
-fields on both sides, and the whitespace around them is dropped, for a reason
-that is not in the Db: mermaid.js rejects a space next to a quote, so a string
-can have no space before it (`a, "b",1` is rejected), and a rule that put a
-space after each comma would give one record two shapes, a space before a field
-without quotes and none before a string. With the commas touching there is one
-rule, and it is the form that the documentation of mermaid.js writes. The
-whitespace inside a field stays. [fixture: commas/spaces-around-commas-dropped]
-[fixture: commas/space-after-comma-dropped] [fixture:
-commas/spaces-inside-fields-kept] A directive next to a comma touches it, as a
-comma has no space beside it (see [Directives](#directives)), and a field of
-spaces only is printed as one space: `a,   %%{init: {}}%%,1` is printed
+fields on both sides, and the whitespace around them is dropped. The rows are
+CSV, in which the spaces beside a comma are part of the field (RFC 4180, section
+2, item 4; the documentation of mermaid.js says that the diagram implements that
+standard), so the comma is not a mark beside which Prettier prints a space, and
+no other diagram type has a row of this kind: the form that was published
+decides (see
+[Lists separated by commas](./compatibility.md#lists-separated-by-commas)).
+mermaid.js also rejects a space next to a quote, so a string can have no space
+before it (`a, "b",1` is rejected), and a space after each comma would give one
+record two shapes, a space before a field without quotes and none before a
+string. The whitespace inside a field stays. [fixture:
+commas/spaces-around-commas-dropped] [fixture: commas/space-after-comma-dropped]
+[fixture: commas/spaces-inside-fields-kept] A directive next to a comma touches
+it, as a comma has no space beside it (see [Directives](#directives)), and a
+field of spaces only is printed as one space: `a,   %%{init: {}}%%,1` is printed
 `a, %%{init: {}}%%,1`. [fixture: directives/next-to-commas] A space next to a
 quote is rejected by mermaid.js, so a string touches its commas, and the space
 before a field after a string, which is read as the whitespace of that field, is

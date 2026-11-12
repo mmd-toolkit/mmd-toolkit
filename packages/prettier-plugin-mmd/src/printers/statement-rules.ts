@@ -40,8 +40,9 @@ import {
  */
 
 /**
- * Adds the rules of a list of classes after `:::`: the `:::`, the `,`, and
- * the names touch what is before them. The list lies after `start`.
+ * Adds the rules of a list of classes after `:::`: the `:::`, the first class,
+ * and each `,` touch what is before them, and each class after a `,` stands
+ * after one space. The list lies after `start`.
  */
 export function addClassListRules(
   source: Source,
@@ -51,7 +52,8 @@ export function addClassListRules(
 ): void {
   const last = classes.at(-1)
   if (last === undefined) return
-  for (const name of classes) rules.set(name.range[0], "none")
+  for (const [index, name] of classes.entries())
+    rules.set(name.range[0], index === 0 ? "none" : "space")
   for (const token of findTokensBetween(source, start, last.range[1])) {
     if (
       isStructural(source, token) &&
@@ -82,8 +84,8 @@ export function addCssClassRules(
 
 /**
  * Adds the rules of a list of names separated by `,`: the first name stands
- * after one space, and the others touch the `,` before them, which touches
- * the name before it.
+ * after one space, each `,` touches the name before it, and each other name
+ * stands after one space, as Prettier prints a comma.
  */
 export function addNameListRules(
   source: Source,
@@ -94,7 +96,7 @@ export function addNameListRules(
   const last = names.at(-1)
   if (first === undefined || last === undefined) return
   rules.set(first.range[0], "space")
-  for (const name of names.slice(1)) rules.set(name.range[0], "none")
+  for (const name of names.slice(1)) rules.set(name.range[0], "space")
   for (const token of findTokensBetween(
     source,
     first.range[1],
@@ -108,7 +110,7 @@ export function addNameListRules(
 
 /**
  * The rules of a `classDef` or `style` statement: its names are separated by
- * `,` without whitespace, and the first style stands after one space. The
+ * `,` followed by one space, and the first style stands after one space. The
  * default style/comma gaps follow the source. Safe ER and requirement units
  * instead use no space before a comma and one after it (docs/er.md and
  * docs/requirement.md, Styles and classes).
@@ -876,8 +878,8 @@ function findColonGap(
 
 /**
  * The rules of a `class` statement: the names of the entities and the
- * classes are lists separated by `,` without whitespace, and the first class
- * stands after one space.
+ * classes are lists separated by `,` followed by one space, and the first
+ * class stands after one space.
  */
 export function classStatementRules(
   source: Source,

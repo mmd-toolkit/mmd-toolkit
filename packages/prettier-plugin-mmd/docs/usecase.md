@@ -451,7 +451,7 @@ Output
 
 ```mmd
 usecase-beta
-  systemBoundary Box["Display"]@{ type: package }:::box,group
+  systemBoundary Box["Display"]@{ type: package }:::box, group
     actor User
     A@{ business: true }
   end
@@ -757,7 +757,7 @@ Output
 usecase-beta
   json Table @{
     "2": 2, "1": {"z":1}, "2": 3
-  }:::data,table
+  }:::data, table
 ```
 
 ### Semicolons at the end of a style statement
@@ -804,10 +804,11 @@ usecase-beta
 
 ### Classes and styles
 
-Reuse [ER's tight class lists](./er.md#styles-and-classes): commas touch target
-and class names, with one gap between lists and before the first declaration;
-CSS declarations use comma-space. A declaration has no whitespace before its
-first colon and one space after it, as in the other diagram types (see
+Reuse [ER's class lists](./er.md#styles-and-classes): a comma touches the target
+or class name before it and has one space after it, with one gap between lists
+and before the first declaration; CSS declarations use comma-space. A
+declaration has no whitespace before its first colon and one space after it, as
+in the other diagram types (see
 [Styles that are drawn the same](./compatibility.md#styles-that-are-drawn-the-same)).
 Mermaid stores the padding before and after the colon, so the Db changes, but it
 draws the same figure. A name that ends with `stroke` is the exception, since a

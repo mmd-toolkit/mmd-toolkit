@@ -808,6 +808,17 @@ CSS が `:` の前後の空白を捨て、連続を 1 つとして読むため�
 閉じていないコメントはスタイルの終わりまで続き、中の連続は残します。
 [fixture: whitespace-between-tokens/style-unclosed-comment-runs-kept]
 
+`class`、`click`、`linkStyle` の文の `,` は、後ろに空白を置かず、
+書かれたまま残します。
+mermaid.js が `class A, B c` のような空白のある形を拒否するからです。
+`classDef` の名前の間の `,` の後ろに空白を置くと、
+その後ろの名前がスタイルに移ります。
+たとえば `classDef a, b fill:red` は、`a` にスタイル `b fill:red` を付けます。
+そのため、この名前も書かれたまま残します。
+詳しくは [コンマで区切る一覧](./compatibility.ja.md#コンマで区切る一覧)
+を参照してください。
+[fixture: whitespace-between-tokens/comma-lists-without-space-kept]
+
 subgraph の `end` の後の U+2028 と U+2029 は mermaid.js にとって空白なので、
 行末の空白と一緒に落とします。
 `end`、U+2028、改行は `end` と印字します。

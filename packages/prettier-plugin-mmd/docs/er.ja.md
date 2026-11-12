@@ -636,8 +636,8 @@ erDiagram
 [fixture: relationship-spacing/role-forms]
 [corpus fixture: er/lex-relationship-no-spaces]
 [corpus fixture: er/lex-colon-no-space]
-実体のクラスは、`:::` と、その間の `,` に両側で接します。
-[fixture: relationship-spacing/names-and-classes]
+実体の最初のクラスは `:::` に接し、クラスの間の `,` は前のクラスに接して、
+後ろに空白を 1 つ置きます。 [fixture: relationship-spacing/names-and-classes]
 
 関係のカーディナリティと線は、語と記号のどちらが書かれていても、
 記号で印字します。
@@ -773,8 +773,10 @@ erDiagram
 
 実体の別名は、名前に接し、角括弧の中に何も置きません。
 `p [ Person ]` は `p[Person]` にします。 [fixture: entities/alias-tight]
-`:::` の後のクラスは `:::` に接し、両側のクラスに接する `,` で区切ります。
-`A ::: c1 , c2` は `A:::c1,c2` にします。
+`:::` の後の最初のクラスは `:::` に接し、クラスは、
+前のクラスに接して後ろに空白を 1 つ置く `,` で区切ります。
+Prettier のコンマの印字と同じ形で、mermaid.js が一覧を同じに読むからです。
+`A ::: c1 , c2` は `A:::c1, c2` にします。
 別名と `:::` を接する書き方が、mermaid.js の文書の例の多くです。
 [fixture: entities/classes-tight] [fixture: entities/alias-and-classes]
 属性ブロックの `{` は空白 1
@@ -852,9 +854,9 @@ B ::: d
 
 ```mmd
 erDiagram
-  A:::c1,c2
+  A:::c1, c2
   "A B":::c
-  A:::é,b-c
+  A:::é, b-c
   B:::d
 ```
 
@@ -1056,7 +1058,9 @@ erDiagram
 
 ### スタイルとクラス
 
-名前とクラスのリストでは、名前に接する comma を使います。
+名前とクラスのリストでは、
+前の名前に接して後ろに空白を 1 つ置く comma を使います。
+Prettier のコンマの印字と同じ形で、mermaid.js が一覧を同じに読むからです。
 最初のスタイルは空白 1 つの後に置きます。
 `style` と `classDef` の、通常の 1 行のプロパティと値からなるスタイルでは、
 最初の `:` の前を詰め、空でない値の前に空白を 1 つ置きます。
@@ -1139,7 +1143,7 @@ classDef default fill:#f9f,stroke-width:4px
 
 ```mmd
 erDiagram
-  classDef a,b,c fill: red
+  classDef a, b, c fill: red
   classDef default fill: #f9f, stroke-width: 4px
 ```
 

@@ -1198,7 +1198,7 @@ function addFloatingNoteRules(
 
 /**
  * Adds the rules of the `,` between the ids of a `class` statement: an id
- * after a `,` touches it. The ids end at whitespace before a `,`, and mermaid.js
+ * after a `,` stands after one space. The ids end at whitespace before a `,`, and mermaid.js
  * reads the rest as the name of the class, so `class A ,B c` has the one id `A`
  * and stays as written (docs/state.md, Whitespace between tokens).
  */
@@ -1215,7 +1215,7 @@ function addClassIdListRules(
       ),
       ",",
     )
-    rules.set(states[index].range[0], "none")
+    rules.set(states[index].range[0], "space")
   }
 }
 

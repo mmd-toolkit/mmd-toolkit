@@ -388,6 +388,14 @@ grammar's required single whitespace character; both remain written. [fixture:
 single-space-gaps/linkstyle-required-tab] [fixture:
 single-space-gaps/interpolate-required-tab]
 
+The `,` of a `class`, `click`, and `linkStyle` statement stays as written,
+without a space after it, since mermaid.js rejects `class A, B c` and the like.
+In a `classDef`, a space after the `,` between the names would move the name
+after it into the style (`classDef a, b fill:red` gives `a` the style
+`b fill:red`), so those names stay as written too (see
+[Lists separated by commas](./compatibility.md#lists-separated-by-commas)).
+[fixture: single-space-gaps/comma-lists-without-space-kept]
+
 Input (escaped): `"agentflow-beta TB\nA\nclass\tA\tc\n"`. [fixture:
 single-space-gaps/class-required-tab]
 

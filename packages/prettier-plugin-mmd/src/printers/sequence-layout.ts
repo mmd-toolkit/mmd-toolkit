@@ -626,7 +626,7 @@ function isReadAsArrowAfterMinus(id: string): boolean {
 
 /**
  * Adds the rules of the `,` between the two ids of a note over two
- * participants: none before it and none after it (docs/sequence.md,
+ * participants: none before it and one space after it (docs/sequence.md,
  * Whitespace between tokens). A note with one id has no `,`.
  */
 function addCommaRules(
@@ -642,7 +642,7 @@ function addCommaRules(
   )
   expectValue(comma, ",")
   rules.set(comma.range[0], "none")
-  rules.set(second.range[0], "none")
+  rules.set(second.range[0], "space")
 }
 
 /**

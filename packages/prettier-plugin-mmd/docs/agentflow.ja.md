@@ -417,6 +417,16 @@ linkStyleの後とinterpolate名の前のタブは、
 [fixture: single-space-gaps/linkstyle-required-tab]
 [fixture: single-space-gaps/interpolate-required-tab]
 
+`class`、`click`、`linkStyle` の文の `,` は、後ろに空白を置かず、
+書かれたまま残します。
+mermaid.js が `class A, B c` のような空白のある形を拒否するからです。
+`classDef` の名前の間の `,` の後ろに空白を置くと、
+その後ろの名前がスタイルに移ります。
+たとえば `classDef a, b fill:red` は、`a` にスタイル `b fill:red` を付けます。
+そのため、この名前も書かれたまま残します。
+詳しくは [コンマで区切る一覧](./compatibility.ja.md#コンマで区切る一覧)
+を参照してください。 [fixture: single-space-gaps/comma-lists-without-space-kept]
+
 入力（escape 表記）: `"agentflow-beta TB\nA\nclass\tA\tc\n"`。
 [fixture: single-space-gaps/class-required-tab]
 

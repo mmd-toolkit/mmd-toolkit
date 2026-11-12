@@ -300,10 +300,12 @@ placed as under [Directives](#directives), and a U+2028 or U+2029 stays where it
 is. [fixture: whitespace-between-tokens/block-text-beside-directive] [test:
 U+2028 between a block keyword and its text] [test: U+2029 between a wrap prefix
 and its text] The `,` between the ids of a note over two participants touches
-both ids, as in `note over A,B`: `note over A , B` is printed `note over A,B`.
-Every spelling that mermaid.js accepts gives the same Db, so nothing forces the
-form; the five notes over two participants in the documentation of mermaid.js
-are all written `A,B`
+the id before it and has one space after it, as in `Note over A, B`:
+`note over A , B` is printed `Note over A, B`. Every spelling that mermaid.js
+accepts gives the same Db, so nothing forces the form. The five notes over two
+participants in the documentation of mermaid.js are all written `A,B`, which
+does not decide the form: Prettier prints a space after a comma, and the form
+that is easier to read comes before the form of the documentation
 ([two](https://github.com/mermaid-js/mermaid/blob/2086904e76c692331e34a45d7cc3bc30860d040e/packages/mermaid/src/docs/syntax/sequenceDiagram.md#L49-L77)
 and
 [three](https://github.com/mermaid-js/mermaid/blob/2086904e76c692331e34a45d7cc3bc30860d040e/packages/mermaid/src/docs/syntax/sequenceDiagram.md#L445-L464)).
@@ -342,7 +344,7 @@ sequenceDiagram
   autonumber 10 5
   create participant C
   A ->> C: x
-  Note over A,C: n
+  Note over A, C: n
   A ->> B: wrap: x
   A ->> B: wrap: y
 ```
@@ -509,7 +511,7 @@ sequenceDiagram
   box Group
     participant C
   end
-  Note over A,B: together
+  Note over A, B: together
   Note right of A: side
   link A: Docs @ https://example.com
   links B: {"Docs":"https://example.com"}

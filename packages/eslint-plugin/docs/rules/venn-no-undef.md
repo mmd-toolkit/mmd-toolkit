@@ -26,9 +26,9 @@ nor a single id of a text node. Declarations anywhere in the diagram count, so
 statements before their declarations are not reported.
 
 Area names are compared without regard to order but with repetitions.
-`style A,B` targets the union, so separate `set A` and `set B` declarations do
+`style A, B` targets the union, so separate `set A` and `set B` declarations do
 not suffice. A union of three or more sets also supplies its pair areas, so
-`text A,B x` after `union A,B,C` is not reported.
+`text A, B x` after `union A, B, C` is not reported.
 
 A `style` with one name can target the id of a text node; that id is not an area
 for `text` or a `style` with several names. Indented `text` belongs to the
@@ -52,7 +52,7 @@ text Typo A1[Review]
 venn-beta
   set A
   set B
-  style A,B fill: red
+  style A, B fill: red
 ```
 
 Examples of **correct** code for this rule:
@@ -62,9 +62,9 @@ Examples of **correct** code for this rule:
 venn-beta
   set A
   set B
-  union A,B
-text A,B AB1[Shared]
-  style A,B fill: red
+  union A, B
+text A, B AB1[Shared]
+  style A, B fill: red
 ```
 
 ```mmd

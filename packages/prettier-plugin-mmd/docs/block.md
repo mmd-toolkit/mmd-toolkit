@@ -695,6 +695,12 @@ block-beta
   class A, B c1
 ```
 
+A `class` with several class names is printed as written: `class A x,y` stays,
+since `x, y` would be one class named `x, y`, as `x,y` is one class named `x,y`,
+and the Db would change (see
+[Lists separated by commas](./compatibility.md#lists-separated-by-commas)).
+[fixture: styles/class-names-without-space-kept]
+
 ### Semicolons at the end of a style statement
 
 A line-ending `;` of a `classDef` or `style` statement is dropped when the

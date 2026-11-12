@@ -31,7 +31,7 @@ mermaid.js は同じ対象の `style` 文を合わせ、各プロパティの最
 [venn-no-invalid-style-key](./venn-no-invalid-style-key.ja.md) が調べる。
 
 対象は名前の並びを順によらず比べるので、
-`style B,A` と `style A,B` は同じ対象を持つ。
+`style B, A` と `style A, B` は同じ対象を持つ。
 値は周りの引用符を除き、書いたとおりに比べ、引用符の中の空白は数える。
 引用符のない `2px` と `2 px` は、mermaid.js が各部分を同じ値につないでも、
 この規則では異なる。

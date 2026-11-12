@@ -621,9 +621,9 @@ mermaid.js, and the role may be a name, a string, or a quoted name alike.
 [fixture: relationship-spacing/around-units-and-role] [fixture:
 relationship-spacing/names-and-classes] [fixture:
 relationship-spacing/role-forms] [corpus fixture: er/lex-relationship-no-spaces]
-[corpus fixture: er/lex-colon-no-space] The classes of an entity touch their
-`:::` and the `,` between them. [fixture:
-relationship-spacing/names-and-classes]
+[corpus fixture: er/lex-colon-no-space] The first class of an entity touches its
+`:::`, and each `,` between the classes touches the class before it and has one
+space after it. [fixture: relationship-spacing/names-and-classes]
 
 The cardinalities and the line of a relationship are printed as symbols,
 whatever words or symbols were written: mermaid.js reads `only one`,
@@ -753,13 +753,15 @@ erDiagram
 
 The alias of an entity touches its name and has nothing inside its brackets, as
 in most examples of the documentation of mermaid.js: `p [ Person ]` is printed
-`p[Person]`. [fixture: entities/alias-tight] The classes after `:::` touch it,
-and are separated by a `,` that touches the classes on both sides:
-`A ::: c1 , c2` is printed `A:::c1,c2`. [fixture: entities/classes-tight]
-[fixture: entities/alias-and-classes] The `{` of an attribute block stands after
-one space (see [Attribute blocks](#attribute-blocks)). A name, a role, or the id
-of a subgraph in quotes that is one plain word is printed without them, as the
-examples in the documentation of mermaid.js write it (see
+`p[Person]`. [fixture: entities/alias-tight] The first class after `:::` touches
+it, and the classes are separated by a `,` that touches the class before it and
+has one space after it, as Prettier prints a comma where mermaid.js reads the
+list the same: `A ::: c1 , c2` is printed `A:::c1, c2`. [fixture:
+entities/classes-tight] [fixture: entities/alias-and-classes] The `{` of an
+attribute block stands after one space (see
+[Attribute blocks](#attribute-blocks)). A name, a role, or the id of a subgraph
+in quotes that is one plain word is printed without them, as the examples in the
+documentation of mermaid.js write it (see
 [The quotes of a text](./compatibility.md#the-quotes-of-a-text)): `"A"[B]` is
 printed `A[B]`, and `C ||--o{ D : "has"` is `C ||--o{ D : has`. A word that
 starts with a letter, with a single `-` between its parts (`LINE-ITEM`, `a-1`),
@@ -826,9 +828,9 @@ Output
 
 ```mmd
 erDiagram
-  A:::c1,c2
+  A:::c1, c2
   "A B":::c
-  A:::é,b-c
+  A:::é, b-c
   B:::d
 ```
 
@@ -1022,25 +1024,26 @@ erDiagram
 
 ### Styles and classes
 
-Name and class lists use commas without surrounding spaces. The first style
-stands after one space. For ordinary single-line property/value styles in
-`style` or `classDef`, put no space before the first colon of each style and one
-before its nonempty value; separate styles with a comma and one following space.
-Print a run of spaces or tabs between two words of a style as one space, in a
-style with a `:` and in one without: `stroke-dasharray:  5    5` becomes
-`stroke-dasharray: 5 5`, and `4px    wide` becomes `4px wide`. Whether
-whitespace stands between two words stays as written: `fill #f00` and `fill#f00`
-are kept apart, since a word that touches the next stays touching, as a gap does
-elsewhere (see [Directives](#directives)), and joining the words would hide
-where one word ends. Mermaid concatenates the native style units whatever
-whitespace separates them: `stroke-dasharray: 5 5` still means
-`stroke-dasharray:55`, so the Db does not change. For example,
-`fill   : navy, stroke  : black` becomes `fill: navy, stroke: black`. A header
-or exterior line break that ordinarily joins does not delay this spacing until
-another formatting. Style interiors containing line separators, owned trivia,
-and statements with a kept semicolon on their physical line retain the existing
-style layout. The keywords `style` and `classDef` keep the case in which they
-are written (see
+Name and class lists use a comma that touches the name before it and has one
+space after it, as Prettier prints a comma where mermaid.js reads the list the
+same. The first style stands after one space. For ordinary single-line
+property/value styles in `style` or `classDef`, put no space before the first
+colon of each style and one before its nonempty value; separate styles with a
+comma and one following space. Print a run of spaces or tabs between two words
+of a style as one space, in a style with a `:` and in one without:
+`stroke-dasharray:  5    5` becomes `stroke-dasharray: 5 5`, and `4px    wide`
+becomes `4px wide`. Whether whitespace stands between two words stays as
+written: `fill #f00` and `fill#f00` are kept apart, since a word that touches
+the next stays touching, as a gap does elsewhere (see
+[Directives](#directives)), and joining the words would hide where one word
+ends. Mermaid concatenates the native style units whatever whitespace separates
+them: `stroke-dasharray: 5 5` still means `stroke-dasharray:55`, so the Db does
+not change. For example, `fill   : navy, stroke  : black` becomes
+`fill: navy, stroke: black`. A header or exterior line break that ordinarily
+joins does not delay this spacing until another formatting. Style interiors
+containing line separators, owned trivia, and statements with a kept semicolon
+on their physical line retain the existing style layout. The keywords `style`
+and `classDef` keep the case in which they are written (see
 [Keywords in one case](./compatibility.md#keywords-in-one-case)). [fixture:
 styles-and-classes/style-unit-padding] [fixture:
 styles-and-classes/class-def-names] [fixture: styles-and-classes/style-names]
@@ -1098,7 +1101,7 @@ Output
 
 ```mmd
 erDiagram
-  classDef a,b,c fill: red
+  classDef a, b, c fill: red
   classDef default fill: #f9f, stroke-width: 4px
 ```
 

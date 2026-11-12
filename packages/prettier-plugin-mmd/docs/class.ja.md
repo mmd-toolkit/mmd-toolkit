@@ -336,18 +336,21 @@ U+2028 と U+2029 はそのまま残します。
 [test: U+2029 between a callback and its tooltip]
 [test: U+2028 between a generic type and the call of a callback]
 
-`classDef` 文の名前を区切る `,` は、両側の名前に接します。
-`classDef c1 , c2 fill:#f00` は `classDef c1,c2 fill: #f00` になります。
+`classDef` 文の名前を区切る `,` は、前の名前に接して、
+後ろに空白を 1 つ置きます。
+`classDef c1 , c2 fill:#f00` は `classDef c1, c2 fill: #f00` になります。
 ER、requirement、
 usecase
 の一覧と同じです（[スタイルとクラス](./er.ja.md#スタイルとクラス)を参照）。
 mermaid.js はどの書き方も同じ文として読むので、形を強いるものはありません。
-mermaid.js の文書にある例 1 件は、接する形で書かれています。
+mermaid.js の文書にある例 1 件は、空白なしで書かれていますが、
+Prettier はコンマの後ろに空白を置くので、形を決める根拠にはなりません。
 その例は、
 [`classDef firstClassName,secondClassName`](https://github.com/mermaid-js/mermaid/blob/2086904e76c692331e34a45d7cc3bc30860d040e/packages/mermaid/src/docs/syntax/classDiagram.md#L761)
 です。 [fixture: whitespace-between-tokens/classdef-names-touching]
 隙間のディレクティブは、[ディレクティブ](#ディレクティブ)のとおりに置きます。
-`,` の隣の隙間には空白を置かないので、ディレクティブは名前と `,` に接します。
+`,` の前の隙間には空白を置かないので、ディレクティブは名前と `,` に接し、
+後ろの隙間の空白 1 つは、ディレクティブの前に置きます。
 [fixture: whitespace-between-tokens/classdef-names-beside-directive]
 [fixture: whitespace-between-tokens/classdef-names-beside-directive-runs]
 文を終わらせる `;` や `#` は、

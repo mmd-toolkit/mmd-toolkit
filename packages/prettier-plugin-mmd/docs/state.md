@@ -512,22 +512,24 @@ that is not closed runs to the end of the style, and the runs in it stay.
 [fixture: whitespace-between-tokens/style-unclosed-string-runs-kept] [fixture:
 whitespace-between-tokens/style-unclosed-url-runs-kept]
 
-The ids of a `class` statement are separated by a `,` that touches the id after
-it: `class A, B c` is printed `class A,B c`, as the lists of ER, requirement,
-and usecase are (see [Styles and classes](./er.md#styles-and-classes)).
-mermaid.js reads `A,B`, `A, B`, and `A,  B` as the same statement, so nothing
-forces the form. Its documentation writes the two examples of the statement with
-a space after the comma
+The ids of a `class` statement are separated by a `,` that touches the id before
+it and has one space after it: `class A,B c` is printed `class A, B c`, as the
+lists of ER, requirement, and usecase are (see
+[Styles and classes](./er.md#styles-and-classes)). mermaid.js reads `A,B`,
+`A, B`, and `A,  B` as the same statement, so nothing forces the form. Its
+documentation writes the two examples of the statement with a space after the
+comma
 ([`class Moving, Crash movement`](https://github.com/mermaid-js/mermaid/blob/2086904e76c692331e34a45d7cc3bc30860d040e/packages/mermaid/src/docs/syntax/stateDiagram.md#L397)),
-which does not decide the form. [fixture:
+which is the form printed. [fixture:
 whitespace-between-tokens/class-ids-touching] Whitespace written before a `,`
 ends the ids, and what follows is the name of the class: `class A ,B c` is the
 state `A` with the class `,B c`. Those forms stay as written, with the
 whitespace after the `,`. [fixture:
 whitespace-between-tokens/class-ids-space-before-comma-kept] [fixture:
 whitespace-between-tokens/comma-kept] A line break after the `,` is joined, so
-`class A,` and `B c` on the next line are printed `class A,B c`, and a directive
-before the `,` does not change that: the id after the `,` touches it. [fixture:
+`class A,` and `B c` on the next line are printed `class A, B c`, and a
+directive before the `,` does not change that: the id after the `,` stands after
+one space. [fixture:
 whitespace-between-tokens/class-ids-line-break-and-directive] A directive in the
 gap after the `,` is placed as under [Directives](#directives), and a `;` that
 the line rule ignores keeps its line as written. [fixture:
@@ -536,6 +538,13 @@ whitespace-between-tokens/class-ids-beside-directive-runs] [fixture:
 whitespace-between-tokens/class-ids-with-ignored-semicolon] A U+2028 or U+2029
 after the `,` stays where it is. [test: U+2028 after the comma of a state class
 statement] [test: U+2029 after the comma of a state class statement]
+
+The classes after the ids, `class A x,y`, and the ids of a `style` statement,
+`style A,B fill:red`, are printed as written: `x, y` would be one class named
+`x, y`, and `style A, B fill:red` would give `A` the style `B fill:red`, so the
+Db would change (see
+[Lists separated by commas](./compatibility.md#lists-separated-by-commas)).
+[fixture: whitespace-between-tokens/comma-lists-without-space-kept]
 
 Input
 ([whitespace-between-tokens/collapsed-input.mmd](../tests/fixtures/state/whitespace-between-tokens/collapsed-input.mmd)):
@@ -560,7 +569,7 @@ stateDiagram-v2
   state f1 <<fork>>
   state "" x
   classDef c fill: red, stroke: blue
-  class A,B c
+  class A, B c
   scale 350 width
   hide empty description
 ```

@@ -1537,6 +1537,79 @@ Venn 図のスタイルのプロパティの値で、書かれたものを採り
 固定している mermaid.js の版を上げるときは、各場所の両方のテキストを描き直し、
 SVG と画素を比べてから、例外を残します。
 
+## コンマで区切る一覧
+
+Prettier は、コンマの後ろに空白を 1 つ置き、前には置きません。
+整形ツールは、空白があっても mermaid.js が同じに読む名前の一覧を、
+その形で印字します。
+コンマは前の名前に接し、後ろに空白が 1 つ付きます。
+対象は、ER 図、requirement 図、usecase 図の `class`、`classDef`、
+`style` の文と `:::` のクラス（`class A,B c,d` は `class A, B c, d`、
+`A:::c1,c2` は `A:::c1, c2` と印字されます）、class 図の `classDef` の名前、
+state 図の `class` の id、
+sequence 図の `Note over` の 2 つの id （`Note over A,B` は `Note over A, B`
+と印字されます）、
+Venn 図の名前（`union A,B` は `union A, B` と印字されます）です。
+[fixture: er/entities/classes-tight]
+[fixture: er/styles-and-classes/class-lists]
+[fixture: requirement/class-lists/shorthand]
+[fixture: class/whitespace-between-tokens/classdef-names-touching]
+[fixture: state/whitespace-between-tokens/class-ids-touching]
+[fixture: sequence/whitespace-between-tokens/comma-touching]
+[fixture: usecase/classes-and-styles/class-lists]
+[fixture: venn/name-lists/names-comma]
+コンマのあるほかの図の一覧は、もともと空白がありました。
+Gantt 図のタスクの項目、user journey の人、C4 の呼び出しの引数、
+XY チャートの値、象限チャートと Wardley マップの点の座標、
+usecase 図のアクターです。
+
+空白を付けて印字する 17 種類の一覧について、
+空白のあるテキストと空白のないテキストを、
+手元の 17 版（それまでの実行の 14 版と、10.9.8、11.7.0、
+11.17.2）で Chromium に実行しました。
+mermaid.js 12.3.0 の Db は、どの一覧でも同じでした。
+空白のないテキストを読む版が、
+空白のあるテキストを拒否することもありませんでした。
+対象にする 5 版（10.9.8、11.7.0、11.17.2、12.0.0、12.3.0）では、
+その版に図の種類があって描ける所で、SVG か画素が同じでした。
+class 図は描くたびにほかのランダムな id になるので、そこでは Db が根拠です。
+（state 図の `class` の文は 9.0.0 と 9.1.7 で違って描かれますが、
+どちらも対象の版ではありません。）
+
+mermaid.js が空白を拒否するか、別のものとして読む所では、空白を印字しません。
+次の所は、一覧を空白なしのままにします。
+
+| 場所                                                    | 空白を付けたとき                                                                                |
+| ------------------------------------------------------- | ----------------------------------------------------------------------------------------------- |
+| flowchart と agentflow の `class`、`click`、`linkStyle` | 空白なしを読むどの版も拒否する（flowchart は 17 版、agentflow は 2 版）                         |
+| flowchart と agentflow の `classDef` の名前             | `classDef a, b fill:red` は、`a` にスタイル `b fill:red` を付け、`b` には付けない。Db が違う    |
+| block 図の `class` の id                                | 空白の後の id にはクラスが付かない。`class A, B x` は `B` にクラスを付けない                    |
+| block 図と state 図の `class` の文のクラス              | `x, y` はその名前の 1 つのクラスで、`x,y` が `x,y` という 1 つのクラスであるのと同じ。Db が違う |
+| state 図の `style` の id                                | `style A, B fill:red` は `A` にスタイル `B fill:red` を付ける。Db が違う                        |
+| Gantt 図の `click` の id                                | どの版（17 版）も拒否する                                                                       |
+
+[fixture: flowchart/whitespace-between-tokens/comma-lists-without-space-kept]
+[fixture: agentflow/single-space-gaps/comma-lists-without-space-kept]
+[fixture: block/styles/class-ids-as-written]
+[fixture: block/styles/class-names-without-space-kept]
+[fixture: state/whitespace-between-tokens/comma-lists-without-space-kept]
+[fixture: gantt/click-statements/ids-touch-commas]
+
+sankey 図の行も、mermaid.js が `a, b, 1` を `a,b,1` と同じに読むのに、
+空白なしのままです。
+行は CSV で、mermaid.js の文書は、
+この図が
+[CSV の標準を実装している](https://github.com/mermaid-js/mermaid/blob/2086904e76c692331e34a45d7cc3bc30860d040e/packages/mermaid/src/docs/syntax/sankey.md#L97)
+と書いていて、RFC 4180（2 節の項目 4）は、コンマの隣の空白を欄の一部とします。
+このような欄を区切るコンマは、Prettier が空白を置く記号ではありません。
+Prettier はこの種類の行を持つ言語を整形しませんし、
+ほかの図の種類にもこの種類の行はないので、公開済みの形が決めます。
+空白を置けるのは一部の行だけでもあります。
+`a, "b c", 1` は、引用符の前の空白を拒否するので、
+sankey のある 14 版がすべて拒否します。
+[fixture: sankey/commas/spaces-around-commas-dropped]
+[fixture: sankey/commas/quoted-fields-touch-commas]
+
 ## 同じに描かれる綴り
 
 mermaid.js は、トークンの異なる綴りの一部を同じトークンとして読み、
@@ -3822,6 +3895,30 @@ mermaid.js は、Gantt 図の一部の値の空白を持ち、一部の行を、
   そのタスクのコロンの前に空白を置きません。
   詳しくは、[タスクのデータ](./gantt.ja.md#タスクのデータ)を参照してください。
   [fixture: gantt/task-data/colon-touching-keyword-name-kept]
+- タスクの `:` の後ろの空白。
+  整形ツールは空白 1 つにします。
+  mermaid.js はデータを `,` で分け、各項目の両端の空白を除くので、
+  この空白は Db に入りません。
+  その処理は
+  [`parseData`](https://github.com/mermaid-js/mermaid/blob/2086904e76c692331e34a45d7cc3bc30860d040e/packages/mermaid/src/diagrams/gantt/ganttDb.js#L496-L505)
+  です。
+  コロンの後ろに空白を置いたテキストと置かないテキストの両方を、27 の図で、
+  手元の 17 版に描きました。
+  10.9.0 から 12.3.0 の 13 版では、描画 351 回のすべてで SVG が同じでした。
+  それより前の 4 版では、108 回のうち 88 回で SVG か画素が同じで、16 回は、
+  整形前も整形後もエラーで止まり、4 回は、コロンの後にディレクティブが続き、
+  空白のないテキストだけがエラーで止まりました。
+  mermaid.js の行の規則が読む行では、
+  その `:` の後ろの空白を書かれたまま残します。
+  行の規則が読むのは、`style` か `classDef` を含み、
+  その後に空白でない文字が続く `:` があり、続いて `#`、
+  さらに後ろに `;` がある行です。
+  `classDef it:a1,2024-01-01,2d;#y:3d;z:2d` のタスクは、
+  `classDef it` と `#y` の 2 つです。
+  最初のコロンの後ろに空白を置くと 3 つになり、対象にする 5 版すべてで、
+  2 つのテキストは違って描かれます。
+  [fixture: gantt/task-data/colon-touches-first-item]
+  [fixture: gantt/task-data/colon-space-line-rule-kept]
 - タスクのデータの項目の中の空白、項目の数、タグの大文字小文字。
   `after   a1` は書かれたままの 1 つの項目で、
   `a : 1d,` は `a : 1d` にない空の項目を持ち、`Done` はタグではありません。

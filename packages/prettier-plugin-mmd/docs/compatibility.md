@@ -1429,6 +1429,71 @@ and a name of a box that differs in its commas, fails. When the pinned
 mermaid.js is updated, draw both texts of each place again and compare the SVG
 and the pixels before the exception stays.
 
+## Lists separated by commas
+
+Prettier prints one space after a comma, and none before it. The formatter
+prints the lists of names that mermaid.js reads the same with the space in that
+form, a comma that touches the name before it and one space after it: the
+`class`, `classDef`, and `style` statements and the `:::` classes of ER,
+requirement, and usecase diagrams (`class A,B c,d` is printed `class A, B c, d`,
+and `A:::c1,c2` is printed `A:::c1, c2`), the `classDef` names of a class
+diagram, the `class` ids of a state diagram, the two ids of a `Note over` in a
+sequence diagram (`Note over A,B` is printed `Note over A, B`), and the names of
+a Venn diagram (`union A,B` is printed `union A, B`). [fixture:
+er/entities/classes-tight] [fixture: er/styles-and-classes/class-lists]
+[fixture: requirement/class-lists/shorthand] [fixture:
+class/whitespace-between-tokens/classdef-names-touching] [fixture:
+state/whitespace-between-tokens/class-ids-touching] [fixture:
+sequence/whitespace-between-tokens/comma-touching] [fixture:
+usecase/classes-and-styles/class-lists] [fixture: venn/name-lists/names-comma]
+The lists of the other diagram types that have a comma already had the space:
+the items of a task of a Gantt chart, the people of a user journey, the
+arguments of a C4 call, the values of an XY chart, the coordinates of a point of
+a quadrant chart and of a Wardley map, and the actors of a use case diagram.
+
+For the 17 kinds of lists that are printed with the space, the text with the
+space and the text without it were run in Chromium with the 17 versions on hand
+(the 14 of the earlier runs, and 10.9.8, 11.7.0, and 11.17.2). The Db of
+mermaid.js 12.3.0 was the same for each of them, and no version rejected the
+text with the space where it read the text without it. In the five versions that
+count (10.9.8, 11.7.0, 11.17.2, 12.0.0, and 12.3.0) the SVG or the pixels were
+the same wherever the version has the diagram type and draws it; a class diagram
+draws other random ids each time, so the Db is its evidence there. (A state
+diagram `class` statement is drawn differently in 9.0.0 and 9.1.7, which do not
+count.)
+
+The space is not printed where mermaid.js rejects it or reads something else.
+The lists stay without the space in these places:
+
+| Where                                                                | With the space                                                                                          |
+| -------------------------------------------------------------------- | ------------------------------------------------------------------------------------------------------- |
+| `class`, `click`, and `linkStyle` of a flowchart and of an agentflow | rejected by every version that reads the text without it (17 versions for a flowchart, 2 for agentflow) |
+| `classDef` names of a flowchart and of an agentflow                  | `classDef a, b fill:red` gives `a` the style `b fill:red`, and `b` none: the Db differs                 |
+| `class` ids of a block diagram                                       | the id after the space gets no class: `class A, B x` leaves `B` without it                              |
+| the classes of a `class` statement of a block and of a state diagram | `x, y` is one class with that name, as `x,y` is one class named `x,y`: the Db differs                   |
+| `style` ids of a state diagram                                       | `style A, B fill:red` gives `A` the style `B fill:red`: the Db differs                                  |
+| `click` ids of a Gantt chart                                         | rejected by every version (17)                                                                          |
+
+[fixture: flowchart/whitespace-between-tokens/comma-lists-without-space-kept]
+[fixture: agentflow/single-space-gaps/comma-lists-without-space-kept] [fixture:
+block/styles/class-ids-as-written] [fixture:
+block/styles/class-names-without-space-kept] [fixture:
+state/whitespace-between-tokens/comma-lists-without-space-kept] [fixture:
+gantt/click-statements/ids-touch-commas]
+
+A row of a sankey diagram stays without the space as well, though mermaid.js
+reads `a, b, 1` as `a,b,1`. The rows are CSV: the documentation of mermaid.js
+says that the diagram
+[implements the CSV standard](https://github.com/mermaid-js/mermaid/blob/2086904e76c692331e34a45d7cc3bc30860d040e/packages/mermaid/src/docs/syntax/sankey.md#L97),
+and RFC 4180 (section 2, item 4) counts the spaces beside a comma as part of the
+field. A comma between such fields is not a mark beside which Prettier prints a
+space, since Prettier formats no language with rows of this kind, and no other
+diagram type has one, so the form that was published decides. A space would also
+be possible only in some rows: `a, "b c", 1` is rejected by the 14 versions that
+have sankey, since mermaid.js rejects a space before a quote. [fixture:
+sankey/commas/spaces-around-commas-dropped] [fixture:
+sankey/commas/quoted-fields-touch-commas]
+
 ## Spellings that are drawn the same
 
 mermaid.js reads some different spellings of a token as the same token and draws
@@ -3557,6 +3622,23 @@ See [Task data](./gantt.md#task-data), [Settings](./gantt.md#settings),
   is set before the colon of such a task (see
   [Task data](./gantt.md#task-data)). [fixture:
   gantt/task-data/colon-touching-keyword-name-kept]
+- The whitespace after the `:` of a task, which the printer sets to one space.
+  mermaid.js splits the data at its commas and trims each item
+  ([`parseData`](https://github.com/mermaid-js/mermaid/blob/2086904e76c692331e34a45d7cc3bc30860d040e/packages/mermaid/src/diagrams/gantt/ganttDb.js#L496-L505)),
+  so the whitespace is not in the Db. Both texts of 27 charts, with a space
+  after the colon and without one, were drawn with the 17 versions on hand: the
+  SVG was the same in all the drawings of the 13 versions from 10.9.0 to 12.3.0,
+  and in the 4 versions before them the SVG or the pixels were the same in 88 of
+  108 drawings, with an error before and after in 16, and in 4 only for the text
+  with no space after a colon that a directive follows. Where the line rule of
+  mermaid.js reads the line (the segment holds `style` or `classDef`, later a
+  `:` followed by characters that are not whitespace, then a `#`, and later a
+  `;`), the whitespace after that `:` stays as written:
+  `classDef it:a1,2024-01-01,2d;#y:3d;z:2d` has two tasks, `classDef it` and
+  `#y`, and with a space after the first colon it has three, and the two texts
+  are drawn differently by the 5 versions that count. [fixture:
+  gantt/task-data/colon-touches-first-item] [fixture:
+  gantt/task-data/colon-space-line-rule-kept]
 - The whitespace inside an item of task data, the number of its items, and the
   case of its tags: `after   a1` is one item as written, `a : 1d,` has an empty
   item that `a : 1d` does not, and `Done` is no tag. [fixture:
