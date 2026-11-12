@@ -15,7 +15,7 @@ SKILL [tests](../tests/SKILL.ja.md) の 1〜4 の節（方針と基準、最初�
 先に読む。
 
 図種は 1 つずつ足し、1 つの図種を、正規化関数と fixture（この SKILL）、
-仕様（spec の SKILL）、parser（parser の SKILL）、
+仕様（spec-diagram-type と spec の SKILL）、parser（parser の SKILL）、
 printer（prettier-plugin の SKILL）の順に終えてから次の図種に進む。
 後の作業は前の作業の結果を使う。
 仕様と parser は要約の欄の一覧（`docs/db-summaries.ja.md`）を参照し、

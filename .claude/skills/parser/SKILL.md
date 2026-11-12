@@ -164,8 +164,8 @@ type.
 - The specification of the diagram is written: the sections of
   `packages/spec/docs/diagrams/<diagram>.md` (Detection, Lexical structure,
   Grammar with its Rejections outside the grammar, and Known divergences) have
-  no "To be written", and `packages/spec/docs/ast/<diagram>.md` exists (the spec
-  skill).
+  no "To be written", and `packages/spec/docs/ast/<diagram>.md` exists (the
+  spec-diagram-type and spec skills).
 - The fixtures of the diagram, its Db summary
   (`packages/tests/docs/db-from-tree/<diagram>.md`), and the checks of its
   recorded trees exist in `packages/tests` (the skills tests-diagram-type and

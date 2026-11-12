@@ -16,12 +16,12 @@ steps too. Read them first.
 
 Diagram types are added one at a time. Each is finished in this order before the
 next one starts: the normalizer and the fixtures (this skill), the specification
-(the spec's skill), the parser (the parser's skill), the printer (the
-prettier-plugin's skill). Each piece of work uses the results of the ones before
-it: the specification and the parser refer to the list of summary fields
-(`docs/db-summaries.md`), and the claims of the specification and the tests of
-the parser use the fixtures. The steps that build the summary from a tree are
-written here after the tree document of the specification
+(the spec-diagram-type and spec skills), the parser (the parser's skill), the
+printer (the prettier-plugin's skill). Each piece of work uses the results of
+the ones before it: the specification and the parser refer to the list of
+summary fields (`docs/db-summaries.md`), and the claims of the specification and
+the tests of the parser use the fixtures. The steps that build the summary from
+a tree are written here after the tree document of the specification
 (`docs/db-from-tree/<diagram>.md` and `src/db-from-tree/<diagram>.ts`).
 
 For a Chevrotain diagram, apply the same procedure with the token definitions as

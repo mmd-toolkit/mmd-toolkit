@@ -6,13 +6,16 @@ description:
   fixtures that back its claims. Use when a diagram type is added, when a gap in
   the specification is found, for example while implementing the parser, when
   fixtures are needed to back a claim or a rule idea, and when mermaid.js is
-  upgraded.
+  upgraded. Adding a diagram type has a skill of its own, spec-diagram-type,
+  that uses this one.
 ---
 
 # Writing the specification (spec)
 
 How to write the specification under `packages/spec/docs/`, checking every claim
-against the pinned mermaid.js and the fixtures.
+against the pinned mermaid.js and the fixtures. Adding a diagram type is in the
+skill [spec-diagram-type](../spec-diagram-type/SKILL.md), which uses the
+sections of this skill.
 
 ## Policies and criteria
 
@@ -99,10 +102,10 @@ against the pinned mermaid.js and the fixtures.
 4. `packages/tests/docs/maintaining-fixtures.md` (the commands and rules for
    fixtures) and `packages/tests/README.md` (the form of a fixture).
 
-The steps of this SKILL write `packages/spec/` and, through the tools of
-`@mmd-toolkit/tests`, its fixtures. When another package has to change (its
-documents, the parser, the formatter), change it with the steps of that
-package's SKILL.
+The steps of this SKILL and of the skill spec-diagram-type write
+`packages/spec/` and, through the tools of `@mmd-toolkit/tests`, its fixtures.
+When another package has to change (its documents, the parser, the formatter),
+change it with the steps of that package's SKILL.
 
 Make no git operation (commit, stage, unstage, `git mv`) unless the user says
 so. Do not edit a tracked file to try something; edit a copy outside the
@@ -236,8 +239,8 @@ When fixtures were added, also run `pnpm run -s fixtures:check` in
 when a result differs from the recorded one.
 
 Run no tests of the other packages. `packages/parser/tests/types.test.ts` lists
-the documents under `docs/known-divergences/`, so the output (3.6) says when one
-was added or removed.
+the documents under `docs/known-divergences/`, so the output (section 7) says
+when one was added or removed.
 
 ### 2.5 Scripts that rewrite documents
 
@@ -258,22 +261,13 @@ script.
   (``A["`x`"]``). With single backticks, Prettier closes up the spaces around it
   and breaks it. After writing, look once at the rendered form.
 
-## 3. Adding a diagram type
-
-Input: the diagram type's Db normalizer and its collected fixtures (sections 2
-and 3 of the tests-diagram-type SKILL). The reading of mermaid.js (3.1) and the
-proposal of the tree (item 3 of 3.3) do not need the fixtures and may start
-while they are collected; check the claims with inputs written for the purpose
-(2.1), and turn them into fixtures once the collection is done, so that a claim
-does not get a second fixture for an input that the collection already has.
-
-### 3.1 Reading mermaid.js
+## 3. Reading mermaid.js
 
 Read the source in a clone of mermaid.js at the tag of the pinned version (how
 to make it is in `tools/README.md`). Every link from the specification is a
 permalink to the commit recorded in `packages/spec/docs/index.md`.
 
-#### Jison diagrams
+### Jison diagrams
 
 1. Read the lexer rules of the grammar definition (`*.jison`) from top to
    bottom, and settle these points:
@@ -304,7 +298,7 @@ permalink to the commit recorded in `packages/spec/docs/index.md`.
 4. Check the order of the preprocessing (Reading a source in common.md) and the
    detection (detection.md).
 
-#### Chevrotain diagrams
+### Chevrotain diagrams
 
 For Chevrotain diagrams, read each active mode's token array in order, including
 custom matchers, skipped tokens, categories, push/pop transitions, and explicit
@@ -318,7 +312,7 @@ controls; Jison's automatic word boundary does not apply. Check full input
 consumption and the wrapper's error handling: the first lexer error is reported
 before any parser error, and a recovered CST need not be accepted.
 
-#### Langium diagrams
+### Langium diagrams
 
 1. Read the entry rule, every imported grammar and all reachable rules. Follow
    the generated grammar, service modules and token builder to the effective
@@ -355,7 +349,7 @@ before any parser error, and a recovered CST need not be accepted.
    actually calls it; an unused branch is not behavior. Record string escapes,
    numeric conversion, trimming and whitespace collapse separately. Keep the
    tree's authored values distinct from converted Db values, and state which
-   spelling the tree preserves under 3.3. Follow assigned, overwritten and
+   spelling the tree preserves under section 4. Follow assigned, overwritten and
    unassigned syntax through the generated model and publication, retaining
    every written occurrence even when absent from Mermaid's model or Db. Trace
    acceptance comparison values through entity replacement, quoting and escape
@@ -370,89 +364,8 @@ before any parser error, and a recovered CST need not be accepted.
    including the state updates, identities and replacements those checks depend
    on. If the adapter publishes nothing or has no semantic gate, record that
    absence rather than inventing a publication step or fields.
-6. Read the shared preprocessing and detection rules in
-   [common.md](../../../packages/spec/docs/common.md): Reading a source,
-   Frontmatter, Leading whitespace and Diagram detection. Read the diagram's
-   detector in [detection.md](../../../packages/spec/docs/detection.md). Before
-   writing Detection in 3.2, record the following as direct sentences with fixed
-   cases:
-   - Distinguish real leading frontmatter from the single retained
-     frontmatter-shaped block at the detection point. Record the one-block skip
-     and its order before bare `%%` lines and the second directive scan.
-   - Record the skip's stopping cases: adjacent fences without a body line, a
-     missing closer, mismatched indentation, four dashes, closing-fence suffix
-     text, a closer without a following line break, and a preceding bare `%%`
-     line. Check a second block, both orders of a block and a second-scan
-     directive, real frontmatter before a retained block, and leading
-     indentation that changes which fences match.
-   - Distinguish the detection point from the header position reached. Record
-     which retained forms the diagram's lexer still reads from the detection
-     point, under its own terminal boundaries and acceptance gate. Record which
-     bare `%%` lines and accompanying whitespace and line breaks detection
-     passes and the lexer does not read again: shared Comments for the bare
-     lines, trivia for that whitespace and those line breaks. Distinguish
-     leading trivia before the detection point from later whitespace the diagram
-     still reads.
-   - List fixed cases with retained forms before and between passed bare lines,
-     and with passed lines and trivia between retained forms. Compare Unicode
-     whitespace after a passed line with the same whitespace without a passed
-     line and with ASCII space/tab and LF controls; include whitespace
-     immediately before the header and on a line of its own. Record what
-     detection passes or retains, which terminal boundary must match, acceptance
-     and tree ownership for each case, using 3.4–3.5.
-   - Recheck any shared claim that other diagram types reject a form against
-     their current rules and fixed fixtures. State only the scope supported by
-     that evidence; do not carry forward a historical list of diagram types.
-7. Apply 3.2–3.5 to the resulting detection rules, ordered units, authored
-   components, hidden forms, conversions and acceptance gate. Write direct
-   sentences and the tree before considering divergences. For each sentence,
-   probe explicit cases at its named boundaries and rule intersections through
-   the tests package's Mermaid runner; cover hidden-form ownership, delimiters,
-   consumed line feeds, EOF and the reverse direction of any divergence. Add
-   only the cases the sentence distinguishes, with the fixture CLI. Do not
-   generate inputs. Derive header, flag and statement gaps and their EOL
-   requirements from this diagram's entry and fragment rules rather than a
-   preceding diagram's layout.
 
-### 3.2 Writing the diagram document
-
-Write `docs/diagrams/<diagram>.md` and its `.ja.md` with the four sections of
-"How to read a diagram document" in index.md.
-
-1. Detection: point to the detector in detection.md.
-2. Lexical structure: the units and the contexts, with the list of rules of each
-   context in the order they are tried. "Units and contexts" in flowchart.md is
-   an example of the form.
-3. Grammar: in the Notation of common.md, with a table of the node that each
-   rule makes, and the inputs that mermaid.js rejects after its grammar has
-   accepted them, with all that decides them (Rejections outside the grammar).
-   State semantic acceptance as direct rules over written statements, with the
-   comparison values and state changes it needs. For conditions depending on
-   site configuration outside the text, state the defaults and that whoever
-   holds a changed configuration applies it, while the remaining conditions are
-   decided from the tree alone.
-4. Known divergences: those of the identifiers in known-divergences.md that
-   apply to the diagram type, and how they show in it. A new divergence is
-   defined in a document of its own, `known-divergences/<identifier>.md` and its
-   `.ja.md`, with the parts that known-divergences.md lists (the syntax, the
-   difference with examples, what it means for an author, why mermaid.js reads
-   it so, the rule and why, the documentation and issues of mermaid.js where any
-   were found), and with a row in the table of known-divergences.md.
-   - When adding a diagram's paragraph to a divergence document, also add the
-     diagram's entry to the section The documentation of mermaid.js and its
-     issues.
-   - For `embedded-data-opaque`, follow
-     [The comparison Db](../../../packages/spec/docs/known-divergences/embedded-data-opaque.md#the-comparison-db)
-     and
-     [DIVERGENCE_PROPERTIES](../../../packages/tests/src/fixture-acceptance.ts).
-
-The Db summary of a diagram type and how it is built from the tree are documents
-of `@mmd-toolkit/tests` (`docs/db-summaries.md` and
-`docs/db-from-tree/<diagram>.md`); what they need is written there with the
-steps of the tests-diagram-type SKILL (the summary) and of the tests-tree-checks
-SKILL (how it is built from the tree).
-
-### 3.3 Adding the nodes of the tree
+## 4. Adding the nodes of the tree
 
 `docs/ast/<diagram>.md` and its `.ja.md`.
 
@@ -493,7 +406,7 @@ Use the diagram names and node prefixes defined by
    SKILL. Flowchart example: the whitespace between the empty description blocks
    right after the name of a subgraph.
 
-### 3.4 Matching claims with fixtures
+## 5. Matching claims with fixtures
 
 Each time a claim is written:
 
@@ -513,7 +426,7 @@ Each time a claim is written:
 6. When the work of another package needs a case of the corpus, cite the
    existing fixture rather than copying its input into another fixture.
 
-### 3.5 Checking a rule
+## 6. Checking a rule
 
 Do not decide a rule from hand-written examples of its usual form only: decide
 it from the cases that its sentences distinguish.
@@ -528,8 +441,8 @@ it from the cases that its sentences distinguish.
 2. Check each case once with mermaid.js and with the parser's `parse()` and
    `dbOf()` (2.1). For a diagram type that the parser does not read yet, compare
    mermaid.js's result with what the sentence says. Each case then has a fixture
-   that the sentence cites (3.4). Cite at least one fixture for each case, not
-   every fixture of the same case.
+   that the sentence cites (section 5). Cite at least one fixture for each case,
+   not every fixture of the same case.
 3. Sort the cases that the sentence does not explain into kinds, and explain
    each kind with one rule. Write mermaid.js's mechanism as one rule instead of
    adding exceptions (flowchart example: the empty string, the empty call, and
@@ -540,13 +453,13 @@ it from the cases that its sentences distinguish.
    Policies and criteria): accept and reject what mermaid.js accepts and
    rejects, and give an accepted input mermaid.js's Db. A text that the author
    writes and mermaid.js does not read, or reads otherwise than an author would
-   mean, is held by a node (3.8, item 2) and the input is accepted (sequence:
-   `title` followed by a line break takes the next line as the title;
+   mean, is held by a node (section 8, item 2) and the input is accepted
+   (sequence: `title` followed by a line break takes the next line as the title;
    `create destroy A` creates A); list such inputs with mermaid.js's result as
    candidates for lint rules. Only where no node can hold the text, whatever the
    cause of mermaid.js's reading, reject the input or write a direct rule that
-   reads it differently, and propose it as a known divergence (3.8; sequence: a
-   comment that starts at `%%` keeps the character before it).
+   reads it differently, and propose it as a known divergence (section 8;
+   sequence: a comment that starts at `%%` keeps the character before it).
 5. Before accepting a form in new places, or generalizing a rule, list where the
    rule applies, and only then write it:
    1. Every position where the form can appear, going through every rule of the
@@ -583,7 +496,7 @@ it from the cases that its sentences distinguish.
    maintainer's reply says so. When nothing is found, say so in the report, with
    the queries used, and write only the behavior in the specification.
 
-### 3.6 Output
+## 7. Output
 
 Show as the result of the work: the sections changed, the names of the fixtures
 added, what the parser has to fix (acceptance, tokens, the Db derivation), and
@@ -599,129 +512,7 @@ The output also names these steps of the other packages:
   exact expected-output formatting fixtures because Db equality cannot show that
   syntax was preserved.
 
-### 3.7 Checks before the parser reads the specification
-
-The parser is written from the specification alone. Before that, go through
-these checks for the diagram type, and write the result of each in the output
-(3.6).
-
-1. **Unit names.** List every unit name of the lexical structure and the
-   grammar, the names of the rules of the grammar included. One name names one
-   unit: a keyword unit and a unit of text never share a name (state: the
-   keyword is `style`, and the text of a style is `style-text`).
-2. **Every character in a unit.** In every context, every character that is not
-   whitespace belongs to a unit, a comment, or a stated rejection: separators
-   such as the `:` of a one-line note or of an alias, the `;` that the line rule
-   ignores, and text that a rule of mermaid.js reads and returns no token for
-   (an id that `processId` drops, an empty description block). The parser gives
-   each unit a token kind, and the ignored `;` a kind for each context, in
-   `packages/parser/docs/tokens/<diagram>.md`; the specification names each unit
-   so that it can.
-3. **The grammar takes every unit.** Every unit that the lexical structure
-   lists, punctuation included, appears in a rule of the grammar, and every unit
-   of a rule comes from a rule of the lexical structure.
-4. **Comments.** Each diagram comment has its mark (`#`, `%%`) and its value,
-   with examples: a comment in an id, a comment after a statement, and a
-   directive between the characters of the mark or inside the value.
-5. **Forms that are not closed.** A node whose form is accepted without its
-   closing part (a description block at the end of the text) has a `closed`
-   field.
-6. **The tree document stands alone.** Each node has its own section and table
-   of fields in `ast/<diagram>.md`; no section is written as "as
-   `<OtherDiagram>Node`". The conditions under which a field is null, and the
-   empty forms, are in the table or below it.
-7. **The summary, field by field.** For each field of each record of the
-   summary, tally over all fixtures of the diagram type the three cases: the key
-   is missing, the value is empty, the value is set. Each case that occurs is
-   explained, with a fixture, by a sentence of `docs/db-from-tree/<diagram>.md`
-   of the tests package; a sentence for a case that no sentence explains is
-   written with the steps of the tests-tree-checks SKILL. Look in the Db class
-   for what is set only on the first visit, what accumulates, and what an update
-   leaves as it was (`Object.assign` keeps the keys that the new object does not
-   have).
-8. **What the Db reads beyond the values.** The tree holds what changes the Db:
-   as values (whitespace that mermaid.js reads, also a value that is all
-   whitespace), as null elements of a list (an empty item between `,`), or as
-   tokens (whether a `:` is there). What no node or token can hold is written as
-   item 4 of 3.3 says.
-9. **Ranges.** Every "any characters" says whether line feeds, U+2028, and
-   U+2029 are included, whether as many or as few as possible are read, and
-   where the rule is tried again (a rule is tried at every position of its
-   context, also after a unit that does not leave it).
-10. **Empty units.** For every string and text unit, say whether it may be
-    empty, and where the grammar takes an empty one (`string` and
-    `string-or-empty`).
-11. **Empty ends of lists.** For every list (statements of a body, items between
-    `,`, lines, the dividers of a body), say what happens when nothing follows
-    its last separator: a body that ends with a divider, a list of ids or styles
-    that ends with `,`, a text that ends right after a keyword. Check each with
-    mermaid.js and the Db class; mermaid.js often builds a different structure
-    when the last part is empty (state does not divide a body whose last
-    statement is a divider).
-12. **What follows a keyword.** For every keyword, check with mermaid.js what
-    happens when a word character, a digit, `-`, `:`, `#`, `%`, `{`, `"`, a line
-    feed, or the end of the text follows it, and say in the rule whether the
-    keyword may be followed by a word character. In jison, a rule whose pattern
-    ends with a word character, such as `"left of"`, gets `\b` at its end, and
-    one that ends with `\s+` or `\s*` does not.
-13. **Known divergences.** Every input of the diagram type that is a known
-    divergence, under a new identifier or an existing one, has the four answers
-    of 3.8 written down.
-
-The tally of item 7, over the records of the summary that are lists of objects:
-
-```ts
-// node <this file> <diagram> — tallies, for each field of each record of the
-// summary, a fixture where the key is missing, one where the value is empty,
-// and one where it is set.
-import { loadFixtures } from "<repo>/packages/tests/src/index.ts"
-import type { DiagramType } from "<repo>/packages/tests/src/index.ts"
-
-function kind(value: unknown): "missing" | "empty" | "set" {
-  if (value === undefined) return "missing"
-  if (value === "" || (Array.isArray(value) && value.length === 0))
-    return "empty"
-  return "set"
-}
-
-const fixtures = (await loadFixtures(process.argv[2] as DiagramType)).filter(
-  (fixture) => fixture.expected.accepted,
-)
-// The fields of each record, over all fixtures.
-const fields = new Map<string, Set<string>>()
-for (const fixture of fixtures) {
-  for (const [record, items] of Object.entries(fixture.expected.db)) {
-    if (!Array.isArray(items)) continue
-    const names = fields.get(record) ?? new Set<string>()
-    for (const item of items)
-      for (const name of Object.keys(item)) names.add(name)
-    fields.set(record, names)
-  }
-}
-const tally = new Map<string, Map<string, string>>()
-for (const fixture of fixtures) {
-  for (const [record, names] of fields) {
-    for (const item of fixture.expected.db[record] as Record<
-      string,
-      unknown
-    >[]) {
-      for (const name of names) {
-        const cases =
-          tally.get(`${record}.${name}`) ?? new Map<string, string>()
-        if (!cases.has(kind(item[name])))
-          cases.set(kind(item[name]), fixture.name)
-        tally.set(`${record}.${name}`, cases)
-      }
-    }
-  }
-}
-for (const [key, cases] of tally) console.log(key, Object.fromEntries(cases))
-```
-
-A field that never occurs as missing in the fixtures may still be missing for
-some input; read the Db class for each field whose value can be `undefined`.
-
-### 3.8 Proposing a known divergence
+## 8. Proposing a known divergence
 
 Every proposal of a known divergence, for a new identifier or for adding inputs
 to an existing one, writes down these four answers (Project 1 of AGENTS.md); a
@@ -754,29 +545,43 @@ proposal without them is not decided:
    its pipeline. That nobody would write the text, or that mermaid.js does not
    read it, is no answer.
 
+A new divergence is defined in a document of its own,
+`known-divergences/<identifier>.md` and its `.ja.md`, with the parts that
+known-divergences.md lists (the syntax, the difference with examples, what it
+means for an author, why mermaid.js reads it so, the rule and why, the
+documentation and issues of mermaid.js where any were found), and with a row in
+the table of known-divergences.md.
+
+- When adding a diagram's paragraph to a divergence document, also add the
+  diagram's entry to the section The documentation of mermaid.js and its issues.
+- For `embedded-data-opaque`, follow
+  [The comparison Db](../../../packages/spec/docs/known-divergences/embedded-data-opaque.md#the-comparison-db)
+  and
+  [DIVERGENCE_PROPERTIES](../../../packages/tests/src/fixture-acceptance.ts).
+
 The document of the divergence (`known-divergences/<identifier>.md`) says, in
 "The rule of this specification, and why", why the text is not held as a node.
 
-## 4. When a gap in the specification is found
+## 9. When a gap in the specification is found
 
 Input: an input that the specification does not decide, or decides differently
 from mermaid.js, found while implementing or reviewing the parser, the
 formatter, or the rules, or while writing the specification.
 
 1. Reproduce the inputs with mermaid.js and with the parser.
-2. Read the cause in the source of mermaid.js (3.1).
-3. List the cases of the sentences that the input concerns, as in 3.5, and check
-   each once with mermaid.js.
+2. Read the cause in the source of mermaid.js (section 3).
+3. List the cases of the sentences that the input concerns, as in section 6, and
+   check each once with mermaid.js.
 4. Write the rule. When it touches the definition of the tree, follow item 3 of
-   3.3.
-5. Add fixtures (3.4), contrasting examples included.
-6. Show the result as in 3.6.
+   section 4.
+5. Add fixtures (section 5), contrasting examples included.
+6. Show the result as in section 7.
 
-When only fixtures are needed (such as the grounds of a rule idea), do 3.4 for
-each item, and show for each item either the names added or the names of
+When only fixtures are needed (such as the grounds of a rule idea), do section 5
+for each item, and show for each item either the names added or the names of
 existing fixtures that suffice, with their `accepted` and values.
 
-## 5. Changing the shared tree
+## 10. Changing the shared tree
 
 A change to the shared part of the tree (`ast.md`: the root, the token kinds,
 comments, directives, the frontmatter, the shared leaf nodes, the invariants)
@@ -787,7 +592,7 @@ pass:
    change. List every sentence that depends on what changes, in `ast.md`,
    `common.md`, and every `ast/<diagram>.md` and `diagrams/<diagram>.md`, with
    what it becomes. When the change accepts a form in new places, list its
-   places and the values read from ranges first, as item 5 of 3.5 says.
+   places and the values read from ranges first, as item 5 of section 6 says.
 2. Write the proposal outside the repository: the options for each point that
    needs a decision, with a recommendation, and the effect on the packages that
    read the tree. Wait for the decision.
@@ -799,7 +604,7 @@ pass:
    change, how to find the fixtures whose `ast.json` changes, and the invariants
    that the tree check must test.
 
-## 6. When mermaid.js is upgraded
+## 11. When mermaid.js is upgraded
 
 Input: the pin of mermaid.js is raised, and the differences of `fixtures:check`
 are sorted (the tests-mermaid-update SKILL).
@@ -815,4 +620,4 @@ are sorted (the tests-mermaid-update SKILL).
 4. Check that each Known divergence identifier still holds.
 5. Check the order and the list of detectors in detection.md against the new
    version.
-6. Show the result as in 3.6.
+6. Show the result as in section 7.

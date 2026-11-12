@@ -176,7 +176,8 @@ pin した mermaid.js の更新を扱う。
   `packages/spec/docs/diagrams/<図種>.md` の節に「To be written」がない。
   節は、Detection、Lexical structure、文法の外の拒否を含む Grammar、
   Known divergences である。
-  `packages/spec/docs/ast/<図種>.md` がある（spec の SKILL）。
+  `packages/spec/docs/ast/<図種>.md` がある（spec-diagram-type と spec の
+  SKILL）。
 - その図種の fixture、
   Db の要約（`packages/tests/docs/db-from-tree/<図種>.md`）、
   記録した木の検査が、
