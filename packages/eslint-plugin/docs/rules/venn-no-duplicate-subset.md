@@ -40,9 +40,9 @@ Examples of **incorrect** code for this rule:
 ```mmd
 %% eslint @mmd-toolkit/venn-no-duplicate-subset: error
 venn-beta
-  set A["Alpha"]:20
+  set A["Alpha"] : 20
   set B["Beta"]
-  set A["Gamma"]:5
+  set A["Gamma"] : 5
 ```
 
 ```mmd
@@ -57,7 +57,7 @@ venn-beta
 ```mmd
 %% eslint @mmd-toolkit/venn-no-duplicate-subset: error
 venn-beta
-  set A["Frontend"]:20
+  set A["Frontend"] : 20
     text A1["React"]
   set B
   set A
@@ -69,7 +69,7 @@ Examples of **correct** code for this rule:
 ```mmd
 %% eslint @mmd-toolkit/venn-no-duplicate-subset: error
 venn-beta
-  set A["Alpha"]:20
+  set A["Alpha"] : 20
   set B["Beta"]
   union A, B["Shared"]
 ```
@@ -77,7 +77,7 @@ venn-beta
 ```mmd
 %% eslint @mmd-toolkit/venn-no-duplicate-subset: error
 venn-beta
-  set A["Frontend"]:20
+  set A["Frontend"] : 20
     text A1["React"]
   set B
 text A A3["Vue"]

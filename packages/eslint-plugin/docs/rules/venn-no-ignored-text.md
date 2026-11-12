@@ -42,7 +42,7 @@ Examples of **correct** code for this rule:
 ```mmd
 %% eslint @mmd-toolkit/venn-no-ignored-text: error
 venn-beta
-  set A:20 %% size
+  set A : 20 %% size
 ```
 
 ## Options

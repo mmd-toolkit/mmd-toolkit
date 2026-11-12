@@ -34,7 +34,7 @@ since: v0.1.0
 %% eslint @mmd-toolkit/radar-no-undef: error
 radar-beta
   axis A, B, C
-  curve sales{A: 1, B: 2, C: 3, D: 9}
+  curve sales{ A: 1, B: 2, C: 3, D: 9 }
 ```
 
 この規則に**従う**コードの例:
@@ -43,7 +43,7 @@ radar-beta
 %% eslint @mmd-toolkit/radar-no-undef: error
 radar-beta
   axis A, B, C
-  curve sales{C: 3, A: 1, B: 2}
+  curve sales{ C: 3, A: 1, B: 2 }
 ```
 
 ## オプション
