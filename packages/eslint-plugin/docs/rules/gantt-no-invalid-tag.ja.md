@@ -45,23 +45,23 @@ id は調べないので、3 つの項目の最初の `Done` や `done crit` は
 %% eslint @mmd-toolkit/gantt-no-invalid-tag: error
 gantt
   dateFormat YYYY-MM-DD
-  Design :2024-01-06, 3d
-  Build :DONE, 5d
+  Design : 2024-01-06, 3d
+  Build : DONE, 5d
 ```
 
 ```mmd
 %% eslint @mmd-toolkit/gantt-no-invalid-tag: error
 gantt
   dateFormat YYYY-MM-DD
-  Design :2024-01-06, 3d
-  Build :done crit, 5d
+  Design : 2024-01-06, 3d
+  Build : done crit, 5d
 ```
 
 ```mmd
 %% eslint @mmd-toolkit/gantt-no-invalid-tag: error
 gantt
   dateFormat YYYY-MM-DD
-  Design :2024-01-06, done
+  Design : 2024-01-06, done
 ```
 
 この規則に**従う**コードの例:
@@ -70,21 +70,21 @@ gantt
 %% eslint @mmd-toolkit/gantt-no-invalid-tag: error
 gantt
   dateFormat YYYY-MM-DD
-  Design :done, 2024-01-06, 3d
+  Design : done, 2024-01-06, 3d
 ```
 
 ```mmd
 %% eslint @mmd-toolkit/gantt-no-invalid-tag: error
 gantt
   dateFormat YYYY-MM-DD
-  Design :done, crit, des1, 2024-01-06, 3d
+  Design : done, crit, des1, 2024-01-06, 3d
 ```
 
 ```mmd
 %% eslint @mmd-toolkit/gantt-no-invalid-tag: error
 gantt
   dateFormat YYYY-MM-DD
-  Design :Done, 2024-01-06, 3d
+  Design : Done, 2024-01-06, 3d
 ```
 
 ## オプション

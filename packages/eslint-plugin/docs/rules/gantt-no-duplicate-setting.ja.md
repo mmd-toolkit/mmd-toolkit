@@ -46,9 +46,9 @@ mermaid.js は後の設定をエラーなしに受理し、それより前のタ
 %% eslint @mmd-toolkit/gantt-no-duplicate-setting: error
 gantt
   dateFormat DD-MM-YYYY
-  Design :01-02-2024, 3d
+  Design : 01-02-2024, 3d
   dateFormat YYYY-MM-DD
-  Build :2024-02-05, 5d
+  Build : 2024-02-05, 5d
 ```
 
 ```mmd
@@ -57,7 +57,7 @@ gantt
   dateFormat YYYY-MM-DD
   axisFormat %m-%d
   axisFormat %d
-  Design :2024-01-06, 3d
+  Design : 2024-01-06, 3d
 ```
 
 この規則に**従う**コードの例:
@@ -67,17 +67,17 @@ gantt
 gantt
   dateFormat YYYY-MM-DD
   axisFormat %m-%d
-  Design :2024-02-01, 3d
-  Build :2024-02-05, 5d
+  Design : 2024-02-01, 3d
+  Build : 2024-02-05, 5d
 ```
 
 ```mmd
 %% eslint @mmd-toolkit/gantt-no-duplicate-setting: error
 gantt
   dateFormat YYYY-MM-DD
-  Design :2024-02-01, 3d
+  Design : 2024-02-01, 3d
   dateFormat YYYY-MM-DD
-  Build :2024-02-05, 5d
+  Build : 2024-02-05, 5d
 ```
 
 ## オプション

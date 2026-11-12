@@ -7,7 +7,7 @@ Filename: gantt-no-undef-incorrect-1.mmd
 Code:
   1 | gantt
   2 |   dateFormat YYYY-MM-DD
-  3 |   Design :des1, 2024-01-06, 3d
+  3 |   Design : des1, 2024-01-06, 3d
   4 |   click des2 href "https://example.com"
     |         ^~~~ [1]
   5 |
@@ -22,9 +22,9 @@ Filename: gantt-no-undef-incorrect-2.mmd
 Code:
   1 | gantt
   2 |   dateFormat YYYY-MM-DD
-  3 |   Design :des1, 2024-01-06, 3d
-  4 |   Build :after des2, 5d
-    |          ^~~~~~~~~~ [1]
+  3 |   Design : des1, 2024-01-06, 3d
+  4 |   Build : after des2, 5d
+    |           ^~~~~~~~~~ [1]
   5 |
 
 [1] mermaid.js finds no task with the id `des2` for this `after`, so the task does not start after it.
@@ -37,9 +37,9 @@ Filename: gantt-no-undef-incorrect-3.mmd
 Code:
   1 | gantt
   2 |   dateFormat YYYY-MM-DD
-  3 |   Design :des1, 2024-01-06, 3d
-  4 |   Review :2024-01-01, until des2
-    |                       ^~~~~~~~~~ [1]
+  3 |   Design : des1, 2024-01-06, 3d
+  4 |   Review : 2024-01-01, until des2
+    |                        ^~~~~~~~~~ [1]
   5 |
 
 [1] mermaid.js finds no task with the id `des2` for this `until`, so the task does not end at it.

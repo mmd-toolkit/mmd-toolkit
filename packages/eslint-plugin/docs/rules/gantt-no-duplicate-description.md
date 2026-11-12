@@ -49,7 +49,7 @@ gantt
     third
   }
   dateFormat YYYY-MM-DD
-  Design :2024-01-06, 3d
+  Design : 2024-01-06, 3d
 ```
 
 Examples of **correct** code for this rule:
@@ -59,7 +59,7 @@ Examples of **correct** code for this rule:
 gantt
   accDescr: first
   dateFormat YYYY-MM-DD
-  Design :2024-01-06, 3d
+  Design : 2024-01-06, 3d
 ```
 
 ```mmd
@@ -68,7 +68,7 @@ gantt
   accDescr: first
   accDescr: first
   dateFormat YYYY-MM-DD
-  Design :2024-01-06, 3d
+  Design : 2024-01-06, 3d
 ```
 
 ## Options

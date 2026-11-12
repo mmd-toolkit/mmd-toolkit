@@ -54,7 +54,7 @@ mermaid.js はタスクより前の `click` では何もしない。
 %% eslint @mmd-toolkit/gantt-no-undef: error
 gantt
   dateFormat YYYY-MM-DD
-  Design :des1, 2024-01-06, 3d
+  Design : des1, 2024-01-06, 3d
   click des2 href "https://example.com"
 ```
 
@@ -62,16 +62,16 @@ gantt
 %% eslint @mmd-toolkit/gantt-no-undef: error
 gantt
   dateFormat YYYY-MM-DD
-  Design :des1, 2024-01-06, 3d
-  Build :after des2, 5d
+  Design : des1, 2024-01-06, 3d
+  Build : after des2, 5d
 ```
 
 ```mmd
 %% eslint @mmd-toolkit/gantt-no-undef: error
 gantt
   dateFormat YYYY-MM-DD
-  Design :des1, 2024-01-06, 3d
-  Review :2024-01-01, until des2
+  Design : des1, 2024-01-06, 3d
+  Review : 2024-01-01, until des2
 ```
 
 この規則に**従う**コードの例:
@@ -80,8 +80,8 @@ gantt
 %% eslint @mmd-toolkit/gantt-no-undef: error
 gantt
   dateFormat YYYY-MM-DD
-  Design :des1, 2024-01-06, 3d
-  Build :after des1, 5d
+  Design : des1, 2024-01-06, 3d
+  Build : after des1, 5d
   click des1 href "https://example.com"
 ```
 

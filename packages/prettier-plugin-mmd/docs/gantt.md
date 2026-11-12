@@ -63,10 +63,10 @@ Output
 gantt
   title T
   section One
-    a :a1, 2024-01-01, 2d
+    a : a1, 2024-01-01, 2d
     click a1 href "u"
   section Two
-    b :2d
+    b : 2d
 ```
 
 Input
@@ -86,7 +86,7 @@ Output
 gantt
     title T
     section S
-        a :1d
+        a : 1d
 ```
 
 ### Statements one per line
@@ -185,9 +185,9 @@ Output
 
 ```mmd
 gantt
-  a :id1, 1d
+  a : id1, 1d
   click id1 href "u"
-  b :1d
+  b : 1d
 ```
 
 Input
@@ -202,7 +202,7 @@ Output
 
 ```mmd
 gantt
-  -x :1d
+  -x : 1d
 ```
 
 Input
@@ -219,7 +219,7 @@ Output
 
 ```mmd
 gantt
-  accDescr { style:#x } a :1d;
+  accDescr { style:#x } a : 1d;
   inclusiveEndDates
   weekday monday
 ```
@@ -259,7 +259,7 @@ gantt
 
   section S
 
-    a :1d
+    a : 1d
 ```
 
 Input
@@ -297,7 +297,7 @@ task-data/description-padding-tightened] A description that starts with `#` or
 task-data/hash-and-semicolon-descriptions]
 
 A name that touches its colon is printed with one space before it: `Short:a1` is
-printed `Short :a1`. The task lines of the examples in the documentation of
+printed `Short : a1`. The task lines of the examples in the documentation of
 mermaid.js are written so: 54 of them have whitespace before the colon, and none
 touches it. The space is set whether or not the printer lines up the colons of
 the section (see below). In a section whose colons it lines up, the name gets
@@ -308,8 +308,8 @@ that ends with a whitespace character other than a space and a tab, such as
 U+00A0, touches its colon too, and the space comes after that character. A task
 that follows a statement on its line, which the printer moves to a line of its
 own, gets the space, or the column of its section, like any other
-(`axisFormat %m #a: 1d` is printed on two lines, the second `#a :1d`). [fixture:
-task-data/colon-touching-name-spaced] [fixture:
+(`axisFormat %m #a: 1d` is printed on two lines, the second `#a : 1d`).
+[fixture: task-data/colon-touching-name-spaced] [fixture:
 task-data/colon-touching-name-aligned-with-padded] [fixture:
 task-data/colon-touching-name-too-wide-kept] [fixture:
 task-data/colon-touching-name-tab-in-name] [fixture:
@@ -425,13 +425,21 @@ task-data/colon-column-comment-after-data] [fixture:
 task-data/colon-column-statement-after-task-moves] [fixture:
 task-data/colon-column-width-of-following-statement-ignored]
 
-The first item touches the colon, and a `,` touches the item before it and is
-followed by one space where an item follows: whitespace around the colon and the
-commas is not in the Db, and is not kept. This is the form of most task lines in
-the documentation of mermaid.js, and the space stands only before an item.
-[fixture: task-data/colon-touches-first-item] [fixture: task-data/comma-spacing]
-[fixture: task-data/tab-around-items] The whitespace at the end of the data is
-dropped. [fixture: task-data/trailing-whitespace-dropped]
+What follows the colon stands after one space, and a `,` touches the item before
+it and is followed by one space where an item follows: whitespace around the
+colon and the commas is not in the Db, and is not kept. The colon follows the
+name of the task, so it takes the space that Prettier prints after a colon that
+follows a name or a key, though most task lines in the documentation of
+mermaid.js write the first item against the colon. The whitespace after the
+colon stays as written within the stretch that the line rule of mermaid.js
+reads, from the first `:` after `style` or `classDef` to the last `#` before the
+last `;` of the line, since a space after such a colon makes the rule ignore
+another `;`: `classDef it:a1,2024-01-01,2d;#y:3d;z:2d` is the tasks
+`classDef it` and `#y`, and with a space after the first colon it is three
+tasks. [fixture: task-data/colon-space-line-rule-kept] [fixture:
+task-data/colon-touches-first-item] [fixture: task-data/comma-spacing] [fixture:
+task-data/tab-around-items] The whitespace at the end of the data is dropped.
+[fixture: task-data/trailing-whitespace-dropped]
 
 The tags and the items are printed as written. The whitespace inside an item is
 part of it, and so is the case of a tag: `after   a1` is the item as it stands,
@@ -440,8 +448,8 @@ task-data/tags] [fixture: task-data/after-until-forms] [fixture:
 keyword-case/tags-case-kept]
 
 An empty item is kept, since the number of the items is read by mermaid.js: the
-commas stay, and an empty item prints nothing, so `a : , 1d` is printed
-`a :, 1d` and `a : 1d,` keeps its comma. [fixture: task-data/empty-items]
+commas stay, and an empty item prints nothing, so `a :,1d` is printed `a : , 1d`
+and `a : 1d,` keeps its comma. [fixture: task-data/empty-items]
 
 Data of whitespace only is one empty item, and mermaid.js needs a character
 after the colon: `a : ` is a task, and `a :` is rejected. So one whitespace
@@ -467,9 +475,9 @@ Output
 
 ```mmd
 gantt
-  Completed task :done, des1, 2014-01-06, 2014-01-08
-  Active task    :active, des2, 2014-01-09, 3d
-  Future task    :des3, after des2, 5d
+  Completed task : done, des1, 2014-01-06, 2014-01-08
+  Active task    : active, des2, 2014-01-09, 3d
+  Future task    : des3, after des2, 5d
 ```
 
 Input
@@ -496,16 +504,16 @@ Output
 ```mmd
 gantt
   section A
-    Task A      :a1, 2014-01-01, 3d
-    Task B long :a2, after a1, 2d
+    Task A      : a1, 2014-01-01, 3d
+    Task B long : a2, after a1, 2d
   section B
-    Other       :a3, after a2, 1d
+    Other       : a3, after a2, 1d
   section C
-    Single            :a4, after a3, 1d
-    Quite a long name :a5, after a4, 1d
+    Single            : a4, after a3, 1d
+    Quite a long name : a5, after a4, 1d
   section D
-    Alone :a6, after a5, 1d
-    Brief :a7, after a6, 1d
+    Alone : a6, after a5, 1d
+    Brief : a7, after a6, 1d
 ```
 
 Input
@@ -531,17 +539,17 @@ Output
 
 ```mmd
 gantt
-  Before :a0, 2014-01-01, 3d
-  Before long name :a9, after a0, 1d
+  Before : a0, 2014-01-01, 3d
+  Before long name : a9, after a0, 1d
   section A
-    Short :a1, 2014-01-01, 3d
-    A longer name :a2, after a1, 2d
+    Short : a1, 2014-01-01, 3d
+    A longer name : a2, after a1, 2d
   section B
-    Compact :b1, 2014-01-01, 3d
-    Single space :b2, after b1, 2d
-    Without id :3d
-    First item empty :, 2014-02-01, 3d
-    日本語 :b5, 2014-02-01, 3d
+    Compact : b1, 2014-01-01, 3d
+    Single space : b2, after b1, 2d
+    Without id : 3d
+    First item empty : , 2014-02-01, 3d
+    日本語 : b5, 2014-02-01, 3d
 ```
 
 Input
@@ -559,9 +567,9 @@ Output
 
 ```mmd
 gantt
-  A task :a1, 2014-01-01, 30d
-  B task :a2, 2014-01-01, 30d
-  C task :a3, 2014-01-01
+  A task : a1, 2014-01-01, 30d
+  B task : a2, 2014-01-01, 30d
+  C task : a3, 2014-01-01
 ```
 
 Input
@@ -580,10 +588,10 @@ Output
 
 ```mmd
 gantt
-  a :done, 1d
-  b :active, crit, 2d
-  c :Done, 1d
-  d :milestone, m1, 2024-01-01, 0d
+  a : done, 1d
+  b : active, crit, 2d
+  c : Done, 1d
+  d : milestone, m1, 2024-01-01, 0d
 ```
 
 ### Settings
@@ -964,8 +972,8 @@ Output
 
 ```mmd
 gantt
-  a :id1, 1d
-  b :id2, 1d
+  a : id1, 1d
+  b : id2, 1d
   click id1,id2 href "u"
   click id1,,id2 href "u"
   click id1, href "u"
@@ -988,7 +996,7 @@ Output
 
 ```mmd
 gantt
-  a :id1, 1d
+  a : id1, 1d
   click id1 href "u" call f()
   click id1 call f() href "u"
 ```
@@ -1011,7 +1019,7 @@ Output
 
 ```mmd
 gantt
-  a :id1, 1d
+  a : id1, 1d
   click id1 call f ()
   click id1 call f(1, 2)
   click id1 call f(1, 2)
@@ -1265,7 +1273,7 @@ Output
 
 ```mmd
 gantt
-  a :id1, 1d
+  a : id1, 1d
   click id1 call f(1,
   2)
 ```
@@ -1330,7 +1338,7 @@ Output
 
 ```mmd
 gantt
-  a :id1, 1d
+  a : id1, 1d
   click id1 call f()
   click id1 call f()
 ```
@@ -1454,7 +1462,7 @@ Output
 
 ```mmd
 gantt
-  a :id1, 1d
+  a : id1, 1d
   click id1 href "u"%% c
   click id1 call f() %% d
 ```
@@ -1545,7 +1553,7 @@ Output
 ```mmd
 gantt
   weekday %%{init: {}}%%monday
-  a :id1, 1d
+  a : id1, 1d
   click %%{init: {}}%%id1 href "u"
   click id1 call f%%{init: {}}%%()
 ```

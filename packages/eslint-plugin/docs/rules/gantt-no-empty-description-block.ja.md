@@ -46,7 +46,7 @@ since: v0.1.0
 gantt
   accDescr {}
   dateFormat YYYY-MM-DD
-  Design :2024-01-06, 3d
+  Design : 2024-01-06, 3d
 ```
 
 <!-- prettier-ignore -->
@@ -55,7 +55,7 @@ gantt
 gantt
   accDescr { }
   dateFormat YYYY-MM-DD
-  Design :2024-01-06, 3d
+  Design : 2024-01-06, 3d
 ```
 
 この規則に**従う**コードの例:
@@ -76,7 +76,7 @@ gantt
     %% old description
   }
   dateFormat YYYY-MM-DD
-  Design :2024-01-06, 3d
+  Design : 2024-01-06, 3d
 ```
 
 ## オプション

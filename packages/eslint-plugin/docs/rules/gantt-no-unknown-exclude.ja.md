@@ -45,7 +45,7 @@ mermaid.js はそこにどんな語も受理し、どれでもない語は、
 gantt
   dateFormat YYYY-MM-DD
   excludes weekend
-  Design :2024-01-05, 3d
+  Design : 2024-01-05, 3d
 ```
 
 ```mmd
@@ -53,7 +53,7 @@ gantt
 gantt
   dateFormat YYYY-MM-DD
   excludes sat, sun
-  Design :2024-01-05, 3d
+  Design : 2024-01-05, 3d
 ```
 
 この規則に**従う**コードの例:
@@ -63,7 +63,7 @@ gantt
 gantt
   dateFormat YYYY-MM-DD
   excludes weekends
-  Design :2024-01-05, 3d
+  Design : 2024-01-05, 3d
 ```
 
 ```mmd
@@ -71,7 +71,7 @@ gantt
 gantt
   dateFormat YYYY-MM-DD
   excludes saturday, sunday, 2024-01-08
-  Design :2024-01-05, 3d
+  Design : 2024-01-05, 3d
 ```
 
 ## オプション

@@ -206,7 +206,7 @@ const diagrams: readonly (readonly [string, readonly string[], string])[] = [
       "a : a1, 2024-01-01, 1d",
       "%%{init: {}}%%",
     ],
-    "gantt\n  title T\n  section S\n    a :a1, 2024-01-01, 1d\n    %%{init: {}}%%\n",
+    "gantt\n  title T\n  section S\n    a : a1, 2024-01-01, 1d\n    %%{init: {}}%%\n",
   ],
 ]
 

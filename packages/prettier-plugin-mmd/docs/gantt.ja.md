@@ -65,10 +65,10 @@ section Two
 gantt
   title T
   section One
-    a :a1, 2024-01-01, 2d
+    a : a1, 2024-01-01, 2d
     click a1 href "u"
   section Two
-    b :2d
+    b : 2d
 ```
 
 入力
@@ -88,7 +88,7 @@ a : 1d
 gantt
     title T
     section S
-        a :1d
+        a : 1d
 ```
 
 ### 1 行に 1 文
@@ -189,9 +189,9 @@ click id1 href "u" b : 1d
 
 ```mmd
 gantt
-  a :id1, 1d
+  a : id1, 1d
   click id1 href "u"
-  b :1d
+  b : 1d
 ```
 
 入力
@@ -206,7 +206,7 @@ gantt-x : 1d
 
 ```mmd
 gantt
-  -x :1d
+  -x : 1d
 ```
 
 入力
@@ -223,7 +223,7 @@ inclusiveEndDates weekday monday
 
 ```mmd
 gantt
-  accDescr { style:#x } a :1d;
+  accDescr { style:#x } a : 1d;
   inclusiveEndDates
   weekday monday
 ```
@@ -264,7 +264,7 @@ gantt
 
   section S
 
-    a :1d
+    a : 1d
 ```
 
 入力
@@ -302,7 +302,7 @@ mermaid.js にとって 2 つの説明です。
 [fixture: task-data/hash-and-semicolon-descriptions]
 
 名前がコロンに接しているタスクは、コロンの前に空白を 1 つ置いて印字します。
-`Short:a1` は `Short :a1` になります。
+`Short:a1` は `Short : a1` になります。
 mermaid.js の文書の例のタスク行はこの形で、54 行がコロンの前に空白を持ち、
 コロンに接する行はありません。
 この空白は、セクションのコロンをそろえるかどうか（後述）によらず置きます。
@@ -315,7 +315,7 @@ mermaid.js の文書の例のタスク行はこの形で、54 行がコロンの
 コロンに接しているとみなし、その文字の後に空白を置きます。
 行の中で文の後にあり、プラグインが別の行に移すタスクも、ほかと同じに空白か、
 セクションの桁を得ます（`axisFormat %m #a: 1d` は 2 行になり、
-2 行目は `#a :1d` です）。 [fixture: task-data/colon-touching-name-spaced]
+2 行目は `#a : 1d` です）。 [fixture: task-data/colon-touching-name-spaced]
 [fixture: task-data/colon-touching-name-aligned-with-padded]
 [fixture: task-data/colon-touching-name-too-wide-kept]
 [fixture: task-data/colon-touching-name-tab-in-name]
@@ -447,10 +447,21 @@ Prettier は行の前にあるものの幅を引かずに `printWidth` をその
 [fixture: task-data/colon-column-directive-inside-name]
 [fixture: task-data/colon-column-comment-after-data]
 
-最初の項目はコロンに接し、`,` は前の項目に接して、
+コロンの後ろは空白 1 つを置いて始め、`,` は前の項目に接して、
 後ろに項目があれば空白 1 つを置きます。
 コロンと `,` の周りの空白は Db に入らないので、残しません。
-mermaid.js の文書の task 行の多くがこの形で、空白は項目の前にだけ置きます。
+コロンはタスクの名前に続くので、
+Prettier が名前やキーに続くコロンの後ろに印字する空白 1 つを置きます。
+mermaid.js の文書の task 行は、最初の項目をコロンに接して書くものが多く、
+この規則はそれに従いません。
+mermaid.js の行の規則が読む範囲では、コロンの後ろの空白を書かれたまま残します。
+規則は、`style` か `classDef` の後の最初の `:` から、
+行の最後の `;` の前の最後の `#` までを読み、
+そのようなコロンの後ろに空白を置くと、規則が無視する `;` が変わるからです。
+`classDef it:a1,2024-01-01,2d;#y:3d;z:2d` は、
+タスク `classDef it` とタスク `#y` の 2 つです。
+最初のコロンの後ろに空白を置くと、タスクは 3 つになります。
+[fixture: task-data/colon-space-line-rule-kept]
 [fixture: task-data/colon-touches-first-item] [fixture: task-data/comma-spacing]
 [fixture: task-data/tab-around-items]
 データの末尾の空白は落とします。
@@ -463,7 +474,7 @@ mermaid.js の文書の task 行の多くがこの形で、空白は項目の前
 [fixture: task-data/after-until-forms] [fixture: keyword-case/tags-case-kept]
 
 空の項目は、mermaid.js が項目の数を読むので残します。
-`,` は残り、空の項目は何も印字しないので、`a : , 1d` は `a :, 1d` になり、
+`,` は残り、空の項目は何も印字しないので、`a :,1d` は `a : , 1d` になり、
 `a : 1d,` は `,` を保ちます。 [fixture: task-data/empty-items]
 
 空白だけのデータは空の項目 1 つで、
@@ -493,9 +504,9 @@ Future task               :         des3, after des2, 5d
 
 ```mmd
 gantt
-  Completed task :done, des1, 2014-01-06, 2014-01-08
-  Active task    :active, des2, 2014-01-09, 3d
-  Future task    :des3, after des2, 5d
+  Completed task : done, des1, 2014-01-06, 2014-01-08
+  Active task    : active, des2, 2014-01-09, 3d
+  Future task    : des3, after des2, 5d
 ```
 
 入力
@@ -522,16 +533,16 @@ gantt
 ```mmd
 gantt
   section A
-    Task A      :a1, 2014-01-01, 3d
-    Task B long :a2, after a1, 2d
+    Task A      : a1, 2014-01-01, 3d
+    Task B long : a2, after a1, 2d
   section B
-    Other       :a3, after a2, 1d
+    Other       : a3, after a2, 1d
   section C
-    Single            :a4, after a3, 1d
-    Quite a long name :a5, after a4, 1d
+    Single            : a4, after a3, 1d
+    Quite a long name : a5, after a4, 1d
   section D
-    Alone :a6, after a5, 1d
-    Brief :a7, after a6, 1d
+    Alone : a6, after a5, 1d
+    Brief : a7, after a6, 1d
 ```
 
 入力
@@ -557,17 +568,17 @@ Before long name:a9, after a0, 1d
 
 ```mmd
 gantt
-  Before :a0, 2014-01-01, 3d
-  Before long name :a9, after a0, 1d
+  Before : a0, 2014-01-01, 3d
+  Before long name : a9, after a0, 1d
   section A
-    Short :a1, 2014-01-01, 3d
-    A longer name :a2, after a1, 2d
+    Short : a1, 2014-01-01, 3d
+    A longer name : a2, after a1, 2d
   section B
-    Compact :b1, 2014-01-01, 3d
-    Single space :b2, after b1, 2d
-    Without id :3d
-    First item empty :, 2014-02-01, 3d
-    日本語 :b5, 2014-02-01, 3d
+    Compact : b1, 2014-01-01, 3d
+    Single space : b2, after b1, 2d
+    Without id : 3d
+    First item empty : , 2014-02-01, 3d
+    日本語 : b5, 2014-02-01, 3d
 ```
 
 入力
@@ -585,9 +596,9 @@ C task :    a3 , 2014-01-01
 
 ```mmd
 gantt
-  A task :a1, 2014-01-01, 30d
-  B task :a2, 2014-01-01, 30d
-  C task :a3, 2014-01-01
+  A task : a1, 2014-01-01, 30d
+  B task : a2, 2014-01-01, 30d
+  C task : a3, 2014-01-01
 ```
 
 入力
@@ -606,10 +617,10 @@ d : milestone , m1, 2024-01-01, 0d
 
 ```mmd
 gantt
-  a :done, 1d
-  b :active, crit, 2d
-  c :Done, 1d
-  d :milestone, m1, 2024-01-01, 0d
+  a : done, 1d
+  b : active, crit, 2d
+  c : Done, 1d
+  d : milestone, m1, 2024-01-01, 0d
 ```
 
 ### 設定
@@ -999,8 +1010,8 @@ click   ,id1,   href "u"
 
 ```mmd
 gantt
-  a :id1, 1d
-  b :id2, 1d
+  a : id1, 1d
+  b : id2, 1d
   click id1,id2 href "u"
   click id1,,id2 href "u"
   click id1, href "u"
@@ -1023,7 +1034,7 @@ click id1 call f() href "u"
 
 ```mmd
 gantt
-  a :id1, 1d
+  a : id1, 1d
   click id1 href "u" call f()
   click id1 call f() href "u"
 ```
@@ -1046,7 +1057,7 @@ click id1 call   f()
 
 ```mmd
 gantt
-  a :id1, 1d
+  a : id1, 1d
   click id1 call f ()
   click id1 call f(1, 2)
   click id1 call f(1, 2)
@@ -1305,7 +1316,7 @@ click id1 call f(1,
 
 ```mmd
 gantt
-  a :id1, 1d
+  a : id1, 1d
   click id1 call f(1,
   2)
 ```
@@ -1372,7 +1383,7 @@ click id1 call f()
 
 ```mmd
 gantt
-  a :id1, 1d
+  a : id1, 1d
   click id1 call f()
   click id1 call f()
 ```
@@ -1493,7 +1504,7 @@ click id1 call f()  %% d
 
 ```mmd
 gantt
-  a :id1, 1d
+  a : id1, 1d
   click id1 href "u"%% c
   click id1 call f() %% d
 ```
@@ -1585,7 +1596,7 @@ click id1 call f%%{init: {}}%%()
 ```mmd
 gantt
   weekday %%{init: {}}%%monday
-  a :id1, 1d
+  a : id1, 1d
   click %%{init: {}}%%id1 href "u"
   click id1 call f%%{init: {}}%%()
 ```
