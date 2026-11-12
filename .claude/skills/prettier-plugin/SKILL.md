@@ -88,9 +88,9 @@ say which kind it is), then the form that the other diagram types print for the
 same kind of gap, then a spelling. The rules say which form reads best, which is
 what a printed form is for; they are applied in their order so that the form
 does not depend on who judges. Where none of them gives a form, the output of
-the released version is not changed on one judgment alone: a form that seems to
-read better is proposed to the user, with a text as written and both outputs,
-and what is decided is added to those rules.
+the released version is not changed on the judgment of whoever is working on it:
+a form that seems to read better is proposed to the user, with a text as written
+and both outputs, and what is decided is added to those rules.
 
 1. From the grammar and the tree in the specification, list what formatting
    could change. The kinds of items flowchart has (as examples; a diagram type
@@ -127,10 +127,10 @@ and what is decided is added to those rules.
    that decided the form, with the facts that rule needs. A reason that says
    only "reads better" tells a reader nothing: name the rule that says why it
    reads better. Where a rule gives a form that reads worse than another form
-   that draws the same, say so and propose the other form, since the rule is
-   then what is wrong. Write what is kept as written because it affects the Db,
-   and the differences from mermaid.js, into `docs/compatibility.md` too. Keep
-   decisions in these two documents only.
+   that draws the same, say so and propose the other form to the user as under
+   step 4, since the rule is then what is wrong. Write what is kept as written
+   because it affects the Db, and the differences from mermaid.js, into
+   `docs/compatibility.md` too. Keep decisions in these two documents only.
 
 ## 4. Writing the printer
 
