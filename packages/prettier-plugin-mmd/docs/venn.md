@@ -400,7 +400,7 @@ Output
 
 ```mmd
 venn-beta
-  set A["L"]:002.00
+  set A["L"] : 002.00
     text item[" Label "]
 ```
 
@@ -540,7 +540,7 @@ Output
 venn-beta
   set A
   set B_2["Beta"]
-  set c-d:3
+  set c-d : 3
   set xset
   set set1
   union A, B_2["Both"]
@@ -552,9 +552,16 @@ venn-beta
 
 ### Sizes and numbers
 
-A size touches the preceding name or label as `:number`, giving both suffixes
-one compact form. A size that is a plain decimal is printed in the shortest form
-(`+5` is `5`, `-.5` is `-0.5`; see
+The colon of a size, in a `set` and in a `union`, has one space on each side:
+`set A["Alpha"]:20` is printed `set A["Alpha"] : 20`, and `union A,B["AB"]:3` is
+printed `union A, B["AB"] : 3`. The size is an addition to the declaration,
+which can be left out, and it is the size of the declaration and not of the name
+before the colon, which a colon against that name would suggest in a `union`. So
+the colon is a mark that stands between the declaration and its size, and
+Prettier prints one space on each side of such a mark. [fixture:
+sizes-and-numbers/colon-of-a-size] [fixture:
+sizes-and-numbers/colon-of-a-size-directive] A size that is a plain decimal is
+printed in the shortest form (`+5` is `5`, `-.5` is `-0.5`; see
 [Spellings that are drawn the same](./compatibility.md#spellings-that-are-drawn-the-same)).
 A zero at the start of the integer part, signed zero and overflow retain their
 spelling; numeric text ids also retain their spelling because rewriting them
@@ -585,9 +592,9 @@ Output
 
 ```mmd
 venn-beta
-  set A:+02.50
-  set B:-0.5
-  union A, B:007
+  set A : +02.50
+  set B : -0.5
+  union A, B : 007
     text 007
 ```
 
@@ -767,15 +774,14 @@ Output
 
 ```mmd
 venn-beta
-  set A[style:#x;y] set B:2
+  set A[style:#x;y] set B : 2
 ```
 
 ### Title
 
-The consumed first title separator becomes one ASCII space for readability, and
-so do the spaces and tabs after it, and the spaces and tabs at the end of the
-title are left out: mermaid.js keeps them in the Db, but draws the same title
-without them (see
+The consumed first title separator becomes one ASCII space, and so do the spaces
+and tabs after it, and the spaces and tabs at the end of the title are left out:
+mermaid.js keeps them in the Db, but draws the same title without them (see
 [Texts after a keyword that are drawn the same](./compatibility.md#texts-after-a-keyword-that-are-drawn-the-same)).
 Every later value character, including statement-looking words, stays as
 written, because everything after the one separator is the title value in the
@@ -893,7 +899,7 @@ Output
 
 ```mmd
 venn-beta
-  set A%%{init: {}}%%["L"]:2
+  set A%%{init: {}}%%["L"] : 2
 ```
 
 Input (escaped):
@@ -913,11 +919,10 @@ venn-beta%%{init: {}}%%
 ### Trailing whitespace
 
 Exterior ASCII spaces and tabs after completed headers and non-title statements
-disappear for clean line endings, including after kept parts and safe suffixes.
-Spaces inside names, colors, style strings, comments and directives remain
-authored text. A run of spaces and tabs inside a label or a title value is
-printed as one space, and the spaces at the end of a title are left out (see
-[Title](#title) and
+disappear, including after kept parts and safe suffixes. Spaces inside names,
+colors, style strings, comments and directives remain authored text. A run of
+spaces and tabs inside a label or a title value is printed as one space, and the
+spaces at the end of a title are left out (see [Title](#title) and
 [Runs of whitespace in a text that are drawn the same](./compatibility.md#runs-of-whitespace-in-a-text-that-are-drawn-the-same)).
 [fixture: venn/trailing-whitespace/continuation-spaces] [corpus fixture:
 venn/db-after-set-label-size-space] [corpus fixture: venn/db-title-padding]
@@ -1061,7 +1066,7 @@ nbsp-title-separator]
 
 ### Frontmatter YAML
 
-Frontmatter uses the shared guarded YAML formatter for readable configuration.
+Frontmatter uses the shared guarded YAML formatter, as Prettier prints YAML.
 Delimiters, closing-line padding, comments/directives before the header and
 title overrides retain their roles; malformed, indented, HTML-sensitive and
 delimiter-hazard YAML stays as written, including ineffective accessibility

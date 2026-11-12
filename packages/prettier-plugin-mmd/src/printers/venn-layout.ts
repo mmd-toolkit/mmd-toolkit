@@ -164,17 +164,24 @@ export function layoutVennStatement(
   }
   const rules = new Map<number, GapRule>()
   // A comma touches the name before it and is followed by one space, and the
-  // colon of a style property is followed by one space too (docs/venn.md, Name
-  // lists and Style properties).
+  // colon of a style property is followed by one space too. The colon of a
+  // size stands between the declaration and its size, with one space on each
+  // side (docs/venn.md, Name lists, Sizes and numbers, and Style properties).
+  const sizeStart =
+    statement.type === "VennSubsetStatement"
+      ? (statement.size?.range[0] ?? null)
+      : null
   const propertyValueStarts = new Set(
     statement.type === "VennStyleStatement"
       ? statement.properties.map((property) => property.value.range[0])
-      : [],
+      : sizeStart === null
+        ? []
+        : [sizeStart],
   )
   // A `;` on the line is read by the line rule of mermaid.js, which ignores
   // it or not by whether whitespace lies between a `:` and a `#`: the gap
-  // after the colon of a property keeps whether it holds whitespace
-  // (docs/venn.md, Style properties and Line rule and kept lines).
+  // after the colon of a property or of a size keeps whether it holds
+  // whitespace (docs/venn.md, Style properties and Line rule and kept lines).
   const keepsColonGap = holdsKeptSemicolon(
     source,
     start,
@@ -186,18 +193,22 @@ export function layoutVennStatement(
     const before = source.text.slice(previous.start, previous.end)
     const text = source.text.slice(atom.start, atom.end)
     const afterPropertyColon = propertyValueStarts.has(atom.start)
+    const beforeSizeColon =
+      text === ":" && atoms[index + 1]?.start === sizeStart
     rules.set(
       atom.start,
       afterPropertyColon
         ? keepsColonGap && atom.start === previous.end
           ? "none"
           : "space"
-        : text === "," ||
-            text === ":" ||
-            before === ":" ||
-            ("label" in statement && atom.start === statement.label?.range[0])
-          ? "none"
-          : "space",
+        : beforeSizeColon
+          ? "space"
+          : text === "," ||
+              text === ":" ||
+              before === ":" ||
+              ("label" in statement && atom.start === statement.label?.range[0])
+            ? "none"
+            : "space",
     )
   }
   return {

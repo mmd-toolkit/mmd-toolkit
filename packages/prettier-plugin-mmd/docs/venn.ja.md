@@ -170,7 +170,7 @@ venn-beta
 
 ### Statements one per line
 
-通常の完結した文は読みやすいように1行ずつにします。
+通常の完結した文は、ほかの図種と同じく1行ずつにします。
 宣言と同じ行に続く style、対象つき text、title は同じ行に保ちます。
 分けると行頭の文が暗黙モードを解除するためです。
 同じ行の宣言の列は分けられます。
@@ -437,7 +437,7 @@ U+2028 や U+2029 を含む空白は、書かれたまま残します。
 
 ```mmd
 venn-beta
-  set A["L"]:002.00
+  set A["L"] : 002.00
     text item[" Label "]
 ```
 
@@ -581,7 +581,7 @@ set "A1"
 venn-beta
   set A
   set B_2["Beta"]
-  set c-d:3
+  set c-d : 3
   set xset
   set set1
   union A, B_2["Both"]
@@ -593,7 +593,16 @@ venn-beta
 
 ### Sizes and numbers
 
-サイズは名前かラベルに `:number` と接し、接尾部を一貫して短い形にします。
+サイズのコロンは、`set` でも `union` でも、両側に空白を 1 つずつ置きます。
+`set A["Alpha"]:20` は `set A["Alpha"] : 20` になり、
+`union A,B["AB"]:3` は `union A, B["AB"] : 3` になります。
+サイズは宣言に付け足すもので、省けます。
+サイズは宣言のものであって、コロンの前の名前のものではありません。
+`union` では、コロンを名前に接すると名前のサイズに見えます。
+したがって、このコロンは宣言とそのサイズの間に立つ記号で、
+Prettier はこの種類の記号の両側に空白を 1 つずつ印字します。
+[fixture: venn/sizes-and-numbers/colon-of-a-size]
+[fixture: venn/sizes-and-numbers/colon-of-a-size-directive]
 通常の十進数のサイズは、最短の形で印字します。
 `+5` は `5`、`-.5` は `-0.5` にします。
 （[同じに描かれる綴り](./compatibility.ja.md#同じに描かれる綴り)を参照）。
@@ -628,9 +637,9 @@ mermaid.js がテキストとして読むため、綴りを保ちます。
 
 ```mmd
 venn-beta
-  set A:+02.50
-  set B:-0.5
-  union A, B:007
+  set A : +02.50
+  set B : -0.5
+  union A, B : 007
     text 007
 ```
 
@@ -823,12 +832,12 @@ U+2029 でも同じラベルです。
 
 ```mmd
 venn-beta
-  set A[style:#x;y] set B:2
+  set A[style:#x;y] set B : 2
 ```
 
 ### Title
 
-読みやすいように title の最初の区切りを ASCII 空白1つにします。
+title の最初の区切りを ASCII 空白1つにします。
 その後の空白とタブも含めて、ASCII 空白 1 つにします。
 タイトルの末尾の空白とタブは除きます。
 mermaid.js はそれらを Db に残しますが、それらがなくても同じタイトルを描きます。
@@ -962,7 +971,7 @@ Venn のヘッダー行の文にはその役割がありません。
 
 ```mmd
 venn-beta
-  set A%%{init: {}}%%["L"]:2
+  set A%%{init: {}}%%["L"] : 2
 ```
 
 入力（escape 表記）:
@@ -1143,7 +1152,7 @@ FF を本文の隙間として受理はしません。
 
 ### Frontmatter YAML
 
-frontmatter は読みやすい設定にするため、共通の保護つき YAML 整形を使います。
+frontmatter には共通の保護つき YAML 整形を使い、Prettier が YAML を印字する形にします。
 区切り、閉じる行の余白、ヘッダー前のコメントとディレクティブ、
 title の上書きの役割を保ちます。
 不正、字下げつき、HTML に影響するもの、区切りが変わる YAML は保ちます。

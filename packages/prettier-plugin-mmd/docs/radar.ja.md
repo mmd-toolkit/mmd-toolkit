@@ -202,8 +202,16 @@ radar-beta
 
 ### Curve braces
 
-`c{1, 2}`、`c["C"]{A: 1}` と印字します。
-開き波括弧の前と内側の両端の普通の空白を詰めます。
+値だけの曲線の波括弧は `c{1, 2}` のように内側を詰め、
+名前と値の組の曲線の波括弧は `c["C"]{ A: 1, B: 2 }` のように、
+内側の両端に空白を 1 つずつ置いて印字します。
+開き波括弧の前の空白は、どちらも詰めます。
+名前と値の組を並べた波括弧は、
+Prettier がオブジェクト（`{ a: 1, b: 2 }`）として印字する種類で、
+値を並べた波括弧は、配列（`[1, 2, 3]`）として印字する種類です。
+mermaid.js の文書の例は、値だけの曲線 14 件を内側を詰めて書き、
+名前と値の組の曲線 1 件を内側の両端に空白 1 つずつを置いて書いています。
+コロンのない名前つきの項目（`{ A 1, B 2 }`）も、名前と値の組です。
 付属部品の接着は architecture、リストの内端は xychart と同じです。
 これは entry の波括弧です。
 説明ブロックの空白は共有の説明規則に従います。
@@ -211,6 +219,14 @@ radar-beta
 [fixture: radar/curve-braces/brace-tight]
 
 [fixture: radar/curve-braces/label-before-brace]
+
+[fixture: radar/curve-braces/named-entries-space-inside]
+
+[fixture: radar/curve-braces/named-entries-padding-collapsed]
+
+[fixture: radar/curve-braces/named-and-value-curves-in-one-statement]
+
+[fixture: radar/curve-braces/named-entries-directive-after-brace]
 
 入力（escape 表記）: `"radar-beta\ncurve trial \t{ \t4, 5 \t}\n"`
 
@@ -231,7 +247,7 @@ radar-beta
 カンマの前や名前つき entry の途中へ改行を追加しません。
 コメントや Root directive のある改行は残します。
 普通の継続行とコメントは 2 段、別行の `}` は文の位置にそろえます。
-コメント付きのリストをブロックとして読みやすく保つため、
+コメント付きのリストをブロックのまま残すため、
 その文のほかの entry の改行も残します。
 hidden の境界、値の行、semicolon の保護区間は継続列を含め保ちます。
 保護区間内に継続の字下げを足しません。
@@ -328,7 +344,7 @@ radar-beta
 ```mmd
 radar-beta
   axis North, South
-  curve trial{North 4, South: 5}
+  curve trial{ North 4, South: 5 }
 ```
 
 ### Numbers
@@ -624,7 +640,7 @@ prototype に似た名前、空の共通代入を残します。
 
 ```mmd
 radar-beta
-  curve trial{South: 5, North: 4, Extra: 9, North: 6}
+  curve trial{ South: 5, North: 4, Extra: 9, North: 6 }
   axis North, South, North
   curve trial{7}
 ```

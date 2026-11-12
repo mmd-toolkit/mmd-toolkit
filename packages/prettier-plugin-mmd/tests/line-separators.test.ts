@@ -3989,12 +3989,12 @@ const vennExamples: readonly (readonly [string, string, string])[] = [
   [
     "venn: ls-kept-overlapping-value",
     "venn-beta\n set A[style:#x;\u2028rest] : 2",
-    "venn-beta\n  set A[style:#x;\u2028rest]:2\n",
+    "venn-beta\n  set A[style:#x;\u2028rest] : 2\n",
   ],
   [
     "venn: ps-kept-overlapping-value",
     "venn-beta\n set A[style:#x;\u2029rest] : 2",
-    "venn-beta\n  set A[style:#x;\u2029rest]:2\n",
+    "venn-beta\n  set A[style:#x;\u2029rest] : 2\n",
   ],
   [
     "venn: bom-frontmatter",

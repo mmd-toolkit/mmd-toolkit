@@ -196,14 +196,29 @@ radar-beta
 
 ### Curve braces
 
-Print `c{1, 2}` and `c["C"]{A: 1}`: ordinary gaps before the opening brace and
-at both interior ends are empty. Attached components and the list's tight inner
-edges follow the architecture and xychart choices. These are entry braces;
-description-block spacing uses the shared description rule.
+Print the braces of a curve of values only tight, `c{1, 2}`, and the braces of a
+curve of named entries with one space inside each end, `c["C"]{ A: 1, B: 2 }`;
+the gap before the opening brace is empty in both. A list of named entries is
+the kind of braces that Prettier prints as an object, `{ a: 1, b: 2 }`, and a
+list of values is the kind it prints as an array, `[1, 2, 3]`. The examples in
+the documentation of mermaid.js write the 14 curves of values only with none
+inside, and the one curve of named entries with one space inside each end. A
+named entry without a colon (`{ A 1, B 2 }`) is a named entry too. Attached
+components and the list's tight inner edges follow the architecture and xychart
+choices. These are entry braces; description-block spacing uses the shared
+description rule.
 
 [fixture: radar/curve-braces/brace-tight]
 
 [fixture: radar/curve-braces/label-before-brace]
+
+[fixture: radar/curve-braces/named-entries-space-inside]
+
+[fixture: radar/curve-braces/named-entries-padding-collapsed]
+
+[fixture: radar/curve-braces/named-and-value-curves-in-one-statement]
+
+[fixture: radar/curve-braces/named-entries-directive-after-brace]
 
 Input (escaped): `"radar-beta\ncurve trial \t{ \t4, 5 \t}\n"`.
 
@@ -224,12 +239,12 @@ Never add a newline before a comma or inside a named entry. Keep newlines
 holding comments or Root directives; ordinary continuation lines and comments
 use two indentation steps, while a separate `}` aligns with its statement.
 Preserve other authored entry newlines in such a statement too, keeping the
-commented list readable as a block. Hidden boundaries, value lines and protected
-semicolon segments remain written, including their continuation columns. No
-continuation indentation is added inside a protected segment; ordinary spacing
-still applies after it. Shared joining checks also keep a terminal line
-containing another statement's semicolon: joining a preceding style-like label
-could change that statement's Db.
+commented list as a block as written. Hidden boundaries, value lines and
+protected semicolon segments remain written, including their continuation
+columns. No continuation indentation is added inside a protected segment;
+ordinary spacing still applies after it. Shared joining checks also keep a
+terminal line containing another statement's semicolon: joining a preceding
+style-like label could change that statement's Db.
 
 [fixture: radar/multi-line-statements/leading-trailing-entry-lines]
 
@@ -321,7 +336,7 @@ Output
 ```mmd
 radar-beta
   axis North, South
-  curve trial{North 4, South: 5}
+  curve trial{ North 4, South: 5 }
 ```
 
 ### Numbers
@@ -612,7 +627,7 @@ Output
 
 ```mmd
 radar-beta
-  curve trial{South: 5, North: 4, Extra: 9, North: 6}
+  curve trial{ South: 5, North: 4, Extra: 9, North: 6 }
   axis North, South, North
   curve trial{7}
 ```
