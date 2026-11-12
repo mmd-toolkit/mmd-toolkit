@@ -90,6 +90,16 @@ How it reads:
   and keeps what the earlier rule was for, naming one kept case at most, for
   example `such as a text with a comma`. Such an entry has three sentences, or
   four with the one of what the user has to do.
+- Such a change names the released version that introduced the decision it
+  overturns, where that was a later version than the first one of the package
+  (`which 0.5.0 began to print without the space`). It also adds one line to the
+  entry of that version in the `CHANGELOG.md` of the package, after the text of
+  the entry and indented like it: `Overturned in the next release: ` and one
+  sentence that says what is printed now. `version:ci` replaces
+  `the next release` with the version that Changesets gives the package
+  (`scripts/stamp-overturned-notes.mjs`), so the changeset has to bump the
+  package whose `CHANGELOG.md` holds the entry. Where a version that is already
+  released overturned the decision, the line names that version itself.
 - Leave out the forms that stay as they were, the conditions of a rule, and the
   counts behind it, such as how many times the documentation of mermaid.js
   writes each form: the rules documents hold them. Name one only when a user
