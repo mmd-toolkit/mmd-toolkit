@@ -374,8 +374,9 @@
   prints as `class A,B c`. In `state`, whitespace before a comma ends the ids, so
   it stays as written.
   
-  Overturned in the next release: these commas are printed with one space after
-  them, as in `class A, B c`.
+  > **NOTE:**\
+  > Overturned in the next release: these commas are printed with one space
+  > after them, as in `class A, B c`.
 
 - [#60](https://github.com/mmd-toolkit/mmd-toolkit/pull/60) [`f41858e`](https://github.com/mmd-toolkit/mmd-toolkit/commit/f41858ef670c82de824f7a0f875b4968abdbf8b8) Thanks [@ota-meshi](https://github.com/ota-meshi)! - Print the punctuation of a `sequence` message or note one way. `+`, `-`, and
   `()` touch the participant, as in `A ->> +B` and `A() ->> ()B`, and the comma of
@@ -383,8 +384,9 @@
   diagram either way. Whitespace around a directive stays as written, and so does
   the space in `A ->> - x`, where `-x` would be read as an arrow.
   
-  Overturned in the next release: the comma of a note is printed with one space
-  after it, as in `Note over A, B`.
+  > **NOTE:**\
+  > Overturned in the next release: the comma of a note is printed with one
+  > space after it, as in `Note over A, B`.
 
 ### Patch Changes
 
@@ -428,9 +430,10 @@
   block, as in `A@{ shape: rect }e1@-->B`, stays attached to the block, so that
   the output is no longer rejected.
   
-  Overturned in the next release: `A[ user@example.com ]` keeps its space in
-  `flowchart` again, since mermaid.js 11.5.0 to 12.2.0 reject the form without
-  it.
+  > **NOTE:**\
+  > Overturned in the next release: `A[ user@example.com ]` keeps its space in
+  > `flowchart` again, since mermaid.js 11.5.0 to 12.2.0 reject the form
+  > without it.
 
 ### Patch Changes
 
