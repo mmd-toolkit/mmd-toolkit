@@ -170,10 +170,9 @@ write their inputs, and run them, are in
     `R&D`)
 - Check each claim of a condition or a suggestion with an input for each case
   that the claim distinguishes, and for each other rule that meets it at the
-  place it names (a directive, an ignored `;`, a comment line, an empty line, a
-  line separator, an empty description block), as
-  [Running tests](../conventions/SKILL.md#running-tests) in the conventions
-  SKILL says. The inputs are chosen from these cases; none is generated.
+  place it names, as
+  [the Principles of AGENTS.md](../../../AGENTS.md#principles) list them. The
+  inputs are chosen from these cases; none is generated.
 - Before showing the table of the cases of a rule, check it against these kinds
   of case, add a row for each kind that a sentence of the document touches, and
   run it through mermaid.js before the sentence states it:

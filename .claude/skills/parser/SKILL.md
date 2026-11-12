@@ -126,10 +126,10 @@ type.
 
 - When a sentence of the parser's documents that defines a behavior is written
   or changed, list the cases that it distinguishes and the other rules that meet
-  it at the place that it names (a directive, an ignored `;`, a comment line, an
-  empty line, a line separator, an empty description block), and ask for a
-  fixture of each case that the corpus lacks (AGENTS.md, Principles). Do not add
-  inputs to a case that has a fixture.
+  it at the place that it names, as
+  [the Principles of AGENTS.md](../../../AGENTS.md#principles) list them, and
+  ask for a fixture of each case that the corpus lacks. Do not add inputs to a
+  case that has a fixture.
 - In every result, show for each claim whether it was checked by running
   something, checked by reading code or documents, or not checked.
 - For a requested performance review of a newly supported diagram or an existing

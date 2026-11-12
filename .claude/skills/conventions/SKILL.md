@@ -158,12 +158,9 @@ everything after every change.
   characters use ESLint's `RuleTester`, with template literals and escapes for
   the input and expected output in the test source.
 - The inputs that check a behavior are fixtures, and every fixture answers a
-  sentence. Every sentence that defines a behavior (in the specification, in the
-  parser's documents of tokens and positions, in the documents of `dbFromTree`,
-  in the formatting rules) has a fixture for each case it distinguishes, and for
-  each other rule that meets it at the place it names: a directive, an ignored
-  `;`, a comment line, an empty line, a line separator (U+2028, U+2029), an
-  empty description block, and whatever else the sentence's own words name. The
+  sentence. Every sentence that defines a behavior has a fixture for each case
+  it distinguishes and for each other rule that meets it at the place it names,
+  as [the Principles of AGENTS.md](../../../AGENTS.md#principles) list them. The
   fixtures are written with the sentence, checked against mermaid.js once, and
   cited by the sentence (`[fixture: ...]`). A failure found anywhere is closed
   by a fixture in the corpus (or a formatting fixture) and by the sentence that

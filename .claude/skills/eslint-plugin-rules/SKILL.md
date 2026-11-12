@@ -61,15 +61,16 @@ after writing it.
   list the cases that the sentence distinguishes (which statement the mistake
   stands in, where in a line, which separator or whitespace stands next to it,
   which context it is in) and the rules of the language that meet it at the
-  place it names (a directive, an ignored `;`, a comment line, an empty line, a
-  line separator, an empty description block). Give each case an input, a
-  fixture of the rule, named after the case. Run mermaid.js once on each input,
-  and compare the report of the rule with what it does, in both directions: a
-  mistake that is not reported, and a report that is not a mistake. A case that
-  mermaid.js rejects gets no fixture. No input is chosen by a random source or
-  by a number, and no command generates inputs. A failure that the comparison
-  finds is closed by the fixture of its case (section 4), and by a sentence of
-  the specification where the specification did not state the reading.
+  place it names, as
+  [the Principles of AGENTS.md](../../../AGENTS.md#principles) list them. Give
+  each case an input, a fixture of the rule, named after the case. Run
+  mermaid.js once on each input, and compare the report of the rule with what it
+  does, in both directions: a mistake that is not reported, and a report that is
+  not a mistake. A case that mermaid.js rejects gets no fixture. No input is
+  chosen by a random source or by a number, and no command generates inputs. A
+  failure that the comparison finds is closed by the fixture of its case
+  (section 4), and by a sentence of the specification where the specification
+  did not state the reading.
 - A rule whose condition depends on something defined anywhere in the diagram
   (ids, vertices that a statement creates) needs inputs where the definition
   comes after the use and where it comes before it, and a statement that creates

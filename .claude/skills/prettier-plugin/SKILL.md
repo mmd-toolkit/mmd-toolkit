@@ -290,13 +290,12 @@ built is in `docs/development.md`.
 - Fixtures answer sentences. Every sentence of the rules documents
   (`docs/<diagram>.md`, `docs/compatibility.md`) that defines a behavior has a
   formatting fixture for each case it distinguishes, and for each other rule
-  that meets it at the place it names: a directive, an ignored `;`, a comment
-  line, an empty line, a line separator (U+2028, U+2029), an empty description
-  block, and whatever else the sentence's own words name. The fixtures are
-  written with the sentence and checked against mermaid.js once. A failure is
-  closed by a fixture and by the sentence that states the rule it shows to be
-  missing. No test or command generates inputs, and no input is chosen by a
-  random source or by a number (a seed, a count).
+  that meets it at the place it names, as
+  [the Principles of AGENTS.md](../../../AGENTS.md#principles) list them. The
+  fixtures are written with the sentence and checked against mermaid.js once. A
+  failure is closed by a fixture and by the sentence that states the rule it
+  shows to be missing. No test or command generates inputs, and no input is
+  chosen by a random source or by a number (a seed, a count).
 - Fixtures come from the cases of the rule sentences, not from copies of corpus
   inputs: write a minimal input for each distinct case, merge fixtures that
   answer the same case, and cite corpus inputs as `[corpus fixture: ...]`.
