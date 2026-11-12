@@ -6,10 +6,15 @@ description:
   fixtures). Use when a rule has been decided with the rule-ideas skill and is
   to be implemented, when the condition, the messages, the fixes, or the
   suggestions of a rule change, and when the tests or the fixtures of a rule are
-  added. The documents of the rules are in the eslint-plugin skill.
+  added. The documents of the rules are in the eslint-plugin skill. Use it
+  together with the eslint-plugin skill.
 ---
 
 # 規則の実装（eslint-plugin-rules）
+
+SKILL [eslint-plugin](../eslint-plugin/SKILL.ja.md#方針と基準)
+の「方針と基準」の節は、この手順にも当たる。
+先に読む。
 
 `@mmd-toolkit/eslint-plugin` の規則を実装、変更、削除する手順。
 規則が報告するものが、固定した mermaid.js についての事実であり、規則が、

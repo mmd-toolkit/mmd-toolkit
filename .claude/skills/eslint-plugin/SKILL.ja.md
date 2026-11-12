@@ -4,8 +4,10 @@ description:
   Write, change, or remove the rule documents of @mmd-toolkit/eslint-plugin
   under packages/eslint-plugin/docs/rules/, and update them when a diagram type
   is added. Use when a rule has been decided and needs its document, when a
-  document must follow a change of the tree or the fixtures, or when a diagram
-  type is supported. Which rules exist is decided with the rule-ideas skill.
+  document must follow a change of the tree or the fixtures, when a diagram type
+  is supported, and when a rule is implemented, whose steps are in the
+  eslint-plugin-rules skill. Which rules exist is decided with the rule-ideas
+  skill.
 ---
 
 # 規則の文書の書き方（eslint-plugin）
