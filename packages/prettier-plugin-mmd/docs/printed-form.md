@@ -10,9 +10,16 @@ and so on). The reason of each of those rules is one of the rules below.
 
 ## What decides a form
 
-A form is decided by the rules below, applied in their order, and not case by
-case on a judgment of which form reads better: two people judge differently, and
-the output would follow whoever wrote the printer.
+What matters most in a printed form is that it reads well. Among the ways of
+writing that draw the same, the formatter prints the one that reads best.
+
+The rules below say which form that is. They are written down, and applied in
+their order, because a judgment that is made case by case differs from one
+person to the next: the same kind of mark would be printed in one way in one
+diagram type and in another way in the next. A rule is there to make a text read
+well. So where a rule gives a form that reads worse than another form that draws
+the same, the rule is what is wrong: the form is decided again, and the rule is
+corrected.
 
 1. The whitespace beside a mark is the whitespace that Prettier prints beside
    the same kind of mark. The formatter is a plugin of Prettier, and a diagram
@@ -24,10 +31,10 @@ the output would follow whoever wrote the printer.
 3. A spelling takes the form that the examples in the documentation of
    mermaid.js use, which is the form that the author of a diagram knows.
 
-The whitespace of Prettier comes before the form of the documentation.
-Whitespace that Prettier prints is not left out because the documentation writes
-a text without it: the documentation writes an argument of a C4 diagram as
-`$link="x"`, and the formatter prints `$link = "x"`.
+Reading well comes before writing as the documentation of mermaid.js writes.
+Whitespace that makes a text easier to read is not left out because the
+documentation writes the text without it: the documentation writes an argument
+of a C4 diagram as `$link="x"`, and the formatter prints `$link = "x"`.
 
 ## 1. The whitespace beside a mark
 
@@ -201,9 +208,9 @@ examples use none, the spelling is kept as written.
 
 ## 4. Where none of these rules gives a form
 
-Where none of these rules gives a form, the output of the released version is
-not changed on a judgment of which form reads better. A form that these rules do
-not give is printed only after it has been decided and added to these rules.
+Where none of these rules gives a form, no rule says yet which form reads best.
+The output of the released version is then not changed on one judgment alone:
+the form is decided, added to these rules, and printed after that.
 
 ## The versions of mermaid.js that count
 
