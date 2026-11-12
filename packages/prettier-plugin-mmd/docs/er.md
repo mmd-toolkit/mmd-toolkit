@@ -616,9 +616,14 @@ erDiagram
 
 A relationship has one space between the left entity and the relationship,
 between the relationship and the right entity, and on each side of the `:` of
-its role, however it was written: this is the form of the documentation of
-mermaid.js, and the role may be a name, a string, or a quoted name alike.
-[fixture: relationship-spacing/around-units-and-role] [fixture:
+its role, however it was written. The colon can be read as a mark that stands
+between the relationship and its role, so the whitespace before it is the one
+that the examples in the documentation of mermaid.js write at least twice as
+often as any other: 40 relationship lines with a space after the colon have a
+space before it, and none touches the entity (counted as under
+[the examples that decide the whitespace before a colon](./compatibility.md#the-examples-that-decide-the-whitespace-before-a-colon)).
+The role may be a name, a string, or a quoted name alike. [fixture:
+relationship-spacing/around-units-and-role] [fixture:
 relationship-spacing/names-and-classes] [fixture:
 relationship-spacing/role-forms] [corpus fixture: er/lex-relationship-no-spaces]
 [corpus fixture: er/lex-colon-no-space] The first class of an entity touches its

@@ -101,8 +101,10 @@ Each statement stands on a line of its own. Nothing separates statements in a
 timeline (diagrams/timeline.md, Diagram and statements), and the header and an
 `accDescr` block are followed on their line by the next statement: the statement
 after either of them goes to a line of its own. The direction of the header
-stays on its line. [fixture: statements-one-per-line/header-then-title]
-[fixture: statements-one-per-line/header-then-period] [fixture:
+stays on its line, and so does the text after it (see
+[Header and direction](#header-and-direction)). [fixture:
+statements-one-per-line/header-then-title] [fixture:
+statements-one-per-line/header-then-period] [fixture:
 statements-one-per-line/header-then-section] [fixture:
 statements-one-per-line/header-direction-then-title] [fixture:
 statements-one-per-line/description-block-then-period] [fixture:
@@ -161,8 +163,7 @@ Output
 ([statements-one-per-line/header-direction-then-title-output.mmd](../tests/fixtures/timeline/statements-one-per-line/header-direction-then-title-output.mmd)):
 
 ```mmd
-timeline TD
-  title T
+timeline TD title T
 ```
 
 Input
@@ -302,19 +303,20 @@ that aligns the colons of a timeline stays; `a : e   ` at the end of a line is
 printed `a : e`, and `c : g   : h` stays as written. A colon that follows a text
 without whitespace at its end gets one space before it, as the examples in the
 documentation of mermaid.js write every colon after a text (88 of them have a
-space before them, and none touches the text): `2004: Facebook: Google` is
-printed `2004 : Facebook : Google`. A colon that no whitespace follows is a
-character of the text and stays where it is. After a period that is the word
-`title` or `section`, in any case, the colon keeps touching it, since the lexer
-reads `title` and whitespace as the keyword of a title: `title: x` is a period
-with the event `x`, and `title : x` is a title with the text `: x`. A directive
-between the text and the colon keeps the gap as written (see
-[Directives](#directives)). An event that a line break separates from the next
-colon ends its line too: in `2020 : e1  ` followed by a line `: e2`, the
-whitespace after `e1` is left out. The directives that end such an event are
-printed with one space before each that has whitespace before it, and the
-whitespace after the last one is left out: `2020 : e1   %%{x}%%  ` is printed
-`2020 : e1 %%{x}%%` (see
+space before them, and none touches the text; counted as under
+[the examples that decide the whitespace before a colon](./compatibility.md#the-examples-that-decide-the-whitespace-before-a-colon)):
+`2004: Facebook: Google` is printed `2004 : Facebook : Google`. A colon that no
+whitespace follows is a character of the text and stays where it is. After a
+period that is the word `title` or `section`, in any case, the colon keeps
+touching it, since the lexer reads `title` and whitespace as the keyword of a
+title: `title: x` is a period with the event `x`, and `title : x` is a title
+with the text `: x`. A directive between the text and the colon keeps the gap as
+written (see [Directives](#directives)). An event that a line break separates
+from the next colon ends its line too: in `2020 : e1  ` followed by a line
+`: e2`, the whitespace after `e1` is left out. The directives that end such an
+event are printed with one space before each that has whitespace before it, and
+the whitespace after the last one is left out: `2020 : e1   %%{x}%%  ` is
+printed `2020 : e1 %%{x}%%` (see
 [Texts after a keyword that are drawn the same](./compatibility.md#texts-after-a-keyword-that-are-drawn-the-same)).
 [fixture: periods-and-events/event-trailing-directive-blanks-dropped] [fixture:
 periods-and-events/event-two-directives-trailing-blanks-dropped] [fixture:
@@ -608,8 +610,13 @@ printed after the keyword on one line; a comment line between them makes the
 statement printed as written (see
 [Multi-line statements](#multi-line-statements)). [fixture:
 titles-and-sections/value-on-next-line] [fixture:
-titles-and-sections/comment-line-inside-kept] The value holds `:`, `#`, `%`, and
-`%%` as characters, except that the name of a section ends at a `:`, which
+titles-and-sections/comment-line-inside-kept] A title whose value starts with a
+`#` on a later line than the keyword stays as written: 10.9.8 reads `title`, a
+line break, and `# c` as a title of whitespace only and a comment, and
+`title # c` as the period `title` and a comment, while the other nine versions
+that count read both as the title `# c` (drawn the same). [fixture:
+titles-and-sections/title-hash-on-next-line-kept] The value holds `:`, `#`, `%`,
+and `%%` as characters, except that the name of a section ends at a `:`, which
 starts an event. [fixture: titles-and-sections/special-characters-in-values]
 [fixture: titles-and-sections/section-ends-at-colon] A directive between the
 keyword and the value stays where it is (see [Directives](#directives)).
@@ -689,17 +696,33 @@ timeline
 ### Header and direction
 
 The header may carry a direction, `LR` or `TD` in any case, after whitespace on
-its line. It is printed on the line of the header after one space, `td` as `TD`,
-as the examples in the documentation of mermaid.js write it (see
-[Spellings that are drawn the same](./compatibility.md#spellings-that-are-drawn-the-same)),
-and `lr` in the case in which it was written; the Db reads it in upper case. The
-space is the one of the whitespace between tokens (see
+its line. It is printed on the line of the header after one space, in the case
+in which it was written; the Db reads it in upper case. The space is the one of
+the whitespace between tokens (see
 [Whitespace between tokens](#whitespace-between-tokens)). [fixture:
 header-and-direction/direction-kept] [fixture:
 header-and-direction/direction-case-kept] [fixture:
-header-and-direction/spaces-before-the-direction] A second word is a period and
-goes to a line of its own, and so is a direction on a line of its own. [fixture:
-header-and-direction/second-word-is-a-period] [fixture:
+header-and-direction/spaces-before-the-direction]
+
+The direction is read from 11.14.0 on. 10.9.8, 11.7.0, 11.8.1, and 11.13.0, the
+versions that count (see
+[Versions of mermaid.js that count](./compatibility.md#versions-of-mermaidjs-that-count))
+that are before it, read the words after `timeline` as the text of a period. So
+`timeline td` and `timeline TD` are periods that differ by their case there, and
+`td` is not printed `TD`, though the examples in the documentation of mermaid.js
+write `TD`. The text that follows a direction stays on the line of the header,
+after its gap as written: `timeline TD title T` is one period in those versions,
+and `timeline TD` followed by a line `title T` is a period and a title, and
+likewise `timeline TD LR` (a direction and the period `LR`) and
+`timeline LR 2004 : a`. A text after the header without a direction goes to a
+line of its own (`timeline History` is printed with `History` below the header),
+which the ten versions draw the same. A period that stays on the line of the
+header has its later events at the ordinary continuation indentation, since its
+colon is not at the column of a period on a line of its own. A direction on a
+line of its own is a period. [fixture:
+header-and-direction/second-word-stays-on-the-header-line] [fixture:
+header-and-direction/direction-then-period-stays] [fixture:
+header-and-direction/text-after-the-header-without-direction-moves] [fixture:
 header-and-direction/direction-on-its-own-line-is-a-period]
 
 A comment after the direction stays on the line (see [Comments](#comments)), and
@@ -711,7 +734,7 @@ header-and-direction/directive-after-the-direction] [fixture:
 header-and-direction/trailing-whitespace-dropped]
 
 Input
-([header-and-direction/second-word-is-a-period-input.mmd](../tests/fixtures/timeline/header-and-direction/second-word-is-a-period-input.mmd)):
+([header-and-direction/second-word-stays-on-the-header-line-input.mmd](../tests/fixtures/timeline/header-and-direction/second-word-stays-on-the-header-line-input.mmd)):
 
 ```mmd
 timeline TD LR
@@ -719,11 +742,10 @@ title T
 ```
 
 Output
-([header-and-direction/second-word-is-a-period-output.mmd](../tests/fixtures/timeline/header-and-direction/second-word-is-a-period-output.mmd)):
+([header-and-direction/second-word-stays-on-the-header-line-output.mmd](../tests/fixtures/timeline/header-and-direction/second-word-stays-on-the-header-line-output.mmd)):
 
 ```mmd
-timeline TD
-  LR
+timeline TD LR
   title T
 ```
 

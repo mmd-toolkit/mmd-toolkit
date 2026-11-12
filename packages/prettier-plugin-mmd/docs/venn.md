@@ -554,14 +554,20 @@ venn-beta
 
 The colon of a size, in a `set` and in a `union`, has one space on each side:
 `set A["Alpha"]:20` is printed `set A["Alpha"] : 20`, and `union A,B["AB"]:3` is
-printed `union A, B["AB"] : 3`. The size is an addition to the declaration,
-which can be left out, and it is the size of the declaration and not of the name
-before the colon, which a colon against that name would suggest in a `union`. So
-the colon is a mark that stands between the declaration and its size, and
-Prettier prints one space on each side of such a mark. [fixture:
-sizes-and-numbers/colon-of-a-size] [fixture:
-sizes-and-numbers/colon-of-a-size-directive] A size that is a plain decimal is
-printed in the shortest form (`+5` is `5`, `-.5` is `-0.5`; see
+printed `union A, B["AB"] : 3`. The colon can be read as a mark that stands
+between the declaration and its size, so the examples in the documentation of
+mermaid.js that write a space after the colon decide the whitespace before it
+(counted as under
+[the examples that decide the whitespace before a colon](./compatibility.md#the-examples-that-decide-the-whitespace-before-a-colon)),
+and there is none: the 6 sizes of the examples (`set A["Alpha"]:20`) have no
+whitespace on either side, which is a way of writing that differs from every
+printed form, so they do not count. The colon is then a mark that stands between
+two things, and Prettier prints one space on each side of such a mark. The size
+is an addition to the declaration, which can be left out, and it is the size of
+the declaration and not of the name before the colon, which a colon against that
+name would suggest in a `union`. [fixture: sizes-and-numbers/colon-of-a-size]
+[fixture: sizes-and-numbers/colon-of-a-size-directive] A size that is a plain
+decimal is printed in the shortest form (`+5` is `5`, `-.5` is `-0.5`; see
 [Spellings that are drawn the same](./compatibility.md#spellings-that-are-drawn-the-same)).
 A zero at the start of the integer part, signed zero and overflow retain their
 spelling; numeric text ids also retain their spelling because rewriting them

@@ -11,11 +11,11 @@ does not hold, and why.
 
 A formatted text is also drawn by versions of mermaid.js other than the pinned
 one, so the forms that the formatter prints are checked against the versions
-that count, defined by the formatting rules in AGENTS.md (item 4): the versions
-published in the 18 months before the pinned version was published; of each
-major version, the smallest and the largest minor version among them, and of a
-diagram type that was added in that time, the first minor version that has it,
-each at its latest patch. The pinned version, 12.3.0, was published on
+that count, defined by [How the printed form is decided](./printed-form.md): the
+versions published in the 18 months before the pinned version was published; of
+each major version, the smallest and the largest minor version among them, and
+of a diagram type that was added in that time, the first minor version that has
+it, each at its latest patch. The pinned version, 12.3.0, was published on
 2026-11-03, so the period starts on 2025-05-03. The ten versions are these:
 
 | Version | Published  | Why it counts                                                                            |
@@ -51,11 +51,11 @@ half year. When the pinned version is raised, the period and the list are
 computed again from the publication date of the new pinned version, with the
 versions of npm.
 
-The three examples that AGENTS.md gives of a spelling kept as written because
-versions disagree hold for these versions: `block` is rejected by 10.9.8,
-11.7.0, and 11.8.1, which read `block-beta` only; a label whose first word has a
-`@` is rejected by the versions from 11.7.0 to 12.0.0 without the space after
-the `[` (see
+The three examples that [How the printed form is decided](./printed-form.md)
+gives of a spelling kept as written because versions disagree hold for these
+versions: `block` is rejected by 10.9.8, 11.7.0, and 11.8.1, which read
+`block-beta` only; a label whose first word has a `@` is rejected by the
+versions from 11.7.0 to 12.0.0 without the space after the `[` (see
 [Whitespace at the start of a label](#whitespace-at-the-start-of-a-label)); and
 `TB` and `TD` are drawn differently by 10.9.8, 11.7.0, and 11.8.1 in a flowchart
 with a subgraph.
@@ -1498,6 +1498,50 @@ and a name of a box that differs in its commas, fails. When the pinned
 mermaid.js is updated, draw both texts of each place again and compare the SVG
 and the pixels before the exception stays.
 
+## The examples that decide the whitespace before a colon
+
+A colon that can also be read as a mark that stands between two things has the
+whitespace before it that the examples in the documentation of the pinned
+mermaid.js write at least twice as often as any other (see
+[Which kind a colon is](./printed-form.md#which-kind-a-colon-is)). All these
+examples are counted in one way. The page is the syntax page of the diagram type
+(`packages/mermaid/src/docs/syntax/<page>.md`), and the blocks are its fenced
+`mermaid-example` blocks; the `mermaid` blocks of the generated copy under
+`docs/syntax/` repeat them. The frontmatter of a block, the comment lines, and
+the directive lines are left out. Of the lines of the kind in question, a line
+is counted when a space or a tab follows the colon, and it is counted by whether
+a space or a tab stands before the colon. A line with no whitespace after the
+colon is not counted, and neither is one with no whitespace on either side, such
+as the `set A:3` of a Venn diagram, which is a way of writing that differs from
+every printed form. A colon at the start of its line has nothing before it (4 in
+the timeline page).
+
+| Line                                           | Page                           | Space before | No space before | Not counted |
+| ---------------------------------------------- | ------------------------------ | -----------: | --------------: | ----------: |
+| The description of a state                     | `stateDiagram.md`              |            1 |               4 |           0 |
+| The label of a transition between states       | `stateDiagram.md`              |           13 |               2 |           0 |
+| The label of a relationship of an ER diagram   | `entityRelationshipDiagram.md` |           40 |               0 |           0 |
+| The label of a relation between classes        | `classDiagram.md`              |           26 |               0 |           0 |
+| A member that a line adds to a class           | `classDiagram.md`              |           16 |               2 |           0 |
+| The text of a message of a sequence diagram    | `sequenceDiagram.md`           |            0 |             107 |           0 |
+| The data of a task of a Gantt chart            | `gantt.md`                     |           22 |               0 |          28 |
+| A colon between a period and its events        | `timeline.md`                  |           88 |               0 |           0 |
+| The size of a set or a union of a Venn diagram | `venn.md`                      |            0 |               0 |           6 |
+
+The lines of a kind are these. A description of a state is `id: text` with no
+arrow, apart from `accTitle`, `accDescr`, and the `:::` that gives a class, and
+the label of a transition is the text after the colon that follows `-->`. The
+label of a relationship of an ER diagram follows the symbols of the
+relationship, and the label of a relation between classes follows the relation.
+A member line is `Name : member` with no relation on the line, where the name
+starts with a letter or `_`. A message of a sequence diagram is the text after
+the colon that follows the arrow of a message. A task of a Gantt chart is any
+line that is none of the statements of the diagram (`title`, `dateFormat`,
+`section`, and the others); the 28 not counted write the data against the colon
+(`Task :a1, 2014-01-01, 3d`). The colons of a timeline are those of the lines
+that are no `title`, `section`, or accessibility line. A Venn size is the last
+colon of a `set` or `union` line.
+
 ## Lists separated by commas
 
 Prettier prints one space after a comma, and none before it. The formatter
@@ -2626,15 +2670,15 @@ space, and `accTitle`, is drawn the same with and without quotes by the versions
 that count, in a shape, between `|`, between two arrows, and as the title of a
 subgraph, so it loses its quotes like any other text, except where it holds a
 `--` between the arrows of a solid link or a `.` between those of a dotted link
-(`A -- a---b --> B` is read as the arrows `--` and `-->` around `a`, `b`, and
-`B`, and `A -- "a---b" --> B` as one link). Any other text stays as written: a
-markdown string, a text that starts with `_`, a `/`, a `\`, a `-`, or a space, a
-text with a bracket, a `|`, a `&`, a `"`, a `;`, a `#`, a `%`, or a `<`, a text
-that ends with a space, and a label on a line that is kept whole. In an
-agentflow diagram a label also stays as written where it is the first unit of
-its line, as after a comment line, a directive on a line of its own, or a U+2028
-or U+2029, since mermaid.js rejects a string there. The label of a link that the
-printer writes in the other form (see
+(`A -- a---b --> B` is read as an open link from `A` to `b` with the label `a`
+and a link from `b` to `B`, and `A -- "a---b" --> B` as one link). Any other
+text stays as written: a markdown string, a text that starts with `_`, a `/`, a
+`\`, a `-`, or a space, a text with a bracket, a `|`, a `&`, a `"`, a `;`, a
+`#`, a `%`, or a `<`, a text that ends with a space, and a label on a line that
+is kept whole. In an agentflow diagram a label also stays as written where it is
+the first unit of its line, as after a comment line, a directive on a line of
+its own, or a U+2028 or U+2029, since mermaid.js rejects a string there. The
+label of a link that the printer writes in the other form (see
 [The label of a link](#the-label-of-a-link)) is written without quotes in that
 form. [fixture: flowchart/quotes/shape-labels-without-quotes] [fixture:
 flowchart/quotes/link-labels-without-quotes] [fixture:
@@ -3923,6 +3967,46 @@ immediately after LF, which the Db setter discards. Its text, line breaks,
 trailing whitespace and directive contents remain as written. [fixture:
 timeline/multi-line-values/description-line-ending-whitespace] [fixture:
 timeline/multi-line-values/description-directive-lines]
+
+## Timeline texts that the versions read differently
+
+Of the versions that count (see
+[Versions of mermaid.js that count](#versions-of-mermaidjs-that-count)), 10.9.8,
+11.7.0, 11.8.1, and 11.13.0 have no direction in the header of a timeline: they
+read the words after `timeline` as the text of a period, and 11.14.0 and the
+later versions read `LR` or `TD` as the direction. 10.9.8 also draws a title
+that starts with a `#` differently from the later versions (see the last case).
+Both texts of each case below were drawn with the ten versions, and a form that
+one of them draws differently is kept as written. See
+[Header and direction](./timeline.md#header-and-direction) and
+[Titles and sections](./timeline.md#titles-and-sections).
+
+- The case of the direction. `timeline td` and `timeline TD` followed by a line
+  `2004 : a` or `title T` were drawn the same by the six versions from 11.14.0
+  and differently by the four others, which draw the period `td` and the period
+  `TD`. So `td` is not printed `TD`, though the examples in the documentation of
+  mermaid.js write `TD`. [fixture: timeline/header-and-direction/direction-kept]
+  [fixture: timeline/header-and-direction/direction-case-kept] [fixture:
+  timeline/header-and-direction/spaces-before-the-direction]
+- The text after a direction on the line of the header. `timeline TD title T`
+  against `timeline TD` and a line `title T`, `timeline TD LR` against `TD` and
+  `LR` on lines of their own, and `timeline LR 2004 : a` against the period on a
+  line of its own were drawn the same by the six versions from 11.14.0 and
+  differently by the four others (one period against a period and a statement).
+  So the text after a direction stays on the line of the header. Without a
+  direction (`timeline History`, `timeline title T`, `timeline 2004 : a`) the
+  text on the line of the header and on a line of its own were drawn the same by
+  all ten versions, and the text goes to a line of its own. [fixture:
+  timeline/header-and-direction/second-word-stays-on-the-header-line] [fixture:
+  timeline/header-and-direction/direction-then-period-stays] [fixture:
+  timeline/statements-one-per-line/header-direction-then-title] [fixture:
+  timeline/header-and-direction/text-after-the-header-without-direction-moves]
+- A title whose text starts with a `#` on a later line than its keyword.
+  `title`, a line break, and `  # c`, against `title # c` on one line, were
+  drawn the same by the nine versions from 11.7.0, which draw the title `# c`
+  for both, and differently by 10.9.8, which draws no title text for the first
+  and the period `title` for the second. So the title stays as written.
+  [fixture: timeline/titles-and-sections/title-hash-on-next-line-kept]
 
 ## Sankey lines that the characters or the quotes decide
 

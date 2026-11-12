@@ -107,7 +107,8 @@ timeline では文を区切るものがなく（diagrams/timeline.md、
 Diagram and statements）、ヘッダーと `accDescr` ブロックの後ろには、
 同じ行に次の文が続けられます。
 どちらの後ろの文も、自分の行に移します。
-ヘッダーの方向は、ヘッダーの行に残します。
+ヘッダーの方向と、その後ろのテキストは、
+ヘッダーの行に残します（[ヘッダーと方向](#ヘッダーと方向)を参照）。
 [fixture: statements-one-per-line/header-then-title]
 [fixture: statements-one-per-line/header-then-period]
 [fixture: statements-one-per-line/header-then-section]
@@ -171,8 +172,7 @@ timeline TD title T
 ([statements-one-per-line/header-direction-then-title-output.mmd](../tests/fixtures/timeline/statements-one-per-line/header-direction-then-title-output.mmd)):
 
 ```mmd
-timeline TD
-  title T
+timeline TD title T
 ```
 
 入力
@@ -314,6 +314,9 @@ event の `:` の後ろの 1 文字を除いた両端の空白を、値として
 mermaid.js の文書の例は、
 テキストの後の `:` をすべてこう書きます（88 個が前に空白を置き、
 テキストに接するものはありません）。
+数え方は
+[コロンの前の空白を決める例](./compatibility.ja.md#コロンの前の空白を決める例)
+を参照してください。
 `2004: Facebook: Google` は `2004 : Facebook : Google` と印字します。
 後ろに空白がない `:` はテキストの文字なので、そのままにします。
 period が `title` か `section` の語（大文字小文字は問いません）のときは、
@@ -634,6 +637,11 @@ Db はその空白を持ちますが、図では描かれません。
 その文を書かれたまま印字します（[複数行の文](#複数行の文)を参照）。
 [fixture: titles-and-sections/value-on-next-line]
 [fixture: titles-and-sections/comment-line-inside-kept]
+キーワードより後ろの行にある値が `#` で始まる title は、書かれたままにします。
+10.9.8 は、`title`、改行、`# c` を、空白だけの title とコメントとして読み、
+`title # c` を、period `title` とコメントとして読みますが、
+対象にする残りの 9 版は、どちらも title `# c` として読み、同じに描くためです。
+[fixture: titles-and-sections/title-hash-on-next-line-kept]
 値は `:`、`#`、`%`、`%%` を文字として持ちます。
 ただし section の名前は `:` で終わり、その `:` は event を始めます。
 [fixture: titles-and-sections/special-characters-in-values]
@@ -717,19 +725,37 @@ timeline
 
 ヘッダーには、同じ行の空白の後ろに、
 方向 `LR` か `TD` を書けます（大文字小文字は問いません）。
-方向は、ヘッダーの行に空白 1 つの後ろに印字します。
-`td` は、mermaid.js の文書の例のとおり、`TD` と印字します。
-（[同じに描かれる綴り](./compatibility.ja.md#同じに描かれる綴り)）。
-`lr` は、書かれた大文字小文字のまま印字します。
+方向は、ヘッダーの行に空白 1 つの後ろに、書かれた大文字小文字のまま印字します。
 Db は大文字にして読みます。
 空白 1 つは、
 トークンの間の空白（[トークンの間の空白](#トークンの間の空白)）と同じです。
 [fixture: header-and-direction/direction-kept]
 [fixture: header-and-direction/direction-case-kept]
 [fixture: header-and-direction/spaces-before-the-direction]
-2 つ目の語は period なので、自分の行に移します。
-自分の行にある方向も period です。
-[fixture: header-and-direction/second-word-is-a-period]
+
+方向を読むのは 11.14.0 以降です。
+それより前の、対象にする 10.9.8、11.7.0、11.8.1、11.13.0 は、
+`timeline` の後ろの語を period のテキストとして読みます。
+詳しくは
+[対象にする mermaid.js の版](./compatibility.ja.md#対象にする-mermaidjs-の版)
+を参照してください。
+そのため `timeline td` と `timeline TD` は、
+これらの版では大文字小文字だけが違う period で、`td` は `TD` と印字しません。
+mermaid.js の文書の例は `TD` と書きます。
+方向の後ろのテキストは、書かれたままの隙間を置いて、ヘッダーの行に残します。
+`timeline TD title T` は、これらの版では 1 つの period で、
+`timeline TD` の次の行が `title T` の形は、period と title だからです。
+`timeline TD LR`（方向と period `LR`）と `timeline LR 2004 : a` も同じです。
+方向のないヘッダーの後ろのテキストは、
+自分の行に移します（`timeline History` は、
+`History` をヘッダーの下に置きます）。
+10 版は、どちらの形も同じに描きます。
+ヘッダーの行に残る period は、`:` が自分の行にある period の桁にないので、
+後ろの event は通常の続きの字下げに置きます。
+自分の行にある方向は period です。
+[fixture: header-and-direction/second-word-stays-on-the-header-line]
+[fixture: header-and-direction/direction-then-period-stays]
+[fixture: header-and-direction/text-after-the-header-without-direction-moves]
 [fixture: header-and-direction/direction-on-its-own-line-is-a-period]
 
 方向の後ろのコメントは行に残します（[コメント](#コメント)を参照）。
@@ -741,7 +767,7 @@ Db は大文字にして読みます。
 [fixture: header-and-direction/trailing-whitespace-dropped]
 
 入力
-([header-and-direction/second-word-is-a-period-input.mmd](../tests/fixtures/timeline/header-and-direction/second-word-is-a-period-input.mmd)):
+([header-and-direction/second-word-stays-on-the-header-line-input.mmd](../tests/fixtures/timeline/header-and-direction/second-word-stays-on-the-header-line-input.mmd)):
 
 ```mmd
 timeline TD LR
@@ -749,11 +775,10 @@ title T
 ```
 
 出力
-([header-and-direction/second-word-is-a-period-output.mmd](../tests/fixtures/timeline/header-and-direction/second-word-is-a-period-output.mmd)):
+([header-and-direction/second-word-stays-on-the-header-line-output.mmd](../tests/fixtures/timeline/header-and-direction/second-word-stays-on-the-header-line-output.mmd)):
 
 ```mmd
-timeline TD
-  LR
+timeline TD LR
   title T
 ```
 

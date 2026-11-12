@@ -12,7 +12,7 @@ mermaid.js が拒否するテキストは変えません。
 
 整形したテキストは、固定した版以外の mermaid.js でも描かれます。
 そのため、整形ツールが印字する形は、対象にする版で確かめます。
-対象にする版は、AGENTS.md の 4 の整形の決まりが定めます。
+対象にする版は、[印字する形の決め方](./printed-form.ja.md)が定めます。
 固定した版が公開された日の 18 か月前から公開された版のうち、
 メジャー版ごとに最小と最大のマイナー版、その期間に加わった図の種類ごとに、
 その図を持つ最初のマイナー版を、それぞれの最新のパッチ版で取ります。
@@ -55,7 +55,8 @@ agentflow とユースケース図は 12.0.0 から読まれます。
 固定した版を上げるときは、新しい固定した版の公開日から期間と一覧を、
 npm の版をもとに計算し直します。
 
-AGENTS.md が、版が食い違うために書かれたまま残す綴りの例として挙げる 3 つは、
+[印字する形の決め方](./printed-form.ja.md)が、
+版が食い違うために書かれたまま残す綴りの例として挙げる 3 つは、
 どれもこの版で成り立ちます。
 `block` は 10.9.8、11.7.0、11.8.1 が拒否します（`block-beta` だけを読みます）。
 最初の語に `@` を含むラベルは、`[` の後の空白がないと、
@@ -1615,6 +1616,52 @@ Venn 図のスタイルのプロパティの値で、書かれたものを採り
 固定している mermaid.js の版を上げるときは、各場所の両方のテキストを描き直し、
 SVG と画素を比べてから、例外を残します。
 
+## コロンの前の空白を決める例
+
+2 つのものの間に置く記号とも読めるコロンの前の空白は、
+固定した mermaid.js の文書の例が 2 倍以上書く形で決めます。
+詳しくは
+[コロンがどの種類かの決め方](./printed-form.ja.md#コロンがどの種類かの決め方)
+を参照してください。
+これらの例は、すべて同じ方法で数えます。
+ページは、
+その図の種類の構文のページ（`packages/mermaid/src/docs/syntax/<ページ>.md`）で、
+ブロックは、そのページの `mermaid-example` のブロックです。
+`docs/syntax/` に生成される写しの `mermaid` のブロックは、それを繰り返します。
+ブロックの frontmatter と、コメントの行、ディレクティブの行は数えません。
+その種類の行のうち、コロンの後に空白かタブがある行を数え、
+コロンの前に空白かタブがあるかどうかで分けます。
+コロンの後に空白がない行と、両側に空白がない行（Venn 図の `set A:3` のような、
+どの印字する形とも違う書き方）は数えません。
+行頭のコロンには前がありません（timeline のページに 4 件あります）。
+
+| 行                                | ページ                         | 前に空白 | 前に空白なし | 数えない |
+| --------------------------------- | ------------------------------ | -------: | -----------: | -------: |
+| state の説明                      | `stateDiagram.md`              |        1 |            4 |        0 |
+| state の遷移のラベル              | `stateDiagram.md`              |       13 |            2 |        0 |
+| ER 図の関係のラベル               | `entityRelationshipDiagram.md` |       40 |            0 |        0 |
+| class の関係のラベル              | `classDiagram.md`              |       26 |            0 |        0 |
+| 行が class に足すメンバー         | `classDiagram.md`              |       16 |            2 |        0 |
+| sequence 図のメッセージのテキスト | `sequenceDiagram.md`           |        0 |          107 |        0 |
+| Gantt 図のタスクのデータ          | `gantt.md`                     |       22 |            0 |       28 |
+| period とその event の間のコロン  | `timeline.md`                  |       88 |            0 |        0 |
+| Venn 図の set と union の大きさ   | `venn.md`                      |        0 |            0 |        6 |
+
+各種類の行は次のとおりです。
+state の説明は、矢印がなく、`accTitle`、`accDescr`、
+クラスを与える `:::` を除く `id: text` です。
+遷移のラベルは、`-->` に続くコロンの後のテキストです。
+ER 図の関係のラベルは関係の記号の後ろ、
+class の関係のラベルは関係の後ろにあります。
+メンバーの行は、行に関係がなく、名前が英字か `_` で始まる `Name : member` です。
+sequence 図のメッセージは、メッセージの矢印に続くコロンの後のテキストです。
+Gantt 図のタスクは、その図の文（`title`、`dateFormat`、
+`section` など）のどれでもない行です。
+数えない 28 件は、データがコロンに接しています（`Task :a1, 2014-01-01, 3d`）。
+timeline のコロンは、`title`、`section`、
+アクセシビリティの行でない行のものです。
+Venn の大きさは、`set` か `union` の行の最後のコロンです。
+
 ## コンマで区切る一覧
 
 Prettier は、コンマの後ろに空白を 1 つ置き、前には置きません。
@@ -2841,7 +2888,8 @@ agentflow 図のどれでも引用符を残します。
 これらのテキストを引用符の有無によらず同じに描きます。
 ただし、実線のリンクの矢印の間にある `--` と、
 点線のリンクの矢印の間にある `.` は除きます。
-`A -- a---b --> B` は、`a`、`b`、`B` を挟む矢印 `--` と `-->` として読まれ、
+`A -- a---b --> B` は、`A` から `b` へのラベル `a` つきの開いたリンクと、
+`b` から `B` へのリンクとして読まれ、
 `A -- "a---b" --> B` は 1 本のリンクとして読まれます。
 ほかのテキストは、書かれたまま残します。
 markdown 文字列、`_`、`/`、`\`、`-`、空白で始まるテキスト、括弧、`|`、`&`、`"`、
@@ -4223,6 +4271,52 @@ Db の setter が捨てる LF 直後の空白とタブだけを置き換えて�
 テキスト、改行、行末の空白、指令の内容は書かれたまま残します。
 [fixture: timeline/multi-line-values/description-line-ending-whitespace]
 [fixture: timeline/multi-line-values/description-directive-lines]
+
+## 版によって読み方が違う timeline のテキスト
+
+対象にする版のうち、10.9.8、11.7.0、11.8.1、11.13.0 は、
+timeline のヘッダーに方向がなく、
+`timeline` の後ろの語を period のテキストとして読みます。
+11.14.0 以降の版は、`LR` か `TD` を方向として読みます。
+10.9.8 は、`#` で始まる title も、後の版と違って描きます（最後の場合を参照）。
+以下の場合は、どれも両方のテキストを 10 版で描き、1 つの版でも違って描く形は、
+書かれたままにします。
+対象にする版は、
+[対象にする mermaid.js の版](#対象にする-mermaidjs-の版) のとおりです。
+詳しくは [ヘッダーと方向](./timeline.ja.md#ヘッダーと方向) と
+[title と section](./timeline.ja.md#title-と-section) を参照してください。
+
+- 方向の大文字小文字。
+  `timeline td` と `timeline TD` の次の行に `2004 : a` や `title T` が続く形は、
+  11.14.0 以降の 6 版では同じに描かれ、
+  残りの 4 版では違って描かれます（period `td` と period `TD` を描きます）。
+  そのため、mermaid.js の文書の例は `TD` と書きますが、
+  `td` は `TD` と印字しません。
+  [fixture: timeline/header-and-direction/direction-kept]
+  [fixture: timeline/header-and-direction/direction-case-kept]
+  [fixture: timeline/header-and-direction/spaces-before-the-direction]
+- ヘッダーの行で方向の後ろにあるテキスト。
+  `timeline TD title T` と、`timeline TD` の次の行が `title T` の形、
+  `timeline TD LR` と、`TD` と `LR` を別の行に置く形、
+  `timeline LR 2004 : a` と、period を自分の行に置く形は、
+  11.14.0 以降の 6 版では同じに描かれ、
+  残りの 4 版では違って描かれます（1 つの period と、period と文です）。
+  そのため、方向の後ろのテキストは、ヘッダーの行に残します。
+  方向がない場合（`timeline History`、`timeline title T`、
+  `timeline 2004 : a`）は、
+  ヘッダーの行にあるテキストと自分の行にあるテキストを、
+  10 版すべてが同じに描くので、テキストは自分の行に移します。
+  [fixture: timeline/header-and-direction/second-word-stays-on-the-header-line]
+  [fixture: timeline/header-and-direction/direction-then-period-stays]
+  [fixture: timeline/statements-one-per-line/header-direction-then-title]
+  [fixture: timeline/header-and-direction/text-after-the-header-without-direction-moves]
+- キーワードより後ろの行に、`#` で始まるテキストを持つ title。
+  `title`、改行、`  # c` の形と、1 行の `title # c` の形は、
+  11.7.0 以降の 9 版では同じに描かれ（どちらも title `# c` を描きます）、
+  10.9.8 では違って描かれます（前者はタイトルのテキストを描かず、
+  後者は period `title` を描きます）。
+  そのため、この title は書かれたままにします。
+  [fixture: timeline/titles-and-sections/title-hash-on-next-line-kept]
 
 ## 文字や引用符で決まる sankey の行
 

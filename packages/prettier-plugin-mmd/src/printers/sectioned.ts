@@ -56,6 +56,12 @@ export interface SectionedDiagram<Statement extends Node> {
    * is.
    */
   readonly readsDirectiveLineWhitespaceAfter?: (statement: Statement) => boolean
+  /**
+   * Whether a statement stays on the line of the header, after its gap as
+   * written, instead of going to a line of its own (see
+   * `BlockRules.writtenGapBefore`). Without it, none does.
+   */
+  readonly staysOnHeaderLine?: (source: Source, statement: Statement) => boolean
 }
 
 /**
@@ -192,6 +198,8 @@ function statementBlockRules<Statement extends Node>(
       deeper.has(statement) ? indentationOf(options, 1) : "",
     readsDirectiveLineWhitespaceAfter:
       diagram.readsDirectiveLineWhitespaceAfter,
+    writtenGapBefore: (statement) =>
+      diagram.staysOnHeaderLine?.(source, statement) === true,
     oneCharacterIndentation: diagram.readsCommentsByWhitespaceBefore
       ? options.useTabs
         ? "\t"

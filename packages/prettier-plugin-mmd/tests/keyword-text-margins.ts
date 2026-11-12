@@ -4,22 +4,24 @@ import { withoutBlanks } from "./db-values.ts"
 
 /**
  * The spaces and tabs of a text that mermaid.js keeps in the Db and draws
- * without, and that the formatter leaves out: at both ends, or at the end.
+ * without, and that the formatter leaves out: at both ends, or at the end; or
+ * one space that the formatter adds at the end of a text that has none.
  */
-type Ends = "both" | "end"
+type Ends = "both" | "end" | "space"
 
 /**
  * The keys of the Db that hold a text after a keyword, for each diagram type:
  * a title, and the date format and the axis format of a Gantt chart, whose
- * whitespace at both ends the formatter leaves out; the periods and events of a
- * timeline, whose whitespace at the end it leaves out at the end of a line and
- * adds before a colon, and the second description of a state, whose whitespace
- * at the end it leaves out, since the whitespace at their start is the padding
- * that aligns colons or is the text after a separator, and the name of a task
- * of a Gantt chart, whose whitespace at the end the formatter sets so that the
- * colons of the tasks of a section stand in one column. The name of a section is not one: two
- * sections that differ by their whitespace are two sections
- * (docs/compatibility.md, Texts after a keyword that are drawn the same).
+ * whitespace at both ends the formatter leaves out; the events of a timeline
+ * and the second description of a state, whose whitespace at the end it leaves
+ * out, since the whitespace at their start is the padding that aligns colons
+ * or is the text after a separator; the periods of a timeline, to which it adds
+ * one space at the end where there is none, before a colon; and the name of a
+ * task of a Gantt chart, whose whitespace at the end the formatter sets so that
+ * the colons of the tasks of a section stand in one column. The name of a
+ * section is not one: two sections that differ by their whitespace are two
+ * sections (docs/compatibility.md, Texts after a keyword that are drawn the
+ * same).
  */
 const keywordTextKeys: ReadonlyMap<string, ReadonlyMap<string, Ends>> = new Map(
   [
@@ -39,7 +41,7 @@ const keywordTextKeys: ReadonlyMap<string, ReadonlyMap<string, Ends>> = new Map(
       "timeline",
       new Map<string, Ends>([
         ["events", "end"],
-        ["task", "end"],
+        ["task", "space"],
         ["title", "both"],
       ]),
     ],
@@ -89,7 +91,11 @@ export function keywordTextDbForFormattingComparison(
     const same =
       ends === "both"
         ? withoutBlanks(written) === withoutBlanks(printed)
-        : withoutTrailingBlanks(written) === withoutTrailingBlanks(printed)
+        : ends === "end"
+          ? withoutTrailingBlanks(written) === withoutTrailingBlanks(printed)
+          : printed === written ||
+            (written === withoutTrailingBlanks(written) &&
+              printed === `${written} `)
     return same ? written : printed
   }) as DbSummary
 }

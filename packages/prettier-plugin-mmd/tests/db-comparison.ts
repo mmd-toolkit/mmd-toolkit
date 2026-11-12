@@ -38,7 +38,7 @@ import {
 /**
  * The Db of a formatted text with the differences restored that the formatter
  * is permitted to make, so that it can be compared with the Db of the written
- * text. The permitted differences are listed in AGENTS.md, item 4; each has
+ * text. The permitted differences are listed in docs/printed-form.md; each has
  * its own function, and a text is compared by the ones of its diagram type.
  */
 export function dbForFormattingComparison(

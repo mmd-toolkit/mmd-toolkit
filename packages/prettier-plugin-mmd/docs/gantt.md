@@ -299,18 +299,20 @@ A name that touches its colon is printed with one space before it: `Short:a1` is
 printed `Short : a1`. The colon of a task can also be read as a mark that stands
 between the name and the data, so the whitespace before it is the one that the
 examples in the documentation of mermaid.js write at least twice as often as any
-other: 54 task lines have whitespace before the colon, and none touches it. The
-space is set whether or not the printer lines up the colons of the section (see
-below). In a section whose colons it lines up, the name gets the space of its
-column, and in any other section one space, also in a section that is left as it
-is because its lines would be longer than `printWidth` or a name holds a tab:
-one space moves no other colon and depends on no width. A name that ends with a
-whitespace character other than a space and a tab, such as U+00A0, touches its
-colon too, and the space comes after that character. A task that follows a
-statement on its line, which the printer moves to a line of its own, gets the
-space, or the column of its section, like any other (`axisFormat %m #a: 1d` is
-printed on two lines, the second `#a : 1d`). [fixture:
-task-data/colon-touching-name-spaced] [fixture:
+other: of the task lines with a space after the colon, 22 have whitespace before
+it, and none touches the name (counted as under
+[the examples that decide the whitespace before a colon](./compatibility.md#the-examples-that-decide-the-whitespace-before-a-colon)).
+The space is set whether or not the printer lines up the colons of the section
+(see below). In a section whose colons it lines up, the name gets the space of
+its column, and in any other section one space, also in a section that is left
+as it is because its lines would be longer than `printWidth` or a name holds a
+tab: one space moves no other colon and depends on no width. A name that ends
+with a whitespace character other than a space and a tab, such as U+00A0,
+touches its colon too, and the space comes after that character. A task that
+follows a statement on its line, which the printer moves to a line of its own,
+gets the space, or the column of its section, like any other
+(`axisFormat %m #a: 1d` is printed on two lines, the second `#a : 1d`).
+[fixture: task-data/colon-touching-name-spaced] [fixture:
 task-data/colon-touching-name-aligned-with-padded] [fixture:
 task-data/colon-touching-name-too-wide-kept] [fixture:
 task-data/colon-touching-name-tab-in-name] [fixture:

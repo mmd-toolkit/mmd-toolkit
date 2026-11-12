@@ -753,9 +753,12 @@ sequenceDiagram
 The `:` before the text of a message, a note, and a `links`, `link`,
 `properties`, or `details` statement, and the `:` after `accTitle` and
 `accDescr`, touch what comes before them and have one space after them, as the
-documentation of mermaid.js writes a sequence diagram, also next to a directive,
-which is placed as under [Directives](#directives). [fixture: colons/spaced]
-[fixture: colons/other-statements-spaced] [fixture:
+documentation of mermaid.js writes a sequence diagram (of its messages with a
+space after the colon, 107 have no space before it and none has one; counted as
+under
+[the examples that decide the whitespace before a colon](./compatibility.md#the-examples-that-decide-the-whitespace-before-a-colon)),
+also next to a directive, which is placed as under [Directives](#directives).
+[fixture: colons/spaced] [fixture: colons/other-statements-spaced] [fixture:
 colons/directive-around-colon] mermaid.js reads the text without the whitespace
 at its ends. When the text is empty, nothing follows the `:`, except that one
 whitespace character stays, the first one as written, where spaces and tabs only

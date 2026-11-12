@@ -131,7 +131,6 @@ export const keywordSpellings: Readonly<
   },
   timeline: {
     section: "section",
-    td: "TD",
     title: "title",
   },
   usecase: {

@@ -113,6 +113,40 @@ export function layoutTimelineHeader(
 }
 
 /**
+ * Whether a statement stays on the line of the header, after its gap as
+ * written: the first statement, when the header has a direction and the
+ * statement starts on its line. A version of mermaid.js before 11.14.0, which
+ * has no direction, reads the words after `timeline` as the text of a period,
+ * so `timeline TD title T` is one period there and `timeline TD` followed by a
+ * line `title T` is a period and a title; the text after a direction stays
+ * where it is (docs/timeline.md, Header and direction).
+ */
+export function staysOnTimelineHeaderLine(
+  source: Source,
+  statement: TimelineStatement,
+): boolean {
+  const { body } = source.root
+  if (
+    body.type !== "TimelineDiagram" ||
+    body.direction === null ||
+    body.body[0] !== statement
+  ) {
+    return false
+  }
+  const keyword = expectToken(
+    findStructuralToken(source, body.range[0]),
+    "the header keyword",
+  )
+  const direction = expectToken(
+    findStructuralToken(source, keyword.range[1]),
+    "the direction of the header",
+  )
+  return !source.text
+    .slice(direction.range[1], statement.range[0])
+    .includes("\n")
+}
+
+/**
  * The layout of a statement, from its start to `end` (the end of its range).
  *
  * - A period with its events, and the events after another statement, keep
@@ -149,6 +183,9 @@ export function layoutTimelineStatement(
     default:
       break
   }
+  if (startsTitleTextWithHashOnNextLine(source, statement)) {
+    return keptAsWritten(start, end)
+  }
   const keptBreaks = findKeptBreaks(source, start, end)
   const keepsLineBreaks = spansKeptBreaks(source, keptBreaks, start, end)
   const formatsTriviaLines =
@@ -183,6 +220,28 @@ export function layoutTimelineStatement(
     outdented: new Set(),
     lineBreaks: "joined",
   }
+}
+
+/**
+ * Whether a title has its text on a later line than its keyword and the text
+ * starts with `#`: `title`, a line break, and `# c`. 10.9.8 draws that
+ * differently from `title # c` on one line, so the statement stays as written
+ * (docs/timeline.md, Titles and sections; docs/compatibility.md, Timeline texts
+ * that the versions read differently).
+ */
+function startsTitleTextWithHashOnNextLine(
+  source: Source,
+  statement: TimelineStatement,
+): boolean {
+  if (statement.type !== "TimelineTitleStatement") return false
+  const text = source.text.slice(...statement.value.range)
+  const first = text.length - text.trimStart().length
+  return (
+    text[first] === "#" &&
+    source.text
+      .slice(statement.range[0], statement.value.range[0] + first)
+      .includes("\n")
+  )
 }
 
 /** The gap rules of a title, a section, or an accessibility statement. */
@@ -272,6 +331,7 @@ function layoutEvents(
       const writtenPeriod = source.text.slice(...statement.period.range)
       if (
         colon.start === statement.period.range[1] &&
+        !staysOnTimelineHeaderLine(source, statement) &&
         !writtenPeriod.includes("\n") &&
         !writtenPeriod.includes("\u2028") &&
         !writtenPeriod.includes("\u2029")

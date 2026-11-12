@@ -81,13 +81,15 @@ and delete files with `mv` and `rm`.
 
 ## 3. Deciding the formatting
 
-The printed form of each item is decided by the rules of AGENTS.md, item 4, in
-their order: the whitespace beside a mark, then the form that the other diagram
-types print for the same kind of gap, then a spelling. No case is left to a
-judgment of which form reads better. Where none of them gives a form, the output
-of the released version is not changed on such a judgment: a form that seems
-better is proposed to the user, with a text as written and both outputs, and
-what is decided is added to those rules.
+The printed form of each item is decided by the rules of
+[How the printed form is decided](../../../packages/prettier-plugin-mmd/docs/printed-form.md),
+in their order: the whitespace beside a mark (for a colon, the three steps that
+say which kind it is), then the form that the other diagram types print for the
+same kind of gap, then a spelling. No case is left to a judgment of which form
+reads better. Where none of them gives a form, the output of the released
+version is not changed on such a judgment: a form that seems better is proposed
+to the user, with a text as written and both outputs, and what is decided is
+added to those rules.
 
 1. From the grammar and the tree in the specification, list what formatting
    could change. The kinds of items flowchart has (as examples; a diagram type
@@ -101,27 +103,27 @@ what is decided is added to those rules.
    - where comments and directives stand
    - the YAML of the frontmatter
    - what is kept as written (what affects the Db)
-2. For each item, find the rule of item 4 that decides its form, taking the
-   rules in their order, and the facts it needs: the whitespace that Prettier
-   prints beside the same kind of mark, the form that the other diagram types
-   print for the same gap, or the count of each form in the examples of the
-   documentation of the pinned mermaid.js. Write the candidate forms with
+2. For each item, find the rule of that document that decides its form, taking
+   the rules in their order, and the facts it needs: the whitespace that
+   Prettier prints beside the same kind of mark, the form that the other diagram
+   types print for the same gap, or the count of each form in the examples of
+   the documentation of the pinned mermaid.js. Write the candidate forms with
    examples (before and after formatting), the rule that decides, and the facts.
    Say which forms change the Db.
 3. For each candidate form, run the text before and after formatting through the
-   pinned mermaid.js and the versions that count (item 4), and check that the Db
-   does not change and that every one of those versions accepts the form and
-   draws it the same. A form that one of them rejects or draws differently is
-   not printed. Each case that the choice distinguishes has a fixture (section
-   6). Attach the results, marked as checked by running.
+   pinned mermaid.js and the versions that count (that document), and check that
+   the Db does not change and that every one of those versions accepts the form
+   and draws it the same. A form that one of them rejects or draws differently
+   is not printed. Each case that the choice distinguishes has a fixture
+   (section 6). Attach the results, marked as checked by running.
 4. Implement the forms that the rules decide. A form that would change what a
    released version printed, and a form that seems better where no rule gives
    one, is shown to the user first, with a text as written, the old and the new
    output, the rule that gives the new form if there is one, and a
    recommendation; the user decides it, and the decision is added to the rules.
 5. Write each decision into the rules document `docs/<diagram>.md` (English and
-   Japanese) as a rule with its reason. The reason is the rule of item 4 that
-   decided the form, with the facts that rule needs; "reads better" is no
+   Japanese) as a rule with its reason. The reason is the rule of that document
+   that decided the form, with the facts that rule needs; "reads better" is no
    reason. Write what is kept as written because it affects the Db, and the
    differences from mermaid.js, into `docs/compatibility.md` too. Keep decisions
    in these two documents only.

@@ -668,14 +668,17 @@ descriptions-and-labels/acc-block-runs-collapsed] The `:` of a description
 touches the id of its state and has one space after it: `A : waiting` becomes
 `A: waiting`. The whitespace before it is the one that the examples in the
 documentation of mermaid.js write at least twice as often as any other: the
-examples write 4 descriptions without a space before the `:` and 1 with one. The
-`:` of a transition label has one space on each side, as the label stands
+examples write 4 descriptions without a space before the `:` and 1 with one
+(counted as under
+[the examples that decide the whitespace before a colon](./compatibility.md#the-examples-that-decide-the-whitespace-before-a-colon)).
+The `:` of a transition label has one space on each side, as the label stands
 between the transition and its text: `A-->B:submit` becomes `A --> B : submit`.
-The examples write 13 labels with a space before the `:` and 2 without, which is
-more than twice as often, so the label keeps the space. A directive between the
-id and the `:` of a description is placed as under [Directives](#directives),
-where the gap is printed as without the directive: `A %%{init: {}}%%: x` becomes
-`A%%{init: {}}%%: x`. [fixture: descriptions-and-labels/spaced] [fixture:
+The examples write 13 labels with a space before the `:` and 2 without, counted
+in the same way, which is more than twice as often, so the label keeps the
+space. A directive between the id and the `:` of a description is placed as
+under [Directives](#directives), where the gap is printed as without the
+directive: `A %%{init: {}}%%: x` becomes `A%%{init: {}}%%: x`. [fixture:
+descriptions-and-labels/spaced] [fixture:
 descriptions-and-labels/directive-between-id-and-colon] The `:` of a description
 after a class spelled as a keyword stays touching it: `A:::style:x` becomes
 `A:::style: x`, because a space before the `:` would let the keyword start a

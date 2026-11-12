@@ -791,6 +791,11 @@ sequenceDiagram
 テキストの前の `:` と、`accTitle` と `accDescr` の後の `:` は、前のものに接し、
 後に空白を 1 つ置きます。
 mermaid.js の文書の sequence 図の書き方と同じです。
+例では、コロンの後に空白があるメッセージ 107 件が、コロンの前に空白を置かず、
+前に空白を置くものはありません。
+数え方は
+[コロンの前の空白を決める例](./compatibility.ja.md#コロンの前の空白を決める例)
+を参照してください。
 ディレクティブの隣でも同じで、
 ディレクティブは[ディレクティブ](#ディレクティブ)のとおりに置きます。
 [fixture: colons/spaced] [fixture: colons/other-statements-spaced]

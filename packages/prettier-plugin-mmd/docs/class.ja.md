@@ -634,7 +634,10 @@ classDiagram
 コロンの前の空白は、mermaid.js の文書の例が、
 ほかのどの形よりも 2 倍以上の頻度で書く形です。
 例では、関係のラベル 26 件がコロンの前に空白を持ち、接するものはなく、
-メンバーの行は 16 件が空白を持ち、2 件が接しています。 [fixture: labels/spaced]
+メンバーの行は 16 件が空白を持ち、2 件が接しています。
+数え方は
+[コロンの前の空白を決める例](./compatibility.ja.md#コロンの前の空白を決める例)
+を参照してください。 [fixture: labels/spaced]
 [fixture: labels/directive-around-colon]
 sequence 図では `:` を前のものに接して書きます（詳しくは、
 [sequence 図の整形規則のコロン](./sequence.ja.md#コロン) を参照）。

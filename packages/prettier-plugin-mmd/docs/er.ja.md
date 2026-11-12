@@ -628,8 +628,14 @@ erDiagram
 
 関係は、左の実体と関係の間、関係と右の実体の間、役割の `:` の両側に、
 どう書かれていても空白 1 つを置きます。
-これは mermaid.js の文書の形で、役割は名前、文字列、
-引用符つきの名前のどれでも同じです。
+このコロンは、関係とその役割の間に立つ記号とも読めるので、コロンの前の空白は、
+mermaid.js の文書の例が、ほかのどの形よりも 2 倍以上の頻度で書く形です。
+例では、コロンの後に空白がある関係の行 40 行のすべてが、コロンの前に空白を持ち、
+実体に接する行はありません。
+数え方は
+[コロンの前の空白を決める例](./compatibility.ja.md#コロンの前の空白を決める例)
+を参照してください。
+役割は名前、文字列、引用符つきの名前のどれでも同じです。
 [fixture: relationship-spacing/around-units-and-role]
 [fixture: relationship-spacing/names-and-classes]
 [fixture: relationship-spacing/role-forms]
