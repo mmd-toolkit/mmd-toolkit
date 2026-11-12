@@ -92,9 +92,13 @@ Correctness is defined by the pinned mermaid.js.
    at least twice as often as any other; where no form is used that often, or
    the examples use none, the spelling is kept as written. The check uses the
    pinned mermaid.js only, while the formatted text is also drawn by other
-   versions of mermaid.js. So a spelling is also kept as written where the form
-   that would be printed is not accepted by every version that accepts the form
-   that was written, or is drawn differently by one of them: the name of a
+   versions of mermaid.js. The versions that count are those published in the 18
+   months before the pinned version was published: of each major version, the
+   smallest and the largest minor version among them, and of a diagram type that
+   was added in that time, the first minor version that has it, each at its
+   latest patch. So a spelling is also kept as written where the form that would
+   be printed is not accepted by every one of these versions that accepts the
+   form that was written, or is drawn differently by one of them: the name of a
    header (`block-beta` and `block`), which the versions accept differently, the
    colon after the header of a gitGraph, which older versions require, and the
    direction of the header of a flowchart (`TB` and `TD`), which the versions
@@ -139,7 +143,9 @@ Correctness is defined by the pinned mermaid.js.
      defined in
      [Labels that are drawn the same](packages/prettier-plugin-mmd/docs/compatibility.md#labels-that-are-drawn-the-same);
    - the case of the hexadecimal digits of a color in a style, which the
-     formatter prints in lower case, defined in
+     formatter prints in lower case, and the space after each comma of a color
+     function in the `rect` and `box` of a sequence diagram and in the `style`
+     of a Venn diagram, defined in
      [Colors that are drawn the same](packages/prettier-plugin-mmd/docs/compatibility.md#colors-that-are-drawn-the-same).
 
 ## What each package is responsible for
