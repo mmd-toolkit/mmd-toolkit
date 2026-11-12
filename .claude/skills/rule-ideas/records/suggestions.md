@@ -239,11 +239,12 @@ nothing.
 - cynefin, gitgraph, radar, treeview, wardley: cynefin-no-redefined-domain,
   gitgraph-no-duplicate-option, radar-no-duplicate-option,
   treeview-no-duplicate-annotation, and wardley-no-duplicate-annotations,
-  -evolution, -evolve, and -size remove this statement, option, or annotation or
-  the one before it whose value it replaces (the first one where mermaid.js
-  keeps the first: wardley-no-duplicate-annotations). The specification names
-  the results that are rejected, and those edits are not offered. In gitgraph,
-  the effective `id:` and `parent:` of a `merge` or a `cherry-pick` decide
+  wardley-no-duplicate-evolution, wardley-no-duplicate-evolve, and
+  wardley-no-duplicate-size remove this statement, option, or annotation or the
+  one before it whose value it replaces (the first one where mermaid.js keeps
+  the first: wardley-no-duplicate-annotations). The specification names the
+  results that are rejected, and those edits are not offered. In gitgraph, the
+  effective `id:` and `parent:` of a `merge` or a `cherry-pick` decide
   rejections (the table of rejections in
   `packages/spec/docs/diagrams/gitgraph.md`: a merge id that names a commit, an
   unknown cherry-pick source, a parent that is no immediate parent), so the

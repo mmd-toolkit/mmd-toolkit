@@ -294,7 +294,8 @@ SKILL.ja.md の 8 節の「書き換えの種類」にある、その種類の�
 - cynefin、gitgraph、radar、treeview、wardley: cynefin-no-redefined-domain、
   gitgraph-no-duplicate-option、radar-no-duplicate-option、
   treeview-no-duplicate-annotation、wardley-no-duplicate-annotations、
-  -evolution、-evolve、-size は、この文、オプション、注釈か、
+  wardley-no-duplicate-evolution、wardley-no-duplicate-evolve、
+  wardley-no-duplicate-size は、この文、オプション、注釈か、
   その値を置き換えられた前のもの（mermaid.js が最初のものを保つ
   wardley-no-duplicate-annotations では最初のもの）を消す。
   仕様は拒まれる結果を挙げており、それらの書き換えは出さない。
