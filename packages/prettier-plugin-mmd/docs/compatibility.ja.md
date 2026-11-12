@@ -4377,7 +4377,7 @@ C4 は書かれた引数の単位と位置をすべて保ちます。
 [fixture: c4/number-like-text/excess-kept] [test: c4: tab-before-quote]
 [test: c4: bare-dollar-prefix]
 
-名前付き属性の通常の間隔は `$key = "value"` とし、キーと引用符の中身は保ちます。
+名前付き属性の通常の間隔は `$key="value"` とし、キーと引用符の中身は保ちます。
 [fixture: c4/named-attributes/named-equals]
 [fixture: c4/named-attributes/named-multiline]
 

@@ -4081,7 +4081,7 @@ the [C4 rules](./c4.md). [fixture: c4/argument-spacing/null-space-kept]
 c4/number-like-text/excess-kept] [test: c4: tab-before-quote] [test: c4:
 bare-dollar-prefix]
 
-Ordinary named-attribute gaps format as `$key = "value"`, keeping key and quoted
+Ordinary named-attribute gaps format as `$key="value"`, keeping key and quoted
 contents intact. [fixture: c4/named-attributes/named-equals] [fixture:
 c4/named-attributes/named-multiline]
 
