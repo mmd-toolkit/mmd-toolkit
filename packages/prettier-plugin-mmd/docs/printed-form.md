@@ -234,22 +234,22 @@ lists them.
 
 So a form is also kept as written where the form that would be printed is not
 accepted by every one of these versions that accepts the form that was written,
-or is drawn differently by one of them. The document of each diagram type names
-its cases with the versions; three of them are:
+or is drawn differently by one of them. Three such cases are:
 
-- the name of a header (`block-beta` and `block`), which the versions accept
-  differently;
+- the name of a header (`block-beta` and `block`), which some of these versions
+  accept differently;
 - the space after the `[` of a flowchart label that holds a `@`
-  (`A[ user@example.com ]`), without which the versions from 11.7.0 to 12.0.0
-  reject the label;
-- the direction of the header of a flowchart (`TB` and `TD`), which the versions
-  before 11.10.0 draw differently.
+  (`A[ user@example.com ]`), without which some of them reject the label;
+- the direction of the header of a flowchart (`TB` and `TD`), which some of them
+  draw differently.
 
-A rule of this kind names the versions that it is kept for. When the pinned
-version is raised and none of the versions that a rule names counts any longer,
-the rule is taken out, and the form is the one that the rules above give. The
-forms that are kept in this way are listed, each with its versions, in
-[Forms kept for versions of mermaid.js that count](./compatibility.md#forms-kept-for-versions-of-mermaidjs-that-count).
+Every such case has a row in
+[Forms kept for versions of mermaid.js that count](./compatibility.md#forms-kept-for-versions-of-mermaidjs-that-count),
+and the row names the versions that the form is kept for. The versions are named
+in that table only: the document of a diagram type gives the reason and points
+to the row. When the pinned version is raised and none of the versions of a row
+counts any longer, the rule is taken out, and the form is the one that the rules
+above give.
 
 The CHANGELOG.md of mermaid.js, or the history of its grammar, shows which
 version added or changed a form.
