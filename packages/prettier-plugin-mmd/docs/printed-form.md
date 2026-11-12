@@ -243,13 +243,14 @@ or is drawn differently by one of them. Three such cases are:
 - the direction of the header of a flowchart (`TB` and `TD`), which some of them
   draw differently.
 
-Every such case has a row in
+Every such case that the pinned version does not need by itself has a row in
 [Forms kept for versions of mermaid.js that count](./compatibility.md#forms-kept-for-versions-of-mermaidjs-that-count),
-and the row names the versions that the form is kept for. The versions are named
-in that table only: the document of a diagram type gives the reason and points
-to the row. When the pinned version is raised and none of the versions of a row
-counts any longer, the rule is taken out, and the form is the one that the rules
-above give.
+and the row names the versions that the form is kept for. A form that the pinned
+version itself rejects or draws differently stays whatever the other versions
+are, so it has no row. The versions are named in that table only: the document
+of a diagram type gives the reason and points to the row. When the pinned
+version is raised and none of the versions of a row counts any longer, the rule
+is taken out, and the form is the one that the rules above give.
 
 The CHANGELOG.md of mermaid.js, or the history of its grammar, shows which
 version added or changed a form.
