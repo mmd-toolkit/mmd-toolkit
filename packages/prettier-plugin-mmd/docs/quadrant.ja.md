@@ -518,6 +518,44 @@ quadrantChart
   classDef c1 radius: 5, color: #f00
 ```
 
+### 色
+
+スタイルの色は、mermaid.js の文書の例と Prettier の CSS 整形と同じく、
+小文字で印字します。
+`A: [0.3, 0.6] color: #FF3300` は `A: [0.3, 0.6] color: #ff3300` と印字します。
+象限チャートの点と `classDef` 文のスタイル（`color` と
+`stroke-color`）の色が対象です。
+色は、スタイルの値の中で単独で立つ、`#` と 3、4、6、8 桁の 16 進数です。
+色を短くすることはなく、色でないテキストは書かれたままにします。
+（[同じに描かれる色](./compatibility.ja.md#同じに描かれる色)を参照）。
+[fixture: colors/colors-in-lower-case]
+
+入力
+([colors/colors-in-lower-case-input.mmd](../tests/fixtures/quadrant/colors/colors-in-lower-case-input.mmd)):
+
+```mmd
+quadrantChart
+x-axis L --> R
+y-axis L --> H
+quadrant-1 Q1
+P: [0.3, 0.6] radius: 12, color: #FF3300, stroke-color: #ABCDEF
+Q:::c1: [0.6, 0.3]
+classDef c1 color: #DEADBE, stroke-color: #C0FFEE
+```
+
+出力
+([colors/colors-in-lower-case-output.mmd](../tests/fixtures/quadrant/colors/colors-in-lower-case-output.mmd)):
+
+```mmd
+quadrantChart
+  x-axis L --> R
+  y-axis L --> H
+  quadrant-1 Q1
+  P: [0.3, 0.6] radius: 12, color: #ff3300, stroke-color: #abcdef
+  Q:::c1: [0.6, 0.3]
+  classDef c1 color: #deadbe, stroke-color: #c0ffee
+```
+
 ### 引用符
 
 軸、象限、点の引用符で囲まれたテキストは、平易なものなら、
@@ -525,8 +563,12 @@ mermaid.js の文書の例のとおりに、引用符なしで印字します。
 （[テキストの引用符](./compatibility.ja.md#テキストの引用符)）。
 `quadrant-1 "A"` は `quadrant-1 A` と印字します。
 平易なテキストは、ASCII 英字の単語でできていて、各単語の末尾には数字も使え、
-単語の間は空白 1 つで、
-字句解析器が独立した単位として読む単語を含まないものです。
+単語の間は空白 1 つで、部分の間は 1 つの `-` でつなげられます。
+`"high-value"` は `high-value` と印字します。
+どの部分も字句解析器が独立した単位として読む語ではなく、
+テキストに `x-axis` も `y-axis` も含まないものに限ります。
+字句解析器は `-` を語の終わりとして読み、その後の部分が語の始まりになるため、
+`"my-title"` と `"my-x-axis"` は引用符を保ちます。
 テキストと同じ行でその後に続く `;` は、改行に置き換えて落とし、
 テキストの引用符は、`;` がない場合と同じに外します。
 `quadrant-1 "A";` は `quadrant-1 A` と印字します。
@@ -539,6 +581,7 @@ mermaid.js は `"L"` と `L`、`"a b"` と `a b` を同じテキストとして�
 そのようなテキストの引用符は残し、引用符を付け加えることはありません。
 [fixture: quotes/strings-runs-collapsed]
 [fixture: quotes/plain-texts-without-quotes]
+[fixture: quotes/texts-with-hyphens-without-quotes]
 [fixture: quotes/texts-that-need-quotes] [fixture: quotes/quotes-not-added]
 [fixture: quotes/keywords-and-arrows-in-strings]
 [fixture: quotes/markdown-strings] [fixture: quotes/string-with-a-comment-mark]
@@ -567,6 +610,28 @@ quadrantChart
   quadrant-2 Need to promote
   Campaign A: [0.3, 0.6]
   Q1 results: [0.5, 0.5]
+```
+
+入力
+([quotes/texts-with-hyphens-without-quotes-input.mmd](../tests/fixtures/quadrant/quotes/texts-with-hyphens-without-quotes-input.mmd)):
+
+```mmd
+quadrantChart
+x-axis "Low-Reach" --> "High-Reach"
+y-axis "low-value" --> "high-value2"
+quadrant-1 "We-should expand"
+"my-point": [0.3, 0.6]
+```
+
+出力
+([quotes/texts-with-hyphens-without-quotes-output.mmd](../tests/fixtures/quadrant/quotes/texts-with-hyphens-without-quotes-output.mmd)):
+
+```mmd
+quadrantChart
+  x-axis Low-Reach --> High-Reach
+  y-axis low-value --> high-value2
+  quadrant-1 We-should expand
+  my-point: [0.3, 0.6]
 ```
 
 ### title とアクセシビリティの文

@@ -4,7 +4,15 @@ import {
   clickCallDbForFormattingComparison,
   clickCallDiagramTypes,
 } from "./click-call-margins.ts"
+import {
+  colorCaseDbForFormattingComparison,
+  colorCaseDiagramTypes,
+} from "./color-case-differences.ts"
 import { eventmodelingDbForFormattingComparison } from "./eventmodeling-data-margins.ts"
+import {
+  labelTypeDbForFormattingComparison,
+  labelTypeDiagramTypes,
+} from "./label-type-differences.ts"
 import {
   keywordTextDbForFormattingComparison,
   keywordTextDiagramTypes,
@@ -56,6 +64,10 @@ export function dbForFormattingComparison(
     compared = textRunDbForFormattingComparison(before, compared, type)
   if (keywordTextDiagramTypes.has(type))
     compared = keywordTextDbForFormattingComparison(before, compared, type)
+  // The colors come before the whitespace: a style that has both differences
+  // takes the written case of its colors, and then the written whitespace.
+  if (colorCaseDiagramTypes.has(type))
+    compared = colorCaseDbForFormattingComparison(before, compared, type)
   if (styleDiagramTypes.has(type))
     compared = styleDbForFormattingComparison(before, compared, type)
   if (clickCallDiagramTypes.has(type))
@@ -64,5 +76,7 @@ export function dbForFormattingComparison(
     compared = mindmapDbForFormattingComparison(before, compared)
   if (kanbanTextDiagramTypes.has(type))
     compared = kanbanDbForFormattingComparison(before, compared)
+  if (labelTypeDiagramTypes.has(type))
+    compared = labelTypeDbForFormattingComparison(before, compared)
   return compared
 }

@@ -560,7 +560,7 @@ const flowchartExamples: readonly (readonly [string, string, string])[] = [
   [
     "U+2028 between the closing quote and the bracket of a flowchart label",
     'flowchart LR\nA["x"\u2028]\n',
-    'flowchart LR\n  A["x"\u2028]\n',
+    "flowchart LR\n  A[x\u2028]\n",
   ],
   [
     "U+2028 in the title of a flowchart subgraph header",
@@ -590,12 +590,32 @@ const flowchartExamples: readonly (readonly [string, string, string])[] = [
   [
     "U+2029 between the closing quote and the bracket of a flowchart label",
     'flowchart LR\nA["x"\u2029]\n',
-    'flowchart LR\n  A["x"\u2029]\n',
+    "flowchart LR\n  A[x\u2029]\n",
   ],
   [
     "U+2029 in the title of a flowchart subgraph header",
     "flowchart LR\nsubgraph S[ T\u2029]\nA\nend\n",
     "flowchart LR\n  subgraph S[T\u2029]\n    A\n  end\n",
+  ],
+  [
+    "U+2028 before the label of an agentflow shape",
+    "agentflow-beta TB\nA[\u2028x]\n",
+    "agentflow-beta TB\n  A[\u2028x]\n",
+  ],
+  [
+    "U+2029 before the label of an agentflow shape",
+    "agentflow-beta TB\nA[\u2029x]\n",
+    "agentflow-beta TB\n  A[\u2029x]\n",
+  ],
+  [
+    "U+2028 before the title of an agentflow flow",
+    "agentflow-beta TB\nflow F[\u2028T]\nA\nend\n",
+    "agentflow-beta TB\n  flow F[\u2028T]\n    A\n  end\n",
+  ],
+  [
+    "U+2029 before the title of an agentflow connector",
+    "agentflow-beta TB\nconnector C[\u2029T]\n",
+    "agentflow-beta TB\n  connector C[\u2029T]\n",
   ],
   [
     "U+2029 after the string of a flowchart click statement with a string over lines",
@@ -765,7 +785,7 @@ const flowchartExamples: readonly (readonly [string, string, string])[] = [
   [
     "U+2028 between the closing quote and the `|` of a flowchart edge label",
     'flowchart TD\nA-->|"x"\u2028|B\n',
-    'flowchart TD\n  A -->|"x"\u2028| B\n',
+    "flowchart TD\n  A -->|x\u2028| B\n",
   ],
   [
     "U+2029 between the graph keyword and its direction",

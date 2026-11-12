@@ -547,7 +547,7 @@ flowchartと同じ理由で、`[ T ]`を含め括弧の内側の空白を落と�
 
 ```mmd
 agentflow-beta TB
-  A[text]
+  A["text"]
 ```
 
 ### Vertices and lists
@@ -1051,7 +1051,7 @@ agentflow-beta TB
 ```mmd
 agentflow-beta TB
   accDescr: a
-  A[Block spacing]
+  A["Block spacing"]
 ```
 
 入力（escape 表記）:
@@ -1064,7 +1064,7 @@ agentflow-beta TB
 agentflow-beta TB
   accDescr: previous description
   accDescr {}
-  A[Empty spacing]
+  A["Empty spacing"]
 ```
 
 入力（escape 表記）:
@@ -1078,7 +1078,7 @@ agentflow-beta TB
   accTitle:
     %%{init: {}}%%
     Title after directive
-  A[Continuation]
+  A["Continuation"]
 ```
 
 ### Multiline statements and values
@@ -1140,8 +1140,8 @@ Dbの正規化で等しくても、ドメインの形、数値やプロトタイ
 
 ```mmd
 agentflow-beta TB
-  A[first]
-  A[second]
+  A["first"]
+  A["second"]
 ```
 
 ### Trailing whitespace
@@ -1194,6 +1194,44 @@ BOMとfrontmatterの共通の制限も適用します。
 出力`"agentflow-beta TB\n  A[\"a\n b\"]\n"`になります。
 [test: agentflow: eol-crlf]
 
+### 色
+
+スタイルの色は、mermaid.js の文書の例と Prettier の CSS 整形と同じく、
+小文字で印字します。
+`style A fill:#F9F,stroke:#ABCDEF` は `style A fill: #f9f, stroke: #abcdef`
+と印字します。
+agentflow 図の `style`、`classDef`、`linkStyle` 文のスタイルの色が対象です。
+色は、スタイルの値の中で単独で立つ、`#` と 3、4、6、8 桁の 16 進数です。
+色を短くすることはなく、色でないテキストは書かれたままにします。
+（[同じに描かれる色](./compatibility.ja.md#同じに描かれる色)を参照）。
+[fixture: colors/colors-in-lower-case]
+
+入力
+([colors/colors-in-lower-case-input.mmd](../tests/fixtures/agentflow/colors/colors-in-lower-case-input.mmd)):
+
+```mmd
+agentflow-beta TB
+A --> B
+C:::c
+style A fill:#F9F,stroke:#ABCDEF
+classDef c fill:#DEADBE
+linkStyle 0 stroke:#FF0000
+linkStyle default stroke:#ABCDEF
+```
+
+出力
+([colors/colors-in-lower-case-output.mmd](../tests/fixtures/agentflow/colors/colors-in-lower-case-output.mmd)):
+
+```mmd
+agentflow-beta TB
+  A --> B
+  C:::c
+  style A fill: #f9f, stroke: #abcdef
+  classDef c fill: #deadbe
+  linkStyle 0 stroke: #ff0000
+  linkStyle default stroke: #abcdef
+```
+
 ### Quotes
 
 引用符で囲まれた flow と connector の名前は、
@@ -1202,7 +1240,7 @@ flowchart の subgraph の名前の条件に従い、引用符なしで印字し
 mermaid.js の文書の例は引用符なしでそれぞれ 17 回と 2 回書き、
 引用符つきでは一度も書いていないためです。
 （[テキストの引用符](./compatibility.ja.md#テキストの引用符)）。
-`flow "My Flow"` は `flow My Flow` と、
+`flow "My Flow"` は `flow My Flow` と、`flow "my-team"` は `flow my-team` と、
 `connector "Join"` は `connector Join` と印字します。
 複数のラベルからなる名前（`connector I "" J`）は書かれたままにします。
 `direction` で終わる名前も書かれたままにします。
@@ -1228,13 +1266,28 @@ mermaid.js はどちらの形のタイトルも同じテキストとして読み
 [fixture: quotes/connector-titles-as-written]
 [fixture: quotes/names-and-titles-before-a-comment]
 
-flow のタイトル、形のラベル、リンクのラベルは、
-例では flow のタイトルを引用符つきで 17 回書き、
-引用符なしでは一度も書いていなくても、書かれたままにします。
+flow のタイトルと形のラベルも、例と同じく引用符つきで印字します。
+例では 17 個のタイトルと 47 個のラベルを、
+いずれも引用符なしでは一度も書いていないためです。
+`flow F [T]` は `flow F["T"]` と、`A[Start]` は `A["Start"]` と印字します。
+リンクのラベルは、2 つの例と同じく引用符なしで印字します。
+`A -->|"text"| B` は `A -- text --> B` と印字します。
+（[辺のラベルの書き方](./flowchart.ja.md#辺のラベルの書き方)を参照）。
+ただし、2 つの矢印の間のラベルに `--` があるときは、
+字句解析器がそこでテキストを終えるので、
+引用符を残します（`A -- "a--b" --> B`）。
+テキストを引用符で囲む条件は、connector のタイトルと同じです。
+コメント行の後、単独の行にあるディレクティブの後、U+2028 や U+2029 の後など、
+行の最初の単位であるラベルは、mermaid.js がそこで文字列を拒否するので、
+書かれたままにします。
 mermaid.js は `A["x"]` を文字列、`A[x]` をテキストとして読み、
-Db の `labelType` は前者が `string`、後者が `text` なので、
-2 つの形は同じに読まれないためです。 [fixture: quotes/flow-titles-as-written]
-[fixture: quotes/labels-as-written]
+Db の `labelType` は前者が `string`、後者が `text` ですが、
+描かれる図は同じです。
+（[同じに描かれるラベル](./compatibility.ja.md#同じに描かれるラベル)）。
+[fixture: quotes/flow-titles-in-quotes] [fixture: quotes/labels-in-quotes]
+[fixture: quotes/labels-after-a-comment-line]
+[fixture: quotes/labels-after-a-directive-line]
+[fixture: quotes/edge-labels-with-two-dashes]
 
 入力
 ([quotes/names-without-quotes-input.mmd](../tests/fixtures/agentflow/quotes/names-without-quotes-input.mmd)):
@@ -1256,6 +1309,10 @@ end
 connector "Join"
 connector "Join2" ["Merge results"]
 connector "J3"@{ x: 1 }
+flow "my-team"
+M --> N
+end
+connector "my-join"
 flow Already
 I --> J
 end
@@ -1269,7 +1326,7 @@ agentflow-beta TB
   flow Main
     A --> B
   end
-  flow My Flow[T]
+  flow My Flow["T"]
     C --> D
   end
   flow F3["T"]
@@ -1281,6 +1338,10 @@ agentflow-beta TB
   connector Join
   connector Join2["Merge results"]
   connector J3@{ x: 1 }
+  flow my-team
+    M --> N
+  end
+  connector my-join
   flow Already
     I --> J
   end
@@ -1314,6 +1375,52 @@ agentflow-beta TB
   connector C6["Touching"]
   connector C7["Already"]
   connector C8["Done?"]@{ x: 1 }
+```
+
+入力
+([quotes/labels-in-quotes-input.mmd](../tests/fixtures/agentflow/quotes/labels-in-quotes-input.mmd)):
+
+```mmd
+agentflow-beta TB
+A[text]
+B["text"]
+C(Is it ready?)
+D{Decision}
+E[(Database v2)]
+F[a/b]
+G[`md`]
+H -- text --> I
+H -->|"text"| I
+J -->|"a/b"| K
+flow F1[title]
+E1
+end
+flow F2["title"]
+G1
+end
+```
+
+出力
+([quotes/labels-in-quotes-output.mmd](../tests/fixtures/agentflow/quotes/labels-in-quotes-output.mmd)):
+
+```mmd
+agentflow-beta TB
+  A["text"]
+  B["text"]
+  C("Is it ready?")
+  D{"Decision"}
+  E[("Database v2")]
+  F[a/b]
+  G[`md`]
+  H -- text --> I
+  H -- text --> I
+  J -->|"a/b"| K
+  flow F1["title"]
+    E1
+  end
+  flow F2["title"]
+    G1
+  end
 ```
 
 ### Frontmatter YAML

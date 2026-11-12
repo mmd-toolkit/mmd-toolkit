@@ -783,12 +783,23 @@ erDiagram
 mermaid.js の文書の例に合わせて引用符なしで印字します。
 [テキストの引用符](./compatibility.ja.md#テキストの引用符) を参照してください。
 `"A"[B]` は `A[B]` に、`C ||--o{ D : "has"` は `C ||--o{ D : has` にします。
+英字で始まり、部分の間に 1 つの `-` を置いた語（`LINE-ITEM`、
+`a-1`）も平易なものとします。
+文書の例は、`LINE-ITEM` や `NAMED-DRIVER` などのこのような名前を、
+引用符なしで 20 回使い、引用符付きでは一度も使わないので、
+`"LINE-ITEM"` は `LINE-ITEM` と印字します。
+`-` はキーワードを終わらせるので（`"end-x"` は `end` と `-x`）、
+最初の `-` より前の部分を、字句解析器が独立した単位として読む語と比較します。
 ほかの名前は、引用符の有無も数も含めて、書かれたまま残します。
+先頭か末尾に `-` がある名前、`-` が 2 つ続く名前、`_` で始まる名前（`"_x"`）も、
+そのまま残します。
+10.5.0 より前の字句解析器は、引用符がないとその名前を拒否するためです。
 `direction` で終わる名前と、`TB`、`BT`、`RL`、`LR` で始まる名前も、
 大文字小文字を問わず書かれたまま残します。
 字句解析器は、`direction`、空白（改行も含みます）、向きの名前を 1 行として読み、
 引用符を外した名前は、前の行か後の行と結ばれるためです。
 [fixture: entities/plain-names-without-quotes]
+[fixture: entities/hyphenated-names-without-quotes]
 [fixture: entities/names-that-need-quotes]
 [fixture: entities/names-next-to-a-direction-line]
 [fixture: entities/names-kept]
@@ -845,6 +856,36 @@ erDiagram
   "A B":::c
   A:::é,b-c
   B:::d
+```
+
+入力
+([entities/hyphenated-names-without-quotes-input.mmd](../tests/fixtures/er/entities/hyphenated-names-without-quotes-input.mmd)):
+
+```mmd
+erDiagram
+"LINE-ITEM" ||--o{ "ORDER-LINE" : "has-items"
+"A-B-C" {
+int id
+}
+"p-q"[Alias]
+subgraph "my-group"
+"x-y"
+end
+```
+
+出力
+([entities/hyphenated-names-without-quotes-output.mmd](../tests/fixtures/er/entities/hyphenated-names-without-quotes-output.mmd)):
+
+```mmd
+erDiagram
+  LINE-ITEM ||--o{ ORDER-LINE : has-items
+  A-B-C {
+    int id
+  }
+  p-q[Alias]
+  subgraph my-group
+    x-y
+  end
 ```
 
 ### subgraph
@@ -1470,6 +1511,61 @@ erDiagram
   A %%{init: {}}%%||--o{ B : x
   C
   %%{init: {}}%% D
+```
+
+### 色
+
+スタイルの色は、mermaid.js の文書の例と Prettier の CSS 整形と同じく、
+小文字で印字します。
+`style CUSTOMER fill:#F9F,stroke:#ABCDEF` は
+`style CUSTOMER fill: #f9f, stroke: #abcdef` と印字します。
+ER 図の `style`、`classDef` 文のスタイルの色が対象です。
+色は、スタイルの値の中で単独で立つ、`#` と 3、4、6、8 桁の 16 進数です。
+色を短くすることはなく、色でないテキストは書かれたままにします。
+（[同じに描かれる色](./compatibility.ja.md#同じに描かれる色)を参照）。
+[fixture: colors/colors-in-lower-case]
+[fixture: colors/words-that-are-not-colors-as-written]
+
+入力
+([colors/colors-in-lower-case-input.mmd](../tests/fixtures/er/colors/colors-in-lower-case-input.mmd)):
+
+```mmd
+erDiagram
+CUSTOMER ||--o{ ORDER : places
+style CUSTOMER fill:#F9F,stroke:#ABCDEF,color:#C0FFEE
+classDef c fill:#DEADBE,stroke:#ABCDEF
+class ORDER c
+```
+
+出力
+([colors/colors-in-lower-case-output.mmd](../tests/fixtures/er/colors/colors-in-lower-case-output.mmd)):
+
+```mmd
+erDiagram
+  CUSTOMER ||--o{ ORDER : places
+  style CUSTOMER fill: #f9f, stroke: #abcdef, color: #c0ffee
+  classDef c fill: #deadbe, stroke: #abcdef
+  class ORDER c
+```
+
+入力
+([colors/words-that-are-not-colors-as-written-input.mmd](../tests/fixtures/er/colors/words-that-are-not-colors-as-written-input.mmd)):
+
+```mmd
+erDiagram
+CUSTOMER
+style CUSTOMER fill:#ABCDE,stroke:#ABCDEF1
+classDef c fill:#ABC-x,stroke:x#ABC
+```
+
+出力
+([colors/words-that-are-not-colors-as-written-output.mmd](../tests/fixtures/er/colors/words-that-are-not-colors-as-written-output.mmd)):
+
+```mmd
+erDiagram
+  CUSTOMER
+  style CUSTOMER fill: #ABCDE, stroke: #ABCDEF1
+  classDef c fill: #ABC-x, stroke: x#ABC
 ```
 
 ### フロントマター YAML

@@ -425,6 +425,60 @@ set A["L"]:002.00
   text item[" Label "]
 ```
 
+### 色
+
+スタイルの色は、mermaid.js の文書の例と Prettier の CSS 整形と同じく、
+小文字で印字します。
+`style A fill:#F9F` は `style A fill:#f9f` と印字します。
+Venn 図の `style` 文のプロパティの色が対象です。
+色は、スタイルの値の中で単独で立つ、`#` と 3、4、6、8 桁の 16 進数です。
+色を短くすることはなく、色でないテキストは書かれたままにします。
+（[同じに描かれる色](./compatibility.ja.md#同じに描かれる色)を参照）。
+[fixture: colors/colors-in-lower-case]
+[fixture: colors/words-that-are-not-colors-as-written]
+
+入力
+([colors/colors-in-lower-case-input.mmd](../tests/fixtures/venn/colors/colors-in-lower-case-input.mmd)):
+
+```mmd
+venn-beta
+set A
+set B
+union A,B
+style A fill:#F9F,color:#ABCDEF
+style B fill:#C0FFEE
+```
+
+出力
+([colors/colors-in-lower-case-output.mmd](../tests/fixtures/venn/colors/colors-in-lower-case-output.mmd)):
+
+```mmd
+venn-beta
+set A
+set B
+union A, B
+style A fill:#f9f, color:#abcdef
+style B fill:#c0ffee
+```
+
+入力
+([colors/words-that-are-not-colors-as-written-input.mmd](../tests/fixtures/venn/colors/words-that-are-not-colors-as-written-input.mmd)):
+
+```mmd
+venn-beta
+set A
+style A fill:#ABCDE,color:#ABCDEF1
+```
+
+出力
+([colors/words-that-are-not-colors-as-written-output.mmd](../tests/fixtures/venn/colors/words-that-are-not-colors-as-written-output.mmd)):
+
+```mmd
+venn-beta
+set A
+style A fill:#ABCDE, color:#ABCDEF1
+```
+
 ### Quotes
 
 集合の名前、対象のない text の id、`style` の対象、style のプロパティの値は、

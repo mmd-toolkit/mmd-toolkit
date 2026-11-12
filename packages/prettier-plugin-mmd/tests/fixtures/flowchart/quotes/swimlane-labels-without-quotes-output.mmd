@@ -1,0 +1,6 @@
+swimlane-beta TB
+  subgraph my-lane[Sales team]
+    A[Start] -->|Is it ready?| B[Next step]
+    B -->|x| C[Done]
+    C -. "a.b" .-> D
+  end

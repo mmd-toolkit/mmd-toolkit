@@ -1,0 +1,26 @@
+flowchart LR
+A("go-")
+B["a.-b"]
+C["a:::b"]
+D["please click here"]
+E["call x"]
+F["interpolate x"]
+G["x_self"]
+H["a b_top"]
+I["accTitle: x"]
+J["a---b"]
+K["go--on"]
+L["Click here"]
+M["a--b"]
+N["call"]
+O["interpolated x"]
+P["aclick x"]
+Q["recall x"]
+A -->|"a.-b"| B
+B -->|"a--b"| C
+C -- "click here" --> D
+D -. "go--on" .-> E
+E == "a--b" ==> F
+subgraph S1 ["x_self"]
+G
+end

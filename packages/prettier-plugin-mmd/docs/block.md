@@ -982,6 +982,63 @@ block-beta
   b
 ```
 
+### Colors
+
+A color in a style is printed in lower case, as the examples in the
+documentation of mermaid.js write it and as the CSS formatter of Prettier prints
+it: `style A fill:#F9F,stroke:#ABCDEF` is printed
+`style A fill: #f9f, stroke: #abcdef`. The colors in the styles of the `style`
+and `classDef` statements of a block diagram are printed so. A color is a `#`
+and 3, 4, 6, or 8 hexadecimal digits that stand alone in the value of a style;
+it is never shortened, and a text that is no color stays as written (see
+[Colors that are drawn the same](./compatibility.md#colors-that-are-drawn-the-same)).
+[fixture: colors/colors-in-lower-case] [fixture:
+colors/words-that-are-not-colors-as-written]
+
+Input
+([colors/colors-in-lower-case-input.mmd](../tests/fixtures/block/colors/colors-in-lower-case-input.mmd)):
+
+```mmd
+block-beta
+columns 2
+A B
+classDef c fill:#DEADBE,stroke:#ABCDEF
+class B c
+style A fill:#F9F,stroke:#ABCDEF,color:#C0FFEE
+```
+
+Output
+([colors/colors-in-lower-case-output.mmd](../tests/fixtures/block/colors/colors-in-lower-case-output.mmd)):
+
+```mmd
+block-beta
+  columns 2
+  A B
+  classDef c fill: #deadbe, stroke: #abcdef
+  class B c
+  style A fill: #f9f, stroke: #abcdef,color: #c0ffee
+```
+
+Input
+([colors/words-that-are-not-colors-as-written-input.mmd](../tests/fixtures/block/colors/words-that-are-not-colors-as-written-input.mmd)):
+
+```mmd
+block-beta
+A B
+style A fill:#ABCDE,stroke:#ABCDEF1
+classDef c fill:url(#ABC),stroke:#ABC-x
+```
+
+Output
+([colors/words-that-are-not-colors-as-written-output.mmd](../tests/fixtures/block/colors/words-that-are-not-colors-as-written-output.mmd)):
+
+```mmd
+block-beta
+  A B
+  style A fill: #ABCDE, stroke: #ABCDEF1
+  classDef c fill: url(#ABC), stroke: #ABC-x
+```
+
 ### Frontmatter YAML
 
 The frontmatter is formatted as YAML by Prettier, as in the other diagrams (see

@@ -1265,6 +1265,207 @@ kanban のボードも、カードのテキスト、列とカードのラベル�
 固定している mermaid.js の版を上げるときは、各場合の両方のテキストを描き直し、
 SVG と画素を比べてから、例外を残します。
 
+## 同じに描かれるラベル
+
+flowchart、swimlane、agentflow の図のラベルは、例が使う形で印字します。
+（[テキストの引用符](#テキストの引用符)を参照）。
+flowchart と swimlane 図では `A["Start here"]` を `A[Start here]` と印字し、
+agentflow 図では `A[Start]` を `A["Start"]` と印字します。
+リンクのラベルと、subgraph や flow のタイトルも同じです。
+もう一方の形を mermaid.js が違って読むテキストは、書かれたまま残します。
+[fixture: flowchart/quotes/shape-labels-without-quotes]
+[fixture: flowchart/quotes/link-labels-without-quotes]
+[fixture: flowchart/quotes/subgraph-titles-without-quotes]
+[fixture: agentflow/quotes/labels-in-quotes]
+[fixture: agentflow/quotes/flow-titles-in-quotes]
+
+mermaid.js は、引用符で囲んだラベルの `labelType` として `string` を、
+引用符のないラベルでは `text` を Db に残すので、印字したテキストの Db は、
+書かれたテキストの Db と違いますが、同じ図を描きます。
+Db は、頂点のテキストの型を `labelType` にします。
+（[`flowDb.ts`](https://github.com/mermaid-js/mermaid/blob/2086904e76c692331e34a45d7cc3bc30860d040e/packages/mermaid/src/diagrams/flowchart/flowDb.ts#L228)、
+[`agentflowDb.ts`](https://github.com/mermaid-js/mermaid/blob/2086904e76c692331e34a45d7cc3bc30860d040e/packages/mermaid/src/diagrams/agentflow/agentflowDb.ts#L485)）。
+辺のテキストの型も同じです。
+（[L333](https://github.com/mermaid-js/mermaid/blob/2086904e76c692331e34a45d7cc3bc30860d040e/packages/mermaid/src/diagrams/flowchart/flowDb.ts#L333)、
+[L752](https://github.com/mermaid-js/mermaid/blob/2086904e76c692331e34a45d7cc3bc30860d040e/packages/mermaid/src/diagrams/agentflow/agentflowDb.ts#L752)）。
+subgraph や flow のタイトルの型も同じです。
+（[L763](https://github.com/mermaid-js/mermaid/blob/2086904e76c692331e34a45d7cc3bc30860d040e/packages/mermaid/src/diagrams/flowchart/flowDb.ts#L763)、
+[L1245](https://github.com/mermaid-js/mermaid/blob/2086904e76c692331e34a45d7cc3bc30860d040e/packages/mermaid/src/diagrams/agentflow/agentflowDb.ts#L1245)）。
+描画処理は、その型が `markdown` かどうかだけを読みます。
+ノードのラベルでそうします。
+（[`labelHelper`](https://github.com/mermaid-js/mermaid/blob/2086904e76c692331e34a45d7cc3bc30860d040e/packages/mermaid/src/rendering-util/rendering-elements/shapes/util.ts#L89)）。
+辺のラベルでもそうします。
+（[`edges.js`](https://github.com/mermaid-js/mermaid/blob/2086904e76c692331e34a45d7cc3bc30860d040e/packages/mermaid/src/rendering-util/rendering-elements/edges.js#L87)）。
+subgraph のタイトルでもそうします。
+（[`clusters.js`](https://github.com/mermaid-js/mermaid/blob/2086904e76c692331e34a45d7cc3bc30860d040e/packages/mermaid/src/rendering-util/rendering-elements/clusters.js#L41)、
+[L555](https://github.com/mermaid-js/mermaid/blob/2086904e76c692331e34a45d7cc3bc30860d040e/packages/mermaid/src/rendering-util/rendering-elements/clusters.js#L555)）。
+
+各場合の両方のテキストを Chromium に描き、SVG または画素が同じでした。
+英字、数字、空白と、`-`、`.`、`,`、`:`、`!`、`?` からなるテキストを、
+flowchart の 14 種類それぞれの形の中、`|` の間、2 つの矢印の間、
+2 つの点線の矢印の間、2 つの太い矢印の間にあるリンクのラベル、
+subgraph のタイトルとして描きました。
+flowchart は mermaid.js 9.0.0、9.1.7、9.4.3、10.3.1、10.9.0、11.0.0、11.4.1、
+11.12.3、11.13.0、11.16.1、12.0.0、12.3.0 で、swimlane 図は 11.16.1、12.0.0、
+12.3.0 で、agentflow 図は 12.0.0、12.3.0 で描きました。
+スタジアム形と非対称の形は線をランダムに描くので、同じテキストを 2 回描いても、
+その path のデータだけが異なります。
+10.3.1 より前は、引用符で囲んだラベルも、
+引用符のないラベルと同じ型 `text` なので、両方の形の Db は同じです。
+列挙した文字は、それぞれの形とリンクの形式で、テキストの先頭、途中、末尾に置き、
+引用符のある形とない形で比べました。
+Db は `labelType` を除いて同じでした。
+ほかの文字は場所によって読み方が異なるので、引用符を残します。
+非対称の形と agentflow 図の `@`、agentflow 図の `%`、点線の矢印の間の `.`、
+太い矢印の間の `=` は、引用符がないと拒否され、テキストの先頭の `/`、`\`、
+`-` は、別の形になるか拒否されます。
+
+テストは、印字したテキストの Db に、
+書かれたテキストの Db から `labelType` を戻して比べます。
+`tests/label-type-differences.ts` の `labelTypeDbForFormattingComparison`
+を使います。
+`labelType` が `string` と `text` の間で異なるときは、書かれた方を採ります。
+ほかの違いは、markdown になったラベルや、
+markdown でなくなったラベルも含めて失敗とします。
+固定している mermaid.js の版を上げるときは、各場合の両方のテキストを描き直し、
+SVG と画素を比べてから、例外を残します。
+
+## 同じに描かれる色
+
+flowchart、swimlane、agentflow、class、state、ER、requirement、block、usecase、
+quadrant、Venn の図のスタイルの色は、小文字で印字します。
+`style A fill:#F9F,stroke:#ABCDEF` は `style A fill: #f9f, stroke: #abcdef`
+と印字します。
+色があるのは次の場所です。
+
+| 図の種類    | 色がある場所                                         | 例の色の数（小文字 / それ以外） |
+| ----------- | ---------------------------------------------------- | ------------------------------: |
+| flowchart   | `style`、`classDef`、番号と `default` の `linkStyle` |                          10 / 0 |
+| swimlane    | 同じ文                                               |                           2 / 0 |
+| agentflow   | 同じ文                                               |                           0 / 0 |
+| class       | `style`、`classDef`                                  |                           8 / 0 |
+| state       | `style`、`classDef`                                  |                           2 / 0 |
+| ER          | `style`、`classDef`                                  |                          12 / 0 |
+| requirement | `style`、`classDef`                                  |                           5 / 0 |
+| block       | `style`、`classDef`                                  |                           7 / 0 |
+| usecase     | `style`、`classDef`                                  |                          10 / 0 |
+| quadrant    | 点と `classDef` の `color` と `stroke-color`         |                           7 / 0 |
+| Venn        | `style` のプロパティ                                 |                           1 / 0 |
+
+表の数は、mermaid.js の文書の例にあるこれらの場所の色を、
+パーサーで読んで数えたものです。
+数は、16 進数の英字を含む色（`#F9F`）だけを数えています。
+例は、そのような色を 64 個、小文字で書き、大文字や混在で書いたものはありません。
+数字だけの色（`#333`、ほかに 30 個）には大文字小文字がないので、数えていません。
+ほかの場所の色は、別の種類のテキストなので、書かれたまま残します。
+その場所は、
+ラベルとタイトル（ラベルの `<span>` の `style='color:#F00'` はラベルです）、
+ノート、C4 図の呼び出しの引数（`$bgColor="#FFF"`）、
+sequence 図の box と rect の色、frontmatter とディレクティブの設定です。
+treemap の `classDef` には色がありません。
+字句解析器が `#` を拒否するためです。
+[fixture: flowchart/colors/colors-in-lower-case]
+[fixture: flowchart/colors/swimlane-colors-in-lower-case]
+[fixture: agentflow/colors/colors-in-lower-case]
+[fixture: class/colors/colors-in-lower-case]
+[fixture: state/colors/colors-in-lower-case]
+[fixture: er/colors/colors-in-lower-case]
+[fixture: requirement/colors/colors-in-lower-case]
+[fixture: block/colors/colors-in-lower-case]
+[fixture: usecase/colors/colors-in-lower-case]
+[fixture: quadrant/colors/colors-in-lower-case]
+[fixture: venn/colors/colors-in-lower-case]
+
+テキストは、色以外に読めない場所でだけ色として扱い、
+Prettier の CSS 整形と同じに印字します。
+Prettier 3.9.9 で、以下の各値を `fill: <値>` として整形し、
+整形ツールは同じテキストを出しました。
+違いは `#fff 10PX` の単位の大文字小文字だけで、整形ツールはこれを変えません。
+色は、スタイルのテキストの中で単独の語になる、`#` と 3、4、6、
+8 桁の 16 進数です。
+テキストの先頭か、空白、`:`、`,`、`(` の後にあり、テキストの末尾か、空白、`,`、
+`)`、`!`、文を終える `;` の前にあります。
+そのため、`#F9F`、`#ABCD`、`#ABCDEF`、`#ABCDEF12`、`#FFF !important`、
+`#FFF!important`、`1px solid #FFF`、`rgb(#FFF)`、`calc(#ABC)`、
+`var(--x, #ABC)`、`fn(#FFF, #000)`、
+`/* #ABC */ #DEF`（コメントの後の色）は小文字で印字します。
+色を短くすることはありません（`#FFFFFF` は 6 桁のままです）。
+次のものは書かれたまま残します。
+2、5、7、9 桁の連なり（`#AB`、`#ABCDE`、`#ABCDEF1`、`#ABCDEF123`）、
+`#` の後がほかの文字のもの（`#GGG`）、ほかの文字が接する語（`#ABC-x`、`x#ABC`、
+`#ABC.5`、`#ABC#DEF`、`#ABC/#DEF`）、文字列（`'#ABC'`）、コメント、
+`url(` の括弧の中（`url(#ABC)` は要素への参照です）、
+バックスラッシュの後（`\#ABC`）にある `#` です。
+スタイルのテキストの中にある `;` は、色を実体のプレースホルダにするか、
+`;` の後の語と結びます。
+例えば、`classDef c fill:#F9F;stroke:red` のスタイルは、
+`fill:#F9Fstroke:red` です。
+詳しくは、
+[mermaid.js の行の規則](../../spec/docs/common.ja.md#style-行と-classdef-行)
+を参照してください。
+そのため、その色は書かれたまま残します。
+文を終える `;` は整形ツールが除くので、その前の色は小文字で印字します。
+色に接するディレクティブ（`fill:#ABCDEF%%{init: {}}%%`）は、
+mermaid.js が取り除いた後で、その前の語を後の語と結ぶことがあるので、
+その色も書かれたまま残します。
+[fixture: flowchart/colors/words-that-are-not-colors-as-written]
+[fixture: flowchart/colors/colors-in-quotes-and-after-a-backslash-as-written]
+[fixture: flowchart/colors/color-before-the-final-semicolon]
+[fixture: flowchart/colors/colors-before-a-semicolon-as-written]
+[fixture: flowchart/colors/colors-next-to-comments-and-directives]
+[fixture: class/colors/words-that-are-not-colors-as-written]
+[fixture: state/colors/words-that-are-not-colors-as-written]
+[fixture: er/colors/words-that-are-not-colors-as-written]
+[fixture: requirement/colors/words-that-are-not-colors-as-written]
+[fixture: block/colors/words-that-are-not-colors-as-written]
+[fixture: usecase/colors/words-that-are-not-colors-as-written]
+[fixture: venn/colors/words-that-are-not-colors-as-written]
+
+mermaid.js は、色を書かれたままの大文字小文字で Db と図に残し、
+同じ図を描きます。
+ノードのスタイルは、そのまま `!important` を付けて、
+図形の CSS `style` 属性に入れ、CSS は色の桁を大文字小文字によらず読みます。
+（[`styles2Map`](https://github.com/mermaid-js/mermaid/blob/2086904e76c692331e34a45d7cc3bc30860d040e/packages/mermaid/src/rendering-util/rendering-elements/shapes/handDrawnShapeStyles.ts#L44-L51)、
+[`styles2String`](https://github.com/mermaid-js/mermaid/blob/2086904e76c692331e34a45d7cc3bc30860d040e/packages/mermaid/src/rendering-util/rendering-elements/shapes/handDrawnShapeStyles.ts#L75-L106)）。
+リンクのスタイルは、パスの `style` 属性に入り、
+その `stroke` が矢印の先の色になります。
+（[スタイルの `stroke:`](https://github.com/mermaid-js/mermaid/blob/2086904e76c692331e34a45d7cc3bc30860d040e/packages/mermaid/src/rendering-util/rendering-elements/edges.js#L899)、
+[パスの `stroke:`](https://github.com/mermaid-js/mermaid/blob/2086904e76c692331e34a45d7cc3bc30860d040e/packages/mermaid/src/rendering-util/rendering-elements/edges.js#L957)）。
+[`addEdgeMarkers`](https://github.com/mermaid-js/mermaid/blob/2086904e76c692331e34a45d7cc3bc30860d040e/packages/mermaid/src/rendering-util/rendering-elements/edgeMarker.ts#L104-L136)
+は、それを色の id（`…pointEnd-margin__ABCDEF`）を持つマーカーに写します。
+この id は mermaid.js が生成するものです。
+quadrant 図は、点の色を `fill` と `stroke` の属性にそのまま入れます。
+（[`quadrantBuilder.ts`](https://github.com/mermaid-js/mermaid/blob/2086904e76c692331e34a45d7cc3bc30860d040e/packages/mermaid/src/diagrams/quadrant-chart/quadrantBuilder.ts#L496-L508)）。
+各場所の両方のテキストを Chromium に描き、SVG が、色の大文字小文字と、
+生成された id と、手描き風の図形のランダムな path を除いて同じか、
+画素が同じでした。
+flowchart の `style`、`classDef`、`linkStyle` は 9.0.0、9.1.7、9.4.3、10.3.1、
+10.9.0、11.0.0、11.4.1、11.12.3、11.13.0、11.14.0、11.15.0、11.16.1、12.0.0、
+12.3.0 の 14 版、swimlane 図は 11.16.1、12.0.0、12.3.0、
+agentflow 図は 12.0.0 と 12.3.0、class 図は `style` が 10.9.0、11.0.0、
+11.4.1 から 12.3.0、`classDef` が 11.4.1 から 12.3.0、
+state 図は `classDef` が 9.4.3、10.3.1、10.9.0、11.0.0 から 12.3.0、
+`style` が 11.0.0 から 12.3.0、ER 図は 11.12.3 から 12.3.0、
+requirement 図は 11.12.3 から 12.3.0、block 図は 10.9.0 から 12.3.0、
+usecase 図は 12.0.0 と 12.3.0、quadrant 図は 11.0.0 から 12.3.0、
+Venn 図は 11.13.0 から 12.3.0 です。
+14 版のうちほかの版は、その文か図の種類を拒否します。
+ただし ER 図の 9.0.0 は、`style` や `classDef` の行を受け付け、
+`style` や `classDef` とその後の id を実体として、スタイルなしで描きます。
+色が大文字のテキストと小文字のテキストは同じ SVG になるので、
+整形ツールの変更は、そこでも同じに描かれます。
+
+テストは、印字したテキストの Db に、
+書かれたテキストの Db から色を戻して比べます。
+`tests/color-case-differences.ts` の `colorCaseDbForFormattingComparison`
+を使います。
+スタイルを持つ Db の場所で、書かれた色を小文字にしたものになっている色は、
+書かれた大文字小文字を採ります。
+ほかの違いは、上の定義で色でないのに小文字で印字されたテキスト、
+別の色になった色、失われた色も含めて、失敗とします。
+固定している mermaid.js の版を上げるときは、各場所の両方のテキストを描き直し、
+SVG と画素を比べてから、例外を残します。
+
 ## 同じに描かれる綴り
 
 mermaid.js は、トークンの異なる綴りの一部を同じトークンとして読み、
@@ -2009,9 +2210,15 @@ sankey 図のリンクの source は、`"a b",c,1` と `a b,c,1` で同じ id �
 | C4             | 境界またはノードの type              |          0 |         14 |
 | C4             | 要素の description                   |          0 |         46 |
 | flowchart      | subgraph の名前                      |         53 |          1 |
+| flowchart      | 形のラベル                           |        109 |          8 |
+| flowchart      | リンクのラベル                       |         32 |          1 |
+| flowchart      | subgraph のタイトル                  |          6 |          0 |
 | agentflow      | flow の名前                          |         17 |          0 |
 | agentflow      | connector の名前                     |          2 |          0 |
 | agentflow      | connector のタイトル                 |          0 |          2 |
+| agentflow      | 形のラベル                           |          0 |         47 |
+| agentflow      | flow のタイトル                      |          0 |         17 |
+| agentflow      | リンクのラベル                       |          2 |          0 |
 | class          | class の名前                         |        178 |          4 |
 | class          | namespace の名前                     |         11 |          0 |
 
@@ -2020,21 +2227,29 @@ actor、use case、system boundary の名前は、
 引用符で囲んだ名前には、それらを付けられないためです。
 すべての名前を数えると、actor は 35 / 0、use case は 44 / 1、
 system boundary は 9 / 2 です。
+flowchart の行には、swimlane 図の例も含めて数えています。
+その例では、形のラベル 59 個、リンクのラベル 12 個、subgraph のタイトル 4 個を、
+引用符なしで書き、引用符で囲んだものはありません。
 
 テキストが平易なら、引用符なしで印字します。
 平易なテキストは、ASCII の英字、数字、`_`、`-`、`.` と、それらの間の空白です。
 sankey 図では、欄が取り除く両端の空白も含みます。
+sankey 図のリンクの source と target には、`R&D` や `it's` のように、`&`、`<`、
+`>`、`'`、`/`、`\` も使えます。
 sankey の字句解析器は、`"` と `,` 以外の ASCII の印字可能文字をすべて、
-引用符のない欄に取り込みますが、
+引用符のない欄に取り込みます。
+これらの文字を単独で、またはテキストの中に含む source と target の Db は、
+引用符の有無によらず同じです。
+リンクの値はこれらの文字で比較していないので、書かれたまま残します。
 ほかの種類の文字はどの処理段階でも同じに読まれるわけではありません。
 `%%` はコメントやディレクティブを始め、`#` は実体参照を始め、
 `;` は `style` と `classDef` の行の規則に関わり、改行は記録を終えます。
-`&`、`<`、`>`、`'`、`\`、`/` は、すべての位置では比較していません。
 そのため、これらの文字や `,`、`"` を含むテキストは、引用符で囲んだまま残し、
 ディレクティブやコメント領域を内部に含む文字列も同じにします。
 [fixture: sankey/quotes/plain-text-without-quotes]
 [fixture: sankey/quotes/plain-text-with-spaces-without-quotes]
 [fixture: sankey/quotes/spaces-at-the-ends-left-out]
+[fixture: sankey/quotes/symbols-without-quotes]
 [fixture: sankey/quotes/comma-and-doubled-quotes-kept]
 [fixture: sankey/quotes/other-characters-keep-the-quotes]
 [fixture: sankey/values/forms-kept]
@@ -2042,22 +2257,28 @@ sankey の字句解析器は、`"` と `,` 以外の ASCII の印字可能文字
 [fixture: sankey/directives/inside-fields-kept]
 [fixture: sankey/multi-line-strings/string-over-lines]
 
-ER 図では、ASCII の英字か `_` で始まる、ASCII の英字、数字、
-`_` からなる 1 語のテキストを、
+ER 図では、ASCII の英字、数字、`_` からなる語で、英字で始まり、
+各部分の間に 1 つの `-` を置いてもよいもの（`LINE-ITEM`、`a-1`）を、
+その語か最初の `-` の前の部分が、
 字句解析器が独立した単位として読む以下の語のいずれでもない場合に、
 引用符なしで印字します。
 大文字小文字は問いません。
 `erDiagram`、`style`、`classDef`、`class`、`subgraph`、`end`、`one`、`many`、
 `only`、`zero`、`optionally`、`or`、`to`、`accTitle`、`accDescr`、`direction`、
 `TB`、`BT`、`RL`、`LR`、`PK`、`FK`、`UK`、`u`、`o` です。
-空白、`-`、ASCII 外の文字など、ほかの文字を含む名前や、
+`-` はキーワードを終えるので、`end-x` は `end` と `-x` です。
+空白、`.`、ASCII 外の文字など、ほかの文字を含む名前や、
+`-` が先頭か末尾にある名前、2 つ続く名前（`-a`、`a-`、`a--b`）、
+`_` で始まる名前（`_x`、`_a-b`）、
 字句解析器が数や多重度として読める数字で始まる名前、
 mermaid.js が名前を空白 1 つで結ぶ subgraph のタイトルは、書かれたまま残します。
+10.5.0 より前の字句解析器は、引用符のない `_` で始まる名前を拒否します。
 `direction` で終わる名前と、`TB`、`BT`、`RL`、`LR` で始まる名前も、
 大文字小文字を問わず引用符を残します。
 字句解析器は、`direction`、空白（改行も含みます）、向きの名前を 1 行として読み、
 引用符を外した名前は、前の行か後の行と結ばれるためです。
 [fixture: er/entities/plain-names-without-quotes]
+[fixture: er/entities/hyphenated-names-without-quotes]
 [fixture: er/entities/names-that-need-quotes]
 [fixture: er/entities/names-next-to-a-direction-line]
 [fixture: er/entities/alias-tight]
@@ -2097,6 +2318,9 @@ Wardley マップでは、ASCII の英字、数字、`_` からなり、
 `"Title x"` の引用符は除きます。
 accelerator と deaccelerator、pipeline の component の名前は、
 引用符で囲んで印字します。
+`-` のある名前は書かれたまま残します。
+この図種が初めて加わった 11.14.0 は、引用符がないと拒否するためです。
+（[mermaid.js の版](#mermaidjs-の版)を参照）。
 矢印のないリンクの 2 つの名前 `"A" "B"` は、
 引用符を外すと 1 つの名前として読まれ、
 名前に隣接する hidden YAML ブロックの `---` は名前に結合されるので、
@@ -2123,13 +2347,18 @@ gitGraph では、ASCII の英字、数字、`_` と、その間の `-`、`.`、
 [fixture: gitgraph/references/reference-forms]
 
 象限チャートでは、ASCII 英字の単語でできていて、各単語の末尾には数字も使え、
-単語の間は空白 1 つのテキストを、どの単語も `title`、`classDef`、`accTitle`、
-`accDescr` のいずれでもなく、`quadrant` で始まる語でもない場合に、
-引用符なしで印字します。
+単語の間は空白 1 つで、各部分を 1 つの `-` で結ぶこともできるテキストを、
+どの部分も `title`、`classDef`、`accTitle`、`accDescr` のいずれでもなく、
+`quadrant` で始まる語でもなく、
+テキストに `x-axis` と `y-axis` を含まない場合に、引用符なしで印字します。
 大文字小文字は問いません。
-字句解析器は、数字や `_` の後の英字を再び単語の始まりとして読むので、`-`、`_`、
-単語の途中の数字や、先頭の数を含むテキストは、引用符で囲んだまま残します。
+字句解析器は `-` を単語の終わりとして読むので、その後の部分は単語を始め、
+`my-x-axis` はキーワード `x-axis` を含みます。
+字句解析器は、数字や `_` の後の英字を再び単語の始まりとして読むので、`_`、
+単語の途中の数字、先頭か `-` の後の数、先頭か末尾にある `-`、
+2 つ続く `-` を含むテキストは、引用符で囲んだまま残します。
 [fixture: quadrant/quotes/plain-texts-without-quotes]
+[fixture: quadrant/quotes/texts-with-hyphens-without-quotes]
 [fixture: quadrant/quotes/texts-that-need-quotes]
 [fixture: quadrant/points/string-names] [fixture: quadrant/axes/strings]
 
@@ -2264,12 +2493,22 @@ ASCII の空白以外の空白を挟んで立つテキスト、行の頭にあ�
 
 flowchart、swimlane 図、agentflow 図では、引用符で囲んだ subgraph、flow、
 connector の名前が、ASCII の英字、数字、`_` の語を空白 1 つで区切ったもので、
-どの語も `_blank`、`_parent`、`_self`、`_top`、`call`、`click`、`default`、
-`direction`、`end`、`href`、`interpolate` でなければ、引用符なしで印字します。
-字句解析器はこれらを独立した単位として読むので、`"end"`、`"click"`、
+各部分を 1 つの `-` で結ぶこともでき（`my-team`）、どの語も `_blank`、
+`_parent`、`_self`、`_top`、`call`、`click`、`default`、`direction`、`end`、
+`href`、`interpolate` でなければ、引用符なしで印字します。
+キーワードを終える最初の `-` の前の部分で比較します。
+字句解析器はこれらを独立した単位として読むので、`"end"`、`"click"`、`"end-x"`、
 `"x _self"` は引用符を残します。
 agentflow 図の字句解析器は `end` を名前として読みますが、
 印字はこれも引用符を残します。
+`-` が先頭か末尾にある名前や、2 つ続く名前は、引用符を残します。
+flowchart では、9.0.0 から 10.3.0 の字句解析器が `-`、`_`、
+数字の後でトークンを始めるので、
+`end` か `interpolate` が名前を終える場合（`"x-end"`、`"x_end"`）、
+空白の前に `click` か `call` がある場合（`"x-click"`、`"x1call"`）、`_self`、
+`_blank`、`_parent`、`_top` がどこかにある場合（`"x_self"`、`"a b_top"`）も、
+引用符を残します。
+swimlane 図と agentflow 図は、これらの名前を引用符なしで印字します。
 同じ行で語が接する名前（`subgraph "S"accDescr {}`）、コメントが続く名前、
 空白 2 つの連なりを持ち、subgraph にタイトルがあるため id になる名前は、
 引用符を残します。
@@ -2277,12 +2516,12 @@ agentflow 図の字句解析器は `end` を名前として読みますが、
 字句解析器は、`direction`、空白（改行も含みます）、向きの名前（`TB`、`BT`、
 `RL`、`LR`、`TD`）を 1 行として読みます。
 `subgraph xdirection` と次の行の `TB --> C` が、この 1 行になるためです。
-connector のタイトルは、mermaid.js が引用符の有無によらず同じに読むので、
-英字または数字で始まり、ASCII の英字、数字、空白、`_`、`-`、`.`、`,`、`:`、`!`、
-`?` からなる場合に、引用符で囲んで印字します。
 [fixture: flowchart/quotes/subgraph-names-without-quotes]
+[fixture: flowchart/quotes/subgraph-names-with-hyphens]
 [fixture: flowchart/quotes/swimlane-lane-names-without-quotes]
 [fixture: flowchart/quotes/subgraph-names-that-need-quotes]
+[fixture: flowchart/quotes/subgraph-names-the-old-lexer-reads]
+[fixture: flowchart/quotes/swimlane-lane-names-the-old-lexer-reads]
 [fixture: flowchart/quotes/subgraph-names-next-to-a-direction-line]
 [fixture: flowchart/quotes/subgraph-names-with-runs-without-quotes]
 [fixture: flowchart/quotes/subgraph-names-before-a-comment]
@@ -2290,9 +2529,60 @@ connector のタイトルは、mermaid.js が引用符の有無によらず同�
 [fixture: agentflow/quotes/names-without-quotes]
 [fixture: agentflow/quotes/names-that-need-quotes]
 [fixture: agentflow/quotes/names-next-to-a-direction-line]
+[fixture: agentflow/quotes/names-and-titles-before-a-comment]
+
+flowchart と swimlane 図の形のラベル、リンクのラベル、subgraph のタイトルは、
+引用符なしで印字します。
+agentflow 図の形のラベル、flow のタイトル、connector のタイトルは、
+引用符で囲んで印字し、リンクのラベルは引用符なしで印字します。
+いずれも、テキストが英字または数字で始まり、末尾に空白がなく、ASCII の英字、
+数字、空白、`_`、`-`、`.`、`,`、`:`、`!`、`?` からなる場合です。
+mermaid.js は、そのテキストを引用符の有無によらず、
+それを読むすべての版とすべての形で同じに読みます。
+ただし、Db に残す `labelType` は異なります。
+（[同じに描かれるラベル](#同じに描かれるラベル) を参照してください）。
+点線のリンクの矢印の間にあるラベル（`-. "a.b" .->`）の `.` は、
+ラベルを終えるので、引用符を残します。
+実線のリンクの矢印の間にあるラベル（`-- "a--b" -->`）の `--` も、ラベルを終え、
+`go--on` は矢印 `--o` として読まれるので、flowchart、swimlane 図、
+agentflow 図のどれでも引用符を残します。
+flowchart では、9.0.0 から 10.3.0 の字句解析器がラベルを文のトークンで読み、
+次の部分を別のトークンとして読みます。
+そのため、ラベルの末尾の `-`、矢印（`---`、`--x`、`--o`、`.-`）、`:::`、
+`_self`、`_blank`、`_parent`、`_top`、`interpolate`、
+空白かラベルの末尾が続く `click` と `call`、
+`accTitle` と `accDescr` を含むラベルも、引用符を残します。
+swimlane 図と agentflow 図は、これらを引用符なしで印字します。
+ほかのテキストは、書かれたまま残します。
+markdown 文字列、`_`、`/`、`\`、`-`、空白で始まるテキスト、括弧、`|`、`&`、`"`、
+`;`、`#`、`%`、`<` を含むテキスト、末尾に空白があるテキスト、
+行全体を残す行のラベルです。
+agentflow 図では、コメント行の後、単独の行にあるディレクティブの後、
+U+2028 や U+2029 の後のように、ラベルが行の最初の単位である場合も、
+書かれたまま残します。
+mermaid.js がその位置の文字列を拒否するためです。
+印字が別の形で書くリンクのラベルは、その形では引用符なしで書きます。
+（[リンクのラベル](#リンクのラベル)を参照）。
+[fixture: flowchart/quotes/shape-labels-without-quotes]
+[fixture: flowchart/quotes/link-labels-without-quotes]
+[fixture: flowchart/quotes/subgraph-titles-without-quotes]
+[fixture: flowchart/quotes/labels-that-need-quotes]
+[fixture: flowchart/quotes/labels-next-to-trivia]
+[fixture: flowchart/quotes/labels-the-old-lexer-reads]
+[fixture: flowchart/quotes/swimlane-labels-the-old-lexer-reads]
+[fixture: flowchart/quotes/labels-with-two-dashes-between-arrows]
+[fixture: flowchart/quotes/swimlane-labels-with-two-dashes-between-arrows]
+[fixture: flowchart/quotes/swimlane-labels-without-quotes]
+[fixture: flowchart/link-label-form/swimlane-arrows-to-pipes]
+[fixture: agentflow/quotes/edge-labels-with-two-dashes]
+[fixture: agentflow/quotes/labels-after-a-directive-line]
+[fixture: agentflow/quotes/labels-in-quotes]
+[fixture: agentflow/quotes/flow-titles-in-quotes]
 [fixture: agentflow/quotes/connector-titles-in-quotes]
 [fixture: agentflow/quotes/connector-titles-as-written]
-[fixture: agentflow/quotes/names-and-titles-before-a-comment]
+[fixture: agentflow/quotes/labels-after-a-comment-line]
+[fixture: agentflow/edge-labels/pipes-to-arrows]
+[fixture: agentflow/labels/labels-quote-unsafe]
 
 class 図では、バッククォートで囲んだ class または namespace の名前が、
 ASCII の英字、数字、`_` からなる 1 語で、`_blank`、`_parent`、`_self`、`_top`、
@@ -2311,11 +2601,6 @@ ASCII の英字、数字、`_` からなる 1 語で、`_blank`、`_parent`、`_
 [fixture: class/quotes/names-next-to-a-direction-line]
 [fixture: class/quotes/names-on-a-kept-line-as-written]
 
-flowchart、swimlane 図、agentflow 図では、subgraph や flow のタイトル、
-図形のラベル、リンクのラベルは、書かれたまま残します。
-mermaid.js は `A["x"]` を文字列、`A[x]` をテキストとして読み、
-Db は前者の `labelType` に `string`、後者に `text` を持つので、
-両方の形は同じに読まれないためです。
 sequence 図に文字列はなく、参加者の説明（`participant A as "Alice"`）、
 メッセージ、ノートの引用符はテキストの文字です。
 class 図の文法は、クラスのラベル、ノートのテキスト、多重度に文字列を必要とし、
@@ -2324,10 +2609,6 @@ class 図の文法は、クラスのラベル、ノートのテキスト、多�
 eventmodeling 図の名前に引用符で囲む形はなく、frame のデータ、タイトル、
 アクセシビリティの値の引用符はテキストの文字です。
 Db はデータ `{"x"}` に `{"x"}` を、`{x}` に `{x}` を持ちます。
-[fixture: flowchart/quotes/labels-as-written]
-[fixture: flowchart/quotes/subgraph-titles-as-written]
-[fixture: agentflow/quotes/labels-as-written]
-[fixture: agentflow/quotes/flow-titles-as-written]
 [fixture: sequence/quotes/texts-as-written]
 [fixture: class/quotes/strings-as-written]
 [fixture: eventmodeling/quotes/quotes-as-written]
@@ -2443,6 +2724,16 @@ class の 7 個の入力も、整形後のテキストと同じ SVG が描かれ
   これらの文法が独立した単位として読む語（`erDiagram`、`one`、`many`、
   `only one`、`to`、`optionally to` と、字句解析器のほかの語）は、
   印字が引用符で囲んだまま残す語に含まれます。
+  9.0.0 から 10.3.0 の文法は、
+  引用符のない名前を `[A-Za-z][A-Za-z0-9\-_]*` として、
+  10.5.0 から 11.4.1 の文法は `[A-Za-z_][A-Za-z0-9\-_]*` として、
+  11.5.0 から 12.3.0 の文法は `([^\x00-\x7F]|\w|\-|\*)+` として読みます（11.13.0
+  は `.` を加えます）。
+  そのため、英字で始まり、英字、数字、`_`、`-` からなる名前は、
+  引用符で囲む名前を読むすべての版で読めますが、
+  `_` で始まる名前は 10.5.0 より前には読めません。
+  9.4.3 と 10.3.1 は、`LINE-ITEM` を引用符の有無によらず同じに描き、
+  引用符のない `_x` を拒否するので、`_` で始まる名前は、引用符を残します。
 - requirement 図の名前と値: 9.1.0、10.9.0、12.3.0 の文法は、requirement の名前、
   id、text、element の名前、type、reference に、
   引用符で囲む文字列と引用符のない文字列の同じ生成規則 `unqString | qString`
@@ -2454,16 +2745,24 @@ class の 7 個の入力も、整形後のテキストと同じ SVG が描かれ
   英字で始まる語を空白で区切った形です。
   11.15.0（名前に `-` を加えた版）、12.0.0、12.3.0 の文法も同じ語を読みます。
   引用符で囲む名前は、引用符のない名前と同じテキストです。
+  11.14.0 は `-` のある名前を引用符なしでは拒否するので、
+  そのような名前は引用符を残します。
 - gitGraph のブランチ: 9.4.3、10.9.0、11.0.0 の文法は、参照 `ref` を、
   引用符のない名前 `\w([-\./\w]*[-\w])?` か文字列として読み、
   これらの文法の字句解析器は、キーワードを大文字小文字を問わず比較します。
   12.3.0 の文法は、書かれたとおりに比較し、
   キーワードより長い名前を名前として読みます。
-- 象限チャートのテキスト: 10.9.0、11.0.0、12.3.0 の文法は、
+- 象限チャートのテキスト: この図種が初めて加わった 10.2.0、10.3.0、10.9.0、
+  11.0.0、12.3.0 の文法は、
   引用符のないテキスト（`ALPHA` とその後のトークン）と文字列を、
   同じ `text` 規則で読みます。
   これらの文法の字句解析器は、`x-axis`、`quadrant-1` から `quadrant-4`、
   `quadrantChart` を、その後の境界を求めずに読みます。
+  この規則は、
+  テキストの中の `-` をトークン `MINUS`
+  として取り込みます（`textNoTagsToken: alphaNumToken | SPACE | MINUS`）。
+  10.3.1 から 12.3.0 は、
+  `-` のあるテキストを引用符の有無によらず同じに描きます。
 - XY チャートのタイトルと分類: 10.6.0、10.9.0、11.0.0、12.0.0、12.3.0 の文法は、
   タイトル、軸やプロットのタイトル、分類を、同じ `text` 規則で読みます。
   この規則は文字列をそのテキストとして読み、引用符のないテキストは、
@@ -2511,6 +2810,55 @@ class の 7 個の入力も、整形後のテキストと同じ SVG が描かれ
   そのため、どの版でも、
   subgraph の名前は両方の形で同じテキストと同じ型になります。
   agentflow 図の文法は、12.0.0、12.1.0、12.2.0、12.3.0 で同じファイルです。
+  9.4.3 の文法は、名前をトークン `ALPHA`、`MINUS`、`NUM` として読み、
+  10.9.0 から 12.3.0 の文法は、`>`、`-`、`.` が後に続かない `-` を、
+  トークン `NODE_STRING` に取り込むので、英字の間の `-` は名前の一部です。
+  `-` はキーワードを終えるので、`end-x` は `end` と `-x` です。
+  名前 `my-group` と `"my-group"` は、9.0.0、9.1.7、9.4.3、10.3.1、10.9.0、
+  11.0.0、11.4.1、11.12.3、11.13.0、11.16.1、12.0.0、12.3.0 で、
+  同じに描かれました（swimlane 図は 11.16.1 から、agentflow 図は 12.0.0 から）。
+  9.4.3 と 10.3.0 の文法が共有する 9.0.0 から 10.3.0 の字句解析器には、
+  `end`（語の境界と後続の空白を伴う）、空白が続く `click` と `call`、
+  `interpolate`、リンクの対象 `_self`、`_blank`、`_parent`、
+  `_top` の規則があり、`-`、`_`、数字の後でトークンを始めます。
+  9.0.0、9.1.7、9.4.3 は、引用符のない `subgraph x-end`、`x_end`、`x1end`、
+  `x-click`、`x-call`、`x-interpolate`、`x-_self`、`x_self`、`x_blank`、
+  `a b_top` を拒否し、引用符のある名前は描きます。
+  10.3.1 以降の版は、両方の形を同じに描きます。
+  そのため、これらの部分を持つ flowchart の名前は、引用符を残します。
+  `x-ending`、`x-clicker`、`x-calls`、`x-End` は、14 版で同じに描かれました。
+- flowchart、swimlane 図、agentflow 図の形、リンク、
+  subgraph のラベル: 角括弧の中のタイトルと形のラベルを読む `text` 規則は、
+  文字列に 10.3.1 から型 `string` を与え、それより前は型 `text` を与えるので、
+  引用符で囲むラベルと同じラベルを引用符なしで書いたものの Db は、
+  10.3.1 から異なります。
+  描画処理は、型が `markdown` かどうかだけを読み、平易なラベルは、
+  [同じに描かれるラベル](#同じに描かれるラベル) に挙げるすべての版で、
+  引用符の有無によらず同じに描かれました。
+  ただし、次のテキストを除きます。
+  9.4.3 と 10.3.0 の文法には、ラベルのテキストのための状態がなく、
+  文のトークンでテキストを読みます。
+  テキスト規則（`textToken`）は、トークン `INTERPOLATE`、`LINK_TARGET`、
+  `STYLE_SEPARATOR`（`:::`）、`LINK`（`---`、`--x`、`--o`、`.-`）と、
+  閉じ記号 `-)` を取りません。
+  キーワード `click` と `call` は、対話的な文の状態を始め、
+  `accTitle` と `accDescr` は、アクセシビリティの行の状態を始めます。
+  9.0.0、9.1.7、9.4.3 は、引用符のない `go-`（丸い形）、`a.-b`、`a---b`、
+  `o--o`、`a:::b`、`please click here`、`call x`、`interpolate`、`x_self`、
+  `a_blank`、`x_top`、9.1.7 からは `accTitle: x` も、形の中、`|` の間、
+  2 つの矢印の間、subgraph のタイトルで拒否するか別に描き、
+  引用符のあるテキストは描きます。
+  10.3.1 以降の版は、ラベルの状態を持ち、両方の形を同じに描きます。
+  そのため、これらの部分を持つ flowchart のラベルは、引用符を残します。
+  10.3.1 以降の字句解析器は、2 つの実線の矢印の間のテキストを 1 文字ずつ、
+  `-` は後に `-` が続かないときだけ読む（`<edgeText>[^-]|\-(?!\-)`）ので、
+  テキストは `--` で終わります。
+  そのため、`--` を含むラベルは、flowchart、swimlane 図、
+  agentflow 図のどれでも引用符を残します。
+  `-- a--b -->` は拒否され、`-- go--on -->` は矢印 `--o` を持ちます。
+  `Click here`、`aclick x`、`recall x`、`interpolated x`、`direction TB x`、
+  `the end of it` は、9.0.0 から 12.3.0 の 14 版で、
+  引用符の有無によらず同じに描かれました。
 - class 図の class の名前: 9.0.0 から 12.3.0 の文法は、
   バッククォートで囲んだ名前（`classLiteralName`: `BQUOTE_STR`）と、
   英字と数字の名前（`alphaNumToken`: `ALPHA`、`NUM`）を、

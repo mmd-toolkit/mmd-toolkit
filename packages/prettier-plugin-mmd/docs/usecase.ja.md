@@ -224,6 +224,63 @@ usecase-beta
   D("` markdown  text `")
 ```
 
+### 色
+
+スタイルの色は、mermaid.js の文書の例と Prettier の CSS 整形と同じく、
+小文字で印字します。
+`style A stroke:#ABCDEF,fill:#F9F` は `style A stroke: #abcdef, fill: #f9f`
+と印字します。
+usecase 図の `style`、`classDef` 文のスタイルの色が対象です。
+色は、スタイルの値の中で単独で立つ、`#` と 3、4、6、8 桁の 16 進数です。
+色を短くすることはなく、色でないテキストは書かれたままにします。
+（[同じに描かれる色](./compatibility.ja.md#同じに描かれる色)を参照）。
+[fixture: colors/colors-in-lower-case]
+[fixture: colors/words-that-are-not-colors-as-written]
+
+入力
+([colors/colors-in-lower-case-input.mmd](../tests/fixtures/usecase/colors/colors-in-lower-case-input.mmd)):
+
+```mmd
+usecase-beta
+actor A
+B(Use)
+A --> B
+style A stroke:#ABCDEF,fill:#F9F
+classDef c fill:#DEADBE
+```
+
+出力
+([colors/colors-in-lower-case-output.mmd](../tests/fixtures/usecase/colors/colors-in-lower-case-output.mmd)):
+
+```mmd
+usecase-beta
+  actor A
+  B("Use")
+  A --> B
+  style A stroke: #abcdef, fill: #f9f
+  classDef c fill: #deadbe
+```
+
+入力
+([colors/words-that-are-not-colors-as-written-input.mmd](../tests/fixtures/usecase/colors/words-that-are-not-colors-as-written-input.mmd)):
+
+```mmd
+usecase-beta
+actor A
+style A stroke:#ABCDE,fill:#ABCDEF1
+classDef c fill:url(#ABC),stroke:#ABC-x
+```
+
+出力
+([colors/words-that-are-not-colors-as-written-output.mmd](../tests/fixtures/usecase/colors/words-that-are-not-colors-as-written-output.mmd)):
+
+```mmd
+usecase-beta
+  actor A
+  style A stroke: #ABCDE, fill: #ABCDEF1
+  classDef c fill: url(#ABC), stroke: #ABC-x
+```
+
 ### Quotes
 
 名前、ラベル、native metadata の語は、
@@ -450,13 +507,18 @@ usecase-beta
 実際の usecase 演算子全体の両側を通常の空白 1 個にします。
 方向、マーカー、ダッシュと点の数を保ちます。
 Db の長さが固定される分割矢印の長い右半分も同じです。
-意味を持つ演算子は、キーワードを mermaid.js の文書の例と同じく小文字にし、
-`..>:include` と `..>:extend` と詰めて印字します。
+意味を持つ演算子は、コロンの前後に空白を 1 つ置き、キーワードを小文字にして、
+`..> : include` と `..> : extend` と印字します。
+mermaid.js の文書の例はこの形を 7 回使い、
+コロンを接して書く形は一度も使いません。
 （[同じに描かれる綴り](./compatibility.ja.md#同じに描かれる綴り)を参照）。
 その後、端点の前を空白 1 個にします。
-コロンとキーワードは演算子の構文です。
+矢印の後のコロンは、class、ER、state 図でも同じ空白を取ります。
+mermaid.js は `..>:include`、`..> :include`、`..>: include`、
+`..> : include` を同じ演算子として読みます。
 [fixture: arrows/semantic-operator-directives]
 [fixture: arrows/arrows-semantic-case-one-form]
+[fixture: arrows/semantic-colon-gaps]
 端点の交換や演算子の種類の変換はしません。
 方向、マーカー、ダッシュと点の数は書かれたままです。
 正規化した Db の演算子は出力しないためです。
@@ -478,9 +540,39 @@ Db の長さが固定される分割矢印の長い右半分も同じです。
 
 ```mmd
 usecase-beta
-  A ..>:include B
-  B ..>:extend C
+  A ..> : include B
+  B ..> : extend C
   C --|> D
+```
+
+入力
+([arrows/semantic-colon-gaps-input.mmd](../tests/fixtures/usecase/arrows/semantic-colon-gaps-input.mmd)):
+
+```mmd
+usecase-beta
+Browse("Browse")
+Checkout("Checkout")
+Checkout..>:include Browse
+Checkout ..> :include Browse
+Checkout ..>: include Browse
+Checkout ..>   :   extend   Browse
+Checkout	..>	:	extend	Browse
+Checkout pays@..>:include Browse
+```
+
+出力
+([arrows/semantic-colon-gaps-output.mmd](../tests/fixtures/usecase/arrows/semantic-colon-gaps-output.mmd)):
+
+```mmd
+usecase-beta
+  Browse("Browse")
+  Checkout("Checkout")
+  Checkout ..> : include Browse
+  Checkout ..> : include Browse
+  Checkout ..> : include Browse
+  Checkout ..> : extend Browse
+  Checkout ..> : extend Browse
+  Checkout pays@..> : include Browse
 ```
 
 ### Arrow id boundaries

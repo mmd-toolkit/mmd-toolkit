@@ -1186,6 +1186,61 @@ stateDiagram-v2
   Foo %%{init: {}}%%--> B
 ```
 
+### Colors
+
+A color in a style is printed in lower case, as the examples in the
+documentation of mermaid.js write it and as the CSS formatter of Prettier prints
+it: `style A fill:#F9F,stroke:#ABCDEF` is printed
+`style A fill: #f9f, stroke: #abcdef`. The colors in the styles of the `style`
+and `classDef` statements of a state diagram are printed so. A color is a `#`
+and 3, 4, 6, or 8 hexadecimal digits that stand alone in the value of a style;
+it is never shortened, and a text that is no color stays as written (see
+[Colors that are drawn the same](./compatibility.md#colors-that-are-drawn-the-same)).
+[fixture: colors/colors-in-lower-case] [fixture:
+colors/words-that-are-not-colors-as-written]
+
+Input
+([colors/colors-in-lower-case-input.mmd](../tests/fixtures/state/colors/colors-in-lower-case-input.mmd)):
+
+```mmd
+stateDiagram-v2
+A --> B
+classDef c fill:#DEADBE,color:#C0FFEE
+class B c
+style A fill:#F9F,stroke:#ABCDEF
+```
+
+Output
+([colors/colors-in-lower-case-output.mmd](../tests/fixtures/state/colors/colors-in-lower-case-output.mmd)):
+
+```mmd
+stateDiagram-v2
+  A --> B
+  classDef c fill: #deadbe, color: #c0ffee
+  class B c
+  style A fill: #f9f, stroke: #abcdef
+```
+
+Input
+([colors/words-that-are-not-colors-as-written-input.mmd](../tests/fixtures/state/colors/words-that-are-not-colors-as-written-input.mmd)):
+
+```mmd
+stateDiagram-v2
+A --> B
+style A fill:#ABCDE,stroke:#ABCDEF1
+classDef c fill:url(#ABC),stroke:#ABC-x
+```
+
+Output
+([colors/words-that-are-not-colors-as-written-output.mmd](../tests/fixtures/state/colors/words-that-are-not-colors-as-written-output.mmd)):
+
+```mmd
+stateDiagram-v2
+  A --> B
+  style A fill: #ABCDE, stroke: #ABCDEF1
+  classDef c fill: url(#ABC), stroke: #ABC-x
+```
+
 ### Frontmatter YAML
 
 As in a flowchart: the YAML between the `---` lines is formatted with Prettier's

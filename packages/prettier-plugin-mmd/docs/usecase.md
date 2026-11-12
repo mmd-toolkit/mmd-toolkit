@@ -212,6 +212,63 @@ usecase-beta
   D("` markdown  text `")
 ```
 
+### Colors
+
+A color in a style is printed in lower case, as the examples in the
+documentation of mermaid.js write it and as the CSS formatter of Prettier prints
+it: `style A stroke:#ABCDEF,fill:#F9F` is printed
+`style A stroke: #abcdef, fill: #f9f`. The colors in the styles of the `style`
+and `classDef` statements of a use case diagram are printed so. A color is a `#`
+and 3, 4, 6, or 8 hexadecimal digits that stand alone in the value of a style;
+it is never shortened, and a text that is no color stays as written (see
+[Colors that are drawn the same](./compatibility.md#colors-that-are-drawn-the-same)).
+[fixture: colors/colors-in-lower-case] [fixture:
+colors/words-that-are-not-colors-as-written]
+
+Input
+([colors/colors-in-lower-case-input.mmd](../tests/fixtures/usecase/colors/colors-in-lower-case-input.mmd)):
+
+```mmd
+usecase-beta
+actor A
+B(Use)
+A --> B
+style A stroke:#ABCDEF,fill:#F9F
+classDef c fill:#DEADBE
+```
+
+Output
+([colors/colors-in-lower-case-output.mmd](../tests/fixtures/usecase/colors/colors-in-lower-case-output.mmd)):
+
+```mmd
+usecase-beta
+  actor A
+  B("Use")
+  A --> B
+  style A stroke: #abcdef, fill: #f9f
+  classDef c fill: #deadbe
+```
+
+Input
+([colors/words-that-are-not-colors-as-written-input.mmd](../tests/fixtures/usecase/colors/words-that-are-not-colors-as-written-input.mmd)):
+
+```mmd
+usecase-beta
+actor A
+style A stroke:#ABCDE,fill:#ABCDEF1
+classDef c fill:url(#ABC),stroke:#ABC-x
+```
+
+Output
+([colors/words-that-are-not-colors-as-written-output.mmd](../tests/fixtures/usecase/colors/words-that-are-not-colors-as-written-output.mmd)):
+
+```mmd
+usecase-beta
+  actor A
+  style A stroke: #ABCDE, fill: #ABCDEF1
+  classDef c fill: url(#ABC), stroke: #ABC-x
+```
+
 ### Quotes
 
 A name, a label, and a word of the native metadata are printed in the form that
@@ -405,17 +462,21 @@ usecase-beta
 Reuse readable [arrow spacing](./class.md#arrow-spacing): one ordinary gap on
 each side of the actual complete usecase operator. Keep direction, marker, and
 every dash/dot, including long split closing halves whose Db length is fixed.
-Semantic operators print compact `..>:include` and `..>:extend`, the keyword in
-lower case, as the examples in the documentation of mermaid.js write it (see
+Semantic operators print `..> : include` and `..> : extend`, with one space
+before and after the colon and the keyword in lower case, as the examples in the
+documentation of mermaid.js write it, 7 times and never with the colon touching
+(see
 [Spellings that are drawn the same](./compatibility.md#spellings-that-are-drawn-the-same)),
-then one target gap; their colon and keyword are operator syntax. [fixture:
+then one target gap; the colon after an arrow takes the same gap in a class, an
+ER, and a state diagram. mermaid.js reads `..>:include`, `..> :include`,
+`..>: include`, and `..> : include` as the same operator. [fixture:
 arrows/semantic-operator-directives] [fixture:
-arrows/arrows-semantic-case-one-form] Never swap endpoints or translate operator
-families. Direction, marker, and the dash and dot counts stay as written because
-the printer never prints a normalized Db operator: `A---->B` printed as
-`A --> B` changes the minimum length, and `A<--B` printed as `B --> A` changes
-the order of source and target. A split arrow keeps its dash counts even where
-the Db length is fixed.
+arrows/arrows-semantic-case-one-form] [fixture: arrows/semantic-colon-gaps]
+Never swap endpoints or translate operator families. Direction, marker, and the
+dash and dot counts stay as written because the printer never prints a
+normalized Db operator: `A---->B` printed as `A --> B` changes the minimum
+length, and `A<--B` printed as `B --> A` changes the order of source and target.
+A split arrow keeps its dash counts even where the Db length is fixed.
 
 [fixture: arrows/arrows-solid] [fixture: arrows/arrows-markers] [fixture:
 arrows/arrows-semantic] [fixture: arrows/arrows-length-kept] [fixture:
@@ -430,9 +491,39 @@ Output
 
 ```mmd
 usecase-beta
-  A ..>:include B
-  B ..>:extend C
+  A ..> : include B
+  B ..> : extend C
   C --|> D
+```
+
+Input
+([arrows/semantic-colon-gaps-input.mmd](../tests/fixtures/usecase/arrows/semantic-colon-gaps-input.mmd)):
+
+```mmd
+usecase-beta
+Browse("Browse")
+Checkout("Checkout")
+Checkout..>:include Browse
+Checkout ..> :include Browse
+Checkout ..>: include Browse
+Checkout ..>   :   extend   Browse
+Checkout	..>	:	extend	Browse
+Checkout pays@..>:include Browse
+```
+
+Output
+([arrows/semantic-colon-gaps-output.mmd](../tests/fixtures/usecase/arrows/semantic-colon-gaps-output.mmd)):
+
+```mmd
+usecase-beta
+  Browse("Browse")
+  Checkout("Checkout")
+  Checkout ..> : include Browse
+  Checkout ..> : include Browse
+  Checkout ..> : include Browse
+  Checkout ..> : extend Browse
+  Checkout ..> : extend Browse
+  Checkout pays@..> : include Browse
 ```
 
 ### Arrow id boundaries

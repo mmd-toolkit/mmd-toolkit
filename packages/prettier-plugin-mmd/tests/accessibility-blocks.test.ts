@@ -1,5 +1,6 @@
 /** Escaped accessibility blocks cover Unicode gaps and CR closing lines. */
 import { describe, expect, it } from "vitest"
+import { dbForFormattingComparison } from "./db-comparison.ts"
 import { formatMermaid } from "./helpers.ts"
 import {
   dbOfText,
@@ -17,7 +18,7 @@ const cases = [
   {
     name: "accessibility blocks: agentflow empty-block-unicode",
     input: "agentflow-beta TB\naccDescr {\u00a0\u2028\u2029}\nA[Unicode empty]",
-    output: "agentflow-beta TB\n  accDescr {}\n  A[Unicode empty]\n",
+    output: 'agentflow-beta TB\n  accDescr {}\n  A["Unicode empty"]\n',
   },
   {
     name: "accessibility blocks: class brace-after-ls-direction-kept",
@@ -63,9 +64,15 @@ describe("accessibility blocks", () => {
   it.each(cases)("$name", async ({ input, output }) => {
     expect(await formatMermaid(input)).toBe(output)
     expect(await formatMermaid(output)).toBe(output)
-    expect(dbOfText(output, defaultEmbedded())).toEqual(
-      dbOfText(input, defaultEmbedded()),
-    )
+    const dbBefore = dbOfText(input, defaultEmbedded())
+    expect(
+      dbForFormattingComparison(
+        dbBefore,
+        dbOfText(output, defaultEmbedded()),
+        input,
+        output,
+      ),
+    ).toEqual(dbBefore)
     expect(writtenEmbeddedTexts(output)).toEqual(writtenEmbeddedTexts(input))
     expect(treeProblemsOfText(input)).toEqual([])
     expect(treeProblemsOfText(output)).toEqual([])

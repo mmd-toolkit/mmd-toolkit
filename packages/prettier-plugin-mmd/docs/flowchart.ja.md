@@ -2609,6 +2609,74 @@ flowchart LR
   end
 ```
 
+### 色
+
+スタイルの色は、mermaid.js の文書の例と Prettier の CSS 整形と同じく、
+小文字で印字します。
+`style A fill:#F9F,stroke:#ABCDEF` は `style A fill: #f9f, stroke: #abcdef`
+と印字します。
+flowchart と swimlane 図の `style`、`classDef`、
+`linkStyle` 文のスタイルの色が対象です。
+色は、スタイルの値の中で単独で立つ、`#` と 3、4、6、8 桁の 16 進数です。
+色を短くすることはなく、色でないテキストは書かれたままにします。
+（[同じに描かれる色](./compatibility.ja.md#同じに描かれる色)を参照）。
+[fixture: colors/colors-in-lower-case]
+[fixture: colors/words-that-are-not-colors-as-written]
+
+入力
+([colors/colors-in-lower-case-input.mmd](../tests/fixtures/flowchart/colors/colors-in-lower-case-input.mmd)):
+
+```mmd
+flowchart LR
+A --> B
+C:::c
+style A fill:#F9F,stroke:#ABCDEF,color:#C0FFEE
+style B fill:#ABCD,stroke:#ABCDEF12
+classDef c fill:#DEADBE,stroke:#ABCDEF
+linkStyle 0 stroke:#FF0000,color:#00FF00
+linkStyle default stroke:#ABCDEF
+```
+
+出力
+([colors/colors-in-lower-case-output.mmd](../tests/fixtures/flowchart/colors/colors-in-lower-case-output.mmd)):
+
+```mmd
+flowchart LR
+  A --> B
+  C:::c
+  style A fill: #f9f, stroke: #abcdef, color: #c0ffee
+  style B fill: #abcd, stroke: #abcdef12
+  classDef c fill: #deadbe, stroke: #abcdef
+  linkStyle 0 stroke: #ff0000, color: #00ff00
+  linkStyle default stroke: #abcdef
+```
+
+入力
+([colors/words-that-are-not-colors-as-written-input.mmd](../tests/fixtures/flowchart/colors/words-that-are-not-colors-as-written-input.mmd)):
+
+```mmd
+flowchart LR
+A --> B
+style A fill:#ABCDE,stroke:#ABCDEF1
+style B fill:#AB,stroke:#GGG
+classDef c fill:x#ABC,stroke:#ABC-x
+classDef d fill:#ABC.5,stroke:#ABC#DEF
+classDef e stroke:#ABC/#DEF
+```
+
+出力
+([colors/words-that-are-not-colors-as-written-output.mmd](../tests/fixtures/flowchart/colors/words-that-are-not-colors-as-written-output.mmd)):
+
+```mmd
+flowchart LR
+  A --> B
+  style A fill: #ABCDE, stroke: #ABCDEF1
+  style B fill: #AB, stroke: #GGG
+  classDef c fill: x#ABC, stroke: #ABC-x
+  classDef d fill: #ABC.5, stroke: #ABC#DEF
+  classDef e stroke: #ABC/#DEF
+```
+
 ### Quotes
 
 引用符付きの subgraph の名前は、mermaid.js の文書の例が引用符なしで 53 回、
@@ -2618,16 +2686,27 @@ flowchart LR
 mermaid.js はどちらの形の名前も同じテキストとして読み、
 複数の語からなる名前の id はどちらでも生成されます。
 名前が ASCII の英字、数字、`_` からなる語を空白 1 つで区切ったもので、
-どの語も `_blank`、`_parent`、`_self`、`_top`、`call`、`click`、`default`、
-`direction`、`end`、`href`、`interpolate` でない場合に、引用符なしで印字します。
+語の部分同士を 1 つの `-` でつないでもよく（`my-group`）、どの語も `_blank`、
+`_parent`、`_self`、`_top`、`call`、`click`、`default`、`direction`、`end`、
+`href`、`interpolate` でない場合に、引用符なしで印字します。
 これらの語は、字句解析器がそれぞれ独立した単位として読むためです。
-そのため、`"a-b"`、`"end"`、`"x end"`、`"click"`、`"x _self"`、`"direction"`、
+`-` はキーワードを終わらせるので、最初の `-` より前の部分で比較します。
+`end-x` は `end` と `-x` です。
+そのため、`"end"`、`"x end"`、`"click"`、`"end-x"`、`"x _self"`、`"direction"`、
+先頭か末尾に `-` があるか、2 つ続く名前（`"-a"`、`"a-"`、`"a--b"`）、
 `.` や ASCII 以外の文字を含む名前と、markdown 文字列は書かれたままにします。
 `direction` で終わる名前（`"xdirection"`、`"my xdirection"`）は、
 後に何が続いても引用符を残します。
 字句解析器は、`direction`、空白（改行も含みます）、`TB`、`BT`、`RL`、`LR`、
 `TD` を 1 行として読みます。
 `subgraph xdirection` と次の行の `TB --> C` が、この 1 行になるためです。
+`flowchart` では、9.0.0 から 10.3.0 の字句解析器が `-`、`_`、
+数字の後でトークンを始めます。
+そのため、`end` か `interpolate` が名前を終える場合（`"x-end"`、`"x_end"`）、
+空白の前に `click` か `call` がある場合（`"x-click"`、`"x1call"`）、`_self`、
+`_blank`、`_parent`、`_top` がある場合（`"x_self"`、`"a b_top"`）も、
+引用符を残します。
+swimlane 図は、これらの名前を引用符なしで印字します。
 同じ行で語が接する名前（`subgraph "S"accDescr {}`）と、
 コメントが続く名前（`subgraph "C" %% note`）は、
 引用符なしのテキストが語やコメントを取り込んでしまうため、引用符を保ちます。
@@ -2637,20 +2716,58 @@ mermaid.js はどちらの形の名前も同じテキストとして読み、
 名前の後の `;` やディレクティブは何も取り込まないので、名前は引用符を失います。
 `subgraph "D"%%{init: {}}%%` は `subgraph D%%{init: {}}%%` と印字します。
 [fixture: quotes/subgraph-names-without-quotes]
+[fixture: quotes/subgraph-names-with-hyphens]
 [fixture: quotes/swimlane-lane-names-without-quotes]
 [fixture: quotes/subgraph-names-that-need-quotes]
+[fixture: quotes/subgraph-names-the-old-lexer-reads]
+[fixture: quotes/swimlane-lane-names-the-old-lexer-reads]
 [fixture: quotes/subgraph-names-next-to-a-direction-line]
 [fixture: quotes/subgraph-names-with-runs-without-quotes]
 [fixture: quotes/subgraph-names-before-a-comment]
 [fixture: subgraph-header/whitespace-before-block-kept]
 
-角括弧の中の subgraph のタイトルと、shape のラベル、link のラベルは、
-書かれたままにします。
+shape のラベル、link のラベル、角括弧の中の subgraph のタイトルも、
+例と同じく引用符なしで印字します。
+例では、shape のラベルを引用符なしで 109 回、引用符付きで 8 回、
+link のラベルを引用符なしで 32 回、引用符付きで 1 回、
+タイトルを引用符なしで 6 回、引用符付きでは一度も書いていないためです。
+（[テキストの引用符](./compatibility.ja.md#テキストの引用符)）。
+`A["Start here"]` は `A[Start here]` と、
+`A -->|"Is it ready?"| B` は `A -->|Is it ready?| B` と、
+`subgraph S ["Title"]` は `subgraph S[Title]` と印字します。
+テキストを引用符なしで印字するのは、英字か数字で始まり、末尾に空白がなく、
+ASCII の英字、数字、空白、`_`、`-`、`.`、`,`、`:`、`!`、`?` からなる場合です。
 mermaid.js は `A["x"]` を文字列として、`A[x]` をテキストとして読み、
 Db の `labelType` に前者では `string`、後者では `text` を持ちます。
-そのため、例では shape のラベルを引用符なしで 109 回、
-引用符付きで 8 回書いていても、この 2 つの形は同じには読まれません。
-[fixture: quotes/labels-as-written] [fixture: quotes/subgraph-titles-as-written]
+ただし、描かれる図は同じです。
+（[同じに描かれるラベル](./compatibility.ja.md#同じに描かれるラベル)）。
+点線の矢印 2 つの間のラベル（`-. "a.b" .->`）では、
+`.` がラベルを終わらせるので、`.` を含むテキストの引用符を残します。
+実線の矢印 2 つの間のラベル（`-- "a--b" -->`）では、
+`--` がラベルを終わらせるので、`--` を含むテキストの引用符を残します。
+`flowchart` では、9.0.0 から 10.3.0 の字句解析器が、
+ラベルを文のトークンで読みます。
+そのため、末尾の `-`（`("go-")`）、矢印（`---`、`--x`、`--o`、`.-`）、`:::`、
+`_self`、`_blank`、`_parent`、`_top`、`interpolate`、
+空白かラベルの末尾が続く `click` と `call`、
+`accTitle` と `accDescr` を含むラベルも、引用符を残します。
+swimlane 図は、これらを引用符なしで印字します。
+それ以外のテキスト（`"x (y)"`、`"a/b"`、`"a & b"`、`"_x"`、`"x "`、`" x"`）と、
+markdown 文字列は引用符を残します。
+mermaid.js の行の規則が丸ごと読む行など、
+プリンタが書かれたまま印字する行のラベルも同じです。
+（[`;` を含む行](./compatibility.ja.md#-を含む行)）。
+引用符なしで書かれたラベルは、引用符なしのままにします。
+[fixture: quotes/shape-labels-without-quotes]
+[fixture: quotes/link-labels-without-quotes]
+[fixture: quotes/subgraph-titles-without-quotes]
+[fixture: quotes/labels-that-need-quotes]
+[fixture: quotes/labels-next-to-trivia]
+[fixture: quotes/labels-the-old-lexer-reads]
+[fixture: quotes/swimlane-labels-the-old-lexer-reads]
+[fixture: quotes/labels-with-two-dashes-between-arrows]
+[fixture: quotes/swimlane-labels-with-two-dashes-between-arrows]
+[fixture: quotes/swimlane-labels-without-quotes]
 
 入力
 ([quotes/subgraph-names-without-quotes-input.mmd](../tests/fixtures/flowchart/quotes/subgraph-names-without-quotes-input.mmd)):
@@ -2700,6 +2817,84 @@ flowchart TD
   subgraph Already
     K --> L
   end
+```
+
+入力
+([quotes/shape-labels-without-quotes-input.mmd](../tests/fixtures/flowchart/quotes/shape-labels-without-quotes-input.mmd)):
+
+```mmd
+flowchart LR
+A["text"]
+B("Is it ready?")
+C(["Step 1: load"])
+D[["go-on, then stop!"]]
+E[("Database v2")]
+F(("x.y"))
+G{{"Hexagon"}}
+H{"Decision"}
+I[/"Input"/]
+J[\"Output"\]
+K[/"Trapezoid"\]
+L[\"Alt trapezoid"/]
+M>"Asymmetric"]
+N((("Double circle")))
+O["a - b"]
+P[text]
+```
+
+出力
+([quotes/shape-labels-without-quotes-output.mmd](../tests/fixtures/flowchart/quotes/shape-labels-without-quotes-output.mmd)):
+
+```mmd
+flowchart LR
+  A[text]
+  B(Is it ready?)
+  C([Step 1: load])
+  D[[go-on, then stop!]]
+  E[(Database v2)]
+  F((x.y))
+  G{{Hexagon}}
+  H{Decision}
+  I[/Input/]
+  J[\Output\]
+  K[/Trapezoid\]
+  L[\Alt trapezoid/]
+  M>Asymmetric]
+  N(((Double circle)))
+  O[a - b]
+  P[text]
+```
+
+入力
+([quotes/link-labels-without-quotes-input.mmd](../tests/fixtures/flowchart/quotes/link-labels-without-quotes-input.mmd)):
+
+```mmd
+flowchart LR
+A -->|"Is it ready?"| B
+B -- "Step 1: load" --> C
+C == "go-on, then stop!" ==> D
+D -- "x" --- E
+E -.-> F
+F -. "ready?" .-> G
+G -. "a.b" .-> H
+H -->|"a.b"| I
+I -->|plain| J
+```
+
+出力
+([quotes/link-labels-without-quotes-output.mmd](../tests/fixtures/flowchart/quotes/link-labels-without-quotes-output.mmd)):
+
+```mmd
+flowchart LR
+  A -->|Is it ready?| B
+  B -- Step 1: load --> C
+  C == go-on, then stop! ==> D
+  D -- x --- E
+  E -.-> F
+  F -. ready? .-> G
+  G -. "a.b" .-> H
+  H -->|a.b| I
+  I -->|plain| J
 ```
 
 ### スタイルの行末の空白

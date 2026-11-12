@@ -1044,6 +1044,63 @@ block-beta
   b
 ```
 
+### 色
+
+スタイルの色は、mermaid.js の文書の例と Prettier の CSS 整形と同じく、
+小文字で印字します。
+`style A fill:#F9F,stroke:#ABCDEF` は `style A fill: #f9f, stroke: #abcdef`
+と印字します。
+block 図の `style`、`classDef` 文のスタイルの色が対象です。
+色は、スタイルの値の中で単独で立つ、`#` と 3、4、6、8 桁の 16 進数です。
+色を短くすることはなく、色でないテキストは書かれたままにします。
+（[同じに描かれる色](./compatibility.ja.md#同じに描かれる色)を参照）。
+[fixture: colors/colors-in-lower-case]
+[fixture: colors/words-that-are-not-colors-as-written]
+
+入力
+([colors/colors-in-lower-case-input.mmd](../tests/fixtures/block/colors/colors-in-lower-case-input.mmd)):
+
+```mmd
+block-beta
+columns 2
+A B
+classDef c fill:#DEADBE,stroke:#ABCDEF
+class B c
+style A fill:#F9F,stroke:#ABCDEF,color:#C0FFEE
+```
+
+出力
+([colors/colors-in-lower-case-output.mmd](../tests/fixtures/block/colors/colors-in-lower-case-output.mmd)):
+
+```mmd
+block-beta
+  columns 2
+  A B
+  classDef c fill: #deadbe, stroke: #abcdef
+  class B c
+  style A fill: #f9f, stroke: #abcdef,color: #c0ffee
+```
+
+入力
+([colors/words-that-are-not-colors-as-written-input.mmd](../tests/fixtures/block/colors/words-that-are-not-colors-as-written-input.mmd)):
+
+```mmd
+block-beta
+A B
+style A fill:#ABCDE,stroke:#ABCDEF1
+classDef c fill:url(#ABC),stroke:#ABC-x
+```
+
+出力
+([colors/words-that-are-not-colors-as-written-output.mmd](../tests/fixtures/block/colors/words-that-are-not-colors-as-written-output.mmd)):
+
+```mmd
+block-beta
+  A B
+  style A fill: #ABCDE, stroke: #ABCDEF1
+  classDef c fill: url(#ABC), stroke: #ABC-x
+```
+
 ### フロントマターの YAML
 
 フロントマターは、ほかの図と同じに Prettier が YAML として整形します（詳しくは、

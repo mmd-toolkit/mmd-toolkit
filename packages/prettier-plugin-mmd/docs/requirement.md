@@ -1517,6 +1517,89 @@ requirementDiagram
   }
 ```
 
+### Colors
+
+A color in a style is printed in lower case, as the examples in the
+documentation of mermaid.js write it and as the CSS formatter of Prettier prints
+it: `style r fill:#F9F,stroke:#ABCDEF` is printed
+`style r fill: #f9f, stroke: #abcdef`. The colors in the styles of the `style`
+and `classDef` statements of a requirement diagram are printed so. A color is a
+`#` and 3, 4, 6, or 8 hexadecimal digits that stand alone in the value of a
+style; it is never shortened, and a text that is no color stays as written (see
+[Colors that are drawn the same](./compatibility.md#colors-that-are-drawn-the-same)).
+[fixture: colors/colors-in-lower-case] [fixture:
+colors/words-that-are-not-colors-as-written]
+
+Input
+([colors/colors-in-lower-case-input.mmd](../tests/fixtures/requirement/colors/colors-in-lower-case-input.mmd)):
+
+```mmd
+requirementDiagram
+requirement r {
+id: 1
+text: t
+risk: low
+verifymethod: test
+}
+requirement q {
+id: 2
+text: u
+risk: low
+verifymethod: test
+}
+r - satisfies -> q
+style r fill:#F9F,stroke:#ABCDEF,color:#C0FFEE
+classDef c fill:#DEADBE,stroke:#ABCDEF
+class q c
+```
+
+Output
+([colors/colors-in-lower-case-output.mmd](../tests/fixtures/requirement/colors/colors-in-lower-case-output.mmd)):
+
+```mmd
+requirementDiagram
+  requirement r {
+    id: 1
+    text: t
+    risk: low
+    verifymethod: test
+  }
+  requirement q {
+    id: 2
+    text: u
+    risk: low
+    verifymethod: test
+  }
+  r - satisfies -> q
+  style r fill: #f9f, stroke: #abcdef, color: #c0ffee
+  classDef c fill: #deadbe, stroke: #abcdef
+  class q c
+```
+
+Input
+([colors/words-that-are-not-colors-as-written-input.mmd](../tests/fixtures/requirement/colors/words-that-are-not-colors-as-written-input.mmd)):
+
+```mmd
+requirementDiagram
+requirement r {
+id: 1
+}
+style r fill:#ABCDE,stroke:#ABCDEF1
+classDef c fill:#ABC-x,stroke:x#ABC
+```
+
+Output
+([colors/words-that-are-not-colors-as-written-output.mmd](../tests/fixtures/requirement/colors/words-that-are-not-colors-as-written-output.mmd)):
+
+```mmd
+requirementDiagram
+  requirement r {
+    id: 1
+  }
+  style r fill: #ABCDE, stroke: #ABCDEF1
+  classDef c fill: #ABC-x, stroke: x#ABC
+```
+
 ### Frontmatter YAML
 
 As in a flowchart: the YAML between the `---` lines is formatted with Prettier's

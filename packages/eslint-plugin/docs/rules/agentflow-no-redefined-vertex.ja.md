@@ -46,8 +46,17 @@ flow は、それより前に終わった flow が持つ頂点や connector を�
 flow が終わる順に見る（flow の中の flow が先に終わる）。
 mermaid.js はそれを先に終わった方に残し、後の方は取らない。
 後の flow の中の頂点の文のうち、リンク、クラス、データブロックがなく、
-id だけか、要素が持つラベルと形を同じラベルの種類とプロパティで書くものは、
+id だけか、要素が持つラベルと形を同じプロパティで書き、
+2 つのラベルがどちらもマークダウンか、どちらもそうでないものは、
 要素について新しいことを言わないので報告する。
+引用符付きのラベルと引用符のないラベルは、mermaid.js が同じに描き、
+整形ツールがどちらかの形にそろえるので、ここでは同じとして扱う。
+整形しても報告が変わらないようにするためである。
+形のプロパティは、mermaid.js が要素に記録するものを変え、
+整形ツールも変えないので、違えば新しいことを言う。
+connector のタイトルは、どう書いてもマークダウンのラベルにならない。
+タイトルを付けて connector を宣言し直しても、ラベルがマークダウンかどうかも、
+形のプロパティも変わらない。
 前の出現として、connector の宣言も数える。
 後の flow の connector の宣言は、
 [agentflow-no-redefined-connector](./agentflow-no-redefined-connector.ja.md)
@@ -57,7 +66,7 @@ id だけか、要素が持つラベルと形を同じラベルの種類とプ�
 何も失われないので報告しない。
 前の flow が要素を持たないときや、要素が前に書かれていないとき、
 文が新しいことを言うとき（リンク、クラス、データブロック、頂点の最初の形、
-ラベルの種類やプロパティの違い）も報告しない。
+マークダウンのラベルとそうでないラベルの違い、プロパティの違い）も報告しない。
 `global` ブロックの直下に書いた頂点や connector は、
 ブロックがどこにあってもどの flow にも属さないので、報告しない。
 `global` ブロックの中に書いた flow は、自分の頂点を持つ。
@@ -75,8 +84,8 @@ mermaid.js が同じラベルとして読んでも報告することがある。
 ```mmd
 %% eslint @mmd-toolkit/agentflow-no-redefined-vertex: error
 agentflow-beta TB
-  A[Start] --> B
-  C --> A[End]
+  A["Start"] --> B
+  C --> A["End"]
 ```
 
 ```mmd
@@ -102,7 +111,7 @@ agentflow-beta TB
 ```mmd
 %% eslint @mmd-toolkit/agentflow-no-redefined-vertex: error
 agentflow-beta TB
-  A[Start] --> B
+  A["Start"] --> B
   A --> C
 ```
 

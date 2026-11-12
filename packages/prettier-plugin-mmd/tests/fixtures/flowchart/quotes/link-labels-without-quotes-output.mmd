@@ -1,0 +1,10 @@
+flowchart LR
+  A -->|Is it ready?| B
+  B -- Step 1: load --> C
+  C == go-on, then stop! ==> D
+  D -- x --- E
+  E -.-> F
+  F -. ready? .-> G
+  G -. "a.b" .-> H
+  H -->|a.b| I
+  I -->|plain| J

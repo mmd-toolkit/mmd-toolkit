@@ -1,0 +1,9 @@
+usecase-beta
+  Browse("Browse")
+  Checkout("Checkout")
+  Checkout ..> : include Browse
+  Checkout ..> : include Browse
+  Checkout ..> : include Browse
+  Checkout ..> : extend Browse
+  Checkout ..> : extend Browse
+  Checkout pays@..> : include Browse

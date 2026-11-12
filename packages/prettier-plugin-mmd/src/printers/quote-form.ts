@@ -20,6 +20,7 @@ import { findRequirementKeptLines } from "./requirement-kept-lines.ts"
 import { findSankeyKeptLines } from "./sankey-kept-lines.ts"
 import type { Source } from "./source.ts"
 import {
+  findDirectiveEndingAt,
   findTriviaAt,
   isBracketPadding,
   isSpaceOrTab,
@@ -33,9 +34,12 @@ import { findXychartKeptLines } from "./xychart-kept-lines.ts"
 
 /**
  * The text that a printer writes for a text in the form of the examples, or
- * undefined where the text must stay in the form that it is written in.
+ * undefined where the text must stay in the form that it is written in. The
+ * diagram type is the type of the diagram that holds the text, for the rules
+ * that differ between the diagram types that share a node type (flowchart,
+ * swimlane).
  */
-type Bare = (text: string) => string | undefined
+type Bare = (text: string, diagramType: string) => string | undefined
 
 /**
  * The form of the examples of a field: without quotes, or in quotes. `text` is
@@ -69,12 +73,18 @@ interface QuoteRule {
    * (`A--b-->C`, `icon:1`).
    */
   readonly standsAlone?: boolean
+  /**
+   * Whether the field has text before it on its line: a string that starts its
+   * line, after a comment line or a line break, is a unit that mermaid.js
+   * rejects there, where the text without quotes is read.
+   */
+  readonly afterTextOnItsLine?: boolean
 }
 
 /** The options of a rule, besides its form and its text. */
 type QuoteOptions = Pick<
   QuoteRule,
-  "when" | "joins" | "wrapped" | "standsAlone"
+  "when" | "joins" | "wrapped" | "standsAlone" | "afterTextOnItsLine"
 >
 
 /** A field that the examples write without quotes. */
@@ -97,27 +107,35 @@ function touchesDashes(before: string, after: string): boolean {
 
 /**
  * A field of a sankey diagram without the spaces at its ends, which
- * mermaid.js drops from a field with or without quotes, when it is plain text:
- * ASCII letters, digits, `_`, `-`, and `.`, with spaces between them. No other
- * character is certain to be read the same without quotes: a stage that reads
- * the text of a diagram before its lexer gives `%%`, `#`, `;`, and `\` a
- * meaning, and the lexer a `,` and a `"`.
+ * mermaid.js drops from a field with or without quotes, when its text is made
+ * of ASCII letters, digits, `_`, and the `characters`, which include the space
+ * (docs/sankey.md, Quotes). No other character is certain to be read the same
+ * without quotes: a stage that reads the text of a diagram before its lexer
+ * gives `%%`, `#`, and `;` a meaning, and the lexer a `,` and a `"`.
  */
-function sankeyField(text: string): string | undefined {
+function sankeyText(text: string, characters: string): string | undefined {
   const field = text.trim()
   return field !== "" &&
     [...field].every(
       (character) =>
-        (character >= "a" && character <= "z") ||
-        (character >= "A" && character <= "Z") ||
-        (character >= "0" && character <= "9") ||
-        character === "_" ||
-        character === "-" ||
-        character === "." ||
-        character === " ",
+        isWordCharacter(character) || characters.includes(character),
     )
     ? field
     : undefined
+}
+
+/**
+ * The source or the target of a link of a sankey diagram. Its text may hold
+ * `&`, `<`, `>`, `'`, `/`, and `\` besides the characters of a value, which
+ * were compared with and without quotes in the two fields.
+ */
+function sankeyName(text: string): string | undefined {
+  return sankeyText(text, " -.&<>'/\\")
+}
+
+/** The value of a link of a sankey diagram. */
+function sankeyValueField(text: string): string | undefined {
+  return sankeyText(text, " -.")
 }
 
 /**
@@ -153,32 +171,44 @@ function joinsDirectionLine(
 /**
  * A word of ASCII letters, digits, and `_`, or, where `spaces` is true, words
  * with spaces between them, that starts with a letter or `_` (or, where
- * `digits` is true, with any of these characters) and whose first word is none
- * of the `reserved` words, which are compared in lower case: the lexer of a
- * diagram type reads a reserved word as a unit of its own, and a text of other
- * characters has a meaning in the stages before the lexer. The text joins no
- * line of a direction either (`joinsDirectionLine`, in any case, since the
- * lexers of an ER and a requirement diagram read in any case).
+ * `digits` is true, with any of these characters; or, where `startsWithLetter`
+ * is true, with a letter only: the lexers before 10.5.0 read no `_` at the
+ * start of a name without quotes) and whose first word is none of the
+ * `reserved` words, which are compared in lower case: the lexer of a diagram
+ * type reads a reserved word as a unit of its own, and a text of other
+ * characters has a meaning in the stages before the lexer. Where `hyphens` is
+ * true, the parts of a word may be joined by a single `-`, and the part before
+ * the first `-` is the one compared with the reserved words, since a `-` ends a
+ * keyword (`end-x` is `end` and `-x`). The text joins no line of a direction
+ * either (`joinsDirectionLine`, in any case, since the lexers of an ER and a
+ * requirement diagram read in any case).
  */
 function wordWithout(
   reserved: ReadonlySet<string>,
-  { spaces = false, digits = false } = {},
+  {
+    spaces = false,
+    digits = false,
+    hyphens = false,
+    startsWithLetter = false,
+  } = {},
 ): Bare {
   return (text) => {
     const first = text[0]
+    const parts = hyphens ? text.split("-") : [text]
     return first !== undefined &&
       (digits || !(first >= "0" && first <= "9")) &&
+      (!startsWithLetter || isLetter(first)) &&
       first !== " " &&
       !text.endsWith(" ") &&
-      [...text].every(
-        (character) =>
-          (character >= "a" && character <= "z") ||
-          (character >= "A" && character <= "Z") ||
-          (character >= "0" && character <= "9") ||
-          character === "_" ||
-          (spaces && character === " "),
+      parts.every(
+        (part) =>
+          part !== "" &&
+          [...part].every(
+            (character) =>
+              isWordCharacter(character) || (spaces && character === " "),
+          ),
       ) &&
-      !reserved.has(text.split(" ")[0].toLowerCase()) &&
+      !reserved.has(parts[0].split(" ")[0].toLowerCase()) &&
       !joinsDirectionLine(text, { ignoreCase: true })
       ? text
       : undefined
@@ -218,6 +248,19 @@ const erReserved: ReadonlySet<string> = new Set([
   "u",
   "o",
 ])
+
+/**
+ * A name or a role of an ER diagram that every version of mermaid.js that
+ * reads it in quotes reads the same without them: a word of `wordWithout` that
+ * starts with a letter (the lexers of 9.4.3 and 10.3.1 reject a `_` at the
+ * start of a name without quotes), which may have a single `-` between its
+ * parts (the lexers of 9.4.3 to 12.3.0 read the `-` inside a name without
+ * quotes).
+ */
+const erName: Bare = wordWithout(erReserved, {
+  hyphens: true,
+  startsWithLetter: true,
+})
 
 /**
  * The words of a requirement diagram that its lexer reads as a unit of its own:
@@ -394,29 +437,39 @@ const quadrantReserved: ReadonlySet<string> = new Set([
 
 /**
  * A text of a quadrant chart that the lexer reads whole without quotes: words
- * of ASCII letters that end with digits, with one space between them, none of
- * them a word that the lexer reads as a unit of its own. A letter after a digit
- * or a `_` would start a word again, so none follows one.
+ * of ASCII letters that end with digits, with one space between them, whose
+ * parts may be joined by a single `-`, none of the parts a word that the lexer
+ * reads as a unit of its own (a `-` ends a word, so a part after it starts a
+ * word again), and no `x-axis` or `y-axis`, which the lexer reads across the
+ * `-`. A letter after a digit or a `_` would start a word again, so none
+ * follows one.
  */
 function quadrantLabel(text: string): string | undefined {
-  return text.split(" ").every((word) => {
-    const letters = [...word].findIndex(
-      (character) => character >= "0" && character <= "9",
+  const lower = text.toLowerCase()
+  return !lower.includes("x-axis") &&
+    !lower.includes("y-axis") &&
+    text.split(" ").every((word) =>
+      word.split("-").every((part) => {
+        const letters = [...part].findIndex(
+          (character) => character >= "0" && character <= "9",
+        )
+        const head = letters === -1 ? part : part.slice(0, letters)
+        const tail = letters === -1 ? "" : part.slice(letters)
+        return (
+          head !== "" &&
+          [...head].every(
+            (character) =>
+              (character >= "a" && character <= "z") ||
+              (character >= "A" && character <= "Z"),
+          ) &&
+          [...tail].every(
+            (character) => character >= "0" && character <= "9",
+          ) &&
+          !quadrantReserved.has(part.toLowerCase()) &&
+          !part.toLowerCase().startsWith("quadrant")
+        )
+      }),
     )
-    const head = letters === -1 ? word : word.slice(0, letters)
-    const tail = letters === -1 ? "" : word.slice(letters)
-    return (
-      head !== "" &&
-      [...head].every(
-        (character) =>
-          (character >= "a" && character <= "z") ||
-          (character >= "A" && character <= "Z"),
-      ) &&
-      [...tail].every((character) => character >= "0" && character <= "9") &&
-      !quadrantReserved.has(word.toLowerCase()) &&
-      !word.toLowerCase().startsWith("quadrant")
-    )
-  })
     ? text
     : undefined
 }
@@ -861,44 +914,239 @@ const headingNameReserved: ReadonlySet<string> = new Set([
 /**
  * The name of a subgraph, a flow, or a connector that every version of
  * mermaid.js reads the same without quotes: words of ASCII letters, digits, and
- * `_` with one space between them, none of them a word of `headingNameReserved`
- * and the last not ending with `direction`, which the line after the name would
- * join (a name stands after a keyword, so no line before it can). The names of
- * the same kind with other characters are not read the same in every position:
- * `end`, `~~~`, `--`, and a `"` in a name differ.
+ * `_` with one space between them, whose parts may be joined by a single `-`,
+ * none of them a word of `headingNameReserved` (compared by the part before
+ * the first `-`, which ends a keyword) and the last not ending with
+ * `direction`, which the line after the name would join (a name stands after a
+ * keyword, so no line before it can). The names of the same kind with other
+ * characters are not read the same in every position: `end`, `~~~`, `--`, and a
+ * `"` in a name differ.
  */
 function headingName(text: string): string | undefined {
-  return text
-    .split(" ")
-    .every(
-      (word) =>
-        word !== "" &&
-        [...word].every(isWordCharacter) &&
-        !headingNameReserved.has(word),
-    ) && !joinsDirectionLine(text, { starts: [] })
+  return text.split(" ").every((word) => {
+    const parts = word.split("-")
+    return (
+      parts.every((part) => part !== "" && [...part].every(isWordCharacter)) &&
+      !headingNameReserved.has(parts[0])
+    )
+  }) && !joinsDirectionLine(text, { starts: [] })
     ? text
     : undefined
 }
 
 /**
- * The title of a connector of an agentflow diagram, which mermaid.js reads the
- * same in quotes and without them: it starts with a letter or a digit, so that
- * the padding inside its brackets is dropped, and holds ASCII letters, digits,
- * spaces, and `_`, `-`, `.`, `,`, `:`, `!`, and `?`. A text with another
- * character, such as a backquote that would start a markdown string, stays as
- * written.
+ * The text of a label, or the title of a connector, that mermaid.js reads the
+ * same in quotes and without them in every position where it stands, in every
+ * version that reads it: it starts with a letter or a digit, so that the
+ * padding inside its brackets is dropped and no `/`, `\`, or `-` opens another
+ * shape, ends with no space, and holds ASCII letters, digits, spaces, and `_`,
+ * `-`, `.`, `,`, `:`, `!`, and `?`. A text with another character, such as a
+ * backquote that would start a markdown string, stays as written.
  */
-function connectorTitle(text: string): string | undefined {
+function labelText(text: string): string | undefined {
   const first = text[0]
   return first !== undefined &&
     isWordCharacter(first) &&
     first !== "_" &&
+    !text.endsWith(" ") &&
     [...text].every(
       (character) =>
         isWordCharacter(character) || " -.,:!?".includes(character),
     )
     ? text
     : undefined
+}
+
+/**
+ * The diagram types whose labels are read by the lexer of the flowchart of
+ * 9.0.0 to 10.3.0, which has no state for the text of a label: it reads the
+ * text with the tokens of a statement (docs/compatibility.md, Labels that are
+ * drawn the same). The lexers of a swimlane and of an agentflow diagram, and
+ * those of 10.3.1 on, read a label in a state of its own.
+ */
+const statementLexerTypes: ReadonlySet<string> = new Set([
+  "flowchart-elk",
+  "flowchart-v2",
+])
+
+/**
+ * The names that the lexer before 10.3.1 reads as a token of its own wherever
+ * they stand in a text, even after a letter: the targets of a link.
+ */
+const linkTargets: readonly string[] = ["_blank", "_parent", "_self", "_top"]
+
+/**
+ * Whether `word` stands in `text` where the lexer before 10.3.1 starts a token,
+ * not in the middle of a run of letters, and the character after it, or
+ * undefined at the end of the text, is one that `follows` accepts.
+ */
+function startsWord(
+  text: string,
+  word: string,
+  follows: (character: string | undefined) => boolean,
+): boolean {
+  for (
+    let at = text.indexOf(word);
+    at !== -1;
+    at = text.indexOf(word, at + 1)
+  ) {
+    if (!isLetter(text[at - 1]) && follows(text[at + word.length])) return true
+  }
+  return false
+}
+
+/** Whether a keyword that needs a boundary after it ends before this character. */
+function endsKeyword(character: string | undefined): boolean {
+  return !isWordCharacter(character)
+}
+
+/** Whether `click` or `call` is followed by whitespace, or by the end of the text. */
+function isFollowedBySpace(character: string | undefined): boolean {
+  return character === undefined || character === " "
+}
+
+/**
+ * Whether the lexer of the flowchart before 10.3.1, which reads a label with
+ * the tokens of a statement (`statementLexerTypes`), reads a part of the text as
+ * a token that a text does not hold:
+ *
+ * - a `-` at the end of the text, which the closer `-)` of an ellipse and the
+ *   closers `)` of the other shapes take with them;
+ * - an arrow: three or more dashes, two dashes and an `x` or an `o`, and `.-`;
+ * - the separator `:::`;
+ * - a target of a link (`_self`, `_blank`, `_parent`, `_top`), wherever it
+ *   stands, and the word `interpolate`, where a run of letters starts and no
+ *   letter, digit, or `_` follows;
+ * - `click` and `call` with a space after them, where a run of letters starts,
+ *   which start the states of an interactive statement; at the end of the
+ *   text too, since between two arrows a space and an arrow follow the label;
+ * - `accTitle` and `accDescr`, which start the states of an accessibility line.
+ */
+function startsOtherTokens(text: string): boolean {
+  const lower = text.toLowerCase()
+  return (
+    text.endsWith("-") ||
+    holdsDashArrow(text) ||
+    text.includes(".-") ||
+    text.includes(":::") ||
+    linkTargets.some((target) => text.includes(target)) ||
+    startsWord(text, "interpolate", endsKeyword) ||
+    startsWord(text, "click", isFollowedBySpace) ||
+    startsWord(text, "call", isFollowedBySpace) ||
+    lower.includes("acctitle") ||
+    lower.includes("accdescr")
+  )
+}
+
+/**
+ * Whether a run of `-` in the text is an arrow for the lexer before 10.3.1:
+ * three or more dashes, or two followed by an `x` or an `o`.
+ */
+function holdsDashArrow(text: string): boolean {
+  let index = 0
+  while (index < text.length) {
+    if (text[index] !== "-") {
+      index++
+      continue
+    }
+    let end = index
+    while (text[end] === "-") end++
+    if (
+      end - index >= 3 ||
+      (end - index === 2 && (text[end] === "x" || text[end] === "o"))
+    )
+      return true
+    index = end
+  }
+  return false
+}
+
+/**
+ * The text of a label of a flowchart: `labelText` and, where the lexer before
+ * 10.3.1 reads the label (`statementLexerTypes`), none of the parts that it
+ * reads as other tokens (`startsOtherTokens`).
+ */
+function flowchartLabelText(
+  text: string,
+  diagramType: string,
+): string | undefined {
+  return statementLexerTypes.has(diagramType) && startsOtherTokens(text)
+    ? undefined
+    : labelText(text)
+}
+
+/**
+ * The name of a subgraph of a flowchart: `headingName` and, where the lexer
+ * before 10.3.1 reads it (`statementLexerTypes`), no part that starts a
+ * keyword there. That lexer starts a token after a `-`, a `_`, or a digit, so
+ * `x-end`, `x_end`, and `x1end` have the keyword `end` at their end, which
+ * takes the line break after the name; `click` and `call` take the whitespace
+ * after them, `interpolate` the letters, and the targets of a link
+ * (`x_self`) are tokens of their own.
+ */
+function flowchartName(text: string, diagramType: string): string | undefined {
+  return statementLexerTypes.has(diagramType) &&
+    (linkTargets.some((target) => text.includes(target)) ||
+      startsWord(text, "end", endsKeyword) ||
+      startsWord(text, "interpolate", endsKeyword) ||
+      startsWord(text, "click", isFollowedBySpace) ||
+      startsWord(text, "call", isFollowedBySpace))
+    ? undefined
+    : headingName(text)
+}
+
+/**
+ * The text of a label between the arrows of a solid link (`-- text -->`), which
+ * a `--` in the text ends, or reads as an arrow with the letters around it
+ * (`go--on` has the arrow `--o`): a text of `labelText` without a `--`.
+ */
+function solidLinkLabelText(text: string): string | undefined {
+  return text.includes("--") ? undefined : labelText(text)
+}
+
+/** The text of a label of a flowchart between the arrows of a dotted link. */
+function flowchartDottedLinkLabelText(
+  text: string,
+  diagramType: string,
+): string | undefined {
+  return text.includes(".") ? undefined : flowchartLabelText(text, diagramType)
+}
+
+/** The text of a label of a flowchart between the arrows of a solid link. */
+function flowchartSolidLinkLabelText(
+  text: string,
+  diagramType: string,
+): string | undefined {
+  return text.includes("--") ? undefined : flowchartLabelText(text, diagramType)
+}
+
+/** The line of the opening arrow of a link, or undefined for a label between `|`. */
+function openingLineOf(node: Node): string | undefined {
+  return (node as Node & { opening?: { line?: string } | null }).opening?.line
+}
+
+/** Whether a link of a flowchart has its label between two dotted arrows. */
+function isDottedArrowLabel(node: Node): boolean {
+  return openingLineOf(node) === "dotted"
+}
+
+/** Whether a link has its label between two solid arrows. */
+function isSolidArrowLabel(node: Node): boolean {
+  return openingLineOf(node) === "solid"
+}
+
+/**
+ * Whether a link has its label between `|`, or between two thick arrows: the
+ * labels between dotted and solid arrows end at a `.` and a `--`.
+ */
+function isPipedOrThickLabel(node: Node): boolean {
+  const line = openingLineOf(node)
+  return line === undefined || line === "thick"
+}
+
+/** Whether a link of an agentflow diagram has its label between `|`. */
+function isPipedLabel(node: Node): boolean {
+  return openingLineOf(node) === undefined
 }
 
 /**
@@ -1077,10 +1325,22 @@ const quoteRules: Readonly<
     title: bare(architectureLabel, { wrapped: ["[", "]"] }),
   },
   AgentflowConnectorStatement: {
-    title: quoted(connectorTitle, { standsAlone: true }),
+    title: quoted(labelText, { standsAlone: true, afterTextOnItsLine: true }),
+  },
+  AgentflowFlowStatement: {
+    title: quoted(labelText, { standsAlone: true, afterTextOnItsLine: true }),
+  },
+  AgentflowLink: {
+    label: [
+      bare(labelText, { when: isPipedLabel }),
+      bare(solidLinkLabelText, { when: isSolidArrowLabel }),
+    ],
   },
   AgentflowName: {
     parts: bare(headingName, { when: hasOnePart, joins: wordFollows }),
+  },
+  AgentflowShape: {
+    label: quoted(labelText, { standsAlone: true, afterTextOnItsLine: true }),
   },
   C4BoundaryStatement: { arguments: c4Arguments },
   ClassName: { name: bare(className) },
@@ -1088,15 +1348,24 @@ const quoteRules: Readonly<
   C4ElementStatement: { arguments: c4Arguments },
   C4RelationshipStatement: { arguments: c4Arguments },
   C4UpdateStatement: { arguments: c4Arguments },
+  FlowchartLink: {
+    label: [
+      bare(flowchartLabelText, { when: isPipedOrThickLabel }),
+      bare(flowchartDottedLinkLabelText, { when: isDottedArrowLabel }),
+      bare(flowchartSolidLinkLabelText, { when: isSolidArrowLabel }),
+    ],
+  },
+  FlowchartShape: { label: bare(flowchartLabelText) },
   FlowchartSubgraphStatement: {
-    name: bare(headingName, { joins: wordFollows }),
+    name: bare(flowchartName, { joins: wordFollows }),
+    title: bare(flowchartLabelText),
   },
   KanbanShape: { label: bare(shapeText, { joins: nextToDash }) },
   MindmapShape: { label: bare(shapeText, { joins: nextToDash }) },
-  ErEntityReference: { name: bare(wordWithout(erReserved)) },
-  ErEntityStatement: { name: bare(wordWithout(erReserved)) },
-  ErRelationshipStatement: { role: bare(wordWithout(erReserved)) },
-  ErSubgraphStatement: { id: bare(wordWithout(erReserved)) },
+  ErEntityReference: { name: bare(erName) },
+  ErEntityStatement: { name: bare(erName) },
+  ErRelationshipStatement: { role: bare(erName) },
+  ErSubgraphStatement: { id: bare(erName) },
   QuadrantAxisStatement: {
     end: bare(quadrantLabel),
     start: bare(quadrantLabel),
@@ -1196,10 +1465,10 @@ const quoteRules: Readonly<
     branch: bare(gitgraphReference, { joins: touchesDashes }),
   },
   SankeyLinkStatement: {
-    source: bare(sankeyField),
-    target: bare(sankeyField),
+    source: bare(sankeyName),
+    target: bare(sankeyName),
     value: bare((text) => {
-      const field = sankeyField(text)
+      const field = sankeyValueField(text)
       return field === undefined ? undefined : (shortestNumber(field) ?? field)
     }),
   },
@@ -1344,6 +1613,36 @@ export function findQuoteFormRespellings(
 }
 
 /**
+ * Whether only spaces, tabs, and directives lie between the start of the line
+ * and `offset`: the first unit of its line, which is the place where mermaid.js
+ * rejects a string in an agentflow diagram. It removes the directives before it
+ * reads the text, and ends a line at a U+2028 or a U+2029 as well as at a line
+ * feed, so a label after a directive on a line of its own, or after a line
+ * separator, is the first unit.
+ */
+function startsItsLine(source: Source, offset: number): boolean {
+  let position = offset
+  while (position > 0) {
+    const directive = findDirectiveEndingAt(source, position)
+    if (directive !== undefined) {
+      position = directive.range[0]
+      continue
+    }
+    const character = source.text[position - 1]
+    if (
+      (character === "\n" && !source.removedLineFeeds.has(position - 1)) ||
+      character === "\r" ||
+      character === "\u2028" ||
+      character === "\u2029"
+    )
+      return true
+    if (!isSpaceOrTab(character)) return false
+    position--
+  }
+  return true
+}
+
+/**
  * Records the respelling of one field of a node, when its rule applies to the
  * node and the field is written in the other form (see
  * `findQuoteFormRespellings`).
@@ -1436,6 +1735,7 @@ function respell(
     printsRunsAsOne(source, item.range[0], item.range[1])
       ? collapseRuns(text)
       : text,
+    source.root.diagramType,
   )
   // mermaid.js takes the directives away before it reads the text, so what
   // follows is the first character after the spaces, tabs, and directives.
@@ -1449,6 +1749,7 @@ function respell(
     next = directive.range[1]
   }
   const after = next < lineEnd ? source.text[next] : undefined
+  if (rule.afterTextOnItsLine === true && startsItsLine(source, start)) return
   if (
     printed !== undefined &&
     (rule.form === "quoted"

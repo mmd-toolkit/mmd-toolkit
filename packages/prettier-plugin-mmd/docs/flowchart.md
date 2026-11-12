@@ -2483,6 +2483,74 @@ flowchart LR
   end
 ```
 
+### Colors
+
+A color in a style is printed in lower case, as the examples in the
+documentation of mermaid.js write it and as the CSS formatter of Prettier prints
+it: `style A fill:#F9F,stroke:#ABCDEF` is printed
+`style A fill: #f9f, stroke: #abcdef`. The colors in the styles of the `style`,
+`classDef`, and `linkStyle` statements of a flowchart and of a swimlane diagram
+are printed so. A color is a `#` and 3, 4, 6, or 8 hexadecimal digits that stand
+alone in the value of a style; it is never shortened, and a text that is no
+color stays as written (see
+[Colors that are drawn the same](./compatibility.md#colors-that-are-drawn-the-same)).
+[fixture: colors/colors-in-lower-case] [fixture:
+colors/words-that-are-not-colors-as-written]
+
+Input
+([colors/colors-in-lower-case-input.mmd](../tests/fixtures/flowchart/colors/colors-in-lower-case-input.mmd)):
+
+```mmd
+flowchart LR
+A --> B
+C:::c
+style A fill:#F9F,stroke:#ABCDEF,color:#C0FFEE
+style B fill:#ABCD,stroke:#ABCDEF12
+classDef c fill:#DEADBE,stroke:#ABCDEF
+linkStyle 0 stroke:#FF0000,color:#00FF00
+linkStyle default stroke:#ABCDEF
+```
+
+Output
+([colors/colors-in-lower-case-output.mmd](../tests/fixtures/flowchart/colors/colors-in-lower-case-output.mmd)):
+
+```mmd
+flowchart LR
+  A --> B
+  C:::c
+  style A fill: #f9f, stroke: #abcdef, color: #c0ffee
+  style B fill: #abcd, stroke: #abcdef12
+  classDef c fill: #deadbe, stroke: #abcdef
+  linkStyle 0 stroke: #ff0000, color: #00ff00
+  linkStyle default stroke: #abcdef
+```
+
+Input
+([colors/words-that-are-not-colors-as-written-input.mmd](../tests/fixtures/flowchart/colors/words-that-are-not-colors-as-written-input.mmd)):
+
+```mmd
+flowchart LR
+A --> B
+style A fill:#ABCDE,stroke:#ABCDEF1
+style B fill:#AB,stroke:#GGG
+classDef c fill:x#ABC,stroke:#ABC-x
+classDef d fill:#ABC.5,stroke:#ABC#DEF
+classDef e stroke:#ABC/#DEF
+```
+
+Output
+([colors/words-that-are-not-colors-as-written-output.mmd](../tests/fixtures/flowchart/colors/words-that-are-not-colors-as-written-output.mmd)):
+
+```mmd
+flowchart LR
+  A --> B
+  style A fill: #ABCDE, stroke: #ABCDEF1
+  style B fill: #AB, stroke: #GGG
+  classDef c fill: x#ABC, stroke: #ABC-x
+  classDef d fill: #ABC.5, stroke: #ABC#DEF
+  classDef e stroke: #ABC/#DEF
+```
+
 ### Quotes
 
 The name of a subgraph in quotes is printed without them, as the examples in the
@@ -2491,37 +2559,77 @@ documentation of mermaid.js write it, 53 times without quotes and once in quotes
 `subgraph "Group A"` is printed `subgraph Group A`. mermaid.js reads the name in
 both forms as the same text, and the id of a name of several words is generated
 in both. A name is printed without quotes where it is words of ASCII letters,
-digits, and `_` with one space between them, none of them one of `_blank`,
-`_parent`, `_self`, `_top`, `call`, `click`, `default`, `direction`, `end`,
-`href`, and `interpolate`, which the lexer reads as a unit of its own. So
-`"a-b"`, `"end"`, `"x end"`, `"click"`, `"x _self"`, `"direction"`, a name with
-a `.` or a letter outside ASCII, and a markdown string stay as written. A name
-that ends with `direction`, such as `"xdirection"` or `"my xdirection"`, stays
-in quotes whatever follows it: the lexer reads `direction`, white space (a line
-break too), and `TB`, `BT`, `RL`, `LR`, or `TD` as one line, which
-`subgraph xdirection` and a next line `TB --> C` would form. A name that a word
-touches on its line (`subgraph "S"accDescr {}`) and a name that a comment
-follows (`subgraph "C" %% note`) keep their quotes, since a text without quotes
-would take the word or the comment into itself, as does a name of two spaces in
-a subgraph that has a title, since there the name is an id, and two ids that
+digits, and `_` with one space between them, whose parts may be joined by a
+single `-` (`my-group`), none of them one of `_blank`, `_parent`, `_self`,
+`_top`, `call`, `click`, `default`, `direction`, `end`, `href`, and
+`interpolate`, which the lexer reads as a unit of its own and which are compared
+by the part before the first `-`, since a `-` ends a keyword (`end-x` is `end`
+and `-x`). So `"end"`, `"x end"`, `"click"`, `"end-x"`, `"x _self"`,
+`"direction"`, a name with a `-` at its start or its end or two together
+(`"-a"`, `"a-"`, `"a--b"`), a name with a `.` or a letter outside ASCII, and a
+markdown string stay as written. A name that ends with `direction`, such as
+`"xdirection"` or `"my xdirection"`, stays in quotes whatever follows it: the
+lexer reads `direction`, white space (a line break too), and `TB`, `BT`, `RL`,
+`LR`, or `TD` as one line, which `subgraph xdirection` and a next line
+`TB --> C` would form. In a `flowchart`, the lexer of 9.0.0 to 10.3.0 starts a
+token after a `-`, a `_`, and a digit, so a name also stays in quotes where
+`end` or `interpolate` ends it (`"x-end"`, `"x_end"`), where `click` or `call`
+stands before whitespace (`"x-click"`, `"x1call"`), and where `_self`, `_blank`,
+`_parent`, or `_top` stands (`"x_self"`, `"a b_top"`); a swimlane diagram prints
+these names without quotes. A name that a word touches on its line
+(`subgraph "S"accDescr {}`) and a name that a comment follows
+(`subgraph "C" %% note`) keep their quotes, since a text without quotes would
+take the word or the comment into itself, as does a name of two spaces in a
+subgraph that has a title, since there the name is an id, and two ids that
 differ by a run are two ids (see
 [Runs of whitespace in a text that are drawn the same](./compatibility.md#runs-of-whitespace-in-a-text-that-are-drawn-the-same)).
 A `;` or a directive after a name takes nothing into it, and the name loses its
 quotes: `subgraph "D"%%{init: {}}%%` is printed `subgraph D%%{init: {}}%%`.
 [fixture: quotes/subgraph-names-without-quotes] [fixture:
+quotes/subgraph-names-with-hyphens] [fixture:
 quotes/swimlane-lane-names-without-quotes] [fixture:
 quotes/subgraph-names-that-need-quotes] [fixture:
+quotes/subgraph-names-the-old-lexer-reads] [fixture:
+quotes/swimlane-lane-names-the-old-lexer-reads] [fixture:
 quotes/subgraph-names-next-to-a-direction-line] [fixture:
 quotes/subgraph-names-with-runs-without-quotes] [fixture:
 quotes/subgraph-names-before-a-comment] [fixture:
 subgraph-header/whitespace-before-block-kept]
 
-The title of a subgraph in brackets, the label of a shape, and the label of a
-link stay as written. mermaid.js reads `A["x"]` as a string and `A[x]` as a
-text, and its Db holds the `labelType` `string` for the first and `text` for the
-second, so the two forms are not read the same, although the examples write the
-labels of shapes without quotes 109 times and in quotes 8 times. [fixture:
-quotes/labels-as-written] [fixture: quotes/subgraph-titles-as-written]
+The label of a shape, the label of a link, and the title of a subgraph in
+brackets are printed without quotes in the same way, as the examples write them:
+109 labels of shapes without quotes against 8 in quotes, 32 labels of links
+against 1, and 6 titles against none (see
+[The quotes of a text](./compatibility.md#the-quotes-of-a-text)).
+`A["Start here"]` is printed `A[Start here]`, `A -->|"Is it ready?"| B` is
+printed `A -->|Is it ready?| B`, and `subgraph S ["Title"]` is printed
+`subgraph S[Title]`. A text is printed without quotes where it starts with a
+letter or a digit, has no space at its end, and holds ASCII letters, digits,
+spaces, and `_`, `-`, `.`, `,`, `:`, `!`, and `?`. mermaid.js reads `A["x"]` as
+a string and `A[x]` as a text, and its Db holds the `labelType` `string` for the
+first and `text` for the second, but it draws the same figure (see
+[Labels that are drawn the same](./compatibility.md#labels-that-are-drawn-the-same)).
+A `.` stays in quotes in a label between two dotted arrows (`-. "a.b" .->`),
+which a `.` ends, and a `--` in a label between two solid arrows
+(`-- "a--b" -->`), which it ends too. In a `flowchart`, which the lexer of 9.0.0
+to 10.3.0 reads with the tokens of a statement, a label also stays in quotes
+where it holds a `-` at its end (`("go-")`), an arrow (`---`, `--x`, `--o`,
+`.-`), `:::`, `_self`, `_blank`, `_parent`, `_top`, `interpolate`, `click` or
+`call` before a space or the end of the label, or `accTitle` or `accDescr`; a
+swimlane diagram prints them without quotes. Any other text stays in quotes
+(`"x (y)"`, `"a/b"`, `"a & b"`, `"_x"`, `"x "`, `" x"`), and so does a markdown
+string, and a label on a line that the printer writes as it is, such as a line
+that the line rule of mermaid.js reads whole (see
+[Lines that hold a `;`](./compatibility.md#lines-that-hold-a-)). A label written
+without quotes stays without them. [fixture: quotes/shape-labels-without-quotes]
+[fixture: quotes/link-labels-without-quotes] [fixture:
+quotes/subgraph-titles-without-quotes] [fixture: quotes/labels-that-need-quotes]
+[fixture: quotes/labels-next-to-trivia] [fixture:
+quotes/labels-the-old-lexer-reads] [fixture:
+quotes/swimlane-labels-the-old-lexer-reads] [fixture:
+quotes/labels-with-two-dashes-between-arrows] [fixture:
+quotes/swimlane-labels-with-two-dashes-between-arrows] [fixture:
+quotes/swimlane-labels-without-quotes]
 
 Input
 ([quotes/subgraph-names-without-quotes-input.mmd](../tests/fixtures/flowchart/quotes/subgraph-names-without-quotes-input.mmd)):
@@ -2571,6 +2679,84 @@ flowchart TD
   subgraph Already
     K --> L
   end
+```
+
+Input
+([quotes/shape-labels-without-quotes-input.mmd](../tests/fixtures/flowchart/quotes/shape-labels-without-quotes-input.mmd)):
+
+```mmd
+flowchart LR
+A["text"]
+B("Is it ready?")
+C(["Step 1: load"])
+D[["go-on, then stop!"]]
+E[("Database v2")]
+F(("x.y"))
+G{{"Hexagon"}}
+H{"Decision"}
+I[/"Input"/]
+J[\"Output"\]
+K[/"Trapezoid"\]
+L[\"Alt trapezoid"/]
+M>"Asymmetric"]
+N((("Double circle")))
+O["a - b"]
+P[text]
+```
+
+Output
+([quotes/shape-labels-without-quotes-output.mmd](../tests/fixtures/flowchart/quotes/shape-labels-without-quotes-output.mmd)):
+
+```mmd
+flowchart LR
+  A[text]
+  B(Is it ready?)
+  C([Step 1: load])
+  D[[go-on, then stop!]]
+  E[(Database v2)]
+  F((x.y))
+  G{{Hexagon}}
+  H{Decision}
+  I[/Input/]
+  J[\Output\]
+  K[/Trapezoid\]
+  L[\Alt trapezoid/]
+  M>Asymmetric]
+  N(((Double circle)))
+  O[a - b]
+  P[text]
+```
+
+Input
+([quotes/link-labels-without-quotes-input.mmd](../tests/fixtures/flowchart/quotes/link-labels-without-quotes-input.mmd)):
+
+```mmd
+flowchart LR
+A -->|"Is it ready?"| B
+B -- "Step 1: load" --> C
+C == "go-on, then stop!" ==> D
+D -- "x" --- E
+E -.-> F
+F -. "ready?" .-> G
+G -. "a.b" .-> H
+H -->|"a.b"| I
+I -->|plain| J
+```
+
+Output
+([quotes/link-labels-without-quotes-output.mmd](../tests/fixtures/flowchart/quotes/link-labels-without-quotes-output.mmd)):
+
+```mmd
+flowchart LR
+  A -->|Is it ready?| B
+  B -- Step 1: load --> C
+  C == go-on, then stop! ==> D
+  D -- x --- E
+  E -.-> F
+  F -. ready? .-> G
+  G -. "a.b" .-> H
+  H -->|a.b| I
+  I -->|plain| J
 ```
 
 ### Style trailing whitespace

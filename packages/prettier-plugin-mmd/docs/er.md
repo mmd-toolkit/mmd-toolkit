@@ -761,12 +761,21 @@ one space (see [Attribute blocks](#attribute-blocks)). A name, a role, or the id
 of a subgraph in quotes that is one plain word is printed without them, as the
 examples in the documentation of mermaid.js write it (see
 [The quotes of a text](./compatibility.md#the-quotes-of-a-text)): `"A"[B]` is
-printed `A[B]`, and `C ||--o{ D : "has"` is `C ||--o{ D : has`. The other names
-are kept as written, quoted or not, numbers included, and so is a name that ends
-with `direction` or starts with `TB`, `BT`, `RL`, or `LR`, in any case: the
-lexer reads `direction`, white space (a line break too), and the name of a
-direction as one line, which a name without quotes would join with the line
-before or after it. [fixture: entities/plain-names-without-quotes] [fixture:
+printed `A[B]`, and `C ||--o{ D : "has"` is `C ||--o{ D : has`. A word that
+starts with a letter, with a single `-` between its parts (`LINE-ITEM`, `a-1`),
+is plain too, as the examples write 20 such names, `LINE-ITEM` and
+`NAMED-DRIVER` among them, and none in quotes: `"LINE-ITEM"` is printed
+`LINE-ITEM`. The part before the first `-` is compared with the words that the
+lexer reads as a unit of its own, since a `-` ends a keyword (`"end-x"` is `end`
+and `-x`). The other names are kept as written, quoted or not, numbers included,
+and so are a name with a `-` at its start or its end or two together, a name
+that starts with a `_` (`"_x"`, which the lexers before 10.5.0 reject without
+quotes), and a name that ends with `direction` or starts with `TB`, `BT`, `RL`,
+or `LR`, in any case: the lexer reads `direction`, white space (a line break
+too), and the name of a direction as one line, which a name without quotes would
+join with the line before or after it. [fixture:
+entities/plain-names-without-quotes] [fixture:
+entities/hyphenated-names-without-quotes] [fixture:
 entities/names-that-need-quotes] [fixture:
 entities/names-next-to-a-direction-line] [fixture: entities/names-kept] A
 directive between the parts of an entity is placed as under
@@ -821,6 +830,36 @@ erDiagram
   "A B":::c
   A:::é,b-c
   B:::d
+```
+
+Input
+([entities/hyphenated-names-without-quotes-input.mmd](../tests/fixtures/er/entities/hyphenated-names-without-quotes-input.mmd)):
+
+```mmd
+erDiagram
+"LINE-ITEM" ||--o{ "ORDER-LINE" : "has-items"
+"A-B-C" {
+int id
+}
+"p-q"[Alias]
+subgraph "my-group"
+"x-y"
+end
+```
+
+Output
+([entities/hyphenated-names-without-quotes-output.mmd](../tests/fixtures/er/entities/hyphenated-names-without-quotes-output.mmd)):
+
+```mmd
+erDiagram
+  LINE-ITEM ||--o{ ORDER-LINE : has-items
+  A-B-C {
+    int id
+  }
+  p-q[Alias]
+  subgraph my-group
+    x-y
+  end
 ```
 
 ### Subgraphs
@@ -1424,6 +1463,61 @@ erDiagram
   A %%{init: {}}%%||--o{ B : x
   C
   %%{init: {}}%% D
+```
+
+### Colors
+
+A color in a style is printed in lower case, as the examples in the
+documentation of mermaid.js write it and as the CSS formatter of Prettier prints
+it: `style CUSTOMER fill:#F9F,stroke:#ABCDEF` is printed
+`style CUSTOMER fill: #f9f, stroke: #abcdef`. The colors in the styles of the
+`style` and `classDef` statements of an ER diagram are printed so. A color is a
+`#` and 3, 4, 6, or 8 hexadecimal digits that stand alone in the value of a
+style; it is never shortened, and a text that is no color stays as written (see
+[Colors that are drawn the same](./compatibility.md#colors-that-are-drawn-the-same)).
+[fixture: colors/colors-in-lower-case] [fixture:
+colors/words-that-are-not-colors-as-written]
+
+Input
+([colors/colors-in-lower-case-input.mmd](../tests/fixtures/er/colors/colors-in-lower-case-input.mmd)):
+
+```mmd
+erDiagram
+CUSTOMER ||--o{ ORDER : places
+style CUSTOMER fill:#F9F,stroke:#ABCDEF,color:#C0FFEE
+classDef c fill:#DEADBE,stroke:#ABCDEF
+class ORDER c
+```
+
+Output
+([colors/colors-in-lower-case-output.mmd](../tests/fixtures/er/colors/colors-in-lower-case-output.mmd)):
+
+```mmd
+erDiagram
+  CUSTOMER ||--o{ ORDER : places
+  style CUSTOMER fill: #f9f, stroke: #abcdef, color: #c0ffee
+  classDef c fill: #deadbe, stroke: #abcdef
+  class ORDER c
+```
+
+Input
+([colors/words-that-are-not-colors-as-written-input.mmd](../tests/fixtures/er/colors/words-that-are-not-colors-as-written-input.mmd)):
+
+```mmd
+erDiagram
+CUSTOMER
+style CUSTOMER fill:#ABCDE,stroke:#ABCDEF1
+classDef c fill:#ABC-x,stroke:x#ABC
+```
+
+Output
+([colors/words-that-are-not-colors-as-written-output.mmd](../tests/fixtures/er/colors/words-that-are-not-colors-as-written-output.mmd)):
+
+```mmd
+erDiagram
+  CUSTOMER
+  style CUSTOMER fill: #ABCDE, stroke: #ABCDEF1
+  classDef c fill: #ABC-x, stroke: x#ABC
 ```
 
 ### Frontmatter YAML

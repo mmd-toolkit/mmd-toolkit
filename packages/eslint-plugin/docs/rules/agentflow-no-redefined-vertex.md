@@ -47,18 +47,26 @@ order in which the flows end (a flow inside another one ends first): mermaid.js
 leaves it in the first and the later one does not get it. A vertex statement in
 the later flow is reported when it has no link, no class, and no data block, and
 writes only the id, or the label and the shape that the element has with the
-same label kind and property of the shape: it says nothing new about the
-element. A connector declaration counts as an earlier occurrence, and a
-connector declaration in a later flow is reported by
+same property of the shape, and with both labels markdown or neither: it says
+nothing new about the element. A label in quotes and a label without them are
+the same here: mermaid.js draws them alike, and the formatter prints one of the
+two forms, so formatting does not change what is reported. A property of the
+shape changes what mermaid.js records for the element, and the formatter leaves
+it as written, so another property says something new. The title of a connector
+is never a markdown label, however it is written, and declaring a connector
+again with a title changes neither whether its label is markdown nor the
+property of its shape. A connector declaration counts as an earlier occurrence,
+and a connector declaration in a later flow is reported by
 [agentflow-no-redefined-connector](./agentflow-no-redefined-connector.md). In a
 group such as `A & B`, each vertex is reported for itself. It is not reported
 when the earlier flow is inside the later one, or has the same id, since nothing
 is lost; nor when no earlier flow has the element, or the element was not
 written before, or when the statement says something new: a link, a class, a
-data block, the first shape of the vertex, or another label kind or property. A
-vertex or a connector written directly in a `global` block, wherever the block
-stands, belongs to no flow, so it is never reported; a flow written in a
-`global` block holds its own vertices.
+data block, the first shape of the vertex, a markdown label where the element's
+label is not markdown or the reverse, or another property. A vertex or a
+connector written directly in a `global` block, wherever the block stands,
+belongs to no flow, so it is never reported; a flow written in a `global` block
+holds its own vertices.
 
 Labels and shapes set by data blocks, such as `A@{ shape: decision }`, are not
 compared, even between shaped vertices. Text, quoted text, and markdown text are
@@ -72,8 +80,8 @@ Examples of **incorrect** code for this rule:
 ```mmd
 %% eslint @mmd-toolkit/agentflow-no-redefined-vertex: error
 agentflow-beta TB
-  A[Start] --> B
-  C --> A[End]
+  A["Start"] --> B
+  C --> A["End"]
 ```
 
 ```mmd
@@ -99,7 +107,7 @@ Examples of **correct** code for this rule:
 ```mmd
 %% eslint @mmd-toolkit/agentflow-no-redefined-vertex: error
 agentflow-beta TB
-  A[Start] --> B
+  A["Start"] --> B
   A --> C
 ```
 

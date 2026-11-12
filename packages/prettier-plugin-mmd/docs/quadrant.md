@@ -499,25 +499,67 @@ quadrantChart
   classDef c1 radius: 5, color: #f00
 ```
 
+### Colors
+
+A color in a style is printed in lower case, as the examples in the
+documentation of mermaid.js write it and as the CSS formatter of Prettier prints
+it: `A: [0.3, 0.6] color: #FF3300` is printed `A: [0.3, 0.6] color: #ff3300`.
+The colors in the `color` and the `stroke-color` of a point and of a `classDef`
+statement of a quadrant chart are printed so. A color is a `#` and 3, 4, 6, or 8
+hexadecimal digits that stand alone in the value of a style; it is never
+shortened, and a text that is no color stays as written (see
+[Colors that are drawn the same](./compatibility.md#colors-that-are-drawn-the-same)).
+[fixture: colors/colors-in-lower-case]
+
+Input
+([colors/colors-in-lower-case-input.mmd](../tests/fixtures/quadrant/colors/colors-in-lower-case-input.mmd)):
+
+```mmd
+quadrantChart
+x-axis L --> R
+y-axis L --> H
+quadrant-1 Q1
+P: [0.3, 0.6] radius: 12, color: #FF3300, stroke-color: #ABCDEF
+Q:::c1: [0.6, 0.3]
+classDef c1 color: #DEADBE, stroke-color: #C0FFEE
+```
+
+Output
+([colors/colors-in-lower-case-output.mmd](../tests/fixtures/quadrant/colors/colors-in-lower-case-output.mmd)):
+
+```mmd
+quadrantChart
+  x-axis L --> R
+  y-axis L --> H
+  quadrant-1 Q1
+  P: [0.3, 0.6] radius: 12, color: #ff3300, stroke-color: #abcdef
+  Q:::c1: [0.6, 0.3]
+  classDef c1 color: #deadbe, stroke-color: #c0ffee
+```
+
 ### Quotes
 
 The text of an axis, of a quadrant, and of a point in quotes is printed without
 them where it is plain, as the examples in the documentation of mermaid.js write
 it (see [The quotes of a text](./compatibility.md#the-quotes-of-a-text)):
 `quadrant-1 "A"` is printed `quadrant-1 A`. A text is plain where it is words of
-ASCII letters, ending in digits, with one space between them, and none of the
-words is one that the lexer reads as a unit of its own. A `;` that follows the
-text on its line is dropped with the line break that replaces it, and the text
-loses its quotes as it does without the `;`: `quadrant-1 "A";` is printed
-`quadrant-1 A`. [fixture: quotes/texts-before-a-semicolon] Any other string and
-a markdown string are printed as written: their quotes and their text, with a
-run of spaces and tabs inside them printed as one space. mermaid.js reads `"L"`
-and `L`, and `"a b"` and `a b`, as the same text, but a string can hold what a
-text without quotes cannot (`"a: b"` has a colon, which a text without quotes is
-rejected for), so the quotes of such a text stay, and a quote is never added.
-[fixture: quotes/strings-runs-collapsed] [fixture:
-quotes/plain-texts-without-quotes] [fixture: quotes/texts-that-need-quotes]
-[fixture: quotes/quotes-not-added] [fixture:
+ASCII letters, ending in digits, with one space between them, whose parts may be
+joined by a single `-` (`"high-value"` is printed `high-value`), and none of the
+parts is one that the lexer reads as a unit of its own, nor is `x-axis` or
+`y-axis` in the text: the lexer reads a `-` as the end of a word, so a part
+after it starts a word (`"my-title"` and `"my-x-axis"` stay in quotes). A `;`
+that follows the text on its line is dropped with the line break that replaces
+it, and the text loses its quotes as it does without the `;`: `quadrant-1 "A";`
+is printed `quadrant-1 A`. [fixture: quotes/texts-before-a-semicolon] Any other
+string and a markdown string are printed as written: their quotes and their
+text, with a run of spaces and tabs inside them printed as one space. mermaid.js
+reads `"L"` and `L`, and `"a b"` and `a b`, as the same text, but a string can
+hold what a text without quotes cannot (`"a: b"` has a colon, which a text
+without quotes is rejected for), so the quotes of such a text stay, and a quote
+is never added. [fixture: quotes/strings-runs-collapsed] [fixture:
+quotes/plain-texts-without-quotes] [fixture:
+quotes/texts-with-hyphens-without-quotes] [fixture:
+quotes/texts-that-need-quotes] [fixture: quotes/quotes-not-added] [fixture:
 quotes/keywords-and-arrows-in-strings] [fixture: quotes/markdown-strings]
 [fixture: quotes/string-with-a-comment-mark]
 
@@ -545,6 +587,28 @@ quadrantChart
   quadrant-2 Need to promote
   Campaign A: [0.3, 0.6]
   Q1 results: [0.5, 0.5]
+```
+
+Input
+([quotes/texts-with-hyphens-without-quotes-input.mmd](../tests/fixtures/quadrant/quotes/texts-with-hyphens-without-quotes-input.mmd)):
+
+```mmd
+quadrantChart
+x-axis "Low-Reach" --> "High-Reach"
+y-axis "low-value" --> "high-value2"
+quadrant-1 "We-should expand"
+"my-point": [0.3, 0.6]
+```
+
+Output
+([quotes/texts-with-hyphens-without-quotes-output.mmd](../tests/fixtures/quadrant/quotes/texts-with-hyphens-without-quotes-output.mmd)):
+
+```mmd
+quadrantChart
+  x-axis Low-Reach --> High-Reach
+  y-axis low-value --> high-value2
+  quadrant-1 We-should expand
+  my-point: [0.3, 0.6]
 ```
 
 ### Titles and accessibility statements

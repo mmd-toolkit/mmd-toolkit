@@ -179,18 +179,19 @@ style:#x;y,b,1
 ### Quotes
 
 A field is printed without quotes when its text is plain: ASCII letters, digits,
-`_`, `-`, and `.`, with spaces between them. `"a"` and `a` are the same id in
-the Db, and so are `" a"` and `a`, since mermaid.js drops the spaces at the ends
-of a field with or without quotes, and the examples in the documentation of
-mermaid.js write every source and every value without quotes, and the target of
-a link without quotes 83 times against 4 in quotes (see
+`_`, `-`, and `.`, with spaces between them, and, in a source and a target, `&`,
+`<`, `>`, `'`, `/`, and `\` (`"R&D"` is printed `R&D`). `"a"` and `a` are the
+same id in the Db, and so are `" a"` and `a`, since mermaid.js drops the spaces
+at the ends of a field with or without quotes, and the examples in the
+documentation of mermaid.js write every source and every value without quotes,
+and the target of a link without quotes 83 times against 4 in quotes (see
 [The quotes of a text](./compatibility.md#the-quotes-of-a-text)). So `"a",b,"1"`
 is printed `a,b,1`, `"a b"` is `a b`, and `" a "` is `a`. A field with a text
 that is not plain stays in quotes: a comma or a doubled quote, which a field
 without quotes cannot hold, a line break, a `;`, a `#`, a `%%`, or any other
 character, and a string with a directive in it. [fixture:
-quotes/plain-text-without-quotes] [fixture:
-quotes/plain-text-with-spaces-without-quotes] [fixture:
+quotes/plain-text-without-quotes] [fixture: quotes/symbols-without-quotes]
+[fixture: quotes/plain-text-with-spaces-without-quotes] [fixture:
 quotes/spaces-at-the-ends-left-out] [fixture:
 quotes/comma-and-doubled-quotes-kept] [fixture:
 quotes/other-characters-keep-the-quotes] [fixture:
@@ -210,6 +211,34 @@ Output
 ```mmd
 sankey
 Pumped heat,"Heating and cooling, ""homes""",193.026
+```
+
+Input
+([quotes/symbols-without-quotes-input.mmd](../tests/fixtures/sankey/quotes/symbols-without-quotes-input.mmd)):
+
+```mmd
+sankey
+"R&D",Product,10
+Product,"AT&T",5
+"it's","a/b",2
+"x<y>","c\dir",3
+" a & b ","'x'",4
+"/","\",1
+a,b,"1&2"
+```
+
+Output
+([quotes/symbols-without-quotes-output.mmd](../tests/fixtures/sankey/quotes/symbols-without-quotes-output.mmd)):
+
+```mmd
+sankey
+R&D,Product,10
+Product,AT&T,5
+it's,a/b,2
+x<y>,c\dir,3
+a & b,'x',4
+/,\,1
+a,b,"1&2"
 ```
 
 ### Values

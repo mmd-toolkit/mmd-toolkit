@@ -26,6 +26,7 @@ import {
   spansKeptBreaks,
 } from "./kept-lines.ts"
 import type { Source } from "./source.ts"
+import { writtenWithRespellings } from "./spelling.ts"
 import {
   findStructuralToken,
   findTriviaBetween,
@@ -144,7 +145,11 @@ function formatStyleAtom(source: Source, atom: Atom): Atom {
   while (text[valueStart] === " " || text[valueStart] === "\t") valueStart++
   return {
     ...atom,
-    doc: [text.slice(0, nameEnd), ": ", text.slice(valueStart)],
+    doc: [
+      text.slice(0, nameEnd),
+      ": ",
+      writtenWithRespellings(source, atom.start + valueStart, atom.end),
+    ],
   }
 }
 

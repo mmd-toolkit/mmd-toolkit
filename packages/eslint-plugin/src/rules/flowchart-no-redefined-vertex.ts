@@ -17,10 +17,16 @@ function propertyOf(shape: FlowchartShape): string {
     : `${shape.property.name.name}:${shape.property.value.name}`
 }
 
-/** Whether mermaid.js records `shape` as it records `previous`: the label kind and the property count. */
+/**
+ * Whether `shape` says nothing new about the vertex besides its name and label
+ * text: both labels are markdown or neither is, and the property is the same.
+ * A label in quotes and a label without them (the kinds `string` and `text`)
+ * draw alike, so they are the same here; a markdown label draws differently.
+ */
 function sameForm(previous: FlowchartShape, shape: FlowchartShape): boolean {
   return (
-    previous.label.kind === shape.label.kind &&
+    (previous.label.kind === "markdown") ===
+      (shape.label.kind === "markdown") &&
     propertyOf(previous) === propertyOf(shape)
   )
 }
@@ -37,8 +43,9 @@ function sameForm(previous: FlowchartShape, shape: FlowchartShape): boolean {
  * The rule also reports a vertex written in a subgraph that does not get it,
  * because a subgraph that ended before has it (`flowchartLostMembers`), when
  * the vertex was written before and this occurrence has no link, class, or data
- * block and writes only the id, or the shape that the vertex has: the label,
- * its kind (text, string, or markdown), and the property of the shape the same.
+ * block and writes only the id, or the shape that the vertex has: the label and
+ * the property of the shape the same, and both labels markdown or neither
+ * (`sameForm`).
  */
 export const flowchartNoRedefinedVertex: MermaidRuleDefinition<{
   RuleOptions: []

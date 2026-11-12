@@ -1,9 +1,17 @@
 erDiagram
 "end" ||--o{ "Class" : "one"
-"a b" ||--o{ "1a" : "a-b"
+"a b" ||--o{ "1a" : "a b"
 "123" ||--o{ "u" : "o"
-"order-item" ||--o{ "Zoë" : "to"
+"-a" ||--o{ "Zoë" : "to"
 "Style"
-subgraph "my-group"
+subgraph "a--b"
 "x"
+end
+"a-" ||--o{ "end-x" : "one-x"
+"u-x" ||--o{ "o-x" : "TB-x"
+"x-direction" ||--o{ "1-a" : "a-é"
+"_a-b" ||--o{ "a-é" : "x"
+"_x" ||--o{ "_1" : "_role"
+subgraph "_group"
+"y"
 end

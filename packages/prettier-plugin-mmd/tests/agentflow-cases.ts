@@ -12,12 +12,12 @@ export const agentflowCases: readonly AgentflowCase[] = [
   {
     name: "agentflow: U+2028 inside the brackets of a flow title",
     input: "agentflow-beta TB\nflow F[ T\u2028]\nA\nend\n",
-    output: "agentflow-beta TB\n  flow F[T\u2028]\n    A\n  end\n",
+    output: 'agentflow-beta TB\n  flow F["T"\u2028]\n    A\n  end\n',
   },
   {
     name: "agentflow: U+2029 inside the brackets of a flow title",
     input: "agentflow-beta TB\nflow F[ T\u2029]\nA\nend\n",
-    output: "agentflow-beta TB\n  flow F[T\u2029]\n    A\n  end\n",
+    output: 'agentflow-beta TB\n  flow F["T"\u2029]\n    A\n  end\n',
   },
   {
     name: "agentflow: U+2028 between the parentheses of a blank callback",
@@ -54,7 +54,7 @@ export const agentflowCases: readonly AgentflowCase[] = [
   {
     name: "agentflow: U+2028 between a flow name and its title",
     input: "agentflow-beta TB\nflow F\u2028[T]\nA\nend",
-    output: "agentflow-beta TB\n  flow F\u2028[T]\n    A\n  end\n",
+    output: 'agentflow-beta TB\n  flow F\u2028["T"]\n    A\n  end\n',
   },
   {
     name: "agentflow: a comment and U+2028 between a flow name and its title",
@@ -94,7 +94,7 @@ export const agentflowCases: readonly AgentflowCase[] = [
   {
     name: "agentflow: U+2029 between the name of a flow in quotes and its title",
     input: 'agentflow-beta TB\nflow "F" \u2029[T]\nA\nend\n',
-    output: 'agentflow-beta TB\n  flow "F" \u2029[T]\n    A\n  end\n',
+    output: 'agentflow-beta TB\n  flow "F" \u2029["T"]\n    A\n  end\n',
   },
   {
     name: "agentflow: U+2028 after the title of a connector",
@@ -109,7 +109,7 @@ export const agentflowCases: readonly AgentflowCase[] = [
   {
     name: "agentflow: U+2028 between the closing quote and the `|` of an edge label",
     input: 'agentflow-beta TB\nA-->|"x"\u2028|B',
-    output: 'agentflow-beta TB\n  A -->|"x"\u2028| B\n',
+    output: "agentflow-beta TB\n  A -->|x\u2028| B\n",
   },
   {
     name: "agentflow: U+2028 before the comma of a style statement",

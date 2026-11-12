@@ -1174,6 +1174,196 @@ difference, among them a text that became a string, fails. When the pinned
 mermaid.js is updated, draw both texts of each case again and compare the SVG
 and the pixels before the exception stays.
 
+## Labels that are drawn the same
+
+The labels of flowchart, swimlane, and agentflow diagrams are printed in the
+form that the examples use (see [The quotes of a text](#the-quotes-of-a-text)):
+`A["Start here"]` is printed `A[Start here]` in a flowchart and a swimlane
+diagram, `A[Start]` is printed `A["Start"]` in an agentflow diagram, and the
+labels of links and the titles of subgraphs and flows follow. A text that
+mermaid.js reads differently in the other form stays as written. [fixture:
+flowchart/quotes/shape-labels-without-quotes] [fixture:
+flowchart/quotes/link-labels-without-quotes] [fixture:
+flowchart/quotes/subgraph-titles-without-quotes] [fixture:
+agentflow/quotes/labels-in-quotes] [fixture:
+agentflow/quotes/flow-titles-in-quotes]
+
+mermaid.js keeps the `labelType` `string` in the Db for a label in quotes and
+`text` for a label without them, so the Db of the printed text differs from the
+Db of the written text, but it draws the same figure. The Db gets the type from
+the text of a vertex
+([`flowDb.ts`](https://github.com/mermaid-js/mermaid/blob/2086904e76c692331e34a45d7cc3bc30860d040e/packages/mermaid/src/diagrams/flowchart/flowDb.ts#L228),
+and
+[`agentflowDb.ts`](https://github.com/mermaid-js/mermaid/blob/2086904e76c692331e34a45d7cc3bc30860d040e/packages/mermaid/src/diagrams/agentflow/agentflowDb.ts#L485)),
+of an edge
+([L333](https://github.com/mermaid-js/mermaid/blob/2086904e76c692331e34a45d7cc3bc30860d040e/packages/mermaid/src/diagrams/flowchart/flowDb.ts#L333)
+and
+[L752](https://github.com/mermaid-js/mermaid/blob/2086904e76c692331e34a45d7cc3bc30860d040e/packages/mermaid/src/diagrams/agentflow/agentflowDb.ts#L752)),
+and of the title of a subgraph or a flow
+([L763](https://github.com/mermaid-js/mermaid/blob/2086904e76c692331e34a45d7cc3bc30860d040e/packages/mermaid/src/diagrams/flowchart/flowDb.ts#L763)
+and
+[L1245](https://github.com/mermaid-js/mermaid/blob/2086904e76c692331e34a45d7cc3bc30860d040e/packages/mermaid/src/diagrams/agentflow/agentflowDb.ts#L1245)),
+and the renderers read only whether it is `markdown`: the label of a node
+([`labelHelper`](https://github.com/mermaid-js/mermaid/blob/2086904e76c692331e34a45d7cc3bc30860d040e/packages/mermaid/src/rendering-util/rendering-elements/shapes/util.ts#L89)),
+the label of an edge
+([`edges.js`](https://github.com/mermaid-js/mermaid/blob/2086904e76c692331e34a45d7cc3bc30860d040e/packages/mermaid/src/rendering-util/rendering-elements/edges.js#L87)),
+and the title of a subgraph
+([`clusters.js`](https://github.com/mermaid-js/mermaid/blob/2086904e76c692331e34a45d7cc3bc30860d040e/packages/mermaid/src/rendering-util/rendering-elements/clusters.js#L41)
+and
+[L555](https://github.com/mermaid-js/mermaid/blob/2086904e76c692331e34a45d7cc3bc30860d040e/packages/mermaid/src/rendering-util/rendering-elements/clusters.js#L555)).
+
+Both texts of each case were drawn in Chromium, and the SVG was the same, or the
+pixels were: a text of letters, digits, spaces, and `-`, `.`, `,`, `:`, `!`, and
+`?` in each of the fourteen shapes of a flowchart, as the label of a link
+between `|`, between two arrows, between two dotted arrows, and between two
+thick arrows, and as the title of a subgraph. The drawings were made with
+mermaid.js 9.0.0, 9.1.7, 9.4.3, 10.3.1, 10.9.0, 11.0.0, 11.4.1, 11.12.3,
+11.13.0, 11.16.1, 12.0.0, and 12.3.0 for a flowchart, with 11.16.1, 12.0.0, and
+12.3.0 for a swimlane diagram, and with 12.0.0 and 12.3.0 for an agentflow
+diagram. The stadium and the asymmetric shape are drawn with strokes at random,
+and the same text drawn twice differs in the data of their paths only. Before
+10.3.1 a label in quotes has the type `text`, as a label without them, so there
+the two forms have the same Db. The characters of the list were compared with
+and without quotes in each shape and form of a link, at the start, in the
+middle, and at the end of a text: the Db was the same apart from the
+`labelType`. Other characters are read differently in some places, and stay in
+quotes: an `@` in the asymmetric shape and in an agentflow diagram, a `%` in an
+agentflow diagram, a `.` between dotted arrows, and a `=` between thick arrows
+are rejected without quotes, and a `/`, a `\`, or a `-` at the start of a text
+makes another shape or is rejected.
+
+The tests compare the Db of the printed text with the `labelType` restored from
+the Db of the written text (`labelTypeDbForFormattingComparison` in
+`tests/label-type-differences.ts`): a `labelType` that differs between `string`
+and `text` takes the written one, and any other difference, among them a label
+that became markdown or stopped being it, fails. When the pinned mermaid.js is
+updated, draw both texts of each case again and compare the SVG and the pixels
+before the exception stays.
+
+## Colors that are drawn the same
+
+The colors in the styles of flowchart, swimlane, agentflow, class, state, ER,
+requirement, block, usecase, quadrant, and Venn diagrams are printed in lower
+case: `style A fill:#F9F,stroke:#ABCDEF` is printed
+`style A fill: #f9f, stroke: #abcdef`. The colors are in these places:
+
+| Diagram type | Where the colors are                                             | Colors of the examples, lower case / otherwise |
+| ------------ | ---------------------------------------------------------------- | ---------------------------------------------: |
+| flowchart    | `style`, `classDef`, `linkStyle` with link numbers and `default` |                                         10 / 0 |
+| swimlane     | the same statements                                              |                                          2 / 0 |
+| agentflow    | the same statements                                              |                                          0 / 0 |
+| class        | `style`, `classDef`                                              |                                          8 / 0 |
+| state        | `style`, `classDef`                                              |                                          2 / 0 |
+| ER           | `style`, `classDef`                                              |                                         12 / 0 |
+| requirement  | `style`, `classDef`                                              |                                          5 / 0 |
+| block        | `style`, `classDef`                                              |                                          7 / 0 |
+| usecase      | `style`, `classDef`                                              |                                         10 / 0 |
+| quadrant     | `color` and `stroke-color` of a point and of a `classDef`        |                                          7 / 0 |
+| Venn         | the properties of `style`                                        |                                          1 / 0 |
+
+The counts are the colors with a hexadecimal letter (`#F9F`) in those places in
+the examples of the documentation of mermaid.js, read with the parser; the
+examples write 64 of them in lower case and none in upper case or in both. A
+color of digits only (`#333`, 30 more) has no case and is not counted. The
+colors of other places are texts of another kind and stay as written: the labels
+and the titles (a `<span>` with `style='color:#F00'` in a label is a label), the
+notes, the arguments of a call of a C4 diagram (`$bgColor="#FFF"`), the colors
+of the boxes and the rectangles of a sequence diagram, and the settings of the
+frontmatter and of the directives. The `classDef` of a treemap has none, since
+its lexer rejects a `#`. [fixture: flowchart/colors/colors-in-lower-case]
+[fixture: flowchart/colors/swimlane-colors-in-lower-case] [fixture:
+agentflow/colors/colors-in-lower-case] [fixture:
+class/colors/colors-in-lower-case] [fixture: state/colors/colors-in-lower-case]
+[fixture: er/colors/colors-in-lower-case] [fixture:
+requirement/colors/colors-in-lower-case] [fixture:
+block/colors/colors-in-lower-case] [fixture:
+usecase/colors/colors-in-lower-case] [fixture:
+quadrant/colors/colors-in-lower-case] [fixture:
+venn/colors/colors-in-lower-case]
+
+A text is a color only where it cannot be anything else, and the formatter
+prints it as the CSS formatter of Prettier does (3.9.9, run on `fill: <value>`
+for each value below; the formatter gave the same text, apart from the case of
+the unit in `#fff 10PX`, which it does not change). A color is a `#` and 3, 4,
+6, or 8 hexadecimal digits that is a word of its own in the text of a style: it
+starts the text or follows whitespace, a `:`, a `,`, or a `(`, and it ends the
+text or is followed by whitespace, a `,`, a `)`, a `!`, or the `;` that ends the
+statement. So `#F9F`, `#ABCD`, `#ABCDEF`, `#ABCDEF12`, `#FFF !important`,
+`#FFF!important`, `1px solid #FFF`, `rgb(#FFF)`, `calc(#ABC)`, `var(--x, #ABC)`,
+`fn(#FFF, #000)`, and `/* #ABC */ #DEF` (the color after the comment) are
+printed in lower case, and a color is never shortened (`#FFFFFF` stays six
+digits). These stay as written: a run of 2, 5, 7, or 9 digits (`#AB`, `#ABCDE`,
+`#ABCDEF1`, `#ABCDEF123`), a `#` followed by other letters (`#GGG`), a word that
+more characters touch (`#ABC-x`, `x#ABC`, `#ABC.5`, `#ABC#DEF`, `#ABC/#DEF`),
+and a `#` inside a string (`'#ABC'`), a comment, the parentheses of `url(`
+(`url(#ABC)` is a reference to an element), or after a backslash (`\#ABC`). A
+`;` inside the text of a style makes the color the placeholder of an entity, or
+joins it to the word after the `;` (`classDef c fill:#F9F;stroke:red` has the
+style `fill:#F9Fstroke:red`,
+[`style` and `classDef` lines](../../spec/docs/common.md#style-and-classdef-lines)),
+so it stays; the `;` that ends the statement is dropped by the formatter, and
+the color before it is printed in lower case. A directive that touches the color
+(`fill:#ABCDEF%%{init: {}}%%`) can join the word before it to the word after it
+once mermaid.js has taken it away, so that color stays as written too. [fixture:
+flowchart/colors/words-that-are-not-colors-as-written] [fixture:
+flowchart/colors/colors-in-quotes-and-after-a-backslash-as-written] [fixture:
+flowchart/colors/color-before-the-final-semicolon] [fixture:
+flowchart/colors/colors-before-a-semicolon-as-written] [fixture:
+flowchart/colors/colors-next-to-comments-and-directives] [fixture:
+class/colors/words-that-are-not-colors-as-written] [fixture:
+state/colors/words-that-are-not-colors-as-written] [fixture:
+er/colors/words-that-are-not-colors-as-written] [fixture:
+requirement/colors/words-that-are-not-colors-as-written] [fixture:
+block/colors/words-that-are-not-colors-as-written] [fixture:
+usecase/colors/words-that-are-not-colors-as-written] [fixture:
+venn/colors/words-that-are-not-colors-as-written]
+
+mermaid.js keeps the colors in the case in which they are written, in its Db and
+in the figure, and draws the same figure. It puts the style of a node into the
+CSS `style` attribute of its shape as it is, with `!important`, where CSS reads
+the digits of a color in any case
+([`styles2Map`](https://github.com/mermaid-js/mermaid/blob/2086904e76c692331e34a45d7cc3bc30860d040e/packages/mermaid/src/rendering-util/rendering-elements/shapes/handDrawnShapeStyles.ts#L44-L51)
+and
+[`styles2String`](https://github.com/mermaid-js/mermaid/blob/2086904e76c692331e34a45d7cc3bc30860d040e/packages/mermaid/src/rendering-util/rendering-elements/shapes/handDrawnShapeStyles.ts#L75-L106)).
+The style of a link goes into the `style` attribute of its path, and its
+`stroke` is the color of the arrowheads
+([`stroke:` of the styles](https://github.com/mermaid-js/mermaid/blob/2086904e76c692331e34a45d7cc3bc30860d040e/packages/mermaid/src/rendering-util/rendering-elements/edges.js#L899)
+and
+[of the path](https://github.com/mermaid-js/mermaid/blob/2086904e76c692331e34a45d7cc3bc30860d040e/packages/mermaid/src/rendering-util/rendering-elements/edges.js#L957)),
+which
+[`addEdgeMarkers`](https://github.com/mermaid-js/mermaid/blob/2086904e76c692331e34a45d7cc3bc30860d040e/packages/mermaid/src/rendering-util/rendering-elements/edgeMarker.ts#L104-L136)
+copies into a marker with the id of the color (`…pointEnd-margin__ABCDEF`), an
+id that mermaid.js generates. A quadrant chart puts the color of a point into
+the attributes `fill` and `stroke` as it is
+([`quadrantBuilder.ts`](https://github.com/mermaid-js/mermaid/blob/2086904e76c692331e34a45d7cc3bc30860d040e/packages/mermaid/src/diagrams/quadrant-chart/quadrantBuilder.ts#L496-L508)).
+Both texts of each place were drawn in Chromium: the SVG was the same apart from
+the case of the colors and from the generated ids and the random paths of the
+hand drawn shapes, or the pixels were the same (`style`, `classDef`, and
+`linkStyle` of a flowchart with the 14 versions 9.0.0, 9.1.7, 9.4.3, 10.3.1,
+10.9.0, 11.0.0, 11.4.1, 11.12.3, 11.13.0, 11.14.0, 11.15.0, 11.16.1, 12.0.0, and
+12.3.0; a swimlane diagram with 11.16.1, 12.0.0, and 12.3.0; an agentflow
+diagram with 12.0.0 and 12.3.0; a class diagram with 10.9.0, 11.0.0, and 11.4.1
+to 12.3.0 for `style`, and with 11.4.1 to 12.3.0 for `classDef`; a state diagram
+with 9.4.3, 10.3.1, 10.9.0, and 11.0.0 to 12.3.0 for `classDef`, and with 11.0.0
+to 12.3.0 for `style`; an ER diagram with 11.12.3 to 12.3.0; a requirement
+diagram with 11.12.3 to 12.3.0; a block diagram with 10.9.0 to 12.3.0; a usecase
+diagram with 12.0.0 and 12.3.0; a quadrant chart with 11.0.0 to 12.3.0; and a
+Venn diagram with 11.13.0 to 12.3.0). Of the 14 versions, the others reject the
+statement or the diagram type, except 9.0.0 for an ER diagram, which accepts a
+`style` or `classDef` line and draws the words `style` or `classDef` and the ids
+after it as entities, without a style, and draws the text with the color in
+upper case and in lower case as the same SVG, so that the formatter's change
+draws the same there too.
+
+The tests compare the Db with the colors of the styles restored from the Db of
+the written text (`colorCaseDbForFormattingComparison` in
+`tests/color-case-differences.ts`): a color that is the written color in lower
+case takes the written case, in the places of the Db that hold a style, and any
+other difference, among them a text that is no color by the definition above and
+was printed in lower case, a color that became another color, and a color that
+was lost, fails. When the pinned mermaid.js is updated, draw both texts of each
+place again and compare the SVG and the pixels before the exception stays.
+
 ## Spellings that are drawn the same
 
 mermaid.js reads some different spellings of a token as the same token and draws
@@ -1887,29 +2077,42 @@ of the examples that write each in each form, are:
 | C4           | the type of a boundary or a node              |              0 |        14 |
 | C4           | the description of an element                 |              0 |        46 |
 | flowchart    | the name of a subgraph                        |             53 |         1 |
+| flowchart    | the label of a shape                          |            109 |         8 |
+| flowchart    | the label of a link                           |             32 |         1 |
+| flowchart    | the title of a subgraph                       |              6 |         0 |
 | agentflow    | the name of a flow                            |             17 |         0 |
 | agentflow    | the name of a connector                       |              2 |         0 |
 | agentflow    | the title of a connector                      |              0 |         2 |
+| agentflow    | the label of a shape                          |              0 |        47 |
+| agentflow    | the title of a flow                           |              0 |        17 |
+| agentflow    | the label of a link                           |              2 |         0 |
 | class        | the name of a class                           |            178 |         4 |
 | class        | the name of a namespace                       |             11 |         0 |
 
 The name of an actor, of a use case, and of a system boundary is counted where
 it has no label or title of its own, since a name in quotes cannot have one;
 counting every name gives 35 / 0 for an actor, 44 / 1 for a use case, and 9 / 2
-for a system boundary.
+for a system boundary. The rows of a flowchart count the examples of a swimlane
+diagram too, which write 59 labels of shapes, 12 labels of links, and 4 titles
+of subgraphs without quotes, and none in quotes.
 
 A text is printed without quotes where it is plain: ASCII letters, digits, `_`,
 `-`, and `.`, with spaces between them, and, in a sankey diagram, with spaces at
-its ends, which the field drops. The sankey lexer takes any printable character
-of ASCII but `"` and `,` into a field without quotes, but a character of another
-kind is not one that every stage reads the same: `%%` starts a comment or a
-directive, `#` starts an entity, `;` takes part in the line rule of `style` and
-`classDef` lines, and a line break ends the record, while `&`, `<`, `>`, `'`,
-`\`, and `/` were not compared in every position. So a text with any of them, or
-with a `,` or a `"`, stays in quotes, and so does a string with a directive or a
-comment region inside it. [fixture: sankey/quotes/plain-text-without-quotes]
-[fixture: sankey/quotes/plain-text-with-spaces-without-quotes] [fixture:
+its ends, which the field drops. The source and the target of a link of a sankey
+diagram may also hold `&`, `<`, `>`, `'`, `/`, and `\`, as `R&D` and `it's` do.
+The sankey lexer takes any printable character of ASCII but `"` and `,` into a
+field without quotes, and the Db of a source and of a target that holds one of
+these characters, alone or inside a text, is the same with and without quotes;
+the value of a link was not compared with them, and stays as written. A
+character of another kind is not one that every stage reads the same: `%%`
+starts a comment or a directive, `#` starts an entity, `;` takes part in the
+line rule of `style` and `classDef` lines, and a line break ends the record. So
+a text with any of them, or with a `,` or a `"`, stays in quotes, and so does a
+string with a directive or a comment region inside it. [fixture:
+sankey/quotes/plain-text-without-quotes] [fixture:
+sankey/quotes/plain-text-with-spaces-without-quotes] [fixture:
 sankey/quotes/spaces-at-the-ends-left-out] [fixture:
+sankey/quotes/symbols-without-quotes] [fixture:
 sankey/quotes/comma-and-doubled-quotes-kept] [fixture:
 sankey/quotes/other-characters-keep-the-quotes] [fixture:
 sankey/values/forms-kept] [fixture:
@@ -1917,20 +2120,26 @@ sankey/quotes/values-in-quotes-without-quotes] [fixture:
 sankey/directives/inside-fields-kept] [fixture:
 sankey/multi-line-strings/string-over-lines]
 
-In an ER diagram a text is printed without quotes where it is one word of ASCII
-letters, digits, and `_` that starts with a letter or a `_` and is none of the
-words that the lexer reads as a unit of its own, in any case: `erDiagram`,
-`style`, `classDef`, `class`, `subgraph`, `end`, `one`, `many`, `only`, `zero`,
-`optionally`, `or`, `to`, `accTitle`, `accDescr`, `direction`, `TB`, `BT`, `RL`,
-`LR`, `PK`, `FK`, `UK`, `u`, and `o`. A name of other characters, such as a
-space, a `-`, or a letter outside ASCII, a name that starts with a digit, which
-the lexer can read as a number or a cardinality, and a title of a subgraph,
-whose names mermaid.js joins with one space, stay as written. So does a name
-that ends with `direction` or starts with `TB`, `BT`, `RL`, or `LR`, in any
-case, since the lexer reads `direction`, white space (a line break too), and the
-name of a direction as one line, which a name without quotes would join with the
-line before or after it. [fixture: er/entities/plain-names-without-quotes]
-[fixture: er/entities/names-that-need-quotes] [fixture:
+In an ER diagram a text is printed without quotes where it is a word of ASCII
+letters, digits, and `_` that starts with a letter, with a single `-` allowed
+between its parts (`LINE-ITEM`, `a-1`), and the word, or the part before its
+first `-`, is none of the words that the lexer reads as a unit of its own, in
+any case: `erDiagram`, `style`, `classDef`, `class`, `subgraph`, `end`, `one`,
+`many`, `only`, `zero`, `optionally`, `or`, `to`, `accTitle`, `accDescr`,
+`direction`, `TB`, `BT`, `RL`, `LR`, `PK`, `FK`, `UK`, `u`, and `o`. A `-` ends
+a keyword, so `end-x` is `end` and `-x`. A name of other characters, such as a
+space, a `.`, or a letter outside ASCII, a name with a `-` at its start or its
+end or two together (`-a`, `a-`, `a--b`), a name that starts with a `_` (`_x`,
+`_a-b`), which the lexers before 10.5.0 reject without quotes, a name that
+starts with a digit, which the lexer can read as a number or a cardinality, and
+a title of a subgraph, whose names mermaid.js joins with one space, stay as
+written. So does a name that ends with `direction` or starts with `TB`, `BT`,
+`RL`, or `LR`, in any case, since the lexer reads `direction`, white space (a
+line break too), and the name of a direction as one line, which a name without
+quotes would join with the line before or after it. [fixture:
+er/entities/plain-names-without-quotes] [fixture:
+er/entities/hyphenated-names-without-quotes] [fixture:
+er/entities/names-that-need-quotes] [fixture:
 er/entities/names-next-to-a-direction-line] [fixture: er/entities/alias-tight]
 [fixture: er/statements-one-per-line/relationships] [fixture:
 er/statements-one-per-line/role-then-entity] [fixture:
@@ -1964,10 +2173,13 @@ without a boundary and in lower case: `build`, `buy`, `outsource`, `market`,
 `pipeline`, `note`, `annotation`, `accelerator`, `deaccelerator`, `title`,
 `accTitle`, and `accDescr`, so that `"buyer"` stays in quotes, as does
 `"title x"` but not `"Title x"`. The names of an accelerator, a deaccelerator,
-and a component of a pipeline are printed in quotes. Two names of a link without
-an arrow, `"A" "B"`, would be read as one name without quotes, and the `---` of
-a hidden YAML block next to a name would join the name, so these keep their
-quotes. [fixture: wardley/names-and-quotes/plain-names-without-quotes] [fixture:
+and a component of a pipeline are printed in quotes. A name with a `-` stays as
+written, since 11.14.0, the first release with the diagram type, rejects it
+without quotes (see [Versions of mermaid.js](#versions-of-mermaidjs)). Two names
+of a link without an arrow, `"A" "B"`, would be read as one name without quotes,
+and the `---` of a hidden YAML block next to a name would join the name, so
+these keep their quotes. [fixture:
+wardley/names-and-quotes/plain-names-without-quotes] [fixture:
 wardley/names-and-quotes/names-that-need-quotes] [fixture:
 wardley/links/link-no-arrow] [fixture: wardley/pipeline/pipeline-depth]
 
@@ -1985,12 +2197,16 @@ gitgraph/references/names-that-need-quotes] [fixture:
 gitgraph/references/reference-forms]
 
 In a quadrant chart a text is printed without quotes where it is words of ASCII
-letters that end in digits, with one space between them, and none of the words
-is `title`, `classDef`, `accTitle`, `accDescr`, or a word that starts with
-`quadrant` (in any case): the lexer reads a letter after a digit or a `_` as the
-start of a word again, so a text with a `-`, a `_`, a digit in the middle of a
-word, or a number at its start stays in quotes. [fixture:
-quadrant/quotes/plain-texts-without-quotes] [fixture:
+letters that end in digits, with one space between them, whose parts may be
+joined by a single `-`, and none of the parts is `title`, `classDef`,
+`accTitle`, `accDescr`, or a word that starts with `quadrant` (in any case), and
+the text holds no `x-axis` or `y-axis`: the lexer reads a `-` as the end of a
+word, so a part after it starts a word, and `my-x-axis` holds the keyword
+`x-axis`. The lexer reads a letter after a digit or a `_` as the start of a word
+again, so a text with a `_`, a digit in the middle of a word, a number at its
+start or after a `-`, or a `-` at its start or its end or two together stays in
+quotes. [fixture: quadrant/quotes/plain-texts-without-quotes] [fixture:
+quadrant/quotes/texts-with-hyphens-without-quotes] [fixture:
 quadrant/quotes/texts-that-need-quotes] [fixture: quadrant/points/string-names]
 [fixture: quadrant/axes/strings]
 
@@ -2104,23 +2320,32 @@ c4/quotes/names-and-texts-on-a-kept-line-as-written]
 
 In a flowchart, a swimlane diagram, and an agentflow diagram the name of a
 subgraph, a flow, and a connector in quotes is printed without them where it is
-words of ASCII letters, digits, and `_` with one space between them, none of
-them `_blank`, `_parent`, `_self`, `_top`, `call`, `click`, `default`,
-`direction`, `end`, `href`, and `interpolate`: the lexer reads these as a unit
-of its own, so `"end"`, `"click"`, and `"x _self"` stay in quotes (the lexer of
-an agentflow diagram reads `end` as a name, and the printer leaves it in quotes
-too). A name that a word touches on its line (`subgraph "S"accDescr {}`), a name
-that a comment follows, and a name of two spaces that is an id, since the
-subgraph has a title, keep their quotes, and so does a name that ends with
-`direction`, whatever follows it: the lexer reads `direction`, white space (a
-line break too), and the name of a direction (`TB`, `BT`, `RL`, `LR`, or `TD`)
-as one line, which `subgraph xdirection` and a next line `TB --> C` would form.
-The title of a connector, which mermaid.js reads the same in quotes and without
-them, is printed in quotes where it starts with a letter or a digit and holds
-ASCII letters, digits, spaces, `_`, `-`, `.`, `,`, `:`, `!`, and `?`. [fixture:
+words of ASCII letters, digits, and `_` with one space between them, whose parts
+may be joined by a single `-` (`my-team`), none of the words `_blank`,
+`_parent`, `_self`, `_top`, `call`, `click`, `default`, `direction`, `end`,
+`href`, and `interpolate`, compared by the part before the first `-`, which ends
+a keyword: the lexer reads these as a unit of its own, so `"end"`, `"click"`,
+`"end-x"`, and `"x _self"` stay in quotes (the lexer of an agentflow diagram
+reads `end` as a name, and the printer leaves it in quotes too). A name with a
+`-` at its start or its end, or two together, stays in quotes. In a flowchart
+the lexer of 9.0.0 to 10.3.0 starts a token after a `-`, a `_`, and a digit, so
+a name stays in quotes where `end` or `interpolate` ends it (`x-end`, `x_end`),
+where `click` or `call` stands before whitespace (`x-click`, `x1call`), and
+where `_self`, `_blank`, `_parent`, or `_top` stands anywhere (`x_self`,
+`a b_top`); a swimlane diagram and an agentflow diagram print these names
+without quotes. A name that a word touches on its line
+(`subgraph "S"accDescr {}`), a name that a comment follows, and a name of two
+spaces that is an id, since the subgraph has a title, keep their quotes, and so
+does a name that ends with `direction`, whatever follows it: the lexer reads
+`direction`, white space (a line break too), and the name of a direction (`TB`,
+`BT`, `RL`, `LR`, or `TD`) as one line, which `subgraph xdirection` and a next
+line `TB --> C` would form. [fixture:
 flowchart/quotes/subgraph-names-without-quotes] [fixture:
+flowchart/quotes/subgraph-names-with-hyphens] [fixture:
 flowchart/quotes/swimlane-lane-names-without-quotes] [fixture:
 flowchart/quotes/subgraph-names-that-need-quotes] [fixture:
+flowchart/quotes/subgraph-names-the-old-lexer-reads] [fixture:
+flowchart/quotes/swimlane-lane-names-the-old-lexer-reads] [fixture:
 flowchart/quotes/subgraph-names-next-to-a-direction-line] [fixture:
 flowchart/quotes/subgraph-names-with-runs-without-quotes] [fixture:
 flowchart/quotes/subgraph-names-before-a-comment] [fixture:
@@ -2128,9 +2353,55 @@ flowchart/subgraph-header/whitespace-before-block-kept] [fixture:
 agentflow/quotes/names-without-quotes] [fixture:
 agentflow/quotes/names-that-need-quotes] [fixture:
 agentflow/quotes/names-next-to-a-direction-line] [fixture:
+agentflow/quotes/names-and-titles-before-a-comment]
+
+The label of a shape, the label of a link, and the title of a subgraph of a
+flowchart and a swimlane diagram are printed without quotes, and the label of a
+shape, the title of a flow, and the title of a connector of an agentflow diagram
+in quotes (the label of a link of an agentflow diagram without them), where the
+text starts with a letter or a digit, has no space at its end, and holds ASCII
+letters, digits, spaces, `_`, `-`, `.`, `,`, `:`, `!`, and `?`. mermaid.js reads
+such a text the same in quotes and without them, in every shape and in every
+version that reads it, apart from the `labelType` that its Db keeps (see
+[Labels that are drawn the same](#labels-that-are-drawn-the-same)). A `.` stays
+in quotes in a label between the arrows of a dotted link (`-. "a.b" .->`), which
+a `.` ends, and so does a `--` in a label between the arrows of a solid link
+(`-- "a--b" -->`), in a flowchart, a swimlane diagram, and an agentflow diagram:
+the lexer ends the text at a `--`, and reads `go--on` as the arrow `--o`. In a
+flowchart a label also stays in quotes where the lexer of 9.0.0 to 10.3.0 reads
+a part of it as another token, since it has no state for the text of a label: a
+`-` at its end, an arrow (`---`, `--x`, `--o`, `.-`), `:::`, `_self`, `_blank`,
+`_parent`, `_top`, `interpolate`, `click` and `call` with a space or the end of
+the label after them (a space and an arrow follow a label between two arrows),
+and `accTitle` and `accDescr`. A swimlane diagram and an agentflow diagram print
+them without quotes. Any other text stays as written: a markdown string, a text
+that starts with `_`, a `/`, a `\`, a `-`, or a space, a text with a bracket, a
+`|`, a `&`, a `"`, a `;`, a `#`, a `%`, or a `<`, a text that ends with a space,
+and a label on a line that is kept whole. In an agentflow diagram a label also
+stays as written where it is the first unit of its line, as after a comment
+line, a directive on a line of its own, or a U+2028 or U+2029, since mermaid.js
+rejects a string there. The label of a link that the printer writes in the other
+form (see [The label of a link](#the-label-of-a-link)) is written without quotes
+in that form. [fixture: flowchart/quotes/shape-labels-without-quotes] [fixture:
+flowchart/quotes/link-labels-without-quotes] [fixture:
+flowchart/quotes/subgraph-titles-without-quotes] [fixture:
+flowchart/quotes/labels-that-need-quotes] [fixture:
+flowchart/quotes/labels-next-to-trivia] [fixture:
+flowchart/quotes/labels-the-old-lexer-reads] [fixture:
+flowchart/quotes/swimlane-labels-the-old-lexer-reads] [fixture:
+flowchart/quotes/labels-with-two-dashes-between-arrows] [fixture:
+flowchart/quotes/swimlane-labels-with-two-dashes-between-arrows] [fixture:
+flowchart/quotes/swimlane-labels-without-quotes] [fixture:
+flowchart/link-label-form/swimlane-arrows-to-pipes] [fixture:
+agentflow/quotes/edge-labels-with-two-dashes] [fixture:
+agentflow/quotes/labels-after-a-directive-line] [fixture:
+agentflow/quotes/labels-in-quotes] [fixture:
+agentflow/quotes/flow-titles-in-quotes] [fixture:
 agentflow/quotes/connector-titles-in-quotes] [fixture:
 agentflow/quotes/connector-titles-as-written] [fixture:
-agentflow/quotes/names-and-titles-before-a-comment]
+agentflow/quotes/labels-after-a-comment-line] [fixture:
+agentflow/edge-labels/pipes-to-arrows] [fixture:
+agentflow/labels/labels-quote-unsafe]
 
 In a class diagram the name of a class or of a namespace between backquotes is
 printed without them where it is a word of ASCII letters, digits, and `_` that
@@ -2148,22 +2419,14 @@ directive keeps its backquotes. [fixture: class/quotes/names-without-quotes]
 class/quotes/names-next-to-a-direction-line] [fixture:
 class/quotes/names-on-a-kept-line-as-written]
 
-In a flowchart, a swimlane diagram, and an agentflow diagram, the title of a
-subgraph or a flow, the label of a shape, and the label of a link stay as
-written: mermaid.js reads `A["x"]` as a string and `A[x]` as a text, and the Db
-holds the `labelType` `string` for the first and `text` for the second, so the
-two forms are not read the same. In a sequence diagram there is no string: the
-quotes of the description of a participant (`participant A as "Alice"`), of a
-message, and of a note are characters of the text. In a class diagram the
-grammar needs a string for the label of a class, the text of a note, and a
-cardinality, and rejects the text without quotes (`class A[Label]`,
-`note for B Text`, `A 1 --> * B`). In an eventmodeling diagram a name has no
-form in quotes, and the quotes in the data of a frame, in a title, and in an
-accessibility value are characters of the text (the Db holds `{"x"}` for the
-data `{"x"}` and `{x}` for `{x}`). [fixture: flowchart/quotes/labels-as-written]
-[fixture: flowchart/quotes/subgraph-titles-as-written] [fixture:
-agentflow/quotes/labels-as-written] [fixture:
-agentflow/quotes/flow-titles-as-written] [fixture:
+In a sequence diagram there is no string: the quotes of the description of a
+participant (`participant A as "Alice"`), of a message, and of a note are
+characters of the text. In a class diagram the grammar needs a string for the
+label of a class, the text of a note, and a cardinality, and rejects the text
+without quotes (`class A[Label]`, `note for B Text`, `A 1 --> * B`). In an
+eventmodeling diagram a name has no form in quotes, and the quotes in the data
+of a frame, in a title, and in an accessibility value are characters of the text
+(the Db holds `{"x"}` for the data `{"x"}` and `{x}` for `{x}`). [fixture:
 sequence/quotes/texts-as-written] [fixture: class/quotes/strings-as-written]
 [fixture: eventmodeling/quotes/quotes-as-written]
 
@@ -2261,6 +2524,14 @@ mermaid.js, show which form each version reads:
   them have the same text. The words that these grammars read as units of their
   own (`erDiagram`, `one`, `many`, `only one`, `to`, `optionally to`, and the
   others of the lexer) are among the words that the printer leaves in quotes.
+  The grammars of 9.0.0 to 10.3.0 read a name without quotes as
+  `[A-Za-z][A-Za-z0-9\-_]*`, those of 10.5.0 to 11.4.1 as
+  `[A-Za-z_][A-Za-z0-9\-_]*`, and those of 11.5.0 to 12.3.0 as
+  `([^\x00-\x7F]|\w|\-|\*)+` (11.13.0 adds `.`). So a name of letters, digits,
+  `_`, and `-` that starts with a letter is read in every version that reads a
+  name in quotes, and a name that starts with a `_` is not read before 10.5.0:
+  9.4.3 and 10.3.1 draw `LINE-ITEM` the same with and without quotes, and reject
+  `_x` without them, so a name that starts with a `_` stays in quotes.
 - The names and the values of a requirement diagram: the grammars of 9.1.0,
   10.9.0, and 12.3.0 give a requirement name, an id, a text, an element name, a
   type, and a reference the same production for a string in quotes and for a
@@ -2272,17 +2543,21 @@ mermaid.js, show which form each version reads:
   of ASCII letters, digits, `_`, `(`, `)`, and `&` that start with a letter and
   have spaces between them; the grammars of 11.15.0 (which adds the `-` to a
   name), 12.0.0, and 12.3.0 read the same words. A name in quotes has the same
-  text as the name without them.
+  text as the name without them. 11.14.0 rejects a name with a `-` without
+  quotes, so such a name stays in quotes.
 - The branches of a gitGraph: the grammars of 9.4.3, 10.9.0, and 11.0.0 read a
   reference (`ref`) as a name without quotes, `\w([-\./\w]*[-\w])?`, or as a
   string, and the lexers of these grammars compare their keywords in any case;
   the grammar of 12.3.0 compares them as written, and reads a name that is
   longer than a keyword as a name.
-- The texts of a quadrant chart: the grammars of 10.9.0, 11.0.0, and 12.3.0 read
-  a text without quotes (`ALPHA` and the tokens that follow it) and a string
-  with the same `text` rule, and the lexers of these grammars read `x-axis`,
-  `quadrant-1` to `quadrant-4`, and `quadrantChart` without a boundary after
-  them.
+- The texts of a quadrant chart: the grammars of 10.2.0, the first version of
+  the type, 10.3.0, 10.9.0, 11.0.0, and 12.3.0 read a text without quotes
+  (`ALPHA` and the tokens that follow it) and a string with the same `text`
+  rule, and the lexers of these grammars read `x-axis`, `quadrant-1` to
+  `quadrant-4`, and `quadrantChart` without a boundary after them. The rule
+  takes a `-` as the token `MINUS` inside a text
+  (`textNoTagsToken: alphaNumToken | SPACE | MINUS`), and 10.3.1 to 12.3.0 draw
+  a text with a `-` the same with and without quotes.
 - The titles and the categories of an XY chart: the grammars of 10.6.0, 10.9.0,
   11.0.0, 12.0.0, and 12.3.0 read a title, the title of an axis or of a plot,
   and a category with the same `text` rule, which takes a string as its text and
@@ -2325,7 +2600,52 @@ mermaid.js, show which form each version reads:
   belongs to the rule `text` from 10.3.1, which reads the title in brackets and
   the label of a shape, not the name. So the name of a subgraph has the same
   text and the same type in both forms in every version. The grammar of the
-  agentflow diagram is the same file in 12.0.0, 12.1.0, 12.2.0, and 12.3.0.
+  agentflow diagram is the same file in 12.0.0, 12.1.0, 12.2.0, and 12.3.0. The
+  grammar of 9.4.3 reads a name as the tokens `ALPHA`, `MINUS`, and `NUM`, and
+  the grammars of 10.9.0 to 12.3.0 take a `-` that no `>`, `-`, or `.` follows
+  into the token `NODE_STRING`, so a `-` between letters is part of a name. A
+  `-` ends a keyword, so `end-x` is `end` and `-x`. The names `my-group` and
+  `"my-group"` were drawn the same by 9.0.0, 9.1.7, 9.4.3, 10.3.1, 10.9.0,
+  11.0.0, 11.4.1, 11.12.3, 11.13.0, 11.16.1, 12.0.0, and 12.3.0 (a swimlane
+  diagram from 11.16.1, an agentflow diagram from 12.0.0). The lexer of 9.0.0 to
+  10.3.0, which the grammars of 9.4.3 and 10.3.0 share, has the rules `end`
+  (with a word boundary and the whitespace after it), `click` and `call` (with
+  whitespace after them), `interpolate`, and the targets of a link `_self`,
+  `_blank`, `_parent`, and `_top`, and it starts a token after a `-`, a `_`, and
+  a digit. 9.0.0, 9.1.7, and 9.4.3 reject `subgraph x-end`, `x_end`, `x1end`,
+  `x-click`, `x-call`, `x-interpolate`, `x-_self`, `x_self`, `x_blank`, and
+  `a b_top` without quotes, and draw the names with quotes; 10.3.1 and the
+  versions after it draw both forms the same. So a name of a flowchart with one
+  of these parts stays in quotes, and the names `x-ending`, `x-clicker`,
+  `x-calls`, and `x-End` were drawn the same by the 14 versions.
+- The labels of the shapes, the links, and the subgraphs of a flowchart, a
+  swimlane diagram, and an agentflow diagram: the rule `text`, which reads the
+  title in brackets and the label of a shape, gives a string the type `string`
+  from 10.3.1, and the type `text` before, so the Db of a label in quotes and of
+  the same label without them differs from 10.3.1. The renderers read only
+  whether the type is `markdown`, and a plain label was drawn the same in quotes
+  and without them in every version listed under
+  [Labels that are drawn the same](#labels-that-are-drawn-the-same), except the
+  texts below. The grammars of 9.4.3 and 10.3.0 have no state for the text of a
+  label: they read it with the tokens of a statement, and the text rule
+  (`textToken`) takes none of the tokens `INTERPOLATE`, `LINK_TARGET`,
+  `STYLE_SEPARATOR` (`:::`), `LINK` (`---`, `--x`, `--o`, `.-`), and the closer
+  `-)`; the keywords `click` and `call` start the states of an interactive
+  statement, and `accTitle` and `accDescr` those of an accessibility line.
+  9.0.0, 9.1.7, and 9.4.3 reject, or draw otherwise, the texts `go-` in a round
+  shape, `a.-b`, `a---b`, `o--o`, `a:::b`, `please click here`, `call x`,
+  `interpolate`, `x_self`, `a_blank`, `x_top`, and, from 9.1.7, `accTitle: x`,
+  without quotes in a shape, between `|`, between two arrows, and as the title
+  of a subgraph, and draw the texts with quotes; 10.3.1 and the versions after
+  it have a state for a label and draw both forms the same. So a label of a
+  flowchart with one of these parts stays in quotes. The lexers of 10.3.1 and
+  later read the text between two solid arrows one character at a time, a `-`
+  only when no `-` follows it (`<edgeText>[^-]|\-(?!\-)`), so the text ends at a
+  `--`, and a label with a `--` stays in quotes there in a flowchart, a swimlane
+  diagram, and an agentflow diagram: `-- a--b -->` is rejected and
+  `-- go--on -->` has the arrow `--o`. The texts `Click here`, `aclick x`,
+  `recall x`, `interpolated x`, `direction TB x`, and `the end of it` were drawn
+  the same by the 14 versions from 9.0.0 to 12.3.0, with and without quotes.
 - The names of the classes of a class diagram: the grammars of 9.0.0 to 12.3.0
   read a name between backquotes (`classLiteralName`: `BQUOTE_STR`) and a name
   of letters and digits (`alphaNumToken`: `ALPHA`, `NUM`) as a `className`. The
