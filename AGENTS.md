@@ -85,99 +85,20 @@ Correctness is defined by the pinned mermaid.js.
    whitespace that the drawing ignores (around a CSS declaration, in a run of
    HTML characters) are not compared. A way of writing that draws the same is
    printed in one form; a way of writing that draws something else is kept as
-   written. Which form that is, is decided by the rules that follow, in their
-   order, so that no case is left to a judgment of which form reads better.
-   First, the whitespace beside a mark is the whitespace that Prettier prints
-   beside the same kind of mark in the languages it formats: none before a comma
-   and one space after it; one space on each side of a `=`; none before the
-   colon that follows a name or a key, and one space after it; one space on each
-   side of a mark that stands between two things, such as an arrow; none inside
-   parentheses and square brackets; and, as Prettier prints an object and an
-   array, one space inside braces that hold names with their values
-   (`{ m: 60, s: 70 }`) and none inside braces that hold values alone
-   (`{85, 90, 80}`). A colon is the colon of a key only where what follows it is
-   the one value of the name before it, as the number of a slice of a pie chart
-   is (`"Dogs": 386`). Where a colon can also be read as a mark that stands
-   between two things (the label of a relation in `A --> B : go`, a member that
-   a line adds to a class in `Animal : +int age`, the data of a task of a Gantt
-   chart), the whitespace before it is the one that the examples in the
-   documentation of the pinned mermaid.js write on that kind of line at least
-   twice as often as any other, and, where no form is written that often, the
-   one that the released version prints. Padding that lines a column up over
-   several lines, as the colons of the tasks of a Gantt chart are lined up, is
-   no such whitespace: Prettier has no kind for it in those languages, so this
-   rule does not decide it. The whitespace is printed wherever every version of
-   mermaid.js that counts (see below) reads the text the same with it, and is
-   left out only where mermaid.js rejects it or reads something else, as in the
-   list of ids of a flowchart `class` statement. Second, a gap of a kind that
-   Prettier does not have takes the form that the other diagram types print for
-   the same kind of gap. Third, a spelling (the case of a keyword, the quotes of
-   a string, the digits of a number, the direction of a header) takes the form
-   that the examples in the documentation of the pinned mermaid.js use at least
-   twice as often as any other; where no form is used that often, or the
-   examples use none, the spelling is kept as written. Where none of these rules
-   gives a form, the output of the released version is not changed on a judgment
-   of which form reads better: a form that seems better is proposed to the user,
-   with a text as written and both outputs, and what is decided is added to
-   these rules. The check uses the pinned mermaid.js only, while the formatted
-   text is also drawn by other versions of mermaid.js. The versions that count
-   are those published in the 18 months before the pinned version was published:
-   of each major version, the smallest and the largest minor version among them,
-   and of a diagram type that was added in that time, the first minor version
-   that has it, each at its latest patch
-   ([Versions of mermaid.js that count](packages/prettier-plugin-mmd/docs/compatibility.md#versions-of-mermaidjs-that-count)
-   lists them). So a spelling is also kept as written where the form that would
-   be printed is not accepted by every one of these versions that accepts the
-   form that was written, or is drawn differently by one of them: the name of a
-   header (`block-beta` and `block`), which the versions accept differently, the
-   space after the `[` of a flowchart label that holds a `@`
-   (`A[ user@example.com ]`), without which the versions from 11.7.0 to 12.0.0
-   reject the label, and the direction of the header of a flowchart (`TB` and
-   `TD`), which the versions before 11.10.0 draw differently. The CHANGELOG.md
-   of mermaid.js, or the history of its grammar, shows which version added or
-   changed a form. The check is that formatting does not change the Db. A
-   formatting that changes the Db but not the drawing is an exception. Each kind
-   of exception has a section that defines it, with links to the code of the
-   pinned mermaid.js that shows why the drawing stays the same and the result of
-   drawing both texts, and the tests compare the Db with the differences of that
-   kind restored, one function for each kind, which
-   `packages/prettier-plugin-mmd/tests/db-comparison.ts` calls. When the pinned
-   mermaid.js is updated, each exception is checked again by drawing. The kinds
-   are:
-   - the limited ASCII space margin changes to eventmodeling block bodies,
-     defined in
-     [Data blocks](packages/prettier-plugin-mmd/docs/eventmodeling.md#data-blocks);
-   - the margin changes to eligible state note paragraphs, defined in
-     [Notes](packages/prettier-plugin-mmd/docs/state.md#notes);
-   - the whitespace around the first `:` and the `,` of styles, the runs of
-     spaces and tabs between the words of a style, which become one space, and
-     the whitespace at the end of a style, defined in
-     [Styles that are drawn the same](packages/prettier-plugin-mmd/docs/compatibility.md#styles-that-are-drawn-the-same);
-   - the whitespace at the start and at the end of a title, of the date format
-     and the axis format of a Gantt chart, and of a description of a C4 diagram,
-     and at the end of the last event of a line of a timeline, of the second
-     description of an alias of a state diagram, and of the name of a task of a
-     Gantt chart, defined in
-     [Texts after a keyword that are drawn the same](packages/prettier-plugin-mmd/docs/compatibility.md#texts-after-a-keyword-that-are-drawn-the-same);
-   - the runs of spaces and tabs inside the texts that mermaid.js draws without
-     them: titles, accessibility descriptions, and the labels of the diagram
-     types that draw them as SVG text, defined in
-     [Runs of whitespace in a text that are drawn the same](packages/prettier-plugin-mmd/docs/compatibility.md#runs-of-whitespace-in-a-text-that-are-drawn-the-same);
-   - the whitespace around the arguments of a `click` call in flowchart,
-     agentflow, class, and Gantt diagrams, defined in
-     [Call arguments that are drawn the same](packages/prettier-plugin-mmd/docs/compatibility.md#call-arguments-that-are-drawn-the-same);
-   - the spaces and tabs at the ends of the texts of a mindmap node and of a
-     kanban card, defined in
-     [Mindmap texts that are drawn the same](packages/prettier-plugin-mmd/docs/compatibility.md#mindmap-texts-that-are-drawn-the-same);
-   - the `labelType` of the labels of flowchart, swimlane, and agentflow
-     diagrams, which differs between a label in quotes and a label without them,
-     defined in
-     [Labels that are drawn the same](packages/prettier-plugin-mmd/docs/compatibility.md#labels-that-are-drawn-the-same);
-   - the case of the hexadecimal digits of a color in a style, which the
-     formatter prints in lower case, and the space after each comma of a color
-     function in the `rect` and `box` of a sequence diagram and in the `style`
-     of a Venn diagram, defined in
-     [Colors that are drawn the same](packages/prettier-plugin-mmd/docs/compatibility.md#colors-that-are-drawn-the-same).
+   written. Which form is printed is decided by rules that are applied in a
+   fixed order, so that no case is left to a judgment of which form reads
+   better: first the whitespace that Prettier prints beside the same kind of
+   mark, then the form that the other diagram types print for the same kind of
+   gap, then the spelling that the examples in the documentation of the pinned
+   mermaid.js use. Where none of them gives a form, the output of the released
+   version is not changed on such a judgment, and a form that seems better is
+   proposed to the user. The formatted text is also drawn by other versions of
+   mermaid.js, so a form is printed only where every version that counts reads
+   and draws it the same. The check is that formatting does not change the Db; a
+   formatting that changes the Db but not the drawing is an exception of a kind
+   that a section of the documents of the formatter defines. The rules, the
+   versions that count, and the kinds of exceptions are in
+   [How the printed form is decided](packages/prettier-plugin-mmd/docs/printed-form.md).
 
 ## What each package is responsible for
 
