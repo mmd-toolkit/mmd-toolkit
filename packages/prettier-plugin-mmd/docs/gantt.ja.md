@@ -378,26 +378,34 @@ Prettier が数えるどの幅でもコロンをそろえられないからで�
 [fixture: task-data/colon-column-white-space-kept]
 [fixture: task-data/colon-touching-name-white-space-kept]
 
-次の場合、タスクは書かれたまま残し、ほかのタスクがそろえる対象に含めず、
-コロンに接する名前にも空白を置きません。
+次の場合、タスクはコロンの前の空白を書かれたまま残し、
+ほかのタスクがそろえる対象に含めず、コロンに接する名前にも空白を置きません。
 そのタスクの空白は、ほかのタスクの桁を決めません。
+コロンとデータは、ほかのタスクと同じように印字します。
+`%%{init: {}}%% A task:a2,after a1,2d` は
+`%%{init: {}}%% A task: a2, after a1, 2d` になります。
+
+- 名前がディレクティブで終わるとき。
+  ディレクティブの隣の空白は、
+  残すからです（[ディレクティブ](#ディレクティブ)を参照）。
+- 文がその前になく、ディレクティブがその前にあるとき。
+
+次の場合、タスクはデータも含めて全体を書かれたまま残します。
+その行が変わらないからです。
 
 - 行を書かれたまま印字するとき（[1 行に 1 文](#1-行に-1-文)と、
   後述する空白だけのデータを参照）。
 - 複数行にわたるとき。
-- 名前がディレクティブで終わるとき。
-  ディレクティブの隣の空白は、
-  残すからです（[ディレクティブ](#ディレクティブ)を参照）。
-- 印字したときに行頭にならないとき。
-  文がその前になく、ディレクティブがその前にあるとき、または、
-  まとまったままの行で、その前に文があるときです。
-  それ以外の行でその前にある文は、周りのディレクティブとともに、
-  別の行に印字されるので、タスクは行頭になります。
-  名前が行頭から始まらないと、ほかのタスクとコロンがそろいません。
-  また、コロンの前の空白が、行の規則の読む所に入りえます。
-  規則は、`style` や `classDef` の後の `:` より後ろの空白を読み、
-  名前は `:` を含まないので、タスクのコロンより前の `:` は、
-  その前にある文からしか来ないからです（[1 行に 1 文](#1-行に-1-文)を参照）。
+- まとまったままの行で、その前に文があるとき。
+
+それ以外の行でその前にある文は、周りのディレクティブとともに、
+別の行に印字されるので、タスクは行頭になります。
+タスクが行頭にならないとき、名前が行頭から始まらないので、
+ほかのタスクとコロンがそろいません。
+また、コロンの前の空白が、行の規則の読む所に入りえます。
+規則は、`style` や `classDef` の後の `:` より後ろの空白を読み、
+名前は `:` を含まないので、タスクのコロンより前の `:` は、
+その前にある文からしか来ないからです（[1 行に 1 文](#1-行に-1-文)を参照）。
 
 [fixture: task-data/colon-column-line-as-written-kept]
 [fixture: task-data/colon-column-task-over-lines-kept]
@@ -409,9 +417,11 @@ Prettier が数えるどの幅でもコロンをそろえられないからで�
 [fixture: task-data/colon-touching-task-after-directive-kept]
 [fixture: task-data/colon-touching-name-ending-with-directive-kept]
 
-空白が後ろに続くと文を始める語を名前とするタスクも、書かれたまま残し、
-ほかのタスクもそれにそろえません。
+空白が後ろに続くと文を始める語を名前とするタスクも、
+コロンの前の空白を書かれたまま残し、ほかのタスクもそれにそろえません。
 `title:T` はタスクで、`title :T` は title なので、コロンの前に空白を置きません。
+データはほかのタスクと同じように印字します（`title:T` は `title: T`
+になります）。
 語は、`dateFormat`、`axisFormat`、`tickInterval`、`includes`、`excludes`、
 `todayMarker`、`title`、`accDescription`、`section`、`click`、`call` で、
 大文字小文字は問わず、名前の中のディレクティブは、
@@ -461,7 +471,14 @@ mermaid.js の行の規則が読む範囲では、コロンの後ろの空白を
 `classDef it:a1,2024-01-01,2d;#y:3d;z:2d` は、
 タスク `classDef it` とタスク `#y` の 2 つです。
 最初のコロンの後ろに空白を置くと、タスクは 3 つになります。
+mermaid.js は規則を当てる前にディレクティブを取り除くので、
+ディレクティブで割れた `style`（`sty%%{init: {}}%%le a:x#y;b:1d`）も `style`
+です。
+コロンと最初の項目の間のディレクティブは、空白の後ろに置き、項目に接します。
+`a:%%{init: {}}%%1d` は `a : %%{init: {}}%%1d` と印字します。
 [fixture: task-data/colon-space-line-rule-kept]
+[fixture: task-data/colon-line-rule-keyword-split-by-directive]
+[fixture: task-data/colon-directive-before-first-item]
 [fixture: task-data/colon-touches-first-item] [fixture: task-data/comma-spacing]
 [fixture: task-data/tab-around-items]
 データの末尾の空白は落とします。

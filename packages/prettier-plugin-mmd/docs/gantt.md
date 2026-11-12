@@ -366,21 +366,25 @@ task-data/colon-column-too-wide-kept] [fixture:
 task-data/colon-column-white-space-kept] [fixture:
 task-data/colon-touching-name-white-space-kept]
 
-A task is left as written, and is not one of the tasks that the others are
-aligned with, so its padding does not decide their column, and a name that
-touches its colon gets no space, where the printer prints its line as written
-(see [Statements one per line](#statements-one-per-line) and the data of
-whitespace only below), where it runs over lines, where its name ends with a
-directive, since the whitespace beside a directive stays (see
-[Directives](#directives)), and where it does not start its printed line: a
-directive stands before it with no statement between, or a statement stands
-before it on a line that stays together. A statement before it on any other line
-is printed on a line of its own, with the directives around it, so the task then
-starts its line. Its name then does not start the line, so its colon would not
-line up with the others, and the whitespace before its colon could lie where the
-line rule of mermaid.js reads it: the rule reads the whitespace after a `:` that
-follows `style` or `classDef`, a name holds no `:`, and so a `:` before the
-colon of the task can only come from a statement before it (see
+A task keeps the whitespace before its colon as written, and is not one of the
+tasks that the others are aligned with, so its padding does not decide their
+column, and a name that touches its colon gets no space, where its name ends
+with a directive, since the whitespace beside a directive stays (see
+[Directives](#directives)), and where a directive stands before it with no
+statement between. Its colon and its data are printed as those of any other
+task: `%%{init: {}}%% A task:a2,after a1,2d` is printed
+`%%{init: {}}%% A task: a2, after a1, 2d`. A task is left as written whole, its
+data too, where the printer prints its line as written (see
+[Statements one per line](#statements-one-per-line) and the data of whitespace
+only below), where it runs over lines, and where a statement stands before it on
+a line that stays together, since that line stays as it is. A statement before
+it on any other line is printed on a line of its own, with the directives around
+it, so the task then starts its line. Where the task does not start its line,
+its name does not start the line, so its colon would not line up with the
+others, and the whitespace before its colon could lie where the line rule of
+mermaid.js reads it: the rule reads the whitespace after a `:` that follows
+`style` or `classDef`, a name holds no `:`, and so a `:` before the colon of the
+task can only come from a statement before it (see
 [Statements one per line](#statements-one-per-line)). [fixture:
 task-data/colon-column-line-as-written-kept] [fixture:
 task-data/colon-column-task-over-lines-kept] [fixture:
@@ -392,13 +396,14 @@ task-data/colon-touching-task-after-statement-kept] [fixture:
 task-data/colon-touching-task-after-directive-kept] [fixture:
 task-data/colon-touching-name-ending-with-directive-kept]
 
-A task named by a word that starts a statement once whitespace follows it is
-left as written too, and the others are not aligned with it: `title:T` is a
-task, and `title :T` is a title, so no whitespace is set before its colon. The
-words are `dateFormat`, `axisFormat`, `tickInterval`, `includes`, `excludes`,
-`todayMarker`, `title`, `accDescription`, `section`, `click`, and `call`, in any
-case, and with the directives in the name taken out, as mermaid.js reads it
-(`ti%%{init: {}}%%tle:T` is the task `title`; see
+A task named by a word that starts a statement once whitespace follows it keeps
+the whitespace before its colon too, and the others are not aligned with it:
+`title:T` is a task, and `title :T` is a title, so no whitespace is set before
+its colon, and its data is printed as any other (`title:T` becomes `title: T`).
+The words are `dateFormat`, `axisFormat`, `tickInterval`, `includes`,
+`excludes`, `todayMarker`, `title`, `accDescription`, `section`, `click`, and
+`call`, in any case, and with the directives in the name taken out, as
+mermaid.js reads it (`ti%%{init: {}}%%tle:T` is the task `title`; see
 [Keywords and what follows them](../../spec/docs/diagrams/gantt.md#the-statement-context)).
 [fixture: task-data/colon-touching-keyword-name-kept] [fixture:
 task-data/colon-touching-keyword-name-with-directive-kept]
@@ -436,7 +441,13 @@ reads, from the first `:` after `style` or `classDef` to the last `#` before the
 last `;` of the line, since a space after such a colon makes the rule ignore
 another `;`: `classDef it:a1,2024-01-01,2d;#y:3d;z:2d` is the tasks
 `classDef it` and `#y`, and with a space after the first colon it is three
-tasks. [fixture: task-data/colon-space-line-rule-kept] [fixture:
+tasks. mermaid.js takes the directives out before it applies the rule, so a
+`style` that a directive splits (`sty%%{init: {}}%%le a:x#y;b:1d`) is `style`
+too. A directive between the colon and the first item stands after the space and
+touches the item: `a:%%{init: {}}%%1d` is printed `a : %%{init: {}}%%1d`.
+[fixture: task-data/colon-space-line-rule-kept] [fixture:
+task-data/colon-line-rule-keyword-split-by-directive] [fixture:
+task-data/colon-directive-before-first-item] [fixture:
 task-data/colon-touches-first-item] [fixture: task-data/comma-spacing] [fixture:
 task-data/tab-around-items] The whitespace at the end of the data is dropped.
 [fixture: task-data/trailing-whitespace-dropped]

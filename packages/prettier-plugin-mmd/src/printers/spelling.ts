@@ -10,6 +10,7 @@ import { findLinkLabelRespellings } from "./link-label-form.ts"
 import { shortestNumber } from "./number-form.ts"
 import { findQuoteFormRespellings } from "./quote-form.ts"
 import type { Source } from "./source.ts"
+import { isSpaceOrTab } from "./source.ts"
 
 /** The text to print in place of the token or node at an offset. */
 export interface Respelling {
@@ -61,8 +62,23 @@ const punctuationAliases: Readonly<
   railroadEbnf: { "::=": "=" },
 }
 
-/** The diagram types whose header can be followed by a `:`, which they read as no `:`. */
-const headerColonTypes: ReadonlySet<string> = new Set(["cynefin", "radar"])
+/**
+ * The diagram types whose header can be followed by a `:`, which they read as
+ * no `:` (a gitGraph needs it after a direction, which is no part of this).
+ */
+const headerColonTypes: ReadonlySet<string> = new Set([
+  "cynefin",
+  "gitGraph",
+  "radar",
+])
+
+/**
+ * The diagram types whose header colon stays where anything but spaces and
+ * tabs stands between the header and the colon: 10.9.8 rejects a gitGraph
+ * header `gitGraph %%{x}%%` that a statement follows on the next line, and
+ * accepts it with the colon (docs/compatibility.md, The colon after a header).
+ */
+const headerColonNeedsBlanks: ReadonlySet<string> = new Set(["gitGraph"])
 
 /**
  * The cardinalities of a relationship of an ER diagram as symbols, by their
@@ -247,7 +263,8 @@ function respellingsOf(source: Source): SourceRespellings {
 /**
  * Records the respelling of the tokens that are respelled one by one: a
  * keyword, the direction of a header, the assignment of the EBNF notation, the
- * colon after the header of a cynefin or a radar diagram, and a string.
+ * colon after the header of a cynefin, a gitGraph, or a radar diagram, and a
+ * string.
  */
 function findTokenRespellings(
   source: Source,
@@ -287,7 +304,11 @@ function findTokenRespellings(
         headerColonTypes.has(type) &&
         index === headerIndex + 1 &&
         text === ":" &&
-        !isTouchedAfter(source, token.range[1])
+        !isTouchedAfter(source, token.range[1]) &&
+        (!headerColonNeedsBlanks.has(type) ||
+          [
+            ...source.text.slice(tokens[headerIndex].range[1], token.range[0]),
+          ].every(isSpaceOrTab))
           ? ""
           : punctuationAliases[type]?.[text]
     } else if (

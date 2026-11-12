@@ -43,6 +43,7 @@ import {
   findStructuralToken,
   findTriviaBetween,
   isSpaceOrTab,
+  isWhitespace,
 } from "./source.ts"
 
 /**
@@ -65,13 +66,21 @@ export const timelineValueNodeTypes: ReadonlySet<Node["type"]> = new Set([
  * them; Trivia between units).
  */
 export function isBareKeywordPeriod(statement: TimelineStatement): boolean {
-  if (
-    statement.type !== "TimelinePeriodStatement" ||
-    statement.events.length > 0
-  ) {
-    return false
-  }
-  const word = toAsciiLowerCase(statement.period.value)
+  return (
+    statement.type === "TimelinePeriodStatement" &&
+    statement.events.length === 0 &&
+    isKeywordWord(statement.period.value)
+  )
+}
+
+/**
+ * Whether the text is the word `title` or `section` in any case, which the
+ * lexer reads as the keyword of a title or a section once whitespace follows
+ * it: a period of that word touches its `:` (`title: x`), and a space before
+ * the `:` would make the line a title with the text `: x`.
+ */
+function isKeywordWord(text: string): boolean {
+  const word = toAsciiLowerCase(text)
   return word === "title" || word === "section"
 }
 
@@ -203,10 +212,11 @@ function textStatementRules(
 /**
  * The layout of a period with its events, or of events alone: the period and
  * the `:` and text of every event, with the gaps between them as written. A
- * period touches its `:`, since it holds the whitespace before it, and so
- * does an event before the next `:`; the text of an event stands after one
- * space, whatever whitespace character was the separator after the `:`
- * (docs/timeline.md, Periods and events).
+ * period holds the whitespace before its `:`, and so does an event before the
+ * next `:`; where a text has none, one space is added, except after the word
+ * `title` or `section`. The text of an event stands after one space, whatever
+ * whitespace character was the separator after the `:` (docs/timeline.md,
+ * Periods and events).
  *
  * The separator may be a line break, with the text on the next line: that
  * line break is whitespace to the lexer, and the text moves to the line of
@@ -242,6 +252,19 @@ function layoutEvents(
         `prettier-plugin-mmd: no colon before the event at offset ${event.range[0]}`,
       )
     }
+    // The text before the `:` gets one space where it ends without whitespace
+    // and nothing stands between them (docs/timeline.md, Periods and events).
+    const text = atoms[eventIndex - 2]
+    const addsSpace =
+      text !== undefined &&
+      text.end === colon.start &&
+      !isWhitespace(source.text[text.end - 1]) &&
+      !(
+        statement.type === "TimelinePeriodStatement" &&
+        event === statement.events[0] &&
+        isKeywordWord(statement.period.value)
+      )
+    if (addsSpace) rules.set(colon.start, "space")
     if (
       event === statement.events[0] &&
       statement.type === "TimelinePeriodStatement"
@@ -254,12 +277,14 @@ function layoutEvents(
         !writtenPeriod.includes("\u2029")
       ) {
         // Keep tabs as tab stops and replace each remaining span by its display
-        // width, so later colons align without changing the period's value
-        // (docs/timeline.md, Periods and events).
-        statementPadding = writtenPeriod
-          .split("\t")
-          .map((part) => " ".repeat(util.getStringWidth(part)))
-          .join("\t")
+        // width, so later colons align under the first one, which stands one
+        // space further where that space is added (docs/timeline.md, Periods
+        // and events).
+        statementPadding =
+          writtenPeriod
+            .split("\t")
+            .map((part) => " ".repeat(util.getStringWidth(part)))
+            .join("\t") + (addsSpace ? " " : "")
       }
     } else if (statementPadding !== undefined) {
       alignedColons.add(colon.start)

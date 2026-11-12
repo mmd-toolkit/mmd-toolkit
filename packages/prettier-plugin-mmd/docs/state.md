@@ -671,11 +671,15 @@ documentation of mermaid.js write at least twice as often as any other: the
 examples write 4 descriptions without a space before the `:` and 1 with one. The
 `:` of a transition label has one space on each side, as the label stands
 between the transition and its text: `A-->B:submit` becomes `A --> B : submit`.
-The examples write 13 labels with a space before the `:` and 6 without, which is
-more than twice as often, so the label keeps the space. [fixture:
-descriptions-and-labels/spaced] The `:` of a description after a class spelled
-as a keyword stays touching it: `A:::style:x` becomes `A:::style: x`, because a
-space before the `:` would let the keyword start a statement. [fixture:
+The examples write 13 labels with a space before the `:` and 2 without, which is
+more than twice as often, so the label keeps the space. A directive between the
+id and the `:` of a description is placed as under [Directives](#directives),
+where the gap is printed as without the directive: `A %%{init: {}}%%: x` becomes
+`A%%{init: {}}%%: x`. [fixture: descriptions-and-labels/spaced] [fixture:
+descriptions-and-labels/directive-between-id-and-colon] The `:` of a description
+after a class spelled as a keyword stays touching it: `A:::style:x` becomes
+`A:::style: x`, because a space before the `:` would let the keyword start a
+statement. [fixture:
 descriptions-and-labels/class-named-style-then-description-kept] The text of a
 description and of a transition label is kept as written, with its runs: a label
 that wraps draws them (see

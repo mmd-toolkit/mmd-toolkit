@@ -291,17 +291,26 @@ timeline
 
 A period and its events are printed as written, with the whitespace between
 their texts and their colons, except for the whitespace at the end of the last
-event of a line: mermaid.js keeps it in the Db, but draws the same event without
-it (see
+event of a line and for a space that is added before a colon: mermaid.js keeps
+both in the Db, but draws the same text without them (see
 [Texts after a keyword that are drawn the same](./compatibility.md#texts-after-a-keyword-that-are-drawn-the-same)).
 The Db keeps the whitespace at the end of a period, which is the whitespace
 before its colon, and the whitespace at both ends of an event beyond the one
 character after its colon: `2004 : a` and `2004: a` are different periods,
 `a :   e` has the event `  e`, and `a : e   ` the event `e   `. So the padding
-that aligns the colons of a timeline stays, and a colon that touches its period
-keeps touching it; `a : e   ` at the end of a line is printed `a : e`, and
-`c : g   : h` stays as written. An event that a line break separates from the
-next colon ends its line too: in `2020 : e1  ` followed by a line `: e2`, the
+that aligns the colons of a timeline stays; `a : e   ` at the end of a line is
+printed `a : e`, and `c : g   : h` stays as written. A colon that follows a text
+without whitespace at its end gets one space before it, as the examples in the
+documentation of mermaid.js write every colon after a text (88 of them have a
+space before them, and none touches the text): `2004: Facebook: Google` is
+printed `2004 : Facebook : Google`. A colon that no whitespace follows is a
+character of the text and stays where it is. After a period that is the word
+`title` or `section`, in any case, the colon keeps touching it, since the lexer
+reads `title` and whitespace as the keyword of a title: `title: x` is a period
+with the event `x`, and `title : x` is a title with the text `: x`. A directive
+between the text and the colon keeps the gap as written (see
+[Directives](#directives)). An event that a line break separates from the next
+colon ends its line too: in `2020 : e1  ` followed by a line `: e2`, the
 whitespace after `e1` is left out. The directives that end such an event are
 printed with one space before each that has whitespace before it, and the
 whitespace after the last one is left out: `2020 : e1   %%{x}%%  ` is printed
@@ -309,6 +318,8 @@ whitespace after the last one is left out: `2020 : e1   %%{x}%%  ` is printed
 [Texts after a keyword that are drawn the same](./compatibility.md#texts-after-a-keyword-that-are-drawn-the-same)).
 [fixture: periods-and-events/event-trailing-directive-blanks-dropped] [fixture:
 periods-and-events/event-two-directives-trailing-blanks-dropped] [fixture:
+periods-and-events/space-before-colon-added] [fixture:
+periods-and-events/space-before-colon-keyword-period] [fixture:
 periods-and-events/period-whitespace-kept] [fixture:
 periods-and-events/event-padding-kept-end-dropped] [fixture:
 periods-and-events/whitespace-only-event] [fixture:
@@ -404,7 +415,7 @@ Output
 ```mmd
 timeline
   2002   : LinkedIn
-  2004: Facebook
+  2004 : Facebook
   2005 : YouTube
 ```
 
@@ -1196,7 +1207,7 @@ Output
 ```mmd
 timeline
   a %%{init: {}}%%: e
-  b: %%{init: {}}%%e
+  b : %%{init: {}}%%e
   c : e%%{init: {}}%%: f
 ```
 

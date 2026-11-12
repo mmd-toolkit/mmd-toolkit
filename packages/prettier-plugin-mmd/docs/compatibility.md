@@ -51,16 +51,14 @@ half year. When the pinned version is raised, the period and the list are
 computed again from the publication date of the new pinned version, with the
 versions of npm.
 
-Two of the three examples that AGENTS.md gives of a spelling kept as written
-because versions disagree hold for these versions: `block` is rejected by
-10.9.8, 11.7.0, and 11.8.1, which read `block-beta` only, and `TB` and `TD` are
-drawn differently by 10.9.8, 11.7.0, and 11.8.1 in a flowchart with a subgraph.
-The third does not: all ten versions read the header of a gitGraph with and
-without the colon (the commits and the branches are the same), and the colon is
-required by every version only after a direction (`gitGraph LR:`, since
-`gitGraph LR` is rejected by all of them). The colon was kept for the sake of
-8.14.0, which does not count (see
-[Versions of mermaid.js](#versions-of-mermaidjs)).
+The three examples that AGENTS.md gives of a spelling kept as written because
+versions disagree hold for these versions: `block` is rejected by 10.9.8,
+11.7.0, and 11.8.1, which read `block-beta` only; a label whose first word has a
+`@` is rejected by the versions from 11.7.0 to 12.0.0 without the space after
+the `[` (see
+[Whitespace at the start of a label](#whitespace-at-the-start-of-a-label)); and
+`TB` and `TD` are drawn differently by 10.9.8, 11.7.0, and 11.8.1 in a flowchart
+with a subgraph.
 
 ## Inputs read differently from mermaid.js
 
@@ -771,8 +769,12 @@ written, and so does a text of spaces and tabs only. The last event of a line of
 a timeline and the second description of a state with an alias lose the
 whitespace at their end in the same way, not the whitespace at their start,
 which aligns the colons of a timeline: `2020 : e   ` is printed `2020 : e`, and
-`state "d" as A : x   ` is printed `state "d" as A : x`. Where a comment follows
-the text on its line, one space separates it from the text. Where directives do,
+`state "d" as A : x   ` is printed `state "d" as A : x`. A period of a timeline,
+and an event that another colon follows, gain one space at their end where they
+end without whitespace, which stands before that colon: `2004: a: b` is printed
+`2004 : a : b`, except after the word `title` or `section` as the period, where
+a space would make the line a title or a section. Where a comment follows the
+text on its line, one space separates it from the text. Where directives do,
 each keeps whether whitespace precedes it, a run becoming one space, and the
 whitespace after the last one is dropped like any whitespace at the end of the
 line, so the line is printed alike whether or not whitespace follows its last
@@ -792,9 +794,10 @@ usecase diagram, for the text of a node of an ishikawa diagram, a mindmap, and a
 treeView, and of a card of a kanban board (not the id of a column, which the
 figure depends on), for the date format and the axis format of a Gantt chart,
 for the `accDescription` of a C4 diagram, for the last event of a line of a
-timeline, and for the second description of a state alias. The runs of spaces
-and tabs inside a date format, an axis format, or the value of an `accTitle:`
-line stay as written before the directives as they do without them. [fixture:
+timeline and the space that a period and an event before a colon gain, and for
+the second description of a state alias. The runs of spaces and tabs inside a
+date format, an axis format, or the value of an `accTitle:` line stay as written
+before the directives as they do without them. [fixture:
 ishikawa/trailing-whitespace/directives-end-blanks-dropped] [fixture:
 usecase/direction-and-accessibility/acctitle-trailing-directive-blanks-dropped]
 [fixture: treeview/trailing-whitespace/directives-end-blanks-dropped] [fixture:
@@ -833,7 +836,8 @@ c4/title-and-accdescription/title-two-directives-trailing-blanks-dropped]
 c4/title-and-accdescription/description-two-directives-trailing-blanks-dropped]
 [fixture:
 timeline/periods-and-events/event-two-directives-trailing-blanks-dropped]
-[fixture:
+[fixture: timeline/periods-and-events/space-before-colon-added] [fixture:
+timeline/periods-and-events/space-before-colon-keyword-period] [fixture:
 state/aliases/second-description-two-directives-trailing-blanks-dropped]
 [fixture: gantt/titles-and-sections/title-trailing-directive-blanks-dropped]
 [fixture: venn/title/title-trailing-directive-blanks-dropped] [fixture:
@@ -881,7 +885,17 @@ each kind were drawn with mermaid.js 12.3.0 in Chromium, and the pixels were the
 same, and so was the SVG, without the generated ids and without the whitespace
 at the ends of a text. The same holds for the events of a timeline, the second
 description of a state, and the title and the description of a C4 diagram, which
-were drawn in the same way.
+were drawn in the same way. A timeline puts the text of a period and of an event
+through
+[`wrap`](https://github.com/mermaid-js/mermaid/blob/2086904e76c692331e34a45d7cc3bc30860d040e/packages/mermaid/src/diagrams/timeline/svgDraw.js#L456-L496),
+which cuts the text at its whitespace and `<br>`, and sets each line trimmed
+([`drawNode`](https://github.com/mermaid-js/mermaid/blob/2086904e76c692331e34a45d7cc3bc30860d040e/packages/mermaid/src/diagrams/timeline/svgDraw.js#L511-L521)),
+so a period and an event are drawn without the whitespace at their end. Texts
+with and without the space before each colon were drawn with the ten versions
+that count (see
+[Versions of mermaid.js that count](#versions-of-mermaidjs-that-count)), and the
+SVG was the same: a period and events on one line and on later lines, in a
+section, with `<br>`, with a text that wraps, and with a text of other scripts.
 
 The name of a section is not printed in this form. The renderers tell two
 sections apart by their names, so two names that differ only by the whitespace
@@ -1489,12 +1503,13 @@ and the pixels before the exception stays.
 Prettier prints one space after a comma, and none before it. The formatter
 prints the lists of names that mermaid.js reads the same with the space in that
 form, a comma that touches the name before it and one space after it: the
-`class`, `classDef`, and `style` statements and the `:::` classes of ER,
-requirement, and usecase diagrams (`class A,B c,d` is printed `class A, B c, d`,
-and `A:::c1,c2` is printed `A:::c1, c2`), the `classDef` names of a class
-diagram, the `class` ids of a state diagram, the two ids of a `Note over` in a
-sequence diagram (`Note over A,B` is printed `Note over A, B`), and the names of
-a Venn diagram (`union A,B` is printed `union A, B`). [fixture:
+`class`, `classDef`, and `style` statements of ER and requirement diagrams, the
+`class` and `classDef` statements of usecase diagrams (a usecase `style` takes
+one id), and the `:::` classes of the three (`class A,B c,d` is printed
+`class A, B c, d`, and `A:::c1,c2` is printed `A:::c1, c2`), the `classDef`
+names of a class diagram, the `class` ids of a state diagram, the two ids of a
+`Note over` in a sequence diagram (`Note over A,B` is printed `Note over A, B`),
+and the names of a Venn diagram (`union A,B` is printed `union A, B`). [fixture:
 er/entities/classes-tight] [fixture: er/styles-and-classes/class-lists]
 [fixture: requirement/class-lists/shorthand] [fixture:
 class/whitespace-between-tokens/classdef-names-touching] [fixture:
@@ -1941,9 +1956,29 @@ The colon stays where a `;` or the `---` of a hidden YAML block touches it.
 cynefin/header/colon-semicolon-kept] [fixture: radar/header/colon-removed]
 [fixture: radar/header/colon-yaml-kept]
 
-The colon after the header of a gitGraph stays as written: see
-[Versions of mermaid.js](#versions-of-mermaidjs). [fixture:
-gitgraph/header/header-colon]
+A gitGraph without a direction reads `gitGraph:` and `gitGraph` the same in
+every version that counts, with the same commits and branches and the same
+figure. The examples write the header without the colon 30 times and with it
+twice (counted over the `mermaid-example` blocks of
+`packages/mermaid/src/docs/syntax/gitgraph.md` of the pinned version, after the
+frontmatter of a block; the other lines of the file that start with `gitGraph:`
+are the key of the configuration in a frontmatter), so the colon is removed:
+`gitGraph:` is printed `gitGraph`, and what follows it on the line goes to the
+next line. The colon stays after a direction, since every version that counts
+rejects `gitGraph LR` and `gitGraph TB` without it (10.9.8 does not read `BT`
+either way). It stays too where a directive or a hidden YAML block stands
+between the keyword and the colon: the examples write no such header, and 10.9.8
+rejects `gitGraph %%{x}%%` followed by a statement on the next line, which it
+accepts with the colon. A directive, a comment, or a hidden form after the colon
+does not keep it: `gitGraph:%%{}%% commit%%{}%%`, `gitGraph: %% note`, and
+`gitGraph: %%{}%%` followed by a statement are drawn the same by the ten
+versions, with and without the colon. [fixture: gitgraph/header/header-colon]
+[fixture: gitgraph/header/header-colon-comment] [fixture:
+gitgraph/header/header-colon-hidden-statement] [fixture:
+gitgraph/header/header-colon-directive-line] [fixture:
+gitgraph/header/header-colon-tab-blank-lines] [fixture:
+gitgraph/header/header-hidden-before-colon] [fixture: gitgraph/header/header-lr]
+[fixture: gitgraph/header/header-tb] [fixture: gitgraph/header/header-bt]
 
 ### The label of a link
 
@@ -2589,11 +2624,14 @@ that holds what is another token outside a label, such as a `-` at its end
 (`go-`), an arrow (`a---b`, `a.-b`), `:::`, `_self`, `click` or `call` before a
 space, and `accTitle`, is drawn the same with and without quotes by the versions
 that count, in a shape, between `|`, between two arrows, and as the title of a
-subgraph, so it loses its quotes like any other text. Any other text stays as
-written: a markdown string, a text that starts with `_`, a `/`, a `\`, a `-`, or
-a space, a text with a bracket, a `|`, a `&`, a `"`, a `;`, a `#`, a `%`, or a
-`<`, a text that ends with a space, and a label on a line that is kept whole. In
-an agentflow diagram a label also stays as written where it is the first unit of
+subgraph, so it loses its quotes like any other text, except where it holds a
+`--` between the arrows of a solid link or a `.` between those of a dotted link
+(`A -- a---b --> B` is read as the arrows `--` and `-->` around `a`, `b`, and
+`B`, and `A -- "a---b" --> B` as one link). Any other text stays as written: a
+markdown string, a text that starts with `_`, a `/`, a `\`, a `-`, or a space, a
+text with a bracket, a `|`, a `&`, a `"`, a `;`, a `#`, a `%`, or a `<`, a text
+that ends with a space, and a label on a line that is kept whole. In an
+agentflow diagram a label also stays as written where it is the first unit of
 its line, as after a comment line, a directive on a line of its own, or a U+2028
 or U+2029, since mermaid.js rejects a string there. The label of a link that the
 printer writes in the other form (see
@@ -2725,8 +2763,9 @@ mermaid.js, show which form each version reads:
 
 - The colon after the header of a gitGraph: the grammar of 8.14.0 has the rule
   `gitGraph:` only, and the grammar of 9.0.0 reads the header with the colon and
-  without it. A text printed without the colon is not read by 8.14.0, so the
-  colon stays as written.
+  without it. 8.14.0 does not count, so the colon of a header without a
+  direction is left out (see
+  [The colon after a header](#the-colon-after-a-header)).
 - The quotes of a field of a sankey diagram: the grammars of 10.3.0, 10.9.0,
   11.0.0, and 12.3.0 have the same rules for a field without quotes and a field
   in quotes, and the same action of a record, which drops the spaces at the ends
@@ -2835,11 +2874,12 @@ mermaid.js, show which form each version reads:
   whether the type is `markdown`, and a plain label was drawn the same in quotes
   and without them in every version listed under
   [Labels that are drawn the same](#labels-that-are-drawn-the-same), except a
-  text with a `--` between two arrows, below. The texts `go-` in a round shape,
-  `a.-b`, `a---b`, `a:::b`, `please click here`, `call x`, `interpolate x`,
-  `x_self`, `a b_top`, and `accTitle: x`, in a shape, between `|`, between two
-  arrows, and as the title of a subgraph, were drawn the same with and without
-  quotes by the versions that count (see
+  text with a `--` between two solid arrows, below. The texts `go-` in a round
+  shape, `a.-b`, `a---b`, `a:::b`, `please click here`, `call x`,
+  `interpolate x`, `x_self`, `a b_top`, and `accTitle: x`, in a shape, between
+  `|`, and as the title of a subgraph, and, where they hold no `--` between
+  solid arrows and no `.` between dotted ones, between two arrows, were drawn
+  the same with and without quotes by the versions that count (see
   [Versions of mermaid.js that count](#versions-of-mermaidjs-that-count)). The
   lexers of 10.3.1 and later read the text between two solid arrows one
   character at a time, a `-` only when no `-` follows it
@@ -3670,11 +3710,12 @@ See [Task data](./gantt.md#task-data), [Settings](./gantt.md#settings),
   with no space after a colon that a directive follows. Where the line rule of
   mermaid.js reads the line (the segment holds `style` or `classDef`, later a
   `:` followed by characters that are not whitespace, then a `#`, and later a
-  `;`), the whitespace after that `:` stays as written:
-  `classDef it:a1,2024-01-01,2d;#y:3d;z:2d` has two tasks, `classDef it` and
-  `#y`, and with a space after the first colon it has three, and the two texts
-  are drawn differently by the 10 versions that count. [fixture:
-  gantt/task-data/colon-touches-first-item] [fixture:
+  `;`), the whitespace after every `:` from the first `:` after `style` or
+  `classDef` to the last `#` before the last `;` stays as written (`:` after
+  that `#` gets its space): `classDef it:a1,2024-01-01,2d;#y:3d;z:2d` has two
+  tasks, `classDef it` and `#y`, and with a space after the first colon it has
+  three, and the two texts are drawn differently by the 10 versions that count.
+  [fixture: gantt/task-data/colon-touches-first-item] [fixture:
   gantt/task-data/colon-space-line-rule-kept]
 - The whitespace inside an item of task data, the number of its items, and the
   case of its tags: `after   a1` is one item as written, `a : 1d,` has an empty
@@ -3834,9 +3875,9 @@ what the Db reads and does not repair what mermaid.js rejects. See
 
 mermaid.js keeps the whitespace in the periods, events, and section names of a
 timeline, and reads a few lines by the place they stand in, so formatting keeps
-them as they are written, except for the whitespace at the ends of a title and
-at the end of the last event of a line. See
-[Periods and events](./timeline.md#periods-and-events),
+them as they are written, except for the whitespace at the ends of a title, at
+the end of the last event of a line, and the space that a colon gets before it.
+See [Periods and events](./timeline.md#periods-and-events),
 [Event statements](./timeline.md#event-statements), and
 [Statements one per line](./timeline.md#statements-one-per-line).
 
@@ -3845,9 +3886,10 @@ at the end of the last event of a line. See
   the one character after its colon, so `2004 : a` and `2004: a` are different
   periods, and the padding that aligns the colons stays. The whitespace at the
   end of a period is part of the text too, and so is that at the end of an event
-  that another colon follows on its line; the whitespace at the end of the last
-  event of a line is left out, including an event that a line break separates
-  from the next colon (see
+  that another colon follows on its line; a text without it gets one space
+  before the colon, except a period that is the word `title` or `section`, and
+  the whitespace at the end of the last event of a line is left out, including
+  an event that a line break separates from the next colon (see
   [Texts after a keyword that are drawn the same](#texts-after-a-keyword-that-are-drawn-the-same)).
   [fixture: timeline/periods-and-events/period-whitespace-kept] [fixture:
   timeline/periods-and-events/event-padding-kept-end-dropped] [fixture:

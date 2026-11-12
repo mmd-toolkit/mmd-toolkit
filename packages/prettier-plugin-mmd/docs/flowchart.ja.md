@@ -143,12 +143,18 @@ accDescr: d ; direction LR
 ### 1 行に 1 文
 
 文はそれぞれ 1 行に置きます。
+Prettier が整形する言語の文を 1 行ずつ印字するのと同じで（JavaScript の
+`a(); b()` は 2 行になります）、mermaid.js の文書も、
+文をそう書いているからです。
+flowchart の例の文の 257 行に、2 つの文を持つ行はありません。
+文を区切る `;` と改行は、どちらも mermaid.js にとって文の終わりなので、
+行に分けても Db も図も変わりません。
 [fixture: statements-one-per-line/compat-empty-description-block-after-statement]
 [fixture: statements-one-per-line/compat-empty-description-block-before-separator]
 [fixture: statements-one-per-line/compat-empty-description-block-before-statement]
 [fixture: statements-one-per-line/compat-empty-description-block-after-data-block]
 1 行に書かれ `;` で区切られた文は、行に分けます。
-`;` は文を区切るだけで、文は 1 行に 1 つ置くからです。
+`;` は文を区切るだけなので、分けるときに取り除きます。
 [fixture: statements-one-per-line/separated-by-semicolons-meets-others]
 [fixture: statements-one-per-line/separated-by-semicolons-after-data-block]
 

@@ -271,6 +271,9 @@
   Overturned in 0.8.0: a text with or without quotes is printed in the form that
   the examples use at least twice as often, such as `"CUSTOMER" ||--o{ "ORDER"`
   in `er`, which becomes `CUSTOMER ||--o{ ORDER`.
+  
+  Overturned in the next release: the colon after the header of a gitGraph
+  without a direction is left out (`gitGraph:` becomes `gitGraph`).
 
 - [#68](https://github.com/mmd-toolkit/mmd-toolkit/pull/68) [`626b905`](https://github.com/mmd-toolkit/mmd-toolkit/commit/626b905d546affb973b08d129e42f7e4c8d6810d) Thanks [@ota-meshi](https://github.com/ota-meshi)! - Print the `:` and the text of a one-line `note` in `stateDiagram` with one space
   before the `:` and one after it where mermaid.js drops them:

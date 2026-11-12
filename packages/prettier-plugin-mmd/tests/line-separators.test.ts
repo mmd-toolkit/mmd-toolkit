@@ -1156,6 +1156,11 @@ const ganttLineSeparatorExamples: readonly (readonly [
     "gantt\n  a : 1d,\u20282d\n",
   ],
   [
+    "U+2028 right after the colon of a task",
+    "gantt\na:\u20281d\n",
+    "gantt\n  a :\u20281d\n",
+  ],
+  [
     "U+2028 after a title keyword",
     "gantt\ntitle\u2028T\n",
     "gantt\n  title\u2028T\n",

@@ -10,13 +10,18 @@ cases.
 
 ### Header
 
-Keep the exact `gitGraph` word, authored direction and optional colon. Print
-ordinary gaps as `gitGraph LR:` or `gitGraph:`; an ordinary inline first
-statement moves below the header. Direction changes the Db, while its omission
-and colon presence remain author choices: mermaid.js 8.14.0 reads the header
-with the colon only, and the colon-less header is read from 9.0.0 (see
-[Versions of mermaid.js](./compatibility.md#versions-of-mermaidjs)). Hidden gaps
-and protected header/body groups retain their source boundaries.
+Keep the exact `gitGraph` word and the authored direction, which changes the Db.
+Print ordinary gaps as `gitGraph LR:` or `gitGraph`; an ordinary inline first
+statement moves below the header. The colon of a header without a direction is
+left out, as the documentation of mermaid.js writes it (30 headers without it, 2
+with it): `gitGraph:` is printed `gitGraph`, and every version that counts reads
+and draws the two forms the same. The colon after a direction stays, since
+mermaid.js rejects `gitGraph LR` without it, and so does a colon that a
+directive or a hidden YAML block precedes, since the printer keeps the gaps
+around a hidden form as written and 10.9.8 rejects `gitGraph %%{x}%%` followed
+by a statement on the next line, which it accepts with the colon (see
+[The colon after a header](./compatibility.md#the-colon-after-a-header)). Hidden
+gaps and protected header/body groups retain their source boundaries.
 
 A hidden form between `gitGraph` and the direction keeps the gap after it as
 written, because a hidden form consumes an immediately following line feed, and
@@ -27,9 +32,14 @@ as `gitGraph %%{}%%  LR:`. [fixture: gitgraph/header/hidden-before-direction]
 [corpus fixture: gitgraph/header-hidden-before-direction]
 
 Fixed cases: [fixture: gitgraph/header/header-absent] [fixture:
-gitgraph/header/header-colon] [fixture: gitgraph/header/header-lr] [fixture:
-gitgraph/header/header-tb] [fixture: gitgraph/header/header-bt] [corpus fixture:
-gitgraph/spec-git-graph-851bf4f9] [fixture: gitgraph/header/hidden-touching]
+gitgraph/header/header-colon] [fixture: gitgraph/header/header-colon-comment]
+[fixture: gitgraph/header/header-colon-hidden-statement] [fixture:
+gitgraph/header/header-colon-directive-line] [fixture:
+gitgraph/header/header-colon-tab-blank-lines] [fixture:
+gitgraph/header/header-hidden-before-colon] [fixture: gitgraph/header/header-lr]
+[fixture: gitgraph/header/header-tb] [fixture: gitgraph/header/header-bt]
+[corpus fixture: gitgraph/spec-git-graph-851bf4f9] [fixture:
+gitgraph/header/hidden-touching]
 
 Input (escaped): `"  gitGraph\t\ncommit\n"`.
 
@@ -86,7 +96,7 @@ Output
 ([statements-one-per-line/eol-header-inline-output.mmd](../tests/fixtures/gitgraph/statements-one-per-line/eol-header-inline-output.mmd)):
 
 ```mmd
-gitGraph:
+gitGraph
   commit id: "a"
 ```
 
@@ -327,7 +337,7 @@ Output
 ([order-numbers/precision-digits-output.mmd](../tests/fixtures/gitgraph/order-numbers/precision-digits-output.mmd)):
 
 ```mmd
-gitGraph:
+gitGraph
   branch release order: 9007199254740993
 ```
 
@@ -893,5 +903,5 @@ Input (escaped):
 Output (escaped):
 
 ````json
-"```mermaid\ngitGraph:\n  commit id: \"Fence\"\n```\n"
+"```mermaid\ngitGraph\n  commit id: \"Fence\"\n```\n"
 ````

@@ -124,7 +124,7 @@ describe("dispatch to diagram printers", () => {
     )
     parse.mockImplementation(actual.parse)
     expect(await formatMermaid('gitGraph:commit id:"Dispatch"')).toBe(
-      'gitGraph:\n  commit id: "Dispatch"\n',
+      'gitGraph\n  commit id: "Dispatch"\n',
     )
   })
   it("registers the pie body printer", async () => {

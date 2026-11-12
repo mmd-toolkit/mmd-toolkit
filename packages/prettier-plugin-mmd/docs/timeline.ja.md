@@ -300,17 +300,29 @@ timeline
 
 ### period と event
 
-period と event は、行の最後の event の末尾の空白を除き、
+period と event は、行の最後の event の末尾の空白と、`:` の前に足す空白を除き、
 テキストと `:` の間の空白も含め、書かれたまま印字します。
-mermaid.js はその空白を Db に持ちますが、空白がなくても同じ event を描きます。
+mermaid.js はその空白を Db に持ちますが、空白がなくても同じテキストを描きます。
 （[同じに描かれるキーワードの後のテキスト](./compatibility.ja.md#同じに描かれるキーワードの後のテキスト)）。
 Db は、period の末尾の空白（`:` の前の空白）と、
 event の `:` の後ろの 1 文字を除いた両端の空白を、値として持ちます。
 `2004 : a` と `2004: a` は別の period で、`a :   e` の event は `  e`、
 `a : e   ` の event は `e   ` です。
-そのため、timeline の `:` をそろえるための空白は残し、
-period に接した `:` は接したままにします。
+そのため、timeline の `:` をそろえるための空白は残します。
 行末の `a : e   ` は `a : e` と印字し、`c : g   : h` は書かれたままにします。
+末尾に空白のないテキストの後の `:` には、その前に空白を 1 つ足します。
+mermaid.js の文書の例は、
+テキストの後の `:` をすべてこう書きます（88 個が前に空白を置き、
+テキストに接するものはありません）。
+`2004: Facebook: Google` は `2004 : Facebook : Google` と印字します。
+後ろに空白がない `:` はテキストの文字なので、そのままにします。
+period が `title` か `section` の語（大文字小文字は問いません）のときは、
+`:` が接したままにします。
+字句解析器は `title` と空白を title のキーワードとして読むためです。
+`title: x` は event `x` を持つ period で、
+`title : x` はテキスト `: x` を持つ title です。
+テキストと `:` の間に directive があるときは、
+隙間を書かれたままにします（[指令](#指令)を参照）。
 次の `:` との間に改行がある event も、行の最後の event です。
 `2020 : e1  ` の次に `: e2` の行が続くとき、`e1` の後ろの空白は除きます。
 このような event の末尾の directive は、前に空白があれば空白 1 つを置き、
@@ -319,6 +331,8 @@ period に接した `:` は接したままにします。
 （[同じに描かれるキーワードの後のテキスト](./compatibility.md#texts-after-a-keyword-that-are-drawn-the-same)）。
 [fixture: periods-and-events/event-trailing-directive-blanks-dropped]
 [fixture: periods-and-events/event-two-directives-trailing-blanks-dropped]
+[fixture: periods-and-events/space-before-colon-added]
+[fixture: periods-and-events/space-before-colon-keyword-period]
 [fixture: periods-and-events/period-whitespace-kept]
 [fixture: periods-and-events/event-padding-kept-end-dropped]
 [fixture: periods-and-events/whitespace-only-event]
@@ -423,7 +437,7 @@ timeline
 ```mmd
 timeline
   2002   : LinkedIn
-  2004: Facebook
+  2004 : Facebook
   2005 : YouTube
 ```
 
@@ -1233,7 +1247,7 @@ c : e%%{init: {}}%%: f
 ```mmd
 timeline
   a %%{init: {}}%%: e
-  b: %%{init: {}}%%e
+  b : %%{init: {}}%%e
   c : e%%{init: {}}%%: f
 ```
 

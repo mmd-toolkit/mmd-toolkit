@@ -136,7 +136,12 @@ accDescr: d ; direction LR
 
 ### Statements one per line
 
-Each statement stands on a line of its own. [fixture:
+Each statement stands on a line of its own, as Prettier prints the statements of
+the languages it formats (`a(); b()` in JavaScript becomes two lines), and as
+the documentation of mermaid.js writes them: none of the 257 lines of statements
+in its flowchart examples holds two. A `;` that separates two statements and a
+line break both end a statement for mermaid.js, so the split changes neither the
+Db nor the figure. [fixture:
 statements-one-per-line/compat-empty-description-block-after-statement]
 [fixture:
 statements-one-per-line/compat-empty-description-block-before-separator]
@@ -144,8 +149,8 @@ statements-one-per-line/compat-empty-description-block-before-separator]
 statements-one-per-line/compat-empty-description-block-before-statement]
 [fixture:
 statements-one-per-line/compat-empty-description-block-after-data-block]
-Statements written on one line and separated by `;` are split into lines: a `;`
-only separates them, and each statement stands on a line of its own. [fixture:
+Statements written on one line and separated by `;` are split into lines, and
+the `;` goes with the split, since it only separates them. [fixture:
 statements-one-per-line/separated-by-semicolons-meets-others] [fixture:
 statements-one-per-line/separated-by-semicolons-after-data-block]
 

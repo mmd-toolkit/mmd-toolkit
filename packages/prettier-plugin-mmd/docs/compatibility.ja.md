@@ -55,19 +55,14 @@ agentflow とユースケース図は 12.0.0 から読まれます。
 固定した版を上げるときは、新しい固定した版の公開日から期間と一覧を、
 npm の版をもとに計算し直します。
 
-AGENTS.md が、
-版が食い違うために書かれたまま残す綴りの例として挙げる 3 つのうち、
-2 つはこの版で成り立ちます。
-`block` は 10.9.8、11.7.0、11.8.1 が拒否し（`block-beta` だけを読みます）、
+AGENTS.md が、版が食い違うために書かれたまま残す綴りの例として挙げる 3 つは、
+どれもこの版で成り立ちます。
+`block` は 10.9.8、11.7.0、11.8.1 が拒否します（`block-beta` だけを読みます）。
+最初の語に `@` を含むラベルは、`[` の後の空白がないと、
+11.7.0 から 12.0.0 までの版が拒否します。
+詳しくは [ラベルの先頭の空白](#ラベルの先頭の空白) を参照してください。
 `TB` と `TD` は、subgraph のある flowchart を 10.9.8、11.7.0、
 11.8.1 が違って描きます。
-3 つめは成り立ちません。
-gitGraph の見出しは、
-10 版すべてがコロンの有無にかかわらず読み（コミットとブランチは同じです）、
-コロンが要るのは、向きが続く `gitGraph LR:` の形だけで、
-コロンのない `gitGraph LR` はどの版も拒否します。
-コロンを書かれたまま残す理由だった 8.14.0 は、
-対象にしない版です（[mermaid.js の版](#mermaidjs-の版)を参照）。
 
 ## mermaid.js と違って読む入力
 
@@ -844,6 +839,11 @@ timeline の行の最後の event と、別名を持つ state の 2 つ目の説
 その空白は timeline のコロンをそろえます。
 `2020 : e   ` は `2020 : e` と印字し、
 `state "d" as A : x   ` は `state "d" as A : x` と印字します。
+timeline の period と、後ろに別のコロンが続く event は、末尾に空白がなければ、
+そのコロンの前に空白を 1 つ足します。
+`2004: a: b` は `2004 : a : b` と印字します。
+period が `title` か `section` の語のときは足しません。
+空白を足すと、その行が title や section になるためです。
 同じ行のテキストの後にコメントがある場合は、空白 1 つでテキストと隔てます。
 ディレクティブがある場合は、それぞれの前に空白があるかないかを保ち、
 空白の連続は空白 1 つにします。
@@ -864,7 +864,8 @@ railroad の図のタイトル、
 mindmap、treeView のノードのテキスト、
 kanban ボードのカードのテキスト（図が依存する列の id は除く）、
 Gantt 図の日付書式と軸の書式、C4 図の `accDescription`、
-timeline の行の最後の event、別名を持つ state の 2 つ目の説明に当てはまります。
+timeline の行の最後の event と、period およびコロンの前の event が足す空白、
+別名を持つ state の 2 つ目の説明に当てはまります。
 日付書式、軸の書式、`accTitle:` の行の値の中の空白とタブの連続は、
 ディレクティブの前でも、
 ディレクティブがない場合と同じように書かれたままにします。
@@ -907,6 +908,8 @@ timeline/titles-and-sections/title-two-directives-trailing-blanks-dropped]
 c4/title-and-accdescription/description-two-directives-trailing-blanks-dropped]
 [fixture:
 timeline/periods-and-events/event-two-directives-trailing-blanks-dropped]
+[fixture: timeline/periods-and-events/space-before-colon-added]
+[fixture: timeline/periods-and-events/space-before-colon-keyword-period]
 [fixture:
 state/aliases/second-description-two-directives-trailing-blanks-dropped]
 [fixture: gantt/titles-and-sections/title-trailing-directive-blanks-dropped]
@@ -956,6 +959,20 @@ mermaid.js はキーワードの後の空白 1 文字を読み、残りを Db �
 同じであることを確かめました。
 timeline の event、state の 2 つ目の説明、C4 図のタイトルと説明も、
 同じ方法で描いて、同じであることを確かめました。
+timeline は period と event のテキストを
+[`wrap`](https://github.com/mermaid-js/mermaid/blob/2086904e76c692331e34a45d7cc3bc30860d040e/packages/mermaid/src/diagrams/timeline/svgDraw.js#L456-L496)
+に通します。
+`wrap` はテキストを空白と `<br>` で区切り、各行を trim して置きます。
+呼び出しは
+[`drawNode`](https://github.com/mermaid-js/mermaid/blob/2086904e76c692331e34a45d7cc3bc30860d040e/packages/mermaid/src/diagrams/timeline/svgDraw.js#L511-L521)
+にあります。
+そのため period と event は、末尾の空白なしで描かれます。
+各コロンの前に空白がある場合とない場合のテキストを、対象にする 10 版で描き、
+SVG が同じであることを確かめました。
+period と event が 1 行にある場合と後の行にある場合、section の中、
+`<br>` を含む場合、折り返されるテキスト、ほかの文字のテキストです。
+詳しくは [対象にする mermaid.js の版](#対象にする-mermaidjs-の版)
+を参照してください。
 
 セクション名は、この形では印字しません。
 レンダラーは名前でセクションを区別するので、
@@ -1604,8 +1621,10 @@ Prettier は、コンマの後ろに空白を 1 つ置き、前には置きま�
 整形ツールは、空白があっても mermaid.js が同じに読む名前の一覧を、
 その形で印字します。
 コンマは前の名前に接し、後ろに空白が 1 つ付きます。
-対象は、ER 図、requirement 図、usecase 図の `class`、`classDef`、
-`style` の文と `:::` のクラス（`class A,B c,d` は `class A, B c, d`、
+対象は、ER 図と requirement 図の `class`、`classDef`、`style` の文、
+usecase 図の `class` と `classDef` の文（usecase 図の `style` は id を 1
+つ取ります）、
+その 3 つの図の `:::` のクラス（`class A,B c,d` は `class A, B c, d`、
 `A:::c1,c2` は `A:::c1, c2` と印字されます）、class 図の `classDef` の名前、
 state 図の `class` の id、
 sequence 図の `Note over` の 2 つの id （`Note over A,B` は `Note over A, B`
@@ -2088,9 +2107,36 @@ cynefin 図と radar 図は、`cynefin-beta:` と `radar-beta:` を、
 [fixture: cynefin/header/colon-semicolon-kept]
 [fixture: radar/header/colon-removed] [fixture: radar/header/colon-yaml-kept]
 
-gitGraph のヘッダーの後のコロンは、書かれたまま残します。
-[mermaid.js の版](#mermaidjs-の版)を参照してください。
-[fixture: gitgraph/header/header-colon]
+向きのない gitGraph は、`gitGraph:` と `gitGraph` を、
+対象にするすべての版が同じに読み、コミットもブランチも図も同じです。
+例は、コロンのないヘッダーを 30 回、コロンつきを 2 回書くので、
+コロンを除きます。
+数えたのは、
+固定した版の `packages/mermaid/src/docs/syntax/gitgraph.md` の `mermaid-example`
+ブロックで、ブロックの frontmatter の後です。
+このファイルで `gitGraph:` で始まるほかの行は、frontmatter の設定のキーです。
+`gitGraph:` は `gitGraph` と印字し、その行で後に続くものは次の行に移します。
+向きの後のコロンは残します。
+対象にするすべての版が、
+コロンのない `gitGraph LR` と `gitGraph TB` を拒否するためです（10.9.8 は、
+コロンの有無にかかわらず `BT` を読みません）。
+ディレクティブや hidden YAML
+ブロックがキーワードとコロンの間にある場合も残します。
+例にはそのようなヘッダーがなく、10.9.8 は、
+次の行に文が続く `gitGraph %%{x}%%` を拒否しますが、
+コロンがあれば受理するためです。
+コロンの後にディレクティブ、コメント、hidden の形があっても、
+コロンは残しません。
+`gitGraph:%%{}%% commit%%{}%%`、`gitGraph: %% note`、
+文が続く `gitGraph: %%{}%%` は、対象にする 10 版で、
+コロンの有無によらず同じに描かれました。 [fixture: gitgraph/header/header-colon]
+[fixture: gitgraph/header/header-colon-comment]
+[fixture: gitgraph/header/header-colon-hidden-statement]
+[fixture: gitgraph/header/header-colon-directive-line]
+[fixture: gitgraph/header/header-colon-tab-blank-lines]
+[fixture: gitgraph/header/header-hidden-before-colon]
+[fixture: gitgraph/header/header-lr] [fixture: gitgraph/header/header-tb]
+[fixture: gitgraph/header/header-bt]
 
 ### リンクのラベル
 
@@ -2793,6 +2839,10 @@ agentflow 図のどれでも引用符を残します。
 `accTitle` を含むテキストも、ほかのテキストと同じく引用符を失います。
 対象にする版は、形の中、`|` の間、2 つの矢印の間、subgraph のタイトルで、
 これらのテキストを引用符の有無によらず同じに描きます。
+ただし、実線のリンクの矢印の間にある `--` と、
+点線のリンクの矢印の間にある `.` は除きます。
+`A -- a---b --> B` は、`a`、`b`、`B` を挟む矢印 `--` と `-->` として読まれ、
+`A -- "a---b" --> B` は 1 本のリンクとして読まれます。
 ほかのテキストは、書かれたまま残します。
 markdown 文字列、`_`、`/`、`\`、`-`、空白で始まるテキスト、括弧、`|`、`&`、`"`、
 `;`、`#`、`%`、`<` を含むテキスト、末尾に空白があるテキスト、
@@ -2949,8 +2999,8 @@ class の 7 個の入力も、整形後のテキストと同じ SVG が描かれ
 
 - gitGraph のヘッダーの後のコロン: 8.14.0 の文法は、規則が `gitGraph:` だけで、
   9.0.0 の文法は、コロンがあるヘッダーとないヘッダーを読みます。
-  コロンなしで印字したテキストは 8.14.0 で読めないので、
-  コロンは書かれたまま残します。
+  8.14.0 は対象にしない版なので、向きのない見出しのコロンは除きます。
+  [ヘッダーの後のコロン](#ヘッダーの後のコロン)を参照してください。
 - sankey 図の欄の引用符: 10.3.0、10.9.0、11.0.0、12.3.0 の文法は、
   引用符のない欄と引用符で囲む欄の規則も、記録のアクションも同じです。
   このアクションは、source と target の両端の空白を除き、
@@ -3069,11 +3119,12 @@ class の 7 個の入力も、整形後のテキストと同じ SVG が描かれ
   描画処理は、型が `markdown` かどうかだけを読み、平易なラベルは、
   [同じに描かれるラベル](#同じに描かれるラベル) に挙げるすべての版で、
   引用符の有無によらず同じに描かれました。
-  ただし、2 つの矢印の間にある `--` を含むテキストを除きます（下を参照）。
+  ただし、2 つの実線の矢印の間にある `--` を含むテキストを除きます（下を参照）。
   `go-`（丸い形）、`a.-b`、`a---b`、`a:::b`、`please click here`、`call x`、
   `interpolate x`、`x_self`、`a b_top`、`accTitle: x` も、形の中、`|` の間、
-  2 つの矢印の間、subgraph のタイトルで、対象にする版が、
-  引用符の有無によらず同じに描きました。
+  subgraph のタイトルで、
+  また実線の矢印の間の `--` と点線の矢印の間の `.` を含まないときは 2
+  つの矢印の間でも、対象にする版が、引用符の有無によらず同じに描きました。
   詳しくは [対象にする mermaid.js の版](#対象にする-mermaidjs-の版)
   を参照してください。
   10.3.1 以降の字句解析器は、2 つの実線の矢印の間のテキストを 1 文字ずつ、
@@ -3951,7 +4002,10 @@ mermaid.js は、Gantt 図の一部の値の空白を持ち、一部の行を、
   整形前も整形後もエラーで止まり、4 回は、コロンの後にディレクティブが続き、
   空白のないテキストだけがエラーで止まりました。
   mermaid.js の行の規則が読む行では、
-  その `:` の後ろの空白を書かれたまま残します。
+  `style` か `classDef` の後の最初の `:` から、
+  最後の `;` の前の最後の `#` までのすべての `:`
+  の後ろの空白を書かれたまま残します（その `#` より後ろの `:`
+  には空白を置きます）。
   行の規則が読むのは、`style` か `classDef` を含み、
   その後に空白でない文字が続く `:` があり、続いて `#`、
   さらに後ろに `;` がある行です。
@@ -4121,7 +4175,7 @@ mindmap の Db は、ノードの字下げを level として読みます。
 mermaid.js は、timeline の period、event、section の名前の空白を保ち、
 いくつかの行を、置かれた場所で読みます。
 そのため、整形は、title の両端の空白と行の最後の event の末尾の空白を除き、
-それらを書かれたまま残します。
+コロンの前に空白を足し、それらを書かれたまま残します。
 [period と event](./timeline.ja.md#period-と-event)、
 [event の文](./timeline.ja.md#event-の文)、
 [1 行 1 文](./timeline.ja.md#1-行-1-文)を参照してください。
@@ -4133,6 +4187,8 @@ mermaid.js は、timeline の period、event、section の名前の空白を保�
   `:` をそろえる空白は残ります。
   period の末尾の空白もテキストの一部で、
   同じ行で後ろに別のコロンが続く event の末尾の空白も同じです。
+  空白のないテキストの後のコロンには空白を 1 つ足します。
+  period が `title` か `section` の語の場合を除きます。
   行の最後の event の末尾の空白は除きます。
   改行で次のコロンと隔てられた event も含みます。
   （[同じに描かれるキーワードの後のテキスト](#同じに描かれるキーワードの後のテキスト)）。

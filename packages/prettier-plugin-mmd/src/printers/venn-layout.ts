@@ -171,7 +171,9 @@ export function layoutVennStatement(
     statement.type === "VennSubsetStatement"
       ? (statement.size?.range[0] ?? null)
       : null
-  const propertyValueStarts = new Set(
+  // The starts of the values that follow a colon: those of the properties of a
+  // style, and the size of a set or a union.
+  const colonValueStarts = new Set(
     statement.type === "VennStyleStatement"
       ? statement.properties.map((property) => property.value.range[0])
       : sizeStart === null
@@ -192,12 +194,12 @@ export function layoutVennStatement(
     const atom = atoms[index]
     const before = source.text.slice(previous.start, previous.end)
     const text = source.text.slice(atom.start, atom.end)
-    const afterPropertyColon = propertyValueStarts.has(atom.start)
+    const afterColon = colonValueStarts.has(atom.start)
     const beforeSizeColon =
       text === ":" && atoms[index + 1]?.start === sizeStart
     rules.set(
       atom.start,
-      afterPropertyColon
+      afterColon
         ? keepsColonGap && atom.start === previous.end
           ? "none"
           : "space"

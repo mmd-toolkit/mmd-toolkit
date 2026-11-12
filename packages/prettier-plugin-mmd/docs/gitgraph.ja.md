@@ -10,13 +10,22 @@ English version: [gitgraph.md](./gitgraph.md)
 
 ### Header
 
-正確な `gitGraph` と書かれた方向と colon の有無を保持します。
-通常の隙間は `gitGraph LR:` または `gitGraph:` とし、
+正確な `gitGraph` と書かれた方向を保持します。
+方向は Db に影響します。
+通常の隙間は `gitGraph LR:` または `gitGraph` とし、
 見出し上の最初の文を次行へ移します。
-方向は Db に影響し、省略と colon の有無は作者の選択です。
-mermaid.js 8.14.0 は colon ありの見出しだけを読み、
-colon なしの見出しは 9.0.0 から読むためです。
-（[mermaid.js の版](./compatibility.ja.md#mermaidjs-の版)を参照）。
+方向のない見出しの colon は、mermaid.js の文書の書き方に合わせて除きます。
+文書は、colon のない見出しを 30 回、colon つきを 2 回書いています。
+`gitGraph:` は `gitGraph` と印字し、対象にする版はどれも、
+この 2 つの形を同じに読み、同じに描きます。
+方向の後の colon は残します。
+mermaid.js は colon のない `gitGraph LR` を拒否するためです。
+ディレクティブや hidden YAML ブロックが前にある colon も残します。
+プリンタは hidden の形の前後の隙間を書かれたままにし、10.9.8 は、
+次の行に文が続く `gitGraph %%{x}%%` を拒否しますが、
+colon があれば受理するためです。
+詳しくは [ヘッダーの後のコロン](./compatibility.ja.md#ヘッダーの後のコロン)
+を参照してください。
 hidden の隙間と保護された見出し・本文の境界は保持します。
 
 `gitGraph` と方向の間にある hidden の形は、直後の改行を取り、
@@ -30,8 +39,14 @@ hidden の隙間と保護された見出し・本文の境界は保持します�
 [corpus fixture: gitgraph/header-hidden-before-direction]
 
 固定例: [fixture: gitgraph/header/header-absent]
-[fixture: gitgraph/header/header-colon] [fixture: gitgraph/header/header-lr]
-[fixture: gitgraph/header/header-tb] [fixture: gitgraph/header/header-bt]
+[fixture: gitgraph/header/header-colon]
+[fixture: gitgraph/header/header-colon-comment]
+[fixture: gitgraph/header/header-colon-hidden-statement]
+[fixture: gitgraph/header/header-colon-directive-line]
+[fixture: gitgraph/header/header-colon-tab-blank-lines]
+[fixture: gitgraph/header/header-hidden-before-colon]
+[fixture: gitgraph/header/header-lr] [fixture: gitgraph/header/header-tb]
+[fixture: gitgraph/header/header-bt]
 [corpus fixture: gitgraph/spec-git-graph-851bf4f9]
 [fixture: gitgraph/header/hidden-touching]
 
@@ -91,7 +106,7 @@ gitgraph に区切りの semicolon はありません。
 ([statements-one-per-line/eol-header-inline-output.mmd](../tests/fixtures/gitgraph/statements-one-per-line/eol-header-inline-output.mmd)):
 
 ```mmd
-gitGraph:
+gitGraph
   commit id: "a"
 ```
 
@@ -342,7 +357,7 @@ order を使って branch を並べ替えません。
 ([order-numbers/precision-digits-output.mmd](../tests/fixtures/gitgraph/order-numbers/precision-digits-output.mmd)):
 
 ```mmd
-gitGraph:
+gitGraph
   branch release order: 9007199254740993
 ```
 
@@ -929,5 +944,5 @@ host の出力と冪等性、payload の Db・木・source を別々に検査し
 出力（escape 表記）:
 
 ````json
-"```mermaid\ngitGraph:\n  commit id: \"Fence\"\n```\n"
+"```mermaid\ngitGraph\n  commit id: \"Fence\"\n```\n"
 ````
