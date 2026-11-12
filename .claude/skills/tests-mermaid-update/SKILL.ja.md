@@ -131,6 +131,9 @@ SKILL [tests](../tests/SKILL.ja.md) の 1〜4 の節（方針と基準、最初�
    テストファイルがスタブのないモジュールを import して収集器が止まったら、
    `tools/src/spec-recorder.ts` にスタブを足して、
    収集し直す（`tools/README.md`）。
+   収集の手順と、記録器を変えるときに守ることは、
+   SKILL tests-diagram-type の
+   [3 節](../tests-diagram-type/SKILL.ja.md#3-fixture) にある。
 6. CI の fixtures ジョブが通る状態にする（`fixtures:generate`
    の後で差分があれば失敗する）。
    `MermaidEnvironmentError` が残っている間は通らない。

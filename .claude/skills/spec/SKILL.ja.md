@@ -383,6 +383,11 @@ Jison の自動的な語境界は適用しない。
    adapter が何も公開しない場合や意味の検査がない場合は、
    公開の処理や欄を作らず、その不在を記録する。
 
+項目 6 と 7（検出と、読んだ後の手順）は、
+SKILL spec-diagram-type の
+[2 節](../spec-diagram-type/SKILL.ja.md#2-langium-の図種の検出と読んだ後の手順)
+にある。
+
 ## 4. 木のノードを足す
 
 `docs/ast/<図種>.md` と `.ja.md`。

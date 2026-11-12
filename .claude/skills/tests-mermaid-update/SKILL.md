@@ -118,7 +118,10 @@ steps too. Read them first.
    existing names do not change and only new inputs are added. Inputs that
    mermaid.js no longer has stay as fixtures. When the collector stops because a
    test file imports a module without a stub, add the stub in
-   `tools/src/spec-recorder.ts` and collect again (`tools/README.md`).
+   `tools/src/spec-recorder.ts` and collect again (`tools/README.md`). The steps
+   of a collection, and what to keep when the recorder changes, are in
+   [The fixtures](../tests-diagram-type/SKILL.md#3-the-fixtures) of the skill
+   tests-diagram-type.
 6. Make the CI job `fixtures` pass (it fails when `fixtures:generate` leaves a
    difference). It cannot pass while a `MermaidEnvironmentError` remains.
 7. Show as the result the classified differences (the fixture names and what

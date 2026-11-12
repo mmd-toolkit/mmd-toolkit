@@ -365,6 +365,9 @@ before any parser error, and a recovered CST need not be accepted.
    on. If the adapter publishes nothing or has no semantic gate, record that
    absence rather than inventing a publication step or fields.
 
+Items 6 and 7, on detection and on the steps after the reading, are in
+[section 2 of spec-diagram-type](../spec-diagram-type/SKILL.md#2-detection-and-the-steps-after-the-reading-for-a-langium-diagram-type).
+
 ## 4. Adding the nodes of the tree
 
 `docs/ast/<diagram>.md` and its `.ja.md`.

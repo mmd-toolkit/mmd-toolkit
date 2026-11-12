@@ -279,7 +279,8 @@ How each part is written:
 - Further Reading: only a list of links to what the people who use the rule can
   read, the pages of the documentation of mermaid.js, its issues, and its pull
   requests, without prose. A permalink to the source of mermaid.js is kept in
-  the record of the rule in the rule-ideas skill, not in the rule document.
+  the record of the rule in the rule-ideas skill
+  (`.claude/skills/rule-ideas/records/`), not in the rule document.
 - Which sentence goes where. A sentence about what mermaid.js does is checked
   against these cases, in this order:
   - It stays in Rule Details when it tells apart, among forms that the people
@@ -290,7 +291,7 @@ How each part is written:
     to the limit that mermaid.js draws.
   - A page of the documentation of mermaid.js, an issue, or a pull request goes
     to Further Reading, as a link; a permalink to its source goes to the record
-    of the rule in the rule-ideas skill.
+    of the rule in the rule-ideas skill (`.claude/skills/rule-ideas/records/`).
   - Anything else is removed: an explanation of how mermaid.js works that tells
     apart no reported forms, a restatement of what an example shows, a sentence
     about forms that the people who use the rule do not write, and the formula
