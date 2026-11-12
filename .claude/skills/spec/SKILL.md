@@ -311,28 +311,9 @@ it from the cases that its sentences distinguish.
    reads it differently, and propose it as a known divergence (section 8;
    sequence: a comment that starts at `%%` keeps the character before it).
 5. Before accepting a form in new places, or generalizing a rule, list where the
-   rule applies, and only then write it:
-   1. Every position where the form can appear, going through every rule of the
-      grammar of each diagram type, not only the end of a line: after the
-      header, after the heading of a statement with a body (the name of a
-      subgraph, a box, a namespace, a composite state), before and after
-      whitespace, before a `;`, and at the end of the text.
-   2. Every place where a value comes from the text of a range rather than from
-      units, such as the name text of a subgraph in flowchart, which is read
-      from the source where empty description blocks follow the name, and
-      whether the form can lie inside such a range.
-   3. A fixture for each kind of position listed in the first item, with each
-      kind of whitespace around the form that the rule distinguishes (none,
-      whitespace, a line break after it), checked with mermaid.js for acceptance
-      and for the Db, the values of the second item included.
-
-   A change of acceptance at one place can change the acceptance and the Db at
-   other places of the same form, so check also that acceptance does not change
-   elsewhere (flowchart example: reading the placeholder of an entity as one
-   unit everywhere would change acceptance under the letter rule, rule 23, so
-   the rule has a limited scope; and skipping every `click` unit would join the
-   click ids of two click contexts and accept inputs that mermaid.js rejects, so
-   the rule does not skip every `click` unit).
+   rule applies, and only then write it. What to list, and what to check before
+   writing it, is in
+   [references/accepting-a-form-in-new-places.md](references/accepting-a-form-in-new-places.md).
 
 6. When a rule of the specification rests on behavior of mermaid.js that looks
    like a bug, such as a known divergence or a surprising reading, search the
@@ -422,23 +403,8 @@ The steps, and what to show when only fixtures are needed, are in
 A change to the shared part of the tree (`ast.md`: the root, the token kinds,
 comments, directives, the frontmatter, the shared leaf nodes, the invariants)
 affects every diagram type and every package that reads the tree. Make it in one
-pass:
-
-1. Review the shared part as a whole, not only the sentence that prompted the
-   change. List every sentence that depends on what changes, in `ast.md`,
-   `common.md`, and every `ast/<diagram>.md` and `diagrams/<diagram>.md`, with
-   what it becomes. When the change accepts a form in new places, list its
-   places and the values read from ranges first, as item 5 of section 6 says.
-2. Write the proposal outside the repository: the options for each point that
-   needs a decision, with a recommendation, and the effect on the packages that
-   read the tree. Wait for the decision.
-3. Write the revision in one change, in English and in Japanese, and check that
-   the fixtures cited by the changed sentences still record what the sentences
-   say.
-4. Write one list of changes for the packages that read the tree, outside the
-   repository: for each package what it must change, which records or ranges
-   change, how to find the fixtures whose `ast.json` changes, and the invariants
-   that the tree check must test.
+pass, with the steps in
+[references/changing-the-shared-tree.md](references/changing-the-shared-tree.md).
 
 ## 11. When mermaid.js is upgraded
 

@@ -5,8 +5,8 @@ description:
   printers after mermaid.js is updated. Use when the parser supports a new
   diagram type and its formatting is to be decided and implemented, or when the
   pinned mermaid.js changes. It covers deciding the formatting choices, the
-  printer, the fixtures, and the documents, and mmdfmt, the command-line tool
-  that formats with the plugin.
+  printer, the fixtures, and the documents; mmdfmt, the command-line tool that
+  formats with the plugin, has a skill of its own.
 ---
 
 # Adding the printer of a diagram type (prettier-plugin)
@@ -25,16 +25,6 @@ update the printers when mermaid.js is updated.
   item by item.
 - Four tests: idempotence, Db agreement before and after formatting, no change
   on failure, fences in Markdown.
-
-`packages/mmdfmt`:
-
-- Formats the diagrams of `.mmd` and `.mermaid` files and of the `mermaid` and
-  `mmd` code blocks of Markdown with Prettier and the plugin, and changes
-  nothing else in a Markdown file.
-- How a diagram is printed is decided in the plugin only; the tool decides which
-  text it formats and how it reports and exits.
-- Its README defines what it does, and each sentence of it that defines a
-  behavior has a test for each case it distinguishes (section 12).
 
 ## 1. What to read first
 
@@ -449,21 +439,8 @@ The steps are in
 
 ## 12. mmdfmt
 
-- The tool calls Prettier with the plugin on the text of each diagram, finds the
-  code blocks of Markdown with Prettier's Markdown parser
-  (`prettier/plugins/markdown`), and replaces only their content lines
-  (`src/markdown.ts`). A syntax error's message and offset are read from the
-  parser's error kept as its `cause` (`src/diagram.ts`).
-- The info strings it formats (`diagramLanguages` in `src/markdown.ts`) are the
-  `aliases` of the plugin's language. A change to the plugin's `languages`, to
-  its handling of rejected text, or to its options is a change to the tool in
-  the same change.
-- Tests (`tests/*.test.ts`) write their inputs in the test code, so that line
-  endings, a byte order mark, and U+2028 are escapes; the files of a run are
-  written to a temporary directory outside the repository, so that no
-  configuration of the repository applies. `tests/plugin-blocks.test.ts`
-  compares the blocks the tool formats with those Prettier formats with the
-  plugin.
-- Which tests to run: `pnpm vitest run --project mmdfmt` after a change to the
-  tool, and also after a change to the plugin's `index.ts`, `parser.ts`, or
-  `printer.ts`.
+- A change to the plugin's `languages`, to its handling of rejected text, or to
+  its options is a change to the tool in the same change, made with the skill
+  [mmdfmt](../mmdfmt/SKILL.md).
+- After a change to the plugin's `index.ts`, `parser.ts`, or `printer.ts`, also
+  run `pnpm vitest run --project mmdfmt`.

@@ -5,8 +5,8 @@ description:
   printers after mermaid.js is updated. Use when the parser supports a new
   diagram type and its formatting is to be decided and implemented, or when the
   pinned mermaid.js changes. It covers deciding the formatting choices, the
-  printer, the fixtures, and the documents, and mmdfmt, the command-line tool
-  that formats with the plugin.
+  printer, the fixtures, and the documents; mmdfmt, the command-line tool that
+  formats with the plugin, has a skill of its own.
 ---
 
 # 図種の printer を足す（prettier-plugin）
@@ -24,16 +24,6 @@ mermaid.js の更新のときに printer を直す手順。
 - 図種ごとの printer は、項目ごとに明示的に決めた整形方針に従う。
 - 4 点のテスト: 冪等、整形前後の Db 一致、失敗時は無変更、
   Markdown 内のフェンス。
-
-`packages/mmdfmt`:
-
-- `.mmd` と `.mermaid` のファイルと、
-  Markdown の `mermaid` と `mmd` のコードブロックの図を、
-  Prettier とプラグインで整形し、Markdown のファイルのほかの部分は変えない。
-- 図をどう印字するかはプラグインだけで決める。
-  ツールが決めるのは、どのテキストを整形するかと、報告と終了の仕方である。
-- 何をするかは README が定め、そのうち振る舞いを定める文には、
-  文が区別する場合ごとにテストがある（12 節）。
 
 ## 1. 最初に読むもの
 
@@ -471,21 +461,7 @@ fixture は tests の SKILL で直す。
 
 ## 12. mmdfmt
 
-- ツールは、図ごとにそのテキストを Prettier とプラグインで整形し、
-  Markdown のコードブロックを Prettier の Markdown
-  のパーサー（`prettier/plugins/markdown`）で見つけ、
-  その中身の行だけを置き換える（`src/markdown.ts`）。
-  構文エラーのメッセージとオフセットは、
-  その `cause` に保持されたパーサーのエラーから読む（`src/diagram.ts`）。
-- 整形する情報文字列（`src/markdown.ts` の `diagramLanguages`）は、
-  プラグインの言語の `aliases` である。
-  プラグインの `languages`、拒否したテキストの扱い、オプションを変えるときは、
-  同じ変更でツールも直す。
-- テスト（`tests/*.test.ts`）は入力をテストのコードに書き、改行コード、
-  バイト順マーク、U+2028 をエスケープで書く。
-  実行で使うファイルはリポジトリの外の一時ディレクトリに書き、
-  リポジトリの設定が当たらないようにする。
-  `tests/plugin-blocks.test.ts` は、ツールが整形するブロックを、
-  Prettier がプラグインで整形するブロックと比べる。
-- 走らせるテスト: ツールを変えたら `pnpm vitest run --project mmdfmt`。
-  プラグインの `index.ts`、`parser.ts`、`printer.ts` を変えたときも走らせる。
+- プラグインの `languages`、拒否したテキストの扱い、オプションを変えるときは、
+  同じ変更でツールも、スキル [mmdfmt](../mmdfmt/SKILL.ja.md) で直す。
+- プラグインの `index.ts`、`parser.ts`、`printer.ts` を変えたときも、
+  `pnpm vitest run --project mmdfmt` を走らせる。

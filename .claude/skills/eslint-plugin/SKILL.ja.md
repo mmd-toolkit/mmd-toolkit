@@ -97,64 +97,14 @@ SKILL（`.claude/skills/rule-ideas/SKILL.md`）の手順と基準で決める。
 `no-unsafe-negation` や `no-unused-vars` の文書がそうである。
 1 行の説明、短い動機、Rule Details、Options、あるときだけの節が、この順に並ぶ。
 Rule Details は、文の後に、反するコードと従うコードの例を持つ。
-英語の規則の文書:
-
-    # @mmd-toolkit/<name>
-
-    Japanese version: [<name>.ja.md](./<name>.ja.md)
-
-    Disallow ….
-
-    <!-- begin auto-generated rule notice -->
-    …
-    <!-- end auto-generated rule notice -->
-
-    <動機。1 段落>
-
-    ## Rule Details
-
-    <少数の短い文>
-
-    Examples of **incorrect** code for this rule:
-
-    ```mmd
-    %% eslint @mmd-toolkit/<name>: error
-    …
-    ```
-
-    Examples of **correct** code for this rule:
-
-    ```mmd
-    %% eslint @mmd-toolkit/<name>: error
-    …
-    ```
-
-    ## Options
-
-    This rule has no options.
-
-    ## When Not To Use It               （本当に言うことがあるときだけ）
-
-    ## Related Rules                    （関連する規則があるときだけ）
-
-    - [<name>](./<name>.md)
-
-    ## Further Reading                  （リンクがあるときだけ）
-
-    - [<mermaid.js の文書の頁、issue、PR>](<link>)
-
-    ## Resources                        （生成する）
+英語の文書のひな形と、日本語の文書の部分は、
+[references/template.ja.md](references/template.ja.md) にある。
 
 `Japanese version: …` の行は、日本語の文書があるときだけ書く。
 日本語の文書のない英語の文書にはこの行を置かない。
 サイトは、
 ない頁へのリンクで失敗するからである（`pnpm run lint:md`
 がそのリンクを報告する）。
-日本語の規則の文書は同じ部分を持つ。
-`英語版: [<名前>.md](./<名前>.md)`、`…を禁止する。`、`## 規則の詳細`、
-`この規則に**反する**コードの例:`、`この規則に**従う**コードの例:`、
-`この規則にはオプションがない。` を持つ `## オプション`、`## 使わないとき`、
-`## 関連する規則`、`## 参考` である。
 日本語の文書からほかの文書へのリンクは、その日本語版（`.ja.md`）に向ける。
 日本語版がないときは、その英語の文書に向ける（リンク先がないと、
 `pnpm run lint:md` が報告する）。
@@ -467,7 +417,6 @@ rule-ideas の SKILL の
   `recommended` が ✅ を付けた規則を有効にすると述べる文を持つ冒頭と、
   規則の id の節である。
   `recommended` に入れる基準は、index でなく `docs/development.md` に書く。
-- 文書を消したら、ほかの文書から参照が残っていないことを `grep` で確かめる。
 - 規則は、SKILL `eslint-plugin-rules` で実装する。
   それは `docs/development.md` の「Writing a rule」の節に従う。
 
@@ -479,13 +428,9 @@ rule-ideas の SKILL の
 
 ## 8. 文書を消す、移す
 
-- ファイルの削除と移動は、
-  スキル conventions の
-  [作業ツリーの扱い](../conventions/SKILL.ja.md#作業ツリーの扱い)
-  のとおりに行う。
-- 文書を移すときは、規則の名前が変わる（6 節）。
-  当たる図種を書いた規則の詳細の文と相対リンクを直し、`update` を実行する。
-  題と index の行は `update` が書く。
+手順は
+[references/removing-or-moving.ja.md](references/removing-or-moving.ja.md)
+にある。
 
 ## 9. 作業の結果
 

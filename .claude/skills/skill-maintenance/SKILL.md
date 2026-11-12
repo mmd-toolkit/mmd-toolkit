@@ -38,18 +38,21 @@ Japanese pair, the wrapping, the document checks) is in the skill `conventions`.
 
 - The entry skill of a package (`spec`, `tests`, `parser`, ...): the section
   Policies and criteria, which AGENTS.md names as the place of the policies and
-  criteria of the package; the rules that are wrong to miss; and the steps that
-  every piece of work on the package follows. A method that several pieces of
-  work use is such a step (the sections of [`spec`](../spec/SKILL.md) from
-  Adding the nodes of the tree to Proposing a known divergence), also when its
-  section is titled after one piece of work (in `parser`, the subsections of
+  criteria of the package; the criteria and the rules that more than one piece
+  of work on the package needs, or that a piece of work without a skill of its
+  own needs; and the steps that every piece of work follows. A method that
+  several pieces of work use is such a step (the sections of
+  [`spec`](../spec/SKILL.md) from Adding the nodes of the tree to Proposing a
+  known divergence), also when its section is titled after one piece of work (in
+  `parser`, the subsections of
   [section 4, Adding a diagram type](../parser/SKILL.md#4-adding-a-diagram-type),
   that its other sections point to or whose rules they follow).
 - A skill of one piece of work, named `<entry>-<work>` after the entry skill
   whose sections it uses (`tests-diagram-type`, `spec-diagram-type`,
-  `tests-mermaid-update`, `rule-ideas-suggestions`): the steps of a piece of
-  work that is done at another time, from other inputs, to other results than
-  the rest of the package's work.
+  `tests-mermaid-update`, `rule-ideas-suggestions`): the steps, the criteria,
+  and the rules that only one piece of work needs, a piece of work that is done
+  at another time, from other inputs, to other results than the rest of the
+  package's work.
   - Its `description` says what it does and when to use it, concretely, and ends
     with "together with the <entry> skill" when the entry skill holds rules for
     it.
@@ -121,15 +124,19 @@ though it names no section). State the sizes and the uses with the decision, so
 that it can be checked. A `SKILL.md` body longer than the 500 lines or the 5,000
 tokens that the official documents recommend is measured so. The tokens are
 estimated as the bytes of the body that `wc -c` counts divided by 4, so a body
-of more than 20,000 bytes is longer. What stays in it above that size is
-criteria, rules that are wrong to miss, and steps that every piece of work of
-the skill uses; the decision states, for each part that stays, its size, the
-pieces of work that use it, and which of these it is. Steps that one piece of
-work or one case uses stay too where they are steps of a procedure whose other
-steps stay, since taking them out would make that piece of work follow its
-procedure through two files (in `parser`, the input, the files of the tests, and
-the documents of a new diagram type, in section 4); a part that sessions of
-other skills read alone moves all the same (below).
+of more than 20,000 bytes is longer. Above that size, the parts that not every
+piece of work of the skill uses are sorted as readers who do not know the
+decision classify them: the steps and the lists of one piece of work or one case
+go to `references/` (section 1), the criteria and the rules that one piece of
+work alone needs go to the skill of that piece of work, and the criteria and the
+rules that several pieces of work need stay. A skill made for this adds its
+description to the listing of every session, which Claude Code cuts to a budget
+of 1% of the context window, dropping first the descriptions of the skills used
+least
+([the skills documentation of Claude Code](https://code.claude.com/docs/en/skills#skill-descriptions-are-cut-short));
+a part smaller than such a description stays. The decision states each part that
+stays above the size: its size, the pieces of work that use it, why it stays,
+and the answer of a reader who does not know the decision.
 
 Split when:
 

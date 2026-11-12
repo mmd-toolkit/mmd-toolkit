@@ -92,66 +92,17 @@ is a mistake, and which forms that look alike it does not report. The form is
 that of the rule documents of ESLint (as `no-unsafe-negation` and
 `no-unused-vars`): a one-line description, a short motivation, Rule Details with
 its sentences and then the examples of incorrect and correct code, Options, and
-the optional sections. The English rule document:
-
-    # @mmd-toolkit/<name>
-
-    Japanese version: [<name>.ja.md](./<name>.ja.md)
-
-    Disallow ….
-
-    <!-- begin auto-generated rule notice -->
-    …
-    <!-- end auto-generated rule notice -->
-
-    <the motivation, one paragraph>
-
-    ## Rule Details
-
-    <a few short sentences>
-
-    Examples of **incorrect** code for this rule:
-
-    ```mmd
-    %% eslint @mmd-toolkit/<name>: error
-    …
-    ```
-
-    Examples of **correct** code for this rule:
-
-    ```mmd
-    %% eslint @mmd-toolkit/<name>: error
-    …
-    ```
-
-    ## Options
-
-    This rule has no options.
-
-    ## When Not To Use It               (only when there is something real to say)
-
-    ## Related Rules                    (only when there are related rules)
-
-    - [<name>](./<name>.md)
-
-    ## Further Reading                  (only when there are links)
-
-    - [<the page of the documentation, issue, or pull request of mermaid.js>](<link>)
-
-    ## Resources                        (generated)
+the optional sections. The template of the English document, and the parts of
+the Japanese one, are in [references/template.md](references/template.md).
 
 The line `Japanese version: …` is written only when the Japanese document
 exists; an English document without one has no such line, since the site would
-fail on a link to a missing page (`pnpm run lint:md` reports the link). The
-Japanese document has the same parts: `英語版: [<name>.md](./<name>.md)`,
-`…を禁止する。`, `## 規則の詳細`, `この規則に**反する**コードの例:`,
-`この規則に**従う**コードの例:`, `## オプション` with
-`この規則にはオプションがない。`, `## 使わないとき`, `## 関連する規則`, and
-`## 参考`. Links from a Japanese document to another document point to its
-Japanese version (`.ja.md`), or to its English document when it has no Japanese
-version (`pnpm run lint:md` reports a link whose target does not exist). When
-the line with the link to the English version is wider than 80 columns, break it
-after `英語版:`.
+fail on a link to a missing page (`pnpm run lint:md` reports the link). Links
+from a Japanese document to another document point to its Japanese version
+(`.ja.md`), or to its English document when it has no Japanese version
+(`pnpm run lint:md` reports a link whose target does not exist). When the line
+with the link to the English version is wider than 80 columns, break it after
+`英語版:`.
 
 How each part is written:
 
@@ -430,8 +381,6 @@ renamed, and removed together, as the section "Rules and their documents" of
   (the introduction, with the sentence that says `recommended` enables the rules
   marked ✅, and the section on rule ids). The criteria for `recommended` are in
   `docs/development.md`, not in the index.
-- When a document is removed, check with `grep` that no other document refers to
-  it.
 - A rule is implemented with the skill `eslint-plugin-rules`, which follows the
   section "Writing a rule" of `docs/development.md`.
 
@@ -442,12 +391,8 @@ The steps are in
 
 ## 8. Removing or moving a document
 
-- Remove and move files as
-  [The working tree](../conventions/SKILL.md#the-working-tree) in the skill
-  conventions says.
-- When a document moves, its rule is renamed (section 6): change the sentence of
-  Rule Details that names the diagram types and its relative links, and run
-  `update`, which writes its title and its row in the index.
+The steps are in
+[references/removing-or-moving.md](references/removing-or-moving.md).
 
 ## 9. The result of the work
 

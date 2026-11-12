@@ -32,6 +32,10 @@ inputs live outside it.
 
 ## 1. Scope
 
+- Read the skill [conventions](../conventions/SKILL.md) first: the documents and
+  the code of the change are checked against it, and the reviewer treats the
+  working tree and stops processes as its section
+  [The working tree](../conventions/SKILL.md#the-working-tree) says.
 - Read the whole of every file the change touched, not the part the report
   points at. A document that covers several diagram types is read for all of
   them.
