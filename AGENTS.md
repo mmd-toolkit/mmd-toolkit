@@ -92,7 +92,8 @@ Correctness is defined by the pinned mermaid.js.
    gap, then the spelling that the examples in the documentation of the pinned
    mermaid.js use. Where none of them gives a form, the output of the released
    version is not changed on such a judgment, and a form that seems better is
-   proposed to the user. The formatted text is also drawn by other versions of
+   proposed to the user, with a text as written, the present output, and the
+   output in that form. The formatted text is also drawn by other versions of
    mermaid.js, so a form is printed only where every version that counts reads
    and draws it the same. The check is that formatting does not change the Db; a
    formatting that changes the Db but not the drawing is an exception of a kind

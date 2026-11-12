@@ -3,8 +3,7 @@
 Formatting does not change what mermaid.js draws (AGENTS.md, item 4). A way of
 writing that draws the same is printed in one form; a way of writing that draws
 something else is kept as written. This document says which form is printed, and
-why, so that whoever writes a printer, reviews one, or proposes another form
-reaches the same form from it.
+why.
 
 The rules of a diagram type are in its own document (`flowchart.md`, `gantt.md`,
 and so on). The reason of each of those rules is one of the rules below.
@@ -29,10 +28,6 @@ The whitespace of Prettier comes before the form of the documentation.
 Whitespace that Prettier prints is not left out because the documentation writes
 a text without it: the documentation writes an argument of a C4 diagram as
 `$link="x"`, and the formatter prints `$link = "x"`.
-
-A form belongs to a kind of mark, not to a line. The same mark has the same
-whitespace in every line, and in every diagram type, where it is of the same
-kind.
 
 ## 1. The whitespace beside a mark
 
@@ -108,14 +103,14 @@ follows one set in `set A : 20` and two in `union A, B : 3`. In the second it is
 not the value of `B`, so the colon of a size is not the colon of a key in either
 line.
 
-An example that writes a colon with no whitespace on either side, as the
-documentation of mermaid.js writes the size `set A:3` of a Venn diagram, is not
-counted in step 3. A form with no space after the colon is not printed, so such
-an example shows neither of the two forms that are compared.
+An example that writes a colon with no whitespace on either side, in the form
+`set A:3`, as the documentation of mermaid.js writes the sizes of a Venn
+diagram, is not counted in step 3. A form with no space after the colon is not
+printed, so such an example shows neither of the two forms that are compared.
 
-Where the kind of a colon is not plain from these steps, whoever writes the
-printer does not choose it: the form is proposed as under
-[4](#4-where-none-of-these-rules-gives-a-form).
+Where the kind of a colon is not plain from these steps, no kind is assumed for
+it: its form is decided as under [4](#4-where-none-of-these-rules-gives-a-form),
+and its line is added to the table below.
 
 In the table below, the examples are those of the documentation of the pinned
 mermaid.js.
@@ -124,6 +119,7 @@ mermaid.js.
 | ---------------------------------------------- | ---- | -------------------------------- | ------------------------------------------------------------------------------------------------------------------------------ |
 | An end of an edge of an architecture diagram   | 1    | `a:R -- L:b`                     | The side is a part of the end of the edge.                                                                                     |
 | The value of a slice of a pie chart            | 2    | `"Dogs": 386`                    | A second line with the same label adds no slice.                                                                               |
+| The title and the description of a diagram     | 2    | `accTitle: text`                 | The line gives the diagram its one title or description.                                                                       |
 | The description of a state                     | 3    | `s2: a description`              | A second line adds a line of description; the examples write no space before the colon at least twice as often as one.         |
 | The label of a transition between states       | 3    | `s1 --> s2 : go`                 | The label belongs to the transition, not to `s2`; the examples write a space before the colon at least twice as often as none. |
 | The label of a relationship of an ER diagram   | 3    | `A \|\|--o{ B : has`             | As for a transition.                                                                                                           |
@@ -134,7 +130,8 @@ mermaid.js.
 | The events of a period of a timeline           | 3    | `2004 : Facebook : Google`       | The colons separate a period and its events; the examples write a space before them.                                           |
 | The size of a set or a union of a Venn diagram | 3    | `set A["Alpha"] : 20`            | Each line adds a set or a union, and no example writes a space after the colon.                                                |
 
-How the examples are counted, and their counts, are in
+How the examples are counted, and their counts for every line that step 3
+decides, are in
 [The examples that decide the whitespace before a colon](./compatibility.md#the-examples-that-decide-the-whitespace-before-a-colon).
 
 ### Padding that lines a column up
@@ -151,15 +148,15 @@ the cells of a table of Markdown to the width of their column.
 So whether lines are lined up is decided for each kind of line, in the document
 of its diagram type.
 
-- The tasks of a section of a Gantt chart are rows of a name and its data. Where
-  a name of a section was written with padding before its colon, the printer
-  puts the colons of the section in one column. In any other section it prints
-  one space before each colon. [Task data](./gantt.md#task-data) defines both.
-- The padding before a colon of a timeline and of a user journey stays as
-  written. [Periods and events](./timeline.md#periods-and-events) and
+- The tasks of a section of a Gantt chart are rows of a name and its data. The
+  printer puts the colons of a section in one column where its names were
+  written with padding before their colons. [Task data](./gantt.md#task-data)
+  defines when it does, and the sections that it leaves as written.
+- The padding that lines the colons of a timeline or of a user journey up stays
+  as written. [Periods and events](./timeline.md#periods-and-events) and
   [Task data](./journey.md#task-data) define it.
 
-Another way of lining lines up is proposed as under
+Another way of lining lines up is decided as under
 [4](#4-where-none-of-these-rules-gives-a-form).
 
 ### Where mermaid.js decides against the whitespace
@@ -167,19 +164,24 @@ Another way of lining lines up is proposed as under
 The whitespace is printed wherever every version of mermaid.js that counts (see
 [The versions of mermaid.js that count](#the-versions-of-mermaidjs-that-count))
 reads the text the same with it. It is left out only where mermaid.js rejects it
-or reads something else, as in the list of ids of a flowchart `class` statement
-(`class A,B c`).
+or reads something else: in the list of ids of a flowchart `class` statement
+(`class A,B c`), after the colon of the width of a block (`a:2`), and beside the
+colon of a property of a shape of a flowchart (`A[|borders:lt|text]`).
 [Lists separated by commas](./compatibility.md#lists-separated-by-commas) names
 the lists that stay without the space.
 
+Where mermaid.js rejects the space after a colon, none is printed before it
+either, since Prettier prints no colon with a space before it alone: the width
+of a block is printed `a:2`, also where `a :2` was written.
+
 ### A text that the tree holds whole
 
-This rule decides the whitespace beside the marks that the tree holds as tokens.
-A text that the tree holds whole is printed as written inside: the text of a
-label and of a string, and the body of a data block (`@{ … }`) that mermaid.js
-reads as YAML, so that `A@{ shape : circle }` in a flowchart keeps the space
-before its colon. What the formatter changes in such a text is defined in the
-document of its diagram type.
+This rule decides the whitespace beside the marks that the syntax tree of the
+parser holds as tokens. A text that the tree holds whole is printed as written
+inside: the text of a label and of a string, and the body of a data block
+(`@{ … }`) that mermaid.js reads as YAML, so that `A@{ shape : circle }` in a
+flowchart keeps the space before its colon. What the formatter changes in such a
+text is defined in the document of its diagram type.
 
 ## 2. A gap of a kind that Prettier does not have
 
@@ -200,9 +202,8 @@ examples use none, the spelling is kept as written.
 ## 4. Where none of these rules gives a form
 
 Where none of these rules gives a form, the output of the released version is
-not changed on a judgment of which form reads better. A form that seems better
-is proposed to the user, with a text as written, the present output, and the
-output in that form. What is decided is added to these rules.
+not changed on a judgment of which form reads better. A form that these rules do
+not give is printed only after it has been decided and added to these rules.
 
 ## The versions of mermaid.js that count
 
@@ -232,14 +233,15 @@ version added or changed a form.
 
 ## The check, and formatting that changes the Db
 
-The check is that formatting does not change the Db. A formatting that changes
-the Db but not the drawing is an exception. Each kind of exception has a section
-that defines it, with links to the code of the pinned mermaid.js that shows why
-the drawing stays the same and the result of drawing both texts, and the tests
-compare the Db with the differences of that kind restored, one function for each
-kind, which `packages/prettier-plugin-mmd/tests/db-comparison.ts` calls. When
-the pinned mermaid.js is updated, each exception is checked again by drawing.
-The kinds are:
+The check is that formatting does not change the Db, which is what mermaid.js
+has read from a text. A formatting that changes the Db but not the drawing is an
+exception. Each kind of exception has a section that defines it, with links to
+the code of the pinned mermaid.js that shows why the drawing stays the same and
+the result of drawing both texts, and the tests compare the Db with the
+differences of that kind restored, one function for each kind, which
+`packages/prettier-plugin-mmd/tests/db-comparison.ts` calls. When the pinned
+mermaid.js is updated, each exception is checked again by drawing. The kinds
+are:
 
 - the limited ASCII space margin changes to eventmodeling block bodies, defined
   in [Data blocks](./eventmodeling.md#data-blocks);

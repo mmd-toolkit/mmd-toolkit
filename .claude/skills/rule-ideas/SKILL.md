@@ -1011,25 +1011,26 @@ labels markdown or neither, is reported: the later subgraph does not hold the
 vertex (run: `A` in `subgraph a`, then `A` in `subgraph b`, leaves `A` in a). A
 label in quotes and a label without them count as one here: after `A[x]`,
 `A["x"]` changes only the `labelType` of the Db, from `text` to `string`, a
-difference that AGENTS.md lists among the formatting exceptions as drawn the
-same, and the formatter prints a label in one of the two forms, so formatting
-would change what is reported if they counted apart; `A["x"]` is reported as
-`A[x]` is, and ``A["`**x**`"]`` is not, since a markdown label draws differently
-(run). A property is another matter: the formatter leaves it, so
-`A[|borders:lt|x]` after `A[x]` still says something new. It is not reported
-when the earlier subgraph is nested in the later one or has its id, where
-nothing is lost. Each vertex of such a statement counts apart: `A & B` in b,
-when a has only `A`, reports `A`, which says nothing new while `B` joins b, and
-`A & B --> C` reports neither (run). `A` in b when no earlier subgraph has it
-puts it in b, `A --> B` draws its edge, `A[y]`, `A:::c`, and after `A[x]` also
-``A["`**x**`"]`` and `A[|borders:lt|x]` change the Db, and a bare `c` that only
-names an earlier subgraph writes a new vertex, so none of them is reported for
-this (run). It is the mistake of this rule, an id written again, in the same
-statement, as in block-no-duplicate-block; (2) none: no example of the
-documentation writes it (run on `flowchart.md` and `swimlanes.md`); (3) "node
-label overwritten", "redefine node label", "node label", "subgraph node two
-subgraphs", "node multiple subgraphs", "subgraph duplicate node", "node belongs
-subgraph", "subgraph members same node":
+difference that the formatter lists among the kinds of formatting that change
+the Db and are drawn the same
+(`packages/prettier-plugin-mmd/docs/printed-form.md`), and the formatter prints
+a label in one of the two forms, so formatting would change what is reported if
+they counted apart; `A["x"]` is reported as `A[x]` is, and ``A["`**x**`"]`` is
+not, since a markdown label draws differently (run). A property is another
+matter: the formatter leaves it, so `A[|borders:lt|x]` after `A[x]` still says
+something new. It is not reported when the earlier subgraph is nested in the
+later one or has its id, where nothing is lost. Each vertex of such a statement
+counts apart: `A & B` in b, when a has only `A`, reports `A`, which says nothing
+new while `B` joins b, and `A & B --> C` reports neither (run). `A` in b when no
+earlier subgraph has it puts it in b, `A --> B` draws its edge, `A[y]`, `A:::c`,
+and after `A[x]` also ``A["`**x**`"]`` and `A[|borders:lt|x]` change the Db, and
+a bare `c` that only names an earlier subgraph writes a new vertex, so none of
+them is reported for this (run). It is the mistake of this rule, an id written
+again, in the same statement, as in block-no-duplicate-block; (2) none: no
+example of the documentation writes it (run on `flowchart.md` and
+`swimlanes.md`); (3) "node label overwritten", "redefine node label", "node
+label", "subgraph node two subgraphs", "node multiple subgraphs", "subgraph
+duplicate node", "node belongs subgraph", "subgraph members same node":
 [#3789](https://github.com/mermaid-js/mermaid/issues/3789) (open, Type:
 Enhancement) proposes another statement for labels,
 [#2567](https://github.com/mermaid-js/mermaid/issues/2567) (open, Type:
