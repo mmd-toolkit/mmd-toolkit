@@ -146,8 +146,7 @@ note 01 {
 ### Statements one per line
 
 普通の top-level AST 文は原順の各行へ分け、semicolon は足しません。
-完全な単位の間に可視の EOL を要しない文法なので、
-Db を変えずに境界を見せられます。
+完全な単位の間に可視の EOL を要しない文法なので、Db は変わりません。
 次が共通文なら先行単位との接続を保ちます。
 greedy な inline data の中の見かけの文は、その値の一部のままです。
 閉じた説明ブロックの後の普通の文は、新しい行へ分けます。
@@ -395,7 +394,7 @@ note
 
 宣言と note の部品は `entity Shop.Buy`、`data D`、`note 01` と、
 普通の 1 space で分けます。
-block opener は見出し行の 1 space 後に置き、宣言の部品を見せます。
+block opener は見出し行の 1 space 後に置きます。
 値と閉じの境界は data の規則に従います。
 required name の `title` は frame と同じく安全な前方境界を保ちます。
 

@@ -459,7 +459,8 @@ quadrantChart
 `radius :  10` は `radius: 10` になります。
 置き換えるのは、そのコロンに接する ASCII 空白とタブだけです。
 先頭のゼロや色の大文字小文字も含めて、値の綴りは保ちます。
-Db を変えず、点とクラスのスタイルを、Prettier がキーに続くコロンに印字する形にそろえます。
+Db を変えず、点とクラスのスタイルを、
+Prettier がキーに続くコロンに印字する形にそろえます。
 [fixture: styles/style-colon-padding] [fixture: styles/style-colon-tab-padding]
 
 trivia、ASCII 空白とタブ以外の空白文字、セミコロン、

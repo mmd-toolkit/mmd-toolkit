@@ -7,6 +7,61 @@ conformance corpus. Formatting keeps what mermaid.js reads from a diagram, and
 text that mermaid.js rejects is left unchanged. This document lists where that
 does not hold, and why.
 
+## Versions of mermaid.js that count
+
+A formatted text is also drawn by versions of mermaid.js other than the pinned
+one, so the forms that the formatter prints are checked against the versions
+that count, defined by the formatting rules in AGENTS.md (item 4): the versions
+published in the 18 months before the pinned version was published; of each
+major version, the smallest and the largest minor version among them, and of a
+diagram type that was added in that time, the first minor version that has it,
+each at its latest patch. The pinned version, 12.3.0, was published on
+2026-11-03, so the period starts on 2025-05-03. The ten versions are these:
+
+| Version | Published  | Why it counts                                                                            |
+| ------- | ---------- | ---------------------------------------------------------------------------------------- |
+| 10.9.8  | 2026-08-04 | the only minor version of 10 published in the period (10.9), at its last patch           |
+| 11.7.0  | 2025-06-20 | the smallest minor version of 11 in the period                                           |
+| 11.8.1  | 2025-07-07 | the first minor version with the treemap diagram (11.8)                                  |
+| 11.13.0 | 2026-03-09 | the first with the Venn and the ishikawa diagrams                                        |
+| 11.14.0 | 2026-04-01 | the first with the Wardley and the treeView diagrams                                     |
+| 11.15.0 | 2026-05-11 | the first with the eventmodeling diagram                                                 |
+| 11.16.1 | 2026-08-04 | the first minor version with the cynefin, railroad, and swimlane diagrams                |
+| 11.17.2 | 2026-08-25 | the largest minor version of 11                                                          |
+| 12.0.0  | 2026-09-10 | the smallest minor version of 12, and the first with the agentflow and use case diagrams |
+| 12.3.0  | 2026-11-03 | the largest minor version of 12, the pinned version                                      |
+
+The diagram types come from running a minimal text of each type in Chromium with
+the bundle of every version published in the period that is the last patch of
+its minor version (`mermaid.detectType` and a parse): treemap is first read by
+11.8.0 and not by 11.7.0, ishikawa and Venn by 11.13.0, Wardley and treeView
+(whose first grammar reads a name in quotes only) by 11.14.0, eventmodeling by
+11.15.0, cynefin, railroad, and swimlane by 11.16.0, and agentflow and use case
+by 12.0.0. The other versions of the period (11.9.0, 11.10.1, 11.11.0, 11.12.3,
+12.1.0, and 12.2.0) are not checked, and a form that only they reject or draw
+differently is printed.
+
+The period is about the versions that users run. Of the downloads of mermaid
+from npm in the week before 2026-11-12 (about 26.6 million, by version from
+[`api.npmjs.org/versions/mermaid/last-week`](https://api.npmjs.org/versions/mermaid/last-week)),
+the versions published in the last 12 months make 92.3%, those of the last 15
+months 96.7%, those of the last 18 months 97.1%, and those of the last 24 months
+98.0%: after 18 months the share grows by less than a point for each further
+half year. When the pinned version is raised, the period and the list are
+computed again from the publication date of the new pinned version, with the
+versions of npm.
+
+Two of the three examples that AGENTS.md gives of a spelling kept as written
+because versions disagree hold for these versions: `block` is rejected by
+10.9.8, 11.7.0, and 11.8.1, which read `block-beta` only, and `TB` and `TD` are
+drawn differently by 10.9.8, 11.7.0, and 11.8.1 in a flowchart with a subgraph.
+The third does not: all ten versions read the header of a gitGraph with and
+without the colon (the commits and the branches are the same), and the colon is
+required by every version only after a direction (`gitGraph LR:`, since
+`gitGraph LR` is rejected by all of them). The colon was kept for the sake of
+8.14.0, which does not count (see
+[Versions of mermaid.js](#versions-of-mermaidjs)).
+
 ## Inputs read differently from mermaid.js
 
 The parser that the plugin uses reads the same inputs as mermaid.js, with a few
@@ -1453,14 +1508,15 @@ a quadrant chart and of a Wardley map, and the actors of a use case diagram.
 
 For the 17 kinds of lists that are printed with the space, the text with the
 space and the text without it were run in Chromium with the 17 versions on hand
-(the 14 of the earlier runs, and 10.9.8, 11.7.0, and 11.17.2). The Db of
-mermaid.js 12.3.0 was the same for each of them, and no version rejected the
-text with the space where it read the text without it. In the five versions that
-count (10.9.8, 11.7.0, 11.17.2, 12.0.0, and 12.3.0) the SVG or the pixels were
-the same wherever the version has the diagram type and draws it; a class diagram
-draws other random ids each time, so the Db is its evidence there. (A state
-diagram `class` statement is drawn differently in 9.0.0 and 9.1.7, which do not
-count.)
+(the 14 of the earlier runs, and 10.9.8, 11.7.0, and 11.17.2), and with 11.8.1
+after it. The Db of mermaid.js 12.3.0 was the same for each of them, and no
+version rejected the text with the space where it read the text without it. In
+the ten versions that count (see
+[Versions of mermaid.js that count](#versions-of-mermaidjs-that-count)) the SVG
+or the pixels were the same wherever the version has the diagram type and draws
+it; a class diagram draws other random ids each time, so the Db is its evidence
+there. (A state diagram `class` statement is drawn differently in 9.0.0 and
+9.1.7, which do not count.)
 
 The space is not printed where mermaid.js rejects it or reads something else.
 The lists stay without the space in these places:
@@ -3636,7 +3692,7 @@ See [Task data](./gantt.md#task-data), [Settings](./gantt.md#settings),
   `;`), the whitespace after that `:` stays as written:
   `classDef it:a1,2024-01-01,2d;#y:3d;z:2d` has two tasks, `classDef it` and
   `#y`, and with a space after the first colon it has three, and the two texts
-  are drawn differently by the 5 versions that count. [fixture:
+  are drawn differently by the 10 versions that count. [fixture:
   gantt/task-data/colon-touches-first-item] [fixture:
   gantt/task-data/colon-space-line-rule-kept]
 - The whitespace inside an item of task data, the number of its items, and the

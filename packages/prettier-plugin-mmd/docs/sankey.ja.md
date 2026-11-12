@@ -367,8 +367,8 @@ c,d,2
 ### ヘッダー
 
 ヘッダーの `sankey` と `sankey-beta` は、書かれた大文字小文字を保ちます。
-mermaid.js 12.3.0 ではどちらも同じ図種で、Db も同じですが、
-mermaid.js 11.9.0 は `sankey-beta` だけを読むため、作者が書いた綴りを保ちます。
+mermaid.js 12.3.0 ではどちらも同じ図種で、Db も同じですが、mermaid.js 10.9.8、
+11.7.0、11.8.1 は `sankey-beta` だけを読むため、作者が書いた綴りを保ちます。
 （[ヘッダーの名前](./compatibility.ja.md#ヘッダーの名前)を参照）。
 ヘッダーは 1 列目に置き、その行には何も続けません。
 mermaid.js は、指令とコメント行以外が続くと拒否します。 [fixture: header/sankey]

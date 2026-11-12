@@ -80,8 +80,7 @@ composite は 3 種類の行でできています。
 `block:G`、`block`、`block-beta` は書かれたままに印字し、
 `block:` はその node に接します。
 mermaid.js は `block: G` と `block:G` を同じに読むので、
-形は 1 つにします（mermaid.js の文書の `block:group1:2`
-の形です）。
+形は 1 つにします（mermaid.js の文書の `block:group1:2` の形です）。
 見出しの後の最初の文と、`end` の後の文は、自分の行に移します。
 1 行に書かれた composite（`block:G a b end`）も同じで、
 どの composite も同じ形に置き、字下げが中身を示します。
@@ -279,9 +278,8 @@ block-beta
 ### ヘッダー
 
 ヘッダーの `block-beta` と `block` は、書かれたまま印字します。
-mermaid.js 12.3.0 はどちらも同じ図種として読みますが、
-mermaid.js 11.9.0 は `block-beta` だけを検出するので、
-綴りは作者の選択だからです。
+mermaid.js 12.3.0 はどちらも同じ図種として読みますが、mermaid.js 10.9.8、
+11.7.0、11.8.1 は `block-beta` だけを検出するので、綴りは作者の選択だからです。
 （[ヘッダーの名前](./compatibility.ja.md#ヘッダーの名前)を参照）。
 前の空白は落とし、同じ行の後ろの文は自分の行に移します（[行](#行)を参照）。
 [fixture: header/block-beta-kept] [fixture: header/block-kept]

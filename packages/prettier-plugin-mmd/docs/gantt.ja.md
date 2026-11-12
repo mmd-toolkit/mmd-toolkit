@@ -362,8 +362,7 @@ mermaid.js の文書の例が、ほかのどの形よりも 2 倍以上の頻度
 [fixture: task-data/colon-column-before-first-section]
 [fixture: task-data/colon-column-sections-and-preamble]
 
-次の場合は、コロンを動かすと図が変わりうるので、
-コロンをその位置に残します。
+次の場合は、コロンを動かすと図が変わりうるので、コロンをその位置に残します。
 どの名前もコロンの前の空白が 1 つ以下のセクションは、どのコロンも動かさず、
 コロンに接する名前にだけ上の空白 1 つを置きます。
 そろえた行が `printWidth` より長く、元の行よりも長くなるセクションは、

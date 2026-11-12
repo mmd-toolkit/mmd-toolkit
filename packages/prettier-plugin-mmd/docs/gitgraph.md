@@ -139,8 +139,8 @@ gitGraph
 ### Operation spacing
 
 Use one space between ordinary operation, reference and option components, even
-when authored components touch. Do not align columns. The visible components get
-a consistent form; bare names retain their required boundaries. Gaps containing
+when authored components touch. Do not align columns. The components get a
+consistent form; bare names retain their required boundaries. Gaps containing
 comments, global directives or hidden forms retain their attachment and physical
 boundaries.
 

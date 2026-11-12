@@ -2325,9 +2325,9 @@ the examples are written as strings, in which `\n` is a line break:
 
 The direction is kept as written: `TD` is not changed to `TB`, and `TB` is not
 changed to `TD`, in the header or in a `direction` statement. mermaid.js 12.3.0
-draws the two the same, but mermaid.js 11.9.0 draws a flowchart with `TB` in its
-header differently from the same text with `TD`, and the header keyword is kept
-as written too (see
+draws the two the same, but mermaid.js 10.9.8, 11.7.0, and 11.8.1 draw a
+flowchart with a subgraph and `TB` in its header differently from the same text
+with `TD`, and the header keyword is kept as written too (see
 [Versions of mermaid.js](./compatibility.md#versions-of-mermaidjs) and
 [The names of a header](./compatibility.md#the-names-of-a-header)). [fixture:
 direction/header-td-kept] [fixture: direction/header-tb-kept] [fixture:

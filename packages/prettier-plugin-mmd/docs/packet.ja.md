@@ -11,11 +11,11 @@
 ### Header
 
 書かれたキーワード `packet` または `packet-beta` を第1列に置きます。
-見出しを明確にするため、通常の最初の文は次行へ移します。
+通常の最初の文は、ほかの図種と同じく次行へ移します。
 `packet` だけは直後の境界が必要で、接着した綴りを作りません。
 hidden の境界と保護された見出し・本文の組を優先します。
 同義の名前は、書かれたまま保ちます。
-11.9.0 より前の mermaid.js は `packet-beta` だけを読むためです。
+mermaid.js 11.7.0 と 11.8.1 は `packet-beta` だけを読むためです。
 （[ヘッダーの名前](./compatibility.ja.md#ヘッダーの名前)を参照）。
 
 [fixture: packet/header/header-packet]

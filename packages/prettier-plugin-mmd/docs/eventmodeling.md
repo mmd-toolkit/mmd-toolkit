@@ -394,9 +394,8 @@ note
 
 Separate declaration and note components with one ordinary space:
 `entity Shop.Buy`, `data D` and `note 01`. Put a block opener on its header line
-after one space, exposing the declaration's parts. Values and closing boundaries
-follow the data rules. A required name `title` keeps its safe preceding
-boundary, as for frames.
+after one space. Values and closing boundaries follow the data rules. A required
+name `title` keeps its safe preceding boundary, as for frames.
 
 [fixture: eventmodeling/declarations-and-notes/entity-ordinary]
 

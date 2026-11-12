@@ -52,7 +52,7 @@ gitGraph
 履歴は平坦なので branch の後に段を増やしません。
 gitgraph の列に文法上の意味がないため、`tabWidth: 0` は空白 0 個、
 `useTabs` は幅 0 でも tab 1 個です。
-木の構造を見せ、その他の値の続きの列・hidden の閉じ・保護部分は変えません。
+その他の値の続きの列・hidden の閉じ・保護部分は変えません。
 
 固定例: [fixture: gitgraph/indentation/indent-two]
 [fixture: gitgraph/indentation/indent-four]
@@ -145,7 +145,7 @@ gitGraph
 
 通常の操作語・参照・option の間は、接していても空白 1 個にします。
 桁揃えはしません。
-部品を一定の形で見せ、bare name に必要な境界を残します。
+部品を一定の形で印字し、bare name に必要な境界を残します。
 コメント・global directive・hidden form を含む隙間は、
 接触と物理境界を保持します。
 

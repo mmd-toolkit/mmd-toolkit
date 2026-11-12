@@ -348,7 +348,8 @@ wardley-beta
 
 label [-1, 2] とし、普通の minus は符号なし整数の大きさに付けます。
 -0 も符号を残し、数の原綴を保ちます。
-符号を離しても Db は同じですが、付けることで対象を明確にします。
+符号を離しても Db は同じですが、符号は数に接します。
+Prettier が単項のマイナスを印字する形です。
 符号と数の間の hidden と global trivia の境界は保ちます。
 
 [fixture: wardley/label-offsets/offset-sign-gap]
@@ -373,7 +374,7 @@ port と矢印の原綴は保ちます。
 A-->B は名前 A- と矢印 -> なので A- -> B と印字します。
 原文の字面から矢印を探しません。
 A -->B の矢印は --> のままです。
-解析済みの部品を空白で見えるようにします。
+解析済みの部品に従った空白です。
 
 [fixture: wardley/links/link-short]
 

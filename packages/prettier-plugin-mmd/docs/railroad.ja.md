@@ -329,7 +329,8 @@ railroad-peg-beta
 ### 選択
 
 EBNF の選択は `a | b`、ABNF と PEG は `a / b` にします。
-両側の通常の1 space で選択肢を見分けやすくします。
+両側に通常の1 spaceを置きます。
+Prettier が2つのものの間の記号に印字する形です。
 順序と階層は保ち、IR の choice call は呼出しの規則に従います。
 
 [fixture: railroad/choices/abnf-slashes]

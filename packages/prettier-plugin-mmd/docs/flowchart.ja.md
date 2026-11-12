@@ -1783,8 +1783,7 @@ CRLF と CR は `endOfLine` に従います。
 [test: data blocks: flowchart one line CRLF]
 [test: data blocks: flowchart one line CR]
 
-1 行のブロックがある行が `printWidth` より長いときは、
-複数行に分けて印字します。
+1 行のブロックがある行が `printWidth` より長いときは、複数行に分けて印字します。
 1 行に 1 項目ずつ文の 1 段内側に置き、`}` は文と同じ桁の単独行に置きます。
 移動できる複数行のブロックと同じです（後述）。
 Prettier が 2 つの形から選び、行が収まる場合は 1 行のままにします。
@@ -2435,8 +2434,8 @@ flowchart %%{init: {}}%%LR
 
 ヘッダーでも `direction` の文でも、方向は書かれたまま残します。
 `TD` を `TB` に変えず、`TB` も `TD` に変えません。
-mermaid.js 12.3.0 は 2 つを同じに描きますが、mermaid.js 11.9.0 は、
-ヘッダーに `TB` がある flowchart を、
+mermaid.js 12.3.0 は 2 つを同じに描きますが、mermaid.js 10.9.8、11.7.0、
+11.8.1 は、subgraph があり、ヘッダーに `TB` がある flowchart を、
 同じテキストで `TD` があるものとは違って描きます。
 ヘッダーのキーワードも書かれたまま残します。
 （[mermaid.js の版](./compatibility.ja.md#mermaidjs-の版)と

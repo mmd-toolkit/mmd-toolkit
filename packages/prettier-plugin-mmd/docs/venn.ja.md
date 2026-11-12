@@ -1152,7 +1152,8 @@ FF を本文の隙間として受理はしません。
 
 ### Frontmatter YAML
 
-frontmatter には共通の保護つき YAML 整形を使い、Prettier が YAML を印字する形にします。
+frontmatter には共通の保護つき YAML 整形を使い、
+Prettier が YAML を印字する形にします。
 区切り、閉じる行の余白、ヘッダー前のコメントとディレクティブ、
 title の上書きの役割を保ちます。
 不正、字下げつき、HTML に影響するもの、区切りが変わる YAML は保ちます。

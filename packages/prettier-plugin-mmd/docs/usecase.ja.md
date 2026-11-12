@@ -75,7 +75,7 @@ usecase-beta
 
 ### Indentation
 
-所属を見える形にするため、class の[字下げ](./class.ja.md#字下げ)を再利用します。
+class の[字下げ](./class.ja.md#字下げ)を再利用します。
 ヘッダーの下を設定の 1 段、境界内の宣言を 2 段とし、`end` は開始文に揃えます。
 [fixture: system-boundaries/boundary-header-comment-empty]
 1 段は `tabWidth` と `useTabs` に従い、既定は空白 2 個、
@@ -162,14 +162,14 @@ usecase-beta
 ER の[実体](./er.ja.md#実体)を再利用します。
 `actor` の後は空白 1 個、id と形の区切り、metadata と class の接尾辞は詰め、
 ラベルの外側の ASCII 空白を除き、actor の項目はコンマと空白で区切ります。
-一つの `actor` キーワードの下にある別々の actor の出現を見える形にするためです。
+一つの `actor` キーワードの下にある別々の actor の出現を、そのまま印字します。
 stereotype の隙間は、[class に揃えた規則](#stereotypes)に従います。
 明示 id、楕円と長方形の綴り、markdown ラベル、接尾辞の順序、
 宣言と参照のすべての出現を保ちます。
 名前とラベルは、例で使われている形で印字します（[Quotes](#quotes) を参照）。
 生成 id や解決後の actor を、書かれた端点の代わりにはしません。
 境界内の metadata 形式は宣言、最上位の形式は更新のままです。
-別名や形を作らず、書かれた構文を見える形にします。
+別名や形を作らず、書かれた構文をそのまま印字します。
 
 [fixture: declarations/actor-list] [fixture: declarations/entity-shapes]
 [fixture: declarations/suffixes] [fixture: declarations/generated-name]
@@ -502,8 +502,7 @@ usecase-beta
 
 ### Arrows
 
-class
-の[矢印の前後の空白](./class.ja.md#矢印の前後の空白)を再利用し、
+class の[矢印の前後の空白](./class.ja.md#矢印の前後の空白)を再利用し、
 実際の usecase 演算子全体の両側を通常の空白 1 個にします。
 方向、マーカー、ダッシュと点の数を保ちます。
 Db の長さが固定される分割矢印の長い右半分も同じです。
@@ -675,7 +674,8 @@ metadata のすべての空行と、コンマか改行かの区切りを保ち�
 キー、コロン、値からなる一つのプロパティ内に改行を挿入しません。
 [fixture: native-metadata/metadata-first-gap-standalone-directive]
 [fixture: native-metadata/metadata-selected-semicolon-between-properties]
-native の検証や宣言と更新の役割を変えず、Prettier がキーと値に印字する形にします。
+native の検証や宣言と更新の役割を変えず、
+Prettier がキーと値に印字する形にします。
 
 共通コメント領域と改行の処理後、最後のプロパティから `}` までの、
 末尾コンマと物理改行の合計は 2 個以下で、コンマは改行の前にだけ置けます。
