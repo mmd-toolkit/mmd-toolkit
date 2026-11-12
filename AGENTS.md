@@ -91,10 +91,13 @@ Correctness is defined by the pinned mermaid.js.
    each side of a `=`, the formatter prints it too wherever mermaid.js reads the
    text the same with it, and leaves it out only where mermaid.js rejects it or
    reads something else, as in the list of ids of a flowchart `class` statement.
-   For a spelling (the case of a keyword, the quotes of a string, the digits of
-   a number, the direction of a header), the form is the one that the examples
-   in the documentation of the pinned mermaid.js use at least twice as often as
-   any other; where no form is used that often, or the examples use none, the
+   Readability comes before the form of the documentation: where the two differ,
+   the form that is easier to read is printed, and a change that makes the
+   output follow the documentation at the cost of readability is not made. For a
+   spelling (the case of a keyword, the quotes of a string, the digits of a
+   number, the direction of a header), the form is the one that the examples in
+   the documentation of the pinned mermaid.js use at least twice as often as any
+   other; where no form is used that often, or the examples use none, the
    spelling is kept as written. The check uses the pinned mermaid.js only, while
    the formatted text is also drawn by other versions of mermaid.js. The
    versions that count are those published in the 18 months before the pinned
