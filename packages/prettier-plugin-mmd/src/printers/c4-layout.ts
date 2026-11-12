@@ -38,7 +38,6 @@ import {
   findTokensBetween,
   findTriviaBetween,
   hasTriviaBesidesTrailingDirectives,
-  isSpaceOrTab,
   isStructural,
   isWhitespace,
 } from "./source.ts"
@@ -347,15 +346,7 @@ export function layoutC4Call(
         before !== "(" && text !== ")" && !beforeComma ? "space" : "none",
       )
     else if (namedGap && (text === "=" || before === "="))
-      rules.set(
-        atom.start,
-        // An `=` with a line break, a comment, a directive, or a `;` beside it
-        // keeps a space on each side of its same-line gaps; otherwise the `=`
-        // touches the key and the value (docs/c4.md, Named attributes).
-        isPlainBesideEquals(source, atoms, text === "=" ? index : index - 1)
-          ? "none"
-          : "space",
-      )
+      rules.set(atom.start, "space")
     else if (
       beforeComma ||
       text === ")" ||
@@ -380,31 +371,6 @@ export function layoutC4Call(
   return statement.type === "C4BoundaryStatement" && opening?.value === "{"
     ? alignBlockOpeningLine(source, layout, opening.range[0])
     : layout
-}
-
-/**
- * Whether the `=` at `atoms[equalsIndex]` has nothing but spaces and tabs on
- * each side: no line break, comment, directive, or `;` (see the gaps of
- * `layoutC4Call`). A `;` that the line rule ignores stands in the atom beside
- * the `=`, and not in the gap.
- */
-function isPlainBesideEquals(
-  source: Source,
-  atoms: readonly Atom[],
-  equalsIndex: number,
-): boolean {
-  const equals = atoms[equalsIndex]
-  const previous = atoms[equalsIndex - 1]
-  const next = atoms[equalsIndex + 1]
-  return (
-    next !== undefined &&
-    source.text[previous.end - 1] !== ";" &&
-    source.text[next.start] !== ";" &&
-    [
-      ...source.text.slice(previous.end, equals.start),
-      ...source.text.slice(equals.end, next.start),
-    ].every(isSpaceOrTab)
-  )
 }
 
 /**
