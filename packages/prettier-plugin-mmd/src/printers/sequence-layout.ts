@@ -589,6 +589,11 @@ function addArrowRules(
       : "space"
   rules.set(arrow.range[0], rule)
   rules.set(next.range[0], rule)
+  // 10.9.8 has no `<<->>` and `<<-->>` and reads the `<<` as part of the name
+  // before them, so the whitespace before such an arrow stays as written.
+  const arrowText = source.text.slice(arrow.range[0], arrow.range[1])
+  if (arrowText === "<<->>" || arrowText === "<<-->>")
+    rules.delete(arrow.range[0])
   // The whitespace beside a `()` stays as written: 10.9.8, 11.7.0, and 11.8.1
   // have no central connection and read `()` as part of a name.
   if (statement.activation !== null) {

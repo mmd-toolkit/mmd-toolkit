@@ -444,6 +444,14 @@ When the machine is under load or the workspace has unrelated failures:
    along.
 5. Check that the sections of the specification and the mermaid.js links that
    the rules' comments point to still match the new version.
+6. Compute the versions that count again (the table in `docs/compatibility.md`,
+   Versions of mermaid.js that count) and go through the table Forms kept for
+   versions of mermaid.js that count, row by row. A rule none of whose named
+   versions counts any longer is taken out, and the form that the rules of
+   `docs/printed-form.md` give is printed; the published output changes, so a
+   changeset goes with it. Write the versions that still count into the rows
+   that stay, and add a row, in the same change, for each new kind that the
+   drawings of the new versions show.
 
 ## 11. Jison diagrams and Langium diagrams
 

@@ -274,11 +274,11 @@ export function layoutStatement(
     normalizeStyleList(source, atoms, statement, {
       keepsSpaceBeforeFill: statement.type === "FlowchartLinkStyleStatement",
       labelStyleNames:
-        statement.type === "FlowchartStyleStatement"
+        statement.type === "FlowchartStyleStatement" || isLinkStyle
           ? ["color", "text-align"]
           : [],
       isLinkStyle,
-      joinsStyles: isLinkStyle,
+      joinsStyles: isLinkStyle || statement.type === "FlowchartStyleStatement",
       keepsGapAfterStroke: statement.type !== "FlowchartStyleStatement",
       escapesComma: statement.type === "FlowchartClassDefStatement",
       collapsesWordGaps: true,

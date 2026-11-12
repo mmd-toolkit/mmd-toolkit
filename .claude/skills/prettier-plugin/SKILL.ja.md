@@ -462,6 +462,15 @@ fixture は tests の SKILL で直す。
    `docs/compatibility.md`、README を合わせる。
 5. 規則のコメントが指す仕様の節と mermaid.js のリンクが、
    新しい版でも合っているかを確かめる。
+6. 対象にする版（`docs/compatibility.md` の「Versions of mermaid.js that
+   count」の表）を計算し直し、
+   「対象にする版の mermaid.js のために残す形」の表（Forms kept for versions of
+   mermaid.js that count）を 1 行ずつ見る。
+   挙げた版が 1 つも対象に残っていない規則は外し、
+   `docs/printed-form.md` の決まりが与える形で印字する。
+   公開済みの出力が変わるので、変更票を付ける。
+   まだ対象に残る版は行に残し、新しい版の描画で見つかった新しい種類は、
+   同じ変更で行を足す。
 
 ## 11. Jison の図と Langium の図
 

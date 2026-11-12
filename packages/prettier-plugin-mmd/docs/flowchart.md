@@ -711,11 +711,17 @@ printed `style A fill: #f00, color: white` (see
 whitespace-between-tokens/style-color-spaced] [fixture:
 whitespace-between-tokens/style-color-first] [fixture:
 whitespace-between-tokens/style-text-align-touching-kept] [fixture:
-whitespace-between-tokens/style-label-name-colon-gap-kept] A space after a
-backslash that ends a style of a `style` is read as nothing:
+whitespace-between-tokens/style-label-name-colon-gap-kept] A `linkStyle` keeps
+the same whitespace for a style that starts with `color:` or `text-align:`,
+which 10.9.8 puts in the style of the label of a link. [fixture:
+whitespace-between-tokens/link-style-label-names-kept] A style of a `style` that
+ends with a backslash keeps whether whitespace stands after it, a run of
+whitespace becoming its first character, since 10.9.8 joins the styles of a node
+with `;` as they are, and the backslash would escape the `;`:
 `style A stroke-width:3px\ ,stroke:#0f0` is printed
-`style A stroke-width: 3px\, stroke: #0f0`. [fixture:
-whitespace-between-tokens/style-backslash-space-dropped] A style of a
+`style A stroke-width: 3px\ , stroke: #0f0` (see
+[Styles that are drawn the same](./compatibility.md#styles-that-are-drawn-the-same)).
+[fixture: whitespace-between-tokens/style-backslash-space-kept] A style of a
 `linkStyle` with a name that ends with `stroke` and a value of spaces and tabs
 only stays as written, since mermaid.js draws no colour of the arrowheads from
 it and does not try a later `stroke:`: `linkStyle 0 stroke: ,   stroke:#f00` is
@@ -990,15 +996,15 @@ arrow-spacing/edge-id-arrow-like-after-ignored-semicolon-runs-collapsed]
 
 An edge id after a data block touches the block: `A@{ shape: circle } e1@--> B`
 is printed `A@{ shape: circle }e1@--> B`. mermaid.js 12.3.0 reads the two forms
-the same, and draws the same figure from them. The grammars of 11.5.0, the first
-with edge ids, to 12.2.0 have no rule for a space after a data block before an
-edge id, so they reject the form with the space; drawn in Chromium, 11.12.3,
-11.13.0, 11.14.0, 11.15.0, 11.16.1, and 12.0.0 did. The touching form is the one
-that every version reads. A directive or an ignored `;` between the block and
-the edge id is removed before the text is read, so the block, the directive or
-the `;`, and the edge id touch one another:
+the same, and draws the same figure from them. Of the versions that count,
+11.7.0, 11.8.1, 11.13.0, 11.14.0, 11.15.0, 11.16.1, 11.17.2, and 12.0.0 have no
+rule for a space after a data block before an edge id, so they reject the form
+with the space (10.9.8 has no data block, and rejects both). The touching form
+is the one that every version that reads a data block reads. A directive or an
+ignored `;` between the block and the edge id is removed before the text is
+read, so the block, the directive or the `;`, and the edge id touch one another:
 `A@{ shape: circle }%%{init: {}}%%e1@--> B`. After the closing bracket of a
-shape the edge id has one space (`A[x] e1@--> B`), since the same six versions
+shape the edge id has one space (`A[x] e1@--> B`), since the same eight versions
 reject `A[x]e1@--> B`. A swimlane diagram follows the same rule. [fixture:
 arrow-spacing/edge-id-after-data-block-touches] [fixture:
 arrow-spacing/edge-id-after-data-block-directive] [fixture:
@@ -1173,18 +1179,18 @@ label-inner-whitespace/leading-whitespace-pipe-label-kept]
 
 The `@` in the first word depends on the version of mermaid.js. 12.3.0 stops the
 run of an edge id at a bracket and at `|`, so it reads `A[user@example.com]` and
-`A-->|x@|B` with the same labels as it reads them with the whitespace. The
-grammars of 11.5.0, the first with edge ids, to 12.2.0 do not stop it there (the
-grammars of the tags show it), so they reject the two without the whitespace and
-accept them with it; drawn in Chromium, 11.12.3, 11.13.0, 11.14.0, 11.15.0,
-11.16.1, and 12.0.0 did. A text printed without the space would be rejected by
-versions that read the text as it is written, so the space stays after every
-opening, in the title of a subgraph, and in a flowchart, a swimlane diagram, and
-an agentflow diagram alike, with one space at the end of the label too, except
-before the closing `?]` or `=]` of a slanted shape, as above (`A[/ x@/?]` stays
-as it is). [fixture: label-inner-whitespace/leading-whitespace-at-sign-kept]
-[fixture: label-inner-whitespace/leading-whitespace-at-sign-every-shape-kept]
-[fixture:
+`A-->|x@|B` with the same labels as it reads them with the whitespace. Of the
+versions that count, 11.7.0, 11.8.1, 11.13.0, 11.14.0, 11.15.0, 11.16.1,
+11.17.2, and 12.0.0 do not stop it there (the grammars of the tags show it), so
+they reject the two without the whitespace and accept them with it; drawn in
+Chromium, 11.12.3, 11.13.0, 11.14.0, 11.15.0, 11.16.1, and 12.0.0 did. A text
+printed without the space would be rejected by versions that read the text as it
+is written, so the space stays after every opening, in the title of a subgraph,
+and in a flowchart, a swimlane diagram, and an agentflow diagram alike, with one
+space at the end of the label too, except before the closing `?]` or `=]` of a
+slanted shape, as above (`A[/ x@/?]` stays as it is). [fixture:
+label-inner-whitespace/leading-whitespace-at-sign-kept] [fixture:
+label-inner-whitespace/leading-whitespace-at-sign-every-shape-kept] [fixture:
 label-inner-whitespace/leading-whitespace-at-sign-before-question-end-kept]
 [fixture: label-inner-whitespace/leading-whitespace-at-sign-swimlane-kept]
 
@@ -2628,7 +2634,7 @@ flowchart LR
   style A fill: #f9f, stroke: #abcdef,color: #c0ffee
   style B fill: #abcd, stroke: #abcdef12
   classDef c fill: #deadbe, stroke: #abcdef
-  linkStyle 0 stroke: #ff0000, color: #00ff00
+  linkStyle 0 stroke: #ff0000,color: #00ff00
   linkStyle default stroke: #abcdef
 ```
 

@@ -25,6 +25,11 @@ export const ishikawaValueNodeTypes: ReadonlySet<Node["type"]> = new Set([
 export interface IshikawaLine {
   readonly range: Range
   readonly depth: number
+  /**
+   * The whitespace written before the node on its physical line, or null for
+   * a root that stands on the line of the header.
+   */
+  readonly indentation: string | null
   readonly separatorWidth: 0 | 1
   readonly leading: LeadingDirectives | null
   /** A root-touching directive keeps this line with the header. */
@@ -49,6 +54,8 @@ export function ishikawaLines(
     const start = Math.max(headerEnd, findNodeLineStart(source, textStart))
     let content = start
     while (content < textStart && isWhitespace(source.text[content])) content++
+    const indentation =
+      start === headerEnd ? null : source.text.slice(start, content)
     let leading = findLeadingDirectives(source, content, textStart)
     let keepsHeaderGroup = false
     if (start === headerEnd) {
@@ -75,6 +82,7 @@ export function ishikawaLines(
     lines.push({
       range: [content, node.text.range[1]],
       depth,
+      indentation,
       separatorWidth: isCommentEnd(source, start) ? 1 : 0,
       leading: leading.directives.length === 0 ? null : leading,
       keepsHeaderGroup,
@@ -118,4 +126,27 @@ export function layoutIshikawaLine(
     atoms.push({ start, end })
   }
   return { ...keptAsWritten(start, end), atoms }
+}
+
+/**
+ * Whether the whitespace written before the nodes shows the tree by nesting
+ * alone: each node is deeper than the nearest node before it that is less
+ * deep, and so on up to the root, with a root on the line of the header
+ * standing before any column. mermaid.js 11.13.0 reads a node that is not
+ * deeper than the node before it, or deeper by less than the nodes in
+ * between, as other than the specification does (a node that clamps to the
+ * root, or a root deeper than its causes), so the printer keeps the written
+ * indentation then (docs/ishikawa.md, Indentation).
+ */
+export function indentationShowsTree(lines: readonly IshikawaLine[]): boolean {
+  const columns: number[] = []
+  for (const line of lines) {
+    const column = line.indentation === null ? -1 : [...line.indentation].length
+    while (columns.length > 0 && columns[columns.length - 1] >= column) {
+      columns.pop()
+    }
+    if (columns.length + 1 !== line.depth) return false
+    columns.push(column)
+  }
+  return true
 }

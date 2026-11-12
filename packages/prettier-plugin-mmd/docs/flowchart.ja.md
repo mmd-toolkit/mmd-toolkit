@@ -740,10 +740,18 @@ mermaid.js はリンクのスタイルから `stroke:` を探し、
 [fixture: whitespace-between-tokens/style-color-first]
 [fixture: whitespace-between-tokens/style-text-align-touching-kept]
 [fixture: whitespace-between-tokens/style-label-name-colon-gap-kept]
-`style` のスタイルの末尾のバックスラッシュの後の空白は読まれません。
+`linkStyle` も、`color:` か `text-align:` で始まるスタイルに同じ空白を残します。
+10.9.8 が、そう始まるスタイルを辺のラベルのスタイルに入れるためです。
+[fixture: whitespace-between-tokens/link-style-label-names-kept]
+`style` のスタイルの末尾のバックスラッシュの後に空白があるかないかは、
+書かれたまま残し、空白の連続は先頭の 1 文字にします。
+10.9.8 が、ノードのスタイルをそのまま `;` でつなぎ、
+バックスラッシュが `;` をエスケープするからです。
 `style A stroke-width:3px\ ,stroke:#0f0` は、
-`style A stroke-width: 3px\, stroke: #0f0` と印字します。
-[fixture: whitespace-between-tokens/style-backslash-space-dropped]
+`style A stroke-width: 3px\ , stroke: #0f0` と印字します。
+詳しくは [同じに描かれるスタイル](./compatibility.ja.md#同じに描かれるスタイル)
+を参照してください。
+[fixture: whitespace-between-tokens/style-backslash-space-kept]
 `linkStyle` のスタイルのうち、名前が `stroke` で終わり、
 値が空白とタブだけのものは、書かれたまま残します。
 mermaid.js はそれから矢印の頭に色を付けず、後の `stroke:` も試さないからです。
@@ -1040,12 +1048,11 @@ flowchart LR
 データブロックの後の辺の id は、ブロックに接します。
 `A@{ shape: circle } e1@--> B` は `A@{ shape: circle }e1@--> B` と印字します。
 mermaid.js 12.3.0 は、この 2 つの形を同じに読み、同じ図を描きます。
-辺の id を持つ最初の版 11.5.0 から 12.2.0 までの文法には、
+対象にする版のうち、11.7.0、11.8.1、11.13.0、11.14.0、11.15.0、11.16.1、
+11.17.2、12.0.0には、
 データブロックの後で辺の id の前の空白を許す規則がないので、
-空白のある形を拒否します。
-Chromium で描くと、11.12.3、11.13.0、11.14.0、11.15.0、11.16.1、
-12.0.0 がそうでした。
-接する形が、すべての版で読める形です。
+空白のある形を拒否します（10.9.8 にはデータブロックがなく、両方を拒否します）。
+接する形が、データブロックを読むすべての版で読める形です。
 ブロックと辺の id の間にディレクティブか、行の規則が無視する `;` があるときは、
 テキストを読む前にそれが取り除かれるので、ブロック、ディレクティブか `;`、
 辺の id は互いに接します（`A@{ shape: circle }%%{init: {}}%%e1@--> B`）。
@@ -1234,11 +1241,9 @@ mermaid.js が、その空白と `?` や `=` をテキストとして読むか�
 12.3.0 は、辺の id の並びを括弧類と `|` で止めるので、
 `A[user@example.com]` と `A-->|x@|B` を、
 空白があるときと同じラベルとして読みます。
-辺の id を持つ最初の版 11.5.0 から 12.2.0 までの文法は、そこで止めないので、
-空白がないこの 2 つを拒否し、
+対象にする版のうち、11.7.0、11.8.1、11.13.0、11.14.0、11.15.0、11.16.1、
+11.17.2、12.0.0は、そこで止めないので、空白がないこの 2 つを拒否し、
 空白がある形は受け入れます（タグの文法で確かめました）。
-Chromium で描くと、11.12.3、11.13.0、11.14.0、11.15.0、11.16.1、
-12.0.0 がそうでした。
 空白なしで印字したテキストは、書かれたとおりのテキストを読む版に拒否されるので、
 空白は残します。
 どの形でも、subgraph の題でも、flowchart、swimlane 図、
@@ -2767,7 +2772,7 @@ flowchart LR
   style A fill: #f9f, stroke: #abcdef,color: #c0ffee
   style B fill: #abcd, stroke: #abcdef12
   classDef c fill: #deadbe, stroke: #abcdef
-  linkStyle 0 stroke: #ff0000, color: #00ff00
+  linkStyle 0 stroke: #ff0000,color: #00ff00
   linkStyle default stroke: #abcdef
 ```
 

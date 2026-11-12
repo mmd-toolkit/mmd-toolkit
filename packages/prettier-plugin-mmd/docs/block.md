@@ -507,11 +507,13 @@ is printed in its shortest form, also after the label of a link: `--->` is
 12.3.0, the ones that have a block diagram, draw the same figure from the
 shorter line (thick lines are read from 11.15.0, and the versions before it
 reject both). The documentation of mermaid.js writes `-->` nine times and `--`
-once, and no longer line. An arrow that ends in `x` or `o` stays as written:
-10.9.0, 11.0.0, and 11.4.1 draw `---x` and `--x`, and `---o` and `--o`,
-differently. So does a thick line without an end arrow (`====`), which the
-versions before 11.15.0 read as ids that differ with the length, and so does a
-line of `~`, which is an id. [fixture: edges/spaces-around-an-arrow] [fixture:
+once, and no longer line. An arrow that ends in `x` or `o` stays as written: of
+the versions that count, 10.9.8, 11.7.0, and 11.8.1 draw `---x` and `--x`, and
+`---o` and `--o`, differently (10.9.0, 11.0.0, and 11.4.1 do too). So does a
+thick line without an end arrow (`====`), which 10.9.8, 11.7.0, 11.8.1, 11.13.0,
+and 11.14.0 read as ids that differ with the length, and which 11.15.0 and the
+later versions reject as `==`, and so does a line of `~`, which is an id in
+every version. [fixture: edges/spaces-around-an-arrow] [fixture:
 edges/spaces-around-a-label] [fixture: edges/end-marker-apart-from-the-id]
 [fixture: edges/start-marker] [fixture: edges/id-ending-in-x-or-o] [fixture:
 edges/arrow-length-shortest] [fixture:

@@ -834,7 +834,7 @@ const flowchartExamples: readonly (readonly [string, string, string])[] = [
   [
     "U+2028 before the comma of a flowchart style statement",
     "flowchart LR\nA-->B\nstyle A fill:#f00\u2028 ,color:white\n",
-    "flowchart LR\n  A --> B\n  style A fill: #f00\u2028, color: white\n",
+    "flowchart LR\n  A --> B\n  style A fill: #f00\u2028,color: white\n",
   ],
   [
     "U+2029 after the comma of a flowchart style statement",

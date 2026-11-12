@@ -787,13 +787,16 @@ is plain too, as the examples write 20 such names, `LINE-ITEM` and
 no such name, with quotes or without, and every version that counts reads it the
 same in both forms. The part before the first `-` is compared with the words
 that the lexer reads as a unit of its own, since a `-` ends a keyword (`"end-x"`
-is `end` and `-x`). The other names are kept as written, quoted or not, numbers
-included, and so are a name with a `-` at its start or its end or two together,
-and a name that ends with `direction` or starts with `TB`, `BT`, `RL`, or `LR`,
-in any case: the lexer reads `direction`, white space (a line break too), and
-the name of a direction as one line, which a name without quotes would join with
-the line before or after it. [fixture: entities/plain-names-without-quotes]
-[fixture: entities/hyphenated-names-without-quotes] [fixture:
+is `end` and `-x`). A name with a letter outside ASCII (`"Zoë"`) keeps its
+quotes, since 10.9.8 rejects it without them, and so does a name with a `.`
+(`"a.b"`), which 10.9.8, 11.7.0, and 11.8.1 reject without them. The other names
+are kept as written, quoted or not, numbers included, and so are a name with a
+`-` at its start or its end or two together, and a name that ends with
+`direction` or starts with `TB`, `BT`, `RL`, or `LR`, in any case: the lexer
+reads `direction`, white space (a line break too), and the name of a direction
+as one line, which a name without quotes would join with the line before or
+after it. [fixture: entities/plain-names-without-quotes] [fixture:
+entities/hyphenated-names-without-quotes] [fixture:
 entities/names-that-need-quotes] [fixture:
 entities/names-next-to-a-direction-line] [fixture: entities/names-kept] A
 directive between the parts of an entity is placed as under

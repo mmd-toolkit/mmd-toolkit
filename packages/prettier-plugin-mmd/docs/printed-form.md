@@ -247,7 +247,9 @@ its cases with the versions; three of them are:
 
 A rule of this kind names the versions that it is kept for. When the pinned
 version is raised and none of the versions that a rule names counts any longer,
-the rule is taken out, and the form is the one that the rules above give.
+the rule is taken out, and the form is the one that the rules above give. The
+forms that are kept in this way are listed, each with its versions, in
+[Forms kept for versions of mermaid.js that count](./compatibility.md#forms-kept-for-versions-of-mermaidjs-that-count).
 
 The CHANGELOG.md of mermaid.js, or the history of its grammar, shows which
 version added or changed a form.

@@ -706,6 +706,13 @@ mermaid.js の line rule が `;` を無視する行は、
 `A () ->> () B: style:#x;;` は書かれたままです。
 [fixture: arrow-spacing/touching-with-ignored-semicolon]
 矢印は書かれたまま印字します。 [fixture: arrow-spacing/arrows-kept]
+`<<->>` と `<<-->>` の前の空白は、書かれたまま残します。
+10.9.8 にはこの矢印がなく、前の名前の一部として `<<` を読むためです。
+`A<<->>B` は `A<<->> B` と印字し、`A <<->> B` はそのままです。
+詳しくは
+[central 接続のある sequence のメッセージ](./compatibility.ja.md#central-接続のある-sequence-のメッセージ)
+を参照してください。
+[fixture: arrow-spacing/bidirectional-arrow-gap-before-kept]
 
 `-` は、その後ろの宛先と合わせると矢印として読まれる場合、空白を残します。
 `-x`、`-X`（字句解析は大文字小文字を区別しません）、`-|\`、`-|/` は矢印なので、
