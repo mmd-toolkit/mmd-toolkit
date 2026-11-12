@@ -40,11 +40,11 @@ info
 ### Indentation
 
 Place ordinary body statements and standalone comments/directives one configured
-step below the header, so the flat body is easy to scan. `tabWidth: 0` gives
-zero spaces; `useTabs` gives one tab even at width zero, because info columns
-have no grammatical meaning. Value continuation columns, hidden
-interiors/closers and retained prefixes follow their preservation rules. YAML
-uses the shared positive minimum.
+step below the header, as the other diagram types do. `tabWidth: 0` gives zero
+spaces; `useTabs` gives one tab even at width zero, because info columns have no
+grammatical meaning. Value continuation columns, hidden interiors/closers and
+retained prefixes follow their preservation rules. YAML uses the shared positive
+minimum.
 
 [fixture: info/indentation/indent-default]
 

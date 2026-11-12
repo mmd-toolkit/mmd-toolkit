@@ -63,15 +63,15 @@ agentflow-beta
 ### Indentation
 
 Reuse [Indentation](./flowchart.md#indentation) for the same reason: indentation
-from the AST makes nesting visible, while authored columns do not determine
-membership. Use one configured step below the header and each flow/global, align
-end with its opener, and give connectors no body. `useTabs` uses one tab per
-level. Agentflow uses the shared significant indentation width: even with
-`tabWidth: 0`, each body step is at least one space. Indented lines such as
-`accTitle: direction LR` are direction statements; moving them to column one
-would change the Db or reject a style-prefixed direction line. Non-direction
-lines whose reading depends on their columns keep their written indentation
-under Direction. [fixture: indentation/indent-direction-unsafe] [fixture:
+is set from the AST, while authored columns do not determine membership. Use one
+configured step below the header and each flow/global, align end with its
+opener, and give connectors no body. `useTabs` uses one tab per level. Agentflow
+uses the shared significant indentation width: even with `tabWidth: 0`, each
+body step is at least one space. Indented lines such as `accTitle: direction LR`
+are direction statements; moving them to column one would change the Db or
+reject a style-prefixed direction line. Non-direction lines whose reading
+depends on their columns keep their written indentation under Direction.
+[fixture: indentation/indent-direction-unsafe] [fixture:
 indentation/indent-nested] [fixture: indentation/indent-tabs] [fixture:
 indentation/indent-zero]
 
@@ -92,9 +92,9 @@ agentflow-beta TB
 
 Reuse flowchart [Indentation](./flowchart.md#indentation) and
 [Statements one per line](./flowchart.md#statements-one-per-line): an opening,
-body and closing line make structure readable. Keep named and unnamed flows,
-globals, empty and mixed nested bodies, and statement order. Globals affect
-membership despite emitting no container, so they remain blocks. Never
+body and closing line, as in the other diagram types. Keep named and unnamed
+flows, globals, empty and mixed nested bodies, and statement order. Globals
+affect membership despite emitting no container, so they remain blocks. Never
 manufacture a name or data. Agentflow end/global consume only ASCII spaces/tabs;
 they do not absorb LF into a name. A semicolon after end is a separate
 EmptyStatement at the containing depth. [fixture: containers/containers-empty]
@@ -410,8 +410,8 @@ agentflow-beta TB
 
 ### Arrows
 
-Reuse [Arrow spacing](./flowchart.md#arrow-spacing): one exterior space makes a
-relation readable; an edge id touches its @ and arrow. Keep directive touching
+Reuse [Arrow spacing](./flowchart.md#arrow-spacing): one exterior space on each
+side of an arrow; an edge id touches its @ and arrow. Keep directive touching
 and exact dash/dot counts, including counts beyond the Db cap: below the cap a
 shorter or longer arrow is another arrow (`A---->B` printed as `A --> B` is read
 differently), and beyond the cap the Db is the same but the tree keeps the
@@ -455,24 +455,23 @@ agentflow-beta TB
 ### Edge labels
 
 Reuse [Link label form](./flowchart.md#link-label-form) and
-[Arrow spacing](./flowchart.md#arrow-spacing) with their reasons: make relations
-readable. A label of plain text (letters, digits, spaces, `_`, `,`, `?`, and
-`!`) on the arrow `-->` or `--x` is printed between two arrows, the form that
-the examples in the documentation of mermaid.js use twice against none for the
-form between pipes (see
-[The label of a link](./compatibility.md#the-label-of-a-link)): `A -->|x| B` is
-printed `A -- x --> B`. [fixture: edge-labels/pipes-to-arrows] Any other label
-keeps the pipe/split form it is written in, since split text can contain a pipe,
-a label with a `|` or a `%%`, a string, and a Markdown label cannot be printed
-between the arrows, a label of blanks only is rejected between the arrows, and
-only the arrows `-->` and `--x` can have a label between two arrows. [fixture:
-edge-labels/blank-pipe-label-kept] Pipes touch the arrow and their label; split
-text has one exterior space. Print one post-pipe gap. Only sequence/failure
-support split labels. Keep string/markdown kind, bare continuation, and split
-semicolons, percent text and line breaks; do not invent another string or split
-reference form. [fixture: edge-labels/edge-label-forms] [fixture:
-edge-labels/split-pipe-content] A string between pipes keeps its text, and the
-pipes touch the arrow and the quotes: `A  -->  |"x  y"|B` is printed as
+[Arrow spacing](./flowchart.md#arrow-spacing) with their reasons. A label of
+plain text (letters, digits, spaces, `_`, `,`, `?`, and `!`) on the arrow `-->`
+or `--x` is printed between two arrows, the form that the examples in the
+documentation of mermaid.js use twice against none for the form between pipes
+(see [The label of a link](./compatibility.md#the-label-of-a-link)):
+`A -->|x| B` is printed `A -- x --> B`. [fixture: edge-labels/pipes-to-arrows]
+Any other label keeps the pipe/split form it is written in, since split text can
+contain a pipe, a label with a `|` or a `%%`, a string, and a Markdown label
+cannot be printed between the arrows, a label of blanks only is rejected between
+the arrows, and only the arrows `-->` and `--x` can have a label between two
+arrows. [fixture: edge-labels/blank-pipe-label-kept] Pipes touch the arrow and
+their label; split text has one exterior space. Print one post-pipe gap. Only
+sequence/failure support split labels. Keep string/markdown kind, bare
+continuation, and split semicolons, percent text and line breaks; do not invent
+another string or split reference form. [fixture: edge-labels/edge-label-forms]
+[fixture: edge-labels/split-pipe-content] A string between pipes keeps its text,
+and the pipes touch the arrow and the quotes: `A  -->  |"x  y"|B` is printed as
 `A -->|"x  y"| B`. [fixture: edge-labels/pipe-label-string-kept] So does a
 closing pipe that was written apart from the closing quote: `A-->|"x" |B` is
 printed `A -->|"x"| B`. [fixture: edge-labels/pipe-string-closing-touches]

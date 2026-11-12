@@ -145,7 +145,7 @@ statements-one-per-line/compat-empty-description-block-before-statement]
 [fixture:
 statements-one-per-line/compat-empty-description-block-after-data-block]
 Statements written on one line and separated by `;` are split into lines: a `;`
-only separates them, and a line of several statements is hard to read. [fixture:
+only separates them, and each statement stands on a line of its own. [fixture:
 statements-one-per-line/separated-by-semicolons-meets-others] [fixture:
 statements-one-per-line/separated-by-semicolons-after-data-block]
 
@@ -1712,23 +1712,23 @@ data-blocks/one-line-surrounding-trivia] [test: data blocks: flowchart one line
 CRLF] [test: data blocks: flowchart one line CR]
 
 A block on one line whose line is longer than `printWidth` prints on several
-lines where that reads better: one entry on each line, one level inside the
-statement, with the `}` alone on a line at the column of the statement, as in a
-block of several lines that moves (see below). Prettier chooses between the two
-forms: the block stays on its line where the line fits, and where the line would
-still be too long up to the `{` (a long text of the node stands before it), the
-lines would not shorten what is too long, so the block stays. [fixture:
-data-blocks/long-split] [fixture: data-blocks/long-prefix-too-long-kept] The
-width of the line is the width that Prettier measures, in which a tab counts for
-nothing, so a line with tabs can be wider on the screen than it measures and
-stay on its line. [fixture: data-blocks/long-tabs-not-counted] mermaid.js reads
-the text of a block on one line as a YAML flow mapping, whose entries a `,`
-separates, and the text of a block of several lines as a block mapping, whose
-entries stand on lines of their own (the sources above). Both read the same
-where every entry is a key and a value that the two readings read alike, which
-the conditions below ensure. The entries print as written, without the spaces
-and tabs at their ends: only the whitespace, the line breaks and the `,` between
-entries change, and the Db is the same. The block splits only if
+lines: one entry on each line, one level inside the statement, with the `}`
+alone on a line at the column of the statement, as in a block of several lines
+that moves (see below). Prettier chooses between the two forms: the block stays
+on its line where the line fits, and where the line would still be too long up
+to the `{` (a long text of the node stands before it), the lines would not
+shorten what is too long, so the block stays. [fixture: data-blocks/long-split]
+[fixture: data-blocks/long-prefix-too-long-kept] The width of the line is the
+width that Prettier measures, in which a tab counts for nothing, so a line with
+tabs can be wider on the screen than it measures and stay on its line. [fixture:
+data-blocks/long-tabs-not-counted] mermaid.js reads the text of a block on one
+line as a YAML flow mapping, whose entries a `,` separates, and the text of a
+block of several lines as a block mapping, whose entries stand on lines of their
+own (the sources above). Both read the same where every entry is a key and a
+value that the two readings read alike, which the conditions below ensure. The
+entries print as written, without the spaces and tabs at their ends: only the
+whitespace, the line breaks and the `,` between entries change, and the Db is
+the same. The block splits only if
 
 - it belongs to a flowchart, an agentflow or a kanban diagram. A sequence
   diagram rejects the lines of a block mapping, and the `@{` of a use case
@@ -1745,9 +1745,9 @@ entries change, and the Db is the same. The block splits only if
   on its line; [fixture: data-blocks/long-use-tabs-kept]
 - it is the only block of its statement and the last thing in it, on the first
   line of the statement: text after its `}` would stand after the `}` on a line
-  of its own, which reads worse than the block on its line, and the first line
-  supplies the level of the statement; [fixture:
-  data-blocks/long-text-after-kept] [fixture: data-blocks/long-two-blocks-kept]
+  of its own, which changes the form of the block, and the first line supplies
+  the level of the statement; [fixture: data-blocks/long-text-after-kept]
+  [fixture: data-blocks/long-two-blocks-kept]
 - it has at least two entries: the lines of a single entry would not shorten the
   line, and only add lines; [fixture: data-blocks/long-one-entry-kept]
 - every entry is a key and a value separated by a colon and whitespace, the

@@ -75,7 +75,7 @@ gitGraph
 
 ### Statements one per line
 
-読みやすさのため、通常の本文の文を 1 行ずつ印字します。
+通常の本文の文は、ほかの図種と同じく 1 行ずつ印字します。
 共通の行値に見かけの操作語や semicolon があっても値のままです。
 引用符内の semicolon も文字です。
 gitgraph に区切りの semicolon はありません。

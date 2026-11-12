@@ -40,8 +40,7 @@ pie showData
 ### Indentation
 
 XY chart の[インデント](./xychart.ja.md#インデント)を再利用します。
-構造を読みやすくするため、
-通常の文と独立したコメント・directive を見出しより1段深く置きます。
+通常の文と独立したコメント・directive を、ほかの図種と同じく見出しより1段深く置きます。
 pie の区分は slice であり、追加の階層にはしません。
 pie では列が構文を決めないため、`tabWidth: 0` の本文は空白0個です。
 `useTabs` は幅0でも tab 1つです。
@@ -71,7 +70,7 @@ accDescr: direction TB
 
 ### Statements one per line
 
-読みやすさのため、[1 行 1 文](./xychart.ja.md#1-行-1-文)を再利用します。
+ほかの図種と同じく、[1 行 1 文](./xychart.ja.md#1-行-1-文)を再利用します。
 ただし pie の EOL と保持する source group を優先します。
 空の説明ブロックも含め、区分と共通文を元の順序で残します。
 pie のセミコロンは文の区切りではなく、ラベルや共通値の文字です。

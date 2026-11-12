@@ -95,9 +95,8 @@ Each statement stands on a line of its own. Nothing separates statements in a
 Gantt chart (diagrams/gantt.md, Diagram and statements), and the header,
 `inclusiveEndDates`, a `weekday` or `weekend` statement with its day, an
 `accDescr` block, and a click statement are followed on their line by the next
-statement: the statement after any of them goes to a line of its own. Two
-statements on one line are hard to read, and the other diagram types print one
-statement on a line too. [fixture:
+statement: the statement after any of them goes to a line of its own. The other
+diagram types print one statement on a line too. [fixture:
 statements-one-per-line/header-then-statement] [fixture:
 statements-one-per-line/header-then-task] [fixture:
 statements-one-per-line/keyword-statements] [fixture:
@@ -322,14 +321,13 @@ U+2028 before the colon of a task] [test: U+00A0 before the colon of a task]
 
 Where a name of a section has padding before its colon (more than one whitespace
 character, or a tab), the printer puts the colons of the section one space after
-its longest name, whether the colons were in one column or not. A column wider
-than the longest name needs is a gap between the names and the data that makes
-the lines harder to read, so it does not stay, and the author can add a longer
-name and let the printer pad the others. The width of a name is the width
-Prettier gives a text, so a full-width character counts 2, and the whitespace
-that is set is spaces, which replace a tab. [fixture:
-task-data/colon-column-new-longest-name] [fixture:
-task-data/description-padding-tightened] [fixture:
+its longest name, whether the colons were in one column or not. The column is
+the narrowest that leaves one space after every name, and whitespace beyond it
+carries nothing, so it does not stay; the author can add a longer name and let
+the printer pad the others. The width of a name is the width Prettier gives a
+text, so a full-width character counts 2, and the whitespace that is set is
+spaces, which replace a tab. [fixture: task-data/colon-column-new-longest-name]
+[fixture: task-data/description-padding-tightened] [fixture:
 task-data/colon-column-wide-characters] [fixture:
 task-data/colon-column-use-tabs]
 
@@ -352,17 +350,17 @@ task-data/colon-column-sections-in-different-columns] [fixture:
 task-data/colon-column-before-first-section] [fixture:
 task-data/colon-column-sections-and-preamble]
 
-The colons stay where they are in these cases, since moving them would not make
-the chart easier to read or could change the figure. A section in which no name
-has more than one space before its colon is left: no colon moves, and a name
-that touches its colon gets its one space as above. A section is left where the
-aligned lines would be longer than `printWidth` and longer than they are, since
-one long name would push every colon of the section far right. A chart that
-holds `white-space` is left, with its names that touch their colons, since the
-CSS of the chart may draw the whitespace at the end of a name, and the figure
-then depends on it. A section where a name holds a tab is left too, since a tab
-reaches the next tab stop of the editor, and no width that Prettier counts lines
-the colons up. [fixture: task-data/colon-column-tab-in-name-kept] [fixture:
+The colons stay where they are in these cases, since moving them could change
+the figure. A section in which no name has more than one space before its colon
+is left: no colon moves, and a name that touches its colon gets its one space as
+above. A section is left where the aligned lines would be longer than
+`printWidth` and longer than they are, since one long name would push every
+colon of the section far right. A chart that holds `white-space` is left, with
+its names that touch their colons, since the CSS of the chart may draw the
+whitespace at the end of a name, and the figure then depends on it. A section
+where a name holds a tab is left too, since a tab reaches the next tab stop of
+the editor, and no width that Prettier counts lines the colons up. [fixture:
+task-data/colon-column-tab-in-name-kept] [fixture:
 task-data/colon-column-single-space-kept] [fixture:
 task-data/colon-column-too-wide-kept] [fixture:
 task-data/colon-column-white-space-kept] [fixture:

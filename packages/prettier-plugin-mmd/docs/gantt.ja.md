@@ -98,7 +98,7 @@ Gantt 図には文を区切るものがなく（diagrams/gantt.md、Diagram and 
 ヘッダー、`inclusiveEndDates`、日つきの `weekday` と `weekend`、
 `accDescr` ブロック、click 文の後ろには、同じ行に次の文を続けられます。
 これらの後ろの文は、それぞれの行に移します。
-1 行に 2 つの文があると読みにくく、ほかの図種も 1 行に 1 つの文を印字します。
+ほかの図種も 1 行に 1 つの文を印字します。
 [fixture: statements-one-per-line/header-then-statement]
 [fixture: statements-one-per-line/header-then-task]
 [fixture: statements-one-per-line/keyword-statements]
@@ -329,8 +329,8 @@ mermaid.js の文書の例が、ほかのどの形よりも 2 倍以上の頻度
 コロンの前に桁そろえの空白（空白が 2 文字以上かタブ）があるときは、
 コロンがすでに 1 つの桁にそろっているかどうかによらず、
 セクションのコロンを最長の名前の後に空白 1 つを置いた所にそろえます。
-最長の名前に必要な桁より後ろにそろえると、名前とデータの間が広がり、
-読みにくくなるので、その桁は残しません。
+桁は、どの名前の後にも空白が 1 つ残る最小の桁で、
+それより後ろの空白は何も運ばないので、その桁は残しません。
 作者は長い名前を足し、ほかの名前の空白を整形に任せられます。
 名前の幅は Prettier がテキストに与える幅なので、全角文字は 2 と数え、
 整える空白には半角空白を使い、タブも置き換えます。
@@ -362,7 +362,7 @@ mermaid.js の文書の例が、ほかのどの形よりも 2 倍以上の頻度
 [fixture: task-data/colon-column-before-first-section]
 [fixture: task-data/colon-column-sections-and-preamble]
 
-次の場合は、コロンを動かしても読みやすくならないか、図が変わりうるので、
+次の場合は、コロンを動かすと図が変わりうるので、
 コロンをその位置に残します。
 どの名前もコロンの前の空白が 1 つ以下のセクションは、どのコロンも動かさず、
 コロンに接する名前にだけ上の空白 1 つを置きます。

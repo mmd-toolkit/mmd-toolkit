@@ -307,12 +307,12 @@ stateDiagram-v2
 
 ### Statements one per line
 
-Each statement stands on a line of its own, as in the other diagram types: two
-statements on one line are hard to read. Nothing separates statements in a state
-diagram, and statements written on one line, as in `A --> B C --> D`, are moved
-to lines of their own; so is an empty description block after a click statement.
-[corpus fixture: state/gram-click-after-empty-description-block] [corpus
-fixture: state/gram-click-empty-description-block-after] [fixture:
+Each statement stands on a line of its own, as in the other diagram types.
+Nothing separates statements in a state diagram, and statements written on one
+line, as in `A --> B C --> D`, are moved to lines of their own; so is an empty
+description block after a click statement. [corpus fixture:
+state/gram-click-after-empty-description-block] [corpus fixture:
+state/gram-click-empty-description-block-after] [fixture:
 statements-one-per-line/split] [fixture: statements-one-per-line/states]
 [fixture: statements-one-per-line/split-then-comment] [fixture:
 statements-one-per-line/split-with-directive-between] The names after `state`
@@ -671,14 +671,14 @@ documentation of mermaid.js write at least twice as often as any other: the
 examples write 4 descriptions without a space before the `:` and 1 with one. The
 `:` of a transition label has one space on each side, as the label stands
 between the transition and its text: `A-->B:submit` becomes `A --> B : submit`.
-The examples write 10 labels with a space before the `:` and 6 without, which is
-not twice as often, so the form that the released version printed stays.
-[fixture: descriptions-and-labels/spaced] The `:` of a description after a class
-spelled as a keyword stays touching it: `A:::style:x` becomes `A:::style: x`,
-because a space before the `:` would let the keyword start a statement.
-[fixture: descriptions-and-labels/class-named-style-then-description-kept] The
-text of a description and of a transition label is kept as written, with its
-runs: a label that wraps draws them (see
+The examples write 13 labels with a space before the `:` and 6 without, which is
+more than twice as often, so the label keeps the space. [fixture:
+descriptions-and-labels/spaced] The `:` of a description after a class spelled
+as a keyword stays touching it: `A:::style:x` becomes `A:::style: x`, because a
+space before the `:` would let the keyword start a statement. [fixture:
+descriptions-and-labels/class-named-style-then-description-kept] The text of a
+description and of a transition label is kept as written, with its runs: a label
+that wraps draws them (see
 [Runs of whitespace in a text that are drawn the same](./compatibility.md#runs-of-whitespace-in-a-text-that-are-drawn-the-same)).
 [fixture: descriptions-and-labels/text-kept] A description of only whitespace
 keeps the whitespace after its `:`: `A : ` gives no description, while `A :` is

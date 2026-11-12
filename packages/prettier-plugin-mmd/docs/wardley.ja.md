@@ -250,7 +250,7 @@ wardley-beta
 ### 座標
 
 座標は [a, b] とし、内端と comma の前は詰め、後は空白 1 つにします。
-Db が同じ空白の形から、区切りを読みやすい形を選びます。
+Db が同じ空白の形から、Prettier がコンマの隣に印字する形を選びます。
 visibility、evolution の順と整数・小数の原綴を保ちます。
 hidden と global trivia の gap には共有規則を使います。
 
@@ -536,7 +536,7 @@ wardley-beta
 
 @ は両側を詰め、/ と stage の矢印 -> の左右は空白 1 つにします。
 任意の boundary と第 2 名、空の引用名、stage の原順を保ちます。
-付属する印と区切りを見やすくし、欠けた値は補いません。
+付属する印は詰め、区切りは分け、欠けた値は補いません。
 bare の title には Name boundaries を適用します。
 
 [fixture: wardley/evolution/stage-all-gaps]

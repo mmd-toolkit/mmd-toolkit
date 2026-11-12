@@ -29,7 +29,7 @@ composite の中の文は `block:` の行より 1 段深く置き、
 行頭の空白は mermaid.js にとって何の意味も持たないので、字下げは構造だけで決め、
 どのテキストも 1 つの形になります。
 入れ子は composite の始まりと終わりを見せます。
-`block:` と `end` だけでは、深く入れ子になると読みにくいからで、
+`block:` と `end` だけでは、深く入れ子になると始まりと終わりが見えないからで、
 mermaid.js の文書もそう書き、
 ほかの図もブロックを入れ子にします（flowchart
 の[字下げ](./flowchart.ja.md#字下げ)を参照）。
@@ -80,7 +80,7 @@ composite は 3 種類の行でできています。
 `block:G`、`block`、`block-beta` は書かれたままに印字し、
 `block:` はその node に接します。
 mermaid.js は `block: G` と `block:G` を同じに読むので、
-形は 1 つのほうが読みやすいからです（mermaid.js の文書の `block:group1:2`
+形は 1 つにします（mermaid.js の文書の `block:group1:2`
 の形です）。
 見出しの後の最初の文と、`end` の後の文は、自分の行に移します。
 1 行に書かれた composite（`block:G a b end`）も同じで、

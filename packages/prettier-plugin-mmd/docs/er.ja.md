@@ -345,8 +345,7 @@ erDiagram
 ER 図の 2 つの文を区切るものはなく、
 mermaid.js は 1 行に続けて書かれた文も読みます。
 各文は行に単独で置きます。
-1 行に 2 つの文があると読みにくく、flowchart、sequence、class、
-state も 1 行に 1 つの文を印字します。
+flowchart、sequence、class、state も 1 行に 1 つの文を印字します。
 `A B` は実体 A と B で、関係は 1 行に、その役割の後の実体は次の行に置き、
 属性ブロックの `}`、subgraph の `end`、ヘッダーの後に続く文も、
 次の行に置きます。 [fixture: statements-one-per-line/entities]

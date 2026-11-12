@@ -148,7 +148,7 @@ accDescr: d ; direction LR
 [fixture: statements-one-per-line/compat-empty-description-block-before-statement]
 [fixture: statements-one-per-line/compat-empty-description-block-after-data-block]
 1 行に書かれ `;` で区切られた文は、行に分けます。
-`;` は文を区切るだけで、1 行に複数の文があると読みにくいからです。
+`;` は文を区切るだけで、文は 1 行に 1 つ置くからです。
 [fixture: statements-one-per-line/separated-by-semicolons-meets-others]
 [fixture: statements-one-per-line/separated-by-semicolons-after-data-block]
 
@@ -1784,7 +1784,7 @@ CRLF と CR は `endOfLine` に従います。
 [test: data blocks: flowchart one line CR]
 
 1 行のブロックがある行が `printWidth` より長いときは、
-読みやすくなる場合に複数行に分けて印字します。
+複数行に分けて印字します。
 1 行に 1 項目ずつ文の 1 段内側に置き、`}` は文と同じ桁の単独行に置きます。
 移動できる複数行のブロックと同じです（後述）。
 Prettier が 2 つの形から選び、行が収まる場合は 1 行のままにします。
@@ -1821,7 +1821,7 @@ mermaid.js は、1 行のブロックのテキストを、
   [fixture: data-blocks/long-use-tabs-kept]
 - 文の最初の行にあり、その文の唯一のブロックで、文の最後にあること。
   `}` の後にテキストがあると、単独行の `}` の後にそのテキストが置かれ、
-  ブロックが 1 行のときより読みづらくなります。
+  ブロックを 1 行に置いたときと形が変わります。
   最初の行は文の段を決めるために使います。
   [fixture: data-blocks/long-text-after-kept]
   [fixture: data-blocks/long-two-blocks-kept]

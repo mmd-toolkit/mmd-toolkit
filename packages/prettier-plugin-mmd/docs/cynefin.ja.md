@@ -1086,7 +1086,7 @@ cynefin-beta
 ### Frontmatter yaml
 
 安全な real frontmatter だけを共有の保護付き YAML formatter に通し、
-Db が同じで読みやすい YAML を選びます。
+Db が同じで Prettier が印字する YAML を選びます。
 malformed YAML、字下げされた fence、区切りの padding、HTML の危険、
 整形で fence ができる本文は、共有の保護に従って保持します。
 YAML の入れ子・block scalar は tabWidth が 0 でも正の最小幅を使います。

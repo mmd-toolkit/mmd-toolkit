@@ -341,7 +341,7 @@ periods-and-events/event-on-the-line-after-the-period] [fixture:
 periods-and-events/events-on-both]
 
 When the first colon immediately follows the period on its line, align later
-event colons under it. This makes the events of one period easy to follow,
+event colons under it. This puts the colons of one period in one column,
 including inside a section. Keep tabs as tab stops in the alignment padding and
 use Prettier's display width for the remaining text, including wide characters.
 Count the period's written text, including a directive inside it, since that is

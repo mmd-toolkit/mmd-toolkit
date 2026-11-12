@@ -5241,7 +5241,7 @@ style に似たラベルと結合すると、別の文の値が変わりうる�
 [fixture: radar/multi-line-statements/semicolon-terminal-line]
 
 コメントや directive を含むリストは、ほかの entry の改行も保ちます。
-ブロックとして読みやすく残し、独立した閉じ波括弧を文の段にそろえるためです。
+ブロックを書かれたまま残し、独立した閉じ波括弧を文の段にそろえるためです。
 コメントのないリストでは、普通の entry の改行は従来どおり結合します。
 [fixture: radar/multi-line-statements/entry-comment-after-comma]
 [fixture: radar/multi-line-statements/entry-global-lines]

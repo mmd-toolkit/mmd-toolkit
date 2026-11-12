@@ -11,9 +11,9 @@ escaped fixed tests.
 ### Header
 
 Keep the authored `packet` or `packet-beta` keyword at column one. Move an
-ordinary first statement below it for a visible heading. Only `packet` requires
-a following boundary; never create a glued spelling. Hidden boundaries and
-protected header/body groups take precedence. Keep the authored synonym:
+ordinary first statement below it, as in the other diagram types. Only `packet`
+requires a following boundary; never create a glued spelling. Hidden boundaries
+and protected header/body groups take precedence. Keep the authored synonym:
 mermaid.js before 11.9.0 reads `packet-beta` only (see
 [The names of a header](./compatibility.md#the-names-of-a-header)).
 
@@ -65,10 +65,10 @@ packet
 
 ### Statements one per line
 
-Print each ordinary statement on its own line for readability. A common line
-value owns apparent later keywords through physical EOL; do not split that text.
-Semicolons are not packet separators. Invalid adjacent blocks or block/common
-forms follow the shared failure path rather than being repaired.
+Print each ordinary statement on its own line, as the other diagram types do. A
+common line value owns apparent later keywords through physical EOL; do not
+split that text. Semicolons are not packet separators. Invalid adjacent blocks
+or block/common forms follow the shared failure path rather than being repaired.
 
 [fixture: packet/statements-one-per-line/inline-title]
 

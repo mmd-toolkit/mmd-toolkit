@@ -76,16 +76,15 @@ block-beta
 A composite stands on three kinds of lines: the line of `block:` and its node,
 the lines of its statements, and the line of `end`. `block:G`, `block`, and
 `block-beta` are printed as written, with `block:` touching its node: mermaid.js
-reads `block: G` and `block:G` alike, and one form is simpler to read
-(`block:group1:2`, as in its documentation). The first statement after the head,
-and the statement after `end`, go to lines of their own, also where the
-composite was written on one line (`block:G a b end`), so that every composite
-is laid out in the same way and the indentation shows its body. `end` stands on
-a line of its own, at the level of its `block:`. [fixture:
-composites/colon-touches-the-node] [fixture:
-composites/colon-and-node-on-different-lines] [fixture: composites/width-kept]
-[fixture: composites/width-colon-touches-the-node] [fixture:
-composites/shape-touches-the-node] [fixture:
+reads `block: G` and `block:G` alike, so the form of its documentation
+(`block:group1:2`) is printed. The first statement after the head, and the
+statement after `end`, go to lines of their own, also where the composite was
+written on one line (`block:G a b end`), so that every composite is laid out in
+the same way and the indentation shows its body. `end` stands on a line of its
+own, at the level of its `block:`. [fixture: composites/colon-touches-the-node]
+[fixture: composites/colon-and-node-on-different-lines] [fixture:
+composites/width-kept] [fixture: composites/width-colon-touches-the-node]
+[fixture: composites/shape-touches-the-node] [fixture:
 composites/block-without-a-node-kept] [fixture:
 composites/block-beta-without-a-node-kept] [fixture:
 composites/composite-on-one-line-split] [fixture:

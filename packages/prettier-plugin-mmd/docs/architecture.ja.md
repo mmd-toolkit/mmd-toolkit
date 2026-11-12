@@ -80,7 +80,7 @@ architecture-beta
 
 ### Statements one per line
 
-読みやすさのため、通常の文は1行ずつ印字します。
+通常の文は、ほかの図種と同じく1行ずつ印字します。
 共通の行値は物理行末までの keyword に見える文字も所有するため、分割しません。
 セミコロンは文の区切りではありません。
 隣接する不正な文や部品の隙間に使われた空の説明は、失敗のままです。
@@ -108,7 +108,7 @@ architecture-beta title t service a; junction j
 
 keyword と ID の間は空白1個です。
 `group g(cloud)[G]`、`service a(server)[A]`、`service a[A]` と印字し、
-括弧・角括弧の付属部品を1つの node として読みやすくします。
+括弧・角括弧の付属部品を1つの node として印字します。
 文字 icon は独立した値なので `service a "I" [A]` とします。
 省略された部品は補わず、trivia のある隙間は接触を保ちます。
 

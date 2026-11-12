@@ -145,10 +145,10 @@ note 01 {
 
 Put ordinary top-level AST statements on separate lines in source order, without
 adding semicolons. The grammar needs no visible EOL between complete units, so
-this exposes their boundaries without changing the Db. A common successor keeps
-its connection to the preceding unit. Apparent statements inside greedy inline
-data remain part of that single value; a closed description can instead be
-followed by an ordinary new statement.
+this does not change the Db. A common successor keeps its connection to the
+preceding unit. Apparent statements inside greedy inline data remain part of
+that single value; a closed description can instead be followed by an ordinary
+new statement.
 
 [fixture: eventmodeling/statements-one-per-line/adjacent-frame-reset-entity]
 
@@ -238,9 +238,10 @@ tf 01 evt Alpha ->> 02 ->> 001
 ### Data references
 
 Use one ordinary space before a data reference and tight inner edges, `[[D]]`.
-This makes the delimiters one readable pair. Compact ordinary component newlines
-too; `[[title]]` also avoids a padded title composite. Preserve hidden forms and
-trivia in their owned gaps, and never qualify a single reference name.
+This is how Prettier prints nested brackets, with none inside. Compact ordinary
+component newlines too; `[[title]]` also avoids a padded title composite.
+Preserve hidden forms and trivia in their owned gaps, and never qualify a single
+reference name.
 
 [fixture: eventmodeling/data-references/reference-padded]
 
@@ -703,13 +704,14 @@ data D {
 ### Common boundaries
 
 Keep a common statement's complete source, the immediately preceding ASCII
-space/tab run and its connection to the unit that makes it readable. Preserve
-the entire intervening source interval across global directives, selected
-semicolons; these removals decide which padding joins. Do not reconstruct a run
-after losing it. The shared accessibility layout is deliberately bypassed here:
-EM terminals retain keyword, delimiter and leading padding as values, unlike the
-converted common terminals of other diagrams. Even when accTitle's setter strips
-some leading padding, retaining all common forms avoids inconsistent exceptions.
+space/tab run and its connection to the unit that lets the lexer read it.
+Preserve the entire intervening source interval across global directives,
+selected semicolons; these removals decide which padding joins. Do not
+reconstruct a run after losing it. The shared accessibility layout is
+deliberately bypassed here: EM terminals retain keyword, delimiter and leading
+padding as values, unlike the converted common terminals of other diagrams. Even
+when accTitle's setter strips some leading padding, retaining all common forms
+avoids inconsistent exceptions.
 
 [fixture:
 eventmodeling/common-boundaries/common-retained-exact-leading-directive-gaps]

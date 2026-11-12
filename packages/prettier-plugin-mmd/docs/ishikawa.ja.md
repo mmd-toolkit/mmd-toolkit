@@ -781,7 +781,7 @@ ishikawa
 
 ### Frontmatter YAML
 
-共有のガード付き Prettier YAML 整形で、安全な設定を読みやすくします。
+共有のガード付き Prettier YAML 整形で、安全な設定を整形します。
 区切りと閉じる行の余白は保ちます。
 [fixture: ishikawa/frontmatter-yaml/frontmatter-yaml]
 [fixture: ishikawa/frontmatter-yaml/frontmatter-width-config]

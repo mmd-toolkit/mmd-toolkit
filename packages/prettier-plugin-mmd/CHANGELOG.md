@@ -28,6 +28,12 @@
   reads both the same. Now the form changes only where mermaid.js reads both the
   same, so a text stays as written where the other form would be read differently,
   such as one with a comma.
+  
+  Overturned in the next release: a name with a `-` in the middle, as in
+  `"LINE-ITEM"` in `er`, a `sankey` name with `&`, `<`, `>`, `'`, `/`, or `\`,
+  and the labels of `flowchart`, `swimlane-beta`, and `agentflow-beta` are
+  printed in the form that the examples use, which for a label is without quotes
+  in the first two and in quotes in the last.
 
 ### Patch Changes
 
@@ -261,6 +267,10 @@
   use in one form, or that changes what mermaid.js reads, stays as written, and so
   do the `direction` statements. The option `singleQuote` has no effect on these
   strings.
+  
+  Overturned in 0.8.0: a text with or without quotes is printed in the form that
+  the examples use at least twice as often, such as `"CUSTOMER" ||--o{ "ORDER"`
+  in `er`, which becomes `CUSTOMER ||--o{ ORDER`.
 
 - [#68](https://github.com/mmd-toolkit/mmd-toolkit/pull/68) [`626b905`](https://github.com/mmd-toolkit/mmd-toolkit/commit/626b905d546affb973b08d129e42f7e4c8d6810d) Thanks [@ota-meshi](https://github.com/ota-meshi)! - Print the `:` and the text of a one-line `note` in `stateDiagram` with one space
   before the `:` and one after it where mermaid.js drops them:
@@ -368,6 +378,9 @@
   `accDescr { a b }`. A block that holds a comment, a directive, or a `;` gets no
   added space, nor does a block on a line kept as written, and the blocks of
   `eventmodeling`, whose Db holds the written characters, stay as written.
+  
+  Overturned in 0.8.0: a block that holds one line of text is printed
+  `accDescr: a b`.
 
 - [#60](https://github.com/mmd-toolkit/mmd-toolkit/pull/60) [`f41858e`](https://github.com/mmd-toolkit/mmd-toolkit/commit/f41858ef670c82de824f7a0f875b4968abdbf8b8) Thanks [@ota-meshi](https://github.com/ota-meshi)! - Print the ids of a `state` `class` statement and the names of a `class` diagram
   `classDef` statement without whitespace around their commas: `class A, B c` now
@@ -427,6 +440,11 @@
   no longer turns it into link text. In `agentflow`, an edge id after a data
   block, as in `A@{ shape: rect }e1@-->B`, stays attached to the block, so that
   the output is no longer rejected.
+  
+  Overturned in the next release: `A[ user@example.com ]` keeps its space in
+  `flowchart` again, since mermaid.js 11.5.0 to 12.2.0 reject the form without
+  it, and an edge id after a data block, as in `A@{ shape: circle }e1@--> B`,
+  stays attached to the block in `flowchart` and `swimlane` too.
 
 ### Patch Changes
 

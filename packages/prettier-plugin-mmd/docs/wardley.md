@@ -244,9 +244,10 @@ wardley-beta
 ### Coordinates
 
 Print coordinate pairs as [a, b], with tight inner edges, no space before the
-comma and one after it. This selects readable punctuation among Db-equal padded
-forms. Keep visibility before evolution and keep integer or decimal spellings;
-hidden/global trivia use their shared gap rules.
+comma and one after it. This is the whitespace that Prettier prints beside a
+comma, chosen among Db-equal padded forms. Keep visibility before evolution and
+keep integer or decimal spellings; hidden/global trivia use their shared gap
+rules.
 
 [fixture: wardley/coordinates/coordinates-decimal]
 
@@ -341,8 +342,9 @@ wardley-beta
 
 Print label [-1, 2]: attach each ordinary minus to its unsigned integer
 magnitude. Keep the sign even for -0 and preserve the magnitude spelling. Spaced
-signs can share the Db, but attachment makes their operand clear. Hidden/global
-trivia between sign and magnitude retain their boundary.
+signs can share the Db, but the sign touches its magnitude, as Prettier prints a
+unary minus. Hidden/global trivia between sign and magnitude retain their
+boundary.
 
 [fixture: wardley/label-offsets/offset-sign-gap]
 
@@ -363,7 +365,7 @@ wardley-beta
 Separate complete AST names, ports and arrows by one ordinary space, including
 arrowless links. Preserve every port and arrow spelling. A-->B is the name A-
 and arrow ->, so it prints A- -> B; do not search the source for arrow-shaped
-text. A -->B instead keeps -->. This spacing exposes the components already read
+text. A -->B instead keeps -->. This spacing follows the components already read
 by the parser.
 
 [fixture: wardley/links/link-short]
@@ -529,9 +531,8 @@ wardley-beta
 
 Attach @ on both sides and put one ordinary space around / and each stage arrow
 ->. Preserve optional boundaries, second names, empty quoted names and source
-stage order. The tight annotation mark and separated alternatives make the
-stages readable without filling missing values; bare title retains Name
-boundaries.
+stage order. The annotation mark is tight and the alternatives are separated,
+without filling missing values; bare title retains Name boundaries.
 
 [fixture: wardley/evolution/stage-all-gaps]
 

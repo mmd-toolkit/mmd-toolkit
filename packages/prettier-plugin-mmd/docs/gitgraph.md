@@ -47,8 +47,8 @@ Put the header at column one and ordinary body statements, standalone comments
 and global directives one configured step below it. The flat history has no
 extra level after branch. `tabWidth: 0` gives zero spaces; `useTabs` gives one
 tab even at width zero, because gitgraph columns have no grammatical meaning.
-This exposes the AST structure without altering other value continuation
-columns, hidden closers or protected segments.
+This does not alter other value continuation columns, hidden closers or
+protected segments.
 
 Fixed cases: [fixture: gitgraph/indentation/indent-two] [fixture:
 gitgraph/indentation/indent-four] [fixture: gitgraph/indentation/indent-zero]
@@ -70,11 +70,11 @@ gitGraph
 
 ### Statements one per line
 
-Print each ordinary body statement on its own line for readability. A line
-common value still owns apparent later operations and semicolons; quoted
-semicolons remain text. Gitgraph has no separator semicolon. Invalid adjacent
-statements and block-following semicolons are parser failures, covered by the
-corpus, and are never repaired.
+Print each ordinary body statement on its own line, as the other diagram types
+do. A line common value still owns apparent later operations and semicolons;
+quoted semicolons remain text. Gitgraph has no separator semicolon. Invalid
+adjacent statements and block-following semicolons are parser failures, covered
+by the corpus, and are never repaired.
 
 Fixed cases: [fixture: gitgraph/statements-one-per-line/eol-header-inline]
 [fixture: gitgraph/statements-one-per-line/eol-title-owns-text] [fixture:

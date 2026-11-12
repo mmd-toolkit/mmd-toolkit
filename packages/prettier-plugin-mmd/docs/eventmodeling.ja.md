@@ -238,7 +238,7 @@ tf 01 evt Alpha ->> 02 ->> 001
 ### Data references
 
 data reference の前は普通の 1 space、内側は `[[D]]` と詰め、
-区切りを 1 組として読みやすくします。
+Prettier が入れ子の角括弧に印字する形です。
 部品間の普通の改行も詰めます。
 `[[title]]` なら前置空白付きの title composite も作りません。
 所有 gap の hidden と trivia は保ち、単一の参照名を qualified にしません。

@@ -583,13 +583,14 @@ The `:` of a label after a relation or a class name has one space on each side:
 can be read as a mark that stands between two things, a relation and its label,
 or a class and the member that the line adds to it, so the whitespace before it
 is the one that the examples in the documentation of mermaid.js write at least
-twice as often as any other: 21 labels of relations and 15 member lines have a
-space before the colon, and none touches it. [fixture: labels/spaced] [fixture:
-labels/directive-around-colon] A sequence diagram writes the `:` touching what
-comes before it (see [Colons in the sequence rules](./sequence.md#colons)); each
-follows the documentation of its diagram type. The `:` after `accTitle` and
-`accDescr` touches the keyword and has one space after it, as in the other
-diagram types and in the documentation of mermaid.js. [fixture:
+twice as often as any other: 26 labels of relations have a space before the
+colon and none touches it, and 16 member lines have one and 2 do not. [fixture:
+labels/spaced] [fixture: labels/directive-around-colon] A sequence diagram
+writes the `:` touching what comes before it (see
+[Colons in the sequence rules](./sequence.md#colons)); each follows the
+documentation of its diagram type. The `:` after `accTitle` and `accDescr`
+touches the keyword and has one space after it, as in the other diagram types
+and in the documentation of mermaid.js. [fixture:
 labels/accessibility-text-runs-collapsed] [fixture:
 multi-line-statements/joined] [fixture: multi-line-statements/acc-descr-joined]
 The text of a label after a relation is kept as written: a label that wraps

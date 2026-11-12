@@ -70,7 +70,7 @@ usecase-beta
 
 Reuse structural [class indentation](./class.md#indentation): one configured
 step below the header, two for boundary declarations, and `end` aligned with its
-opener make membership visible. [fixture:
+opener, as in class diagrams. [fixture:
 system-boundaries/boundary-header-comment-empty] A step follows `tabWidth` and
 `useTabs`, two spaces by default or one tab per level. Indentation does not
 determine usecase syntax, so `tabWidth: 0` stays zero; accessibility remains
@@ -459,11 +459,11 @@ usecase-beta
 
 ### Arrows
 
-Reuse readable [arrow spacing](./class.md#arrow-spacing): one ordinary gap on
-each side of the actual complete usecase operator. Keep direction, marker, and
-every dash/dot, including long split closing halves whose Db length is fixed.
-Semantic operators print `..> : include` and `..> : extend`, with one space
-before and after the colon and the keyword in lower case, as the examples in the
+Reuse [arrow spacing](./class.md#arrow-spacing): one ordinary gap on each side
+of the actual complete usecase operator. Keep direction, marker, and every
+dash/dot, including long split closing halves whose Db length is fixed. Semantic
+operators print `..> : include` and `..> : extend`, with one space before and
+after the colon and the keyword in lower case, as the examples in the
 documentation of mermaid.js write it, 7 times and never with the colon touching
 (see
 [Spellings that are drawn the same](./compatibility.md#spellings-that-are-drawn-the-same)),
@@ -620,9 +620,9 @@ native-metadata/metadata-closer-directive-own-line] Preserve every metadata
 blank line and comma-versus-newline separator; never insert a newline within a
 key/colon/value property. [fixture:
 native-metadata/metadata-first-gap-standalone-directive] [fixture:
-native-metadata/metadata-selected-semicolon-between-properties] This improves
-structural readability without changing native validation or the
-declaration/update roles.
+native-metadata/metadata-selected-semicolon-between-properties] This gives the
+property the form that Prettier prints for a key and its value, without changing
+native validation or the declaration/update roles.
 
 After common comment-region and line-terminator handling, the optional trailing
 comma and physical line breaks between the last property and `}` total at most
@@ -870,10 +870,10 @@ usecase-beta
 
 Print `note for <target> <label>` with one ordinary gap between parts, keeping
 the target, markdown or empty label and note order; a plain label is printed in
-quotes (see [Quotes](#quotes)). This reuses the source-value and readable
-keyword-spacing reasons of [class notes](./class.md#whitespace-between-tokens).
-Forward resolution never manufactures an id, position or declaration; inline
-percent text remains label content.
+quotes (see [Quotes](#quotes)). This reuses the source-value and keyword-spacing
+reasons of [class notes](./class.md#whitespace-between-tokens). Forward
+resolution never manufactures an id, position or declaration; inline percent
+text remains label content.
 
 [fixture: notes/notes-forms] [fixture: notes/notes-forward] [fixture:
 notes/notes-empty-markdown] [fixture: notes/empty-and-markdown-order]

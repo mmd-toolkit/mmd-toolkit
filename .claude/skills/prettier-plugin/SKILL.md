@@ -83,8 +83,11 @@ and delete files with `mv` and `rm`.
 
 The printed form of each item is decided by the rules of AGENTS.md, item 4, in
 their order: the whitespace beside a mark, then the form that the other diagram
-types print for the same kind of gap, then a spelling, then the output of the
-released version. No case is left to a judgment of which form reads better.
+types print for the same kind of gap, then a spelling. No case is left to a
+judgment of which form reads better. Where none of them gives a form, the output
+of the released version is not changed on such a judgment: a form that seems
+better is proposed to the user, with a text as written and both outputs, and
+what is decided is added to those rules.
 
 1. From the grammar and the tree in the specification, list what formatting
    could change. The kinds of items flowchart has (as examples; a diagram type
@@ -112,9 +115,10 @@ released version. No case is left to a judgment of which form reads better.
    not printed. Each case that the choice distinguishes has a fixture (section
    6). Attach the results, marked as checked by running.
 4. Implement the forms that the rules decide. A form that would change what a
-   released version printed is shown to the user first, with the input, the old
-   and the new output, the rule that gives the new form, and a recommendation;
-   the user decides it.
+   released version printed, and a form that seems better where no rule gives
+   one, is shown to the user first, with a text as written, the old and the new
+   output, the rule that gives the new form if there is one, and a
+   recommendation; the user decides it, and the decision is added to the rules.
 5. Write each decision into the rules document `docs/<diagram>.md` (English and
    Japanese) as a rule with its reason. The reason is the rule of item 4 that
    decided the form, with the facts that rule needs; "reads better" is no

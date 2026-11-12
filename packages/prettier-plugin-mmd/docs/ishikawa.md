@@ -710,7 +710,7 @@ ishikawa
 
 ### Frontmatter YAML
 
-Shared guarded Prettier YAML formatting makes safe configuration readable while
+Shared guarded Prettier YAML formatting formats safe configuration while
 retaining delimiters and closing padding. [fixture:
 ishikawa/frontmatter-yaml/frontmatter-yaml] [fixture:
 ishikawa/frontmatter-yaml/frontmatter-width-config] [fixture:

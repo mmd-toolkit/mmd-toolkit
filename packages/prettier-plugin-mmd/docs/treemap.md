@@ -890,7 +890,7 @@ treemap
 Use shared root placement for ordinary pre-header comments, directives and blank
 lines. Preserve a detection second-scan single-line percent form as its Comment,
 with its inner Root directive printed once. There is no native hidden YAML form
-to promote into frontmatter; unreadable retained YAML remains rejected.
+to promote into frontmatter; retained YAML that cannot be read remains rejected.
 
 [fixture: treemap/prefix/comment]
 

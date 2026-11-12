@@ -11,9 +11,9 @@ output reparsing. Invisible-character examples are escaped test cases.
 
 Reuse [XY chart header/body layout](./xychart.md#header-and-orientation): an
 exact lower-case `pie` starts at column one and a written `showData` follows one
-space, for a consistent visible heading. An ordinary inline first statement
-moves below it. Hidden predecessors of the flag retain their position and
-consumed breaks; moving them would end the flag opportunity.
+space, as in the other diagram types. An ordinary inline first statement moves
+below it. Hidden predecessors of the flag retain their position and consumed
+breaks; moving them would end the flag opportunity.
 
 Fixed cases: [fixture: pie/header/header-space] [fixture:
 pie/header/header-absent] [fixture: pie/header/flag-hidden-yaml] [fixture:
@@ -37,8 +37,8 @@ pie showData
 ### Indentation
 
 Reuse [XY chart indentation](./xychart.md#indentation): ordinary statements and
-standalone comments/directives stand one configured step below the header, for
-readable structure. A pie section is a slice and adds no nested level.
+standalone comments/directives stand one configured step below the header, as
+the other diagram types do. A pie section is a slice and adds no nested level.
 `tabWidth: 0` gives zero body spaces; `useTabs` gives one tab, including with
 width zero, because pie columns have no grammatical meaning. Other value
 continuation columns and hidden closers retain their source columns; YAML alone
@@ -66,12 +66,12 @@ accDescr: direction TB
 
 ### Statements one per line
 
-Reuse [one statement per line](./xychart.md#statements-one-per-line) for
-readability, subject to pie EOL and protected source groups. Keep sections and
-common assignments interleaved in written order, including empty description
-blocks. Pie has no separator semicolon: semicolons in labels and common values
-stay text. Invalid adjacent statements are handled by the corpus failure path
-rather than repaired.
+Reuse [one statement per line](./xychart.md#statements-one-per-line) as the
+other diagram types do, subject to pie EOL and protected source groups. Keep
+sections and common assignments interleaved in written order, including empty
+description blocks. Pie has no separator semicolon: semicolons in labels and
+common values stay text. Invalid adjacent statements are handled by the corpus
+failure path rather than repaired.
 
 Fixed cases: [fixture: pie/statements-one-per-line/body-lines] [fixture:
 pie/statements-one-per-line/semicolon-values] [fixture:
@@ -274,12 +274,12 @@ across physical or Unicode line boundaries; a real comment/directive keeps its
 break. Empty whitespace-only interiors print `{}` because no text needs
 surrounding whitespace. Keep comment-only blocks with comments one level inside
 and a separate closer at statement level. Ordinary later-line text and
-standalone comment lines align one level inside the statement, making the body
-readable. Keep line breaks, blank lines and trailing whitespace; a separate `}`
-aligns with the statement. Directives and shared removed comment regions keep
-their complete source. Trivia-bearing interiors keep their trivia. The first
-closing brace still closes the block, even inside quote/backslash/hidden-looking
-text.
+standalone comment lines align one level inside the statement, as the other
+diagram types do. Keep line breaks, blank lines and trailing whitespace; a
+separate `}` aligns with the statement. Directives and shared removed comment
+regions keep their complete source. Trivia-bearing interiors keep their trivia.
+The first closing brace still closes the block, even inside
+quote/backslash/hidden-looking text.
 
 Fixed cases: [fixture: pie/description-blocks/block-runs] [fixture:
 pie/description-blocks/block-empty] [fixture:

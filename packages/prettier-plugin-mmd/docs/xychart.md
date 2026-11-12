@@ -62,9 +62,9 @@ xychart
 Each statement stands on a line of its own. Nothing separates statements in an
 XY chart (diagrams/xychart.md, Diagram and statements), so `title T line [1]`,
 `x-axis [a] line [1]`, `line [1]bar [2]`, and a statement after the header on
-its line are several statements on one line. They go to lines of their own,
-because a line of two statements is harder to read, as in the other diagrams
-(see [Statements one per line](./flowchart.md#statements-one-per-line)). The
+its line are several statements on one line. They go to lines of their own, as
+in the other diagrams (see
+[Statements one per line](./flowchart.md#statements-one-per-line)). The
 orientation of the header stays on the header's line (see
 [Header and orientation](#header-and-orientation)). A directive between two
 statements on a line moves with the statement after it. A `;` ends a statement
@@ -368,10 +368,10 @@ whitespace is in the Db, and none of it changes how units are read, since a
 bracket, a comma, and a quote are no characters of a word, so the form is a
 choice. It is the form that most examples in the documentation of mermaid.js use
 (`[jan, feb, mar]`, `[5000, 6000, 7500]`); some examples there have no space
-after a comma (`[12,2,20,25,17,24]`), and one form for every chart is simpler to
-read than two. A space after each comma is also how a list of values reads in
-English. [fixture: brackets-and-commas/spaces-inside-and-around-commas]
-[fixture: brackets-and-commas/bracket-touching-the-keyword] [fixture:
+after a comma (`[12,2,20,25,17,24]`), and every chart has one form. A space
+after each comma is the whitespace that Prettier prints beside a comma.
+[fixture: brackets-and-commas/spaces-inside-and-around-commas] [fixture:
+brackets-and-commas/bracket-touching-the-keyword] [fixture:
 brackets-and-commas/bracket-touching-the-title] [fixture:
 brackets-and-commas/bracket-touching-a-string] [fixture:
 brackets-and-commas/values-with-spaces] [fixture:

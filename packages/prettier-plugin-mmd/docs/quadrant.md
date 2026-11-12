@@ -443,9 +443,9 @@ separated by a comma with no space before it and one after it
 dropped. In an ordinary style, the first `:` touches its name and has one space
 before the value: `radius :  10` becomes `radius: 10`. Replace only ASCII spaces
 and tabs next to that colon; keep the value's spelling, including leading zeros
-and color case. This gives point and class styles one readable form without
-changing their Db. [fixture: styles/style-colon-padding] [fixture:
-styles/style-colon-tab-padding]
+and color case. This gives point and class styles the form that Prettier prints
+after a key, without changing their Db. [fixture: styles/style-colon-padding]
+[fixture: styles/style-colon-tab-padding]
 
 Keep a style's interior as written when it contains trivia, whitespace other
 than ASCII spaces and tabs, a semicolon or a second colon, or lies on a

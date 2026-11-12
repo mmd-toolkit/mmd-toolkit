@@ -192,7 +192,7 @@ railroad-peg-beta
 ### 規則ごとの行
 
 通常の規則を1行ずつに置き、必須の終端 `;` を直前の空白なしで定義に付けます。
-構文を変えずに規則の境界を見やすくするためです。
+構文は変えません。
 4方言とも最後の規則にも終端が必要です。
 ABNF の終端の直後は LF または EOF にします。
 `; note` はコメントなので終端にはなりません。
@@ -480,7 +480,7 @@ EBNF と PEG の AST 上の後置演算子 `?`、`*`、`+` を operand に付け
 EBNF の連鎖順と PEG の一つの suffix を保ちます。
 EBNF の special sequence の優先は AST に表れているため、
 raw leaf 内の疑問符を後置演算子に読み替えません。
-call や group に置き換えず、適用先を見やすくするためです。
+call や group に置き換えません。
 
 [fixture: railroad/postfixes/ebnf-chain]
 
@@ -515,7 +515,7 @@ railroad-peg-beta
 
 PEG の predicate は `&expr`、`!expr` と詰め、suffix operand 全体を保ちます。
 group、postfix、group 内の入れ子の predicate も残します。
-前置記号の適用先を見やすくし、Db の label を式の代わりに使わないためです。
+Db の label を式の代わりに使わないためです。
 
 [fixture: railroad/predicates/peg-nested]
 
@@ -1146,7 +1146,7 @@ colon を keyword に付け、非空値の前を通常の1 space にします。
 `accTitle` はブラウザがツールチップとして表示するので、
 その連なりは書かれたまま残します。
 次行の値は join しません。
-他の図種と同じ、簡潔で読みやすい配置にするためです。
+他の図種と同じ配置にするためです。
 値の終わりのディレクティブは、それぞれの前に空白があれば空白 1 つを置き、
 最後のディレクティブの後の空白を除いて印字します。
 （[同じに描かれるキーワードの後のテキスト](./compatibility.ja.md#同じに描かれるキーワードの後のテキスト)）。
@@ -2688,7 +2688,7 @@ railroad-peg-beta
 
 安全な実際の先頭 frontmatter だけを、
 共有の guard 付き YAML formatter へ渡します。
-埋込みの効果を保ちながら YAML を読みやすくするためです。
+埋込みの効果を保ちながら Prettier が印字する YAML にするためです。
 不正な YAML、字下げした fence、closer padding、HTML quote の危険がある形、
 本文の整形で fence が現れる形、保持 prefix の YAML は書かれたままにします。
 YAML の入れ子と block scalar は、tabWidth 0 でも共有の正の最小幅を使います。

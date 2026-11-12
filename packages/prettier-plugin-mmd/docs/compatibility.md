@@ -3418,9 +3418,9 @@ class/unclosed-backquoted-names/kept] See
 ## Description block indentation
 
 Separate an ordinary `accDescr` keyword and its opening `{` with one space,
-including in empty blocks. This makes the block boundary clear without changing
-its text. Interior contacts and trivia keep their own rules. [fixture:
-info/description-blocks/block-gap-presence] [fixture:
+including in empty blocks. This is how Prettier prints the space before a `{`,
+without changing its text. Interior contacts and trivia keep their own rules.
+[fixture: info/description-blocks/block-gap-presence] [fixture:
 flowchart/accessibility-lines/empty-block-touching-keyword]
 
 Ordinary closed multiline `accDescr` bodies use the statement's continuation
@@ -4867,7 +4867,7 @@ radar/semicolons/semicolon-selected-kept] [fixture:
 radar/multi-line-statements/semicolon-terminal-line]
 
 A list containing comments or directives keeps its other authored entry newlines
-too, so it remains a readable block. A separate closing brace aligns with the
+too, so it remains a block as written. A separate closing brace aligns with the
 statement. Comment-free lists still compact their ordinary entry newlines.
 [fixture: radar/multi-line-statements/entry-comment-after-comma] [fixture:
 radar/multi-line-statements/entry-global-lines]

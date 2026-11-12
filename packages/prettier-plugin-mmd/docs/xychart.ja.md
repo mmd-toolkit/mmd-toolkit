@@ -65,7 +65,7 @@ XY チャートでは、文の間に何も要りません（diagrams/xychart.md�
 Diagram and statements）。
 そのため、`title T line [1]`、`x-axis [a] line [1]`、`line [1]bar [2]` や、
 ヘッダーの行でヘッダーの後に続く文は、1 行に複数の文があります。
-1 行に 2 つの文があると読みにくいので、それぞれ自分の行に移します。
+それぞれ自分の行に移します。
 ほかの図も同じです（[1 行に 1 文](./flowchart.ja.md#1-行に-1-文)を参照）。
 ヘッダーの向きは、
 ヘッダーの行に残します（[ヘッダーと向き](#ヘッダーと向き)を参照）。
@@ -387,8 +387,8 @@ xychart
 mermaid.js の文書の例の多くがこの形で（`[jan, feb, mar]`、
 `[5000, 6000, 7500]`）、
 コンマの後に空白がない例もあります（`[12,2,20,25,17,24]`）が、
-どのチャートでも形が 1 つのほうが、2 つあるより読みやすくなります。
-コンマの後の空白は、英文の読みでもあります。
+どのチャートでも形を 1 つにします。
+コンマの後の空白は、Prettier がコンマに印字する形です。
 [fixture: brackets-and-commas/spaces-inside-and-around-commas]
 [fixture: brackets-and-commas/bracket-touching-the-keyword]
 [fixture: brackets-and-commas/bracket-touching-the-title]
