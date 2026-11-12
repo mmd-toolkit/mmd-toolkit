@@ -2822,18 +2822,33 @@ the author's request. [fixture: flowchart/arrow-spacing/arrow-length-kept]
 ## Whitespace at the start of a label
 
 mermaid.js drops whitespace at the start of a label without quotes, and so does
-formatting, except where the label would then be read differently: the
-whitespace is kept, as one space, when the label starts with `/`, `\`, `-`, or
-`"`, or when the label of a `>` shape has a `@` in its first word, and the label
-then gets one space at its end too. [fixture:
-flowchart/label-inner-whitespace/trimmed] [fixture:
+formatting, except where the label would then be read differently or not at all:
+the whitespace is kept, as one space, when the label starts with `/`, `\`, `-`,
+or `"`, or when its first word has a `@`, and the label then gets one space at
+its end too. [fixture: flowchart/label-inner-whitespace/trimmed] [fixture:
 flowchart/label-inner-whitespace/leading-whitespace-kept] [fixture:
 flowchart/label-inner-whitespace/compat-leading-backslash-kept] For example,
 `A[ /x/]` is a rectangle with the label `/x/`, while `A[/x/]` is a lean-right
 shape with the label `x`. See
-[Label inner whitespace](./flowchart.md#label-inner-whitespace). In agentflow,
-where `A[x@]` is rejected, the whitespace is kept in every shape when the first
-word of the label contains `@`.
+[Label inner whitespace](./flowchart.md#label-inner-whitespace).
+
+The `@` depends on the version of mermaid.js. 12.3.0 stops the run of an edge id
+at a bracket and at `|`, so it reads `A[user@example.com]` and `A-->|x@|B` as it
+reads them with the whitespace, and rejects only `A>x@]`. 11.12.3, 11.13.0,
+11.14.0, 11.15.0, 11.16.1, and 12.0.0 do not stop it there: they reject a label
+whose first word has a `@` without the whitespace, in a shape, between `|`, and
+in the title of a subgraph, and read it with the whitespace. Drawn in Chromium,
+`A[ x@y ]`, `A-->| x@y |B`, `subgraph S[ x@y ]`, and `A( x@y )` and the same
+texts without the spaces were the same in 10.3.1, 10.9.0, 11.0.0, 11.4.1, and
+12.3.0, rejected in the form without the spaces by the six versions above, and
+rejected in both forms by 9.0.0, 9.1.7, and 9.4.3. A text printed without the
+space would be rejected by versions that read the text as it is written, so the
+space is kept in a flowchart, a swimlane diagram, and an agentflow diagram
+alike. [fixture:
+flowchart/label-inner-whitespace/leading-whitespace-at-sign-kept] [fixture:
+flowchart/label-inner-whitespace/leading-whitespace-at-sign-every-shape-kept]
+[fixture:
+flowchart/label-inner-whitespace/leading-whitespace-at-sign-swimlane-kept]
 
 ## Directives between tokens
 

@@ -963,6 +963,19 @@ arrow-spacing/edge-id-arrow-like-after-directive-runs] [fixture:
 arrow-spacing/edge-id-arrow-like-after-ignored-semicolon] [fixture:
 arrow-spacing/edge-id-arrow-like-after-ignored-semicolon-runs-collapsed]
 
+An edge id after a data block touches the block: `A@{ shape: circle } e1@--> B`
+is printed `A@{ shape: circle }e1@--> B`. mermaid.js 12.3.0 reads the two forms
+the same, and draws the same figure from them, but 11.12.3, 11.13.0, 11.14.0,
+11.15.0, 11.16.1, and 12.0.0 reject the form with the space, so the touching
+form is the one that every version reads. A directive between the block and the
+edge id is removed before the text is read, so the edge id touches the directive
+too. After the closing bracket of a shape the edge id has one space
+(`A[x] e1@--> B`), since the same six versions reject `A[x]e1@--> B`. A swimlane
+diagram follows the same rule. [fixture:
+arrow-spacing/edge-id-after-data-block-touches] [fixture:
+arrow-spacing/edge-id-after-data-block-directive] [fixture:
+arrow-spacing/edge-id-after-data-block-touches-swimlane]
+
 Input
 ([arrow-spacing/plain-input.mmd](../tests/fixtures/flowchart/arrow-spacing/plain-input.mmd)):
 
@@ -1061,6 +1074,30 @@ flowchart LR
   I[x]~~~i@~~~ J
 ```
 
+Input
+([arrow-spacing/edge-id-after-data-block-touches-input.mmd](../tests/fixtures/flowchart/arrow-spacing/edge-id-after-data-block-touches-input.mmd)):
+
+```mmd
+flowchart LR
+A@{ shape: circle } e1@--> B
+C@{ shape: rect }e2@-.->D
+E@{ shape: rect }   e3@-->|x| F@{ shape: circle } e4@==> G
+H[x] e5@--> I
+J[x]e6@--> K
+```
+
+Output
+([arrow-spacing/edge-id-after-data-block-touches-output.mmd](../tests/fixtures/flowchart/arrow-spacing/edge-id-after-data-block-touches-output.mmd)):
+
+```mmd
+flowchart LR
+  A@{ shape: circle }e1@--> B
+  C@{ shape: rect }e2@-.-> D
+  E@{ shape: rect }e3@-->|x| F@{ shape: circle }e4@==> G
+  H[x] e5@--> I
+  J[x] e6@--> K
+```
+
 ### Label inner whitespace
 
 Whitespace at the ends of a label without quotes is dropped, as mermaid.js drops
@@ -1090,29 +1127,33 @@ label-inner-whitespace/pipe-string-closing-touches] [test: U+2028 between the
 closing quote and the `|` of a flowchart edge label]
 
 The whitespace at the start of a label is kept, as one space, when the label
-would be read differently without it: when the label starts with `/`, `\`, `-`,
-or `"`, and when the label of a `>` shape has a `@` in its first word, up to
-whitespace or a `"`. [fixture:
-label-inner-whitespace/compat-leading-backslash-kept] [fixture:
-label-inner-whitespace/leading-whitespace-trimmed-without-trigger] [fixture:
-label-inner-whitespace/leading-whitespace-run-becomes-one] Without the space,
-`A[ /x/]` would become a lean-right shape with the label `x`, `A( -x-)` an
-ellipse, and `A>x@ ]` would be rejected, because the run of an edge id does not
-stop at `>` and reads `A>x` as an edge id. Such a label then has one space at
-its end too: `A[ /x/]` becomes `A[ /x/ ]`, except before the closing `?]` or
+would be read differently without it, or not read at all: when the label starts
+with `/`, `\`, `-`, or `"`, and when its first word, up to whitespace or a `"`,
+has a `@`. [fixture: label-inner-whitespace/compat-leading-backslash-kept]
+[fixture: label-inner-whitespace/leading-whitespace-trimmed-without-trigger]
+[fixture: label-inner-whitespace/leading-whitespace-run-becomes-one] Without the
+space, `A[ /x/]` would become a lean-right shape with the label `x`, `A( -x-)`
+an ellipse, and `A>x@ ]` would be rejected, because the run of an edge id does
+not stop at `>` and reads `A>x` as an edge id. Such a label then has one space
+at its end too: `A[ /x/]` becomes `A[ /x/ ]`, except before the closing `?]` or
 `=]` of a slanted shape, where mermaid.js would read the space and the `?` or
 `=` as text: `A[/ -x/?]` stays as it is. The rule is the same for every shape
-and for the text between `|`, except for the `@`. [fixture:
+and for the text between `|`. [fixture:
 label-inner-whitespace/leading-whitespace-every-shape-kept] [fixture:
 label-inner-whitespace/leading-whitespace-pipe-label-kept]
 
-After any other opening than `>`, a `@` in a label needs no space. The run of an
-edge id stops at the brackets and at `|`, so `A[x@]` and `A-->|x@|B` have the
-label `x@` with or without the whitespace, and `A[ user@example.com ]` becomes
-`A[user@example.com]`. [fixture:
-label-inner-whitespace/leading-whitespace-at-sign-trimmed] Agentflow differs:
-its edge id run does not stop there, `A[x@]` is rejected, and so the space stays
-before a label whose first word has a `@` (see [Labels](./agentflow.md#labels)).
+The `@` in the first word depends on the version of mermaid.js. 12.3.0 stops the
+run of an edge id at a bracket and at `|`, so it reads `A[user@example.com]` and
+`A-->|x@|B` with the same labels as it reads them with the whitespace. The
+versions 11.12.3, 11.13.0, 11.14.0, 11.15.0, 11.16.1, and 12.0.0 do not stop it
+there: they reject the two without the whitespace and accept them with it. A
+text printed without the space would be rejected by versions that read the text
+as it is written, so the space stays after every opening, in the title of a
+subgraph, and in a flowchart, a swimlane diagram, and an agentflow diagram
+alike, with one space at the end of the label too. [fixture:
+label-inner-whitespace/leading-whitespace-at-sign-kept] [fixture:
+label-inner-whitespace/leading-whitespace-at-sign-every-shape-kept] [fixture:
+label-inner-whitespace/leading-whitespace-at-sign-swimlane-kept]
 
 Input
 ([label-inner-whitespace/trimmed-input.mmd](../tests/fixtures/flowchart/label-inner-whitespace/trimmed-input.mmd)):
@@ -1212,6 +1253,34 @@ Output
 flowchart LR
   B[/ -x/?]
   C[/ -x/=]
+```
+
+Input
+([label-inner-whitespace/leading-whitespace-at-sign-kept-input.mmd](../tests/fixtures/flowchart/label-inner-whitespace/leading-whitespace-at-sign-kept-input.mmd)):
+
+```mmd
+flowchart LR
+A[ user@example.com ]
+B-->| x@ |C
+D-->| y@z |E
+F[ @x ]
+G[ x@ y ]
+H[ a@b@ ]
+I(( x@ ))
+```
+
+Output
+([label-inner-whitespace/leading-whitespace-at-sign-kept-output.mmd](../tests/fixtures/flowchart/label-inner-whitespace/leading-whitespace-at-sign-kept-output.mmd)):
+
+```mmd
+flowchart LR
+  A[ user@example.com ]
+  B -->| x@ | C
+  D -->| y@z | E
+  F[ @x ]
+  G[ x@ y ]
+  H[ a@b@ ]
+  I(( x@ ))
 ```
 
 ### Link label form

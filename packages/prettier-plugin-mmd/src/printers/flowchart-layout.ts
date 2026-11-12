@@ -7,6 +7,7 @@ import type {
 import {
   addHeadingTitleRules,
   addShapeRules,
+  addEdgeIdAfterDataBlockRules,
   addLinkRules,
   breaksBetweenParts,
   addBlankCallbackRule,
@@ -407,8 +408,8 @@ function findStylesStart(
  *   whitespace).
  * - A link has one space before and after it, and one space on each side of
  *   text between two arrows (docs/flowchart.md, Arrow spacing). An edge id
- *   touches its `@` and the arrow. Text between `|` touches the `|` and the
- *   `|` touch the arrow.
+ *   touches its `@` and the arrow, and touches the data block before it. Text
+ *   between `|` touches the `|` and the `|` touch the arrow.
  */
 function vertexStatementRules(
   source: Source,
@@ -419,5 +420,6 @@ function vertexStatementRules(
     if (node.type === "FlowchartShape") addShapeRules(source, node, rules)
     if (node.type === "FlowchartLink") addLinkRules(source, node, rules)
   })
+  addEdgeIdAfterDataBlockRules(source, statement, rules)
   return rules
 }

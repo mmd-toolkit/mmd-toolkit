@@ -1006,6 +1006,21 @@ flowchart LR
 [fixture: arrow-spacing/edge-id-arrow-like-after-ignored-semicolon]
 [fixture: arrow-spacing/edge-id-arrow-like-after-ignored-semicolon-runs-collapsed]
 
+データブロックの後の辺の id は、ブロックに接します。
+`A@{ shape: circle } e1@--> B` は `A@{ shape: circle }e1@--> B` と印字します。
+mermaid.js 12.3.0 は、この 2 つの形を同じに読み、同じ図を描きますが、11.12.3、
+11.13.0、11.14.0、11.15.0、11.16.1、12.0.0 は、空白のある形を拒否するので、
+接する形が、すべての版で読める形です。
+ブロックと辺の id の間にディレクティブがあるときは、
+テキストを読む前にディレクティブが取り除かれるので、
+辺の id はディレクティブにも接します。
+形の閉じ括弧の後の辺の id には空白が 1 つあります（`A[x] e1@--> B`）。
+同じ 6 つの版が `A[x]e1@--> B` を拒否するからです。
+swimlane 図も同じ規則です。
+[fixture: arrow-spacing/edge-id-after-data-block-touches]
+[fixture: arrow-spacing/edge-id-after-data-block-directive]
+[fixture: arrow-spacing/edge-id-after-data-block-touches-swimlane]
+
 入力
 ([arrow-spacing/plain-input.mmd](../tests/fixtures/flowchart/arrow-spacing/plain-input.mmd)):
 
@@ -1104,6 +1119,30 @@ flowchart LR
   I[x]~~~i@~~~ J
 ```
 
+入力
+([arrow-spacing/edge-id-after-data-block-touches-input.mmd](../tests/fixtures/flowchart/arrow-spacing/edge-id-after-data-block-touches-input.mmd)):
+
+```mmd
+flowchart LR
+A@{ shape: circle } e1@--> B
+C@{ shape: rect }e2@-.->D
+E@{ shape: rect }   e3@-->|x| F@{ shape: circle } e4@==> G
+H[x] e5@--> I
+J[x]e6@--> K
+```
+
+出力
+([arrow-spacing/edge-id-after-data-block-touches-output.mmd](../tests/fixtures/flowchart/arrow-spacing/edge-id-after-data-block-touches-output.mmd)):
+
+```mmd
+flowchart LR
+  A@{ shape: circle }e1@--> B
+  C@{ shape: rect }e2@-.-> D
+  E@{ shape: rect }e3@-->|x| F@{ shape: circle }e4@==> G
+  H[x] e5@--> I
+  J[x] e6@--> K
+```
+
 ### ラベルの内側の空白
 
 引用符のないラベルの両端の空白は、mermaid.js が取り除くのと同じく取り除きます。
@@ -1136,10 +1175,10 @@ U+2028、U+2029 は残します。
 [fixture: label-inner-whitespace/pipe-string-closing-touches]
 [test: U+2028 between the closing quote and the `|` of a flowchart edge label]
 
-ラベルの先頭の空白は、それがないとラベルの読み方が変わるときは、
-空白 1 つとして残します。
+ラベルの先頭の空白は、それがないとラベルの読み方が変わるときと、
+読まれなくなるときは、空白 1 つとして残します。
 ラベルが `/`、`\`、`-`、`"` のどれかで始まるときと、
-`>` の形のラベルの最初の語（空白か `"` まで）が `@` を含むときです。
+最初の語（空白か `"` まで）が `@` を含むときです。
 [fixture: label-inner-whitespace/compat-leading-backslash-kept]
 [fixture: label-inner-whitespace/leading-whitespace-trimmed-without-trigger]
 [fixture: label-inner-whitespace/leading-whitespace-run-becomes-one]
@@ -1151,19 +1190,23 @@ U+2028、U+2029 は残します。
 ただし、斜めの形の閉じの `?]` と `=]` の前には置きません。
 mermaid.js が、その空白と `?` や `=` をテキストとして読むからです。
 `A[/ -x/?]` はそのままです。
-この規則は、`@` を除き、どの形でも、`|` の間のテキストでも同じです。
+この規則は、どの形でも、`|` の間のテキストでも同じです。
 [fixture: label-inner-whitespace/leading-whitespace-every-shape-kept]
 [fixture: label-inner-whitespace/leading-whitespace-pipe-label-kept]
 
-`>` 以外で開く形では、ラベルの中の `@` に空白は要りません。
-辺の id の並びは、括弧類と `|` で止まるので、`A[x@]` と `A-->|x@|B` のラベルは、
-空白があってもなくても `x@` です。
-`A[ user@example.com ]` は `A[user@example.com]` になります。
-[fixture: label-inner-whitespace/leading-whitespace-at-sign-trimmed]
-agentflow では違います。
-辺の id の並びがそこで止まらず、`A[x@]` は拒否されます。
-そのため、最初の語に `@` があるラベルは、前の空白を残します。
-詳しくは [Labels](./agentflow.ja.md#labels) を参照してください。
+最初の語の `@` は、mermaid.js の版によって読み方が違います。
+12.3.0 は、辺の id の並びを括弧類と `|` で止めるので、
+`A[user@example.com]` と `A-->|x@|B` を、
+空白があるときと同じラベルとして読みます。
+11.12.3、11.13.0、11.14.0、11.15.0、11.16.1、12.0.0 は、そこで止めず、
+空白がないこの 2 つを拒否し、空白がある形は受け入れます。
+空白なしで印字したテキストは、書かれたとおりのテキストを読む版に拒否されるので、
+空白は残します。
+どの形でも、subgraph の題でも、flowchart、swimlane 図、
+agentflow 図のどれでも同じで、ラベルの末尾にも空白 1 つを置きます。
+[fixture: label-inner-whitespace/leading-whitespace-at-sign-kept]
+[fixture: label-inner-whitespace/leading-whitespace-at-sign-every-shape-kept]
+[fixture: label-inner-whitespace/leading-whitespace-at-sign-swimlane-kept]
 
 入力
 ([label-inner-whitespace/trimmed-input.mmd](../tests/fixtures/flowchart/label-inner-whitespace/trimmed-input.mmd)):
@@ -1263,6 +1306,34 @@ C[/ -x/=]
 flowchart LR
   B[/ -x/?]
   C[/ -x/=]
+```
+
+入力
+([label-inner-whitespace/leading-whitespace-at-sign-kept-input.mmd](../tests/fixtures/flowchart/label-inner-whitespace/leading-whitespace-at-sign-kept-input.mmd)):
+
+```mmd
+flowchart LR
+A[ user@example.com ]
+B-->| x@ |C
+D-->| y@z |E
+F[ @x ]
+G[ x@ y ]
+H[ a@b@ ]
+I(( x@ ))
+```
+
+出力
+([label-inner-whitespace/leading-whitespace-at-sign-kept-output.mmd](../tests/fixtures/flowchart/label-inner-whitespace/leading-whitespace-at-sign-kept-output.mmd)):
+
+```mmd
+flowchart LR
+  A[ user@example.com ]
+  B -->| x@ | C
+  D -->| y@z | E
+  F[ @x ]
+  G[ x@ y ]
+  H[ a@b@ ]
+  I(( x@ ))
 ```
 
 ### 辺のラベルの書き方

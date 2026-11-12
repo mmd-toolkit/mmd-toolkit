@@ -24,6 +24,7 @@ import {
   keptAsWritten,
   layoutCompactEmptyDescriptionBlock,
   spansLinesThatCannotJoin,
+  walk,
 } from "./layout.ts"
 import type { KeptLines } from "./kept-lines.ts"
 import { holdsJoiningRegion, lineStartOf } from "./kept-lines.ts"
@@ -142,6 +143,38 @@ export function addLinkRules(
 }
 
 /**
+ * Adds the rule that the edge id of a link touches the data block before it:
+ * `A@{ shape: circle }e1@--> B`, not `A@{ shape: circle } e1@--> B`
+ * (docs/flowchart.md, Arrow spacing; docs/agentflow.md, Arrows). A vertex
+ * statement takes no whitespace after a data block but the one that an arrow
+ * reads. mermaid.js 12.3.0 reads both forms the same in a flowchart, but
+ * 11.12.3 to 12.0.0 reject the form with the space, and the agentflow diagram
+ * rejects it in every version. Call it after the rules of the links are set.
+ */
+export function addEdgeIdAfterDataBlockRules(
+  source: Source,
+  statement: Node,
+  rules: Map<number, GapRule>,
+): void {
+  const dataBlockEnds = new Set<number>()
+  walk(statement, (node) => {
+    if (
+      node.type === "FlowchartDataBlock" ||
+      node.type === "AgentflowDataBlock"
+    )
+      dataBlockEnds.add(node.range[1])
+  })
+  if (dataBlockEnds.size === 0) return
+  walk(statement, (node) => {
+    if (node.type !== "FlowchartLink" && node.type !== "AgentflowLink") return
+    if (node.id === null) return
+    const before = findStructuralTokenEndingBefore(source, node.range[0])
+    if (before !== undefined && dataBlockEnds.has(before.range[1]))
+      rules.set(node.range[0], "none")
+  })
+}
+
+/**
  * Whether an edge id starts as an arrow does (diagrams/flowchart.md, Arrows
  * and the lexical rule of the edge id; diagrams/agentflow.md, Arrows). Such an
  * id is an edge id only where no whitespace stands before it, as in
@@ -209,9 +242,7 @@ export function labelEdgeRule(source: Source, label: GraphLabel): GapRule {
   const hasWhitespaceBefore = [
     ...source.text.slice(before.range[1], label.range[0]),
   ].some(isWhitespace)
-  return hasWhitespaceBefore && keepsLeadingWhitespace(label, before)
-    ? "space"
-    : "none"
+  return hasWhitespaceBefore && keepsLeadingWhitespace(label) ? "space" : "none"
 }
 
 /**
@@ -225,23 +256,24 @@ export function labelEdgeRule(source: Source, label: GraphLabel): GapRule {
  *   with the label `/x/`, `A[/x/]` a lean-right with the label `x`;
  *   `A( -x-)` is a rounded, `A(-x-)` an ellipse; `A[/ "x /]` has the
  *   label `"x`, and `A[/"x/]` is rejected.
- * - a label whose first word, up to whitespace or a `"`, holds a `@`, in
- *   agentflow and after the `>` of a flowchart shape: `A>x@]` is rejected,
- *   because `A>x@` is read as an edge id, and `A> x@]` has the label `x@`. In
- *   flowchart, the run of an edge id stops at the brackets and at `|`, so
- *   `A[x@]` and `A-->|x@|B` are accepted with the same label as with the
- *   whitespace, and it is dropped. In agentflow, `A[x@]` is rejected too.
+ * - a label whose first word, up to whitespace or a `"`, holds a `@`: after
+ *   the `>` of a flowchart shape and in agentflow, `A>x@]` is rejected,
+ *   because `A>x@` is read as an edge id, and `A> x@]` has the label `x@`.
+ *   mermaid.js 12.3.0 stops the run of an edge id at the other brackets and
+ *   at `|`, so it reads `A[x@]` and `A-->|x@|B` as it reads them with the
+ *   whitespace. 11.12.3 to 12.0.0 do not stop it there and reject them, and
+ *   the formatted text is drawn by those versions too (docs/compatibility.md,
+ *   Whitespace at the start of a label).
  *
- * Apart from the `@`, the rule is the same for every shape and for the text
- * between `|`, so that it does not depend on which brackets a label has. The
- * label's value is its text without directives, as mermaid.js reads it.
+ * The rule is the same for every shape and for the text between `|`, so that
+ * it does not depend on which brackets a label has. The label's value is its
+ * text without directives, as mermaid.js reads it.
  */
-function keepsLeadingWhitespace(label: GraphLabel, opening: Token): boolean {
+function keepsLeadingWhitespace(label: GraphLabel): boolean {
   const first = label.value.charAt(0)
   if (first === "/" || first === "\\" || first === "-" || first === '"') {
     return true
   }
-  if (label.type !== "AgentflowLabel" && opening.value !== ">") return false
   let wordEnd = 0
   while (
     wordEnd < label.value.length &&

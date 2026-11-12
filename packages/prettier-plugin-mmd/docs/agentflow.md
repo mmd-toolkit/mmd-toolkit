@@ -138,9 +138,9 @@ headings with a title in
 are written so, and the Db is the same for both forms. The whitespace inside the
 brackets of the title is dropped, so `[ T ]` is printed `[T]` and `["x" ]` is
 printed `["x"]`, as in flowchart; Agentflow has no reason to choose a different
-form. One space stays where the title would be read otherwise (`[ /x/ ]`, and
-`[ x@ ]` in Agentflow). A directive at an edge of the title touches the bracket
-and the title, as the gap has no space: `flow F[ %%{x}%% T ]` is printed
+form. One space stays where the title would be read otherwise (`[ /x/ ]` and
+`[ x@ ]`). A directive at an edge of the title touches the bracket and the
+title, as the gap has no space: `flow F[ %%{x}%% T ]` is printed
 `flow F[%%{x}%%T]`, and `flow G[ T %%{x}%% ]` is printed `flow G[T%%{x}%%]`.
 [fixture: names-and-headings/heading-title-directive-at-edge] A U+2028 or U+2029
 on the line of the `]` stays, and one at the start of a continuation line is
@@ -419,12 +419,14 @@ arrows/three-kinds]
 An edge id after a data block touches it: a vertex statement takes no whitespace
 after a data block except the one that an arrow reads, so
 `A@{ shape: rect }e1@-->B` is accepted and `A@{ shape: rect } e1@-->B` is
-rejected. [fixture: arrows/edge-id-after-data-block-touches] An edge id that
-starts as an arrow does touches the shape or the data block before it, as in
-`A["x"]--a@-->B`. In agentflow that is an edge id that starts with `--`, `-.-`,
-or `-..-`; one such as `x--a`, `==a`, `-.a`, or `.-a` is read the same after
-whitespace, and has one space before it. [fixture:
-arrows/edge-id-arrow-like-kept-attached] [fixture:
+rejected. A directive between the block and the edge id is removed before the
+text is read, so the edge id touches the directive too. [fixture:
+arrows/edge-id-after-data-block-touches] [fixture:
+arrows/edge-id-after-data-block-directive] An edge id that starts as an arrow
+does touches the shape or the data block before it, as in `A["x"]--a@-->B`. In
+agentflow that is an edge id that starts with `--`, `-.-`, or `-..-`; one such
+as `x--a`, `==a`, `-.a`, or `.-a` is read the same after whitespace, and has one
+space before it. [fixture: arrows/edge-id-arrow-like-kept-attached] [fixture:
 arrows/edge-id-not-arrow-like-gets-one-space]
 
 Input (escaped): `"agentflow-beta TB\nA--xB"`. [fixture:

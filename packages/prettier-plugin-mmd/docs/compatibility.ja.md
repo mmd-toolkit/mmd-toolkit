@@ -3049,9 +3049,10 @@ elk のレイアウトは
 ## ラベルの先頭の空白
 
 mermaid.js は引用符のないラベルの先頭の空白を取り除き、整形も取り除きます。
-ただし、取り除くとラベルの読み方が変わる場合は、空白 1 つとして残します。
+ただし、取り除くとラベルの読み方が変わるか、読まれなくなる場合は、
+空白 1 つとして残します。
 ラベルが `/`、`\`、`-`、`"` のどれかで始まる場合と、
-`>` の形のラベルの最初の語が `@` を含む場合です。
+最初の語が `@` を含む場合です。
 そのときは、ラベルの末尾にも空白 1 つを置きます。
 [fixture: flowchart/label-inner-whitespace/trimmed]
 [fixture: flowchart/label-inner-whitespace/leading-whitespace-kept]
@@ -3059,8 +3060,23 @@ mermaid.js は引用符のないラベルの先頭の空白を取り除き、整
 たとえば、`A[ /x/]` はラベル `/x/` の rectangle ですが、
 `A[/x/]` はラベル `x` の lean-right の形です。
 [ラベルの内側の空白](./flowchart.ja.md#ラベルの内側の空白)を参照してください。
-`A[x@]` が拒否される agentflow では、どの形でも、
-最初の語が `@` を含む場合は空白を残します。
+
+`@` は、mermaid.js の版によって読み方が違います。
+12.3.0 は、辺の id の並びを括弧類と `|` で止めるので、
+`A[user@example.com]` と `A-->|x@|B` を、空白があるときと同じに読み、
+拒否するのは `A>x@]` だけです。
+11.12.3、11.13.0、11.14.0、11.15.0、11.16.1、12.0.0 は、そこで止めないので、
+最初の語に `@` があるラベルは、空白がないと、形でも、`|` の間でも、
+subgraph の題でも拒否し、空白があれば読みます。
+Chromium で描くと、`A[ x@y ]`、`A-->| x@y |B`、`subgraph S[ x@y ]`、
+`A( x@y )` と、空白のない同じテキストは、10.3.1、10.9.0、11.0.0、11.4.1、
+12.3.0 では同じで、上の 6 つの版では空白のない形が拒否され、9.0.0、9.1.7、
+9.4.3 では両方が拒否されました。
+空白なしで印字したテキストは、書かれたとおりのテキストを読む版に拒否されるので、
+空白は、flowchart、swimlane 図、agentflow 図のどれでも残します。
+[fixture: flowchart/label-inner-whitespace/leading-whitespace-at-sign-kept]
+[fixture: flowchart/label-inner-whitespace/leading-whitespace-at-sign-every-shape-kept]
+[fixture: flowchart/label-inner-whitespace/leading-whitespace-at-sign-swimlane-kept]
 
 ## トークンの間のディレクティブ
 
