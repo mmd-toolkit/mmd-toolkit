@@ -33,13 +33,17 @@ mermaid.js は各入力とその出力を同じ Db として読みます。
 beta の境界に合わない接尾辞は根のテキストに残します。
 接するコメントと directive は後の規則に従います。
 [fixture: ishikawa/header/header-beta-fallback]
-`-beta` で始まり、見出しに接する根（`ishikawa-beta-beta` は、
-見出し `ishikawa-beta` と根 `-beta` です）は、自分の行に移します。
+見出しの直後に、`-beta` という語で始まる根が続く場合は、根を自分の行に移します。
+間にあるのが指令だけの場合も同じで、
+指令は見出しを読む前に取り除かれます（`ishikawa-beta-beta` は、
+見出し `ishikawa-beta` と根 `-beta` です）。
 短い見出しが長い見出しとして読まれないようにするためです。
-ノードの字下げを書かれたままにするので、根が見出しの行に残る場合は、
-見出しも書かれたままにします。
+ノードの字下げを書かれたままにするか、指令が根に接していて、
+根が見出しの行に残る場合は、見出しも書かれたままにします。
+`-betax` や `-x` のような根は、この語ではないので、見出しを短くします。
 [fixture: ishikawa/header/header-beta-then-beta-root]
 [fixture: ishikawa/header/header-beta-then-beta-root-kept]
+[fixture: ishikawa/header/header-beta-directive-then-beta-root-kept]
 
 入力（escape 表記）:
 

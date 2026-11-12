@@ -12,7 +12,7 @@ import { findLinkLabelRespellings } from "./link-label-form.ts"
 import { shortestNumber } from "./number-form.ts"
 import { findQuoteFormRespellings } from "./quote-form.ts"
 import type { Source } from "./source.ts"
-import { findTokenStartingAt } from "./source.ts"
+import { findTokenStartingAt, skipDirectives } from "./source.ts"
 
 /** The text to print in place of the token or node at an offset. */
 export interface Respelling {
@@ -66,6 +66,24 @@ function headerDirectionSpelling(
     ).length === 0
     ? "TD"
     : undefined
+}
+
+/**
+ * Whether `-beta`, in any case and followed by no word character, stands at
+ * the offset after the directives that start there, which mermaid.js removes
+ * before it reads the header.
+ */
+function startsWithBetaWord(source: Source, offset: number): boolean {
+  const position = skipDirectives(source, offset)
+  if (toAsciiLowerCase(source.text.slice(position, position + 5)) !== "-beta")
+    return false
+  const after = source.text.charAt(position + 5)
+  return !(
+    (after >= "a" && after <= "z") ||
+    (after >= "A" && after <= "Z") ||
+    (after >= "0" && after <= "9") ||
+    after === "_"
+  )
 }
 
 /** Whether the root of an ishikawa diagram stays on the line of the header. */
@@ -356,15 +374,18 @@ function findTokenRespellings(
       // The keyword of the header stays as written, since some versions that
       // count do not read every name of a header, except for the diagram types
       // that every version reads and draws alike with the short name.
-      // A text that touches the header with a `-` on its line keeps it as
-      // written: the short name followed by `-beta` would be read as the long
-      // name.
+      // A root that starts with `-beta` and stands on the line of the header
+      // keeps the header as written: the short name followed by it would be
+      // read as the long name, and the root would be lost. mermaid.js removes
+      // the directives before it reads the header, so they do not separate the
+      // two (docs/ishikawa.md, Header).
       const shortName = shortHeaderNames[type]
       respelled =
         shortName !== undefined &&
         toAsciiLowerCase(text).startsWith(shortName) &&
         !(
-          source.text[token.range[1]] === "-" && keepsRootOnHeaderLineOf(source)
+          startsWithBetaWord(source, token.range[1]) &&
+          keepsRootOnHeaderLineOf(source)
         )
           ? shortName
           : undefined

@@ -1022,6 +1022,66 @@ const classLineSeparatorExamples: readonly (readonly [
  */
 const erExamples: readonly (readonly [string, string, string])[] = [
   [
+    "U+2028 between the end of an ER subgraph and the next entity",
+    "erDiagram\nsubgraph S\nA\nend\u2028B\n",
+    "erDiagram\n  subgraph S\n    A\n  end\u2028B\n",
+  ],
+  [
+    "U+2029 between the end of an ER subgraph and a relationship",
+    "erDiagram\nsubgraph S\nA\nend\u2029B ||--o{ C : x\n",
+    "erDiagram\n  subgraph S\n    A\n  end\u2029B ||--o{ C : x\n",
+  ],
+  [
+    "U+2028 between the end of a nested ER subgraph and a direction",
+    "erDiagram\nsubgraph O\nsubgraph I\nA\nend\u2028direction RL\nB\nend\n",
+    "erDiagram\n  subgraph O\n    subgraph I\n      A\n    end\u2028direction RL\n    B\n  end\n",
+  ],
+  [
+    "U+2028 after the end of an ER subgraph that nothing follows",
+    "erDiagram\nSUBGRAPH S\nA\nEND\u2028\n",
+    "erDiagram\n  SUBGRAPH S\n    A\n  END\u2028\n",
+  ],
+  [
+    "a name in quotes after the end of an ER subgraph and a U+2028",
+    'erDiagram\nsubgraph S\nA\nend\u2028"B"\n',
+    'erDiagram\n  subgraph S\n    A\n  end\u2028"B"\n',
+  ],
+  [
+    "a directive between the end of an ER subgraph and a U+2028",
+    "erDiagram\nsubgraph S\nA\nend%%{init: {}}%%\u2028B\n",
+    "erDiagram\n  subgraph S\n    A\n  end%%{init: {}}%%\u2028B\n",
+  ],
+  [
+    "a directive between the end of an ER subgraph and a U+2029 and a name in quotes",
+    'erDiagram\nsubgraph S\nA\nend%%{init: {}}%%\u2029"B"\n',
+    'erDiagram\n  subgraph S\n    A\n  end%%{init: {}}%%\u2029"B"\n',
+  ],
+  [
+    "a directive between the keyword of an ER subgraph and a U+2028",
+    "erDiagram\nsubgraph%%{init: {}}%%\u2028S\nA\nend\n",
+    "erDiagram\n  subgraph%%{init: {}}%%\u2028S\n    A\n  end\n",
+  ],
+  [
+    "a directive between an ER number name and a U+2028",
+    "erDiagram\n12%%{init: {}}%%\u2028a\n",
+    "erDiagram\n  12%%{init: {}}%%\u2028a\n",
+  ],
+  [
+    "a line of two ER statements that starts with U+2028",
+    "erDiagram\nA\n\u2028class-A a\n",
+    "erDiagram\n  A\n  \u2028class-A a\n",
+  ],
+  [
+    "U+2028 between the keyword of an ER subgraph and its name",
+    "erDiagram\nsubgraph\u2028S\nA\nend\n",
+    "erDiagram\n  subgraph\u2028S\n    A\n  end\n",
+  ],
+  [
+    "U+2028 between an ER number name and the next name",
+    "erDiagram\n12\u2028a\n",
+    "erDiagram\n  12\u2028a\n",
+  ],
+  [
     "U+2028 between an ER subgraph name and its title",
     "erDiagram\nsubgraph S\u2028[t]\nA\nend\n",
     "erDiagram\n  subgraph S\u2028[t]\n    A\n  end\n",

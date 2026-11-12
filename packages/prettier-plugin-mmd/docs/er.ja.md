@@ -364,14 +364,23 @@ flowchart、sequence、class、state も 1 行に 1 つの文を印字します�
 2 つの文の間のディレクティブは、後ろの文と一緒に置きます。
 [fixture: statements-one-per-line/directive-after-statement]
 
-2 つの場合は、文を 1 行に残します。
+いくつかの場合は、文を 1 行に残します。
 実体 `1` の直後に、空白なしで、またはディレクティブだけを挟んで、別の文や、
 その subgraph の `end` が続くときは、そのままにします。
 `1a` は実体 `1` と `a` ですが、`1` と文字を 2 行に分けたり、
 間に空白を置いたりすると、
 カーディナリティ `only-one` と名前になるからです（diagrams/er.md、
 カーディナリティ、数、関係の線、規則 11）。
-ほかの数は、後ろの文と分けます。
+2 桁以上の数の名前の実体も、直後に名前が続く文字（英字、`_`、`-`、`*`、
+ASCII 外の文字）があれば、その行に残します。
+`12a` は、固定した版では実体 `12` と `a` ですが、
+対象にする版の一部では 1 つの名前で、2 行に分けると違って描くからです。
+詳しくは
+[対象にする版の mermaid.js のために残す形](./compatibility.ja.md#対象にする版の-mermaidjs-のために残す形)
+を参照してください。
+数とその文字の間にディレクティブがあっても、変わりません。
+mermaid.js は、テキストを読む前にディレクティブを取り除くからです。
+`2.5x` のようなほかの数は、後ろの文と分けます。
 そのような実体の行は書かれたまま印字し、その行で終わる subgraph も、
 ヘッダーから `end` まで、行ごとの 1 段の字下げなしで書かれたまま印字します。
 [fixture: statements-one-per-line/number-name-then-name-kept]
@@ -382,6 +391,34 @@ flowchart、sequence、class、state も 1 行に 1 つの文を印字します�
 [fixture: statements-one-per-line/number-name-before-directive-kept]
 [fixture: statements-one-per-line/number-name-then-name-split]
 [corpus fixture: er/lex-name-number-then-letter]
+[corpus fixture: er/lex-name-number2-then-letter]
+`subgraph` キーワードと名前の間に ASCII 外の文字か U+2028、U+2029 があれば、
+書かれたままにします。
+`end` の後にそうした文字や区切りが続く文も、`end` の行に、
+隙間を書かれたままにして残します。
+`endé` は、固定した版ではキーワード `end` と実体 `é` ですが、
+対象にする版の一部では 1 つの名前だからです。
+`end` の行の終わりにある U+2028 や U+2029 は残し、U+2028 や U+2029 で始まり、
+複数の文がある行は、書かれたまま印字します。
+そうした `end` の後の引用符つきの名前は、引用符を残します。
+キーワードとその後ろの間にディレクティブがあっても、変わりません。
+ディレクティブが U+2028 や U+2029 の前にあっても、ASCII 外の文字に接していても、
+同じです。 [fixture: statements-one-per-line/end-then-name-outside-ascii-kept]
+[fixture: statements-one-per-line/subgraph-then-name-outside-ascii-kept]
+[fixture: statements-one-per-line/end-directive-then-name-outside-ascii-kept]
+[fixture: statements-one-per-line/subgraph-directive-then-name-outside-ascii-kept]
+[corpus fixture: er/lex-keyword-end-then-e-acute]
+[corpus fixture: er/lex-keyword-subgraph-then-e-acute]
+[corpus fixture: er/db-subgraph-direction-after-nested-end-line-separator]
+[test: U+2028 between the end of an ER subgraph and the next entity]
+[test: a directive between the end of an ER subgraph and a U+2028]
+[test: a directive between the end of an ER subgraph and a U+2029 and a name in quotes]
+[test: a directive between the keyword of an ER subgraph and a U+2028]
+[test: a directive between an ER number name and a U+2028]
+属性が複数あり `~` を含む行は、書かれたまま印字します。
+対象にする版のうち最も古い版が、ジェネリクスの型の `~` を行頭から読むからです。
+[fixture: attribute-spacing/attributes-with-tilde-on-one-line-kept]
+[corpus fixture: er/lex-tilde-after-quoted]
 また、保持する `;` がある行は、その文を一緒に残します。
 mermaid.js の行の規則は行のテキストを読み、テキストを別の行に動かすと、
 規則に合う行と、規則が無視する `;` が、
@@ -460,8 +497,7 @@ erDiagram
   1a
   1"x"
   B
-  12
-  a
+  12a
 ```
 
 ### 空行

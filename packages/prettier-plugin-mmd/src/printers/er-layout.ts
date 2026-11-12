@@ -27,6 +27,7 @@ import {
   layoutDescriptionBlock,
   toAsciiLowerCase,
 } from "./layout.ts"
+import { followsSplitKeyword } from "./er-kept-lines.ts"
 import type { Source } from "./source.ts"
 import { printedToken } from "./spelling.ts"
 import {
@@ -218,7 +219,15 @@ export function layoutSubgraphOpening(
     // comment line after U+2028 or U+2029).
     return keptAsWritten(statement.range[0], end)
   }
-  const rules = new Map<number, GapRule>([[statement.id.range[0], "space"]])
+  // The keyword and a name that a U+2028, a U+2029, or a character outside
+  // ASCII separates from it are one name to a version that counts, so no space
+  // is set between them (docs/er.md, Subgraphs).
+  const rules = new Map<number, GapRule>([
+    [
+      statement.id.range[0],
+      followsSplitKeyword(source, statement.id.range[0]) ? "none" : "space",
+    ],
+  ])
   if (statement.title !== null) {
     const opening = expectToken(
       findStructuralToken(source, statement.id.range[1]),

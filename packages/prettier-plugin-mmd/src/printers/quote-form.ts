@@ -8,7 +8,7 @@ import type {
 } from "@mmd-toolkit/ast"
 import { visitorKeys } from "@mmd-toolkit/parser"
 import { findAgentflowKeptLines } from "./agentflow-kept-lines.ts"
-import { findErKeptLines } from "./er-kept-lines.ts"
+import { findErKeptLines, followsSplitKeyword } from "./er-kept-lines.ts"
 import { findFlowchartKeptLines } from "./flowchart-kept-lines.ts"
 import type { KeptLines } from "./kept-lines.ts"
 import { lineEndOf, lineStartOf } from "./kept-lines.ts"
@@ -56,7 +56,12 @@ interface QuoteRule {
    * does not separate from it, would join a text without quotes into a longer
    * name, or make the field another unit in the form that it would be given.
    */
-  readonly joins?: (before: string, after: string) => boolean
+  readonly joins?: (
+    before: string,
+    after: string,
+    source: Source,
+    start: number,
+  ) => boolean
   /**
    * The characters that stand at the two ends of the range of the field and
    * are no part of its text, such as the brackets of a label. The quotes go
@@ -92,6 +97,20 @@ function bare(text: Bare, options: QuoteOptions = {}): QuoteRule {
 /** A field that the examples write in quotes. */
 function quoted(text: Bare, options: QuoteOptions = {}): QuoteRule {
   return { form: "quoted", text, ...options }
+}
+
+/**
+ * Whether the name follows `end` or `subgraph` so that a version that counts
+ * reads both as one name, so the name without quotes would join the keyword
+ * (docs/er.md, Statements one per line).
+ */
+function followsKeywordAsOneName(
+  _before: string,
+  _after: string,
+  source: Source,
+  start: number,
+): boolean {
+  return followsSplitKeyword(source, start)
 }
 
 /**
@@ -1208,9 +1227,13 @@ const quoteRules: Readonly<
   KanbanShape: { label: bare(shapeText, { joins: nextToDash }) },
   MindmapShape: { label: bare(shapeText, { joins: nextToDash }) },
   ErEntityReference: { name: bare(erName) },
-  ErEntityStatement: { name: bare(erName) },
+  ErEntityStatement: {
+    name: bare(erName, { joins: followsKeywordAsOneName }),
+  },
   ErRelationshipStatement: { role: bare(erName) },
-  ErSubgraphStatement: { id: bare(erName) },
+  ErSubgraphStatement: {
+    id: bare(erName, { joins: followsKeywordAsOneName }),
+  },
   QuadrantAxisStatement: {
     end: bare(quadrantLabel),
     start: bare(quadrantLabel),
@@ -1605,6 +1628,8 @@ function respell(
     rule.joins?.(
       source.text.slice(line, start),
       source.text.slice(textEnd, lineEndOf(source, textEnd)),
+      source,
+      start,
     ) !== true &&
     !isKept(source, start)
   ) {

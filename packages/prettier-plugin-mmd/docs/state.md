@@ -309,15 +309,31 @@ stateDiagram-v2
 
 Each statement stands on a line of its own, as in the other diagram types.
 Nothing separates statements in a state diagram, and statements written on one
-line, as in `A --> B C --> D`, are moved to lines of their own; so is an empty
-description block after a click statement. [corpus fixture:
+line, as in `A --> B C --> D`, are moved to lines of their own. [fixture:
+statements-one-per-line/states] [fixture:
+statements-one-per-line/split-then-comment] [fixture:
+statements-one-per-line/split-with-directive-between] Two cases stay on their
+line as written, since the oldest versions that count read the rest of the line
+as a comment or as a part of the statement (see
+[Forms kept for versions of mermaid.js that count](./compatibility.md#forms-kept-for-versions-of-mermaidjs-that-count)):
+a `%` state at the top level with whitespace and more text after it on its line,
+and a `click` statement with another statement after it on its line.
+`% not a comment` is the states `%`, `not`, `a`, and `comment` to the pinned
+version, and a comment to those versions; a `%` inside the braces of a composite
+state is read the same by every version that counts, and its states go to lines
+of their own. `click A href "u" accDescr {}` is a click and an empty description
+block to the pinned version, and a click that holds the rest of the line to the
+oldest version that counts. Directives on the line change nothing, since
+mermaid.js removes them before it reads the text: `%%%{init: {}}%% a` is read as
+`% a`. [fixture: statements-one-per-line/percent-then-text-kept] [fixture:
+statements-one-per-line/percent-and-click-directive-then-text-kept] [fixture:
+statements-one-per-line/percent-in-braces-split] [fixture:
+statements-one-per-line/split] [corpus fixture:
 state/gram-click-after-empty-description-block] [corpus fixture:
-state/gram-click-empty-description-block-after] [fixture:
-statements-one-per-line/split] [fixture: statements-one-per-line/states]
-[fixture: statements-one-per-line/split-then-comment] [fixture:
-statements-one-per-line/split-with-directive-between] The names after `state`
-stay on the line of `state`: `state a b` is two statements, and on a line of its
-own `b` would add the state b, which `state a b` does not. [corpus fixture:
+state/gram-click-empty-description-block-after] [corpus fixture:
+state/spec-state-style-9ceea0dd] The names after `state` stay on the line of
+`state`: `state a b` is two statements, and on a line of its own `b` would add
+the state b, which `state a b` does not. [corpus fixture:
 state/lex-state-without-body] The same holds for the `""` that mermaid.js does
 not read in `state x "" y` and `state z ""`. [fixture:
 statements-one-per-line/state-names-kept] A line that holds a kept `;` keeps its
@@ -352,8 +368,7 @@ stateDiagram-v2
   [*]
   x
   A
-  click A href "https://example.com"
-  accDescr {}
+  click A href "https://example.com" accDescr {}
 ```
 
 Input

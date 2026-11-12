@@ -355,15 +355,22 @@ er/gram-empty-description-block-between-names] A directive between two
 statements stands with the statement after it. [fixture:
 statements-one-per-line/directive-after-statement]
 
-Two cases keep their statements on one line. The entity `1` followed right after
-by another statement or by the `end` of its subgraph, with no whitespace between
-them or with only directives, stays as it is: `1a` is the entities `1` and `a`,
-while `1` and a letter on two lines, or with whitespace between them, are the
-cardinality `only-one` and a name (diagrams/er.md, The cardinalities, numbers,
-and relationship lines, rule 11). Any other number is split from the statement
-after it. The line of such an entity is printed as written, and so is a subgraph
-that ends on it, from its header to its `end`, without the indentation of a
-level for its lines. [fixture:
+Some cases keep their statements on one line. The entity `1` followed right
+after by another statement or by the `end` of its subgraph, with no whitespace
+between them or with only directives, stays as it is: `1a` is the entities `1`
+and `a`, while `1` and a letter on two lines, or with whitespace between them,
+are the cardinality `only-one` and a name (diagrams/er.md, The cardinalities,
+numbers, and relationship lines, rule 11). An entity named by a number of two
+digits or more stays on its line with a character that continues a name right
+after it (a letter, `_`, `-`, `*`, or a character outside ASCII): `12a` is the
+entities `12` and `a` to the pinned version, and one name to some versions that
+count, which draw the two lines differently (see
+[Forms kept for versions of mermaid.js that count](./compatibility.md#forms-kept-for-versions-of-mermaidjs-that-count)).
+Directives between the number and that character change nothing, since
+mermaid.js removes the directives before it reads the text. Any other number,
+such as `2.5x`, is split from the statement after it. The line of such an entity
+is printed as written, and so is a subgraph that ends on it, from its header to
+its `end`, without the indentation of a level for its lines. [fixture:
 statements-one-per-line/number-name-then-name-kept] [fixture:
 statements-one-per-line/number-name-before-uppercase] [fixture:
 statements-one-per-line/number-name-before-non-ascii] [fixture:
@@ -371,10 +378,36 @@ statements-one-per-line/number-name-in-subgraph-kept] [fixture:
 statements-one-per-line/number-name-before-end-kept] [fixture:
 statements-one-per-line/number-name-before-directive-kept] [fixture:
 statements-one-per-line/number-name-then-name-split] [corpus fixture:
-er/lex-name-number-then-letter] And a line that holds a kept `;` keeps its
-statements together: the line rule of mermaid.js reads the text of a line, and
-moving text to another line changes which line matches the rule and which `;` it
-ignores (see [Styles and classes](#styles-and-classes)). [fixture:
+er/lex-name-number-then-letter] [corpus fixture:
+er/lex-name-number2-then-letter] A `subgraph` keyword with a character outside
+ASCII, or a U+2028 or U+2029, between it and its name stays as written, and so
+does the statement after an `end` that such a character or separator follows,
+which stays on the line of the `end` with the gap as written: `endé` is the
+keyword `end` and the entity `é` to the pinned version, and one name to some
+versions that count. A U+2028 or U+2029 that ends the line of an `end` stays,
+and a line that starts with one and holds several statements is printed as
+written. A name in quotes that follows such an `end` keeps its quotes.
+Directives between the keyword and what follows it change none of this, whether
+they stand before the U+2028 or U+2029 or touch the character outside ASCII.
+[fixture: statements-one-per-line/end-then-name-outside-ascii-kept] [fixture:
+statements-one-per-line/subgraph-then-name-outside-ascii-kept] [fixture:
+statements-one-per-line/end-directive-then-name-outside-ascii-kept] [fixture:
+statements-one-per-line/subgraph-directive-then-name-outside-ascii-kept] [corpus
+fixture: er/lex-keyword-end-then-e-acute] [corpus fixture:
+er/lex-keyword-subgraph-then-e-acute] [corpus fixture:
+er/db-subgraph-direction-after-nested-end-line-separator] [test: U+2028 between
+the end of an ER subgraph and the next entity] [test: a directive between the
+end of an ER subgraph and a U+2028] [test: a directive between the end of an ER
+subgraph and a U+2029 and a name in quotes] [test: a directive between the
+keyword of an ER subgraph and a U+2028] [test: a directive between an ER number
+name and a U+2028] A line of several attributes with a `~` in it is printed as
+written, since the oldest version that counts reads the `~` of a generic type
+from the start of the line. [fixture:
+attribute-spacing/attributes-with-tilde-on-one-line-kept] [corpus fixture:
+er/lex-tilde-after-quoted] And a line that holds a kept `;` keeps its statements
+together: the line rule of mermaid.js reads the text of a line, and moving text
+to another line changes which line matches the rule and which `;` it ignores
+(see [Styles and classes](#styles-and-classes)). [fixture:
 statements-one-per-line/semicolon-line-kept] [fixture:
 statements-one-per-line/ignored-semicolon-line-kept] The `}` of an attribute
 block or the `end` of a subgraph on such a line, with a statement after it on
@@ -449,8 +482,7 @@ erDiagram
   1a
   1"x"
   B
-  12
-  a
+  12a
 ```
 
 ### Blank lines

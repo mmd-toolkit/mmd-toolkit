@@ -19,7 +19,7 @@ import {
   printClosedBlock,
   printDiagramBlock,
 } from "./blocks.ts"
-import { findErKeptLines } from "./er-kept-lines.ts"
+import { findErKeptLines, followsSplitKeyword } from "./er-kept-lines.ts"
 import {
   classifyErStatement,
   findAttributeBraces,
@@ -32,6 +32,7 @@ import {
   layoutSubgraphOpening,
 } from "./er-layout.ts"
 import { expectToken, layoutKeywordHeader, toAsciiLowerCase } from "./layout.ts"
+import { lineEndOf } from "./kept-lines.ts"
 import { indentationOf, printAsWritten } from "./lines.ts"
 import { narrowPath } from "./paths.ts"
 import type { Source } from "./source.ts"
@@ -204,10 +205,28 @@ function printSubgraph(
   return printClosedBlock(
     header,
     block,
-    printedToken(source, closing),
+    [
+      printedToken(source, closing),
+      trailingSeparators(source, closing.range[1]),
+    ],
     depth,
     options,
   )
+}
+
+/**
+ * The U+2028 and U+2029 that end the line of the `end` of a subgraph, from the
+ * end of the keyword to the last of them, as written, or nothing where
+ * another statement follows on the line: `end` followed by a U+2028 is the
+ * keyword to the pinned lexer, and one name to a version that counts
+ * (docs/er.md, Line separators).
+ */
+function trailingSeparators(source: Source, from: number): string {
+  const rest = source.text.slice(from, lineEndOf(source, from))
+  const last = Math.max(rest.lastIndexOf("\u2028"), rest.lastIndexOf("\u2029"))
+  return last === -1 || rest.slice(last + 1).trim() !== ""
+    ? ""
+    : rest.slice(0, last + 1)
 }
 
 /**
@@ -285,7 +304,8 @@ function statementBlockRules(source: Source): BlockRules<ErStatement> {
       )
     },
     writtenGapBefore: (statement) =>
-      touchesKeywordWithDash(source, statement.range[0]),
+      touchesKeywordWithDash(source, statement.range[0]) ||
+      followsSplitKeyword(source, statement.range[0]),
     isDroppedAtTopLevel: () => false,
     keepsWhitespaceLineAfterComment: false,
     keepsDirectiveLinesUnindented: false,

@@ -28,12 +28,16 @@ ishikawa/header/header-lowercase] [fixture: ishikawa/header/header-valid]
 [fixture: ishikawa/header/header-beta] Exterior padding disappears; a failed
 beta boundary leaves its suffix with the root, and attached trivia follows the
 rules below. [fixture: ishikawa/header/header-beta-fallback] A root that starts
-with `-beta` and touches the header (`ishikawa-beta-beta` has the header
-`ishikawa-beta` and the root `-beta`) goes to a line of its own, so the short
-header cannot be read as the long one. Where the root stays on the line of the
-header, because the indentation of the nodes is kept as written, the header
-stays as written too. [fixture: ishikawa/header/header-beta-then-beta-root]
-[fixture: ishikawa/header/header-beta-then-beta-root-kept]
+with the word `-beta` right after the header, with at most directives between
+them, which mermaid.js removes before it reads the header (`ishikawa-beta-beta`
+has the header `ishikawa-beta` and the root `-beta`), goes to a line of its own,
+so the short header cannot be read as the long one. Where the root stays on the
+line of the header, because the indentation of the nodes is kept as written or a
+directive touches it, the header stays as written too. A root such as `-betax`
+or `-x` is no such word, and the header is shortened. [fixture:
+ishikawa/header/header-beta-then-beta-root] [fixture:
+ishikawa/header/header-beta-then-beta-root-kept] [fixture:
+ishikawa/header/header-beta-directive-then-beta-root-kept]
 
 Input (escaped):
 

@@ -8,7 +8,13 @@ import {
 } from "./kept-lines.ts"
 import { layoutCompactEmptyDescriptionBlock, walk } from "./layout.ts"
 import type { Source } from "./source.ts"
-import { findStructuralToken, isWhitespace } from "./source.ts"
+import {
+  findStructuralToken,
+  isAtLineEnd,
+  isWhitespace,
+  skipDirectives,
+  skipSpacesAndTabs,
+} from "./source.ts"
 
 /** The lines that hold a `;`, of each source, found once per source. */
 const semicolonLinesBySource = new WeakMap<Source, ReadonlySet<number>>()
@@ -50,6 +56,7 @@ export function findStateKeptLines(source: Source): KeptLines {
     verbatim: new Set([
       ...findLineSeparatorLines(source),
       ...findLinesEndedBySemicolon(source),
+      ...findLinesReadAsCommentsByOlderVersions(source, diagramOf(source).body),
     ]),
     ownIndentation: findLinesStartingWithSeparator(source),
   }
@@ -126,6 +133,80 @@ function findLinesStartingWithSeparator(source: Source): ReadonlySet<number> {
         break
       }
       offset++
+    }
+  }
+  return lines
+}
+
+/**
+ * The lines on which a version that counts reads the text after a statement
+ * as a comment or as a part of it, which the formatter prints as written
+ * (docs/state.md, Statements one per line):
+ *
+ * - A `%` state at the top level, with whitespace and more text after it on
+ *   its line: `% not a comment` is the states `%`, `not`, `a`, and `comment`
+ *   to the pinned lexer, and a comment to the oldest versions that count, so
+ *   the states cannot be moved to lines of their own. A `%` inside braces is
+ *   read the same by every version that counts.
+ * - A `click` statement with another statement after it on its line:
+ *   `click A href "u" accDescr {}` is a click and an empty description block
+ *   to the pinned lexer, and a click whose address holds the rest of the line
+ *   to the oldest version that counts.
+ */
+function findLinesReadAsCommentsByOlderVersions(
+  source: Source,
+  statements: readonly StateStatement[],
+  topLevel = true,
+): number[] {
+  const lines: number[] = []
+
+  /**
+   * Whether spaces or tabs and more text follow the offset on its line.
+   * mermaid.js removes the directives before it reads the text, so they are
+   * neither the text nor a separation.
+   */
+  function textFollows(offset: number): boolean {
+    let position = offset
+    let separated = false
+    for (;;) {
+      const afterDirectives = skipDirectives(source, position)
+      const afterBlanks = skipSpacesAndTabs(
+        source,
+        afterDirectives,
+        source.text.length,
+      )
+      if (afterBlanks > afterDirectives) separated = true
+      if (afterBlanks === position) break
+      position = afterBlanks
+    }
+    return separated && !isAtLineEnd(source, position)
+  }
+
+  for (const statement of statements) {
+    if (
+      topLevel &&
+      statement.type === "StateDefinitionStatement" &&
+      statement.description === null &&
+      source.text.slice(...statement.reference.range) === "%" &&
+      textFollows(statement.range[1])
+    ) {
+      lines.push(lineStartOf(source, statement.range[0]))
+    }
+    if (
+      statement.type === "StateClickStatement" &&
+      textFollows(statement.range[1])
+    ) {
+      lines.push(lineStartOf(source, statement.range[0]))
+    }
+    if (
+      (statement.type === "StateCompositeStatement" ||
+        statement.type === "StateAliasDefinitionStatement") &&
+      statement.body !== null
+    ) {
+      appendItems(
+        lines,
+        findLinesReadAsCommentsByOlderVersions(source, statement.body, false),
+      )
     }
   }
   return lines

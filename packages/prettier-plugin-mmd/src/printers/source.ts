@@ -147,6 +147,21 @@ export function skipSpacesAndTabs(
 }
 
 /**
+ * The offset after the directives that start at `offset`, or `offset` where
+ * none starts there. mermaid.js removes the directives before it reads the
+ * text, so the character that lies after them is the one that follows the
+ * text before them.
+ */
+export function skipDirectives(source: Source, offset: number): number {
+  let position = offset
+  for (;;) {
+    const trivia = findTriviaBetween(source, position, position + 1).at(0)
+    if (trivia?.type !== "Directive") return position
+    position = trivia.range[1]
+  }
+}
+
+/**
  * The length of the line terminator that starts at `offset`: 2 for `\r\n`, 1
  * for a lone `\r` or `\n`, and 0 where none starts.
  */
