@@ -124,20 +124,23 @@ Correctness is defined by the pinned mermaid.js.
    are those published in the 18 months before the pinned version was published:
    of each major version, the smallest and the largest minor version among them,
    and of a diagram type that was added in that time, the first minor version
-   that has it, each at its latest patch. So a spelling is also kept as written
-   where the form that would be printed is not accepted by every one of these
-   versions that accepts the form that was written, or is drawn differently by
-   one of them: the name of a header (`block-beta` and `block`), which the
-   versions accept differently, the colon after the header of a gitGraph, which
-   older versions require, and the direction of the header of a flowchart (`TB`
-   and `TD`), which the versions before 11.10.0 draw differently. The
-   CHANGELOG.md of mermaid.js, or the history of its grammar, shows which
-   version added or changed a form. The check is that formatting does not change
-   the Db. A formatting that changes the Db but not the drawing is an exception.
-   Each kind of exception has a section that defines it, with links to the code
-   of the pinned mermaid.js that shows why the drawing stays the same and the
-   result of drawing both texts, and the tests compare the Db with the
-   differences of that kind restored, one function for each kind, which
+   that has it, each at its latest patch
+   ([Versions of mermaid.js that count](packages/prettier-plugin-mmd/docs/compatibility.md#versions-of-mermaidjs-that-count)
+   lists them). So a spelling is also kept as written where the form that would
+   be printed is not accepted by every one of these versions that accepts the
+   form that was written, or is drawn differently by one of them: the name of a
+   header (`block-beta` and `block`), which the versions accept differently, the
+   space after the `[` of a flowchart label that holds a `@`
+   (`A[ user@example.com ]`), without which the versions from 11.7.0 to 12.0.0
+   reject the label, and the direction of the header of a flowchart (`TB` and
+   `TD`), which the versions before 11.10.0 draw differently. The CHANGELOG.md
+   of mermaid.js, or the history of its grammar, shows which version added or
+   changed a form. The check is that formatting does not change the Db. A
+   formatting that changes the Db but not the drawing is an exception. Each kind
+   of exception has a section that defines it, with links to the code of the
+   pinned mermaid.js that shows why the drawing stays the same and the result of
+   drawing both texts, and the tests compare the Db with the differences of that
+   kind restored, one function for each kind, which
    `packages/prettier-plugin-mmd/tests/db-comparison.ts` calls. When the pinned
    mermaid.js is updated, each exception is checked again by drawing. The kinds
    are:
