@@ -21,6 +21,7 @@ import {
 } from "./kept-lines.ts"
 import { accessibilityRules, trimTextAfterKeyword } from "./statement-rules.ts"
 import type { Source } from "./source.ts"
+import { isAtLineEnd } from "./source.ts"
 
 /**
  * The node types of a user journey whose text is a value, printed as written:
@@ -95,15 +96,6 @@ export function endsWithNeededWhitespace(statement: JourneyStatement): boolean {
     statement.score === null &&
     statement.people.length === 0 &&
     statement.textAfter === null
-  )
-}
-
-/** Whether the text ends at `offset` or a line terminator stands there. */
-function isAtLineEnd(source: Source, offset: number): boolean {
-  return (
-    offset >= source.text.length ||
-    source.text[offset] === "\n" ||
-    source.text[offset] === "\r"
   )
 }
 

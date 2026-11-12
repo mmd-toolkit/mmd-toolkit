@@ -965,15 +965,19 @@ arrow-spacing/edge-id-arrow-like-after-ignored-semicolon-runs-collapsed]
 
 An edge id after a data block touches the block: `A@{ shape: circle } e1@--> B`
 is printed `A@{ shape: circle }e1@--> B`. mermaid.js 12.3.0 reads the two forms
-the same, and draws the same figure from them, but 11.12.3, 11.13.0, 11.14.0,
-11.15.0, 11.16.1, and 12.0.0 reject the form with the space, so the touching
-form is the one that every version reads. A directive between the block and the
-edge id is removed before the text is read, so the edge id touches the directive
-too. After the closing bracket of a shape the edge id has one space
-(`A[x] e1@--> B`), since the same six versions reject `A[x]e1@--> B`. A swimlane
-diagram follows the same rule. [fixture:
+the same, and draws the same figure from them. The grammars of 11.5.0, the first
+with edge ids, to 12.2.0 have no rule for a space after a data block before an
+edge id, so they reject the form with the space; drawn in Chromium, 11.12.3,
+11.13.0, 11.14.0, 11.15.0, 11.16.1, and 12.0.0 did. The touching form is the one
+that every version reads. A directive or an ignored `;` between the block and
+the edge id is removed before the text is read, so the block, the directive or
+the `;`, and the edge id touch one another:
+`A@{ shape: circle }%%{init: {}}%%e1@--> B`. After the closing bracket of a
+shape the edge id has one space (`A[x] e1@--> B`), since the same six versions
+reject `A[x]e1@--> B`. A swimlane diagram follows the same rule. [fixture:
 arrow-spacing/edge-id-after-data-block-touches] [fixture:
 arrow-spacing/edge-id-after-data-block-directive] [fixture:
+arrow-spacing/edge-id-after-data-block-semicolon] [fixture:
 arrow-spacing/edge-id-after-data-block-touches-swimlane]
 
 Input
@@ -1145,15 +1149,19 @@ label-inner-whitespace/leading-whitespace-pipe-label-kept]
 The `@` in the first word depends on the version of mermaid.js. 12.3.0 stops the
 run of an edge id at a bracket and at `|`, so it reads `A[user@example.com]` and
 `A-->|x@|B` with the same labels as it reads them with the whitespace. The
-versions 11.12.3, 11.13.0, 11.14.0, 11.15.0, 11.16.1, and 12.0.0 do not stop it
-there: they reject the two without the whitespace and accept them with it. A
-text printed without the space would be rejected by versions that read the text
-as it is written, so the space stays after every opening, in the title of a
-subgraph, and in a flowchart, a swimlane diagram, and an agentflow diagram
-alike, with one space at the end of the label too. [fixture:
-label-inner-whitespace/leading-whitespace-at-sign-kept] [fixture:
-label-inner-whitespace/leading-whitespace-at-sign-every-shape-kept] [fixture:
-label-inner-whitespace/leading-whitespace-at-sign-swimlane-kept]
+grammars of 11.5.0, the first with edge ids, to 12.2.0 do not stop it there (the
+grammars of the tags show it), so they reject the two without the whitespace and
+accept them with it; drawn in Chromium, 11.12.3, 11.13.0, 11.14.0, 11.15.0,
+11.16.1, and 12.0.0 did. A text printed without the space would be rejected by
+versions that read the text as it is written, so the space stays after every
+opening, in the title of a subgraph, and in a flowchart, a swimlane diagram, and
+an agentflow diagram alike, with one space at the end of the label too, except
+before the closing `?]` or `=]` of a slanted shape, as above (`A[/ x@/?]` stays
+as it is). [fixture: label-inner-whitespace/leading-whitespace-at-sign-kept]
+[fixture: label-inner-whitespace/leading-whitespace-at-sign-every-shape-kept]
+[fixture:
+label-inner-whitespace/leading-whitespace-at-sign-before-question-end-kept]
+[fixture: label-inner-whitespace/leading-whitespace-at-sign-swimlane-kept]
 
 Input
 ([label-inner-whitespace/trimmed-input.mmd](../tests/fixtures/flowchart/label-inner-whitespace/trimmed-input.mmd)):

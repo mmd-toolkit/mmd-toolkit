@@ -31,6 +31,7 @@ import type {
 } from "./sequence-layout.ts"
 import {
   classifySequenceStatement,
+  findColonWhitespaceEnd,
   findTitleText,
   layoutBlockHeader,
   layoutSequenceHeader,
@@ -321,7 +322,8 @@ function sequenceBlockRules(
 /**
  * Where the printed text of a statement ends: at its last token, except for
  * a title, whose text in the Db keeps the whitespace at its end (see
- * `findTitleText`).
+ * `findTitleText`), and for a statement with an empty text, which keeps one
+ * whitespace character after its `:` (see `findColonWhitespaceEnd`).
  */
 function findSequencePrintedEnd(
   source: Source,
@@ -329,7 +331,8 @@ function findSequencePrintedEnd(
 ): number {
   const afterSemicolons = printedEndAfterSemicolons(source, statement)
   if (afterSemicolons !== undefined) return afterSemicolons
-  if (statement.type !== "SequenceTitleStatement") return statement.range[1]
+  if (statement.type !== "SequenceTitleStatement")
+    return findColonWhitespaceEnd(source, statement) ?? statement.range[1]
   return findTitleText(source, statement).end
 }
 

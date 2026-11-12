@@ -3062,20 +3062,24 @@ mermaid.js は引用符のないラベルの先頭の空白を取り除き、整
 [ラベルの内側の空白](./flowchart.ja.md#ラベルの内側の空白)を参照してください。
 
 `@` は、mermaid.js の版によって読み方が違います。
-12.3.0 は、辺の id の並びを括弧類と `|` で止めるので、
+flowchart では、12.3.0 は辺の id の並びを括弧類と `|` で止めるので、
 `A[user@example.com]` と `A-->|x@|B` を、空白があるときと同じに読み、
 拒否するのは `A>x@]` だけです。
-11.12.3、11.13.0、11.14.0、11.15.0、11.16.1、12.0.0 は、そこで止めないので、
+agentflow 図は 12.3.0 でも `A[x@]` を拒否します。
+辺の id を持つ最初の版 11.5.0 から 12.2.0 までの文法は、そこで止めないので、
 最初の語に `@` があるラベルは、空白がないと、形でも、`|` の間でも、
-subgraph の題でも拒否し、空白があれば読みます。
+subgraph の題でも拒否し、空白があれば読みます（タグ 11.4.1、11.5.0、12.2.0、
+12.3.0 の `flow.jison` の辺の id の規則を読みました）。
 Chromium で描くと、`A[ x@y ]`、`A-->| x@y |B`、`subgraph S[ x@y ]`、
 `A( x@y )` と、空白のない同じテキストは、10.3.1、10.9.0、11.0.0、11.4.1、
-12.3.0 では同じで、上の 6 つの版では空白のない形が拒否され、9.0.0、9.1.7、
+12.3.0 では同じで、11.12.3、11.13.0、11.14.0、11.15.0、11.16.1、
+12.0.0 では空白のない形が拒否され、9.0.0、9.1.7、
 9.4.3 では両方が拒否されました。
 空白なしで印字したテキストは、書かれたとおりのテキストを読む版に拒否されるので、
 空白は、flowchart、swimlane 図、agentflow 図のどれでも残します。
 [fixture: flowchart/label-inner-whitespace/leading-whitespace-at-sign-kept]
 [fixture: flowchart/label-inner-whitespace/leading-whitespace-at-sign-every-shape-kept]
+[fixture: flowchart/label-inner-whitespace/leading-whitespace-at-sign-before-question-end-kept]
 [fixture: flowchart/label-inner-whitespace/leading-whitespace-at-sign-swimlane-kept]
 
 ## トークンの間のディレクティブ

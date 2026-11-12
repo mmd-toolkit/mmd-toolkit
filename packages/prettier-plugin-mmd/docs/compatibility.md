@@ -2832,21 +2832,25 @@ flowchart/label-inner-whitespace/compat-leading-backslash-kept] For example,
 shape with the label `x`. See
 [Label inner whitespace](./flowchart.md#label-inner-whitespace).
 
-The `@` depends on the version of mermaid.js. 12.3.0 stops the run of an edge id
-at a bracket and at `|`, so it reads `A[user@example.com]` and `A-->|x@|B` as it
-reads them with the whitespace, and rejects only `A>x@]`. 11.12.3, 11.13.0,
-11.14.0, 11.15.0, 11.16.1, and 12.0.0 do not stop it there: they reject a label
-whose first word has a `@` without the whitespace, in a shape, between `|`, and
-in the title of a subgraph, and read it with the whitespace. Drawn in Chromium,
-`A[ x@y ]`, `A-->| x@y |B`, `subgraph S[ x@y ]`, and `A( x@y )` and the same
-texts without the spaces were the same in 10.3.1, 10.9.0, 11.0.0, 11.4.1, and
-12.3.0, rejected in the form without the spaces by the six versions above, and
-rejected in both forms by 9.0.0, 9.1.7, and 9.4.3. A text printed without the
-space would be rejected by versions that read the text as it is written, so the
-space is kept in a flowchart, a swimlane diagram, and an agentflow diagram
-alike. [fixture:
+The `@` depends on the version of mermaid.js. In a flowchart, 12.3.0 stops the
+run of an edge id at a bracket and at `|`, so it reads `A[user@example.com]` and
+`A-->|x@|B` as it reads them with the whitespace, and rejects only `A>x@]`; an
+agentflow diagram rejects `A[x@]` in 12.3.0 too. The grammars of 11.5.0, the
+first with edge ids, to 12.2.0 do not stop the run there (the rule of the edge
+id in `flow.jison` of the tags 11.4.1, 11.5.0, 12.2.0, and 12.3.0 was read), so
+they reject a label whose first word has a `@` without the whitespace, in a
+shape, between `|`, and in the title of a subgraph, and read it with the
+whitespace. Drawn in Chromium, `A[ x@y ]`, `A-->| x@y |B`, `subgraph S[ x@y ]`,
+and `A( x@y )` and the same texts without the spaces were the same in 10.3.1,
+10.9.0, 11.0.0, 11.4.1, and 12.3.0, rejected in the form without the spaces by
+11.12.3, 11.13.0, 11.14.0, 11.15.0, 11.16.1, and 12.0.0, and rejected in both
+forms by 9.0.0, 9.1.7, and 9.4.3. A text printed without the space would be
+rejected by versions that read the text as it is written, so the space is kept
+in a flowchart, a swimlane diagram, and an agentflow diagram alike. [fixture:
 flowchart/label-inner-whitespace/leading-whitespace-at-sign-kept] [fixture:
 flowchart/label-inner-whitespace/leading-whitespace-at-sign-every-shape-kept]
+[fixture:
+flowchart/label-inner-whitespace/leading-whitespace-at-sign-before-question-end-kept]
 [fixture:
 flowchart/label-inner-whitespace/leading-whitespace-at-sign-swimlane-kept]
 

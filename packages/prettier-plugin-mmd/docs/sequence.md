@@ -646,9 +646,17 @@ documentation of mermaid.js writes a sequence diagram, also next to a directive,
 which is placed as under [Directives](#directives). [fixture: colons/spaced]
 [fixture: colons/other-statements-spaced] [fixture:
 colons/directive-around-colon] mermaid.js reads the text without the whitespace
-at its ends. When the text is empty, nothing follows the `:`. [fixture:
-colons/spaced] [fixture: colons/empty-text] A line break after the `:` of
-`accTitle` is whitespace for mermaid.js, so the next line is its text: an
+at its ends. When the text is empty, nothing follows the `:`, except that one
+whitespace character stays, the first one as written, where whitespace followed
+the `:` and nothing else but a `;` that the printer drops: `A->>B: ` is a
+message with an empty text, while mermaid.js before 11.7.0 rejects `A->>B:` (the
+text rule of the grammar of 11.6.0 needs a character at least, and that of
+11.7.0 does not), and so it rejects a note and a `links`, `link`, `properties`,
+or `details` statement the same way. Parsed in Chromium, 9.0.0, 9.1.7, 9.4.3,
+10.3.1, 10.9.0, 11.0.0, and 11.4.1 rejected the text without that character, and
+11.12.3 to 12.3.0 read both. [fixture: colons/spaced] [fixture:
+colons/empty-text] [fixture: colons/whitespace-only-text] A line break after the
+`:` of `accTitle` is whitespace for mermaid.js, so the next line is its text: an
 `accTitle:` with no text cannot stand before another statement. [fixture:
 colons/acc-title-colon-line-break]
 

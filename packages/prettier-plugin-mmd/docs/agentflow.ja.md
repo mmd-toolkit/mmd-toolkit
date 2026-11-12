@@ -452,11 +452,14 @@ agentflowの矢印は`-->`、`--x`、`-.-`とその延長形だけです。
 vertex 文は、矢印が読む空白を除き、データブロックの後に空白を取りません。
 そのため`A@{ shape: rect }e1@-->B`は受理され、
 `A@{ shape: rect } e1@-->B`は拒否されます。
-ブロックと辺IDの間にディレクティブがあるときは、
-テキストを読む前にディレクティブが取り除かれるので、
-辺IDはディレクティブにも接します。
+ブロックと辺IDの間にディレクティブか、行の規則が無視する `;` があるときは、
+テキストを読む前にそれが取り除かれるので、ブロック、ディレクティブか `;`、
+辺IDは互いに接します。
+`A@{ shape: rect }%%{x}%%e1@-->B` は `A@{ shape: rect }%%{x}%%e1@--> B`
+と印字し、`A@{ shape: rect };e1@-->B` の `;` もブロックと辺IDに接したままです。
 [fixture: arrows/edge-id-after-data-block-touches]
 [fixture: arrows/edge-id-after-data-block-directive]
+[fixture: arrows/edge-id-after-data-block-semicolon]
 矢印の始まりと同じ形の辺IDは、前の形かデータブロックに接します。
 たとえば`A["x"]--a@-->B`です。
 agentflowでは、`--`、`-.-`、`-..-`で始まる辺IDがそれに当たります。

@@ -1008,17 +1008,22 @@ flowchart LR
 
 データブロックの後の辺の id は、ブロックに接します。
 `A@{ shape: circle } e1@--> B` は `A@{ shape: circle }e1@--> B` と印字します。
-mermaid.js 12.3.0 は、この 2 つの形を同じに読み、同じ図を描きますが、11.12.3、
-11.13.0、11.14.0、11.15.0、11.16.1、12.0.0 は、空白のある形を拒否するので、
+mermaid.js 12.3.0 は、この 2 つの形を同じに読み、同じ図を描きます。
+辺の id を持つ最初の版 11.5.0 から 12.2.0 までの文法には、
+データブロックの後で辺の id の前の空白を許す規則がないので、
+空白のある形を拒否します。
+Chromium で描くと、11.12.3、11.13.0、11.14.0、11.15.0、11.16.1、
+12.0.0 がそうでした。
 接する形が、すべての版で読める形です。
-ブロックと辺の id の間にディレクティブがあるときは、
-テキストを読む前にディレクティブが取り除かれるので、
-辺の id はディレクティブにも接します。
+ブロックと辺の id の間にディレクティブか、行の規則が無視する `;` があるときは、
+テキストを読む前にそれが取り除かれるので、ブロック、ディレクティブか `;`、
+辺の id は互いに接します（`A@{ shape: circle }%%{init: {}}%%e1@--> B`）。
 形の閉じ括弧の後の辺の id には空白が 1 つあります（`A[x] e1@--> B`）。
 同じ 6 つの版が `A[x]e1@--> B` を拒否するからです。
 swimlane 図も同じ規則です。
 [fixture: arrow-spacing/edge-id-after-data-block-touches]
 [fixture: arrow-spacing/edge-id-after-data-block-directive]
+[fixture: arrow-spacing/edge-id-after-data-block-semicolon]
 [fixture: arrow-spacing/edge-id-after-data-block-touches-swimlane]
 
 入力
@@ -1198,14 +1203,20 @@ mermaid.js が、その空白と `?` や `=` をテキストとして読むか�
 12.3.0 は、辺の id の並びを括弧類と `|` で止めるので、
 `A[user@example.com]` と `A-->|x@|B` を、
 空白があるときと同じラベルとして読みます。
-11.12.3、11.13.0、11.14.0、11.15.0、11.16.1、12.0.0 は、そこで止めず、
-空白がないこの 2 つを拒否し、空白がある形は受け入れます。
+辺の id を持つ最初の版 11.5.0 から 12.2.0 までの文法は、そこで止めないので、
+空白がないこの 2 つを拒否し、
+空白がある形は受け入れます（タグの文法で確かめました）。
+Chromium で描くと、11.12.3、11.13.0、11.14.0、11.15.0、11.16.1、
+12.0.0 がそうでした。
 空白なしで印字したテキストは、書かれたとおりのテキストを読む版に拒否されるので、
 空白は残します。
 どの形でも、subgraph の題でも、flowchart、swimlane 図、
 agentflow 図のどれでも同じで、ラベルの末尾にも空白 1 つを置きます。
+ただし、
+斜めの形の閉じの `?]` と `=]` の前には置きません（`A[/ x@/?]` はそのままです）。
 [fixture: label-inner-whitespace/leading-whitespace-at-sign-kept]
 [fixture: label-inner-whitespace/leading-whitespace-at-sign-every-shape-kept]
+[fixture: label-inner-whitespace/leading-whitespace-at-sign-before-question-end-kept]
 [fixture: label-inner-whitespace/leading-whitespace-at-sign-swimlane-kept]
 
 入力

@@ -145,11 +145,12 @@ export function addLinkRules(
 /**
  * Adds the rule that the edge id of a link touches the data block before it:
  * `A@{ shape: circle }e1@--> B`, not `A@{ shape: circle } e1@--> B`
- * (docs/flowchart.md, Arrow spacing; docs/agentflow.md, Arrows). A vertex
- * statement takes no whitespace after a data block but the one that an arrow
- * reads. mermaid.js 12.3.0 reads both forms the same in a flowchart, but
- * 11.12.3 to 12.0.0 reject the form with the space, and the agentflow diagram
- * rejects it in every version. Call it after the rules of the links are set.
+ * (docs/flowchart.md, Arrow spacing; docs/agentflow.md, Arrows). mermaid.js
+ * 12.3.0 reads both forms the same in a flowchart, but the grammars of 11.5.0
+ * to 12.2.0 have no rule for a space after a data block before an edge id, and
+ * the agentflow diagram rejects it in every version. A directive or an ignored
+ * `;` between them is removed before the text is read, so the edge id touches
+ * it too. Call it after the rules of the links are set.
  */
 export function addEdgeIdAfterDataBlockRules(
   source: Source,
@@ -261,7 +262,7 @@ export function labelEdgeRule(source: Source, label: GraphLabel): GapRule {
  *   because `A>x@` is read as an edge id, and `A> x@]` has the label `x@`.
  *   mermaid.js 12.3.0 stops the run of an edge id at the other brackets and
  *   at `|`, so it reads `A[x@]` and `A-->|x@|B` as it reads them with the
- *   whitespace. 11.12.3 to 12.0.0 do not stop it there and reject them, and
+ *   whitespace. 11.5.0 to 12.2.0 do not stop it there and reject them, and
  *   the formatted text is drawn by those versions too (docs/compatibility.md,
  *   Whitespace at the start of a label).
  *

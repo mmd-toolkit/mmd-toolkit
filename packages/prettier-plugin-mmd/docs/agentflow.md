@@ -419,10 +419,14 @@ arrows/three-kinds]
 An edge id after a data block touches it: a vertex statement takes no whitespace
 after a data block except the one that an arrow reads, so
 `A@{ shape: rect }e1@-->B` is accepted and `A@{ shape: rect } e1@-->B` is
-rejected. A directive between the block and the edge id is removed before the
-text is read, so the edge id touches the directive too. [fixture:
+rejected. A directive or an ignored `;` between the block and the edge id is
+removed before the text is read, so the block, the directive or the `;`, and the
+edge id touch one another: `A@{ shape: rect }%%{x}%%e1@-->B` is printed
+`A@{ shape: rect }%%{x}%%e1@--> B`, and `A@{ shape: rect };e1@-->B` keeps its
+`;` against the block and the edge id. [fixture:
 arrows/edge-id-after-data-block-touches] [fixture:
-arrows/edge-id-after-data-block-directive] An edge id that starts as an arrow
+arrows/edge-id-after-data-block-directive] [fixture:
+arrows/edge-id-after-data-block-semicolon] An edge id that starts as an arrow
 does touches the shape or the data block before it, as in `A["x"]--a@-->B`. In
 agentflow that is an edge id that starts with `--`, `-.-`, or `-..-`; one such
 as `x--a`, `==a`, `-.a`, or `.-a` is read the same after whitespace, and has one

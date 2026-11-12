@@ -123,6 +123,15 @@ export function isSpaceOrTab(character: string): boolean {
   return character === " " || character === "\t"
 }
 
+/** Whether the text ends at `offset` or a line terminator stands there. */
+export function isAtLineEnd(source: Source, offset: number): boolean {
+  return (
+    offset >= source.text.length ||
+    source.text[offset] === "\n" ||
+    source.text[offset] === "\r"
+  )
+}
+
 /**
  * The offset of the first character from `start` on that is no space and no
  * tab, or `end` where the range holds nothing else.

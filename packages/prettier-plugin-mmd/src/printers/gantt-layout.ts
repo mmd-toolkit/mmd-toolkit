@@ -36,6 +36,7 @@ import type { Source } from "./source.ts"
 import {
   findTokenEndingBefore,
   findTokensBetween,
+  isAtLineEnd,
   isSpaceOrTab,
 } from "./source.ts"
 
@@ -160,15 +161,6 @@ export function endsWithNeededWhitespace(
     default:
       return false
   }
-}
-
-/** Whether the text ends at `offset` or a line terminator stands there. */
-function isAtLineEnd(source: Source, offset: number): boolean {
-  return (
-    offset >= source.text.length ||
-    source.text[offset] === "\n" ||
-    source.text[offset] === "\r"
-  )
 }
 
 /**

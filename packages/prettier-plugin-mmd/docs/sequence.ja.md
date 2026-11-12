@@ -683,8 +683,18 @@ mermaid.js の文書の sequence 図の書き方と同じです。
 [fixture: colons/spaced] [fixture: colons/other-statements-spaced]
 [fixture: colons/directive-around-colon]
 mermaid.js はテキストを両端の空白を除いて読みます。
-テキストが空のときは、`:` の後に何も置きません。 [fixture: colons/spaced]
-[fixture: colons/empty-text]
+テキストが空のときは、`:` の後に何も置きません。
+ただし、`:` の後に空白だけがあり、その後に書かれているものが、
+整形ツールが落とす `;` だけのときは、
+空白を 1 文字（書かれた最初の文字）残します。
+`A->>B: ` はテキストが空のメッセージですが、
+11.7.0 より前の mermaid.js は `A->>B:` を拒否するからです（11.6.0
+の文法のテキストの規則は 1 文字以上を要り、11.7.0 の規則は要りません）。
+ノートと `links`・`link`・`properties`・`details` の文も同じです。
+Chromium で解析すると、9.0.0、9.1.7、9.4.3、10.3.1、10.9.0、11.0.0、11.4.1 は、
+その文字のない形を拒否し、11.12.3 から 12.3.0 までは両方を読みました。
+[fixture: colons/spaced] [fixture: colons/empty-text]
+[fixture: colons/whitespace-only-text]
 `accTitle` の `:` の後の改行は、mermaid.js にとって空白なので、
 次の行がそのテキストになります。
 テキストのない `accTitle:` は、ほかの文の前には書けません。

@@ -35,6 +35,8 @@ import {
   findStructuralToken,
   findTokenStartingAt,
   findTriviaBetween,
+  isAtLineEnd,
+  isSpaceOrTab,
   isWhitespace,
 } from "./source.ts"
 
@@ -398,6 +400,40 @@ export function findTitleText(
   throw new Error(
     `prettier-plugin-mmd: no whitespace between the keyword of the title at offset ${statement.range[0]} and its text`,
   )
+}
+
+/**
+ * The end of the statement together with the whitespace character that stays
+ * after its `:` when no text follows it, or null when no whitespace stays:
+ * `A->>B: ` is a message with an empty text, while mermaid.js before 11.7.0
+ * rejects `A->>B:`, since its text rule needs a character at least. The
+ * whitespace is outside the range of the statement, and its first character
+ * is printed as written, as in a task of a Gantt chart or a user journey
+ * (docs/sequence.md, Colons). It stays only where the line ends after it or a
+ * `;` follows, which the printer drops: a comment or a directive after it is
+ * placed as under Directives.
+ */
+export function findColonWhitespaceEnd(
+  source: Source,
+  statement: SequenceStatement,
+): number | null {
+  switch (statement.type) {
+    case "SequenceMessageStatement":
+    case "SequenceNoteStatement":
+    case "SequenceLinksStatement":
+    case "SequenceLinkStatement":
+    case "SequencePropertiesStatement":
+    case "SequenceDetailsStatement":
+      break
+    default:
+      return null
+  }
+  if (statement.text !== null) return null
+  const start = statement.range[1]
+  if (!isSpaceOrTab(source.text[start])) return null
+  let end = start
+  while (isSpaceOrTab(source.text[end])) end++
+  return isAtLineEnd(source, end) || source.text[end] === ";" ? start + 1 : null
 }
 
 /** The gap rules of a statement: around its arrow, its `,`, and its `:`. */
