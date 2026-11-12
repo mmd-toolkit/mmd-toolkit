@@ -4,9 +4,14 @@ import { util } from "prettier"
 import type { MermaidAst } from "../parser.ts"
 import { maxOf } from "./collections.ts"
 import type { KeptLines } from "./kept-lines.ts"
-import { isFirstOnItsLine, lineEndOf, lineStartOf } from "./kept-lines.ts"
+import { lineEndOf, lineStartOf } from "./kept-lines.ts"
 import type { Source } from "./source.ts"
-import { findTriviaBetween, isSpaceOrTab } from "./source.ts"
+import {
+  findTokensBetween,
+  findTriviaBetween,
+  isSpaceOrTab,
+  isStructural,
+} from "./source.ts"
 import { toAsciiLowerCase } from "./layout.ts"
 import { holdsWhiteSpaceProperty } from "./text-runs.ts"
 
@@ -61,12 +66,14 @@ const alignmentBySource = new WeakMap<Source, Alignment>()
  * as it is, since its CSS may draw the whitespace.
  *
  * A task is no part of a section's tasks where the printer prints its line as
- * written, where it runs over lines, where something stands before it on its
- * line, or where its name ends with a directive. A section where a name holds a
- * tab is left as it is: a tab reaches the next tab stop of the editor, so no
- * width that Prettier counts lines the colons up. The width of a name, and of
- * the rest of the line, is the width as written, so a directive in the name
- * counts, as the colons are lined up in the text.
+ * written, where it runs over lines, where it does not start its printed line
+ * (see `startsItsPrintedLine`), where its name ends with a directive, or where
+ * its name is a keyword once the directives are taken out of it. A section
+ * where a name holds a tab is left as it is: a tab reaches the next tab stop of
+ * the editor, so no width that Prettier counts lines the colons up. The width
+ * of a name, and of the rest of the task up to the next statement on its line,
+ * is the width as written, so a directive in the name counts, as the colons are
+ * lined up in the text.
  *
  * A name that touches its colon, and is in no section whose colons are moved,
  * gets one space before it: its column is one more than the width of its name.
@@ -232,10 +239,11 @@ const keywordsThatTakeText: ReadonlySet<string> = new Set([
 ])
 
 /**
- * Whether a task starts its line once the chart is printed: no comment or
- * directive stands before it on its line, and the statements before it, which
- * are printed on lines of their own, are not on a line whose statements stay
- * together (see `findGanttKeptLines`).
+ * Whether a task starts its line once the chart is printed. A statement before
+ * it on its line, with the directives and the comments around it, is printed on
+ * a line of its own, unless the line is one whose statements stay together (see
+ * `findGanttKeptLines`). With no statement before it, a comment or a directive
+ * that stands before it on the line stays on its line.
  */
 function startsItsPrintedLine(
   source: Source,
@@ -243,10 +251,28 @@ function startsItsPrintedLine(
   kept: KeptLines,
 ): boolean {
   const lineStart = lineStartOf(source, offset)
-  return (
-    findTriviaBetween(source, lineStart, offset).length === 0 &&
-    (isFirstOnItsLine(source, offset) || !kept.joined.has(lineStart))
+  if (
+    findTokensBetween(source, lineStart, offset).some((token) =>
+      isStructural(source, token),
+    )
   )
+    return !kept.joined.has(lineStart)
+  return findTriviaBetween(source, lineStart, offset).length === 0
+}
+
+/**
+ * The text of a name without its directives, which mermaid.js removes before it
+ * reads the name (docs/gantt.md, Directives).
+ */
+function withoutDirectives(source: Source, from: number, to: number): string {
+  let text = ""
+  let at = from
+  for (const item of findTriviaBetween(source, from, to)) {
+    if (item.type !== "Directive" || item.range[1] > to) continue
+    text += source.text.slice(at, item.range[0])
+    at = item.range[1]
+  }
+  return text + source.text.slice(at, to)
 }
 
 /** The row of a task whose line the printer may align, or null. */
@@ -284,12 +310,23 @@ function toRow(
   // The name is a word that starts a statement once whitespace follows it:
   // with whitespace before the colon, the line would be that statement.
   if (
-    keywordsThatTakeText.has(toAsciiLowerCase(source.text.slice(from, nameEnd)))
+    keywordsThatTakeText.has(
+      toAsciiLowerCase(withoutDirectives(source, from, nameEnd)),
+    )
   )
     return null
   const padding = source.text.slice(nameEnd, colon)
   const nameWidth = util.getStringWidth(source.text.slice(from, nameEnd))
+  // The statements after the task on its line are printed on lines of their
+  // own, unless the line is one whose statements stay together.
   let dataEnd = lineEndOf(source, colon)
+  const lineStart = lineStartOf(source, task.range[0])
+  if (!kept.joined.has(lineStart)) {
+    const next = findTokensBetween(source, task.range[1], dataEnd).find(
+      (token) => isStructural(source, token),
+    )
+    if (next !== undefined) dataEnd = next.range[0]
+  }
   while (dataEnd > colon && isSpaceOrTab(source.text[dataEnd - 1])) dataEnd--
   return {
     task,

@@ -303,7 +303,7 @@ mermaid.js にとって 2 つの説明です。
 
 名前がコロンに接しているタスクは、コロンの前に空白を 1 つ置いて印字します。
 `Short:a1` は `Short :a1` になります。
-mermaid.js の文書の例のタスク行はこの形で、44 行がコロンの前に空白を持ち、
+mermaid.js の文書の例のタスク行はこの形で、54 行がコロンの前に空白を持ち、
 コロンに接する行はありません。
 この空白は、セクションのコロンをそろえるかどうか（後述）によらず置きます。
 コロンをそろえるセクションでは、その桁までの空白になり、
@@ -388,9 +388,12 @@ Prettier が数えるどの幅でもコロンをそろえられないからで�
 - 名前がディレクティブで終わるとき。
   ディレクティブの隣の空白は、
   残すからです（[ディレクティブ](#ディレクティブ)を参照）。
-- 同じ行で、その前にコメントかディレクティブがあるとき、または、
-  まとまったままの行で、その前に文があるとき。
-  名前が行頭から始まらず、ほかのタスクとコロンがそろわないからです。
+- 印字したときに行頭にならないとき。
+  文がその前になく、ディレクティブがその前にあるとき、または、
+  まとまったままの行で、その前に文があるときです。
+  それ以外の行でその前にある文は、周りのディレクティブとともに、
+  別の行に印字されるので、タスクは行頭になります。
+  名前が行頭から始まらないと、ほかのタスクとコロンがそろいません。
   また、コロンの前の空白が、行の規則の読む所に入りえます。
   規則は、`style` や `classDef` の後の `:` より後ろの空白を読み、
   名前は `:` を含まないので、タスクのコロンより前の `:` は、
@@ -411,17 +414,21 @@ Prettier が数えるどの幅でもコロンをそろえられないからで�
 `title:T` はタスクで、`title :T` は title なので、コロンの前に空白を置きません。
 語は、`dateFormat`、`axisFormat`、`tickInterval`、`includes`、`excludes`、
 `todayMarker`、`title`、`accDescription`、`section`、`click`、`call` で、
-大文字小文字は問いません。
+大文字小文字は問わず、名前の中のディレクティブは、
+mermaid.js が読むとおり除いて比べます（`ti%%{init: {}}%%tle:T` はタスク `title`
+です）。
 詳しくは、
 [キーワードとその後に続くもの](../../spec/docs/diagrams/gantt.ja.md#文の文脈)
 を参照してください。 [fixture: task-data/colon-touching-keyword-name-kept]
+[fixture: task-data/colon-touching-keyword-name-with-directive-kept]
 
 行にあるそれ以外のものは、タスクをそろえる妨げになりません。
 名前の中やほかの場所にある `;`、コメント、名前の中やデータの後のディレクティブ、
 行の規則が読む行があっても、タスクはそろえます。
 行頭から始まるタスクの桁そろえの空白は、その行の最初の `:` より前にあり、
 規則が読むのは、その後ろの空白だけだからです。
-名前と行の残りの幅は、書かれたままの幅です。
+名前と、同じ行の次の文（別の行に印字します）の前までのタスクの残りの幅は、
+書かれたままの幅です。
 コロンをテキスト上でそろえるので、名前の中のディレクティブも幅に数え、
 データの後のコメントやディレクティブも `printWidth` に数えます。
 プラグインが数えるのは、図の行だけです。
@@ -434,6 +441,8 @@ Prettier は行の前にあるものの幅を引かずに `printWidth` をその
 を参照してください。
 [test: Gantt in a list item: the width is that of the diagram alone]
 [fixture: task-data/colon-column-name-with-semicolon]
+[fixture: task-data/colon-column-statement-after-task-moves]
+[fixture: task-data/colon-column-width-of-following-statement-ignored]
 [fixture: task-data/colon-column-style-rule-line]
 [fixture: task-data/colon-column-directive-inside-name]
 [fixture: task-data/colon-column-comment-after-data]

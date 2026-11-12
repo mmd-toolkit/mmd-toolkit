@@ -298,7 +298,7 @@ task-data/hash-and-semicolon-descriptions]
 
 A name that touches its colon is printed with one space before it: `Short:a1` is
 printed `Short :a1`. The task lines of the examples in the documentation of
-mermaid.js are written so: 44 of them have whitespace before the colon, and none
+mermaid.js are written so: 54 of them have whitespace before the colon, and none
 touches it. The space is set whether or not the printer lines up the colons of
 the section (see below). In a section whose colons it lines up, the name gets
 the space of its column, and in any other section one space, also in a section
@@ -314,8 +314,9 @@ task-data/colon-touching-name-aligned-with-padded] [fixture:
 task-data/colon-touching-name-too-wide-kept] [fixture:
 task-data/colon-touching-name-tab-in-name] [fixture:
 task-data/colon-touching-name-style-rule-line] [fixture:
-task-data/colon-touching-task-after-hash-ended-statement] [test: U+2028 before
-the colon of a task] [test: U+00A0 before the colon of a task]
+task-data/colon-touching-task-after-hash-ended-statement] [fixture:
+task-data/colon-touching-task-after-statement-with-directive-moved] [test:
+U+2028 before the colon of a task] [test: U+00A0 before the colon of a task]
 
 Where a name of a section has padding before its colon (more than one whitespace
 character, or a tab), the printer puts the colons of the section one space after
@@ -371,13 +372,15 @@ touches its colon gets no space, where the printer prints its line as written
 (see [Statements one per line](#statements-one-per-line) and the data of
 whitespace only below), where it runs over lines, where its name ends with a
 directive, since the whitespace beside a directive stays (see
-[Directives](#directives)), and where a comment or a directive, or a statement
-on a line that stays together, stands before it on its line. Its name then does
-not start the line, so its colon would not line up with the others, and the
-whitespace before its colon could lie where the line rule of mermaid.js reads
-it: the rule reads the whitespace after a `:` that follows `style` or
-`classDef`, a name holds no `:`, and so a `:` before the colon of the task can
-only come from a statement before it (see
+[Directives](#directives)), and where it does not start its printed line: a
+directive stands before it with no statement between, or a statement stands
+before it on a line that stays together. A statement before it on any other line
+is printed on a line of its own, with the directives around it, so the task then
+starts its line. Its name then does not start the line, so its colon would not
+line up with the others, and the whitespace before its colon could lie where the
+line rule of mermaid.js reads it: the rule reads the whitespace after a `:` that
+follows `style` or `classDef`, a name holds no `:`, and so a `:` before the
+colon of the task can only come from a statement before it (see
 [Statements one per line](#statements-one-per-line)). [fixture:
 task-data/colon-column-line-as-written-kept] [fixture:
 task-data/colon-column-task-over-lines-kept] [fixture:
@@ -394,28 +397,33 @@ left as written too, and the others are not aligned with it: `title:T` is a
 task, and `title :T` is a title, so no whitespace is set before its colon. The
 words are `dateFormat`, `axisFormat`, `tickInterval`, `includes`, `excludes`,
 `todayMarker`, `title`, `accDescription`, `section`, `click`, and `call`, in any
-case (see
+case, and with the directives in the name taken out, as mermaid.js reads it
+(`ti%%{init: {}}%%tle:T` is the task `title`; see
 [Keywords and what follows them](../../spec/docs/diagrams/gantt.md#the-statement-context)).
-[fixture: task-data/colon-touching-keyword-name-kept]
+[fixture: task-data/colon-touching-keyword-name-kept] [fixture:
+task-data/colon-touching-keyword-name-with-directive-kept]
 
 Nothing else on the line keeps a task from being aligned: a `;` in the name or
 elsewhere on the line, a comment, a directive inside the name or after the data,
 and a line that the line rule reads leave the task aligned, as the padding of a
 task that starts its line lies before the first `:` of the line, and the rule
 reads only the whitespace after it. The width of a name, and of the rest of the
-line, is the width as written, so a directive inside the name counts, as the
-colons are lined up in the text, and a comment or a directive after the data
-counts toward `printWidth`. The plugin counts the lines of the diagram alone: in
-a Markdown code block in a list or a block quote, Prettier passes it the
-`printWidth` as it is, without the width of what stands before the lines, so
-there the lines can be wider than `printWidth` on the screen, while `mmdfmt`
-passes the width less what it writes before the lines (see
+task, up to the next statement on its line (printed on a line of its own), is
+the width as written, so a directive inside the name counts, as the colons are
+lined up in the text, and a comment or a directive after the data counts toward
+`printWidth`. The plugin counts the lines of the diagram alone: in a Markdown
+code block in a list or a block quote, Prettier passes it the `printWidth` as it
+is, without the width of what stands before the lines, so there the lines can be
+wider than `printWidth` on the screen, while `mmdfmt` passes the width less what
+it writes before the lines (see
 [Code blocks in detail](../../mmdfmt/README.md#code-blocks-in-detail)). [test:
 Gantt in a list item: the width is that of the diagram alone] [fixture:
 task-data/colon-column-name-with-semicolon] [fixture:
 task-data/colon-column-style-rule-line] [fixture:
 task-data/colon-column-directive-inside-name] [fixture:
-task-data/colon-column-comment-after-data]
+task-data/colon-column-comment-after-data] [fixture:
+task-data/colon-column-statement-after-task-moves] [fixture:
+task-data/colon-column-width-of-following-statement-ignored]
 
 The first item touches the colon, and a `,` touches the item before it and is
 followed by one space where an item follows: whitespace around the colon and the
