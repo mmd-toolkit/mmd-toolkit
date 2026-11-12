@@ -86,37 +86,39 @@ Correctness is defined by the pinned mermaid.js.
    HTML characters) are not compared. A way of writing that draws the same is
    printed in one form; a way of writing that draws something else is kept as
    written. For a gap, the form is the one that the other diagram types print
-   for the same kind of gap. Where Prettier prints whitespace beside a
-   punctuation mark in the languages it formats, one space after a comma and on
-   each side of a `=`, the formatter prints it too wherever mermaid.js reads the
-   text the same with it, and leaves it out only where mermaid.js rejects it or
-   reads something else, as in the list of ids of a flowchart `class` statement.
-   Readability comes before the form of the documentation: where the two differ,
-   the form that is easier to read is printed, and a change that makes the
-   output follow the documentation at the cost of readability is not made. For a
-   spelling (the case of a keyword, the quotes of a string, the digits of a
-   number, the direction of a header), the form is the one that the examples in
-   the documentation of the pinned mermaid.js use at least twice as often as any
-   other; where no form is used that often, or the examples use none, the
-   spelling is kept as written. The check uses the pinned mermaid.js only, while
-   the formatted text is also drawn by other versions of mermaid.js. The
-   versions that count are those published in the 18 months before the pinned
-   version was published: of each major version, the smallest and the largest
-   minor version among them, and of a diagram type that was added in that time,
-   the first minor version that has it, each at its latest patch. So a spelling
-   is also kept as written where the form that would be printed is not accepted
-   by every one of these versions that accepts the form that was written, or is
-   drawn differently by one of them: the name of a header (`block-beta` and
-   `block`), which the versions accept differently, the colon after the header
-   of a gitGraph, which older versions require, and the direction of the header
-   of a flowchart (`TB` and `TD`), which the versions before 11.10.0 draw
-   differently. The CHANGELOG.md of mermaid.js, or the history of its grammar,
-   shows which version added or changed a form. The check is that formatting
-   does not change the Db. A formatting that changes the Db but not the drawing
-   is an exception. Each kind of exception has a section that defines it, with
-   links to the code of the pinned mermaid.js that shows why the drawing stays
-   the same and the result of drawing both texts, and the tests compare the Db
-   with the differences of that kind restored, one function for each kind, which
+   for the same kind of gap. A gap beside a comma or a `=` is the exception: the
+   formatter prints the whitespace that Prettier prints there in the languages
+   it formats, one space after a comma and one on each side of a `=`, wherever
+   every version of mermaid.js that counts (see below) reads the text the same
+   with it, and leaves it out only where mermaid.js rejects it or reads
+   something else, as in the list of ids of a flowchart `class` statement.
+   Readability comes before the form of the documentation, also where the rule
+   of spellings that follows would give that form: where the two differ, the
+   form that is easier to read is printed, and where it is unclear which form
+   reads better, ask before changing the output. For a spelling (the case of a
+   keyword, the quotes of a string, the digits of a number, the direction of a
+   header), the form is the one that the examples in the documentation of the
+   pinned mermaid.js use at least twice as often as any other; where no form is
+   used that often, or the examples use none, the spelling is kept as written.
+   The check uses the pinned mermaid.js only, while the formatted text is also
+   drawn by other versions of mermaid.js. The versions that count are those
+   published in the 18 months before the pinned version was published: of each
+   major version, the smallest and the largest minor version among them, and of
+   a diagram type that was added in that time, the first minor version that has
+   it, each at its latest patch. So a spelling is also kept as written where the
+   form that would be printed is not accepted by every one of these versions
+   that accepts the form that was written, or is drawn differently by one of
+   them: the name of a header (`block-beta` and `block`), which the versions
+   accept differently, the colon after the header of a gitGraph, which older
+   versions require, and the direction of the header of a flowchart (`TB` and
+   `TD`), which the versions before 11.10.0 draw differently. The CHANGELOG.md
+   of mermaid.js, or the history of its grammar, shows which version added or
+   changed a form. The check is that formatting does not change the Db. A
+   formatting that changes the Db but not the drawing is an exception. Each kind
+   of exception has a section that defines it, with links to the code of the
+   pinned mermaid.js that shows why the drawing stays the same and the result of
+   drawing both texts, and the tests compare the Db with the differences of that
+   kind restored, one function for each kind, which
    `packages/prettier-plugin-mmd/tests/db-comparison.ts` calls. When the pinned
    mermaid.js is updated, each exception is checked again by drawing. The kinds
    are:
