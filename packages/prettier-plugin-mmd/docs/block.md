@@ -503,20 +503,21 @@ where `I--xJ` hides it); an id that ends in `x` or `o` stays apart from the
 arrow after it in the same way (`A x --x B`, `Ao --> B`). The line of an arrow
 is printed in its shortest form, also after the label of a link: `--->` is
 `-->`, `-----` is `---`, `<--->` is `<-->`, `-..->` is `-.->`, and `====>` is
-`==>`. The length of the line is not in the Db, and the versions 10.9.0 to
-12.3.0, the ones that have a block diagram, draw the same figure from the
-shorter line (thick lines are read from 11.15.0, and the versions before it
-reject both). The documentation of mermaid.js writes `-->` nine times and `--`
-once, and no longer line. An arrow that ends in `x` or `o` stays as written: of
-the versions that count, 10.9.8, 11.7.0, and 11.8.1 draw `---x` and `--x`, and
-`---o` and `--o`, differently (10.9.0, 11.0.0, and 11.4.1 do too). So does a
-thick line without an end arrow (`====`), which 10.9.8, 11.7.0, 11.8.1, 11.13.0,
-and 11.14.0 read as ids that differ with the length, and which 11.15.0 and the
-later versions reject as `==`, and so does a line of `~`, which is an id in
-every version. [fixture: edges/spaces-around-an-arrow] [fixture:
-edges/spaces-around-a-label] [fixture: edges/end-marker-apart-from-the-id]
-[fixture: edges/start-marker] [fixture: edges/id-ending-in-x-or-o] [fixture:
-edges/arrow-length-shortest] [fixture:
+`==>`. The length of the line is not in the Db, and the versions that count draw
+the same figure from the shorter line (the versions that do not read a thick
+line reject both). The documentation of mermaid.js writes `-->` nine times and
+`--` once, and no longer line. A line that starts with `<` is shortened whatever
+it ends in, since the versions that count draw it the same: `<---x` is `<--x`,
+and `<====` is `<===`. A line without the `<` that ends in `x` or `o` stays as
+written, since some of the versions that count draw `---x` and `--x`, and `---o`
+and `--o`, differently. So does a thick line that does not end in `>` (`====`),
+which some of them read as ids that differ with the length, and so does a line
+of `~`, which is an id in every version (see
+[Forms kept for versions of mermaid.js that count](./compatibility.md#forms-kept-for-versions-of-mermaidjs-that-count)).
+[fixture: edges/spaces-around-an-arrow] [fixture: edges/spaces-around-a-label]
+[fixture: edges/end-marker-apart-from-the-id] [fixture: edges/start-marker]
+[fixture: edges/id-ending-in-x-or-o] [fixture: edges/arrow-length-shortest]
+[fixture: edges/arrow-length-start-marker-shortest] [fixture:
 edges/arrow-length-kept-where-drawn-differently] [fixture: edges/line-kinds]
 [fixture: edges/label-with-other-opening-arrow] [fixture:
 edges/edge-over-lines-joined] [fixture: edges/width-before-the-arrow] [fixture:

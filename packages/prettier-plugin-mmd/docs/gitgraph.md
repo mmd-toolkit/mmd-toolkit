@@ -270,18 +270,24 @@ gitGraph
 
 ### References
 
-A branch, checkout and merge reference in quotes that the lexer reads whole
-without them is printed without quotes, as the examples in the documentation of
-mermaid.js write it (see
+A branch, checkout and merge reference in quotes that the lexer of every version
+that counts reads whole without them is printed without quotes, as the examples
+in the documentation of mermaid.js write it (see
 [The quotes of a text](./compatibility.md#the-quotes-of-a-text)): `branch "dev"`
 is printed `branch dev`. The reference is plain where it is ASCII letters,
 digits, and `_`, with `-`, `.`, and `/` between them, it starts with a letter or
-`_`, and it does not start with one of the words that the lexer reads as a unit
-of its own (`commit`, `branch`, `merge`, `LR`, `NORMAL`, and the others, in any
-case) before a character that is no part of a word, or with `title`. Other
-references keep their quotes, a string is printed between `"` as under Quotes,
-and empty, whitespace-only, Unicode, reserved-word, and numeric-looking quoted
-names are preserved. [fixture: references/plain-names-without-quotes] [fixture:
+`_`, and it is none of the names that a version that counts reads as something
+else: `gitGraph`, `HIGHLIGHT`, `REVERSE`, `NORMAL`, `LR`, and `TB`, in any case,
+alone or before a character that is no part of a word (`lr-x`); `commit`,
+`branch`, `merge`, `cherry-pick`, `checkout`, and `options`, in any case, as the
+whole name; `switch` and `BT` as written; and a name that starts with `title`.
+So `"commit-x"`, `"Title"`, and `"bt"` lose their quotes, and `"Merge"`,
+`"lr-x"`, `"switch"`, and `"title1"` keep them (see
+[Forms kept for versions of mermaid.js that count](./compatibility.md#forms-kept-for-versions-of-mermaidjs-that-count)).
+Other references keep their quotes, a string is printed between `"` as under
+Quotes, and empty, whitespace-only, Unicode, reserved-word, and numeric-looking
+quoted names are preserved. [fixture: references/plain-names-without-quotes]
+[fixture: references/names-next-to-a-keyword-without-quotes] [fixture:
 references/names-that-need-quotes]
 
 Fixed cases: [fixture: gitgraph/references/reference-forms] [corpus fixture:

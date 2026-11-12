@@ -291,19 +291,30 @@ gitGraph
 ### References
 
 branch・checkout・merge の引用符で囲んだ参照は、
-字句解析器が引用符なしでも全体を読む場合、
+対象にするすべての版の字句解析器が引用符なしでも全体を読む場合、
 mermaid.js の文書の例と同じく引用符なしで印字します。
 （[テキストの引用符](./compatibility.ja.md#テキストの引用符)を参照）。
 `branch "dev"` は `branch dev` と印字します。
 引用符なしで読める参照は、ASCII の英字、数字、`_` と、その間の `-`、`.`、
-`/` からなり、ASCII の英字か `_` で始まるものです。
-ただし、語の一部でない文字の前で、
-字句解析器が独立した単位として読む語（`commit`、`branch`、`merge`、`LR`、
-`NORMAL` などで、大文字小文字は問いません）か、`title` で始まる参照を除きます。
+`/` からなり、ASCII の英字か `_` で始まるもので、
+対象にする版のどれかが別のものとして読む名前を除きます。
+その名前は次のとおりです。
+`gitGraph`、`HIGHLIGHT`、`REVERSE`、`NORMAL`、`LR`、`TB` は、
+大文字小文字を問わず、それだけの場合と、
+語の一部でない文字の前の場合です（`lr-x`）。
+`commit`、`branch`、`merge`、`cherry-pick`、`checkout`、`options` は、
+大文字小文字を問わず、名前の全体がそれである場合です。
+`switch` と `BT` は書かれたとおりの場合で、`title` で始まる名前も除きます。
+そのため、`"commit-x"`、`"Title"`、`"bt"` は引用符を除き、`"Merge"`、`"lr-x"`、
+`"switch"`、`"title1"` は引用符を残します。
+詳しくは
+[対象にする版の mermaid.js のために残す形](./compatibility.ja.md#対象にする版の-mermaidjs-のために残す形)
+を参照してください。
 ほかの参照は引用符を残します。
 文字列は Quotes のとおり `"` で囲んで印字します。
 空・空白のみ・Unicode・予約語・数字風の引用名もそのままです。
 [fixture: references/plain-names-without-quotes]
+[fixture: references/names-next-to-a-keyword-without-quotes]
 [fixture: references/names-that-need-quotes]
 
 固定例: [fixture: gitgraph/references/reference-forms]

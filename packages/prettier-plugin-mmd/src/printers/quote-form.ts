@@ -347,26 +347,32 @@ function wardleyName(text: string): string | undefined {
 }
 
 /**
- * The words of a gitGraph that its lexer reads as a unit of its own, in lower
- * case: the lexers of older versions of mermaid.js compare them in any case.
+ * The words of a gitGraph that the lexer of a version that counts reads as a
+ * unit of its own before a character that is no part of a word (`lr-x` is `lr`
+ * and `-x`), in lower case, since one of those versions compares them in any
+ * case (docs/compatibility.md, The quotes of a text).
  */
-const gitgraphReserved: readonly string[] = [
-  "cherry-pick",
+const gitgraphWordsBeforeNonWord: readonly string[] = [
   "gitgraph",
   "highlight",
-  "checkout",
   "reverse",
-  "commit",
   "normal",
-  "branch",
-  "switch",
-  "merge",
   "lr",
   "tb",
-  "bt",
-  "title",
-  "acctitle",
-  "accdescr",
+]
+
+/**
+ * The words of a gitGraph that are a unit of their own only as the whole name
+ * (`commit-x` is a name, `commit` is not), in lower case, since one of the
+ * versions that count compares them in any case.
+ */
+const gitgraphWholeWords: readonly string[] = [
+  "cherry-pick",
+  "checkout",
+  "commit",
+  "branch",
+  "merge",
+  "options",
 ]
 
 /** Whether a character is an ASCII letter, a digit, or `_`. */
@@ -384,20 +390,23 @@ function isWordCharacter(character: string | undefined): boolean {
  * A branch of a gitGraph that the lexer reads whole without quotes: ASCII
  * letters, digits, `_`, and `-`, `.`, `/` between them, starting with a letter
  * or `_` (a digit can start a number), ending with a letter, a digit, or `_`,
- * and not starting with one of the words that it reads as a unit of its own,
- * in any case, before a character that is no part of a word, or with `title`.
+ * and none of the names that a version that counts reads as something else:
+ * the words of `gitgraphWordsBeforeNonWord` and `gitgraphWholeWords` in any
+ * case, `switch` and `BT` as written, and a name that starts with `title`,
+ * which the line of a title takes (docs/gitgraph.md, References).
  */
 function gitgraphReference(text: string): string | undefined {
   const lower = text.toLowerCase()
-  // The line of a title is read before a name, so a name that starts with
-  // `title` cannot be written without quotes.
-  const startsWithReserved =
-    lower.startsWith("title") ||
-    gitgraphReserved.some(
+  const isUnitOfItsOwn =
+    text.startsWith("title") ||
+    text === "switch" ||
+    text === "BT" ||
+    gitgraphWholeWords.includes(lower) ||
+    gitgraphWordsBeforeNonWord.some(
       (word) => lower.startsWith(word) && !isWordCharacter(lower[word.length]),
     )
   return (isLetter(text[0]) || text.startsWith("_")) &&
-    !startsWithReserved &&
+    !isUnitOfItsOwn &&
     isWordCharacter(text.at(-1)) &&
     [...text].every(
       (character) => isWordCharacter(character) || "-./".includes(character),

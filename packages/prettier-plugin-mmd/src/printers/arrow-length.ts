@@ -65,13 +65,14 @@ function isDashedArrow(text: string): boolean {
 
 /**
  * The shortest form of an arrow of a block diagram, where mermaid.js draws it
- * the same in every version that reads it: a solid line with an end arrow or
- * no end marker (`--->` is `-->`, `----` is `---`), a thick line with an end
- * arrow (`===>` is `==>`), and a dotted line with one dot (`-..->` is
- * `-.->`). A line that ends in `x` or `o` stays as written, since the
- * versions 10.9.0 to 11.4.1 draw `---x` and `--x` differently, and so does a
- * thick line without an end arrow, which the versions before 11.15.0 read as
- * ids (docs/compatibility.md, Arrows that are drawn the same).
+ * the same in every version that counts: a solid line with an end arrow or no
+ * end marker (`--->` is `-->`, `----` is `---`), a thick line with an end arrow
+ * (`===>` is `==>`), and a dotted line with one dot (`-..->` is `-.->`). A line
+ * that starts with `<` is drawn the same in any length, whatever it ends in
+ * (`<---x` is `<--x`, `<====` is `<===`). A line without the `<` that ends in
+ * `x` or `o` stays as written, since some versions that count draw `---x` and
+ * `--x` differently, and so does a thick line that does not end in `>`, which
+ * some of them read as ids (docs/compatibility.md, The length of an arrow).
  */
 function shortestBlockArrow(arrow: {
   readonly value: string
@@ -80,13 +81,16 @@ function shortestBlockArrow(arrow: {
   readonly endMarker: string
 }): string {
   const start = arrow.startMarker === "arrow" ? "<" : ""
+  const mark = arrow.endMarker === "cross" ? "x" : "o"
   if (arrow.line === "solid") {
     if (arrow.endMarker === "arrow") return `${start}-->`
     if (arrow.endMarker === "none") return `${start}---`
-    return arrow.value
+    return start === "" ? arrow.value : `<--${mark}`
   }
   if (arrow.line === "thick") {
-    return arrow.endMarker === "arrow" ? `${start}==>` : arrow.value
+    if (arrow.endMarker === "arrow") return `${start}==>`
+    if (start === "") return arrow.value
+    return arrow.endMarker === "none" ? "<===" : `<==${mark}`
   }
   let text = ""
   for (const character of arrow.value) {

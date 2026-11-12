@@ -533,20 +533,24 @@ mermaid.js の文書の辺の書き方で、矢印と後ろの id の間の空�
 矢印の線は、ラベルつきの辺のラベルの後でも、最短の形で印字します。
 `--->` は `-->`、`-----` は `---`、`<--->` は `<-->`、`-..->` は `-.->`、
 `====>` は `==>` です。
-線の長さは Db に入らず、block 図を持つ 10.9.0 から 12.3.0 までの版は、
-短い線から同じ図を描きます（太線は 11.15.0 から読まれ、
-それより前の版は両方を拒否します）。
+線の長さは Db に入らず、対象にする版は、
+短い線から同じ図を描きます（太線を読まない版は両方を拒否します）。
 mermaid.js の文書は `-->` を 9 回、`--` を 1 回書き、
 それより長い線はありません。
-`x` か `o` で終わる矢印は書かれたままにします。
-対象にする版のうち 10.9.8、11.7.0、11.8.1 は、`---x` と `--x`、
-`---o` と `--o` を違う図に描くからです（10.9.0、11.0.0、11.4.1 も同じです）。
-終わりの矢印のない太線（`====`）も同じで、10.9.8、11.7.0、11.8.1、11.13.0、
-11.14.0 は、長さで違う id として読み、11.15.0 以降は `==` を拒否します。
+`<` で始まる線は、何で終わっても短くします。
+対象にする版が同じに描くからです（`<---x` は `<--x`、`<====` は `<===`）。
+`<` のない、`x` か `o` で終わる矢印は書かれたままにします。
+対象にする版のうち、`---x` と `--x`、
+`---o` と `--o` を違う図に描くものがあるからです。
+`>` で終わらない太線（`====`）も同じで、長さで違う id として読む版があります。
 `~` の線も、どの版でも id なので同じです。
-[fixture: edges/spaces-around-an-arrow] [fixture: edges/spaces-around-a-label]
+詳しくは
+[対象にする版の mermaid.js のために残す形](./compatibility.ja.md#対象にする版の-mermaidjs-のために残す形)
+を参照してください。 [fixture: edges/spaces-around-an-arrow]
+[fixture: edges/spaces-around-a-label]
 [fixture: edges/end-marker-apart-from-the-id] [fixture: edges/start-marker]
 [fixture: edges/id-ending-in-x-or-o] [fixture: edges/arrow-length-shortest]
+[fixture: edges/arrow-length-start-marker-shortest]
 [fixture: edges/arrow-length-kept-where-drawn-differently]
 [fixture: edges/line-kinds] [fixture: edges/label-with-other-opening-arrow]
 [fixture: edges/edge-over-lines-joined] [fixture: edges/width-before-the-arrow]
