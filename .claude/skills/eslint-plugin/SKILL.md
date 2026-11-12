@@ -150,10 +150,13 @@ How each part is written:
   [section 4](references/checking-before-and-after-writing.md)): `update` prints
   it as the formatter prints it, and `check:docs` fails on an example that it
   would change. That step also covers comparing an example with its fixture, the
-  fixtures it may use, and the `<!-- prettier-ignore -->` exception. The prose
-  quotes an example as the code block writes it (`A --> B`, not `A-->B`, where
-  the formatter prints the spaces), and refers to a line by what it holds, not
-  by counting.
+  fixtures it may use, and the `<!-- prettier-ignore -->` exception. An example
+  kept as written under `<!-- prettier-ignore -->` has a sentence in Rule
+  Details that says why. An example or a claim without a fixture gets one, and
+  the document change is not done until the fixture exists. The prose quotes an
+  example as the code block writes it (`A --> B`, not `A-->B`, where the
+  formatter prints the spaces), and refers to a line by what it holds, not by
+  counting.
 - The examples are test cases. The tests of the rule read the English document:
   the `mmd` code blocks after the line "Examples of **incorrect** code for this
   rule:" up to the line "Examples of **correct** code for this rule:" are the
