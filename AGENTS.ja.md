@@ -154,8 +154,8 @@ Mermaid 記法（`.mmd`）について、mermaid.js が持つ全図種を対象�
      が定める。
    - スタイルの色の 16 進数の大文字と小文字。
      フォーマッターは小文字で印字する。
-     sequence 図の `rect` と `box`、Venn 図の `style`
-     の色の関数の、コンマの後の空白も含む。
+     sequence 図の `rect` と `box`、
+     Venn 図の `style` の色の関数の、コンマの後の空白も含む。
      [同じに描かれる色](packages/prettier-plugin-mmd/docs/compatibility.ja.md#同じに描かれる色)
      が定める。
 
