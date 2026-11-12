@@ -326,10 +326,10 @@ How each part is written:
 ## 4. Checking, before and after writing
 
 The scripts that run mermaid.js, parse a text, and format it are in
-[section 4](../rule-ideas/SKILL.md#4-checking-with-mermaid-and-parse) of the
-rule-ideas skill (`.claude/skills/rule-ideas/SKILL.md`). Put them outside the
-repository and run them with `node <file>`; with many inputs, run the script in
-the background and write its output to a file.
+[references/probe-scripts.md](../rule-ideas/references/probe-scripts.md) of the
+rule-ideas skill. Put them outside the repository and run them with
+`node <file>`; with many inputs, run the script in the background and write its
+output to a file.
 
 1. What mermaid.js does: run every example through `runMermaid(text)` of
    `packages/tests/src/mermaid.ts`. Every example must be accepted (a rejected

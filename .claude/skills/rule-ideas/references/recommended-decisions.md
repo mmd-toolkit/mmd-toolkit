@@ -5,6 +5,21 @@ The decision of each rule under the criteria of section 7 of
 named by its number here is one of section 7 of SKILL.md. Section 7 of SKILL.md
 says how to search them.
 
+Contents:
+
+- Decisions: a table with a row for each rule, and the reason for a rule that is
+  not enabled.
+- The notes on what was checked for criteria 1 to 4: first the notes on groups
+  of rules that several diagram types share (the title and description rules,
+  the empty block rules, the unclosed block rules, the direction line rules);
+  then the notes on single rules of flowchart, sequence, class, state, er,
+  gantt, journey, requirement, mindmap, timeline, and sankey; then, for each
+  later diagram type, a paragraph that names its searches
+  (`The XY chart rules.`) and its notes, in this order: XY chart, quadrant,
+  block, kanban, C4, venn, agentflow, usecase, pie, gitgraph, packet,
+  architecture, radar, treemap, railroad, Cynefin, Wardley, Event Modeling, and
+  tree view; last, the note on class-no-inline-comment.
+
 The table below records the decision, with the reason for a rule that is not
 enabled, and the rule file sets `recommended` from it. The notes after it give
 what was checked for each criterion. The common rules are enabled: each meets

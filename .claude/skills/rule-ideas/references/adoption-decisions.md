@@ -3,6 +3,15 @@
 The decisions on rule candidates made so far, under the criteria of section 2 of
 [SKILL.md](../SKILL.md). Section 2 of SKILL.md says how to search them.
 
+Contents:
+
+- Kept: a table of the rules kept, one row for each decision, with the name of
+  the rule.
+- Dropped: a table of the candidates dropped, one row for each decision, with
+  the reason. A row of a diagram type other than flowchart and sequence starts
+  with the diagram type in words (`In a class diagram`, `In a Wardley map`), and
+  the rows of every diagram type (`In every diagram type`) are last.
+
 Kept (an author's mistake that mermaid accepts silently):
 
 | Input                                                                                                | What mermaid does                                                                               | Rule                                                                                                                                                        |

@@ -1,15 +1,11 @@
 ---
 name: skill-maintenance
 description: >-
-  Keep the skills under .claude/skills/ divided so that each session loads the
-  rules of its work and little else: what goes in the entry skill of a package,
-  in a skill of one piece of work, and in a records file; when to split a skill
-  and when not to; how to move text between files, or rename or renumber a
-  section, without changing what it says or losing a reference to it, and how to
-  check that. Use when records or a new piece of work are added to a skill, when
-  a skill is split or text moves between skills, when a section of a skill is
-  renamed or renumbered, when the skill lines of AGENTS.md change, and when
-  reviewing such a change.
+  Divide the skills under .claude/skills/ by piece of work and move text between
+  them without loss. Use when records or a new piece of work are added to a
+  skill, when a skill is split or text moves between skills, when a section of a
+  skill is renamed or renumbered, when the skill lines of AGENTS.md change, and
+  when reviewing such a change.
 ---
 
 # Keeping the skills divided by work (skill-maintenance)
@@ -65,8 +61,15 @@ Japanese pair, the wrapping, the document checks) is in the skill `conventions`.
   - Where its steps go through sections of the entry skill, it lists the steps
     in their order and names each section by its title, with a link to its
     anchor.
-- Records of past decisions, in `<skill>/references/<name>.md`
-  (`rule-ideas/references/`): the decision on each rule and what was checked for
+- Documents that a piece of work reads only when it needs them, in
+  `<skill>/references/<name>.md`: records of past decisions, lists searched for
+  one entry, and the code of the scripts that the steps run
+  (`rule-ideas/references/`, `prettier-plugin/references/`). The `SKILL.md`
+  links each of them directly, at the step that uses it, and says what to search
+  it for; a file in `references/` is never the only way to another file. A file
+  in `references/` of more than 100 lines starts with a list of its contents, in
+  their order.
+- Records of past decisions: the decision on each rule and what was checked for
   it. A record is searched, not read whole.
   - The section of the skill that a record belongs to says what to search for:
     the name of a rule, its `<diagram>-<name>` form where a note covers a group
@@ -79,12 +82,23 @@ Japanese pair, the wrapping, the document checks) is in the skill `conventions`.
     records.
 - A list that a piece of work searches for one entry, as the test files of each
   source file of the formatter
-  (`prettier-plugin/references/tests-by-changed-file.md`): a file next to the
-  `SKILL.md`, which says, where the list is used, what to search it for. Like a
-  record, it holds no rule that decides a new case.
+  (`prettier-plugin/references/tests-by-changed-file.md`). Like a record, it
+  holds no rule that decides a new case.
 - AGENTS.md names, in the item of each package, every skill of its work, as the
   item of `packages/eslint-plugin` names `rule-ideas`, `eslint-plugin`, and
   `eslint-plugin-rules`.
+
+The official documents on skills set this form:
+[the Agent Skills specification](https://agentskills.io/specification) lets a
+skill folder hold any files beside `SKILL.md` and recommends `references/` for
+the documents that an agent reads when needed, a `SKILL.md` under 500 lines with
+a body under 5,000 tokens, and references one level deep from `SKILL.md`;
+[Skill authoring best practices](https://platform.claude.com/docs/en/agents-and-tools/agent-skills/best-practices)
+adds that every reference file is linked directly from `SKILL.md`, and that a
+reference file longer than 100 lines starts with a table of contents, since
+Claude may read only its first lines; and
+[the skills documentation of Claude Code](https://code.claude.com/docs/en/skills)
+says that such files are loaded only when they are needed.
 
 ## 2. When to split, and when not
 
@@ -93,14 +107,20 @@ work use it. A piece of work uses a part when its steps point to it, and also
 when the part holds rules that what its steps do is subject to (a step that
 implements a changed rule follows the rules of writing a lexer and a grammar,
 though it names no section). State the sizes and the uses with the decision, so
-that it can be checked.
+that it can be checked. A `SKILL.md` body longer than the 500 lines that the
+official documents recommend is measured so; what stays in it above that length
+is criteria, rules that are wrong to miss, and steps that every piece of work of
+the skill uses, and the decision states the sizes.
 
 Split when:
 
 - a part that only one piece of work uses is a large share of what the other
   pieces of work load without using it; or
 - a skill holds records of past decisions in its body: they move to its
-  `references/`.
+  `references/`; or
+- sessions of other skills read a part alone (the scripts that `rule-ideas`
+  runs, which `eslint-plugin` and `eslint-plugin-rules` also run): it moves to
+  `references/`, so that they read only it.
 
 Do not split when:
 
@@ -136,41 +156,36 @@ a pointer to it stands where it stood.
 
 ## 3. Moving text without changing it
 
-1. Write the plan before moving anything: a table of the line ranges of each
-   file, English and Japanese, with the file and the place each range goes to;
-   each sentence that changes inside a range (a reference whose target moves, a
-   heading), with its old and its new text; and the new text (a guide, a
-   heading, a frontmatter) in full. Read the boundary lines of every range in
-   the file before using its numbers.
-2. Move the text unchanged. Only the planned sentences change; the rewrapping
-   that Prettier and `pnpm run lint:md --fix` do is no change. A sentence that
-   seems out of place, a duplicate, or a stale sentence is listed and reported,
-   not fixed in the move.
-3. Check mechanically that each range, after its planned changes, stands in its
-   new place exactly once: compare English with each run of whitespace read as
-   one space, and Japanese with all whitespace removed. List the text of each
-   new file that no range accounts for, and read it: it is the planned new text
-   and nothing else.
-4. Check the move a second time without the table of the plan: compare every
-   sentence of the old files, word by word, with the new files, and check that
-   the order is kept and nothing is in two places. When sections are renumbered,
-   replace the section numbers with one placeholder before comparing, and check
-   each changed reference against a table of the old number and the new place.
-   Give this comparison the sentences that moved between sections, with their
-   old and new places, so that they are not counted as lost.
-5. Check each English file and its `.ja.md`: the same `name` and a `description`
+1. Plan before moving: the line ranges of each file, English and Japanese, and
+   where each goes; every sentence that changes inside a range (a reference
+   whose target moves, a heading), old and new; and the new text in full. Read
+   the boundary lines of every range before using its numbers.
+2. Move the text unchanged: only the planned sentences change, and the
+   rewrapping of Prettier and `pnpm run lint:md --fix` is no change. A sentence
+   that seems out of place, duplicated, or stale is reported, not fixed in the
+   move.
+3. Check mechanically that each range, with its planned changes, stands in its
+   new place exactly once (English with each run of whitespace as one space,
+   Japanese with all whitespace removed), and read the text that no range
+   accounts for: it is the planned new text.
+4. Compare the move a second time without the table of the plan: every sentence
+   of the old files, word by word, against the new files, in order and in one
+   place. When sections are renumbered, the comparison replaces section numbers
+   with one placeholder and checks each changed reference against a table of old
+   numbers and new places; it is told which sentences moved between sections,
+   and where, so that they are not counted as lost.
+5. Check each English file and its `.ja.md`: the same `name`, a `description`
    that says the same (in English, or in Japanese), headings that say the same
-   at the same levels and with the same numbers, the same number of code blocks
-   (indented ones too), and new Japanese text that says what the English says.
-6. For each records file, search it as the guide of its skill says, for a few
-   rules of different kinds (one named alone, one covered by a note on a group),
-   and check that the search finds each decision.
-7. Read each skill that changed as a session of each piece of work that uses it:
-   from its `description` and its opening, does that session load the skills it
-   needs, and does it reach, by what it loads and the pointers there, every rule
-   that applied to that work before the change, and does it load little else
-   (the sizes of what it loads, measured as in section 2)? A rule that it no
-   longer reaches is a finding of the move.
+   at the same levels and numbers, the same number of code blocks (indented ones
+   too), and Japanese that says what the English says.
+6. Search each file of `references/` as the guide of its skill says, for a rule
+   named alone and for one covered by a note on a group, and check that both are
+   found.
+7. Read each changed skill as a session of each piece of work that uses it: from
+   the `description` and the opening, it loads the skills it needs, reaches
+   every rule that applied to that work before the change (in what it loads, or
+   by the pointers there), and loads little else (the sizes, measured as in
+   section 2). A rule that it no longer reaches is a finding of the move.
 8. Run the document checks that the skill `conventions` names, and
    `pnpm run lint:md`, which reports a link or an anchor that the move broke.
 
@@ -206,5 +221,5 @@ No check of the repository covers these; steps 4 to 7 of section 3 and section 4
 check them: that moved text says what it said, that a reference written in prose
 still reaches what it meant, that the guide to a records file finds what is
 searched for, that each piece of work still reaches every rule that applies to
-it, and that the frontmatter of a `.ja.md` says what that of its English file
-says.
+it, that each file of `references/` is linked from its `SKILL.md`, and that the
+frontmatter of a `.ja.md` says what that of its English file says.

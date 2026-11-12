@@ -341,8 +341,9 @@ Rule Details は、文の後に、反するコードと従うコードの例を�
 ## 4. 書く前と書いた後に確かめること
 
 mermaid.js を動かし、テキストを parse し、整形するスクリプトは、
-rule-ideas の SKILL（`.claude/skills/rule-ideas/SKILL.md`）の
-[4 節](../rule-ideas/SKILL.ja.md#4-mermaid-と-parse-で確かめる手順)にある。
+rule-ideas の SKILL の
+[references/probe-scripts.ja.md](../rule-ideas/references/probe-scripts.ja.md)
+にある。
 リポジトリの外に置き、`node <ファイル>` で動かす。
 入力が多いときは、バックグラウンドで動かし、出力をファイルに書く。
 

@@ -1,15 +1,11 @@
 ---
 name: skill-maintenance
 description: >-
-  Keep the skills under .claude/skills/ divided so that each session loads the
-  rules of its work and little else: what goes in the entry skill of a package,
-  in a skill of one piece of work, and in a records file; when to split a skill
-  and when not to; how to move text between files, or rename or renumber a
-  section, without changing what it says or losing a reference to it, and how to
-  check that. Use when records or a new piece of work are added to a skill, when
-  a skill is split or text moves between skills, when a section of a skill is
-  renamed or renumbered, when the skill lines of AGENTS.md change, and when
-  reviewing such a change.
+  Divide the skills under .claude/skills/ by piece of work and move text between
+  them without loss. Use when records or a new piece of work are added to a
+  skill, when a skill is split or text moves between skills, when a section of a
+  skill is renamed or renumbered, when the skill lines of AGENTS.md change, and
+  when reviewing such a change.
 ---
 
 # スキルを作業ごとに分けて保つ（skill-maintenance）
@@ -69,8 +65,17 @@ description: >-
     そうした作業をするセッションが入口のスキルも読み込むようにする。
   - 手順が入口のスキルの節を通るところでは、手順を順に挙げ、それぞれの節を題と、
     そのアンカーへのリンクで示す。
-- `<skill>/references/<name>.md`（`rule-ideas/references/`）に置く過去の判断の記録:
-  規則ごとの判断と、そのために確かめたこと。
+- 作業が必要なときにだけ読む文書は、
+  `<skill>/references/<name>.md` に置く: 過去の判断の記録、
+  1 つの項目を引くために検索する一覧、
+  手順が動かすスクリプトのコードである（`rule-ideas/references/`、
+  `prettier-plugin/references/`）。
+  `SKILL.md` は、その文書を使う手順でそれぞれに直接リンクし、
+  何で検索するかを述べる。
+  `references/` のファイルだけが別のファイルへの道になることはない。
+  `references/` のファイルが 100 行を超えるときは、
+  内容をその順に挙げる目次で始める。
+- 過去の判断の記録: 規則ごとの判断と、そのために確かめたこと。
   記録は、全体を読むのでなく検索する。
   - 記録が属するスキルの節は、何を検索するかを述べる: 規則の名前、
     注が規則のまとまりを扱うところではその `<diagram>-<name>` の形、図種の項目、
@@ -80,15 +85,26 @@ description: >-
   - 新しい場合も決める文（1 つの規則についてでなく、
     規則の種類についての規則）は記録ではなく、記録の中に書かれたものであっても、
     スキルに置く。
-- 作業が 1 つの項目を引くために検索する一覧は、
-  `SKILL.md`
-  の隣のファイルに置く（整形ツールのソースのファイルごとのテストのファイル、
-  `prettier-plugin/references/tests-by-changed-file.md`）。
-  `SKILL.md` は、その一覧を使う所で、何で検索するかを述べる。
+- 作業が 1 つの項目を引くために、
+  検索する一覧（整形ツールのソースのファイルごとのテストのファイル、
+  `prettier-plugin/references/tests-by-changed-file.md` など）。
   記録と同じく、新しい場合を決める規則は持たない。
 - AGENTS.md は、`packages/eslint-plugin` の項目が `rule-ideas`、
   `eslint-plugin`、`eslint-plugin-rules` を挙げるように、
   パッケージごとの項目で、その作業のすべてのスキルを挙げる。
+
+スキルの公式文書は、この形を定めている。
+[Agent Skills の仕様](https://agentskills.io/specification) は、
+スキルのフォルダーに `SKILL.md` 以外のどんなファイルも置けるとし、
+エージェントが必要なときに読む文書には `references/` を、
+`SKILL.md` は 500 行未満で本文を 5,000 トークン未満にすることと、
+`SKILL.md` から 1 階層の深さの参照を勧める。
+[Skill authoring best practices](https://platform.claude.com/docs/en/agents-and-tools/agent-skills/best-practices)
+は、すべての参照ファイルに `SKILL.md` から直接リンクすることと、
+Claude が最初の数行しか読まないことがあるため、
+100 行を超える参照ファイルは目次で始めることを加える。
+[Claude Code のスキルの文書](https://code.claude.com/docs/en/skills) は、
+そうしたファイルは必要なときにだけ読み込まれると述べる。
 
 ## 2. 分けるときと分けないとき
 
@@ -99,6 +115,9 @@ description: >-
 その部分が持つときである（変更された規則を実装する手順は、節を挙げていなくても、
 字句解析器と文法を書く規則に従う）。
 判断とともに大きさと使う作業を示し、その判断を確かめられるようにする。
+公式文書が勧める 500 行を超える `SKILL.md` の本文も、このように測る。
+その長さを超えても残すのは、基準と、見落としてはいけない規則と、
+そのスキルのすべての作業が使う手順であり、判断には大きさを示す。
 
 次のときは分ける。
 
@@ -107,6 +126,10 @@ description: >-
   または、
 - 過去の判断の記録をスキルの本文に持つとき: 記録はそのスキルの `references/`
   に移す。
+  または、
+- ほかのスキルのセッションが、ある部分だけを読むとき（`rule-ideas` が動かし、
+  `eslint-plugin` と `eslint-plugin-rules` も動かすスクリプト）:
+  その部分だけを読むよう、`references/` に移す。
 
 次のときは分けない。
 
@@ -145,23 +168,19 @@ description: >-
 
 ## 3. テキストを変えずに移す
 
-1. 何も移す前に、計画を書く: 英語と日本語の各ファイルの行の範囲と、
-   それぞれの範囲の移動先のファイルと場所の表、
+1. 移す前に計画する: 英語と日本語の各ファイルの行の範囲と、それぞれの移動先、
    範囲内で変える文（参照先が移る参照、見出し）のそれぞれと、
-   その元のテキストと新しいテキスト、新しく書くテキスト（案内、見出し、
-   フロントマター）の全文である。
+   その元のテキストと新しいテキスト、新しく書くテキストの全文である。
    行番号を使う前に、すべての範囲の境界の行をファイルで読む。
 2. テキストを変えずに移す。
    変えるのは計画した文だけで、
    Prettier と `pnpm run lint:md --fix` による折り返しは変更としない。
-   場違いに見える文、重複、古くなった文は、挙げて報告し、移動の中では直さない。
+   場違いに見える文、重複、古くなった文は、報告し、移動の中では直さない。
 3. それぞれの範囲が、計画した変更を当てたうえで、
    新しい場所にちょうど 1 回あることを機械的に確かめる:
    英語は空白の連なりをそれぞれ 1 つの空白として読み、
    日本語はすべての空白を除いて比べる。
-   新しいファイルごとに、
-   どの範囲にも含まれないテキストを挙げて読む:
-   それは計画した新しいテキストだけである。
+   どの範囲にも含まれないテキストを読む: それは計画した新しいテキストである。
 4. 計画の表を使わずに、移動をもう一度確かめる: 元のファイルのすべての文を、
    新しいファイルと語ごとに比べ、順序を保ち、
    どの文も 2 か所に置かれていないことを確かめる。
@@ -173,11 +192,10 @@ description: >-
    同じことを言う `description`（英語でも日本語でもよい）、
    同じ階層と番号で同じことを言う見出し、
    同じ数のコードブロック（字下げによるものも）、
-   英語が言うことを言う新しい日本語のテキストである。
-6. 記録のファイルごとに、そのスキルの案内が述べるとおりに、
-   種類の違ういくつかの規則（単独で挙げたものを 1 つ、
-   まとまりについての注が扱うものを 1 つ）を検索し、
-   それぞれの判断が見つかることを確かめる。
+   英語が言うことを言う日本語である。
+6. `references/` のファイルごとに、そのスキルの案内が述べるとおりに、
+   単独で挙げた規則と、まとまりについての注が扱う規則を検索し、
+   両方が見つかることを確かめる。
 7. 変えたスキルを、
    そのスキルを使う作業ごとのセッションとして読む: `description` と冒頭から、
    そのセッションは必要なスキルを読み込むか、
@@ -221,4 +239,5 @@ description: >-
 文章で書かれた参照が意図したものに今もたどり着くこと、
 記録のファイルへの案内で探すものが見つかること、各作業が、
 当たるすべての規則に今もたどり着くこと、
+`references/` の各ファイルにその `SKILL.md` からリンクしていること、
 `.ja.md` のフロントマターが英語のファイルのものと同じことを言うこと。

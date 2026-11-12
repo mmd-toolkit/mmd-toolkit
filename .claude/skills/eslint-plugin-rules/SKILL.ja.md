@@ -74,7 +74,8 @@ SKILL [eslint-plugin](../eslint-plugin/SKILL.ja.md#方針と基準)
   それぞれを mermaid.js で確かめる。
 - mermaid.js を動かす、テキストを parse するスクリプトは、
   rule-ideas の SKILL の
-  [4 節](../rule-ideas/SKILL.ja.md#4-mermaid-と-parse-で確かめる手順)にある。
+  [references/probe-scripts.ja.md](../rule-ideas/references/probe-scripts.ja.md)
+  にある。
   下のスクリプトは、テストと同じように 1 つの規則でテキストを lint し、
   fix と提案をそれぞれ当てる。
   それらのスクリプトと同じく、

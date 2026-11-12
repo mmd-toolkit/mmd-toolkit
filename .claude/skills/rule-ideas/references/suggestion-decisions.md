@@ -6,6 +6,15 @@ number here is one of section 8 of SKILL.md, and the conditions of each kind of
 edit are under The kinds of edits there. Section 8 of SKILL.md says how to
 search them.
 
+Contents:
+
+- The rules: the edits of each rule, first for the kinds of rule that several
+  diagram types share (`<diagram>-no-duplicate-title` and the others), then an
+  item for each diagram type or group of diagram types (`- class:`), and last
+  the common rules.
+- Fixes: which edits are fixes, and which stay suggestions, with the reason for
+  each.
+
 ## The rules
 
 Each rule below offers the edits named with it, under the conditions of its kind

@@ -5,6 +5,17 @@ The test files that a change to each source file of
 [SKILL.md](../SKILL.md#6-tests) says how to run them, and how to search this
 list.
 
+Contents:
+
+- A shared module, which every diagram type uses.
+- The files of each diagram type, by its name (`flowchart*.ts`), from flowchart
+  to wardley.
+- `error.ts`, `default-size.ts`, `statement-rules.ts`, `accessibility-lines.ts`,
+  the files of the plugin (`index.ts`, `parser.ts`, `printer.ts`, `root.ts`,
+  `frontmatter-yaml.ts`), and the test helpers.
+
+The list:
+
 - A shared module (`blocks.ts`, `atoms.ts`, `gap.ts`, `layout.ts`, `lines.ts`,
   `source.ts`, `kept-lines.ts`, `common-layout.ts`, `hidden-forms.ts`,
   `flat-hidden-diagram.ts`): the tests of every diagram type, that is, the whole

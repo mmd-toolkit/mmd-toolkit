@@ -76,9 +76,9 @@ after writing it.
   the thing before or after the statement that names it. Check each with
   mermaid.js.
 - The scripts that run mermaid.js and parse a text are in
-  [section 4](../rule-ideas/SKILL.md#4-checking-with-mermaid-and-parse) of the
-  rule-ideas skill. The script below lints a text with one rule, as the tests
-  do, and applies each fix and each suggestion; replace `<repo>` with the
+  [references/probe-scripts.md](../rule-ideas/references/probe-scripts.md) of
+  the rule-ideas skill. The script below lints a text with one rule, as the
+  tests do, and applies each fix and each suggestion; replace `<repo>` with the
   absolute path of the root of the repository, as in those scripts. Put the
   scripts outside the repository and run them with `node <file>`, never with
   `tsx`. Calls to mermaid.js are serialized and slow: run a check that takes

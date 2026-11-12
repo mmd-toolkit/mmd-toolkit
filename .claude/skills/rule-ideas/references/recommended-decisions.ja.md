@@ -5,6 +5,20 @@
 ここで番号で指す基準は、SKILL.ja.md の 7 節の基準である。
 検索の仕方は、SKILL.ja.md の 7 節にある。
 
+目次:
+
+- 判定: 規則ごとに 1 行を置き、入れない規則には理由を書く表。
+- 基準 1 から 4 について調べたことの注: 最初に、
+  いくつかの図種が共有する規則の組の注（タイトルと説明の規則、
+  空のブロックの規則、閉じていないブロックの規則、方向の行の規則）。
+  次に、flowchart、sequence、class、state、er、gantt、journey、requirement、
+  mindmap、timeline、sankey の個々の規則の注。
+  次に、その後の図種ごとに、検索を記す段落（`XY チャートの規則。`）とその注。
+  順は、XY チャート、四象限チャート、ブロック図、カンバン図、C4、venn、
+  agentflow、usecase、pie、gitgraph、packet、architecture、radar、treemap、
+  railroad、cynefin、wardley、Event Modeling、ツリービュー。
+  最後に、class-no-inline-comment の注。
+
 判定は下の表に記録し、入れない規則には理由を書く。
 規則のファイルは、この表から `recommended` を設定する。
 表の後の注に、基準ごとに調べたことを書く。

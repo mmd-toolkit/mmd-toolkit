@@ -5,6 +5,17 @@
 回し方と、この一覧の引き方は、
 [SKILL.ja.md](../SKILL.ja.md#6-テスト) の 6 節にある。
 
+目次:
+
+- すべての図種が使う共有のモジュール。
+- 図種ごとの、その名前によるファイル（`flowchart*.ts`）。
+  flowchart から wardley まで。
+- `error.ts`、`default-size.ts`、`statement-rules.ts`、
+  `accessibility-lines.ts`、プラグインのファイル（`index.ts`、`parser.ts`、
+  `printer.ts`、`root.ts`、`frontmatter-yaml.ts`）と、テストのヘルパー。
+
+一覧:
+
 - 共有のモジュール: `blocks.ts`、`atoms.ts`、`gap.ts`、`layout.ts`、`lines.ts`、
   `source.ts`、`kept-lines.ts`、`common-layout.ts`、`hidden-forms.ts`、
   `flat-hidden-diagram.ts`。
