@@ -311,7 +311,13 @@ In the native metadata, a key in quotes and the scalar of a property but `icon`
 are printed without quotes where they are such a word (`"type": "hollow"` is
 printed `type: hollow`), and the scalar of `icon` is printed in quotes where it
 is such a word (`icon: user` is printed `icon: "user"`). A scalar that is not a
-word, such as `"fa:user"`, stays. [fixture: quotes/metadata]
+word, such as `"fa:user"`, stays. [fixture: quotes/metadata] The tree holds each
+property of the native metadata as a key, a colon, and a scalar, unlike the data
+block of a flowchart or a kanban board, which it holds whole. So the colon of a
+property is the colon of a key (step 2 of
+[Which kind a colon is](./printed-form.md#which-kind-a-colon-is)):
+`type : hollow` is printed `type: hollow`. [fixture:
+native-metadata/metadata-newline]
 
 A name or a label that touches a unit in the source is printed in the same way,
 since the printer sets a space or a delimiter between them: `A--important-->B`
@@ -465,7 +471,9 @@ dash/dot, including long split closing halves whose Db length is fixed. Semantic
 operators print `..> : include` and `..> : extend`, with one space before and
 after the colon and the keyword in lower case, as the examples in the
 documentation of mermaid.js write it, 7 times and never with the colon touching
-(see
+(counted as under
+[the examples that decide the whitespace before a colon](./compatibility.md#the-examples-that-decide-the-whitespace-before-a-colon);
+see
 [Spellings that are drawn the same](./compatibility.md#spellings-that-are-drawn-the-same)),
 then one target gap; the colon after an arrow takes the same gap in a class, an
 ER, and a state diagram. mermaid.js reads `..>:include`, `..> :include`,

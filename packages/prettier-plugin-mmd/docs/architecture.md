@@ -426,8 +426,11 @@ architecture-beta
 ### Port colons
 
 Close ordinary gaps on both sides of each port colon, as `a:R` and `L:b`. The
-colon belongs to its endpoint rather than an aligned field; keep trivia and
-hidden boundaries instead of tightening them.
+colon is a colon inside a name: the side `R` is a part of how the edge names its
+end, the side `R` of the service `a`, so no whitespace stands on either side
+(step 1 of [Which kind a colon is](./printed-form.md#which-kind-a-colon-is)). It
+is no aligned field. Keep trivia and hidden boundaries instead of tightening
+them.
 
 [fixture: architecture/port-colons/port-colons-tight]
 

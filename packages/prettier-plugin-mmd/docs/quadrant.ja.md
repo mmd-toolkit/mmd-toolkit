@@ -390,8 +390,16 @@ quadrantChart
 `:` の前の名前と座標はテキストで、
 書かれたまま残します（`0.30` は `0.3` ではありません）が、
 両端の空白は Db が落とすので落とします。
-この形は mermaid.js の文書のものです（`Campaign A: [0.3, 0.6]`、
-`Campaign B:::class1: [0.8, 0.1]`）。 [fixture: points/colon-touches-the-name]
+各行が点を 1 つ足すので、この colon はキーの colon ではありません。
+colon の前の空白は、mermaid.js の文書の例が決めます。
+colon の後に空白を置いて書いた例のうち、前に空白を置くものは 0 件で、
+置かないものは 9 件です（`Campaign A: [0.3, 0.6]`、
+`Campaign B:::class1: [0.8, 0.1]`）。
+これは手順 3 です。
+詳しくは
+[コロンがどの種類かの決め方](./printed-form.ja.md#コロンがどの種類かの決め方) と
+[コロンの前の空白を決める例](./compatibility.ja.md#コロンの前の空白を決める例)
+を参照してください。 [fixture: points/colon-touches-the-name]
 [fixture: points/spaces-inside-the-brackets]
 [fixture: points/name-whitespace-at-the-ends-dropped]
 [fixture: points/name-inner-runs-collapsed] [fixture: points/string-names]

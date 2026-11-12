@@ -181,15 +181,17 @@ requirementDiagram
 ### Fields
 
 A field is printed on one line: its keyword, the `:` touching it, and its value
-after one space, as the documentation of mermaid.js writes the fields and as a
-user journey puts a value after one space. Comments or directives keep their
-line breaks; structural continuations and intervening trivia stand one level
-inside the field. [fixture: fields/comment-and-directive-continuations]
-[fixture: fields/colon-touches-keyword] [fixture:
-fields/spaces-around-colon-and-value] [fixture: fields/value-after-one-space]
-The whitespace at the ends of an unquoted value is not in the Db and is dropped;
-a run of spaces and tabs inside the value, or between the quotes of a string, is
-in the Db and is printed as one space (see
+after one space. The colon is the colon of a key: the line gives the field its
+one value (step 2 of
+[Which kind a colon is](./printed-form.md#which-kind-a-colon-is)). Comments or
+directives keep their line breaks; structural continuations and intervening
+trivia stand one level inside the field. [fixture:
+fields/comment-and-directive-continuations] [fixture:
+fields/colon-touches-keyword] [fixture: fields/spaces-around-colon-and-value]
+[fixture: fields/value-after-one-space] The whitespace at the ends of an
+unquoted value is not in the Db and is dropped; a run of spaces and tabs inside
+the value, or between the quotes of a string, is in the Db and is printed as one
+space (see
 [Runs of whitespace in a text that are drawn the same](./compatibility.md#runs-of-whitespace-in-a-text-that-are-drawn-the-same)).
 [fixture: fields/value-outer-whitespace-dropped] [fixture:
 fields/value-inner-runs-collapsed] [fixture:

@@ -477,11 +477,14 @@ kanban
 
 A data block `@{ ... }` is embedded text that mermaid.js reads as YAML for the
 properties of a node, such as `ticket` and `assigned`. The printer keeps it
-opaque, with its delimiters and its content retained, apart from the uniform
-indentation below, the spaces at the ends of a block on one line, and the
-printing of a block on one line on lines where its line is too long: it does not
-format the YAML, and it does not merge, reorder, or repair blocks, whether a
-block is empty (`A@{}`), has an unknown or duplicate key
+opaque, with its delimiters and its content retained (the tree holds its body
+whole, so the colon of a key stays as written: `A@{ ticket : MC-1 }` keeps the
+space before its colon; see
+[A text that the tree holds whole](./printed-form.md#a-text-that-the-tree-holds-whole)),
+apart from the uniform indentation below, the spaces at the ends of a block on
+one line, and the printing of a block on one line on lines where its line is too
+long: it does not format the YAML, and it does not merge, reorder, or repair
+blocks, whether a block is empty (`A@{}`), has an unknown or duplicate key
 (`A@{ticket: X, ticket: Y}`), is not valid YAML (`A@{assigned: [a}`), or runs
 over several lines. The parser accepts a block whose YAML is invalid, although
 mermaid.js rejects it (known divergence

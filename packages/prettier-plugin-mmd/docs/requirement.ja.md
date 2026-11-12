@@ -182,7 +182,10 @@ requirementDiagram
 
 フィールドは 1 行に、キーワード、キーワードに接する `:`、
 空白 1 つの後に値を置きます。
-mermaid.js の文書がフィールドをそう書き、journey も値の前に空白 1 つを置きます。
+この colon はキーの colon で、行がフィールドに値を 1 つ与えます。
+詳しくは
+[コロンがどの種類かの決め方](./printed-form.ja.md#コロンがどの種類かの決め方)
+の手順 2 を参照してください。
 コメントかディレクティブがあれば改行を残し、
 構造の続きの行と間の注釈をフィールドより 1 段深く置きます。
 [fixture: fields/comment-and-directive-continuations]

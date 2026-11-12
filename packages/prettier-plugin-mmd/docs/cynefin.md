@@ -257,9 +257,15 @@ cynefin-beta
 ### Label colon
 
 Use to : "label" with one ordinary space before and after the colon, separating
-the label from its endpoint. Retain an absent label, an empty quoted label and a
-whitespace-only label as distinct authored forms. Hidden and global trivia gaps
-override ordinary spacing.
+the label from its endpoint. The label belongs to the transition and not to its
+endpoint, so the examples in the documentation of mermaid.js decide the
+whitespace before the colon (step 3 of
+[Which kind a colon is](./printed-form.md#which-kind-a-colon-is)): all 4 that
+write a space after the colon write a space before it (counted as under
+[the examples that decide the whitespace before a colon](./compatibility.md#the-examples-that-decide-the-whitespace-before-a-colon)).
+Retain an absent label, an empty quoted label and a whitespace-only label as
+distinct authored forms. Hidden and global trivia gaps override ordinary
+spacing.
 
 [fixture: cynefin/label-colon/colon-tabs]
 

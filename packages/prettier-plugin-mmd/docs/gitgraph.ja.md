@@ -185,7 +185,11 @@ gitGraph
 `id: "A"`、`msg: "M"`、`tag: "T"`、`type: NORMAL`、`parent: "A"`、
 `order: 2` と印字します。
 colon は語に接し、通常の値の前は空白 1 個です。
-共通の accessibility の colon と同じ形です。
+この colon はキーの colon で、option が語に値を 1 つ与え、
+繰り返した option は値を置き換えます。
+詳しくは
+[コロンがどの種類かの決め方](./printed-form.ja.md#コロンがどの種類かの決め方)
+の手順 2 を参照してください。
 語と colon の間の global directive や選ばれた semicolon は残します。
 その位置の通常の空白は不正です。
 

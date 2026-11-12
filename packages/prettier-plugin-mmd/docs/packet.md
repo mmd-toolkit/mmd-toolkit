@@ -183,9 +183,15 @@ packet
 ### Block colons
 
 Print `0-15: "Source Port"`, `16: "Flag"` and `+3: "Payload"`: zero ordinary
-spaces before the colon, one after it, without column alignment. This follows
-gitgraph option colons and shared accessibility colons. Pie spacing is a
-pie-specific choice. Trivia-bearing gaps retain their boundaries.
+spaces before the colon, one after it, without column alignment. Each line adds
+a block, so the colon is not the colon of a key, and it can be read as a mark
+that stands between the range and its label. The examples in the documentation
+of mermaid.js decide the whitespace before it (step 3 of
+[Which kind a colon is](./printed-form.md#which-kind-a-colon-is)): of the
+examples that write a space after the colon, 29 write no space before it and
+none writes one (counted as under
+[the examples that decide the whitespace before a colon](./compatibility.md#the-examples-that-decide-the-whitespace-before-a-colon)).
+Trivia-bearing gaps retain their boundaries.
 
 [fixture: packet/block-colons/colon-compact]
 

@@ -77,14 +77,17 @@ A composite stands on three kinds of lines: the line of `block:` and its node,
 the lines of its statements, and the line of `end`. `block:G`, `block`, and
 `block-beta` are printed as written, with `block:` touching its node: mermaid.js
 reads `block: G` and `block:G` alike, so the form of its documentation
-(`block:group1:2`) is printed. The first statement after the head, and the
-statement after `end`, go to lines of their own, also where the composite was
-written on one line (`block:G a b end`), so that every composite is laid out in
-the same way and the indentation shows its body. `end` stands on a line of its
-own, at the level of its `block:`. [fixture: composites/colon-touches-the-node]
-[fixture: composites/colon-and-node-on-different-lines] [fixture:
-composites/width-kept] [fixture: composites/width-colon-touches-the-node]
-[fixture: composites/shape-touches-the-node] [fixture:
+(`block:group1:2`) is printed: the examples write `block:` touching its node 4
+times and never with a space after it, and the ten versions that count reject a
+space before the colon (`block : G`), which the keyword `block:` forbids. The
+first statement after the head, and the statement after `end`, go to lines of
+their own, also where the composite was written on one line (`block:G a b end`),
+so that every composite is laid out in the same way and the indentation shows
+its body. `end` stands on a line of its own, at the level of its `block:`.
+[fixture: composites/colon-touches-the-node] [fixture:
+composites/colon-and-node-on-different-lines] [fixture: composites/width-kept]
+[fixture: composites/width-colon-touches-the-node] [fixture:
+composites/shape-touches-the-node] [fixture:
 composites/block-without-a-node-kept] [fixture:
 composites/block-beta-without-a-node-kept] [fixture:
 composites/composite-on-one-line-split] [fixture:
@@ -374,13 +377,17 @@ An id and the shape after it touch (`A("x")`, `B[["y"]]`), also where whitespace
 was written between them (`A ("x")`): mermaid.js reads the whitespace between an
 id and an opening alike, so the form is a choice, and touching shows that the id
 and its shape are one node, so that `A ("x") B` is not read as three. It is how
-the documentation of mermaid.js writes shapes. The `:` of a width touches what
-is before it (`A:3`, `B["b"]:2`), as the `:` of `space:2` must. [fixture:
-shapes/shape-touches-the-id] [fixture: shapes/shape-on-the-next-line-joined]
-[fixture: shapes/shape-touching-kept] [fixture:
-shapes/other-openings-and-closings] [fixture: shapes/width-colon-touches-the-id]
-[fixture: shapes/width-after-a-shape] [fixture:
-shapes/width-colon-on-the-next-line-joined] [fixture:
+the documentation of mermaid.js writes shapes. The `:` of a width is a colon
+inside a name (step 1 of
+[Which kind a colon is](./printed-form.md#which-kind-a-colon-is)): `A:3` is a
+node with its width, so no whitespace stands on either side of it (`A:3`,
+`B["b"]:2`). The ten versions that count reject whitespace after it (`A: 3`,
+`A : 3`) and read a space before it (`A :3`) the same, and the `:` of `space:2`
+must touch. [fixture: shapes/shape-touches-the-id] [fixture:
+shapes/shape-on-the-next-line-joined] [fixture: shapes/shape-touching-kept]
+[fixture: shapes/other-openings-and-closings] [fixture:
+shapes/width-colon-touches-the-id] [fixture: shapes/width-after-a-shape]
+[fixture: shapes/width-colon-on-the-next-line-joined] [fixture:
 shapes/shape-and-width-in-a-row] [fixture: shapes/shape-on-a-target] [fixture:
 shapes/directive-between-the-id-and-the-shape] [fixture:
 shapes/comment-line-between-the-id-and-the-shape-kept]

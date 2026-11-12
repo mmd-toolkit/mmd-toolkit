@@ -81,6 +81,9 @@ composite は 3 種類の行でできています。
 `block:` はその node に接します。
 mermaid.js は `block: G` と `block:G` を同じに読むので、
 形は 1 つにします（mermaid.js の文書の `block:group1:2` の形です）。
+例は `block:` を node に接して 4 回書き、後に空白を置く形は一度も書きません。
+対象にする 10 版は、コロンの前の空白（`block : G`）を拒否します。
+キーワード `block:` が許さないからです。
 見出しの後の最初の文と、`end` の後の文は、自分の行に移します。
 1 行に書かれた composite（`block:G a b end`）も同じで、
 どの composite も同じ形に置き、字下げが中身を示します。
@@ -392,8 +395,14 @@ mermaid.js は id と形の始まりの間の空白を同じに読むので、�
 接していると、id と形が 1 つの node であることが見え、
 `A ("x") B` が 3 つと読まれません。
 mermaid.js の文書の形です。
-幅の `:` は前に接します（`A:3`、`B["b"]:2`）。
-`space:2` の `:` が接していなければならないのと同じです。
+幅の `:` は名前の中のコロンで、`A:3` は幅を持つノードなので、
+どちらの側にも空白を置きません（`A:3`、`B["b"]:2`）。
+詳しくは
+[コロンがどの種類かの決め方](./printed-form.ja.md#コロンがどの種類かの決め方)
+の手順 1 を参照してください。
+対象にする 10 版は、コロンの後の空白（`A: 3`、`A : 3`）を拒否し、
+前の空白（`A :3`）は同じに読みます。
+`space:2` の `:` は接していなければなりません。
 [fixture: shapes/shape-touches-the-id]
 [fixture: shapes/shape-on-the-next-line-joined]
 [fixture: shapes/shape-touching-kept]

@@ -1516,17 +1516,27 @@ as the `set A:3` of a Venn diagram, which is a way of writing that differs from
 every printed form. A colon at the start of its line has nothing before it (4 in
 the timeline page).
 
-| Line                                           | Page                           | Space before | No space before | Not counted |
-| ---------------------------------------------- | ------------------------------ | -----------: | --------------: | ----------: |
-| The description of a state                     | `stateDiagram.md`              |            1 |               4 |           0 |
-| The label of a transition between states       | `stateDiagram.md`              |           13 |               2 |           0 |
-| The label of a relationship of an ER diagram   | `entityRelationshipDiagram.md` |           40 |               0 |           0 |
-| The label of a relation between classes        | `classDiagram.md`              |           26 |               0 |           0 |
-| A member that a line adds to a class           | `classDiagram.md`              |           16 |               2 |           0 |
-| The text of a message of a sequence diagram    | `sequenceDiagram.md`           |            0 |             107 |           0 |
-| The data of a task of a Gantt chart            | `gantt.md`                     |           22 |               0 |          28 |
-| A colon between a period and its events        | `timeline.md`                  |           88 |               0 |           0 |
-| The size of a set or a union of a Venn diagram | `venn.md`                      |            0 |               0 |           6 |
+| Line                                                   | Page                           | Space before | No space before | Not counted |
+| ------------------------------------------------------ | ------------------------------ | -----------: | --------------: | ----------: |
+| The description of a state                             | `stateDiagram.md`              |            1 |               4 |           0 |
+| The label of a transition between states               | `stateDiagram.md`              |           13 |               2 |           0 |
+| The label of a relationship of an ER diagram           | `entityRelationshipDiagram.md` |           40 |               0 |           0 |
+| The label of a relation between classes                | `classDiagram.md`              |           26 |               0 |           0 |
+| A member that a line adds to a class                   | `classDiagram.md`              |           16 |               2 |           0 |
+| The text of a message of a sequence diagram            | `sequenceDiagram.md`           |            0 |             107 |           0 |
+| The text of a note of a sequence diagram               | `sequenceDiagram.md`           |            0 |               8 |           0 |
+| The text of a `links` statement of a sequence diagram  | `sequenceDiagram.md`           |            0 |               2 |           0 |
+| The text of a note of a state diagram                  | `stateDiagram.md`              |            1 |               0 |           0 |
+| The second description of an alias of a state diagram  | `stateDiagram.md`              |            0 |               0 |           0 |
+| The label of a block of a packet diagram               | `packet.md`                    |            0 |              29 |           0 |
+| The coordinates of a point of a quadrant chart         | `quadrantChart.md`             |            0 |               9 |           0 |
+| The number of a leaf of a treemap                      | `treemap.md`                   |            0 |              35 |           2 |
+| The label of a transition of a cynefin diagram         | `cynefin.md`                   |            4 |               0 |           0 |
+| The score and the people of a task of a user journey   | `userJourney.md`               |            0 |              10 |           0 |
+| The label of a semantic operator of a use case diagram | `usecase.md`                   |            7 |               0 |           0 |
+| The data of a task of a Gantt chart                    | `gantt.md`                     |           22 |               0 |          28 |
+| A colon between a period and its events                | `timeline.md`                  |           88 |               0 |           0 |
+| The size of a set or a union of a Venn diagram         | `venn.md`                      |            0 |               0 |           6 |
 
 The lines of a kind are these. A description of a state is `id: text` with no
 arrow, apart from `accTitle`, `accDescr`, and the `:::` that gives a class, and
@@ -1540,7 +1550,11 @@ line that is none of the statements of the diagram (`title`, `dateFormat`,
 `section`, and the others); the 28 not counted write the data against the colon
 (`Task :a1, 2014-01-01, 3d`). The colons of a timeline are those of the lines
 that are no `title`, `section`, or accessibility line. A Venn size is the last
-colon of a `set` or `union` line.
+colon of a `set` or `union` line. A note, a `links` statement, a packet block, a
+quadrant point, a treemap leaf, a cynefin transition, and a use case operator
+are the lines that start with that word or that have that shape, with the colon
+that follows the word, the range, the name, or the arrow. A task of a user
+journey has two colons, and both are counted.
 
 ## Lists separated by commas
 

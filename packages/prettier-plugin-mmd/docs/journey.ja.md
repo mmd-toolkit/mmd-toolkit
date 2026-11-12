@@ -271,8 +271,14 @@ score と人は、コロンの後でも `,` の後でも、空白 1 つの後に
 コロンと `,` は前の値に接します。
 それらの周りの空白は Db に入らないので、残しません。
 空白は値の前にだけ置きます。
-Gantt 図と同じ規則で、mermaid.js の文書の task 行の多くがこの形です。
-[fixture: task-data/colon-spacing] [fixture: task-data/people-comma-spacing]
+スコアの後のコロンは、前に空白を置きません。
+mermaid.js の文書の例で、コロンの後に空白を置いて書かれたコロン 10 件のうち、
+前に空白を置くものはありません（手順 3 です）。
+詳しくは
+[コロンがどの種類かの決め方](./printed-form.ja.md#コロンがどの種類かの決め方) と
+[コロンの前の空白を決める例](./compatibility.ja.md#コロンの前の空白を決める例)
+を参照してください。 [fixture: task-data/colon-spacing]
+[fixture: task-data/people-comma-spacing]
 空の score や空の人は何も印字しないので、その前に空白を置きません。
 `A: : Me` は `A:: Me` に、`A: 3: a, ,b` は `A: 3: a,, b` になります。
 空の人は、mermaid.js が名前として読むので残します。

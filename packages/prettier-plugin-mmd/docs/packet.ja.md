@@ -185,8 +185,16 @@ packet
 
 通常は colon の前を空白0個、後を1個にし、列は揃えません。
 例は `0-15: "Source Port"`、`16: "Flag"`、`+3: "Payload"` です。
-gitgraph の option と共有の accessibility の colon に合わせます。
-pie の空白は pie 固有の選択です。
+各行がブロックを 1 つ足すので、この colon はキーの colon ではなく、
+範囲とそのラベルの間に立つ記号とも読めます。
+そこで colon の前の空白は、mermaid.js の文書の例が決めます。
+colon の後に空白を置いて書いた例のうち、前に空白を置くものは 0 件で、
+置かないものは 29 件です。
+これは手順 3 です。
+詳しくは
+[コロンがどの種類かの決め方](./printed-form.ja.md#コロンがどの種類かの決め方) と
+[コロンの前の空白を決める例](./compatibility.ja.md#コロンの前の空白を決める例)
+を参照してください。
 trivia がある隙間は境界を保ちます。
 
 [fixture: packet/block-colons/colon-compact]

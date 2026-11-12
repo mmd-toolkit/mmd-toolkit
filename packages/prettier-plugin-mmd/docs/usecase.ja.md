@@ -332,6 +332,13 @@ native metadata では、引用符に囲まれたキーと、
 `icon: user` は `icon: "user"` と印字します。
 `"fa:user"` のような、語ではないスカラーはそのままにします。
 [fixture: quotes/metadata]
+木は native metadata の各プロパティを、キー、コロン、スカラーとして持ちます。
+flowchart や kanban のデータブロックは、木が丸ごと持つので違います。
+そのため、プロパティのコロンはキーのコロンで、
+`type : hollow` は `type: hollow` と印字します。
+詳しくは
+[コロンがどの種類かの決め方](./printed-form.ja.md#コロンがどの種類かの決め方)
+の手順 2 を参照してください。 [fixture: native-metadata/metadata-newline]
 
 原文で単位に接している名前やラベルも、印字でその間に空白か区切りを置くため、
 同じように印字します。
@@ -510,7 +517,10 @@ Db の長さが固定される分割矢印の長い右半分も同じです。
 `..> : include` と `..> : extend` と印字します。
 mermaid.js の文書の例はこの形を 7 回使い、
 コロンを接して書く形は一度も使いません。
-（[同じに描かれる綴り](./compatibility.ja.md#同じに描かれる綴り)を参照）。
+数え方は
+[コロンの前の空白を決める例](./compatibility.ja.md#コロンの前の空白を決める例)
+を参照してください。
+（[同じに描かれる綴り](./compatibility.ja.md#同じに描かれる綴り)も参照）。
 その後、端点の前を空白 1 個にします。
 矢印の後のコロンは、class、ER、state 図でも同じ空白を取ります。
 mermaid.js は `..>:include`、`..> :include`、`..>: include`、

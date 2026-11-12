@@ -440,7 +440,12 @@ architecture-beta
 ### Port colons
 
 `a:R` と `L:b` のように port の colon の両側を詰めます。
-colon は列を揃える欄ではなく端点の一部だからです。
+この colon は名前の中の colon で、辺が端を名付ける仕方の一部です。
+`R` は service `a` の側であり、どちらの側にも空白を置きません。
+詳しくは
+[コロンがどの種類かの決め方](./printed-form.ja.md#コロンがどの種類かの決め方)
+の手順 1 を参照してください。
+列を揃える欄ではありません。
 trivia と hidden の境界は詰めずに保ちます。
 
 [fixture: architecture/port-colons/port-colons-tight]

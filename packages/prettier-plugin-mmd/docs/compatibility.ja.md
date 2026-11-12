@@ -1635,17 +1635,27 @@ SVG と画素を比べてから、例外を残します。
 どの印字する形とも違う書き方）は数えません。
 行頭のコロンには前がありません（timeline のページに 4 件あります）。
 
-| 行                                | ページ                         | 前に空白 | 前に空白なし | 数えない |
-| --------------------------------- | ------------------------------ | -------: | -----------: | -------: |
-| state の説明                      | `stateDiagram.md`              |        1 |            4 |        0 |
-| state の遷移のラベル              | `stateDiagram.md`              |       13 |            2 |        0 |
-| ER 図の関係のラベル               | `entityRelationshipDiagram.md` |       40 |            0 |        0 |
-| class の関係のラベル              | `classDiagram.md`              |       26 |            0 |        0 |
-| 行が class に足すメンバー         | `classDiagram.md`              |       16 |            2 |        0 |
-| sequence 図のメッセージのテキスト | `sequenceDiagram.md`           |        0 |          107 |        0 |
-| Gantt 図のタスクのデータ          | `gantt.md`                     |       22 |            0 |       28 |
-| period とその event の間のコロン  | `timeline.md`                  |       88 |            0 |        0 |
-| Venn 図の set と union の大きさ   | `venn.md`                      |        0 |            0 |        6 |
+| 行                                    | ページ                         | 前に空白 | 前に空白なし | 数えない |
+| ------------------------------------- | ------------------------------ | -------: | -----------: | -------: |
+| state の説明                          | `stateDiagram.md`              |        1 |            4 |        0 |
+| state の遷移のラベル                  | `stateDiagram.md`              |       13 |            2 |        0 |
+| ER 図の関係のラベル                   | `entityRelationshipDiagram.md` |       40 |            0 |        0 |
+| class の関係のラベル                  | `classDiagram.md`              |       26 |            0 |        0 |
+| 行が class に足すメンバー             | `classDiagram.md`              |       16 |            2 |        0 |
+| sequence 図のメッセージのテキスト     | `sequenceDiagram.md`           |        0 |          107 |        0 |
+| sequence 図のノートのテキスト         | `sequenceDiagram.md`           |        0 |            8 |        0 |
+| sequence 図の `links` 文のテキスト    | `sequenceDiagram.md`           |        0 |            2 |        0 |
+| state 図のノートのテキスト            | `stateDiagram.md`              |        1 |            0 |        0 |
+| state 図の別名の 2 つ目の説明         | `stateDiagram.md`              |        0 |            0 |        0 |
+| packet 図のブロックのラベル           | `packet.md`                    |        0 |           29 |        0 |
+| quadrant 図の点の座標                 | `quadrantChart.md`             |        0 |            9 |        0 |
+| treemap の leaf の数                  | `treemap.md`                   |        0 |           35 |        2 |
+| cynefin 図の遷移のラベル              | `cynefin.md`                   |        4 |            0 |        0 |
+| user journey のタスクのスコアと人     | `userJourney.md`               |        0 |           10 |        0 |
+| use case 図の意味を持つ演算子のラベル | `usecase.md`                   |        7 |            0 |        0 |
+| Gantt 図のタスクのデータ              | `gantt.md`                     |       22 |            0 |       28 |
+| period とその event の間のコロン      | `timeline.md`                  |       88 |            0 |        0 |
+| Venn 図の set と union の大きさ       | `venn.md`                      |        0 |            0 |        6 |
 
 各種類の行は次のとおりです。
 state の説明は、矢印がなく、`accTitle`、`accDescr`、
@@ -1661,6 +1671,10 @@ Gantt 図のタスクは、その図の文（`title`、`dateFormat`、
 timeline のコロンは、`title`、`section`、
 アクセシビリティの行でない行のものです。
 Venn の大きさは、`set` か `union` の行の最後のコロンです。
+ノート、`links` 文、packet のブロック、quadrant の点、treemap の leaf、
+cynefin の遷移、use case の演算子は、その語で始まる行か、その形の行で、語、
+範囲、名前、矢印に続くコロンです。
+user journey のタスクには 2 つのコロンがあり、どちらも数えます。
 
 ## コンマで区切る一覧
 

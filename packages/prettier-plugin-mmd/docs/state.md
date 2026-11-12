@@ -753,17 +753,22 @@ Where the first two characters are a `:` and a space or a tab, in either order,
 the note is printed with the `:` after one space and the text after one space,
 whatever whitespace was written there: `note right of A: x` and
 `note left of A\t:\tz` are printed `note right of A : x` and
-`note left of A : z`. The whitespace inside the text stays, since a note that
-wraps draws its runs. The Db and the figure are the same. [fixture:
-notes/colon-and-text-spaced] Any other start stays as written, and so does a
-note with an empty text, with a comment or a directive, or with a character
-other than an ASCII one. [fixture: notes/colon-and-text-kept] In
-`note left of A:h` the `:` and the `h` are the two characters that mermaid.js
-drops, so the note has no text, and the whitespace after the `h` is dropped.
-[fixture: notes/one-character-text-kept] [corpus fixture:
-state/lex-note-colon-then-one-character] The whitespace before the id becomes
-one space. A text that mermaid.js does not read right after the position, as in
-`note left of%%x A`, keeps touching the position.
+`note left of A : z`. The text of a note belongs to the note, and a second line
+adds a second note, so the colon is not the colon of a key; the one example that
+writes a space after the colon writes a space before it (step 3 of
+[Which kind a colon is](./printed-form.md#which-kind-a-colon-is); counted as
+under
+[the examples that decide the whitespace before a colon](./compatibility.md#the-examples-that-decide-the-whitespace-before-a-colon)).
+The whitespace inside the text stays, since a note that wraps draws its runs.
+The Db and the figure are the same. [fixture: notes/colon-and-text-spaced] Any
+other start stays as written, and so does a note with an empty text, with a
+comment or a directive, or with a character other than an ASCII one. [fixture:
+notes/colon-and-text-kept] In `note left of A:h` the `:` and the `h` are the two
+characters that mermaid.js drops, so the note has no text, and the whitespace
+after the `h` is dropped. [fixture: notes/one-character-text-kept] [corpus
+fixture: state/lex-note-colon-then-one-character] The whitespace before the id
+becomes one space. A text that mermaid.js does not read right after the
+position, as in `note left of%%x A`, keeps touching the position.
 
 The pinned Mermaid renders `stateDiagram-v2` notes as Markdown labels, setting
 `labelType` to `markdown` in
@@ -1046,10 +1051,15 @@ reads `"d" as A`, so the Db is the same, and the words of the statement stand
 apart in one form (`asA` is no `as`). [fixture: aliases/second-description-kept]
 [fixture: aliases/tabs-between-parts] [fixture: aliases/id-kept] The `""` that
 it does not read before and after the string stand apart from it in the same
-way. `asA` is no `as`, and is rejected. The second description, the text after
-the `:`, is kept as written, except for the whitespace at its end: mermaid.js
-reads it with the whitespace at its ends, so `:short` and `: short` give
-different descriptions, and draws it without the whitespace at its end (see
+way. `asA` is no `as`, and is rejected. The `:` before the second description
+stands after one space and the description after it as written: no example in
+the documentation of mermaid.js writes a second description, so the colon is
+printed as a mark that stands between two things (step 3 of
+[Which kind a colon is](./printed-form.md#which-kind-a-colon-is)). The second
+description, the text after the `:`, is kept as written, except for the
+whitespace at its end: mermaid.js reads it with the whitespace at its ends, so
+`:short` and `: short` give different descriptions, and draws it without the
+whitespace at its end (see
 [Texts after a keyword that are drawn the same](./compatibility.md#texts-after-a-keyword-that-are-drawn-the-same)).
 The directives that end it are printed with one space before each that has
 whitespace before it, and the whitespace after the last one is left out:

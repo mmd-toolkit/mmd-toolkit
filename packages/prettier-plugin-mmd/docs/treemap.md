@@ -199,8 +199,14 @@ treemap
 
 Keep the leaf’s authored colon or comma, with no ordinary space before and one
 after. This gives equivalent padding a consistent form without changing
-punctuation. Commas inside NumericLiteral spans, including trailing commas,
-remain part of the number. Trivia-bearing gaps keep their contact.
+punctuation. Each line adds a leaf, so the colon is not the colon of a key, and
+the examples in the documentation of mermaid.js decide the whitespace before it
+(step 3 of [Which kind a colon is](./printed-form.md#which-kind-a-colon-is)): of
+the examples that write a space after the colon, 35 write no space before it and
+none writes one (counted as under
+[the examples that decide the whitespace before a colon](./compatibility.md#the-examples-that-decide-the-whitespace-before-a-colon)).
+Commas inside NumericLiteral spans, including trailing commas, remain part of
+the number. Trivia-bearing gaps keep their contact.
 
 [fixture: treemap/separators/colon]
 

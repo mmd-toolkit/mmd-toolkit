@@ -376,8 +376,13 @@ the name and the `:` touches the class name (`A:::c1: [0.3, 0.6]`), whatever
 whitespace was written around them. None of this whitespace is in the Db; the
 name before the `:` and the coordinates are texts, which are kept as written
 (`0.30` is not `0.3`), but the whitespace at their ends is dropped, as the Db
-drops it. The form is the one of the documentation of mermaid.js
-(`Campaign A: [0.3, 0.6]`, `Campaign B:::class1: [0.8, 0.1]`). [fixture:
+drops it. Each line adds a point, so the colon is not the colon of a key, and
+the examples in the documentation of mermaid.js decide the whitespace before it
+(step 3 of [Which kind a colon is](./printed-form.md#which-kind-a-colon-is)): of
+the examples that write a space after the colon, 9 write no space before it and
+none writes one (counted as under
+[the examples that decide the whitespace before a colon](./compatibility.md#the-examples-that-decide-the-whitespace-before-a-colon)),
+as in `Campaign A: [0.3, 0.6]` and `Campaign B:::class1: [0.8, 0.1]`. [fixture:
 points/colon-touches-the-name] [fixture: points/spaces-inside-the-brackets]
 [fixture: points/name-whitespace-at-the-ends-dropped] [fixture:
 points/name-inner-runs-collapsed] [fixture: points/string-names] [fixture:

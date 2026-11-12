@@ -174,9 +174,11 @@ gitGraph
 
 Print `id: "A"`, `msg: "M"`, `tag: "T"`, `type: NORMAL`, `parent: "A"` and
 `order: 2`: the colon touches its word, with one ordinary space before its
-value. This follows the shared accessibility colon form. Preserve trivia at an
-authored word/colon boundary, including global directives and selected
-semicolons; ordinary whitespace before that colon is invalid.
+value. The colon is the colon of a key: the option gives its word one value, and
+a repeated option replaces it (step 2 of
+[Which kind a colon is](./printed-form.md#which-kind-a-colon-is)). Preserve
+trivia at an authored word/colon boundary, including global directives and
+selected semicolons; ordinary whitespace before that colon is invalid.
 
 Fixed cases: [fixture: gitgraph/option-colons/colon-commit] [fixture:
 gitgraph/option-colons/colon-order] [corpus fixture:

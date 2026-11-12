@@ -259,14 +259,19 @@ and keywords inside it. [fixture: task-data/special-characters-in-description]
 
 A score or a person stands after one space, after a colon and after a comma
 alike; a colon and a comma touch what is before them. Whitespace around them is
-not in the Db, and is not kept. The space is written only before a value, as in
-a Gantt chart, which is the form of most task lines in the documentation of
-mermaid.js. [fixture: task-data/colon-spacing] [fixture:
-task-data/people-comma-spacing] An empty score or an empty person prints
-nothing, so no space stands before it: `A: : Me` is printed `A:: Me`, and
-`A: 3: a, ,b` is printed `A: 3: a,, b`. The empty people stay, since mermaid.js
-reads each as a name. [fixture: task-data/empty-score] [fixture:
-task-data/empty-people] [fixture: task-data/no-people-no-score]
+not in the Db, and is not kept. The space is written only before a value, and a
+colon after the score touches it: of the colons that the examples in the
+documentation of mermaid.js write with a space after them, none has a space
+before it (10 colons; step 3 of
+[Which kind a colon is](./printed-form.md#which-kind-a-colon-is); counted as
+under
+[the examples that decide the whitespace before a colon](./compatibility.md#the-examples-that-decide-the-whitespace-before-a-colon)).
+[fixture: task-data/colon-spacing] [fixture: task-data/people-comma-spacing] An
+empty score or an empty person prints nothing, so no space stands before it:
+`A: : Me` is printed `A:: Me`, and `A: 3: a, ,b` is printed `A: 3: a,, b`. The
+empty people stay, since mermaid.js reads each as a name. [fixture:
+task-data/empty-score] [fixture: task-data/empty-people] [fixture:
+task-data/no-people-no-score]
 
 The score and the people are printed as written: the whitespace inside a person
 is part of it in the Db. The spelling of a score is the author's: mermaid.js
