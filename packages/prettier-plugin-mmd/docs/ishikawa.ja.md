@@ -59,19 +59,23 @@ ishikawa
 [fixture: ishikawa/indentation/indent-sibling-causes]
 [fixture: ishikawa/indentation/indent-zero-unclamped-unsafe]
 
-そうでないときは、各ノードが書かれた前の空白を残し、見出しの行にある根もそこに残します。
+そうでないときは、各ノードが書かれた前の空白を残し、
+見出しの行にある根もそこに残します。
 根に clamp された原因、根か見出しの後の空白と同じ桁の原因、
 前にあるノードより深くない原因、原因より深い根です。
-仕様はこれらを根の子として読みますが、
-11.13.0 は、深さで印字したテキストを書かれたテキストと違って描き、
-この図を持つ後の 6 つの版（11.14.0、11.15.0、11.16.1、11.17.2、12.0.0、12.3.0）は
-どちらも同じに描きます。
-詳しくは [対象にする版の mermaid.js のために残す形](./compatibility.ja.md#対象にする版の-mermaidjs-のために残す形) を参照してください。
+仕様はこれらを根の子として読みますが、11.13.0 は、
+深さで印字したテキストを書かれたテキストと違って描き、
+この図を持つ後の 6 つの版（11.14.0、11.15.0、11.16.1、11.17.2、12.0.0、
+12.3.0）はどちらも同じに描きます。
+詳しくは
+[対象にする版の mermaid.js のために残す形](./compatibility.ja.md#対象にする版の-mermaidjs-のために残す形)
+を参照してください。
 コメントの終わりの区切りの後にあるノードは、通常の規則に従います。
 [fixture: ishikawa/indentation/indent-clamped]
 [fixture: ishikawa/indentation/indent-depth]
 [fixture: ishikawa/indentation/indent-relative-zero]
 [fixture: ishikawa/indentation/indent-unindented-causes]
+[fixture: ishikawa/indentation/indent-tabs-irregular-kept]
 [fixture: ishikawa/root-indentation/root-deeper]
 [fixture: ishikawa/root-indentation/root-zero-alternative]
 [fixture: ishikawa/root-on-header-line/header-root-kept]
@@ -134,6 +138,12 @@ Ishikawa の見出しは、
 共有の行の規則の `style` と `classDef` の契機を加えないためです。
 見出しのコメントと directive の接続は、専用の規則に従います。
 根に含まれる文らしいテキストは分割しません。
+これは、
+書かれた字下げが入れ子だけで木を示すときです（[Indentation](#indentation)）。
+見出しと根の間の空白より深くない原因があるときは、根は見出しの行に残り、
+原因は書かれた字下げを残します。
+[fixture: ishikawa/root-on-header-line/header-root-irregular-kept]
+[fixture: ishikawa/root-on-header-line/header-root-directive-irregular-kept]
 [fixture: ishikawa/root-on-header-line/header-root]
 [fixture: ishikawa/root-on-header-line/header-root-kept]
 [fixture: ishikawa/root-on-header-line/header-root-percent]
@@ -372,7 +382,7 @@ ishikawa/standalone-directives/header-touching-prefix-spaced-directive]
 入力（escape 表記）:
 
 ```json
-"ishikawa %%{init: {}}%% R\n A"
+"ishikawa %%{init: {}}%% R\n   A"
 ```
 
 出力
@@ -387,7 +397,7 @@ ishikawa
 入力（escape 表記）:
 
 ```json
-"ishikawa %%{init: {\n     }}%% R\n A\n  B"
+"ishikawa %%{init: {\n     }}%% R\n   A\n    B"
 ```
 
 出力
@@ -928,7 +938,7 @@ parse に失敗した本文は整形を辞退するためです。
 入力（escape 表記）:
 
 ```json
-"ishikawa R\n A\n   B"
+"ishikawa R\n  A\n    B"
 ```
 
 出力

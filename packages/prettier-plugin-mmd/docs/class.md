@@ -710,9 +710,15 @@ member-lines/directive-inside-kept] [corpus fixture: class/lex-member-percent]
 mermaid.js divides each member into its parts by its text, and the whitespace
 after a visibility mark is part of the name: `+ foo()` has the name ` foo`, with
 a space, and `+foo()` the name `foo`. [fixture: member-lines/runs-collapsed]
-[corpus fixture: class/gram-member-visibility-whitespace-body-0184dca2] An
-annotation line, `<< y z >>`, keeps the whitespace around its text in the Db.
-[fixture: member-lines/runs-collapsed]
+[corpus fixture: class/gram-member-visibility-whitespace-body-0184dca2] A tab
+after the mark stays a tab, a run of whitespace with a tab in it becoming one
+tab: 10.9.8 reads the tab as part of the name, as it reads a space, and the
+later versions trim it, so `+\tint x` is neither printed `+int x` nor `+ int x`
+(see
+[Forms kept for versions of mermaid.js that count](./compatibility.md#forms-kept-for-versions-of-mermaidjs-that-count)).
+[fixture: member-lines/visibility-tab-kept] An annotation line, `<< y z >>`,
+keeps the whitespace around its text in the Db. [fixture:
+member-lines/runs-collapsed]
 
 Input
 ([member-lines/runs-collapsed-input.mmd](../tests/fixtures/class/member-lines/runs-collapsed-input.mmd)):

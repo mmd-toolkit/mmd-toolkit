@@ -539,12 +539,12 @@ mermaid.js の文書の辺の書き方で、矢印と後ろの id の間の空�
 mermaid.js の文書は `-->` を 9 回、`--` を 1 回書き、
 それより長い線はありません。
 `x` か `o` で終わる矢印は書かれたままにします。
-10.9.0、11.0.0、11.4.1 は、`---x` と `--x`、
-`---o` と `--o` を違う図に描くからです。
-終わりの矢印のない太線（`====`）も同じで、11.15.0 より前の版は、
-長さで違う id として読みます。
-`~` の線も id なので同じです。 [fixture: edges/spaces-around-an-arrow]
-[fixture: edges/spaces-around-a-label]
+対象にする版のうち 10.9.8、11.7.0、11.8.1 は、`---x` と `--x`、
+`---o` と `--o` を違う図に描くからです（10.9.0、11.0.0、11.4.1 も同じです）。
+終わりの矢印のない太線（`====`）も同じで、10.9.8、11.7.0、11.8.1、11.13.0、
+11.14.0 は、長さで違う id として読み、11.15.0 以降は `==` を拒否します。
+`~` の線も、どの版でも id なので同じです。
+[fixture: edges/spaces-around-an-arrow] [fixture: edges/spaces-around-a-label]
 [fixture: edges/end-marker-apart-from-the-id] [fixture: edges/start-marker]
 [fixture: edges/id-ending-in-x-or-o] [fixture: edges/arrow-length-shortest]
 [fixture: edges/arrow-length-kept-where-drawn-differently]

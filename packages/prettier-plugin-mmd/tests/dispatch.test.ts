@@ -159,7 +159,7 @@ describe("dispatch to diagram printers", () => {
       "@mmd-toolkit/parser",
     )
     parse.mockImplementation(actual.parse)
-    expect(await formatMermaid("ishikawa R\n A\n   B")).toBe(
+    expect(await formatMermaid("ishikawa R\n  A\n    B")).toBe(
       "ishikawa\n  R\n    A\n      B\n",
     )
   })

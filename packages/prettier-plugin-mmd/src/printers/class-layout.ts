@@ -542,6 +542,32 @@ function findMemberStretches(source: Source, statement: Node): Atom[] {
 }
 
 /**
+ * The visibility mark and the tab after it, as one stretch printed with the
+ * tab, where the tab stands between the mark and the text of the member.
+ * 10.9.8 reads the tab as part of the name, as it reads a space, while the
+ * later versions trim it, so neither dropping the tab nor printing a space
+ * draws the same (docs/class.md, Member lines).
+ */
+function findTabAfterVisibility(
+  source: Source,
+  member: ClassMethod | ClassAttribute,
+  values: readonly Node[],
+): Atom | undefined {
+  const first = values.find((value) => value.range[0] >= member.range[0])
+  if (first === undefined) return undefined
+  const mark = source.text[member.range[0]]
+  if (mark !== "+" && mark !== "-" && mark !== "#" && mark !== "~")
+    return undefined
+  const gap = source.text.slice(member.range[0] + 1, first.range[0])
+  if (!gap.includes("\t")) return undefined
+  return {
+    start: member.range[0],
+    end: first.range[0],
+    doc: `${mark}\t`,
+  }
+}
+
+/**
  * Member fields already exclude harmless exterior padding. Keep their contents
  * and, in a method, its classifier tail and return type, formatting only the
  * gaps around the AST fields: the classifier of an attribute touches its text
@@ -565,7 +591,14 @@ export function printClassMember(
   )
     return undefined
   const values = collectValueNodes(member, classValueNodeTypes)
-  const atoms = collectAtoms(source, start, end, values, [])
+  const markGap = findTabAfterVisibility(source, member, values)
+  const atoms = collectAtoms(
+    source,
+    start,
+    end,
+    values,
+    markGap === undefined ? [] : [markGap],
+  )
   const rules = new Map<number, GapRule>()
   for (const atom of atoms.slice(1))
     rules.set(
