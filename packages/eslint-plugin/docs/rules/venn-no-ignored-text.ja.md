@@ -37,7 +37,7 @@ mermaid.js は既定の大きさ 10 の `set A` をエラーなしに読む。
 ```mmd
 %% eslint @mmd-toolkit/venn-no-ignored-text: error
 venn-beta
-set A:%% size to fill in
+  set A:%% size to fill in
 ```
 
 この規則に**従う**コードの例:
@@ -45,7 +45,7 @@ set A:%% size to fill in
 ```mmd
 %% eslint @mmd-toolkit/venn-no-ignored-text: error
 venn-beta
-set A:20 %% size
+  set A:20 %% size
 ```
 
 ## オプション

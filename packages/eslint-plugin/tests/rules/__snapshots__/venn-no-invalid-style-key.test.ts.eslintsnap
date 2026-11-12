@@ -6,15 +6,15 @@ Filename: venn-no-invalid-style-key-incorrect-1.mmd
 
 Code:
   1 | venn-beta
-  2 | set A
-  3 | style A Fill:red, opacity:0.5
-    |         ^~~~ [1]  ^~~~~~~ [2]
+  2 |   set A
+  3 |   style A Fill: red, opacity: 0.5
+    |           ^~~~ [1]   ^~~~~~~ [2]
   4 |
 
 Output:
   1 | venn-beta
-  2 | set A
-  3 | style A fill:red, opacity:0.5
+  2 |   set A
+  3 |   style A fill: red, opacity: 0.5
   4 |
 
 [1] mermaid.js does not read the style property `Fill` in the drawing.

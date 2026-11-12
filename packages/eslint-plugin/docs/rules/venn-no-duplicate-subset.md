@@ -24,8 +24,8 @@ earlier ones, while repeated union sizes are drawn as an overlap between them.
 
 This rule applies to Venn diagrams (`venn-beta`). It reports a `set` or `union`
 whose names an earlier declaration already has, even if the statements are
-identical. Name order does not count, but repetitions do: `union B, A` repeats
-`union A, B`, while `union A, A, B` is different.
+identical. Name order does not count, but repetitions do: `union B,A` repeats
+`union A,B`, while `union A,A,B` is different.
 
 A union of three or more sets adds pair areas to the drawing without declaring
 those pairs. Declaring such a pair before or after the larger union is not
@@ -40,28 +40,28 @@ Examples of **incorrect** code for this rule:
 ```mmd
 %% eslint @mmd-toolkit/venn-no-duplicate-subset: error
 venn-beta
-set A["Alpha"]:20
-set B["Beta"]
-set A["Gamma"]:5
+  set A["Alpha"]:20
+  set B["Beta"]
+  set A["Gamma"]:5
 ```
 
 ```mmd
 %% eslint @mmd-toolkit/venn-no-duplicate-subset: error
 venn-beta
-set A
-set B
-union A, B["Shared"]
-union B, A["Both"]
+  set A
+  set B
+  union A,B["Shared"]
+  union B,A["Both"]
 ```
 
 ```mmd
 %% eslint @mmd-toolkit/venn-no-duplicate-subset: error
 venn-beta
-set A["Frontend"]:20
-  text A1["React"]
-set B
-set A
-  text A3["Vue"]
+  set A["Frontend"]:20
+    text A1["React"]
+  set B
+  set A
+    text A3["Vue"]
 ```
 
 Examples of **correct** code for this rule:
@@ -69,17 +69,17 @@ Examples of **correct** code for this rule:
 ```mmd
 %% eslint @mmd-toolkit/venn-no-duplicate-subset: error
 venn-beta
-set A["Alpha"]:20
-set B["Beta"]
-union A, B["Shared"]
+  set A["Alpha"]:20
+  set B["Beta"]
+  union A,B["Shared"]
 ```
 
 ```mmd
 %% eslint @mmd-toolkit/venn-no-duplicate-subset: error
 venn-beta
-set A["Frontend"]:20
-  text A1["React"]
-set B
+  set A["Frontend"]:20
+    text A1["React"]
+  set B
 text A A3["Vue"]
 ```
 

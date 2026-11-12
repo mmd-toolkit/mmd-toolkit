@@ -27,9 +27,9 @@ mermaid.js は文をエラーなしに受理するが、文字を描かず、ス
 図のどこでの宣言も数えるので、宣言より前の文も報告しない。
 
 領域の名前は順によらず、繰り返しを含めて比べる。
-`style A, B` は和を指すので、別々の `set A` と `set B` の宣言だけでは足りない。
+`style A,B` は和を指すので、別々の `set A` と `set B` の宣言だけでは足りない。
 3 つ以上の集合の和は各組の領域も与えるので、
-`union A, B, C` の後の `text A, B x` は報告しない。
+`union A,B,C` の後の `text A,B x` は報告しない。
 
 名前が 1 つの `style` は文字のノードの id を指せるが、
 その id は `text` や複数名の `style` には領域ではない。
@@ -43,16 +43,16 @@ mermaid.js は文をエラーなしに受理するが、文字を描かず、ス
 ```mmd
 %% eslint @mmd-toolkit/venn-no-undef: error
 venn-beta
-set A
+  set A
 text Typo A1[Review]
 ```
 
 ```mmd
 %% eslint @mmd-toolkit/venn-no-undef: error
 venn-beta
-set A
-set B
-style A, B fill:red
+  set A
+  set B
+  style A,B fill: red
 ```
 
 この規則に**従う**コードの例:
@@ -60,19 +60,19 @@ style A, B fill:red
 ```mmd
 %% eslint @mmd-toolkit/venn-no-undef: error
 venn-beta
-set A
-set B
-union A, B
-text A, B AB1[Shared]
-style A, B fill:red
+  set A
+  set B
+  union A,B
+text A,B AB1[Shared]
+  style A,B fill: red
 ```
 
 ```mmd
 %% eslint @mmd-toolkit/venn-no-undef: error
 venn-beta
-set A
+  set A
 text A A1[React]
-style A1 color:red
+  style A1 color: red
 ```
 
 ## オプション

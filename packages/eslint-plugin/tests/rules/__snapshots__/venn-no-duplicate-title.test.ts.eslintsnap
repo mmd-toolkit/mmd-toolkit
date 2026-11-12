@@ -6,10 +6,10 @@ Filename: venn-no-duplicate-title-incorrect-1.mmd
 
 Code:
   1 | venn-beta
-  2 | title Audience
-  3 | title Coverage
-    | ^~~~~~~~~~~~~~ [1]
-  4 | set A
+  2 |   title Audience
+  3 |   title Coverage
+    |   ^~~~~~~~~~~~~~ [1]
+  4 |   set A
   5 |
 
 [1] mermaid.js replaces the earlier title with this title.
@@ -17,14 +17,14 @@ Code:
       - Remove this statement.
         Output:
           1 | venn-beta
-          2 | title Audience
-          3 | set A
+          2 |   title Audience
+          3 |   set A
           4 |
       - Remove the earlier statement that sets the title.
         Output:
           1 | venn-beta
-          2 | title Coverage
-          3 | set A
+          2 |   title Coverage
+          3 |   set A
           4 |
 ---
 
