@@ -328,9 +328,13 @@ mermaid.js は、矢印の周りの空白があってもなくても同じに読
 空白 1 つは mermaid.js の文書が使う形で、
 テキストの中の空白（[キーワードとテキスト](#キーワードとテキスト)
 を参照）が隠してしまう、最初のテキストの終わりを示します。
-矢印の長さは Db に入りませんが、書き手が書いたものなので、`--->` は残します。
+矢印は、長さによらず `-->` と印字します（`--->` は `-->`）。
+長さは Db に入らず、
+2つ目のテキストのない軸も `--->` と `-->` で同じテキストを持ち、
+象限チャートを持つ 10.3.1 から 12.3.0 までの版は同じ図を描くからです。
+mermaid.js の文書は `-->` を 6 回書き、それより長い矢印はありません。
 [fixture: axes/arrow-touching] [fixture: axes/arrow-with-more-whitespace]
-[fixture: axes/arrow-touching-on-one-side] [fixture: axes/arrow-length-kept]
+[fixture: axes/arrow-touching-on-one-side] [fixture: axes/arrow-length-shortest]
 [fixture: axes/text-inner-runs-collapsed] [fixture: axes/strings]
 [fixture: axes/markdown-string] [fixture: axes/axis-only-one-text]
 

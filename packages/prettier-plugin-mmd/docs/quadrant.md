@@ -315,12 +315,16 @@ The arrow of an axis has one space before it and one after it:
 the same with or without the whitespace around it, so the form is a choice: one
 space is the form that its documentation uses, and it shows where the first text
 ends, which the whitespace inside the texts (see
-[Keywords and texts](#keywords-and-texts)) would otherwise hide. The length of
-the arrow is not in the Db, but it is what the author wrote, so `--->` stays.
-[fixture: axes/arrow-touching] [fixture: axes/arrow-with-more-whitespace]
-[fixture: axes/arrow-touching-on-one-side] [fixture: axes/arrow-length-kept]
-[fixture: axes/text-inner-runs-collapsed] [fixture: axes/strings] [fixture:
-axes/markdown-string] [fixture: axes/axis-only-one-text]
+[Keywords and texts](#keywords-and-texts)) would otherwise hide. The arrow is
+printed `-->` whatever its length (`--->` is `-->`): the length is not in the
+Db, an axis with no second text holds the same text with `--->` and with `-->`,
+and the versions 10.3.1 to 12.3.0, the ones that have a quadrant chart, draw the
+same figure. The documentation of mermaid.js writes `-->` six times and no
+longer arrow. [fixture: axes/arrow-touching] [fixture:
+axes/arrow-with-more-whitespace] [fixture: axes/arrow-touching-on-one-side]
+[fixture: axes/arrow-length-shortest] [fixture: axes/text-inner-runs-collapsed]
+[fixture: axes/strings] [fixture: axes/markdown-string] [fixture:
+axes/axis-only-one-text]
 
 An axis with the arrow and no second text, as in `x-axis L -->`, is printed with
 the arrow, after one space: mermaid.js reads it as another axis than `x-axis L`

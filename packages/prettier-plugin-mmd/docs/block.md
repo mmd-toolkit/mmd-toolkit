@@ -493,12 +493,23 @@ the same edge with or without the whitespace around an arrow, so the form is a
 choice: it is how its documentation writes edges, and a space between an arrow
 and the id after it shows where a marker ends and the id starts (`I --x J`,
 where `I--xJ` hides it); an id that ends in `x` or `o` stays apart from the
-arrow after it in the same way (`A x --x B`, `Ao --> B`). The length of the line
-(`---->`) is not in the Db, but it is what the author wrote, so it stays.
-[fixture: edges/spaces-around-an-arrow] [fixture: edges/spaces-around-a-label]
-[fixture: edges/end-marker-apart-from-the-id] [fixture: edges/start-marker]
-[fixture: edges/id-ending-in-x-or-o] [fixture: edges/length-kept] [fixture:
-edges/line-kinds] [fixture: edges/label-with-other-opening-arrow] [fixture:
+arrow after it in the same way (`A x --x B`, `Ao --> B`). The line of an arrow
+is printed in its shortest form, also after the label of a link: `--->` is
+`-->`, `-----` is `---`, `<--->` is `<-->`, `-..->` is `-.->`, and `====>` is
+`==>`. The length of the line is not in the Db, and the versions 10.9.0 to
+12.3.0, the ones that have a block diagram, draw the same figure from the
+shorter line (thick lines are read from 11.15.0, and the versions before it
+reject both). The documentation of mermaid.js writes `-->` nine times and `--`
+once, and no longer line. An arrow that ends in `x` or `o` stays as written:
+10.9.0, 11.0.0, and 11.4.1 draw `---x` and `--x`, and `---o` and `--o`,
+differently. So does a thick line without an end arrow (`====`), which the
+versions before 11.15.0 read as ids that differ with the length, and so does a
+line of `~`, which is an id. [fixture: edges/spaces-around-an-arrow] [fixture:
+edges/spaces-around-a-label] [fixture: edges/end-marker-apart-from-the-id]
+[fixture: edges/start-marker] [fixture: edges/id-ending-in-x-or-o] [fixture:
+edges/arrow-length-shortest] [fixture:
+edges/arrow-length-kept-where-drawn-differently] [fixture: edges/line-kinds]
+[fixture: edges/label-with-other-opening-arrow] [fixture:
 edges/edge-over-lines-joined] [fixture: edges/width-before-the-arrow] [fixture:
 edges/edge-with-shapes]
 

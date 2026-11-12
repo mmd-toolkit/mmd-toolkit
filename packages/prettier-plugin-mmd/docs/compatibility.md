@@ -1370,14 +1370,14 @@ mermaid.js reads some different spellings of a token as the same token and draws
 the same figure from them: a keyword in another case, a string between `'`
 instead of `"`, a number with a zero at the end, the words of a relationship of
 an ER diagram instead of its symbols, an accessibility description in a block on
-one line instead of after a colon, a text in quotes instead of without them. The
-printer writes such a spelling in one form. For the whitespace between tokens
-the form is the one that the other diagram types print for the same kind of gap
-(see the sections above). For a spelling, the form is the one that the examples
-in the documentation of the pinned mermaid.js use at least twice as often as any
-other form. Where no form is used that often, or the examples use none, the
-spelling is kept as written. The examples are the 541 fenced `mermaid-example`
-and `mermaid` blocks of the
+one line instead of after a colon, a text in quotes instead of without them, an
+arrow longer than it needs to be. The printer writes such a spelling in one
+form. For the whitespace between tokens the form is the one that the other
+diagram types print for the same kind of gap (see the sections above). For a
+spelling, the form is the one that the examples in the documentation of the
+pinned mermaid.js use at least twice as often as any other form. Where no form
+is used that often, or the examples use none, the spelling is kept as written.
+The examples are the 541 fenced `mermaid-example` and `mermaid` blocks of the
 [syntax pages](https://github.com/mermaid-js/mermaid/tree/2086904e76c692331e34a45d7cc3bc30860d040e/packages/mermaid/src/docs/syntax);
 the parser reads 524 of them, and the counts below are counts in those 524.
 
@@ -1414,32 +1414,34 @@ Of the keyword pairs a sample was drawn, and a pair whose own text, drawn twice,
 already differs was not counted. The kinds below were compared in the examples
 and, with the Db only, in the inputs of the conformance corpus:
 
-| Kind                               | Examples | Same Db and drawing | Corpus | Same Db |
-| ---------------------------------- | -------: | ------------------: | -----: | ------: |
-| Relationships of an ER diagram     |        4 |                   4 |     66 |      66 |
-| `Rel_Up` and the like of C4        |        1 |                   1 |      7 |       7 |
-| `::=` of the EBNF notation         |        9 |                   9 |     91 |      91 |
-| A packet range with equal ends     |        2 |                   2 |    133 |     131 |
-| The colon of a header (removed)    |        6 |                   6 |    646 |     643 |
-| The colon of a header (line break) |        0 |                   0 |     22 |      21 |
-| The label of a link                |       19 |                  19 |    170 |     162 |
-| A description block on one line    |        3 |                   3 |    533 |     483 |
-| Quotes of a sankey field           |        6 |                   6 |     11 |      11 |
-| Quotes of an ER name               |        0 |                   0 |     15 |      15 |
-| Quotes of a requirement name       |        0 |                   0 |     12 |      12 |
-| Quotes of a Wardley map name       |        0 |                   0 |     35 |      35 |
-| Quotes of a gitGraph branch        |        0 |                   0 |      2 |       2 |
-| Quotes of a quadrant text          |        0 |                   0 |     19 |      13 |
-| Quotes of an XY chart text         |        0 |                   0 |    191 |     191 |
-| Quotes of a venn name or label     |        0 |                   0 |    176 |     174 |
-| Quotes of a use case name or label |        0 |                   0 |     93 |      90 |
-| Quotes of an architecture label    |        0 |                   0 |      2 |       2 |
-| Quotes of a mindmap shape text     |        0 |                   0 |      7 |       7 |
-| Quotes of a kanban shape text      |        0 |                   0 |    114 |     114 |
-| Quotes of a C4 argument            |        0 |                   0 |     67 |      65 |
-| Quotes of a heading name           |        0 |                   0 |     11 |      11 |
-| Quotes of an agentflow name        |        0 |                   0 |     26 |      24 |
-| Quotes of a class name             |        0 |                   0 |      7 |       7 |
+| Kind                                        | Examples | Same Db and drawing | Corpus | Same Db |
+| ------------------------------------------- | -------: | ------------------: | -----: | ------: |
+| Relationships of an ER diagram              |        4 |                   4 |     66 |      66 |
+| Length of an arrow of a block diagram       |        0 |                   0 |      4 |       4 |
+| Length of an axis arrow of a quadrant chart |        0 |                   0 |      2 |       2 |
+| `Rel_Up` and the like of C4                 |        1 |                   1 |      7 |       7 |
+| `::=` of the EBNF notation                  |        9 |                   9 |     91 |      91 |
+| A packet range with equal ends              |        2 |                   2 |    133 |     131 |
+| The colon of a header (removed)             |        6 |                   6 |    646 |     643 |
+| The colon of a header (line break)          |        0 |                   0 |     22 |      21 |
+| The label of a link                         |       19 |                  19 |    170 |     162 |
+| A description block on one line             |        3 |                   3 |    533 |     483 |
+| Quotes of a sankey field                    |        6 |                   6 |     11 |      11 |
+| Quotes of an ER name                        |        0 |                   0 |     15 |      15 |
+| Quotes of a requirement name                |        0 |                   0 |     12 |      12 |
+| Quotes of a Wardley map name                |        0 |                   0 |     35 |      35 |
+| Quotes of a gitGraph branch                 |        0 |                   0 |      2 |       2 |
+| Quotes of a quadrant text                   |        0 |                   0 |     19 |      13 |
+| Quotes of an XY chart text                  |        0 |                   0 |    191 |     191 |
+| Quotes of a venn name or label              |        0 |                   0 |    176 |     174 |
+| Quotes of a use case name or label          |        0 |                   0 |     93 |      90 |
+| Quotes of an architecture label             |        0 |                   0 |      2 |       2 |
+| Quotes of a mindmap shape text              |        0 |                   0 |      7 |       7 |
+| Quotes of a kanban shape text               |        0 |                   0 |    114 |     114 |
+| Quotes of a C4 argument                     |        0 |                   0 |     67 |      65 |
+| Quotes of a heading name                    |        0 |                   0 |     11 |      11 |
+| Quotes of an agentflow name                 |        0 |                   0 |     26 |      24 |
+| Quotes of a class name                      |        0 |                   0 |      7 |       7 |
 
 A corpus pair that is not counted in the last column is a pair of which
 mermaid.js rejects the other spelling, except two pairs of the label of a link,
@@ -1690,6 +1692,34 @@ er/relationship-spacing/cardinality-words-case-one-form] [fixture:
 er/relationship-spacing/entity-only-before-cardinality] [fixture:
 er/relationship-spacing/directive-between-word-units-kept] [fixture:
 er/relationship-spacing/symbols-on-the-other-side]
+
+### The length of an arrow
+
+The line of an arrow of a block diagram is printed in its shortest form, and so
+is the arrow between the two texts of an axis of a quadrant chart (see
+[Edges](./block.md#edges) and [Axes](./quadrant.md#axes)): `--->` is `-->`,
+`-----` is `---`, `<--->` is `<-->`, `-..->` is `-.->`, and `====>` is `==>`.
+The length of the line is no part of the Db of either, and the examples write
+the shortest form only (`-->` nine times and `--` once in the block page, `-->`
+six times in the quadrant page). Drawn in Chromium, the solid, open,
+bidirectional, dotted, and labelled arrows gave the same SVG in the ten versions
+from 10.9.0 to 12.3.0 that have a block diagram, `==>` and `====>` gave the same
+SVG from 11.15.0, which first reads a thick line (the versions before it reject
+both), and the axes `--->` and `-->` of a quadrant chart gave the same SVG in
+the twelve versions from 10.3.1 to 12.3.0 that have the chart, also with no text
+after the arrow, whose Db holds the same text for both. The four block inputs
+and the two quadrant inputs of the corpus that the printer changes were read
+with the same Db and drawn the same by every version that reads them. These stay
+as written, since a version draws them differently: an arrow that ends in `x` or
+`o` (10.9.0, 11.0.0, and 11.4.1 draw `---x` and `--x`, and `---o` and `--o`,
+differently), a thick line without an end arrow (the versions before 11.15.0
+read `===` and `====` as two ids that differ), and a line of `~` (an id). The
+length of the link of a flowchart is not one of these: it asks for a link that
+spans more ranks (see
+[What else stays as written](#what-else-stays-as-written)). [fixture:
+block/edges/arrow-length-shortest] [fixture:
+block/edges/arrow-length-kept-where-drawn-differently] [fixture:
+quadrant/axes/arrow-length-shortest]
 
 ### Other spellings of a keyword or of a punctuation mark
 

@@ -523,10 +523,24 @@ mermaid.js の文書の辺の書き方で、矢印と後ろの id の間の空�
 印がどこで終わり id がどこで始まるかを示します（`I --x J`。
 `I--xJ` では見えません）。
 `x` か `o` で終わる id も、後ろの矢印から離れます（`A x --x B`、`Ao --> B`）。
-線の長さ（`---->`）は Db に入りませんが、書き手が書いたものなので残します。
-[fixture: edges/spaces-around-an-arrow] [fixture: edges/spaces-around-a-label]
+矢印の線は、ラベルつきの辺のラベルの後でも、最短の形で印字します。
+`--->` は `-->`、`-----` は `---`、`<--->` は `<-->`、`-..->` は `-.->`、
+`====>` は `==>` です。
+線の長さは Db に入らず、block 図を持つ 10.9.0 から 12.3.0 までの版は、
+短い線から同じ図を描きます（太線は 11.15.0 から読まれ、
+それより前の版は両方を拒否します）。
+mermaid.js の文書は `-->` を 9 回、`--` を 1 回書き、
+それより長い線はありません。
+`x` か `o` で終わる矢印は書かれたままにします。
+10.9.0、11.0.0、11.4.1 は、`---x` と `--x`、
+`---o` と `--o` を違う図に描くからです。
+終わりの矢印のない太線（`====`）も同じで、11.15.0 より前の版は、
+長さで違う id として読みます。
+`~` の線も id なので同じです。 [fixture: edges/spaces-around-an-arrow]
+[fixture: edges/spaces-around-a-label]
 [fixture: edges/end-marker-apart-from-the-id] [fixture: edges/start-marker]
-[fixture: edges/id-ending-in-x-or-o] [fixture: edges/length-kept]
+[fixture: edges/id-ending-in-x-or-o] [fixture: edges/arrow-length-shortest]
+[fixture: edges/arrow-length-kept-where-drawn-differently]
 [fixture: edges/line-kinds] [fixture: edges/label-with-other-opening-arrow]
 [fixture: edges/edge-over-lines-joined] [fixture: edges/width-before-the-arrow]
 [fixture: edges/edge-with-shapes]

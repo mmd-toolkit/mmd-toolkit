@@ -1,6 +1,7 @@
 import type { Node, Range, Token } from "@mmd-toolkit/ast"
 import { visitorKeys } from "@mmd-toolkit/parser"
 import type { Atom } from "./atoms.ts"
+import { findArrowLengthRespellings } from "./arrow-length.ts"
 import { findNodes } from "./collections.ts"
 import { findColorRespellings } from "./color-form.ts"
 import { keywordSpellings } from "./keyword-spellings.ts"
@@ -236,6 +237,7 @@ function respellingsOf(source: Source): SourceRespellings {
     findLinkLabelRespellings(source, map)
     collectNumbers(source, source.root, map)
     findColorRespellings(source, map)
+    findArrowLengthRespellings(source, map)
     found = { byStart: map, starts: [...map.keys()].sort((a, b) => a - b) }
     respellingsOfSource.set(source, found)
   }
