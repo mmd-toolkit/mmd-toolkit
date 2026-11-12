@@ -230,9 +230,10 @@ each at its latest patch.
 [Versions of mermaid.js that count](./compatibility.md#versions-of-mermaidjs-that-count)
 lists them.
 
-So a spelling is also kept as written where the form that would be printed is
-not accepted by every one of these versions that accepts the form that was
-written, or is drawn differently by one of them:
+So a form is also kept as written where the form that would be printed is not
+accepted by every one of these versions that accepts the form that was written,
+or is drawn differently by one of them. The document of each diagram type names
+its cases with the versions; three of them are:
 
 - the name of a header (`block-beta` and `block`), which the versions accept
   differently;
@@ -268,8 +269,9 @@ are:
 - the whitespace at the start and at the end of a title, of the date format and
   the axis format of a Gantt chart, and of a description of a C4 diagram, and at
   the end of a period and of an event of a timeline, of the second description
-  of an alias of a state diagram, and of the name of a task of a Gantt chart,
-  defined in
+  of an alias of a state diagram, of the name of a task of a Gantt chart, and of
+  the description of a task of a user journey, which is the whitespace before
+  its first colon, defined in
   [Texts after a keyword that are drawn the same](./compatibility.md#texts-after-a-keyword-that-are-drawn-the-same);
 - the runs of spaces and tabs inside the texts that mermaid.js draws without
   them: titles, accessibility descriptions, and the labels of the diagram types

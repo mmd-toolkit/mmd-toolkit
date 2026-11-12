@@ -119,12 +119,16 @@ Mermaid 記法（`.mmd`）について、mermaid.js が持つ全図種を対象�
   それを作って確かめる道具を持つ。
   コーパスが記録する木の確かめも持つ。
   記録した木から Db を作って mermaid.js の Db と比べ、木の不変条件を確かめる。
-  SKILL は `tests`。
+  作業は SKILL `tests` に従う。
+  図種を足す作業、木から Db を作る関数と木の検査を書く作業、
+  mermaid.js を更新する作業は、それに加えて、SKILL `tests-diagram-type`、
+  `tests-tree-checks`、`tests-mermaid-update` に従う。
 - `packages/spec`: 構文と、抽象構文木の形（ノードの型、欄、値）を定義する。
   入力を受理するかどうかを決めるものは、すべてここで定める。
   定義の出どころはここで、実装はこれに従う。
   仕様の文書は、parser のトークンと位置の仕様に言及しない。
-  SKILL は `spec`。
+  作業は SKILL `spec` に従う。
+  図種を足す作業は、それに加えて、SKILL `spec-diagram-type` に従う。
 - `packages/ast`: 木の TypeScript の型で、仕様の定義に従う。
   持つのは型だけである。
   パーサー、フォーマッター、リンターは、これを任意の peer 依存にする。
@@ -140,7 +144,8 @@ Mermaid 記法（`.mmd`）について、mermaid.js が持つ全図種を対象�
   parser は、仕様とこれらの文書とコーパスから、別の言語でも書けるものにする。
   そのため、parser のテストは、結果を fixture の記録と比べ、
   mermaid.js も生成した入力も動かさない。
-  SKILL は `parser`。
+  作業は SKILL `parser` に従う。
+  頼まれた性能のレビューは、SKILL `parser-performance-review` に従う。
 - `packages/prettier-plugin-mmd`: フォーマッター。
   図種ごとに printer を持ち、項目ごとに明示的に決めた整形方針に従う。
   SKILL は `prettier-plugin`。

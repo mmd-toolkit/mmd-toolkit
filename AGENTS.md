@@ -113,12 +113,16 @@ package.
   defines the fixture format, and holds the conformance corpus and the tools
   that generate and check it. It also checks the trees that the corpus records:
   it builds the Db from a recorded tree and compares it with the Db of
-  mermaid.js, and it checks the invariants of the tree. Skill `tests`.
+  mermaid.js, and it checks the invariants of the tree. Its work follows the
+  skill `tests`; adding a diagram type, writing the Db builder and the tree
+  checker, and updating mermaid.js follow, with it, the skills
+  `tests-diagram-type`, `tests-tree-checks`, and `tests-mermaid-update`.
 - `packages/spec`: defines the syntax and the shape of the abstract syntax tree
   (node types, fields, values), and whatever decides whether an input is
   accepted. It is the source of the definition; implementations follow it. Its
   documents do not refer to the parser's specification of tokens and positions.
-  Skill `spec`.
+  Its work follows the skill `spec`; adding a diagram type follows, with it, the
+  skill `spec-diagram-type`.
 - `packages/ast`: the TypeScript types of the tree, which follow the definition
   in the specification. It holds types only. The parser, the formatter, and the
   linter have it as an optional peer dependency, so that their users download it
@@ -131,8 +135,9 @@ package.
   specification and the fixtures, never from the source of mermaid.js. A parser
   is to be writable in another language from the specification, these documents,
   and the corpus, so the tests of the parser compare its results with what the
-  fixtures record and run neither mermaid.js nor generated inputs. Skill
-  `parser`.
+  fixtures record and run neither mermaid.js nor generated inputs. Its work
+  follows the skill `parser`; a requested review of its performance follows the
+  skill `parser-performance-review`.
 - `packages/prettier-plugin-mmd`: the formatter, with one printer for each
   diagram type, following formatting choices that are decided explicitly, item
   by item. Skill `prettier-plugin`.
