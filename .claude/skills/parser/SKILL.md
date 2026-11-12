@@ -8,8 +8,9 @@ description:
   tree in ast.json, or its error in parse-error.json), finding gaps in the
   specification, and fixing the parser when the pinned mermaid.js is updated.
   Use when a diagram type is added to the parser, when fixtures are added or a
-  rule of the specification changes, or when mermaid.js is updated. A requested
-  review of its performance has a skill of its own, parser-performance-review.
+  rule of the specification changes, when only the types of packages/ast change,
+  or when mermaid.js is updated. A requested review of its performance has a
+  skill of its own, parser-performance-review.
 ---
 
 # Adding the parser of a diagram type (parser)

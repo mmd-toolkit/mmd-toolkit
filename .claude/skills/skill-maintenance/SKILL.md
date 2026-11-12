@@ -68,7 +68,8 @@ Japanese pair, the wrapping, the document checks) is in the skill `conventions`.
 - Documents that a piece of work reads only when it needs them, in
   `<skill>/references/<name>.md`: records of past decisions, lists searched for
   one entry, the code of the scripts that the steps run, and, in a skill above
-  the size of section 2, the steps of one piece of work or of one case of it
+  the size of section 2, the steps of one piece of work or of one case of it,
+  and steps that several pieces of work use where section 2 lets them go
   (`rule-ideas/references/`, `prettier-plugin/references/`, `spec/references/`).
   The `SKILL.md` links each of them directly, at the step that uses it, and says
   what to search a record or a list for; a file in `references/` is never the
@@ -127,12 +128,15 @@ estimated as the bytes of the body that `wc -c` counts divided by 4, so a body
 of more than 20,000 bytes is longer. Above that size, the parts that not every
 piece of work of the skill uses are sorted as readers who do not know the
 decision classify them: the steps and the lists of one piece of work or one case
-go to `references/` (section 1), the criteria and the rules that one piece of
-work alone needs go to the skill of that piece of work, and the criteria and the
-rules that several pieces of work need stay. A skill made for this adds its
-description to the listing of every session, which Claude Code cuts to a budget
-of 1% of the context window, dropping first the descriptions of the skills used
-least
+go to `references/` (section 1); steps that several pieces of work use go there
+too, when every one of those pieces of work reaches them by a link at the step
+where it uses them, and readers who do not know the decision, reading as each of
+those pieces of work, find no rule missed; the criteria and the rules that one
+piece of work alone needs go to the skill of that piece of work; and the
+criteria and the rules that several pieces of work need stay. A skill made for
+this adds its description to the listing of every session, which Claude Code
+cuts to a budget of 1% of the context window, dropping first the descriptions of
+the skills used least
 ([the skills documentation of Claude Code](https://code.claude.com/docs/en/skills#skill-descriptions-are-cut-short));
 a part smaller than such a description stays. The decision states each part that
 stays above the size: its size, the pieces of work that use it, why it stays,

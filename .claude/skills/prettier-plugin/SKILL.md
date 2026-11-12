@@ -3,10 +3,11 @@ name: prettier-plugin
 description:
   Add the printer of a diagram type to prettier-plugin-mmd, or update the
   printers after mermaid.js is updated. Use when the parser supports a new
-  diagram type and its formatting is to be decided and implemented, or when the
-  pinned mermaid.js changes. It covers deciding the formatting choices, the
-  printer, the fixtures, and the documents; mmdfmt, the command-line tool that
-  formats with the plugin, has a skill of its own.
+  diagram type and its formatting is to be decided and implemented, when the
+  pinned mermaid.js changes, or when the plugin's entry changes (index.ts,
+  parser.ts, printer.ts, its options, or its languages). It covers deciding the
+  formatting choices, the printer, the fixtures, and the documents; mmdfmt, the
+  command-line tool that formats with the plugin, has a skill of its own.
 ---
 
 # Adding the printer of a diagram type (prettier-plugin)
@@ -118,9 +119,10 @@ and both outputs, and what is decided is added to those rules.
    only "reads better" tells a reader nothing: name the rule that says why it
    reads better. Where a rule gives a form that reads worse than another form
    that draws the same, say so and propose the other form to the user as under
-   step 4, since the rule is then what is wrong. Write what is kept as written
-   because it affects the Db, and the differences from mermaid.js, into
-   `docs/compatibility.md` too. Keep decisions in these two documents only.
+   step 4 of this section, since the rule is then what is wrong. Write what is
+   kept as written because it affects the Db, and the differences from
+   mermaid.js, into `docs/compatibility.md` too. Keep decisions in these two
+   documents only.
 
 ## 4. Writing the printer
 
@@ -192,7 +194,7 @@ Steps when writing:
    the text of tokens again. Where a lexical fact that is not in the tree is
    needed, find it in the lexical sections of the specification, give it a
    fixture (section 6), and make it an explicit rule with a comment that points
-   to the section of the specification (section 5).
+   to the section of the specification (section 5 of this skill).
 2. Do not build a check that parses the formatted result again at run time and
    compares it; it only hides a missing rule.
 3. Keep each decision in one place (for example, where a line starts and ends,

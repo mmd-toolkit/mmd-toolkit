@@ -3,10 +3,11 @@ name: prettier-plugin
 description:
   Add the printer of a diagram type to prettier-plugin-mmd, or update the
   printers after mermaid.js is updated. Use when the parser supports a new
-  diagram type and its formatting is to be decided and implemented, or when the
-  pinned mermaid.js changes. It covers deciding the formatting choices, the
-  printer, the fixtures, and the documents; mmdfmt, the command-line tool that
-  formats with the plugin, has a skill of its own.
+  diagram type and its formatting is to be decided and implemented, when the
+  pinned mermaid.js changes, or when the plugin's entry changes (index.ts,
+  parser.ts, printer.ts, its options, or its languages). It covers deciding the
+  formatting choices, the printer, the fixtures, and the documents; mmdfmt, the
+  command-line tool that formats with the plugin, has a skill of its own.
 ---
 
 # 図種の printer を足す（prettier-plugin）
@@ -120,7 +121,7 @@ fixture は tests の SKILL で直す。
    「読みやすいから」とだけ書いた理由は、読む人に何も伝えない。
    なぜ読みやすいかを言う決まりを、名指しして書く。
    決まりを当てた形が、描くものが同じになる別の形より読みにくいときは、
-   そう書いて、手順 4 のとおり、別の形を利用者に提案する。
+   そう書いて、この節の手順 4 のとおり、別の形を利用者に提案する。
    決まりの方が誤っているからである。
    Db に効くために書かれたまま残すものと、mermaid.js と違う箇所は、
    `docs/compatibility.md` にも書く。
@@ -206,7 +207,7 @@ fixture は tests の SKILL で直す。
    トークンのテキストを字句解析し直さない。
    木にない字句の事実が要るときは、仕様の字句の節で見つけ、
    fixture を置き（6 節）、
-   仕様の節を指すコメントを付けた明示の規則にする（5 節）。
+   仕様の節を指すコメントを付けた明示の規則にする（このスキルの 5 節）。
 2. 実行時に整形の結果を parser で読み直して比べる仕組みは作らない。
    規則の欠けを隠すだけである。
 3. 1 つの判定は 1 か所に置く。
