@@ -2357,9 +2357,14 @@ the examples are written as strings, in which `\n` is a line break:
 The `TB` in the header of a flowchart that has no subgraph is printed `TD`:
 `flowchart TB` becomes `flowchart TD`, and `graph TB` becomes `graph TD`. The
 examples of the documentation write `TD` 70 times and `TB` 7 times, and every
-version that counts, and the layout of ELK, draws a flowchart without a subgraph
-the same with the two. A `subgraph` in a label, an id, or a comment is no
-subgraph. [fixture: direction/header-tb-without-subgraph] [fixture:
+version that counts draws a flowchart without a subgraph the same with the two,
+with the layout that each version uses by default and with the other one where
+it has two. ELK as an external layout package was drawn for the pinned version
+only (see
+[Layouts that the versions were drawn with](./compatibility.md#layouts-that-the-versions-were-drawn-with)).
+
+A `subgraph` in a label, an id, or a comment is no subgraph. [fixture:
+direction/header-tb-without-subgraph] [fixture:
 direction/header-graph-tb-without-subgraph] [fixture:
 direction/header-tb-subgraph-word-is-no-subgraph] [fixture:
 direction/header-tb-with-direction-statement] With a subgraph the header is kept

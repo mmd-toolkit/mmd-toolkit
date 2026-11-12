@@ -366,8 +366,11 @@ a label without quotes would end earlier or be read as a closer or an opener: a
 label with a `)`, a `]`, a `(`, or a `}`; a label that starts with a `-`
 (`card6("-x")`, since `(-` opens another shape, and a `-` before a `)` closes
 one); a string next to a dash of the dash form (`card4(-"x"-)`); a label with
-padding or a line break. A markdown string stays as written. [fixture:
+padding or a line break. A markdown string stays as written. Directives between
+the string and the dash change nothing, since mermaid.js removes them before it
+reads the text: `card7("x"%%{init: {}}%%-)` keeps its quotes. [fixture:
 quotes/labels-without-quotes] [fixture: quotes/labels-that-need-quotes]
+[fixture: quotes/dash-closer-after-a-directive-kept]
 
 Input
 ([quotes/labels-without-quotes-input.mmd](../tests/fixtures/kanban/quotes/labels-without-quotes-input.mmd)):

@@ -390,8 +390,13 @@ kanban
 `(-` が別の形の開きになり、`)` の前の `-` が閉じになるため）、
 ダッシュの形のダッシュに接する文字列（`card4(-"x"-)`）、
 余白や改行を持つラベルです。
-markdown 文字列は書かれたまま残します。 [fixture: quotes/labels-without-quotes]
+markdown 文字列は書かれたまま残します。
+文字列とダッシュの間にディレクティブがあっても、変わりません。
+mermaid.js は、テキストを読む前にそれらを取り除くので、
+`card7("x"%%{init: {}}%%-)` は引用符を残します。
+[fixture: quotes/labels-without-quotes]
 [fixture: quotes/labels-that-need-quotes]
+[fixture: quotes/dash-closer-after-a-directive-kept]
 
 入力
 ([quotes/labels-without-quotes-input.mmd](../tests/fixtures/kanban/quotes/labels-without-quotes-input.mmd)):

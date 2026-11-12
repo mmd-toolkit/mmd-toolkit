@@ -66,15 +66,17 @@ ESLint Online Playground の
 
 基準は mermaid.js です。
 版は[仕様](./packages/spec/docs/index.ja.md)に記録していて、今は 12.3.0 です。
-フォーマッターは、トークンの綴り（キーワードの大文字小文字など）を変えるとき、
-mermaid.js の履歴（変更履歴と、過去の版の文法）から、
-古い版が変えた後の綴りを読まないか、別に読むと分かる場合は、
+整形した図は別の版でも描かれるので、フォーマッターは、
+印字するものを 10 版の mermaid.js で確かめています。
+書き方（キーワードの大文字小文字など）を変えるとき、
+変えた後の形を 10 版のどれかが違って読むか、読まない場合は、
 書かれたまま残します。
-それ以外の整形は、12.3.0 だけで確かめています。
-綴りの種類ごとに何を読んだかは、
-フォーマッターの
-[互換性の文書](./packages/prettier-plugin-mmd/docs/compatibility.ja.md#mermaidjs-の版)
+10 版は
+[対象にする mermaid.js の版](./packages/prettier-plugin-mmd/docs/compatibility.ja.md#対象にする-mermaidjs-の版)
 に挙げています。
+書かれたまま残す形は、
+[対象にする版の mermaid.js のために残す形](./packages/prettier-plugin-mmd/docs/compatibility.ja.md#対象にする版の-mermaidjs-のために残す形)
+に 1 つずつ挙げています。
 
 - パーサーは、mermaid.js と同じテキストを受理し、同じテキストを拒否します。
   受理したテキストは、同じ図として読みます。

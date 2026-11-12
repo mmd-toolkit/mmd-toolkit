@@ -13,6 +13,7 @@ import {
   findTokenEndingBefore,
   isSpaceOrTab,
   skipDirectives,
+  textWithoutDirectives,
 } from "./source.ts"
 import { toAsciiLowerCase } from "./layout.ts"
 
@@ -262,16 +263,7 @@ export function followsSplitKeyword(
     !["end", "subgraph"].includes(toAsciiLowerCase(keyword.value))
   )
     return false
-  let gap = ""
-  for (let offset = keyword.range[1]; offset < nameStart;) {
-    const next = skipDirectives(source, offset)
-    if (next > offset) {
-      offset = next
-    } else {
-      gap += source.text.charAt(offset)
-      offset++
-    }
-  }
+  const gap = textWithoutDirectives(source, keyword.range[1], nameStart)
   return (
     gap.includes("\u2028") ||
     gap.includes("\u2029") ||

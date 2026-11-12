@@ -4,15 +4,17 @@ mmd-toolkitは、
 **[mermaid.js](https://mermaid.js.org/) 12.3.0**を互換性の基準とします。
 対応する図の種類は、[図の対応状況](./support.ja.md)を参照してください。
 
-フォーマッターは、トークンの綴り（キーワードの大文字小文字など）を変えるとき、
-mermaid.js の履歴（変更履歴と、過去の版の文法）から、
-古い版が変えた後の綴りを読まないか、別に読むと分かる場合は、
+整形した図は別の版の mermaid.js でも描かれるので、フォーマッターは、
+印字するものを 10 版の mermaid.js で確かめています。
+書き方（キーワードの大文字小文字など）を変えるとき、
+変えた後の形を 10 版のどれかが違って読むか、読まない場合は、
 書かれたまま残します。
-それ以外の整形は、12.3.0 だけで確かめています。
-綴りの種類ごとに何を読んだかは、
-フォーマッターの
-[互換性の文書](../../../prettier-plugin-mmd/docs/compatibility.ja.md#mermaidjs-の版)
+10 版は
+[対象にする mermaid.js の版](../../../prettier-plugin-mmd/docs/compatibility.ja.md#対象にする-mermaidjs-の版)
 に挙げています。
+書かれたまま残す形は、
+[対象にする版の mermaid.js のために残す形](../../../prettier-plugin-mmd/docs/compatibility.ja.md#対象にする版の-mermaidjs-のために残す形)
+に 1 つずつ挙げています。
 
 ## 保証する性質
 

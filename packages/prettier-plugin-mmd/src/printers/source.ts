@@ -162,6 +162,31 @@ export function skipDirectives(source: Source, offset: number): number {
 }
 
 /**
+ * The text from `from` to `to` without the directives that lie in it, as
+ * mermaid.js reads it: it removes the directives before it reads the text. A
+ * directive that starts before `from` and ends inside the range is left out
+ * from `from` on.
+ */
+export function textWithoutDirectives(
+  source: Source,
+  from: number,
+  to: number,
+): string {
+  let text = ""
+  let position = from
+  while (position < to) {
+    const trivia = findTriviaAt(source, position)
+    if (trivia?.type === "Directive") {
+      position = trivia.range[1]
+    } else {
+      text += source.text.charAt(position)
+      position++
+    }
+  }
+  return text
+}
+
+/**
  * The length of the line terminator that starts at `offset`: 2 for `\r\n`, 1
  * for a lone `\r` or `\n`, and 0 where none starts.
  */

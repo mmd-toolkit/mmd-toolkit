@@ -406,8 +406,11 @@ earlier or be read as a closer or an opener: a text with a `)`, a `]`, a `(`, or
 a `}`; a text that starts with a `-` (`a("-x")`, since `(-` opens another shape,
 and a `-` before a `)` closes one); a string next to a dash of the dash form
 (`f(-"x"-)`, whose closer `-)` follows a string only); a text with padding or a
-line break; and an empty string. A markdown string stays as written. [fixture:
+line break; and an empty string. A markdown string stays as written. Directives
+between the string and the dash change nothing, since mermaid.js removes them
+before it reads the text: `f("x"%%{init: {}}%%-)` keeps its quotes. [fixture:
 quotes/labels-without-quotes] [fixture: quotes/labels-that-need-quotes]
+[fixture: quotes/dash-closer-after-a-directive-kept]
 
 Input
 ([quotes/labels-without-quotes-input.mmd](../tests/fixtures/mindmap/quotes/labels-without-quotes-input.mmd)):

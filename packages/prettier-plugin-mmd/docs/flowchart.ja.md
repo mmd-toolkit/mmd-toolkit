@@ -2476,7 +2476,11 @@ flowchart %%{init: {}}%%LR
 subgraph のない flowchart のヘッダーの `TB` は `TD` と印字します。
 `flowchart TB` は `flowchart TD` に、`graph TB` は `graph TD` になります。
 mermaid.js の文書の例は `TD` を 70 回、`TB` を 7 回書き、対象にする版のどれも、
-ELK の配置でも、subgraph のない flowchart を 2 つで同じに描きます。
+subgraph のない flowchart を 2 つで同じに描きます。
+各版の既定の配置と、配置が 2 つある版ではもう一方の配置で確かめました。
+パッケージとして読み込む ELK の配置は、固定した版でだけ描きました。
+詳しくは [描画に使った配置](./compatibility.ja.md#描画に使った配置)
+を参照してください。
 ラベル、id、コメントにある `subgraph` は subgraph ではありません。
 [fixture: direction/header-tb-without-subgraph]
 [fixture: direction/header-graph-tb-without-subgraph]

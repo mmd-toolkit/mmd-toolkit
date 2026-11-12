@@ -49,22 +49,11 @@ pairs of header spellings (`graph` and `flowchart`, `stateDiagram` and
 were drawn by the ten versions again under five configurations: the default one;
 `flowchart.defaultRenderer` and `state.defaultRenderer` set to `dagre-d3`, once
 by a directive in the text and once by `mermaid.initialize`, with the same
-result; `layout: elk`, which the bundles do not load, so that the two texts of a
-pair were drawn alike or both rejected; `look: neo`; and `htmlLabels: false`.
-Only `defaultRenderer` changed the result, and the rows of those two pairs name
-it. The other settings, such as `theme` and the settings of each diagram type,
-were not drawn.
-
-The texts of a flowchart with `TB` and with `TD` were also drawn with the layout
-of ELK loaded: mermaid.js 12.3.0 with `@mermaid-js/layout-elk` 1.0.2 and
-`layout: elk` drew 1,034 pairs, which are the flowcharts without a subgraph in
-the 28 places where another rule meets a header, those that hold the word
-`subgraph` only in a label, an id, or a comment, and flowcharts with a subgraph.
-The layout was in use: the same diagram drawn with dagre has another size. 932
-pairs were drawn the same, 102 were rejected in both forms, and none was drawn
-differently. The header `flowchart-elk` was drawn with `TB` and with `TD` by the
-ten versions as their bundles are, in 15 forms: of 1,050 pairs, 1,036 were drawn
-the same and 14 were rejected in both forms.
+result; `layout: elk`; `look: neo`; and `htmlLabels: false`. Only
+`defaultRenderer` changed the result, and the rows of those two pairs name it.
+The other settings, such as `theme` and the settings of each diagram type, were
+not drawn. The layouts that the drawings used are in
+[Layouts that the versions were drawn with](#layouts-that-the-versions-were-drawn-with).
 
 The period is about the versions that users run. Of the downloads of mermaid
 from npm in the week before 2026-11-12 (about 26.6 million, by version from
@@ -75,6 +64,91 @@ months 96.7%, those of the last 18 months 97.1%, and those of the last 24 months
 half year. When the pinned version is raised, the period and the list are
 computed again from the publication date of the new pinned version, with the
 versions of npm.
+
+## Layouts that the versions were drawn with
+
+The setting `layout` chooses the algorithm that places the nodes, and the
+versions read it differently. A text of a flowchart, a state, a class, an ER, a
+requirement, and a mindmap diagram was drawn by each of the ten versions with
+the default layout, with `layout: dagre`, and with `layout: elk`, and the sizes
+of the figures were compared:
+
+| Versions           | What the setting changes in these diagrams                                                                                                                                                                       |
+| ------------------ | ---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| 10.9.8             | nothing; ELK is chosen by the header `flowchart-elk`                                                                                                                                                             |
+| 11.7.0, 11.8.1     | nothing, except that `layout: elk` is rejected for a state diagram                                                                                                                                               |
+| 11.13.0 to 11.17.2 | the same, and `layout: dagre` draws a mindmap differently from its default                                                                                                                                       |
+| 12.0.0, 12.3.0     | the default is ELK, the same as `layout: elk`; `layout: dagre` draws a flowchart, a state, a class, an ER, a requirement, and a mindmap diagram differently, and `layout: elk` is rejected for a mindmap diagram |
+
+A block, an architecture, and a kanban diagram were drawn the same under the
+three settings by every version that has them. So the drawings of the tables use
+the dagre layout in 10.9.8 and in 11.7.0 to 11.17.2, and the ELK layout in
+12.0.0 and 12.3.0, the layout that each version uses by default (a mindmap
+diagram has a layout of its own in all of them). The pairs were drawn again with
+the other layout where a version has one:
+
+- 12.0.0 and 12.3.0 with `layout: dagre`: 8,892 pairs of the fixtures of this
+  package and of the corpus (2,964 flowchart, 1,364 agentflow, 1,348 ER, 1,313
+  class, 1,128 state, 520 requirement, and 255 mindmap texts, each written and
+  formatted). In 12.0.0, 6,975 pairs were drawn the same, 1,292 had the same
+  pixels, 565 were rejected in both forms, and 60 were rejected as written and
+  accepted formatted. In 12.3.0, the numbers are 7,041, 1,292, 545, and 14. None
+  was drawn differently.
+- 11.13.0 to 11.17.2 with `layout: dagre`, the mindmap texts of those pairs: 255
+  pairs for each version, of which 217 were drawn the same, 9 had the same
+  pixels, 19 were rejected in both forms, and 10 were rejected as written and
+  accepted formatted. None was drawn differently.
+- 10.9.8 with the header `flowchart-elk`, the flowchart texts of those pairs
+  with the header replaced: 2,921 pairs, of which 33 were drawn the same, 640
+  had the same pixels, 2,239 were rejected in both forms, and 9 were rejected as
+  written and accepted formatted. None was drawn differently. With the header
+  `flowchart`, the same 2,921 pairs were drawn in 2,316 cases (56 the same,
+  2,260 with the same pixels), 586 were rejected in both forms, and 19 were
+  rejected as written and accepted formatted.
+
+The texts of a flowchart with `TB` and with `TD` were also drawn with ELK loaded
+as a package: mermaid.js 12.3.0 with `@mermaid-js/layout-elk` 1.0.2 and
+`layout: elk` drew 1,034 pairs, which are the flowcharts without a subgraph in
+the 28 places where another rule meets a header, those that hold the word
+`subgraph` only in a label, an id, or a comment, and flowcharts with a subgraph.
+The layout was in use: the same diagram drawn with dagre has another size. 932
+pairs were drawn the same, 102 were rejected in both forms, and none was drawn
+differently. The header `flowchart-elk` was drawn with `TB` and with `TD` by the
+ten versions as their bundles are, in 15 forms: of 1,050 pairs, 1,036 were drawn
+the same and 14 were rejected in both forms.
+
+The ELK layout as a package of the 11.x versions (`@mermaid-js/layout-elk` for
+11.7.0 to 11.17.2) was not drawn, so the 11.x versions with an external ELK
+layout are not compared yet. What those versions hand to a layout was compared
+instead. The renderer of a flowchart, a state, a class, an ER, a requirement,
+and a mindmap diagram gives the layout the `getData()` of the diagram database.
+That data was taken for the written and for the formatted text of the 8,892
+pairs in each of seven versions (the mindmap diagrams of 11.7.0 and 11.8.1 have
+no such data):
+
+| Version | Same data | Different data | Rejected in both forms | Rejected as written only | No data |
+| ------- | --------- | -------------- | ---------------------- | ------------------------ | ------- |
+| 11.7.0  | 6,459     | 391            | 1,723                  | 83                       | 236     |
+| 11.8.1  | 6,459     | 391            | 1,723                  | 83                       | 236     |
+| 11.13.0 | 6,546     | 639            | 1,620                  | 87                       | 0       |
+| 11.14.0 | 6,560     | 640            | 1,608                  | 84                       | 0       |
+| 11.15.0 | 6,598     | 640            | 1,570                  | 84                       | 0       |
+| 11.16.1 | 6,665     | 648            | 1,494                  | 85                       | 0       |
+| 11.17.2 | 6,680     | 648            | 1,479                  | 85                       | 0       |
+
+The fields that differed hold the colors and the spacing of a style, the
+whitespace of a text (the runs that the formatter writes as one space, which
+HTML collapses, and the blanks at the ends of a description), the type `string`
+or `text` of a flowchart label in quotes or without, ids that are generated for
+every parse, and the id of a subgraph in 2 flowchart pairs. Apart from those,
+the nodes, the edges, and the shapes were the same.
+
+The renderer of a flowchart also gives the layout the direction of the header,
+`getDirection()`. In 11.7.0 and 11.8.1 it differs for the 41 flowchart pairs
+whose header the formatter changes from `TB` to `TD`: it returns `TB` for the
+written text and `TD` for the formatted text. The other five versions return the
+same direction for both. An ELK layout package may draw the two differently in
+11.7.0 and 11.8.1, which is not compared yet.
 
 ## Forms kept for versions of mermaid.js that count
 

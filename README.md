@@ -59,14 +59,15 @@ in ESLint Online Playground. The [sample project](./examples/eslint) includes
 ## What you can rely on
 
 mermaid.js is the reference, at the version recorded in the
-[specification](./packages/spec/docs/index.md), currently 12.3.0. When the
-formatter would change how a token is spelled, such as the case of a keyword, it
-keeps the spelling as written if the history of mermaid.js (its changelog and
-the grammars of earlier releases) shows that an earlier version reads the new
-spelling differently or not at all. The rest of its formatting is checked with
-12.3.0 only. The formatter's
-[compatibility notes](./packages/prettier-plugin-mmd/docs/compatibility.md#versions-of-mermaidjs)
-list what was read for each kind of spelling.
+[specification](./packages/spec/docs/index.md), currently 12.3.0. A formatted
+text is also drawn by other versions, so the formatter checks what it prints
+against ten versions of mermaid.js. When the formatter would change how
+something is written, such as the case of a keyword, it keeps it as written if
+one of the ten reads the new form differently or not at all.
+[Versions of mermaid.js that count](./packages/prettier-plugin-mmd/docs/compatibility.md#versions-of-mermaidjs-that-count)
+names the ten, and
+[Forms kept for versions of mermaid.js that count](./packages/prettier-plugin-mmd/docs/compatibility.md#forms-kept-for-versions-of-mermaidjs-that-count)
+lists each form that stays as written for them.
 
 - The parser accepts and rejects the same text as mermaid.js, and reads an
   accepted text as the same diagram.

@@ -25,6 +25,7 @@ import {
   isBracketPadding,
   isSpaceOrTab,
   isWhitespace,
+  textWithoutDirectives,
 } from "./source.ts"
 import { c4ArgumentFields, c4NameFields, c4TextFields } from "./text-slots.ts"
 import { collapseRuns, printsRunsAsOne } from "./text-runs.ts"
@@ -1626,8 +1627,8 @@ function respell(
       : !"#%".includes(after ?? "\n") &&
         !(after === ":" && endsLikeStyleKeyword(printed))) &&
     rule.joins?.(
-      source.text.slice(line, start),
-      source.text.slice(textEnd, lineEndOf(source, textEnd)),
+      textWithoutDirectives(source, line, start),
+      textWithoutDirectives(source, textEnd, lineEndOf(source, textEnd)),
       source,
       start,
     ) !== true &&
