@@ -10,3 +10,5 @@ Section numbers below are those of [SKILL.md](../SKILL.md).
   `update`, which writes its title and its row in the index.
 - When a document is removed, check with `grep` that no other document refers to
   it.
+- The tests that a removed or moved document runs are in
+  [tests-after-writing.md](tests-after-writing.md).

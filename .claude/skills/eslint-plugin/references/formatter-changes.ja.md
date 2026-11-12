@@ -6,8 +6,11 @@
    parser を build し、英日の例を書き換える。
 2. `pnpm --filter @mmd-toolkit/eslint-plugin run test:update` を実行し、
    スナップショットの差分を読む。
+   例を変えたときに回すテストは、
+   [tests-after-writing.ja.md](tests-after-writing.ja.md) にある。
    もう報告されなくなった反する例と、報告されるようになった従う例は、
-   書いたまま残す（4 節の手順 4）か、例から外す。
+   書いたまま残す（[4 節](checking-before-and-after-writing.ja.md) の手順
+   4）か、例から外す。
    `<!-- prettier-ignore -->`
    を付けた例をフォーマッターが同じ形に印字するようになったら、
    もう残す理由はないので、印とその文を消す。
@@ -16,7 +19,8 @@
    英日とも新しい形に書く。
 4. フォーマッターが、
    前は変えていた書き方を書かれたまま残すようになった変更では、
-   該当する例を fixture の `input.mmd` から作り直す（4 節の手順 4）。
+   該当する例を fixture の `input.mmd`
+   から作り直す（[4 節](checking-before-and-after-writing.ja.md) の手順 4）。
    古い印字結果を整形し直しても、fixture のテキストには戻らないからである。
 5. `pnpm run lint:docs` を実行する。
    続けて、ドキュメントサイトのテストを実行する。

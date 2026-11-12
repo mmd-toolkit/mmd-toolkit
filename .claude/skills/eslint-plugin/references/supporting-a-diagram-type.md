@@ -10,15 +10,18 @@ Section numbers below are those of [SKILL.md](../SKILL.md).
    uses for its sidebar; `tests/rule-docs.test.ts` fails when the two orders
    differ, and `update` fails for a rule of a diagram type that is missing.
 2. For each common rule, run an ordinary example of the new diagram type through
-   mermaid.js. When it behaves as in the other diagram types and the rule has
-   something to say for that diagram type, add an item to the list of diagram
-   types in its Rule Details (what happens there), and its fixture to the tests
-   of the rule. When it behaves differently, or when one definition over the
-   shared part of the tree no longer covers it, the rule no longer meets the
-   condition for a common rule (the
-   [criteria](../../rule-ideas/SKILL.md#policies-and-criteria) of the rule-ideas
-   skill). Moving it to the rules of a diagram type is a decision about the
-   rule: make it with the rule-ideas skill first, with the result of mermaid.js
-   as the evidence, and then move the document (section 8).
+   mermaid.js. The scripts that run it, and the steps that check an example and
+   add its fixture, are in [section 4](checking-before-and-after-writing.md).
+   The tests that the change runs are in
+   [tests-after-writing.md](tests-after-writing.md). When it behaves as in the
+   other diagram types and the rule has something to say for that diagram type,
+   add an item to the list of diagram types in its Rule Details (what happens
+   there), and its fixture to the tests of the rule. When it behaves
+   differently, or when one definition over the shared part of the tree no
+   longer covers it, the rule no longer meets the condition for a common rule
+   (the [criteria](../../rule-ideas/SKILL.md#policies-and-criteria) of the
+   rule-ideas skill). Moving it to the rules of a diagram type is a decision
+   about the rule: make it with the rule-ideas skill first, with the result of
+   mermaid.js as the evidence, and then move the document (section 8).
 3. Write the documents of the rules of that diagram type with the procedure of
    [SKILL.md](../SKILL.md).

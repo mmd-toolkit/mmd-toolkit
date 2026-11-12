@@ -34,7 +34,7 @@ its scope, and whether `recommended` enables it. The adoption criteria are in
     (`packages/tests/docs/maintaining-fixtures.md`). The fixture is used in the
     examples of the rule document and in the tests of the rule (the
     eslint-plugin SKILL, step 4 of
-    [section 4](../eslint-plugin/SKILL.md#4-checking-before-and-after-writing)).
+    [section 4](../eslint-plugin/references/checking-before-and-after-writing.md)).
 - Mark each claim as run (checked by running it), read (checked by reading), or
   unchecked. Withdraw a wrong claim in those words.
 - Read the current specification before relying on it.

@@ -35,8 +35,8 @@ description:
     tests パッケージに頼む（`packages/tests/docs/maintaining-fixtures.md`）。
     fixture は、
     規則の文書の例と規則のテストに使う（eslint-plugin の SKILL の
-    [4 節](../eslint-plugin/SKILL.ja.md#4-書く前と書いた後に確かめること)の手順
-    4）。
+    [4 節](../eslint-plugin/references/checking-before-and-after-writing.ja.md)
+    の手順 4）。
 - 主張ごとに、【実行】（動かして確かめた）、【読解】（読んで確かめた）、
   未確認を示す。
   誤りと分かったら、その言葉で撤回する。

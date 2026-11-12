@@ -11,6 +11,10 @@
    2 つの順序が違うと `tests/rule-docs.test.ts` が失敗し、
    `DIAGRAM_ORDER` にない図種の規則があると `update` が失敗する。
 2. 共通の規則ごとに、新しい図種の普通の書き方の例を mermaid.js に掛ける。
+   それを動かすスクリプトと、例を確かめて fixture を足す手順は、
+   [4 節](checking-before-and-after-writing.ja.md)にある。
+   その変更で実行するテストは、
+   [tests-after-writing.ja.md](tests-after-writing.ja.md) にある。
    ほかの図種と同じに振る舞い、その規則がその図種について言うことがあるなら、
    規則の詳細の図種の箇条に 1 項目（そこで起きること）を足し、
    その fixture を規則のテストに足す。
