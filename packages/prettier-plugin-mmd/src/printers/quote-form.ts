@@ -788,8 +788,9 @@ function holdsLineTerminator(text: string): boolean {
  * The text of a label in square brackets of an architecture diagram that every
  * version of mermaid.js that reads the label in quotes reads without them:
  * ASCII letters, digits, `_`, and spaces, with none at its ends. The grammars
- * of 11.13.0 to 11.16.1, which read a label in quotes, read a label without
- * quotes of these characters only.
+ * of some versions that count read a label in quotes, and a label without
+ * quotes of these characters only (docs/compatibility.md, Forms kept for
+ * versions of mermaid.js that count).
  */
 function architectureLabel(text: string): string | undefined {
   return text !== "" &&

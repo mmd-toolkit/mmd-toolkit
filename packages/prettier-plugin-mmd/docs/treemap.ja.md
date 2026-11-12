@@ -627,15 +627,16 @@ trivia を持つ値は書かれた境界を保ちます。
 その下の行は 1 段深いままにします。
 行頭から始まる title はそのまま行頭に置き、
 ヘッダーと同じ行に続く title（`treemaptitle T`）は次の行の行頭に移します。
-treemap を持つ最初の版 11.8.1 は、字下げされた title、`accTitle`、
+treemap を持つ最初の版は、字下げされた title、`accTitle`、
 `accDescr` を拒否します。
 それ以降の版は、行頭の同じ文も 1 段深い同じ文も受け付け、同じに描きます。
-そのため、1 段深く印字すると 11.8.1 が拒否するテキストになります。
+そのため、1 段深く印字すると最初の版が拒否するテキストになります。
 詳しくは
-[treemap の親子と作者の値](./compatibility.ja.md#treemap-の親子と作者の値)
+[treemap の親子と作者の値](./compatibility.ja.md#treemap-の親子と作者の値) と
+[対象にする版の mermaid.js のために残す形](./compatibility.ja.md#対象にする版の-mermaidjs-のために残す形)
 を参照してください。
 その title の前のコメント行は title にそろえます。
-書かれた時点で字下げされた title は、11.8.1 が書かれたままでも拒否するので、
+書かれた時点で字下げされた title は、最初の版が書かれたままでも拒否するので、
 ほかの文と同じく 1 段深く印字します。 [fixture: treemap/header/common]
 [fixture: treemap/title/after-header-spaced-line-start]
 

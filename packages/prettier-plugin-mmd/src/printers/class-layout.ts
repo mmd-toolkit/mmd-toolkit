@@ -544,9 +544,10 @@ function findMemberStretches(source: Source, statement: Node): Atom[] {
 /**
  * The visibility mark and the tab after it, as one stretch printed with the
  * tab, where the tab stands between the mark and the text of the member.
- * 10.9.8 reads the tab as part of the name, as it reads a space, while the
- * later versions trim it, so neither dropping the tab nor printing a space
- * draws the same (docs/class.md, Member lines).
+ * A version that counts reads the tab as part of the name, as it reads a
+ * space, while the others trim it, so neither dropping the tab nor printing a
+ * space draws the same (docs/class.md, Member lines; docs/compatibility.md,
+ * Forms kept for versions of mermaid.js that count).
  */
 function findTabAfterVisibility(
   source: Source,

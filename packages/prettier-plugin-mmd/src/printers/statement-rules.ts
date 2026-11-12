@@ -320,12 +320,12 @@ export interface StyleListUse {
  * and of a class diagram. mermaid.js puts a style that starts with `color:` or
  * `text-align:` in the style of the label of a node and every other style in
  * the style of its shape (a block arrow takes the style of its label as it
- * is), in a block diagram, and, in 10.9.8, in a flowchart (both names) and in a
- * class diagram (`color`). A style that starts with whitespace, or has
+ * is), in a block diagram, and, in a version that counts, in a flowchart (both
+ * names) and in a class diagram (`color`). A style that starts with whitespace, or has
  * whitespace between its name and the `:`, does not start so. So such a style
  * keeps whether whitespace stands before it, and between the name and the `:`,
  * a run of whitespace becoming one space (docs/compatibility.md, Styles that
- * are drawn the same).
+ * are drawn the same; Forms kept for versions of mermaid.js that count).
  *
  * `joinsStyles` is set for the statements whose styles mermaid.js joins with
  * `;` into one CSS text without taking their whitespace away: a `linkStyle`

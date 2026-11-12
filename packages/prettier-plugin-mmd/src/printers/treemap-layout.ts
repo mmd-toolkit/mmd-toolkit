@@ -52,11 +52,12 @@ export interface TreemapLine {
 
 /**
  * The depth at which a line is printed. A title or an accessibility statement
- * is printed at the start of its line, unless it was written indented:
- * 11.8.1, the first version with the diagram, rejects such a statement when it
- * is indented, and accepts it at the start of its line and after the header on
+ * is printed at the start of its line, unless it was written indented: the
+ * first version with the diagram rejects such a statement when it is
+ * indented, and accepts it at the start of its line and after the header on
  * the line of the header (`treemaptitle T`), so the printer does not indent
- * what was not written indented (docs/treemap.md, Title). Every other line is
+ * what was not written indented (docs/treemap.md, Title; docs/compatibility.md,
+ * Forms kept for versions of mermaid.js that count). Every other line is
  * printed at its own depth.
  */
 export function treemapPrintedDepth(source: Source, line: TreemapLine): number {

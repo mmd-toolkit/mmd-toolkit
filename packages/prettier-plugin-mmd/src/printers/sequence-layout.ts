@@ -458,7 +458,7 @@ function scanAfterBareColon(
 /**
  * The end of the statement together with the whitespace character that stays
  * after its `:` when no text follows it, or null when no whitespace stays:
- * `A->>B: ` is a message with an empty text, while mermaid.js before 11.7.0
+ * `A->>B: ` is a message with an empty text, while a version that counts
  * rejects `A->>B:`, since its text rule needs a character at least. The
  * whitespace is outside the range of the statement, and its first character
  * is printed as written, as in a task of a Gantt chart or a user journey
@@ -480,7 +480,7 @@ export function findColonWhitespaceEnd(
 /**
  * Whether the line of a statement with an empty text is printed as written,
  * because the whitespace after its `:` is read with what lies around it.
- * mermaid.js before 11.7.0 needs a character after the `:`, takes a whitespace
+ * A version that counts needs a character after the `:`, takes a whitespace
  * character of any kind for it, and removes a directive before it reads the
  * line, so the whitespace after a directive is that character too. The printer
  * drops whitespace at the end of a line and prints another whitespace
@@ -589,12 +589,13 @@ function addArrowRules(
       : "space"
   rules.set(arrow.range[0], rule)
   rules.set(next.range[0], rule)
-  // 10.9.8 has no `<<->>` and `<<-->>` and reads the `<<` as part of the name
-  // before them, so the whitespace before such an arrow stays as written.
+  // A version that counts has no `<<->>` and `<<-->>` and reads the `<<` as
+  // part of the name before them, so the whitespace before such an arrow stays
+  // as written.
   const arrowText = source.text.slice(arrow.range[0], arrow.range[1])
   if (arrowText === "<<->>" || arrowText === "<<-->>")
     rules.delete(arrow.range[0])
-  // The whitespace beside a `()` stays as written: 10.9.8, 11.7.0, and 11.8.1
+  // The whitespace beside a `()` stays as written: some versions that count
   // have no central connection and read `()` as part of a name.
   if (statement.activation !== null) {
     // The `-` of an activation and the first characters of the target would

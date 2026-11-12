@@ -545,9 +545,11 @@ relationship-spacing/cardinality-words-case-one-form]
 
 A `class` or `subgraph` keyword that touches a unit starting with a `-`, and an
 `end` that touches a statement starting with a `-`, keep touching: `class-A a`
-is not printed `class -A a`, which 10.9.8 rejects, and `subgraph-x` and `end-x`
-are not split, since 11.7.0 to 11.16.1 read them as entities (see
-[ER lines that the place or the whitespace decides](./compatibility.md#er-lines-that-the-place-or-the-whitespace-decides)).
+is not printed `class -A a`, which a version that counts rejects, and
+`subgraph-x` and `end-x` are not split, since some read them as entities (see
+[ER lines that the place or the whitespace decides](./compatibility.md#er-lines-that-the-place-or-the-whitespace-decides)
+and
+[Forms kept for versions of mermaid.js that count](./compatibility.md#forms-kept-for-versions-of-mermaidjs-that-count)).
 `classDef` and `style` are not among them: `classDef-x` is printed
 `classDef -x`. [fixture:
 whitespace-between-tokens/keyword-then-dash-touching-kept] [fixture:
@@ -992,15 +994,17 @@ A direction line is `direction` and its value, with the text that mermaid.js
 does not read before and after them. The text is kept as written. One space
 stands between it and `direction`, where they were written apart, and between
 `direction` and the value; the value keeps the case in which it is written (`lr`
-stays `lr`), since 10.9.8 reads the line as entities and draws `direction tb`
-and `direction TB` differently (see
-[Keywords in one case](./compatibility.md#keywords-in-one-case)). [fixture:
-direction/spacing] [fixture: direction/text-kept] [fixture: direction/case-kept]
-[fixture: direction/case-bt-rl-kept] A value written on a later line is printed
-after `direction` on one line. [fixture: direction/value-on-next-line-joined]
-[corpus fixture: er/lex-direction-value-next-line] A direction line with a
-directive or comment keeps its line breaks and indents structural continuations
-one level deeper. [fixture: direction/directive-and-comment-line-kept]
+stays `lr`), since a version that counts reads the line as entities and draws
+`direction tb` and `direction TB` differently (see
+[Keywords in one case](./compatibility.md#keywords-in-one-case) and
+[Forms kept for versions of mermaid.js that count](./compatibility.md#forms-kept-for-versions-of-mermaidjs-that-count)).
+[fixture: direction/spacing] [fixture: direction/text-kept] [fixture:
+direction/case-kept] [fixture: direction/case-bt-rl-kept] A value written on a
+later line is printed after `direction` on one line. [fixture:
+direction/value-on-next-line-joined] [corpus fixture:
+er/lex-direction-value-next-line] A direction line with a directive or comment
+keeps its line breaks and indents structural continuations one level deeper.
+[fixture: direction/directive-and-comment-line-kept]
 
 Input
 ([direction/text-kept-input.mmd](../tests/fixtures/er/direction/text-kept-input.mmd)):

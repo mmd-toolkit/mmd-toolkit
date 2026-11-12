@@ -115,8 +115,8 @@ export function layoutTimelineHeader(
 /**
  * Whether a statement stays on the line of the header, after its gap as
  * written: the first statement, when the header has a direction and the
- * statement starts on its line. A version of mermaid.js before 11.14.0, which
- * has no direction, reads the words after `timeline` as the text of a period,
+ * statement starts on its line. A version of mermaid.js that counts and has no
+ * direction reads the words after `timeline` as the text of a period,
  * so `timeline TD title T` is one period there and `timeline TD` followed by a
  * line `title T` is a period and a title; the text after a direction stays
  * where it is (docs/timeline.md, Header and direction).
@@ -224,10 +224,10 @@ export function layoutTimelineStatement(
 
 /**
  * Whether a title has its text on a later line than its keyword and the text
- * starts with `#`: `title`, a line break, and `# c`. 10.9.8 draws that
- * differently from `title # c` on one line, so the statement stays as written
- * (docs/timeline.md, Titles and sections; docs/compatibility.md, Timeline texts
- * that the versions read differently).
+ * starts with `#`: `title`, a line break, and `# c`. A version that counts draws
+ * that differently from `title # c` on one line, so the statement stays as
+ * written (docs/timeline.md, Titles and sections; docs/compatibility.md, Forms
+ * kept for versions of mermaid.js that count).
  */
 function startsTitleTextWithHashOnNextLine(
   source: Source,

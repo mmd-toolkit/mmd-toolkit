@@ -702,22 +702,24 @@ node, and uses the one form. [fixture:
 whitespace-between-tokens/style-stroke-before-colon-spaced] A `style` keeps
 whether whitespace stands before a style that starts with `color:` or
 `text-align:`, and between such a name and the `:`, a run of whitespace becoming
-one space, since 10.9.8 puts a style that starts so in the style of the label of
-the node: `style A fill:#f00,color:white` is printed
+one space, since a version that counts puts a style that starts so in the style
+of the label of the node: `style A fill:#f00,color:white` is printed
 `style A fill: #f00,color: white`, and `style A fill:#f00 ,   color:white` is
 printed `style A fill: #f00, color: white` (see
-[Styles that are drawn the same](./compatibility.md#styles-that-are-drawn-the-same)).
+[Styles that are drawn the same](./compatibility.md#styles-that-are-drawn-the-same)
+and
+[Forms kept for versions of mermaid.js that count](./compatibility.md#forms-kept-for-versions-of-mermaidjs-that-count)).
 [fixture: whitespace-between-tokens/style-color-touching-kept] [fixture:
 whitespace-between-tokens/style-color-spaced] [fixture:
 whitespace-between-tokens/style-color-first] [fixture:
 whitespace-between-tokens/style-text-align-touching-kept] [fixture:
 whitespace-between-tokens/style-label-name-colon-gap-kept] A `linkStyle` keeps
 the same whitespace for a style that starts with `color:` or `text-align:`,
-which 10.9.8 puts in the style of the label of a link. [fixture:
+which a version that counts puts in the style of the label of a link. [fixture:
 whitespace-between-tokens/link-style-label-names-kept] A style of a `style` that
 ends with a backslash keeps whether whitespace stands after it, a run of
-whitespace becoming its first character, since 10.9.8 joins the styles of a node
-with `;` as they are, and the backslash would escape the `;`:
+whitespace becoming its first character, since a version that counts joins the
+styles of a node with `;` as they are, and the backslash would escape the `;`:
 `style A stroke-width:3px\ ,stroke:#0f0` is printed
 `style A stroke-width: 3px\ , stroke: #0f0` (see
 [Styles that are drawn the same](./compatibility.md#styles-that-are-drawn-the-same)).
@@ -996,17 +998,17 @@ arrow-spacing/edge-id-arrow-like-after-ignored-semicolon-runs-collapsed]
 
 An edge id after a data block touches the block: `A@{ shape: circle } e1@--> B`
 is printed `A@{ shape: circle }e1@--> B`. mermaid.js 12.3.0 reads the two forms
-the same, and draws the same figure from them. Of the versions that count,
-11.7.0, 11.8.1, 11.13.0, 11.14.0, 11.15.0, 11.16.1, 11.17.2, and 12.0.0 have no
-rule for a space after a data block before an edge id, so they reject the form
-with the space (10.9.8 has no data block, and rejects both). The touching form
-is the one that every version that reads a data block reads. A directive or an
-ignored `;` between the block and the edge id is removed before the text is
-read, so the block, the directive or the `;`, and the edge id touch one another:
-`A@{ shape: circle }%%{init: {}}%%e1@--> B`. After the closing bracket of a
-shape the edge id has one space (`A[x] e1@--> B`), since the same eight versions
-reject `A[x]e1@--> B`. A swimlane diagram follows the same rule. [fixture:
-arrow-spacing/edge-id-after-data-block-touches] [fixture:
+the same, and draws the same figure from them. Eight of the versions that count
+have no rule for a space after a data block before an edge id, so they reject
+the form with the space (one has no data block, and rejects both; see
+[Forms kept for versions of mermaid.js that count](./compatibility.md#forms-kept-for-versions-of-mermaidjs-that-count)).
+The touching form is the one that every version that reads a data block reads. A
+directive or an ignored `;` between the block and the edge id is removed before
+the text is read, so the block, the directive or the `;`, and the edge id touch
+one another: `A@{ shape: circle }%%{init: {}}%%e1@--> B`. After the closing
+bracket of a shape the edge id has one space (`A[x] e1@--> B`), since the same
+eight versions reject `A[x]e1@--> B`. A swimlane diagram follows the same rule.
+[fixture: arrow-spacing/edge-id-after-data-block-touches] [fixture:
 arrow-spacing/edge-id-after-data-block-directive] [fixture:
 arrow-spacing/edge-id-after-data-block-semicolon] [fixture:
 arrow-spacing/edge-id-after-data-block-touches-swimlane]
@@ -1180,15 +1182,16 @@ label-inner-whitespace/leading-whitespace-pipe-label-kept]
 The `@` in the first word depends on the version of mermaid.js. 12.3.0 stops the
 run of an edge id at a bracket and at `|`, so it reads `A[user@example.com]` and
 `A-->|x@|B` with the same labels as it reads them with the whitespace. Of the
-versions that count, 11.7.0, 11.8.1, 11.13.0, 11.14.0, 11.15.0, 11.16.1,
-11.17.2, and 12.0.0 do not stop it there (the grammars of the tags show it), so
-they reject the two without the whitespace and accept them with it; drawn in
-Chromium, 11.12.3, 11.13.0, 11.14.0, 11.15.0, 11.16.1, and 12.0.0 did. A text
-printed without the space would be rejected by versions that read the text as it
-is written, so the space stays after every opening, in the title of a subgraph,
-and in a flowchart, a swimlane diagram, and an agentflow diagram alike, with one
-space at the end of the label too, except before the closing `?]` or `=]` of a
-slanted shape, as above (`A[/ x@/?]` stays as it is). [fixture:
+versions that count, eight do not stop it there (the grammars of the tags show
+it; see
+[Forms kept for versions of mermaid.js that count](./compatibility.md#forms-kept-for-versions-of-mermaidjs-that-count)),
+so they reject the two without the whitespace and accept them with it; drawn in
+Chromium, 11.12.3 and five of the eight did. A text printed without the space
+would be rejected by versions that read the text as it is written, so the space
+stays after every opening, in the title of a subgraph, and in a flowchart, a
+swimlane diagram, and an agentflow diagram alike, with one space at the end of
+the label too, except before the closing `?]` or `=]` of a slanted shape, as
+above (`A[/ x@/?]` stays as it is). [fixture:
 label-inner-whitespace/leading-whitespace-at-sign-kept] [fixture:
 label-inner-whitespace/leading-whitespace-at-sign-every-shape-kept] [fixture:
 label-inner-whitespace/leading-whitespace-at-sign-before-question-end-kept]
@@ -2353,13 +2356,13 @@ the examples are written as strings, in which `\n` is a line break:
 
 The direction is kept as written: `TD` is not changed to `TB`, and `TB` is not
 changed to `TD`, in the header or in a `direction` statement. mermaid.js 12.3.0
-draws the two the same, but mermaid.js 10.9.8, 11.7.0, and 11.8.1 draw a
-flowchart with a subgraph and `TB` in its header differently from the same text
-with `TD`, and the header keyword is kept as written too (see
-[Versions of mermaid.js](./compatibility.md#versions-of-mermaidjs) and
-[The names of a header](./compatibility.md#the-names-of-a-header)). [fixture:
-direction/header-td-kept] [fixture: direction/header-tb-kept] [fixture:
-direction/header-keyword-kept] [fixture:
+draws the two the same, but three versions that count draw a flowchart with a
+subgraph and `TB` in its header differently from the same text with `TD`, and
+the header keyword is kept as written too (see
+[Forms kept for versions of mermaid.js that count](./compatibility.md#forms-kept-for-versions-of-mermaidjs-that-count)
+and [The names of a header](./compatibility.md#the-names-of-a-header)).
+[fixture: direction/header-td-kept] [fixture: direction/header-tb-kept]
+[fixture: direction/header-keyword-kept] [fixture:
 direction/statement-td-kept-with-other-header] [fixture:
 direction/statement-values-kept] mermaid.js keeps the `TD` of a `direction`
 statement in a subgraph as written, so changing it there would change the

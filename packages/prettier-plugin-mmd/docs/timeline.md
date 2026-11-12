@@ -611,16 +611,18 @@ statement printed as written (see
 [Multi-line statements](#multi-line-statements)). [fixture:
 titles-and-sections/value-on-next-line] [fixture:
 titles-and-sections/comment-line-inside-kept] A title whose value starts with a
-`#` on a later line than the keyword stays as written: 10.9.8 reads `title`, a
-line break, and `# c` as a title of whitespace only and a comment, and
-`title # c` as the period `title` and a comment, while the other nine versions
-that count read both as the title `# c` (drawn the same). [fixture:
-titles-and-sections/title-hash-on-next-line-kept] The value holds `:`, `#`, `%`,
-and `%%` as characters, except that the name of a section ends at a `:`, which
-starts an event. [fixture: titles-and-sections/special-characters-in-values]
-[fixture: titles-and-sections/section-ends-at-colon] A directive between the
-keyword and the value stays where it is (see [Directives](#directives)).
-[fixture: titles-and-sections/directive-between-keyword-and-value]
+`#` on a later line than the keyword stays as written: one version that counts
+reads `title`, a line break, and `# c` as a title of whitespace only and a
+comment, and `title # c` as the period `title` and a comment, while the other
+nine read both as the title `# c` (drawn the same; see
+[Forms kept for versions of mermaid.js that count](./compatibility.md#forms-kept-for-versions-of-mermaidjs-that-count)).
+[fixture: titles-and-sections/title-hash-on-next-line-kept] The value holds `:`,
+`#`, `%`, and `%%` as characters, except that the name of a section ends at a
+`:`, which starts an event. [fixture:
+titles-and-sections/special-characters-in-values] [fixture:
+titles-and-sections/section-ends-at-colon] A directive between the keyword and
+the value stays where it is (see [Directives](#directives)). [fixture:
+titles-and-sections/directive-between-keyword-and-value]
 
 Input
 ([titles-and-sections/special-characters-in-values-input.mmd](../tests/fixtures/timeline/titles-and-sections/special-characters-in-values-input.mmd)):
@@ -704,24 +706,25 @@ header-and-direction/direction-kept] [fixture:
 header-and-direction/direction-case-kept] [fixture:
 header-and-direction/spaces-before-the-direction]
 
-The direction is read from 11.14.0 on. 10.9.8, 11.7.0, 11.8.1, and 11.13.0, the
-versions that count (see
-[Versions of mermaid.js that count](./compatibility.md#versions-of-mermaidjs-that-count))
-that are before it, read the words after `timeline` as the text of a period. So
-`timeline td` and `timeline TD` are periods that differ by their case there, and
-`td` is not printed `TD`, though the examples in the documentation of mermaid.js
-write `TD`. The text that follows a direction stays on the line of the header,
-after its gap as written: `timeline TD title T` is one period in those versions,
-and `timeline TD` followed by a line `title T` is a period and a title, and
-likewise `timeline TD LR` (a direction and the period `LR`) and
-`timeline LR 2004 : a`. A text after the header without a direction goes to a
-line of its own (`timeline History` is printed with `History` below the header),
-which the ten versions draw the same. A period that stays on the line of the
-header has its later events at the ordinary continuation indentation, since its
-colon is not at the column of a period on a line of its own. A direction on a
-line of its own is a period. [fixture:
-header-and-direction/second-word-stays-on-the-header-line] [fixture:
-header-and-direction/direction-then-period-stays] [fixture:
+Four of the versions that count (see
+[Versions of mermaid.js that count](./compatibility.md#versions-of-mermaidjs-that-count)
+and
+[Forms kept for versions of mermaid.js that count](./compatibility.md#forms-kept-for-versions-of-mermaidjs-that-count))
+read no direction: they read the words after `timeline` as the text of a period,
+and the six others read the direction. So `timeline td` and `timeline TD` are
+periods that differ by their case there, and `td` is not printed `TD`, though
+the examples in the documentation of mermaid.js write `TD`. The text that
+follows a direction stays on the line of the header, after its gap as written:
+`timeline TD title T` is one period in those versions, and `timeline TD`
+followed by a line `title T` is a period and a title, and likewise
+`timeline TD LR` (a direction and the period `LR`) and `timeline LR 2004 : a`. A
+text after the header without a direction goes to a line of its own
+(`timeline History` is printed with `History` below the header), which the ten
+versions draw the same. A period that stays on the line of the header has its
+later events at the ordinary continuation indentation, since its colon is not at
+the column of a period on a line of its own. A direction on a line of its own is
+a period. [fixture: header-and-direction/second-word-stays-on-the-header-line]
+[fixture: header-and-direction/direction-then-period-stays] [fixture:
 header-and-direction/text-after-the-header-without-direction-moves] [fixture:
 header-and-direction/direction-on-its-own-line-is-a-period]
 

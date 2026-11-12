@@ -351,11 +351,13 @@ whitespace-between-tokens/style-words-directive-kept] A backslash does not
 escape a `,` here: `fill:a\,b ,stroke:c` is printed `fill: a\, b, stroke: c`.
 [fixture: whitespace-between-tokens/style-backslash-before-comma] A `style`
 keeps whether whitespace stands before a style that starts with `color:`, and
-between `color` and the `:`, a run of whitespace becoming one space, since
-10.9.8 puts a style that starts so in the style of the label of the class:
-`style A fill:#f00,color:white` is printed `style A fill: #f00,color: white`
-(see
-[Styles that are drawn the same](./compatibility.md#styles-that-are-drawn-the-same)).
+between `color` and the `:`, a run of whitespace becoming one space, since a
+version that counts puts a style that starts so in the style of the label of the
+class: `style A fill:#f00,color:white` is printed
+`style A fill: #f00,color: white` (see
+[Styles that are drawn the same](./compatibility.md#styles-that-are-drawn-the-same)
+and
+[Forms kept for versions of mermaid.js that count](./compatibility.md#forms-kept-for-versions-of-mermaidjs-that-count)).
 [fixture: whitespace-between-tokens/style-color-touching-kept] [fixture:
 whitespace-between-tokens/style-color-spaced] [fixture:
 whitespace-between-tokens/style-label-name-colon-gap-kept] A `style` whose last
@@ -712,9 +714,9 @@ after a visibility mark is part of the name: `+ foo()` has the name ` foo`, with
 a space, and `+foo()` the name `foo`. [fixture: member-lines/runs-collapsed]
 [corpus fixture: class/gram-member-visibility-whitespace-body-0184dca2] A tab
 after the mark stays a tab, a run of whitespace with a tab in it becoming one
-tab: 10.9.8 reads the tab as part of the name, as it reads a space, and the
-later versions trim it, so `+\tint x` is neither printed `+int x` nor `+ int x`
-(see
+tab: a version that counts reads the tab as part of the name, as it reads a
+space, and the others trim it, so `+\tint x` is neither printed `+int x` nor
+`+ int x` (see
 [Forms kept for versions of mermaid.js that count](./compatibility.md#forms-kept-for-versions-of-mermaidjs-that-count)).
 [fixture: member-lines/visibility-tab-kept] An annotation line, `<< y z >>`,
 keeps the whitespace around its text in the Db. [fixture:

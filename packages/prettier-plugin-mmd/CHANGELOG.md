@@ -34,6 +34,9 @@
   and the labels of `flowchart`, `swimlane-beta`, and `agentflow-beta` are
   printed in the form that the examples use, which for a label is without quotes
   in the first two and in quotes in the last.
+  
+  Overturned in the next release: a gitGraph name that starts with a keyword,
+  such as `"commit-x"`, is printed without quotes (`branch commit-x`).
 
 ### Patch Changes
 

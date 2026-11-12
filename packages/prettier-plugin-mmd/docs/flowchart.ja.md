@@ -729,11 +729,14 @@ mermaid.js はリンクのスタイルから `stroke:` を探し、
 `style` は、`color:` か `text-align:` で始まるスタイルの前の空白の有無と、
 その名前と `:` の間の空白の有無を、書かれたまま残します。
 空白の連続は空白 1 つにします。
-10.9.8 が、そう始まるスタイルをノードのラベルのスタイルに入れるためです。
+対象にする版に、
+そう始まるスタイルをノードのラベルのスタイルに入れるものがあるためです。
 `style A fill:#f00,color:white` は `style A fill: #f00,color: white` と印字し、
 `style A fill:#f00 ,   color:white` は `style A fill: #f00, color: white`
 と印字します。
 詳しくは [同じに描かれるスタイル](./compatibility.ja.md#同じに描かれるスタイル)
+と
+[対象にする版の mermaid.js のために残す形](./compatibility.ja.md#対象にする版の-mermaidjs-のために残す形)
 を参照してください。
 [fixture: whitespace-between-tokens/style-color-touching-kept]
 [fixture: whitespace-between-tokens/style-color-spaced]
@@ -741,11 +744,12 @@ mermaid.js はリンクのスタイルから `stroke:` を探し、
 [fixture: whitespace-between-tokens/style-text-align-touching-kept]
 [fixture: whitespace-between-tokens/style-label-name-colon-gap-kept]
 `linkStyle` も、`color:` か `text-align:` で始まるスタイルに同じ空白を残します。
-10.9.8 が、そう始まるスタイルを辺のラベルのスタイルに入れるためです。
+対象にする版に、
+そう始まるスタイルを辺のラベルのスタイルに入れるものがあるためです。
 [fixture: whitespace-between-tokens/link-style-label-names-kept]
 `style` のスタイルの末尾のバックスラッシュの後に空白があるかないかは、
 書かれたまま残し、空白の連続は先頭の 1 文字にします。
-10.9.8 が、ノードのスタイルをそのまま `;` でつなぎ、
+対象にする版に、ノードのスタイルをそのまま `;` でつなぐものがあり、
 バックスラッシュが `;` をエスケープするからです。
 `style A stroke-width:3px\ ,stroke:#0f0` は、
 `style A stroke-width: 3px\ , stroke: #0f0` と印字します。
@@ -1048,16 +1052,18 @@ flowchart LR
 データブロックの後の辺の id は、ブロックに接します。
 `A@{ shape: circle } e1@--> B` は `A@{ shape: circle }e1@--> B` と印字します。
 mermaid.js 12.3.0 は、この 2 つの形を同じに読み、同じ図を描きます。
-対象にする版のうち、11.7.0、11.8.1、11.13.0、11.14.0、11.15.0、11.16.1、
-11.17.2、12.0.0には、
+対象にする版のうち 8 つには、
 データブロックの後で辺の id の前の空白を許す規則がないので、
-空白のある形を拒否します（10.9.8 にはデータブロックがなく、両方を拒否します）。
+空白のある形を拒否します（1 つにはデータブロックがなく、両方を拒否します。
+詳しくは
+[対象にする版の mermaid.js のために残す形](./compatibility.ja.md#対象にする版の-mermaidjs-のために残す形)
+を参照）。
 接する形が、データブロックを読むすべての版で読める形です。
 ブロックと辺の id の間にディレクティブか、行の規則が無視する `;` があるときは、
 テキストを読む前にそれが取り除かれるので、ブロック、ディレクティブか `;`、
 辺の id は互いに接します（`A@{ shape: circle }%%{init: {}}%%e1@--> B`）。
 形の閉じ括弧の後の辺の id には空白が 1 つあります（`A[x] e1@--> B`）。
-同じ 6 つの版が `A[x]e1@--> B` を拒否するからです。
+同じ 8 つの版が `A[x]e1@--> B` を拒否するからです。
 swimlane 図も同じ規則です。
 [fixture: arrow-spacing/edge-id-after-data-block-touches]
 [fixture: arrow-spacing/edge-id-after-data-block-directive]
@@ -1241,9 +1247,11 @@ mermaid.js が、その空白と `?` や `=` をテキストとして読むか�
 12.3.0 は、辺の id の並びを括弧類と `|` で止めるので、
 `A[user@example.com]` と `A-->|x@|B` を、
 空白があるときと同じラベルとして読みます。
-対象にする版のうち、11.7.0、11.8.1、11.13.0、11.14.0、11.15.0、11.16.1、
-11.17.2、12.0.0は、そこで止めないので、空白がないこの 2 つを拒否し、
-空白がある形は受け入れます（タグの文法で確かめました）。
+対象にする版のうち 8 つは、そこで止めないので、空白がないこの 2 つを拒否し、
+空白がある形は受け入れます（タグの文法で確かめました。
+詳しくは
+[対象にする版の mermaid.js のために残す形](./compatibility.ja.md#対象にする版の-mermaidjs-のために残す形)
+を参照）。
 空白なしで印字したテキストは、書かれたとおりのテキストを読む版に拒否されるので、
 空白は残します。
 どの形でも、subgraph の題でも、flowchart、swimlane 図、
@@ -2467,14 +2475,16 @@ flowchart %%{init: {}}%%LR
 
 ヘッダーでも `direction` の文でも、方向は書かれたまま残します。
 `TD` を `TB` に変えず、`TB` も `TD` に変えません。
-mermaid.js 12.3.0 は 2 つを同じに描きますが、mermaid.js 10.9.8、11.7.0、
-11.8.1 は、subgraph があり、ヘッダーに `TB` がある flowchart を、
+mermaid.js 12.3.0 は 2 つを同じに描きますが、対象にする版のうち 3 つは、
+subgraph があり、ヘッダーに `TB` がある flowchart を、
 同じテキストで `TD` があるものとは違って描きます。
 ヘッダーのキーワードも書かれたまま残します。
-（[mermaid.js の版](./compatibility.ja.md#mermaidjs-の版)と
-[ヘッダーの名前](./compatibility.ja.md#ヘッダーの名前)を参照）。
-[fixture: direction/header-td-kept] [fixture: direction/header-tb-kept]
-[fixture: direction/header-keyword-kept]
+詳しくは [ヘッダーの名前](./compatibility.ja.md#ヘッダーの名前)
+を参照してください。
+残す版は
+[対象にする版の mermaid.js のために残す形](./compatibility.ja.md#対象にする版の-mermaidjs-のために残す形)
+の表にあります。 [fixture: direction/header-td-kept]
+[fixture: direction/header-tb-kept] [fixture: direction/header-keyword-kept]
 [fixture: direction/statement-td-kept-with-other-header]
 [fixture: direction/statement-values-kept]
 mermaid.js は subgraph の中の `direction` の文の `TD` を、

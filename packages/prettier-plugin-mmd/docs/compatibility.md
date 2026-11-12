@@ -51,15 +51,6 @@ half year. When the pinned version is raised, the period and the list are
 computed again from the publication date of the new pinned version, with the
 versions of npm.
 
-The three examples that [How the printed form is decided](./printed-form.md)
-gives of a spelling kept as written because versions disagree hold for these
-versions: `block` is rejected by 10.9.8, 11.7.0, and 11.8.1, which read
-`block-beta` only; a label whose first word has a `@` is rejected by the
-versions from 11.7.0 to 12.0.0 without the space after the `[` (see
-[Whitespace at the start of a label](#whitespace-at-the-start-of-a-label)); and
-`TB` and `TD` are drawn differently by 10.9.8, 11.7.0, and 11.8.1 in a flowchart
-with a subgraph.
-
 ## Forms kept for versions of mermaid.js that count
 
 A form that the rules of [How the printed form is decided](./printed-form.md)
@@ -676,9 +667,8 @@ backslashes at the end escape each other, and the pixels of
 were the same, so the whitespace after them is dropped. The other styles are not
 affected: the `classDef` of the other diagram types, the `style` of a node of an
 agentflow and a state diagram, and of the other shapes of a block diagram, and
-that of a flowchart in the nine versions that count other than 10.9.8, since
-mermaid.js takes the whitespace at the ends of their styles away before it uses
-them
+that of a flowchart in nine of the ten versions that count, since mermaid.js
+takes the whitespace at the ends of their styles away before it uses them
 ([`getCompiledStyles`](https://github.com/mermaid-js/mermaid/blob/2086904e76c692331e34a45d7cc3bc30860d040e/packages/mermaid/src/diagrams/flowchart/flowDb.ts#L1156-L1168),
 [`styles2Map`](https://github.com/mermaid-js/mermaid/blob/2086904e76c692331e34a45d7cc3bc30860d040e/packages/mermaid/src/rendering-util/rendering-elements/shapes/handDrawnShapeStyles.ts#L44-L51)),
 and the pixels of both spellings were the same. A `classDef` of a class diagram
@@ -721,16 +711,18 @@ of a block diagram make the style of their label again from their styles with
 spellings were the same for them and for a `classDef`. [fixture:
 block/styles/style-label-styles-kept]
 
-10.9.8 reads the `style` of a flowchart and of a class diagram so too, and the
-nine other versions that count do not. In a flowchart,
-`style A fill:#f00,color:white` and `style A fill: #f00, color: white` were
-drawn with different pixels by 10.9.8 and with the same SVG by the nine others,
-and the same for `text-align:right` on a node with a label of two lines, and for
-`color :red`. In a class diagram the pixels differed for `color` only. So in the
-`style` of a flowchart a style that starts with `color:` or `text-align:` keeps
-whether whitespace stands before it, and a name `color` or `text-align` keeps
-whether whitespace stands between it and the `:`, and in the `style` of a class
-diagram a style that starts with `color:` does. [fixture:
+One of the versions that count reads the `style` of a flowchart and of a class
+diagram so too, and the nine others do not (see
+[Forms kept for versions of mermaid.js that count](#forms-kept-for-versions-of-mermaidjs-that-count)).
+In a flowchart, `style A fill:#f00,color:white` and
+`style A fill: #f00, color: white` were drawn with different pixels by that
+version and with the same SVG by the nine others, and the same for
+`text-align:right` on a node with a label of two lines, and for `color :red`. In
+a class diagram the pixels differed for `color` only. So in the `style` of a
+flowchart a style that starts with `color:` or `text-align:` keeps whether
+whitespace stands before it, and a name `color` or `text-align` keeps whether
+whitespace stands between it and the `:`, and in the `style` of a class diagram
+a style that starts with `color:` does. [fixture:
 flowchart/whitespace-between-tokens/style-color-touching-kept] [fixture:
 flowchart/whitespace-between-tokens/style-text-align-touching-kept] [fixture:
 flowchart/whitespace-between-tokens/style-label-name-colon-gap-kept] [fixture:
@@ -1004,8 +996,8 @@ or into a `tspan`
 as it stands. A task with whitespace before its first colon (one space, two
 spaces, a tab) and the same task without it were drawn with the ten versions
 that count, and the pixels were the same; the SVG differed only in the text of
-the `div` and of the `tspan` (and, before 11.14.0, in the number in the `id` of
-a line, which counts the drawings of the page).
+the `div` and of the `tspan` (and, in the oldest of them, in the number in the
+`id` of a line, which counts the drawings of the page).
 
 The name of a section is not printed in this form. The renderers tell two
 sections apart by their names, so two names that differ only by the whitespace
@@ -1906,25 +1898,25 @@ drawn differently, an ER diagram keeps the key `PK` or `FK` of an attribute in
 its Db as written, a Gantt chart keeps the tags `done` and `crit` and the
 `after` of a task, an xychart keeps `horizontal`, and a treeView reads `ICON(…)`
 as part of a name. An ER diagram keeps `direction`, its value, `subgraph`, and
-`end` as written too: 10.9.8 has no direction line and reads `direction tb` as
-two entities, and 10.9.8 to 11.16.1 have no subgraph and read `subgraph S` and
-`end` as entities, whose names keep their case. `direction tb` and
-`direction TB` were drawn differently by 10.9.8 and the same by the other nine
-versions. A text with `SUBGRAPH S` or `END` and the same text with `subgraph S`
-or `end` were drawn differently by the seven versions before 11.17.2 (10.9.8,
-11.7.0, 11.8.1, 11.13.0, 11.14.0, 11.15.0, and 11.16.1) and the same by the
-three later versions. The `style` of an ER diagram, a requirement diagram, and a
-Venn diagram, and the `classDef` of an ER diagram, a state diagram, a
-requirement diagram, and a quadrant chart stay as written too. Before it reads a
-text, mermaid.js removes the last `;` of a line that has a `style` or a
-`classDef` in exactly this case, then a `:`, then a `#` after non-blank
-characters only, then a `;`. It reads a line with the keyword in another case
-with that `;`, so `STYLE A fill:#f00;` has another Db than `style A fill:#f00;`.
-The rule reads the line after the directives and the comments are removed, so a
-directive that spans lines joins its two sides into one line, and whether
-another case reads a line the same cannot be told from the line of the keyword
-alone. The quadrant chart rejects some texts that the two cases would read
-differently and reads the others the same, and stays as written too. [fixture:
+`end` as written too: one version that counts has no direction line and reads
+`direction tb` as two entities, and seven have no subgraph and read `subgraph S`
+and `end` as entities, whose names keep their case. `direction tb` and
+`direction TB` were drawn differently by the one and the same by the other nine.
+A text with `SUBGRAPH S` or `END` and the same text with `subgraph S` or `end`
+were drawn differently by the seven and the same by the three others (see
+[Forms kept for versions of mermaid.js that count](#forms-kept-for-versions-of-mermaidjs-that-count)).
+The `style` of an ER diagram, a requirement diagram, and a Venn diagram, and the
+`classDef` of an ER diagram, a state diagram, a requirement diagram, and a
+quadrant chart stay as written too. Before it reads a text, mermaid.js removes
+the last `;` of a line that has a `style` or a `classDef` in exactly this case,
+then a `:`, then a `#` after non-blank characters only, then a `;`. It reads a
+line with the keyword in another case with that `;`, so `STYLE A fill:#f00;` has
+another Db than `style A fill:#f00;`. The rule reads the line after the
+directives and the comments are removed, so a directive that spans lines joins
+its two sides into one line, and whether another case reads a line the same
+cannot be told from the line of the keyword alone. The quadrant chart rejects
+some texts that the two cases would read differently and reads the others the
+same, and stays as written too. [fixture:
 er/whitespace-between-tokens/keyword-case-kept] [fixture:
 er/direction/case-kept] [fixture: er/direction/case-bt-rl-kept] [fixture:
 er/subgraphs/end-case-kept] [fixture:
@@ -2612,11 +2604,12 @@ without a boundary and in lower case: `build`, `buy`, `outsource`, `market`,
 `accTitle`, and `accDescr`, so that `"buyer"` stays in quotes, as does
 `"title x"` but not `"Title x"`. The names of an accelerator, a deaccelerator,
 and a component of a pipeline are printed in quotes. A name with a `-` stays as
-written, since 11.14.0, the first release with the diagram type, rejects it
-without quotes (see [Versions of mermaid.js](#versions-of-mermaidjs)). Two names
-of a link without an arrow, `"A" "B"`, would be read as one name without quotes,
-and the `---` of a hidden YAML block next to a name would join the name, so
-these keep their quotes. [fixture:
+written, since the first release with the diagram type rejects it without quotes
+(see
+[Forms kept for versions of mermaid.js that count](#forms-kept-for-versions-of-mermaidjs-that-count)).
+Two names of a link without an arrow, `"A" "B"`, would be read as one name
+without quotes, and the `---` of a hidden YAML block next to a name would join
+the name, so these keep their quotes. [fixture:
 wardley/names-and-quotes/plain-names-without-quotes] [fixture:
 wardley/names-and-quotes/names-that-need-quotes] [fixture:
 wardley/links/link-no-arrow] [fixture: wardley/pipeline/pipeline-depth]
@@ -2725,18 +2718,20 @@ usecase/quotes/texts-on-a-kept-line-as-written]
 
 In an architecture diagram a label in quotes is printed without them where it is
 ASCII letters, digits, `_`, and spaces, with no space at its ends: the grammars
-of 11.13.0 to 11.16.1, which read a label in quotes, read a label without quotes
-of these characters only, and a backslash or a quote would change the title that
-mermaid.js reads, since it takes one pair of outer quotes off a title and turns
-`\"` and `\'` into `"` and `'` only in a title that had them (`"a\"b"` printed
-`a\"b`, and `"'x'"` printed `'x'`). In a mindmap and a kanban board the text of
-a shape in quotes is printed without them where it holds none of `)`, `]`, `(`,
-and `}`, which end a text without quotes or are read as a closer, has no padding
-or line break, does not start with a `-` (`(` and a `-` make the opener `(-`,
-and a `-` before a `)` makes the closer `-)`), and does not stand next to a dash
-of the dash form (`(-"x"-)`, whose closer `-)` follows only a string). A
-markdown string stays. [fixture: architecture/quotes/labels-without-quotes]
-[fixture: architecture/quotes/labels-that-need-quotes] [fixture:
+of some versions that count, which read a label in quotes, read a label without
+quotes of these characters only (see
+[Forms kept for versions of mermaid.js that count](#forms-kept-for-versions-of-mermaidjs-that-count)),
+and a backslash or a quote would change the title that mermaid.js reads, since
+it takes one pair of outer quotes off a title and turns `\"` and `\'` into `"`
+and `'` only in a title that had them (`"a\"b"` printed `a\"b`, and `"'x'"`
+printed `'x'`). In a mindmap and a kanban board the text of a shape in quotes is
+printed without them where it holds none of `)`, `]`, `(`, and `}`, which end a
+text without quotes or are read as a closer, has no padding or line break, does
+not start with a `-` (`(` and a `-` make the opener `(-`, and a `-` before a `)`
+makes the closer `-)`), and does not stand next to a dash of the dash form
+(`(-"x"-)`, whose closer `-)` follows only a string). A markdown string stays.
+[fixture: architecture/quotes/labels-without-quotes] [fixture:
+architecture/quotes/labels-that-need-quotes] [fixture:
 mindmap/quotes/labels-without-quotes] [fixture:
 mindmap/quotes/labels-that-need-quotes] [fixture:
 kanban/quotes/labels-without-quotes] [fixture:
@@ -2877,10 +2872,11 @@ sequence/quotes/texts-as-written] [fixture: class/quotes/strings-as-written]
 [fixture: eventmodeling/quotes/quotes-as-written]
 
 The name of a treeView node in quotes stays as written, though the examples
-write a name without quotes 58 times and in quotes 8 times: the grammars of
-11.14.0 and 11.15.0 read a name in quotes only, and a name without quotes is
-read from 11.16.0, so a text printed without quotes would not be read by a
-version that reads the text as it is written.
+write a name without quotes 58 times and in quotes 8 times: the grammars of two
+versions that count read a name in quotes only, and a name without quotes is
+read from the version after them, so a text printed without quotes would not be
+read by a version that reads the text as it is written (see
+[Forms kept for versions of mermaid.js that count](#forms-kept-for-versions-of-mermaidjs-that-count)).
 
 Where the printer writes the runs of spaces and tabs of a text as one space (see
 [Runs of whitespace in a text that are drawn the same](#runs-of-whitespace-in-a-text-that-are-drawn-the-same)),
@@ -3279,20 +3275,20 @@ shape with the label `x`. See
 The `@` depends on the version of mermaid.js. In a flowchart, 12.3.0 stops the
 run of an edge id at a bracket and at `|`, so it reads `A[user@example.com]` and
 `A-->|x@|B` as it reads them with the whitespace, and rejects only `A>x@]`; an
-agentflow diagram rejects `A[x@]` in 12.3.0 too. Of the versions that count,
-11.7.0, 11.8.1, 11.13.0, 11.14.0, 11.15.0, 11.16.1, 11.17.2, and 12.0.0 do not
-stop the run there, as the grammars of 11.5.0, the first with edge ids, to
-12.2.0 do not (the rule of the edge id in `flow.jison` of the tags 11.4.1,
-11.5.0, 12.2.0, and 12.3.0 was read), so they reject a label whose first word
-has a `@` without the whitespace, in a shape, between `|`, and in the title of a
-subgraph, and read it with the whitespace. Drawn in Chromium, `A[ x@y ]`,
-`A-->| x@y |B`, `subgraph S[ x@y ]`, and `A( x@y )` and the same texts without
-the spaces were the same in 10.3.1, 10.9.0, 11.0.0, 11.4.1, and 12.3.0, rejected
-in the form without the spaces by 11.12.3, 11.13.0, 11.14.0, 11.15.0, 11.16.1,
-and 12.0.0, and rejected in both forms by 9.0.0, 9.1.7, and 9.4.3. A text
-printed without the space would be rejected by versions that read the text as it
-is written, so the space is kept in a flowchart, a swimlane diagram, and an
-agentflow diagram alike. [fixture:
+agentflow diagram rejects `A[x@]` in 12.3.0 too. Eight of the versions that
+count do not stop the run there (see
+[Forms kept for versions of mermaid.js that count](#forms-kept-for-versions-of-mermaidjs-that-count)),
+as the grammars of 11.5.0, the first with edge ids, to 12.2.0 do not (the rule
+of the edge id in `flow.jison` of the tags 11.4.1, 11.5.0, 12.2.0, and 12.3.0
+was read), so they reject a label whose first word has a `@` without the
+whitespace, in a shape, between `|`, and in the title of a subgraph, and read it
+with the whitespace. Drawn in Chromium, `A[ x@y ]`, `A-->| x@y |B`,
+`subgraph S[ x@y ]`, and `A( x@y )` and the same texts without the spaces were
+the same in 10.3.1, 10.9.0, 11.0.0, 11.4.1, and 12.3.0, rejected in the form
+without the spaces by 11.12.3 and by five of the eight, and rejected in both
+forms by 9.0.0, 9.1.7, and 9.4.3. A text printed without the space would be
+rejected by versions that read the text as it is written, so the space is kept
+in a flowchart, a swimlane diagram, and an agentflow diagram alike. [fixture:
 flowchart/label-inner-whitespace/leading-whitespace-at-sign-kept] [fixture:
 flowchart/label-inner-whitespace/leading-whitespace-at-sign-every-shape-kept]
 [fixture:
@@ -3637,19 +3633,20 @@ sequence/arrow-spacing/touching-before-read-otherwise-kept] See
 ## Sequence messages with a central connection
 
 The whitespace beside the `()` of a sequence message (`A () ->> () B`) stays as
-written, touching or one space. 10.9.8, 11.7.0, and 11.8.1 have no central
+written, touching or one space. Three of the versions that count have no central
 connection and read the `()` as part of the name next to it, so `A ()` and `A()`
 are two names, and `A ->> () x` and `A ->> ()x` are two targets. The texts with
 and without the whitespace beside a `()` (`A () ->> B` and `A() ->> B`,
 `A ->> () x` and `A ->> ()x`, and the same with a directive beside the `()`)
-were drawn with the ten versions that count: the three versions drew them
-differently, and the seven from 11.13.0 the same. The `+` and `-` of an
-activation are not among them: the texts with and without the whitespace beside
-them were drawn the same by all ten versions. The whitespace before `<<->>` and
-`<<-->>` stays as written too: 10.9.8 has no such arrow and reads the `<<` as
-part of the name before it, and `Alice<<->>Bob` and `Alice <<->> Bob` were drawn
-differently by it and the same by the nine others. The whitespace after the
-arrow is not at stake in any version. [fixture:
+were drawn with the ten versions that count: the three drew them differently,
+and the seven others the same. The `+` and `-` of an activation are not among
+them: the texts with and without the whitespace beside them were drawn the same
+by all ten versions. The whitespace before `<<->>` and `<<-->>` stays as written
+too: one version that counts has no such arrow and reads the `<<` as part of the
+name before it, and `Alice<<->>Bob` and `Alice <<->> Bob` were drawn differently
+by it and the same by the nine others (see
+[Forms kept for versions of mermaid.js that count](#forms-kept-for-versions-of-mermaidjs-that-count)).
+The whitespace after the arrow is not at stake in any version. [fixture:
 sequence/arrow-spacing/bidirectional-arrow-gap-before-kept] [fixture:
 sequence/arrow-spacing/parentheses-touching] [fixture:
 sequence/arrow-spacing/touching-beside-directive] [fixture:
@@ -3907,17 +3904,19 @@ around them decide, so formatting keeps them as they are written. See
   and an `end` right before a statement that starts with a `-`: `class-A a`,
   `subgraph-x`, and `end-x`. The lexer of 12.3.0 ends a keyword at a `-`, so
   these are the keyword and the id `-A` or `-x`, and each of the ten versions
-  accepts the written text. 10.9.8 rejects the text with a space (`class -A a`,
-  and `subgraph -x`), 11.7.0 to 11.16.1 draw `subgraph-x` and `end-x`, which
-  they read as entities, differently from the text with a space, and 11.7.0 and
-  later draw `class-A a` the same as `class -A a`. So the keyword and the `-`
-  keep touching, in any case of the keyword. `classDef-x` and `style-y` are
-  drawn the same with and without a space by each version that accepts them
-  (10.9.8 rejects both), so they are printed `classDef -x` and `style -y`.
-  [fixture: er/whitespace-between-tokens/keyword-then-dash-touching-kept]
-  [fixture: er/whitespace-between-tokens/keyword-upper-then-dash-touching-kept]
-  [fixture: er/whitespace-between-tokens/subgraph-then-dash-touching-kept]
-  [fixture: er/whitespace-between-tokens/end-then-dash-touching-kept] [fixture:
+  accepts the written text. One version that counts rejects the text with a
+  space (`class -A a`, and `subgraph -x`), seven draw `subgraph-x` and `end-x`,
+  which they read as entities, differently from the text with a space, and the
+  nine others draw `class-A a` the same as `class -A a` (see
+  [Forms kept for versions of mermaid.js that count](#forms-kept-for-versions-of-mermaidjs-that-count)).
+  So the keyword and the `-` keep touching, in any case of the keyword.
+  `classDef-x` and `style-y` are drawn the same with and without a space by each
+  version that accepts them (one rejects both), so they are printed
+  `classDef -x` and `style -y`. [fixture:
+  er/whitespace-between-tokens/keyword-then-dash-touching-kept] [fixture:
+  er/whitespace-between-tokens/keyword-upper-then-dash-touching-kept] [fixture:
+  er/whitespace-between-tokens/subgraph-then-dash-touching-kept] [fixture:
+  er/whitespace-between-tokens/end-then-dash-touching-kept] [fixture:
   er/whitespace-between-tokens/classdef-style-then-dash-spaced] [fixture:
   er/whitespace-between-tokens/keyword-then-dash-apart] [corpus fixture:
   er/lex-keyword-class-then-dash] [corpus fixture:
@@ -4181,18 +4180,19 @@ timeline/multi-line-values/description-directive-lines]
 ## Timeline texts that the versions read differently
 
 Of the versions that count (see
-[Versions of mermaid.js that count](#versions-of-mermaidjs-that-count)), 10.9.8,
-11.7.0, 11.8.1, and 11.13.0 have no direction in the header of a timeline: they
-read the words after `timeline` as the text of a period, and 11.14.0 and the
-later versions read `LR` or `TD` as the direction. 10.9.8 also draws a title
-that starts with a `#` differently from the later versions (see the last case).
-Both texts of each case below were drawn with the ten versions, and a form that
-one of them draws differently is kept as written. See
-[Header and direction](./timeline.md#header-and-direction) and
+[Versions of mermaid.js that count](#versions-of-mermaidjs-that-count)), four
+have no direction in the header of a timeline: they read the words after
+`timeline` as the text of a period, and the six others read `LR` or `TD` as the
+direction. The oldest of the ten also draws a title that starts with a `#`
+differently from the nine others (see the last case). Both texts of each case
+below were drawn with the ten versions, and a form that one of them draws
+differently is kept as written (see
+[Forms kept for versions of mermaid.js that count](#forms-kept-for-versions-of-mermaidjs-that-count)).
+See [Header and direction](./timeline.md#header-and-direction) and
 [Titles and sections](./timeline.md#titles-and-sections).
 
 - The case of the direction. `timeline td` and `timeline TD` followed by a line
-  `2004 : a` or `title T` were drawn the same by the six versions from 11.14.0
+  `2004 : a` or `title T` were drawn the same by the six that read a direction
   and differently by the four others, which draw the period `td` and the period
   `TD`. So `td` is not printed `TD`, though the examples in the documentation of
   mermaid.js write `TD`. [fixture: timeline/header-and-direction/direction-kept]
@@ -4201,7 +4201,7 @@ one of them draws differently is kept as written. See
 - The text after a direction on the line of the header. `timeline TD title T`
   against `timeline TD` and a line `title T`, `timeline TD LR` against `TD` and
   `LR` on lines of their own, and `timeline LR 2004 : a` against the period on a
-  line of its own were drawn the same by the six versions from 11.14.0 and
+  line of its own were drawn the same by the six that read a direction and
   differently by the four others (one period against a period and a statement).
   So the text after a direction stays on the line of the header. Without a
   direction (`timeline History`, `timeline title T`, `timeline 2004 : a`) the
@@ -4213,10 +4213,10 @@ one of them draws differently is kept as written. See
   timeline/header-and-direction/text-after-the-header-without-direction-moves]
 - A title whose text starts with a `#` on a later line than its keyword.
   `title`, a line break, and `  # c`, against `title # c` on one line, were
-  drawn the same by the nine versions from 11.7.0, which draw the title `# c`
-  for both, and differently by 10.9.8, which draws no title text for the first
-  and the period `title` for the second. So the title stays as written.
-  [fixture: timeline/titles-and-sections/title-hash-on-next-line-kept]
+  drawn the same by nine of the versions, which draw the title `# c` for both,
+  and differently by the tenth, which draws no title text for the first and the
+  period `title` for the second. So the title stays as written. [fixture:
+  timeline/titles-and-sections/title-hash-on-next-line-kept]
 
 ## Sankey lines that the characters or the quotes decide
 
@@ -5295,20 +5295,21 @@ boundaries keep the body as written.
 A `title`, `accTitle`, or `accDescr` statement, a line or a block, that was not
 written indented is printed at the start of its line. Of the versions that count
 (see [Versions of mermaid.js that count](#versions-of-mermaidjs-that-count)),
-10.9.8 and 11.7.0 have no treemap diagram, 11.8.1 rejects these statements when
-they are indented and reads them at the start of their line and after the header
-on its line (`treemaptitle T`, but not `treemap title T`), and the seven
-versions from 11.13.0 read all of these. The two texts of a title, an
-`accTitle`, an `accDescr` line, an `accDescr` block, and a title after the rows,
-one with the statement at the start of its line and one with it a step in, were
-drawn with the seven versions from 11.13.0 and gave identical SVGs; 11.8.1
-rejects the indented text. The text `treemaptitle T` and the text with `title T`
-on a line of its own were drawn the same by the eight versions from 11.8.1. So a
-statement that starts its line is not moved, one that follows the header goes to
-the start of the next line, and one that is indented in the source is printed a
-step in, like the other statements, since 11.8.1 rejects it as written too.
-[fixture: treemap/title/line-start-kept] [fixture:
-treemap/title/line-start-after-row-kept] [fixture:
+two have no treemap diagram, one rejects these statements when they are indented
+and reads them at the start of their line and after the header on its line
+(`treemaptitle T`, but not `treemap title T`), and the seven others read all of
+these (see
+[Forms kept for versions of mermaid.js that count](#forms-kept-for-versions-of-mermaidjs-that-count)).
+The two texts of a title, an `accTitle`, an `accDescr` line, an `accDescr`
+block, and a title after the rows, one with the statement at the start of its
+line and one with it a step in, were drawn with the seven others and gave
+identical SVGs; the one rejects the indented text. The text `treemaptitle T` and
+the text with `title T` on a line of its own were drawn the same by the eight
+that have a treemap diagram. So a statement that starts its line is not moved,
+one that follows the header goes to the start of the next line, and one that is
+indented in the source is printed a step in, like the other statements, since
+the one rejects it as written too. [fixture: treemap/title/line-start-kept]
+[fixture: treemap/title/line-start-after-row-kept] [fixture:
 treemap/title/line-start-tab-rows-kept] [fixture:
 treemap/title/line-start-comment-aligned] [fixture:
 treemap/title/indented-at-body-step] [fixture:
@@ -5853,20 +5854,22 @@ wardley/name-boundaries/force-title-contact] [fixture:
 wardley/name-boundaries/quoted-title] [fixture:
 wardley/name-boundaries/title-prefix-safe]
 
-A long arrow right after a name, `Alpha-->Beta`, is read by 11.14.0, the first
-version with the diagram, as the name `Alpha`, the arrow `-->`, and the name
-`Beta`, since it rejects a `-` inside a name. The five later versions that count
-(11.15.0, 11.16.1, 11.17.2, 12.0.0, and 12.3.0) read it as the name `Alpha-`,
-the arrow `->`, and the name `Beta`. So no space is put between a name that ends
-with a `-` and the arrow after it: `Alpha-->Beta` is printed `Alpha--> Beta`,
-not `Alpha- -> Beta`, which 11.14.0 rejects. The texts `Alpha-->Beta` and
-`Alpha--> Beta`, with the components declared, were drawn with the six versions
-and gave identical SVGs in all of them; `Alpha- -> Beta` gave the same SVG in
-the five later versions and is rejected by 11.14.0. `Alpha -->Beta` is a
-different link in the five later versions (the arrow `-->`), so it keeps its
-arrow and is printed `Alpha --> Beta`. [fixture: wardley/links/link-long-glued]
-[fixture: wardley/links/link-name-dashes-glued] [fixture:
-wardley/links/link-name-dash-spaced] [fixture: wardley/links/link-long-spaced]
+A long arrow right after a name, `Alpha-->Beta`, is read by the first version
+with the diagram as the name `Alpha`, the arrow `-->`, and the name `Beta`,
+since it rejects a `-` inside a name. The five later versions that count read it
+as the name `Alpha-`, the arrow `->`, and the name `Beta`. So no space is put
+between a name that ends with a `-` and the arrow after it: `Alpha-->Beta` is
+printed `Alpha--> Beta`, not `Alpha- -> Beta`, which the first version rejects
+(see
+[Forms kept for versions of mermaid.js that count](#forms-kept-for-versions-of-mermaidjs-that-count)).
+The texts `Alpha-->Beta` and `Alpha--> Beta`, with the components declared, were
+drawn with the six versions and gave identical SVGs in all of them;
+`Alpha- -> Beta` gave the same SVG in the five later versions and is rejected by
+the first. `Alpha -->Beta` is a different link in the five later versions (the
+arrow `-->`), so it keeps its arrow and is printed `Alpha --> Beta`. [fixture:
+wardley/links/link-long-glued] [fixture: wardley/links/link-name-dashes-glued]
+[fixture: wardley/links/link-name-dash-spaced] [fixture:
+wardley/links/link-long-spaced]
 
 Flow interiors keep their complete authored spelling, including empty labels,
 backslashes and continuation columns. A link's grammatical label-opening `;`

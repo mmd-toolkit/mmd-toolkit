@@ -74,9 +74,10 @@ const headerColonTypes: ReadonlySet<string> = new Set([
 
 /**
  * The diagram types whose header colon stays where anything but spaces and
- * tabs stands between the header and the colon: 10.9.8 rejects a gitGraph
- * header `gitGraph %%{x}%%` that a statement follows on the next line, and
- * accepts it with the colon (docs/compatibility.md, The colon after a header).
+ * tabs stands between the header and the colon: a version that counts rejects
+ * a gitGraph header `gitGraph %%{x}%%` that a statement follows on the next
+ * line, and accepts it with the colon (docs/compatibility.md, The colon after
+ * a header; Forms kept for versions of mermaid.js that count).
  */
 const headerColonNeedsBlanks: ReadonlySet<string> = new Set(["gitGraph"])
 

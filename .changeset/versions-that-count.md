@@ -1,5 +1,5 @@
 ---
-"prettier-plugin-mmd": patch
+"prettier-plugin-mmd": minor
 ---
 
 Decide what stays as written from ten versions of mermaid.js, the one the

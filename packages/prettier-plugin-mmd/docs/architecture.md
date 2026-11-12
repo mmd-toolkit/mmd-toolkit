@@ -304,18 +304,18 @@ the documentation of mermaid.js write it (see
 `group api(cloud)["API Group"]` is printed `group api(cloud)[API Group]`, and
 `service s(server)['Plain Single']` is printed
 `service s(server)[Plain Single]`. A label is plain where it is ASCII letters,
-digits, `_`, and spaces, with no space at its ends: the versions 11.13.0,
-11.14.0, 11.15.0, and 11.16.1, which read a label in quotes, read a label
-without quotes of these characters only (11.7.0 and 11.8.1 read no label in
-quotes), so `"a-b"`, `"A.B"`, `"日本語"`, `"a[b"`, the empty label, and a label
-with padding inside the quotes (`[" padded "]`) keep their quotes. So do a
-backslash and a quote: mermaid.js takes one pair of outer quotes, `"` or `'`,
-off the title that it reads, and turns `\"` and `\'` into `"` and `'` only in a
-title that had them, so `"a\"b"` printed `a\"b`, and `"'x'"` printed `'x'`,
-would be read as other titles. A label without quotes is never put in quotes.
-[fixture: quotes/labels-without-quotes] [fixture:
-quotes/labels-that-need-quotes] [fixture:
-quotes/labels-with-runs-without-quotes]
+digits, `_`, and spaces, with no space at its ends: four versions that count,
+which read a label in quotes, read a label without quotes of these characters
+only (two others read no label in quotes; see
+[Forms kept for versions of mermaid.js that count](./compatibility.md#forms-kept-for-versions-of-mermaidjs-that-count)),
+so `"a-b"`, `"A.B"`, `"日本語"`, `"a[b"`, the empty label, and a label with
+padding inside the quotes (`[" padded "]`) keep their quotes. So do a backslash
+and a quote: mermaid.js takes one pair of outer quotes, `"` or `'`, off the
+title that it reads, and turns `\"` and `\'` into `"` and `'` only in a title
+that had them, so `"a\"b"` printed `a\"b`, and `"'x'"` printed `'x'`, would be
+read as other titles. A label without quotes is never put in quotes. [fixture:
+quotes/labels-without-quotes] [fixture: quotes/labels-that-need-quotes]
+[fixture: quotes/labels-with-runs-without-quotes]
 
 Input
 ([quotes/labels-without-quotes-input.mmd](../tests/fixtures/architecture/quotes/labels-without-quotes-input.mmd)):

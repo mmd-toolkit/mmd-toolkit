@@ -638,10 +638,13 @@ Db はその空白を持ちますが、図では描かれません。
 [fixture: titles-and-sections/value-on-next-line]
 [fixture: titles-and-sections/comment-line-inside-kept]
 キーワードより後ろの行にある値が `#` で始まる title は、書かれたままにします。
-10.9.8 は、`title`、改行、`# c` を、空白だけの title とコメントとして読み、
-`title # c` を、period `title` とコメントとして読みますが、
-対象にする残りの 9 版は、どちらも title `# c` として読み、同じに描くためです。
-[fixture: titles-and-sections/title-hash-on-next-line-kept]
+対象にする版の 1 つは、`title`、改行、`# c` を、
+空白だけの title とコメントとして読み、`title # c` を、
+period `title` とコメントとして読みますが、残りの 9 版は、
+どちらも title `# c` として読み、同じに描くためです。
+詳しくは
+[対象にする版の mermaid.js のために残す形](./compatibility.ja.md#対象にする版の-mermaidjs-のために残す形)
+を参照してください。 [fixture: titles-and-sections/title-hash-on-next-line-kept]
 値は `:`、`#`、`%`、`%%` を文字として持ちます。
 ただし section の名前は `:` で終わり、その `:` は event を始めます。
 [fixture: titles-and-sections/special-characters-in-values]
@@ -733,11 +736,12 @@ Db は大文字にして読みます。
 [fixture: header-and-direction/direction-case-kept]
 [fixture: header-and-direction/spaces-before-the-direction]
 
-方向を読むのは 11.14.0 以降です。
-それより前の、対象にする 10.9.8、11.7.0、11.8.1、11.13.0 は、
+対象にする版のうち 4 つは方向を読まず、
 `timeline` の後ろの語を period のテキストとして読みます。
+残りの 6 つは方向を読みます。
 詳しくは
-[対象にする mermaid.js の版](./compatibility.ja.md#対象にする-mermaidjs-の版)
+[対象にする mermaid.js の版](./compatibility.ja.md#対象にする-mermaidjs-の版) と
+[対象にする版の mermaid.js のために残す形](./compatibility.ja.md#対象にする版の-mermaidjs-のために残す形)
 を参照してください。
 そのため `timeline td` と `timeline TD` は、
 これらの版では大文字小文字だけが違う period で、`td` は `TD` と印字しません。

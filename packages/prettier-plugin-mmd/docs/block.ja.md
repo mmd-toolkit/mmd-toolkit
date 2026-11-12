@@ -281,9 +281,14 @@ block-beta
 ### ヘッダー
 
 ヘッダーの `block-beta` と `block` は、書かれたまま印字します。
-mermaid.js 12.3.0 はどちらも同じ図種として読みますが、mermaid.js 10.9.8、
-11.7.0、11.8.1 は `block-beta` だけを検出するので、綴りは作者の選択だからです。
-（[ヘッダーの名前](./compatibility.ja.md#ヘッダーの名前)を参照）。
+mermaid.js 12.3.0 はどちらも同じ図種として読みますが、
+対象にする版には `block-beta` だけを検出するものがあるので、
+綴りは作者の選択だからです。
+詳しくは [ヘッダーの名前](./compatibility.ja.md#ヘッダーの名前)
+を参照してください。
+残す版は
+[対象にする版の mermaid.js のために残す形](./compatibility.ja.md#対象にする版の-mermaidjs-のために残す形)
+の表にあります。
 前の空白は落とし、同じ行の後ろの文は自分の行に移します（[行](#行)を参照）。
 [fixture: header/block-beta-kept] [fixture: header/block-kept]
 [fixture: header/statement-after-the-header-on-a-line-of-its-own]

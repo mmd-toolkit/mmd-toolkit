@@ -269,12 +269,13 @@ block-beta
 ### Header
 
 The header, `block-beta` or `block`, is printed as written: mermaid.js 12.3.0
-reads them as the same diagram type, but mermaid.js 10.9.8, 11.7.0, and 11.8.1
-detect `block-beta` only, so the spelling is the author's (see
-[The names of a header](./compatibility.md#the-names-of-a-header)). The
-whitespace before it is dropped, and a statement after it on its line goes to a
-line of its own (see [Rows](#rows)). [fixture: header/block-beta-kept] [fixture:
-header/block-kept] [fixture:
+reads them as the same diagram type, but some versions that count detect
+`block-beta` only, so the spelling is the author's (see
+[The names of a header](./compatibility.md#the-names-of-a-header) and
+[Forms kept for versions of mermaid.js that count](./compatibility.md#forms-kept-for-versions-of-mermaidjs-that-count)).
+The whitespace before it is dropped, and a statement after it on its line goes
+to a line of its own (see [Rows](#rows)). [fixture: header/block-beta-kept]
+[fixture: header/block-kept] [fixture:
 header/statement-after-the-header-on-a-line-of-its-own] [fixture:
 header/columns-after-the-header-on-a-line-of-its-own] [fixture:
 header/leading-whitespace-dropped]

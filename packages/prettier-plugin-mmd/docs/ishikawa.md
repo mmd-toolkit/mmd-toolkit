@@ -59,10 +59,9 @@ Where it does not, the nodes keep the whitespace written before them, and a root
 on the line of the header stays there: a cause that is clamped to the root, a
 cause at the column of the root, or of the whitespace after the header, a cause
 not deeper than the nearest node before it that it follows, and a root deeper
-than its causes. The specification reads them as children of the root, while
-11.13.0 draws the text printed by depth differently from the written text, and
-the six later versions that have the diagram (11.14.0, 11.15.0, 11.16.1,
-11.17.2, 12.0.0, and 12.3.0) draw both the same (see
+than its causes. The specification reads them as children of the root, while the
+first version that has the diagram draws the text printed by depth differently
+from the written text, and the six later ones draw both the same (see
 [Forms kept for versions of mermaid.js that count](./compatibility.md#forms-kept-for-versions-of-mermaidjs-that-count)).
 A node that follows a comment-ending separator on its line is left to the
 ordinary rules. [fixture: ishikawa/indentation/indent-clamped] [fixture:

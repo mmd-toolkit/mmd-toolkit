@@ -145,11 +145,12 @@ export function layoutIshikawaLine(
  * Whether the whitespace written before the nodes shows the tree by nesting
  * alone: each node is deeper than the nearest node before it that is less
  * deep, and so on up to the root, with a root on the line of the header
- * standing before any column. mermaid.js 11.13.0 reads a node that is not
+ * standing before any column. A version that counts reads a node that is not
  * deeper than the node before it, or deeper by less than the nodes in
  * between, as other than the specification does (a node that clamps to the
  * root, or a root deeper than its causes), so the printer keeps the written
- * indentation then (docs/ishikawa.md, Indentation). A node that follows a
+ * indentation then (docs/ishikawa.md, Indentation; docs/compatibility.md,
+ * Forms kept for versions of mermaid.js that count). A node that follows a
  * comment-ending separator on its line is left to the ordinary rules: the
  * separator is a whitespace character in the count of one reading and not in
  * the other.

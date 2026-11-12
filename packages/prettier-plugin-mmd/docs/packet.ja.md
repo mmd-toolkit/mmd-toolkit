@@ -15,8 +15,12 @@
 `packet` だけは直後の境界が必要で、接着した綴りを作りません。
 hidden の境界と保護された見出し・本文の組を優先します。
 同義の名前は、書かれたまま保ちます。
-mermaid.js 11.7.0 と 11.8.1 は `packet-beta` だけを読むためです。
-（[ヘッダーの名前](./compatibility.ja.md#ヘッダーの名前)を参照）。
+対象にする版に `packet-beta` だけを読むものがあるためです。
+詳しくは [ヘッダーの名前](./compatibility.ja.md#ヘッダーの名前)
+を参照してください。
+残す版は
+[対象にする版の mermaid.js のために残す形](./compatibility.ja.md#対象にする版の-mermaidjs-のために残す形)
+の表にあります。
 
 [fixture: packet/header/header-packet]
 

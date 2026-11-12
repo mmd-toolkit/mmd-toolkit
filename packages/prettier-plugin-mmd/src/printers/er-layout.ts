@@ -169,14 +169,14 @@ export function findAttributeBraces(
 
 /**
  * Whether a unit that starts with a `-` touches the keyword before it, as in
- * `class-A a`, `subgraph-x`, and `end-x`. The lexer of 12.3.0 ends a keyword at
- * a `-`, so these are `class` and the id `-A`, and so on; 10.9.8 reads
- * `class-A` as one name and rejects `class -A a`, and 11.7.0 to 11.16.1 read
- * `subgraph-x` and `end-x` as entities and draw them differently from
+ * `class-A a`, `subgraph-x`, and `end-x`. The lexer of the pinned version ends a
+ * keyword at a `-`, so these are `class` and the id `-A`, and so on; a version
+ * that counts reads `class-A` as one name and rejects `class -A a`, and some
+ * read `subgraph-x` and `end-x` as entities and draw them differently from
  * `subgraph -x` and `end` with `-x`, so no space is set between them (the
  * statements `class`, `subgraph`, and `end` only: no version tells `classDef-x`
- * from `classDef -x`; docs/compatibility.md, ER lines that the place or the
- * whitespace decides; docs/er.md, Whitespace between tokens).
+ * from `classDef -x`; docs/compatibility.md, Forms kept for versions of
+ * mermaid.js that count; docs/er.md, Whitespace between tokens).
  */
 export function touchesKeywordWithDash(source: Source, start: number): boolean {
   if (source.text[start] !== "-") return false

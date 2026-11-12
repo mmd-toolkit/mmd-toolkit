@@ -211,16 +211,17 @@ xychart
 ### Header and orientation
 
 The header is printed as written: `xychart` or `xychart-beta`, in the case
-written. mermaid.js 12.3.0 reads them as the same diagram type, but mermaid.js
-10.9.8, 11.7.0, and 11.8.1 detect `xychart-beta` only, so the spelling is the
-author's, not the printer's (see
-[The names of a header](./compatibility.md#the-names-of-a-header)). A header
-after the first stands on a line of its own, and none is dropped: a later header
-with an orientation changes the orientation, and one without changes nothing,
-but the text is the author's. A header with a comment or directive in its gap
-keeps that line break and aligns its continuation one level inside the header
-(see [Multi-line statements](#multi-line-statements)). [fixture:
-header-and-orientation/plain-header] [fixture:
+written. mermaid.js 12.3.0 reads them as the same diagram type, but some
+versions that count detect `xychart-beta` only, so the spelling is the author's,
+not the printer's (see
+[The names of a header](./compatibility.md#the-names-of-a-header) and
+[Forms kept for versions of mermaid.js that count](./compatibility.md#forms-kept-for-versions-of-mermaidjs-that-count)).
+A header after the first stands on a line of its own, and none is dropped: a
+later header with an orientation changes the orientation, and one without
+changes nothing, but the text is the author's. A header with a comment or
+directive in its gap keeps that line break and aligns its continuation one level
+inside the header (see [Multi-line statements](#multi-line-statements)).
+[fixture: header-and-orientation/plain-header] [fixture:
 header-and-orientation/beta-header-kept] [fixture:
 header-and-orientation/header-only] [fixture:
 header-and-orientation/vertical-kept] [fixture:

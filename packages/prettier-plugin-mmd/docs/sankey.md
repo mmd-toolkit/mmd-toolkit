@@ -353,12 +353,13 @@ c,d,2
 ### Header
 
 The header `sankey` or `sankey-beta` keeps the case in which it is written: Both
-are the same diagram type and give the same Db in mermaid.js 12.3.0, but
-mermaid.js 10.9.8, 11.7.0, and 11.8.1 read `sankey-beta` only (see
-[The names of a header](./compatibility.md#the-names-of-a-header)), so the
-printer keeps the spelling that the author wrote. It stands at the first column,
-and nothing follows it on its line, since mermaid.js rejects anything but a
-directive or a comment line there. [fixture: header/sankey] [fixture:
+are the same diagram type and give the same Db in mermaid.js 12.3.0, but some
+versions that count read `sankey-beta` only (see
+[The names of a header](./compatibility.md#the-names-of-a-header) and
+[Forms kept for versions of mermaid.js that count](./compatibility.md#forms-kept-for-versions-of-mermaidjs-that-count)),
+so the printer keeps the spelling that the author wrote. It stands at the first
+column, and nothing follows it on its line, since mermaid.js rejects anything
+but a directive or a comment line there. [fixture: header/sankey] [fixture:
 header/sankey-beta] [fixture: header/upper-case-beta] [fixture:
 header/leading-whitespace-dropped] A directive glued to the header stays glued.
 [fixture: header/directive-glued-to-the-header] A comment line or a directive

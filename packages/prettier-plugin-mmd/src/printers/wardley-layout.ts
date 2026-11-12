@@ -172,9 +172,9 @@ function layoutComponents(
       before?.value === "-" ||
       before?.value === ";"
     rules.set(atom.start, touches ? "none" : "space")
-    // The name `A-` and the arrow `->` of `A-->B` touch as written: 11.14.0
-    // reads `-->` there, and rejects a name with a `-` (docs/wardley.md,
-    // Links).
+    // The name `A-` and the arrow `->` of `A-->B` touch as written: a version
+    // that counts reads `-->` there, and rejects a name with a `-`
+    // (docs/wardley.md, Links).
     if (
       statement.type === "WardleyLinkStatement" &&
       statement.arrow?.range[0] === atom.start &&

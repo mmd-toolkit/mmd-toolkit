@@ -14,8 +14,9 @@ Keep the authored `packet` or `packet-beta` keyword at column one. Move an
 ordinary first statement below it, as in the other diagram types. Only `packet`
 requires a following boundary; never create a glued spelling. Hidden boundaries
 and protected header/body groups take precedence. Keep the authored synonym:
-mermaid.js 11.7.0 and 11.8.1 read `packet-beta` only (see
-[The names of a header](./compatibility.md#the-names-of-a-header)).
+some versions that count read `packet-beta` only (see
+[The names of a header](./compatibility.md#the-names-of-a-header) and
+[Forms kept for versions of mermaid.js that count](./compatibility.md#forms-kept-for-versions-of-mermaidjs-that-count)).
 
 [fixture: packet/header/header-packet]
 

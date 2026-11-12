@@ -601,14 +601,17 @@ becoming the title's value. [fixture: treemap/title/empty-next-comment]
 A title that was not written indented is printed at the start of its line, and
 the rows below it stay one step in: one that starts its line stays there, and
 one that follows the header on its line (`treemaptitle T`) goes to the start of
-the next line. 11.8.1, the first version with the diagram, rejects a title, an
+the next line. The first version with the diagram rejects a title, an
 `accTitle`, and an `accDescr` that is indented, while the later versions read
 the same statement at the start of its line and one step in and draw both the
-same, so printing it one step in would give a text that 11.8.1 rejects (see
-[Treemap parentage and authored values](./compatibility.md#treemap-parentage-and-authored-values)).
+same, so printing it one step in would give a text that the first version
+rejects (see
+[Treemap parentage and authored values](./compatibility.md#treemap-parentage-and-authored-values)
+and
+[Forms kept for versions of mermaid.js that count](./compatibility.md#forms-kept-for-versions-of-mermaidjs-that-count)).
 A comment line before such a title aligns with it. A title that is indented in
-the source is printed one step in, like the other statements, since 11.8.1
-rejects it as written too. [fixture: treemap/header/common] [fixture:
+the source is printed one step in, like the other statements, since the first
+version rejects it as written too. [fixture: treemap/header/common] [fixture:
 treemap/title/after-header-spaced-line-start]
 
 [fixture: treemap/title/padding]
