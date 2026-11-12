@@ -41,14 +41,15 @@ Japanese pair, the wrapping, the document checks) is in the skill `conventions`.
   criteria of the package; the rules that are wrong to miss; and the steps that
   every piece of work on the package follows. A method that several pieces of
   work use is such a step (the sections of [`spec`](../spec/SKILL.md) from
-  Reading mermaid.js to Proposing a known divergence), also when its section is
-  titled after one piece of work (in `parser`, the subsections of
+  Adding the nodes of the tree to Proposing a known divergence), also when its
+  section is titled after one piece of work (in `parser`, the subsections of
   [section 4, Adding a diagram type](../parser/SKILL.md#4-adding-a-diagram-type),
   that its other sections point to or whose rules they follow).
-- A skill of one piece of work, named `<package>-<work>` (`tests-diagram-type`,
-  `spec-diagram-type`, `tests-mermaid-update`): the steps of a piece of work
-  that is done at another time, from other inputs, to other results than the
-  rest of the package's work.
+- A skill of one piece of work, named `<entry>-<work>` after the entry skill
+  whose sections it uses (`tests-diagram-type`, `spec-diagram-type`,
+  `tests-mermaid-update`, `rule-ideas-suggestions`): the steps of a piece of
+  work that is done at another time, from other inputs, to other results than
+  the rest of the package's work.
   - Its `description` says what it does and when to use it, concretely, and ends
     with "together with the <entry> skill" when the entry skill holds rules for
     it.
@@ -63,12 +64,22 @@ Japanese pair, the wrapping, the document checks) is in the skill `conventions`.
     anchor.
 - Documents that a piece of work reads only when it needs them, in
   `<skill>/references/<name>.md`: records of past decisions, lists searched for
-  one entry, and the code of the scripts that the steps run
-  (`rule-ideas/references/`, `prettier-plugin/references/`). The `SKILL.md`
-  links each of them directly, at the step that uses it, and says what to search
-  it for; a file in `references/` is never the only way to another file. A file
-  in `references/` of more than 100 lines starts with a list of its contents, in
-  their order.
+  one entry, the code of the scripts that the steps run, and, in a skill above
+  the size of section 2, the steps of one piece of work or of one case of it
+  (`rule-ideas/references/`, `prettier-plugin/references/`, `spec/references/`).
+  The `SKILL.md` links each of them directly, at the step that uses it, and says
+  what to search a record or a list for; a file in `references/` is never the
+  only way to another file. A file in `references/` of more than 100 lines
+  starts with a list of its contents, in their order.
+  - Steps go there when the request, or a fact that the session has already
+    read, tells it that it does that piece of work or meets that case (updating
+    mermaid.js, a diagram whose grammar is Langium); when they hold no criterion
+    and no rule that also binds other work; and when one link, at the step where
+    that work or case starts, reaches them. The heading of a section whose steps
+    move stays in the `SKILL.md`, with that link.
+  - A file there that names the sections of its `SKILL.md` by number says so in
+    its first sentence (`Section numbers below are those of SKILL.md.`), and a
+    change that renumbers those sections searches it too (section 4).
 - Records of past decisions: the decision on each rule and what was checked for
   it. A record is searched, not read whole.
   - The section of the skill that a record belongs to says what to search for:
@@ -85,8 +96,8 @@ Japanese pair, the wrapping, the document checks) is in the skill `conventions`.
   (`prettier-plugin/references/tests-by-changed-file.md`). Like a record, it
   holds no rule that decides a new case.
 - AGENTS.md names, in the item of each package, every skill of its work, as the
-  item of `packages/eslint-plugin` names `rule-ideas`, `eslint-plugin`, and
-  `eslint-plugin-rules`.
+  item of `packages/eslint-plugin` names `rule-ideas`, `rule-ideas-suggestions`,
+  `eslint-plugin`, and `eslint-plugin-rules`.
 
 The official documents on skills set this form:
 [the Agent Skills specification](https://agentskills.io/specification) lets a
@@ -113,7 +124,12 @@ estimated as the bytes of the body that `wc -c` counts divided by 4, so a body
 of more than 20,000 bytes is longer. What stays in it above that size is
 criteria, rules that are wrong to miss, and steps that every piece of work of
 the skill uses; the decision states, for each part that stays, its size, the
-pieces of work that use it, and which of these it is.
+pieces of work that use it, and which of these it is. Steps that one piece of
+work or one case uses stay too where they are steps of a procedure whose other
+steps stay, since taking them out would make that piece of work follow its
+procedure through two files (in `parser`, the input, the files of the tests, and
+the documents of a new diagram type, in section 4); a part that sessions of
+other skills read alone moves all the same (below).
 
 Split when:
 
@@ -135,8 +151,8 @@ Do not split when:
   its input, its wiring, the entry of the diagram's parser, and its documents
   are for a new diagram type alone); or
 - there is no other piece of work to split off: the skill is the steps of one
-  piece of work (`eslint-plugin`, `review`, `parser-performance-review`), or the
-  rules that every piece of work shares (`conventions`).
+  piece of work (`review`, `parser-performance-review`), or the rules that every
+  piece of work shares (`conventions`).
 
 When a part moves to a skill of one piece of work, a sentence in it that other
 pieces of work also need stays in the entry skill, in a section that those
@@ -198,12 +214,12 @@ A move, or a section renamed or renumbered, can leave a reference pointing at
 nothing, or at something else, with no check failing. Before the change, find
 every reference to the text that changes and to the text around it:
 
-- Search each file whole, not only near the parts that change, for references by
-  number (`section 7`, `3.5`, `§5.3.8`, `item 3 of 3.3`, `7 節`, `3.4〜3.5`), by
-  title, and relative ones (`above`, `below`, `here`, `this section`,
-  `this document`, `the table above`, `上の`, `下の`, `この節`, `ここ`). A
-  relative reference in text that stays can point into text that moves, and one
-  in text that moves can point back.
+- Search each file whole, and the files of its `references/`, not only near the
+  parts that change, for references by number (`section 7`, `3.5`, `§5.3.8`,
+  `item 3 of 3.3`, `7 節`, `3.4〜3.5`), by title, and relative ones (`above`,
+  `below`, `here`, `this section`, `this document`, `the table above`, `上の`,
+  `下の`, `この節`, `ここ`). A relative reference in text that stays can point
+  into text that moves, and one in text that moves can point back.
 - Search the whole repository, outside `node_modules`, for references to the
   skill and its sections: the other skills, AGENTS.md, the documents of the
   packages, and comments in code (`the tests skill`, `the spec SKILL`,

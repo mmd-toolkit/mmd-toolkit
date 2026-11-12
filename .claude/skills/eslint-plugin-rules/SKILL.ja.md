@@ -25,7 +25,9 @@ SKILL [eslint-plugin](../eslint-plugin/SKILL.ja.md#方針と基準)
 ## 1. 最初に読むもの
 
 1. 規則についての決定。
-   rule-ideas の SKILL （`.claude/skills/rule-ideas/SKILL.md`）で決まる。
+   rule-ideas の SKILL （`.claude/skills/rule-ideas/SKILL.md`）で決まり、
+   fix と提案については rule-ideas-suggestions の SKILL
+   （`.claude/skills/rule-ideas-suggestions/SKILL.md`）で決まる。
    規則を持つこと、名前と範囲、`recommended` で有効にするか、fix を持つか、
    提案を持つか。
    実装してみて、決定が成り立たないと分かったら（条件が木から読めない、
@@ -117,8 +119,8 @@ SKILL [eslint-plugin](../eslint-plugin/SKILL.ja.md#方針と基準)
 ## 3. 規則を書く
 
 - `docs/development.md` の Writing a rule に従う。
-  規則の採否、範囲、`recommended`、fix を持つか、
-  提案を持つかは rule-ideas の SKILL から来る。
+  規則の採否、範囲、`recommended` は rule-ideas の SKILL から来て、
+  fix を持つか、提案を持つかは rule-ideas-suggestions の SKILL から来る。
 - fix と提案は、それぞれ `create` から分けた関数で組み立てる。
   fix は、編集できる場所でだけ出す。
   ほかでは、報告は fix を持たない。
@@ -131,8 +133,8 @@ SKILL [eslint-plugin](../eslint-plugin/SKILL.ja.md#方針と基準)
   その読み方は、2 節のとおり、規則とは独立に確かめる。
   規則のテストは mermaid.js を動かさない。
   候補の条件が、
-  rule-ideas の [8 節](../rule-ideas/SKILL.ja.md#8-提案)と
-  [`.claude/skills/rule-ideas/references/suggestion-decisions.ja.md`](../rule-ideas/references/suggestion-decisions.ja.md)
+  スキル [rule-ideas-suggestions](../rule-ideas-suggestions/SKILL.ja.md) と
+  [`.claude/skills/rule-ideas-suggestions/references/suggestion-decisions.ja.md`](../rule-ideas-suggestions/references/suggestion-decisions.ja.md)
   の記録が与える文で書けないときは、その候補を rule-ideas に戻す。
   提案を出さないことは、普通の結論である。
   条件や確かめを足して候補を守ってはならず、結果を parse したり、

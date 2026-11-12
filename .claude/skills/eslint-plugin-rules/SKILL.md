@@ -25,11 +25,13 @@ every rule follows, and the tests and the fixtures are described in
 ## 1. What to read first
 
 1. The decision about the rule, made with the rule-ideas skill
-   (`.claude/skills/rule-ideas/SKILL.md`): that the rule is kept, its name and
-   scope, whether `recommended` enables it, whether it has a fix, and whether it
-   offers suggestions. When the implementation shows that a decision cannot hold
-   (the condition cannot be read from the tree, a fix or a suggestion cannot be
-   checked), take the evidence back to that decision.
+   (`.claude/skills/rule-ideas/SKILL.md`) and, for its fix and its suggestions,
+   the rule-ideas-suggestions skill
+   (`.claude/skills/rule-ideas-suggestions/SKILL.md`): that the rule is kept,
+   its name and scope, whether `recommended` enables it, whether it has a fix,
+   and whether it offers suggestions. When the implementation shows that a
+   decision cannot hold (the condition cannot be read from the tree, a fix or a
+   suggestion cannot be checked), take the evidence back to that decision.
 2. The English document of the rule, which holds the examples that the tests
    read.
 3. The section
@@ -115,9 +117,9 @@ after writing it.
 
 ## 3. Write the rule
 
-- Follow Writing a rule in `docs/development.md`. The adoption, the scope,
-  `recommended`, whether the rule has a fix, and whether it offers suggestions
-  come from the rule-ideas skill.
+- Follow Writing a rule in `docs/development.md`. The adoption, the scope, and
+  `recommended` come from the rule-ideas skill, and whether the rule has a fix
+  and whether it offers suggestions from the rule-ideas-suggestions skill.
 - A fix and a suggestion are each built in a function of its own, apart from
   `create`. A fix is offered only where the edit can be made; elsewhere the
   report has no fix. Check the resulting text of each against what its message
@@ -128,10 +130,10 @@ after writing it.
   the suggestion is applied, for every place where it is offered. Check that
   reading independently of the rule as in section 2; a rule test does not run
   mermaid.js. When the condition of a candidate cannot be written in the
-  sentences that the record of rule-ideas
-  ([section 8](../rule-ideas/SKILL.md#8-suggestions) and
-  [`.claude/skills/rule-ideas/references/suggestion-decisions.md`](../rule-ideas/references/suggestion-decisions.md))
-  gives, the candidate goes back to rule-ideas, and offering no suggestion is an
+  sentences that the skill
+  [rule-ideas-suggestions](../rule-ideas-suggestions/SKILL.md) and its record
+  ([`.claude/skills/rule-ideas-suggestions/references/suggestion-decisions.md`](../rule-ideas-suggestions/references/suggestion-decisions.md))
+  give, the candidate goes back to rule-ideas, and offering no suggestion is an
   ordinary conclusion: do not add a condition or a check to keep it, and do not
   parse the result of an edit or decide it per known divergence.
 - The condition is written over the tree and the tokens: node types, fields,

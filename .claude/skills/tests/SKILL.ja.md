@@ -212,7 +212,8 @@ tests の生成器（`fixtures:add-many` など）で足す（方針と手順は
 埋め込みデータのためだけに mermaid.js が拒否した入力として `add-many`
 が挙げたものには、
 SKILL tests-diagram-type の
-[3 節の手順 7](../tests-diagram-type/SKILL.ja.md#3-fixture) のとおり印を付ける。
+[references/collecting-fixtures.ja.md](../tests-diagram-type/references/collecting-fixtures.ja.md)
+の手順 7 のとおり印を付ける。
 この SKILL が行うのは次のこと。
 
 1. 道具と形式を保つ。
@@ -308,8 +309,9 @@ SKILL tests-diagram-type の
    既存の共有経路を拡張する。
    図種固有の読み方を加えたり、道具が新しい保持形式を扱うと決めつけたりしない。
 4. 参照経路を確かめてから、
-   SKILL [tests-diagram-type](../tests-diagram-type/SKILL.ja.md#3-fixture) の 3
-   節の手順 8 の、安定した生成の手順を行う。
+   SKILL tests-diagram-type の
+   [references/collecting-fixtures.ja.md](../tests-diagram-type/references/collecting-fixtures.ja.md)
+   の手順 8 の、安定した生成の手順を行う。
    別の所で述べられた件数を信じず、CLI の操作後の現在の corpus から、
    印と必須の読みを数え、足りない記録を報告する。
    比較する Db のない opaque-data の場合は、テストと報告で明示する。

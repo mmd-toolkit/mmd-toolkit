@@ -120,8 +120,8 @@ steps too. Read them first.
    test file imports a module without a stub, add the stub in
    `tools/src/spec-recorder.ts` and collect again (`tools/README.md`). The steps
    of a collection, and what to keep when the recorder changes, are in
-   [The fixtures](../tests-diagram-type/SKILL.md#3-the-fixtures) of the skill
-   tests-diagram-type.
+   [references/collecting-fixtures.md](../tests-diagram-type/references/collecting-fixtures.md)
+   of the skill tests-diagram-type.
 6. Make the CI job `fixtures` pass (it fails when `fixtures:generate` leaves a
    difference). It cannot pass while a `MermaidEnvironmentError` remains.
 7. Show as the result the classified differences (the fixture names and what

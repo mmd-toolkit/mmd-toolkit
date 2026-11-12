@@ -230,7 +230,9 @@ Rule Details は、文の後に、反するコードと従うコードの例を�
 - 規則の詳細: 例の前に、少数の短い文で、規則を使う人の言葉で書く。
   - 対象の図種を、「この規則は、
     <名前>（<ヘッダー>）に当てる。」の 1 つの形で書く。
-    名前は下の表のものである。
+    名前は
+    [references/diagram-type-names.ja.md](references/diagram-type-names.ja.md)
+    の表のものであり、図種で検索する。
     ヘッダーには、仕様の図種の文書が定めるすべてのヘッダーを、「、」で並べる。
     その文書は `packages/spec/docs/diagrams/<diagram>.md` である。
     「この規則は、フローチャート（`flowchart`、`graph`、`flowchart-elk`、
@@ -241,39 +243,6 @@ Rule Details は、文の後に、反するコードと従うコードの例を�
     ヘッダーは `requirementDiagram` である。
     `flowchart-v2` や `swimlane` のような、ヘッダーでない図種の id は使わない。
     共通の規則は「この規則は、すべての図種に当てる。」と書く。
-
-    | 図種          | 名前                 |
-    | ------------- | -------------------- |
-    | agentflow     | agentflow 図         |
-    | architecture  | アーキテクチャ図     |
-    | block         | ブロック図           |
-    | c4            | C4 図                |
-    | class         | クラス図             |
-    | cynefin       | Cynefin 図           |
-    | er            | ER 図                |
-    | eventmodeling | イベントモデリング図 |
-    | flowchart     | フローチャート       |
-    | gantt         | ガントチャート       |
-    | gitgraph      | Git グラフ           |
-    | journey       | ユーザージャーニー図 |
-    | kanban        | カンバン             |
-    | mindmap       | マインドマップ       |
-    | packet        | パケット図           |
-    | pie           | 円グラフ             |
-    | quadrant      | 象限チャート         |
-    | radar         | レーダーチャート     |
-    | railroad      | レールロード図       |
-    | requirement   | 要求図               |
-    | sankey        | Sankey 図            |
-    | sequence      | シーケンス図         |
-    | state         | 状態図               |
-    | timeline      | タイムライン         |
-    | treemap       | ツリーマップ         |
-    | treeview      | ツリービュー         |
-    | usecase       | ユースケース図       |
-    | venn          | ベン図               |
-    | wardley       | Wardley マップ       |
-    | xychart       | XY チャート          |
 
   - 規則が報告するもの。
   - 報告しない形のうち、規則を使う人が書きうるものと、その理由。
@@ -296,8 +265,9 @@ Rule Details は、文の後に、反するコードと従うコードの例を�
 - 参考（Further Reading）: 規則を使う人が読めるもの、
   つまり mermaid.js の文書の頁、issue、PR へのリンクの一覧だけを、
   散文なしで書く。
-  mermaid.js のソースの permalink は規則の文書に置かず、rule-ideas の SKILL の、
-  `.claude/skills/rule-ideas/references/` にある規則の記録に置く。
+  mermaid.js のソースの permalink は規則の文書に置かず、
+  規則の記録（`.claude/skills/rule-ideas/references/` と、
+  提案については `.claude/skills/rule-ideas-suggestions/references/`）に置く。
 - どの文をどこに置くか。
   mermaid.js がすることについての文を、次に順に当てる。
   - 規則を使う人が書きうる形の中で、報告するものとしないものを分ける文は、
@@ -307,8 +277,9 @@ Rule Details は、文の後に、反するコードと従うコードの例を�
     頂点より前の文を報告しないこと、数を数として比べること、
     数を mermaid.js が描く上限までで比べること、などである。
   - mermaid.js の文書の頁、issue、PR は、参考にリンクとして置く。
-    ソースの permalink は、rule-ideas の SKILL の、
-    `.claude/skills/rule-ideas/references/` にある規則の記録に置く。
+    ソースの permalink は、
+    規則の記録（`.claude/skills/rule-ideas/references/` と、
+    提案については `.claude/skills/rule-ideas-suggestions/references/`）に置く。
   - ほかは消す。
     報告する形としない形を分けない mermaid.js の仕組みの説明、
     例が示すことの言い直し、規則を使う人が書かない形についての文、
@@ -488,30 +459,9 @@ rule-ideas の SKILL の
   日本語の文書の最初の段落を変えたら、`update` を実行する。
 - フォーマッター（`packages/prettier-plugin-mmd`）が印字する形を変えると、
   例が古くなり、`check:docs` が失敗する。
-  そのときは次の順にする。
-  1. `pnpm --filter @mmd-toolkit/eslint-plugin run update:docs` を実行する。
-     parser を build し、英日の例を書き換える。
-  2. `pnpm --filter @mmd-toolkit/eslint-plugin run test:update` を実行し、
-     スナップショットの差分を読む。
-     もう報告されなくなった反する例と、報告されるようになった従う例は、
-     書いたまま残す（4 節の手順 4）か、例から外す。
-     `<!-- prettier-ignore -->`
-     を付けた例をフォーマッターが同じ形に印字するようになったら、
-     もう残す理由はないので、印とその文を消す。
-  3. 書き換えた文書の本文から、古い形を探す。
-     フォーマッターが変えた行を引いているコードスパンである。
-     英日とも新しい形に書く。
-  4. フォーマッターが、
-     前は変えていた書き方を書かれたまま残すようになった変更では、
-     該当する例を fixture の `input.mmd` から作り直す（4 節の手順 4）。
-     古い印字結果を整形し直しても、fixture のテキストには戻らないからである。
-  5. `pnpm run lint:docs` を実行する。
-     続けて、ドキュメントサイトのテストを実行する。
-     このテストは、build したプラグインで、すべての規則の文書の例を表示する。
-     先に `pnpm --filter @mmd-toolkit/eslint-plugin run build` を実行し、
-     そのあと `pnpm --filter @mmd-toolkit/docs run test` を実行する。
-     `packages/docs/pages/linter` のページの例は手で書くので、
-     それもフォーマッターが印字する形に直す。
+  そのときの手順は、
+  [references/formatter-changes.ja.md](references/formatter-changes.ja.md)
+  にある。
 - index のうち手で書くもの: 生成する一覧より前の部分で、
   `recommended` が ✅ を付けた規則を有効にすると述べる文を持つ冒頭と、
   規則の id の節である。
@@ -522,25 +472,9 @@ rule-ideas の SKILL の
 
 ## 7. 図種に対応したとき
 
-1. 規則の名前を、`packages/spec/docs/ast/<図種>.md` の名前 `<図種>-` で始める。
-   index の図種の表は、その規則ができると `update` が生成する（6 節）。
-   図種を `tools/rule-docs.ts` の `DIAGRAM_ORDER` に足す。
-   場所は、
-   サイトがサイドバーに使う `packages/docs/.vitepress/documents.js` の
-   `diagramOrder` での位置である。
-   2 つの順序が違うと `tests/rule-docs.test.ts` が失敗し、
-   `DIAGRAM_ORDER` にない図種の規則があると `update` が失敗する。
-2. 共通の規則ごとに、新しい図種の普通の書き方の例を mermaid.js に掛ける。
-   ほかの図種と同じに振る舞い、その規則がその図種について言うことがあるなら、
-   規則の詳細の図種の箇条に 1 項目（そこで起きること）を足し、
-   その fixture を規則のテストに足す。
-   振る舞いが違う、または木の共通の部分の 1 つの定義で扱えなくなったなら、
-   その規則は共通の規則の条件（rule-ideas の SKILL
-   の[基準](../rule-ideas/SKILL.ja.md#方針と基準)）を満たさない。
-   図種の規則に移すのは規則についての判断なので、
-   先に mermaid.js の結果を根拠に rule-ideas の SKILL で決め、
-   それから文書を移す（8 節）。
-3. その図種の規則の文書は、上の手順で書く。
+手順は
+[references/supporting-a-diagram-type.ja.md](references/supporting-a-diagram-type.ja.md)
+にある。
 
 ## 8. 文書を消す、移す
 

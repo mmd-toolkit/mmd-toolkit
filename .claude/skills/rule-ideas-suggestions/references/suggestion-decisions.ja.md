@@ -1,10 +1,10 @@
 # 規則ごとの提案と自動修正（記録）
 
-[SKILL.ja.md](../SKILL.ja.md) の 8 節で決めた、規則ごとの書き換えと、
+[SKILL.ja.md](../SKILL.ja.md) の 1 節で決めた、規則ごとの書き換えと、
 どの書き換えを自動修正にするかである。
-ここで番号で指す基準は SKILL.ja.md の 8 節の基準で、書き換えの種類ごとの条件は、
+ここで番号で指す基準は SKILL.ja.md の 1 節の基準で、書き換えの種類ごとの条件は、
 そこの「書き換えの種類」にある。
-検索の仕方は、SKILL.ja.md の 8 節にある。
+検索の仕方は、SKILL.ja.md の 1 節にある。
 
 目次:
 
@@ -18,7 +18,7 @@
 ## 規則
 
 下の各規則は、そこに挙げる書き換えを、
-SKILL.ja.md の 8 節の「書き換えの種類」にある、その種類の条件で出す。
+SKILL.ja.md の 1 節の「書き換えの種類」にある、その種類の条件で出す。
 提案を付けないとある規則は、何も出さない。
 
 - agentflow、architecture、cynefin、er、eventmodeling、flowchart、gantt、
@@ -348,8 +348,8 @@ SKILL.ja.md の 8 節の「書き換えの種類」にある、その種類の�
   no-invalid-init-directive は、報告した `'` と `\'` のそれぞれに `\u0027` を、
   報告した `"` のそれぞれに `\"` を書き、
   報告した末尾の `,` を 1 つずつ消す（報告は
-  [recommended-decisions.ja.md](recommended-decisions.ja.md) のその注のとおり。
-  その手順を Node で実行）。
+  [recommended-decisions.ja.md](../../rule-ideas/references/recommended-decisions.ja.md)
+  のその注のとおり。その手順を Node で実行）。
   さらに、別の大文字小文字でだけ `init` か `initialize` で終わる名前を、
   引数がないか、語か、mermaid.js が読める JSON（構造の誤りも、末尾の `,` も、
   壊す引用符もないもの）のとき、小文字で書く。

@@ -139,17 +139,11 @@ type.
   [Running tests](../conventions/SKILL.md#running-tests)). While working, run
   the test files that go with the changed part of the code, in `packages/parser`
   (`npx vitest run <files>`; a diagram's part of `tests/fixtures.test.ts` with
-  `-t "<diagram> fixtures"`):
+  `-t "<diagram> fixtures"`).
 
-  | Changed part                                                                  | Test files                                                                                                                                                           |
-  | ----------------------------------------------------------------------------- | -------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
-  | `src/diagrams/<diagram>/`                                                     | `tests/<diagram>.test.ts`, `tests/fixtures.test.ts`                                                                                                                  |
-  | `packages/ast/src/`, `src/visitor-keys*`                                      | `tests/types.test.ts`, `tests/traverse.test.ts`, `tests/ast-<diagram>-examples.test.ts`, `tests/union-docs.test.ts`, and for flowchart `tests/ast-flowchart.test.ts` |
-  | `src/unit-grammar.ts`, `src/empty-forms.ts`, `src/diagram-*.ts`               | `tests/<diagram>.test.ts` of every diagram, `tests/diagram-parsing.test.ts`, `tests/fixtures.test.ts`                                                                |
-  | the common rules (`src/source-lexer.ts`, `directives.ts`, `entities.ts`, ...) | the test file of the same name, `tests/fixtures.test.ts`                                                                                                             |
-  | `src/diagrams/flowchart/subgraph-ids.ts`                                      | `tests/fixtures.test.ts`                                                                                                                                             |
-  | `src/parse.ts`, `src/index.ts`                                                | `tests/parse.test.ts`, `tests/readme-example.test.ts`                                                                                                                |
-  | `tests/helpers/reference-inputs.ts`, `tests/helpers/known-divergences.ts`     | `tests/reference-inputs.test.ts`, `tests/fixtures.test.ts`                                                                                                           |
+  Which test files go with each changed part is listed in
+  [references/tests-by-changed-part.md](references/tests-by-changed-part.md):
+  find the row whose changed part covers the changed file.
 
   The tests that read documents, which a change of those documents alone also
   runs: `tests/readme-example.test.ts` (the example of `README.md` and

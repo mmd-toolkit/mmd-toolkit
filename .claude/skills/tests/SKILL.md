@@ -193,8 +193,8 @@ The fixtures that back the claims of the specification are added with the tests
 generator (`fixtures:add-many` and the others; the policies and the steps are in
 the spec's skill). When `add-many` lists an input as rejected by mermaid.js only
 because of embedded data, mark it as step 7 of
-[The fixtures](../tests-diagram-type/SKILL.md#3-the-fixtures) in the skill
-tests-diagram-type says. This skill does the following.
+[references/collecting-fixtures.md](../tests-diagram-type/references/collecting-fixtures.md)
+in the skill tests-diagram-type says. This skill does the following.
 
 1. Keep the tools and the format: the generator, `add`, `add-many`,
    `set-divergence`, `set-note`, the loader and the collection tools work as
@@ -279,9 +279,10 @@ tests-diagram-type says. This skill does the following.
    add a diagram-local reading or assume the tools already cover a newly
    retained form.
 4. After checking the reference path, run the stable-generation steps of step 8
-   of section 3 of the skill
-   [tests-diagram-type](../tests-diagram-type/SKILL.md#3-the-fixtures). Count
-   marks and required readings from the current corpus after the CLI operation
-   rather than trusting a count stated elsewhere, and report any missing record.
-   Keep opaque-data cases with no comparison Db explicit in tests and the
-   report; do not invent a specified reading or Db to make them comparable.
+   of
+   [references/collecting-fixtures.md](../tests-diagram-type/references/collecting-fixtures.md)
+   of the skill tests-diagram-type. Count marks and required readings from the
+   current corpus after the CLI operation rather than trusting a count stated
+   elsewhere, and report any missing record. Keep opaque-data cases with no
+   comparison Db explicit in tests and the report; do not invent a specified
+   reading or Db to make them comparable.

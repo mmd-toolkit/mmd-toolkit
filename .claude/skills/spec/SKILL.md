@@ -113,74 +113,17 @@ repository.
 
 ## 2. Tools
 
-Put scripts in a working directory outside the repository, with the extension
-`.mts`, and run them with `node <file>`: Node runs TypeScript as it is, from any
-directory. Package names do not resolve from outside the repository, so a script
-imports the source files by absolute path; replace `<repo>` in the scripts below
-with the absolute path of the root of the repository. Node only removes types
-that can be erased: write a type-only import as `import type`, and use no
-`enum`, no `namespace`, and no parameter properties. Calls to mermaid.js are
-serial and slow (tens of milliseconds each). With many inputs, run in the
-background and write the output to a file in the working directory.
-
 ### 2.1 Checking inputs with mermaid.js
 
-```ts
-// Runs the pinned mermaid.js on each input of a JSON file of the form
-// { "<key>": "<input>" } and prints whether it is accepted, with the Db summary
-// or the error:
-//   node <this file> <inputs.json>
-import { readFileSync } from "node:fs"
-import { runMermaid } from "<repo>/packages/tests/src/mermaid.ts"
-
-const inputs: Record<string, string> = JSON.parse(
-  readFileSync(process.argv[2]!, "utf8"),
-)
-for (const [key, input] of Object.entries(inputs)) {
-  const outcome = await runMermaid(input)
-  const result = outcome.accepted
-    ? JSON.stringify(outcome.db)
-    : `rejected: ${outcome.error.name}: ${outcome.error.message.split("\n")[0]}`
-  console.log(`${key}\t${JSON.stringify(input)}\n  ${result}`)
-}
-```
-
-Write the JSON of inputs with a script, not by hand, so that whitespace at the
-end of a line, tabs, and `\r` are exact. After writing, check the bytes with
-`od -c`.
-
-To compare with the tree and the Db derivation of the parser, load `parse` from
-`<repo>/packages/parser/src/index.ts` and `dbOf` from
-`<repo>/packages/parser/tests/helpers/db.ts` in the same script (read only; do
-not edit the parser's files). Pass `dbOf` the values that `resolveEmbeddedData`
-of `<repo>/packages/tests/src/mermaid.ts` returns for the same text; it returns
-undefined when mermaid.js rejects the text.
+The script that runs the pinned mermaid.js on a list of inputs, with how to
+write its inputs and how to compare its results with the parser, is in
+[references/probe-scripts.md](references/probe-scripts.md), which also says how
+to set up and run the scripts.
 
 ### 2.2 Finding existing fixtures
 
-```ts
-// Lists the fixtures whose input contains a text, with what mermaid.js did:
-//   node <this file> "<text>"
-import { loadFixtures } from "<repo>/packages/tests/src/index.ts"
-import { diagramIds, isDiagramType } from "<repo>/tools/src/diagrams.ts"
-
-// The fixture directories: one per diagram type, and `common`.
-const diagrams = Object.keys(diagramIds).filter(isDiagramType)
-
-const wanted = process.argv[2]!
-for (const diagram of diagrams) {
-  for (const fixture of await loadFixtures(diagram)) {
-    if (!fixture.input.includes(wanted)) continue
-    const outcome = fixture.expected.accepted
-      ? `accepted ${JSON.stringify(fixture.expected.db)}`
-      : `rejected ${fixture.expected.error.name}`
-    const divergence = fixture.knownDivergence ?? "none"
-    console.log(
-      `${diagram}/${fixture.name} (divergence: ${divergence})\n  ${JSON.stringify(fixture.input)}\n  ${outcome}`,
-    )
-  }
-}
-```
+The script that lists the fixtures whose input contains a text is in
+[references/probe-scripts.md](references/probe-scripts.md).
 
 ### 2.3 Adding fixtures
 
@@ -268,106 +211,10 @@ Read the source in a clone of mermaid.js at the tag of the pinned version (how
 to make it is in `tools/README.md`). Every link from the specification is a
 permalink to the commit recorded in `packages/spec/docs/index.md`.
 
-### Jison diagrams
-
-1. Read the lexer rules of the grammar definition (`*.jison`) from top to
-   bottom, and settle these points:
-   - The exclusive states (`%x`), the rules without a state (they match only in
-     the initial state), and the `<*>` rules (they match in every state, but the
-     rules of that state that come earlier in the file match first). Flowchart
-     example: the string rule `<*>["]` also matches in the click state and the
-     dir state.
-   - Rules that return no token. Flowchart examples: `"click"[\s]+` only enters
-     a state, so the grammar never sees the word `click` (the known divergence
-     `click-reserved-word`); the rules for `""`, for `call` with empty
-     parentheses, and for `accDescr {}` return no token either
-     (`tokenless-empty-forms`).
-   - Rules that can match the empty string (such as `[^\s\n]*`). At the end of
-     the text they return an empty token, which makes the input rejected.
-   - Whitespace rules that include line feeds, such as `[\s]+`. They also take
-     the line feed that mermaid.js appends to the text (End of text in
-     common.md).
-2. Read the grammar rules and the action of each (the Db functions it calls).
-3. Read the Db class. Look for plain objects used as sets of keys
-   (`hasOwnProperty`, `__proto__`), the difference between `Object.assign` and
-   spreading, rewrites with regular expressions, the places that throw
-   (rejections outside the grammar), and the values that depend on the browser
-   rather than on the text, such as `window.CSS` or `document` (sequence: the
-   colour of a box). Such a value is supplied from outside, as a site
-   configuration is; `docs/db-from-tree/<diagram>.md` of `@mmd-toolkit/tests`
-   says so, written with the steps of the tests-tree-checks SKILL.
-4. Check the order of the preprocessing (Reading a source in common.md) and the
-   detection (detection.md).
-
-### Chevrotain diagrams
-
-For Chevrotain diagrams, read each active mode's token array in order, including
-custom matchers, skipped tokens, categories, push/pop transitions, and explicit
-`longer_alt`; do not assume longest match or infer precedence from declaration
-order outside those arrays. Read parser rule methods, gates and lookahead as the
-grammar, then visitor/model validation as acceptance conditions. Distinguish a
-composite token's authored components when stating directive and
-ignored-semicolon boundaries. Check mode-specific whitespace/comments, custom
-matcher failure, category versus exact-unit acceptance, and longer-alternative
-controls; Jison's automatic word boundary does not apply. Check full input
-consumption and the wrapper's error handling: the first lexer error is reported
-before any parser error, and a recovered CST need not be accepted.
-
-### Langium diagrams
-
-1. Read the entry rule, every imported grammar and all reachable rules. Follow
-   the generated grammar, service modules and token builder to the effective
-   terminal array. Record its priority order, including inherited terminals,
-   custom keyword matchers and longer alternatives. Declaration order alone and
-   a general longest-match assumption do not establish that order. Inventory
-   imported terminals that are unreachable, and read mermaid.js's fixed tests
-   under both `packages/parser` and `packages/mermaid/src/diagrams/<diagram>`.
-2. Read the actual keyword matcher and its boundary test. State the exact
-   characters that satisfy the boundary and distinguish them from whitespace
-   skipped between units. Judge the boundary on the diagram text after global
-   directives and the semicolons selected by the common line rule are left out.
-   Through the tests package's Mermaid runner, probe a global directive glued
-   immediately after a keyword and before the next component. Compare cases
-   where removal leaves a valid boundary with cases where it joins the two
-   components. Do not import Jison's word-boundary rule. Check competing
-   keywords and terminals at the same position, including composite line forms
-   whose keyword and value are read together. Check each keyword with a custom
-   matcher separately from punctuation-joined spellings that do not use it,
-   distinguishing their word and punctuation components.
-3. Read hidden terminals in priority order, including their flags and where
-   their match ends. Separate them from global preprocessing. Check whether they
-   consume a following line feed, use it only as a boundary, or consume the
-   appended line feed at EOF. Check an earlier terminal enclosing the same text,
-   fallback to comments when a hidden form fails, and matches between complete
-   units versus inside an atom. First ask where the tree can hold every skipped
-   form; do not propose a divergence merely because it is hidden. Check
-   alternative order and greedy or lazy matches within each terminal with
-   adjacent delimiters, rather than assuming the nearest closer wins. Give each
-   retained form an owner and range, with any consumed following line feed
-   outside that range.
-4. Follow the diagram's module to its custom, common and default value
-   converters. Match each conversion branch to the grammar rule name that
-   actually calls it; an unused branch is not behavior. Record string escapes,
-   numeric conversion, trimming and whitespace collapse separately. Keep the
-   tree's authored values distinct from converted Db values, and state which
-   spelling the tree preserves under section 4. Follow assigned, overwritten and
-   unassigned syntax through the generated model and publication, retaining
-   every written occurrence even when absent from Mermaid's model or Db. Trace
-   acceptance comparison values through entity replacement, quoting and escape
-   decoding, whitespace handling and configuration-dependent escaping, testing
-   rewrite order and overlaps introduced by intermediate text.
-5. Follow the public parse wrapper and the diagram's adapter through complete
-   consumption and every error check. Determine whether any lexer error or
-   parser error prevents publication, including errors attached to a recovered
-   tree. Read model validation and Db rejection after conversion too. Do not
-   infer acceptance from the existence of a recovered tree or from the grammar
-   alone. Enumerate reachable semantic checks after final option selection,
-   including the state updates, identities and replacements those checks depend
-   on. If the adapter publishes nothing or has no semantic gate, record that
-   absence rather than inventing a publication step or fields.
-
-Items 6 and 7, on detection and on the steps after the reading, are in
-[section 2 of spec-diagram-type](../spec-diagram-type/SKILL.md#2-detection-and-the-steps-after-the-reading-for-a-langium-diagram-type).
+Read the grammar with the steps for the engine of the diagram type:
+[references/reading-jison.md](references/reading-jison.md),
+[references/reading-chevrotain.md](references/reading-chevrotain.md), or
+[references/reading-langium.md](references/reading-langium.md).
 
 ## 4. Adding the nodes of the tree
 
@@ -568,22 +415,8 @@ The document of the divergence (`known-divergences/<identifier>.md`) says, in
 
 ## 9. When a gap in the specification is found
 
-Input: an input that the specification does not decide, or decides differently
-from mermaid.js, found while implementing or reviewing the parser, the
-formatter, or the rules, or while writing the specification.
-
-1. Reproduce the inputs with mermaid.js and with the parser.
-2. Read the cause in the source of mermaid.js (section 3).
-3. List the cases of the sentences that the input concerns, as in section 6, and
-   check each once with mermaid.js.
-4. Write the rule. When it touches the definition of the tree, follow item 3 of
-   section 4.
-5. Add fixtures (section 5), contrasting examples included.
-6. Show the result as in section 7.
-
-When only fixtures are needed (such as the grounds of a rule idea), do section 5
-for each item, and show for each item either the names added or the names of
-existing fixtures that suffice, with their `accepted` and values.
+The steps, and what to show when only fixtures are needed, are in
+[references/gaps.md](references/gaps.md).
 
 ## 10. Changing the shared tree
 
@@ -610,18 +443,5 @@ pass:
 
 ## 11. When mermaid.js is upgraded
 
-Input: the pin of mermaid.js is raised, and the differences of `fixtures:check`
-are sorted (the tests-mermaid-update SKILL).
-
-1. Change the pinned version and commit in index.md (recorded in one place).
-2. Move every permalink to the new commit. Collect the URLs with the old commit
-   from the documents; for each link, find the function in the same file of the
-   new version and adjust the line range. Reread the claim of every link whose
-   function moved, disappeared, or was renamed. Then run `pnpm run lint:docs`,
-   which reports any link to mermaid.js that still points to another commit.
-3. For each fixture that changed, reread the claims that cite it, and follow the
-   new reading of mermaid.js.
-4. Check that each Known divergence identifier still holds.
-5. Check the order and the list of detectors in detection.md against the new
-   version.
-6. Show the result as in section 7.
+The steps are in
+[references/upgrading-mermaid.md](references/upgrading-mermaid.md).

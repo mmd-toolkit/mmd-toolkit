@@ -47,9 +47,9 @@ fixture が要らないので、収集の間に始めてよい。
 ## 2. Langium の図種の検出と、読んだ後の手順
 
 次の項目は、
-spec の SKILL の「mermaid.js
-を読む」の「[Langium の図](../spec/SKILL.ja.md#langium-の図)」の項目 1〜5
-に続く。
+spec の SKILL の
+[references/reading-langium.ja.md](../spec/references/reading-langium.ja.md)
+の項目 1〜5 に続く。
 
 6. [common.md](../../../packages/spec/docs/common.ja.md)
    の共通の前処理と検出の規則を読む。

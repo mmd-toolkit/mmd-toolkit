@@ -47,8 +47,8 @@ Adding a diagram type follows these sections, in this order:
 ## 2. Detection, and the steps after the reading, for a Langium diagram type
 
 These items follow items 1 to 5 of
-[Langium diagrams](../spec/SKILL.md#langium-diagrams) in Reading mermaid.js of
-the spec skill.
+[references/reading-langium.md](../spec/references/reading-langium.md) of the
+spec skill.
 
 6. Read the shared preprocessing and detection rules in
    [common.md](../../../packages/spec/docs/common.md): Reading a source,

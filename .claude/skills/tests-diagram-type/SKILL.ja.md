@@ -32,75 +32,9 @@ Chevrotain の図種にも同じ手順を適用し、トークン定義を字句
 それぞれを区別する場合を集め、
 トークン数だけでは確かめられない mode の切替と優先順位の組合せも含める。
 
-Langium の図種では、その図種自身の文法と service から次の事項を導く。
-terminal の順序、境界、変換、公開を図種ごとに導き直す。
-共通規則を import しただけでは、その図種での使われ方は決まらない。
-
-1. `entry` 規則から import と規則呼出しをたどる。
-   書かれた文法と生成文法を読む。
-   token builder と value converter を注入する service module も確かめる。
-   hidden を含め、到達可能な terminal だけを結果の順序で列挙する。
-   import 先に宣言があるだけでは到達しない。
-   terminal の構成規則も、独立した字句単位になるとは限らない。
-   clone に生成ファイルがなければ、
-   インストールされた pin の bundle の source map を読み、
-   生成 module・文法と書かれた service の配線を照合する。
-2. keyword のパターンも読む。
-   独自の境界を持つもの、既定の順序を使うもの、
-   明示的な `longer_alt` の選択肢を持つものを列挙する。
-   [共有の token builder](https://github.com/mermaid-js/mermaid/blob/2086904e76c692331e34a45d7cc3bc30860d040e/packages/parser/src/language/common/tokenBuilder.ts#L7-L31)
-   は指定された keyword だけに、空白・EOF・percent ペアの先読み境界を加える。
-   一般的な最長一致ではなく、最初に合う規則を取る。
-   keyword 境界と明示的な選択肢も単位を決める。
-   接着した接尾辞、keyword の接頭辞、keyword に接した記号、
-   参照・数・文字列・共通の複合 terminal との優先順位を probe する。
-   検出には、それ自身の境界がある。
-3. hidden terminal が字句規則として消費するテキストを調べる。
-   全体の除去とは区別する。
-   import した
-   [YAML・DIRECTIVE terminal](https://github.com/mermaid-js/mermaid/blob/2086904e76c692331e34a45d7cc3bc30860d040e/packages/parser/src/language/common/common.langium#L25-L34)
-   は直後の LF を消費し、ほかの空白境界は先読みだけする。
-   各単位の隙間と各文の EOL・EOF を probe する。
-   唯一の LF が消えると次の文は拒否されるが、
-   共通の付加 LF が消えた場合は EOF で EOL を満たせる。
-   先頭の frontmatter、共通の directive 除去、本文の hidden terminal を分ける。
-   閉じを選ぶ前に、選択肢の優先順位を導く。
-   本文のある選択肢が、隣接する空の閉じより先に選ばれる場合がある。
-   保持する接頭部と、通過した裸行の trivia について、
-   検出から parser への受渡しを、その図種で独立に probe する。
-4. 実際の terminal 規則名から、注入された converter と fallback をたどる。
-   恒等・文字列・整数・double の変換は、到達するものだけを調べる。
-   [共通の converter](https://github.com/mermaid-js/mermaid/blob/2086904e76c692331e34a45d7cc3bc30860d040e/packages/parser/src/language/common/valueConverter.ts#L26-L70)
-   は、行とブロックの共通の値で空白の読みが異なる。
-   たとえば pie の
-   [独自分岐](https://github.com/mermaid-js/mermaid/blob/2086904e76c692331e34a45d7cc3bc30860d040e/packages/parser/src/language/pie/valueConverter.ts#L6-L16)
-   は PIE_SECTION_LABEL を名指すが、
-   [文法](https://github.com/mermaid-js/mermaid/blob/2086904e76c692331e34a45d7cc3bc30860d040e/packages/parser/src/language/pie/pie.langium#L1-L20)
-   は STRING を呼び、既定の escape 変換に進む。
-   到達する単位について、両方の引用符、未知の escape、精度、overflow、
-   underflow を集める。
-   前の図種の単位に到達しない所は、拒否の対照を置き、理由を記す。
-5. 回復した AST だけでなく公開の受理の門を読む。
-   [公開 parse wrapper](https://github.com/mermaid-js/mermaid/blob/2086904e76c692331e34a45d7cc3bc30860d040e/packages/parser/src/parse.ts#L134-L150)
-   は字句・構文エラーが 1 つでもあれば拒否する。
-   次に、その図種の AST から Db への公開をたどる。
-   保存する値、条件付き・省略する代入、値を代入しない文法の literal、
-   adapter が捨てる文を区別する。
-   再代入の順序、最後の空値、重複の扱い、公開後の意味上の拒否を記録する。
-   何も公開せず、要約が空になる図種もある。
-   先頭・回復した文の内部・正しい接頭辞の後のエラーを、
-   到達可能な Db の拒否それぞれとは別に調べる。
-6. parse を await する spec を記録できるよう、
-   collector の parse stub は非同期にする。
-   `Promise.resolve(record(text))` で呼出しを記録する。
-   Langium を実行せず、受理を模倣しない。
-   共有の recorder で spec を実行し、
-   各記録位置が実際の parse 呼出しであることを確かめる。
-   stub のために最後の入力の後でだけ本体が失敗するテストは、
-   入力の欠落がないと証明してから、3 節の手順 3 の既存の明示的な許可を使える。
-   normalizer、固定 fixture、安定した生成は 2 節と 3 節に従う。
-   AST の定義後は SKILL [tests-tree-checks](../tests-tree-checks/SKILL.ja.md)
-   の手順で Db builder と checker を実装する。
+Langium の図種では、
+先に [references/reading-langium.ja.md](references/reading-langium.ja.md)
+の手順で、mermaid.js の文法を読む。
 
 ## 1. 入力
 
@@ -266,86 +200,11 @@ terminal の順序、境界、変換、公開を図種ごとに導き直す。
 
 ## 3. fixture
 
-1. 入力は、
-   その図種の構文に図のテキストを渡す mermaid のテスト（Langium の図種では、
-   mermaid の parser パッケージのその図種のテストも含む）と、
-   docs の mermaid のブロック、demos から集める。
-   集めるテストファイルの一覧と除外の理由は `tools/collect.ts` の `SPEC_FILES`
-   だけが持ち、範囲は `tools/README.md` にある。
-2. 図種の間で収集の道具（`tools/collect.ts`、
-   `tools/src/spec-recorder.ts`）が違うのは、読む spec ファイルと、
-   テキストを受け取る関数だけ。
-   `collect.ts` の `SPEC_FILES` に、その図種の spec ファイルのうち、
-   図のテキストを mermaid に渡すものを足す。
-   除くファイルには理由を書く。
-   spec ファイルが import するモジュールと、
-   テキストを受け取る関数（図種のパーサーの `parse`、
-   `Diagram.fromText` など）のスタブは、`spec-recorder.ts` の一覧に足す。
-   この一覧は全図種で共有する。
-3. spec ファイルの記録器（`tools/src/spec-recorder.ts`）は、
-   各 spec ファイルをスタブに対して実行する。
-   記録器が前提にしていることと、
-   変えるとき・図種を足すときに守ることは次のとおり:
-   - spec ファイルは、ループやテンプレートリテラルで入力を作るので、
-     文字列リテラルを静的に読むと取りこぼす。
-     ファイルをスタブに対して実行して、parse に渡された文字列を記録する。
-   - Node の module hooks（`registerHooks`、`register`）は、
-     lint が実験的な機能として止める。
-     TypeScript で transpile すると行番号がずれる。
-     そのため記録器は、テストファイルを一時ディレクトリに写し、
-     import のパスの引用符の中だけを書き換えて、そのまま import する。
-     テストの中の `import("...")` の呼び出しのパスも書き換える。
-     型だけの import は、Node が消すので、そのままにする。
-   - macOS の一時ディレクトリはシンボリックリンクなので、
-     スタックトレースの実パスと合わせるために `realpathSync` を通す。
-   - Node は URL ごとにモジュールを 1 回しか評価しないので、
-     スタブのモジュールはテストファイルごとに別のディレクトリに置く。
-   - 例外で入力を隠さない。
-     スタブが文字列にされたら例外にし、本体の例外があれば収集を止める。
-     収集を続けられるのは、ファイル・テスト名・エラーの本文が、
-     `collect.ts` の `ERRORS_AFTER_THEIR_INPUT` に載っていて、
-     最後の parse 呼出しの後でだけ失敗し、全入力を記録したと証明できる場合だけ。
-   - 描画の配置を確かめるテストは、スタブで算術をする。
-     スタブの算術は `NaN` になり、`NaN` を含むテキストを記録したら止まる。
-   - 実際の DOM で描画して図を確かめるテストは、
-     スタブでは動かない（sequence の `actorBandModel.spec.ts`）。
-     その入力が docs や demos にもあることを確かめて、理由を書いて除く。
-   - 記録した各入力の行に、実際にテキストを渡す呼び出しがあることを確かめる。
-4. docs と demos のブロックは、
-   mermaid.js の検出器（`detectDiagramType`）でその図種のものだけを取る。
-   demos のテキストは `mermaid.run()` が読むものにそろえる。
-   `<pre>` の直後の改行を落とし、文字参照を解決し、
-   mermaid が使う `ts-dedent` をかけ、trim する。
-   ブラウザで実際のページと照らすと、確かめられる。
-   この照合だけは、収集と違い、clone に依存を入れる必要がある。
-   clone の開発サーバー（`pnpm run dev`）を起動する。
-   これは demos のページが import する `mermaid.esm.mjs` を作り、demos を配る。
-   demos のページを開いて照らす。
-5. 収集した入力には `config` を付けない。
-   名前は `<出どころ>-<ファイル>-<入力の SHA-256 の先頭 8 桁の 16 進数>`
-   （`docs/maintaining-fixtures.md`）。
-6. `fixtures:add-many <図種> <ファイル> --dry-run` で試し、
-   出力を読んでから本番を実行する。
-7. `add-many` が出す「rejected by mermaid」の一覧を 1 件ずつ見る。
-   埋め込まれたデータだけが原因で拒否されるものには、
-   `fixtures:set-divergence` で `embedded-data-opaque` を付ける。
-   埋め込まれたデータとは、データブロックの未知の shape や壊れた YAML、
-   フロントマター、ディレクティブのこと。
-   標準外のエラー（`TypeError` など）は、入力が原因かを手で確かめる。
-   `MermaidEnvironmentError` が出たら、
-   Node にない機能を mermaid.js が使っている。
-   2 節のとおり代役を与える（`docs/expected-results.md`）。
-   正しい埋め込み設定が受理を両方向に変える場合も probe し、
-   仕様の印と必須の読みを SKILL
-   [tests](../tests/SKILL.ja.md#51-保持する形式と埋め込みデータの指定読み) の
-   5.1 で適用する。
-   拒否の一覧だけを、差異の全件の一覧としない。
-8. `fixtures:generate` を 2 回実行し、
-   SKILL [tests](../tests/SKILL.ja.md#4-確かめ方すべての作業で) の 4
-   の節のハッシュの比較で 2 回目が何も変えないことを確かめる。
-   `fixtures:check` を通す。
-   収集をもう一度実行し、
-   新規が 0 件であること（名前が安定していること）を確かめる。
+手順 1 から 8 は、mermaid.js のテスト、docs、demos から入力を集め、
+fixture として足す。
+[references/collecting-fixtures.ja.md](references/collecting-fixtures.ja.md)
+にある。
+
 9. 手書きの入力。
    各入力は、note の 1 行で 1 つの問いに答える。
    書く前に、これまでの図種で必要になった場合の種類を、

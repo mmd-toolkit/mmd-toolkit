@@ -216,8 +216,10 @@ How each part is written:
 - Rule Details: a few short sentences before the examples, in the words of the
   people who use the rule:
   - The diagram types it applies to, in one form: "This rule applies to <name>
-    (<headers>)." The name is the one in the table below, and the headers are
-    every header that the diagram document of the specification defines
+    (<headers>)." The name is the one in
+    [references/diagram-type-names.md](references/diagram-type-names.md),
+    searched for the diagram type, and the headers are every header that the
+    diagram document of the specification defines
     (`packages/spec/docs/diagrams/<diagram>.md`), joined with commas and "and":
     "This rule applies to flowcharts (`flowchart`, `graph`, `flowchart-elk`, and
     `swimlane-beta`).", "This rule applies to class diagrams (`classDiagram` and
@@ -227,39 +229,6 @@ How each part is written:
     header is `requirementDiagram`. A diagram type id that is no header, such as
     `flowchart-v2` or `swimlane`, is not used. A common rule says "This rule
     applies to every diagram type."
-
-    | Diagram type  | Name                         |
-    | ------------- | ---------------------------- |
-    | agentflow     | agentflow diagrams           |
-    | architecture  | architecture diagrams        |
-    | block         | block diagrams               |
-    | c4            | C4 diagrams                  |
-    | class         | class diagrams               |
-    | cynefin       | Cynefin diagrams             |
-    | er            | entity relationship diagrams |
-    | eventmodeling | Event Modeling diagrams      |
-    | flowchart     | flowcharts                   |
-    | gantt         | Gantt charts                 |
-    | gitgraph      | Git graphs                   |
-    | journey       | user journey diagrams        |
-    | kanban        | Kanban boards                |
-    | mindmap       | mind maps                    |
-    | packet        | packet diagrams              |
-    | pie           | pie charts                   |
-    | quadrant      | quadrant charts              |
-    | radar         | radar charts                 |
-    | railroad      | railroad diagrams            |
-    | requirement   | requirement diagrams         |
-    | sankey        | Sankey diagrams              |
-    | sequence      | sequence diagrams            |
-    | state         | state diagrams               |
-    | timeline      | timelines                    |
-    | treemap       | treemaps                     |
-    | treeview      | tree views                   |
-    | usecase       | use case diagrams            |
-    | venn          | Venn diagrams                |
-    | wardley       | Wardley maps                 |
-    | xychart       | XY charts                    |
 
   - What the rule reports.
   - The forms that it does not report and that the people who use it may write,
@@ -282,8 +251,9 @@ How each part is written:
 - Further Reading: only a list of links to what the people who use the rule can
   read, the pages of the documentation of mermaid.js, its issues, and its pull
   requests, without prose. A permalink to the source of mermaid.js is kept in
-  the record of the rule in the rule-ideas skill
-  (`.claude/skills/rule-ideas/references/`), not in the rule document.
+  the records of the rule (`.claude/skills/rule-ideas/references/`, and
+  `.claude/skills/rule-ideas-suggestions/references/` for its suggestions), not
+  in the rule document.
 - Which sentence goes where. A sentence about what mermaid.js does is checked
   against these cases, in this order:
   - It stays in Rule Details when it tells apart, among forms that the people
@@ -293,9 +263,9 @@ How each part is written:
     reported, that numbers are compared as numbers, that a count is compared up
     to the limit that mermaid.js draws.
   - A page of the documentation of mermaid.js, an issue, or a pull request goes
-    to Further Reading, as a link; a permalink to its source goes to the record
-    of the rule in the rule-ideas skill
-    (`.claude/skills/rule-ideas/references/`).
+    to Further Reading, as a link; a permalink to its source goes to the records
+    of the rule (`.claude/skills/rule-ideas/references/`, and
+    `.claude/skills/rule-ideas-suggestions/references/` for its suggestions).
   - Anything else is removed: an explanation of how mermaid.js works that tells
     apart no reported forms, a restatement of what an example shows, a sentence
     about forms that the people who use the rule do not write, and the formula
@@ -453,27 +423,9 @@ renamed, and removed together, as the section "Rules and their documents" of
   stands directly before. Do not write the generated parts by hand; after a
   change of the first paragraph of a Japanese document, run `update`.
 - When the formatter (`packages/prettier-plugin-mmd`) changes what it prints,
-  the examples are out of date and `check:docs` fails. Then:
-  1. Run `pnpm --filter @mmd-toolkit/eslint-plugin run update:docs`. It builds
-     the parser and rewrites the examples of both languages.
-  2. Run `pnpm --filter @mmd-toolkit/eslint-plugin run test:update` and read the
-     diff of the snapshots. An incorrect example that is no longer reported, or
-     a correct example that now is, is kept as written (step 4 of section 4) or
-     dropped. An example under `<!-- prettier-ignore -->` that the formatter now
-     prints the same way is no longer kept: remove the mark and its sentence.
-  3. Search the prose of each changed document for the old forms: a code span
-     that quotes a line the formatter changed. Write the new form, in both
-     languages.
-  4. Where the change makes the formatter leave as written what it used to
-     change, rebuild the affected examples from the `input.mmd` of their
-     fixtures (step 4 of section 4): formatting the old printed example does not
-     give back the text of the fixture.
-  5. Run `pnpm run lint:docs`. Then run the tests of the documentation site,
-     which render the examples of every rule document with the built plugin:
-     `pnpm --filter @mmd-toolkit/eslint-plugin run build`, then
-     `pnpm --filter @mmd-toolkit/docs run test`. The examples of the pages in
-     `packages/docs/pages/linter` are written by hand; print them as the
-     formatter prints them too.
+  the examples are out of date and `check:docs` fails. The steps that bring them
+  up to date are in
+  [references/formatter-changes.md](references/formatter-changes.md).
 - What is written by hand in the index: what comes before the generated list
   (the introduction, with the sentence that says `recommended` enables the rules
   marked ✅, and the section on rule ids). The criteria for `recommended` are in
@@ -485,26 +437,8 @@ renamed, and removed together, as the section "Rules and their documents" of
 
 ## 7. When a diagram type is supported
 
-1. Start the names of its rules with `<diagram>-`, the name of
-   `packages/spec/docs/ast/<diagram>.md`. The table of the diagram type in the
-   index is generated by `update` once its rules exist (section 6). Add the
-   diagram type to `DIAGRAM_ORDER` in `tools/rule-docs.ts`, at its place in
-   `diagramOrder` of `packages/docs/.vitepress/documents.js`, which the site
-   uses for its sidebar; `tests/rule-docs.test.ts` fails when the two orders
-   differ, and `update` fails for a rule of a diagram type that is missing.
-2. For each common rule, run an ordinary example of the new diagram type through
-   mermaid.js. When it behaves as in the other diagram types and the rule has
-   something to say for that diagram type, add an item to the list of diagram
-   types in its Rule Details (what happens there), and its fixture to the tests
-   of the rule. When it behaves differently, or when one definition over the
-   shared part of the tree no longer covers it, the rule no longer meets the
-   condition for a common rule (the
-   [criteria](../rule-ideas/SKILL.md#policies-and-criteria) of the rule-ideas
-   skill). Moving it to the rules of a diagram type is a decision about the
-   rule: make it with the rule-ideas skill first, with the result of mermaid.js
-   as the evidence, and then move the document (section 8).
-3. Write the documents of the rules of that diagram type with the procedure
-   above.
+The steps are in
+[references/supporting-a-diagram-type.md](references/supporting-a-diagram-type.md).
 
 ## 8. Removing or moving a document
 
