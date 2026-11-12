@@ -814,10 +814,13 @@ mermaid.js の文書の例に合わせて引用符なしで印字します。
 対象にする版はすべて、どちらの形も同じに読みます。
 `-` はキーワードを終わらせるので（`"end-x"` は `end` と `-x`）、
 最初の `-` より前の部分を、字句解析器が独立した単位として読む語と比較します。
-ASCII 以外の文字を含む名前（`"Zoë"`）は、10.9.8 が引用符なしで拒否するので、
+ASCII 以外の文字を含む名前（`"Zoë"`）は、
+対象にする版に引用符なしで拒否するものがあるので、引用符を残します。
+`.` を含む名前（`"a.b"`）も、対象にする版に引用符なしで拒否するものがあるので、
 引用符を残します。
-`.` を含む名前（`"a.b"`）も、10.9.8、11.7.0、11.8.1 が引用符なしで拒否するので、
-引用符を残します。
+詳しくは
+[対象にする版の mermaid.js のために残す形](./compatibility.ja.md#対象にする版の-mermaidjs-のために残す形)
+を参照してください。
 ほかの名前は、引用符の有無も数も含めて、書かれたまま残します。
 先頭か末尾に `-` がある名前と、`-` が 2 つ続く名前も、そのまま残します。
 `direction` で終わる名前と、`TB`、`BT`、`RL`、`LR` で始まる名前も、
@@ -827,6 +830,7 @@ ASCII 以外の文字を含む名前（`"Zoë"`）は、10.9.8 が引用符な�
 [fixture: entities/plain-names-without-quotes]
 [fixture: entities/hyphenated-names-without-quotes]
 [fixture: entities/names-that-need-quotes]
+[fixture: entities/name-with-dot-kept]
 [fixture: entities/names-next-to-a-direction-line]
 [fixture: entities/names-kept]
 実体の部分の間にあるディレクティブは、

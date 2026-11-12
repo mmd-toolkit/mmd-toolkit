@@ -1542,10 +1542,11 @@ a backslash, a line break, U+2028, U+2029, a backquote, `&`, `#`, or `<` (see
 [Spellings that are drawn the same](./compatibility.md#spellings-that-are-drawn-the-same)),
 and `singleQuote` is not read. Quoting a padded bare directory can change its
 name and file/directory type. A name in quotes keeps its quotes, though the
-examples write 58 names without quotes and 8 in quotes: 11.14.0 and 11.15.0 read
-a name in quotes only (see
+examples write 58 names without quotes and 8 in quotes: some versions that count
+read a name in quotes only (see
 [Forms kept for versions of mermaid.js that count](./compatibility.md#forms-kept-for-versions-of-mermaidjs-that-count)).
-[fixture: treeview/names/single-quote-sensitive-kept] [fixture:
+[fixture: treeview/names/quoted-name-kept] [fixture:
+treeview/names/single-quote-sensitive-kept] [fixture:
 treeview/names/name-quote-tail]
 
 [fixture: treeview/names/name-bare-tail]

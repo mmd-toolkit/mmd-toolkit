@@ -100,8 +100,8 @@ whatever the versions are.
 | [sequence](./sequence.md#colons)                             | `A->>B:%%{init: {}}%%` and two spaces, or a no-break space after the `:`                                      | the line without the whitespace                    | [1](./printed-form.md#1-the-whitespace-beside-a-mark) | 10.9.8 rejects the line without the whitespace                                                                                                 | [fixture: sequence/colons/directive-then-whitespace-kept]                   |
 | [sequence](./sequence.md#arrow-spacing)                      | `A () ->> () B`                                                                                               | `A() ->> ()B`                                      | [1](./printed-form.md#1-the-whitespace-beside-a-mark) | 10.9.8, 11.7.0, 11.8.1 read `()` as part of a name                                                                                             | [fixture: sequence/arrow-spacing/parentheses-touching]                      |
 | [sequence](./sequence.md#arrow-spacing)                      | `A<<->>B` printed `A<<->> B`                                                                                  | `A <<->> B`                                        | [1](./printed-form.md#1-the-whitespace-beside-a-mark) | 10.9.8 reads the `<<` as part of the name before it                                                                                            | [fixture: sequence/arrow-spacing/bidirectional-arrow-gap-before-kept]       |
-| [gitGraph](./gitgraph.md#header)                             | `gitGraph %%{x}%%:` printed `gitGraph%%{x}%%:`                                                                | `gitGraph%%{x}%%`                                  | [3](./printed-form.md#3-a-spelling)                   | 10.9.8 rejects the header without the colon after a directive                                                                                  | [fixture: gitgraph/header/header-directive-before-colon-kept]               |
-| [gitGraph](./gitgraph.md#quotes)                             | `branch "Merge"`                                                                                              | `branch Merge`                                     | [3](./printed-form.md#3-a-spelling)                   | 10.9.8 compares keywords in any case and rejects the name without quotes                                                                       | [fixture: gitgraph/quotes/branch-keyword-name-kept]                         |
+| [gitGraph](./gitgraph.md#header)                             | `gitGraph %%{x}%%:` printed `gitGraph%%{x}%%:`                                                                | `gitGraph %%{x}%%`                                 | [3](./printed-form.md#3-a-spelling)                   | 10.9.8 rejects the header without the colon after a directive                                                                                  | [fixture: gitgraph/header/header-directive-before-colon-kept]               |
+| [gitGraph](./gitgraph.md#references)                         | `branch "Merge"`                                                                                              | `branch Merge`                                     | [3](./printed-form.md#3-a-spelling)                   | 10.9.8 compares keywords in any case and rejects the name without quotes                                                                       | [fixture: gitgraph/references/names-that-need-quotes]                       |
 | [timeline](./timeline.md#header-and-direction)               | `timeline td`; `timeline TD title T`                                                                          | `timeline TD`; the text on a line of its own       | [3](./printed-form.md#3-a-spelling)                   | 10.9.8, 11.7.0, 11.8.1, 11.13.0 read the words as a period                                                                                     | [fixture: timeline/header-and-direction/direction-case-kept]                |
 | [timeline](./timeline.md#titles-and-sections)                | `title`, a line break, `# c`                                                                                  | `title # c`                                        | [1](./printed-form.md#1-the-whitespace-beside-a-mark) | 10.9.8 reads them as a title of whitespace and a comment                                                                                       | [fixture: timeline/titles-and-sections/title-hash-on-next-line-kept]        |
 | [ER](./er.md#whitespace-between-tokens)                      | `class-A a`                                                                                                   | `class -A a`                                       | [1](./printed-form.md#1-the-whitespace-beside-a-mark) | 10.9.8 rejects the form with a space                                                                                                           | [fixture: er/whitespace-between-tokens/keyword-then-dash-touching-kept]     |
@@ -2142,15 +2142,18 @@ frontmatter of a block; the other lines of the file that start with `gitGraph:`
 are the key of the configuration in a frontmatter), so the colon is removed:
 `gitGraph:` is printed `gitGraph`, and what follows it on the line goes to the
 next line. The colon stays after a direction, since every version that counts
-rejects `gitGraph LR` and `gitGraph TB` without it (10.9.8 does not read `BT`
-either way). It stays too where a directive or a hidden YAML block stands
-between the keyword and the colon: the examples write no such header, and 10.9.8
-rejects `gitGraph %%{x}%%` followed by a statement on the next line, which it
-accepts with the colon. A directive, a comment, or a hidden form after the colon
-does not keep it: `gitGraph:%%{}%% commit%%{}%%`, `gitGraph: %% note`, and
-`gitGraph: %%{}%%` followed by a statement are drawn the same by the ten
-versions, with and without the colon. [fixture: gitgraph/header/header-colon]
-[fixture: gitgraph/header/header-colon-comment] [fixture:
+rejects `gitGraph LR` and `gitGraph TB` without it (one of them does not read
+`BT` either way). It stays too where a directive or a hidden YAML block stands
+between the keyword and the colon: the examples write no such header, and a
+version that counts rejects `gitGraph %%{x}%%` followed by a statement on the
+next line, which it accepts with the colon (see the gitGraph row of
+[Forms kept for versions of mermaid.js that count](#forms-kept-for-versions-of-mermaidjs-that-count)).
+A directive, a comment, or a hidden form after the colon does not keep it:
+`gitGraph:%%{}%% commit%%{}%%`, `gitGraph: %% note`, and `gitGraph: %%{}%%`
+followed by a statement are drawn the same by the ten versions, with and without
+the colon. [fixture: gitgraph/header/header-colon] [fixture:
+gitgraph/header/header-directive-before-colon-kept] [fixture:
+gitgraph/header/header-colon-comment] [fixture:
 gitgraph/header/header-colon-hidden-statement] [fixture:
 gitgraph/header/header-colon-directive-line] [fixture:
 gitgraph/header/header-colon-tab-blank-lines] [fixture:

@@ -16,12 +16,17 @@ statement moves below the header. The colon of a header without a direction is
 left out, as the documentation of mermaid.js writes it (30 headers without it, 2
 with it): `gitGraph:` is printed `gitGraph`, and every version that counts reads
 and draws the two forms the same. The colon after a direction stays, since
-mermaid.js rejects `gitGraph LR` without it, and so does a colon that a
-directive or a hidden YAML block precedes, since the printer keeps the gaps
-around a hidden form as written and 10.9.8 rejects `gitGraph %%{x}%%` followed
-by a statement on the next line, which it accepts with the colon (see
-[The colon after a header](./compatibility.md#the-colon-after-a-header)). Hidden
-gaps and protected header/body groups retain their source boundaries.
+mermaid.js rejects `gitGraph LR` without it. So does a colon that anything but
+spaces and tabs precedes, a directive or a hidden YAML block, since a version
+that counts rejects such a header without the colon when a statement follows on
+the next line, and accepts it with the colon (see
+[The colon after a header](./compatibility.md#the-colon-after-a-header) and
+[Forms kept for versions of mermaid.js that count](./compatibility.md#forms-kept-for-versions-of-mermaidjs-that-count)).
+The directive stands after the space that the gap has without it, which is none
+before a colon (see [Directives](./flowchart.md#directives)):
+`gitGraph %%{x}%%:` is printed `gitGraph%%{x}%%:`. [fixture:
+gitgraph/header/header-directive-before-colon-kept] Hidden gaps and protected
+header/body groups retain their source boundaries.
 
 A hidden form between `gitGraph` and the direction keeps the gap after it as
 written, because a hidden form consumes an immediately following line feed, and

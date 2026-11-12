@@ -1523,10 +1523,11 @@ directory の slash を含みます。
 padding のある裸の directory を引用すると名前と種類が変わりえます。
 引用符で囲んだ名前は、引用符を残します。
 文書の例は、引用符なしの名前を 58 回、引用符付きの名前を 8 回書きますが、
-11.14.0 と 11.15.0 が、引用符で囲んだ名前だけを読むためです。
+対象にする版に、引用符で囲んだ名前だけを読むものがあるためです。
 詳しくは
 [対象にする版の mermaid.js のために残す形](./compatibility.ja.md#対象にする版の-mermaidjs-のために残す形)
-を参照してください。 [fixture: treeview/names/single-quote-sensitive-kept]
+を参照してください。 [fixture: treeview/names/quoted-name-kept]
+[fixture: treeview/names/single-quote-sensitive-kept]
 [fixture: treeview/names/name-quote-tail]
 
 [fixture: treeview/names/name-bare-tail]
