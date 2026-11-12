@@ -63,7 +63,7 @@ npm の版をもとに計算し直します。
 この表は、そうした形を 1 つずつ挙げます。
 書かれたまま残す形、決まりが印字する形、その形を与える決まり、
 残す形が要る版（対象の 10 版のうち）、fixture の順です。
-図種の列は、その図種の規則の節へのリンクで、その節も同じ版を挙げています。
+図種の列は、その図種の規則の節へのリンクで、その節は残す形の理由を書いています。
 
 行は、挙げた版が 1 つも対象に残らなくなったときに外す規則です。
 その決まりは、
@@ -80,7 +80,7 @@ npm の版をもとに計算し直します。
 | [flowchart](./flowchart.ja.md#方向)                         | `graph LR`                                                                                                    | `flowchart LR`                             | [3](./printed-form.ja.md#3-綴り)           | `flowchart.defaultRenderer` が `dagre-d3` のとき、11.7.0、11.8.1、11.13.0、11.14.0、11.15.0、11.16.1、11.17.2 が `graph` を読み、`flowchart` を拒否する            | [fixture: flowchart/direction/header-keyword-kept]                          |
 | [state](./state.ja.md#header)                               | `stateDiagram`                                                                                                | `stateDiagram-v2`                          | [3](./printed-form.ja.md#3-綴り)           | `state.defaultRenderer` が `dagre-d3` のとき、10.9.8 が 2 つを違って描き、11.7.0、11.8.1、11.13.0、11.14.0、11.15.0、11.16.1、11.17.2 が `stateDiagram` を拒否する | [fixture: state/header/spellings-kept]                                      |
 | [flowchart、swimlane](./flowchart.ja.md#ラベルの内側の空白) | `A[ user@example.com ]`                                                                                       | `A[user@example.com]`                      | [1](./printed-form.ja.md#1-記号の横の空白) | flowchart: 11.7.0、11.8.1、11.13.0、11.14.0、11.15.0、11.16.1、11.17.2、12.0.0、swimlane: 11.16.1、11.17.2、12.0.0 が、空白のない形を拒否する                      | [fixture: flowchart/label-inner-whitespace/leading-whitespace-at-sign-kept] |
-| [flowchart、swimlane](./flowchart.ja.md#矢印の前後の空白)   | `A@{ shape: circle }e1@--> B`                                                                                 | `A@{ shape: circle } e1@--> B`             | [1](./printed-form.ja.md#1-記号の横の空白) | flowchart: 上と同じ 8 版、swimlane: 11.16.1、11.17.2、12.0.0 が、空白のある形を拒否する                                                                            | [fixture: flowchart/arrow-spacing/edge-id-after-data-block-touches]         |
+| [flowchart、swimlane](./flowchart.ja.md#矢印の前後の空白)   | `A@{ shape: circle }e1@--> B`                                                                                 | `A@{ shape: circle } e1@--> B`             | [1](./printed-form.ja.md#1-記号の横の空白) | flowchart: 11.7.0、11.8.1、11.13.0、11.14.0、11.15.0、11.16.1、11.17.2、12.0.0、swimlane: 11.16.1、11.17.2、12.0.0 が、空白のある形を拒否する                      | [fixture: flowchart/arrow-spacing/edge-id-after-data-block-touches]         |
 | [flowchart](./flowchart.ja.md#トークンの間の空白)           | `style A fill:#f00,color:white` を `style A fill: #f00,color: white` と印字                                   | `style A fill: #f00, color: white`         | [1](./printed-form.ja.md#1-記号の横の空白) | 10.9.8 が、`color:` か `text-align:` で始まるスタイルからラベルの色を取る                                                                                          | [fixture: flowchart/whitespace-between-tokens/style-color-touching-kept]    |
 | [flowchart](./flowchart.ja.md#トークンの間の空白)           | `linkStyle 0 stroke:#f00,color:red` を `linkStyle 0 stroke: #f00,color: red` と印字                           | `linkStyle 0 stroke: #f00, color: red`     | [1](./printed-form.ja.md#1-記号の横の空白) | 10.9.8 が、辺のラベルでも同じことをする                                                                                                                            | [fixture: flowchart/whitespace-between-tokens/link-style-label-names-kept]  |
 | [flowchart](./flowchart.ja.md#トークンの間の空白)           | `style A stroke-width:3px\ ,stroke:#0f0` を `style A stroke-width: 3px\ , stroke: #0f0` と印字                | `style A stroke-width: 3px\, stroke: #0f0` | [1](./printed-form.ja.md#1-記号の横の空白) | 10.9.8 が、ノードのスタイルをそのまま `;` でつなぐ                                                                                                                 | [fixture: flowchart/whitespace-between-tokens/style-backslash-space-kept]   |
@@ -3246,8 +3246,11 @@ class の 7 個の入力も、整形後のテキストと同じ SVG が描かれ
   英字で始まる語を空白で区切った形です。
   11.15.0（名前に `-` を加えた版）、12.0.0、12.3.0 の文法も同じ語を読みます。
   引用符で囲む名前は、引用符のない名前と同じテキストです。
-  11.14.0 は `-` のある名前を引用符なしでは拒否するので、
+  最初の文法は `-` のある名前を引用符なしでは拒否するので、
   そのような名前は引用符を残します。
+  詳しくは
+  [対象にする版の mermaid.js のために残す形](#対象にする版の-mermaidjs-のために残す形)
+  を参照してください。
 - gitGraph のブランチ: 9.4.3、10.9.0、11.0.0 の文法は、参照 `ref` を、
   引用符のない名前 `\w([-\./\w]*[-\w])?` か文字列として読み、
   これらの文法の字句解析器は、キーワードを大文字小文字を問わず比較します。
@@ -3282,6 +3285,9 @@ class の 7 個の入力も、整形後のテキストと同じ SVG が描かれ
   そのため、引用符で囲んだラベルは、
   引用符を読むどの版も読むこれらの文字からなる場合にだけ、
   引用符なしで印字します。
+  詳しくは
+  [対象にする版の mermaid.js のために残す形](#対象にする版の-mermaidjs-のために残す形)
+  を参照してください。
 - mindmap の形のテキスト: この規則が初めて加わった v9.4.0、v10.1.0 と、
   v10.3.0 から 12.3.0 の文法は、形の中の文字列と、`)`、`]`、`(`、
   `}` を含まないテキストを、同じ `NODE_DESCR` として読み、
@@ -3292,6 +3298,9 @@ class の 7 個の入力も、整形後のテキストと同じ SVG が描かれ
   ノードの名前を引用符で囲む文字列だけとして読み（`name=STRING2`）、
   11.16.0 の文法で引用符のない名前（`BARE_NAME`）が加わりました。
   引用符で囲む名前は、上のテキストのとおり、書かれたまま残します。
+  詳しくは
+  [対象にする版の mermaid.js のために残す形](#対象にする版の-mermaidjs-のために残す形)
+  を参照してください。
 - C4 図の引数: 引数の文脈の字句解析器の規則（`<attribute>[ ]*["]`、
   `<string>[^"]*` と、どちらも `STR` を返す `<attribute>[^,]+`）と、
   アクション `attribute: STR { $$ = $1.trim(); }` は、

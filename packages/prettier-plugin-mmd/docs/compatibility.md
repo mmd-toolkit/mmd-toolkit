@@ -59,7 +59,7 @@ would give is not printed where one of the
 differently. This table lists each such form: the form that stays as written,
 the form that the rules would print, the rule that would give it, the versions
 among the ten that need the kept form, and a fixture. The diagram column links
-to the rules of the diagram type, which name the same versions.
+to the rules of the diagram type, which give the reason of the kept form.
 
 A row is a rule that
 [How the printed form is decided](./printed-form.md#the-versions-of-mermaidjs-that-count)
@@ -75,7 +75,7 @@ takes out when none of the versions that the row names counts any longer.
 | [flowchart](./flowchart.md#direction)                        | `graph LR`                                                                                                    | `flowchart LR`                                     | [3](./printed-form.md#3-a-spelling)                   | 11.7.0, 11.8.1, 11.13.0, 11.14.0, 11.15.0, 11.16.1, 11.17.2 read `graph` and reject `flowchart` where `flowchart.defaultRenderer` is `dagre-d3`                      | [fixture: flowchart/direction/header-keyword-kept]                          |
 | [state](./state.md#header)                                   | `stateDiagram`                                                                                                | `stateDiagram-v2`                                  | [3](./printed-form.md#3-a-spelling)                   | where `state.defaultRenderer` is `dagre-d3`, 10.9.8 draws the two differently, and 11.7.0, 11.8.1, 11.13.0, 11.14.0, 11.15.0, 11.16.1, 11.17.2 reject `stateDiagram` | [fixture: state/header/spellings-kept]                                      |
 | [flowchart, swimlane](./flowchart.md#label-inner-whitespace) | `A[ user@example.com ]`                                                                                       | `A[user@example.com]`                              | [1](./printed-form.md#1-the-whitespace-beside-a-mark) | flowchart: 11.7.0, 11.8.1, 11.13.0, 11.14.0, 11.15.0, 11.16.1, 11.17.2, 12.0.0; swimlane: 11.16.1, 11.17.2, 12.0.0; they reject the tight form                       | [fixture: flowchart/label-inner-whitespace/leading-whitespace-at-sign-kept] |
-| [flowchart, swimlane](./flowchart.md#arrow-spacing)          | `A@{ shape: circle }e1@--> B`                                                                                 | `A@{ shape: circle } e1@--> B`                     | [1](./printed-form.md#1-the-whitespace-beside-a-mark) | flowchart: same eight versions; swimlane: 11.16.1, 11.17.2, 12.0.0; they reject the form with a space                                                                | [fixture: flowchart/arrow-spacing/edge-id-after-data-block-touches]         |
+| [flowchart, swimlane](./flowchart.md#arrow-spacing)          | `A@{ shape: circle }e1@--> B`                                                                                 | `A@{ shape: circle } e1@--> B`                     | [1](./printed-form.md#1-the-whitespace-beside-a-mark) | flowchart: 11.7.0, 11.8.1, 11.13.0, 11.14.0, 11.15.0, 11.16.1, 11.17.2, 12.0.0; swimlane: 11.16.1, 11.17.2, 12.0.0; they reject the form with a space                | [fixture: flowchart/arrow-spacing/edge-id-after-data-block-touches]         |
 | [flowchart](./flowchart.md#whitespace-between-tokens)        | `style A fill:#f00,color:white` printed `style A fill: #f00,color: white`                                     | `style A fill: #f00, color: white`                 | [1](./printed-form.md#1-the-whitespace-beside-a-mark) | 10.9.8 takes the label colour from a style that starts with `color:` or `text-align:`                                                                                | [fixture: flowchart/whitespace-between-tokens/style-color-touching-kept]    |
 | [flowchart](./flowchart.md#whitespace-between-tokens)        | `linkStyle 0 stroke:#f00,color:red` printed `linkStyle 0 stroke: #f00,color: red`                             | `linkStyle 0 stroke: #f00, color: red`             | [1](./printed-form.md#1-the-whitespace-beside-a-mark) | 10.9.8 does the same for the label of a link                                                                                                                         | [fixture: flowchart/whitespace-between-tokens/link-style-label-names-kept]  |
 | [flowchart](./flowchart.md#whitespace-between-tokens)        | `style A stroke-width:3px\ ,stroke:#0f0` printed `style A stroke-width: 3px\ , stroke: #0f0`                  | `style A stroke-width: 3px\, stroke: #0f0`         | [1](./printed-form.md#1-the-whitespace-beside-a-mark) | 10.9.8 joins the styles of a node with `;` as they are                                                                                                               | [fixture: flowchart/whitespace-between-tokens/style-backslash-space-kept]   |
@@ -2986,8 +2986,9 @@ mermaid.js, show which form each version reads:
   of ASCII letters, digits, `_`, `(`, `)`, and `&` that start with a letter and
   have spaces between them; the grammars of 11.15.0 (which adds the `-` to a
   name), 12.0.0, and 12.3.0 read the same words. A name in quotes has the same
-  text as the name without them. 11.14.0 rejects a name with a `-` without
-  quotes, so such a name stays in quotes.
+  text as the name without them. The first of these grammars rejects a name with
+  a `-` without quotes, so such a name stays in quotes (see
+  [Forms kept for versions of mermaid.js that count](#forms-kept-for-versions-of-mermaidjs-that-count)).
 - The branches of a gitGraph: the grammars of 9.4.3, 10.9.0, and 11.0.0 read a
   reference (`ref`) as a name without quotes, `\w([-\./\w]*[-\w])?`, or as a
   string, and the lexers of these grammars compare their keywords in any case;
@@ -3016,7 +3017,8 @@ mermaid.js, show which form each version reads:
   quotes, and the grammars of 11.17.0 to 12.3.0 read a label in quotes or any
   text without `[`, `]`, and a line break. So a label in quotes is printed
   without them only where it is of those characters, which every version that
-  reads the quotes reads.
+  reads the quotes reads (see
+  [Forms kept for versions of mermaid.js that count](#forms-kept-for-versions-of-mermaidjs-that-count)).
 - The texts of the shapes of a mindmap: the grammars of v9.4.0 (the first with
   the rule), v10.1.0, and v10.3.0 to 12.3.0 read a string in a shape and a text
   without `)`, `]`, `(`, and `}` as the same `NODE_DESCR`, with the rule of the
@@ -3027,7 +3029,8 @@ mermaid.js, show which form each version reads:
   diagram type, and of 11.15.0 reads the name of a node as a string in quotes
   only (`name=STRING2`), and the grammar of 11.16.0 added the name without
   quotes (`BARE_NAME`). A name in quotes stays as written, as the text above
-  says.
+  says (see
+  [Forms kept for versions of mermaid.js that count](#forms-kept-for-versions-of-mermaidjs-that-count)).
 - The arguments of a C4 diagram: the lexer rules of the argument context
   (`<attribute>[ ]*["]`, `<string>[^"]*`, and `<attribute>[^,]+`, which both
   return `STR`) and the action `attribute: STR { $$ = $1.trim(); }` are the same

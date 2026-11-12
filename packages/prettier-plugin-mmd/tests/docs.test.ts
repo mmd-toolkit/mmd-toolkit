@@ -2,7 +2,9 @@
  * Keeps the documents in step with the formatting fixtures: each rule of a
  * rules document, `docs/<diagram>.md`, is a fixture folder, and each example
  * in the rules documents and the READMEs is a copy of the fixture file it
- * links to.
+ * links to. It keeps the table of the forms kept for versions of mermaid.js
+ * that count in step with the table of those versions, in
+ * `docs/compatibility.md`.
  */
 import { readdir, readFile, stat } from "node:fs/promises"
 import { fileURLToPath } from "node:url"
@@ -647,6 +649,118 @@ describe("the citations in the documents", async () => {
     "cites a case that exists: %s",
     (citation) => {
       expect(flatTitles.has(flat(citation))).toBe(true)
+    },
+  )
+})
+
+/** The headings of the two tables of `docs/compatibility.md` that name versions. */
+const versionTables = [
+  {
+    document: "docs/compatibility.md",
+    counted: "## Versions of mermaid.js that count",
+    kept: "## Forms kept for versions of mermaid.js that count",
+  },
+  {
+    document: "docs/compatibility.ja.md",
+    counted: "## 対象にする mermaid.js の版",
+    kept: "## 対象にする版の mermaid.js のために残す形",
+  },
+]
+
+/** The columns of the table of the forms kept, and the one that names versions. */
+const KEPT_COLUMNS = 6
+const NEEDED_BY_COLUMN = 4
+
+/** The rows of the table in the section that starts at the heading. */
+function tableRowsOf(lines: readonly string[], heading: string): string[][] {
+  const start = lines.indexOf(heading)
+  expect(start, `no section ${heading}`).not.toBe(-1)
+  const end = lines.findIndex(
+    (line, index) => index > start && line.startsWith("## "),
+  )
+  return (
+    lines
+      .slice(start + 1, end === -1 ? lines.length : end)
+      .filter((line) => line.startsWith("| "))
+      // The first two lines of the table are its head and its rule.
+      .slice(2)
+      .map((line) =>
+        line
+          .slice(1, -1)
+          .split(" | ")
+          .map((cell) => cell.trim()),
+      )
+  )
+}
+
+/** Whether a character is an ASCII digit. */
+function isDigit(character: string | undefined): boolean {
+  return character !== undefined && character >= "0" && character <= "9"
+}
+
+/** The versions written as three numbers with dots, such as `11.7.0`, in a text. */
+function versionsIn(text: string): string[] {
+  const versions: string[] = []
+  let index = 0
+  while (index < text.length) {
+    if (
+      !isDigit(text[index]) ||
+      isDigit(text[index - 1]) ||
+      text[index - 1] === "."
+    ) {
+      index++
+      continue
+    }
+    let end = index
+    while (
+      isDigit(text[end]) ||
+      (text[end] === "." && isDigit(text[end + 1]))
+    ) {
+      end++
+    }
+    const version = text.slice(index, end)
+    if (version.split(".").length === 3) versions.push(version)
+    index = end
+  }
+  return versions
+}
+
+describe("the table of forms kept for versions of mermaid.js that count", () => {
+  it.each(versionTables)(
+    "names only versions that count, in $document",
+    async ({ document, counted, kept }) => {
+      const text = await readFile(new URL(document, packageRoot), "utf8")
+      const lines = text.split("\n")
+      const versions = tableRowsOf(lines, counted).map((cells) => cells[0])
+      expect(
+        versions.length,
+        `${document}: no version that counts`,
+      ).toBeGreaterThan(0)
+      const rows = tableRowsOf(lines, kept)
+      expect(rows.length, `${document}: no row of forms kept`).toBeGreaterThan(
+        0,
+      )
+      for (const cells of rows) {
+        const row = cells[0] ?? ""
+        expect
+          .soft(
+            cells.length,
+            `${document}: the row ${row} has the wrong columns`,
+          )
+          .toBe(KEPT_COLUMNS)
+        const named = versionsIn(cells[NEEDED_BY_COLUMN] ?? "")
+        expect
+          .soft(named.length, `${document}: the row ${row} names no version`)
+          .toBeGreaterThan(0)
+        for (const version of named) {
+          expect
+            .soft(
+              versions,
+              `${document}: the row ${row} names ${version}, which does not count: delete the row, or the name if another version in the row counts`,
+            )
+            .toContain(version)
+        }
+      }
     },
   )
 })
