@@ -245,6 +245,10 @@ its cases with the versions; three of them are:
 - the direction of the header of a flowchart (`TB` and `TD`), which the versions
   before 11.10.0 draw differently.
 
+A rule of this kind names the versions that it is kept for. When the pinned
+version is raised and none of the versions that a rule names counts any longer,
+the rule is taken out, and the form is the one that the rules above give.
+
 The CHANGELOG.md of mermaid.js, or the history of its grammar, shows which
 version added or changed a form.
 
