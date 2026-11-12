@@ -666,6 +666,22 @@ of a block diagram make the style of their label again from their styles with
 spellings were the same for them and for a `classDef`. [fixture:
 block/styles/style-label-styles-kept]
 
+10.9.8 reads the `style` of a flowchart and of a class diagram so too, and the
+nine other versions that count do not. In a flowchart,
+`style A fill:#f00,color:white` and `style A fill: #f00, color: white` were
+drawn with different pixels by 10.9.8 and with the same SVG by the nine others,
+and the same for `text-align:right` on a node with a label of two lines, and for
+`color :red`. In a class diagram the pixels differed for `color` only. So in the
+`style` of a flowchart a style that starts with `color:` or `text-align:` keeps
+whether whitespace stands before it, and a name `color` or `text-align` keeps
+whether whitespace stands between it and the `:`, and in the `style` of a class
+diagram a style that starts with `color:` does. [fixture:
+flowchart/whitespace-between-tokens/style-color-touching-kept] [fixture:
+flowchart/whitespace-between-tokens/style-text-align-touching-kept] [fixture:
+flowchart/whitespace-between-tokens/style-label-name-colon-gap-kept] [fixture:
+class/whitespace-between-tokens/style-color-touching-kept] [fixture:
+class/whitespace-between-tokens/style-label-name-colon-gap-kept]
+
 A run of spaces and tabs between the words of a style is printed as one space in
 flowchart, agentflow, class, state, block, usecase, treemap, ER, and requirement
 diagrams, in a style with a `:` and in one without, and whether whitespace
@@ -774,10 +790,10 @@ presence of whitespace before a style of a link that starts with `stroke:`, and
 the presence of whitespace in the value of a `stroke` of a link that is
 whitespace only, the presence of whitespace after a backslash that ends a style
 that mermaid.js joins as it is, and the presence of whitespace before a style of
-a block that starts with `color:` or `text-align:`, or between such a name and
-the `:`, fails. When the pinned mermaid.js is updated, draw the statements of
-each of these kinds again and compare the SVG and the pixels before the
-exception stays.
+a block or a flowchart that starts with `color:` or `text-align:`, or a class
+that starts with `color:`, or between such a name and the `:`, fails. When the
+pinned mermaid.js is updated, draw the statements of each of these kinds again
+and compare the SVG and the pixels before the exception stays.
 
 ## Texts after a keyword that are drawn the same
 
@@ -3534,6 +3550,28 @@ Such a message keeps its arrow touching on both sides. [fixture:
 sequence/arrow-spacing/touching-before-read-otherwise-kept] See
 [Arrow spacing](./sequence.md#arrow-spacing).
 
+## Sequence messages with a central connection
+
+The whitespace beside the `()` of a sequence message (`A () ->> () B`) stays as
+written, touching or one space. 10.9.8, 11.7.0, and 11.8.1 have no central
+connection and read the `()` as part of the name next to it, so `A ()` and `A()`
+are two names, and `A ->> () x` and `A ->> ()x` are two targets. The texts with
+and without the whitespace beside a `()` (`A () ->> B` and `A() ->> B`,
+`A ->> () x` and `A ->> ()x`, and the same with a directive beside the `()`)
+were drawn with the ten versions that count: the three versions drew them
+differently, and the seven from 11.13.0 the same. The `+` and `-` of an
+activation are not among them: the texts with and without the whitespace beside
+them were drawn the same by all ten versions. [fixture:
+sequence/arrow-spacing/parentheses-touching] [fixture:
+sequence/arrow-spacing/touching-beside-directive] [fixture:
+sequence/arrow-spacing/touching-between-semicolons] [fixture:
+sequence/arrow-spacing/touching-after-blank-lines] [fixture:
+sequence/arrow-spacing/touching-over-line-breaks-joined] [fixture:
+sequence/arrow-spacing/touching-with-comment-line-kept] [fixture:
+sequence/arrow-spacing/minus-before-arrow-like-target-spaced] [corpus fixture:
+sequence/spec-sequence-diagram-c8d8bf08] See
+[Arrow spacing](./sequence.md#arrow-spacing).
+
 ## Sequence statements over several lines
 
 In a sequence diagram, a statement continues on the next line when whitespace
@@ -5165,18 +5203,22 @@ treemap/style-gaps/css-directive-tabs] [fixture:
 treemap/style-gaps/css-comment-semicolon-kept] Protected semicolon row
 boundaries keep the body as written.
 
-A `title`, `accTitle`, or `accDescr` statement, a line or a block, that starts
-its line stays at the start of its line. Of the versions that count (see
-[Versions of mermaid.js that count](#versions-of-mermaidjs-that-count)), 10.9.8
-and 11.7.0 have no treemap diagram, 11.8.1 rejects these statements when they
-are indented and reads them at the start of their line, and the seven versions
-from 11.13.0 read both. The two texts of a title, an `accTitle`, an `accDescr`
-line, an `accDescr` block, and a title after the rows, one with the statement at
-the start of its line and one with it a step in, were drawn with the seven
-versions from 11.13.0 and gave identical SVGs; 11.8.1 rejects the indented text.
-So a statement that starts its line is not moved, and one that is indented in
-the source is printed a step in, like the other statements, since 11.8.1 rejects
-it as written too. [fixture: treemap/title/line-start-kept] [fixture:
+A `title`, `accTitle`, or `accDescr` statement, a line or a block, that was not
+written indented is printed at the start of its line. Of the versions that count
+(see [Versions of mermaid.js that count](#versions-of-mermaidjs-that-count)),
+10.9.8 and 11.7.0 have no treemap diagram, 11.8.1 rejects these statements when
+they are indented and reads them at the start of their line and after the header
+on its line (`treemaptitle T`, but not `treemap title T`), and the seven
+versions from 11.13.0 read all of these. The two texts of a title, an
+`accTitle`, an `accDescr` line, an `accDescr` block, and a title after the rows,
+one with the statement at the start of its line and one with it a step in, were
+drawn with the seven versions from 11.13.0 and gave identical SVGs; 11.8.1
+rejects the indented text. The text `treemaptitle T` and the text with `title T`
+on a line of its own were drawn the same by the eight versions from 11.8.1. So a
+statement that starts its line is not moved, one that follows the header goes to
+the start of the next line, and one that is indented in the source is printed a
+step in, like the other statements, since 11.8.1 rejects it as written too.
+[fixture: treemap/title/line-start-kept] [fixture:
 treemap/title/line-start-after-row-kept] [fixture:
 treemap/title/line-start-tab-rows-kept] [fixture:
 treemap/title/line-start-comment-aligned] [fixture:
@@ -5186,7 +5228,10 @@ treemap/accessibility-lines/description-line-start-kept] [fixture:
 treemap/accessibility-lines/title-indented-at-body-step] [fixture:
 treemap/accessibility-lines/description-indented-at-body-step] [fixture:
 treemap/description-blocks/line-start-kept] [fixture:
-treemap/description-blocks/indented-at-body-step]
+treemap/description-blocks/indented-at-body-step] [fixture:
+treemap/header/common] [fixture: treemap/title/after-header-spaced-line-start]
+[fixture: treemap/accessibility-lines/title-glued-after-header] [fixture:
+treemap/description-blocks/spaced-after-header-line-start]
 
 [fixture: treemap/indentation/leaf-closes] [fixture:
 treemap/indentation/common-and-class] [fixture: treemap/indentation/zero]

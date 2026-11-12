@@ -726,6 +726,20 @@ mermaid.js はリンクのスタイルから `stroke:` を探し、
 [fixture: whitespace-between-tokens/class-def-stroke-before-colon-kept]
 `style` はノードに適用され、1 つの形で印字します。
 [fixture: whitespace-between-tokens/style-stroke-before-colon-spaced]
+`style` は、`color:` か `text-align:` で始まるスタイルの前の空白の有無と、
+その名前と `:` の間の空白の有無を、書かれたまま残します。
+空白の連続は空白 1 つにします。
+10.9.8 が、そう始まるスタイルをノードのラベルのスタイルに入れるためです。
+`style A fill:#f00,color:white` は `style A fill: #f00,color: white` と印字し、
+`style A fill:#f00 ,   color:white` は `style A fill: #f00, color: white`
+と印字します。
+詳しくは [同じに描かれるスタイル](./compatibility.ja.md#同じに描かれるスタイル)
+を参照してください。
+[fixture: whitespace-between-tokens/style-color-touching-kept]
+[fixture: whitespace-between-tokens/style-color-spaced]
+[fixture: whitespace-between-tokens/style-color-first]
+[fixture: whitespace-between-tokens/style-text-align-touching-kept]
+[fixture: whitespace-between-tokens/style-label-name-colon-gap-kept]
 `style` のスタイルの末尾のバックスラッシュの後の空白は読まれません。
 `style A stroke-width:3px\ ,stroke:#0f0` は、
 `style A stroke-width: 3px\, stroke: #0f0` と印字します。
@@ -2750,7 +2764,7 @@ linkStyle default stroke:#ABCDEF
 flowchart LR
   A --> B
   C:::c
-  style A fill: #f9f, stroke: #abcdef, color: #c0ffee
+  style A fill: #f9f, stroke: #abcdef,color: #c0ffee
   style B fill: #abcd, stroke: #abcdef12
   classDef c fill: #deadbe, stroke: #abcdef
   linkStyle 0 stroke: #ff0000, color: #00ff00

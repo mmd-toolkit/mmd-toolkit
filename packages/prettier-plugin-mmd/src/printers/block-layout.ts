@@ -468,7 +468,8 @@ function addStyledStatementRules(
   if (printsStyles) {
     normalizeStyleList(source, atoms, statement, {
       joinsStyles,
-      splitsLabelStyles: statement.type === "BlockStyleStatement",
+      labelStyleNames:
+        statement.type === "BlockStyleStatement" ? ["color", "text-align"] : [],
       collapsesWordGaps: true,
     })
   }

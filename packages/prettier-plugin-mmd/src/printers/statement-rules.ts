@@ -242,10 +242,14 @@ export interface StyleListUse {
    */
   readonly joinsStyles?: boolean
   /**
-   * The statement is a `style` of a block diagram: mermaid.js sorts its styles
-   * into those of the label and those of the shape by how they start.
+   * The names of the styles that mermaid.js puts in the style of the label of
+   * a node by how they start: `color` and `text-align` in the `style` of a
+   * block diagram and of a flowchart, `color` in that of a class diagram (see
+   * below). A style that starts with one of them keeps whether whitespace
+   * stands before it, and whether whitespace stands between the name and the
+   * `:`.
    */
-  readonly splitsLabelStyles?: boolean
+  readonly labelStyleNames?: readonly string[]
   /** The styles can reach a link: a `linkStyle`, a `classDef`. */
   readonly keepsGapAfterStroke?: boolean
   /**
@@ -312,13 +316,16 @@ export interface StyleListUse {
  *   its value, which reaches up to the `,` after it. The gap after that `,`
  *   follows the rules above.
  *
- * `splitsLabelStyles` is set for the `style` of a block diagram. mermaid.js
- * puts a style that starts with `color:` or `text-align:` in the style of the
- * label of a node and every other style in the style of its shape, and a block
- * arrow takes the style of its label as it is. A style that starts with
- * whitespace, or has whitespace between its name and the `:`, does not start
- * so. So such a style keeps whether whitespace stands before it, and between
- * `color` or `text-align` and the `:`, a run of whitespace becoming one space.
+ * `labelStyleNames` is set for the `style` of a block diagram, of a flowchart,
+ * and of a class diagram. mermaid.js puts a style that starts with `color:` or
+ * `text-align:` in the style of the label of a node and every other style in
+ * the style of its shape (a block arrow takes the style of its label as it
+ * is), in a block diagram, and, in 10.9.8, in a flowchart (both names) and in a
+ * class diagram (`color`). A style that starts with whitespace, or has
+ * whitespace between its name and the `:`, does not start so. So such a style
+ * keeps whether whitespace stands before it, and between the name and the `:`,
+ * a run of whitespace becoming one space (docs/compatibility.md, Styles that
+ * are drawn the same).
  *
  * `joinsStyles` is set for the statements whose styles mermaid.js joins with
  * `;` into one CSS text without taking their whitespace away: a `linkStyle`
@@ -356,7 +363,7 @@ export function normalizeStyleList(
     keepsSpaceBeforeFill = false,
     isLinkStyle = false,
     joinsStyles = false,
-    splitsLabelStyles = false,
+    labelStyleNames = [],
     keepsGapAfterStroke = false,
     escapesComma = false,
     collapsesWordGaps = false,
@@ -403,7 +410,7 @@ export function normalizeStyleList(
     if (!keepsValue) {
       addColonEdit(source, core, edits, {
         keepsGapAfterStroke,
-        keepsGapAfterLabelName: splitsLabelStyles,
+        labelStyleNames,
       })
       if (collapsesWordGaps) addWordGapEdits(source, core, edits)
     }
@@ -422,9 +429,9 @@ export function normalizeStyleList(
         core[0] === start &&
         ((keepsSpaceBeforeFill && source.text.startsWith("fill", core[0])) ||
           (isLinkStyle && source.text.startsWith("stroke:", core[0])) ||
-          (splitsLabelStyles &&
-            (source.text.startsWith("color:", core[0]) ||
-              source.text.startsWith("text-align:", core[0]))))
+          labelStyleNames.some((name) =>
+            source.text.startsWith(`${name}:`, core[0]),
+          ))
       edits.push(
         { range: [previousEnd, start - 1], replacement: "" },
         { range: [start, core[0]], replacement: touchesWord ? "" : " " },
@@ -819,10 +826,10 @@ export function addColonEdit(
   edits: TextEdit[],
   {
     keepsGapAfterStroke = false,
-    keepsGapAfterLabelName = false,
+    labelStyleNames = [],
   }: {
     readonly keepsGapAfterStroke?: boolean
-    readonly keepsGapAfterLabelName?: boolean
+    readonly labelStyleNames?: readonly string[]
   } = {},
 ): void {
   const gap = findColonGap(source.text, start, end)
@@ -832,7 +839,7 @@ export function addColonEdit(
   const spaceBeforeColon =
     nameEnd < colon &&
     ((keepsGapAfterStroke && name.endsWith("stroke")) ||
-      (keepsGapAfterLabelName && (name === "color" || name === "text-align")))
+      labelStyleNames.includes(name))
   edits.push({
     range: [nameEnd, valueStart],
     replacement: `${spaceBeforeColon ? " " : ""}:${valueStart < end ? " " : ""}`,

@@ -725,6 +725,23 @@ block 図のほかの形は、スタイルから `styles2String` で、
 これらの形でも `classDef` でも、両方の書き方の画素は同じでした。
 [fixture: block/styles/style-label-styles-kept]
 
+10.9.8 は flowchart と class 図の `style` も同じように読み、
+対象にするほかの 9 つの版は読みません。
+flowchart の `style A fill:#f00,color:white` と
+`style A fill: #f00, color: white` は、10.9.8 では画素が異なり、
+ほかの 9 つの版では SVG が同一でした。
+2 行のラベルを持つノードの `text-align:right` と、`color :red` も同じです。
+class 図で画素が異なったのは `color` だけです。
+そのため、flowchart の `style` では、
+`color:` か `text-align:` で始まるスタイルは、前に空白があるかないかを保ち、
+名前 `color` か `text-align` は、`:` との間に空白があるかないかを保ちます。
+class 図の `style` では、`color:` で始まるスタイルに同じことをします。
+[fixture: flowchart/whitespace-between-tokens/style-color-touching-kept]
+[fixture: flowchart/whitespace-between-tokens/style-text-align-touching-kept]
+[fixture: flowchart/whitespace-between-tokens/style-label-name-colon-gap-kept]
+[fixture: class/whitespace-between-tokens/style-color-touching-kept]
+[fixture: class/whitespace-between-tokens/style-label-name-colon-gap-kept]
+
 flowchart、agentflow、class、state、block、usecase、treemap、ER、
 requirement の図では、`:` のあるスタイルでも、ないスタイルでも、
 語と語の間の空白とタブの連続を空白 1 つで印字し、
@@ -847,7 +864,8 @@ state、block の図で描きました。
 リンクの `stroke` の空白だけの値の中の空白の有無、
 mermaid.js が書かれたままつなぐスタイルの末尾で、
 バックスラッシュの後に空白があるかないか、
-`color:` か `text-align:` で始まる block のスタイルの前や、
+`color:` か `text-align:` で始まる block と flowchart のスタイル、
+`color:` で始まる class のスタイルの前や、
 その名前と `:` の間の空白の有無も含めて、失敗とします。
 固定している mermaid.js の版を上げるときは、これらの種類の文を描き直し、
 SVG と画素を比べてから、例外を残します。
@@ -3817,6 +3835,29 @@ sequence のメッセージは、矢印の両側に空白を 1 つずつ置き�
 [fixture: sequence/arrow-spacing/touching-before-read-otherwise-kept]
 [矢印の前後の空白](./sequence.ja.md#矢印の前後の空白)を参照してください。
 
+## central 接続のある sequence のメッセージ
+
+sequence のメッセージの `()`（`A () ->> () B`）の前後の空白は、
+接していれば接したまま、空いていれば空白 1 つで、書かれたままにします。
+10.9.8、11.7.0、11.8.1 には central 接続がなく、
+`()` を隣の名前の一部として読むので、`A ()` と `A()` は別の名前、
+`A ->> () x` と `A ->> ()x` は別の宛先です。
+`()` の前後の空白の有無だけが違うテキスト（`A () ->> B` と `A() ->> B`、
+`A ->> () x` と `A ->> ()x`、`()` の隣にディレクティブがある同じ形）を、
+数える 10 の版で描くと、3 つの版は異なって描き、
+11.13.0 からの 7 つの版は同じに描きました。
+有効化の `+` と `-` は対象外で、
+その前後の空白の有無は 10 の版すべてで同じに描かれました。
+[fixture: sequence/arrow-spacing/parentheses-touching]
+[fixture: sequence/arrow-spacing/touching-beside-directive]
+[fixture: sequence/arrow-spacing/touching-between-semicolons]
+[fixture: sequence/arrow-spacing/touching-after-blank-lines]
+[fixture: sequence/arrow-spacing/touching-over-line-breaks-joined]
+[fixture: sequence/arrow-spacing/touching-with-comment-line-kept]
+[fixture: sequence/arrow-spacing/minus-before-arrow-like-target-spaced]
+[corpus fixture: sequence/spec-sequence-diagram-c8d8bf08]
+[矢印の前後の空白](./sequence.ja.md#矢印の前後の空白)を参照してください。
+
 ## 複数行の sequence の文
 
 sequence 図では、改行の前に空白があると、文は次の行に続きます。
@@ -5587,19 +5628,23 @@ class のスタイル区切りの独立した trivia とスタイルの継続行
 [fixture: treemap/style-gaps/css-comment-semicolon-kept]
 semicolon が保護する行の境界は、本文の原文を保ちます。
 
-行頭から始まる `title`、`accTitle`、
-`accDescr` の文（1 行のものもブロックも）は、行頭に置いたままにします。
+字下げして書かれていない `title`、`accTitle`、
+`accDescr` の文（1 行のものもブロックも）は、行頭に置いて印字します。
 数える版のうち、10.9.8 と 11.7.0 には treemap がなく、
-11.8.1 は字下げされたこれらの文を拒否して行頭のものを読み、
-11.13.0 からの 7 つの版は両方を読みます。
+11.8.1 は字下げされたこれらの文を拒否して、
+行頭のものとヘッダーと同じ行に続くもの（`treemaptitle T`。
+`treemap title T` は拒否）を読み、
+11.13.0 からの 7 つの版はこれらをすべて読みます。
 数える版は [対象にする mermaid.js の版](#対象にする-mermaidjs-の版) に定めます。
 title、`accTitle`、`accDescr` の 1 行、`accDescr` のブロック、
 行の後の title について、文が行頭にある文と 1 段深い文の 2 つを、
 11.13.0 からの 7 つの版で描くと、SVG は同一でした。
 11.8.1 は字下げした文を拒否します。
-そのため、行頭から始まる文は動かさず、書かれた時点で字下げされた文は、
-11.8.1 が書かれたままでも拒否するので、ほかの文と同じく 1 段深く印字します。
-[fixture: treemap/title/line-start-kept]
+`treemaptitle T` と、title を単独の行に置いたテキストは、
+11.8.1 からの 8 つの版で同じに描かれました。
+そのため、行頭から始まる文は動かさず、ヘッダーに続く文は次の行の行頭に移し、
+書かれた時点で字下げされた文は、11.8.1 が書かれたままでも拒否するので、
+ほかの文と同じく 1 段深く印字します。 [fixture: treemap/title/line-start-kept]
 [fixture: treemap/title/line-start-after-row-kept]
 [fixture: treemap/title/line-start-tab-rows-kept]
 [fixture: treemap/title/line-start-comment-aligned]
@@ -5610,6 +5655,10 @@ title、`accTitle`、`accDescr` の 1 行、`accDescr` のブロック、
 [fixture: treemap/accessibility-lines/description-indented-at-body-step]
 [fixture: treemap/description-blocks/line-start-kept]
 [fixture: treemap/description-blocks/indented-at-body-step]
+[fixture: treemap/header/common]
+[fixture: treemap/title/after-header-spaced-line-start]
+[fixture: treemap/accessibility-lines/title-glued-after-header]
+[fixture: treemap/description-blocks/spaced-after-header-line-start]
 
 [fixture: treemap/indentation/leaf-closes]
 [fixture: treemap/indentation/common-and-class]

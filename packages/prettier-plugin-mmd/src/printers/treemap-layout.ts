@@ -52,21 +52,30 @@ export interface TreemapLine {
 
 /**
  * The depth at which a line is printed. A title or an accessibility statement
- * that starts its line stays at the start of its line: 11.8.1, the first
- * version with the diagram, rejects such a statement when it is indented, and
- * accepts it at the start of its line, so the printer does not indent it
- * (docs/treemap.md, Title). Every other line is printed at its own depth.
+ * is printed at the start of its line, unless it was written indented:
+ * 11.8.1, the first version with the diagram, rejects such a statement when it
+ * is indented, and accepts it at the start of its line and after the header on
+ * the line of the header (`treemaptitle T`), so the printer does not indent
+ * what was not written indented (docs/treemap.md, Title). Every other line is
+ * printed at its own depth.
  */
 export function treemapPrintedDepth(source: Source, line: TreemapLine): number {
   const statement = line.statements[0]
-  const keepsLineStart =
-    line.leading === null &&
-    (statement.type === "TreemapTitleStatement" ||
-      statement.type === "TreemapAccTitleStatement" ||
-      statement.type === "TreemapAccDescrStatement" ||
-      statement.type === "TreemapAccDescrBlockStatement") &&
-    lineStartOf(source, statement.range[0]) === statement.range[0]
-  return keepsLineStart ? 0 : line.depth
+  if (
+    line.leading !== null ||
+    (statement.type !== "TreemapTitleStatement" &&
+      statement.type !== "TreemapAccTitleStatement" &&
+      statement.type !== "TreemapAccDescrStatement" &&
+      statement.type !== "TreemapAccDescrBlockStatement")
+  ) {
+    return line.depth
+  }
+  const before = source.text.slice(
+    lineStartOf(source, statement.range[0]),
+    statement.range[0],
+  )
+  const writtenIndented = before !== "" && [...before].every(isWhitespace)
+  return writtenIndented ? line.depth : 0
 }
 
 /** Own row syntax in source order, always including the required name. */

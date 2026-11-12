@@ -565,8 +565,8 @@ function addWrapRules(node: Node, rules: Map<number, GapRule>): void {
  * after it, before the `+`, `-`, or `()` that may follow it, or before the
  * target; none on either side when the source is an id that a following
  * space would make another unit (see `isReadOtherwiseBeforeWhitespace`).
- * The `()` of the source touches the source, and the `+`, `-`, or `()`
- * before the target touches the target (docs/sequence.md, Arrow spacing).
+ * The `+` or `-` before the target touches the target, and the whitespace
+ * beside a `()` stays as written (docs/sequence.md, Arrow spacing).
  * The arrow is printed from its token, whose range is the range of the
  * arrow node.
  */
@@ -589,16 +589,9 @@ function addArrowRules(
       : "space"
   rules.set(arrow.range[0], rule)
   rules.set(next.range[0], rule)
-  if (statement.fromCentralConnection) {
-    rules.set(
-      expectToken(
-        findStructuralToken(source, statement.from.range[1]),
-        "the `()` after the source of a message",
-      ).range[0],
-      "none",
-    )
-  }
-  if (statement.activation !== null || statement.toCentralConnection) {
+  // The whitespace beside a `()` stays as written: 10.9.8, 11.7.0, and 11.8.1
+  // have no central connection and read `()` as part of a name.
+  if (statement.activation !== null) {
     // The `-` of an activation and the first characters of the target would
     // read as an arrow (see `isReadAsArrowAfterMinus`).
     rules.set(

@@ -393,6 +393,8 @@ export function layoutClassStatement(
     }
     normalizeStyleList(source, atoms, statement, {
       joinsStyles,
+      labelStyleNames:
+        statement.type === "ClassStyleStatement" ? ["color"] : [],
       collapsesWordGaps: true,
     })
   }

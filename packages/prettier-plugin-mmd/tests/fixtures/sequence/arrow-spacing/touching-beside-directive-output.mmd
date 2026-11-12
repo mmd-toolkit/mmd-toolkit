@@ -3,10 +3,10 @@ sequenceDiagram
   A ->> +%%{init: {}}%%B: b
   B ->> %%{init: {}}%%-A: c
   B ->> -%%{init: {}}%%A: d
-  A() %%{init: {}}%%->> B: e
-  A%%{init: {}}%%() ->> B: f
-  A ->> ()%%{init: {}}%%B: g
-  A ->> ()%%{init: {}}%%B: h
+  A () %%{init: {}}%%->> B: e
+  A %%{init: {}}%%() ->> B: f
+  A ->> () %%{init: {}}%%B: g
+  A ->> () %%{init: {}}%%B: h
   Note over A%%{init: {}}%%, B: i
   Note over A, %%{init: {}}%%B: j
   Note over A%%{init: {}}%%, %%{init: {}}%%B: k

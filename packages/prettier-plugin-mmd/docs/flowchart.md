@@ -699,7 +699,19 @@ styles of a link to colour its arrowheads. [fixture:
 whitespace-between-tokens/link-style-stroke-before-colon-kept] [fixture:
 whitespace-between-tokens/class-def-stroke-before-colon-kept] A `style` styles a
 node, and uses the one form. [fixture:
-whitespace-between-tokens/style-stroke-before-colon-spaced] A space after a
+whitespace-between-tokens/style-stroke-before-colon-spaced] A `style` keeps
+whether whitespace stands before a style that starts with `color:` or
+`text-align:`, and between such a name and the `:`, a run of whitespace becoming
+one space, since 10.9.8 puts a style that starts so in the style of the label of
+the node: `style A fill:#f00,color:white` is printed
+`style A fill: #f00,color: white`, and `style A fill:#f00 ,   color:white` is
+printed `style A fill: #f00, color: white` (see
+[Styles that are drawn the same](./compatibility.md#styles-that-are-drawn-the-same)).
+[fixture: whitespace-between-tokens/style-color-touching-kept] [fixture:
+whitespace-between-tokens/style-color-spaced] [fixture:
+whitespace-between-tokens/style-color-first] [fixture:
+whitespace-between-tokens/style-text-align-touching-kept] [fixture:
+whitespace-between-tokens/style-label-name-colon-gap-kept] A space after a
 backslash that ends a style of a `style` is read as nothing:
 `style A stroke-width:3px\ ,stroke:#0f0` is printed
 `style A stroke-width: 3px\, stroke: #0f0`. [fixture:
@@ -2613,7 +2625,7 @@ Output
 flowchart LR
   A --> B
   C:::c
-  style A fill: #f9f, stroke: #abcdef, color: #c0ffee
+  style A fill: #f9f, stroke: #abcdef,color: #c0ffee
   style B fill: #abcd, stroke: #abcdef12
   classDef c fill: #deadbe, stroke: #abcdef
   linkStyle 0 stroke: #ff0000, color: #00ff00

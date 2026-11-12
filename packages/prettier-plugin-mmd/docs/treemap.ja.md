@@ -48,7 +48,8 @@ statementsBefore の common 文と classDef は原文の位置を保ち、
 普通の根は設定の 1 段、子は親より 1 段深く置きます。
 common 文と classDef は本文の 1 段に置きます。
 同じ読みを持つ幅から、一貫した深さを選ぶためです。
-行頭から始まる title とアクセシビリティの文だけは、行頭に置いたままにします。
+字下げして書かれていない title とアクセシビリティの文だけは、
+行頭に置いて印字します。
 詳しくは [Title](#title) を参照してください。
 tabWidth 0 でも、字下げが親子を決めるので 1 段 1 文字以上にします。
 style と終端のない classDef に行が接する場合は接触を保ち、
@@ -622,7 +623,10 @@ trivia を持つ値は書かれた境界を保ちます。
 空の title の次のコメント行は次の文にそろえ、title の値にはしません。
 [fixture: treemap/title/empty-next-comment]
 
-行頭から始まる title は行頭に置いたままにし、その下の行は 1 段深いままにします。
+字下げして書かれていない title は行頭に置いて印字し、
+その下の行は 1 段深いままにします。
+行頭から始まる title はそのまま行頭に置き、
+ヘッダーと同じ行に続く title（`treemaptitle T`）は次の行の行頭に移します。
 treemap を持つ最初の版 11.8.1 は、字下げされた title、`accTitle`、
 `accDescr` を拒否します。
 それ以降の版は、行頭の同じ文も 1 段深い同じ文も受け付け、同じに描きます。
@@ -632,7 +636,8 @@ treemap を持つ最初の版 11.8.1 は、字下げされた title、`accTitle`
 を参照してください。
 その title の前のコメント行は title にそろえます。
 書かれた時点で字下げされた title は、11.8.1 が書かれたままでも拒否するので、
-ほかの文と同じく 1 段深く印字します。
+ほかの文と同じく 1 段深く印字します。 [fixture: treemap/header/common]
+[fixture: treemap/title/after-header-spaced-line-start]
 
 [fixture: treemap/title/padding]
 
@@ -679,7 +684,8 @@ trivia の境界を保ち、次行の値を連結しません。
 [fixture: accessibility-lines/acc-directives-end-blanks-dropped]
 
 `accTitle` と `accDescr` の文は title と同じ位置に置きます。
-行頭から始まるときは行頭に置いたままにし、そうでなければ 1 段深く印字します。
+字下げして書かれていなければ行頭に置いて印字し、
+字下げして書かれていれば 1 段深く印字します。
 詳しくは [Title](#title) を参照してください。
 
 [fixture: treemap/accessibility-lines/title-padding]
@@ -699,6 +705,8 @@ trivia の境界を保ち、次行の値を連結しません。
 [fixture: treemap/accessibility-lines/title-indented-at-body-step]
 
 [fixture: treemap/accessibility-lines/description-indented-at-body-step]
+
+[fixture: treemap/accessibility-lines/title-glued-after-header]
 
 [fixture: treemap/accessibility-lines/trivia]
 
@@ -730,7 +738,8 @@ Mermaid が説明から LF 後の字下げを除くためです。
 本文も設定の字下げを使い、タブと幅 0 の正の最小段幅も同じです。
 別行の opener と closer は文の列にそろえます。
 最初の `}` がブロックを閉じます。
-行頭から始まるブロックは行頭に置いたままにし、本文はその 1 段内側に置きます。
+字下げして書かれていないブロックは行頭に置いて印字し、
+本文はその 1 段内側に置きます。
 詳しくは [Title](#title) を参照してください。
 
 [fixture: treemap/description-blocks/empty]
@@ -760,6 +769,8 @@ Mermaid が説明から LF 後の字下げを除くためです。
 [fixture: treemap/description-blocks/line-start-kept]
 
 [fixture: treemap/description-blocks/indented-at-body-step]
+
+[fixture: treemap/description-blocks/spaced-after-header-line-start]
 
 [corpus fixture: treemap/common-block-first-close]
 

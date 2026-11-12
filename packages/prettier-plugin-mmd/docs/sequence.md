@@ -630,30 +630,30 @@ sequenceDiagram
 
 A message has one space before and after its arrow, as a flowchart link does:
 `Alice->>Bob: hi` becomes `Alice ->> Bob: hi`. [fixture: arrow-spacing/spaced]
-The `+`, `-`, or `()` after the arrow touches the target, and the `()` before
-the arrow touches the source: `A ->> + B` is printed `A ->> +B`, and
-`A () ->> () B` is printed `A() ->> ()B`. [fixture:
-arrow-spacing/plus-and-minus-touching] [fixture:
-arrow-spacing/parentheses-touching] mermaid.js reads the spellings with and
-without the whitespace as the same message, except for a `-` before a target
-that would read as an arrow with it (below), so nothing else forces the form.
-The printer already gives `A->>+B` the form `A ->> +B`, and ten of the twelve
-messages with a `+` or `-` in the documentation of mermaid.js write the sign
-touching the target (`->>+John`, `-->>-Alice`;
+The `+` or `-` after the arrow touches the target: `A ->> + B` is printed
+`A ->> +B`. [fixture: arrow-spacing/plus-and-minus-touching] The whitespace
+beside a `()` stays as written, touching or one space: `A () ->> () B` is
+printed as it is, and `A()->>()B` is printed `A() ->> ()B`, since 10.9.8,
+11.7.0, and 11.8.1 read the `()` as part of the name next to it (see
+[Sequence messages with a central connection](./compatibility.md#sequence-messages-with-a-central-connection)).
+[fixture: arrow-spacing/parentheses-touching] mermaid.js reads the spellings of
+a `+` or `-` with and without the whitespace as the same message, except for a
+`-` before a target that would read as an arrow with it (below), so nothing else
+forces the form. The printer already gives `A->>+B` the form `A ->> +B`, and ten
+of the twelve messages with a `+` or `-` in the documentation of mermaid.js
+write the sign touching the target (`->>+John`, `-->>-Alice`;
 [the activation examples](https://github.com/mermaid-js/mermaid/blob/2086904e76c692331e34a45d7cc3bc30860d040e/packages/mermaid/src/docs/syntax/sequenceDiagram.md#L413-L424)
 and
 [the nested ones](https://github.com/mermaid-js/mermaid/blob/2086904e76c692331e34a45d7cc3bc30860d040e/packages/mermaid/src/docs/syntax/sequenceDiagram.md#L664-L669)).
 The other two write the sign touching the arrow, `->>+ John`
 ([here](https://github.com/mermaid-js/mermaid/blob/2086904e76c692331e34a45d7cc3bc30860d040e/packages/mermaid/src/docs/syntax/sequenceDiagram.md#L671-L672)),
-and are printed with the sign on the target as well. Its three messages with
-`()` write it touching its id
-([central connections](https://github.com/mermaid-js/mermaid/blob/2086904e76c692331e34a45d7cc3bc30860d040e/packages/mermaid/src/docs/syntax/sequenceDiagram.md#L392-L394)).
-The whitespace is dropped only where a gap holds nothing but whitespace. A
-directive in the gap is placed as under [Directives](#directives):
-`A%%{init: {}}%%->>B: v` is printed `A %%{init: {}}%%->> B: v`, and
-`A ->> +%%{init: {}}%% B: v` is printed `A ->> +%%{init: {}}%%B: v`, since the
-`+` touches the target. [fixture: arrow-spacing/directive-beside-arrow]
-[fixture: arrow-spacing/directive-beside-arrow-runs] [fixture:
+and are printed with the sign on the target as well. The whitespace is dropped
+only where a gap holds nothing but whitespace. A directive in the gap is placed
+as under [Directives](#directives): `A%%{init: {}}%%->>B: v` is printed
+`A %%{init: {}}%%->> B: v`, and `A ->> +%%{init: {}}%% B: v` is printed
+`A ->> +%%{init: {}}%%B: v`, since the `+` touches the target. [fixture:
+arrow-spacing/directive-beside-arrow] [fixture:
+arrow-spacing/directive-beside-arrow-runs] [fixture:
 arrow-spacing/touching-beside-directive] A line break in the gap is joined as in
 [Multi-line statements](#multi-line-statements), and the whitespace goes with
 it; a comment line keeps the lines. [fixture:

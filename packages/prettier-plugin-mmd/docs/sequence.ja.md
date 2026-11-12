@@ -655,11 +655,18 @@ sequenceDiagram
 メッセージの矢印の前後には、flowchart の辺と同じく、空白を 1 つずつ置きます。
 `Alice->>Bob: hi` は `Alice ->> Bob: hi` になります。
 [fixture: arrow-spacing/spaced]
-矢印の後の `+`、`-`、`()` は宛先に接し、矢印の前の `()` は送り元に接します。
-`A ->> + B` は `A ->> +B` に、`A () ->> () B` は `A() ->> ()B` になります。
+矢印の後の `+` と `-` は宛先に接します。
+`A ->> + B` は `A ->> +B` になります。
 [fixture: arrow-spacing/plus-and-minus-touching]
-[fixture: arrow-spacing/parentheses-touching]
-空白があってもなくても、mermaid.js は同じメッセージとして読みます。
+`()` の前後の空白は、接していれば接したまま、空いていれば空白 1 つで、
+書かれたままにします。
+`A () ->> () B` はそのまま、`A()->>()B` は `A() ->> ()B` と印字します。
+10.9.8、11.7.0、11.8.1 は、`()` を隣の名前の一部として読むためです。
+詳しくは
+[中央接続のある sequence のメッセージ](./compatibility.ja.md#central-接続のある-sequence-のメッセージ)
+を参照してください。 [fixture: arrow-spacing/parentheses-touching]
+`+` と `-` は、空白があってもなくても、
+mermaid.js は同じメッセージとして読みます。
 例外は、矢印として読まれる始まりの宛先の前の `-` だけです（下記）。
 ほかにこの形を強いる条件はありません。
 整形は `A->>+B` をすでに `A ->> +B` にしています。
@@ -672,10 +679,6 @@ mermaid.js の文書で `+` か `-` のあるメッセージ 12 件のうち、
 これも記号が宛先に接する形に整形します。
 その 2 件は
 [ここ](https://github.com/mermaid-js/mermaid/blob/2086904e76c692331e34a45d7cc3bc30860d040e/packages/mermaid/src/docs/syntax/sequenceDiagram.md#L671-L672)
-にあります。
-`()` のあるメッセージ 3 件は、`()` が id に接しています。
-その 3 件は
-[中央接続の例](https://github.com/mermaid-js/mermaid/blob/2086904e76c692331e34a45d7cc3bc30860d040e/packages/mermaid/src/docs/syntax/sequenceDiagram.md#L392-L394)
 にあります。
 空白を削るのは、隙間が空白だけでできているときに限ります。
 隙間のディレクティブは、[ディレクティブ](#ディレクティブ)のとおりに置きます。

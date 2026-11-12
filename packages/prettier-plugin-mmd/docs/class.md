@@ -350,10 +350,19 @@ a directive between its words keeps them as written. [fixture:
 whitespace-between-tokens/style-words-directive-kept] A backslash does not
 escape a `,` here: `fill:a\,b ,stroke:c` is printed `fill: a\, b, stroke: c`.
 [fixture: whitespace-between-tokens/style-backslash-before-comma] A `style`
-whose last style ends with a backslash keeps whether whitespace stands after it,
-a run of whitespace becoming its first character, also at the end of the
-statement, since mermaid.js joins the styles of a class with `;` as they are,
-and the backslash would escape the `;` (see
+keeps whether whitespace stands before a style that starts with `color:`, and
+between `color` and the `:`, a run of whitespace becoming one space, since
+10.9.8 puts a style that starts so in the style of the label of the class:
+`style A fill:#f00,color:white` is printed `style A fill: #f00,color: white`
+(see
+[Styles that are drawn the same](./compatibility.md#styles-that-are-drawn-the-same)).
+[fixture: whitespace-between-tokens/style-color-touching-kept] [fixture:
+whitespace-between-tokens/style-color-spaced] [fixture:
+whitespace-between-tokens/style-label-name-colon-gap-kept] A `style` whose last
+style ends with a backslash keeps whether whitespace stands after it, a run of
+whitespace becoming its first character, also at the end of the statement, since
+mermaid.js joins the styles of a class with `;` as they are, and the backslash
+would escape the `;` (see
 [Styles that are drawn the same](./compatibility.md#styles-that-are-drawn-the-same)):
 `style A fill:abc\  ,stroke:green` is printed
 `style A fill: abc\ , stroke: green`. [fixture:
@@ -987,7 +996,7 @@ classDiagram
   class A
   class B
   A --> B
-  style A fill: #f9f, stroke: #abcdef, color: #c0ffee
+  style A fill: #f9f, stroke: #abcdef,color: #c0ffee
   classDef c fill: #deadbe, stroke: #abcdef
   cssClass "B" c
 ```

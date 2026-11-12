@@ -401,6 +401,17 @@ mermaid.js がクラスのスタイルを書かれたまま `;` でつなぎ、
 `style A fill:abc\  ,stroke:green` は、
 `style A fill: abc\ , stroke: green` と印字します。
 [fixture: whitespace-between-tokens/style-backslash-space-kept]
+`style` は、`color:` で始まるスタイルの前の空白の有無と、
+`color` と `:` の間の空白の有無を、書かれたまま残します。
+空白の連続は空白 1 つにします。
+10.9.8 が、そう始まるスタイルをクラスのラベルのスタイルに入れるためです。
+`style A fill:#f00,color:white` は `style A fill: #f00,color: white`
+と印字します。
+詳しくは [同じに描かれるスタイル](./compatibility.ja.md#同じに描かれるスタイル)
+を参照してください。
+[fixture: whitespace-between-tokens/style-color-touching-kept]
+[fixture: whitespace-between-tokens/style-color-spaced]
+[fixture: whitespace-between-tokens/style-label-name-colon-gap-kept]
 [fixture: whitespace-between-tokens/style-backslash-at-end-kept]
 `classDef` も空白の有無を保ちます。
 適用先のクラスより後に書かれていると、
@@ -1060,7 +1071,7 @@ classDiagram
   class A
   class B
   A --> B
-  style A fill: #f9f, stroke: #abcdef, color: #c0ffee
+  style A fill: #f9f, stroke: #abcdef,color: #c0ffee
   classDef c fill: #deadbe, stroke: #abcdef
   cssClass "B" c
 ```

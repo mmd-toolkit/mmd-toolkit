@@ -273,6 +273,10 @@ export function layoutStatement(
       statement.type === "FlowchartDefaultLinkStyleStatement"
     normalizeStyleList(source, atoms, statement, {
       keepsSpaceBeforeFill: statement.type === "FlowchartLinkStyleStatement",
+      labelStyleNames:
+        statement.type === "FlowchartStyleStatement"
+          ? ["color", "text-align"]
+          : [],
       isLinkStyle,
       joinsStyles: isLinkStyle,
       keepsGapAfterStroke: statement.type !== "FlowchartStyleStatement",
