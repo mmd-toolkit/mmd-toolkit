@@ -454,6 +454,7 @@ rule-ideas の SKILL（`.claude/skills/rule-ideas/SKILL.md`）の 4 節にある
   規則のファイルを変える。
 - 規則のファイルの `recommended` は、
   rule-ideas の SKILL の 7 節の判定から設定する。
+  判定は `.claude/skills/rule-ideas/records/recommended.ja.md` に記録してある。
   そこの判定がいったんの案なら、先に決め直す。
 - `pnpm --filter @mmd-toolkit/eslint-plugin run update` が書くもの:
   すべての文書の題と告知。

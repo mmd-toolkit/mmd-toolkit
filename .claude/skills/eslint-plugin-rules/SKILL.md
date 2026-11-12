@@ -46,20 +46,21 @@ after writing it.
   Db that receives it and record what it is given.
 - Check each condition for reporting or not reporting, each message, each fix,
   and each suggestion with an input for every case it distinguishes. For each
-  sentence of the document of the rule, and of the notes of the rule in section
-  7 of the rule-ideas skill, list the cases that the sentence distinguishes
-  (which statement the mistake stands in, where in a line, which separator or
-  whitespace stands next to it, which context it is in) and the rules of the
-  language that meet it at the place it names (a directive, an ignored `;`, a
-  comment line, an empty line, a line separator, an empty description block).
-  Give each case an input, a fixture of the rule, named after the case. Run
-  mermaid.js once on each input, and compare the report of the rule with what it
-  does, in both directions: a mistake that is not reported, and a report that is
-  not a mistake. A case that mermaid.js rejects gets no fixture. No input is
-  chosen by a random source or by a number, and no command generates inputs. A
-  failure that the comparison finds is closed by the fixture of its case
-  (section 4), and by a sentence of the specification where the specification
-  did not state the reading.
+  sentence of the document of the rule, and of the notes of the rule in the
+  record of section 7 of the rule-ideas skill
+  (`.claude/skills/rule-ideas/records/recommended.md`), list the cases that the
+  sentence distinguishes (which statement the mistake stands in, where in a
+  line, which separator or whitespace stands next to it, which context it is in)
+  and the rules of the language that meet it at the place it names (a directive,
+  an ignored `;`, a comment line, an empty line, a line separator, an empty
+  description block). Give each case an input, a fixture of the rule, named
+  after the case. Run mermaid.js once on each input, and compare the report of
+  the rule with what it does, in both directions: a mistake that is not
+  reported, and a report that is not a mistake. A case that mermaid.js rejects
+  gets no fixture. No input is chosen by a random source or by a number, and no
+  command generates inputs. A failure that the comparison finds is closed by the
+  fixture of its case (section 4), and by a sentence of the specification where
+  the specification did not state the reading.
 - A rule whose condition depends on something defined anywhere in the diagram
   (ids, vertices that a statement creates) needs inputs where the definition
   comes after the use and where it comes before it, and a statement that creates
@@ -116,7 +117,8 @@ after writing it.
   the suggestion is applied, for every place where it is offered. Check that
   reading independently of the rule as in section 2; a rule test does not run
   mermaid.js. When the condition of a candidate cannot be written in the
-  sentences that the record of rule-ideas (section 8) gives, the candidate goes
+  sentences that the record of rule-ideas (section 8 and
+  `.claude/skills/rule-ideas/records/suggestions.md`) gives, the candidate goes
   back to rule-ideas, and offering no suggestion is an ordinary conclusion: do
   not add a condition or a check to keep it, and do not parse the result of an
   edit or decide it per known divergence.

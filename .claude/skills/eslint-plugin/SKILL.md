@@ -423,8 +423,10 @@ renamed, and removed together, as the section "Rules and their documents" of
   description (`meta.docs.description`), and whether the `recommended`
   configuration enables it. Adding, renaming, or removing a rule, or changing
   the first paragraph of an English document, also changes the rule file.
-- `recommended` in the rule file is set from the decision in section 7 of the
-  rule-ideas SKILL; a provisional decision there is made again first.
+- `recommended` in the rule file is set from the decision of section 7 of the
+  rule-ideas SKILL, recorded in
+  `.claude/skills/rule-ideas/records/recommended.md`; a provisional decision
+  there is made again first.
 - What `pnpm --filter @mmd-toolkit/eslint-plugin run update` writes: the title
   of every document; the notice of every document; the Resources section at the
   end of every document, between `<!-- begin auto-generated rule resources -->`
