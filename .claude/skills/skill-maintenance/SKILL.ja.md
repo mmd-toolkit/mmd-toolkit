@@ -2,10 +2,10 @@
 name: skill-maintenance
 description: >-
   Divide the skills under .claude/skills/ by piece of work and move text between
-  them without loss. Use when records or a new piece of work are added to a
-  skill, when a skill is split or text moves between skills, when a section of a
-  skill is renamed or renumbered, when the skill lines of AGENTS.md change, and
-  when reviewing such a change.
+  them without loss. Use when a skill gains records, another file in
+  references/, or a new piece of work, when a skill is split or text moves
+  between skills, when a section of a skill is renamed or renumbered, when the
+  skill lines of AGENTS.md change, and when reviewing such a change.
 ---
 
 # スキルを作業ごとに分けて保つ（skill-maintenance）
