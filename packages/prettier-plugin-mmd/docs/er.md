@@ -767,17 +767,17 @@ printed `A[B]`, and `C ||--o{ D : "has"` is `C ||--o{ D : has`. A word that
 starts with a letter, with a single `-` between its parts (`LINE-ITEM`, `a-1`),
 is plain too, as the examples write 20 such names, `LINE-ITEM` and
 `NAMED-DRIVER` among them, and none in quotes: `"LINE-ITEM"` is printed
-`LINE-ITEM`. The part before the first `-` is compared with the words that the
-lexer reads as a unit of its own, since a `-` ends a keyword (`"end-x"` is `end`
-and `-x`). The other names are kept as written, quoted or not, numbers included,
-and so are a name with a `-` at its start or its end or two together, a name
-that starts with a `_` (`"_x"`, which the lexers before 10.5.0 reject without
-quotes), and a name that ends with `direction` or starts with `TB`, `BT`, `RL`,
-or `LR`, in any case: the lexer reads `direction`, white space (a line break
-too), and the name of a direction as one line, which a name without quotes would
-join with the line before or after it. [fixture:
-entities/plain-names-without-quotes] [fixture:
-entities/hyphenated-names-without-quotes] [fixture:
+`LINE-ITEM`. A `_` may start a name (`"_x"` is printed `_x`): the examples write
+no such name, with quotes or without, and every version that counts reads it the
+same in both forms. The part before the first `-` is compared with the words
+that the lexer reads as a unit of its own, since a `-` ends a keyword (`"end-x"`
+is `end` and `-x`). The other names are kept as written, quoted or not, numbers
+included, and so are a name with a `-` at its start or its end or two together,
+and a name that ends with `direction` or starts with `TB`, `BT`, `RL`, or `LR`,
+in any case: the lexer reads `direction`, white space (a line break too), and
+the name of a direction as one line, which a name without quotes would join with
+the line before or after it. [fixture: entities/plain-names-without-quotes]
+[fixture: entities/hyphenated-names-without-quotes] [fixture:
 entities/names-that-need-quotes] [fixture:
 entities/names-next-to-a-direction-line] [fixture: entities/names-kept] A
 directive between the parts of an entity is placed as under
@@ -847,6 +847,7 @@ int id
 subgraph "my-group"
 "x-y"
 end
+"_a-b" ||--o{ "_c-d" : "_e-f"
 ```
 
 Output
@@ -862,6 +863,7 @@ erDiagram
   subgraph my-group
     x-y
   end
+  _a-b ||--o{ _c-d : _e-f
 ```
 
 ### Subgraphs

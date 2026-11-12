@@ -34,12 +34,9 @@ import { findXychartKeptLines } from "./xychart-kept-lines.ts"
 
 /**
  * The text that a printer writes for a text in the form of the examples, or
- * undefined where the text must stay in the form that it is written in. The
- * diagram type is the type of the diagram that holds the text, for the rules
- * that differ between the diagram types that share a node type (flowchart,
- * swimlane).
+ * undefined where the text must stay in the form that it is written in.
  */
-type Bare = (text: string, diagramType: string) => string | undefined
+type Bare = (text: string) => string | undefined
 
 /**
  * The form of the examples of a field: without quotes, or in quotes. `text` is
@@ -171,11 +168,9 @@ function joinsDirectionLine(
 /**
  * A word of ASCII letters, digits, and `_`, or, where `spaces` is true, words
  * with spaces between them, that starts with a letter or `_` (or, where
- * `digits` is true, with any of these characters; or, where `startsWithLetter`
- * is true, with a letter only: the lexers before 10.5.0 read no `_` at the
- * start of a name without quotes) and whose first word is none of the
- * `reserved` words, which are compared in lower case: the lexer of a diagram
- * type reads a reserved word as a unit of its own, and a text of other
+ * `digits` is true, with any of these characters) and whose first word is none
+ * of the `reserved` words, which are compared in lower case: the lexer of a
+ * diagram type reads a reserved word as a unit of its own, and a text of other
  * characters has a meaning in the stages before the lexer. Where `hyphens` is
  * true, the parts of a word may be joined by a single `-`, and the part before
  * the first `-` is the one compared with the reserved words, since a `-` ends a
@@ -185,19 +180,13 @@ function joinsDirectionLine(
  */
 function wordWithout(
   reserved: ReadonlySet<string>,
-  {
-    spaces = false,
-    digits = false,
-    hyphens = false,
-    startsWithLetter = false,
-  } = {},
+  { spaces = false, digits = false, hyphens = false } = {},
 ): Bare {
   return (text) => {
     const first = text[0]
     const parts = hyphens ? text.split("-") : [text]
     return first !== undefined &&
       (digits || !(first >= "0" && first <= "9")) &&
-      (!startsWithLetter || isLetter(first)) &&
       first !== " " &&
       !text.endsWith(" ") &&
       parts.every(
@@ -251,16 +240,11 @@ const erReserved: ReadonlySet<string> = new Set([
 
 /**
  * A name or a role of an ER diagram that every version of mermaid.js that
- * reads it in quotes reads the same without them: a word of `wordWithout` that
- * starts with a letter (the lexers of 9.4.3 and 10.3.1 reject a `_` at the
- * start of a name without quotes), which may have a single `-` between its
- * parts (the lexers of 9.4.3 to 12.3.0 read the `-` inside a name without
- * quotes).
+ * reads it in quotes reads the same without them: a word of `wordWithout`
+ * that may have a single `-` between its parts (the lexers of 9.4.3 to 12.3.0
+ * read the `-` inside a name without quotes).
  */
-const erName: Bare = wordWithout(erReserved, {
-  hyphens: true,
-  startsWithLetter: true,
-})
+const erName: Bare = wordWithout(erReserved, { hyphens: true })
 
 /**
  * The words of a requirement diagram that its lexer reads as a unit of its own:
@@ -958,144 +942,6 @@ function labelText(text: string): string | undefined {
 }
 
 /**
- * The diagram types whose labels are read by the lexer of the flowchart of
- * 9.0.0 to 10.3.0, which has no state for the text of a label: it reads the
- * text with the tokens of a statement (docs/compatibility.md, Labels that are
- * drawn the same). The lexers of a swimlane and of an agentflow diagram, and
- * those of 10.3.1 on, read a label in a state of its own.
- */
-const statementLexerTypes: ReadonlySet<string> = new Set([
-  "flowchart-elk",
-  "flowchart-v2",
-])
-
-/**
- * The names that the lexer before 10.3.1 reads as a token of its own wherever
- * they stand in a text, even after a letter: the targets of a link.
- */
-const linkTargets: readonly string[] = ["_blank", "_parent", "_self", "_top"]
-
-/**
- * Whether `word` stands in `text` where the lexer before 10.3.1 starts a token,
- * not in the middle of a run of letters, and the character after it, or
- * undefined at the end of the text, is one that `follows` accepts.
- */
-function startsWord(
-  text: string,
-  word: string,
-  follows: (character: string | undefined) => boolean,
-): boolean {
-  for (
-    let at = text.indexOf(word);
-    at !== -1;
-    at = text.indexOf(word, at + 1)
-  ) {
-    if (!isLetter(text[at - 1]) && follows(text[at + word.length])) return true
-  }
-  return false
-}
-
-/** Whether a keyword that needs a boundary after it ends before this character. */
-function endsKeyword(character: string | undefined): boolean {
-  return !isWordCharacter(character)
-}
-
-/** Whether `click` or `call` is followed by whitespace, or by the end of the text. */
-function isFollowedBySpace(character: string | undefined): boolean {
-  return character === undefined || character === " "
-}
-
-/**
- * Whether the lexer of the flowchart before 10.3.1, which reads a label with
- * the tokens of a statement (`statementLexerTypes`), reads a part of the text as
- * a token that a text does not hold:
- *
- * - a `-` at the end of the text, which the closer `-)` of an ellipse and the
- *   closers `)` of the other shapes take with them;
- * - an arrow: three or more dashes, two dashes and an `x` or an `o`, and `.-`;
- * - the separator `:::`;
- * - a target of a link (`_self`, `_blank`, `_parent`, `_top`), wherever it
- *   stands, and the word `interpolate`, where a run of letters starts and no
- *   letter, digit, or `_` follows;
- * - `click` and `call` with a space after them, where a run of letters starts,
- *   which start the states of an interactive statement; at the end of the
- *   text too, since between two arrows a space and an arrow follow the label;
- * - `accTitle` and `accDescr`, which start the states of an accessibility line.
- */
-function startsOtherTokens(text: string): boolean {
-  const lower = text.toLowerCase()
-  return (
-    text.endsWith("-") ||
-    holdsDashArrow(text) ||
-    text.includes(".-") ||
-    text.includes(":::") ||
-    linkTargets.some((target) => text.includes(target)) ||
-    startsWord(text, "interpolate", endsKeyword) ||
-    startsWord(text, "click", isFollowedBySpace) ||
-    startsWord(text, "call", isFollowedBySpace) ||
-    lower.includes("acctitle") ||
-    lower.includes("accdescr")
-  )
-}
-
-/**
- * Whether a run of `-` in the text is an arrow for the lexer before 10.3.1:
- * three or more dashes, or two followed by an `x` or an `o`.
- */
-function holdsDashArrow(text: string): boolean {
-  let index = 0
-  while (index < text.length) {
-    if (text[index] !== "-") {
-      index++
-      continue
-    }
-    let end = index
-    while (text[end] === "-") end++
-    if (
-      end - index >= 3 ||
-      (end - index === 2 && (text[end] === "x" || text[end] === "o"))
-    )
-      return true
-    index = end
-  }
-  return false
-}
-
-/**
- * The text of a label of a flowchart: `labelText` and, where the lexer before
- * 10.3.1 reads the label (`statementLexerTypes`), none of the parts that it
- * reads as other tokens (`startsOtherTokens`).
- */
-function flowchartLabelText(
-  text: string,
-  diagramType: string,
-): string | undefined {
-  return statementLexerTypes.has(diagramType) && startsOtherTokens(text)
-    ? undefined
-    : labelText(text)
-}
-
-/**
- * The name of a subgraph of a flowchart: `headingName` and, where the lexer
- * before 10.3.1 reads it (`statementLexerTypes`), no part that starts a
- * keyword there. That lexer starts a token after a `-`, a `_`, or a digit, so
- * `x-end`, `x_end`, and `x1end` have the keyword `end` at their end, which
- * takes the line break after the name; `click` and `call` take the whitespace
- * after them, `interpolate` the letters, and the targets of a link
- * (`x_self`) are tokens of their own.
- */
-function flowchartName(text: string, diagramType: string): string | undefined {
-  return statementLexerTypes.has(diagramType) &&
-    (linkTargets.some((target) => text.includes(target)) ||
-      startsWord(text, "end", endsKeyword) ||
-      startsWord(text, "interpolate", endsKeyword) ||
-      startsWord(text, "click", isFollowedBySpace) ||
-      startsWord(text, "call", isFollowedBySpace))
-    ? undefined
-    : headingName(text)
-}
-
-/**
  * The text of a label between the arrows of a solid link (`-- text -->`), which
  * a `--` in the text ends, or reads as an arrow with the letters around it
  * (`go--on` has the arrow `--o`): a text of `labelText` without a `--`.
@@ -1105,19 +951,8 @@ function solidLinkLabelText(text: string): string | undefined {
 }
 
 /** The text of a label of a flowchart between the arrows of a dotted link. */
-function flowchartDottedLinkLabelText(
-  text: string,
-  diagramType: string,
-): string | undefined {
-  return text.includes(".") ? undefined : flowchartLabelText(text, diagramType)
-}
-
-/** The text of a label of a flowchart between the arrows of a solid link. */
-function flowchartSolidLinkLabelText(
-  text: string,
-  diagramType: string,
-): string | undefined {
-  return text.includes("--") ? undefined : flowchartLabelText(text, diagramType)
+function dottedLinkLabelText(text: string): string | undefined {
+  return text.includes(".") ? undefined : labelText(text)
 }
 
 /** The line of the opening arrow of a link, or undefined for a label between `|`. */
@@ -1350,15 +1185,15 @@ const quoteRules: Readonly<
   C4UpdateStatement: { arguments: c4Arguments },
   FlowchartLink: {
     label: [
-      bare(flowchartLabelText, { when: isPipedOrThickLabel }),
-      bare(flowchartDottedLinkLabelText, { when: isDottedArrowLabel }),
-      bare(flowchartSolidLinkLabelText, { when: isSolidArrowLabel }),
+      bare(labelText, { when: isPipedOrThickLabel }),
+      bare(dottedLinkLabelText, { when: isDottedArrowLabel }),
+      bare(solidLinkLabelText, { when: isSolidArrowLabel }),
     ],
   },
-  FlowchartShape: { label: bare(flowchartLabelText) },
+  FlowchartShape: { label: bare(labelText) },
   FlowchartSubgraphStatement: {
-    name: bare(flowchartName, { joins: wordFollows }),
-    title: bare(flowchartLabelText),
+    name: bare(headingName, { joins: wordFollows }),
+    title: bare(labelText),
   },
   KanbanShape: { label: bare(shapeText, { joins: nextToDash }) },
   MindmapShape: { label: bare(shapeText, { joins: nextToDash }) },
@@ -1735,7 +1570,6 @@ function respell(
     printsRunsAsOne(source, item.range[0], item.range[1])
       ? collapseRuns(text)
       : text,
-    source.root.diagramType,
   )
   // mermaid.js takes the directives away before it reads the text, so what
   // follows is the first character after the spaces, tabs, and directives.
