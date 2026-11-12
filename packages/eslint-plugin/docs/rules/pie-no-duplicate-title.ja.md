@@ -48,7 +48,7 @@ mermaid.js は後の文をエラーなしに受理し、同じ種類の前のタ
 pie
   title First
   title Second
-  "A" : 1
+  "A": 1
 ```
 
 この規則に**従う**コードの例:
@@ -57,7 +57,7 @@ pie
 %% eslint @mmd-toolkit/pie-no-duplicate-title: error
 pie
   title Second
-  "A" : 1
+  "A": 1
 ```
 
 ## オプション

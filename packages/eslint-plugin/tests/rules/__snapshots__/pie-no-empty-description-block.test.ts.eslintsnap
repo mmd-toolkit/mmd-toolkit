@@ -8,7 +8,7 @@ Code:
   1 | pie
   2 |   accDescr {}
     |   ^~~~~~~~~~~ [1]
-  3 |   "A" : 1
+  3 |   "A": 1
   4 |
 
 [1] mermaid.js sets an empty description from this empty `accDescr` block, replacing any earlier description.
@@ -16,7 +16,7 @@ Code:
       - Remove the empty block.
         Output:
           1 | pie
-          2 |   "A" : 1
+          2 |   "A": 1
           3 |
 ---
 

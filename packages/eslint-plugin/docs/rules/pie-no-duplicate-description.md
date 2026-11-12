@@ -49,7 +49,7 @@ Examples of **incorrect** code for this rule:
 pie
   accDescr: First
   accDescr: Second
-  "A" : 1
+  "A": 1
 ```
 
 Examples of **correct** code for this rule:
@@ -58,7 +58,7 @@ Examples of **correct** code for this rule:
 %% eslint @mmd-toolkit/pie-no-duplicate-description: error
 pie
   accDescr: Second
-  "A" : 1
+  "A": 1
 ```
 
 ## Options

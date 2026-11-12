@@ -51,7 +51,7 @@ LF、CRLF、CR は LF として比べる。
 pie
   accDescr: First
   accDescr: Second
-  "A" : 1
+  "A": 1
 ```
 
 この規則に**従う**コードの例:
@@ -60,7 +60,7 @@ pie
 %% eslint @mmd-toolkit/pie-no-duplicate-description: error
 pie
   accDescr: Second
-  "A" : 1
+  "A": 1
 ```
 
 ## オプション
