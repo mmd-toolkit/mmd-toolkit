@@ -92,16 +92,24 @@ Correctness is defined by the pinned mermaid.js.
    and one space after it; one space on each side of a `=`; none before the
    colon that follows a name or a key, and one space after it; one space on each
    side of a mark that stands between two things, such as an arrow; and none
-   inside parentheses and square brackets, and one space inside braces. Padding
-   that lines a column up over several lines, as the colons of the tasks of a
-   Gantt chart are lined up, is no such whitespace: Prettier has no kind for it
-   in those languages, so this rule does not decide it. The whitespace is
-   printed wherever every version of mermaid.js that counts (see below) reads
-   the text the same with it, and is left out only where mermaid.js rejects it
-   or reads something else, as in the list of ids of a flowchart `class`
-   statement. Second, a gap of a kind that Prettier does not have takes the form
-   that the other diagram types print for the same kind of gap. Third, a
-   spelling (the case of a keyword, the quotes of a string, the digits of a
+   inside parentheses and square brackets, and one space inside braces. A colon
+   is the colon of a key only where what follows it is the one value of the name
+   before it, as the number of a slice of a pie chart is (`"Dogs": 386`). Where
+   a colon can also be read as a mark that stands between two things (the label
+   of a relation in `A --> B : go`, a member that a line adds to a class in
+   `Animal : +int age`, the data of a task of a Gantt chart), the whitespace
+   before it is the one that the examples in the documentation of the pinned
+   mermaid.js write on that kind of line at least twice as often as any other,
+   and, where no form is written that often, the one that the released version
+   prints. Padding that lines a column up over several lines, as the colons of
+   the tasks of a Gantt chart are lined up, is no such whitespace: Prettier has
+   no kind for it in those languages, so this rule does not decide it. The
+   whitespace is printed wherever every version of mermaid.js that counts (see
+   below) reads the text the same with it, and is left out only where mermaid.js
+   rejects it or reads something else, as in the list of ids of a flowchart
+   `class` statement. Second, a gap of a kind that Prettier does not have takes
+   the form that the other diagram types print for the same kind of gap. Third,
+   a spelling (the case of a keyword, the quotes of a string, the digits of a
    number, the direction of a header) takes the form that the examples in the
    documentation of the pinned mermaid.js use at least twice as often as any
    other; where no form is used that often, or the examples use none, the
