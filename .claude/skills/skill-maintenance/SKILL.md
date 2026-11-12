@@ -107,10 +107,13 @@ work use it. A piece of work uses a part when its steps point to it, and also
 when the part holds rules that what its steps do is subject to (a step that
 implements a changed rule follows the rules of writing a lexer and a grammar,
 though it names no section). State the sizes and the uses with the decision, so
-that it can be checked. A `SKILL.md` body longer than the 500 lines that the
-official documents recommend is measured so; what stays in it above that length
-is criteria, rules that are wrong to miss, and steps that every piece of work of
-the skill uses, and the decision states the sizes.
+that it can be checked. A `SKILL.md` body longer than the 500 lines or the 5,000
+tokens that the official documents recommend is measured so. The tokens are
+estimated as the bytes of the body that `wc -c` counts divided by 4, so a body
+of more than 20,000 bytes is longer. What stays in it above that size is
+criteria, rules that are wrong to miss, and steps that every piece of work of
+the skill uses; the decision states, for each part that stays, its size, the
+pieces of work that use it, and which of these it is.
 
 Split when:
 
