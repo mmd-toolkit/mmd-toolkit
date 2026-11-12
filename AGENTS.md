@@ -144,7 +144,7 @@ package.
 - `packages/mmdfmt`: the command-line formatter. It formats `.mmd` and
   `.mermaid` files and the diagrams in the code blocks of Markdown files with
   Prettier and `prettier-plugin-mmd`, and changes nothing else; its README
-  defines what it does. Skill `prettier-plugin`.
+  defines what it does. Skill `mmdfmt`.
 - `packages/eslint-plugin`: the linter, an ESLint language plugin. A rule
   reports a mistake of the author that mermaid.js accepts without a word and
   reads as something other than what was meant. Which rules exist is decided

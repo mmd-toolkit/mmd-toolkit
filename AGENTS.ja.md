@@ -153,7 +153,7 @@ Mermaid 記法（`.mmd`）について、mermaid.js が持つ全図種を対象�
   `.mmd` と `.mermaid` のファイルと、Markdown のファイルのコードブロックの図を、
   Prettier と `prettier-plugin-mmd` で整形し、ほかは変えない。
   何をするかは README が定める。
-  SKILL は `prettier-plugin`。
+  SKILL は `mmdfmt`。
 - `packages/eslint-plugin`: リンター。
   ESLint の言語プラグインである。
   規則が報告するのは、書き手の誤りのうち、mermaid.js が黙って受理し、
