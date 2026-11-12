@@ -48,6 +48,8 @@ statementsBefore の common 文と classDef は原文の位置を保ち、
 普通の根は設定の 1 段、子は親より 1 段深く置きます。
 common 文と classDef は本文の 1 段に置きます。
 同じ読みを持つ幅から、一貫した深さを選ぶためです。
+行頭から始まる title とアクセシビリティの文だけは、行頭に置いたままにします。
+詳しくは [Title](#title) を参照してください。
 tabWidth 0 でも、字下げが親子を決めるので 1 段 1 文字以上にします。
 style と終端のない classDef に行が接する場合は接触を保ち、
 その図の全根の基準を 0 にします。
@@ -620,6 +622,18 @@ trivia を持つ値は書かれた境界を保ちます。
 空の title の次のコメント行は次の文にそろえ、title の値にはしません。
 [fixture: treemap/title/empty-next-comment]
 
+行頭から始まる title は行頭に置いたままにし、その下の行は 1 段深いままにします。
+treemap を持つ最初の版 11.8.1 は、字下げされた title、`accTitle`、
+`accDescr` を拒否します。
+それ以降の版は、行頭の同じ文も 1 段深い同じ文も受け付け、同じに描きます。
+そのため、1 段深く印字すると 11.8.1 が拒否するテキストになります。
+詳しくは
+[treemap の親子と作者の値](./compatibility.ja.md#treemap-の親子と作者の値)
+を参照してください。
+その title の前のコメント行は title にそろえます。
+書かれた時点で字下げされた title は、11.8.1 が書かれたままでも拒否するので、
+ほかの文と同じく 1 段深く印字します。
+
 [fixture: treemap/title/padding]
 
 [fixture: treemap/title/empty-next-comment]
@@ -630,6 +644,16 @@ trivia を持つ値は書かれた境界を保ちます。
 
 [fixture: treemap/title/quotes]
 
+[fixture: treemap/title/line-start-kept]
+
+[fixture: treemap/title/line-start-after-row-kept]
+
+[fixture: treemap/title/line-start-tab-rows-kept]
+
+[fixture: treemap/title/line-start-comment-aligned]
+
+[fixture: treemap/title/indented-at-body-step]
+
 入力（escape 表記）: `"treemap\ntitle\t  Topic  words \t\n\"AfterTitle\":3"`
 
 出力
@@ -637,7 +661,7 @@ trivia を持つ値は書かれた境界を保ちます。
 
 ```mmd
 treemap
-  title Topic words
+title Topic words
   "AfterTitle": 3
 ```
 
@@ -654,6 +678,10 @@ trivia の境界を保ち、次行の値を連結しません。
 （[同じに描かれるキーワードの後のテキスト](./compatibility.ja.md#同じに描かれるキーワードの後のテキスト)）。
 [fixture: accessibility-lines/acc-directives-end-blanks-dropped]
 
+`accTitle` と `accDescr` の文は title と同じ位置に置きます。
+行頭から始まるときは行頭に置いたままにし、そうでなければ 1 段深く印字します。
+詳しくは [Title](#title) を参照してください。
+
 [fixture: treemap/accessibility-lines/title-padding]
 
 [fixture: treemap/accessibility-lines/description-padding]
@@ -663,6 +691,14 @@ trivia の境界を保ち、次行の値を連結しません。
 [fixture: treemap/accessibility-lines/description-empty]
 
 [fixture: treemap/accessibility-lines/colon-braces]
+
+[fixture: treemap/accessibility-lines/title-line-start-kept]
+
+[fixture: treemap/accessibility-lines/description-line-start-kept]
+
+[fixture: treemap/accessibility-lines/title-indented-at-body-step]
+
+[fixture: treemap/accessibility-lines/description-indented-at-body-step]
 
 [fixture: treemap/accessibility-lines/trivia]
 
@@ -675,7 +711,7 @@ trivia の境界を保ち、次行の値を連結しません。
 
 ```mmd
 treemap
-  accTitle: Access  words
+accTitle: Access  words
 ```
 
 ### Description blocks
@@ -694,6 +730,8 @@ Mermaid が説明から LF 後の字下げを除くためです。
 本文も設定の字下げを使い、タブと幅 0 の正の最小段幅も同じです。
 別行の opener と closer は文の列にそろえます。
 最初の `}` がブロックを閉じます。
+行頭から始まるブロックは行頭に置いたままにし、本文はその 1 段内側に置きます。
+詳しくは [Title](#title) を参照してください。
 
 [fixture: treemap/description-blocks/empty]
 
@@ -719,6 +757,10 @@ Mermaid が説明から LF 後の字下げを除くためです。
 
 [fixture: treemap/description-blocks/opener-directive]
 
+[fixture: treemap/description-blocks/line-start-kept]
+
+[fixture: treemap/description-blocks/indented-at-body-step]
+
 [corpus fixture: treemap/common-block-first-close]
 
 [test: treemap/description-blocks/unicode-empty]
@@ -733,11 +775,11 @@ Mermaid が説明から LF 後の字下げを除くためです。
 
 ```mmd
 treemap
-  accDescr {
-    first
+accDescr {
+  first
 
-    second
-  }
+  second
+}
   "AfterDescription": 3
 ```
 
@@ -1105,8 +1147,8 @@ treemap
     "Left": 1
   classDef zz color: red
   classDef zz fill: blue
-  title Earlier
-  title
+title Earlier
+title
 ```
 
 ### Final newline

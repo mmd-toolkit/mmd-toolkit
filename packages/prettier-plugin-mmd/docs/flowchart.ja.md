@@ -3066,6 +3066,20 @@ HTML タグの中の `="..."` を書き換えます。
 [fixture: frontmatter-yaml/compat-tag-start-underscore-kept]
 [fixture: frontmatter-yaml/compat-less-than-without-tag-formatted]
 
+フロントマターの中で始まるタグがその後で終わるとき、
+フロントマターの後のテキストは書かれたままにします。
+mermaid.js は、そのタグの最初の `>` までの値の引用符を書き換えますが、
+その `>` は本文の中にあることがあります。
+仕様は、そのタグがないものとして本文を読みます。
+詳しくは
+[フロントマターの中で始まる HTML タグ](./compatibility.ja.md#フロントマターの中で始まる-html-タグ)
+を参照してください。 [fixture: frontmatter-yaml/tag-open-into-body-kept]
+[fixture: frontmatter-yaml/tag-open-ends-in-comment-kept]
+[fixture: frontmatter-yaml/tag-open-ends-in-directive-kept]
+[fixture: frontmatter-yaml/tag-second-open-kept]
+[fixture: frontmatter-yaml/tag-open-no-gt-after-formatted]
+[fixture: frontmatter-yaml/tag-closed-by-later-line-formatted]
+
 入力
 ([frontmatter-yaml/formatted-input.mmd](../tests/fixtures/flowchart/frontmatter-yaml/formatted-input.mmd)):
 

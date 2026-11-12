@@ -172,6 +172,16 @@ function layoutComponents(
       before?.value === "-" ||
       before?.value === ";"
     rules.set(atom.start, touches ? "none" : "space")
+    // The name `A-` and the arrow `->` of `A-->B` touch as written: 11.14.0
+    // reads `-->` there, and rejects a name with a `-` (docs/wardley.md,
+    // Links).
+    if (
+      statement.type === "WardleyLinkStatement" &&
+      statement.arrow?.range[0] === atom.start &&
+      previous.end === atom.start &&
+      source.text[previous.end - 1] === "-"
+    )
+      rules.set(atom.start, "none")
     // A bare title followed by whitespace starts metadata instead of a name.
     // Preserve its authored boundary, including before ports, @ and slash
     // (diagrams/wardley.md, Keyword and name boundaries; Name boundaries).

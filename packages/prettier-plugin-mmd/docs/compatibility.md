@@ -156,13 +156,35 @@ read it as YAML, and kept as written otherwise (see
 
 mermaid.js rewrites `="..."` inside HTML tags over the whole text, frontmatter
 included, before it removes the frontmatter. A tag that starts in the
-frontmatter can therefore change how a `"` of the diagram is read. The plugin
-does not look for tags in the frontmatter.
+frontmatter can therefore change how a `"` of the diagram is read, up to the
+first `>` after it. The specification looks for tags only after the frontmatter
+([html-tag-in-frontmatter](../../spec/docs/known-divergences/html-tag-in-frontmatter.md)),
+so the tree of such a text can differ from what mermaid.js reads.
 
 For example, mermaid.js accepts a flowchart whose frontmatter has `title: <a`
 and whose node is `A[b="c">d]`, with the label `b='c'>d`. The plugin reports it
 as a syntax error and leaves it unchanged. [corpus fixture:
 flowchart/html-tag-starts-in-frontmatter]
+
+When a tag starts in the frontmatter and ends after it, the plugin keeps the
+text after the frontmatter as written, because a text printed from the tree can
+change what mermaid.js reads there. The tags are found as the specification
+finds them: a `<` and a word character, then everything up to the first `>`, and
+the search goes on after that `>`. For example, an ER diagram with `title: <a`
+in the frontmatter and the body `"b="c">d"` is accepted by each of the ten
+versions that count, with the one entity `b='c'>d`. The specification reads
+three entities, `"b="`, `c`, and `">d"`, and the text printed from them, one on
+each line, was rejected by each of the ten versions. [corpus fixture:
+er/div-html-tag-starts-in-frontmatter-name] The `>` that ends the tag can be the
+`>` of an arrow, or lie in a comment line or a directive. A tag that ends in the
+frontmatter, a tag with no `>` after it, and a `<` with no word character after
+it leave the text after the frontmatter formatted. [fixture:
+flowchart/frontmatter-yaml/tag-open-into-body-kept] [fixture:
+flowchart/frontmatter-yaml/tag-open-ends-in-comment-kept] [fixture:
+flowchart/frontmatter-yaml/tag-open-ends-in-directive-kept] [fixture:
+flowchart/frontmatter-yaml/tag-second-open-kept] [fixture:
+flowchart/frontmatter-yaml/tag-open-no-gt-after-formatted] [fixture:
+flowchart/frontmatter-yaml/tag-closed-by-later-line-formatted]
 
 ### `click` only starts a click statement
 
@@ -773,12 +795,15 @@ which aligns the colons of a timeline: `2020 : e   ` is printed `2020 : e`, and
 and an event that another colon follows, gain one space at their end where they
 end without whitespace, which stands before that colon: `2004: a: b` is printed
 `2004 : a : b`, except after the word `title` or `section` as the period, where
-a space would make the line a title or a section. Where a comment follows the
-text on its line, one space separates it from the text. Where directives do,
-each keeps whether whitespace precedes it, a run becoming one space, and the
-whitespace after the last one is dropped like any whitespace at the end of the
-line, so the line is printed alike whether or not whitespace follows its last
-directive, as a directive at the end of a line is in the other diagrams (see
+a space would make the line a title or a section. The description of a task of a
+user journey loses the whitespace before its first colon (`Make tea : 5: Me` is
+printed `Make tea: 5: Me`), except in a section whose descriptions are padded to
+line the colons up. Where a comment follows the text on its line, one space
+separates it from the text. Where directives do, each keeps whether whitespace
+precedes it, a run becoming one space, and the whitespace after the last one is
+dropped like any whitespace at the end of the line, so the line is printed alike
+whether or not whitespace follows its last directive, as a directive at the end
+of a line is in the other diagrams (see
 [Directives](./flowchart.md#directives)): `title T  %%{x}%%  %%{y}%%` and
 `title T  %%{x}%%  %%{y}%%  ` are both printed `title T %%{x}%% %%{y}%%`,
 `title T%%{x}%%%%{y}%%  ` is printed `title T%%{x}%%%%{y}%%`, and
@@ -794,10 +819,11 @@ usecase diagram, for the text of a node of an ishikawa diagram, a mindmap, and a
 treeView, and of a card of a kanban board (not the id of a column, which the
 figure depends on), for the date format and the axis format of a Gantt chart,
 for the `accDescription` of a C4 diagram, for the last event of a line of a
-timeline and the space that a period and an event before a colon gain, and for
-the second description of a state alias. The runs of spaces and tabs inside a
-date format, an axis format, or the value of an `accTitle:` line stay as written
-before the directives as they do without them. [fixture:
+timeline and the space that a period and an event before a colon gain, for the
+description of a task of a user journey, and for the second description of a
+state alias. The runs of spaces and tabs inside a date format, an axis format,
+or the value of an `accTitle:` line stay as written before the directives as
+they do without them. [fixture:
 ishikawa/trailing-whitespace/directives-end-blanks-dropped] [fixture:
 usecase/direction-and-accessibility/acctitle-trailing-directive-blanks-dropped]
 [fixture: treeview/trailing-whitespace/directives-end-blanks-dropped] [fixture:
@@ -853,6 +879,11 @@ gantt/settings/format-blank-kept] [fixture:
 journey/titles-and-sections/title-padding-dropped] [fixture:
 journey/titles-and-sections/title-blank-kept] [fixture:
 journey/titles-and-sections/title-hash-gap-one-space-section-kept] [fixture:
+journey/task-data/description-blank-dropped] [fixture:
+journey/task-data/description-blank-dropped-per-section] [fixture:
+journey/task-data/description-blank-directive-kept] [fixture:
+journey/task-data/description-blank-over-lines-kept] [fixture:
+journey/task-data/description-padding-space-tab-kept] [fixture:
 timeline/titles-and-sections/title-padding-dropped] [fixture:
 timeline/titles-and-sections/title-blank-kept] [fixture:
 timeline/periods-and-events/event-padding-kept-end-dropped] [fixture:
@@ -896,6 +927,14 @@ that count (see
 [Versions of mermaid.js that count](#versions-of-mermaidjs-that-count)), and the
 SVG was the same: a period and events on one line and on later lines, in a
 section, with `<br>`, with a text that wraps, and with a text of other scripts.
+A user journey puts the description of a task into a `div` of a `foreignObject`,
+or into a `tspan`
+([`drawTask`](https://github.com/mermaid-js/mermaid/blob/2086904e76c692331e34a45d7cc3bc30860d040e/packages/mermaid/src/diagrams/user-journey/svgDraw.js#L251-L262)),
+as it stands. A task with whitespace before its first colon (one space, two
+spaces, a tab) and the same task without it were drawn with the ten versions
+that count, and the pixels were the same; the SVG differed only in the text of
+the `div` and of the `tspan` (and, before 11.14.0, in the number in the `id` of
+a line, which counts the drawings of the page).
 
 The name of a section is not printed in this form. The renderers tell two
 sections apart by their names, so two names that differ only by the whitespace
@@ -1734,7 +1773,6 @@ kind is compared again.
 The lexers of these diagram types read a keyword in any case. The printer writes
 the keywords below in the case shown, and every other keyword as written.
 
-- ER diagram: `BT`, `direction`, `end`, `LR`, `RL`, `subgraph`, `TB`.
 - Gantt chart: `axisFormat`, `dateFormat`, `excludes`, `friday`, `monday`,
   `section`, `tickInterval`, `title`, `weekday`, `weekend`.
 - User journey: `section`, `title`.
@@ -1761,9 +1799,6 @@ the keywords below in the case shown, and every other keyword as written.
 The examples use the printed case of each keyword at least twice as often as any
 other case: `Note` is written seven times and `note` once, and the other
 keywords are never written in another case. [fixture:
-er/whitespace-between-tokens/keyword-case-one-form] [fixture:
-er/direction/case-one-form] [fixture: er/direction/case-bt-rl-one-form]
-[fixture: er/subgraphs/end-case-one-form] [fixture:
 gantt/keyword-case/keywords-one-form] [fixture:
 gantt/weekday-and-weekend/day-case-one-form] [fixture:
 journey/keyword-case/keywords-one-form] [fixture:
@@ -1799,7 +1834,15 @@ and `OF` of a note in its Db as written, and a note with `LEFT` or `OF` was
 drawn differently, an ER diagram keeps the key `PK` or `FK` of an attribute in
 its Db as written, a Gantt chart keeps the tags `done` and `crit` and the
 `after` of a task, an xychart keeps `horizontal`, and a treeView reads `ICON(…)`
-as part of a name. The `style` of an ER diagram, a requirement diagram, and a
+as part of a name. An ER diagram keeps `direction`, its value, `subgraph`, and
+`end` as written too: 10.9.8 has no direction line and reads `direction tb` as
+two entities, and 10.9.8 to 11.16.1 have no subgraph and read `subgraph S` and
+`end` as entities, whose names keep their case. `direction tb` and
+`direction TB` were drawn differently by 10.9.8 and the same by the other nine
+versions. A text with `SUBGRAPH S` or `END` and the same text with `subgraph S`
+or `end` were drawn differently by the seven versions before 11.17.2 (10.9.8,
+11.7.0, 11.8.1, 11.13.0, 11.14.0, 11.15.0, and 11.16.1) and the same by the
+three later versions. The `style` of an ER diagram, a requirement diagram, and a
 Venn diagram, and the `classDef` of an ER diagram, a state diagram, a
 requirement diagram, and a quadrant chart stay as written too. Before it reads a
 text, mermaid.js removes the last `;` of a line that has a `style` or a
@@ -1811,7 +1854,9 @@ directive that spans lines joins its two sides into one line, and whether
 another case reads a line the same cannot be told from the line of the keyword
 alone. The quadrant chart rejects some texts that the two cases would read
 differently and reads the others the same, and stays as written too. [fixture:
-er/whitespace-between-tokens/keyword-case-one-form] [fixture:
+er/whitespace-between-tokens/keyword-case-kept] [fixture:
+er/direction/case-kept] [fixture: er/direction/case-bt-rl-kept] [fixture:
+er/subgraphs/end-case-kept] [fixture:
 state/whitespace-between-tokens/keyword-case-one-form] [fixture:
 block/keyword-case/keywords-kept] [fixture: treeview/keyword-case/icon-kept]
 [fixture: er/attribute-spacing/keys-case-kept] [fixture:
@@ -3731,6 +3776,28 @@ around them decide, so formatting keeps them as they are written. See
   the line feed after it, so the next line goes on in the style. [fixture:
   er/styles-and-classes/trailing-whitespace-takes-next-line] [corpus fixture:
   er/lex-classdef-space-before-line-feed]
+- A `class` or `subgraph` keyword right before a unit that starts with a `-`,
+  and an `end` right before a statement that starts with a `-`: `class-A a`,
+  `subgraph-x`, and `end-x`. The lexer of 12.3.0 ends a keyword at a `-`, so
+  these are the keyword and the id `-A` or `-x`, and each of the ten versions
+  accepts the written text. 10.9.8 rejects the text with a space (`class -A a`,
+  and `subgraph -x`), 11.7.0 to 11.16.1 draw `subgraph-x` and `end-x`, which
+  they read as entities, differently from the text with a space, and 11.7.0 and
+  later draw `class-A a` the same as `class -A a`. So the keyword and the `-`
+  keep touching, in any case of the keyword. `classDef-x` and `style-y` are
+  drawn the same with and without a space by each version that accepts them
+  (10.9.8 rejects both), so they are printed `classDef -x` and `style -y`.
+  [fixture: er/whitespace-between-tokens/keyword-then-dash-touching-kept]
+  [fixture: er/whitespace-between-tokens/keyword-upper-then-dash-touching-kept]
+  [fixture: er/whitespace-between-tokens/subgraph-then-dash-touching-kept]
+  [fixture: er/whitespace-between-tokens/end-then-dash-touching-kept] [fixture:
+  er/whitespace-between-tokens/classdef-style-then-dash-spaced] [fixture:
+  er/whitespace-between-tokens/keyword-then-dash-apart] [corpus fixture:
+  er/lex-keyword-class-then-dash] [corpus fixture:
+  er/lex-keyword-subgraph-then-dash] [corpus fixture:
+  er/lex-keyword-end-then-dash] [corpus fixture:
+  er/lex-keyword-classdef-then-dash] [corpus fixture:
+  er/lex-keyword-style-then-dash]
 
 ## Gantt lines that the whitespace decides
 
@@ -3826,10 +3893,12 @@ See [Task data](./journey.md#task-data) and
 [Titles and sections](./journey.md#titles-and-sections).
 
 - The whitespace at the ends of the name of a `section`, and between the text of
-  a task description and its colon. The Db keeps it, so `section  S` with two
-  spaces and `Make tea  : 5` with padding are not the same as their trimmed
-  forms, and the padding that aligns the colons stays. The whitespace at the
-  ends of a `title` is left out (see
+  a task description and its colon in a section whose descriptions are padded.
+  The Db keeps it, so `section  S` with two spaces and `Make tea  : 5` with
+  padding are not the same as their trimmed forms, and the padding that aligns
+  the colons stays. The whitespace before the colon of a description in a
+  section without padding is left out, as is the whitespace at the ends of a
+  `title` (see
   [Texts after a keyword that are drawn the same](#texts-after-a-keyword-that-are-drawn-the-same)).
   [fixture: journey/titles-and-sections/title-trailing-dropped-section-kept]
   [fixture: journey/task-data/description-padding-kept]
@@ -5096,6 +5165,29 @@ treemap/style-gaps/css-directive-tabs] [fixture:
 treemap/style-gaps/css-comment-semicolon-kept] Protected semicolon row
 boundaries keep the body as written.
 
+A `title`, `accTitle`, or `accDescr` statement, a line or a block, that starts
+its line stays at the start of its line. Of the versions that count (see
+[Versions of mermaid.js that count](#versions-of-mermaidjs-that-count)), 10.9.8
+and 11.7.0 have no treemap diagram, 11.8.1 rejects these statements when they
+are indented and reads them at the start of their line, and the seven versions
+from 11.13.0 read both. The two texts of a title, an `accTitle`, an `accDescr`
+line, an `accDescr` block, and a title after the rows, one with the statement at
+the start of its line and one with it a step in, were drawn with the seven
+versions from 11.13.0 and gave identical SVGs; 11.8.1 rejects the indented text.
+So a statement that starts its line is not moved, and one that is indented in
+the source is printed a step in, like the other statements, since 11.8.1 rejects
+it as written too. [fixture: treemap/title/line-start-kept] [fixture:
+treemap/title/line-start-after-row-kept] [fixture:
+treemap/title/line-start-tab-rows-kept] [fixture:
+treemap/title/line-start-comment-aligned] [fixture:
+treemap/title/indented-at-body-step] [fixture:
+treemap/accessibility-lines/title-line-start-kept] [fixture:
+treemap/accessibility-lines/description-line-start-kept] [fixture:
+treemap/accessibility-lines/title-indented-at-body-step] [fixture:
+treemap/accessibility-lines/description-indented-at-body-step] [fixture:
+treemap/description-blocks/line-start-kept] [fixture:
+treemap/description-blocks/indented-at-body-step]
+
 [fixture: treemap/indentation/leaf-closes] [fixture:
 treemap/indentation/common-and-class] [fixture: treemap/indentation/zero]
 [fixture: treemap/indentation/glued-roots] [fixture:
@@ -5626,6 +5718,21 @@ wardley/name-boundaries/stage-title-contact] [fixture:
 wardley/name-boundaries/force-title-contact] [fixture:
 wardley/name-boundaries/quoted-title] [fixture:
 wardley/name-boundaries/title-prefix-safe]
+
+A long arrow right after a name, `Alpha-->Beta`, is read by 11.14.0, the first
+version with the diagram, as the name `Alpha`, the arrow `-->`, and the name
+`Beta`, since it rejects a `-` inside a name. The five later versions that count
+(11.15.0, 11.16.1, 11.17.2, 12.0.0, and 12.3.0) read it as the name `Alpha-`,
+the arrow `->`, and the name `Beta`. So no space is put between a name that ends
+with a `-` and the arrow after it: `Alpha-->Beta` is printed `Alpha--> Beta`,
+not `Alpha- -> Beta`, which 11.14.0 rejects. The texts `Alpha-->Beta` and
+`Alpha--> Beta`, with the components declared, were drawn with the six versions
+and gave identical SVGs in all of them; `Alpha- -> Beta` gave the same SVG in
+the five later versions and is rejected by 11.14.0. `Alpha -->Beta` is a
+different link in the five later versions (the arrow `-->`), so it keeps its
+arrow and is printed `Alpha --> Beta`. [fixture: wardley/links/link-long-glued]
+[fixture: wardley/links/link-name-dashes-glued] [fixture:
+wardley/links/link-name-dash-spaced] [fixture: wardley/links/link-long-spaced]
 
 Flow interiors keep their complete authored spelling, including empty labels,
 backslashes and continuation columns. A link's grammatical label-opening `;`

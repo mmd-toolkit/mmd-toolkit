@@ -50,6 +50,25 @@ export interface TreemapLine {
   readonly leading: LeadingDirectives | null
 }
 
+/**
+ * The depth at which a line is printed. A title or an accessibility statement
+ * that starts its line stays at the start of its line: 11.8.1, the first
+ * version with the diagram, rejects such a statement when it is indented, and
+ * accepts it at the start of its line, so the printer does not indent it
+ * (docs/treemap.md, Title). Every other line is printed at its own depth.
+ */
+export function treemapPrintedDepth(source: Source, line: TreemapLine): number {
+  const statement = line.statements[0]
+  const keepsLineStart =
+    line.leading === null &&
+    (statement.type === "TreemapTitleStatement" ||
+      statement.type === "TreemapAccTitleStatement" ||
+      statement.type === "TreemapAccDescrStatement" ||
+      statement.type === "TreemapAccDescrBlockStatement") &&
+    lineStartOf(source, statement.range[0]) === statement.range[0]
+  return keepsLineStart ? 0 : line.depth
+}
+
 /** Own row syntax in source order, always including the required name. */
 function treemapRowParts(row: TreemapSection | TreemapLeaf): readonly Node[] {
   return [

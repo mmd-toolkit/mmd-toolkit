@@ -46,9 +46,10 @@ parents. Print ordinary roots one configured step in and children one step
 deeper than their parent; common statements and class definitions use one body
 step. This chooses consistent depths from equivalent widths. Use at least one
 character per step at tabWidth zero because indentation determines parentage. A
-styleless, unterminated class definition touching a row keeps that contact; in
-such a diagram every root uses baseline zero, so later roots cannot become
-children accidentally.
+title or an accessibility statement that starts its line is the exception and
+stays there (see [Title](#title)). A styleless, unterminated class definition
+touching a row keeps that contact; in such a diagram every root uses baseline
+zero, so later roots cannot become children accidentally.
 
 [fixture: treemap/indentation/irregular]
 
@@ -596,6 +597,17 @@ left out, whatever the whitespace at the end of the line (see
 A comment line after an empty title aligns with the next statement without
 becoming the title's value. [fixture: treemap/title/empty-next-comment]
 
+A title that starts its line stays at the start of its line, and the rows below
+it stay one step in. 11.8.1, the first version with the diagram, rejects a
+title, an `accTitle`, and an `accDescr` that is indented, while the later
+versions read the same statement at the start of its line and one step in and
+draw both the same, so printing it one step in would give a text that 11.8.1
+rejects (see
+[Treemap parentage and authored values](./compatibility.md#treemap-parentage-and-authored-values)).
+A comment line before such a title aligns with it. A title that is indented in
+the source is printed one step in, like the other statements, since 11.8.1
+rejects it as written too.
+
 [fixture: treemap/title/padding]
 
 [fixture: treemap/title/empty-next-comment]
@@ -606,6 +618,16 @@ becoming the title's value. [fixture: treemap/title/empty-next-comment]
 
 [fixture: treemap/title/quotes]
 
+[fixture: treemap/title/line-start-kept]
+
+[fixture: treemap/title/line-start-after-row-kept]
+
+[fixture: treemap/title/line-start-tab-rows-kept]
+
+[fixture: treemap/title/line-start-comment-aligned]
+
+[fixture: treemap/title/indented-at-body-step]
+
 Input (escaped): `"treemap\ntitle\t  Topic  words \t\n\"AfterTitle\":3"`.
 
 Output
@@ -613,7 +635,7 @@ Output
 
 ```mmd
 treemap
-  title Topic words
+title Topic words
   "AfterTitle": 3
 ```
 
@@ -629,6 +651,10 @@ the last one is left out (see
 [Texts after a keyword that are drawn the same](./compatibility.md#texts-after-a-keyword-that-are-drawn-the-same)).
 [fixture: accessibility-lines/acc-directives-end-blanks-dropped]
 
+An `accTitle` or `accDescr` statement is placed like a title: it stays at the
+start of its line when it starts its line, and it is printed one step in
+otherwise (see [Title](#title)).
+
 [fixture: treemap/accessibility-lines/title-padding]
 
 [fixture: treemap/accessibility-lines/description-padding]
@@ -638,6 +664,14 @@ the last one is left out (see
 [fixture: treemap/accessibility-lines/description-empty]
 
 [fixture: treemap/accessibility-lines/colon-braces]
+
+[fixture: treemap/accessibility-lines/title-line-start-kept]
+
+[fixture: treemap/accessibility-lines/description-line-start-kept]
+
+[fixture: treemap/accessibility-lines/title-indented-at-body-step]
+
+[fixture: treemap/accessibility-lines/description-indented-at-body-step]
 
 [fixture: treemap/accessibility-lines/trivia]
 
@@ -650,7 +684,7 @@ Output
 
 ```mmd
 treemap
-  accTitle: Access  words
+accTitle: Access  words
 ```
 
 ### Description blocks
@@ -665,7 +699,9 @@ boundaries, and align body lines one step inside the statement while retaining
 internal blank lines. Mermaid discards indentation after LF from the
 description. The body uses the configured indentation, including tabs and the
 positive minimum step at width zero. Align a separate opener or closer with its
-statement. The first `}` still closes the block.
+statement. The first `}` still closes the block. A block that starts its line
+stays at the start of its line, with its body one step inside it (see
+[Title](#title)).
 
 [fixture: treemap/description-blocks/empty]
 
@@ -691,6 +727,10 @@ statement. The first `}` still closes the block.
 
 [fixture: treemap/description-blocks/opener-directive]
 
+[fixture: treemap/description-blocks/line-start-kept]
+
+[fixture: treemap/description-blocks/indented-at-body-step]
+
 [corpus fixture: treemap/common-block-first-close]
 
 [test: treemap/description-blocks/unicode-empty]
@@ -705,11 +745,11 @@ Output
 
 ```mmd
 treemap
-  accDescr {
-    first
+accDescr {
+  first
 
-    second
-  }
+  second
+}
   "AfterDescription": 3
 ```
 
@@ -1065,8 +1105,8 @@ treemap
     "Left": 1
   classDef zz color: red
   classDef zz fill: blue
-  title Earlier
-  title
+title Earlier
+title
 ```
 
 ### Final newline

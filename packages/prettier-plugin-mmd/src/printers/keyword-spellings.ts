@@ -7,25 +7,17 @@
  * where the examples use one form at least twice as often as any other; a
  * keyword that the examples do not use, and one that another case changes the
  * Db or the figure of (`left` and `right` of a note in a state diagram, `class`
- * in a class diagram), are not listed and stay as written. So are `style` and
- * `classDef`: mermaid.js removes the last `;` of a line that has them in this
- * case before it reads a `:`, a `#`, and a `;` that follow in this order, and
- * the line is read as a whole after the directives and comments are removed,
- * so no rule on the line of the keyword can tell whether another case reads it
- * the same.
+ * in a class diagram), or that an older version reads as an entity (`direction`,
+ * `subgraph`, and `end` of an ER diagram), are not listed and stay as written.
+ * So are `style` and `classDef`: mermaid.js removes the last `;` of a line that
+ * has them in this case before it reads a `:`, a `#`, and a `;` that follow in
+ * this order, and the line is read as a whole after the directives and comments
+ * are removed, so no rule on the line of the keyword can tell whether another
+ * case reads it the same.
  */
 export const keywordSpellings: Readonly<
   Record<string, Readonly<Record<string, string>>>
 > = {
-  er: {
-    bt: "BT",
-    direction: "direction",
-    end: "end",
-    lr: "LR",
-    rl: "RL",
-    subgraph: "subgraph",
-    tb: "TB",
-  },
   gantt: {
     axisformat: "axisFormat",
     dateformat: "dateFormat",

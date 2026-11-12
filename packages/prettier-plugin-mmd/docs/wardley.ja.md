@@ -371,7 +371,14 @@ wardley-beta
 
 木の完全な名前、port、矢印の間は、矢印のない link も空白 1 つにします。
 port と矢印の原綴は保ちます。
-A-->B は名前 A- と矢印 -> なので A- -> B と印字します。
+A-->B は名前 A- と矢印 -> ですが、図を持つ最初の版 11.14.0 は、
+`-` を含む名前を拒否して、同じテキストを名前 A と矢印 --> として読みます。
+そのため、`-` で終わる名前と矢印の間は空けません。
+A-->B は A--> B と印字し、A- -> B とは印字しません。
+どの版も、A--> B を A-->B と同じに読みます。
+詳しくは
+[wardley の原文と必須の改行](./compatibility.ja.md#wardley-の原文と必須の改行)
+を参照してください。
 原文の字面から矢印を探しません。
 A -->B の矢印は --> のままです。
 解析済みの部品に従った空白です。
@@ -379,6 +386,10 @@ A -->B の矢印は --> のままです。
 [fixture: wardley/links/link-short]
 
 [fixture: wardley/links/link-long-glued]
+
+[fixture: wardley/links/link-name-dashes-glued]
+
+[fixture: wardley/links/link-name-dash-spaced]
 
 [fixture: wardley/links/link-long-spaced]
 

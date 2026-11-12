@@ -2910,6 +2910,18 @@ frontmatter-yaml/compat-tag-start-digit-kept] [fixture:
 frontmatter-yaml/compat-tag-start-underscore-kept] [fixture:
 frontmatter-yaml/compat-less-than-without-tag-formatted]
 
+The text after the frontmatter is kept as written when a tag starts in the
+frontmatter and ends after it, since mermaid.js rewrites the quotes of a value
+in that tag up to its first `>`, which can lie in the text, while the
+specification reads the text without that tag (see
+[HTML tags that start in the frontmatter](./compatibility.md#html-tags-that-start-in-the-frontmatter)).
+[fixture: frontmatter-yaml/tag-open-into-body-kept] [fixture:
+frontmatter-yaml/tag-open-ends-in-comment-kept] [fixture:
+frontmatter-yaml/tag-open-ends-in-directive-kept] [fixture:
+frontmatter-yaml/tag-second-open-kept] [fixture:
+frontmatter-yaml/tag-open-no-gt-after-formatted] [fixture:
+frontmatter-yaml/tag-closed-by-later-line-formatted]
+
 Input
 ([frontmatter-yaml/formatted-input.mmd](../tests/fixtures/flowchart/frontmatter-yaml/formatted-input.mmd)):
 

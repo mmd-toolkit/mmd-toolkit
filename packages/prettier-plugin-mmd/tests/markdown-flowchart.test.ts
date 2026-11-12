@@ -78,6 +78,15 @@ describe("a flowchart in a Markdown code block", () => {
     )
   })
 
+  it("keeps the text after a frontmatter that opens an HTML tag as written", async () => {
+    // docs/compatibility.md, HTML tags that start in the frontmatter
+    expect(
+      await formatTwice(
+        "```mermaid\n---\ntitle: <a\n---\nflowchart LR\nA-->B\n```\n",
+      ),
+    ).toBe("```mermaid\n---\ntitle: <a\n---\nflowchart LR\nA-->B\n```\n")
+  })
+
   it("keeps whitespace at the end of a line inside the block", async () => {
     expect(
       await formatTwice(

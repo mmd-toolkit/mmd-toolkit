@@ -168,6 +168,35 @@ export function findAttributeBraces(
 }
 
 /**
+ * Whether a unit that starts with a `-` touches the keyword before it, as in
+ * `class-A a`, `subgraph-x`, and `end-x`. The lexer of 12.3.0 ends a keyword at
+ * a `-`, so these are `class` and the id `-A`, and so on; 10.9.8 reads
+ * `class-A` as one name and rejects `class -A a`, and 11.7.0 to 11.16.1 read
+ * `subgraph-x` and `end-x` as entities and draw them differently from
+ * `subgraph -x` and `end` with `-x`, so no space is set between them (the
+ * statements `class`, `subgraph`, and `end` only: no version tells `classDef-x`
+ * from `classDef -x`; docs/compatibility.md, ER lines that the place or the
+ * whitespace decides; docs/er.md, Whitespace between tokens).
+ */
+export function touchesKeywordWithDash(source: Source, start: number): boolean {
+  if (source.text[start] !== "-") return false
+  const before = findTokenEndingBefore(source, start)
+  return before?.type === "Keyword" && before.range[1] === start
+}
+
+/** Sets no gap before the units that `touchesKeywordWithDash` finds. */
+function keepKeywordDashTouching(
+  source: Source,
+  atoms: readonly Atom[],
+  rules: Map<number, GapRule>,
+): void {
+  for (const atom of atoms) {
+    if (touchesKeywordWithDash(source, atom.start))
+      rules.set(atom.start, "none")
+  }
+}
+
+/**
  * The layout of the line that opens a subgraph: its keyword, name, and title
  * with its brackets, up to the end of the title or of the name. The empty
  * description blocks that may follow stand on the line as statements of the
@@ -207,20 +236,17 @@ export function layoutSubgraphOpening(
     expectValue(closing, "]")
     rules.set(closing.range[0], "none")
   }
-  return {
-    atoms: collectAtoms(
-      source,
-      statement.range[0],
-      end,
-      collectValueNodes(statement, erValueNodeTypes).filter(
-        (value) => value.range[1] <= end,
-      ),
-      [],
+  const atoms = collectAtoms(
+    source,
+    statement.range[0],
+    end,
+    collectValueNodes(statement, erValueNodeTypes).filter(
+      (value) => value.range[1] <= end,
     ),
-    rules,
-    outdented: new Set(),
-    lineBreaks: "kept",
-  }
+    [],
+  )
+  keepKeywordDashTouching(source, atoms, rules)
+  return { atoms, rules, outdented: new Set(), lineBreaks: "kept" }
 }
 
 /**
@@ -332,11 +358,14 @@ export function layoutErStatement(
     collectValueNodes(statement, erValueNodeTypes),
     kept,
   )
+  const rules = statementRules(source, statement, styles.length > 0)
+  if (statement.type === "ErClassStatement")
+    keepKeywordDashTouching(source, atoms, rules)
   return {
     atoms: keepFirstGapLineTails(source, atoms, (from, to) =>
       gapKeepsLineBreak(source, keptBreaks, from, to),
     ),
-    rules: statementRules(source, statement, styles.length > 0),
+    rules,
     outdented: new Set(),
     lineBreaks: "joined",
   }

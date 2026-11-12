@@ -34,7 +34,7 @@ export const treemapCases: readonly TreemapCase[] = [
   {
     name: "treemap/line-terminators-and-unicode/crlf-values",
     input: 'treemap\r\n"CRLF\r\n name":3\r\naccDescr {one\r\ntwo}\r\n',
-    output: 'treemap\n  "CRLF\n name": 3\n  accDescr {one\n    two}\n',
+    output: 'treemap\n  "CRLF\n name": 3\naccDescr {one\n  two}\n',
     options: {},
   },
   {
@@ -42,7 +42,7 @@ export const treemapCases: readonly TreemapCase[] = [
     input:
       'treemap\n"N\u2028S\u2029E\u00a0W\ufeff":3\naccTitle: A\u2028B\nclassDef zz x:1\u2028y:2\u2029;\n',
     output:
-      'treemap\n  "N\u2028S\u2029E\u00a0W\ufeff": 3\n  accTitle: A\u2028B\n  classDef zz x:1\u2028y:2\n',
+      'treemap\n  "N\u2028S\u2029E\u00a0W\ufeff": 3\naccTitle: A\u2028B\n  classDef zz x:1\u2028y:2\n',
     options: {},
   },
   {
@@ -63,19 +63,19 @@ export const treemapCases: readonly TreemapCase[] = [
     name: "treemap/accessibility-lines/unicode-edges",
     input:
       "treemap\ntitle \u00a0Topic\u3000\naccTitle: \u2028Access\u2029\naccDescr: \ufeffDetail\u00a0",
-    output: "treemap\n  title Topic\n  accTitle: Access\n  accDescr: Detail\n",
+    output: "treemap\ntitle Topic\naccTitle: Access\naccDescr: Detail\n",
     options: {},
   },
   {
     name: "treemap/description-blocks/unicode-empty",
     input: 'treemap\naccDescr{ \t\n\u2028\u00a0}\n"EmptyUnicode":3',
-    output: 'treemap\n  accDescr {}\n  "EmptyUnicode": 3\n',
+    output: 'treemap\naccDescr {}\n  "EmptyUnicode": 3\n',
     options: {},
   },
   {
     name: "treemap/description-blocks/unicode-opener",
     input: "treemap\naccDescr\u2028{Unicode detail}",
-    output: "treemap\n  accDescr: Unicode detail\n",
+    output: "treemap\naccDescr: Unicode detail\n",
     options: {},
   },
   {

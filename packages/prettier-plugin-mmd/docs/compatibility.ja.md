@@ -173,14 +173,41 @@ Prettier が YAML として読めるときは Prettier の YAML 整形で整形�
 mermaid.js は、フロントマターを取り除く前に、
 フロントマターを含むテキスト全体で、HTML タグの中の `="..."` を書き換えます。
 そのため、フロントマターの中で始まるタグが、
-図の `"` の読み方を変えることがあります。
-このプラグインは、フロントマターの中ではタグを探しません。
+その後の最初の `>` までの `"` の読み方を変えることがあります。
+仕様はフロントマターの後でだけタグを探します。
+そのため、そのようなテキストの木は、mermaid.js の読みと異なることがあります。
+詳しくは
+[html-tag-in-frontmatter](../../spec/docs/known-divergences/html-tag-in-frontmatter.ja.md)
+を参照してください。
 
 たとえば、フロントマターに `title: <a` があり、
 ノードが `A[b="c">d]` の flowchart を、
 mermaid.js はラベル `b='c'>d` として受理します。
 このプラグインは構文エラーとして報告し、変えません。
 [corpus fixture: flowchart/html-tag-starts-in-frontmatter]
+
+フロントマターの中で始まるタグがその後で終わるとき、
+プラグインはフロントマターの後のテキストを書かれたままにします。
+木から印字したテキストは、そこで mermaid.js の読みを変えることがあるためです。
+タグは仕様と同じ手順で探します。
+`<` と単語文字、そこから最初の `>` までを 1 つのタグとし、
+その `>` の後から探しを続けます。
+たとえば、フロントマターに `title: <a` があり、本文が `"b="c">d"` の ER 図を、
+数える 10 の版はどれも、1 つのエンティティ `b='c'>d` として受理します。
+仕様は 3 つのエンティティ `"b="`、`c`、`">d"` と読み、
+それを 1 行に 1 つずつ印字したテキストは、10 の版のどれも拒否しました。
+[corpus fixture: er/div-html-tag-starts-in-frontmatter-name]
+タグを終える `>` は、矢印の `>`、
+コメント行や directive の中の `>` でもかまいません。
+フロントマターの中で終わるタグ、後に `>` がないタグ、
+後に単語文字が続かない `<` は、
+フロントマターの後のテキストを整形したままにします。
+[fixture: flowchart/frontmatter-yaml/tag-open-into-body-kept]
+[fixture: flowchart/frontmatter-yaml/tag-open-ends-in-comment-kept]
+[fixture: flowchart/frontmatter-yaml/tag-open-ends-in-directive-kept]
+[fixture: flowchart/frontmatter-yaml/tag-second-open-kept]
+[fixture: flowchart/frontmatter-yaml/tag-open-no-gt-after-formatted]
+[fixture: flowchart/frontmatter-yaml/tag-closed-by-later-line-formatted]
 
 ### `click` は click 文だけを始める
 
@@ -845,6 +872,9 @@ timeline の period と、後ろに別のコロンが続く event は、末尾�
 `2004: a: b` は `2004 : a : b` と印字します。
 period が `title` か `section` の語のときは足しません。
 空白を足すと、その行が title や section になるためです。
+user journey のタスクの説明は、最初のコロンの前の空白を除きます。
+`Make tea : 5: Me` は `Make tea: 5: Me` と印字します。
+説明をそろえてコロンの桁をそろえた節は、書かれたままにします。
 同じ行のテキストの後にコメントがある場合は、空白 1 つでテキストと隔てます。
 ディレクティブがある場合は、それぞれの前に空白があるかないかを保ち、
 空白の連続は空白 1 つにします。
@@ -866,7 +896,7 @@ mindmap、treeView のノードのテキスト、
 kanban ボードのカードのテキスト（図が依存する列の id は除く）、
 Gantt 図の日付書式と軸の書式、C4 図の `accDescription`、
 timeline の行の最後の event と、period およびコロンの前の event が足す空白、
-別名を持つ state の 2 つ目の説明に当てはまります。
+user journey のタスクの説明、別名を持つ state の 2 つ目の説明に当てはまります。
 日付書式、軸の書式、`accTitle:` の行の値の中の空白とタブの連続は、
 ディレクティブの前でも、
 ディレクティブがない場合と同じように書かれたままにします。
@@ -927,6 +957,11 @@ state/aliases/second-description-two-directives-trailing-blanks-dropped]
 [fixture: journey/titles-and-sections/title-padding-dropped]
 [fixture: journey/titles-and-sections/title-blank-kept]
 [fixture: journey/titles-and-sections/title-hash-gap-one-space-section-kept]
+[fixture: journey/task-data/description-blank-dropped]
+[fixture: journey/task-data/description-blank-dropped-per-section]
+[fixture: journey/task-data/description-blank-directive-kept]
+[fixture: journey/task-data/description-blank-over-lines-kept]
+[fixture: journey/task-data/description-padding-space-tab-kept]
 [fixture: timeline/titles-and-sections/title-padding-dropped]
 [fixture: timeline/titles-and-sections/title-blank-kept]
 [fixture: timeline/periods-and-events/event-padding-kept-end-dropped]
@@ -974,6 +1009,15 @@ period と event が 1 行にある場合と後の行にある場合、section �
 `<br>` を含む場合、折り返されるテキスト、ほかの文字のテキストです。
 詳しくは [対象にする mermaid.js の版](#対象にする-mermaidjs-の版)
 を参照してください。
+user journey は、タスクの説明を `foreignObject` の `div` か `tspan` に、
+そのまま置きます。
+呼び出しは
+[`drawTask`](https://github.com/mermaid-js/mermaid/blob/2086904e76c692331e34a45d7cc3bc30860d040e/packages/mermaid/src/diagrams/user-journey/svgDraw.js#L251-L262)
+にあります。
+最初のコロンの前に空白（空白 1 つ、空白 2 つ、タブ）があるタスクと、
+ないタスクを、対象にする 10 版で描き、画素は同じでした。
+SVG の違いは `div` と `tspan` のテキストだけです（11.14.0 より前の版では、
+ページの描画の回数を数える線の `id` の番号も違います）。
 
 セクション名は、この形では印字しません。
 レンダラーは名前でセクションを区別するので、
@@ -1865,7 +1909,6 @@ C4 図の 2 対は、テキスト中の空白やタブの連なりで Db が異�
 印字は、以下のキーワードを示した大文字小文字にし、
 それ以外のキーワードは書かれたままにします。
 
-- ER 図: `BT`、`direction`、`end`、`LR`、`RL`、`subgraph`、`TB`。
 - Gantt 図: `axisFormat`、`dateFormat`、`excludes`、`friday`、`monday`、
   `section`、`tickInterval`、`title`、`weekday`、`weekend`。
 - ユーザージャーニー: `section`、`title`。
@@ -1893,10 +1936,6 @@ C4 図の 2 対は、テキスト中の空白やタブの連なりで Db が異�
 ほかのどの大文字小文字よりも 2 倍以上多く使います。
 `Note` は 7 回、`note` は 1 回書かれ、
 ほかのキーワードは別の大文字小文字で書かれません。
-[fixture: er/whitespace-between-tokens/keyword-case-one-form]
-[fixture: er/direction/case-one-form]
-[fixture: er/direction/case-bt-rl-one-form]
-[fixture: er/subgraphs/end-case-one-form]
 [fixture: gantt/keyword-case/keywords-one-form]
 [fixture: gantt/weekday-and-weekend/day-case-one-form]
 [fixture: journey/keyword-case/keywords-one-form]
@@ -1935,6 +1974,16 @@ ER 図は属性のキー `PK` と `FK` を Db に書かれたまま保ち、
 Gantt 図はタスクのタグ `done` と `crit` と `after` を保ち、
 XY チャートは `horizontal` を保ち、
 treeView は `ICON(…)` を名前の一部として読みます。
+ER 図の `direction` とその値、`subgraph`、`end` も書かれたまま残します。
+10.9.8 には方向の行がなく、`direction tb` を 2 つのエンティティとして読み、
+10.9.8 から 11.16.1 には subgraph がなく、`subgraph S` と `end` を、
+大文字小文字を名前に保つエンティティとして読むためです。
+`direction tb` と `direction TB` は、10.9.8 では異なって描かれ、
+ほかの 9 つの版では同じに描かれました。
+`SUBGRAPH S` か `END` があるテキストと、
+`subgraph S` か `end` がある同じテキストは、11.17.2 より前の 7 つの版（10.9.8、
+11.7.0、11.8.1、11.13.0、11.14.0、11.15.0、11.16.1）では異なって描かれ、
+後の 3 つの版では同じに描かれました。
 ER 図、要件図、Venn 図の `style` と、ER 図、状態遷移図、要件図、
 象限チャートの `classDef` も書かれたまま残します。
 mermaid.js は、正確にこの大文字小文字の `style` か `classDef` があり、
@@ -1947,7 +1996,9 @@ mermaid.js は、正確にこの大文字小文字の `style` か `classDef` が
 別の大文字小文字で行が同じに読まれるかは分かりません。
 象限チャートは、2 つの大文字小文字で読みが異なるテキストの一部を拒否し、
 ほかは同じに読みますが、これも書かれたまま残します。
-[fixture: er/whitespace-between-tokens/keyword-case-one-form]
+[fixture: er/whitespace-between-tokens/keyword-case-kept]
+[fixture: er/direction/case-kept] [fixture: er/direction/case-bt-rl-kept]
+[fixture: er/subgraphs/end-case-kept]
 [fixture: state/whitespace-between-tokens/keyword-case-one-form]
 [fixture: block/keyword-case/keywords-kept]
 [fixture: treeview/keyword-case/icon-kept]
@@ -4022,6 +4073,32 @@ mermaid.js は、一部の ER の行を、置かれた場所や周りの空白�
   その後の改行を取り込み、次の行がスタイルの続きになります。
   [fixture: er/styles-and-classes/trailing-whitespace-takes-next-line]
   [corpus fixture: er/lex-classdef-space-before-line-feed]
+- `class` と `subgraph` のキーワードの直後に `-` で始まる単位が続く場合と、
+  `end` の直後に `-` で始まる文が続く場合（`class-A a`、`subgraph-x`、
+  `end-x`）。
+  12.3.0 の字句解析器はキーワードを `-` で終えるので、
+  これらはキーワードと id `-A` や `-x` で、
+  数える 10 の版はどれも書かれたテキストを受理します。
+  10.9.8 は空白を入れたテキスト（`class -A a` と `subgraph -x`）を拒否し、
+  11.7.0 から 11.16.1 は、エンティティとして読む `subgraph-x` と `end-x` を、
+  空白を入れたテキストとは異なって描きます。
+  11.7.0 以降は `class-A a` を `class -A a` と同じに描きます。
+  そのため、キーワードの大文字小文字を問わず、
+  キーワードと `-` は接したままにします。
+  `classDef-x` と `style-y` は、
+  受理する版のどれでも空白の有無で同じに描かれる（10.9.8
+  はどちらも拒否する）ので、`classDef -x` と `style -y` と印字します。
+  [fixture: er/whitespace-between-tokens/keyword-then-dash-touching-kept]
+  [fixture: er/whitespace-between-tokens/keyword-upper-then-dash-touching-kept]
+  [fixture: er/whitespace-between-tokens/subgraph-then-dash-touching-kept]
+  [fixture: er/whitespace-between-tokens/end-then-dash-touching-kept]
+  [fixture: er/whitespace-between-tokens/classdef-style-then-dash-spaced]
+  [fixture: er/whitespace-between-tokens/keyword-then-dash-apart]
+  [corpus fixture: er/lex-keyword-class-then-dash]
+  [corpus fixture: er/lex-keyword-subgraph-then-dash]
+  [corpus fixture: er/lex-keyword-end-then-dash]
+  [corpus fixture: er/lex-keyword-classdef-then-dash]
+  [corpus fixture: er/lex-keyword-style-then-dash]
 
 ## 空白で決まる Gantt 図の行
 
@@ -4129,11 +4206,12 @@ mermaid.js は、journey の一部の値の空白を持ち、一部の行を、
 [タスクのデータ](./journey.ja.md#タスクのデータ)と
 [タイトルとセクション](./journey.ja.md#タイトルとセクション)を参照してください。
 
-- `section` の名前の両端の空白と、タスクの説明のテキストとコロンの間の空白。
+- `section` の名前の両端の空白と、
+  桁をそろえた節にあるタスクの説明のテキストとコロンの間の空白。
   Db が持つので、空白 2 つの `section  S` や、桁をそろえた `Make tea  : 5` は、
   空白を落とした形とは別のものです。
   コロンをそろえる空白も残ります。
-  `title` の両端の空白は除きます。
+  桁をそろえない節の説明のコロンの前の空白と、`title` の両端の空白は除きます。
   （[同じに描かれるキーワードの後のテキスト](#同じに描かれるキーワードの後のテキスト)）。
   [fixture: journey/titles-and-sections/title-trailing-dropped-section-kept]
   [fixture: journey/task-data/description-padding-kept]
@@ -5509,6 +5587,30 @@ class のスタイル区切りの独立した trivia とスタイルの継続行
 [fixture: treemap/style-gaps/css-comment-semicolon-kept]
 semicolon が保護する行の境界は、本文の原文を保ちます。
 
+行頭から始まる `title`、`accTitle`、
+`accDescr` の文（1 行のものもブロックも）は、行頭に置いたままにします。
+数える版のうち、10.9.8 と 11.7.0 には treemap がなく、
+11.8.1 は字下げされたこれらの文を拒否して行頭のものを読み、
+11.13.0 からの 7 つの版は両方を読みます。
+数える版は [対象にする mermaid.js の版](#対象にする-mermaidjs-の版) に定めます。
+title、`accTitle`、`accDescr` の 1 行、`accDescr` のブロック、
+行の後の title について、文が行頭にある文と 1 段深い文の 2 つを、
+11.13.0 からの 7 つの版で描くと、SVG は同一でした。
+11.8.1 は字下げした文を拒否します。
+そのため、行頭から始まる文は動かさず、書かれた時点で字下げされた文は、
+11.8.1 が書かれたままでも拒否するので、ほかの文と同じく 1 段深く印字します。
+[fixture: treemap/title/line-start-kept]
+[fixture: treemap/title/line-start-after-row-kept]
+[fixture: treemap/title/line-start-tab-rows-kept]
+[fixture: treemap/title/line-start-comment-aligned]
+[fixture: treemap/title/indented-at-body-step]
+[fixture: treemap/accessibility-lines/title-line-start-kept]
+[fixture: treemap/accessibility-lines/description-line-start-kept]
+[fixture: treemap/accessibility-lines/title-indented-at-body-step]
+[fixture: treemap/accessibility-lines/description-indented-at-body-step]
+[fixture: treemap/description-blocks/line-start-kept]
+[fixture: treemap/description-blocks/indented-at-body-step]
+
 [fixture: treemap/indentation/leaf-closes]
 [fixture: treemap/indentation/common-and-class]
 [fixture: treemap/indentation/zero] [fixture: treemap/indentation/glued-roots]
@@ -6055,6 +6157,24 @@ evolution stage が metadata に変わることがあるためです。
 [fixture: wardley/name-boundaries/force-title-contact]
 [fixture: wardley/name-boundaries/quoted-title]
 [fixture: wardley/name-boundaries/title-prefix-safe]
+
+名前の直後の長い矢印 `Alpha-->Beta` を、図を持つ最初の版 11.14.0 は、
+名前 `Alpha`、矢印 `-->`、名前 `Beta` として読みます。
+名前の中の `-` を拒否するためです。
+数える版のうち後の 5 つ（11.15.0、11.16.1、11.17.2、12.0.0、12.3.0）は、
+名前 `Alpha-`、矢印 `->`、名前 `Beta` として読みます。
+そのため、`-` で終わる名前とその後の矢印の間に空白を入れません。
+`Alpha-->Beta` は `Alpha--> Beta` と印字し、
+11.14.0 が拒否する `Alpha- -> Beta` とは印字しません。
+component を宣言した `Alpha-->Beta` と `Alpha--> Beta` を 6 つの版で描くと、
+どの版でも SVG は同一でした。
+`Alpha- -> Beta` は後の 5 つの版で同じ SVG になり、11.14.0 は拒否します。
+`Alpha -->Beta` は後の 5 つの版では別の link（矢印 `-->`）なので、
+矢印を保ち `Alpha --> Beta` と印字します。
+[fixture: wardley/links/link-long-glued]
+[fixture: wardley/links/link-name-dashes-glued]
+[fixture: wardley/links/link-name-dash-spaced]
+[fixture: wardley/links/link-long-spaced]
 
 flow の内部は空ラベル、backslash、継続行の列を含め、書かれたまま保ちます。
 link の文法上のラベル開始 `;` は前の部品に付け、後ろは物理行末まで保ちます。

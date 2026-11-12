@@ -50,6 +50,12 @@ const restored: readonly DbPair[] = [
     after: { tasks: [{ task: "2004 ", events: ["a ", "b"] }] },
   },
   {
+    name: "the whitespace before the first colon of a task of a user journey",
+    diagramType: "journey",
+    before: { tasks: [{ task: "Make tea  ", score: 5 }] },
+    after: { tasks: [{ task: "Make tea", score: 5 }] },
+  },
+  {
     name: "a period of a timeline that keeps the whitespace at its end",
     diagramType: "timeline",
     before: { tasks: [{ task: "2002   ", events: ["a"] }] },
@@ -143,6 +149,18 @@ const kept: readonly DbPair[] = [
     diagramType: "timeline",
     before: { tasks: [{ task: "2004 ", events: ["a"] }] },
     after: { tasks: [{ task: "2004  ", events: ["a"] }] },
+  },
+  {
+    name: "the whitespace before the colon of a task of a user journey narrowed",
+    diagramType: "journey",
+    before: { tasks: [{ task: "Make tea   ", score: 5 }] },
+    after: { tasks: [{ task: "Make tea ", score: 5 }] },
+  },
+  {
+    name: "the whitespace at the start of a task of a user journey",
+    diagramType: "journey",
+    before: { tasks: [{ task: "  Make tea ", score: 5 }] },
+    after: { tasks: [{ task: "Make tea", score: 5 }] },
   },
   {
     name: "the whitespace at the start of a period of a timeline",

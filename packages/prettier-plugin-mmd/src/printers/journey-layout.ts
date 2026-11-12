@@ -12,6 +12,7 @@ import {
   keepFirstGapLineTails,
   keptAsWritten,
   layoutDescriptionBlock,
+  replaceInAtoms,
 } from "./layout.ts"
 import {
   findKeptBreaks,
@@ -21,7 +22,12 @@ import {
 } from "./kept-lines.ts"
 import { accessibilityRules, trimTextAfterKeyword } from "./statement-rules.ts"
 import type { Source } from "./source.ts"
-import { isAtLineEnd } from "./source.ts"
+import {
+  findTriviaBetween,
+  isAtLineEnd,
+  isSpaceOrTab,
+  isWhitespace,
+} from "./source.ts"
 
 /**
  * The node types of a user journey whose text is a value, printed as written:
@@ -146,6 +152,9 @@ export function layoutJourneyStatement(
     statement.type === "JourneyTitleStatement" ? statement.value.range : null,
     true,
   )
+  if (statement.type === "JourneyTaskStatement") {
+    dropDescriptionBlanks(source, statement, atoms)
+  }
   const remainder = findBlankRemainder(source, statement)
   if (remainder !== null) atoms.push(remainder)
   return {
@@ -156,6 +165,88 @@ export function layoutJourneyStatement(
     outdented: new Set(),
     lineBreaks: "joined",
   }
+}
+
+/**
+ * The number of spaces and tabs at the end of the description of a task, which
+ * is the whitespace before its first colon (the range of the description keeps
+ * it).
+ */
+function countDescriptionBlanks(
+  source: Source,
+  task: JourneyTaskStatement,
+): number {
+  const [from, to] = task.description.range
+  let count = 0
+  while (to - count > from && isSpaceOrTab(source.text[to - count - 1])) count++
+  return count
+}
+
+/** The padded tasks of each source, found once (`findPaddedTasks`). */
+const paddedTasksOfSource = new WeakMap<
+  Source,
+  ReadonlySet<JourneyTaskStatement>
+>()
+
+/**
+ * The tasks of the sections in which some description has padding before its
+ * colon, two spaces or tabs at least: the padding lines the colons of the
+ * section up, so the section stays as written (docs/journey.md, Task data). A
+ * section is the tasks up to the next `section`; the tasks before the first
+ * one are a section.
+ */
+function findPaddedTasks(source: Source): ReadonlySet<JourneyTaskStatement> {
+  let found = paddedTasksOfSource.get(source)
+  if (found === undefined) {
+    const sections: JourneyTaskStatement[][] = [[]]
+    const { body } = source.root
+    if (body.type === "JourneyDiagram") {
+      for (const statement of body.body) {
+        if (statement.type === "JourneySectionStatement") sections.push([])
+        else if (statement.type === "JourneyTaskStatement")
+          sections.at(-1)!.push(statement)
+      }
+    }
+    found = new Set(
+      sections
+        .filter((section) =>
+          section.some((task) => countDescriptionBlanks(source, task) >= 2),
+        )
+        .flat(),
+    )
+    paddedTasksOfSource.set(source, found)
+  }
+  return found
+}
+
+/**
+ * Leaves the spaces and tabs before the first colon of a task out of what is
+ * printed: the Db keeps them as the end of the description and mermaid.js
+ * draws the same task without them, and the examples in its documentation
+ * write the colon touching the description (docs/journey.md, Task data). The
+ * whitespace stays in a section whose colons it lines up (see
+ * `findPaddedTasks`), after a whitespace character other than a space and a
+ * tab, in a description of whitespace only, and in a description that holds a
+ * directive.
+ */
+function dropDescriptionBlanks(
+  source: Source,
+  task: JourneyTaskStatement,
+  atoms: Atom[],
+): void {
+  const [from, to] = task.description.range
+  const blanks = countDescriptionBlanks(source, task)
+  const contentEnd = to - blanks
+  if (
+    blanks === 0 ||
+    contentEnd === from ||
+    isWhitespace(source.text[contentEnd - 1]) ||
+    findPaddedTasks(source).has(task) ||
+    findTriviaBetween(source, from, to + 1).length > 0
+  ) {
+    return
+  }
+  replaceInAtoms(source, atoms, [{ range: [contentEnd, to], replacement: "" }])
 }
 
 /** The gap rules of a statement, by the start of the atom after the gap. */

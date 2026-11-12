@@ -5,9 +5,10 @@ import { withoutBlanks } from "./db-values.ts"
 /**
  * The spaces and tabs of a text that mermaid.js keeps in the Db and draws
  * without, and that the formatter leaves out: at both ends, or at the end; or
- * one space that the formatter adds at the end of a text that has none.
+ * all of those at the end or none; or one space that the formatter adds at the
+ * end of a text that has none.
  */
-type Ends = "both" | "end" | "space"
+type Ends = "both" | "end" | "dropped" | "space"
 
 /**
  * The keys of the Db that hold a text after a keyword, for each diagram type:
@@ -18,7 +19,9 @@ type Ends = "both" | "end" | "space"
  * or is the text after a separator; the periods of a timeline, to which it adds
  * one space at the end where there is none, before a colon; and the name of a
  * task of a Gantt chart, whose whitespace at the end the formatter sets so that
- * the colons of the tasks of a section stand in one column. The name of a
+ * the colons of the tasks of a section stand in one column; and the
+ * description of a task of a user journey, whose whitespace at the end, before
+ * the first colon, the formatter leaves out or keeps as it is. The name of a
  * section is not one: two sections that differ by their whitespace are two
  * sections (docs/compatibility.md, Texts after a keyword that are drawn the
  * same).
@@ -34,7 +37,13 @@ const keywordTextKeys: ReadonlyMap<string, ReadonlyMap<string, Ends>> = new Map(
         ["title", "both"],
       ]),
     ],
-    ["journey", new Map<string, Ends>([["title", "both"]])],
+    [
+      "journey",
+      new Map<string, Ends>([
+        ["task", "dropped"],
+        ["title", "both"],
+      ]),
+    ],
     ["sequence", new Map<string, Ends>([["title", "both"]])],
     ["venn", new Map<string, Ends>([["title", "both"]])],
     [
@@ -93,9 +102,11 @@ export function keywordTextDbForFormattingComparison(
         ? withoutBlanks(written) === withoutBlanks(printed)
         : ends === "end"
           ? withoutTrailingBlanks(written) === withoutTrailingBlanks(printed)
-          : printed === written ||
-            (written === withoutTrailingBlanks(written) &&
-              printed === `${written} `)
+          : ends === "dropped"
+            ? printed === written || printed === withoutTrailingBlanks(written)
+            : printed === written ||
+              (written === withoutTrailingBlanks(written) &&
+                printed === `${written} `)
     return same ? written : printed
   }) as DbSummary
 }

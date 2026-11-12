@@ -17,6 +17,7 @@ import {
   findTreemapPrintedEnd,
   layoutTreemapStatement,
   treemapLines,
+  treemapPrintedDepth,
   treemapStatementRange,
 } from "./treemap-layout.ts"
 
@@ -62,7 +63,10 @@ export function printTreemap(
     return printAsWritten(source, diagram.range[0], source.text.length)
   const placements = new Map(
     lines.map((line) => {
-      const column = significantIndentationOf(options, line.depth)
+      const column = significantIndentationOf(
+        options,
+        treemapPrintedDepth(source, line),
+      )
       return [
         line,
         line.leading === null
@@ -82,13 +86,14 @@ export function printTreemap(
   ])
   const block = printBlock(
     lines.map((line) => {
-      const column = significantIndentationOf(options, line.depth)
+      const depth = treemapPrintedDepth(source, line)
+      const column = significantIndentationOf(options, depth)
       return [
         placements.get(line)!.head,
         ...line.statements.flatMap((statement, index) => {
           const descriptionIndentation =
             statement.type === "TreemapAccDescrBlockStatement"
-              ? significantIndentationOf(options, line.depth + 1)
+              ? significantIndentationOf(options, depth + 1)
               : ""
           return [
             index === 0

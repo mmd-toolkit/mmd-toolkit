@@ -377,17 +377,18 @@ An id and the shape after it touch (`A("x")`, `B[["y"]]`), also where whitespace
 was written between them (`A ("x")`): mermaid.js reads the whitespace between an
 id and an opening alike, so the form is a choice, and touching shows that the id
 and its shape are one node, so that `A ("x") B` is not read as three. It is how
-the documentation of mermaid.js writes shapes. The `:` of a width is a colon
-inside a name (step 1 of
-[Which kind a colon is](./printed-form.md#which-kind-a-colon-is)): `A:3` is a
-node with its width, so no whitespace stands on either side of it (`A:3`,
-`B["b"]:2`). The ten versions that count reject whitespace after it (`A: 3`,
-`A : 3`) and read a space before it (`A :3`) the same, and the `:` of `space:2`
-must touch. [fixture: shapes/shape-touches-the-id] [fixture:
-shapes/shape-on-the-next-line-joined] [fixture: shapes/shape-touching-kept]
-[fixture: shapes/other-openings-and-closings] [fixture:
-shapes/width-colon-touches-the-id] [fixture: shapes/width-after-a-shape]
-[fixture: shapes/width-colon-on-the-next-line-joined] [fixture:
+the documentation of mermaid.js writes shapes. The `:` of a width touches what
+is before it and what follows (`A:3`, `B["b"]:2`). The ten versions that count
+reject whitespace after it (`A: 3`, `A : 3`), and Prettier prints no colon with
+a space on one side only, so a space before it (`A :3`, which they read the
+same) is not printed either (see
+[Where mermaid.js decides against the whitespace](./printed-form.md#where-mermaidjs-decides-against-the-whitespace)).
+The `:` of `space:2` must touch. [fixture: shapes/shape-touches-the-id]
+[fixture: shapes/shape-on-the-next-line-joined] [fixture:
+shapes/shape-touching-kept] [fixture: shapes/other-openings-and-closings]
+[fixture: shapes/width-colon-touches-the-id] [fixture:
+shapes/width-after-a-shape] [fixture:
+shapes/width-colon-on-the-next-line-joined] [fixture:
 shapes/shape-and-width-in-a-row] [fixture: shapes/shape-on-a-target] [fixture:
 shapes/directive-between-the-id-and-the-shape] [fixture:
 shapes/comment-line-between-the-id-and-the-shape-kept]

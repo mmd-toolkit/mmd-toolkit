@@ -25,6 +25,7 @@ import {
   findAttributeBraces,
   findSubgraphHeaderEnd,
   hasAttributeBlock,
+  touchesKeywordWithDash,
   layoutAttribute,
   layoutBlockOpening,
   layoutErStatement,
@@ -283,6 +284,8 @@ function statementBlockRules(source: Source): BlockRules<ErStatement> {
           hasAttributeBlock(source, classified.statement))
       )
     },
+    writtenGapBefore: (statement) =>
+      touchesKeywordWithDash(source, statement.range[0]),
     isDroppedAtTopLevel: () => false,
     keepsWhitespaceLineAfterComment: false,
     keepsDirectiveLinesUnindented: false,

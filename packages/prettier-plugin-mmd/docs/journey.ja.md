@@ -258,11 +258,34 @@ journey
 
 タスクは、説明、コロン、score、コロン、人々、
 3 つ目のコロン以降のテキストの順に印字します。
-説明は、テキストとコロンの間の空白も含めて、書かれたまま印字します。
-その空白は説明の一部で Db が持つので、
-`Make tea  : 5` と `Make tea: 5` は別のタスクであり、
-コロンをそろえる空白も残ります。 [fixture: task-data/colon-touches-description]
+説明のテキストと最初のコロンの間の空白は、説明の末尾で、Db は持ち、
+mermaid.js はなくても同じに描きます。
+詳しくは
+[同じに描かれるキーワードの後のテキスト](./compatibility.ja.md#同じに描かれるキーワードの後のテキスト)
+を参照してください。
+各行がタスクを 1 つ足すので、このコロンはキーのコロンではありません。
+mermaid.js の文書の例は、このコロンを説明に接して書きます。
+タスクの行 5 行で、コロンの後に空白がある 10 個のコロンは、
+前に空白を置きません。
+これは手順 3 です。
+詳しくは
+[コロンがどの種類かの決め方](./printed-form.ja.md#コロンがどの種類かの決め方) と
+[コロンの前の空白を決める例](./compatibility.ja.md#コロンの前の空白を決める例)
+を参照してください。
+そのため `Make tea : 5: Me` は `Make tea: 5: Me` と印字します。
+コロンをそろえる空白は残します。
+節のどれかの説明が、コロンの前に 2 つ以上の空白かタブを持つ節は、
+その節のタスクをすべて書かれたままにします（最初の `section` より前のタスクは、
+それで 1 つの節です）。
+空白とタブ以外の空白文字で終わる説明（`A\u3000 : 5` の U+3000）、
+ディレクティブを含む説明、複数行にわたるタスクも、書かれたままにします。
+[fixture: task-data/description-blank-dropped]
+[fixture: task-data/description-blank-dropped-per-section]
+[fixture: task-data/description-blank-directive-kept]
+[fixture: task-data/description-blank-over-lines-kept]
+[fixture: task-data/colon-touches-description]
 [fixture: task-data/description-padding-kept]
+[fixture: task-data/description-padding-space-tab-kept]
 説明には、引用符、タグ、`%`、キーワードを含められます。
 [fixture: task-data/special-characters-in-description]
 [fixture: task-data/keywords-inside]

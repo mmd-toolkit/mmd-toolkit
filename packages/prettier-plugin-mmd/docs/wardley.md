@@ -364,13 +364,21 @@ wardley-beta
 
 Separate complete AST names, ports and arrows by one ordinary space, including
 arrowless links. Preserve every port and arrow spelling. A-->B is the name A-
-and arrow ->, so it prints A- -> B; do not search the source for arrow-shaped
-text. A -->B instead keeps -->. This spacing follows the components already read
-by the parser.
+and arrow ->, but 11.14.0, the first version with the diagram, rejects a name
+with a `-` in it and reads the same text as the name A and the arrow -->, so an
+arrow is not separated from a name that ends with `-`: A-->B prints A--> B,
+which every version draws as it draws A-->B, not A- -> B (see
+[Wardley authored text and required line breaks](./compatibility.md#wardley-authored-text-and-required-line-breaks)).
+Do not search the source for arrow-shaped text. A -->B instead keeps -->. This
+spacing follows the components already read by the parser.
 
 [fixture: wardley/links/link-short]
 
 [fixture: wardley/links/link-long-glued]
+
+[fixture: wardley/links/link-name-dashes-glued]
+
+[fixture: wardley/links/link-name-dash-spaced]
 
 [fixture: wardley/links/link-long-spaced]
 

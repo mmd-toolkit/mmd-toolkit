@@ -1361,6 +1361,16 @@ const journeyWhitespaceExamples: readonly (readonly [
     "journey\n  Task:\u2029\n",
   ],
   [
+    "U+00A0 before the colon of a task",
+    "journey\nA\u00a0: 5\nB : 2\n",
+    "journey\n  A\u00a0: 5\n  B: 2\n",
+  ],
+  [
+    "U+3000 and a space before the colon of a task",
+    "journey\nA\u3000 : 5\nB : 2\n",
+    "journey\n  A\u3000 : 5\n  B: 2\n",
+  ],
+  [
     "U+00A0 after a title keyword",
     "journey\ntitle\u00a0T\n",
     "journey\n  title T\n",

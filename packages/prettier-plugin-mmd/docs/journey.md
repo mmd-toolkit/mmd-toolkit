@@ -248,14 +248,34 @@ journey
 ### Task data
 
 A task is printed as its description, a colon, the score, a colon, the people,
-and the text after a third colon. The description is printed as written, with
-the whitespace between its text and the colon: that whitespace is part of the
-description, which the Db keeps, so `Make tea  : 5` and `Make tea: 5` are
-different tasks, and the padding that aligns the colons of a journey stays.
-[fixture: task-data/colon-touches-description] [fixture:
-task-data/description-padding-kept] A description may hold quotes, tags, `%`,
-and keywords inside it. [fixture: task-data/special-characters-in-description]
-[fixture: task-data/keywords-inside]
+and the text after a third colon. The whitespace between the text of the
+description and the first colon is the end of the description, which the Db
+keeps and mermaid.js draws without (see
+[Texts after a keyword that are drawn the same](./compatibility.md#texts-after-a-keyword-that-are-drawn-the-same)).
+Each line adds a task, so the colon is not the colon of a key, and the examples
+in the documentation of mermaid.js write it touching the description: of the
+five task lines, the ten colons that are followed by a space have no space
+before them (step 3 of
+[Which kind a colon is](./printed-form.md#which-kind-a-colon-is); counted as
+under
+[the examples that decide the whitespace before a colon](./compatibility.md#the-examples-that-decide-the-whitespace-before-a-colon)).
+So `Make tea : 5: Me` is printed `Make tea: 5: Me`. The padding that lines the
+colons up stays: in a section where some description has two spaces or tabs, or
+more, before its colon, every task of the section stays as written (the tasks
+before the first `section` are a section), as the tasks of a Gantt chart whose
+names are padded are lined up. A description that ends with a whitespace
+character other than a space or a tab (`A\u3000 : 5` with U+3000), a description
+that holds a directive, and a task over several lines also stay as written.
+[fixture: task-data/description-blank-dropped] [fixture:
+task-data/description-blank-dropped-per-section] [fixture:
+task-data/description-blank-directive-kept] [fixture:
+task-data/description-blank-over-lines-kept] [fixture:
+task-data/colon-touches-description] [fixture:
+task-data/description-padding-kept] [fixture:
+task-data/description-padding-space-tab-kept] A description may hold quotes,
+tags, `%`, and keywords inside it. [fixture:
+task-data/special-characters-in-description] [fixture:
+task-data/keywords-inside]
 
 A score or a person stands after one space, after a colon and after a comma
 alike; a colon and a comma touch what is before them. Whitespace around them is

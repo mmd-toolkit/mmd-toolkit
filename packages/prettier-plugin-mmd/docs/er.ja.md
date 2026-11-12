@@ -547,16 +547,30 @@ erDiagram
 接しているトークンは、以下の規則が別に定めるものを除き、接したままにします。
 [fixture: whitespace-between-tokens/collapsed]
 [fixture: whitespace-between-tokens/touching-kept]
-表にあるキーワードは、そこで示す大文字小文字で印字します。
-（[同じに描かれる綴り](./compatibility.ja.md#同じに描かれる綴り)を参照）。
-`SUBGRAPH` は `subgraph`、`END` は `end` です。
-ほかのキーワード（`CLASS`、`CLASSDEF`、`STYLE`）は、
+キーワード（`SUBGRAPH`、`END`、`DIRECTION`、`CLASS`、`CLASSDEF`、`STYLE`）は、
 書かれた大文字小文字を保ちます。
 （[大文字小文字をそろえるキーワード](./compatibility.ja.md#大文字小文字をそろえるキーワード)）。
 Db がそのまま保つ属性のキーも同じです。
 関係の語は記号として印字します（[関係の空白](#関係の空白)を参照）。
-[fixture: whitespace-between-tokens/keyword-case-one-form]
+[fixture: whitespace-between-tokens/keyword-case-kept]
 [fixture: relationship-spacing/cardinality-words-case-one-form]
+
+`class` と `subgraph` のキーワードに `-` で始まる単位が接する場合と、
+`end` に `-` で始まる文が接する場合は、接したままにします。
+`class-A a` は `class -A a` と印字しません。
+10.9.8 が拒否するためです。
+`subgraph-x` と `end-x` は分けません。
+11.7.0 から 11.16.1 がエンティティとして読むためです。
+詳しくは
+[置かれた場所や空白で読みが決まる ER の行](./compatibility.ja.md#置かれた場所や空白で読みが決まる-er-の行)
+を参照してください。
+`classDef` と `style` は対象外で、`classDef-x` は `classDef -x` と印字します。
+[fixture: whitespace-between-tokens/keyword-then-dash-touching-kept]
+[fixture: whitespace-between-tokens/keyword-upper-then-dash-touching-kept]
+[fixture: whitespace-between-tokens/subgraph-then-dash-touching-kept]
+[fixture: whitespace-between-tokens/end-then-dash-touching-kept]
+[fixture: whitespace-between-tokens/classdef-style-then-dash-spaced]
+[fixture: whitespace-between-tokens/keyword-then-dash-apart]
 
 入力
 ([whitespace-between-tokens/touching-kept-input.mmd](../tests/fixtures/er/whitespace-between-tokens/touching-kept-input.mmd)):
@@ -583,7 +597,7 @@ erDiagram
 ```
 
 入力
-([whitespace-between-tokens/keyword-case-one-form-input.mmd](../tests/fixtures/er/whitespace-between-tokens/keyword-case-one-form-input.mmd)):
+([whitespace-between-tokens/keyword-case-kept-input.mmd](../tests/fixtures/er/whitespace-between-tokens/keyword-case-kept-input.mmd)):
 
 ```mmd
 erDiagram
@@ -604,17 +618,17 @@ int a PK
 ```
 
 出力
-([whitespace-between-tokens/keyword-case-one-form-output.mmd](../tests/fixtures/er/whitespace-between-tokens/keyword-case-one-form-output.mmd)):
+([whitespace-between-tokens/keyword-case-kept-output.mmd](../tests/fixtures/er/whitespace-between-tokens/keyword-case-kept-output.mmd)):
 
 ```mmd
 erDiagram
-  subgraph S
+  SUBGRAPH S
     A
-  end
+  END
   CLASSDEF a fill: red
   CLASS A a
   STYLE A fill: red
-  direction LR
+  DIRECTION lr
   ACCTITLE: T
   ACCDESCR: D
   ACCDESCR: D
@@ -911,14 +925,14 @@ mermaid.js が空白 1 つで結ぶからです。 [fixture: subgraphs/header-sp
 [fixture: subgraphs/title-touches-name] [fixture: subgraphs/title-names-spaced]
 [fixture: subgraphs/quoted-and-number-ids]
 本体の文は 1 段深く置き、`end` は、subgraph と同じ段に行に単独で置き、
-どの大文字小文字でも `end` と印字します。
+書かれた大文字小文字のまま印字します。
 本体の `class`、`classDef`、`style` 文のキーワードは、subgraph の外と同じく、
 書かれたまま残します。
 mermaid.js は、それを書かれたまま subgraph のノードに並べます。
 [fixture: subgraphs/statement-keywords-case-kept]
 `end` の後に同じ行で続く文は、次の行に置きます。
 [fixture: subgraphs/end-on-the-line-of-a-statement]
-[fixture: subgraphs/end-case-one-form] [fixture: subgraphs/entity-after-end]
+[fixture: subgraphs/end-case-kept] [fixture: subgraphs/entity-after-end]
 文のない subgraph は、`end` を次の行に置いて印字します。
 [fixture: subgraphs/empty]
 
@@ -1009,12 +1023,14 @@ erDiagram
 方向の行は、`direction` とその値と、前後の mermaid.js が読まないテキストです。
 テキストは書かれたまま残します。
 テキストと `direction` の間（離して書かれていれば）と、
-`direction` と値の間には空白 1 つを置き、値は大文字で印字します。
-`lr` は `LR` です。
-mermaid.js の文書の例で使う形です。
-（[同じに描かれる綴り](./compatibility.ja.md#同じに描かれる綴り)を参照）。
-[fixture: direction/spacing] [fixture: direction/text-kept]
-[fixture: direction/case-one-form] [fixture: direction/case-bt-rl-one-form]
+`direction` と値の間には空白 1 つを置き、値は書かれた大文字小文字を保ちます。
+`lr` は `lr` のままです。
+10.9.8 はその行をエンティティとして読み、
+`direction tb` と `direction TB` を別に描くためです。
+詳しくは
+[大文字小文字をそろえるキーワード](./compatibility.ja.md#大文字小文字をそろえるキーワード)
+を参照してください。 [fixture: direction/spacing] [fixture: direction/text-kept]
+[fixture: direction/case-kept] [fixture: direction/case-bt-rl-kept]
 後の行に書かれた値は、`direction` の後に 1 行で印字します。
 [fixture: direction/value-on-next-line-joined]
 [corpus fixture: er/lex-direction-value-next-line]
@@ -1047,7 +1063,7 @@ erDiagram
 ```
 
 入力
-([direction/case-one-form-input.mmd](../tests/fixtures/er/direction/case-one-form-input.mmd)):
+([direction/case-kept-input.mmd](../tests/fixtures/er/direction/case-kept-input.mmd)):
 
 ```mmd
 erDiagram
@@ -1056,12 +1072,12 @@ Direction Tb
 ```
 
 出力
-([direction/case-one-form-output.mmd](../tests/fixtures/er/direction/case-one-form-output.mmd)):
+([direction/case-kept-output.mmd](../tests/fixtures/er/direction/case-kept-output.mmd)):
 
 ```mmd
 erDiagram
-  direction LR
-  direction TB
+  DIRECTION lr
+  Direction Tb
 ```
 
 ### スタイルとクラス

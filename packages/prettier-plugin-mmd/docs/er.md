@@ -535,16 +535,27 @@ erDiagram
 Within a line, a run of spaces and tabs between two tokens becomes one space,
 and tokens that touch keep touching, unless a rule below says otherwise.
 [fixture: whitespace-between-tokens/collapsed] [fixture:
-whitespace-between-tokens/touching-kept] A keyword of the table under
-[Spellings that are drawn the same](./compatibility.md#spellings-that-are-drawn-the-same)
-is printed in the case shown there (`SUBGRAPH` is `subgraph`, and `END` is
-`end`). Any other keyword keeps the case in which it is written (`CLASS`,
-`CLASSDEF`, and `STYLE`: see
+whitespace-between-tokens/touching-kept] A keyword keeps the case in which it is
+written (`SUBGRAPH`, `END`, `DIRECTION`, `CLASS`, `CLASSDEF`, and `STYLE`: see
 [Keywords in one case](./compatibility.md#keywords-in-one-case)), and so do the
 keys of an attribute, which the Db keeps. The words of a relationship are
 printed as symbols (see [Relationship spacing](#relationship-spacing)).
-[fixture: whitespace-between-tokens/keyword-case-one-form] [fixture:
+[fixture: whitespace-between-tokens/keyword-case-kept] [fixture:
 relationship-spacing/cardinality-words-case-one-form]
+
+A `class` or `subgraph` keyword that touches a unit starting with a `-`, and an
+`end` that touches a statement starting with a `-`, keep touching: `class-A a`
+is not printed `class -A a`, which 10.9.8 rejects, and `subgraph-x` and `end-x`
+are not split, since 11.7.0 to 11.16.1 read them as entities (see
+[ER lines that the place or the whitespace decides](./compatibility.md#er-lines-that-the-place-or-the-whitespace-decides)).
+`classDef` and `style` are not among them: `classDef-x` is printed
+`classDef -x`. [fixture:
+whitespace-between-tokens/keyword-then-dash-touching-kept] [fixture:
+whitespace-between-tokens/keyword-upper-then-dash-touching-kept] [fixture:
+whitespace-between-tokens/subgraph-then-dash-touching-kept] [fixture:
+whitespace-between-tokens/end-then-dash-touching-kept] [fixture:
+whitespace-between-tokens/classdef-style-then-dash-spaced] [fixture:
+whitespace-between-tokens/keyword-then-dash-apart]
 
 Input
 ([whitespace-between-tokens/touching-kept-input.mmd](../tests/fixtures/er/whitespace-between-tokens/touching-kept-input.mmd)):
@@ -571,7 +582,7 @@ erDiagram
 ```
 
 Input
-([whitespace-between-tokens/keyword-case-one-form-input.mmd](../tests/fixtures/er/whitespace-between-tokens/keyword-case-one-form-input.mmd)):
+([whitespace-between-tokens/keyword-case-kept-input.mmd](../tests/fixtures/er/whitespace-between-tokens/keyword-case-kept-input.mmd)):
 
 ```mmd
 erDiagram
@@ -592,17 +603,17 @@ int a PK
 ```
 
 Output
-([whitespace-between-tokens/keyword-case-one-form-output.mmd](../tests/fixtures/er/whitespace-between-tokens/keyword-case-one-form-output.mmd)):
+([whitespace-between-tokens/keyword-case-kept-output.mmd](../tests/fixtures/er/whitespace-between-tokens/keyword-case-kept-output.mmd)):
 
 ```mmd
 erDiagram
-  subgraph S
+  SUBGRAPH S
     A
-  end
+  END
   CLASSDEF a fill: red
   CLASS A a
   STYLE A fill: red
-  direction LR
+  DIRECTION lr
   ACCTITLE: T
   ACCDESCR: D
   ACCDESCR: D
@@ -883,12 +894,12 @@ mermaid.js joins them with one space. [fixture: subgraphs/header-spacing]
 [fixture: subgraphs/title-touches-name] [fixture: subgraphs/title-names-spaced]
 [fixture: subgraphs/quoted-and-number-ids] The statements of the body stand one
 level deeper, and `end` stands on a line of its own at the level of the
-subgraph, printed `end` in any case; in the body, the keyword of a `class`,
-`classDef`, or `style` statement stays as written, as it does outside a
-subgraph, and mermaid.js lists it as a node of the subgraph as written.
-[fixture: subgraphs/statement-keywords-case-kept] A statement that follows the
-`end` on its line stands on the line after it. [fixture:
-subgraphs/end-on-the-line-of-a-statement] [fixture: subgraphs/end-case-one-form]
+subgraph, printed in the case in which it is written; in the body, the keyword
+of a `class`, `classDef`, or `style` statement stays as written, as it does
+outside a subgraph, and mermaid.js lists it as a node of the subgraph as
+written. [fixture: subgraphs/statement-keywords-case-kept] A statement that
+follows the `end` on its line stands on the line after it. [fixture:
+subgraphs/end-on-the-line-of-a-statement] [fixture: subgraphs/end-case-kept]
 [fixture: subgraphs/entity-after-end] A subgraph without statements is printed
 with its `end` on the next line. [fixture: subgraphs/empty]
 
@@ -976,16 +987,16 @@ erDiagram
 A direction line is `direction` and its value, with the text that mermaid.js
 does not read before and after them. The text is kept as written. One space
 stands between it and `direction`, where they were written apart, and between
-`direction` and the value; the value is printed in upper case (`lr` is `LR`), as
-the examples in the documentation of mermaid.js write it (see
-[Spellings that are drawn the same](./compatibility.md#spellings-that-are-drawn-the-same)).
-[fixture: direction/spacing] [fixture: direction/text-kept] [fixture:
-direction/case-one-form] [fixture: direction/case-bt-rl-one-form] A value
-written on a later line is printed after `direction` on one line. [fixture:
-direction/value-on-next-line-joined] [corpus fixture:
-er/lex-direction-value-next-line] A direction line with a directive or comment
-keeps its line breaks and indents structural continuations one level deeper.
-[fixture: direction/directive-and-comment-line-kept]
+`direction` and the value; the value keeps the case in which it is written (`lr`
+stays `lr`), since 10.9.8 reads the line as entities and draws `direction tb`
+and `direction TB` differently (see
+[Keywords in one case](./compatibility.md#keywords-in-one-case)). [fixture:
+direction/spacing] [fixture: direction/text-kept] [fixture: direction/case-kept]
+[fixture: direction/case-bt-rl-kept] A value written on a later line is printed
+after `direction` on one line. [fixture: direction/value-on-next-line-joined]
+[corpus fixture: er/lex-direction-value-next-line] A direction line with a
+directive or comment keeps its line breaks and indents structural continuations
+one level deeper. [fixture: direction/directive-and-comment-line-kept]
 
 Input
 ([direction/text-kept-input.mmd](../tests/fixtures/er/direction/text-kept-input.mmd)):
@@ -1012,7 +1023,7 @@ erDiagram
 ```
 
 Input
-([direction/case-one-form-input.mmd](../tests/fixtures/er/direction/case-one-form-input.mmd)):
+([direction/case-kept-input.mmd](../tests/fixtures/er/direction/case-kept-input.mmd)):
 
 ```mmd
 erDiagram
@@ -1021,12 +1032,12 @@ Direction Tb
 ```
 
 Output
-([direction/case-one-form-output.mmd](../tests/fixtures/er/direction/case-one-form-output.mmd)):
+([direction/case-kept-output.mmd](../tests/fixtures/er/direction/case-kept-output.mmd)):
 
 ```mmd
 erDiagram
-  direction LR
-  direction TB
+  DIRECTION lr
+  Direction Tb
 ```
 
 ### Styles and classes
