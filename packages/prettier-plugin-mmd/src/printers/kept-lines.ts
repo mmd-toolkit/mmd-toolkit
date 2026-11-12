@@ -738,10 +738,18 @@ const styleEndCharactersKept: ReadonlyMap<
 
 const unusualStyleEndsBySource = new WeakMap<Source, ReadonlySet<number>>()
 
+/** The directive that starts at `offset`, if there is one. */
+function findDirectiveStartingAt(source: Source, offset: number) {
+  return findTriviaBetween(source, offset, offset + 1).find(
+    (item) => item.type === "Directive" && item.range[0] === offset,
+  )
+}
+
 /**
  * The lines of a `style`, `classDef`, or `linkStyle` statement whose end is
  * followed, before the end of the line, by a whitespace character that
- * `styleEndCharactersKept` selects. The statement holds the styles up to its
+ * `styleEndCharactersKept` selects, also after a `;` that the line rule
+ * ignores and after a directive. The statement holds the styles up to its
  * last token, and the printer leaves out the whitespace after it, which these
  * lines keep as written.
  */
@@ -757,9 +765,21 @@ export function findLinesWithUnusualStyleEnd(
     const keeps = styleEndCharactersKept.get(statement.type)
     let end = statement.range[1]
     let kept = false
-    while (!isAtLineEnd(source, end) && isWhitespace(source.text[end])) {
-      if (keeps?.(source.text[end]) === true) kept = true
-      end++
+    // The line rule of mermaid.js removes the last `;` of the line before it
+    // reads the styles, and so does it with a directive, so the whitespace
+    // after them is at the end of the last style too.
+    while (!isAtLineEnd(source, end)) {
+      const character = source.text.charAt(end)
+      if (isWhitespace(character)) {
+        if (keeps?.(character) === true) kept = true
+        end++
+      } else if (source.ignoredSemicolons.has(end)) {
+        end++
+      } else {
+        const directive = findDirectiveStartingAt(source, end)
+        if (directive === undefined) break
+        end = directive.range[1]
+      }
     }
     if (kept) lines.add(lineStartOf(source, statement.range[1]))
   }

@@ -29,10 +29,10 @@ block precedes is left out like any other, since the versions that count read
 the header the same with it and without it, or reject both: `gitGraph ---`, the
 block, and `--- :` are printed with `---` and no colon. [fixture:
 gitgraph/header/header-yaml-before-colon] A colon on a line of its own after the
-block stays, since the printer keeps the line break after a hidden form (see
-[Hidden yaml](#hidden-yaml)) and leaving the colon out would leave an empty line
-there. [corpus fixture: gitgraph/header-hidden-before-colon] Hidden gaps and
-protected header/body groups retain their source boundaries.
+block is left out with the line break before it, so that no empty line stays.
+[fixture: gitgraph/header/header-yaml-colon-on-its-own-line] [corpus fixture:
+gitgraph/header-hidden-before-colon] Hidden gaps and protected header/body
+groups retain their source boundaries.
 
 A hidden form between `gitGraph` and the direction keeps the gap after it as
 written, because a hidden form consumes an immediately following line feed, and

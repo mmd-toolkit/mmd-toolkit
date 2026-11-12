@@ -258,7 +258,7 @@ ER 図の `"CUSTOMER" ||--o{ "ORDER" : places` は、
 - ヘッダーの名前（`block-beta` と `block`）は、対象の版の間で受け付けが違う。
 - `@` を含む flowchart のラベルの `[` の後の空白（`A[ user@example.com ]`）は、
   それがないと、対象の版の一部がラベルを拒否する。
-- flowchart のヘッダーの向き（`TB` と `TD`）は、
+- subgraph のある flowchart のヘッダーの向き（`TB` と `TD`）は、
   対象の版の一部が違う描き方をする。
 
 これに当たる場合のうち、固定している版だけでは要らないものは、どれも、

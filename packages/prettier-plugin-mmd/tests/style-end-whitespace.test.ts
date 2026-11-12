@@ -5,9 +5,11 @@
  * line is printed as written: a no-break space, U+3000, a vertical tab, and a
  * byte order mark in a class diagram, a flowchart, and the `linkStyle` of an
  * agentflow diagram, and a vertical tab and a form feed in the `classDef` of an
- * ER diagram. Elsewhere, and for a space and a tab, it is left out
- * (docs/compatibility.md, Whitespace at the end of a style). The characters are
- * written as escapes, and no fixture holds them.
+ * ER diagram. The whitespace also counts after a `;` that the line rule of
+ * mermaid.js removes and after a directive, which it removes too. Elsewhere,
+ * and for a space and a tab, it is left out (docs/compatibility.md, Whitespace
+ * at the end of a style). The characters are written as escapes, and no fixture
+ * holds them.
  */
 import { describe, expect, it } from "vitest"
 import { formatMermaid } from "./helpers.ts"
@@ -62,6 +64,40 @@ const keepsCharacters: readonly Case[] = [
   ],
 ]
 
+/** The statements that keep the character after a `;` or a directive that comes first. */
+const keepsCharactersAfterIgnoredText: readonly Case[] = [
+  [
+    "a `;` after the style of a class diagram",
+    "classDiagram\nclass A\nstyle A fill:#f00;@\n",
+    "classDiagram\n  class A\n  style A fill:#f00;@\n",
+  ],
+  [
+    "a directive after the style of a class diagram",
+    "classDiagram\nclass A\nstyle A fill:red %%{init: {}}%%@\n",
+    "classDiagram\n  class A\n  style A fill:red %%{init: {}}%%@\n",
+  ],
+  [
+    "a `;` after the style of a flowchart",
+    "flowchart LR\nA-->B\nstyle A fill:#f00;@\n",
+    "flowchart LR\n  A --> B\n  style A fill:#f00;@\n",
+  ],
+  [
+    "a directive and a `;` after the style of a flowchart",
+    "flowchart LR\nA-->B\nstyle A fill:#f00 %%{init: {}}%%;@\n",
+    "flowchart LR\n  A --> B\n  style A fill:#f00 %%{init: {}}%%;@\n",
+  ],
+  [
+    "a `;` and a directive after the classDef of a flowchart",
+    "flowchart LR\nA-->B\nclassDef k fill:#f00; %%{init: {}}%%@\n",
+    "flowchart LR\n  A --> B\n  classDef k fill:#f00; %%{init: {}}%%@\n",
+  ],
+  [
+    "a directive after the linkStyle of a flowchart",
+    "flowchart LR\nA-->B\nlinkStyle 0 stroke:#f00 %%{init: {}}%%@\n",
+    "flowchart LR\n  A --> B\n  linkStyle 0 stroke:#f00 %%{init: {}}%%@\n",
+  ],
+]
+
 /** The statements whose figure is the same without the character, with the line as printed. */
 const dropsCharacters: readonly Case[] = [
   [
@@ -94,6 +130,18 @@ describe("the whitespace at the end of a style", () => {
     }
   })
 
+  it("keeps the whitespace after a `;` and after a directive that the line rule removes", async () => {
+    for (const [name, character] of unusualWhitespace) {
+      for (const [title, input, output] of keepsCharactersAfterIgnoredText) {
+        const formatted = await formatMermaid(input.replace("@", character))
+        expect(formatted, `${name} after ${title}`).toBe(
+          output.replace("@", character),
+        )
+        expect(await formatMermaid(formatted), `${title} twice`).toBe(formatted)
+      }
+    }
+  })
+
   it("keeps a vertical tab and a form feed at the end of the classDef of an ER diagram", async () => {
     for (const character of ["\u000b", "\u000c"]) {
       const formatted = await formatMermaid(
@@ -104,6 +152,12 @@ describe("the whitespace at the end of a style", () => {
       )
       expect(await formatMermaid(formatted), JSON.stringify(character)).toBe(
         formatted,
+      )
+      const afterDirective = await formatMermaid(
+        `erDiagram\nA ||--o{ B : has\nclassDef k fill:#f00 %%{init: {}}%%${character}\nclass A k\n`,
+      )
+      expect(afterDirective, JSON.stringify(character)).toContain(
+        `\n  classDef k fill:#f00 %%{init: {}}%%${character}\n`,
       )
     }
   })
@@ -125,7 +179,11 @@ describe("the whitespace at the end of a style", () => {
   })
 
   it("leaves out the spaces and tabs at the end of a style", async () => {
-    for (const [title, input] of [...keepsCharacters, ...dropsCharacters]) {
+    for (const [title, input] of [
+      ...keepsCharacters,
+      ...keepsCharactersAfterIgnoredText,
+      ...dropsCharacters,
+    ]) {
       const formatted = await formatMermaid(input.replace("@", " \t "))
       expect(formatted, title).not.toContain(" \n")
       expect(formatted, title).not.toContain("\t\n")

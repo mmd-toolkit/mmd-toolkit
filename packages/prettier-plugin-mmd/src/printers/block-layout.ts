@@ -225,7 +225,9 @@ export function layoutCompositeHead(
     atoms: keepFirstGapLineTails(source, atoms, (from, to) =>
       gapKeepsLineBreak(source, keptBreaks, from, to),
     ),
-    rules: new Map([...layout.rules, [head.range[0], "none"]]),
+    // One space separates the keyword `block:` from its node (docs/block.md,
+    // Composites).
+    rules: new Map([...layout.rules, [head.range[0], "space"]]),
     outdented: new Set(),
     lineBreaks: "joined",
   }

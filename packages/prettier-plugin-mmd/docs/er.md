@@ -1102,7 +1102,11 @@ styles-and-classes/trailing-whitespace-takes-next-line] [fixture:
 styles-and-classes/directive-before-next-line] [fixture:
 styles-and-classes/comment-line-inside-kept] [corpus fixture:
 er/lex-classdef-space-before-line-feed] [corpus fixture:
-er/lex-style-tab-before-line-feed]
+er/lex-style-tab-before-line-feed] A vertical tab and a form feed at the end of
+the last style take the line feed in the same way, since the style context reads
+every whitespace character between units, and the statement is kept in the same
+way. [test: keeps a vertical tab and a form feed at the end of the classDef of
+an ER diagram]
 
 Line-ending semicolons follow
 [Semicolons at the end of a style statement](#semicolons-at-the-end-of-a-style-statement).

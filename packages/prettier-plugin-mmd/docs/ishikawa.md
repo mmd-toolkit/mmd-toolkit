@@ -17,16 +17,23 @@ running Mermaid.
 
 ### Header
 
-The selected written `ishikawa` or `ishikawa-beta` header stands at column one,
-retaining its accepted case and stable/beta spelling. This makes the header easy
-to find without replacing an authored choice with a Db-equal spelling (see
+The header stands at column one and is printed `ishikawa`, in lower case and
+without `-beta`, whatever case and name it was written in: `IsHiKaWa-BeTa` and
+`ISHIKAWA` become `ishikawa`. Every version of mermaid.js that counts and has
+the diagram reads the names in any case and draws them the same (see
 [The names of a header](./compatibility.md#the-names-of-a-header)). [fixture:
 ishikawa/header/header-column] [fixture: ishikawa/header/header-stable]
 [fixture: ishikawa/header/header-case-alternative] [fixture:
 ishikawa/header/header-lowercase] [fixture: ishikawa/header/header-valid]
-Exterior padding disappears; a failed beta boundary leaves its suffix with the
-root, and attached trivia follows the rules below. [fixture:
-ishikawa/header/header-beta-fallback]
+[fixture: ishikawa/header/header-beta] Exterior padding disappears; a failed
+beta boundary leaves its suffix with the root, and attached trivia follows the
+rules below. [fixture: ishikawa/header/header-beta-fallback] A root that starts
+with `-beta` and touches the header (`ishikawa-beta-beta` has the header
+`ishikawa-beta` and the root `-beta`) goes to a line of its own, so the short
+header cannot be read as the long one. Where the root stays on the line of the
+header, because the indentation of the nodes is kept as written, the header
+stays as written too. [fixture: ishikawa/header/header-beta-then-beta-root]
+[fixture: ishikawa/header/header-beta-then-beta-root-kept]
 
 Input (escaped):
 
@@ -585,11 +592,11 @@ ishikawa
 
 ### Case and order
 
-Written header case, literal case, source/sibling order and repeated nodes
-remain, including equal labels with different children. Header case is a
-Db-equal authored choice worth retaining; sibling order and repetitions are part
-of the ordered Db tree, so sorting, deduplication or grouping would change it.
-[fixture: ishikawa/case-and-order/case-order-kept] [fixture:
+Literal case, source/sibling order and repeated nodes remain, including equal
+labels with different children. The header is printed `ishikawa` whatever case
+it was written in (see [Header](#header)); sibling order and repetitions are
+part of the ordered Db tree, so sorting, deduplication or grouping would change
+it. [fixture: ishikawa/case-and-order/case-order-kept] [fixture:
 ishikawa/case-and-order/deduplicate-unsafe] [fixture:
 ishikawa/case-and-order/single-cause]
 
@@ -603,7 +610,7 @@ Output
 ([case-and-order/case-order-kept-output.mmd](../tests/fixtures/ishikawa/case-and-order/case-order-kept-output.mmd)):
 
 ```mmd
-iShIkAwA
+ishikawa
   R
     A
       First

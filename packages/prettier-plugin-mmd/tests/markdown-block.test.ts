@@ -19,7 +19,7 @@ describe("a block diagram in a Markdown code block", () => {
         "# Title\n\n```mermaid\n  block-beta\n\n  columns   3 a b\nblock:G c end\nd-->e\n```\n",
       ),
     ).toBe(
-      "# Title\n\n```mermaid\nblock-beta\n  columns 3\n  a b\n  block:G\n    c\n  end\n  d --> e\n```\n",
+      "# Title\n\n```mermaid\nblock-beta\n  columns 3\n  a b\n  block: G\n    c\n  end\n  d --> e\n```\n",
     )
   })
 

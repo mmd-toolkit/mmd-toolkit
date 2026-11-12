@@ -10,6 +10,19 @@ import type { Source } from "./source.ts"
 import { findTokenStartingAt } from "./source.ts"
 
 /**
+ * Whether a root that stands on the line of the header stays there: where the
+ * indentation of the nodes is kept as written (docs/ishikawa.md, Indentation),
+ * or where a directive touches the root.
+ */
+export function keepsRootOnHeaderLine(lines: readonly IshikawaLine[]): boolean {
+  const root = lines[0]
+  return (
+    root?.keepsHeaderGroup === true ||
+    (root?.indentation === null && !indentationShowsTree(lines))
+  )
+}
+
+/**
  * Semicolons never separate nodes. Header-line roots can move whole, except
  * when a header directive touches the root (docs/ishikawa.md, Standalone
  * directives and Line rule and kept lines).
@@ -26,16 +39,7 @@ export function findIshikawaKeptLines(
       (line) => line !== headerLine,
     ),
   )
-  const root = lines[0]
-  if (
-    root?.keepsHeaderGroup === true ||
-    (root?.indentation === null && !indentationShowsTree(lines))
-  ) {
-    // A root that stands on the line of the header stays there where the
-    // indentation of the nodes is kept as written (docs/ishikawa.md,
-    // Indentation).
-    joined.add(headerLine)
-  }
+  if (keepsRootOnHeaderLine(lines)) joined.add(headerLine)
   const verbatim = new Set(
     [...findLinesEndedBySemicolon(source)].filter((line) =>
       source.root.directives.some(

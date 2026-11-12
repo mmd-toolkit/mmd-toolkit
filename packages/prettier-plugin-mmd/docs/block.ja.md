@@ -65,7 +65,7 @@ d
 block-beta
   columns 3
   a
-  block:group1:2
+  block: group1:2
     columns 2
     h
     i
@@ -77,18 +77,33 @@ block-beta
 
 composite は 3 種類の行でできています。
 `block:` とその node の行、中の文の行、`end` の行です。
-`block:G`、`block`、`block-beta` は書かれたままに印字し、
-`block:` はその node に接します。
-mermaid.js は `block: G` と `block:G` を同じに読むので、
-形は 1 つにします（mermaid.js の文書の `block:group1:2` の形です）。
+`block` と `block-beta` は書かれたままに印字します。
+キーワード `block:` はコロンを含み、その node との間は空白 1 つにします。
+`block:G` は `block: G` に、`block:G:2` は `block: G:2` に印字します。
+幅のコロンは、ブロック図のほかの箇所と同じく node に接します。
+キーワードとその後ろのものの間の隙間は、
+どの図種でも同じ形にします（`title Pets`）。
+詳しくは
+[Prettier にない種類の隙間](./printed-form.ja.md#2-prettier-にない種類の隙間)
+を参照してください。
+この決まりは、mermaid.js の例に綴りを合わせる決まりより先に当たります。
 例は `block:` を node に接して 4 回書き、後に空白を置く形は一度も書きません。
-対象にする 10 版は、コロンの前の空白（`block : G`）を拒否します。
-キーワード `block:` が許さないからです。
+mermaid.js は `block: G` と `block:G` を同じに読み、
+対象にする版もすべて同じなので、接する形が要る版はありません。
+対象にする版はどれも、コロンの前の空白（`block : G`）を拒否します。
+キーワード `block:` が許さないので、この形は印字しません。
+`block:` の後には、改行を含む空白を置けます。
+空白、タブ、改行の隙間は、空白 1 つに印字します。
+`block:`、改行、`G` は `block: G` になります。
+この隙間にあるディレクティブは、その空白の後に置き、node に接します。
+詳しくは[指令](#指令)を参照してください。
 見出しの後の最初の文と、`end` の後の文は、自分の行に移します。
 1 行に書かれた composite（`block:G a b end`）も同じで、
 どの composite も同じ形に置き、字下げが中身を示します。
 `end` は自分の行に置き、`block:` と同じ段にします。
-[fixture: composites/colon-touches-the-node]
+[fixture: composites/space-after-the-colon]
+[fixture: composites/tab-after-the-colon]
+[fixture: composites/directive-between-the-colon-and-the-node]
 [fixture: composites/colon-and-node-on-different-lines]
 [fixture: composites/width-kept]
 [fixture: composites/width-colon-touches-the-node]
@@ -103,22 +118,34 @@ mermaid.js は `block: G` と `block:G` を同じに読むので、
 [fixture: composites/head-over-lines-joined]
 
 入力
-([composites/colon-touches-the-node-input.mmd](../tests/fixtures/block/composites/colon-touches-the-node-input.mmd)):
+([composites/space-after-the-colon-input.mmd](../tests/fixtures/block/composites/space-after-the-colon-input.mmd)):
 
 ```mmd
 block-beta
-block: G
+block:G
 a
+end
+block: H
+b
+end
+block:   I
+c
 end
 ```
 
 出力
-([composites/colon-touches-the-node-output.mmd](../tests/fixtures/block/composites/colon-touches-the-node-output.mmd)):
+([composites/space-after-the-colon-output.mmd](../tests/fixtures/block/composites/space-after-the-colon-output.mmd)):
 
 ```mmd
 block-beta
-  block:G
+  block: G
     a
+  end
+  block: H
+    b
+  end
+  block: I
+    c
   end
 ```
 
@@ -135,7 +162,7 @@ block:G a b end
 
 ```mmd
 block-beta
-  block:G
+  block: G
     a b
   end
 ```
@@ -401,9 +428,9 @@ mermaid.js は id と形の始まりの間の空白を同じに読むので、�
 `A ("x") B` が 3 つと読まれません。
 mermaid.js の文書の形です。
 幅の `:` は、前にも後にも接します（`A:3`、`B["b"]:2`）。
-対象にする 10 版は、コロンの後の空白（`A: 3`、`A : 3`）を拒否します。
+対象にする版はどれも、コロンの後の空白（`A: 3`、`A : 3`）を拒否します。
 Prettier は片側だけに空白を置いたコロンを印字しないので、前の空白（`A :3`。
-10 版は同じに読みます）も印字しません。
+それらの版は同じに読みます）も印字しません。
 詳しくは
 [mermaid.js が空白を許さない所](./printed-form.ja.md#mermaidjs-が空白を許さない所)
 を参照してください。

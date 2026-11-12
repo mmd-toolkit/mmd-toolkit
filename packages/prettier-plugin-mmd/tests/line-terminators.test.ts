@@ -195,7 +195,7 @@ const diagrams: readonly (readonly [string, readonly string[], string])[] = [
       "%% c",
       "%%{init: {}}%%",
     ],
-    "block-beta\n  columns 3\n  a b\n  block:G\n    c --> d\n  end\n  %% c\n  %%{init: {}}%%\n",
+    "block-beta\n  columns 3\n  a b\n  block: G\n    c --> d\n  end\n  %% c\n  %%{init: {}}%%\n",
   ],
   [
     "gantt",

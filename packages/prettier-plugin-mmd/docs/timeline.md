@@ -611,8 +611,8 @@ statement printed as written (see
 [Multi-line statements](#multi-line-statements)). [fixture:
 titles-and-sections/value-on-next-line] [fixture:
 titles-and-sections/comment-line-inside-kept] A title whose value starts with a
-`#` on a later line than the keyword stays as written: one version that counts
-reads `title`, a line break, and `# c` as a title of whitespace only and a
+`#` on a later line than the keyword stays as written: some versions that count
+read `title`, a line break, and `# c` as a title of whitespace only and a
 comment, and `title # c` as the period `title` and a comment, while the others
 read both as the title `# c` (drawn the same; see
 [Forms kept for versions of mermaid.js that count](./compatibility.md#forms-kept-for-versions-of-mermaidjs-that-count)).

@@ -8,6 +8,7 @@ import type {
 import type { Atom, AtomLayout, GapRule } from "./atoms.ts"
 import { layoutCommonDescription, layoutCommonLine } from "./common-layout.ts"
 import { protectHiddenGaps } from "./hidden-forms.ts"
+import { findRespellings } from "./spelling.ts"
 import {
   collectAtoms,
   collectValueNodes,
@@ -65,7 +66,25 @@ export function layoutGitgraphHeader(
   )
   if (colon?.value === ":") end = colon.range[1]
   const hidden = [...diagram.textBeforeDirection, ...diagram.textBeforeColon]
-  const atoms = collectAtoms(source, keyword.range[0], end, hidden, [])
+  const atoms = [...collectAtoms(source, keyword.range[0], end, hidden, [])]
+  // A colon that is left out (docs/gitgraph.md, Header) on a line of its own
+  // after a hidden YAML block takes the line break before it, so that no empty
+  // line stays where it stood.
+  const yaml = diagram.textBeforeColon.at(-1)
+  const colonIndex = atoms.findIndex((atom) => atom.start === colon?.range[0])
+  if (
+    yaml !== undefined &&
+    colon !== undefined &&
+    colonIndex > 0 &&
+    findRespellings(source).get(colon.range[0])?.text === "" &&
+    source.text.slice(yaml.range[1], colon.range[0]).includes("\n")
+  ) {
+    atoms[colonIndex] = {
+      start: atoms[colonIndex - 1].end,
+      end: colon.range[1],
+      doc: "",
+    }
+  }
   const rules = gitgraphGapRules(source, atoms)
   return protectHiddenGaps(
     { atoms, rules, outdented: new Set(), lineBreaks: "kept" },

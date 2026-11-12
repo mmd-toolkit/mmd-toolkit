@@ -63,7 +63,7 @@ Output
 block-beta
   columns 3
   a
-  block:group1:2
+  block: group1:2
     columns 2
     h
     i
@@ -74,17 +74,28 @@ block-beta
 ### Composites
 
 A composite stands on three kinds of lines: the line of `block:` and its node,
-the lines of its statements, and the line of `end`. `block:G`, `block`, and
-`block-beta` are printed as written, with `block:` touching its node: mermaid.js
-reads `block: G` and `block:G` alike, so the form of its documentation
-(`block:group1:2`) is printed: the examples write `block:` touching its node 4
-times and never with a space after it, and the ten versions that count reject a
-space before the colon (`block : G`), which the keyword `block:` forbids. The
-first statement after the head, and the statement after `end`, go to lines of
-their own, also where the composite was written on one line (`block:G a b end`),
-so that every composite is laid out in the same way and the indentation shows
-its body. `end` stands on a line of its own, at the level of its `block:`.
-[fixture: composites/colon-touches-the-node] [fixture:
+the lines of its statements, and the line of `end`. `block` and `block-beta` are
+printed as written. The keyword `block:` holds its colon, and one space
+separates it from its node: `block:G` is printed `block: G`, and `block:G:2` is
+printed `block: G:2`, the colon of the width touching the node as it does
+elsewhere in a block diagram. A gap between a keyword and what follows it has
+one form in every diagram type (`title Pets`; see
+[A gap of a kind that Prettier does not have](./printed-form.md#2-a-gap-of-a-kind-that-prettier-does-not-have)),
+and that rule comes before the spelling of the examples of mermaid.js, which
+write `block:` touching its node 4 times and never with a space after it.
+mermaid.js reads `block: G` and `block:G` alike, and so do all the versions that
+count, so none needs the touching form. They all reject a space before the colon
+(`block : G`), which the keyword `block:` forbids, so the printer never writes
+it. Whitespace may stand after `block:`, line feeds included, and a gap of
+spaces, tabs, or a line break is printed as the one space: `block:`, a line
+break, and `G` become `block: G`. A directive in that gap stands after the space
+and touches the node (see [Directives](#directives)). The first statement after
+the head, and the statement after `end`, go to lines of their own, also where
+the composite was written on one line (`block:G a b end`), so that every
+composite is laid out in the same way and the indentation shows its body. `end`
+stands on a line of its own, at the level of its `block:`. [fixture:
+composites/space-after-the-colon] [fixture: composites/tab-after-the-colon]
+[fixture: composites/directive-between-the-colon-and-the-node] [fixture:
 composites/colon-and-node-on-different-lines] [fixture: composites/width-kept]
 [fixture: composites/width-colon-touches-the-node] [fixture:
 composites/shape-touches-the-node] [fixture:
@@ -98,22 +109,34 @@ composites/end-on-a-line-of-its-own] [fixture:
 composites/head-over-lines-joined]
 
 Input
-([composites/colon-touches-the-node-input.mmd](../tests/fixtures/block/composites/colon-touches-the-node-input.mmd)):
+([composites/space-after-the-colon-input.mmd](../tests/fixtures/block/composites/space-after-the-colon-input.mmd)):
 
 ```mmd
 block-beta
-block: G
+block:G
 a
+end
+block: H
+b
+end
+block:   I
+c
 end
 ```
 
 Output
-([composites/colon-touches-the-node-output.mmd](../tests/fixtures/block/composites/colon-touches-the-node-output.mmd)):
+([composites/space-after-the-colon-output.mmd](../tests/fixtures/block/composites/space-after-the-colon-output.mmd)):
 
 ```mmd
 block-beta
-  block:G
+  block: G
     a
+  end
+  block: H
+    b
+  end
+  block: I
+    c
   end
 ```
 
@@ -130,7 +153,7 @@ Output
 
 ```mmd
 block-beta
-  block:G
+  block: G
     a b
   end
 ```
@@ -379,8 +402,8 @@ was written between them (`A ("x")`): mermaid.js reads the whitespace between an
 id and an opening alike, so the form is a choice, and touching shows that the id
 and its shape are one node, so that `A ("x") B` is not read as three. It is how
 the documentation of mermaid.js writes shapes. The `:` of a width touches what
-is before it and what follows (`A:3`, `B["b"]:2`). The ten versions that count
-reject whitespace after it (`A: 3`, `A : 3`), and Prettier prints no colon with
+is before it and what follows (`A:3`, `B["b"]:2`). Every version that counts
+rejects whitespace after it (`A: 3`, `A : 3`), and Prettier prints no colon with
 a space on one side only, so a space before it (`A :3`, which they read the
 same) is not printed either (see
 [Where mermaid.js decides against the whitespace](./printed-form.md#where-mermaidjs-decides-against-the-whitespace)).

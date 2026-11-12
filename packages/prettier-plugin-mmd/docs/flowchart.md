@@ -2354,24 +2354,32 @@ the examples are written as strings, in which `\n` is a line break:
 
 ### Direction
 
-The direction is kept as written: `TD` is not changed to `TB`, and `TB` is not
-changed to `TD`, in the header or in a `direction` statement. mermaid.js 12.3.0
-draws the two the same, but some versions that count draw a flowchart with a
-subgraph and `TB` in its header differently from the same text with `TD`, and
+The `TB` in the header of a flowchart that has no subgraph is printed `TD`:
+`flowchart TB` becomes `flowchart TD`, and `graph TB` becomes `graph TD`. The
+examples of the documentation write `TD` 70 times and `TB` 7 times, and every
+version that counts, and the layout of ELK, draws a flowchart without a subgraph
+the same with the two. A `subgraph` in a label, an id, or a comment is no
+subgraph. [fixture: direction/header-tb-without-subgraph] [fixture:
+direction/header-graph-tb-without-subgraph] [fixture:
+direction/header-tb-subgraph-word-is-no-subgraph] [fixture:
+direction/header-tb-with-direction-statement] With a subgraph the header is kept
+as written, `TD` as well as `TB`: some versions that count draw a flowchart with
+a subgraph and `TB` in its header differently from the same text with `TD`, and
 the header keyword is kept as written too (see
 [Forms kept for versions of mermaid.js that count](./compatibility.md#forms-kept-for-versions-of-mermaidjs-that-count)
-and [The names of a header](./compatibility.md#the-names-of-a-header)).
-[fixture: direction/header-td-kept] [fixture: direction/header-tb-kept]
-[fixture: direction/header-keyword-kept] [fixture:
-direction/statement-td-kept-with-other-header] [fixture:
-direction/statement-values-kept] mermaid.js keeps the `TD` of a `direction`
-statement in a subgraph as written, so changing it there would change the
-diagram, and changing only the header would make the two disagree. The header of
-a swimlane diagram is printed with `TB` for `TD`, as the header of an agentflow
-diagram is (see [Header](./agentflow.md#header)); both diagram types are later
-than the version that made `TD` behave as `TB`. A `TD` that stands after a
-directive which follows the header (`swimlane-beta%%{init: {}}%% TD`) stays as
-written. [fixture: direction/swimlane-header-td-one-form] [fixture:
+and [The names of a header](./compatibility.md#the-names-of-a-header)). The
+header `flowchart-elk` is kept as written as well. [fixture:
+direction/header-td-kept] [fixture: direction/header-tb-with-subgraph-kept]
+[fixture: direction/header-elk-tb-kept] [fixture: direction/header-keyword-kept]
+[fixture: direction/statement-td-kept-with-other-header] [fixture:
+direction/statement-values-kept] A `direction` statement is kept as written:
+mermaid.js keeps the `TD` of a `direction` statement in a subgraph as written,
+so changing it there would change the diagram. The header of a swimlane diagram
+is printed with `TB` for `TD`, as the header of an agentflow diagram is (see
+[Header](./agentflow.md#header)); both diagram types are later than the version
+that made `TD` behave as `TB`. A `TD` that stands after a directive which
+follows the header (`swimlane-beta%%{init: {}}%% TD`) stays as written.
+[fixture: direction/swimlane-header-td-one-form] [fixture:
 direction/swimlane-header-td-after-directive-kept] In a `direction` statement
 mermaid.js reads the text before `direction` and after the value as text, which
 may hold labels and strings, and a `;` after the value belongs to that text and

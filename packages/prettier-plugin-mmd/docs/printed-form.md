@@ -240,8 +240,8 @@ or is drawn differently by one of them. Three such cases are:
   accept differently;
 - the space after the `[` of a flowchart label that holds a `@`
   (`A[ user@example.com ]`), without which some of them reject the label;
-- the direction of the header of a flowchart (`TB` and `TD`), which some of them
-  draw differently.
+- the direction of the header of a flowchart that has a subgraph (`TB` and
+  `TD`), which some of them draw differently.
 
 Every such case that the pinned version does not need by itself has a row in
 [Forms kept for versions of mermaid.js that count](./compatibility.md#forms-kept-for-versions-of-mermaidjs-that-count),

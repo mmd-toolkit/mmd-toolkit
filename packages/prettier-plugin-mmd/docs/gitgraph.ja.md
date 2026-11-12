@@ -38,9 +38,9 @@ hidden YAML ブロックが前にある colon は、ほかの colon と同じく
 どちらも拒否するためです。
 `gitGraph ---`、ブロック、`--- :` は、`---` のまま colon なしで印字します。
 [fixture: gitgraph/header/header-yaml-before-colon]
-ブロックの後の、単独の行にある colon は残します。
-印字は hidden の形の後の改行を保つので、
-colon を除くとそこに空の行が残るためです（[Hidden yaml](#hidden-yaml)を参照）。
+ブロックの後の、単独の行にある colon は、その前の改行と一緒に除くので、
+空の行は残りません。
+[fixture: gitgraph/header/header-yaml-colon-on-its-own-line]
 [corpus fixture: gitgraph/header-hidden-before-colon]
 hidden の隙間と保護された見出し・本文の境界は保持します。
 

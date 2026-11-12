@@ -1149,6 +1149,10 @@ Db は同じで mermaid.js の読みも見えますが、作者が書いた空�
 [fixture: styles-and-classes/comment-line-inside-kept]
 [corpus fixture: er/lex-classdef-space-before-line-feed]
 [corpus fixture: er/lex-style-tab-before-line-feed]
+最後のスタイルの末尾の垂直タブと改ページも、
+スタイル文脈が空白の文字をすべて単位の間として読むので、
+同じようにその後の改行を取り込み、文は同じように書かれたまま残します。
+[test: keeps a vertical tab and a form feed at the end of the classDef of an ER diagram]
 
 行末のセミコロンは、
 [スタイル文の末尾のセミコロン](#スタイル文の末尾のセミコロン)に従います。

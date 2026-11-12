@@ -17,20 +17,29 @@ mermaid.js は各入力とその出力を同じ Db として読みます。
 
 ### Header
 
-選択された `ishikawa` か `ishikawa-beta` の見出しは、
-受理された大文字小文字と stable/beta の綴りを保ち、1 列目に置きます。
-作者の選択を Db が等しい綴りに置き換えずに、見出しを見つけやすくするためです。
-（[ヘッダーの名前](./compatibility.ja.md#ヘッダーの名前)を参照）。
-[fixture: ishikawa/header/header-column]
+見出しは 1 列目に置き、書かれた大文字小文字と名前によらず、
+小文字で `-beta` のない `ishikawa` と印字します。
+`IsHiKaWa-BeTa` と `ISHIKAWA` は `ishikawa` になります。
+この図を持つ対象の版は、どれも大文字小文字を問わずに名前を読み、
+同じに描くからです。
+詳しくは [ヘッダーの名前](./compatibility.ja.md#ヘッダーの名前)
+を参照してください。 [fixture: ishikawa/header/header-column]
 [fixture: ishikawa/header/header-stable]
 [fixture: ishikawa/header/header-case-alternative]
 [fixture: ishikawa/header/header-lowercase]
-[fixture: ishikawa/header/header-valid]
+[fixture: ishikawa/header/header-valid] [fixture: ishikawa/header/header-beta]
 
 外側の空白は除きます。
 beta の境界に合わない接尾辞は根のテキストに残します。
 接するコメントと directive は後の規則に従います。
 [fixture: ishikawa/header/header-beta-fallback]
+`-beta` で始まり、見出しに接する根（`ishikawa-beta-beta` は、
+見出し `ishikawa-beta` と根 `-beta` です）は、自分の行に移します。
+短い見出しが長い見出しとして読まれないようにするためです。
+ノードの字下げを書かれたままにするので、根が見出しの行に残る場合は、
+見出しも書かれたままにします。
+[fixture: ishikawa/header/header-beta-then-beta-root]
+[fixture: ishikawa/header/header-beta-then-beta-root-kept]
 
 入力（escape 表記）:
 
@@ -635,9 +644,10 @@ ishikawa
 
 ### Case and order
 
-見出しと literal の大文字小文字、入力と兄弟の順序、
+literal の大文字小文字、入力と兄弟の順序、
 同じ label で異なる子を持つものも含め、節点の繰返しを保ちます。
-見出しの大文字小文字は Db が等しい作者の選択として保ちます。
+見出しは書かれた大文字小文字によらず `ishikawa` と印字します（[Header](#header)
+を参照）。
 兄弟の順序と繰返しは順序付き Db の木の一部なので、ソート、重複除去、
 同じ label のまとめは行いません。
 [fixture: ishikawa/case-and-order/case-order-kept]
@@ -654,7 +664,7 @@ ishikawa
 ([case-and-order/case-order-kept-output.mmd](../tests/fixtures/ishikawa/case-and-order/case-order-kept-output.mmd)):
 
 ```mmd
-iShIkAwA
+ishikawa
   R
     A
       First

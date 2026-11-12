@@ -2506,7 +2506,7 @@ const blockLineSeparatorExamples: readonly (readonly [
   [
     "U+2028 between a composite head and its body",
     "block-beta\nblock:G\u2028a\u2028end\n",
-    "block-beta\n  block:G\n    a\n  end\n",
+    "block-beta\n  block: G\n    a\n  end\n",
   ],
   [
     "block: ls-comment-in-composite-head",
@@ -2521,17 +2521,17 @@ const blockLineSeparatorExamples: readonly (readonly [
   [
     "block: comment-ls-semicolon-before",
     'block-beta\nblock:r\n A["x"]%% c;\u2028 B["y"]\nend\n',
-    'block-beta\n  block:r\n    A["x"] %% c;\u2028 B["y"]\n  end\n',
+    'block-beta\n  block: r\n    A["x"] %% c;\u2028 B["y"]\n  end\n',
   ],
   [
     "block: comment-ps-semicolon-after",
     'block-beta\nblock:r\n A["x"]%% c\u2029 B["x;y"]\nend\n',
-    'block-beta\n  block:r\n    A["x"] %% c\u2029 B["x;y"]\n  end\n',
+    'block-beta\n  block: r\n    A["x"] %% c\u2029 B["x;y"]\n  end\n',
   ],
   [
     "block: comment-ls-semicolon-both",
     'block-beta\nblock:r\n A["x"]%% c;\u2028 B["x;y"]\nend\n',
-    'block-beta\n  block:r\n    A["x"] %% c;\u2028 B["x;y"]\n  end\n',
+    'block-beta\n  block: r\n    A["x"] %% c;\u2028 B["x;y"]\n  end\n',
   ],
   [
     "U+2029 before the comma of a block classDef statement",
@@ -2598,7 +2598,7 @@ const blockWhitespaceExamples: readonly (readonly [string, string, string])[] =
     [
       "U+00A0 in a composite head",
       "block-beta\nblock:\u00a0G\u00a0a\u00a0end\n",
-      "block-beta\n  block:G\n    a\n  end\n",
+      "block-beta\n  block: G\n    a\n  end\n",
     ],
     [
       "U+0085 inside an id",

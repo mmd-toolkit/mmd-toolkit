@@ -772,14 +772,14 @@ colons/directive-around-colon] mermaid.js reads the text without the whitespace
 at its ends. When the text is empty, nothing follows the `:`, except that one
 whitespace character stays, the first one as written, where spaces and tabs only
 followed the `:` up to the end of the line or to a `;` that the printer drops:
-`A->>B: ` is a message with an empty text, while one of the versions that count
-rejects `A->>B:` (its text rule needs a character at least, and that of the
-later versions does not), and so it rejects a note and a `links`, `link`,
+`A->>B: ` is a message with an empty text, while some versions that count reject
+`A->>B:` (their text rule needs a character at least, and that of the later
+versions does not), and so they reject a note and a `links`, `link`,
 `properties`, or `details` statement the same way (see
 [Forms kept for versions of mermaid.js that count](./compatibility.md#forms-kept-for-versions-of-mermaidjs-that-count)).
-Parsed in Chromium, one of the versions that count rejected the text without
-that character, and the nine others read both. [fixture: colons/spaced]
-[fixture: colons/empty-text] [fixture: colons/whitespace-only-text] [fixture:
+Parsed in Chromium, the text without that character was rejected by some of the
+versions that count and read by the others. [fixture: colons/spaced] [fixture:
+colons/empty-text] [fixture: colons/whitespace-only-text] [fixture:
 colons/semicolon-after-whitespace-kept] The whitespace character that stays is
 lost at the end of the last line of a code block in Markdown, where Prettier
 removes it whatever the plugin prints (see
@@ -796,8 +796,8 @@ and removes a directive before it reads the line, so the whitespace after a
 directive is that character. The printer drops whitespace at the end of a line
 and prints another whitespace character as a space, so it would leave `A->>B:`,
 which such a version rejects: `A->>B:%%{init: {}}%%` followed by two spaces is
-accepted by the ten versions that count, and the text without the spaces is
-rejected by one of them. A space or a tab right after the `:` is the character
+accepted by every version that counts, and the text without the spaces is
+rejected by some of them. A space or a tab right after the `:` is the character
 that such a version needs, so the line is printed as usual and the rest is left
 out: `A->>B: %%{init: {}}%%` followed by two spaces is printed
 `A ->> B: %%{init: {}}%%`. [fixture: colons/directive-then-whitespace-kept]

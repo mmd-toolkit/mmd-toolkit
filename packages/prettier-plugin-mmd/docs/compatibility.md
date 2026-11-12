@@ -44,16 +44,27 @@ differently is printed.
 The texts that the tables name were drawn in Chromium with
 `mermaid.initialize({ startOnLoad: false, securityLevel: "loose", … })`, fixed
 ids for the figure, and the default configuration of each version otherwise. The
-pairs of header spellings of the table of forms kept (`graph` and `flowchart`,
-`stateDiagram` and `stateDiagram-v2`, `treemap` and `treemap-beta`, `ishikawa`
-and `ishikawa-beta`) were drawn by the ten versions again under five
-configurations: the default one; `flowchart.defaultRenderer` and
-`state.defaultRenderer` set to `dagre-d3`, once by a directive in the text and
-once by `mermaid.initialize`, with the same result; `layout: elk`, which the
-bundles do not load, so that the two texts of a pair were drawn alike or both
-rejected; `look: neo`; and `htmlLabels: false`. Only `defaultRenderer` changed
-the result, and the rows of those two pairs name it. The other settings, such as
-`theme` and the settings of each diagram type, were not drawn.
+pairs of header spellings (`graph` and `flowchart`, `stateDiagram` and
+`stateDiagram-v2`, `treemap` and `treemap-beta`, `ishikawa` and `ishikawa-beta`)
+were drawn by the ten versions again under five configurations: the default one;
+`flowchart.defaultRenderer` and `state.defaultRenderer` set to `dagre-d3`, once
+by a directive in the text and once by `mermaid.initialize`, with the same
+result; `layout: elk`, which the bundles do not load, so that the two texts of a
+pair were drawn alike or both rejected; `look: neo`; and `htmlLabels: false`.
+Only `defaultRenderer` changed the result, and the rows of those two pairs name
+it. The other settings, such as `theme` and the settings of each diagram type,
+were not drawn.
+
+The texts of a flowchart with `TB` and with `TD` were also drawn with the layout
+of ELK loaded: mermaid.js 12.3.0 with `@mermaid-js/layout-elk` 1.0.2 and
+`layout: elk` drew 1,034 pairs, which are the flowcharts without a subgraph in
+the 28 places where another rule meets a header, those that hold the word
+`subgraph` only in a label, an id, or a comment, and flowcharts with a subgraph.
+The layout was in use: the same diagram drawn with dagre has another size. 932
+pairs were drawn the same, 102 were rejected in both forms, and none was drawn
+differently. The header `flowchart-elk` was drawn with `TB` and with `TD` by the
+ten versions as their bundles are, in 15 forms: of 1,050 pairs, 1,036 were drawn
+the same and 14 were rejected in both forms.
 
 The period is about the versions that users run. Of the downloads of mermaid
 from npm in the week before 2026-11-12 (about 26.6 million, by version from
@@ -88,7 +99,7 @@ whatever the other versions are, so it has no row.
 | [sankey](./sankey.md#header)                                 | `sankey-beta`                                                                                                     | `sankey`                                           | [3](./printed-form.md#3-a-spelling)                   | 10.9.8, 11.7.0, 11.8.1 reject `sankey`                                                                                                                               | [fixture: sankey/header/sankey-beta]                                        |
 | [xychart](./xychart.md#header-and-orientation)               | `xychart-beta`                                                                                                    | `xychart`                                          | [3](./printed-form.md#3-a-spelling)                   | 10.9.8, 11.7.0, 11.8.1 reject `xychart`                                                                                                                              | [fixture: xychart/header-and-orientation/beta-header-kept]                  |
 | [packet](./packet.md#header)                                 | `packet-beta`                                                                                                     | `packet`                                           | [3](./printed-form.md#3-a-spelling)                   | 11.7.0, 11.8.1 reject `packet` (10.9.8 has no packet diagram)                                                                                                        | [fixture: packet/header/header-beta]                                        |
-| [flowchart](./flowchart.md#direction)                        | `flowchart TB`                                                                                                    | `flowchart TD`                                     | [3](./printed-form.md#3-a-spelling)                   | 10.9.8, 11.7.0, 11.8.1 draw a flowchart with a subgraph differently                                                                                                  | [fixture: flowchart/direction/header-tb-kept]                               |
+| [flowchart](./flowchart.md#direction)                        | `flowchart TB` in a flowchart that has a subgraph                                                                 | `flowchart TD`                                     | [3](./printed-form.md#3-a-spelling)                   | 10.9.8, 11.7.0, 11.8.1 draw a flowchart with a subgraph differently                                                                                                  | [fixture: flowchart/direction/header-tb-with-subgraph-kept]                 |
 | [flowchart](./flowchart.md#direction)                        | `graph LR`                                                                                                        | `flowchart LR`                                     | [3](./printed-form.md#3-a-spelling)                   | 10.9.8, 11.7.0, 11.8.1, 11.13.0, 11.14.0, 11.15.0, 11.16.1, 11.17.2 read `graph` and reject `flowchart` where `flowchart.defaultRenderer` is `dagre-d3`              | [fixture: flowchart/direction/header-keyword-kept]                          |
 | [state](./state.md#header)                                   | `stateDiagram`                                                                                                    | `stateDiagram-v2`                                  | [3](./printed-form.md#3-a-spelling)                   | where `state.defaultRenderer` is `dagre-d3`, 10.9.8 draws the two differently, and 11.7.0, 11.8.1, 11.13.0, 11.14.0, 11.15.0, 11.16.1, 11.17.2 reject `stateDiagram` | [fixture: state/header/spellings-kept]                                      |
 | [flowchart, swimlane](./flowchart.md#label-inner-whitespace) | `A[ user@example.com ]`                                                                                           | `A[user@example.com]`                              | [1](./printed-form.md#1-the-whitespace-beside-a-mark) | flowchart: 11.7.0, 11.8.1, 11.13.0, 11.14.0, 11.15.0, 11.16.1, 11.17.2, 12.0.0; swimlane: 11.16.1, 11.17.2, 12.0.0; they reject the tight form                       | [fixture: flowchart/label-inner-whitespace/leading-whitespace-at-sign-kept] |
@@ -504,6 +515,24 @@ requirement, a use case, a Venn diagram, and a quadrant chart reject the text
 with the character and accept the text without it, so there the character is
 removed, as the formatter formats other text that mermaid.js rejects. [test:
 keeps whitespace other than a space and a tab at the end of a style]
+
+The line rule of mermaid.js removes the last `;` of a `style` or `classDef` line
+(see [Lines that hold a `;`](#lines-that-hold-a-)), and mermaid.js removes a
+directive too, so a character after such a `;` or after a directive is at the
+end of the last style as well: `style A fill:#f00;` followed by a no-break
+space, and `style A fill:red %%{init: {}}%%` followed by one, are kept as
+written in the same statements as above, and a space or a tab there is left out.
+[test: keeps the whitespace after a `;` and after a directive that the line rule
+removes] The endings were drawn by the ten versions that count, for the `style`
+of a class diagram and of a flowchart, the `classDef` of a class diagram, a
+flowchart, and an ER diagram, and the `linkStyle` of a flowchart and of an
+agentflow diagram: 24 endings for each statement, made of the character alone,
+with a space, a tab, a second character, a `;`, a directive, a comment, or a
+U+2028 or a U+2029 next to it. The text with the character and the text without
+it, and the text as written and as formatted, were drawn. Of the 168 texts, the
+formatter reads 153, and in none of them does the formatted text draw
+differently from the written text, or get rejected, in a version that draws the
+written one.
 
 ## Styles that are drawn the same
 
@@ -1934,10 +1963,10 @@ drawn differently, an ER diagram keeps the key `PK` or `FK` of an attribute in
 its Db as written, a Gantt chart keeps the tags `done` and `crit` and the
 `after` of a task, an xychart keeps `horizontal`, and a treeView reads `ICON(…)`
 as part of a name. An ER diagram keeps `direction`, its value, `subgraph`, and
-`end` as written too: one version that counts has no direction line and reads
-`direction tb` as two entities, and seven have no subgraph and read `subgraph S`
+`end` as written too: some versions that count have no direction line and read
+`direction tb` as two entities, and some have no subgraph and read `subgraph S`
 and `end` as entities, whose names keep their case. `direction tb` and
-`direction TB` were drawn differently by the one and the same by the others. A
+`direction TB` were drawn differently by the first and the same by the others. A
 text with `SUBGRAPH S` or `END` and the same text with `subgraph S` or `end`
 were drawn differently by some and the same by the others (see
 [Forms kept for versions of mermaid.js that count](#forms-kept-for-versions-of-mermaidjs-that-count)).
@@ -2074,10 +2103,12 @@ flowchart/direction/swimlane-header-td-one-form] [fixture:
 flowchart/direction/statement-td-kept-with-other-header] [fixture:
 flowchart/direction/statement-values-kept]
 
-The header of a flowchart stays as written, `TB` or `TD`, though the examples
-use `TD` 59 times against 5: see
-[Versions of mermaid.js](#versions-of-mermaidjs). [fixture:
-flowchart/direction/header-tb-kept] [fixture:
+The `TB` in the header of a flowchart that has no subgraph is printed `TD`, as
+the examples use `TD` 70 times against 7. The header of a flowchart with a
+subgraph stays as written, `TB` or `TD`, since some versions that count draw it
+differently with the two: see [Versions of mermaid.js](#versions-of-mermaidjs).
+[fixture: flowchart/direction/header-tb-without-subgraph] [fixture:
+flowchart/direction/header-tb-with-subgraph-kept] [fixture:
 flowchart/link-label-form/flowchart-header-both-forms-kept]
 
 ### The relationships of an ER diagram
@@ -3202,7 +3233,9 @@ mermaid.js, show which form each version reads:
   which 11.13.0 reads
   ([the entry](https://github.com/mermaid-js/mermaid/blob/2086904e76c692331e34a45d7cc3bc30860d040e/packages/mermaid/CHANGELOG.md#L860)).
   The flowchart grammars of 8.14.0, 9.4.3, and 10.9.0 read `TB` and `TD` both as
-  the direction of a header. So `TB` stays as written.
+  the direction of a header. So `TB` stays as written in a flowchart with a
+  subgraph; without a subgraph every version that counts draws the two the same,
+  and `TB` is printed `TD`.
 - The label of a link and the direction of a header in agentflow and swimlane
   diagrams: the CHANGELOG.md adds the swimlane diagram in 11.16.0
   ([the entry](https://github.com/mermaid-js/mermaid/blob/2086904e76c692331e34a45d7cc3bc30860d040e/packages/mermaid/CHANGELOG.md#L605));
@@ -3232,10 +3265,11 @@ mermaid.js, show which form each version reads:
 
 ### The names of a header
 
-The name of a header stays as written: `block-beta` and `block`, `graph` and
-`flowchart`, `packet-beta` and `packet`, `sankey-beta` and `sankey`,
-`xychart-beta` and `xychart`, `treemap` and `treemap-beta`, `ishikawa` and
-`ishikawa-beta`. mermaid.js 12.3.0 accepts both names of each pair
+The name of a header stays as written, except in the treemap and the ishikawa
+diagrams (see below): `block-beta` and `block`, `graph` and `flowchart`,
+`packet-beta` and `packet`, `sankey-beta` and `sankey`, `xychart-beta` and
+`xychart`. mermaid.js 12.3.0 accepts both names of each pair of these, and of
+`treemap-beta` and `treemap`, and `ishikawa-beta` and `ishikawa`
 ([block](https://github.com/mermaid-js/mermaid/blob/2086904e76c692331e34a45d7cc3bc30860d040e/packages/mermaid/src/diagrams/block/blockDetector.ts#L6),
 [sankey](https://github.com/mermaid-js/mermaid/blob/2086904e76c692331e34a45d7cc3bc30860d040e/packages/mermaid/src/diagrams/sankey/sankeyDetector.ts#L6),
 [xychart](https://github.com/mermaid-js/mermaid/blob/2086904e76c692331e34a45d7cc3bc30860d040e/packages/mermaid/src/diagrams/xychart/xychartDetector.ts#L10),
@@ -3266,17 +3300,35 @@ other, or draw the two differently (the rows of these two diagrams in the same
 table). A directive of the text can set the renderer, and so can the
 configuration of the site, which the formatter cannot read, so these names stay
 as written whatever the text holds. The versions that count read `treemap-beta`
-and `treemap`, and `ishikawa-beta` and `ishikawa`, both or neither, and draw
-them the same, and the CHANGELOG.md records no change of the names of the
-treemap and ishikawa diagrams; they stay as written as well. A header in another
-case (`ISHIKAWA`, `sankey-BETA`, `XYCHART-BETA`) stays as written as well.
-[fixture: block/header/block-beta-kept] [fixture:
-flowchart/direction/header-keyword-kept] [fixture:
-flowchart/direction/header-td-kept] [fixture: ishikawa/header/header-valid]
-[fixture: ishikawa/header/header-stable] [fixture: packet/header/header-beta]
-[fixture: packet/hidden-yaml/yaml-beta-header] [fixture:
-sankey/header/sankey-beta] [fixture: sankey/header/upper-case-beta] [fixture:
-treemap/header/common] [fixture:
+and `treemap` both or neither, and `ishikawa-beta` and `ishikawa` in any case
+both or neither, and draw the two names of a diagram the same, and the
+CHANGELOG.md records no change of the names of the treemap and ishikawa
+diagrams. They were drawn by the 8 versions that have the treemap diagram and
+the 7 that have the ishikawa diagram: the texts with one name and with the
+other, in 45 forms and in the 28 places where another rule meets a header (a
+directive, a `;`, a comment, an empty line, a U+2028 or U+2029, the end of the
+text, an indentation, and others), and each of the 918 texts that the formatter
+reads, as written and as formatted. They were drawn the same in every version
+that has the diagram, and a text that one of them accepted was accepted in the
+other form too. So the header of a treemap diagram is printed `treemap`, and
+that of an ishikawa diagram `ishikawa`, in lower case, whatever name and case it
+was written in; `TREEMAP-BETA`, which no version reads, is not formatted. The
+exception is a text that touches the header of an ishikawa diagram with `-beta`:
+`ishikawa-beta-beta` has the header `ishikawa-beta` and the root `-beta`, and
+the header printed `ishikawa` with `-beta` on its line would be read as the
+header `ishikawa-beta` alone, so the root goes to a line of its own; where it
+stays on the line of the header, the header stays as written. A header of the
+other diagrams in another case (`sankey-BETA`, `XYCHART-BETA`) stays as written.
+[fixture: treemap/header/beta] [fixture: ishikawa/header/header-beta] [fixture:
+ishikawa/header/header-column] [fixture:
+ishikawa/header/header-beta-then-beta-root] [fixture:
+ishikawa/header/header-beta-then-beta-root-kept] [fixture:
+block/header/block-beta-kept] [fixture: flowchart/direction/header-keyword-kept]
+[fixture: flowchart/direction/header-td-kept] [fixture:
+ishikawa/header/header-valid] [fixture: ishikawa/header/header-stable] [fixture:
+packet/header/header-beta] [fixture: packet/hidden-yaml/yaml-beta-header]
+[fixture: sankey/header/sankey-beta] [fixture: sankey/header/upper-case-beta]
+[fixture: treemap/header/common] [fixture:
 xychart/header-and-orientation/beta-header-kept] [fixture:
 xychart/keyword-case/header-spelling-kept] [fixture:
 xychart/header-and-orientation/second-header-spelling-and-case-kept]
@@ -3685,13 +3737,13 @@ connection and read the `()` as part of the name next to it, so `A ()` and `A()`
 are two names, and `A ->> () x` and `A ->> ()x` are two targets. The texts with
 and without the whitespace beside a `()` (`A () ->> B` and `A() ->> B`,
 `A ->> () x` and `A ->> ()x`, and the same with a directive beside the `()`)
-were drawn with the ten versions that count: the three drew them differently,
-and the seven others the same. The `+` and `-` of an activation are not among
-them: the texts with and without the whitespace beside them were drawn the same
-by all ten versions. The whitespace before `<<->>` and `<<-->>` stays as written
-too: one version that counts has no such arrow and reads the `<<` as part of the
-name before it, and `Alice<<->>Bob` and `Alice <<->> Bob` were drawn differently
-by it and the same by the nine others (see
+were drawn with the ten versions that count: some drew them differently, and the
+others the same. The `+` and `-` of an activation are not among them: the texts
+with and without the whitespace beside them were drawn the same by all ten
+versions. The whitespace before `<<->>` and `<<-->>` stays as written too: some
+versions that count have no such arrow and read the `<<` as part of the name
+before it, and `Alice<<->>Bob` and `Alice <<->> Bob` were drawn differently by
+them and the same by the others (see
 [Forms kept for versions of mermaid.js that count](#forms-kept-for-versions-of-mermaidjs-that-count)).
 The whitespace after the arrow is not at stake in any version. [fixture:
 sequence/arrow-spacing/bidirectional-arrow-gap-before-kept] [fixture:
@@ -4248,9 +4300,9 @@ See [Header and direction](./timeline.md#header-and-direction) and
 - The text after a direction on the line of the header. `timeline TD title T`
   against `timeline TD` and a line `title T`, `timeline TD LR` against `TD` and
   `LR` on lines of their own, and `timeline LR 2004 : a` against the period on a
-  line of its own were drawn the same by the six that read a direction and
-  differently by the four others (one period against a period and a statement).
-  So the text after a direction stays on the line of the header. Without a
+  line of its own were drawn the same by the versions that read a direction and
+  differently by the others (one period against a period and a statement). So
+  the text after a direction stays on the line of the header. Without a
   direction (`timeline History`, `timeline title T`, `timeline 2004 : a`) the
   text on the line of the header and on a line of its own were drawn the same by
   all ten versions, and the text goes to a line of its own. [fixture:
@@ -4260,9 +4312,9 @@ See [Header and direction](./timeline.md#header-and-direction) and
   timeline/header-and-direction/text-after-the-header-without-direction-moves]
 - A title whose text starts with a `#` on a later line than its keyword.
   `title`, a line break, and `  # c`, against `title # c` on one line, were
-  drawn the same by nine of the versions, which draw the title `# c` for both,
-  and differently by the tenth, which draws no title text for the first and the
-  period `title` for the second. So the title stays as written. [fixture:
+  drawn the same by most of the versions that count, which draw the title `# c`
+  for both, and differently by some, which draw no title text for the first and
+  the period `title` for the second. So the title stays as written. [fixture:
   timeline/titles-and-sections/title-hash-on-next-line-kept]
 
 ## Sankey lines that the characters or the quotes decide

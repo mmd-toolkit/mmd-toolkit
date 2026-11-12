@@ -13,8 +13,9 @@ from mermaid.js.
 ### Header
 
 Put the header at column one and an ordinary first statement on the next line,
-making the heading easy to find. Preserve the authored `treemap` or
-`treemap-beta` keyword rather than choosing between Db-equivalent aliases (see
+making the heading easy to find. The keyword is printed `treemap`, also where it
+was written `treemap-beta`: every version of mermaid.js that counts and has the
+diagram reads both names and draws them the same (see
 [The names of a header](./compatibility.md#the-names-of-a-header)). Add no
 colon; an empty body stays empty.
 

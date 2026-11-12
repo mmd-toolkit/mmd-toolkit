@@ -4,12 +4,15 @@ import type { Atom } from "./atoms.ts"
 import { findArrowLengthRespellings } from "./arrow-length.ts"
 import { findNodes } from "./collections.ts"
 import { findColorRespellings } from "./color-form.ts"
+import { ishikawaLines } from "./ishikawa-layout.ts"
+import { keepsRootOnHeaderLine } from "./ishikawa-kept-lines.ts"
 import { keywordSpellings } from "./keyword-spellings.ts"
-import { childrenOf } from "./layout.ts"
+import { childrenOf, toAsciiLowerCase } from "./layout.ts"
 import { findLinkLabelRespellings } from "./link-label-form.ts"
 import { shortestNumber } from "./number-form.ts"
 import { findQuoteFormRespellings } from "./quote-form.ts"
 import type { Source } from "./source.ts"
+import { findTokenStartingAt } from "./source.ts"
 
 /** The text to print in place of the token or node at an offset. */
 export interface Respelling {
@@ -31,6 +34,49 @@ const directionSpellings: Readonly<
 > = {
   agentflow: { TD: "TB" },
   swimlane: { TD: "TB" },
+}
+
+/**
+ * The diagram types whose header is printed as this name, in lower case and
+ * without the `-beta` that the header may have: every version that counts and
+ * has the diagram reads and draws the names the same (docs/compatibility.md,
+ * The names of a header).
+ */
+const shortHeaderNames: Readonly<Record<string, string>> = {
+  ishikawa: "ishikawa",
+  treemap: "treemap",
+}
+
+/**
+ * The spelling of the direction of a header: the one that
+ * `directionSpellings` gives, and `TD` for the `TB` of a flowchart without a
+ * subgraph, which every version that counts draws the same
+ * (docs/compatibility.md, Forms kept for versions of mermaid.js that count).
+ */
+function headerDirectionSpelling(
+  source: Source,
+  type: string,
+  text: string,
+): string | undefined {
+  if (type !== "flowchart-v2") return directionSpellings[type]?.[text]
+  return text === "TB" &&
+    findNodes(
+      source.root.body,
+      (node) => node.type === "FlowchartSubgraphStatement",
+    ).length === 0
+    ? "TD"
+    : undefined
+}
+
+/** Whether the root of an ishikawa diagram stays on the line of the header. */
+function keepsRootOnHeaderLineOf(source: Source): boolean {
+  const { body } = source.root
+  if (body.type !== "IshikawaDiagram") return false
+  const header = findTokenStartingAt(source, body.range[0])
+  return (
+    header !== undefined &&
+    keepsRootOnHeaderLine(ishikawaLines(source, body, header.range[1]))
+  )
 }
 
 /**
@@ -268,7 +314,7 @@ function findTokenRespellings(
   const headerIndex = tokens.findIndex((token) => token.type === "Keyword")
   // The direction of a header is the keyword that follows it.
   const directionIndex =
-    directionSpellings[type] !== undefined &&
+    (directionSpellings[type] !== undefined || type === "flowchart-v2") &&
     headerIndex !== -1 &&
     tokens[headerIndex + 1]?.type === "Keyword" &&
     source.text
@@ -294,21 +340,9 @@ function findTokenRespellings(
         )
       : headerIndex + 1
   const between = tokens.slice(headerIndex + 1, afterHeader)
-  // A colon on a line of its own after a hidden YAML block stays: the printer
-  // keeps the line break after a hidden form, so leaving the colon out would
-  // leave an empty line there (docs/gitgraph.md, Hidden yaml).
-  const colonOnItsOwnLine =
-    between.length > 0 &&
-    source.text
-      .slice(
-        between[between.length - 1].range[1],
-        tokens[afterHeader]?.range[0],
-      )
-      .includes("\n")
   const colonIndex =
-    (between.some((token) => token.type === "Directive") &&
-      !between.some((token) => token.type === "RawText")) ||
-    colonOnItsOwnLine
+    between.some((token) => token.type === "Directive") &&
+    !between.some((token) => token.type === "RawText")
       ? -1
       : afterHeader
 
@@ -319,13 +353,25 @@ function findTokenRespellings(
     const text = source.text.slice(...token.range)
     let respelled: string | undefined
     if (token.type === "Keyword" && index === headerIndex) {
-      // The keyword of the header stays as written: mermaid.js accepts the
-      // names of a header from different versions on.
-      respelled = undefined
+      // The keyword of the header stays as written, since some versions that
+      // count do not read every name of a header, except for the diagram types
+      // that every version reads and draws alike with the short name.
+      // A text that touches the header with a `-` on its line keeps it as
+      // written: the short name followed by `-beta` would be read as the long
+      // name.
+      const shortName = shortHeaderNames[type]
+      respelled =
+        shortName !== undefined &&
+        toAsciiLowerCase(text).startsWith(shortName) &&
+        !(
+          source.text[token.range[1]] === "-" && keepsRootOnHeaderLineOf(source)
+        )
+          ? shortName
+          : undefined
     } else if (token.type === "Keyword") {
       respelled =
         index === directionIndex
-          ? directionSpellings[type]?.[text]
+          ? headerDirectionSpelling(source, type, text)
           : (keywordAliases[type]?.[text] ?? spellings[text.toLowerCase()])
     } else if (token.type === "Punctuator") {
       respelled =

@@ -277,6 +277,13 @@
   
   Overturned in the next release: the colon after the header of a gitGraph
   without a direction is left out (`gitGraph:` becomes `gitGraph`).
+  
+  Overturned in the next release: the header of a treemap or an ishikawa diagram
+  is printed without `-beta`, and that of an ishikawa diagram in lower case
+  (`treemap-beta` becomes `treemap`, and `ISHIKAWA-BETA` becomes `ishikawa`).
+  
+  Overturned in the next release: the `TB` in the header of a flowchart that has
+  no subgraph is printed `TD`.
 
 - [#68](https://github.com/mmd-toolkit/mmd-toolkit/pull/68) [`626b905`](https://github.com/mmd-toolkit/mmd-toolkit/commit/626b905d546affb973b08d129e42f7e4c8d6810d) Thanks [@ota-meshi](https://github.com/ota-meshi)! - Print the `:` and the text of a one-line `note` in `stateDiagram` with one space
   before the `:` and one after it where mermaid.js drops them:
@@ -497,6 +504,10 @@
 ### Minor Changes
 
 - [#1](https://github.com/mmd-toolkit/mmd-toolkit/pull/1) [`c05ce11`](https://github.com/mmd-toolkit/mmd-toolkit/commit/c05ce112065146b267e4735fab1cf2049c037ea6) Thanks [@ota-meshi](https://github.com/ota-meshi)! - First release.
+  
+  Overturned in the next release: the node of a nested `block:` in a block
+  diagram, printed touching the colon (`block:G`), is printed after a space
+  (`block: G`).
 
 ### Patch Changes
 

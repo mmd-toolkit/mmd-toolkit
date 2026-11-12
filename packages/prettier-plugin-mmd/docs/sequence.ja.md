@@ -709,8 +709,7 @@ mermaid.js の line rule が `;` を無視する行は、
 [fixture: arrow-spacing/touching-with-ignored-semicolon]
 矢印は書かれたまま印字します。 [fixture: arrow-spacing/arrows-kept]
 `<<->>` と `<<-->>` の前の空白は、書かれたまま残します。
-対象にする版の 1 つにはこの矢印がなく、
-前の名前の一部として `<<` を読むためです。
+対象にする版の一部にはこの矢印がなく、前の名前の一部として `<<` を読むためです。
 `A<<->>B` は `A<<->> B` と印字し、`A <<->> B` はそのままです。
 詳しくは
 [central 接続のある sequence のメッセージ](./compatibility.ja.md#central-接続のある-sequence-のメッセージ)
@@ -826,9 +825,9 @@ mermaid.js はテキストを両端の空白を除いて読みます。
 [対象にする版の mermaid.js のために残す形](./compatibility.ja.md#対象にする版の-mermaidjs-のために残す形)
 を参照）。
 ノートと `links`・`link`・`properties`・`details` の文も同じです。
-Chromium で解析すると、対象にする版の 1 つはその文字のない形を拒否し、
-ほかの 9 つは両方を読みました。 [fixture: colons/spaced]
-[fixture: colons/empty-text] [fixture: colons/whitespace-only-text]
+Chromium で解析すると、その文字のない形を、対象にする版の一部は拒否し、
+ほかの版は読みました。 [fixture: colons/spaced] [fixture: colons/empty-text]
+[fixture: colons/whitespace-only-text]
 [fixture: colons/semicolon-after-whitespace-kept]
 残した空白は、Markdown のコードブロックの最後の行の末尾では失われます。
 プラグインの印字によらず、Prettier が取り除くからです。
@@ -848,8 +847,8 @@ Gantt 図の[タスク](./gantt.ja.md#タスクのデータ)と、
 その 1 文字になります。
 整形ツールは、行末の空白を落とし、ほかの空白文字を空白に替えるので、
 `A->>B:` が残り、これらの版は拒否します。
-`A->>B:%%{init: {}}%%` の後に空白が 2 つ続く形は、対象にする 10 版が受理し、
-空白のない形は 1 つの版が拒否します。
+`A->>B:%%{init: {}}%%` の後に空白が 2 つ続く形は、対象にするどの版も受理し、
+空白のない形は一部の版が拒否します。
 `:` の直後が空白かタブなら、それが、そうした版が要る 1 文字なので、
 行は通常どおりに印字し、残りは除きます。
 `A->>B: %%{init: {}}%%` の後に空白が 2 つ続く形は、

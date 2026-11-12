@@ -47,7 +47,7 @@ agentflow とユースケース図は 12.0.0 から読まれます。
 表が挙げるテキストは、Chromium で、
 `mermaid.initialize({ startOnLoad: false, securityLevel: "loose", … })` と、
 図の固定した id、そのほかは各版の既定の設定で描きました。
-残す形の表が挙げるヘッダーの綴りの対（`graph` と `flowchart`、
+ヘッダーの綴りの対（`graph` と `flowchart`、
 `stateDiagram` と `stateDiagram-v2`、`treemap` と `treemap-beta`、
 `ishikawa` と `ishikawa-beta`）は、10 版で、5 つの設定で描き直しました。
 既定の設定、
@@ -59,6 +59,18 @@ agentflow とユースケース図は 12.0.0 から読まれます。
 結果が変わったのは `defaultRenderer` だけで、
 その 2 つの対の行がそれを挙げています。
 `theme` や図種ごとの設定など、ほかの設定は描いていません。
+
+flowchart の `TB` と `TD` のテキストは、ELK の配置を読み込んでも描きました。
+mermaid.js 12.3.0 に `@mermaid-js/layout-elk` 1.0.2 を読み込み、
+`layout: elk` で、1,034 組を描きました。
+組は、ヘッダーにほかの規則が出会う 28 の場所の subgraph のない flowchart、
+`subgraph` という語がラベルと id とコメントにだけある flowchart、
+subgraph のある flowchart です。
+配置が使われたことは、同じ図を dagre で描くと大きさが違うことで確かめました。
+932 組は同じに描かれ、102 組は両方の形が拒否され、違って描かれた組はありません。
+ヘッダー `flowchart-elk` は、10 版を各版のバンドルのまま、
+`TB` と `TD` で 15 の形について描きました。
+1,050 組のうち 1,036 組は同じに描かれ、14 組は両方の形が拒否されました。
 
 期間は、利用者が実際に使う版を基準に決めました。
 2026-11-12 の前の 1 週間の mermaid の npm のダウンロードは約 2660 万で、
@@ -95,7 +107,7 @@ npm の版をもとに計算し直します。
 | [sankey](./sankey.ja.md#ヘッダー)                           | `sankey-beta`                                                                                                 | `sankey`                                   | [3](./printed-form.ja.md#3-綴り)           | 10.9.8、11.7.0、11.8.1 が `sankey` を拒否する                                                                                                                      | [fixture: sankey/header/sankey-beta]                                        |
 | [xychart](./xychart.ja.md#ヘッダーと向き)                   | `xychart-beta`                                                                                                | `xychart`                                  | [3](./printed-form.ja.md#3-綴り)           | 10.9.8、11.7.0、11.8.1 が `xychart` を拒否する                                                                                                                     | [fixture: xychart/header-and-orientation/beta-header-kept]                  |
 | [packet](./packet.ja.md#header)                             | `packet-beta`                                                                                                 | `packet`                                   | [3](./printed-form.ja.md#3-綴り)           | 11.7.0、11.8.1 が `packet` を拒否する（10.9.8 には packet 図がない）                                                                                               | [fixture: packet/header/header-beta]                                        |
-| [flowchart](./flowchart.ja.md#方向)                         | `flowchart TB`                                                                                                | `flowchart TD`                             | [3](./printed-form.ja.md#3-綴り)           | 10.9.8、11.7.0、11.8.1 が subgraph のある flowchart を違って描く                                                                                                   | [fixture: flowchart/direction/header-tb-kept]                               |
+| [flowchart](./flowchart.ja.md#方向)                         | subgraph のある flowchart の `flowchart TB`                                                                   | `flowchart TD`                             | [3](./printed-form.ja.md#3-綴り)           | 10.9.8、11.7.0、11.8.1 が subgraph のある flowchart を違って描く                                                                                                   | [fixture: flowchart/direction/header-tb-with-subgraph-kept]                 |
 | [flowchart](./flowchart.ja.md#方向)                         | `graph LR`                                                                                                    | `flowchart LR`                             | [3](./printed-form.ja.md#3-綴り)           | `flowchart.defaultRenderer` が `dagre-d3` のとき、10.9.8、11.7.0、11.8.1、11.13.0、11.14.0、11.15.0、11.16.1、11.17.2 が `graph` を読み、`flowchart` を拒否する    | [fixture: flowchart/direction/header-keyword-kept]                          |
 | [state](./state.ja.md#header)                               | `stateDiagram`                                                                                                | `stateDiagram-v2`                          | [3](./printed-form.ja.md#3-綴り)           | `state.defaultRenderer` が `dagre-d3` のとき、10.9.8 が 2 つを違って描き、11.7.0、11.8.1、11.13.0、11.14.0、11.15.0、11.16.1、11.17.2 が `stateDiagram` を拒否する | [fixture: state/header/spellings-kept]                                      |
 | [flowchart、swimlane](./flowchart.ja.md#ラベルの内側の空白) | `A[ user@example.com ]`                                                                                       | `A[user@example.com]`                      | [1](./printed-form.ja.md#1-記号の横の空白) | flowchart: 11.7.0、11.8.1、11.13.0、11.14.0、11.15.0、11.16.1、11.17.2、12.0.0、swimlane: 11.16.1、11.17.2、12.0.0 が、空白のない形を拒否する                      | [fixture: flowchart/label-inner-whitespace/leading-whitespace-at-sign-kept] |
@@ -558,6 +570,27 @@ requirement 図、use case 図、Venn 図、象限チャートは、
 文字のあるテキストを拒否し、ないテキストを受理するので、
 mermaid.js が拒否するほかのテキストと同じく、文字を取り除きます。
 [test: keeps whitespace other than a space and a tab at the end of a style]
+
+mermaid.js の line rule は、`style` と `classDef` の行の最後の `;` を取り除き、
+指令も取り除きます。
+（[`;` を含む行](#-を含む行)を参照）。
+そのため、そうした `;` の後や指令の後の文字も、最後のスタイルの末尾にあります。
+`style A fill:#f00;` の後にノーブレークスペースがある形と、
+`style A fill:red %%{init: {}}%%` の後にそれがある形は、
+上と同じ文で書かれたまま残し、そこにある空白とタブは落とします。
+[test: keeps the whitespace after a `;` and after a directive that the line rule removes]
+この末尾の形は、対象にする 10 版で描きました。
+対象は、class 図と flowchart の `style`、
+class 図と flowchart と ER 図の `classDef`、
+flowchart と agentflow 図の `linkStyle` です。
+それぞれの文について 24 の末尾を用意しました。
+文字だけの形、空白、タブ、2 つ目の文字、`;`、指令、コメント、
+U+2028 か U+2029 が文字の隣にある形です。
+文字のあるテキストとないテキスト、
+書かれたテキストと整形したテキストを描きました。
+168 のテキストのうち、整形ツールが読むのは 153 です。
+そのどれでも、書かれたテキストを描く版で、
+整形したテキストが違って描かれることも、拒否されることもありませんでした。
 
 ## 同じに描かれるスタイル
 
@@ -2238,10 +2271,13 @@ mermaid.js が文の向きを Db に書かれたまま保つからです。
 [fixture: flowchart/direction/statement-td-kept-with-other-header]
 [fixture: flowchart/direction/statement-values-kept]
 
-flowchart のヘッダーは、`TB` も `TD` も書かれたまま残します。
-例は `TD` を 59 回、もう一方を 5 回使いますが、形は変えません。
+subgraph のない flowchart のヘッダーの `TB` は、例が `TD` を 70 回、
+もう一方を 7 回使うので、`TD` と印字します。
+subgraph のある flowchart のヘッダーは、`TB` も `TD` も書かれたまま残します。
+対象にする版の一部が、2 つを違って描くからです。
 [mermaid.js の版](#mermaidjs-の版)を参照してください。
-[fixture: flowchart/direction/header-tb-kept]
+[fixture: flowchart/direction/header-tb-without-subgraph]
+[fixture: flowchart/direction/header-tb-with-subgraph-kept]
 [fixture: flowchart/link-label-form/flowchart-header-both-forms-kept]
 
 ### ER 図の関係
@@ -2365,8 +2401,8 @@ hidden YAML ブロックが間にある場合は、コロンを残しません�
 `gitGraph ---`、ブロック、`--- :` と文が続く形を、対象にする 10 版で、
 コロンのある形とない形に描き、ブロックを読まない版はどちらも拒否したので、
 コロンを除きます。 [fixture: gitgraph/header/header-yaml-before-colon]
-ブロックの後の、単独の行にある colon は、
-印字が hidden の形の後の改行を保つので残します。
+ブロックの後の、単独の行にある colon は、その前の改行と一緒に除きます。
+[fixture: gitgraph/header/header-yaml-colon-on-its-own-line]
 [corpus fixture: gitgraph/header-hidden-before-colon]
 コロンの後にディレクティブ、コメント、hidden の形があっても、
 コロンは残しません。
@@ -3491,7 +3527,9 @@ class の 7 個の入力も、整形後のテキストと同じ SVG が描かれ
   （[その記述](https://github.com/mermaid-js/mermaid/blob/2086904e76c692331e34a45d7cc3bc30860d040e/packages/mermaid/CHANGELOG.md#L860)）。
   8.14.0、9.4.3、10.9.0 の flowchart の文法は、
   `TB` と `TD` の両方をヘッダーの向きとして読みます。
-  そのため、`TB` は書かれたまま残します。
+  そのため、subgraph のある flowchart の `TB` は書かれたまま残します。
+  subgraph のない flowchart は、対象にする版のどれも 2 つを同じに描くので、
+  `TB` は `TD` と印字します。
 - agentflow 図と swimlane 図のリンクのラベルとヘッダーの向き: CHANGELOG.md は
   11.16.0 に swimlane 図を追加します。
   （[その記述](https://github.com/mermaid-js/mermaid/blob/2086904e76c692331e34a45d7cc3bc30860d040e/packages/mermaid/CHANGELOG.md#L605)）。
@@ -3521,10 +3559,11 @@ class の 7 個の入力も、整形後のテキストと同じ SVG が描かれ
 ### ヘッダーの名前
 
 ヘッダーの名前は書かれたまま残します。
+ただし、treemap 図と ishikawa 図は例外です（後で述べます）。
 `block-beta` と `block`、`graph` と `flowchart`、`packet-beta` と `packet`、
-`sankey-beta` と `sankey`、`xychart-beta` と `xychart`、
-`treemap` と `treemap-beta`、`ishikawa` と `ishikawa-beta` です。
-mermaid.js 12.3.0 は、どの対も両方の名前を受理します。
+`sankey-beta` と `sankey`、`xychart-beta` と `xychart` です。
+mermaid.js 12.3.0 は、これらの対も、`treemap-beta` と `treemap`、
+`ishikawa-beta` と `ishikawa` も、どの対も両方の名前を受理します。
 （[block](https://github.com/mermaid-js/mermaid/blob/2086904e76c692331e34a45d7cc3bc30860d040e/packages/mermaid/src/diagrams/block/blockDetector.ts#L6)、
 [sankey](https://github.com/mermaid-js/mermaid/blob/2086904e76c692331e34a45d7cc3bc30860d040e/packages/mermaid/src/diagrams/sankey/sankeyDetector.ts#L6)、
 [xychart](https://github.com/mermaid-js/mermaid/blob/2086904e76c692331e34a45d7cc3bc30860d040e/packages/mermaid/src/diagrams/xychart/xychartDetector.ts#L10)、
@@ -3550,14 +3589,37 @@ packet 図は 11.9.0 で beta を外れています。
 11.1.0 と 11.3.0 の文法は `packet-beta` だけを読みます。
 そのため、接尾辞なしで印字したテキストは、
 接尾辞を外したリリースより前の版では描かれません。
-mermaid.js 11.9.0 は、`graph` と `flowchart`、`treemap-beta` と `treemap` を、
-どちらも読みます。
-CHANGELOG.md は、flowchart、treemap、
-ishikawa の図の名前の変更を記録していません。
+対象にする版は、`graph` と `flowchart` を同じに描きます。
 テキストを描く版を知っているのは作者で、フォーマッターは知らないので、
-どの名前も書き換えません。
-別の大文字小文字のヘッダー（`ISHIKAWA`、`sankey-BETA`、`XYCHART-BETA`）も、
-書かれたまま残します。 [fixture: block/header/block-beta-kept]
+この名前は書き換えません。
+treemap 図と ishikawa 図は別です。
+対象にする版のうち treemap 図を持つ版は、`treemap-beta` と `treemap` を、
+ishikawa 図を持つ版は、`ishikawa-beta` と `ishikawa` を大文字小文字を問わずに、
+どちらも読むか、どちらも読まないかのどちらかで、同じに描きます。
+CHANGELOG.md は、この 2 図種の名前の変更を記録していません。
+treemap 図を持つ 8 版と ishikawa 図を持つ 7 版で描きました。
+片方の名前のテキストともう片方のテキスト（45 の形と、
+ヘッダーにほかの規則が出会う 28 の場所：指令、`;`、コメント、空行、
+U+2028 と U+2029、テキストの終わり、字下げなど）と、
+整形ツールが読む 918 のテキストの書かれた形と整形した形です。
+図を持つどの版でも同じに描かれ、どちらかの形を受理した版は、
+もう一方の形も受理しました。
+そのため、treemap 図のヘッダーは `treemap`、
+ishikawa 図のヘッダーは小文字の `ishikawa` と印字します。
+書かれた名前や大文字小文字は問いません。
+どの版も読まない `TREEMAP-BETA` は整形しません。
+例外は、ishikawa 図のヘッダーに `-beta` で始まるテキストが接している形です。
+`ishikawa-beta-beta` は、ヘッダー `ishikawa-beta` と根 `-beta` で、
+`ishikawa` の行に `-beta` を続けて印字すると、
+根のないヘッダー `ishikawa-beta` として読まれます。
+そのため、根は自分の行に移します。
+根がヘッダーの行に残る場合は、ヘッダーも書かれたまま残します。
+ほかの図種で別の大文字小文字のヘッダー（`sankey-BETA`、`XYCHART-BETA`）は、
+書かれたまま残します。 [fixture: treemap/header/beta]
+[fixture: ishikawa/header/header-beta] [fixture: ishikawa/header/header-column]
+[fixture: ishikawa/header/header-beta-then-beta-root]
+[fixture: ishikawa/header/header-beta-then-beta-root-kept]
+[fixture: block/header/block-beta-kept]
 [fixture: flowchart/direction/header-keyword-kept]
 [fixture: flowchart/direction/header-td-kept]
 [fixture: ishikawa/header/header-valid] [fixture: ishikawa/header/header-stable]
@@ -3986,8 +4048,7 @@ sequence のメッセージの `()`（`A () ->> () B`）の前後の空白は、
 `A ->> () x` と `A ->> ()x` は別の宛先です。
 `()` の前後の空白の有無だけが違うテキスト（`A () ->> B` と `A() ->> B`、
 `A ->> () x` と `A ->> ()x`、`()` の隣にディレクティブがある同じ形）を、
-数える 10 の版で描くと、その 3 つは異なって描き、
-ほかの 7 つの版は同じに描きました。
+数える 10 の版で描くと、一部は異なって描き、ほかの版は同じに描きました。
 有効化の `+` と `-` は対象外で、
 その前後の空白の有無は 10 の版すべてで同じに描かれました。
 `<<->>` と `<<-->>` の前の空白も、書かれたまま残します。
@@ -4576,8 +4637,8 @@ Db の setter が捨てる LF 直後の空白とタブだけを置き換えて�
 
 - 方向の大文字小文字。
   `timeline td` と `timeline TD` の次の行に `2004 : a` や `title T` が続く形は、
-  方向を読む 6 版では同じに描かれ、
-  残りの 4 版では違って描かれます（period `td` と period `TD` を描きます）。
+  方向を読む版では同じに描かれ、
+  読まない版では違って描かれます（period `td` と period `TD` を描きます）。
   そのため、mermaid.js の文書の例は `TD` と書きますが、
   `td` は `TD` と印字しません。
   [fixture: timeline/header-and-direction/direction-kept]
@@ -4587,8 +4648,8 @@ Db の setter が捨てる LF 直後の空白とタブだけを置き換えて�
   `timeline TD title T` と、`timeline TD` の次の行が `title T` の形、
   `timeline TD LR` と、`TD` と `LR` を別の行に置く形、
   `timeline LR 2004 : a` と、period を自分の行に置く形は、
-  方向を読む 6 版では同じに描かれ、
-  残りの 4 版では違って描かれます（1 つの period と、period と文です）。
+  方向を読む版では同じに描かれ、
+  読まない版では違って描かれます（1 つの period と、period と文です）。
   そのため、方向の後ろのテキストは、ヘッダーの行に残します。
   方向がない場合（`timeline History`、`timeline title T`、
   `timeline 2004 : a`）は、
@@ -4600,8 +4661,8 @@ Db の setter が捨てる LF 直後の空白とタブだけを置き換えて�
   [fixture: timeline/header-and-direction/text-after-the-header-without-direction-moves]
 - キーワードより後ろの行に、`#` で始まるテキストを持つ title。
   `title`、改行、`  # c` の形と、1 行の `title # c` の形は、
-  9 版では同じに描かれ（どちらも title `# c` を描きます）、
-  残りの 1 版では違って描かれます（前者はタイトルのテキストを描かず、
+  ほとんどの版では同じに描かれ（どちらも title `# c` を描きます）、
+  一部の版では違って描かれます（前者はタイトルのテキストを描かず、
   後者は period `title` を描きます）。
   そのため、この title は書かれたままにします。
   [fixture: timeline/titles-and-sections/title-hash-on-next-line-kept]

@@ -2473,23 +2473,33 @@ flowchart %%{init: {}}%%LR
 
 ### 方向
 
-ヘッダーでも `direction` の文でも、方向は書かれたまま残します。
-`TD` を `TB` に変えず、`TB` も `TD` に変えません。
-mermaid.js 12.3.0 は 2 つを同じに描きますが、対象にする版の一部は、
-subgraph があり、ヘッダーに `TB` がある flowchart を、
-同じテキストで `TD` があるものとは違って描きます。
+subgraph のない flowchart のヘッダーの `TB` は `TD` と印字します。
+`flowchart TB` は `flowchart TD` に、`graph TB` は `graph TD` になります。
+mermaid.js の文書の例は `TD` を 70 回、`TB` を 7 回書き、対象にする版のどれも、
+ELK の配置でも、subgraph のない flowchart を 2 つで同じに描きます。
+ラベル、id、コメントにある `subgraph` は subgraph ではありません。
+[fixture: direction/header-tb-without-subgraph]
+[fixture: direction/header-graph-tb-without-subgraph]
+[fixture: direction/header-tb-subgraph-word-is-no-subgraph]
+[fixture: direction/header-tb-with-direction-statement]
+subgraph がある場合、ヘッダーは `TB` も `TD` も書かれたまま残します。
+対象にする版の一部は、subgraph があり、ヘッダーに `TB` がある flowchart を、
+同じテキストで `TD` があるものとは違って描くからです。
 ヘッダーのキーワードも書かれたまま残します。
 詳しくは [ヘッダーの名前](./compatibility.ja.md#ヘッダーの名前)
 を参照してください。
 残す版は
 [対象にする版の mermaid.js のために残す形](./compatibility.ja.md#対象にする版の-mermaidjs-のために残す形)
-の表にあります。 [fixture: direction/header-td-kept]
-[fixture: direction/header-tb-kept] [fixture: direction/header-keyword-kept]
+の表にあります。
+ヘッダー `flowchart-elk` も書かれたまま残します。
+[fixture: direction/header-td-kept]
+[fixture: direction/header-tb-with-subgraph-kept]
+[fixture: direction/header-elk-tb-kept] [fixture: direction/header-keyword-kept]
 [fixture: direction/statement-td-kept-with-other-header]
 [fixture: direction/statement-values-kept]
+`direction` の文は書かれたまま残します。
 mermaid.js は subgraph の中の `direction` の文の `TD` を、
-書かれたとおりに保つので、そこで変えると図が変わり、
-ヘッダーだけを変えると両者が食い違います。
+書かれたとおりに保つので、そこで変えると図が変わります。
 swimlane 図のヘッダーでは、agentflow 図のヘッダーと同じく、
 `TD` を `TB` と印字します（[Header](./agentflow.ja.md#header)を参照）。
 どちらの図種も、

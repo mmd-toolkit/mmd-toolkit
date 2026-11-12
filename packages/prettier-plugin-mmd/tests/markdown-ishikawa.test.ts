@@ -27,8 +27,8 @@ const cases: readonly MarkdownCase[] = [
     input: "```mermaid\n  IsHiKaWa-BeTa R\n A\n   B\n```\n",
     options: {},
     payloadInput: "ishikawa R\n A\n   B",
-    output: "```mermaid\nIsHiKaWa-BeTa R\n A\n   B\n```\n",
-    payloadOutput: "IsHiKaWa-BeTa R\n A\n   B\n",
+    output: "```mermaid\nishikawa R\n A\n   B\n```\n",
+    payloadOutput: "ishikawa R\n A\n   B\n",
     rejected: false,
   },
   {
