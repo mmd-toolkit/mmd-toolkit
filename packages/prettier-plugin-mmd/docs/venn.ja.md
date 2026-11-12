@@ -454,6 +454,19 @@ Venn 図の `style` 文のプロパティの色が対象です。
 [fixture: colors/colors-in-lower-case]
 [fixture: colors/words-that-are-not-colors-as-written]
 
+プロパティの値として単独で立つ色関数は、
+小文字の `rgb(`（数 3 個）か `rgba(`（数 4 個）のとき、
+コンマごとの後ろに空白を 1 つ置いて印字します。
+`style A fill:rgb(1,2,3)` は `style A fill: rgb(1, 2, 3)` と印字します。
+コンマの前の空白と括弧の内側の空白は、書かれたままです。
+大文字の関数（`RGB(1,2,3)`）と、複数行にわたる関数も、書かれたままです。
+mermaid.js の文書の例には、Venn 図の色関数がありません。
+空白を置く形は、sequence 図の例と、ほかの図の種類のスタイルの形です。
+詳しくは、
+[同じに描かれる色](./compatibility.ja.md#同じに描かれる色) を参照してください。
+[fixture: colors/functions-spaced] [fixture: colors/function-padding-kept]
+[fixture: colors/functions-as-written]
+
 入力
 ([colors/colors-in-lower-case-input.mmd](../tests/fixtures/venn/colors/colors-in-lower-case-input.mmd)):
 

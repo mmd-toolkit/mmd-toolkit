@@ -515,6 +515,114 @@ sequenceDiagram
   links B: {"Docs":"https://example.com"}
 ```
 
+### Colors
+
+A color function that stands alone as the text of a `rect`, or as the color of a
+`box`, is printed with one space after each comma: `rect rgb(191,223,255)` is
+printed `rect rgb(191, 223, 255)`, and `box hsl(10,40%,90%) Team` is printed
+`box hsl(10, 40%, 90%) Team`. The documentation of mermaid.js writes the colors
+of a `rect` so (all 4 examples), and those of a `box` as often with the space as
+without it, so 6 of the 8 examples have it. The color of a `box` is the part of
+its text that mermaid.js asks the browser about (`color-candidate`); when the
+browser does not take it for a color, mermaid.js takes the whole text of the box
+for its title, and the spaces would change the title. So the printer touches
+only a function of the form that every browser reads: `rgb(` with three
+arguments and `rgba(` with four (`rgb(10%,20,30)` is no color), `hsl(` with
+three and `hsla(` with four, the second and the third of an `hsl` a percentage,
+all in lower case. `box rgb(33,66,99) Team (x)` stays as written, since the
+pattern of mermaid.js reads up to the last `)`, and so do
+`box RGB(33,66,99) Team`, `box rgb (33,66,99) Team`, and a `rect` with more text
+than the function. The whitespace before a comma and inside the parentheses
+stays as written. [fixture: colors/functions-spaced] [fixture:
+colors/function-padding-kept] [fixture: colors/functions-as-written] [fixture:
+colors/functions-beside-comments-and-directives] See
+[Colors that are drawn the same](./compatibility.md#colors-that-are-drawn-the-same)
+for the versions that were run and the Db.
+
+Input
+([colors/functions-spaced-input.mmd](../tests/fixtures/sequence/colors/functions-spaced-input.mmd)):
+
+```mmd
+sequenceDiagram
+participant A
+participant B
+rect rgb(191,223,255)
+A->>B: one
+end
+rect rgba(0,0,255,.1)
+A->>B: two
+end
+rect hsl(120,100%,50%)
+A->>B: three
+end
+rect hsla(120,100%,50%,0.5)
+A->>B: four
+end
+rect rgb(10%,20%,30%)
+A->>B: five
+end
+rect rgb(191,223, 255)
+A->>B: six
+end
+rect rgb(191,  223,   255)
+A->>B: seven
+end
+box rgb(33,66,99)
+participant C
+end
+box rgba(33,66,99,0.5) Team
+participant D
+end
+box hsl(10,40%,90%) Team
+participant E
+end
+box hsla(10,40%,90%,0.5)Team
+participant F
+end
+```
+
+Output
+([colors/functions-spaced-output.mmd](../tests/fixtures/sequence/colors/functions-spaced-output.mmd)):
+
+```mmd
+sequenceDiagram
+  participant A
+  participant B
+  rect rgb(191, 223, 255)
+    A ->> B: one
+  end
+  rect rgba(0, 0, 255, .1)
+    A ->> B: two
+  end
+  rect hsl(120, 100%, 50%)
+    A ->> B: three
+  end
+  rect hsla(120, 100%, 50%, 0.5)
+    A ->> B: four
+  end
+  rect rgb(10%, 20%, 30%)
+    A ->> B: five
+  end
+  rect rgb(191, 223, 255)
+    A ->> B: six
+  end
+  rect rgb(191, 223, 255)
+    A ->> B: seven
+  end
+  box rgb(33, 66, 99)
+    participant C
+  end
+  box rgba(33, 66, 99, 0.5) Team
+    participant D
+  end
+  box hsl(10, 40%, 90%) Team
+    participant E
+  end
+  box hsla(10, 40%, 90%, 0.5)Team
+    participant F
+  end
+```
+
 ### Arrow spacing
 
 A message has one space before and after its arrow, as a flowchart link does:

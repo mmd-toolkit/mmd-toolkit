@@ -418,6 +418,18 @@ style; it is never shortened, and a text that is no color stays as written (see
 [fixture: colors/colors-in-lower-case] [fixture:
 colors/words-that-are-not-colors-as-written]
 
+A color function that stands alone as the value of a property, `rgb(` with three
+numbers or `rgba(` with four, in lower case, is printed with one space after
+each comma: `style A fill:rgb(1,2,3)` is printed `style A fill: rgb(1, 2, 3)`.
+The whitespace before a comma and inside the parentheses stays as written, and
+so does a function in capitals (`RGB(1,2,3)`) or one that runs over lines. The
+examples in the documentation of mermaid.js have no color function in a Venn
+diagram; the space is the form of the examples of the sequence diagram and of
+the styles of the other diagram types (see
+[Colors that are drawn the same](./compatibility.md#colors-that-are-drawn-the-same)).
+[fixture: colors/functions-spaced] [fixture: colors/function-padding-kept]
+[fixture: colors/functions-as-written]
+
 Input
 ([colors/colors-in-lower-case-input.mmd](../tests/fixtures/venn/colors/colors-in-lower-case-input.mmd)):
 

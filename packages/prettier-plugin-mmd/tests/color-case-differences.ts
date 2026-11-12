@@ -1,8 +1,13 @@
-import type { DbSummary } from "@mmd-toolkit/tests"
+import type { DbSummary, JsonValue } from "@mmd-toolkit/tests"
 import type { DbPath } from "./db-restore.ts"
 import { restoreStrings } from "./db-restore.ts"
+import { objectOf } from "./db-values.ts"
 
-/** The diagram types whose styles hold colors that the formatter prints in lower case. */
+/**
+ * The diagram types whose styles hold colors that the formatter prints in lower
+ * case, and the sequence diagram, whose boxes and rectangles hold color
+ * functions that it prints with a space after each comma.
+ */
 export const colorCaseDiagramTypes: ReadonlySet<string> = new Set([
   "agentflow",
   "block",
@@ -12,11 +17,15 @@ export const colorCaseDiagramTypes: ReadonlySet<string> = new Set([
   "flowchart-v2",
   "quadrantChart",
   "requirement",
+  "sequence",
   "stateDiagram",
   "swimlane",
   "usecase",
   "venn",
 ])
+
+/** The type of the message that starts a `rect` in the Db of a sequence diagram. */
+const rectStartType = 22
 
 /**
  * Whether the Db of a diagram type holds a style at a place: the key of a list
@@ -134,6 +143,102 @@ function withWrittenColors(written: string, printed: string): string {
   return result + printed.slice(at)
 }
 
+/** The text without the spaces and tabs that follow a comma. */
+function withoutSpacesAfterCommas(text: string): string {
+  let result = ""
+  for (let index = 0; index < text.length; index++) {
+    result += text[index]
+    if (text[index] === ",") while (isSpace(text[index + 1])) index++
+  }
+  return result
+}
+
+/** Whether a text is one color function: `rgb(`, `rgba(`, `hsl(` or `hsla(` and a `)`. */
+function isColorFunction(text: string): boolean {
+  const open = text.indexOf("(")
+  return (
+    ["rgb", "rgba", "hsl", "hsla"].includes(text.slice(0, open)) &&
+    text.endsWith(")") &&
+    !text.slice(open + 1, -1).includes("(") &&
+    !text.slice(open + 1, -1).includes(")")
+  )
+}
+
+/**
+ * The printed text with the spaces after the commas of the written text, where
+ * the two are one color function and differ in nothing else; any other text is
+ * returned as it is (docs/compatibility.md, Colors that are drawn the same).
+ */
+function withWrittenColorFunction(written: string, printed: string): string {
+  return isColorFunction(written) &&
+    withoutSpacesAfterCommas(written) === withoutSpacesAfterCommas(printed)
+    ? written
+    : printed
+}
+
+/**
+ * The Db of a sequence diagram with the color of each box (`fill`) and the text
+ * of each `rect` (the message of the start of the rectangle) in the form of the
+ * written Db, where the two differ in the spaces after the commas of a color
+ * function. A list of another length stays as it is.
+ */
+function withWrittenSequenceColors(
+  before: DbSummary,
+  after: DbSummary,
+): DbSummary {
+  const written = objectOf(before)
+  const printed = objectOf(after)
+  if (written === undefined || printed === undefined) return after
+
+  /** The items of a list of `after` with the string at `key` restored, where `isTarget` says so. */
+  function restoreList(
+    name: string,
+    key: string,
+    isTarget: (item: Record<string, JsonValue>) => boolean,
+  ): JsonValue | undefined {
+    const writtenItems = written![name]
+    const printedItems = printed![name]
+    if (
+      !Array.isArray(writtenItems) ||
+      !Array.isArray(printedItems) ||
+      writtenItems.length !== printedItems.length
+    )
+      return printedItems
+    return printedItems.map((item, index) => {
+      const writtenItem = objectOf(writtenItems[index])
+      const printedItem = objectOf(item)
+      if (
+        writtenItem === undefined ||
+        printedItem === undefined ||
+        !isTarget(printedItem) ||
+        typeof writtenItem[key] !== "string" ||
+        typeof printedItem[key] !== "string"
+      )
+        return item
+      return {
+        ...printedItem,
+        [key]: withWrittenColorFunction(writtenItem[key], printedItem[key]),
+      }
+    })
+  }
+
+  return {
+    ...printed,
+    ...("boxes" in printed
+      ? { boxes: restoreList("boxes", "fill", () => true) }
+      : {}),
+    ...("messages" in printed
+      ? {
+          messages: restoreList(
+            "messages",
+            "message",
+            (item) => item.type === rectStartType,
+          ),
+        }
+      : {}),
+  }
+}
+
 /**
  * Checks the colors of the styles of a formatted diagram even though the
  * formatter printed them in lower case. mermaid.js keeps the colors of a style
@@ -150,9 +255,15 @@ export function colorCaseDbForFormattingComparison(
   diagramType: string,
 ): DbSummary | null {
   if (before === null || after === null) return after
-  return restoreStrings(before, after, (written, printed, path) =>
-    holdsStyle(path, diagramType)
-      ? withWrittenColors(written, printed)
-      : printed,
-  ) as DbSummary
+  if (diagramType === "sequence")
+    return withWrittenSequenceColors(before, after)
+  return restoreStrings(before, after, (written, printed, path) => {
+    if (!holdsStyle(path, diagramType)) return printed
+    const colors = withWrittenColors(written, printed)
+    // The value of a property of a Venn style holds the text of its color
+    // function as written.
+    return diagramType === "venn"
+      ? withWrittenColorFunction(written, colors)
+      : colors
+  }) as DbSummary
 }

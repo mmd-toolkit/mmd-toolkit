@@ -1366,7 +1366,8 @@ quadrant、Venn の図のスタイルの色は、小文字で印字します。
 その場所は、
 ラベルとタイトル（ラベルの `<span>` の `style='color:#F00'` はラベルです）、
 ノート、C4 図の呼び出しの引数（`$bgColor="#FFF"`）、
-sequence 図の box と rect の色、frontmatter とディレクティブの設定です。
+sequence 図の box と rect の色（色関数のコンマは後述）、
+frontmatter とディレクティブの設定です。
 treemap の `classDef` には色がありません。
 字句解析器が `#` を拒否するためです。
 [fixture: flowchart/colors/colors-in-lower-case]
@@ -1426,6 +1427,48 @@ mermaid.js が取り除いた後で、その前の語を後の語と結ぶこと
 [fixture: usecase/colors/words-that-are-not-colors-as-written]
 [fixture: venn/colors/words-that-are-not-colors-as-written]
 
+単独でテキストになっている色関数は、
+コンマごとの後ろに空白を 1 つ置いて印字します。
+`rect rgb(191,223,255)` は `rect rgb(191, 223, 255)`、
+`box hsl(10,40%,90%) Team` は `box hsl(10, 40%, 90%) Team`、
+Venn 図の `style A fill:rgb(1,2,3)` は `style A fill: rgb(1, 2, 3)` になります。
+場所は、sequence 図の `rect` のテキストと、
+`box` のテキストのうち mermaid.js がブラウザーに尋ねる部分（仕様の
+`color-candidate`）と、Venn 図の `style` のプロパティの値です。
+コンマの前の空白と、括弧の内側の空白は、書かれたままです。
+色関数とするのは、小文字の `rgb(`、`rgba(`、`hsl(`、`hsla(` で、
+引数は `rgb` と `hsl` が 3 個、`rgba` と `hsla` が 4 個、
+どれも数字と多くても 1 つの点から成り、百分率には後ろに `%` を付け、
+最後が `)` のものです。
+`rgb` の最初の 3 個は、すべて数かすべて百分率で、
+`hsl` の 2 個目と 3 個目は百分率です。
+これは、どのブラウザーでも色になります。
+それ以外は、色かどうかを整形ツールが知りえません。
+mermaid.js はブラウザーに尋ね、色でなければ `box` のテキスト全体を題にするので、
+空白を足すと題が変わります。
+（[`parseBoxData`](https://github.com/mermaid-js/mermaid/blob/2086904e76c692331e34a45d7cc3bc30860d040e/packages/mermaid/src/diagrams/sequence/sequenceDb.ts#L394-L419)）。
+そのため、
+`box rgb(33,66,99) Team (x,y)`（mermaid.js の正規表現は最後の `)`
+まで読みます）、`box RGB(33,66,99) Team`、`box rgb (33,66,99) Team`、
+`box hsl(120,100,50) Team`、`box rgb(10%,20,30) Team`、
+`box rgb(1,2) Team` は書かれたままです。
+どれも、12 版で 2 つのテキストが違って描かれました。
+mermaid.js の文書は、`rect` の色のコンマの後ろに空白を置くものを 4 回、
+置かないものを 0 回、`box` の色は置くものを 2 回、置かないものを 2 回書き、
+Venn 図には色関数がありません。
+空白を置く形は、sequence 図の例の 8 個のうち 6 個の形であり、
+ほかの図の種類のスタイルが印字される形でもあります。
+（[同じに描かれるスタイル](#同じに描かれるスタイル)）。
+コンマの後ろが、空白とタブ以外の空白文字（U+00A0 や U+2028 など）のものと、
+`rect` の後が関数のほかに文字を持つもの（`rgb(1,2,3) extra`）は、
+書かれたままです。 [fixture: sequence/colors/functions-spaced]
+[fixture: sequence/colors/function-padding-kept]
+[fixture: sequence/colors/functions-as-written]
+[fixture: sequence/colors/functions-beside-comments-and-directives]
+[fixture: venn/colors/functions-spaced]
+[fixture: venn/colors/function-padding-kept]
+[fixture: venn/colors/functions-as-written]
+
 mermaid.js は、色を書かれたままの大文字小文字で Db と図に残し、
 同じ図を描きます。
 ノードのスタイルは、そのまま `!important` を付けて、
@@ -1460,14 +1503,37 @@ Venn 図は 11.13.0 から 12.3.0 です。
 色が大文字のテキストと小文字のテキストは同じ SVG になるので、
 整形ツールの変更は、そこでも同じに描かれます。
 
+`rect` は、メッセージの後ろの長方形の属性 `fill` に、
+テキストをそのまま入れます。
+（[`draw`](https://github.com/mermaid-js/mermaid/blob/2086904e76c692331e34a45d7cc3bc30860d040e/packages/mermaid/src/diagrams/sequence/sequenceRenderer.ts#L1182-L1196)、
+[`drawBackgroundRect`](https://github.com/mermaid-js/mermaid/blob/2086904e76c692331e34a45d7cc3bc30860d040e/packages/mermaid/src/diagrams/common/svgDrawCommon.ts#L54-L66)）。
+`box` も、`parseBoxData` が見つけた色を同じに入れ、
+CSS はコンマの後ろの空白をどの形でも読みます。
+（[`drawBox`](https://github.com/mermaid-js/mermaid/blob/2086904e76c692331e34a45d7cc3bc30860d040e/packages/mermaid/src/diagrams/sequence/svgDraw.js#L1445-L1462)）。
+Db は書かれたテキストをそのまま持つので異なり、図は同じです。
+上の形の `rect` の色 7 個と `box` の色 4 個の両方のテキストを、
+Chromium で 14 版に描きました。
+画素は、
+`rect` の 98 回と `box` の 48 回（9.0.0 と 9.1.7 には `box`
+がありません）で同じでした。
+Venn 図の色 7 個は、Venn 図のある 11.13.0 からの 6 版に描き、
+42 回とも SVG が同じでした。
+上の fixture も同じに描きました。
+sequence の fixture は 61 回の画素が同じで、
+Venn の fixture は 18 回の SVG が同じで、残りは、
+整形前も整形後もエラーで止まりました。
+
 テストは、印字したテキストの Db に、
 書かれたテキストの Db から色を戻して比べます。
 `tests/color-case-differences.ts` の `colorCaseDbForFormattingComparison`
 を使います。
 スタイルを持つ Db の場所で、書かれた色を小文字にしたものになっている色は、
 書かれた大文字小文字を採ります。
+また、書かれた色関数と、コンマの後ろの空白だけが違う色関数も、
+sequence 図の box の `fill` と `rect` の開始のメッセージ、
+Venn 図のスタイルのプロパティの値で、書かれたものを採ります。
 ほかの違いは、上の定義で色でないのに小文字で印字されたテキスト、
-別の色になった色、失われた色も含めて、失敗とします。
+別の色になった色、失われた色、コンマが違う box の名前も含めて、失敗とします。
 固定している mermaid.js の版を上げるときは、各場所の両方のテキストを描き直し、
 SVG と画素を比べてから、例外を残します。
 

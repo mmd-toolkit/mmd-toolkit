@@ -1273,10 +1273,11 @@ color of digits only (`#333`, 30 more) has no case and is not counted. The
 colors of other places are texts of another kind and stay as written: the labels
 and the titles (a `<span>` with `style='color:#F00'` in a label is a label), the
 notes, the arguments of a call of a C4 diagram (`$bgColor="#FFF"`), the colors
-of the boxes and the rectangles of a sequence diagram, and the settings of the
-frontmatter and of the directives. The `classDef` of a treemap has none, since
-its lexer rejects a `#`. [fixture: flowchart/colors/colors-in-lower-case]
-[fixture: flowchart/colors/swimlane-colors-in-lower-case] [fixture:
+of the boxes and the rectangles of a sequence diagram (not the commas of a color
+function, see below), and the settings of the frontmatter and of the directives.
+The `classDef` of a treemap has none, since its lexer rejects a `#`. [fixture:
+flowchart/colors/colors-in-lower-case] [fixture:
+flowchart/colors/swimlane-colors-in-lower-case] [fixture:
 agentflow/colors/colors-in-lower-case] [fixture:
 class/colors/colors-in-lower-case] [fixture: state/colors/colors-in-lower-case]
 [fixture: er/colors/colors-in-lower-case] [fixture:
@@ -1323,6 +1324,44 @@ block/colors/words-that-are-not-colors-as-written] [fixture:
 usecase/colors/words-that-are-not-colors-as-written] [fixture:
 venn/colors/words-that-are-not-colors-as-written]
 
+A color function that stands alone in its text is printed with one space after
+each comma: `rect rgb(191,223,255)` is printed `rect rgb(191, 223, 255)`,
+`box hsl(10,40%,90%) Team` is printed `box hsl(10, 40%, 90%) Team`, and
+`style A fill:rgb(1,2,3)` of a Venn diagram is printed
+`style A fill: rgb(1, 2, 3)`. The places are the text of a `rect` and the part
+of the text of a `box` that mermaid.js asks the browser about (the
+`color-candidate` of the specification), in a sequence diagram, and the value of
+a property of a `style` of a Venn diagram. The whitespace before a comma and
+inside the parentheses stays as written. The text is a color function when it is
+`rgb(`, `rgba(`, `hsl(`, or `hsla(` in lower case, with three arguments for
+`rgb` and `hsl` and four for `rgba` and `hsla`, each of digits and at most one
+dot, with a `%` after it for a percentage, and a `)`; the first three arguments
+of an `rgb` are all numbers or all percentages, and the second and the third of
+an `hsl` are percentages. That is a color in every browser. For anything else
+the printer cannot know that it is one: mermaid.js asks the browser, and takes
+the whole text of a `box` for its title when it is not
+([`parseBoxData`](https://github.com/mermaid-js/mermaid/blob/2086904e76c692331e34a45d7cc3bc30860d040e/packages/mermaid/src/diagrams/sequence/sequenceDb.ts#L394-L419)),
+so the spaces would change the title. So `box rgb(33,66,99) Team (x,y)` (the
+pattern of mermaid.js reads up to the last `)`), `box RGB(33,66,99) Team`,
+`box rgb (33,66,99) Team`, `box hsl(120,100,50) Team`,
+`box rgb(10%,20,30) Team`, and `box rgb(1,2) Team` stay as written; 12 versions
+drew the two texts of each of them differently. The documentation of mermaid.js
+writes the colors of a `rect` with a space after the commas 4 times and without
+it never, those of a `box` 2 times with it and 2 times without it, and has no
+color function in a Venn diagram. The space is the form of the examples of the
+sequence diagram (6 of 8), and the form in which the styles of the other diagram
+types are printed (see
+[Styles that are drawn the same](#styles-that-are-drawn-the-same)). A comma
+followed by a whitespace character other than a space and a tab, such as U+00A0
+and U+2028, and a text that has more than the function, such as `rect` followed
+by `rgb(1,2,3) extra`, stay as written. [fixture:
+sequence/colors/functions-spaced] [fixture:
+sequence/colors/function-padding-kept] [fixture:
+sequence/colors/functions-as-written] [fixture:
+sequence/colors/functions-beside-comments-and-directives] [fixture:
+venn/colors/functions-spaced] [fixture: venn/colors/function-padding-kept]
+[fixture: venn/colors/functions-as-written]
+
 mermaid.js keeps the colors in the case in which they are written, in its Db and
 in the figure, and draws the same figure. It puts the style of a node into the
 CSS `style` attribute of its shape as it is, with `!important`, where CSS reads
@@ -1360,14 +1399,35 @@ after it as entities, without a style, and draws the text with the color in
 upper case and in lower case as the same SVG, so that the formatter's change
 draws the same there too.
 
+A `rect` puts its text into the attribute `fill` of the rectangle behind the
+messages as it is
+([`draw`](https://github.com/mermaid-js/mermaid/blob/2086904e76c692331e34a45d7cc3bc30860d040e/packages/mermaid/src/diagrams/sequence/sequenceRenderer.ts#L1182-L1196)
+and
+[`drawBackgroundRect`](https://github.com/mermaid-js/mermaid/blob/2086904e76c692331e34a45d7cc3bc30860d040e/packages/mermaid/src/diagrams/common/svgDrawCommon.ts#L54-L66)),
+and a `box` does the same with the color that `parseBoxData` finds
+([`drawBox`](https://github.com/mermaid-js/mermaid/blob/2086904e76c692331e34a45d7cc3bc30860d040e/packages/mermaid/src/diagrams/sequence/svgDraw.js#L1445-L1462)),
+where CSS reads the whitespace after a comma in any form. The Db keeps the text
+as it is written, so it differs, and the figure is the same. Both texts of 7
+`rect` and 4 `box` colors of the forms above were drawn in Chromium with the 14
+versions: the pixels were the same in the 98 drawings of the `rect` and the 48
+of the `box` (9.0.0 and 9.1.7 have no `box`), and 7 Venn colors were drawn with
+the 6 versions from 11.13.0 that have a Venn diagram, with the same SVG in the
+42 drawings. The same was drawn for the fixtures above: 61 drawings of the
+sequence fixtures had the same pixels and 18 of the Venn fixtures the same SVG,
+and mermaid.js stopped with an error, before and after, in the others.
+
 The tests compare the Db with the colors of the styles restored from the Db of
 the written text (`colorCaseDbForFormattingComparison` in
 `tests/color-case-differences.ts`): a color that is the written color in lower
-case takes the written case, in the places of the Db that hold a style, and any
-other difference, among them a text that is no color by the definition above and
-was printed in lower case, a color that became another color, and a color that
-was lost, fails. When the pinned mermaid.js is updated, draw both texts of each
-place again and compare the SVG and the pixels before the exception stays.
+case takes the written case, in the places of the Db that hold a style, and so
+does a color function that differs from the written one only in the spaces after
+its commas, in the `fill` of a box and the message that starts a `rect` of a
+sequence diagram and in the value of a property of a Venn style; any other
+difference, among them a text that is no color by the definition above and was
+printed in lower case, a color that became another color, a color that was lost,
+and a name of a box that differs in its commas, fails. When the pinned
+mermaid.js is updated, draw both texts of each place again and compare the SVG
+and the pixels before the exception stays.
 
 ## Spellings that are drawn the same
 

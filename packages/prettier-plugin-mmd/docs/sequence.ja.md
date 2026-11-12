@@ -537,6 +537,118 @@ sequenceDiagram
   links B: {"Docs":"https://example.com"}
 ```
 
+### 色
+
+`rect` のテキストや `box` の色として単独で立つ色関数は、
+コンマごとの後ろに空白を 1 つ置いて印字します。
+`rect rgb(191,223,255)` は `rect rgb(191, 223, 255)`、
+`box hsl(10,40%,90%) Team` は `box hsl(10, 40%, 90%) Team` と印字します。
+mermaid.js の文書は、`rect` の色をこの形で書いています（例の 4 個すべて）。
+`box` の色は、空白を置く形と置かない形が同じ数で、
+合わせると例の 8 個のうち 6 個が空白を置く形です。
+`box` の色は、
+テキストのうち mermaid.js がブラウザーに尋ねる部分（`color-candidate`）です。
+ブラウザーが色と認めないと、mermaid.js は `box` のテキスト全体を題にするので、
+空白を足すと題が変わります。
+そのため、整形ツールは、どのブラウザーでも読める形の関数だけを直します。
+`rgb(` は引数 3 個、`rgba(` は 4 個で（`rgb(10%,20,30)` は色ではありません）、
+`hsl(` は 3 個、`hsla(` は 4 個で、`hsl` の 2 個目と 3 個目は百分率です。
+どれも小文字です。
+`box rgb(33,66,99) Team (x)` は、
+mermaid.js の正規表現が最後の `)` まで読むので、書かれたままです。
+`box RGB(33,66,99) Team`、`box rgb (33,66,99) Team`、
+関数のほかにテキストがある `rect` も、書かれたままです。
+コンマの前の空白と括弧の内側の空白は、書かれたままです。
+[fixture: colors/functions-spaced] [fixture: colors/function-padding-kept]
+[fixture: colors/functions-as-written]
+[fixture: colors/functions-beside-comments-and-directives]
+実行した版と Db は、
+[同じに描かれる色](./compatibility.ja.md#同じに描かれる色)を参照してください。
+
+入力
+([colors/functions-spaced-input.mmd](../tests/fixtures/sequence/colors/functions-spaced-input.mmd)):
+
+```mmd
+sequenceDiagram
+participant A
+participant B
+rect rgb(191,223,255)
+A->>B: one
+end
+rect rgba(0,0,255,.1)
+A->>B: two
+end
+rect hsl(120,100%,50%)
+A->>B: three
+end
+rect hsla(120,100%,50%,0.5)
+A->>B: four
+end
+rect rgb(10%,20%,30%)
+A->>B: five
+end
+rect rgb(191,223, 255)
+A->>B: six
+end
+rect rgb(191,  223,   255)
+A->>B: seven
+end
+box rgb(33,66,99)
+participant C
+end
+box rgba(33,66,99,0.5) Team
+participant D
+end
+box hsl(10,40%,90%) Team
+participant E
+end
+box hsla(10,40%,90%,0.5)Team
+participant F
+end
+```
+
+出力
+([colors/functions-spaced-output.mmd](../tests/fixtures/sequence/colors/functions-spaced-output.mmd)):
+
+```mmd
+sequenceDiagram
+  participant A
+  participant B
+  rect rgb(191, 223, 255)
+    A ->> B: one
+  end
+  rect rgba(0, 0, 255, .1)
+    A ->> B: two
+  end
+  rect hsl(120, 100%, 50%)
+    A ->> B: three
+  end
+  rect hsla(120, 100%, 50%, 0.5)
+    A ->> B: four
+  end
+  rect rgb(10%, 20%, 30%)
+    A ->> B: five
+  end
+  rect rgb(191, 223, 255)
+    A ->> B: six
+  end
+  rect rgb(191, 223, 255)
+    A ->> B: seven
+  end
+  box rgb(33, 66, 99)
+    participant C
+  end
+  box rgba(33, 66, 99, 0.5) Team
+    participant D
+  end
+  box hsl(10, 40%, 90%) Team
+    participant E
+  end
+  box hsla(10, 40%, 90%, 0.5)Team
+    participant F
+  end
+```
+
 ### 矢印の前後の空白
 
 メッセージの矢印の前後には、flowchart の辺と同じく、空白を 1 つずつ置きます。
