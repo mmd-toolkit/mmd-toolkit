@@ -36,7 +36,7 @@ Examples of **incorrect** code for this rule:
 ```mmd
 %% eslint @mmd-toolkit/block-no-edge-in-composite-head: error
 block
-  block:G --> B
+  block: G --> B
     A
   end
 ```
@@ -46,7 +46,7 @@ Examples of **correct** code for this rule:
 ```mmd
 %% eslint @mmd-toolkit/block-no-edge-in-composite-head: error
 block
-  block:G
+  block: G
     A
   end
   G --> B

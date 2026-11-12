@@ -44,7 +44,7 @@ Examples of **incorrect** code for this rule:
 
 ```mmd
 %% eslint @mmd-toolkit/treemap-no-invalid-value: error
-treemap-beta
+treemap
   "Revenue": 1_000
 ```
 
@@ -52,7 +52,7 @@ Examples of **correct** code for this rule:
 
 ```mmd
 %% eslint @mmd-toolkit/treemap-no-invalid-value: error
-treemap-beta
+treemap
   "Revenue": 1,000
 ```
 

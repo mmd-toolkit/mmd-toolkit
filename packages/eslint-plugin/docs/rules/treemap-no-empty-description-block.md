@@ -39,7 +39,7 @@ Examples of **incorrect** code for this rule:
 
 ```mmd
 %% eslint @mmd-toolkit/treemap-no-empty-description-block: error
-treemap-beta
+treemap
   accDescr {}
   "Revenue": 10
 ```
@@ -48,7 +48,7 @@ Examples of **correct** code for this rule:
 
 ```mmd
 %% eslint @mmd-toolkit/treemap-no-empty-description-block: error
-treemap-beta
+treemap
   accDescr {
     Revenue by product
     in the last quarter

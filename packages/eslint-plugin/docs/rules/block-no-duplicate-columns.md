@@ -51,7 +51,7 @@ Examples of **correct** code for this rule:
 %% eslint @mmd-toolkit/block-no-duplicate-columns: error
 block
   columns 2
-  block:G
+  block: G
     columns 3
     A
   end
