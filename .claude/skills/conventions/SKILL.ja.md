@@ -228,7 +228,8 @@ review がもう一度その文を読む。
 commit と push は、ユーザーが言ったときだけ行う。
 このことは [AGENTS.md の「行動原則」](../../../AGENTS.ja.md#行動原則) にある。
 
-- git がステージするものと、チェックアウトされたファイルを変えない。
+- ユーザーが言わないかぎり、git がステージするものと、
+  チェックアウトされたファイルを変えない。
   `git add`、`git mv`、`git rm`、`git stash`、`git checkout`、`git restore`、
   `git reset` を使わない。
   ファイルの移動、名前の変更、削除は、ただの `mv` と `rm` で行う。
@@ -254,8 +255,8 @@ commit と push は、ユーザーが言ったときだけ行う。
   `\u00a0` のようなエスケープを実際の文字に変えることがある。
   ソースや文書を書いた後は、
   `node scripts/check-invisible-chars.mjs`（`pnpm run lint:chars`）を走らせる。
-  ソースを ASCII で保つパッケージでは、ほかの文字も grep で探し、
-  エスケープに戻す。
+  書いたものから ASCII の外の文字を grep で探し、
+  エスケープで書いたものはエスケープに戻す。
 - 止めてよいプロセスは、自分で起動したものだけで、
   タスクの id かプロセスの id で止める。
   名前では止めない（`pkill -f vitest` は、

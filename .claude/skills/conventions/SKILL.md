@@ -198,9 +198,9 @@ What follows holds for every piece of work that writes in this repository.
 Commit and push only when the user says so
 ([the Principles of AGENTS.md](../../../AGENTS.md#principles)).
 
-- Do not change what git stages or checks out: no `git add`, `git mv`, `git rm`,
-  `git stash`, `git checkout`, `git restore`, or `git reset`. Move, rename, and
-  delete files with plain `mv` and `rm`.
+- Do not change what git stages or checks out, unless the user says so: no
+  `git add`, `git mv`, `git rm`, `git stash`, `git checkout`, `git restore`, or
+  `git reset`. Move, rename, and delete files with plain `mv` and `rm`.
 - Do not edit a tracked file for a while to try something or to change how a
   check runs (such as the number of inputs of a test): a run that is cut off
   never restores it, and the file can then be staged or committed in that state.
@@ -219,9 +219,9 @@ Commit and push only when the user says so
   (`pnpm run lint` and the whole test suite).
 - The Write tool and shell here-documents can turn an escape such as `\u00a0`
   into the real character. After writing source or documents, run
-  `node scripts/check-invisible-chars.mjs` (`pnpm run lint:chars`), and where a
-  package keeps its sources in ASCII, grep for other characters and turn them
-  back into escapes.
+  `node scripts/check-invisible-chars.mjs` (`pnpm run lint:chars`), grep what
+  you wrote for characters outside ASCII, and turn back into escapes those that
+  were written as escapes.
 - Stop only the processes that you started, by their task id or process id;
   never by name (`pkill -f vitest` also stops every other run of the tests on
   the machine).
