@@ -140,12 +140,8 @@ everything after every change.
 - A change to code, while working on it: run the test files that the change can
   affect (`vitest run <files>`). The skill of the package says which test files
   go with which part of the code.
-- When a piece of the work is done: report it, so that it is pushed. CI runs the
-  whole suite of every package and the checks of the repository on each push, so
-  they are not run on the machine for a piece of work.
-- When all the work of the pull request is done, before it leaves draft: run the
-  whole suite of the package once on the machine, and the checks of the
-  repository (`pnpm run lint`, `pnpm run format:check`).
+- Before reporting the work as done: run the whole suite of the package once,
+  and the checks of the repository (`pnpm run lint`, `pnpm run format:check`).
 - The tests of a package run fixed inputs only: the fixtures of the corpus, the
   fixtures of the package, and the inputs of past failures. No test generates
   its inputs, and no command does.
