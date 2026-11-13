@@ -2473,8 +2473,9 @@ so changing it there would change the diagram. The header of a swimlane diagram
 is printed with `TB` for `TD`, as the header of an agentflow diagram is (see
 [Header](./agentflow.md#header)); both diagram types are later than the version
 that made `TD` behave as `TB`. A `TD` that stands after a directive which
-follows the header (`swimlane-beta%%{init: {}}%% TD`) stays as written.
-[fixture: direction/swimlane-header-td-one-form] [fixture:
+follows the header is printed `TB` too (`swimlane-beta%%{init: {}}%% TD` becomes
+`swimlane-beta %%{init: {}}%%TB`). [fixture:
+direction/swimlane-header-td-one-form] [fixture:
 direction/swimlane-header-td-one-form-after-directive] In a `direction`
 statement mermaid.js reads the text before `direction` and after the value as
 text, which may hold labels and strings, and a `;` after the value belongs to
@@ -3012,7 +3013,11 @@ suffix; it does not prevent ordinary style spacing. [test: style trailing NBSP
 taken by an unclosed directive]
 
 Spaces and tabs at the end of a `style`, `classDef`, or `linkStyle` statement
-are dropped. [fixture: style-trailing-whitespace/removed] [fixture:
+are dropped, except a space or a tab after a backslash that ends the last style,
+which stays as one character, and a style of whitespace only (after a `,`, after
+a directive or an ignored `;`, or the blank value of the `stroke:` of a
+`linkStyle`), which stays as written (the paragraphs below give each). [fixture:
+style-trailing-whitespace/removed] [fixture:
 style-trailing-whitespace/removed-tab] [fixture:
 style-trailing-whitespace/removed-after-directive] mermaid.js keeps them at the
 end of the last style, so this is one of the rules that change what mermaid.js

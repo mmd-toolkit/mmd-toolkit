@@ -482,14 +482,25 @@ U+2028 and class, and a name on the next line] [test: a line that starts with
 U+2028 and class, and two names in quotes] [test: a line that starts with U+2028
 and class, and a name with a class] [test: a line that starts with U+2028, a
 space, and class] [test: a line that starts with U+2028, a space, a name, and a
-direction line] A line of several attributes is printed as written when an
-attribute on it that comes after another holds a pair of `~`, as in
-`int a List~int~ b`: the oldest version that counts reads a generic type with a
-rule that runs from the start of an attribute over the rest of the line to the
-second `~`. A line whose only `~` is in a string or in a directive, which
-mermaid.js removes before it reads the text, and an attribute whose own type
-holds the pair, are split. [fixture:
-attribute-spacing/attributes-with-tilde-on-one-line-kept] [fixture:
+direction line] A U+2028 or U+2029 that is an entity of its own, after another
+statement on its line and before a comment on that line, stays on its line:
+mermaid.js draws that entity, while on a line of its own the character is
+whitespace before a comment line and no entity is drawn. At the end of its line,
+or before a directive, it is split from the statement before it like any other
+statement, and at the start of its line it is whitespace before the comment.
+[test: U+2028 alone after a name in quotes, before a comment] [test: U+2029
+alone after a name in quotes and a space, before a comment] [test: U+2028 alone
+after the block of an accessibility description, before a comment] [test: two
+U+2028 alone after a name in quotes, before a comment] [test: U+2028 alone after
+a name in quotes, at the end of its line] [test: U+2028 alone after a name in
+quotes, before a directive] [test: U+2028 alone at the start of its line, before
+a comment] A line of several attributes is printed as written when an attribute
+on it that comes after another holds a pair of `~`, as in `int a List~int~ b`:
+the oldest version that counts reads a generic type with a rule that runs from
+the start of an attribute over the rest of the line to the second `~`. A line
+whose only `~` is in a string or in a directive, which mermaid.js removes before
+it reads the text, and an attribute whose own type holds the pair, are split.
+[fixture: attribute-spacing/attributes-with-tilde-on-one-line-kept] [fixture:
 attribute-spacing/attributes-with-generic-type-later-on-one-line-kept] [fixture:
 attribute-spacing/attributes-with-generic-type-first-on-one-line-split]
 [fixture: attribute-spacing/attributes-with-tilde-in-quotes-on-one-line-split]

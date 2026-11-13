@@ -4,6 +4,7 @@ import type { KeptLines } from "./kept-lines.ts"
 import {
   findLinesEndedBySemicolon,
   findLinesWithOwnSemicolons,
+  isSeparatorBeforeCommentAfterAnother,
   lineEndOf,
   lineStartOf,
 } from "./kept-lines.ts"
@@ -221,6 +222,12 @@ function findLinesReadByTheirPlace(
           continuesName(
             source.text.charAt(skipRemoved(source, statement.range[1])),
           ))
+    ) {
+      lines.push(lineStartOf(source, statement.range[0]))
+    }
+    if (
+      isNameAlone(statement) &&
+      isSeparatorBeforeCommentAfterAnother(source, statement.range)
     ) {
       lines.push(lineStartOf(source, statement.range[0]))
     }

@@ -149,10 +149,11 @@ The formatting rules of each diagram type are in its document:
   lists each form that stays as written for them.
 - Formatting a formatted diagram again changes nothing.
 - Spaces and tabs at the end of a `style`, `classDef`, or `linkStyle` line are
-  removed, except a space or a tab after a backslash that ends the last style.
-  mermaid.js keeps them at the end of the last style. Whitespace of another kind
-  there, such as a no-break space, stays where it changes the figure, in a class
-  diagram and a flowchart for example.
+  removed, except a space or a tab after a backslash that ends the last style,
+  and a style of whitespace only, such as the blank value in
+  `linkStyle default stroke: `. mermaid.js keeps them at the end of the last
+  style. Whitespace of another kind there, such as a no-break space, stays where
+  it changes the figure, in a class diagram and a flowchart for example.
 - The lines inside `eventmodeling` data and note blocks are aligned where the
   [Data blocks](./docs/eventmodeling.md#data-blocks) rule permits it. This can
   change the spaces in the text that mermaid.js keeps, while the rendered

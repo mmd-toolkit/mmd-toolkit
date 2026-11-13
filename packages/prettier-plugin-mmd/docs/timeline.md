@@ -611,15 +611,20 @@ statement printed as written (see
 [Multi-line statements](#multi-line-statements)). [fixture:
 titles-and-sections/value-on-next-line] [fixture:
 titles-and-sections/comment-line-inside-kept] A title whose value starts with a
-`#` after whitespace on a later line than the keyword stays as written: some
-versions that count read `title`, a line break, an indentation, and `# c` as a
-title of whitespace only and a comment, and `title # c` as the period `title`
-and a comment, while the others read both as the title `# c` (drawn the same;
-see
+`#` after more than one whitespace character stays as written: `title` and two
+spaces, or a tab and a space, or a line break and an indentation, and then
+`# c`. Some versions that count read `title`, that whitespace, and `# c` as a
+title of whitespace only and a comment, and `title # c` with one whitespace
+character as the period `title` and a comment, while the others read both as the
+title `# c` (drawn the same; see
 [Forms kept for versions of mermaid.js that count](./compatibility.md#forms-kept-for-versions-of-mermaidjs-that-count)).
 A `#` at the start of its line is no such text to them, and both forms are the
-period `title`, so the value is joined to the keyword. [fixture:
+period `title`, so the value is joined to the keyword; and one whitespace
+character before the `#`, a space or a tab, is printed as one space. [fixture:
 titles-and-sections/title-hash-on-next-line-kept] [fixture:
+titles-and-sections/title-hash-after-padding-kept] [fixture:
+titles-and-sections/title-hash-after-tab-and-space-kept] [fixture:
+titles-and-sections/title-hash-after-tab-joined] [fixture:
 titles-and-sections/title-hash-at-line-start-joined] The value holds `:`, `#`,
 `%`, and `%%` as characters, except that the name of a section ends at a `:`,
 which starts an event. [fixture:

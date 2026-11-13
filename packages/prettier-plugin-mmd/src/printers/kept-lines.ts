@@ -364,6 +364,30 @@ export function isFirstOnItsLine(source: Source, offset: number): boolean {
 }
 
 /**
+ * Whether the text in `range` is U+2028 or U+2029 alone, does not start its
+ * line, and is followed on its line by a comment: a statement that mermaid.js
+ * reads as a name made of the character, after another statement. On a line of
+ * its own the character is whitespace before a comment line, and no name is
+ * read, so the statement stays on its line (docs/er.md, Statements one per
+ * line; docs/treeview.md, Statements one per line).
+ */
+export function isSeparatorBeforeCommentAfterAnother(
+  source: Source,
+  range: readonly [number, number],
+): boolean {
+  return (
+    range[1] > range[0] &&
+    [...source.text.slice(...range)].every(
+      (character) => character === "\u2028" || character === "\u2029",
+    ) &&
+    !isFirstOnItsLine(source, range[0]) &&
+    findTriviaBetween(source, range[1], lineEndOf(source, range[1])).some(
+      (item) => item.type === "Comment",
+    )
+  )
+}
+
+/**
  * Whether nothing but whitespace follows the `;` at `offset` on its line: no
  * token that holds more than whitespace, comment, or directive starts after it
  * before the line ends (a style holds the whitespace after an ignored `;`), and

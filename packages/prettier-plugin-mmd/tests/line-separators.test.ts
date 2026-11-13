@@ -1441,6 +1441,41 @@ const erExamples: readonly (readonly [string, string, string])[] = [
     'erDiagram\nA ||--o{ B : "myDirection"\u2029BT ||--o{ C : has\n',
     'erDiagram\n  A ||--o{ B : "myDirection"\n  \u2029BT ||--o{ C : has\n',
   ],
+  [
+    "U+2028 alone after a name in quotes, before a comment",
+    'erDiagram\n"Foo"\u2028%% c\n',
+    'erDiagram\n  "Foo"\u2028%% c\n',
+  ],
+  [
+    "U+2029 alone after a name in quotes and a space, before a comment",
+    'erDiagram\n"Foo" \u2029%% c\n',
+    'erDiagram\n  "Foo" \u2029%% c\n',
+  ],
+  [
+    "U+2028 alone after the block of an accessibility description, before a comment",
+    "erDiagram\naccDescr {x}\u2028%% c\n",
+    "erDiagram\n  accDescr {x}\u2028%% c\n",
+  ],
+  [
+    "two U+2028 alone after a name in quotes, before a comment",
+    'erDiagram\n"Foo"\u2028\u2028%% c\n',
+    'erDiagram\n  "Foo"\u2028\u2028%% c\n',
+  ],
+  [
+    "U+2028 alone after a name in quotes, at the end of its line",
+    'erDiagram\n"Foo"\u2028\n',
+    "erDiagram\n  Foo\n  \u2028\n",
+  ],
+  [
+    "U+2028 alone after a name in quotes, before a directive",
+    'erDiagram\n"Foo"\u2028%%{init: {}}%%\n',
+    "erDiagram\n  Foo\n  \u2028%%{init: {}}%%\n",
+  ],
+  [
+    "U+2028 alone at the start of its line, before a comment",
+    "erDiagram\n\u2028%% c\n",
+    "erDiagram\n  %% c\n",
+  ],
 ]
 
 /**
@@ -2268,6 +2303,16 @@ const timelineLineSeparatorExamples: readonly (readonly [
     "U+2028 and spaces at the end of the last event of a line",
     "timeline\n2020 : e  \u2028  \n",
     "timeline\n  2020 : e  \u2028\n",
+  ],
+  [
+    "U+2028 and a space between the title keyword and a hash",
+    "timeline\ntitle\u2028 # c\n  2004 : a\n",
+    "timeline\n  title\u2028 # c\n  2004 : a\n",
+  ],
+  [
+    "U+2029 and a space between the title keyword and a hash",
+    "timeline\ntitle\u2029 # c\n  2004 : a\n",
+    "timeline\n  title\u2029 # c\n  2004 : a\n",
   ],
 ]
 

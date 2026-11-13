@@ -7,6 +7,7 @@ import { openingLine, printBlock, printDiagramBlock } from "./blocks.ts"
 import {
   findLinesEndedBySemicolon,
   findLinesWithOwnSemicolons,
+  isSeparatorBeforeCommentAfterAnother,
   lineStartOf,
   withJoinedLines,
 } from "./kept-lines.ts"
@@ -88,6 +89,12 @@ export function printTreeview(
               )),
         ),
     )
+  // A node named by a U+2028 or U+2029 alone, after another node on its line
+  // and before a comment, stays on its line (docs/treeview.md, Statements one
+  // per line).
+  const holdsSeparatorNode = nodes.some((node) =>
+    isSeparatorBeforeCommentAfterAnother(source, treeviewStatementRange(node)),
+  )
   const plan = boxMode
     ? planTreeviewBox(
         source,
@@ -97,7 +104,10 @@ export function printTreeview(
         protectedRows,
       )
     : undefined
-  if (plan?.kind === "written" || (!boxMode && protectedRows))
+  if (
+    plan?.kind === "written" ||
+    (!boxMode && (protectedRows || holdsSeparatorNode))
+  )
     return printAsWritten(source, diagram.range[0], source.text.length)
   const drawing = plan?.kind === "drawn" ? plan : undefined
   const lines = drawing?.lines ?? originalLines

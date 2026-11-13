@@ -1179,6 +1179,19 @@ treeView-beta
 
 [fixture: treeview/semicolons/protected-row-body]
 
+Without branch characters, a node named by a U+2028 or U+2029 alone, after
+another node on its line and before a comment on that line, stays on its line,
+and so does the rest of the body: mermaid.js draws a node named by the
+character, while on a line of its own the character is whitespace before a
+comment line and no node is drawn. At the end of its line, or before a
+directive, the node is split from the node before it like any other node.
+
+[test: treeview/statements-one-per-line/separator-node-before-comment-ls]
+
+[test: treeview/statements-one-per-line/separator-node-before-comment-ps]
+
+[test: treeview/statements-one-per-line/separator-node-at-line-end]
+
 ### Annotation gaps
 
 Use one ASCII space before an ordinary same-line annotation. Its required

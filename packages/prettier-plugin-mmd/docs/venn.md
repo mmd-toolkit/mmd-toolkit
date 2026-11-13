@@ -607,8 +607,11 @@ venn-beta
 
 ### Style properties
 
-Color-function comma spacing reads through directives, retaining their contents
-and the whitespace beside them. [fixture:
+Color-function comma spacing reads through directives: the one space after a
+comma stands before a directive that follows the comma, in place of the
+whitespace that was there, and the contents of the directive and the whitespace
+after it stay as written (`rgb(1,%%{x}%%  2,3)` is printed
+`rgb(1, %%{x}%%  2, 3)`). [fixture:
 style-properties/word-run-directive-parenthesis-kept]
 
 A property is printed `key: value`, with no space before the colon and one after

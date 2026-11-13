@@ -194,7 +194,7 @@ export function layoutTimelineStatement(
     default:
       break
   }
-  if (startsTitleTextWithHashOnNextLine(source, statement)) {
+  if (startsTitleTextWithHashAfterWhitespace(source, statement)) {
     return keptAsWritten(start, end)
   }
   const keptBreaks = findKeptBreaks(source, start, end)
@@ -234,17 +234,19 @@ export function layoutTimelineStatement(
 }
 
 /**
- * Whether a title has its text on a later line than its keyword and the text
- * starts with `#` after whitespace on its line: `title`, a line break, an
+ * Whether a title has more than one whitespace character between its keyword
+ * and a `#`, or a line break and an indentation before it: `title` and two
+ * spaces, or a tab and a space, and `# c`; or `title`, a line break, an
  * indentation, and `# c`. The oldest version that counts has a title rule that
- * takes the whitespace of the next line as the text of the title when a `#`
- * follows it, so the `# c` is a comment there, while `title # c` on one line is
- * the period `title` and a comment. A `#` at the start of its line is no title
- * text there, and the title is the period `title` in both forms. The statement
- * stays as written (docs/timeline.md, Titles and sections;
- * docs/compatibility.md, Forms kept for versions of mermaid.js that count).
+ * takes the whitespace after the first character as the text of the title when
+ * a `#` follows it, so the `# c` is a comment there, while `title # c` with one
+ * whitespace character is the period `title` and a comment. A `#` at the start
+ * of its line is no title text there, and the title is the period `title` in
+ * both forms. The statement stays as written (docs/timeline.md, Titles and
+ * sections; docs/compatibility.md, Forms kept for versions of mermaid.js that
+ * count).
  */
-function startsTitleTextWithHashOnNextLine(
+function startsTitleTextWithHashAfterWhitespace(
   source: Source,
   statement: TimelineStatement,
 ): boolean {
@@ -255,7 +257,8 @@ function startsTitleTextWithHashOnNextLine(
     textRead(source, statement.range[0], statement.value.range[0]) +
     text.slice(0, text.length - text.trimStart().length)
   const lineBreak = beforeHash.lastIndexOf("\n")
-  return lineBreak >= 0 && lineBreak + 1 < beforeHash.length
+  if (lineBreak >= 0) return lineBreak + 1 < beforeHash.length
+  return beforeHash.length > "title".length + 1
 }
 
 /** The gap rules of a title, a section, or an accessibility statement. */

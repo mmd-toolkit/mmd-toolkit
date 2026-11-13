@@ -423,6 +423,24 @@ export const treeviewCases: readonly TreeviewCase[] = [
     options: {},
   },
   {
+    name: "treeview/statements-one-per-line/separator-node-before-comment-ls",
+    input: 'treeView-beta\n"a"\u2028%% c\n',
+    output: 'treeView-beta\n"a"\u2028%% c\n',
+    options: {},
+  },
+  {
+    name: "treeview/statements-one-per-line/separator-node-before-comment-ps",
+    input: 'treeView-beta\n"a"\u2029%% c\n',
+    output: 'treeView-beta\n"a"\u2029%% c\n',
+    options: {},
+  },
+  {
+    name: "treeview/statements-one-per-line/separator-node-at-line-end",
+    input: 'treeView-beta\n"a"\u2028\n  "b"\n',
+    output: 'treeView-beta\n  "a"\n  \u2028\n    "b"\n',
+    options: {},
+  },
+  {
     name: "treeview/statements-one-per-line/review159-box-quoted-ls",
     input: 'treeView-beta\nroot\n├── "a"\u2028 "b"\n└── c\n',
     output: 'treeView-beta\nroot\n├── "a"\u2028 "b"\n└── c\n',

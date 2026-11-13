@@ -40,10 +40,11 @@ diagram type is later than the version of mermaid.js that made `TD` behave as
 [Versions of mermaid.js that count](./compatibility.md#versions-of-mermaidjs-that-count)).
 Agentflow accepts only exact lower-case `agentflow-beta`. An absent direction
 stays absent, symbol directions stay written, a direction that stands after a
-directive which follows the header (`agentflow-beta%%{init: {}}%% TD`) stays as
-written, and next-line LR remains a vertex. Ordinary header followers move into
-the body; directive attachment follows Directives. [fixture:
-header/header-column] [fixture: header/header-direction-spelling] [fixture:
+directive which follows the header is printed like any other (`TD` as `TB`, and
+`agentflow-beta%%{init: {}}%% TD` as `agentflow-beta %%{init: {}}%%TB`), and
+next-line LR remains a vertex. Ordinary header followers move into the body;
+directive attachment follows Directives. [fixture: header/header-column]
+[fixture: header/header-direction-spelling] [fixture:
 header/header-inline-separated] [fixture: header/header-next-line-direction]
 [fixture: header/header-symbol] [fixture:
 header/header-direction-spelling-after-directive] A symbol direction stands
