@@ -11,7 +11,13 @@ import { findAgentflowKeptLines } from "./agentflow-kept-lines.ts"
 import { findErKeptLines, followsSplitKeyword } from "./er-kept-lines.ts"
 import { findFlowchartKeptLines } from "./flowchart-kept-lines.ts"
 import type { KeptLines } from "./kept-lines.ts"
-import { lineEndOf, lineStartOf } from "./kept-lines.ts"
+import {
+  findCommentAfter,
+  isFollowedByComment,
+  joinsNextLine,
+  lineEndOf,
+  lineStartOf,
+} from "./kept-lines.ts"
 import { shortestNumber } from "./number-form.ts"
 import { findQuadrantKeptLines } from "./quadrant-kept-lines.ts"
 import { findKanbanKeptLines } from "./kanban-kept-lines.ts"
@@ -21,7 +27,7 @@ import { findSankeyKeptLines } from "./sankey-kept-lines.ts"
 import type { Source } from "./source.ts"
 import {
   findDirectiveEndingAt,
-  findTriviaBetween,
+  findTriviaAt,
   isBracketPadding,
   isSpaceOrTab,
   isWordCharacter,
@@ -796,6 +802,22 @@ function isNoIcon(node: Node): boolean {
   return !isIcon(node)
 }
 
+/**
+ * Whether a line terminator (LF, CR, U+2028, or U+2029) ends a text, with
+ * nothing but whitespace after it: where a comment follows, it starts after
+ * that character.
+ */
+function endsWithLineTerminator(text: string): boolean {
+  for (
+    let index = text.length - 1;
+    index >= 0 && isWhitespace(text[index]);
+    index--
+  ) {
+    if ("\n\r\u2028\u2029".includes(text[index])) return true
+  }
+  return false
+}
+
 /** Whether a text holds a line terminator (LF, CR, U+2028, or U+2029). */
 function holdsLineTerminator(text: string): boolean {
   return [...text].some((character) => "\n\r\u2028\u2029".includes(character))
@@ -1404,15 +1426,44 @@ function keptLinesOfSource(source: Source): KeptLines | null {
  * keeps whole, because of a `;` or a number that the lexer reads with what
  * follows: the characters that touch a text stay there, and a text without
  * quotes could join them into one name. A diagram type without a function of
- * its own is told by a `;` or a `%%` on the line.
+ * its own is told by a `;` or a `%%` on the line. A line that mermaid.js reads
+ * together with the next one, because a comment region or a directive that is
+ * not closed removes a line feed of it, is one too: it is printed as written,
+ * and a quote that comes between a U+2028 and a comment would make the comment
+ * text.
  */
 function isKept(source: Source, offset: number): boolean {
   const kept = keptLinesOfSource(source)
   const line = lineStartOf(source, offset)
-  return kept === null
-    ? source.text.slice(line, lineEndOf(source, offset)).includes(";") ||
-        source.text.slice(line, lineEndOf(source, offset)).includes("%%")
-    : kept.joined.has(line) || kept.verbatim.has(line)
+  return (
+    (kept === null
+      ? holdsSemicolonOrPercents(source, line, lineEndOf(source, offset))
+      : kept.joined.has(line) || kept.verbatim.has(line)) ||
+    joinsNextLine(source, offset)
+  )
+}
+
+/**
+ * Whether the line from `start` to `end` holds a `;`, or a `%%` or a directive
+ * that does not start a comment line: one after a U+2028 or U+2029, with only
+ * whitespace and directives between, stands apart from the text before the
+ * character, and the printer puts it on a line of its own.
+ */
+function holdsSemicolonOrPercents(
+  source: Source,
+  start: number,
+  end: number,
+): boolean {
+  const text = source.text.slice(start, end)
+  if (text.includes(";")) return true
+  for (let at = text.indexOf("%%"); at >= 0;) {
+    // A directive is read whole: the `%%` that closes it is not a comment.
+    const trivia = findTriviaAt(source, start + at)
+    const directive = trivia?.type === "Directive" ? trivia : undefined
+    if (!startsItsLine(source, directive?.range[0] ?? start + at)) return true
+    at = text.indexOf("%%", directive ? directive.range[1] - start : at + 2)
+  }
+  return false
 }
 
 /**
@@ -1616,15 +1667,19 @@ function respell(
   const next = skipBlanksAndRemoved(source, textEnd, lineEnd)
   const after = next < lineEnd ? source.text[next] : undefined
   if (rule.afterTextOnItsLine === true && startsItsLine(source, start)) return
+  // A `%%` that a U+2028, a U+2029, or a line feed comes before starts a
+  // comment of its own, so it touches no text before the character.
+  const startsCommentAfterLineBreak =
+    after === "%" &&
+    findCommentAfter(source, textEnd)?.crossesLineBreak === true
   // A U+2028 or U+2029 at the end of a text without quotes starts a comment
-  // where the `%%` follows it (common.md, Comment lines). The closing quote
-  // would stand between them, and the `%%` would be text.
+  // where whitespace, line breaks, and directives and then a `%%` follow it
+  // (common.md, Comment lines). The closing quote would stand between them, and
+  // the `%%` would be text.
   if (
     !isString &&
-    "\u2028\u2029".includes(written.at(-1) ?? "") &&
-    findTriviaBetween(source, textEnd, textEnd + 1).some(
-      (trivia) => trivia.type === "Comment",
-    )
+    endsWithLineTerminator(written) &&
+    isFollowedByComment(source, textEnd)
   )
     return
   if (
@@ -1633,7 +1688,7 @@ function respell(
       ? rule.standsAlone === true ||
         (!touchesToken(source, start, true) &&
           !touchesToken(source, end, false))
-      : !"#%".includes(after ?? "\n") &&
+      : (!"#%".includes(after ?? "\n") || startsCommentAfterLineBreak) &&
         !(after === ":" && endsLikeStyleKeyword(printed))) &&
     rule.joins?.(
       textRead(source, line, start),

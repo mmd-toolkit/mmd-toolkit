@@ -1662,7 +1662,14 @@ inside a value] [test: U+2029 inside a string] [test: U+2028 before the colon of
 a field] [test: U+2028 before the arrow of a relationship] [test: U+2028 after
 the name of a relationship] [test: U+2028 between direction and its value]
 [test: U+2028 after the colon of accTitle] [test: U+2028 inside an accessibility
-text]
+text] A string that a U+2028 or U+2029 follows right away keeps its quotes where
+a comment after the character removes the line feed that ends the line, so that
+the line is read with the next one and printed as written: a name without quotes
+goes on over the character, and the comment would be text. [test: U+2028 and a
+comment after the target in quotes of a relationship, with a statement after the
+comment] [test: U+2028 and a comment after a value in quotes, with a statement
+after the comment] [test: U+2028 and a comment after the class in quotes of a
+class statement, with a statement after the comment]
 
 ### Whitespace characters
 

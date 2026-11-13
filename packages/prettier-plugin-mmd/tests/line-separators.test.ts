@@ -1028,6 +1028,16 @@ const classLineSeparatorExamples: readonly (readonly [
     "classDiagram\nclass A\nstyle A fill:#f00\u2028 ,color:white\n",
     "classDiagram\n  class A\n  style A fill:#f00\u2028 ,color:white\n",
   ],
+  [
+    "U+2028 and a comment after a name in backquotes",
+    "classDiagram\nclass `A_Car`\u2028%% c\n",
+    "classDiagram\n  class A_Car\n  %% c\n",
+  ],
+  [
+    "U+2028, a directive, and a comment after a name in backquotes",
+    "classDiagram\nclass `notex`\u2028%%{x}%%%% c\n\n",
+    "classDiagram\n  class notex\n  %%{x}%%%% c\n",
+  ],
 ]
 
 /**
@@ -1873,6 +1883,21 @@ const requirementLineSeparatorExamples: readonly (readonly [
     "U+2028 inside an accessibility text",
     "requirementDiagram\naccTitle: a\u2028b\n",
     "requirementDiagram\n  accTitle: a\u2028b\n",
+  ],
+  [
+    "U+2028 and a comment after the target in quotes of a relationship, with a statement after the comment",
+    'requirementDiagram\na - satisfies -> "b"\u2028%% c\naccDescr {}\n',
+    'requirementDiagram\n  a - satisfies -> "b"\u2028%% c\naccDescr {}\n',
+  ],
+  [
+    "U+2028 and a comment after a value in quotes, with a statement after the comment",
+    'requirementDiagram\nrequirement r {\nid: "1"\u2028%% c\naccDescr {}\n}\n',
+    'requirementDiagram\n  requirement r {\n    id: "1"\u2028%% c\naccDescr {}\n  }\n',
+  ],
+  [
+    "U+2028 and a comment after the class in quotes of a class statement, with a statement after the comment",
+    'requirementDiagram\nrequirement r {\n}\nclass r\n"c"\u2028%% c\naccDescr {}\n',
+    'requirementDiagram\n  requirement r {\n  }\n  class r\n"c"\u2028%% c\naccDescr {}\n',
   ],
 ]
 

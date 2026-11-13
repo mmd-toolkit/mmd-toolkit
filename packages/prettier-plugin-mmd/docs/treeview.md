@@ -1182,13 +1182,14 @@ treeView-beta
 Without branch characters, a node that starts with a whitespace character other
 than a space or a tab (U+2028, U+2029, a no-break space, and the others that
 `String.prototype.trim` removes), after another node on its line, stays on its
-line, and so does the rest of the body, when a comment follows that whitespace,
-with only whitespace, line breaks, and directives between: mermaid.js draws a
-node there, named by the whitespace, or by the whitespace and the `%%` after it,
-while on a line of its own the whitespace belongs to a comment line, which takes
-it with the whitespace and line breaks before its `%%`, and no node is drawn. At
-the end of its line before a directive, or with no comment after it, the node is
-split from the node before it like any other node.
+line, and the body is printed as written, when a comment follows that
+whitespace, with only whitespace, line breaks, and directives between:
+mermaid.js draws a node there, named by the whitespace, or by the whitespace and
+the `%%` after it, while on a line of its own the whitespace belongs to a
+comment line, which takes it with the whitespace and line breaks before its
+`%%`, and no node is drawn. At the end of its line before a directive, or with
+no comment after it, the node is split from the node before it like any other
+node.
 
 [test: treeview/statements-one-per-line/separator-node-before-comment-ls]
 

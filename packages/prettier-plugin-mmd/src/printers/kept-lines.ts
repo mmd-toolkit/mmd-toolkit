@@ -364,47 +364,68 @@ export function isFirstOnItsLine(source: Source, offset: number): boolean {
 }
 
 /**
- * Whether the text at `offset`, after other text on its line, would be taken
- * by a comment line on a line of its own: a whitespace character that is not a
- * space or a tab (a U+2028, a U+2029, a no-break space, and the others of
- * `isWhitespace`), then whitespace, line breaks, and directives, then a comment
- * that satisfies the second condition of common.md, Comment lines (a character
- * after the `%%` that is not `{` or a line terminator). The comment line of
- * mermaid.js starts at the start of a line and takes the whitespace before its
- * `%%`, line breaks included. Where the text stands, after other text, it is
- * read: a U+2028 or U+2029 starts a comment of its own, so the whitespace
- * before it is a name, and any other whitespace character is a name, with the
- * `%%` after it, or a name that ends its line. On a line of its own the text is
- * whitespace before the comment line and no name is read. So a statement that
- * starts there stays on its line (docs/er.md and docs/treeview.md, Statements
- * one per line).
+ * The comment that starts after `offset`, with only whitespace (line breaks
+ * included) and directives between: the `%%` satisfies the second condition of
+ * common.md, Comment lines (a character after it that is not `{` or a line
+ * terminator). `crossesLineBreak` says whether a line feed, a U+2028, or a
+ * U+2029 lies between: the comment starts right after it, whatever the text
+ * before it is.
  */
-export function becomesCommentLineOnItsOwnLine(
+export function findCommentAfter(
   source: Source,
   offset: number,
-): boolean {
-  if (
-    !isWhitespace(source.text.charAt(offset)) ||
-    isFirstOnItsLine(source, offset)
-  ) {
-    return false
-  }
+): { readonly at: number; readonly crossesLineBreak: boolean } | undefined {
   let at = offset
+  let crossesLineBreak = false
   while (at < source.text.length) {
     const directive = findTriviaBetween(source, at, at + 1).find(
       (item) => item.type === "Directive",
     )
     if (directive !== undefined) at = directive.range[1]
-    else if (isWhitespace(source.text.charAt(at))) at++
-    else break
+    else if (isWhitespace(source.text.charAt(at))) {
+      if ("\n\r\u2028\u2029".includes(source.text.charAt(at))) {
+        crossesLineBreak = true
+      }
+      at++
+    } else break
   }
   const after = source.text.charAt(at + 2)
-  return (
-    source.text.startsWith("%%", at) &&
+  return source.text.startsWith("%%", at) &&
     after !== "" &&
     after !== "{" &&
     after !== "\n" &&
     after !== "\r"
+    ? { at, crossesLineBreak }
+    : undefined
+}
+
+/** Whether a comment starts after `offset` (see `findCommentAfter`). */
+export function isFollowedByComment(source: Source, offset: number): boolean {
+  return findCommentAfter(source, offset) !== undefined
+}
+
+/**
+ * Whether the text at `offset`, after other text on its line, would be taken
+ * by a comment line on a line of its own: a whitespace character that is not a
+ * space or a tab (a U+2028, a U+2029, a no-break space, and the others of
+ * `isWhitespace`), then whitespace, line breaks, and directives, then a comment
+ * (see `isFollowedByComment`). The comment line of mermaid.js starts at the
+ * start of a line and takes the whitespace before its `%%`, line breaks
+ * included. Where the text stands, after other text, it is read: a U+2028 or
+ * U+2029 starts a comment of its own, so the whitespace before it is a name,
+ * and any other whitespace character is a name, with the `%%` after it, or a
+ * name that ends its line. On a line of its own the text is whitespace before
+ * the comment line and no name is read. So a statement that starts there stays
+ * on its line (docs/er.md and docs/treeview.md, Statements one per line).
+ */
+export function becomesCommentLineOnItsOwnLine(
+  source: Source,
+  offset: number,
+): boolean {
+  return (
+    isWhitespace(source.text.charAt(offset)) &&
+    !isFirstOnItsLine(source, offset) &&
+    isFollowedByComment(source, offset)
   )
 }
 

@@ -492,7 +492,15 @@ whitespace-between-tokens/style-hex-escape-run-spaced] mermaid.js reads the
 whitespace around the `,` as nothing in a state diagram, but keeps the
 whitespace around the `:` in the Db; the figure is the same (see
 [Styles that are drawn the same](./compatibility.md#styles-that-are-drawn-the-same)).
-[fixture: whitespace-between-tokens/style-colon-spaced] A backslash does not
+[fixture: whitespace-between-tokens/style-colon-spaced] A `style` statement
+whose styles after the first hold no `:` keeps the whitespace around its commas
+(`style A fill:rgb(1,2,3)` and `style A fill:a,b,c` are printed as they are,
+apart from the space after the `:`): mermaid.js 10.9.8 has no `style` statement
+in a state diagram and reads such a line as states and the description of one
+(`a,b,c` is the description of the state `fill`), which it draws as it is, so a
+space after a comma changes the text; it rejects a line with a second `:`.
+[fixture: whitespace-between-tokens/style-color-function-commas-kept] [fixture:
+whitespace-between-tokens/style-description-commas-kept] A backslash does not
 escape a `,` here: `fill:a\,b ,stroke:c` is printed `fill: a\, b, stroke: c`. A
 space after a backslash before the `:` stays, since taking it away would escape
 the `:`, and the whitespace after that space goes. [fixture:
@@ -1262,7 +1270,14 @@ it is never shortened, and a text that is no color stays as written (see
 [Colors that are drawn the same](./compatibility.md#colors-that-are-drawn-the-same)).
 [fixture: colors/colors-in-lower-case] [fixture:
 colors/words-that-are-not-colors-as-written] [fixture:
-state/colors/color-directive-in-url-name-kept]
+state/colors/color-directive-in-url-name-kept] A `style` statement whose styles
+after the first hold no `:` keeps its colors as written (`style A fill:#ABC` is
+printed `style A fill: #ABC`), because mermaid.js 10.9.8 draws the line as text,
+as a description of a state (see
+[Whitespace between tokens](#whitespace-between-tokens)); the `classDef`
+statement is printed in lower case in any case. [fixture:
+colors/style-read-as-description-kept] [fixture:
+colors/style-read-as-description-kept-v1]
 
 Input
 ([colors/colors-in-lower-case-input.mmd](../tests/fixtures/state/colors/colors-in-lower-case-input.mmd)):

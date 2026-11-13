@@ -190,11 +190,14 @@ U+2028, U+2029, a backquote, `&`, `#`, or `<` (see
 [Spellings that are drawn the same](./compatibility.md#spellings-that-are-drawn-the-same)),
 and `singleQuote` is not read. [fixture: labels/single-quote-sensitive-kept]
 
-A plain label whose text ends with a U+2028 or U+2029 that a comment follows
-right away is not put in quotes: the character starts the comment (see
+A plain label whose text ends with a U+2028 or U+2029, and that a comment
+follows with only whitespace, line breaks, and directives between, is not put in
+quotes: the character starts the comment (see
 [Comment lines](../../spec/docs/common.md#comment-lines)), the closing quote
 would stand between them, the `%%` would be text of the label, and mermaid.js
-rejects it. The same label with no comment after it is put in quotes as any
+rejects it. The same holds for a text that stands before such a character: the
+line that holds the comment is read with the next one, and printed as written,
+with its quotes. The same label with no comment after it is put in quotes as any
 label with that character is. [test: usecase: U+2028 alone in the parentheses of
 an actor label, before a comment] [test: usecase: U+2028 alone in the
 parentheses of an entity label, before a comment] [test: usecase: U+2029 alone
@@ -204,7 +207,14 @@ usecase: U+2028 alone as a note text, before a comment] [test: usecase: U+2028
 alone as an edge label, before a comment] [test: usecase: U+2028 alone in the
 parentheses of a boundary title, before a comment] [test: usecase: U+2028 alone
 in the brackets of a boundary title, before a comment] [test: usecase: U+2028
-alone in the parentheses of an entity label, at the end of its line]
+alone in the parentheses of an entity label, at the end of its line] [test:
+usecase: U+2028, a space, and a comment after a label text] [test: usecase:
+U+2028, a tab, and a comment after a label text] [test: usecase: U+2028, a
+directive, a space, and a comment after a label text] [test: usecase: U+2028, a
+directive, and a comment after a label text] [test: usecase: U+2028, a line
+feed, and a comment after a label text] [test: usecase: U+2029, a directive, and
+a comment after a label text] [test: usecase: U+2028, a space, and a comment
+after a note text that holds a percent mark]
 
 [fixture: labels/label-quote-kinds] [fixture: labels/label-empty-quotes]
 [fixture: labels/label-quote-rewrite-one-form] [fixture:

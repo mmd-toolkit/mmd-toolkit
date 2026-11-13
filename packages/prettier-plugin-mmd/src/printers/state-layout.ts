@@ -66,6 +66,7 @@ import {
   printStyleWithColon,
   styleUnitsCanCompact,
 } from "./statement-rules.ts"
+import { readsStyleAsDescription } from "./style-text.ts"
 
 /**
  * The node types of a state diagram whose text is a value, printed as
@@ -1155,7 +1156,11 @@ function addStyleCommaRules(
       statement.range[0],
       statement.range[1],
       styles,
-    )
+    ) ||
+    // mermaid.js 10.9.8 draws the commas of such a `style` as the characters
+    // of a description, so a space after one changes the drawing there.
+    (statement.type === "StateStyleStatement" &&
+      readsStyleAsDescription(source, styles))
   ) {
     return
   }

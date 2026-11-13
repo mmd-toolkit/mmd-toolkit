@@ -2,7 +2,7 @@ import type { Node } from "@mmd-toolkit/ast"
 import { visitorKeys } from "@mmd-toolkit/parser"
 import type { Source } from "./source.ts"
 import { isSpaceOrTab, readDiagramText, textRead } from "./source.ts"
-import { styleColorEdits } from "./style-text.ts"
+import { readsStyleAsDescription, styleColorEdits } from "./style-text.ts"
 
 /**
  * The fields that hold the text of a style, by the type of the node: a
@@ -163,7 +163,13 @@ export function findColorRespellings(
   node: Node = source.root,
 ): void {
   findColorFunctionRespellings(source, found, node)
-  const fields = styleFields[node.type] ?? []
+  // mermaid.js 10.9.8 draws the text of such a `style` as the description of a
+  // state, so the case of a color changes the drawing there.
+  const fields =
+    node.type === "StateStyleStatement" &&
+    readsStyleAsDescription(source, node.styles)
+      ? []
+      : (styleFields[node.type] ?? [])
   for (const key of visitorKeys[node.type]) {
     const value = (node as unknown as Record<string, unknown>)[key]
     for (const child of Array.isArray(value) ? value : [value]) {

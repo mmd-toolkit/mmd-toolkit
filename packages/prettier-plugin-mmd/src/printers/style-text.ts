@@ -6,6 +6,7 @@ import {
   isWhitespace,
   previousRead,
   skipRemoved,
+  textRead,
 } from "./source.ts"
 
 /**
@@ -149,6 +150,27 @@ function endOfUrl(source: Source, from: number, end: number): number {
     else if (character === ")") return index + 1
   }
   return end
+}
+
+/**
+ * Whether mermaid.js 10.9.8 reads a `style` statement of a state diagram as a
+ * state with a description, and so draws its text as it is: it has no `style`
+ * statement there, and a line `style A fill:#ABC` is the states `style` and `A`
+ * and the description `#ABC` of the state `fill`. It reads the line so where no
+ * style after the first holds a `:`: a second `:` is a syntax error. The
+ * characters of such a line stay as written where they would be drawn
+ * (docs/state.md, Styles).
+ */
+export function readsStyleAsDescription(
+  source: Source,
+  styles: readonly ({ readonly range: readonly [number, number] } | null)[],
+): boolean {
+  return styles
+    .slice(1)
+    .every(
+      (style) =>
+        style === null || !textRead(source, ...style.range).includes(":"),
+    )
 }
 
 /**

@@ -182,6 +182,8 @@ whatever the other versions are, so it has no row.
 | [state](./state.md#statements-one-per-line)                    | a statement of the top level starting with a `%` word (`%a b`, `%a --> b c`), with a later statement that starts without it | the `%` statement and the rest on lines of their own                  | [2](./printed-form.md#2-a-gap-of-a-kind-that-prettier-does-not-have) | 10.9.8 and 11.7.0 read the rest of the line as a comment                                                    | [fixture: state/statements-one-per-line/percent-word-then-text-kept]               |
 | [state](./state.md#statements-one-per-line)                    | a click statement with a `:` (`click A href "a:b" accDescr {}`), with another statement after it on its line                | the click and the statement on lines of their own                     | [2](./printed-form.md#2-a-gap-of-a-kind-that-prettier-does-not-have) | 10.9.8 reads the `:` as the start of a description that runs to the end of the line                         | [fixture: state/statements-one-per-line/split]                                     |
 | [state](./state.md#semicolons-at-the-end-of-a-style-statement) | `style A fill:red;`, the `;` that ends a `style` that has no `#`                                                            | `style A fill: red`, the `;` dropped                                  | [3](./printed-form.md#3-a-spelling)                                  | 10.9.8 reads the `;` as a state of its own                                                                  | [fixture: state/semicolons-at-the-end-of-a-style-statement/style-text-terminators] |
+| [state](./state.md#colors)                                     | `style A fill:#ABC`, the color of a `style` that has no second `:`                                                          | `style A fill: #abc`                                                  | [3](./printed-form.md#3-a-spelling)                                  | 10.9.8 draws the line as text, with `#ABC` as the description of a state                                    | [fixture: state/colors/style-read-as-description-kept]                             |
+| [state](./state.md#whitespace-between-tokens)                  | `style A fill:rgb(1,2,3)`, the commas of a `style` that has no second `:`                                                   | `style A fill: rgb(1, 2, 3)`                                          | [1](./printed-form.md#1-the-whitespace-beside-a-mark)                | 10.9.8 draws the line as text, with `rgb(1,2,3)` as the description of a state                              | [fixture: state/whitespace-between-tokens/style-color-function-commas-kept]        |
 | [flowchart, swimlane](./flowchart.md#label-inner-whitespace)   | `A[ user@example.com ]`                                                                                                     | `A[user@example.com]`                                                 | [1](./printed-form.md#1-the-whitespace-beside-a-mark)                | flowchart: 11.7.0, 11.17.2, 12.0.0; swimlane: 11.16.1, 11.17.2, 12.0.0; they reject the tight form          | [fixture: flowchart/label-inner-whitespace/leading-whitespace-at-sign-kept]        |
 | [flowchart, swimlane](./flowchart.md#arrow-spacing)            | `A@{ shape: circle }e1@--> B`                                                                                               | `A@{ shape: circle } e1@--> B`                                        | [1](./printed-form.md#1-the-whitespace-beside-a-mark)                | flowchart: 11.7.0, 11.17.2, 12.0.0; swimlane: 11.16.1, 11.17.2, 12.0.0; they reject the form with a space   | [fixture: flowchart/arrow-spacing/edge-id-after-data-block-touches]                |
 | [flowchart](./flowchart.md#whitespace-between-tokens)          | `style A fill:#f00,color:white` printed `style A fill: #f00,color: white`                                                   | `style A fill: #f00, color: white`                                    | [1](./printed-form.md#1-the-whitespace-beside-a-mark)                | 10.9.8 takes the label colour from a style that starts with `color:` or `text-align:`                       | [fixture: flowchart/whitespace-between-tokens/style-color-touching-kept]           |
@@ -1683,7 +1685,13 @@ The `classDef` of a treemap is printed so too: the versions that count draw
 of a class diagram keeps its colors as written, although the examples count it:
 a version that counts has no `classDef` there and draws its words as the text of
 classes, so `classDef k fill:#FFF` and `classDef k fill:#fff` are drawn with
-different text. [fixture: flowchart/colors/colors-in-lower-case] [fixture:
+different text. The `style` of a state diagram keeps its colors too where no
+style after the first holds a `:`: 10.9.8 has no `style` statement there and
+draws `style A fill:#FFF` as the states `style` and `A` and the description
+`#FFF` of the state `fill`, so `#FFF` and `#fff` are drawn with different text;
+a line with a second `:` it rejects, and its colors are printed in lower case.
+[fixture: state/colors/style-read-as-description-kept] [fixture:
+flowchart/colors/colors-in-lower-case] [fixture:
 flowchart/colors/swimlane-colors-in-lower-case] [fixture:
 agentflow/colors/colors-in-lower-case] [fixture:
 class/colors/colors-in-lower-case] [fixture: state/colors/colors-in-lower-case]
@@ -1979,7 +1987,11 @@ is used that often, or the examples use none, the spelling is kept as written. A
 line that the printer prints as written has these spellings in one form too:
 `NOTE OVER A:%%{init: {}}%%  ;ACTOR B` is printed
 `Note over A:%%{init: {}}%%  ;actor B`, the whitespace, the `;`, and the
-directive staying as they are. [fixture:
+directive staying as they are, except that the quotes of a text stay as written
+on a line that mermaid.js reads with the next one, because a comment after the
+text removes its line feed: a U+2028 or U+2029 may stand between the text and
+the comment, and a quote that comes between them makes the comment a part of the
+text, or a name without quotes goes on over the character. [fixture:
 sequence/keyword-case/kept-line-in-one-form] [fixture:
 gantt/keyword-case/kept-line-in-one-form] The examples are the 541 fenced
 `mermaid-example` and `mermaid` blocks of the
