@@ -71,7 +71,8 @@ export function layoutGitgraphHeader(
   const atoms = [...collectAtoms(source, keyword.range[0], end, hidden, [])]
   // A colon that is left out (docs/gitgraph.md, Header) on a line of its own
   // after a hidden YAML block takes the line break before it, so that no empty
-  // line stays where it stood.
+  // line stays where it stood. A comment or a directive between them is no
+  // line break to take: it stays, as the gap prints it.
   const yaml = diagram.textBeforeColon.at(-1)
   const colonIndex = atoms.findIndex((atom) => atom.start === colon?.range[0])
   if (
@@ -79,7 +80,8 @@ export function layoutGitgraphHeader(
     colon !== undefined &&
     colonIndex > 0 &&
     findRespellings(source).get(colon.range[0])?.text === "" &&
-    source.text.slice(yaml.range[1], colon.range[0]).includes("\n")
+    source.text.slice(yaml.range[1], colon.range[0]).includes("\n") &&
+    source.text.slice(yaml.range[1], colon.range[0]).trim() === ""
   ) {
     atoms[colonIndex] = {
       start: atoms[colonIndex - 1].end,

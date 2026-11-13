@@ -84,8 +84,8 @@ ishikawa
 詳しくは
 [対象にする版の mermaid.js のために残す形](./compatibility.ja.md#対象にする版の-mermaidjs-のために残す形)
 を参照してください。
-コメントの終わりの区切りの後にあるノードは、通常の規則に従います。
-[fixture: ishikawa/indentation/indent-clamped]
+コメントを終わらせる区切り文字と同じ行で、その後に続くノードは、
+通常の規則に従います。 [fixture: ishikawa/indentation/indent-clamped]
 [fixture: ishikawa/indentation/indent-depth]
 [fixture: ishikawa/indentation/indent-relative-zero]
 [fixture: ishikawa/indentation/indent-unindented-causes]
@@ -848,9 +848,9 @@ YAML の字下げは `tabWidth: 0` でも最低 1 つの空白を使います。
 [fixture: ishikawa/frontmatter-yaml/zero-width-nested-title]
 [fixture: ishikawa/frontmatter-yaml/zero-width-nested-config]
 
-不正、字下げ付き、HTML に影響するもの、区切りの危険がある YAML は、
-フロントマターの境界をまたぐタグも含めて保ちます。
-[fixture: ishikawa/frontmatter-yaml/frontmatter-indented]
+不正な YAML、字下げされた YAML、HTML 処理の影響を受ける YAML、
+区切りの危険がある YAML は、フロントマターの境界をまたいで始まるタグも含めて、
+書かれたまま保ちます。 [fixture: ishikawa/frontmatter-yaml/frontmatter-indented]
 [fixture: ishikawa/frontmatter-yaml/frontmatter-malformed]
 [corpus fixture: ishikawa/frontmatter-malformed]
 [corpus fixture: ishikawa/frontmatter-html-title]

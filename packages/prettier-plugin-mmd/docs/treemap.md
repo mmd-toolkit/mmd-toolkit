@@ -457,8 +457,8 @@ treemap
 
 ### Colors
 
-A color in the style of a `classDef` is printed in lower case, as in the other
-diagram types (see
+A color in the style of a `classDef` is printed in lower case, as in most of the
+other diagram types, but not in a class diagram (see
 [Colors that are drawn the same](./compatibility.md#colors-that-are-drawn-the-same)):
 `classDef zz fill:#ABCDEF` is printed `classDef zz fill: #abcdef`. The versions
 that count draw `#ABCDEF` and `#abcdef` the same. A `#` that is no color, such

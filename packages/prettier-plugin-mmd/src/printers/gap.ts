@@ -64,12 +64,6 @@ export interface AbsentItem {
   readonly doc: Doc
   /** Whether it is a `;`, which stands against what comes before it. */
   readonly isSemicolon: boolean
-  /**
-   * Whether it is a directive that does not end with `}%%`: the whitespace
-   * after its argument ends it, so what follows it on its line would join a
-   * word argument if no whitespace stood between.
-   */
-  readonly isUnclosedDirective: boolean
 }
 
 /** A line of the source that holds only items, such as a comment line. */
@@ -712,10 +706,6 @@ function toRun(
       ? parts.map((part) => ({
           doc: printItem(source, part.item),
           isSemicolon: part.item.type === "IgnoredSemicolon",
-          isUnclosedDirective:
-            "closed" in part.item &&
-            part.item.type === "Directive" &&
-            !part.item.closed,
         }))
       : null,
     endsWithWhitespace: endsWithSpaceOrTab(
@@ -789,12 +779,6 @@ export function printAbsentItems(
     doc.push(item.doc)
   }
   if (apart && !spaced && !place.atLineEnd) doc.push(" ")
-  // The whitespace after the argument of a directive that is not closed is
-  // taken with it: without it, the text that follows would be read as a part
-  // of a word argument (common.md, Where a directive is).
-  if (items[items.length - 1].isUnclosedDirective && run.spaceAfter) {
-    if (!place.atLineEnd) doc.push(" ")
-  }
   return doc
 }
 

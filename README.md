@@ -63,8 +63,8 @@ mermaid.js is the reference, at the version recorded in the
 text is also drawn by other versions, so the formatter checks what it prints
 against up to five versions of mermaid.js for each diagram type. When the
 formatter would change how something is written, such as the case of a keyword,
-it keeps it as written if one of the versions that count for the diagram type
-reads the new form differently or not at all.
+it keeps it as written if a version that counts for the diagram type and reads
+the written form does not read the new form, or draws it differently.
 [Versions of mermaid.js that count](./packages/prettier-plugin-mmd/docs/compatibility.md#versions-of-mermaidjs-that-count)
 lists them for each diagram type, and
 [Forms kept for versions of mermaid.js that count](./packages/prettier-plugin-mmd/docs/compatibility.md#forms-kept-for-versions-of-mermaidjs-that-count)

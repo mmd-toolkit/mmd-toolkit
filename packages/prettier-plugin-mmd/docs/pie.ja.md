@@ -46,7 +46,7 @@ pie の区分は扇形であり、追加の階層にはしません。
 pie では列が構文を決めないため、`tabWidth: 0` の本文は空白0個です。
 `useTabs` は幅0でもタブ 1つです。
 説明本文以外の値の継続行と隠れた形の閉じは元の列を保ち、
-YAML だけは共有の最小幅を使います。
+YAML だけは共有の正の最小幅を使います。
 
 固定例: [fixture: pie/indentation/indent-default]
 [fixture: pie/indentation/indent-four] [fixture: pie/indentation/indent-zero]

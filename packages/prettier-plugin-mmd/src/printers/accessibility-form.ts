@@ -258,8 +258,18 @@ function readDescriptionBlock(
   const endsAtPercent = diagramTypesEndingTextAtPercent.has(
     source.root.diagramType,
   )
+  // A directive that is not closed takes the whitespace after it, line breaks
+  // included, so in the form with the `:`, which ends at the line, what follows
+  // would go on the line of the text.
+  const holdsUnclosedDirective = source.root.directives.some(
+    (directive) =>
+      !directive.closed &&
+      statement.range[0] <= directive.range[0] &&
+      directive.range[0] < statement.range[1],
+  )
   if (
     holdsLineBreak(text) ||
+    holdsUnclosedDirective ||
     (apart &&
       bodiesReadingDirectionLines.has(source.root.body.type) &&
       spelled.toLowerCase().includes("direction")) ||

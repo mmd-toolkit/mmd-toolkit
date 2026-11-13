@@ -42,7 +42,7 @@ import {
   findTokenEndingBefore,
   findTriviaBetween,
   isWhitespace,
-  skipSpacesAndTabs,
+  skipBlanksAndRemoved,
   textRead,
 } from "./source.ts"
 
@@ -350,8 +350,9 @@ export function findStyleStatementEnd(
   if (!statement.type.endsWith("LinkStyleStatement")) return statement.range[1]
   // The whitespace after the last style of a `linkStyle` that mermaid.js reads
   // (see `normalizeStyleList`).
-  const tail = skipSpacesAndTabs(source, last.range[1], written)
-  if (hasBlankStrokeValue(source.text.slice(last.range[0], tail))) {
+  const tail = skipBlanksAndRemoved(source, last.range[1], written)
+  const styleStart = statement.styles.at(-1)?.range[0] ?? last.range[0]
+  if (hasBlankStrokeValue(textRead(source, styleStart, tail))) {
     return written
   }
   return Math.max(statement.range[1], endOfJoinedStyle(source, last.range))

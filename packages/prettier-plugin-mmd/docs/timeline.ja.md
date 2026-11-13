@@ -299,7 +299,7 @@ timeline
 
 ### period と event
 
-period と event は、行の最後の event の末尾の空白と、`:` の前に足す空白を除き、
+期間とイベントは、行の最後のイベントの末尾の空白と、`:` の前に足す空白を除き、
 テキストと `:` の間の空白も含め、書かれたまま印字します。
 mermaid.js はその空白を Db に持ちますが、空白がなくても同じテキストを描きます。
 （[同じに描かれるキーワードの後のテキスト](./compatibility.ja.md#同じに描かれるキーワードの後のテキスト)）。
@@ -327,7 +327,7 @@ period が `title` か `section` の語（大文字小文字は問いません�
 隙間を書かれたままにします（[指令](#指令)を参照）。
 次の `:` との間に改行がある event も、行の最後の event です。
 `2020 : e1  ` の次に `: e2` の行が続くとき、`e1` の後ろの空白は除きます。
-このような event の末尾のディレクティブは、前に空白があれば空白 1 つを置き、
+このようなイベントの末尾のディレクティブは、前に空白があれば空白 1 つを置き、
 最後のディレクティブの後ろの空白は除きます。
 `2020 : e1   %%{x}%%  ` は `2020 : e1 %%{x}%%` と印字します。
 （[同じに描かれるキーワードの後のテキスト](./compatibility.ja.md#同じに描かれるキーワードの後のテキスト)）。
@@ -340,7 +340,7 @@ period が `title` か `section` の語（大文字小文字は問いません�
 [fixture: periods-and-events/whitespace-only-event]
 [fixture: periods-and-events/period-trailing-kept-event-end-dropped]
 [fixture: periods-and-events/event-end-before-continuation-dropped]
-event の中の `:`、`#`、`%%` はテキストの文字で、
+イベントの中の `:`、`#`、`%%` はテキストの文字で、
 後ろに空白が続かない `:` も同じです。
 [fixture: periods-and-events/colon-inside-event]
 [fixture: periods-and-events/special-characters-in-events]

@@ -4486,3 +4486,31 @@ describe("style semicolons", () => {
     expect(await describeFrontmatterChange(input, output)).toBeNull()
   })
 })
+
+/**
+ * An ishikawa diagram whose written indentation does not show the tree keeps
+ * it for the nodes, and a node after a diagram comment that ends at a
+ * U+2028 keeps the separator once, with the comment: the other lines of the
+ * diagram decide whether the written indentation is kept, so that one node
+ * after such a comment does not re-indent the lines before it (docs/ishikawa.md,
+ * Indentation).
+ */
+describe("an ishikawa diagram with a node after a comment that ends at a line separator", () => {
+  it.each([
+    [
+      "a comment with a `{}` after the `%%`",
+      "ishikawa\nR\n  A\n B\n  C\n%%{}%%\u2028 D\n",
+      "ishikawa\nR\n  A\n B\n  C\n    %%{}%%\u2028 D\n",
+    ],
+    [
+      "a plain comment",
+      "ishikawa\nR\n  A\n B\n  C\n%% c\u2028 D\n",
+      "ishikawa\nR\n  A\n B\n  C\n    %% c\u2028 D\n",
+    ],
+  ])("keeps the written indentation: %s", async (_title, input, expected) => {
+    const output = await format(input)
+    expect(output).toBe(expected)
+    expect(await format(output)).toBe(output)
+    expect(writtenTextKeptUpToSeparators(input, output)).toBe(true)
+  })
+})

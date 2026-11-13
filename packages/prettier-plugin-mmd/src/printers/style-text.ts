@@ -1,10 +1,10 @@
 import type { TextEdit } from "./layout.ts"
 import type { Source } from "./source.ts"
 import {
-  findDirectiveEndingAt,
   findTriviaAt,
   isSpaceOrTab,
   isWhitespace,
+  previousRead,
   skipRemoved,
 } from "./source.ts"
 
@@ -26,6 +26,11 @@ export function styleRunEdits(
   const edits: TextEdit[] = []
   let position = start
   while (position < end) {
+    const read = skipRemoved(source, position)
+    if (read !== position) {
+      position = read
+      continue
+    }
     const regionEnd = endOfStyleRegion(source, position, end)
     const character = text[position]
     if (regionEnd !== undefined) {
@@ -168,6 +173,11 @@ export function styleColorEdits(
   const edits: TextEdit[] = []
   let position = start
   while (position < end) {
+    const read = skipRemoved(source, position)
+    if (read !== position) {
+      position = read
+      continue
+    }
     const regionEnd = endOfStyleRegion(source, position, end)
     const character = text[position]
     if (regionEnd !== undefined) {
@@ -180,23 +190,17 @@ export function styleColorEdits(
         digitsEnd = skipRemoved(source, digitsEnd + 1)
       }
       const digits = digitPositions.length
-      let beforeAt = position
-      for (;;) {
-        const directive = findDirectiveEndingAt(source, beforeAt)
-        if (directive === undefined || directive.range[0] < start) break
-        beforeAt = directive.range[0]
-      }
-      const before = beforeAt === start ? undefined : text[beforeAt - 1]
-      const after = text[digitsEnd]
+      // The characters beside the color are the ones that the lexer reads: the
+      // `;` that ends the text, which the line rule ignores, is not one.
+      const beforeAt = previousRead(source, position)
+      const before = beforeAt < start ? undefined : text[beforeAt]
+      const after = digitsEnd < end ? text[digitsEnd] : undefined
       if (
         (digits === 3 || digits === 4 || digits === 6 || digits === 8) &&
         (before === undefined ||
           isWhitespace(before) ||
           ":,(".includes(before)) &&
-        (after === undefined ||
-          isWhitespace(after) ||
-          ",)!".includes(after) ||
-          (after === ";" && digitsEnd === end))
+        (after === undefined || isWhitespace(after) || ",)!".includes(after))
       ) {
         // Edit only the written digits: a directive between them stays whole.
         for (const digit of digitPositions) {

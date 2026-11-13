@@ -53,13 +53,15 @@ export function printIshikawa(
       const column = significantIndentationOf(options, line.depth)
       const width = column.length - line.separatorWidth
       const character = options.useTabs ? "\t" : " "
+      // The separator that ends a comment before the line is printed with the
+      // comment, and the written whitespace of the line starts with it.
       return [
         line,
         line.leading === null
           ? {
               indentation:
                 keepsWrittenIndentation && line.indentation !== null
-                  ? line.indentation
+                  ? line.indentation.slice(line.separatorWidth)
                   : character.repeat(width),
               head: "",
               column,
@@ -68,7 +70,9 @@ export function printIshikawa(
               ...placeLeadingDirectives(
                 source,
                 line.leading,
-                keepsWrittenIndentation ? line.column : width,
+                keepsWrittenIndentation
+                  ? line.column - line.separatorWidth
+                  : width,
                 character,
               ),
               column,

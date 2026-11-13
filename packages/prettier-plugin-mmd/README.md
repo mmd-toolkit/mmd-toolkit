@@ -140,17 +140,19 @@ The formatting rules of each diagram type are in its document:
   currently 12.3.0. A formatted text is also drawn by other versions, so the
   formatter checks what it prints against up to five versions of mermaid.js for
   each diagram type. When the formatter would change how something is written,
-  such as the case of a keyword, it keeps it as written if one of the versions
-  that count for the diagram type reads the new form differently or not at all.
+  such as the case of a keyword, it keeps it as written if a version that counts
+  for the diagram type and reads the written form does not read the new form, or
+  draws it differently.
   [Versions of mermaid.js that count](./docs/compatibility.md#versions-of-mermaidjs-that-count)
   lists them for each diagram type, and
   [Forms kept for versions of mermaid.js that count](./docs/compatibility.md#forms-kept-for-versions-of-mermaidjs-that-count)
   lists each form that stays as written for them.
 - Formatting a formatted diagram again changes nothing.
 - Spaces and tabs at the end of a `style`, `classDef`, or `linkStyle` line are
-  removed. mermaid.js keeps them at the end of the last style. Whitespace of
-  another kind there, such as a no-break space, stays where it changes the
-  figure, in a class diagram and a flowchart for example.
+  removed, except a space or a tab after a backslash that ends the last style.
+  mermaid.js keeps them at the end of the last style. Whitespace of another kind
+  there, such as a no-break space, stays where it changes the figure, in a class
+  diagram and a flowchart for example.
 - The lines inside `eventmodeling` data and note blocks are aligned where the
   [Data blocks](./docs/eventmodeling.md#data-blocks) rule permits it. This can
   change the spaces in the text that mermaid.js keeps, while the rendered

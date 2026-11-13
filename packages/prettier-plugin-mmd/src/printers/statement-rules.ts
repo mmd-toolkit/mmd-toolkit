@@ -28,7 +28,9 @@ import {
   hasTriviaBesidesTrailingDirectives,
   isSpaceOrTab,
   isStructural,
+  skipRemoved,
   skipSpacesAndTabs,
+  textRead,
 } from "./source.ts"
 
 /**
@@ -436,7 +438,7 @@ export function normalizeStyleList(
     let comma = start
     while (comma < to && !endsStyle(source, comma, escapesComma)) comma++
     const keepsValue =
-      isLinkStyle && hasBlankStrokeValue(source.text.slice(start, comma))
+      isLinkStyle && hasBlankStrokeValue(textRead(source, start, comma))
     let core: Range = keepsValue
       ? [skipSpacesAndTabs(source, start, comma), comma]
       : trimStyle(source, [start, comma], { keepsEscapedSpace: escapesComma })
@@ -445,7 +447,7 @@ export function normalizeStyleList(
       joinsStyles &&
       !keepsValue &&
       core[1] < comma &&
-      endsWithEscape(source.text.slice(core[0], core[1]))
+      endsWithEscape(textRead(source, core[0], core[1]))
     ) {
       core = [core[0], core[1] + 1]
     }
@@ -836,9 +838,12 @@ export function endsWithEscape(text: string): boolean {
  */
 export function endOfJoinedStyle(source: Source, range: Range): number {
   const [start, end] = range
-  return isSpaceOrTab(source.text[end]) &&
-    endsWithEscape(source.text.slice(start, end))
-    ? end + 1
+  // The character after the style is the one that the lexer reads next, past a
+  // directive that stands between them.
+  const next = skipRemoved(source, end)
+  return isSpaceOrTab(source.text[next]) &&
+    endsWithEscape(textRead(source, start, end))
+    ? next + 1
     : end
 }
 

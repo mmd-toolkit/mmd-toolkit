@@ -421,20 +421,20 @@ ends] [fixture: whitespace-between-tokens/data-block-padded-zero-width]
 [fixture: whitespace-between-tokens/data-block-surrounding-trivia] [fixture:
 whitespace-between-tokens/data-block-and-ignored-line-kept] [fixture:
 whitespace-between-tokens/actor-data-block-kept] A data block of a `participant`
-or an `actor` without `create` that holds none of `:`, `,`, `;`, and `>` is read
-by a version that counts as a part of the name of the participant, with the
-whitespace before it, the whitespace inside it, and the whitespace before a `%%`
-comment after it. So the gap before the block, the block, and that gap before
-the comment stay as written, and the block is not padded:
-`participant A   @{ x }` and `actor B@{x}` stay, and so does the whitespace
-before the `%%` in `participant C@{ y }   %% c`. mermaid.js removes the
-directives before it reads the name, so the name runs over a directive in that
-whitespace, one that is not closed included, and the whitespace on both sides of
-it stays: `participant B@{x}   %%{init: {}}%%   %% c`. A directive that ends the
-line, with no comment after it, is an ordinary gap, printed
-`participant E@{z} %%{init: {}}%%`. A block with one of these characters, and
-the block of a statement with `create`, which that version rejects, are printed
-as above (see
+or an `actor` without `create` that holds none of `:`, `,`, `;`, and `>`, and no
+line break, is read by a version that counts as a part of the name of the
+participant, with the whitespace before it, the whitespace inside it, and the
+whitespace before a `%%` comment after it. So the gap before the block, the
+block, and that gap before the comment stay as written, and the block is not
+padded: `participant A   @{ x }` and `actor B@{x}` stay, and so does the
+whitespace before the `%%` in `participant C@{ y }   %% c`. mermaid.js removes
+the directives before it reads the name, so the name runs over a directive in
+that whitespace, one that is not closed included, and the whitespace on both
+sides of it stays: `participant B@{x}   %%{init: {}}%%   %% c`. A directive that
+ends the line, with no comment after it, is an ordinary gap, printed
+`participant E@{z} %%{init: {}}%%`. A block with one of these characters or with
+a line break, and the block of a statement with `create`, which that version
+rejects, are printed as above (see
 [Forms kept for versions of mermaid.js that count](./compatibility.md#forms-kept-for-versions-of-mermaidjs-that-count)).
 [fixture: whitespace-between-tokens/data-block-name-gap-before-kept] [fixture:
 whitespace-between-tokens/data-block-name-comment-gap-kept] [fixture:

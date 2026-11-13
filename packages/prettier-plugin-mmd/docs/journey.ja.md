@@ -400,7 +400,7 @@ journey
 書かれた空白によらず、前の値に接します。
 [fixture: ignored-data/third-colon-touches]
 [fixture: ignored-data/text-as-written] [fixture: ignored-data/four-colons]
-空の score や空の人の後でも同じです。 [fixture: ignored-data/after-empty-people]
+空のスコアや空の人の後でも同じです。 [fixture: ignored-data/after-empty-people]
 末尾の空白は落とします。 [fixture: ignored-data/trailing-whitespace-dropped]
 
 入力

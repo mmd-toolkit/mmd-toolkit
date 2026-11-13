@@ -13,18 +13,12 @@ export interface TriviaComment {
 
 /**
  * A directive as the printers read it: its kind and its range, which takes
- * the whitespace after a directive that is not closed when that holds a
- * U+2028 or U+2029 (see `extendDirective`).
+ * the whitespace after a directive that is not closed, as the scan of
+ * mermaid.js does (see `extendDirective`).
  */
 export interface TriviaDirective {
   readonly type: "Directive"
   readonly range: Range
-  /**
-   * Whether the directive ends with `}%%`. One that does not end so takes the
-   * whitespace after its argument (see `findTakenWhitespace`), so that the
-   * whitespace is what ends a word argument.
-   */
-  readonly closed: boolean
 }
 
 /**
@@ -170,6 +164,27 @@ export function isAtLineEnd(source: Source, offset: number): boolean {
 }
 
 /**
+ * The offset of the first character from `start` on that the lexer of the
+ * diagram reads and that is no space and no tab, or `end` where the range
+ * holds nothing else: the spaces and tabs, and what mermaid.js removes (see
+ * `Source.removed`), are passed.
+ */
+export function skipBlanksAndRemoved(
+  source: Source,
+  start: number,
+  end: number,
+): number {
+  let offset = start
+  while (offset < end) {
+    const read = skipRemoved(source, offset)
+    if (read !== offset) offset = read
+    else if (isSpaceOrTab(source.text[offset])) offset++
+    else break
+  }
+  return Math.min(offset, end)
+}
+
+/**
  * The offset of the first character from `start` on that is no space and no
  * tab, or `end` where the range holds nothing else.
  */
@@ -198,15 +213,18 @@ export function skipRemoved(source: Source, offset: number): number {
 }
 
 /**
- * `skipRemoved` for the text as it is before the line rule is applied: the `;`
- * that the rule ignores are still in it. Diagram detection reads the text so
- * (docs/cynefin.md, Semicolons).
+ * Whether the text from `from` to `to` holds a character that mermaid.js
+ * removes before the lexer reads it (see `Source.removed`).
  */
-export function skipRemovedBeforeLineRule(
+export function holdsRemoved(
   source: Source,
-  offset: number,
-): number {
-  return findCoveringRange(source.removedBeforeLineRule, offset)?.[1] ?? offset
+  from: number,
+  to: number,
+): boolean {
+  const range = source.removed[
+    findFirstIndex(source.removed, (candidate) => candidate[1] > from)
+  ] as Range | undefined
+  return range !== undefined && range[0] < to
 }
 
 /**
@@ -220,6 +238,18 @@ export function previousRead(source: Source, offset: number): number {
     if (range === undefined) return position
     position = range[0] - 1
   }
+}
+
+/**
+ * `skipRemoved` for the text as it is before the line rule is applied: the `;`
+ * that the rule ignores are still in it. Diagram detection reads the text so
+ * (docs/cynefin.md, Semicolons).
+ */
+export function skipRemovedBeforeLineRule(
+  source: Source,
+  offset: number,
+): number {
+  return findCoveringRange(source.removedBeforeLineRule, offset)?.[1] ?? offset
 }
 
 /**
@@ -265,12 +295,12 @@ function textWithout(
 
 /**
  * The diagram text of a source (common.md, Reading a source): the characters
- * that the lexer of the diagram reads, and the offset in the source of each.
+ * that the lexer of the diagram reads, and a way back to the source.
  */
 export interface DiagramText {
   readonly text: string
-  /** The offset in the source of the character at each index of `text`. */
-  readonly offsets: readonly number[]
+  /** The offset in the source of the character at `index` of `text`. */
+  readonly offsetOf: (index: number) => number
 }
 
 const diagramTexts = new WeakMap<Source, DiagramText>()
@@ -279,25 +309,40 @@ const diagramTexts = new WeakMap<Source, DiagramText>()
  * The diagram text of the source, found once: a decision that reads across
  * the places where characters are removed, such as a word that a directive
  * or a `;` that the line rule ignores cuts, reads it, and goes back to the
- * source through `offsets`.
+ * source through `offsetOf`.
  */
 export function readDiagramText(source: Source): DiagramText {
   let diagramText = diagramTexts.get(source)
   if (diagramText === undefined) {
-    const characters: string[] = []
-    const offsets: number[] = []
+    // The stretches of the source that stay, with where each starts in the
+    // text and in the source.
+    const stretches: { readonly visible: number; readonly source: number }[] =
+      []
+    let visible = 0
     let position = 0
     for (const [start, end] of [
       ...source.removed,
       [source.text.length, source.text.length],
     ]) {
-      for (; position < start; position++) {
-        characters.push(source.text[position])
-        offsets.push(position)
+      if (start > position) {
+        stretches.push({ visible, source: position })
+        visible += start - position
       }
       position = Math.max(position, end)
     }
-    diagramText = { text: characters.join(""), offsets }
+    diagramText = {
+      text: textRead(source, 0, source.text.length),
+      offsetOf(index) {
+        const stretch =
+          stretches[
+            findFirstIndex(
+              stretches,
+              (candidate) => candidate.visible > index,
+            ) - 1
+          ]
+        return stretch.source + index - stretch.visible
+      },
+    }
     diagramTexts.set(source, diagramText)
   }
   return diagramText
@@ -421,14 +466,15 @@ function findTakenWhitespace(
 
 /**
  * Makes the directive as the printers read it. The whitespace that a
- * directive that is not closed takes is part of it when it holds a U+2028 or
- * U+2029. The free text of its argument stops before such a character, which
- * is no whitespace to it (common.md, Where a directive is): with the
- * character printed as a space, the argument would reach past it, and take
- * the statements that follow, up to the next `}%%` or the end of the text. So
- * the whitespace is printed as written, with the directive. Whitespace that
- * runs to the end of the text joins nothing, so only what reaches its last
- * U+2028 or U+2029 matters there.
+ * directive that is not closed takes, line breaks included, is part of it:
+ * mermaid.js removes it with the directive (common.md, Where a directive is),
+ * so what follows goes on the line of the directive, and the whitespace is
+ * printed as written. The free text of an argument stops before a U+2028 or
+ * U+2029, which is no whitespace to it: with the character printed as a
+ * space, the argument would reach past it, and take the statements that
+ * follow, up to the next `}%%` or the end of the text. Whitespace that runs to
+ * the end of the text joins nothing, so there only what reaches its last
+ * U+2028 or U+2029 is part of the directive.
  */
 function extendDirective(
   text: string,
@@ -448,7 +494,7 @@ function extendDirective(
       ? findTakenWhitespace(text, record)
       : undefined
   if (taken === undefined) {
-    return { type: "Directive", range: directive.range, closed: true }
+    return { type: "Directive", range: directive.range }
   }
   // Only the whitespace that the directive takes is searched: a search of the
   // whole text would read it once for each directive.
@@ -457,14 +503,16 @@ function extendDirective(
     whitespace.lastIndexOf("\u2028"),
     whitespace.lastIndexOf("\u2029"),
   )
-  if (stop < 0) {
-    return { type: "Directive", range: directive.range, closed: false }
+  if (taken.runsToEnd && stop < 0) {
+    return { type: "Directive", range: directive.range }
   }
   const lastStop = taken.start + stop
   return {
     type: "Directive",
-    range: [directive.range[0], taken.runsToEnd ? lastStop + 1 : taken.end],
-    closed: false,
+    range: [
+      directive.range[0],
+      taken.runsToEnd && stop >= 0 ? lastStop + 1 : taken.end,
+    ],
   }
 }
 
@@ -611,7 +659,6 @@ function findCommentRegions(
 function findRemovedRanges(
   text: string,
   root: Root,
-  directiveTokens: readonly Token[],
   commentRegions: readonly Range[],
   ignoredSemicolons: ReadonlySet<number>,
 ): {
@@ -619,18 +666,15 @@ function findRemovedRanges(
   readonly beforeLineRule: readonly Range[]
 } {
   const found: Range[] = [...commentRegions]
-  for (const token of directiveTokens) {
-    const record = root.directives[
-      findFirstIndex(
-        root.directives,
-        (candidate) => candidate.range[0] >= token.range[0],
-      )
-    ] as Directive | undefined
-    const taken =
-      record?.range[0] === token.range[0]
-        ? findTakenWhitespace(text, record)
-        : undefined
-    found.push([token.range[0], taken?.end ?? token.range[1]])
+  // The frontmatter is not part of the text that the lexer reads (common.md,
+  // Reading a source), and a directive is found everywhere after it, also in a
+  // comment that the lexer of the diagram reads itself.
+  if (root.frontmatter !== null) found.push(root.frontmatter.range)
+  for (const directive of root.directives) {
+    found.push([
+      directive.range[0],
+      findTakenWhitespace(text, directive)?.end ?? directive.range[1],
+    ])
   }
   const beforeLineRule = mergeRanges(found)
   for (const offset of ignoredSemicolons) found.push([offset, offset + 1])
@@ -697,7 +741,13 @@ export function createSource(
   // The tokens, the comments, and the records of the directives are in source
   // order and do not overlap, so they are searched with `findFirstIndex` and
   // `findCoveringRange`, not scanned for each directive and comment.
-  const directiveRanges = directiveTokens.map((token) => token.range)
+  // A directive takes the whitespace after it when it is not closed, so a
+  // U+2028 or U+2029 in that whitespace is no comment start (common.md,
+  // Comment lines).
+  const extendedDirectives = directiveTokens.map((token) =>
+    extendDirective(text, token, root.directives),
+  )
+  const directiveRanges = extendedDirectives.map((directive) => directive.range)
   const comments = joinCommentFragments(text, root, directiveRanges)
   const commentRanges = comments.map((comment) => comment.range)
   const commentRegions: CommentRegions = keepsCommentLines
@@ -709,20 +759,20 @@ export function createSource(
       .filter((token) => token.type === "IgnoredSemicolon")
       .map((token) => token.range[0]),
   )
-  const directives = directiveTokens
-    .filter(
-      (token) =>
-        findCoveringRange(commentRanges, token.range[0], token.range[1]) ===
-        undefined,
-    )
-    .map((token) => extendDirective(text, token, root.directives))
+  const directives = extendedDirectives.filter(
+    (directive) =>
+      findCoveringRange(
+        commentRanges,
+        directive.range[0],
+        directive.range[1],
+      ) === undefined,
+  )
   const trivia = [...comments, ...directives].sort(
     (a, b) => a.range[0] - b.range[0],
   )
   const removed = findRemovedRanges(
     text,
     root,
-    directiveTokens,
     commentRegions.all,
     ignoredSemicolons,
   )

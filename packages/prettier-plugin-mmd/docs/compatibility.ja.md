@@ -148,7 +148,7 @@ flowchart、state、class、ER、requirement、mindmap の描画処理は、
 
 違ったのは、スタイルの色と空白、
 テキストの空白（整形が 1 つの空白にする連続した空白で、HTML はそれをまとめます。
-description の両端の空白もそうです）、
+説明の両端の空白も含みます）、
 引用符つきか引用符なしかで決まる flowchart のラベルの型 `string` と `text`、
 解析のたびに作られる id、flowchart の subgraph の id のフィールドで、
 その subgraph の id を挙げる文はありません。
@@ -229,7 +229,7 @@ ELK の配置のパッケージのどのリリースも、
 | [ER](./er.ja.md#トークンの間の空白)                         | `subgraph-x`、`end-x`                                                                                         | `subgraph -x`、`end` と単独の行の `-x`          | [1](./printed-form.ja.md#1-記号の横の空白)            | 10.9.8 が空白を入れた形を拒否し、11.7.0 が違って描く                                                                     | [fixture: er/whitespace-between-tokens/subgraph-then-dash-touching-kept]      |
 | [ER](./er.ja.md#方向)                                       | `DIRECTION lr`                                                                                                | `direction LR`                                  | [3](./printed-form.ja.md#3-綴り)                      | 10.9.8 が、その行をエンティティとして読む                                                                                | [fixture: er/direction/case-kept]                                             |
 | [ER](./er.ja.md#subgraph)                                   | `SUBGRAPH S` と `END`                                                                                         | `subgraph S` と `end`                           | [3](./printed-form.ja.md#3-綴り)                      | 10.9.8 と 11.7.0 が、エンティティとして読む                                                                              | [fixture: er/subgraphs/end-case-kept]                                         |
-| [ER](./er.ja.md#実体)                                       | 引用符つきの `"Zoë"`                                                                                          | `Zoë`                                           | [3](./printed-form.ja.md#3-綴り)                      | 10.9.8 が、ASCII 以外の文字を含む引用符なしの名前を拒否する                                                              | [fixture: er/entities/names-that-need-quotes]                                 |
+| [ER](./er.ja.md#実体)                                       | 引用符つきの `"Zoë"`                                                                                          | `Zoë`                                           | [3](./printed-form.ja.md#3-綴り)                      | 10.9.8 が、ASCII 以外の字母を含む引用符なしの名前を拒否する                                                              | [fixture: er/entities/names-that-need-quotes]                                 |
 | [ER](./er.ja.md#実体)                                       | 引用符つきの `"a.b"`                                                                                          | `a.b`                                           | [3](./printed-form.ja.md#3-綴り)                      | 10.9.8 と 11.7.0 が、引用符なしの名前の `.` を拒否する                                                                   | [fixture: er/entities/name-with-dot-kept]                                     |
 | [ER](./er.ja.md#1-行に-1-文)                                | `12a`、2 桁以上の数と、名前が続く文字                                                                         | `12` と `a` を別の行に                          | [2](./printed-form.ja.md#2-prettier-にない種類の隙間) | 11.7.0 が 2 行を違って描く。10.9.8 はテキストを拒否する                                                                  | [fixture: er/statements-one-per-line/number-name-then-name-kept]              |
 | [ER](./er.ja.md#1-行に-1-文)                                | `endé`、`end` と U+2028 か U+2029 と文、`subgraphé`、`subgraph` と U+2028 と名前                              | `end` と `é` を別の行に。区切りは空白にして印字 | [2](./printed-form.ja.md#2-prettier-にない種類の隙間) | 11.7.0 が違って描く。10.9.8 は `endé` と `subgraphé` を拒否する                                                          | [fixture: er/statements-one-per-line/end-then-name-outside-ascii-kept]        |
@@ -330,7 +330,7 @@ usecase の JSON の表は、本文の全行を一定数の半角空白だけ動
 開きの行の本文、半角空白以外の行頭空白、内部のディレクティブ、0 桁の YAML の印、
 行全体を保つ行、文の最初の行より後のブロック、`tabWidth: 0` は移動を妨げます。
 `useTabs` のときは、ブロックを持つ文を書かれたまま印字します。
-sequence では、Mermaid がブロック全体を両端の空白を除くため、
+sequence では、Mermaid がブロック全体の両端の空白を除くため、
 文字のある本文行が 1 行であることも必要です。
 条件と理由は[データブロック](./flowchart.ja.md#データブロック)に従い、
 ほかのブロックは桁を保ちます。 [fixture: flowchart/data-blocks/deep-nested-yaml]
@@ -955,13 +955,22 @@ class 図の `text-align:left` も同じです。
 前に空白があるスタイルは、`:` の前の空白があってもなくても、
 ラベルのスタイルになりません。
 `style A fill:#f00, color :red` と `style A fill: #f00, color: red`
-は同じに描かれ、class 図の `style A color :red` と `style A color: red` も、
-文の最初のスタイルの前に空白があるので、同じに描かれました。
+は同じに描かれ、`style A fill:#f00,color :red` と、
+スタイルの前に空白がある `style A fill: #f00, color: red` も同じに描かれました。
 そのため、flowchart と class 図の `style` では、
-`color:` か `text-align:` で始まるスタイルは、前に空白があるかないかを保ち、
-名前 `color` か `text-align` は、スタイルの前に空白がない場合に、
-`:` との間に空白があるかないかを保ちます。
-class 図では、直前の `,` に接するスタイルが、その場合です。
+`color:` か `text-align:` で始まるスタイルは、前に空白があるかないかを保ちます。
+flowchart では、
+文の最初のスタイルの名前（`color` や `text-align`）と `:`
+の間に空白があるかないかを保ち、連続する空白は 1 つにします。
+対象にする版の 1 つは、その隙間がない場合にだけラベルのスタイルとして読みます。
+`style A color   :red` は `style A color : red` と印字します。
+直前の `,` に接し、名前と `:` の間に隙間があるスタイルは、
+スタイルの前に空白を置いて印字します。
+class 図のスタイルも同じです。
+対象にする版の 1 つは、class 図の文の最初のスタイルを、
+隙間の有無によらずラベルのスタイルとして読みません。
+class 図では、
+`style A color :red` と `style A color: red` は同じに描かれました。
 swimlane 図をそう読む、対象にする版はなく、
 その `style` と `linkStyle` は 1 つの形で印字します。
 [fixture: flowchart/whitespace-between-tokens/style-color-touching-kept]
@@ -1298,7 +1307,7 @@ timeline は period と event のテキストを
 各コロンの前に空白がある場合とない場合のテキストを、
 timeline で対象にする版で描き、SVG が同じであることを確かめました。
 period と event が 1 行にある場合と後の行にある場合、section の中、
-`<br>` を含む場合、折り返されるテキスト、ほかの文字のテキストです。
+`<br>` を含む場合、折り返されるテキスト、ほかの文字体系のテキストです。
 詳しくは [対象にする mermaid.js の版](#対象にする-mermaidjs-の版)
 を参照してください。
 user journey は、タスクの説明を `foreignObject` の `div` か `tspan` に、
@@ -1437,7 +1446,7 @@ railroad 図の文字列と特殊シーケンスです。
 
 - architecture 図のラベルの、タブだけの連続と、空白にはさまれたタブ。
   mermaid.js は、このラベルを 1 つの空白で区切って語ごとに描くからです。
-  `["A<タブ>B"]` は `[A<タブ>B]` と印字します。
+  `["A<タブ>B"]` は `[A<タブ>B]` と印字し、`"A<タブ> B"` は `A B` と印字します。
   語は、mermaid.js が括弧を外し、前後の空白を除き、外側の引用符を 1 組外し、
   もう一度前後の空白を除いて残る部分です。
   そのため、連なりの隣にある引用符や、引用符の中の括弧も語の文字で、
@@ -1981,7 +1990,7 @@ SVG と画素を比べてから、例外を残します。
 これらの例は、すべて同じ方法で数えます。
 ページは、
 その図の種類の構文のページ（`packages/mermaid/src/docs/syntax/<ページ>.md`）で、
-ブロックは、そのページの `mermaid-example` のブロックです。
+ブロックは、そのページのフェンスで囲まれた `mermaid-example` のブロックです。
 `docs/syntax/` に生成される写しの `mermaid` のブロックは、それを繰り返します。
 ブロックのフロントマターと、コメントの行、ディレクティブの行は数えません。
 その種類の行のうち、コロンの後に空白かタブがある行を数え、
@@ -2285,7 +2294,7 @@ C4 図の 2 対は、テキスト中の空白やタブの連なりで Db が異�
 状態遷移図はノートの `LEFT`、`RIGHT`、`OF` を Db に書かれたまま保ち、
 `LEFT` か `OF` のノートは異なって描かれ、
 ER 図は属性のキー `PK` と `FK` を Db に書かれたまま保ち、
-Gantt 図はタスクのタグ `done` と `crit` と `after` を保ち、
+Gantt 図はタグ `done` と `crit`、タスクの `after` を保ち、
 XY チャートは `horizontal` を保ち、
 treeView は `ICON(…)` を名前の一部として読みます。
 ER 図の `direction` とその値、`subgraph`、`end` も書かれたまま残します。
@@ -2558,7 +2567,7 @@ cynefin 図と radar 図は、`cynefin-beta:` と `radar-beta:` を、
 向きの後のコロンは残します。
 対象にするすべての版が、
 コロンのない `gitGraph LR` と `gitGraph TB` を拒否するためです。
-一部の版は、コロンの有無にかかわらず `BT` を読みません。
+そのうち 1 つの版は、コロンの有無にかかわらず `BT` を読みません。
 ディレクティブがキーワードとコロンの間にある場合も残します。
 例にはそのようなヘッダーがなく、対象にする版のうち、
 次の行に文が続く `gitGraph %%{x}%%` を拒否しますが、
@@ -2573,7 +2582,8 @@ cynefin 図と radar 図は、`cynefin-beta:` と `radar-beta:` を、
 `gitGraph ---`、ブロック、`--- :` と文が続く形を、gitGraph で対象にする版で、
 コロンのある形とない形に描き、ブロックを読まない版はどちらも拒否したので、
 コロンを除きます。 [fixture: gitgraph/header/header-yaml-before-colon]
-ブロックの後の、単独の行にあるコロンは、その前の改行と一緒に除きます。
+ブロックの後の、単独の行にあるコロンは、空行が残らないよう、
+その前の改行と一緒に除きます。
 [fixture: gitgraph/header/header-yaml-colon-on-its-own-line]
 [corpus fixture: gitgraph/header-hidden-before-colon]
 コロンの後にディレクティブ、コメント、隠れた形があっても、コロンは残しません。
@@ -3092,7 +3102,7 @@ gitGraph では、ASCII の英字、数字、`_` と、その間の `-`、`.`、
 対象にする版のどれかが別のものとして読む名前でない場合に、
 引用符なしで印字します。
 数字は数の始まりになり得ます。
-対象にする版の一部は、字句解析器のキーワードを大文字小文字を問わず比較します。
+対象にする版の 1 つは、字句解析器のキーワードを大文字小文字を問わず比較します。
 `gitGraph`、`NORMAL`、`REVERSE`、`HIGHLIGHT`、`LR`、`TB` は、
 語の一部でない文字で終わるので、`lr-x` は語 `lr` と `-x` です。
 `commit`、`branch`、`merge`、`cherry-pick`、`checkout`、`options` は、
@@ -3504,9 +3514,10 @@ Db も描画も同じでした。
 同じ表の flowchart と state の行が、その版を挙げています。
 テキストの指令も、整形ツールが読めないサイトの設定も、
 この描画処理を設定できるので、テキストの内容によらず、この名前は残します。
-対象にする版のうち treemap 図を持つ版は、`treemap-beta` と `treemap` を、
-ishikawa 図を持つ版は、`ishikawa-beta` と `ishikawa` を大文字小文字を問わずに、
-どちらも読むか、どちらも読まないかのどちらかで、同じに描きます。
+対象にする版は、`treemap-beta` と `treemap` をどちらも読むか、
+どちらも読まないかのどちらかであり、`ishikawa-beta` と `ishikawa` も、
+大文字小文字を問わず、どちらも読むか、どちらも読まないかのどちらかです。
+いずれの図も、2 つの名前を同じに描きます。
 CHANGELOG.md は、この 2 図種の名前の変更を記録していません。
 treemap 図を持つ 8 版と ishikawa 図を持つ 7 版で描きました。
 それぞれ、その図種で対象にする版を含みます。
@@ -4405,7 +4416,7 @@ mermaid.js は、一部の ER の行を、置かれた場所や周りの空白�
   その版は空白として読み、空白が終わる位置でキーワードの規則を試します。
   `class` の後ろには名前が 2 つ続くので、`class A a` はその版では 1 つの文です。
   文を別の行に置くと `class` だけの行になり、拒否されます。
-  キーワードに接する名前（`classé`）は 2 つのうちの 1 つです。
+  キーワードに接する名前（`classé`）は 2 つのうちの最初の名前です。
   どちらの名前の前の空白も、改行以外の空白で始まる場合は、改行を越えて続きます。
   両方の名前までの隙間は、コメント、ディレクティブ、空行を含めて残します。
   キーワードや最初の名前の直後にある改行は、class の文を終えます。
@@ -4784,7 +4795,7 @@ mermaid.js は、timeline の period、event、section の名前の空白を保�
   [fixture: timeline/multi-line-statements/comment-line-inside-kept]
   [fixture: timeline/statements-one-per-line/ignored-semicolon-line-kept]
 
-`accDescr` ブロックの後ろのテキスト行は、
+`accDescr` ブロック内の後続のテキスト行は、
 Db の設定関数が捨てる LF 直後の空白とタブだけを置き換えて字下げします。
 テキスト、改行、行末の空白、指令の内容は書かれたまま残します。
 [fixture: timeline/multi-line-values/description-line-ending-whitespace]
@@ -4793,9 +4804,9 @@ Db の設定関数が捨てる LF 直後の空白とタブだけを置き換え�
 ## 版によって読み方が違う timeline のテキスト
 
 timeline で対象にする版の一部は、ヘッダーに方向がなく、
-`timeline` の後ろの語を period のテキストとして読みます。
+`timeline` の後ろの語を期間のテキストとして読みます。
 残りの版は、`LR` か `TD` を方向として読みます。
-timeline で対象にする最も古い版は、`#` で始まる title も、
+timeline で対象にする最も古い版は、`#` で始まるタイトルも、
 後の版と違って描きます（最後の場合を参照）。
 以下の場合は、どれも両方のテキストを timeline で対象にする版で描き、
 1 つの版でも違って描く形は、書かれたままにします。
@@ -4810,7 +4821,7 @@ timeline で対象にする最も古い版は、`#` で始まる title も、
 - 方向の大文字小文字。
   `timeline td` と `timeline TD` の次の行に `2004 : a` や `title T` が続く形は、
   方向を読む版では同じに描かれ、
-  読まない版では違って描かれます（period `td` と period `TD` を描きます）。
+  読まない版では違って描かれます（期間 `td` と期間 `TD` を描きます）。
   そのため、mermaid.js の文書の例は `TD` と書きますが、
   `td` は `TD` と印字しません。
   [fixture: timeline/header-and-direction/direction-kept]
@@ -5378,7 +5389,7 @@ Ishikawa は、入力の字下げ幅や Db の一時的なレベルを使わず�
 [fixture: ishikawa/indentation/indent-clamped]
 [fixture: ishikawa/indentation/indent-zero]
 
-引用符、空に見える形、アクセシビリティ、style、データらしい文、
+引用符、空に見える形、アクセシビリティやスタイルやデータの文に見えるもの、
 インラインのパーセントのテキストは値として保ちます。
 内部のディレクティブの隙間と、結合した物理行の継続列は保ちます。
 普通の行でも保持する行でも、値の末尾の文字は全て保ちます。
@@ -5637,8 +5648,9 @@ pie のコーパスは、受理と Db の読みを仕様が定める、印付き
 見出しの後のコロン、`checkout` の代わりの `switch`、
 文字列の引用符は 1 つの形で印字します。
 [同じに描かれる綴り](#同じに描かれる綴り)を参照してください。
-文字列と参照の余白、エスケープ、HTML、実体参照、tag の順序は Db を変え、
-cherry-pick の空 tag は既定 tag を抑止します。
+文字列と参照の余白、エスケープ、HTML、実体参照、
+タグの順序は Db を変えることがあります。
+cherry-pick の空のタグは既定のタグを抑止することがあります。
 要約にメッセージがなくても削除はしません。 [fixture: gitgraph/header/header-tb]
 [fixture: gitgraph/checkout-aliases/alias-one-form]
 [fixture: gitgraph/messages/message-forms]
@@ -5755,7 +5767,8 @@ Markdown は最終行の余白を削除し、途中の隠れた形の境界は�
 
 識別子の付いた読みは仕様に従います。
 キーワードの単位の途中での分断は拒否のままとし、中身を検証しない埋め込みデータ、
-C4 の検出、裸パーセント後の Unicode は指定された受理に従います。
+C4 の検出、
+ヘッダー前の裸のパーセント記号に続く Unicode は指定された受理に従います。
 素の mermaid.js による拒否には mermaid.js の素の Db
 や架空の埋め込みデータの効果を補いません。
 解析失敗は単体では構文エラーを報告し、Markdown では埋め込みを辞退します。
@@ -6119,7 +6132,7 @@ treemap に図固有の隠れた YAML やディレクティブのノードはあ
 ## Treeview modes and authored values
 
 [treeview の規則](./treeview.ja.md)は字下げモードの入力をそのモードに保ちます。
-罫線の図は、file の親も含めて AST の `children` から森を読み、
+罫線の図は、親となるファイルも含めて AST の `children` から森を読み、
 普通の枝と案内線を固定の 4 列の部品で描き直します。
 次の兄弟があれば `├── `、最後なら `└── `、続く祖先の段は `│   ` です。
 枝付きや混在の根は全部に枝を付け、
@@ -6690,7 +6703,7 @@ pipeline の開き括弧と子文には、幅 0 でも可視 LF が必要です�
 既存の 6 つの[仕様による読み](./wardley.ja.md#仕様による読み)を使います。
 単位内のディレクティブと選択したセミコロンの分割、フロントマターの HTML、
 不透明な埋め込みデータ、通過した bare-percent trivia、後の C4 語が対象です。
-Wardley は差異と埋め込みデータの受理設定キーを足しません。
+Wardley は、差異も、内容を検証せずに比較する際の受理設定キーも追加しません。
 素の mermaid.js による拒否に mermaid.js の素の Db はありません。
 解析失敗は単独ファイルでは出力せず構文エラーにし、
 Markdown では埋め込みを断ります。

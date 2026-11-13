@@ -589,7 +589,7 @@ mermaid.js の文書は `-->` を 9 回、`--` を 1 回書き、
 [fixture: edges/edge-with-shapes]
 
 辺の連鎖 `A --> B --> C` は 1 つの文で、1 行に印字します。
-mermaid.js はそれを正しく読まず、Db が最後の前のノードを落としますが、
+mermaid.js はそれを正しく読まず、Db が最後より前のすべてのノードを落としますが、
 `A --> B` と `B --> C` に分けると別の Db になります。
 印字は連鎖を mermaid.js より良く読むことはしません。
 それは lint の規則の仕事です。 [fixture: edges/chain-on-one-line]

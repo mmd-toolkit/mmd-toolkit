@@ -187,8 +187,8 @@ whatever the other versions are, so it has no row.
 | [flowchart](./flowchart.md#whitespace-between-tokens)        | `linkStyle 0 stroke:#f00,color:red` printed `linkStyle 0 stroke: #f00,color: red`                                           | `linkStyle 0 stroke: #f00, color: red`                                | [1](./printed-form.md#1-the-whitespace-beside-a-mark)                | 10.9.8 does the same for the label of a link                                                                                | [fixture: flowchart/whitespace-between-tokens/link-style-label-names-kept]    |
 | [flowchart](./flowchart.md#whitespace-between-tokens)        | `linkStyle 0 fill  :#f00` printed `linkStyle 0 fill : #f00`                                                                 | `linkStyle 0 fill: #f00`                                              | [1](./printed-form.md#1-the-whitespace-beside-a-mark)                | 11.7.0 puts `color:` in the place of the first `fill:` of the style of the label of a link                                  | [fixture: flowchart/whitespace-between-tokens/link-style-fill-colon-gap-kept] |
 | [flowchart](./flowchart.md#whitespace-between-tokens)        | `style A stroke-width:3px\ ,stroke:#0f0` printed `style A stroke-width: 3px\ , stroke: #0f0`                                | `style A stroke-width: 3px\, stroke: #0f0`                            | [1](./printed-form.md#1-the-whitespace-beside-a-mark)                | 10.9.8 joins the styles of a node with `;` as they are                                                                      | [fixture: flowchart/whitespace-between-tokens/style-backslash-space-kept]     |
-| [flowchart](./flowchart.md#style-trailing-whitespace)        | the line of a `style` or a `classDef` that ends in a no-break space, U+3000, a vertical tab, or a byte order mark           | the line without the character                                        | [1](./printed-form.md#1-the-whitespace-beside-a-mark)                | 10.9.8 draws the text without the character differently                                                                     | [test: keeps whitespace other than a space and a tab at the end of a style]   |
-| [class](./class.md#whitespace-between-tokens)                | `style A fill:#f00,color:white` printed `style A fill: #f00,color: white`; `fill:#f00,color :red` printed `color : red`     | `style A fill: #f00, color: white`                                    | [1](./printed-form.md#1-the-whitespace-beside-a-mark)                | 10.9.8 takes the label colour and alignment from a style that starts with `color:` or `text-align:`                         | [fixture: class/whitespace-between-tokens/style-color-touching-kept]          |
+| [flowchart](./flowchart.md#style-trailing-whitespace)        | the line of a `style` that ends in a no-break space, U+3000, a vertical tab, or a byte order mark                           | the line without the character                                        | [1](./printed-form.md#1-the-whitespace-beside-a-mark)                | 10.9.8 draws the text without the character differently                                                                     | [test: keeps whitespace other than a space and a tab at the end of a style]   |
+| [class](./class.md#whitespace-between-tokens)                | `style A fill:#f00,color:white` printed `style A fill: #f00,color: white`                                                   | `style A fill: #f00, color: white`                                    | [1](./printed-form.md#1-the-whitespace-beside-a-mark)                | 10.9.8 takes the label colour and alignment from a style that starts with `color:` or `text-align:`                         | [fixture: class/whitespace-between-tokens/style-color-touching-kept]          |
 | [class](./class.md#member-lines)                             | `+<tab>int x`, the tab after the mark of an attribute                                                                       | `+int x`                                                              | [1](./printed-form.md#1-the-whitespace-beside-a-mark)                | 10.9.8 reads the tab as part of the name                                                                                    | [fixture: class/member-lines/visibility-tab-kept]                             |
 | [block](./block.md#edges)                                    | `A ---x B`, `A ---o B`                                                                                                      | `A --x B`, `A --o B`                                                  | [3](./printed-form.md#3-a-spelling)                                  | 10.9.8 and 11.7.0 draw them differently                                                                                     | [fixture: block/edges/arrow-length-kept-where-drawn-differently]              |
 | [block](./block.md#edges)                                    | `A ===x B`, `A ===o B`                                                                                                      | `A ==x B`, `A ==o B`                                                  | [3](./printed-form.md#3-a-spelling)                                  | 10.9.8 and 11.7.0 draw them differently                                                                                     | [fixture: block/edges/arrow-length-kept-where-drawn-differently]              |
@@ -590,9 +590,10 @@ each diagram type, for the `style`, `classDef`, and `linkStyle` of each diagram
 type that has them. The figure differs, in the pinned version and in others that
 count, for the `style` of a class diagram, for the `classDef` of a class diagram
 that stands after its class, for the `linkStyle` of a flowchart and of an
-agentflow diagram, for the `classDef` of an agentflow diagram, and for a
-vertical tab and a form feed in the `classDef` of an ER diagram. It differs in
-another version that counts for the `style` and `classDef` of a flowchart (see
+agentflow diagram, for the `classDef` of a flowchart and of an agentflow
+diagram, and for a vertical tab and a form feed in the `classDef` of an ER
+diagram. It differs in another version that counts for the `style` of a
+flowchart (see
 [Forms kept for versions of mermaid.js that count](#forms-kept-for-versions-of-mermaidjs-that-count)).
 These statements keep the character. A form feed is no exception in a class
 diagram or a flowchart, where it is whitespace in CSS and the figure is the
@@ -2675,12 +2676,17 @@ colon in each version that counts for the diagram type. A pie chart and a
 gitGraph are drawn differently by the oldest version that counts, which reads
 the `%% c` after a `:` as a part of the description, so that `accDescr {a} %% c`
 and `accDescr: a %% c` have different descriptions there, and the others do not.
-A sequence, state, Gantt, user journey, timeline, requirement, C4, architecture,
-packet, radar, railroad, cynefin, wardley, and info diagram was drawn the same
-with both forms in every version that accepts the input. So a block with a
-comment after the `}` stays a block in a pie chart and a gitGraph, with its text
-padded, and is printed in the form with the colon in the others. [fixture:
-pie/description-blocks/block-then-comment] [fixture:
+A sequence, state, Gantt, user journey, requirement, and C4 diagram was drawn
+differently by every version that counts for it: the description is `a` for the
+block and `a %% c` for the form with the colon. A timeline diagram was drawn the
+same, and the printer keeps the block there too, with the diagram types of the
+sentence above that take the `%%` as part of the text of the form with the
+colon. An architecture, packet, radar, railroad, cynefin, wardley, and info
+diagram was drawn the same with both forms in every version that accepts the
+input. So a block with a comment after the `}` stays a block in a pie chart and
+a gitGraph, with its text padded, and in the diagram types that take the `%%` as
+part of the text, and is printed in the form with the colon in the others.
+[fixture: pie/description-blocks/block-then-comment] [fixture:
 gitgraph/title-and-common-values/block-then-comment-kept]
 
 ### The quotes of a text
@@ -3323,11 +3329,11 @@ The row for labels whose first word has an `@` in
 [Forms kept for versions of mermaid.js that count](#forms-kept-for-versions-of-mermaidjs-that-count)
 names those versions. The texts `A[ x@y ]`, `A-->| x@y |B`, `subgraph S[ x@y ]`,
 and `A( x@y )` and the same texts without the spaces were drawn in Chromium.
-Some versions drew both forms the same, others rejected both, and five of eight
-versions, together with one other version, rejected the form without the spaces.
-A text printed without the space would be rejected by versions that count for
-the diagram type and read the text as it is written, so the space is kept in a
-flowchart, a swimlane diagram, and an agentflow diagram alike. [fixture:
+Some versions drew both forms the same, others rejected both, and others
+rejected the form without the spaces. A text printed without the space would be
+rejected by versions that count for the diagram type and read the text as it is
+written, so the space is kept in a flowchart, a swimlane diagram, and an
+agentflow diagram alike. [fixture:
 flowchart/label-inner-whitespace/leading-whitespace-at-sign-kept] [fixture:
 flowchart/label-inner-whitespace/leading-whitespace-at-sign-every-shape-kept]
 [fixture:
@@ -3602,10 +3608,10 @@ class/member-bodies/compat-unclosed-directive-joins-body-line]
 
 The whitespace on the line of the directive is taken with it as well, and it is
 what ends a word argument: `%%{x: w B` has the argument `w` and leaves `B` to
-the diagram, while `%%{x: wB` has the argument `wB`. A gap that follows such a
-directive and has whitespace in the source therefore keeps whitespace, one space
-where the rule of the gap prints none: `"style:#x" end; %%{x: w B` of an ER
-diagram stays as written. [fixture:
+the diagram, while `%%{x: wB` has the argument `wB`. The tree leaves that
+whitespace outside the directive, but the printers read it as a part of the
+directive and print it as written: `"style:#x" end; %%{x: w B` of an ER diagram
+stays as it is. [fixture:
 er/directives/unclosed-directive-argument-then-text-kept]
 
 A directive with a free-text argument, such as `init`, and no `}%%` extends to
@@ -4013,11 +4019,12 @@ around them decide, so formatting keeps them as they are written. See
 - A `class` or `subgraph` keyword right before a unit that starts with a `-`,
   and an `end` right before a statement that starts with a `-`: `class-A a`,
   `subgraph-x`, and `end-x`. The pinned lexer ends a keyword at a `-`, so these
-  are the keyword and the id `-A` or `-x`, and each of the ten versions accepts
-  the written text. Some versions that count reject the text with a space
-  (`class -A a`, and `subgraph -x`), some draw `subgraph-x` and `end-x`, which
-  they read as entities, differently from the text with a space, and the others
-  draw `class-A a` the same as `class -A a` (see
+  are the keyword and the id `-A` or `-x`, and each of the versions that count
+  for an ER diagram accepts the written text. Some versions that count reject
+  the text with a space (`class -A a`, and `subgraph -x`), some draw
+  `subgraph-x` and `end-x`, which they read as entities, differently from the
+  text with a space, and the others draw `class-A a` the same as `class -A a`
+  (see
   [Forms kept for versions of mermaid.js that count](#forms-kept-for-versions-of-mermaidjs-that-count)).
   So the keyword and the `-` keep touching, in any case of the keyword.
   `classDef-x` and `style-y` are drawn the same with and without a space by each
@@ -4496,9 +4503,10 @@ See [Header and direction](./timeline.md#header-and-direction) and
   `# c` for both, and differently by some, which draw no title text for the
   first and the period `title` for the second: their title rule takes the
   whitespace before the `#` as the text. So the title stays as written. With the
-  `#` at the start of its line, that rule finds no text, and both forms are the
-  period `title` in every version, so the value is joined to the keyword.
-  [fixture: timeline/titles-and-sections/title-hash-on-next-line-kept] [fixture:
+  `#` at the start of its line, there is no whitespace for that rule to take as
+  the text, and both forms were drawn the same by every version that counts, so
+  the value is joined to the keyword. [fixture:
+  timeline/titles-and-sections/title-hash-on-next-line-kept] [fixture:
   timeline/titles-and-sections/title-hash-at-line-start-joined]
 
 ## Sankey lines that the characters or the quotes decide
@@ -5585,14 +5593,15 @@ the others read all of these (see
 [Forms kept for versions of mermaid.js that count](#forms-kept-for-versions-of-mermaidjs-that-count)).
 The two texts of a title, an `accTitle`, an `accDescr` line, an `accDescr`
 block, and a title after the rows, one with the statement at the start of its
-line and one with it a step in, were drawn with the seven others and gave
-identical SVGs; the one rejects the indented text. The text `treemaptitle T` and
-the text with `title T` on a line of its own were drawn the same by the eight
-that have a treemap diagram. So a statement that starts its line is not moved,
-one that follows the header goes to the start of the next line, and one that is
-indented in the source is printed a step in, like the other statements, since
-the one rejects it as written too. [fixture: treemap/title/line-start-kept]
-[fixture: treemap/title/line-start-after-row-kept] [fixture:
+line and one with it a step in, were drawn with the versions that count for
+treemap and gave identical SVGs, but for the one that rejects the indented text.
+The text `treemaptitle T` and the text with `title T` on a line of its own were
+drawn the same by the versions that count for treemap. So a statement that
+starts its line is not moved, one that follows the header goes to the start of
+the next line, and one that is indented in the source is printed a step in, like
+the other statements, since the one rejects it as written too. [fixture:
+treemap/title/line-start-kept] [fixture:
+treemap/title/line-start-after-row-kept] [fixture:
 treemap/title/line-start-tab-rows-kept] [fixture:
 treemap/title/line-start-comment-aligned] [fixture:
 treemap/title/indented-at-body-step] [fixture:

@@ -203,8 +203,8 @@ mindmap
 mermaid.js の文書の例の書き方と同じです。
 [fixture: decorations/at-the-column-of-the-node]
 [fixture: decorations/before-and-after-children]
-2 つ目の class の行（アイコンの行も同じ）は Db
-では最初のものに置き換わりますが、どちらも書かれたまま残します。
+2 つ目のクラスの行（アイコンの行も同じ）は Db で最初のものを置き換えますが、
+どちらも書かれたまま残します。
 作者が書いたテキストを、印字は落とさないからです。
 [fixture: decorations/second-class-kept]
 

@@ -17,6 +17,7 @@ import type { Source } from "./source.ts"
 import {
   findCoveringRange,
   findTriviaBetween,
+  holdsRemoved,
   isSpaceOrTab,
   textRead,
 } from "./source.ts"
@@ -197,8 +198,8 @@ export function collapsedRunsAtom(
 }
 
 /**
- * Whether the text at `[start, end)` stays as written: it holds a comment or a
- * directive, a line break, or a U+2028 or U+2029, which are characters of the
+ * Whether the text at `[start, end)` stays as written: it holds a comment, a
+ * directive, or a `;` that the line rule ignores, a line break, or a U+2028 or U+2029, which are characters of the
  * text and mark where a rule of mermaid.js reads the line, or a `<`, which may
  * start an HTML tag that keeps the whitespace (`<pre>`), or the diagram holds
  * `white-space`.
@@ -212,6 +213,7 @@ export function staysAsWritten(
   return (
     text.includes("<") ||
     holdsWhiteSpaceProperty(source) ||
+    holdsRemoved(source, start, end) ||
     [...text].some(
       (character) =>
         character === "\n" ||

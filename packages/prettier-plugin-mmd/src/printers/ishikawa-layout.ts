@@ -156,14 +156,18 @@ export function layoutIshikawaLine(
  * the other.
  */
 export function indentationShowsTree(lines: readonly IshikawaLine[]): boolean {
-  if (lines.some((line) => line.separatorWidth !== 0)) return true
   const columns: number[] = []
   for (const line of lines) {
     const { column } = line
     while (columns.length > 0 && columns[columns.length - 1] >= column) {
       columns.pop()
     }
-    if (columns.length + 1 !== line.depth) return false
+    if (line.separatorWidth !== 0) {
+      // Left to the ordinary rules: it stands at its depth for the lines
+      // after it, and decides nothing about the lines before it.
+      columns.length = Math.min(columns.length, line.depth - 1)
+      while (columns.length < line.depth - 1) columns.push(columns.at(-1) ?? -1)
+    } else if (columns.length + 1 !== line.depth) return false
     columns.push(column)
   }
   return true

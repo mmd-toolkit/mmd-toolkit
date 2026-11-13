@@ -1,6 +1,6 @@
 import type { Range } from "@mmd-toolkit/ast"
 import type { Source } from "./source.ts"
-import { isSpaceOrTab } from "./source.ts"
+import { isSpaceOrTab, textRead } from "./source.ts"
 import { findRespellings } from "./spelling.ts"
 
 /**
@@ -100,11 +100,20 @@ export function printShapeWithoutPadding(
       ? respelling.text
       : source.text.slice(...label.range)
   const trimmed = trimBlanks(text)
-  const keepsPadding = label.kind !== "text" || trimmed.startsWith('"')
+  // The text as mermaid.js reads it, without the `;` that the line rule
+  // ignores and the directives: `[ ;"x" ]` has the text `"x"`.
+  const read = trimBlanks(
+    respelling?.end === label.range[1]
+      ? text
+      : textRead(source, ...label.range),
+  )
+  const keepsPadding = label.kind !== "text" || read.startsWith('"')
   return (
     source.text.slice(shape.range[0], label.range[0]) +
-    (trimmed === "" && label.kind === "text"
-      ? " "
+    (read === "" && label.kind === "text"
+      ? trimmed === ""
+        ? " "
+        : text
       : keepsPadding
         ? text
         : trimmed) +
