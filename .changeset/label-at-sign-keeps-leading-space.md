@@ -7,5 +7,4 @@ Keep the spaces around a `flowchart` or `swimlane-beta` label that holds an `@`:
 began to print such a label without the spaces, so that a label comes out in one
 form, but several versions of mermaid.js reject `A[user@example.com]`, so a
 diagram that drew there stopped drawing once it was formatted. Now the spaces
-stay as written, and `A[/ a@"b" /]` of an `agentflow-beta` is printed
-`A[/a@"b"/]`.
+stay as written.
