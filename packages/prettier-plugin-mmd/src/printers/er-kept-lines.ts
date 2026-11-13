@@ -4,7 +4,7 @@ import type { KeptLines } from "./kept-lines.ts"
 import {
   findLinesEndedBySemicolon,
   findLinesWithOwnSemicolons,
-  isSeparatorBeforeCommentAfterAnother,
+  becomesCommentLineOnItsOwnLine,
   lineEndOf,
   lineStartOf,
 } from "./kept-lines.ts"
@@ -225,10 +225,7 @@ function findLinesReadByTheirPlace(
     ) {
       lines.push(lineStartOf(source, statement.range[0]))
     }
-    if (
-      isNameAlone(statement) &&
-      isSeparatorBeforeCommentAfterAnother(source, statement.range)
-    ) {
+    if (becomesCommentLineOnItsOwnLine(source, statement.range[0])) {
       lines.push(lineStartOf(source, statement.range[0]))
     }
     if (statement.type === "ErSubgraphStatement") {

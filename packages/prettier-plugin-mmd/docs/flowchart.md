@@ -3013,10 +3013,10 @@ suffix; it does not prevent ordinary style spacing. [test: style trailing NBSP
 taken by an unclosed directive]
 
 Spaces and tabs at the end of a `style`, `classDef`, or `linkStyle` statement
-are dropped, except a space or a tab after a backslash that ends the last style,
-which stays as one character, and a style of whitespace only (after a `,`, after
-a directive or an ignored `;`, or the blank value of the `stroke:` of a
-`linkStyle`), which stays as written (the paragraphs below give each). [fixture:
+are dropped, except where the figure depends on them, in the statements that the
+paragraphs below and the document of the diagram type name: a space or a tab
+after a backslash that ends the last style stays as one character, and a style
+of whitespace only stays as written. [fixture:
 style-trailing-whitespace/removed] [fixture:
 style-trailing-whitespace/removed-tab] [fixture:
 style-trailing-whitespace/removed-after-directive] mermaid.js keeps them at the

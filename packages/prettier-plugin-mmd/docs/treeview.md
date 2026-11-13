@@ -1179,18 +1179,37 @@ treeView-beta
 
 [fixture: treeview/semicolons/protected-row-body]
 
-Without branch characters, a node named by a U+2028 or U+2029 alone, after
-another node on its line and before a comment on that line, stays on its line,
-and so does the rest of the body: mermaid.js draws a node named by the
-character, while on a line of its own the character is whitespace before a
-comment line and no node is drawn. At the end of its line, or before a
-directive, the node is split from the node before it like any other node.
+Without branch characters, a node that starts with a whitespace character other
+than a space or a tab (U+2028, U+2029, a no-break space, and the others that
+`String.prototype.trim` removes), after another node on its line, stays on its
+line, and so does the rest of the body, when a comment follows that whitespace,
+with only whitespace, line breaks, and directives between: mermaid.js draws a
+node there, named by the whitespace, or by the whitespace and the `%%` after it,
+while on a line of its own the whitespace belongs to a comment line, which takes
+it with the whitespace and line breaks before its `%%`, and no node is drawn. At
+the end of its line before a directive, or with no comment after it, the node is
+split from the node before it like any other node.
 
 [test: treeview/statements-one-per-line/separator-node-before-comment-ls]
 
 [test: treeview/statements-one-per-line/separator-node-before-comment-ps]
 
 [test: treeview/statements-one-per-line/separator-node-at-line-end]
+
+[test:
+treeview/statements-one-per-line/whitespace-node-before-comment-no-break-space]
+
+[test:
+treeview/statements-one-per-line/whitespace-node-before-comment-ideographic-space]
+
+[test:
+treeview/statements-one-per-line/whitespace-node-at-line-end-before-comment-line]
+
+[test:
+treeview/statements-one-per-line/whitespace-node-at-line-end-before-separator-comment-line]
+
+[test:
+treeview/statements-one-per-line/whitespace-node-at-line-end-before-directive-line]
 
 ### Annotation gaps
 

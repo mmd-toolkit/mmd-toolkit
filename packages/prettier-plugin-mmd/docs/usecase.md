@@ -190,6 +190,22 @@ U+2028, U+2029, a backquote, `&`, `#`, or `<` (see
 [Spellings that are drawn the same](./compatibility.md#spellings-that-are-drawn-the-same)),
 and `singleQuote` is not read. [fixture: labels/single-quote-sensitive-kept]
 
+A plain label whose text ends with a U+2028 or U+2029 that a comment follows
+right away is not put in quotes: the character starts the comment (see
+[Comment lines](../../spec/docs/common.md#comment-lines)), the closing quote
+would stand between them, the `%%` would be text of the label, and mermaid.js
+rejects it. The same label with no comment after it is put in quotes as any
+label with that character is. [test: usecase: U+2028 alone in the parentheses of
+an actor label, before a comment] [test: usecase: U+2028 alone in the
+parentheses of an entity label, before a comment] [test: usecase: U+2029 alone
+in the parentheses of an entity label, before a comment] [test: usecase: U+2028
+after a letter in the parentheses of an entity label, before a comment] [test:
+usecase: U+2028 alone as a note text, before a comment] [test: usecase: U+2028
+alone as an edge label, before a comment] [test: usecase: U+2028 alone in the
+parentheses of a boundary title, before a comment] [test: usecase: U+2028 alone
+in the brackets of a boundary title, before a comment] [test: usecase: U+2028
+alone in the parentheses of an entity label, at the end of its line]
+
 [fixture: labels/label-quote-kinds] [fixture: labels/label-empty-quotes]
 [fixture: labels/label-quote-rewrite-one-form] [fixture:
 labels/label-quote-remove-kept] [fixture: labels/label-interior-kept] [fixture:

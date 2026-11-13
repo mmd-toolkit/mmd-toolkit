@@ -21,6 +21,7 @@ import { findSankeyKeptLines } from "./sankey-kept-lines.ts"
 import type { Source } from "./source.ts"
 import {
   findDirectiveEndingAt,
+  findTriviaBetween,
   isBracketPadding,
   isSpaceOrTab,
   isWordCharacter,
@@ -1615,6 +1616,17 @@ function respell(
   const next = skipBlanksAndRemoved(source, textEnd, lineEnd)
   const after = next < lineEnd ? source.text[next] : undefined
   if (rule.afterTextOnItsLine === true && startsItsLine(source, start)) return
+  // A U+2028 or U+2029 at the end of a text without quotes starts a comment
+  // where the `%%` follows it (common.md, Comment lines). The closing quote
+  // would stand between them, and the `%%` would be text.
+  if (
+    !isString &&
+    "\u2028\u2029".includes(written.at(-1) ?? "") &&
+    findTriviaBetween(source, textEnd, textEnd + 1).some(
+      (trivia) => trivia.type === "Comment",
+    )
+  )
+    return
   if (
     printed !== undefined &&
     (rule.form === "quoted"

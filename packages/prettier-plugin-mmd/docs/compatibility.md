@@ -575,10 +575,10 @@ block/multi-line-statements/line-rule-semicolon-after-touching-arrow-kept]
 ## Whitespace at the end of a style
 
 Spaces and tabs at the end of a `style`, `classDef`, or `linkStyle` statement
-are removed, except a space or a tab after a backslash that ends the last style,
-which stays as one character, and a style of whitespace only (after a `,`, after
-a directive or an ignored `;`, or the blank value of the `stroke:` of a
-`linkStyle`), which stays as written (the paragraphs below give each). [fixture:
+are removed, except where the figure depends on them, in the statements that the
+paragraphs below and the document of the diagram type name: a space or a tab
+after a backslash that ends the last style stays as one character, and a style
+of whitespace only stays as written. [fixture:
 flowchart/style-trailing-whitespace/removed] mermaid.js keeps them at the end of
 the last style, so this changes what mermaid.js stores, separately from the
 permitted eventmodeling body margins in

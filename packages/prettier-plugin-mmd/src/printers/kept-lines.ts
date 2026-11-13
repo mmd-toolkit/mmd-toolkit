@@ -364,26 +364,47 @@ export function isFirstOnItsLine(source: Source, offset: number): boolean {
 }
 
 /**
- * Whether the text in `range` is U+2028 or U+2029 alone, does not start its
- * line, and is followed on its line by a comment: a statement that mermaid.js
- * reads as a name made of the character, after another statement. On a line of
- * its own the character is whitespace before a comment line, and no name is
- * read, so the statement stays on its line (docs/er.md, Statements one per
- * line; docs/treeview.md, Statements one per line).
+ * Whether the text at `offset`, after other text on its line, would be taken
+ * by a comment line on a line of its own: a whitespace character that is not a
+ * space or a tab (a U+2028, a U+2029, a no-break space, and the others of
+ * `isWhitespace`), then whitespace, line breaks, and directives, then a comment
+ * that satisfies the second condition of common.md, Comment lines (a character
+ * after the `%%` that is not `{` or a line terminator). The comment line of
+ * mermaid.js starts at the start of a line and takes the whitespace before its
+ * `%%`, line breaks included. Where the text stands, after other text, it is
+ * read: a U+2028 or U+2029 starts a comment of its own, so the whitespace
+ * before it is a name, and any other whitespace character is a name, with the
+ * `%%` after it, or a name that ends its line. On a line of its own the text is
+ * whitespace before the comment line and no name is read. So a statement that
+ * starts there stays on its line (docs/er.md and docs/treeview.md, Statements
+ * one per line).
  */
-export function isSeparatorBeforeCommentAfterAnother(
+export function becomesCommentLineOnItsOwnLine(
   source: Source,
-  range: readonly [number, number],
+  offset: number,
 ): boolean {
-  return (
-    range[1] > range[0] &&
-    [...source.text.slice(...range)].every(
-      (character) => character === "\u2028" || character === "\u2029",
-    ) &&
-    !isFirstOnItsLine(source, range[0]) &&
-    findTriviaBetween(source, range[1], lineEndOf(source, range[1])).some(
-      (item) => item.type === "Comment",
+  if (
+    !isWhitespace(source.text.charAt(offset)) ||
+    isFirstOnItsLine(source, offset)
+  ) {
+    return false
+  }
+  let at = offset
+  while (at < source.text.length) {
+    const directive = findTriviaBetween(source, at, at + 1).find(
+      (item) => item.type === "Directive",
     )
+    if (directive !== undefined) at = directive.range[1]
+    else if (isWhitespace(source.text.charAt(at))) at++
+    else break
+  }
+  const after = source.text.charAt(at + 2)
+  return (
+    source.text.startsWith("%%", at) &&
+    after !== "" &&
+    after !== "{" &&
+    after !== "\n" &&
+    after !== "\r"
   )
 }
 

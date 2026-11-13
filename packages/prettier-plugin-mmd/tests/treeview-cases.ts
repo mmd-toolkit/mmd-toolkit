@@ -435,6 +435,36 @@ export const treeviewCases: readonly TreeviewCase[] = [
     options: {},
   },
   {
+    name: "treeview/statements-one-per-line/whitespace-node-before-comment-no-break-space",
+    input: 'treeView-beta\n"a"\u00a0%% c\n',
+    output: 'treeView-beta\n"a"\u00a0%% c\n',
+    options: {},
+  },
+  {
+    name: "treeview/statements-one-per-line/whitespace-node-before-comment-ideographic-space",
+    input: 'treeView-beta\n"a"\u3000%% c\n',
+    output: 'treeView-beta\n"a"\u3000%% c\n',
+    options: {},
+  },
+  {
+    name: "treeview/statements-one-per-line/whitespace-node-at-line-end-before-comment-line",
+    input: 'treeView-beta\n"a"\u00a0\n%% c\n',
+    output: 'treeView-beta\n"a"\u00a0\n%% c\n',
+    options: {},
+  },
+  {
+    name: "treeview/statements-one-per-line/whitespace-node-at-line-end-before-separator-comment-line",
+    input: 'treeView-beta\n"a"\u00a0\n\u2028%% c\n\n',
+    output: 'treeView-beta\n"a"\u00a0\n\u2028%% c\n\n',
+    options: {},
+  },
+  {
+    name: "treeview/statements-one-per-line/whitespace-node-at-line-end-before-directive-line",
+    input: 'treeView-beta\n"a"\u00a0\n%%{init: {}}%%\n',
+    output: 'treeView-beta\n  "a"\n  \u00a0\n%%{init: {}}%%\n',
+    options: {},
+  },
+  {
     name: "treeview/statements-one-per-line/separator-node-at-line-end",
     input: 'treeView-beta\n"a"\u2028\n  "b"\n',
     output: 'treeView-beta\n  "a"\n  \u2028\n    "b"\n',

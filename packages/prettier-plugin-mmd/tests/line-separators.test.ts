@@ -1472,6 +1472,16 @@ const erExamples: readonly (readonly [string, string, string])[] = [
     "erDiagram\n  Foo\n  \u2028%%{init: {}}%%\n",
   ],
   [
+    "U+00A0 and U+2028 after a name in quotes, before a comment",
+    'erDiagram\n"Foo"\u00a0\u2028%% c\n',
+    'erDiagram\n  "Foo"\u00a0\u2028%% c\n',
+  ],
+  [
+    "U+00A0 after a name in quotes at the end of its line, and U+2028 and a comment on the next line",
+    'erDiagram\n"Foo"\u00a0\n\u2028%% c\n\n',
+    'erDiagram\n  "Foo"\u00a0\n  %% c\n',
+  ],
+  [
     "U+2028 alone at the start of its line, before a comment",
     "erDiagram\n\u2028%% c\n",
     "erDiagram\n  %% c\n",
