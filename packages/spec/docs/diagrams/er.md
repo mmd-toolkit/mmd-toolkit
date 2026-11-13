@@ -196,13 +196,13 @@ er/tokens-comment-line-in-name-directive-before-comment] [fixture:
 er/tokens-comment-line-in-name-crlf] [fixture:
 er/tokens-comment-line-in-name-lone-cr] [fixture:
 er/tokens-comment-lines-consecutive-in-name] [fixture:
-er/tokens-comment-lines-two-in-name] A space or a tab at the start of the next
-line ends the name: with `Bar` indented by two spaces or by a tab, the entities
-are `A` followed by U+2028, and `Bar`, and a comment line at the end of the text
-leaves the entity `A` followed by U+2028. [fixture:
+er/tokens-comment-lines-with-name-part-between] A space or a tab at the start of
+the next line ends the name: with `Bar` indented by two spaces or by a tab, the
+entities are `A` followed by U+2028, and `Bar`, and a comment line at the end of
+the text leaves the entity `A` followed by U+2028. [fixture:
 er/tokens-comment-line-in-name-line-separator-indented-name] [fixture:
 er/tokens-comment-line-in-name-paragraph-separator-indented-name] [fixture:
-er/tokens-comment-line-in-name-then-tab-name] [fixture:
+er/tokens-comment-line-in-name-line-separator-tab-indented-name] [fixture:
 er/tokens-comment-line-in-name-line-separator-at-end] [fixture:
 er/tokens-comment-line-in-name-paragraph-separator-at-end] The U+2028 after the
 `}` of a description block starts a name of its own, so `accDescr {x}`, U+2028,
@@ -222,8 +222,12 @@ er/tokens-comment-line-in-classdef-id-line-separator] A word of an attribute
 block holds a U+2028 or U+2029 in the same way (see
 [The attribute block context](#the-attribute-block-context)): `string x`,
 U+2028, `%% c`, and `y` in a block is the attribute with the type `string` and
-the name `x`, U+2028, `y`. [fixture:
-er/tokens-comment-line-in-attribute-word-line-separator] A directive inside such
+the name `x`, U+2028, `y`, and with U+2029 it is the same. The type goes on in
+the same way: `string`, U+2028, `%% c`, and `x y` is the attribute with the type
+`string`, U+2028, `x` and the name `y`. [fixture:
+er/tokens-comment-line-in-attribute-word-line-separator] [fixture:
+er/tokens-comment-line-in-attribute-word-paragraph-separator] [fixture:
+er/tokens-comment-line-in-attribute-type-line-separator] A directive inside such
 a name is rejected as in any name (see
 [Directives inside units](#directives-inside-units)): `A`, U+2028, `%% c`, and
 `B%%{init: {}}%%C` is rejected, while mermaid.js reads the one entity `A`,

@@ -1,7 +1,7 @@
 {
   "source": {
     "kind": "authored",
-    "note": "er.md Units and contexts, Names: er.md The attribute block context, Word: a word holds U+2028 and goes on after a comment line that follows it: the attribute type string and the name x, U+2028, y."
+    "note": "er.md The attribute block context, Word: a word holds U+2028 and goes on after a comment line that follows it: the attribute type string and the name x, U+2028, y."
   },
   "accepted": true,
   "diagramType": "er",

@@ -1,0 +1,34 @@
+{
+  "source": {
+    "kind": "authored",
+    "note": "er.md The attribute block context, Word: the type of an attribute goes on after a comment line that follows its U+2028: the type string, U+2028, x and the name y."
+  },
+  "accepted": true,
+  "diagramType": "er",
+  "db": {
+    "direction": "TB",
+    "title": "",
+    "accTitle": "",
+    "accDescr": "",
+    "entities": [
+      {
+        "id": "entity-A-0",
+        "attributes": [
+          {
+            "type": "string x",
+            "name": "y",
+            "keys": [],
+            "comment": ""
+          }
+        ],
+        "alias": "",
+        "cssStyles": [],
+        "name": "A",
+        "classes": []
+      }
+    ],
+    "relationships": [],
+    "classes": [],
+    "subGraphs": []
+  }
+}

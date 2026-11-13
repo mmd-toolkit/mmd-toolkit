@@ -98,8 +98,10 @@ U+2028 と `%%` の間に改行があっても、同じです。
 [fixture: er/tokens-comment-line-in-name-crlf]
 [fixture: er/tokens-comment-line-in-name-lone-cr]
 [fixture: er/tokens-comment-lines-consecutive-in-name]
-[fixture: er/tokens-comment-lines-two-in-name]
+[fixture: er/tokens-comment-lines-with-name-part-between]
 [fixture: er/tokens-comment-line-in-attribute-word-line-separator]
+[fixture: er/tokens-comment-line-in-attribute-word-paragraph-separator]
+[fixture: er/tokens-comment-line-in-attribute-type-line-separator]
 名前は、どこにあっても同じトークンを持ちます。
 関係の 2 つ目のエンティティ、役割、別名、クラス、subgraph の id、
 `style` の対象、`classDef` の id がそうです。
@@ -117,7 +119,7 @@ U+2028 と `%%` の間に改行があっても、同じです。
 次の行が空白かタブで始まるときです。
 [fixture: er/tokens-comment-line-in-name-line-separator-indented-name]
 [fixture: er/tokens-comment-line-in-name-paragraph-separator-indented-name]
-[fixture: er/tokens-comment-line-in-name-then-tab-name]
+[fixture: er/tokens-comment-line-in-name-line-separator-tab-indented-name]
 [fixture: er/tokens-comment-line-in-name-line-separator-at-end]
 [fixture: er/tokens-comment-line-in-name-paragraph-separator-at-end]
 説明ブロックの `}` の後の U+2028 は、それ自身の名前を始め、

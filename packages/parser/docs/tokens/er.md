@@ -83,8 +83,10 @@ er/tokens-comment-line-in-name-directive-before-comment] [fixture:
 er/tokens-comment-line-in-name-crlf] [fixture:
 er/tokens-comment-line-in-name-lone-cr] [fixture:
 er/tokens-comment-lines-consecutive-in-name] [fixture:
-er/tokens-comment-lines-two-in-name] [fixture:
-er/tokens-comment-line-in-attribute-word-line-separator] The name has the same
+er/tokens-comment-lines-with-name-part-between] [fixture:
+er/tokens-comment-line-in-attribute-word-line-separator] [fixture:
+er/tokens-comment-line-in-attribute-word-paragraph-separator] [fixture:
+er/tokens-comment-line-in-attribute-type-line-separator] The name has the same
 tokens wherever it stands: the second entity of a relationship, a role, an
 alias, a class, the id of a subgraph, and the target of `style` or the id of
 `classDef`. [fixture:
@@ -100,8 +102,8 @@ does not lie inside the name, the name has one token, which ends after the
 U+2028: at the end of the text, and before a next line that starts with a space
 or a tab. [fixture: er/tokens-comment-line-in-name-line-separator-indented-name]
 [fixture: er/tokens-comment-line-in-name-paragraph-separator-indented-name]
-[fixture: er/tokens-comment-line-in-name-then-tab-name] [fixture:
-er/tokens-comment-line-in-name-line-separator-at-end] [fixture:
+[fixture: er/tokens-comment-line-in-name-line-separator-tab-indented-name]
+[fixture: er/tokens-comment-line-in-name-line-separator-at-end] [fixture:
 er/tokens-comment-line-in-name-paragraph-separator-at-end] The U+2028 after the
 `}` of a description block starts a name of its own, whose first token is that
 one character. [fixture:

@@ -225,14 +225,14 @@ U+2028、`B`、U+2028、`C` です。
 [fixture: er/tokens-comment-line-in-name-crlf]
 [fixture: er/tokens-comment-line-in-name-lone-cr]
 [fixture: er/tokens-comment-lines-consecutive-in-name]
-[fixture: er/tokens-comment-lines-two-in-name]
+[fixture: er/tokens-comment-lines-with-name-part-between]
 次の行の先頭にある空白かタブは、名前を終わらせます。
 `Bar` を 2 つの空白かタブで字下げすると、エンティティは `A`、
 U+2028 と `Bar` です。
 テキストの終わりのコメント行は、`A`、U+2028 というエンティティを残します。
 [fixture: er/tokens-comment-line-in-name-line-separator-indented-name]
 [fixture: er/tokens-comment-line-in-name-paragraph-separator-indented-name]
-[fixture: er/tokens-comment-line-in-name-then-tab-name]
+[fixture: er/tokens-comment-line-in-name-line-separator-tab-indented-name]
 [fixture: er/tokens-comment-line-in-name-line-separator-at-end]
 [fixture: er/tokens-comment-line-in-name-paragraph-separator-at-end]
 説明ブロックの `}` の後の U+2028 は、それ自身の名前を始めます。
@@ -256,7 +256,13 @@ U+2028 と `Bar` です。
 を持ちます（[属性ブロックの文脈](#属性ブロックの文脈) を参照）。
 ブロックの中の `string x`、U+2028、`%% c`、`y` は、型 `string`、名前 `x`、
 U+2028、`y` の属性です。
+U+2029 でも同じです。
+型も同じように続きます。
+`string`、U+2028、`%% c`、`x y` は、型 `string`、U+2028、
+`x` と名前 `y` の属性です。
 [fixture: er/tokens-comment-line-in-attribute-word-line-separator]
+[fixture: er/tokens-comment-line-in-attribute-word-paragraph-separator]
+[fixture: er/tokens-comment-line-in-attribute-type-line-separator]
 このような名前の中のディレクティブは、どの名前でもそうであるように、
 拒否されます（[単位の中のディレクティブ](#単位の中のディレクティブ) を参照）。
 `A`、U+2028、`%% c`、`B%%{init: {}}%%C` は拒否されますが、
