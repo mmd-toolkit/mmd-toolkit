@@ -498,17 +498,22 @@ U+2028 や U+2029 で始まる文も、対象にする版の一部がテキス�
 [test: a line that starts with U+2028 and class, and a name with a class]
 [test: a line that starts with U+2028, a space, and class]
 [test: a line that starts with U+2028, a space, a name, and a direction line]
-それだけで 1 つの実体になる U+2028 か U+2029 が、同じ行のほかの文の後、
-その行のコメントの前にあるときは、その行に残します。
-mermaid.js はその実体を描きますが、この文字だけを 1 行に置くと、
-コメント行の前の空白になり、実体は描かれないからです。
-行の末尾にあるときと、ディレクティブの前にあるときは、ほかの文と同じく、
+空白とタブ以外の空白文字（U+2028、U+2029、
+その前に置かれたノーブレークスペース）で始まる文は、同じ行のほかの文の後にあり、
+その空白の後に、空白、改行、ディレクティブだけを挟んでコメントが続くとき、
+その行に残します。
+mermaid.js は、その空白を実体の名前として読み、その実体を描きます。
+その空白だけを 1 行に置くと、空白はコメント行のものになり、実体は描かれません。
+コメント行は、`%%` の前の空白と改行を一緒に取るからです。
+行の末尾にあって次がディレクティブのときは、ほかの文と同じく、
 前の文から分けます。
 行の先頭にあるときは、コメントの前の空白です。
 [test: U+2028 alone after a name in quotes, before a comment]
 [test: U+2029 alone after a name in quotes and a space, before a comment]
 [test: U+2028 alone after the block of an accessibility description, before a comment]
 [test: two U+2028 alone after a name in quotes, before a comment]
+[test: U+00A0 and U+2028 after a name in quotes, before a comment]
+[test: U+00A0 after a name in quotes at the end of its line, and U+2028 and a comment on the next line]
 [test: U+2028 alone after a name in quotes, at the end of its line]
 [test: U+2028 alone after a name in quotes, before a directive]
 [test: U+2028 alone at the start of its line, before a comment]

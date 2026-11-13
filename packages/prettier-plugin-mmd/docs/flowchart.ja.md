@@ -3183,11 +3183,11 @@ flowchart LR
 [test: style trailing NBSP taken by an unclosed directive]
 
 `style`、`classDef`、`linkStyle` の文の末尾の空白とタブは取り除きます。
-ただし、最後のスタイルを終えるバックスラッシュの後の空白かタブは、
-1 文字として残します。
-空白だけのスタイル（`,` の後、ディレクティブか無視される `;` の後、
-`linkStyle` の `stroke:` の空の値）は、書かれたまま残します。
-それぞれは、下の段落で説明します。 [fixture: style-trailing-whitespace/removed]
+ただし、図がそれらに左右される所では残します。
+下の段落と図種の文書が名前を挙げている文がそれです。
+最後のスタイルを終えるバックスラッシュの後の空白かタブは、1 文字として残し、
+空白だけのスタイルは、書かれたまま残します。
+[fixture: style-trailing-whitespace/removed]
 [fixture: style-trailing-whitespace/removed-tab]
 [fixture: style-trailing-whitespace/removed-after-directive]
 mermaid.js はそれらを最後のスタイルの末尾に残すので、

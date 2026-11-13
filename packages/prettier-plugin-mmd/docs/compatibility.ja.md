@@ -638,11 +638,10 @@ block/multi-line-statements/line-rule-semicolon-after-touching-arrow-kept]
 ## スタイルの末尾の空白
 
 `style`、`classDef`、`linkStyle` の文の末尾の空白とタブは取り除きます。
-ただし、最後のスタイルを終えるバックスラッシュの後の空白かタブは、
-1 文字として残します。
-空白だけのスタイル（`,` の後、ディレクティブか無視される `;` の後、
-`linkStyle` の `stroke:` の空の値）は、書かれたまま残します。
-それぞれは、下の段落で説明します。
+ただし、図がそれらに左右される所では残します。
+下の段落と図種の文書が名前を挙げている文がそれです。
+最後のスタイルを終えるバックスラッシュの後の空白かタブは、1 文字として残し、
+空白だけのスタイルは、書かれたまま残します。
 [fixture: flowchart/style-trailing-whitespace/removed]
 mermaid.js はそれらを最後のスタイルの末尾に残すので、
 ここでは整形が mermaid.js の保存するものを変えます。

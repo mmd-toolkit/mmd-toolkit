@@ -164,9 +164,11 @@ flowchart LR
   [対象にする版の mermaid.js のために残す形](./docs/compatibility.ja.md#対象にする版の-mermaidjs-のために残す形)
   に 1 つずつ挙げています。
 - 整形した図をもう一度整形しても、何も変わりません。
-- `style`、`classDef`、`linkStyle` の行の末尾の空白とタブを取り除きますが、
+- `style`、`classDef`、`linkStyle` の行の末尾の空白とタブを取り除きます。
+  ただし、取り除くと mermaid.js が別の図を描く所では残します。
+  図種の文書が名前を挙げている文がそれで、
   最後のスタイルの末尾にあるバックスラッシュの後の空白やタブと、
-  `linkStyle default stroke: ` の空の値のような、空白だけのスタイルは残します。
+  `linkStyle default stroke: ` の空の値のような、空白だけのスタイルです。
   mermaid.js は、それらを最後のスタイルの末尾に残します。
   ノーブレークスペースなど、ほかの種類の空白は、
   図が変わる所（class 図や flowchart など）では残します。

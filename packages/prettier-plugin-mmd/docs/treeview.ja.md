@@ -1165,20 +1165,35 @@ treeView-beta
 
 [fixture: treeview/semicolons/protected-row-body]
 
-罫線の文字がないとき、U+2028 か U+2029 だけを名前にするノードが、
-同じ行のほかのノードの後、その行のコメントの前にあると、その行に残します。
+罫線の文字がないとき、空白とタブ以外の空白文字（U+2028、U+2029、
+ノーブレークスペースなど、
+`String.prototype.trim` が取り除く文字）で始まるノードは、
+同じ行のほかのノードの後にあり、その空白の後に、空白、改行、
+ディレクティブだけを挟んでコメントが続くとき、その行に残します。
 本文の残りも、書かれたまま残します。
-mermaid.js はこの文字を名前にするノードを描きますが、
-この文字だけを 1 行に置くと、コメント行の前の空白になり、
-ノードは描かれないからです。
-行の末尾にあるときと、ディレクティブの前にあるときは、ほかのノードと同じく、
-前のノードから分けます。
+mermaid.js は、その空白か、その空白と後ろの `%%` を名前にするノードを、
+そこに描きます。
+その空白だけを 1 行に置くと、空白はコメント行のものになり、
+ノードは描かれません。
+コメント行は、`%%` の前の空白と改行を一緒に取るからです。
+行の末尾にあって次がディレクティブのときと、後ろにコメントがないときは、
+ほかのノードと同じく、前のノードから分けます。
 
 [test: treeview/statements-one-per-line/separator-node-before-comment-ls]
 
 [test: treeview/statements-one-per-line/separator-node-before-comment-ps]
 
 [test: treeview/statements-one-per-line/separator-node-at-line-end]
+
+[test: treeview/statements-one-per-line/whitespace-node-before-comment-no-break-space]
+
+[test: treeview/statements-one-per-line/whitespace-node-before-comment-ideographic-space]
+
+[test: treeview/statements-one-per-line/whitespace-node-at-line-end-before-comment-line]
+
+[test: treeview/statements-one-per-line/whitespace-node-at-line-end-before-separator-comment-line]
+
+[test: treeview/statements-one-per-line/whitespace-node-at-line-end-before-directive-line]
 
 ### Annotation gaps
 
