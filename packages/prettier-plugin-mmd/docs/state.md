@@ -1400,10 +1400,11 @@ stateDiagram-v2
 ### Semicolons at the end of a style statement
 
 When a style contains removed text, its colon spacing stays as written while an
-eligible final semicolon is dropped. A colon inside a directive is not a CSS
-colon, and a directive does not interrupt an escape before the style's colon.
-[fixture: semicolons-at-the-end-of-a-style-statement/directive-colon-kept]
-[fixture: semicolons-at-the-end-of-a-style-statement/directive-escape-kept]
+eligible final semicolon of a `classDef` is dropped or one of a `style` stays. A
+colon inside a directive is not a CSS colon, and a directive does not interrupt
+an escape before the style's colon. [fixture:
+semicolons-at-the-end-of-a-style-statement/directive-colon-kept] [fixture:
+semicolons-at-the-end-of-a-style-statement/directive-escape-kept]
 
 A line-ending `;` of a `classDef` or `style` statement is dropped when the
 [line rule of mermaid.js](../../spec/docs/common.md#style-and-classdef-lines)
@@ -1420,12 +1421,14 @@ description block follows its usual layout while the style terminator is
 dropped. [fixture:
 semicolons-at-the-end-of-a-style-statement/empty-description-block]
 
-Without a `#` in the statement, a final `;` in the last style is dropped when
-that style contains no other `;` and has non-whitespace text before it:
-mermaid.js removes the first `;` of each style. [fixture:
-semicolons-at-the-end-of-a-style-statement/style-text-terminators] Keep
-`classDef c fill:red;;`, `classDef c ;` and `style A fill : #f00;`; they do not
-meet these conditions. [fixture:
+Without a `#` in the statement, a final `;` in the last style of a `classDef` is
+dropped when that style contains no other `;` and has non-whitespace text before
+it: mermaid.js removes the first `;` of each style. The `;` that ends a `style`
+stays, since a version that counts reads it as a state of its own (see
+[Forms kept for versions of mermaid.js that count](./compatibility.md#forms-kept-for-versions-of-mermaidjs-that-count)).
+[fixture: semicolons-at-the-end-of-a-style-statement/style-text-terminators]
+Keep `classDef c fill:red;;`, `classDef c ;` and `style A fill : #f00;`; they do
+not meet these conditions. [fixture:
 semicolons-at-the-end-of-a-style-statement/style-text-kept] A statement with no
 style, such as `style A`, has no `;` to drop, and its whitespace follows the
 usual layout. [fixture:

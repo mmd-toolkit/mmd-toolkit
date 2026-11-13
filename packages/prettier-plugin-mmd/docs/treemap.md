@@ -522,9 +522,15 @@ the `;` that is a unit of the statement, with or without whitespace between,
 [fixture: semicolons/class-terminator-directive-kept] when it is part of the
 style, as in `classDef zz fill: #f00;`, where `#f00;` is an entity, [fixture:
 semicolons/class-terminator-entity-kept] and when another `;` is beside it.
-[fixture: semicolons/class-terminator-beside-semicolon-kept] A directive before
-a `;` that the line rule ignores stays and the `;` is dropped, as in the other
-diagram types. [fixture: semicolons/class-terminator-hash-directive-dropped]
+[fixture: semicolons/class-terminator-beside-semicolon-kept] It stays too after
+a U+2028 or U+2029 and then a comment line: the character is no whitespace of
+the line rule and the comment line is removed, so dropping the `;` and the
+character would change what mermaid.js draws, and the line is printed as
+written. [test:
+treemap/semicolons/class-terminator-after-separator-and-comment-kept] A
+directive before a `;` that the line rule ignores stays and the `;` is dropped,
+as in the other diagram types. [fixture:
+semicolons/class-terminator-hash-directive-dropped]
 
 Where the `;` that ends the statement stays, the whitespace after it is the run
 that indents the next statement: the whitespace between the `;` and a comment or

@@ -4486,7 +4486,7 @@ describe("style semicolons", () => {
     [
       "style semicolons: state CRLF terminator",
       "stateDiagram-v2\r\nstyle A fill:red ;\r\n",
-      "stateDiagram-v2\n  style A fill: red\n",
+      "stateDiagram-v2\n  style A fill:red ;\n",
     ],
     [
       "style semicolons: state trailing tab",

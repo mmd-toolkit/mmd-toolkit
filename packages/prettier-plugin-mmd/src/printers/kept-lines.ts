@@ -12,6 +12,7 @@ import {
   isAtLineEnd,
   isSpaceOrTab,
   isWhitespace,
+  previousRead,
   skipRemoved,
   textRead,
 } from "./source.ts"
@@ -451,6 +452,29 @@ function statementContinuesAfter(source: Source, offset: number): boolean {
 }
 
 /**
+ * Whether a U+2028 or U+2029 stands before the `;` at `offset`, with at most
+ * spaces and tabs between them and some text that mermaid.js removes (a
+ * comment line, say). The character ends no line for the line rule, and the
+ * `;` stays where it is: with the `;` and the character dropped, a second
+ * formatting would read the line differently. A `;` right after the
+ * character is dropped with it (docs/treemap.md, Semicolons).
+ */
+function followsLineSeparator(source: Source, offset: number): boolean {
+  let position = offset
+  let crossedRemoved = false
+  while (position > 0) {
+    const before = previousRead(source, position)
+    if (before < 0) return false
+    if (before !== position - 1) crossedRemoved = true
+    const character = source.text[before]
+    if (character === "\u2028" || character === "\u2029") return crossedRemoved
+    if (!isSpaceOrTab(character)) return false
+    position = before
+  }
+  return false
+}
+
+/**
  * Whether the printer drops the `;` at `offset`: one that the line rule
  * ignores at the end of its line, which is dropped as a `;` that separates
  * statements is, since mermaid.js removes it from the text, and the `;` that
@@ -467,7 +491,8 @@ function statementContinuesAfter(source: Source, offset: number): boolean {
 export function isDroppedSemicolon(source: Source, offset: number): boolean {
   if (
     !isLastOnItsLine(source, offset) ||
-    source.root.comments.some((comment) => comment.range[1] === offset)
+    source.root.comments.some((comment) => comment.range[1] === offset) ||
+    followsLineSeparator(source, offset)
   ) {
     return false
   }
@@ -620,8 +645,10 @@ function styleSemicolonsOf(source: Source): StyleSemicolons {
     ) {
       addUnitTerminator(node, node.styles.at(-1))
     } else if (
+      // The `;` that ends a `style` of a state diagram stays: 10.9.8 reads it
+      // as a state of its own (docs/compatibility.md, Forms kept for versions
+      // of mermaid.js that count).
       node.type === "StateClassDefStatement" ||
-      node.type === "StateStyleStatement" ||
       node.type === "BlockClassDefStatement"
     ) {
       const style = node.styles.findLast((item) => item !== null)

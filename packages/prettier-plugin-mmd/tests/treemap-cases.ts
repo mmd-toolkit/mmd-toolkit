@@ -117,6 +117,12 @@ export const treemapCases: readonly TreemapCase[] = [
     options: {},
   },
   {
+    name: "treemap/semicolons/class-terminator-after-separator-and-comment-kept",
+    input: 'treemap\n"a":1\nclassDef cc fill: red \u2028\n%% c\n ;\n',
+    output: 'treemap\n  "a": 1\n  classDef cc fill: red \u2028\n%% c\n ;\n',
+    options: {},
+  },
+  {
     name: "treemap/semicolons/protected-later-atom",
     input: 'treemap\n"Protected"\n:3\n:::zz\nclassDef zz color:#red;;',
     output: 'treemap\n  "Protected": 3:::zz\n  classDef zz color:#red;;\n',
