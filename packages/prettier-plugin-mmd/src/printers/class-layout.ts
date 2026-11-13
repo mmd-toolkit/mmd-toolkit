@@ -56,6 +56,8 @@ import {
   findTokensBetween,
   findTriviaBetween,
   isStructural,
+  skipDirectives,
+  textWithoutDirectives,
 } from "./source.ts"
 
 /**
@@ -394,7 +396,7 @@ export function layoutClassStatement(
     normalizeStyleList(source, atoms, statement, {
       joinsStyles,
       labelStyleNames:
-        statement.type === "ClassStyleStatement" ? ["color"] : [],
+        statement.type === "ClassStyleStatement" ? ["color", "text-align"] : [],
       collapsesWordGaps: true,
     })
   }
@@ -947,8 +949,8 @@ function spaceAfterName(
   name: ClassName,
   token: number,
 ): GapRule {
-  if (token !== name.range[1]) return "space"
-  const text = source.text.slice(...name.range)
+  if (token !== skipDirectives(source, name.range[1])) return "space"
+  const text = textWithoutDirectives(source, ...name.range)
   const before = text.at(-"call".length - 1)
   const endsWithCall =
     text.endsWith("call") && (before === undefined || !isWordCharacter(before))

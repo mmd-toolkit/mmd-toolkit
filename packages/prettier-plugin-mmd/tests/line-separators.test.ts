@@ -1022,6 +1022,121 @@ const classLineSeparatorExamples: readonly (readonly [
  */
 const erExamples: readonly (readonly [string, string, string])[] = [
   [
+    "er/statements-one-per-line/class-names-after-directive-ls",
+    "erDiagram\n\u2028class %%{init: {}}%%\nA a",
+    "erDiagram\n  \u2028class %%{init: {}}%%\nA a\n",
+  ],
+  [
+    "er/statements-one-per-line/class-second-name-after-directive-ps",
+    "erDiagram\n\u2029class A \n%%{init: {}}%%\na",
+    "erDiagram\n  \u2029class A \n%%{init: {}}%%\na\n",
+  ],
+  [
+    "er/statements-one-per-line/R44-er-subgraph-LS-c-before",
+    'erDiagram\n"style:#x" subgraph;\u2028X\nA\nend',
+    'erDiagram\n  "style:#x" subgraph;\u2028X\n    A\n  end\n',
+  ],
+  [
+    "er/statements-one-per-line/R44-er-subgraph-PS-c-before",
+    'erDiagram\n"style:#x" subgraph;\u2029X\nA\nend',
+    'erDiagram\n  "style:#x" subgraph;\u2029X\n    A\n  end\n',
+  ],
+  [
+    "er/statements-one-per-line/R63-er-ascii-after-LS-e",
+    'erDiagram\nsubgraph S\nA\nend\u2028\n\n"X"',
+    'erDiagram\n  subgraph S\n    A\n  end\u2028\n\n"X"\n',
+  ],
+  [
+    "er/statements-one-per-line/R44-er-after-separator-LS-e",
+    "erDiagram\nsubgraph S\nA\nend\u2028\n\nX",
+    "erDiagram\n  subgraph S\n    A\n  end\u2028\n\nX\n",
+  ],
+  [
+    "er/statements-one-per-line/R44-er-after-separator-PS-e",
+    "erDiagram\nsubgraph S\nA\nend\u2029\n\nX",
+    "erDiagram\n  subgraph S\n    A\n  end\u2029\n\nX\n",
+  ],
+  [
+    "er/statements-one-per-line/R74-er-LS-g-comment",
+    "erDiagram\nsubgraph S\nA\nend\u2028 %% c",
+    "erDiagram\n  subgraph S\n    A\n  end\u2028 %% c\n",
+  ],
+  [
+    "er/statements-one-per-line/R74-er-LS-g-directive",
+    "erDiagram\nsubgraph S\nA\nend\u2028%%{init: {}}%%",
+    "erDiagram\n  subgraph S\n    A\n  end\u2028%%{init: {}}%%\n",
+  ],
+  [
+    "er/statements-one-per-line/R74-er-PS-g-comment",
+    "erDiagram\nsubgraph S\nA\nend\u2029 %% c",
+    "erDiagram\n  subgraph S\n    A\n  end\u2029 %% c\n",
+  ],
+  [
+    "er/statements-one-per-line/R74-er-PS-g-directive",
+    "erDiagram\nsubgraph S\nA\nend\u2029%%{init: {}}%%",
+    "erDiagram\n  subgraph S\n    A\n  end\u2029%%{init: {}}%%\n",
+  ],
+  [
+    "er/statements-one-per-line/R45-er-class-LS-d",
+    "erDiagram\n\u2028class \n%% c\nA a",
+    "erDiagram\n  \u2028class \n%% c\nA a\n",
+  ],
+  [
+    "er/statements-one-per-line/R45-er-class-LS-e",
+    "erDiagram\n\u2028class \n\nA a",
+    "erDiagram\n  \u2028class \n\nA a\n",
+  ],
+  [
+    "er/statements-one-per-line/R45-er-class-PS-d",
+    "erDiagram\n\u2029class \n%% c\nA a",
+    "erDiagram\n  \u2029class \n%% c\nA a\n",
+  ],
+  [
+    "er/statements-one-per-line/R45-er-class-PS-e",
+    "erDiagram\n\u2029class \n\nA a",
+    "erDiagram\n  \u2029class \n\nA a\n",
+  ],
+  [
+    "er/statements-one-per-line/R45-er-second-name-LS-d",
+    "erDiagram\n\u2028class A \n%% c\na",
+    "erDiagram\n  \u2028class A \n%% c\na\n",
+  ],
+  [
+    "er/statements-one-per-line/R45-er-second-name-LS-e",
+    "erDiagram\n\u2028class A \n\na",
+    "erDiagram\n  \u2028class A \n\na\n",
+  ],
+  [
+    "er/statements-one-per-line/R45-er-nonascii-name-LS-d",
+    "erDiagram\n\u2028class\u00e9 \n%% c\na",
+    "erDiagram\n  \u2028class\u00e9 \n%% c\na\n",
+  ],
+  [
+    "er/statements-one-per-line/R45-er-nonascii-name-LS-e",
+    "erDiagram\n\u2028class\u00e9 \n\na",
+    "erDiagram\n  \u2028class\u00e9 \n\na\n",
+  ],
+  [
+    "er/statements-one-per-line/R45-er-second-name-PS-d",
+    "erDiagram\n\u2029class A \n%% c\na",
+    "erDiagram\n  \u2029class A \n%% c\na\n",
+  ],
+  [
+    "er/statements-one-per-line/R45-er-second-name-PS-e",
+    "erDiagram\n\u2029class A \n\na",
+    "erDiagram\n  \u2029class A \n\na\n",
+  ],
+  [
+    "er/statements-one-per-line/R45-er-nonascii-name-PS-d",
+    "erDiagram\n\u2029class\u00e9 \n%% c\na",
+    "erDiagram\n  \u2029class\u00e9 \n%% c\na\n",
+  ],
+  [
+    "er/statements-one-per-line/R45-er-nonascii-name-PS-e",
+    "erDiagram\n\u2029class\u00e9 \n\na",
+    "erDiagram\n  \u2029class\u00e9 \n\na\n",
+  ],
+  [
     "U+2028 between the end of an ER subgraph and the next entity",
     "erDiagram\nsubgraph S\nA\nend\u2028B\n",
     "erDiagram\n  subgraph S\n    A\n  end\u2028B\n",

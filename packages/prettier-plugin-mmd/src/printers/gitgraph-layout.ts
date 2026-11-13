@@ -6,6 +6,7 @@ import type {
   Token,
 } from "@mmd-toolkit/ast"
 import type { Atom, AtomLayout, GapRule } from "./atoms.ts"
+import { isReadAsAccValueByOlderVersions } from "./acc-value-join.ts"
 import { layoutCommonDescription, layoutCommonLine } from "./common-layout.ts"
 import { protectHiddenGaps } from "./hidden-forms.ts"
 import { findRespellings } from "./spelling.ts"
@@ -13,6 +14,7 @@ import {
   collectAtoms,
   collectValueNodes,
   expectToken,
+  keptAsWritten,
   protectSemicolonPrefixes,
 } from "./layout.ts"
 import type { Source } from "./source.ts"
@@ -102,6 +104,9 @@ export function layoutGitgraphStatement(
   statement: GitgraphBodyItem,
 ): AtomLayout {
   const [start, end] = statement.range
+  if (isReadAsAccValueByOlderVersions(source, statement)) {
+    return keptAsWritten(start, end)
+  }
   const values = collectValueNodes(statement, gitgraphValueNodeTypes)
   const hidden = values.filter(
     (value): value is GitgraphIgnoredText =>

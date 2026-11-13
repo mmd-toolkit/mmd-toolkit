@@ -19,6 +19,7 @@ import {
   isSubgraphIdNamedElsewhere,
 } from "./flowchart-clusters.ts"
 import { findFlowchartKeptLines } from "./flowchart-kept-lines.ts"
+import { findFillOfLabel } from "./flowchart-link-styles.ts"
 import type { Atom, AtomLayout, GapRule } from "./atoms.ts"
 import {
   collectAtoms,
@@ -294,20 +295,27 @@ export function layoutStatement(
     // mermaid.js draws the same figure whatever the whitespace around the `:`
     // and the `,` of the styles, except before a style that starts with `fill`
     // in a `linkStyle` with link numbers, in the styles of a `linkStyle` where
-    // mermaid.js reads them as the styles of a link, and between `stroke` and
-    // the `:` in the styles that can reach a link (docs/flowchart.md, Styles).
+    // mermaid.js reads them as the styles of a link, between `stroke` and the
+    // `:` in the styles that can reach a link, and between `fill` and the `:`
+    // in a `linkStyle` (docs/flowchart.md, Styles).
     const isLinkStyle =
       statement.type === "FlowchartLinkStyleStatement" ||
       statement.type === "FlowchartDefaultLinkStyleStatement"
     normalizeStyleList(source, atoms, statement, {
       keepsSpaceBeforeFill: statement.type === "FlowchartLinkStyleStatement",
       labelStyleNames:
-        statement.type === "FlowchartStyleStatement" || isLinkStyle
+        (statement.type === "FlowchartStyleStatement" || isLinkStyle) &&
+        source.root.diagramType !== "swimlane"
           ? ["color", "text-align"]
           : [],
       isLinkStyle,
       joinsStyles: isLinkStyle || statement.type === "FlowchartStyleStatement",
       keepsGapAfterStroke: statement.type !== "FlowchartStyleStatement",
+      fillOfLabel:
+        statement.type === "FlowchartLinkStyleStatement" ||
+        statement.type === "FlowchartDefaultLinkStyleStatement"
+          ? findFillOfLabel(source, statement)
+          : null,
       escapesComma: statement.type === "FlowchartClassDefStatement",
       collapsesWordGaps: true,
     })

@@ -369,7 +369,10 @@ in it and reads the same text as the name A and the arrow -->, so an arrow is
 not separated from a name that ends with `-`: A-->B prints A--> B, which every
 version draws as it draws A-->B, not A- -> B (see
 [Wardley authored text and required line breaks](./compatibility.md#wardley-authored-text-and-required-line-breaks)).
-Do not search the source for arrow-shaped text. A -->B instead keeps -->. This
+A directive between the name and the arrow does not part them, as mermaid.js
+takes the directive away before it reads the text: A-%%{init: {}}%%->B prints
+A-%%{init: {}}%%-> B. [fixture: wardley/links/link-glued-directive-between] Do
+not search the source for arrow-shaped text. A -->B instead keeps -->. This
 spacing follows the components already read by the parser.
 
 [fixture: wardley/links/link-short]

@@ -464,16 +464,23 @@ whitespace to surround; tabs, line breaks and Unicode whitespace follow the same
 rule. [fixture: title-and-common-values/empty-whitespace-interiors] [test:
 gitgraph Unicode and tab interiors] Comment/directive-only blocks keep their
 trivia. Keep every repeated, empty and interleaved assignment, including
-frontmatter fallback. Line forms never read the next physical line, even across
-blanks/comments/directives; colon-form braces stay line text. These choices
-compact equivalent outer whitespace without changing the description text or
-lexical ownership.
+frontmatter fallback. The pinned grammar reads no line form on the next physical
+line, even across blanks/comments/directives, and the oldest version that counts
+reads the statement after an empty `accTitle:` or `accDescr:` as its value, so
+that statement and the whitespace before a `%%` after an `accTitle` value stay
+as written (see
+[Accessibility lines that the oldest version reads to the end](./compatibility.md#accessibility-lines-that-the-oldest-version-reads-to-the-end));
+colon-form braces stay line text. These choices compact equivalent outer
+whitespace without changing the description text or lexical ownership.
 
 Fixed cases: [fixture: gitgraph/title-and-common-values/title-trim] [corpus
 fixture: gitgraph/title-next-line] [fixture:
 gitgraph/title-and-common-values/common-repeats-empty] [fixture:
 gitgraph/title-and-common-values/a11y-fixed] [fixture:
 gitgraph/title-and-common-values/a11y-no-next-line] [fixture:
+gitgraph/title-and-common-values/acc-value-on-next-line-kept] [fixture:
+gitgraph/title-and-common-values/acc-title-percent-gap-kept] [fixture:
+gitgraph/title-and-common-values/block-then-comment-kept] [fixture:
 gitgraph/title-and-common-values/common-literal-not-string] [fixture:
 gitgraph/title-and-common-values/common-move-front] [corpus fixture:
 gitgraph/accdescr-block] [fixture:

@@ -41,6 +41,7 @@ import {
 } from "./statement-rules.ts"
 import {
   findStructuralToken,
+  findDirectiveEndingAt,
   findTokenEndingBefore,
   findTokensBetween,
   findTriviaBetween,
@@ -181,8 +182,17 @@ export function findAttributeBraces(
  */
 export function touchesKeywordWithDash(source: Source, start: number): boolean {
   if (source.text[start] !== "-") return false
-  const before = findTokenEndingBefore(source, start)
-  return before?.type === "Keyword" && before.range[1] === start
+  // mermaid.js removes the directives between them before it reads the text.
+  let keywordEnd = start
+  for (
+    let directive = findDirectiveEndingAt(source, keywordEnd);
+    directive !== undefined;
+    directive = findDirectiveEndingAt(source, keywordEnd)
+  ) {
+    keywordEnd = directive.range[0]
+  }
+  const before = findTokenEndingBefore(source, keywordEnd)
+  return before?.type === "Keyword" && before.range[1] === keywordEnd
 }
 
 /** Sets no gap before the units that `touchesKeywordWithDash` finds. */
@@ -255,7 +265,32 @@ export function layoutSubgraphOpening(
     [],
   )
   keepKeywordDashTouching(source, atoms, rules)
-  return { atoms, rules, outdented: new Set(), lineBreaks: "kept" }
+  return {
+    atoms,
+    rules,
+    outdented: new Set(),
+    lineBreaks: "kept",
+    writtenGapsBefore: ignoredKeywordGaps(source, atoms),
+  }
+}
+
+/**
+ * The gap after `class` or `subgraph` when it holds an ignored `;`.
+ * The line rule removes that character before the lexer tests the keyword
+ * boundary, so the whole gap keeps its contacts (diagrams/er.md, The
+ * statement context; docs/er.md, Statements one per line).
+ */
+function ignoredKeywordGaps(
+  source: Source,
+  atoms: readonly Atom[],
+): ReadonlySet<number> {
+  const [keyword, name] = atoms
+  if (keyword === undefined || name === undefined) return new Set()
+  return findTokensBetween(source, keyword.end, name.start).some((token) =>
+    source.ignoredSemicolons.has(token.range[0]),
+  )
+    ? new Set([name.start])
+    : new Set()
 }
 
 /**
@@ -377,6 +412,10 @@ export function layoutErStatement(
     rules,
     outdented: new Set(),
     lineBreaks: "joined",
+    writtenGapsBefore:
+      statement.type === "ErClassStatement"
+        ? ignoredKeywordGaps(source, atoms)
+        : undefined,
   }
 }
 

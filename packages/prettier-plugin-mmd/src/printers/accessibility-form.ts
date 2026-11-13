@@ -9,6 +9,10 @@ import {
 import type { Source } from "./source.ts"
 import { findTriviaBetween, isWhitespace } from "./source.ts"
 import { holdsStatementAfter } from "./accessibility-lines.ts"
+import {
+  diagramTypesWithJisonAccessibilityLines,
+  isReadAsAccValueByOlderVersions,
+} from "./acc-value-join.ts"
 import { printedToken } from "./spelling.ts"
 import { treeviewBoxCharacters } from "./treeview-characters.ts"
 import { collapseRuns, staysAsWritten } from "./text-runs.ts"
@@ -133,7 +137,10 @@ interface DescriptionBlockParts {
  * the drawing of a box; where a line terminator separates the text from the
  * keyword or from the `}` and a diagram type of `bodiesReadingDirectionLines`
  * holds `direction` in it (also split by a directive); and where the block is
- * not closed or has no text. The characters in the `omitted` ranges are not
+ * not closed or has no text, and where the oldest version that counts reads
+ * the block as the value of the empty `accTitle:` or `accDescr:` before it
+ * (docs/compatibility.md, Accessibility lines that the oldest version reads to
+ * the end). The characters in the `omitted` ranges are not
  * printed (the drawing of a box in a treeView), and count as whitespace.
  */
 function readDescriptionBlock(
@@ -150,7 +157,8 @@ function readDescriptionBlock(
     !isDescriptionBlock(statement) ||
     statement.value === null ||
     statement.closed === false ||
-    diagramTypesStoringTheToken.has(source.root.diagramType)
+    diagramTypesStoringTheToken.has(source.root.diagramType) ||
+    isReadAsAccValueByOlderVersions(source, statement)
   ) {
     return undefined
   }
@@ -364,7 +372,8 @@ export function printAccessibilityLine(
  */
 function commentsAfterAllowed(source: Source, end: number): boolean {
   return (
-    diagramTypesEndingTextAtPercent.has(source.root.diagramType) ||
+    (diagramTypesEndingTextAtPercent.has(source.root.diagramType) &&
+      !diagramTypesWithJisonAccessibilityLines.has(source.root.diagramType)) ||
     findTriviaBetween(source, end, lineEndOf(source, end)).every(
       (item) => item.type === "Directive",
     )

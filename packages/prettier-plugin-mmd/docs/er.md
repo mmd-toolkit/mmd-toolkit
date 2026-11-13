@@ -355,6 +355,20 @@ er/gram-empty-description-block-between-names] A directive between two
 statements stands with the statement after it. [fixture:
 statements-one-per-line/directive-after-statement]
 
+An ignored `;` keeps the line that makes the line rule ignore it: in
+`"style:#x" end;`, the `end` stays with the entity before it, also in upper
+case. An ignored `;` between `class` or `subgraph` and its first name keeps the
+complete gap as written: `class;-A a`, `subgraph;-x`, and `subgraph;é` keep
+their contacts after the `;` is removed by the line rule. This also applies when
+U+2028 or U+2029 precedes the subgraph name. [fixture:
+statements-one-per-line/closing-end-ignored-semicolon-kept] [fixture:
+statements-one-per-line/closing-uppercase-end-ignored-semicolon-kept] [fixture:
+statements-one-per-line/class-ignored-semicolon-before-dash-kept] [fixture:
+statements-one-per-line/subgraph-ignored-semicolon-before-dash-kept] [fixture:
+statements-one-per-line/subgraph-ignored-semicolon-before-non-ascii-kept] [test:
+er/statements-one-per-line/R44-er-subgraph-LS-c-before] [test:
+er/statements-one-per-line/R44-er-subgraph-PS-c-before]
+
 Some cases keep their statements on one line. The entity `1` followed right
 after by another statement or by the `end` of its subgraph, with no whitespace
 between them or with only directives, stays as it is: `1a` is the entities `1`
@@ -384,22 +398,48 @@ ASCII, or a U+2028 or U+2029, between it and its name stays as written, and so
 does the statement after an `end` that such a character or separator follows,
 which stays on the line of the `end` with the gap as written: `endé` is the
 keyword `end` and the entity `é` to the pinned version, and one name to some
-versions that count. A U+2028 or U+2029 that ends the line of an `end` stays,
-and so does a statement that starts with one, when another statement follows it
-on its line, and some versions that count read the line from the end of the
-whitespace as a `class` statement or as a direction line: the character belongs
-to the first name to the pinned version, and those versions read it as
-whitespace before the keyword. `class A a` goes on over the line there, with two
-names after the keyword. `A direction LR` and `A B direction LR` are a direction
-line there, which takes the statements before `direction` too, and so are
-`direction LR B` and `direction` with its value on the next line when a
-statement follows the value, which stays on the line of the value. A statement
-that starts so with another word (`classes`, `directionX`, a name), `class` with
-one name, and `direction` with its value alone are split from the statement
-after them. A name in quotes that follows such an `end` keeps its quotes.
-Directives between the keyword and what follows it change none of this, whether
-they stand before the U+2028 or U+2029 or touch the character outside ASCII.
-[fixture: statements-one-per-line/end-then-name-outside-ascii-kept] [fixture:
+versions that count. A U+2028 or U+2029 that ends the line of an `end` stays
+exactly once, also before a comment or directive and before a blank line and
+another statement. [test: er/statements-one-per-line/R63-er-ascii-after-LS-e]
+[test: er/statements-one-per-line/R44-er-after-separator-LS-e] [test:
+er/statements-one-per-line/R44-er-after-separator-PS-e] [test:
+er/statements-one-per-line/R74-er-LS-g-comment] [test:
+er/statements-one-per-line/R74-er-LS-g-directive] [test:
+er/statements-one-per-line/R74-er-PS-g-comment] [test:
+er/statements-one-per-line/R74-er-PS-g-directive] A statement that starts with
+one also stays with its following statements when some versions that count read
+the text from the end of the whitespace as a `class` statement or as a direction
+line: the character belongs to the first name to the pinned version, and those
+versions read it as whitespace before the keyword. `class A a` goes on over the
+line there, with two names after the keyword. The whitespace before either name
+can continue across line feeds when it starts with another whitespace character.
+In that case, both gaps stay as written, including comment lines, directives and
+blank lines, through the second name. A line feed directly after the keyword or
+first name does not continue the class statement. [test:
+er/statements-one-per-line/R45-er-class-LS-d] [test:
+er/statements-one-per-line/R45-er-class-LS-e] [test:
+er/statements-one-per-line/R45-er-class-PS-d] [test:
+er/statements-one-per-line/R45-er-class-PS-e] [test:
+er/statements-one-per-line/R45-er-second-name-LS-d] [test:
+er/statements-one-per-line/R45-er-second-name-LS-e] [test:
+er/statements-one-per-line/R45-er-nonascii-name-LS-d] [test:
+er/statements-one-per-line/R45-er-nonascii-name-LS-e] [test:
+er/statements-one-per-line/R45-er-second-name-PS-d] [test:
+er/statements-one-per-line/R45-er-second-name-PS-e] [test:
+er/statements-one-per-line/R45-er-nonascii-name-PS-d] [test:
+er/statements-one-per-line/R45-er-nonascii-name-PS-e] [test:
+er/statements-one-per-line/class-names-after-directive-ls] [test:
+er/statements-one-per-line/class-second-name-after-directive-ps]
+`A direction LR` and `A B direction LR` are a direction line there, which takes
+the statements before `direction` too, and so are `direction LR B` and
+`direction` with its value on the next line when a statement follows the value,
+which stays on the line of the value. A statement that starts so with another
+word (`classes`, `directionX`, a name), `class` with one name, and `direction`
+with its value alone are split from the statement after them. A name in quotes
+that follows such an `end` keeps its quotes. Directives between the keyword and
+what follows it change none of this, whether they stand before the U+2028 or
+U+2029 or touch the character outside ASCII. [fixture:
+statements-one-per-line/end-then-name-outside-ascii-kept] [fixture:
 statements-one-per-line/subgraph-then-name-outside-ascii-kept] [fixture:
 statements-one-per-line/end-directive-then-name-outside-ascii-kept] [fixture:
 statements-one-per-line/subgraph-directive-then-name-outside-ascii-kept] [corpus
@@ -633,8 +673,12 @@ is not printed `class -A a`, which a version that counts rejects, and
 [ER lines that the place or the whitespace decides](./compatibility.md#er-lines-that-the-place-or-the-whitespace-decides)
 and
 [Forms kept for versions of mermaid.js that count](./compatibility.md#forms-kept-for-versions-of-mermaidjs-that-count)).
-`classDef` and `style` are not among them: `classDef-x` is printed
-`classDef -x`. [fixture:
+A directive between the keyword and the `-` does not part them, since mermaid.js
+removes it before it reads the text: `class%%{init: {}}%%-A a` stays. `classDef`
+and `style` are not among them: `classDef-x` is printed `classDef -x`. [fixture:
+whitespace-between-tokens/class-then-dash-directive-kept] [fixture:
+whitespace-between-tokens/subgraph-then-dash-directive-kept] [fixture:
+whitespace-between-tokens/end-then-dash-directive-kept] [fixture:
 whitespace-between-tokens/keyword-then-dash-touching-kept] [fixture:
 whitespace-between-tokens/keyword-upper-then-dash-touching-kept] [fixture:
 whitespace-between-tokens/subgraph-then-dash-touching-kept] [fixture:

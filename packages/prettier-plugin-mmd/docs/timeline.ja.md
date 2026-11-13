@@ -637,14 +637,19 @@ Db はその空白を持ちますが、図では描かれません。
 その文を書かれたまま印字します（[複数行の文](#複数行の文)を参照）。
 [fixture: titles-and-sections/value-on-next-line]
 [fixture: titles-and-sections/comment-line-inside-kept]
-キーワードより後ろの行にある値が `#` で始まる title は、書かれたままにします。
-対象にする版の一部は、`title`、改行、`# c` を、
+キーワードより後ろの行にある値が、空白に続く `#` で始まる title は、
+書かれたままにします。
+対象にする版の一部は、`title`、改行、字下げ、`# c` を、
 空白だけの title とコメントとして読み、`title # c` を、
 period `title` とコメントとして読みますが、残りの版は、
 どちらも title `# c` として読み、同じに描くためです。
 詳しくは
 [対象にする版の mermaid.js のために残す形](./compatibility.ja.md#対象にする版の-mermaidjs-のために残す形)
-を参照してください。 [fixture: titles-and-sections/title-hash-on-next-line-kept]
+を参照してください。
+`#` が行頭にあると、その版でも両方の形が period `title` になるので、
+値はキーワードにつなげます。
+[fixture: titles-and-sections/title-hash-on-next-line-kept]
+[fixture: titles-and-sections/title-hash-at-line-start-joined]
 値は `:`、`#`、`%`、`%%` を文字として持ちます。
 ただし section の名前は `:` で終わり、その `:` は event を始めます。
 [fixture: titles-and-sections/special-characters-in-values]
@@ -1277,7 +1282,7 @@ c : e%%{init: {}}%%: f
 timeline
   a %%{init: {}}%%: e
   b : %%{init: {}}%%e
-  c : e%%{init: {}}%%: f
+  c : e %%{init: {}}%%: f
 ```
 
 ### フロントマターの YAML

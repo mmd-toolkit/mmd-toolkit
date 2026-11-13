@@ -2,9 +2,7 @@
 "prettier-plugin-mmd": minor
 ---
 
-Decide what stays as written from ten versions of mermaid.js, the one the
-formatter is checked with and nine earlier ones: `10.9.8`, `11.7.0`, `11.8.1`,
-`11.13.0`, `11.14.0`, `11.15.0`, `11.16.1`, `11.17.2`, `12.0.0`, and `12.3.0`. A
-form that one of them rejects or draws differently stays as written, and a
-version that is not among them is no reason to keep a form: `A <---x B` is now
-printed `A <--x B`, since all ten draw it the same.
+Decide what stays as written for each diagram type from mermaid.js `10.9.8`,
+`11.7.0`, `11.17.2`, `12.0.0`, and `12.3.0` where they have it. For a diagram
+type added during the 18 months before `12.3.0`, the first version that reads it
+replaces the oldest version of that major for that diagram type alone.

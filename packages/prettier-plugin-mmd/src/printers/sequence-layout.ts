@@ -22,6 +22,7 @@ import {
   toAsciiLowerCase,
   walk,
 } from "./layout.ts"
+import { holdsNameLikeDataBlock } from "./sequence-name-blocks.ts"
 import {
   findKeptBreaks,
   gapKeepsLineBreak,
@@ -34,6 +35,7 @@ import type { Source } from "./source.ts"
 import {
   findStructuralToken,
   findTokenStartingAt,
+  findTriviaAt,
   findTriviaBetween,
   isAtLineEnd,
   isSpaceOrTab,
@@ -311,7 +313,19 @@ export function layoutSequenceStatement(
         )
       : originalLayout()
   }
-  const atoms = collectAtoms(source, start, end, values, tail)
+  // A data block that a version that counts reads as a part of the name stays
+  // as written with its id, so does the gap between them (docs/sequence.md,
+  // Whitespace between tokens).
+  const nameBlock = holdsNameLikeDataBlock(statement)
+    ? [{ start: statement.id.range[0], end: statement.data.range[1] }]
+    : []
+  const atoms = collectAtoms(source, start, end, values, [
+    ...tail,
+    ...nameBlock,
+    ...(statement.type === "SequenceMessageStatement"
+      ? findNameGaps(source, statement)
+      : []),
+  ])
   return {
     atoms: keepFirstGapLineTails(source, atoms, (from, to) =>
       gapKeepsLineBreak(source, keptBreaks, from, to),
@@ -320,6 +334,41 @@ export function layoutSequenceStatement(
     outdented: new Set(),
     lineBreaks: "joined",
   }
+}
+
+/**
+ * The stretches of a message whose whitespace stays as written, directives
+ * and all: some versions that count read a `()` beside an id, and the `<<` of
+ * a `<<->>` or `<<-->>`, as part of the name, so the whitespace between the id
+ * and the `()` or the `<<` is part of the name, and so is the one between a
+ * `()` and the target (docs/sequence.md, Arrow spacing).
+ */
+function findNameGaps(
+  source: Source,
+  statement: SequenceMessageStatement,
+): Atom[] {
+  const stretches: Atom[] = []
+  const { arrow, from, to } = statement
+  if (statement.fromCentralConnection) {
+    const parentheses = expectToken(
+      findStructuralToken(source, from.range[1]),
+      "the `()` after the source of a message",
+    )
+    stretches.push({ start: from.range[1], end: parentheses.range[1] })
+  } else {
+    const arrowText = source.text.slice(arrow.range[0], arrow.range[1])
+    if (arrowText === "<<->>" || arrowText === "<<-->>") {
+      stretches.push({ start: from.range[1], end: arrow.range[0] })
+    }
+  }
+  if (statement.toCentralConnection) {
+    const parentheses = expectToken(
+      findStructuralToken(source, arrow.range[1]),
+      "the `()` before the target of a message",
+    )
+    stretches.push({ start: parentheses.range[0], end: to.range[0] })
+  }
+  return stretches
 }
 
 /**
@@ -467,6 +516,30 @@ function scanAfterBareColon(
     startsWithSpaceOrTab:
       isSpaceOrTab(source.text.charAt(statement.range[1])) && !holdsSeparator,
   }
+}
+
+/**
+ * The end of the `%%` comment that follows such a data block on its line, or
+ * undefined when none does. The name of a participant that a version that
+ * counts reads reaches that comment, with the whitespace before it, so both
+ * stay as written (a participant with a description after `as` has its text
+ * run to the comment already).
+ */
+export function findEndOfCommentAfterNameBlock(
+  source: Source,
+  statement: SequenceStatement,
+): number | undefined {
+  if (!holdsNameLikeDataBlock(statement) || statement.alias !== null) {
+    return undefined
+  }
+  let position = statement.range[1]
+  while (isSpaceOrTab(source.text.charAt(position))) position++
+  const comment = findTriviaAt(source, position)
+  return comment?.type === "Comment" &&
+    comment.mark === "%%" &&
+    comment.range[0] === position
+    ? comment.range[1]
+    : undefined
 }
 
 /**

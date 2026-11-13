@@ -1120,6 +1120,7 @@ block 図の `style`、`classDef` 文のスタイルの色が対象です。
 （[同じに描かれる色](./compatibility.ja.md#同じに描かれる色)を参照）。
 [fixture: colors/colors-in-lower-case]
 [fixture: colors/words-that-are-not-colors-as-written]
+[fixture: block/colors/color-directive-in-url-name-kept]
 
 入力
 ([colors/colors-in-lower-case-input.mmd](../tests/fixtures/block/colors/colors-in-lower-case-input.mmd)):

@@ -229,13 +229,26 @@ of an `accDescr` is printed as one space (see
 [Runs of whitespace in a text that are drawn the same](./compatibility.md#runs-of-whitespace-in-a-text-that-are-drawn-the-same)),
 and that of an `accTitle` stays as written, since the browser shows it as a
 tooltip; quotes and line-form braces remain text; repeated assignments and
-percent comment attachment remain. Pie never joins next-line values, including
-after blank/comment/directive gaps, because its composite line forms stop at
-physical EOL. Hidden forms and protected textual groups retain their gaps. The
-directives that end the value are printed with one space before each that has
-whitespace before it, and the whitespace after the last one is left out (see
+percent comment attachment remain. The pinned grammar never joins next-line
+values, including after blank/comment/directive gaps, because its composite line
+forms stop at physical EOL, but the oldest version that counts does: its lexer
+takes the whitespace after the `:` of an empty `accTitle:` or `accDescr:` for
+the line breaks too, and reads the next statement, after the blank lines and the
+comments and directives that mermaid.js removes first, as the value. That
+statement stays as written (`"A":1` is not printed `"A": 1`), as does the
+whitespace before a `%%` that follows an `accTitle` value, which that version
+reads as part of the title (`accTitle: Value   %% note`); a comment after the
+`}` of a description block keeps the block, since the text of the form with the
+colon would take the comment (see
+[Accessibility lines that the oldest version reads to the end](./compatibility.md#accessibility-lines-that-the-oldest-version-reads-to-the-end)).
+Hidden forms and protected textual groups retain their gaps. The directives that
+end the value are printed with one space before each that has whitespace before
+it, and the whitespace after the last one is left out (see
 [Texts after a keyword that are drawn the same](./compatibility.md#texts-after-a-keyword-that-are-drawn-the-same)).
-[fixture: accessibility-lines/acc-directives-end-blanks-dropped]
+[fixture: accessibility-lines/acc-directives-end-blanks-dropped] [fixture:
+accessibility-lines/acc-title-percent-gap-kept] [fixture:
+accessibility-lines/acc-value-after-blank-and-directive-kept] [fixture:
+accessibility-lines/acc-value-with-value-then-row-split]
 
 Fixed cases: [fixture: pie/accessibility-lines/a11y-lines] [fixture:
 pie/accessibility-lines/a11y-empty] [fixture:

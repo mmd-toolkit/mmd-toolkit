@@ -21,7 +21,8 @@ colon stays where a hidden form or a global directive lies between it and the
 word, and where a `;` or the `---` of a hidden YAML block touches it. Hidden
 forms, global trivia and protected semicolon segments keep their source
 boundaries instead. Empty bodies remain empty. [fixture:
-radar/header/colon-removed] [fixture: radar/header/colon-yaml-kept]
+radar/header/colon-removed] [fixture: radar/header/colon-yaml-kept] [fixture:
+radar/header/colon-directive-before-hidden-yaml-kept]
 
 [fixture: radar/header/joined-empty]
 

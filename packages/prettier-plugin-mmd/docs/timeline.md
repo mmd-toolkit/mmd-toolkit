@@ -611,14 +611,18 @@ statement printed as written (see
 [Multi-line statements](#multi-line-statements)). [fixture:
 titles-and-sections/value-on-next-line] [fixture:
 titles-and-sections/comment-line-inside-kept] A title whose value starts with a
-`#` on a later line than the keyword stays as written: some versions that count
-read `title`, a line break, and `# c` as a title of whitespace only and a
-comment, and `title # c` as the period `title` and a comment, while the others
-read both as the title `# c` (drawn the same; see
+`#` after whitespace on a later line than the keyword stays as written: some
+versions that count read `title`, a line break, an indentation, and `# c` as a
+title of whitespace only and a comment, and `title # c` as the period `title`
+and a comment, while the others read both as the title `# c` (drawn the same;
+see
 [Forms kept for versions of mermaid.js that count](./compatibility.md#forms-kept-for-versions-of-mermaidjs-that-count)).
-[fixture: titles-and-sections/title-hash-on-next-line-kept] The value holds `:`,
-`#`, `%`, and `%%` as characters, except that the name of a section ends at a
-`:`, which starts an event. [fixture:
+A `#` at the start of its line is no such text to them, and both forms are the
+period `title`, so the value is joined to the keyword. [fixture:
+titles-and-sections/title-hash-on-next-line-kept] [fixture:
+titles-and-sections/title-hash-at-line-start-joined] The value holds `:`, `#`,
+`%`, and `%%` as characters, except that the name of a section ends at a `:`,
+which starts an event. [fixture:
 titles-and-sections/special-characters-in-values] [fixture:
 titles-and-sections/section-ends-at-colon] A directive between the keyword and
 the value stays where it is (see [Directives](#directives)). [fixture:
@@ -1233,7 +1237,7 @@ Output
 timeline
   a %%{init: {}}%%: e
   b : %%{init: {}}%%e
-  c : e%%{init: {}}%%: f
+  c : e %%{init: {}}%%: f
 ```
 
 ### Frontmatter YAML

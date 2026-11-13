@@ -2,6 +2,7 @@ import type { Node, Range } from "@mmd-toolkit/ast"
 import type { Doc } from "prettier"
 import type { Atom, AtomLayout, GapRule } from "./atoms.ts"
 import { appendItems } from "./collections.ts"
+import type { FillOfLabel } from "./flowchart-link-styles.ts"
 import type { TextEdit } from "./layout.ts"
 import {
   expectToken,
@@ -253,6 +254,12 @@ export interface StyleListUse {
   /** The styles can reach a link: a `linkStyle`, a `classDef`. */
   readonly keepsGapAfterStroke?: boolean
   /**
+   * The statement is a `linkStyle` of a flowchart whose styles some versions
+   * that count put in the style of the label of a link, and which part of them
+   * (see `keepsGapAfterFill` below).
+   */
+  readonly fillOfLabel?: FillOfLabel | null
+  /**
    * A backslash escapes a `,`: `a\,b` is one style, and a space between the
    * backslash and a `,` decides that. Only the `classDef` of flowchart and
    * agentflow reads it so; their `style` and `linkStyle` end a style at every
@@ -316,12 +323,22 @@ export interface StyleListUse {
  *   its value, which reaches up to the `,` after it. The gap after that `,`
  *   follows the rules above.
  *
+ * `fillOfLabel` is set for a `linkStyle` of a flowchart. Some versions that
+ * count make the style of the label of a link from the styles of the link and
+ * put `color:` in the place of the first `fill:` in it (`first-fill`), or in
+ * the first style only (`first-style`, in a swimlane diagram), so a name that
+ * ends with `fill` keeps whether whitespace stands between it and the `:`, a
+ * run of whitespace becoming one space: with the gap, the label keeps the
+ * `fill`, and without it, the label has `color`. Where the part is the first
+ * `fill:`, a style after a style that has `fill:` in its text uses the one
+ * form, and where it is the first style, so does every style but the first.
+ *
  * `labelStyleNames` is set for the `style` of a block diagram, of a flowchart,
  * and of a class diagram. mermaid.js puts a style that starts with `color:` or
  * `text-align:` in the style of the label of a node and every other style in
  * the style of its shape (a block arrow takes the style of its label as it
  * is), in a block diagram, and, in a version that counts, in a flowchart (both
- * names) and in a class diagram (`color`). A style that starts with whitespace, or has
+ * names) and in a class diagram (both). A style that starts with whitespace, or has
  * whitespace between its name and the `:`, does not start so. So such a style
  * keeps whether whitespace stands before it, and between the name and the `:`,
  * a run of whitespace becoming one space (docs/compatibility.md, Styles that
@@ -365,6 +382,7 @@ export function normalizeStyleList(
     joinsStyles = false,
     labelStyleNames = [],
     keepsGapAfterStroke = false,
+    fillOfLabel = null,
     escapesComma = false,
     collapsesWordGaps = false,
     trimsEnd = false,
@@ -390,6 +408,7 @@ export function normalizeStyleList(
   const edits: TextEdit[] = []
   const [from, to] = [first.range[0], last.range[1]]
   let previousEnd = -1
+  let hasFillColonBefore = false
   for (let start = from; start <= to;) {
     let comma = start
     while (comma < to && !endsStyle(source, comma, escapesComma)) comma++
@@ -410,6 +429,10 @@ export function normalizeStyleList(
     if (!keepsValue) {
       addColonEdit(source, core, edits, {
         keepsGapAfterStroke,
+        keepsGapAfterFill:
+          fillOfLabel === "first-style"
+            ? previousEnd === -1
+            : fillOfLabel === "first-fill" && !hasFillColonBefore,
         labelStyleNames,
       })
       if (collapsesWordGaps) addWordGapEdits(source, core, edits)
@@ -438,6 +461,7 @@ export function normalizeStyleList(
       )
     }
     previousEnd = core[1]
+    hasFillColonBefore ||= source.text.slice(start, comma).includes("fill:")
     start = comma + 1
   }
   // An insertion at the edge of an atom is the business of the gap rules.
@@ -817,8 +841,9 @@ function trimStyle(
  * a name before the `:` has no whitespace before it to take away. The space
  * that a backslash before the `:` escapes stays, and the whitespace after it
  * goes: CSS reads the escaped space as part of the name. Where
- * `keepsGapAfterStroke` is set and the name ends with `stroke`, one space
- * stays before the `:` if whitespace stood there.
+ * `keepsGapAfterStroke` is set and the name ends with `stroke`, or
+ * `keepsGapAfterFill` is set and the name ends with `fill`, one space stays
+ * before the `:` if whitespace stood there.
  */
 export function addColonEdit(
   source: Source,
@@ -826,9 +851,11 @@ export function addColonEdit(
   edits: TextEdit[],
   {
     keepsGapAfterStroke = false,
+    keepsGapAfterFill = false,
     labelStyleNames = [],
   }: {
     readonly keepsGapAfterStroke?: boolean
+    readonly keepsGapAfterFill?: boolean
     readonly labelStyleNames?: readonly string[]
   } = {},
 ): void {
@@ -839,6 +866,7 @@ export function addColonEdit(
   const spaceBeforeColon =
     nameEnd < colon &&
     ((keepsGapAfterStroke && name.endsWith("stroke")) ||
+      (keepsGapAfterFill && name.endsWith("fill")) ||
       labelStyleNames.includes(name))
   edits.push({
     range: [nameEnd, valueStart],

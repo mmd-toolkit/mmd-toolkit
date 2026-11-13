@@ -303,19 +303,22 @@ the documentation of mermaid.js write it (see
 [The quotes of a text](./compatibility.md#the-quotes-of-a-text)):
 `group api(cloud)["API Group"]` is printed `group api(cloud)[API Group]`, and
 `service s(server)['Plain Single']` is printed
-`service s(server)[Plain Single]`. A label is plain where it is ASCII letters,
-digits, `_`, and spaces, with no space at its ends: some versions that count,
-which read a label in quotes, read a label without quotes of these characters
-only (others read no label in quotes; see
-[Forms kept for versions of mermaid.js that count](./compatibility.md#forms-kept-for-versions-of-mermaidjs-that-count)),
-so `"a-b"`, `"A.B"`, `"日本語"`, `"a[b"`, the empty label, and a label with
-padding inside the quotes (`[" padded "]`) keep their quotes. So do a backslash
-and a quote: mermaid.js takes one pair of outer quotes, `"` or `'`, off the
-title that it reads, and turns `\"` and `\'` into `"` and `'` only in a title
-that had them, so `"a\"b"` printed `a\"b`, and `"'x'"` printed `'x'`, would be
-read as other titles. A label without quotes is never put in quotes. [fixture:
+`service s(server)[Plain Single]`. A label is plain where it holds no bracket,
+quote, backslash, or line break, and has no space at its ends: a label without
+quotes runs to the next `]`, and one that starts and ends with a quote is read
+as a label in quotes, so `"a-b"`, `"A.B"`, and `"日本語"` are printed without
+quotes, while `"a[b"`, the empty label, and a label with padding inside the
+quotes (`[" padded "]`) keep theirs. So do a backslash and a quote: mermaid.js
+takes one pair of outer quotes, `"` or `'`, off the title that it reads, and
+turns `\"` and `\'` into `"` and `'` only in a title that had them, so `"a\"b"`
+printed `a\"b`, and `"'x'"` printed `'x'`, would be read as other titles. A
+label without quotes is never put in quotes. A run of spaces and tabs in a label
+is printed as one space, except where it makes a word of its own: mermaid.js
+draws a label word by word, split at single spaces, so a run of tabs alone, and
+a tab between two spaces, stay (`"A<tab>B"` is printed `A<tab>B`). [fixture:
 quotes/labels-without-quotes] [fixture: quotes/labels-that-need-quotes]
-[fixture: quotes/labels-with-runs-without-quotes]
+[fixture: quotes/labels-with-runs-without-quotes] [fixture:
+quotes/labels-with-tab-words-kept]
 
 Input
 ([quotes/labels-without-quotes-input.mmd](../tests/fixtures/architecture/quotes/labels-without-quotes-input.mmd)):

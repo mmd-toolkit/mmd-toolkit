@@ -31,6 +31,7 @@ import {
   findTokenStartingAt,
   findTriviaBetween,
   isWhitespace,
+  textWithoutDirectives,
 } from "./source.ts"
 import { normalizeStyleList } from "./statement-rules.ts"
 
@@ -63,15 +64,17 @@ export interface TreemapLine {
 export function treemapPrintedDepth(source: Source, line: TreemapLine): number {
   const statement = line.statements[0]
   if (
-    line.leading !== null ||
-    (statement.type !== "TreemapTitleStatement" &&
-      statement.type !== "TreemapAccTitleStatement" &&
-      statement.type !== "TreemapAccDescrStatement" &&
-      statement.type !== "TreemapAccDescrBlockStatement")
+    statement.type !== "TreemapTitleStatement" &&
+    statement.type !== "TreemapAccTitleStatement" &&
+    statement.type !== "TreemapAccDescrStatement" &&
+    statement.type !== "TreemapAccDescrBlockStatement"
   ) {
     return line.depth
   }
-  const before = source.text.slice(
+  // mermaid.js removes the directives before the statement first, so a line
+  // that starts with directives is indented only by the whitespace around them.
+  const before = textWithoutDirectives(
+    source,
     lineStartOf(source, statement.range[0]),
     statement.range[0],
   )

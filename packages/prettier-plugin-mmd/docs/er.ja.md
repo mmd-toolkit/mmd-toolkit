@@ -364,6 +364,21 @@ flowchart、sequence、class、state も 1 行に 1 つの文を印字します�
 2 つの文の間のディレクティブは、後ろの文と一緒に置きます。
 [fixture: statements-one-per-line/directive-after-statement]
 
+無視される `;` は、行規則がそれを無視する根拠となる行に残します。
+`"style:#x" end;` の `end` は、前の実体と同じ行に、大文字でも残します。
+`class` や `subgraph` と最初の名前の間に無視される `;` があるときは、
+隙間全体を書かれたまま残します。
+`class;-A a`、`subgraph;-x`、`subgraph;é` は、
+行規則が `;` を取り除いた後の接し方を保ちます。
+subgraph の名前の前に U+2028 や U+2029 があるときも同じです。
+[fixture: statements-one-per-line/closing-end-ignored-semicolon-kept]
+[fixture: statements-one-per-line/closing-uppercase-end-ignored-semicolon-kept]
+[fixture: statements-one-per-line/class-ignored-semicolon-before-dash-kept]
+[fixture: statements-one-per-line/subgraph-ignored-semicolon-before-dash-kept]
+[fixture: statements-one-per-line/subgraph-ignored-semicolon-before-non-ascii-kept]
+[test: er/statements-one-per-line/R44-er-subgraph-LS-c-before]
+[test: er/statements-one-per-line/R44-er-subgraph-PS-c-before]
+
 いくつかの場合は、文を 1 行に残します。
 実体 `1` の直後に、空白なしで、またはディレクティブだけを挟んで、別の文や、
 その subgraph の `end` が続くときは、そのままにします。
@@ -398,13 +413,39 @@ mermaid.js は、テキストを読む前にディレクティブを取り除く
 隙間を書かれたままにして残します。
 `endé` は、固定した版ではキーワード `end` と実体 `é` ですが、
 対象にする版の一部では 1 つの名前だからです。
-`end` の行の終わりにある U+2028 や U+2029 は残します。
-U+2028 や U+2029 で始まる文も、同じ行に後ろの文があり、
-対象にする版の一部がその行を、空白の終わりから `class` の文、
-または方向の行として読む場合は残します。
+`end` の行の終わりにある U+2028 や U+2029 は、1 回だけ残します。
+コメントやディレクティブの前や、空行を挟んで別の文が続くときも同じです。
+[test: er/statements-one-per-line/R63-er-ascii-after-LS-e]
+[test: er/statements-one-per-line/R44-er-after-separator-LS-e]
+[test: er/statements-one-per-line/R44-er-after-separator-PS-e]
+[test: er/statements-one-per-line/R74-er-LS-g-comment]
+[test: er/statements-one-per-line/R74-er-LS-g-directive]
+[test: er/statements-one-per-line/R74-er-PS-g-comment]
+[test: er/statements-one-per-line/R74-er-PS-g-directive]
+U+2028 や U+2029 で始まる文も、対象にする版の一部がテキストを、
+空白の終わりから `class` の文、または方向の行として読む場合は、
+後ろの文と一緒に残します。
 固定した版は、その文字を最初の名前の一部として読みますが、
 その版は空白として読み、キーワードの前に置くからです。
 `class A a` は、キーワードの後ろに名前が 2 つあるので、行にわたって続きます。
+どちらの名前の前の空白も、改行以外の空白で始まる場合は、改行を越えて続きます。
+この場合は、2 番目の名前までの両方の隙間を、コメント行、ディレクティブ、
+空行を含めて書かれたまま残します。
+キーワードや最初の名前の直後にある改行は、class の文を続けません。
+[test: er/statements-one-per-line/R45-er-class-LS-d]
+[test: er/statements-one-per-line/R45-er-class-LS-e]
+[test: er/statements-one-per-line/R45-er-class-PS-d]
+[test: er/statements-one-per-line/R45-er-class-PS-e]
+[test: er/statements-one-per-line/R45-er-second-name-LS-d]
+[test: er/statements-one-per-line/R45-er-second-name-LS-e]
+[test: er/statements-one-per-line/R45-er-nonascii-name-LS-d]
+[test: er/statements-one-per-line/R45-er-nonascii-name-LS-e]
+[test: er/statements-one-per-line/R45-er-second-name-PS-d]
+[test: er/statements-one-per-line/R45-er-second-name-PS-e]
+[test: er/statements-one-per-line/R45-er-nonascii-name-PS-d]
+[test: er/statements-one-per-line/R45-er-nonascii-name-PS-e]
+[test: er/statements-one-per-line/class-names-after-directive-ls]
+[test: er/statements-one-per-line/class-second-name-after-directive-ps]
 `A direction LR` と `A B direction LR` は、その版では方向の行で、
 `direction` の前にある文も含めます。
 `direction LR B` や、値が次の行にある `direction` も、
@@ -651,7 +692,13 @@ Db がそのまま保つ属性のキーも同じです。
 詳しくは
 [置かれた場所や空白で読みが決まる ER の行](./compatibility.ja.md#置かれた場所や空白で読みが決まる-er-の行)
 を参照してください。
+キーワードと `-` の間のディレクティブは、2 つを分けません。
+mermaid.js が、テキストを読む前にディレクティブを取り除くからです。
+`class%%{init: {}}%%-A a` はそのまま残ります。
 `classDef` と `style` は対象外で、`classDef-x` は `classDef -x` と印字します。
+[fixture: whitespace-between-tokens/class-then-dash-directive-kept]
+[fixture: whitespace-between-tokens/subgraph-then-dash-directive-kept]
+[fixture: whitespace-between-tokens/end-then-dash-directive-kept]
 [fixture: whitespace-between-tokens/keyword-then-dash-touching-kept]
 [fixture: whitespace-between-tokens/keyword-upper-then-dash-touching-kept]
 [fixture: whitespace-between-tokens/subgraph-then-dash-touching-kept]

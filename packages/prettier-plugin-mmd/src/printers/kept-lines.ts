@@ -732,6 +732,7 @@ const styleEndCharactersKept: ReadonlyMap<
   ["FlowchartClassDefStatement", (c) => !isCssWhitespace(c)],
   ["FlowchartLinkStyleStatement", (c) => !isCssWhitespace(c)],
   ["FlowchartDefaultLinkStyleStatement", (c) => !isCssWhitespace(c)],
+  ["AgentflowClassDefStatement", (c) => !isCssWhitespace(c)],
   ["AgentflowLinkStyleStatement", (c) => !isCssWhitespace(c)],
   ["AgentflowDefaultLinkStyleStatement", (c) => !isCssWhitespace(c)],
 ])

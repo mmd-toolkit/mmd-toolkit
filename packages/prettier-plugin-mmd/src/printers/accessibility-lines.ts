@@ -6,6 +6,8 @@ import {
   findStructuralToken,
   findTriviaBetween,
   isWhitespace,
+  skipDirectives,
+  textWithoutDirectives,
 } from "./source.ts"
 
 /**
@@ -117,9 +119,20 @@ function isDirectionAfterHead(
     )
   }
   const next = skipWhitespaceAndTrivia(source, statementEnd)
+  const second = skipDirectives(source, next + 1)
+  const hasWhitespace = [...readableText(source, statementEnd, next)].some(
+    isWhitespace,
+  )
   return (
-    (separated || index > 0 || next > statementEnd) &&
-    isDirection(source.text.slice(next, next + 2), caseSensitive)
+    (separated || index > 0 || hasWhitespace) &&
+    isDirection(
+      textWithoutDirectives(
+        source,
+        next,
+        Math.min(second + 1, source.text.length),
+      ),
+      caseSensitive,
+    )
   )
 }
 

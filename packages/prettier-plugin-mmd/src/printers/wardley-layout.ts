@@ -26,6 +26,7 @@ import {
   findTokenStartingAt,
   findTokensBetween,
   isStructural,
+  skipDirectives,
 } from "./source.ts"
 
 /** Authored names, numbers, strings and hidden forms keep their source spans. */
@@ -174,11 +175,12 @@ function layoutComponents(
     rules.set(atom.start, touches ? "none" : "space")
     // The name `A-` and the arrow `->` of `A-->B` touch as written: a version
     // that counts reads `-->` there, and rejects a name with a `-`
-    // (docs/wardley.md, Links).
+    // (docs/wardley.md, Links). mermaid.js takes a directive between them away
+    // first, so a directive there does not part them.
     if (
       statement.type === "WardleyLinkStatement" &&
       statement.arrow?.range[0] === atom.start &&
-      previous.end === atom.start &&
+      skipDirectives(source, previous.end) === atom.start &&
       source.text[previous.end - 1] === "-"
     )
       rules.set(atom.start, "none")

@@ -244,13 +244,29 @@ C4 の[アクセシビリティの行](./c4.ja.md#アクセシビリティの行
 その連なりは書かれたまま残します。
 引用符・行形式の波括弧は文字として残し、
 重複代入と percent コメントの接続も保ちます。
-pie の行形式は物理的な EOL で終わるため、
+固定した文法の行形式は物理的な EOL で終わるため、
 空行・コメント・directive を挟んでも次行の値を結合しません。
+しかし、対象にする版のうち最も古い版は結合します。
+その字句解析器は、
+空の `accTitle:` または `accDescr:` の `:` の後の空白に改行も含めます。
+mermaid.js が先に取り除く空行・コメント・directive の後の次の文を、
+値として読みます。
+その文は書かれたまま残します（`"A":1` を `"A": 1` と印字しません）。
+`accTitle` の値の後の `%%` の前の空白も、その版が title の一部として読むので、
+書かれたまま残します（`accTitle: Value   %% note`）。
+説明ブロックの `}` の後のコメントは、コロンの形の本文が取り込むので、
+ブロックの形を残します。
+詳しくは
+[最も古い版が末尾まで読むアクセシビリティの行](./compatibility.ja.md#最も古い版が末尾まで読むアクセシビリティの行)
+を参照してください。
 hidden form と保持する文字 group の gap を残します。
 値の終わりのディレクティブは、それぞれの前に空白があれば空白 1 つを置き、
 最後のディレクティブの後の空白を除いて印字します。
 （[同じに描かれるキーワードの後のテキスト](./compatibility.ja.md#同じに描かれるキーワードの後のテキスト)）。
 [fixture: accessibility-lines/acc-directives-end-blanks-dropped]
+[fixture: accessibility-lines/acc-title-percent-gap-kept]
+[fixture: accessibility-lines/acc-value-after-blank-and-directive-kept]
+[fixture: accessibility-lines/acc-value-with-value-then-row-split]
 
 固定例: [fixture: pie/accessibility-lines/a11y-lines]
 [fixture: pie/accessibility-lines/a11y-empty]

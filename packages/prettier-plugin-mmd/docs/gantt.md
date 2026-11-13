@@ -620,13 +620,15 @@ written. [fixture: settings/format-blank-kept] A date format of `D` stays as
 written, since the axis of days is drawn only where `D` has no whitespace around
 it, and so does `tickInterval`, which is read as a whole, so that whitespace
 before or after it turns its ticks into the default ones. [fixture:
-settings/format-padding-kept-where-drawn-differently] The value of `todayMarker`
-is printed as written, the whitespace at its ends included: `todayMarker off`
-followed by two spaces is another marker, which draws the line of today.
-[fixture: settings/trailing-whitespace-by-setting] The value of `todayMarker`
-holds `#`, and every value holds `%%`, as characters of the text; the value of
-`todayMarker` ends at a `;`, and the value of `dateFormat`, `axisFormat`, and
-`tickInterval` ends at a `#` or a `;` (see
+settings/format-padding-kept-where-drawn-differently] [fixture:
+gantt/settings/date-format-directive-after-value-kept] [fixture:
+gantt/settings/date-format-directive-before-value-kept] The value of
+`todayMarker` is printed as written, the whitespace at its ends included:
+`todayMarker off` followed by two spaces is another marker, which draws the line
+of today. [fixture: settings/trailing-whitespace-by-setting] The value of
+`todayMarker` holds `#`, and every value holds `%%`, as characters of the text;
+the value of `todayMarker` ends at a `;`, and the value of `dateFormat`,
+`axisFormat`, and `tickInterval` ends at a `#` or a `;` (see
 [Statements one per line](#statements-one-per-line)). [fixture:
 settings/hash-semicolon-percent-in-values]
 

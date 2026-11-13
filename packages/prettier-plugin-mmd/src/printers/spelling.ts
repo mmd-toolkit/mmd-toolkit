@@ -13,7 +13,12 @@ import { findLinkLabelRespellings } from "./link-label-form.ts"
 import { shortestNumber } from "./number-form.ts"
 import { findQuoteFormRespellings } from "./quote-form.ts"
 import type { Source } from "./source.ts"
-import { findTokenStartingAt, skipDirectives } from "./source.ts"
+import {
+  findStructuralToken,
+  findTokenStartingAt,
+  skipDirectives,
+  textWithoutDirectives,
+} from "./source.ts"
 
 /** The text to print in place of the token or node at an offset. */
 export interface Respelling {
@@ -76,10 +81,9 @@ function headerDirectionSpelling(
  * before it reads the header.
  */
 function startsWithBetaWord(source: Source, offset: number): boolean {
-  const position = skipDirectives(source, offset)
-  if (toAsciiLowerCase(source.text.slice(position, position + 5)) !== "-beta")
-    return false
-  const after = source.text.charAt(position + 5)
+  const text = textWithoutDirectives(source, offset, source.text.length)
+  if (toAsciiLowerCase(text.slice(0, 5)) !== "-beta") return false
+  const after = text.charAt(5)
   return !(
     (after >= "a" && after <= "z") ||
     (after >= "A" && after <= "Z") ||
@@ -333,16 +337,21 @@ function findTokenRespellings(
   const tokens = source.root.tokens
   const headerIndex = tokens.findIndex((token) => token.type === "Keyword")
   // The direction of a header is the keyword that follows it.
+  const headerEnd = tokens[headerIndex]?.range[1]
+  const direction =
+    headerEnd === undefined ? undefined : findStructuralToken(source, headerEnd)
   const directionIndex =
     (directionSpellings[type] !== undefined ||
       type === "flowchart-v2" ||
       type === "flowchart-elk") &&
     headerIndex !== -1 &&
-    tokens[headerIndex + 1]?.type === "Keyword" &&
-    source.text
-      .slice(tokens[headerIndex].range[1], tokens[headerIndex + 1].range[0])
-      .trim() === ""
-      ? headerIndex + 1
+    direction?.type === "Keyword" &&
+    textWithoutDirectives(
+      source,
+      tokens[headerIndex].range[1],
+      direction.range[0],
+    ).trim() === ""
+      ? tokens.indexOf(direction)
       : -1
   // The colon of a header follows it. In a gitGraph, directives and a hidden
   // YAML block, which are tokens, can stand between them. The colon stays after
@@ -427,7 +436,8 @@ function findTokenRespellings(
  * not read the same before them, and the printer keeps them where they are.
  */
 function isTouchedAfter(source: Source, offset: number): boolean {
-  return source.text[offset] === ";" || source.text[offset] === "-"
+  const position = skipDirectives(source, offset)
+  return source.text[position] === ";" || source.text[position] === "-"
 }
 
 /**

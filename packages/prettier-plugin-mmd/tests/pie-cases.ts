@@ -210,7 +210,7 @@ export const pieCases: readonly PieCase[] = [
     name: "pie/line-terminators-and-unicode/line-values-only-unicode",
     input:
       "pie\ntitle \u2028\u2029\naccTitle: \u2029\u2028\naccDescr:\u2028\u2029",
-    output: "pie\n  title\n  accTitle:\n  accDescr:\n",
+    output: "pie\n  title\n  accTitle:\n  accDescr:\u2028\u2029\n",
     options: {},
   },
 ]

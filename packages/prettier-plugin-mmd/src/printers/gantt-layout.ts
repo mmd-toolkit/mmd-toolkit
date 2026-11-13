@@ -38,6 +38,7 @@ import {
   findTokensBetween,
   isAtLineEnd,
   isSpaceOrTab,
+  textWithoutDirectives,
 } from "./source.ts"
 
 /**
@@ -279,7 +280,8 @@ function textAfterKeyword(
     case "GanttAxisFormatStatement":
       return statement.value
     case "GanttDateFormatStatement":
-      return source.text.slice(...statement.value.range).trim() === "D"
+      return textWithoutDirectives(source, ...statement.value.range).trim() ===
+        "D"
         ? null
         : statement.value
     default:

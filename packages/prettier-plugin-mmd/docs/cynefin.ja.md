@@ -20,6 +20,7 @@ mermaid.js は `cynefin-beta:` と `cynefin-beta` を同じ見出しとして読
 `;` か hidden YAML block の `---` が接するときは、colon を保ちます。
 [fixture: cynefin/header/colon-removed]
 [fixture: cynefin/header/colon-semicolon-kept]
+[fixture: cynefin/header/colon-directive-before-hidden-yaml-kept]
 普通の最初の文は次の行へ移し、見出しを見つけやすくします。
 global directive の接触、hidden の隣接、保護行は共有規則に従います。
 見出し行を保つときは、その行の領域と項目の開きも同じ行に保ちます。

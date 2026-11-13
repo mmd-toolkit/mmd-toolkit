@@ -381,6 +381,10 @@ A-->B は A--> B と印字し、A- -> B とは印字しません。
 詳しくは
 [wardley の原文と必須の改行](./compatibility.ja.md#wardley-の原文と必須の改行)
 を参照してください。
+名前と矢印の間のディレクティブは、2 つを分けません。
+mermaid.js が、テキストを読む前にディレクティブを取り除くからです。
+A-%%{init: {}}%%->B は A-%%{init: {}}%%-> B と印字します。
+[fixture: wardley/links/link-glued-directive-between]
 原文の字面から矢印を探しません。
 A -->B の矢印は --> のままです。
 解析済みの部品に従った空白です。

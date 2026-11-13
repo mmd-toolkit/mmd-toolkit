@@ -401,8 +401,8 @@ mermaid.js がクラスのスタイルを書かれたまま `;` でつなぎ、
 `style A fill:abc\  ,stroke:green` は、
 `style A fill: abc\ , stroke: green` と印字します。
 [fixture: whitespace-between-tokens/style-backslash-space-kept]
-`style` は、`color:` で始まるスタイルの前の空白の有無と、
-`color` と `:` の間の空白の有無を、書かれたまま残します。
+`style` は、`color:` か `text-align:` で始まるスタイルの前の空白の有無と、
+その名前と `:` の間の空白の有無を、書かれたまま残します。
 空白の連続は空白 1 つにします。
 対象にする版に、
 そう始まるスタイルをクラスのラベルのスタイルに入れるものがあるためです。
@@ -412,6 +412,7 @@ mermaid.js がクラスのスタイルを書かれたまま `;` でつなぎ、
 を参照してください。
 [fixture: whitespace-between-tokens/style-color-touching-kept]
 [fixture: whitespace-between-tokens/style-color-spaced]
+[fixture: whitespace-between-tokens/style-text-align-touching-kept]
 [fixture: whitespace-between-tokens/style-label-name-colon-gap-kept]
 [fixture: whitespace-between-tokens/style-backslash-at-end-kept]
 `classDef` も空白の有無を保ちます。
@@ -610,6 +611,8 @@ classDiagram
 前に空白を置くと、`A call()--> B` はクラス A のコールバックに、
 `call-->C` はコールバックの始まりになるからです。
 [fixture: arrow-spacing/touching-call-kept]
+[fixture: class/arrow-spacing/call-directive-in-word-kept]
+[fixture: class/arrow-spacing/call-directive-before-parens-kept]
 [fixture: arrow-spacing/touching-call-colon-kept]
 [corpus fixture: class/lex-call-prefix]
 
@@ -1061,7 +1064,15 @@ class 図の `style`、`classDef` 文のスタイルの色が対象です。
 色を短くすることはなく、色でないテキストは書かれたままにします。
 （[同じに描かれる色](./compatibility.ja.md#同じに描かれる色)を参照）。
 [fixture: colors/colors-in-lower-case]
+[fixture: class/colors/color-directive-after-digits-kept]
+[fixture: class/colors/color-directive-before-hash-kept]
+[fixture: class/colors/color-directive-in-digits-kept]
 [fixture: colors/words-that-are-not-colors-as-written]
+[fixture: class/colors/color-directive-with-quote-kept]
+[fixture: class/colors/color-directive-with-comment-closer-kept]
+[fixture: class/colors/color-directive-in-comment-opener-kept]
+[fixture: class/colors/color-directive-before-url-opener-kept]
+[fixture: class/colors/color-directive-in-url-name-kept]
 
 入力
 ([colors/colors-in-lower-case-input.mmd](../tests/fixtures/class/colors/colors-in-lower-case-input.mmd)):
@@ -1427,6 +1438,7 @@ classDiagram
 従来の複数行の配置で値を語より1段深く置き、
 値が方向文として読まれるのを防ぎます。
 [fixture: multi-line-statements/title-next-direction-tb]
+[fixture: class/multi-line-statements/direction-directive-in-value-kept]
 [fixture: multi-line-statements/title-next-direction-bt]
 [fixture: multi-line-statements/title-next-direction-lr]
 [fixture: multi-line-statements/title-next-direction-rl]

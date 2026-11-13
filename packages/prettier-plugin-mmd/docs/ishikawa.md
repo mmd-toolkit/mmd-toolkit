@@ -37,7 +37,9 @@ directive touches it, the header stays as written too. A root such as `-betax`
 or `-x` is no such word, and the header is shortened. [fixture:
 ishikawa/header/header-beta-then-beta-root] [fixture:
 ishikawa/header/header-beta-then-beta-root-kept] [fixture:
-ishikawa/header/header-beta-directive-then-beta-root-kept]
+ishikawa/header/header-beta-directive-then-beta-root-kept] [fixture:
+ishikawa/header/beta-directive-before-word-kept] [fixture:
+ishikawa/header/beta-directive-in-root-kept]
 
 Input (escaped):
 

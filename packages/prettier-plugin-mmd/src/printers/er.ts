@@ -19,7 +19,11 @@ import {
   printClosedBlock,
   printDiagramBlock,
 } from "./blocks.ts"
-import { findErKeptLines, followsSplitKeyword } from "./er-kept-lines.ts"
+import {
+  findErClassNameGaps,
+  findErKeptLines,
+  followsSplitKeyword,
+} from "./er-kept-lines.ts"
 import {
   classifyErStatement,
   findAttributeBraces,
@@ -36,7 +40,13 @@ import { lineEndOf } from "./kept-lines.ts"
 import { indentationOf, printAsWritten } from "./lines.ts"
 import { narrowPath } from "./paths.ts"
 import type { Source } from "./source.ts"
-import { findTokenEndingBefore, findTokenStartingAt } from "./source.ts"
+import {
+  findTokenEndingBefore,
+  findTokenStartingAt,
+  findTriviaAt,
+  isWhitespace,
+  skipDirectives,
+} from "./source.ts"
 
 /**
  * Prints the body of an ER diagram and the nodes below it, to the end of the
@@ -207,7 +217,7 @@ function printSubgraph(
     block,
     [
       printedToken(source, closing),
-      trailingSeparators(source, closing.range[1]),
+      printAsWritten(source, closing.range[1], printedErEnd(source, statement)),
     ],
     depth,
     options,
@@ -215,18 +225,31 @@ function printSubgraph(
 }
 
 /**
- * The U+2028 and U+2029 that end the line of the `end` of a subgraph, from the
- * end of the keyword to the last of them, as written, or nothing where
- * another statement follows on the line: `end` followed by a U+2028 is the
+ * The end of the printed statement, including the U+2028 and U+2029 after
+ * the `end` of a subgraph, through the last of them before a comment or a
+ * directive, or no extension where another statement follows on the line.
+ * The block consumes exactly what the closing prints, so a following written
+ * gap cannot print the separators again. `end` followed by a U+2028 is the
  * keyword to the pinned lexer, and one name to a version that counts
  * (docs/er.md, Line separators).
  */
-function trailingSeparators(source: Source, from: number): string {
-  const rest = source.text.slice(from, lineEndOf(source, from))
-  const last = Math.max(rest.lastIndexOf("\u2028"), rest.lastIndexOf("\u2029"))
-  return last === -1 || rest.slice(last + 1).trim() !== ""
-    ? ""
-    : rest.slice(0, last + 1)
+function printedErEnd(source: Source, statement: ErStatement): number {
+  const from = statement.range[1]
+  if (statement.type !== "ErSubgraphStatement") return from
+  const lineEnd = lineEndOf(source, from)
+  let end = from
+  for (let position = from; position < lineEnd; position++) {
+    position = skipDirectives(source, position)
+    if (
+      position >= lineEnd ||
+      findTriviaAt(source, position)?.type === "Comment"
+    )
+      break
+    const character = source.text.charAt(position)
+    if (!isWhitespace(character)) return from
+    if (character === "\u2028" || character === "\u2029") end = position + 1
+  }
+  return end
 }
 
 /**
@@ -294,7 +317,11 @@ function findSubgraphEnd(
 function statementBlockRules(source: Source): BlockRules<ErStatement> {
   return {
     kept: findErKeptLines(source),
-    printedEnd: (statement) => statement.range[1],
+    printedEnd: (statement) => printedErEnd(source, statement),
+    // An ignored `;` after `end` still needs the line's `style` and `:#`
+    // trigger (diagrams/er.md, The statement context; docs/er.md,
+    // Statements one per line).
+    keptClosingJoin: " ",
     holdsStatements: (statement) => {
       const classified = classifyErStatement(statement)
       return (
@@ -305,7 +332,8 @@ function statementBlockRules(source: Source): BlockRules<ErStatement> {
     },
     writtenGapBefore: (statement) =>
       touchesKeywordWithDash(source, statement.range[0]) ||
-      followsSplitKeyword(source, statement.range[0]),
+      followsSplitKeyword(source, statement.range[0]) ||
+      findErClassNameGaps(source).has(statement.range[0]),
     isDroppedAtTopLevel: () => false,
     keepsWhitespaceLineAfterComment: false,
     keepsDirectiveLinesUnindented: false,

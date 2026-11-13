@@ -3,8 +3,8 @@
  * by whitespace. Where mermaid.js keeps the character in the value of the last
  * style, so that the figure changes without it, the whitespace stays and the
  * line is printed as written: a no-break space, U+3000, a vertical tab, and a
- * byte order mark in a class diagram, a flowchart, and the `linkStyle` of an
- * agentflow diagram, and a vertical tab and a form feed in the `classDef` of an
+ * byte order mark in a class diagram, a flowchart, and the `classDef` and the
+ * `linkStyle` of an agentflow diagram, and a vertical tab and a form feed in the `classDef` of an
  * ER diagram. The whitespace also counts after a `;` that the line rule of
  * mermaid.js removes and after a directive, which it removes too. Elsewhere,
  * and for a space and a tab, it is left out (docs/compatibility.md, Whitespace
@@ -48,6 +48,11 @@ const keepsCharacters: readonly Case[] = [
     "flowchart LR\n  A --> B\n  linkStyle default stroke:#f00@\n",
   ],
   [
+    "the classDef of an agentflow diagram",
+    "agentflow-beta TB\nflow F\nA:::ka\nend\nclassDef ka fill:#f00@\n",
+    "agentflow-beta TB\n  flow F\n    A:::ka\n  end\n  classDef ka fill:#f00@\n",
+  ],
+  [
     "the style of a flowchart",
     "flowchart LR\nA-->B\nstyle A fill:#f00@\n",
     "flowchart LR\n  A --> B\n  style A fill:#f00@\n",
@@ -85,6 +90,11 @@ const keepsCharactersAfterIgnoredText: readonly Case[] = [
     "a directive and a `;` after the style of a flowchart",
     "flowchart LR\nA-->B\nstyle A fill:#f00 %%{init: {}}%%;@\n",
     "flowchart LR\n  A --> B\n  style A fill:#f00 %%{init: {}}%%;@\n",
+  ],
+  [
+    "a `;` and a directive after the classDef of an agentflow diagram",
+    "agentflow-beta TB\nflow F\nA:::ka\nend\nclassDef ka fill:#f00; %%{init: {}}%%@\n",
+    "agentflow-beta TB\n  flow F\n    A:::ka\n  end\n  classDef ka fill:#f00; %%{init: {}}%%@\n",
   ],
   [
     "a `;` and a directive after the classDef of a flowchart",

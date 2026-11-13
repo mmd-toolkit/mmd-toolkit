@@ -432,7 +432,6 @@ id と `@{` の間のディレクティブは、
 mermaid.js がその位置で block mapping の行を拒否するためです。
 [fixture: whitespace-between-tokens/data-block-long-kept]
 その規則が書かれたままにする場合は、このブロックも書かれたままにします。
-[fixture: whitespace-between-tokens/data-block-space-only-padded]
 [fixture: whitespace-between-tokens/data-block-directive-kept]
 [fixture: whitespace-between-tokens/data-block-kept-line-kept]
 [test: data blocks: sequence one line with U+2028 inside]
@@ -442,6 +441,25 @@ mermaid.js がその位置で block mapping の行を拒否するためです。
 [fixture: whitespace-between-tokens/data-block-surrounding-trivia]
 [fixture: whitespace-between-tokens/data-block-and-ignored-line-kept]
 [fixture: whitespace-between-tokens/actor-data-block-kept]
+`create` のない `participant` と `actor` のデータブロックで、`:`、`,`、`;`、
+`>` のどれも含まないものは、対象にする版が、参加者の名前の一部として読みます。
+ブロックの前の空白、ブロックの中の空白、その後の `%%` コメントの前の空白も、
+名前に入ります。
+そのため、ブロックの前の隙間、ブロック、コメントの前の隙間は、書かれたまま残し、
+ブロックの両端に空白は足しません。
+`participant A   @{ x }` と `actor B@{x}` はそのまま残り、
+`participant C@{ y }   %% c` の `%%` の前の空白も残ります。
+これらの文字を含むブロックと、`create` のある文のブロックは、
+その版が両方の形を拒否するので、上のとおりに印字します。
+詳しくは
+[対象にする版の mermaid.js のために残す形](./compatibility.ja.md#対象にする版の-mermaidjs-のために残す形)
+を参照してください。
+[fixture: whitespace-between-tokens/data-block-name-gap-before-kept]
+[fixture: whitespace-between-tokens/data-block-name-comment-gap-kept]
+[fixture: whitespace-between-tokens/data-block-space-only-kept]
+[fixture: whitespace-between-tokens/compat-malformed-data-block-kept]
+[fixture: whitespace-between-tokens/data-block-name-end-characters-padded]
+[fixture: whitespace-between-tokens/data-block-name-created-padded]
 行に単独の `)` のように、mermaid.js が何も読まない行は残し、
 周りの文と同じ段に置きます。
 [fixture: whitespace-between-tokens/data-block-and-ignored-line-kept]
@@ -658,15 +676,19 @@ sequenceDiagram
 矢印の後の `+` と `-` は宛先に接します。
 `A ->> + B` は `A ->> +B` になります。
 [fixture: arrow-spacing/plus-and-minus-touching]
-`()` の前後の空白は、接していれば接したまま、空いていれば空白 1 つで、
+`()` の前後の空白は、接していれば接したまま、空いていれば空白の連続も含めて、
 書かれたままにします。
-`A () ->> () B` はそのまま、`A()->>()B` は `A() ->> ()B` と印字します。
-対象にする版の一部は、`()` を隣の名前の一部として読むためです。
+間のディレクティブも、空白の間に残します。
+`A () ->> () B` はそのまま、`A   () ->> () B` は空白 3 つのまま、
+`A()->>()B` は `A() ->> ()B` と印字します。
+対象にする版の一部は、`()` を空白ごと隣の名前の一部として読むためです。
 詳しくは
 [中央接続のある sequence のメッセージ](./compatibility.ja.md#central-接続のある-sequence-のメッセージ)
 と
 [対象にする版の mermaid.js のために残す形](./compatibility.ja.md#対象にする版の-mermaidjs-のために残す形)
 を参照してください。 [fixture: arrow-spacing/parentheses-touching]
+[fixture: arrow-spacing/parentheses-gap-run-kept]
+[fixture: arrow-spacing/parentheses-gap-directive-kept]
 `+` と `-` は、空白があってもなくても、
 mermaid.js は同じメッセージとして読みます。
 例外は、矢印として読まれる始まりの宛先の前の `-` だけです（下記）。
@@ -710,13 +732,14 @@ mermaid.js の line rule が `;` を無視する行は、
 矢印は書かれたまま印字します。 [fixture: arrow-spacing/arrows-kept]
 `<<->>` と `<<-->>` の前の空白は、書かれたまま残します。
 対象にする版の一部にはこの矢印がなく、前の名前の一部として `<<` を読むためです。
-`A<<->>B` は `A<<->> B` と印字し、`A <<->> B` はそのままです。
+`A<<->>B` は `A<<->> B` と印字し、`A <<->> B` と `A   <<->> B` はそのままです。
 詳しくは
 [central 接続のある sequence のメッセージ](./compatibility.ja.md#central-接続のある-sequence-のメッセージ)
 と
 [対象にする版の mermaid.js のために残す形](./compatibility.ja.md#対象にする版の-mermaidjs-のために残す形)
 を参照してください。
 [fixture: arrow-spacing/bidirectional-arrow-gap-before-kept]
+[fixture: arrow-spacing/bidirectional-arrow-gap-run-kept]
 
 `-` は、その後ろの宛先と合わせると矢印として読まれる場合、空白を残します。
 `-x`、`-X`（字句解析は大文字小文字を区別しません）、`-|\`、`-|/` は矢印なので、

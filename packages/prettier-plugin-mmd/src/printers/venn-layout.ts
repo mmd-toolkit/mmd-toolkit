@@ -14,7 +14,9 @@ import { trimTextAfterKeyword } from "./statement-rules.ts"
 import type { Source } from "./source.ts"
 import { findRespellings } from "./spelling.ts"
 import {
+  findTriviaAt,
   findTriviaBetween,
+  skipDirectives,
   hasTriviaBesidesTrailingDirectives,
   isSpaceOrTab,
 } from "./source.ts"
@@ -81,6 +83,11 @@ function findWordRunEdits(source: Source, [start, end]: Range): TextEdit[] {
   const edits: TextEdit[] = []
   let depth = 0
   for (let position = start; position < end;) {
+    const trivia = findTriviaAt(source, position)
+    if (trivia?.type === "Directive") {
+      position = trivia.range[1]
+      continue
+    }
     const character = source.text[position]
     if (character === "(") depth++
     else if (character === ")" && depth > 0) depth--
@@ -200,7 +207,7 @@ export function layoutVennStatement(
     rules.set(
       atom.start,
       afterColon
-        ? keepsColonGap && atom.start === previous.end
+        ? keepsColonGap && skipDirectives(source, previous.end) === atom.start
           ? "none"
           : "space"
         : beforeSizeColon

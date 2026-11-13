@@ -19,11 +19,14 @@ Section numbers below are those of [SKILL.md](../SKILL.md).
    along.
 5. Check that the sections of the specification and the mermaid.js links that
    the rules' comments point to still match the new version.
-6. Compute the versions that count again (the table in `docs/compatibility.md`,
-   Versions of mermaid.js that count) and go through the table Forms kept for
-   versions of mermaid.js that count, row by row. A rule none of whose named
-   versions counts any longer is taken out, and the form that the rules of
-   `docs/printed-form.md` give is printed; the published output changes, so a
-   changeset goes with it. Write the versions that still count into the rows
-   that stay, and add a row, in the same change, for each new kind that the
-   drawings of the new versions show.
+6. Compute the versions that count for each diagram type again (the table in
+   `docs/compatibility.md`, Versions of mermaid.js that count) and go through
+   the table Forms kept for versions of mermaid.js that count, row by row. For a
+   diagram type added during the period, its first minor version replaces the
+   smallest minor version of its major version for that diagram type only. A
+   rule none of whose named versions counts any longer for its diagram type is
+   taken out, and the form that the rules of `docs/printed-form.md` give is
+   printed; the published output changes, so a changeset goes with it. Write
+   only the versions that still count for each diagram type into the rows that
+   stay, and add a row, in the same change, for each new kind that the drawings
+   of the new versions show.

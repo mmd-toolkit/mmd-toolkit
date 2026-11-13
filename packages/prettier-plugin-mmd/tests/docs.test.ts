@@ -672,6 +672,90 @@ const versionTables = [
 const KEPT_COLUMNS = 6
 const NEEDED_BY_COLUMN = 4
 
+/** The versions that count for each group of diagram types. */
+const countedVersionGroups = [
+  {
+    diagrams: [
+      "flowchart",
+      "sequence",
+      "class",
+      "state",
+      "ER",
+      "gantt",
+      "pie",
+      "gitGraph",
+      "user journey",
+      "mindmap",
+      "timeline",
+      "requirement",
+      "C4",
+      "sankey",
+      "xychart",
+      "quadrant",
+      "block",
+    ],
+    versions: ["10.9.8", "11.7.0", "11.17.2", "12.0.0", "12.3.0"],
+  },
+  {
+    diagrams: ["packet", "architecture", "kanban", "radar"],
+    versions: ["11.7.0", "11.17.2", "12.0.0", "12.3.0"],
+  },
+  {
+    diagrams: ["treemap"],
+    versions: ["11.8.1", "11.17.2", "12.0.0", "12.3.0"],
+  },
+  {
+    diagrams: ["ishikawa", "Venn"],
+    versions: ["11.13.0", "11.17.2", "12.0.0", "12.3.0"],
+  },
+  {
+    diagrams: ["Wardley", "treeView"],
+    versions: ["11.14.0", "11.17.2", "12.0.0", "12.3.0"],
+  },
+  {
+    diagrams: ["eventmodeling"],
+    versions: ["11.15.0", "11.17.2", "12.0.0", "12.3.0"],
+  },
+  {
+    diagrams: ["cynefin", "railroad", "swimlane"],
+    versions: ["11.16.1", "11.17.2", "12.0.0", "12.3.0"],
+  },
+  {
+    diagrams: ["agentflow", "use case"],
+    versions: ["12.0.0", "12.3.0"],
+  },
+]
+
+/** The comma-separated diagram names used in the English and Japanese tables. */
+function diagramNamesIn(text: string): string[] {
+  return text
+    .replaceAll("、", ",")
+    .split(",")
+    .map((name) => name.trim())
+}
+
+/** Expands the inclusive descriptions in the table's Diagram types column. */
+function countedDiagramsIn(text: string): string[] {
+  switch (text) {
+    case "every diagram type that 10.9.8 has":
+    case "10.9.8 が持つすべての図種":
+      return countedVersionGroups[0].diagrams
+    case "every diagram type that 11.7.0 has":
+    case "11.7.0 が持つすべての図種":
+      return countedVersionGroups.slice(0, 2).flatMap((group) => group.diagrams)
+    case "every diagram type except agentflow and use case":
+    case "agentflow と use case を除くすべての図種":
+      return countedVersionGroups
+        .slice(0, -1)
+        .flatMap((group) => group.diagrams)
+    case "every diagram type":
+    case "すべての図種":
+      return countedVersionGroups.flatMap((group) => group.diagrams)
+    default:
+      return diagramNamesIn(text)
+  }
+}
+
 /** The rows of the table in the section that starts at the heading. */
 function tableRowsOf(lines: readonly string[], heading: string): string[][] {
   const start = lines.indexOf(heading)
@@ -745,38 +829,95 @@ describe("the table of forms kept for versions of mermaid.js that count", () => 
   )
 
   it.each(versionTables)(
+    "names the diagram types that each version counts for, in $document",
+    async ({ document, counted }) => {
+      const text = await readFile(new URL(document, packageRoot), "utf8")
+      const rows = tableRowsOf(text.split("\n"), counted)
+      const versions = [
+        ...new Set(countedVersionGroups.flatMap((group) => group.versions)),
+      ]
+      expect(rows.map((cells) => cells[0]).toSorted()).toEqual(
+        versions.toSorted(),
+      )
+      for (const cells of rows) {
+        const version = cells[0]
+        const message = `${document}: diagram types for ${version}`
+        expect.soft(cells.length, message).toBe(4)
+        expect
+          .soft(countedDiagramsIn(cells[3] ?? "").toSorted(), message)
+          .toEqual(
+            countedVersionGroups
+              .filter((group) => group.versions.includes(version))
+              .flatMap((group) => group.diagrams)
+              .toSorted(),
+          )
+      }
+    },
+  )
+
+  it.each(versionTables)(
     "names only versions that count, in $document",
-    async ({ document, counted, kept }) => {
+    async ({ document, kept }) => {
       const text = await readFile(new URL(document, packageRoot), "utf8")
       const lines = text.split("\n")
-      const versions = tableRowsOf(lines, counted).map((cells) => cells[0])
-      expect(
-        versions.length,
-        `${document}: no version that counts`,
-      ).toBeGreaterThan(0)
       const rows = tableRowsOf(lines, kept)
       expect(rows.length, `${document}: no row of forms kept`).toBeGreaterThan(
         0,
       )
-      for (const cells of rows) {
-        const row = cells[0] ?? ""
+      for (const [index, cells] of rows.entries()) {
+        const row = `row ${index + 1} (${cells[0]}: ${cells[1]})`
         expect
           .soft(
             cells.length,
             `${document}: the row ${row} has the wrong columns`,
           )
           .toBe(KEPT_COLUMNS)
-        const named = versionsIn(cells[NEEDED_BY_COLUMN] ?? "")
+        const link = cells[0] ?? ""
+        expect.soft(link.startsWith("["), `${document}: ${row}`).toBe(true)
+        const end = link.indexOf("](")
+        expect
+          .soft(end, `${document}: ${row} has no diagram link`)
+          .toBeGreaterThan(1)
+        const diagrams = diagramNamesIn(link.slice(1, end))
+        for (const diagram of diagrams) {
+          expect
+            .soft(
+              countedVersionGroups.some((group) =>
+                group.diagrams.includes(diagram),
+              ),
+              `${document}: ${row} names unknown diagram type ${diagram}`,
+            )
+            .toBe(true)
+        }
+        const needed = cells[NEEDED_BY_COLUMN] ?? ""
+        const named = versionsIn(needed)
         expect
           .soft(named.length, `${document}: the row ${row} names no version`)
           .toBeGreaterThan(0)
-        for (const version of named) {
-          expect
-            .soft(
-              versions,
-              `${document}: the row ${row} names ${version}, which does not count: delete the row, or the name if another version in the row counts`,
+        for (const part of needed.split(";")) {
+          const scopedDiagram = countedVersionGroups
+            .flatMap((group) => group.diagrams)
+            .find((diagram) => part.trimStart().startsWith(`${diagram}:`))
+          const partDiagrams =
+            scopedDiagram === undefined ? diagrams : [scopedDiagram]
+          if (scopedDiagram !== undefined) {
+            expect
+              .soft(diagrams, `${document}: ${row}`)
+              .toContain(scopedDiagram)
+          }
+          const versions = countedVersionGroups
+            .filter((group) =>
+              group.diagrams.some((diagram) => partDiagrams.includes(diagram)),
             )
-            .toContain(version)
+            .flatMap((group) => group.versions)
+          for (const version of versionsIn(part)) {
+            expect
+              .soft(
+                versions,
+                `${document}: ${row} names ${version}, which does not count for ${partDiagrams.join(", ")}: delete the row, or the name if another version in the row counts for that diagram type`,
+              )
+              .toContain(version)
+          }
         }
       }
     },

@@ -14,7 +14,12 @@ import { traverseNodes, visitorKeys } from "@mmd-toolkit/parser"
 import type { Atom } from "./atoms.ts"
 import type { TextEdit } from "./layout.ts"
 import type { Source } from "./source.ts"
-import { findCoveringRange, findTriviaBetween, isSpaceOrTab } from "./source.ts"
+import {
+  findCoveringRange,
+  findTriviaBetween,
+  isSpaceOrTab,
+  textWithoutDirectives,
+} from "./source.ts"
 import { writtenWithRespellings } from "./spelling.ts"
 import {
   blankTextSlots,
@@ -30,29 +35,80 @@ const holdsProperty = new WeakMap<Source, boolean>()
 export function holdsWhiteSpaceProperty(source: Source): boolean {
   let holds = holdsProperty.get(source)
   if (holds === undefined) {
-    holds = source.text.toLowerCase().includes("white-space")
+    holds =
+      source.text.toLowerCase().includes("white-space") ||
+      textWithoutDirectives(source, 0, source.text.length)
+        .toLowerCase()
+        .includes("white-space")
     holdsProperty.set(source, holds)
   }
   return holds
 }
 
 /**
+ * Whether mermaid.js splits the texts of the diagram at single spaces, each
+ * word becoming a part of the drawn text of its own: the labels of an
+ * architecture diagram. A run of spaces and tabs is then drawn as one space
+ * only if it holds a space and no tab stands between two of its spaces: a
+ * run of tabs alone is part of a word, and a tab between two spaces is a word
+ * of its own (docs/compatibility.md, Runs of whitespace in a text that are
+ * drawn the same).
+ */
+export function splitsTextsAtSpaces(source: Source): boolean {
+  return source.root.diagramType === "architecture"
+}
+
+/**
+ * Whether a run of spaces and tabs that stands between two words is drawn as
+ * one space by a diagram that splits its texts at single spaces (see
+ * `splitsTextsAtSpaces`).
+ */
+function isDrawnAsOneSpace(run: string): boolean {
+  const parts = run.split(" ")
+  return parts.length > 1 && parts.slice(1, -1).every((part) => part === "")
+}
+
+/**
+ * Whether a run of spaces and tabs stands between two words of a label: the
+ * characters before and after it are not the brackets or the quotes around the
+ * text, and exist. A run at an end of the text is drawn as nothing.
+ */
+function isBetweenWords(
+  before: string | undefined,
+  after: string | undefined,
+): boolean {
+  return (
+    before !== undefined &&
+    after !== undefined &&
+    !"[\"'".includes(before) &&
+    !"]\"'".includes(after)
+  )
+}
+
+/**
  * The text with each run of spaces and tabs replaced by one space. mermaid.js
  * keeps the runs of a text in the Db and draws the text without them
  * (docs/compatibility.md, Runs of whitespace in a text that are drawn the
- * same).
+ * same). Where `splitsAtSpaces` is set, a run between two words that is not
+ * drawn as one space stays as written (see `splitsTextsAtSpaces`).
  */
-export function collapseRuns(text: string): string {
+export function collapseRuns(text: string, splitsAtSpaces = false): string {
   let collapsed = ""
-  let inRun = false
-  for (const character of text) {
-    if (isSpaceOrTab(character)) {
-      if (!inRun) collapsed += " "
-      inRun = true
-    } else {
-      collapsed += character
-      inRun = false
+  const characters = [...text]
+  let index = 0
+  while (index < characters.length) {
+    if (!isSpaceOrTab(characters[index])) {
+      collapsed += characters[index]
+      index++
+      continue
     }
+    let end = index
+    while (end < characters.length && isSpaceOrTab(characters[end])) end++
+    const run = characters.slice(index, end).join("")
+    const betweenWords = isBetweenWords(characters[index - 1], characters[end])
+    collapsed +=
+      splitsAtSpaces && betweenWords && !isDrawnAsOneSpace(run) ? run : " "
+    index = end
   }
   return collapsed
 }
@@ -79,7 +135,7 @@ export function collapsedRunsAtom(
       : atom
   }
   if (staysAsWritten(source, atom.start, atom.end)) return atom
-  const doc = collapseDoc(atom.doc ?? text)
+  const doc = collapseDoc(atom.doc ?? text, splitsTextsAtSpaces(source))
   return doc === (atom.doc ?? text) ? atom : { ...atom, doc }
 }
 
@@ -122,6 +178,7 @@ export function collapseRunEdits(
   end: number,
 ): TextEdit[] {
   if (staysAsWritten(source, start, end)) return []
+  const splitsAtSpaces = splitsTextsAtSpaces(source)
   const edits: TextEdit[] = []
   let position = start
   while (position < end) {
@@ -131,7 +188,13 @@ export function collapseRunEdits(
     }
     let runEnd = position
     while (runEnd < end && isSpaceOrTab(source.text[runEnd])) runEnd++
-    edits.push({ range: [position, runEnd], replacement: " " })
+    const stays =
+      splitsAtSpaces &&
+      position > start &&
+      runEnd < end &&
+      isBetweenWords(source.text[position - 1], source.text[runEnd]) &&
+      !isDrawnAsOneSpace(source.text.slice(position, runEnd))
+    if (!stays) edits.push({ range: [position, runEnd], replacement: " " })
     position = runEnd
   }
   return edits
@@ -145,13 +208,13 @@ export function collapseRunEdits(
  * that a railroad-beta call ignores: `r = terminal(%%{!  }%% "a");` keeps both
  * spaces of `%%{!  }%%`, which `mapDoc` would print as one.
  */
-function collapseDoc(doc: Doc): Doc {
+function collapseDoc(doc: Doc, splitsAtSpaces: boolean): Doc {
   if (typeof doc === "string") {
-    const collapsed = collapseRuns(doc)
+    const collapsed = collapseRuns(doc, splitsAtSpaces)
     return collapsed === doc ? doc : collapsed
   }
   if (Array.isArray(doc)) {
-    const parts = doc.map(collapseDoc)
+    const parts = doc.map((part) => collapseDoc(part, splitsAtSpaces))
     return parts.every((part, index) => part === doc[index]) ? doc : parts
   }
   return doc
@@ -340,7 +403,7 @@ function subgraphId(
       : name
   return label !== undefined && label.kind !== "text"
     ? label.value.trim()
-    : source.text.slice(...name.range).trim()
+    : textWithoutDirectives(source, ...name.range).trim()
 }
 
 /** Records the ranges of the texts below `node` in the fields of the slots. */

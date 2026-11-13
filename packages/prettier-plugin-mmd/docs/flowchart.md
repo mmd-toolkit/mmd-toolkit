@@ -667,6 +667,7 @@ and `subgraph " S "` have the id `S`), and a diagram that names `swimlane` (see
 [fixture: whitespace-between-tokens/subgraph-name-runs-collapsed] [fixture:
 subgraph-header/markdown-title-runs-kept] [fixture:
 subgraph-header/collapsed-title-runs-kept] [fixture:
+flowchart/subgraph-header/id-directive-in-data-target-kept] [fixture:
 subgraph-header/collapsed-quoted-name-title-runs-kept] [fixture:
 subgraph-header/collapsed-markdown-name-title-runs-kept] [fixture:
 subgraph-header/collapsed-spaced-name-title-runs-kept] [fixture:
@@ -716,11 +717,49 @@ whitespace-between-tokens/style-text-align-touching-kept] [fixture:
 whitespace-between-tokens/style-label-name-colon-gap-kept] A `linkStyle` keeps
 the same whitespace for a style that starts with `color:` or `text-align:`,
 which a version that counts puts in the style of the label of a link. [fixture:
-whitespace-between-tokens/link-style-label-names-kept] A style of a `style` that
-ends with a backslash keeps whether whitespace stands after it, a run of
-whitespace becoming its first character, since a version that counts joins the
-styles of a node with `;` as they are, and the backslash would escape the `;`:
-`style A stroke-width:3px\ ,stroke:#0f0` is printed
+whitespace-between-tokens/link-style-label-names-kept] A `linkStyle` keeps
+whether whitespace stands between a name that ends with `fill` and the `:`, a
+run of whitespace becoming one space: `linkStyle 0 fill  :#f00` is printed
+`linkStyle 0 fill : #f00`. A version that counts makes the style of the label of
+a link from the styles of the link and puts `color:` in the place of the first
+`fill:` in them, or, in a swimlane diagram, in the first style only, and
+`fill :` is no `fill:` (see
+[Forms kept for versions of mermaid.js that count](./compatibility.md#forms-kept-for-versions-of-mermaidjs-that-count)
+and
+[Styles that are drawn the same](./compatibility.md#styles-that-are-drawn-the-same)).
+[fixture: whitespace-between-tokens/link-style-fill-colon-gap-kept] [fixture:
+whitespace-between-tokens/link-style-fill-colon-gap-swimlane-kept] A style that
+the label does not read is printed in the one form: a style after a style that
+has `fill:` in its text, or, in a swimlane diagram, a style that is not the
+first: `linkStyle 0 fill:#f00,fill  :#0f0` is printed
+`linkStyle 0 fill: #f00,fill: #0f0`. [fixture:
+whitespace-between-tokens/link-style-fill-colon-gap-after-fill-spaced] [fixture:
+whitespace-between-tokens/link-style-fill-colon-gap-swimlane-not-first-spaced]
+The styles of a statement that a later one replaces are printed in the one form
+too: a `linkStyle` that a later `linkStyle` replaces for every link it numbers,
+and a `linkStyle default` that a later `linkStyle default` replaces. The styles
+of a `linkStyle` that is replaced for some of its links only stay. [fixture:
+whitespace-between-tokens/link-style-fill-colon-gap-replaced-spaced] [fixture:
+whitespace-between-tokens/link-style-fill-colon-gap-replaced-for-one-link-kept]
+The styles of a `linkStyle default` stand before those of a numbered `linkStyle`
+in the styles of a link, so a numbered `linkStyle` after them is printed in the
+one form where the label reads them first: in a flowchart when one of them has
+`fill:`, and in a swimlane diagram whatever they are. [fixture:
+whitespace-between-tokens/link-style-fill-colon-gap-default-fill-spaced]
+[fixture:
+flowchart/whitespace-between-tokens/link-style-directive-before-fill-colon-kept]
+[fixture: flowchart/whitespace-between-tokens/link-style-directive-in-fill-kept]
+[fixture:
+whitespace-between-tokens/link-style-fill-colon-gap-swimlane-default-spaced]
+[fixture:
+whitespace-between-tokens/link-style-fill-colon-gap-swimlane-default-kept] No
+version that counts reads an agentflow diagram so, and its `linkStyle` uses the
+one form. [fixture:
+agentflow/single-space-gaps/link-style-fill-colon-gap-spaced] A style of a
+`style` that ends with a backslash keeps whether whitespace stands after it, a
+run of whitespace becoming its first character, since a version that counts
+joins the styles of a node with `;` as they are, and the backslash would escape
+the `;`: `style A stroke-width:3px\ ,stroke:#0f0` is printed
 `style A stroke-width: 3px\ , stroke: #0f0` (see
 [Styles that are drawn the same](./compatibility.md#styles-that-are-drawn-the-same)).
 [fixture: whitespace-between-tokens/style-backslash-space-kept] A style of a
@@ -1168,6 +1207,7 @@ would be read differently without it, or not read at all: when the label starts
 with `/`, `\`, `-`, or `"`, and when its first word, up to whitespace or a `"`,
 has a `@`. [fixture: label-inner-whitespace/compat-leading-backslash-kept]
 [fixture: label-inner-whitespace/leading-whitespace-trimmed-without-trigger]
+[fixture: flowchart/label-inner-whitespace/label-directive-with-whitespace-kept]
 [fixture: label-inner-whitespace/leading-whitespace-run-becomes-one] Without the
 space, `A[ /x/]` would become a lean-right shape with the label `x`, `A( -x-)`
 an ellipse, and `A>x@ ]` would be rejected, because the run of an edge id does
@@ -2374,17 +2414,18 @@ subgraph has belongs to that one; a nested subgraph is a member of the one
 around it, so its vertices are inside both), except that the value of an
 `accTitle` or `accDescr` statement and a `;`, which the list of the
 specification holds too, are no node of the figure: a subgraph that holds only
-them is empty. A link to the id of a subgraph, or from it, does not join the
-subgraph to the outside, and a `subgraph` in a label, an id, or a comment is no
-subgraph. Every other version that counts draws the figure the same with the
-two, with the layout that each version uses by default and with the other one
-where it has two (see
+them is empty, also where a `click` names the same id as such a value. A link to
+the id of a subgraph, or from it, does not join the subgraph to the outside, and
+a `subgraph` in a label, an id, or a comment is no subgraph. Every other version
+that counts draws the figure the same with the two, with the layout that each
+version uses by default and with the other one where it has two (see
 [Layouts that the versions were drawn with](./compatibility.md#layouts-that-the-versions-were-drawn-with)
 and
 [Forms kept for versions of mermaid.js that count](./compatibility.md#forms-kept-for-versions-of-mermaidjs-that-count)).
 The header keyword is kept as written too (see
 [The names of a header](./compatibility.md#the-names-of-a-header)). [fixture:
 direction/header-tb-without-subgraph] [fixture:
+flowchart/direction/header-directive-before-direction-kept] [fixture:
 direction/header-graph-tb-without-subgraph] [fixture:
 direction/header-tb-subgraph-word-is-no-subgraph] [fixture:
 direction/header-tb-with-direction-statement] [fixture:
@@ -2400,6 +2441,7 @@ direction/header-tb-subgraph-acc-title-only] [fixture:
 direction/header-tb-subgraph-acc-descr-only] [fixture:
 direction/header-tb-subgraph-semicolon-only] [fixture:
 direction/header-tb-subgraph-acc-title-and-vertex-kept] [fixture:
+direction/header-tb-subgraph-acc-title-with-click-id] [fixture:
 direction/header-tb-two-subgraphs-linked-to-each-other] [fixture:
 direction/header-tb-two-subgraphs-one-unlinked-kept] [fixture:
 direction/header-tb-subgraph-member-of-earlier-kept] [fixture:
@@ -2551,16 +2593,17 @@ after a block and a directive would be read as a vertex.
 The whitespace before a name of one word, written without a title, stays as
 written when more than one whitespace character stands between `subgraph` and
 the name, with the directives left out, and another statement names the name as
-an id: a vertex, a `style`, a `class`, or a subgraph with the same name. Some
-versions that count read the first of those characters as the separator after
-the keyword and the others as the start of the name text, so the subgraph has a
-generated id there, while the form with one space has the name as its id. In
-`subgraph  S`, a later `S --> Z` is an edge between two vertices there, and in
-`subgraph S` it is an edge from the subgraph. A swimlane diagram reads it so in
-the newest versions too. Where no statement names the id, nobody sees it, and
-the whitespace becomes one space, as it does before a name with a title, before
-a name of several words, and where a single tab stands. A `click` makes no
-vertex, so it names nothing. [fixture:
+an id: a vertex, a `style`, a `class`, a `click`, or a subgraph with the same
+name. Some versions that count read the first of those characters as the
+separator after the keyword and the others as the start of the name text, so the
+subgraph has a generated id there, while the form with one space has the name as
+its id. In `subgraph  S`, a later `S --> Z` is an edge between two vertices
+there, and in `subgraph S` it is an edge from the subgraph, and a later
+`click S href "u"` sets its link on the subgraph in the form with one space and
+on nothing in the other. Some of the versions that count that draw a swimlane
+diagram read it so there too. Where no statement names the id, nobody sees it,
+and the whitespace becomes one space, as it does before a name with a title,
+before a name of several words, and where a single tab stands. [fixture:
 subgraph-header/name-leading-space-run-named-kept] [fixture:
 subgraph-header/name-leading-space-run-style-kept] [fixture:
 subgraph-header/name-leading-space-run-class-kept] [fixture:
@@ -2570,7 +2613,9 @@ subgraph-header/name-leading-space-nested-kept] [fixture:
 subgraph-header/name-leading-space-same-name-twice-kept] [fixture:
 subgraph-header/name-leading-space-swimlane-kept] [fixture:
 subgraph-header/name-leading-space-unnamed-collapsed] [fixture:
-subgraph-header/name-leading-space-click-only-collapsed] [fixture:
+subgraph-header/name-leading-space-click-kept] [fixture:
+subgraph-header/name-leading-space-click-call-kept] [fixture:
+subgraph-header/name-leading-space-click-tooltip-kept] [fixture:
 subgraph-header/name-leading-space-title-collapsed] [fixture:
 subgraph-header/name-leading-space-several-words-collapsed] [fixture:
 subgraph-header/name-leading-tab-one-space-collapsed] [fixture:

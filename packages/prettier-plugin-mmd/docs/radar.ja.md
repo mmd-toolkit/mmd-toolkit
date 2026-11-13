@@ -24,6 +24,7 @@ mermaid.js は `radar-beta:` と `radar-beta` を同じ見出しとして読み�
 hidden form、global trivia、semicolon の保護区間では境界を保ちます。
 空の本文は空のままです。 [fixture: radar/header/colon-removed]
 [fixture: radar/header/colon-yaml-kept]
+[fixture: radar/header/colon-directive-before-hidden-yaml-kept]
 
 [fixture: radar/header/joined-empty]
 

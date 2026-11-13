@@ -8,7 +8,10 @@ import { styleColorEdits } from "./style-text.ts"
  * The fields that hold the text of a style, by the type of the node: a
  * `style`, a `classDef`, a `linkStyle`, and the styles of a point of a
  * quadrant chart and of a Venn diagram (docs/compatibility.md, Colors that are
- * drawn the same). The treemap holds none: its lexer rejects a `#`.
+ * drawn the same). The treemap holds none: its lexer rejects a `#`. The
+ * `classDef` of a class diagram is not among them: a version that counts has no
+ * `classDef` there and draws its words as the text of classes, so the case of a
+ * color changes the drawing.
  */
 const styleFields: Readonly<Record<string, readonly string[]>> = {
   AgentflowClassDefStatement: ["styles"],
@@ -17,7 +20,6 @@ const styleFields: Readonly<Record<string, readonly string[]>> = {
   AgentflowStyleStatement: ["styles"],
   BlockClassDefStatement: ["styles"],
   BlockStyleStatement: ["styles"],
-  ClassClassDefStatement: ["styles"],
   ClassStyleStatement: ["styles"],
   ErClassDefStatement: ["styles"],
   ErStyleStatement: ["styles"],

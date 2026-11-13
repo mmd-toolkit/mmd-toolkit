@@ -350,16 +350,17 @@ a directive between its words keeps them as written. [fixture:
 whitespace-between-tokens/style-words-directive-kept] A backslash does not
 escape a `,` here: `fill:a\,b ,stroke:c` is printed `fill: a\, b, stroke: c`.
 [fixture: whitespace-between-tokens/style-backslash-before-comma] A `style`
-keeps whether whitespace stands before a style that starts with `color:`, and
-between `color` and the `:`, a run of whitespace becoming one space, since a
-version that counts puts a style that starts so in the style of the label of the
-class: `style A fill:#f00,color:white` is printed
+keeps whether whitespace stands before a style that starts with `color:` or
+`text-align:`, and between such a name and the `:`, a run of whitespace becoming
+one space, since a version that counts puts a style that starts so in the style
+of the label of the class: `style A fill:#f00,color:white` is printed
 `style A fill: #f00,color: white` (see
 [Styles that are drawn the same](./compatibility.md#styles-that-are-drawn-the-same)
 and
 [Forms kept for versions of mermaid.js that count](./compatibility.md#forms-kept-for-versions-of-mermaidjs-that-count)).
 [fixture: whitespace-between-tokens/style-color-touching-kept] [fixture:
 whitespace-between-tokens/style-color-spaced] [fixture:
+whitespace-between-tokens/style-text-align-touching-kept] [fixture:
 whitespace-between-tokens/style-label-name-colon-gap-kept] A `style` whose last
 style ends with a backslash keeps whether whitespace stands after it, a run of
 whitespace becoming its first character, also at the end of the statement, since
@@ -561,6 +562,8 @@ rule 10). So an arrow or the `:` of a label that touches a name that ends with
 the word `call` stays touching: with a space before it, `A call()--> B` would be
 a callback of the class A, and `call-->C` would start one. [fixture:
 arrow-spacing/touching-call-kept] [fixture:
+class/arrow-spacing/call-directive-in-word-kept] [fixture:
+class/arrow-spacing/call-directive-before-parens-kept] [fixture:
 arrow-spacing/touching-call-colon-kept] [corpus fixture: class/lex-call-prefix]
 
 Inside an ASCII word, after a letter, digit, or `_`, `call` starts no keyword,
@@ -984,7 +987,15 @@ and 3, 4, 6, or 8 hexadecimal digits that stand alone in the value of a style;
 it is never shortened, and a text that is no color stays as written (see
 [Colors that are drawn the same](./compatibility.md#colors-that-are-drawn-the-same)).
 [fixture: colors/colors-in-lower-case] [fixture:
-colors/words-that-are-not-colors-as-written]
+class/colors/color-directive-after-digits-kept] [fixture:
+class/colors/color-directive-before-hash-kept] [fixture:
+class/colors/color-directive-in-digits-kept] [fixture:
+colors/words-that-are-not-colors-as-written] [fixture:
+class/colors/color-directive-with-quote-kept] [fixture:
+class/colors/color-directive-with-comment-closer-kept] [fixture:
+class/colors/color-directive-in-comment-opener-kept] [fixture:
+class/colors/color-directive-before-url-opener-kept] [fixture:
+class/colors/color-directive-in-url-name-kept]
 
 Input
 ([colors/colors-in-lower-case-input.mmd](../tests/fixtures/class/colors/colors-in-lower-case-input.mmd)):
@@ -1335,6 +1346,7 @@ whitespace and uppercase TB, BT, LR or RL, even within longer text. Continuation
 values use the previous multiline layout, one level deeper than the keyword, so
 the accessibility value is not consumed as a direction statement. [fixture:
 multi-line-statements/title-next-direction-tb] [fixture:
+class/multi-line-statements/direction-directive-in-value-kept] [fixture:
 multi-line-statements/title-next-direction-bt] [fixture:
 multi-line-statements/title-next-direction-lr] [fixture:
 multi-line-statements/title-next-direction-rl] [fixture:

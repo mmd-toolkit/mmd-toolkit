@@ -498,11 +498,22 @@ directive と共有の除去対象となるコメント領域は原文全体を�
 [test: gitgraph Unicode and tab interiors]
 コメントや directive だけの block も trivia を残します。
 frontmatter の fallback を含む反復・空値・出現位置を保持します。
-空行・コメント・directive を挟んでも行形式は次の物理行を取り込まず、
+固定した文法では、空行・コメント・directive を挟んでも、
+行形式は次の物理行を取り込みません。
+対象にする版のうち最も古い版は、
+空の `accTitle:` または `accDescr:` の後の文を値として読みます。
+そのため、その文と、`accTitle` の値の後の `%%` の前の空白は、
+書かれたまま残します。
+詳しくは
+[最も古い版が末尾まで読むアクセシビリティの行](./compatibility.ja.md#最も古い版が末尾まで読むアクセシビリティの行)
+を参照してください。
 colon 後の波括弧は行値のままです。
 同じ意味の外端だけを詰め、説明の内容と字句上の所有は変えません。
 
 固定例: [fixture: gitgraph/title-and-common-values/title-trim]
+[fixture: gitgraph/title-and-common-values/acc-value-on-next-line-kept]
+[fixture: gitgraph/title-and-common-values/acc-title-percent-gap-kept]
+[fixture: gitgraph/title-and-common-values/block-then-comment-kept]
 [corpus fixture: gitgraph/title-next-line]
 [fixture: gitgraph/title-and-common-values/common-repeats-empty]
 [fixture: gitgraph/title-and-common-values/a11y-fixed]

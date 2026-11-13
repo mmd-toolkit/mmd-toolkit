@@ -19,10 +19,11 @@ none (see
 colon stays where a hidden form or a global directive lies between it and the
 word, and where a `;` or the `---` of a hidden YAML block touches it. [fixture:
 cynefin/header/colon-removed] [fixture: cynefin/header/colon-semicolon-kept]
-Move an ordinary first statement to the next line so the header is easy to find.
-Global directive contact, hidden neighbors and protected lines use their shared
-rules: a kept header line also keeps its domain and item openings on that line.
-A spaced colon is rejected rather than repaired.
+[fixture: cynefin/header/colon-directive-before-hidden-yaml-kept] Move an
+ordinary first statement to the next line so the header is easy to find. Global
+directive contact, hidden neighbors and protected lines use their shared rules:
+a kept header line also keeps its domain and item openings on that line. A
+spaced colon is rejected rather than repaired.
 
 [fixture: cynefin/hidden-boundaries/meeting-inline-directive-directive]
 

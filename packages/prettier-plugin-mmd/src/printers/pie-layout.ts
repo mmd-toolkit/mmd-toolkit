@@ -11,8 +11,10 @@ import {
   collectValueNodes,
   expectToken,
   expectValue,
+  keptAsWritten,
   protectSemicolonPrefixes,
 } from "./layout.ts"
+import { isReadAsAccValueByOlderVersions } from "./acc-value-join.ts"
 import { layoutCommonLine, layoutCommonDescription } from "./common-layout.ts"
 import { protectHiddenGaps } from "./hidden-forms.ts"
 import type { Source } from "./source.ts"
@@ -78,6 +80,9 @@ export function layoutPieStatement(
   statement: PieBodyItem,
 ): AtomLayout {
   const [start, end] = statement.range
+  if (isReadAsAccValueByOlderVersions(source, statement)) {
+    return keptAsWritten(start, end)
+  }
   const values = collectValueNodes(statement, pieValueNodeTypes)
   const rules = new Map<number, GapRule>()
   let layout: AtomLayout

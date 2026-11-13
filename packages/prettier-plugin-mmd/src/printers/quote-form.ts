@@ -28,7 +28,11 @@ import {
   textWithoutDirectives,
 } from "./source.ts"
 import { c4ArgumentFields, c4NameFields, c4TextFields } from "./text-slots.ts"
-import { collapseRuns, printsRunsAsOne } from "./text-runs.ts"
+import {
+  collapseRuns,
+  printsRunsAsOne,
+  splitsTextsAtSpaces,
+} from "./text-runs.ts"
 import { findUsecaseKeptLines } from "./usecase-kept-lines.ts"
 import { findVennKeptLines } from "./venn-kept-lines.ts"
 import { findXychartKeptLines } from "./xychart-kept-lines.ts"
@@ -806,18 +810,19 @@ function holdsLineTerminator(text: string): boolean {
 
 /**
  * The text of a label in square brackets of an architecture diagram that every
- * version of mermaid.js that reads the label in quotes reads without them:
- * ASCII letters, digits, `_`, and spaces, with none at its ends. The grammars
- * of some versions that count read a label in quotes, and a label without
- * quotes of these characters only (docs/compatibility.md, Forms kept for
- * versions of mermaid.js that count).
+ * version of mermaid.js that counts reads without quotes as it reads it in
+ * quotes. A label without quotes runs to the next `]` and holds no `[`, `]`, or
+ * line break; one that starts and ends with the same quote is read as a label
+ * in quotes, whose backslash escapes of the quote are taken away. So a text
+ * with a bracket, a quote, a backslash, or a line terminator stays in quotes,
+ * and so does one with whitespace at its ends, which the label without quotes
+ * would lose (docs/architecture.md, Quotes).
  */
 function architectureLabel(text: string): string | undefined {
   return text !== "" &&
     text.trim() === text &&
-    [...text].every(
-      (character) => isWordCharacter(character) || character === " ",
-    )
+    ![...text].some((character) => "[]\"'\\".includes(character)) &&
+    !holdsLineTerminator(text)
     ? text
     : undefined
 }
@@ -1603,7 +1608,7 @@ function respell(
   // and the second formatting reads the text that the first one wrote.
   const printed = rule.text(
     printsRunsAsOne(source, item.range[0], item.range[1])
-      ? collapseRuns(text)
+      ? collapseRuns(text, splitsTextsAtSpaces(source))
       : text,
   )
   // mermaid.js takes the directives away before it reads the text, so what

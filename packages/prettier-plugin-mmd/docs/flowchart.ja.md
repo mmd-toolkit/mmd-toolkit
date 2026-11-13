@@ -690,6 +690,7 @@ Markdown 文字列ではバッククォートの間の文字です。
 [fixture: whitespace-between-tokens/subgraph-name-runs-collapsed]
 [fixture: subgraph-header/markdown-title-runs-kept]
 [fixture: subgraph-header/collapsed-title-runs-kept]
+[fixture: flowchart/subgraph-header/id-directive-in-data-target-kept]
 [fixture: subgraph-header/collapsed-quoted-name-title-runs-kept]
 [fixture: subgraph-header/collapsed-markdown-name-title-runs-kept]
 [fixture: subgraph-header/collapsed-spaced-name-title-runs-kept]
@@ -747,6 +748,48 @@ mermaid.js はリンクのスタイルから `stroke:` を探し、
 対象にする版に、
 そう始まるスタイルを辺のラベルのスタイルに入れるものがあるためです。
 [fixture: whitespace-between-tokens/link-style-label-names-kept]
+`linkStyle` は、名前が `fill` で終わるスタイルの、
+名前と `:` の間に空白があるかないかを、書かれたまま残し、
+空白の連続は 1 つの空白にします。
+`linkStyle 0 fill  :#f00` は `linkStyle 0 fill : #f00` と印字します。
+対象にする版に、辺のラベルのスタイルを辺のスタイルから作り、
+その中の最初の `fill:` を `color:` に置き換えるものがあります。
+swimlane 図では、最初のスタイルの中だけを置き換えます。
+`fill :` は `fill:` ではないからです。
+詳しくは
+[対象にする版の mermaid.js のために残す形](./compatibility.ja.md#対象にする版の-mermaidjs-のために残す形)
+と [同じに描かれるスタイル](./compatibility.ja.md#同じに描かれるスタイル)
+を参照してください。
+[fixture: whitespace-between-tokens/link-style-fill-colon-gap-kept]
+[fixture: whitespace-between-tokens/link-style-fill-colon-gap-swimlane-kept]
+ラベルが読まないスタイルは、1 つの形で印字します。
+`fill:` を含むスタイルより後のスタイルと、
+swimlane 図で最初ではないスタイルがそうです。
+`linkStyle 0 fill:#f00,fill  :#0f0` は、
+`linkStyle 0 fill: #f00,fill: #0f0` と印字します。
+[fixture: whitespace-between-tokens/link-style-fill-colon-gap-after-fill-spaced]
+[fixture: whitespace-between-tokens/link-style-fill-colon-gap-swimlane-not-first-spaced]
+後の文に置き換えられる文のスタイルも、1 つの形で印字します。
+番号つきの `linkStyle` は、番号を付けたすべての辺について、
+後の `linkStyle` に置き換えられる場合です。
+`linkStyle default` は、後の `linkStyle default` に置き換えられる場合です。
+一部の辺についてだけ置き換えられる `linkStyle` のスタイルは、そのまま残します。
+[fixture: whitespace-between-tokens/link-style-fill-colon-gap-replaced-spaced]
+[fixture: whitespace-between-tokens/link-style-fill-colon-gap-replaced-for-one-link-kept]
+辺のスタイルの中では、`linkStyle default` のスタイルが、
+番号つきの `linkStyle` のスタイルより前に並びます。
+ラベルがそのスタイルを先に読む場合、
+後の番号つきの `linkStyle` は 1 つの形で印字します。
+flowchart では、そのスタイルのどれかに `fill:` があるときです。
+swimlane 図では、そのスタイルがあれば、内容を問いません。
+[fixture: whitespace-between-tokens/link-style-fill-colon-gap-default-fill-spaced]
+[fixture: flowchart/whitespace-between-tokens/link-style-directive-before-fill-colon-kept]
+[fixture: flowchart/whitespace-between-tokens/link-style-directive-in-fill-kept]
+[fixture: whitespace-between-tokens/link-style-fill-colon-gap-swimlane-default-spaced]
+[fixture: whitespace-between-tokens/link-style-fill-colon-gap-swimlane-default-kept]
+agentflow 図をそう読む、対象にする版はないので、
+その `linkStyle` は 1 つの形で印字します。
+[fixture: agentflow/single-space-gaps/link-style-fill-colon-gap-spaced]
 `style` のスタイルの末尾のバックスラッシュの後に空白があるかないかは、
 書かれたまま残し、空白の連続は先頭の 1 文字にします。
 対象にする版に、ノードのスタイルをそのまま `;` でつなぐものがあり、
@@ -1230,6 +1273,7 @@ U+2028、U+2029 は残します。
 最初の語（空白か `"` まで）が `@` を含むときです。
 [fixture: label-inner-whitespace/compat-leading-backslash-kept]
 [fixture: label-inner-whitespace/leading-whitespace-trimmed-without-trigger]
+[fixture: flowchart/label-inner-whitespace/label-directive-with-whitespace-kept]
 [fixture: label-inner-whitespace/leading-whitespace-run-becomes-one]
 空白がないと、`A[ /x/]` はラベル `x` の lean-right の形に、
 `A( -x-)` は ellipse になり、`A>x@ ]` は拒否されます。
@@ -2497,6 +2541,7 @@ subgraph のものです。入れ子の subgraph は外側の subgraph のメン
 その中の頂点は両方の中にあります）。
 ただし、仕様の一覧にある `accTitle` や `accDescr` の文の値と `;` は、
 図のノードではないので、それだけを持つ subgraph は空として扱います。
+`click` が同じ id を挙げても同じです。
 subgraph の id への接続、id からの接続は、その subgraph を外につなぎません。
 ラベル、id、コメントにある `subgraph` は subgraph ではありません。
 ほかの対象にする版は、2 つで同じに描きます。
@@ -2507,6 +2552,7 @@ subgraph の id への接続、id からの接続は、その subgraph を外に
 ヘッダーのキーワードも書かれたまま残します。
 詳しくは [ヘッダーの名前](./compatibility.ja.md#ヘッダーの名前)
 を参照してください。 [fixture: direction/header-tb-without-subgraph]
+[fixture: flowchart/direction/header-directive-before-direction-kept]
 [fixture: direction/header-graph-tb-without-subgraph]
 [fixture: direction/header-tb-subgraph-word-is-no-subgraph]
 [fixture: direction/header-tb-with-direction-statement]
@@ -2523,6 +2569,7 @@ subgraph の id への接続、id からの接続は、その subgraph を外に
 [fixture: direction/header-tb-subgraph-acc-descr-only]
 [fixture: direction/header-tb-subgraph-semicolon-only]
 [fixture: direction/header-tb-subgraph-acc-title-and-vertex-kept]
+[fixture: direction/header-tb-subgraph-acc-title-with-click-id]
 [fixture: direction/header-tb-two-subgraphs-linked-to-each-other]
 [fixture: direction/header-tb-two-subgraphs-one-unlinked-kept]
 [fixture: direction/header-tb-subgraph-member-of-earlier-kept]
@@ -2696,16 +2743,17 @@ subgraph の id は `subGraph0` になり、空白がなければ `S` になり�
 タイトルのない 1 語の名前の前の空白は、`subgraph` と名前の間に、
 ディレクティブを除いて空白文字が 2 つ以上あり、
 別の文がその名前を id として挙げているときは、書かれたまま残します。
-挙げる文は、頂点、`style`、`class`、同じ名前の subgraph です。
+挙げる文は、頂点、`style`、`class`、`click`、同じ名前の subgraph です。
 対象にする版の一部は、その最初の文字をキーワードの後の区切りとして読み、
 残りを名前のテキストの始まりとして読むので、
 その版では subgraph の id が生成され、空白 1 つの形では名前が id になります。
 `subgraph  S` の後の `S --> Z` は、その版では 2 つの頂点の間の辺で、
 `subgraph S` では subgraph からの辺です。
-swimlane 図では、最新の版もそう読みます。
+後ろの `click S href "u"` は、空白 1 つの形では subgraph にリンクを付け、
+もう一方では何にも付きません。
+swimlane 図を描く、対象にする版の一部も、そう読みます。
 id を挙げる文がなければ、id は見えないので、空白は 1 つにします。
 タイトルのある名前、複数の語の名前、タブ 1 つの場合も同じです。
-`click` は頂点を作らないので、id を挙げたことになりません。
 [fixture: subgraph-header/name-leading-space-run-named-kept]
 [fixture: subgraph-header/name-leading-space-run-style-kept]
 [fixture: subgraph-header/name-leading-space-run-class-kept]
@@ -2715,7 +2763,9 @@ id を挙げる文がなければ、id は見えないので、空白は 1 つ�
 [fixture: subgraph-header/name-leading-space-same-name-twice-kept]
 [fixture: subgraph-header/name-leading-space-swimlane-kept]
 [fixture: subgraph-header/name-leading-space-unnamed-collapsed]
-[fixture: subgraph-header/name-leading-space-click-only-collapsed]
+[fixture: subgraph-header/name-leading-space-click-kept]
+[fixture: subgraph-header/name-leading-space-click-call-kept]
+[fixture: subgraph-header/name-leading-space-click-tooltip-kept]
 [fixture: subgraph-header/name-leading-space-title-collapsed]
 [fixture: subgraph-header/name-leading-space-several-words-collapsed]
 [fixture: subgraph-header/name-leading-tab-one-space-collapsed]

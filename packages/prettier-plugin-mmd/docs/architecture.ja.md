@@ -307,12 +307,12 @@ architecture-beta
 `group api(cloud)["API Group"]` は `group api(cloud)[API Group]` と印字し、
 `service s(server)['Plain Single']` は `service s(server)[Plain Single]`
 と印字します。
-平易なラベルとは、ASCII 英字、数字、`_`、空白からなり、
+平易なラベルとは、角括弧、引用符、バックスラッシュ、改行を含まず、
 両端に空白がないものです。
-対象にする版のうち、引用符つきのラベルを読むものは、
-引用符なしのラベルではこれらの文字だけを読む（ほかの 2
-つは引用符つきのラベルを読まない）ので、`"a-b"`、`"A.B"`、`"日本語"`、`"a[b"`、
-空のラベル、引用符の内側に余白があるラベル（`[" padded "]`）は、
+引用符なしのラベルは次の `]` まで続き、
+同じ引用符で始まり終わるラベルは引用符つきのラベルとして読まれるので、`"a-b"`、
+`"A.B"`、`"日本語"` は引用符なしで印字します。
+`"a[b"`、空のラベル、引用符の内側に余白があるラベル（`[" padded "]`）は、
 引用符を保ちます。
 バックスラッシュや引用符があるラベルも同じです。
 mermaid.js は、読むタイトルの外側の `"` か `'` の引用符 1 組を外し、
@@ -320,9 +320,15 @@ mermaid.js は、読むタイトルの外側の `"` か `'` の引用符 1 組�
 `"a\"b"` を `a\"b` と、`"'x'"` を `'x'` と印字すると、
 別のタイトルとして読まれます。
 引用符なしのラベルを引用符で囲むことはありません。
+ラベルの中の空白とタブの連続は空白 1 つにしますが、
+それだけで 1 語になる場合は残します。
+mermaid.js はラベルを、1 つの空白で区切った語ごとに描くので、タブだけの連続と、
+空白にはさまれたタブは、別の語になります。
+`"A<タブ>B"` は `A<タブ>B` と印字します。
 [fixture: quotes/labels-without-quotes]
 [fixture: quotes/labels-that-need-quotes]
 [fixture: quotes/labels-with-runs-without-quotes]
+[fixture: quotes/labels-with-tab-words-kept]
 
 入力
 ([quotes/labels-without-quotes-input.mmd](../tests/fixtures/architecture/quotes/labels-without-quotes-input.mmd)):

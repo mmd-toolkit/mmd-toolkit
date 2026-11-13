@@ -659,6 +659,8 @@ mermaid.js はその空白を Db に残しますが、その空白がなくて�
 `tickInterval` も、値全体を読んでいて、
 前か後に空白があると目盛りが既定のものになるので、書かれたままにします。
 [fixture: settings/format-padding-kept-where-drawn-differently]
+[fixture: gantt/settings/date-format-directive-after-value-kept]
+[fixture: gantt/settings/date-format-directive-before-value-kept]
 `todayMarker` の値は、両端の空白も含めて書かれたまま印字します。
 末尾に空白 2 つがある `todayMarker off` は別のマーカーで、今日の線を描きます。
 [fixture: settings/trailing-whitespace-by-setting]

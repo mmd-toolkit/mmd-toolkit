@@ -44,6 +44,7 @@ import {
   findTriviaBetween,
   isSpaceOrTab,
   isWhitespace,
+  skipDirectives,
 } from "./source.ts"
 
 /**
@@ -224,10 +225,14 @@ export function layoutTimelineStatement(
 
 /**
  * Whether a title has its text on a later line than its keyword and the text
- * starts with `#`: `title`, a line break, and `# c`. A version that counts draws
- * that differently from `title # c` on one line, so the statement stays as
- * written (docs/timeline.md, Titles and sections; docs/compatibility.md, Forms
- * kept for versions of mermaid.js that count).
+ * starts with `#` after whitespace on its line: `title`, a line break, an
+ * indentation, and `# c`. The oldest version that counts has a title rule that
+ * takes the whitespace of the next line as the text of the title when a `#`
+ * follows it, so the `# c` is a comment there, while `title # c` on one line is
+ * the period `title` and a comment. A `#` at the start of its line is no title
+ * text there, and the title is the period `title` in both forms. The statement
+ * stays as written (docs/timeline.md, Titles and sections;
+ * docs/compatibility.md, Forms kept for versions of mermaid.js that count).
  */
 function startsTitleTextWithHashOnNextLine(
   source: Source,
@@ -235,13 +240,10 @@ function startsTitleTextWithHashOnNextLine(
 ): boolean {
   if (statement.type !== "TimelineTitleStatement") return false
   const text = source.text.slice(...statement.value.range)
-  const first = text.length - text.trimStart().length
-  return (
-    text[first] === "#" &&
-    source.text
-      .slice(statement.range[0], statement.value.range[0] + first)
-      .includes("\n")
-  )
+  const hash = statement.value.range[0] + text.length - text.trimStart().length
+  if (text.trimStart()[0] !== "#") return false
+  const lineBreak = source.text.lastIndexOf("\n", hash)
+  return lineBreak >= statement.range[0] && lineBreak + 1 < hash
 }
 
 /** The gap rules of a title, a section, or an accessibility statement. */
@@ -316,7 +318,7 @@ function layoutEvents(
     const text = atoms[eventIndex - 2]
     const addsSpace =
       text !== undefined &&
-      text.end === colon.start &&
+      skipDirectives(source, text.end) === colon.start &&
       !isWhitespace(source.text[text.end - 1]) &&
       !(
         statement.type === "TimelinePeriodStatement" &&

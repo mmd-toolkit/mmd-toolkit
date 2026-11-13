@@ -44,6 +44,8 @@ beta の境界に合わない接尾辞は根のテキストに残します。
 [fixture: ishikawa/header/header-beta-then-beta-root]
 [fixture: ishikawa/header/header-beta-then-beta-root-kept]
 [fixture: ishikawa/header/header-beta-directive-then-beta-root-kept]
+[fixture: ishikawa/header/beta-directive-before-word-kept]
+[fixture: ishikawa/header/beta-directive-in-root-kept]
 
 入力（escape 表記）:
 

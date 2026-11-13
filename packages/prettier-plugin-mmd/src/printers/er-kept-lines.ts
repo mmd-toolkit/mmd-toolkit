@@ -24,6 +24,65 @@ const semicolonLinesBySource = new WeakMap<Source, ReadonlySet<number>>()
 /** The kept lines of each source, found once per source. */
 const keptLinesBySource = new WeakMap<Source, KeptLines>()
 
+/** The starts of names that keep their gap after an older `class` keyword. */
+const classNameGapsBySource = new WeakMap<Source, ReadonlySet<number>>()
+
+/**
+ * The bare names after a U+2028/U+2029-prefixed `class` that an older lexer
+ * reads as a class statement. Its whitespace rule consumes line feeds only
+ * after another whitespace character; comments and directives are removed
+ * first, so an intervening comment or blank line does not end that gap.
+ * Keep the original gaps through both names (docs/er.md, Statements one per
+ * line), including the first name in `classé`.
+ */
+export function findErClassNameGaps(source: Source): ReadonlySet<number> {
+  const cached = classNameGapsBySource.get(source)
+  if (cached !== undefined) return cached
+  const gaps = new Set<number>()
+
+  /** Checks each statement list without crossing a subgraph boundary. */
+  function visit(statements: readonly ErStatement[]): void {
+    for (const [index, statement] of statements.entries()) {
+      if (statement.type === "ErSubgraphStatement") visit(statement.body)
+      if (!isLineSeparator(source.text.charAt(statement.range[0]))) continue
+      const start = skipWhitespaceOnLine(source, statement.range[0])
+      const own = textWithoutDirectives(source, start, statement.range[1])
+      if (
+        !isNameAlone(statement) ||
+        toAsciiLowerCase(readWord(own, 0)) !== "class"
+      )
+        continue
+      const needed = own.length > "class".length ? 1 : 2
+      const names = statements.slice(index + 1, index + 1 + needed)
+      if (
+        names.length !== needed ||
+        !names.every((name, nameIndex) => {
+          if (!isNameAlone(name) || name.name.type !== "ErIdentifier")
+            return false
+          const previous = nameIndex === 0 ? statement : names[nameIndex - 1]
+          const first = textWithoutDirectives(
+            source,
+            previous.range[1],
+            name.range[0],
+          ).charAt(0)
+          return (
+            first !== "" &&
+            first !== "\n" &&
+            first !== "\r" &&
+            isWhitespace(first)
+          )
+        })
+      )
+        continue
+      for (const name of names) gaps.add(name.range[0])
+    }
+  }
+
+  visit(diagramOf(source).body)
+  classNameGapsBySource.set(source, gaps)
+  return gaps
+}
+
 /**
  * The lines of an ER diagram that hold a `;` (see
  * `findLinesWithOwnSemicolons`), by line start offset. No `;` separates
@@ -119,12 +178,13 @@ function findSubgraphHeaderLines(
  * - An entity statement named by a number of two digits or more, with a
  *   character right after it that continues a name: `12a` is the entities
  *   `12` and `a` to the pinned lexer, and one name to a version that counts.
- * - A statement that starts with a U+2028 or U+2029, with another statement
- *   after it on its line, where a version that counts reads the line from the
+ * - A statement that starts with a U+2028 or U+2029, with following statements,
+ *   where a version that counts reads the text from the
  *   end of the whitespace as a `class` statement or a direction line (see
  *   `startsLineReadAsKeywordByOlderVersions`): the character belongs to the
  *   first name to the pinned lexer, and a version that counts reads it as
- *   whitespace. `class A a` is a statement that goes on over the line, and
+ *   whitespace. `class A a` can continue across line feeds after whitespace
+ *   (see `findErClassNameGaps`), and
  *   `A direction LR` is a direction line, which has no entity `A`; on lines
  *   of their own, the statements are a keyword alone, which it rejects, and
  *   an entity and a direction line.
@@ -273,16 +333,8 @@ function findLineReadAsKeywordByOlderVersions(
   const followers = statements.slice(index + 1, index + 3)
   const own = textWithoutDirectives(source, start, statement.range[1])
   if (toAsciiLowerCase(readWord(own, 0)) === "class") {
-    const needed = own.length > "class".length ? 1 : 2
-    const names = followers.slice(0, needed)
-    return isNameAlone(statement) &&
-      names.length === needed &&
-      names.every(
-        (name) =>
-          isNameAlone(name) &&
-          name.name.type === "ErIdentifier" &&
-          lineStartOf(source, name.range[0]) === line,
-      )
+    return followers[0] !== undefined &&
+      findErClassNameGaps(source).has(followers[0].range[0])
       ? line
       : null
   }

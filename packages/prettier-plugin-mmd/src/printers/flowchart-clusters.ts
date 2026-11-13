@@ -26,7 +26,7 @@ interface Facts {
   readonly links: [string, string][]
   /** The ids that make a vertex somewhere: in a vertex statement, a style, or a class. */
   readonly vertices: Set<string>
-  /** The ids of the click statements, which make no vertex. */
+  /** The ids of the click statements, which make no vertex and set their action on a subgraph that has the id. */
   readonly clicked: Set<string>
   /** How many subgraphs have each name text, by the text without the whitespace at its ends. */
   readonly names: Map<string, number>
@@ -60,11 +60,7 @@ export function hasSubgraphWithoutOuterLink(
   const kept = withMembersLeftOut(facts.clusters)
   // A member that is no vertex and no subgraph, such as the value of an
   // accessibility statement or a `;`, is no node of the figure.
-  const known = new Set([
-    ...facts.vertices,
-    ...facts.clicked,
-    ...kept.map((item) => item.id),
-  ])
+  const known = new Set([...facts.vertices, ...kept.map((item) => item.id)])
   const clusters = kept.map((item) => ({
     ...item,
     members: item.members.filter((member) => known.has(member)),
@@ -103,11 +99,12 @@ function factsOf(source: Source, diagram: FlowchartDiagram): Facts {
 
 /**
  * Whether some other statement names the id that the subgraph has when its
- * name is one word: a vertex, a style, or a class with that id, or another
- * subgraph with the same name. A statement that names an id which no subgraph
- * has makes a vertex of it, except a click, which makes none. So where the id
- * of the subgraph differs from the name, such a statement reads a vertex and
- * not the subgraph.
+ * name is one word: a vertex, a style, a class, or a click with that id, or
+ * another subgraph with the same name. A statement that names an id which no
+ * subgraph has makes a vertex of it, or, for a click, finds none and sets
+ * nothing; a click that names the id of a subgraph sets it on the subgraph.
+ * So where the id of the subgraph differs from the name, such a statement
+ * reads a vertex, or nothing, and not the subgraph.
  */
 export function isSubgraphIdNamedElsewhere(
   source: Source,
@@ -116,7 +113,11 @@ export function isSubgraphIdNamedElsewhere(
 ): boolean {
   const facts = factsOf(source, diagram)
   const id = subgraph.name.value.trim()
-  return facts.vertices.has(id) || (facts.names.get(id) ?? 0) > 1
+  return (
+    facts.vertices.has(id) ||
+    facts.clicked.has(id) ||
+    (facts.names.get(id) ?? 0) > 1
+  )
 }
 
 /**
