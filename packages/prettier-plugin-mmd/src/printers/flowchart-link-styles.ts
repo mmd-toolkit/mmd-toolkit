@@ -34,6 +34,7 @@ interface LinkStyles {
 /** The `linkStyle` statements of each diagram, found once per source. */
 const linkStylesBySource = new WeakMap<Source, LinkStyles>()
 
+/** The `linkStyle` statements of a diagram, found once and kept for the source. */
 function linkStylesOf(source: Source): LinkStyles {
   const cached = linkStylesBySource.get(source)
   if (cached !== undefined) return cached

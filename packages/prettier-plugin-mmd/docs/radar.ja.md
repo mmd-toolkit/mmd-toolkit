@@ -19,9 +19,9 @@
 mermaid.js は `radar-beta:` と `radar-beta` を同じ見出しとして読み、
 文書の例はコロンのない見出しを 3 回使い、ある形は使わないためです。
 （[ヘッダーの後のコロン](./compatibility.ja.md#ヘッダーの後のコロン)を参照）。
-コロンと語の間に hidden form か global directive があるときと、
-`;` か hidden YAML ブロックの `---` がコロンに接するときは、コロンを残します。
-hidden form、global trivia、semicolon の保護区間では境界を保ちます。
+コロンと語の間に隠れた形か大域的なディレクティブがあるときと、
+`;` か隠れた YAML ブロックの `---` がコロンに接するときは、コロンを残します。
+隠れた形、大域的な注釈類、セミコロンの保護区間では境界を保ちます。
 空の本文は空のままです。 [fixture: radar/header/colon-removed]
 [fixture: radar/header/colon-yaml-kept]
 [fixture: radar/header/colon-directive-before-hidden-yaml-kept]
@@ -72,13 +72,13 @@ radar-beta
 
 ### Indentation
 
-共有の平坦な本文 printer を使います。
-普通の文、独立コメント、Root directive は設定の 1 段字下げします。
-通常は 2 spaces、tabWidth 4 なら 4 spaces、0 なら 0 spaces です。
+共有の平坦な本文印字処理を使います。
+普通の文、独立コメント、`Root` ディレクティブは設定の 1 段字下げします。
+通常は空白 2 つ、`tabWidth` 4 なら空白 4 つ、0 なら空白は置きません。
 列に文法上の意味がないため、0 も使えます。
-useTabs は幅 0 でも 1 tab を使います。
-entry の継続行は 2 段です。
-値の継続列、hidden の内側と closer、保持する prefix は各規則に従います。
+`useTabs` は幅 0 でも 1 タブを使います。
+項目の継続行は 2 段です。
+値の継続列、隠れた形の内側と閉じ記号、保持する前置部分は各規則に従います。
 
 [fixture: radar/indentation/indent-two]
 
@@ -107,10 +107,10 @@ radar-beta
 
 普通の axis、curve、options、共通文は 1 文ずつ改行します。
 作者の文の単位を見せるためです。
-一つの keyword のカンマ群は分割せず、keyword も複製しません。
+一つのキーワードのカンマ群は分割せず、キーワードも複製しません。
 カンマのない隣接 option は別の文です。
 `ticks 7max 8` も 2 文になります。
-共通の行値は物理 EOL までの keyword に見える文字も所有します。
+共通の行値は物理 EOL までのキーワードに見える文字も所有します。
 空の説明ブロックも文として残し、保護された見出しと本文の群を優先します。
 
 [fixture: radar/statements-one-per-line/all-inline-kinds]
@@ -144,12 +144,12 @@ radar-beta
 
 ### Groups and commas
 
-群の keyword と最初の member の間は普通の空白 1 個にします。
-axis、curve、options、entry のカンマは前を詰め、後を 1 space にします。
+群のキーワードと最初の構成要素の間は普通の空白 1 個にします。
+axis、curve、options、項目のカンマは前を詰め、後を空白 1 つにします。
 xychart と quadrant と同じ見た目にそろえるためです。
 axis・curve・options の群には可視改行を追加しません。
 その文法では拒否されるためです。
-trivia のある間隙は書かれた接触と分離を保ちます。
+注釈類のある間隙は書かれた接触と分離を保ちます。
 
 [fixture: radar/groups-and-commas/axis-comma]
 
@@ -183,7 +183,7 @@ radar-beta
 `[` の前後と `]` の前の普通の空白を詰めます。
 名前に付くラベルを一つに見せるためです。
 ラベルの省略と空文字列は区別します。
-引用符の内側は値として扱い、hidden と global の境界を優先します。
+引用符の内側は値として扱い、隠れた形と大域的な処理の境界を優先します。
 
 [fixture: radar/labels/axis-double-brackets]
 
@@ -219,7 +219,7 @@ mermaid.js の文書の例は、値だけの曲線 14 件を内側を詰めて�
 [コロンがどの種類かの決め方](./printed-form.ja.md#コロンがどの種類かの決め方)
 の手順 2 を参照してください。
 付属部品の接着は architecture、リストの内端は xychart と同じです。
-これは entry の波括弧です。
+これは項目の波括弧です。
 説明ブロックの空白は共有の説明規則に従います。
 
 [fixture: radar/curve-braces/brace-tight]
@@ -246,19 +246,19 @@ radar-beta
 
 ### Multi-line statements
 
-コメントや directive のない文では、
-文法が空白として読む entry の改行を結合します。
+コメントやディレクティブのない文では、
+文法が空白として読む項目の改行を結合します。
 対象は `{` の後、カンマの後、`}` の前です。
 数だけのリストも名前つきリストも、xychart・quadrant と同様に 1 行にします。
-カンマの前や名前つき entry の途中へ改行を追加しません。
-コメントや Root directive のある改行は残します。
+カンマの前や名前つき項目の途中へ改行を追加しません。
+コメントや `Root` ディレクティブのある改行は残します。
 普通の継続行とコメントは 2 段、別行の `}` は文の位置にそろえます。
 コメント付きのリストをブロックのまま残すため、
-その文のほかの entry の改行も残します。
-hidden の境界、値の行、semicolon の保護区間は継続列を含め保ちます。
+その文のほかの項目の改行も残します。
+隠れた形の境界、値の行、セミコロンの保護区間は継続列を含め保ちます。
 保護区間内に継続の字下げを足しません。
 その後の普通の間隙には通常の空白規則を適用します。
-終端行に別の文の semicolon がある場合も共有の結合検査で保ちます。
+終端行に別の文のセミコロンがある場合も共有の結合検査で保ちます。
 前の style に似たラベルと結合すると、その文の Db が変わりうるためです。
 
 [fixture: radar/multi-line-statements/leading-trailing-entry-lines]
@@ -327,11 +327,11 @@ radar-beta
 ### Named entries
 
 作者が書いたコロンの有無を保ちます。
-`A: 1` はコロンの前を詰め、後を 1 space にします。
-`A 1` は間を 1 space にし、列揃えはしません。
+`A: 1` はコロンの前を詰め、後を空白 1 つにします。
+`A 1` は間を空白 1 つにし、列揃えはしません。
 句読法を保ちながら、同じ意味の空白をそろえるためです。
 軸名 `accTitle` と `accDescr` へのコロン追加は安全ではありません。
-共通の複合 token が優先してしまうためです。
+共通の複合トークンが優先してしまうためです。
 
 [fixture: radar/named-entries/named-colon-gap]
 
@@ -355,13 +355,13 @@ radar-beta
 
 ### Numbers
 
-entry と ticks・max・min の数は NumericLiteral の source span を印字します。
+項目と ticks・max・min の数は `NumericLiteral` の原文の範囲を印字します。
 普通の十進表記は最短の形で印字し、`1.50` は `1.5`、`5.00` は `5` にします。
 （[同じに描かれる綴り](./compatibility.ja.md#同じに描かれる綴り)）。
-整数部の先頭のゼロ、丸められる精度、subnormal、underflow、
-overflow の綴りを保ちます。
-double 値からの再出力は綴りを失います。
-radar が拒否する指数表記や Infinity を出すこともあるためです。
+整数部の先頭のゼロ、丸められる精度、非正規化数、アンダーフロー、
+桁あふれの綴りを保ちます。
+倍精度浮動小数点数値からの再出力は綴りを失います。
+radar が拒否する指数表記や `Infinity` を出すこともあるためです。
 
 [fixture: radar/numbers/shortest-form]
 
@@ -394,8 +394,8 @@ radar-beta
 
 ### Options
 
-option の keyword と値の間は普通の空白 1 個にします。
-boolean・graticule の固定小文字、数の綴り、カンマ群、反復と順序を保ちます。
+オプションのキーワードと値の間は普通の空白 1 個にします。
+真偽値・`graticule` の固定小文字、数の綴り、カンマ群、反復と順序を保ちます。
 既定値への置換、ticks の 32 への制限、min・max の並べ替えはしません。
 公開された値は作者の構文ではないためです。
 radar の描画設定から文の値を補いません。
@@ -429,8 +429,8 @@ radar-beta
 
 ### Quotes
 
-ラベルの StringLiteral は完全な source span を保ちます。
-空文字列、escape、HTML、entity、hidden に見える文字を含みます。
+ラベルの `StringLiteral` は完全な原文の範囲を保ちます。
+空文字列、エスケープ、HTML、実体参照、隠れた形に見える文字を含みます。
 テキストの中の空白とタブの連なりは、空白 1 つにして印字します。
 空白とタブだけの文字列は空白 1 つになり、`["   "]` は `[" "]` と印字します。
 （[同じに描かれるテキスト中の空白の連なり](./compatibility.ja.md#同じに描かれるテキスト中の空白の連なり)）。
@@ -438,7 +438,7 @@ radar-beta
 U+2029、バッククォート、`&`、`#`、`<` がある場合を除き、`"` で囲んで印字します。
 （[同じに描かれる綴り](./compatibility.ja.md#同じに描かれる綴り)）。
 `singleQuote` は読みません。
-空ラベルの削除は ID への fallback を変えます。
+空ラベルを削除すると、代わりに ID を使う処理が変わります。
 [fixture: radar/quotes/single-quote-sensitive-kept]
 
 [fixture: radar/quotes/quotes-and-empty]
@@ -470,13 +470,13 @@ radar-beta
 ### Title
 
 共有の共通行レイアウトを使います。
-共通空白の外端を除き、非空の値の前は 1 space にします。
-null と空白だけの値は `title` にします。
-同じ意味の外端だけをそろえ、内部の綴り、引用符、見かけの keyword を保ちます。
+共通空白の外端を除き、非空の値の前は空白 1 つにします。
+`null` と空白だけの値は `title` にします。
+同じ意味の外端だけをそろえ、内部の綴り、引用符、見かけのキーワードを保ちます。
 ただし、値の中の空白とタブの連なりは空白 1 つにして印字します。
 （[同じに描かれるテキスト中の空白の連なり](./compatibility.ja.md#同じに描かれるテキスト中の空白の連なり)）。
-コメントや directive を挟んでも、次の物理行から値を取りません。
-trivia のある値と保護区間は原文の間隙を保ちます。
+コメントやディレクティブを挟んでも、次の物理行から値を取りません。
+注釈類のある値と保護区間は原文の間隙を保ちます。
 題の終わりのディレクティブは、それぞれの前に空白があれば空白 1 つを置き、
 行末の空白の有無にかかわらず、最後のディレクティブの後の空白を除いて印字します。
 （[同じに描かれるキーワードの後のテキスト](./compatibility.ja.md#同じに描かれるキーワードの後のテキスト)）。
@@ -505,7 +505,7 @@ radar-beta
 ### Accessibility lines
 
 共有の `accTitle: value` と `accDescr: value` を使います。
-コロンは keyword に接着し、外端を除いた非空の値の前は 1 space です。
+コロンはキーワードに接着し、外端を除いた非空の値の前は空白 1 つです。
 空の値はコロンで終え、次行の値を結合しません。
 外側をそろえても内部の文字は書き換えません。
 ただし、`accDescr` の値の中の空白とタブの連なりは空白 1 つにして印字します。
@@ -513,7 +513,7 @@ radar-beta
 `accTitle` はブラウザがツールチップとして表示するので、
 その連なりは書かれたまま残します。
 コロン後の波括弧は行値のままです。
-trivia・hidden・semicolon の保護を優先します。
+注釈類・隠れた形・セミコロンの保護を優先します。
 値の終わりのディレクティブは、それぞれの前に空白があれば空白 1 つを置き、
 最後のディレクティブの後の空白を除いて印字します。
 （[同じに描かれるキーワードの後のテキスト](./compatibility.ja.md#同じに描かれるキーワードの後のテキスト)）。
@@ -546,13 +546,13 @@ radar-beta
 波括弧を残すブロックは、境界がわかるよう、
 キーワードと開始波括弧の間に空白を 1 つ置きます。
 空白だけの内部は、空白で囲む文字がないため `{}` にします。
-opener 前の普通の空白は結合し、実際の trivia のある改行は残します。
-コメント・directive だけの内部を保ちます。
+開始記号前の普通の空白は結合し、実際の注釈類のある改行は残します。
+コメント・ディレクティブだけの内部を保ちます。
 通常の説明本文と独立したコメント行は文より1段内側に揃えます。
 Db で LF 後の字下げが取り除かれるためです。
 改行、内部の空行、行末空白を保ちます。
-directive と共有の除去対象となるコメント領域は原文全体を保ちます。
-別行の opener と closer は文にそろえます。
+ディレクティブと共有の除去対象となるコメント領域は原文全体を保ちます。
+別行の開始記号と閉じ記号は文にそろえます。
 最初の閉じ波括弧で値を終えます。
 
 [fixture: radar/description-blocks/block-empty-fixed]
@@ -591,11 +591,11 @@ radar-beta
 
 ### Multiline values
 
-printWidth で折り返しません。
+`printWidth` で折り返しません。
 新しい可視改行は群の部品を拒否させ、値の詰め直しは Db を変えうるためです。
 ラベルの物理継続行、列、内部の空行を保ちます。
 説明本文は前述の共有の字下げを使います。
-長い axis 群と entry リストも折り返しません。
+長い axis 群と項目リストも折り返しません。
 
 [fixture: radar/multiline-values/long-axis-no-wrap]
 
@@ -621,10 +621,10 @@ last"]
 
 ### Source order
 
-本文、axis・curve・option の群、entry の順と全出現を保ちます。
-前方参照、重複軸・curve・entry、余分な名前つき entry、最初の値 0、
-prototype に似た名前、空の共通代入を残します。
-別の curve は異なる entry 形式を選べます。
+本文、axis・curve・option の群、項目の順と全出現を保ちます。
+前方参照、重複軸・curve・項目、余分な名前つき項目、最初の値 0、
+プロトタイプに似た名前、空の共通代入を残します。
+別の curve は異なる項目形式を選べます。
 数だけのリストと名前つきリストを相互変換しません。
 解決済み Db は作者の選択を再現できず、並べ替えや削除で読みが変わるためです。
 
@@ -654,12 +654,12 @@ radar-beta
 ### Comments
 
 普通の独立コメントは本文 1 段、見出し前は第 1 列にそろえます。
-inline コメントは行と接着を保ち、分離した空白は 1 個にします。
-mark、本文、末尾の空白を保ちます。
-native コメントは物理 EOL で終わり、LS・PS は内容のままです。
-先に始まった文字列と説明が percent の文字を所有する場合もあります。
+同じ行のコメントは行と接着を保ち、分離した空白は 1 個にします。
+印、本文、末尾の空白を保ちます。
+図固有のコメントは物理 EOL で終わり、LS・PS は内容のままです。
+先に始まった文字列と説明がパーセントの文字を所有する場合もあります。
 除去された共通領域は完全な原文と継続列を保ちます。
-共有の配置規則で文字の owner を変えないためです。
+共有の配置規則で文字の所有ノードを変えないためです。
 
 [fixture: radar/comments/standalone-comments]
 
@@ -691,18 +691,18 @@ radar-beta
 
 ### Global directives
 
-Root directive の内容、順、owner を保ちます。
-部品や値の内部の directive も残します。
+`Root` ディレクティブの内容、順、所有ノードを保ちます。
+部品や値の内部のディレクティブも残します。
 同じ印字行の中のディレクティブは、
 [ディレクティブ](./flowchart.ja.md#ディレクティブ)のとおりに置きます。
 元は同じ行にあった単位を別の行へ分けるときは、
-間の directive を次の単位に付けます。
+間のディレクティブを次の単位に付けます。
 右側の接触・分離は保ち、左側の接触は切れます。
 普通の独立した開始位置は本文 1 段です。
 複数行の内部と EOF に届く未完の末尾は書かれたままです。
 JSON 整形や集約はしません。
 除去時に周囲が接合され、部品の境界の空白を消すと受理を壊しうるためです。
-native の RadarIgnoredText directive は別の原文ノードです。
+図固有の `RadarIgnoredText` ディレクティブは別の原文ノードです。
 
 [fixture: radar/global-directives/header-to-body]
 
@@ -738,17 +738,18 @@ radar-beta
 
 ### Hidden forms
 
-RadarIgnoredText の source span は AST の owner で 1 回だけ印字します。
-owner は textBeforeHeader、textBeforeColon、body、
-member・entry・option・共通文の間隙です。
-value は共通 trivia を除くため、値ではなく範囲を印字します。
-member の間隙を本文の文に昇格せず、hidden YAML・JSON を整形しません。
-空の内部、3 fence で 1 match、別 match、後の有効な closer、
-内部の global・comment による切断を保ちます。
-普通の body opener は字下げできますが、内部と closer の列は保ちます。
-hidden form の前に改行を新設しません。
-文字列と共通値が持つ hidden に見える文字も所有を保ちます。
-native form の照合に失敗したコメントはコメントのままです。
+`RadarIgnoredText` の原文の範囲は AST の所有ノードで 1 回だけ印字します。
+所有ノードは `textBeforeHeader`、`textBeforeColon`、`body`、
+構成要素・項目・オプション・共通文の間隙です。
+値は共通注釈類を除くため、値ではなく範囲を印字します。
+構成要素の間隙を本文の文に昇格せず、隠れた YAML・JSON を整形しません。
+空の内部、囲み記号 3 つによる 1 つの一致範囲、別々の一致範囲、
+後で有効になる閉じ記号、
+内部の大域的な処理やコメントによる分断を保ちます。
+普通の本文の開始記号は字下げできますが、内部と閉じ記号の列は保ちます。
+隠れた形の前に改行を新設しません。
+文字列と共通値が持つ隠れた形に見える文字も所有を保ちます。
+図固有の形の照合に失敗したコメントはコメントのままです。
 
 [fixture: radar/hidden-forms/axis-hidden-members]
 
@@ -818,15 +819,15 @@ radar-beta
 
 ### Hidden boundaries
 
-ノード範囲外の消費 LF と closer 後の空白は共有の保護を使います。
-closer 後の space・tab は EOL を可視に保てます。
-それがない共通文の suffix は次の文の前に予備 LF が必要です。
+ノード範囲外の消費 LF と閉じ記号後の空白は共有の保護を使います。
+閉じ記号後の空白・タブは EOL を可視に保てます。
+それがない共通文の後置部分は次の文の前に予備 LF が必要です。
 EOF 自身も文を終えます。
 EOL が不要な axis・curve・options でも、書かれた境界を保ちます。
-見出し端の例外は見出し自身の hidden form だけに適用します。
+見出し端の例外は見出し自身の隠れた形だけに適用します。
 その行に残る文も本文の境界を持ちます。
-群の最後の member の suffix も同じ共有処理へ渡します。
-複数 suffix、可視 EOL 後の form、EOF の closer 後の空白も保ちます。
+群の最後の構成要素の後置部分も同じ共有処理へ渡します。
+複数後置部分、可視 EOL 後の形、EOF の閉じ記号後の空白も保ちます。
 外側の余分な空行は共有の空行規則に従います。
 
 [fixture: radar/hidden-boundaries/hidden-axis-no-spare-needed]
@@ -874,12 +875,12 @@ radar-beta%%{}%% axis A%%{}%%
 
 ### Retained prefix
 
-textBeforeHeader があれば、見出し keyword までの prefix 全体を保ちます。
-先頭 LF、コメントの列、渡された bare line の trivia、second scan の form、
-real・hidden YAML の順を含みます。
-共有の keepsPrefix で、無視された YAML の frontmatter への昇格を防ぎます。
+`textBeforeHeader` があれば、見出しキーワードまでの前置部分全体を保ちます。
+先頭 LF、コメントの列、渡された単独行の注釈類、再走査の形、
+実際の・隠れた YAML の順を含みます。
+共有の `keepsPrefix` で、無視された YAML のフロントマターへの昇格を防ぎます。
 title と設定が変わりうるためです。
-普通のコメントだけの prefix は root の整形を使います。
+普通のコメントだけの前置部分は最上位の整形を使います。
 
 [fixture: radar/retained-prefix/retained-leading-lf]
 
@@ -910,7 +911,7 @@ radar-beta
 
 ### Semicolons
 
-すべての authored semicolon を保ちます。
+すべての書かれたセミコロンを保ちます。
 保つ `;` を含む区間は、行の規則が無視する `;` が整形で変わる所を除き、
 ほかの場所と同じように整形します。
 この規則は、[セミコロン](./flowchart.ja.md#セミコロン)のとおり、
@@ -927,10 +928,10 @@ radar-beta
 [fixture: semicolons/no-stretch-formatted]
 [fixture: multi-line-statements/protected-semicolon-written-indentation]
 保護された見出しと最初の文の群はまとめて残します。
-style・classDef の選択、2 回の除去、大小文字・colon・hash の非該当形、
-Unicode の区間境界、directive 除去後の接合を保ちます。
-選択された semicolon の削除でも別のものが選択され、値が変わりえます。
-radar に普通の semicolon 区切りはありません。
+style・classDef の選択、2 回の除去、大小文字・コロン・ハッシュ記号の非該当形、
+Unicode の区間境界、ディレクティブ除去後の接合を保ちます。
+選択されたセミコロンの削除でも別のものが選択され、値が変わりえます。
+radar に普通のセミコロン区切りはありません。
 
 [fixture: radar/semicolons/native-axis-value]
 
@@ -968,12 +969,12 @@ radar-beta
 
 ### Blank lines
 
-文や trivia の間の普通の ASCII 空行は最大 1 行にします。
+文や注釈類の間の普通の ASCII 空行は最大 1 行にします。
 文書・本文の端と見出し直後の普通の空行は除きます。
 空白だけの行は空行にそろえます。
 余分な空間を増やさず、まとまりを保つためです。
-必要な hidden LF には先に共有の境界規則を適用します。
-値、説明、directive・hidden の内部、共通領域の接合、prefix は保ちます。
+隠れた形に必要な LF には先に共有の境界規則を適用します。
+値、説明、ディレクティブ・隠れた形の内部、共通領域の接合、前置部分は保ちます。
 
 [fixture: radar/blank-lines/blanks-ordinary]
 
@@ -1000,11 +1001,12 @@ radar-beta
 
 ### Trailing whitespace
 
-見出し、完了した axis・curve・options、説明 closer 後の無害な空白を除きます。
-共通の行値の外端は共有の trim に従います。
-コメント末尾、値の物理継続行、directive・hidden の内部、保護区間、
-保持する prefix は残します。
-hidden closer 後の空白は EOF でも残します。
+見出し、完了した axis・curve・options、説明の閉じの後にある、
+値の外側の無害な ASCII 空白を除きます。
+共通の行値は、共有の規則に従って両端の空白を除きます。
+コメント末尾、値の物理継続行、ディレクティブ・隠れた形の内部、保護区間、
+保持する前置部分は残します。
+隠れた形の閉じ記号後の空白は EOF でも残します。
 受理を左右しうるためです。
 
 [fixture: radar/trailing-whitespace/trailing-safe]
@@ -1031,14 +1033,14 @@ radar-beta
 
 ### Frontmatter yaml
 
-安全な real frontmatter だけ共有の保護つき YAML 整形を使います。
-区切りの空白、不正な YAML、字下げされた fence、HTML の危険、
-整形で fence が生じる本文は保ちます。
-tabWidth 0 でも YAML の入れ子と block scalar は共有の正の最小幅を使います。
-hidden YAML と保持する prefix は不透明なままです。
+安全な実際のフロントマターだけ共有の保護つき YAML 整形を使います。
+区切りの空白、不正な YAML、字下げされた囲み記号、HTML の危険、
+整形で囲み記号が生じる本文は保ちます。
+`tabWidth` 0 でも YAML の入れ子とブロックスカラーは共有の正の最小幅を使います。
+隠れた YAML と保持する前置部分は不透明なままです。
 有効な設定と無視される文字を分けるためです。
 描画設定を option の文へ移しません。
-frontmatter への fallback を戻す空の本文 title も削除しません。
+代わりに使うフロントマターの値を復活させる、本文の空の title も削除しません。
 
 [fixture: radar/frontmatter-yaml/frontmatter-safe]
 
@@ -1073,14 +1075,14 @@ radar-beta
 
 ### Line terminators and unicode
 
-共有の Prettier host の改行を使います。
+共有の Prettier 埋め込み先の改行を使います。
 物理 CR・CRLF は LF として読み、設定された LF・CRLF・CR で出します。
-ラベル、共通値、hidden form、frontmatter の内側も同じです。
+ラベル、共通値、隠れた形、フロントマターの内側も同じです。
 LS・PS・NBSP・BOM は字句上の役割を保ち、一般的な間隙にはしません。
-共通値の外端 trim と説明 opener 前の普通の空白だけが正規化対象です。
+共通値の外端の空白と、説明の開始記号前の普通の空白だけが正規化対象です。
 ラベルの LS・PS を LF にすると Db が変わります。
-host は先頭 BOM を除去・復元します。
-元の byte や frontmatter の状態は保証しません。
+埋め込み先は先頭 BOM を除去・復元します。
+元のバイトやフロントマターの状態は保証しません。
 
 [corpus fixture: radar/line-ls-between]
 
@@ -1121,9 +1123,9 @@ host は先頭 BOM を除去・復元します。
 ### Final newline
 
 普通の受理入力は設定された改行 1 個で終えます。
-空の本文と共通行、完了した説明、コメント、閉じた hidden form も同じです。
+空の本文と共通行、完了した説明、コメント、閉じた隠れた形も同じです。
 普通の末尾空行を除き、ファイル末尾をそろえます。
-EOF に届く global directive の末尾と必要な hidden・prefix の境界は保ちます。
+EOF に届く大域的なディレクティブの末尾と必要な隠れた形・前置部分の境界は保ちます。
 その内部に文字を追加しません。
 
 [fixture: radar/final-newline/final-comment]
@@ -1155,10 +1157,10 @@ directive-as-token-boundary、ignored-semicolon-as-token-boundary、
 html-tag-in-frontmatter、embedded-data-opaque、bare-percent-line-before-header、
 c4-keyword-anywhere です。
 原子的な切断は拒否し、ほかの印つき入力は仕様の読みを使います。
-radar に opaque 比較から除く固有の受理設定 key はありません。
-raw の拒否には raw Db がありません。
-空ラベル、空説明、全体の hidden form はノードであり、新しい差異ではありません。
-standalone の失敗は修復した出力を返さず構文エラーにします。
+radar に不透明比較から除く固有の受理設定キーはありません。
+素の mermaid.js の拒否には素の mermaid.js の Db がありません。
+空ラベル、空説明、全体の隠れた形はノードであり、新しい差異ではありません。
+単独ファイルの失敗は修復した出力を返さず構文エラーにします。
 Markdown は埋め込みを辞退します。
 [互換性](./compatibility.ja.md#radar-の原文の群と-hidden-境界)
 も参照してください。
@@ -1190,12 +1192,12 @@ Markdown は埋め込みを辞退します。
 
 ### Markdown fences
 
-共有の Markdown 経路で、dedent 済みの内容に同じ規則を適用します。
-fence・list・quote の字下げと EOL は host が担当します。
-最後の hidden padding を含め、内容の最終行の空白は host が削ります。
-途中の共通文 suffix の後で次の文に必要な空白は残します。
+共有の Markdown 経路で、外側の字下げを除いた内容に同じ規則を適用します。
+囲み記号・リスト・引用の字下げと EOL は埋め込み先が担当します。
+最後の隠れた形の余白を含め、内容の最終行の空白は埋め込み先が削ります。
+途中の共通文後置部分の後で次の文に必要な空白は残します。
 内容の規則を一つに保つためです。
-host の出力と冪等性は、内容の Db と原文保持とは別に検査します。
+埋め込み先の出力と冪等性は、内容の Db と原文保持とは別に検査します。
 
 [test: radar Markdown: top-level]
 

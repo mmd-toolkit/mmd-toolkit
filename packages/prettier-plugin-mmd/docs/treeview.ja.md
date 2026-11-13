@@ -1231,8 +1231,9 @@ treeView-beta
 罫線モードの枝付き注釈は、所有ノードの行へ、原順で space 1 個を挟んで寄せます。
 ただし、前に description が無く、間にコメント、directive、
 選ばれる semicolon や comment region が無い場合だけです。
-寄せることで値の枝が露出する、値の tab の読みが変わる、モードが失われる場合も、
-本文を保ちます。
+それ以外の場合は、本文全体を保ちます。
+寄せることで値の枝が露出する、値のタブの読みが変わる、
+罫線モードが失われる場合も含みます。
 comment region や除かれた directive の後の物理行から始まる注釈は、
 前置の spaces を所有ノードの名前の列に揃え、最低 1 space を残します。
 物理 LF が論理行から消えても、class、icon、
@@ -2920,7 +2921,8 @@ directive-as-token-boundary、ignored-semicolon-as-token-boundary、
 html-tag-in-frontmatter、embedded-data-opaque、bare-percent-line-before-header、
 c4-keyword-anywhere です。
 空の引用名と `icon()` は受理される構文です。
-拒否される文法を修復せず、記録があれば仕様の Db で比較します。
+拒否される文法は修復しません。
+受理されたコーパスの入力を、記録があれば仕様の Db と比較します。
 raw の拒否に raw の Db はなく、treeview 固有の opaque の受理設定はありません。
 
 [corpus fixture: treeview/directive-header-inside]

@@ -166,8 +166,8 @@ treemap
 
 ### Statements one per line
 
-普通の隣接行や閉じた説明の後の文は、元順で一文一行にします。
-ほかの図種と同じです。
+普通の隣接行や閉じた説明の後の文は、元の順序で 1 行に 1 文ずつ置き、
+文の境界を見やすくします。
 終端のない空の classDef と次の引用行の接触は、間の directive も含めて保ちます。
 空白を足すと行が style に取り込まれるためです。
 完了した classDef にこの接触の制約はありませんが、semicolon の保護が優先します。
@@ -465,6 +465,37 @@ Db は各スタイルの空白を保つので変わりますが、描かれる�
 ```mmd
 treemap
   classDef zz color:red , fill:blue,stroke:rgb(1\,2\,3),
+```
+
+### Colors
+
+`classDef` のスタイルの色は、ほかの図種と同じく小文字で印字します。
+（[同じに描かれる色](./compatibility.ja.md#同じに描かれる色)）。
+`classDef zz fill:#ABCDEF` は `classDef zz fill: #abcdef` と印字します。
+対象にする版は、`#ABCDEF` と `#abcdef` を同じに描きます。
+`url(#ABC)` の `#ABC` のように、色でない `#` は書かれたままにします。
+[fixture: colors/colors-in-lower-case]
+
+入力
+([colors/colors-in-lower-case-input.mmd](../tests/fixtures/treemap/colors/colors-in-lower-case-input.mmd)):
+
+```mmd
+treemap-beta
+"A"
+  "B": 1:::zz
+classDef zz fill:#ABCDEF,stroke:#DEF,color:#C0FFEE
+classDef yy color:#333,fill:url(#ABC)
+```
+
+出力
+([colors/colors-in-lower-case-output.mmd](../tests/fixtures/treemap/colors/colors-in-lower-case-output.mmd)):
+
+```mmd
+treemap
+  "A"
+    "B": 1:::zz
+  classDef zz fill: #abcdef, stroke: #def, color: #c0ffee
+  classDef yy color: #333, fill: url(#ABC)
 ```
 
 ### Semicolons

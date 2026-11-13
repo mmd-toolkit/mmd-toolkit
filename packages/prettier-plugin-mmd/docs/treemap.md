@@ -455,6 +455,38 @@ treemap
   classDef zz color:red , fill:blue,stroke:rgb(1\,2\,3),
 ```
 
+### Colors
+
+A color in the style of a `classDef` is printed in lower case, as in the other
+diagram types (see
+[Colors that are drawn the same](./compatibility.md#colors-that-are-drawn-the-same)):
+`classDef zz fill:#ABCDEF` is printed `classDef zz fill: #abcdef`. The versions
+that count draw `#ABCDEF` and `#abcdef` the same. A `#` that is no color, such
+as the `#ABC` of `url(#ABC)`, stays as written. [fixture:
+colors/colors-in-lower-case]
+
+Input
+([colors/colors-in-lower-case-input.mmd](../tests/fixtures/treemap/colors/colors-in-lower-case-input.mmd)):
+
+```mmd
+treemap-beta
+"A"
+  "B": 1:::zz
+classDef zz fill:#ABCDEF,stroke:#DEF,color:#C0FFEE
+classDef yy color:#333,fill:url(#ABC)
+```
+
+Output
+([colors/colors-in-lower-case-output.mmd](../tests/fixtures/treemap/colors/colors-in-lower-case-output.mmd)):
+
+```mmd
+treemap
+  "A"
+    "B": 1:::zz
+  classDef zz fill: #abcdef, stroke: #def, color: #c0ffee
+  classDef yy color: #333, fill: url(#ABC)
+```
+
 ### Semicolons
 
 A `;` that ends a `classDef` statement with a style, at the end of its line, is

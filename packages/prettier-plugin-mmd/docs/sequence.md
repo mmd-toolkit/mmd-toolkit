@@ -551,9 +551,10 @@ three and `hsla(` with four, the second and the third of an `hsl` a percentage,
 all in lower case. `box rgb(33,66,99) Team (x)` stays as written, since the
 pattern of mermaid.js reads up to the last `)`, and so do
 `box RGB(33,66,99) Team`, `box rgb (33,66,99) Team`, and a `rect` with more text
-than the function. The whitespace before a comma and inside the parentheses
-stays as written. [fixture: colors/functions-spaced] [fixture:
-colors/function-padding-kept] [fixture: colors/functions-as-written] [fixture:
+than the function. The whitespace before a comma, immediately after the opening
+`(`, and immediately before the closing `)` stays as written. [fixture:
+colors/functions-spaced] [fixture: colors/function-padding-kept] [fixture:
+colors/functions-as-written] [fixture:
 colors/functions-beside-comments-and-directives] See
 [Colors that are drawn the same](./compatibility.md#colors-that-are-drawn-the-same)
 for the versions that were run and the Db.

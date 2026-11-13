@@ -241,7 +241,7 @@ function startsTitleTextWithHashOnNextLine(
   if (statement.type !== "TimelineTitleStatement") return false
   const text = source.text.slice(...statement.value.range)
   const hash = statement.value.range[0] + text.length - text.trimStart().length
-  if (text.trimStart()[0] !== "#") return false
+  if (!text.trimStart().startsWith("#")) return false
   const lineBreak = source.text.lastIndexOf("\n", hash)
   return lineBreak >= statement.range[0] && lineBreak + 1 < hash
 }

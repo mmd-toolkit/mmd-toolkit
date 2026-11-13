@@ -351,9 +351,13 @@ whitespace-between-tokens/style-words-directive-kept] A backslash does not
 escape a `,` here: `fill:a\,b ,stroke:c` is printed `fill: a\, b, stroke: c`.
 [fixture: whitespace-between-tokens/style-backslash-before-comma] A `style`
 keeps whether whitespace stands before a style that starts with `color:` or
-`text-align:`, and between such a name and the `:`, a run of whitespace becoming
-one space, since a version that counts puts a style that starts so in the style
-of the label of the class: `style A fill:#f00,color:white` is printed
+`text-align:`, since a version that counts puts a style that follows a `,`
+directly and starts so in the style of the label of the class. The first style
+of the statement, and a style with whitespace before it, are not read so, with a
+gap between the name and the `:` or without it: `style A color :red` is printed
+`style A color: red`. Nor is a style that follows a `,` directly and has such a
+gap: it is printed with whitespace before it, `style A fill:#f00,color :red` as
+`style A fill: #f00, color: red`. `style A fill:#f00,color:white` is printed
 `style A fill: #f00,color: white` (see
 [Styles that are drawn the same](./compatibility.md#styles-that-are-drawn-the-same)
 and
@@ -361,11 +365,12 @@ and
 [fixture: whitespace-between-tokens/style-color-touching-kept] [fixture:
 whitespace-between-tokens/style-color-spaced] [fixture:
 whitespace-between-tokens/style-text-align-touching-kept] [fixture:
-whitespace-between-tokens/style-label-name-colon-gap-kept] A `style` whose last
-style ends with a backslash keeps whether whitespace stands after it, a run of
-whitespace becoming its first character, also at the end of the statement, since
-mermaid.js joins the styles of a class with `;` as they are, and the backslash
-would escape the `;` (see
+whitespace-between-tokens/style-label-name-colon-gap-after-comma-spaced]
+[fixture: whitespace-between-tokens/style-label-name-colon-gap-first-spaced] A
+`style` whose last style ends with a backslash keeps whether whitespace stands
+after it, a run of whitespace becoming its first character, also at the end of
+the statement, since mermaid.js joins the styles of a class with `;` as they
+are, and the backslash would escape the `;` (see
 [Styles that are drawn the same](./compatibility.md#styles-that-are-drawn-the-same)):
 `style A fill:abc\  ,stroke:green` is printed
 `style A fill: abc\ , stroke: green`. [fixture:

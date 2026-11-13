@@ -577,7 +577,7 @@ mermaid.js の文書は、`rect` の色をこの形で書いています（例�
 mermaid.js の正規表現が最後の `)` まで読むので、書かれたままです。
 `box RGB(33,66,99) Team`、`box rgb (33,66,99) Team`、
 関数のほかにテキストがある `rect` も、書かれたままです。
-コンマの前の空白と括弧の内側の空白は、書かれたままです。
+コンマの前、開き括弧 `(` の直後、閉じ括弧 `)` の直前の空白は、書かれたままです。
 [fixture: colors/functions-spaced] [fixture: colors/function-padding-kept]
 [fixture: colors/functions-as-written]
 [fixture: colors/functions-beside-comments-and-directives]
@@ -1405,7 +1405,8 @@ box やブロックの中の文が `end` の前にある場合が当たります
 書かれた字下げはその先にあるもののものなので、文は通常の字下げで印字し、
 ブロックの行も文と一緒に動かします。
 複数行にわたるディレクティブの残りなど、
-データブロックの節に挙げたもの以外で始まる行の文も同じです。
+[データブロック](./flowchart.ja.md#データブロック)
+の節に挙げたもの以外で始まる行の文も同じです。
 `end` が先にある文は、その行と同じ深さなので、書かれたまま印字します。
 [fixture: multi-line-values/data-use-tabs-box-header-moved]
 [fixture: multi-line-values/data-use-tabs-section-keyword-moved]

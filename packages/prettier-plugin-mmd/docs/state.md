@@ -262,7 +262,7 @@ The spelling of the header, `stateDiagram` or `stateDiagram-v2`, stays as
 written, like the name of any other header (see
 [The names of a header](./compatibility.md#the-names-of-a-header)): the examples
 in the documentation of mermaid.js use `stateDiagram-v2` 17 times and
-`stateDiagram` 5 times, and mermaid.js 12.3.0 draws both with the same diagram.
+`stateDiagram` 5 times, and pinned mermaid.js draws both with the same diagram.
 [fixture: header/spellings-kept] [fixture: indentation/header-without-v2-kept]
 
 Input (escaped): `"stateDiagram\nSTATE \"legacy\" AS old"`.
@@ -802,11 +802,11 @@ The pinned Mermaid renders `stateDiagram-v2` notes as Markdown labels, setting
 This is limited Markdown support: lists fall back to their source text instead
 of a list layout in
 [`handle-markdown-text.ts`](https://github.com/mermaid-js/mermaid/blob/2086904e76c692331e34a45d7cc3bc30860d040e/packages/mermaid/src/rendering-util/handle-markdown-text.ts#L120-L145).
-The formatter recognizes Markdown with the same Marked 16.4.2 as pinned Mermaid.
-It does not run the Markdown formatter on note contents; the rules below only
-align supported paragraph margins while preserving the remaining body text.
-[fixture: notes/markdown-code-kept] [fixture:
-notes/markdown-unordered-list-kept]
+The formatter reads notes with the same Marked, 16.4.2, as pinned Mermaid (see
+[`package.json`](../package.json)). It does not run the Markdown formatter on
+note contents; the rules below only align supported paragraph margins while
+preserving the remaining body text. [fixture: notes/markdown-code-kept]
+[fixture: notes/markdown-unordered-list-kept]
 
 For a note whose body starts after a single-line header, with `end note`
 starting its own line, align every content line of a single paragraph one level
@@ -867,12 +867,12 @@ notes/html-first-line-zero-width] [fixture: notes/first-tab-markup-margin]
 Mermaid keeps the margins in the Db, so the Db of the printed note differs from
 the Db of the written note, but it draws the same figure. Both texts of each
 fixture of this section whose printed note differs from the written one were
-drawn with mermaid.js 12.3.0 in Chromium, after the state that the note refers
+drawn with pinned mermaid.js in Chromium, after the state that the note refers
 to was declared where the fixture does not declare it, and with `handDrawnSeed`
 set, since the lines of the box of a note are random otherwise. The SVG, without
 the generated ids, and the pixels were the same, except for
 `notes/over-lines-empty-id-kept`, whose note refers to an empty id and which
-mermaid.js 12.3.0 cannot draw in either form. The tests compare the Db of the
+pinned mermaid.js cannot draw in either form. The tests compare the Db of the
 printed text with the margins of the notes restored from the Db of the written
 text (`stateDbForFormattingComparison` in `tests/state-note-margins.ts`). When
 the pinned mermaid.js is updated, draw both texts of each fixture again before

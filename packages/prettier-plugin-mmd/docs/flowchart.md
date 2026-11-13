@@ -702,9 +702,15 @@ whitespace-between-tokens/class-def-stroke-before-colon-kept] A `style` styles a
 node, and uses the one form. [fixture:
 whitespace-between-tokens/style-stroke-before-colon-spaced] A `style` keeps
 whether whitespace stands before a style that starts with `color:` or
-`text-align:`, and between such a name and the `:`, a run of whitespace becoming
-one space, since a version that counts puts a style that starts so in the style
-of the label of the node: `style A fill:#f00,color:white` is printed
+`text-align:`, and, for the first style of the statement, between such a name
+and the `:`, a run of whitespace becoming one space, since a version that counts
+puts a style that starts so in the style of the label of the node:
+`style A color   :red,fill:#f00` is printed `style A color : red, fill: #f00`. A
+style with whitespace before it does not start so, with the gap or without it:
+`style A fill:#f00, color :red` is printed `style A fill: #f00, color: red`. A
+style that follows a `,` directly and has a gap before its `:` is printed so
+too, with whitespace before it: `style A fill:#f00,color   :red` is printed
+`style A fill: #f00, color: red`. `style A fill:#f00,color:white` is printed
 `style A fill: #f00,color: white`, and `style A fill:#f00 ,   color:white` is
 printed `style A fill: #f00, color: white` (see
 [Styles that are drawn the same](./compatibility.md#styles-that-are-drawn-the-same)
@@ -714,16 +720,19 @@ and
 whitespace-between-tokens/style-color-spaced] [fixture:
 whitespace-between-tokens/style-color-first] [fixture:
 whitespace-between-tokens/style-text-align-touching-kept] [fixture:
-whitespace-between-tokens/style-label-name-colon-gap-kept] A `linkStyle` keeps
-the same whitespace for a style that starts with `color:` or `text-align:`,
-which a version that counts puts in the style of the label of a link. [fixture:
-whitespace-between-tokens/link-style-label-names-kept] A `linkStyle` keeps
-whether whitespace stands between a name that ends with `fill` and the `:`, a
-run of whitespace becoming one space: `linkStyle 0 fill  :#f00` is printed
-`linkStyle 0 fill : #f00`. A version that counts makes the style of the label of
-a link from the styles of the link and puts `color:` in the place of the first
-`fill:` in them, or, in a swimlane diagram, in the first style only, and
-`fill :` is no `fill:` (see
+whitespace-between-tokens/style-label-name-colon-gap-first-kept] [fixture:
+whitespace-between-tokens/style-label-name-colon-gap-after-comma-spaced]
+[fixture:
+whitespace-between-tokens/style-label-name-colon-gap-after-space-spaced] A
+`linkStyle` keeps the same whitespace for a style that starts with `color:` or
+`text-align:`, which a version that counts puts in the style of the label of a
+link. [fixture: whitespace-between-tokens/link-style-label-names-kept] A
+`linkStyle` keeps whether whitespace stands between a name that ends with `fill`
+and the `:`, a run of whitespace becoming one space: `linkStyle 0 fill  :#f00`
+is printed `linkStyle 0 fill : #f00`. A version that counts makes the style of
+the label of a link from the styles of the link and puts `color:` in the place
+of the first `fill:` in them, or, in a swimlane diagram, in the first style
+only, and `fill :` is no `fill:` (see
 [Forms kept for versions of mermaid.js that count](./compatibility.md#forms-kept-for-versions-of-mermaidjs-that-count)
 and
 [Styles that are drawn the same](./compatibility.md#styles-that-are-drawn-the-same)).

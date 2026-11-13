@@ -4,11 +4,12 @@ import { restoreStrings } from "./db-restore.ts"
 import { objectOf } from "./db-values.ts"
 
 /**
- * The diagram types whose styles hold colors that the formatter prints in lower
- * case, and the sequence diagram, whose boxes and rectangles hold color
- * functions that it prints with a space after each comma.
+ * The diagram types whose Db holds colors that the formatter prints in another
+ * form than written: the styles with colors in lower case, and the boxes and
+ * rectangles of a sequence diagram, whose color functions are printed with a
+ * space after each comma.
  */
-export const colorCaseDiagramTypes: ReadonlySet<string> = new Set([
+export const colorFormDiagramTypes: ReadonlySet<string> = new Set([
   "agentflow",
   "block",
   "classDiagram",
@@ -20,6 +21,7 @@ export const colorCaseDiagramTypes: ReadonlySet<string> = new Set([
   "sequence",
   "stateDiagram",
   "swimlane",
+  "treemap",
   "usecase",
   "venn",
 ])

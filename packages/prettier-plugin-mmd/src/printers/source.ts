@@ -123,6 +123,20 @@ export function isSpaceOrTab(character: string): boolean {
   return character === " " || character === "\t"
 }
 
+/**
+ * Whether a character is an ASCII letter, an ASCII digit, or `_`: the
+ * characters that the lexers read as a word (common.md, Notation).
+ */
+export function isWordCharacter(character: string | undefined): boolean {
+  return (
+    character !== undefined &&
+    ((character >= "a" && character <= "z") ||
+      (character >= "A" && character <= "Z") ||
+      (character >= "0" && character <= "9") ||
+      character === "_")
+  )
+}
+
 /** Whether the text ends at `offset` or a line terminator stands there. */
 export function isAtLineEnd(source: Source, offset: number): boolean {
   return (

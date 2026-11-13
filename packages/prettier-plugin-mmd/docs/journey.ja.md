@@ -94,7 +94,7 @@ journey
 
 各文は 1 行に 1 つ置きます。
 journey には文を区切るものがなく（diagrams/journey.md、
-Diagram and statements）、ヘッダーと `accDescr` ブロックの後ろには、
+図と文）、ヘッダーと `accDescr` ブロックの後ろには、
 同じ行に次の文を続けられます。
 それらの後ろの文は、それぞれの行に移します。
 [fixture: statements-one-per-line/header-then-title]
@@ -273,6 +273,7 @@ mermaid.js の文書の例は、このコロンを説明に接して書きます
 [コロンの前の空白を決める例](./compatibility.ja.md#コロンの前の空白を決める例)
 を参照してください。
 そのため `Make tea : 5: Me` は `Make tea: 5: Me` と印字します。
+名前に桁そろえの空白がある Gantt 図のタスクをそろえるのと同じく、
 コロンをそろえる空白は残します。
 節のどれかの説明が、コロンの前に 2 つ以上の空白かタブを持つ節は、
 その節のタスクをすべて書かれたままにします（最初の `section` より前のタスクは、
@@ -396,8 +397,8 @@ journey
 ### 無視されるデータ
 
 3 つ目のコロン以降は、mermaid.js が読まず、木はテキストとして持ちます。
-コロンも含めて書かれたまま印字し、コロンは、書かれた空白によらず、
-前の値に接します。 [fixture: ignored-data/third-colon-touches]
+コロンも含めて書かれたまま印字し、タスクのデータのコロンと同じく、
+コロンは、書かれた空白によらず、前の値に接します。 [fixture: ignored-data/third-colon-touches]
 [fixture: ignored-data/text-as-written] [fixture: ignored-data/four-colons]
 空の score や空の人の後でも同じです。 [fixture: ignored-data/after-empty-people]
 末尾の空白は落とします。 [fixture: ignored-data/trailing-whitespace-dropped]
@@ -686,9 +687,9 @@ mermaid.js が複数行にわたって読む文は、
 タスクは複数行に書かれることがありません。
 [fixture: multi-line-statements/breaks-decided-one-by-one]
 [fixture: multi-line-statements/value-on-next-line-joined]
-`accTitle` と `accDescr:` の文では、trivia の改行を保ち、
-section の下でも後続の構造部分と独立した trivia 行を文より 1 段深くそろえます。
-各 gap の最初の行の末尾と、指令の内部全体を保ちます。
+`accTitle` と `accDescr:` の文では、注釈類の改行を保ち、
+section の下でも後続の構造部分と独立した注釈類行を文より 1 段深くそろえます。
+各隙間の最初の行の末尾と、指令の内部全体を保ちます。
 物理行を結ぶコメント領域は、元の配置を保ちます。
 `;` があるだけでは、複数行に書かれた文をつなぐ妨げにはなりません。
 journey では文の区切りに `;` を使えず、
@@ -698,7 +699,7 @@ journey では文の区切りに `;` を使えず、
 [fixture: multi-line-statements/accessibility-trivia-continuations]
 
 title と section では、値の空白が Db の一部なので、
-複数行の trivia を含む配置を元のまま保ちます。
+複数行の注釈類を含む配置を元のまま保ちます。
 [fixture: multi-line-statements/comment-line-inside-kept]
 [fixture: multi-line-statements/directive-inside-kept]
 
@@ -896,12 +897,12 @@ journey # c
 [fixture: directives/statement-after-directive-line]
 
 元は同じ行にあった単位を別の行へ分けるときは、
-間の directive を次の単位に付けます。
+間のディレクティブを次の単位に付けます。
 右側の接触・分離は保ち、左側の接触は切れます。
 
 [fixture: journey/directives/split-directive-gap]
 
-文の単位の間の指令は元の gap に残し、
+文の単位の間の指令は元の隙間に残し、
 [ディレクティブ](#ディレクティブ)のとおりに置きます。
 構造部分の続きの列は[複数行の文](#複数行の文)に従います。
 値の中の指令は、そのテキストの一部です。 [fixture: directives/between-units]

@@ -1,5 +1,5 @@
 ---
-"prettier-plugin-mmd": patch
+"prettier-plugin-mmd": minor
 ---
 
 Print a string after the `(-` opener of a mindmap or kanban shape without its

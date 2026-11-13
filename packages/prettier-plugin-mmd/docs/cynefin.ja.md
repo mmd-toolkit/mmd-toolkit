@@ -12,19 +12,19 @@ cynefin-beta と cynefin-beta: の整形規則です。
 ### Header
 
 cynefin-beta は第 1 列に置きます。
-見出しの語の直後の colon は削除します。
+見出しの語の直後のコロンは削除します。
 mermaid.js は `cynefin-beta:` と `cynefin-beta` を同じ見出しとして読み、
-その文書の例は colon なしを 3 回使い、colon ありは使わないためです。
+その文書の例はコロンなしを 3 回使い、コロンありは使わないためです。
 （[ヘッダーの後のコロン](./compatibility.ja.md#ヘッダーの後のコロン)を参照）。
-語との間に hidden の形か global directive があるときと、
-`;` か hidden YAML block の `---` が接するときは、colon を保ちます。
+語との間に隠れた形か大域的なディレクティブがあるときと、
+`;` か隠れた YAML ブロックの `---` が接するときは、コロンを保ちます。
 [fixture: cynefin/header/colon-removed]
 [fixture: cynefin/header/colon-semicolon-kept]
 [fixture: cynefin/header/colon-directive-before-hidden-yaml-kept]
 普通の最初の文は次の行へ移し、見出しを見つけやすくします。
-global directive の接触、hidden の隣接、保護行は共有規則に従います。
+大域的なディレクティブの接触、隠れた形の隣接、保護行は共有規則に従います。
 見出し行を保つときは、その行の領域と項目の開きも同じ行に保ちます。
-空白で離れた colon は修復せず、拒否します。
+空白で離れたコロンは修復せず、拒否します。
 
 [fixture: cynefin/hidden-boundaries/meeting-inline-directive-directive]
 
@@ -78,7 +78,7 @@ global directive の接触、hidden の隣接、保護行は共有規則に従�
 
 [fixture: cynefin/header/header-global-colon]
 
-入力（escape 表記）: `"  cynefin-beta complex \"Header\""`
+入力（エスケープ表記）: `"  cynefin-beta complex \"Header\""`
 
 出力
 ([header/header-bare-inline-output.mmd](../tests/fixtures/cynefin/header/header-bare-inline-output.mmd)):
@@ -93,7 +93,7 @@ cynefin-beta
 
 本文の文は設定の 1 段、領域の項目は 2 段にします。
 親は列ではなく、木の項目リストで決まるためです。
-tabWidth が 0 なら空白は加えず、useTabs は幅が 0 でも 1 段に 1 tab を使います。
+`tabWidth` が 0 なら空白は加えず、`useTabs` は幅が 0 でも 1 段に 1 タブを使います。
 説明本文以外の値の継続行と保護された内部は元の列を保ちます。
 
 [fixture: cynefin/indentation/indent-two]
@@ -106,7 +106,7 @@ tabWidth が 0 なら空白は加えず、useTabs は幅が 0 でも 1 段に 1 
 
 [fixture: cynefin/indentation/indent-zero-tabs]
 
-入力（escape 表記）: `"cynefin-beta\ncomplex\n \"Indent\"\nclear-->chaotic"`
+入力（エスケープ表記）: `"cynefin-beta\ncomplex\n \"Indent\"\nclear-->chaotic"`
 
 出力
 ([indentation/indent-two-output.mmd](../tests/fixtures/cynefin/indentation/indent-two-output.mmd)):
@@ -125,10 +125,10 @@ cynefin-beta
 領域と項目、隣接する文字列、隣接する領域の間に文法上 EOL は不要なので、
 分割しても Db は同じです。
 空文字列、重複項目、複数行文字列を残します。
-項目間のコメント、directive、空行、hidden form は列を閉じません。
-保護区間と hidden の同一行の隣接を優先し、閉じ記号は補いません。
+項目間のコメント、ディレクティブ、空行、隠れた形は列を閉じません。
+保護区間と隠れた形の同一行の隣接を優先し、閉じ記号は補いません。
 
-保つ semicolon の行では、領域の語と最初の項目も同じ行に保ちます。
+保つセミコロンの行では、領域の語と最初の項目も同じ行に保ちます。
 項目だけを次の行へ動かすと、次の整形で項目同士が分かれるためです。
 
 [fixture: cynefin/semicolons/review-semicolon-following-pair]
@@ -159,7 +159,7 @@ cynefin-beta
 
 [corpus fixture: cynefin/gram-items-empty-description-redeclare]
 
-入力（escape 表記）: `"cynefin-beta\ncomplex\"Alpha\"'Beta'clear\"Gamma'\""`
+入力（エスケープ表記）: `"cynefin-beta\ncomplex\"Alpha\"'Beta'clear\"Gamma'\""`
 
 出力
 ([domains-and-items/open-body-output.mmd](../tests/fixtures/cynefin/domains-and-items/open-body-output.mmd)):
@@ -175,13 +175,13 @@ cynefin-beta
 
 ### Component spacing
 
-同じ行に残る普通の領域と項目の部品は 1 space で分け、部品を見分けやすくします。
-同じ印字行の中の global directive は、
-[Global directives](#global-directives) のとおりに置きます。
+同じ行に残る普通の領域と項目の部品は 空白 1 個で分け、部品を見分けやすくします。
+同じ印字行の中の大域的なディレクティブは、
+[大域的なディレクティブ](#global-directives) のとおりに置きます。
 行に分ける所も同じです。
-hidden closer の padding は保護されたままにします。
+隠れた形の閉じ記号の余白は保護されたままにします。
 保持する `;` が保護するのは、
-行の規則が読む範囲だけです（[Semicolons](#semicolons)を参照）。
+行の規則が読む範囲だけです（[セミコロン](#semicolons)を参照）。
 
 [fixture: cynefin/component-spacing/domain-hidden-contact]
 
@@ -191,7 +191,7 @@ hidden closer の padding は保護されたままにします。
 
 [fixture: cynefin/semicolons/cross-domain-suffix]
 
-入力（escape 表記）:
+入力（エスケープ表記）:
 `"cynefin-beta\ncomplex%%{!domain-gap}%% \"ContactHidden\""`
 
 出力
@@ -204,7 +204,7 @@ cynefin-beta
 
 ### Statements one per line
 
-普通の領域、遷移、共通文は source 順で別々の行にし、semicolon は加えません。
+普通の領域、遷移、共通文は原文順で別々の行にし、セミコロンは加えません。
 ほかの図種と同じです。
 遷移と共通文には可視 EOL が要ります。
 領域の構文に見える title の内容は一つの値のままにし、
@@ -218,7 +218,7 @@ cynefin-beta
 
 [fixture: cynefin/statements-one-per-line/empty-description-redeclare]
 
-入力（escape 表記）:
+入力（エスケープ表記）:
 `"cynefin-beta\ncomplex\"Left\"clear\"Right\"chaotic-->clear\nconfusion\"End\""`
 
 出力
@@ -237,9 +237,9 @@ cynefin-beta
 
 ### Arrow spacing
 
-from --> to の矢印全体の左右を普通の 1 space にし、端点の語と区別します。
+`from --> to` の矢印全体の左右を普通の 空白 1 個にし、端点の語と区別します。
 矢印は分割せず、部品の間を折り返しません。
-named gap の hidden と global directive の接触は元の境界を保ちます。
+名前付きの隙間の隠れた形と大域的なディレクティブの接触は元の境界を保ちます。
 
 [fixture: cynefin/arrow-spacing/arrow-bare]
 
@@ -249,7 +249,7 @@ named gap の hidden と global directive の接触は元の境界を保ちま�
 
 [fixture: cynefin/global-directives/global-component-gaps]
 
-入力（escape 表記）: `"cynefin-beta\ncomplex-->clear"`
+入力（エスケープ表記）: `"cynefin-beta\ncomplex-->clear"`
 
 出力
 ([arrow-spacing/arrow-bare-output.mmd](../tests/fixtures/cynefin/arrow-spacing/arrow-bare-output.mmd)):
@@ -262,17 +262,17 @@ cynefin-beta
 ### Label colon
 
 ラベルを端点から分けるため、
-to : "label" の colon の前後を普通の 1 space にします。
+`to : "label"` のコロンの前後を普通の 空白 1 個にします。
 ラベルは遷移のものであって端点のものではないので、
-colon の前の空白は mermaid.js の文書の例が決めます。
-colon の後に空白を置いて書いた 4 件は、すべて前にも空白を置いています。
+コロンの前の空白は mermaid.js の文書の例が決めます。
+コロンの後に空白を置いて書いた 4 件は、すべて前にも空白を置いています。
 これは手順 3 です。
 詳しくは
 [コロンがどの種類かの決め方](./printed-form.ja.md#コロンがどの種類かの決め方) と
 [コロンの前の空白を決める例](./compatibility.ja.md#コロンの前の空白を決める例)
 を参照してください。
 ラベルなし、引用符の中が空、空白だけのラベルは別々の形として残します。
-hidden と global trivia の隙間を普通の空白より優先します。
+隠れた形と大域的な注釈類の隙間を普通の空白より優先します。
 
 [fixture: cynefin/label-colon/colon-tabs]
 
@@ -288,7 +288,7 @@ hidden と global trivia の隙間を普通の空白より優先します。
 
 [fixture: cynefin/global-directives/global-component-gaps]
 
-入力（escape 表記）: `"cynefin-beta\nchaotic --> confusion\t:\t\t'ColonTabs'"`
+入力（エスケープ表記）: `"cynefin-beta\nchaotic --> confusion\t:\t\t'ColonTabs'"`
 
 出力
 ([label-colon/colon-tabs-output.mmd](../tests/fixtures/cynefin/label-colon/colon-tabs-output.mmd)):
@@ -300,15 +300,15 @@ cynefin-beta
 
 ### Strings
 
-項目と遷移ラベルの StringLiteral は source span のまま印字します。
-escape、空の値、HTML・entity、native form に見える文字を保ちますが、
+項目と遷移ラベルの `StringLiteral` は原文の範囲のまま印字します。
+エスケープ、空の値、HTML・entity、図固有の形に見える文字を保ちますが、
 項目の中の空白とタブの連なりは、空白 1 つにして印字します。
 （[同じに描かれるテキスト中の空白の連なり](./compatibility.ja.md#同じに描かれるテキスト中の空白の連なり)）。
 `'` で囲まれた文字列は、内容に `'`、`"`、バックスラッシュ、改行、U+2028、
 U+2029、バッククォート、`&`、`#`、`<` がある場合を除き、`"` で囲んで印字します。
 （[同じに描かれる綴り](./compatibility.ja.md#同じに描かれる綴り)）。
 `singleQuote` は読みません。
-trim や escape の decode は値を変え得ます。
+両端の空白の除去やエスケープの復号は値を変え得ます。
 
 [fixture: cynefin/strings/strings-quotes]
 
@@ -332,7 +332,7 @@ trim や escape の decode は値を変え得ます。
 
 [fixture: cynefin/strings/strings-transition-escapes]
 
-入力（escape 表記）:
+入力（エスケープ表記）:
 `"cynefin-beta\ncomplex 'Single' \"Double\" 'opposite \" quote' \"opposite ' quote\""`
 
 設定: `{"singleQuote": true}`
@@ -362,7 +362,7 @@ cynefin-beta
 
 [fixture: cynefin/empty-domains/empty-domain-last-reset]
 
-入力（escape 表記）: `"cynefin-beta\ncomplicated"`
+入力（エスケープ表記）: `"cynefin-beta\ncomplicated"`
 
 出力
 ([empty-domains/empty-domain-alone-output.mmd](../tests/fixtures/cynefin/empty-domains/empty-domain-alone-output.mmd)):
@@ -374,7 +374,7 @@ cynefin-beta
 
 ### Redeclarations
 
-各領域ブロックと項目を source 順で残し、
+各領域ブロックと項目を原文順で残し、
 重複項目も confusion の全項目も保ちます。
 後の宣言は前を置き換えるため、統合すると読みが変わります。
 Db の公開順や描画上限を理由に、並べ替え・削除・打ち切りはしません。
@@ -385,7 +385,7 @@ Db の公開順や描画上限を理由に、並べ替え・削除・打ち切�
 
 [fixture: cynefin/redeclarations/confusion-overflow]
 
-入力（escape 表記）:
+入力（エスケープ表記）:
 `"cynefin-beta\nclear \"Earlier\"\ncomplex \"Partner\"\nclear \"Final\""`
 
 出力
@@ -405,11 +405,11 @@ cynefin-beta
 
 自己遷移、重複、未宣言の端点、空ラベルも含めて、全遷移を残します。
 自己遷移が Db から消えても、書かれた構文は残るためです。
-重複の削除や空白だけのラベルの trim は読みを変え得ます。
+重複の削除や空白だけのラベルの両端の空白の除去は読みを変え得ます。
 
 [fixture: cynefin/transition-occurrences/transition-occurrences]
 
-入力（escape 表記）:
+入力（エスケープ表記）:
 `"cynefin-beta\ncomplex-->clear:'First'\ncomplex-->clear:'Second'\ncomplex-->complex:'Self'\nclear-->clear\nconfusion-->chaotic:\"\""`
 
 出力
@@ -426,16 +426,16 @@ cynefin-beta
 
 ### Title
 
-共有の共通行 layout で普通の外端空白を trim し、非空値の前を 1 space にして、
+共有の共通行配置で普通の外端空白を除き、非空値の前を 空白 1 個にして、
 内部の文字は保ちます。
 空または空白だけの値は title だけにし、次行を値にしません。
 引用符を文字列の区切りと解釈せず、Db が等しい簡潔な外端を選びます。
-空の代入によるリセットと trivia の接触を残します。
+空の代入によるリセットと注釈類の接触を残します。
 題の終わりのディレクティブは、それぞれの前に空白があれば空白 1 つを置き、
 行末の空白の有無にかかわらず、最後のディレクティブの後の空白を除いて印字します。
 （[同じに描かれるキーワードの後のテキスト](./compatibility.ja.md#同じに描かれるキーワードの後のテキスト)）。
 [fixture: title/title-directives-end-blanks-dropped]
-null の title の separator 1 space・tab は範囲の外にあります。
+`null` の title の 区切り 空白 1 個・タブは範囲の外にあります。
 値の最初の文字より前にある、行の規則が無視する `;` は、
 その前の空白が 1 文字でもそれ以上でも、隙間の項目です。
 `title  ;T` と `title ;T` は同じように印字します。
@@ -465,7 +465,7 @@ null の title の separator 1 space・tab は範囲の外にあります。
 
 [corpus fixture: cynefin/lex-title-one-tab]
 
-入力（escape 表記）: `"cynefin-beta\ntitle\t  Title  inside\t\ttext  "`
+入力（エスケープ表記）: `"cynefin-beta\ntitle\t  Title  inside\t\ttext  "`
 
 出力
 ([title/title-edges-output.mmd](../tests/fixtures/cynefin/title/title-edges-output.mmd)):
@@ -477,11 +477,11 @@ cynefin-beta
 
 ### Accessibility lines
 
-共有の accTitle: value と accDescr: value の配置を使い、
-colon を keyword に付け、非空値の前を 1 space にします。
-空の代入は colon で終え、次行には結合しません。
-普通の外端空白だけを trim し、内部と trivia の接触を保ち、
-colon 後のかっこは行の値として残します。
+共有の `accTitle: value` と `accDescr: value` の配置を使い、
+コロンをキーワードに付け、非空値の前を 空白 1 個にします。
+空の代入はコロンで終え、次行には結合しません。
+普通の外端空白だけを除き、内部と注釈類の接触を保ち、
+コロン後のかっこは行の値として残します。
 共通の簡潔な形で、値を解釈し直さないためです。
 値の終わりのディレクティブは、それぞれの前に空白があれば空白 1 つを置き、
 最後のディレクティブの後の空白を除いて印字します。
@@ -500,7 +500,7 @@ colon 後のかっこは行の値として残します。
 
 [fixture: cynefin/accessibility-lines/accessibility-trivia]
 
-入力（escape 表記）:
+入力（エスケープ表記）:
 `"cynefin-beta\naccTitle \t:  Access  Title \t\naccDescr\t:  Access\t\tDescription  "`
 
 出力
@@ -519,13 +519,13 @@ cynefin-beta
 空白だけの内部は `{}` にします。
 波括弧を残すブロックは、境界がわかるよう、
 キーワードと開始波括弧の間に空白を 1 つ置きます。
-普通の opener 前の空白は結合し、独立した closer は文の段にそろえます。
+普通の開始記号前の空白は結合し、独立した閉じ記号は文の段にそろえます。
 通常の説明本文と独立したコメント行は文より1段内側に揃えます。
 Db で LF 後の字下げが取り除かれるためです。
 改行、内部の空行、行末空白を保ちます。
-directive と共有の除去対象となるコメント領域は原文全体を保ちます。
-空ブロック内のコメント・directive は共有の配置を保ちます。
-値内の native form に見える文字も値のままにします。
+ディレクティブと共有の除去対象となるコメント領域は原文全体を保ちます。
+空ブロック内のコメント・ディレクティブは共有の配置を保ちます。
+値内の図固有の形に見える文字も値のままにします。
 
 [fixture: cynefin/description-blocks/description-empty]
 
@@ -549,7 +549,7 @@ directive と共有の除去対象となるコメント領域は原文全体を�
 
 [fixture: cynefin/description-blocks/opener-directive]
 
-入力（escape 表記）: `"cynefin-beta\naccDescr { \t\n \n}\nclear \"AfterEmpty\""`
+入力（エスケープ表記）: `"cynefin-beta\naccDescr { \t\n \n}\nclear \"AfterEmpty\""`
 
 出力
 ([description-blocks/description-empty-output.mmd](../tests/fixtures/cynefin/description-blocks/description-empty-output.mmd)):
@@ -563,13 +563,13 @@ cynefin-beta
 
 ### Hidden forms
 
-CynefinIgnoredText は AST の各 owner で source span を一度だけ印字します。
-対象は retained prefix、本文、領域名の suffix、項目の prefix・suffix、
-遷移の named gap、共通文の suffix です。
-value は共通の除去を含まないので、再構築すると source を失います。
-開始行は所属本文の段、内部と closer は元の列を保ちます。
-項目先頭の form とその後のラベルは、保持した LF の後で項目の段にそろえます。
-一つの match、後の有効な closer、別々の match、
+`CynefinIgnoredText` は AST の各所有ノードで原文の範囲を一度だけ印字します。
+対象は保持された前置部分、本文、領域名の後置部分、項目の前置部分・後置部分、
+遷移の名前付きの隙間、共通文の後置部分です。
+値は共通の除去を含まないので、再構築すると原文を失います。
+開始行は所属本文の段、内部と閉じ記号は元の列を保ちます。
+項目先頭の形とその後のラベルは、保持した LF の後で項目の段にそろえます。
+一つの一致範囲、後の有効な閉じ記号、別々の一致範囲、
 失敗してコメントになった形を保ちます。
 
 [fixture: cynefin/hidden-forms/hidden-domain-name]
@@ -620,7 +620,7 @@ value は共通の除去を含まないので、再構築すると source を失
 
 [corpus fixture: cynefin/hidden-all-unit-gaps]
 
-入力（escape 表記）: `"cynefin-beta\ncomplex%%{!name-owner}%%\n\"NameChild\""`
+入力（エスケープ表記）: `"cynefin-beta\ncomplex%%{!name-owner}%%\n\"NameChild\""`
 
 出力
 ([hidden-forms/hidden-domain-name-output.mmd](../tests/fixtures/cynefin/hidden-forms/hidden-domain-name-output.mmd)):
@@ -644,23 +644,23 @@ cynefin-beta
 ### Hidden boundaries
 
 範囲外の消費 LF、同一行の接触、
-closer の space・tab は EOF も含めて共有の hidden-gap・block 規則で保ちます。
-遷移と共通文の suffix が LF を消費するときは予備の可視 LF が要り、
-closer の padding が LF を可視のまま残す場合もあります。
+閉じ記号の空白・タブは EOF も含めて共有の隠れた形の隙間・ブロック 規則で保ちます。
+遷移と共通文の後置部分が LF を消費するときは予備の可視 LF が要り、
+閉じ記号の余白が LF を可視のまま残す場合もあります。
 領域と項目には可視 EOL は要りません。
-普通の端の改行の例外は見出し自身の hidden にだけ適用し、
-見出し行の最初の文の suffix はその文のものとして扱います。
-複数 suffix と可視 EOL 後の本文 form も保ちます。
+普通の端の改行の例外は見出し自身の隠れた形にだけ適用し、
+見出し行の最初の文の後置部分はその文のものとして扱います。
+複数の後置部分と可視 EOL 後の本文形も保ちます。
 
 見出し、領域の開き、項目間に同じ行保持の判断を適用し、
-項目末尾の native DIRECTIVE・YAML もその判断に含めます。
+項目末尾の図固有の `DIRECTIVE`・YAML もその判断に含めます。
 その行の開きと子を同じ行に保ちます。
 子だけを移すと見出し行の保護が失われ、次の整形が変わるためです。
-form を所有する node は変えず、行の配置を保ちます。
+形を所有するノードは変えず、行の配置を保ちます。
 
-native の suffix が同じ行を保つ場合も、
-semicolon で保護した区間は一度だけ印字します。
-suffix の owner は保ち、項目の重複で Db を変えません。
+図固有の後置部分が同じ行を保つ場合も、
+セミコロンで保護した区間は一度だけ印字します。
+後置部分の所有ノードは保ち、項目の重複で Db を変えません。
 
 [fixture: cynefin/hidden-boundaries/semicolon-hidden-header-directive]
 
@@ -712,7 +712,7 @@ suffix の owner は保ち、項目の重複で Db を変えません。
 
 [fixture: cynefin/hidden-boundaries/header-inline-domain-item-yaml]
 
-入力（escape 表記）: `"cynefin-beta complex \"A\" %%{{x}}%%\n"`
+入力（エスケープ表記）: `"cynefin-beta complex \"A\" %%{{x}}%%\n"`
 
 出力
 ([hidden-boundaries/header-inline-domain-item-directive-output.mmd](../tests/fixtures/cynefin/hidden-boundaries/header-inline-domain-item-directive-output.mmd)):
@@ -751,7 +751,7 @@ cynefin-beta complex "A" %%{{x}}%%
 
 [fixture: cynefin/hidden-forms/hidden-item-trailing]
 
-入力（escape 表記）:
+入力（エスケープ表記）:
 `"cynefin-beta\ncomplex-->clear%%{!spare}%%\n\nchaotic \"Spare\""`
 
 出力
@@ -767,11 +767,11 @@ cynefin-beta
 
 ### Retained prefix
 
-textBeforeHeader があれば共有の keepsPrefix で、
-見出し keyword を含む prefix 全体を保ちます。
-先頭 LF、passed trivia、second-scan directive、
-real・retained YAML の順を保ちます。
-掃除すると無視された YAML が有効な frontmatter になり、title、設定、
+`textBeforeHeader` があれば共有の `keepsPrefix` で、
+見出しキーワードを含む前置部分全体を保ちます。
+先頭 LF、通過した注釈類、再走査で読むディレクティブ、
+実際の YAML と保持された YAML の順を保ちます。
+掃除すると無視された YAML が有効なフロントマターになり、title、設定、
 受理を変え得るためです。
 
 [fixture: cynefin/retained-prefix/prefix-retained-yaml]
@@ -784,7 +784,7 @@ real・retained YAML の順を保ちます。
 
 [fixture: cynefin/retained-prefix/prefix-passed-bare-ascii]
 
-入力（escape 表記）:
+入力（エスケープ表記）:
 `"%% ordinary prefix\n---\ntitle: RetainedOnly\nconfig: [\n---\ncynefin-beta\ncomplex \"PrefixItem\""`
 
 出力
@@ -803,16 +803,16 @@ cynefin-beta
 
 ### Global directives
 
-Root directive の source と順を保ちます。
+`Root` ディレクティブの原文と順を保ちます。
 同じ印字行の中のディレクティブは、
 [ディレクティブ](./flowchart.ja.md#ディレクティブ)のとおりに置きます。
 元は同じ行にあった単位を別の行へ分けるときは、
-間の directive を次の単位に付けます。
+間のディレクティブを次の単位に付けます。
 右側の接触・分離は保ち、左側の接触は切れます。
 普通の独立行は所属本文の段にし、項目間なら項目の段です。
 複数行の内部と未完の EOF の終わりは書かれたままにします。
 順の入れ替えや JSON の変更は共通の除去が結合する文字を変え得るためです。
-native hidden directive は別の形として扱います。
+図固有の隠れたディレクティブは別の形として扱います。
 
 [fixture: cynefin/global-directives/header-to-body]
 
@@ -832,7 +832,7 @@ native hidden directive は別の形として扱います。
 
 [fixture: cynefin/global-directives/between-items-contact]
 
-入力（escape 表記）:
+入力（エスケープ表記）:
 `"cynefin-beta\ncomplex%%{wrap}%%-->%%{wrap}%%clear%%{wrap}%%:%%{wrap}%%'GlobalLabel'"`
 
 出力
@@ -845,11 +845,11 @@ cynefin-beta
 
 ### Comments
 
-普通の独立コメントは所属本文の段、項目間は項目の段、prefix は第 1 列にします。
-inline コメントは行と接触を保ち、元から離れていれば 1 space にします。
-印、内容、末尾の padding を残します。
-native comment は CR・LF で終わり、LS・PS は内容です。
-共有の comment-region による行結合では内部の列を保ち、
+普通の独立コメントは所属本文の段、項目間は項目の段、前置部分は第 1 列にします。
+同じ行のコメントは行と接触を保ち、元から離れていれば 空白 1 個にします。
+印、内容、末尾の余白を残します。
+図固有のコメントは CR・LF で終わり、LS・PS は内容です。
+共有のコメント領域による行結合では内部の列を保ち、
 印字する最初の行だけをそろえます。
 移動すると所属が変わり得るためです。
 
@@ -871,7 +871,7 @@ native comment は CR・LF で終わり、LS・PS は内容です。
 
 [test: cynefin/comments/comment-ls-native-content]
 
-入力（escape 表記）: `"%% PrefixComment\ncynefin-beta\nclear \"Commented\""`
+入力（エスケープ表記）: `"%% PrefixComment\ncynefin-beta\nclear \"Commented\""`
 
 出力
 ([comments/comment-prefix-output.mmd](../tests/fixtures/cynefin/comments/comment-prefix-output.mmd)):
@@ -885,12 +885,12 @@ cynefin-beta
 
 ### Blank lines
 
-文、項目、trivia の間の普通の ASCII 空行は最大 1 行にし、
+文、項目、注釈類の間の普通の ASCII 空行は最大 1 行にし、
 文書・本文の端の空行を削ります。
 空白だけの行も空行にします。
 余分な間隔を増やさず、書かれたまとまりを保つためです。
-値、説明、hidden・directive 内部、retained prefix、joining region、
-semicolon の保護、hidden に要る LF は各規則に従います。
+値、説明、隠れた形・ディレクティブ内部、保持された前置部分、結合される領域、
+セミコロンの保護、隠れた形に要る LF は各規則に従います。
 
 [fixture: cynefin/blank-lines/blanks-between-items]
 
@@ -900,7 +900,7 @@ semicolon の保護、hidden に要る LF は各規則に従います。
 
 [fixture: cynefin/blank-lines/blanks-hidden-excess]
 
-入力（escape 表記）:
+入力（エスケープ表記）:
 `"cynefin-beta\n\ncomplex \"BlankStart\"\n\n \t\n\n\"BlankEnd\"\n\n\n"`
 
 出力
@@ -916,11 +916,11 @@ cynefin-beta
 
 ### Trailing whitespace
 
-見出し、領域の語、完成した項目・遷移、説明 closer の後の、
-害のない外側の ASCII padding を削ります。
-値の継続行、コメント、directive・hidden 内部、必要な closer padding、
+見出し、領域の語、完成した項目・遷移、説明の閉じ記号の後の、
+害のない外側の ASCII 余白を削ります。
+値の継続行、コメント、ディレクティブ・隠れた形の内部、必要な閉じ記号の余白、
 保護区間は保ちます。
-全物理行の trim は値や受理を変え得るので、owner ごとに決めます。
+全物理行の両端の空白の除去は値や受理を変え得るので、所有ノードごとに決めます。
 
 [fixture: cynefin/trailing-whitespace/trailing-structure]
 
@@ -930,7 +930,7 @@ cynefin-beta
 
 [fixture: cynefin/trailing-whitespace/trailing-hidden-opener]
 
-入力（escape 表記）:
+入力（エスケープ表記）:
 `"cynefin-beta \t\ncomplex \t\n\"StructuralTail\" \t\nclear-->chaotic \t\naccDescr {Done} \t"`
 
 出力
@@ -946,7 +946,7 @@ cynefin-beta
 
 ### Semicolons
 
-全 semicolon を残します。
+全セミコロンを残します。
 保つ `;` を含む区間は、行の規則が無視する `;` が整形で変わる所を除き、
 ほかの場所と同じように整形します。
 この規則は、[セミコロン](./flowchart.ja.md#セミコロン)のとおり、
@@ -964,11 +964,11 @@ cynefin-beta
 [fixture: semicolons/semi-line-other-value]
 保護した最初の行は所属本文の段にし、項目なら項目の段にします。
 中身と後続行の列は保ちます。
-segment は directive と comment-region の結合を含め、
+区間はディレクティブとコメント領域の結合を含め、
 mermaid が読む形で数えます。
-cynefin は文法上の semicolon を持たないので verbatimStyleLines は false で、
+cynefin は文法上のセミコロンを持たないので `verbatimStyleLines` は `false` で、
 普通の style・classDef の語の行も整形します。
-semicolon の削除や trigger の移動は Db や受理を変え得るためです。
+セミコロンの削除や条件を満たす語の移動は Db や受理を変え得るためです。
 
 [fixture: cynefin/hidden-boundaries/semicolon-hidden-header-directive]
 
@@ -1018,7 +1018,7 @@ semicolon の削除や trigger の移動は Db や受理を変え得るためで
 
 [fixture: cynefin/semicolons/cross-domain-suffix]
 
-入力（escape 表記）: `"cynefin-beta\ncomplex \"style:#fixed\";\"SuffixItem\""`
+入力（エスケープ表記）: `"cynefin-beta\ncomplex \"style:#fixed\";\"SuffixItem\""`
 
 出力
 ([semicolons/semi-selected-outside-string-output.mmd](../tests/fixtures/cynefin/semicolons/semi-selected-outside-string-output.mmd)):
@@ -1044,7 +1044,7 @@ cynefin-beta
 
 [fixture: cynefin/semicolons/cynefin-domain-end-before-transition]
 
-入力（escape 表記）: `"cynefin-beta\ncomplex \"a;\" clear \"b\" \"c\""`
+入力（エスケープ表記）: `"cynefin-beta\ncomplex \"a;\" clear \"b\" \"c\""`
 
 出力
 ([semicolons/review-semicolon-following-pair-output.mmd](../tests/fixtures/cynefin/semicolons/review-semicolon-following-pair-output.mmd)):
@@ -1067,12 +1067,12 @@ cynefin-beta
 
 ### Multiline values
 
-printWidth では折り返しません。
+`printWidth` では折り返しません。
 領域・項目の分割を除き、文字列と遷移ラベルの物理的な内容、継続列、
 内部空行を保ちます。
 説明本文は前述の共有の字下げを使います。
-reflow や字下げの変更は Db を変え、遷移部品の折り返しは拒否を招き得ます。
-独立した説明 closer は共有規則でそろえます。
+折り返し直しや字下げの変更は Db を変え、遷移部品の折り返しは拒否を招き得ます。
+独立した説明の閉じ記号は共有規則でそろえます。
 
 [fixture: cynefin/multiline-values/long-line-unwrapped]
 
@@ -1080,7 +1080,7 @@ reflow や字下げの変更は Db を変え、遷移部品の折り返しは拒
 
 [fixture: cynefin/multiline-values/multiline-label-columns]
 
-入力（escape 表記）:
+入力（エスケープ表記）:
 `"cynefin-beta\ncomplex-->clear:\"A deliberately long transition label that stays on its authored physical line\""`
 
 設定: `{"printWidth": 20}`
@@ -1095,13 +1095,13 @@ cynefin-beta
 
 ### Frontmatter yaml
 
-安全な real frontmatter だけを共有の保護付き YAML formatter に通し、
+安全な実際のフロントマターだけを共有の保護付き YAML 整形処理に通し、
 Db が同じで Prettier が印字する YAML を選びます。
-malformed YAML、字下げされた fence、区切りの padding、HTML の危険、
-整形で fence ができる本文は、共有の保護に従って保持します。
-YAML の入れ子・block scalar は tabWidth が 0 でも正の最小幅を使います。
-retained・native YAML は source のままにし、
-空 title による frontmatter へのリセットも残します。
+不正な YAML、字下げされた囲み、区切りの余白、HTML の危険、
+整形で囲みができる本文は、共有の保護に従って保持します。
+YAML の入れ子・ブロックスカラーは `tabWidth` が 0 でも正の最小幅を使います。
+保持された・図固有の YAML は原文のままにし、
+空 title によるフロントマターへのリセットも残します。
 
 [fixture: cynefin/frontmatter-yaml/frontmatter-safe-yaml]
 
@@ -1125,7 +1125,7 @@ retained・native YAML は source のままにし、
 
 [test: cynefin/specified-readings/divergence-opaque-yaml]
 
-入力（escape 表記）:
+入力（エスケープ表記）:
 `"---\ntitle: 'SafeYaml'\nconfig: {cynefin: {width: 1000}}\n---\ncynefin-beta\nclear \"YamlBody\""`
 
 出力
@@ -1143,13 +1143,13 @@ cynefin-beta
 
 ### Line terminators and unicode
 
-共有の host 方針で CR・CRLF を LF として読み、
-値や hidden 内部も設定の LF・CRLF・CR で出力します。
-LS・PS・NBSP・BOM は、共通値の外端と普通の説明 opener 前の空白を除き、
+共有の埋め込み先方針で CR・CRLF を LF として読み、
+値や隠れた形の内部も設定の LF・CRLF・CR で出力します。
+LS・PS・NBSP・BOM は、共通値の外端と普通の説明開始記号前の空白を除き、
 字句上の役割を保ちます。
-一律に padding とすると値を変えたり、拒否入力を修復したりするためです。
+一律に余白とすると値を変えたり、拒否入力を修復したりするためです。
 先頭 BOM は Prettier が除去・復元するため、
-元の frontmatter の状態と byte 一致は保証しません。
+元のフロントマターの状態とバイト一致は保証しません。
 
 [test: cynefin/line-terminators-and-unicode/eol-bare-cr]
 
@@ -1173,7 +1173,7 @@ LS・PS・NBSP・BOM は、共通値の外端と普通の説明 opener 前の空
 
 ### Source order
 
-領域、項目、遷移、共通の代入、本文の hidden の全出現を source 順で残します。
+領域、項目、遷移、共通の代入、本文の隠れた形の全出現を原文順で残します。
 空の共通代入もリセットとして残します。
 有効値からの再構築や並べ替えは書かれた出現を失い、
 遷移の順や空のリセットの読みを変え得るためです。
@@ -1182,7 +1182,7 @@ LS・PS・NBSP・BOM は、共通値の外端と普通の説明 opener 前の空
 
 [fixture: cynefin/source-order/source-common-empty-resets]
 
-入力（escape 表記）:
+入力（エスケープ表記）:
 `"cynefin-beta\nclear \"EarlyClear\"\ntitle EarlyTitle\ncomplex-->clear:'EarlyMove'\ncomplex \"LaterComplex\"\naccTitle: Accessible\nclear \"FinalClear\"\ntitle FinalTitle"`
 
 出力
@@ -1205,9 +1205,9 @@ cynefin-beta
 ### Final newline
 
 普通の受理ファイルは設定の改行 1 個で終えます。
-空領域、最後のコメント、閉じた hidden form も同じです。
+空領域、最後のコメント、閉じた隠れた形も同じです。
 ファイルの終わりをそろえるため、普通の末尾空行は削ります。
-未完の global directive、retained prefix の境界、hidden に要る padding、
+未完の大域的なディレクティブ、保持された前置部分の境界、隠れた形に要る余白、
 保護された終わりを優先します。
 
 [fixture: cynefin/final-newline/final-newline-domain]
@@ -1224,7 +1224,7 @@ cynefin-beta
 
 [corpus fixture: cynefin/header-colon]
 
-入力（escape 表記）: `"cynefin-beta\ncomplex \"FinalItem\""`
+入力（エスケープ表記）: `"cynefin-beta\ncomplex \"FinalItem\""`
 
 出力
 ([final-newline/final-newline-domain-output.mmd](../tests/fixtures/cynefin/final-newline/final-newline-domain-output.mmd)):
@@ -1241,11 +1241,11 @@ cynefin-beta
 directive-as-token-boundary、ignored-semicolon-as-token-boundary、
 html-tag-in-frontmatter、embedded-data-opaque、bare-percent-line-before-header、
 c4-keyword-anywhere です。
-cynefin 固有の acceptance-setting key や差異は加えません。
-raw 拒否には raw Db がないので、
-利用できる指定読みと embedded effect を使います。
-単独の parse 失敗は出力せず構文エラーとし、Markdown は embedding を辞退して、
-拒否 payload を host に任せます。
+cynefin 固有の受理を決める設定キーや差異は加えません。
+素の mermaid.js による拒否には 素の mermaid.js の Db がないので、
+利用できる指定読みと埋め込みデータの効果を使います。
+単独の構文解析失敗は出力せず構文エラーとし、Markdown は埋め込みを辞退して、
+拒否された図の本文を埋め込み先に任せます。
 
 [test: cynefin/specified-readings/divergence-opaque-yaml]
 
@@ -1263,12 +1263,12 @@ raw 拒否には raw Db がないので、
 
 ### Markdown fences
 
-共有の Markdown 接続で、dedent した payload に同じ規則を適用します。
-host が fence・list・quote の字下げを決め、
-最終 code line の padding を削ります。
-内部の hidden に要る padding は保護します。
-末尾 hidden の padding は host が削っても単独整形では保ちます。
-実際の host 出力と 3 回の冪等を、単独 payload の Db 一致と別に検査します。
+共有の Markdown 接続で、外側の字下げを除いた図の本文に同じ規則を適用します。
+埋め込み先が囲み・リスト・引用の字下げを決め、
+最終コード行の余白を削ります。
+内部の隠れた形に要る余白は保護します。
+末尾の隠れた形の余白は埋め込み先が削っても単独整形では保ちます。
+実際の埋め込み先出力と 3 回の冪等を、単独の図の本文の Db 一致と別に検査します。
 
 [test: cynefin Markdown: top-level]
 

@@ -4,9 +4,9 @@
 
 IR、EBNF、ABNF、PEG の決定32項目に従い、
 一つの[railroad の木](../../spec/docs/ast/railroad.ja.md)と共有の平坦な本文
-printer を使います。
-parser が Root.diagramType で方言を選び、
-printer は方言を再判定せずその node と token を使います。
+印字処理を使います。
+パーサーが `Root.diagramType` で方言を選び、
+印字処理は方言を再判定せずそのノードとトークンを使います。
 各規則で選択の理由を説明し、
 [互換性](./compatibility.ja.md#railroad-の方言と書かれた値)に保持する文字と
 mermaid.js との差をまとめます。
@@ -19,8 +19,8 @@ mermaid.js との差をまとめます。
 方言を見つけやすくするためです。
 IR は `railroad-beta`、EBNF は `railroad-ebnf-beta`、
 ABNF は `railroad-abnf-beta`、PEG は `railroad-peg-beta` を保ちます。
-colon や flag は加えません。
-hidden form、共有 trivia、保護された semicolon 区間は共有の境界規則に従い、
+コロンや指定は加えません。
+隠れた形、共有注釈類、保護されたセミコロン区間は共有の境界規則に従い、
 空の本文は空のままにします。
 
 [fixture: railroad/header/abnf-hidden]
@@ -97,16 +97,16 @@ railroad-peg-beta%%{!heading}%%
 
 ### 字下げ
 
-共有の平坦な本文 printer を使い、通常の規則、metadata、
-独立したコメントと Root directive を設定の1段で字下げします。
-既定は2 spaces、tabWidth 4 は4 spaces、0 は0 spaces です。
+共有の平坦な本文印字処理を使い、通常の規則、メタデータ、
+独立したコメントと `Root` ディレクティブを設定の1段で字下げします。
+既定は空白2つ、`tabWidth` 4 は空白4つ、0 は空白を置きません。
 列に文法上の意味がないためです。
-useTabs は幅0でも1 tab です。
-構造の継続行と規則内の独立した trivia は2段、
+`useTabs` は幅0でもタブ1つです。
+構造の継続行と規則内の独立した注釈類は2段、
 別行の構造的な閉じ括弧と終端は文の位置に揃えます。
 入れ子の IR 呼出しは[長い行](#長い行)の規則で引数の段を使います。
-その他の値の継続列、hidden の内部と保持 prefix は元の列を保ちます。
-semicolon の保護区間の最初の行は、他の平坦な図種と同じく本文の1段に揃えます。
+その他の値の継続列、隠れた形の内部と保持前置部分は元の列を保ちます。
+セミコロンの保護区間の最初の行は、他の平坦な図種と同じく本文の1段に揃えます。
 2行目以降は保護された本文に属するため、書かれた列を保ちます。
 
 [fixture: railroad/indentation/abnf-default]
@@ -192,12 +192,12 @@ railroad-peg-beta
 ### 規則ごとの行
 
 通常の規則を1行ずつに置き、必須の終端 `;` を直前の空白なしで定義に付けます。
-構文は変えません。
+構文を変えずに、規則の境界を見やすくします。
 4方言とも最後の規則にも終端が必要です。
 ABNF の終端の直後は LF または EOF にします。
 `; note` はコメントなので終端にはなりません。
 そのコメントと本当の終端は改行を越えて動かしません。
-共有の semicolon 保護を優先します。
+共有のセミコロン保護を優先します。
 
 [fixture: railroad/statements-one-per-line/abnf-terminator]
 
@@ -261,13 +261,13 @@ railroad-peg-beta
 
 ### 代入
 
-代入の両側を通常の1 space にし、名前の列は揃えません。
+代入の両側を通常の空白1つにし、名前の列は揃えません。
 IR と ABNF の `=`、PEG の `<-` を保ち、EBNF の `::=` は `=` と印字します。
 EBNF の2形は同じ Db で、mermaid.js の文書の例は `=` を 35 回使い、
 `::=` は使わないためです。
 （[キーワードや記号の別の綴り](./compatibility.ja.md#キーワードや記号の別の綴り)
 を参照）。
-複合記号は1 token のままにします。
+複合記号は1つのトークンのままにします。
 [fixture: railroad/assignment/ebnf-assignment-equals]
 
 [fixture: railroad/assignment/abnf-spaces]
@@ -329,9 +329,9 @@ railroad-peg-beta
 ### 選択
 
 EBNF の選択は `a | b`、ABNF と PEG は `a / b` にします。
-両側に通常の1 spaceを置きます。
+両側に通常の空白1つを置きます。
 Prettier が2つのものの間の記号に印字する形です。
-順序と階層は保ち、IR の choice call は呼出しの規則に従います。
+順序と階層は保ち、IR の choice 呼び出しは呼出しの規則に従います。
 
 [fixture: railroad/choices/abnf-slashes]
 
@@ -374,10 +374,10 @@ railroad-peg-beta
 
 ### EBNF の並び
 
-並びの各境界で任意 comma の有無を保ちます。
-comma の前は通常の空白なし、後は1 space、comma のない境界は1 space です。
+並びの各境界で任意コンマの有無を保ちます。
+コンマの前は通常の空白なし、後は空白1つ、コンマのない境界は空白1つです。
 混在する形も混在のままにします。
-comma の追加や削除で Db が同じでも、書かれた句読点を失うためです。
+コンマの追加や削除で Db が同じでも、書かれた句読点を失うためです。
 
 [fixture: railroad/ebnf-sequences/adjacency]
 
@@ -397,10 +397,10 @@ railroad-ebnf-beta
 
 ### ABNF と PEG の並び
 
-ABNF と PEG の隣り合う member は通常の1 space で分けます。
+ABNF と PEG の隣り合う構成要素は通常の空白1つで分けます。
 接触していた文字列や group も対象です。
-member を見分けやすくし、別の名前が一つになるのを防ぎます。
-comma は加えません。
+構成要素を見分けやすくし、別の名前が一つになるのを防ぎます。
+コンマは加えません。
 
 [fixture: railroad/sequences/abnf-members]
 
@@ -434,7 +434,7 @@ railroad-peg-beta
 
 EBNF の `(expr)`、`[expr]`、`{expr}`、ABNF の `(expr)`、`[expr]`、
 PEG の `(expr)` の内側の通常の空白を詰めます。
-入れ子や singleton を含め、括弧はすべて残します。
+入れ子や要素が1つの形を含め、括弧はすべて残します。
 内端を揃え、括弧の削除で Db が同じでも原文の構造を保つためです。
 
 [fixture: railroad/groups/abnf-delimiters]
@@ -477,11 +477,11 @@ railroad-peg-beta
 
 ### 後置演算子
 
-EBNF と PEG の AST 上の後置演算子 `?`、`*`、`+` を operand に付けます。
-EBNF の連鎖順と PEG の一つの suffix を保ちます。
+EBNF と PEG の AST 上の後置演算子 `?`、`*`、`+` を適用先に付けます。
+EBNF の連鎖順と PEG の一つの後置部分を保ちます。
 EBNF の special sequence の優先は AST に表れているため、
-raw leaf 内の疑問符を後置演算子に読み替えません。
-call や group に置き換えません。
+原文の leaf 内の疑問符を後置演算子に読み替えません。
+呼び出しや group に置き換えません。
 
 [fixture: railroad/postfixes/ebnf-chain]
 
@@ -514,9 +514,10 @@ railroad-peg-beta
 
 ### 前置 predicate
 
-PEG の predicate は `&expr`、`!expr` と詰め、suffix operand 全体を保ちます。
-group、postfix、group 内の入れ子の predicate も残します。
-Db の label を式の代わりに使わないためです。
+PEG の先読み条件は `&expr`、`!expr` と詰め、後続の式全体を保ちます。
+group、後置演算子、group 内の入れ子の先読み条件も残します。
+前置記号の間隔を詰めて適用先を示します。
+Db のラベルは式の代わりにはなりません。
 
 [fixture: railroad/predicates/peg-nested]
 
@@ -534,9 +535,9 @@ railroad-peg-beta
 
 ### repeat の表記
 
-ABNF の数字と star の綴りをすべて保ちます。
-先頭ゼロ、exact count、上下限の省略、ゼロ、任意の範囲、巨大な整数も対象です。
-完全な repeat と primary の間の通常の空白だけを詰めます。
+ABNF の数字とアスタリスクの綴りをすべて保ちます。
+先頭ゼロ、ちょうどの回数、上下限の省略、ゼロ、任意の範囲、巨大な整数も対象です。
+完全な repeat と基本式の間の通常の空白だけを詰めます。
 省略した値を補ったり optional group へ変換したりしません。
 Db が同じでも表記を失い、丸めた数を再印字する理由にはならないためです。
 
@@ -558,11 +559,11 @@ railroad-abnf-beta
 
 ### numeric value の表記
 
-ABNF の numeric value は source span 全体を保ちます。
-base letter の大小、数字、先頭ゼロ、dot、hyphen と、
-指定した base に合わない数字も対象です。
-公開される terminal は raw text なので、正規化で Db が変わるためです。
-span 外の後続 reference は `%x42 Z` のように別 member にします。
+ABNF の数値は原文範囲全体を保ちます。
+基数を示す文字の大小、数字、先頭ゼロ、ドット、ハイフンと、
+指定した基数に合わない数字も対象です。
+公開される terminal は原文のテキストなので、正規化で Db が変わるためです。
+範囲外の後続参照は `%x42 Z` のように別構成要素にします。
 
 [fixture: railroad/numeric-values/abnf-spellings]
 
@@ -580,15 +581,15 @@ railroad-abnf-beta
 
 ### 呼出し
 
-IR の8 constructor を `name(...)` にします。
+IR の8つの構築関数を `name(...)` にします。
 sequence、choice、optional、oneOrMore、zeroOrMore、terminal、nonterminal、
 special が対象です。
-`(` の前と括弧の内端の通常の空白を詰め、引数 comma の前を0、
-同じ行の後を1 space にします。
+`(` の前と括弧の内端の通常の空白を詰め、引数コンマの前を0、
+同じ行の後を空白1つにします。
 呼出しの配置は[長い行](#長い行)の規則に従います。
-空の引用引数、入れ子、singleton の sequence と choice も保ちます。
-singleton の削除で Db が同じでも原文の call を失うためです。
-末尾 comma は加えません。
+空の引用引数、入れ子、要素が1つの形の sequence と choice も保ちます。
+要素が1つの形の削除で Db が同じでも原文の呼び出しを失うためです。
+末尾コンマは加えません。
 
 [fixture: railroad/calls/ir-all]
 
@@ -628,9 +629,9 @@ railroad-beta
 
 ### 例外演算子
 
-EBNF の例外 `-` は両側を通常の1 space にします。
-左結合と右の primary を保ち、Identifier 内の hyphen は分けません。
-`left-right` は一つの reference、`left - right` は例外で Db が異なるため、
+EBNF の例外 `-` は両側を通常の空白1つにします。
+左結合と右の基本式を保ち、`Identifier` 内のハイフンは分けません。
+`left-right` は一つの参照、`left - right` は例外で Db が異なるため、
 この空白が必要です。
 
 [fixture: railroad/exceptions/ebnf-hyphenated-name]
@@ -649,11 +650,11 @@ railroad-ebnf-beta
 
 ### special sequence の内容
 
-EBNF の special sequence は source span 全体を保ちます。
-両端の疑問符、外端の空白、引用符、backslash、継続行の列も対象です。
+EBNF の special sequence は原文範囲全体を保ちます。
+両端の疑問符、外端の空白、引用符、バックスラッシュ、継続行の列も対象です。
 テキストの中の空白とタブの連なりは、空白 1 つにして印字します。
 （[同じに描かれるテキスト中の空白の連なり](./compatibility.ja.md#同じに描かれるテキスト中の空白の連なり)）。
-外端だけの trim で Db が同じでも、原文の保持により再解釈を避けます。
+外端の空白だけを除いて Db が同じでも、原文の保持により再解釈を避けます。
 
 [fixture: railroad/special-sequences/ebnf-content]
 
@@ -671,22 +672,22 @@ railroad-ebnf-beta
 
 ### 文字列
 
-StringLiteral の source span を保ちます。
-escape、空文字列、HTML、entity、hidden やコメントに見える文字も対象です。
+`StringLiteral` の原文範囲を保ちます。
+エスケープ、空文字列、HTML、実体参照、隠れた形やコメントに見える文字も対象です。
 文字列の中の空白とタブの連なりは、空白 1 つにして印字します。
 空白とタブだけの文字列は空白 1 つになります。
 規則名は空白を含まないため、
 文字列にその連なりを含む nonterminal はどの規則も参照せず、
 その文字列はほかの文字列と同じに印字します。
 [fixture: railroad/quotes/ir-string-runs-collapsed]
-IR、EBNF、PEG は両方の引用符と backslash escape を認めます。
-`'` で囲んだ文字列は `"` で囲んで印字しますが、内容に `'`、`"`、backslash、
+IR、EBNF、PEG は両方の引用符とバックスラッシュエスケープを認めます。
+`'` で囲んだ文字列は `"` で囲んで印字しますが、内容に `'`、`"`、バックスラッシュ、
 改行、U+2028、U+2029、バッククォート、`&`、`#`、
 `<` が含まれる場合は書かれたままにします。
 （[同じに描かれる綴り](./compatibility.ja.md#同じに描かれる綴り)を参照）。
 `singleQuote` は読みません。
-ABNF は二重引用符だけを認め、backslash を普通の文字として読みます。
-内容の trim や escape の誤解釈で Db が変わります。
+ABNF は二重引用符だけを認め、バックスラッシュを普通の文字として読みます。
+内容の両端の空白の除去やエスケープの誤解釈で Db が変わります。
 [fixture: railroad/quotes/ir-single-quote-sensitive-kept]
 [fixture: railroad/quotes/ebnf-single-quote-sensitive-kept]
 [fixture: railroad/quotes/peg-single-quote-sensitive-kept]
@@ -762,15 +763,15 @@ railroad-peg-beta
 `sequence`、`choice`、`optional`、`oneOrMore`、`zeroOrMore` の引数は、
 後ろの行で1段深く、1行に一つずつ置きます。
 閉じ括弧は呼出しと同じ段に置きます。
-短い呼出しや singleton も含め、すべての入れ子の呼出しに適用します。
+短い呼出しや要素が1つの形も含め、すべての入れ子の呼出しに適用します。
 `printWidth` や元の空白による改行には依存しません。
 文法の階層を一貫して示すためです。
-末尾 comma は加えません。
+末尾コンマは加えません。
 
 `terminal`、`nonterminal`、`special` は、
 引用値と一つのコンパクトな単位にします。
-constructor、開き括弧、値、閉じ括弧の間の境界に、コメント、global directive、
-native hidden form があれば、その leaf 呼出しも複数行にします。
+構築関数、開き括弧、値、閉じ括弧の間の境界に、コメント、大域的なディレクティブ、
+図固有の隠れた形があれば、その leaf 呼出しも複数行にします。
 文字列の内容は、物理的な改行と継続行の元の列を保ちます。
 
 [fixture: railroad/calls/ir-singletons]
@@ -795,12 +796,12 @@ native hidden form があれば、その leaf 呼出しも複数行にします�
 
 [fixture: railroad/multiline-values/ir-columns]
 
-コメント、global directive、native hidden form は引数との境界に保ち、
+コメント、大域的なディレクティブ、図固有の隠れた形は引数との境界に保ち、
 周囲の呼出しには構造に沿った配置を使います。
-値の中の semicolon は、この配置を妨げません。
-trivia の内容は[コメント](#コメント)、[共有 directive](#共有-directive)、
-[hidden form の保持](#hidden-form-の保持)の規則で保ちます。
-`style` や `classDef` を含む行と無視される semicolon は、
+値の中のセミコロンは、この配置を妨げません。
+注釈類の内容は[コメント](#コメント)、[共有ディレクティブ](#共有-directive)、
+[隠れた形の保持](#hidden-form-の保持)の規則で保ちます。
+`style` や `classDef` を含む行と無視されるセミコロンは、
 保護した配置を使います。
 EBNF、ABNF、PEG では、最外周の選択の代入直後と、
 `|` や `/` の前に作者が書いた改行を保ち、続きは 1 段深く置きます。
@@ -890,14 +891,14 @@ railroad-peg-beta
 [長い行](#長い行)にある最外周の選択の段落改行は、
 通常の余白の詰めより優先します。
 
-文法上 padding である通常の CR/LF gap を各位置の空白規則へ揃えます。
-IR は constructor、括弧、引数、comma、EBNF は代入、選択、並び、group、例外、
-postfix が対象です。
-ABNF は代入、選択、並び、完全な repeat と primary、group、PEG は代入、選択、
-並び、prefix、suffix、group が対象です。
+文法上余白である通常の CR/LF 隙間を各位置の空白規則へ揃えます。
+IR は構築関数、括弧、引数、コンマ、EBNF は代入、選択、並び、group、例外、
+後置演算子が対象です。
+ABNF は代入、選択、並び、完全な repeat と基本式、group、PEG は代入、選択、
+並び、前置部分、後置部分、group が対象です。
 IR 呼出しは[長い行](#長い行)の規則で構造に沿って配置します。
-名前、複合代入記号、repeat の内部、numeric value は分割しません。
-コメント、directive、hidden の境界、保護された semicolon の改行は保ちます。
+名前、複合代入記号、repeat の内部、数値は分割しません。
+コメント、ディレクティブ、隠れた形の境界、保護されたセミコロンの改行は保ちます。
 それらの join で受理や Db が変わるためです。
 
 [fixture: railroad/component-newlines/abnf-components]
@@ -960,8 +961,8 @@ railroad-peg-beta
 ### 複数行の値
 
 文字列と EBNF special sequence の物理改行、内部空行、継続列を保ちます。
-これらの値を一つの atom とし、後続行に構造の字下げを足しません。
-内容の reflow や字下げ変更は PEG predicate の label を含め Db を変えるためです。
+これらの値を一つの印字単位とし、後続行に構造の字下げを足しません。
+内容の折り返し直しや字下げ変更は PEG 先読み条件のラベルを含め Db を変えるためです。
 説明ブロックの本文の字下げ、外端、別行の閉じ括弧は共有の説明規則に従います。
 
 [fixture: railroad/multiline-values/abnf-columns]
@@ -1030,13 +1031,13 @@ last";
 
 ### タイトル
 
-共有の common-line 配置を使います。
-非空値の通常の外端だけを trim して `title value` にし、
-null と空白だけの値は裸の `title` にします。
-引用符に見える内容と escape は保ち、
+共有の共通行配置を使います。
+非空値の通常の外端の空白だけを除いて `title value` にし、
+`null` と空白だけの値は裸の `title` にします。
+引用符に見える内容とエスケープは保ち、
 値の中の空白とタブの連なりは空白 1 つにして印字します。
 次の物理行から値を取りません。
-裸の title prefix と後続の規則は別の文にし、規則を値に取り込みません。
+裸の title 前置部分と後続の規則は別の文にし、規則を値に取り込みません。
 比較 Db は本文の title を除きますが、内容を書き換える理由にはなりません。
 題の終わりのディレクティブは、それぞれの前に空白があれば空白 1 つを置き、
 行末の空白の有無にかかわらず、最後のディレクティブの後の空白を除いて印字します。
@@ -1138,10 +1139,10 @@ railroad-peg-beta
 
 ### accessibility の行
 
-共有の common-line 配置で `accTitle: value` と `accDescr: value` にします。
-colon を keyword に付け、非空値の前を通常の1 space にします。
-空値は colon で終えます。
-外端の空白だけを trim し、内部の文字と括弧に見える行の値は保ちます。
+共有の共通行配置で `accTitle: value` と `accDescr: value` にします。
+コロンをキーワードに付け、非空値の前を通常の空白1つにします。
+空値はコロンで終えます。
+外端の空白だけを除き、内部の文字と括弧に見える行の値は保ちます。
 ただし、`accDescr` の値の中の空白とタブの連なりは空白 1 つにして印字します。
 （[同じに描かれるテキスト中の空白の連なり](./compatibility.ja.md#同じに描かれるテキスト中の空白の連なり)）。
 `accTitle` はブラウザがツールチップとして表示するので、
@@ -1310,28 +1311,28 @@ railroad-peg-beta
 ### コメント
 
 独立したコメントは本文で1段、見出し前で第1列に置きます。
-通常の IR 呼出し以外では、inline は左右と接触と分離を保ち、
-通常の分離 gap は1 space にします。
-mark、内容、末尾空白、block の継続列、順序を保ちます。
-line comment の後の operand と終端は次行に残します。
+通常の IR 呼出し以外では、行内のコメントは左右と接触と分離を保ち、
+通常の分離隙間は空白1つにします。
+印、内容、末尾空白、ブロックの継続列、順序を保ちます。
+行コメントの後の適用先と終端は次行に残します。
 全方言に `%%`、IR に `/* */`、EBNF に `/* */` と `(* *)`、
 ABNF に `;` の行コメント、PEG に `#` の行コメントがあります。
-裸の ABNF `;` は句読点であり、`//` は native comment ではありません。
+裸の ABNF `;` は句読点であり、`//` は図固有のコメントではありません。
 値が所有する文字は値のままにします。
-所有位置を保ち、line comment がコードを取り込むのを防ぐためです。
+所有位置を保ち、行コメントがコードを取り込むのを防ぐためです。
 
-通常の IR 呼出しの中では、引数前の block comment を引数の行へ一緒に移します。
-comma や閉じ括弧の前のコメントは引数の後ろに残します。
-line comment の後ろのトークンは後の行に置きます。
+通常の IR 呼出しの中では、引数前のブロックコメントを引数の行へ一緒に移します。
+コンマや閉じ括弧の前のコメントは引数の後ろに残します。
+行コメントの後ろのトークンは後の行に置きます。
 独立したコメント行は引数の段に順序を保って置き、空行は1つまでにします。
-constructor と開き括弧の間のコメントは、その間に残します。
+構築関数と開き括弧の間のコメントは、その間に残します。
 その位置に改行があれば、両方の括弧を継続行として字下げし、
 引数をさらに1段深く置きます。
 元は1行に書かれた IR 呼出しの隙間では、
-constructor と開き括弧の間のコメントの両側に1 space を置きます。
+構築関数と開き括弧の間のコメントの両側に空白1つを置きます。
 引数前のコメントは、その引数の通常の区切りの後に置き、
-引数まで1 space を置きます。
-comma や閉じ括弧の前のコメントは、前に1 space、後ろに空白なしで置きます。
+引数まで空白1つを置きます。
+コンマや閉じ括弧の前のコメントは、前に空白1つ、後ろに空白なしで置きます。
 閉じ括弧は独立した行に置きます。
 既存の改行の隣でも同じ外側空白を使い、コメントを越えて句読点を移しません。
 タブや幅0の字下げでも、コメントの連なりの内容、内部の接触、継続列、
@@ -1468,19 +1469,19 @@ railroad-peg-beta
 
 ### 共有 directive
 
-Root directive を source span から元の所有位置に1回印字します。
+`Root` ディレクティブを原文範囲から元の所有位置に1回印字します。
 通常の IR 呼出しの隙間以外では、同じ印字行の中のディレクティブは、
 [ディレクティブ](./flowchart.ja.md#ディレクティブ)のとおりに置きます。
 元は同じ行にあった単位を別の行へ分けるときは、
-間の directive を次の単位に付けます。
+間のディレクティブを次の単位に付けます。
 右側の接触・分離は保ち、左側の接触は切れます。
-通常の独立した directive を本文で1段字下げします。
+通常の独立したディレクティブを本文で1段字下げします。
 内容の JSON 整形や見出し前への収集はしません。
-一律の空白追加が、共有処理後の文字列、repeat の部品、numeric value、
-predicate の operand を変えるためです。
+一律の空白追加が、共有処理後の文字列、repeat の部品、数値、
+先読み条件の適用先を変えるためです。
 
 通常の IR 呼出しの隙間は、コメントと同じ外側空白と構造に沿った配置を使います。
-directive は引数のそばに保ち、引用値の leaf 呼出しも複数行にします。
+ディレクティブは引数のそばに保ち、引用値の leaf 呼出しも複数行にします。
 内容と、同じ連なりの他の項目との接触は元のままにします。
 
 [fixture: railroad/long-lines/ir-directive-kept]
@@ -1549,18 +1550,18 @@ railroad-peg-beta
 
 ### hidden form の保持
 
-RailroadIgnoredText を AST の各 owner で range 全体から1回印字します。
-規則、call、list member、group、postfix、例外、repeat と primary、
-predicate と operand の gap を保ちます。
-本文の opener は字下げできますが、内部と closer は元の列を保ちます。
-native form の YAML や JSON を整形せず、trivia を除いた value も使いません。
-三つの fence が一つの form になる場合と、
-失敗した directive opener が percent comment になる場合も保ちます。
-受理や opaque な文字の位置を変えないためです。
+`RailroadIgnoredText` を AST の各所有ノードで範囲全体から1回印字します。
+規則、呼び出し、リスト構成要素、group、後置演算子、例外、repeat と基本式、
+先読み条件と適用先の隙間を保ちます。
+本文の開始記号は字下げできますが、内部と閉じ記号は元の列を保ちます。
+図固有の形の YAML や JSON を整形せず、注釈類を除いた値も使いません。
+三つの囲み記号が一つの形になる場合と、
+失敗したディレクティブ開始記号がパーセントコメントになる場合も保ちます。
+受理や不透明な文字の位置を変えないためです。
 
 通常の IR 呼出しの中では、
-native hidden form 全体を一つの opaque な項目にします。
-その中の global directive も含め、内容と内部の列を書かれたまま保ち、
+図固有の隠れた形全体を一つの不透明な項目にします。
+その中の大域的なディレクティブも含め、内容と内部の列を書かれたまま保ち、
 周囲の文法を構造に沿って字下げします。
 
 [fixture: railroad/hidden-forms/ir-call-global-inside-native]
@@ -1651,15 +1652,15 @@ railroad-peg-beta
 
 ### hidden の境界
 
-通常の IR 呼出しの隙間以外では、node range 外で消費した LF、
-closer 後の space と tab、inline の接触を共有の hidden-gap 保護で残します。
+通常の IR 呼出しの隙間以外では、ノード範囲外で消費した LF、
+閉じ記号後の空白とタブ、同じ行の接触を共有の隠れた形の隙間保護で残します。
 その呼出しの中では、
-[hidden form の保持](#hidden-form-の保持)の規則で全体を保ちます。
+[隠れた形の保持](#hidden-form-の保持)の規則で全体を保ちます。
 通常の規則は必須 `;` で終わるため、他図種の visible-EOL 条件は加えません。
-本文の form には共有の予備 LF 規則を使い、
-見出し自身の form だけに header-edge の例外を使います。
+本文の形には共有の予備 LF 規則を使い、
+見出し自身の形だけにヘッダー端の例外を使います。
 見出しの行から移した文も本文の境界を保ちます。
-共有の kept-line 規則で hidden form と前後の文がその行に残る場合とは区別します。
+共有の行を保持する規則で隠れた形と前後の文がその行に残る場合とは区別します。
 
 [fixture: railroad/hidden-boundaries/abnf-closing-padding]
 
@@ -1767,12 +1768,12 @@ railroad-peg-beta
 
 ### 保持 prefix
 
-textBeforeHeader があれば、見出し keyword までの prefix 全体を保ちます。
-先頭 LF、passed bare trivia、保持 YAML、second-scan form、
-real と hidden の順序も対象です。
-共有の keepsPrefix により、
-無効だった YAML が frontmatter になって埋込み title や設定を変えるのを防ぎます。
-コメントだけの通常の prefix は root の整形に従います。
+`textBeforeHeader` があれば、見出しキーワードまでの前置部分全体を保ちます。
+先頭 LF、通過した単独行の注釈類、保持 YAML、再走査で読む形、
+実際の形と隠れた形の順序も対象です。
+共有の `keepsPrefix` により、
+無効だった YAML がフロントマターになって埋込み title や設定を変えるのを防ぎます。
+コメントだけの通常の前置部分は最上位の整形に従います。
 
 [fixture: railroad/retained-prefix/abnf-leading]
 
@@ -1862,23 +1863,23 @@ railroad-peg-beta
 
 ### セミコロン
 
-書かれた semicolon をすべて保ちます。
-規則の必須の可視終端と ABNF の native comment mark は文法の句読点として、
-共有の text-prefix scan から除きます。
-通常の IR 規則は、値の中の semicolon をテキストとして保ち、
+書かれたセミコロンをすべて保ちます。
+規則の必須の可視終端と ABNF の図固有のコメント印は文法の句読点として、
+共有のテキストの前置部分の走査から除きます。
+通常の IR 規則は、値の中のセミコロンをテキストとして保ち、
 呼出しの構造に沿った配置を妨げません。
-その他の semicolon は、交差する値や trivia 全体まで元の区間を保護します。
+その他のセミコロンは、交差する値や注釈類全体まで元の区間を保護します。
 保護した区間の最初の行は、他の平坦な図種と同じく本文の1段に揃えます。
 最初の行の列に文法上の意味はありません。
 2行目以降は書かれた列を保ち、字下げを足しません。
 
 [fixture: railroad/long-lines/ir-semicolon-kept]
 
-railroad では、global directive を除いた後の原文の行に、
+railroad では、大域的なディレクティブを除いた後の原文の行に、
 文字列 style または classDef があれば、その行を書かれたまま保ちます。
-行の中のすべての文、コメント、native hidden form と、その間の空白を含みます。
+行の中のすべての文、コメント、図固有の隠れた形と、その間の空白を含みます。
 前後の行とは結合しません。
-directive の除去で、これらの文字列が複数の物理行をまたいでできる場合は、
+ディレクティブの除去で、これらの文字列が複数の物理行をまたいでできる場合は、
 またがる行をすべて保ちます。
 [fixture: railroad/semicolons/native-terminal-value]
 
@@ -1887,7 +1888,7 @@ directive の除去で、これらの文字列が複数の物理行をまたい�
 [fixture: railroad/semicolons/abnf-word-unclosed-directive-lines]
 [fixture: railroad/semicolons/peg-word-unclosed-directive-lines]
 ここでいう行は、mermaid.js が1行として読む範囲全体です。
-U+2028 や U+2029 の後の comment line が、語を含む行の前、後、
+U+2028 や U+2029 の後のコメント行が、語を含む行の前、後、
 両方のテキストをつなぐ場合も、つながる原文の行をすべて保ちます。
 最初の行の字下げは本文の1段に揃え、中身と2行目以降の列は書かれたままです。
 
@@ -1916,22 +1917,22 @@ U+2028 や U+2029 の後の comment line が、語を含む行の前、後、
 [test: railroad/semicolons/peg-classdef-comment-after-ps]
 [test: railroad/semicolons/peg-classdef-comment-both-ps]
 
-共有の kept-line 配置に従い、
-その行をまたぐ文や不可分な値・trivia も全体を保ちます。
+共有の行を保持する配置に従い、
+その行をまたぐ文や不可分な値・注釈類も全体を保ちます。
 2行目以降の列は書かれたままです。
 
-mermaid.js は、これらの文字列を含む行の最後の semicolon を無視し得ます。
+mermaid.js は、これらの文字列を含む行の最後のセミコロンを無視し得ます。
 railroad では、規則の必須終端や ABNF のコメントの印がその対象になり得ます。
 行を変えると規則が拒否されたり、コメントの中身がコードとして読まれたりするため、
 原文の行を保つことで両方の句読点を守ります。
 内容を移した後の行規則の効き方は予測しません。
 
 払うものは、規則名、文字列、コメントに style や classDef を含む行が、
-後に colon や hash がなくても整形されないことです。
+後にコロンやハッシュ記号がなくても整形されないことです。
 その他の行は通常の規則に従います。
-除かれる global directive の中にしかない語は、行を保つ対象にしません。
-directive の除去で接する文字は対象にします。
-ヘッダの前の行にある global directive も同じように除かれ、その後の本文の行は、
+除かれる大域的なディレクティブの中にしかない語は、行を保つ対象にしません。
+ディレクティブの除去で接する文字は対象にします。
+ヘッダの前の行にある大域的なディレクティブも同じように除かれ、その後の本文の行は、
 従来どおり保つか整形します。
 [fixture: railroad/semicolons/ir-word-after-leading-directive]
 
@@ -2618,11 +2619,11 @@ railroad-peg-beta
 
 通常の連続空行を最大1行にし、文書と本文の端の空行を除きます。
 通常の空白だけの行を空にし、
-見出しと完結した構造の無害な ASCII padding を除きます。
+見出しと完結した構造の無害な ASCII 余白を除きます。
 他の平坦な図種と同じ見通しにするためです。
-値、コメント末尾、directive と hidden の内部、必要な closer padding、prefix、
+値、コメント末尾、ディレクティブと隠れた形の内部、必要な閉じ記号余白、前置部分、
 保護区間は各規則に従います。
-ABNF の見かけの終端後の space は無害と推測せず、
+ABNF の見かけの終端後の空白は無害と推測せず、
 AST がコメントとして読んだ結果に従います。
 
 [fixture: railroad/blank-lines/abnf-collapse]
@@ -2687,13 +2688,13 @@ railroad-peg-beta
 
 ### frontmatter の YAML
 
-安全な実際の先頭 frontmatter だけを、
-共有の guard 付き YAML formatter へ渡します。
+安全な実際の先頭フロントマターだけを、
+共有の保護条件付き YAML 整形処理へ渡します。
 埋込みの効果を保ちながら Prettier が印字する YAML にするためです。
-不正な YAML、字下げした fence、closer padding、HTML quote の危険がある形、
-本文の整形で fence が現れる形、保持 prefix の YAML は書かれたままにします。
-YAML の入れ子と block scalar は、tabWidth 0 でも共有の正の最小幅を使います。
-native hidden YAML は opaque なので、この経路へ渡しません。
+不正な YAML、字下げした囲み記号、閉じ記号余白、HTML 引用の危険がある形、
+本文の整形で囲み記号が現れる形、保持前置部分の YAML は書かれたままにします。
+YAML の入れ子とブロックスカラーは、`tabWidth` 0 でも共有の正の最小幅を使います。
+図固有の隠れた YAML は不透明なので、この経路へ渡しません。
 
 [fixture: railroad/frontmatter-yaml/abnf-padding]
 
@@ -2790,14 +2791,14 @@ railroad-peg-beta
 
 ### 改行と Unicode
 
-共有の host 方針に従い、物理 CR と CRLF を LF として読み、設定した LF、CRLF、
+共有の埋め込み先方針に従い、物理 CR と CRLF を LF として読み、設定した LF、CRLF、
 CR で出力します。
-値、hidden、frontmatter の内部も同じです。
-先頭 BOM は host の除去と復元の制限に従います。
-LS、PS、NBSP、BOM は通常の native gap の空白にはしません。
-文字列、special sequence、native line comment が所有するものは保ちます。
-共有 common value の外端では Notation whitespace の trim を使います。
-Unicode separator を構造上の改行へ変えず、native の所有関係に従うためです。
+値、隠れたテキスト、フロントマターの内部も同じです。
+先頭 BOM は埋め込み先の除去と復元の制限に従います。
+LS、PS、NBSP、BOM は通常の図固有の隙間の空白にはしません。
+文字列、special sequence、図固有の行コメントが所有するものは保ちます。
+共有の共通値は、記法で定義された空白を両端から除きます。
+Unicode の区切り文字を構造上の改行へ変えず、図固有の所有関係に従うためです。
 
 [test: railroad/line-terminators-and-unicode/ir-cr]
 
@@ -2845,10 +2846,11 @@ Unicode separator を構造上の改行へ変えず、native の所有関係に�
 
 ### 出現順
 
-規則、選択肢、重複名、前方や未定義の reference、
-metadata の繰返しと空の reset を含め、すべての出現と順序を保ちます。
-call、group、repeat、predicate の operand 全体を AST から残します。
-sort や空の metadata の削除で Db が変わり、正規化された singleton が同じでも、
+規則、選択肢、重複名、前方や未定義の参照、
+メタデータの繰返しと空のリセットを含め、すべての出現と順序を保ちます。
+呼び出し、group、repeat、先読み条件の適用先全体を AST から残します。
+並べ替えや、上書きされたメタデータと空のメタデータの削除で Db が変わり、
+正規化された要素が1つの形が同じでも、
 Db から原文を再構築する理由にはならないためです。
 
 [fixture: railroad/source-order/abnf-duplicates]
@@ -2926,11 +2928,11 @@ railroad-peg-beta
 ### 末尾改行
 
 通常の受理本文は設定した末尾改行1個で終えます。
-空本文、規則、metadata、コメント、閉じた hidden form が対象です。
+空本文、規則、メタデータ、コメント、閉じた隠れた形が対象です。
 ファイル末尾を揃えるためです。
-EOF まで達する Root directive、必要な hidden padding、
-保護された末尾と prefix は共有の例外に従います。
-ABNF の終端後に space は加えません。
+EOF まで達する `Root` ディレクティブ、必要な隠れた形の余白、
+保護された末尾と前置部分は共有の例外に従います。
+ABNF の終端後に空白は加えません。
 
 [fixture: railroad/final-newline/abnf-empty]
 
@@ -3016,9 +3018,9 @@ railroad-peg-beta
 directive-as-token-boundary、ignored-semicolon-as-token-boundary、
 html-tag-in-frontmatter、embedded-data-opaque、bare-percent-line-before-header、
 c4-keyword-anywhere です。
-railroad には opaque 比較から除く受理設定 key がありません。
-空文字列は値で、空 call は拒否します。
-raw の拒否に raw Db はないため、仕様で受理する入力は記録された読み、原文の保持、
+railroad には不透明比較から除く受理設定キー がありません。
+空文字列は値で、空呼び出しは拒否します。
+素の mermaid.js の拒否に素の mermaid.js の Db はないため、仕様で受理する入力は記録された読み、原文の保持、
 冪等性を別に検査します。
 単体の解析失敗は修復出力なしで構文エラーを返し、
 Markdown は埋込み整形を辞退します。
@@ -3091,12 +3093,12 @@ Markdown は埋込み整形を辞退します。
 
 ### Markdown フェンス
 
-共有の Markdown 経路で、dedent した本文に同じ規則を適用します。
-host が fence、list、quote の列を与え、
-最終本文行の padding を除く場合があります。
-最後の hidden padding も対象ですが、内部の hidden 境界は保ちます。
-container の列を railroad の字下げと混同しないよう、
-host 全体の出力と本文の Db 保持を別に検査します。
+共有の Markdown 経路で、外側の字下げを除去した本文に同じ規則を適用します。
+埋め込み先が囲み記号、リスト、引用の列を与え、
+最終本文行の余白を除く場合があります。
+最後の隠れた形の余白も対象ですが、内部の隠れた形の境界は保ちます。
+埋め込み先の枠の列を railroad の字下げと混同しないよう、
+埋め込み先全体の出力と本文の Db 保持を別に検査します。
 
 [test: railroad Markdown: ir-top-level]
 

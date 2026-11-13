@@ -723,12 +723,13 @@ follows a direction stays on the line of the header, after its gap as written:
 followed by a line `title T` is a period and a title, and likewise
 `timeline TD LR` (a direction and the period `LR`) and `timeline LR 2004 : a`. A
 text after the header without a direction goes to a line of its own
-(`timeline History` is printed with `History` below the header), which the ten
-versions draw the same. A period that stays on the line of the header has its
-later events at the ordinary continuation indentation, since its colon is not at
-the column of a period on a line of its own. A direction on a line of its own is
-a period. [fixture: header-and-direction/second-word-stays-on-the-header-line]
-[fixture: header-and-direction/direction-then-period-stays] [fixture:
+(`timeline History` is printed with `History` below the header), which every
+version that counts for timeline draws the same. A period that stays on the line
+of the header has its later events at the ordinary continuation indentation,
+since its colon is not at the column of a period on a line of its own. A
+direction on a line of its own is a period. [fixture:
+header-and-direction/second-word-stays-on-the-header-line] [fixture:
+header-and-direction/direction-then-period-stays] [fixture:
 header-and-direction/text-after-the-header-without-direction-moves] [fixture:
 header-and-direction/direction-on-its-own-line-is-a-period]
 

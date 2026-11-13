@@ -13,6 +13,7 @@ import {
   findTokenEndingBefore,
   findTriviaAt,
   isWhitespace,
+  isWordCharacter,
   skipDirectives,
   textWithoutDirectives,
 } from "./source.ts"
@@ -401,16 +402,6 @@ function readWord(text: string, offset: number): string {
   let end = offset
   while (end < text.length && isWordCharacter(text.charAt(end))) end++
   return text.slice(offset, end)
-}
-
-/** Whether a character is an ASCII letter, a digit, or `_`. */
-function isWordCharacter(character: string): boolean {
-  return (
-    (character >= "a" && character <= "z") ||
-    (character >= "A" && character <= "Z") ||
-    (character >= "0" && character <= "9") ||
-    character === "_"
-  )
 }
 
 /** Whether the text is a number of two digits or more. */

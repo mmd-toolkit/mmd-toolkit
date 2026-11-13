@@ -4,7 +4,7 @@ import { printer } from "prettier/doc"
 import type { MermaidAst } from "../parser.ts"
 import { significantIndentationWidth } from "./lines.ts"
 import type { Source } from "./source.ts"
-import { isWhitespace } from "./source.ts"
+import { isWhitespace, isWordCharacter } from "./source.ts"
 
 const { printDocToString } = printer
 
@@ -124,16 +124,6 @@ export function startsTagInFrontmatter(
     start = text.indexOf("<", end + 1)
   }
   return false
-}
-
-/** Whether a character is a word character (common.md, Notation). */
-function isWordCharacter(character: string): boolean {
-  return (
-    ("A" <= character && character <= "Z") ||
-    ("a" <= character && character <= "z") ||
-    ("0" <= character && character <= "9") ||
-    character === "_"
-  )
 }
 
 /**

@@ -32,7 +32,7 @@ subgraph の文はその `subgraph` の行より 1 段深く置き、
 本文の1段は共有の意味を持つ字下げ幅を使い、
 `tabWidth: 0`でも最低1つの空白にします。
 `useTabs`では1段をタブ1つにします。
-字下げをすべて取り除くと、方向文がaccessibilityの値や構文エラーに変わり、
+字下げをすべて取り除くと、方向文がアクセシビリティの値や構文エラーに変わり、
 Mermaidの読みが変わるためです。
 この下限で実際の方向文を保護します。
 桁位置で読みが変わる非方向行は、後述の規則で元の字下げを保ちます。
@@ -189,7 +189,7 @@ mermaid.js が取り除くコメント行を除いた行を読みます。
 `#` や `;` のない行と同じく `A[style:] --> B %%{init:{"x":"#;"}}%%` になります。
 行の途中の `%%` はコメント行ではなく、規則はそのテキストを読みます。
 詳しくは次の節を参照してください。
-[Label content](./architecture.ja.md#label-content)
+[ラベルの内容](./architecture.ja.md#label-content)
 [fixture: semicolons/line-rule-chars-only-in-directive]
 
 入力
@@ -727,11 +727,16 @@ mermaid.js はリンクのスタイルから `stroke:` を探し、
 [fixture: whitespace-between-tokens/class-def-stroke-before-colon-kept]
 `style` はノードに適用され、1 つの形で印字します。
 [fixture: whitespace-between-tokens/style-stroke-before-colon-spaced]
-`style` は、`color:` か `text-align:` で始まるスタイルの前の空白の有無と、
-その名前と `:` の間の空白の有無を、書かれたまま残します。
+`style` は、`color:` か `text-align:` で始まるスタイルの前の空白の有無を、
+書かれたまま残します。
+前に空白がないスタイルでは、その名前と `:` の間の空白の有無も残します。
 空白の連続は空白 1 つにします。
 対象にする版に、
 そう始まるスタイルをノードのラベルのスタイルに入れるものがあるためです。
+前に空白があるスタイルは、名前と `:` の間に空白があってもなくても、
+そう始まりません。
+`style A fill:#f00, color :red` は `style A fill: #f00, color: red`
+と印字します。
 `style A fill:#f00,color:white` は `style A fill: #f00,color: white` と印字し、
 `style A fill:#f00 ,   color:white` は `style A fill: #f00, color: white`
 と印字します。
@@ -743,7 +748,9 @@ mermaid.js はリンクのスタイルから `stroke:` を探し、
 [fixture: whitespace-between-tokens/style-color-spaced]
 [fixture: whitespace-between-tokens/style-color-first]
 [fixture: whitespace-between-tokens/style-text-align-touching-kept]
-[fixture: whitespace-between-tokens/style-label-name-colon-gap-kept]
+[fixture: whitespace-between-tokens/style-label-name-colon-gap-first-kept]
+[fixture: whitespace-between-tokens/style-label-name-colon-gap-after-comma-spaced]
+[fixture: whitespace-between-tokens/style-label-name-colon-gap-after-space-spaced]
 `linkStyle` も、`color:` か `text-align:` で始まるスタイルに同じ空白を残します。
 対象にする版に、
 そう始まるスタイルを辺のラベルのスタイルに入れるものがあるためです。
@@ -1275,8 +1282,8 @@ U+2028、U+2029 は残します。
 [fixture: label-inner-whitespace/leading-whitespace-trimmed-without-trigger]
 [fixture: flowchart/label-inner-whitespace/label-directive-with-whitespace-kept]
 [fixture: label-inner-whitespace/leading-whitespace-run-becomes-one]
-空白がないと、`A[ /x/]` はラベル `x` の lean-right の形に、
-`A( -x-)` は ellipse になり、`A>x@ ]` は拒否されます。
+空白がないと、`A[ /x/]` はラベル `x` の右に傾く形に、
+`A( -x-)` は楕円になり、`A>x@ ]` は拒否されます。
 辺の id の並びが `>` で止まらず、`A>x` を辺の id として読むからです。
 そうしたラベルは、末尾にも空白 1 つを置きます。
 `A[ /x/]` は `A[ /x/ ]` になります。
@@ -1557,10 +1564,10 @@ flowchartの通常のアクセシビリティ行に固有の理由はないの�
 Mermaidはコロンの次行の通常の文字を値と読むので、語と同じ行につなぎます。
 [fixture: accessibility-lines/next-line-values]
 
-文中の実コメントやdirectiveがあれば短い形につなぎません。
+文中の実コメントやディレクティブがあれば短い形につなぎません。
 従来の[複数行の文](#複数行の文)の配置を保ち、
-コメントやdirectiveを含む継続行はキーワードより1段深く置きます。
-コメントやdirectiveの文字と、著者が文を区切った改行を保ちます。
+コメントやディレクティブを含む継続行はキーワードより1段深く置きます。
+コメントやディレクティブの文字と、著者が文を区切った改行を保ちます。
 flowchartはコロンの後のコメントを読み飛ばして後の値を読みます。
 通常の結合が使えない場合も、従来の継続行の規則を保つためです。
 [fixture: accessibility-lines/next-line-comment-kept]
@@ -1595,7 +1602,7 @@ CRには共通の改行の正規化を使います。
 [test: graph accessibility: flowchart unicode-gaps]
 [test: graph accessibility: flowchart unicode-values]
 [test: graph accessibility: flowchart unicode-semicolon-kept]
-文字とtriviaのない閉じた説明ブロックの内側は、空白や空行があっても`{}`です。
+文字と注釈類のない閉じた説明ブロックの内側は、空白や空行があっても`{}`です。
 外側の語と波括弧の隙間は、元が接していても空白 1 個にします。
 語と本文の開始を見分けやすくするためで、`accDescr {}` と印字します。
 [fixture: accessibility-lines/empty-block-touching-keyword]
@@ -1605,7 +1612,7 @@ usecaseのDbが同じ形に従います。 [fixture: accessibility-lines/empty-b
 [fixture: accessibility-lines/empty-block-lines]
 空ブロック内で受理するNBSP、U+2028、U+2029も落とします。
 [test: accessibility blocks: flowchart empty-block-unicode]
-保持行の例外を優先し、コメントやdirectiveがあるブロックは従来の配置を保ちます。
+保持行の例外を優先し、コメントやディレクティブがあるブロックは従来の配置を保ちます。
 [fixture: accessibility-lines/empty-block-semicolon-kept]
 [fixture: accessibility-lines/empty-block-directive-kept]
 [fixture: multi-line-values/accdescr-block-comment-only]
@@ -1631,7 +1638,7 @@ mermaid.js の文書には、1 行のブロックの例がありません。
 `tabWidth: 0`の本文の最小幅でも同じ空ブロックと閉じ括弧の規則を使います。
 [fixture: accessibility-lines/block-zero-width]
 
-入力（escape 表記）:
+入力（エスケープ表記）:
 `"flowchart LR\naccTitle:Compact title\naccDescr:Compact description"`。
 
 出力
@@ -1643,7 +1650,7 @@ flowchart LR
   accDescr: Compact description
 ```
 
-入力（escape 表記）: `"flowchart LR\naccDescr {a}\nA[Block spacing]"`
+入力（エスケープ表記）: `"flowchart LR\naccDescr {a}\nA[Block spacing]"`
 
 出力
 ([accessibility-lines/block-tight-text-output.mmd](../tests/fixtures/flowchart/accessibility-lines/block-tight-text-output.mmd)):
@@ -1654,7 +1661,7 @@ flowchart LR
   A[Block spacing]
 ```
 
-入力（escape 表記）:
+入力（エスケープ表記）:
 `"flowchart LR\naccDescr: previous description\naccDescr { }\nA[Empty spacing]"`
 
 出力
@@ -1667,7 +1674,7 @@ flowchart LR
   A[Empty spacing]
 ```
 
-入力（escape 表記）:
+入力（エスケープ表記）:
 `"flowchart LR\naccTitle:\n%%{init: {}}%%\nTitle after directive\nA[Continuation]"`。
 
 出力
@@ -1683,7 +1690,7 @@ flowchart LR
 
 ### 複数行の文
 
-通常のアクセシビリティのコロン行と、triviaのない閉じた空の説明ブロックは、
+通常のアクセシビリティのコロン行と、注釈類のない閉じた空の説明ブロックは、
 [アクセシビリティの行](#アクセシビリティの行)に従い行をつなぎます。
 それ以外の複数行の文は改行を保ち、2行目以降を1行目より1段深く置きます。
 文をどこで折るかは、連鎖や長い行と同じく書き手の選択です。
@@ -1816,7 +1823,7 @@ cb
 `A@{shape: circle}` も `A@{   shape: circle   }` も `A@{ shape: circle }`
 になります。
 mermaid.js は 1 行のブロックの文字列を、前に `{` と改行、
-後ろに改行と `}` を付けて、YAML の flow mapping として読みます。
+後ろに改行と `}` を付けて、YAML のフロー形式のマッピングとして読みます。
 ([flowchart](https://github.com/mermaid-js/mermaid/blob/2086904e76c692331e34a45d7cc3bc30860d040e/packages/mermaid/src/diagrams/flowchart/flowDb.ts#L160-L168)、
 [agentflow](https://github.com/mermaid-js/mermaid/blob/2086904e76c692331e34a45d7cc3bc30860d040e/packages/mermaid/src/diagrams/agentflow/agentflowDb.ts#L364-L371)、
 [kanban](https://github.com/mermaid-js/mermaid/blob/2086904e76c692331e34a45d7cc3bc30860d040e/packages/mermaid/src/diagrams/kanban/kanbanDb.ts#L118-L129)、
@@ -1829,19 +1836,19 @@ U+00A0 などの空白は文字列の一部として残します。
 [test: data blocks: flowchart one line with no-break spaces at the ends]
 半角空白とタブしか含まないブロックや何も含まないブロックは、
 `@{ }` と印字します。
-mermaid.js は空の flow mapping として読むので、`A@{}`、`A@{   }`、
+mermaid.js は空のフロー形式のマッピングとして読むので、`A@{}`、`A@{   }`、
 `A@{ }` の Db と図は同じです。
 sequence 図では、`@{}` は拒否され、`@{   }` は受理されます。
 [fixture: data-blocks/one-line-space-only-padded]
 次の場合、ブロックは書かれたままにします。
 
 - `%%{` を含むとき。
-  directive は、複数行のブロックと同じく、文字と桁を保ちます。
+  ディレクティブは、複数行のブロックと同じく、文字と桁を保ちます。
   [fixture: data-blocks/one-line-directive-kept]
 - その行が全体を保つ行であるとき。
   下の条件と同じです。 [fixture: data-blocks/one-line-kept-line-kept]
 - 別のブロックと接しているとき。
-  間に何もないか、directive だけがある場合です。
+  間に何もないか、ディレクティブだけがある場合です。
   `}@{` のように接する 2 つのブロックは、mermaid.js が文字列を連結して読むので、
   片方の端の空白が両方のテキストを変えます。
   [fixture: data-blocks/one-line-touching-blocks-kept]
@@ -1867,7 +1874,7 @@ sequence 図では、`@{}` は拒否され、`@{   }` は受理されます。
 接していないブロックは、1 文に複数あっても、それぞれ整えます。
 同じ文の複数行のブロックの隣にある 1 行のブロックも同じです。
 [fixture: data-blocks/one-line-separate-blocks-padded]
-コメント、ディレクティブ、空行、空の description block、
+コメント、ディレクティブ、空行、空の説明ブロック、
 ブロックの隣にある捨てられる文の `;` は、それぞれの規則に従います。
 CRLF と CR は `endOfLine` に従います。
 [fixture: data-blocks/one-line-surrounding-trivia]
@@ -1886,9 +1893,9 @@ Prettier が 2 つの形から選び、行が収まる場合は 1 行のまま�
 タブがある行は測った幅より画面上で広くても、1 行のままになることがあります。
 [fixture: data-blocks/long-tabs-not-counted]
 mermaid.js は、1 行のブロックのテキストを、
-`,` で項目を区切る YAML の flow mapping として読み、
+`,` で項目を区切る YAML のフロー形式のマッピングとして読み、
 複数行のブロックのテキストを、
-項目ごとに行を分ける block mapping として読みます（上のソースを参照）。
+項目ごとに行を分けるブロック形式のマッピングとして読みます（上のソースを参照）。
 どの項目も両方の読み方で同じに読まれるキーと値であれば、両者は同じに読まれます。
 下の条件がこれを保証します。
 各項目は、両端の空白とタブを除いて書かれたまま印字します。
@@ -1896,9 +1903,9 @@ mermaid.js は、1 行のブロックのテキストを、
 次の条件をすべて満たす場合だけ、ブロックを分けます。
 
 - flowchart、agentflow、kanban のいずれかの図のブロックであること。
-  sequence 図は block mapping の行を拒否し、usecase 図の `@{` は、
+  sequence 図はブロック形式のマッピングの行を拒否し、usecase 図の `@{` は、
   独自の構文を持ちます（[複数行の値](./sequence.ja.md#複数行の値)と
-  [Native metadata](./usecase.ja.md#native-metadata)を参照）。
+  [図固有のメタデータ](./usecase.ja.md#native-metadata)を参照）。
   [fixture: sequence/whitespace-between-tokens/data-block-long-kept]
   [fixture: usecase/native-metadata/long-block-kept]
 - 複数行のブロックと同じく、`tabWidth` が 0 でないこと。
@@ -1919,25 +1926,25 @@ mermaid.js は、1 行のブロックのテキストを、
   1 項目を複数行にしても行は短くならず、行数が増えるだけです。
   [fixture: data-blocks/long-one-entry-kept]
 - どの項目も、コロンと空白で区切られたキーと値であり、
-  値が項目の末尾までを占める引用符付きのスカラーか、plain scalar であること。
-  plain scalar は、YAML が意味を与える文字（`&`、`*`、`!`、`|`、`>`、`%`、`@`、
+  値が項目の末尾までを占める引用符付きのスカラーか、引用符なしのスカラーであること。
+  引用符なしのスカラーは、YAML が意味を与える文字（`&`、`*`、`!`、`|`、`>`、`%`、`@`、
   バッククォート、および直後に空白がある `-`、`?`、`:`）で始まらず、末尾にも、
   直後に空白がある位置にも `:` を含まないものです。
-  block mapping は、これらを flow mapping とは違って読むためです。
+  ブロック形式のマッピングは、これらをフロー形式のマッピングとは違って読むためです。
   値がない項目（`{ pos, h: 60 }` の `pos`）、空の項目（末尾の `,` の後）、
-  anchor や alias である値、`pos:t` のような項目は、どれもこれに当たりません。
+  アンカーや別名参照である値、`pos:t` のような項目は、どれもこれに当たりません。
   [fixture: data-blocks/long-entry-without-value-kept]
   [fixture: data-blocks/long-trailing-comma-kept]
   [fixture: data-blocks/long-indicator-value-kept]
   [fixture: data-blocks/long-colon-without-space-kept]
 - 引用符の外に `[`、`]`、`{`、`}` がなく、
   コメント（先頭か空白の後の `#`）がないこと。
-  値の flow collection は 1 行ではない 1 項目として読まれ、
-  コメントは block mapping の行を終わらせるためです。
+  値のフロー形式のコレクションは 1 行ではない 1 項目として読まれ、
+  コメントはブロック形式のマッピングの行を終わらせるためです。
   [fixture: data-blocks/long-nested-kept]
   [fixture: data-blocks/long-comment-kept]
 - 両端を整える条件を満たすこと。
-  ブロック内に directive がなく、行全体を保つ行でなく、
+  ブロック内にディレクティブがなく、行全体を保つ行でなく、
   ほかのブロックと接していないことです。
   [fixture: data-blocks/long-kept-line-kept]
 
@@ -1987,11 +1994,11 @@ flowchart LR
   Mermaid は flowchart と kanban のタブで字下げした YAML を拒否し、
   移動量も半角空白で数えます。 [test: data blocks: JSON leading tab kept]
 - ブロックに `%%{` がないこと。
-  directive のテキストと桁は書かれたまま保ちます。
+  ディレクティブのテキストと桁は書かれたまま保ちます。
   [fixture: data-blocks/directive-inside-kept]
 - 最も浅い文字のある行が 0 桁なら、そこから始まる行の先頭が `---`、`...`、
   `%` でないこと。
-  文書の印や YAML directive を 0 桁から動かすと、
+  文書の印や YAML ディレクティブを 0 桁から動かすと、
   受理される YAML が拒否される場合があります。
   [fixture: data-blocks/document-start-kept]
   [fixture: data-blocks/document-end-kept]
@@ -1999,7 +2006,7 @@ flowchart LR
 - `}` が単独行と言えるのは、前に半角空白だけがあり、
   その幅が文字のある最も浅い行以下のときだけであること。
   `}` の前の空白は、Mermaid がブロックのテキストの最後の行として読み、
-  literal や folded のスカラーが残します。
+  改行を保つ形式や改行を折り畳む形式のスカラーが残します。
   それより深い半角空白は、空白だけの行として値に入り、
   `}` を文の桁へ動かすと消えます。
   `}` の前のタブ、NBSP、U+2028 も、その行の文字なので、その行は本文の行で、
@@ -2115,10 +2122,10 @@ mermaid.js は単独行の `}` の前のタブを受理しますが、
 ノードの行自体の字下げを整形器が整える必要がある場合は、
 `useTabs` でないときと同じく、ブロックの行も空白で字下げして一緒に動かします。
 該当するのは、
-`end` がヘッダーと同じ字下げに置かれる agentflow の container のヘッダー、
+`end` がヘッダーと同じ字下げに置かれる agentflow のコンテナーのヘッダー、
 数える最初にあるものと同じ深さでない文や、それ以外のもので始まる行の文（前述）、
 mermaid.js が字下げをノードの段として読む kanban のノードです。
-[Metadata blocks](./agentflow.ja.md#metadata-blocks)と
+[データブロック](./agentflow.ja.md#metadata-blocks)と
 [データブロック](./kanban.ja.md#データブロック)を参照してください。
 このとき、作者の書き方にかかわらず、タブ幅が `tabWidth` と同じなら正しくそろい、
 異なるタブ幅ではその差の分だけずれます。
@@ -2129,24 +2136,24 @@ mermaid.js が字下げをノードの段として読む kanban のノードで�
 本文に文字がないブロックには最も浅い文字のある行がないため、
 書かれたまま残します。 [fixture: usecase/json-tables/empty-body-kept]
 
-同じ移動を agentflow の metadata、kanban の data、usecase の JSON table、
+同じ移動を agentflow のメタデータ、kanban のデータ、usecase の JSON の表、
 sequence の参加者データにも適用します。
 sequence では、文字がある本文行がちょうど 1 行であることも必要です。
-Mermaid はブロック全体を trim して最初の行の字下げだけを除くため、
+Mermaid はブロック全体の両端の空白を除いて最初の行の字下げだけを除くため、
 後のキーを字下げすると受理される YAML が拒否される場合があります。
-[Metadata blocks](./agentflow.ja.md#metadata-blocks)、
+[データブロック](./agentflow.ja.md#metadata-blocks)、
 [データブロック](./kanban.ja.md#データブロック)、
-[JSON tables](./usecase.ja.md#json-tables)、
+[JSON の表](./usecase.ja.md#json-tables)、
 [複数行の値](./sequence.ja.md#複数行の値)を参照してください。
 
 空白だけの行も同じ量だけ動かし、空白がなくなる場合は空行にします。
 空行は空のままにします。
 本文の各行の末尾空白は保ちます。
-literal block scalar は空白行の幅と末尾空白を読むため、
+改行を保つブロックスカラーは空白行の幅と末尾空白を読むため、
 変えると Db が変わる場合があります。 [fixture: data-blocks/scalar-blank-lines]
 [fixture: data-blocks/scalar-blank-lines-outdent]
 
-前後の directive、コメント、空行、空の説明ブロック、
+前後のディレクティブ、コメント、空行、空の説明ブロック、
 捨てる文区切りの `;` はそれぞれの規則に従います。
 CRLF と CR は `endOfLine` に従い、値の U+2028 と U+2029 は文字として保ちます。
 [fixture: data-blocks/surrounding-trivia] [test: data blocks: flowchart CRLF]
@@ -2203,7 +2210,7 @@ subgraph の中では、本文があるブロックの原文が字下げごと�
 [fixture: multi-line-values/accdescr-block-text-starts-on-brace-line]
 1 行のブロックは、
 [1 行の説明ブロック](./compatibility.ja.md#1-行の説明ブロック) に従い、
-trivia のない空ブロックは、
+注釈類のない空ブロックは、
 [アクセシビリティの行](#アクセシビリティの行)に従います。
 テキストがなく、コメント行だけを持つブロックは、値を持ちません。
 そのコメント行は、文の中のコメント行と同じく、
@@ -2420,7 +2427,7 @@ U+2028 か U+2029 を含む隙間は、書かれたまま残します。
 [fixture: directives/content-kept]
 
 元は同じ行にあった単位を別の行へ分けるときは、
-間の directive を次の単位に付けます。
+間のディレクティブを次の単位に付けます。
 右側の接触・分離は保ち、左側の接触は切れます。
 
 [fixture: flowchart/directives/same-line-as-statements]
@@ -2583,10 +2590,10 @@ subgraph の id への接続、id からの接続は、その subgraph を外に
 mermaid.js は subgraph の中の `direction` の文の `TD` を、
 書かれたとおりに保つので、そこで変えると図が変わります。
 swimlane 図のヘッダーでは、agentflow 図のヘッダーと同じく、
-`TD` を `TB` と印字します（[Header](./agentflow.ja.md#header)を参照）。
+`TD` を `TB` と印字します（[ヘッダー](./agentflow.ja.md#header)を参照）。
 どちらの図種も、
 `TD` が `TB` と同じように振る舞うようになった版より後のものです。
-ヘッダーに続く directive の後にある `TD` は、
+ヘッダーに続くディレクティブの後にある `TD` は、
 `swimlane-beta%%{init: {}}%% TD` のように書かれたまま残します。
 [fixture: direction/swimlane-header-td-one-form]
 [fixture: direction/swimlane-header-td-after-directive-kept]
@@ -2984,10 +2991,10 @@ mermaid.js はどちらの形の名前も同じテキストとして読み、
 [fixture: quotes/subgraph-names-before-a-comment]
 [fixture: subgraph-header/whitespace-before-block-kept]
 
-shape のラベル、link のラベル、角括弧の中の subgraph のタイトルも、
+形のラベル、リンクのラベル、角括弧の中の subgraph のタイトルも、
 例と同じく引用符なしで印字します。
-例では、shape のラベルを引用符なしで 109 回、引用符付きで 8 回、
-link のラベルを引用符なしで 32 回、引用符付きで 1 回、
+例では、形のラベルを引用符なしで 109 回、引用符付きで 8 回、
+リンクのラベルを引用符なしで 32 回、引用符付きで 1 回、
 タイトルを引用符なしで 6 回、引用符付きでは一度も書いていないためです。
 （[テキストの引用符](./compatibility.ja.md#テキストの引用符)）。
 `A["Start here"]` は `A[Start here]` と、
@@ -3201,7 +3208,8 @@ mermaid.js がその空白を、
 
 ### フロントマターの YAML
 
-`---` の行の間の YAML は、Prettier の YAML 整形で整形します。
+`---` の行の間の YAML は、ほかの場所の YAML と同じく、
+Prettier の YAML 整形で整形します。
 パーサーは YAML を読まないので、YAML として整形するのは整形器の仕事です。
 [fixture: frontmatter-yaml/compat-unknown-config-formatted]
 `---` の行は、行末の空白とタブも含めて、書かれたまま残します。

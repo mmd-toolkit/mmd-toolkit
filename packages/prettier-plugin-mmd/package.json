@@ -50,7 +50,7 @@
   },
   "dependencies": {
     "@mmd-toolkit/parser": "workspace:^",
-    "marked": "18.2.0"
+    "marked": "16.4.2"
   },
   "devDependencies": {
     "@mmd-toolkit/ast": "workspace:*",

@@ -318,9 +318,10 @@ ends, which the whitespace inside the texts (see
 [Keywords and texts](#keywords-and-texts)) would otherwise hide. The arrow is
 printed `-->` whatever its length (`--->` is `-->`): the length is not in the
 Db, an axis with no second text holds the same text with `--->` and with `-->`,
-and the versions 10.3.1 to 12.3.0, the ones that have a quadrant chart, draw the
-same figure. The documentation of mermaid.js writes `-->` six times and no
-longer arrow. [fixture: axes/arrow-touching] [fixture:
+and the
+[versions that count for quadrant charts](./compatibility.md#versions-of-mermaidjs-that-count)
+draw the same figure. The documentation of mermaid.js writes `-->` six times and
+no longer arrow. [fixture: axes/arrow-touching] [fixture:
 axes/arrow-with-more-whitespace] [fixture: axes/arrow-touching-on-one-side]
 [fixture: axes/arrow-length-shortest] [fixture: axes/text-inner-runs-collapsed]
 [fixture: axes/strings] [fixture: axes/markdown-string] [fixture:

@@ -6,7 +6,7 @@ import {
 } from "./click-call-margins.ts"
 import {
   colorCaseDbForFormattingComparison,
-  colorCaseDiagramTypes,
+  colorFormDiagramTypes,
 } from "./color-case-differences.ts"
 import { eventmodelingDbForFormattingComparison } from "./eventmodeling-data-margins.ts"
 import {
@@ -66,7 +66,7 @@ export function dbForFormattingComparison(
     compared = keywordTextDbForFormattingComparison(before, compared, type)
   // The colors come before the whitespace: a style that has both differences
   // takes the written case of its colors, and then the written whitespace.
-  if (colorCaseDiagramTypes.has(type))
+  if (colorFormDiagramTypes.has(type))
     compared = colorCaseDbForFormattingComparison(before, compared, type)
   if (styleDiagramTypes.has(type))
     compared = styleDbForFormattingComparison(before, compared, type)

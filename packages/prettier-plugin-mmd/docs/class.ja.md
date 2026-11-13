@@ -401,21 +401,28 @@ mermaid.js がクラスのスタイルを書かれたまま `;` でつなぎ、
 `style A fill:abc\  ,stroke:green` は、
 `style A fill: abc\ , stroke: green` と印字します。
 [fixture: whitespace-between-tokens/style-backslash-space-kept]
-`style` は、`color:` か `text-align:` で始まるスタイルの前の空白の有無と、
-その名前と `:` の間の空白の有無を、書かれたまま残します。
+`style` は、`color:` か `text-align:` で始まるスタイルの前の空白の有無を、
+書かれたまま残します。
+直前の `,` に接するスタイルでは、その名前と `:` の間の空白の有無も残します。
 空白の連続は空白 1 つにします。
 対象にする版に、
 そう始まるスタイルをクラスのラベルのスタイルに入れるものがあるためです。
+文の最初のスタイルと、前に空白があるスタイルは、
+名前と `:` の間に空白があってもなくても、そう始まりません。
+`style A color :red` は `style A color: red` と印字します。
 `style A fill:#f00,color:white` は `style A fill: #f00,color: white`
 と印字します。
-詳しくは [同じに描かれるスタイル](./compatibility.ja.md#同じに描かれるスタイル)
+詳しくは [同じに描かれるスタイル](./compatibility.ja.md#同じに描かれるスタイル) と
+[対象にする版の mermaid.js のために残す形](./compatibility.ja.md#対象にする版の-mermaidjs-のために残す形)
 を参照してください。
 [fixture: whitespace-between-tokens/style-color-touching-kept]
 [fixture: whitespace-between-tokens/style-color-spaced]
 [fixture: whitespace-between-tokens/style-text-align-touching-kept]
-[fixture: whitespace-between-tokens/style-label-name-colon-gap-kept]
+[fixture: whitespace-between-tokens/style-label-name-colon-gap-after-comma-spaced]
+[fixture: whitespace-between-tokens/style-label-name-colon-gap-first-spaced]
 [fixture: whitespace-between-tokens/style-backslash-at-end-kept]
-`classDef` も空白の有無を保ちます。
+`classDef` も、最後のスタイルがバックスラッシュで終わる場合は、
+その後の空白の有無を保ちます。
 適用先のクラスより後に書かれていると、
 mermaid.js はスタイルをクラスのスタイルへ書かれたまま足します。
 前に書かれていると空白を取り除き、画素は同じですが、文の順序で決まるので、
@@ -757,19 +764,19 @@ classDiagram
 空でない戻り値型の前に空白を 1 つ置きます。
 フィールドの中の空白とタブの連なりは、空白 1 つで印字します。
 可視性記号の後の空白 1 つは、名前の一部なので残します。
-trivia、無視される文字、物理・Unicode の改行、
+注釈類、無視される文字、物理・Unicode の改行、
 セミコロン行の保護があるメソッドは原文全体を保ちます。
 [fixture: member-lines/method-padding]
 [fixture: member-lines/method-values-and-classifiers-runs-collapsed]
 [fixture: member-lines/method-trivia-and-semicolon-kept]
 
-mermaid.js の文書と同じく、属性の classifier はそのテキストに接します。
+mermaid.js の文書と同じく、属性の分類記号はそのテキストに接します。
 `+attr string *` は `+attr string*` と印字します。
 [fixture: member-lines/attribute-classifier-touches]
 属性と注釈の行は、本体内でもクラス名の `:` の後でも、
 内部の空白とタブの連なりを除き、中身を保ちます。
 メソッドの名前・引数・戻り値の中身も、連なりを除いて保ちます。
-generic のつづりと classifier に伴う末尾も保ちます。
+総称型のつづりと分類記号に伴う末尾も保ちます。
 [fixture: member-lines/runs-collapsed]
 [fixture: member-lines/percent-text-runs-collapsed]
 [fixture: member-lines/trailing-whitespace-dropped]

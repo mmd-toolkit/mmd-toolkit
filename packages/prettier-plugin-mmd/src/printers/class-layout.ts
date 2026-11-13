@@ -56,6 +56,7 @@ import {
   findTokensBetween,
   findTriviaBetween,
   isStructural,
+  isWordCharacter,
   skipDirectives,
   textWithoutDirectives,
 } from "./source.ts"
@@ -397,6 +398,7 @@ export function layoutClassStatement(
       joinsStyles,
       labelStyleNames:
         statement.type === "ClassStyleStatement" ? ["color", "text-align"] : [],
+      labelStyleGaps: "none",
       collapsesWordGaps: true,
     })
   }
@@ -955,21 +957,6 @@ function spaceAfterName(
   const endsWithCall =
     text.endsWith("call") && (before === undefined || !isWordCharacter(before))
   return endsWithCall ? "none" : "space"
-}
-
-/**
- * Whether a character is one of those that the lexer reads as a word, which
- * `call` does not start inside of: an ASCII letter, an ASCII digit, or `_`
- * (diagrams/class.md, The shared rules, rule 12). After any other character,
- * a `-`, a `.`, a letter that is not ASCII, or whitespace, a unit starts.
- */
-function isWordCharacter(character: string): boolean {
-  return (
-    (character >= "a" && character <= "z") ||
-    (character >= "A" && character <= "Z") ||
-    (character >= "0" && character <= "9") ||
-    character === "_"
-  )
 }
 
 /**

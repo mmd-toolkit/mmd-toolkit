@@ -92,7 +92,7 @@ requirementDiagram
 
 ### 本体
 
-trivia を挟んで見出しが続く場合、開始括弧のある行を最初のキーワードにそろえ、
+注釈類を挟んで見出しが続く場合、開始括弧のある行を最初のキーワードにそろえ、
 本文がさらに 1 段深く見えるようにします。
 その行をまたぐ値や保護された原文の境界は変えません。
 [fixture: bodies/header-completion-after-comment]
@@ -182,7 +182,7 @@ requirementDiagram
 
 フィールドは 1 行に、キーワード、キーワードに接する `:`、
 空白 1 つの後に値を置きます。
-この colon はキーの colon で、行がフィールドに値を 1 つ与えます。
+このコロンはキーのコロンで、行がフィールドに値を 1 つ与えます。
 詳しくは
 [コロンがどの種類かの決め方](./printed-form.ja.md#コロンがどの種類かの決め方)
 の手順 2 を参照してください。
@@ -391,9 +391,9 @@ ER 図の関係文も単位の間は空白 1 つです。
 空白の後で改行して複数行に書かれた関係文は、
 コメントやディレクティブが結合を妨げる場合を除き、1 行にします。
 結合しない場合は、
-後続の構造部分と独立した trivia を関係文の内側に 1 段字下げします。
+後続の構造部分と独立した注釈類を関係文の内側に 1 段字下げします。
 関係文を続ける空白の連続は LF より前から始まる必要があるため、
-各 gap の最初の行の末尾を保ちます。
+各隙間の最初の行の末尾を保ちます。
 複数行のディレクティブ全体と名前の内部も保ちます。
 [fixture: relationship-spacing/over-lines-joined]
 [fixture: relationship-spacing/comment-continuation-with-multiline-names]
@@ -537,7 +537,7 @@ Mermaid は、区切る空白にかかわらずスタイルの単位をつなげ
 `style r :  red   x` は `style r : red x` と印字します。
 [fixture: styles-and-classes/style-colon-first-run-spaced]
 通常はつなげる見出しや外側の改行があっても、最初の整形で同じ間隔にします。
-スタイル内部の改行区切り、所有する trivia、
+スタイル内部の改行区切り、所有する注釈類、
 同じ物理行に保持するセミコロンがある場合は、既存のスタイルの配置を保ちます。
 キーワード `style` と `classDef` は、書かれた大文字小文字を保ちます。
 （[大文字小文字をそろえるキーワード](./compatibility.ja.md#大文字小文字をそろえるキーワード)）。
@@ -568,7 +568,7 @@ Mermaid は、区切る空白にかかわらずスタイルの単位をつなげ
 `class` 文は、途中で改行して続けられます。
 改行の前の名前は style の文脈で読まれ、
 引用符のない名前は `style-word` です（diagrams/requirement.md、
-The style context、規則 1）。
+スタイルの文脈、規則 1）。
 改行の後の名前は文の文脈で読まれ、
 引用符のない名前は空白やほかの文字を含められます。
 最初の改行の後の名前がすべて、
@@ -753,7 +753,7 @@ requirementDiagram
 
 requirement の図には文を区切るものがなく、
 mermaid.js は同じ行に続く文を読みます。
-各文は 1 行に 1 つ置きます。
+1 行に 2 つの文があると読みにくいため、各文は 1 行に 1 つ置きます。
 ほかの図種も 1 行に 1 つの文を印字します。
 `}` の後ろの文、
 ヘッダーの後ろや `}` か文字列で終わる文の後ろの空の説明ブロック、
@@ -1044,7 +1044,7 @@ requirementDiagram
 
 `accDescr { ... }` ブロックの後続の本文行は、文の内側に 1 段字下げし、
 LF 直後の ASCII 空白とタブだけを置き換えます。
-説明の setter がこの字下げを捨てるためです。
+説明の設定関数がこの字下げを捨てるためです。
 改行、行末空白、ディレクティブの内部は保ちます。
 `}` は文と同じ段に置きます。
 [fixture: accessibility-statements/block-lines-kept]
@@ -1155,7 +1155,7 @@ accDescr: direction RL
 [fixture: semicolons-at-the-end-of-a-style-statement/hash-terminators]
 文の前後の空行とコメント行は、通常の配置に従います。
 [fixture: semicolons-at-the-end-of-a-style-statement/blank-and-comment-lines]
-空の description block も通常の配置に従い、スタイルの終端は削除します。
+空の説明ブロックも通常の配置に従い、スタイルの終端は削除します。
 [fixture: semicolons-at-the-end-of-a-style-statement/empty-description-block]
 
 行の規則が無視しないセミコロンは、スタイルの文字として残します。
@@ -1349,7 +1349,7 @@ mermaid.js は表のキーワードをどの大文字小文字でも読み、Db 
 [fixture: keyword-case/keywords-one-form] [fixture: keyword-case/types-one-form]
 ヘッダーは、
 小文字の `requirement` で始まるときだけ検出されます（diagrams/requirement.md、
-Detection）。
+図の種類の検出）。
 
 入力
 ([keyword-case/keywords-one-form-input.mmd](../tests/fixtures/requirement/keyword-case/keywords-one-form-input.mmd)):

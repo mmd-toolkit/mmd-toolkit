@@ -4,7 +4,7 @@
 
 決定済みの26項目を、共有処理と原綴の AST で実装します。
 実行時に Mermaid を呼ばず、出力を再解析しません。
-不可視文字と物理 CR は escape した固定テストです。
+不可視文字と物理 CR はエスケープした固定テストです。
 
 ## Rules
 
@@ -13,7 +13,7 @@
 書かれたキーワード `packet` または `packet-beta` を第1列に置きます。
 通常の最初の文は、ほかの図種と同じく次行へ移します。
 `packet` だけは直後の境界が必要で、接着した綴りを作りません。
-hidden の境界と保護された見出し・本文の組を優先します。
+隠れた形の境界と保護された見出し・本文の組を優先します。
 同義の名前は、書かれたまま保ちます。
 対象にする版に `packet-beta` だけを読むものがあるためです。
 詳しくは [ヘッダーの名前](./compatibility.ja.md#ヘッダーの名前)
@@ -40,11 +40,11 @@ packet
 
 ### Indentation
 
-通常の文と独立したコメント・global directive は、見出しから1段字下げします。
+通常の文と独立したコメント・大域的なディレクティブは、見出しから1段字下げします。
 本文は平坦で、公開される行は構文の入れ子を増やしません。
 packet の列には文法上の意味がないため、`tabWidth: 0` は空白0個、
 `useTabs` は幅0でもタブ1個です。
-説明本文以外の値の継続列、hidden の閉じ、保持する prefix は原形を保ちます。
+説明本文以外の値の継続列、隠れた形の閉じ、保持する前置部分は原形を保ちます。
 YAML は共有の正の最小幅を使います。
 
 [fixture: packet/indentation/indent-default]
@@ -114,7 +114,7 @@ mermaid.js は両方を同じに読み、文書の例は位置だけを 7 回使
 を参照）。
 両端の間に空白と `-` 以外がある範囲は、書かれたままにします。
 [fixture: packet/block-forms-and-order/equal-range-single]
-同じ label と空の共通代入を含め、全出現を順に残します。
+同じラベルと空の共通代入を含め、全出現を順に残します。
 Db から文を再構成したり併合したりしません。
 行分割と公開上限は作者の構造を失い、空代入の削除は最終値を変えるためです。
 
@@ -142,7 +142,7 @@ packet
 ### Range dash
 
 数値の範囲を見た目の1単位にするため、通常は `0-15` と詰めます。
-global trivia と hidden の境界は詰めずに保ちます。
+大域的な注釈類と隠れた形の境界は詰めずに保ちます。
 消費される LF は通常の空白ではないためです。
 
 [fixture: packet/range-dash/dash-tight]
@@ -166,8 +166,8 @@ packet
 ### Relative plus
 
 接頭記号と相対長をまとめて読めるよう、通常は `+3` と詰めます。
-count の数字は原綴を保ちます。
-global trivia と hidden form の接触状態と消費 LF は保ちます。
+`count` の数字は原綴を保ちます。
+大域的な注釈類と隠れた形の接触状態と消費 LF は保ちます。
 
 [fixture: packet/relative-plus/plus-tight]
 
@@ -187,19 +187,19 @@ packet
 
 ### Block colons
 
-通常は colon の前を空白0個、後を1個にし、列は揃えません。
+通常はコロンの前を空白0個、後を1個にし、列は揃えません。
 例は `0-15: "Source Port"`、`16: "Flag"`、`+3: "Payload"` です。
-各行がブロックを 1 つ足すので、この colon はキーの colon ではなく、
+各行がブロックを 1 つ足すので、このコロンはキーのコロンではなく、
 範囲とそのラベルの間に立つ記号とも読めます。
-そこで colon の前の空白は、mermaid.js の文書の例が決めます。
-colon の後に空白を置いて書いた例のうち、前に空白を置くものは 0 件で、
+そこでコロンの前の空白は、mermaid.js の文書の例が決めます。
+コロンの後に空白を置いて書いた例のうち、前に空白を置くものは 0 件で、
 置かないものは 29 件です。
 これは手順 3 です。
 詳しくは
 [コロンがどの種類かの決め方](./printed-form.ja.md#コロンがどの種類かの決め方) と
 [コロンの前の空白を決める例](./compatibility.ja.md#コロンの前の空白を決める例)
 を参照してください。
-trivia がある隙間は境界を保ちます。
+注釈類がある隙間は境界を保ちます。
 
 [fixture: packet/block-colons/colon-compact]
 
@@ -222,14 +222,14 @@ packet
 
 ### Quotes
 
-StringLiteral の範囲全体を保ちます。
-空 label と escape も含みます。
+`StringLiteral` の範囲全体を保ちます。
+空ラベルとエスケープも含みます。
 `'` で囲まれた文字列は、内容に `'`、`"`、バックスラッシュ、改行、U+2028、
 U+2029、バッククォート、`&`、`#`、`<` がある場合を除き、`"` で囲んで印字します。
 （[同じに描かれる綴り](./compatibility.ja.md#同じに描かれる綴り)）。
 `singleQuote` は読みません。
-その他の再符号化には、escape と前処理の新たな判断が必要です。
-引用符に見える共通値は、再引用する文字列ではなく literal のままです。
+その他の再符号化には、エスケープと前処理の新たな判断が必要です。
+引用符に見える共通値は、再引用する文字列ではなく原文のテキストのままです。
 
 [fixture: packet/quotes/quotes-one-form]
 
@@ -253,12 +253,12 @@ packet
 
 ### Label content
 
-label の padding、escape、HTML、entity、hidden に見える文字列を、
-内部の共通 trivia を含む範囲全体として保ちます。
-label の中の空白とタブの連なりは、空白 1 つにして印字します。
+ラベルの余白、エスケープ、HTML、実体参照、隠れた形に見える文字列を、
+内部の共通注釈類を含む範囲全体として保ちます。
+ラベルの中の空白とタブの連なりは、空白 1 つにして印字します。
 （[同じに描かれるテキスト中の空白の連なり](./compatibility.ja.md#同じに描かれるテキスト中の空白の連なり)）。
-このテキストの decode は Db を変え得ます。
-物理改行だけは共有の host 方針に従います。
+このテキストの復号は Db を変え得ます。
+物理改行だけは共有の埋め込み先方針に従います。
 
 [fixture: packet/label-content/label-padding]
 
@@ -281,10 +281,10 @@ packet
 
 ### Numbers
 
-start、end、count は NumericLiteral.value ではなく原綴の数字を印字します。
-0、精度を失う整数と overflow する数字も保ちます。
-double は原綴を失い、拒否される指数や Infinity の構文にもなるためです。
-不正な先頭0、小数、符号、指数の入力は corpus の失敗として扱います。
+`start`、`end`、`count` は `NumericLiteral.value` ではなく原綴の数字を印字します。
+0、精度を失う整数と桁あふれする数字も保ちます。
+倍精度浮動小数点数は原綴を失い、拒否される指数や `Infinity` の構文にもなるためです。
+不正な先頭0、小数、符号、指数の入力はコーパスの失敗として扱います。
 
 [fixture: packet/numbers/number-zero]
 
@@ -314,14 +314,14 @@ packet
 
 ### Title
 
-`title` の後を空白1個とし、非空値の共通空白の外端を trim します。
-null または空白だけの値は裸の `title` にします。
-等価な外側の空白を統一し、内部文字列、引用符、escape を保つためです。
+`title` の後を空白1個とし、非空値の外端から共通の空白を除きます。
+`null` または空白だけの値は裸の `title` にします。
+等価な外側の空白を統一し、内部文字列、引用符、エスケープを保つためです。
 ただし、値の中の空白とタブの連なりは空白 1 つにして印字します。
 （[同じに描かれるテキスト中の空白の連なり](./compatibility.ja.md#同じに描かれるテキスト中の空白の連なり)）。
-空行・コメント・directive を挟んでも、次の物理行から値を取りません。
-空の最終代入と frontmatter への fallback を残します。
-保護された trivia と hidden の境界を優先します。
+空行・コメント・ディレクティブを挟んでも、次の物理行から値を取りません。
+空の最終代入と、代わりに使われるフロントマターの値を残します。
+保護された注釈類と隠れた形の境界を優先します。
 題の終わりのディレクティブは、それぞれの前に空白があれば空白 1 つを置き、
 行末の空白の有無にかかわらず、最後のディレクティブの後の空白を除いて印字します。
 （[同じに描かれるキーワードの後のテキスト](./compatibility.ja.md#同じに描かれるキーワードの後のテキスト)）。
@@ -350,15 +350,15 @@ packet
 ### Accessibility lines
 
 共有の `accTitle: value` と `accDescr: value` を使います。
-colon は語に接し、trim した非空値の前を空白1個にします。
-空値は colon までです。
+コロンは語に接し、両端の空白を除いた非空値の前を空白1個にします。
+空値はコロンまでです。
 内部文字列とコメントの接触を変えず、外側の空白を統一するためです。
 ただし、`accDescr` の値の中の空白とタブの連なりは空白 1 つにして印字します。
 （[同じに描かれるテキスト中の空白の連なり](./compatibility.ja.md#同じに描かれるテキスト中の空白の連なり)）。
 `accTitle` はブラウザがツールチップとして表示するので、
 その連なりは書かれたまま残します。
-colon 後の brace は行値です。
-次行の値は結合せず、hidden suffix と保護された組の隙間を保ちます。
+コロン後の波括弧は行値です。
+次行の値は結合せず、隠れた後置部分と保護された組の隙間を保ちます。
 値の終わりのディレクティブは、それぞれの前に空白があれば空白 1 つを置き、
 最後のディレクティブの後の空白を除いて印字します。
 （[同じに描かれるキーワードの後のテキスト](./compatibility.ja.md#同じに描かれるキーワードの後のテキスト)）。
@@ -390,15 +390,15 @@ packet
 [1 行の説明ブロック](./compatibility.ja.md#1-行の説明ブロック) に従います。
 波括弧を残すブロックは、境界がわかるよう、
 キーワードと開始波括弧の間に空白を 1 つ置きます。
-通常の opener 空白は物理・Unicode 行を越えて結合します。
-実際の trivia があれば改行を保ちます。
+開始記号前の通常の空白は物理・Unicode 行を越えて結合します。
+実際の注釈類があれば改行を保ちます。
 囲む文字列がないため、空白だけの内側は `{}` にします。
-コメント・directive だけの内側は trivia を残します。
+コメント・ディレクティブだけの内側は注釈類を残します。
 通常の説明本文と独立したコメント行は、文より1段内側に揃えます。
 Db で LF 後の字下げが取り除かれるためです。
 改行、空行、行末空白は保ち、独立した閉じは文の位置へ揃えます。
-directive と共有の除去対象となるコメント領域は原文全体を保ちます。
-引用符、backslash、hidden に見える文字列も最初の閉じ brace を保護しません。
+ディレクティブと共有の除去対象となるコメント領域は原文全体を保ちます。
+引用符、バックスラッシュ、隠れた形に見える文字列も最初の閉じ波括弧を保護しません。
 
 [fixture: packet/description-blocks/description-gaps]
 
@@ -440,10 +440,10 @@ packet
 
 ### Multiline values
 
-printWidth では component と値を折り返しません。
-block component 間の可視 LF は拒否され、label の改行変更は Db を変えるためです。
-既存の label の物理行、継続列と内部空行を保ちます。
-説明本文は前述の共有の字下げ、hidden の消費 LF は境界規則に従います。
+`printWidth` では構成要素と値を折り返しません。
+ブロック構成要素間の可視 LF は拒否され、ラベルの改行変更は Db を変えるためです。
+既存のラベルの物理行、継続列と内部空行を保ちます。
+説明本文は前述の共有の字下げ、隠れた形の消費 LF は境界規則に従います。
 
 [fixture: packet/multiline-values/long-no-wrap]
 
@@ -466,11 +466,11 @@ packet
 
 共有の接触規則を使います。
 通常の独立コメントは本文1段、見出し前は第1列です。
-inline は同じ行に置き、接触は保ち、離れた側は空白1個にします。
-mark、内容と末尾 padding を保ちます。
-native comment は物理 LF・CR までで、LS・PS は内容です。
-先行する string・block は percent 文字列を所有し、共通の行値はそこで終わります。
-所有を変えないため、共通の削除領域は source 全体と結合する列を保ちます。
+同じ行のは同じ行に置き、接触は保ち、離れた側は空白1個にします。
+印、内容と末尾余白を保ちます。
+図固有のコメントは物理 LF・CR までで、LS・PS は内容です。
+先行する文字列・ブロックはパーセント文字列を所有し、共通の行値はそこで終わります。
+所有を変えないため、共通の削除領域は原文全体と結合する列を保ちます。
 
 [fixture: packet/comments/comments-placement]
 
@@ -497,17 +497,17 @@ packet
 
 ### Global directives
 
-共有の Root directive の配置規則を使い、opaque な内容、順序、
-component の境界と値内部の文字列を保ちます。
+共有の `Root` ディレクティブの配置規則を使い、不透明な内容、順序、
+構成要素の境界と値内部の文字列を保ちます。
 同じ印字行の中のディレクティブは、
 [ディレクティブ](./flowchart.ja.md#ディレクティブ)のとおりに置きます。
 元は同じ行にあった単位を別の行へ分けるときは、
-間の directive を次の単位に付けます。
+間のディレクティブを次の単位に付けます。
 右側の接触・分離は保ち、左側の接触は切れます。
 通常の独立した開始だけ本文1段に揃えます。
 複数行の内部と EOF に達する末尾は原形を保ちます。
-共通の削除は区切りを補わず、init の削除は行設定を変えるためです。
-native hidden DIRECTIVE は別の所有ノードのままです。
+共通の削除は区切りを補わず、`init` の削除は行設定を変えるためです。
+図固有の隠れた `DIRECTIVE` は別の所有ノードのままです。
 
 [fixture: packet/global-directives/header-to-body]
 
@@ -536,14 +536,15 @@ packet
 
 ### Hidden yaml
 
-yaml-block の PacketIgnoredText を、textBeforeHeader、body、名前付きの隙間、
-textAfter の所有位置に1回だけ、範囲全体として保ちます。
-範囲外の消費 LF と、EOF を含む閉じの padding を保ちます。
-必須の境界の移動や trim は後続文を拒否させ得るためです。
-範囲外の余分な LF と端の空行は [Blank lines](#blank-lines) に従います。
-opaque な本文は YAML 整形せず、直前に LF を追加しません。
-通常の body opener は字下げできますが、内部と閉じの列は保ちます。
-空・3 fence の match、複数 form、遅い有効な閉じ、global cut も保ちます。
+YAML ブロックの `PacketIgnoredText` を、`textBeforeHeader`、`body`、名前付きの隙間、
+`textAfter` の所有位置に1回だけ、範囲全体として保ちます。
+範囲外の消費 LF と、EOF を含む閉じの余白を保ちます。
+必須の境界を動かしたり空白を除いたりすると、後続文が拒否され得るためです。
+範囲外の余分な LF と端の空行は [空行](#blank-lines) に従います。
+不透明な本文は YAML 整形せず、直前に LF を追加しません。
+通常の本文の開始記号は字下げできますが、内部と閉じの列は保ちます。
+空の一致範囲と囲み記号3つの一致範囲、複数の形、
+後ろで有効になる閉じ、大域的な処理による分断も保ちます。
 先行する値の字句優先順位を保ちます。
 
 [fixture: packet/hidden-yaml/yaml-gap-count]
@@ -601,12 +602,13 @@ opaque count
 
 ### Hidden directives
 
-directive の PacketIgnoredText にも共有の source・境界保持を適用し、
-Root directive と区別します。
-range・single・relative の内部の全隙間、7種類の文の suffix、
-見出しとの接触と可視 EOL 後の body form を保ちます。
-任意・複数行の本文、遅い有効な閉じ、複数 form、global cut も保ちます。
-接着した無効な閉じや未閉じの形は native Comment のままの場合があります。
+ディレクティブの `PacketIgnoredText` にも共有の原文・境界保持を適用し、
+`Root` ディレクティブと区別します。
+範囲・単一位置・相対長の内部の全隙間、7種類の文の後置部分、
+見出しとの接触と可視 EOL 後の本文の形を保ちます。
+任意・複数行の本文、後ろで有効になる閉じ、複数の形、
+大域的な処理による分断も保ちます。
+接着した無効な閉じや未閉じの形は図固有の `Comment` のままの場合があります。
 境界の追加はその分類を変え得るためです。
 
 [fixture: packet/hidden-directives/hidden-all-range-gaps]
@@ -658,12 +660,12 @@ packet
 
 ### Retained prefix
 
-textBeforeHeader に hidden form があれば、prefix 全体を保ちます。
-先頭 LF、コメントの列、通過した bare line の trivia、
-第2 scan の form と real・hidden の順序も含みます。
+`textBeforeHeader` に隠れた形があれば、前置部分全体を保ちます。
+先頭 LF、コメントの列、通過した単独行の注釈類、
+再走査の形と、実際の形・隠れた形の順序も含みます。
 先頭 LF の削除は、無視された YAML を有効な title・設定、
-または不正な frontmatter へ昇格させ得るためです。
-通常の通過コメントだけの prefix は、共有の root 整理を使います。
+または不正なフロントマターへ昇格させ得るためです。
+通常の通過コメントだけの前置部分は、共有の最上位の整理を使います。
 
 [fixture: packet/retained-prefix/prefix-retain]
 
@@ -707,10 +709,10 @@ packet
 [fixture: semicolons/stretch-kept-rest-formatted]
 [fixture: semicolons/no-stretch-formatted]
 保護された見出しと最初の文は分離しません。
-style・classDef の両 pass、大文字小文字、colon・hash の空白、反復、
-Unicode の境界と directive で再結合する trigger の読みを保ちます。
+style・classDef の両走査、大文字小文字、コロン・ハッシュ記号の空白、反復、
+Unicode の境界とディレクティブで再結合する条件を満たす語の読みを保ちます。
 選ばれた1個の削除が別の1個を選び、Db を変え得るためです。
-atomic cut は失敗のままです。
+単位の途中での分断は失敗のままです。
 
 [fixture: packet/semicolons/native-field-value]
 
@@ -749,9 +751,9 @@ packet
 過剰な空白を減らして区切りを見せるため、通常の内部 ASCII 空行列は1空行、
 文書と本文の通常の端の空行は削除します。
 コメント周辺も同じです。
-値、block、directive、hidden の内部、共通領域の結合、保持する prefix の空行は、
+値、ブロック、ディレクティブ、隠れた形の内部、共通領域の結合、保持する前置部分の空行は、
 内容や原文の役割に属するため保ちます。
-hidden form が LF を消費した後は、
+隠れた形が LF を消費した後は、
 次の文に必要なときだけ予備の LF 1 つを保ちます。
 文書の終わりは設定の終端改行1つにし、見出しの直後の空行は削除します。
 見出しと最初の文の間に EOL は必要ありません。
@@ -759,8 +761,8 @@ hidden form が LF を消費した後は、
 空白だけの行を空行にします。
 予備の LF は文法の要件で、それ以降はコメントの後と同じ作者の区切りです。
 
-hidden の境界や semicolon の保護で文が見出しの行に残っても、
-その文の後置 hidden form の後は文と文の間として扱います。
+隠れた形の境界やセミコロンの保護で文が見出しの行に残っても、
+その文の後置隠れた形の後は文と文の間として扱います。
 
 [fixture: packet/blank-lines/hidden-following-blanks]
 
@@ -801,11 +803,11 @@ packet
 ### Trailing whitespace
 
 通常の行末を揃えるため、見出し、
-完成した block と説明の閉じの後の無害な外側 ASCII padding を除きます。
-共通の行値は共有の compact 配置に従います。
-値の継続行、コメント、directive、hidden の内部と保護 segment を保ちます。
+完成したブロックと説明の閉じの後の無害な外側 ASCII 余白を除きます。
+共通の行値は共有の簡潔な配置に従います。
+値の継続行、コメント、ディレクティブ、隠れた形の内部と保護区間を保ちます。
 範囲外の空白も必要な EOL を可視に保てるため、
-hidden の閉じの padding は EOF でも残します。
+隠れた形の閉じの余白は EOF でも残します。
 
 [fixture: packet/trailing-whitespace/trailing-safe]
 
@@ -826,12 +828,12 @@ packet
 
 ### Frontmatter yaml
 
-安全な実 frontmatter だけ、共有の guard 付き YAML 整形へ渡します。
-delimiter の padding、不正な本文、字下げした delimiter、
-HTML の危険がある本文と delimiter を生成する本文は原形を保ちます。
+安全な実フロントマターだけ、共有の保護条件付き YAML 整形へ渡します。
+区切りの余白、不正な本文、字下げした区切り、
+HTML の危険がある本文と区切りを生成する本文は原形を保ちます。
 等価な YAML 引用でも、Mermaid の HTML 変換後に不正になり得るためです。
-入れ子と block scalar に字下げが必要なため、幅0でも YAML は正の最小幅です。
-hidden YAML と保持する prefix はこの整形へ渡しません。
+入れ子とブロックスカラーに字下げが必要なため、幅0でも YAML は正の最小幅です。
+隠れた YAML と保持する前置部分はこの整形へ渡しません。
 
 [fixture: packet/frontmatter-yaml/frontmatter-safe]
 
@@ -861,15 +863,15 @@ packet
 
 ### Line terminators and unicode
 
-共有の host 改行処理を使います。
-物理 CR・CRLF を正規化し、endOfLine に従います。
-label、block、hidden と frontmatter の内部も同じです。
+共有の埋め込み先改行処理を使います。
+物理 CR・CRLF を正規化し、`endOfLine` に従います。
+ラベル、ブロック、隠れたテキスト、フロントマターの内部も同じです。
 LS・PS・NBSP・BOM は内容としての字句上の役割を保ちます。
-共通の行値の外端は trim し、通常の block opener 空白は結合できます。
-不正な native Unicode gap は拒否のままです。
-Prettier は先頭 BOM を除去・復元するため、開始 fence の BOM は YAML を昇格させ、
+共通の行値の外端の空白を除き、ブロックの開始記号前の通常の空白は結合できます。
+不正な図固有の Unicode 隙間は拒否のままです。
+Prettier は先頭 BOM を除去・復元するため、開始囲み記号の BOM は YAML を昇格させ、
 閉じにもある BOM は失敗させ得ます。
-byte の同一性は保証しません。
+バイトの同一性は保証しません。
 
 [corpus fixture: packet/line-ls-between]
 
@@ -909,11 +911,11 @@ byte の同一性は保証しません。
 ### Final newline
 
 予測可能なファイル末尾にするため、通常の受理入力は指定改行1個で終えます。
-見出しだけ、共通行、空 block、コメントと閉じた hidden form も含みます。
+見出しだけ、共通行、空ブロック、コメントと閉じた隠れた形も含みます。
 通常の末尾空行列を除きます。
-EOF に達する global の末尾、hidden の閉じ padding、
-必要な prefix と消費 LF の境界は保ちます。
-最終 LF は raw C4 検出を変えても、packet の指定読みを保ち得ます。
+EOF に達する大域的なの末尾、隠れた形の閉じ余白、
+必要な前置部分と消費 LF の境界は保ちます。
+最終 LF は素の mermaid.js の C4 検出を変えても、packet の指定読みを保ち得ます。
 
 [corpus fixture: packet/spec-packet-c4580507]
 
@@ -942,15 +944,15 @@ packet
 ### Specified readings
 
 [6つの既知の差異](../../spec/docs/diagrams/packet.ja.md#既知の差異) に従います。
-directive・選択セミコロンの atomic cut は失敗のままです。
-frontmatter HTML は本文だけの変換、opaque な埋め込みデータ、
-C4 検出と見出し前の bare percent trivia は指定読みを使います。
-受理を変える本文の bitsPerRow は指定の比較経路だけで外し、site 設定、
+ディレクティブ・選択セミコロンの単位の途中での分断は失敗のままです。
+フロントマター HTML は本文だけの変換、不透明な埋め込みデータ、
+C4 検出と見出し前の単独のパーセントの注釈類は指定読みを使います。
+受理を変える本文の `bitsPerRow` は指定の比較経路だけで外し、サイト設定、
 title と他の設定を残します。
-raw 拒否には raw Db がありません。
-hidden form、空 label と空説明は新たな差異ではありません。
-standalone の失敗は出力せず構文エラーを報告します。
-Markdown では埋め込みを辞退し、payload を host に任せます。
+素の mermaid.js の拒否には素の mermaid.js の Db がありません。
+隠れた形、空ラベルと空説明は新たな差異ではありません。
+単独ファイルの失敗は出力せず構文エラーを報告します。
+Markdown では埋め込みを辞退し、図の本文を埋め込み先に任せます。
 
 [corpus fixture: packet/directive-header-middle]
 
@@ -975,13 +977,13 @@ Markdown では埋め込みを辞退し、payload を host に任せます。
 
 ### Markdown fences
 
-共有の Markdown 経路で、字下げを除いた payload に packet 規則を適用します。
-fence・list・quote の字下げと改行は host に任せます。
-実際の host 出力と冪等性を、payload の Db・木・source と別に検査します。
-Markdown は code block の最終行の padding を trim します。
-後続文の EOL が不要な最終 hidden 境界の空白も含みます。
-内部の hidden padding は引き続き必要です。
-拒否された payload は host の未整形 code 経路に従います。
+共有の Markdown 経路で、字下げを除いた図の本文に packet 規則を適用します。
+囲み記号・リスト・引用の字下げと改行は埋め込み先に任せます。
+実際の埋め込み先出力と冪等性を、図の本文の Db・木・原文と別に検査します。
+Markdown はコードブロックの最終行の余白を除きます。
+後続文の EOL が不要な最終隠れた形の境界の空白も含みます。
+内部の隠れた形の余白は引き続き必要です。
+拒否された図の本文は埋め込み先の未整形コード経路に従います。
 
 [test: packet Markdown: top-level]
 

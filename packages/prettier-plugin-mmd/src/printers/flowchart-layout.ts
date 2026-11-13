@@ -308,6 +308,7 @@ export function layoutStatement(
         source.root.diagramType !== "swimlane"
           ? ["color", "text-align"]
           : [],
+      labelStyleGaps: "first",
       isLinkStyle,
       joinsStyles: isLinkStyle || statement.type === "FlowchartStyleStatement",
       keepsGapAfterStroke: statement.type !== "FlowchartStyleStatement",

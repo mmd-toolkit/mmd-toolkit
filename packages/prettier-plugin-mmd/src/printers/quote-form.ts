@@ -24,14 +24,15 @@ import {
   findTriviaAt,
   isBracketPadding,
   isSpaceOrTab,
+  isWordCharacter,
   isWhitespace,
   textWithoutDirectives,
 } from "./source.ts"
 import { c4ArgumentFields, c4NameFields, c4TextFields } from "./text-slots.ts"
 import {
+  collapseLabelRuns,
   collapseRuns,
   printsRunsAsOne,
-  splitsTextsAtSpaces,
 } from "./text-runs.ts"
 import { findUsecaseKeptLines } from "./usecase-kept-lines.ts"
 import { findVennKeptLines } from "./venn-kept-lines.ts"
@@ -398,17 +399,6 @@ const gitgraphWholeWords: readonly string[] = [
   "merge",
   "options",
 ]
-
-/** Whether a character is an ASCII letter, a digit, or `_`. */
-function isWordCharacter(character: string | undefined): boolean {
-  return (
-    character !== undefined &&
-    ((character >= "a" && character <= "z") ||
-      (character >= "A" && character <= "Z") ||
-      (character >= "0" && character <= "9") ||
-      character === "_")
-  )
-}
 
 /**
  * A branch of a gitGraph that the lexer reads whole without quotes: ASCII
@@ -1608,7 +1598,9 @@ function respell(
   // and the second formatting reads the text that the first one wrote.
   const printed = rule.text(
     printsRunsAsOne(source, item.range[0], item.range[1])
-      ? collapseRuns(text, splitsTextsAtSpaces(source))
+      ? item.type === "ArchitectureLabel"
+        ? collapseLabelRuns(text, false)
+        : collapseRuns(text)
       : text,
   )
   // mermaid.js takes the directives away before it reads the text, so what

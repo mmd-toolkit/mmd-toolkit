@@ -385,8 +385,9 @@
   the space in `A ->> - x`, where `-x` would be read as an arrow.
   
   > **NOTE:**\
-  > Overturned in the next release: the comma of a note is printed with one
-  > space after it, as in `Note over A, B`.
+  > Overturned in the next release: whitespace beside `()` stays as written,
+  > as in `A () ->> () B`, and the comma of a note is printed with one space
+  > after it, as in `Note over A, B`.
 
 ### Patch Changes
 
@@ -431,9 +432,10 @@
   the output is no longer rejected.
   
   > **NOTE:**\
-  > Overturned in the next release: `A[ user@example.com ]` keeps its space in
-  > `flowchart` again, since mermaid.js 11.5.0 to 12.2.0 reject the form
-  > without it.
+  > Overturned in the next release: `A[ user@example.com ]` keeps its space
+  > again in `flowchart` (mermaid.js 11.7.0, 11.17.2, and 12.0.0 reject the
+  > form without it) and `swimlane-beta` (11.16.1, 11.17.2, and 12.0.0 reject
+  > it).
 
 ### Patch Changes
 

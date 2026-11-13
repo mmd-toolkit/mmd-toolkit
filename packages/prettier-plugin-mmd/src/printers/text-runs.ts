@@ -46,22 +46,12 @@ export function holdsWhiteSpaceProperty(source: Source): boolean {
 }
 
 /**
- * Whether mermaid.js splits the texts of the diagram at single spaces, each
- * word becoming a part of the drawn text of its own: the labels of an
- * architecture diagram. A run of spaces and tabs is then drawn as one space
- * only if it holds a space and no tab stands between two of its spaces: a
- * run of tabs alone is part of a word, and a tab between two spaces is a word
- * of its own (docs/compatibility.md, Runs of whitespace in a text that are
- * drawn the same).
- */
-export function splitsTextsAtSpaces(source: Source): boolean {
-  return source.root.diagramType === "architecture"
-}
-
-/**
- * Whether a run of spaces and tabs that stands between two words is drawn as
- * one space by a diagram that splits its texts at single spaces (see
- * `splitsTextsAtSpaces`).
+ * Whether a run of spaces and tabs that stands between two words of a label
+ * that mermaid.js splits at single spaces is drawn as one space: it holds a
+ * space and no tab stands between two of its spaces. A run of tabs alone is
+ * part of a word, and a tab between two spaces is a word of its own
+ * (docs/compatibility.md, Runs of whitespace in a text that are drawn the
+ * same).
  */
 function isDrawnAsOneSpace(run: string): boolean {
   const parts = run.split(" ")
@@ -69,48 +59,104 @@ function isDrawnAsOneSpace(run: string): boolean {
 }
 
 /**
- * Whether a run of spaces and tabs stands between two words of a label: the
- * characters before and after it are not the brackets or the quotes around the
- * text, and exist. A run at an end of the text is drawn as nothing.
+ * Where the words of a label of an architecture diagram are in its characters,
+ * as `[from, to)`: the part that mermaid.js draws, which it reads as
+ * `ARCH_TITLE` is converted (`valueConverter.ts`): it takes the brackets off,
+ * trims, takes one pair of outer quotes off where the text starts and ends with
+ * the same quote, and trims again. A quote inside the text is a character of a
+ * word, whatever stands beside it. `bracketed` tells that the characters hold
+ * the brackets of the label (`[A B]`, `["A B"]`); otherwise they are the text
+ * between them, which the string of a label in quotes holds.
  */
-function isBetweenWords(
-  before: string | undefined,
-  after: string | undefined,
-): boolean {
-  return (
-    before !== undefined &&
-    after !== undefined &&
-    !"[\"'".includes(before) &&
-    !"]\"'".includes(after)
-  )
+function findWords(
+  characters: readonly string[],
+  bracketed: boolean,
+): readonly [number, number] {
+  const opening = bracketed && characters[0] === "[" ? 1 : 0
+  const closing =
+    bracketed && characters[characters.length - 1] === "]"
+      ? characters.length - 1
+      : characters.length
+  const [from, to] = trimmed(characters, opening, Math.max(opening, closing))
+  if (
+    from < to &&
+    (characters[from] === '"' || characters[from] === "'") &&
+    characters[to - 1] === characters[from]
+  ) {
+    return trimmed(characters, from + 1, Math.max(from + 1, to - 1))
+  }
+  return [from, to]
+}
+
+/**
+ * The range `[from, to)` of the characters without the characters at its ends
+ * that `String#trim` takes off.
+ */
+function trimmed(
+  characters: readonly string[],
+  from: number,
+  to: number,
+): readonly [number, number] {
+  let start = from
+  let end = to
+  while (start < end && characters[start].trim() === "") start++
+  while (end > start && characters[end - 1].trim() === "") end--
+  return [start, end]
+}
+
+/**
+ * The characters with each run of spaces and tabs replaced by one space, except
+ * the runs that `keeps` tells to leave as written, given the start and the end
+ * of the run.
+ */
+function replaceRuns(
+  characters: readonly string[],
+  keeps: (start: number, end: number) => boolean,
+): string {
+  let replaced = ""
+  let index = 0
+  while (index < characters.length) {
+    if (!isSpaceOrTab(characters[index])) {
+      replaced += characters[index]
+      index++
+      continue
+    }
+    let end = index
+    while (end < characters.length && isSpaceOrTab(characters[end])) end++
+    replaced += keeps(index, end) ? characters.slice(index, end).join("") : " "
+    index = end
+  }
+  return replaced
 }
 
 /**
  * The text with each run of spaces and tabs replaced by one space. mermaid.js
  * keeps the runs of a text in the Db and draws the text without them
  * (docs/compatibility.md, Runs of whitespace in a text that are drawn the
- * same). Where `splitsAtSpaces` is set, a run between two words that is not
- * drawn as one space stays as written (see `splitsTextsAtSpaces`).
+ * same).
  */
-export function collapseRuns(text: string, splitsAtSpaces = false): string {
-  let collapsed = ""
-  const characters = [...text]
-  let index = 0
-  while (index < characters.length) {
-    if (!isSpaceOrTab(characters[index])) {
-      collapsed += characters[index]
-      index++
-      continue
-    }
-    let end = index
-    while (end < characters.length && isSpaceOrTab(characters[end])) end++
-    const run = characters.slice(index, end).join("")
-    const betweenWords = isBetweenWords(characters[index - 1], characters[end])
-    collapsed +=
-      splitsAtSpaces && betweenWords && !isDrawnAsOneSpace(run) ? run : " "
-    index = end
-  }
-  return collapsed
+export function collapseRuns(text: string): string {
+  return replaceRuns([...text], () => false)
+}
+
+/**
+ * The label of a group, a service, or an edge of an architecture diagram with
+ * each run of spaces and tabs replaced by one space, except a run between two
+ * words that is not drawn as one space. mermaid.js draws a label word by word,
+ * split at single spaces (see `isDrawnAsOneSpace`), and the words are what
+ * stands between the brackets and the outer quotes (see `findWords`):
+ * `bracketed` tells that the label is given with them.
+ */
+export function collapseLabelRuns(label: string, bracketed: boolean): string {
+  const characters = [...label]
+  const [from, to] = findWords(characters, bracketed)
+  return replaceRuns(
+    characters,
+    (start, end) =>
+      start > from &&
+      end < to &&
+      !isDrawnAsOneSpace(characters.slice(start, end).join("")),
+  )
 }
 
 /**
@@ -120,11 +166,17 @@ export function collapseRuns(text: string, splitsAtSpaces = false): string {
  * `staysAsWritten`), which a style that keeps the runs of a label can need
  * for every text of a diagram that holds `white-space`. An atom that has a
  * planned layout keeps it, with the runs of its text printed as one space.
+ * `label` tells that the atom is the label of a group, a service, or an edge of
+ * an architecture diagram, with its brackets, whose words are drawn one by one
+ * (see `collapseLabelRuns`).
  */
 export function collapsedRunsAtom(
   source: Source,
   atom: Atom,
-  options: { readonly printsBlankAsOne?: boolean } = {},
+  options: {
+    readonly printsBlankAsOne?: boolean
+    readonly label?: boolean
+  } = {},
 ): Atom {
   const text = writtenWithRespellings(source, atom.start, atom.end)
   if (collapseRuns(text) === " ") {
@@ -135,7 +187,12 @@ export function collapsedRunsAtom(
       : atom
   }
   if (staysAsWritten(source, atom.start, atom.end)) return atom
-  const doc = collapseDoc(atom.doc ?? text, splitsTextsAtSpaces(source))
+  const doc = collapseDoc(
+    atom.doc ?? text,
+    options.label === true
+      ? (part) => collapseLabelRuns(part, true)
+      : collapseRuns,
+  )
   return doc === (atom.doc ?? text) ? atom : { ...atom, doc }
 }
 
@@ -178,7 +235,6 @@ export function collapseRunEdits(
   end: number,
 ): TextEdit[] {
   if (staysAsWritten(source, start, end)) return []
-  const splitsAtSpaces = splitsTextsAtSpaces(source)
   const edits: TextEdit[] = []
   let position = start
   while (position < end) {
@@ -188,13 +244,7 @@ export function collapseRunEdits(
     }
     let runEnd = position
     while (runEnd < end && isSpaceOrTab(source.text[runEnd])) runEnd++
-    const stays =
-      splitsAtSpaces &&
-      position > start &&
-      runEnd < end &&
-      isBetweenWords(source.text[position - 1], source.text[runEnd]) &&
-      !isDrawnAsOneSpace(source.text.slice(position, runEnd))
-    if (!stays) edits.push({ range: [position, runEnd], replacement: " " })
+    edits.push({ range: [position, runEnd], replacement: " " })
     position = runEnd
   }
   return edits
@@ -208,13 +258,13 @@ export function collapseRunEdits(
  * that a railroad-beta call ignores: `r = terminal(%%{!  }%% "a");` keeps both
  * spaces of `%%{!  }%%`, which `mapDoc` would print as one.
  */
-function collapseDoc(doc: Doc, splitsAtSpaces: boolean): Doc {
+function collapseDoc(doc: Doc, collapse: (text: string) => string): Doc {
   if (typeof doc === "string") {
-    const collapsed = collapseRuns(doc, splitsAtSpaces)
+    const collapsed = collapse(doc)
     return collapsed === doc ? doc : collapsed
   }
   if (Array.isArray(doc)) {
-    const parts = doc.map((part) => collapseDoc(part, splitsAtSpaces))
+    const parts = doc.map((part) => collapseDoc(part, collapse))
     return parts.every((part, index) => part === doc[index]) ? doc : parts
   }
   return doc
@@ -227,6 +277,18 @@ function collapseDoc(doc: Doc, splitsAtSpaces: boolean): Doc {
  */
 export type TextSlots = Readonly<Record<string, readonly string[]>>
 
+/** A text found in the tree: its range, and what decides how it is collapsed. */
+interface FoundText {
+  readonly range: Range
+  /** Whether a text of spaces and tabs only is one space. */
+  readonly blank: boolean
+  /**
+   * Whether the text is the label of an architecture diagram, which mermaid.js
+   * draws word by word.
+   */
+  readonly label?: boolean
+}
+
 interface Texts {
   /** The ranges of the texts, in source order and disjoint. */
   readonly ranges: readonly Range[]
@@ -235,6 +297,11 @@ interface Texts {
    * space.
    */
   readonly blanks: ReadonlySet<number>
+  /**
+   * The starts of the ranges of the labels of an architecture diagram, whose
+   * runs of spaces and tabs between words may stay (see `collapseLabelRuns`).
+   */
+  readonly labels: ReadonlySet<number>
 }
 
 const textsOfSource = new WeakMap<Source, Texts>()
@@ -247,21 +314,23 @@ const textsOfSource = new WeakMap<Source, Texts>()
 function findTexts(source: Source): Texts {
   let texts = textsOfSource.get(source)
   if (texts === undefined) {
-    const found: { range: Range; blank: boolean }[] = []
+    const found: FoundText[] = []
     collectTexts(source, source.root, found)
     found.sort((a, b) => a.range[0] - b.range[0] || b.range[1] - a.range[1])
     const ranges: Range[] = []
     const blanks = new Set<number>()
-    for (const { range, blank } of found) {
+    const labels = new Set<number>()
+    for (const { range, blank, label } of found) {
       if (
         (ranges.length === 0 || range[0] >= ranges[ranges.length - 1][1]) &&
         !source.text.slice(range[0], range[1]).includes("\n")
       ) {
         ranges.push(range)
         if (blank) blanks.add(range[0])
+        if (label === true) labels.add(range[0])
       }
     }
-    texts = { ranges, blanks }
+    texts = { ranges, blanks, labels }
     textsOfSource.set(source, texts)
   }
   return texts
@@ -274,7 +343,7 @@ function findTexts(source: Source): Texts {
  */
 function collectC4Texts(
   node: C4BoundaryStatement | C4ElementStatement | C4RelationshipStatement,
-  found: { range: Range; blank: boolean }[],
+  found: FoundText[],
 ): void {
   const fields = c4ArgumentFields[node.keyword]
   node.arguments.forEach((argument, index) => {
@@ -369,7 +438,7 @@ function collectDataIds(source: Source, node: Node, ids: Set<string>): void {
 function collectSubgraphTexts(
   source: Source,
   node: AgentflowFlowStatement | FlowchartSubgraphStatement,
-  found: { range: Range; blank: boolean }[],
+  found: FoundText[],
 ): void {
   const facts = findSubgraphFacts(source)
   if (facts.swimlane || facts.generatedId) return
@@ -407,11 +476,7 @@ function subgraphId(
 }
 
 /** Records the ranges of the texts below `node` in the fields of the slots. */
-function collectTexts(
-  source: Source,
-  node: Node,
-  found: { range: Range; blank: boolean }[],
-): void {
+function collectTexts(source: Source, node: Node, found: FoundText[]): void {
   if (
     node.type === "FlowchartSubgraphStatement" ||
     node.type === "AgentflowFlowStatement"
@@ -432,7 +497,12 @@ function collectTexts(
     for (const child of Array.isArray(value) ? value : [value]) {
       if (child === null || child === undefined) continue
       const item = child as Node
-      if (fields.includes(key)) found.push({ range: item.range, blank: false })
+      if (fields.includes(key))
+        found.push({
+          range: item.range,
+          blank: false,
+          label: item.type === "ArchitectureLabel",
+        })
       else if (blankFields.includes(key))
         found.push({ range: item.range, blank: true })
       collectTexts(source, item, found)
@@ -471,7 +541,7 @@ export function collapseTextAtoms(
   source: Source,
   atoms: readonly Atom[],
 ): readonly Atom[] {
-  const { ranges, blanks } = findTexts(source)
+  const { ranges, blanks, labels } = findTexts(source)
   if (ranges.length === 0) return atoms
   return atoms.map((atom) => {
     const text = findCoveringRange(ranges, atom.start, atom.end)
@@ -479,6 +549,7 @@ export function collapseTextAtoms(
       ? atom
       : collapsedRunsAtom(source, atom, {
           printsBlankAsOne: blanks.has(text[0]),
+          label: labels.has(text[0]),
         })
   })
 }

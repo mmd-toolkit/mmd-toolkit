@@ -241,7 +241,7 @@ Db が保つからです。 [fixture: attribute-spacing/keys-comma-space]
 [corpus fixture: er/gram-attribute-split-lines]
 [corpus fixture: er/gram-name-then-key-next-line]
 部分の間にコメント行かディレクティブがある属性は、改行を保ちます。
-後続の構造部分と独立した trivia 行は、subgraph の中でも、
+後続の構造部分と独立した注釈類行は、subgraph の中でも、
 属性の内側に 1 段字下げします。
 型、名前、引用符付きコメントの内部は書かれたまま残します。
 [fixture: attribute-spacing/comment-line-inside-kept]
@@ -344,7 +344,7 @@ erDiagram
 
 ER 図の 2 つの文を区切るものはなく、
 mermaid.js は 1 行に続けて書かれた文も読みます。
-各文は行に単独で置きます。
+1 行に 2 つの文があると読みにくいため、各文は行に単独で置きます。
 flowchart、sequence、class、state も 1 行に 1 つの文を印字します。
 `A B` は実体 A と B で、関係は 1 行に、その役割の後の実体は次の行に置き、
 属性ブロックの `}`、subgraph の `end`、ヘッダーの後に続く文も、
@@ -691,6 +691,8 @@ Db がそのまま保つ属性のキーも同じです。
 対象にする版にエンティティとして読むものがあるためです。
 詳しくは
 [置かれた場所や空白で読みが決まる ER の行](./compatibility.ja.md#置かれた場所や空白で読みが決まる-er-の行)
+と
+[対象にする版の mermaid.js のために残す形](./compatibility.ja.md#対象にする版の-mermaidjs-のために残す形)
 を参照してください。
 キーワードと `-` の間のディレクティブは、2 つを分けません。
 mermaid.js が、テキストを読む前にディレクティブを取り除くからです。
@@ -930,7 +932,7 @@ erDiagram
 前のクラスに接して後ろに空白を 1 つ置く `,` で区切ります。
 Prettier のコンマの印字と同じ形で、mermaid.js が一覧を同じに読むからです。
 `A ::: c1 , c2` は `A:::c1, c2` にします。
-別名と `:::` を接する書き方が、mermaid.js の文書の例の多くです。
+別名をこのように書く例が、mermaid.js の文書の例の多くです。
 [fixture: entities/classes-tight] [fixture: entities/alias-and-classes]
 属性ブロックの `{` は空白 1
 つの後に置きます（[属性ブロック](#属性ブロック)を参照）。
@@ -1170,7 +1172,8 @@ erDiagram
 対象にする版の一部はその行をエンティティとして読み、
 `direction tb` と `direction TB` を別に描くためです。
 詳しくは
-[大文字小文字をそろえるキーワード](./compatibility.ja.md#大文字小文字をそろえるキーワード)
+[大文字小文字をそろえるキーワード](./compatibility.ja.md#大文字小文字をそろえるキーワード) と
+[対象にする版の mermaid.js のために残す形](./compatibility.ja.md#対象にする版の-mermaidjs-のために残す形)
 を参照してください。 [fixture: direction/spacing] [fixture: direction/text-kept]
 [fixture: direction/case-kept] [fixture: direction/case-bt-rl-kept]
 後の行に書かれた値は、`direction` の後に 1 行で印字します。
@@ -1225,7 +1228,7 @@ erDiagram
 ### スタイルとクラス
 
 名前とクラスのリストでは、
-前の名前に接して後ろに空白を 1 つ置く comma を使います。
+前の名前に接して後ろに空白を 1 つ置くコンマを使います。
 Prettier のコンマの印字と同じ形で、mermaid.js が一覧を同じに読むからです。
 最初のスタイルは空白 1 つの後に置きます。
 `style` と `classDef` の、通常の 1 行のプロパティと値からなるスタイルでは、
@@ -1244,7 +1247,7 @@ Mermaid は、区切る空白にかかわらずスタイルの単位をつなげ
 `stroke-dasharray: 5 5` は引き続き `stroke-dasharray:55` で、Db は変わりません。
 `fill   : navy, stroke  : black` は `fill: navy, stroke: black` にします。
 通常はつなげる見出しや外側の改行があっても、最初の整形で同じ間隔にします。
-スタイル内部の改行区切り、所有する trivia、
+スタイル内部の改行区切り、所有する注釈類、
 同じ物理行に保持するセミコロンがある場合は、既存のスタイルの配置を保ちます。
 キーワード `style` と `classDef` は、書かれた大文字小文字を保ちます。
 （[大文字小文字をそろえるキーワード](./compatibility.ja.md#大文字小文字をそろえるキーワード)）。
@@ -1376,7 +1379,7 @@ erDiagram
 
 通常の `accDescr { ... }` ブロックの後続の本文行は、文の内側に 1 段字下げし、
 LF 直後の ASCII 空白とタブだけを置き換えます。
-説明の setter がこの字下げを捨てるためです。
+説明の設定関数がこの字下げを捨てるためです。
 改行、行末空白、ディレクティブの内部は保ちます。
 subgraph 内では、生の説明がその所属の読みにも使われるため、
 本文の元の列を保ちます。
@@ -1399,7 +1402,7 @@ subgraph 内では、生の説明がその所属の読みにも使われるた�
 agentflow、usecase に合わせます。
 [test: accessibility revisions: er empty-description-nbsp]
 コメントやディレクティブがあるブロックは、改行と完全な内容を保ち、
-普通の独立した trivia はブロックの内側にそろえます。
+普通の独立した注釈類はブロックの内側にそろえます。
 [fixture: accessibility-statements/empty-blocks]
 [fixture: accessibility-statements/empty-block-with-directive-or-comment-line]
 [corpus fixture: er/gram-acc-descr-block-empty]
@@ -1884,7 +1887,7 @@ erDiagram
 [fixture: semicolons-at-the-end-of-a-style-statement/hash-terminators]
 文の前後の空行とコメント行は、通常の配置に従います。
 [fixture: semicolons-at-the-end-of-a-style-statement/blank-and-comment-lines]
-空の description block も通常の配置に従い、スタイルの終端は削除します。
+空の説明ブロックも通常の配置に従い、スタイルの終端は削除します。
 [fixture: semicolons-at-the-end-of-a-style-statement/empty-description-block]
 
 文に `#` がない場合は、文を終える `;` の単位も、直前の空白と一緒に削除します。

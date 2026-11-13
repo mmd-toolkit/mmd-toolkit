@@ -1,10 +1,10 @@
 # Gitgraph formatting rules
 
-English version: [gitgraph.md](./gitgraph.md)
+英語版: [gitgraph.md](./gitgraph.md)
 
 決定した 26 項目を、書かれた AST から実装する整形規則です。
 実行時に Mermaid を呼ばず、出力を再解析しません。
-不可視文字は escape した固定テストに置きます。
+不可視文字はエスケープした固定テストに置きます。
 
 ## Rules
 
@@ -14,37 +14,37 @@ English version: [gitgraph.md](./gitgraph.md)
 方向は Db に影響します。
 通常の隙間は `gitGraph LR:` または `gitGraph` とし、
 見出し上の最初の文を次行へ移します。
-方向のない見出しの colon は、mermaid.js の文書の書き方に合わせて除きます。
-文書は、colon のない見出しを 30 回、colon つきを 2 回書いています。
+方向のない見出しのコロンは、mermaid.js の文書の書き方に合わせて除きます。
+文書は、コロンのない見出しを 30 回、コロンつきを 2 回書いています。
 `gitGraph:` は `gitGraph` と印字し、対象にする版はどれも、
 この 2 つの形を同じに読み、同じに描きます。
-方向の後の colon は残します。
-mermaid.js は colon のない `gitGraph LR` を拒否するためです。
-ディレクティブが前にある colon も残します。
-対象にする版のうち、colon のない見出しの次の行に文が続くと拒否し、
-colon があれば受理するものがあるためです。
+方向の後のコロンは残します。
+mermaid.js はコロンのない `gitGraph LR` を拒否するためです。
+ディレクティブが前にあるコロンも残します。
+対象にする版のうち、コロンのない見出しの次の行に文が続くと拒否し、
+コロンがあれば受理するものがあるためです。
 詳しくは [ヘッダーの後のコロン](./compatibility.ja.md#ヘッダーの後のコロン)
 を参照してください。
 残す版は
 [対象にする版の mermaid.js のために残す形](./compatibility.ja.md#対象にする版の-mermaidjs-のために残す形)
 の表にあります。
 ディレクティブは、それがないときの隙間の空白の後に置きます。
-colon の前の隙間に空白はないので、
+コロンの前の隙間に空白はないので、
 `gitGraph %%{x}%%:` は `gitGraph%%{x}%%:` と印字します。
 [ディレクティブ](./flowchart.ja.md#ディレクティブ)の規則に従います。
 [fixture: gitgraph/header/header-directive-before-colon-kept]
-hidden YAML ブロックが前にある colon は、ほかの colon と同じく除きます。
-対象にする版は、colon の有無にかかわらず見出しを同じに読むか、
+隠れた YAML ブロックが前にあるコロンは、ほかのコロンと同じく除きます。
+対象にする版は、コロンの有無にかかわらず見出しを同じに読むか、
 どちらも拒否するためです。
-`gitGraph ---`、ブロック、`--- :` は、`---` のまま colon なしで印字します。
+`gitGraph ---`、ブロック、`--- :` は、`---` のままコロンなしで印字します。
 [fixture: gitgraph/header/header-yaml-before-colon]
-ブロックの後の、単独の行にある colon は、その前の改行と一緒に除くので、
+ブロックの後の、単独の行にあるコロンは、その前の改行と一緒に除くので、
 空の行は残りません。
 [fixture: gitgraph/header/header-yaml-colon-on-its-own-line]
 [corpus fixture: gitgraph/header-hidden-before-colon]
-hidden の隙間と保護された見出し・本文の境界は保持します。
+隠れた形の隙間と保護された見出し・本文の境界は保持します。
 
-`gitGraph` と方向の間にある hidden の形は、直後の改行を取り、
+`gitGraph` と方向の間にある隠れた形は、直後の改行を取り、
 その後の隙間を動かすと入力が拒否されることがあるため、
 その隙間を書かれたまま保持します（詳しくは、
 [隠れた DIRECTIVE と行末](../../spec/docs/diagrams/gitgraph.ja.md#隠れた-directive-と行末)
@@ -66,7 +66,7 @@ hidden の隙間と保護された見出し・本文の境界は保持します�
 [corpus fixture: gitgraph/spec-git-graph-851bf4f9]
 [fixture: gitgraph/header/hidden-touching]
 
-入力（escape 表記）: `"  gitGraph\t\ncommit\n"`
+入力（エスケープ表記）: `"  gitGraph\t\ncommit\n"`
 
 出力
 ([header/header-absent-output.mmd](../tests/fixtures/gitgraph/header/header-absent-output.mmd)):
@@ -79,11 +79,11 @@ gitGraph
 ### Indentation
 
 見出しは第 1 列、
-通常の本文の文・独立コメント・global directive は設定した 1 段下に置きます。
+通常の本文の文・独立コメント・大域的なディレクティブは設定した 1 段下に置きます。
 履歴は平坦なので branch の後に段を増やしません。
 gitgraph の列に文法上の意味がないため、`tabWidth: 0` は空白 0 個、
-`useTabs` は幅 0 でも tab 1 個です。
-その他の値の続きの列・hidden の閉じ・保護部分は変えません。
+`useTabs` は幅 0 でもタブ 1 個です。
+その他の値の続きの列・隠れた形の閉じ・保護部分は変えません。
 
 固定例: [fixture: gitgraph/indentation/indent-two]
 [fixture: gitgraph/indentation/indent-four]
@@ -91,7 +91,7 @@ gitgraph の列に文法上の意味がないため、`tabWidth: 0` は空白 0 
 [fixture: gitgraph/indentation/tabs-normal]
 [fixture: gitgraph/indentation/zero-tabs]
 
-入力（escape 表記）: `"gitGraph\ncommit\n      branch b\ncommit\nswitch main\n"`
+入力（エスケープ表記）: `"gitGraph\ncommit\n      branch b\ncommit\nswitch main\n"`
 
 出力
 ([indentation/indent-two-output.mmd](../tests/fixtures/gitgraph/indentation/indent-two-output.mmd)):
@@ -107,16 +107,16 @@ gitGraph
 ### Statements one per line
 
 通常の本文の文は、ほかの図種と同じく 1 行ずつ印字します。
-共通の行値に見かけの操作語や semicolon があっても値のままです。
-引用符内の semicolon も文字です。
-gitgraph に区切りの semicolon はありません。
-不正な隣接文や block 後の semicolon は corpus で拒否を検査し、修復しません。
+共通の行値に見かけの操作語やセミコロンがあっても値のままです。
+引用符内のセミコロンも文字です。
+gitgraph に区切りのセミコロンはありません。
+不正な隣接文やブロック後のセミコロンはコーパスで拒否を検査し、修復しません。
 
 固定例: [fixture: gitgraph/statements-one-per-line/eol-header-inline]
 [fixture: gitgraph/statements-one-per-line/eol-title-owns-text]
 [fixture: gitgraph/statements-one-per-line/eol-values-semicolon]
 
-入力（escape 表記）: `"gitGraph:commit id:\"a\"\n"`
+入力（エスケープ表記）: `"gitGraph:commit id:\"a\"\n"`
 
 出力
 ([statements-one-per-line/eol-header-inline-output.mmd](../tests/fixtures/gitgraph/statements-one-per-line/eol-header-inline-output.mmd)):
@@ -130,9 +130,9 @@ gitGraph
 
 通常の連続空行は 1 行にし、文書と本文の端の通常空行は削除します。
 コメントの前後にも同じ規則を使い、作者の区切りを残します。
-引用値・description block・directive と hidden の内部と、
-保持する prefix の空行は、値や字句上の役割に属するため保持します。
-hidden form が LF を消費した後は、
+引用値・説明ブロック・ディレクティブと隠れた形の内部と、
+保持する前置部分の空行は、値や字句上の役割に属するため保持します。
+隠れた形が LF を消費した後は、
 次の文に必要なときだけ予備の LF 1 つを保ちます。
 文書の終わりは設定の終端改行1つにし、見出しの直後の空行は削除します。
 見出しと最初の文の間に EOL は必要ありません。
@@ -140,8 +140,8 @@ hidden form が LF を消費した後は、
 空白だけの行を空行にします。
 予備の LF は文法の要件で、それ以降はコメントの後と同じ作者の区切りです。
 
-hidden の境界や semicolon の保護で文が見出しの行に残っても、
-その文の後置 hidden form の後は文と文の間として扱います。
+隠れた形の境界やセミコロンの保護で文が見出しの行に残っても、
+その文の後置隠れた形の後は文と文の間として扱います。
 
 [fixture: gitgraph/blank-lines/hidden-following-blanks]
 
@@ -160,7 +160,7 @@ hidden の境界や semicolon の保護で文が見出しの行に残っても�
 [fixture: gitgraph/blank-lines/blank-string-kept]
 [fixture: gitgraph/blank-lines/block-and-directive]
 
-入力（escape 表記）: `"\ngitGraph\n\n\ncommit\n \t\n\ncommit\n\n"`
+入力（エスケープ表記）: `"\ngitGraph\n\n\ncommit\n \t\n\ncommit\n\n"`
 
 出力
 ([blank-lines/blank-collapse-output.mmd](../tests/fixtures/gitgraph/blank-lines/blank-collapse-output.mmd)):
@@ -174,10 +174,10 @@ gitGraph
 
 ### Operation spacing
 
-通常の操作語・参照・option の間は、接していても空白 1 個にします。
+通常の操作語・参照・オプションの間は、接していても空白 1 個にします。
 桁揃えはしません。
-部品を一定の形で印字し、bare name に必要な境界を残します。
-コメント・global directive・hidden form を含む隙間は、
+部品を一定の形で印字し、引用符なしの名前に必要な境界を残します。
+コメント・大域的なディレクティブ・隠れた形を含む隙間は、
 接触と物理境界を保持します。
 
 固定例: [corpus fixture: gitgraph/gram-commit-glued-options]
@@ -186,7 +186,7 @@ gitGraph
 [fixture: gitgraph/operation-spacing/gap-merge]
 [fixture: gitgraph/operation-spacing/touching-message-tag]
 
-入力（escape 表記）: `"gitGraph commit\"note\"tag:\"v\"\n"`
+入力（エスケープ表記）: `"gitGraph commit\"note\"tag:\"v\"\n"`
 
 出力
 ([operation-spacing/touching-message-tag-output.mmd](../tests/fixtures/gitgraph/operation-spacing/touching-message-tag-output.mmd)):
@@ -200,13 +200,14 @@ gitGraph
 
 `id: "A"`、`msg: "M"`、`tag: "T"`、`type: NORMAL`、`parent: "A"`、
 `order: 2` と印字します。
-colon は語に接し、通常の値の前は空白 1 個です。
-この colon はキーの colon で、option が語に値を 1 つ与え、
-繰り返した option は値を置き換えます。
+コロンは語に接し、通常の値の前は空白 1 個です。
+このコロンはキーのコロンで、オプションが語に値を 1 つ与え、
+繰り返したオプションは値を置き換えます。
 詳しくは
 [コロンがどの種類かの決め方](./printed-form.ja.md#コロンがどの種類かの決め方)
 の手順 2 を参照してください。
-語と colon の間の global directive や選ばれた semicolon は残します。
+語とコロンの間の注釈は、
+大域的なディレクティブや選ばれたセミコロンも含めて残します。
 その位置の通常の空白は不正です。
 
 固定例: [fixture: gitgraph/option-colons/colon-commit]
@@ -214,7 +215,7 @@ colon は語に接し、通常の値の前は空白 1 個です。
 [corpus fixture: gitgraph/lex-option-global-before-colon]
 [corpus fixture: gitgraph/lex-selected-semicolon-option-word-colon]
 
-入力（escape 表記）:
+入力（エスケープ表記）:
 `"gitGraph\ncommit id:\"A\" msg:\t\"M\" tag:  \"T\" type:HIGHLIGHT\n"`
 
 出力
@@ -227,11 +228,11 @@ gitGraph
 
 ### Order and repetitions
 
-上書きされた id・type・message、反復や空の tag を含め、
-option と文のすべての出現を原順序で印字します。
-並べ替えたり scalar を最終値だけに減らしたりしません。
+上書きされた id・type・メッセージ、反復や空の tag を含め、
+オプションと文のすべての出現を原順序で印字します。
+並べ替えたりスカラーを最終値だけに減らしたりしません。
 解決後の履歴からは作者の出現列が失われ、
-scalar・tag・文の順序は Db にも影響します。
+スカラー・tag・文の順序は Db にも影響します。
 
 固定例: [fixture: gitgraph/order-and-repetitions/order-reverse-id]
 [fixture: gitgraph/order-and-repetitions/order-reverse-type]
@@ -241,7 +242,7 @@ scalar・tag・文の順序は Db にも影響します。
 [corpus fixture: gitgraph/db-overwritten-invalid-merge-id]
 [fixture: gitgraph/order-and-repetitions/order-statements]
 
-入力（escape 表記）: `"gitGraph\ncommit tag:\"x\" tag:\"x\"\n"`
+入力（エスケープ表記）: `"gitGraph\ncommit tag:\"x\" tag:\"x\"\n"`
 
 出力
 ([order-and-repetitions/order-dedup-tags-output.mmd](../tests/fixtures/gitgraph/order-and-repetitions/order-dedup-tags-output.mmd)):
@@ -253,15 +254,15 @@ gitGraph
 
 ### Messages
 
-bare の引用 message と明示した `msg:` の形を保持します。
+導入語のない引用メッセージと明示した `msg:` の形を保持します。
 空値や反復も保持します。
 導入の形は作者の構文です。
-Db summary に message 本文がなくても、一致を理由に変更や削除はしません。
+Db の要約にメッセージ本文がなくても、一致を理由に変更や削除はしません。
 
 固定例: [fixture: gitgraph/messages/message-forms]
 [fixture: gitgraph/messages/message-empty]
 
-入力（escape 表記）: `"gitGraph\ncommit \"bare\" msg:\"explicit\" \"last\"\n"`
+入力（エスケープ表記）: `"gitGraph\ncommit \"bare\" msg:\"explicit\" \"last\"\n"`
 
 出力
 ([messages/message-forms-output.mmd](../tests/fixtures/gitgraph/messages/message-forms-output.mmd)):
@@ -273,12 +274,12 @@ gitGraph
 
 ### Quotes
 
-StringLiteral は完全な source span で印字し、escape を変えません。
+`StringLiteral` は完全な原文の範囲で印字し、エスケープを変えません。
 `'` で囲まれた文字列は、内容に `'`、`"`、バックスラッシュ、改行、
 バッククォート、`&`、`#`、`<` がない限り、`"` で囲んで印字します。
 （[同じに描かれる綴り](./compatibility.ja.md#同じに描かれる綴り)を参照）。
 `singleQuote` は読みません。
-それ以外の再エンコードには escape と前処理の新たな判断が必要で、
+それ以外の再エンコードにはエスケープと前処理の新たな判断が必要で、
 作者の書き方も失われるためです。
 
 固定例: [fixture: gitgraph/quotes/quotes-one-form]
@@ -286,7 +287,7 @@ StringLiteral は完全な source span で印字し、escape を変えません�
 [fixture: gitgraph/quotes/single-quote-option]
 [fixture: gitgraph/quotes/single-quote-sensitive-kept]
 
-入力（escape 表記）: `"gitGraph\ncommit id:'A' msg:\"a'b\" tag:'a\"b'\n"`
+入力（エスケープ表記）: `"gitGraph\ncommit id:'A' msg:\"a'b\" tag:'a\"b'\n"`
 
 出力
 ([quotes/quotes-one-form-output.mmd](../tests/fixtures/gitgraph/quotes/quotes-one-form-output.mmd)):
@@ -319,7 +320,7 @@ mermaid.js の文書の例と同じく引用符なしで印字します。
 [対象にする版の mermaid.js のために残す形](./compatibility.ja.md#対象にする版の-mermaidjs-のために残す形)
 を参照してください。
 ほかの参照は引用符を残します。
-文字列は Quotes のとおり `"` で囲んで印字します。
+文字列は引用符のとおり `"` で囲んで印字します。
 空・空白のみ・Unicode・予約語・数字風の引用名もそのままです。
 [fixture: references/plain-names-without-quotes]
 [fixture: references/names-next-to-a-keyword-without-quotes]
@@ -330,7 +331,7 @@ mermaid.js の文書の例と同じく引用符なしで印字します。
 [corpus fixture: gitgraph/lex-reference-integer-quoted]
 [fixture: gitgraph/references/reference-empty]
 
-入力（escape 表記）:
+入力（エスケープ表記）:
 `"gitGraph\nbranch a_b-c/d.e\nbranch \"titleA\"\ncheckout a_b-c/d.e\n"`
 
 出力
@@ -345,12 +346,12 @@ gitGraph
 
 ### Authored values
 
-文字列と参照の両端・内部の空白、tab、物理改行、Unicode、大小文字、escape、HTML、
+文字列と参照の両端・内部の空白、タブ、物理改行、Unicode、大小文字、エスケープ、HTML、
 entity を保持します。
 空値も leaf のままです。
-これらは identity・lookup・tag の値に影響します。
-変換後の Db から再構築せず、escape を JavaScript として解釈しません。
-物理 CR の変換は別途 host が行います。
+これらは同一性・参照による検索・tag の値に影響します。
+変換後の Db から再構築せず、エスケープを JavaScript として解釈しません。
+物理 CR の変換は別途埋め込み先が行います。
 
 固定例: [fixture: gitgraph/authored-values/inner-padding-change]
 [fixture: gitgraph/authored-values/inner-runs-change]
@@ -360,7 +361,7 @@ entity を保持します。
 [corpus fixture: gitgraph/entity-all-fields]
 [corpus fixture: gitgraph/db-compare-whitespace-id-lookups]
 
-入力（escape 表記）: `"gitGraph\ncommit id:\" A \" tag:\" T \"\n"`
+入力（エスケープ表記）: `"gitGraph\ncommit id:\" A \" tag:\" T \"\n"`
 
 出力
 ([authored-values/inner-padding-change-output.mmd](../tests/fixtures/gitgraph/authored-values/inner-padding-change-output.mmd)):
@@ -372,17 +373,17 @@ gitGraph
 
 ### Order numbers
 
-order の符号なし整数は、0、精度を失う整数、overflow も書かれた桁を保持します。
-作者の値は変換後の double でなく NumericLiteral の source です。
+order の符号なし整数は、0、精度を失う整数、桁あふれも書かれた桁を保持します。
+作者の値は変換後の倍精度浮動小数点数でなく `NumericLiteral` の原文です。
 order を使って branch を並べ替えません。
-不正な符号・先頭 0・小数・指数形は corpus の拒否例です。
+不正な符号・先頭 0・小数・指数形はコーパスの拒否例です。
 
 固定例: [corpus fixture: gitgraph/number-zero]
 [corpus fixture: gitgraph/number-precision]
 [corpus fixture: gitgraph/number-overflow]
 [fixture: gitgraph/order-numbers/precision-digits]
 
-入力（escape 表記）: `"gitGraph:branch release order:9007199254740993\n"`
+入力（エスケープ表記）: `"gitGraph:branch release order:9007199254740993\n"`
 
 出力
 ([order-numbers/precision-digits-output.mmd](../tests/fixtures/gitgraph/order-numbers/precision-digits-output.mmd)):
@@ -399,7 +400,7 @@ gitGraph
 
 固定例: [fixture: gitgraph/keyword-case/type-uppercase]
 
-入力（escape 表記）:
+入力（エスケープ表記）:
 `"gitGraph\ncommit type:NORMAL\ncommit type:REVERSE\ncommit type:HIGHLIGHT\n"`
 
 出力
@@ -422,7 +423,7 @@ gitGraph
 
 固定例: [fixture: gitgraph/checkout-aliases/alias-one-form]
 
-入力（escape 表記）: `"gitGraph\nbranch b\nswitch main\ncheckout b\n"`
+入力（エスケープ表記）: `"gitGraph\nbranch b\nswitch main\ncheckout b\n"`
 
 出力
 ([checkout-aliases/alias-one-form-output.mmd](../tests/fixtures/gitgraph/checkout-aliases/alias-one-form-output.mmd)):
@@ -437,10 +438,10 @@ gitGraph
 ### Cherry pick options
 
 cherry-pick の id・parent・tag を原順序で残し、
-通常の操作語と colon の空白規則を適用します。
+通常の操作語とコロンの空白規則を適用します。
 上書き前の不正参照、空 parent、反復や空の tag も残します。
-id は source を指し、空 tag の削除は既定 tag を復活させ Db を変えます。
-merge source の parent の条件は受理側の責務です。
+`id` は元コミットを指し、空 tag の削除は既定 tag を復活させ Db を変えます。
+マージ元のコミットの `parent` の条件は受理側の責務です。
 
 固定例: [fixture: gitgraph/cherry-pick-options/cherry-spacing]
 [corpus fixture: gitgraph/gram-cherry-pick-repeated-options]
@@ -450,7 +451,7 @@ merge source の parent の条件は受理側の責務です。
 [corpus fixture: gitgraph/db-overwritten-invalid-source]
 [corpus fixture: gitgraph/db-cherry-pick-only-empty-tags]
 
-入力（escape 表記）:
+入力（エスケープ表記）:
 `"gitGraph\ncommit id:\"A\"\nbranch b\ncommit id:\"B\"\ncheckout main\ncherry-pick tag:\"x\"id:\"B\"parent:\"A\"tag:\"\"\n"`
 
 出力
@@ -467,7 +468,7 @@ gitGraph
 
 ### Title and common values
 
-`title` は空白 1 個と外端だけ trim した非空値を印字します。
+`title` は空白 1 個と外端だけ 両端の空白を除いた非空値を印字します。
 値の中の空白とタブの連なりは、空白 1 つにして印字します。
 （[同じに描かれるテキスト中の空白の連なり](./compatibility.ja.md#同じに描かれるテキスト中の空白の連なり)）。
 空や空白のみなら裸の `title` です。
@@ -475,8 +476,8 @@ gitGraph
 行末の空白の有無にかかわらず、最後のディレクティブの後の空白を除いて印字します。
 （[同じに描かれるキーワードの後のテキスト](./compatibility.ja.md#同じに描かれるキーワードの後のテキスト)）。
 [fixture: title-and-common-values/title-directives-end-blanks-dropped]
-共通の accessibility 配置で `accTitle: value`・`accDescr: value`、
-空 block は `{}` と印字します。
+共通のアクセシビリティ配置で `accTitle: value`・`accDescr: value`、
+空ブロックは `{}` と印字します。
 これらの行の値の終わりのディレクティブは、
 題の終わりのディレクティブと同じように印字します。
 （[同じに描かれるキーワードの後のテキスト](./compatibility.ja.md#同じに描かれるキーワードの後のテキスト)）。
@@ -484,21 +485,21 @@ gitGraph
 
 1 行の説明ブロックは、
 [1 行の説明ブロック](./compatibility.ja.md#1-行の説明ブロック) に従います。
-波括弧を残すブロックは、通常の gap では、
+波括弧を残すブロックは、通常の隙間では、
 接して書かれていても `accDescr` と `{` の間に空白 1 つを置きます。
-保護対象の trivia やセミコロンの配置では、その gap を保ちます。
+保護対象の注釈類やセミコロンの配置では、その隙間を保ちます。
 別行の閉じは文に揃えます。
 通常の説明本文と独立したコメント行は、文より1段内側に揃えます。
 Db で LF 後の字下げが取り除かれるためです。
 改行、内部の空行、行末空白を保持します。
-directive と共有の除去対象となるコメント領域は原文全体を保ちます。
+ディレクティブと共有の除去対象となるコメント領域は原文全体を保ちます。
 空白だけの内側は、囲む空白を要する本文がないため `{}` と印字します。
 タブ、改行、Unicode の空白も同じです。
 [fixture: title-and-common-values/empty-whitespace-interiors]
 [test: gitgraph Unicode and tab interiors]
-コメントや directive だけの block も trivia を残します。
-frontmatter の fallback を含む反復・空値・出現位置を保持します。
-固定した文法では、空行・コメント・directive を挟んでも、
+コメントやディレクティブだけのブロックも注釈類を残します。
+フロントマターの代替の扱いを含む反復・空値・出現位置を保持します。
+固定した文法では、空行・コメント・ディレクティブを挟んでも、
 行形式は次の物理行を取り込みません。
 対象にする版のうち最も古い版は、
 空の `accTitle:` または `accDescr:` の後の文を値として読みます。
@@ -507,7 +508,7 @@ frontmatter の fallback を含む反復・空値・出現位置を保持しま�
 詳しくは
 [最も古い版が末尾まで読むアクセシビリティの行](./compatibility.ja.md#最も古い版が末尾まで読むアクセシビリティの行)
 を参照してください。
-colon 後の波括弧は行値のままです。
+コロン後の波括弧は行値のままです。
 同じ意味の外端だけを詰め、説明の内容と字句上の所有は変えません。
 
 固定例: [fixture: gitgraph/title-and-common-values/title-trim]
@@ -529,7 +530,7 @@ colon 後の波括弧は行値のままです。
 [corpus fixture: gitgraph/common-title-only-whitespace]
 [test: gitgraph/title-and-common-values/block-opener-join-fixed]
 
-入力（escape 表記）: `"gitGraph\ntitle\t  A  B\t C  \n"`
+入力（エスケープ表記）: `"gitGraph\ntitle\t  A  B\t C  \n"`
 
 出力
 ([title-and-common-values/title-trim-output.mmd](../tests/fixtures/gitgraph/title-and-common-values/title-trim-output.mmd)):
@@ -541,17 +542,17 @@ gitGraph
 
 ### Multiline values
 
-printWidth で操作語・option・値を折り返しません。
+`printWidth` で操作語・オプション・値を折り返しません。
 可視 LF は文を終えるためです。
 引用値の物理行、続きの列、内部の空行を保持します。
 説明本文は前述の共有の字下げを使い、
-hidden が消費した LF の隙間は専用の保持規則に従います。
+隠れた形が消費した LF の隙間は専用の保持規則に従います。
 
 固定例: [fixture: gitgraph/multiline-values/long-kept]
 [fixture: gitgraph/multiline-values/multiline-string]
 [fixture: gitgraph/multiline-values/block-columns-fixed]
 
-入力（escape 表記）:
+入力（エスケープ表記）:
 `"gitGraph\ncommit id:\"a-very-long-identifier-that-stays-written\" msg:\"long authored message with several words\" tag:\"release-with-a-long-tag\" type:HIGHLIGHT\n"`
 ({"printWidth": 20})
 
@@ -568,10 +569,10 @@ gitGraph
 通常の独立コメントは本文 1 段、見出し前は第 1 列へ揃えます。
 行内コメントは同じ行で、接していれば接触を、離れていれば空白 1 個を残します。
 作者の付着を保つため mark・本文・末尾空白を保持します。
-native comment の LS/PS は内容です。
-文字列と block は percent text を所有し、行値はその前で終わります。
-共通の削除領域は完全な source span を保持します。
-保持する prefix は通常の配置に優先します。
+図固有のコメントの LS/PS は内容です。
+文字列とブロックはパーセントの文字を所有し、行値はその前で終わります。
+共通の削除領域は完全な原文の範囲を保持します。
+保持する前置部分は通常の配置に優先します。
 
 固定例: [fixture: gitgraph/comments/comment-placement]
 [fixture: gitgraph/comments/comment-bare-triple]
@@ -580,7 +581,7 @@ native comment の LS/PS は内容です。
 [corpus fixture: gitgraph/comment-between-mark-characters]
 [corpus fixture: gitgraph/comment-native-ls-content]
 
-入力（escape 表記）:
+入力（エスケープ表記）:
 `"  %% before\ngitGraph %% header\ncommit%% glued\ncommit  %% apart\n    %% last\n"`
 
 出力
@@ -598,16 +599,16 @@ gitGraph %% header
 
 ### Global directives
 
-global directive の内容・順序・単位の間の位置を保持します。
+大域的なディレクティブの内容・順序・単位の間の位置を保持します。
 同じ印字行の中のディレクティブは、
 [ディレクティブ](./flowchart.ja.md#ディレクティブ)のとおりに置きます。
 元は同じ行にあった単位を別の行へ分けるときは、
-間の directive を次の単位に付けます。
+間のディレクティブを次の単位に付けます。
 右側の接触・分離は保ち、左側の接触は切れます。
 通常の独立した開始位置だけ本文 1 段へ揃えます。
-文字列内部、語と colon の間、EOF に達する未閉鎖の形も保持します。
-opaque な本文と独立した設定効果を再構築しません。
-atomic な語の分断は仕様どおり拒否します。
+文字列内部、語とコロンの間、EOF に達する未閉鎖の形も保持します。
+中身を解析しない本文と独立した設定効果を再構築しません。
+語の単位の途中での分断は仕様どおり拒否します。
 
 [fixture: gitgraph/global-directives/header-to-body]
 
@@ -618,7 +619,7 @@ atomic な語の分断は仕様どおり拒否します。
 [corpus fixture: gitgraph/directive-open-after-header]
 [fixture: gitgraph/global-directives/directive-order-change]
 
-入力（escape 表記）:
+入力（エスケープ表記）:
 `"gitGraph\ncommit id%%{wrap}%%:\"A\"\ncommit id:%%{wrap}%% \"B\"\n"`
 
 出力
@@ -632,17 +633,17 @@ gitGraph
 
 ### Hidden yaml
 
-yaml-block の GitgraphIgnoredText は、
-見出し・option・名前・textAfter・本文の所有位置に、
-内部の共通 trivia を含む完全な source span で保持します。
-range 外の消費 LF と閉じの padding は、
-EOF や trivia・次の form の前でも残します。
-範囲外の spare LF と端の空行は [Blank lines](#blank-lines) に従います。
+yaml-ブロックの `GitgraphIgnoredText` は、
+見出し・オプション・名前・`textAfter`・本文の所有位置に、
+内部の共通注釈類を含む完全な原文の範囲で保持します。
+範囲外の消費 LF と閉じの余白は、
+EOF や注釈類・次の形の前でも残します。
+範囲外の 予備の LF と端の空行は [空行](#blank-lines) に従います。
 直前に LF を足しません。
-本文の opener は 1 段にでき、内部と閉じの列は変えません。
-空 body・3 fence・後の有効な closer・複数 form も opaque です。
-先に始まった文字列・block・行値の所有も変えません。
-境界の移動や trim は受理を失わせるためです。
+本文の開始記号は 1 段にでき、内部と閉じの列は変えません。
+空本文・3 つの囲み・後の有効な閉じ記号・複数の形も中身を解析しません。
+先に始まった文字列・ブロック・行値の所有も変えません。
+境界の移動や 両端の空白の除去は受理を失わせるためです。
 
 固定例: [corpus fixture: gitgraph/lex-yaml-invalid-body]
 [corpus fixture: gitgraph/lex-hidden-yaml-before-option-value]
@@ -687,7 +688,7 @@ EOF や trivia・次の form の前でも残します。
 [fixture: gitgraph/hidden-yaml/standalone-closing-padding]
 [fixture: gitgraph/hidden-yaml/option-consumed-lf]
 
-入力（escape 表記）: `"gitGraph commit id:---\nopaque\n---\n\"root\"\n"`
+入力（エスケープ表記）: `"gitGraph commit id:---\nopaque\n---\n\"root\"\n"`
 
 出力
 ([hidden-yaml/option-consumed-lf-output.mmd](../tests/fixtures/gitgraph/hidden-yaml/option-consumed-lf-output.mmd)):
@@ -702,12 +703,12 @@ opaque
 
 ### Hidden directives
 
-directive の GitgraphIgnoredText は Hidden yaml と同じく source と境界を保持し、
-9 種すべての文の suffix でも同じです。
-native form は global directive と別です。
-空・記号・複数行の内容と、先行する文字列や block の所有を残します。
-不成立の closer は後の closer まで内容になるか、
-native comment に fallback します。
+ディレクティブの `GitgraphIgnoredText` は隠れた YAML と同じく原文と境界を保持し、
+9 種すべての文の後置部分でも同じです。
+図固有の形は大域的なディレクティブと別です。
+空・記号・複数行の内容と、先行する文字列やブロックの所有を残します。
+不成立の閉じ記号は後の閉じ記号まで内容になるか、
+図固有のコメントとして扱います。
 分類を変える境界は足しません。
 必須部品が欠けた入力は拒否します。
 
@@ -761,7 +762,7 @@ native comment に fallback します。
 [test: gitgraph/hidden-directives/hidden-physical-multiline]
 [fixture: gitgraph/hidden-directives/option-consumed-lf]
 
-入力（escape 表記）: `"gitGraph commit id:%%{!}%%\n'root'\n"`
+入力（エスケープ表記）: `"gitGraph commit id:%%{!}%%\n'root'\n"`
 
 出力
 ([hidden-directives/option-consumed-lf-output.mmd](../tests/fixtures/gitgraph/hidden-directives/option-consumed-lf-output.mmd)):
@@ -774,7 +775,7 @@ gitGraph
 
 ### Semicolons
 
-すべての semicolon を残します。
+すべてのセミコロンを残します。
 保つ `;` を含む区間は、行の規則が無視する `;` が整形で変わる所を除き、
 ほかの場所と同じように整形します。
 この規則は、[セミコロン](./flowchart.ja.md#セミコロン)のとおり、
@@ -790,10 +791,10 @@ gitGraph
 [fixture: semicolons/stretch-kept-rest-formatted]
 [fixture: semicolons/no-stretch-formatted]
 保護された見出しと最初の文を分けません。
-style・classDef の pass、colon と hash の空白、大小文字、反復、
-directive が再結合する trigger と LS/PS の境界を残します。
-選ばれた semicolon の削除は別の選択を起こして Db を変えます。
-atomic な分断は拒否します。
+style・classDef の走査、コロンとハッシュ記号の空白、大小文字、反復、
+ディレクティブが再結合する条件を満たす語と LS/PS の境界を残します。
+選ばれたセミコロンの削除は別の選択を起こして Db を変えます。
+単位の途中での分断は拒否します。
 
 固定例: [fixture: gitgraph/semicolons/native-commit-value]
 
@@ -806,7 +807,7 @@ atomic な分断は拒否します。
 [fixture: gitgraph/semicolons/semicolon-remove-selected]
 [corpus fixture: gitgraph/style-ls-segment]
 
-入力（escape 表記）: `"gitGraph title style:#a;b\n"`
+入力（エスケープ表記）: `"gitGraph title style:#a;b\n"`
 
 出力
 ([semicolons/semicolon-header-protect-output.mmd](../tests/fixtures/gitgraph/semicolons/semicolon-header-protect-output.mmd)):
@@ -817,19 +818,19 @@ gitGraph title style:#a;b
 
 ### Trailing whitespace
 
-通常の見出しと完成した option・名前・数値・block の外側にある、
+通常の見出しと完成したオプション・名前・数値・ブロックの外側にある、
 無害な ASCII 行末空白を削除します。
 共通の行値には外端の規則を使います。
-文字列・コメント・directive と hidden の内部、保護部分、
-続きの行の末尾は source を保持します。
-hidden の閉じの padding は必要な EOL を可視に保つため、EOF でも残します。
+文字列・コメント・ディレクティブと隠れた形の内部、保護部分、
+続きの行の末尾は原文を保持します。
+隠れた形の閉じの余白は必要な EOL を可視に保つため、EOF でも残します。
 
 固定例: [fixture: gitgraph/trailing-whitespace/trailing-safe]
 [fixture: gitgraph/trailing-whitespace/trailing-string-kept]
 [corpus fixture: gitgraph/lex-hidden-directive-commit-eof]
 [fixture: gitgraph/trailing-whitespace/hidden-eof-padding]
 
-入力（escape 表記）:
+入力（エスケープ表記）:
 `"gitGraph \t\ncommit id:\"A\"  \nbranch b order:2\t\naccDescr {D}\t"`
 
 出力
@@ -844,12 +845,12 @@ gitGraph
 
 ### Line terminators and unicode
 
-共通の host の改行規則を使い、物理 CR/CRLF を LF にして endOfLine で出力します。
-値・block・hidden form の内部も同じです。
-内容の LS/PS/NBSP/BOM は保持し、共通の行値の外端だけ共通空白を trim します。
-通常の block opener の空白は結合できます。
-構造上の非 ASCII separator は拒否を保ちます。
-先頭 BOM は Prettier host の扱いに従い、byte 同一は保証しません。
+共通の埋め込み先の改行規則を使い、物理 CR/CRLF を LF にして `endOfLine` で出力します。
+値・ブロック・隠れた形の内部も同じです。
+内容の LS/PS/NBSP/BOM は保持し、共通の行値の外端からだけ共通空白を除きます。
+通常のブロック開始記号の空白は結合できます。
+構造上の非 ASCII 区切りは拒否を保ちます。
+先頭 BOM は 埋め込み先の Prettierの扱いに従い、バイト同一は保証しません。
 
 固定例: [test: gitgraph/line-terminators-and-unicode/eol-cr]
 [test: gitgraph/line-terminators-and-unicode/eol-crlf]
@@ -864,21 +865,21 @@ gitGraph
 [corpus fixture: gitgraph/div-detect-bare-before-header-ls]
 [test: gitgraph/line-terminators-and-unicode/unicode-to-lf-change]
 
-入力（escape 表記）: `"gitGraph\rcommit id:\"A\"\r"`
+入力（エスケープ表記）: `"gitGraph\rcommit id:\"A\"\r"`
 
-出力（escape 表記）: `"gitGraph\n  commit id: \"A\"\n"`
+出力（エスケープ表記）: `"gitGraph\n  commit id: \"A\"\n"`
 
 ### Frontmatter yaml
 
-安全な実 frontmatter だけ既存の YAML formatter に渡します。
-delimiter の padding、不正・字下げあり・HTML の危険がある YAML、
-delimiter を作る出力は書かれたままです。
-YAML は tabWidth 0 でも共有の正の最小字下げを使います。
-見出し前に保持する hidden text があれば、
-先頭 LF・コメント・bare-line trivia・second-scan form・実と hidden の順序を含む
-prefix 全体を残します。
-先頭 LF の削除は hidden YAML を有効な title や設定に変え、Db を変えます。
-hidden form は YAML formatter に渡しません。
+安全な実フロントマターだけ既存の YAML 整形処理に渡します。
+区切りの余白、不正・字下げあり・HTML の危険がある YAML、
+区切りを作る出力は書かれたままです。
+YAML は `tabWidth` 0 でも共有の正の最小字下げを使います。
+見出し前に保持する隠れたテキストがあれば、
+先頭 LF・コメント・単独行の注釈類・再走査で読む形・実際の形と隠れた形の順序を含む
+前置部分全体を残します。
+先頭 LF の削除は隠れた YAML を有効な title や設定に変え、Db を変えます。
+隠れた形は YAML 整形処理に渡しません。
 
 固定例: [fixture: gitgraph/frontmatter-yaml/frontmatter-safe]
 [fixture: gitgraph/frontmatter-yaml/prefix-promote-change]
@@ -893,7 +894,7 @@ hidden form は YAML formatter に渡しません。
 [fixture: gitgraph/frontmatter-yaml/frontmatter-delimiter-padding]
 [fixture: gitgraph/frontmatter-yaml/frontmatter-indented-kept]
 
-入力（escape 表記）:
+入力（エスケープ表記）:
 `"---\ntitle:   T\nconfig: {gitGraph: {mainBranchName: trunk, mainBranchOrder: 3}}\n---\ngitGraph\ncommit\n"`
 
 出力
@@ -911,10 +912,10 @@ gitGraph
 ### Final newline
 
 通常の受理ファイルは設定した終端改行 1 個で終えます。
-見出しのみ、最後の操作文、bare comment、空 block も同じです。
+見出しのみ、最後の操作文、通常のコメント、空ブロックも同じです。
 通常の末尾空行列は削除します。
-EOF に達する global directive、hidden の閉じの padding、
-保持する prefix の境界は残し、閉じた hidden form には終端 LF を足せます。
+EOF に達する大域的なディレクティブ、隠れた形の閉じの余白、
+保持する前置部分の境界は残し、閉じた隠れた形には終端 LF を足せます。
 共通のファイル終端を使いながら、消費 LF の境界を守ります。
 
 固定例: [corpus fixture: gitgraph/header-eof]
@@ -925,7 +926,7 @@ EOF に達する global directive、hidden の閉じの padding、
 [fixture: gitgraph/final-newline/final-open-global]
 [corpus fixture: gitgraph/div-detect-c4container-comment-eof]
 
-入力（escape 表記）: `"gitGraph\naccDescr{}"`
+入力（エスケープ表記）: `"gitGraph\naccDescr{}"`
 
 出力
 ([final-newline/final-block-output.mmd](../tests/fixtures/gitgraph/final-newline/final-block-output.mmd)):
@@ -938,14 +939,14 @@ gitGraph
 ### Specified readings
 
 既知の差異は仕様の受理と Db の読みを使います。
-standalone の解析失敗は構文エラーを報告し、
-Markdown は埋め込みを辞退して payload を host に返します。
-語内の directive と選ばれた semicolon を結合して修復しません。
-frontmatter の HTML は本文だけの読み、
-不正な opaque YAML は架空の設定や raw Db を補わない扱いです。
-C4 検出と bare percent line の差異も新設せず既存の識別子に従います。
-raw の拒否には raw Db がありません。
-空の quoted option と空の description block は受理したままです。
+単独ファイルの解析失敗は構文エラーを報告し、
+Markdown は埋め込みを辞退して図の本文を埋め込み先に返します。
+語内のディレクティブと選ばれたセミコロンを結合して修復しません。
+フロントマターの HTML は本文だけの読み、
+中身を解析しない不正な YAML は架空の設定や 素の mermaid.js の Db を補わない扱いです。
+C4 検出と単独のパーセントの行の差異も新設せず既存の識別子に従います。
+素の mermaid.js による拒否には 素の mermaid.js の Db がありません。
+空の引用符付きオプションと空の説明ブロックは受理したままです。
 
 [corpus fixture: gitgraph/div-directive-in-commit]
 [corpus fixture: gitgraph/div-style-semicolon-in-order-number]
@@ -957,15 +958,15 @@ raw の拒否には raw Db がありません。
 [corpus fixture: gitgraph/common-block-only-whitespace]
 
 たとえば `gitGraph\ncom%%{wrap}%%mit id:"A"` は構文エラーです。
-修復した出力は作らず、Markdown は payload を host に返します。
+修復した出力は作らず、Markdown は図の本文を埋め込み先に返します。
 
 ### Markdown fences
 
-共通の Markdown 経路で dedent 後の payload に同じ規則を使います。
-fence・list・quote の字下げと改行は host が担います。
-最終 payload 行の padding は host が削除する限界がありますが、
-本文途中の hidden の閉じの空白は保持します。
-host の出力と冪等性、payload の Db・木・source を別々に検査します。
+共通の Markdown 経路で 外側の字下げを除いた図の本文に同じ規則を使います。
+囲み・リスト・引用の字下げと改行は埋め込み先が担います。
+図の本文の最終行の余白は、最後の隠れた形の境界の空白も含めて、
+埋め込み先が削除する限界がありますが、本文途中の隠れた形の閉じの空白は保持します。
+埋め込み先の出力と冪等性、図の本文の Db・木・原文を別々に検査します。
 
 [test: gitgraph Markdown: top-level] [test: gitgraph Markdown: list]
 [test: gitgraph Markdown: quote] [test: gitgraph Markdown: zero]
@@ -977,13 +978,13 @@ host の出力と冪等性、payload の Db・木・source を別々に検査し
 [test: gitgraph Markdown: final-hidden-padding]
 [test: gitgraph Markdown: rejected]
 
-入力（escape 表記）:
+入力（エスケープ表記）:
 
 ````json
 "```mermaid\ngitGraph:commit id:\"Fence\"\n```\n"
 ````
 
-出力（escape 表記）:
+出力（エスケープ表記）:
 
 ````json
 "```mermaid\ngitGraph\n  commit id: \"Fence\"\n```\n"

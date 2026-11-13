@@ -315,10 +315,15 @@ printed `a\"b`, and `"'x'"` printed `'x'`, would be read as other titles. A
 label without quotes is never put in quotes. A run of spaces and tabs in a label
 is printed as one space, except where it makes a word of its own: mermaid.js
 draws a label word by word, split at single spaces, so a run of tabs alone, and
-a tab between two spaces, stay (`"A<tab>B"` is printed `A<tab>B`). [fixture:
+a tab between two spaces, stay (`"A<tab>B"` is printed `A<tab>B`). The words are
+what mermaid.js keeps of the title: it takes the brackets off, trims, takes one
+pair of outer quotes off, and trims again. A quote inside the words, or beside a
+bracket inside them, is a character of a word like any other, so a tab beside it
+stays too (`["A'<tab>B"]` and `["A[<tab>B"]` are printed as written). [fixture:
 quotes/labels-without-quotes] [fixture: quotes/labels-that-need-quotes]
 [fixture: quotes/labels-with-runs-without-quotes] [fixture:
-quotes/labels-with-tab-words-kept]
+quotes/labels-with-tab-words-kept] [fixture:
+quotes/labels-with-quotes-beside-tab-words-kept]
 
 Input
 ([quotes/labels-without-quotes-input.mmd](../tests/fixtures/architecture/quotes/labels-without-quotes-input.mmd)):

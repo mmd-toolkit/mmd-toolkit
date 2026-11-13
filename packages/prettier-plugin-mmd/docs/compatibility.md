@@ -90,77 +90,64 @@ default (a mindmap diagram has a layout of its own in all of them). The pairs
 were drawn again with the other layout in 12.0.0 and 12.3.0, and for mindmap in
 11.17.2:
 
-- 12.0.0 and 12.3.0 with `layout: dagre`: 8,892 pairs of the fixtures of this
-  package and of the corpus (2,964 flowchart, 1,364 agentflow, 1,348 ER, 1,313
-  class, 1,128 state, 520 requirement, and 255 mindmap texts, each written and
-  formatted). In 12.0.0, 6,975 pairs were drawn the same, 1,292 had the same
-  pixels, 565 were rejected in both forms, and 60 were rejected as written and
-  accepted formatted. In 12.3.0, the numbers are 7,041, 1,292, 545, and 14. None
-  was drawn differently.
-- 11.17.2 with `layout: dagre`, the mindmap texts of those pairs: 255 pairs, of
-  which 217 were drawn the same, 9 had the same pixels, 19 were rejected in both
-  forms, and 10 were rejected as written and accepted formatted. None was drawn
-  differently.
-- 10.9.8 with the header `flowchart-elk`, the flowchart texts of those pairs
-  with the header replaced: 2,921 pairs, of which 33 were drawn the same, 640
-  had the same pixels, 2,239 were rejected in both forms, and 9 were rejected as
-  written and accepted formatted. None was drawn differently. With the header
-  `flowchart`, the same 2,921 pairs were drawn in 2,316 cases (56 the same,
-  2,260 with the same pixels), 586 were rejected in both forms, and 19 were
-  rejected as written and accepted formatted.
+- 12.0.0 and 12.3.0 with `layout: dagre`: the written and formatted texts of the
+  flowchart, agentflow, ER, class, state, requirement, and mindmap fixtures of
+  this package and of the corpus were drawn, and their SVGs and pixels were
+  compared. None was drawn differently.
+- 11.17.2 with `layout: dagre`: the mindmap texts of those pairs were drawn and
+  compared in the same way. None was drawn differently.
+- 10.9.8 with the header `flowchart-elk`: the flowchart texts of those pairs
+  were drawn with the header replaced, and with the header `flowchart`, and
+  their SVGs and pixels were compared. None was drawn differently.
+
+Some texts were rejected in both forms, and some were rejected as written and
+accepted formatted.
 
 The texts of a flowchart with `TB` and with `TD` were also drawn with ELK loaded
 as a package: mermaid.js 12.3.0 with `@mermaid-js/layout-elk` 1.0.2 and
-`layout: elk` drew 1,034 pairs, which are the flowcharts without a subgraph in
-the 28 places where another rule meets a header, those that hold the word
-`subgraph` only in a label, an id, or a comment, and flowcharts with a subgraph.
-The layout was in use: a flowchart with four edges drawn in the same runner with
-`layout: dagre` has another size (223.5 × 346 against 216 × 316 with
-`layout: elk`). 12.3.0 has the ELK layout built in as `elk`, and the package
-registers a loader of the same name, which replaces the built-in one; drawn with
-the bundle of 12.3.0 alone, the same flowchart has the size 216 × 316 under the
-default and under `layout: elk`, and 223.5 × 346 under `layout: dagre`. 932
-pairs were drawn the same, 102 were rejected in both forms, and none was drawn
-differently. The header `flowchart-elk` was drawn with `TB` and with `TD` in 15
-forms, with the bundles as they are: of 1,050 pairs, 1,036 were drawn the same
-and 14 were rejected in both forms. These drawings include the versions that
-count for flowchart.
+`layout: elk`. These were flowcharts without a subgraph where another rule meets
+a header, those that hold the word `subgraph` only in a label, an id, or a
+comment, and flowcharts with a subgraph. The layout was in use: a flowchart with
+four edges drawn in the same runner with `layout: dagre` has another size (223.5
+× 346 against 216 × 316 with `layout: elk`). 12.3.0 has the ELK layout built in
+as `elk`, and the package registers a loader of the same name, which replaces
+the built-in one; drawn with the bundle of 12.3.0 alone, the same flowchart has
+the size 216 × 316 under the default and under `layout: elk`, and 223.5 × 346
+under `layout: dagre`. The SVGs were the same for the written and formatted
+texts, or both forms were rejected; none was drawn differently. The header
+`flowchart-elk` was also drawn with `TB` and with `TD`, with the bundles as they
+are. The SVGs were the same, or both forms were rejected. These drawings include
+the versions that count for flowchart.
 
 The ELK layout as a package of the 11.x versions (`@mermaid-js/layout-elk` 0.1.1
 to 0.2.3, the releases for mermaid.js 11) was not drawn: the package was not
 downloaded, and its source was read instead, the file
 `packages/mermaid-layout-elk/src/render.ts` at the tag
-`@mermaid-js/layout-elk@<version>` of the repository of mermaid.js, for each of
-the 13 releases. What those versions hand to a layout was compared too. The
-renderer of a flowchart, a state, a class, an ER, a requirement, and a mindmap
-diagram gives the layout the `getData()` of the diagram database. That data was
-taken for the written and for the formatted text of the 8,892 pairs in each of
-11.7.0 and 11.17.2 (the mindmap diagrams of 11.7.0 have no such data):
-
-| Version | Same data | Different data | Rejected in both forms | Rejected as written only | No data |
-| ------- | --------- | -------------- | ---------------------- | ------------------------ | ------- |
-| 11.7.0  | 6,459     | 391            | 1,723                  | 83                       | 236     |
-| 11.17.2 | 6,680     | 648            | 1,479                  | 85                       | 0       |
+`@mermaid-js/layout-elk@<version>` of the repository of mermaid.js, for each
+release. What those versions hand to a layout was compared too. The renderer of
+a flowchart, a state, a class, an ER, a requirement, and a mindmap diagram gives
+the layout the `getData()` of the diagram database. That data was taken for the
+written and formatted fixture texts in each of 11.7.0 and 11.17.2 (the mindmap
+diagrams of 11.7.0 have no such data).
 
 The fields that differed hold the colors and the spacing of a style, the
 whitespace of a text (the runs that the formatter writes as one space, which
 HTML collapses, and the blanks at the ends of a description), the type `string`
 or `text` of a flowchart label in quotes or without, ids that are generated for
-every parse, and the id of a subgraph in 2 flowchart pairs, whose id no
-statement names. Apart from those, the nodes, the edges, and the shapes were the
-same.
+every parse, and the id of a flowchart subgraph that no statement names. Apart
+from those, the nodes, the edges, and the shapes were the same.
 
 The renderer of a flowchart also gives the layout the direction of the header,
-`getDirection()`. In 11.7.0 it differs for the 41 flowchart pairs whose header
-the formatter changes from `TB` to `TD`: it returns `TB` for the written text
-and `TD` for the formatted text. The other versions that count return the same
-direction for both. In each of the 13 releases of the ELK layout package, the
-direction is read by its function `dir2ElkDirection` and nowhere else (0.1.1 to
-0.2.0 also give it to `getEdgeStartEndPoint`, whose arrow function has the one
-parameter `edge`): `TB` gives `DOWN`, and so does every word that is none of
-`LR`, `RL`, and `BT`, `TD` included, which 0.2.1 to 0.2.3 name as well. So the
-layout option `elk.direction` is the same for the written and for the formatted
-text. This is a reading of the source, not a drawing.
+`getDirection()`. In 11.7.0 it differs for flowchart pairs whose header the
+formatter changes from `TB` to `TD`: it returns `TB` for the written text and
+`TD` for the formatted text. The other versions that count return the same
+direction for both. In each release of the ELK layout package, the direction is
+read by its function `dir2ElkDirection` and nowhere else (0.1.1 to 0.2.0 also
+give it to `getEdgeStartEndPoint`, whose arrow function has the one parameter
+`edge`): `TB` gives `DOWN`, and so does every word that is none of `LR`, `RL`,
+and `BT`, `TD` included, which 0.2.1 to 0.2.3 name as well. So the layout option
+`elk.direction` is the same for the written and for the formatted text. This is
+a reading of the source, not a drawing.
 
 ## Forms kept for versions of mermaid.js that count
 
@@ -201,7 +188,7 @@ whatever the other versions are, so it has no row.
 | [flowchart](./flowchart.md#whitespace-between-tokens)        | `linkStyle 0 fill  :#f00` printed `linkStyle 0 fill : #f00`                                                                 | `linkStyle 0 fill: #f00`                                              | [1](./printed-form.md#1-the-whitespace-beside-a-mark)                | 11.7.0 puts `color:` in the place of the first `fill:` of the style of the label of a link                                  | [fixture: flowchart/whitespace-between-tokens/link-style-fill-colon-gap-kept] |
 | [flowchart](./flowchart.md#whitespace-between-tokens)        | `style A stroke-width:3px\ ,stroke:#0f0` printed `style A stroke-width: 3px\ , stroke: #0f0`                                | `style A stroke-width: 3px\, stroke: #0f0`                            | [1](./printed-form.md#1-the-whitespace-beside-a-mark)                | 10.9.8 joins the styles of a node with `;` as they are                                                                      | [fixture: flowchart/whitespace-between-tokens/style-backslash-space-kept]     |
 | [flowchart](./flowchart.md#style-trailing-whitespace)        | the line of a `style` or a `classDef` that ends in a no-break space, U+3000, a vertical tab, or a byte order mark           | the line without the character                                        | [1](./printed-form.md#1-the-whitespace-beside-a-mark)                | 10.9.8 draws the text without the character differently                                                                     | [test: keeps whitespace other than a space and a tab at the end of a style]   |
-| [class](./class.md#whitespace-between-tokens)                | `style A fill:#f00,color:white` printed `style A fill: #f00,color: white`; `color :red` printed `color : red`               | `style A fill: #f00, color: white`                                    | [1](./printed-form.md#1-the-whitespace-beside-a-mark)                | 10.9.8 takes the label colour from a style that starts with `color:`                                                        | [fixture: class/whitespace-between-tokens/style-color-touching-kept]          |
+| [class](./class.md#whitespace-between-tokens)                | `style A fill:#f00,color:white` printed `style A fill: #f00,color: white`; `fill:#f00,color :red` printed `color : red`     | `style A fill: #f00, color: white`                                    | [1](./printed-form.md#1-the-whitespace-beside-a-mark)                | 10.9.8 takes the label colour and alignment from a style that starts with `color:` or `text-align:`                         | [fixture: class/whitespace-between-tokens/style-color-touching-kept]          |
 | [class](./class.md#member-lines)                             | `+<tab>int x`, the tab after the mark of an attribute                                                                       | `+int x`                                                              | [1](./printed-form.md#1-the-whitespace-beside-a-mark)                | 10.9.8 reads the tab as part of the name                                                                                    | [fixture: class/member-lines/visibility-tab-kept]                             |
 | [block](./block.md#edges)                                    | `A ---x B`, `A ---o B`                                                                                                      | `A --x B`, `A --o B`                                                  | [3](./printed-form.md#3-a-spelling)                                  | 10.9.8 and 11.7.0 draw them differently                                                                                     | [fixture: block/edges/arrow-length-kept-where-drawn-differently]              |
 | [block](./block.md#edges)                                    | `A ===x B`, `A ===o B`                                                                                                      | `A ==x B`, `A ==o B`                                                  | [3](./printed-form.md#3-a-spelling)                                  | 10.9.8 and 11.7.0 draw them differently                                                                                     | [fixture: block/edges/arrow-length-kept-where-drawn-differently]              |
@@ -345,14 +332,14 @@ text after the frontmatter as written, because a text printed from the tree can
 change what mermaid.js reads there. The tags are found as the specification
 finds them: a `<` and a word character, then everything up to the first `>`, and
 the search goes on after that `>`. For example, an ER diagram with `title: <a`
-in the frontmatter and the body `"b="c">d"` is accepted by each of the ten
-versions that count, with the one entity `b='c'>d`. The specification reads
+in the frontmatter and the body `"b="c">d"` is accepted by each version that
+counts for ER diagrams, with the one entity `b='c'>d`. The specification reads
 three entities, `"b="`, `c`, and `">d"`, and the text printed from them, one on
-each line, was rejected by each of the ten versions. [corpus fixture:
-er/div-html-tag-starts-in-frontmatter-name] The `>` that ends the tag can be the
-`>` of an arrow, or lie in a comment line or a directive. A tag that ends in the
-frontmatter, a tag with no `>` after it, and a `<` with no word character after
-it leave the text after the frontmatter formatted. [fixture:
+each line, was rejected by each version that counts for ER diagrams. [corpus
+fixture: er/div-html-tag-starts-in-frontmatter-name] The `>` that ends the tag
+can be the `>` of an arrow, or lie in a comment line or a directive. A tag that
+ends in the frontmatter, a tag with no `>` after it, and a `<` with no word
+character after it leave the text after the frontmatter formatted. [fixture:
 flowchart/frontmatter-yaml/tag-open-into-body-kept] [fixture:
 flowchart/frontmatter-yaml/tag-open-ends-in-comment-kept] [fixture:
 flowchart/frontmatter-yaml/tag-open-ends-in-directive-kept] [fixture:
@@ -598,14 +585,14 @@ a byte order mark) is not removed where mermaid.js draws another figure without
 it: the line stays as written. CSS reads a space, a tab, and a form feed as
 whitespace, but not these characters, and mermaid.js keeps them in the value of
 the last style in some diagram types. The texts with and without each of these
-characters and a form feed were drawn in Chromium by the ten versions that
-count, for the `style`, `classDef`, and `linkStyle` of each diagram type that
-has them. The figure differs, in the pinned version and in others that count,
-for the `style` of a class diagram, for the `classDef` of a class diagram that
-stands after its class, for the `linkStyle` of a flowchart and of an agentflow
-diagram, for the `classDef` of an agentflow diagram, and for a vertical tab and
-a form feed in the `classDef` of an ER diagram. It differs in another version
-that counts for the `style` and `classDef` of a flowchart (see
+characters and a form feed were drawn in Chromium by the versions that count for
+each diagram type, for the `style`, `classDef`, and `linkStyle` of each diagram
+type that has them. The figure differs, in the pinned version and in others that
+count, for the `style` of a class diagram, for the `classDef` of a class diagram
+that stands after its class, for the `linkStyle` of a flowchart and of an
+agentflow diagram, for the `classDef` of an agentflow diagram, and for a
+vertical tab and a form feed in the `classDef` of an ER diagram. It differs in
+another version that counts for the `style` and `classDef` of a flowchart (see
 [Forms kept for versions of mermaid.js that count](#forms-kept-for-versions-of-mermaidjs-that-count)).
 These statements keep the character. A form feed is no exception in a class
 diagram or a flowchart, where it is whitespace in CSS and the figure is the
@@ -623,16 +610,16 @@ end of the last style as well: `style A fill:#f00;` followed by a no-break
 space, and `style A fill:red %%{init: {}}%%` followed by one, are kept as
 written in the same statements as above, and a space or a tab there is left out.
 [test: keeps the whitespace after a `;` and after a directive that the line rule
-removes] The endings were drawn by the ten versions that count, for the `style`
-of a class diagram and of a flowchart, the `classDef` of a class diagram, a
-flowchart, and an ER diagram, and the `linkStyle` of a flowchart and of an
-agentflow diagram: 24 endings for each statement, made of the character alone,
-with a space, a tab, a second character, a `;`, a directive, a comment, or a
-U+2028 or a U+2029 next to it. The text with the character and the text without
-it, and the text as written and as formatted, were drawn. Of the 168 texts, the
-formatter reads 153, and in none of them does the formatted text draw
-differently from the written text, or get rejected, in a version that draws the
-written one.
+removes] The endings were drawn by the versions that count for each diagram
+type, for the `style` of a class diagram and of a flowchart, the `classDef` of a
+class diagram, a flowchart, and an ER diagram, and the `linkStyle` of a
+flowchart and of an agentflow diagram: 24 endings for each statement, made of
+the character alone, with a space, a tab, a second character, a `;`, a
+directive, a comment, or a U+2028 or a U+2029 next to it. The text with the
+character and the text without it, and the text as written and as formatted,
+were drawn. Of the 168 texts, the formatter reads 153, and in none of them does
+the formatted text draw differently from the written text, or get rejected, in a
+version that draws the written one.
 
 ## Styles that are drawn the same
 
@@ -881,18 +868,36 @@ diagram so too, and the others do not (see
 In a flowchart, `style A fill:#f00,color:white` and
 `style A fill: #f00, color: white` were drawn with different pixels by those
 versions and with the same SVG by the others, and the same for
-`text-align:right` on a node with a label of two lines, and for `color :red`. In
-a class diagram the pixels differed for `color` only. So in the `style` of a
-flowchart a style that starts with `color:` or `text-align:` keeps whether
-whitespace stands before it, and a name `color` or `text-align` keeps whether
-whitespace stands between it and the `:`, and in the `style` of a class diagram
-a style that starts with `color:` does. No version that counts reads a swimlane
-diagram so, and its `style` and `linkStyle` use the one form. [fixture:
+`text-align:right` on a node with a label of two lines, and for `color :red`,
+and for `text-align:left` in a class diagram. A style with whitespace before it
+is no style of the label with the gap before its `:` or without it:
+`style A fill:#f00, color :red` and `style A fill: #f00, color: red` were drawn
+the same, and so were `style A fill:#f00,color :red` and
+`style A fill: #f00, color: red`, which has whitespace before the style. So in
+the `style` of a flowchart and of a class diagram a style that starts with
+`color:` or `text-align:` keeps whether whitespace stands before it. In a
+flowchart, the name of the first style of the statement keeps whether whitespace
+stands between it and the `:`, a run of whitespace becoming one space, which a
+version that counts reads as the label style only without the gap:
+`style A color   :red` is printed `style A color : red`. A style that follows a
+`,` directly and has a gap is printed with whitespace before it, and so is the
+style of a class diagram, whose first style a version that counts does not read
+as the style of the label either way: `style A color :red` and
+`style A color: red` were drawn the same there. No version that counts reads a
+swimlane diagram so, and its `style` and `linkStyle` use the one form. [fixture:
 flowchart/whitespace-between-tokens/style-color-touching-kept] [fixture:
 flowchart/whitespace-between-tokens/style-text-align-touching-kept] [fixture:
-flowchart/whitespace-between-tokens/style-label-name-colon-gap-kept] [fixture:
-class/whitespace-between-tokens/style-color-touching-kept] [fixture:
-class/whitespace-between-tokens/style-label-name-colon-gap-kept] [fixture:
+flowchart/whitespace-between-tokens/style-label-name-colon-gap-first-kept]
+[fixture:
+flowchart/whitespace-between-tokens/style-label-name-colon-gap-after-comma-spaced]
+[fixture:
+flowchart/whitespace-between-tokens/style-label-name-colon-gap-after-space-spaced]
+[fixture: class/whitespace-between-tokens/style-color-touching-kept] [fixture:
+class/whitespace-between-tokens/style-text-align-touching-kept] [fixture:
+class/whitespace-between-tokens/style-label-name-colon-gap-after-comma-spaced]
+[fixture:
+class/whitespace-between-tokens/style-label-name-colon-gap-first-spaced]
+[fixture:
 flowchart/whitespace-between-tokens/style-label-name-colon-gap-swimlane-spaced]
 
 The styles of a link reach the style of its label too: in a flowchart in some of
@@ -1192,8 +1197,8 @@ through
 which cuts the text at its whitespace and `<br>`, and sets each line trimmed
 ([`drawNode`](https://github.com/mermaid-js/mermaid/blob/2086904e76c692331e34a45d7cc3bc30860d040e/packages/mermaid/src/diagrams/timeline/svgDraw.js#L511-L521)),
 so a period and an event are drawn without the whitespace at their end. Texts
-with and without the space before each colon were drawn with the ten versions
-that count (see
+with and without the space before each colon were drawn with the versions that
+count for timeline (see
 [Versions of mermaid.js that count](#versions-of-mermaidjs-that-count)), and the
 SVG was the same: a period and events on one line and on later lines, in a
 section, with `<br>`, with a text that wraps, and with a text of other scripts.
@@ -1201,10 +1206,10 @@ A user journey puts the description of a task into a `div` of a `foreignObject`,
 or into a `tspan`
 ([`drawTask`](https://github.com/mermaid-js/mermaid/blob/2086904e76c692331e34a45d7cc3bc30860d040e/packages/mermaid/src/diagrams/user-journey/svgDraw.js#L251-L262)),
 as it stands. A task with whitespace before its first colon (one space, two
-spaces, a tab) and the same task without it were drawn with the ten versions
-that count, and the pixels were the same; the SVG differed only in the text of
-the `div` and of the `tspan` (and, in the oldest of them, in the number in the
-`id` of a line, which counts the drawings of the page).
+spaces, a tab) and the same task without it were drawn with the versions that
+count for user journey, and the pixels were the same; the SVG differed only in
+the text of the `div` and of the `tspan` (and, in the oldest of them, in the
+number in the `id` of a line, which counts the drawings of the page).
 
 The name of a section is not printed in this form. The renderers tell two
 sections apart by their names, so two names that differ only by the whitespace
@@ -1324,7 +1329,12 @@ These stay as written:
 - A run of tabs alone, or a tab between two spaces, in the label of an
   architecture diagram, which mermaid.js splits at single spaces and draws word
   by word: `["A<tab>B"]` is printed `[A<tab>B]`, and `"A<tab> B"` is printed
-  `A B`. [fixture: architecture/quotes/labels-with-tab-words-kept]
+  `A B`. The words are what mermaid.js keeps of the title after it takes the
+  brackets off, trims, takes one pair of outer quotes off, and trims again, so a
+  quote beside the run, or a bracket inside the quotes, is a character of a
+  word: `["A'<tab>B"]` stays as written. [fixture:
+  architecture/quotes/labels-with-tab-words-kept] [fixture:
+  architecture/quotes/labels-with-quotes-beside-tab-words-kept]
 - A text of spaces and tabs only that is not a string, except for the icon, the
   class, and the shape text of a mindmap node and a kanban card, which are
   printed as one space (see
@@ -1657,12 +1667,13 @@ and the titles (a `<span>` with `style='color:#F00'` in a label is a label), the
 notes, the arguments of a call of a C4 diagram (`$bgColor="#FFF"`), the colors
 of the boxes and the rectangles of a sequence diagram (not the commas of a color
 function, see below), and the settings of the frontmatter and of the directives.
-The `classDef` of a treemap has none, since its lexer rejects a `#`. The
-`classDef` of a class diagram keeps its colors as written, although the examples
-count it: a version that counts has no `classDef` there and draws its words as
-the text of classes, so `classDef k fill:#FFF` and `classDef k fill:#fff` are
-drawn with different text. [fixture: flowchart/colors/colors-in-lower-case]
-[fixture: flowchart/colors/swimlane-colors-in-lower-case] [fixture:
+The `classDef` of a treemap is printed so too: the versions that count draw
+`classDef zz color:#ABC` and `classDef zz color:#abc` the same. The `classDef`
+of a class diagram keeps its colors as written, although the examples count it:
+a version that counts has no `classDef` there and draws its words as the text of
+classes, so `classDef k fill:#FFF` and `classDef k fill:#fff` are drawn with
+different text. [fixture: flowchart/colors/colors-in-lower-case] [fixture:
+flowchart/colors/swimlane-colors-in-lower-case] [fixture:
 agentflow/colors/colors-in-lower-case] [fixture:
 class/colors/colors-in-lower-case] [fixture: state/colors/colors-in-lower-case]
 [fixture: er/colors/colors-in-lower-case] [fixture:
@@ -1670,7 +1681,7 @@ requirement/colors/colors-in-lower-case] [fixture:
 block/colors/colors-in-lower-case] [fixture:
 usecase/colors/colors-in-lower-case] [fixture:
 quadrant/colors/colors-in-lower-case] [fixture:
-venn/colors/colors-in-lower-case]
+venn/colors/colors-in-lower-case] [fixture: treemap/colors/colors-in-lower-case]
 
 A text is a color only where it cannot be anything else, and the formatter
 prints it as the CSS formatter of Prettier does (3.9.9, run on `fill: <value>`
@@ -1900,7 +1911,7 @@ space and the text without it were run in Chromium with the 17 versions on hand
 (the 14 of the earlier runs, and 10.9.8, 11.7.0, and 11.17.2), and with 11.8.1
 after it. The Db of mermaid.js 12.3.0 was the same for each of them, and no
 version rejected the text with the space where it read the text without it. In
-the ten versions that count (see
+the versions that count for each diagram type (see
 [Versions of mermaid.js that count](#versions-of-mermaidjs-that-count)) the SVG
 or the pixels were the same wherever the version has the diagram type and draws
 it; a class diagram draws other random ids each time, so the Db is its evidence
@@ -1968,8 +1979,8 @@ where one of the [versions that count](#versions-of-mermaidjs-that-count)
 rejects the form that would be printed or draws it differently.
 [Forms kept for versions of mermaid.js that count](#forms-kept-for-versions-of-mermaidjs-that-count)
 lists each such form, and
-[Versions of mermaid.js that count](#versions-of-mermaidjs-that-count) names the
-ten versions.
+[Versions of mermaid.js that count](#versions-of-mermaidjs-that-count) lists
+them for each diagram type.
 
 Each kind was compared with mermaid.js 12.3.0 before the printer wrote its form.
 For each example that holds the spelling, the example was written again in the
@@ -2292,23 +2303,24 @@ is the arrow between the two texts of an axis of a quadrant chart (see
 `-----` is `---`, `<--->` is `<-->`, `-..->` is `-.->`, and `====>` is `==>`.
 The length of the line is no part of the Db of either, and the examples write
 the shortest form only (`-->` nine times and `--` once in the block page, `-->`
-six times in the quadrant page). Drawn in Chromium by the ten versions that
-count, the shorter and the longer line of a solid arrow with an end arrow or no
-end marker (`-->` and `--->`, `---` and `----`), of a bidirectional arrow
-(`<-->` and `<--->`), and of a dotted arrow (`-.->` and `-..->`, `-.-` and
-`-..-`, also with an `x` or an `o` at the end) gave the same SVG. So did `==>`
-and `====>`, which the five versions that read a thick line draw alike and the
-five that do not reject both, and the axes `--->` and `-->` of a quadrant chart,
-also with no text after the arrow, whose Db holds the same text for both. A line
-that starts with `<` gave the same SVG in any length whatever it ends in
-(`<---x` and `<--x`, `<====` and `<===`). The four block inputs and the two
-quadrant inputs of the corpus that the printer changes were read with the same
-Db and drawn the same by every version that reads them. These stay as written,
-since a version that counts draws them differently: an arrow without the `<`
-that ends in `x` or `o` (some versions draw `---x` and `--x`, and `---o` and
-`--o`, differently, and some draw `===x` and `==x` differently), a thick line
-that does not end in `>` (some versions read `===` and `====` as two ids that
-differ), and a line of `~` (an id). The row for each of them in
+six times in the quadrant page). Drawn in Chromium by the versions that count
+for each diagram type, the shorter and the longer line of a solid arrow with an
+end arrow or no end marker (`-->` and `--->`, `---` and `----`), of a
+bidirectional arrow (`<-->` and `<--->`), and of a dotted arrow (`-.->` and
+`-..->`, `-.-` and `-..-`, also with an `x` or an `o` at the end) gave the same
+SVG. So did `==>` and `====>`, which the versions that count for block diagrams
+and read a thick line draw alike, while those that do not read it reject both,
+and the axes `--->` and `-->` of a quadrant chart, also with no text after the
+arrow, whose Db holds the same text for both. A line that starts with `<` gave
+the same SVG in any length whatever it ends in (`<---x` and `<--x`, `<====` and
+`<===`). The four block inputs and the two quadrant inputs of the corpus that
+the printer changes were read with the same Db and drawn the same by every
+version that reads them. These stay as written, since a version that counts
+draws them differently: an arrow without the `<` that ends in `x` or `o` (some
+versions draw `---x` and `--x`, and `---o` and `--o`, differently, and some draw
+`===x` and `==x` differently), a thick line that does not end in `>` (some
+versions read `===` and `====` as two ids that differ), and a line of `~` (an
+id). The row for each of them in
 [Forms kept for versions of mermaid.js that count](#forms-kept-for-versions-of-mermaidjs-that-count)
 names the versions. The length of the link of a flowchart is not one of these:
 it asks for a link that spans more ranks (see
@@ -2364,15 +2376,17 @@ with the colon (see the gitGraph row of
 `gitGraph %%{}%%:` is no such header: an empty directive is a comment that takes
 the colon with it. [fixture: gitgraph/header/header-hidden-before-colon] A
 hidden YAML block between them does not keep it: `gitGraph ---`, a block, and
-`--- :` followed by a statement were drawn by the ten versions with the colon
-and without it, and the one that does not read the block rejects both, so the
-colon is left out. [fixture: gitgraph/header/header-yaml-before-colon] A colon
-on a line of its own after the block stays, since the printer keeps the line
-break after a hidden form. [corpus fixture: gitgraph/header-hidden-before-colon]
-A directive, a comment, or a hidden form after the colon does not keep it:
-`gitGraph:%%{}%% commit%%{}%%`, `gitGraph: %% note`, and `gitGraph: %%{}%%`
-followed by a statement are drawn the same by the ten versions, with and without
-the colon. [fixture: gitgraph/header/header-colon] [fixture:
+`--- :` followed by a statement were drawn by the versions that count for
+gitGraph with the colon and without it, and the one that does not read the block
+rejects both, so the colon is left out. [fixture:
+gitgraph/header/header-yaml-before-colon] A colon on a line of its own after the
+block is left out with the line break before it, so that no empty line stays.
+[fixture: gitgraph/header/header-yaml-colon-on-its-own-line] [corpus fixture:
+gitgraph/header-hidden-before-colon] A directive, a comment, or a hidden form
+after the colon does not keep it: `gitGraph:%%{}%% commit%%{}%%`,
+`gitGraph: %% note`, and `gitGraph: %%{}%%` followed by a statement were drawn
+the same by the versions that count for gitGraph, with and without the colon.
+[fixture: gitgraph/header/header-colon] [fixture:
 gitgraph/header/header-directive-before-colon-kept] [fixture:
 gitgraph/header/header-colon-comment] [fixture:
 gitgraph/header/header-colon-hidden-statement] [fixture:
@@ -2869,10 +2883,10 @@ of a title) as units of their own. So `"develop"`, `"feature/login"`,
 `"lr-x"`, `"switch"`, `"BT"`, `"titleA"`, `"1st"`, `"release/1."`, and a name
 with a space keep them. A list of 433 names, the keywords in three cases and in
 mixed cases, alone and with the endings `-x`, `.x`, `/x`, `1`, and `_x`, was
-drawn in a `branch` with and without quotes by the ten versions, and 240 of them
-also in a `checkout` and in a `merge`: the quotes changed the drawing, or the
-acceptance, of exactly the names that keep them. [fixture:
-gitgraph/references/plain-names-without-quotes] [fixture:
+drawn in a `branch` with and without quotes by the versions that count for
+gitGraph, and 240 of them also in a `checkout` and in a `merge`: the quotes
+changed the drawing, or the acceptance, of exactly the names that keep them.
+[fixture: gitgraph/references/plain-names-without-quotes] [fixture:
 gitgraph/references/names-next-to-a-keyword-without-quotes] [fixture:
 gitgraph/references/names-that-need-quotes] [fixture:
 gitgraph/references/reference-forms]
@@ -3186,8 +3200,8 @@ inputs (once the whitespace of a style was taken away), and the 7 class inputs.
 The name of a header stays as written, except in the treemap and the ishikawa
 diagrams (see below): `block-beta` and `block`, `graph` and `flowchart`,
 `packet-beta` and `packet`, `sankey-beta` and `sankey`, `xychart-beta` and
-`xychart`. mermaid.js 12.3.0 accepts both names of each pair of these, and of
-`treemap-beta` and `treemap`, and `ishikawa-beta` and `ishikawa`
+`xychart`. The pinned mermaid.js accepts both names of each pair of these, and
+of `treemap-beta` and `treemap`, and `ishikawa-beta` and `ishikawa`
 ([block](https://github.com/mermaid-js/mermaid/blob/2086904e76c692331e34a45d7cc3bc30860d040e/packages/mermaid/src/diagrams/block/blockDetector.ts#L6),
 [sankey](https://github.com/mermaid-js/mermaid/blob/2086904e76c692331e34a45d7cc3bc30860d040e/packages/mermaid/src/diagrams/sankey/sankeyDetector.ts#L6),
 [xychart](https://github.com/mermaid-js/mermaid/blob/2086904e76c692331e34a45d7cc3bc30860d040e/packages/mermaid/src/diagrams/xychart/xychartDetector.ts#L10),
@@ -3203,44 +3217,41 @@ against none of `graph`, `packet` 4 against none, `sankey` 8 against none,
 `xychart` 7 against 1, `treemap-beta` 8 against none, and `ishikawa-beta` once
 against none.
 
-But the versions that count do not accept the names alike. The CHANGELOG.md
-removes the suffix of the block, sankey, and xychart diagrams in 11.10.0
-([the entry](https://github.com/mermaid-js/mermaid/blob/2086904e76c692331e34a45d7cc3bc30860d040e/packages/mermaid/CHANGELOG.md#L1020))
-and moves the packet diagram out of beta in 11.9.0
-([the entry](https://github.com/mermaid-js/mermaid/blob/2086904e76c692331e34a45d7cc3bc30860d040e/packages/mermaid/CHANGELOG.md#L1087)),
-so some of the versions that count detect no diagram from a text printed without
-the suffix (the rows of these four diagrams in
-[Forms kept for versions of mermaid.js that count](#forms-kept-for-versions-of-mermaidjs-that-count)).
-The versions that count draw `graph` and `flowchart` the same, as they draw
-`stateDiagram` and `stateDiagram-v2`, unless the text sets the `defaultRenderer`
-of the diagram to `dagre-d3`: then some of them read one name and reject the
-other, or draw the two differently (the rows of these two diagrams in the same
-table). A directive of the text can set the renderer, and so can the
-configuration of the site, which the formatter cannot read, so these names stay
-as written whatever the text holds. The versions that count read `treemap-beta`
-and `treemap` both or neither, and `ishikawa-beta` and `ishikawa` in any case
-both or neither, and draw the two names of a diagram the same, and the
-CHANGELOG.md records no change of the names of the treemap and ishikawa
-diagrams. They were drawn by the 8 versions that have the treemap diagram and
-the 7 that have the ishikawa diagram: the texts with one name and with the
-other, in 45 forms and in the 28 places where another rule meets a header (a
-directive, a `;`, a comment, an empty line, a U+2028 or U+2029, the end of the
-text, an indentation, and others), and each of the 918 texts that the formatter
-reads, as written and as formatted. They were drawn the same in every version
-that has the diagram, and a text that one of them accepted was accepted in the
-other form too. So the header of a treemap diagram is printed `treemap`, and
-that of an ishikawa diagram `ishikawa`, in lower case, whatever name and case it
-was written in; `TREEMAP-BETA`, which no version reads, is not formatted. The
-exception is a root that starts with the word `-beta` right after the header of
-an ishikawa diagram, with at most directives between them, which mermaid.js
-removes before it reads the header: `ishikawa-beta-beta` has the header
-`ishikawa-beta` and the root `-beta`, and the header printed `ishikawa` with
-`-beta` on its line would be read as the header `ishikawa-beta` alone. So the
-root goes to a line of its own; where it stays on the line of the header, the
-header stays as written. A header of the other diagrams in another case
-(`sankey-BETA`, `XYCHART-BETA`) stays as written. [fixture: treemap/header/beta]
-[fixture: ishikawa/header/header-beta] [fixture: ishikawa/header/header-column]
-[fixture: ishikawa/header/header-beta-then-beta-root] [fixture:
+But the versions that count for each diagram type do not accept the names alike.
+Some detect no diagram from a text printed without the suffix; the rows for
+block, sankey, xychart, and packet in
+[Forms kept for versions of mermaid.js that count](#forms-kept-for-versions-of-mermaidjs-that-count)
+name the versions that need it. The versions that count draw `graph` and
+`flowchart` the same, as they draw `stateDiagram` and `stateDiagram-v2`, unless
+the text sets the `defaultRenderer` of the diagram to `dagre-d3`: then some of
+them read one name and reject the other, or draw the two differently (the rows
+of these two diagrams in the same table). A directive of the text can set the
+renderer, and so can the configuration of the site, which the formatter cannot
+read, so these names stay as written whatever the text holds. The versions that
+count read `treemap-beta` and `treemap` both or neither, and `ishikawa-beta` and
+`ishikawa` in any case both or neither, and draw the two names of a diagram the
+same, and the CHANGELOG.md records no change of the names of the treemap and
+ishikawa diagrams. They were drawn by 8 versions with the treemap diagram and 7
+with the ishikawa diagram, including the versions that count for each: the texts
+with one name and with the other, in 45 forms and in the 28 places where another
+rule meets a header (a directive, a `;`, a comment, an empty line, a U+2028 or
+U+2029, the end of the text, an indentation, and others), and each of the 918
+texts that the formatter reads, as written and as formatted. They were drawn the
+same in every version that has the diagram, and a text that one of them accepted
+was accepted in the other form too. So the header of a treemap diagram is
+printed `treemap`, and that of an ishikawa diagram `ishikawa`, in lower case,
+whatever name and case it was written in; `TREEMAP-BETA`, which no version
+reads, is not formatted. The exception is a root that starts with the word
+`-beta` right after the header of an ishikawa diagram, with at most directives
+between them, which mermaid.js removes before it reads the header:
+`ishikawa-beta-beta` has the header `ishikawa-beta` and the root `-beta`, and
+the header printed `ishikawa` with `-beta` on its line would be read as the
+header `ishikawa-beta` alone. So the root goes to a line of its own; where it
+stays on the line of the header, the header stays as written. A header of the
+other diagrams in another case (`sankey-BETA`, `XYCHART-BETA`) stays as written.
+[fixture: treemap/header/beta] [fixture: ishikawa/header/header-beta] [fixture:
+ishikawa/header/header-column] [fixture:
+ishikawa/header/header-beta-then-beta-root] [fixture:
 ishikawa/header/header-beta-then-beta-root-kept] [fixture:
 ishikawa/header/header-beta-directive-then-beta-root-kept] [fixture:
 block/header/block-beta-kept] [fixture: flowchart/direction/header-keyword-kept]
@@ -3254,7 +3265,7 @@ xychart/keyword-case/header-spelling-kept] [fixture:
 xychart/header-and-orientation/second-header-spelling-and-case-kept]
 
 `stateDiagram` and `stateDiagram-v2` stay as written for the same reason. The
-detector of mermaid.js 12.3.0 draws both with the unified state diagram
+detector of the pinned mermaid.js draws both with the unified state diagram
 ([the comment](https://github.com/mermaid-js/mermaid/blob/2086904e76c692331e34a45d7cc3bc30860d040e/packages/mermaid/src/diagrams/state/stateDetector-V2.ts#L9)).
 The 22 pairs of the examples gave the same Db, and 21 of their drawings were the
 same, pixel for pixel. The 22nd, the choice example
@@ -3284,30 +3295,32 @@ mermaid.js drops whitespace at the start of a label without quotes, and so does
 formatting, except where the label would then be read differently or not at all:
 the whitespace is kept, as one space, when the label starts with `/`, `\`, `-`,
 or `"`, or when its first word has a `@`, and the label then gets one space at
-its end too. [fixture: flowchart/label-inner-whitespace/trimmed] [fixture:
+its end too, except before the closing `?]` or `=]` of a slanted shape, where
+mermaid.js would read the space and the `?` or `=` as text. [fixture:
+flowchart/label-inner-whitespace/leading-whitespace-before-question-end-kept]
+[fixture: flowchart/label-inner-whitespace/trimmed] [fixture:
 flowchart/label-inner-whitespace/leading-whitespace-kept] [fixture:
 flowchart/label-inner-whitespace/compat-leading-backslash-kept] For example,
 `A[ /x/]` is a rectangle with the label `/x/`, while `A[/x/]` is a lean-right
 shape with the label `x`. See
 [Label inner whitespace](./flowchart.md#label-inner-whitespace).
 
-The `@` depends on the version of mermaid.js. In a flowchart, 12.3.0 stops the
-run of an edge id at a bracket and at `|`, so it reads `A[user@example.com]` and
-`A-->|x@|B` as it reads them with the whitespace, and rejects only `A>x@]`; an
-agentflow diagram rejects `A[x@]` in 12.3.0 too. Some of the versions that count
-do not stop the run there (see
-[Forms kept for versions of mermaid.js that count](#forms-kept-for-versions-of-mermaidjs-that-count)),
-as the grammars of 11.5.0, the first with edge ids, to 12.2.0 do not (the rule
-of the edge id in `flow.jison` of the tags 11.4.1, 11.5.0, 12.2.0, and 12.3.0
-was read), so they reject a label whose first word has a `@` without the
-whitespace, in a shape, between `|`, and in the title of a subgraph, and read it
-with the whitespace. Drawn in Chromium, `A[ x@y ]`, `A-->| x@y |B`,
-`subgraph S[ x@y ]`, and `A( x@y )` and the same texts without the spaces were
-the same in 10.3.1, 10.9.0, 11.0.0, 11.4.1, and 12.3.0, rejected in the form
-without the spaces by 11.12.3 and by five of the eight, and rejected in both
-forms by 9.0.0, 9.1.7, and 9.4.3. A text printed without the space would be
-rejected by versions that read the text as it is written, so the space is kept
-in a flowchart, a swimlane diagram, and an agentflow diagram alike. [fixture:
+The `@` depends on the version of mermaid.js. In a flowchart, the pinned version
+stops the run of an edge id at a bracket and at `|`, so it reads
+`A[user@example.com]` and `A-->|x@|B` as it reads them with the whitespace, and
+rejects only `A>x@]`; an agentflow diagram rejects `A[x@]` in the pinned version
+too. Some versions that count for flowchart do not stop the run there: they
+reject a label whose first word has a `@` without the whitespace, in a shape,
+between `|`, and in the title of a subgraph, and read it with the whitespace.
+The row for labels whose first word has an `@` in
+[Forms kept for versions of mermaid.js that count](#forms-kept-for-versions-of-mermaidjs-that-count)
+names those versions. The texts `A[ x@y ]`, `A-->| x@y |B`, `subgraph S[ x@y ]`,
+and `A( x@y )` and the same texts without the spaces were drawn in Chromium.
+Some versions drew both forms the same, others rejected both, and five of eight
+versions, together with one other version, rejected the form without the spaces.
+A text printed without the space would be rejected by versions that count for
+the diagram type and read the text as it is written, so the space is kept in a
+flowchart, a swimlane diagram, and an agentflow diagram alike. [fixture:
 flowchart/label-inner-whitespace/leading-whitespace-at-sign-kept] [fixture:
 flowchart/label-inner-whitespace/leading-whitespace-at-sign-every-shape-kept]
 [fixture:
@@ -3689,13 +3702,13 @@ connection and read the `()` as part of the name next to it, so `A ()` and `A()`
 are two names, and `A ->> () x` and `A ->> ()x` are two targets. The texts with
 and without the whitespace beside a `()` (`A () ->> B` and `A() ->> B`,
 `A ->> () x` and `A ->> ()x`, and the same with a directive beside the `()`)
-were drawn with the ten versions that count: some drew them differently, and the
-others the same. The `+` and `-` of an activation are not among them: the texts
-with and without the whitespace beside them were drawn the same by all ten
-versions. The whitespace before `<<->>` and `<<-->>` stays as written too: some
-versions that count have no such arrow and read the `<<` as part of the name
-before it, and `Alice<<->>Bob` and `Alice <<->> Bob` were drawn differently by
-them and the same by the others (see
+were drawn with the versions that count for sequence diagrams: some drew them
+differently, and the others the same. The `+` and `-` of an activation are not
+among them: the texts with and without the whitespace beside them were drawn the
+same by every version that counts for sequence diagrams. The whitespace before
+`<<->>` and `<<-->>` stays as written too: some versions that count have no such
+arrow and read the `<<` as part of the name before it, and `Alice<<->>Bob` and
+`Alice <<->> Bob` were drawn differently by them and the same by the others (see
 [Forms kept for versions of mermaid.js that count](#forms-kept-for-versions-of-mermaidjs-that-count)).
 The whitespace after the arrow is not at stake in any version. [fixture:
 sequence/arrow-spacing/bidirectional-arrow-gap-before-kept] [fixture:
@@ -4197,9 +4210,9 @@ See [Task data](./gantt.md#task-data), [Settings](./gantt.md#settings),
   `classDef` to the last `#` before the last `;` stays as written (`:` after
   that `#` gets its space): `classDef it:a1,2024-01-01,2d;#y:3d;z:2d` has two
   tasks, `classDef it` and `#y`, and with a space after the first colon it has
-  three, and the two texts are drawn differently by the 10 versions that count.
-  [fixture: gantt/task-data/colon-touches-first-item] [fixture:
-  gantt/task-data/colon-space-line-rule-kept]
+  three, and the two texts are drawn differently by every version that counts
+  for Gantt charts. [fixture: gantt/task-data/colon-touches-first-item]
+  [fixture: gantt/task-data/colon-space-line-rule-kept]
 - The whitespace inside an item of task data, the number of its items, and the
   case of its tags: `after   a1` is one item as written, `a : 1d,` has an empty
   item that `a : 1d` does not, and `Done` is no tag. [fixture:
@@ -4411,24 +4424,25 @@ timeline/multi-line-values/description-directive-lines]
 
 ## Timeline texts that the versions read differently
 
-Of the versions that count (see
-[Versions of mermaid.js that count](#versions-of-mermaidjs-that-count)), four
-have no direction in the header of a timeline: they read the words after
-`timeline` as the text of a period, and the six others read `LR` or `TD` as the
-direction. The oldest of the ten also draws a title that starts with a `#`
+Of the versions that count for timeline (see
+[Versions of mermaid.js that count](#versions-of-mermaidjs-that-count)), some
+have no direction in the header: they read the words after `timeline` as the
+text of a period, and the others read `LR` or `TD` as the direction. The oldest
+version that counts for timeline also draws a title that starts with a `#`
 differently from the others (see the last case). Both texts of each case below
-were drawn with the ten versions, and a form that one of them draws differently
-is kept as written (see
+were drawn with the versions that count for timeline, and a form that one of
+them draws differently is kept as written (see
 [Forms kept for versions of mermaid.js that count](#forms-kept-for-versions-of-mermaidjs-that-count)).
 See [Header and direction](./timeline.md#header-and-direction) and
 [Titles and sections](./timeline.md#titles-and-sections).
 
 - The case of the direction. `timeline td` and `timeline TD` followed by a line
-  `2004 : a` or `title T` were drawn the same by the six that read a direction
-  and differently by the four others, which draw the period `td` and the period
-  `TD`. So `td` is not printed `TD`, though the examples in the documentation of
-  mermaid.js write `TD`. [fixture: timeline/header-and-direction/direction-kept]
-  [fixture: timeline/header-and-direction/direction-case-kept] [fixture:
+  `2004 : a` or `title T` were drawn the same by the versions that count for
+  timeline and read a direction and differently by the others, which draw the
+  period `td` and the period `TD`. So `td` is not printed `TD`, though the
+  examples in the documentation of mermaid.js write `TD`. [fixture:
+  timeline/header-and-direction/direction-kept] [fixture:
+  timeline/header-and-direction/direction-case-kept] [fixture:
   timeline/header-and-direction/spaces-before-the-direction]
 - The text after a direction on the line of the header. `timeline TD title T`
   against `timeline TD` and a line `title T`, `timeline TD LR` against `TD` and
@@ -4438,7 +4452,8 @@ See [Header and direction](./timeline.md#header-and-direction) and
   the text after a direction stays on the line of the header. Without a
   direction (`timeline History`, `timeline title T`, `timeline 2004 : a`) the
   text on the line of the header and on a line of its own were drawn the same by
-  all ten versions, and the text goes to a line of its own. [fixture:
+  every version that counts for timeline, and the text goes to a line of its
+  own. [fixture:
   timeline/header-and-direction/second-word-stays-on-the-header-line] [fixture:
   timeline/header-and-direction/direction-then-period-stays] [fixture:
   timeline/statements-one-per-line/header-direction-then-title] [fixture:
@@ -6099,13 +6114,13 @@ printed `Alpha--> Beta`, not `Alpha- -> Beta`, which the first version rejects
 (see
 [Forms kept for versions of mermaid.js that count](#forms-kept-for-versions-of-mermaidjs-that-count)).
 The texts `Alpha-->Beta` and `Alpha--> Beta`, with the components declared, were
-drawn with the six versions and gave identical SVGs in all of them;
-`Alpha- -> Beta` gave the same SVG in the five later versions and is rejected by
-the first. `Alpha -->Beta` is a different link in the five later versions (the
-arrow `-->`), so it keeps its arrow and is printed `Alpha --> Beta`. [fixture:
-wardley/links/link-long-glued] [fixture: wardley/links/link-name-dashes-glued]
-[fixture: wardley/links/link-name-dash-spaced] [fixture:
-wardley/links/link-long-spaced]
+drawn with the four versions that count for Wardley maps and gave identical SVGs
+in all of them; `Alpha- -> Beta` gave the same SVG in the three later versions
+and is rejected by the first. `Alpha -->Beta` is a different link in the three
+later versions (the arrow `-->`), so it keeps its arrow and is printed
+`Alpha --> Beta`. [fixture: wardley/links/link-long-glued] [fixture:
+wardley/links/link-name-dashes-glued] [fixture:
+wardley/links/link-name-dash-spaced] [fixture: wardley/links/link-long-spaced]
 
 Flow interiors keep their complete authored spelling, including empty labels,
 backslashes and continuation columns. A link's grammatical label-opening `;`

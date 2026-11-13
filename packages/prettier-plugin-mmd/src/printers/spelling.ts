@@ -16,6 +16,7 @@ import type { Source } from "./source.ts"
 import {
   findStructuralToken,
   findTokenStartingAt,
+  isWordCharacter,
   skipDirectives,
   textWithoutDirectives,
 } from "./source.ts"
@@ -83,13 +84,7 @@ function headerDirectionSpelling(
 function startsWithBetaWord(source: Source, offset: number): boolean {
   const text = textWithoutDirectives(source, offset, source.text.length)
   if (toAsciiLowerCase(text.slice(0, 5)) !== "-beta") return false
-  const after = text.charAt(5)
-  return !(
-    (after >= "a" && after <= "z") ||
-    (after >= "A" && after <= "Z") ||
-    (after >= "0" && after <= "9") ||
-    after === "_"
-  )
+  return !isWordCharacter(text.charAt(5))
 }
 
 /** Whether the root of an ishikawa diagram stays on the line of the header. */

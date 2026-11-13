@@ -170,7 +170,7 @@ venn-beta
 
 ### Statements one per line
 
-通常の完結した文は、ほかの図種と同じく1行ずつにします。
+通常の完結した文は、見渡しやすいように 1 行ずつにします。
 宣言と同じ行に続く style、対象つき text、title は同じ行に保ちます。
 分けると行頭の文が暗黙モードを解除するためです。
 同じ行の宣言の列は分けられます。
@@ -457,7 +457,7 @@ Venn 図の `style` 文のプロパティの色が対象です。
 小文字の `rgb(`（数 3 個）か `rgba(`（数 4 個）のとき、
 コンマごとの後ろに空白を 1 つ置いて印字します。
 `style A fill:rgb(1,2,3)` は `style A fill: rgb(1, 2, 3)` と印字します。
-コンマの前の空白と括弧の内側の空白は、書かれたままです。
+コンマの前、開き括弧 `(` の直後、閉じ括弧 `)` の直前の空白は、書かれたままです。
 大文字の関数（`RGB(1,2,3)`）と、複数行にわたる関数も、書かれたままです。
 mermaid.js の文書の例には、Venn 図の色関数がありません。
 空白を置く形は、sequence 図の例と、ほかの図の種類のスタイルの形です。
@@ -609,8 +609,8 @@ Prettier がこの種類の記号の両側に印字するとおり、空白を 1
 サイズは宣言に付け足すもので、省けます。
 サイズは宣言のものであって、コロンの前の名前のものではありません。
 `union` では、コロンを名前に接すると名前のサイズに見えます。
-[fixture: venn/sizes-and-numbers/colon-of-a-size]
-[fixture: venn/sizes-and-numbers/colon-of-a-size-directive]
+[fixture: sizes-and-numbers/colon-of-a-size]
+[fixture: sizes-and-numbers/colon-of-a-size-directive]
 通常の十進数のサイズは、最短の形で印字します。
 `+5` は `5`、`-.5` は `-0.5` にします。
 （[同じに描かれる綴り](./compatibility.ja.md#同じに描かれる綴り)を参照）。
@@ -1001,8 +1001,7 @@ venn-beta%%{init: {}}%%
 
 ### Trailing whitespace
 
-完結したヘッダーと title 以外の文の後の外側の ASCII 空白とタブは除き、
-行末をそろえます。
+完結したヘッダーと title 以外の文の後の外側の ASCII 空白とタブは除きます。
 保持部分と安全な接尾部の後も同じです。
 名前、色、style の文字列、
 コメントとディレクティブ内の空白は書かれたテキストとして保ちます。

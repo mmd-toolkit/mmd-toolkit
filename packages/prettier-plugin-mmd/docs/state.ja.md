@@ -266,8 +266,8 @@ accDescr {}
 ほかのヘッダーの名前と同じです。
 （[ヘッダーの名前](./compatibility.ja.md#ヘッダーの名前)を参照）。
 mermaid.js の文書の例は `stateDiagram-v2` を 17 回、`stateDiagram` を 5 回使い、
-mermaid.js 12.3.0 はどちらも同じ図に描きます。 [fixture: header/spellings-kept]
-[fixture: indentation/header-without-v2-kept]
+固定版の mermaid.js はどちらも同じ図に描きます。
+[fixture: header/spellings-kept] [fixture: indentation/header-without-v2-kept]
 
 Input (escaped): `"stateDiagram\nSTATE \"legacy\" AS old"`.
 
@@ -853,8 +853,8 @@ id の前の空白は空白 1 つにします。
 対応する記法は限定されています。
 [`handle-markdown-text.ts`](https://github.com/mermaid-js/mermaid/blob/2086904e76c692331e34a45d7cc3bc30860d040e/packages/mermaid/src/rendering-util/handle-markdown-text.ts#L120-L145)
 では、リストはリストとして配置せず、原文のテキストへ戻します。
-このフォーマッターは、
-固定版の Mermaid と同じ Marked 16.4.2 で Markdown を判別します。
+このフォーマッターは、固定版の Mermaid と同じ Marked 16.4.2 でノートを読みます。
+（[`package.json`](../package.json)）。
 ノート本文を Markdown フォーマッターへ渡さず、
 以下の規則で対応する段落の余白だけをそろえ、そのほかの本文は保ちます。
 [fixture: notes/markdown-code-kept]
@@ -929,12 +929,12 @@ Mermaid は余白を Db に残すので、印字したノートの Db は、
 書かれたノートの Db と違いますが、同じ図を描きます。
 この節の fixture のうち、
 印字したノートが書かれたものと異なる各 fixture について、
-両方のテキストを mermaid.js 12.3.0 で Chromium に描きました。
+両方のテキストを固定版の mermaid.js で Chromium に描きました。
 fixture が参照先の状態を宣言していない場合は、その状態を宣言してから描きました。
 また、ノートの枠の線がランダムにならないように、`handDrawnSeed` を設定しました。
 生成された id を除いた SVG と画素は同じでした。
 ただし、`notes/over-lines-empty-id-kept` のノートは空の id を参照しており、
-mermaid.js 12.3.0 はどちらの形でも描けません。
+固定版の mermaid.js はどちらの形でも描けません。
 テストは、印字したテキストの Db に、
 書かれたテキストの Db からノートの余白を戻して比べます。
 `tests/state-note-margins.ts` の関数、
@@ -1157,7 +1157,8 @@ mermaid.js は `"d"as A` を `"d" as A` と同じに読み Db が同じなので
 別名の `:` は空白 1 つの後に置き、その後の説明は書かれたままにします。
 mermaid.js の文書の例に 2 つ目の説明を書くものがなく、
 colon は 2 つのものの間に置く記号として印字するからです。
-手順 3 を参照してください。
+[コロンがどの種類かの決め方](./printed-form.ja.md#コロンがどの種類かの決め方)
+の手順 3 を参照してください。
 2 つ目の説明、つまり `:` の後のテキストは、末尾の空白を除き、
 書かれたまま残します。
 mermaid.js は、それを両端の空白ごと読むので、
@@ -1720,7 +1721,8 @@ U+2028 か U+2029 を含む行は、書かれたまま残します。
 [test: U+2028 on the closing lines of a composite statement and of one in its body]
 [test: U+2028 on the closing lines of three nested composite statements]
 本体にその文字を含む行がある composite の文、本体が空で、
-閉じる行がその文字を含む composite の文（`state A {`、空白だけの行、`}`）、
+閉じる行がその文字を含む composite の文（`state A {`、空白だけの行、`}`。
+字下げするブロックがないので、その行は書かれたままです）、
 閉じる `}` が行頭にない composite の文（`B }` や、
 前にディレクティブがある場合）、閉じる行で文字の後にコメント行か、
 別の規則が残す `;` がある composite の文は、文全体を書かれたまま印字し、

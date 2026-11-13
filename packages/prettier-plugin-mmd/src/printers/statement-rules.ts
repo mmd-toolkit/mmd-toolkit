@@ -251,6 +251,18 @@ export interface StyleListUse {
    * `:`.
    */
   readonly labelStyleNames?: readonly string[]
+  /**
+   * Which of those styles keep whether whitespace stands between their name
+   * and the `:`: `all`, the default; `first`, the first style of the statement
+   * only; or `none`. A style after a `,` is printed with a space before it
+   * unless it starts with a label name and the `:` (see `touchesWord`), and a
+   * style that has whitespace before it is no style of the label, with the gap
+   * before its `:` or without it. The first style of the statement has no `,`
+   * before it to print a space after, so the gap decides whether it starts with
+   * a label name and the `:`; in a class diagram it has whitespace before it
+   * already.
+   */
+  readonly labelStyleGaps?: "all" | "first" | "none"
   /** The styles can reach a link: a `linkStyle`, a `classDef`. */
   readonly keepsGapAfterStroke?: boolean
   /**
@@ -278,6 +290,17 @@ export interface StyleListUse {
    * left out too.
    */
   readonly trimsEnd?: boolean
+}
+
+/**
+ * Whether a style keeps whether whitespace stands between its label name and
+ * the `:` (see `StyleListUse.labelStyleGaps`).
+ */
+function keepsLabelStyleGap(
+  gaps: NonNullable<StyleListUse["labelStyleGaps"]>,
+  isFirst: boolean,
+): boolean {
+  return gaps === "all" || (gaps === "first" && isFirst)
 }
 
 /**
@@ -381,6 +404,7 @@ export function normalizeStyleList(
     isLinkStyle = false,
     joinsStyles = false,
     labelStyleNames = [],
+    labelStyleGaps = "all",
     keepsGapAfterStroke = false,
     fillOfLabel = null,
     escapesComma = false,
@@ -433,7 +457,9 @@ export function normalizeStyleList(
           fillOfLabel === "first-style"
             ? previousEnd === -1
             : fillOfLabel === "first-fill" && !hasFillColonBefore,
-        labelStyleNames,
+        labelStyleNames: keepsLabelStyleGap(labelStyleGaps, previousEnd === -1)
+          ? labelStyleNames
+          : [],
       })
       if (collapsesWordGaps) addWordGapEdits(source, core, edits)
     }

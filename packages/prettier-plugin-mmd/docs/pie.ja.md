@@ -4,7 +4,7 @@
 
 決定した21項目を定めます。
 原文の木を使い、実行時に Mermaid を呼ばず、出力を再解析しません。
-不可視文字の例はテストの escape で表します。
+不可視文字の例はテストのエスケープで表します。
 
 ## Rules
 
@@ -14,8 +14,8 @@ XY chart の[ヘッダーと向き](./xychart.ja.md#ヘッダーと向き) を�
 ほかの図種と同じく、正確な小文字の `pie` を先頭列に置き、
 書かれた `showData` の前を空白1つにします。
 通常の同一行の最初の文は次行へ移します。
-flag 前の hidden form と消費される改行は保持します。
-移動すると flag を読めなくなるためです。
+指定前の隠れた形と消費される改行は保持します。
+移動すると指定を読めなくなるためです。
 
 固定例: [fixture: pie/header/header-space] [fixture: pie/header/header-absent]
 [fixture: pie/header/flag-hidden-yaml]
@@ -40,12 +40,12 @@ pie showData
 ### Indentation
 
 XY chart の[インデント](./xychart.ja.md#インデント)を再利用します。
-通常の文と独立したコメント・directive を、
+通常の文と独立したコメント・ディレクティブを、
 ほかの図種と同じく見出しより1段深く置きます。
-pie の区分は slice であり、追加の階層にはしません。
+pie の区分は扇形であり、追加の階層にはしません。
 pie では列が構文を決めないため、`tabWidth: 0` の本文は空白0個です。
-`useTabs` は幅0でも tab 1つです。
-説明本文以外の値の継続行と hidden の閉じは元の列を保ち、
+`useTabs` は幅0でもタブ 1つです。
+説明本文以外の値の継続行と隠れた形の閉じは元の列を保ち、
 YAML だけは共有の最小幅を使います。
 
 固定例: [fixture: pie/indentation/indent-default]
@@ -72,10 +72,10 @@ accDescr: direction TB
 ### Statements one per line
 
 ほかの図種と同じく、[1 行 1 文](./xychart.ja.md#1-行-1-文)を再利用します。
-ただし pie の EOL と保持する source group を優先します。
+ただし pie の EOL と保持する原文のまとまりを優先します。
 空の説明ブロックも含め、区分と共通文を元の順序で残します。
 pie のセミコロンは文の区切りではなく、ラベルや共通値の文字です。
-不正に並ぶ文は修復せず、corpus の失敗経路で扱います。
+不正に並ぶ文は修復せず、コーパスの失敗経路で扱います。
 
 固定例: [fixture: pie/statements-one-per-line/body-lines]
 [fixture: pie/statements-one-per-line/semicolon-values]
@@ -104,9 +104,9 @@ pie
 [Mermaid の pie の例](https://github.com/mermaid-js/mermaid/blob/2086904e76c692331e34a45d7cc3bc30860d040e/packages/mermaid/src/docs/syntax/pie.md#L68-L73)
 とは違う形です。
 両方の引用符と空ラベルにも適用します。
-directive のある gap は、
+ディレクティブのある隙間は、
 [ディレクティブ](./flowchart.ja.md#ディレクティブ)のとおりに置きます。
-hidden form は物理的な境界を保持します。
+隠れた形は物理的な境界を保持します。
 これらは区切りを供給しないためです。
 
 固定例: [fixture: pie/sections/section-colon]
@@ -131,14 +131,14 @@ pie
 
 XY chart の[引用符](./xychart.ja.md#引用符)を再利用します。
 原文は著者の選択なので、引用符を含む範囲全体を保ちます。
-escape は decode せず、空・空白だけのラベル、
-entity・HTML・hidden に見える percent の文字列を残します。
+エスケープは復号せず、空・空白だけのラベル、
+実体参照・HTML・隠れた形に見えるパーセントの文字列を残します。
 `'` で囲まれた文字列は、内容に `'`、`"`、バックスラッシュ、改行、U+2028、
 U+2029、バッククォート、`&`、`#`、`<` がある場合を除き、`"` で囲んで印字します。
 （[同じに描かれる綴り](./compatibility.ja.md#同じに描かれる綴り)）。
 `singleQuote` は読みません。
 変換後に衝突するラベルも別の出現として残します。
-解決後の Map は原文ではないためです。
+解決後の `Map` は原文ではないためです。
 
 固定例: [fixture: pie/labels/single-quote-sensitive-kept]
 [fixture: pie/labels/label-quotes] [fixture: pie/labels/label-escapes]
@@ -168,12 +168,12 @@ pie
 ### Numbers
 
 XY chart の[数](./xychart.ja.md#数)を再利用します。
-普通の十進表記の NumericLiteral は最短の形で印字し、`1.50` は `1.5`、
+普通の十進表記の `NumericLiteral` は最短の形で印字し、`1.50` は `1.5`、
 `2.0` は `2` にします。
 （[同じに描かれる綴り](./compatibility.ja.md#同じに描かれる綴り)）。
-その他は、変換後の double ではなく原文の範囲を印字します。
-負のゼロ、整数部の先頭のゼロ、長い精度、ゼロや小さい slice を残します。
-overflow と符号付き underflow は corpus の受理された読みを使い、
+その他は、変換後の倍精度浮動小数点数ではなく原文の範囲を印字します。
+負のゼロ、整数部の先頭のゼロ、長い精度、ゼロや小さい扇形を残します。
+桁あふれと符号付きの過小値の丸めはコーパスの受理された読みを使い、
 不正な綴りや負の重複値は解析失敗のままです。
 
 固定例: [fixture: pie/numbers/shortest-form] [fixture: pie/numbers/forms-kept]
@@ -203,13 +203,13 @@ pie showData
 C4 の[アクセシビリティの行](./c4.ja.md#アクセシビリティの行)と同じ理由で、
 共通値の同等な外側空白を1つの形にします。
 `title` の後は空白1つと両端を除いた空でない値にし、
-null・空・空白だけなら `title` だけにします。
+`null`・空・空白だけなら `title` だけにします。
 値の中の空白とタブの連なりは、空白 1 つにして印字します。
 （[同じに描かれるテキスト中の空白の連なり](./compatibility.ja.md#同じに描かれるテキスト中の空白の連なり)）。
-引用符、backslash、重複代入と frontmatter への fallback は残します。
+引用符、バックスラッシュ、重複代入と代わりに使われるフロントマターの値は残します。
 pie は次の物理行を title に結合しません。
-空行・コメント・directive を挟んでも次の区分は別文です。
-保持する trivia とセミコロンの group を優先します。
+空行・コメント・ディレクティブを挟んでも次の区分は別文です。
+保持する注釈類とセミコロンのまとまりを優先します。
 題の終わりのディレクティブは、それぞれの前に空白があれば空白 1 つを置き、
 行末の空白の有無にかかわらず、最後のディレクティブの後の空白を除いて印字します。
 （[同じに描かれるキーワードの後のテキスト](./compatibility.ja.md#同じに描かれるキーワードの後のテキスト)）。
@@ -243,13 +243,13 @@ C4 の[アクセシビリティの行](./c4.ja.md#アクセシビリティの行
 `accTitle` はブラウザがツールチップとして表示するので、
 その連なりは書かれたまま残します。
 引用符・行形式の波括弧は文字として残し、
-重複代入と percent コメントの接続も保ちます。
+重複代入とパーセントコメントの接続も保ちます。
 固定した文法の行形式は物理的な EOL で終わるため、
-空行・コメント・directive を挟んでも次行の値を結合しません。
+空行・コメント・ディレクティブを挟んでも次行の値を結合しません。
 しかし、対象にする版のうち最も古い版は結合します。
 その字句解析器は、
 空の `accTitle:` または `accDescr:` の `:` の後の空白に改行も含めます。
-mermaid.js が先に取り除く空行・コメント・directive の後の次の文を、
+mermaid.js が先に取り除く空行・コメント・ディレクティブの後の次の文を、
 値として読みます。
 その文は書かれたまま残します（`"A":1` を `"A": 1` と印字しません）。
 `accTitle` の値の後の `%%` の前の空白も、その版が title の一部として読むので、
@@ -259,7 +259,7 @@ mermaid.js が先に取り除く空行・コメント・directive の後の次�
 詳しくは
 [最も古い版が末尾まで読むアクセシビリティの行](./compatibility.ja.md#最も古い版が末尾まで読むアクセシビリティの行)
 を参照してください。
-hidden form と保持する文字 group の gap を残します。
+隠れた形と保持する文字のまとまりの隙間を残します。
 値の終わりのディレクティブは、それぞれの前に空白があれば空白 1 つを置き、
 最後のディレクティブの後の空白を除いて印字します。
 （[同じに描かれるキーワードの後のテキスト](./compatibility.ja.md#同じに描かれるキーワードの後のテキスト)）。
@@ -299,18 +299,19 @@ pie
 波括弧を残すブロックは、
 flowchart の[複数行の値](./flowchart.ja.md#複数行の値)を再利用します。
 説明の Db では LF 後の字下げが取り除かれるためです。
-通常の gap では、接して書かれていても語と開き括弧の間に空白 1 つを置きます。
-保護対象の trivia やセミコロンの配置では、その gap を保ちます。
+通常の隙間では、接して書かれていても語と開き括弧の間に空白 1 つを置きます。
+保護対象の注釈類やセミコロンの配置では、その隙間を保ちます。
 開き括弧の前が空白だけなら改行や Unicode の境界も結合できます。
-コメント・directive の改行は残します。
+コメント・ディレクティブの改行は残します。
 空白だけの内部は囲む値がないため `{}` にします。
 コメントだけなら1段内側に置き、別行の閉じを文の列に揃えます。
+ほかの図種と同じく、
 通常の後続本文と独立したコメント行は、文より1段内側に揃えます。
 改行、空行、行末空白は保ちます。
-directive と共有の除去対象となるコメント領域は原文全体を保ちます。
+ディレクティブと共有の除去対象となるコメント領域は原文全体を保ちます。
 別行の `}` は文の列です。
-trivia のある内部は残します。
-引用符・backslash・hidden に見える文字列でも最初の `}` が閉じます。
+注釈類のある内部は残します。
+引用符・バックスラッシュ・隠れた形に見える文字列でも最初の `}` が閉じます。
 
 固定例: [fixture: pie/description-blocks/block-runs]
 [fixture: pie/description-blocks/block-empty]
@@ -346,33 +347,33 @@ pie
 
 ### Hidden yaml
 
-yaml-block の PieIgnoredText は、
-header・本文・区分の gap・textAfter の元の位置で、
-trivia を除いた値ではなく範囲全体を保ちます。
+YAML ブロックの `PieIgnoredText` は、
+ヘッダー・本文・区分の隙間・`textAfter` の元の位置で、
+注釈類を除いた値ではなく範囲全体を保ちます。
 隠れた形式を元の位置で保持する規則は、
 仕様の字句規則にこれらの形式を持つ図種に共通です。
-pie はこれを適用する最初の printer です。
-pie の hidden 規則は node 外の直後の LF を消費し、
+pie はこれを適用する最初の印字処理です。
+pie の隠れた規則はノード外の直後の LF を消費し、
 閉じ境界の空白が必要な EOL を残す場合があります。
 EOF も含む閉じの空白を保ちます。
-範囲外の必須 LF と端の空行は [Blank lines](#blank-lines) に従います。
-不正・空・入れ子に見える内容、内部の trivia、複数の form を保持します。
+範囲外の必須 LF と端の空行は [空行](#blank-lines) に従います。
+不正・空・入れ子に見える内容、内部の注釈類、複数の形を保持します。
 直前へ改行を加えません。
 これらの編集は、いずれも Mermaid の受理を変えるためです。
-form の前に改行を加える、または form を別の行へ移すと、
-form が消費していた LF が文の途中の見える LF になります。
-form を削ると、消費されていた LF が現れます。
-閉じの空白を削ると、form が次の文に必要な LF を消費し、その文が拒否されます。
-hidden YAML の閉じ fence は先頭列に置きます。
-先頭列にあるときだけ閉じとなり、字下げした閉じ fence は拒否されます。
+形の前に改行を加える、または形を別の行へ移すと、
+形が消費していた LF が文の途中の見える LF になります。
+形を削ると、消費されていた LF が現れます。
+閉じの空白を削ると、形が次の文に必要な LF を消費し、その文が拒否されます。
+隠れた YAML の閉じ囲み記号は先頭列に置きます。
+先頭列にあるときだけ閉じとなり、字下げした閉じ囲み記号は拒否されます。
 通常の開きの前の空白は縮められ、本文の開きには字下げできます。
 内部と先頭列の閉じは元の列です。
-すでに始まった文字列・title・block を優先します。
+すでに始まった文字列・title・ブロックを優先します。
 
-本文の先頭・途中の単独の form、字下げされた form、header・showData の後、
-EOF の form でも、閉じの空白を保持します。
-hidden YAML と hidden directive に同じ境界の規則を適用します。
-form 間や同じ行の次の文の前でも、閉じの空白を保ちます。
+本文の先頭・途中の単独の形、字下げされた形、ヘッダー・`showData` の後、
+EOF の形でも、閉じの空白を保持します。
+隠れた YAML と隠れたディレクティブに同じ境界の規則を適用します。
+形間や同じ行の次の文の前でも、閉じの空白を保ちます。
 
 固定例: [fixture: pie/hidden-yaml/yaml-section-gaps]
 [fixture: pie/hidden-yaml/yaml-body]
@@ -422,19 +423,19 @@ ignored
 
 ### Hidden directives
 
-directive の PieIgnoredText にも [Hidden yaml](#hidden-yaml)と同じ、
+ディレクティブの `PieIgnoredText` にも [隠れた YAML](#hidden-yaml)と同じ、
 共有する範囲・境界の理由を適用します。
-Root の directive とは別です。
-空・句読点だけ・複数行の form、コロン・数値・flag 前の gap、
-内部の global trivia、5種類の文の textAfter を保持します。
+`Root` のディレクティブとは別です。
+空・句読点だけ・複数行の形、コロン・数値・指定前の隙間、
+内部の大域的な注釈類、5種類の文の `textAfter` を保持します。
 数字に接する不適格な閉じは実際のコメントとなるか、
 後の閉じまで続く場合があります。
 境界を加えず、この分類を保持します。
 そのような `}%%` の後に空白を加えると、
-Mermaid が読むコメントが hidden token に変わるためです。
-文字列と block は先に適用します。
+Mermaid が読むコメントが隠れたトークンに変わるためです。
+文字列とブロックは先に適用します。
 次の文がある場合の閉じの空白と余分な LF は重要です。
-EOF の閉じた form には共有の最後の LF を加えられます。
+EOF の閉じた形には共有の最後の LF を加えられます。
 
 固定例: [fixture: pie/hidden-directives/hidden-number-gap]
 [fixture: pie/hidden-directives/hidden-before-colon]
@@ -489,11 +490,11 @@ pie
 共有の[コメント](./flowchart.ja.md#コメント)を再利用します。
 同一行の接したコメントは接したまま、離れていれば空白1つにします。
 独立したコメントは本文の文に揃え、見出し前は先頭列に置きます。
-裸・3つの percent と末尾の空白を残します。
+裸・3つのパーセントと末尾の空白を残します。
 pie 固有のコメントは LF で終わり、LS・PS は内部に残ります。
 LS・PS は区切りではなく、
 そこで終えると行の残りが文として現れて Db が変わるためです。
-文字列と block 内の percent は内容で、共通の行形式の値はその直前で終わります。
+文字列とブロック内のパーセントは内容で、共通の行形式の値はその直前で終わります。
 共通の削除領域は飲み込んだ範囲と結合後の継続列を保ちます。
 継続行を字下げし直すと、結合したラベルに空白が加わるためです。
 保持する前置きは通常の整列より優先します。
@@ -528,7 +529,7 @@ pie
 同じ印字行の中のディレクティブは、
 [ディレクティブ](./flowchart.ja.md#ディレクティブ)のとおりに置きます。
 元は同じ行にあった単位を別の行へ分けるときは、
-間の directive を次の単位に付けます。
+間のディレクティブを次の単位に付けます。
 右側の接触・分離は保ち、左側の接触は切れます。
 保つ `;` を含む区間は、行の規則が無視する `;` が整形で変わる所を除き、
 ほかの場所と同じように整形します。
@@ -544,9 +545,9 @@ pie
 それ以外の複数行の文は、1 行の文と同じように整形します。
 [fixture: directives-and-semicolons/stretch-kept-rest-formatted]
 [fixture: directives-and-semicolons/no-stretch-formatted]
-保護した header/body を分割しません。
-全セミコロン、style/classDef の両段階、大小文字と colon-hash の空白の区別、
-Unicode の区間境界、directive が再結合する trigger、
+保護したヘッダーと本文を分割しません。
+全セミコロン、style/classDef の両段階、大小文字とコロン-ハッシュ記号の空白の区別、
+Unicode の区間境界、ディレクティブが再結合する条件を満たす語、
 コメント内のセミコロンを残します。
 語・数値の内部の切断は指定の解析失敗です。
 
@@ -588,19 +589,19 @@ pie title style:#a;b
 
 見えるまとまりを保つため、共有の[空行](./flowchart.ja.md#空行)を再利用します。
 通常の ASCII の空行の連続は1行にし、文書・本文の端の通常の空行は除きます。
-値・directive・ignored の内部、共通領域の結合と前置き全体は元の空行を保ちます。
+値・ディレクティブ・無視された部分の内部、共通領域の結合と前置き全体は元の空行を保ちます。
 変えると原文の役割や YAML の意味が変わり得るためです。
-hidden form が LF を消費した後は、
+隠れた形が LF を消費した後は、
 次の文に必要なときだけ予備の LF 1 つを保ちます。
 文書の終わりは設定の終端改行1つにし、見出しの直後の空行は削除します。
 見出しと最初の文の間に EOL は必要ありません。
 それ以外は予備の LF の後に通常の空行の規則を適用し、連続空行を1行、
 空白だけの行を空行にします。
 予備の LF は文法の要件で、それ以降はコメントの後と同じ作者の区切りです。
-Unicode だけの不正な本文行は corpus の解析失敗です。
+Unicode だけの不正な本文行はコーパスの解析失敗です。
 
-hidden の境界や semicolon の保護で文が見出しの行に残っても、
-その文の後置 hidden form の後は文と文の間として扱います。
+隠れた形の境界やセミコロンの保護で文が見出しの行に残っても、
+その文の後置隠れた形の後は文と文の間として扱います。
 
 [fixture: pie/blank-lines/hidden-following-blanks]
 
@@ -638,11 +639,11 @@ pie
 ### Trailing whitespace
 
 C4 の[末尾空白](./c4.ja.md#末尾空白)を再利用し、
-見出し・数値・完了した block 後の無害な ASCII 空白を除きます。
-共通の行形式の両端は Title と Accessibility lines に従います。
-ラベル行・コメント・directive と、
-ignored の内部・共通領域の継続・セミコロンの保護範囲は残します。
-hidden の閉じ境界の空白は node 外でも EOL を保つ場合があるため、
+見出し・数値・完了したブロック後の無害な ASCII 空白を除きます。
+共通の行形式の両端はタイトルとアクセシビリティの行に従います。
+ラベル行・コメント・ディレクティブと、
+無視された部分の内部・共通領域の継続・セミコロンの保護範囲は残します。
+隠れた形の閉じ境界の空白はノード外でも EOL を保つ場合があるため、
 EOF も含め残します。
 
 固定例: [fixture: pie/trailing-whitespace/trailing-exterior]
@@ -652,7 +653,7 @@ EOF も含め残します。
 [fixture: pie/trailing-whitespace/trailing-protected-prefix]
 
 セミコロンがあるだけでは行の値の末尾空白を保護しません。
-共有のセミコロン prefix の規則が、保持する原文を決めます。
+共有のセミコロン前置部分の規則が、保持する原文を決めます。
 [fixture: pie/trailing-whitespace/line-semicolons]
 [fixture: pie/trailing-whitespace/line-selected-semicolons]
 [fixture: pie/trailing-whitespace/line-without-semicolons]
@@ -675,11 +676,11 @@ flowchart の [複数行の値](./flowchart.ja.md#複数行の値) と共有の
 [折り返し](./flowchart.ja.md#折り返し) を再利用します。
 原文は著者の選択で、幅によらず同じ配置にするためです。
 ラベルの物理行、継続列、内部の空行を保持します。
-説明本文は [Description blocks](#description-blocks) に従います。
-printWidth で長い文を折り返さず、区分の部品も別行にしません。
-挿入順、変換後に重なるラベル、prototype・数値に見える key、
-共通文の重複・空代入、ゼロや小さい slice を残します。
-解決した Map から組み直すと出現を失うか最初の値が変わるためです。
+説明本文は [説明ブロック](#description-blocks) に従います。
+`printWidth` で長い文を折り返さず、区分の部品も別行にしません。
+挿入順、変換後に重なるラベル、プロトタイプ・数値に見えるキー、
+共通文の重複・空代入、ゼロや小さい扇形を残します。
+解決した `Map` から組み直すと出現を失うか最初の値が変わるためです。
 
 固定例: [fixture: pie/multiline-values-and-order/multiline-label]
 [fixture: pie/multiline-values-and-order/no-wrap]
@@ -710,21 +711,21 @@ pie
 
 共有の[行末](./compatibility.ja.md#行末)と
 [バイト順マーク](./compatibility.ja.md#バイト順マーク)を再利用します。
-Prettier は印字前に CR・CRLF を正規化し、後から endOfLine を適用します。
-ラベル・block・hidden の消費する LF も Mermaid の読みを保ちます。
-LS・PS・NBSP・BOM は値・コメント・ignored のモードに従って残します。
+Prettier は印字前に CR・CRLF を正規化し、後から `endOfLine` を適用します。
+ラベル・ブロック・隠れた形の消費する LF も Mermaid の読みを保ちます。
+LS・PS・NBSP・BOM は値・コメント・無視された部分のモードに従って残します。
 LS・PS は pie の区切りではなく、文字列、共通値、コメント、
-ignored の内部では内容で、構造上の位置では不正なので、
+無視された部分の内部では内容で、構造上の位置では不正なので、
 そこで分割しても置換してもいけません。
 分割すると Db が変わります。
 保護範囲外の共通値は、
 両端の [仕様で定義する共通の空白](../../spec/docs/common.ja.md#表記)
 を除きます。 [corpus fixture: pie/review-common-all-whitespace-trim]
-空白だけの block の開きの gap は結合します。
-通常の colon の gap は ASCII です。
-native の colon の gap は ASCII の空白だけで、そこの NBSP は拒否されます。
+空白だけのブロックの開きの隙間は結合します。
+通常のコロンの隙間は ASCII です。
+図固有のコロンの隙間は ASCII の空白だけで、そこの NBSP は拒否されます。
 不正な構造上の Unicode は拒否のままです。
-先頭の BOM は Prettier が処理するため、byte の同一性は約束しません。
+先頭の BOM は Prettier が処理するため、バイトの同一性は約束しません。
 
 固定例: [test: pie/line-terminators-and-unicode/eol-cr]
 [test: pie/line-terminators-and-unicode/eol-crlf-hidden]
@@ -770,12 +771,12 @@ native の colon の gap は ASCII の空白だけで、そこの NBSP は拒否
 YAML の字下げは幅0でも最低1文字です。
 隠れた形式を含む前置きを保持する規則は、
 仕様の字句規則がヘッダーより前にこれらの形式を保持する図種に共通です。
-pie はこれを適用する最初の printer です。
-先頭 LF、コメントの列、2回目の走査の form、裸の行の trivia、fence の順序も含め、
+pie はこれを適用する最初の印字処理です。
+先頭 LF、コメントの列、2回目の走査の形、裸の行の注釈類、囲み記号の順序も含め、
 前置き全体を保持します。
-削除・移動すると無効だった YAML が実際の frontmatter になるためです。
-PieIgnoredText を YAML formatter へ渡しません。
-原文と embedded effect を別々に確認します。
+削除・移動すると無効だった YAML が実際のフロントマターになるためです。
+`PieIgnoredText` を YAML 整形処理へ渡しません。
+原文と埋め込まれた効果を別々に確認します。
 
 固定例: [fixture: pie/frontmatter-yaml/frontmatter-safe]
 [fixture: pie/frontmatter-yaml/frontmatter-invalid]
@@ -814,11 +815,11 @@ pie
 を再利用します。
 受理した木は仕様の読みで整形し、解析失敗は単独ファイルで構文エラー、
 Markdown では埋め込みを辞退します。
-既知の差異の印がある corpus 入力には、仕様が定める受理と Db の読みを使います。
-raw の拒否には raw Db がありません。
-不正な opaque YAML は受理した effect を捏造せず、原文と木を確認します。
-hidden form・空ラベル・空 block に別の差異を加えません。
-正常な prefix 後の失敗も corpus で扱います。
+既知の差異の印があるコーパス入力には、仕様が定める受理と Db の読みを使います。
+素の mermaid.js の拒否には素の mermaid.js の Db がありません。
+不正な不透明 YAML は受理した効果を捏造せず、原文と木を確認します。
+隠れた形・空ラベル・空ブロックに別の差異を加えません。
+正常な前置部分後の失敗もコーパスで扱います。
 
 [corpus fixture: pie/div-directive-number]
 [corpus fixture: pie/div-atomic-semicolon-number]
@@ -836,12 +837,12 @@ hidden form・空ラベル・空 block に別の差異を加えません。
 
 終端を揃えるため、共有の[末尾の改行](./c4.ja.md#末尾の改行)を再利用します。
 通常の受理したファイルは指定の改行1つで終えます。
-見出しだけ、区分、閉じた block、空の共通値、裸・3つの percent コメント、
-閉じた hidden form も同じ経路です。
-EOF まで続く global directive と hidden の閉じの空白は残します。
-閉じた hidden token が追加の LF を消費しても EOF で EOL を満たせます。
-通常の末尾空行は除き、保護した hidden・前置きの境界は残します。
-最後の LF が raw の C4 判定を変えても、指定の pie の読みは変わりません。
+見出しだけ、区分、閉じたブロック、空の共通値、裸・3つのパーセントコメント、
+閉じた隠れた形も同じ経路です。
+EOF まで続く大域的なディレクティブと隠れた形の閉じの空白は残します。
+閉じた隠れたトークンが追加の LF を消費しても EOF で EOL を満たせます。
+通常の末尾空行は除き、保護した隠れた形・前置きの境界は残します。
+最後の LF が素の mermaid.js の C4 判定を変えても、指定の pie の読みは変わりません。
 
 固定例: [fixture: pie/final-newline/final-newline]
 [fixture: pie/final-newline/final-bare]
@@ -871,15 +872,15 @@ pie
 共有の
 [Markdown のコードブロック](./compatibility.ja.md#markdown-のコードブロック)
 を再利用します。
-host の字下げを除いた payload に pie の規則を適用し、
-リスト・引用・fence の字下げは Markdown が与えます。
-固定した先頭・リスト・引用の host で、複数行の値、幅0・tab、
-hidden の gap と境界、保持する前置き、実際の YAML、
-セミコロンと directive の group を確認します。
-host は辞退した payload も最後の code block 行の空白を削り、改行を制御します。
-後続の文に EOL が不要なら最後の hidden 境界の空白が消える場合があります。
-内部の hidden 境界を削る許可にはなりません。
-host の出力と冪等性を、payload の Db・木・原文とは別に確認します。
+埋め込み先の字下げを除いた図の本文に pie の規則を適用し、
+リスト・引用・囲み記号の字下げは Markdown が与えます。
+固定した先頭・リスト・引用の埋め込み先で、複数行の値、幅0・タブ、
+隠れた形の隙間と境界、保持する前置き、実際の YAML、
+セミコロンとディレクティブのまとまりを確認します。
+埋め込み先は辞退した図の本文も最後のコードブロック行の空白を削り、改行を制御します。
+後続の文に EOL が不要なら最後の隠れた形の境界の空白が消える場合があります。
+内部の隠れた形の境界を削る許可にはなりません。
+埋め込み先の出力と冪等性を、図の本文の Db・木・原文とは別に確認します。
 
 [test: pie Markdown: top-level] [test: pie Markdown: list]
 [test: pie Markdown: quote] [test: pie Markdown: zero]

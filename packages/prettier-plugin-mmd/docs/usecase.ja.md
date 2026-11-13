@@ -162,14 +162,14 @@ usecase-beta
 ER の[実体](./er.ja.md#実体)を再利用します。
 `actor` の後は空白 1 個、id と形の区切り、metadata と class の接尾辞は詰め、
 ラベルの外側の ASCII 空白を除き、actor の項目はコンマと空白で区切ります。
-一つの `actor` キーワードの下にある別々の actor の出現を、そのまま印字します。
+1 つの `actor` キーワードが導入する別々の actor の出現を、見える形にします。
 stereotype の隙間は、[class に揃えた規則](#stereotypes)に従います。
 明示 id、楕円と長方形の綴り、markdown ラベル、接尾辞の順序、
 宣言と参照のすべての出現を保ちます。
 名前とラベルは、例で使われている形で印字します（[Quotes](#quotes) を参照）。
 生成 id や解決後の actor を、書かれた端点の代わりにはしません。
 境界内の metadata 形式は宣言、最上位の形式は更新のままです。
-別名や形を作らず、書かれた構文をそのまま印字します。
+別名や形を作らず、書かれた構文を見える形にします。
 
 [fixture: declarations/actor-list] [fixture: declarations/entity-shapes]
 [fixture: declarations/suffixes] [fixture: declarations/generated-name]
@@ -1284,7 +1284,7 @@ id、隙間、プロパティ、CSS の拒否位置を修復しません。
 ### Frontmatter YAML
 
 [フロントマターの YAML](./flowchart.ja.md#フロントマターの-yaml)を再利用します。
-安全な設定は YAML 整形で整形し、不正な本文、字下げした区切り、
+安全な設定は YAML 整形で読みやすくし、不正な本文、字下げした区切り、
 原文または整形後の YAML の HTML タグ開始、
 整形で現れる終了区切りは読みを保ちます。
 区切りと終了行の余白、ヘッダー前のコメントと directive を保ちます。

@@ -94,7 +94,7 @@ gantt
 ### 1 行に 1 文
 
 各文は 1 行に 1 つ置きます。
-Gantt 図には文を区切るものがなく（diagrams/gantt.md、Diagram and statements）、
+Gantt 図には文を区切るものがなく（`diagrams/gantt.md`、図と文）、
 ヘッダー、`inclusiveEndDates`、日つきの `weekday` と `weekend`、
 `accDescr` ブロック、click 文の後ろには、同じ行に次の文を続けられます。
 これらの後ろの文は、それぞれの行に移します。
@@ -110,7 +110,7 @@ Gantt 図には文を区切るものがなく（diagrams/gantt.md、Diagram and 
 `title`、`section`、`accTitle`、`accDescr:` は行の残りを取るので、
 その後ろには何も続きません。
 `todayMarker` の値は `;` で終わり、ほかの設定、タスクのデータ、
-リストは `#` か `;` で終わり（diagrams/gantt.md、The statement context）、
+リストは `#` か `;` で終わり（`diagrams/gantt.md`、文の文脈）、
 その後ろは次の文です。
 `a : 1d#b : 2d` はタスク `a ` と `#b ` です。
 その文は、説明の最初の文字である `#` と一緒に、自分の行に移します。
@@ -326,6 +326,7 @@ mermaid.js の文書の例が、ほかのどの形よりも 2 倍以上の頻度
 [fixture: task-data/colon-touching-name-tab-in-name]
 [fixture: task-data/colon-touching-name-style-rule-line]
 [fixture: task-data/colon-touching-task-after-hash-ended-statement]
+[fixture: task-data/colon-touching-task-after-statement-with-directive-moved]
 [test: U+2028 before the colon of a task]
 [test: U+00A0 before the colon of a task]
 
@@ -466,7 +467,7 @@ Prettier は行の前にあるものの幅を引かずに `printWidth` をその
 コロンと `,` の周りの空白は Db に入らないので、残しません。
 コロンはタスクの名前に続くので、
 Prettier が名前やキーに続くコロンの後ろに印字する空白 1 つを置きます。
-mermaid.js の文書の task 行は、最初の項目をコロンに接して書くものが多く、
+mermaid.js の文書のタスク行は、最初の項目をコロンに接して書くものが多く、
 この規則はそれに従いません。
 mermaid.js の行の規則が読む範囲では、コロンの後ろの空白を書かれたまま残します。
 規則は、`style` か `classDef` の後の最初の `:` から、
@@ -1231,17 +1232,17 @@ mermaid.js が複数行にわたって読む文は、
 [fixture: multi-line-statements/value-on-next-line-joined]
 [fixture: multi-line-statements/blank-lines-between-keyword-and-day]
 click、weekday/weekend、includes/excludes、アクセシビリティの行の文では、
-trivia の改行を保ちます。
+注釈類の改行を保ちます。
 後続の構造部分と独立したコメント行や指令行は、section の下でも、
 その文より 1 段深くそろえます。
-各 gap の最初の行の末尾と指令の内部全体は保ち、引用符付き文字列、呼び出し名、
+各隙間の最初の行の末尾と指令の内部全体は保ち、引用符付き文字列、呼び出し名、
 引数はひとまとまりのままです。
 [fixture: multi-line-statements/structural-trivia-continuations]
 [fixture: click-statements/trivia-continuation-under-section]
 
 title、section、設定、タスクでは、値の空白が Db の一部なので、
-複数行の trivia を含む配置を元のまま保ちます。
-click 文などの trivia 行を整形する文では、
+複数行の注釈類を含む配置を元のまま保ちます。
+click 文などの注釈類行を整形する文では、
 改行を空白 1 つか何も挟まずにつなぐと、
 行の規則が無視する `;` が変わりうる場合と、最後の行を `;` が終える場合は、
 その改行を残します。
@@ -1547,12 +1548,12 @@ gantt
 [fixture: directives/statement-after-directive-line]
 
 元は同じ行にあった単位を別の行へ分けるときは、
-間の directive を次の単位に付けます。
+間のディレクティブを次の単位に付けます。
 右側の接触・分離は保ち、左側の接触は切れます。
 
 [fixture: gantt/directives/split-directive-gap]
 
-文の単位の間の指令は元の gap に残し、
+文の単位の間の指令は元の隙間に残し、
 [ディレクティブ](#ディレクティブ)のとおりに置きます。
 構造部分の続きの列は[複数行の文](#複数行の文)に従います。
 値の中の指令は、そのテキストの一部です。 [fixture: directives/between-units]
