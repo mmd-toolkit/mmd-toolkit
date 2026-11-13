@@ -498,6 +498,20 @@ U+2028 や U+2029 で始まる文も、対象にする版の一部がテキス�
 [test: a line that starts with U+2028 and class, and a name with a class]
 [test: a line that starts with U+2028, a space, and class]
 [test: a line that starts with U+2028, a space, a name, and a direction line]
+それだけで 1 つの実体になる U+2028 か U+2029 が、同じ行のほかの文の後、
+その行のコメントの前にあるときは、その行に残します。
+mermaid.js はその実体を描きますが、この文字だけを 1 行に置くと、
+コメント行の前の空白になり、実体は描かれないからです。
+行の末尾にあるときと、ディレクティブの前にあるときは、ほかの文と同じく、
+前の文から分けます。
+行の先頭にあるときは、コメントの前の空白です。
+[test: U+2028 alone after a name in quotes, before a comment]
+[test: U+2029 alone after a name in quotes and a space, before a comment]
+[test: U+2028 alone after the block of an accessibility description, before a comment]
+[test: two U+2028 alone after a name in quotes, before a comment]
+[test: U+2028 alone after a name in quotes, at the end of its line]
+[test: U+2028 alone after a name in quotes, before a directive]
+[test: U+2028 alone at the start of its line, before a comment]
 複数の属性がある行は、その行の後ろの属性が、
 `int a List~int~ b` のように `~` を 2 つ持つときに、書かれたまま印字します。
 対象にする版のうち最も古い版が、ジェネリクスの型を、

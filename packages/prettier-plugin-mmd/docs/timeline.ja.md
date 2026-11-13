@@ -636,10 +636,11 @@ Db はその空白を持ちますが、図では描かれません。
 その文を書かれたまま印字します（[複数行の文](#複数行の文)を参照）。
 [fixture: titles-and-sections/value-on-next-line]
 [fixture: titles-and-sections/comment-line-inside-kept]
-キーワードより後ろの行にある値が、空白に続く `#` で始まる title は、
-書かれたままにします。
-対象にする版の一部は、`title`、改行、字下げ、`# c` を、
-空白だけの title とコメントとして読み、`title # c` を、
+値が、2 文字以上の空白に続く `#` で始まる title は、書かれたままにします。
+`title` の後に、空白 2 つか、タブと空白か、改行と字下げがあり、
+その後に `# c` が続く形です。
+対象にする版の一部は、`title`、その空白、`# c` を、
+空白だけの title とコメントとして読み、空白が 1 文字の `title # c` を、
 period `title` とコメントとして読みますが、残りの版は、
 どちらも title `# c` として読み、同じに描くためです。
 詳しくは
@@ -647,7 +648,11 @@ period `title` とコメントとして読みますが、残りの版は、
 を参照してください。
 `#` が行頭にあると、その版でも両方の形が period `title` になるので、
 値はキーワードにつなげます。
+`#` の前の空白が 1 文字（半角空白かタブ）のときは、空白 1 つで印字します。
 [fixture: titles-and-sections/title-hash-on-next-line-kept]
+[fixture: titles-and-sections/title-hash-after-padding-kept]
+[fixture: titles-and-sections/title-hash-after-tab-and-space-kept]
+[fixture: titles-and-sections/title-hash-after-tab-joined]
 [fixture: titles-and-sections/title-hash-at-line-start-joined]
 値は `:`、`#`、`%`、`%%` を文字として持ちます。
 ただし section の名前は `:` で終わり、その `:` は event を始めます。

@@ -45,8 +45,10 @@ mermaid.js が `TD` を `TB` と同じように扱うようになった版より
 を参照してください。
 agentflowが受理する見出しは小文字の`agentflow-beta`だけです。
 方向の省略と記号を保ち、次行のLRは頂点のままです。
-見出しに続くディレクティブの後にある方向は、
-`agentflow-beta%%{init: {}}%% TD` のように書かれたまま残します。
+見出しに続くディレクティブの後にある方向も、ほかの方向と同じに印字します。
+`TD` は `TB` になり、
+`agentflow-beta%%{init: {}}%% TD` は `agentflow-beta %%{init: {}}%%TB`
+になります。
 通常の後続文は本文へ移し、ディレクティブの付着はディレクティブの節に従います。
 [fixture: header/header-column] [fixture: header/header-direction-spelling]
 [fixture: header/header-inline-separated]

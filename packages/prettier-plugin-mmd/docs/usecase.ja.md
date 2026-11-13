@@ -1257,7 +1257,7 @@ Mermaid は読む前に物理的な CR と CRLF を LF にし、
 メタデータ、JSON、markdown、アクセシビリティ、CSS、
 ディレクティブの内部も同じです。
 LS と PS は文脈に従う文字として、ラベル、ステレオタイプの本文、note、
-固有の構文と CSS の引用値、アクセシビリティ、コメントに保ちます。
+固有の構文と CSS の、引用符で囲んだ値、アクセシビリティ、コメントに保ちます。
 アクセシビリティとステレオタイプの外側の空白は、それぞれの規則に従って整えます。
 [test: usecase: a11y-unicode-exterior]
 [test: usecase: stereotype-unicode-exterior-padding]
@@ -1367,7 +1367,7 @@ usecase-beta
 [test: usecase Markdown: stereotype-suffixes]
 アクセシビリティ行の外側の空白は、単独ファイルと Markdown の両方で除きます。
 例えば `accTitle:  Title  ` は、どちらでも `accTitle: Title` になります。
-拒否した囲みの区切りには、ホストの空白と改行の処理だけを適用します。
+拒否したコードブロックには、ホストの空白と改行の処理だけを適用します。
 
 [fixture: markdown-fences/markdown-top-payload]
 [fixture: markdown-fences/markdown-list-payload]

@@ -2610,9 +2610,9 @@ swimlane 図のヘッダーでは、agentflow 図のヘッダーと同じく、
 `TD` を `TB` と印字します（[ヘッダー](./agentflow.ja.md#header)を参照）。
 どちらの図種も、
 `TD` が `TB` と同じように振る舞うようになった版より後のものです。
-ヘッダーに続くディレクティブの後にある `TD` は、
-`swimlane-beta%%{init: {}}%% TD` のように書かれたまま残します。
-[fixture: direction/swimlane-header-td-one-form]
+ヘッダーに続くディレクティブの後にある `TD` も、`TB` と印字します。
+`swimlane-beta%%{init: {}}%% TD` は `swimlane-beta %%{init: {}}%%TB`
+になります。 [fixture: direction/swimlane-header-td-one-form]
 [fixture: direction/swimlane-header-td-one-form-after-directive]
 `direction` の文では、mermaid.js は `direction` の前と値の後を、
 ラベルや文字列を含みうるテキストとして読み、値の後の `;` はそのテキストに属し、
@@ -3183,7 +3183,11 @@ flowchart LR
 [test: style trailing NBSP taken by an unclosed directive]
 
 `style`、`classDef`、`linkStyle` の文の末尾の空白とタブは取り除きます。
-[fixture: style-trailing-whitespace/removed]
+ただし、最後のスタイルを終えるバックスラッシュの後の空白かタブは、
+1 文字として残します。
+空白だけのスタイル（`,` の後、ディレクティブか無視される `;` の後、
+`linkStyle` の `stroke:` の空の値）は、書かれたまま残します。
+それぞれは、下の段落で説明します。 [fixture: style-trailing-whitespace/removed]
 [fixture: style-trailing-whitespace/removed-tab]
 [fixture: style-trailing-whitespace/removed-after-directive]
 mermaid.js はそれらを最後のスタイルの末尾に残すので、
