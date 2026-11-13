@@ -261,6 +261,11 @@
   use in one form, or that changes what mermaid.js reads, stays as written, and so
   do the `direction` statements. The option `singleQuote` has no effect on these
   strings.
+  
+  > **NOTE:**\
+  > Overturned in the next release: `direction`, its value, `subgraph`, and
+  > `end` of an `erDiagram` keep their case, as in `SUBGRAPH S`, and so does
+  > the direction of a `timeline` header, as in `timeline td`.
 
 - [#68](https://github.com/mmd-toolkit/mmd-toolkit/pull/68) [`626b905`](https://github.com/mmd-toolkit/mmd-toolkit/commit/626b905d546affb973b08d129e42f7e4c8d6810d) Thanks [@ota-meshi](https://github.com/ota-meshi)! - Print the `:` and the text of a one-line `note` in `stateDiagram` with one space
   before the `:` and one after it where mermaid.js drops them:
@@ -334,6 +339,10 @@
   `participant A@{ "type": "queue" }`, the form in the Mermaid documentation.
   mermaid.js reads the same diagram either way. A directive, U+2028, or U+2029
   between the id and the block keeps the whitespace as written.
+  
+  > **NOTE:**\
+  > Overturned in the next release: a block that mermaid.js 10.9.8 and 11.7.0
+  > read as a part of the name stays as written, as in `participant A @{x}`.
 
 - [#58](https://github.com/mmd-toolkit/mmd-toolkit/pull/58) [`1f30d00`](https://github.com/mmd-toolkit/mmd-toolkit/commit/1f30d0065688ed391e4af58353532282b8070dda) Thanks [@ota-meshi](https://github.com/ota-meshi)! - Drop the `;` at the end of `classDef` and `style` lines in `class`, `state`,
   `er`, `requirement`, `block`, `venn`, and `usecase`, as in `flowchart`, when
@@ -366,6 +375,11 @@
   touches another block, holds a directive, holds only whitespace, or starts with
   a YAML document marker stays as written, and so do the JSON tables of `usecase`,
   whose braces are part of the JSON.
+  
+  > **NOTE:**\
+  > Overturned in the next release: in `sequence`, a block that mermaid.js
+  > 10.9.8 and 11.7.0 read as a part of the name of a participant stays as
+  > written, as in `participant A@{x}`.
 
 - [#60](https://github.com/mmd-toolkit/mmd-toolkit/pull/60) [`f41858e`](https://github.com/mmd-toolkit/mmd-toolkit/commit/f41858ef670c82de824f7a0f875b4968abdbf8b8) Thanks [@ota-meshi](https://github.com/ota-meshi)! - Print a one-line `accDescr { ... }` with one space inside each end, as a
   one-line `@{ ... }` already is: `accDescr {a b}` now prints as

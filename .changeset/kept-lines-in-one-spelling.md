@@ -2,7 +2,7 @@
 "prettier-plugin-mmd": patch
 ---
 
-Keep a `sequenceDiagram` note and the statement after its directive on one line:
-`NOTE OVER A:%%{init: {}}%%  ;ACTOR B` now becomes
-`Note over A:%%{init: {}}%%  ;actor B`, avoiding a line break that mermaid.js
-10.9.8 rejects.
+Print the keywords, strings, and numbers of a line whose whitespace stays as
+written in the same form as on the other lines: in a `gantt`, the line
+`EXCLUDES  %%{init: {}}%%` with a space after the directive kept its capitals,
+and is now printed with `excludes`.
