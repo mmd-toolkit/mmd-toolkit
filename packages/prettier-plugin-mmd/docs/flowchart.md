@@ -2467,13 +2467,13 @@ is printed with `TB` for `TD`, as the header of an agentflow diagram is (see
 that made `TD` behave as `TB`. A `TD` that stands after a directive which
 follows the header (`swimlane-beta%%{init: {}}%% TD`) stays as written.
 [fixture: direction/swimlane-header-td-one-form] [fixture:
-direction/swimlane-header-td-one-form-after-directive] In a `direction` statement
-mermaid.js reads the text before `direction` and after the value as text, which
-may hold labels and strings, and a `;` after the value belongs to that text and
-is no separator. The text is kept as written; the whitespace between it and
-`direction`, and between `direction` and the value, becomes one space, as
-between any tokens. A line such as `A[direction TB]` is a `direction` statement
-too, its vertices and links are not read, and it is printed so, at the
+direction/swimlane-header-td-one-form-after-directive] In a `direction`
+statement mermaid.js reads the text before `direction` and after the value as
+text, which may hold labels and strings, and a `;` after the value belongs to
+that text and is no separator. The text is kept as written; the whitespace
+between it and `direction`, and between `direction` and the value, becomes one
+space, as between any tokens. A line such as `A[direction TB]` is a `direction`
+statement too, its vertices and links are not read, and it is printed so, at the
 indentation of its level. [fixture: direction/statement-holds-text-kept] The
 direction of the header stands after one space, also where a symbol touched the
 keyword: `graph>` is printed `graph >`, and `flowchart^` is printed
