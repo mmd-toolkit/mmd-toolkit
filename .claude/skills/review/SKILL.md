@@ -39,6 +39,11 @@ inputs live outside it.
 - Read the whole of every file the change touched, not the part the report
   points at. A document that covers several diagram types is read for all of
   them.
+- A review of a branch or a pull request covers the whole of it, also when the
+  request names only its last commit: every file it changed since its base, and
+  the released behavior that the same sentences govern. What an earlier round
+  did not look at is looked at in this one, so that the findings come in one
+  report and not a few with each round.
 - List what the change can affect beyond the files it touched: the packages that
   use a shared interface it changed, the fixtures that back a rule it changed,
   the printers and rules that read a node it changed.
@@ -221,7 +226,11 @@ Every review has a section on proper form, also when the behavior is right:
   (`packages/tests/fixtures/`), where a parser in any language is checked with
   it, and not in a list inside the parser.
 - The report says what the reviewer did not look at and why, so that nobody
-  reads a pass as exhaustive.
+  reads a pass as exhaustive. That list holds only what the reviewer could not
+  look at (a run that needs something it may not fetch, a file it cannot read),
+  each with the one who can. What the reviewer could have looked at is looked at
+  before the report is sent: no finding is left for a later round by leaving its
+  place unread.
 
 ## 6. Running things on the machine
 
