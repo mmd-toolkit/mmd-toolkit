@@ -47,8 +47,7 @@ mermaid.js の更新のときに printer を直す手順。
 mermaid.js 自身のテキスト・値・設定の鍵・ソースのパスを持つ所だけ、
 mermaid.js の綴りを使う。
 
-この手順が書くのは `packages/prettier-plugin-mmd` と `packages/mmdfmt` と、
-この SKILL だけ。
+この手順が書くのは `packages/prettier-plugin-mmd` と、この SKILL だけ。
 ほかのパッケージを直す必要が出たら、そのパッケージの SKILL の手順で直す。
 仕様の欠落は spec の SKILL、木の変更は parser の SKILL、
 fixture は tests の SKILL で直す。

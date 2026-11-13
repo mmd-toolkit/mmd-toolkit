@@ -48,10 +48,10 @@ digits in one word for paths and fixture categories, its capitalized form for
 node type prefixes, and mermaid.js's spelling only where its own text, values,
 configuration keys or source paths are held.
 
-This procedure writes only to `packages/prettier-plugin-mmd`, `packages/mmdfmt`,
-and this SKILL. When another package needs a change, make it with that package's
-SKILL (a gap in the specification with the spec SKILL, a change of the tree with
-the parser SKILL, fixtures with the tests SKILL). The working tree is treated as
+This procedure writes only to `packages/prettier-plugin-mmd` and this SKILL.
+When another package needs a change, make it with that package's SKILL (a gap in
+the specification with the spec SKILL, a change of the tree with the parser
+SKILL, fixtures with the tests SKILL). The working tree is treated as
 [The working tree](../conventions/SKILL.md#the-working-tree) in the skill
 conventions says.
 

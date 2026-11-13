@@ -746,7 +746,7 @@ timeline の規則、つまり timeline-no-duplicate-title、
 timeline-no-duplicate-description、timeline-no-empty-description-block は、
 上のタイトル、説明、空のブロックの規則の注を持つ。
 場合は journey のものに、行の終わりの `title` が次の行の全体を取るタイトルと、
-年や出来事の前の空のブロックを加えたものである（実行）。
+期間や出来事の前の空のブロックを加えたものである（実行）。
 検索は「timeline title」「timeline section」「timeline accTitle」「timeline
 colon」「timeline hash」。
 
@@ -886,7 +886,8 @@ mermaid.js はそれを 1 度描く。
 
 - block-no-edge-chain、
   block-no-edge-in-composite-head: (1)
-  連なりは最後のリンクだけを始点なしに残し、最初のブロックを置かない。
+  連なりは最後のリンクだけを始点なしに残し、
+  最初の 2 つのブロックをどちらも置かない。
   リンクのある頭は、id も辺もない複合ブロックを与える（実行）。
   (2) なし。
   mermaid.js の文書は、辺に 1 つのリンクを書き、
@@ -1365,7 +1366,7 @@ accDescr」「treemap classDef」「treemap whitespace」。
   値は数字、`_`、`.`、`,` だけを持つので、条件の `_`、2 つ以上の `.`、
   数字がないことは、全体を読まれない値とちょうど一致する。
   小数点のつもりのカンマも除かれる（`0,5` は 5、`1.234,5` は 1.2345。
-  実行）ので、後に数字の続く `.` の後のカンマと、
+  実行）ので、`.` の後にあるカンマで、そのカンマの後に数字が続くものと、
   数字が続く最後のカンマの後が 3 桁でないカンマも報告する。
   西洋式でもインド式（`1,00,000`）でも、
   桁区切りはそこにカンマを置かないからである。
@@ -1450,7 +1451,7 @@ evolve」「wardley annotations」「wardley title」。
 - wardley-no-duplicate-annotations: (1) 最初の `annotations` だけが枠を置き、
   後のものは効果を持たない（パーサーを読んだ。実行）。
   (2) なし。
-  最初の位置の後のものと、注釈の文字のないマップのものは報告しない。
+  最初と同じ位置を指定する後のものと、注釈の文字のないマップのものは報告しない。
   mermaid.js は端を越える枠を内側に動かすので、
   端の近くの 2 つの位置は 1 つの枠を与えることがあり、文書がそれを述べる。
   (4) `annotations` は 1 つ書く。

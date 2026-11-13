@@ -2,7 +2,7 @@
 name: rule-ideas
 description:
   Find ideas for the rules of @mmd-toolkit/eslint-plugin and decide which rules to keep
-  (adoption, name, scope, whether `recommended` enables them, suggestions). Use
+  (adoption, name, scope, whether `recommended` enables them). Use
   when looking for new rule candidates, reviewing proposed candidates, or
   rechecking existing rules against the adoption criteria.
   Deciding the suggestions of a kept rule has a skill of its own, rule-ideas-suggestions.
@@ -161,8 +161,9 @@ description:
 
 ## 4. mermaid と parse() で確かめる手順
 
-mermaid.js と `parse()` を入力の一覧に流すスクリプト（`probe.mts`）と、
-整形するスクリプト（`format.mts`）は、置き方、入力の書き方、実行の仕方とともに、
+固定した版の mermaid.js と `parse()` を入力の一覧に流すスクリプトと、
+整形するスクリプト（それぞれ `probe.mts` と `format.mts`）は、置き方、
+入力の書き方、実行の仕方とともに、
 [references/probe-scripts.ja.md](references/probe-scripts.ja.md) にある。
 
 - 1 つの候補につき、次の 3 つを同時に流す。

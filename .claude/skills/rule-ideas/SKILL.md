@@ -2,11 +2,10 @@
 name: rule-ideas
 description:
   Find ideas for the rules of @mmd-toolkit/eslint-plugin and decide which rules
-  to keep (adoption, name, scope, whether `recommended` enables them,
-  suggestions). Use when looking for new rule candidates, reviewing proposed
-  candidates, or rechecking existing rules against the adoption criteria.
-  Deciding the suggestions of a kept rule has a skill of its own,
-  rule-ideas-suggestions.
+  to keep (adoption, name, scope, whether `recommended` enables them). Use when
+  looking for new rule candidates, reviewing proposed candidates, or rechecking
+  existing rules against the adoption criteria. Deciding the suggestions of a
+  kept rule has a skill of its own, rule-ideas-suggestions.
 ---
 
 # Finding rule ideas and deciding which rules to keep (rule-ideas)

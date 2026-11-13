@@ -122,7 +122,8 @@ description:
 仕様の抜けは spec スキルで直し、推測で書いた規則で埋めません。
 作業ツリーは、
 スキル conventions の
-[作業ツリーの扱い](../conventions/SKILL.ja.md#作業ツリーの扱い) のとおりに扱う。
+[作業ツリーの扱い](../conventions/SKILL.ja.md#作業ツリーの扱い)
+のとおりに扱います。
 
 ## 2. ファイルの組み立て
 
