@@ -237,11 +237,13 @@ to these rules, and printed after that.
 The check uses the pinned mermaid.js only, while the formatted text is also
 drawn by other versions of mermaid.js. The versions that count are those
 published in the 18 months before the pinned version was published: of each
-major version, the smallest and the largest minor version among them, and of a
-diagram type that was added in that time, the first minor version that has it,
-each at its latest patch.
+major version, the smallest and the largest minor version among them, each at
+its latest patch. A diagram type that was added in that time is not read by the
+smallest minor version of its major version, so for that diagram type, and for
+no other, the first minor version that has it counts in its place. A text of one
+diagram type is thus checked against two versions of each major version at most.
 [Versions of mermaid.js that count](./compatibility.md#versions-of-mermaidjs-that-count)
-lists them.
+lists the versions, and for which diagram types each one counts.
 
 So a form is also kept as written where the form that would be printed is not
 accepted by every one of these versions that accepts the form that was written,
