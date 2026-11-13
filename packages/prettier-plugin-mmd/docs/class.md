@@ -982,9 +982,14 @@ A color in a style is printed in lower case, as the examples in the
 documentation of mermaid.js write it and as the CSS formatter of Prettier prints
 it: `style A fill:#F9F,stroke:#ABCDEF` is printed
 `style A fill: #f9f, stroke: #abcdef`. The colors in the styles of the `style`
-and `classDef` statements of a class diagram are printed so. A color is a `#`
-and 3, 4, 6, or 8 hexadecimal digits that stand alone in the value of a style;
-it is never shortened, and a text that is no color stays as written (see
+statement of a class diagram are printed so, and those of a `classDef` stay as
+written: a version that counts has no `classDef` in a class diagram and draws
+its words as the text of classes, so `#DEADBE` and `#deadbe` are drawn as
+different texts (see
+[Colors that are drawn the same](./compatibility.md#colors-that-are-drawn-the-same)).
+A color is a `#` and 3, 4, 6, or 8 hexadecimal digits that stand alone in the
+value of a style; it is never shortened, and a text that is no color stays as
+written (see
 [Colors that are drawn the same](./compatibility.md#colors-that-are-drawn-the-same)).
 [fixture: colors/colors-in-lower-case] [fixture:
 class/colors/color-directive-after-digits-kept] [fixture:
@@ -1019,7 +1024,7 @@ classDiagram
   class B
   A --> B
   style A fill: #f9f, stroke: #abcdef,color: #c0ffee
-  classDef c fill: #deadbe, stroke: #abcdef
+  classDef c fill: #DEADBE, stroke: #ABCDEF
   cssClass "B" c
 ```
 

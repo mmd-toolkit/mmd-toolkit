@@ -1059,7 +1059,11 @@ classDiagram
 小文字で印字します。
 `style A fill:#F9F,stroke:#ABCDEF` は `style A fill: #f9f, stroke: #abcdef`
 と印字します。
-class 図の `style`、`classDef` 文のスタイルの色が対象です。
+class 図の `style` 文のスタイルの色が対象で、
+`classDef` の色は書かれたままにします。
+対象にする版に、class 図の `classDef` を持たず、
+語をクラスのテキストとして描くものがあり、
+`#DEADBE` と `#deadbe` でテキストが異なるためです。
 色は、スタイルの値の中で単独で立つ、`#` と 3、4、6、8 桁の 16 進数です。
 色を短くすることはなく、色でないテキストは書かれたままにします。
 （[同じに描かれる色](./compatibility.ja.md#同じに描かれる色)を参照）。
@@ -1096,7 +1100,7 @@ classDiagram
   class B
   A --> B
   style A fill: #f9f, stroke: #abcdef,color: #c0ffee
-  classDef c fill: #deadbe, stroke: #abcdef
+  classDef c fill: #DEADBE, stroke: #ABCDEF
   cssClass "B" c
 ```
 

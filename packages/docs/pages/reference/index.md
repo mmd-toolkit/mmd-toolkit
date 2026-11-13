@@ -5,11 +5,12 @@ compatibility reference. See [Diagram support](./support.md) for the diagram
 types covered.
 
 A formatted text is also drawn by other versions of mermaid.js, so the formatter
-checks what it prints against ten versions of it. When the formatter would
-change how something is written, such as the case of a keyword, it keeps it as
-written if one of the ten reads the new form differently or not at all.
+checks what it prints against up to five versions of mermaid.js for each diagram
+type. When the formatter would change how something is written, such as the case
+of a keyword, it keeps it as written if one of the versions that count for the
+diagram type reads the new form differently or not at all.
 [Versions of mermaid.js that count](../../../prettier-plugin-mmd/docs/compatibility.md#versions-of-mermaidjs-that-count)
-names the ten, and
+lists them for each diagram type, and
 [Forms kept for versions of mermaid.js that count](../../../prettier-plugin-mmd/docs/compatibility.md#forms-kept-for-versions-of-mermaidjs-that-count)
 lists each form that stays as written for them.
 

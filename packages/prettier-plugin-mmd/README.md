@@ -138,12 +138,12 @@ The formatting rules of each diagram type are in its document:
   whitespace changes below.
 - mermaid.js is the reference, at the version recorded in the specification,
   currently 12.3.0. A formatted text is also drawn by other versions, so the
-  formatter checks what it prints against ten versions of mermaid.js. When the
-  formatter would change how something is written, such as the case of a
-  keyword, it keeps it as written if one of the ten reads the new form
-  differently or not at all.
+  formatter checks what it prints against up to five versions of mermaid.js for
+  each diagram type. When the formatter would change how something is written,
+  such as the case of a keyword, it keeps it as written if one of the versions
+  that count for the diagram type reads the new form differently or not at all.
   [Versions of mermaid.js that count](./docs/compatibility.md#versions-of-mermaidjs-that-count)
-  names the ten, and
+  lists them for each diagram type, and
   [Forms kept for versions of mermaid.js that count](./docs/compatibility.md#forms-kept-for-versions-of-mermaidjs-that-count)
   lists each form that stays as written for them.
 - Formatting a formatted diagram again changes nothing.
