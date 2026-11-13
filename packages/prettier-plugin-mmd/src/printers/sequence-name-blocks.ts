@@ -27,14 +27,13 @@ export function isNameToOlderVersions(text: string): boolean {
 
 /**
  * Whether the statement has a data block that a version that counts reads as
- * a part of its name. Those versions have no `create`, and reject it.
+ * a part of its name, also after `create`.
  */
 export function holdsNameLikeDataBlock(
   statement: SequenceStatement,
 ): statement is SequenceParticipantStatement & { data: SequenceDataBlock } {
   return (
     statement.type === "SequenceParticipantStatement" &&
-    !statement.created &&
     statement.data !== null &&
     isNameToOlderVersions(statement.data.value)
   )

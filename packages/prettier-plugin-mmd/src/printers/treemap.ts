@@ -7,6 +7,7 @@ import {
   findLinesEndedBySemicolon,
   findLinesWithOwnSemicolons,
   lineStartOf,
+  withJoinedLines,
 } from "./kept-lines.ts"
 import { expectToken, layoutKeywordHeader } from "./layout.ts"
 import { placeLeadingDirectives } from "./indentation-lines.ts"
@@ -37,13 +38,22 @@ export function printTreemap(
     findTokenStartingAt(source, diagram.range[0]),
     "the treemap header",
   )
-  const joined = findLinesWithOwnSemicolons(source)
-  const verbatim = findLinesEndedBySemicolon(source)
   const lines = treemapLines(source, diagram, keyword.range[1])
-  // A kept semicolon line that contains a row boundary constrains its logical
-  // indentation. Preserve the body together, rather than fixing some rows and
-  // moving others (docs/treemap.md, Semicolons; diagrams/treemap.md,
-  // Headers and indentation). This is a source constraint, not output reparsing.
+  const kept = {
+    joined: findLinesWithOwnSemicolons(source),
+    verbatim: findLinesEndedBySemicolon(source),
+    ownIndentation: new Set(
+      lines.map((line) => lineStartOf(source, line.range[0])),
+    ),
+  }
+  // The lines that a directive that is not closed joins are kept lines too:
+  // the rows on such a line are read with the indentation of the first one.
+  const keptWithJoinedLines = withJoinedLines(source, kept, false)
+  // A kept semicolon line, or a line that a directive that is not closed
+  // joins, that contains a row boundary constrains its logical indentation.
+  // Preserve the body together, rather than fixing some rows and moving others
+  // (docs/treemap.md, Semicolons and Directives; diagrams/treemap.md, Headers
+  // and indentation). This is a source constraint, not output reparsing.
   const items = lines.flatMap((line) => line.statements)
   const protectedRows = items.some(
     (item) =>
@@ -55,8 +65,12 @@ export function printTreemap(
             lineStartOf(source, treemapStatementRange(item)[0]) ||
             lineStartOf(source, treemapStatementRange(other)[1] - 1) ===
               lineStartOf(source, treemapStatementRange(item)[0])) &&
-          (joined.has(lineStartOf(source, treemapStatementRange(item)[0])) ||
-            verbatim.has(lineStartOf(source, treemapStatementRange(item)[0]))),
+          (keptWithJoinedLines.joined.has(
+            lineStartOf(source, treemapStatementRange(item)[0]),
+          ) ||
+            keptWithJoinedLines.verbatim.has(
+              lineStartOf(source, treemapStatementRange(item)[0]),
+            )),
       ),
   )
   if (protectedRows)
@@ -129,13 +143,7 @@ export function printTreemap(
       isTopLevel: true,
     },
     {
-      kept: {
-        joined,
-        verbatim,
-        ownIndentation: new Set(
-          lines.map((line) => lineStartOf(source, line.range[0])),
-        ),
-      },
+      kept,
       relocatedWhitespace,
       indentsOnlyCommentLines: true,
       extraIndentationOf: (line) => placements.get(line)!.indentation,

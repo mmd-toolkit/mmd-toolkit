@@ -1027,8 +1027,13 @@ the text `accTitle:` before `direction`. So an `accTitle`, `accDescr:`, or
 whitespace characters, and one of `TB`, `BT`, `RL`, and `LR`, in any case, keeps
 the first column. The line is judged as the lexer reads it, without the
 directives and the comment lines. [fixture:
-accessibility-statements/first-column-kept] A line that holds no such direction
-is indented as any statement is. [fixture:
+accessibility-statements/first-column-kept] A text written on a later line is
+brought to the `:`, so `accTitle:`, a line break, and `direction LR` are printed
+`accTitle: direction LR` at the first column, also where `accTitle:` was written
+after an indentation: the written statement is a title, and an indented
+`accTitle: direction LR` would be a direction line. [fixture:
+accessibility-statements/first-column-text-brought-to-the-colon-from-indentation]
+A line that holds no such direction is indented as any statement is. [fixture:
 accessibility-statements/first-column-not-needed] The line counts as a whole:
 where other statements follow on it (`accDescr {x}; title direction RL`), the
 `direction` in them counts too, as the lexer reads the whole line from its

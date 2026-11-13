@@ -727,9 +727,13 @@ text after the header without a direction goes to a line of its own
 version that counts for timeline draws the same. A period that stays on the line
 of the header has its later events at the ordinary continuation indentation,
 since its colon is not at the column of a period on a line of its own. A
-direction on a line of its own is a period. [fixture:
+direction on a line of its own is a period. The line breaks that count are the
+ones that mermaid.js reads, so a directive that spans lines is no break:
+`timeline TD%%{init:`, a line break, and `{}}%% title T` is
+`timeline TD title T`, and the text stays. [fixture:
 header-and-direction/second-word-stays-on-the-header-line] [fixture:
 header-and-direction/direction-then-period-stays] [fixture:
+header-and-direction/text-after-a-directive-over-lines-stays] [fixture:
 header-and-direction/text-after-the-header-without-direction-moves] [fixture:
 header-and-direction/direction-on-its-own-line-is-a-period]
 

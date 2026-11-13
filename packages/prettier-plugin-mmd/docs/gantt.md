@@ -468,10 +468,12 @@ Data of whitespace only is one empty item, and mermaid.js needs a character
 after the colon: `a : ` is a task, and `a :` is rejected. So one whitespace
 character stays after the colon, the first one as written, and the rest is
 dropped. Where a directive or another character follows on the line, the line is
-printed as written, since the whitespace is read together with it. [fixture:
-task-data/whitespace-only-data] [fixture:
-task-data/whitespace-only-data-then-directive] A directive between the parts of
-a task stays where it is (see [Directives](#directives)).
+printed as written, since the whitespace is read together with it. A task that
+ends a line which stays together because of a `;` keeps that character too.
+[fixture: task-data/whitespace-only-data] [fixture:
+task-data/whitespace-only-data-then-directive] [fixture:
+task-data/whitespace-only-data-on-kept-line] A directive between the parts of a
+task stays where it is (see [Directives](#directives)).
 
 Input
 ([task-data/description-padding-tightened-input.mmd](../tests/fixtures/gantt/task-data/description-padding-tightened-input.mmd)):

@@ -38,6 +38,7 @@ import {
   findTokenEndingBefore,
   findTokenStartingAt,
   findTokensBetween,
+  isSpaceOrTab,
   isStructural,
   isWhitespace,
 } from "./source.ts"
@@ -419,9 +420,11 @@ export function printBlock<Statement extends Positioned>(
   const { statements } = bounds
   const kept = withUnusualStyleEnds(
     source,
-    rules.joiningRegionsPrintedAsWritten === true
-      ? rules.kept
-      : withJoinedLines(source, rules.kept),
+    withJoinedLines(
+      source,
+      rules.kept,
+      rules.joiningRegionsPrintedAsWritten !== true,
+    ),
   )
   const lines: Line[] = []
   let headerTrailing: ItemRun | null = null
@@ -797,11 +800,16 @@ export function printBlock<Statement extends Positioned>(
             rules.omittedRanges,
             rules.relocatedWhitespace,
           )
+    // The spaces and tabs after the printed end of the last statement are not
+    // printed, so the statement ends the line, with the whitespace that it
+    // takes (the one after the `:` of a task, say).
+    const endsTheLine =
+      position === stretch.end || [...written].every(isSpaceOrTab)
     return {
       doc: [...parts, trailing],
       blankBefore: false,
       endsWithWhitespace:
-        (position === stretch.end &&
+        (endsTheLine &&
           last !== undefined &&
           endsWithSpaceOrTab(source.text.slice(last.range[0], position))) ||
         (rules.keepsTrailingWhitespaceInKeptTrivia === true &&

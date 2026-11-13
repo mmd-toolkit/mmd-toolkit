@@ -360,7 +360,11 @@ export function layoutClassStatement(
     source.text.slice(start, statement.value.range[0]).includes("\n") &&
     holdsDirection(
       source,
-      { range: statement.range, text: statement.value.value },
+      {
+        range: statement.range,
+        text: statement.value.value,
+        valueStart: statement.value.range[0],
+      },
       { caseSensitive: true },
     )
   const atoms = collectAtoms(

@@ -219,6 +219,17 @@ export function printAtoms(
         )
       ) {
         if (
+          gap.trailing !== null &&
+          gap.trailing.absentItems?.every((item) => item.isSemicolon) ===
+            true &&
+          gap.lines.length === 0 &&
+          gap.leading === null
+        ) {
+          // A `;` that the line rule ignores before the line break: mermaid.js
+          // reads the line as if it were not there, so the lines join and the
+          // `;` stays where it is written.
+          current = [withTrailing(current, gap.trailing)]
+        } else if (
           gap.trailing !== null ||
           gap.lines.length > 0 ||
           gap.leading !== null

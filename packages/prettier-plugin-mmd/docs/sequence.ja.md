@@ -469,7 +469,7 @@ mermaid.js は名前を読む前にディレクティブを除きます。
 [fixture: whitespace-between-tokens/data-block-space-only-kept]
 [fixture: whitespace-between-tokens/compat-malformed-data-block-kept]
 [fixture: whitespace-between-tokens/data-block-name-end-characters-padded]
-[fixture: whitespace-between-tokens/data-block-name-created-padded]
+[fixture: whitespace-between-tokens/data-block-name-created-kept]
 行に単独の `)` のように、mermaid.js が何も読まない行は残し、
 周りの文と同じ段に置きます。
 [fixture: whitespace-between-tokens/data-block-and-ignored-line-kept]

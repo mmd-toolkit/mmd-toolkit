@@ -96,7 +96,7 @@ function keepsRootOnHeaderLineOf(source: Source): boolean {
   const header = findTokenStartingAt(source, body.range[0])
   return (
     header !== undefined &&
-    keepsRootOnHeaderLine(ishikawaLines(source, body, header.range[1]))
+    keepsRootOnHeaderLine(source, ishikawaLines(source, body, header.range[1]))
   )
 }
 

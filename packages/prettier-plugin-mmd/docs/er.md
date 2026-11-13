@@ -1361,13 +1361,16 @@ needs no word boundary after it, and may stand on a later line, which the
 statement does not hold. The first printed line is the one that counts: a text
 written on a later line is brought to the `:` (see
 [Multi-line statements](#multi-line-statements)), so `accTitle:`, a line break,
-and `direction LR` are printed `accTitle: direction LR` at the first column. The
-comment lines and the directives between `direction` and the value are skipped,
-as the lexer reads the text without them (diagrams/er.md, Trivia between units),
-and so are empty lines. Where no direction follows, the statement is indented as
-any other. The line counts as a whole: where other statements follow on it
-(`accDescr {x}; accDescr {direction RL}`), the `direction` in them counts too,
-as the lexer reads the whole line from its start. [fixture:
+and `direction LR` are printed `accTitle: direction LR` at the first column,
+also where `accTitle:` was written after an indentation: the written statement
+is a title, and an indented `accTitle: direction LR` would be a direction line.
+The comment lines and the directives between `direction` and the value are
+skipped, as the lexer reads the text without them (diagrams/er.md, Trivia
+between units), and so are empty lines. Where no direction follows, the
+statement is indented as any other. The line counts as a whole: where other
+statements follow on it (`accDescr {x}; accDescr {direction RL}`), the
+`direction` in them counts too, as the lexer reads the whole line from its
+start. [fixture:
 accessibility-statements/semicolon-line-with-direction-text-first-column]
 [fixture: accessibility-statements/first-column-for-direction-text] [fixture:
 accessibility-statements/first-column-direction-case-insensitive] [fixture:
@@ -1379,6 +1382,10 @@ accessibility-statements/first-column-value-after-directive-line] [fixture:
 accessibility-statements/first-column-value-after-blank-line] [fixture:
 accessibility-statements/first-column-text-brought-to-the-colon] [fixture:
 accessibility-statements/first-column-text-brought-to-the-colon-in-subgraph]
+[fixture:
+accessibility-statements/first-column-text-brought-to-the-colon-from-indentation]
+[fixture:
+accessibility-statements/first-column-text-brought-to-the-colon-from-indentation-directive]
 [fixture: accessibility-statements/first-column-directive-inside-direction]
 [fixture:
 accessibility-statements/first-column-directive-over-lines-before-direction]

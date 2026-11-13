@@ -938,6 +938,16 @@ remaining configured indentation before the first directive. Earlier-line
 carried units move once instead. Keep necessary class keyword/name whitespace
 and never use a directive as its substitute.
 
+A directive that is not closed takes the whitespace after its argument, line
+breaks included, so the next row goes on its line (see
+[A line that a directive that is not closed joins](./compatibility.md#a-line-that-a-directive-that-is-not-closed-joins)),
+and the rows on that line are read from the indentation before the first of
+them. `"A" %%{x: w`, a line break, and `  "B": 1` make `B` a child of `A`, and
+with `A` indented by two spaces `B` is its sibling. A body with such a line is
+printed as written, as it is for a kept line that constrains a row boundary (see
+[Semicolons](#semicolons)). [fixture:
+treemap/directives/unclosed-directive-joins-rows-kept]
+
 With useTabs, the retained gaps and the supplied indentation are all printed as
 tabs: the whitespace on both sides of the directive is one indentation unit, in
 which each character counts once whatever its kind (see [Tabs](#tabs)).

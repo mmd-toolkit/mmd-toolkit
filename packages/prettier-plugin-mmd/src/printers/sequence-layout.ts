@@ -555,12 +555,13 @@ export function findEndOfCommentAfterNameBlock(
     return undefined
   }
   // mermaid.js removes the directives before it reads the name, so the name
-  // runs over the spaces and tabs and the directives to the comment.
+  // runs over the whitespace (every character of it but a line break, which
+  // ends a name) and the directives to the comment.
   let position = statement.range[1]
   for (;;) {
     const read = skipRemoved(source, position)
     if (read !== position) position = read
-    else if (isSpaceOrTab(source.text.charAt(position))) position++
+    else if (isNameWhitespace(source.text.charAt(position))) position++
     else break
   }
   const comment = findTriviaAt(source, position)
@@ -569,6 +570,16 @@ export function findEndOfCommentAfterNameBlock(
     comment.range[0] === position
     ? comment.range[1]
     : undefined
+}
+
+/** Whether a character is whitespace that the name of an older version holds: any but a line break. */
+function isNameWhitespace(character: string): boolean {
+  return (
+    character !== "" &&
+    character !== "\n" &&
+    character !== "\r" &&
+    isWhitespace(character)
+  )
 }
 
 /**

@@ -45,6 +45,7 @@ import {
   isSpaceOrTab,
   isWhitespace,
   skipRemoved,
+  textRead,
 } from "./source.ts"
 
 /**
@@ -142,9 +143,11 @@ export function staysOnTimelineHeaderLine(
     findStructuralToken(source, keyword.range[1]),
     "the direction of the header",
   )
-  return !source.text
-    .slice(direction.range[1], statement.range[0])
-    .includes("\n")
+  // The line breaks that count are the ones mermaid.js reads: a line break
+  // inside a directive is removed with it.
+  return !textRead(source, direction.range[1], statement.range[0]).includes(
+    "\n",
+  )
 }
 
 /**

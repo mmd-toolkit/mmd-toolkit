@@ -370,6 +370,7 @@ export function layoutStateStatement(
     holdsDirection(source, {
       range: statement.range,
       text: statement.value.value,
+      valueStart: statement.value.range[0],
     })
   const atoms = collectAtoms(
     source,

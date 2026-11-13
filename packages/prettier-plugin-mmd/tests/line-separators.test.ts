@@ -3737,6 +3737,21 @@ const dataBlockExamples: readonly (readonly [
     'sequenceDiagram\n  participant A@{ \u00a0"type":"queue"\u00a0 }\n',
   ],
   [
+    "data blocks: sequence name block with a no-break space before a comment",
+    "sequenceDiagram\nparticipant A@{x}\u00a0%% c\n",
+    "sequenceDiagram\n  participant A@{x}\u00a0%% c\n",
+  ],
+  [
+    "data blocks: sequence name block with an ideographic space before a comment",
+    "sequenceDiagram\nparticipant A@{x}\u3000%% c\n",
+    "sequenceDiagram\n  participant A@{x}\u3000%% c\n",
+  ],
+  [
+    "data blocks: sequence name block with a form feed before a comment",
+    "sequenceDiagram\nparticipant A@{x}\f%% c\n",
+    "sequenceDiagram\n  participant A@{x}\f%% c\n",
+  ],
+  [
     "data blocks: kanban one line with U+2028 inside",
     'kanban\nS\n  A@{ticket:"Alpha\u2028 Beta"}\n',
     'kanban\n  S\n    A@{ticket:"Alpha\u2028 Beta"}\n',

@@ -32,14 +32,17 @@ with the word `-beta` right after the header, with at most directives between
 them, which mermaid.js removes before it reads the header (`ishikawa-beta-beta`
 has the header `ishikawa-beta` and the root `-beta`), goes to a line of its own,
 so the short header cannot be read as the long one. Where the root stays on the
-line of the header, because the indentation of the nodes is kept as written or a
-directive touches it, the header stays as written too. A root such as `-betax`
-or `-x` is no such word, and the header is shortened. [fixture:
+line of the header, because the indentation of the nodes is kept as written, a
+directive touches it, or a directive that is not closed joins the next line to
+it, the header stays as written too. A root such as `-betax` or `-x` is no such
+word, and the header is shortened. [fixture:
 ishikawa/header/header-beta-then-beta-root] [fixture:
 ishikawa/header/header-beta-then-beta-root-kept] [fixture:
 ishikawa/header/header-beta-directive-then-beta-root-kept] [fixture:
 ishikawa/header/beta-directive-before-word-kept] [fixture:
-ishikawa/header/beta-directive-in-root-kept]
+ishikawa/header/beta-directive-in-root-kept] [fixture:
+ishikawa/header/header-beta-then-beta-root-joined-line-kept] [fixture:
+ishikawa/header/header-beta-then-beta-root-joined-semicolon-line-kept]
 
 Input (escaped):
 
@@ -77,7 +80,10 @@ first version that has the diagram draws the text printed by depth differently
 from the written text, and the later ones draw both the same (see
 [Forms kept for versions of mermaid.js that count](./compatibility.md#forms-kept-for-versions-of-mermaidjs-that-count)).
 A node that follows a comment-ending separator on its line is left to the
-ordinary rules. [fixture: ishikawa/indentation/indent-clamped] [fixture:
+ordinary rules, and a root that does so leaves the whole diagram to them: every
+version that counts rejects such a root, so the indentation decides no drawing.
+[test: ishikawa: header-spaced-directive-comment-ls] [fixture:
+ishikawa/indentation/indent-clamped] [fixture:
 ishikawa/indentation/indent-depth] [fixture:
 ishikawa/indentation/indent-relative-zero] [fixture:
 ishikawa/indentation/indent-unindented-causes] [fixture:

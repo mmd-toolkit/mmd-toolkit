@@ -153,9 +153,14 @@ export function layoutIshikawaLine(
  * Forms kept for versions of mermaid.js that count). A node that follows a
  * comment-ending separator on its line is left to the ordinary rules: the
  * separator is a whitespace character in the count of one reading and not in
- * the other.
+ * the other. A root that follows one leaves the whole diagram to them, because
+ * no version that counts draws such a diagram.
  */
 export function indentationShowsTree(lines: readonly IshikawaLine[]): boolean {
+  // Every version that counts rejects a root that follows a comment-ending
+  // separator, so the indentation of such a diagram decides no drawing.
+  if (lines.some((line) => line.depth === 1 && line.separatorWidth !== 0))
+    return true
   const columns: number[] = []
   for (const line of lines) {
     const { column } = line

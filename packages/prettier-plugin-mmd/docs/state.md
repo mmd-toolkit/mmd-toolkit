@@ -1481,6 +1481,7 @@ multi-line-statements/next-line-direction-lower-value] [fixture:
 multi-line-statements/next-line-direction-mixed-keyword] [fixture:
 multi-line-statements/next-line-direction-spaced-bt] [fixture:
 multi-line-statements/next-line-direction-after-text] [fixture:
+multi-line-statements/title-next-direction-directive-in-value] [fixture:
 multi-line-statements/next-line-direction-tb] [fixture:
 multi-line-statements/next-line-direction-rl] [fixture:
 multi-line-statements/next-line-direction-td-joined] CRLF before the value and

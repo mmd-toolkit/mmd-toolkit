@@ -689,13 +689,24 @@ export function holdsJoiningRegion(
  * The kept lines with the lines that hold a removed line feed added as
  * verbatim lines: a line that mermaid.js reads over several lines of the
  * source is printed as written, from its first line to its end. A layout that
- * prints its joining regions itself skips this (see
- * `BlockRules.joiningRegionsPrintedAsWritten`).
+ * prints its joining regions itself leaves out the lines that the regions join
+ * (`joinsByRegions` is false; see `BlockRules.joiningRegionsPrintedAsWritten`),
+ * and keeps the ones that a directive that is not closed joins.
  */
-export function withJoinedLines(source: Source, kept: KeptLines): KeptLines {
-  const joinedLines = [...source.removedLineFeeds].map((lineFeed) =>
-    lineStartOf(source, lineFeed),
-  )
+export function withJoinedLines(
+  source: Source,
+  kept: KeptLines,
+  joinsByRegions = true,
+): KeptLines {
+  const joinedLines = [...source.removedLineFeeds]
+    .filter(
+      (lineFeed) =>
+        joinsByRegions ||
+        !source.joiningRegions.some(
+          (region) => region.start <= lineFeed && lineFeed < region.end,
+        ),
+    )
+    .map((lineFeed) => lineStartOf(source, lineFeed))
   return {
     ...kept,
     verbatim: new Set([...kept.verbatim, ...joinedLines]),

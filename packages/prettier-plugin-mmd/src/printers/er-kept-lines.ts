@@ -7,7 +7,11 @@ import {
   lineEndOf,
   lineStartOf,
 } from "./kept-lines.ts"
-import { holdsDirection, holdsStatementAfter } from "./accessibility-lines.ts"
+import {
+  holdsDirection,
+  holdsDirectionOnlyWhenJoined,
+  holdsStatementAfter,
+} from "./accessibility-lines.ts"
 import type { Source } from "./source.ts"
 import {
   findTokenEndingBefore,
@@ -497,20 +501,74 @@ function findAccessibilityLines(
     if (statement.type === "ErSubgraphStatement") {
       appendItems(lines, findAccessibilityLines(source, statement.body))
     } else if (
-      (statement.type === "ErAccTitleStatement" ||
-        statement.type === "ErAccDescrStatement" ||
-        statement.type === "ErAccDescrBlockStatement") &&
-      holdsDirection(source, {
-        range: [statement.range[0], lineEndOf(source, statement.range[1])],
-        text:
-          statement.type === "ErAccDescrBlockStatement" ||
-          holdsStatementAfter(source, statement.range[1])
-            ? null
-            : statement.value.value,
-      })
+      isAccessibilityStatement(statement) &&
+      holdsDirection(source, directionStatementOf(source, statement))
     ) {
       lines.push(lineStartOf(source, statement.range[0]))
     }
   }
   return lines
+}
+
+/** The statements of `accTitle` and `accDescr`, the ones that can hold a direction. */
+function isAccessibilityStatement(statement: ErStatement): statement is Extract<
+  ErStatement,
+  {
+    type:
+      "ErAccTitleStatement" | "ErAccDescrStatement" | "ErAccDescrBlockStatement"
+  }
+> {
+  return (
+    statement.type === "ErAccTitleStatement" ||
+    statement.type === "ErAccDescrStatement" ||
+    statement.type === "ErAccDescrBlockStatement"
+  )
+}
+
+/** What `holdsDirection` reads of an `accTitle` or `accDescr` statement. */
+function directionStatementOf(
+  source: Source,
+  statement: Extract<
+    ErStatement,
+    {
+      type:
+        | "ErAccTitleStatement"
+        | "ErAccDescrStatement"
+        | "ErAccDescrBlockStatement"
+    }
+  >,
+): Parameters<typeof holdsDirection>[1] {
+  return {
+    range: [statement.range[0], lineEndOf(source, statement.range[1])],
+    text:
+      statement.type === "ErAccDescrBlockStatement" ||
+      holdsStatementAfter(source, statement.range[1])
+        ? null
+        : statement.value.value,
+    valueStart:
+      statement.type === "ErAccDescrBlockStatement"
+        ? undefined
+        : statement.value.range[0],
+  }
+}
+
+/**
+ * Whether the printer brings the text of a statement to the `:` and the line
+ * then holds a direction, which the written line does not. The statement then
+ * starts at the first column: at the first column `accTitle: direction LR` is
+ * a title, as the statement is read when its text stands on a later line,
+ * while after an indentation it is a direction line (see
+ * `findAccessibilityLines`).
+ */
+export function isDirectionBroughtToTheColon(
+  source: Source,
+  statement: ErStatement,
+): boolean {
+  return (
+    isAccessibilityStatement(statement) &&
+    holdsDirectionOnlyWhenJoined(
+      source,
+      directionStatementOf(source, statement),
+    )
+  )
 }

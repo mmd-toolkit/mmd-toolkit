@@ -46,6 +46,11 @@ export function holdsDirection(
      * from the source.
      */
     readonly text: string | null
+    /**
+     * Where the value starts, for a statement with a `text`: the line break
+     * before it joins unless a comment or a directive stands in the gap.
+     */
+    readonly valueStart?: number
   },
   options: { readonly caseSensitive?: boolean } = {},
 ): boolean {
@@ -54,10 +59,13 @@ export function holdsDirection(
   let view: string
   if (
     statement.text !== null &&
-    !spansLinesThatCannotJoin(source, start, end)
+    !spansLinesThatCannotJoin(source, start, end, { ignoresTrivia: true }) &&
+    (statement.valueStart === undefined ||
+      !spansLinesThatCannotJoin(source, start, statement.valueStart))
   ) {
     // The value of the tree is the text that the lexer reads, without the
-    // directives inside it.
+    // directives inside it. A directive inside the value does not keep the
+    // line break before it: the first line is printed with the value.
     const keyword = findStructuralToken(source, start)
     view = `${keyword?.value ?? ""}: ${statement.text}`
   } else {
@@ -95,6 +103,22 @@ export function holdsDirection(
     from = head.indexOf("direction", from + 1)
   }
   return false
+}
+
+/**
+ * Whether the first line that is printed for an accessibility statement holds
+ * a direction only because the printer brings the text of a later line to the
+ * `:`: the line as written does not hold it (see `holdsDirection`).
+ */
+export function holdsDirectionOnlyWhenJoined(
+  source: Source,
+  statement: Parameters<typeof holdsDirection>[1],
+  options: Parameters<typeof holdsDirection>[2] = {},
+): boolean {
+  return (
+    holdsDirection(source, statement, options) &&
+    !holdsDirection(source, { range: statement.range, text: null }, options)
+  )
 }
 
 /**
@@ -152,7 +176,16 @@ function skipWhitespaceAndRemoved(source: Source, offset: number): number {
   return position
 }
 
-/** Whether a character ends a line for the run before `direction`: a line feed, U+2028, or U+2029. */
+/**
+ * Whether a character ends a line for the run before `direction`: a line feed,
+ * a carriage return (the lexer reads a lone `\r` as a line feed), U+2028, or
+ * U+2029.
+ */
 function isLineEnd(character: string): boolean {
-  return character === "\n" || character === "\u2028" || character === "\u2029"
+  return (
+    character === "\n" ||
+    character === "\r" ||
+    character === "\u2028" ||
+    character === "\u2029"
+  )
 }
