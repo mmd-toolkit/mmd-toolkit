@@ -1055,7 +1055,12 @@ tf %%{wrap}%%01 evt Alpha %%{wrap}%%->> %%{wrap}%%02
 行の規則が無視する `;` が変わりうる場合は、各区間の頭から最後の保つ `;` までを、
 書かれたまま残します。
 それ以外の複数行の文は、1 行の文と同じように整形します。
+行の規則が無視する `;` は mermaid.js が除くため、
+その両側のトークンが接していれば 1 つのトークンになります。
+`;` の後の隙間は空白の有無を保ち、`/*style:#x*/;title` は書かれたまま残します。
+`/*style:#x*/ title` は拒否されるためです。
 [fixture: semicolons/stretch-kept-rest-formatted]
+[fixture: semicolons/ignored-semicolon-touches-next-atom]
 [fixture: semicolons/no-stretch-formatted]
 [fixture: semicolons/protected-gwt-title-hidden-gap-remains-zero]
 最初の保護された本文行は所属の段に揃え、内容と後続列は書かれたままです。

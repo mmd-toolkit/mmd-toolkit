@@ -989,7 +989,10 @@ class キーワードと名前の必須空白を保ち、ディレクティブ�
 `A` を空白 2 つで字下げすると `B` はその兄弟になります。
 そのような行を含む本文は、保持する行が行の境界を拘束する場合と同じく、
 書かれたまま印字します（[セミコロン](#semicolons)を参照）。
+二つの行を 1 行に書き、その間に閉じていないディレクティブがある場合も同じです。
+ディレクティブが引数の後の空白、つまり二つ目の行の字下げを取り込むためです。
 [fixture: treemap/directives/unclosed-directive-joins-rows-kept]
+[fixture: treemap/directives/unclosed-directive-between-rows-kept]
 
 `useTabs` のときは、保つ隙間も補う字下げもすべてタブで印字します。
 ディレクティブの前後の空白は一つの字下げ単位で、

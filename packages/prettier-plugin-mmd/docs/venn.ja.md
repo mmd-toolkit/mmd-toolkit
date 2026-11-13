@@ -933,6 +933,11 @@ kanban がディレクティブごと移すのは、
 ディレクティブの後ろの空白がそこでは節点の字下げになるためで、
 Venn のヘッダー行の文にはその役割がありません。
 セミコロンを保持する行もヘッダーとの関係を保ちます。
+閉じていないディレクティブの引数の後の空白は、
+保護するコメントの隙間に続く行でもディレクティブとともに取り込まれるため、
+そのまま保ちます。
+`%%{x y text A t` では `y` と `text` の間の空白を保ちます。
+[fixture: venn/directives/directive-unclosed-argument-space-after-percent-brace-comment]
 [corpus fixture: venn/db-indent-after-directive]
 [corpus fixture: venn/db-set-label-unclosed-directive-gap]
 [corpus fixture: venn/lex-after-set-directive-unclosed]

@@ -971,12 +971,12 @@ mermaid.js はそのように読みます。 [fixture: title/separator]
 [fixture: title/trailing-whitespace-dropped]
 [fixture: title/semicolon-after-whitespace-dropped]
 キーワードと次の行のテキストの間にある、行の規則が無視する `;` は、
-タイトルを単独の行に印字するときは除きます。
-その行では規則の引き金がなくなり、
-`;` がキーワードとテキストを分けてしまうからです。
+ひとまとまりで残る行の一部として、規則の条件となる部分と同じ行に残します。
 `participant A@{"style":"x:#y"};title;` と次の行の `T` は、
-`participant A@{ "style":"x:#y" }` と `title T` と印字します。
-ひとまとまりで残る行では、`;` は残ります。
+テキストをキーワードにつなげて、
+`participant A@{"style":"x:#y"};title; T` と印字します。
+[セミコロン](./compatibility.ja.md#行の規則が文の値の前で無視する-)
+を参照してください。
 [fixture: title/ignored-semicolon-before-text-on-next-line-kept]
 [fixture: title/ignored-semicolon-before-text-on-kept-line-kept]
 空白が行末にあるので、例は、`\n` を改行とする文字列で書きます。

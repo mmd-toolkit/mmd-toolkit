@@ -3932,6 +3932,36 @@ U+2028 か U+2029 を含む空白は、ディレクティブがどこにあっ�
 クラス `AclassD` と `B` を宣言し、U+2028 を空白にすると、`A` だけになります。
 [corpus fixture: class/unclosed-directive-separator-whitespace-5cfdfca6]
 
+## 行の規則が文の値の前で無視する `;`
+
+mermaid.js の行の規則は、規則の条件となる部分と `;` がそれぞれどの文にあっても、
+テキストの行全体に適用されます（仕様の
+[`style` 行と `classDef` 行](../../spec/docs/common.ja.md#style-行と-classdef-行)）。
+`accDescr {style:#x} accTitle:;` は、
+説明ブロックの `style:#x` によって `;` が無視される行です。
+行末の `;` は、文を区切るものと同じように取り除きます。
+しかし、`accTitle:` と次の行の `T` のように、`;` を含む文が、
+その行の後に文自身の値を持って続く場合、その `;` は文末ではないので、
+印字処理は取り除きません。
+規則の条件となる部分と `;` を同じ行に残します。
+`;` が条件となる部分から離れるため、文を 1 行ずつに分けたり、
+説明ブロックをコロンの形にしたりしません。
+値は、その文の通常の印字規則に従って、つなぐかそのまま残します。
+ブロックの行の後に続く、文からなる本文や、文を閉じる語（`end`）は、
+そのような値ではありません。
+[fixture: flowchart/semicolons/ignored-semicolon-before-value-on-next-line-kept]
+[fixture: sequence/multi-line-statements/ignored-semicolon-before-value-on-next-line-kept]
+[fixture: agentflow/semicolons/ignored-semicolon-before-value-on-next-line-kept]
+[fixture: requirement/multi-line-statements/ignored-semicolon-before-name-on-next-line-kept]
+[fixture: xychart/multi-line-statements/ignored-semicolon-before-values-on-next-line-kept]
+[fixture: block/multi-line-statements/ignored-semicolon-before-value-on-next-line-kept]
+ER 図と requirement 図は、`accTitle` が 1 桁目にない場合、
+`accTitle: direction LR` を方向の行として読むので、
+そこでテキストを `:` の後につなげると図が変わります。
+そのため、その文は書かれたまま残します。
+[fixture: er/accessibility-statements/ignored-semicolon-before-direction-text-kept]
+[fixture: requirement/accessibility-statements/ignored-semicolon-before-direction-text-kept]
+
 ## 最も古い版が末尾まで読むアクセシビリティの行
 
 固定した pie と gitGraph の文法は、

@@ -33,6 +33,11 @@ mermaid.js はコロンのない `gitGraph LR` を拒否するためです。
 `gitGraph %%{x}%%:` は `gitGraph%%{x}%%:` と印字します。
 [ディレクティブ](./flowchart.ja.md#ディレクティブ)の規則に従います。
 [fixture: gitgraph/header/header-directive-before-colon-kept]
+閉じていないディレクティブが後にあるコロンも、次の行に文が続く場合は残します。
+ディレクティブが改行を取り、コロンがないと文が `gitGraph` に直接続くため、
+行を分けられません。
+`gitGraph:%%{x y` と次の行の `commit` は書かれたまま残します。
+[fixture: gitgraph/header/header-colon-unclosed-directive-joins-next-line-kept]
 隠れた YAML ブロックが前にあるコロンは、ほかのコロンと同じく除きます。
 対象にする版は、コロンの有無にかかわらず見出しを同じに読むか、
 どちらも拒否するためです。
