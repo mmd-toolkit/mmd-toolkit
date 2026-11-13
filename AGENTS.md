@@ -217,18 +217,19 @@ same change.
     `pnpm run lint:md`.
   - A code block of Mermaid text has the info string `mmd` and is written as the
     formatter prints it, unless the example is there to show a way of writing.
-  - Run the tests that a change can affect, and the whole suite of the package
-    once before reporting the work as done. The tests of a package run fixed
-    inputs only: the fixtures of the corpus, the fixtures of the package, and
-    the inputs of past failures. No test generates its inputs, and no command
-    does. Every sentence that defines a behavior (in the specification, in the
-    parser's documents of tokens and positions, in the documents of
-    `dbFromTree`, in the formatting rules) has a fixture for each case it
-    distinguishes, and for each other rule that meets it at the place it names:
-    a directive, an ignored `;`, a comment line, an empty line, a line separator
-    (U+2028, U+2029), an empty description block, the end of the text, and
-    whatever else the sentence's own words name. The fixtures are written with
-    the sentence and checked against mermaid.js once. A review checks each
+  - Run the tests that a change can affect. The whole suite of a package and the
+    checks of the repository run in CI on every push, so they are run on the
+    machine only once, when all the work of the pull request is done. The tests
+    of a package run fixed inputs only: the fixtures of the corpus, the fixtures
+    of the package, and the inputs of past failures. No test generates its
+    inputs, and no command does. Every sentence that defines a behavior (in the
+    specification, in the parser's documents of tokens and positions, in the
+    documents of `dbFromTree`, in the formatting rules) has a fixture for each
+    case it distinguishes, and for each other rule that meets it at the place it
+    names: a directive, an ignored `;`, a comment line, an empty line, a line
+    separator (U+2028, U+2029), an empty description block, the end of the text,
+    and whatever else the sentence's own words name. The fixtures are written
+    with the sentence and checked against mermaid.js once. A review checks each
     sentence for the cases it lacks. No input is chosen by a random source or by
     a number (a seed, a count).
 - Commit and push only when the user says so.
