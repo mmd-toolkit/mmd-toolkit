@@ -541,6 +541,11 @@ style のない `classDef` の `;` は、消すと次の行が style になり�
 [fixture: semicolons/class-terminator-entity-kept]
 別の `;` が隣にあるときも残します。
 [fixture: semicolons/class-terminator-beside-semicolon-kept]
+U+2028 か U+2029 の後にコメント行が続き、その後にある `;` も残します。
+その文字は行の規則の空白ではなく、コメント行は取り除かれるので、
+`;` とその文字を消すと mermaid.js の描く図が変わります。
+その行は書かれたまま印字します。
+[test: treemap/semicolons/class-terminator-after-separator-and-comment-kept]
 行の規則が無視する `;` の前にディレクティブがあるときは、
 ディレクティブを残して `;` を消します。
 ほかの図種と同じです。

@@ -1488,8 +1488,8 @@ stateDiagram-v2
 
 ### スタイル文の末尾のセミコロン
 
-除かれるテキストを含むスタイルでは、コロン前後の空白を書かれたまま保ち、
-削除できる末尾のセミコロンは削除します。
+除かれるテキストを含むスタイルでは、コロン前後の空白を書かれたまま保ちます。
+削除できる末尾のセミコロンは、`classDef` では削除し、`style` では残します。
 ディレクティブ内のコロンは CSS のコロンではなく、ディレクティブがあっても、
 スタイルのコロンの前のエスケープは途切れません。
 [fixture: semicolons-at-the-end-of-a-style-statement/directive-colon-kept]
@@ -1510,10 +1510,15 @@ stateDiagram-v2
 空の説明ブロックも通常の配置に従い、スタイルの終端は削除します。
 [fixture: semicolons-at-the-end-of-a-style-statement/empty-description-block]
 
-文に `#` がない場合は、最後のスタイルの末尾の `;` も削除します。
+文に `#` がない場合は、`classDef` の最後のスタイルの末尾の `;` も削除します。
 ただし、そのスタイルにほかの `;` がなく、
 前に空白以外のテキストがある場合に限ります。
 mermaid.js は各スタイルの最初の `;` を取り除くためです。
+`style` の終わりの `;` は残します。
+対象にする版の 1 つが、その `;` を 1 つの状態として読むからです。
+詳しくは
+[対象にする版の mermaid.js のために残す形](./compatibility.ja.md#対象にする版の-mermaidjs-のために残す形)
+を参照してください。
 [fixture: semicolons-at-the-end-of-a-style-statement/style-text-terminators]
 `classDef c fill:red;;`、`classDef c ;`、
 `style A fill : #f00;` は条件を満たさないので残します。
