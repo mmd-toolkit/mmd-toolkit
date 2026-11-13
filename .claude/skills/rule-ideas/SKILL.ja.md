@@ -42,11 +42,8 @@ description:
   誤りと分かったら、その言葉で撤回する。
 - 根拠にする前に、いまの仕様を読む。
 - 先にスキル [conventions](../conventions/SKILL.ja.md) を読む。
-  作業ツリーはその節
-  [作業ツリーの扱い](../conventions/SKILL.ja.md#作業ツリーの扱い)
-  のとおりに扱い、
-  検査のスクリプトはその節
-  [リポジトリの外で動かすスクリプト](../conventions/SKILL.ja.md#リポジトリの外で動かすスクリプト)
+  検査のスクリプトは
+  [references/probe-scripts.ja.md](references/probe-scripts.ja.md)
   のとおりに用意して動かす。
 
 ## 2. 採否の基準と、その当て方

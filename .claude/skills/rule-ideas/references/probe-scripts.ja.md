@@ -12,12 +12,17 @@ SKILL eslint-plugin と eslint-plugin-rules も、これを動かす。
   実行の仕方。
 - 整形して確かめる: `format.mts`。
 
+以下のスクリプトはリポジトリのファイルではなく、コミットしない。
+ソースはリポジトリのルートの絶対パスで import するので、
+`<repo>` をそのパスに置き換える。
+`.mts` ファイルとして、どのディレクトリからでも `node <file>` で動かせる。
+Node が除去するのは消去できる型だけなので、
+型だけの import は `import type` とし、`enum`、`namespace`、
+引数プロパティは使わない。
+
 ## mermaid.js と parse() で確かめる
 
-次のスクリプトを `probe.mts` として置き、
-スキル conventions の
-[リポジトリの外で動かすスクリプト](../../conventions/SKILL.ja.md#リポジトリの外で動かすスクリプト)
-のとおりに準備する。
+次のスクリプトを `probe.mts` として置く。
 
 ```ts
 import { readFileSync } from "node:fs"
@@ -83,9 +88,14 @@ for (const input of inputs) {
 
 ## 整形して確かめる（SKILL.ja.md の 2 節の問い 5）
 
-次のスクリプトを作業用ディレクトリに `format.mts` として置き、
-`<repo>` を置き換えて、probe と同じように実行する。
+次のスクリプトを `format.mts` として置き、probe と同じように実行する。
 prettier は、プラグインのパッケージが依存として持つものを import する。
+フォーマッターのソース（`packages/prettier-plugin-mmd`）を import
+するスクリプトは、
+`@mmd-toolkit/parser` と `@mmd-toolkit/tests` を `lib/` のビルドから読み込む。
+そのソースを変えたら、
+`pnpm --filter @mmd-toolkit/parser run build` と
+`pnpm --filter @mmd-toolkit/tests run build` でビルドし直す。
 
 ```ts
 import { readFileSync } from "node:fs"

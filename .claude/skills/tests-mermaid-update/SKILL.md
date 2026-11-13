@@ -10,8 +10,8 @@ description: >-
 # Updating mermaid.js (tests-mermaid-update)
 
 Sections 1 to 4 of the skill [tests](../tests/SKILL.md) (the policies and
-criteria, what to read first, the working tree, and how to check) hold for these
-steps too. Read them first.
+criteria, what to read first, what these skills write, and how to check) hold
+for these steps too. Read them first.
 
 1. Change the devDependency `mermaid` in `packages/tests/package.json` to the
    new version, and run `pnpm install` (`pnpm-lock.yaml` is a shared file at the

@@ -82,8 +82,7 @@ after writing it.
   [references/probe-scripts.md](../rule-ideas/references/probe-scripts.md) of
   the rule-ideas skill. The script below lints a text with one rule, as the
   tests do, and applies each fix and each suggestion; set it up and run it as
-  [Scripts run outside the repository](../conventions/SKILL.md#scripts-run-outside-the-repository)
-  in the skill conventions says.
+  that document says.
 
   ```ts
   import { Linter } from "<repo>/packages/eslint-plugin/node_modules/eslint/lib/api.js"
@@ -250,9 +249,6 @@ done.
     run inside the package misses the configuration of the root),
     `pnpm run lint:docs`, `pnpm run lint:chars`, `pnpm run format:check`, and
     `npx tsc --noEmit`.
-- The working tree is treated as
-  [The working tree](../conventions/SKILL.md#the-working-tree) in the skill
-  conventions says.
 
 ## 6. Report
 

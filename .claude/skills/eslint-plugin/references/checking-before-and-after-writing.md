@@ -4,9 +4,7 @@ Section numbers below are those of [SKILL.md](../SKILL.md).
 
 The scripts that run mermaid.js, parse a text, and format it are in
 [references/probe-scripts.md](../../rule-ideas/references/probe-scripts.md) of
-the rule-ideas skill. Set them up and run them as
-[Scripts run outside the repository](../../conventions/SKILL.md#scripts-run-outside-the-repository)
-in the skill conventions says.
+the rule-ideas skill.
 
 1. What mermaid.js does: run every example through `runMermaid(text)` of
    `packages/tests/src/mermaid.ts`. Every example must be accepted (a rejected

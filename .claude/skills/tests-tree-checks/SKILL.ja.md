@@ -13,7 +13,7 @@ description: >-
 # Langium の図: 木からの Db と木の検査（tests-tree-checks）
 
 SKILL [tests](../tests/SKILL.ja.md) の 1〜4 の節（方針と基準、最初に読むもの、
-作業ツリーの扱い、確かめ方）は、この手順にも当たる。
+これらの SKILL が書くもの、確かめ方）は、この手順にも当たる。
 先に読む。
 
 SKILL [tests-diagram-type](../tests-diagram-type/SKILL.ja.md) に従い、

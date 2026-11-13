@@ -68,13 +68,10 @@ AGENTS.md とスキル [conventions](../conventions/SKILL.ja.md) にある。
   ページが持つ部分の README を変えたら、同じ変更でページも変える。
   2 つを照らす検査はない。
 
-## 4. 作業ツリー
+## 4. このスキルが書くもの
 
 このスキルの手順が書くのは、`packages/mmdfmt`、サイトのそのページ、
 このスキルである。
-作業ツリーは、
-スキル conventions の
-[作業ツリーの扱い](../conventions/SKILL.ja.md#作業ツリーの扱い) のとおりに扱う。
 ほかのパッケージが必要とする変更は、
 スキル prettier-plugin の
 [1 節](../prettier-plugin/SKILL.ja.md#1-最初に読むもの)

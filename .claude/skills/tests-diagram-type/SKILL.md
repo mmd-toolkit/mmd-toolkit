@@ -11,8 +11,8 @@ description: >-
 # Adding a diagram type (tests-diagram-type)
 
 Sections 1 to 4 of the skill [tests](../tests/SKILL.md) (the policies and
-criteria, what to read first, the working tree, and how to check) hold for these
-steps too. Read them first.
+criteria, what to read first, what these skills write, and how to check) hold
+for these steps too. Read them first.
 
 Diagram types are added one at a time. Each is finished in this order before the
 next one starts: the normalizer and the fixtures (this skill), the specification
@@ -155,7 +155,7 @@ For a Langium diagram, read mermaid.js's grammar first with the steps of
    `packages/tests/src/mermaid-run-store.ts`; `codeIdentityOf` uses this list to
    build the result identity. The lists of diagram types in other packages are
    changed by the steps of that package's skill (section 3 of the skill
-   [tests](../tests/SKILL.md#3-the-working-tree)), not here.
+   [tests](../tests/SKILL.md#3-what-these-skills-write)), not here.
 6. Add tests in `tests/` (dropped fields do not appear, a patch does not change
    the summary, data block effects). In corpus-backed tests, load fixtures by
    name rather than copying their input strings, and add a missing input through

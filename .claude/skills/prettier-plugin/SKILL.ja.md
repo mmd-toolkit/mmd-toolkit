@@ -51,9 +51,6 @@ mermaid.js の綴りを使う。
 ほかのパッケージを直す必要が出たら、そのパッケージの SKILL の手順で直す。
 仕様の欠落は spec の SKILL、木の変更は parser の SKILL、
 fixture は tests の SKILL で直す。
-作業ツリーは、
-スキル conventions の
-[作業ツリーの扱い](../conventions/SKILL.ja.md#作業ツリーの扱い) のとおりに扱う。
 
 ## 2. 始める条件（入力）
 
@@ -419,11 +416,6 @@ fixture は tests の SKILL で直す。
     木の `comments` は文書のノードで包んで渡す。
   - `embed` は、扱わないノードで `null` を返す。
   - `printDocToString` は `endOfLine` を見る。
-- 作業ツリーの扱いと、確かめのスクリプトの書き方は、
-  スキル conventions の
-  [作業ツリーの扱い](../conventions/SKILL.ja.md#作業ツリーの扱い) と
-  [リポジトリの外で動かすスクリプト](../conventions/SKILL.ja.md#リポジトリの外で動かすスクリプト)
-  のとおりにする。
 - 文書の例を下書きから作り直すときは、
   下書きが最新か（文書に直接の修正が入っていないか）を、作り直す前に確かめる。
 

@@ -111,10 +111,6 @@ description:
 ほかのパッケージ（その文書、parser、フォーマッター）を直す必要が出たら、
 そのパッケージの SKILL の手順で直す。
 
-作業ツリーは、
-スキル conventions の
-[作業ツリーの扱い](../conventions/SKILL.ja.md#作業ツリーの扱い) のとおりに扱う。
-
 ## 2. 道具
 
 ### 2.1 mermaid.js で入力を確かめる

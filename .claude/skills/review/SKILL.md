@@ -6,8 +6,7 @@ description:
   everything it is going to find. Use before reviewing a change, before
   re-reviewing a fix, and when a review is repeated more than twice on the same
   item. It names the inputs a review takes from the sentences, the checks it
-  runs on documents, how a finding is classified and reported, and how a review
-  runs things on the machine.
+  runs on documents, and how a finding is classified and reported.
 ---
 
 # Reviewing a change
@@ -27,15 +26,12 @@ document). A claim in the report under review is neither until the reviewer has
 run it. Numbers are counted again before they are sent; a wrong count is a
 finding against the review.
 
-The reviewer edits nothing in the working tree. Probes, copies, and generated
-inputs live outside it.
+The reviewer edits nothing in the working tree.
 
 ## 1. Scope
 
 - Read the skill [conventions](../conventions/SKILL.md) first: the documents and
-  the code of the change are checked against it, and the reviewer treats the
-  working tree and stops processes as its section
-  [The working tree](../conventions/SKILL.md#the-working-tree) says.
+  the code of the change are checked against it.
 - Read the whole of every file the change touched, not the part the report
   points at. A document that covers several diagram types is read for all of
   them.
@@ -121,7 +117,10 @@ reported as a finding, or a real one is dismissed as declared.
 When the change is a fix, run the same inputs on the version before the fix.
 Every difference in output is classified by reading each one, not by a rule that
 sorts them: intended by the fix, a consequence the fix did not report, or
-unrelated. Unreported consequences are findings.
+unrelated. Unreported consequences are findings. A copy of code that runs
+mermaid.js, such as that version, runs with the result store disabled
+(`MMD_TOOLKIT_MERMAID_CACHE=disabled`), unless the copy reads the tree's own
+`packages/tests` and so shares its key.
 
 For a tool or a piece of infrastructure (the mermaid result store, the fixture
 tools, a CLI), the inputs are different and the list is this:
@@ -231,16 +230,3 @@ Every review has a section on proper form, also when the behavior is right:
   each with the one who can. What the reviewer could have looked at is looked at
   before the report is sent: no finding is left for a later round by leaving its
   place unread.
-
-## 6. Running things on the machine
-
-- Fix the number of concurrent processes before a parallel run, children
-  included (8 to 16), and do not probe a system limit: hitting the per-user
-  process limit kills the other runs on the machine.
-- A copy of code that runs mermaid.js runs with the result store disabled
-  (`MMD_TOOLKIT_MERMAID_CACHE=disabled`), unless the copy reads the tree's own
-  `packages/tests` and so shares its key.
-- Stop processes as [The working tree](../conventions/SKILL.md#the-working-tree)
-  in the skill conventions says.
-- Do not start a long run while another long run is going; the load multiplies
-  both.

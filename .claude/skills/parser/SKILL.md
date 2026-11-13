@@ -64,7 +64,7 @@ type.
    `packages/tests/fixtures/<diagram>/`. The behavior to implement is only what
    these hold.
 
-## 2. The working tree
+## 2. What this skill writes
 
 - The steps of this skill write `packages/parser`, `packages/ast`, and the
   `ast.json` and `parse-error.json` files in
@@ -72,9 +72,6 @@ type.
   They do not write the other files of a fixture, the specification, or the
   other packages; when one of those must change, change it with the steps of
   that package's skill (spec, tests, prettier-plugin).
-- The working tree is treated as
-  [The working tree](../conventions/SKILL.md#the-working-tree) in the skill
-  conventions says.
 - The sources and tests of `packages/parser` are ASCII only (every other
   character is written as an escape), except a readable character in a comment
   of `src/code-points.ts` that shows which character a constant is (`// À`). So
@@ -94,15 +91,15 @@ type.
 ## 3. How to check (in every piece of work)
 
 - Check every claim about the behavior of mermaid.js, your own or another's,
-  before writing it, in a probe outside the repository (in the scratchpad), a
-  script run with `node --conditions=source` that imports
-  `runMermaidWithEmbeddedData` and `dbFromTree` from the sources of
-  `packages/tests`: the first gives the acceptance and the Db of mermaid.js for
-  an input, the second the Db built from the parser's tree of the same input.
-  What the probe shows goes into the corpus and the sentences, and the probe is
-  not kept: an input that a sentence needs becomes a fixture, which the tests
-  package adds when given the input and the sentence (the tests skill), or which
-  you add with the fixtures CLI and report to the tests package:
+  before writing it, in a probe outside the repository, a script run with
+  `node --conditions=source` that imports `runMermaidWithEmbeddedData` and
+  `dbFromTree` from the sources of `packages/tests`: the first gives the
+  acceptance and the Db of mermaid.js for an input, the second the Db built from
+  the parser's tree of the same input. What the probe shows goes into the corpus
+  and the sentences, and the probe is not kept: an input that a sentence needs
+  becomes a fixture, which the tests package adds when given the input and the
+  sentence (the tests skill), or which you add with the fixtures CLI and report
+  to the tests package:
 
   ```sh
   pnpm --filter @mmd-toolkit/tests run fixtures:add <diagram> <name> --note "<the sentence and the case>" < input.mmd

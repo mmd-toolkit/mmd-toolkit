@@ -10,7 +10,7 @@ description: >-
 # mermaid.js を更新するとき（tests-mermaid-update）
 
 SKILL [tests](../tests/SKILL.ja.md) の 1〜4 の節（方針と基準、最初に読むもの、
-作業ツリーの扱い、確かめ方）は、この手順にも当たる。
+これらの SKILL が書くもの、確かめ方）は、この手順にも当たる。
 先に読む。
 
 1. `packages/tests/package.json` の devDependency `mermaid` を新しい版にし、

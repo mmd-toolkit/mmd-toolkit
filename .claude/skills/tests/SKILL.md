@@ -45,7 +45,7 @@ this skill hold for their steps too.
    Db summaries, the values from embedded data, and the steps for maintaining
    and collecting fixtures are there.
 
-## 3. The working tree
+## 3. What these skills write
 
 - The steps of this skill and of the skills `tests-diagram-type`,
   `tests-tree-checks`, and `tests-mermaid-update` write only `packages/tests`,
@@ -53,10 +53,6 @@ this skill hold for their steps too.
   (`packages/spec`, `packages/parser`, `packages/prettier-plugin-mmd`) needs a
   change, make it by the steps of that package's skill. When taking inputs from
   another package's tests, only read them.
-- The working tree is treated as
-  [The working tree](../conventions/SKILL.md#the-working-tree) in the skill
-  conventions says.
-- Rename a fixture by moving its directory with a plain `mv`.
 - Removing fixture directories is irreversible. When something must be removed,
   show the list and the commands, and ask for a decision.
 - Read the result of `eslint --fix` and of Prettier, as the skill `conventions`
@@ -65,9 +61,8 @@ this skill hold for their steps too.
 ## 4. How to check (in every piece of work)
 
 - Before taking in a claim, whoever makes it, check it by running mermaid.js.
-  Put the following script as `probe.mts`, and set it up and run it as
-  [Scripts run outside the repository](../conventions/SKILL.md#scripts-run-outside-the-repository)
-  in the skill conventions says.
+  Save the following script as `probe.mts`, replace `<repo>` with the absolute
+  path of the root of the repository, and run it with `node probe.mts`.
 
   ```ts
   import { runMermaidWithEmbeddedData } from "<repo>/packages/tests/src/mermaid.ts"

@@ -107,10 +107,6 @@ The steps of this SKILL and of the skill spec-diagram-type write
 When another package has to change (its documents, the parser, the formatter),
 change it with the steps of that package's SKILL.
 
-The working tree is treated as
-[The working tree](../conventions/SKILL.md#the-working-tree) in the skill
-conventions says.
-
 ## 2. Tools
 
 ### 2.1 Checking inputs with mermaid.js

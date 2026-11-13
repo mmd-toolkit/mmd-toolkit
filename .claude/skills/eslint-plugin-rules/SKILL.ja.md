@@ -81,10 +81,7 @@ SKILL [eslint-plugin](../eslint-plugin/SKILL.ja.md#方針と基準)
   にある。
   下のスクリプトは、テストと同じように 1 つの規則でテキストを lint し、
   fix と提案をそれぞれ当てる。
-  スクリプトは、
-  スキル conventions の
-  [リポジトリの外で動かすスクリプト](../conventions/SKILL.ja.md#リポジトリの外で動かすスクリプト)
-  のとおりに準備して動かす。
+  準備と動かし方は、その文書のとおりにする。
 
   ```ts
   import { Linter } from "<repo>/packages/eslint-plugin/node_modules/eslint/lib/api.js"
@@ -257,10 +254,6 @@ SKILL `conventions`
     `npx eslint packages/eslint-plugin` （パッケージの中で動かす ESLint は、
     ルートの設定を読まない）、`pnpm run lint:docs`、`pnpm run lint:chars`、
     `pnpm run format:check`、`npx tsc --noEmit`。
-- 作業ツリーは、
-  スキル conventions の
-  [作業ツリーの扱い](../conventions/SKILL.ja.md#作業ツリーの扱い)
-  のとおりに扱う。
 
 ## 6. 報告
 

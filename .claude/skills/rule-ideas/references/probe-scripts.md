@@ -11,11 +11,15 @@ Contents:
   inputs, and run it.
 - Checking by formatting: `format.mts`.
 
+The scripts below are not files of the repository and are not committed. They
+import sources by the absolute path of the repository root: replace `<repo>`
+with that path. As `.mts` files, they run from any directory with `node <file>`.
+Node only removes types that can be erased: use `import type` for type-only
+imports, and no `enum`, `namespace`, or parameter properties.
+
 ## Running mermaid.js and parse()
 
-Put the following script as `probe.mts`, and set it up as
-[Scripts run outside the repository](../../conventions/SKILL.md#scripts-run-outside-the-repository)
-in the skill conventions says.
+Put the following script as `probe.mts`.
 
 ```ts
 import { readFileSync } from "node:fs"
@@ -81,9 +85,12 @@ for (const input of inputs) {
 
 ## Checking by formatting (question 5 of section 2 of SKILL.md)
 
-Put the following script in the working directory as `format.mts`, replace
-`<repo>`, and run it like the probe; it imports the prettier that the plugin's
-package depends on.
+Put the following script as `format.mts` and run it like the probe; it imports
+the prettier that the plugin's package depends on. A script that imports the
+formatter sources (`packages/prettier-plugin-mmd`) gets `@mmd-toolkit/parser`
+and `@mmd-toolkit/tests` from their builds in `lib/`. After their sources
+change, rebuild them with `pnpm --filter @mmd-toolkit/parser run build` and
+`pnpm --filter @mmd-toolkit/tests run build`.
 
 ```ts
 import { readFileSync } from "node:fs"

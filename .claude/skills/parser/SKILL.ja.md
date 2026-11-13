@@ -67,7 +67,7 @@ pin した mermaid.js の更新を扱う。
    それと `packages/tests/fixtures/<図種>/` の fixture。
    実装する挙動は、ここにあるものだけ。
 
-## 2. 作業ツリー
+## 2. この SKILL が書くもの
 
 - この SKILL の手順が書くのは、`packages/parser`、`packages/ast` と、
   fixture のテストが書く `packages/tests/fixtures/<図種>/<fixture 名>/` の
@@ -75,10 +75,6 @@ pin した mermaid.js の更新を扱う。
   fixture のほかのファイル、仕様、ほかのパッケージは書かない。
   それらを直す必要が出たら、そのパッケージの SKILL の手順で直す。
   spec、tests、prettier-plugin の SKILL である。
-- 作業ツリーは、
-  スキル conventions の
-  [作業ツリーの扱い](../conventions/SKILL.ja.md#作業ツリーの扱い)
-  のとおりに扱う。
 - `packages/parser` のソースとテストは ASCII
   だけで書かれている（それ以外の文字は、すべてエスケープで書く）。
   例外は、`src/code-points.ts` のコメントで、
@@ -100,7 +96,7 @@ pin した mermaid.js の更新を扱う。
 ## 3. 確かめ方（すべての作業で）
 
 - mermaid.js の挙動についての主張は、自分のものも、ほかから来たものも、
-  書く前に、リポジトリの外（scratchpad）の probe で確かめる。
+  書く前に、リポジトリの外の probe で確かめる。
   probe は `node --conditions=source` で走らせるスクリプトで、
   `packages/tests` のソースから `runMermaidWithEmbeddedData` と `dbFromTree`
   を読み込む。

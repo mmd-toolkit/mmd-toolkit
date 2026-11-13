@@ -37,12 +37,9 @@ its scope, and whether `recommended` enables it. The adoption criteria are in
 - Mark each claim as run (checked by running it), read (checked by reading), or
   unchecked. Withdraw a wrong claim in those words.
 - Read the current specification before relying on it.
-- Read the skill [conventions](../conventions/SKILL.md) first: the working tree
-  is treated as its section
-  [The working tree](../conventions/SKILL.md#the-working-tree) says, and the
-  scripts of a check are set up and run as its section
-  [Scripts run outside the repository](../conventions/SKILL.md#scripts-run-outside-the-repository)
-  says.
+- Read the skill [conventions](../conventions/SKILL.md) first. Set up and run
+  the scripts of a check as
+  [references/probe-scripts.md](references/probe-scripts.md) says.
 
 ## 2. The adoption criteria, and how to apply them
 

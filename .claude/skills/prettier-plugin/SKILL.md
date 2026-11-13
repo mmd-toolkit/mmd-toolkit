@@ -51,9 +51,7 @@ configuration keys or source paths are held.
 This procedure writes only to `packages/prettier-plugin-mmd` and this SKILL.
 When another package needs a change, make it with that package's SKILL (a gap in
 the specification with the spec SKILL, a change of the tree with the parser
-SKILL, fixtures with the tests SKILL). The working tree is treated as
-[The working tree](../conventions/SKILL.md#the-working-tree) in the skill
-conventions says.
+SKILL, fixtures with the tests SKILL).
 
 ## 2. When to start (input)
 
@@ -401,10 +399,6 @@ When the machine is under load or the workspace has unrelated failures:
     tree's `comments` in a document node.
   - `embed` returns `null` for nodes it does not handle.
   - `printDocToString` follows `endOfLine`.
-- Treat the working tree, and write the scripts of a check, as the skill
-  conventions says
-  ([The working tree](../conventions/SKILL.md#the-working-tree),
-  [Scripts run outside the repository](../conventions/SKILL.md#scripts-run-outside-the-repository)).
 - Before making a document again from its draft, check that the draft is current
   (that the document has not been edited directly).
 

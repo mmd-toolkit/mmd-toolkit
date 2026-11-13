@@ -46,7 +46,7 @@ pin した mermaid.js の更新は SKILL
    fixture の形式、期待値の求め方、Db の要約、埋め込まれたデータの値、
    fixture の保守と収集の手順はそこにある。
 
-## 3. 作業ツリーの扱い
+## 3. これらの SKILL が書くもの
 
 - この SKILL と、SKILL `tests-diagram-type`、`tests-tree-checks`、
   `tests-mermaid-update` の手順が書くのは、`packages/tests`、`tools/`、
@@ -55,11 +55,6 @@ pin した mermaid.js の更新は SKILL
   `packages/prettier-plugin-mmd`）を直す必要が出たら、
   そのパッケージの SKILL の手順で直す。
   ほかのパッケージのテストから入力を取るときは、読むだけにする。
-- 作業ツリーは、
-  スキル conventions の
-  [作業ツリーの扱い](../conventions/SKILL.ja.md#作業ツリーの扱い)
-  のとおりに扱う。
-- fixture の改名は、ディレクトリごと通常の `mv` で行う。
 - fixture のディレクトリを消すことは取り消せない。
   消す必要があるときは、消すものの一覧とコマンドを示して決定を求める。
 - `eslint --fix` と Prettier の結果は、SKILL `conventions` のとおり必ず読む。
@@ -68,10 +63,9 @@ pin した mermaid.js の更新は SKILL
 
 - 主張は、それが誰のものでも、
   mermaid.js を実際に動かして確かめてから採り入れる。
-  次のスクリプトを `probe.mts` として置き、
-  スキル conventions の
-  [リポジトリの外で動かすスクリプト](../conventions/SKILL.ja.md#リポジトリの外で動かすスクリプト)
-  のとおりに準備して動かす。
+  次のスクリプトを `probe.mts` として保存し、
+  `<repo>` をリポジトリのルートの絶対パスに置き換えて、
+  `node probe.mts` で動かす。
 
   ```ts
   import { runMermaidWithEmbeddedData } from "<repo>/packages/tests/src/mermaid.ts"

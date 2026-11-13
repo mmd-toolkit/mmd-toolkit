@@ -6,9 +6,6 @@ mermaid.js を動かし、テキストを parse し、整形するスクリプ�
 rule-ideas の SKILL の
 [references/probe-scripts.ja.md](../../rule-ideas/references/probe-scripts.ja.md)
 にある。
-スキル conventions の
-[リポジトリの外で動かすスクリプト](../../conventions/SKILL.ja.md#リポジトリの外で動かすスクリプト)
-のとおりに準備して動かす。
 
 1. mermaid.js の読み方: 各例を `packages/tests/src/mermaid.ts` の
    `runMermaid(text)` に掛ける。

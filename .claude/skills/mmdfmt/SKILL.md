@@ -67,12 +67,10 @@ changes to the tool, and the tests to run after them, are in
   part of the README that the page holds changes the page in the same change. No
   check compares the two.
 
-## 4. The working tree
+## 4. What this skill writes
 
 The steps of this skill write `packages/mmdfmt`, its page on the documentation
-site, and this skill. The working tree is treated as
-[The working tree](../conventions/SKILL.md#the-working-tree) in the skill
-conventions says. A change that another package needs is made as the last
+site, and this skill. A change that another package needs is made as the last
 paragraph of
 [section 1 of the skill prettier-plugin](../prettier-plugin/SKILL.md#1-what-to-read-first)
 says.

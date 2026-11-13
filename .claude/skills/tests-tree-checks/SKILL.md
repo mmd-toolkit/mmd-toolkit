@@ -13,8 +13,8 @@ description: >-
 # Langium diagrams: the Db builder and the tree checker (tests-tree-checks)
 
 Sections 1 to 4 of the skill [tests](../tests/SKILL.md) (the policies and
-criteria, what to read first, the working tree, and how to check) hold for these
-steps too. Read them first.
+criteria, what to read first, what these skills write, and how to check) hold
+for these steps too. Read them first.
 
 Use the skill [tests-diagram-type](../tests-diagram-type/SKILL.md) to extract
 the diagram's behavior and collect its fixed fixtures. Before generating

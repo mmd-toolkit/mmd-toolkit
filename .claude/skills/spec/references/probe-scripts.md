@@ -1,8 +1,10 @@
 # Scripts (spec)
 
-Set up and run the scripts below as
-[Scripts run outside the repository](../../conventions/SKILL.md#scripts-run-outside-the-repository)
-in the skill conventions says.
+The scripts below are not files of the repository and are not committed. They
+import sources by the absolute path of the repository root: replace `<repo>`
+with that path. Save them as `.mts` files and run them from any directory with
+`node <file>`. Node only removes types that can be erased: use `import type` for
+type-only imports, and no `enum`, `namespace`, or parameter properties.
 
 ## Checking inputs with mermaid.js
 

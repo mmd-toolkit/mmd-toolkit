@@ -4,9 +4,8 @@ description: >-
   The conventions of this repository for writing code and Markdown documents in
   any package: regular expressions, comments and autofix output, invisible
   characters, links to mermaid.js source, the English and Japanese document
-  pairs, prose wrapping, Mermaid code blocks, which tests to run after a change,
-  how the working tree is treated, and how scripts run outside the repository
-  are written. Use before writing or reviewing source code, tests, or a Markdown
+  pairs, prose wrapping, Mermaid code blocks, and which tests to run after a
+  change. Use before writing or reviewing source code, tests, or a Markdown
   document here, before running the tests, and when a check of `pnpm run lint`
   or `pnpm run format:check` fails on one of these.
 ---
@@ -73,6 +72,11 @@ The procedures of a package are in the skill of that package.
   it carries the reason (`-- …`). The rules that carry these conventions have no
   such place: `pnpm run lint` rejects a comment that disables one of them, or
   that names no rule; `eslint.config.mjs` lists them and what to do instead.
+- The shared files at the root (`package.json`, `pnpm-lock.yaml`,
+  `tsconfig.json`, `eslint.config.mjs`, `prettier.config.js`,
+  `vitest.config.ts`, `.github/workflows/`, `scripts/`) act on every package.
+  Change them only when needed; before a change, check what it does to the other
+  packages.
 
 ## Documents
 
@@ -191,68 +195,3 @@ rules, and holes in the tree check, which no product sees; and a generator lets
 a change be reported done without anyone listing the cases of its sentence. The
 rule names the habit: write the sentence, list its cases, give each a fixture,
 cite them, and let the review read the sentence again.
-
-## The working tree
-
-What follows holds for every piece of work that writes in this repository.
-Commit and push only when the user says so
-([the Principles of AGENTS.md](../../../AGENTS.md#principles)).
-
-- Do not change what git stages or checks out, unless the user says so: no
-  `git add`, `git mv`, `git rm`, `git stash`, `git checkout`, `git restore`, or
-  `git reset`. Move, rename, and delete files with plain `mv` and `rm`.
-- Do not edit a tracked file for a while to try something or to change how a
-  check runs (such as the number of inputs of a test): a run that is cut off
-  never restores it, and the file can then be staged or committed in that state.
-  Try it in a copy outside the repository.
-- Put the scripts, temporary files, probes, and logs of a check in a working
-  directory outside the repository: a temporary test file in the working tree is
-  picked up by a test run.
-- When the working tree is shared with other work, do not touch a file that
-  someone else is editing: the changes of one of the two are lost, also when you
-  wait until the edits stop. Read the target before deleting or replacing it.
-- The shared files at the root (`package.json`, `pnpm-lock.yaml`,
-  `tsconfig.json`, `eslint.config.mjs`, `prettier.config.js`,
-  `vitest.config.ts`, `.github/workflows/`, `scripts/`) act on every package.
-  Change them only when needed; before a change, check what it does to the other
-  packages, and after it, run the checks of the whole repository
-  (`pnpm run lint` and the whole test suite).
-- The Write tool and shell here-documents can turn an escape such as `\u00a0`
-  into the real character. After writing source or documents, run
-  `node scripts/check-invisible-chars.mjs` (`pnpm run lint:chars`), grep what
-  you wrote for characters outside ASCII, and turn back into escapes those that
-  were written as escapes.
-- Stop only the processes that you started, by their task id or process id;
-  never by name (`pkill -f vitest` also stops every other run of the tests on
-  the machine).
-- The tests are heavy. Under a high load (a load average of `uptime` above the
-  number of CPUs) a test file can time out; when one does, run that file alone
-  before judging. Run long checks in the background, with the output in a file
-  outside the repository.
-
-## Scripts run outside the repository
-
-A script that checks something (a probe of mermaid.js, the parser, or the
-formatter) is written and run so:
-
-- Put it in a working directory outside the repository as a `.mts` file (an ES
-  module, where top-level `await` is allowed), and run it with `node <file>`,
-  never with `tsx`: Node runs TypeScript as it is, from any directory.
-- A file outside the repository does not resolve package names: import the
-  source files by their absolute path. The scripts in the skills write the root
-  of the repository as `<repo>`; replace it with its absolute path.
-- Node only removes types that can be erased: write a type-only import as
-  `import type`, and use no `enum`, no `namespace`, and no parameter properties.
-- Write the inputs of a script (a JSON file) with a script, such as `json.dump`
-  in Python, not by hand or in the shell, so that whitespace at the end of a
-  line, tabs, `\r`, and quotes are exact; after writing, check the bytes with
-  `od -c`.
-- Calls to mermaid.js are serial and slow (tens of milliseconds each): with many
-  inputs, run the script in the background, write its output to a file in the
-  working directory, and read the counts, not only a sample.
-- A script that imports the sources of the formatter
-  (`packages/prettier-plugin-mmd`) gets `@mmd-toolkit/parser` and
-  `@mmd-toolkit/tests` from their builds in `lib/`, unlike the tests: after
-  their sources change, rebuild them first
-  (`pnpm --filter @mmd-toolkit/parser run build`,
-  `pnpm --filter @mmd-toolkit/tests run build`).
