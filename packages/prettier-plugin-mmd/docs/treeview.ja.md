@@ -1691,6 +1691,29 @@ treeview/branch-prefixes/box-redraw-prefix-trivia-and-value-protection]
 `title  ;T` と `title ;T` は同じように印字します。
 [fixture: treeview/semicolons/ignored-semicolon-title-value-second-space]
 
+テキストのない `title` は、
+同じ行のディレクティブかコメントの前に空白が書かれていれば、
+その最初のものの前に空白 1 つを置いて印字します。
+空白が 1 文字でもそれ以上でも、タブでも、
+空白と U+2028 か U+2029 の組でも同じです（空白だけの title は、
+値のない `title` です）。
+キーワードとディレクティブの間に何も書かれていなければ、空白は置きません。
+`title`、空白 1 つ、`%%{init: {}}%%` はそのまま印字し、`title`、空白 3 つ、
+`%%{init: {}}%%` も同じ形に印字します。
+キーワードの後の 1 文字の空白は、mermaid.js にとってキーワードの一部なので、
+テキストのない title はキーワードで終わります。
+その 1 文字は、テキストのある title の後の空白と同じく、行の隙間です。
+2 回目の整形は、1 回目と同じ形になります。
+[fixture: title/bare-title-directive-one-space]
+[fixture: title/bare-title-directive-spaces]
+[fixture: title/bare-title-directive-tab]
+[fixture: title/bare-title-directive-touching]
+[fixture: title/bare-title-comment-spaces]
+[fixture: title/bare-title-unclosed-directive-spaces]
+[test: treeview/title/bare-title-directive-space-and-line-separator]
+[test: treeview/title/bare-title-directive-space-and-paragraph-separator]
+[test: treeview/title/bare-title-directive-spaces-and-line-separator]
+
 [fixture: treeview/title/title-shared]
 
 [fixture: treeview/title/title-bare]

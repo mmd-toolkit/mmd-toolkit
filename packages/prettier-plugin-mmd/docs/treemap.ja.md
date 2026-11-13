@@ -658,6 +658,28 @@ Db の等しい外側の空白から 1 つを選び、引用符に見える文�
 行末の空白の有無にかかわらず、最後のディレクティブの後の空白を除いて印字します。
 （[同じに描かれるキーワードの後のテキスト](./compatibility.ja.md#同じに描かれるキーワードの後のテキスト)）。
 [fixture: title/title-directives-end-blanks-dropped]
+テキストのない `title` は、
+同じ行のディレクティブかコメントの前に空白が書かれていれば、
+その最初のものの前に空白 1 つを置いて印字します。
+空白が 1 文字でもそれ以上でも、タブでも、
+空白と U+2028 か U+2029 の組でも同じです（空白だけの title は、
+値のない `title` です）。
+キーワードとディレクティブの間に何も書かれていなければ、空白は置きません。
+`title`、空白 1 つ、`%%{init: {}}%%` はそのまま印字し、`title`、空白 3 つ、
+`%%{init: {}}%%` も同じ形に印字します。
+キーワードの後の 1 文字の空白は、mermaid.js にとってキーワードの一部なので、
+テキストのない title はキーワードで終わります。
+その 1 文字は、テキストのある title の後の空白と同じく、行の隙間です。
+2 回目の整形は、1 回目と同じ形になります。
+[fixture: title/bare-title-directive-one-space]
+[fixture: title/bare-title-directive-spaces]
+[fixture: title/bare-title-directive-tab]
+[fixture: title/bare-title-directive-touching]
+[fixture: title/bare-title-comment-spaces]
+[fixture: title/bare-title-unclosed-directive-spaces]
+[test: treemap/title/bare-title-directive-space-and-line-separator]
+[test: treemap/title/bare-title-directive-space-and-paragraph-separator]
+[test: treemap/title/bare-title-directive-spaces-and-line-separator]
 
 空の title の次のコメント行は次の文にそろえ、title の値にはしません。
 [fixture: treemap/title/empty-next-comment]
