@@ -432,10 +432,8 @@
   the output is no longer rejected.
   
   > **NOTE:**\
-  > Overturned in the next release: `A[ user@example.com ]` keeps its space
-  > again in `flowchart` (mermaid.js 11.7.0, 11.17.2, and 12.0.0 reject the
-  > form without it) and `swimlane-beta` (11.16.1, 11.17.2, and 12.0.0 reject
-  > it).
+  > Overturned in the next release: `A[ user@example.com ]` keeps its spaces
+  > again in `flowchart` and `swimlane-beta`.
 
 ### Patch Changes
 
