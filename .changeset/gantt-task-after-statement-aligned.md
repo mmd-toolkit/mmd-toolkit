@@ -2,7 +2,6 @@
 "prettier-plugin-mmd": patch
 ---
 
-Line up the colon of a Gantt task written after another statement on its line at
-the first formatting: `axisFormat %m #a   : 1d` was printed with `#a   :1d` as
-written on its own line, and the next formatting lined it up with the other
-tasks.
+Line up the colon of a `gantt` task on the first formatting even when another
+statement precedes it: after `Short   : 1d`, `axisFormat %m #a   : 1d` now
+prints as `axisFormat %m` and `#a    : 1d` on separate lines.

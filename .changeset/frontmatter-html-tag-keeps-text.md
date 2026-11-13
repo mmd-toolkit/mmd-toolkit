@@ -2,7 +2,7 @@
 "prettier-plugin-mmd": patch
 ---
 
-Keep the text after the frontmatter as written when an HTML tag starts in the
-frontmatter (`title: <a`) and ends after it. An `erDiagram` whose body was
-`"b="c">d"` was printed with `"b="`, `c`, and `">d"` on three lines, which
-mermaid.js rejects.
+Keep the text after frontmatter as written when an HTML tag starts in the
+frontmatter and ends after it: an `erDiagram` with `title: <a` in its
+frontmatter and the body `"b="c">d"` now keeps that body on one line instead of
+splitting it into three lines that mermaid.js rejects.

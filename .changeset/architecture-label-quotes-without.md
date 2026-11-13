@@ -2,6 +2,5 @@
 "prettier-plugin-mmd": minor
 ---
 
-Print the label of an `architecture` group or service without quotes when it
-holds no bracket, quote, or backslash: `service api(server)["A.B"]` becomes
-`service api(server)[A.B]`.
+Print an `architecture-beta` group or service label without quotes when it needs
+none: `service api(server)["A.B"]` becomes `service api(server)[A.B]`.

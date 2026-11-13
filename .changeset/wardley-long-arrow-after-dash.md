@@ -2,6 +2,5 @@
 "prettier-plugin-mmd": patch
 ---
 
-Fix a `wardley` link whose long arrow touches the name before it: `Alpha-->Beta`
-was printed `Alpha- -> Beta`, which mermaid.js 11.14.0 rejects. It is now
-printed `Alpha--> Beta`.
+Keep a long `wardley-beta` arrow attached to the name before it: `Alpha-->Beta`
+becomes `Alpha--> Beta`.

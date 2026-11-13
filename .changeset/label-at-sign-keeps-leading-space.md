@@ -2,6 +2,10 @@
 "prettier-plugin-mmd": patch
 ---
 
-Keep the spaces around labels such as `A[ user@example.com ]` (previously
-printed `A[user@example.com]`) in `flowchart` and `swimlane-beta`, and print
-`A[/ a@"b" /]` as `A[/a@"b"/]` in `agentflow-beta`.
+Keep the spaces around a `flowchart` or `swimlane-beta` label that holds an `@`:
+`A[ user@example.com ]` no longer becomes `A[user@example.com]`. Version 0.4.0
+began to print such a label without the spaces, so that a label comes out in one
+form, but several versions of mermaid.js reject `A[user@example.com]`, so a
+diagram that drew there stopped drawing once it was formatted. Now the spaces
+stay as written, and `A[/ a@"b" /]` of an `agentflow-beta` is printed
+`A[/a@"b"/]`.

@@ -2,6 +2,6 @@
 "prettier-plugin-mmd": patch
 ---
 
-Keep a tab between the words of an `architecture` label: `["A<tab>B"]` was
-printed `[A B]`, which mermaid.js draws as two words instead of one. A tab
-beside a quote or a bracket inside the label stays too, as in `["A'<tab>B"]`.
+Keep a tab between the words of an `architecture-beta` label:
+`service api(server)["A<tab>B"]` becomes `service api(server)[A<tab>B]` instead
+of replacing the tab with a space.
