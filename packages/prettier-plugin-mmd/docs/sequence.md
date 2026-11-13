@@ -911,8 +911,8 @@ between the keyword and a text on the next line stays, on the line of the
 trigger of the rule, which is part of the line that stays together:
 `participant A@{"style":"x:#y"};title;` and `T` are printed
 `participant A@{"style":"x:#y"};title; T`, the text joined to the keyword (see
-[Semicolons](#semicolons)). [fixture:
-title/ignored-semicolon-before-text-on-next-line-kept] [fixture:
+[A `;` that the line rule ignores before the value of its statement](./compatibility.md#a--that-the-line-rule-ignores-before-the-value-of-its-statement)).
+[fixture: title/ignored-semicolon-before-text-on-next-line-kept] [fixture:
 title/ignored-semicolon-before-text-on-kept-line-kept] It is at the end of a
 line, so the example is written as strings, in which `\n` is a line break:
 `"sequenceDiagram\ntitle Kept   \nA->>B: x\n"` is printed as
