@@ -26,6 +26,7 @@ import {
   findTokenStartingAt,
   isCommentLine,
   skipIgnoredSemicolons,
+  textRead,
 } from "./source.ts"
 
 /** Prints Ishikawa's nested tree with one configured step per depth. */
@@ -120,7 +121,9 @@ export function printIshikawa(
             keyword.range[1] <= comment.range[0] &&
             comment.range[1] <= line.range[0] &&
             (!isCommentLine(source.text, source.root, comment) ||
-              comment.range[0] < source.text.indexOf("\n", keyword.range[1])),
+              !textRead(source, keyword.range[1], comment.range[0]).includes(
+                "\n",
+              )),
         )
       )
     },

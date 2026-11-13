@@ -29,9 +29,9 @@ import {
   findFirstIndex,
   findTokenStartingAt,
   findTriviaBetween,
-  isCommentLine,
   isSpaceOrTab,
   isWhitespace,
+  textRead,
 } from "./source.ts"
 
 /** The leaves printed as written (docs/kanban.md, Labels and Data blocks). */
@@ -281,11 +281,6 @@ export function findKeptGapEnd(
   return offset
 }
 
-/** Whether a character is a line feed, a U+2028, or a U+2029. */
-function isLineBreak(character: string): boolean {
-  return character === "\n" || character === "\u2028" || character === "\u2029"
-}
-
 /** Whether the gap holds a diagram comment that makes it a kept gap. */
 function holdsKeptGap(source: Source, start: number, end: number): boolean {
   // A kept stretch may already have printed the comment's final selected
@@ -293,35 +288,14 @@ function holdsKeptGap(source: Source, start: number, end: number): boolean {
   // Blank lines and Whitespace characters).
   if (isCommentEnd(source, start)) return true
   const all = source.root.comments
-  const comments = all.slice(
-    findFirstIndex(all, (comment) => comment.range[1] >= start),
-    findFirstIndex(all, (comment) => comment.range[1] > end),
-  )
-  for (const comment of comments) {
-    // Looking back for the line break one character at a time stays on the
-    // line of the comment, where a search for each of the three characters
-    // would run to the start of the text for one that is not there.
-    let boundary = comment.range[0]
-    while (boundary > 0 && !isLineBreak(source.text[boundary - 1])) boundary--
-    const directives = findTriviaBetween(
-      source,
-      boundary,
-      comment.range[0],
-    ).filter((item) => item.type === "Directive")
-    let position = boundary
-    while (position < comment.range[0]) {
-      const here = position
-      const directive = directives.find((item) => item.range[0] === here)
-      if (directive !== undefined) position = directive.range[1]
-      else if (isWhitespace(source.text[position])) position++
-      else break
-    }
-    if (
-      isCommentLine(source.text, source.root, comment) &&
-      position === comment.range[0]
+  const comments = all
+    .slice(
+      findFirstIndex(all, (comment) => comment.range[1] >= start),
+      findFirstIndex(all, (comment) => comment.range[1] > end),
     )
-      continue
-    const after = source.text.slice(comment.range[1], end)
+    .filter((comment) => textRead(source, ...comment.range) !== "")
+  for (const comment of comments) {
+    const after = textRead(source, comment.range[1], end)
     if (after.includes("\u2028") || after.includes("\u2029")) return true
     if (comments.some((next) => next.range[0] >= comment.range[1])) return true
     const lines = after.split("\n")

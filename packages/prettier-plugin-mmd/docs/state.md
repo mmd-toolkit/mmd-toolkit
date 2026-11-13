@@ -771,6 +771,10 @@ stateDiagram-v2
 
 ### Notes
 
+An ignored semicolon after a block note's header does not make that header hold
+note text; the body uses the ordinary note layout. [fixture:
+notes/header-ignored-semicolon]
+
 What follows the id of a note on one line, its `:` and its text, is read by
 mermaid.js from right after the id, without its first two characters, and
 trimmed: `note left of A:hi` has the text `i`, and
@@ -1395,6 +1399,12 @@ stateDiagram-v2
 
 ### Semicolons at the end of a style statement
 
+When a style contains removed text, its colon spacing stays as written while an
+eligible final semicolon is dropped. A colon inside a directive is not a CSS
+colon, and a directive does not interrupt an escape before the style's colon.
+[fixture: semicolons-at-the-end-of-a-style-statement/directive-colon-kept]
+[fixture: semicolons-at-the-end-of-a-style-statement/directive-escape-kept]
+
 A line-ending `;` of a `classDef` or `style` statement is dropped when the
 [line rule of mermaid.js](../../spec/docs/common.md#style-and-classdef-lines)
 ignores it: no whitespace lies between the `:` and the later `#`. Removing this
@@ -1594,6 +1604,10 @@ stateDiagram-v2
 ```
 
 ### Line separators
+
+A directive before a leading separator does not hide the separator: the line
+keeps its written indentation. [test: a state line starting with a directive
+before U+2028]
 
 A line that holds U+2028 or U+2029 is kept as written, the second description of
 an alias included, whitespace after the character too: `state "d" as A : x`, two

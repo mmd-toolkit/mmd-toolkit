@@ -249,11 +249,13 @@ function startsTitleTextWithHashOnNextLine(
   statement: TimelineStatement,
 ): boolean {
   if (statement.type !== "TimelineTitleStatement") return false
-  const text = source.text.slice(...statement.value.range)
-  const hash = statement.value.range[0] + text.length - text.trimStart().length
+  const text = textRead(source, ...statement.value.range)
   if (!text.trimStart().startsWith("#")) return false
-  const lineBreak = source.text.lastIndexOf("\n", hash)
-  return lineBreak >= statement.range[0] && lineBreak + 1 < hash
+  const beforeHash =
+    textRead(source, statement.range[0], statement.value.range[0]) +
+    text.slice(0, text.length - text.trimStart().length)
+  const lineBreak = beforeHash.lastIndexOf("\n")
+  return lineBreak >= 0 && lineBreak + 1 < beforeHash.length
 }
 
 /** The gap rules of a title, a section, or an accessibility statement. */

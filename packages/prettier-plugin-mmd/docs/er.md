@@ -675,8 +675,10 @@ and
 [Forms kept for versions of mermaid.js that count](./compatibility.md#forms-kept-for-versions-of-mermaidjs-that-count)).
 A directive between the keyword and the `-` does not part them, since mermaid.js
 removes it before it reads the text: `class%%{init: {}}%%-A a` stays. `classDef`
-and `style` are not among them: `classDef-x` is printed `classDef -x`. [fixture:
-whitespace-between-tokens/class-then-dash-directive-kept] [fixture:
+and `style` are not among them: `classDef-x` is printed `classDef -x`. A `;`
+that the line rule ignores does not part the keyword and the `-` either.
+[fixture: whitespace-between-tokens/class-then-dash-ignored-semicolon-kept]
+[fixture: whitespace-between-tokens/class-then-dash-directive-kept] [fixture:
 whitespace-between-tokens/subgraph-then-dash-directive-kept] [fixture:
 whitespace-between-tokens/end-then-dash-directive-kept] [fixture:
 whitespace-between-tokens/keyword-then-dash-touching-kept] [fixture:
@@ -1309,6 +1311,10 @@ erDiagram
 ```
 
 ### Accessibility statements
+
+A `;` that the line rule ignores after a description block does not prevent the
+one-line colon form; its written source remains after the description. [fixture:
+accessibility-statements/block-trailing-ignored-semicolon]
 
 The `:` of `accTitle` and `accDescr` touches the keyword and has one space after
 it; the text is without the whitespace at its ends. [fixture:

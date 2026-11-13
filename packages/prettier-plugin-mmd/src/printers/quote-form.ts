@@ -21,11 +21,13 @@ import { findSankeyKeptLines } from "./sankey-kept-lines.ts"
 import type { Source } from "./source.ts"
 import {
   findDirectiveEndingAt,
-  findTriviaAt,
   isBracketPadding,
   isSpaceOrTab,
   isWordCharacter,
   isWhitespace,
+  previousRead,
+  skipBlanksAndRemoved,
+  skipRemoved,
   textRead,
 } from "./source.ts"
 import { c4ArgumentFields, c4NameFields, c4TextFields } from "./text-slots.ts"
@@ -1423,13 +1425,16 @@ function touchesToken(
   offset: number,
   before: boolean,
 ): boolean {
-  const character = source.text[before ? offset - 1 : offset]
+  const read = before
+    ? previousRead(source, offset)
+    : skipRemoved(source, offset)
+  const character = source.text[read]
   return (
     character !== undefined &&
     !isWhitespace(character) &&
     !";[".includes(character) &&
     source.root.tokens.find((token) =>
-      before ? token.range[1] === offset : token.range[0] === offset,
+      before ? token.range[1] === read + 1 : token.range[0] === read,
     )?.type !== "Keyword"
   )
 }
@@ -1603,17 +1608,11 @@ function respell(
         : collapseRuns(text)
       : text,
   )
-  // mermaid.js takes the directives away before it reads the text, so what
-  // follows is the first character after the spaces, tabs, and directives.
+  // What follows is the first character after blanks and removed text,
+  // including the terminal whitespace taken by an unclosed directive.
   const textEnd = rule.wrapped === undefined ? stringEnd : end
   const lineEnd = lineEndOf(source, textEnd)
-  let next = textEnd
-  for (;;) {
-    while (next < lineEnd && isSpaceOrTab(source.text[next])) next++
-    const directive = findTriviaAt(source, next)
-    if (directive?.type !== "Directive" || directive.range[0] !== next) break
-    next = directive.range[1]
-  }
+  const next = skipBlanksAndRemoved(source, textEnd, lineEnd)
   const after = next < lineEnd ? source.text[next] : undefined
   if (rule.afterTextOnItsLine === true && startsItsLine(source, start)) return
   if (

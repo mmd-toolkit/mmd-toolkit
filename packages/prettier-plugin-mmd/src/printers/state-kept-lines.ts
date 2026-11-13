@@ -12,6 +12,7 @@ import {
   findStructuralToken,
   findTokenStartingAt,
   isWhitespace,
+  skipRemoved,
   textRead,
 } from "./source.ts"
 
@@ -122,7 +123,10 @@ function findLinesStartingWithSeparator(source: Source): ReadonlySet<number> {
   const lines = new Set<number>()
   for (const line of findLineSeparatorLines(source)) {
     let offset = line
-    while (offset < source.text.length && isWhitespace(source.text[offset])) {
+    while (offset < source.text.length) {
+      offset = skipRemoved(source, offset)
+      if (offset >= source.text.length || !isWhitespace(source.text[offset]))
+        break
       if (source.text[offset] === "\n") break
       if (
         source.text[offset] === "\u2028" ||

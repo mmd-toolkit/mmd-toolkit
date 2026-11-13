@@ -45,7 +45,7 @@ import {
 } from "./statement-rules.ts"
 import {
   findStructuralToken,
-  findDirectiveEndingAt,
+  previousRead,
   findTokenEndingBefore,
   findTokensBetween,
   findTriviaBetween,
@@ -186,15 +186,7 @@ export function findAttributeBraces(
  */
 export function touchesKeywordWithDash(source: Source, start: number): boolean {
   if (source.text[start] !== "-") return false
-  // mermaid.js removes the directives between them before it reads the text.
-  let keywordEnd = start
-  for (
-    let directive = findDirectiveEndingAt(source, keywordEnd);
-    directive !== undefined;
-    directive = findDirectiveEndingAt(source, keywordEnd)
-  ) {
-    keywordEnd = directive.range[0]
-  }
+  const keywordEnd = previousRead(source, start) + 1
   const before = findTokenEndingBefore(source, keywordEnd)
   return before?.type === "Keyword" && before.range[1] === keywordEnd
 }

@@ -26,6 +26,7 @@ import {
   findTokensBetween,
   findTriviaBetween,
   hasTriviaBesidesTrailingDirectives,
+  holdsRemoved,
   isSpaceOrTab,
   isStructural,
   skipRemoved,
@@ -148,7 +149,7 @@ export function styleStatementRules(
  */
 export function printStyleUnitSpacing(source: Source, style: Node): Doc {
   const [start, end] = style.range
-  const gap = findColonGap(source.text, start, end)
+  const gap = findColonGap(source, start, end)
   if (gap === undefined) return printWordGaps(source, start, end)
   return [
     printWordGaps(source, start, gap.nameEnd),
@@ -707,7 +708,12 @@ export function normalizeCallArguments(
     while (to > from && isSpaceOrTab(text[to - 1])) to--
     return [from, to]
   })
-  if (trimmed.some(([from, to]) => from === to)) return
+  if (
+    trimmed.some(([from, to]) =>
+      [...textRead(source, range[0] + from, range[0] + to)].every(isSpaceOrTab),
+    )
+  )
+    return
   const edits: TextEdit[] = []
   const [offset] = range
   for (const [index, [from, to]] of trimmed.entries()) {
@@ -889,7 +895,7 @@ export function addColonEdit(
     readonly labelStyleNames?: readonly string[]
   } = {},
 ): void {
-  const gap = findColonGap(source.text, start, end)
+  const gap = findColonGap(source, start, end)
   if (gap === undefined) return
   const { nameEnd, colon, valueStart } = gap
   const name = source.text.slice(start, nameEnd)
@@ -925,10 +931,15 @@ interface ColonGap {
  * that space stays and the whitespace after it goes.
  */
 function findColonGap(
-  text: string,
+  source: Source,
   start: number,
   end: number,
 ): ColonGap | undefined {
+  // The colon's padding cannot replace an indivisible removed item. Keep the
+  // style as written, including escapes beside it (docs/state.md,
+  // Semicolons at the end of a style statement).
+  if (holdsRemoved(source, start, end)) return undefined
+  const { text } = source
   const colon = text.indexOf(":", start)
   if (colon === -1 || colon >= end) return undefined
   let valueStart = colon + 1

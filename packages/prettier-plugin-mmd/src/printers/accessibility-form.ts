@@ -7,7 +7,7 @@ import {
   lineStartOf,
 } from "./kept-lines.ts"
 import type { Source } from "./source.ts"
-import { findTriviaBetween, isWhitespace } from "./source.ts"
+import { findTriviaBetween, isWhitespace, textRead } from "./source.ts"
 import { holdsStatementAfter } from "./accessibility-lines.ts"
 import {
   diagramTypesWithJisonAccessibilityLines,
@@ -241,11 +241,7 @@ function readDescriptionBlock(
         textOf(source, inner[last]).trimEnd().length),
   ]
   const text = source.text.slice(...textRange)
-  // The text without the directives that lie inside it.
-  const spelled = inner
-    .filter((token) => token.type === "RawText")
-    .map((token) => textOf(source, token))
-    .join("")
+  const spelled = textRead(source, ...textRange)
   // A lexer that reads a whole line starting at its beginning reads a line
   // with `direction` as the direction of the diagram, before or after the rule
   // of `accDescr`, so the form with the `:` reads the description as a
@@ -253,8 +249,8 @@ function readDescriptionBlock(
   // after a line terminator that is no part of a line (LF, CR, U+2028, U+2029),
   // or with a directive inside the word, which mermaid.js takes away first.
   const apart =
-    holdsLineTerminator(source.text.slice(statement.range[0], textRange[0])) ||
-    holdsLineTerminator(source.text.slice(textRange[1], statement.range[1]))
+    holdsLineTerminator(textRead(source, statement.range[0], textRange[0])) ||
+    holdsLineTerminator(textRead(source, textRange[1], statement.range[1]))
   const endsAtPercent = diagramTypesEndingTextAtPercent.has(
     source.root.diagramType,
   )
@@ -268,18 +264,18 @@ function readDescriptionBlock(
       directive.range[0] < statement.range[1],
   )
   if (
-    holdsLineBreak(text) ||
+    holdsLineBreak(spelled) ||
     holdsUnclosedDirective ||
     (apart &&
       bodiesReadingDirectionLines.has(source.root.body.type) &&
       spelled.toLowerCase().includes("direction")) ||
     (source.root.diagramType === "treeView" &&
-      [...text].some((character) =>
+      [...spelled].some((character) =>
         treeviewBoxCharacters.includes(character),
       )) ||
     (endsAtPercent &&
-      (text.includes("\u2028") ||
-        text.includes("\u2029") ||
+      (spelled.includes("\u2028") ||
+        spelled.includes("\u2029") ||
         spelled.includes("%%")))
   ) {
     return undefined
@@ -385,7 +381,8 @@ function commentsAfterAllowed(source: Source, end: number): boolean {
     (diagramTypesEndingTextAtPercent.has(source.root.diagramType) &&
       !diagramTypesWithJisonAccessibilityLines.has(source.root.diagramType)) ||
     findTriviaBetween(source, end, lineEndOf(source, end)).every(
-      (item) => item.type === "Directive",
+      (item) =>
+        item.type === "Directive" || textRead(source, ...item.range) === "",
     )
   )
 }
@@ -409,7 +406,7 @@ export function rewriteDirectiveBlocks(source: Source): string | undefined {
     if (
       block === undefined ||
       (block.beforeBrace.length === 0 && block.beforeText.length === 0) ||
-      holdsLineBreak(source.text.slice(...node.range))
+      holdsLineBreak(textRead(source, ...node.range))
     ) {
       return
     }

@@ -29,6 +29,7 @@ import {
   isSpaceOrTab,
   isStructural,
   isWhitespace,
+  skipRemoved,
 } from "./source.ts"
 
 /**
@@ -415,7 +416,11 @@ export function layoutDescriptionBlock(
     while (to > from && source.text[to - 1].trim() === "") to--
     const trivia = findTriviaBetween(source, ...valueRange)
     let hasText = false
-    for (let offset = from; offset < to; offset++) {
+    for (
+      let offset = skipRemoved(source, from);
+      offset < to;
+      offset = skipRemoved(source, offset + 1)
+    ) {
       const item = trivia.find(
         (entry) => entry.range[0] <= offset && offset < entry.range[1],
       )

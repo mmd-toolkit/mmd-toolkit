@@ -14,7 +14,12 @@ import type { LeadingDirectives } from "./indentation-lines.ts"
 import { keptAsWritten, replaceInAtoms } from "./layout.ts"
 import { collectTextEndEdits, endsWithDirectives } from "./statement-rules.ts"
 import type { Source } from "./source.ts"
-import { findTriviaBetween, isSpaceOrTab, isWhitespace } from "./source.ts"
+import {
+  findTriviaBetween,
+  isSpaceOrTab,
+  isWhitespace,
+  textRead,
+} from "./source.ts"
 
 /** All Ishikawa values are literals, including numbers and apparent strings. */
 export const ishikawaValueNodeTypes: ReadonlySet<Node["type"]> = new Set([
@@ -65,10 +70,9 @@ export function ishikawaLines(
     let leading = findLeadingDirectives(source, content, textStart)
     // A root on the line of the header has the whitespace between the header
     // and its text as its indentation.
-    const column =
-      content -
-      start +
-      countWhitespaceOutside(source, content, textStart, leading.directives)
+    const column = [...textRead(source, start, textStart)].filter(
+      isWhitespace,
+    ).length
     let keepsHeaderGroup = false
     if (start === headerEnd) {
       // A header-attached prefix stays with the header. Once whitespace
@@ -176,25 +180,4 @@ export function indentationShowsTree(lines: readonly IshikawaLine[]): boolean {
     columns.push(column)
   }
   return true
-}
-
-/** The whitespace characters between two offsets that no directive covers. */
-function countWhitespaceOutside(
-  source: Source,
-  from: number,
-  to: number,
-  directives: readonly Range[],
-): number {
-  let count = 0
-  let at = from
-  for (const [start, end] of directives) {
-    for (let offset = at; offset < start; offset++) {
-      if (isWhitespace(source.text[offset])) count++
-    }
-    at = Math.max(at, end)
-  }
-  for (let offset = at; offset < to; offset++) {
-    if (isWhitespace(source.text[offset])) count++
-  }
-  return count
 }

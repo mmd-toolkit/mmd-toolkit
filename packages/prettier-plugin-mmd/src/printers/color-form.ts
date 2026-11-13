@@ -1,7 +1,7 @@
 import type { Node } from "@mmd-toolkit/ast"
 import { visitorKeys } from "@mmd-toolkit/parser"
 import type { Source } from "./source.ts"
-import { isSpaceOrTab } from "./source.ts"
+import { isSpaceOrTab, readDiagramText, textRead } from "./source.ts"
 import { styleColorEdits } from "./style-text.ts"
 
 /**
@@ -138,12 +138,15 @@ function findColorFunctionRespellings(
   const target = colorFunctionOf(node)
   if (target === null) return
   const [start, end] = target.range
-  const text = source.text.slice(start, end)
+  const text = textRead(source, start, end)
+  const { offsetOf } = readDiagramText(source)
+  const readStart = textRead(source, 0, start).length
   for (const comma of findColorFunctionCommas(text) ?? []) {
-    let after = comma + 1
-    while (after < text.length && isSpaceOrTab(text[after])) after++
-    if (text.slice(comma, after) !== ", ")
-      found.set(start + comma, { end: start + after, text: ", " })
+    const writtenComma = offsetOf(readStart + comma)
+    let after = writtenComma + 1
+    while (after < end && isSpaceOrTab(source.text[after])) after++
+    if (source.text.slice(writtenComma, after) !== ", ")
+      found.set(writtenComma, { end: after, text: ", " })
   }
 }
 

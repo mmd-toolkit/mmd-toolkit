@@ -47,6 +47,16 @@ const cases = [
     output: 'pie\n  accDescr: direction RL\n  "A": 1\n',
   },
   {
+    name: "accessibility blocks: pie separator-inside-directive-converted",
+    input: "pie\naccDescr {a%%{x:\u2028}%%b}",
+    output: "pie\n  accDescr: a%%{x:\u2028}%%b\n",
+  },
+  {
+    name: "accessibility blocks: flowchart removed-comment-after-block-converted",
+    input: "flowchart LR\naccDescr {x}\u2028%% c\n",
+    output: "flowchart LR\n  accDescr: x\n  %% c\n",
+  },
+  {
     name: "accessibility blocks: state text-with-ls-kept",
     input: "stateDiagram-v2\naccDescr {a\u2028b}\nA --> B",
     output: "stateDiagram-v2\n  accDescr {a\u2028b}\n  A --> B\n",

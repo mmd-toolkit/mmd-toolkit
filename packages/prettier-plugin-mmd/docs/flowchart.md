@@ -136,6 +136,10 @@ accDescr: d ; direction LR
 
 ### Statements one per line
 
+A `;` that the line rule ignores after a word does not separate it from the next
+surviving `;`: only that surviving separator determines the line kept with the
+word. [fixture: statements-one-per-line/word-before-ignored-semicolon]
+
 Each statement stands on a line of its own, as Prettier prints the statements of
 the languages it formats (`a(); b()` in JavaScript becomes two lines), and as
 the documentation of mermaid.js writes them: none of the 257 lines of statements
@@ -648,6 +652,10 @@ flowchart LR
 ```
 
 ### Whitespace between tokens
+
+A call argument that contains only spaces and tabs after the ignored `;` is
+removed keeps the argument list as written, like any other blank argument.
+[fixture: whitespace-between-tokens/call-blank-ignored-part]
 
 Within a line, a run of spaces and tabs between two tokens becomes one space, so
 that a line has one form whoever wrote it, and tokens that touch keep touching,
@@ -2998,6 +3006,10 @@ flowchart LR
 ```
 
 ### Style trailing whitespace
+
+Whitespace taken by an unclosed directive at the end of the input is not a style
+suffix; it does not prevent ordinary style spacing. [test: style trailing NBSP
+taken by an unclosed directive]
 
 Spaces and tabs at the end of a `style`, `classDef`, or `linkStyle` statement
 are dropped. [fixture: style-trailing-whitespace/removed] [fixture:

@@ -14,8 +14,7 @@ import {
 } from "./accessibility-lines.ts"
 import type { Source } from "./source.ts"
 import {
-  findTokenEndingBefore,
-  findTriviaAt,
+  findStructuralTokenEndingBefore,
   isWhitespace,
   isWordCharacter,
   skipRemoved,
@@ -283,16 +282,15 @@ function findAttributeLinesWithTildes(
 
 /**
  * The offset of the first `~` from `from` to the end of the line at `to` that
- * no directive holds, or -1: mermaid.js removes the directives before it reads
- * the text.
+ * mermaid.js reads, or -1: removed characters do not supply a tilde.
  */
 function indexOfTilde(source: Source, from: number, to: number): number {
   let position = from
   while (position < to) {
-    const trivia = findTriviaAt(source, position)
-    if (trivia?.type === "Directive") position = trivia.range[1]
-    else if (source.text[position] === "~") return position
-    else position++
+    position = skipRemoved(source, position)
+    if (position >= to) break
+    if (source.text[position] === "~") return position
+    position++
   }
   return -1
 }
@@ -442,10 +440,7 @@ export function followsSplitKeyword(
   source: Source,
   nameStart: number,
 ): boolean {
-  let keyword = findTokenEndingBefore(source, nameStart)
-  while (keyword?.type === "Directive") {
-    keyword = findTokenEndingBefore(source, keyword.range[0])
-  }
+  const keyword = findStructuralTokenEndingBefore(source, nameStart)
   if (
     keyword?.type !== "Keyword" ||
     !["end", "subgraph"].includes(toAsciiLowerCase(keyword.value))

@@ -185,6 +185,11 @@ A name that holds a directive or a comment is kept as written, as above.
 [fixture: names-and-headings/heading-data-touches-name] [test: agentflow: U+2029
 between a connector name and its data block]
 
+Whitespace before the title is trimmed through a `;` that the line rule ignores:
+`connector style:#x ; [T]` is printed `connector style:#x;[T]`. The semicolon
+keeps its written place against the name. [fixture:
+names-and-headings/title-after-ignored-semicolon]
+
 The whitespace at the end of an ordinary single-part name that has neither a
 title nor a data block is dropped in the same way: `flow F` followed by two
 spaces is printed `flow F`, and so is `flow F ;` followed by a line, where the
@@ -233,7 +238,9 @@ statement that follows, also one after a `;` that becomes a line break: without
 it the line break ends the id and the next statement is read as a part of the
 name, so the Db differs. Drop a space or tab where nothing follows it but
 whitespace, line breaks, and separators: the text then ends the id, as at EOF
-without the character, and the Db and the figure are the same. [fixture:
+without the character, and the Db and the figure are the same. A `;` that the
+line rule ignores leaves no following text for this decision. [fixture:
+names-and-headings/click-exit-before-ignored-semicolon] [fixture:
 names-and-headings/name-exit-space-before-statement-kept] [fixture:
 names-and-headings/name-exit-space-before-separator-statement-kept] [fixture:
 names-and-headings/name-exit-space-before-blank-end-dropped] Additional
@@ -269,7 +276,10 @@ names-and-headings/name-click-exit-before-title-tab]
 A name read as a click id that reaches EOF with no exit character keeps its text
 as written; the only addition is the final LF of
 [Final newline](#final-newline). [fixture:
-names-and-headings/name-click-exit-eof]
+names-and-headings/name-click-exit-eof] Whitespace taken by an unclosed
+directive is removed before the click id is read, so it supplies no exit
+character and can be dropped at EOF. [test: agentflow: click id before taken EOF
+whitespace]
 
 Ordinary blank gaps after the character ending click-id text follow Blank lines.
 [fixture: names-and-headings/name-exit-lf-empty-line] [fixture:

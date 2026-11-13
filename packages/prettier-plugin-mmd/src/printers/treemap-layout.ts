@@ -116,14 +116,7 @@ function touchesEmptyClass(
     (next?.type !== "TreemapSection" && next?.type !== "TreemapLeaf")
   )
     return false
-  let position = item.range[1]
-  const nextStart = treemapStatementRange(next)[0]
-  for (const trivia of findTriviaBetween(source, position, nextStart)) {
-    if (trivia.type !== "Directive" || trivia.range[0] !== position)
-      return false
-    position = trivia.range[1]
-  }
-  return position === nextStart
+  return textRead(source, item.range[1], treemapStatementRange(next)[0]) === ""
 }
 
 /**

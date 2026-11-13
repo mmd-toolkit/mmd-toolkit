@@ -636,11 +636,17 @@ whether it accepts depends on how many diagram comments and empty lines lie
 between two statements. For example, `S`, a line `%%`, an empty line, and `   A`
 are rejected by mermaid.js and accepted by the specification. The printer does
 not repair that. A gap that holds a diagram comment followed by an empty line,
-by another comment, or by a U+2028 or U+2029 is kept whole as written: its empty
-lines and its comments, up to the indentation of the next statement, which the
-printer chooses (see [Indentation](#indentation)). A gap with only comment lines
-(`S`, `%% note`, an empty line, `A`) is formatted as usual, and the comment line
-is aligned (see [Comments](#comments)). A gap of this kind at the end of the
+by another diagram comment, or by a U+2028 or U+2029 in the read text is kept
+whole as written: its empty lines and its comments, up to the indentation of the
+next statement, which the printer chooses (see [Indentation](#indentation)). A
+gap with only comment lines (`S`, `%% note`, an empty line, `A`) is formatted as
+usual, and the comment line is aligned (see [Comments](#comments)). A common
+comment after a directive containing a line feed, or after a native `%%`
+comment, is still removed before this decision and aligned as usual; a U+2028 or
+U+2029 inside that common comment is removed too and cannot make the gap stay as
+written. [test: kanban: comment-line-ls-taken] [fixture:
+blank-lines/common-comment-after-multiline-directive] [fixture:
+blank-lines/native-then-common-comment] A gap of this kind at the end of the
 board is kept whole too, with nothing after it to indent: `kanban`, ` S`, `%%`,
 and two empty lines print `  S`, `%%`, and the same two empty lines. [fixture:
 blank-lines/div-between-comment-blank] [fixture:

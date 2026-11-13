@@ -211,11 +211,13 @@ Ishikawa. A blank after a diagram comment is that comment's separating gap, not
 a plain body-edge blank, so it stays. [fixture: ishikawa/blank-lines/blank-runs]
 [fixture: ishikawa/blank-lines/blank-around-trivia] A separating blank after a
 diagram comment remains one, including after an attached header comment,
-touching or spaced (see [Comments](#comments)); the complete terminal gap after
-a final diagram comment stays written. [fixture:
+touching or spaced, also when a directive before the comment contains a line
+feed that mermaid.js removes (see [Comments](#comments)); the complete terminal
+gap after a final diagram comment stays written. [fixture:
 ishikawa/blank-lines/blank-comment-accepted] [fixture:
 ishikawa/blank-lines/blank-header-comment-accepted] [fixture:
-ishikawa/blank-lines/blank-spaced-header-comment-accepted] [corpus fixture:
+ishikawa/blank-lines/blank-spaced-header-comment-accepted] [fixture:
+ishikawa/blank-lines/header-comment-after-multiline-directive] [corpus fixture:
 ishikawa/gram-last-comment-blank-line] [fixture:
 ishikawa/blank-lines/header-comment-many-blanks] [fixture:
 ishikawa/blank-lines/interior-comment-many-blanks] [fixture:
@@ -403,17 +405,20 @@ ishikawa/inline-directives/directive-single-space-gaps] [fixture:
 ishikawa/inline-directives/directive-in-value] [fixture:
 ishikawa/inline-directives/literal-side-whitespace] [fixture:
 ishikawa/inline-directives/joined-line-spaces] Leading directive gaps instead
-count toward the node's chosen depth indentation, excluding directive
-characters: retain the gaps while they fit, shorten from the last gap backwards
-when necessary, and supply the remainder before the first directive using
-configured characters. This reuses kanban's allocation policy, keeps multiline
-contents and continuation columns, and avoids preserving arbitrary source
-indentation. [fixture: ishikawa/inline-directives/directive-leading] [fixture:
+count toward the node's chosen depth indentation, excluding directive characters
+and removed common comment regions: retain the gaps while they fit, shorten from
+the last gap backwards when necessary, and supply the remainder before the first
+directive using configured characters. This reuses kanban's allocation policy,
+keeps multiline contents and continuation columns, and avoids preserving
+arbitrary source indentation. [fixture:
+ishikawa/inline-directives/directive-leading] [fixture:
 ishikawa/inline-directives/directive-leading-wide] [fixture:
 ishikawa/inline-directives/directive-two-leading] [fixture:
 ishikawa/inline-directives/directive-multiline-join] [test: ishikawa:
 ls-comment-leading-directives] [test: ishikawa:
-ps-comment-leading-directive-kept-zero]
+ps-comment-leading-directive-kept-zero] [test: ishikawa:
+leading-directive-in-joining-region] [test: ishikawa:
+joining-region-does-not-count-indentation]
 
 Input (escaped):
 

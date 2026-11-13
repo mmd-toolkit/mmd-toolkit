@@ -7,6 +7,7 @@ import {
   lineStartOf,
 } from "./kept-lines.ts"
 import type { Source } from "./source.ts"
+import { textRead } from "./source.ts"
 
 /** The lines that hold a `;`, of each source, found once per source. */
 const semicolonLinesBySource = new WeakMap<Source, ReadonlySet<number>>()
@@ -90,7 +91,8 @@ function findPercentMemberLines(
     if (statement.type !== "ClassDeclaration") continue
     const first = statement.members?.at(0)
     if (first === undefined) continue
-    if (!source.text.startsWith("%%", first.range[0])) continue
+    if (!textRead(source, first.range[0], first.range[1]).startsWith("%%"))
+      continue
     lines.push(lineStartOf(source, first.range[0]))
   }
   return lines

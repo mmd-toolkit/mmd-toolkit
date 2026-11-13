@@ -4,7 +4,7 @@ import { printAtoms } from "./atoms.ts"
 import type { BlockRules } from "./blocks.ts"
 import { openingLine, printBlock, printDiagramBlock } from "./blocks.ts"
 import { expectToken, layoutKeywordHeader } from "./layout.ts"
-import { lineStartOf } from "./kept-lines.ts"
+import { holdsKeptSemicolon, lineStartOf } from "./kept-lines.ts"
 import {
   indentationOf,
   significantIndentationOf,
@@ -55,6 +55,7 @@ export function printVenn(
           previous === undefined
             ? ""
             : statement.range[0] <= vennKeptPrefixEnd(source, start) ||
+                holdsKeptSemicolon(source, start, statement.range[0]) ||
                 findTriviaBetween(source, start, statement.range[0]).length >
                   0 ||
                 gap.includes("\n")

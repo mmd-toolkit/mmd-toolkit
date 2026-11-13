@@ -610,6 +610,10 @@ xychart
   bar [1 ""]
 ```
 
+A directive between the keyword and a title is removed before token contact is
+tested: `title %%{wrap x}%%abc` therefore prints the title in quotes. The
+directive stays as written. [fixture: quotes/title-after-directive]
+
 ### Accessibility statements
 
 The `:` of `accTitle` and `accDescr` touches the keyword and has one space after

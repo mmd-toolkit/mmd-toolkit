@@ -43,6 +43,9 @@ import {
   findTriviaBetween,
   isSpaceOrTab,
   isWhitespace,
+  previousRead,
+  skipRemoved,
+  textRead,
 } from "./source.ts"
 
 /** Written leaf values; the leaf coverage test accounts for the other leaves. */
@@ -121,8 +124,19 @@ export function layoutContainerHeader(
     const touchesData =
       node.title === null && node.data.length > 0 && holdsNoTrivia
     if (node.title !== null || touchesData) {
-      while (nameEnd > nameStart && isWhitespace(source.text[nameEnd - 1]))
-        nameEnd--
+      if (holdsNoTrivia) {
+        for (;;) {
+          const previous = previousRead(source, nameEnd)
+          if (previous < nameStart || !isWhitespace(source.text[previous]))
+            break
+          nameEnd = previous
+        }
+      } else {
+        // A name with trivia keeps its authored gap before the last item;
+        // only its written trailing padding is exterior to that item.
+        while (nameEnd > nameStart && isWhitespace(source.text[nameEnd - 1]))
+          nameEnd--
+      }
     } else if (holdsNoTrivia) {
       // At the end of the heading only the spaces and tabs go: U+2028 and
       // U+2029 are characters of the text there.
@@ -235,6 +249,8 @@ export function findNamePrintedEnd(
   }
   let position = name.range[1]
   while (position < source.text.length) {
+    position = skipRemoved(source, position)
+    if (position >= source.text.length) break
     const { element, end } = readGapElement(source, position)
     if (element.kind === "item" && element.item.type !== "Comment")
       position = end
@@ -246,7 +262,7 @@ export function findNamePrintedEnd(
         : end
     } else if (
       element.kind === "lineTerminator" &&
-      source.text.slice(end).trim() !== ""
+      textRead(source, end, source.text.length).trim() !== ""
     )
       return end
     else return name.range[1]
@@ -261,6 +277,8 @@ export function findNamePrintedEnd(
 function endsTheInput(source: Source, offset: number): boolean {
   let position = offset
   while (position < source.text.length) {
+    position = skipRemoved(source, position)
+    if (position >= source.text.length) break
     const { element, end } = readGapElement(source, position)
     if (
       element.kind !== "whitespace" &&

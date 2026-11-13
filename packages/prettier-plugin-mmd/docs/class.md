@@ -116,6 +116,9 @@ member-bodies/empty-unified] [fixture:
 member-bodies/comment-only-over-lines-kept] [fixture:
 member-bodies/directive-only-over-lines-kept] [fixture:
 member-bodies/percent-member-kept] [corpus fixture: class/lex-member-percent]
+The start of the member is read after the `;` that the line rule ignores is
+removed: a member written as `%;% c` still starts with `%%`, and stays on the
+line of the `{`. [fixture: member-bodies/percent-member-ignored-semicolon-kept]
 
 Input
 ([member-bodies/split-input.mmd](../tests/fixtures/class/member-bodies/split-input.mmd)):

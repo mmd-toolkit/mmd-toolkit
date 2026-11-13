@@ -196,7 +196,8 @@ export function findLinesAfterWords(
     while (
       tokens[after]?.type === "String" ||
       tokens[after]?.type === "StringFragment" ||
-      tokens[after]?.type === "Directive"
+      tokens[after]?.type === "Directive" ||
+      tokens[after]?.type === "IgnoredSemicolon"
     )
       after++
     const separator = tokens[after]

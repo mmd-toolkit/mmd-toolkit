@@ -56,6 +56,7 @@ import {
   isSpaceOrTab,
   isStructural,
   isWhitespace,
+  textRead,
 } from "./source.ts"
 import { findStateSemicolonLines } from "./state-kept-lines.ts"
 import {
@@ -1042,16 +1043,7 @@ function isOnlyTriviaOrWhitespace(
   start: number,
   end: number,
 ): boolean {
-  const trivia = findTriviaBetween(source, start, end)
-  for (let offset = start; offset < end; offset++) {
-    if (
-      !isWhitespace(source.text[offset]) &&
-      !trivia.some(({ range }) => range[0] <= offset && offset < range[1])
-    ) {
-      return false
-    }
-  }
-  return true
+  return [...textRead(source, start, end)].every(isWhitespace)
 }
 
 /** The gap rules of a statement. */

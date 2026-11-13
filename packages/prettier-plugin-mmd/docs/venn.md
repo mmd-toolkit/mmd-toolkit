@@ -607,6 +607,10 @@ venn-beta
 
 ### Style properties
 
+Color-function comma spacing reads through directives, retaining their contents
+and the whitespace beside them. [fixture:
+style-properties/word-run-directive-parenthesis-kept]
+
 A property is printed `key: value`, with no space before the colon and one after
 it, and the properties are separated by a comma and one space, as the styles of
 the other diagram types are printed (`style A fill: #f00, stroke: #000`). The
@@ -710,6 +714,11 @@ venn-beta
 
 ### Line rule and kept lines
 
+A kept semicolon between a declaration and its same-line explicit text stays,
+just as it does before another declaration. The label therefore keeps the same
+line-rule context on the next formatting. [fixture:
+line-rule-and-kept-lines/semicolon-before-explicit-text]
+
 Semicolons never separate Venn statements. Except for
 [Semicolons at the end of a style statement](#semicolons-at-the-end-of-a-style-statement),
 they stay as written. A segment that holds a kept `;` is formatted as anywhere
@@ -810,7 +819,11 @@ with directives and then spaces and tabs is printed as the same title with the
 directives last: `title T  %%{x}%%  ` is printed `title T %%{x}%%`, and
 `title T  %%{x}%%  %%{y}%%  ` is printed `title T %%{x}%% %%{y}%%`. [fixture:
 venn/title/title-trailing-directive-blanks-dropped] [fixture:
-venn/title/title-two-directives-trailing-blanks-dropped] LF and the broader
+venn/title/title-two-directives-trailing-blanks-dropped] A title whose text
+stands on a later line after a `;` that the line rule ignores stays as written,
+with the `;` and the indentation of that line: the lexer rejects the title
+printed with the text indented. [fixture:
+venn/title/ignored-semicolon-before-text-on-next-line-kept] LF and the broader
 accepted title separators may normalize, but trivia, joined regions and kept
 parts protect their written boundaries. [corpus fixture:
 venn/db-frontmatter-title-overridden] [corpus fixture: venn/db-title-on-header]

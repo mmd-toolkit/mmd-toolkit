@@ -385,10 +385,20 @@ function joinCommentFragments(
     return [comments[index - 1].range[1], comments[index].range[0]]
   }
 
-  /** Whether a U+2028 or U+2029 lies in the gap before the comment at `index`. */
+  /**
+   * Whether a U+2028 or U+2029 that mermaid.js reads lies in the gap before the
+   * comment at `index`: one inside a directive is removed with it.
+   */
   function hasSeparatorBefore(index: number): boolean {
-    const gap = text.slice(...gapBefore(index))
-    return gap.includes("\u2028") || gap.includes("\u2029")
+    const [from, to] = gapBefore(index)
+    for (let offset = from; offset < to; offset++) {
+      if (
+        (text[offset] === "\u2028" || text[offset] === "\u2029") &&
+        findCoveringRange(directiveRanges, offset) === undefined
+      )
+        return true
+    }
+    return false
   }
 
   const joined: TriviaComment[] = []
@@ -548,7 +558,10 @@ export function isCommentLine(
     const directive = directives[index]
     if (end < directive.range[1]) continue
     withoutDirectives += text.slice(position, directive.range[0])
-    position = directive.range[1]
+    position = Math.min(
+      end,
+      findTakenWhitespace(text, directive)?.end ?? directive.range[1],
+    )
   }
   withoutDirectives += text.slice(position, end)
   const next = withoutDirectives[2]

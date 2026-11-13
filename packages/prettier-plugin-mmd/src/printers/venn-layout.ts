@@ -135,6 +135,15 @@ export function layoutVennStatement(
       hasTriviaBesidesTrailingDirectives(source, start, end))
   )
     return keptAsWritten(start, end)
+  // A title whose text stands on a later line, after a `;` that stays: the
+  // line break and the whitespace of the later line are kept, since the
+  // indentation of the line is part of what the lexer reads.
+  if (
+    statement.type === "VennTitleStatement" &&
+    source.text.slice(start, statement.value.range[0]).includes("\n") &&
+    holdsKeptSemicolon(source, start, statement.value.range[0])
+  )
+    return keptAsWritten(start, end)
   const values = collectValueNodes(statement, vennValueNodeTypes)
   let atoms = collectAtoms(source, start, end, values, [])
   // Protect the textual prefix on every semicolon segment, including

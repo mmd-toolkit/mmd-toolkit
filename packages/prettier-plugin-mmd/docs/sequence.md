@@ -569,7 +569,9 @@ than the function. The whitespace before a comma, immediately after the opening
 `(`, and immediately before the closing `)` stays as written. [fixture:
 colors/functions-spaced] [fixture: colors/function-padding-kept] [fixture:
 colors/functions-as-written] [fixture:
-colors/functions-beside-comments-and-directives] See
+colors/functions-beside-comments-and-directives] A directive within a channel is
+removed before the function is recognized, and stays as written while the commas
+take their ordinary spacing. [fixture: colors/directive-in-channel] See
 [Colors that are drawn the same](./compatibility.md#colors-that-are-drawn-the-same)
 for the versions that were run and the Db.
 
@@ -819,9 +821,13 @@ versions does not), and so they reject a note and a `links`, `link`,
 Parsed in Chromium, the text without that character was rejected by some of the
 versions that count and read by the others. [fixture: colons/spaced] [fixture:
 colons/empty-text] [fixture: colons/whitespace-only-text] [fixture:
-colons/semicolon-after-whitespace-kept] The whitespace character that stays is
-lost at the end of the last line of a code block in Markdown, where Prettier
-removes it whatever the plugin prints (see
+colons/semicolon-after-whitespace-kept] A `;` that the line rule ignores before
+that whitespace is removed before the whitespace is recognized. Where it stands
+directly after the `:`, the line stays as written so that the ignored `;` and
+the whitespace after it stay together. [fixture:
+colons/ignored-semicolon-before-empty-text-whitespace] The whitespace character
+that stays is lost at the end of the last line of a code block in Markdown,
+where Prettier removes it whatever the plugin prints (see
 [Markdown code blocks](./compatibility.md#markdown-code-blocks)); `mmdfmt` keeps
 it.
 

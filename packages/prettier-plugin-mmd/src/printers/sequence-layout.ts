@@ -493,7 +493,13 @@ function scanAfterBareColon(
   let holdsWhitespace = false
   let holdsSeparator = false
   let isPlainRun = true
-  while (!isAtLineEnd(source, end) && source.text[end] !== ";") {
+  for (;;) {
+    const read = skipRemoved(source, end)
+    if (read !== end) {
+      isPlainRun = false
+      end = read
+    }
+    if (isAtLineEnd(source, end) || source.text[end] === ";") break
     const character = source.text.charAt(end)
     if (isWhitespace(character)) {
       holdsWhitespace = true
@@ -503,13 +509,7 @@ function scanAfterBareColon(
       end++
       continue
     }
-    const at = end
-    const directive = findTriviaBetween(source, at, at + 1).find(
-      (item) => item.type === "Directive" && item.range[0] === at,
-    )
-    if (directive === undefined) return null
-    isPlainRun = false
-    end = directive.range[1]
+    return null
   }
   return {
     holdsWhitespace,

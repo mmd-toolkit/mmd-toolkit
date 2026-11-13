@@ -13,6 +13,7 @@ import {
   isSpaceOrTab,
   isWhitespace,
   skipRemoved,
+  textRead,
 } from "./source.ts"
 
 /**
@@ -610,8 +611,9 @@ function styleSemicolonsOf(source: Source): StyleSemicolons {
         ends.add(semicolon)
       continue
     }
-    const statementText = source.text.slice(...node.range)
-    if (statementText.includes("#")) continue
+    // The `#` and the `;` that count are those of the text that mermaid.js
+    // reads: a directive in the statement holds neither.
+    if (textRead(source, ...node.range).includes("#")) continue
     if (
       node.type === "ErClassDefStatement" ||
       node.type === "ErStyleStatement"
@@ -624,11 +626,12 @@ function styleSemicolonsOf(source: Source): StyleSemicolons {
     ) {
       const style = node.styles.findLast((item) => item !== null)
       if (style === undefined || style === null) continue
-      const text = source.text.slice(...style.range)
+      const text = textRead(source, ...style.range)
       if (
         text.endsWith(";") &&
         text.indexOf(";") === text.length - 1 &&
-        text.slice(0, -1).trim() !== ""
+        text.slice(0, -1).trim() !== "" &&
+        source.text[style.range[1] - 1] === ";"
       )
         terminators.add(style.range[1] - 1)
     }
@@ -836,13 +839,6 @@ const styleEndCharactersKept: ReadonlyMap<
 
 const unusualStyleEndsBySource = new WeakMap<Source, ReadonlySet<number>>()
 
-/** The directive that starts at `offset`, if there is one. */
-function findDirectiveStartingAt(source: Source, offset: number) {
-  return findTriviaBetween(source, offset, offset + 1).find(
-    (item) => item.type === "Directive" && item.range[0] === offset,
-  )
-}
-
 /**
  * The lines of a `style`, `classDef`, or `linkStyle` statement whose end is
  * followed, before the end of the line, by a whitespace character that
@@ -866,18 +862,13 @@ export function findLinesWithUnusualStyleEnd(
     // The line rule of mermaid.js removes the last `;` of the line before it
     // reads the styles, and so does it with a directive, so the whitespace
     // after them is at the end of the last style too.
-    while (!isAtLineEnd(source, end)) {
+    while (end < source.text.length) {
+      end = skipRemoved(source, end)
+      if (isAtLineEnd(source, end)) break
       const character = source.text.charAt(end)
-      if (isWhitespace(character)) {
-        if (keeps?.(character) === true) kept = true
-        end++
-      } else if (source.ignoredSemicolons.has(end)) {
-        end++
-      } else {
-        const directive = findDirectiveStartingAt(source, end)
-        if (directive === undefined) break
-        end = directive.range[1]
-      }
+      if (!isWhitespace(character)) break
+      if (keeps?.(character) === true) kept = true
+      end++
     }
     if (kept) lines.add(lineStartOf(source, statement.range[1]))
   }

@@ -35,9 +35,18 @@ that count read the header the same with it and without it, or reject both:
 `gitGraph ---`, the block, and `--- :` are printed with `---` and no colon.
 [fixture: gitgraph/header/header-yaml-before-colon] A colon on a line of its own
 after the block is left out with the line break before it, so that no empty line
-stays. [fixture: gitgraph/header/header-yaml-colon-on-its-own-line] [corpus
-fixture: gitgraph/header-hidden-before-colon] Hidden gaps and protected
-header/body groups retain their source boundaries.
+stays. A comment or directive between the block and that colon keeps its
+attachment to the block or its normal indentation before the first statement;
+the omitted colon leaves no empty line. This also applies when an unclosed
+directive, or a directive inside its argument, precedes the colon. [fixture:
+gitgraph/header/yaml-colon-after-comment] [fixture:
+gitgraph/header/yaml-colon-after-inline-directive] [fixture:
+gitgraph/header/yaml-colon-after-directive] [fixture:
+gitgraph/header/yaml-colon-after-nested-directive] [fixture:
+gitgraph/header/yaml-colon-after-unclosed-directive] [fixture:
+gitgraph/header/header-yaml-colon-on-its-own-line] [corpus fixture:
+gitgraph/header-hidden-before-colon] Hidden gaps and protected header/body
+groups retain their source boundaries.
 
 A hidden form between `gitGraph` and the direction keeps the gap after it as
 written, because a hidden form consumes an immediately following line feed, and

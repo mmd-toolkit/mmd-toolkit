@@ -12,6 +12,22 @@ export interface IshikawaCase {
 
 export const ishikawaCases: readonly IshikawaCase[] = [
   {
+    rule: "inline-directives",
+    name: "ishikawa: leading-directive-in-joining-region",
+    input: "ishikawa\n R\n%%{}\u2028 %%{x: {}}%% %% c\n  A",
+    output: "ishikawa\n  R\n    %%{}\u2028    %%{x: {}}%% %% c\n  A\n",
+    options: {},
+    rejected: false,
+  },
+  {
+    rule: "indentation",
+    name: "ishikawa: joining-region-does-not-count-indentation",
+    input: "ishikawa\n R\n%%{}\u2028 %% c\n  A",
+    output: "ishikawa\n  R\n    %%{}\u2028    %% c\n  A\n",
+    options: {},
+    rejected: false,
+  },
+  {
     rule: "line-separators",
     name: "ishikawa: ls-comment-two-lf-before-root",
     input: "ishikawa\n%%{}%%\u2028\n\nRoot\n",

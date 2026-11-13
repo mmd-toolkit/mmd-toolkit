@@ -1408,7 +1408,10 @@ comments/percent-brace-line-after-directive-and-blank-lines] [fixture:
 comments/percent-brace-line-after-comment-and-directive-lines] [fixture:
 comments/percent-brace-line-after-directive-on-its-line] [fixture:
 comments/percent-brace-line-after-directive-touching] [fixture:
-comments/percent-brace-line-after-directive-with-tabs]
+comments/percent-brace-line-after-directive-with-tabs] A directive between the
+marker characters is removed before the `%%{` is recognized; the same
+one-character indentation applies while the directive is kept as written.
+[fixture: comments/directive-in-percent-brace-marker]
 
 A comment after a statement, or after the header, stays on the line, as written:
 one space stands before it where whitespace was written, and none where it

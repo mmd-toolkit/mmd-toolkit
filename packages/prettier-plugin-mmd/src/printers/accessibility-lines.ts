@@ -12,17 +12,17 @@ import {
 
 /**
  * Whether anything but whitespace, comments, and directives follows `end` on
- * its line: another statement, or a `;`.
+ * its line: another statement, or a `;` that the line rule does not remove.
  */
 export function holdsStatementAfter(source: Source, end: number): boolean {
   const lineEnd = lineEndOf(source, end)
   let position = end
   for (const item of findTriviaBetween(source, end, lineEnd)) {
-    if (![...source.text.slice(position, item.range[0])].every(isWhitespace))
+    if (![...textRead(source, position, item.range[0])].every(isWhitespace))
       return true
     position = Math.max(position, item.range[1])
   }
-  return ![...source.text.slice(position, lineEnd)].every(isWhitespace)
+  return ![...textRead(source, position, lineEnd)].every(isWhitespace)
 }
 
 /**

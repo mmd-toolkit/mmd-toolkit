@@ -2503,6 +2503,24 @@ in the text of a flowchart description block] [test: U+2028 before the text of a
 flowchart description block] [test: U+2028 after the text of a flowchart
 description block]
 
+The tests for line breaks, separation from `direction`, and treeView box
+characters read the diagram text, after directives and the whitespace they take
+are removed. A line break or box character inside a closed directive therefore
+does not keep the braces. A directive before the opening brace follows the same
+rule when deciding whether the block is on one line. [fixture:
+flowchart/accessibility-lines/block-hidden-line-break] [fixture:
+flowchart/accessibility-lines/block-hidden-direction-gap] [fixture:
+flowchart/accessibility-lines/block-prefix-hidden-line-break] [fixture:
+treeview/description-blocks/block-hidden-box-glyph] [test: accessibility blocks:
+pie separator-inside-directive-converted]
+
+A common comment region after the closing brace is removed before the diagram
+reads the statement, so it does not prevent the colon form. A `;` that the line
+rule ignores after the brace does not count as a following statement either; its
+written source is retained after the description. [test: accessibility blocks:
+flowchart removed-comment-after-block-converted] [fixture:
+er/accessibility-statements/block-trailing-ignored-semicolon]
+
 A comment after the `}` stays after the text in the diagram types that end the
 text of the form with the colon before a `%%`, as the list below says. A
 statement that follows the block on its line goes to a line of its own, as any
@@ -2533,8 +2551,8 @@ accessibility blocks: pie brace-after-ls-direction-converted]
 The block stays as written where the form with the colon would not hold what the
 block holds, or would not be read as the block is:
 
-- The text is over several lines: the form with the colon is one line. [fixture:
-  er/accessibility-statements/block-lines-kept] [fixture:
+- The diagram text is over several lines: the form with the colon is one line.
+  [fixture: er/accessibility-statements/block-lines-kept] [fixture:
   pie/description-blocks/block-inline-leading-lines] [fixture:
   pie/description-blocks/block-columns]
 - The diagram type reads a line with `direction` as the direction of the diagram
@@ -2568,8 +2586,8 @@ block holds, or would not be read as the block is:
   accessibility blocks: er text-between-ps-direction-kept] [test: accessibility
   blocks: requirement brace-after-ps-direction-kept]
 - A directive stands before the `{` or between the `{` and the text, and the
-  block is over several lines, or another statement follows it on a line that
-  keeps its statements together (see
+  diagram text of the block is over several lines, or another statement follows
+  it on a line that keeps its statements together (see
   [Lines that hold a `;`](#lines-that-hold-a-): a C4 line that holds a block
   beside an empty block is such a line). The printer writes such a block with
   the colon only where it stands on one line and its line does not keep its
@@ -2598,11 +2616,12 @@ block holds, or would not be read as the block is:
   flowchart/accessibility-lines/empty-block-directive-kept]
 - The block is not closed. [fixture:
   flowchart/accessibility-lines/block-unclosed]
-- The block is on a line that keeps its statements together, and a statement, or
-  a `;`, follows it on that line, or the line is one that the line rule of
-  mermaid.js reads (see [Lines that hold a `;`](#lines-that-hold-a-)). The form
-  with the colon runs to the end of the line, so a statement after it would
-  become part of its text. [fixture:
+- The block is on a line that keeps its statements together, and a statement or
+  a `;` that the diagram reads follows it on that line, including a line that
+  the line rule of mermaid.js reads (see
+  [Lines that hold a `;`](#lines-that-hold-a-)). The form with the colon runs to
+  the end of the line, so a statement after it would become part of its text.
+  [fixture:
   flowchart/accessibility-lines/block-before-another-statement-on-a-kept-line]
   [fixture: flowchart/accessibility-lines/block-on-style-line-kept] [fixture:
   c4/statements-one-per-line/description-null-adjacency]
@@ -4787,7 +4806,11 @@ line break that no region removes, so what stands on the line after the comment
 lines is part of it: a `;` there ends the name of a `subgraph` line without a
 title and stays where it is. An empty line or a line of only whitespace ends the
 line, unless a comment line follows it: before a comment line, such lines belong
-to the region and are removed with it.
+to the region and are removed with it. A U+2028 or U+2029 inside a directive is
+removed with the directive, so it ends no diagram comment and cuts none: the
+comment fragments before and after such a directive stay one comment, printed as
+written. [test: a diagram comment joined past a closed directive that holds
+U+2028]
 
 ## Frontmatter
 

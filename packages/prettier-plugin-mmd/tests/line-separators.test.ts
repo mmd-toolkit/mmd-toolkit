@@ -51,6 +51,16 @@ function format(text: string, options: Options = {}): Promise<string> {
  */
 const examples: readonly (readonly [string, string, string])[] = [
   [
+    "a state line starting with a directive before U+2028",
+    "stateDiagram-v2\n%%{wrap foo}%%\u2028A",
+    "stateDiagram-v2\n%%{wrap foo}%%\u2028A\n",
+  ],
+  [
+    "style trailing NBSP taken by an unclosed directive",
+    "flowchart TD\nstyle A fill:red%%{x y\u00a0",
+    "flowchart TD\n  style A fill: red%%{x y\n",
+  ],
+  [
     "U+2028 before the `:::` of a state",
     "stateDiagram-v2\nA\u2028:::c\n",
     "stateDiagram-v2\n  A\u2028:::c\n",
@@ -315,6 +325,11 @@ const semicolonExamples: readonly (readonly [string, string, string])[] = [
  *   that it needs after the `:`, and the printer would drop it.
  */
 const sequenceExamples: readonly (readonly [string, string, string])[] = [
+  [
+    "a diagram comment joined past a closed directive that holds U+2028",
+    "sequenceDiagram\n# native\u2028%% first\n%% middle\n%%{x:\u2028}%%%% last\nremainder\nAlice->>Bob: x\n",
+    "sequenceDiagram\n  # native\u2028%% first\n%% middle\n%%{x:\u2028}%%%% last\nremainder\n  Alice ->> Bob: x\n",
+  ],
   [
     "a standalone open directive before U+2028 and a semicolon",
     "sequenceDiagram\n%%{wrap foo\u2028;\nparticipant A\n",
@@ -3189,7 +3204,7 @@ const kanbanExamples: readonly (readonly [string, string, string, Options?])[] =
     [
       "kanban: comment-line-ls-taken",
       "kanban\n S[x]\n%%\n%%\u2028   A\n",
-      "kanban\n  S[x]\n%%\n%%\u2028   A\n",
+      "kanban\n  S[x]\n  %%\n  %%\u2028   A\n",
     ],
     [
       "kanban: indent-whitespace-kind",
