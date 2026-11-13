@@ -339,6 +339,10 @@
   `er`, `requirement`, `block`, `venn`, and `usecase`, as in `flowchart`, when
   mermaid.js reads the line the same without it. A `;` that is part of the value,
   as in `style A fill:red;` in `requirement`, stays.
+  
+  > **NOTE:**\
+  > Overturned in the next release: the `;` that ends a `style` of a `state`
+  > diagram stays, as in `style A fill:red;`.
 
 - [#59](https://github.com/mmd-toolkit/mmd-toolkit/pull/59) [`4a6be00`](https://github.com/mmd-toolkit/mmd-toolkit/commit/4a6be00cd4dc012d5a75e17540419e6d81eaf4de) Thanks [@ota-meshi](https://github.com/ota-meshi)! - Drop the `;` that ends a `classDef` line in `treemap`, as in the other diagram
   types. `classDef important fill:#f96;` now prints as
