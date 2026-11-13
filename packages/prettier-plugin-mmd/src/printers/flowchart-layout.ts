@@ -14,6 +14,10 @@ import {
   findCallArgumentsParentheses,
   layoutGraphAccessibility,
 } from "./graph-layout.ts"
+import {
+  hasSpaceBeforeOneWordName,
+  isSubgraphIdNamedElsewhere,
+} from "./flowchart-clusters.ts"
 import { findFlowchartKeptLines } from "./flowchart-kept-lines.ts"
 import type { Atom, AtomLayout, GapRule } from "./atoms.ts"
 import {
@@ -149,6 +153,27 @@ function endsLine(
 }
 
 /**
+ * Whether the header keeps the whitespace between `subgraph` and its name as
+ * written: a name of one word without a title, with more than one whitespace
+ * character before it, that another statement names (see
+ * `hasSpaceBeforeOneWordName` and `isSubgraphIdNamedElsewhere`). The versions
+ * that read the extra whitespace as the start of the name give the subgraph a
+ * generated id, and a statement that names the id of the form with one space
+ * reads a vertex there (docs/flowchart.md, Subgraph header).
+ */
+function keepsSpaceBeforeName(
+  source: Source,
+  subgraph: FlowchartSubgraphStatement,
+): boolean {
+  const { body } = source.root
+  return (
+    body.type === "FlowchartDiagram" &&
+    hasSpaceBeforeOneWordName(source, subgraph) &&
+    isSubgraphIdNamedElsewhere(source, body, subgraph)
+  )
+}
+
+/**
  * The layout of the `subgraph` line. A name of one word without a title is
  * printed with the whitespace after it, which mermaid.js reads as part of the
  * name; the whitespace at the end of the line of a name of several words
@@ -159,7 +184,10 @@ export function layoutSubgraphHeader(
   subgraph: FlowchartSubgraphStatement,
   headerEnd: number,
 ): AtomLayout {
-  if (holdsJoiningRegion(source, subgraph.range[0], headerEnd)) {
+  if (
+    holdsJoiningRegion(source, subgraph.range[0], headerEnd) ||
+    keepsSpaceBeforeName(source, subgraph)
+  ) {
     return keptAsWritten(subgraph.range[0], headerEnd)
   }
   // A block, a `;` that stays or a directive on the line stands after the

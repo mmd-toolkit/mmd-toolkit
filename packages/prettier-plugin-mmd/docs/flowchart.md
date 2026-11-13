@@ -1179,23 +1179,26 @@ and for the text between `|`. [fixture:
 label-inner-whitespace/leading-whitespace-every-shape-kept] [fixture:
 label-inner-whitespace/leading-whitespace-pipe-label-kept]
 
-The `@` in the first word depends on the version of mermaid.js. 12.3.0 stops the
-run of an edge id at a bracket and at `|`, so it reads `A[user@example.com]` and
-`A-->|x@|B` with the same labels as it reads them with the whitespace. Of the
-versions that count, some do not stop it there (the grammars of the tags show
-it; see
-[Forms kept for versions of mermaid.js that count](./compatibility.md#forms-kept-for-versions-of-mermaidjs-that-count)),
-so they reject the two without the whitespace and accept them with it; drawn in
-Chromium, 11.12.3 and some of them did. A text printed without the space would
-be rejected by versions that read the text as it is written, so the space stays
-after every opening, in the title of a subgraph, and in a flowchart, a swimlane
-diagram, and an agentflow diagram alike, with one space at the end of the label
-too, except before the closing `?]` or `=]` of a slanted shape, as above
-(`A[/ x@/?]` stays as it is). [fixture:
+The `@` in the first word depends on the version of mermaid.js. The pinned
+version stops the run of an edge id at a bracket and at `|`, so it reads
+`A[user@example.com]` and `A-->|x@|B` with the same labels as it reads them with
+the whitespace. Some versions that count do not stop it there: their lexers read
+a run of characters that are no whitespace and no `"`, then an `@` that no `{`
+or `"` follows, as an edge id, so they reject the two without the whitespace and
+accept them with it (see
+[Forms kept for versions of mermaid.js that count](./compatibility.md#forms-kept-for-versions-of-mermaidjs-that-count)).
+A text printed without the space would be rejected by versions that read the
+text as it is written, so the space stays after every opening, in the title of a
+subgraph, and in a flowchart, a swimlane diagram, and an agentflow diagram
+alike, with one space at the end of the label too, except before the closing
+`?]` or `=]` of a slanted shape, as above (`A[/ x@/?]` stays as it is). An `@`
+that a `{` or a `"` follows is no edge id to those lexers, so a label with only
+such an `@` loses its space (`A[/ a@"b" /]` is printed `A[/a@"b"/]`). [fixture:
 label-inner-whitespace/leading-whitespace-at-sign-kept] [fixture:
 label-inner-whitespace/leading-whitespace-at-sign-every-shape-kept] [fixture:
 label-inner-whitespace/leading-whitespace-at-sign-before-question-end-kept]
 [fixture: label-inner-whitespace/leading-whitespace-at-sign-swimlane-kept]
+[fixture: label-inner-whitespace/leading-whitespace-at-sign-before-quote]
 
 Input
 ([label-inner-whitespace/trimmed-input.mmd](../tests/fixtures/flowchart/label-inner-whitespace/trimmed-input.mmd)):
@@ -2368,11 +2371,14 @@ otherwise: with no subgraph, with only subgraphs that a link joins to the
 outside, that have a `direction` statement, or that are empty. The members of a
 subgraph are those that the specification defines (a vertex that an earlier
 subgraph has belongs to that one; a nested subgraph is a member of the one
-around it, so its vertices are inside both), a link to the id of a subgraph, or
-from it, does not join the subgraph to the outside, and a `subgraph` in a label,
-an id, or a comment is no subgraph. Every other version that counts draws the
-figure the same with the two, with the layout that each version uses by default
-and with the other one where it has two (see
+around it, so its vertices are inside both), except that the value of an
+`accTitle` or `accDescr` statement and a `;`, which the list of the
+specification holds too, are no node of the figure: a subgraph that holds only
+them is empty. A link to the id of a subgraph, or from it, does not join the
+subgraph to the outside, and a `subgraph` in a label, an id, or a comment is no
+subgraph. Every other version that counts draws the figure the same with the
+two, with the layout that each version uses by default and with the other one
+where it has two (see
 [Layouts that the versions were drawn with](./compatibility.md#layouts-that-the-versions-were-drawn-with)
 and
 [Forms kept for versions of mermaid.js that count](./compatibility.md#forms-kept-for-versions-of-mermaidjs-that-count)).
@@ -2390,6 +2396,10 @@ direction/header-tb-nested-inner-unlinked-kept] [fixture:
 direction/header-tb-nested-inner-linked] [fixture:
 direction/header-tb-subgraph-own-direction] [fixture:
 direction/header-tb-empty-subgraph] [fixture:
+direction/header-tb-subgraph-acc-title-only] [fixture:
+direction/header-tb-subgraph-acc-descr-only] [fixture:
+direction/header-tb-subgraph-semicolon-only] [fixture:
+direction/header-tb-subgraph-acc-title-and-vertex-kept] [fixture:
 direction/header-tb-two-subgraphs-linked-to-each-other] [fixture:
 direction/header-tb-two-subgraphs-one-unlinked-kept] [fixture:
 direction/header-tb-subgraph-member-of-earlier-kept] [fixture:
@@ -2537,6 +2547,34 @@ that a line break follows is read as the line break, and does not count.
 on the line of the header, as written, with the `;` and the directives after
 them: on a line of their own, the whitespace would be read otherwise, and a `;`
 after a block and a directive would be read as a vertex.
+
+The whitespace before a name of one word, written without a title, stays as
+written when more than one whitespace character stands between `subgraph` and
+the name, with the directives left out, and another statement names the name as
+an id: a vertex, a `style`, a `class`, or a subgraph with the same name. Some
+versions that count read the first of those characters as the separator after
+the keyword and the others as the start of the name text, so the subgraph has a
+generated id there, while the form with one space has the name as its id. In
+`subgraph  S`, a later `S --> Z` is an edge between two vertices there, and in
+`subgraph S` it is an edge from the subgraph. A swimlane diagram reads it so in
+the newest versions too. Where no statement names the id, nobody sees it, and
+the whitespace becomes one space, as it does before a name with a title, before
+a name of several words, and where a single tab stands. A `click` makes no
+vertex, so it names nothing. [fixture:
+subgraph-header/name-leading-space-run-named-kept] [fixture:
+subgraph-header/name-leading-space-run-style-kept] [fixture:
+subgraph-header/name-leading-space-run-class-kept] [fixture:
+subgraph-header/name-leading-space-tab-kept] [fixture:
+subgraph-header/name-leading-space-directive-kept] [fixture:
+subgraph-header/name-leading-space-nested-kept] [fixture:
+subgraph-header/name-leading-space-same-name-twice-kept] [fixture:
+subgraph-header/name-leading-space-swimlane-kept] [fixture:
+subgraph-header/name-leading-space-unnamed-collapsed] [fixture:
+subgraph-header/name-leading-space-click-only-collapsed] [fixture:
+subgraph-header/name-leading-space-title-collapsed] [fixture:
+subgraph-header/name-leading-space-several-words-collapsed] [fixture:
+subgraph-header/name-leading-tab-one-space-collapsed] [fixture:
+subgraph-header/name-leading-space-directive-touching-collapsed]
 
 A name that ends with an `end` unit, as in `subgraph Front end`, takes the line
 break after it and the whitespace of the next line (see

@@ -147,8 +147,9 @@ The fields that differed hold the colors and the spacing of a style, the
 whitespace of a text (the runs that the formatter writes as one space, which
 HTML collapses, and the blanks at the ends of a description), the type `string`
 or `text` of a flowchart label in quotes or without, ids that are generated for
-every parse, and the id of a subgraph in 2 flowchart pairs. Apart from those,
-the nodes, the edges, and the shapes were the same.
+every parse, and the id of a subgraph in 2 flowchart pairs, whose id no
+statement names. Apart from those, the nodes, the edges, and the shapes were the
+same.
 
 The renderer of a flowchart also gives the layout the direction of the header,
 `getDirection()`. In 11.7.0 and 11.8.1 it differs for the 41 flowchart pairs
@@ -188,9 +189,10 @@ whatever the other versions are, so it has no row.
 | [flowchart](./flowchart.md#direction)                        | `flowchart TB` with a subgraph that no link joins to the outside                                                            | `flowchart TD`                                                        | [3](./printed-form.md#3-a-spelling)                                  | 10.9.8, 11.7.0, 11.8.1 lay such a subgraph out alone, in `LR` for `TB` and in `TB` for `TD`                                                                          | [fixture: flowchart/direction/header-tb-unlinked-subgraph-kept]               |
 | [flowchart](./flowchart.md#direction)                        | `flowchart TB` with a link from a vertex inside a subgraph to its id                                                        | `flowchart TD`                                                        | [3](./printed-form.md#3-a-spelling)                                  | 10.9.8 counts no such link as one to the outside                                                                                                                     | [fixture: flowchart/direction/header-tb-link-from-inside-to-subgraph-id-kept] |
 | [flowchart](./flowchart.md#direction)                        | `flowchart-elk TB` with a subgraph that no link joins to the outside                                                        | `flowchart-elk TD`                                                    | [3](./printed-form.md#3-a-spelling)                                  | 11.7.0, 11.8.1 draw the header with the dagre layout                                                                                                                 | [fixture: flowchart/direction/header-elk-tb-unlinked-subgraph-kept]           |
+| [flowchart](./flowchart.md#subgraph-header)                  | `subgraph  S`, more than one whitespace character before a name of one word that a statement names                          | `subgraph S`                                                          | [1](./printed-form.md#1-the-whitespace-beside-a-mark)                | 10.9.8, 11.7.0, 11.8.1, 11.13.0, 11.14.0, 11.15.0, 11.16.1, 11.17.2 read the second character as the start of the name and give the subgraph a generated id          | [fixture: flowchart/subgraph-header/name-leading-space-run-named-kept]        |
 | [flowchart](./flowchart.md#direction)                        | `graph LR`                                                                                                                  | `flowchart LR`                                                        | [3](./printed-form.md#3-a-spelling)                                  | 10.9.8, 11.7.0, 11.8.1, 11.13.0, 11.14.0, 11.15.0, 11.16.1, 11.17.2 read `graph` and reject `flowchart` where `flowchart.defaultRenderer` is `dagre-d3`              | [fixture: flowchart/direction/header-keyword-kept]                            |
 | [state](./state.md#header)                                   | `stateDiagram`                                                                                                              | `stateDiagram-v2`                                                     | [3](./printed-form.md#3-a-spelling)                                  | where `state.defaultRenderer` is `dagre-d3`, 10.9.8 draws the two differently, and 11.7.0, 11.8.1, 11.13.0, 11.14.0, 11.15.0, 11.16.1, 11.17.2 reject `stateDiagram` | [fixture: state/header/spellings-kept]                                        |
-| [state](./state.md#statements-one-per-line)                  | a statement of the top level that starts with a `%` word (`%a b`, `% --> b c`), with another statement after it on its line | the `%` statement and the rest on lines of their own                  | [2](./printed-form.md#2-a-gap-of-a-kind-that-prettier-does-not-have) | 10.9.8, 11.7.0, 11.8.1, 11.13.0, and 11.14.0 read the rest of the line as a comment                                                                                  | [fixture: state/statements-one-per-line/percent-word-then-text-kept]          |
+| [state](./state.md#statements-one-per-line)                  | a statement of the top level starting with a `%` word (`%a b`, `%a --> b c`), with a later statement that starts without it | the `%` statement and the rest on lines of their own                  | [2](./printed-form.md#2-a-gap-of-a-kind-that-prettier-does-not-have) | 10.9.8, 11.7.0, 11.8.1, 11.13.0, and 11.14.0 read the rest of the line as a comment                                                                                  | [fixture: state/statements-one-per-line/percent-word-then-text-kept]          |
 | [state](./state.md#statements-one-per-line)                  | a click statement with a `:` (`click A href "a:b" accDescr {}`), with another statement after it on its line                | the click and the statement on lines of their own                     | [2](./printed-form.md#2-a-gap-of-a-kind-that-prettier-does-not-have) | 10.9.8 reads the `:` as the start of a description that runs to the end of the line                                                                                  | [fixture: state/statements-one-per-line/split]                                |
 | [flowchart, swimlane](./flowchart.md#label-inner-whitespace) | `A[ user@example.com ]`                                                                                                     | `A[user@example.com]`                                                 | [1](./printed-form.md#1-the-whitespace-beside-a-mark)                | flowchart: 11.7.0, 11.8.1, 11.13.0, 11.14.0, 11.15.0, 11.16.1, 11.17.2, 12.0.0; swimlane: 11.16.1, 11.17.2, 12.0.0; they reject the tight form                       | [fixture: flowchart/label-inner-whitespace/leading-whitespace-at-sign-kept]   |
 | [flowchart, swimlane](./flowchart.md#arrow-spacing)          | `A@{ shape: circle }e1@--> B`                                                                                               | `A@{ shape: circle } e1@--> B`                                        | [1](./printed-form.md#1-the-whitespace-beside-a-mark)                | flowchart: 11.7.0, 11.8.1, 11.13.0, 11.14.0, 11.15.0, 11.16.1, 11.17.2, 12.0.0; swimlane: 11.16.1, 11.17.2, 12.0.0; they reject the form with a space                | [fixture: flowchart/arrow-spacing/edge-id-after-data-block-touches]           |
@@ -219,7 +221,7 @@ whatever the other versions are, so it has no row.
 | [ER](./er.md#entities)                                       | `"a.b"` in quotes                                                                                                           | `a.b`                                                                 | [3](./printed-form.md#3-a-spelling)                                  | 10.9.8, 11.7.0, 11.8.1 reject a `.` in a name without quotes                                                                                                         | [fixture: er/entities/name-with-dot-kept]                                     |
 | [ER](./er.md#statements-one-per-line)                        | `12a`, a number of two digits or more and a character that continues a name                                                 | `12` and `a` on lines of their own                                    | [2](./printed-form.md#2-a-gap-of-a-kind-that-prettier-does-not-have) | 11.7.0 and 11.8.1 draw the two lines differently; 10.9.8 rejects the text                                                                                            | [fixture: er/statements-one-per-line/number-name-then-name-kept]              |
 | [ER](./er.md#statements-one-per-line)                        | `endé`, `end` and a U+2028 or U+2029 and a statement, `subgraphé`, `subgraph` and a U+2028 and a name                       | `end` and `é` on lines of their own; the separator printed as a space | [2](./printed-form.md#2-a-gap-of-a-kind-that-prettier-does-not-have) | 11.7.0, 11.8.1, 11.13.0, 11.14.0, 11.15.0, and 11.16.1 draw them differently; 10.9.8 rejects `endé` and `subgraphé`                                                  | [fixture: er/statements-one-per-line/end-then-name-outside-ascii-kept]        |
-| [ER](./er.md#statements-one-per-line)                        | a U+2028 or U+2029 before `class`, or before `direction` and a direction, with another statement after it on its line       | each statement on a line of its own                                   | [2](./printed-form.md#2-a-gap-of-a-kind-that-prettier-does-not-have) | 11.7.0, 11.8.1, 11.13.0, 11.14.0, 11.15.0, and 11.16.1 reject the `class` line and draw the `direction` line differently                                             | [test: a line of two ER statements that starts with U+2028]                   |
+| [ER](./er.md#statements-one-per-line)                        | a U+2028 or U+2029 before `class` and two names, or before a direction line, with a statement after it on its line          | each statement on a line of its own                                   | [2](./printed-form.md#2-a-gap-of-a-kind-that-prettier-does-not-have) | 11.7.0, 11.8.1, 11.13.0, 11.14.0, 11.15.0, and 11.16.1 reject the `class` line and draw the `direction` line differently                                             | [test: a line of two ER statements that starts with U+2028]                   |
 | [ER](./er.md#statements-one-per-line)                        | an attribute with a pair of `~` after another attribute on its line (`int a List~int~ b`)                                   | one attribute on each line                                            | [2](./printed-form.md#2-a-gap-of-a-kind-that-prettier-does-not-have) | 10.9.8 reads the line up to the second `~` as the type of its first attribute                                                                                        | [fixture: er/attribute-spacing/attributes-with-tilde-on-one-line-kept]        |
 | [treemap](./treemap.md#title)                                | `title T` at the start of its line                                                                                          | `  title T` one step in                                               | [1](./printed-form.md#1-the-whitespace-beside-a-mark)                | 11.8.1 rejects a title, `accTitle`, and `accDescr` that is indented                                                                                                  | [fixture: treemap/title/line-start-kept]                                      |
 | [ishikawa](./ishikawa.md#indentation)                        | `ishikawa`, `R`, `  A`, ` B`, `  C` as written                                                                              | every node at its depth                                               | [1](./printed-form.md#1-the-whitespace-beside-a-mark)                | 11.13.0 draws the text printed by depth differently from the written text                                                                                            | [fixture: ishikawa/indentation/indent-relative-zero]                          |
@@ -3852,12 +3854,12 @@ around them decide, so formatting keeps them as they are written. See
   er/lex-classdef-space-before-line-feed]
 - A `class` or `subgraph` keyword right before a unit that starts with a `-`,
   and an `end` right before a statement that starts with a `-`: `class-A a`,
-  `subgraph-x`, and `end-x`. The lexer of 12.3.0 ends a keyword at a `-`, so
-  these are the keyword and the id `-A` or `-x`, and each of the ten versions
-  accepts the written text. Some versions that count reject the text with a
-  space (`class -A a`, and `subgraph -x`), some draw `subgraph-x` and `end-x`,
-  which they read as entities, differently from the text with a space, and the
-  others draw `class-A a` the same as `class -A a` (see
+  `subgraph-x`, and `end-x`. The pinned lexer ends a keyword at a `-`, so these
+  are the keyword and the id `-A` or `-x`, and each of the ten versions accepts
+  the written text. Some versions that count reject the text with a space
+  (`class -A a`, and `subgraph -x`), some draw `subgraph-x` and `end-x`, which
+  they read as entities, differently from the text with a space, and the others
+  draw `class-A a` the same as `class -A a` (see
   [Forms kept for versions of mermaid.js that count](#forms-kept-for-versions-of-mermaidjs-that-count)).
   So the keyword and the `-` keep touching, in any case of the keyword.
   `classDef-x` and `style-y` are drawn the same with and without a space by each
@@ -3877,90 +3879,143 @@ around them decide, so formatting keeps them as they are written. See
 - An entity named by a number of two digits or more, right before a character
   that continues a name (a letter, `_`, `-`, `*`, or a character outside ASCII):
   `12a`, `12*a`, and `12日本`. The pinned lexer ends the number there, and the
-  line is two entities. 11.7.0 and 11.8.1 read one name, and draw the two lines
-  differently; 10.9.8 rejects the text, and the versions from 11.13.0 draw both
-  forms the same. A `.` after the number (`12.a`) and a quote (`12"x"`) make no
-  difference, and the line is split. Directives between the number and the
-  character change nothing, since mermaid.js removes them first. [fixture:
+  line is two entities. Some versions that count read one name and draw the two
+  lines differently, while the others reject the text or draw both forms the
+  same (see
+  [Forms kept for versions of mermaid.js that count](#forms-kept-for-versions-of-mermaidjs-that-count)).
+  A `.` after the number (`12.a`) and a quote (`12"x"`) make no difference, and
+  the line is split. Directives between the number and the character change
+  nothing, since mermaid.js removes them first. [fixture:
   er/statements-one-per-line/number-name-then-name-kept] [fixture:
   er/statements-one-per-line/number-name-before-directive-kept] [corpus fixture:
   er/lex-name-number2-then-letter]
 - The keyword `subgraph` and the name after it, and the keyword `end` and the
   statement after it, with a character outside ASCII between them (`subgraphé`,
   `endé`, `end日本`) or a U+2028 or U+2029 between them or at the end of the
-  line of an `end` (`end` U+2028 `B`). 11.7.0 to 11.16.1 read one name and draw
-  the text differently. 10.9.8 rejects the forms with a character outside ASCII
-  and draws the U+2028 and U+2029 forms the same in both; 11.17.2, 12.0.0, and
-  12.3.0 draw both forms the same. The keywords `class`, `classDef`, `style`,
-  and `direction` are drawn the same with and without such a character.
-  Directives between the keyword and what follows it change none of this.
-  [fixture: er/statements-one-per-line/end-then-name-outside-ascii-kept]
-  [fixture: er/statements-one-per-line/subgraph-then-name-outside-ascii-kept]
-  [fixture:
+  line of an `end` (`end` U+2028 `B`). Some versions that count read one name
+  and draw the text differently, while the others reject the forms with a
+  character outside ASCII, or draw both forms the same (see
+  [Forms kept for versions of mermaid.js that count](#forms-kept-for-versions-of-mermaidjs-that-count)).
+  The keywords `class`, `classDef`, `style`, and `direction` are drawn the same
+  with and without such a character. Directives between the keyword and what
+  follows it change none of this. [fixture:
+  er/statements-one-per-line/end-then-name-outside-ascii-kept] [fixture:
+  er/statements-one-per-line/subgraph-then-name-outside-ascii-kept] [fixture:
   er/statements-one-per-line/end-directive-then-name-outside-ascii-kept]
   [fixture:
   er/statements-one-per-line/subgraph-directive-then-name-outside-ascii-kept]
   [corpus fixture: er/lex-keyword-end-then-e-acute] [corpus fixture:
   er/lex-keyword-subgraph-then-e-acute] [corpus fixture:
   er/db-subgraph-direction-after-nested-end-line-separator]
-- A statement that starts with a U+2028 or U+2029 and the word `class`, or
-  `direction` and a direction (`TB`, `BT`, `RL`, `LR`, in any case), with
-  another statement after it on its line. The pinned lexer reads the character
-  as part of the first name, and 11.7.0 to 11.16.1 read it as whitespace before
-  the keyword, so they read `class A a` and `direction LR B` as statements that
-  go on over the line: the statements on lines of their own are a `class` alone,
-  which they reject, and a `direction` alone, which they draw differently. A
-  statement that starts so with another word (`classes`, `directionX`, a name)
-  is drawn the same on a line of its own, and so is a U+2028 inside a name (`B`
-  U+2028 `class A a`). [test: a line of two ER statements that starts with
-  U+2028] [test: a line that starts with U+2029 and class, and two more
-  statements] [test: a line that starts with U+2028 and direction, and two more
-  statements] [test: a statement with U+2028 and class after a space, and two
-  more statements] [test: a line that starts with U+2028 and a name, and one
-  more statement] [test: a line that starts with U+2028 and a word that starts
-  like class] [test: a line that starts with U+2028 and a word that starts like
-  direction]
+- A statement that starts with a U+2028 or U+2029, with another statement after
+  it on its line, where some versions that count read the line from the end of
+  the whitespace as a `class` statement or as a direction line. The pinned lexer
+  reads the character as part of the first name, and those versions read it as
+  whitespace, so their lexer tries its keyword rules where the whitespace ends.
+  The keyword `class` is followed by two names, so `class A a` is one statement
+  there, and on lines of their own it is a `class` alone, which they reject. A
+  name that touches the keyword (`classé`) is the first of the two, and the
+  names in quotes, with an alias, a class, or attributes, are none: the line
+  `class "A" "a"` is rejected on one line and on lines of their own. The rule of
+  the direction line takes the run up to the next line terminator that holds
+  `direction`, whitespace, and a direction (`TB`, `BT`, `RL`, `LR`, in any case;
+  the whitespace may hold a line feed), so in `A direction LR` and
+  `A B direction LR` the line is a direction line that has no entity `A`, which
+  on a line of its own is one. The same holds for `direction` as the end of the
+  first statement when a statement follows the value (`direction LR B`), and the
+  line that holds the value is the one printed as written. A `direction` alone
+  with its value (`direction LR`, or the value on the next line with nothing
+  after it) is the same direction line on lines of their own. A statement that
+  starts so with another word (`classes`, `directionX`, a name) is drawn the
+  same on a line of its own, and so is a name with a U+2028 inside it (`B`
+  U+2028 `class A a`, `B` U+2028 `C direction LR`), since the run of the rule
+  stops at the separator, and a directive that holds the words, since mermaid.js
+  removes it first. The condition reads the line and not what the other
+  statements declare: where a later statement declares the entity `A` again, the
+  two forms draw the same, and the line stays as written. [test: a line of two
+  ER statements that starts with U+2028] [test: a line that starts with U+2029
+  and class, and two more statements] [test: a line that starts with U+2028 and
+  direction, and two more statements] [test: a statement with U+2028 and class
+  after a space, and two more statements] [test: a line that starts with U+2028
+  and a name, and one more statement] [test: a line that starts with U+2028 and
+  a word that starts like class] [test: a line that starts with U+2028 and a
+  word that starts like direction] [test: a line that starts with U+2028, a
+  name, and a direction line] [test: a line that starts with U+2029, two names,
+  and a direction line] [test: a line that starts with U+2028, a relationship,
+  and a direction line] [test: a direction line after a name and a name that
+  starts with U+2028] [test: a line that starts with U+2028 and direction, and a
+  value on the next line that a statement follows] [test: a line that starts
+  with U+2028, a name, and a direction line with a directive before its value]
+  [test: a line that starts with U+2028, a name, and a direction line in upper
+  case] [test: a line that starts with U+2028, class and a character outside
+  ASCII, and one more statement] [test: a line that starts with U+2028 and CLASS
+  in upper case, and two more statements] [test: a line in an ER subgraph that
+  starts with U+2028, a name, and a direction line] [test: a line that starts
+  with U+2028 and direction, and its value alone] [test: a line that starts with
+  U+2028 and a name that ends with direction, and its value alone] [test: a line
+  that starts with U+2028 and direction, and a value glued to a letter] [test: a
+  line that starts with U+2028 and direction, and a relationship that starts
+  with its value] [test: a line that starts with U+2028, a name, and direction
+  without a direction] [test: a line that starts with U+2028, a name, a second
+  U+2028, and a direction line] [test: a line that starts with U+2028 and
+  direction, its value, and a statement on the next line] [test: a line that
+  starts with U+2028 and a name, and a directive that holds a direction] [test:
+  a line that starts with U+2028 and class, and one more statement] [test: a
+  line that starts with U+2028 and class, and a name on the next line] [test: a
+  line that starts with U+2028 and class, and two names in quotes] [test: a line
+  that starts with U+2028 and class, and a name with a class] [test: a line that
+  starts with U+2028, a space, and class] [test: a line that starts with U+2028,
+  a space, a name, and a direction line]
 - Several attributes on a line, one of which comes after another attribute and
-  holds a pair of `~` (`int a List~int~ b`). 10.9.8 reads a generic type with a
-  rule that starts at an attribute and runs on over the rest of the line to the
-  second `~`, so the first attribute of the example has the type
-  `int a List~int~` there. An attribute whose own type holds the pair
-  (`List~int~ a PK int b`) and a line with one `~` only (`string a "x~y" int b`)
-  are drawn the same on lines of their own. [fixture:
-  er/attribute-spacing/attributes-with-tilde-on-one-line-kept] [fixture:
+  holds a pair of `~` (`int a List~int~ b`). The oldest version that counts
+  reads a generic type with a rule that starts at an attribute and runs on over
+  the rest of the line to the second `~`, so the first attribute of the example
+  has the type `int a List~int~` there. An attribute whose own type holds the
+  pair (`List~int~ a PK int b`), a line with one `~` only
+  (`string a "x~y" int b`), and a line whose pair is in a directive are drawn
+  the same on lines of their own, since mermaid.js removes the directives first.
+  [fixture: er/attribute-spacing/attributes-with-tilde-on-one-line-kept]
+  [fixture:
   er/attribute-spacing/attributes-with-generic-type-later-on-one-line-kept]
   [fixture:
   er/attribute-spacing/attributes-with-generic-type-first-on-one-line-split]
   [fixture:
   er/attribute-spacing/attributes-with-tilde-in-quotes-on-one-line-split]
+  [fixture:
+  er/attribute-spacing/attributes-with-tilde-in-directive-on-one-line-split]
   [corpus fixture: er/lex-tilde-after-quoted]
 
 ## State lines that older versions read as a comment
 
 A statement of the top level of a state diagram that starts with a word that
-starts with `%` (`%`, `%a`), with another statement after it on its line, stays
-on its line as written. The pinned lexer reads `% not a comment` as the states
-`%`, `not`, `a`, and `comment`, and `%a b` as the states `%a` and `b`. The
-lexers of 10.9.8, 11.7.0, 11.8.1, 11.13.0, and 11.14.0 have a rule that reads a
-`%` and the rest of the line as a comment where a token starts, so the words
-moved to lines of their own would be states there. The versions from 11.15.0
-read both forms the same, and so do all the versions for a `%` inside a word
-(`a%b c`), inside the braces of a composite state, and with nothing after it
-(`%a`, `%a --> b`, `%a : x y`); a `%` word that is the target of a transition
-(`a --> %b c`) is rejected in both forms by those five. A `click` statement that
-holds a `:` stays on its line with a statement after it: 10.9.8 has no `click`
-statement and reads a `:` as the start of a description that runs on to the next
-`:`, to a `;`, or to the end of the line, so the statement after
-`click A href "a:b"` would not be one there. A click statement without a `:`
-(`click A href "u" accDescr {}`) is drawn the same on lines of its own by every
-version. Directives on the line change none of this, since mermaid.js removes
+starts with `%` (`%`, `%a`), with a statement after it on its line that starts
+with no such word, stays on its line as written. The pinned lexer reads
+`% not a comment` as the states `%`, `not`, `a`, and `comment`, and `%a b` as
+the states `%a` and `b`. Some versions that count have a rule that reads a `%`
+and the rest of the line as a comment where a token starts, so the words moved
+to lines of their own would be states there. A statement after it that starts
+with a `%` word is a comment on a line of its own as well, so `%a %b` is split,
+while `%a b %c` stays. Every version reads both forms the same for a `%` inside
+a word (`a%b c`), inside the braces of a composite state, and with nothing after
+it (`%a`, `%a --> b`, `%a : x y`); the versions with that rule reject a `%` word
+that is the target of a transition (`a --> %b c`) in both forms. A `click`
+statement that holds a `:` stays on its line with a statement after it: the
+oldest version that counts has no `click` statement and reads a `:` as the start
+of a description that runs on to the next `:`, to a `;`, or to the end of the
+line, so the statement after `click A href "a:b"` would not be one there. A
+click statement without a `:` (`click A href "u" accDescr {}`) is drawn the same
+on lines of its own by every version, and so is one whose only `:` stands in a
+directive. Directives on the line change none of this, since mermaid.js removes
 them before it reads the text. [fixture:
 state/statements-one-per-line/percent-then-text-kept] [fixture:
 state/statements-one-per-line/percent-word-then-text-kept] [fixture:
+state/statements-one-per-line/percent-word-then-percent-word-split] [fixture:
+state/statements-one-per-line/percent-word-text-percent-word-kept] [fixture:
 state/statements-one-per-line/percent-and-click-directive-then-text-kept]
 [fixture: state/statements-one-per-line/percent-in-braces-split] [fixture:
 state/statements-one-per-line/split] [fixture:
-state/statements-one-per-line/click-without-colon-split] [corpus fixture:
+state/statements-one-per-line/click-without-colon-split] [fixture:
+state/statements-one-per-line/click-colon-in-directive-split] [corpus fixture:
 state/spec-state-style-9ceea0dd]
 
 ## Gantt lines that the whitespace decides

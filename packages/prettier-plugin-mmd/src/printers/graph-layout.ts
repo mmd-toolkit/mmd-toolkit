@@ -145,10 +145,11 @@ export function addLinkRules(
 /**
  * Adds the rule that the edge id of a link touches the data block before it:
  * `A@{ shape: circle }e1@--> B`, not `A@{ shape: circle } e1@--> B`
- * (docs/flowchart.md, Arrow spacing; docs/agentflow.md, Arrows). mermaid.js
- * 12.3.0 reads both forms the same in a flowchart, but the grammars of 11.5.0
- * to 12.2.0 have no rule for a space after a data block before an edge id, and
- * the agentflow diagram rejects it in every version. A directive or an ignored
+ * (docs/flowchart.md, Arrow spacing; docs/agentflow.md, Arrows). The pinned
+ * mermaid.js reads both forms the same in a flowchart, but some versions that
+ * count have no rule for a space after a data block before an edge id
+ * (docs/compatibility.md, Forms kept for versions of mermaid.js that count),
+ * and the agentflow diagram rejects it in every version. A directive or an ignored
  * `;` between them is removed before the text is read, so the edge id touches
  * it too. Call it after the rules of the links are set.
  */
@@ -257,14 +258,15 @@ export function labelEdgeRule(source: Source, label: GraphLabel): GapRule {
  *   with the label `/x/`, `A[/x/]` a lean-right with the label `x`;
  *   `A( -x-)` is a rounded, `A(-x-)` an ellipse; `A[/ "x /]` has the
  *   label `"x`, and `A[/"x/]` is rejected.
- * - a label whose first word, up to whitespace or a `"`, holds a `@`: after
- *   the `>` of a flowchart shape and in agentflow, `A>x@]` is rejected,
- *   because `A>x@` is read as an edge id, and `A> x@]` has the label `x@`.
- *   mermaid.js 12.3.0 stops the run of an edge id at the other brackets and
- *   at `|`, so it reads `A[x@]` and `A-->|x@|B` as it reads them with the
- *   whitespace. 11.5.0 to 12.2.0 do not stop it there and reject them, and
- *   the formatted text is drawn by those versions too (docs/compatibility.md,
- *   Whitespace at the start of a label).
+ * - a label whose first word, up to whitespace or a `"`, holds a `@` that no
+ *   `{` or `"` follows: after the `>` of a flowchart shape and in agentflow,
+ *   `A>x@]` is rejected, because `A>x@` is read as an edge id, and `A> x@]`
+ *   has the label `x@`.
+ *   The pinned mermaid.js stops the run of an edge id at the other brackets
+ *   and at `|`, so it reads `A[x@]` and `A-->|x@|B` as it reads them with the
+ *   whitespace. Some versions that count do not stop it there and reject
+ *   them, and the formatted text is drawn by those versions too
+ *   (docs/compatibility.md, Whitespace at the start of a label).
  *
  * The rule is the same for every shape and for the text between `|`, so that
  * it does not depend on which brackets a label has. The label's value is its
@@ -275,15 +277,21 @@ function keepsLeadingWhitespace(label: GraphLabel): boolean {
   if (first === "/" || first === "\\" || first === "-" || first === '"') {
     return true
   }
-  let wordEnd = 0
-  while (
-    wordEnd < label.value.length &&
-    !isWhitespace(label.value.charAt(wordEnd)) &&
-    label.value.charAt(wordEnd) !== '"'
+  // The lexers that read an edge id take a run of characters that are no
+  // whitespace and no `"`, an `@`, and a character that is no `{` and no `"`.
+  for (
+    let index = 0;
+    index < label.value.length &&
+    !isWhitespace(label.value.charAt(index)) &&
+    label.value.charAt(index) !== '"';
+    index++
   ) {
-    wordEnd++
+    const next = label.value.charAt(index + 1)
+    if (label.value.charAt(index) === "@" && next !== "{" && next !== '"') {
+      return true
+    }
   }
-  return label.value.slice(0, wordEnd).includes("@")
+  return false
 }
 
 /**

@@ -1244,12 +1244,14 @@ mermaid.js が、その空白と `?` や `=` をテキストとして読むか�
 [fixture: label-inner-whitespace/leading-whitespace-pipe-label-kept]
 
 最初の語の `@` は、mermaid.js の版によって読み方が違います。
-12.3.0 は、辺の id の並びを括弧類と `|` で止めるので、
+固定した版は、辺の id の並びを括弧類と `|` で止めるので、
 `A[user@example.com]` と `A-->|x@|B` を、
 空白があるときと同じラベルとして読みます。
-対象にする版の一部は、そこで止めないので、空白がないこの 2 つを拒否し、
-空白がある形は受け入れます（タグの文法で確かめました。
-詳しくは
+対象にする版の一部は、そこで止めません。
+空白と `"` 以外の文字の並びの後に、
+`{` も `"` も続かない `@` が来ると辺の id として読むので、
+空白がないこの 2 つを拒否し、
+空白がある形は受け入れます（詳しくは
 [対象にする版の mermaid.js のために残す形](./compatibility.ja.md#対象にする版の-mermaidjs-のために残す形)
 を参照）。
 空白なしで印字したテキストは、書かれたとおりのテキストを読む版に拒否されるので、
@@ -1258,10 +1260,14 @@ mermaid.js が、その空白と `?` や `=` をテキストとして読むか�
 agentflow 図のどれでも同じで、ラベルの末尾にも空白 1 つを置きます。
 ただし、
 斜めの形の閉じの `?]` と `=]` の前には置きません（`A[/ x@/?]` はそのままです）。
+`{` か `"` が続く `@` は、それらの字句解析器にとって辺の id ではないので、
+そのような `@` だけを含むラベルは空白を失います（`A[/ a@"b" /]` は `A[/a@"b"/]`
+と印字します）。
 [fixture: label-inner-whitespace/leading-whitespace-at-sign-kept]
 [fixture: label-inner-whitespace/leading-whitespace-at-sign-every-shape-kept]
 [fixture: label-inner-whitespace/leading-whitespace-at-sign-before-question-end-kept]
 [fixture: label-inner-whitespace/leading-whitespace-at-sign-swimlane-kept]
+[fixture: label-inner-whitespace/leading-whitespace-at-sign-before-quote]
 
 入力
 ([label-inner-whitespace/trimmed-input.mmd](../tests/fixtures/flowchart/label-inner-whitespace/trimmed-input.mmd)):
@@ -2489,6 +2495,8 @@ subgraph がない場合、外と接続でつながる subgraph だけの場合�
 subgraph のメンバーは仕様が定めるものです（前の subgraph が持つ頂点はその
 subgraph のものです。入れ子の subgraph は外側の subgraph のメンバーなので、
 その中の頂点は両方の中にあります）。
+ただし、仕様の一覧にある `accTitle` や `accDescr` の文の値と `;` は、
+図のノードではないので、それだけを持つ subgraph は空として扱います。
 subgraph の id への接続、id からの接続は、その subgraph を外につなぎません。
 ラベル、id、コメントにある `subgraph` は subgraph ではありません。
 ほかの対象にする版は、2 つで同じに描きます。
@@ -2511,6 +2519,10 @@ subgraph の id への接続、id からの接続は、その subgraph を外に
 [fixture: direction/header-tb-nested-inner-linked]
 [fixture: direction/header-tb-subgraph-own-direction]
 [fixture: direction/header-tb-empty-subgraph]
+[fixture: direction/header-tb-subgraph-acc-title-only]
+[fixture: direction/header-tb-subgraph-acc-descr-only]
+[fixture: direction/header-tb-subgraph-semicolon-only]
+[fixture: direction/header-tb-subgraph-acc-title-and-vertex-kept]
 [fixture: direction/header-tb-two-subgraphs-linked-to-each-other]
 [fixture: direction/header-tb-two-subgraphs-one-unlinked-kept]
 [fixture: direction/header-tb-subgraph-member-of-earlier-kept]
@@ -2680,6 +2692,34 @@ subgraph の id は `subGraph0` になり、空白がなければ `S` になり�
 ヘッダーの行に書かれたまま残します。
 ブロックが独立した行にあると、空白は別に読まれ、
 ブロックとディレクティブの後の `;` は頂点として読まれます。
+
+タイトルのない 1 語の名前の前の空白は、`subgraph` と名前の間に、
+ディレクティブを除いて空白文字が 2 つ以上あり、
+別の文がその名前を id として挙げているときは、書かれたまま残します。
+挙げる文は、頂点、`style`、`class`、同じ名前の subgraph です。
+対象にする版の一部は、その最初の文字をキーワードの後の区切りとして読み、
+残りを名前のテキストの始まりとして読むので、
+その版では subgraph の id が生成され、空白 1 つの形では名前が id になります。
+`subgraph  S` の後の `S --> Z` は、その版では 2 つの頂点の間の辺で、
+`subgraph S` では subgraph からの辺です。
+swimlane 図では、最新の版もそう読みます。
+id を挙げる文がなければ、id は見えないので、空白は 1 つにします。
+タイトルのある名前、複数の語の名前、タブ 1 つの場合も同じです。
+`click` は頂点を作らないので、id を挙げたことになりません。
+[fixture: subgraph-header/name-leading-space-run-named-kept]
+[fixture: subgraph-header/name-leading-space-run-style-kept]
+[fixture: subgraph-header/name-leading-space-run-class-kept]
+[fixture: subgraph-header/name-leading-space-tab-kept]
+[fixture: subgraph-header/name-leading-space-directive-kept]
+[fixture: subgraph-header/name-leading-space-nested-kept]
+[fixture: subgraph-header/name-leading-space-same-name-twice-kept]
+[fixture: subgraph-header/name-leading-space-swimlane-kept]
+[fixture: subgraph-header/name-leading-space-unnamed-collapsed]
+[fixture: subgraph-header/name-leading-space-click-only-collapsed]
+[fixture: subgraph-header/name-leading-space-title-collapsed]
+[fixture: subgraph-header/name-leading-space-several-words-collapsed]
+[fixture: subgraph-header/name-leading-tab-one-space-collapsed]
+[fixture: subgraph-header/name-leading-space-directive-touching-collapsed]
 
 末尾が `end` の単位である名前（`subgraph Front end` など）は、
 その後の改行と次の行の空白まで名前として読まれます（詳しくは、

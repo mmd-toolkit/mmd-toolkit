@@ -422,13 +422,17 @@ mindmap
 ダッシュの形のダッシュに接する文字列（`f(-"x"-)` で、
 閉じの `-)` は文字列の後ろだけに続く形）、余白か改行のあるテキスト、
 空の文字列です。
+開きの `(-` の後の文字列は、引用符を外します。
+mermaid.js は `f(-x)` を `f(-"x")` と同じに読むからです。
 markdown 文字列は書かれたまま残します。
 文字列とダッシュの間にディレクティブがあっても、変わりません。
 mermaid.js は、テキストを読む前にそれらを取り除くので、
-`f("x"%%{init: {}}%%-)` は引用符を残します。
+`f("x"%%{init: {}}%%-)` は引用符を残し、
+`f(-%%{init: {}}%%"y z")` は引用符を外します。
 [fixture: quotes/labels-without-quotes]
 [fixture: quotes/labels-that-need-quotes]
 [fixture: quotes/dash-closer-after-a-directive-kept]
+[fixture: quotes/dash-opener-string-unquoted]
 
 入力
 ([quotes/labels-without-quotes-input.mmd](../tests/fixtures/mindmap/quotes/labels-without-quotes-input.mmd)):

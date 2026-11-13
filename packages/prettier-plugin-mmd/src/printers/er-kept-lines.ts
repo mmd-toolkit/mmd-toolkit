@@ -11,7 +11,8 @@ import { holdsDirection, holdsStatementAfter } from "./accessibility-lines.ts"
 import type { Source } from "./source.ts"
 import {
   findTokenEndingBefore,
-  isSpaceOrTab,
+  findTriviaAt,
+  isWhitespace,
   skipDirectives,
   textWithoutDirectives,
 } from "./source.ts"
@@ -118,13 +119,15 @@ function findSubgraphHeaderLines(
  * - An entity statement named by a number of two digits or more, with a
  *   character right after it that continues a name: `12a` is the entities
  *   `12` and `a` to the pinned lexer, and one name to a version that counts.
- * - A statement that starts with a U+2028 or U+2029 and the word `class`, or
- *   `direction` and a direction, with another statement after it on its line:
- *   the character belongs to the first name to the pinned lexer, and a
- *   version that counts reads it as whitespace, so the word is the keyword
- *   of a statement that goes on over the line (`class A a`, `direction LR`),
- *   and the statements on lines of their own are a keyword alone, which it
- *   rejects or reads as a direction.
+ * - A statement that starts with a U+2028 or U+2029, with another statement
+ *   after it on its line, where a version that counts reads the line from the
+ *   end of the whitespace as a `class` statement or a direction line (see
+ *   `startsLineReadAsKeywordByOlderVersions`): the character belongs to the
+ *   first name to the pinned lexer, and a version that counts reads it as
+ *   whitespace. `class A a` is a statement that goes on over the line, and
+ *   `A direction LR` is a direction line, which has no entity `A`; on lines
+ *   of their own, the statements are a keyword alone, which it rejects, and
+ *   an entity and a direction line.
  * - The lines of an attribute block with a `~` that a version that counts
  *   reads from the start of an attribute (see `findAttributeLinesWithTildes`).
  * - The `subgraph` keyword with a character outside ASCII, or a U+2028 or
@@ -139,21 +142,15 @@ function findLinesReadByTheirPlace(
 ): number[] {
   const lines: number[] = []
   for (const [index, statement] of statements.entries()) {
-    const following = statements[index + 1]
+    const keptLine = findLineReadAsKeywordByOlderVersions(
+      source,
+      statements,
+      index,
+    )
+    if (keptLine !== null) lines.push(keptLine)
     if (
-      following !== undefined &&
-      startsWithSeparatedKeyword(source, statement.range[0]) &&
-      lineStartOf(source, following.range[0]) ===
-        lineStartOf(source, statement.range[0])
-    ) {
-      lines.push(lineStartOf(source, statement.range[0]))
-    }
-    if (
-      statement.type === "ErEntityStatement" &&
+      isNameAlone(statement) &&
       statement.name.type === "ErIdentifier" &&
-      statement.alias === null &&
-      statement.cssClasses.length === 0 &&
-      statement.attributes === null &&
       (statement.name.name === "1"
         ? startsLikeRuleEleven(source, statement.range[1])
         : isNumber(statement.name.name) &&
@@ -200,8 +197,9 @@ function findAttributeLinesWithTildes(
     for (const attribute of attributes) {
       const line = lineStartOf(source, attribute.range[0])
       const lineEnd = lineEndOf(source, attribute.range[0])
-      const first = source.text.indexOf("~", attribute.range[0])
-      const second = first === -1 ? -1 : source.text.indexOf("~", first + 1)
+      const first = indexOfTilde(source, attribute.range[0], lineEnd)
+      const second =
+        first === -1 ? -1 : indexOfTilde(source, first + 1, lineEnd)
       const onLine = attributes.filter(
         (other) => lineStartOf(source, other.range[0]) === line,
       )
@@ -219,30 +217,125 @@ function findAttributeLinesWithTildes(
 }
 
 /**
- * Whether the text at `offset` starts with a U+2028 or U+2029 and then the
- * word `class`, or the word `direction`, whitespace, and a direction (`TB`,
- * `BT`, `RL`, `LR`, in any case). A version that counts reads the character
- * as whitespace before the keyword.
+ * The offset of the first `~` from `from` to the end of the line at `to` that
+ * no directive holds, or -1: mermaid.js removes the directives before it reads
+ * the text.
  */
-function startsWithSeparatedKeyword(source: Source, offset: number): boolean {
-  let position = offset
-  while (isLineSeparator(source.text.charAt(position))) position++
-  if (position === offset) return false
-  const word = readWord(source.text, position)
-  if (toAsciiLowerCase(word) === "class") return true
-  if (toAsciiLowerCase(word) !== "direction") return false
-  position += word.length
-  const blanks = position
-  while (
-    isSpaceOrTab(source.text.charAt(position)) ||
-    isLineSeparator(source.text.charAt(position))
+function indexOfTilde(source: Source, from: number, to: number): number {
+  let position = from
+  while (position < to) {
+    const trivia = findTriviaAt(source, position)
+    if (trivia?.type === "Directive") position = trivia.range[1]
+    else if (source.text[position] === "~") return position
+    else position++
+  }
+  return -1
+}
+
+/**
+ * The line to print as written for the statement at `index`, which starts
+ * with a U+2028 or U+2029 that a version that counts reads as whitespace, or
+ * null where the statements on lines of their own are read as the line is.
+ * The keyword rules of that version start where the whitespace ends, with the
+ * directives removed:
+ *
+ * - `class` followed by a character that is no letter, digit, or `_` is the
+ *   keyword, and `class A a` is one statement. It needs two names after the
+ *   keyword, and a statement of a name alone is one name (`classé` is the
+ *   keyword and the name `é`), so `class A` is rejected whether it stands on
+ *   one line or on two. The line of the statement is the one to keep.
+ * - The rule of the direction line takes the run up to the next line
+ *   terminator that holds `direction`, whitespace, and a direction
+ *   (`holdsDirection`), so `A direction LR` is a direction line with no entity
+ *   `A`, while on lines of their own `A` is an entity. When the statement
+ *   after the first is a direction line, whose `direction` is out of the reach
+ *   of the rule once it stands on a line of its own, the line of the first is
+ *   the one to keep. When `direction` ends the first statement, the whitespace
+ *   before the direction may hold a line feed, so a line of the entity
+ *   `direction` and a line of the entity `LR` are the same direction line; the
+ *   line that holds the value is read differently only where a statement
+ *   follows the value on it, which the rule takes into the direction line and
+ *   which stands on a line of its own otherwise, and that line is the one to
+ *   keep.
+ */
+function findLineReadAsKeywordByOlderVersions(
+  source: Source,
+  statements: readonly ErStatement[],
+  index: number,
+): number | null {
+  const statement = statements[index]
+  if (!isLineSeparator(source.text.charAt(statement.range[0]))) return null
+  const start = skipWhitespaceOnLine(source, statement.range[0])
+  // A separator that whitespace follows is a name of its own, and the
+  // keyword after the whitespace is read the same by every version.
+  if (start >= statement.range[1]) return null
+  const line = lineStartOf(source, statement.range[0])
+  const followers = statements.slice(index + 1, index + 3)
+  const own = textWithoutDirectives(source, start, statement.range[1])
+  if (toAsciiLowerCase(readWord(own, 0)) === "class") {
+    const needed = own.length > "class".length ? 1 : 2
+    const names = followers.slice(0, needed)
+    return isNameAlone(statement) &&
+      names.length === needed &&
+      names.every(
+        (name) =>
+          isNameAlone(name) &&
+          name.name.type === "ErIdentifier" &&
+          lineStartOf(source, name.range[0]) === line,
+      )
+      ? line
+      : null
+  }
+  if (
+    !holdsDirection(source, {
+      range: [start, lineEndOf(source, start)],
+      text: null,
+    })
   )
-    position++
-  return (
-    position > blanks &&
-    ["tb", "bt", "rl", "lr"].includes(
-      toAsciiLowerCase(source.text.slice(position, position + 2)),
+    return null
+  const [first, second] = followers
+  if (
+    first?.type === "ErDirectionStatement" &&
+    lineStartOf(source, first.range[0]) === line
+  )
+    return line
+  const valueLine =
+    first === undefined ? null : lineStartOf(source, first.range[0])
+  return second !== undefined &&
+    valueLine === lineStartOf(source, second.range[0])
+    ? valueLine
+    : null
+}
+
+/**
+ * The offset of the first character from `offset` on that is no whitespace
+ * and no directive, or of the line feed that ends the line.
+ */
+function skipWhitespaceOnLine(source: Source, offset: number): number {
+  let start = offset
+  for (;;) {
+    start = skipDirectives(source, start)
+    const character = source.text.charAt(start)
+    if (
+      character === "" ||
+      character === "\n" ||
+      character === "\r" ||
+      !isWhitespace(character)
     )
+      return start
+    start++
+  }
+}
+
+/** Whether the statement is an entity written by its name alone. */
+function isNameAlone(
+  statement: ErStatement,
+): statement is Extract<ErStatement, { type: "ErEntityStatement" }> {
+  return (
+    statement.type === "ErEntityStatement" &&
+    statement.alias === null &&
+    statement.cssClasses.length === 0 &&
+    statement.attributes === null
   )
 }
 

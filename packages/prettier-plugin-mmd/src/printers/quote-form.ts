@@ -259,10 +259,10 @@ const erReserved: ReadonlySet<string> = new Set([
 ])
 
 /**
- * A name or a role of an ER diagram that every version of mermaid.js that
- * reads it in quotes reads the same without them: a word of `wordWithout`
- * that may have a single `-` between its parts (the lexers of 9.4.3 to 12.3.0
- * read the `-` inside a name without quotes).
+ * A name or a role of an ER diagram that every version that counts and reads
+ * it in quotes reads the same without them: a word of `wordWithout` that may
+ * have a single `-` between its parts (docs/compatibility.md, The quotes of a
+ * text).
  */
 const erName: Bare = wordWithout(erReserved, { hyphens: true })
 
@@ -840,12 +840,13 @@ function shapeText(text: string): string | undefined {
 }
 
 /**
- * Whether a dash stands next to a text in a shape of a mindmap or a kanban
- * board: the closer `-)` follows only a string, and `(-` opens a shape in which
- * a text without quotes would be read with it.
+ * Whether a dash stands right after a text in a shape of a mindmap or a kanban
+ * board: the closer `-)` follows only a string, so a text without quotes would
+ * not close the shape. A dash before the text, as in `(-"x")`, changes nothing:
+ * the text is read the same with and without quotes.
  */
-function nextToDash(before: string, after: string): boolean {
-  return before.endsWith("-") || after.startsWith("-")
+function dashFollows(_before: string, after: string): boolean {
+  return after.startsWith("-")
 }
 
 /** Whether a plot of an XY chart is a line. */
@@ -1225,8 +1226,8 @@ const quoteRules: Readonly<
     name: bare(headingName, { joins: wordFollows }),
     title: bare(labelText),
   },
-  KanbanShape: { label: bare(shapeText, { joins: nextToDash }) },
-  MindmapShape: { label: bare(shapeText, { joins: nextToDash }) },
+  KanbanShape: { label: bare(shapeText, { joins: dashFollows }) },
+  MindmapShape: { label: bare(shapeText, { joins: dashFollows }) },
   ErEntityReference: { name: bare(erName) },
   ErEntityStatement: {
     name: bare(erName, { joins: followsKeywordAsOneName }),

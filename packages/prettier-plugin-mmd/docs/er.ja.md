@@ -399,12 +399,18 @@ mermaid.js は、テキストを読む前にディレクティブを取り除く
 `endé` は、固定した版ではキーワード `end` と実体 `é` ですが、
 対象にする版の一部では 1 つの名前だからです。
 `end` の行の終わりにある U+2028 や U+2029 は残します。
-U+2028 や U+2029 で始まり、`class`、または `direction` と方向が続き、
-同じ行に後ろの文がある文も残します。
+U+2028 や U+2029 で始まる文も、同じ行に後ろの文があり、
+対象にする版の一部がその行を、空白の終わりから `class` の文、
+または方向の行として読む場合は残します。
 固定した版は、その文字を最初の名前の一部として読みますが、
-対象にする版の一部は空白として読み、キーワードの前に置くので、
-`class A a` や `direction LR B` が行にわたって続くからです。
-ほかの語（`classes`、名前）で始まる文は、後ろの文と分けます。
+その版は空白として読み、キーワードの前に置くからです。
+`class A a` は、キーワードの後ろに名前が 2 つあるので、行にわたって続きます。
+`A direction LR` と `A B direction LR` は、その版では方向の行で、
+`direction` の前にある文も含めます。
+`direction LR B` や、値が次の行にある `direction` も、
+値の後ろに文が続くときは同じで、その文は値のある行に残します。
+ほかの語（`classes`、`directionX`、名前）で始まる文、名前が 1 つの `class`、
+値だけが続く `direction` は、後ろの文と分けます。
 そうした `end` の後の引用符つきの名前は、引用符を残します。
 キーワードとその後ろの間にディレクティブがあっても、変わりません。
 ディレクティブが U+2028 や U+2029 の前にあっても、ASCII 外の文字に接していても、
@@ -427,15 +433,42 @@ U+2028 や U+2029 で始まり、`class`、または `direction` と方向が続
 [test: a line that starts with U+2028 and a name, and one more statement]
 [test: a line that starts with U+2028 and a word that starts like class]
 [test: a line that starts with U+2028 and a word that starts like direction]
+[test: a line that starts with U+2028, a name, and a direction line]
+[test: a line that starts with U+2029, two names, and a direction line]
+[test: a line that starts with U+2028, a relationship, and a direction line]
+[test: a direction line after a name and a name that starts with U+2028]
+[test: a line that starts with U+2028 and direction, and a value on the next line that a statement follows]
+[test: a line that starts with U+2028, a name, and a direction line with a directive before its value]
+[test: a line that starts with U+2028, a name, and a direction line in upper case]
+[test: a line that starts with U+2028, class and a character outside ASCII, and one more statement]
+[test: a line that starts with U+2028 and CLASS in upper case, and two more statements]
+[test: a line in an ER subgraph that starts with U+2028, a name, and a direction line]
+[test: a line that starts with U+2028 and direction, and its value alone]
+[test: a line that starts with U+2028 and a name that ends with direction, and its value alone]
+[test: a line that starts with U+2028 and direction, and a value glued to a letter]
+[test: a line that starts with U+2028 and direction, and a relationship that starts with its value]
+[test: a line that starts with U+2028, a name, and direction without a direction]
+[test: a line that starts with U+2028, a name, a second U+2028, and a direction line]
+[test: a line that starts with U+2028 and direction, its value, and a statement on the next line]
+[test: a line that starts with U+2028 and a name, and a directive that holds a direction]
+[test: a line that starts with U+2028 and class, and one more statement]
+[test: a line that starts with U+2028 and class, and a name on the next line]
+[test: a line that starts with U+2028 and class, and two names in quotes]
+[test: a line that starts with U+2028 and class, and a name with a class]
+[test: a line that starts with U+2028, a space, and class]
+[test: a line that starts with U+2028, a space, a name, and a direction line]
 複数の属性がある行は、その行の後ろの属性が、
 `int a List~int~ b` のように `~` を 2 つ持つときに、書かれたまま印字します。
 対象にする版のうち最も古い版が、ジェネリクスの型を、
 属性の先頭から行の残りを越えて 2 つ目の `~` まで続く規則で読むからです。
-`~` が文字列の中にしかない行と、自分の型が `~` を 2 つ持つ属性は、分けます。
+`~` が文字列かディレクティブの中にしかない行と、
+自分の型が `~` を 2 つ持つ属性は、分けます。
+ディレクティブは、mermaid.js がテキストを読む前に取り除くからです。
 [fixture: attribute-spacing/attributes-with-tilde-on-one-line-kept]
 [fixture: attribute-spacing/attributes-with-generic-type-later-on-one-line-kept]
 [fixture: attribute-spacing/attributes-with-generic-type-first-on-one-line-split]
 [fixture: attribute-spacing/attributes-with-tilde-in-quotes-on-one-line-split]
+[fixture: attribute-spacing/attributes-with-tilde-in-directive-on-one-line-split]
 [corpus fixture: er/lex-tilde-after-quoted]
 また、保持する `;` がある行は、その文を一緒に残します。
 mermaid.js の行の規則は行のテキストを読み、テキストを別の行に動かすと、

@@ -385,16 +385,21 @@ does the statement after an `end` that such a character or separator follows,
 which stays on the line of the `end` with the gap as written: `endé` is the
 keyword `end` and the entity `é` to the pinned version, and one name to some
 versions that count. A U+2028 or U+2029 that ends the line of an `end` stays,
-and so does a statement that starts with one and the word `class`, or
-`direction` and a direction, when another statement follows it on its line: the
-character belongs to the first name to the pinned version, and some versions
-that count read it as whitespace before the keyword, so `class A a` and
-`direction LR B` go on over the line there. A statement that starts so with
-another word (`classes`, a name) is split from the statement after it. A name in
-quotes that follows such an `end` keeps its quotes. Directives between the
-keyword and what follows it change none of this, whether they stand before the
-U+2028 or U+2029 or touch the character outside ASCII. [fixture:
-statements-one-per-line/end-then-name-outside-ascii-kept] [fixture:
+and so does a statement that starts with one, when another statement follows it
+on its line, and some versions that count read the line from the end of the
+whitespace as a `class` statement or as a direction line: the character belongs
+to the first name to the pinned version, and those versions read it as
+whitespace before the keyword. `class A a` goes on over the line there, with two
+names after the keyword. `A direction LR` and `A B direction LR` are a direction
+line there, which takes the statements before `direction` too, and so are
+`direction LR B` and `direction` with its value on the next line when a
+statement follows the value, which stays on the line of the value. A statement
+that starts so with another word (`classes`, `directionX`, a name), `class` with
+one name, and `direction` with its value alone are split from the statement
+after them. A name in quotes that follows such an `end` keeps its quotes.
+Directives between the keyword and what follows it change none of this, whether
+they stand before the U+2028 or U+2029 or touch the character outside ASCII.
+[fixture: statements-one-per-line/end-then-name-outside-ascii-kept] [fixture:
 statements-one-per-line/subgraph-then-name-outside-ascii-kept] [fixture:
 statements-one-per-line/end-directive-then-name-outside-ascii-kept] [fixture:
 statements-one-per-line/subgraph-directive-then-name-outside-ascii-kept] [corpus
@@ -411,20 +416,49 @@ a line that starts with U+2028 and direction, and two more statements] [test: a
 statement with U+2028 and class after a space, and two more statements] [test: a
 line that starts with U+2028 and a name, and one more statement] [test: a line
 that starts with U+2028 and a word that starts like class] [test: a line that
-starts with U+2028 and a word that starts like direction] A line of several
-attributes is printed as written when an attribute on it that comes after
-another holds a pair of `~`, as in `int a List~int~ b`: the oldest version that
-counts reads a generic type with a rule that runs from the start of an attribute
-over the rest of the line to the second `~`. A line whose only `~` is in a
-string, and an attribute whose own type holds the pair, are split. [fixture:
+starts with U+2028 and a word that starts like direction] [test: a line that
+starts with U+2028, a name, and a direction line] [test: a line that starts with
+U+2029, two names, and a direction line] [test: a line that starts with U+2028,
+a relationship, and a direction line] [test: a direction line after a name and a
+name that starts with U+2028] [test: a line that starts with U+2028 and
+direction, and a value on the next line that a statement follows] [test: a line
+that starts with U+2028, a name, and a direction line with a directive before
+its value] [test: a line that starts with U+2028, a name, and a direction line
+in upper case] [test: a line that starts with U+2028, class and a character
+outside ASCII, and one more statement] [test: a line that starts with U+2028 and
+CLASS in upper case, and two more statements] [test: a line in an ER subgraph
+that starts with U+2028, a name, and a direction line] [test: a line that starts
+with U+2028 and direction, and its value alone] [test: a line that starts with
+U+2028 and a name that ends with direction, and its value alone] [test: a line
+that starts with U+2028 and direction, and a value glued to a letter] [test: a
+line that starts with U+2028 and direction, and a relationship that starts with
+its value] [test: a line that starts with U+2028, a name, and direction without
+a direction] [test: a line that starts with U+2028, a name, a second U+2028, and
+a direction line] [test: a line that starts with U+2028 and direction, its
+value, and a statement on the next line] [test: a line that starts with U+2028
+and a name, and a directive that holds a direction] [test: a line that starts
+with U+2028 and class, and one more statement] [test: a line that starts with
+U+2028 and class, and a name on the next line] [test: a line that starts with
+U+2028 and class, and two names in quotes] [test: a line that starts with U+2028
+and class, and a name with a class] [test: a line that starts with U+2028, a
+space, and class] [test: a line that starts with U+2028, a space, a name, and a
+direction line] A line of several attributes is printed as written when an
+attribute on it that comes after another holds a pair of `~`, as in
+`int a List~int~ b`: the oldest version that counts reads a generic type with a
+rule that runs from the start of an attribute over the rest of the line to the
+second `~`. A line whose only `~` is in a string or in a directive, which
+mermaid.js removes before it reads the text, and an attribute whose own type
+holds the pair, are split. [fixture:
 attribute-spacing/attributes-with-tilde-on-one-line-kept] [fixture:
 attribute-spacing/attributes-with-generic-type-later-on-one-line-kept] [fixture:
 attribute-spacing/attributes-with-generic-type-first-on-one-line-split]
 [fixture: attribute-spacing/attributes-with-tilde-in-quotes-on-one-line-split]
-[corpus fixture: er/lex-tilde-after-quoted] And a line that holds a kept `;`
-keeps its statements together: the line rule of mermaid.js reads the text of a
-line, and moving text to another line changes which line matches the rule and
-which `;` it ignores (see [Styles and classes](#styles-and-classes)). [fixture:
+[fixture:
+attribute-spacing/attributes-with-tilde-in-directive-on-one-line-split] [corpus
+fixture: er/lex-tilde-after-quoted] And a line that holds a kept `;` keeps its
+statements together: the line rule of mermaid.js reads the text of a line, and
+moving text to another line changes which line matches the rule and which `;` it
+ignores (see [Styles and classes](#styles-and-classes)). [fixture:
 statements-one-per-line/semicolon-line-kept] [fixture:
 statements-one-per-line/ignored-semicolon-line-kept] The `}` of an attribute
 block or the `end` of a subgraph on such a line, with a statement after it on

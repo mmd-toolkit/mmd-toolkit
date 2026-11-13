@@ -165,7 +165,8 @@ flowchart、state、class、ER、requirement、mindmap の描画処理は、
 テキストの空白（整形が 1 つの空白にする連続した空白で、HTML はそれをまとめます。
 description の末尾の空白もそうです）、
 引用符つきか引用符なしかで決まる flowchart のラベルの型 `string` と `text`、
-解析のたびに作られる id、flowchart の 2 組の subgraph の id のフィールドです。
+解析のたびに作られる id、flowchart の 2 組の subgraph の id のフィールドで、
+その id を挙げる文はありません。
 それ以外の、ノード、辺、形は同じでした。
 
 flowchart の描画処理は、ヘッダーの向き `getDirection()` も配置に渡します。
@@ -210,9 +211,10 @@ ELK の配置のパッケージの 13 リリースのどれも、
 | [flowchart](./flowchart.ja.md#方向)                         | 外とつながらない subgraph のある `flowchart TB`                                                               | `flowchart TD`                                  | [3](./printed-form.ja.md#3-綴り)                      | 10.9.8、11.7.0、11.8.1 が、その subgraph を単独で並べる（`TB` では `LR`、`TD` では `TB`）                                                                          | [fixture: flowchart/direction/header-tb-unlinked-subgraph-kept]               |
 | [flowchart](./flowchart.ja.md#方向)                         | subgraph の中の頂点からその id への接続がある `flowchart TB`                                                  | `flowchart TD`                                  | [3](./printed-form.ja.md#3-綴り)                      | 10.9.8 は、そのような接続を外への接続と数えない                                                                                                                    | [fixture: flowchart/direction/header-tb-link-from-inside-to-subgraph-id-kept] |
 | [flowchart](./flowchart.ja.md#方向)                         | 外とつながらない subgraph のある `flowchart-elk TB`                                                           | `flowchart-elk TD`                              | [3](./printed-form.ja.md#3-綴り)                      | 11.7.0、11.8.1 はそのヘッダーを dagre の配置で描く                                                                                                                 | [fixture: flowchart/direction/header-elk-tb-unlinked-subgraph-kept]           |
+| [flowchart](./flowchart.ja.md#subgraph-のヘッダー)          | `subgraph  S`。文が挙げる 1 語の名前の前に、空白文字が 2 つ以上ある                                           | `subgraph S`                                    | [1](./printed-form.ja.md#1-記号の横の空白)            | 10.9.8、11.7.0、11.8.1、11.13.0、11.14.0、11.15.0、11.16.1、11.17.2 は 2 つ目の文字を名前の始まりとして読み、subgraph に生成された id を付ける                     | [fixture: flowchart/subgraph-header/name-leading-space-run-named-kept]        |
 | [flowchart](./flowchart.ja.md#方向)                         | `graph LR`                                                                                                    | `flowchart LR`                                  | [3](./printed-form.ja.md#3-綴り)                      | `flowchart.defaultRenderer` が `dagre-d3` のとき、10.9.8、11.7.0、11.8.1、11.13.0、11.14.0、11.15.0、11.16.1、11.17.2 が `graph` を読み、`flowchart` を拒否する    | [fixture: flowchart/direction/header-keyword-kept]                            |
 | [state](./state.ja.md#header)                               | `stateDiagram`                                                                                                | `stateDiagram-v2`                               | [3](./printed-form.ja.md#3-綴り)                      | `state.defaultRenderer` が `dagre-d3` のとき、10.9.8 が 2 つを違って描き、11.7.0、11.8.1、11.13.0、11.14.0、11.15.0、11.16.1、11.17.2 が `stateDiagram` を拒否する | [fixture: state/header/spellings-kept]                                        |
-| [state](./state.ja.md#1-行に-1-文)                          | 最上位で `%` の語で始まり（`%a b`、`% --> b c`）、同じ行に後ろの文がある文                                    | `%` の文と残りを別の行に                        | [2](./printed-form.ja.md#2-prettier-にない種類の隙間) | 10.9.8、11.7.0、11.8.1、11.13.0、11.14.0 が行の残りをコメントとして読む                                                                                            | [fixture: state/statements-one-per-line/percent-word-then-text-kept]          |
+| [state](./state.ja.md#1-行に-1-文)                          | 最上位で `%` の語で始まり（`%a b`、`%a --> b c`）、同じ行に `%` で始まらない後ろの文がある文                  | `%` の文と残りを別の行に                        | [2](./printed-form.ja.md#2-prettier-にない種類の隙間) | 10.9.8、11.7.0、11.8.1、11.13.0、11.14.0 が行の残りをコメントとして読む                                                                                            | [fixture: state/statements-one-per-line/percent-word-then-text-kept]          |
 | [state](./state.ja.md#1-行に-1-文)                          | `:` を含み（`click A href "a:b" accDescr {}`）、同じ行に後ろの文がある click 文                               | click と文を別の行に                            | [2](./printed-form.ja.md#2-prettier-にない種類の隙間) | 10.9.8 は `:` を、行の終わりまで続く説明の始まりとして読む                                                                                                         | [fixture: state/statements-one-per-line/split]                                |
 | [flowchart、swimlane](./flowchart.ja.md#ラベルの内側の空白) | `A[ user@example.com ]`                                                                                       | `A[user@example.com]`                           | [1](./printed-form.ja.md#1-記号の横の空白)            | flowchart: 11.7.0、11.8.1、11.13.0、11.14.0、11.15.0、11.16.1、11.17.2、12.0.0、swimlane: 11.16.1、11.17.2、12.0.0 が、空白のない形を拒否する                      | [fixture: flowchart/label-inner-whitespace/leading-whitespace-at-sign-kept]   |
 | [flowchart、swimlane](./flowchart.ja.md#矢印の前後の空白)   | `A@{ shape: circle }e1@--> B`                                                                                 | `A@{ shape: circle } e1@--> B`                  | [1](./printed-form.ja.md#1-記号の横の空白)            | flowchart: 11.7.0、11.8.1、11.13.0、11.14.0、11.15.0、11.16.1、11.17.2、12.0.0、swimlane: 11.16.1、11.17.2、12.0.0 が、空白のある形を拒否する                      | [fixture: flowchart/arrow-spacing/edge-id-after-data-block-touches]           |
@@ -241,7 +243,7 @@ ELK の配置のパッケージの 13 リリースのどれも、
 | [ER](./er.ja.md#実体)                                       | 引用符つきの `"a.b"`                                                                                          | `a.b`                                           | [3](./printed-form.ja.md#3-綴り)                      | 10.9.8、11.7.0、11.8.1 が、引用符なしの名前の `.` を拒否する                                                                                                       | [fixture: er/entities/name-with-dot-kept]                                     |
 | [ER](./er.ja.md#1-行に-1-文)                                | `12a`、2 桁以上の数と、名前が続く文字                                                                         | `12` と `a` を別の行に                          | [2](./printed-form.ja.md#2-prettier-にない種類の隙間) | 11.7.0 と 11.8.1 が 2 行を違って描く。10.9.8 はテキストを拒否する                                                                                                  | [fixture: er/statements-one-per-line/number-name-then-name-kept]              |
 | [ER](./er.ja.md#1-行に-1-文)                                | `endé`、`end` と U+2028 か U+2029 と文、`subgraphé`、`subgraph` と U+2028 と名前                              | `end` と `é` を別の行に。区切りは空白にして印字 | [2](./printed-form.ja.md#2-prettier-にない種類の隙間) | 11.7.0、11.8.1、11.13.0、11.14.0、11.15.0、11.16.1 が違って描く。10.9.8 は `endé` と `subgraphé` を拒否する                                                        | [fixture: er/statements-one-per-line/end-then-name-outside-ascii-kept]        |
-| [ER](./er.ja.md#1-行に-1-文)                                | `class` の前、または `direction` と方向の前にある U+2028 か U+2029 と、同じ行に後ろの文がある行               | 各文を別の行に                                  | [2](./printed-form.ja.md#2-prettier-にない種類の隙間) | 11.7.0、11.8.1、11.13.0、11.14.0、11.15.0、11.16.1 が `class` の行を拒否し、`direction` の行を違って描く                                                           | [test: a line of two ER statements that starts with U+2028]                   |
+| [ER](./er.ja.md#1-行に-1-文)                                | `class` と名前 2 つ、または方向の行の前にある U+2028 か U+2029 と、同じ行に後ろの文がある行                   | 各文を別の行に                                  | [2](./printed-form.ja.md#2-prettier-にない種類の隙間) | 11.7.0、11.8.1、11.13.0、11.14.0、11.15.0、11.16.1 が `class` の行を拒否し、`direction` の行を違って描く                                                           | [test: a line of two ER statements that starts with U+2028]                   |
 | [ER](./er.ja.md#1-行に-1-文)                                | 同じ行の別の属性の後にある、`~` が 2 つの属性（`int a List~int~ b`）                                          | 属性を 1 行ずつに                               | [2](./printed-form.ja.md#2-prettier-にない種類の隙間) | 10.9.8 は、最初の属性の型を 2 つ目の `~` までとして読む                                                                                                            | [fixture: er/attribute-spacing/attributes-with-tilde-on-one-line-kept]        |
 | [treemap](./treemap.ja.md#title)                            | 行頭の `title T`                                                                                              | 1 段深い `  title T`                            | [1](./printed-form.ja.md#1-記号の横の空白)            | 11.8.1 が、字下げされた title、`accTitle`、`accDescr` を拒否する                                                                                                   | [fixture: treemap/title/line-start-kept]                                      |
 | [ishikawa](./ishikawa.ja.md#indentation)                    | `ishikawa`、`R`、`  A`、` B`、`  C` を書かれたまま                                                            | すべてのノードを深さの位置に置く形              | [1](./printed-form.ja.md#1-記号の横の空白)            | 11.13.0 が、深さで印字したテキストを書かれたテキストと違って描く                                                                                                   | [fixture: ishikawa/indentation/indent-relative-zero]                          |
@@ -4170,7 +4172,7 @@ mermaid.js は、一部の ER の行を、置かれた場所や周りの空白�
 - `class` と `subgraph` のキーワードの直後に `-` で始まる単位が続く場合と、
   `end` の直後に `-` で始まる文が続く場合（`class-A a`、`subgraph-x`、
   `end-x`）。
-  12.3.0 の字句解析器はキーワードを `-` で終えるので、
+  固定した字句解析器はキーワードを `-` で終えるので、
   これらはキーワードと id `-A` や `-x` で、
   数える 10 の版はどれも書かれたテキストを受理します。
   対象にする版の一部は空白を入れたテキスト（`class -A a` と
@@ -4198,8 +4200,11 @@ mermaid.js は、一部の ER の行を、置かれた場所や周りの空白�
   ASCII 外の文字）がある形です。
   `12a`、`12*a`、`12日本` などです。
   固定した字句解析器はそこで数を終えるので、その行は 2 つの実体です。
-  11.7.0 と 11.8.1 は 1 つの名前として読み、2 行を違って描きます。
-  10.9.8 はテキストを拒否し、11.13.0 以降は両方の形を同じに描きます。
+  対象にする版の一部は 1 つの名前として読み、2 行を違って描きます。
+  ほかの版は、テキストを拒否するか、両方の形を同じに描きます。
+  詳しくは
+  [対象にする版の mermaid.js のために残す形](#対象にする版の-mermaidjs-のために残す形)
+  を参照してください。
   数の後の `.`（`12.a`）や引用符（`12"x"`）は違いを生まず、行は分けます。
   数とその文字の間にディレクティブがあっても、変わりません。
   mermaid.js が先に取り除くからです。
@@ -4210,10 +4215,11 @@ mermaid.js は、一部の ER の行を、置かれた場所や周りの空白�
   ASCII 外の文字がある形（`subgraphé`、`endé`、`end日本`）と、
   U+2028 か U+2029 がある形、
   `end` の行の終わりにある U+2028 や U+2029 （`end` U+2028 `B`）です。
-  11.7.0 から 11.16.1 は 1 つの名前として読み、描画が違います。
-  10.9.8 は ASCII 外の文字がある形を拒否し、
-  U+2028 と U+2029 の形は両方の形を同じに描きます。
-  11.17.2、12.0.0、12.3.0 も両方の形を同じに描きます。
+  対象にする版の一部は 1 つの名前として読み、描画が違います。
+  ほかの版は、ASCII 外の文字がある形を拒否するか、両方の形を同じに描きます。
+  詳しくは
+  [対象にする版の mermaid.js のために残す形](#対象にする版の-mermaidjs-のために残す形)
+  を参照してください。
   `class`、`classDef`、`style`、`direction` は、
   そうした文字があってもなくても同じに描きます。
   キーワードとその後ろの間にディレクティブがあっても、変わりません。
@@ -4224,16 +4230,35 @@ mermaid.js は、一部の ER の行を、置かれた場所や周りの空白�
   [corpus fixture: er/lex-keyword-end-then-e-acute]
   [corpus fixture: er/lex-keyword-subgraph-then-e-acute]
   [corpus fixture: er/db-subgraph-direction-after-nested-end-line-separator]
-- U+2028 か U+2029 で始まり、`class`、または `direction` と方向（`TB`、`BT`、
-  `RL`、`LR`。大文字小文字は問いません）が続き、同じ行に後ろの文がある文です。
-  固定した字句解析器は、その文字を最初の名前の一部として読みます。
-  11.7.0 から 11.16.1 は空白として読み、キーワードの前に置くので、
-  `class A a` と `direction LR B` を、行にわたって続く文として読みます。
-  文を別の行に置くと、`class` だけの行は拒否され、
-  `direction` だけの行は違って描かれます。
+- U+2028 か U+2029 で始まる文のうち、同じ行に後ろの文があり、
+  対象にする版の一部が、その行を空白の終わりから `class` の文、
+  または方向の行として読むものです。
+  固定した字句解析器は、その文字を最初の名前の一部として読みますが、
+  その版は空白として読み、空白が終わる位置でキーワードの規則を試します。
+  `class` の後ろには名前が 2 つ続くので、`class A a` はその版では 1 つの文です。
+  文を別の行に置くと `class` だけの行になり、拒否されます。
+  キーワードに接する名前（`classé`）は 2 つのうちの 1 つで、引用符つきの名前や、
+  別名・クラス・属性のある名前は、名前に数えません。
+  `class "A" "a"` は、1 行でも別の行でも拒否されます。
+  方向の行の規則は、`direction`、空白、方向（`TB`、`BT`、`RL`、`LR`。
+  大文字小文字は問いません。空白は改行を含められます）を含む、
+  次の行末までを 1 つの行として取ります。
+  `A direction LR` と `A B direction LR` は、
+  その版では実体 `A` のない方向の行で、別の行に置くと `A` が実体になります。
+  最初の文の終わりが `direction` で、
+  値の後ろに文が続く場合（`direction LR B`）も同じで、
+  値のある行を書かれたまま印字します。
+  `direction` と値だけの場合（`direction LR`、値が次の行にあって、
+  後ろに何もない場合）は、別の行に置いても同じ方向の行です。
   ほかの語（`classes`、`directionX`、名前）で始まる文は、
-  別の行に置いても同じに描かれ、
-  名前の中にある U+2028（`B` U+2028 `class A a`）も同じです。
+  別の行に置いても同じに描かれます。
+  名前の中にある U+2028（`B` U+2028 `class A a`、
+  `B` U+2028 `C direction LR`）は、規則の取る範囲がその区切りで終わるので、
+  同じです。
+  語を含むディレクティブも、mermaid.js が先に取り除くので、同じです。
+  条件は行だけを読み、ほかの文が何を宣言するかは読みません。
+  後ろの文が実体 `A` をもう一度宣言する場合は、どちらの形も同じに描かれますが、
+  行は書かれたままにします。
   [test: a line of two ER statements that starts with U+2028]
   [test: a line that starts with U+2029 and class, and two more statements]
   [test: a line that starts with U+2028 and direction, and two more statements]
@@ -4241,47 +4266,79 @@ mermaid.js は、一部の ER の行を、置かれた場所や周りの空白�
   [test: a line that starts with U+2028 and a name, and one more statement]
   [test: a line that starts with U+2028 and a word that starts like class]
   [test: a line that starts with U+2028 and a word that starts like direction]
+  [test: a line that starts with U+2028, a name, and a direction line]
+  [test: a line that starts with U+2029, two names, and a direction line]
+  [test: a line that starts with U+2028, a relationship, and a direction line]
+  [test: a direction line after a name and a name that starts with U+2028]
+  [test: a line that starts with U+2028 and direction, and a value on the next line that a statement follows]
+  [test: a line that starts with U+2028, a name, and a direction line with a directive before its value]
+  [test: a line that starts with U+2028, a name, and a direction line in upper case]
+  [test: a line that starts with U+2028, class and a character outside ASCII, and one more statement]
+  [test: a line that starts with U+2028 and CLASS in upper case, and two more statements]
+  [test: a line in an ER subgraph that starts with U+2028, a name, and a direction line]
+  [test: a line that starts with U+2028 and direction, and its value alone]
+  [test: a line that starts with U+2028 and a name that ends with direction, and its value alone]
+  [test: a line that starts with U+2028 and direction, and a value glued to a letter]
+  [test: a line that starts with U+2028 and direction, and a relationship that starts with its value]
+  [test: a line that starts with U+2028, a name, and direction without a direction]
+  [test: a line that starts with U+2028, a name, a second U+2028, and a direction line]
+  [test: a line that starts with U+2028 and direction, its value, and a statement on the next line]
+  [test: a line that starts with U+2028 and a name, and a directive that holds a direction]
+  [test: a line that starts with U+2028 and class, and one more statement]
+  [test: a line that starts with U+2028 and class, and a name on the next line]
+  [test: a line that starts with U+2028 and class, and two names in quotes]
+  [test: a line that starts with U+2028 and class, and a name with a class]
+  [test: a line that starts with U+2028, a space, and class]
+  [test: a line that starts with U+2028, a space, a name, and a direction line]
 - 1 行にある複数の属性のうち、
   別の属性の後にある属性が `~` を 2 つ持つ形（`int a List~int~ b`）です。
-  10.9.8 は、ジェネリクスの型を、
+  対象にする版のうち最も古い版は、ジェネリクスの型を、
   属性から行の残りを越えて 2 つ目の `~` まで続く規則で読むので、
   例の最初の属性の型が `int a List~int~` になります。
   自分の型が `~` を 2 つ持つ属性（`List~int~ a PK int b`）や、
-  `~` が 1 つだけの行（`string a "x~y" int b`）は、
-  別の行に置いても同じに描かれます。
+  `~` が 1 つだけの行（`string a "x~y" int b`）、
+  組がディレクティブの中にある行は、別の行に置いても同じに描かれます。
+  mermaid.js が先にディレクティブを取り除くからです。
   [fixture: er/attribute-spacing/attributes-with-tilde-on-one-line-kept]
   [fixture: er/attribute-spacing/attributes-with-generic-type-later-on-one-line-kept]
   [fixture: er/attribute-spacing/attributes-with-generic-type-first-on-one-line-split]
   [fixture: er/attribute-spacing/attributes-with-tilde-in-quotes-on-one-line-split]
+  [fixture: er/attribute-spacing/attributes-with-tilde-in-directive-on-one-line-split]
   [corpus fixture: er/lex-tilde-after-quoted]
 
 ## 古い版がコメントとして読む state の行
 
-最上位にあり、`%` で始まる語（`%`、`%a`）で始まり、
-同じ行に後ろの文がある state の文は、行に書かれたまま残します。
+最上位にあり、`%` で始まる語（`%`、`%a`）で始まり、同じ行に、
+`%` の語で始まらない後ろの文がある state の文は、行に書かれたまま残します。
 固定した字句解析器は `% not a comment` を状態 `%`、`not`、`a`、
 `comment` として、`%a b` を状態 `%a` と `b` として読みます。
-10.9.8、11.7.0、11.8.1、11.13.0、11.14.0 の字句解析器には、
+対象にする版の一部の字句解析器には、
 トークンが始まる所で `%` と行の残りをコメントとして読む規則があるので、
 語を別の行に移すと、それらの版では状態になってしまいます。
-11.15.0 以降は両方の形を同じに読みます。
+後ろの文が `%` の語で始まる場合は、別の行に置いてもコメントなので、
+`%a %b` は分け、`%a b %c` は残します。
 語の中の `%`（`a%b c`）、複合状態の波括弧の中、後ろに何もない `%` （`%a`、
 `%a --> b`、`%a : x y`）は、どの版も同じに読みます。
-遷移の先の `%` の語（`a --> %b c`）は、その 5 版が両方の形を拒否します。
+その規則のある版は、遷移の先の `%` の語（`a --> %b c`）を、
+両方の形で拒否します。
 `:` を含む `click` 文も、同じ行に後ろの文があれば残します。
-10.9.8 には `click` 文がなく、`:` を、
+最も古い対象の版には `click` 文がなく、`:` を、
 次の `:` か `;` か行の終わりまで続く説明の始まりとして読むので、
 `click A href "a:b"` の後ろの文は文になりません。
-`:` のない click 文（`click A href "u" accDescr {}`）は、
+`:` のない click 文（`click A href "u" accDescr {}`）と、
+`:` がディレクティブの中にしかない click 文は、
 別の行に置いてもどの版も同じに描きます。
-行にあるディレクティブは、どれも結果を変えません。
+行にあるディレクティブは、ほかの点では結果を変えません。
 mermaid.js は、テキストを読む前にそれらを取り除くからです。
 [fixture: state/statements-one-per-line/percent-then-text-kept]
 [fixture: state/statements-one-per-line/percent-word-then-text-kept]
+[fixture: state/statements-one-per-line/percent-word-then-percent-word-split]
+[fixture: state/statements-one-per-line/percent-word-text-percent-word-kept]
 [fixture: state/statements-one-per-line/percent-and-click-directive-then-text-kept]
 [fixture: state/statements-one-per-line/percent-in-braces-split]
 [fixture: state/statements-one-per-line/split]
 [fixture: state/statements-one-per-line/click-without-colon-split]
+[fixture: state/statements-one-per-line/click-colon-in-directive-split]
 [corpus fixture: state/spec-state-style-9ceea0dd]
 
 ## 空白で決まる Gantt 図の行

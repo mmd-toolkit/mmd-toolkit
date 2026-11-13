@@ -1102,6 +1102,126 @@ const erExamples: readonly (readonly [string, string, string])[] = [
     "erDiagram\n  A\n  \u2028directionX\n  LR\n  B\n",
   ],
   [
+    "a line that starts with U+2028, a name, and a direction line",
+    "erDiagram\nA\n\u2028B direction LR\n",
+    "erDiagram\n  A\n  \u2028B direction LR\n",
+  ],
+  [
+    "a line that starts with U+2029, two names, and a direction line",
+    "erDiagram\nA\n\u2029B C direction LR\n",
+    "erDiagram\n  A\n  \u2029B C direction LR\n",
+  ],
+  [
+    "a line that starts with U+2028, a relationship, and a direction line",
+    "erDiagram\nA\n\u2028B ||--o{ C : x direction LR\n",
+    "erDiagram\n  A\n  \u2028B ||--o{ C : x direction LR\n",
+  ],
+  [
+    "a direction line after a name and a name that starts with U+2028",
+    "erDiagram\nA\nC \u2028B direction LR\n",
+    "erDiagram\n  A\n  C \u2028B direction LR\n",
+  ],
+  [
+    "a line that starts with U+2028 and direction, and a value on the next line that a statement follows",
+    "erDiagram\nA\n\u2028direction\nLR B\n",
+    "erDiagram\n  A\n  \u2028direction\n  LR B\n",
+  ],
+  [
+    "a line that starts with U+2028, a name, and a direction line with a directive before its value",
+    "erDiagram\nA\n\u2028B direction%%{init: {}}%% LR\n",
+    "erDiagram\n  A\n  \u2028B direction%%{init: {}}%% LR\n",
+  ],
+  [
+    "a line that starts with U+2028, a name, and a direction line in upper case",
+    "erDiagram\nA\n\u2028B DIRECTION lr\n",
+    "erDiagram\n  A\n  \u2028B DIRECTION lr\n",
+  ],
+  [
+    "a line that starts with U+2028, class and a character outside ASCII, and one more statement",
+    "erDiagram\nA\n\u2028classé A\n",
+    "erDiagram\n  A\n  \u2028classé A\n",
+  ],
+  [
+    "a line that starts with U+2028 and CLASS in upper case, and two more statements",
+    "erDiagram\nA\n\u2028CLASS A a\n",
+    "erDiagram\n  A\n  \u2028CLASS A a\n",
+  ],
+  [
+    "a line in an ER subgraph that starts with U+2028, a name, and a direction line",
+    "erDiagram\nA\nsubgraph S\n\u2028B direction LR\nend\n",
+    "erDiagram\n  A\n  subgraph S\n    \u2028B direction LR\n  end\n",
+  ],
+  [
+    "a line that starts with U+2028 and direction, and its value alone",
+    "erDiagram\nA\n\u2028direction LR\n",
+    "erDiagram\n  A\n  \u2028direction\n  LR\n",
+  ],
+  [
+    "a line that starts with U+2028 and a name that ends with direction, and its value alone",
+    "erDiagram\nA\n\u2028Bdirection LR\n",
+    "erDiagram\n  A\n  \u2028Bdirection\n  LR\n",
+  ],
+  [
+    "a line that starts with U+2028 and direction, and a value glued to a letter",
+    "erDiagram\nA\n\u2028direction LRX\n",
+    "erDiagram\n  A\n  \u2028direction\n  LRX\n",
+  ],
+  [
+    "a line that starts with U+2028 and direction, and a relationship that starts with its value",
+    "erDiagram\nA\n\u2028direction LR ||--o{ B : x\n",
+    "erDiagram\n  A\n  \u2028direction\n  LR ||--o{ B : x\n",
+  ],
+  [
+    "a line that starts with U+2028, a name, and direction without a direction",
+    "erDiagram\nA\n\u2028B direction XY\n",
+    "erDiagram\n  A\n  \u2028B\n  direction\n  XY\n",
+  ],
+  [
+    "a line that starts with U+2028, a name, a second U+2028, and a direction line",
+    "erDiagram\nA\n\u2028B\u2028C direction LR\n",
+    "erDiagram\n  A\n  \u2028B\u2028C\n  direction LR\n",
+  ],
+  [
+    "a line that starts with U+2028 and direction, its value, and a statement on the next line",
+    "erDiagram\nA\n\u2028direction LR\nB\n",
+    "erDiagram\n  A\n  \u2028direction\n  LR\n  B\n",
+  ],
+  [
+    "a line that starts with U+2028 and a name, and a directive that holds a direction",
+    'erDiagram\nA\n\u2028B %%{init: {"x": "direction LR"}}%% C\n',
+    'erDiagram\n  A\n  \u2028B\n  %%{init: {"x": "direction LR"}}%% C\n',
+  ],
+  [
+    "a line that starts with U+2028 and class, and one more statement",
+    "erDiagram\nA\n\u2028class B\n",
+    "erDiagram\n  A\n  \u2028class\n  B\n",
+  ],
+  [
+    "a line that starts with U+2028 and class, and a name on the next line",
+    "erDiagram\nA\n\u2028class B\nb\n",
+    "erDiagram\n  A\n  \u2028class\n  B\n  b\n",
+  ],
+  [
+    "a line that starts with U+2028 and class, and two names in quotes",
+    'erDiagram\nA\n\u2028class "B" "b"\n',
+    "erDiagram\n  A\n  \u2028class\n  B\n  b\n",
+  ],
+  [
+    "a line that starts with U+2028 and class, and a name with a class",
+    "erDiagram\nA\n\u2028class B:::x b\n",
+    "erDiagram\n  A\n  \u2028class\n  B:::x\n  b\n",
+  ],
+  [
+    "a line that starts with U+2028, a space, and class",
+    "erDiagram\nA\n\u2028 class B b\n",
+    "erDiagram\n  A\n  \u2028\n  class B b\n",
+  ],
+  [
+    "a line that starts with U+2028, a space, a name, and a direction line",
+    "erDiagram\nA\n\u2028 B direction LR\n",
+    "erDiagram\n  A\n  \u2028\n  B direction LR\n",
+  ],
+  [
     "U+2028 between the keyword of an ER subgraph and its name",
     "erDiagram\nsubgraph\u2028S\nA\nend\n",
     "erDiagram\n  subgraph\u2028S\n    A\n  end\n",

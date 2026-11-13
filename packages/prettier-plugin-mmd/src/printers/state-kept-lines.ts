@@ -12,6 +12,7 @@ import {
   findStructuralToken,
   findTokenStartingAt,
   isWhitespace,
+  textWithoutDirectives,
 } from "./source.ts"
 
 /** The lines that hold a `;`, of each source, found once per source. */
@@ -142,13 +143,16 @@ function findLinesStartingWithSeparator(source: Source): ReadonlySet<number> {
  * (docs/state.md, Statements one per line):
  *
  * - A statement of the top level that starts with a `%` word, with another
- *   statement after it on its line (see `startsWithPercentWord`): the oldest
- *   versions that count read the `%` where a token starts as the start of a
- *   comment, and the comment runs to the end of the line.
+ *   statement after it on its line that does not start with a `%` word (see
+ *   `startsWithPercentWord`): the oldest versions that count read the `%`
+ *   where a token starts as the start of a comment, and the comment runs to
+ *   the end of the line. A statement after it that starts with a `%` word is
+ *   a comment on a line of its own as well.
  * - A `click` statement that holds a `:`, with another statement after it on
  *   its line: the oldest version that counts has no `click` statement, and
  *   reads the `:` as the start of a description that runs on over the
- *   statements after it (see `holdsColon`).
+ *   statements after it (see `holdsColon`). The directives are left out,
+ *   since mermaid.js removes them before it reads the text.
  */
 function findLinesReadAsCommentsByOlderVersions(
   source: Source,
@@ -158,14 +162,24 @@ function findLinesReadAsCommentsByOlderVersions(
   const lines: number[] = []
   for (const [index, statement] of statements.entries()) {
     const line = lineStartOf(source, statement.range[0])
-    const followed = statements
-      .slice(index + 1)
-      .some((next) => lineStartOf(source, next.range[0]) === line)
-    if (topLevel && followed && startsWithPercentWord(source, statement)) {
+    const later: StateStatement[] = []
+    for (
+      let next = index + 1;
+      next < statements.length &&
+      lineStartOf(source, statements[next].range[0]) === line;
+      next++
+    ) {
+      later.push(statements[next])
+    }
+    if (
+      topLevel &&
+      later.some((next) => !startsWithPercentWord(source, next)) &&
+      startsWithPercentWord(source, statement)
+    ) {
       lines.push(line)
     }
     if (
-      followed &&
+      later.length > 0 &&
       statement.type === "StateClickStatement" &&
       holdsColon(source, statement.range)
     ) {
@@ -208,9 +222,9 @@ function startsWithPercentWord(
   )
 }
 
-/** Whether the source text of a range holds a `:`. */
+/** Whether the text of a range, without its directives, holds a `:`. */
 function holdsColon(source: Source, range: Range): boolean {
-  return source.text.slice(range[0], range[1]).includes(":")
+  return textWithoutDirectives(source, range[0], range[1]).includes(":")
 }
 
 /** The body of the state diagram of a source. */

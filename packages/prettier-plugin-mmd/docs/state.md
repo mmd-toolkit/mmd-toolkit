@@ -316,22 +316,28 @@ statements-one-per-line/split-with-directive-between] Two cases stay on their
 line as written, since the oldest versions that count read the rest of the line
 as a comment or as a part of the statement (see
 [Forms kept for versions of mermaid.js that count](./compatibility.md#forms-kept-for-versions-of-mermaidjs-that-count)):
-a statement of the top level that starts with a `%` word, with another statement
-after it on its line, and a `click` statement that holds a `:`, with another
-statement after it on its line. `% not a comment` is the states `%`, `not`, `a`,
-and `comment` to the pinned version, and `%a b` the states `%a` and `b`; those
-versions read a `%` where a token starts, and the rest of the line, as a
-comment. A `%` inside a word (`a%b c`), inside the braces of a composite state,
+a statement of the top level that starts with a `%` word, with a statement after
+it on its line that starts with no `%` word, and a `click` statement that holds
+a `:`, with another statement after it on its line. `% not a comment` is the
+states `%`, `not`, `a`, and `comment` to the pinned version, and `%a b` the
+states `%a` and `b`; those versions read a `%` where a token starts, and the
+rest of the line, as a comment. A statement after it that starts with a `%` word
+is a comment on a line of its own as well, so `%a %b` is split and `%a b %c`
+stays. A `%` inside a word (`a%b c`), inside the braces of a composite state,
 and with nothing after it (`%a --> b`) is read the same by every version that
 counts, and its statements go to lines of their own.
 `click A href "a:b" accDescr {}` is a click and an empty description block to
 the pinned version, and the oldest version that counts has no click statement
 and reads the `:` as the start of a description that runs on over the rest of
-the line; without a `:` (`click A href "u" accDescr {}`) the two are split.
-Directives on the line change nothing, since mermaid.js removes them before it
-reads the text: `%%%{init: {}}%% a` is read as `% a`. [fixture:
+the line; without a `:` (`click A href "u" accDescr {}`) the two are split, and
+so are they where the only `:` stands in a directive. Directives on the line
+change nothing otherwise, since mermaid.js removes them before it reads the
+text: `%%%{init: {}}%% a` is read as `% a`. [fixture:
 statements-one-per-line/percent-then-text-kept] [fixture:
 statements-one-per-line/percent-word-then-text-kept] [fixture:
+statements-one-per-line/percent-word-then-percent-word-split] [fixture:
+statements-one-per-line/percent-word-text-percent-word-kept] [fixture:
+statements-one-per-line/click-colon-in-directive-split] [fixture:
 statements-one-per-line/percent-and-click-directive-then-text-kept] [fixture:
 statements-one-per-line/percent-in-braces-split] [fixture:
 statements-one-per-line/split] [fixture:

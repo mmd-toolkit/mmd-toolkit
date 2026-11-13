@@ -3,6 +3,6 @@
 ---
 
 Keep the text after the frontmatter as written when an HTML tag starts in the
-frontmatter and ends after it (`title: <a` with a `>` in the diagram):
-formatting changed the quotes in the diagram, which turned an `erDiagram` that
-mermaid.js accepts into one that it rejects.
+frontmatter (`title: <a`) and ends after it. An `erDiagram` whose body was
+`"b="c">d"` was printed with `"b="`, `c`, and `">d"` on three lines, which
+mermaid.js rejects.
