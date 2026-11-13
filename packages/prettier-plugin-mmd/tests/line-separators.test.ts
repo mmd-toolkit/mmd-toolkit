@@ -1072,6 +1072,36 @@ const erExamples: readonly (readonly [string, string, string])[] = [
     "erDiagram\n  A\n  \u2028class-A a\n",
   ],
   [
+    "a line that starts with U+2029 and class, and two more statements",
+    "erDiagram\nA\n\u2029class A a\n",
+    "erDiagram\n  A\n  \u2029class A a\n",
+  ],
+  [
+    "a line that starts with U+2028 and direction, and two more statements",
+    "erDiagram\nA\n\u2028direction LR B\n",
+    "erDiagram\n  A\n  \u2028direction LR B\n",
+  ],
+  [
+    "a statement with U+2028 and class after a space, and two more statements",
+    "erDiagram\nA\nB \u2028class A a\n",
+    "erDiagram\n  A\n  B \u2028class A a\n",
+  ],
+  [
+    "a line that starts with U+2028 and a name, and one more statement",
+    "erDiagram\nA\n\u2028B C\n",
+    "erDiagram\n  A\n  \u2028B\n  C\n",
+  ],
+  [
+    "a line that starts with U+2028 and a word that starts like class",
+    "erDiagram\nA\n\u2028classes A a\n",
+    "erDiagram\n  A\n  \u2028classes\n  A\n  a\n",
+  ],
+  [
+    "a line that starts with U+2028 and a word that starts like direction",
+    "erDiagram\nA\n\u2028directionX LR B\n",
+    "erDiagram\n  A\n  \u2028directionX\n  LR\n  B\n",
+  ],
+  [
     "U+2028 between the keyword of an ER subgraph and its name",
     "erDiagram\nsubgraph\u2028S\nA\nend\n",
     "erDiagram\n  subgraph\u2028S\n    A\n  end\n",

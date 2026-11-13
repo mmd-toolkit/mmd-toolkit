@@ -39,8 +39,10 @@ mermaid.js の文書の例では、`TB` は 10 回、`TD` は 0 回使われて�
 （[ヘッダーの向き](./compatibility.ja.md#ヘッダーの向き)を参照）。
 この図種は、
 mermaid.js が `TD` を `TB` と同じように扱うようになった版より後に加わったため、
-これを読むすべての版が 2 つを同じに描きます。
-（[mermaid.js の版](./compatibility.ja.md#mermaidjs-の版)を参照）。
+対象にする版のうち、これを読むすべての版が、2 つを同じに描きます。
+詳しくは
+[対象にする mermaid.js の版](./compatibility.ja.md#対象にする-mermaidjs-の版)
+を参照してください。
 agentflowが受理する見出しは小文字の`agentflow-beta`だけです。
 方向の省略と記号を保ち、次行のLRは頂点のままです。
 見出しに続く directive の後にある方向は、

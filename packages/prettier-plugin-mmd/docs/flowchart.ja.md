@@ -2473,32 +2473,51 @@ flowchart %%{init: {}}%%LR
 
 ### 方向
 
-subgraph のない flowchart のヘッダーの `TB` は `TD` と印字します。
-`flowchart TB` は `flowchart TD` に、`graph TB` は `graph TD` になります。
-mermaid.js の文書の例は `TD` を 70 回、`TB` を 7 回書き、対象にする版のどれも、
-subgraph のない flowchart を 2 つで同じに描きます。
-各版の既定の配置と、配置が 2 つある版ではもう一方の配置で確かめました。
-パッケージとして読み込む ELK の配置は、固定した版でだけ描きました。
-詳しくは [描画に使った配置](./compatibility.ja.md#描画に使った配置)
-を参照してください。
+flowchart のヘッダーの `TB` は `TD` と印字します。
+mermaid.js の文書の例は `TD` を 70 回、`TB` を 7 回書くからです。
+`flowchart TB` は `flowchart TD` に、`graph TB` は `graph TD` に、
+`flowchart-elk TB` は `flowchart-elk TD` になります。
+対象にする版の一部が、`TB` と `TD` で図を違って描くときは、`TB` のまま残します。
+それらの版の dagre の配置は、ある subgraph を図から取り出して単独で並べます。
+図の向きが `TB` のときは `LR`、そうでないときは `TB` で並べます。
+取り出すのは、自分の `direction` の文がなく、メンバーがあり、
+中の頂点と外の頂点を結ぶ接続がない subgraph です。
+したがって、そのような subgraph がある flowchart では、
+ヘッダーを書かれたまま残し、ほかは `TD` と印字します。
+subgraph がない場合、外と接続でつながる subgraph だけの場合、
+`direction` の文がある場合、空の場合です。
+subgraph のメンバーは仕様が定めるものです（前の subgraph が持つ頂点はその
+subgraph のものです。入れ子の subgraph は外側の subgraph のメンバーなので、
+その中の頂点は両方の中にあります）。
+subgraph の id への接続、id からの接続は、その subgraph を外につなぎません。
 ラベル、id、コメントにある `subgraph` は subgraph ではありません。
-[fixture: direction/header-tb-without-subgraph]
+ほかの対象にする版は、2 つで同じに描きます。
+各版の既定の配置と、配置が 2 つある版ではもう一方の配置で確かめました。
+詳しくは [描画に使った配置](./compatibility.ja.md#描画に使った配置) と
+[対象にする版の mermaid.js のために残す形](./compatibility.ja.md#対象にする版の-mermaidjs-のために残す形)
+を参照してください。
+ヘッダーのキーワードも書かれたまま残します。
+詳しくは [ヘッダーの名前](./compatibility.ja.md#ヘッダーの名前)
+を参照してください。 [fixture: direction/header-tb-without-subgraph]
 [fixture: direction/header-graph-tb-without-subgraph]
 [fixture: direction/header-tb-subgraph-word-is-no-subgraph]
 [fixture: direction/header-tb-with-direction-statement]
-subgraph がある場合、ヘッダーは `TB` も `TD` も書かれたまま残します。
-対象にする版の一部は、subgraph があり、ヘッダーに `TB` がある flowchart を、
-同じテキストで `TD` があるものとは違って描くからです。
-ヘッダーのキーワードも書かれたまま残します。
-詳しくは [ヘッダーの名前](./compatibility.ja.md#ヘッダーの名前)
-を参照してください。
-残す版は
-[対象にする版の mermaid.js のために残す形](./compatibility.ja.md#対象にする版の-mermaidjs-のために残す形)
-の表にあります。
-ヘッダー `flowchart-elk` も書かれたまま残します。
 [fixture: direction/header-td-kept]
-[fixture: direction/header-tb-with-subgraph-kept]
-[fixture: direction/header-elk-tb-kept] [fixture: direction/header-keyword-kept]
+[fixture: direction/header-tb-unlinked-subgraph-kept]
+[fixture: direction/header-tb-subgraph-linked-out]
+[fixture: direction/header-tb-link-to-subgraph-id-kept]
+[fixture: direction/header-tb-link-from-inside-to-subgraph-id-kept]
+[fixture: direction/header-tb-nested-inner-unlinked-kept]
+[fixture: direction/header-tb-nested-inner-linked]
+[fixture: direction/header-tb-subgraph-own-direction]
+[fixture: direction/header-tb-empty-subgraph]
+[fixture: direction/header-tb-two-subgraphs-linked-to-each-other]
+[fixture: direction/header-tb-two-subgraphs-one-unlinked-kept]
+[fixture: direction/header-tb-subgraph-member-of-earlier-kept]
+[fixture: direction/header-elk-tb-without-subgraph]
+[fixture: direction/header-elk-tb-unlinked-subgraph-kept]
+[fixture: direction/header-elk-tb-linked-subgraph]
+[fixture: direction/header-keyword-kept]
 [fixture: direction/statement-td-kept-with-other-header]
 [fixture: direction/statement-values-kept]
 `direction` の文は書かれたまま残します。

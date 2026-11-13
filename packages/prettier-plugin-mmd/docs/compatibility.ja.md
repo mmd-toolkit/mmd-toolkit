@@ -122,16 +122,29 @@ mermaid.js 12.3.0 に `@mermaid-js/layout-elk` 1.0.2 を読み込み、
 組は、ヘッダーにほかの規則が出会う 28 の場所の subgraph のない flowchart、
 `subgraph` という語がラベルと id とコメントにだけある flowchart、
 subgraph のある flowchart です。
-配置が使われたことは、同じ図を dagre で描くと大きさが違うことで確かめました。
+配置が使われたことは、
+辺が 4 本の flowchart を同じ描画処理で `layout: dagre` にして描くと、
+大きさが違うことで確かめました（`layout: elk` では 216 × 316、
+`layout: dagre` では 223.5 × 346）。
+12.3.0 は ELK の配置を `elk` として内蔵していて、
+パッケージは同じ名前の loader を登録するので、
+内蔵のものがパッケージのものに置き換わります。
+12.3.0 のバンドルだけで描くと、
+同じ flowchart は既定の設定でも `layout: elk` でも 216 × 316、
+`layout: dagre` では 223.5 × 346 でした。
 932 組は同じに描かれ、102 組は両方の形が拒否され、違って描かれた組はありません。
 ヘッダー `flowchart-elk` は、10 版を各版のバンドルのまま、
 `TB` と `TD` で 15 の形について描きました。
 1,050 組のうち 1,036 組は同じに描かれ、14 組は両方の形が拒否されました。
 
-11.x の版のパッケージとしての ELK の配置（11.7.0 から 11.17.2 向けの
-`@mermaid-js/layout-elk`）は描いていません。
-外部の ELK の配置を使う 11.x は、まだ比べていません。
-代わりに、それらの版が配置に渡すものを比べました。
+11.x の版のパッケージとしての ELK の配置（mermaid.js 11 向けのリリースである
+`@mermaid-js/layout-elk` 0.1.1 から 0.2.3）は描いていません。
+パッケージをダウンロードしていないので、代わりにそのソースを読みました。
+mermaid.js のリポジトリの、
+各リリースのタグ `@mermaid-js/layout-elk@<版>` にある
+`packages/mermaid-layout-elk/src/render.ts` を、
+13 リリースのすべてについて読んでいます。
+それらの版が配置に渡すものも比べました。
 flowchart、state、class、ER、requirement、mindmap の描画処理は、
 図のデータベースの `getData()` を配置に渡します。
 その 8,892 組の書かれたテキストと整形したテキストについて、
@@ -160,8 +173,15 @@ flowchart の描画処理は、ヘッダーの向き `getDirection()` も配置�
 整形がヘッダーを `TB` から `TD` に変える 41 組の flowchart で、向きが違います。
 書かれたテキストでは `TB`、整形したテキストでは `TD` を返します。
 ほかの 5 版は、どちらも同じ向きを返します。
-ELK の配置のパッケージは、11.7.0 と 11.8.1 で 2 つを違って描くかもしれず、
-まだ比べていません。
+ELK の配置のパッケージの 13 リリースのどれも、
+向きを関数 `dir2ElkDirection` だけで読みます（0.1.1 から 0.2.0 は
+`getEdgeStartEndPoint` にも渡しますが、
+その関数は引数 `edge` の 1 つしか受け取りません）。
+`TB` は `DOWN` になり、`LR`、`RL`、`BT` のどれでもない語も `DOWN` になるので、
+`TD` も同じです（0.2.1 から 0.2.3 は `TD` を名指しします）。
+したがって、書かれたテキストと整形したテキストで、
+配置の設定 `elk.direction` は同じです。
+これはソースを読んだ結果で、描いた結果ではありません。
 
 ## 対象にする版の mermaid.js のために残す形
 
@@ -181,52 +201,54 @@ ELK の配置のパッケージは、11.7.0 と 11.8.1 で 2 つを違って描�
 固定した版そのものが拒否するか違って描く形は、ほかの版が替わっても残すので、
 行を持ちません。
 
-| 図種                                                        | 書かれたまま残す形                                                                                            | 決まりが与える形                                | 決まり                                                | 要る版                                                                                                                                                             | fixture                                                                     |
-| ----------------------------------------------------------- | ------------------------------------------------------------------------------------------------------------- | ----------------------------------------------- | ----------------------------------------------------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------ | --------------------------------------------------------------------------- |
-| [block](./block.ja.md#ヘッダー)                             | `block-beta`                                                                                                  | `block`                                         | [3](./printed-form.ja.md#3-綴り)                      | 10.9.8、11.7.0、11.8.1 が `block` を拒否する                                                                                                                       | [fixture: block/header/block-beta-kept]                                     |
-| [sankey](./sankey.ja.md#ヘッダー)                           | `sankey-beta`                                                                                                 | `sankey`                                        | [3](./printed-form.ja.md#3-綴り)                      | 10.9.8、11.7.0、11.8.1 が `sankey` を拒否する                                                                                                                      | [fixture: sankey/header/sankey-beta]                                        |
-| [xychart](./xychart.ja.md#ヘッダーと向き)                   | `xychart-beta`                                                                                                | `xychart`                                       | [3](./printed-form.ja.md#3-綴り)                      | 10.9.8、11.7.0、11.8.1 が `xychart` を拒否する                                                                                                                     | [fixture: xychart/header-and-orientation/beta-header-kept]                  |
-| [packet](./packet.ja.md#header)                             | `packet-beta`                                                                                                 | `packet`                                        | [3](./printed-form.ja.md#3-綴り)                      | 11.7.0、11.8.1 が `packet` を拒否する（10.9.8 には packet 図がない）                                                                                               | [fixture: packet/header/header-beta]                                        |
-| [flowchart](./flowchart.ja.md#方向)                         | subgraph のある flowchart の `flowchart TB`                                                                   | `flowchart TD`                                  | [3](./printed-form.ja.md#3-綴り)                      | 10.9.8、11.7.0、11.8.1 が subgraph のある flowchart を違って描く                                                                                                   | [fixture: flowchart/direction/header-tb-with-subgraph-kept]                 |
-| [flowchart](./flowchart.ja.md#方向)                         | `graph LR`                                                                                                    | `flowchart LR`                                  | [3](./printed-form.ja.md#3-綴り)                      | `flowchart.defaultRenderer` が `dagre-d3` のとき、10.9.8、11.7.0、11.8.1、11.13.0、11.14.0、11.15.0、11.16.1、11.17.2 が `graph` を読み、`flowchart` を拒否する    | [fixture: flowchart/direction/header-keyword-kept]                          |
-| [state](./state.ja.md#header)                               | `stateDiagram`                                                                                                | `stateDiagram-v2`                               | [3](./printed-form.ja.md#3-綴り)                      | `state.defaultRenderer` が `dagre-d3` のとき、10.9.8 が 2 つを違って描き、11.7.0、11.8.1、11.13.0、11.14.0、11.15.0、11.16.1、11.17.2 が `stateDiagram` を拒否する | [fixture: state/header/spellings-kept]                                      |
-| [state](./state.ja.md#1-行に-1-文)                          | 最上位にあり、同じ行に空白と別のテキストが続く `%` の状態                                                     | `%` と語を別の行に                              | [2](./printed-form.ja.md#2-prettier-にない種類の隙間) | 10.9.8、11.7.0、11.8.1、11.13.0、11.14.0 が行の残りをコメントとして読む                                                                                            | [fixture: state/statements-one-per-line/percent-then-text-kept]             |
-| [state](./state.ja.md#1-行に-1-文)                          | `click A href "u" accDescr {}`、同じ行に後ろの文がある click 文                                               | click と文を別の行に                            | [2](./printed-form.ja.md#2-prettier-にない種類の隙間) | 10.9.8 が違って描く                                                                                                                                                | [fixture: state/statements-one-per-line/split]                              |
-| [flowchart、swimlane](./flowchart.ja.md#ラベルの内側の空白) | `A[ user@example.com ]`                                                                                       | `A[user@example.com]`                           | [1](./printed-form.ja.md#1-記号の横の空白)            | flowchart: 11.7.0、11.8.1、11.13.0、11.14.0、11.15.0、11.16.1、11.17.2、12.0.0、swimlane: 11.16.1、11.17.2、12.0.0 が、空白のない形を拒否する                      | [fixture: flowchart/label-inner-whitespace/leading-whitespace-at-sign-kept] |
-| [flowchart、swimlane](./flowchart.ja.md#矢印の前後の空白)   | `A@{ shape: circle }e1@--> B`                                                                                 | `A@{ shape: circle } e1@--> B`                  | [1](./printed-form.ja.md#1-記号の横の空白)            | flowchart: 11.7.0、11.8.1、11.13.0、11.14.0、11.15.0、11.16.1、11.17.2、12.0.0、swimlane: 11.16.1、11.17.2、12.0.0 が、空白のある形を拒否する                      | [fixture: flowchart/arrow-spacing/edge-id-after-data-block-touches]         |
-| [flowchart](./flowchart.ja.md#トークンの間の空白)           | `style A fill:#f00,color:white` を `style A fill: #f00,color: white` と印字                                   | `style A fill: #f00, color: white`              | [1](./printed-form.ja.md#1-記号の横の空白)            | 10.9.8 が、`color:` か `text-align:` で始まるスタイルからラベルの色を取る                                                                                          | [fixture: flowchart/whitespace-between-tokens/style-color-touching-kept]    |
-| [flowchart](./flowchart.ja.md#トークンの間の空白)           | `linkStyle 0 stroke:#f00,color:red` を `linkStyle 0 stroke: #f00,color: red` と印字                           | `linkStyle 0 stroke: #f00, color: red`          | [1](./printed-form.ja.md#1-記号の横の空白)            | 10.9.8 が、辺のラベルでも同じことをする                                                                                                                            | [fixture: flowchart/whitespace-between-tokens/link-style-label-names-kept]  |
-| [flowchart](./flowchart.ja.md#トークンの間の空白)           | `style A stroke-width:3px\ ,stroke:#0f0` を `style A stroke-width: 3px\ , stroke: #0f0` と印字                | `style A stroke-width: 3px\, stroke: #0f0`      | [1](./printed-form.ja.md#1-記号の横の空白)            | 10.9.8 が、ノードのスタイルをそのまま `;` でつなぐ                                                                                                                 | [fixture: flowchart/whitespace-between-tokens/style-backslash-space-kept]   |
-| [flowchart](./flowchart.ja.md#スタイルの行末の空白)         | ノーブレークスペース、U+3000、垂直タブ、バイト順マークで終わる `style` か `classDef` の行                     | その文字のない行                                | [1](./printed-form.ja.md#1-記号の横の空白)            | 10.9.8 が、その文字のないテキストを違って描く                                                                                                                      | [test: keeps whitespace other than a space and a tab at the end of a style] |
-| [class](./class.ja.md#トークンの間の空白)                   | `style A fill:#f00,color:white` を `style A fill: #f00,color: white` と、`color :red` を `color : red` と印字 | `style A fill: #f00, color: white`              | [1](./printed-form.ja.md#1-記号の横の空白)            | 10.9.8 が、`color:` で始まるスタイルからラベルの色を取る                                                                                                           | [fixture: class/whitespace-between-tokens/style-color-touching-kept]        |
-| [class](./class.ja.md#メンバーの行)                         | `+<タブ>int x`（属性の記号の後のタブ）                                                                        | `+int x`                                        | [1](./printed-form.ja.md#1-記号の横の空白)            | 10.9.8 が、タブを名前の一部として読む                                                                                                                              | [fixture: class/member-lines/visibility-tab-kept]                           |
-| [block](./block.ja.md#辺)                                   | `A ---x B`、`A ---o B`                                                                                        | `A --x B`、`A --o B`                            | [3](./printed-form.ja.md#3-綴り)                      | 10.9.8、11.7.0、11.8.1 が違って描く                                                                                                                                | [fixture: block/edges/arrow-length-kept-where-drawn-differently]            |
-| [block](./block.ja.md#辺)                                   | `A ===x B`、`A ===o B`                                                                                        | `A ==x B`、`A ==o B`                            | [3](./printed-form.ja.md#3-綴り)                      | 10.9.8、11.7.0、11.8.1、11.13.0、11.14.0 が違って描く                                                                                                              | [fixture: block/edges/arrow-length-kept-where-drawn-differently]            |
-| [block](./block.ja.md#辺)                                   | `A ==== B`                                                                                                    | `A === B`                                       | [3](./printed-form.ja.md#3-綴り)                      | 10.9.8、11.7.0、11.8.1、11.13.0、11.14.0 が、線を長さで違う id として読む                                                                                          | [fixture: block/edges/arrow-length-kept-where-drawn-differently]            |
-| [sequence](./sequence.ja.md#コロン)                         | `A->>B: `（`:` の後に空白 1 文字）                                                                            | `A->>B:`                                        | [1](./printed-form.ja.md#1-記号の横の空白)            | 10.9.8 が、後に何もない `:` を拒否する                                                                                                                             | [fixture: sequence/colons/whitespace-only-text]                             |
-| [sequence](./sequence.ja.md#コロン)                         | `A->>B:%%{init: {}}%%` の後に空白 2 つ、または `:` の後にノーブレークスペース                                 | 空白を落とした行                                | [1](./printed-form.ja.md#1-記号の横の空白)            | 10.9.8 が、空白を落とした行を拒否する                                                                                                                              | [fixture: sequence/colons/directive-then-whitespace-kept]                   |
-| [sequence](./sequence.ja.md#矢印の前後の空白)               | `A () ->> () B`                                                                                               | `A() ->> ()B`                                   | [1](./printed-form.ja.md#1-記号の横の空白)            | 10.9.8、11.7.0、11.8.1 が `()` を名前の一部として読む                                                                                                              | [fixture: sequence/arrow-spacing/parentheses-touching]                      |
-| [sequence](./sequence.ja.md#矢印の前後の空白)               | `A<<->>B` を `A<<->> B` と印字                                                                                | `A <<->> B`                                     | [1](./printed-form.ja.md#1-記号の横の空白)            | 10.9.8 が、前の `<<` を名前の一部として読む                                                                                                                        | [fixture: sequence/arrow-spacing/bidirectional-arrow-gap-before-kept]       |
-| [gitGraph](./gitgraph.ja.md#header)                         | `gitGraph %%{x}%%:` を `gitGraph%%{x}%%:` と印字                                                              | `gitGraph %%{x}%%`                              | [3](./printed-form.ja.md#3-綴り)                      | 10.9.8 が、ディレクティブの後でコロンのないヘッダーを拒否する                                                                                                      | [fixture: gitgraph/header/header-directive-before-colon-kept]               |
-| [gitGraph](./gitgraph.ja.md#references)                     | `branch "Merge"`、`branch "lr-x"`                                                                             | `branch Merge`、`branch lr-x`                   | [3](./printed-form.ja.md#3-綴り)                      | 10.9.8 が、キーワードを大文字小文字を問わず読み、`lr-x` を `lr` と `-x` として読む                                                                                 | [fixture: gitgraph/references/names-that-need-quotes]                       |
-| [timeline](./timeline.ja.md#ヘッダーと方向)                 | `timeline td`、`timeline TD title T`                                                                          | `timeline TD`、テキストは単独の行               | [3](./printed-form.ja.md#3-綴り)                      | 10.9.8、11.7.0、11.8.1、11.13.0 が、後の語を期間として読む                                                                                                         | [fixture: timeline/header-and-direction/direction-case-kept]                |
-| [timeline](./timeline.ja.md#title-と-section)               | `title`、改行、`# c`                                                                                          | `title # c`                                     | [1](./printed-form.ja.md#1-記号の横の空白)            | 10.9.8 が、空白だけの title とコメントとして読む                                                                                                                   | [fixture: timeline/titles-and-sections/title-hash-on-next-line-kept]        |
-| [ER](./er.ja.md#トークンの間の空白)                         | `class-A a`                                                                                                   | `class -A a`                                    | [1](./printed-form.ja.md#1-記号の横の空白)            | 10.9.8 が、空白を入れた形を拒否する                                                                                                                                | [fixture: er/whitespace-between-tokens/keyword-then-dash-touching-kept]     |
-| [ER](./er.ja.md#トークンの間の空白)                         | `subgraph-x`、`end-x`                                                                                         | `subgraph -x`、`end` と単独の行の `-x`          | [1](./printed-form.ja.md#1-記号の横の空白)            | 10.9.8 が空白を入れた形を拒否し、11.7.0、11.8.1、11.13.0、11.14.0、11.15.0、11.16.1 が違って描く                                                                   | [fixture: er/whitespace-between-tokens/subgraph-then-dash-touching-kept]    |
-| [ER](./er.ja.md#方向)                                       | `DIRECTION lr`                                                                                                | `direction LR`                                  | [3](./printed-form.ja.md#3-綴り)                      | 10.9.8 が、その行をエンティティとして読む                                                                                                                          | [fixture: er/direction/case-kept]                                           |
-| [ER](./er.ja.md#subgraph)                                   | `SUBGRAPH S` と `END`                                                                                         | `subgraph S` と `end`                           | [3](./printed-form.ja.md#3-綴り)                      | 10.9.8、11.7.0、11.8.1、11.13.0、11.14.0、11.15.0、11.16.1 が、エンティティとして読む                                                                              | [fixture: er/subgraphs/end-case-kept]                                       |
-| [ER](./er.ja.md#実体)                                       | 引用符つきの `"Zoë"`                                                                                          | `Zoë`                                           | [3](./printed-form.ja.md#3-綴り)                      | 10.9.8 が、ASCII 以外の文字を含む引用符なしの名前を拒否する                                                                                                        | [fixture: er/entities/names-that-need-quotes]                               |
-| [ER](./er.ja.md#実体)                                       | 引用符つきの `"a.b"`                                                                                          | `a.b`                                           | [3](./printed-form.ja.md#3-綴り)                      | 10.9.8、11.7.0、11.8.1 が、引用符なしの名前の `.` を拒否する                                                                                                       | [fixture: er/entities/name-with-dot-kept]                                   |
-| [ER](./er.ja.md#1-行に-1-文)                                | `12a`、2 桁以上の数と、名前が続く文字                                                                         | `12` と `a` を別の行に                          | [2](./printed-form.ja.md#2-prettier-にない種類の隙間) | 11.7.0 と 11.8.1 が 2 行を違って描く。10.9.8 はテキストを拒否する                                                                                                  | [fixture: er/statements-one-per-line/number-name-then-name-kept]            |
-| [ER](./er.ja.md#1-行に-1-文)                                | `endé`、`end` と U+2028 か U+2029 と文、`subgraphé`、`subgraph` と U+2028 と名前                              | `end` と `é` を別の行に。区切りは空白にして印字 | [2](./printed-form.ja.md#2-prettier-にない種類の隙間) | 11.7.0、11.8.1、11.13.0、11.14.0、11.15.0、11.16.1 が違って描く。10.9.8 はテキストを拒否する                                                                       | [fixture: er/statements-one-per-line/end-then-name-outside-ascii-kept]      |
-| [ER](./er.ja.md#1-行に-1-文)                                | U+2028 か U+2029 で始まり、複数の文がある行                                                                   | 各文を別の行に                                  | [2](./printed-form.ja.md#2-prettier-にない種類の隙間) | 11.7.0 から 11.16.1 が整形した後のテキストを拒否する                                                                                                               | [test: a line of two ER statements that starts with U+2028]                 |
-| [ER](./er.ja.md#1-行に-1-文)                                | 1 行にある、`~` を含む複数の属性                                                                              | 属性を 1 行ずつに                               | [2](./printed-form.ja.md#2-prettier-にない種類の隙間) | 10.9.8 が違って描く                                                                                                                                                | [fixture: er/attribute-spacing/attributes-with-tilde-on-one-line-kept]      |
-| [treemap](./treemap.ja.md#title)                            | 行頭の `title T`                                                                                              | 1 段深い `  title T`                            | [1](./printed-form.ja.md#1-記号の横の空白)            | 11.8.1 が、字下げされた title、`accTitle`、`accDescr` を拒否する                                                                                                   | [fixture: treemap/title/line-start-kept]                                    |
-| [ishikawa](./ishikawa.ja.md#indentation)                    | `ishikawa`、`R`、`  A`、` B`、`  C` を書かれたまま                                                            | すべてのノードを深さの位置に置く形              | [1](./printed-form.ja.md#1-記号の横の空白)            | 11.13.0 が、深さで印字したテキストを書かれたテキストと違って描く                                                                                                   | [fixture: ishikawa/indentation/indent-relative-zero]                        |
-| [Wardley](./wardley.ja.md#link)                             | `Alpha-->Beta` を `Alpha--> Beta` と印字                                                                      | `Alpha- -> Beta`                                | [1](./printed-form.ja.md#1-記号の横の空白)            | 11.14.0 が、名前の `-` を拒否する                                                                                                                                  | [fixture: wardley/links/link-long-glued]                                    |
-| [Wardley](./wardley.ja.md#名前と引用)                       | 引用符つきの `"real-time"`                                                                                    | `real-time`                                     | [3](./printed-form.ja.md#3-綴り)                      | 11.14.0 が、引用符なしの `-` を含む名前を拒否する                                                                                                                  | [fixture: wardley/names-and-quotes/names-that-need-quotes]                  |
-| [treeView](./treeview.ja.md#names)                          | 引用符つきの `"name"`                                                                                         | `name`                                          | [3](./printed-form.ja.md#3-綴り)                      | 11.14.0、11.15.0 が、引用符で囲んだ名前だけを読む                                                                                                                  | [fixture: treeview/names/quoted-name-kept]                                  |
-| [architecture](./architecture.ja.md#quotes)                 | 引用符つきの `["A.B"]`                                                                                        | `[A.B]`                                         | [3](./printed-form.ja.md#3-綴り)                      | 11.13.0、11.14.0、11.15.0、11.16.1 が、引用符なしのラベルを ASCII の文字・数字・`_`・空白に限って読む                                                              | [fixture: architecture/quotes/labels-that-need-quotes]                      |
+| 図種                                                        | 書かれたまま残す形                                                                                            | 決まりが与える形                                | 決まり                                                | 要る版                                                                                                                                                             | fixture                                                                       |
+| ----------------------------------------------------------- | ------------------------------------------------------------------------------------------------------------- | ----------------------------------------------- | ----------------------------------------------------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------ | ----------------------------------------------------------------------------- |
+| [block](./block.ja.md#ヘッダー)                             | `block-beta`                                                                                                  | `block`                                         | [3](./printed-form.ja.md#3-綴り)                      | 10.9.8、11.7.0、11.8.1 が `block` を拒否する                                                                                                                       | [fixture: block/header/block-beta-kept]                                       |
+| [sankey](./sankey.ja.md#ヘッダー)                           | `sankey-beta`                                                                                                 | `sankey`                                        | [3](./printed-form.ja.md#3-綴り)                      | 10.9.8、11.7.0、11.8.1 が `sankey` を拒否する                                                                                                                      | [fixture: sankey/header/sankey-beta]                                          |
+| [xychart](./xychart.ja.md#ヘッダーと向き)                   | `xychart-beta`                                                                                                | `xychart`                                       | [3](./printed-form.ja.md#3-綴り)                      | 10.9.8、11.7.0、11.8.1 が `xychart` を拒否する                                                                                                                     | [fixture: xychart/header-and-orientation/beta-header-kept]                    |
+| [packet](./packet.ja.md#header)                             | `packet-beta`                                                                                                 | `packet`                                        | [3](./printed-form.ja.md#3-綴り)                      | 11.7.0、11.8.1 が `packet` を拒否する（10.9.8 には packet 図がない）                                                                                               | [fixture: packet/header/header-beta]                                          |
+| [flowchart](./flowchart.ja.md#方向)                         | 外とつながらない subgraph のある `flowchart TB`                                                               | `flowchart TD`                                  | [3](./printed-form.ja.md#3-綴り)                      | 10.9.8、11.7.0、11.8.1 が、その subgraph を単独で並べる（`TB` では `LR`、`TD` では `TB`）                                                                          | [fixture: flowchart/direction/header-tb-unlinked-subgraph-kept]               |
+| [flowchart](./flowchart.ja.md#方向)                         | subgraph の中の頂点からその id への接続がある `flowchart TB`                                                  | `flowchart TD`                                  | [3](./printed-form.ja.md#3-綴り)                      | 10.9.8 は、そのような接続を外への接続と数えない                                                                                                                    | [fixture: flowchart/direction/header-tb-link-from-inside-to-subgraph-id-kept] |
+| [flowchart](./flowchart.ja.md#方向)                         | 外とつながらない subgraph のある `flowchart-elk TB`                                                           | `flowchart-elk TD`                              | [3](./printed-form.ja.md#3-綴り)                      | 11.7.0、11.8.1 はそのヘッダーを dagre の配置で描く                                                                                                                 | [fixture: flowchart/direction/header-elk-tb-unlinked-subgraph-kept]           |
+| [flowchart](./flowchart.ja.md#方向)                         | `graph LR`                                                                                                    | `flowchart LR`                                  | [3](./printed-form.ja.md#3-綴り)                      | `flowchart.defaultRenderer` が `dagre-d3` のとき、10.9.8、11.7.0、11.8.1、11.13.0、11.14.0、11.15.0、11.16.1、11.17.2 が `graph` を読み、`flowchart` を拒否する    | [fixture: flowchart/direction/header-keyword-kept]                            |
+| [state](./state.ja.md#header)                               | `stateDiagram`                                                                                                | `stateDiagram-v2`                               | [3](./printed-form.ja.md#3-綴り)                      | `state.defaultRenderer` が `dagre-d3` のとき、10.9.8 が 2 つを違って描き、11.7.0、11.8.1、11.13.0、11.14.0、11.15.0、11.16.1、11.17.2 が `stateDiagram` を拒否する | [fixture: state/header/spellings-kept]                                        |
+| [state](./state.ja.md#1-行に-1-文)                          | 最上位で `%` の語で始まり（`%a b`、`% --> b c`）、同じ行に後ろの文がある文                                    | `%` の文と残りを別の行に                        | [2](./printed-form.ja.md#2-prettier-にない種類の隙間) | 10.9.8、11.7.0、11.8.1、11.13.0、11.14.0 が行の残りをコメントとして読む                                                                                            | [fixture: state/statements-one-per-line/percent-word-then-text-kept]          |
+| [state](./state.ja.md#1-行に-1-文)                          | `:` を含み（`click A href "a:b" accDescr {}`）、同じ行に後ろの文がある click 文                               | click と文を別の行に                            | [2](./printed-form.ja.md#2-prettier-にない種類の隙間) | 10.9.8 は `:` を、行の終わりまで続く説明の始まりとして読む                                                                                                         | [fixture: state/statements-one-per-line/split]                                |
+| [flowchart、swimlane](./flowchart.ja.md#ラベルの内側の空白) | `A[ user@example.com ]`                                                                                       | `A[user@example.com]`                           | [1](./printed-form.ja.md#1-記号の横の空白)            | flowchart: 11.7.0、11.8.1、11.13.0、11.14.0、11.15.0、11.16.1、11.17.2、12.0.0、swimlane: 11.16.1、11.17.2、12.0.0 が、空白のない形を拒否する                      | [fixture: flowchart/label-inner-whitespace/leading-whitespace-at-sign-kept]   |
+| [flowchart、swimlane](./flowchart.ja.md#矢印の前後の空白)   | `A@{ shape: circle }e1@--> B`                                                                                 | `A@{ shape: circle } e1@--> B`                  | [1](./printed-form.ja.md#1-記号の横の空白)            | flowchart: 11.7.0、11.8.1、11.13.0、11.14.0、11.15.0、11.16.1、11.17.2、12.0.0、swimlane: 11.16.1、11.17.2、12.0.0 が、空白のある形を拒否する                      | [fixture: flowchart/arrow-spacing/edge-id-after-data-block-touches]           |
+| [flowchart](./flowchart.ja.md#トークンの間の空白)           | `style A fill:#f00,color:white` を `style A fill: #f00,color: white` と印字                                   | `style A fill: #f00, color: white`              | [1](./printed-form.ja.md#1-記号の横の空白)            | 10.9.8 が、`color:` か `text-align:` で始まるスタイルからラベルの色を取る                                                                                          | [fixture: flowchart/whitespace-between-tokens/style-color-touching-kept]      |
+| [flowchart](./flowchart.ja.md#トークンの間の空白)           | `linkStyle 0 stroke:#f00,color:red` を `linkStyle 0 stroke: #f00,color: red` と印字                           | `linkStyle 0 stroke: #f00, color: red`          | [1](./printed-form.ja.md#1-記号の横の空白)            | 10.9.8 が、辺のラベルでも同じことをする                                                                                                                            | [fixture: flowchart/whitespace-between-tokens/link-style-label-names-kept]    |
+| [flowchart](./flowchart.ja.md#トークンの間の空白)           | `style A stroke-width:3px\ ,stroke:#0f0` を `style A stroke-width: 3px\ , stroke: #0f0` と印字                | `style A stroke-width: 3px\, stroke: #0f0`      | [1](./printed-form.ja.md#1-記号の横の空白)            | 10.9.8 が、ノードのスタイルをそのまま `;` でつなぐ                                                                                                                 | [fixture: flowchart/whitespace-between-tokens/style-backslash-space-kept]     |
+| [flowchart](./flowchart.ja.md#スタイルの行末の空白)         | ノーブレークスペース、U+3000、垂直タブ、バイト順マークで終わる `style` か `classDef` の行                     | その文字のない行                                | [1](./printed-form.ja.md#1-記号の横の空白)            | 10.9.8 が、その文字のないテキストを違って描く                                                                                                                      | [test: keeps whitespace other than a space and a tab at the end of a style]   |
+| [class](./class.ja.md#トークンの間の空白)                   | `style A fill:#f00,color:white` を `style A fill: #f00,color: white` と、`color :red` を `color : red` と印字 | `style A fill: #f00, color: white`              | [1](./printed-form.ja.md#1-記号の横の空白)            | 10.9.8 が、`color:` で始まるスタイルからラベルの色を取る                                                                                                           | [fixture: class/whitespace-between-tokens/style-color-touching-kept]          |
+| [class](./class.ja.md#メンバーの行)                         | `+<タブ>int x`（属性の記号の後のタブ）                                                                        | `+int x`                                        | [1](./printed-form.ja.md#1-記号の横の空白)            | 10.9.8 が、タブを名前の一部として読む                                                                                                                              | [fixture: class/member-lines/visibility-tab-kept]                             |
+| [block](./block.ja.md#辺)                                   | `A ---x B`、`A ---o B`                                                                                        | `A --x B`、`A --o B`                            | [3](./printed-form.ja.md#3-綴り)                      | 10.9.8、11.7.0、11.8.1 が違って描く                                                                                                                                | [fixture: block/edges/arrow-length-kept-where-drawn-differently]              |
+| [block](./block.ja.md#辺)                                   | `A ===x B`、`A ===o B`                                                                                        | `A ==x B`、`A ==o B`                            | [3](./printed-form.ja.md#3-綴り)                      | 10.9.8、11.7.0、11.8.1、11.13.0、11.14.0 が違って描く                                                                                                              | [fixture: block/edges/arrow-length-kept-where-drawn-differently]              |
+| [block](./block.ja.md#辺)                                   | `A ==== B`                                                                                                    | `A === B`                                       | [3](./printed-form.ja.md#3-綴り)                      | 10.9.8、11.7.0、11.8.1、11.13.0、11.14.0 が、線を長さで違う id として読む                                                                                          | [fixture: block/edges/arrow-length-kept-where-drawn-differently]              |
+| [sequence](./sequence.ja.md#コロン)                         | `A->>B: `（`:` の後に空白 1 文字）                                                                            | `A->>B:`                                        | [1](./printed-form.ja.md#1-記号の横の空白)            | 10.9.8 が、後に何もない `:` を拒否する                                                                                                                             | [fixture: sequence/colons/whitespace-only-text]                               |
+| [sequence](./sequence.ja.md#コロン)                         | `A->>B:%%{init: {}}%%` の後に空白 2 つ、または `:` の後にノーブレークスペース                                 | 空白を落とした行                                | [1](./printed-form.ja.md#1-記号の横の空白)            | 10.9.8 が、空白を落とした行を拒否する                                                                                                                              | [fixture: sequence/colons/directive-then-whitespace-kept]                     |
+| [sequence](./sequence.ja.md#矢印の前後の空白)               | `A () ->> () B`                                                                                               | `A() ->> ()B`                                   | [1](./printed-form.ja.md#1-記号の横の空白)            | 10.9.8、11.7.0、11.8.1 が `()` を名前の一部として読む                                                                                                              | [fixture: sequence/arrow-spacing/parentheses-touching]                        |
+| [sequence](./sequence.ja.md#矢印の前後の空白)               | `A<<->>B` を `A<<->> B` と印字                                                                                | `A <<->> B`                                     | [1](./printed-form.ja.md#1-記号の横の空白)            | 10.9.8 が、前の `<<` を名前の一部として読む                                                                                                                        | [fixture: sequence/arrow-spacing/bidirectional-arrow-gap-before-kept]         |
+| [gitGraph](./gitgraph.ja.md#header)                         | `gitGraph %%{x}%%:` を `gitGraph%%{x}%%:` と印字                                                              | `gitGraph %%{x}%%`                              | [3](./printed-form.ja.md#3-綴り)                      | 10.9.8 が、ディレクティブの後でコロンのないヘッダーを拒否する                                                                                                      | [fixture: gitgraph/header/header-directive-before-colon-kept]                 |
+| [gitGraph](./gitgraph.ja.md#references)                     | `branch "Merge"`、`branch "lr-x"`                                                                             | `branch Merge`、`branch lr-x`                   | [3](./printed-form.ja.md#3-綴り)                      | 10.9.8 が、キーワードを大文字小文字を問わず読み、`lr-x` を `lr` と `-x` として読む                                                                                 | [fixture: gitgraph/references/names-that-need-quotes]                         |
+| [timeline](./timeline.ja.md#ヘッダーと方向)                 | `timeline td`、`timeline TD title T`                                                                          | `timeline TD`、テキストは単独の行               | [3](./printed-form.ja.md#3-綴り)                      | 10.9.8、11.7.0、11.8.1、11.13.0 が、後の語を期間として読む                                                                                                         | [fixture: timeline/header-and-direction/direction-case-kept]                  |
+| [timeline](./timeline.ja.md#title-と-section)               | `title`、改行、`# c`                                                                                          | `title # c`                                     | [1](./printed-form.ja.md#1-記号の横の空白)            | 10.9.8 が、空白だけの title とコメントとして読む                                                                                                                   | [fixture: timeline/titles-and-sections/title-hash-on-next-line-kept]          |
+| [ER](./er.ja.md#トークンの間の空白)                         | `class-A a`                                                                                                   | `class -A a`                                    | [1](./printed-form.ja.md#1-記号の横の空白)            | 10.9.8 が、空白を入れた形を拒否する                                                                                                                                | [fixture: er/whitespace-between-tokens/keyword-then-dash-touching-kept]       |
+| [ER](./er.ja.md#トークンの間の空白)                         | `subgraph-x`、`end-x`                                                                                         | `subgraph -x`、`end` と単独の行の `-x`          | [1](./printed-form.ja.md#1-記号の横の空白)            | 10.9.8 が空白を入れた形を拒否し、11.7.0、11.8.1、11.13.0、11.14.0、11.15.0、11.16.1 が違って描く                                                                   | [fixture: er/whitespace-between-tokens/subgraph-then-dash-touching-kept]      |
+| [ER](./er.ja.md#方向)                                       | `DIRECTION lr`                                                                                                | `direction LR`                                  | [3](./printed-form.ja.md#3-綴り)                      | 10.9.8 が、その行をエンティティとして読む                                                                                                                          | [fixture: er/direction/case-kept]                                             |
+| [ER](./er.ja.md#subgraph)                                   | `SUBGRAPH S` と `END`                                                                                         | `subgraph S` と `end`                           | [3](./printed-form.ja.md#3-綴り)                      | 10.9.8、11.7.0、11.8.1、11.13.0、11.14.0、11.15.0、11.16.1 が、エンティティとして読む                                                                              | [fixture: er/subgraphs/end-case-kept]                                         |
+| [ER](./er.ja.md#実体)                                       | 引用符つきの `"Zoë"`                                                                                          | `Zoë`                                           | [3](./printed-form.ja.md#3-綴り)                      | 10.9.8 が、ASCII 以外の文字を含む引用符なしの名前を拒否する                                                                                                        | [fixture: er/entities/names-that-need-quotes]                                 |
+| [ER](./er.ja.md#実体)                                       | 引用符つきの `"a.b"`                                                                                          | `a.b`                                           | [3](./printed-form.ja.md#3-綴り)                      | 10.9.8、11.7.0、11.8.1 が、引用符なしの名前の `.` を拒否する                                                                                                       | [fixture: er/entities/name-with-dot-kept]                                     |
+| [ER](./er.ja.md#1-行に-1-文)                                | `12a`、2 桁以上の数と、名前が続く文字                                                                         | `12` と `a` を別の行に                          | [2](./printed-form.ja.md#2-prettier-にない種類の隙間) | 11.7.0 と 11.8.1 が 2 行を違って描く。10.9.8 はテキストを拒否する                                                                                                  | [fixture: er/statements-one-per-line/number-name-then-name-kept]              |
+| [ER](./er.ja.md#1-行に-1-文)                                | `endé`、`end` と U+2028 か U+2029 と文、`subgraphé`、`subgraph` と U+2028 と名前                              | `end` と `é` を別の行に。区切りは空白にして印字 | [2](./printed-form.ja.md#2-prettier-にない種類の隙間) | 11.7.0、11.8.1、11.13.0、11.14.0、11.15.0、11.16.1 が違って描く。10.9.8 は `endé` と `subgraphé` を拒否する                                                        | [fixture: er/statements-one-per-line/end-then-name-outside-ascii-kept]        |
+| [ER](./er.ja.md#1-行に-1-文)                                | `class` の前、または `direction` と方向の前にある U+2028 か U+2029 と、同じ行に後ろの文がある行               | 各文を別の行に                                  | [2](./printed-form.ja.md#2-prettier-にない種類の隙間) | 11.7.0、11.8.1、11.13.0、11.14.0、11.15.0、11.16.1 が `class` の行を拒否し、`direction` の行を違って描く                                                           | [test: a line of two ER statements that starts with U+2028]                   |
+| [ER](./er.ja.md#1-行に-1-文)                                | 同じ行の別の属性の後にある、`~` が 2 つの属性（`int a List~int~ b`）                                          | 属性を 1 行ずつに                               | [2](./printed-form.ja.md#2-prettier-にない種類の隙間) | 10.9.8 は、最初の属性の型を 2 つ目の `~` までとして読む                                                                                                            | [fixture: er/attribute-spacing/attributes-with-tilde-on-one-line-kept]        |
+| [treemap](./treemap.ja.md#title)                            | 行頭の `title T`                                                                                              | 1 段深い `  title T`                            | [1](./printed-form.ja.md#1-記号の横の空白)            | 11.8.1 が、字下げされた title、`accTitle`、`accDescr` を拒否する                                                                                                   | [fixture: treemap/title/line-start-kept]                                      |
+| [ishikawa](./ishikawa.ja.md#indentation)                    | `ishikawa`、`R`、`  A`、` B`、`  C` を書かれたまま                                                            | すべてのノードを深さの位置に置く形              | [1](./printed-form.ja.md#1-記号の横の空白)            | 11.13.0 が、深さで印字したテキストを書かれたテキストと違って描く                                                                                                   | [fixture: ishikawa/indentation/indent-relative-zero]                          |
+| [Wardley](./wardley.ja.md#link)                             | `Alpha-->Beta` を `Alpha--> Beta` と印字                                                                      | `Alpha- -> Beta`                                | [1](./printed-form.ja.md#1-記号の横の空白)            | 11.14.0 が、名前の `-` を拒否する                                                                                                                                  | [fixture: wardley/links/link-long-glued]                                      |
+| [Wardley](./wardley.ja.md#名前と引用)                       | 引用符つきの `"real-time"`                                                                                    | `real-time`                                     | [3](./printed-form.ja.md#3-綴り)                      | 11.14.0 が、引用符なしの `-` を含む名前を拒否する                                                                                                                  | [fixture: wardley/names-and-quotes/names-that-need-quotes]                    |
+| [treeView](./treeview.ja.md#names)                          | 引用符つきの `"name"`                                                                                         | `name`                                          | [3](./printed-form.ja.md#3-綴り)                      | 11.14.0、11.15.0 が、引用符で囲んだ名前だけを読む                                                                                                                  | [fixture: treeview/names/quoted-name-kept]                                    |
+| [architecture](./architecture.ja.md#quotes)                 | 引用符つきの `["A.B"]`                                                                                        | `[A.B]`                                         | [3](./printed-form.ja.md#3-綴り)                      | 11.13.0、11.14.0、11.15.0、11.16.1 が、引用符なしのラベルを ASCII の文字・数字・`_`・空白に限って読む                                                              | [fixture: architecture/quotes/labels-that-need-quotes]                        |
 
 ## mermaid.js と違って読む入力
 
@@ -2054,8 +2076,8 @@ mermaid.js は、トークンの異なる綴りの一部を同じトークンと
 そうした形は
 [対象にする版の mermaid.js のために残す形](#対象にする版の-mermaidjs-のために残す形)
 に 1 つずつ挙げています。
-[mermaid.js の版](#mermaidjs-の版)に、
-それぞれの種類について文法で調べたことを示します。
+[対象にする mermaid.js の版](#対象にする-mermaidjs-の版)に、
+10 版を挙げています。
 
 印字が形をそろえる前に、それぞれの種類を mermaid.js 12.3.0 と比べました。
 綴りを含む各例を別の綴りでも書き、mermaid.js が両方のテキストを読みました。
@@ -2357,13 +2379,13 @@ mermaid.js が文の向きを Db に書かれたまま保つからです。
 [fixture: flowchart/direction/statement-td-kept-with-other-header]
 [fixture: flowchart/direction/statement-values-kept]
 
-subgraph のない flowchart のヘッダーの `TB` は、例が `TD` を 70 回、
-もう一方を 7 回使うので、`TD` と印字します。
-subgraph のある flowchart のヘッダーは、`TB` も `TD` も書かれたまま残します。
-対象にする版の一部が、2 つを違って描くからです。
-[mermaid.js の版](#mermaidjs-の版)を参照してください。
+flowchart のヘッダーの `TB` は、例が `TD` を 70 回、もう一方を 7 回使うので、
+`TD` と印字します。
+外とつながらない subgraph があって、
+対象にする版の一部が `TB` と `TD` を違って描くときは、`TB` のまま残します。
+詳しくは [方向](./flowchart.ja.md#方向)を参照してください。
 [fixture: flowchart/direction/header-tb-without-subgraph]
-[fixture: flowchart/direction/header-tb-with-subgraph-kept]
+[fixture: flowchart/direction/header-tb-unlinked-subgraph-kept]
 [fixture: flowchart/link-label-form/flowchart-header-both-forms-kept]
 
 ### ER 図の関係
@@ -3372,276 +3394,6 @@ agentflow の 26 個の入力も、スタイルの空白を除くと、
 整形後のテキストと同じ SVG が描かれました。
 class の 7 個の入力も、整形後のテキストと同じ SVG が描かれました。
 
-### mermaid.js の版
-
-固定している mermaid.js の CHANGELOG.md には、
-この節に挙げるキーワードの大文字小文字、文字列の引用符、
-数の桁についての記述がないので、
-これらを版のために書かれたまま残すことはありません。
-ほかの種類については、mermaid.js の履歴から読んだ CHANGELOG.md と、
-リリースタグの文法が、各版がどの形を読むかを示します。
-
-- gitGraph のヘッダーの後のコロン: 8.14.0 の文法は、規則が `gitGraph:` だけで、
-  9.0.0 の文法は、コロンがあるヘッダーとないヘッダーを読みます。
-  8.14.0 は対象にしない版なので、向きのない見出しのコロンは除きます。
-  [ヘッダーの後のコロン](#ヘッダーの後のコロン)を参照してください。
-- sankey 図の欄の引用符: 10.3.0、10.9.0、11.0.0、12.3.0 の文法は、
-  引用符のない欄と引用符で囲む欄の規則も、記録のアクションも同じです。
-  このアクションは、source と target の両端の空白を除き、
-  `""` を `"` として読み、値は欄の両端の空白を除いて `parseFloat` で読みます。
-- ER 図の名前と役割: 8.14.0 の文法には、引用符で囲む名前がありません。
-  9.4.3、10.9.0、11.0.0、12.3.0 の文法は、
-  引用符で囲む名前と役割をそれぞれの規則で読み、
-  引用符を除く（`$1.replace(/"/g, '')`）ので、引用符で囲む名前と、
-  同じ名前を引用符なしで書いたものは、同じテキストになります。
-  これらの文法が独立した単位として読む語（`erDiagram`、`one`、`many`、
-  `only one`、`to`、`optionally to` と、字句解析器のほかの語）は、
-  印字が引用符で囲んだまま残す語に含まれます。
-  10.5.0 から 11.4.1 の文法は、
-  引用符のない名前を `[A-Za-z_][A-Za-z0-9\-_]*` として、
-  11.5.0 から 12.3.0 の文法は `([^\x00-\x7F]|\w|\-|\*)+` として読みます（11.13.0
-  は `.` を加えます）。
-  そのため、英字か `_` で始まり、英字、数字、`_`、`-` からなる名前は、
-  対象にするすべての版で、引用符なしで読めます。
-  名前 `_x`、`_1`、`_a-b`、役割 `_role`、subgraph の名前 `_group` は、
-  対象にする版で、引用符の有無によらず同じに描かれました。
-  詳しくは [対象にする mermaid.js の版](#対象にする-mermaidjs-の版)
-  を参照してください。
-- requirement 図の名前と値: 9.1.0、10.9.0、12.3.0 の文法は、requirement の名前、
-  id、text、element の名前、type、reference に、
-  引用符で囲む文字列と引用符のない文字列の同じ生成規則 `unqString | qString`
-  を使い、字句解析器のキーワードを大文字小文字を問わず語全体として読みます。
-  そのため、それらのいずれでもない語は、これらのすべての版で名前として読めます。
-- Wardley マップの名前: この図種が初めて加わった 11.14.0 の文法は、
-  引用符のない名前を終端記号 `NAME_WITH_SPACES` で読みます。
-  ASCII の英字、数字、`_`、`(`、`)`、`&` からなり、
-  英字で始まる語を空白で区切った形です。
-  11.15.0（名前に `-` を加えた版）、12.0.0、12.3.0 の文法も同じ語を読みます。
-  引用符で囲む名前は、引用符のない名前と同じテキストです。
-  最初の文法は `-` のある名前を引用符なしでは拒否するので、
-  そのような名前は引用符を残します。
-  詳しくは
-  [対象にする版の mermaid.js のために残す形](#対象にする版の-mermaidjs-のために残す形)
-  を参照してください。
-- gitGraph のブランチ: 9.4.3、10.9.0、11.0.0 の文法は、参照 `ref` を、
-  引用符のない名前 `\w([-\./\w]*[-\w])?` か文字列として読み、
-  これらの文法の字句解析器は、キーワードを大文字小文字を問わず比較します。
-  12.3.0 の文法は、書かれたとおりに比較し、
-  キーワードより長い名前を名前として読みます。
-  どの名前を対象にする版がキーワードとして読むかは、これらの文法では決まらず、
-  描いて確かめました（[テキストの引用符](#テキストの引用符)を参照）。
-- 象限チャートのテキスト: この図種が初めて加わった 10.2.0、10.3.0、10.9.0、
-  11.0.0、12.3.0 の文法は、
-  引用符のないテキスト（`ALPHA` とその後のトークン）と文字列を、
-  同じ `text` 規則で読みます。
-  これらの文法の字句解析器は、`x-axis`、`quadrant-1` から `quadrant-4`、
-  `quadrantChart` を、その後の境界を求めずに読みます。
-  この規則は、
-  テキストの中の `-` をトークン `MINUS`
-  として取り込みます（`textNoTagsToken: alphaNumToken | SPACE | MINUS`）。
-  10.3.1 から 12.3.0 は、
-  `-` のあるテキストを引用符の有無によらず同じに描きます。
-- XY チャートのタイトルと分類: 10.6.0、10.9.0、11.0.0、12.0.0、12.3.0 の文法は、
-  タイトル、軸やプロットのタイトル、分類を、同じ `text` 規則で読みます。
-  この規則は文字列をそのテキストとして読み、引用符のないテキストは、
-  トークンの間の空白なしでつないだものとして読みます。
-  これらの字句解析器は、`title`、`x-axis`、`y-axis`、`line`、`bar` を、
-  後ろに英字、数字、`_` がない場合に、大文字小文字を問わず読み、
-  `vertical` と `horizontal` は、どこで始まる場合も読みます。
-- architecture 図のラベル: 11.1.0 から 11.12.3 の文法は、
-  角括弧内の ASCII の英字、数字、`_`、空白からなるラベルを読み、
-  引用符で囲むラベルは読みません。
-  11.13.0 から 11.16.1 の文法は、そのようなラベルか引用符で囲むラベルを読み、
-  11.17.0 から 12.3.0 の文法は、引用符で囲むラベルか、`[`、`]`、
-  改行を含まない任意のテキストを読みます。
-  そのため、引用符で囲んだラベルは、
-  引用符を読むどの版も読むこれらの文字からなる場合にだけ、
-  引用符なしで印字します。
-  詳しくは
-  [対象にする版の mermaid.js のために残す形](#対象にする版の-mermaidjs-のために残す形)
-  を参照してください。
-- mindmap の形のテキスト: この規則が初めて加わった v9.4.0、v10.1.0 と、
-  v10.3.0 から 12.3.0 の文法は、形の中の文字列と、`)`、`]`、`(`、
-  `}` を含まないテキストを、同じ `NODE_DESCR` として読み、
-  文字列の規則をテキストの規則よりも前に置きます。
-  kanban のボードの形のテキストは、この図種が初めて加わった 11.4.0 の文法が、
-  12.3.0 までのすべての後続のリリースの文法と同じです。
-- treeView 図の名前: この図種が初めて加わった 11.14.0 と 11.15.0 の文法は、
-  ノードの名前を引用符で囲む文字列だけとして読み（`name=STRING2`）、
-  11.16.0 の文法で引用符のない名前（`BARE_NAME`）が加わりました。
-  引用符で囲む名前は、上のテキストのとおり、書かれたまま残します。
-  詳しくは
-  [対象にする版の mermaid.js のために残す形](#対象にする版の-mermaidjs-のために残す形)
-  を参照してください。
-- C4 図の引数: 引数の文脈の字句解析器の規則（`<attribute>[ ]*["]`、
-  `<string>[^"]*` と、どちらも `STR` を返す `<attribute>[^,]+`）と、
-  アクション `attribute: STR { $$ = $1.trim(); }` は、
-  C4 の文法がある最初のタグ 9.1.2（名前付き属性 `$key="value"` が、
-  9.1.3 で加わる前）、9.1.3、9.2.0、10.3.0、10.5.0、11.0.0、11.13.0、
-  12.3.0 の文法で同じです。
-  9.1.x の文法は、規則を console に記録するだけです。
-  そのため、この図種があるどの版でも、文字列と引用符のない引数は、
-  同じ引数になります。
-- flowchart の subgraph と agentflow 図の flow の名前: 9.0.0 から 10.0.2
-  の文法は、subgraph の名前を `text` 規則で読みます。
-  この規則は文字列をそのまま取り、型を持ちません（`$$ = $1`）。
-  10.1.0 から 10.3.0 の文法も `text` 規則で読み、
-  語と同じく文字列も型が `text` になります。
-  10.3.1 から 12.3.0 の文法は `textNoTags` 規則で読み、
-  この規則では文字列は型が `text` になります。
-  型 `string` は、10.3.1 から `text` 規則にあります。
-  この規則は角括弧の中のタイトルと形のラベルを読み、名前は読みません。
-  そのため、どの版でも、
-  subgraph の名前は両方の形で同じテキストと同じ型になります。
-  agentflow 図の文法は、12.0.0、12.1.0、12.2.0、12.3.0 で同じファイルです。
-  9.4.3 の文法は、名前をトークン `ALPHA`、`MINUS`、`NUM` として読み、
-  10.9.0 から 12.3.0 の文法は、`>`、`-`、`.` が後に続かない `-` を、
-  トークン `NODE_STRING` に取り込むので、英字の間の `-` は名前の一部です。
-  `-` はキーワードを終えるので、`end-x` は `end` と `-x` です。
-  名前 `my-group` と `"my-group"` は、9.0.0、9.1.7、9.4.3、10.3.1、10.9.0、
-  11.0.0、11.4.1、11.12.3、11.13.0、11.16.1、12.0.0、12.3.0 で、
-  同じに描かれました（swimlane 図は 11.16.1 から、agentflow 図は 12.0.0 から）。
-  subgraph の名前 `x-end`、`x_end`、`x-click`、`x-call`、`x-interpolate`、
-  `x-_top`、`x_self`、`a b_top`、`x1click`、`x-ending`、`x-clicker`、
-  `x-End` は、対象にする版で、引用符の有無によらず同じに描かれました。
-  詳しくは [対象にする mermaid.js の版](#対象にする-mermaidjs-の版)
-  を参照してください。
-- flowchart、swimlane 図、agentflow 図の形、リンク、
-  subgraph のラベル: 角括弧の中のタイトルと形のラベルを読む `text` 規則は、
-  文字列に 10.3.1 から型 `string` を与え、それより前は型 `text` を与えるので、
-  引用符で囲むラベルと同じラベルを引用符なしで書いたものの Db は、
-  10.3.1 から異なります。
-  描画処理は、型が `markdown` かどうかだけを読み、平易なラベルは、
-  [同じに描かれるラベル](#同じに描かれるラベル) に挙げるすべての版で、
-  引用符の有無によらず同じに描かれました。
-  ただし、2 つの実線の矢印の間にある `--` を含むテキストを除きます（下を参照）。
-  `go-`（丸い形）、`a.-b`、`a---b`、`a:::b`、`please click here`、`call x`、
-  `interpolate x`、`x_self`、`a b_top`、`accTitle: x` も、形の中、`|` の間、
-  subgraph のタイトルで、
-  また実線の矢印の間の `--` と点線の矢印の間の `.` を含まないときは 2
-  つの矢印の間でも、対象にする版が、引用符の有無によらず同じに描きました。
-  詳しくは [対象にする mermaid.js の版](#対象にする-mermaidjs-の版)
-  を参照してください。
-  10.3.1 以降の字句解析器は、2 つの実線の矢印の間のテキストを 1 文字ずつ、
-  `-` は後に `-` が続かないときだけ読む（`<edgeText>[^-]|\-(?!\-)`）ので、
-  テキストは `--` で終わります。
-  そのため、`--` を含むラベルは、flowchart、swimlane 図、
-  agentflow 図のどれでも引用符を残します。
-  `-- a--b -->` は拒否され、`-- go--on -->` は矢印 `--o` を持ちます。
-  `Click here`、`aclick x`、`recall x`、`interpolated x`、`direction TB x`、
-  `the end of it` は、9.0.0 から 12.3.0 の 14 版で、
-  引用符の有無によらず同じに描かれました。
-- class 図の class の名前: 9.0.0 から 12.3.0 の文法は、
-  バッククォートで囲んだ名前（`classLiteralName`: `BQUOTE_STR`）と、
-  英字と数字の名前（`alphaNumToken`: `ALPHA`、`NUM`）を、
-  `className` として読みます。
-  これらの版の jison の字句解析器が語全体として読む語は、
-  [テキストの引用符](#テキストの引用符)が class 図について挙げる語です。
-  ヘッダーの `classDiagram` の規則は、どの版の字句解析器にもあります。
-  それ以外の英字、数字、`_` の文字列は、`ALPHA` か `NUM` として読まれます。
-  そのため、英字、数字、`_` からなる名前は、これらの語のどれでもなければ、
-  どの版でも両方の形で同じ名前です。
-  ただし、`direction` を含む行に結ばれる場合は除きます（次の項目）。
-- `direction` で終わる名前と、向きの名前で始まる名前: class 図、flowchart、
-  agentflow 図、ER 図、requirement 図では、
-  class と flowchart の 9.0.0 から 12.3.0 の文法の字句解析器は、
-  ほかの規則より先に、規則 `.*direction\s+TB[^\n]*` と、`BT`、`RL`、
-  `LR` の同じ規則を試し、`\s+` は改行も読みます。
-  flowchart の 11.13.0 から 12.3.0 の文法と、
-  agentflow 図の 12.0.0 から 12.3.0 の文法には、`TD` の規則もあります。
-  ER 図と requirement 図の 11.5.0 から 12.3.0 の文法には 4 つの規則があり、
-  それより前の文法にはありません。
-  ER 図と requirement 図の字句解析器は、
-  これらの版のすべてで大文字小文字を問わずに読み、
-  ほかは書かれた大文字小文字で読みます。
-  規則のない版は、引用符の有無によらず名前を同じに読みます。
-  そのため、印字が引用符を残す名前は、どの版でも同じに読まれます。
-- use case 図の名前、ラベル、metadata: この図種が初めて加わった 12.0.0 と、
-  12.1.0、12.2.0、12.3.0 の字句解析器、パーサー、visitor、model builder は、
-  同じファイルです。
-  visitor は、引用符で囲まれた名前の id を、ASCII の英字、数字、
-  `_` 以外の文字を、`_` に置き換えて作り、引用符のない名前の id は、
-  名前自体から作ります。
-- Venn 図の名前、ラベル、値: この図種が初めて加わった 11.13.0、12.0.0、
-  12.3.0 の文法は同じで、各版の `vennDB.ts` も同じです。
-  引用符で囲む名前と、同じ名前を引用符なしで書いたものは、
-  同じテキストになります。
-  `normalizeText` が文字列の引用符を外し、
-  すべてのテキストの両端の空白を除くためです。
-  角括弧のラベルは、引用符の有無によらず両端の空白を除き、
-  字句解析器は `venn-beta`、`set`、`union`、`text`、`style` を、
-  大文字小文字を問わず読みます。
-- 1 行のブロックのアクセシビリティの説明: flowchart の 9.0.0 と 9.0.1 の文法に、
-  `accDescr` の規則はありません。
-  最初に規則がある 9.1.0 の文法には、コロンの形とブロックの形があります。
-  9.1.0、9.4.3、10.9.0、11.0.0、12.0.0、12.3.0 の文法では、
-  ブロックの規則があるすべてのファイルに、コロンの規則もあります。
-  9.1.0、10.9.0、12.3.0 の各ファイルで、
-  コロンの規則は行の残り `(?!\n|;|#)*[^\n]*` を読みます。
-  11.0.0 以降の Langium パーサーを使う図種の文法は、
-  共通文法の 1 つの終端記号で両方の形を読みます。
-  そのため、コロンで印字したテキストは、ブロックを読むすべての版で読めます。
-- gitGraph の `switch`: 10.9.0 の文法は `checkout` があり、`switch` はなく、
-  11.0.0 の文法は両方があります。
-  `checkout` で印字したテキストは、`switch` を読むすべての版で読めます。
-- ER の関係の記号: 8.8.0、8.14.0、9.0.0 の文法は記号があり、語はなく、
-  9.4.3 の文法は語もあります。
-  記号で印字したテキストは、語を読むすべての版で読めます。
-- C4 の `Rel_Up` など: C4 の文法がある最初のタグは 9.1.2 で、
-  9.1.0 と 9.1.1 にはありません。
-  その文法には `Rel_Up` と `Rel_U` の両方があります。
-- EBNF の `::=`: CHANGELOG.md は 11.16.0 に railroad 図を追加し、
-  （[その記述](https://github.com/mermaid-js/mermaid/blob/2086904e76c692331e34a45d7cc3bc30860d040e/packages/mermaid/CHANGELOG.md#L601)）、
-  11.16.0 の文法には `=` と `::=` の両方があります。
-- packet 図の範囲: packet 図がある最初の版 11.0.0 の文法は、
-  規則 `start=INT('-' end=INT)?` で位置と範囲を読みます。
-- cynefin 図と radar 図のヘッダーの後のコロン: CHANGELOG.md は、
-  11.6.0 に radar チャートを追加し、
-  （[その記述](https://github.com/mermaid-js/mermaid/blob/2086904e76c692331e34a45d7cc3bc30860d040e/packages/mermaid/CHANGELOG.md#L1168)）、
-  11.16.0 に cynefin 図を追加し、
-  （[その記述](https://github.com/mermaid-js/mermaid/blob/2086904e76c692331e34a45d7cc3bc30860d040e/packages/mermaid/CHANGELOG.md#L585)）、
-  それぞれの最初のリリースの文法は、
-  コロンがあるヘッダーとないヘッダーを読みます。
-- flowchart のヘッダーの向き: 11.10.0 の CHANGELOG.md は、
-  `TD` の挙動を `TB` と同じに更新したと記します。
-  （[その記述](https://github.com/mermaid-js/mermaid/blob/2086904e76c692331e34a45d7cc3bc30860d040e/packages/mermaid/CHANGELOG.md#L1061)）。
-  11.9.0 は `TD` の向きを Db に残し、
-  3 つの subgraph をまたぐノードを結ぶ文書の flowchart の例（`flowchart TB`、
-  `c1-->a2`）を、同じテキストの `TD` 版と異なって描きます。
-  12.3.0 は両者を同じに描きます。
-  11.9.0 は subgraph の `direction TD` も拒否し、11.13.0 は読みます。
-  （[その記述](https://github.com/mermaid-js/mermaid/blob/2086904e76c692331e34a45d7cc3bc30860d040e/packages/mermaid/CHANGELOG.md#L860)）。
-  8.14.0、9.4.3、10.9.0 の flowchart の文法は、
-  `TB` と `TD` の両方をヘッダーの向きとして読みます。
-  そのため、subgraph のある flowchart の `TB` は書かれたまま残します。
-  subgraph のない flowchart は、対象にする版のどれも 2 つを同じに描くので、
-  `TB` は `TD` と印字します。
-- agentflow 図と swimlane 図のリンクのラベルとヘッダーの向き: CHANGELOG.md は
-  11.16.0 に swimlane 図を追加します。
-  （[その記述](https://github.com/mermaid-js/mermaid/blob/2086904e76c692331e34a45d7cc3bc30860d040e/packages/mermaid/CHANGELOG.md#L605)）。
-  swimlane は、両方のラベルの形がある flowchart の文法を読みます。
-  12.0.0 に追加された agentflow 図の文法は、
-  （[その記述](https://github.com/mermaid-js/mermaid/blob/2086904e76c692331e34a45d7cc3bc30860d040e/packages/mermaid/CHANGELOG.md#L250)）、
-  12.0.0 と 12.3.0 で同じファイルで、両方の形があります。
-  両図種とも 11.10.0 より後なので、それらを読むすべての版で `TD` は `TB` です。
-- sankey 図のリンクの値: sankey の文法がある最初のタグは 10.3.0 で、
-  10.2.4 にはありません。
-  10.3.0、10.3.1、10.4.0、10.5.0、10.6.0、10.7.0、10.8.0、10.9.0、11.0.0、
-  11.4.0、11.8.0、11.10.0、11.14.0、12.0.0、12.3.0 の文法は、
-  `parseFloat($value.trim())` で値を数にするので、`1.0`、`+1`、
-  `.5` を読むすべての版で、`1` と `0.5` が読めます。
-  CHANGELOG.md には、値の読み方についての記述はありません。
-- キーワードの大文字小文字: sequence、Gantt、user journey、ER、requirement、
-  state の図の字句解析器は、8.14.0、9.4.3、10.9.0、12.3.0 の文法で、
-  大文字小文字を区別しません。
-  ほかの図種の文法がある、調べた中で最も古いタグも、大文字小文字を区別しません。
-  timeline と mindmap の図は 9.4.0、象限チャートは 10.2.0、
-  XY チャートは 10.6.0、Venn 図は 11.13.0、
-  （[その記述](https://github.com/mermaid-js/mermaid/blob/2086904e76c692331e34a45d7cc3bc30860d040e/packages/mermaid/CHANGELOG.md#L836)）、
-  usecase 図は 12.0.0 です。
-  （[その記述](https://github.com/mermaid-js/mermaid/blob/2086904e76c692331e34a45d7cc3bc30860d040e/packages/mermaid/CHANGELOG.md#L248)）。
-  8.14.0 より前の版は読んでいません。
-
 ### ヘッダーの名前
 
 ヘッダーの名前は書かれたまま残します。
@@ -4455,16 +4207,15 @@ mermaid.js は、一部の ER の行を、置かれた場所や周りの空白�
   [fixture: er/statements-one-per-line/number-name-before-directive-kept]
   [corpus fixture: er/lex-name-number2-then-letter]
 - キーワード `subgraph` と後ろの名前、キーワード `end` と後ろの文の間に、
-  ASCII 外の文字か U+2028、U+2029 がある形です（`subgraphé`、`endé`、`end日本`、
-  `end` U+2028 `B`）。
-  `end` の行の終わりにある U+2028 や U+2029 も同じです。
+  ASCII 外の文字がある形（`subgraphé`、`endé`、`end日本`）と、
+  U+2028 か U+2029 がある形、
+  `end` の行の終わりにある U+2028 や U+2029 （`end` U+2028 `B`）です。
   11.7.0 から 11.16.1 は 1 つの名前として読み、描画が違います。
-  10.9.8 はテキストを拒否し、11.17.2、12.0.0、
-  12.3.0 は両方の形を同じに描きます。
+  10.9.8 は ASCII 外の文字がある形を拒否し、
+  U+2028 と U+2029 の形は両方の形を同じに描きます。
+  11.17.2、12.0.0、12.3.0 も両方の形を同じに描きます。
   `class`、`classDef`、`style`、`direction` は、
   そうした文字があってもなくても同じに描きます。
-  U+2028 か U+2029 で始まり、複数の文がある行は、
-  文を別の行に置くと 11.7.0 から 11.16.1 が拒否します。
   キーワードとその後ろの間にディレクティブがあっても、変わりません。
   [fixture: er/statements-one-per-line/end-then-name-outside-ascii-kept]
   [fixture: er/statements-one-per-line/subgraph-then-name-outside-ascii-kept]
@@ -4473,31 +4224,64 @@ mermaid.js は、一部の ER の行を、置かれた場所や周りの空白�
   [corpus fixture: er/lex-keyword-end-then-e-acute]
   [corpus fixture: er/lex-keyword-subgraph-then-e-acute]
   [corpus fixture: er/db-subgraph-direction-after-nested-end-line-separator]
-- 1 行にある複数の属性と `~` です。
-  10.9.8 は、ジェネリクスの型の `~` を行頭から読みます。
+- U+2028 か U+2029 で始まり、`class`、または `direction` と方向（`TB`、`BT`、
+  `RL`、`LR`。大文字小文字は問いません）が続き、同じ行に後ろの文がある文です。
+  固定した字句解析器は、その文字を最初の名前の一部として読みます。
+  11.7.0 から 11.16.1 は空白として読み、キーワードの前に置くので、
+  `class A a` と `direction LR B` を、行にわたって続く文として読みます。
+  文を別の行に置くと、`class` だけの行は拒否され、
+  `direction` だけの行は違って描かれます。
+  ほかの語（`classes`、`directionX`、名前）で始まる文は、
+  別の行に置いても同じに描かれ、
+  名前の中にある U+2028（`B` U+2028 `class A a`）も同じです。
+  [test: a line of two ER statements that starts with U+2028]
+  [test: a line that starts with U+2029 and class, and two more statements]
+  [test: a line that starts with U+2028 and direction, and two more statements]
+  [test: a statement with U+2028 and class after a space, and two more statements]
+  [test: a line that starts with U+2028 and a name, and one more statement]
+  [test: a line that starts with U+2028 and a word that starts like class]
+  [test: a line that starts with U+2028 and a word that starts like direction]
+- 1 行にある複数の属性のうち、
+  別の属性の後にある属性が `~` を 2 つ持つ形（`int a List~int~ b`）です。
+  10.9.8 は、ジェネリクスの型を、
+  属性から行の残りを越えて 2 つ目の `~` まで続く規則で読むので、
+  例の最初の属性の型が `int a List~int~` になります。
+  自分の型が `~` を 2 つ持つ属性（`List~int~ a PK int b`）や、
+  `~` が 1 つだけの行（`string a "x~y" int b`）は、
+  別の行に置いても同じに描かれます。
   [fixture: er/attribute-spacing/attributes-with-tilde-on-one-line-kept]
+  [fixture: er/attribute-spacing/attributes-with-generic-type-later-on-one-line-kept]
+  [fixture: er/attribute-spacing/attributes-with-generic-type-first-on-one-line-split]
+  [fixture: er/attribute-spacing/attributes-with-tilde-in-quotes-on-one-line-split]
   [corpus fixture: er/lex-tilde-after-quoted]
 
 ## 古い版がコメントとして読む state の行
 
-最上位にあり、同じ行に空白と別のテキストが続く `%` の状態は、
-行に書かれたまま残します。
+最上位にあり、`%` で始まる語（`%`、`%a`）で始まり、
+同じ行に後ろの文がある state の文は、行に書かれたまま残します。
 固定した字句解析器は `% not a comment` を状態 `%`、`not`、`a`、
-`comment` として読み、10.9.8、11.7.0、11.8.1、11.13.0、
-11.14.0 は行の残りをコメントとして読むので、語を別の行に移すと、
-それらの版では状態になってしまいます。
+`comment` として、`%a b` を状態 `%a` と `b` として読みます。
+10.9.8、11.7.0、11.8.1、11.13.0、11.14.0 の字句解析器には、
+トークンが始まる所で `%` と行の残りをコメントとして読む規則があるので、
+語を別の行に移すと、それらの版では状態になってしまいます。
 11.15.0 以降は両方の形を同じに読みます。
-複合状態の波括弧の中の `%` と、テキストに接する `%`（`%a`）は、
-どの版も同じに読みます。
-同じ行に後ろの文がある `click` 文も、書かれたまま残します。
-10.9.8 は `click A href "u" accDescr {}`
-の空の説明ブロックをアドレスの一部として読みます。
+語の中の `%`（`a%b c`）、複合状態の波括弧の中、後ろに何もない `%` （`%a`、
+`%a --> b`、`%a : x y`）は、どの版も同じに読みます。
+遷移の先の `%` の語（`a --> %b c`）は、その 5 版が両方の形を拒否します。
+`:` を含む `click` 文も、同じ行に後ろの文があれば残します。
+10.9.8 には `click` 文がなく、`:` を、
+次の `:` か `;` か行の終わりまで続く説明の始まりとして読むので、
+`click A href "a:b"` の後ろの文は文になりません。
+`:` のない click 文（`click A href "u" accDescr {}`）は、
+別の行に置いてもどの版も同じに描きます。
 行にあるディレクティブは、どれも結果を変えません。
 mermaid.js は、テキストを読む前にそれらを取り除くからです。
 [fixture: state/statements-one-per-line/percent-then-text-kept]
+[fixture: state/statements-one-per-line/percent-word-then-text-kept]
 [fixture: state/statements-one-per-line/percent-and-click-directive-then-text-kept]
 [fixture: state/statements-one-per-line/percent-in-braces-split]
 [fixture: state/statements-one-per-line/split]
+[fixture: state/statements-one-per-line/click-without-colon-split]
 [corpus fixture: state/spec-state-style-9ceea0dd]
 
 ## 空白で決まる Gantt 図の行

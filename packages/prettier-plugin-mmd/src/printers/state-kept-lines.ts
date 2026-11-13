@@ -10,10 +10,8 @@ import { layoutCompactEmptyDescriptionBlock, walk } from "./layout.ts"
 import type { Source } from "./source.ts"
 import {
   findStructuralToken,
-  isAtLineEnd,
+  findTokenStartingAt,
   isWhitespace,
-  skipDirectives,
-  skipSpacesAndTabs,
 } from "./source.ts"
 
 /** The lines that hold a `;`, of each source, found once per source. */
@@ -143,15 +141,14 @@ function findLinesStartingWithSeparator(source: Source): ReadonlySet<number> {
  * as a comment or as a part of it, which the formatter prints as written
  * (docs/state.md, Statements one per line):
  *
- * - A `%` state at the top level, with whitespace and more text after it on
- *   its line: `% not a comment` is the states `%`, `not`, `a`, and `comment`
- *   to the pinned lexer, and a comment to the oldest versions that count, so
- *   the states cannot be moved to lines of their own. A `%` inside braces is
- *   read the same by every version that counts.
- * - A `click` statement with another statement after it on its line:
- *   `click A href "u" accDescr {}` is a click and an empty description block
- *   to the pinned lexer, and a click whose address holds the rest of the line
- *   to the oldest version that counts.
+ * - A statement of the top level that starts with a `%` word, with another
+ *   statement after it on its line (see `startsWithPercentWord`): the oldest
+ *   versions that count read the `%` where a token starts as the start of a
+ *   comment, and the comment runs to the end of the line.
+ * - A `click` statement that holds a `:`, with another statement after it on
+ *   its line: the oldest version that counts has no `click` statement, and
+ *   reads the `:` as the start of a description that runs on over the
+ *   statements after it (see `holdsColon`).
  */
 function findLinesReadAsCommentsByOlderVersions(
   source: Source,
@@ -159,44 +156,20 @@ function findLinesReadAsCommentsByOlderVersions(
   topLevel = true,
 ): number[] {
   const lines: number[] = []
-
-  /**
-   * Whether spaces or tabs and more text follow the offset on its line.
-   * mermaid.js removes the directives before it reads the text, so they are
-   * neither the text nor a separation.
-   */
-  function textFollows(offset: number): boolean {
-    let position = offset
-    let separated = false
-    for (;;) {
-      const afterDirectives = skipDirectives(source, position)
-      const afterBlanks = skipSpacesAndTabs(
-        source,
-        afterDirectives,
-        source.text.length,
-      )
-      if (afterBlanks > afterDirectives) separated = true
-      if (afterBlanks === position) break
-      position = afterBlanks
-    }
-    return separated && !isAtLineEnd(source, position)
-  }
-
-  for (const statement of statements) {
-    if (
-      topLevel &&
-      statement.type === "StateDefinitionStatement" &&
-      statement.description === null &&
-      source.text.slice(...statement.reference.range) === "%" &&
-      textFollows(statement.range[1])
-    ) {
-      lines.push(lineStartOf(source, statement.range[0]))
+  for (const [index, statement] of statements.entries()) {
+    const line = lineStartOf(source, statement.range[0])
+    const followed = statements
+      .slice(index + 1)
+      .some((next) => lineStartOf(source, next.range[0]) === line)
+    if (topLevel && followed && startsWithPercentWord(source, statement)) {
+      lines.push(line)
     }
     if (
+      followed &&
       statement.type === "StateClickStatement" &&
-      textFollows(statement.range[1])
+      holdsColon(source, statement.range)
     ) {
-      lines.push(lineStartOf(source, statement.range[0]))
+      lines.push(line)
     }
     if (
       (statement.type === "StateCompositeStatement" ||
@@ -210,6 +183,34 @@ function findLinesReadAsCommentsByOlderVersions(
     }
   }
   return lines
+}
+
+/**
+ * Whether a state or a transition starts with a word that starts with `%` but
+ * is no `%%` comment: `%`, `%a`, `% --> b`. The words after the `state`
+ * keyword and the words in braces are read in other contexts of the lexer of
+ * the oldest versions that count, which do not read the `%` as a comment.
+ */
+function startsWithPercentWord(
+  source: Source,
+  statement: StateStatement,
+): boolean {
+  if (
+    statement.type !== "StateDefinitionStatement" &&
+    statement.type !== "StateTransitionStatement"
+  )
+    return false
+  const first = findTokenStartingAt(source, statement.range[0])
+  return (
+    first?.type === "Identifier" &&
+    first.value.startsWith("%") &&
+    !first.value.startsWith("%%")
+  )
+}
+
+/** Whether the source text of a range holds a `:`. */
+function holdsColon(source: Source, range: Range): boolean {
+  return source.text.slice(range[0], range[1]).includes(":")
 }
 
 /** The body of the state diagram of a source. */

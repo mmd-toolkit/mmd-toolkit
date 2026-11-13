@@ -2354,29 +2354,50 @@ the examples are written as strings, in which `\n` is a line break:
 
 ### Direction
 
-The `TB` in the header of a flowchart that has no subgraph is printed `TD`:
-`flowchart TB` becomes `flowchart TD`, and `graph TB` becomes `graph TD`. The
-examples of the documentation write `TD` 70 times and `TB` 7 times, and every
-version that counts draws a flowchart without a subgraph the same with the two,
-with the layout that each version uses by default and with the other one where
-it has two. ELK as an external layout package was drawn for the pinned version
-only (see
-[Layouts that the versions were drawn with](./compatibility.md#layouts-that-the-versions-were-drawn-with)).
-
-A `subgraph` in a label, an id, or a comment is no subgraph. [fixture:
+The `TB` in the header of a flowchart is printed `TD`, as the examples of the
+documentation write `TD` 70 times and `TB` 7 times: `flowchart TB` becomes
+`flowchart TD`, `graph TB` becomes `graph TD`, and `flowchart-elk TB` becomes
+`flowchart-elk TD`. It stays `TB` where some version that counts draws the
+figure differently with `TB` and with `TD`. The dagre layout of those versions
+takes a subgraph out of the figure and lays it out alone, in `LR` where the
+direction of the figure is `TB` and in `TB` where it is not, and it does so for
+a subgraph that has no `direction` statement of its own, has a member, and has
+no link between a vertex inside it and a vertex outside it. So the header stays
+as written where the flowchart has such a subgraph, and is printed `TD`
+otherwise: with no subgraph, with only subgraphs that a link joins to the
+outside, that have a `direction` statement, or that are empty. The members of a
+subgraph are those that the specification defines (a vertex that an earlier
+subgraph has belongs to that one; a nested subgraph is a member of the one
+around it, so its vertices are inside both), a link to the id of a subgraph, or
+from it, does not join the subgraph to the outside, and a `subgraph` in a label,
+an id, or a comment is no subgraph. Every other version that counts draws the
+figure the same with the two, with the layout that each version uses by default
+and with the other one where it has two (see
+[Layouts that the versions were drawn with](./compatibility.md#layouts-that-the-versions-were-drawn-with)
+and
+[Forms kept for versions of mermaid.js that count](./compatibility.md#forms-kept-for-versions-of-mermaidjs-that-count)).
+The header keyword is kept as written too (see
+[The names of a header](./compatibility.md#the-names-of-a-header)). [fixture:
 direction/header-tb-without-subgraph] [fixture:
 direction/header-graph-tb-without-subgraph] [fixture:
 direction/header-tb-subgraph-word-is-no-subgraph] [fixture:
-direction/header-tb-with-direction-statement] With a subgraph the header is kept
-as written, `TD` as well as `TB`: some versions that count draw a flowchart with
-a subgraph and `TB` in its header differently from the same text with `TD`, and
-the header keyword is kept as written too (see
-[Forms kept for versions of mermaid.js that count](./compatibility.md#forms-kept-for-versions-of-mermaidjs-that-count)
-and [The names of a header](./compatibility.md#the-names-of-a-header)). The
-header `flowchart-elk` is kept as written as well. [fixture:
-direction/header-td-kept] [fixture: direction/header-tb-with-subgraph-kept]
-[fixture: direction/header-elk-tb-kept] [fixture: direction/header-keyword-kept]
-[fixture: direction/statement-td-kept-with-other-header] [fixture:
+direction/header-tb-with-direction-statement] [fixture:
+direction/header-td-kept] [fixture: direction/header-tb-unlinked-subgraph-kept]
+[fixture: direction/header-tb-subgraph-linked-out] [fixture:
+direction/header-tb-link-to-subgraph-id-kept] [fixture:
+direction/header-tb-link-from-inside-to-subgraph-id-kept] [fixture:
+direction/header-tb-nested-inner-unlinked-kept] [fixture:
+direction/header-tb-nested-inner-linked] [fixture:
+direction/header-tb-subgraph-own-direction] [fixture:
+direction/header-tb-empty-subgraph] [fixture:
+direction/header-tb-two-subgraphs-linked-to-each-other] [fixture:
+direction/header-tb-two-subgraphs-one-unlinked-kept] [fixture:
+direction/header-tb-subgraph-member-of-earlier-kept] [fixture:
+direction/header-elk-tb-without-subgraph] [fixture:
+direction/header-elk-tb-unlinked-subgraph-kept] [fixture:
+direction/header-elk-tb-linked-subgraph] [fixture:
+direction/header-keyword-kept] [fixture:
+direction/statement-td-kept-with-other-header] [fixture:
 direction/statement-values-kept] A `direction` statement is kept as written:
 mermaid.js keeps the `TD` of a `direction` statement in a subgraph as written,
 so changing it there would change the diagram. The header of a swimlane diagram

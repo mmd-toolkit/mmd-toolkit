@@ -398,8 +398,13 @@ mermaid.js は、テキストを読む前にディレクティブを取り除く
 隙間を書かれたままにして残します。
 `endé` は、固定した版ではキーワード `end` と実体 `é` ですが、
 対象にする版の一部では 1 つの名前だからです。
-`end` の行の終わりにある U+2028 や U+2029 は残し、U+2028 や U+2029 で始まり、
-複数の文がある行は、書かれたまま印字します。
+`end` の行の終わりにある U+2028 や U+2029 は残します。
+U+2028 や U+2029 で始まり、`class`、または `direction` と方向が続き、
+同じ行に後ろの文がある文も残します。
+固定した版は、その文字を最初の名前の一部として読みますが、
+対象にする版の一部は空白として読み、キーワードの前に置くので、
+`class A a` や `direction LR B` が行にわたって続くからです。
+ほかの語（`classes`、名前）で始まる文は、後ろの文と分けます。
 そうした `end` の後の引用符つきの名前は、引用符を残します。
 キーワードとその後ろの間にディレクティブがあっても、変わりません。
 ディレクティブが U+2028 や U+2029 の前にあっても、ASCII 外の文字に接していても、
@@ -415,9 +420,22 @@ mermaid.js は、テキストを読む前にディレクティブを取り除く
 [test: a directive between the end of an ER subgraph and a U+2029 and a name in quotes]
 [test: a directive between the keyword of an ER subgraph and a U+2028]
 [test: a directive between an ER number name and a U+2028]
-属性が複数あり `~` を含む行は、書かれたまま印字します。
-対象にする版のうち最も古い版が、ジェネリクスの型の `~` を行頭から読むからです。
+[test: a line of two ER statements that starts with U+2028]
+[test: a line that starts with U+2029 and class, and two more statements]
+[test: a line that starts with U+2028 and direction, and two more statements]
+[test: a statement with U+2028 and class after a space, and two more statements]
+[test: a line that starts with U+2028 and a name, and one more statement]
+[test: a line that starts with U+2028 and a word that starts like class]
+[test: a line that starts with U+2028 and a word that starts like direction]
+複数の属性がある行は、その行の後ろの属性が、
+`int a List~int~ b` のように `~` を 2 つ持つときに、書かれたまま印字します。
+対象にする版のうち最も古い版が、ジェネリクスの型を、
+属性の先頭から行の残りを越えて 2 つ目の `~` まで続く規則で読むからです。
+`~` が文字列の中にしかない行と、自分の型が `~` を 2 つ持つ属性は、分けます。
 [fixture: attribute-spacing/attributes-with-tilde-on-one-line-kept]
+[fixture: attribute-spacing/attributes-with-generic-type-later-on-one-line-kept]
+[fixture: attribute-spacing/attributes-with-generic-type-first-on-one-line-split]
+[fixture: attribute-spacing/attributes-with-tilde-in-quotes-on-one-line-split]
 [corpus fixture: er/lex-tilde-after-quoted]
 また、保持する `;` がある行は、その文を一緒に残します。
 mermaid.js の行の規則は行のテキストを読み、テキストを別の行に動かすと、

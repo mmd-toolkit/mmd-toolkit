@@ -385,11 +385,16 @@ does the statement after an `end` that such a character or separator follows,
 which stays on the line of the `end` with the gap as written: `endé` is the
 keyword `end` and the entity `é` to the pinned version, and one name to some
 versions that count. A U+2028 or U+2029 that ends the line of an `end` stays,
-and a line that starts with one and holds several statements is printed as
-written. A name in quotes that follows such an `end` keeps its quotes.
-Directives between the keyword and what follows it change none of this, whether
-they stand before the U+2028 or U+2029 or touch the character outside ASCII.
-[fixture: statements-one-per-line/end-then-name-outside-ascii-kept] [fixture:
+and so does a statement that starts with one and the word `class`, or
+`direction` and a direction, when another statement follows it on its line: the
+character belongs to the first name to the pinned version, and some versions
+that count read it as whitespace before the keyword, so `class A a` and
+`direction LR B` go on over the line there. A statement that starts so with
+another word (`classes`, a name) is split from the statement after it. A name in
+quotes that follows such an `end` keeps its quotes. Directives between the
+keyword and what follows it change none of this, whether they stand before the
+U+2028 or U+2029 or touch the character outside ASCII. [fixture:
+statements-one-per-line/end-then-name-outside-ascii-kept] [fixture:
 statements-one-per-line/subgraph-then-name-outside-ascii-kept] [fixture:
 statements-one-per-line/end-directive-then-name-outside-ascii-kept] [fixture:
 statements-one-per-line/subgraph-directive-then-name-outside-ascii-kept] [corpus
@@ -400,14 +405,26 @@ the end of an ER subgraph and the next entity] [test: a directive between the
 end of an ER subgraph and a U+2028] [test: a directive between the end of an ER
 subgraph and a U+2029 and a name in quotes] [test: a directive between the
 keyword of an ER subgraph and a U+2028] [test: a directive between an ER number
-name and a U+2028] A line of several attributes with a `~` in it is printed as
-written, since the oldest version that counts reads the `~` of a generic type
-from the start of the line. [fixture:
-attribute-spacing/attributes-with-tilde-on-one-line-kept] [corpus fixture:
-er/lex-tilde-after-quoted] And a line that holds a kept `;` keeps its statements
-together: the line rule of mermaid.js reads the text of a line, and moving text
-to another line changes which line matches the rule and which `;` it ignores
-(see [Styles and classes](#styles-and-classes)). [fixture:
+name and a U+2028] [test: a line of two ER statements that starts with U+2028]
+[test: a line that starts with U+2029 and class, and two more statements] [test:
+a line that starts with U+2028 and direction, and two more statements] [test: a
+statement with U+2028 and class after a space, and two more statements] [test: a
+line that starts with U+2028 and a name, and one more statement] [test: a line
+that starts with U+2028 and a word that starts like class] [test: a line that
+starts with U+2028 and a word that starts like direction] A line of several
+attributes is printed as written when an attribute on it that comes after
+another holds a pair of `~`, as in `int a List~int~ b`: the oldest version that
+counts reads a generic type with a rule that runs from the start of an attribute
+over the rest of the line to the second `~`. A line whose only `~` is in a
+string, and an attribute whose own type holds the pair, are split. [fixture:
+attribute-spacing/attributes-with-tilde-on-one-line-kept] [fixture:
+attribute-spacing/attributes-with-generic-type-later-on-one-line-kept] [fixture:
+attribute-spacing/attributes-with-generic-type-first-on-one-line-split]
+[fixture: attribute-spacing/attributes-with-tilde-in-quotes-on-one-line-split]
+[corpus fixture: er/lex-tilde-after-quoted] And a line that holds a kept `;`
+keeps its statements together: the line rule of mermaid.js reads the text of a
+line, and moving text to another line changes which line matches the rule and
+which `;` it ignores (see [Styles and classes](#styles-and-classes)). [fixture:
 statements-one-per-line/semicolon-line-kept] [fixture:
 statements-one-per-line/ignored-semicolon-line-kept] The `}` of an attribute
 block or the `end` of a subgraph on such a line, with a statement after it on

@@ -323,23 +323,28 @@ state 図には文を区切るものがなく、
 詳しくは
 [対象にする版の mermaid.js のために残す形](./compatibility.ja.md#対象にする版の-mermaidjs-のために残す形)
 を参照してください。
-1 つは、最上位にあり、後ろに空白と別のテキストが同じ行にある `%` の状態です。
-もう 1 つは、同じ行に後ろの文がある `click` 文です。
+1 つは、最上位にあり、`%` の語で始まり、同じ行に後ろの文がある文です。
+もう 1 つは、`:` を含み、同じ行に後ろの文がある `click` 文です。
 `% not a comment` は、固定した版では状態 `%`、`not`、`a`、`comment` で、
-その古い版ではコメントです。
-複合状態の波括弧の中の `%` は、対象にする版のどれも同じに読むので、
-その状態は自分の行に移します。
-`click A href "u" accDescr {}` は、固定した版では click と空の説明ブロックで、
-最も古い対象の版では、行の残りを含む click です。
+`%a b` は状態 `%a` と `b` です。
+その古い版は、トークンが始まる所の `%` と行の残りを、コメントとして読みます。
+語の中の `%`（`a%b c`）、複合状態の波括弧の中の `%`、
+後ろに何もない `%`（`%a --> b`）は、対象にする版のどれも同じに読むので、
+その文は自分の行に移します。
+`click A href "a:b" accDescr {}` は、
+固定した版では click と空の説明ブロックです。
+最も古い対象の版には click 文がなく、`:` を、
+行の残りを越えて続く説明の始まりとして読みます。
+`:` のない `click A href "u" accDescr {}` は、2 つに分けます。
 行にあるディレクティブは、結果を変えません。
 mermaid.js は、テキストを読む前にそれらを取り除くので、
 `%%%{init: {}}%% a` は `% a` と読まれます。
 [fixture: statements-one-per-line/percent-then-text-kept]
+[fixture: statements-one-per-line/percent-word-then-text-kept]
 [fixture: statements-one-per-line/percent-and-click-directive-then-text-kept]
 [fixture: statements-one-per-line/percent-in-braces-split]
 [fixture: statements-one-per-line/split]
-[corpus fixture: state/gram-click-after-empty-description-block]
-[corpus fixture: state/gram-click-empty-description-block-after]
+[fixture: statements-one-per-line/click-without-colon-split]
 [corpus fixture: state/spec-state-style-9ceea0dd]
 `state` の後の名前は、`state` の行に残します。
 `state a b` は 2 つの文で、`b` を行に単独で置くと状態 b を足しますが、

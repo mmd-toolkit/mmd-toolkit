@@ -36,10 +36,10 @@ direction `TD` is printed `TB`, the direction that the examples in the
 documentation of mermaid.js use (10 times, and `TD` never; see
 [The direction of a header](./compatibility.md#the-direction-of-a-header)): the
 diagram type is later than the version of mermaid.js that made `TD` behave as
-`TB`, so every version that reads it draws the two the same (see
-[Versions of mermaid.js](./compatibility.md#versions-of-mermaidjs)). Agentflow
-accepts only exact lower-case `agentflow-beta`. An absent direction stays
-absent, symbol directions stay written, a direction that stands after a
+`TB`, so every version that counts and reads it draws the two the same (see
+[Versions of mermaid.js that count](./compatibility.md#versions-of-mermaidjs-that-count)).
+Agentflow accepts only exact lower-case `agentflow-beta`. An absent direction
+stays absent, symbol directions stay written, a direction that stands after a
 directive which follows the header (`agentflow-beta%%{init: {}}%% TD`) stays as
 written, and next-line LR remains a vertex. Ordinary header followers move into
 the body; directive attachment follows Directives. [fixture:

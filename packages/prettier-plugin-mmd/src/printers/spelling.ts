@@ -4,6 +4,7 @@ import type { Atom } from "./atoms.ts"
 import { findArrowLengthRespellings } from "./arrow-length.ts"
 import { findNodes } from "./collections.ts"
 import { findColorRespellings } from "./color-form.ts"
+import { hasSubgraphWithoutOuterLink } from "./flowchart-clusters.ts"
 import { ishikawaLines } from "./ishikawa-layout.ts"
 import { keepsRootOnHeaderLine } from "./ishikawa-kept-lines.ts"
 import { keywordSpellings } from "./keyword-spellings.ts"
@@ -50,20 +51,21 @@ const shortHeaderNames: Readonly<Record<string, string>> = {
 /**
  * The spelling of the direction of a header: the one that
  * `directionSpellings` gives, and `TD` for the `TB` of a flowchart without a
- * subgraph, which every version that counts draws the same
- * (docs/compatibility.md, Forms kept for versions of mermaid.js that count).
+ * subgraph that some version that counts draws in another direction, which
+ * every version that counts draws the same (docs/flowchart.md, Direction).
  */
 function headerDirectionSpelling(
   source: Source,
   type: string,
   text: string,
 ): string | undefined {
-  if (type !== "flowchart-v2") return directionSpellings[type]?.[text]
+  if (type !== "flowchart-v2" && type !== "flowchart-elk") {
+    return directionSpellings[type]?.[text]
+  }
+  const { body } = source.root
   return text === "TB" &&
-    findNodes(
-      source.root.body,
-      (node) => node.type === "FlowchartSubgraphStatement",
-    ).length === 0
+    body.type === "FlowchartDiagram" &&
+    !hasSubgraphWithoutOuterLink(source, body)
     ? "TD"
     : undefined
 }
@@ -332,7 +334,9 @@ function findTokenRespellings(
   const headerIndex = tokens.findIndex((token) => token.type === "Keyword")
   // The direction of a header is the keyword that follows it.
   const directionIndex =
-    (directionSpellings[type] !== undefined || type === "flowchart-v2") &&
+    (directionSpellings[type] !== undefined ||
+      type === "flowchart-v2" ||
+      type === "flowchart-elk") &&
     headerIndex !== -1 &&
     tokens[headerIndex + 1]?.type === "Keyword" &&
     source.text

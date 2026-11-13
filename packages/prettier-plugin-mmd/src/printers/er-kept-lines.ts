@@ -118,9 +118,15 @@ function findSubgraphHeaderLines(
  * - An entity statement named by a number of two digits or more, with a
  *   character right after it that continues a name: `12a` is the entities
  *   `12` and `a` to the pinned lexer, and one name to a version that counts.
- * - A line that starts with a U+2028 or U+2029 and holds several statements: the
- *   character belongs to the first name, and a version that counts rejects
- *   the statements on lines of their own.
+ * - A statement that starts with a U+2028 or U+2029 and the word `class`, or
+ *   `direction` and a direction, with another statement after it on its line:
+ *   the character belongs to the first name to the pinned lexer, and a
+ *   version that counts reads it as whitespace, so the word is the keyword
+ *   of a statement that goes on over the line (`class A a`, `direction LR`),
+ *   and the statements on lines of their own are a keyword alone, which it
+ *   rejects or reads as a direction.
+ * - The lines of an attribute block with a `~` that a version that counts
+ *   reads from the start of an attribute (see `findAttributeLinesWithTildes`).
  * - The `subgraph` keyword with a character outside ASCII, or a U+2028 or
  *   U+2029, between it and its name: the keyword ends there to the pinned
  *   lexer, and a version that counts reads one name (`subgraphé` is the
@@ -136,7 +142,7 @@ function findLinesReadByTheirPlace(
     const following = statements[index + 1]
     if (
       following !== undefined &&
-      startsWithSeparator(source, statement.range[0]) &&
+      startsWithSeparatedKeyword(source, statement.range[0]) &&
       lineStartOf(source, following.range[0]) ===
         lineStartOf(source, statement.range[0])
     ) {
@@ -168,11 +174,14 @@ function findLinesReadByTheirPlace(
 }
 
 /**
- * The lines of an attribute block that hold several attributes and a `~`.
- * The oldest version that counts reads the `~` of a generic type from the
- * start of the line, so ` string a "x~y" List~int~ b` is one attribute there,
- * and two when the attributes stand on lines of their own (docs/er.md,
- * Attribute blocks).
+ * The lines of an attribute block that hold several attributes, one of which
+ * starts before a pair of `~`. The oldest version that counts reads the `~` of
+ * a generic type with the rule `(.*?)[~](.*?)*[~]`, which starts at the
+ * attribute and runs on over the rest of the line to the second `~`, so
+ * ` int a List~int~ b` is the attribute `int a List~int~` and `b` there, and
+ * the attributes `int a` and `List~int~ b` when they stand on lines of their
+ * own. The rule reads an attribute whose own type holds the pair as it is
+ * (`List~int~ a`) (docs/er.md, Attribute blocks).
  */
 function findAttributeLinesWithTildes(
   source: Source,
@@ -190,15 +199,17 @@ function findAttributeLinesWithTildes(
     )
     for (const attribute of attributes) {
       const line = lineStartOf(source, attribute.range[0])
+      const lineEnd = lineEndOf(source, attribute.range[0])
+      const first = source.text.indexOf("~", attribute.range[0])
+      const second = first === -1 ? -1 : source.text.indexOf("~", first + 1)
       const onLine = attributes.filter(
         (other) => lineStartOf(source, other.range[0]) === line,
       )
       if (
-        onLine[0] === attribute &&
         onLine.length > 1 &&
-        source.text
-          .slice(attribute.range[0], onLine.at(-1)?.range[1])
-          .includes("~")
+        second !== -1 &&
+        second < lineEnd &&
+        second >= attribute.dataType.range[1]
       ) {
         lines.push(line)
       }
@@ -208,16 +219,53 @@ function findAttributeLinesWithTildes(
 }
 
 /**
- * Whether the line of the offset starts, after spaces and tabs, with a U+2028
- * or U+2029, which belongs to the name of the first statement to the pinned
- * lexer and not to the whitespace before it.
+ * Whether the text at `offset` starts with a U+2028 or U+2029 and then the
+ * word `class`, or the word `direction`, whitespace, and a direction (`TB`,
+ * `BT`, `RL`, `LR`, in any case). A version that counts reads the character
+ * as whitespace before the keyword.
  */
-function startsWithSeparator(source: Source, offset: number): boolean {
-  const line = lineStartOf(source, offset)
-  let position = line
-  while (isSpaceOrTab(source.text.charAt(position))) position++
-  const character = source.text.charAt(position)
+function startsWithSeparatedKeyword(source: Source, offset: number): boolean {
+  let position = offset
+  while (isLineSeparator(source.text.charAt(position))) position++
+  if (position === offset) return false
+  const word = readWord(source.text, position)
+  if (toAsciiLowerCase(word) === "class") return true
+  if (toAsciiLowerCase(word) !== "direction") return false
+  position += word.length
+  const blanks = position
+  while (
+    isSpaceOrTab(source.text.charAt(position)) ||
+    isLineSeparator(source.text.charAt(position))
+  )
+    position++
+  return (
+    position > blanks &&
+    ["tb", "bt", "rl", "lr"].includes(
+      toAsciiLowerCase(source.text.slice(position, position + 2)),
+    )
+  )
+}
+
+/** Whether a character is a U+2028 or a U+2029. */
+function isLineSeparator(character: string): boolean {
   return character === "\u2028" || character === "\u2029"
+}
+
+/** The letters, digits, and `_` that start at `offset`. */
+function readWord(text: string, offset: number): string {
+  let end = offset
+  while (end < text.length && isWordCharacter(text.charAt(end))) end++
+  return text.slice(offset, end)
+}
+
+/** Whether a character is an ASCII letter, a digit, or `_`. */
+function isWordCharacter(character: string): boolean {
+  return (
+    (character >= "a" && character <= "z") ||
+    (character >= "A" && character <= "Z") ||
+    (character >= "0" && character <= "9") ||
+    character === "_"
+  )
 }
 
 /** Whether the text is a number of two digits or more. */
