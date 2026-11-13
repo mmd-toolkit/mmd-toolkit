@@ -12,6 +12,7 @@ import {
   isAtLineEnd,
   isSpaceOrTab,
   isWhitespace,
+  skipRemoved,
 } from "./source.ts"
 
 /**
@@ -363,16 +364,88 @@ export function isFirstOnItsLine(source: Source, offset: number): boolean {
 /**
  * Whether nothing but whitespace follows the `;` at `offset` on its line: no
  * token that holds more than whitespace, comment, or directive starts after it
- * before the line ends (a style holds the whitespace after an ignored `;`). A
- * `;` that the line rule ignores and that ends its line can be dropped only
- * where it is optional (see `isDroppedSemicolon`).
+ * before the line ends (a style holds the whitespace after an ignored `;`), and
+ * the statement that holds it does not go on with text of its own on a later
+ * line (see `statementContinuesAfter`). A `;` that the line rule ignores and
+ * that ends its line can be dropped only where it is optional (see
+ * `isDroppedSemicolon`).
  */
 export function isLastOnItsLine(source: Source, offset: number): boolean {
   const lineEnd = lineEndOf(source, offset)
   return (
     findTokensBetween(source, offset + 1, lineEnd).every(
       (token) => source.text.slice(...token.range).trim() === "",
-    ) && findTriviaBetween(source, offset + 1, lineEnd).length === 0
+    ) &&
+    findTriviaBetween(source, offset + 1, lineEnd).length === 0 &&
+    !statementContinuesAfter(source, offset)
+  )
+}
+
+/** The nodes of each source, found once. */
+const nodesBySource = new WeakMap<Source, readonly Node[]>()
+
+/**
+ * Whether the statement that holds the `;` at `offset` goes on after the end
+ * of its line, with a value of its own: a value that stands on a later line,
+ * as the text of `accTitle:;` and of `title;` does. The `;` then is not at the
+ * end of its statement: the printer joins the later line, or keeps it, so the
+ * `;` stands between the text of the statement, on the line of the trigger
+ * that makes the line rule ignore it, and is no `;` to drop. What follows the
+ * line may also be a statement of its own (the body of a block) or the word
+ * that closes the statement (`end`), which are no values of the statement.
+ */
+function statementContinuesAfter(source: Source, offset: number): boolean {
+  let nodes = nodesBySource.get(source)
+  if (nodes === undefined) {
+    nodes = findNodes(source.root, () => true)
+    nodesBySource.set(source, nodes)
+  }
+  let holder: Node | undefined
+  for (const node of nodes) {
+    if (
+      node.type.endsWith("Statement") &&
+      node.range[0] <= offset &&
+      offset < node.range[1] &&
+      (holder === undefined ||
+        node.range[1] - node.range[0] < holder.range[1] - holder.range[0])
+    )
+      holder = node
+  }
+  if (holder === undefined) return false
+  const lineEnd = lineEndOf(source, offset)
+  if (holder.range[1] <= lineEnd) return false
+  let next = lineEnd
+  while (next < holder.range[1]) {
+    const read = skipRemoved(source, next)
+    if (read !== next) next = read
+    else if (isWhitespace(source.text[next])) next++
+    else break
+  }
+  if (next >= holder.range[1]) return false
+  const start = holder.range[0]
+  const end = holder.range[1]
+  // A statement of its own that holds the next text is no value of the holder.
+  if (
+    nodes.some(
+      (node) =>
+        node !== holder &&
+        node.type.endsWith("Statement") &&
+        start <= node.range[0] &&
+        node.range[1] <= end &&
+        node.range[0] <= next &&
+        next < node.range[1],
+    )
+  )
+    return false
+  // A value of the holder that starts on a later line and reaches the text:
+  // its range may begin with the whitespace before the text.
+  return nodes.some(
+    (node) =>
+      node !== holder &&
+      lineEnd <= node.range[0] &&
+      node.range[0] <= next &&
+      next < node.range[1] &&
+      node.range[1] <= end,
   )
 }
 
@@ -711,6 +784,19 @@ export function withJoinedLines(
     ...kept,
     verbatim: new Set([...kept.verbatim, ...joinedLines]),
   }
+}
+
+/**
+ * Whether mermaid.js reads the line that holds `offset` together with the
+ * next one: a directive that is not closed, or a comment region, removes a
+ * line feed of the line. Such a line is printed as written, so its parts
+ * cannot move to a line of their own.
+ */
+export function joinsNextLine(source: Source, offset: number): boolean {
+  const line = lineStartOf(source, offset)
+  return [...source.removedLineFeeds].some(
+    (lineFeed) => lineStartOf(source, lineFeed) === line,
+  )
 }
 
 /** Whether a character is whitespace in CSS, other than a line break: a space, a tab, or a form feed. */

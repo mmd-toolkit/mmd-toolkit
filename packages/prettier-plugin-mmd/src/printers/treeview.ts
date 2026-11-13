@@ -8,6 +8,7 @@ import {
   findLinesEndedBySemicolon,
   findLinesWithOwnSemicolons,
   lineStartOf,
+  withJoinedLines,
 } from "./kept-lines.ts"
 import { expectToken, findLayoutEnd, layoutKeywordHeader } from "./layout.ts"
 import { placeLeadingDirectives } from "./indentation-lines.ts"
@@ -40,8 +41,19 @@ export function printTreeview(
     "the treeview header",
   )
   const boxMode = treeviewBoxMode(source, keyword.range[1])
-  const ownSemicolons = findLinesWithOwnSemicolons(source)
-  const verbatim = findLinesEndedBySemicolon(source)
+  const keptLines = {
+    joined: findLinesWithOwnSemicolons(source),
+    verbatim: findLinesEndedBySemicolon(source),
+    ownIndentation: new Set<number>(),
+  }
+  // Without the box characters the indentation of a node is read from its
+  // line, so the lines that mermaid.js reads over several lines of the source,
+  // because a comment line or a directive that is not closed removes a line
+  // feed, are kept lines too: the nodes on them are read with the indentation
+  // of the first. The box mode plans these lines itself (see `planTreeviewBox`).
+  const { joined: ownSemicolons, verbatim } = boxMode
+    ? keptLines
+    : withJoinedLines(source, keptLines)
   const originalLines = treeviewLines(
     source,
     diagram,

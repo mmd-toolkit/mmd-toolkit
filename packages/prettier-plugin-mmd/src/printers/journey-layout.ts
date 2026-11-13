@@ -14,6 +14,7 @@ import {
   layoutDescriptionBlock,
   replaceInAtoms,
 } from "./layout.ts"
+import type { TextEdit } from "./layout.ts"
 import {
   findKeptBreaks,
   gapKeepsLineBreak,
@@ -246,7 +247,25 @@ function dropDescriptionBlanks(
   ) {
     return
   }
-  replaceInAtoms(source, atoms, [{ range: [contentEnd, to], replacement: "" }])
+  const edits: TextEdit[] = [{ range: [contentEnd, to], replacement: "" }]
+  // A `;` that the line rule ignores at the end of the description is read as
+  // not there, so the whitespace before it goes as well, as it does when the
+  // `;` stands outside the description (`A ;:` and `A ;` + tab + `:` are
+  // printed alike).
+  if (source.ignoredSemicolons.has(contentEnd - 1)) {
+    let semicolonStart = contentEnd - 1
+    while (
+      semicolonStart > from &&
+      isSpaceOrTab(source.text[semicolonStart - 1])
+    )
+      semicolonStart--
+    if (semicolonStart > from && semicolonStart < contentEnd - 1)
+      edits.unshift({
+        range: [semicolonStart, contentEnd - 1],
+        replacement: "",
+      })
+  }
+  replaceInAtoms(source, atoms, edits)
 }
 
 /** The gap rules of a statement, by the start of the atom after the gap. */

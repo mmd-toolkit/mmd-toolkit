@@ -251,12 +251,19 @@ function startsItsPrintedLine(
   kept: KeptLines,
 ): boolean {
   const lineStart = lineStartOf(source, offset)
-  if (
-    findTokensBetween(source, lineStart, offset).some((token) =>
-      isStructural(source, token),
-    )
+  const before = findTokensBetween(source, lineStart, offset).filter((token) =>
+    isStructural(source, token),
   )
-    return !kept.joined.has(lineStart)
+  if (before.length > 0) {
+    // A directive between the statement before it and the task moves to the
+    // line of the task, which then starts with it.
+    return (
+      !kept.joined.has(lineStart) &&
+      !findTriviaBetween(source, before.at(-1)!.range[1], offset).some(
+        (item) => item.type === "Directive",
+      )
+    )
+  }
   return findTriviaBetween(source, lineStart, offset).length === 0
 }
 

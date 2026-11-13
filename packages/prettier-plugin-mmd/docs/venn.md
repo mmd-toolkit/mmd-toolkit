@@ -863,8 +863,13 @@ directive and its neighbour decides what is read. This is the same as in class,
 flowchart, gantt, timeline and block diagrams. Kanban moves the directive along
 only because the whitespace after a directive becomes node indentation there; a
 statement on a Venn header line has no such role. A semicolon-kept line also
-keeps its header attachment. [corpus fixture: venn/db-indent-after-directive]
-[corpus fixture: venn/db-set-label-unclosed-directive-gap] [corpus fixture:
+keeps its header attachment. The whitespace after the argument of a directive
+that is not closed is taken with it, also on a line that follows a protected
+comment gap, so it stays: `%%{x y text A t` keeps the space between `y` and
+`text`. [fixture:
+venn/directives/directive-unclosed-argument-space-after-percent-brace-comment]
+[corpus fixture: venn/db-indent-after-directive] [corpus fixture:
+venn/db-set-label-unclosed-directive-gap] [corpus fixture:
 venn/lex-after-set-directive-unclosed] [corpus fixture:
 venn/lex-comment-after-directive-keeps-id] [corpus fixture:
 venn/lex-directive-style-value-color] [corpus fixture:

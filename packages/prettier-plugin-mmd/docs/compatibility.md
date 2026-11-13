@@ -3634,6 +3634,39 @@ or the end of the text. `class A%%{init: {}`, a space, U+2028, `class D`, and
 the U+2028, only `A`. [corpus fixture:
 class/unclosed-directive-separator-whitespace-5cfdfca6]
 
+## A `;` that the line rule ignores before the value of its statement
+
+The line rule of mermaid.js (the specification's
+[`style` and `classDef` lines](../../spec/docs/common.md#style-and-classdef-lines))
+applies to a line of the text as a whole, whatever statement holds the trigger
+and whatever statement holds the `;`: `accDescr {style:#x} accTitle:;` is a line
+whose `;` is ignored because of the `style:#x` of the description block. A `;`
+that ends its line is dropped, as one that separates statements is. But where
+the statement that holds it goes on after the line with a value of its own, as
+`accTitle:` and `T` on the next line do, the `;` is not at the end of its
+statement, and the printer does not drop it: the line stays together, with the
+trigger and the `;` on it, so that no statement per line, and no description
+block in the form of the colon, parts the `;` from its trigger, and the value is
+joined or kept as the statement is printed otherwise. A body of statements after
+the line of a block, and the word that closes a statement (`end`), are no such
+value. [fixture:
+flowchart/semicolons/ignored-semicolon-before-value-on-next-line-kept] [fixture:
+sequence/multi-line-statements/ignored-semicolon-before-value-on-next-line-kept]
+[fixture: agentflow/semicolons/ignored-semicolon-before-value-on-next-line-kept]
+[fixture:
+requirement/multi-line-statements/ignored-semicolon-before-name-on-next-line-kept]
+[fixture:
+xychart/multi-line-statements/ignored-semicolon-before-values-on-next-line-kept]
+[fixture:
+block/multi-line-statements/ignored-semicolon-before-value-on-next-line-kept] An
+ER diagram and a requirement diagram read `accTitle: direction LR` as a
+direction line when `accTitle` does not stand at the first column, so a text
+that is brought to the `:` there would change the figure, and the statement
+stays as written. [fixture:
+er/accessibility-statements/ignored-semicolon-before-direction-text-kept]
+[fixture:
+requirement/accessibility-statements/ignored-semicolon-before-direction-text-kept]
+
 ## Accessibility lines that the oldest version reads to the end
 
 The pinned grammar of a pie chart and of a gitGraph ends the value of an

@@ -7,6 +7,7 @@ import { findColorRespellings } from "./color-form.ts"
 import { hasSubgraphWithoutOuterLink } from "./flowchart-clusters.ts"
 import { ishikawaLines } from "./ishikawa-layout.ts"
 import { keepsRootOnHeaderLine } from "./ishikawa-kept-lines.ts"
+import { joinsNextLine } from "./kept-lines.ts"
 import { keywordSpellings } from "./keyword-spellings.ts"
 import { childrenOf, toAsciiLowerCase } from "./layout.ts"
 import { findLinkLabelRespellings } from "./link-label-form.ts"
@@ -434,7 +435,13 @@ function findTokenRespellings(
  */
 function isTouchedAfter(source: Source, offset: number): boolean {
   const position = skipRemovedBeforeLineRule(source, offset)
-  return source.text[position] === ";" || source.text[position] === "-"
+  return (
+    source.text[position] === ";" ||
+    source.text[position] === "-" ||
+    // A directive that is not closed takes the line break, so the next
+    // statement follows the colon directly, and the line cannot be split.
+    joinsNextLine(source, offset)
+  )
 }
 
 /**

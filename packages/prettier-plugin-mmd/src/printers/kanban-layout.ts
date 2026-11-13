@@ -22,6 +22,7 @@ import {
   printPaddedLiteral,
   printShapeWithoutPadding,
   trimBlanksEnd,
+  withoutIgnoredSemicolonsEnd,
 } from "./padded-text.ts"
 import type { Source } from "./source.ts"
 import {
@@ -243,7 +244,13 @@ function printKanbanText(source: Source, line: KanbanLine): string | undefined {
   if (shape === null) {
     return line.depth === 2 && head !== "" ? head : undefined
   }
-  return head + printShapeWithoutPadding(source, shape)
+  // A `;` that the line rule ignores between the text and the shape is removed
+  // by mermaid.js, with the whitespace around it.
+  const text = id === null ? "" : withoutIgnoredSemicolonsEnd(source, id.range)
+  return (
+    (line.depth === 2 ? trimBlanksEnd(text) : text) +
+    printShapeWithoutPadding(source, shape)
+  )
 }
 
 /**

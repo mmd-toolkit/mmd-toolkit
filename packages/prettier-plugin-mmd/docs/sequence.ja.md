@@ -977,7 +977,7 @@ mermaid.js はそのように読みます。 [fixture: title/separator]
 `participant A@{"style":"x:#y"};title;` と次の行の `T` は、
 `participant A@{ "style":"x:#y" }` と `title T` と印字します。
 ひとまとまりで残る行では、`;` は残ります。
-[fixture: title/ignored-semicolon-before-text-on-next-line-dropped]
+[fixture: title/ignored-semicolon-before-text-on-next-line-kept]
 [fixture: title/ignored-semicolon-before-text-on-kept-line-kept]
 空白が行末にあるので、例は、`\n` を改行とする文字列で書きます。
 `"sequenceDiagram\ntitle Kept   \nA->>B: x\n"` は

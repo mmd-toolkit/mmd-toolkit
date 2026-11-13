@@ -13,7 +13,7 @@ import { expectToken, layoutKeywordHeader } from "./layout.ts"
 import { placeLeadingDirectives } from "./indentation-lines.ts"
 import { printAsWritten, significantIndentationOf } from "./lines.ts"
 import type { Source } from "./source.ts"
-import { findTokenStartingAt } from "./source.ts"
+import { findTokenStartingAt, holdsRemoved } from "./source.ts"
 import {
   findTreemapPrintedEnd,
   layoutTreemapStatement,
@@ -70,7 +70,22 @@ export function printTreemap(
           ) ||
             keptWithJoinedLines.verbatim.has(
               lineStartOf(source, treemapStatementRange(item)[0]),
-            )),
+            ) ||
+            // A directive between two rows of a line takes the whitespace
+            // after it, which is the indentation of the second row.
+            ((other.type === "TreemapSection" ||
+              other.type === "TreemapLeaf") &&
+              holdsRemoved(
+                source,
+                Math.min(
+                  treemapStatementRange(item)[1],
+                  treemapStatementRange(other)[1],
+                ),
+                Math.max(
+                  treemapStatementRange(item)[0],
+                  treemapStatementRange(other)[0],
+                ),
+              ))),
       ),
   )
   if (protectedRows)

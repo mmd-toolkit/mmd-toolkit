@@ -907,12 +907,12 @@ title/tab-and-colon-line-break] [fixture: title/line-break-indented] The
 whitespace at the end of a title is left out, also where a `;` follows it.
 [fixture: title/trailing-whitespace-dropped] [fixture:
 title/semicolon-after-whitespace-dropped] A `;` that the line rule ignores
-between the keyword and a text on the next line is left out when the title is
-printed on a line of its own, since it would lose the trigger of the rule there
-and separate the keyword from its text: `participant A@{"style":"x:#y"};title;`
-and `T` are printed `participant A@{ "style":"x:#y" }` and `title T`. On a line
-that stays together it stays. [fixture:
-title/ignored-semicolon-before-text-on-next-line-dropped] [fixture:
+between the keyword and a text on the next line stays, on the line of the
+trigger of the rule, which is part of the line that stays together:
+`participant A@{"style":"x:#y"};title;` and `T` are printed
+`participant A@{"style":"x:#y"};title; T`, the text joined to the keyword (see
+[Semicolons](#semicolons)). [fixture:
+title/ignored-semicolon-before-text-on-next-line-kept] [fixture:
 title/ignored-semicolon-before-text-on-kept-line-kept] It is at the end of a
 line, so the example is written as strings, in which `\n` is a line break:
 `"sequenceDiagram\ntitle Kept   \nA->>B: x\n"` is printed as

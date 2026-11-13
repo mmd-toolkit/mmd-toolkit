@@ -24,15 +24,20 @@ when a statement follows on the next line, and accepts it with the colon (see
 The directive stands after the space that the gap has without it, which is none
 before a colon (see [Directives](./flowchart.md#directives)):
 `gitGraph %%{x}%%:` is printed `gitGraph%%{x}%%:`. [fixture:
-gitgraph/header/header-directive-before-colon-kept] A colon that a hidden YAML
-block precedes is left out like any other, since the versions that count read
-the header the same with it and without it, or reject both: `gitGraph ---`, the
-block, and `--- :` are printed with `---` and no colon. [fixture:
-gitgraph/header/header-yaml-before-colon] A colon on a line of its own after the
-block is left out with the line break before it, so that no empty line stays.
-[fixture: gitgraph/header/header-yaml-colon-on-its-own-line] [corpus fixture:
-gitgraph/header-hidden-before-colon] Hidden gaps and protected header/body
-groups retain their source boundaries.
+gitgraph/header/header-directive-before-colon-kept] A colon that a directive
+that is not closed follows stays too, when a statement follows on the next line:
+the directive takes the line break, so without the colon the statement would
+follow `gitGraph` directly, and the line cannot be split. `gitGraph:%%{x y` and
+`commit` on the next line stay as they are. [fixture:
+gitgraph/header/header-colon-unclosed-directive-joins-next-line-kept] A colon
+that a hidden YAML block precedes is left out like any other, since the versions
+that count read the header the same with it and without it, or reject both:
+`gitGraph ---`, the block, and `--- :` are printed with `---` and no colon.
+[fixture: gitgraph/header/header-yaml-before-colon] A colon on a line of its own
+after the block is left out with the line break before it, so that no empty line
+stays. [fixture: gitgraph/header/header-yaml-colon-on-its-own-line] [corpus
+fixture: gitgraph/header-hidden-before-colon] Hidden gaps and protected
+header/body groups retain their source boundaries.
 
 A hidden form between `gitGraph` and the direction keeps the gap after it as
 written, because a hidden form consumes an immediately following line feed, and

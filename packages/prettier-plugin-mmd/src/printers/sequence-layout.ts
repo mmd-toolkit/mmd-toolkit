@@ -19,18 +19,14 @@ import {
   formatDescriptionBlock,
   keepFirstGapLineTails,
   layoutCompactEmptyDescriptionBlockWithFallback,
-  replaceInAtoms,
   toAsciiLowerCase,
   walk,
 } from "./layout.ts"
 import { holdsNameLikeDataBlock } from "./sequence-name-blocks.ts"
 import {
   findKeptBreaks,
-  findLinesEndedBySemicolon,
-  findLinesWithOwnSemicolons,
   gapKeepsLineBreak,
   holdsJoiningRegion,
-  lineStartOf,
   printedEndOf,
   spansKeptBreaks,
 } from "./kept-lines.ts"
@@ -396,23 +392,6 @@ function layoutTitle(
     source.text[separator] === "\u2028" || source.text[separator] === "\u2029"
   const text: Atom = { start: keepsSeparator ? separator : separator + 1, end }
   const atoms: Atom[] = [{ start: statement.range[0], end: separator }, text]
-  // A `;` that the line rule ignores between the keyword and the text is
-  // removed by mermaid.js. Printed on a line of its own, it would lose the
-  // trigger of the rule and separate the statement from its text, so it is left
-  // out, unless the line is one that stays together (docs/sequence.md, Title).
-  const line = lineStartOf(source, statement.range[0])
-  const ignored =
-    findLinesWithOwnSemicolons(source).has(line) ||
-    findLinesEndedBySemicolon(source).has(line)
-      ? []
-      : [...source.ignoredSemicolons].filter(
-          (offset) => statement.range[0] <= offset && offset < separator,
-        )
-  replaceInAtoms(
-    source,
-    atoms,
-    ignored.map((offset) => ({ range: [offset, offset + 1], replacement: "" })),
-  )
   // mermaid.js keeps the whitespace after the separator in the title, and
   // draws the same text without it (docs/compatibility.md, Texts after a
   // keyword that are drawn the same).

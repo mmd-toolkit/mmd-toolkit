@@ -2,6 +2,7 @@ import type { KeptLines } from "./kept-lines.ts"
 import {
   findLinesEndedBySemicolon,
   findLinesWithOwnSemicolons,
+  joinsNextLine,
   lineStartOf,
 } from "./kept-lines.ts"
 import type { IshikawaLine } from "./ishikawa-layout.ts"
@@ -23,15 +24,8 @@ export function keepsRootOnHeaderLine(
   return (
     root?.keepsHeaderGroup === true ||
     (root?.indentation === null &&
-      (!indentationShowsTree(lines) || joinsHeaderLine(source)))
-  )
-}
-
-/** Whether mermaid.js reads the line of the header together with the next. */
-function joinsHeaderLine(source: Source): boolean {
-  const headerLine = headerLineOf(source)
-  return [...source.removedLineFeeds].some(
-    (lineFeed) => lineStartOf(source, lineFeed) === headerLine,
+      (!indentationShowsTree(lines) ||
+        joinsNextLine(source, headerLineOf(source))))
   )
 }
 

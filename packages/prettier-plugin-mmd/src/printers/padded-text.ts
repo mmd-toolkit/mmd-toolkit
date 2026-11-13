@@ -31,6 +31,27 @@ export function trimBlanksEnd(text: string): string {
   return text.slice(0, end)
 }
 
+/**
+ * The text of the range of a node text that a shape follows, without the `;`
+ * that the line rule ignores at its end and the spaces and tabs around it:
+ * mermaid.js removes the `;`, and the text is the same as where the `;`
+ * stands between the text and the shape. A text that does not end so is
+ * returned as written.
+ */
+export function withoutIgnoredSemicolonsEnd(
+  source: Source,
+  range: Range,
+): string {
+  let end = range[1]
+  let crossed = false
+  while (end > range[0]) {
+    if (source.ignoredSemicolons.has(end - 1)) crossed = true
+    else if (!isSpaceOrTab(source.text[end - 1])) break
+    end--
+  }
+  return source.text.slice(range[0], crossed ? end : range[1])
+}
+
 /** The text without the spaces and tabs at its start. */
 function trimBlanksStart(text: string): string {
   let start = 0

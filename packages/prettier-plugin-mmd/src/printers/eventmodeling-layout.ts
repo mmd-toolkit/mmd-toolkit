@@ -247,11 +247,20 @@ function layoutComponents(
       previous === undefined
         ? undefined
         : findTokenStartingAt(source, previous.start)
+    // A `;` that the line rule ignores is removed by mermaid.js: where the
+    // atom touches it, nothing separates the atom from what stands before the
+    // `;`, which a title after a block comment needs (docs/eventmodeling.md,
+    // Semicolons).
+    const touchesIgnoredSemicolon =
+      previous !== undefined &&
+      source.ignoredSemicolons.has(atom.start - 1) &&
+      !isWhitespace(source.text[atom.start - 2])
     const touches =
       token?.value === "." ||
       before?.value === "." ||
       token?.value === "]]" ||
       before?.value === "[[" ||
+      touchesIgnoredSemicolon ||
       inTag
     if (previous !== undefined) {
       rules.set(atom.start, touches ? "none" : "space")

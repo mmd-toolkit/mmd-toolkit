@@ -945,8 +945,11 @@ and the rows on that line are read from the indentation before the first of
 them. `"A" %%{x: w`, a line break, and `  "B": 1` make `B` a child of `A`, and
 with `A` indented by two spaces `B` is its sibling. A body with such a line is
 printed as written, as it is for a kept line that constrains a row boundary (see
-[Semicolons](#semicolons)). [fixture:
-treemap/directives/unclosed-directive-joins-rows-kept]
+[Semicolons](#semicolons)). The same holds for two rows on one line with a
+directive that is not closed between them, since the directive takes the
+whitespace after its argument, which is the indentation of the second row.
+[fixture: treemap/directives/unclosed-directive-joins-rows-kept] [fixture:
+treemap/directives/unclosed-directive-between-rows-kept]
 
 With useTabs, the retained gaps and the supplied indentation are all printed as
 tabs: the whitespace on both sides of the directive is one indentation unit, in

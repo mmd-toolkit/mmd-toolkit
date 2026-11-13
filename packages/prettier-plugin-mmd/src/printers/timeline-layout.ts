@@ -150,6 +150,13 @@ export function staysOnTimelineHeaderLine(
   )
 }
 
+/** The offset after the `;` that the line rule ignores at `offset`, if any. */
+function skipIgnoredSemicolons(source: Source, offset: number): number {
+  let position = offset
+  while (source.ignoredSemicolons.has(position)) position++
+  return position
+}
+
 /**
  * The layout of a statement, from its start to `end` (the end of its range).
  *
@@ -333,9 +340,15 @@ function layoutEvents(
       event === statement.events[0] &&
       statement.type === "TimelinePeriodStatement"
     ) {
-      const writtenPeriod = source.text.slice(...statement.period.range)
+      // A `;` that the line rule ignores between the period and the colon is
+      // printed, so it is part of the text before the colon.
+      const periodEnd = skipIgnoredSemicolons(source, statement.period.range[1])
+      const writtenPeriod = source.text.slice(
+        statement.period.range[0],
+        periodEnd,
+      )
       if (
-        colon.start === statement.period.range[1] &&
+        colon.start === periodEnd &&
         !staysOnTimelineHeaderLine(source, statement) &&
         !writtenPeriod.includes("\n") &&
         !writtenPeriod.includes("\u2028") &&

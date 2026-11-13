@@ -104,7 +104,11 @@ export function layoutContainerHeader(
     while (nameStart < nameEnd) {
       const trivia = findTriviaBetween(source, nameStart, nameStart + 1).at(0)
       if (trivia !== undefined) nameStart = Math.min(trivia.range[1], nameEnd)
-      else if (isWhitespace(source.text[nameStart])) nameStart++
+      else if (
+        isWhitespace(source.text[nameStart]) ||
+        source.ignoredSemicolons.has(nameStart)
+      )
+        nameStart++
       else break
     }
     // The data block of a heading without a title touches the name, whose
@@ -122,7 +126,13 @@ export function layoutContainerHeader(
     } else if (holdsNoTrivia) {
       // At the end of the heading only the spaces and tabs go: U+2028 and
       // U+2029 are characters of the text there.
-      while (nameEnd > nameStart && isSpaceOrTab(source.text[nameEnd - 1]))
+      // A `;` that the line rule ignores is removed like the whitespace
+      // around it.
+      while (
+        nameEnd > nameStart &&
+        (isSpaceOrTab(source.text[nameEnd - 1]) ||
+          source.ignoredSemicolons.has(nameEnd - 1))
+      )
         nameEnd--
     }
     // A whitespace-only name still needs its written character.

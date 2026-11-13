@@ -1,3 +1,4 @@
+import type { Doc } from "prettier"
 import { appendItems } from "./collections.ts"
 import type {
   BlockClassDefStatement,
@@ -33,14 +34,17 @@ import {
   lineStartOf,
   spansKeptBreaks,
 } from "./kept-lines.ts"
-import { printAsWrittenTrimmed } from "./lines.ts"
+import { printAsWritten, printAsWrittenTrimmed } from "./lines.ts"
 import type { Source } from "./source.ts"
 import { endOfJoinedStyle, normalizeStyleList } from "./statement-rules.ts"
 import {
+  findDirectiveEndingAt,
+  findTriviaAt,
   findStructuralToken,
   findTokenEndingBefore,
   findTokenStartingAt,
   findTokensBetween,
+  isSpaceOrTab,
   isStructural,
   isWhitespace,
 } from "./source.ts"
@@ -461,30 +465,107 @@ function addStyledStatementRules(
   if (printsStyles && joinsStyles) {
     printedEnd = findLinePrintedEnd(source, statement)
   }
-  const atoms: Atom[] = [{ start, end: printedEnd }]
+  // The whitespace and the directives between the last style and a `;` that
+  // the printer drops are printed as they are where the `;` is not there.
+  const stylesEnd = dropsSemicolon
+    ? findEndOfStylesBefore(source, start, semicolon)
+    : printedEnd
+  const atoms: Atom[] = [
+    { start, end: printsStyles && dropsSemicolon ? stylesEnd : printedEnd },
+  ]
   // mermaid.js draws the same figure whatever the whitespace around the `:`
   // and the `,` of the styles (docs/block.md, Styles), except after a
   // backslash that ends a style of a `style`. A statement with a kept line
   // break keeps its styles as written: printing them changes whether joining
   // its lines is safe, so a second pass would join them.
   if (printsStyles) {
-    normalizeStyleList(source, atoms, statement, {
-      joinsStyles,
-      labelStyleNames:
-        statement.type === "BlockStyleStatement" ? ["color", "text-align"] : [],
-      collapsesWordGaps: true,
-    })
+    // The last style reaches the `;` that the printer drops, with the
+    // directives before it: they are no part of the style, which is judged
+    // as it is when the `;` is not there.
+    const lastStyle = statement.styles.findLast((style) => style !== null)
+    normalizeStyleList(
+      source,
+      atoms,
+      dropsSemicolon && lastStyle !== undefined && lastStyle !== null
+        ? {
+            range: [statement.range[0], stylesEnd],
+            styles: statement.styles.map((style) =>
+              style === lastStyle
+                ? { ...style, range: [style.range[0], stylesEnd] as Range }
+                : style,
+            ),
+          }
+        : statement,
+      {
+        joinsStyles,
+        labelStyleNames:
+          statement.type === "BlockStyleStatement"
+            ? ["color", "text-align"]
+            : [],
+        collapsesWordGaps: true,
+      },
+    )
   }
-  const doc =
+  const tailsDropped = printsStyles && dropsSemicolon && stylesEnd < printedEnd
+  const styleDoc =
     atoms[0].doc ??
-    (dropsSemicolon
-      ? printAsWrittenTrimmed(source, start, semicolon)
-      : undefined)
+    (tailsDropped ? printAsWritten(source, start, stylesEnd) : undefined)
+  const doc =
+    styleDoc === undefined
+      ? dropsSemicolon
+        ? printAsWrittenTrimmed(source, start, semicolon)
+        : undefined
+      : tailsDropped
+        ? [styleDoc, printStylesTail(source, stylesEnd, printedEnd)]
+        : styleDoc
   kept.push({
     start,
     end: Math.max(statement.range[1], printedEnd),
     ...(doc && { doc }),
   })
+}
+
+/**
+ * The text from `start` to `end`, which holds whitespace and directives only:
+ * a run of spaces and tabs is one space, and a directive is as written.
+ */
+function printStylesTail(source: Source, start: number, end: number): Doc {
+  const parts: Doc[] = []
+  let position = start
+  while (position < end) {
+    const directive = findTriviaAt(source, position)
+    if (directive?.type === "Directive" && directive.range[0] === position) {
+      parts.push(printAsWritten(source, position, directive.range[1]))
+      position = directive.range[1]
+      continue
+    }
+    let runEnd = position
+    while (runEnd < end && isWhitespace(source.text[runEnd])) runEnd++
+    const run = source.text.slice(position, runEnd)
+    parts.push([...run].every(isSpaceOrTab) ? " " : run)
+    position = Math.max(runEnd, position + 1)
+  }
+  return parts
+}
+
+/**
+ * Where the styles end before the `;` at `semicolon`: before the whitespace
+ * and the directives that stand between them.
+ */
+function findEndOfStylesBefore(
+  source: Source,
+  start: number,
+  semicolon: number,
+): number {
+  let position = semicolon
+  for (;;) {
+    while (position > start && isWhitespace(source.text[position - 1])) {
+      position--
+    }
+    const directive = findDirectiveEndingAt(source, position)
+    if (directive === undefined) return position
+    position = directive.range[0]
+  }
 }
 
 /**

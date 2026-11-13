@@ -442,16 +442,19 @@ function printCallGap(
   placement: "leading" | "constructor" | "comma" | "closing",
 ): Doc {
   if (!hasCallTrivia(gap)) return ordinary
+  // A directive that is not closed takes the whitespace after its argument,
+  // which is printed with it: no space is added after such a run.
   if (!gap.breaksLine) {
     const run = gap.leading ?? gap.trailing!
-    if (placement === "leading") return [ordinary, run.doc, " "]
+    const space = run.endsWithWhitespace ? "" : " "
+    if (placement === "leading") return [ordinary, run.doc, space]
     return [
       " ",
       run.doc,
       placement === "closing"
         ? ifBreak(ordinary, "")
         : placement === "constructor"
-          ? " "
+          ? space
           : "",
     ]
   }
@@ -468,7 +471,9 @@ function printCallGap(
   const after =
     gap.leading !== null
       ? placement === "leading" || placement === "constructor"
-        ? " "
+        ? gap.leading.endsWithWhitespace
+          ? ""
+          : " "
         : ""
       : triviaBreak(previous, gap.leading === null && gap.blankAfter)
   return placement === "closing" ? [indent(trivia), after] : [trivia, after]

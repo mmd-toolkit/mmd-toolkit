@@ -15,6 +15,7 @@ import {
   gapKeepsLineBreak,
   holdsJoiningRegion,
   isDroppedSemicolon,
+  isFirstOnItsLine,
   spansKeptBreaks,
 } from "./kept-lines.ts"
 import {
@@ -27,7 +28,10 @@ import {
   layoutDescriptionBlock,
   toAsciiLowerCase,
 } from "./layout.ts"
-import { followsSplitKeyword } from "./er-kept-lines.ts"
+import {
+  followsSplitKeyword,
+  isDirectionBroughtToTheColon,
+} from "./er-kept-lines.ts"
 import type { Source } from "./source.ts"
 import { printedToken } from "./spelling.ts"
 import {
@@ -376,6 +380,16 @@ export function layoutErStatement(
   const keptBreaks = findKeptBreaks(source, start, end)
   const keepsLineBreaks = spansKeptBreaks(source, keptBreaks, start, end)
   if (keepsLineBreaks && holdsJoiningRegion(source, start, end)) {
+    return keptAsWritten(start, end)
+  }
+  // The text of a statement that is brought to its `:` makes a direction line
+  // when the statement does not start its line, where it is read as a title
+  // at the first column (see `isDirectionBroughtToTheColon`): the statement
+  // stays as written then.
+  if (
+    isDirectionBroughtToTheColon(source, statement) &&
+    !isFirstOnItsLine(source, start)
+  ) {
     return keptAsWritten(start, end)
   }
   const kept = findKeptStretches(source, statement)

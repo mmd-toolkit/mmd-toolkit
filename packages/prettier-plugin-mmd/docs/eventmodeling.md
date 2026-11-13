@@ -1050,8 +1050,13 @@ diagram. Text that no part of the layout holds stays as written. A statement
 over several lines whose lines, joined with one space or with nothing, could
 change which `;` the line rule ignores keeps the text of each segment, up to its
 last kept `;`, as written; any other statement over several lines is formatted
-like one on a single line. [fixture: semicolons/stretch-kept-rest-formatted]
-[fixture: semicolons/no-stretch-formatted] [fixture:
+like one on a single line. A `;` that the line rule ignores is removed by
+mermaid.js, so the tokens on both sides of it are one token where they touch:
+the gap after it keeps whether it holds whitespace, and `/*style:#x*/;title`
+stays as it is, since `/*style:#x*/ title` is rejected. [fixture:
+semicolons/stretch-kept-rest-formatted] [fixture:
+semicolons/ignored-semicolon-touches-next-atom] [fixture:
+semicolons/no-stretch-formatted] [fixture:
 semicolons/protected-gwt-title-hidden-gap-remains-zero] The first protected body
 line aligns with its body; contents and later columns remain authored. Required
 identifier and common-value padding takes precedence over structural
