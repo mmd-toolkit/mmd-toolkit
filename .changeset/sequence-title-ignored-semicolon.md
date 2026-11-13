@@ -2,7 +2,8 @@
 "prettier-plugin-mmd": patch
 ---
 
-Drop the `;` that `sequenceDiagram` ignores between `title` and a text on the
-next line, so that the title stays one statement:
-`participant A@{"style":"x:#y"};title;` followed by `T` on the next line prints
-`title T`.
+Keep a line together where a `;` that mermaid.js ignores stands between a
+statement and its value on the next line: in a `sequenceDiagram`,
+`participant A@{"style":"x:#y"};title;` followed by `T` was split into two
+lines that mermaid.js rejects, and is now printed
+`participant A@{"style":"x:#y"};title; T`.
