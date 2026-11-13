@@ -442,7 +442,8 @@ mermaid.js がその位置でブロック形式のマッピングの行を拒否
 [fixture: whitespace-between-tokens/data-block-and-ignored-line-kept]
 [fixture: whitespace-between-tokens/actor-data-block-kept]
 `create` のない `participant` と `actor` のデータブロックで、`:`、`,`、`;`、
-`>` のどれも含まないものは、対象にする版が、参加者の名前の一部として読みます。
+`>` のどれも含まず、改行も含まないものは、対象にする版が、
+参加者の名前の一部として読みます。
 ブロックの前の空白、ブロックの中の空白、その後の `%%` コメントの前の空白も、
 名前に入ります。
 そのため、ブロックの前の隙間、ブロック、コメントの前の隙間は、書かれたまま残し、
@@ -455,8 +456,8 @@ mermaid.js は名前を読む前にディレクティブを除きます。
 `participant B@{x}   %%{init: {}}%%   %% c` がその例です。
 コメントがなく、行がディレクティブで終わる場合は通常の隙間で、
 `participant E@{z} %%{init: {}}%%` と印字します。
-これらの文字を含むブロックと、`create` のある文のブロックは、
-その版が両方の形を拒否するので、上のとおりに印字します。
+これらの文字か改行を含むブロックと、`create` のある文のブロックは、
+その版が拒否するので、上のとおりに印字します。
 詳しくは
 [対象にする版の mermaid.js のために残す形](./compatibility.ja.md#対象にする版の-mermaidjs-のために残す形)
 を参照してください。
@@ -965,6 +966,15 @@ mermaid.js はそのように読みます。 [fixture: title/separator]
 タイトルの末尾の空白は、後ろに `;` がある場合も除きます。
 [fixture: title/trailing-whitespace-dropped]
 [fixture: title/semicolon-after-whitespace-dropped]
+キーワードと次の行のテキストの間にある、行の規則が無視する `;` は、
+タイトルを単独の行に印字するときは除きます。
+その行では規則の引き金がなくなり、
+`;` がキーワードとテキストを分けてしまうからです。
+`participant A@{"style":"x:#y"};title;` と次の行の `T` は、
+`participant A@{ "style":"x:#y" }` と `title T` と印字します。
+ひとまとまりで残る行では、`;` は残ります。
+[fixture: title/ignored-semicolon-before-text-on-next-line-dropped]
+[fixture: title/ignored-semicolon-before-text-on-kept-line-kept]
 空白が行末にあるので、例は、`\n` を改行とする文字列で書きます。
 `"sequenceDiagram\ntitle Kept   \nA->>B: x\n"` は
 `"sequenceDiagram\n  title Kept\n  A ->> B: x\n"` と印字します。

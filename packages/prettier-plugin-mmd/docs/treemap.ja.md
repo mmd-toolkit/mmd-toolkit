@@ -470,7 +470,8 @@ treemap
 
 ### Colors
 
-`classDef` のスタイルの色は、ほかの図種と同じく小文字で印字します。
+`classDef` のスタイルの色は、class 図とは異なり、
+ほかのほとんどの図種と同じく小文字で印字します。
 （[同じに描かれる色](./compatibility.ja.md#同じに描かれる色)）。
 `classDef zz fill:#ABCDEF` は `classDef zz fill: #abcdef` と印字します。
 対象にする版は、`#ABCDEF` と `#abcdef` を同じに描きます。
