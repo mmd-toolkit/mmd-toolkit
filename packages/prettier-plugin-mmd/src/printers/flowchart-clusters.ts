@@ -5,11 +5,7 @@ import type {
 } from "@mmd-toolkit/ast"
 import { appendItems } from "./collections.ts"
 import type { Source } from "./source.ts"
-import {
-  findStructuralToken,
-  isWhitespace,
-  textWithoutDirectives,
-} from "./source.ts"
+import { findStructuralToken, isWhitespace, textRead } from "./source.ts"
 
 /** A subgraph as the dagre layout meets it: its id and its members. */
 interface Cluster {
@@ -141,7 +137,7 @@ export function hasSpaceBeforeOneWordName(
     return false
   const keyword = findStructuralToken(source, subgraph.range[0])
   if (keyword === undefined) return false
-  const gap = textWithoutDirectives(source, keyword.range[1], name.range[0])
+  const gap = textRead(source, keyword.range[1], name.range[0])
   return [...gap].filter(isWhitespace).length > 1
 }
 

@@ -26,7 +26,7 @@ import {
   findTokenStartingAt,
   findTokensBetween,
   isStructural,
-  skipDirectives,
+  skipRemoved,
 } from "./source.ts"
 
 /** Authored names, numbers, strings and hidden forms keep their source spans. */
@@ -180,7 +180,7 @@ function layoutComponents(
     if (
       statement.type === "WardleyLinkStatement" &&
       statement.arrow?.range[0] === atom.start &&
-      skipDirectives(source, previous.end) === atom.start &&
+      skipRemoved(source, previous.end) === atom.start &&
       source.text[previous.end - 1] === "-"
     )
       rules.set(atom.start, "none")

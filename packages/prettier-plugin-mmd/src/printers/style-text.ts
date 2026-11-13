@@ -5,7 +5,7 @@ import {
   findTriviaAt,
   isSpaceOrTab,
   isWhitespace,
-  skipDirectives,
+  skipRemoved,
 } from "./source.ts"
 
 /**
@@ -54,11 +54,11 @@ export function styleRunEdits(
  * `\20 `, one space, and `Black`).
  */
 function endOfEscape(source: Source, backslashAt: number, end: number): number {
-  let position = skipDirectives(source, backslashAt + 1)
+  let position = skipRemoved(source, backslashAt + 1)
   let digits = 0
   while (digits < 6 && position < end && isHexDigit(source.text[position])) {
     digits++
-    position = skipDirectives(source, position + 1)
+    position = skipRemoved(source, position + 1)
   }
   if (digits === 0) return Math.min(position + 1, end)
   return position < end && isSpaceOrTab(source.text[position])
@@ -78,7 +78,7 @@ function endOfStyleMark(
 ): number | undefined {
   let position = start
   for (const character of mark) {
-    position = skipDirectives(source, position)
+    position = skipRemoved(source, position)
     if (position >= end || source.text[position].toLowerCase() !== character)
       return undefined
     position++
@@ -106,7 +106,7 @@ function endOfStyleRegion(
   const commentStart = endOfStyleMark(source, position, end, "/*")
   if (commentStart !== undefined) {
     for (let index = commentStart; index < end; index++) {
-      index = skipDirectives(source, index)
+      index = skipRemoved(source, index)
       const close = endOfStyleMark(source, index, end, "*/")
       if (close !== undefined) return close
     }
@@ -124,9 +124,9 @@ function isHexDigit(character: string | undefined): boolean {
 /** The offset after the string that starts with the quote at `quoteAt`. */
 function endOfQuoted(source: Source, quoteAt: number, end: number): number {
   for (let index = quoteAt + 1; index < end; index++) {
-    index = skipDirectives(source, index)
+    index = skipRemoved(source, index)
     if (index >= end) break
-    if (source.text[index] === "\\") index = skipDirectives(source, index + 1)
+    if (source.text[index] === "\\") index = skipRemoved(source, index + 1)
     else if (source.text[index] === source.text[quoteAt]) return index + 1
   }
   return end
@@ -135,10 +135,10 @@ function endOfQuoted(source: Source, quoteAt: number, end: number): number {
 /** The offset after the `)` that closes the `url(` whose text starts at `from`. */
 function endOfUrl(source: Source, from: number, end: number): number {
   for (let index = from; index < end; index++) {
-    index = skipDirectives(source, index)
+    index = skipRemoved(source, index)
     if (index >= end) break
     const character = source.text[index]
-    if (character === "\\") index = skipDirectives(source, index + 1)
+    if (character === "\\") index = skipRemoved(source, index + 1)
     else if (character === '"' || character === "'")
       index = endOfQuoted(source, index, end) - 1
     else if (character === ")") return index + 1
@@ -174,10 +174,10 @@ export function styleColorEdits(
       position = regionEnd
     } else if (character === "#") {
       const digitPositions: number[] = []
-      let digitsEnd = skipDirectives(source, position + 1)
+      let digitsEnd = skipRemoved(source, position + 1)
       while (digitsEnd < end && isHexDigit(text[digitsEnd])) {
         digitPositions.push(digitsEnd)
-        digitsEnd = skipDirectives(source, digitsEnd + 1)
+        digitsEnd = skipRemoved(source, digitsEnd + 1)
       }
       const digits = digitPositions.length
       let beforeAt = position

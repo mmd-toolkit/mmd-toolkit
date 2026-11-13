@@ -6,8 +6,8 @@ import {
   findStructuralToken,
   findTriviaBetween,
   isWhitespace,
-  skipDirectives,
-  textWithoutDirectives,
+  skipRemoved,
+  textRead,
 } from "./source.ts"
 
 /**
@@ -61,7 +61,7 @@ export function holdsDirection(
     const keyword = findStructuralToken(source, start)
     view = `${keyword?.value ?? ""}: ${statement.text}`
   } else {
-    view = readableText(source, start, end)
+    view = textRead(source, start, end)
   }
   let headEnd = 0
   while (headEnd < view.length && !isLineEnd(view[headEnd])) headEnd++
@@ -118,41 +118,18 @@ function isDirectionAfterHead(
       isDirection(remainder.slice(index, index + 2), caseSensitive)
     )
   }
-  const next = skipWhitespaceAndTrivia(source, statementEnd)
-  const second = skipDirectives(source, next + 1)
-  const hasWhitespace = [...readableText(source, statementEnd, next)].some(
+  const next = skipWhitespaceAndRemoved(source, statementEnd)
+  const second = skipRemoved(source, next + 1)
+  const hasWhitespace = [...textRead(source, statementEnd, next)].some(
     isWhitespace,
   )
   return (
     (separated || index > 0 || hasWhitespace) &&
     isDirection(
-      textWithoutDirectives(
-        source,
-        next,
-        Math.min(second + 1, source.text.length),
-      ),
+      textRead(source, next, Math.min(second + 1, source.text.length)),
       caseSensitive,
     )
   )
-}
-
-/**
- * The text from `from` to `to` as the lexer reads it: without the directives
- * and the comment lines.
- */
-function readableText(source: Source, from: number, to: number): string {
-  let text = ""
-  let position = from
-  while (position < to) {
-    const trivia = findTriviaBetween(source, position, position + 1).at(0)
-    if (trivia === undefined) {
-      text += source.text[position]
-      position++
-    } else {
-      position = trivia.range[1]
-    }
-  }
-  return text
 }
 
 /** Whether two characters match the direction values under the selected case rule. */
@@ -164,24 +141,15 @@ function isDirection(text: string, caseSensitive: boolean): boolean {
 }
 
 /**
- * The offset after the whitespace, the comments, and the directives that
- * start at `offset`, or `offset` when none does.
+ * The offset of the first character from `offset` on that the lexer reads and
+ * that is no whitespace (see `skipRemoved`), or the end of the text.
  */
-function skipWhitespaceAndTrivia(source: Source, offset: number): number {
-  let position = offset
-  for (;;) {
-    const trivia = findTriviaBetween(source, position, position + 1).at(0)
-    if (trivia !== undefined) {
-      position = trivia.range[1]
-    } else if (
-      position < source.text.length &&
-      isWhitespace(source.text[position])
-    ) {
-      position++
-    } else {
-      return position
-    }
+function skipWhitespaceAndRemoved(source: Source, offset: number): number {
+  let position = skipRemoved(source, offset)
+  while (position < source.text.length && isWhitespace(source.text[position])) {
+    position = skipRemoved(source, position + 1)
   }
+  return position
 }
 
 /** Whether a character ends a line for the run before `direction`: a line feed, U+2028, or U+2029. */

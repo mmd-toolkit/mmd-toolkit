@@ -912,16 +912,19 @@ label has `fill` in the place of `color`, so the SVG differs. In
 SVG was the same, as the second `fill` is not the first. So in a `linkStyle` of
 a flowchart or a swimlane diagram a name that ends with `fill` keeps whether
 whitespace stands between it and the `:`, a run of whitespace becoming one
-space, where the label reads it: not after a style that has `fill:` in its text
-and, in a swimlane diagram, only in the first style; not in a statement that a
-later `linkStyle` replaces for all its links, or a later `linkStyle default`
-replaces; and not in a numbered `linkStyle` after a `linkStyle default` whose
-styles the label reads before it, which are those with `fill:` in a flowchart
-and any in a swimlane diagram. The styles of a link in an agentflow diagram,
-which no version that counts reads so, and the styles of a node and of a
-`classDef`, are printed in the one form. [fixture:
+space, where the label reads it: not after a style that has `fill:` in its text,
+also when a `;` that the line rule ignores splits the word (`fi;ll:red`), and,
+in a swimlane diagram, only in the first style; not in a statement that a later
+`linkStyle` replaces for all its links, or a later `linkStyle default` replaces;
+and not in a numbered `linkStyle` after a `linkStyle default` whose styles the
+label reads before it, which are those with `fill:` in a flowchart and any in a
+swimlane diagram. The styles of a link in an agentflow diagram, which no version
+that counts reads so, and the styles of a node and of a `classDef`, are printed
+in the one form. [fixture:
 flowchart/whitespace-between-tokens/link-style-fill-colon-gap-kept] [fixture:
 flowchart/whitespace-between-tokens/link-style-fill-colon-gap-after-fill-spaced]
+[fixture:
+flowchart/whitespace-between-tokens/link-style-default-fill-split-by-semicolon-spaced]
 [fixture:
 flowchart/whitespace-between-tokens/link-style-fill-colon-gap-replaced-spaced]
 [fixture:
@@ -1344,10 +1347,12 @@ These stay as written:
   or U+2029 in it, whose lines and marks mermaid.js reads by their place.
   [fixture: pie/directives-and-semicolons/global-value]
 - A text with a `<`, which may start an HTML tag that keeps the whitespace
-  (`<pre>`), and every text of a diagram that holds `white-space` anywhere,
-  which a `style` or a `classDef` can use to keep the runs of a label. [fixture:
+  (`<pre>`), and every text of a diagram that holds `white-space` anywhere, also
+  when a directive or a `;` that the line rule ignores splits the word, which a
+  `style` or a `classDef` can use to keep the runs of a label. [fixture:
   sequence/whitespace-between-tokens/html-tag-runs-kept] [fixture:
-  pie/title/white-space-property-kept]
+  pie/title/white-space-property-kept] [fixture:
+  flowchart/label-inner-whitespace/white-space-split-by-ignored-semicolon-kept]
 - The labels that mermaid.js draws as HTML: the nodes and the edges of a
   flowchart and an agentflow diagram, the descriptions, transitions, and notes
   of a state diagram, the nodes of a mindmap, the labels of a relation of a
@@ -1698,10 +1703,11 @@ digits). These stay as written: a run of 2, 5, 7, or 9 digits (`#AB`, `#ABCDE`,
 `#ABCDEF1`, `#ABCDEF123`), a `#` followed by other letters (`#GGG`), a word that
 more characters touch (`#ABC-x`, `x#ABC`, `#ABC.5`, `#ABC#DEF`, `#ABC/#DEF`),
 and a `#` inside a string (`'#ABC'`), a comment, the parentheses of `url(`
-(`url(#ABC)` is a reference to an element), or after a backslash (`\#ABC`). A
-`;` inside the text of a style makes the color the placeholder of an entity, or
-joins it to the word after the `;` (`classDef c fill:#F9F;stroke:red` has the
-style `fill:#F9Fstroke:red`,
+(`url(#ABC)` is a reference to an element, also where a directive or a `;` that
+the line rule ignores splits the name, as in `u;rl(#ABC)`), or after a backslash
+(`\#ABC`). A `;` inside the text of a style makes the color the placeholder of
+an entity, or joins it to the word after the `;`
+(`classDef c fill:#F9F;stroke:red` has the style `fill:#F9Fstroke:red`,
 [`style` and `classDef` lines](../../spec/docs/common.md#style-and-classdef-lines)),
 so it stays; the `;` that ends the statement is dropped by the formatter, and
 the color before it is printed in lower case. A directive that touches the color
@@ -1718,7 +1724,8 @@ er/colors/words-that-are-not-colors-as-written] [fixture:
 requirement/colors/words-that-are-not-colors-as-written] [fixture:
 block/colors/words-that-are-not-colors-as-written] [fixture:
 usecase/colors/words-that-are-not-colors-as-written] [fixture:
-venn/colors/words-that-are-not-colors-as-written]
+venn/colors/words-that-are-not-colors-as-written] [fixture:
+state/colors/color-ignored-semicolon-in-url-name-kept]
 
 A color function that stands alone in its text is printed with one space after
 each comma: `rect rgb(191,223,255)` is printed `rect rgb(191, 223, 255)`,
@@ -2259,8 +2266,8 @@ which follows the header (`agentflow-beta%%{x}%% TD`) stays as written. A
 `direction` statement stays as written in all of them: mermaid.js keeps the
 direction of the statement as written in the Db. [fixture:
 agentflow/header/header-direction-spelling] [fixture:
-agentflow/header/header-direction-after-directive-kept] [fixture:
-flowchart/direction/swimlane-header-td-after-directive-kept] [fixture:
+agentflow/header/header-direction-spelling-after-directive] [fixture:
+flowchart/direction/swimlane-header-td-one-form-after-directive] [fixture:
 flowchart/direction/swimlane-header-td-one-form] [fixture:
 flowchart/direction/statement-td-kept-with-other-header] [fixture:
 flowchart/direction/statement-values-kept]
@@ -3593,6 +3600,14 @@ without the indentation of its level: `state S {%%{wrap foo`, an empty line, and
 state/composite-states/compat-unclosed-directive-joins-body-line] [fixture:
 class/member-bodies/compat-unclosed-directive-joins-body-line]
 
+The whitespace on the line of the directive is taken with it as well, and it is
+what ends a word argument: `%%{x: w B` has the argument `w` and leaves `B` to
+the diagram, while `%%{x: wB` has the argument `wB`. A gap that follows such a
+directive and has whitespace in the source therefore keeps whitespace, one space
+where the rule of the gap prints none: `"style:#x" end; %%{x: w B` of an ER
+diagram stays as written. [fixture:
+er/directives/unclosed-directive-argument-then-text-kept]
+
 A directive with a free-text argument, such as `init`, and no `}%%` extends to
 the end of the text (the specification's
 [Where a directive is](../../spec/docs/common.md#where-a-directive-is)), so
@@ -3629,9 +3644,11 @@ counts reads both with a lexer built with jison, whose rule takes `accTitle`,
   statement after a value on the same line is no such statement.
 - A `%%` after the value is part of the text, so the whitespace before it stays
   in an `accTitle`, whose runs stay as written since the browser shows the title
-  as a tooltip (`accTitle: Value   %% note`), and a comment after the `}` of a
-  block keeps the block: the form with the colon, `accDescr: a %% c`, has the
-  description `a %% c`, where the block has `a`.
+  as a tooltip (`accTitle: Value   %% note`), also when a directive stands
+  before the `%%`, a directive that is not closed included, whose own whitespace
+  is removed with it (`accTitle: Value   %%{x: w  %% note`), and a comment after
+  the `}` of a block keeps the block: the form with the colon,
+  `accDescr: a %% c`, has the description `a %% c`, where the block has `a`.
 
 The other diagram types of the pinned grammar have no such version. [fixture:
 pie/accessibility-lines/a11y-next-join-kept] [fixture:
@@ -3643,7 +3660,10 @@ pie/accessibility-lines/acc-title-percent-gap-kept] [fixture:
 pie/description-blocks/block-then-comment] [fixture:
 gitgraph/title-and-common-values/acc-value-on-next-line-kept] [fixture:
 gitgraph/title-and-common-values/acc-title-percent-gap-kept] [fixture:
-gitgraph/title-and-common-values/block-then-comment-kept]
+pie/accessibility-lines/acc-title-unclosed-directive-then-comment-kept]
+[fixture:
+gitgraph/title-and-common-values/acc-title-unclosed-directive-then-comment-kept]
+[fixture: gitgraph/title-and-common-values/block-then-comment-kept]
 
 ## Lines that hold a direction text
 
@@ -3665,7 +3685,15 @@ directive splits (`accDescr: direc%%{init: {}}%%tion RL`) is a direction text as
 well, in a description in a block or after a colon, in a title, after a `;`, and
 inside a subgraph, in a flowchart and in a swimlane diagram. [fixture:
 flowchart/indentation/direction-text-split-by-a-directive-kept] [fixture:
-flowchart/indentation/swimlane-direction-text-split-by-a-directive-kept] See
+flowchart/indentation/swimlane-direction-text-split-by-a-directive-kept] It also
+removes the comment lines and the `;` that the line rule ignores before the
+lexer reads the text, so a `direction` that such a `;` splits
+(`accTitle:style:#x,direc;tion TB`), and one whose value stands on a later line
+after a comment line (`accTitle:direction`, a comment line, and `TB`), are
+direction texts too, in a flowchart and in an ER diagram. [fixture:
+flowchart/indentation/direction-text-split-by-ignored-semicolon-kept] [fixture:
+flowchart/indentation/direction-text-value-after-comment-line-kept] [fixture:
+er/indentation/direction-text-split-by-ignored-semicolon-kept] See
 [Indentation](./flowchart.md#indentation).
 
 Flowchart bodies use the shared significant indentation minimum, at least one
@@ -3710,7 +3738,11 @@ same by every version that counts for sequence diagrams. The whitespace before
 arrow and read the `<<` as part of the name before it, and `Alice<<->>Bob` and
 `Alice <<->> Bob` were drawn differently by them and the same by the others (see
 [Forms kept for versions of mermaid.js that count](#forms-kept-for-versions-of-mermaidjs-that-count)).
-The whitespace after the arrow is not at stake in any version. [fixture:
+After a `()` it is the same: the name that these versions read runs from the id
+to the `<<`, so the whitespace between the `()` and the `<<` is part of it, and
+`A ()   <<->> B` stays as written, with a directive in that whitespace too. The
+whitespace after the arrow is not at stake in any version. [fixture:
+sequence/arrow-spacing/parentheses-then-bidirectional-arrow-gap-kept] [fixture:
 sequence/arrow-spacing/bidirectional-arrow-gap-before-kept] [fixture:
 sequence/arrow-spacing/parentheses-touching] [fixture:
 sequence/arrow-spacing/touching-beside-directive] [fixture:

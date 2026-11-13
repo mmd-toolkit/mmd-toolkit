@@ -60,7 +60,7 @@ mermaid.js は `radar-beta:` と `radar-beta` を同じ見出しとして読み�
 
 [corpus fixture: radar/spec-radar-test-ts-f0d1a74d]
 
-入力（escape 表記）: `"radar-beta : curve trial{4}\n"`
+入力（エスケープ表記）: `"radar-beta : curve trial{4}\n"`
 
 出力
 ([header/join-separated-inline-alternative-output.mmd](../tests/fixtures/radar/header/join-separated-inline-alternative-output.mmd)):
@@ -90,7 +90,7 @@ radar-beta
 
 [fixture: radar/indentation/zero-tabs]
 
-入力（escape 表記）: `"radar-beta\naxis North\nticks 7\n"`
+入力（エスケープ表記）: `"radar-beta\naxis North\nticks 7\n"`
 
 設定: `{"tabWidth": 4}`
 
@@ -123,7 +123,7 @@ radar-beta
 
 [corpus fixture: radar/tail-axis-semicolon]
 
-入力（escape 表記）:
+入力（エスケープ表記）:
 `"radar-beta axis North axis South curve one{1}curve two{2}ticks 7 max 9 min 2 showLegend false graticule polygon\n"`
 
 出力
@@ -167,7 +167,7 @@ axis・curve・options の群には可視改行を追加しません。
 
 [corpus fixture: radar/gram-entry-newline-before-comma]
 
-入力（escape 表記）: `"radar-beta\naxis North [\"N\"] ,\tSouth , East\n"`
+入力（エスケープ表記）: `"radar-beta\naxis North [\"N\"] ,\tSouth , East\n"`
 
 出力
 ([groups-and-commas/axis-comma-output.mmd](../tests/fixtures/radar/groups-and-commas/axis-comma-output.mmd)):
@@ -191,7 +191,7 @@ radar-beta
 
 [fixture: radar/labels/empty-and-absent-label]
 
-入力（escape 表記）: `"radar-beta\naxis North \t[ \t\"North label\"\t ]\n"`
+入力（エスケープ表記）: `"radar-beta\naxis North \t[ \t\"North label\"\t ]\n"`
 
 出力
 ([labels/axis-double-brackets-output.mmd](../tests/fixtures/radar/labels/axis-double-brackets-output.mmd)):
@@ -234,7 +234,7 @@ mermaid.js の文書の例は、値だけの曲線 14 件を内側を詰めて�
 
 [fixture: radar/curve-braces/named-entries-directive-after-brace]
 
-入力（escape 表記）: `"radar-beta\ncurve trial \t{ \t4, 5 \t}\n"`
+入力（エスケープ表記）: `"radar-beta\ncurve trial \t{ \t4, 5 \t}\n"`
 
 出力
 ([curve-braces/brace-tight-output.mmd](../tests/fixtures/radar/curve-braces/brace-tight-output.mmd)):
@@ -311,7 +311,7 @@ radar-beta
 
 [fixture: radar/multi-line-statements/protected-semicolon-later-semicolon-blank-lines]
 
-入力（escape 表記）: `"radar-beta\ncurve trial{4,\n%% entry note\n5\n}\n"`
+入力（エスケープ表記）: `"radar-beta\ncurve trial{4,\n%% entry note\n5\n}\n"`
 
 出力
 ([multi-line-statements/entry-comment-after-comma-output.mmd](../tests/fixtures/radar/multi-line-statements/entry-comment-after-comma-output.mmd)):
@@ -341,7 +341,7 @@ radar-beta
 
 [fixture: radar/named-entries/accessibility-identifiers]
 
-入力（escape 表記）:
+入力（エスケープ表記）:
 `"radar-beta\naxis North,South\ncurve trial{North 4,South:5}\n"`
 
 出力
@@ -358,7 +358,7 @@ radar-beta
 項目と ticks・max・min の数は `NumericLiteral` の原文の範囲を印字します。
 普通の十進表記は最短の形で印字し、`1.50` は `1.5`、`5.00` は `5` にします。
 （[同じに描かれる綴り](./compatibility.ja.md#同じに描かれる綴り)）。
-整数部の先頭のゼロ、丸められる精度、非正規化数、アンダーフロー、
+整数部の先頭のゼロ、丸められる精度、非正規化数、過小値の丸め、
 桁あふれの綴りを保ちます。
 倍精度浮動小数点数値からの再出力は綴りを失います。
 radar が拒否する指数表記や `Infinity` を出すこともあるためです。
@@ -381,7 +381,7 @@ radar が拒否する指数表記や `Infinity` を出すこともあるため�
 
 [corpus fixture: radar/db-option-overflow]
 
-入力（escape 表記）:
+入力（エスケープ表記）:
 `"radar-beta\ncurve trial{0004.5000,9007199254740993,0.12345678901234567890,0}\n"`
 
 出力
@@ -416,7 +416,7 @@ radar の描画設定から文の値を補いません。
 
 [corpus fixture: radar/config-frontmatter-options-cannot-reject]
 
-入力（escape 表記）:
+入力（エスケープ表記）:
 `"radar-beta\nshowLegend\t false,ticks\t7,max  8,min\t2,graticule\tpolygon\n"`
 
 出力
@@ -453,7 +453,7 @@ U+2029、バッククォート、`&`、`#`、`<` がある場合を除き、`"` 
 
 [fixture: radar/quotes/whitespace-only-labels]
 
-入力（escape 表記）:
+入力（エスケープ表記）:
 `"radar-beta\naxis North['single \"other\"'],South[\"double 'other'\"],East[\"\"]\ncurve trial['']{1,2,3}\n"`
 
 設定: `{"singleQuote": true}`
@@ -492,7 +492,7 @@ radar-beta
 
 [fixture: radar/title/title-quote-raw]
 
-入力（escape 表記）: `"radar-beta\ntitle\t  Topic  words\t \n"`
+入力（エスケープ表記）: `"radar-beta\ntitle\t  Topic  words\t \n"`
 
 出力
 ([title/title-edge-trim-output.mmd](../tests/fixtures/radar/title/title-edge-trim-output.mmd)):
@@ -527,7 +527,7 @@ radar-beta
 
 [fixture: radar/accessibility-lines/a11y-no-next-comment]
 
-入力（escape 表記）:
+入力（エスケープ表記）:
 `"radar-beta\naccTitle \t:   Access  words\t\naccDescr\t:   Detail  words \n"`
 
 出力
@@ -575,7 +575,7 @@ Db で LF 後の字下げが取り除かれるためです。
 
 [test: radar/description-blocks/unicode-empty]
 
-入力（escape 表記）:
+入力（エスケープ表記）:
 `"radar-beta\naccDescr{Word}\naccDescr { Word }\naccDescr{Left }\naccDescr { Right}\n"`
 
 出力
@@ -603,7 +603,7 @@ radar-beta
 
 [fixture: radar/multiline-values/physical-value-columns]
 
-入力（escape 表記）:
+入力（エスケープ表記）:
 `"radar-beta\naxis North[\"first\n   second\n\nlast\"]\ncurve trial['other\n  continuation']{4}\n"`
 
 出力
@@ -638,7 +638,7 @@ last"]
 
 [fixture: radar/source-order/mixed-curve-forms]
 
-入力（escape 表記）:
+入力（エスケープ表記）:
 `"radar-beta\ncurve trial{South:5,North:4,Extra:9,North:6}\naxis North,South,North\ncurve trial{7}\n"`
 
 出力
@@ -677,7 +677,7 @@ radar-beta
 
 [test: radar/comments/native-comment-ls-ps]
 
-入力（escape 表記）:
+入力（エスケープ表記）:
 `"radar-beta\naxis North[\"N%%literal\"]\naccDescr {a%%literal}\n"`
 
 出力
@@ -724,7 +724,7 @@ JSON 整形や集約はしません。
 
 [fixture: radar/global-directives/left-separated]
 
-入力（escape 表記）:
+入力（エスケープ表記）:
 `"radar-beta\naxis North%%{wrap}%%[%%{wrap}%%\"N\"%%{wrap}%%]\ncurve trial%%{wrap}%%{4}\n"`
 
 出力
@@ -744,8 +744,7 @@ radar-beta
 値は共通注釈類を除くため、値ではなく範囲を印字します。
 構成要素の間隙を本文の文に昇格せず、隠れた YAML・JSON を整形しません。
 空の内部、囲み記号 3 つによる 1 つの一致範囲、別々の一致範囲、
-後で有効になる閉じ記号、
-内部の大域的な処理やコメントによる分断を保ちます。
+後で有効になる閉じ記号、内部の大域的な処理やコメントによる分断を保ちます。
 普通の本文の開始記号は字下げできますが、内部と閉じ記号の列は保ちます。
 隠れた形の前に改行を新設しません。
 文字列と共通値が持つ隠れた形に見える文字も所有を保ちます。
@@ -803,7 +802,7 @@ radar-beta
 
 [corpus fixture: radar/hidden-yaml-adjacent-eof]
 
-入力（escape 表記）:
+入力（エスケープ表記）:
 `"radar-beta\naxis North%%{!open}%%\n[%%{!value}%%\n\"N\"%%{!close}%%\n]\n"`
 
 出力
@@ -862,7 +861,7 @@ EOL が不要な axis・curve・options でも、書かれた境界を保ちま�
 
 [fixture: radar/hidden-boundaries/header-axis-suffix]
 
-入力（escape 表記）: `"radar-beta%%{}%% axis A%%{}%%\n\ncurve c{1}"`
+入力（エスケープ表記）: `"radar-beta%%{}%% axis A%%{}%%\n\ncurve c{1}"`
 
 出力
 ([hidden-boundaries/header-axis-suffix-output.mmd](../tests/fixtures/radar/hidden-boundaries/header-axis-suffix-output.mmd)):
@@ -894,7 +893,7 @@ title と設定が変わりうるためです。
 
 [corpus fixture: radar/retained-directive-between-bare]
 
-入力（escape 表記）:
+入力（エスケープ表記）:
 `"\n---\ntitle: Ignored title\n---\nradar-beta\naxis North\n"`
 
 出力
@@ -955,7 +954,7 @@ radar に普通のセミコロン区切りはありません。
 
 [test: radar/semicolons/semicolon-ls-segment]
 
-入力（escape 表記）:
+入力（エスケープ表記）:
 `"radar-beta\ntitle style:#red;;\naxis North[\"classDef:#blue;;\"]\n"`
 
 出力
@@ -986,7 +985,7 @@ radar-beta
 
 [fixture: radar/blank-lines/hidden-end-blanks]
 
-入力（escape 表記）:
+入力（エスケープ表記）:
 `"\n\nradar-beta\n\n\naxis North\n \t\n\ncurve trial{4}\n\n"`
 
 出力
@@ -1017,7 +1016,7 @@ radar-beta
 
 [fixture: radar/trailing-whitespace/trailing-hidden-eof-kept]
 
-入力（escape 表記）:
+入力（エスケープ表記）:
 `"radar-beta \t\naxis North \t\ncurve trial{4} \t\nticks 7 \t\naccDescr {Detail} \t\n"`
 
 出力
@@ -1058,7 +1057,7 @@ radar-beta
 
 [fixture: radar/frontmatter-yaml/frontmatter-empty-title-fallback]
 
-入力（escape 表記）:
+入力（エスケープ表記）:
 `"---\ntitle:   Radar topic\nconfig: {theme: dark, radar: {width: 250}}\n---\nradar-beta\naxis North\n"`
 
 出力
@@ -1116,16 +1115,17 @@ LS・PS・NBSP・BOM は字句上の役割を保ち、一般的な間隙には�
 
 [test: radar/line-terminators-and-unicode/description-content]
 
-入力（escape 表記）: `"radar-beta\raxis North\rcurve trial{4}\r"`
+入力（エスケープ表記）: `"radar-beta\raxis North\rcurve trial{4}\r"`
 
-出力（escape 表記）: `"radar-beta\n  axis North\n  curve trial{4}\n"`
+出力（エスケープ表記）: `"radar-beta\n  axis North\n  curve trial{4}\n"`
 
 ### Final newline
 
 普通の受理入力は設定された改行 1 個で終えます。
 空の本文と共通行、完了した説明、コメント、閉じた隠れた形も同じです。
 普通の末尾空行を除き、ファイル末尾をそろえます。
-EOF に届く大域的なディレクティブの末尾と必要な隠れた形・前置部分の境界は保ちます。
+EOF
+に届く大域的なディレクティブの末尾と必要な隠れた形・前置部分の境界は保ちます。
 その内部に文字を追加しません。
 
 [fixture: radar/final-newline/final-comment]
@@ -1140,7 +1140,7 @@ EOF に届く大域的なディレクティブの末尾と必要な隠れた形�
 
 [corpus fixture: radar/c4-container-header-eof]
 
-入力（escape 表記）: `"radar-beta\naccDescr {Detail}%%{!suffix}%%"`
+入力（エスケープ表記）: `"radar-beta\naccDescr {Detail}%%{!suffix}%%"`
 
 出力
 ([final-newline/final-hidden-closed-output.mmd](../tests/fixtures/radar/final-newline/final-hidden-closed-output.mmd)):

@@ -201,8 +201,9 @@ architecture-beta
 
 ### Text icons
 
-StringLiteral の範囲全体を保ちます。
-単引用符・二重引用符・反対側の引用符・空文字・エスケープ・空白・継続行も保持します。
+`StringLiteral` の範囲全体を保ちます。
+単引用符、二重引用符、反対側の引用符、空文字、エスケープ、空白、
+継続行も保持します。
 ただし、テキストの中の空白とタブの連なりは、
 空白 1 つにして印字します（[ラベルの内容](#label-content)を参照）。
 `singleQuote` では書き換えません。
@@ -222,7 +223,8 @@ StringLiteral の範囲全体を保ちます。
 
 [corpus fixture: architecture/directive-empty-text-icon]
 
-入力（エスケープ表記）: `"architecture-beta\nservice double\"a'\\n\\t\\q\\\\b\"\n"`
+入力（エスケープ表記）:
+`"architecture-beta\nservice double\"a'\\n\\t\\q\\\\b\"\n"`
 
 設定: `{"singleQuote": true}`
 
@@ -244,8 +246,7 @@ mermaid.js は余白を除いて引用符を外し `x` と読むので、
 `["x"]` や `[x]` と同じに読みます。
 印字は引用符つきのラベルと同じで、
 `service padded [ "x" ]` は `service padded[x]` になります。
-引用符に見えても引用符付きとして読まれなかったテキストは、
-引用符なしのままにし、
+引用符に見えても引用符付きとして読まれなかったテキストは、引用符なしのままにし、
 変換後の文字から種別を推測しません。
 
 [fixture: architecture/label-forms/backslash-fallback]
@@ -326,10 +327,18 @@ mermaid.js は、読むタイトルの外側の `"` か `'` の引用符 1 組�
 mermaid.js はラベルを、1 つの空白で区切った語ごとに描くので、タブだけの連続と、
 空白にはさまれたタブは、別の語になります。
 `"A<タブ>B"` は `A<タブ>B` と印字します。
+これらの語は、mermaid.js がタイトルから残すものです。
+角括弧を外し、両端の空白を除き、外側の引用符 1 組を外して、
+再び両端の空白を除きます。
+語の中や、語の中の角括弧の隣にある引用符も、ほかと同じく語の文字なので、
+その隣のタブも残します。
+`["A'<タブ>B"]` と `["A[<タブ>B"]` は書かれたまま印字します。
 [fixture: quotes/labels-without-quotes]
+[fixture: quotes/labels-with-punctuation-without-quotes]
 [fixture: quotes/labels-that-need-quotes]
 [fixture: quotes/labels-with-runs-without-quotes]
 [fixture: quotes/labels-with-tab-words-kept]
+[fixture: quotes/labels-with-quotes-beside-tab-words-kept]
 
 入力
 ([quotes/labels-without-quotes-input.mmd](../tests/fixtures/architecture/quotes/labels-without-quotes-input.mmd)):
@@ -610,8 +619,8 @@ architecture-beta
 
 ### Title
 
-共有の共通行処理を使い、
-`title value` の両端から、共通規則が読む空白だけを除きます。
+共有の共通行処理を使い、`title value` の両端から、
+共通規則が読む空白だけを除きます。
 `null` と空白だけの値は `title` とし、同じ意味の外側の空白を詰めます。
 注釈類を挟んでも次の物理行を値にしません。
 architecture の要約が title を公開しなくても、文と内容を保ちます。
@@ -656,7 +665,8 @@ architecture-beta
 ### Accessibility lines
 
 共有の `accTitle: value` と `accDescr: value` を使います。
-コロンをキーワードに付け、両端の空白を除いた非空値の前は空白1個、空ならコロンで終えます。
+コロンをキーワードに付け、両端の空白を除いた非空値の前は空白1個、
+空ならコロンで終えます。
 これにより外側の空白を統一します。
 次行の文を取り込まず、コロン後の波括弧は行値のまま保ちます。
 保護された注釈類と隠れた形の隙間を優先します。
@@ -892,7 +902,7 @@ architecture-beta
 `textAfter` の所有ノードごとに1回だけ保ち、
 注釈類を除いた値でなく原文の全範囲を使います。
 図固有の YAML と DIRECTIVE は不透明で、
-フロントマター や `Root` ディレクティブではありません。
+フロントマターや `Root` ディレクティブではありません。
 本文の開始は字下げできますが、内部列と閉じの列を保ちます。
 3 つの囲みの一致、別々の形、後の有効な閉じ、内部の大域的な切れ目を保ちます。
 先行する値は隠れた形に見える文字を所有し、
@@ -1051,7 +1061,8 @@ architecture-beta%%{}%% group a%%{}%%
 
 通常の ASCII 空行は文・注釈類間に最大1行残し、本文・文書端では除きます。
 過剰な空白を除きながら、見た目のまとまりを保つためです。
-値の内部、保持する前置部分、保護区間、隠れた形の境界に必要な LF は各規則に従います。
+値の内部、保持する前置部分、保護区間、
+隠れた形の境界に必要な LF は各規則に従います。
 
 [fixture: architecture/blank-lines/blank-collapse]
 
@@ -1184,8 +1195,8 @@ architecture-beta
 [fixture: semicolons/crossing-comment]
 保護された見出し・最初の文は一緒に保ちます。
 選択された1個の削除や style・classDef の条件を満たす語の移動は、
-別のセミコロンを選んで Db を変え得るため、2 回の走査、条件を満たさない語、entity、
-値の物理行、大域的な除去で結合する条件を満たす語を保ちます。
+別のセミコロンを選んで Db を変え得るため、2 回の走査、条件を満たさない語、
+entity、値の物理行、大域的な除去で結合する条件を満たす語を保ちます。
 
 [fixture: architecture/semicolons/native-service-value]
 
@@ -1236,10 +1247,10 @@ architecture-beta
 
 共有の埋め込み先方針で物理 CR・CRLF を LF にし、設定の `endOfLine` を出します。
 値と隠れた形の内部も同じです。
-内容の LS・PS・NBSP・BOM は保ち、
-共通の行値の端からだけ、共通規則が読む空白を除きます。
+内容の LS・PS・NBSP・BOM は保ち、共通の行値の端からだけ、
+共通規則が読む空白を除きます。
 構造の非 ASCII 区切りは拒否のままです。
-先頭 BOM はバイト同一性でなく 埋め込み先の Prettierの処理に従います。
+先頭 BOM はバイト同一性でなく埋め込み先の Prettierの処理に従います。
 
 [corpus fixture: architecture/hidden-yaml-crlf]
 
@@ -1394,7 +1405,8 @@ architecture に受理を決める設定キーはなく、検出は C4 より前
 生の拒否から生の Db を作りません。
 拒否構文を修復せず、単独整形は出力のない構文エラー、
 Markdown は埋め込みを辞退します。
-空の引用符付きアイコン・ラベル、空の説明、図固有の隠れた形に新しい差分は不要です。
+空の引用符付きアイコン・ラベル、空の説明、
+図固有の隠れた形に新しい差分は不要です。
 
 [corpus fixture: architecture/div-frontmatter-invalid-yaml]
 
@@ -1419,7 +1431,7 @@ Markdown は埋め込みを辞退します。
 ### Markdown fences
 
 共有の Markdown 経路で字下げを除いた図の本文に同じ規則を適用します。
-囲み・リスト・引用 の字下げと EOL は埋め込み先が用意します。
+囲み・リスト・引用の字下げと EOL は埋め込み先が用意します。
 最後の隠れた形の余白を含め、図の本文の最終行の余白は埋め込み先が除きますが、
 内部の隠れた形の境界は必要です。
 埋め込み先の出力と冪等性は図の本文の Db・原文保持と別に確認します。

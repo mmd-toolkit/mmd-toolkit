@@ -51,14 +51,14 @@ agentflowが受理する見出しは小文字の`agentflow-beta`だけです。
 [fixture: header/header-column] [fixture: header/header-direction-spelling]
 [fixture: header/header-inline-separated]
 [fixture: header/header-next-line-direction] [fixture: header/header-symbol]
-[fixture: header/header-direction-after-directive-kept]
+[fixture: header/header-direction-spelling-after-directive]
 記号の方向は、
 [flowchart](./flowchart.ja.md#方向)と同じく空白 1 つの後に置きます。
 `agentflow-beta<` は `agentflow-beta <` と印字します。
 [fixture: header/header-symbol-touching-spaced]
 [test: agentflow: U+2028 between the header keyword and its direction]
 
-入力（escape 表記）: `"agentflow-beta"`。 [fixture: header/header-only]
+入力（エスケープ表記）: `"agentflow-beta"`。 [fixture: header/header-only]
 
 出力
 ([header/header-only-output.mmd](../tests/fixtures/agentflow/header/header-only-output.mmd)):
@@ -83,7 +83,7 @@ styleで始まる方向行は拒否されるためです。
 [fixture: indentation/indent-nested] [fixture: indentation/indent-tabs]
 [fixture: indentation/indent-zero]
 
-入力（escape 表記）: `"agentflow-beta TB\nflow F\nA\nend"`。
+入力（エスケープ表記）: `"agentflow-beta TB\nflow F\nA\nend"`。
 [fixture: indentation/indent-four]
 
 出力
@@ -123,7 +123,7 @@ mermaid.js がタイトルを折り返すので、書かれたまま残します
 [fixture: containers/flow-markdown-name-title-collapsed-runs-kept]
 [fixture: containers/flow-two-part-name-title-collapsed-runs-kept]
 
-入力（escape 表記）: `"agentflow-beta TB\nglobal\t \nA\nend B"`。
+入力（エスケープ表記）: `"agentflow-beta TB\nglobal\t \nA\nend B"`。
 [fixture: containers/global-tabs]
 
 出力
@@ -184,8 +184,8 @@ flowchart と同じ形で、agentflowだけ違う形を選ぶ理由がないた�
 [fixture: names-and-headings/name-heading-title-beside-directive]
 [fixture: names-and-headings/name-heading-title-gap-run-beside-directive]
 [test: agentflow: a comment and U+2028 between a flow name and its title]
-行の規則が読む可能性のある行の `:` と `#` の間の隙間は、
-flowchart と同じく、空白があるかないかを保ちます。
+行の規則が読む可能性のある行の `:` と `#` の間の隙間は、flowchart と同じく、
+空白があるかないかを保ちます。
 [fixture: names-and-headings/name-heading-title-after-colon-before-hash]
 隙間の U+2028 と U+2029 は、そのまま残します。
 [test: agentflow: U+2028 between a flow name and its title]
@@ -315,7 +315,7 @@ flowとconnectorの名前、空白、タブ、空白の連続、LFが続く区�
 [fixture: names-and-headings/empty-description-tab-connector]
 [fixture: names-and-headings/empty-description-two-spaces-connector]
 
-入力（escape 表記）: `"agentflow-beta TB\nflow F accDescr {} ;A\nend"`。
+入力（エスケープ表記）: `"agentflow-beta TB\nflow F accDescr {} ;A\nend"`。
 [fixture: names-and-headings/empty-description-space-flow]
 
 出力
@@ -430,7 +430,7 @@ mermaid.js が `class A, B c` のような空白のある形を拒否するか�
 詳しくは [コンマで区切る一覧](./compatibility.ja.md#コンマで区切る一覧)
 を参照してください。 [fixture: single-space-gaps/comma-lists-without-space-kept]
 
-入力（escape 表記）: `"agentflow-beta TB\nA\nclass\tA\tc\n"`。
+入力（エスケープ表記）: `"agentflow-beta TB\nA\nclass\tA\tc\n"`。
 [fixture: single-space-gaps/class-required-tab]
 
 出力
@@ -480,7 +480,7 @@ agentflowでは、`--`、`-.-`、`-..-`で始まる辺IDがそれに当たりま
 前に空白を1つ置きます。 [fixture: arrows/edge-id-arrow-like-kept-attached]
 [fixture: arrows/edge-id-not-arrow-like-gets-one-space]
 
-入力（escape 表記）: `"agentflow-beta TB\nA--xB"`。
+入力（エスケープ表記）: `"agentflow-beta TB\nA--xB"`。
 [fixture: arrows/arrow-kind-change-unsafe]
 
 出力
@@ -523,7 +523,7 @@ Markdown ラベルは矢印の間には印字できず、
 [fixture: edge-labels/pipe-string-closing-touches]
 [test: agentflow: U+2028 between the closing quote and the `|` of an edge label]
 
-入力（escape 表記）: `"agentflow-beta TB\nA --> |x| B"`。
+入力（エスケープ表記）: `"agentflow-beta TB\nA --> |x| B"`。
 [fixture: edge-labels/pipe-label-gap]
 
 出力
@@ -557,7 +557,7 @@ flow/connectorの見出しのタイトルは、
 flowchartと同じ理由で、`[ T ]`を含め括弧の内側の空白を落とします。
 [fixture: names-and-headings/name-heading-touches-title]
 
-入力（escape 表記）: `"agentflow-beta TB\nA[text]"`。
+入力（エスケープ表記）: `"agentflow-beta TB\nA[text]"`。
 [fixture: labels/labels-quote-unsafe]
 
 出力
@@ -585,7 +585,7 @@ IDの分割、並べ替え、末尾コンマの補完はしません。
 [fixture: vertices-and-lists/class-list-holes]
 [fixture: vertices-and-lists/groups-suffixes]
 
-入力（escape 表記）: `"agentflow-beta TB\nA&B"`。
+入力（エスケープ表記）: `"agentflow-beta TB\nA&B"`。
 [fixture: vertices-and-lists/ampersand-id]
 
 出力
@@ -604,7 +604,8 @@ agentflow-beta TB
 未知キーとプロトタイプ名のキー、スカラー、配列、空、複数行の内容を保ちます。
 agentflow の後の振り分けや別名解決を根拠に YAML を書き換えたり、
 結合したりしません。
-内容だけの拒否には仕様の不透明な読みを使い、素の mermaid.js の拒否にはDbがありません。
+内容だけの拒否には仕様の不透明な読みを使い、
+素の mermaid.js の拒否にはDbがありません。
 区切り記号の不備は拒否のままです。 [fixture: metadata-blocks/metadata-adjacent]
 [fixture: metadata-blocks/metadata-alias-rewrite-unsafe]
 [fixture: metadata-blocks/metadata-multiline]
@@ -640,10 +641,11 @@ agentflow の後の振り分けや別名解決を根拠に YAML を書き換え�
 
 ほかの移動条件と理由は、
 [データブロック](./flowchart.ja.md#データブロック)に従います。
-開きの行に本文があるブロック、内部のディレクティブ、行全体を保つ行、幅 0 の字下げ、
-文の最初の行より後から始まるブロックは、書かれたまま残します。
+開きの行に本文があるブロック、内部のディレクティブ、行全体を保つ行、
+幅 0 の字下げ、文の最初の行より後から始まるブロックは、書かれたまま残します。
 `useTabs` では、複数行のブロックを持つ文全体を書かれたまま印字します。
-前後のコメント、ディレクティブ、空の説明、空行、区切りはそれぞれの規則に従います。
+前後のコメント、ディレクティブ、空の説明、空行、
+区切りはそれぞれの規則に従います。
 [fixture: metadata-blocks/inline-and-directive-kept]
 [fixture: metadata-blocks/kept-body-line]
 [fixture: metadata-blocks/zero-width-kept]
@@ -684,7 +686,7 @@ agentflow の後の振り分けや別名解決を根拠に YAML を書き換え�
 [fixture: metadata-blocks/container-header-adjacent-kept]
 [fixture: metadata-blocks/connector-adjacent-single-line-kept]
 
-入力（escape 表記）: `"agentflow-beta TB\nA@{}@{\n}"`。
+入力（エスケープ表記）: `"agentflow-beta TB\nA@{}@{\n}"`。
 [fixture: metadata-blocks/metadata-empty]
 
 出力
@@ -715,7 +717,7 @@ agentflow が受け付ける行の途中の `%%` コメントのテキストを�
 `C[style:]-->D %%{init:{"x":"#;"}}%%` はほかの行と同じく空白を入れて印字します。
 [fixture: semicolons/line-rule-comment-read]
 
-入力（escape 表記）: `"agentflow-beta TB\nA;B;; ;"`。
+入力（エスケープ表記）: `"agentflow-beta TB\nA;B;; ;"`。
 [fixture: semicolons/semicolons-top]
 
 出力
@@ -758,7 +760,7 @@ flowchartが頂点として読むパーセント文字の扱いを適用しま�
 [fixture: kept-lines/open-directive-semicolon]
 [corpus fixture: agentflow/lex-style-trigger-ls-segment]
 
-入力（escape 表記）: `"agentflow-beta TB\nA[Style:#x;y]"`。
+入力（エスケープ表記）: `"agentflow-beta TB\nA[Style:#x;y]"`。
 [fixture: kept-lines/line-rule-nonmatch]
 
 出力
@@ -781,7 +783,7 @@ agentflowのコメントはLFを残し、後続の空行を取りません。
 [fixture: blank-lines/blank-comment-content] [fixture: blank-lines/blank-runs]
 [fixture: blank-lines/blank-value]
 
-入力（escape 表記）: `"agentflow-beta TB\nA\n%% c\n\n\nB"`。
+入力（エスケープ表記）: `"agentflow-beta TB\nA\n%% c\n\n\nB"`。
 [fixture: blank-lines/blank-comments]
 
 出力
@@ -816,7 +818,7 @@ agentflowではセミコロンや説明の閉じ記号の後も実コメント�
 裸の%%と仕様が受理する見出し前のパーセント波括弧コメントも保ちます。
 上限超過時の共通領域は既定のサイズによる分岐に従います。
 
-入力（escape 表記）: `"agentflow-beta TB\nA;%% c\nB"`。
+入力（エスケープ表記）: `"agentflow-beta TB\nA;%% c\nB"`。
 [fixture: comments/comment-after-semicolon]
 
 出力
@@ -847,10 +849,10 @@ Dbは同じで、agentflowだけ見出しに付ける理由がないためです
 
 EOFまで未閉鎖の末尾と、ディレクティブを止めるセミコロンを保ちます。
 名前の文字、最初のstyleの空白、ラベルコメント脇の空白が一般規則に優先します。
-トークン内のディレクティブは仕様の拒否のままで、受理する文字やデータを修復しません。
-[fixture: directives/directive-eof]
+トークン内のディレクティブは仕様の拒否のままで、
+受理する文字やデータを修復しません。 [fixture: directives/directive-eof]
 
-入力（escape 表記）: `"agentflow-beta TB;%%{init: {}}%%A"`。
+入力（エスケープ表記）: `"agentflow-beta TB;%%{init: {}}%%A"`。
 [fixture: directives/header-init-directive-touching-body]
 
 出力
@@ -865,7 +867,8 @@ agentflow-beta TB
 
 agentflowは既定でコメントを保ち、50000 UTF-16単位を超えると読みが変わるため、
 flowchartとは別の規則です。
-frontmatterとディレクティブを除き、CRLFを1単位、サロゲート対を2単位として測ります。
+frontmatterとディレクティブを除き、CRLFを1単位、
+サロゲート対を2単位として測ります。
 [fixture: default-size-branches/size-utf16-surrogate]
 50000以上なら図の全文と末尾をそのまま保ちます。
 [fixture: default-size-branches/size-preserving-to-fallback-unsafe]
@@ -907,7 +910,8 @@ Mermaidは順に試す方向の選択肢と、その選択肢内の最後の出�
 
 非方向行の字下げでdirectionと、その後の空白とTB/BT/RL/LR/TDが、
 方向文として読まれる場合は元の桁位置を保ちます。
-ディレクティブを除いた文字と、アクセシビリティの語に次行の値を結合した文字で見ます。
+ディレクティブを除いた文字と、
+アクセシビリティの語に次行の値を結合した文字で見ます。
 小文字などの似た綴りは該当しません。
 逆に、実際の方向文は`tabWidth: 0`でも本文の字下げを正にします。
 アクセシビリティやstyleの前置きが1桁目の優先順位を取り戻さないためです。
@@ -917,7 +921,7 @@ Mermaidは順に試す方向の選択肢と、その選択肢内の最後の出�
 [fixture: direction/zero-description-indented]
 [fixture: direction/zero-style-direction]
 
-入力（escape 表記）: `"agentflow-beta TB\nflow F\ndirection TD\nA\nend"`。
+入力（エスケープ表記）: `"agentflow-beta TB\nflow F\ndirection TD\nA\nend"`。
 [fixture: direction/direction-td-change-unsafe]
 
 出力
@@ -960,7 +964,8 @@ flowchartと異なり、コロンの後のコメントらしい行も値の文�
 その行を値としてつなぎ、次の文を別に保ちます。
 [fixture: accessibility/next-line-percent-value]
 文中にディレクティブがあれば通常の結合をせず、従来の複数行の文の配置を保ちます。
-継続行とディレクティブ行をキーワードより1段深く置き、文字と著者の改行を保ちます。
+継続行とディレクティブ行をキーワードより1段深く置き、
+文字と著者の改行を保ちます。
 flowchartの継続行の規則を同じ理由で再利用するためです。
 [fixture: accessibility/inline-directive-kept]
 [fixture: accessibility/next-line-directive-kept]
@@ -1049,7 +1054,7 @@ flowchart と異なり、コメントに見える説明行も値であり、
 [fixture: accessibility/accessibility-lines]
 [fixture: accessibility/accessibility-open-eof]
 
-入力（escape 表記）:
+入力（エスケープ表記）:
 `"agentflow-beta TB\naccTitle:Compact title\naccDescr:Compact description"`。
 
 出力
@@ -1061,7 +1066,7 @@ agentflow-beta TB
   accDescr: Compact description
 ```
 
-入力（escape 表記）: `"agentflow-beta TB\naccDescr {a}\nA[Block spacing]"`
+入力（エスケープ表記）: `"agentflow-beta TB\naccDescr {a}\nA[Block spacing]"`
 
 出力
 ([accessibility/block-tight-text-output.mmd](../tests/fixtures/agentflow/accessibility/block-tight-text-output.mmd)):
@@ -1072,7 +1077,7 @@ agentflow-beta TB
   A["Block spacing"]
 ```
 
-入力（escape 表記）:
+入力（エスケープ表記）:
 `"agentflow-beta TB\naccDescr: previous description\naccDescr { }\nA[Empty spacing]"`
 
 出力
@@ -1085,7 +1090,7 @@ agentflow-beta TB
   A["Empty spacing"]
 ```
 
-入力（escape 表記）:
+入力（エスケープ表記）:
 `"agentflow-beta TB\naccTitle:\n%%{init: {}}%%\nTitle after directive\nA[Continuation]"`。
 
 出力
@@ -1108,7 +1113,8 @@ agentflow-beta TB
 
 [複数行の文](./flowchart.ja.md#複数行の文)と、
 [複数行の値](./flowchart.ja.md#複数行の値)を同じ理由で再利用します。
-改行位置は著者が選び、[アクセシビリティ](#accessibility) の説明本文の字下げを除き、
+改行位置は著者が選び、
+[アクセシビリティ](#accessibility) の説明本文の字下げを除き、
 値の後続行の桁位置は文字だからです。
 通常の継続トークンはさらに1段深くします。
 文字列、markdown、分割文字、Name、データ、ディレクティブ、
@@ -1123,7 +1129,7 @@ agentflowが閉じ波括弧の後で畳むのは直後のLF前の行空白だけ
 [fixture: multiline-statements-and-values/multiline-chain]
 [fixture: multiline-statements-and-values/multiline-string]
 
-入力（escape 表記）: `"agentflow-beta TB\nA\nclick A\ncb"`。
+入力（エスケープ表記）: `"agentflow-beta TB\nA\nclick A\ncb"`。
 [fixture: multiline-statements-and-values/multiline-click]
 
 出力
@@ -1150,7 +1156,7 @@ Dbの正規化で等しくても、ドメインの形、数値やプロトタイ
 [fixture: chains-and-line-wrapping/long-chain]
 [fixture: chains-and-line-wrapping/order-repeated]
 
-入力（escape 表記）: `"agentflow-beta TB\nA[first]\nA[second]"`。
+入力（エスケープ表記）: `"agentflow-beta TB\nA[first]\nA[second]"`。
 [fixture: chains-and-line-wrapping/order-sort-unsafe]
 
 出力
@@ -1182,7 +1188,7 @@ agentflow-beta TB
 バックスラッシュで終わる `linkStyle` は、その後の空白も 1 文字として保ちます。
 [fixture: trailing-whitespace/link-style-backslash-at-end-kept]
 
-入力（escape 表記）:
+入力（エスケープ表記）:
 `"agentflow-beta TB\nA   \nA-->B \t\nstyle A fill:red \t"`。
 [fixture: trailing-whitespace/trailing-exterior]
 
@@ -1460,7 +1466,7 @@ frontmatterをまたぐHTMLには本文だけを見る仕様を使い、
 [fixture: frontmatter-yaml/frontmatter-zero-block-scalar]
 [fixture: frontmatter-yaml/frontmatter-zero-width]
 
-入力（escape 表記）: `"---\ntitle: [\n---\nagentflow-beta TB\nA"`。
+入力（エスケープ表記）: `"---\ntitle: [\n---\nagentflow-beta TB\nA"`。
 [fixture: frontmatter-yaml/frontmatter-invalid]
 
 出力
@@ -1487,7 +1493,7 @@ EOFで終わるディレクティブには値の文字を足しません。
 [fixture: final-newline/final-comment]
 [fixture: final-newline/final-open-description]
 
-入力（escape 表記）: `"agentflow-beta TB\nA\n\n\n"`。
+入力（エスケープ表記）: `"agentflow-beta TB\nA\n\n\n"`。
 [fixture: final-newline/final-ordinary]
 
 出力
@@ -1503,8 +1509,8 @@ agentflow-beta TB
 [Markdown のコードブロック](./compatibility.ja.md#markdown-のコードブロック)
 と同じく、外側の字下げを除いた図に単独ファイルと同じ規則を使います。
 コードブロックの囲み、リスト、引用の字下げはMarkdownが付けます。
-最上位、入れ子リスト、引用、設定、値、ディレクティブ、Name、大きな保持本文について、
-ホストと字下げを除いたDbを別に確認します。
+最上位、入れ子リスト、引用、設定、値、ディレクティブ、Name、
+大きな保持本文について、ホストと字下げを除いたDbを別に確認します。
 Prettierはブロック最終行の末尾空白を落とし、
 最後の空白だけのstyleが拒否され得ます。
 この制限は処理を返した失敗入力にも適用し、
@@ -1512,7 +1518,7 @@ Prettierはブロック最終行の末尾空白を落とし、
 サイズ境界は外側の字下げを除いた本文で判断します。
 [fixture: markdown-fences/markdown-list-payload]
 
-入力（escape 表記）: `"agentflow-beta TB\nA-->B"`。
+入力（エスケープ表記）: `"agentflow-beta TB\nA-->B"`。
 [fixture: markdown-fences/markdown-top-payload]
 
 出力
@@ -1581,7 +1587,7 @@ mermaid.js はどちらの書き方も同じ呼び出しとして読むからで
 [fixture: click-statements/string-over-lines-keyword-gap]
 [fixture: click-statements/callback-parentheses-over-lines]
 
-入力（escape 表記）: `"agentflow-beta TB\nA\nclick   A cb\n"`。
+入力（エスケープ表記）: `"agentflow-beta TB\nA\nclick   A cb\n"`。
 [fixture: click-statements/click-keyword-gap]
 
 出力

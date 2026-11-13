@@ -620,14 +620,17 @@ whether whitespace lies between a `:` and a `#`. Each bare value is one written
 `VennLiteral`. A run of spaces and tabs between its atoms, outside the
 parentheses of an rgb/rgba token, is printed as one space: mermaid.js joins the
 atoms with one space, so the Db is the same, and whether whitespace stands
-between two atoms stays as written. Space inside an rgb/rgba token is different:
-changing a component gap changes the Db, and so does quoting a joined bare
-value; a quoted value is printed without quotes as [Quotes](#quotes) says, and
-whole rgb/rgba tokens, key case, repetitions and separate statements stay as
-written. A kept prefix overrides punctuation spacing so colon-to-hash gaps
-cannot change semicolon selection. [corpus fixture:
-venn/div-c4-bare-style-value] [corpus fixture: venn/db-style-case-and-order]
-[corpus fixture: venn/db-style-colon-value-inline-directive] [corpus fixture:
+between two atoms stays as written. A comment line inside the parentheses
+(`style A fill:rgb(1,`, a line `%% ) x  y`, and `2,3)`) is removed before the
+value is read, so its characters, a `)` among them, are no part of the value and
+stay as written. Space inside an rgb/rgba token is different: changing a
+component gap changes the Db, and so does quoting a joined bare value; a quoted
+value is printed without quotes as [Quotes](#quotes) says, and whole rgb/rgba
+tokens, key case, repetitions and separate statements stay as written. A kept
+prefix overrides punctuation spacing so colon-to-hash gaps cannot change
+semicolon selection. [corpus fixture: venn/div-c4-bare-style-value] [corpus
+fixture: venn/db-style-case-and-order] [corpus fixture:
+venn/db-style-colon-value-inline-directive] [corpus fixture:
 venn/db-style-property-colon-inline-directive] [corpus fixture:
 venn/db-style-prototype-keys] [corpus fixture: venn/db-style-unknown] [corpus
 fixture: venn/lex-directive-style-value-color] [corpus fixture:
@@ -646,6 +649,7 @@ venn/style-properties/colon-directive-before-hash-kept] [corpus fixture:
 venn/db-form-style-rgb] [fixture:
 venn/style-properties/style-color-space-differs] [fixture:
 venn/style-properties/word-run-directive-parenthesis-kept] [fixture:
+venn/style-properties/style-parentheses-comment-line-kept] [fixture:
 venn/style-properties/style-common-comment] [fixture:
 venn/style-properties/style-order-kept] [fixture:
 venn/style-properties/style-property-spacing] [fixture:

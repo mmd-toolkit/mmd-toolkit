@@ -63,7 +63,7 @@ mermaid.js の読み方を保ち、Db が同じ複数の形から選ぶ場合は
 [fixture: venn/header/header-title]
 [fixture: venn/header/header-trailing-comment]
 
-入力（escape 表記）:
+入力（エスケープ表記）:
 
 ```json
 "venn-beta set A"
@@ -84,7 +84,7 @@ venn-beta
 [corpus fixture: venn/div-c4-bare-identifier]
 [fixture: venn/header/div-c4-detector]
 
-入力（escape 表記）:
+入力（エスケープ表記）:
 
 ```json
 "venn-beta\nset \"C4Container\""
@@ -152,7 +152,7 @@ mermaid.js は `set`、`union`、`style`、`title` の前の字下げを読み�
 [fixture: venn/indentation/mode-reenabled]
 [fixture: venn/indentation/union-positive-widths]
 
-入力（escape 表記）:
+入力（エスケープ表記）:
 
 ```json
 "venn-beta\n    set A\n         text one\n text two"
@@ -202,7 +202,7 @@ title は行の残りを値として取るので、title の後の文に見え�
 [fixture: venn/statements-one-per-line/statements-split]
 [fixture: venn/statements-one-per-line/title-not-two-statements]
 
-入力（escape 表記）:
+入力（エスケープ表記）:
 
 ```json
 "venn-beta set A   style A fill : red\n text item"
@@ -305,7 +305,7 @@ venn-beta
 [fixture: venn/comments/ignored-fragment]
 [fixture: venn/comments/ignored-line-preserves-mode]
 
-入力（escape 表記）:
+入力（エスケープ表記）:
 
 ```json
 "venn-beta\nset A Q%% note\n text item"
@@ -346,7 +346,7 @@ Venn は、コンマの隣の空白があってもなくても、
 [fixture: venn/name-lists/names-comma] [corpus fixture: venn/db-form-set]
 [fixture: venn/name-lists/quoted-keyword]
 
-入力（escape 表記）:
+入力（エスケープ表記）:
 
 ```json
 "venn-beta\nset A\nset \"B\"\nunion A ,\"B\" , A\ntext A , \"B\" item\nstyle A ,\"B\" fill:red"
@@ -367,12 +367,12 @@ text A, "B" item
 ### Labels
 
 角括弧ラベルは名前か text の id に接し、短い接尾部にします。
-内部の全ての文字を保ちますが、mermaid.js が trim する括弧に接する空白、タブ、
-no-break space は除き、[Quotes](#quotes)のとおりに引用符つきで印字します。
+内部の全ての文字を保ちますが、mermaid.js が除く、括弧に接する空白、タブ、
+改行しない空白は除き、[引用符](#quotes)のとおりに引用符つきで印字します。
 `set A[ L ]` は `set A["L"]` になります。
 ディレクティブを含むラベルは、書かれたまま残します。
 保つ `;` のある行でも空白は落とします。
-ただし、[Line rule and kept lines](#line-rule-and-kept-lines)のとおり、
+ただし、[行の規則と保持する行](#line-rule-and-kept-lines)のとおり、
 行の規則が読む範囲は除きます。
 その範囲の外の空白を落としても `;` は動かないので、
 行の規則は同じ `;` を選びます。
@@ -426,7 +426,7 @@ U+2028 や U+2029 を含む空白は、書かれたまま残します。
 [fixture: venn/labels/quoted-label-padding-trim-equal]
 [fixture: venn/labels/suffix-spacing]
 
-入力（escape 表記）:
+入力（エスケープ表記）:
 
 ```json
 "venn-beta\nset A [ L ] : 002.00\n text item [\" Label \"]"
@@ -535,8 +535,8 @@ mermaid.js が引用符のない値の語を空白 1 つで結ぶためです。
 [fixture: quotes/names-without-quotes] [fixture: quotes/names-that-need-quotes]
 [fixture: quotes/style-values-without-quotes]
 
-ラベルのテキストは、角括弧の間のテキストから、
-mermaid.js が trim する括弧に接する空白、タブ、no-break space を除いたものです。
+ラベルのテキストは、角括弧の間のテキストから、mermaid.js と同じく、
+括弧に接する空白、タブ、改行しない空白を除いたものです。
 `set A[ Alpha ]` は `set A["Alpha"]` になり、
 `set D[" Padded "]` は書かれたままです。
 空白だけのラベル（`[ ]` の Db にラベルはなく、
@@ -634,7 +634,7 @@ mermaid.js がテキストとして読むため、綴りを保ちます。
 [fixture: venn/sizes-and-numbers/text-number-spelling-differs-control]
 [fixture: venn/sizes-and-numbers/text-number-spelling-differs]
 
-入力（escape 表記）:
+入力（エスケープ表記）:
 
 ```json
 "venn-beta\nset A : +02.50 set B: -.5 union A,B : 007\n text 007"
@@ -670,6 +670,9 @@ mermaid.js の行の規則は、コロンとハッシュの間に空白がある
 単位の間の空白とタブの連続は、rgb・rgba の括弧の外では空白 1 つにします。
 mermaid.js は単位を空白 1 つで結ぶので、Db は同じです。
 単位と単位の間に空白があるかどうかは、書かれたまま保ちます。
+括弧の中のコメント行（`style A fill:rgb(1,`、`%% ) x  y` の行、`2,3)`）は、
+値を読む前に除かれるので、その文字（`)` も）は値の一部ではなく、
+書かれたまま残ります。
 rgb・rgba の内部の空白は別で、成分の隙間を変えると Db が変わり、
 結んだ裸の値を引用符で囲んでも変わります。
 引用符つきの値は、[Quotes](#quotes)のとおり、引用符なしで印字します。
@@ -698,6 +701,7 @@ rgb・rgba のトークン全体、キーの大小文字、重複と別々の文
 [corpus fixture: venn/db-form-style-rgb]
 [fixture: venn/style-properties/style-color-space-differs]
 [fixture: venn/style-properties/word-run-directive-parenthesis-kept]
+[fixture: venn/style-properties/style-parentheses-comment-line-kept]
 [fixture: venn/style-properties/style-common-comment]
 [fixture: venn/style-properties/style-order-kept]
 [fixture: venn/style-properties/style-property-spacing]
@@ -705,7 +709,7 @@ rgb・rgba のトークン全体、キーの大小文字、重複と別々の文
 [fixture: venn/style-properties/style-quote-differs]
 [fixture: venn/style-properties/style-string-empty]
 
-入力（escape 表記）:
+入力（エスケープ表記）:
 
 ```json
 "venn-beta\nstyle A , B fill : red , opacity : .50 , custom : \" dark blue \""
@@ -832,7 +836,7 @@ U+2029 でも同じラベルです。
 [fixture: venn/line-rule-and-kept-lines/multiple-last-semicolons]
 [fixture: venn/line-rule-and-kept-lines/semicolon-removal-shifts]
 
-入力（escape 表記）:
+入力（エスケープ表記）:
 
 ```json
 "venn-beta\n set A[style:#x;y]   set B : 2   "
@@ -885,7 +889,7 @@ LF と title で受理する広い種類の区切りは正規化します。
 [fixture: venn/title/title-ends-dropped-at-end-of-input]
 [fixture: venn/title/title-whitespace-only]
 
-入力（escape 表記）:
+入力（エスケープ表記）:
 
 ```json
 "venn-beta\ntitle\n  T"
@@ -971,7 +975,7 @@ Venn のヘッダー行の文にはその役割がありません。
 [fixture: venn/directives/style-directive-touching-next]
 [fixture: venn/directives/declaration-directive-touching-next]
 
-入力（escape 表記）:
+入力（エスケープ表記）:
 
 ```json
 "venn-beta\nset A  %%{init: {}}%% [L] : 2"
@@ -985,7 +989,7 @@ venn-beta
   set A%%{init: {}}%%["L"] : 2
 ```
 
-入力（escape 表記）:
+入力（エスケープ表記）:
 
 ```json
 "venn-beta%%{init: {}}%% set A"
@@ -1043,7 +1047,7 @@ venn-beta%%{init: {}}%%
 [fixture: venn/multiline-values/multiline-values]
 [fixture: venn/multiline-values/wrap-list-rejected]
 
-入力（escape 表記）:
+入力（エスケープ表記）:
 
 ```json
 "venn-beta\nset \"A\n B\"[L\n  M]\ntext A \"x\n y\"[N\n O]\nstyle A fill:\"red\n blue\",stroke:rgb(1,\n  2,3)"
@@ -1089,7 +1093,7 @@ text A "x
 
 [fixture: venn/keyword-case-and-order/keyword-lower-equal]
 
-入力（escape 表記）:
+入力（エスケープ表記）:
 
 ```json
 "venn-beta\nSET A\n  TeXt item\nSTYLE A fill:RED\nTitle T"
@@ -1146,7 +1150,7 @@ ASCII 空白にできるのは title の最初の区切りだけです。
 検出前の広い空白と title の区切りは専用の規則に従います。
 U+0085 は空白ではなく、NBSP、BOM、U+3000、VT、
 FF を本文の隙間として受理はしません。
-ファイル先頭の BOM と BOM・frontmatter の制限は共通のホスト処理に従います。
+ファイル先頭の BOM と BOM・フロントマターの制限は共通のホスト処理に従います。
 
 [corpus fixture: venn/db-form-set]
 
@@ -1162,7 +1166,7 @@ FF を本文の隙間として受理はしません。
 
 ### Frontmatter YAML
 
-frontmatter には共通の保護つき YAML 整形を使い、
+フロントマターには共通の保護つき YAML 整形を使い、
 Prettier が YAML を印字する形にします。
 区切り、閉じる行の余白、ヘッダー前のコメントとディレクティブ、
 title の上書きの役割を保ちます。
@@ -1184,7 +1188,7 @@ title の上書きの役割を保ちます。
 [fixture: venn/frontmatter-yaml/frontmatter-yaml-control]
 [fixture: venn/frontmatter-yaml/frontmatter-yaml]
 
-入力（escape 表記）:
+入力（エスケープ表記）:
 
 ```json
 "---\ntitle:   T\nconfig: {venn: {padding:  20}}\n---\nvenn-beta\nset A"
@@ -1223,7 +1227,7 @@ Markdown は同じ Venn の規則の外側にフェンスとコンテナーの�
 [fixture: venn/final-newline/ignored-fragment-comment]
 [fixture: venn/final-newline/multiple-terminal-lf]
 
-入力（escape 表記）:
+入力（エスケープ表記）:
 
 ```json
 "venn-beta\nset A"

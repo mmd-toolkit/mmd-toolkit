@@ -14,8 +14,8 @@ import {
   findTriviaAt,
   isWhitespace,
   isWordCharacter,
-  skipDirectives,
-  textWithoutDirectives,
+  skipRemoved,
+  textRead,
 } from "./source.ts"
 import { toAsciiLowerCase } from "./layout.ts"
 
@@ -47,7 +47,7 @@ export function findErClassNameGaps(source: Source): ReadonlySet<number> {
       if (statement.type === "ErSubgraphStatement") visit(statement.body)
       if (!isLineSeparator(source.text.charAt(statement.range[0]))) continue
       const start = skipWhitespaceOnLine(source, statement.range[0])
-      const own = textWithoutDirectives(source, start, statement.range[1])
+      const own = textRead(source, start, statement.range[1])
       if (
         !isNameAlone(statement) ||
         toAsciiLowerCase(readWord(own, 0)) !== "class"
@@ -61,7 +61,7 @@ export function findErClassNameGaps(source: Source): ReadonlySet<number> {
           if (!isNameAlone(name) || name.name.type !== "ErIdentifier")
             return false
           const previous = nameIndex === 0 ? statement : names[nameIndex - 1]
-          const first = textWithoutDirectives(
+          const first = textRead(
             source,
             previous.range[1],
             name.range[0],
@@ -216,7 +216,7 @@ function findLinesReadByTheirPlace(
         ? startsLikeRuleEleven(source, statement.range[1])
         : isNumber(statement.name.name) &&
           continuesName(
-            source.text.charAt(skipDirectives(source, statement.range[1])),
+            source.text.charAt(skipRemoved(source, statement.range[1])),
           ))
     ) {
       lines.push(lineStartOf(source, statement.range[0]))
@@ -332,7 +332,7 @@ function findLineReadAsKeywordByOlderVersions(
   if (start >= statement.range[1]) return null
   const line = lineStartOf(source, statement.range[0])
   const followers = statements.slice(index + 1, index + 3)
-  const own = textWithoutDirectives(source, start, statement.range[1])
+  const own = textRead(source, start, statement.range[1])
   if (toAsciiLowerCase(readWord(own, 0)) === "class") {
     return followers[0] !== undefined &&
       findErClassNameGaps(source).has(followers[0].range[0])
@@ -367,7 +367,7 @@ function findLineReadAsKeywordByOlderVersions(
 function skipWhitespaceOnLine(source: Source, offset: number): number {
   let start = offset
   for (;;) {
-    start = skipDirectives(source, start)
+    start = skipRemoved(source, start)
     const character = source.text.charAt(start)
     if (
       character === "" ||
@@ -447,7 +447,7 @@ export function followsSplitKeyword(
     !["end", "subgraph"].includes(toAsciiLowerCase(keyword.value))
   )
     return false
-  const gap = textWithoutDirectives(source, keyword.range[1], nameStart)
+  const gap = textRead(source, keyword.range[1], nameStart)
   return (
     gap.includes("\u2028") ||
     gap.includes("\u2029") ||
@@ -462,7 +462,7 @@ export function followsSplitKeyword(
  * before them from what lies after them.
  */
 function startsLikeRuleEleven(source: Source, offset: number): boolean {
-  const character = source.text[skipDirectives(source, offset)]
+  const character = source.text[skipRemoved(source, offset)]
   return (
     character !== undefined &&
     ((character >= "a" && character <= "z") ||

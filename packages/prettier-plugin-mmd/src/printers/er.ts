@@ -45,7 +45,7 @@ import {
   findTokenStartingAt,
   findTriviaAt,
   isWhitespace,
-  skipDirectives,
+  skipRemoved,
 } from "./source.ts"
 
 /**
@@ -239,7 +239,7 @@ function printedErEnd(source: Source, statement: ErStatement): number {
   const lineEnd = lineEndOf(source, from)
   let end = from
   for (let position = from; position < lineEnd; position++) {
-    position = skipDirectives(source, position)
+    position = skipRemoved(source, position)
     if (
       position >= lineEnd ||
       findTriviaAt(source, position)?.type === "Comment"

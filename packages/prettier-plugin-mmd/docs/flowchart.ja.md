@@ -729,13 +729,19 @@ mermaid.js はリンクのスタイルから `stroke:` を探し、
 [fixture: whitespace-between-tokens/style-stroke-before-colon-spaced]
 `style` は、`color:` か `text-align:` で始まるスタイルの前の空白の有無を、
 書かれたまま残します。
-前に空白がないスタイルでは、その名前と `:` の間の空白の有無も残します。
+文の最初のスタイルでは、その名前と `:` の間の空白の有無も残します。
 空白の連続は空白 1 つにします。
 対象にする版に、
 そう始まるスタイルをノードのラベルのスタイルに入れるものがあるためです。
+`style A color   :red,fill:#f00` は `style A color : red, fill: #f00`
+と印字します。
 前に空白があるスタイルは、名前と `:` の間に空白があってもなくても、
 そう始まりません。
 `style A fill:#f00, color :red` は `style A fill: #f00, color: red`
+と印字します。
+直前の `,` に接し、名前と `:` の間に空白があるスタイルも同じで、
+前に空白を置いて印字します。
+`style A fill:#f00,color   :red` は `style A fill: #f00, color: red`
 と印字します。
 `style A fill:#f00,color:white` は `style A fill: #f00,color: white` と印字し、
 `style A fill:#f00 ,   color:white` は `style A fill: #f00, color: white`
@@ -1282,8 +1288,8 @@ U+2028、U+2029 は残します。
 [fixture: label-inner-whitespace/leading-whitespace-trimmed-without-trigger]
 [fixture: flowchart/label-inner-whitespace/label-directive-with-whitespace-kept]
 [fixture: label-inner-whitespace/leading-whitespace-run-becomes-one]
-空白がないと、`A[ /x/]` はラベル `x` の右に傾く形に、
-`A( -x-)` は楕円になり、`A>x@ ]` は拒否されます。
+空白がないと、`A[ /x/]` はラベル `x` の右に傾く形に、`A( -x-)` は楕円になり、
+`A>x@ ]` は拒否されます。
 辺の id の並びが `>` で止まらず、`A>x` を辺の id として読むからです。
 そうしたラベルは、末尾にも空白 1 つを置きます。
 `A[ /x/]` は `A[ /x/ ]` になります。
@@ -1612,7 +1618,8 @@ usecaseのDbが同じ形に従います。 [fixture: accessibility-lines/empty-b
 [fixture: accessibility-lines/empty-block-lines]
 空ブロック内で受理するNBSP、U+2028、U+2029も落とします。
 [test: accessibility blocks: flowchart empty-block-unicode]
-保持行の例外を優先し、コメントやディレクティブがあるブロックは従来の配置を保ちます。
+保持行の例外を優先し、
+コメントやディレクティブがあるブロックは従来の配置を保ちます。
 [fixture: accessibility-lines/empty-block-semicolon-kept]
 [fixture: accessibility-lines/empty-block-directive-kept]
 [fixture: multi-line-values/accdescr-block-comment-only]
@@ -1926,11 +1933,13 @@ mermaid.js は、1 行のブロックのテキストを、
   1 項目を複数行にしても行は短くならず、行数が増えるだけです。
   [fixture: data-blocks/long-one-entry-kept]
 - どの項目も、コロンと空白で区切られたキーと値であり、
-  値が項目の末尾までを占める引用符付きのスカラーか、引用符なしのスカラーであること。
-  引用符なしのスカラーは、YAML が意味を与える文字（`&`、`*`、`!`、`|`、`>`、`%`、`@`、
-  バッククォート、および直後に空白がある `-`、`?`、`:`）で始まらず、末尾にも、
-  直後に空白がある位置にも `:` を含まないものです。
-  ブロック形式のマッピングは、これらをフロー形式のマッピングとは違って読むためです。
+  値が項目の末尾までを占める引用符付きのスカラーか、
+  引用符なしのスカラーであること。
+  引用符なしのスカラーは、YAML が意味を与える文字（`&`、`*`、`!`、`|`、`>`、
+  `%`、`@`、バッククォート、および直後に空白がある `-`、`?`、`:`）で始まらず、
+  末尾にも、直後に空白がある位置にも `:` を含まないものです。
+  ブロック形式のマッピングは、
+  これらをフロー形式のマッピングとは違って読むためです。
   値がない項目（`{ pos, h: 60 }` の `pos`）、空の項目（末尾の `,` の後）、
   アンカーや別名参照である値、`pos:t` のような項目は、どれもこれに当たりません。
   [fixture: data-blocks/long-entry-without-value-kept]
@@ -2596,7 +2605,7 @@ swimlane 図のヘッダーでは、agentflow 図のヘッダーと同じく、
 ヘッダーに続くディレクティブの後にある `TD` は、
 `swimlane-beta%%{init: {}}%% TD` のように書かれたまま残します。
 [fixture: direction/swimlane-header-td-one-form]
-[fixture: direction/swimlane-header-td-after-directive-kept]
+[fixture: direction/swimlane-header-td-one-form-after-directive]
 `direction` の文では、mermaid.js は `direction` の前と値の後を、
 ラベルや文字列を含みうるテキストとして読み、値の後の `;` はそのテキストに属し、
 区切りではありません。

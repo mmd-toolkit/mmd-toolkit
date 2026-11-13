@@ -28,7 +28,7 @@
 
 [fixture: packet/header/header-global-boundary]
 
-入力（escape 表記）: `" \tpacket \t\n0:\"Head\"\n"`
+入力（エスケープ表記）: `" \tpacket \t\n0:\"Head\"\n"`
 
 出力
 ([header/header-packet-output.mmd](../tests/fixtures/packet/header/header-packet-output.mmd)):
@@ -40,7 +40,8 @@ packet
 
 ### Indentation
 
-通常の文と独立したコメント・大域的なディレクティブは、見出しから1段字下げします。
+通常の文と独立したコメント・大域的なディレクティブは、
+見出しから1段字下げします。
 本文は平坦で、公開される行は構文の入れ子を増やしません。
 packet の列には文法上の意味がないため、`tabWidth: 0` は空白0個、
 `useTabs` は幅0でもタブ1個です。
@@ -57,7 +58,7 @@ YAML は共有の正の最小幅を使います。
 
 [fixture: packet/indentation/indent-zero-tabs]
 
-入力（escape 表記）: `"packet\n0:\"Indent\"\n       1:\"Next\"\n"`
+入力（エスケープ表記）: `"packet\n0:\"Indent\"\n       1:\"Next\"\n"`
 
 出力
 ([indentation/indent-default-output.mmd](../tests/fixtures/packet/indentation/indent-default-output.mmd)):
@@ -93,7 +94,7 @@ packet
 
 [corpus fixture: packet/gram-empty-description-in-block]
 
-入力（escape 表記）: `"packet title Inline topic"`
+入力（エスケープ表記）: `"packet title Inline topic"`
 
 出力
 ([statements-one-per-line/inline-title-output.mmd](../tests/fixtures/packet/statements-one-per-line/inline-title-output.mmd)):
@@ -126,7 +127,7 @@ Db から文を再構成したり併合したりしません。
 
 [fixture: packet/block-forms-and-order/cap-unpublished-kept]
 
-入力（escape 表記）:
+入力（エスケープ表記）:
 `"packet\n+2:\"relative\"\n2:\"single\"\n3-3:\"equal range\"\n"`
 
 出力
@@ -153,7 +154,7 @@ packet
 
 [fixture: packet/range-dash/dash-global-after]
 
-入力（escape 表記）: `"packet\n0 \t- 2 : \"Dash\"\n"`
+入力（エスケープ表記）: `"packet\n0 \t- 2 : \"Dash\"\n"`
 
 出力
 ([range-dash/dash-tight-output.mmd](../tests/fixtures/packet/range-dash/dash-tight-output.mmd)):
@@ -175,7 +176,7 @@ packet
 
 [fixture: packet/relative-plus/plus-global-after]
 
-入力（escape 表記）: `"packet\n+ \t3 :\"Plus\"\n"`
+入力（エスケープ表記）: `"packet\n+ \t3 :\"Plus\"\n"`
 
 出力
 ([relative-plus/plus-tight-output.mmd](../tests/fixtures/packet/relative-plus/plus-tight-output.mmd)):
@@ -207,7 +208,7 @@ packet
 
 [fixture: packet/block-colons/colon-global-after]
 
-入力（escape 表記）:
+入力（エスケープ表記）:
 `"packet\n0 - 2 \t:  \"Range\"\n3 \t:\t'Single'\n+ 2 :\"Relative\"\n"`
 
 出力
@@ -237,7 +238,7 @@ U+2029、バッククォート、`&`、`#`、`<` がある場合を除き、`"` 
 
 [fixture: packet/quotes/quotes-single-option]
 
-入力（escape 表記）:
+入力（エスケープ表記）:
 `"packet\n0:'single \"quote\"'\n1:\"double 'quote'\"\n2:''\n3:\"\"\n"`
 
 出力
@@ -268,7 +269,7 @@ packet
 
 [fixture: packet/label-content/label-hidden-looking]
 
-入力（escape 表記）: `"packet\n0:\"  A  B\t C  \"\n1:\" \t \"\n"`
+入力（エスケープ表記）: `"packet\n0:\"  A  B\t C  \"\n1:\" \t \"\n"`
 
 出力
 ([label-content/label-padding-output.mmd](../tests/fixtures/packet/label-content/label-padding-output.mmd)):
@@ -281,9 +282,11 @@ packet
 
 ### Numbers
 
-`start`、`end`、`count` は `NumericLiteral.value` ではなく原綴の数字を印字します。
+`start`、`end`、
+`count` は `NumericLiteral.value` ではなく原綴の数字を印字します。
 0、精度を失う整数と桁あふれする数字も保ちます。
-倍精度浮動小数点数は原綴を失い、拒否される指数や `Infinity` の構文にもなるためです。
+倍精度浮動小数点数は原綴を失い、
+拒否される指数や `Infinity` の構文にもなるためです。
 不正な先頭0、小数、符号、指数の入力はコーパスの失敗として扱います。
 
 [fixture: packet/numbers/number-zero]
@@ -302,7 +305,7 @@ packet
 
 [corpus fixture: packet/db-overflow-wide]
 
-入力（escape 表記）: `"packet\n0-0:\"Zero\"\n"`
+入力（エスケープ表記）: `"packet\n0-0:\"Zero\"\n"`
 
 出力
 ([numbers/number-zero-output.mmd](../tests/fixtures/packet/numbers/number-zero-output.mmd)):
@@ -337,7 +340,7 @@ packet
 
 [fixture: packet/title/title-frontmatter]
 
-入力（escape 表記）: `"packet\ntitle\t  Topic  words \t\n"`
+入力（エスケープ表記）: `"packet\ntitle\t  Topic  words \t\n"`
 
 出力
 ([title/title-trim-output.mmd](../tests/fixtures/packet/title/title-trim-output.mmd)):
@@ -372,7 +375,7 @@ packet
 
 [corpus fixture: packet/common-comment-gap]
 
-入力（escape 表記）:
+入力（エスケープ表記）:
 `"packet\naccTitle \t:  Access  words \t\naccDescr\t:  Details  words \t\n"`
 
 出力
@@ -398,7 +401,8 @@ packet
 Db で LF 後の字下げが取り除かれるためです。
 改行、空行、行末空白は保ち、独立した閉じは文の位置へ揃えます。
 ディレクティブと共有の除去対象となるコメント領域は原文全体を保ちます。
-引用符、バックスラッシュ、隠れた形に見える文字列も最初の閉じ波括弧を保護しません。
+引用符、バックスラッシュ、
+隠れた形に見える文字列も最初の閉じ波括弧を保護しません。
 
 [fixture: packet/description-blocks/description-gaps]
 
@@ -424,7 +428,7 @@ Db で LF 後の字下げが取り除かれるためです。
 
 [corpus fixture: packet/accdescr-block-escaped-close]
 
-入力（escape 表記）:
+入力（エスケープ表記）:
 `"packet\naccDescr{A}\naccDescr   {  B  }\naccDescr {C }\naccDescr{ D}\n"`
 
 出力
@@ -449,7 +453,7 @@ packet
 
 [fixture: packet/multiline-values/multiline-label]
 
-入力（escape 表記）:
+入力（エスケープ表記）:
 `"packet\n0-30:\"Long authored label with enough words to exceed a narrow width\"\n"`
 
 設定: `{"printWidth": 20}`
@@ -469,7 +473,8 @@ packet
 同じ行のは同じ行に置き、接触は保ち、離れた側は空白1個にします。
 印、内容と末尾余白を保ちます。
 図固有のコメントは物理 LF・CR までで、LS・PS は内容です。
-先行する文字列・ブロックはパーセント文字列を所有し、共通の行値はそこで終わります。
+先行する文字列・ブロックはパーセント文字列を所有し、
+共通の行値はそこで終わります。
 所有を変えないため、共通の削除領域は原文全体と結合する列を保ちます。
 
 [fixture: packet/comments/comments-placement]
@@ -480,7 +485,7 @@ packet
 
 [test: packet/comments/comments-ls-ps]
 
-入力（escape 表記）:
+入力（エスケープ表記）:
 `"packet\n0:\"A%%B\"\naccDescr { A%%B }\ntitle Text%%comment\n"`
 
 出力
@@ -521,7 +526,7 @@ packet
 
 [fixture: packet/global-directives/global-multiline]
 
-入力（escape 表記）:
+入力（エスケープ表記）:
 `"packet\n0%%{wrap}%%:\t\"Global\"\naccTitle%%{wrap}%%: Access\naccDescr%%{wrap}%%{ Detail }\n"`
 
 出力
@@ -536,15 +541,15 @@ packet
 
 ### Hidden yaml
 
-YAML ブロックの `PacketIgnoredText` を、`textBeforeHeader`、`body`、名前付きの隙間、
-`textAfter` の所有位置に1回だけ、範囲全体として保ちます。
+YAML ブロックの `PacketIgnoredText` を、`textBeforeHeader`、`body`、
+名前付きの隙間、`textAfter` の所有位置に1回だけ、範囲全体として保ちます。
 範囲外の消費 LF と、EOF を含む閉じの余白を保ちます。
 必須の境界を動かしたり空白を除いたりすると、後続文が拒否され得るためです。
 範囲外の余分な LF と端の空行は [空行](#blank-lines) に従います。
 不透明な本文は YAML 整形せず、直前に LF を追加しません。
 通常の本文の開始記号は字下げできますが、内部と閉じの列は保ちます。
-空の一致範囲と囲み記号3つの一致範囲、複数の形、
-後ろで有効になる閉じ、大域的な処理による分断も保ちます。
+空の一致範囲と囲み記号3つの一致範囲、複数の形、後ろで有効になる閉じ、
+大域的な処理による分断も保ちます。
 先行する値の字句優先順位を保ちます。
 
 [fixture: packet/hidden-yaml/yaml-gap-count]
@@ -587,7 +592,7 @@ YAML ブロックの `PacketIgnoredText` を、`textBeforeHeader`、`body`、名
 
 [corpus fixture: packet/lex-yaml-common-comment]
 
-入力（escape 表記）: `"packet\n+---\nopaque count\n---\n2:\"Ycount\"\n"`
+入力（エスケープ表記）: `"packet\n+---\nopaque count\n---\n2:\"Ycount\"\n"`
 
 出力
 ([hidden-yaml/yaml-gap-count-output.mmd](../tests/fixtures/packet/hidden-yaml/yaml-gap-count-output.mmd)):
@@ -647,7 +652,7 @@ opaque count
 
 [corpus fixture: packet/lex-hidden-after-visible-eol]
 
-入力（escape 表記）:
+入力（エスケープ表記）:
 `"packet\n0%%{!d}%% -%%{!e}%% 1%%{!c}%% :%%{!l}%% \"Dgaps\"\n"`
 
 出力
@@ -661,8 +666,8 @@ packet
 ### Retained prefix
 
 `textBeforeHeader` に隠れた形があれば、前置部分全体を保ちます。
-先頭 LF、コメントの列、通過した単独行の注釈類、
-再走査の形と、実際の形・隠れた形の順序も含みます。
+先頭 LF、コメントの列、通過した単独行の注釈類、再走査の形と、
+実際の形・隠れた形の順序も含みます。
 先頭 LF の削除は、無視された YAML を有効な title・設定、
 または不正なフロントマターへ昇格させ得るためです。
 通常の通過コメントだけの前置部分は、共有の最上位の整理を使います。
@@ -675,7 +680,7 @@ packet
 
 [fixture: packet/retained-prefix/prefix-between-retained]
 
-入力（escape 表記）:
+入力（エスケープ表記）:
 `"\n---\ntitle: Ignored title\nconfig: {packet: {bitsPerRow: 8}}\n---\npacket\n0-9:\"Prefix\"\n"`
 
 出力
@@ -732,7 +737,7 @@ Unicode の境界とディレクティブで再結合する条件を満たす語
 
 [test: packet/semicolons/semicolons-ls-segment]
 
-入力（escape 表記）:
+入力（エスケープ表記）:
 `"packet\ntitle Text;;\naccTitle: Access;\naccDescr: Detail;;\n0:\"Label;\"\n"`
 
 出力
@@ -751,10 +756,9 @@ packet
 過剰な空白を減らして区切りを見せるため、通常の内部 ASCII 空行列は1空行、
 文書と本文の通常の端の空行は削除します。
 コメント周辺も同じです。
-値、ブロック、ディレクティブ、隠れた形の内部、共通領域の結合、保持する前置部分の空行は、
-内容や原文の役割に属するため保ちます。
-隠れた形が LF を消費した後は、
-次の文に必要なときだけ予備の LF 1 つを保ちます。
+値、ブロック、ディレクティブ、隠れた形の内部、共通領域の結合、
+保持する前置部分の空行は、内容や原文の役割に属するため保ちます。
+隠れた形が LF を消費した後は、次の文に必要なときだけ予備の LF 1 つを保ちます。
 文書の終わりは設定の終端改行1つにし、見出しの直後の空行は削除します。
 見出しと最初の文の間に EOL は必要ありません。
 それ以外は予備の LF の後に通常の空行の規則を適用し、連続空行を1行、
@@ -788,7 +792,7 @@ packet
 
 [fixture: packet/blank-lines/blanks-values]
 
-入力（escape 表記）: `"\n\npacket\n\n\n0:\"Blank\"\n \t\n\n1:\"Group\"\n\n"`
+入力（エスケープ表記）: `"\n\npacket\n\n\n0:\"Blank\"\n \t\n\n1:\"Group\"\n\n"`
 
 出力
 ([blank-lines/blanks-collapse-output.mmd](../tests/fixtures/packet/blank-lines/blanks-collapse-output.mmd)):
@@ -815,7 +819,8 @@ packet
 
 [fixture: packet/trailing-whitespace/trailing-multiline]
 
-入力（escape 表記）: `"packet \t\n0:\"Exterior\" \t\naccDescr { Detail } \t\n"`
+入力（エスケープ表記）:
+`"packet \t\n0:\"Exterior\" \t\naccDescr { Detail } \t\n"`
 
 出力
 ([trailing-whitespace/trailing-safe-output.mmd](../tests/fixtures/packet/trailing-whitespace/trailing-safe-output.mmd)):
@@ -847,7 +852,7 @@ HTML の危険がある本文と区切りを生成する本文は原形を保ち
 
 [fixture: packet/frontmatter-yaml/frontmatter-delimiter-producing]
 
-入力（escape 表記）:
+入力（エスケープ表記）:
 `"---\ntitle: \"<a b=\\\"c\\\">\"\n---\npacket\n0:\"Html guard\"\n"`
 
 出力
@@ -869,8 +874,8 @@ packet
 LS・PS・NBSP・BOM は内容としての字句上の役割を保ちます。
 共通の行値の外端の空白を除き、ブロックの開始記号前の通常の空白は結合できます。
 不正な図固有の Unicode 隙間は拒否のままです。
-Prettier は先頭 BOM を除去・復元するため、開始囲み記号の BOM は YAML を昇格させ、
-閉じにもある BOM は失敗させ得ます。
+Prettier は先頭 BOM を除去・復元するため、
+開始囲み記号の BOM は YAML を昇格させ、閉じにもある BOM は失敗させ得ます。
 バイトの同一性は保証しません。
 
 [corpus fixture: packet/line-ls-between]
@@ -904,9 +909,9 @@ Prettier は先頭 BOM を除去・復元するため、開始囲み記号の BO
 
 [test: packet/line-terminators-and-unicode/bom-frontmatter-opening]
 
-入力（escape 表記）: `"packet\r0:\"Physical\"\r"`
+入力（エスケープ表記）: `"packet\r0:\"Physical\"\r"`
 
-出力（escape 表記）: `"packet\n  0: \"Physical\"\n"`
+出力（エスケープ表記）: `"packet\n  0: \"Physical\"\n"`
 
 ### Final newline
 
@@ -931,7 +936,7 @@ EOF に達する大域的なの末尾、隠れた形の閉じ余白、
 
 [corpus fixture: packet/div-c4-hidden-suffix-eof]
 
-入力（escape 表記）: `"packet\n0:\"Final\"\n\n"`
+入力（エスケープ表記）: `"packet\n0:\"Final\"\n\n"`
 
 出力
 ([final-newline/final-statement-output.mmd](../tests/fixtures/packet/final-newline/final-statement-output.mmd)):
@@ -1011,6 +1016,6 @@ Markdown はコードブロックの最終行の余白を除きます。
 
 [test: packet Markdown: rejected]
 
-入力（escape 表記）: `"```mermaid\npacket 0:\"Fence\"\n```\n"`
+入力（エスケープ表記）: `"```mermaid\npacket 0:\"Fence\"\n```\n"`
 
-出力（escape 表記）: `"```mermaid\npacket\n  0: \"Fence\"\n```\n"`
+出力（エスケープ表記）: `"```mermaid\npacket\n  0: \"Fence\"\n```\n"`

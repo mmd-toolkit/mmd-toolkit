@@ -47,7 +47,7 @@ beta の境界に合わない接尾辞は根のテキストに残します。
 [fixture: ishikawa/header/beta-directive-before-word-kept]
 [fixture: ishikawa/header/beta-directive-in-root-kept]
 
-入力（escape 表記）:
+入力（エスケープ表記）:
 
 ```json
 "ishikawa-betaX\n A"
@@ -107,7 +107,7 @@ ishikawa
 [fixture: ishikawa/indentation/zero-leading-directive]
 [fixture: ishikawa/indentation/zero-tabs-leading-directives]
 
-入力（escape 表記）:
+入力（エスケープ表記）:
 
 ```json
 "ishikawa\nR\n A\n  B"
@@ -123,7 +123,7 @@ ishikawa
       B
 ```
 
-入力（escape 表記）:
+入力（エスケープ表記）:
 
 ```json
 "ishikawa\nR\n    A\n B\n  C\n      D\n E"
@@ -152,8 +152,7 @@ Ishikawa の見出しは、
 共有の行の規則の `style` と `classDef` の契機を加えないためです。
 見出しのコメントとディレクティブの接続は、専用の規則に従います。
 根に含まれる文らしいテキストは分割しません。
-これは、
-書かれた字下げが入れ子だけで木を示すときです（[字下げ](#indentation)）。
+これは、書かれた字下げが入れ子だけで木を示すときです（[字下げ](#indentation)）。
 見出しと根の間の空白より深くない原因があるときは、根は見出しの行に残り、
 原因は書かれた字下げを残します。
 [fixture: ishikawa/root-on-header-line/header-root-irregular-kept]
@@ -164,7 +163,7 @@ Ishikawa の見出しは、
 [fixture: ishikawa/root-on-header-line/header-root-tab]
 [fixture: ishikawa/root-on-header-line/header-root-touch]
 
-入力（escape 表記）:
+入力（エスケープ表記）:
 
 ```json
 "ishikawa R\n    A\n      B"
@@ -197,7 +196,7 @@ ishikawa
 [fixture: ishikawa/root-indentation/rootless-comment]
 [fixture: ishikawa/root-indentation/rootless-directives]
 
-入力（escape 表記）:
+入力（エスケープ表記）:
 
 ```json
 "ishikawa\n     R"
@@ -260,7 +259,7 @@ ishikawa
 [corpus fixture: ishikawa/div-header-two-comments-blank-cr]
 [corpus fixture: ishikawa/div-header-two-comments-blank-crlf]
 
-入力（escape 表記）:
+入力（エスケープ表記）:
 
 ```json
 "ishikawa\nR\n\n %% c\n\n %%{init: {}}%%\n\n A"
@@ -307,10 +306,9 @@ ishikawa
 [corpus fixture: ishikawa/div-c4-inline-percent-ls-eof]
 [corpus fixture: ishikawa/div-c4-inline-percent-ps-eof]
 
-Unicode の終端と共通領域の結合は、
-[行区切り文字](#line-separators) に従います。
+Unicode の終端と共通領域の結合は、[行区切り文字](#line-separators) に従います。
 
-入力（escape 表記）:
+入力（エスケープ表記）:
 
 ```json
 "ishikawa\nR %% literal"
@@ -379,7 +377,7 @@ ishikawa/standalone-directives/header-touching-prefix-spaced-directive]
 閉じたもの、複数行のもの、単語の引数、EOF までのものも境界を保ちます。
 [fixture: ishikawa/standalone-directives/directive-open-eof]
 
-入力（escape 表記）:
+入力（エスケープ表記）:
 
 ```json
 "%%{init: {}}%%ishikawa\nR"
@@ -393,7 +391,7 @@ ishikawa/standalone-directives/header-touching-prefix-spaced-directive]
   R
 ```
 
-入力（escape 表記）:
+入力（エスケープ表記）:
 
 ```json
 "ishikawa %%{init: {}}%% R\n   A"
@@ -408,7 +406,7 @@ ishikawa
     A
 ```
 
-入力（escape 表記）:
+入力（エスケープ表記）:
 
 ```json
 "ishikawa %%{init: {\n     }}%% R\n   A\n    B"
@@ -448,7 +446,7 @@ kanban の配分を再利用し、複数行の内容と継続列を保ち、
 [test: ishikawa: ls-comment-leading-directives]
 [test: ishikawa: ps-comment-leading-directive-kept-zero]
 
-入力（escape 表記）:
+入力（エスケープ表記）:
 
 ```json
 "ishikawa\nR  %%{init: {}}%%   X"
@@ -493,7 +491,7 @@ Mermaid がテキストの両端の空白を除くので、除いても Db と�
 見出し行の外側の余白だけで、それはテキストの値ではありません。
 [fixture: ishikawa/trailing-whitespace/trailing-header-div]
 
-入力と出力（escape 表記）:
+入力と出力（エスケープ表記）:
 
 ```json
 [
@@ -517,8 +515,8 @@ Mermaid がテキストの両端の空白を除くので、除いても Db と�
 節点テキストは、末尾の空白とタブを除き、
 内部の空白とタブの連なりを空白 1 つにするほかは、
 書かれた綴りを保ちます（[末尾の空白](#trailing-whitespace)を参照）。
-引用符、バッククォート、空に見える文字列や括弧や呼び出し、閉じ忘れ、数、句読点、実体参照、
-HTML、プロトタイプの名前もテキストです。
+引用符、バッククォート、空に見える文字列や括弧や呼び出し、閉じ忘れ、数、句読点、
+実体参照、HTML、プロトタイプの名前もテキストです。
 title、アクセシビリティ、style、装飾、データらしい形も同じです。
 [fixture: ishikawa/node-text/values-opaque]
 [fixture: ishikawa/node-text/values-quote-unsafe]
@@ -538,7 +536,7 @@ Mermaid がソース全体から C4 を検出して拒否する入力も同じ�
 [corpus fixture: ishikawa/detect-c4-dynamic-quoted]
 [fixture: ishikawa/node-text/div-c4]
 
-入力（escape 表記）:
+入力（エスケープ表記）:
 
 ```json
 "ishikawa\nR <a x=\"y\">#amp;</a>\n A#35;#x41;"
@@ -553,7 +551,7 @@ ishikawa
     A#35;#x41;
 ```
 
-入力（escape 表記）:
+入力（エスケープ表記）:
 
 ```json
 "ishikawa\nR\n C4Container"
@@ -599,7 +597,7 @@ Ishikawa の節点を分けるセミコロンはありません。
 [fixture: ishikawa/line-rule-and-kept-lines/line-rule-nonmatches]
 [fixture: ishikawa/line-rule-and-kept-lines/open-directive-semicolon-stop]
 
-入力（escape 表記）:
+入力（エスケープ表記）:
 
 ```json
 "ishikawa\nR style:#abc;"
@@ -633,7 +631,7 @@ ishikawa
 [test: ishikawa: joined-common-region]
 [test: ishikawa: joined-deeper-continuation]
 
-入力（escape 表記）:
+入力（エスケープ表記）:
 
 ```json
 "ishikawa\nR\n A deliberately long cause remains one literal line even when printWidth is twenty"
@@ -650,17 +648,17 @@ ishikawa
 
 ### Case and order
 
-テキストの大文字小文字、入力と兄弟の順序、
-同じラベルで異なる子を持つものも含め、節点の繰返しを保ちます。
-見出しは書かれた大文字小文字によらず `ishikawa` と印字します（[ヘッダー](#header)
-を参照）。
+テキストの大文字小文字、入力と兄弟の順序、同じラベルで異なる子を持つものも含め、
+節点の繰返しを保ちます。
+見出しは書かれた大文字小文字によらず `ishikawa`
+と印字します（[ヘッダー](#header) を参照）。
 兄弟の順序と繰返しは順序付き Db の木の一部なので、ソート、重複除去、
 同じラベルのまとめは行いません。
 [fixture: ishikawa/case-and-order/case-order-kept]
 [fixture: ishikawa/case-and-order/deduplicate-unsafe]
 [fixture: ishikawa/case-and-order/single-cause]
 
-入力（escape 表記）:
+入力（エスケープ表記）:
 
 ```json
 "iShIkAwA\nR\n A\n  First\n A\n  Second\n title T"
@@ -693,7 +691,7 @@ Mermaid はこれらを LF と読み、Ishikawa に文字列の引用文脈は�
 拒否される裸の見出しは拒否したままにします。
 LS と PS は別の文脈による規則に従います。
 
-入力と出力（escape 表記）:
+入力と出力（エスケープ表記）:
 
 ```json
 {
@@ -766,7 +764,7 @@ Mermaid がコメントと空行を組み合わせる読み方を保つためで
 [test: ishikawa: ls-comment-two-lf-before-root]
 [test: ishikawa: ps-comment-two-lf-before-root]
 
-入力と出力（escape 表記）:
+入力と出力（エスケープ表記）:
 
 ```json
 {
@@ -817,7 +815,7 @@ NEL、ゼロ幅空白、NUL、補助平面の文字もテキストです。
 互換性の文書にある Prettier の共有の処理に従います。
 [test: ishikawa: leading-bom]
 
-入力（escape 表記）:
+入力（エスケープ表記）:
 
 ```json
 "ishikawa\nR\n A\n\tB\n  C"
@@ -876,7 +874,7 @@ YAML の字下げは `tabWidth: 0` でも最低 1 つの空白を使います。
 データらしい節点テキストを YAML 整形しません。
 空または閉じていないフロントマターの区切りは構文エラーです。
 
-入力（escape 表記）:
+入力（エスケープ表記）:
 
 ```json
 "---\n%YAML 1.2\n--- !!map\ntitle: T\n---\nishikawa\nR"
@@ -914,7 +912,7 @@ ishikawa
 [corpus fixture: ishikawa/directive-open-root-eof]
 [fixture: ishikawa/final-newline/final-value-spaces]
 
-入力（escape 表記）:
+入力（エスケープ表記）:
 
 ```json
 "ishikawa\nR\n%% c"
@@ -931,7 +929,8 @@ ishikawa
 
 ### Markdown fences
 
-Markdown がコンテナの字下げを除いてから、Mermaid コードブロックに同じ規則を適用します。
+Markdown がコンテナの字下げを除いてから、
+Mermaid コードブロックに同じ規則を適用します。
 コードブロック、リスト、引用の字下げはホストが補います。
 タブや幅 0 の設定も含め、図の深さを Markdown の入れ物から独立させ、
 解析に失敗した本文は整形を辞退するためです。
@@ -950,7 +949,7 @@ Markdown がコンテナの字下げを除いてから、Mermaid コードブロ
 [test: ishikawa Markdown: declined-nonfinal-trailing-whitespace]
 ホストの出力と、字下げを除いた図の読みを分けて検査します。
 
-入力（escape 表記）:
+入力（エスケープ表記）:
 
 ```json
 "ishikawa R\n  A\n    B"

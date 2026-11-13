@@ -60,7 +60,7 @@ import {
   findTokensBetween,
   findTriviaBetween,
   isStructural,
-  skipDirectives,
+  skipRemoved,
 } from "./source.ts"
 
 type CommonStatement = (
@@ -157,7 +157,7 @@ export function layoutCommonLine(
     isAccTitle(statement) &&
     diagramTypesWithJisonAccessibilityLines.has(source.root.diagramType) &&
     value !== null &&
-    startsPlainComment(source, skipDirectives(source, value.range[1]))
+    startsPlainComment(source, skipRemoved(source, value.range[1]))
   const endsInDirectives =
     hasTrivia &&
     !titleReachesComment &&

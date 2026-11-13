@@ -12,7 +12,7 @@ import {
   findStructuralToken,
   findTokenStartingAt,
   isWhitespace,
-  textWithoutDirectives,
+  textRead,
 } from "./source.ts"
 
 /** The lines that hold a `;`, of each source, found once per source. */
@@ -224,7 +224,7 @@ function startsWithPercentWord(
 
 /** Whether the text of a range, without its directives, holds a `:`. */
 function holdsColon(source: Source, range: Range): boolean {
-  return textWithoutDirectives(source, range[0], range[1]).includes(":")
+  return textRead(source, range[0], range[1]).includes(":")
 }
 
 /** The body of the state diagram of a source. */

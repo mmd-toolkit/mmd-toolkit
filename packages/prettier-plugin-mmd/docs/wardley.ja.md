@@ -4,7 +4,7 @@
 
 採用した 35 項目に従い、
 [Wardley の木](../../spec/docs/ast/wardley.ja.md)を印字します。
-最上位と pipeline の本文は共有 factory の同じ関数を通します。
+最上位と pipeline の本文は共有生成処理の同じ関数を通します。
 保持する原文と mermaid.js との差は
 [互換性](./compatibility.ja.md#wardley-の原文と必須の改行)に記録します。
 
@@ -15,7 +15,7 @@
 見出し wardley-beta は原綴のまま第 1 列に置き、
 普通の最初の文を次の行へ移します。
 図種を見つけやすくするためで、コロンは足しません。
-hidden form、保持 prefix、保護行には共有の境界規則を使います。
+読み飛ばす構文、保持前置部分、保護行には共有の境界規則を使います。
 空の本文には文を足しません。
 
 [fixture: wardley/header/header-glued]
@@ -24,7 +24,7 @@ hidden form、保持 prefix、保護行には共有の境界規則を使いま�
 
 [fixture: wardley/header/header-empty]
 
-入力（escape 表記）: `"wardley-betacomponentHeader[0.3,0.6]"`
+入力（エスケープ表記）: `"wardley-betacomponentHeader[0.3,0.6]"`
 
 出力
 ([header/header-glued-output.mmd](../tests/fixtures/wardley/header/header-glued-output.mmd)):
@@ -36,10 +36,10 @@ wardley-beta
 
 ### 字下げ
 
-普通の文、metadata、独立した trivia は設定の 1 段だけ字下げします。
-既定は空白 2 つ、tabWidth 4 は 4 つ、0 は 0 です。
+普通の文、メタデータ、独立した注釈は設定の 1 段だけ字下げします。
+既定は空白 2 つ、`tabWidth` 4 は 4 つ、0 は 0 です。
 列に文法上の意味がないためです。
-useTabs は幅 0 でもタブを使います。
+`useTabs` は幅 0 でもタブを使います。
 保護区間の最初の行は本文の段に揃え、内部と後続行の列は保ちます。
 
 [fixture: wardley/indentation/indent-two]
@@ -52,7 +52,7 @@ useTabs は幅 0 でもタブを使います。
 
 [fixture: wardley/indentation/indent-zero-tabs]
 
-入力（escape 表記）: `"wardley-beta\n component Indent [0.3,0.6]"`
+入力（エスケープ表記）: `"wardley-beta\n component Indent [0.3,0.6]"`
 
 出力
 ([indentation/indent-two-output.mmd](../tests/fixtures/wardley/indentation/indent-two-output.mmd)):
@@ -75,7 +75,7 @@ pipeline Parent { と印字し、
 
 [fixture: wardley/pipeline/pipeline-tab]
 
-入力（escape 表記）:
+入力（エスケープ表記）:
 `"wardley-beta\ncomponent Parent[0.4,0.5]\npipelineParent{\n component Child[0.6]label[-1,2]\n      }"`
 
 出力
@@ -97,7 +97,7 @@ Wardley のセミコロンは文の区切りではないので足しません。
 
 [fixture: wardley/statements-one-per-line/statement-eol]
 
-入力（escape 表記）:
+入力（エスケープ表記）:
 `"wardley-beta\nanchor Sep [0.8,0.2]\ncomponent Step [0.2,0.4]"`
 
 出力
@@ -112,9 +112,9 @@ wardley-beta
 ### 部品間の空白
 
 命令語と最初の完全な名前、数、文字列、括弧の間は空白 1 つにします。
-pipeline も含め、接した keyword にも同じ規則を使います。
-keyword に末尾境界がなく、木が名前と区別しているためです。
-trivia と hidden の境界には普通の空白規則を当てません。
+pipeline も含め、接したキーワードにも同じ規則を使います。
+キーワードに末尾境界がなく、木が名前と区別しているためです。
+注釈と読み飛ばす部分の境界には普通の空白規則を当てません。
 
 [fixture: wardley/component-spacing/keyword-anchor]
 
@@ -134,7 +134,7 @@ trivia と hidden の境界には普通の空白規則を当てません。
 
 [fixture: wardley/component-spacing/keyword-evolution]
 
-入力（escape 表記）: `"wardley-beta\nanchorUser[0.8,0.3]"`
+入力（エスケープ表記）: `"wardley-beta\nanchorUser[0.8,0.3]"`
 
 出力
 ([component-spacing/keyword-anchor-output.mmd](../tests/fixtures/wardley/component-spacing/keyword-anchor-output.mmd)):
@@ -148,7 +148,7 @@ wardley-beta
 
 ### 名前と引用
 
-component、anchor、link、`evolve` 文、pipeline、evolution の stage の名前は、
+component、anchor、link、`evolve` 文、pipeline、evolution の段階の名前は、
 引用符なしで読める場合に引用符なしで印字し、accelerator、deaccelerator、
 pipeline の component の名前は、
 mermaid.js の文書の例と同じく引用符で囲んで印字します。
@@ -157,7 +157,7 @@ mermaid.js の文書の例と同じく引用符で囲んで印字します。
 `accelerator Market` は `accelerator "Market"` と印字します。
 引用符なしで読める名前は、ASCII の英字で始まり、ASCII の英字、数字、
 `_` からなる語を空白 1 つで区切った形で、
-字句解析器が命令か strategy として読む小文字の語（`build`、`component`、
+字句解析器が命令か戦略として読む小文字の語（`build`、`component`、
 `title` など）で始まらないものです。
 `-` を含む名前は、引用符を残します。
 この図種を初めて含む版は、引用符なしでは拒否するためです。
@@ -165,26 +165,25 @@ mermaid.js の文書の例と同じく引用符で囲んで印字します。
 [対象にする版の mermaid.js のために残す形](./compatibility.ja.md#対象にする版の-mermaidjs-のために残す形)
 を参照してください。
 矢印のない link（`"A" "B"`）の名前と、
-hidden YAML block の `---` に接する名前は、引用符を残します。
+読み飛ばす YAML ブロックの `---` に接する名前は、引用符を残します。
 [fixture: names-and-quotes/plain-names-without-quotes]
 [fixture: names-and-quotes/names-that-need-quotes]
 それ以外では、
-WardleyIdentifier と StringLiteral を source span のまま印字します。
-内部の空白とタブ、ハイフン、括弧、ampersand、escape、
+`WardleyIdentifier` と `StringLiteral` を原文の範囲のまま印字します。
+内部の空白とタブ、ハイフン、括弧、`&`、エスケープ、
 空と空白だけの文字列も保ちます。
-ただし、link の label は除き、
-中の空白とタブの連なりは空白 1 つにして印字します。
+ただし、link のラベルは除き、中の空白とタブの連なりは空白 1 つにして印字します。
 （[セミコロンのラベル](#セミコロンのラベル)を参照）。
 名前の文字列が `'` で囲まれていれば、`"` で囲んで印字しますが、内容に `'`、`"`、
-backslash、改行、U+2028、U+2029、バッククォート、`&`、`#`、
+バックスラッシュ、改行、U+2028、U+2029、バッククォート、`&`、`#`、
 `<` が含まれる場合は書かれたままにします。
 （[同じに描かれる綴り](./compatibility.ja.md#同じに描かれる綴り)を参照）。
 `singleQuote` は読みません。
-link の label（`+'moving'>`）は `'` で囲んだままにします。
+link のラベル（`+'moving'>`）は `'` で囲んだままにします。
 mermaid.js がその場所で読む引用符は、それだけだからです。
 [fixture: names-and-quotes/single-quote-sensitive-kept]
-名前の空白を畳むことと文字列の trim は Db を変えます。
-escape の別の解釈が必要になる引用符への変更はしません。
+名前の空白を畳むことと文字列の両端の空白の除去は Db を変えます。
+エスケープの別の解釈が必要になる引用符への変更はしません。
 
 [fixture: wardley/names-and-quotes/name-spaces]
 
@@ -196,7 +195,7 @@ escape の別の解釈が必要になる引用符への変更はしません。
 
 [fixture: wardley/names-and-quotes/name-hyphen]
 
-入力（escape 表記）: `"wardley-beta\ncomponent Foo  Bar\tBaz [0.3,0.6]"`
+入力（エスケープ表記）: `"wardley-beta\ncomponent Foo  Bar\tBaz [0.3,0.6]"`
 
 出力
 ([names-and-quotes/name-spaces-output.mmd](../tests/fixtures/wardley/names-and-quotes/name-spaces-output.mmd)):
@@ -209,10 +208,10 @@ wardley-beta
 ### 名前の境界
 
 普通の名前と後続部品の間は空白 1 つにします。
-ただし bare 名がちょうど title のときは、座標、pipeline の括弧、evolve の数、
-矢印、port、@、/ との接し方を保ちます。
-title の後の空白で metadata として読まれるためです。
-引用した "title" と bare の titlex は普通に空白を置きます。
+ただし引用符のない名前がちょうど title のときは、座標、pipeline の括弧、
+evolve の数、矢印、port、@、/ との接し方を保ちます。
+title の後の空白でメタデータとして読まれるためです。
+引用した "title" と引用符なしの titlex は普通に空白を置きます。
 大文字の名前は名前のままです。
 
 [fixture: wardley/name-boundaries/component-title-contact]
@@ -237,7 +236,7 @@ title の後の空白で metadata として読まれるためです。
 
 [fixture: wardley/name-boundaries/title-evolve-hidden]
 
-入力（escape 表記）: `"wardley-beta\ncomponent title[0.3,0.6]"`
+入力（エスケープ表記）: `"wardley-beta\ncomponent title[0.3,0.6]"`
 
 出力
 ([name-boundaries/component-title-contact-output.mmd](../tests/fixtures/wardley/name-boundaries/component-title-contact-output.mmd)):
@@ -251,16 +250,16 @@ wardley-beta
 
 ### 座標
 
-座標は [a, b] とし、内端と comma の前は詰め、後は空白 1 つにします。
+座標は [a, b] とし、内端とコンマの前は詰め、後は空白 1 つにします。
 Db が同じ空白の形から、Prettier がコンマの隣に印字する形を選びます。
 visibility、evolution の順と整数・小数の原綴を保ちます。
-hidden と global trivia の gap には共有規則を使います。
+読み飛ばす部分と大域的な注釈の隙間には共有規則を使います。
 
 [fixture: wardley/coordinates/coordinates-decimal]
 
 [fixture: wardley/coordinates/coordinates-integer]
 
-入力（escape 表記）: `"wardley-beta\nanchor Coord [ 0.3 \t,\t 0.6 ]"`
+入力（エスケープ表記）: `"wardley-beta\nanchor Coord [ 0.3 \t,\t 0.6 ]"`
 
 出力
 ([coordinates/coordinates-decimal-output.mmd](../tests/fixtures/wardley/coordinates/coordinates-decimal-output.mmd)):
@@ -272,9 +271,10 @@ wardley-beta
 
 ### 数
 
-NumericLiteral は double 値を文字列化せず、source span を印字します。
-小数の先頭と末尾のゼロ、精度、丸められる境界、非正規化数、underflow、
-受理される overflow を保ちます。
+`NumericLiteral` は倍精度浮動小数点数の値を文字列化せず、
+原文の範囲を印字します。
+小数の先頭と末尾のゼロ、精度、丸められる境界、非正規化数、小さすぎる値の丸め、
+受理される桁あふれを保ちます。
 01.00 を 1 にすると、小数必須の位置で拒否されます。
 百分率への変換も作者の単位を失うため行いません。
 拒否される先頭ゼロの整数は修復しません。
@@ -293,7 +293,7 @@ NumericLiteral は double 値を文字列化せず、source span を印字しま
 
 [corpus fixture: wardley/db-coordinate-double-hundred]
 
-入力（escape 表記）: `"wardley-beta\ncomponent Digits [000.30,01.00]"`
+入力（エスケープ表記）: `"wardley-beta\ncomponent Digits [000.30,01.00]"`
 
 出力
 ([numbers/decimal-leading-zero-output.mmd](../tests/fixtures/wardley/numbers/decimal-leading-zero-output.mmd)):
@@ -307,9 +307,10 @@ wardley-beta
 
 ### 装飾
 
-label offset、strategy、inertia は書かれたものを文法上の順に保ちます。
+ラベルの位置のずれ、戦略、inertia は書かれたものを文法上の順に保ちます。
 装飾の外側は空白 1 つ、括弧の内側は詰めます。
-bare inertia と (inertia)、build、buy、outsource、market を保ちます。
+括弧なしの `inertia` と `(inertia)`、`build`、`buy`、`outsource`、
+`market` を保ちます。
 inertia の両形は Db が同じでも、変更すると書かれたノード形を失います。
 既定値は補いません。
 
@@ -335,7 +336,7 @@ inertia の両形は Db が同じでも、変更すると書かれたノード�
 
 [fixture: wardley/decorations/label-strategy-bare-inertia]
 
-入力（escape 表記）:
+入力（エスケープ表記）:
 `"wardley-beta\ncomponent Decor[0.3,0.6]label[1,-2]( build )( inertia )"`
 
 出力
@@ -348,17 +349,17 @@ wardley-beta
 
 ### label offset
 
-label [-1, 2] とし、普通の minus は符号なし整数の大きさに付けます。
+label [-1, 2] とし、普通のマイナスは符号なし整数の大きさに付けます。
 -0 も符号を残し、数の原綴を保ちます。
 符号を離しても Db は同じですが、符号は数に接します。
 Prettier が単項のマイナスを印字する形です。
-符号と数の間の hidden と global trivia の境界は保ちます。
+符号と数の間の読み飛ばす部分と大域的な注釈の境界は保ちます。
 
 [fixture: wardley/label-offsets/offset-sign-gap]
 
 [fixture: wardley/label-offsets/offset-negative-zero]
 
-入力（escape 表記）:
+入力（エスケープ表記）:
 `"wardley-beta\ncomponent Sign[0.3,0.6]label[ - 1 , -\t2 ]"`
 
 出力
@@ -419,7 +420,7 @@ A -->B の矢印は --> のままです。
 
 [fixture: wardley/links/link-multiword]
 
-入力（escape 表記）: `"wardley-beta\nAlpha->Beta"`
+入力（エスケープ表記）: `"wardley-beta\nAlpha->Beta"`
 
 出力
 ([links/link-short-output.mmd](../tests/fixtures/wardley/links/link-short-output.mmd)):
@@ -434,9 +435,9 @@ wardley-beta
 [test: wardley/flows/unicode-flow]
 
 +'label'>、+'label'<、+'label'<> の内側は書かれたまま保ちます。
-空ラベル、padding、backslash、継続行の列も含みます。
-完全な部品間の Root directive の境界も保ちます。
-普通の空白を挿入すると複合単位が拒否され、trim は Db を変えます。
+空ラベル、余白、バックスラッシュ、継続行の列も含みます。
+完全な部品間の大域的なディレクティブの境界も保ちます。
+普通の空白を挿入すると複合単位が拒否され、両端の空白の除去は Db を変えます。
 flow の優先順位で見えなくても、両 port とセミコロンラベルを残します。
 
 [fixture: wardley/flows/flow-forward]
@@ -455,7 +456,7 @@ flow の優先順位で見えなくても、両 port とセミコロンラベル
 
 [fixture: wardley/flows/flow-ports-and-label]
 
-入力（escape 表記）: `"wardley-beta\nAlpha+'moving'>Beta"`
+入力（エスケープ表記）: `"wardley-beta\nAlpha+'moving'>Beta"`
 
 出力
 ([flows/flow-forward-output.mmd](../tests/fixtures/wardley/flows/flow-forward-output.mmd)):
@@ -468,12 +469,12 @@ wardley-beta
 ### セミコロンのラベル
 
 文法上のラベル開始 ; は前の部品に付け、
-後ろは物理行末まで source span のまま印字します。
+後ろは物理行末まで原文の範囲のまま印字します。
 Db が同じ形から、link に属する区切りと分かる接した形を選びます。
-padding を足したり trim したりしません。; の後が空白なら、
+余白を足したり両端の空白を除いたりしません。; の後が空白なら、
 空白だけのラベルとして受理され、裸の ; は拒否されます。
-後続のセミコロンには共有の prefix 保護を使います。
-native に見える形と percent テキストもラベルのままです。
+後続のセミコロンには共有の前置部分保護を使います。
+図種固有の構文に見える形と `%` テキストもラベルのままです。
 リンクのラベルでは、`;` の後や flow の引用符の間の空白とタブの連なりは、
 空白 1 つにして印字します。
 （[同じに描かれるテキスト中の空白の連なり](./compatibility.ja.md#同じに描かれるテキスト中の空白の連なり)）。
@@ -490,7 +491,7 @@ component の名前はそのままです。 [fixture: wardley/flows/flow-padding
 
 [fixture: wardley/semicolon-labels/label-comment-native]
 
-入力（escape 表記）: `"wardley-beta\nAlpha->Beta;; extra"`
+入力（エスケープ表記）: `"wardley-beta\nAlpha->Beta;; extra"`
 
 出力
 ([semicolon-labels/label-two-semicolons-output.mmd](../tests/fixtures/wardley/semicolon-labels/label-two-semicolons-output.mmd)):
@@ -503,15 +504,15 @@ wardley-beta
 ### evolve
 
 evolve Name 0.80 とし、部品間は空白 1 つにします。
-書かれた参照と小数、空の引用名、未反映の target を保ちます。
+書かれた参照と小数、空の引用名、未反映の対象を保ちます。
 ID が存在しなくても文を消しません。
-bare 名と数を結ぶと拒否されることがあります。
+引用符のない名前と数を結ぶと拒否されることがあります。
 
 [fixture: wardley/evolves/evolve-numeric-gap]
 
 [fixture: wardley/evolves/evolve-empty-name]
 
-入力（escape 表記）:
+入力（エスケープ表記）:
 `"wardley-beta\ncomponent Motion[0.3,0.6]\nevolveMotion\t0.80"`
 
 出力
@@ -526,7 +527,7 @@ wardley-beta
 ### note と annotation
 
 note、annotations、annotation、force の部品間は空白 1 つにします。
-annotation の外側の comma も前を詰め、後を空白 1 つにします。
+annotation の外側のコンマも前を詰め、後を空白 1 つにします。
 列を揃えず、座標の句読法と同じ選択にします。
 空文字、番号 0、整数と小数の座標、後続の検査されない box を保ちます。
 
@@ -540,7 +541,7 @@ annotation の外側の comma も前を詰め、後を空白 1 つにします�
 
 [fixture: wardley/notes-and-annotations/force-spacing]
 
-入力（escape 表記）: `"wardley-beta\nnote\t\"Body\"[ 0.3 ,0.6 ]"`
+入力（エスケープ表記）: `"wardley-beta\nnote\t\"Body\"[ 0.3 ,0.6 ]"`
 
 出力
 ([notes-and-annotations/note-spacing-output.mmd](../tests/fixtures/wardley/notes-and-annotations/note-spacing-output.mmd)):
@@ -552,10 +553,10 @@ wardley-beta
 
 ### evolution
 
-@ は両側を詰め、/ と stage の矢印 -> の左右は空白 1 つにします。
-任意の boundary と第 2 名、空の引用名、stage の原順を保ちます。
+@ は両側を詰め、/ と段階の矢印 -> の左右は空白 1 つにします。
+任意の境界と第 2 名、空の引用名、段階の原順を保ちます。
 付属する印は詰め、区切りは分け、欠けた値は補いません。
-bare の title には Name boundaries を適用します。
+引用符なしの title には名前の境界を適用します。
 
 [fixture: wardley/evolution/stage-all-gaps]
 
@@ -569,7 +570,7 @@ bare の title には Name boundaries を適用します。
 
 [fixture: wardley/evolution/stage-title-arrow]
 
-入力（escape 表記）:
+入力（エスケープ表記）:
 `"wardley-beta\nevolution  Early  @ 0.20/ Concept->Late@1.00 / Utility"`
 
 出力
@@ -583,14 +584,14 @@ wardley-beta
 ### size
 
 size [800, 600] とし、座標と同じ括弧の形にします。
-2 つの整数の source span を保ち、0 も残します。
+2 つの整数の原文の範囲を保ち、0 も残します。
 実効的な描画寸法で文を置き換えず、数の組の表記を揃えます。
 
 [fixture: wardley/size/size-spacing]
 
 [fixture: wardley/size/size-zero]
 
-入力（escape 表記）: `"wardley-beta\nsize[ 800 \t,\t 600 ]"`
+入力（エスケープ表記）: `"wardley-beta\nsize[ 800 \t,\t 600 ]"`
 
 出力
 ([size/size-spacing-output.mmd](../tests/fixtures/wardley/size/size-spacing-output.mmd)):
@@ -602,8 +603,8 @@ wardley-beta
 
 ### title
 
-共有の common-line layout を使い、空でない値の前は空白 1 つにします。
-普通の外端の共通空白は trim し、閉じない引用符も内部の文字として保ちます。
+共通の行の配置を使い、空でない値の前は空白 1 つにします。
+外端の通常の共通空白は除き、閉じない引用符も内部の文字として保ちます。
 空の title は空のままで、次の行を値にしません。
 値を引用文字列として扱わず、Db が同じ端の形を簡潔にします。
 題の終わりのディレクティブは、それぞれの前に空白があれば空白 1 つを置き、
@@ -619,7 +620,7 @@ wardley-beta
 
 [fixture: wardley/title/title-next-line]
 
-入力（escape 表記）: `"wardley-beta\ntitle\t  A  subject \t"`
+入力（エスケープ表記）: `"wardley-beta\ntitle\t  A  subject \t"`
 
 出力
 ([title/title-trim-output.mmd](../tests/fixtures/wardley/title/title-trim-output.mmd)):
@@ -633,7 +634,7 @@ wardley-beta
 
 [test: wardley/accessibility/unicode-empty-description]
 
-accTitle: Value と accDescr: Value は共有の行 layout を使います。
+accTitle: Value と accDescr: Value は共有の行配置を使います。
 空の代入も残します。
 値の終わりのディレクティブは、それぞれの前に空白があれば空白 1 つを置き、
 最後のディレクティブの後の空白を除いて印字します。
@@ -654,18 +655,18 @@ accTitle: Value と accDescr: Value は共有の行 layout を使います。
 キーワードと開始括弧の間が空白だけなら同じ行にまとめ、
 独立した閉じ括弧を文と同じ段にそろえます。
 [fixture: wardley/accessibility/description-empty]
-保護された trivia とセミコロンの配置では、隙間を保ちます。
+保護された注釈とセミコロンの配置では、隙間を保ちます。
 通常の説明本文と独立したコメント行は文より 1 段深くそろえます。
 Db で LF 後の字下げが取り除かれるためです。
 改行、内部の空行、行末空白を保ちます。
 ディレクティブと共有処理で取り除かれるコメント領域は、
 ディレクティブだけを含むブロックでも原文全体を保ちます。
-trivia は共有の継続行の配置を保ちます。
+注釈は共有の継続行の配置を保ちます。
 [fixture: wardley/accessibility/description-closer]
 [fixture: wardley/accessibility/description-comment-only]
 [fixture: wardley/accessibility/description-directive-only]
 
-入力（escape 表記）:
+入力（エスケープ表記）:
 `"wardley-beta\naccTitle \t:  A  B \t\naccDescr\t:  C  D \t"`
 
 出力
@@ -679,12 +680,12 @@ wardley-beta
 
 ### hidden form
 
-WardleyIgnoredText は木の owner で、range の原文を 1 回だけ印字します。
-保持 prefix、本文、部品の gap、pipeline の開き部と本文、suffix が対象です。
+`WardleyIgnoredText` は木の所属先で、範囲の原文を 1 回だけ印字します。
+保持前置部分、本文、部品の隙間、pipeline の開き部と本文、後続部分が対象です。
 value は共通除去を省くため、それから再構築しません。
-hidden YAML と directive の内部と closer の列は保ちます。
-先に読む文字列と値の内部はその値、失敗した native 形はコメントのままです。
-3 fence の一致、別々の一致、後の適格な closer も保ちます。
+読み飛ばす YAML とディレクティブの内部と閉じ記号の列は保ちます。
+先に読む文字列と値の内部はその値、失敗した図種固有の形はコメントのままです。
+3 つの区切りを含む一致、別々の一致、後の適格な閉じ記号も保ちます。
 
 [fixture: wardley/hidden-forms/hidden-body-directive]
 
@@ -710,7 +711,7 @@ hidden YAML と directive の内部と closer の列は保ちます。
 
 [corpus fixture: wardley/hidden-all-unit-gaps]
 
-入力（escape 表記）:
+入力（エスケープ表記）:
 `"wardley-beta\n%%{!native}%%\ncomponent HiddenBody[0.3,0.6]"`
 
 出力
@@ -734,16 +735,16 @@ wardley-beta
 
 ### hidden の境界
 
-range 外で消費する LF、inline の接触、closer 後の空白とタブには、
-共有の hidden-gap と block 規則を使い、EOF の padding も保ちます。
-suffix が LF を消費したら次の文に予備の可視 LF が必要です。
-closer の padding があれば最初の LF が可視のままになります。
-見出しに可視 EOL が不要な例外は、見出し自身の form だけに適用します。
+範囲外で消費する LF、行内の接触、閉じ記号後の空白とタブには、
+共有の `hidden-gap` と block 規則を使い、EOF の余白も保ちます。
+後続部分が LF を消費したら次の文に予備の可視 LF が必要です。
+閉じ記号の余白があれば最初の LF が可視のままになります。
+見出しに可視 EOL が不要な例外は、見出し自身の形だけに適用します。
 最初の文が同じ行に残っても、その文には本文側の規則を使います。
-pipeline の opener と子文にも可視 LF を保ちます。
-可視 EOL 後の form は本文の項目です。
-複数 suffix と YAML の境界を保ち、保護テキストの中に段を足しません。
-hidden form が見出し行を保つときは、pipeline の開きもその行に保ちます。
+pipeline の開始記号と子文にも可視 LF を保ちます。
+可視 EOL 後の形は本文の項目です。
+複数後続部分と YAML の境界を保ち、保護テキストの中に段を足しません。
+読み飛ばす構文が見出し行を保つときは、pipeline の開きもその行に保ちます。
 
 [fixture: wardley/hidden-boundaries/meeting-inline-directive-directive]
 
@@ -823,7 +824,7 @@ hidden form が見出し行を保つときは、pipeline の開きもその行�
 
 [fixture: wardley/hidden-boundaries/pipeline-body-before-close]
 
-入力（escape 表記）:
+入力（エスケープ表記）:
 `"wardley-beta\ncomponent Spare[0.3,0.6]%%{!end}%%\n\ncomponent After[0.4,0.7]"`
 
 出力
@@ -852,16 +853,16 @@ wardley-beta
 
 ### global directive
 
-Root directive の原文、順、owner を保ちます。
+大域的なディレクティブの原文、順、所属先を保ちます。
 同じ印字行の中のディレクティブは、
 [ディレクティブ](./flowchart.ja.md#ディレクティブ)のとおりに置きます。
 元は同じ行にあった単位を別の行へ分けるときは、
-間の directive を次の単位に付けます。
+間のディレクティブを次の単位に付けます。
 右側の接触・分離は保ち、左側の接触は切れます。
 普通の独立行は本文の段に揃え、複数行の内部と EOF に達する未完の終端は保ちます。
 JSON 整形や順の入れ替えはしません。
 共通除去が両側の文字を結び、受理や値を変えることがあるためです。
-native の hidden directive は別のノードです。
+固有の読み飛ばすディレクティブは別のノードです。
 
 [fixture: wardley/global-directives/header-to-body]
 
@@ -885,7 +886,7 @@ native の hidden directive は別のノードです。
 
 [fixture: wardley/global-directives/global-unclosed]
 
-入力（escape 表記）: `"wardley-beta\ncomponent%%{wrap}%%Glued[0.3,0.6]"`
+入力（エスケープ表記）: `"wardley-beta\ncomponent%%{wrap}%%Glued[0.3,0.6]"`
 
 出力
 ([global-directives/global-keyword-contact-output.mmd](../tests/fixtures/wardley/global-directives/global-keyword-contact-output.mmd)):
@@ -900,10 +901,10 @@ wardley-beta
 [test: wardley/comments/native-separators]
 
 普通の独立コメントは所属する本文の段、見出し前は第 1 列に揃えます。
-inline は同じ行と接触側を保ち、離れた gap は空白 1 つにします。
-mark、本文、末尾 padding を保ち、pipeline 内では子文の段にします。
-文字列、flow、link ラベルの percent テキストはその値に残します。
-共通の comment-region の結合は原文の列を保ち、owner の変化を防ぎます。
+行内のコメントは同じ行と接触側を保ち、離れた隙間は空白 1 つにします。
+印、本文、末尾余白を保ち、pipeline 内では子文の段にします。
+文字列、flow、link ラベルの `%` テキストはその値に残します。
+共通のコメント領域の結合は原文の列を保ち、所属先の変化を防ぎます。
 
 [fixture: wardley/comments/comment-standalone]
 
@@ -915,7 +916,8 @@ mark、本文、末尾 padding を保ち、pipeline 内では子文の段にし�
 
 [fixture: wardley/comments/comment-triple-bare]
 
-入力（escape 表記）: `"wardley-beta\ncomponent InlineSpace[0.3,0.6] \t%% tail"`
+入力（エスケープ表記）:
+`"wardley-beta\ncomponent InlineSpace[0.3,0.6] \t%% tail"`
 
 出力
 ([comments/comment-inline-separated-output.mmd](../tests/fixtures/wardley/comments/comment-inline-separated-output.mmd)):
@@ -927,12 +929,12 @@ wardley-beta
 
 ### 空行
 
-普通の ASCII 空行は文と trivia の間で最大 1 行にします。
-文書と本文の端の余分な空行と、空白だけの padding は落とします。
+普通の ASCII 空行は文と注釈の間で最大 1 行にします。
+文書と本文の端の余分な空行と、空白だけの余白は落とします。
 pipeline の端も必須の可視 LF を残して空行を除きます。
 作者のまとまりを 1 行で示す選択です。
-値、hidden と directive の内部、保持 prefix、保護区間、必須の hidden LF には、
-それぞれの保持規則を使います。
+値、読み飛ばす部分とディレクティブの内部、保持前置部分、保護区間、
+読み飛ばす構文の必須 LF には、それぞれの保持規則を使います。
 
 [fixture: wardley/blank-lines/blanks-collapse]
 
@@ -940,7 +942,7 @@ pipeline の端も必須の可視 LF を残して空行を除きます。
 
 [fixture: wardley/blank-lines/blanks-comments]
 
-入力（escape 表記）:
+入力（エスケープ表記）:
 `"\n\nwardley-beta\n\n\ncomponent GroupA[0.3,0.6]\n \t\n\n\ncomponent GroupB[0.4,0.7]\n\n"`
 
 出力
@@ -955,10 +957,10 @@ wardley-beta
 
 ### 行末の空白
 
-見出し、完結した構造、説明の closer の外の無害な ASCII padding は落とします。
-owner ごとに判断し、link ラベルの末尾、文字列と flow、コメント、directive、
-hidden の内部、必須の closer padding、保護区間は保ちます。
-物理行を一律に trim すると、Db が変わるか空白だけのラベルが拒否されます。
+見出し、完結した構造、説明の閉じ記号の外の無害な ASCII 余白は落とします。
+所属先ごとに判断し、link ラベルの末尾、文字列と flow、コメント、ディレクティブ、
+読み飛ばす部分の内部、閉じ記号後の必須の余白、保護区間は保ちます。
+物理行の両端の空白を一律に除くと、Db が変わるか空白だけのラベルが拒否されます。
 
 [fixture: wardley/trailing-whitespace/trailing-exterior]
 
@@ -966,7 +968,7 @@ hidden の内部、必須の closer padding、保護区間は保ちます。
 
 [fixture: wardley/trailing-whitespace/trailing-blank-label-keep]
 
-入力（escape 表記）:
+入力（エスケープ表記）:
 `"wardley-beta \t\ncomponent Tail[0.3,0.6] \t\naccDescr { End } \t"`
 
 出力
@@ -980,23 +982,24 @@ wardley-beta
 
 ### セミコロン
 
-Root directive を除いた後でセミコロンと literal の style か classDef
+大域的なディレクティブを除いた後でセミコロンと文字列 `style` か `classDef`
 の両方を含む原文行は、共有の行保護で丸ごと保ちます。
 規則が発火しない語の行でも、セミコロンがあれば保護します。
 `mystyle` のような名前だけでは、
 通常の component や pipeline の空白整形を妨げません。
-文、コメント、hidden form を同じ行に残し、前後の行と結びません。
+文、コメント、読み飛ばす構文を同じ行に残し、前後の行と結びません。
 最初の行は本文の段に揃え、中身と後続行の列は保ちます。
-directive をまたぐ語と U+2028/U+2029 後の comment region も、
+ディレクティブをまたぐ語と U+2028/U+2029 後のコメント領域も、
 mermaid が 1 行として読む範囲で数えます。
 行規則が文法上のラベル開始も無視しうるため、行全体を保つことで、
 移動後の選択を予測する必要をなくします。
 書かれたセミコロンはすべて保ちます。
-文法上のラベル開始だけは共有の textual-prefix 保護から除きます。
+文法上のラベル開始だけは共有のテキストの前置部分保護から除きます。
 ほかのセミコロンは区間の最後のセミコロンまでと、
-交差する値と trivia 全体を原文のまま保護します。
-除去される Root directive の内部だけにある語は、行全体を保護する理由にしません。
-ヘッダの前にある Root directive も同じように除かれ、その後の本文の行は、
+交差する値と注釈全体を原文のまま保護します。
+除去される大域的なディレクティブの内部だけにある語は、
+行全体を保護する理由にしません。
+ヘッダの前にある大域的なディレクティブも同じように除かれ、その後の本文の行は、
 従来どおり保護するか整形します。
 
 語の行の `;` の前後の空白は、mermaid.js の行の読み方を変えるので、
@@ -1062,7 +1065,7 @@ mermaid.js が別の読み方をする形を印字しません。
 
 [fixture: wardley/semicolons/style-after-leading-directive]
 
-入力（escape 表記）: `"wardley-beta\nAlpha  -> Beta; style:#tone;"`
+入力（エスケープ表記）: `"wardley-beta\nAlpha  -> Beta; style:#tone;"`
 
 出力
 ([semicolons/style-label-output.mmd](../tests/fixtures/wardley/semicolons/style-label-output.mmd)):
@@ -1074,12 +1077,12 @@ wardley-beta
 
 ### 複数行の値
 
-printWidth では折り返しません。
+`printWidth` では折り返しません。
 文字列と flow の物理的な中身、継続行の列、内部の空行を保ちます。
 説明本文は前述の共有の字下げを使います。
 普通の文の部品間の可視 LF は拒否され、値の継続行の字下げは Db を変えます。
 長い component と evolution の行も折り返しません。
-説明の opener と closer には Accessibility を使います。
+説明の開始記号と閉じ記号にはアクセシビリティを使います。
 
 [fixture: wardley/multiline-values/long-component]
 
@@ -1089,7 +1092,7 @@ printWidth では折り返しません。
 
 [fixture: wardley/multiline-values/multiline-flow-columns]
 
-入力（escape 表記）:
+入力（エスケープ表記）:
 `"wardley-beta\ncomponent A very long component name with repeated words[0.123456789012345,0.987654321098765]label[-13,24](build)inertia"`
 
 設定: `{"printWidth":20}`
@@ -1104,13 +1107,13 @@ wardley-beta
 
 ### フロントマターの YAML
 
-安全な実フロントマターだけ、共有の guarded YAML formatter を使います。
-不正な YAML、字下げした fence、区切りの padding、HTML の危険、
-整形で fence を作る本文は書かれたまま保ちます。
+安全な実フロントマターだけ、共有の保護条件付きの YAML 整形処理を使います。
+不正な YAML、字下げした囲みの区切り、区切りの余白、HTML の危険、
+整形で囲みの区切りを作る本文は書かれたまま保ちます。
 YAML は幅 0 でも共有の正の最小字下げを使います。
-textBeforeHeader があれば、先頭 LF、通過した trivia、second-scan form、
-実 form と保持 form の順を含め、完全な prefix を保ちます。
-共有の keepsPrefix により、
+`textBeforeHeader` があれば、先頭 LF、通過した注釈、2 回目の走査で読む形、
+実形と保持形の順を含め、完全な前置部分を保ちます。
+共有の `keepsPrefix` により、
 無視する YAML が実フロントマターになって設定や title を変えることを防ぎます。
 
 [fixture: wardley/frontmatter-yaml/frontmatter-safe]
@@ -1131,7 +1134,7 @@ textBeforeHeader があれば、先頭 LF、通過した trivia、second-scan fo
 
 [fixture: wardley/frontmatter-yaml/frontmatter-fence-guard]
 
-入力（escape 表記）:
+入力（エスケープ表記）:
 `"---\ntitle: 'Map'\nconfig: {wardley: {width: 600}}\n---\nwardley-beta\ncomponent Fm[0.3,0.6]"`
 
 出力
@@ -1148,13 +1151,13 @@ wardley-beta
 
 ### 改行と Unicode
 
-共有の host 方針で CR/CRLF を LF として読み、設定の改行で印字します。
-値と hidden form の内部も同様です。
+共有の呼び出し側方針で CR/CRLF を LF として読み、設定の改行で印字します。
+値と読み飛ばす構文の内部も同様です。
 LS/PS/NBSP/BOM は字句上の役割を保ちます。
-例外は共有の common 値の外端 trim と普通の description opener の空白です。
-一般の padding に変えると、Db を変えるか拒否入力を修復してしまいます。
+例外は共通値の外端の空白除去と、通常の説明ブロックの開始記号の前の空白です。
+一般の余白に変えると、Db を変えるか拒否入力を修復してしまいます。
 先頭 BOM は Prettier が除去・復元するため、
-元のフロントマターの判定と byte 一致は保証しません。
+元のフロントマターの判定とバイト一致は保証しません。
 
 [test: wardley/line-terminators-and-unicode/cr-structure]
 
@@ -1176,7 +1179,7 @@ LS/PS/NBSP/BOM は字句上の役割を保ちます。
 
 ### 原順
 
-文、子文、stage、装飾、参照、空の代入を、全出現とともに原順で保ちます。
+文、子文、段階、装飾、参照、空の代入を、全出現とともに原順で保ちます。
 繰り返した宣言と pipeline、未反映の evolve、最初の annotations box、
 最後の size、evolution、共通代入も書かれたまま残します。
 実効 Db から再構築しません。
@@ -1188,7 +1191,7 @@ LS/PS/NBSP/BOM は字句上の役割を保ちます。
 
 [fixture: wardley/source-order/order-pipeline-stages]
 
-入力（escape 表記）:
+入力（エスケープ表記）:
 `"wardley-beta\ncomponent Zorder[0.3,0.6]\ncomponent Aorder[0.4,0.7]\ncomponent Zorder[0.5,0.8]"`
 
 出力
@@ -1210,10 +1213,10 @@ wardley-beta
 ### 最終改行
 
 普通の受理ファイルは設定の改行 1 個で終え、末尾の普通の空行を落とします。
-見出しだけ、コメント、閉じた hidden form も同じ終端に揃えます。
-EOF に達する global 終端、保持 prefix の境界、保護テキスト、
-必須の hidden closer padding を優先します。
-ラベルの padding は値であり、末尾の余分な空行として落としません。
+見出しだけ、コメント、閉じた読み飛ばす構文も同じ終端に揃えます。
+EOF に達する大域的な終端、保持前置部分の境界、保護テキスト、
+読み飛ばす構文の閉じ記号後の必須の余白を優先します。
+ラベルの余白は値であり、末尾の余分な空行として落としません。
 
 [corpus fixture: wardley/header-only]
 
@@ -1221,7 +1224,7 @@ EOF に達する global 終端、保持 prefix の境界、保護テキスト、
 
 [fixture: wardley/final-newline/final-hidden]
 
-入力（escape 表記）: `"wardley-beta\n%% final"`
+入力（エスケープ表記）: `"wardley-beta\n%% final"`
 
 出力
 ([final-newline/final-comment-output.mmd](../tests/fixtures/wardley/final-newline/final-comment-output.mmd)):
@@ -1239,9 +1242,9 @@ wardley-beta
 directive-as-token-boundary、ignored-semicolon-as-token-boundary、
 html-tag-in-frontmatter、embedded-data-opaque、bare-percent-line-before-header、
 c4-keyword-anywhere です。
-Wardley 固有の opaque な受理設定キーはありません。
-raw の拒否に raw Db はなく、
-利用できる specified reading と埋め込み効果を使います。
+Wardley 固有の内容を解釈しない受理設定キーはありません。
+素の mermaid.js が拒否した場合、素の Db はなく、
+利用できる仕様で定める読み方と埋め込み効果を使います。
 単独ファイルの解析失敗は出力せず構文エラーにし、
 Markdown では埋め込みを断ります。
 拒否構文は修復しません。
@@ -1266,13 +1269,15 @@ Markdown では埋め込みを断ります。
 
 ### Markdown のフェンス
 
-共有の Markdown 接続で、段を除いた payload に同じ規則を適用します。
-fence、list、quote の列は host が付け、最後の code 行の padding を落とします。
+共有の Markdown 接続で、段を除いた図のテキストに同じ規則を適用します。
+囲みの区切り、リスト、引用の列は呼び出し側が付け、
+最後のコード行の余白を落とします。
 特に HostSource -> HostTarget; の後の空白だけのラベルを落とすと、裸の ; が残り、
-Wardley が payload を拒否します。
-単独ファイルではその padding を保ちます。
-ラベルを書き換える規則は加えず、既存の Markdown host の制限として記録します。
-実際の host 出力と 3 回の冪等性は、単独 payload の Db 比較とは別に検査します。
+Wardley が図のテキストを拒否します。
+単独ファイルではその余白を保ちます。
+ラベルを書き換える規則は加えず、既存の Markdown 側の制限として記録します。
+実際の呼び出し側出力と 3 回の冪等性は、
+単独の図のテキストの Db 比較とは別に検査します。
 
 [test: wardley Markdown: top-level]
 

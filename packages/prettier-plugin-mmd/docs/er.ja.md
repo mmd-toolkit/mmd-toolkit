@@ -1172,7 +1172,8 @@ erDiagram
 対象にする版の一部はその行をエンティティとして読み、
 `direction tb` と `direction TB` を別に描くためです。
 詳しくは
-[大文字小文字をそろえるキーワード](./compatibility.ja.md#大文字小文字をそろえるキーワード) と
+[大文字小文字をそろえるキーワード](./compatibility.ja.md#大文字小文字をそろえるキーワード)
+と
 [対象にする版の mermaid.js のために残す形](./compatibility.ja.md#対象にする版の-mermaidjs-のために残す形)
 を参照してください。 [fixture: direction/spacing] [fixture: direction/text-kept]
 [fixture: direction/case-kept] [fixture: direction/case-bt-rl-kept]

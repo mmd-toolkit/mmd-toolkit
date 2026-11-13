@@ -43,7 +43,7 @@ import {
   findTriviaBetween,
   isWhitespace,
   skipSpacesAndTabs,
-  textWithoutDirectives,
+  textRead,
 } from "./source.ts"
 
 type GraphLabel = AgentflowLabel | FlowchartLabel
@@ -243,7 +243,7 @@ export function labelEdgeRule(source: Source, label: GraphLabel): GapRule {
     "the bracket before a label",
   )
   const hasWhitespaceBefore = [
-    ...textWithoutDirectives(source, before.range[1], label.range[0]),
+    ...textRead(source, before.range[1], label.range[0]),
   ].some(isWhitespace)
   return hasWhitespaceBefore && keepsLeadingWhitespace(label) ? "space" : "none"
 }

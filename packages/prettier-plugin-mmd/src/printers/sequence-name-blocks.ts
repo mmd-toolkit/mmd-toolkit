@@ -10,9 +10,11 @@ import type { Source } from "./source.ts"
 /**
  * Whether a version that counts reads the text of a data block as a part of
  * the name of its participant: the versions before the data blocks have the
- * name rule `[^\->:\n,;]+?...`, which takes the `@{`, the text, and the `}`
- * into the name when the text holds none of the characters that end a name,
- * and the name is the text of the actor box. The whitespace of the block, and
+ * name rule `[^\->:\n,;]+?([\-]*[^\->:\n,;]+?)*?`, which takes the `@{`, the
+ * text, and the `}` into the name when the text holds none of the characters
+ * that end a name: a `-` is not one of them when a character that is not a `-`
+ * stands before it, so a `-` in the text keeps the block in the name. The name
+ * is the text of the actor box. The whitespace of the block, and
  * the whitespace between the id and the `@{`, is then part of the name. A
  * text with a `:`, a `,`, a `;`, or a `>` is rejected there in both forms
  * (docs/sequence.md, Whitespace between tokens).

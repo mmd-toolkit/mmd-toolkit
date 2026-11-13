@@ -615,7 +615,8 @@ mermaid.js は字下げをノードの段として読むため、
 [fixture: data-blocks/use-tabs-folded-empty-lines-kept]
 
 外側のコメント、ディレクティブ、空行はそれぞれの規則に従います。
-CRLF と CR は `endOfLine` に従い、値の Unicode の区切り文字は文字として保ちます。
+CRLF と CR は `endOfLine` に従い、
+値の Unicode の区切り文字は文字として保ちます。
 [fixture: data-blocks/surrounding-trivia] [test: kanban: multiline-data-crlf]
 [test: kanban: multiline-data-cr] [test: data blocks: kanban U+2028]
 

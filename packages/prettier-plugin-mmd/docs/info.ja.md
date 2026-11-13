@@ -28,7 +28,7 @@
 
 [corpus fixture: info/header-flag-next-line]
 
-入力（escape 表記）: `" \tinfo  \n"`
+入力（エスケープ表記）: `" \tinfo  \n"`
 
 出力
 ([header/header-only-output.mmd](../tests/fixtures/info/header/header-only-output.mmd)):
@@ -56,7 +56,7 @@ YAML には共有の正の最小幅を使います。
 
 [fixture: info/indentation/indent-zero-tabs]
 
-入力（escape 表記）:
+入力（エスケープ表記）:
 `"info\ntitle Topic\n%% note\n%%{wrap}%%\naccTitle: Access\n"`
 
 出力
@@ -86,7 +86,7 @@ info
 
 [fixture: info/statements-one-per-line/same-line-keyword-content]
 
-入力（escape 表記）: `"info title Topic\n"`
+入力（エスケープ表記）: `"info title Topic\n"`
 
 出力
 ([statements-one-per-line/first-title-inline-output.mmd](../tests/fixtures/info/statements-one-per-line/first-title-inline-output.mmd)):
@@ -128,7 +128,7 @@ info
 
 [corpus fixture: info/lex-title-directive-only]
 
-入力（escape 表記）: `"info\ntitle\t   Topic  words \t\n"`
+入力（エスケープ表記）: `"info\ntitle\t   Topic  words \t\n"`
 
 出力
 ([title/title-trim-output.mmd](../tests/fixtures/info/title/title-trim-output.mmd)):
@@ -167,7 +167,7 @@ info
 
 [fixture: info/accessibility-lines/a11y-only-directive]
 
-入力（escape 表記）:
+入力（エスケープ表記）:
 `"info\naccTitle \t:  Access  words \t\naccDescr\t:   Details  words  \n"`
 
 出力
@@ -213,7 +213,7 @@ Db に LF 後の字下げが残らないためです。
 
 [corpus fixture: info/lex-block-directive-only]
 
-入力（escape 表記）:
+入力（エスケープ表記）:
 `"info\naccDescr{D}\naccDescr   {  D  }\naccDescr {D }\naccDescr{ D}\n"`
 
 出力
@@ -249,7 +249,7 @@ info が共通値を公開しなくても作者の本文なので、内部空白
 
 [corpus fixture: info/line-ls-block]
 
-入力（escape 表記）:
+入力（エスケープ表記）:
 `"info\ntitle \"open\\q\naccTitle: 'one\\n' \"two\"\naccDescr: \\u0041 \\t\n"`
 
 出力
@@ -271,7 +271,8 @@ YAML ブロックの `InfoIgnoredText` は原文全体を所有位置に保ち�
 範囲外の予備の LF と端の空行は [空行](#blank-lines) に従います。
 形の前に改行を足さず、不透明な本文を YAML 整形しません。
 開始記号の通常の字下げは整え、内部と第1列の閉じは列を保ちます。
-空の本文、複数の形、前の不成立の閉じ、大域的な処理による分断も原文の範囲を保ちます。
+空の本文、複数の形、前の不成立の閉じ、
+大域的な処理による分断も原文の範囲を保ちます。
 先に始まった行やブロックの値を隠れた形として読み直しません。
 
 [fixture: info/hidden-yaml/yaml-before-flag]
@@ -310,7 +311,7 @@ YAML ブロックの `InfoIgnoredText` は原文全体を所有位置に保ち�
 
 [corpus fixture: info/lex-yaml-three-fences]
 
-入力（escape 表記）: `"info\n---\nx: ignored\n---\nshowInfo\n"`
+入力（エスケープ表記）: `"info\n---\nx: ignored\n---\nshowInfo\n"`
 
 出力
 ([hidden-yaml/yaml-before-flag-output.mmd](../tests/fixtures/info/hidden-yaml/yaml-before-flag-output.mmd)):
@@ -380,7 +381,7 @@ showInfo
 
 [corpus fixture: info/hidden-directive-unclosed]
 
-入力（escape 表記）: `"info showInfo\n%%{! ignored }%%\ntitle Topic\n"`
+入力（エスケープ表記）: `"info showInfo\n%%{! ignored }%%\ntitle Topic\n"`
 
 出力
 ([hidden-directives/hidden-body-output.mmd](../tests/fixtures/info/hidden-directives/hidden-body-output.mmd)):
@@ -412,7 +413,8 @@ info showInfo
 
 [test: info/comments/comments-common-region-join]
 
-入力（escape 表記）: `"    %% before\ninfo\n       %% body\naccTitle: Access\n"`
+入力（エスケープ表記）:
+`"    %% before\ninfo\n       %% body\naccTitle: Access\n"`
 
 出力
 ([comments/comments-align-output.mmd](../tests/fixtures/info/comments/comments-align-output.mmd)):
@@ -436,8 +438,7 @@ info
 間のディレクティブを次の単位に付けます。
 右側の接触・分離は保ち、左側の接触は切れます。
 通常の独立ディレクティブの開始列だけを本文の1段へ合わせます。
-完全な構成要素境界、値内部、複数行、不正な `init`、
-EOF に達する終端も保ちます。
+完全な構成要素境界、値内部、複数行、不正な `init`、EOF に達する終端も保ちます。
 収集、再整形、削除はしません。
 info の Db が空でも `init` は設定を変えうるためです。
 
@@ -459,7 +460,7 @@ info の Db が空でも `init` は設定を変えうるためです。
 
 [corpus fixture: info/directive-unclosed-after-header]
 
-入力（escape 表記）:
+入力（エスケープ表記）:
 `"info\naccTitle%%{wrap}%%: Access\naccDescr%%{wrap}%%{ D }\n"`
 
 出力
@@ -488,7 +489,8 @@ info
 それ以外の複数行の文は、1 行の文と同じように整形します。
 [fixture: semicolons/stretch-kept-rest-formatted]
 [fixture: semicolons/no-stretch-formatted]
-条件を満たす語の移動が選択と受理を変えうるため、保護された見出しと本文は分離しません。
+条件を満たす語の移動が選択と受理を変えうるため、
+保護された見出しと本文は分離しません。
 style/classDef の両 pass、大小文字、colon と hash の空白、Unicode 境界、
 ディレクティブで再結合する条件を満たす語の読みを保ちます。
 セミコロンは info の一般的な文区切りではありません。
@@ -517,7 +519,7 @@ style/classDef の両 pass、大小文字、colon と hash の空白、Unicode �
 
 [corpus fixture: info/style-block-end-directive]
 
-入力（escape 表記）: `"info\ntitle A;; ;\naccTitle: B;\naccDescr: C;;\n"`
+入力（エスケープ表記）: `"info\ntitle A;; ;\naccTitle: B;\naccDescr: C;;\n"`
 
 出力
 ([semicolons/semicolon-line-values-output.mmd](../tests/fixtures/info/semicolons/semicolon-line-values-output.mmd)):
@@ -536,8 +538,7 @@ info
 コメントの周囲も同じです。
 値、ディレクティブ、隠れた形の内部、共通の結合領域、保持前置部分は、
 原文の役割に関わるため改行を保ちます。
-隠れた形が LF を消費した後は、
-次の文に必要なときだけ予備の LF 1 つを保ちます。
+隠れた形が LF を消費した後は、次の文に必要なときだけ予備の LF 1 つを保ちます。
 文書の終わりは設定の終端改行1つにし、見出しの直後の空行は削除します。
 見出しと最初の文の間に EOL は必要ありません。
 それ以外は予備の LF の後に通常の空行の規則を適用し、連続空行を1行、
@@ -567,7 +568,8 @@ info
 
 [fixture: info/blank-lines/blank-hidden-kept]
 
-入力（escape 表記）: `"\n\ninfo\n\n\ntitle Topic\n \t\n\naccTitle: Access\n\n"`
+入力（エスケープ表記）:
+`"\n\ninfo\n\n\ntitle Topic\n \t\n\naccTitle: Access\n\n"`
 
 出力
 ([blank-lines/blank-runs-output.mmd](../tests/fixtures/info/blank-lines/blank-runs-output.mmd)):
@@ -596,7 +598,7 @@ info
 
 [fixture: info/trailing-whitespace/trailing-hidden-eof-kept]
 
-入力（escape 表記）: `"info showInfo \t\naccDescr {D} \t\n"`
+入力（エスケープ表記）: `"info showInfo \t\naccDescr {D} \t\n"`
 
 出力
 ([trailing-whitespace/trailing-exterior-output.mmd](../tests/fixtures/info/trailing-whitespace/trailing-exterior-output.mmd)):
@@ -608,7 +610,8 @@ info showInfo
 
 ### Frontmatter yaml
 
-実際のフロントマターだけに[フロントマター](./compatibility.ja.md#フロントマター)を使います。
+実際のフロントマターだけに、
+[フロントマター](./compatibility.ja.md#フロントマター)を使います。
 安全な本文を整形し、区切りの余白は保ちます。
 不正な本文、字下げされた区切りの本文、HTML による問題がある本文、
 区切りを生む本文は保ちます。
@@ -633,7 +636,7 @@ info showInfo
 
 [corpus fixture: info/div-frontmatter-invalid-yaml]
 
-入力（escape 表記）:
+入力（エスケープ表記）:
 `"---\ntitle:   Topic\nconfig: {theme: dark, look: classic}\n---\ninfo\n"`
 
 出力
@@ -654,7 +657,8 @@ info
 前置部分全体を保持します。
 先頭 LF の削除で無視された YAML が実フロントマターに昇格し、
 設定が有効になったり、不正 YAML が拒否されたりするためです。
-通過したパーセントと波括弧の行や未閉鎖行は共有 `Comment` とし、二重印字しません。
+通過したパーセントと波括弧の行や未閉鎖行は共有 `Comment` とし、
+二重印字しません。
 通常の通過コメントだけの前置部分は、共有の最上位の経路を使います。
 
 [fixture: info/retained-prefix/prefix-leading-lf-kept]
@@ -669,7 +673,7 @@ info
 
 [fixture: info/retained-prefix/prefix-between-retained-kept]
 
-入力（escape 表記）:
+入力（エスケープ表記）:
 `"\n---\ntitle: Hidden\nconfig: {theme: dark}\n---\ninfo\n"`
 
 出力
@@ -693,8 +697,8 @@ Prettier が CR/CRLF を正規化して設定の LF/CRLF/CR を出します。
 共通行の外端の空白を除き、ブロックの開始記号前の通常の空白は結合します。
 不正な図固有の Unicode 隙間は拒否のままです。
 Prettier は先頭 BOM を除去・復元するため、
-開始の囲み記号の BOM があると埋め込み先が隠れた YAML を実フロントマター
-と読む場合があります。
+開始の囲み記号の BOM があると埋め込み先が隠れた YAML
+を実フロントマターと読む場合があります。
 バイト同一は保証しません。
 
 [test: info/line-terminators-and-unicode/eol-cr-body]
@@ -726,9 +730,9 @@ Prettier は先頭 BOM を除去・復元するため、
 [corpus fixture: info/space-trailing-unicode]
 [corpus fixture: info/frontmatter-bom-both]
 
-入力（escape 表記）: `"info\rshowInfo\rtitle Topic\r"`
+入力（エスケープ表記）: `"info\rshowInfo\rtitle Topic\r"`
 
-出力（escape 表記）: `"info showInfo\n  title Topic\n"`
+出力（エスケープ表記）: `"info showInfo\n  title Topic\n"`
 
 ### Final newline
 
@@ -737,8 +741,8 @@ Prettier は先頭 BOM を除去・復元するため、
 閉じた隠れた形が対象で、通常の末尾空行列は削除します。
 隠れた形の閉じの余白と必要な境界、
 EOF に達する大域的なディレクティブの原終端は保ちます。
-C4 を含む EOF コメントへの LF 追加は素の mermaid.js の検出を変える場合がありますが、
-指定された info の読みは保ちます。
+C4 を含む EOF コメントへの LF 追加は素の mermaid.js
+の検出を変える場合がありますが、指定された info の読みは保ちます。
 
 [fixture: info/final-newline/final-common]
 
@@ -758,7 +762,7 @@ C4 を含む EOF コメントへの LF 追加は素の mermaid.js の検出を�
 
 [corpus fixture: info/div-c4container-header-comment-eof]
 
-入力（escape 表記）: `"info\ntitle\naccTitle: Access"`
+入力（エスケープ表記）: `"info\ntitle\naccTitle: Access"`
 
 出力
 ([final-newline/final-common-output.mmd](../tests/fixtures/info/final-newline/final-common-output.mmd)):
@@ -776,7 +780,8 @@ info
 ディレクティブや選択したセミコロンによるキーワード内の分断は修復せず拒否します。
 不透明な埋め込みデータ、C4 キーワードの検出、
 ヘッダーより前の裸パーセント後の Unicode は識別子の付いた読みを使います。
-素の mermaid.js の拒否には素の mermaid.js の Db や架空の埋め込まれた効果を補いません。
+素の mermaid.js の拒否には素の mermaid.js の Db
+や架空の埋め込まれた効果を補いません。
 単体ファイルの解析失敗は出力せず構文エラーを報告し、
 Markdown は共有経路で埋め込みを辞退します。
 
@@ -862,6 +867,6 @@ Markdown は最終行の隠れた形の境界を含む余白を削除します�
 
 [test: info Markdown: rejected]
 
-入力（escape 表記）: `"```mermaid\ninfo showInfo title Topic\n```\n"`
+入力（エスケープ表記）: `"```mermaid\ninfo showInfo title Topic\n```\n"`
 
-出力（escape 表記）: `"```mermaid\ninfo showInfo\n  title Topic\n```\n"`
+出力（エスケープ表記）: `"```mermaid\ninfo showInfo\n  title Topic\n```\n"`

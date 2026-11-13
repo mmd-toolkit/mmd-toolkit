@@ -5,7 +5,7 @@ import type {
 } from "@mmd-toolkit/ast"
 import { walk } from "./layout.ts"
 import type { Source } from "./source.ts"
-import { textWithoutDirectives } from "./source.ts"
+import { textRead } from "./source.ts"
 
 /**
  * Which part of the styles of a link some versions that count put in the style
@@ -70,8 +70,7 @@ function linkNumber(source: Source, index: Node): number {
 function hasFillColon(source: Source, statement: LinkStyleStatement): boolean {
   return statement.styles.some(
     (style) =>
-      style !== null &&
-      textWithoutDirectives(source, ...style.range).includes("fill:"),
+      style !== null && textRead(source, ...style.range).includes("fill:"),
   )
 }
 

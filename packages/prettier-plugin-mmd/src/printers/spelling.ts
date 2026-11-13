@@ -17,8 +17,9 @@ import {
   findStructuralToken,
   findTokenStartingAt,
   isWordCharacter,
-  skipDirectives,
-  textWithoutDirectives,
+  skipRemovedBeforeLineRule,
+  textRead,
+  textReadBeforeLineRule,
 } from "./source.ts"
 
 /** The text to print in place of the token or node at an offset. */
@@ -78,11 +79,12 @@ function headerDirectionSpelling(
 
 /**
  * Whether `-beta`, in any case and followed by no word character, stands at
- * the offset after the directives that start there, which mermaid.js removes
- * before it reads the header.
+ * the offset after the directives and the comment lines that start there,
+ * which mermaid.js removes before it reads the header. The `;` that the line
+ * rule ignores are not removed yet: diagram detection reads the header.
  */
 function startsWithBetaWord(source: Source, offset: number): boolean {
-  const text = textWithoutDirectives(source, offset, source.text.length)
+  const text = textReadBeforeLineRule(source, offset, source.text.length)
   if (toAsciiLowerCase(text.slice(0, 5)) !== "-beta") return false
   return !isWordCharacter(text.charAt(5))
 }
@@ -341,7 +343,7 @@ function findTokenRespellings(
       type === "flowchart-elk") &&
     headerIndex !== -1 &&
     direction?.type === "Keyword" &&
-    textWithoutDirectives(
+    textRead(
       source,
       tokens[headerIndex].range[1],
       direction.range[0],
@@ -431,7 +433,7 @@ function findTokenRespellings(
  * not read the same before them, and the printer keeps them where they are.
  */
 function isTouchedAfter(source: Source, offset: number): boolean {
-  const position = skipDirectives(source, offset)
+  const position = skipRemovedBeforeLineRule(source, offset)
   return source.text[position] === ";" || source.text[position] === "-"
 }
 

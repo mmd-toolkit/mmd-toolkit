@@ -31,7 +31,7 @@ import {
   findTokenStartingAt,
   findTriviaBetween,
   isWhitespace,
-  textWithoutDirectives,
+  textRead,
 } from "./source.ts"
 import { normalizeStyleList } from "./statement-rules.ts"
 
@@ -73,7 +73,7 @@ export function treemapPrintedDepth(source: Source, line: TreemapLine): number {
   }
   // mermaid.js removes the directives before the statement first, so a line
   // that starts with directives is indented only by the whitespace around them.
-  const before = textWithoutDirectives(
+  const before = textRead(
     source,
     lineStartOf(source, statement.range[0]),
     statement.range[0],

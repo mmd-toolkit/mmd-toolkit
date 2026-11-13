@@ -121,7 +121,7 @@ subgraph のある flowchart です。
 大きさが違うことで確かめました（`layout: elk` では 216 × 316、
 `layout: dagre` では 223.5 × 346）。
 12.3.0 は ELK の配置を `elk` として内蔵していて、
-パッケージは同じ名前の loader を登録するので、
+パッケージは同じ名前の読み込み処理を登録するので、
 内蔵のものがパッケージのものに置き換わります。
 12.3.0 のバンドルだけで描くと、
 同じ flowchart は既定の設定でも `layout: elk` でも 216 × 316、
@@ -176,7 +176,7 @@ ELK の配置のパッケージのどのリリースも、
 違って描く所では、その形を印字しません。
 この表は、そうした形を 1 つずつ挙げます。
 書かれたまま残す形、決まりが印字する形、その形を与える決まり、
-その図種について対象になり、残す形が要る版、fixture の順です。
+その図種について対象になり、残す形が要る版、テストケースの順です。
 図種の列は、その図種の規則の節へのリンクで、その節は残す形の理由を書いています。
 
 行は、挙げた版が 1 つも対象に残らなくなったときに外す規則です。
@@ -187,7 +187,7 @@ ELK の配置のパッケージのどのリリースも、
 固定した版そのものが拒否するか違って描く形は、ほかの版が替わっても残すので、
 行を持ちません。
 
-| 図種                                                        | 書かれたまま残す形                                                                                            | 決まりが与える形                                | 決まり                                                | 要る版                                                                                                                   | fixture                                                                       |
+| 図種                                                        | 書かれたまま残す形                                                                                            | 決まりが与える形                                | 決まり                                                | 要る版                                                                                                                   | テストケース                                                                  |
 | ----------------------------------------------------------- | ------------------------------------------------------------------------------------------------------------- | ----------------------------------------------- | ----------------------------------------------------- | ------------------------------------------------------------------------------------------------------------------------ | ----------------------------------------------------------------------------- |
 | [block](./block.ja.md#ヘッダー)                             | `block-beta`                                                                                                  | `block`                                         | [3](./printed-form.ja.md#3-綴り)                      | 10.9.8 と 11.7.0 が `block` を拒否する                                                                                   | [fixture: block/header/block-beta-kept]                                       |
 | [sankey](./sankey.ja.md#ヘッダー)                           | `sankey-beta`                                                                                                 | `sankey`                                        | [3](./printed-form.ja.md#3-綴り)                      | 10.9.8 と 11.7.0 が `sankey` を拒否する                                                                                  | [fixture: sankey/header/sankey-beta]                                          |
@@ -220,7 +220,7 @@ ELK の配置のパッケージのどのリリースも、
 | [sequence](./sequence.ja.md#トークンの間の空白)             | `:`、`,`、`;`、`>` を含まないデータブロックを持つ `participant A   @{ x }`                                    | `participant A@{ x }`                           | [1](./printed-form.ja.md#1-記号の横の空白)            | 10.9.8 と 11.7.0 が、ブロックを参加者の名前の一部として、空白ごと読む                                                    | [fixture: sequence/whitespace-between-tokens/data-block-name-gap-before-kept] |
 | [gitGraph](./gitgraph.ja.md#header)                         | `gitGraph %%{x}%%:` を `gitGraph%%{x}%%:` と印字                                                              | `gitGraph %%{x}%%`                              | [3](./printed-form.ja.md#3-綴り)                      | 10.9.8 が、ディレクティブの後でコロンのないヘッダーを拒否する                                                            | [fixture: gitgraph/header/header-directive-before-colon-kept]                 |
 | [gitGraph](./gitgraph.ja.md#references)                     | `branch "Merge"`、`branch "lr-x"`                                                                             | `branch Merge`、`branch lr-x`                   | [3](./printed-form.ja.md#3-綴り)                      | 10.9.8 が、キーワードを大文字小文字を問わず読み、`lr-x` を `lr` と `-x` として読む                                       | [fixture: gitgraph/references/names-that-need-quotes]                         |
-| [pie、gitGraph](./pie.ja.md#accessibility-lines)            | 値のない `accTitle:` または `accDescr:` と、後ろの行の文（`"A":1`）                                           | 規則で印字される文（`"A": 1`）                  | [1](./printed-form.ja.md#1-記号の横の空白)            | 10.9.8 は、空行・コメント・directive の後の文を値として読む                                                              | [fixture: pie/accessibility-lines/a11y-next-join-kept]                        |
+| [pie、gitGraph](./pie.ja.md#accessibility-lines)            | 値のない `accTitle:` または `accDescr:` と、後ろの行の文（`"A":1`）                                           | 規則で印字される文（`"A": 1`）                  | [1](./printed-form.ja.md#1-記号の横の空白)            | 10.9.8 は、空行・コメント・ディレクティブの後の文を値として読む                                                          | [fixture: pie/accessibility-lines/a11y-next-join-kept]                        |
 | [pie、gitGraph](./pie.ja.md#accessibility-lines)            | `accTitle: Value   %% note`。値の後の `%%` の前の空白                                                         | `accTitle: Value %% note`                       | [1](./printed-form.ja.md#1-記号の横の空白)            | 10.9.8 は、`%%` とその後ろを title の一部として読む                                                                      | [fixture: pie/accessibility-lines/acc-title-percent-gap-kept]                 |
 | [pie、gitGraph](./pie.ja.md#accessibility-lines)            | `accDescr {a} %% c`。ブロックの `}` の後のコメント                                                            | `accDescr: a %% c`                              | [2](./printed-form.ja.md#2-prettier-にない種類の隙間) | 10.9.8 は、コロンの形の説明に `%% c` を含めて読む                                                                        | [fixture: pie/description-blocks/block-then-comment]                          |
 | [timeline](./timeline.ja.md#ヘッダーと方向)                 | `timeline td`、`timeline TD title T`                                                                          | `timeline TD`、テキストは単独の行               | [3](./printed-form.ja.md#3-綴り)                      | 10.9.8 と 11.7.0 が、後の語を期間として読む                                                                              | [fixture: timeline/header-and-direction/direction-case-kept]                  |
@@ -310,7 +310,7 @@ flowchart/whitespace-between-tokens/compat-unknown-shape-data-block-kept]
 [corpus fixture: flowchart/div-data-unknown-shape]
 [corpus fixture: flowchart/frontmatter-invalid-yaml]
 
-directive は書かれたまま残します。
+ディレクティブは書かれたまま残します。
 flowchart、agentflow、kanban、sequence の 1 行のデータブロックは、
 両端の内側に空白を 1 つずつ置いて印字し、
 [データブロック](./flowchart.ja.md#データブロック)が定める場合は、
@@ -325,12 +325,12 @@ flowchart、agentflow、kanban では、
 条件は[データブロック](./flowchart.ja.md#データブロック)にあります。
 [fixture: flowchart/data-blocks/long-split]
 flowchart、agentflow、kanban、sequence の対象となる複数行のデータブロックと、
-usecase の JSON table は、本文の全行を一定数の半角空白だけ動かします。
+usecase の JSON の表は、本文の全行を一定数の半角空白だけ動かします。
 行どうしの字下げの差と末尾空白を保ち、単独行の `}` は文の段に揃えます。
-開きの行の本文、半角空白以外の行頭空白、内部の directive、0 桁の YAML の印、
+開きの行の本文、半角空白以外の行頭空白、内部のディレクティブ、0 桁の YAML の印、
 行全体を保つ行、文の最初の行より後のブロック、`tabWidth: 0` は移動を妨げます。
 `useTabs` のときは、ブロックを持つ文を書かれたまま印字します。
-sequence では、Mermaid がブロック全体を trim するため、
+sequence では、Mermaid がブロック全体を両端の空白を除くため、
 文字のある本文行が 1 行であることも必要です。
 条件と理由は[データブロック](./flowchart.ja.md#データブロック)に従い、
 ほかのブロックは桁を保ちます。 [fixture: flowchart/data-blocks/deep-nested-yaml]
@@ -375,7 +375,7 @@ ER 図で対象にする版はどれも、1 つのエンティティ `b='c'>d` �
 ER 図で対象にする版のどれも拒否しました。
 [corpus fixture: er/div-html-tag-starts-in-frontmatter-name]
 タグを終える `>` は、矢印の `>`、
-コメント行や directive の中の `>` でもかまいません。
+コメント行やディレクティブの中の `>` でもかまいません。
 フロントマターの中で終わるタグ、後に `>` がないタグ、
 後に単語文字が続かない `<` は、
 フロントマターの後のテキストを整形したままにします。
@@ -428,12 +428,12 @@ mermaid.js は、そうした位置の多くでそれらを受理し、ないも
 行に単独で書いたときや、
 同じ行の別の文の後に書いたときは（`A accDescr {}` は頂点 A と空の description
 ブロックです）、descriptionブロックの文です。
-文字とtriviaのない通常の閉じたブロックの内側は、改行があっても`{}`です。
+文字と注釈類のない通常の閉じたブロックの内側は、改行があっても`{}`です。
 接する語は`accDescr{}`と接したままにします。
 説明ブロックの文法がある全図種で、空白だけの内側をこの形に揃えます。
 タブと Unicode の空白も含めます。
 囲む空白を要する本文がないためです。
-コメントや directive があるブロックの内容と必要な改行は保ちます。
+コメントやディレクティブがあるブロックの内容と必要な改行は保ちます。
 通常の字下げは、
 [説明ブロックの字下げ](#説明ブロックの字下げ)と各図種の構造の規則に従います。
 周囲の行の保護条件も維持します。 [test: sequence Unicode and tab interiors]
@@ -641,7 +641,7 @@ block/multi-line-statements/line-rule-semicolon-after-touching-arrow-kept]
 mermaid.js はそれらを最後のスタイルの末尾に残すので、
 ここでは整形が mermaid.js の保存するものを変えます。
 これとは別に、
-eventmodeling の [Data blocks](./eventmodeling.ja.md#data-blocks)
+eventmodeling の [データブロック](./eventmodeling.ja.md#data-blocks)
 も限定した本文の字下げの変更を認めています。
 テストは、末尾の空白とタブを除いたスタイルを比べます。
 
@@ -991,8 +991,8 @@ SVG が異なります。
 名前が `fill` で終わるスタイルは、`:` との間に空白があるかないかを残し、
 空白の連続は空白 1 つにします。
 ただし、ラベルが読まない場合は残しません。
-`fill:` を含むスタイルより後のスタイルと、swimlane 図で最初ではないスタイルは、
-読まれません。
+`fill:` を含むスタイルより後のスタイル（行の規則が無視する `;` が語を分割する
+`fi;ll:red` も含みます）と、swimlane 図で最初ではないスタイルは、読まれません。
 後の `linkStyle` がその番号のすべての辺について置き換える文と、
 後の `linkStyle default` が置き換える文も、読まれません。
 番号つきの `linkStyle` で、
@@ -1004,6 +1004,7 @@ agentflow 図の辺のスタイルは、対象にする版がそう読まない�
 ノードのスタイルと `classDef` のスタイルと同じく 1 つの形で印字します。
 [fixture: flowchart/whitespace-between-tokens/link-style-fill-colon-gap-kept]
 [fixture: flowchart/whitespace-between-tokens/link-style-fill-colon-gap-after-fill-spaced]
+[fixture: flowchart/whitespace-between-tokens/link-style-default-fill-split-by-semicolon-spaced]
 [fixture: flowchart/whitespace-between-tokens/link-style-fill-colon-gap-replaced-spaced]
 [fixture: flowchart/whitespace-between-tokens/link-style-fill-colon-gap-replaced-for-one-link-kept]
 [fixture: flowchart/whitespace-between-tokens/link-style-fill-colon-gap-default-fill-spaced]
@@ -1070,7 +1071,7 @@ state と block の図では、同じ値を持ち、連なりの隣に文字列�
 usecase 図では、同じ値を持つ `style` と `classDef` です。
 treemap では、`:` と `,` の前後の空白、語の間の連続、文字列、
 エスケープされた `,`、末尾の空白を持つ `classDef` です。
-このほかに、コーパスとこのパッケージの fixture の文のうち、
+このほかに、コーパスとこのパッケージのテストケースの文のうち、
 整形でスタイルが変わるものも同じ方法で描きました。
 1,355 個のテキストが `style`、`classDef`、`linkStyle` のいずれかを持ちます。
 そのうち Db が変わる 769 個では、754 個は画素が同じで、
@@ -1078,7 +1079,7 @@ treemap では、`:` と `,` の前後の空白、語の間の連続、文字列
 5 個はアニメーションするリンクを持つユースケース図で、
 アニメーションのフレームによって画素が異なりますが、
 `style` 属性の空白を除くと SVG は同じです。
-コーパス、このパッケージの fixture、
+コーパス、このパッケージのテストケース、
 mermaid.js の文書にある treemap の `classDef` の文で、
 整形でスタイルが変わるものも同じ方法で描きました。
 78 個のテキストすべてで画素は同じで、`style` 属性の空白を除くと SVG も同じです。
@@ -1139,7 +1140,7 @@ mermaid.js が書かれたままつなぐスタイルの末尾で、
 その名前と `:` の間の空白の有無も含めて、失敗とします。
 対象にする版だけが読む空白と、swimlane 図の辺のスタイルで、
 名前が `fill` で終わるものの `:` の前の空白は、この比べ方では確かめません。
-比べるのは 1 つのテキストの Db だけだからで、fixture が確かめます。
+比べるのは 1 つのテキストの Db だけだからで、テストケースが確かめます。
 固定している mermaid.js の版を上げるときは、これらの種類の文を描き直し、
 SVG と画素を比べてから、例外を残します。
 
@@ -1289,7 +1290,7 @@ timeline の event、state の 2 つ目の説明、C4 図のタイトルと説�
 timeline は period と event のテキストを
 [`wrap`](https://github.com/mermaid-js/mermaid/blob/2086904e76c692331e34a45d7cc3bc30860d040e/packages/mermaid/src/diagrams/timeline/svgDraw.js#L456-L496)
 に通します。
-`wrap` はテキストを空白と `<br>` で区切り、各行を trim して置きます。
+`wrap` はテキストを空白と `<br>` で区切り、各行の両端の空白を除いて置きます。
 呼び出しは
 [`drawNode`](https://github.com/mermaid-js/mermaid/blob/2086904e76c692331e34a45d7cc3bc30860d040e/packages/mermaid/src/diagrams/timeline/svgDraw.js#L511-L521)
 にあります。
@@ -1363,13 +1364,13 @@ Gantt 図のタスクの名前は、テキストとコロンの間の空白で�
 `active`、`milestone`、2 つのセクションです。
 画素は同じで、生成された id とタスクのテキストの末尾の空白を除くと、
 SVG も同じでした。
-コーパス、mermaid.js の文書、このパッケージの fixture のうち、
+コーパス、mermaid.js の文書、このパッケージのテストケースのうち、
 印字がタスクの名前を変える 39 個のテキストの中で、
 mermaid.js が描ける 36 個も同じでした。
 残りの 3 個は、整形前も整形後もエラーで止まります。
 描けるテキストのうち 2 個の SVG は、タイトルの先頭の空白も異なり、
 これは前述のタイトルの例外に当たります。
-コロンに接する名前の後に空白を置く規則で足したか変えた fixture 15
+コロンに接する名前の後に空白を置く規則で足したか変えたテストケース 15
 個の両方のテキストを、mermaid.js 9.0.0 から 12.3.0 までの 14 版で描きました。
 画素が同じだった描画が 162 回、SVG が同じだった描画が 14 回で、残りの 34 回は、
 整形前も整形後もエラーで止まりました。
@@ -1414,7 +1415,7 @@ sequence 図のテキスト（メッセージ、ノート、ブロック、box�
 C4 図の引数のうち label、technology、type、description、
 Cynefin 図と ishikawa 図のリテラル、packet 図と Venn 図のラベル、
 Wardley マップのリンク、treemap の名前、
-railroad 図の文字列と special sequence です。
+railroad 図の文字列と特殊シーケンスです。
 空白とタブだけの文字列は、ほかの文字列と同じ文字列として扱います。
 `["   "]` は `[" "]` と印字します。 [fixture: pie/title/title-inner-text]
 [fixture: railroad/quotes/ir-string-runs-collapsed]
@@ -1437,9 +1438,14 @@ railroad 図の文字列と special sequence です。
 - architecture 図のラベルの、タブだけの連続と、空白にはさまれたタブ。
   mermaid.js は、このラベルを 1 つの空白で区切って語ごとに描くからです。
   `["A<タブ>B"]` は `[A<タブ>B]` と印字します。
+  語は、mermaid.js が括弧を外し、前後の空白を除き、外側の引用符を 1 組外し、
+  もう一度前後の空白を除いて残る部分です。
+  そのため、連なりの隣にある引用符や、引用符の中の括弧も語の文字で、
+  `["A'<タブ>B"]` は書かれたまま残します。
   [fixture: architecture/quotes/labels-with-tab-words-kept]
+  [fixture: architecture/quotes/labels-with-quotes-beside-tab-words-kept]
 - 文字列でない、空白とタブだけのテキスト。
-  ただし、mindmap のノードと kanban のカードの icon、class、形のテキストは、
+  ただし、mindmap のノードと kanban のカードのアイコン、class、形のテキストは、
   空白 1 つで印字します。
   （[同じに描かれる mindmap のテキスト](#同じに描かれる-mindmap-のテキスト)）。
   [fixture: gantt/titles-and-sections/title-blank-kept]
@@ -1450,9 +1456,11 @@ railroad 図の文字列と special sequence です。
 - `<` を含むテキスト。
   空白を保つ HTML タグ（`<pre>`）を始めるかもしれないからです。
   どこかに `white-space` を含む図の、すべてのテキストも残します。
+  ディレクティブや、行の規則が無視する `;` が語を分割していても同じです。
   `style` や `classDef` が、それを使ってラベルの連なりを保てるからです。
   [fixture: sequence/whitespace-between-tokens/html-tag-runs-kept]
   [fixture: pie/title/white-space-property-kept]
+  [fixture: flowchart/label-inner-whitespace/white-space-split-by-ignored-semicolon-kept]
 - mermaid.js が HTML として描くラベル。
   flowchart と agentflow 図のノードと辺、state 図の説明、遷移、ノート、
   mindmap のノード、class 図の関係のラベル、usecase 図のすべてのテキストです。
@@ -1527,7 +1535,7 @@ railroad 図の文字列と special sequence です。
   [fixture: pie/accessibility-lines/accessibility-inner-tab]
   [fixture: quadrant/titles-and-accessibility-statements/text-inner-whitespace-kept]
 - C4 の文の引数のうち、label、technology、type、description でないもの（sprite、
-  tags、link）と、本来の位置にない名前付き属性。
+  tags、リンク）と、本来の位置にない名前付き属性。
   mermaid.js の読み方は、その場所によって変わります。
   （[引数の形](./c4.ja.md#引数の形)を参照してください）。
   [fixture: c4/named-attributes/named-text-places-runs-collapsed]
@@ -1628,7 +1636,7 @@ mermaid.js は括弧の間のテキストを Db に残すので、印字した�
 
 ## 同じに描かれる mindmap のテキスト
 
-mindmap のノードのテキスト、形のテキスト、icon、class は、
+mindmap のノードのテキスト、形のテキスト、アイコン、class は、
 両端の空白とタブを除いて印字します。
 `a (x)` は `a(x)`、`b[ y ]` は `b[y]`、`::icon( fa )` は `::icon(fa)`、
 `::: big ` は `:::big` と印字します。
@@ -1655,7 +1663,7 @@ mindmap のノードのテキスト、形のテキスト、icon、class は、
 mermaid.js はテキストを Db（`nodeId`、`descr`、`icon`、`class`）に残すので、
 印字したテキストの Db は、書かれたテキストの Db と違いますが、
 同じノードを描きます。
-ノードと形のテキストは markdown のラベルに、icon はノードの icon に、
+ノードと形のテキストは markdown のラベルに、アイコンはノードのアイコンに、
 class は要素の class の並びに入り、
 ブラウザーはその並びを空白で区切って読みます。
 ノードの id は描かれません。
@@ -1668,7 +1676,7 @@ class は要素の class の並びに入り、
 以前と同じに描かれます。
 文字列になるテキストは、描かれ方が異なりました。
 
-kanban のボードも、カードのテキスト、列とカードのラベル、icon、class に、
+kanban のボードも、カードのテキスト、列とカードのラベル、アイコン、class に、
 同じ規則を適用します（[Kanban](./kanban.ja.md#形)を参照）。
 列の id は例外で、mermaid.js はそれで 2 つの列を区別します。
 `todo [A]` と `todo[B]` は別々に描かれる 2 つの列で、
@@ -1785,7 +1793,7 @@ quadrant、Venn の図のスタイルの色は、小文字で印字します。
 ラベルとタイトル（ラベルの `<span>` の `style='color:#F00'` はラベルです）、
 ノート、C4 図の呼び出しの引数（`$bgColor="#FFF"`）、
 sequence 図の box と rect の色（色関数のコンマは後述）、
-frontmatter とディレクティブの設定です。
+フロントマターとディレクティブの設定です。
 treemap の `classDef` も同じく小文字で印字します。
 対象にする版は、
 `classDef zz color:#ABC` と `classDef zz color:#abc` を同じに描きます。
@@ -1824,7 +1832,8 @@ Prettier 3.9.9 で、以下の各値を `fill: <値>` として整形し、
 2、5、7、9 桁の連なり（`#AB`、`#ABCDE`、`#ABCDEF1`、`#ABCDEF123`）、
 `#` の後がほかの文字のもの（`#GGG`）、ほかの文字が接する語（`#ABC-x`、`x#ABC`、
 `#ABC.5`、`#ABC#DEF`、`#ABC/#DEF`）、文字列（`'#ABC'`）、コメント、
-`url(` の括弧の中（`url(#ABC)` は要素への参照です）、
+`url(` の括弧の中（`url(#ABC)` は要素への参照です。ディレクティブや、
+行の規則が無視する `;` が名前を分割する `u;rl(#ABC)` も同じです）、
 バックスラッシュの後（`\#ABC`）にある `#` です。
 スタイルのテキストの中にある `;` は、色を実体のプレースホルダにするか、
 `;` の後の語と結びます。
@@ -1850,6 +1859,7 @@ mermaid.js が取り除いた後で、その前の語を後の語と結ぶこと
 [fixture: block/colors/words-that-are-not-colors-as-written]
 [fixture: usecase/colors/words-that-are-not-colors-as-written]
 [fixture: venn/colors/words-that-are-not-colors-as-written]
+[fixture: state/colors/color-ignored-semicolon-in-url-name-kept]
 
 単独でテキストになっている色関数は、
 コンマごとの後ろに空白を 1 つ置いて印字します。
@@ -1942,9 +1952,9 @@ Chromium で 14 版に描きました。
 がありません）で同じでした。
 Venn 図の色 7 個は、Venn 図のある 11.13.0 からの 6 版に描き、
 42 回とも SVG が同じでした。
-上の fixture も同じに描きました。
-sequence の fixture は 61 回の画素が同じで、
-Venn の fixture は 18 回の SVG が同じで、残りは、
+上のテストケースも同じに描きました。
+sequence のテストケースは 61 回の画素が同じで、
+Venn のテストケースは 18 回の SVG が同じで、残りは、
 整形前も整形後もエラーで止まりました。
 
 テストは、印字したテキストの Db に、
@@ -1973,7 +1983,7 @@ SVG と画素を比べてから、例外を残します。
 その図の種類の構文のページ（`packages/mermaid/src/docs/syntax/<ページ>.md`）で、
 ブロックは、そのページの `mermaid-example` のブロックです。
 `docs/syntax/` に生成される写しの `mermaid` のブロックは、それを繰り返します。
-ブロックの frontmatter と、コメントの行、ディレクティブの行は数えません。
+ブロックのフロントマターと、コメントの行、ディレクティブの行は数えません。
 その種類の行のうち、コロンの後に空白かタブがある行を数え、
 コロンの前に空白かタブがあるかどうかで分けます。
 コロンの後に空白がない行と、両側に空白がない行（Venn 図の `set A:3` のような、
@@ -2201,8 +2211,8 @@ Venn のラベルの 2 対も、空白やタブの連なりで Db が異なり�
 （[同じに描かれるテキスト中の空白の連なり](#同じに描かれるテキスト中の空白の連なり)）。
 use case 図の 3 対と agentflow 図の 2 対は、スタイルの空白で Db が異なります。
 C4 図の 2 対は、テキスト中の空白やタブの連なりで Db が異なります。
-印字は、hidden YAML ブロックに隣接する packet 図の範囲、
-`;` や hidden YAML ブロックの `---` が接するコロン、
+印字は、隠れた YAML ブロックに隣接する packet 図の範囲、
+`;` や隠れた YAML ブロックの `---` が接するコロン、
 `%%` を含むリンクのラベルを書き換えません。
 固定している mermaid.js の版を上げるときは、例を数え直し、
 それぞれの種類を比べ直します。
@@ -2350,7 +2360,7 @@ Prettier の `singleQuote` オプションは読みません。
 
 テキストに `'`、`"`、バックスラッシュ、改行、U+2028、U+2029、バッククォート、
 `&`、`#`、`<` を含む文字列は、書かれたまま残します。
-`"` の間で escape が必要になるか、
+`"` の間でエスケープが必要になるか、
 mermaid.js が別の読み方をする文字（`#35;` などのエンティティ、HTML、
 Markdown 文字列）を含むからです。
 Wardley の flow のラベル（`+'moving'>`）は `'` の間に残します。
@@ -2427,8 +2437,8 @@ swimlane の数は、1 つの例で数えたものです。
 どの図でも `direction` の文は書かれたまま残します。
 mermaid.js が文の向きを Db に書かれたまま保つからです。
 [fixture: agentflow/header/header-direction-spelling]
-[fixture: agentflow/header/header-direction-after-directive-kept]
-[fixture: flowchart/direction/swimlane-header-td-after-directive-kept]
+[fixture: agentflow/header/header-direction-spelling-after-directive]
+[fixture: flowchart/direction/swimlane-header-td-one-form-after-directive]
 [fixture: flowchart/direction/swimlane-header-td-one-form]
 [fixture: flowchart/direction/statement-td-kept-with-other-header]
 [fixture: flowchart/direction/statement-values-kept]
@@ -2531,7 +2541,7 @@ cynefin 図と radar 図は、`cynefin-beta:` と `radar-beta:` を、
 例は、どちらの図もコロンのないヘッダーを 3 回書き、コロンつきは書かないので、
 コロンを除き、その行で後に続くものは、コロンのないヘッダーの後と同じく、
 次の行に移します。
-`;` や hidden YAML ブロックの `---` が接するコロンは残します。
+`;` や隠れた YAML ブロックの `---` が接するコロンは残します。
 [fixture: cynefin/header/colon-removed]
 [fixture: cynefin/header/colon-semicolon-kept]
 [fixture: radar/header/colon-removed] [fixture: radar/header/colon-yaml-kept]
@@ -2542,8 +2552,8 @@ cynefin 図と radar 図は、`cynefin-beta:` と `radar-beta:` を、
 コロンを除きます。
 数えたのは、
 固定した版の `packages/mermaid/src/docs/syntax/gitgraph.md` の `mermaid-example`
-ブロックで、ブロックの frontmatter の後です。
-このファイルで `gitGraph:` で始まるほかの行は、frontmatter の設定のキーです。
+ブロックで、ブロックのフロントマターの後です。
+このファイルで `gitGraph:` で始まるほかの行は、フロントマターの設定のキーです。
 `gitGraph:` は `gitGraph` と印字し、その行で後に続くものは次の行に移します。
 向きの後のコロンは残します。
 対象にするすべての版が、
@@ -2559,15 +2569,14 @@ cynefin 図と radar 図は、`cynefin-beta:` と `radar-beta:` を、
 `gitGraph %%{}%%:` はそのようなヘッダーではありません。
 中身のないディレクティブはコメントで、コロンもその中に入ります。
 [fixture: gitgraph/header/header-hidden-before-colon]
-hidden YAML ブロックが間にある場合は、コロンを残しません。
+隠れた YAML ブロックが間にある場合は、コロンを残しません。
 `gitGraph ---`、ブロック、`--- :` と文が続く形を、gitGraph で対象にする版で、
 コロンのある形とない形に描き、ブロックを読まない版はどちらも拒否したので、
 コロンを除きます。 [fixture: gitgraph/header/header-yaml-before-colon]
-ブロックの後の、単独の行にある colon は、その前の改行と一緒に除きます。
+ブロックの後の、単独の行にあるコロンは、その前の改行と一緒に除きます。
 [fixture: gitgraph/header/header-yaml-colon-on-its-own-line]
 [corpus fixture: gitgraph/header-hidden-before-colon]
-コロンの後にディレクティブ、コメント、hidden の形があっても、
-コロンは残しません。
+コロンの後にディレクティブ、コメント、隠れた形があっても、コロンは残しません。
 `gitGraph:%%{}%% commit%%{}%%`、`gitGraph: %% note`、
 文が続く `gitGraph: %%{}%%` は、gitGraph で対象にする版で、
 コロンの有無によらず同じに描かれました。 [fixture: gitgraph/header/header-colon]
@@ -2848,14 +2857,14 @@ U+2029（単独）、タブ、空白の連なり、`;` を含む場合と、本�
 `}` の後にコメントを置くと、10 図種で Db が異なり、
 本文を `%%` の前で終える 11 図種ではすべて同じで、
 4 図種では mermaid.js が拒否しました。
-適合性コーパスでは、533 個の fixture の 544 個のブロックを、
+適合性コーパスでは、533 個のテストケースの 544 個のブロックを、
 コロンの形で印字します。
 483 個では mermaid.js の Db が同じで、41 個は mermaid.js が拒否する入力で、
 9 個はタイトル、説明、スタイルの空白が異なります。
 この違いは、
 [同じに描かれるテキスト中の空白の連なり](#同じに描かれるテキスト中の空白の連なり)
 と、[同じに描かれるスタイル](#同じに描かれるスタイル)の節で定めています。
-整形ツールの fixture のうち、整形で変わる 71 対を描画し、
+整形ツールのテストケースのうち、整形で変わる 71 対を描画し、
 mermaid.js が描画する 68 対では SVG が同じでした。
 
 `}` の後のコメントは、ブロックの形とコロンの形を、
@@ -2875,7 +2884,7 @@ pie 図と gitGraph ではテキストの両端に空白を足したブロック
 ### テキストの引用符
 
 mermaid.js は、一部のテキストを引用符がある形とない形で同じに読みます。
-sankey 図のリンクの source は、`"a b",c,1` と `a b,c,1` で同じ id です。
+sankey 図のリンクの`source`は、`"a b",c,1` と `a b,c,1` で同じ id です。
 [記録のアクション](https://github.com/mermaid-js/mermaid/blob/2086904e76c692331e34a45d7cc3bc30860d040e/packages/mermaid/src/diagrams/sankey/parser/sankey.jison#L53-L55)
 が、どちらの形の欄も両端の空白を除き、`""` を `"` として読むためです。
 形は、その図種の例が、もう一方の 2 倍以上の頻度で使うものにします。
@@ -2884,7 +2893,7 @@ sankey 図のリンクの source は、`"a b",c,1` と `a b,c,1` で同じ id �
 
 | 図種           | 欄                                   | 引用符なし | 引用符あり |
 | -------------- | ------------------------------------ | ---------: | ---------: |
-| sankey         | リンクの source                      |         87 |          0 |
+| sankey         | リンクの`source`                     |         87 |          0 |
 | sankey         | リンクの target                      |         83 |          4 |
 | sankey         | リンクの値（値の形に従う）           |         87 |          0 |
 | ER             | 実体の名前                           |         39 |          2 |
@@ -2895,7 +2904,7 @@ sankey 図のリンクの source は、`"a b",c,1` と `a b,c,1` で同じ id �
 | requirement    | requirement の名前                   |         15 |          1 |
 | requirement    | element の名前                       |         10 |          0 |
 | requirement    | requirement の id                    |         16 |          0 |
-| requirement    | requirement の text                  |         13 |          3 |
+| requirement    | requirement のテキスト               |         13 |          3 |
 | requirement    | element の type                      |          9 |          1 |
 | requirement    | element の docRef                    |          2 |          0 |
 | requirement    | 関係の左の名前                       |         14 |          0 |
@@ -2923,17 +2932,17 @@ sankey 図のリンクの source は、`"a b",c,1` と `a b,c,1` で同じ id �
 | XY チャート    | 分類                                 |         38 |         17 |
 | Venn           | 集合の一覧にある集合の名前           |         50 |          0 |
 | Venn           | 集合または union のラベル            |          0 |         22 |
-| Venn           | 対象のない text の id                |          6 |          0 |
-| Venn           | 対象のない text のラベル             |          0 |          6 |
+| Venn           | 対象のないテキストの id              |          6 |          0 |
+| Venn           | 対象のないテキストのラベル           |          0 |          6 |
 | Venn           | style の対象                         |          4 |          0 |
 | Venn           | style のプロパティの値               |          3 |          0 |
 | use case       | actor の名前                         |         21 |          0 |
 | use case       | use case の名前                      |          8 |          1 |
-| use case       | 関係の source                        |         66 |          0 |
+| use case       | 関係の`source`                       |         66 |          0 |
 | use case       | 関係の target                        |         66 |          0 |
 | use case       | system boundary の名前               |          7 |          2 |
-| use case       | metadata 更新の対象                  |          4 |          0 |
-| use case       | metadata のプロパティのキー          |         16 |          0 |
+| use case       | メタデータ更新の対象                 |          4 |          0 |
+| use case       | メタデータのプロパティのキー         |         16 |          0 |
 | use case       | actor、境界、更新の type             |          7 |          0 |
 | use case       | エッジの animation                   |          2 |          0 |
 | use case       | 丸括弧内の actor のラベル            |          1 |         12 |
@@ -2941,7 +2950,7 @@ sankey 図のリンクの source は、`"a b",c,1` と `a b,c,1` で同じ id �
 | use case       | id のある system boundary のタイトル |          0 |          2 |
 | use case       | 分割した association のラベル        |          1 |          3 |
 | use case       | note のラベル                        |          0 |          1 |
-| use case       | actor の icon                        |          0 |          2 |
+| use case       | actor のアイコン                     |          0 |          2 |
 | use case       | 角括弧内の use case のラベル         |          6 |          0 |
 | architecture   | group のラベル                       |          6 |          0 |
 | architecture   | service のラベル                     |         30 |          0 |
@@ -2949,9 +2958,9 @@ sankey 図のリンクの source は、`"a b",c,1` と `a b,c,1` で同じ id �
 | kanban         | 形のテキスト                         |         19 |          0 |
 | C4             | 要素または境界の alias               |         73 |          0 |
 | C4             | 更新での要素の alias                 |          2 |          0 |
-| C4             | 関係の source                        |         35 |          0 |
+| C4             | 関係の`source`                       |         35 |          0 |
 | C4             | 関係の target                        |         35 |          0 |
-| C4             | 更新での関係の source                |         31 |          0 |
+| C4             | 更新での関係の`source`               |         31 |          0 |
 | C4             | 更新での関係の target                |         31 |          0 |
 | C4             | ラベル                               |          1 |        107 |
 | C4             | technology                           |          0 |         43 |
@@ -2982,11 +2991,11 @@ flowchart の行には、swimlane 図の例も含めて数えています。
 テキストが平易なら、引用符なしで印字します。
 平易なテキストは、ASCII の英字、数字、`_`、`-`、`.` と、それらの間の空白です。
 sankey 図では、欄が取り除く両端の空白も含みます。
-sankey 図のリンクの source と target には、`R&D` や `it's` のように、`&`、`<`、
-`>`、`'`、`/`、`\` も使えます。
+sankey 図のリンクの`source`と `target` には、`R&D` や `it's` のように、`&`、
+`<`、`>`、`'`、`/`、`\` も使えます。
 sankey の字句解析器は、`"` と `,` 以外の ASCII の印字可能文字をすべて、
 引用符のない欄に取り込みます。
-これらの文字を単独で、またはテキストの中に含む source と target の Db は、
+これらの文字を単独で、またはテキストの中に含む`source`と `target` の Db は、
 引用符の有無によらず同じです。
 リンクの値はこれらの文字で比較していないので、書かれたまま残します。
 ほかの種類の文字はどの処理段階でも同じに読まれるわけではありません。
@@ -3037,7 +3046,7 @@ ASCII の英字、数字、`_` からなる 1 語で、
 字句解析器が独立した単位として読む語（キーワード、requirement と関係の種類、
 risk、検証方法、向きで、大文字小文字は問いません）のいずれでもない場合に、
 引用符なしで印字します。
-id、text、type、docRef は、同じ文字からなる語を空白で区切った形で、
+id、テキスト、type、docRef は、同じ文字からなる語を空白で区切った形で、
 最初の語がそれらの語のいずれでもない場合に、引用符なしで印字します。
 `text: "the test text"` は `text: the test text` と印字し、
 `text: "risk high"` は引用符で囲んだまま残します。
@@ -3071,7 +3080,7 @@ accelerator と deaccelerator、pipeline の component の名前は、
 の表にあります。
 矢印のないリンクの 2 つの名前 `"A" "B"` は、
 引用符を外すと 1 つの名前として読まれ、
-名前に隣接する hidden YAML ブロックの `---` は名前に結合されるので、
+名前に隣接する隠れた YAML ブロックの `---` は名前に結合されるので、
 これらは引用符を残します。
 [fixture: wardley/names-and-quotes/plain-names-without-quotes]
 [fixture: wardley/names-and-quotes/names-that-need-quotes]
@@ -3165,7 +3174,7 @@ mermaid.js が引用符の有無によらず除くので、印字でも除きま
 空白だけのラベル（Db にはラベルがなく、`[" "]` には空のラベルがあります）、
 `%%` を含むラベル、内部にディレクティブやコメントがあるラベルは、
 書かれたまま残します。
-対象のある text は、例にないので書かれたまま残します。
+対象のあるテキストは、例にないので書かれたまま残します。
 [fixture: venn/quotes/names-without-quotes]
 [fixture: venn/quotes/names-that-need-quotes]
 [fixture: venn/quotes/style-values-without-quotes]
@@ -3190,7 +3199,7 @@ note のラベルは、引用符で囲んで印字します。
 引用符とバッククォートで markdown 文字列になるためです。
 use case の角括弧内のラベルは、ASCII の英字、数字、`_` からなる語を、
 空白 1 つで区切った形なら、引用符なしで印字します。
-native metadata のキーとスカラーは、1 語なら引用符なしで印字します。
+図固有のメタデータのキーとスカラーは、1 語なら引用符なしで印字します。
 ただし、`icon` のスカラーは引用符で囲んで印字します。
 [fixture: usecase/quotes/names-without-quotes]
 [fixture: usecase/quotes/names-that-need-quotes]
@@ -3236,7 +3245,7 @@ ASCII の空白以外の空白を挟んで立つテキスト、行の頭にあ�
 同じ行の後ろに `,` がないテキストは、引用符なしのまま残します。
 `,` や `(` の後のタブやほかの空白は空白 1 つに置き換えるので、
 引用符を付けるのを妨げません。
-ノードと関係の description、`RelIndex` のすべての引数、sprite、tags、link、
+ノードと関係の description、`RelIndex` のすべての引数、sprite、tags、リンク、
 更新の設定と、`Enterprise_Boundary`、`System_Boundary`、
 `Container_Boundary` の 3 番目の tags は、例では名前付き属性で書かれるか、
 まったく書かれないので、書かれたまま残します。
@@ -3364,7 +3373,7 @@ sequence 図に文字列はなく、参加者の説明（`participant A as "Alic
 class 図の文法は、クラスのラベル、ノートのテキスト、多重度に文字列を必要とし、
 引用符のないテキスト（`class A[Label]`、`note for B Text`、
 `A 1 --> * B`）を拒否します。
-eventmodeling 図の名前に引用符で囲む形はなく、frame のデータ、タイトル、
+eventmodeling 図の名前に引用符で囲む形はなく、フレームのデータ、タイトル、
 アクセシビリティの値の引用符はテキストの文字です。
 Db はデータ `{"x"}` に `{"x"}` を、`{x}` に `{x}` を持ちます。
 [fixture: sequence/quotes/texts-as-written]
@@ -3552,7 +3561,7 @@ mermaid.js は指令をヘッダーを読む前に取り除きます。
 flowchart の長いリンク（`-->` に対する `--->`）は、書かれたまま残します。
 mermaid.js の文書は、追加のダッシュが、
 より多くの階層をまたぐリンクを求めると説明しています。
-（[Minimum length of a link](https://github.com/mermaid-js/mermaid/blob/2086904e76c692331e34a45d7cc3bc30860d040e/packages/mermaid/src/docs/syntax/flowchart.md#L933-L955)）。
+（[リンクの最小の長さ](https://github.com/mermaid-js/mermaid/blob/2086904e76c692331e34a45d7cc3bc30860d040e/packages/mermaid/src/docs/syntax/flowchart.md#L933-L955)）。
 コードも長さをレイアウトに渡します。
 [`flowDb.ts`](https://github.com/mermaid-js/mermaid/blob/2086904e76c692331e34a45d7cc3bc30860d040e/packages/mermaid/src/diagrams/flowchart/flowDb.ts#L1378)
 は、辺の `minlen` として長さを与えます。
@@ -3578,8 +3587,8 @@ mermaid.js が、その空白と `?` や `=` をテキストとして読むた�
 [fixture: flowchart/label-inner-whitespace/trimmed]
 [fixture: flowchart/label-inner-whitespace/leading-whitespace-kept]
 [fixture: flowchart/label-inner-whitespace/compat-leading-backslash-kept]
-たとえば、`A[ /x/]` はラベル `/x/` の rectangle ですが、
-`A[/x/]` はラベル `x` の lean-right の形です。
+たとえば、`A[ /x/]` はラベル `/x/` の長方形ですが、
+`A[/x/]` はラベル `x` の右に傾く形です。
 [ラベルの内側の空白](./flowchart.ja.md#ラベルの内側の空白)を参照してください。
 
 `@` は、mermaid.js の版によって読み方が違います。
@@ -3658,10 +3667,10 @@ class の関数名から `(` までの空白は値の一部として保ちます
 [fixture: requirement/fields/comment-and-directive-continuations]
 [fixture: sequence/multi-line-statements/autonumber-comment-continuation]
 
-Gantt の click・暦・リスト・accessibility の構造、
-journey と timeline の accessibility 行、quadrant の点と accessibility、
-block の構造、XY チャートのヘッダー・軸・plot・accessibility も同じです。
-literal の文字は字下げし直しません。
+Gantt の click・暦・リスト・アクセシビリティの構造、
+journey と timeline のアクセシビリティ行、quadrant の点とアクセシビリティ、
+block の構造、XY チャートのヘッダー・軸・plot・アクセシビリティも同じです。
+値として書かれた文字は字下げし直しません。
 Gantt の設定・task・title・section、journey と timeline の title・section、
 timeline の event は値に属する空白を保ちます。
 複数行のラベルと引用値も内部の列を保ちます。
@@ -3672,9 +3681,9 @@ timeline の event は値に属する空白を保ちます。
 [fixture: block/multi-line-statements/structural-trivia-continuations]
 [fixture: xychart/multi-line-statements/axis-trivia-with-multiline-string]
 
-C4 の呼び出しも、インライン directive の内容・接触・必要な改行を保ちながら、
+C4 の呼び出しも、インラインディレクティブの内容・接触・必要な改行を保ちながら、
 周りの空白を整えます。
-directive の下に残る境界の開き波括弧は呼び出しにそろえます。
+ディレクティブの下に残る境界の開き波括弧は呼び出しにそろえます。
 [fixture: c4/directives/directive-inline]
 [fixture: c4/boundary-bodies/opener-directive]
 [fixture: c4/named-attributes/named-exterior-directive-lines]
@@ -3688,21 +3697,21 @@ state、requirement、C4 の boundary の見出しが対象です。
 [fixture: c4/boundary-bodies/named-header-completion]
 [fixture: c4/boundary-bodies/value-spans-header-line-kept]
 
-eventmodeling の data と note は、コメント、directive、見出しが完結する行に、
-通常の継続行の字下げを使います。
+eventmodeling のデータと note は、コメント、ディレクティブ、
+見出しが完結する行に、通常の継続行の字下げを使います。
 条件を満たす本文はその開始行からさらに設定の1段深くし、
-native hidden の見出しの境界や本文の保持条件を優先します。
+図固有の隠れた形の見出しの境界や本文の保持条件を優先します。
 閉じ波括弧は引き続き第1列に置きます。
-GWT と同じく原文の順序と trivia の形を保ちます。
+GWT と同じく原文の順序と注釈類の形を保ちます。
 [fixture: eventmodeling/declarations-and-notes/header-completion-comments]
 [fixture: eventmodeling/declarations-and-notes/header-opener-comment]
 [fixture: eventmodeling/declarations-and-notes/header-directive-continuation]
 [fixture: eventmodeling/declarations-and-notes/header-continuation-unsafe-body]
 
 GWT には開始波括弧がありません。
-継続する source-frame の行と、その間のコメントや directive は、
-通常の継続として `gwt` より 1 段深く置き、書かれた順序と trivia の形を保ちます。
-clause keyword は 1 段、item は 2 段の字下げを保ちます。
+継続する参照元フレームの行と、その間のコメントやディレクティブは、
+通常の継続として `gwt` より 1 段深く置き、書かれた順序と注釈類の形を保ちます。
+節のキーワードは 1 段、項目は 2 段の字下げを保ちます。
 [fixture: eventmodeling/gwt-clauses-and-items/header-completion-comment]
 [fixture: eventmodeling/gwt-clauses-and-items/header-directive-continuation]
 
@@ -3712,7 +3721,7 @@ clause keyword は 1 段、item は 2 段の字下げを保ちます。
 空白 1 つで印字します。
 （[同じに描かれるスタイル](#同じに描かれるスタイル)を参照）。
 単なる改行を結合する見出しでも、初回からこの空白にそろえます。
-trivia、複数行のスタイル値、semicolon の影響がある行は既存の配置を保ちます。
+注釈類、複数行のスタイル値、セミコロンの影響がある行は既存の配置を保ちます。
 [fixture: er/styles-and-classes/style-unit-padding]
 [fixture: er/styles-and-classes/over-lines-joined]
 [fixture: requirement/styles-and-classes/style-unit-padding]
@@ -3752,12 +3761,12 @@ class、state、ER、requirement、block、Venn、usecase の図では、
 [fixture: block/semicolons-at-the-end-of-a-style-statement/directive-before-terminator]
 [fixture: venn/semicolons-at-the-end-of-a-style-statement/directive-before-terminator]
 [fixture: usecase/semicolons-at-the-end-of-a-style-statement/directive-before-terminator]
-文に `#` がない ER では、最後のスタイルとの間に trivia がない場合に、
+文に `#` がない ER では、最後のスタイルとの間に注釈類がない場合に、
 終端の `;` の単位も削除します。
 treemap の `classDef` 文は、style があり同じ条件のとき、
 `#` の有無にかかわらず終端の `;` の単位を削除します。
 `fill: #f00;` のように style の中にある `;` は、
-`#f00;` が entity なので残します。
+`#f00;` が実体参照なので残します。
 [fixture: treemap/semicolons/class-terminator-dropped]
 [fixture: treemap/semicolons/class-terminator-directive-kept]
 [fixture: treemap/semicolons/class-terminator-entity-kept]
@@ -3836,7 +3845,7 @@ sequence 図で、
 その後のディレクティブに続く `;` を残し、行に U+2028 か U+2029 があるときは、
 行を書かれたまま印字します。
 その文字は、単位を終える `}` の後の空白として読まれませんが、
-空白文字は読まれます。
+通常の空白 1 文字は読まれます。
 [fixture: sequence/statements-one-per-line/data-block-directive-kept]
 [fixture: sequence/statements-one-per-line/autonumber-directive-kept]
 `participant Z@{ ... }%%{init: {}}%%`、U+2029、`;` は受理され、
@@ -3877,6 +3886,14 @@ class 図と state 図では、その行送りの後の文は、その段の字�
 [fixture: state/composite-states/compat-unclosed-directive-joins-body-line]
 [fixture: class/member-bodies/compat-unclosed-directive-joins-body-line]
 
+同じ行の空白も、ディレクティブと一緒に取られ、語の引数を終わらせます。
+`%%{x: w B` の引数は `w` で、`B` は図に残ります。
+`%%{x: wB` の引数は `wB` です。
+そのため、閉じていないディレクティブの後の隙間は、元に空白があれば、
+その隙間の規則が空白を置かなくても、空白を 1 つ残します。
+ER 図の `"style:#x" end; %%{x: w B` は、書かれたまま残ります。
+[fixture: er/directives/unclosed-directive-argument-then-text-kept]
+
 `init` のような自由なテキストの引数を持ち、`}%%` で閉じないディレクティブは、
 テキストの終わりまで続きます（仕様の
 [ディレクティブの位置](../../spec/docs/common.ja.md#ディレクティブの位置)）。
@@ -3908,16 +3925,19 @@ U+2028 か U+2029 を含む空白は、ディレクティブがどこにあっ�
 次のようになります。
 
 - 空の `:` の後の空白は改行を越え、
-  mermaid.js が先に取り除く空行・コメント・ directive の後の次の文が、
+  mermaid.js が先に取り除く空行・コメント・ディレクティブの後の次の文が、
   値になります。
   `accTitle:` と次の行の `"A":1` は、title `"A":1` です。
   その文は書かれたままにします。
-  本文が title か説明だからです（そうでなければ行の colon は `"A": 1`
+  本文が title か説明だからです（そうでなければ行のコロンは `"A": 1`
   と印字されます）。
   値の後ろの同じ行の文は、そうした文ではありません。
 - 値の後の `%%` は本文の一部なので、`accTitle` では前の空白を残します。
   `accTitle` の連なりは、ブラウザがツールチップとして表示するので、
   書かれたまま残します（`accTitle: Value   %% note`）。
+  `%%` の前にディレクティブがあっても同じです。
+  閉じていないディレクティブでも、その空白は、ディレクティブと一緒に取られます。
+  例は `accTitle: Value   %%{x: w  %% note` です。
   ブロックの `}` の後のコメントは、ブロックの形を残します。
   コロンの形 `accDescr: a %% c` の説明は `a %% c` で、
   ブロックの説明は `a` だからです。
@@ -3932,6 +3952,8 @@ U+2028 か U+2029 を含む空白は、ディレクティブがどこにあっ�
 [fixture: pie/description-blocks/block-then-comment]
 [fixture: gitgraph/title-and-common-values/acc-value-on-next-line-kept]
 [fixture: gitgraph/title-and-common-values/acc-title-percent-gap-kept]
+[fixture: pie/accessibility-lines/acc-title-unclosed-directive-then-comment-kept]
+[fixture: gitgraph/title-and-common-values/acc-title-unclosed-directive-then-comment-kept]
 [fixture: gitgraph/title-and-common-values/block-then-comment-kept]
 
 ## 方向のテキストを含む行
@@ -3956,11 +3978,21 @@ flowchart と swimlane の図の、ブロック内かコロンの後の説明、
 サブグラフ内でも同じです。
 [fixture: flowchart/indentation/direction-text-split-by-a-directive-kept]
 [fixture: flowchart/indentation/swimlane-direction-text-split-by-a-directive-kept]
+mermaid.js は、字句解析器がテキストを読む前に、コメント行と、
+行の規則が無視する `;` も除きます。
+そのため、そうした `;` が分割する `direction` も、方向のテキストです。
+例は `accTitle:style:#x,direc;tion TB` です。
+値がコメント行の後の行にある `direction` も同じです。
+例は `accTitle:direction`、コメント行、`TB` です。
+flowchart と ER 図で同じです。
+[fixture: flowchart/indentation/direction-text-split-by-ignored-semicolon-kept]
+[fixture: flowchart/indentation/direction-text-value-after-comment-line-kept]
+[fixture: er/indentation/direction-text-split-by-ignored-semicolon-kept]
 [字下げ](./flowchart.ja.md#字下げ)を参照してください。
 
 flowchart本文は共有の意味を持つ字下げの下限を使い、
 `tabWidth: 0`でも1段に最低1つの空白を置きます。
-字下げを落として、方向文が1桁目のaccessibilityやキーワードの優先順位を、
+字下げを落として、方向文が1桁目のアクセシビリティやキーワードの優先順位を、
 取り戻さないようにするためです。
 [fixture: flowchart/indentation/zero-direction-description-subgraph]
 [fixture: flowchart/indentation/zero-direction-title]
@@ -3991,7 +4023,7 @@ sequence のメッセージは、矢印の両側に空白を 1 つずつ置き�
 
 sequence のメッセージの `()`（`A () ->> () B`）の前後の空白は、
 接していれば接したまま、空いていれば空白 1 つで、書かれたままにします。
-sequence 図で対象にする版の一部には central 接続がなく、
+sequence 図で対象にする版の一部には中央接続がなく、
 `()` を隣の名前の一部として読むので、`A ()` と `A()` は別の名前、
 `A ->> () x` と `A ->> ()x` は別の宛先です。
 `()` の前後の空白の有無だけが違うテキスト（`A () ->> B` と `A() ->> B`、
@@ -4007,7 +4039,13 @@ sequence 図で対象にする版のすべてで同じに描かれました。
 残す版は
 [対象にする版の mermaid.js のために残す形](#対象にする版の-mermaidjs-のために残す形)
 の表にあります。
+`()` の後でも同じです。
+それらの版が読む名前は id から `<<` まで続くので、
+`()` と `<<` の間の空白は名前の一部です。
+`A ()   <<->> B` は書かれたまま残し、
+その空白にディレクティブがあっても同じです。
 矢印の後の空白は、どの版でも問題になりません。
+[fixture: sequence/arrow-spacing/parentheses-then-bidirectional-arrow-gap-kept]
 [fixture: sequence/arrow-spacing/bidirectional-arrow-gap-before-kept]
 [fixture: sequence/arrow-spacing/parentheses-touching]
 [fixture: sequence/arrow-spacing/touching-beside-directive]
@@ -4057,13 +4095,13 @@ mermaid.js は、そうしたコメントの後の改行をコメントの一部
 
 ## class のラベルとメンバーの行
 
-class の属性、annotation、メソッドの各値とジェネリック型の内容は原文を保ちます。
+class の属性、注釈、メソッドの各値とジェネリック型の内容は原文を保ちます。
 可視性の印の後の空白と、
 2 つの `~` の間の空白は Db に含まれる場合があるためです。
 通常のメソッドでは丸括弧の周囲の余白を取り除き、
 空でない戻り型の前を空白1個にします。
-trivia、無視されたテキスト、行区切り、
-semicolon の保護があるメソッドは原文を保ちます。
+注釈類、無視されたテキスト、行区切り、
+セミコロンの保護があるメソッドは原文を保ちます。
 [fixture: class/member-lines/method-padding]
 [fixture: class/member-lines/method-values-and-classifiers-runs-collapsed]
 [fixture: class/member-lines/method-trivia-and-semicolon-kept]
@@ -4090,14 +4128,14 @@ mermaid.js の行単位の規則は、`:` の直後から `#` までのテキス
 
 通常の `accDescr` と開始の `{` の間には、空ブロックでも空白を1個置きます。
 本文を変えず、Prettier が `{` の前に印字する空白にするためです。
-内側の接触と trivia はそれぞれの規則を保ちます。
+内側の接触と注釈類はそれぞれの規則を保ちます。
 [fixture: info/description-blocks/block-gap-presence]
 [fixture: flowchart/accessibility-lines/empty-block-touching-keyword]
 
 通常の閉じた複数行の `accDescr` 本文は文の継続行の字下げを使い、
 独立した `}` は文と同じ段に置きます。
 Mermaid が説明から LF 後の先頭の空白とタブを除くためです。
-それ以外の文字、改行、行末の空白、directive の内容は保ちます。
+それ以外の文字、改行、行末の空白、ディレクティブの内容は保ちます。
 引用符付きの文字列と不透明なデータブロックは、それぞれの値の保持規則に従います。
 [fixture: flowchart/multi-line-values/accdescr-block-kept]
 
@@ -4132,7 +4170,7 @@ ER の subgraph が対象です。
 global 本文の原文を変えると、後続の flow のメンバーが変わる場合があります。
 Treeview の罫線モードも、普通の物理行を字下げすると拒否される場合があるため、
 本文の列を保ちます。
-Eventmodeling の共通 terminal は原文を値とする固有の規則に従います。
+Eventmodeling の共通終端トークンは原文を値とする固有の規則に従います。
 [fixture: flowchart/multi-line-values/accdescr-block-subgraph-raw-membership-kept]
 [fixture: agentflow/accessibility/global-description-membership-kept]
 [corpus fixture: er/db-subgraph-nodes-acc-descr-block-lines]
@@ -4161,15 +4199,15 @@ mermaid.js はノートの本文を id の直後から読み、最初の 2 文�
 複数行のブロックノートは、[ノート](./state.ja.md#ノート)の限定規則に従い、
 単一の段落の内容がある各行をノートより 1 段深くそろえます。
 本文の字下げには、`useTabs` でも ASCII 空白を使います。
-tab は、Mermaid が取り除く、内容がある最初の行の余白だけで許可します。
-後続行の tab を含む余白は原文を保ちます。
+タブは、Mermaid が取り除く、内容がある最初の行の余白だけで許可します。
+後続行のタブを含む余白は原文を保ちます。
 行内の強調、同じ物理行で閉じるコード、行頭ではない正確な `<br/>` も対象です。
 前後の空行は正確に保ちます。
 記号で始まる文字どおりの継続行は、
 原文と出力の両方で必要な空白 4 個以上の余白を保つ場合だけそろえます。
 描画を保ちながら、
-raw `notes[].text` の許可された行頭の ASCII 空白だけが変わる場合があります。
-[fixture: state/notes/payment-prose]
+変換前の `notes[].text` の許可された行頭の ASCII
+空白だけが変わる場合があります。 [fixture: state/notes/payment-prose]
 [fixture: state/notes/prose-tab-margin-kept]
 [fixture: state/notes/later-tab-margin-kept]
 [fixture: state/notes/over-lines-text-ends-kept]
@@ -4179,13 +4217,13 @@ raw `notes[].text` の許可された行頭の ASCII 空白だけが変わる場
 [fixture: state/notes/markdown-ordered-list-kept]
 [fixture: state/notes/literal-markers-zero-width]
 
-ブロック構文、空行で分かれた段落、hard break、複数行コード、取り消し線、
+ブロック構文、空行で分かれた段落、強制改行、複数行コード、取り消し線、
 一般の HTML などの保護する形では、後続の余白を保ちます。
 これらの余白は、描画されるラベルに現れる場合があります。
 `<pre>` 内や空行後の字下げを変えると、サイズや配置が変わることがあるためです。
 このような本文は、最初の物理行が空でなく、
-字下げが ASCII 空白と tab だけならその行だけをそろえます。
-Mermaid はこの余白を取り除くため、raw Db は一致します。
+字下げが ASCII 空白とタブだけならその行だけをそろえます。
+Mermaid はこの余白を取り除くため、mermaid.js の素の Db は一致します。
 先頭行には、後続行の余白や内容行の有無によらず、設定された本文の段を使います。
 原文の後続行の字下げを先頭へコピーしません。
 後続の余白が先頭行と異なる場合も、後続のバイト列は正確に保ちます。
@@ -4193,7 +4231,7 @@ Mermaid はこの余白を取り除くため、raw Db は一致します。
 [fixture: state/notes/protected-tab-margins-kept]
 [fixture: state/notes/single-markup-row]
 
-trivia、セミコロン、保護された結合領域がある場合は、
+注釈類、セミコロン、保護された結合領域がある場合は、
 本文全体を原文のまま保ちます。
 一般の Markdown は再整形しません。 [fixture: state/notes/html-note-kept]
 [fixture: state/notes/html-pre-first-line]
@@ -4740,14 +4778,14 @@ mermaid.js は、timeline の period、event、section の名前の空白を保�
   [fixture: timeline/periods-and-events/title-word-then-directive-line]
 - title と section のキーワードと本文の間にコメント行か指令がある場合は、
   値に属する空白を含めて原文のまま残します。
-  accessibility 行は、
+  アクセシビリティ行は、
   [構造の継続行](#コメントやディレクティブの前後の構造の継続行)をそろえます。
   `;` を含む行は、その行の文をまとめて残します。
   [fixture: timeline/multi-line-statements/comment-line-inside-kept]
   [fixture: timeline/statements-one-per-line/ignored-semicolon-line-kept]
 
 `accDescr` ブロックの後ろのテキスト行は、
-Db の setter が捨てる LF 直後の空白とタブだけを置き換えて字下げします。
+Db の設定関数が捨てる LF 直後の空白とタブだけを置き換えて字下げします。
 テキスト、改行、行末の空白、指令の内容は書かれたまま残します。
 [fixture: timeline/multi-line-values/description-line-ending-whitespace]
 [fixture: timeline/multi-line-values/description-directive-lines]
@@ -4914,7 +4952,7 @@ Db や字句解析器が読むものは変えません。
 ## テキスト、引用符、字句解析器で決まる象限チャートの行
 
 象限チャートのラベル、title、
-accessibility のテキストの中の空白は Db に入るので、
+アクセシビリティのテキストの中の空白は Db に入るので、
 整形はそれらのテキストを書かれたまま残し、その周りの空白を変えます。
 Db や字句解析器が読むものは変えません。
 [キーワードとテキスト](./quadrant.ja.md#キーワードとテキスト)と
@@ -4961,7 +4999,7 @@ Db や字句解析器が読むものは変えません。
   その後の `;` を持つ行です。
   [fixture: statements-one-per-line/line-rule-line-kept-together]
   [fixture: multi-line-statements/semicolon-on-the-last-line-joined]
-- コメント行や指令を含む点と accessibility の文は必要な改行を残し、
+- コメント行や指令を含む点とアクセシビリティの文は必要な改行を残し、
   [構造の継続行](#コメントやディレクティブの前後の構造の継続行)をそろえます。
   [fixture: multi-line-statements/comment-line-inside-kept]
   [fixture: multi-line-statements/directive-inside-kept]
@@ -4979,10 +5017,10 @@ Db や字句解析器が読むものは変えません。
 
 通常の点とクラスのスタイルは `name: value` と印字します。
 正規化するのは最初のコロンに接する ASCII 空白とタブだけで、値の綴りは保ちます。
-trivia、ASCII 空白とタブ以外の空白文字、セミコロン、
+注釈類、ASCII 空白とタブ以外の空白文字、セミコロン、
 2 個目のコロンがあるスタイルや、保護対象のセミコロン行にあるスタイルの内部は、
 書かれたまま保ちます。
-2 個目のコロンの後の suffix は解釈しません。
+2 個目のコロンの後の後置部分は解釈しません。
 [fixture: quadrant/styles/style-colon-padding]
 [fixture: quadrant/styles/style-colon-tab-padding]
 [fixture: quadrant/styles/style-extra-colon-kept]
@@ -5006,7 +5044,7 @@ Db や字句解析器が読むものは変えません。
   [fixture: styles/class-name-runs-collapsed]
   [fixture: styles/class-name-with-a-comma-runs-collapsed]
 - `%%` で始まる文。
-  mermaid.js は node の後の `%%x` を id として読み、
+  mermaid.js はノードの後の `%%x` を id として読み、
   `%%x` で始まる行をコメント行として読むので、
   そのような文がある行は 1 行のまま残します。
   [fixture: rows/percent-id-stays-in-its-row]
@@ -5015,7 +5053,7 @@ Db や字句解析器が読むものは変えません。
   [fixture: rows/percent-id-after-the-header-stays-on-the-line]
   [fixture: comments/percent-in-a-line-is-an-id]
 - 辺の連鎖 `A --> B --> C` は、1 つの文のまま 1 行に残します。
-  mermaid.js はそれを正しく読まず（Db が最後の前の node を落とします）、
+  mermaid.js はそれを正しく読まず（Db が最後の前のノードを落とします）、
   分けると別の読みになります。 [fixture: edges/chain-on-one-line]
 - mermaid.js の行の規則が読む行は、文を 1 行に残し、
   保持する `;` も書かれたままです。
@@ -5156,7 +5194,7 @@ Prettier はすべての行の末尾の空白を取り除きます。
 mermaid.js が受理する `error` 擬似図は、`error` という語と、
 その周りのコメント・ディレクティブ・改行だけでできたテキストで、
 整形するものがありません。
-printer は、フロントマターを含め、テキスト全体を書かれたまま印字します。
+印字処理は、フロントマターを含め、テキスト全体を書かれたまま印字します。
 単独のファイルで変わりうるのは改行コードだけで、
 他の言語と同じく Prettier の `endOfLine` オプションに従います。
 Markdown では、コードブロックを Prettier に任せます。
@@ -5172,7 +5210,7 @@ kanban のボードの Db は字下げを持たず、
 ノードの字下げを最初のノードの字下げと比べて、セクションと項目を区別します。
 そのため、印字は、セクションは 1 段、項目は 2 段の字下げを決め、
 役割を決めるものを保ちます。
-裸の id・ラベル・icon・class の空白は値として残します。
+裸の id・ラベル・アイコン・class の空白は値として残します。
 装飾はノードの桁に揃え、インラインディレクティブの行は、
 ディレクティブと隣の隙間を保ち、最初のディレクティブの前の空白を印字が決めます。
 YAML として正しくないデータブロックは、パーサーが不透明なテキストとして受理し、
@@ -5247,10 +5285,10 @@ direction の文字の結合は、先頭列でも受理される入力を拒否�
 [fixture: c4/header/empty-header-comment-columns]
 [fixture: c4/boundary-bodies/empty-beforebody-comment-columns]
 
-コロン形式の accessibility は注釈の改行を残し、
+コロン形式のアクセシビリティは注釈の改行を残し、
 値の外側の構造と独立した注釈を継続行として字下げします。
-説明ブロックの独立した directive は本文にそろえ、内容と接触は変えません。
-native の `title` と `accDescription` の値の前置空白、方向の文字を含む行、
+説明ブロックの独立したディレクティブは本文にそろえ、内容と接触は変えません。
+図固有の `title` と `accDescription` の値の前置空白、方向の文字を含む行、
 セミコロンの保護、コメントで結合される領域は、それぞれの保持規則に従います。
 [fixture: c4/accessibility-lines/colon-trivia-continuations]
 [fixture: c4/description-blocks/block-directive-lines]
@@ -5265,7 +5303,7 @@ native の `title` と `accDescription` の値の前置空白、方向の文字�
 最後の保つ `;` の前の最後の `#` までに空白がない並びを読みます。
 その範囲の隙間と余白は空白の有無を保ち、空白の連続は空白 1 つにします。
 範囲の外は、この図種の通常の規則に従います。
-字下げと値の外の末尾空白は printer が整えます。
+字下げと値の外の末尾空白は印字処理が整えます。
 [fixture: c4/comments/comment-header] [fixture: c4/blank-lines/comment-recovery]
 [fixture: c4/final-newline/comment-eof-gap]
 [fixture: c4/line-rule-and-semicolons/semicolon-inline-comment]
@@ -5275,11 +5313,11 @@ native の `title` と `accDescription` の値の前置空白、方向の文字�
 
 ## Venn の暗黙の text とテキストの行規則
 
-Venn の本文は1段深く、対象を書かない text はさらに1段深くします。
-モードが有効な間は正の字下げが暗黙の text を選ぶので、
-対象つき text はヘッダーと同じ位置に置き、
-そこで字下げして暗黙の text にしないようにします。
-宣言と同じ行の style、対象つき text、title は分けず、
+Venn の本文は1段深く、対象を書かないテキストはさらに1段深くします。
+モードが有効な間は正の字下げが暗黙のテキストを選ぶので、
+対象つきテキストはヘッダーと同じ位置に置き、
+そこで字下げして暗黙のテキストにしないようにします。
+宣言と同じ行の style、対象つきテキスト、title は分けず、
 モードを解除しないようにします。
 先頭のディレクティブは論理的な字下げの正とゼロを保ちます。
 図コメントの隙間は `%%{ }%%` の前の空行と空白だけの行の境界を保ちます。
@@ -5300,7 +5338,7 @@ Venn の本文は1段深く、対象を書かない text はさらに1段深く�
 裸の空白、引用符内の空白、空の引用符つきラベルの読み分けも保ちます。
 上で述べた行末のスタイルの終端を除き、セミコロンを保ちます。
 保つセミコロンがある行は、
-[Line rule and kept lines](./venn.ja.md#line-rule-and-kept-lines)のとおり、
+[行の規則と保持する行](./venn.ja.md#line-rule-and-kept-lines)のとおり、
 行の規則が読む範囲を除いて、ほかの場所と同じように整形します。
 コメントとディレクティブ内の Unicode 区切りは保持部分を切りません。
 Venn の図コメントは LF か末尾まで続きます。
@@ -5316,7 +5354,7 @@ Venn の図コメントは LF か末尾まで続きます。
 通常の ASCII の隙間、設定の暗黙の字下げ、title の最初の区切りです。
 CR と CRLF は共通の改行処理を使います。
 値の Unicode 文字は保ち、不正な通常の隙間は拒否のままです。
-失敗、Markdown、frontmatter、最後の改行は共通の経路に従います。
+失敗、Markdown、フロントマター、最後の改行は共通の経路に従います。
 仕様の単位境界の乖離は失敗のままで、
 C4 の検出と不透明な YAML の乖離は仕様の読み方を使います。
 生の拒否には生の Db はありません。
@@ -5340,14 +5378,14 @@ Ishikawa は、入力の字下げ幅や Db の一時的なレベルを使わず�
 [fixture: ishikawa/indentation/indent-clamped]
 [fixture: ishikawa/indentation/indent-zero]
 
-引用符、空に見える形、accessibility、style、データらしい文、
-インラインの percent のテキストは literal として保ちます。
-内部の directive の隙間と、結合した物理行の継続列は保ちます。
-普通の行でも保持する行でも、literal の末尾の文字は全て保ちます。
+引用符、空に見える形、アクセシビリティ、style、データらしい文、
+インラインのパーセントのテキストは値として保ちます。
+内部のディレクティブの隙間と、結合した物理行の継続列は保ちます。
+普通の行でも保持する行でも、値の末尾の文字は全て保ちます。
 値は書かれたものであり、Db が等しいことは値を消す理由になりません。
 mindmap と同じ選択です。
-semicolon は全て残し、共有の区間保持の経路で、
-交差する literal と trivia 全体を保護します。
+セミコロンは全て残し、共有の区間保持の経路で、
+交差する値と注釈類全体を保護します。
 
 [fixture: ishikawa/node-text/values-opaque]
 [fixture: ishikawa/inline-directives/directive-in-value]
@@ -5361,7 +5399,7 @@ semicolon は全て残し、共有の区間保持の経路で、
 末尾の図コメントの隙間は全体を保ちます。
 受理した差異は仕様の木を使い、失敗は修復しません。
 生の拒否には生の Db はありません。
-ガード付き frontmatter、設定の CR と LF への変換、EOF の directive、
+ガード付きフロントマター、設定の CR と LF への変換、EOF のディレクティブ、
 Markdown のホストの処理は、共有の経路を使います。
 
 [test: ishikawa: ls-comment-boundary] [test: ishikawa: ps-comment-boundary]
@@ -5371,13 +5409,13 @@ Markdown のホストの処理は、共有の経路を使います。
 [fixture: ishikawa/frontmatter-yaml/frontmatter-html-guard]
 [test: ishikawa: eol-crlf] [test: ishikawa Markdown: quote-list-clamped]
 
-見出し行で見出しに接する directive は、空白で離れた根を下へ移しても残します。
-空白で隔てられた directive は、同じ行の根と一緒に移し、
-その後ろの隙間を [Inline directives](./ishikawa.ja.md#inline-directives)
+見出し行で見出しに接するディレクティブは、空白で離れた根を下へ移しても残します。
+空白で隔てられたディレクティブは、同じ行の根と一緒に移し、
+その後ろの隙間を [行内のディレクティブ](./ishikawa.ja.md#inline-directives)
 の根の字下げに数えます。
 残すと、除去後に見出しの行末に空白が残り、Mermaid が拒否するためです。
-根に接する directive は見出しとの組全体を保ちます。
-同じ行に根がない directive は、仕様の読みを保ちます。
+根に接するディレクティブは見出しとの組全体を保ちます。
+同じ行に根がないディレクティブは、仕様の読みを保ちます。
 
 [fixture: ishikawa/standalone-directives/header-spaced-directive]
 [fixture: ishikawa/standalone-directives/header-spaced-multiline-directive]
@@ -5392,7 +5430,7 @@ Markdown のホストの処理は、共有の経路を使います。
 agentflow本文は共有の意味を持つ字下げ幅を使い、
 `tabWidth: 0`でも1段に最低1つの空白を置きます。
 字下げのある方向文を1桁目へ移すと、
-前置きがaccessibilityの値や構文エラーに変わり得るためです。
+前置きがアクセシビリティの値や構文エラーに変わり得るためです。
 [fixture: agentflow/direction/zero-title-indented]
 [fixture: agentflow/direction/zero-description-indented]
 [fixture: agentflow/direction/zero-style-direction]
@@ -5406,7 +5444,7 @@ tooltipの前の必須の1単位は、その後の空白が値なので保ちま
 clickのIDとして名前を読むのを終える空白1文字も保ちます。
 区切りをLFへ変えると名前でなくなる、末尾の空白だけの断片は落とします。
 [fixture: agentflow/names-and-headings/empty-description-space-flow]
-clickのtextBeforeUrl/textBeforeTooltipも各prefixと元の隙間を保ちます。
+clickのtextBeforeUrl/textBeforeTooltipも各前置部分と元の隙間を保ちます。
 click予約語の例外は使いません。
 [fixture: agentflow/single-space-gaps/style-first-spaces]
 [corpus fixture: agentflow/lex-flow-name-click-state]
@@ -5417,19 +5455,20 @@ click予約語の例外は使いません。
 end/globalはLFではなくASCIIの空白とタブを取り、
 波括弧後に畳むのは直後のLF前の空白だけです。
 データは書かれた出現に別々に保ちます。
-内容だけの拒否には仕様の不透明な読みを使い、rawの拒否にはDbがありません。
+内容だけの拒否には仕様の不透明な読みを使い、
+素の mermaid.js による拒否にはDbがありません。
 [fixture: agentflow/comments/comment-looking-values]
 [fixture: agentflow/multiline-statements-and-values/brace-blank-kept]
 [corpus fixture: agentflow/db-data-block-invalid-yaml]
 
-frontmatterとdirectiveを除き、正規化したUTF-16で50000単位以上なら、
+フロントマターとディレクティブを除き、正規化したUTF-16で50000単位以上なら、
 図の全文と末尾を保ちます。
 未満でも、印字計画が50000未満に収まるときだけ通常配置を適用します。
 字下げ、末尾LF、空白削除、ホストが戻すBOMで、
 Mermaidのコメント保持の分岐を変えないためです。
-frontmatterは共通の保護付きYAML整形を使います。
+フロントマターは共通の保護付きYAML整形を使います。
 CR/LFとMarkdownも共通のホスト処理に従います。
-ブロック最終行の末尾空白の削除でnullのstyleが拒否され得る制限も同じです。
+ブロック最終行の末尾空白の削除で`null`のstyleが拒否され得る制限も同じです。
 [fixture: agentflow/default-size-branches/size-preserving-to-fallback-unsafe]
 [fixture: agentflow/default-size-branches/size-below-planned-crossing]
 [test: agentflow Markdown: null style host limitation]
@@ -5447,12 +5486,13 @@ usecase は書かれた AST に従います。
 [fixture: usecase/indentation/indent-zero]
 [fixture: usecase/frontmatter-yaml/frontmatter-zero]
 
-native の `@{...}` metadata は解析と検証を行う構文です。
+図固有の `@{...}` メタデータは解析と検証を行う構文です。
 構造の空白だけを変え、書かれた区切り、空行、綴り、順序、重複をすべて保ちます。
 JSON の表データは不透明で、数とエスケープの綴り、プロパティの順序も含みますが、
 先頭部分の `{` は `@` に接し、
-対象となる余白は [JSON tables](./usecase.ja.md#json-tables) に従います。
-効果を渡さない整形 fixture では、共有の Db 比較を null とし、原文を比較します。
+対象となる余白は [JSON の表](./usecase.ja.md#json-tables) に従います。
+効果を渡さない整形テストケースでは、共有の Db 比較を `null` とし、
+原文を比較します。
 コーパスは存在する記録済みの効果を使います。
 CSS 宣言の最初のコロンの前後の空白は、
 [同じに描かれるスタイル](#同じに描かれるスタイル)に従います。
@@ -5498,7 +5538,7 @@ usecase/gram-metadata-no-trailing-comma-two-properties-three-newlines]
 [corpus fixture: usecase/gram-metadata-property-comma-two-newlines]
 [corpus fixture: usecase/gram-metadata-property-comma-three-newlines]
 
-accessibility 行は class と C4 の規則を再利用し、
+アクセシビリティ行は class と C4 の規則を再利用し、
 両端の空白を除いた値の前を空白 1 個にします。
 説明本文は[説明ブロックの字下げ](#説明ブロックの字下げ)に従い、
 文字と改行を保ちながら普通の行頭の字下げと独立した閉じ波括弧をそろえます。
@@ -5527,7 +5567,7 @@ class の[トークンの間の空白](./class.ja.md#トークンの間の空白
 ラベル、境界タイトルの余白、継続列は、除去で Db が等しい場合も書かれたままです。
 `'` で囲むラベルは、
 [同じに描かれる綴り](#同じに描かれる綴り)に従って `"` で囲んで印字します。
-共通コメント領域の結合と LS、PS を越える native コメントを保ちます。
+共通コメント領域の結合と LS、PS を越える図固有のコメントを保ちます。
 セミコロンは文を区切らず、行の規則が読む範囲を保護します。
 六つの既存の乖離は指定の受理と読みに従い、拒否する木は共有の失敗経路に従います。
 [fixture: usecase/labels/label-quote-kinds]
@@ -5536,32 +5576,31 @@ class の[トークンの間の空白](./class.ja.md#トークンの間の空白
 [fixture: usecase/statements-and-semicolons/semicolon-selected-boundary]
 [test: usecase: comment-region-join] [test: usecase: unicode-comment]
 
-共有の EOL、BOM、frontmatter、末尾改行、Markdown の処理を適用します。
-accessibility 行の外側の空白は、単独ファイルと Markdown の両方で除きます。
+共有の EOL、BOM、フロントマター、末尾改行、Markdown の処理を適用します。
+アクセシビリティ行の外側の空白は、単独ファイルと Markdown の両方で除きます。
 [fixture: usecase/final-newline/final-value-padding]
 [test: usecase Markdown: last-value-padding]
 
 ## Pie hidden boundaries and authored values
 
-[pie の規則](./pie.ja.md)は、ラベルの引用符と値の桁を 1 つの形で印字し、escape、
-値の継続列、重複と原文の順序を保ちます。
+[pie の規則](./pie.ja.md)は、ラベルの引用符と値の桁を 1 つの形で印字し、
+エスケープ、値の継続列、重複と原文の順序を保ちます。
 [同じに描かれる綴り](#同じに描かれる綴り)を参照してください。
-共通の title/accessibility 行の両端は C4 と同様に整えますが、
+共通の title/アクセシビリティ行の両端は C4 と同様に整えますが、
 pie は次の物理行の値を結合しません。
 空のラベルと説明 block も実際の構文です。 [fixture: pie/labels/label-quotes]
 [fixture: pie/numbers/number-spellings] [fixture: pie/title/title-next-trivia]
 [fixture: pie/description-blocks/block-empty]
 
-Hidden YAML と hidden DIRECTIVE は PieIgnoredText であり、
-先頭の frontmatter や Root の directive とは別です。
-hidden の範囲全体を原文の位置に保ちます。
+隠れた YAML と隠れた `DIRECTIVE` は `PieIgnoredText` であり、
+先頭のフロントマターや `Root` のディレクティブとは別です。
+隠れた形の範囲全体を原文の位置に保ちます。
 受理を決める閉じの空白は EOF でも保ちます。
-範囲外の必須 LF と端の空行は [pie の Blank lines](./pie.ja.md#blank-lines)
-に従います。
-Hidden YAML の閉じは先頭列を保ちます。
+範囲外の必須 LF と端の空行は [pie の空行](./pie.ja.md#blank-lines) に従います。
+隠れた YAML の閉じは先頭列を保ちます。
 検出が飛ばした前置きは先頭 LF とコメントも全体を保ち、
-ignored YAML が frontmatter になるのを防ぎます。
-保護した YAML 整形は実際の frontmatter だけに適用します。
+無視された YAML がフロントマターになるのを防ぎます。
+保護した YAML 整形は実際のフロントマターだけに適用します。
 [fixture: pie/hidden-yaml/yaml-after-space-boundary]
 [fixture: pie/hidden-directives/hidden-after-extra-lf]
 [fixture: pie/frontmatter-yaml/preheader-leading-lf]
@@ -5571,18 +5610,20 @@ pie の本文は `tabWidth: 0` で字下げ0幅です。
 YAML は共有の正の最小幅を保ちます。
 セミコロンをすべて残し、行の規則が読む範囲を保護します。
 物理改行、BOM、末尾改行の処理は共有します。
-Markdown host は最後の code block 行の空白を hidden 境界も含め削ります。
-後続の文の前にある内部の hidden 境界の空白は必要です。
+Markdown
+の埋め込み先は最後のコードブロック行の空白を隠れた形の境界も含め削ります。
+後続の文の前にある内部の隠れた形の境界の空白は必要です。
 [fixture: pie/indentation/indent-zero]
 [fixture: pie/frontmatter-yaml/frontmatter-zero]
 [fixture: pie/directives-and-semicolons/selected-two-passes]
 [test: pie Markdown: hidden-boundary] [test: pie Markdown: final-hidden-padding]
 
-pie の corpus は、受理と Db の読みを仕様が定める、印付きの差異を含みます。
-raw が拒否する C4 判定、前置きの Unicode、opaque YAML には raw Db がなく、
+pie のコーパスは、受理と Db の読みを仕様が定める、印付きの差異を含みます。
+素の mermaid.js が拒否する C4 判定、前置きの Unicode、
+中身を検証しない YAML には mermaid.js の素の Db がなく、
 利用できる指定の Db と木を別に確認します。
-拒否する payload は共有の失敗経路を使います。
-[Specified readings](./pie.ja.md#specified-readings)を参照してください。
+拒否する本文は共有の失敗経路を使います。
+[仕様による読み](./pie.ja.md#specified-readings)を参照してください。
 [corpus fixture: pie/div-detect-c4-label]
 [corpus fixture: pie/div-review-yaml-leading-invalid]
 [corpus fixture: pie/div-preheader-retained-yaml-bare-ls]
@@ -5590,15 +5631,15 @@ raw が拒否する C4 判定、前置きの Unicode、opaque YAML には raw Db
 
 ## Gitgraph の hidden 境界と書かれた履歴
 
-[gitgraph の規則](./gitgraph.ja.md)は、見出しの方向、bare と明示的な message、
-参照の形、order の桁、option と文の全出現の原順序を保持します。
+[gitgraph の規則](./gitgraph.ja.md)は、見出しの方向、
+導入語のないメッセージと明示的なメッセージ、参照の形、order の桁、
+オプションと文の全出現の原順序を保持します。
 見出しの後のコロン、`checkout` の代わりの `switch`、
 文字列の引用符は 1 つの形で印字します。
 [同じに描かれる綴り](#同じに描かれる綴り)を参照してください。
-文字列と参照の padding、escape、HTML、entity、tag の順序は Db を変え、
+文字列と参照の余白、エスケープ、HTML、実体参照、tag の順序は Db を変え、
 cherry-pick の空 tag は既定 tag を抑止します。
-summary に message がなくても削除はしません。
-[fixture: gitgraph/header/header-tb]
+要約にメッセージがなくても削除はしません。 [fixture: gitgraph/header/header-tb]
 [fixture: gitgraph/checkout-aliases/alias-one-form]
 [fixture: gitgraph/messages/message-forms]
 [fixture: gitgraph/quotes/quotes-one-form]
@@ -5608,15 +5649,15 @@ summary に message がなくても削除はしません。
 [corpus fixture: gitgraph/db-cherry-pick-only-empty-tags]
 [fixture: gitgraph/order-and-repetitions/order-reverse-id]
 
-GitgraphIgnoredText は native hidden YAML/DIRECTIVE を保持し、
-実 frontmatter と global directive とは別です。
-hidden の範囲全体を所有位置に残し、閉じの padding は EOF でも保持します。
-範囲外の必須 LF と端の空行は
-[gitgraph の Blank lines](./gitgraph.ja.md#blank-lines) に従います。
-hidden YAML の閉じの列も残します。
-見出し前に保持する prefix 全体を残し、hidden YAML の有効化を防ぎます。
-安全な実 YAML は共通の formatter を使い、tabWidth 0 でも正の最小字下げです。
-global trivia、コメント、semicolon の保護は共通の規則に従い、
+`GitgraphIgnoredText` は図固有の隠れた YAML/`DIRECTIVE` を保持し、
+実フロントマターと大域的なディレクティブとは別です。
+隠れた形の範囲全体を所有位置に残し、閉じの余白は EOF でも保持します。
+範囲外の必須 LF と端の空行は [gitgraph の空行](./gitgraph.ja.md#blank-lines)
+に従います。
+隠れた YAML の閉じの列も残します。
+見出し前に保持する前置部分全体を残し、隠れた YAML の有効化を防ぎます。
+安全な実 YAML は共通の整形処理を使い、`tabWidth` 0 でも正の最小字下げです。
+大域的な注釈類、コメント、セミコロンの保護は共通の規則に従い、
 保護された見出しと最初の文は分けません。
 [corpus fixture: gitgraph/lex-hidden-yaml-before-option-value]
 [corpus fixture: gitgraph/lex-hidden-yaml-commit-closing-space]
@@ -5627,14 +5668,14 @@ global trivia、コメント、semicolon の保護は共通の規則に従い、
 [fixture: gitgraph/global-directives/directive-sides]
 [fixture: gitgraph/semicolons/semicolon-cross-trigger]
 
-共通の title と accessibility の行の外端は詰めますが、
+共通の title とアクセシビリティの行の外端は詰めますが、
 次の物理行から値を取り込みません。
-共通の description block 配置は、内側の波括弧の接触、空 block、trivia を保ち、
+共通の説明ブロック配置は、内側の波括弧の接触、空 block、注釈類を保ち、
 普通の本文の字下げは
 [説明ブロックの字下げ](#説明ブロックの字下げ)に従ってそろえます。
-物理改行・BOM・終端改行は共通の host の経路です。
-Markdown は最終 payload 行の padding を消しますが、
-本文途中の hidden の padding は必要なままです。
+物理改行・BOM・終端改行は共通の埋め込み先の経路です。
+Markdown は本文の最終行の余白を消しますが、
+本文途中の隠れた形の余白は必要なままです。
 [corpus fixture: gitgraph/title-next-line]
 [fixture: gitgraph/title-and-common-values/a11y-no-next-line]
 [fixture: gitgraph/title-and-common-values/a11y-fixed]
@@ -5644,14 +5685,15 @@ Markdown は最終 payload 行の padding を消しますが、
 [test: gitgraph Markdown: final-hidden-padding]
 
 既知の差異は仕様に従います。
-atomic な directive と semicolon の分断、本文だけの frontmatter HTML、
-opaque な埋め込みデータ、C4 検出、bare percent の見出し前 trivia が対象です。
-不正 YAML を含め raw の拒否に raw Db はなく、
+ディレクティブとセミコロンによる単位の途中での分断、
+本文だけのフロントマター HTML、中身を検証しない埋め込みデータ、C4 検出、
+bare percent の見出し前注釈類が対象です。
+不正 YAML を含め素の mermaid.js による拒否に mermaid.js の素の Db はなく、
 利用できる仕様の読みを別に検査します。
-空の quoted option と空の description block は受理したままです。
-解析失敗は standalone の構文エラーを報告し、
-Markdown の埋め込みを辞退して payload を修復しません。
-[Specified readings](./gitgraph.ja.md#specified-readings) を参照してください。
+空の引用符付きオプションと空の説明ブロックは受理したままです。
+解析失敗は単独ファイルの構文エラーを報告し、
+Markdown の埋め込みを辞退して本文を修復しません。
+[仕様による読み](./gitgraph.ja.md#specified-readings) を参照してください。
 [corpus fixture: gitgraph/div-directive-in-commit]
 [corpus fixture: gitgraph/div-style-semicolon-in-order-number]
 [corpus fixture: gitgraph/div-frontmatter-cross-title-value]
@@ -5662,11 +5704,11 @@ Markdown の埋め込みを辞退して payload を修復しません。
 
 ## info の hidden 境界と原文の文
 
-[info の規則](./info.ja.md)は、書かれた showInfo の選択、共通文の順序と反復、
-空の構文、引用符、escape、値の文字を保ちます。
+[info の規則](./info.ja.md)は、書かれた `showInfo` の選択、共通文の順序と反復、
+空の構文、引用符、エスケープ、値の文字を保ちます。
 通常の説明本文の行頭は[説明ブロックの字下げ](#説明ブロックの字下げ)に従います。
-ほかの literal と hidden form の継続列は原文のままです。
-info の公開 Db summary は、title と accessibility の代入があっても空です。
+ほかの値と隠れた形の継続列は原文のままです。
+info の公開 Db 要約は、title とアクセシビリティの代入があっても空です。
 空 Db の一致は原文を削除する根拠にはなりません。
 共通行の外端は詰め、次の物理行の値は別のままです。
 [fixture: info/statements-one-per-line/order-and-empty]
@@ -5674,16 +5716,16 @@ info の公開 Db summary は、title と accessibility の代入があっても
 [fixture: info/title/title-next-comment-directive]
 [fixture: info/accessibility-lines/a11y-line-braces]
 
-InfoIgnoredText は実 frontmatter や Root directive と別に、
-hidden YAML/DIRECTIVE を元の所有位置に保ちます。
-hidden の範囲全体と閉じの padding を EOF でも保ちます。
+`InfoIgnoredText` は実フロントマターや `Root` ディレクティブと別に、
+隠れた YAML/`DIRECTIVE` を元の所有位置に保ちます。
+隠れた形の範囲全体と閉じの余白を EOF でも保ちます。
 これらの境界は受理を左右するためです。
-範囲外の必須 LF と端の空行は [info の Blank lines](./info.ja.md#blank-lines)
+範囲外の必須 LF と端の空行は [info の空行](./info.ja.md#blank-lines)
 に従います。
-hidden YAML の閉じは列を保ちます。
-無視された YAML の実 frontmatter への昇格が設定や受理を変えないよう、
-先頭 LF とコメント列を含む保持 prefix 全体を残します。
-共有 formatter と正の最小字下げを使うのは安全な実 YAML だけです。
+隠れた YAML の閉じは列を保ちます。
+無視された YAML の実フロントマターへの昇格が設定や受理を変えないよう、
+先頭 LF とコメント列を含む保持する前置部分全体を残します。
+共有整形処理と正の最小字下げを使うのは安全な実 YAML だけです。
 [fixture: info/hidden-yaml/yaml-block-space]
 [fixture: info/hidden-yaml/yaml-block-spare]
 [fixture: info/hidden-directives/hidden-title-space]
@@ -5691,18 +5733,18 @@ hidden YAML の閉じは列を保ちます。
 [fixture: info/retained-prefix/prefix-leading-lf-kept]
 [fixture: info/frontmatter-yaml/frontmatter-zero-minimum]
 
-すべての semicolon を残し、共有の source segment 保護で、
-交差する値・trivia と保護された見出し・本文 group を完全な形に保ちます。
-trigger の segment 変更は受理を変えうるためです。
-global directive の原文を保ち、隙間の中では、
+すべてのセミコロンを残し、共有の原文の区間の保護で、
+交差する値・注釈類と保護された見出し・本文 group を完全な形に保ちます。
+条件になる語の区間変更は受理を変えうるためです。
+大域的なディレクティブの原文を保ち、隙間の中では、
 [ディレクティブ](./flowchart.ja.md#ディレクティブ)のとおりに置きます。
 info の Db が空でも init の削除は設定を変えうるためです。
 物理 EOL と EOF に達する global の終端は共有経路を使います。
 Prettier は先頭 BOM を除去・復元します。
-opening fence の BOM により、
-plugin 内部では hidden YAML が実 frontmatter として読まれることがあります。
+開始の囲みの BOM により、
+プラグイン内部では隠れた YAML が実フロントマターとして読まれることがあります。
 閉じの前にも BOM があると、共有の単体構文エラーの制約に当たります。
-Markdown は最終行の padding を削除し、途中の hidden 境界は残します。
+Markdown は最終行の余白を削除し、途中の隠れた形の境界は残します。
 [fixture: info/semicolons/semicolon-style-classdef]
 [fixture: info/global-directives/global-config-align]
 [fixture: info/final-newline/final-open-global]
@@ -5712,11 +5754,12 @@ Markdown は最終行の padding を削除し、途中の hidden 境界は残し
 [test: info Markdown: final-hidden-padding]
 
 識別子の付いた読みは仕様に従います。
-keyword の atomic cut は拒否のままとし、opaque embedded data、C4 の検出、
-裸 percent 後の Unicode は指定された受理に従います。
-raw 拒否には raw Db や架空の embedded 効果を補いません。
-解析失敗は単体では構文エラーを報告し、Markdown では embedding を辞退します。
-payload を修復しません。 [corpus fixture: info/div-directive-flag-middle]
+キーワードの単位の途中での分断は拒否のままとし、中身を検証しない埋め込みデータ、
+C4 の検出、裸パーセント後の Unicode は指定された受理に従います。
+素の mermaid.js による拒否には mermaid.js の素の Db
+や架空の埋め込みデータの効果を補いません。
+解析失敗は単体では構文エラーを報告し、Markdown では埋め込みを辞退します。
+本文を修復しません。 [corpus fixture: info/div-directive-flag-middle]
 [corpus fixture: info/div-selected-showinfo]
 [corpus fixture: info/div-frontmatter-invalid-yaml]
 [corpus fixture: info/div-c4container-title]
@@ -5725,15 +5768,15 @@ payload を修復しません。 [corpus fixture: info/div-directive-flag-middle
 ## Packet の hidden 境界と原綴の block
 
 [packet の規則](./packet.ja.md)は、`packet-beta` を `packet` と印字し、
-range・single・relative の3形式を保ちます。
+範囲指定・単一位置指定・相対指定の 3 形式を保ちます。
 公開行から block を再構成せず、公開上限後の出現も除きません。
 同じ label は別々に残し、空の共通代入も残します。
 空 title の削除は、それ以前の title を復活させ得るためです。
-label の padding、escape、HTML、entity と物理的な継続列は、
+label の余白、エスケープ、HTML、実体参照と物理的な継続列は、
 書き換えが Db を変え得るため保ちます。
 `'` で囲む label は、
 [同じに描かれる綴り](#同じに描かれる綴り)に従って `"` で囲んで印字します。
-数値は double で丸め・overflow しても原綴です。
+数値は倍精度浮動小数点数で丸め・桁あふれしても原綴です。
 指数・Infinity は packet の構文ではありません。
 [fixture: packet/block-forms-and-order/block-three-forms]
 [fixture: packet/block-forms-and-order/keep-interleaving]
@@ -5743,15 +5786,15 @@ label の padding、escape、HTML、entity と物理的な継続列は、
 [fixture: packet/numbers/number-precision]
 [fixture: packet/numbers/number-overflow]
 
-PacketIgnoredText は native hidden YAML・DIRECTIVE を、
-実 frontmatter と Root directive から分けて保持します。
-名前付きの所有位置で hidden の範囲全体と、EOF を含む閉じの padding を保ちます。
+`PacketIgnoredText` は図固有の隠れた YAML・`DIRECTIVE` を、
+実フロントマターと `Root` ディレクティブから分けて保持します。
+名前付きの所有位置で隠れた形の範囲全体と、EOF を含む閉じの余白を保ちます。
 これらは、後続文に可視 EOL があるかを決め得るためです。
-範囲外の必須 LF と端の空行は [packet の Blank lines](./packet.ja.md#blank-lines)
+範囲外の必須 LF と端の空行は [packet の空行](./packet.ja.md#blank-lines)
 に従います。
-内部と閉じの列、保持する見出し前の prefix 全体も保ちます。
+内部と閉じの列、保持する見出し前の前置部分全体も保ちます。
 無視された YAML を有効な title・設定へ昇格させないためです。
-安全な実 frontmatter だけ、guard 付き YAML 整形と正の最小字下げを使います。
+安全な実フロントマターだけ、保護条件付き YAML 整形と正の最小字下げを使います。
 packet の列には文法上の意味がないため、本文の `tabWidth: 0` は0桁です。
 [fixture: packet/hidden-yaml/yaml-all-range-gaps]
 [fixture: packet/hidden-yaml/yaml-suffix-space]
@@ -5762,17 +5805,17 @@ packet の列には文法上の意味がないため、本文の `tabWidth: 0` �
 [fixture: packet/indentation/indent-zero]
 
 共通の行値は外端を詰めますが、次の物理行から値を取りません。
-共有の accessibility と説明配置は、空の形と trivia を保ちます。
+共有のアクセシビリティと説明配置は、空の形と注釈類を保ちます。
 普通の説明本文の行頭は[説明ブロックの字下げ](#説明ブロックの字下げ)に従い、
-ほかの literal と hidden form の継続列は保ちます。
-global directive は opaque な内容と接触を保ちます。
+ほかの値と隠れた形の継続列は保ちます。
+大域的なディレクティブは中身を解析しない内容と接触を保ちます。
 init の削除は行設定を変え得ます。
-全セミコロンを残し、共有の segment 保護で交差する値・trivia と、
+全セミコロンを残し、共有の区間保護で交差する値・注釈類と、
 見出し・本文の組を保ちます。
-選択セミコロンの削除や trigger の移動は Db を変え得るためです。
+選択セミコロンの削除や条件になる語の移動は Db を変え得るためです。
 物理 EOL、BOM、末尾改行と Markdown 処理は共有です。
-Markdown は payload 最終行の padding を trim します。
-内部の hidden padding は引き続き必要です。 [fixture: packet/title/title-no-next]
+Markdown は本文の最終行の余白を除きます。
+内部の隠れた形の余白は引き続き必要です。 [fixture: packet/title/title-no-next]
 [fixture: packet/accessibility-lines/a11y-empty-next]
 [fixture: packet/description-blocks/description-columns]
 [fixture: packet/global-directives/global-standalone]
@@ -5782,14 +5825,16 @@ Markdown は payload 最終行の padding を trim します。
 [test: packet Markdown: final-hidden-padding]
 
 6つの[指定読み](./packet.ja.md#specified-readings)が、
-keyword・整数の atomic cut、本文だけの frontmatter HTML、
-opaque な埋め込みデータ、C4 検出と通過した bare percent trivia を扱います。
-受理を変える本文の `packet.bitsPerRow` は指定の比較経路に従い、site 設定、
+キーワードや整数の単位の途中での分断、本文だけのフロントマター HTML、
+中身を検証しない埋め込みデータ、
+C4 検出と通過した bare percent trivia を扱います。
+受理を変える本文の `packet.bitsPerRow` は指定の比較経路に従い、サイトの設定、
 title と他の設定を残します。
-raw 拒否には raw Db や、受理されたとみなす埋め込み効果はありません。
-hidden form、空 label と空説明には新たな差異は不要です。
-parser の失敗は standalone では出力せず構文エラーを報告し、
-Markdown では埋め込みを辞退して payload を修復しません。
+素の mermaid.js による拒否には mermaid.js の素の Db や、
+受理されたとみなす埋め込み効果はありません。
+隠れた形、空 label と空説明には新たな差異は不要です。
+パーサーの失敗は単独ファイルでは出力せず構文エラーを報告し、
+Markdown では埋め込みを辞退して本文を修復しません。
 [corpus fixture: packet/directive-header-middle]
 [corpus fixture: packet/div-selected-title-interior]
 [corpus fixture: packet/config-frontmatter-fraction]
@@ -5799,18 +5844,17 @@ Markdown では埋め込みを辞退して payload を修復しません。
 ## architecture の値と hidden 境界
 
 [architecture の規則](./architecture.ja.md)は、
-角括弧ラベルの全 source 範囲を保ちます。
-bare・quoted の kind、引用符の綴り、quoted の空値、escape、HTML、
-entity も含みます。
+角括弧ラベルの全原文範囲を保ちます。
+引用符なしと引用符付きの種別、引用符の綴り、引用符付きの空値、エスケープ、HTML、
+実体参照も含みます。
 ただし、タイトルや矢印のラベルの括弧に接する空白、タブ、
-no-break space は除きます。
-[Label content](./architecture.ja.md#label-content) を参照してください。
-内側の空白や escape の変換は Db を変え得ます。
-文字 icon は StringLiteral の source 全体、名前付き icon は名前を保ちます。
-trim、decode、置き換えは mermaid.js の読みを変え得るためです。
-`singleQuote` は icon とラベルを書き換えません。
-矢印の marker は有無の flag から組み立てず、
-逆向きの `>--<` も実際の文字を保ちます。
+改行しない空白は除きます。
+[ラベルの内容](./architecture.ja.md#label-content) を参照してください。
+内側の空白やエスケープの変換は Db を変え得ます。
+文字アイコンは `StringLiteral` の原文全体、名前付きアイコンは名前を保ちます。
+両端の空白の除去、復号、置き換えは mermaid.js の読みを変え得るためです。
+`singleQuote` はアイコンとラベルを書き換えません。
+矢印の印は有無の真偽値から組み立てず、逆向きの `>--<` も実際の文字を保ちます。
 [fixture: architecture/label-forms/padded-quotes]
 [fixture: architecture/label-content/bare-padding]
 [fixture: architecture/label-content/html-entities]
@@ -5819,18 +5863,18 @@ trim、decode、置き換えは mermaid.js の読みを変え得るためです�
 [fixture: architecture/named-icons/unknown-name]
 [fixture: architecture/arrow-lines/arrow-reversed-markers]
 
-native hidden YAML・DIRECTIVE の source 全体を AST の owner に保ち、
-範囲外で消費される LF と閉じの padding も保持します。
+図固有の隠れた YAML・`DIRECTIVE` の原文全体を AST の所有ノードに保ち、
+範囲外で消費される LF と閉じの余白も保持します。
 これらの境界が受理を決め得ます。
-見出し自身の hidden form の直後だけ予備の LF は不要で、
+見出し自身の隠れた形の直後だけ予備の LF は不要で、
 見出し行の文は文としての境界を必要とします。
-無視された YAML が有効な frontmatter に変わらないよう、
-保持する prefix 全体を保ちます。
-安全な実際の frontmatter だけを guarded YAML formatter に渡し、
+無視された YAML が有効なフロントマターに変わらないよう、
+保持する前置部分全体を保ちます。
+安全な実際のフロントマターだけを保護条件付きの YAML 整形処理に渡し、
 共有の正の最小字下げ幅を使います。
 作者のセミコロンはすべて共有の区間保護で保ちます。
 選択された1個の削除が別の選択を生み、ラベルを変え得るためです。
-source 順、繰り返す制約、空の共通代入も保ちます。
+原文順、繰り返す制約、空の共通代入も保ちます。
 [fixture: architecture/hidden-forms/yaml-named-icon-title-and-parent-gaps]
 [fixture: architecture/hidden-boundaries/header-and-statement]
 [fixture: architecture/hidden-boundaries/suffix-space]
@@ -5840,15 +5884,16 @@ source 順、繰り返す制約、空の共通代入も保ちます。
 [fixture: architecture/source-order/authored-order]
 
 既存の5個の[仕様の読み](./architecture.ja.md#specified-readings)を使います。
-directive・選択されたセミコロンによる不可分 token の切断、frontmatter の HTML、
-不透明な embedded data、通過した bare-percent trivia が対象です。
+ディレクティブ・選択されたセミコロンによる単位の途中での切断、
+フロントマターの HTML、不透明な埋め込みデータ、
+通過した bare-percent trivia が対象です。
 architecture に受理を決める設定キーはなく、C4 より前に検出するため、
 C4 検出の例外は追加しません。
 生の拒否から生の Db や架空の効果を作りません。
-parser の失敗は単独では修復出力のない構文エラーとなり、
+パーサーの失敗は単独では修復出力のない構文エラーとなり、
 Markdown は埋め込みを辞退します。
-Markdown host は payload 最終行の padding を除きますが、
-内部の hidden padding は必要です。
+Markdown の埋め込み先は本文の最終行の余白を除きますが、
+内部の隠れた形の余白は必要です。
 [corpus fixture: architecture/div-directive-name]
 [corpus fixture: architecture/div-semicolon-parent-id]
 [corpus fixture: architecture/div-frontmatter-open-tag-icon]
@@ -5861,23 +5906,23 @@ Markdown host は payload 最終行の padding を除きますが、
 
 ## radar の原文の群と hidden 境界
 
-[radar の規則](./radar.ja.md)は axis・curve・options の群、entry 形式、
-名前つき entry のコロンの有無、反復と原文順をすべて保ちます。
-公開値が使わない余分な名前や重複 entry も残します。
+[radar の規則](./radar.ja.md)は axis・curve・options の群、項目形式、
+名前つき項目のコロンの有無、反復と原文順をすべて保ちます。
+公開値が使わない余分な名前や重複項目も残します。
 数だけの curve と名前つき curve は区別します。
 見出しのコロンの有無は保ち、前の普通の空白は gitgraph と同じく詰めます。
-単純な十進表記の NumericLiteral の source span は最短の形で印字し、
-その他は整数部の先頭のゼロ、丸められる精度、subnormal、underflow、
-overflow を保ちます。
-double 値から再出力しません。
-option の値は作者のままです。
+単純な十進表記の `NumericLiteral` の原文の範囲は最短の形で印字し、
+その他は整数部の先頭のゼロ、丸められる精度、非正規化数、アンダーフロー、
+桁あふれを保ちます。
+倍精度浮動小数点の値から再出力しません。
+オプションの値は作者のままです。
 ticks の制限、min・max の並べ替え、描画設定からの置換はしません。
-ラベルの StringLiteral は空・空白だけの文字列、escape、HTML、entity を保ち、
-ラベルの中の空白とタブの連なりは空白 1 つで印字します。
+ラベルの `StringLiteral` は空・空白だけの文字列、エスケープ、HTML、
+実体参照を保ち、ラベルの中の空白とタブの連なりは空白 1 つで印字します。
 `'` で囲むラベルは、
 [同じに描かれる綴り](#同じに描かれる綴り)に従って `"` で囲んで印字し、
 `singleQuote` は読みません。
-空ラベルの削除は ID への fallback を変えます。
+空ラベルの削除は ID を代わりに使う処理を変えます。
 [fixture: radar/source-order/declaration-order-kept]
 [fixture: radar/source-order/mixed-curve-forms]
 [fixture: radar/header/join-separated-inline-alternative]
@@ -5891,21 +5936,21 @@ ticks の制限、min・max の並べ替え、描画設定からの置換はし�
 [fixture: radar/quotes/escape-label] [fixture: radar/quotes/label-html-entity]
 [fixture: radar/quotes/whitespace-only-labels]
 
-共通行の trim は普通の値の外端だけに適用します。
-trivia と semicolon の保護を優先します。
+共通行の両端の空白の除去は普通の値の外端だけに適用します。
+注釈類とセミコロンの保護を優先します。
 説明は共有のブロック配置を使います。
 空白だけの内部は詰め、
 普通の本文の字下げは
 [説明ブロックの字下げ](#説明ブロックの字下げ)に従ってそろえます。
-native hidden form は AST の owner で 1 回だけ印字します。
-範囲外の消費 LF と closer 後の空白も残します。
-群の最後の member が持つ suffix も、ほかの文と同じ境界規則に渡します。
-見出し端の例外は見出し自身の hidden form だけに適用します。
-保持された prefix は全体で残し、無視された YAML の frontmatter 昇格を防ぎます。
-安全な real frontmatter だけ保護つき YAML 整形を使います。
-すべての semicolon は共有の文字区間の保護下に残します。
+図固有の隠れた形は AST の所有ノードで 1 回だけ印字します。
+範囲外の消費 LF と閉じ記号後の空白も残します。
+群の最後の構成要素が持つ後置部分も、ほかの文と同じ境界規則に渡します。
+見出し端の例外は見出し自身の隠れた形だけに適用します。
+保持された前置部分は全体で残し、無視された YAML のフロントマター昇格を防ぎます。
+安全な実際のフロントマターだけ保護つき YAML 整形を使います。
+すべてのセミコロンは共有の文字区間の保護下に残します。
 保護区間内に字下げを足さず、継続列を保ちます。
-複数行の文の終端行の semicolon も同じです。
+複数行の文の終端行のセミコロンも同じです。
 style に似たラベルと結合すると、別の文の値が変わりうるためです。
 [fixture: radar/title/title-edge-trim]
 [fixture: radar/description-blocks/block-empty-fixed]
@@ -5919,26 +5964,27 @@ style に似たラベルと結合すると、別の文の値が変わりうる�
 [fixture: radar/semicolons/semicolon-selected-kept]
 [fixture: radar/multi-line-statements/semicolon-terminal-line]
 
-コメントや directive を含むリストは、ほかの entry の改行も保ちます。
+コメントやディレクティブを含むリストは、ほかの項目の改行も保ちます。
 ブロックを書かれたまま残し、独立した閉じ波括弧を文の段にそろえるためです。
-コメントのないリストでは、普通の entry の改行は従来どおり結合します。
+コメントのないリストでは、普通の項目の改行は従来どおり結合します。
 [fixture: radar/multi-line-statements/entry-comment-after-comma]
 [fixture: radar/multi-line-statements/entry-global-lines]
 
 radar は既存の 6 差異の読みを使います。
-原子的な directive・除去対象 semicolon の切断は拒否します。
-frontmatter の HTML は本文から読み、埋め込みデータは不透明なままです。
-検出で通過した bare percent の trivia を保ちます。
-C4 keyword で、選択された radar 図を置き換えません。
-opaque 比較から除く radar 固有の受理設定 key はありません。
-raw の拒否には raw Db がなく、受理された効果を作りません。
-空ラベル、空説明、全体の hidden form はノードであり、新しい差異ではありません。
-standalone の失敗は構文エラーにし、修復した出力を返しません。
+ディレクティブや除去対象のセミコロンが単位の途中を切る形は拒否します。
+フロントマターの HTML は本文から読み、埋め込みデータは不透明なままです。
+検出で通過した bare percent の注釈類を保ちます。
+C4 キーワードで、選択された radar 図を置き換えません。
+埋め込みを検証しない場合の比較から除く radar 固有の受理設定キーはありません。
+素の mermaid.js による拒否には mermaid.js の素の Db がなく、
+受理された効果を作りません。
+空ラベル、空説明、全体の隠れた形はノードであり、新しい差異ではありません。
+単独ファイルの失敗は構文エラーにし、修復した出力を返しません。
 Markdown は埋め込みを辞退します。
-物理 CR・CRLF と先頭 BOM は共有 host の制限に従います。
-LS・PS は lexer が値として読む場所では値の文字のままです。
-Markdown host は最終行の空白を削ります。
-途中の共通文 suffix で必要な空白は残します。
+物理 CR・CRLF と先頭 BOM は共有埋め込み先の制限に従います。
+LS・PS は字句解析器が値として読む場所では値の文字のままです。
+Markdown の埋め込み先は最終行の空白を削ります。
+途中の共通文後置部分で必要な空白は残します。
 [corpus fixture: radar/directive-header-middle]
 [corpus fixture: radar/div-semicolon-id]
 [corpus fixture: radar/div-html-frontmatter-cross]
@@ -5955,37 +6001,37 @@ Markdown host は最終行の空白を削ります。
 
 ## treemap の親子と作者の値
 
-[treemap の規則](./treemap.ja.md)は、AST の children にある森の順序を保ちます。
-木は、space と tab を各 1 文字と数える、
-行の割り当て済みの indent を反映しています。
-leaf は section を閉じますが親にはならず、class と common の文は参加しません。
+[treemap の規則](./treemap.ja.md)は、
+AST の `children` にある森の順序を保ちます。
+木は、空白とタブを各 1 文字と数える、行の割り当て済みの字下げを反映しています。
+leaf は section を閉じますが親にはならず、class の文と共通の文は参加しません。
 普通の根は設定の正の 1 段に置きます。
-字下げが親子を決めるので、tabWidth 0 でも 1 段 1 文字以上です。
+字下げが親子を決めるので、`tabWidth` 0 でも 1 段 1 文字以上です。
 class 名と行が接する場合は接触を保ち、図全体の根の基準を 0 にします。
 行末や空白行の字下げは、次の行へ一度だけ移します。
-独立したコメント行は [Comments](./treemap.ja.md#comments) に従い、
+独立したコメント行は [コメント](./treemap.ja.md#comments) に従い、
 次の文の桁にそろえ、末尾では最後の文の桁にそろえます。
 [fixture: treemap/comments/aligned-depths]
 [fixture: treemap/comments/aligned-final]
-文の間では、裸の `%%`、directive ではない `%%{` の行、
-独立した directive を第 1 列に置きます。
+文の間では、裸の `%%`、ディレクティブではない `%%{` の行、
+独立したディレクティブを第 1 列に置きます。
 字下げすると mermaid.js が拒否するためです。
 [fixture: treemap/comments/native-bare]
 [fixture: treemap/comments/native-nonword]
 [fixture: treemap/comments/unclosed-directive]
 [fixture: treemap/comments/mixed-directives]
-class のスタイル区切りの独立した trivia とスタイルの継続行は、
+class のスタイル区切りの独立した注釈類とスタイルの継続行は、
 `classDef` より1段内側にそろえます。
-スタイル本文と、複数行にわたる文の semicolon が保護する区間は変えません。
+スタイル本文と、複数行にわたる文のセミコロンが保護する区間は変えません。
 [fixture: treemap/style-gaps/css-comment]
 [fixture: treemap/style-gaps/css-directive-tabs]
 [fixture: treemap/style-gaps/css-comment-semicolon-kept]
-semicolon が保護する行の境界は、本文の原文を保ちます。
+セミコロンが保護する行の境界は、本文の原文を保ちます。
 
 字下げして書かれていない `title`、`accTitle`、
 `accDescr` の文（1 行のものもブロックも）は、行頭に置いて印字します。
-対象にする版の一部には treemap がなく、
-この図種を初めて持つ版は、字下げされたこれらの文を拒否して、
+対象にする版の一部には treemap がなく、この図種を初めて持つ版は、
+字下げされたこれらの文を拒否して、
 行頭のものとヘッダーと同じ行に続くもの（`treemaptitle T`。
 `treemap title T` は拒否）を読み、ほかの版はこれらをすべて読みます。
 残す版は
@@ -6024,19 +6070,18 @@ treemap を持つ 8 つの版で同じに描かれました。
 [fixture: treemap/comments/carried-space] [fixture: treemap/directives/leading]
 [fixture: treemap/semicolons/body-kept]
 
-数は comma、underscore、dot、精度を含む source の綴りを保ちます。
+数はコンマ、アンダースコア、ドット、精度を含む原文の綴りを保ちます。
 ただし、単純な十進表記は最短の形で印字します。
 [同じに描かれる綴り](#同じに描かれる綴り)を参照してください。
 数値から印字し直すと、読みが変わったり拒否される構文になったりします。
-名前は空名、backslash、entity、HTML、物理継続列を保ち、
+名前は空名、バックスラッシュ、実体参照、HTML、物理継続列を保ち、
 名前の中の空白とタブの連なりは空白 1 つで印字します。
 `'` で囲む名前は、同じ節に従って `"` で囲んで印字します。
-class style は内部と末尾の padding を含め、作者の literal 全体として保ちます。
+class style は内部と末尾の余白を含め、作者の値全体として保ちます。
 CSS としては整形しません。
 class の再定義、空代入、未解決の selector、元順を保ちます。
-common 値と説明ブロックは共有の外側の配置を使い、
-内側の文字と trivia を保ちます。
-全 semicolon を保ち、複数行にわたる文の保護区間の内部に字下げを足さず、
+共通の値と説明ブロックは共有の外側の配置を使い、内側の文字と注釈類を保ちます。
+全セミコロンを保ち、複数行にわたる文の保護区間の内部に字下げを足さず、
 列を保ちます。
 
 [fixture: treemap/numbers/underscore] [fixture: treemap/numbers/precision]
@@ -6048,17 +6093,17 @@ common 値と説明ブロックは共有の外側の配置を使い、
 [fixture: treemap/semicolons/protected-class-column]
 
 既存の 6 つの[指定読み](./treemap.ja.md#specified-readings)に従います。
-atomic な directive と選ばれた semicolon の切断は拒否します。
-frontmatter の HTML 引用符の影響を分離し、埋め込みを opaque とします。
-検出で通過した bare percent の trivia は再読せず、後の C4 語で図種を変えません。
-treemap に native hidden YAML や directive の node はありません。
-opaque 比較で除く受理設定もありません。
+ディレクティブや選ばれたセミコロンによる単位の途中での切断は拒否します。
+フロントマターの HTML 引用符の影響を分離し、埋め込みの中身を検証しません。
+検出で通過した bare percent の注釈類は再読せず、後の C4 語で図種を変えません。
+treemap に図固有の隠れた YAML やディレクティブのノードはありません。
+埋め込みを検証しない場合の比較で除く受理設定もありません。
 拒否入力の修復出力は作りません。
-raw で拒否された入力には raw Db がなく、
-corpus が記録する受理された指定読みを比較に使います。
-共有の host は CR と CRLF を正規化し、
-実際の frontmatter YAML に guard を使います。
-最後の Markdown コード行の padding は、style の末尾も含めて除かれえます。
+素の mermaid.js が拒否した入力には mermaid.js の素の Db がなく、
+コーパスが記録する受理された指定読みを比較に使います。
+共有の埋め込み先は CR と CRLF を正規化し、
+実際のフロントマター YAML に保護条件を使います。
+最後の Markdown コード行の余白は、style の末尾も含めて除かれえます。
 
 [corpus fixture: treemap/directive-header-middle]
 [corpus fixture: treemap/div-semicolon-number-atom]
@@ -6074,12 +6119,12 @@ corpus が記録する受理された指定読みを比較に使います。
 ## Treeview modes and authored values
 
 [treeview の規則](./treeview.ja.md)は字下げモードの入力をそのモードに保ちます。
-罫線の図は、file の親も含めて AST の children から森を読み、
+罫線の図は、file の親も含めて AST の `children` から森を読み、
 普通の枝と案内線を固定の 4 列の部品で描き直します。
 次の兄弟があれば `├── `、最後なら `└── `、続く祖先の段は `│   ` です。
 枝付きや混在の根は全部に枝を付け、
 それ以外は根と第 1 世代の枝を第 1 列に置きます。
-誤った見た目の列、兄弟の印、太さと dash の数を、読む木の形に置き換えます。
+誤った見た目の列、兄弟の印、太さとダッシュの数を、読む木の形に置き換えます。
 同じ物理行のノードも原順で行を分け、その木から枝を描きます。
 
 [fixture: treeview/statements-one-per-line/review159-box-quoted-line-rule-semicolon]
@@ -6157,17 +6202,17 @@ corpus が記録する受理された指定読みを比較に使います。
 [corpus fixture: treeview/box-physical-empty-description]
 
 外側の装飾は続く案内線か空行にし、モードの選択に必要な装飾は残します。
-`accDescr` の opener の gap にある唯一の選び手は gap だけを保ち、
+`accDescr` の開始記号の隙間にある唯一の選び手は隙間だけを保ち、
 それ以外の構造は説明ブロックの規則で整え、罫線モードの本文は元の列を保ちます。
-共通文と native comment の prefix を外し、
+共通文と図固有のコメントの前置部分を外し、
 コメントが運んだ枝はノードへ 1 回描きます。
 枝付き注釈は、前に description が無く、
-間に共有の trivia や選ばれる semicolon が無い場合だけ、原順で同じ行へ寄せます。
+間に共有の注釈類や選ばれるセミコロンが無い場合だけ、原順で同じ行へ寄せます。
 字下げモードの注釈の行は分けたままです。
-comment region や除かれた directive の後の物理行から始まる注釈は、
-前置の spaces を所有ノードの名前の列に揃え、最低 1 space を残します。
+コメント領域や除かれたディレクティブの後の物理行から始まる注釈は、
+前置の空白を所有ノードの名前の列に揃え、最低空白 1 個を残します。
 LF がつながっても注釈の印を前の名前と分けて読むためです。
-名前、値、注釈の各出現、prefix の任意文字と共有の trivia は原文として保ちます。
+名前、値、注釈の各出現、前置部分の任意文字と共有の注釈類は原文として保ちます。
 
 [fixture: treeview/decorations/review159-sole-opener-selector-line-rule-semicolon]
 
@@ -6286,13 +6331,13 @@ treeview/decorations/box-redraw-annotation-blank-after-inline-directive]
 
 [test: treeview/decorations/box-redraw-annotation-blank-ps]
 
-prefix と装飾の trivia、prefix の任意文字、固定された行の境界、
+前置部分と装飾の注釈類、前置部分の任意文字、固定された行の境界、
 危険な注釈の移動、モードの喪失や値の読みの変化があれば本文を保ちます。
 行分けで名前の先頭の Unicode 空白が新しい枝なしの行に露出する場合も同じです。
-値内の prefix と装飾は綴りを保ち、予定した最初の正の branch 列の幅でも、
-その indent の読みが変わらないことを確認します。
-枝の追加や除去で値の tab や末尾の読みも変えません。
-共有の semicolon の保護とこれらの条件は重ねて適用します。
+値内の前置部分と装飾は綴りを保ち、予定した最初の正の枝列の幅でも、
+その字下げの読みが変わらないことを確認します。
+枝の追加や除去で値のタブや末尾の読みも変えません。
+共有のセミコロンの保護とこれらの条件は重ねて適用します。
 本文を保った図には見た目の不一致が残りえます。
 見た目を強制するために作者の文字を捨てることはしません。
 
@@ -6319,8 +6364,8 @@ treeview/branch-prefixes/box-redraw-prefix-trivia-and-value-protection]
 [fixture: treeview/tabs/box-redraw-joined-description-directive-tab]
 
 既存の六つの[仕様上の読み](./treeview.ja.md#specified-readings)、
-frontmatter の guard、
-共有の CR・CRLF の処理と Markdown の最終行の trim は維持します。
+フロントマターの保護条件、
+共有の CR・CRLF の処理と Markdown の最終行の末尾空白の除去は維持します。
 拒否される単独入力は構文エラーのままとし、修復しません。
 
 [corpus fixture: treeview/directive-header-inside]
@@ -6335,9 +6380,9 @@ frontmatter の guard、
 ## railroad の方言と書かれた値
 
 [railroad の規則](./railroad.ja.md)は、選ばれた IR、EBNF、ABNF、PEG の見出し、
-代入記号、EBNF の任意 comma、式の構造を保ちます。
-正規化した Db が同じでも singleton の call と group は残します。
-規則、選択肢、metadata の繰返しと空の reset を出現順に保ちます。
+代入記号、EBNF の任意コンマ、式の構造を保ちます。
+正規化した Db が同じでも要素が 1 つの call と group は残します。
+規則、選択肢、メタデータの繰返しと空のリセットを出現順に保ちます。
 比較 Db は本文の title を除きますが、その内容を削除する許可にはなりません。
 [fixture: railroad/assignment/ebnf-spellings]
 [fixture: railroad/ebnf-sequences/mixed] [fixture: railroad/calls/ir-singletons]
@@ -6349,19 +6394,18 @@ railroad/source-order/peg-duplicates] [fixture: railroad/title/ir-trim]
 
 通常の IR 複合呼出しは、文法の階層を示すため、常に引数を入れ子の行にします。
 `printWidth` や元の空白による改行には依存しません。
-値は分割せず、末尾 comma は加えません。
+値は分割せず、末尾コンマは加えません。
 通常の `terminal`、`nonterminal`、`special` は引用値とコンパクトにまとめます。
-呼出しの境界にコメント、global directive、native hidden form があれば、
+呼出しの境界にコメント、大域的なディレクティブ、図固有の隠れた形があれば、
 その leaf 呼出しも複数行にします。
-呼出しの隙間では外側の空白を統一し、trivia の内容、内部の接触、
+呼出しの隙間では外側の空白を統一し、注釈類の内容、内部の接触、
 元の改行を保ちます。
-native hidden form は内部の global directive も含めて全体を opaque
-な項目として保ち、周囲の文法を構造に沿って字下げします。
-constructor の後ろに改行があれば、両方の括弧を継続行として字下げし、
+図固有の隠れた形は、内部の大域的なディレクティブも含め、
+中身を解析しない 1 つの項目として保ち、周囲の文法を構造に沿って字下げします。
+構築子の後ろに改行があれば、両方の括弧を継続行として字下げし、
 引数をさらに1段深く置きます。
-値の中の semicolon は、この配置を妨げません。
-`style` や `classDef` を含む行と無視される semicolon は、
-保護した配置を使います。
+値の中のセミコロンは、この配置を妨げません。
+`style` や `classDef` を含む行と無視されるセミコロンは、保護した配置を使います。
 EBNF、ABNF、PEG は平坦な配置を保ちます。
 [fixture: railroad/comments/ir-leaf-value-comments]
 [fixture: railroad/comments/ir-leaf-boundary-comments]
@@ -6382,19 +6426,21 @@ EBNF、ABNF、PEG は平坦な配置を保ちます。
 [fixture: railroad/long-lines/abnf-width]
 [fixture: railroad/long-lines/peg-width]
 
-文字列は source span 全体を保ちます。
-空値、空白だけの値、escape、HTML、entity、継続列も対象です。
+文字列は原文の範囲全体を保ちます。
+空値、空白だけの値、エスケープ、HTML、実体参照、継続列も対象です。
 `'` で囲む IR、EBNF、PEG の文字列は、
 [同じに描かれる綴り](#同じに描かれる綴り)に従って `"` で囲んで印字し、
 `singleQuote` は読みません。
-ABNF は backslash を普通の文字として読み、他の3方言は escape として読みます。
-ABNF の repeat は先頭ゼロ、上下限の省略、exact 形、巨大な整数を保ちます。
-numeric value は base letter の大小、数字、dot、
-hyphen を raw text として保ちます。
-EBNF の special sequence は外端の空白も含め、span 全体を保ち、
+ABNF はバックスラッシュを普通の文字として読み、
+他の3方言はエスケープとして読みます。
+ABNF の repeat は先頭ゼロ、上下限の省略、ちょうどの回数を指定する形、
+巨大な整数を保ちます。
+数値は基数を示す英字の大小、数字、ドット、
+ハイフンを原文のテキストとして保ちます。
+EBNF の特殊シーケンスは外端の空白も含め、範囲全体を保ち、
 内部の空白とタブの連なりは空白 1 つで印字します。
-これらの表記の変換や値の reflow で Db が変わることがあります。
-PEG predicate は公開 label から再構築せず、書かれた operand 全体を残します。
+これらの表記の変換や値の折り返し直しで Db が変わることがあります。
+PEG の先読み記号は公開 label から再構築せず、書かれた適用先全体を残します。
 [fixture: railroad/quotes/ir-escape] [fixture:
 railroad/quotes/ebnf-escape] [fixture: railroad/quotes/abnf-backslash] [fixture:
 railroad/quotes/peg-escape] [fixture: railroad/quotes/ir-empty-and-text]
@@ -6409,25 +6455,27 @@ railroad/special-sequences/ebnf-content] [fixture:
 railroad/multiline-values/peg-columns] [fixture: railroad/predicates/peg-nested]
 
 コメントの形と内容も書かれたままにします。
-全方言の `%%`、IR の C comment、EBNF の C と ISO comment、
-ABNF の semicolon 行コメント、PEG の hash 行コメントが対象です。
-LS と PS は native line comment の内容として保ちます。
+全方言の `%%`、IR の C コメント、EBNF の C と ISO コメント、
+ABNF のセミコロン行コメント、PEG の `#` の行コメントが対象です。
+LS と PS は図固有の行コメントの内容として保ちます。
 裸の ABNF `;` は句読点であり、終端の直後は LF または EOF にします。
 規則の必須の可視 `;` は安全な場所で定義に付けます。
-通常の IR 規則は、値の中の semicolon によって配置を固定しません。
-その他の semicolon は共有の区間保護に従い、交差する値も保ちます。
+通常の IR 規則は、値の中のセミコロンによって配置を固定しません。
+その他のセミコロンは共有の区間保護に従い、交差する値も保ちます。
 保護した区間の最初の行は他の平坦な図種と同じく本文の1段に揃え、
 2行目以降は書かれた列を保ちます。
-global directive を除いた後に文字列 style または classDef を含む原文の行は、
-すべての文、コメント、native hidden form、内部の空白を書かれたまま保ちます。
+大域的なディレクティブを除いた後に文字列 style または classDef
+を含む原文の行は、すべての文、コメント、図固有の隠れた形、
+内部の空白を書かれたまま保ちます。
 前後の行とは結合しません。
-directive の除去で語が複数の行をまたいでできる場合は、その行をすべて保ちます。
+ディレクティブの除去で語が複数の行をまたいでできる場合は、
+その行をすべて保ちます。
 [fixture: railroad/semicolons/ir-word-unclosed-directive-lines]
 [fixture: railroad/semicolons/ebnf-word-unclosed-directive-lines]
 [fixture: railroad/semicolons/abnf-word-unclosed-directive-lines]
 [fixture: railroad/semicolons/peg-word-unclosed-directive-lines]
 ここでいう行は、mermaid.js が1行として読む範囲全体です。
-U+2028 や U+2029 の後の comment line が語を含む行の前、後、両方をつなぐ場合は、
+U+2028 や U+2029 の後のコメント行が語を含む行の前、後、両方をつなぐ場合は、
 つながる原文の行をすべて保ちます。
 最初の行の字下げは本文の1段に揃え、中身と2行目以降の列は書かれたままです。
 [test: railroad/semicolons/ir-style-comment-before-ls]
@@ -6454,15 +6502,15 @@ U+2028 や U+2029 の後の comment line が語を含む行の前、後、両方
 [test: railroad/semicolons/peg-classdef-comment-before-ps]
 [test: railroad/semicolons/peg-classdef-comment-after-ps]
 [test: railroad/semicolons/peg-classdef-comment-both-ps]
-共有の kept-line 配置に従い、交差する文や不可分な値・trivia も全体を保ちます。
-mermaid.js は、そのような行の最後の semicolon を無視し得ます。
+共有の行の保持規則に従い、交差する文や不可分な値・注釈類も全体を保ちます。
+mermaid.js は、そのような行の最後のセミコロンを無視し得ます。
 railroad では規則の必須終端や ABNF のコメントの印がその対象になり得るため、
 行を変えると規則が拒否されたり、コメントがコードとして読まれたりします。
 原文を保つことで、移した後の行規則を予測せずに両方を守ります。
 払うものは、名前、文字列、コメントにこれらの文字列を含む行が、
-colon や hash がなくても整形されないことです。
+コロンや `#` がなくても整形されないことです。
 その他の行は通常どおり整形します。
-除かれる directive の中にしかない語は、行を保つ対象にしません。
+除かれるディレクティブの中にしかない語は、行を保つ対象にしません。
 [fixture: railroad/comments/ir-positions]
 [fixture: railroad/comments/ebnf-positions]
 [fixture: railroad/comments/abnf-positions] [fixture:
@@ -6507,14 +6555,14 @@ railroad/semicolons/peg-value-last-line]
 [fixture: railroad/semicolons/peg-word-middle-line]
 
 common line と説明ブロックは共有の配置に従います。
-hidden YAML と native directive は AST の owner ごとに RailroadIgnoredText の
-span 全体を保ち、range 外の消費 LF と closing padding も残します。
-見出し自身の form だけに header-edge の例外を使います。
-本文の form は、見出しの行から文を移した後も共有の予備 LF 規則に従います。
-保持 prefix 全体を保ち、無効だった YAML が frontmatter になるのを防ぎます。
-安全な実際の frontmatter だけを guard 付き YAML 整形に通します。
-物理 CR と CRLF、先頭 BOM、Markdown 本文末尾の padding は、
-共有 host の制限に従います。 [fixture: railroad/description-blocks/ir-edges]
+隠れた YAML と図固有のディレクティブは AST の所有ノードごとに
+`RailroadIgnoredText` の範囲全体を保ち、範囲外の消費 LF と閉じの余白も残します。
+見出し自身の形だけにヘッダーの端の例外を使います。
+本文の形は、見出しの行から文を移した後も共有の予備 LF 規則に従います。
+保持する前置部分全体を保ち、無効だった YAML がフロントマターになるのを防ぎます。
+安全な実際のフロントマターだけを保護条件付き YAML 整形に通します。
+物理 CR と CRLF、先頭 BOM、Markdown 本文末尾の余白は、
+共有埋め込み先の制限に従います。 [fixture: railroad/description-blocks/ir-edges]
 [fixture:
 railroad/hidden-forms/ir-owners] [fixture: railroad/hidden-forms/ebnf-owners]
 [fixture: railroad/hidden-forms/abnf-owners] [fixture:
@@ -6531,12 +6579,12 @@ railroad/line-terminators-and-unicode/ebnf-leading-bom]
 abnf-final-hidden-padding]
 
 既存の6つの[仕様による読み](./railroad.ja.md#仕様による読み)は、
-atom 内の directive と選択された semicolon の分割を拒否し、
-frontmatter の HTML quote の影響を分け、埋込みデータを opaque にし、
+単位内のディレクティブと選択されたセミコロンの分割を拒否し、
+フロントマターの HTML 引用符の影響を分け、埋込みデータの中身を検証せず、
 検出で通過した bare-percent trivia を保ち、後の C4 語でも railroad を保ちます。
-opaque 比較から除く railroad の受理設定 key はありません。
+埋め込みを検証しない場合の比較から除く railroad の受理設定キーはありません。
 空文字列は値として保ち、空 call は拒否し、新しい差異は加えません。
-raw の拒否に raw Db や架空の受理効果はありません。
+素の mermaid.js による拒否に mermaid.js の素の Db や架空の受理効果はありません。
 拒否される単体入力は修復出力なしで構文エラーを返し、
 Markdown は埋込み整形を辞退します。 [corpus fixture:
 railroad/ir-div-directive-header] [corpus fixture:
@@ -6551,10 +6599,10 @@ railroad/ir-error-empty-call] [test: railroad Markdown: ir-rejected]
 
 [Wardley の規則](./wardley.ja.md)は名前、文字列、数の原綴、原順、
 全出現を保ちます。
-bare 名がちょうど `title` のときは、後続部品との接し方を保ちます。
-空白を入れると component、link、evolve、
-evolution stage が metadata に変わることがあるためです。
-引用名と長い bare 名には普通の空白を置きます。
+引用符なしの名前がちょうど `title` のときは、後続部品との接し方を保ちます。
+空白を入れると component、リンク、evolve、
+進化段階がメタデータに変わることがあるためです。
+引用名と長い引用符なしの名前には普通の空白を置きます。
 [fixture: wardley/name-boundaries/component-title-contact]
 [fixture: wardley/name-boundaries/link-title-contact]
 [fixture: wardley/name-boundaries/title-evolve-hidden]
@@ -6576,19 +6624,20 @@ evolution stage が metadata に変わることがあるためです。
 component を宣言した `Alpha-->Beta` と `Alpha--> Beta` を、
 Wardley 図で対象にする 4 つの版で描くと、どの版でも SVG は同一でした。
 `Alpha- -> Beta` は後の 3 つの版で同じ SVG になり、最初の版は拒否します。
-`Alpha -->Beta` は後の 3 つの版では別の link（矢印 `-->`）なので、
+`Alpha -->Beta` は後の 3 つの版では別のリンク（矢印 `-->`）なので、
 矢印を保ち `Alpha --> Beta` と印字します。
 [fixture: wardley/links/link-long-glued]
 [fixture: wardley/links/link-name-dashes-glued]
 [fixture: wardley/links/link-name-dash-spaced]
 [fixture: wardley/links/link-long-spaced]
 
-flow の内部は空ラベル、backslash、継続行の列を含め、書かれたまま保ちます。
-link の文法上のラベル開始 `;` は前の部品に付け、後ろは物理行末まで保ちます。
-空白だけのラベルと末尾 padding も含み、裸の `;` は拒否されます。
-共有の textual-prefix 保護はその開始印を除外します。
-後続のセミコロンは区間と交差する値と trivia 全体を保護します。
-Db に影響するのが片方だけでも、両ラベルと port を残します。
+flow の内部は空ラベル、バックスラッシュ、継続行の列を含め、
+書かれたまま保ちます。
+リンクの文法上のラベル開始 `;` は前の部品に付け、後ろは物理行末まで保ちます。
+空白だけのラベルと末尾余白も含み、裸の `;` は拒否されます。
+共有のテキストの前置部分保護はその開始印を除外します。
+後続のセミコロンは区間と交差する値と注釈類全体を保護します。
+Db に影響するのが片方だけでも、両ラベルとポートを残します。
 [fixture: wardley/flows/flow-ports-and-label]
 [fixture: wardley/flows/flow-padding-escapes]
 [fixture: wardley/multiline-values/multiline-flow-columns]
@@ -6597,9 +6646,9 @@ Db に影響するのが片方だけでも、両ラベルと port を残しま�
 [fixture: wardley/semicolon-labels/label-two-semicolons]
 [corpus fixture: wardley/tail-link-empty-label]
 
-global directive を除いた後でセミコロンと literal の `style` か `classDef`
+大域的なディレクティブを除いた後でセミコロンと文字列 `style` か `classDef`
 の両方を含む原文行は、共有の行保護で文、コメント、
-hidden form を含めて丸ごと保ちます。
+隠れた形を含めて丸ごと保ちます。
 そのセミコロンが選ばれなくても同じです。
 セミコロンがない行では、
 名前に `mystyle` を含む component や pipeline も通常どおり整形します。
@@ -6607,11 +6656,11 @@ hidden form を含めて丸ごと保ちます。
 [fixture: wardley/semicolons/style-pipeline-header]
 [fixture: wardley/semicolons/style-pipeline-child]
 最初の行は本文の段に揃え、中身と後続行の列は保ち、前後の行と結びません。
-directive をまたぐ語と U+2028/U+2029 後の comment-region の結合も、
+ディレクティブをまたぐ語と U+2028/U+2029 後のコメント領域の結合も、
 mermaid が 1 行として読む範囲で数えます。
 行規則が文法上のラベル開始を無視して端点やラベルを変えることがあるため、
 原文行を丸ごと保ち、移動後の効き方を予測する必要をなくします。
-除去する global directive の内部だけにある語は、行を保護する理由にしません。
+除去する大域的なディレクティブの内部だけにある語は、行を保護する理由にしません。
 [fixture: wardley/semicolons/style-selected-delimiter]
 [fixture: wardley/semicolons/style-delimiter-hash-after]
 [fixture: wardley/semicolons/style-colon-space-nontrigger]
@@ -6623,15 +6672,14 @@ mermaid が 1 行として読む範囲で数えます。
 [test: wardley/semicolons/style-comment-both-connected]
 [fixture: wardley/semicolons/style-inside-global]
 
-hidden form は木の owner で source span を保ち、
-消費 LF と closing padding を共有規則で保護します。
+隠れた形は木の所有ノードで原文の範囲を保ち、
+消費 LF と閉じの余白を共有規則で保護します。
 pipeline の開き括弧と子文には、幅 0 でも可視 LF が必要です。
-hidden form の LF では代用できません。
-見出し自身の form だけに header-edge の例外を使います。
-保持 prefix 全体を残し、無視する YAML が実フロントマターになるのを防ぎます。
-安全な実 YAML だけを guarded 整形に通し、
-説明ブロックも共有の layout を使います。
-[fixture: wardley/pipeline/pipeline-zero]
+隠れた形の LF では代用できません。
+見出し自身の形だけにヘッダーの端の例外を使います。
+保持する前置部分全体を残し、無視する YAML が実フロントマターになるのを防ぎます。
+安全な実 YAML だけを保護条件付きの整形に通し、
+説明ブロックも共有の配置を使います。 [fixture: wardley/pipeline/pipeline-zero]
 [fixture: wardley/hidden-boundaries/hidden-pipeline-opening]
 [fixture: wardley/hidden-boundaries/hidden-pipeline-child]
 [fixture: wardley/hidden-boundaries/header-first-statement-hidden]
@@ -6640,16 +6688,16 @@ hidden form の LF では代用できません。
 [fixture: wardley/accessibility/description-empty]
 
 既存の 6 つの[仕様による読み](./wardley.ja.md#仕様による読み)を使います。
-atom 内の directive と選択したセミコロンの分割、フロントマターの HTML、
+単位内のディレクティブと選択したセミコロンの分割、フロントマターの HTML、
 不透明な埋め込みデータ、通過した bare-percent trivia、後の C4 語が対象です。
-Wardley は差異と opaque な受理設定キーを足しません。
-raw の拒否に raw Db はありません。
+Wardley は差異と埋め込みデータの受理設定キーを足しません。
+素の mermaid.js による拒否に mermaid.js の素の Db はありません。
 解析失敗は単独ファイルでは出力せず構文エラーにし、
 Markdown では埋め込みを断ります。
-CR/CRLF と先頭 BOM は共有の host 制限に従います。
-Markdown は最後の code 行を trim します。
-空白だけのラベルを落とすと裸の `;` が残り、受理された payload が拒否されます。
-単独ファイルではその padding を保ちます。
+CR/CRLF と先頭 BOM は共有の埋め込み先制限に従います。
+Markdown は最後のコード行の末尾空白を除きます。
+空白だけのラベルを落とすと裸の `;` が残り、受理された本文が拒否されます。
+単独ファイルではその余白を保ちます。
 [corpus fixture: wardley/directive-arrow-inside]
 [corpus fixture: wardley/lex-selected-decimal-inside]
 [corpus fixture: wardley/div-html-frontmatter-reject]
@@ -6662,8 +6710,8 @@ Markdown は最後の code 行を trim します。
 
 ## cynefin の書かれた領域と hidden の境界
 
-native の suffix が行を保つ場合も、
-semicolon で保護した prefix は一度だけ印字し、suffix の owner を保ちます。
+図固有の後置部分が行を保つ場合も、セミコロンで保護した前置部分は一度だけ印字し、
+後置部分の所有ノードを保ちます。
 
 [fixture: cynefin/hidden-boundaries/semicolon-hidden-header-directive]
 
@@ -6677,7 +6725,7 @@ semicolon で保護した prefix は一度だけ印字し、suffix の owner を
 項目の順と重複、自己遷移、空ラベル、共通文のリセットを残します。
 領域と項目の行は木を示すもので、列が親を選ぶわけではありません。
 有効な Db からの再構築は出現を失い、置換やリセットの読みを変え得ます。
-文字列は空の値や native form に見える文字も含め、escape、内部の列を保ちます。
+文字列は空の値や図固有の形に見える文字も含め、エスケープ、内部の列を保ちます。
 `'` で囲む文字列は、
 [同じに描かれる綴り](#同じに描かれる綴り)に従って `"` で囲んで印字します。
 [fixture: cynefin/empty-domains/empty-domain-last-reset]
@@ -6687,19 +6735,19 @@ semicolon で保護した prefix は一度だけ印字し、suffix の owner を
 [fixture: cynefin/strings/strings-quote-backslash]
 [fixture: cynefin/multiline-values/multiline-string-columns]
 
-native hidden form は各 AST owner に残します。
-prefix、本文、名前の suffix、項目の先頭・末尾、遷移の隙間、
-共通文の suffix です。
-source は一度だけ印字し、内部と closer の列、範囲外の消費 LF、
-必要な closing padding を保ちます。
+図固有の隠れた形は各 AST の所有ノードに残します。
+前置部分、本文、名前の後置部分、項目の先頭・末尾、遷移の隙間、
+共通文の後置部分です。
+原文は一度だけ印字し、内部と閉じ記号の列、範囲外の消費 LF、
+必要な閉じの余白を保ちます。
 遷移と共通文には可視 EOL が要り、領域と項目には不要です。
-見出しの端の例外は見出し自身の form だけに適用します。
-保つ行では項目の suffix form も含め、見出し、領域の開き、
+見出しの端の例外は見出し自身の形だけに適用します。
+保つ行では項目の後置部分の形も含め、見出し、領域の開き、
 項目に同じ判断を使います。
 子の移動によって親の保護を失わないためです。
-無視された YAML を有効な frontmatter にしないよう、
-skip された prefix 全体を保ちます。
-安全な real YAML と説明ブロックは共有 layout を使います。
+無視された YAML を有効なフロントマターにしないよう、
+読み飛ばした前置部分全体を保ちます。
+安全な実際の YAML と説明ブロックは共有配置を使います。
 [fixture: cynefin/hidden-forms/hidden-domain-name]
 [fixture: cynefin/hidden-forms/hidden-between-items]
 [fixture: cynefin/hidden-forms/hidden-body-after-last-item]
@@ -6713,19 +6761,19 @@ skip された prefix 全体を保ちます。
 [fixture: cynefin/frontmatter-yaml/frontmatter-safe-yaml]
 [fixture: cynefin/description-blocks/description-empty]
 
-書かれた semicolon はすべて残します。
-保持する `;` がある segment は、行の規則が無視する `;` が変わりうる場合を除き、
-ほかと同じように整形します（[Semicolons](./cynefin.ja.md#semicolons)を参照）。
-除去される directive と comment の結合を含め、
-segment は mermaid の読みで決まります。
-cynefin に文法上の semicolon はないため、
-semicolon のない style・classDef の語の行も整形し、
+書かれたセミコロンはすべて残します。
+保持する `;` がある区間は、行の規則が無視する `;` が変わりうる場合を除き、
+ほかと同じように整形します（[セミコロン](./cynefin.ja.md#semicolons)を参照）。
+除去されるディレクティブとコメントの結合を含め、
+区間は mermaid の読みで決まります。
+cynefin に文法上のセミコロンはないため、
+セミコロンのない style・classDef の語の行も整形し、
 語を含む行全体の保持は適用しません。
-同じ印字行の中の Root directive は、
+同じ印字行の中の `Root` ディレクティブは、
 [ディレクティブ](./flowchart.ja.md#ディレクティブ)のとおりに置きます。
-文や項目を行に分ける所では directive を次の単位に付け、右側を保ち、
+文や項目を行に分ける所ではディレクティブを次の単位に付け、右側を保ち、
 左側の接触は切れます。
-native comment は LS・PS を内容に残します。
+図固有のコメントは LS・PS を内容に残します。
 これらの境界は選択、値、受理を変え得るためです。
 [fixture: cynefin/semicolons/semi-selected-before-arrow]
 [fixture: cynefin/semicolons/semi-item-body-indentation]
@@ -6735,17 +6783,16 @@ native comment は LS・PS を内容に残します。
 [test: cynefin/comments/comment-ls-native-content]
 [test: cynefin/comments/comment-unicode-join]
 
-既存の[六つの指定読み](./cynefin.ja.md#specified-readings)は、atom 内の cut、
-frontmatter の HTML、opaque embedded data、passed bare-percent trivia、
-C4 の語を扱います。
-raw 拒否には raw Db がなく、
-cynefin 固有の差異や acceptance-setting key は加えません。
-単独の parse 失敗は構文エラーを通じてファイルを変えず、
-Markdown は embedding を辞退します。
-CR・CRLF と先頭 BOM は共有の host の制限に従います。
-Markdown は最終 code line の hidden padding を削りますが、単独整形では保ち、
-必要な内部の padding も保護します。
-[corpus fixture: cynefin/directive-arrow-inside]
+既存の[六つの指定読み](./cynefin.ja.md#specified-readings)は、単位内の分断、
+フロントマターの HTML、中身を検証しない埋め込みデータ、
+passed bare-percent trivia、C4 の語を扱います。
+素の mermaid.js による拒否には mermaid.js の素の Db がなく、
+cynefin 固有の差異や受理を決める設定キーは加えません。
+単独の構文解析失敗は構文エラーを通じてファイルを変えず、
+Markdown は埋め込みを辞退します。
+CR・CRLF と先頭 BOM は共有の埋め込み先の制限に従います。
+Markdown は最終コード行の隠れた形の余白を削りますが、単独整形では保ち、
+必要な内部の余白も保護します。 [corpus fixture: cynefin/directive-arrow-inside]
 [corpus fixture: cynefin/semicolon-arrow-inside]
 [test: cynefin/specified-readings/divergence-html-cross]
 [test: cynefin/specified-readings/divergence-opaque-yaml]
@@ -6758,29 +6805,28 @@ Markdown は最終 code line の hidden padding を削りますが、単独整�
 ## Eventmodeling terminals and source boundaries
 
 eventmodeling の[規則](./eventmodeling.ja.md)は、
-[Data blocks](./eventmodeling.ja.md#data-blocks) の限定的な ASCII 空白 margin
-変更を除き、inline data と block の内容を保ちます。
+[データブロック](./eventmodeling.ja.md#data-blocks) の限定的な ASCII
+空白による余白の変更を除き、行内データと block の内容を保ちます。
 この変更は空でない本文行をすべて `tabWidth` 個、
 通常の見出しの継続行が残る場合は `2 * tabWidth` 個の空白で字下げし、データ項目、
-JSON、code の構造は解釈しません。
-見出しへ結合される通常の LF や inline directive 内部の LF では段を増やさず、
-native hidden を含む見出しは従来の本文の段を保ちます。
+JSON、コードの構造は解釈しません。
+見出しへ結合される通常の LF や行内ディレクティブ内部の LF では段を増やさず、
+図固有の隠れた形を含む見出しは従来の本文の段を保ちます。
 [fixture: eventmodeling/declarations-and-notes/header-directive-continuation]
 [fixture: eventmodeling/declarations-and-notes/header-inline-multiline-directive]
 [fixture: eventmodeling/declarations-and-notes/header-continuation-tabs]
 [fixture: eventmodeling/declarations-and-notes/data-and-note-headers]
 [fixture: eventmodeling/hidden-forms/hidden-data-tag-owners]
 
-この変更は描画を保ちながら raw Db 値を変える場合がありますが、parser、仕様、
-記録された Mermaid の読みは変えません。
-ほかの payload の文字、引用符、波括弧、空行、行末の空白、
-見かけの後続文は保ちます。
+この変更は描画を保ちながら mermaid.js の素の Db 値を変える場合がありますが、
+パーサー、仕様、記録された Mermaid の読みは変えません。
+ほかの本文の文字、引用符、波括弧、空行、行末の空白、見かけの後続文は保ちます。
 tag は引き続き整形できます。
-block-data は直後の LF を消費し、それ以外の空白は lookahead です。
+ブロックデータは直後の LF を消費し、それ以外の空白は先読みです。
 閉じの空白と LS・PS の境界は EOF でも保ちます。
-block closer の字下げは拒否を、
-lookahead の LF への置換は比較 Db の変更を起こす場合があります。
-native data は埋め込まれた設定として評価せず、source から直接読みます。
+ブロックの閉じの字下げは拒否を、
+先読みの LF への置換は比較 Db の変更を起こす場合があります。
+図固有のデータは埋め込まれた設定として評価せず、原文から直接読みます。
 [fixture: eventmodeling/data-blocks/body-overindented-first-line]
 [fixture: eventmodeling/data-blocks/body-overindented-later-line]
 [fixture: eventmodeling/inline-data/greedy-apparent-frames-kept]
@@ -6789,24 +6835,24 @@ native data は埋め込まれた設定として評価せず、source から直�
 [test: eventmodeling/line-terminators-and-unicode/block-ls-boundary-stays-outside-value]
 [fixture: eventmodeling/final-newline/final-block-padding-kept]
 
-普通のトップレベルの文は第 1 列から始め、frame、model entity、data、
+普通のトップレベルの文は第 1 列から始め、フレーム、モデルの実体、データ、
 note の宣言を、無字下げ必須の閉じ波括弧と同じ段にそろえます。
-GWT の clause と item は設定の字下げで入れ子にします。
-margin の規則の対象外である data の本文は、原文の列を保ちます。
+GWT の節と項目は設定の字下げで入れ子にします。
+余白の規則の対象外であるデータの本文は、原文の列を保ちます。
 [fixture: eventmodeling/indentation/mixed-top-level-blocks]
 [fixture: eventmodeling/indentation/gwt-four-spaces]
 [fixture: eventmodeling/indentation/data-declaration-column-one]
 [fixture: eventmodeling/indentation/note-column-one]
 
-共通の EM terminal は keyword、delimiter、前置 ASCII 空白も値に含みます。
-global directive と選ばれた semicolon を挟む場合も、
+共通の EM 終端トークンはキーワード、区切り、前置 ASCII 空白も値に含みます。
+大域的なディレクティブと選ばれたセミコロンを挟む場合も、
 原文全体とその前方区間を保ちます。
-通常の accessibility の空白と共有 description-block の圧縮は使いません。
+通常のアクセシビリティの空白と共有説明ブロックの圧縮は使いません。
 空白だけの description も内部を保ちます。
 共通文は見出し・先行文・消費 LF との元の接続に依存する場合があり、
 普通の本文行へ置くと拒否される場合があります。
-required identifier の `title` も、水平空白を足すと metadata になりうるため、
-成立している LF や hidden の境界を保ちます。
+必須の識別子の `title` も、水平空白を足すとメタデータになりうるため、
+成立している LF や隠れた形の境界を保ちます。
 [fixture: eventmodeling/header/accdescr-moved-to-line-start]
 [fixture: eventmodeling/common-boundaries/common-retained-exact-leading-directive-gaps]
 [fixture: eventmodeling/semicolons/metadata-across-selected-semicolon-gap-exact]
@@ -6814,48 +6860,48 @@ required identifier の `title` も、水平空白を足すと metadata にな�
 [fixture: eventmodeling/frame-components/hidden-before-required-title-identifier-keep-zero-indentation]
 
 Eventmodeling の Db は、
-source が `maxTextSize` （既定は UTF-16 コード単位で 50000）を超えない限り、
+原文が `maxTextSize` （既定は UTF-16 コード単位で 50000）を超えない限り、
 コメント行を残します。
-通常の大きさでは、data block、note、description block、slash block comment、
-hidden 形の内部の `%%` のコメント行は、その text の一部で、
-許容されたブロック本文の margin 変更を除き、原文どおりに保ちます。
-frontmatter と directive を除いた後の正規化した単位数が 50000 以上のときは、
-図の text 全体とその終わりを保ちます。
+通常の大きさでは、データ block、note、説明ブロック、
+スラッシュのブロックコメント、隠れた形の内部の `%%` のコメント行は、
+そのテキストの一部で、許容されたブロック本文の余白変更を除き、
+原文どおりに保ちます。
+フロントマターとディレクティブを除いた後の正規化した単位数が 50000
+以上のときは、図のテキスト全体とその終わりを保ちます。
 それ未満のときは、印字する計画の長さも 50000 未満に収まる場合だけ、
 通常の整形を行います。
-字下げや末尾の改行で text が上限を越え、
+字下げや末尾の改行でテキストが上限を越え、
 そのコメント行が Db から消えるのを防ぐためです。
 [fixture: eventmodeling/default-size-branches/size-utf16-surrogate]
 [fixture: eventmodeling/default-size-branches/size-preserving-to-fallback-unsafe]
 [fixture: eventmodeling/default-size-branches/size-below-planned-crossing]
 [fixture: eventmodeling/comments/comment-line-inside-data-block-kept]
 
-model entity、note、GWT、未使用・後続の同名 data、重複参照、型語、
-参照と併記した inline data も、全出現を残します。
-GWT の clause・item は範囲で終わる共有の本文経路を使います。
-hidden YAML と native DIRECTIVE は元の owner で 1 回印字し、
-消費 LF と閉じの空白は共有 hidden 規則で保護します。
-見出し前の保持 form があれば prefix 全体を保ち、本物の frontmatter にしません。
-安全な本物の frontmatter だけを guard 付き YAML formatter に通します。
+モデルの実体、note、GWT、未使用・後続の同名データ、重複参照、型語、
+参照と併記した行内データも、全出現を残します。
+GWT の節・項目は範囲で終わる共有の本文経路を使います。
+隠れた YAML と図固有の `DIRECTIVE` は元の所有ノードで 1 回印字し、
+消費 LF と閉じの空白は隠れた形を扱う共有規則で保護します。
+見出し前の保持形があれば前置部分全体を保ち、本物のフロントマターにしません。
+安全な本物のフロントマターだけを保護条件付き YAML 整形処理に通します。
 [fixture: eventmodeling/source-order/all-occurrences-retained]
 [fixture: eventmodeling/hidden-forms/hidden-gwt-clause-item-owners]
 [fixture: eventmodeling/hidden-forms/gwt-required-source-and-given-hidden-gaps]
 [fixture: eventmodeling/frontmatter-yaml/retained-prefix-whole]
 [fixture: eventmodeling/frontmatter-yaml/safe-real-yaml]
 
-子の本文の opening edge も含め、書かれた semicolon はすべて残します。
-保持する `;` がある segment は、行の規則が無視する `;` が変わりうる場合を除き、
+子の本文の開始境界も含め、書かれたセミコロンはすべて残します。
+保持する `;` がある区間は、行の規則が無視する `;` が変わりうる場合を除き、
 ほかと同じように整形します。
-（[Semicolons](./eventmodeling.ja.md#semicolons)）。
+（[セミコロン](./eventmodeling.ja.md#semicolons)）。
 値に属する空白は保ちます。
-文法上の semicolon はなく、
-style・classDef という語だけでは行全体を固定しません。
-directive は同じ印字行では両側の接触を保ち、
+文法上のセミコロンはなく、style・classDef という語だけでは行全体を固定しません。
+ディレクティブは同じ印字行では両側の接触を保ち、
 単位を行に分けるときは次の単位へ付けます。
 共通値の区間では原文保持を優先します。
-comment は mark と内容を保ち、native 行 comment は LS・PS を含みます。
-単位を行に分けるとき、間の inline comment と directive は原順で次側へ付けます。
-共有の置き方に揃え、同じ comment を図種の間で同じように扱います。
+コメントは印と内容を保ち、図固有の行コメントは LS・PS を含みます。
+単位を行に分けるとき、間の行内コメントとディレクティブは原順で次側へ付けます。
+共有の置き方に揃え、同じコメントを図種の間で同じように扱います。
 [fixture: eventmodeling/comments/mixed-directive-order]
 [fixture: eventmodeling/semicolons/gwt-protected-opening-kept]
 [fixture: eventmodeling/semicolons/no-grammar-semicolon-style-word-line-formats]
@@ -6863,15 +6909,16 @@ comment は mark と内容を保ち、native 行 comment は LS・PS を含み�
 [test: eventmodeling/comments/native-line-comment-ls-stays-content]
 [test: eventmodeling/comments/comment-after-ls-gap-ends-at-lf]
 
-既存の 5 つの [specified reading](./eventmodeling.ja.md#specified-readings)
+既存の 5 つの [仕様による読み](./eventmodeling.ja.md#specified-readings)
 に従い、差異は足しません。
-対象は atomic な directive・semicolon の分断、frontmatter を跨ぐ HTML quote、
-opaque な埋め込み設定、後出の C4 語です。
-raw 拒否には raw Db がありません。
+対象はディレクティブやセミコロンによる単位の途中での分断、
+フロントマターを跨ぐ HTML 引用符、中身を検証しない埋め込み設定、
+後出の C4 語です。
+素の mermaid.js による拒否には mermaid.js の素の Db がありません。
 拒否ファイルは構文エラーを報告して書き換えず、
-Markdown の拒否 payload は Prettier に任せます。
+Markdown の拒否本文は Prettier に任せます。
 共有の CR・CRLF 変換と、
-Markdown host が最後の code 行の空白を削る制限も適用します。
+Markdown の埋め込み先が最後のコード行の空白を削る制限も適用します。
 [corpus fixture: eventmodeling/directive-arrow-inside]
 [corpus fixture: eventmodeling/lex-semicolon-frame-id-inside]
 [corpus fixture: eventmodeling/div-html-frontmatter-value]

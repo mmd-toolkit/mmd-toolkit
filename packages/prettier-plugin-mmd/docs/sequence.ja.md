@@ -429,7 +429,7 @@ id と `@{` の間のディレクティブは、
 `participant A@{"type":"queue"}` は `participant A@{ "type":"queue" }`
 になります。 [fixture: whitespace-between-tokens/data-block-padded]
 長いブロックも複数行には分けません。
-mermaid.js がその位置で block mapping の行を拒否するためです。
+mermaid.js がその位置でブロック形式のマッピングの行を拒否するためです。
 [fixture: whitespace-between-tokens/data-block-long-kept]
 その規則が書かれたままにする場合は、このブロックも書かれたままにします。
 [fixture: whitespace-between-tokens/data-block-directive-kept]
@@ -449,6 +449,12 @@ mermaid.js がその位置で block mapping の行を拒否するためです。
 ブロックの両端に空白は足しません。
 `participant A   @{ x }` と `actor B@{x}` はそのまま残り、
 `participant C@{ y }   %% c` の `%%` の前の空白も残ります。
+mermaid.js は名前を読む前にディレクティブを除きます。
+そのため、名前はその空白の中のディレクティブの上を越えて続きます。
+閉じていないディレクティブでも同じで、ディレクティブの両側の空白が残ります。
+`participant B@{x}   %%{init: {}}%%   %% c` がその例です。
+コメントがなく、行がディレクティブで終わる場合は通常の隙間で、
+`participant E@{z} %%{init: {}}%%` と印字します。
 これらの文字を含むブロックと、`create` のある文のブロックは、
 その版が両方の形を拒否するので、上のとおりに印字します。
 詳しくは
@@ -456,6 +462,9 @@ mermaid.js がその位置で block mapping の行を拒否するためです。
 を参照してください。
 [fixture: whitespace-between-tokens/data-block-name-gap-before-kept]
 [fixture: whitespace-between-tokens/data-block-name-comment-gap-kept]
+[fixture: whitespace-between-tokens/data-block-name-directive-then-comment-gap-kept]
+[fixture: whitespace-between-tokens/data-block-name-unclosed-directive-then-comment-gap-kept]
+[fixture: whitespace-between-tokens/data-block-name-directive-at-line-end-spaced]
 [fixture: whitespace-between-tokens/data-block-space-only-kept]
 [fixture: whitespace-between-tokens/compat-malformed-data-block-kept]
 [fixture: whitespace-between-tokens/data-block-name-end-characters-padded]
@@ -534,7 +543,7 @@ sequenceDiagram
 [fixture: keyword-case/blocks-one-form]
 [fixture: keyword-case/blocks-one-form-2]
 
-Input (escaped):
+入力（エスケープ表記）:
 `"sequenceDiagram\nACTOR A AS Alice\nparticipant B\nAUTONUMBER\nACTIVATE A\nDEACTIVATE A\nBOX Group\nparticipant C\nEND\nNote OVER A,B: together\nNote RIGHT OF A: side\nLINK A: Docs @ https://example.com\nLINKS B: {\"Docs\":\"https://example.com\"}"`.
 
 出力
@@ -724,7 +733,7 @@ mermaid.js の文書で `+` か `-` のあるメッセージ 12 件のうち、
 `;` や空行で区切られた文も、同じように整形します。
 [fixture: arrow-spacing/touching-between-semicolons]
 [fixture: arrow-spacing/touching-after-blank-lines]
-mermaid.js の line rule が `;` を無視する行は、
+mermaid.js の行の規則が `;` を無視する行は、
 [1 行に 1 文](#1-行に-1-文)に従います。
 `A ->> + B: style:#x;` は `A ->> +B: style:#x;` になり、
 `A () ->> () B: style:#x;;` は書かれたままです。
@@ -733,13 +742,16 @@ mermaid.js の line rule が `;` を無視する行は、
 `<<->>` と `<<-->>` の前の空白は、書かれたまま残します。
 対象にする版の一部にはこの矢印がなく、前の名前の一部として `<<` を読むためです。
 `A<<->>B` は `A<<->> B` と印字し、`A <<->> B` と `A   <<->> B` はそのままです。
+`()` が矢印の前にある `A ()   <<->> B` もそのままです。
+名前が id から `<<` まで続くからです。
 詳しくは
-[central 接続のある sequence のメッセージ](./compatibility.ja.md#central-接続のある-sequence-のメッセージ)
+[中央接続のある sequence のメッセージ](./compatibility.ja.md#central-接続のある-sequence-のメッセージ)
 と
 [対象にする版の mermaid.js のために残す形](./compatibility.ja.md#対象にする版の-mermaidjs-のために残す形)
 を参照してください。
 [fixture: arrow-spacing/bidirectional-arrow-gap-before-kept]
 [fixture: arrow-spacing/bidirectional-arrow-gap-run-kept]
+[fixture: arrow-spacing/parentheses-then-bidirectional-arrow-gap-kept]
 
 `-` は、その後ろの宛先と合わせると矢印として読まれる場合、空白を残します。
 `-x`、`-X`（字句解析は大文字小文字を区別しません）、`-|\`、`-|/` は矢印なので、
@@ -1124,7 +1136,7 @@ mermaid.js の読み方のいくつかがそれに左右されるため、
   メッセージのテキストは次の行まで続きます。
   文や見出しとコメント行とその後のテキストは、字下げなしで、
   間の空白も整形せずに、書かれたまま印字します。
-  木はコメントを並べますが、printer は 1 つの行として読みます。
+  木はコメントを並べますが、印字処理は 1 つの行として読みます。
   [U+2028 か U+2029 の後のコメント行](./compatibility.ja.md#u2028-か-u2029-の後のコメント行)
   を参照してください。 [test: a `#` comment after U+2028, which joins no lines]
   [test: a `%%` comment line after U+2028, which joins the next line]
@@ -1178,7 +1190,7 @@ mermaid.js の読み方のいくつかがそれに左右されるため、
   [test: a `;` after an ignored `;` and U+2029, which the line rule reads as the end of its line]
   [test: a `;` on the next line after an ignored `;` and U+2028, which the line rule reads as the end of its line]
   [test: statements after an ignored `;`, with a U+2029 later on the line]
-- printer が残す U+2028 か U+2029 の後の `;`。
+- 印字処理が残す U+2028 か U+2029 の後の `;`。
   `box`、タイトル、subgraph の名前のテキストの終わりにあるものがその例です。
   mermaid.js は、U+2028 か U+2029 の直後に始まるコメント行を、
   その前の改行ごと取り除くので、間にある `;` が、
@@ -1211,7 +1223,7 @@ flowchart と同じです。
 [fixture: directives/touching-kept] [fixture: directives/block-lines-kept]
 
 元は同じ行にあった単位を別の行へ分けるときは、
-間の directive を次の単位に付けます。
+間のディレクティブを次の単位に付けます。
 右側の接触・分離は保ち、左側の接触は切れます。
 
 [fixture: sequence/directives/split-directive-gap]
@@ -1242,7 +1254,7 @@ sequenceDiagram
 
 ### Quotes
 
-printer は引用符を付けたり外したりしません。
+印字処理は引用符を付けたり外したりしません。
 sequence 図には文字列がなく、引用符はテキストの文字です。
 `participant A as "Alice"` の説明は引用符を含む `"Alice"` で、
 `participant B as Bob` の説明は `Bob` です。
@@ -1364,7 +1376,7 @@ sequenceDiagram
 `accDescr{  }` は `accDescr {}` にします。
 [fixture: multi-line-values/empty-whitespace-interiors]
 [test: sequence Unicode and tab interiors]
-コメントや directive があるブロックの内容と改行は保ちます。
+コメントやディレクティブがあるブロックの内容と改行は保ちます。
 1 行のブロックは、
 [1 行の説明ブロック](./compatibility.ja.md#1-行の説明ブロック) に従います。
 [fixture: multi-line-values/block-text-on-one-line-padded]
@@ -1420,22 +1432,24 @@ box やブロックの中の文が `end` の前にある場合が当たります
 [fixture: multi-line-values/data-closing-deeper-kept]
 [fixture: multi-line-values/data-closing-equal-depth]
 
-Mermaid はデータブロック全体を trim し、最初の行の余白だけを除き、
+Mermaid はデータブロック全体の両端の空白を除くので、最初の行は余白を失いますが、
 後の行は 0 桁から数えます。
 キー 2 つを 0 桁に置く形は受理されますが、
 字下げすると YAML が拒否される場合があります。
 そのため、文字のある本文行が複数あるブロックは桁を保ちます。
-共有条件により、開きの行から本文が始まる形、内部の directive、行全体を保つ行、
-`tabWidth: 0` もそのまま残します。
-最初の行との相対的な余白や directive のテキストを変えず、
+共有条件により、開きの行から本文が始まる形、内部のディレクティブ、
+行全体を保つ行、`tabWidth: 0` もそのまま残します。
+最初の行との相対的な余白やディレクティブのテキストを変えず、
 行全体の保持を守るためです。
 [fixture: multi-line-values/data-multiple-lines-kept]
 [fixture: multi-line-values/data-inline-and-directive-kept]
 [fixture: multi-line-values/data-kept-body-line]
 [fixture: multi-line-values/data-zero-width-kept]
 
-前後のコメント、directive、空行、空の説明ブロックはそれぞれの規則に従います。
-CRLF と CR は `endOfLine` に従い、値の Unicode separator は文字として保ちます。
+前後のコメント、ディレクティブ、空行、
+空の説明ブロックはそれぞれの規則に従います。
+CRLF と CR は `endOfLine` に従い、
+値内の Unicode の区切り文字は文字として保ちます。
 [fixture: multi-line-values/data-surrounding-trivia]
 [test: data blocks: sequence U+2028] [test: data blocks: sequence CR]
 

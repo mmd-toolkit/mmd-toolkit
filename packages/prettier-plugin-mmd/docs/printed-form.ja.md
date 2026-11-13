@@ -308,7 +308,7 @@ Db を変えても描くものを変えない整形は、例外とする。
 種類は、次のとおりである。
 
 - eventmodeling のブロックの本体の、限られた ASCII の空白の余白の変更。
-  [Data blocks](./eventmodeling.ja.md#data-blocks) が定める。
+  [データブロック](./eventmodeling.ja.md#data-blocks) が定める。
 - 対象になる state の note の段落の、余白の変更。
   [ノート](./state.ja.md#ノート) が定める。
 - スタイルの最初の `:` と `,` のまわりの空白、

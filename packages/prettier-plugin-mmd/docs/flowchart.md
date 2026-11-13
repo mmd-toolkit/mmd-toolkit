@@ -2467,7 +2467,7 @@ is printed with `TB` for `TD`, as the header of an agentflow diagram is (see
 that made `TD` behave as `TB`. A `TD` that stands after a directive which
 follows the header (`swimlane-beta%%{init: {}}%% TD`) stays as written.
 [fixture: direction/swimlane-header-td-one-form] [fixture:
-direction/swimlane-header-td-after-directive-kept] In a `direction` statement
+direction/swimlane-header-td-one-form-after-directive] In a `direction` statement
 mermaid.js reads the text before `direction` and after the value as text, which
 may hold labels and strings, and a `;` after the value belongs to that text and
 is no separator. The text is kept as written; the whitespace between it and

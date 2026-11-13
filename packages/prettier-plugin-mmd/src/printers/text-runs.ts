@@ -18,7 +18,7 @@ import {
   findCoveringRange,
   findTriviaBetween,
   isSpaceOrTab,
-  textWithoutDirectives,
+  textRead,
 } from "./source.ts"
 import { writtenWithRespellings } from "./spelling.ts"
 import {
@@ -37,7 +37,7 @@ export function holdsWhiteSpaceProperty(source: Source): boolean {
   if (holds === undefined) {
     holds =
       source.text.toLowerCase().includes("white-space") ||
-      textWithoutDirectives(source, 0, source.text.length)
+      textRead(source, 0, source.text.length)
         .toLowerCase()
         .includes("white-space")
     holdsProperty.set(source, holds)
@@ -472,7 +472,7 @@ function subgraphId(
       : name
   return label !== undefined && label.kind !== "text"
     ? label.value.trim()
-    : textWithoutDirectives(source, ...name.range).trim()
+    : textRead(source, ...name.range).trim()
 }
 
 /** Records the ranges of the texts below `node` in the fields of the slots. */

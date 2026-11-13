@@ -403,16 +403,18 @@ mermaid.js がクラスのスタイルを書かれたまま `;` でつなぎ、
 [fixture: whitespace-between-tokens/style-backslash-space-kept]
 `style` は、`color:` か `text-align:` で始まるスタイルの前の空白の有無を、
 書かれたまま残します。
-直前の `,` に接するスタイルでは、その名前と `:` の間の空白の有無も残します。
-空白の連続は空白 1 つにします。
-対象にする版に、
-そう始まるスタイルをクラスのラベルのスタイルに入れるものがあるためです。
+対象にする版に、直前の `,` に接してそう始まるスタイルを、
+クラスのラベルのスタイルに入れるものがあるためです。
 文の最初のスタイルと、前に空白があるスタイルは、
-名前と `:` の間に空白があってもなくても、そう始まりません。
+名前と `:` の間に空白があってもなくても、そのようには読まれません。
 `style A color :red` は `style A color: red` と印字します。
+直前の `,` に接し、名前と `:` の間に空白があるスタイルも同じです。
+その前に空白を置き、`style A fill:#f00,color :red` は、
+`style A fill: #f00, color: red` と印字します。
 `style A fill:#f00,color:white` は `style A fill: #f00,color: white`
 と印字します。
-詳しくは [同じに描かれるスタイル](./compatibility.ja.md#同じに描かれるスタイル) と
+詳しくは [同じに描かれるスタイル](./compatibility.ja.md#同じに描かれるスタイル)
+と
 [対象にする版の mermaid.js のために残す形](./compatibility.ja.md#対象にする版の-mermaidjs-のために残す形)
 を参照してください。
 [fixture: whitespace-between-tokens/style-color-touching-kept]
@@ -1467,7 +1469,7 @@ TDとほかの大小文字はその方向行の規則ではないので、通常
 [fixture: multi-line-statements/direction-value-tabs]
 [test: accessibility revisions: class direction-value-cr]
 
-入力（escape 表記）: `"classDiagram\nclass A11y\naccTitle:\n direction LR"`。
+入力（エスケープ表記）: `"classDiagram\nclass A11y\naccTitle:\n direction LR"`。
 
 出力
 ([multi-line-statements/title-next-direction-lr-output.mmd](../tests/fixtures/class/multi-line-statements/title-next-direction-lr-output.mmd)):

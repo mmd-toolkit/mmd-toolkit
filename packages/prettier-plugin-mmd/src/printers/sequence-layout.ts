@@ -40,6 +40,7 @@ import {
   isAtLineEnd,
   isSpaceOrTab,
   isWhitespace,
+  skipRemoved,
 } from "./source.ts"
 
 /**
@@ -349,17 +350,17 @@ function findNameGaps(
 ): Atom[] {
   const stretches: Atom[] = []
   const { arrow, from, to } = statement
-  if (statement.fromCentralConnection) {
+  const arrowText = source.text.slice(arrow.range[0], arrow.range[1])
+  if (arrowText === "<<->>" || arrowText === "<<-->>") {
+    // The name reaches the `<<`, so the stretch holds the `()` and the gaps
+    // around it.
+    stretches.push({ start: from.range[1], end: arrow.range[0] })
+  } else if (statement.fromCentralConnection) {
     const parentheses = expectToken(
       findStructuralToken(source, from.range[1]),
       "the `()` after the source of a message",
     )
     stretches.push({ start: from.range[1], end: parentheses.range[1] })
-  } else {
-    const arrowText = source.text.slice(arrow.range[0], arrow.range[1])
-    if (arrowText === "<<->>" || arrowText === "<<-->>") {
-      stretches.push({ start: from.range[1], end: arrow.range[0] })
-    }
   }
   if (statement.toCentralConnection) {
     const parentheses = expectToken(
@@ -532,8 +533,15 @@ export function findEndOfCommentAfterNameBlock(
   if (!holdsNameLikeDataBlock(statement) || statement.alias !== null) {
     return undefined
   }
+  // mermaid.js removes the directives before it reads the name, so the name
+  // runs over the spaces and tabs and the directives to the comment.
   let position = statement.range[1]
-  while (isSpaceOrTab(source.text.charAt(position))) position++
+  for (;;) {
+    const read = skipRemoved(source, position)
+    if (read !== position) position = read
+    else if (isSpaceOrTab(source.text.charAt(position))) position++
+    else break
+  }
   const comment = findTriviaAt(source, position)
   return comment?.type === "Comment" &&
     comment.mark === "%%" &&

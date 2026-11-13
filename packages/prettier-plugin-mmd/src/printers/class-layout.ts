@@ -57,8 +57,8 @@ import {
   findTriviaBetween,
   isStructural,
   isWordCharacter,
-  skipDirectives,
-  textWithoutDirectives,
+  skipRemoved,
+  textRead,
 } from "./source.ts"
 
 /**
@@ -951,8 +951,8 @@ function spaceAfterName(
   name: ClassName,
   token: number,
 ): GapRule {
-  if (token !== skipDirectives(source, name.range[1])) return "space"
-  const text = textWithoutDirectives(source, ...name.range)
+  if (token !== skipRemoved(source, name.range[1])) return "space"
+  const text = textRead(source, ...name.range)
   const before = text.at(-"call".length - 1)
   const endsWithCall =
     text.endsWith("call") && (before === undefined || !isWordCharacter(before))

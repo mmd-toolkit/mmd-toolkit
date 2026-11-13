@@ -427,13 +427,23 @@ whitespace before it, the whitespace inside it, and the whitespace before a `%%`
 comment after it. So the gap before the block, the block, and that gap before
 the comment stay as written, and the block is not padded:
 `participant A   @{ x }` and `actor B@{x}` stay, and so does the whitespace
-before the `%%` in `participant C@{ y }   %% c`. A block with one of these
-characters, and the block of a statement with `create`, which that version
-rejects, are printed as above (see
+before the `%%` in `participant C@{ y }   %% c`. mermaid.js removes the
+directives before it reads the name, so the name runs over a directive in that
+whitespace, one that is not closed included, and the whitespace on both sides of
+it stays: `participant B@{x}   %%{init: {}}%%   %% c`. A directive that ends the
+line, with no comment after it, is an ordinary gap, printed
+`participant E@{z} %%{init: {}}%%`. A block with one of these characters, and
+the block of a statement with `create`, which that version rejects, are printed
+as above (see
 [Forms kept for versions of mermaid.js that count](./compatibility.md#forms-kept-for-versions-of-mermaidjs-that-count)).
 [fixture: whitespace-between-tokens/data-block-name-gap-before-kept] [fixture:
 whitespace-between-tokens/data-block-name-comment-gap-kept] [fixture:
-whitespace-between-tokens/data-block-space-only-kept] [fixture:
+whitespace-between-tokens/data-block-name-directive-then-comment-gap-kept]
+[fixture:
+whitespace-between-tokens/data-block-name-unclosed-directive-then-comment-gap-kept]
+[fixture:
+whitespace-between-tokens/data-block-name-directive-at-line-end-spaced]
+[fixture: whitespace-between-tokens/data-block-space-only-kept] [fixture:
 whitespace-between-tokens/compat-malformed-data-block-kept] [fixture:
 whitespace-between-tokens/data-block-name-end-characters-padded] [fixture:
 whitespace-between-tokens/data-block-name-created-padded] A line that mermaid.js
@@ -696,12 +706,15 @@ written. [fixture: arrow-spacing/touching-with-ignored-semicolon] The arrow is
 printed as written. [fixture: arrow-spacing/arrows-kept] The whitespace before
 `<<->>` and `<<-->>` stays as written, since a version that counts has no such
 arrow and reads the `<<` as part of the name before it: `A<<->>B` is printed
-`A<<->> B`, and `A <<->> B` and `A   <<->> B` are printed as they are (see
+`A<<->> B`, and `A <<->> B` and `A   <<->> B` are printed as they are, and so is
+a message with a `()` before the arrow, `A ()   <<->> B`, since the name runs
+from the id to the `<<` (see
 [Sequence messages with a central connection](./compatibility.md#sequence-messages-with-a-central-connection)
 and
 [Forms kept for versions of mermaid.js that count](./compatibility.md#forms-kept-for-versions-of-mermaidjs-that-count)).
 [fixture: arrow-spacing/bidirectional-arrow-gap-before-kept] [fixture:
-arrow-spacing/bidirectional-arrow-gap-run-kept]
+arrow-spacing/bidirectional-arrow-gap-run-kept] [fixture:
+arrow-spacing/parentheses-then-bidirectional-arrow-gap-kept]
 
 The `-` keeps its space before a target that would read as an arrow with it:
 `-x` and `-X`, since the lexer ignores case, `-|\`, and `-|/` are arrows, so

@@ -1,6 +1,6 @@
 # Gitgraph formatting rules
 
-英語版: [gitgraph.md](./gitgraph.md)
+English version: [gitgraph.md](./gitgraph.md)
 
 決定した 26 項目を、書かれた AST から実装する整形規則です。
 実行時に Mermaid を呼ばず、出力を再解析しません。
@@ -79,7 +79,8 @@ gitGraph
 ### Indentation
 
 見出しは第 1 列、
-通常の本文の文・独立コメント・大域的なディレクティブは設定した 1 段下に置きます。
+通常の本文の文・独立コメント・大域的なディレクティブは設定した 1
+段下に置きます。
 履歴は平坦なので branch の後に段を増やしません。
 gitgraph の列に文法上の意味がないため、`tabWidth: 0` は空白 0 個、
 `useTabs` は幅 0 でもタブ 1 個です。
@@ -91,7 +92,8 @@ gitgraph の列に文法上の意味がないため、`tabWidth: 0` は空白 0 
 [fixture: gitgraph/indentation/tabs-normal]
 [fixture: gitgraph/indentation/zero-tabs]
 
-入力（エスケープ表記）: `"gitGraph\ncommit\n      branch b\ncommit\nswitch main\n"`
+入力（エスケープ表記）:
+`"gitGraph\ncommit\n      branch b\ncommit\nswitch main\n"`
 
 出力
 ([indentation/indent-two-output.mmd](../tests/fixtures/gitgraph/indentation/indent-two-output.mmd)):
@@ -132,8 +134,7 @@ gitGraph
 コメントの前後にも同じ規則を使い、作者の区切りを残します。
 引用値・説明ブロック・ディレクティブと隠れた形の内部と、
 保持する前置部分の空行は、値や字句上の役割に属するため保持します。
-隠れた形が LF を消費した後は、
-次の文に必要なときだけ予備の LF 1 つを保ちます。
+隠れた形が LF を消費した後は、次の文に必要なときだけ予備の LF 1 つを保ちます。
 文書の終わりは設定の終端改行1つにし、見出しの直後の空行は削除します。
 見出しと最初の文の間に EOL は必要ありません。
 それ以外は予備の LF の後に通常の空行の規則を適用し、連続空行を1行、
@@ -262,7 +263,8 @@ Db の要約にメッセージ本文がなくても、一致を理由に変更�
 固定例: [fixture: gitgraph/messages/message-forms]
 [fixture: gitgraph/messages/message-empty]
 
-入力（エスケープ表記）: `"gitGraph\ncommit \"bare\" msg:\"explicit\" \"last\"\n"`
+入力（エスケープ表記）:
+`"gitGraph\ncommit \"bare\" msg:\"explicit\" \"last\"\n"`
 
 出力
 ([messages/message-forms-output.mmd](../tests/fixtures/gitgraph/messages/message-forms-output.mmd)):
@@ -346,8 +348,8 @@ gitGraph
 
 ### Authored values
 
-文字列と参照の両端・内部の空白、タブ、物理改行、Unicode、大小文字、エスケープ、HTML、
-entity を保持します。
+文字列と参照の両端・内部の空白、タブ、物理改行、Unicode、大小文字、エスケープ、
+HTML、entity を保持します。
 空値も leaf のままです。
 これらは同一性・参照による検索・tag の値に影響します。
 変換後の Db から再構築せず、エスケープを JavaScript として解釈しません。
@@ -468,7 +470,7 @@ gitGraph
 
 ### Title and common values
 
-`title` は空白 1 個と外端だけ 両端の空白を除いた非空値を印字します。
+`title` は空白 1 個と外端だけ両端の空白を除いた非空値を印字します。
 値の中の空白とタブの連なりは、空白 1 つにして印字します。
 （[同じに描かれるテキスト中の空白の連なり](./compatibility.ja.md#同じに描かれるテキスト中の空白の連なり)）。
 空や空白のみなら裸の `title` です。
@@ -636,14 +638,13 @@ gitGraph
 yaml-ブロックの `GitgraphIgnoredText` は、
 見出し・オプション・名前・`textAfter`・本文の所有位置に、
 内部の共通注釈類を含む完全な原文の範囲で保持します。
-範囲外の消費 LF と閉じの余白は、
-EOF や注釈類・次の形の前でも残します。
-範囲外の 予備の LF と端の空行は [空行](#blank-lines) に従います。
+範囲外の消費 LF と閉じの余白は、EOF や注釈類・次の形の前でも残します。
+範囲外の予備の LF と端の空行は [空行](#blank-lines) に従います。
 直前に LF を足しません。
 本文の開始記号は 1 段にでき、内部と閉じの列は変えません。
 空本文・3 つの囲み・後の有効な閉じ記号・複数の形も中身を解析しません。
 先に始まった文字列・ブロック・行値の所有も変えません。
-境界の移動や 両端の空白の除去は受理を失わせるためです。
+境界の移動や両端の空白の除去は受理を失わせるためです。
 
 固定例: [corpus fixture: gitgraph/lex-yaml-invalid-body]
 [corpus fixture: gitgraph/lex-hidden-yaml-before-option-value]
@@ -703,12 +704,11 @@ opaque
 
 ### Hidden directives
 
-ディレクティブの `GitgraphIgnoredText` は隠れた YAML と同じく原文と境界を保持し、
-9 種すべての文の後置部分でも同じです。
+ディレクティブの `GitgraphIgnoredText` は隠れた YAML
+と同じく原文と境界を保持し、9 種すべての文の後置部分でも同じです。
 図固有の形は大域的なディレクティブと別です。
 空・記号・複数行の内容と、先行する文字列やブロックの所有を残します。
-不成立の閉じ記号は後の閉じ記号まで内容になるか、
-図固有のコメントとして扱います。
+不成立の閉じ記号は後の閉じ記号まで内容になるか、図固有のコメントとして扱います。
 分類を変える境界は足しません。
 必須部品が欠けた入力は拒否します。
 
@@ -845,12 +845,13 @@ gitGraph
 
 ### Line terminators and unicode
 
-共通の埋め込み先の改行規則を使い、物理 CR/CRLF を LF にして `endOfLine` で出力します。
+共通の埋め込み先の改行規則を使い、
+物理 CR/CRLF を LF にして `endOfLine` で出力します。
 値・ブロック・隠れた形の内部も同じです。
 内容の LS/PS/NBSP/BOM は保持し、共通の行値の外端からだけ共通空白を除きます。
 通常のブロック開始記号の空白は結合できます。
 構造上の非 ASCII 区切りは拒否を保ちます。
-先頭 BOM は 埋め込み先の Prettierの扱いに従い、バイト同一は保証しません。
+先頭 BOM は埋め込み先の Prettierの扱いに従い、バイト同一は保証しません。
 
 固定例: [test: gitgraph/line-terminators-and-unicode/eol-cr]
 [test: gitgraph/line-terminators-and-unicode/eol-crlf]
@@ -875,9 +876,8 @@ gitGraph
 区切りの余白、不正・字下げあり・HTML の危険がある YAML、
 区切りを作る出力は書かれたままです。
 YAML は `tabWidth` 0 でも共有の正の最小字下げを使います。
-見出し前に保持する隠れたテキストがあれば、
-先頭 LF・コメント・単独行の注釈類・再走査で読む形・実際の形と隠れた形の順序を含む
-前置部分全体を残します。
+見出し前に保持する隠れたテキストがあれば、先頭 LF、コメント、単独行の注釈類、
+再走査で読む形、実際の形と隠れた形の順序を含む前置部分全体を残します。
 先頭 LF の削除は隠れた YAML を有効な title や設定に変え、Db を変えます。
 隠れた形は YAML 整形処理に渡しません。
 
@@ -943,9 +943,10 @@ gitGraph
 Markdown は埋め込みを辞退して図の本文を埋め込み先に返します。
 語内のディレクティブと選ばれたセミコロンを結合して修復しません。
 フロントマターの HTML は本文だけの読み、
-中身を解析しない不正な YAML は架空の設定や 素の mermaid.js の Db を補わない扱いです。
+中身を解析しない不正な YAML は架空の設定や素の mermaid.js の Db
+を補わない扱いです。
 C4 検出と単独のパーセントの行の差異も新設せず既存の識別子に従います。
-素の mermaid.js による拒否には 素の mermaid.js の Db がありません。
+素の mermaid.js による拒否には素の mermaid.js の Db がありません。
 空の引用符付きオプションと空の説明ブロックは受理したままです。
 
 [corpus fixture: gitgraph/div-directive-in-commit]
@@ -962,10 +963,11 @@ C4 検出と単独のパーセントの行の差異も新設せず既存の識�
 
 ### Markdown fences
 
-共通の Markdown 経路で 外側の字下げを除いた図の本文に同じ規則を使います。
+共通の Markdown 経路で外側の字下げを除いた図の本文に同じ規則を使います。
 囲み・リスト・引用の字下げと改行は埋め込み先が担います。
 図の本文の最終行の余白は、最後の隠れた形の境界の空白も含めて、
-埋め込み先が削除する限界がありますが、本文途中の隠れた形の閉じの空白は保持します。
+埋め込み先が削除する限界がありますが、
+本文途中の隠れた形の閉じの空白は保持します。
 埋め込み先の出力と冪等性、図の本文の Db・木・原文を別々に検査します。
 
 [test: gitgraph Markdown: top-level] [test: gitgraph Markdown: list]

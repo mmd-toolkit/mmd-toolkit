@@ -245,8 +245,7 @@ export interface StyleListUse {
   /**
    * The names of the styles that mermaid.js puts in the style of the label of
    * a node by how they start: `color` and `text-align` in the `style` of a
-   * block diagram and of a flowchart, `color` in that of a class diagram (see
-   * below). A style that starts with one of them keeps whether whitespace
+   * block diagram, of a flowchart, and of a class diagram (see below). A style that starts with one of them keeps whether whitespace
    * stands before it, and whether whitespace stands between the name and the
    * `:`.
    */

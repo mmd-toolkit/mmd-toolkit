@@ -93,9 +93,8 @@ journey
 ### 1 行に 1 文
 
 各文は 1 行に 1 つ置きます。
-journey には文を区切るものがなく（diagrams/journey.md、
-図と文）、ヘッダーと `accDescr` ブロックの後ろには、
-同じ行に次の文を続けられます。
+journey には文を区切るものがなく（diagrams/journey.md、図と文）、
+ヘッダーと `accDescr` ブロックの後ろには、同じ行に次の文を続けられます。
 それらの後ろの文は、それぞれの行に移します。
 [fixture: statements-one-per-line/header-then-title]
 [fixture: statements-one-per-line/header-then-task]
@@ -397,8 +396,9 @@ journey
 ### 無視されるデータ
 
 3 つ目のコロン以降は、mermaid.js が読まず、木はテキストとして持ちます。
-コロンも含めて書かれたまま印字し、タスクのデータのコロンと同じく、
-コロンは、書かれた空白によらず、前の値に接します。 [fixture: ignored-data/third-colon-touches]
+コロンも含めて書かれたまま印字し、タスクのデータのコロンと同じく、コロンは、
+書かれた空白によらず、前の値に接します。
+[fixture: ignored-data/third-colon-touches]
 [fixture: ignored-data/text-as-written] [fixture: ignored-data/four-colons]
 空の score や空の人の後でも同じです。 [fixture: ignored-data/after-empty-people]
 末尾の空白は落とします。 [fixture: ignored-data/trailing-whitespace-dropped]

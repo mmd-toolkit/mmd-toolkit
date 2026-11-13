@@ -1057,8 +1057,8 @@ block-beta
 `accDescr{  }` は `accDescr {}` にします。
 [fixture: empty-description-blocks/empty-whitespace-interiors]
 [test: block Unicode and tab interiors]
-指令かコメント行を持つブロックは、内容と改行を保ち、
-独立した注釈類を 1 段内側、閉じ括弧を文の段に置きます。
+指令かコメント行を持つブロックは、内容と改行を保ち、独立した注釈類を 1 段内側、
+閉じ括弧を文の段に置きます。
 [fixture: empty-description-blocks/trivia-continuations]
 ヘッダーの後でも、2 つのノードの間でも、自分の行に置きます。
 文法がブロックを受け入れるのは、文が始まる場所です。

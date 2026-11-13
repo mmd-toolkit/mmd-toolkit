@@ -94,9 +94,9 @@ gantt
 ### 1 行に 1 文
 
 各文は 1 行に 1 つ置きます。
-Gantt 図には文を区切るものがなく（`diagrams/gantt.md`、図と文）、
-ヘッダー、`inclusiveEndDates`、日つきの `weekday` と `weekend`、
-`accDescr` ブロック、click 文の後ろには、同じ行に次の文を続けられます。
+Gantt 図には文を区切るものがなく（`diagrams/gantt.md`、図と文）、ヘッダー、
+`inclusiveEndDates`、日つきの `weekday` と `weekend`、`accDescr` ブロック、
+click 文の後ろには、同じ行に次の文を続けられます。
 これらの後ろの文は、それぞれの行に移します。
 ほかの図種も 1 行に 1 つの文を印字します。
 [fixture: statements-one-per-line/header-then-statement]
@@ -1242,8 +1242,7 @@ click、weekday/weekend、includes/excludes、アクセシビリティの行の�
 
 title、section、設定、タスクでは、値の空白が Db の一部なので、
 複数行の注釈類を含む配置を元のまま保ちます。
-click 文などの注釈類行を整形する文では、
-改行を空白 1 つか何も挟まずにつなぐと、
+click 文などの注釈類行を整形する文では、改行を空白 1 つか何も挟まずにつなぐと、
 行の規則が無視する `;` が変わりうる場合と、最後の行を `;` が終える場合は、
 その改行を残します。
 それ以外の改行は、`;` を含む文でも通常どおりつなぎます。

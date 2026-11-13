@@ -44,7 +44,7 @@ import {
   findTriviaBetween,
   isSpaceOrTab,
   isWhitespace,
-  skipDirectives,
+  skipRemoved,
 } from "./source.ts"
 
 /**
@@ -318,7 +318,7 @@ function layoutEvents(
     const text = atoms[eventIndex - 2]
     const addsSpace =
       text !== undefined &&
-      skipDirectives(source, text.end) === colon.start &&
+      skipRemoved(source, text.end) === colon.start &&
       !isWhitespace(source.text[text.end - 1]) &&
       !(
         statement.type === "TimelinePeriodStatement" &&

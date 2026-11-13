@@ -9,7 +9,7 @@ English version: [eventmodeling.md](./eventmodeling.md)
 
 共有生成処理とブロック・印字単位・隠れた形の隙間経路を使います。
 GWT は閉じ記号を作らず、範囲で終わる子の本文を 2 つ使います。
-共通終端トークンとデータ の字句境界は、行と字下げを選ぶ段階へ渡します。
+共通終端トークンとデータの字句境界は、行と字下げを選ぶ段階へ渡します。
 
 ## Rules
 
@@ -45,7 +45,7 @@ GWT は閉じ記号を作らず、範囲で終わる子の本文を 2 つ使い�
 
 [fixture: eventmodeling/header/header-slash-boundary]
 
-入力（escape 表記）: `"  eventmodeling tf 01 evt Alpha"`
+入力（エスケープ表記）: `"  eventmodeling tf 01 evt Alpha"`
 
 出力
 ([header/ordinary-frame-output.mmd](../tests/fixtures/eventmodeling/header/ordinary-frame-output.mmd)):
@@ -55,7 +55,7 @@ eventmodeling
 tf 01 evt Alpha
 ```
 
-入力（escape 表記）: `"eventmodeling tf 01 evt A %%{{x}}%%\n"`
+入力（エスケープ表記）: `"eventmodeling tf 01 evt A %%{{x}}%%\n"`
 
 出力
 ([header/ordinary-frame-with-native-directive-output.mmd](../tests/fixtures/eventmodeling/header/ordinary-frame-with-native-directive-output.mmd)):
@@ -79,7 +79,8 @@ eventmodeling tf 01 evt A %%{{x}}%%
 GWT 節は設定の 1 段、項目は 2 段にします。
 `data` と `note` の見出しが完結する行も含め、
 通常の構造の継続行はその文より 1 段深くします。
-安全に字下げできるブロック本文は、その継続した見出し行からさらに 1 段深くします。
+安全に字下げできるブロック本文は、
+その継続した見出し行からさらに 1 段深くします。
 列は親子を決めないため、`tabWidth: 0` では空白を足しません。
 `useTabs` では幅が 0 でも 1 段にタブを 1 個使います。
 値の継続列、メタデータの空白、隠れた形が消費する LF の境界は、
@@ -111,7 +112,7 @@ GWT 節は設定の 1 段、項目は 2 段にします。
 
 [fixture: eventmodeling/declarations-and-notes/data-name-title-keep-lf]
 
-入力（escape 表記）: `"eventmodeling\ntf 01 evt Alpha\nrf 02 cmd Beta"`
+入力（エスケープ表記）: `"eventmodeling\ntf 01 evt Alpha\nrf 02 cmd Beta"`
 
 出力
 ([indentation/body-four-spaces-output.mmd](../tests/fixtures/eventmodeling/indentation/body-four-spaces-output.mmd)):
@@ -163,7 +164,7 @@ note 01 {
 
 [fixture: eventmodeling/statements-one-per-line/do-not-manufacture-statement-from-greedy-data]
 
-入力（escape 表記）:
+入力（エスケープ表記）:
 `"eventmodeling tf 01 evt Alpha rf 02 cmd Beta entity Shop.Beta"`
 
 出力
@@ -179,7 +180,7 @@ entity Shop.Beta
 ### Frame components
 
 フレームキーワード、数字の名前、実体の種類、修飾名の間は、
-元が図固有の空白の改行でも普通の 空白 1 個にします。
+元が図固有の空白の改行でも普通の空白 1 個にします。
 `01 evt` のように完全な部品を見分けるためです。
 必須の識別子がちょうど `title` のときは成立する境界を保ちます。
 普通の LF は継続行にし、隠れた形が消費する LF の後の空白は原文どおりです。
@@ -201,7 +202,7 @@ entity Shop.Beta
 
 [corpus fixture: eventmodeling/lex-name-title-after-lf]
 
-入力（escape 表記）: `"eventmodeling tf 01evt Alpha"`
+入力（エスケープ表記）: `"eventmodeling tf 01evt Alpha"`
 
 出力
 ([frame-components/time-parts-glued-number-type-output.mmd](../tests/fixtures/eventmodeling/frame-components/time-parts-glued-number-type-output.mmd)):
@@ -214,7 +215,7 @@ tf 01 evt Alpha
 ### Source references
 
 完全な参照元を結ぶ矢印は `Name ->> 02 ->> 001` のように、
-矢印の左右を普通の 空白 1 個にして見分けやすくします。
+矢印の左右を普通の空白 1 個にして見分けやすくします。
 全参照とその順序、先頭の 0 を保ち、逆転や解決はしません。
 隠れた形の隙間と大域的な注釈類は保護された境界を保ちます。
 
@@ -224,7 +225,7 @@ tf 01 evt Alpha
 
 [fixture: eventmodeling/source-references/arrow-comment-contact]
 
-入力（escape 表記）: `"eventmodeling tf 01 evt Alpha->>02->>001"`
+入力（エスケープ表記）: `"eventmodeling tf 01 evt Alpha->>02->>001"`
 
 出力
 ([source-references/arrows-touching-output.mmd](../tests/fixtures/eventmodeling/source-references/arrows-touching-output.mmd)):
@@ -236,7 +237,7 @@ tf 01 evt Alpha ->> 02 ->> 001
 
 ### Data references
 
-データの参照の前は普通の 空白 1 個、内側は `[[D]]` と詰め、
+データの参照の前は普通の空白 1 個、内側は `[[D]]` と詰め、
 Prettier が入れ子の角括弧に印字する形です。
 部品間の普通の改行も詰めます。
 `[[title]]` なら前置空白付きの title composite も作りません。
@@ -252,7 +253,7 @@ Prettier が入れ子の角括弧に印字する形です。
 
 [fixture: eventmodeling/data-references/reference-names-acctitle-accdescr]
 
-入力（escape 表記）: `"eventmodeling tf 01 evt Alpha [[ \tD\t ]]"`
+入力（エスケープ表記）: `"eventmodeling tf 01 evt Alpha [[ \tD\t ]]"`
 
 出力
 ([data-references/reference-padded-output.mmd](../tests/fixtures/eventmodeling/data-references/reference-padded-output.mmd)):
@@ -264,7 +265,7 @@ tf 01 evt Alpha [[D]]
 
 ### Type tags
 
-型タグの内側は `` `json` `` と詰め、本文の前は普通の 空白 1 個にします。
+型タグの内側は `` `json` `` と詰め、本文の前は普通の空白 1 個にします。
 注記と値を見分けるためです。
 タグの有無と全 8 種の型語は原文どおり残します。
 タグは本文を JSON などとして解釈する指示ではありません。
@@ -282,7 +283,7 @@ tf 01 evt Alpha [[D]]
 
 [fixture: eventmodeling/type-tags/all-block-tags-retained]
 
-入力（escape 表記）:
+入力（エスケープ表記）:
 `"eventmodeling tf 01 evt Alpha \u0060 \tjson \t\u0060{ x }"`
 
 出力
@@ -295,8 +296,7 @@ tf 01 evt Alpha `json` { x }
 
 ### Qualified names
 
-修飾名のドットの普通の隙間は改行や Unicode 空白も詰め、
-`Shop.Bought` にします。
+修飾名のドットの普通の隙間は改行や Unicode 空白も詰め、`Shop.Bought` にします。
 ドットは既存の識別子区間を接続する記号だからです。
 完全な識別子の綴りと、所有する隠れた形・コメント隙間は保ちます。
 隠れた形が消費する LF の後の `title` 区間に空白を足しません。
@@ -315,7 +315,7 @@ tf 01 evt Alpha `json` { x }
 
 [fixture: eventmodeling/qualified-names/hidden-before-title-segment-keep-no-prefix-space]
 
-入力（escape 表記）:
+入力（エスケープ表記）:
 `"eventmodeling rf 02 cmd Shop\n.\nBuy entity Root\n.\nChild"`
 
 出力
@@ -329,7 +329,8 @@ entity Root.Child
 
 ### Authored spellings
 
-短形・長形のフレームキーワード、全 9 種の実体の種類、数字の名前の綴りを保ちます。
+短形・長形のフレームキーワード、全 9 種の実体の種類、
+数字の名前の綴りを保ちます。
 フレームキーワードの別名変更は比較 Db が等しくても、選ばれた形を失います。
 実体の種類の別名は Db に残り、`1`、`01`、`001` は別のフレーム名なので、
 別名の変換も数値への正規化もしません。
@@ -344,7 +345,7 @@ entity Root.Child
 
 [fixture: eventmodeling/authored-spellings/nine-entity-types-preserved]
 
-入力（escape 表記）:
+入力（エスケープ表記）:
 `"eventmodeling timeframe 001 event Alpha resetframe 02 command Beta"`
 
 出力
@@ -393,10 +394,10 @@ note
 ```
 
 宣言と note の部品は `entity Shop.Buy`、`data D`、`note 01` と、
-普通の 空白 1 個で分けます。
-ブロック開始記号は見出し行の 空白 1 個後に置きます。
+普通の空白 1 個で分けます。
+ブロック開始記号は見出し行の空白 1 個後に置きます。
 値と閉じの境界は data の規則に従います。
-必須の名前 の `title` はフレームと同じく安全な前方境界を保ちます。
+必須の名前の `title` はフレームと同じく安全な前方境界を保ちます。
 
 [fixture: eventmodeling/declarations-and-notes/entity-ordinary]
 
@@ -406,7 +407,7 @@ note
 
 [fixture: eventmodeling/declarations-and-notes/data-name-title-keep-lf]
 
-入力（escape 表記）: `"eventmodeling entity\tShop\n.\nBuy"`
+入力（エスケープ表記）: `"eventmodeling entity\tShop\n.\nBuy"`
 
 出力
 ([declarations-and-notes/entity-ordinary-output.mmd](../tests/fixtures/eventmodeling/declarations-and-notes/entity-ordinary-output.mmd)):
@@ -426,11 +427,10 @@ GWT の見出しがコメントやディレクティブの後に続く場合、�
 [fixture: eventmodeling/gwt-clauses-and-items/header-completion-comment]
 [fixture: eventmodeling/gwt-clauses-and-items/header-directive-continuation]
 
-`gwt 99` は第 1 列、節キーワードはさらに 1 段、
-各項目はさらに 1 段深くします。
+`gwt 99` は第 1 列、節キーワードはさらに 1 段、各項目はさらに 1 段深くします。
 架空の閉じ記号を足さず、書かれた節と項目の関係を見せます。
 必須の given・then、任意の when、項目の順序・反復・型語を保ちます。
-普通の項目部品は 空白 1 個で分け、必須の `title` の境界、隠れた形、注釈類、
+普通の項目部品は空白 1 個で分け、必須の `title` の境界、隠れた形、注釈類、
 保護された開始境界を優先します。
 
 [fixture: eventmodeling/gwt-clauses-and-items/given-when-then-nested]
@@ -449,7 +449,7 @@ GWT の見出しがコメントやディレクティブの後に続く場合、�
 
 [corpus fixture: eventmodeling/gram-gwt-item-comment-line]
 
-入力（escape 表記）:
+入力（エスケープ表記）:
 `"eventmodeling gwt 99 given evt Alpha cmd Beta when command Buy then ui Screen rmo View tf 01 evt End"`
 
 出力
@@ -492,7 +492,7 @@ tf 01 evt End
 
 [fixture: eventmodeling/inline-data/data-hidden-looking-text]
 
-入力（escape 表記）: `"eventmodeling tf 01 evt Alpha { \t x  }"`
+入力（エスケープ表記）: `"eventmodeling tf 01 evt Alpha { \t x  }"`
 
 出力
 ([inline-data/inline-braces-unchanged-output.mmd](../tests/fixtures/eventmodeling/inline-data/inline-braces-unchanged-output.mmd)):
@@ -558,8 +558,7 @@ tf 01 evt Alpha { 	 x  }
 
 [fixture: eventmodeling/data-blocks/body-after-empty-first-row-kept]
 
-空行、空白だけの行、改行、行末の空白とタブ、
-行頭の余白より後の文字は保ちます。
+空行、空白だけの行、改行、行末の空白とタブ、行頭の余白より後の文字は保ちます。
 閉じ波括弧は第 1 列に残します。
 見かけの文、波括弧を含むテキスト、直後の閉じ風の行も、
 本文を持つ形の規則が後の閉じまで読む場合は保ちます。
@@ -577,7 +576,8 @@ tf 01 evt Alpha { 	 x  }
 開きの LF の前に空白がある場合、本文が `<`、`&`、`%%{` を含む場合、
 空でない行の ASCII 空白前置部分の後がタブなどの空白の場合は、
 本文全体を書かれたまま残します。
-HTML、entity、ディレクティブ風のテキストは、字下げで描画が変わる場合があるためです。
+HTML、entity、ディレクティブ風のテキストは、
+字下げで描画が変わる場合があるためです。
 `;` を含む本文も、書かれたまま残します。
 `#amp;` などの Mermaid の図固有の実体参照の綴りは、`;` で終わるからです。
 
@@ -596,7 +596,7 @@ HTML、entity、ディレクティブ風のテキストは、字下げで描画�
 [fixture: eventmodeling/data-blocks/body-style-semicolon-kept]
 
 Mermaid は本文内の字下げを受理し、変換前の値に含めます。
-そのため、この行頭余白の変更では、描画を保ちながら 変換前の Db 値が変わります。
+そのため、この行頭余白の変更では、描画を保ちながら変換前の Db 値が変わります。
 これは整形処理の明示的な例外で、パーサー、仕様、
 記録された Mermaid の Db の読みは変えません。
 
@@ -622,7 +622,7 @@ Mermaid は本文内の字下げを受理し、変換前の値に含めます。
 
 [fixture: eventmodeling/final-newline/final-block-padding-kept]
 
-入力（escape 表記）:
+入力（エスケープ表記）:
 `"eventmodeling\ndata AddItem01 {\n    sku: 'SHIRT-M'\n  quantity: 2\n}\n"`
 
 出力
@@ -636,7 +636,7 @@ data AddItem01 {
 }
 ```
 
-入力（escape 表記）:
+入力（エスケープ表記）:
 `"eventmodeling\ndata D {\n  sku: 'SHIRT-M'\n    quantity: 2\n  price: 10\n}\n"`
 
 出力
@@ -651,7 +651,7 @@ data D {
 }
 ```
 
-入力（escape 表記）: `"eventmodeling tf 01 evt Alpha [[D]] data D {\nx\n}\n"`
+入力（エスケープ表記）: `"eventmodeling tf 01 evt Alpha [[D]] data D {\nx\n}\n"`
 
 出力
 ([data-blocks/block-closer-indent-unsafe-output.mmd](../tests/fixtures/eventmodeling/data-blocks/block-closer-indent-unsafe-output.mmd)):
@@ -666,8 +666,7 @@ data D {
 
 ### Data boundaries
 
-ブロックデータが閉じの LF を消費するか、
-空白の先読みで止まるかを保ちます。
+ブロックデータが閉じの LF を消費するか、空白の先読みで止まるかを保ちます。
 普通の後続文を次の行へ移すときも、閉じ直後の水平空白は残します。
 LS・PS の先読みは終端トークンの外のままで、LF へ変えません。
 次が共通文なら、最初の LF の有無、前置の連なり全体、
@@ -691,7 +690,7 @@ EOF の論理 LF は明示的な末尾 LF 1 個にできます。
 
 [fixture: eventmodeling/data-boundaries/after-block-same-line-tab-metadata-boundary-kept]
 
-入力（escape 表記）: `"eventmodeling tf 01 evt Alpha [[D]] data D {\nx\n}"`
+入力（エスケープ表記）: `"eventmodeling tf 01 evt Alpha [[D]] data D {\nx\n}"`
 
 出力
 ([data-boundaries/block-eof-logical-lf-kept-output.mmd](../tests/fixtures/eventmodeling/data-boundaries/block-eof-logical-lf-kept-output.mmd)):
@@ -729,7 +728,7 @@ EM 終端トークンは他図種の変換済み共通の終端トークンと�
 
 [fixture: eventmodeling/common-boundaries/native-comment-common-padding-change-db]
 
-入力（escape 表記）:
+入力（エスケープ表記）:
 `"eventmodeling tf 01 evt Alpha \t%%{init:{}}%%  accDescr: D"`
 
 出力
@@ -756,7 +755,7 @@ title の前置空白、1 個の区切り、本文、末尾テキストを原文
 
 [fixture: eventmodeling/title/overwritten-occurrences]
 
-入力（escape 表記）: `"eventmodeling title\ntf 01 evt Alpha"`
+入力（エスケープ表記）: `"eventmodeling title\ntf 01 evt Alpha"`
 
 出力
 ([title/title-empty-remains-output.mmd](../tests/fixtures/eventmodeling/title/title-empty-remains-output.mmd)):
@@ -768,8 +767,8 @@ tf 01 evt Alpha
 
 ### Accessibility lines
 
-アクセシビリティの行形式は前置空白、キーワードとコロンの間、コロン後と末尾の空白、
-空本文、引用符、波括弧風のテキストを保ちます。
+アクセシビリティの行形式は前置空白、キーワードとコロンの間、
+コロン後と末尾の空白、空本文、引用符、波括弧風のテキストを保ちます。
 `EM_ACC_TITLE` と `EM_ACC_DESCR` はこれらも値に含むためです。
 空本文でも終端トークンは空ではなく、コロン形式をブロックへ変えません。
 行の値の LS・PS は内容のままです。
@@ -786,7 +785,7 @@ tf 01 evt Alpha
 
 [corpus fixture: eventmodeling/common-repeat-empty]
 
-入力（escape 表記）:
+入力（エスケープ表記）:
 `"eventmodeling accTitle: First\ntf 01 evt Alpha accTitle:"`
 
 出力
@@ -818,7 +817,7 @@ tf 01 evt Alpha accTitle:
 
 [corpus fixture: eventmodeling/common-description-repeat]
 
-入力（escape 表記）: `"eventmodeling accDescr\n\n{ Details }"`
+入力（エスケープ表記）: `"eventmodeling accDescr\n\n{ Details }"`
 
 出力
 ([description-blocks/description-opener-newline-unchanged-output.mmd](../tests/fixtures/eventmodeling/description-blocks/description-opener-newline-unchanged-output.mmd)):
@@ -882,7 +881,7 @@ GWT 節・項目の隙間を保ちます。
 
 [corpus fixture: eventmodeling/detect-real-retained-secondscan]
 
-入力（escape 表記）:
+入力（エスケープ表記）:
 `"eventmodeling tf 01 evt Alpha ---\nx\n---\ntf 02 evt Beta"`
 
 出力
@@ -898,7 +897,7 @@ tf 02 evt Beta
 ### Comments
 
 普通の独立コメントは所属本文の段に揃え、GWT 項目間では項目の段にします。
-同じ印字行では接触を保ち、害のない分離を 空白 1 個にします。
+同じ印字行では接触を保ち、害のない分離を空白 1 個にします。
 単位を行に分けるとき、
 間の行内のコメントはディレクティブと同じく次の単位へ付けます。
 同じコメントを図種の間で同じように扱うため、共有の置き方を使います。
@@ -954,7 +953,7 @@ data ブロック、note、`accDescr` ブロック、スラッシュのブロッ
 
 [fixture: eventmodeling/comments/inline-percent-before-next-statement]
 
-入力（escape 表記）: `"eventmodeling\ntf 01 evt A /*c*/ tf 02 evt B\n"`
+入力（エスケープ表記）: `"eventmodeling\ntf 01 evt A /*c*/ tf 02 evt B\n"`
 
 出力
 ([comments/split-statements-block-output.mmd](../tests/fixtures/eventmodeling/comments/split-statements-block-output.mmd)):
@@ -1029,7 +1028,7 @@ CRLF は 1 単位、サロゲートペアは 2 単位と数えます。
 
 [fixture: eventmodeling/global-directives/standalone-directive-before-normal-frame]
 
-入力（escape 表記）:
+入力（エスケープ表記）:
 `"eventmodeling tf%%{wrap}%% 01 evt Alpha%%{wrap}%%->>%%{wrap}%%02"`
 
 出力
@@ -1092,7 +1091,7 @@ tf %%{wrap}%%01 evt Alpha %%{wrap}%%->> %%{wrap}%%02
 
 [fixture: eventmodeling/semicolons/two-hidden-clause-prefixes]
 
-入力（escape 表記）:
+入力（エスケープ表記）:
 `"eventmodeling tf 01 evt Alpha \"style:#x\" ;rf 02 cmd Beta"`
 
 出力
@@ -1121,7 +1120,7 @@ data の内部は [データブロック](#data-blocks) の規則に従います
 
 [fixture: eventmodeling/blank-lines/description-empty-ends-same-line-common-no-split]
 
-入力（escape 表記）:
+入力（エスケープ表記）:
 `"\n\neventmodeling\n\n\ntf 01 evt Alpha\n\n \t\n\nrf 02 cmd Beta\n\n"`
 
 出力
@@ -1148,7 +1147,7 @@ rf 02 cmd Beta
 
 [fixture: eventmodeling/trailing-whitespace/metadata-trailing-whitespace-removal-changes]
 
-入力（escape 表記）:
+入力（エスケープ表記）:
 `"eventmodeling \t\ntf 01 evt Alpha \t\nentity Shop.Buy \t"`
 
 出力
@@ -1176,7 +1175,7 @@ entity Shop.Buy
 
 [fixture: eventmodeling/long-lines/inline-value-wrapping-rejects]
 
-入力（escape 表記）:
+入力（エスケープ表記）:
 `"eventmodeling tf 001 evt VeryLongNamespace.VeryLongEventName ->> 002 ->> 003 ->> 004 [[LongDataName]] \u0060text\u0060 {a very long authored payload}"`
 
 出力
@@ -1191,8 +1190,8 @@ tf 001 evt VeryLongNamespace.VeryLongEventName ->> 002 ->> 003 ->> 004 [[LongDat
 
 印字処理は引用符を付けたり外したりしません。
 名前には引用符で囲む形がなく、`tf 01 evt "Alpha"` は拒否されます。
-フレームのデータの本文（行内の波括弧の中か、`data` 宣言のブロック内）、タイトル、
-アクセシビリティの値にある引用符は、テキストの文字です。
+フレームのデータの本文（行内の波括弧の中か、`data` 宣言のブロック内）、
+タイトル、アクセシビリティの値にある引用符は、テキストの文字です。
 Db は、データ `{"x"}` には `{"x"}` を、`{x}` には `{x}` を保持し、
 `accTitle: "T"` と書かれたタイトルには `accTitle: "T"` を保持します。
 そのため、引用符の有無を変えて同じテキストとして書けるものはなく、
@@ -1248,7 +1247,7 @@ YAML の入れ子は幅 0 でも正の最小字下げを使います。
 
 [fixture: eventmodeling/frontmatter-yaml/indented-fences-kept]
 
-入力（escape 表記）:
+入力（エスケープ表記）:
 `"---\ntitle: 'YamlTitle'\nconfig: {eventmodeling: {padding: 12}}\n---\neventmodeling tf 01 evt Alpha"`
 
 出力
@@ -1319,7 +1318,7 @@ data の並べ替えは最初の検索結果も変える場合があります。
 
 [corpus fixture: eventmodeling/common-description-repeat]
 
-入力（escape 表記）:
+入力（エスケープ表記）:
 `"eventmodeling entity Shop.Alpha entity Shop.Alpha note 99 {\nunused\n}\ngwt 99 given evt Alpha then cmd Beta tf 01 evt Alpha ->> 02 ->> 02 [[D]] {unused} data D {\nfirst\n}\ndata D {\nsecond\n}\ndata Unused {\nx\n}\n"`
 
 出力
@@ -1367,7 +1366,7 @@ EOF に達する未完ディレクティブは字句上の終端を保ちます�
 
 [fixture: eventmodeling/final-newline/hidden-eof-with-no-lf-gets-lf]
 
-入力（escape 表記）: `"eventmodeling accDescr: D"`
+入力（エスケープ表記）: `"eventmodeling accDescr: D"`
 
 出力
 ([final-newline/final-common-line-newline-output.mmd](../tests/fixtures/eventmodeling/final-newline/final-common-line-newline-output.mmd)):
@@ -1382,7 +1381,7 @@ eventmodeling accDescr: D
 ignored-semicolon-as-token-boundary、html-tag-in-frontmatter、
 embedded-data-opaque、c4-keyword-anywhere に従います。
 新しい差異を加えず、拒否入力の単位の途中での分断を修復しません。
-素の mermaid.js による拒否には 素の mermaid.js の Db がないため、
+素の mermaid.js による拒否には素の mermaid.js の Db がないため、
 必要な比較は記録された仕様が定める読みを使います。
 ファイルの拒否入力は構文エラーとなって書き換えず、
 Markdown では埋め込み先に任せます。

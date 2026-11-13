@@ -46,7 +46,7 @@ the body; directive attachment follows Directives. [fixture:
 header/header-column] [fixture: header/header-direction-spelling] [fixture:
 header/header-inline-separated] [fixture: header/header-next-line-direction]
 [fixture: header/header-symbol] [fixture:
-header/header-direction-after-directive-kept] A symbol direction stands after
+header/header-direction-spelling-after-directive] A symbol direction stands after
 one space, as in [flowchart](./flowchart.md#direction): `agentflow-beta<` is
 printed `agentflow-beta <`. [fixture: header/header-symbol-touching-spaced]
 [test: agentflow: U+2028 between the header keyword and its direction]

@@ -26,7 +26,7 @@ import {
   isSpaceOrTab,
   isWordCharacter,
   isWhitespace,
-  textWithoutDirectives,
+  textRead,
 } from "./source.ts"
 import { c4ArgumentFields, c4NameFields, c4TextFields } from "./text-slots.ts"
 import {
@@ -1625,8 +1625,8 @@ function respell(
       : !"#%".includes(after ?? "\n") &&
         !(after === ":" && endsLikeStyleKeyword(printed))) &&
     rule.joins?.(
-      textWithoutDirectives(source, line, start),
-      textWithoutDirectives(source, textEnd, lineEndOf(source, textEnd)),
+      textRead(source, line, start),
+      textRead(source, textEnd, lineEndOf(source, textEnd)),
       source,
       start,
     ) !== true &&

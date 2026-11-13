@@ -802,11 +802,13 @@ The pinned Mermaid renders `stateDiagram-v2` notes as Markdown labels, setting
 This is limited Markdown support: lists fall back to their source text instead
 of a list layout in
 [`handle-markdown-text.ts`](https://github.com/mermaid-js/mermaid/blob/2086904e76c692331e34a45d7cc3bc30860d040e/packages/mermaid/src/rendering-util/handle-markdown-text.ts#L120-L145).
-The formatter reads notes with the same Marked, 16.4.2, as pinned Mermaid (see
-[`package.json`](../package.json)). It does not run the Markdown formatter on
-note contents; the rules below only align supported paragraph margins while
-preserving the remaining body text. [fixture: notes/markdown-code-kept]
-[fixture: notes/markdown-unordered-list-kept]
+The formatter reads notes with Marked, the Markdown parser that mermaid.js uses
+for these labels, and takes from it only how the body divides: whether it is a
+single paragraph rather than a list, a heading, a code block, or another block,
+and which inline forms the paragraph holds. It does not run the Markdown
+formatter on note contents; the rules below only align supported paragraph
+margins while preserving the remaining body text. [fixture:
+notes/markdown-code-kept] [fixture: notes/markdown-unordered-list-kept]
 
 For a note whose body starts after a single-line header, with `end note`
 starting its own line, align every content line of a single paragraph one level
