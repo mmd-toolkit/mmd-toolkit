@@ -161,19 +161,73 @@ and `"A#amp;"` is the quoted name of the same entity; in an attribute block, the
 there. [fixture: er/entity-placeholder-in-name] [fixture:
 er/entity-placeholder-in-quoted-name] [fixture:
 er/entity-placeholder-in-attribute-word] A `#` or `%%` after a unit on its line
-is no comment: this diagram has no comment rule, so `A # c` and
-`A ||--o{ B : x %% c` are rejected, while a comment line is removed before the
-lexer reads the text (see [Comment lines](../common.md#comment-lines)), also
-inside an attribute block or a subgraph, and inside a string that runs over
-several lines, where it is a comment region of the string. [fixture:
-er/lex-hash-after-name] [fixture: er/lex-percent-after-statement] [fixture:
-er/comment-line] [fixture: er/lex-block-comment-line] [fixture:
-er/lex-subgraph-comment-line] [fixture: er/tokens-comment-line-in-role-string]
-[fixture: er/tokens-comment-line-in-comment-string] [fixture:
+is no comment, except a `%%` after a U+2028 or U+2029 (see below): this diagram
+has no comment rule, so `A # c` and `A ||--o{ B : x %% c` are rejected, while a
+comment line is removed before the lexer reads the text (see
+[Comment lines](../common.md#comment-lines)), also inside an attribute block or
+a subgraph, and inside a string that runs over several lines, where it is a
+comment region of the string. [fixture: er/lex-hash-after-name] [fixture:
+er/lex-percent-after-statement] [fixture: er/comment-line] [fixture:
+er/lex-block-comment-line] [fixture: er/lex-subgraph-comment-line] [fixture:
+er/tokens-comment-line-in-role-string] [fixture:
+er/tokens-comment-line-in-comment-string] [fixture:
 er/tokens-comment-line-in-backquoted-word] A comment line that holds the closing
 quote of a string takes it with it, and the string is then not closed:
 `A ||--o{ B : "x`, a line break, and `%% c"` is rejected. [fixture:
 er/lex-comment-line-takes-closing-quote]
+
+**A comment line after a U+2028 or U+2029.** A U+2028 or U+2029 starts a line
+for a comment (see [Comment lines](../common.md#comment-lines)), so a `%%` after
+one of them, with only whitespace and directives between, is a comment line,
+though a unit lies before it on the line, and the lexer reads through it as
+through any comment line. A name that holds the U+2028 or U+2029 goes on after
+the comment line, and the characters before and after it are one name: `A`,
+U+2028, `%% c`, a line break, and `Bar` is the one entity `A`, U+2028, `Bar`. It
+is the same with U+2029, with spaces before the `%%`, with a line break between
+the U+2028 and the `%%`, with a directive before the `%%`, and with a CRLF or a
+lone CR where the line break stands. With two comment lines, `A`, U+2028,
+`%% c`, `%% d`, and `Bar` is the one entity `A`, U+2028, `Bar`, and `A`, U+2028,
+`%% c`, `B`, U+2028, `%% d`, and `C` the one entity `A`, U+2028, `B`, U+2028,
+`C`. [fixture: er/tokens-comment-line-in-name-line-separator] [fixture:
+er/tokens-comment-line-in-name-paragraph-separator] [fixture:
+er/tokens-comment-line-in-name-spaces-before-comment] [fixture:
+er/tokens-comment-line-in-name-line-feed-before-comment] [fixture:
+er/tokens-comment-line-in-name-directive-before-comment] [fixture:
+er/tokens-comment-line-in-name-crlf] [fixture:
+er/tokens-comment-line-in-name-lone-cr] [fixture:
+er/tokens-comment-lines-consecutive-in-name] [fixture:
+er/tokens-comment-lines-two-in-name] A space or a tab at the start of the next
+line ends the name: with `Bar` indented by two spaces or by a tab, the entities
+are `A` followed by U+2028, and `Bar`, and a comment line at the end of the text
+leaves the entity `A` followed by U+2028. [fixture:
+er/tokens-comment-line-in-name-line-separator-indented-name] [fixture:
+er/tokens-comment-line-in-name-paragraph-separator-indented-name] [fixture:
+er/tokens-comment-line-in-name-then-tab-name] [fixture:
+er/tokens-comment-line-in-name-line-separator-at-end] [fixture:
+er/tokens-comment-line-in-name-paragraph-separator-at-end] The U+2028 after the
+`}` of a description block starts a name of its own, so `accDescr {x}`, U+2028,
+`%% c`, and `Bar` are the description `x` and the entity U+2028, `Bar`.
+[fixture: er/tokens-comment-line-after-acc-descr-block-line-separator] The name
+is cut in the same way wherever it stands: the second entity of a relationship,
+a role without quotes, an alias, a class after `:::` or in a `class` statement,
+the id of a subgraph, the target of `style`, and the id of `classDef`. [fixture:
+er/tokens-comment-line-in-relationship-entity-line-separator] [fixture:
+er/tokens-comment-line-in-relationship-role-line-separator] [fixture:
+er/tokens-comment-line-in-alias-line-separator] [fixture:
+er/tokens-comment-line-in-class-separator-line-separator] [fixture:
+er/tokens-comment-line-in-class-statement-line-separator] [fixture:
+er/tokens-comment-line-in-subgraph-id-line-separator] [fixture:
+er/tokens-comment-line-in-style-target-line-separator] [fixture:
+er/tokens-comment-line-in-classdef-id-line-separator] A word of an attribute
+block holds a U+2028 or U+2029 in the same way (see
+[The attribute block context](#the-attribute-block-context)): `string x`,
+U+2028, `%% c`, and `y` in a block is the attribute with the type `string` and
+the name `x`, U+2028, `y`. [fixture:
+er/tokens-comment-line-in-attribute-word-line-separator] A directive inside such
+a name is rejected as in any name (see
+[Directives inside units](#directives-inside-units)): `A`, U+2028, `%% c`, and
+`B%%{init: {}}%%C` is rejected, while mermaid.js reads the one entity `A`,
+U+2028, `BC`. [fixture: er/div-directive-in-name-after-comment-line]
 
 ### Directives inside units
 

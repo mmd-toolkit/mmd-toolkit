@@ -8,7 +8,7 @@ import type {
   Token,
   TokenKind,
 } from "@mmd-toolkit/ast"
-import { isWhitespace } from "./character-classes.ts"
+import { isLineSegmentSeparator, isWhitespace } from "./character-classes.ts"
 import { APOSTROPHE } from "./code-points.ts"
 import { ParseError } from "./errors.ts"
 import type { DiagramComment } from "./diagram-parsing.ts"
@@ -145,12 +145,14 @@ interface Cut {
 
 /**
  * common.md, A directive is a token boundary, and `style` and `classDef`
- * lines: whether a token of kind `kind` may be cut, which only a `String`
- * token and a `RawText` token may. A directive or a `;` that the line rule
- * ignores inside a token of any other kind, a name, a number, a keyword, an
- * arrow, or another delimiter, makes the input rejected.
+ * lines: whether a token of kind `kind` may be cut at a directive or at a `;`
+ * that the line rule ignores, which only a `String` token and a `RawText`
+ * token may. A directive or such a `;` inside a token of any other kind, a
+ * name, a number, a keyword, an arrow, or another delimiter, makes the input
+ * rejected. A comment region cuts a token of every kind (see
+ * {@link SourceLexer.rejectCut}).
  */
-function mayBeCut(kind: DiagramTokenKind): boolean {
+function mayBeCutAtDirective(kind: DiagramTokenKind): boolean {
   return kind === "String" || kind === "RawText"
 }
 
@@ -638,39 +640,59 @@ export class SourceLexer {
 
   /**
    * common.md, A directive is a token boundary, and `style` and `classDef`
-   * lines: throws `ParseError` at the first of the cuts `cuts` of the token
-   * `token` when its kind may not be cut (see {@link mayBeCut}): the
-   * directive, or the `;` that the line rule ignores. A comment region cuts
-   * only tokens whose units span lines, `String` and `RawText` tokens
-   * (`docs/tokens.md`, Comment regions in tokens); one inside a token of
-   * another kind is a bug of the diagram's parser.
+   * lines: throws `ParseError` at the first directive, or the first `;` that
+   * the line rule ignores, among the cuts `cuts` of the token `token` when
+   * its kind may not be cut at one (see {@link mayBeCutAtDirective}). A
+   * comment region cuts a token of every kind: a unit that reads U+2028 or
+   * U+2029 as one of its characters, such as an ER name, goes on after the
+   * comment line that follows it (`docs/tokens.md`, Comment regions in
+   * tokens). Only a `String` token and a `RawText` token span lines, so the
+   * first region of a run of regions inside a token of another kind starts
+   * after a U+2028 or U+2029, and each next region starts where the one
+   * before it ends, after its line terminator; a region that starts after a
+   * line terminator otherwise is a bug of the diagram's parser.
    */
   private rejectCut(token: PendingToken, cuts: readonly Cut[]): void {
-    const [cut] = cuts
-    if (cut === undefined || mayBeCut(token.kind)) return
-    switch (cut.cause) {
-      case "comment-region":
-        throw new Error(
-          this.bug(
-            `the comment region at ${cut.range[0]} cuts the ${token.kind} token at ${token.range[0]}`,
-          ),
-        )
-      case "directive":
-        throw new ParseError(
-          "Unexpected directive",
-          cut.range,
-          this.lines.location(cut.range),
-        )
-      case "ignored-semicolon":
-        throw new ParseError(
-          "Unexpected ; that the line rule ignores",
-          cut.range,
-          this.lines.location(cut.range),
-        )
-      default:
-        throw new Error(
-          this.bug(`unknown cut ${JSON.stringify(cut.cause satisfies never)}`),
-        )
+    if (mayBeCutAtDirective(token.kind)) return
+    let previous: Cut | null = null
+    for (const cut of cuts) {
+      switch (cut.cause) {
+        case "comment-region": {
+          const followsRegion =
+            previous?.cause === "comment-region" &&
+            previous.range[1] === cut.range[0]
+          if (
+            !followsRegion &&
+            !isLineSegmentSeparator(this.text.charCodeAt(cut.range[0] - 1))
+          ) {
+            throw new Error(
+              this.bug(
+                `the comment region at ${cut.range[0]} cuts the ${token.kind} token at ${token.range[0]} after a line terminator`,
+              ),
+            )
+          }
+          break
+        }
+        case "directive":
+          throw new ParseError(
+            "Unexpected directive",
+            cut.range,
+            this.lines.location(cut.range),
+          )
+        case "ignored-semicolon":
+          throw new ParseError(
+            "Unexpected ; that the line rule ignores",
+            cut.range,
+            this.lines.location(cut.range),
+          )
+        default:
+          throw new Error(
+            this.bug(
+              `unknown cut ${JSON.stringify(cut.cause satisfies never)}`,
+            ),
+          )
+      }
+      previous = cut
     }
   }
 

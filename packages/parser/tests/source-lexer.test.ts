@@ -377,6 +377,48 @@ describe("SourceLexer.recordTokens", () => {
     ).toEqual(["%%{i}%%", "%%{j}%%"])
   })
 
+  it("cuts a token of any kind at a comment region that follows a U+2028 inside it", () => {
+    // docs/tokens.md, Comment regions in tokens: a name holds the U+2028 as
+    // one of its characters, so the comment line after it lies inside the
+    // name, which is cut into tokens of its own kind; a directive inside it
+    // still makes the input rejected.
+    const text = "A\u2028%% c\nBar"
+    const lexer = lexerOf(text)
+    lexer.recordTokens(
+      [{ kind: "Identifier", range: [0, text.length] }],
+      [],
+      null,
+    )
+    expect(listed(lexer)).toEqual([
+      ["Identifier", "A\u2028"],
+      ["Comment", "%% c"],
+      ["Identifier", "Bar"],
+    ])
+    // A second comment line starts where the first ends, after its line
+    // terminator, and cuts the name in the same way.
+    const twice = "A\u2028%% c\n%% d\nBar"
+    const consecutive = lexerOf(twice)
+    consecutive.recordTokens(
+      [{ kind: "Identifier", range: [0, twice.length] }],
+      [],
+      null,
+    )
+    expect(listed(consecutive)).toEqual([
+      ["Identifier", "A\u2028"],
+      ["Comment", "%% c"],
+      ["Comment", "%% d"],
+      ["Identifier", "Bar"],
+    ])
+    const directive = "A\u2028%% c\nB%%{x}%%C"
+    expect(() => {
+      lexerOf(directive).recordTokens(
+        [{ kind: "Identifier", range: [0, directive.length] }],
+        [],
+        null,
+      )
+    }).toThrow("Unexpected directive")
+  })
+
   it("cuts a token at each directive inside it, and keeps in the pieces the whitespace next to the cuts", () => {
     // docs/tokens.md, A token that a directive cuts: the range of a token is
     // the text of its value, so each piece, with the whitespace next to the

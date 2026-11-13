@@ -1,0 +1,27 @@
+{
+  "source": {
+    "kind": "authored",
+    "note": "er.md Units and contexts, Names: the U+2028 after the } of a description block starts a name of its own, which the comment line cuts after that one character: the description x and the entity U+2028, Bar."
+  },
+  "accepted": true,
+  "diagramType": "er",
+  "db": {
+    "direction": "TB",
+    "title": "",
+    "accTitle": "",
+    "accDescr": "x",
+    "entities": [
+      {
+        "id": "entity- Bar-0",
+        "attributes": [],
+        "alias": "",
+        "cssStyles": [],
+        "name": " Bar",
+        "classes": []
+      }
+    ],
+    "relationships": [],
+    "classes": [],
+    "subGraphs": []
+  }
+}

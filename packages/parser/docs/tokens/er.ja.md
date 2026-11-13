@@ -74,6 +74,58 @@
 [単位の中のディレクティブ](../../../spec/docs/diagrams/er.ja.md#単位の中のディレクティブ)
 を参照。
 
+コメント領域は、どの種類のトークンも切ります。
+[トークンの中のコメント領域](../tokens.ja.md#トークンの中のコメント領域)
+を参照。
+この図種では、U+2028 や U+2029 を文字として読む名前と属性ブロックの語が、
+コメント領域を持ちえます。
+`A`、U+2028、行 `%% c`、行 `Bar` は 1 つの名前です。
+そのノードは領域にまたがり、値は `A`、U+2028、`Bar` です。
+そのトークンは、U+2028 を後ろに持つ `A` と `Bar` の `Identifier` で、
+その間にコメントがあります。
+U+2029 でも、`%%` の前に空白があっても、同じです。
+U+2028 と `%%` の間に改行があっても、同じです。
+コメント行を終えるのが CRLF や単独の CR でも、属性ブロックの語でも、同じです。
+`%%` の前にディレクティブがあるときは、
+2 つのトークンの間に `Directive` トークンがあります。
+コメント行が 2 つあるときは、連続していても、間に名前の一部があっても、
+名前は 2 つか 3 つのトークンを持ち、その間にコメントがあります。
+[fixture: er/tokens-comment-line-in-name-line-separator]
+[fixture: er/tokens-comment-line-in-name-paragraph-separator]
+[fixture: er/tokens-comment-line-in-name-spaces-before-comment]
+[fixture: er/tokens-comment-line-in-name-line-feed-before-comment]
+[fixture: er/tokens-comment-line-in-name-directive-before-comment]
+[fixture: er/tokens-comment-line-in-name-crlf]
+[fixture: er/tokens-comment-line-in-name-lone-cr]
+[fixture: er/tokens-comment-lines-consecutive-in-name]
+[fixture: er/tokens-comment-lines-two-in-name]
+[fixture: er/tokens-comment-line-in-attribute-word-line-separator]
+名前は、どこにあっても同じトークンを持ちます。
+関係の 2 つ目のエンティティ、役割、別名、クラス、subgraph の id、
+`style` の対象、`classDef` の id がそうです。
+[fixture: er/tokens-comment-line-in-relationship-entity-line-separator]
+[fixture: er/tokens-comment-line-in-relationship-role-line-separator]
+[fixture: er/tokens-comment-line-in-alias-line-separator]
+[fixture: er/tokens-comment-line-in-class-separator-line-separator]
+[fixture: er/tokens-comment-line-in-class-statement-line-separator]
+[fixture: er/tokens-comment-line-in-subgraph-id-line-separator]
+[fixture: er/tokens-comment-line-in-style-target-line-separator]
+[fixture: er/tokens-comment-line-in-classdef-id-line-separator]
+コメント行が名前の中にないときは、
+名前は U+2028 の後で終わる 1 つのトークンを持ちます。
+それは、コメント行がテキストの終わりにあるときと、
+次の行が空白かタブで始まるときです。
+[fixture: er/tokens-comment-line-in-name-line-separator-indented-name]
+[fixture: er/tokens-comment-line-in-name-paragraph-separator-indented-name]
+[fixture: er/tokens-comment-line-in-name-then-tab-name]
+[fixture: er/tokens-comment-line-in-name-line-separator-at-end]
+[fixture: er/tokens-comment-line-in-name-paragraph-separator-at-end]
+説明ブロックの `}` の後の U+2028 は、それ自身の名前を始め、
+その最初のトークンはその 1 文字です。
+[fixture: er/tokens-comment-line-after-acc-descr-block-line-separator]
+コメント行の後の名前の中のディレクティブは、どの名前でもそうであるように、
+入力を拒否させます。 [fixture: er/div-directive-in-name-after-comment-line]
+
 - 文である空の説明ブロックは、`Keyword` トークン `accDescr` と、
   `Punctuator` トークン `{` と `}` を持ちます。
   [fixture: er/gram-acc-descr-block-empty]

@@ -129,7 +129,7 @@ describe("finishDiagram", () => {
       [{ kind: "RawText", range: [0, 1] }],
     ],
     [
-      "of a kind that a comment region cuts",
+      "with a comment region after a line feed inside an Identifier",
       "a\n%% c\nb",
       [{ kind: "Identifier", range: [0, 8] }],
     ],

@@ -180,7 +180,8 @@ er/spec-er-diagram-95010e73]
 [fixture:
 er/entity-placeholder-in-quoted-name] [fixture:
 er/entity-placeholder-in-attribute-word]
-行の中で単位の後にある `#` や `%%` はコメントではありません。
+行の中で単位の後にある `#` や `%%` は、
+U+2028 や U+2029 の後の `%%`（後述）を除いて、コメントではありません。
 この図にはコメントの規則がないので、
 `A # c` と `A ||--o{ B : x %% c` は拒否されます。
 コメント行は、字句解析器がテキストを読む前に、
@@ -196,6 +197,71 @@ er/tokens-comment-line-in-backquoted-word]
 文字列は閉じていないことになります。
 `A ||--o{ B : "x`、改行、`%% c"` は拒否されます。
 [fixture: er/lex-comment-line-takes-closing-quote]
+
+**U+2028 や U+2029 の後のコメント行。**
+U+2028 と U+2029 は、
+コメントのための行の始まりです（[コメント行](../common.ja.md#コメント行)
+を参照）。
+そのため、間に空白とディレクティブしかない `%%` は、その行の前に単位があっても、
+コメント行です。
+字句解析器は、ほかのコメント行と同じく、それを通り抜けて読みます。
+U+2028 や U+2029 を文字として持つ名前は、コメント行の後も続きます。
+コメント行の前後の文字は、1 つの名前です。
+`A`、U+2028、`%% c`、改行、`Bar` は、1 つのエンティティ `A`、U+2028、
+`Bar` です。
+U+2029 でも同じです。
+`%%` の前に空白があっても、U+2028 と `%%` の間に改行があっても同じです。
+`%%` の前にディレクティブがあっても同じです。
+改行の位置が CRLF や単独の CR でも同じです。
+コメント行が 2 つあるとき、`A`、U+2028、`%% c`、`%% d`、`Bar` は、
+1 つのエンティティ `A`、U+2028、`Bar` です。
+`A`、U+2028、`%% c`、`B`、U+2028、`%% d`、`C` は、1 つのエンティティ `A`、
+U+2028、`B`、U+2028、`C` です。
+[fixture: er/tokens-comment-line-in-name-line-separator]
+[fixture: er/tokens-comment-line-in-name-paragraph-separator]
+[fixture: er/tokens-comment-line-in-name-spaces-before-comment]
+[fixture: er/tokens-comment-line-in-name-line-feed-before-comment]
+[fixture: er/tokens-comment-line-in-name-directive-before-comment]
+[fixture: er/tokens-comment-line-in-name-crlf]
+[fixture: er/tokens-comment-line-in-name-lone-cr]
+[fixture: er/tokens-comment-lines-consecutive-in-name]
+[fixture: er/tokens-comment-lines-two-in-name]
+次の行の先頭にある空白かタブは、名前を終わらせます。
+`Bar` を 2 つの空白かタブで字下げすると、エンティティは `A`、
+U+2028 と `Bar` です。
+テキストの終わりのコメント行は、`A`、U+2028 というエンティティを残します。
+[fixture: er/tokens-comment-line-in-name-line-separator-indented-name]
+[fixture: er/tokens-comment-line-in-name-paragraph-separator-indented-name]
+[fixture: er/tokens-comment-line-in-name-then-tab-name]
+[fixture: er/tokens-comment-line-in-name-line-separator-at-end]
+[fixture: er/tokens-comment-line-in-name-paragraph-separator-at-end]
+説明ブロックの `}` の後の U+2028 は、それ自身の名前を始めます。
+`accDescr {x}`、U+2028、`%% c`、`Bar` は、説明 `x` とエンティティ U+2028、
+`Bar` です。
+[fixture: er/tokens-comment-line-after-acc-descr-block-line-separator]
+名前は、どこにあっても同じように切られます。
+関係の 2 つ目のエンティティ、引用符のない役割、別名、
+`:::` の後や `class` 文のクラス、subgraph の id、`style` の対象、
+`classDef` の id がそうです。
+[fixture: er/tokens-comment-line-in-relationship-entity-line-separator]
+[fixture: er/tokens-comment-line-in-relationship-role-line-separator]
+[fixture: er/tokens-comment-line-in-alias-line-separator]
+[fixture: er/tokens-comment-line-in-class-separator-line-separator]
+[fixture: er/tokens-comment-line-in-class-statement-line-separator]
+[fixture: er/tokens-comment-line-in-subgraph-id-line-separator]
+[fixture: er/tokens-comment-line-in-style-target-line-separator]
+[fixture: er/tokens-comment-line-in-classdef-id-line-separator]
+属性ブロックの語も、
+同じように U+2028 や U+2029
+を持ちます（[属性ブロックの文脈](#属性ブロックの文脈) を参照）。
+ブロックの中の `string x`、U+2028、`%% c`、`y` は、型 `string`、名前 `x`、
+U+2028、`y` の属性です。
+[fixture: er/tokens-comment-line-in-attribute-word-line-separator]
+このような名前の中のディレクティブは、どの名前でもそうであるように、
+拒否されます（[単位の中のディレクティブ](#単位の中のディレクティブ) を参照）。
+`A`、U+2028、`%% c`、`B%%{init: {}}%%C` は拒否されますが、
+mermaid.js は 1 つのエンティティ `A`、U+2028、`BC` として読みます。
+[fixture: er/div-directive-in-name-after-comment-line]
 
 ### 単位の中のディレクティブ
 

@@ -1,0 +1,27 @@
+{
+  "source": {
+    "kind": "authored",
+    "note": "er.md Units and contexts, Names: a comment line after the U+2028 of a name is removed and the name goes on with the next line: the one entity A, U+2028, Bar. The two Identifier tokens are cut at the comment region."
+  },
+  "accepted": true,
+  "diagramType": "er",
+  "db": {
+    "direction": "TB",
+    "title": "",
+    "accTitle": "",
+    "accDescr": "",
+    "entities": [
+      {
+        "id": "entity-A Bar-0",
+        "attributes": [],
+        "alias": "",
+        "cssStyles": [],
+        "name": "A Bar",
+        "classes": []
+      }
+    ],
+    "relationships": [],
+    "classes": [],
+    "subGraphs": []
+  }
+}

@@ -119,11 +119,12 @@ and
 and at the comment regions that the units read through
 ([`tokens.md`, Comment](./tokens.md#comment)), whose directives before the
 comment's `%%` are then outside every token; the pieces of a `String` token are
-`StringFragment` tokens. Only a `RawText` token and a `String` token may be cut:
-a directive or an ignored `;` inside a token of another kind makes the input
-rejected, at the directive or the `;`, which `SourceLexer.recordTokens` decides
-for every diagram in one place. Each directive outside the tokens and the
-comments is recorded as a `Directive` token of its own. The frontmatter is
+`StringFragment` tokens. A comment region cuts a token of every kind, but only a
+`RawText` token and a `String` token may be cut at a directive or an ignored
+`;`: a directive or an ignored `;` inside a token of another kind makes the
+input rejected, at the directive or the `;`, which `SourceLexer.recordTokens`
+decides for every diagram in one place. Each directive outside the tokens and
+the comments is recorded as a `Directive` token of its own. The frontmatter is
 recorded first, as its opening `---`, its body, and its closing `---`
 ([`ast.md`, Frontmatter](../../spec/docs/ast.md#frontmatter)).
 

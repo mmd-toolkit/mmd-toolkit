@@ -421,13 +421,27 @@ mermaid.js が値の一部として読むものを含みます（[トークン](
 1 つのトークンの中に領域がいくつもあれば、それぞれで切ります。
 [fixture: flowchart/tokens-string-two-comment-lines]
 [fixture: flowchart/tokens-rawtext-two-comment-lines]
-コメント領域を持ちうるのは、
-単位が行をまたぎうる `String` と `RawText` のトークンだけです。
+`String` と `RawText` のトークンは、単位が行をまたぎうるところで、
+コメント領域を持ちます。
+ほかの種類のトークンがコメント領域を持つのは、その単位が、
+U+2028 か U+2029 を文字として持つときです。
+この 2 つは、コメントのための行の始まりです。
+[コメント行](../../spec/docs/common.ja.md#コメント行) を参照。
+ER の図の名前がそうで、U+2028 の後のコメント行の後も、名前は続きます。
+そのため、コメント領域は、どの種類のトークンも切ります。
+ディレクティブと無視される `;` が切るのは、
+`String` と `RawText` のトークンだけです。
+[ディレクティブが切るトークン](#ディレクティブが切るトークン) を参照。
 `String` のトークンの断片は `StringFragment` のトークンです。
-`RawText` のトークンの断片は、
-ディレクティブが切るトークンの断片が元の種類を持つのと同じく、
-`RawText` のトークンです（[Directive](../../spec/docs/ast.ja.md#directive)
-を参照）。
+ほかの種類のトークンの断片は、ディレクティブが切るトークンの断片と同じく、
+元の種類を持ちます。
+[Directive](../../spec/docs/ast.ja.md#directive) を参照。
+ER では、`A`、U+2028、行 `%% c`、行 `Bar` は 1 つの名前です。
+そのトークンは、U+2028 を後ろに持つ `A` と `Bar` の `Identifier` で、
+その間にコメントがあります。
+[ER のトークン](./tokens/er.ja.md#トークン) を参照。
+[fixture: er/tokens-comment-line-in-name-line-separator]
+[fixture: er/tokens-comment-line-in-attribute-word-line-separator]
 ラベル、StringLiteral、リテラルなど、単位のノードは断片と領域にまたがり、
 その値は、これまでどおり領域の前と後のテキストをつないだものです。
 `A["one`、行 `%% two`、行 `three"]` では、

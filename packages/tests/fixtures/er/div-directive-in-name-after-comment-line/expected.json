@@ -1,0 +1,28 @@
+{
+  "source": {
+    "kind": "authored",
+    "note": "er.md Units and contexts, Names: a directive inside a name makes the input rejected, also in a name that a comment line cuts before it (directive-as-token-boundary); mermaid.js reads the one entity A, U+2028, BC."
+  },
+  "knownDivergence": "directive-as-token-boundary",
+  "accepted": true,
+  "diagramType": "er",
+  "db": {
+    "direction": "TB",
+    "title": "",
+    "accTitle": "",
+    "accDescr": "",
+    "entities": [
+      {
+        "id": "entity-A BC-0",
+        "attributes": [],
+        "alias": "",
+        "cssStyles": [],
+        "name": "A BC",
+        "classes": []
+      }
+    ],
+    "relationships": [],
+    "classes": [],
+    "subGraphs": []
+  }
+}

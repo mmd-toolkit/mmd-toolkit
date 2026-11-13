@@ -370,15 +370,26 @@ of whitespace and line terminators only that mermaid.js does not read as part of
 the value, such as one at the start of a label whose ends mermaid.js trims.
 Where several regions lie inside one token, it is cut at each. [fixture:
 flowchart/tokens-string-two-comment-lines] [fixture:
-flowchart/tokens-rawtext-two-comment-lines] Only `String` and `RawText` tokens
-can hold a comment region, because only their units may span lines. The
-fragments of a `String` token are `StringFragment` tokens; the fragments of a
-`RawText` token are `RawText` tokens, as the fragments of a token that a
-directive cuts keep its kind (see
-[Directive](../../spec/docs/ast.md#directive)). The node of the unit, such as a
-label, a StringLiteral, or a literal, spans the fragments and the region, and
-its value is the text before and after the region joined, as before. In
-`A["one`, a line `%% two`, and a line `three"]`, the label has the
+flowchart/tokens-rawtext-two-comment-lines] A `String` token and a `RawText`
+token can hold a comment region where their units may span lines. A token of
+another kind can hold one where its unit has a U+2028 or a U+2029 among its
+characters, which starts a line for a comment (see
+[Comment lines](../../spec/docs/common.md#comment-lines)), as the name of an ER
+diagram has: it goes on after a comment line that follows the U+2028. So a
+comment region cuts a token of every kind, while a directive and an ignored `;`
+cut only a `String` token and a `RawText` token (see
+[A token that a directive cuts](#a-token-that-a-directive-cuts)). The fragments
+of a `String` token are `StringFragment` tokens; the fragments of a token of any
+other kind keep its kind, as the fragments of a token that a directive cuts do
+(see [Directive](../../spec/docs/ast.md#directive)). In ER, `A`, U+2028, a line
+`%% c`, and a line `Bar` make one name with the `Identifier` tokens `A` with the
+U+2028 after it, and `Bar`, and the comment between them (see
+[ER tokens](./tokens/er.md#tokens)). [fixture:
+er/tokens-comment-line-in-name-line-separator] [fixture:
+er/tokens-comment-line-in-attribute-word-line-separator] The node of the unit,
+such as a label, a StringLiteral, or a literal, spans the fragments and the
+region, and its value is the text before and after the region joined, as before.
+In `A["one`, a line `%% two`, and a line `three"]`, the label has the
 `StringFragment` tokens `"one` with the line feed after it, and `three"`, with
 the comment between them, and the value `one`, a line feed, and `three`; in
 `A["`, a line `%% c`, and a line `b"]`, the fragments are `"` with a line feed,
