@@ -59,6 +59,7 @@ import {
   findStructuralToken,
   findTokensBetween,
   findTriviaBetween,
+  isSpaceOrTab,
   isStructural,
   skipRemoved,
 } from "./source.ts"
@@ -124,6 +125,33 @@ function startsPlainComment(source: Source, offset: number): boolean {
 /** Whether the statement is an `accTitle:` line. */
 function isAccTitle(statement: CommonStatement): boolean {
   return statement.type.includes("AccTitle")
+}
+
+/**
+ * Where the whitespace that the planned indentation of the next line supplies
+ * starts, after a line that ends with `statement`. A `title` with no text ends
+ * where its keyword ends, and the whitespace after it is no part of its range,
+ * unlike the whitespace after a title with text. That whitespace, when a
+ * directive or a comment follows it on the line, is a gap of the line, which a
+ * gap rule prints as one space, and no indentation of the next line, so the
+ * run starts after the last of those items (docs/treemap.md and
+ * docs/treeview.md, Title).
+ */
+export function relocatedWhitespaceStart(
+  source: Source,
+  statement: Node,
+  end: number,
+): number {
+  if (!statement.type.endsWith("TitleStatement")) return end
+  let position = end
+  let after = end
+  for (;;) {
+    while (isSpaceOrTab(source.text.charAt(position))) position++
+    const item = findTriviaBetween(source, position, position + 1)[0]
+    if (item === undefined) return after
+    position = item.range[1]
+    after = position
+  }
 }
 
 /**

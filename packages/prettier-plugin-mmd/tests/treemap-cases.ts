@@ -10,6 +10,24 @@ interface TreemapCase {
 
 export const treemapCases: readonly TreemapCase[] = [
   {
+    name: "treemap/title/bare-title-directive-space-and-line-separator",
+    input: 'treemap\ntitle \u2028%%{init: {}}%%\n"A":1\n',
+    output: 'treemap\ntitle %%{init: {}}%%\n  "A": 1\n',
+    options: {},
+  },
+  {
+    name: "treemap/title/bare-title-directive-space-and-paragraph-separator",
+    input: 'treemap\ntitle \u2029%%{init: {}}%%\n"A":1\n',
+    output: 'treemap\ntitle %%{init: {}}%%\n  "A": 1\n',
+    options: {},
+  },
+  {
+    name: "treemap/title/bare-title-directive-spaces-and-line-separator",
+    input: 'treemap\ntitle  \u2028%%{init: {}}%%\n"A":1\n',
+    output: 'treemap\ntitle %%{init: {}}%%\n  "A": 1\n',
+    options: {},
+  },
+  {
     name: "treemap/comments/standalone-ls",
     input:
       'treemap\n"SeparatorRoot"\n%% note\u2028still comment\n "SeparatorChild":2\n',

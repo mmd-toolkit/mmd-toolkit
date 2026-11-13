@@ -632,7 +632,24 @@ boundaries. The directives that end a title are printed with one space before
 each that has whitespace before it, and the whitespace after the last one is
 left out, whatever the whitespace at the end of the line (see
 [Texts after a keyword that are drawn the same](./compatibility.md#texts-after-a-keyword-that-are-drawn-the-same)).
-[fixture: title/title-directives-end-blanks-dropped]
+[fixture: title/title-directives-end-blanks-dropped] A `title` with no text,
+written with whitespace before a directive or a comment on its line, is printed
+with one space before the first of them, whether the whitespace is one character
+or more, a tab, or a space and a U+2028 or U+2029 (a title of whitespace only is
+a bare `title`), and with none where nothing is written between the keyword and
+the directive: `title`, a space, and `%%{init: {}}%%` is printed as it is, and
+`title`, three spaces, and `%%{init: {}}%%` as the first. The one whitespace
+character after the keyword is part of the keyword to mermaid.js, so a title
+with no text ends at its keyword, and that character is a gap of the line like
+the whitespace after a title with text; the second formatting finds the form of
+the first. [fixture: title/bare-title-directive-one-space] [fixture:
+title/bare-title-directive-spaces] [fixture: title/bare-title-directive-tab]
+[fixture: title/bare-title-directive-touching] [fixture:
+title/bare-title-comment-spaces] [fixture:
+title/bare-title-unclosed-directive-spaces] [test:
+treemap/title/bare-title-directive-space-and-line-separator] [test:
+treemap/title/bare-title-directive-space-and-paragraph-separator] [test:
+treemap/title/bare-title-directive-spaces-and-line-separator]
 
 A comment line after an empty title aligns with the next statement without
 becoming the title's value. [fixture: treemap/title/empty-next-comment]

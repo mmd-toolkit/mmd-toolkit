@@ -483,17 +483,17 @@ U+2028 and class, and two names in quotes] [test: a line that starts with U+2028
 and class, and a name with a class] [test: a line that starts with U+2028, a
 space, and class] [test: a line that starts with U+2028, a space, a name, and a
 direction line] A statement that starts with a whitespace character other than a
-space or a tab (U+2028, U+2029, or a no-break space after one of them), after
-another statement on its line, stays on its line when a comment follows that
-whitespace, with only whitespace, line breaks, and directives between:
-mermaid.js reads the whitespace as the name of an entity and draws that entity,
-while on a line of its own the whitespace belongs to a comment line, which takes
-it with the whitespace and line breaks before its `%%`, and no entity is drawn.
-At the end of its line before a directive, it is split from the statement before
-it like any other statement, and at the start of its line it is whitespace
-before the comment. [test: U+2028 alone after a name in quotes, before a
-comment] [test: U+2029 alone after a name in quotes and a space, before a
-comment] [test: U+2028 alone after the block of an accessibility description,
+space or a tab (U+2028, U+2029, or a no-break space that comes before one of
+them), after another statement on its line, stays on its line when a comment
+follows that whitespace, with only whitespace, line breaks, and directives
+between: mermaid.js reads the whitespace as the name of an entity and draws that
+entity, while on a line of its own the whitespace belongs to a comment line,
+which takes it with the whitespace and line breaks before its `%%`, and no
+entity is drawn. At the end of its line before a directive, it is split from the
+statement before it like any other statement, and at the start of its line it is
+whitespace before the comment. [test: U+2028 alone after a name in quotes,
+before a comment] [test: U+2029 alone after a name in quotes and a space, before
+a comment] [test: U+2028 alone after the block of an accessibility description,
 before a comment] [test: two U+2028 alone after a name in quotes, before a
 comment] [test: U+00A0 and U+2028 after a name in quotes, before a comment]
 [test: U+00A0 after a name in quotes at the end of its line, and U+2028 and a

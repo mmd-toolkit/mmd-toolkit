@@ -1710,6 +1710,25 @@ the value is a gap item whether one whitespace character or more comes before
 it: `title  ;T` and `title ;T` are printed alike. [fixture:
 treeview/semicolons/ignored-semicolon-title-value-second-space]
 
+A `title` with no text, written with whitespace before a directive or a comment
+on its line, is printed with one space before the first of them, whether the
+whitespace is one character or more, a tab, or a space and a U+2028 or U+2029 (a
+title of whitespace only is a bare `title`), and with none where nothing is
+written between the keyword and the directive: `title`, a space, and
+`%%{init: {}}%%` is printed as it is, and `title`, three spaces, and
+`%%{init: {}}%%` as the first. The one whitespace character after the keyword is
+part of the keyword to mermaid.js, so a title with no text ends at its keyword,
+and that character is a gap of the line like the whitespace after a title with
+text; the second formatting finds the form of the first. [fixture:
+title/bare-title-directive-one-space] [fixture:
+title/bare-title-directive-spaces] [fixture: title/bare-title-directive-tab]
+[fixture: title/bare-title-directive-touching] [fixture:
+title/bare-title-comment-spaces] [fixture:
+title/bare-title-unclosed-directive-spaces] [test:
+treeview/title/bare-title-directive-space-and-line-separator] [test:
+treeview/title/bare-title-directive-space-and-paragraph-separator] [test:
+treeview/title/bare-title-directive-spaces-and-line-separator]
+
 [fixture: treeview/title/title-shared]
 
 [fixture: treeview/title/title-bare]

@@ -423,6 +423,24 @@ export const treeviewCases: readonly TreeviewCase[] = [
     options: {},
   },
   {
+    name: "treeview/title/bare-title-directive-space-and-line-separator",
+    input: 'treeView-beta\ntitle \u2028%%{init: {}}%%\n"A"\n',
+    output: 'treeView-beta\n  title %%{init: {}}%%\n  "A"\n',
+    options: {},
+  },
+  {
+    name: "treeview/title/bare-title-directive-space-and-paragraph-separator",
+    input: 'treeView-beta\ntitle \u2029%%{init: {}}%%\n"A"\n',
+    output: 'treeView-beta\n  title %%{init: {}}%%\n  "A"\n',
+    options: {},
+  },
+  {
+    name: "treeview/title/bare-title-directive-spaces-and-line-separator",
+    input: 'treeView-beta\ntitle  \u2028%%{init: {}}%%\n"A"\n',
+    output: 'treeView-beta\n  title %%{init: {}}%%\n  "A"\n',
+    options: {},
+  },
+  {
     name: "treeview/statements-one-per-line/separator-node-before-comment-ls",
     input: 'treeView-beta\n"a"\u2028%% c\n',
     output: 'treeView-beta\n"a"\u2028%% c\n',
