@@ -1714,6 +1714,13 @@ U+2028 と U+2029 は、requirement の図の単位の間の空白であり、�
 [test: U+2028 between direction and its value]
 [test: U+2028 after the colon of accTitle]
 [test: U+2028 inside an accessibility text]
+すぐ後に U+2028 か U+2029 が続く文字列は、その文字の後のコメントが、
+行を終える改行を取り除く所では、引用符を保ちます。
+その行は次の行と合わせて読まれるので、書かれたまま印字します。
+引用符がないと、名前がその文字を越えて続き、コメントがテキストになるからです。
+[test: U+2028 and a comment after the target in quotes of a relationship, with a statement after the comment]
+[test: U+2028 and a comment after a value in quotes, with a statement after the comment]
+[test: U+2028 and a comment after the class in quotes of a class statement, with a statement after the comment]
 
 ### 空白の文字
 

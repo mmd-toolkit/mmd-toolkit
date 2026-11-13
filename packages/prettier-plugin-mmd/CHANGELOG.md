@@ -287,6 +287,10 @@
   there, the whitespace between `stroke` and its `:` in a `classDef` or a
   `linkStyle` of `flowchart` and `agentflow`, a backslash in a style, and the
   `color:` and `text-align:` of a `block` `style`.
+  
+  > **NOTE:**\
+  > Overturned in the next release: in a `stateDiagram`, the commas of a `style`
+  > with one style stay as written, as in `style A fill: rgb(1,2,3)`.
 
 - [#68](https://github.com/mmd-toolkit/mmd-toolkit/pull/68) [`626b905`](https://github.com/mmd-toolkit/mmd-toolkit/commit/626b905d546affb973b08d129e42f7e4c8d6810d) Thanks [@ota-meshi](https://github.com/ota-meshi)! - Print a run of spaces and tabs inside a title, an `accDescr`, and the labels
   that mermaid.js draws as SVG text (the texts of a C4 statement, the strings of a

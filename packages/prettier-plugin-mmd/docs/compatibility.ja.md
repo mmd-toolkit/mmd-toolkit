@@ -202,6 +202,8 @@ ELK の配置のパッケージのどのリリースも、
 | [state](./state.ja.md#1-行に-1-文)                          | 最上位で `%` の語で始まり（`%a b`、`%a --> b c`）、同じ行に `%` で始まらない後ろの文がある文   | `%` の文と残りを別の行に                        | [2](./printed-form.ja.md#2-prettier-にない種類の隙間) | 10.9.8 と 11.7.0 が行の残りをコメントとして読む                                                                     | [fixture: state/statements-one-per-line/percent-word-then-text-kept]               |
 | [state](./state.ja.md#1-行に-1-文)                          | `:` を含み（`click A href "a:b" accDescr {}`）、同じ行に後ろの文がある click 文                | click と文を別の行に                            | [2](./printed-form.ja.md#2-prettier-にない種類の隙間) | 10.9.8 は `:` を、行の終わりまで続く説明の始まりとして読む                                                          | [fixture: state/statements-one-per-line/split]                                     |
 | [state](./state.ja.md#スタイル文の末尾のセミコロン)         | `style A fill:red;` の、`#` のない `style` を終える `;`                                        | `style A fill: red`（`;` を落とす）             | [3](./printed-form.ja.md#3-綴り)                      | 10.9.8 が `;` を 1 つの状態として読む                                                                               | [fixture: state/semicolons-at-the-end-of-a-style-statement/style-text-terminators] |
+| [state](./state.ja.md#色)                                   | `style A fill:#ABC` の、2 つ目の `:` がない `style` の色                                       | `style A fill: #abc`                            | [3](./printed-form.ja.md#3-綴り)                      | 10.9.8 が行をテキストとして描き、`#ABC` が状態の説明になる                                                          | [fixture: state/colors/style-read-as-description-kept]                             |
+| [state](./state.ja.md#トークンの間の空白)                   | `style A fill:rgb(1,2,3)` の、2 つ目の `:` がない `style` のコンマ                             | `style A fill: rgb(1, 2, 3)`                    | [1](./printed-form.ja.md#1-記号の横の空白)            | 10.9.8 が行をテキストとして描き、`rgb(1,2,3)` が状態の説明になる                                                    | [fixture: state/whitespace-between-tokens/style-color-function-commas-kept]        |
 | [flowchart、swimlane](./flowchart.ja.md#ラベルの内側の空白) | `A[ user@example.com ]`                                                                        | `A[user@example.com]`                           | [1](./printed-form.ja.md#1-記号の横の空白)            | flowchart: 11.7.0、11.17.2、12.0.0; swimlane: 11.16.1、11.17.2、12.0.0 が、空白のない形を拒否する                   | [fixture: flowchart/label-inner-whitespace/leading-whitespace-at-sign-kept]        |
 | [flowchart、swimlane](./flowchart.ja.md#矢印の前後の空白)   | `A@{ shape: circle }e1@--> B`                                                                  | `A@{ shape: circle } e1@--> B`                  | [1](./printed-form.ja.md#1-記号の横の空白)            | flowchart: 11.7.0、11.17.2、12.0.0; swimlane: 11.16.1、11.17.2、12.0.0 が、空白のある形を拒否する                   | [fixture: flowchart/arrow-spacing/edge-id-after-data-block-touches]                |
 | [flowchart](./flowchart.ja.md#トークンの間の空白)           | `style A fill:#f00,color:white` を `style A fill: #f00,color: white` と印字                    | `style A fill: #f00, color: white`              | [1](./printed-form.ja.md#1-記号の横の空白)            | 10.9.8 が、`color:` か `text-align:` で始まるスタイルからラベルの色を取る                                           | [fixture: flowchart/whitespace-between-tokens/style-color-touching-kept]           |
@@ -1815,6 +1817,13 @@ class 図の `classDef` は、例が数えていても、色を書かれたま�
 対象にする版に、そこに `classDef` を持たず、
 語をクラスのテキストとして描くものがあり、
 `classDef k fill:#FFF` と `classDef k fill:#fff` でテキストが異なるためです。
+state 図の `style` も、最初のスタイルの後のスタイルに `:` がない所では、
+色を書かれたまま残します。
+10.9.8 は、そこに `style` 文を持たず、`style A fill:#FFF` を、
+状態 `style` と `A`、および状態 `fill` の説明 `#FFF` として描くので、
+`#FFF` と `#fff` でテキストが異なるためです。
+2 つ目の `:` がある行は、10.9.8 が拒否するので、色を小文字で印字します。
+[fixture: state/colors/style-read-as-description-kept]
 [fixture: flowchart/colors/colors-in-lower-case]
 [fixture: flowchart/colors/swimlane-colors-in-lower-case]
 [fixture: agentflow/colors/colors-in-lower-case]
@@ -2138,6 +2147,12 @@ mermaid.js は、トークンの異なる綴りの一部を同じトークンと
 書かれたまま印字する行も、これらの綴りは 1 つの形にします。
 `NOTE OVER A:%%{init: {}}%%  ;ACTOR B` は `Note over A:%%{init: {}}%%  ;actor B`
 と印字し、空白と `;` とディレクティブはそのままです。
+ただし、mermaid.js が次の行と合わせて読む行では、
+テキストの引用符を書かれたまま残します。
+テキストの後のコメントが、その行の改行を取り除く行です。
+テキストとコメントの間に U+2028 か U+2029 があると、
+その間に入る引用符がコメントをテキストの一部にするか、
+引用符のない名前がその文字を越えて続くからです。
 [fixture: sequence/keyword-case/kept-line-in-one-form]
 [fixture: gantt/keyword-case/kept-line-in-one-form]
 例は、[構文のページ][mermaid-syntax-pages]の、

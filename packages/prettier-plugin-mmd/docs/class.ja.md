@@ -1158,6 +1158,10 @@ ASCII の英字、数字、`_` からなる 1 語で、
 バッククォートを保ちます。
 ほかの文字を含む名前（`` `a-b` ``、`` `Animal Class!` ``、`` `é` ``）と、
 コメントやディレクティブのある行の名前も、バッククォートを保ちます。
+ただし、U+2028 か U+2029 の後から始まるコメントやディレクティブは、
+printer が別の行に置くので、その行の名前は数えません。
+`` class `A_Car` ``、その文字、`%% c` は、`class A_Car` と、
+次の行のコメントとして印字します。
 `direction` で終わる名前と、`TB`、`BT`、`RL`、`LR` で始まる名前も、
 バッククォートを保ちます。
 字句解析器は、`direction`、空白（改行も含みます）、向きの名前を 1 行として読み、
@@ -1166,6 +1170,8 @@ ASCII の英字、数字、`_` からなる 1 語で、
 [fixture: quotes/names-without-quotes] [fixture: quotes/names-that-need-quotes]
 [fixture: quotes/names-next-to-a-direction-line]
 [fixture: quotes/names-on-a-kept-line-as-written]
+[test: U+2028 and a comment after a name in backquotes]
+[test: U+2028, a directive, and a comment after a name in backquotes]
 
 printer は引用符を付けません。
 文法が文字列を要求する箇所では、mermaid.js は引用符のないテキストを拒否します。

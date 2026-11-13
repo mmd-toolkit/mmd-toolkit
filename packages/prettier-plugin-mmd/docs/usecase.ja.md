@@ -201,13 +201,16 @@ U+2029、バッククォート、`&`、`#`、`<` を含む場合を除き、`"` 
 （[同じに描かれる綴り](./compatibility.ja.md#同じに描かれる綴り)を参照）。
 `singleQuote` は読みません。 [fixture: labels/single-quote-sensitive-kept]
 
-引用符で囲んでいないラベルのテキストが U+2028 か U+2029 で終わり、
-そのすぐ後にコメントが続くときは、引用符で囲みません。
+引用符で囲んでいないラベルのテキストが U+2028 か U+2029 で終わり、その後に、
+空白、改行、ディレクティブだけを挟んでコメントが続くときは、引用符で囲みません。
 その文字はコメントを始めます。
 詳しくは [コメント行](../../spec/docs/common.ja.md#コメント行)
 を参照してください。
 引用符で囲むと、閉じの引用符がその文字とコメントの間に入り、
 `%%` がラベルのテキストになって、mermaid.js が拒否するからです。
+そのような文字の前にあるテキストも同じです。
+コメントのある行は、次の行と合わせて読まれるので、
+引用符も含めて書かれたまま印字します。
 後ろにコメントがない同じラベルは、その文字を含むほかのラベルと同じく、
 引用符で囲みます。
 [test: usecase: U+2028 alone in the parentheses of an actor label, before a comment]
@@ -219,6 +222,13 @@ U+2029、バッククォート、`&`、`#`、`<` を含む場合を除き、`"` 
 [test: usecase: U+2028 alone in the parentheses of a boundary title, before a comment]
 [test: usecase: U+2028 alone in the brackets of a boundary title, before a comment]
 [test: usecase: U+2028 alone in the parentheses of an entity label, at the end of its line]
+[test: usecase: U+2028, a space, and a comment after a label text]
+[test: usecase: U+2028, a tab, and a comment after a label text]
+[test: usecase: U+2028, a directive, a space, and a comment after a label text]
+[test: usecase: U+2028, a directive, and a comment after a label text]
+[test: usecase: U+2028, a line feed, and a comment after a label text]
+[test: usecase: U+2029, a directive, and a comment after a label text]
+[test: usecase: U+2028, a space, and a comment after a note text that holds a percent mark]
 
 [fixture: labels/label-quote-kinds] [fixture: labels/label-empty-quotes]
 [fixture: labels/label-quote-rewrite-one-form]

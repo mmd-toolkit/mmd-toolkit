@@ -513,6 +513,16 @@ mermaid.js は state 図では `,` の前後の空白を何もないものとし
 描かれる図は同じです。
 詳しくは [同じに描かれるスタイル](./compatibility.ja.md#同じに描かれるスタイル)
 を参照してください。 [fixture: whitespace-between-tokens/style-colon-spaced]
+最初のスタイルの後のスタイルに `:` がない `style` 文は、
+コンマの前後の空白を書かれたままにします。
+`style A fill:rgb(1,2,3)` と `style A fill:a,b,c` は、`:` の後の空白を除いて、
+そのまま印字します。
+mermaid.js 10.9.8 は、state 図に `style` 文を持たず、そのような行を、状態と、
+その 1 つの説明として読みます（`a,b,c` は状態 `fill` の説明です）。
+説明はそのまま描かれるので、コンマの後の空白はテキストを変えます。
+2 つ目の `:` がある行は、10.9.8 が拒否します。
+[fixture: whitespace-between-tokens/style-color-function-commas-kept]
+[fixture: whitespace-between-tokens/style-description-commas-kept]
 ここではバックスラッシュは `,` をエスケープしません。
 `fill:a\,b ,stroke:c` は `fill: a\, b, stroke: c` と印字します。
 バックスラッシュの後で `:` の前にある空白は、
@@ -1345,6 +1355,14 @@ state 図の `style`、`classDef` 文のスタイルの色が対象です。
 [fixture: colors/colors-in-lower-case]
 [fixture: colors/words-that-are-not-colors-as-written]
 [fixture: state/colors/color-directive-in-url-name-kept]
+最初のスタイルの後のスタイルに `:` がない `style` 文は、
+色を書かれたままにします（`style A fill:#ABC` は `style A fill: #ABC`
+と印字します）。
+mermaid.js 10.9.8 が、その行を、状態の説明として、
+テキストのまま描くからです（[トークンの間の空白](#トークンの間の空白)を参照）。
+`classDef` 文は、どの場合も小文字で印字します。
+[fixture: colors/style-read-as-description-kept]
+[fixture: colors/style-read-as-description-kept-v1]
 
 入力
 ([colors/colors-in-lower-case-input.mmd](../tests/fixtures/state/colors/colors-in-lower-case-input.mmd)):
