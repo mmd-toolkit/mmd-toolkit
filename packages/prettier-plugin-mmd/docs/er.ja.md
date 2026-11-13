@@ -1426,7 +1426,10 @@ subgraph の中でも 1 桁目を保ちます（diagrams/er.md、方向の行）
 数えるのは最初に印字される行です。
 後の行に書かれたテキストは `:`
 の行に寄せるので（[複数行の文](#複数行の文)を参照）、`accTitle:`、改行、
-`direction LR` は、1 桁目の `accTitle: direction LR` として印字します。
+`direction LR` は、`accTitle:` が字下げの後に書かれていた場合も、
+1 桁目の `accTitle: direction LR` として印字します。
+書かれた文はタイトルで、
+字下げした `accTitle: direction LR` は方向の行になるためです。
 `direction` と方向の間のコメント行とディレクティブは、
 字句解析器がそれらなしにテキストを読むので、飛ばし（diagrams/er.md、
 単位の間のトリビア）、空行も同じです。
@@ -1445,6 +1448,8 @@ subgraph の中でも 1 桁目を保ちます（diagrams/er.md、方向の行）
 [fixture: accessibility-statements/first-column-value-after-blank-line]
 [fixture: accessibility-statements/first-column-text-brought-to-the-colon]
 [fixture: accessibility-statements/first-column-text-brought-to-the-colon-in-subgraph]
+[fixture: accessibility-statements/first-column-text-brought-to-the-colon-from-indentation]
+[fixture: accessibility-statements/first-column-text-brought-to-the-colon-from-indentation-directive]
 [fixture: accessibility-statements/first-column-directive-inside-direction]
 [fixture: accessibility-statements/first-column-directive-over-lines-before-direction]
 [fixture: accessibility-statements/indented-when-directive-takes-the-space-before-value]

@@ -1452,6 +1452,7 @@ classDiagram
 値が方向文として読まれるのを防ぎます。
 [fixture: multi-line-statements/title-next-direction-tb]
 [fixture: class/multi-line-statements/direction-directive-in-value-kept]
+[fixture: class/multi-line-statements/title-next-direction-directive-in-value]
 [fixture: multi-line-statements/title-next-direction-bt]
 [fixture: multi-line-statements/title-next-direction-lr]
 [fixture: multi-line-statements/title-next-direction-rl]

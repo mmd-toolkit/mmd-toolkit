@@ -441,11 +441,12 @@ mermaid.js がその位置でブロック形式のマッピングの行を拒否
 [fixture: whitespace-between-tokens/data-block-surrounding-trivia]
 [fixture: whitespace-between-tokens/data-block-and-ignored-line-kept]
 [fixture: whitespace-between-tokens/actor-data-block-kept]
-`create` のない `participant` と `actor` のデータブロックで、`:`、`,`、`;`、
-`>` のどれも含まず、改行も含まないものは、対象にする版が、
+`create` の有無にかかわらず、`participant` と `actor` のデータブロックで、`:`、
+`,`、`;`、`>` のどれも含まず、改行も含まないものは、対象にする版が、
 参加者の名前の一部として読みます。
 ブロックの前の空白、ブロックの中の空白、その後の `%%` コメントの前の空白も、
 名前に入ります。
+改行以外なら、どの空白文字でも同じです。
 そのため、ブロックの前の隙間、ブロック、コメントの前の隙間は、書かれたまま残し、
 ブロックの両端に空白は足しません。
 `participant A   @{ x }` と `actor B@{x}` はそのまま残り、
@@ -456,8 +457,7 @@ mermaid.js は名前を読む前にディレクティブを除きます。
 `participant B@{x}   %%{init: {}}%%   %% c` がその例です。
 コメントがなく、行がディレクティブで終わる場合は通常の隙間で、
 `participant E@{z} %%{init: {}}%%` と印字します。
-これらの文字か改行を含むブロックと、`create` のある文のブロックは、
-その版が拒否するので、上のとおりに印字します。
+これらの文字か改行を含むブロックは、上のとおりに印字します。
 詳しくは
 [対象にする版の mermaid.js のために残す形](./compatibility.ja.md#対象にする版の-mermaidjs-のために残す形)
 を参照してください。
@@ -470,6 +470,10 @@ mermaid.js は名前を読む前にディレクティブを除きます。
 [fixture: whitespace-between-tokens/compat-malformed-data-block-kept]
 [fixture: whitespace-between-tokens/data-block-name-end-characters-padded]
 [fixture: whitespace-between-tokens/data-block-name-created-kept]
+[fixture: whitespace-between-tokens/data-block-name-created-comment-gap-kept]
+[test: data blocks: sequence name block with a no-break space before a comment]
+[test: data blocks: sequence name block with an ideographic space before a comment]
+[test: data blocks: sequence name block with a form feed before a comment]
 行に単独の `)` のように、mermaid.js が何も読まない行は残し、
 周りの文と同じ段に置きます。
 [fixture: whitespace-between-tokens/data-block-and-ignored-line-kept]

@@ -506,8 +506,10 @@ mermaid.js はコロンの後に 1 文字を要求します。
 残りは落とします。
 行の続きにディレクティブなどの文字があるときは、
 空白がそれらと一緒に読まれるので、行を書かれたまま印字します。
+`;` によって分割せずに残す行の末尾にあるタスクも、その空白 1 文字を残します。
 [fixture: task-data/whitespace-only-data]
 [fixture: task-data/whitespace-only-data-then-directive]
+[fixture: task-data/whitespace-only-data-on-kept-line]
 タスクの部分の間のディレクティブは、
 その位置に残します（[ディレクティブ](#ディレクティブ) を参照）。
 

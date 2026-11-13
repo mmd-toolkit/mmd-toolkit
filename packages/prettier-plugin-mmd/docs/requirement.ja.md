@@ -1063,6 +1063,12 @@ LF 直後の ASCII 空白とタブだけを置き換えます。
 `LR` のどれか（大文字小文字は問わない）があるものは、1 桁目を保ちます。
 行は、ディレクティブとコメント行を除いて字句解析器が読むとおりに判断します。
 [fixture: accessibility-statements/first-column-kept]
+後の行に書かれたテキストは `:` の後ろに寄せるので、`accTitle:`、改行、
+`direction LR` は、`accTitle:` が字下げの後に書かれていた場合も、
+1 桁目の `accTitle: direction LR` として印字します。
+書かれた文はタイトルで、
+字下げした `accTitle: direction LR` は方向の行になるためです。
+[fixture: accessibility-statements/first-column-text-brought-to-the-colon-from-indentation]
 そのような方向を含まない行は、ほかの文と同じに字下げします。
 [fixture: accessibility-statements/first-column-not-needed]
 行全体で判断します。

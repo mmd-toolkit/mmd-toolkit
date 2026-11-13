@@ -761,8 +761,13 @@ timeline について対象にする版は、どちらの形も同じに描き�
 ヘッダーの行に残る period は、`:` が自分の行にある period の桁にないので、
 後ろの event は通常の続きの字下げに置きます。
 自分の行にある方向は period です。
+ここで改行として数えるのは mermaid.js が読むものなので、
+複数行にわたるディレクティブは改行になりません。
+`timeline TD%%{init:`、改行、`{}}%% title T` は `timeline TD title T` となり、
+テキストはその行に残します。
 [fixture: header-and-direction/second-word-stays-on-the-header-line]
 [fixture: header-and-direction/direction-then-period-stays]
+[fixture: header-and-direction/text-after-a-directive-over-lines-stays]
 [fixture: header-and-direction/text-after-the-header-without-direction-moves]
 [fixture: header-and-direction/direction-on-its-own-line-is-a-period]
 

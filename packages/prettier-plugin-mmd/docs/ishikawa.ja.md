@@ -38,14 +38,17 @@ beta の境界に合わない接尾辞は根のテキストに残します。
 指令は見出しを読む前に取り除かれます（`ishikawa-beta-beta` は、
 見出し `ishikawa-beta` と根 `-beta` です）。
 短い見出しが長い見出しとして読まれないようにするためです。
-ノードの字下げを書かれたままにするか、指令が根に接していて、
-根が見出しの行に残る場合は、見出しも書かれたままにします。
+ノードの字下げを書かれたままにするか、ディレクティブが根に接するか、
+閉じていないディレクティブが次の行をつなぐことで、根が見出しの行に残る場合は、
+見出しも書かれたままにします。
 `-betax` や `-x` のような根は、この語ではないので、見出しを短くします。
 [fixture: ishikawa/header/header-beta-then-beta-root]
 [fixture: ishikawa/header/header-beta-then-beta-root-kept]
 [fixture: ishikawa/header/header-beta-directive-then-beta-root-kept]
 [fixture: ishikawa/header/beta-directive-before-word-kept]
 [fixture: ishikawa/header/beta-directive-in-root-kept]
+[fixture: ishikawa/header/header-beta-then-beta-root-joined-line-kept]
+[fixture: ishikawa/header/header-beta-then-beta-root-joined-semicolon-line-kept]
 
 入力（エスケープ表記）:
 
@@ -85,7 +88,11 @@ ishikawa
 [対象にする版の mermaid.js のために残す形](./compatibility.ja.md#対象にする版の-mermaidjs-のために残す形)
 を参照してください。
 コメントを終わらせる区切り文字と同じ行で、その後に続くノードは、
-通常の規則に従います。 [fixture: ishikawa/indentation/indent-clamped]
+通常の規則に従います。
+根がそのように続く場合は、図全体が通常の規則に従います。
+対象にする版はどれもそのような根を拒否するため、字下げは図に影響しません。
+[test: ishikawa: header-spaced-directive-comment-ls]
+[fixture: ishikawa/indentation/indent-clamped]
 [fixture: ishikawa/indentation/indent-depth]
 [fixture: ishikawa/indentation/indent-relative-zero]
 [fixture: ishikawa/indentation/indent-unindented-causes]
