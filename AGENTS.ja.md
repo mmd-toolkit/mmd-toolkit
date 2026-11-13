@@ -22,9 +22,8 @@ Mermaid 記法（`.mmd`）について、mermaid.js が持つ全図種を対象�
 正しさの基準は pin した mermaid.js 本体。
 
 1. 受理・拒否が mermaid.js と一致する。
-   例外は、
-   仕様が Known divergences
-   （`packages/spec/docs/known-divergences.md`）に定義する入力で、
+   例外は、仕様が「既知の差異」（Known divergences、
+   `packages/spec/docs/known-divergences.md`）に定義する入力で、
    それぞれが識別子を持ち、関わる fixture にその識別子の印が付く。
 
    入力を差にするのは、次の 2 つの問いに、この順で答えた後だけである。
@@ -75,7 +74,7 @@ Mermaid 記法（`.mmd`）について、mermaid.js が持つ全図種を対象�
    issue と pull request を探し、見つけたものを事実として引く。
 
 2. 受理した入力の Db が mermaid.js と一致する。
-   ただし、Known divergences が読み方の違いを定義する入力を除く。
+   ただし、「既知の差異」が読み方の違いを定義する入力を除く。
 3. AST は入力を何も失わない。
    入力のすべての文字は、トークンかコメントに含まれるか、空白か行終端子である。
    トークンとコメントのテキストは、その範囲の入力と一致する。

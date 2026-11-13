@@ -38,8 +38,8 @@ SKILL [eslint-plugin](../eslint-plugin/SKILL.ja.md#方針と基準)
    SKILL `conventions`。
    前者は `.claude/skills/eslint-plugin/SKILL.md` にある。
 4. 木の定義: `packages/spec/docs/ast.md` と `packages/spec/docs/ast/<図種>.md`。
-5. `packages/eslint-plugin/docs/development.md` の Writing a rule、
-   The fixtures of the rules、Snapshots、Rules and their documents。
+5. `packages/eslint-plugin/docs/development.md` の「規則の書き方」、
+   「規則の fixture」、「スナップショット」、「規則と文書」の節。
 
 ## 2. 規則とは独立に、事実を確かめる
 
@@ -112,7 +112,7 @@ SKILL [eslint-plugin](../eslint-plugin/SKILL.ja.md#方針と基準)
 
 ## 3. 規則を書く
 
-- `docs/development.md` の Writing a rule に従う。
+- `docs/development.md` の「規則の書き方」の節に従う。
   規則の採否、範囲、`recommended` は rule-ideas の SKILL から来て、
   fix を持つか、提案を持つかは rule-ideas-suggestions の SKILL から来る。
 - fix と提案は、それぞれ `create` から分けた関数で組み立てる。

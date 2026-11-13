@@ -379,18 +379,19 @@ fixture corpus.
 
 Steps:
 
-1. Only `tests/fixtures.test.ts` writes the corpus records. It compares each
-   parse result with its record and checks acceptance with the shared helper
-   above (4.7). That the recorded trees keep the conditions of the tree and give
-   the Db of mermaid.js is a check of the corpus, which `@mmd-toolkit/tests`
-   makes on every recorded tree (`check-tree-corpus.test.ts` and
-   `db-from-tree.test.ts`); no test of the parser parses the fixtures again to
-   check them. A diagram test names the fixtures of the cases that it checks and
-   states what their trees hold; `tests/helpers/tree-problems.ts` wraps the
-   check of the tree conditions (`checkTree`) for such a test. When
-   `db-from-tree.test.ts` fails for a recorded tree because its accepted reading
-   has no embedded values to build the Db with, report it to the specification
-   with the input and the recorded reading.
+1. Only `tests/fixtures.test.ts` writes the corpus records (4.7). It compares
+   each parse result with its record and checks acceptance with the shared
+   helper above. That the recorded trees keep the conditions of the tree and
+   give the Db of mermaid.js is a check of the corpus, which
+   `@mmd-toolkit/tests` makes on every recorded tree
+   (`check-tree-corpus.test.ts` and `db-from-tree.test.ts`); no test of the
+   parser parses the fixtures again to check them. A diagram test names the
+   fixtures of the cases that it checks and states what their trees hold;
+   `tests/helpers/tree-problems.ts` wraps the check of the tree conditions
+   (`checkTree`) for such a test. When `db-from-tree.test.ts` fails for a
+   recorded tree because its accepted reading has no embedded values to build
+   the Db with, report it to the specification with the input and the recorded
+   reading.
 2. Find where text outside a node's range decides a reading. Example from the
    flowchart: the name text of a subgraph runs to its separator, and where empty
    description blocks follow the name, the whitespace between them lies outside

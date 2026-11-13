@@ -149,14 +149,17 @@ How each part is written:
   fixture (step 4 of
   [section 4](references/checking-before-and-after-writing.md)): `update` prints
   it as the formatter prints it, and `check:docs` fails on an example that it
-  would change. That step also covers comparing an example with its fixture, the
-  fixtures it may use, and the `<!-- prettier-ignore -->` exception. An example
-  kept as written under `<!-- prettier-ignore -->` has a sentence in Rule
-  Details that says why. An example or a claim without a fixture gets one, and
-  the document change is not done until the fixture exists. The prose quotes an
-  example as the code block writes it (`A --> B`, not `A-->B`, where the
-  formatter prints the spaces), and refers to a line by what it holds, not by
-  counting.
+  would change. That step also covers comparing an example with its fixture. An
+  example uses only fixtures whose `accepted` is true, also a correct example.
+  The only example that is not printed so is one kept as written on purpose,
+  where a way of writing that the formatter prints in one form is the point
+  (whitespace, the case of a value or a keyword, quotes, the form of a number):
+  `<!-- prettier-ignore -->` stands directly before its code block, in both
+  languages, and a sentence in Rule Details says why. An example or a claim
+  without a fixture gets one, and the document change is not done until the
+  fixture exists. The prose quotes an example as the code block writes it
+  (`A --> B`, not `A-->B`, where the formatter prints the spaces), and refers to
+  a line by what it holds, not by counting.
 - The examples are test cases. The tests of the rule read the English document:
   the `mmd` code blocks after the line "Examples of **incorrect** code for this
   rule:" up to the line "Examples of **correct** code for this rule:" are the

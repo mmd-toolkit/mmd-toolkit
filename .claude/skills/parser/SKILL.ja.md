@@ -56,8 +56,9 @@ pin した mermaid.js の更新を扱う。
 
 1. この文書の「方針と基準」の節（仕様だけから実装し、
    mermaid.js のソースを挙動の出どころにしない）、
-   AGENTS.md の「Shared interfaces」と「Principles」（読みやすさ、あるべき形）、
-   SKILL `conventions`（正規表現を使わない、見えない文字、文書の決まり）。
+   AGENTS.md の「共有するインターフェース」と「行動原則」（読みやすさ、
+   あるべき形）、SKILL `conventions`（正規表現を使わない、見えない文字、
+   文書の決まり）。
 2. `packages/parser/docs/development.md`（パーサーの作りと道具）、
    `docs/tokens.md` と `docs/positions.md`（木のトークン、位置、不変条件）、
    `docs/testing.md`（テストが何を確かめるか）、
@@ -172,8 +173,9 @@ pin した mermaid.js の更新を扱う。
    決まらないもの、仕様と fixture が食い違うもの、
    mermaid.js（3 節）と仕様が食い違うものは、仕様の欠落である。
    mermaid.js のソースから埋めず、入力と mermaid.js の結果を添えて、
-   先に仕様を直す（spec の SKILL の「[When a gap in the specification is
-   found](../spec/SKILL.ja.md#9-仕様の欠落が見つかったとき)」）。
+   先に仕様を直す（spec の SKILL の
+   [仕様の欠落が見つかったとき](../spec/SKILL.ja.md#9-仕様の欠落が見つかったとき)
+   の節）。
    仕様が決めなければならないことの、
    flowchart の例: 1 文字ずつ読む文脈での実体参照の読み方、
    subgraph の名前の中の `click` のトークンの種類、
@@ -243,7 +245,7 @@ flowchart のファイルが手本になる。
    ディレクティブを除いたテキストのような派生テキストを、
    中間結果として作らない。
    そうしたテキストは mermaid.js の前処理のパスを繰り返すもので、
-   仕様はその代わりに直接の規則を述べている（AGENTS.md の Principles）。
+   仕様はその代わりに直接の規則を述べている（AGENTS.md の「行動原則」）。
 3. ほかの図種の文書も述べる規則は、実装を 1 つにして両方で使う。
    flowchart と class の方向の行は、
    それぞれの値の一覧で `src/direction-line.ts` を使う。
@@ -275,7 +277,7 @@ flowchart のファイルが手本になる。
 6. 字句解析器が大文字小文字を区別しないとき（sequence ではすべての規則）は、
    語を `src/scanning.ts` の `matchWordIgnoringCase` と
    `matchWholeWordIgnoringCase` で比べる。
-   これらは Notation に従う。
+   これらは仕様の「表記」に従う。
    小文字にしてから比べることはしない。
 7. 図種の字句解析器が自分のコメントを読むとき（図のコメント。sequence では、
    行の終わりまでの `#` と `%`）は、その範囲と値の始まりを返し、

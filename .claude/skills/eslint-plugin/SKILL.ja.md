@@ -61,8 +61,7 @@ fixture で確かめて書く手順。
 3. 木の定義: `packages/spec/docs/ast.md` と `packages/spec/docs/ast/<図種>.md`。
    規則の条件は、ここにあるノードの型、欄、トークンの種類で書く。
 4. `packages/eslint-plugin/docs/rules/index.md` と、同じ種類の既存の文書 1 つ。
-5. `packages/eslint-plugin/docs/development.md` の「Rules and their
-   documents」の節。
+5. `packages/eslint-plugin/docs/development.md` の「規則と文書」の節。
    規則のファイル、文書のうちそれから生成する部分、
    コマンド `update` と `check:docs` が書いてある。
 
@@ -160,9 +159,13 @@ Rule Details は、文の後に、反するコードと従うコードの例を�
   にする。
   `update` が例をフォーマッターの印字する形にし、`check:docs` は、
   `update` が変える例があると失敗する。
-  その手順には、例とその fixture の比較、例に使える fixture と、
-  `<!-- prettier-ignore -->` の例外も書いてある。
-  `<!-- prettier-ignore -->` で書いたまま残す例には、
+  その手順には、例とその fixture の比較も書いてある。
+  例にする fixture は、従う例も含めて、`accepted` が true のものだけにする。
+  フォーマッターの印字する形にしない例は、
+  フォーマッターが 1 つの形に印字する書き方（空白、
+  値やキーワードの大文字小文字、引用符、数の書き方）そのものが要点で、
+  わざと書いたまま残す例だけである。
+  そのコードブロックの直前に、英日とも `<!-- prettier-ignore -->` を置き、
   その理由を述べる文を規則の詳細に置く。
   fixture のない例や主張には fixture を足し、
   fixture ができるまで文書の変更は終わらない。
@@ -304,8 +307,8 @@ Rule Details は、文の後に、反するコードと従うコードの例を�
 ## 6. 規則のファイルと、生成する部分
 
 文書はそれぞれ `src/rules/` の規則のファイルに属する。
-2 つは、`docs/development.md` の「Rules and their documents」の節のとおり、
-一緒に足し、名前を変え、消す。
+2 つは、`docs/development.md` の「規則と文書」の節のとおり、一緒に足し、
+名前を変え、消す。
 
 - 規則のファイルから来るもの: 規則があること、その名前、
   英語の説明（`meta.docs.description`）、
@@ -346,7 +349,7 @@ Rule Details は、文の後に、反するコードと従うコードの例を�
   規則の id の節である。
   `recommended` に入れる基準は、index でなく `docs/development.md` に書く。
 - 規則は、SKILL `eslint-plugin-rules` で実装する。
-  それは `docs/development.md` の「Writing a rule」の節に従う。
+  それは `docs/development.md` の「規則の書き方」の節に従う。
 
 ## 7. 図種に対応したとき
 
