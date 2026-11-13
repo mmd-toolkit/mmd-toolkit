@@ -698,6 +698,8 @@ Db がそのまま保つ属性のキーも同じです。
 mermaid.js が、テキストを読む前にディレクティブを取り除くからです。
 `class%%{init: {}}%%-A a` はそのまま残ります。
 `classDef` と `style` は対象外で、`classDef-x` は `classDef -x` と印字します。
+行の規則が無視する `;` も、キーワードと `-` を分けません。
+[fixture: whitespace-between-tokens/class-then-dash-ignored-semicolon-kept]
 [fixture: whitespace-between-tokens/class-then-dash-directive-kept]
 [fixture: whitespace-between-tokens/subgraph-then-dash-directive-kept]
 [fixture: whitespace-between-tokens/end-then-dash-directive-kept]
@@ -1368,6 +1370,10 @@ erDiagram
 ```
 
 ### アクセシビリティの文
+
+説明ブロックの後で行の規則が無視する `;` があっても、
+コロンを使う 1 行の形にでき、書かれた `;` は説明の後に残します。
+[fixture: accessibility-statements/block-trailing-ignored-semicolon]
 
 `accTitle` と `accDescr` の `:` は、キーワードに接し、後に空白 1 つを置きます。
 テキストは両端の空白を除きます。

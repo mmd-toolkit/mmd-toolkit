@@ -1800,7 +1800,14 @@ treeView-beta
 [fixture: treeview/modes/block-interior-active]
 [fixture: treeview/description-blocks/box-redraw-remove-opener-prefixes]
 [fixture: treeview/description-blocks/block-after-directive]
+罫線の文字の判定は、ディレクティブを取り除いたテキストで行うので、
+ディレクティブ内の罫線の文字を理由に波括弧を残すことはありません。
+[fixture: description-blocks/block-hidden-box-glyph]
 普通の空白だけの内部は `{}` です。
+行の規則が無視する `;` もテキストではありません。
+書かれた `;` があるために縮められないときは、
+`;` を残して空のブロックの配置にします。
+[fixture: description-blocks/block-ignored-semicolon-interior]
 波括弧を残すブロックは、`accDescr` と `{` の間を、
 元が接していても空白 1 つにします。
 キーワードと本文の開始を見分けやすくするためです。

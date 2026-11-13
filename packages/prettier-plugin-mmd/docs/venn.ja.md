@@ -653,6 +653,10 @@ venn-beta
 
 ### Style properties
 
+色関数のコンマ前後の空白を決めるときは、ディレクティブを越えて読み、
+その内容と隣の空白を保ちます。
+[fixture: style-properties/word-run-directive-parenthesis-kept]
+
 プロパティは `key: value` と印字します。
 コロンの前に空白はなく、後に空白が 1 つあります。
 プロパティの区切りはコンマと空白 1 つです。
@@ -762,6 +766,11 @@ venn-beta
 ```
 
 ### Line rule and kept lines
+
+宣言と、それと同じ行の明示のテキストの間にある、保つセミコロンは、
+別の宣言の前と同じように残します。
+そのため、次の整形でもラベルは行の規則の同じ文脈に置かれます。
+[fixture: line-rule-and-kept-lines/semicolon-before-explicit-text]
 
 セミコロンは Venn の文を区切りません。
 [スタイル文の末尾のセミコロン](#semicolons-at-the-end-of-a-style-statement)
@@ -873,6 +882,10 @@ mermaid.js はそれらを Db に残しますが、それらがなくても同�
 `title T  %%{x}%%  %%{y}%%  ` は `title T %%{x}%% %%{y}%%` と印字します。
 [fixture: venn/title/title-trailing-directive-blanks-dropped]
 [fixture: venn/title/title-two-directives-trailing-blanks-dropped]
+行の規則が無視する `;` の後の行にテキストがあるタイトルは、
+`;` とその行の字下げを含めて、書かれたまま残します。
+テキストを字下げして印字すると、字句解析器がタイトルを拒否するためです。
+[fixture: venn/title/ignored-semicolon-before-text-on-next-line-kept]
 LF と title で受理する広い種類の区切りは正規化します。
 ただし項目、結合領域、保持部分の境界は保ちます。
 [corpus fixture: venn/db-frontmatter-title-overridden]

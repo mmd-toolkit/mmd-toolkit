@@ -2703,6 +2703,25 @@ treeView、ユースケース、wardley の図（残りの 12 図種）では、
 [test: U+2028 before the text of a flowchart description block]
 [test: U+2028 after the text of a flowchart description block]
 
+改行、`direction` との分離、treeView の箱の文字を調べるときは、
+ディレクティブとそれが取り除く空白を除いた後の図のテキストを読みます。
+そのため、閉じたディレクティブの中の改行や箱の文字は、
+波かっこを残す理由になりません。
+ブロックが 1 行にあるかを判断するときは、
+開き波かっこの前のディレクティブにも同じ規則を適用します。
+[fixture: flowchart/accessibility-lines/block-hidden-line-break]
+[fixture: flowchart/accessibility-lines/block-hidden-direction-gap]
+[fixture: flowchart/accessibility-lines/block-prefix-hidden-line-break]
+[fixture: treeview/description-blocks/block-hidden-box-glyph]
+[test: accessibility blocks: pie separator-inside-directive-converted]
+
+閉じ波かっこの後の共通コメント領域は、図が文を読む前に取り除かれるため、
+コロンの形への変換を妨げません。
+波かっこの後で行の規則が無視する `;` も後続の文としては数えず、
+書かれた `;` は説明の後に残します。
+[test: accessibility blocks: flowchart removed-comment-after-block-converted]
+[fixture: er/accessibility-statements/block-trailing-ignored-semicolon]
+
 後の箇条書きで述べるとおり、コロンの形の本文を `%%` の前で終える図種では、
 `}` の後のコメントは本文の後に残します。
 同じ行でブロックの後に続く文は、その行が文を同じ行に保つ行でなければ、
@@ -2732,7 +2751,7 @@ C4 図で空のブロックの後にあるブロック `accDescr {}accDescr {D}`
 コロンの形ではブロックの内容を保てないか、ブロックと同じに読まれない場合は、
 ブロックを書かれたまま残します。
 
-- 本文が複数行にまたがる場合です。
+- 図のテキストが複数行にまたがる場合です。
   コロンの形は 1 行だからです。
   [fixture: er/accessibility-statements/block-lines-kept]
   [fixture: pie/description-blocks/block-inline-leading-lines]
@@ -2769,7 +2788,8 @@ C4 図で空のブロックの後にあるブロック `accDescr {}accDescr {D}`
   [test: accessibility blocks: er text-between-ps-direction-kept]
   [test: accessibility blocks: requirement brace-after-ps-direction-kept]
 - `{` の前か `{` と本文の間にディレクティブがあり、
-  ブロックが複数行にまたがるか、文を同じ行に保つ行で後ろに別の文が続く場合です。
+  ブロック内の図のテキストが複数行にまたがるか、
+  文を同じ行に保つ行で後ろに別の文が続く場合です。
   [`;` を含む行](#-を含む行)を参照してください。
   C4 でブロックが空のブロックの隣にある行も、そのような行です。
   このようなブロックをコロンの形で印字するのは、ブロックが 1 行にあり、
@@ -2800,8 +2820,9 @@ C4 図で空のブロックの後にあるブロック `accDescr {}accDescr {D}`
   [fixture: flowchart/accessibility-lines/empty-block-directive-kept]
 - ブロックが閉じていない場合です。
   [fixture: flowchart/accessibility-lines/block-unclosed]
-- 文を同じ行に保つ行のブロックで、同じ行の後ろに文か `;` が続くか、
-  mermaid.js の行の規則が読む行の場合です（[`;` を含む行](#-を含む行)を参照）。
+- 文を同じ行に保つ行のブロックで、
+  同じ行の後ろに図が読む文か `;` が続く場合です。
+  mermaid.js の行の規則が読む行も含みます（[`;` を含む行](#-を含む行)を参照）。
   コロンの形は行末まで続くため、後ろの文が本文の一部になってしまいます。
   [fixture: flowchart/accessibility-lines/block-before-another-statement-on-a-kept-line]
   [fixture: flowchart/accessibility-lines/block-on-style-line-kept]
@@ -5154,6 +5175,11 @@ mermaid.js がこう読む行は、ソースの何行にもまたがります。
 空の行や空白だけの行は、行を終わらせます。
 ただし、その後にコメント行が続くときは別です。
 コメント行の前にあるそのような行は、領域に入り、領域と一緒に取り除かれます。
+ディレクティブの中の U+2028 や U+2029 はディレクティブと一緒に取り除かれるため、
+図のコメントを終わらせることも、途中で切ることもありません。
+そのようなディレクティブの前後にあるコメントの断片は、1 つのコメントのまま、
+書かれたまま印字します。
+[test: a diagram comment joined past a closed directive that holds U+2028]
 
 ## フロントマター
 

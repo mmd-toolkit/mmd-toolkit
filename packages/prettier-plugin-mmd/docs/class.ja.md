@@ -130,6 +130,9 @@ CSS クラスの後の、空白だけの行を中に持つ本体も `{ }` にし
 [fixture: member-bodies/directive-only-over-lines-kept]
 [fixture: member-bodies/percent-member-kept]
 [corpus fixture: class/lex-member-percent]
+メンバーの先頭は、行の規則が無視する `;` を取り除いた後に読みます。
+`%;% c` と書かれたメンバーも `%%` で始まるので、`{` の行に残します。
+[fixture: member-bodies/percent-member-ignored-semicolon-kept]
 
 入力
 ([member-bodies/split-input.mmd](../tests/fixtures/class/member-bodies/split-input.mmd)):

@@ -203,6 +203,11 @@ mermaid.js が名前の後の空白を trim するので Db は同じであり�
 [fixture: names-and-headings/heading-data-touches-name]
 [test: agentflow: U+2029 between a connector name and its data block]
 
+タイトルの前の空白は、行の規則が無視する `;` を挟んでいても除きます。
+`connector style:#x ; [T]` は `connector style:#x;[T]` と印字します。
+セミコロンは、名前との位置関係を保ちます。
+[fixture: names-and-headings/title-after-ignored-semicolon]
+
 タイトルもデータブロックもない通常の 1 つの部分からなる名前では、
 末尾の空白も同じように落とします。
 `flow F` の後ろに空白が 2 つあれば `flow F` と印字し、
@@ -258,6 +263,8 @@ connectorにも名前がありますが、閉じる`end`はありません。
 Db が異なるからです。
 後ろに空白、改行、区切りだけが続く空白やタブは落とします。
 その文字のない EOF と同じく、テキストが id を終わらせ、Db も図も同じだからです。
+行の規則が無視する `;` は、この判断では後続のテキストになりません。
+[fixture: names-and-headings/click-exit-before-ignored-semicolon]
 [fixture: names-and-headings/name-exit-space-before-statement-kept]
 [fixture: names-and-headings/name-exit-space-before-separator-statement-kept]
 [fixture: names-and-headings/name-exit-space-before-blank-end-dropped]
@@ -294,6 +301,9 @@ click の ID として読む名前が、終了文字なしで EOF に達する�
 名前の本文を書かれたとおりに保ちます。
 加えるのは [末尾の改行](#final-newline) の末尾の LF だけです。
 [fixture: names-and-headings/name-click-exit-eof]
+閉じていないディレクティブが取る空白は、click の ID を読む前に取り除かれるので、
+終了文字にはならず、EOF では落とせます。
+[test: agentflow: click id before taken EOF whitespace]
 
 clickのIDの読みを終える文字の後の通常の空行は、空行に従います。
 [fixture: names-and-headings/name-exit-lf-empty-line]

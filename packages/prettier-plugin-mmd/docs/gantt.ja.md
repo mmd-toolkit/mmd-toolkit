@@ -1459,6 +1459,9 @@ mermaid.js は、その `%%{` を、前の空白が 1 文字か、
 [fixture: comments/percent-brace-line-after-directive-on-its-line]
 [fixture: comments/percent-brace-line-after-directive-touching]
 [fixture: comments/percent-brace-line-after-directive-with-tabs]
+印を構成する文字の間のディレクティブは、`%%{` を認識する前に取り除きます。
+ディレクティブを書かれたまま残し、同じ 1 文字の字下げを適用します。
+[fixture: comments/directive-in-percent-brace-marker]
 
 文やヘッダーの後ろのコメントは、書かれたとおり行に残します。
 空白が書かれていれば空白 1 つを置き、接していれば接したままにします。

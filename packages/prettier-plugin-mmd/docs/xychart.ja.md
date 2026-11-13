@@ -645,6 +645,11 @@ xychart
   bar [1 ""]
 ```
 
+キーワードとタイトルの間のディレクティブは、
+トークンの接触を判定する前に取り除かれます。
+そのため、`title %%{wrap x}%%abc` はタイトルを引用符で囲んで印字します。
+ディレクティブは書かれたまま残します。 [fixture: quotes/title-after-directive]
+
 ### アクセシビリティの文
 
 `accTitle` と `accDescr` の `:` は、キーワードに接し、

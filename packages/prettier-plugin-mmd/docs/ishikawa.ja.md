@@ -231,10 +231,12 @@ ishikawa
 本文の端の普通の空行ではないため、区切りの空行は 1 つ保ちます。
 見出しに付く図のコメントの後も同じで、見出しに接していても、
 空白で離れていても変わりません（[コメント](#comments) を参照）。
+コメントの前のディレクティブに mermaid.js が取り除く改行があっても同じです。
 最後の図コメントの後の隙間は、末尾まで全体を保ちます。
 [fixture: ishikawa/blank-lines/blank-comment-accepted]
 [fixture: ishikawa/blank-lines/blank-header-comment-accepted]
 [fixture: ishikawa/blank-lines/blank-spaced-header-comment-accepted]
+[fixture: ishikawa/blank-lines/header-comment-after-multiline-directive]
 [corpus fixture: ishikawa/gram-last-comment-blank-line]
 [fixture: ishikawa/blank-lines/header-comment-many-blanks]
 [fixture: ishikawa/blank-lines/interior-comment-many-blanks]
@@ -441,7 +443,7 @@ ishikawa
 [fixture: ishikawa/inline-directives/joined-line-spaces]
 
 先頭のディレクティブの隙間は、節点の深さによる字下げに数えます。
-ディレクティブの文字自体は数えません。
+ディレクティブの文字自体と、取り除かれる共通コメント領域は数えません。
 隙間は収まる間は保ち、超える分は最後の隙間から順に短くします。
 残りを最初のディレクティブの前に、設定の文字で補います。
 kanban の配分を再利用し、複数行の内容と継続列を保ち、
@@ -452,6 +454,8 @@ kanban の配分を再利用し、複数行の内容と継続列を保ち、
 [fixture: ishikawa/inline-directives/directive-multiline-join]
 [test: ishikawa: ls-comment-leading-directives]
 [test: ishikawa: ps-comment-leading-directive-kept-zero]
+[test: ishikawa: leading-directive-in-joining-region]
+[test: ishikawa: joining-region-does-not-count-indentation]
 
 入力（エスケープ表記）:
 

@@ -142,6 +142,10 @@ accDescr: d ; direction LR
 
 ### 1 行に 1 文
 
+語の後で行の規則が無視する `;` は、その語と次に残る `;` を分けません。
+その語と同じ行に残す範囲は、残る区切りだけで決まります。
+[fixture: statements-one-per-line/word-before-ignored-semicolon]
+
 文はそれぞれ 1 行に置きます。
 Prettier が整形する言語の文を 1 行ずつ印字するのと同じで（JavaScript の
 `a(); b()` は 2 行になります）、mermaid.js の文書も、
@@ -668,6 +672,10 @@ flowchart LR
 ```
 
 ### トークンの間の空白
+
+無視される `;` を取り除いた後に空白とタブだけが残る呼び出しの引数も、
+ほかの空白だけの引数と同じく、引数リストを書かれたまま残します。
+[fixture: whitespace-between-tokens/call-blank-ignored-part]
 
 同じ行の中で、2 つのトークンの間にある空白とタブの連続は、空白 1 つにします。
 行を、書いた人によらず 1 つの形にするためです。
@@ -3169,6 +3177,10 @@ flowchart LR
 ```
 
 ### スタイルの行末の空白
+
+入力の末尾で閉じていないディレクティブが取る空白は、スタイルの末尾ではないので、
+スタイルの空白は通常どおりに整えます。
+[test: style trailing NBSP taken by an unclosed directive]
 
 `style`、`classDef`、`linkStyle` の文の末尾の空白とタブは取り除きます。
 [fixture: style-trailing-whitespace/removed]

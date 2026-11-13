@@ -45,6 +45,16 @@ mermaid.js はコロンのない `gitGraph LR` を拒否するためです。
 [fixture: gitgraph/header/header-yaml-before-colon]
 ブロックの後の、単独の行にあるコロンは、その前の改行と一緒に除くので、
 空の行は残りません。
+ブロックとそのコロンの間のコメントやディレクティブは、ブロックへの接続か、
+最初の文の前での通常の字下げを保ちます。
+コロンを除いても空行は残りません。
+閉じていないディレクティブや、
+その引数内のディレクティブがコロンの前にある場合も同じです。
+[fixture: gitgraph/header/yaml-colon-after-comment]
+[fixture: gitgraph/header/yaml-colon-after-inline-directive]
+[fixture: gitgraph/header/yaml-colon-after-directive]
+[fixture: gitgraph/header/yaml-colon-after-nested-directive]
+[fixture: gitgraph/header/yaml-colon-after-unclosed-directive]
 [fixture: gitgraph/header/header-yaml-colon-on-its-own-line]
 [corpus fixture: gitgraph/header-hidden-before-colon]
 隠れた形の隙間と保護された見出し・本文の境界は保持します。

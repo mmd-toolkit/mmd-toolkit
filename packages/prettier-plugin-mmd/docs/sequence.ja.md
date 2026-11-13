@@ -595,6 +595,9 @@ mermaid.js の正規表現が最後の `)` まで読むので、書かれたま�
 [fixture: colors/functions-spaced] [fixture: colors/function-padding-kept]
 [fixture: colors/functions-as-written]
 [fixture: colors/functions-beside-comments-and-directives]
+成分の中のディレクティブは、関数を認識する前に取り除かれます。
+ディレクティブは書かれたまま残し、コンマの空白には通常の規則を適用します。
+[fixture: colors/directive-in-channel]
 実行した版と Db は、
 [同じに描かれる色](./compatibility.ja.md#同じに描かれる色)を参照してください。
 
@@ -869,6 +872,10 @@ Chromium で解析すると、その文字のない形を、対象にする版�
 ほかの版は読みました。 [fixture: colons/spaced] [fixture: colons/empty-text]
 [fixture: colons/whitespace-only-text]
 [fixture: colons/semicolon-after-whitespace-kept]
+その空白の前で行の規則が無視する `;` は、空白を認識する前に取り除かれます。
+`:` の直後にある場合は、無視される `;` とその後の空白が一緒に残るように、
+行を書かれたまま残します。
+[fixture: colons/ignored-semicolon-before-empty-text-whitespace]
 残した空白は、Markdown のコードブロックの最後の行の末尾では失われます。
 プラグインの印字によらず、Prettier が取り除くからです。
 詳しくは、

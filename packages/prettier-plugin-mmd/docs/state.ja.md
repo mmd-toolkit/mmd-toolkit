@@ -815,6 +815,10 @@ stateDiagram-v2
 
 ### ノート
 
+ブロックノートの見出しの後に無視されるセミコロンがあっても、
+見出しにノートの本文があることにはなりません。
+本文には通常のノートの配置を使います。 [fixture: notes/header-ignored-semicolon]
+
 1 行のノートの id の後、つまり `:` と本文は、
 mermaid.js が id の直後から最初の 2 文字を除いて読み、両端の空白を除きます。
 `note left of A:hi` の本文は `i` で、
@@ -1484,6 +1488,13 @@ stateDiagram-v2
 
 ### スタイル文の末尾のセミコロン
 
+除かれるテキストを含むスタイルでは、コロン前後の空白を書かれたまま保ち、
+削除できる末尾のセミコロンは削除します。
+ディレクティブ内のコロンは CSS のコロンではなく、ディレクティブがあっても、
+スタイルのコロンの前のエスケープは途切れません。
+[fixture: semicolons-at-the-end-of-a-style-statement/directive-colon-kept]
+[fixture: semicolons-at-the-end-of-a-style-statement/directive-escape-kept]
+
 `classDef` または `style` 文の行末の `;` は、
 [mermaid.js の行の規則](../../spec/docs/common.ja.md#style-行と-classdef-行)
 が無視するときに削除します。
@@ -1697,6 +1708,10 @@ stateDiagram-v2
 ```
 
 ### 行区切り文字
+
+行頭の区切り文字の前にディレクティブがあっても、区切り文字が隠れることはなく、
+行の字下げは書かれたまま保ちます。
+[test: a state line starting with a directive before U+2028]
 
 U+2028 か U+2029 を含む行は、書かれたまま残します。
 別名の 2 つ目の説明も、その文字の後の空白も含めて残します。
