@@ -47,6 +47,7 @@ kanban も同じ空行の規則と上の 4 つの場合に従います。
 ノード、icon、class の行が文です。
 データ接尾部はノードの行に属します。
 最初のノードの前のヘッダー末尾の空白と空行は受理します。
+
 [fixture: kanban/gram-grid-comment-line-header-line]
 [fixture: kanban/gram-grid-directive-line-header-line]
 [fixture: kanban/gram-grid-lf-header-line]
@@ -65,25 +66,39 @@ kanban も同じ空行の規則と上の 4 つの場合に従います。
 [fixture: kanban/lex-ps-whitespace-first]
 [fixture: kanban/lex-tab-whitespace-first]
 [fixture: kanban/div-header-space-node]
+
 ノードや装飾の前のコメントとその後の空行は受理します。
+
 [fixture: kanban/div-header-comments-blank]
 [fixture: kanban/div-between-comment-blank]
 [fixture: kanban/div-comment-blank-before-icon]
 [fixture: kanban/div-comment-blank-before-class]
+
 次の文の前で U+2028 と U+2029 に終わるコメントは受理します。
 mermaid.js はこれらの入力を拒否します。
+
 [fixture: kanban/div-header-comment-ls-node]
 [fixture: kanban/div-header-comment-ps-node]
 [fixture: kanban/div-between-real-comments-ls-node]
 [fixture: kanban/div-between-real-comments-ps-node]
+
 [空行](../diagrams/kanban.ja.md#空行) を参照してください。
 
 kanban ではヘッダー後の 1 つの図のコメントは両者で受理します。
+
 [fixture: kanban/header-header-comment-blank]
+
 ノード間の 2 つの図のコメントは両者で受理します。
+
 [fixture: kanban/gram-between-comments-blank]
-icon 前の空行は両者で受理します。 [fixture: kanban/gram-blank-before-icon]
-末尾の空行は両者で受理します。 [fixture: kanban/gram-shallower-then-empty]
+
+icon 前の空行は両者で受理します。
+
+[fixture: kanban/gram-blank-before-icon]
+
+末尾の空行は両者で受理します。
+
+[fixture: kanban/gram-shallower-then-empty]
 
 Ishikawa
 にも同じ直接の規則を適用します（「 [空行](../diagrams/ishikawa.ja.md#空行)」）。
@@ -93,6 +108,7 @@ Ishikawa
 1. 見出しの後の図のコメントが 0 個を含む偶数個で、
    その後に空行を挟んで最初の節点が続く形を受理します。
    コメントが 0 個なら、見出し末尾の空白や空行だけでも該当します。
+
    [fixture: ishikawa/div-header-two-comments-blank-node]
    [fixture: ishikawa/div-header-blank-node]
    [fixture: ishikawa/div-header-blank-indented-node]
@@ -115,6 +131,7 @@ Ishikawa
 2. 見出しの後の図のコメントが奇数個で、
    最後のコメントを終える U+2028 または U+2029 の後に、
    同じ物理行の節点が続く形を受理します。
+
    [fixture: ishikawa/div-header-comment-ls-node]
    [fixture: ishikawa/div-header-comment-ps-node]
    [fixture: ishikawa/div-header-inline-comment-ls-node]
@@ -125,6 +142,7 @@ Ishikawa
 3. 節点間の図のコメントが奇数個で、
    その後に空行を挟んで次の節点が続く形を受理します。
    コメント末尾の区切りの後に LF が続く形も含みます。
+
    [fixture: ishikawa/div-between-comment-blank-node]
    [fixture: ishikawa/div-between-comment-ls-blank-node]
    [fixture: ishikawa/div-between-comment-ps-blank-node]
@@ -136,12 +154,14 @@ Ishikawa
 4. 節点間の図のコメントが 0 個ではない偶数個で、
    最後のコメントを終える U+2028 または U+2029 の後に、
    同じ物理行の節点が続く形を受理します。
+
    [fixture: ishikawa/div-between-two-comments-ls-node]
    [fixture: ishikawa/div-between-two-comments-ps-node]
 
 両者が受理する対照例の木は保ちます。
 見出し後の奇数個のコメントと空行、節点間の偶数個のコメントと空行、
 見出し後の 2 個のコメントと区切りと節点、コメントの前や末尾の空行です。
+
 [fixture: ishikawa/gram-header-comment-blank-node]
 [fixture: ishikawa/gram-between-two-comments-blank-node]
 [fixture: ishikawa/gram-header-comment-spaces-node]
@@ -154,6 +174,7 @@ Ishikawa
 ソースの末尾が見出しだけで、書かれた改行も他の内容も続かない形は引き続き拒否し、
 この差異には含めません。
 除かれる directive と追加される LF では内容を補えません。
+
 [fixture: ishikawa/header-only] [fixture: ishikawa/header-beta-only]
 [fixture: ishikawa/header-directive-only-eof] [fixture: ishikawa/header-only-lf]
 
@@ -213,11 +234,12 @@ Ishikawa
 | 5   | 拒否       | 根                 |
 
 表で比較した読みを次の fixture が記録します。
-[fixture: mindmap/db-blank-line-after-header] [fixture:
-mindmap/div-header-two-comments-then-blank] [fixture:
-mindmap/div-comment-then-blank-between-nodes] [fixture:
-mindmap/div-shape-comment-then-blank] [fixture:
-mindmap/div-header-trailing-spaces-then-node]
+
+[fixture: mindmap/db-blank-line-after-header]
+[fixture: mindmap/div-header-two-comments-then-blank]
+[fixture: mindmap/div-comment-then-blank-between-nodes]
+[fixture: mindmap/div-shape-comment-then-blank]
+[fixture: mindmap/div-header-trailing-spaces-then-node]
 
 上の一覧の場合と、その隣の、どちらも同じに読む入力です。
 
@@ -226,47 +248,54 @@ mindmap/div-header-trailing-spaces-then-node]
   ヘッダーの行と次の行の 2 つの図のコメント、改行ごと取り除かれるコメント行を、
   空の行の前に置いたもの。
   一方、1 つか 3 つのコメントと空の行、コメントの前の空の行、コメント行だけは、
-  どちらも受理します。 [fixture: mindmap/db-whitespace-line-after-header]
-  [fixture:
-  mindmap/div-tab-line-after-header] [fixture:
-  mindmap/db-directive-between-header-and-first-node] [fixture:
-  mindmap/div-header-space-directive-then-node] [fixture:
-  mindmap/div-header-line-comment-comment-then-blank] [fixture:
-  mindmap/div-comment-line-then-blank-after-header] [fixture:
-  mindmap/gram-header-comment-then-blank] [fixture:
-  mindmap/gram-header-three-comments-then-blank] [fixture:
-  mindmap/gram-header-line-comment-then-blank] [fixture:
-  mindmap/gram-header-blank-then-comment] [fixture:
-  mindmap/db-comment-line-after-header]
+  どちらも受理します。
+
+  [fixture: mindmap/db-whitespace-line-after-header]
+  [fixture: mindmap/div-tab-line-after-header]
+  [fixture: mindmap/db-directive-between-header-and-first-node]
+  [fixture: mindmap/div-header-space-directive-then-node]
+  [fixture: mindmap/div-header-line-comment-comment-then-blank]
+  [fixture: mindmap/div-comment-line-then-blank-after-header]
+  [fixture: mindmap/gram-header-comment-then-blank]
+  [fixture: mindmap/gram-header-three-comments-then-blank]
+  [fixture: mindmap/gram-header-line-comment-then-blank]
+  [fixture: mindmap/gram-header-blank-then-comment]
+  [fixture: mindmap/db-comment-line-after-header]
+
 - 場合 2: `mindmap %% c`、U+2028、`root`。
-  一方、そうしたノードの前の 2 つのコメントは、どちらも受理します。 [fixture:
-  mindmap/div-header-comment-line-separator-node] [fixture:
-  mindmap/gram-header-two-comments-line-separator-node]
+  一方、そうしたノードの前の 2 つのコメントは、どちらも受理します。
+
+  [fixture: mindmap/div-header-comment-line-separator-node]
+  [fixture: mindmap/gram-header-two-comments-line-separator-node]
+
 - 場合 3: 3 つのコメント、icon の後のコメント、`%%{ }%%` の行、
   class の行の後のコメント、U+2028 と改行が続くコメントを、
   空行の前に置いたもの。
   また、コメントの後の、icon の行か class の行の前の空行。
   一方、2 つのコメント、コメント行、2 つのコメントの間の空行は、
-  どちらも受理します。 [fixture:
-  mindmap/div-three-comments-then-blank-between-nodes] [fixture:
-  mindmap/div-icon-comment-then-blank] [fixture:
-  mindmap/div-percent-brace-then-blank-between-nodes] [fixture:
-  mindmap/div-class-then-comment-then-blank] [fixture:
-  mindmap/div-shape-comment-line-separator-then-blank] [fixture:
-  mindmap/div-comment-then-blank-then-icon] [fixture:
-  mindmap/div-comment-then-blank-then-class] [fixture:
-  mindmap/gram-two-comments-then-blank-between-nodes] [fixture:
-  mindmap/gram-shape-comment-comment-then-blank] [fixture:
-  mindmap/gram-comment-line-then-blank-between-nodes] [fixture:
-  mindmap/gram-comment-blank-comment-blank-between-nodes] [fixture:
-  mindmap/db-blank-line-between-nodes] [fixture:
-  mindmap/gram-blank-then-comment-between-nodes] [fixture:
-  mindmap/gram-comment-then-blank-at-end] [fixture:
-  mindmap/gram-blank-then-icon]
+  どちらも受理します。
+
+  [fixture: mindmap/div-three-comments-then-blank-between-nodes]
+  [fixture: mindmap/div-icon-comment-then-blank]
+  [fixture: mindmap/div-percent-brace-then-blank-between-nodes]
+  [fixture: mindmap/div-class-then-comment-then-blank]
+  [fixture: mindmap/div-shape-comment-line-separator-then-blank]
+  [fixture: mindmap/div-comment-then-blank-then-icon]
+  [fixture: mindmap/div-comment-then-blank-then-class]
+  [fixture: mindmap/gram-two-comments-then-blank-between-nodes]
+  [fixture: mindmap/gram-shape-comment-comment-then-blank]
+  [fixture: mindmap/gram-comment-line-then-blank-between-nodes]
+  [fixture: mindmap/gram-comment-blank-comment-blank-between-nodes]
+  [fixture: mindmap/db-blank-line-between-nodes]
+  [fixture: mindmap/gram-blank-then-comment-between-nodes]
+  [fixture: mindmap/gram-comment-then-blank-at-end]
+  [fixture: mindmap/gram-blank-then-icon]
+
 - 場合 4: 形の後のコメント、`%%{ }%%` の行、U+2028、次のノード。
-  一方、そうしたノードの前の 1 つのコメントは、どちらも受理します。 [fixture:
-  mindmap/div-two-comments-line-separator-between-nodes] [fixture:
-  mindmap/lex-comment-ends-at-line-separator]
+  一方、そうしたノードの前の 1 つのコメントは、どちらも受理します。
+
+  [fixture: mindmap/div-two-comments-line-separator-between-nodes]
+  [fixture: mindmap/lex-comment-ends-at-line-separator]
 
 差異は一方向です。
 この仕様は mermaid.js が拒否する入力を受理し、
@@ -300,6 +329,7 @@ kanban の字句規則と文法も空白と文を同じように組にします�
 を参照してください。
 その組分けは木が持つものを変えません。
 同じ直接の規則を適用します。
+
 [fixture: kanban/gram-grid-comment-line-header-line]
 [fixture: kanban/gram-grid-directive-line-header-line]
 [fixture: kanban/gram-grid-lf-header-line]
@@ -336,6 +366,7 @@ Ishikawa も
 その組だけに依存する受理条件を保つ節点はありません。
 直接の規則は書かれた節点のテキストと字下げをすべて保ちます。
 この理由で受理する入力は増えますが、mermaid.js が受理する入力を拒否しません。
+
 [fixture: ishikawa/div-header-blank-node]
 [fixture: ishikawa/div-between-comment-blank-node]
 [fixture: ishikawa/gram-header-comment-blank-node]
@@ -359,10 +390,11 @@ mermaid.js はその入力を受理し、どのノードの字下げも変わり
 図のコメントを終える U+2028 か U+2029 は、
 改行までその後に空白しかないときはその空白ごと除き、
 その行で文が続くときはその前に改行を入れます。
-[fixture: mindmap/db-directive-between-header-and-first-node] [fixture:
-mindmap/div-header-trailing-spaces-then-node] [fixture:
-mindmap/div-shape-comment-line-separator-then-blank] [fixture:
-mindmap/div-two-comments-line-separator-between-nodes]
+
+[fixture: mindmap/db-directive-between-header-and-first-node]
+[fixture: mindmap/div-header-trailing-spaces-then-node]
+[fixture: mindmap/div-shape-comment-line-separator-then-blank]
+[fixture: mindmap/div-two-comments-line-separator-between-nodes]
 
 ## mermaid.js の文書と issue
 

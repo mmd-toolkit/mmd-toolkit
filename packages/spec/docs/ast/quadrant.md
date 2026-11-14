@@ -29,8 +29,10 @@ two coordinates, and styles, which a **class** of `classDef` may give too.
 Child fields: `body`. The header is not a field: there is one, and a second
 header makes the input rejected. A line break, a `;`, an empty line, and an
 empty statement belong to no statement and make no node. A text with a header
-and no statement is accepted. [fixture: quadrant/spec-quadrant-jison-fe2d2340]
-[fixture: quadrant/header-twice]
+and no statement is accepted.
+
+[fixture: quadrant/spec-quadrant-jison-fe2d2340] [fixture:
+quadrant/header-twice]
 
 **QuadrantStatement** is a QuadrantTitleStatement, QuadrantAccTitleStatement,
 QuadrantAccDescrStatement, QuadrantAccDescrBlockStatement,
@@ -49,10 +51,11 @@ Child fields: `value`. The value is the rest of the line without the whitespace
 at its ends, the whitespace characters of Notation such as U+00A0 and U+3000
 included, as mermaid.js reads a title: `title   T   ` has the value `T`,
 `title`, U+00A0, and `T` the value `T`, and `title` alone or followed by U+3000
-alone has the value null. [fixture: quadrant/db-title-nbsp-before-text]
-[fixture: quadrant/db-title-ideographic-only] [fixture:
-quadrant/db-ends-title-nbsp-end] [fixture:
-quadrant/db-ends-title-nbsp-end-of-text] [fixture:
+alone has the value null.
+
+[fixture: quadrant/db-title-nbsp-before-text] [fixture:
+quadrant/db-title-ideographic-only] [fixture: quadrant/db-ends-title-nbsp-end]
+[fixture: quadrant/db-ends-title-nbsp-end-of-text] [fixture:
 quadrant/db-ends-title-ideographic-end] [fixture:
 quadrant/db-ends-title-ideographic-end-of-text] [fixture:
 quadrant/db-ends-title-bom-end] [fixture:
@@ -73,8 +76,12 @@ Child fields: `value`. The whitespace after the `:` is read with it, line feeds
 included, so the text starts on the first line that has one: `accTitle:`
 followed by a line `title T` has the value `title T`. The value is the text
 without the whitespace at its ends, the whitespace characters of Notation such
-as U+00A0 included, as mermaid.js reads it, and is never empty: [fixture:
-quadrant/db-ends-acc-title-nbsp-end] [fixture:
+as U+00A0 included, as mermaid.js reads it, and is never empty: `accTitle:` with
+nothing after it but whitespace up to the end of the text, also U+00A0 alone, is
+rejected, and `accTitle:`, U+3000, a line break, and `title T` has the value
+`title T`.
+
+[fixture: quadrant/db-ends-acc-title-nbsp-end] [fixture:
 quadrant/db-ends-acc-title-nbsp-end-of-text] [fixture:
 quadrant/db-ends-acc-title-ideographic-end] [fixture:
 quadrant/db-ends-acc-title-ideographic-end-of-text] [fixture:
@@ -86,10 +93,8 @@ quadrant/db-acc-title-nbsp-after-colon] [fixture:
 quadrant/db-acc-title-ideographic-after-colon] [fixture:
 quadrant/db-acc-title-bom-after-colon] [fixture:
 quadrant/db-acc-title-ls-after-colon] [fixture:
-quadrant/db-acc-title-ps-after-colon] `accTitle:` with nothing after it but
-whitespace up to the end of the text, also U+00A0 alone, is rejected, and
-`accTitle:`, U+3000, a line break, and `title T` has the value `title T`.
-[fixture: quadrant/gram-acc-title-nbsp-only] [fixture:
+quadrant/db-acc-title-ps-after-colon] [fixture:
+quadrant/gram-acc-title-nbsp-only] [fixture:
 quadrant/db-acc-title-ideographic-then-next-line] [fixture:
 quadrant/db-acc-title-next-line-keyword] [fixture:
 quadrant/gram-unclosed-acc-title-at-end]
@@ -104,7 +109,9 @@ An `accDescr:` statement with its text.
 
 Child fields: `value`. As for QuadrantAccTitleStatement, the text starts on the
 first line that has one, has no whitespace of Notation at its ends, and is never
-empty. [fixture: quadrant/db-ends-acc-descr-nbsp-end] [fixture:
+empty.
+
+[fixture: quadrant/db-ends-acc-descr-nbsp-end] [fixture:
 quadrant/db-ends-acc-descr-nbsp-end-of-text] [fixture:
 quadrant/db-ends-acc-descr-ideographic-end] [fixture:
 quadrant/db-ends-acc-descr-ideographic-end-of-text] [fixture:
@@ -127,15 +134,19 @@ description block.
 
 Child fields: `value`. The block is always closed: the text may not end inside
 it. `accDescr {`, `D`, `E`, and `}` on four lines have the value `D`, a line
-feed, and `E`, and `accDescr {x`, U+00A0, and `}` the value `x`; [fixture:
-quadrant/db-acc-descr-block-nbsp-before-brace-close] `accDescr {}`, `accDescr {`
-and `}` on two lines, and a block of U+3000 alone have the value null and change
-nothing: `accDescr: D` followed by `accDescr {`, U+3000, and `}` keeps the
-description `D`. [fixture: quadrant/db-acc-descr-ideographic-block-keeps-line]
+feed, and `E`, and `accDescr {x`, U+00A0, and `}` the value `x`; `accDescr {}`,
+`accDescr {` and `}` on two lines, and a block of U+3000 alone have the value
+null and change nothing: `accDescr: D` followed by `accDescr {`, U+3000, and `}`
+keeps the description `D`.
+
+[fixture: quadrant/db-acc-descr-block-nbsp-before-brace-close] [fixture:
+quadrant/db-acc-descr-ideographic-block-keeps-line]
+
 An empty description block is a statement only where a statement starts and
 after the last unit of a statement; inside a statement it makes the input
 rejected (see
 [Empty description blocks](../diagrams/quadrant.md#empty-description-blocks)).
+
 [fixture: quadrant/db-acc-descr-block-lines] [fixture:
 quadrant/db-acc-descr-block-empty-braces] [fixture:
 quadrant/db-acc-descr-block-empty] [fixture:
@@ -162,8 +173,10 @@ text of the x axis, and the bottom and the top text of the y axis. When `end` is
 not null, `arrow` is true; `x-axis L -->` has the `arrow` true and the `end`
 null, which mermaid.js reads differently from `x-axis L`. The length of the
 arrow is not a field: `y-axis B ---> T` and `y-axis B --> T` have the same
-fields. [fixture: quadrant/db-x-axis-upper-case] [fixture:
-quadrant/db-y-axis-both] [fixture: quadrant/db-x-axis-left-with-arrow] [fixture:
+fields.
+
+[fixture: quadrant/db-x-axis-upper-case] [fixture: quadrant/db-y-axis-both]
+[fixture: quadrant/db-x-axis-left-with-arrow] [fixture:
 quadrant/db-y-axis-bottom-only] [fixture: quadrant/db-y-axis-long-arrow]
 
 ### QuadrantQuadrantStatement
@@ -176,8 +189,9 @@ quadrant/db-y-axis-bottom-only] [fixture: quadrant/db-y-axis-long-arrow]
 | `text`     | QuadrantLabel | The text of the quadrant. |
 
 Child fields: `text`. The number is the digit of the keyword: `Quadrant-1 A` has
-the quadrant 1, and `quadrant-10 A` the quadrant 1 and the text `0 A`. [fixture:
-quadrant/db-quadrant-upper-case] [fixture: quadrant/db-quadrant-ten]
+the quadrant 1, and `quadrant-10 A` the quadrant 1 and the text `0 A`.
+
+[fixture: quadrant/db-quadrant-upper-case] [fixture: quadrant/db-quadrant-ten]
 
 ### QuadrantPointStatement
 
@@ -203,6 +217,7 @@ the whitespace at its ends: `radius: 10, color: #f00` has the styles
 `radius:  10` and `color:  #f00`. How mermaid.js reads a style into a name and a
 value, and which styles it takes, is in the summary of the tests package and in
 [Rejections outside the grammar](../diagrams/quadrant.md#rejections-outside-the-grammar).
+
 [fixture: quadrant/db-point-plain] [fixture:
 quadrant/db-point-coordinate-any-char-x] [fixture:
 quadrant/db-point-coordinate-space-in-x] [fixture:
@@ -222,9 +237,10 @@ quadrant/db-style-radius-colon-after]
 | `styles` | list of QuadrantLiteral | The styles, in source order; at least one. |
 
 Child fields: `name`, `styles`. The styles are written as those of a point. A
-`classDef` without styles is rejected. [fixture: quadrant/db-classdef-color]
-[fixture: quadrant/db-classdef-two-styles] [fixture:
-quadrant/gram-classdef-no-style]
+`classDef` without styles is rejected.
+
+[fixture: quadrant/db-classdef-color] [fixture: quadrant/db-classdef-two-styles]
+[fixture: quadrant/gram-classdef-no-style]
 
 ### QuadrantLabel
 
@@ -245,8 +261,10 @@ markdown string leaves out its quotes and backquotes: ``"`A`": [0.3, 0.6]`` has
 the name with the kind `markdown` and the value `A`. The words after a string
 follow its content with the whitespace before them: `quadrant-1 "a" b` has the
 kind `string` and the value `a b`, and ``quadrant-1 "`a`" b`` the kind
-`markdown` and the value `a b`. [fixture: quadrant/db-quadrant-spaces-trimmed]
-[fixture: quadrant/db-quadrant-tab-inside] [fixture:
+`markdown` and the value `a b`.
+
+[fixture: quadrant/db-quadrant-spaces-trimmed] [fixture:
+quadrant/db-quadrant-tab-inside] [fixture:
 quadrant/db-x-axis-spaces-only-string] [fixture: quadrant/db-name-markdown]
 [fixture: quadrant/db-quadrant-quoted-then-bare] [fixture:
 quadrant/db-quadrant-markdown-then-bare] [fixture:
@@ -265,8 +283,9 @@ No child fields. The value keeps the whitespace inside it, line feeds included,
 and has none at its ends; for a title, an accessibility text, and the text of a
 description block, the whitespace characters of Notation such as U+00A0 are
 whitespace at its ends too: `accDescr {`, a line `  D`, a line `    E`, and `}`
-has the value `D`, a line feed, four spaces, and `E`. [fixture:
-quadrant/db-acc-descr-block-indented-lines] [fixture:
+has the value `D`, a line feed, four spaces, and `E`.
+
+[fixture: quadrant/db-acc-descr-block-indented-lines] [fixture:
 quadrant/db-point-coordinate-space-in-x]
 
 ### QuadrantIdentifier
@@ -283,10 +302,14 @@ characters outside ASCII, such as U+00A0, which are characters of a word in this
 diagram type: `classDef a`, U+00A0, `b color: #f00` defines the class whose name
 is `a`, U+00A0, and `b`. The name holds no ASCII whitespace, and its dashes,
 colons, and commas are part of it: `classDef c-1 color: #f00` defines `c-1`.
+
 [fixture: quadrant/db-grid-nbsp-classdef-name] [fixture:
 quadrant/db-classdef-dash-name] [fixture:
-quadrant/db-classdef-name-colon-between-letters] A comment region inside the
-name, after a U+2028 or a U+2029, is left out of its written text: `classDef a`,
-U+2028, `%% c`, a line break, and `b color: #109060` defines the class whose
-`name` is `a`, U+2028, and `b` (see [Classes](../diagrams/quadrant.md#classes)).
+quadrant/db-classdef-name-colon-between-letters]
+
+A comment region inside the name, after a U+2028 or a U+2029, is left out of its
+written text: `classDef a`, U+2028, `%% c`, a line break, and `b color: #109060`
+defines the class whose `name` is `a`, U+2028, and `b` (see
+[Classes](../diagrams/quadrant.md#classes)).
+
 [fixture: quadrant/lex-classdef-name-line-separator-comment-line]

@@ -43,11 +43,13 @@ mermaid.js の Db と同じくここでは**頂点**（vertex）と呼びます�
 この図種の StringLiteral（click の文の URL と tooltip）は、
 常に閉じていて空ではありません。
 空の文字列 `""` は `empty-string` の単位で、文法のどの規則も取りません。
+
 [fixture: flowchart/lex-empty-string-line]
 [fixture: flowchart/gram-click-href-empty-string]
 [fixture: flowchart/gram-click-href-tooltip-empty-string]
 [fixture: flowchart/gram-click-call-tooltip-empty-string]
 [fixture: flowchart/gram-click-callback-tooltip-empty-string]
+
 [文字列](../diagrams/flowchart.ja.md#文字列) を参照してください。
 
 ## ノード
@@ -116,8 +118,9 @@ FlowchartAccDescrStatement、FlowchartAccDescrBlockStatement のどれかです�
 | `data`     | FlowchartDataBlock の列    | 頂点の直後に続けて書いたデータブロック。ソースの順。なければ空。 |
 
 子の欄: `id`、`shape`、`cssClass`、`data`。
-[fixture: flowchart/gram-vertex-id-comma] [fixture:
-flowchart/gram-vertex-class-comma]
+
+[fixture: flowchart/gram-vertex-id-comma]
+[fixture: flowchart/gram-vertex-class-comma]
 
 ### FlowchartShape
 
@@ -160,8 +163,9 @@ flowchart/gram-vertex-class-comma]
 ラベルは 1 つの欄のままです。
 道具が、書き方によらず、
 リンクのラベルを 1 か所で見つけられるようにするためです。
-[fixture: flowchart/gram-pipe-label-space-after] [fixture:
-flowchart/gram-link-text-string-then-text]
+
+[fixture: flowchart/gram-pipe-label-space-after]
+[fixture: flowchart/gram-link-text-string-then-text]
 
 ### FlowchartArrow
 
@@ -186,8 +190,9 @@ flowchart/gram-link-text-string-then-text]
 その最初のものは省略できます（`.->` と `-.->` はどちらも長さ 1
 の点線の矢印です）。
 どちらが書かれたかは、`value` にあり、欄にはありません。
-[fixture: flowchart/db-arrow-single-forms] [fixture:
-flowchart/lex-arrow-head-x-before-id]
+
+[fixture: flowchart/db-arrow-single-forms]
+[fixture: flowchart/lex-arrow-head-x-before-id]
 
 ### FlowchartOpeningArrow
 
@@ -210,9 +215,10 @@ flowchart/lex-arrow-head-x-before-id]
 `A<-- t -->B` では、開く矢印は始まりの記号 `arrow` を持ちます。
 `A== t x==>B` では、どちらの矢印も線 `thick` を持ち、
 閉じる矢印は始まりの記号 `cross` を持ちます。
-[fixture: flowchart/db-arrow-double] [fixture:
-flowchart/db-arrow-thick-head-invalid] [fixture:
-flowchart/db-arrow-dash-head-length]
+
+[fixture: flowchart/db-arrow-double]
+[fixture: flowchart/db-arrow-thick-head-invalid]
+[fixture: flowchart/db-arrow-dash-head-length]
 
 ### FlowchartLabel
 
@@ -223,9 +229,10 @@ flowchart/db-arrow-dash-head-length]
 
 子の欄はありません。
 すべて空白のラベルの値は、その空白です。
-[fixture: flowchart/tokens-label-all-whitespace] [fixture:
-flowchart/tokens-edge-label-all-whitespace] [fixture:
-flowchart/tokens-subgraph-title-all-whitespace]
+
+[fixture: flowchart/tokens-label-all-whitespace]
+[fixture: flowchart/tokens-edge-label-all-whitespace]
+[fixture: flowchart/tokens-subgraph-title-all-whitespace]
 
 ### FlowchartLiteral
 
@@ -265,7 +272,10 @@ flowchart/tokens-subgraph-title-all-whitespace]
 | `value` | 文字列 | `@{` と、それを閉じる `}` の間の、書かれたテキスト。 |
 
 子の欄はありません。
-木は値を読みません。 [fixture: flowchart/gram-data-consecutive-blocks]
+木は値を読みません。
+
+[fixture: flowchart/gram-data-consecutive-blocks]
+
 [`embedded-data-opaque`](../known-divergences/embedded-data-opaque.ja.md)
 を参照してください。
 
@@ -283,8 +293,9 @@ flowchart では、方向の行の、`direction` の前と値の後のテキス�
 
 子の欄はありません。
 値は両端に空白を持ちません。
-[fixture: flowchart/lex-direction-line-text-before-directive-inside] [fixture:
-flowchart/lex-direction-line-text-after-directive-inside]
+
+[fixture: flowchart/lex-direction-line-text-before-directive-inside]
+[fixture: flowchart/lex-direction-line-text-after-directive-inside]
 
 ### FlowchartSubgraphStatement
 
@@ -312,26 +323,32 @@ subgraph の Db の id とタイトルは、`name`、`title`、そしてどの�
 `subgraph S accDescr {}` も同じです。
 文字列の後でも、その空白は名前に入ります。
 空白 1 つが続く `subgraph "S"` がそうです。
-[fixture: flowchart/db-subgraph-name-trailing-space] [fixture:
-flowchart/db-subgraph-name-space-before-empty-description-block] [fixture:
-flowchart/db-subgraph-string-name-trailing-space]
+
+[fixture: flowchart/db-subgraph-name-trailing-space]
+[fixture: flowchart/db-subgraph-name-space-before-empty-description-block]
+[fixture: flowchart/db-subgraph-string-name-trailing-space]
+
 タイトルがあれば、mermaid.js は `[` の前の空白を読まず、
 名前は空白でない最後の文字で終わります。
 `subgraph a  [T]` の id は `a` です。
+
 [fixture: flowchart/db-subgraph-title-spaces-before-bracket]
+
 空の説明ブロックが名前のすぐ後に続くときだけ、その間の空白と、
 最後のブロックと `;` の間の空白は、どのノードにも属しません。
 ブロックは `body` の文だからですが、mermaid.js はそれを名前に読みます。
 `subgraph "S"accDescr {} accDescr {}` と `subgraph "S"accDescr {} ;` は、
 作った id を持ちます。
 この形でだけ、Db はその空白をソースから読みます。
+
 [fixture: flowchart/db-subgraph-name-space-between-empty-description-blocks]
-[fixture:
-flowchart/db-subgraph-name-space-after-empty-description-block-before-semicolon]
+[fixture: flowchart/db-subgraph-name-space-after-empty-description-block-before-semicolon]
+
 名前かタイトルの後、区切りの前の空の説明ブロックは、`body` の最初の文です。
 子のノードをソースの順に保つためです。
 `subgraph S accDescr {}`、行 `A`、`end` の本体は、
 FlowchartAccDescrBlockStatement と FlowchartVertexStatement です。
+
 [fixture: flowchart/gram-empty-description-block-after-subgraph-name]
 
 ### FlowchartStyleStatement
@@ -351,8 +368,10 @@ mermaid.js は `,` の後のその始まりの空白をタブも含めて読み�
 空白でない最後の文字で終わります。
 `style A fill:#f00 ,  stroke:#333 ` のスタイルは、`fill:#f00` と、
 空白 2 つの後の `stroke:#333` です。
-[fixture: flowchart/db-style-tabs-after-comma] [fixture:
-flowchart/db-linkstyle-leading-space-fill]
+
+[fixture: flowchart/db-style-tabs-after-comma]
+[fixture: flowchart/db-linkstyle-leading-space-fill]
+
 すべて空白のスタイルは、空白の量によらず null で、
 mermaid.js はそれを空のテキストとして読みます。
 `style A fill:#f00, ` のスタイルは、リテラルと null です。
@@ -362,12 +381,13 @@ mermaid.js はそれを空のテキストとして読みます。
 を持ちます。
 `style A fill:#f00, %%{init: {}}%%` に空白 2 つと `stroke:#333` が続くと、
 2 つ目のスタイルは空白 3 つと `stroke:#333` です。
-[fixture: flowchart/tokens-style-ignored-semicolon-then-spaces] [fixture:
-common/entity-style-semicolon-between-styles] [fixture:
-flowchart/tokens-style-directive-after-comma]
-[fixture: flowchart/gram-style-id-comma] [fixture:
-flowchart/gram-style-whitespace] [fixture:
-flowchart/db-style-whitespace-only-value]
+
+[fixture: flowchart/tokens-style-ignored-semicolon-then-spaces]
+[fixture: common/entity-style-semicolon-between-styles]
+[fixture: flowchart/tokens-style-directive-after-comma]
+[fixture: flowchart/gram-style-id-comma]
+[fixture: flowchart/gram-style-whitespace]
+[fixture: flowchart/db-style-whitespace-only-value]
 
 ### FlowchartClassDefStatement
 
@@ -376,9 +396,10 @@ flowchart/db-style-whitespace-only-value]
 | `cssClasses` | (Identifier または null) の列       | CSS クラス。`classDef` の後の `id-list` の、`,` の単位の間の部分。ソースの順。空の部分は null（[flowchart.ja.md](../diagrams/flowchart.ja.md#styleclasslinkstyle-の文) を参照）。                      |
 | `styles`     | (FlowchartLiteral または null) の列 | スタイル。FlowchartStyleStatement と同じ。ただし、`\` の直後の `,` は 2 つのスタイルを分けず、スタイルの一部になる（[flowchart.ja.md](../diagrams/flowchart.ja.md#styleclasslinkstyle-の文) を参照）。 |
 
-子の欄: `cssClasses`、`styles`。 [fixture: flowchart/db-classdef-names-empty]
-[fixture:
-flowchart/db-classdef-names-trailing-comma]
+子の欄: `cssClasses`、`styles`。
+
+[fixture: flowchart/db-classdef-names-empty]
+[fixture: flowchart/db-classdef-names-trailing-comma]
 
 ### FlowchartClassStatement
 
@@ -387,9 +408,11 @@ flowchart/db-classdef-names-trailing-comma]
 | `ids`      | (Identifier または null) の列 | `class` の後の最初の id をリストとして読んだもの。その `id-list` の、`,` の単位の間の部分。空の部分は null。 |
 | `cssClass` | Identifier                    | 2 つ目の id、つまり CSS クラス。カンマを含む。                                                               |
 
-子の欄: `ids`、`cssClass`。 [fixture: flowchart/db-class-ids-empty-first]
-[fixture:
-flowchart/db-class-ids-only-comma] [fixture: flowchart/gram-class-name-comma]
+子の欄: `ids`、`cssClass`。
+
+[fixture: flowchart/db-class-ids-empty-first]
+[fixture: flowchart/db-class-ids-only-comma]
+[fixture: flowchart/gram-class-name-comma]
 
 ### FlowchartClickCallbackStatement
 
@@ -411,6 +434,7 @@ mermaid.js は引数を書かれたとおりに渡し、その後、引用符の
 それぞれの両端を削ります。
 `click A call f( x, y )` の引数は、空白、`x, y`、空白で、
 `f` を `x` と `y` で呼びます。
+
 [fixture: flowchart/tokens-callback-name-trailing-space]
 [fixture: flowchart/tokens-callback-arguments-spaces-at-ends]
 
@@ -427,10 +451,14 @@ URL にリンクするクリックの文です。
 | `target`  | 文字列または null             | リンク先。`_self`、`_blank`、`_parent`、`_top` のどれか（[文の文脈](../diagrams/flowchart.ja.md#文の文脈) を参照）。なければ null。 |
 
 子の欄: `ids`、`url`、`tooltip`。
-[fixture: flowchart/db-click-ids-empty-tooltip] [fixture:
-flowchart/lex-click-id-comma]
 
-文はほかに `click` の単位を持ちません。 [fixture: flowchart/gram-click-href]
+[fixture: flowchart/db-click-ids-empty-tooltip]
+[fixture: flowchart/lex-click-id-comma]
+
+文はほかに `click` の単位を持ちません。
+
+[fixture: flowchart/gram-click-href]
+
 [クリックとコールバック](../diagrams/flowchart.ja.md#クリックとコールバック)
 を参照してください。
 
@@ -473,13 +501,16 @@ flowchart/lex-click-id-comma]
 `  accDescr: d ; direction LR` はテキスト `accDescr: d ;` を持ちます。
 `A[direction TB]` は、その前のテキスト `A[` と値の後のテキスト `]` を持ち、
 `direction LR trailing` は値の後のテキスト `trailing` を持ちます。
-[fixture: flowchart/lex-direction-line-swallows-edge] [fixture:
-flowchart/lex-direction-line-acc-descr-subgraph-indented] [fixture:
-flowchart/lex-direction-line-text-before-directive-inside] [fixture:
-flowchart/lex-direction-line-in-label] [fixture:
-flowchart/lex-direction-line-text-after-value] [fixture:
-flowchart/lex-direction-line-text-after-directive-inside]
+
+[fixture: flowchart/lex-direction-line-swallows-edge]
+[fixture: flowchart/lex-direction-line-acc-descr-subgraph-indented]
+[fixture: flowchart/lex-direction-line-text-before-directive-inside]
+[fixture: flowchart/lex-direction-line-in-label]
+[fixture: flowchart/lex-direction-line-text-after-value]
+[fixture: flowchart/lex-direction-line-text-after-directive-inside]
+
 `direction`、改行、`TB` はどちらも持ちません。
+
 [fixture: flowchart/lex-direction-line-top-level-next-line]
 
 ### FlowchartAccTitleStatement
@@ -491,8 +522,9 @@ flowchart/lex-direction-line-text-after-directive-inside]
 子の欄: `value`。
 `:` の後の空白は改行も含めて一緒に読まれるので、
 値が null になるのはテキストの終わりだけです。
-[fixture: flowchart/lex-acc-title-next-line] [fixture:
-flowchart/gram-acc-title-empty-at-end]
+
+[fixture: flowchart/lex-acc-title-next-line]
+[fixture: flowchart/gram-acc-title-empty-at-end]
 
 ### FlowchartAccDescrStatement
 
@@ -505,6 +537,7 @@ flowchart/gram-acc-title-empty-at-end]
 子の欄: `value`。
 `:` の後の空白は改行も含めて一緒に読まれるので、
 値が null になるのはテキストの終わりだけです。
+
 [fixture: flowchart/db-acc-descr-empty-replaces]
 
 ### FlowchartAccDescrBlockStatement
@@ -522,7 +555,9 @@ Db への効果が `accDescr:` の文と違うので、別のノードの型に�
 
 子の欄: `value`。
 テキストの終わりの `accDescr { x` の値は `x` です。
+
 [fixture: flowchart/lex-acc-descr-block-unclosed]
+
 `accDescr {  }` はテキストのない閉じたブロックで、値は null です。
 `{` の後の空白は `{` と一緒に読まれます。
 そのようなブロックは、文が始まるところと、文の最後の単位の後、
@@ -533,9 +568,11 @@ subgraph の名前の後では、その subgraph の本体の最初の文で、�
 [flowchart.ja.md](../diagrams/flowchart.ja.md#区切りの前の空の説明ブロック)
 を参照してください。
 ほかの場所では文の中にあり、入力は拒否されます。
+
 [fixture: flowchart/gram-acc-descr-block-empty]
 [fixture: flowchart/db-acc-descr-empty-block-keeps]
 [fixture: flowchart/gram-empty-description-block-after-vertex]
 [fixture: flowchart/header-empty-description-block-after-direction]
+
 [flowchart.ja.md](../diagrams/flowchart.ja.md#アクセシビリティの値)
 を参照してください。

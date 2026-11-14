@@ -5,6 +5,7 @@
 トークンは仕様の
 [順序](../../../spec/docs/diagrams/architecture.md#ordered-rules)に従います。
 複合一致は、書かれた構成要素の境界でのみ分割します。
+
 [fixture: architecture/gram-written-tree]
 [fixture: architecture/directive-icon-delimiters]
 [fixture: architecture/directive-group-delimiters]
@@ -23,6 +24,7 @@ Numeric 項目はなく、数字に見える名前やラベルもテキストで
 丸括弧のアイコンは `(`・アイコン名・`)`、
 修飾子は `{`・`group`・`}` に分かれます。
 余白やネイティブの隠れた形式は、この複合一致を分割できません。
+
 [fixture: architecture/lex-numeric-ids-text]
 [fixture: architecture/lex-icon-leading-symbols]
 [fixture: architecture/directive-icon-delimiters]
@@ -34,6 +36,7 @@ Numeric 項目はなく、数字に見える名前やラベルもテキストで
 字句解析が選んだ完全な引用の選択肢は String 項目、
 裸の代替は余白も含めて RawText 項目です。
 変換結果や引用に見える内容で、この選択を変更しません。
+
 [fixture: architecture/lex-title-quoted-brackets]
 [fixture: architecture/lex-title-padded-quotes]
 [fixture: architecture/lex-title-unclosed-quote-with-close]
@@ -48,6 +51,7 @@ Numeric 項目はなく、数字に見える名前やラベルもテキストで
 ブロックの値は両端の共通空白だけを除き、
 空または共通 trivia だけの内容に値のトークンはありません。
 引用に見える内容も、共通値は RawText です。
+
 [fixture: architecture/lex-title-one-space-null]
 [fixture: architecture/lex-title-one-tab-null]
 [fixture: architecture/lex-title-two-spaces-literal]
@@ -61,6 +65,7 @@ Numeric 項目はなく、数字に見える名前やラベルもテキストで
 隠れた形式は開始から条件を満たす終端まで一つの RawText 項目です。
 直前の余白と、消費した直後の LF は含みません。
 本文のある YAML は、隣接する空のフェンスや両ダッシュ規則に優先します。
+
 [fixture: architecture/hidden-yaml-open-padding]
 [fixture: architecture/hidden-yaml-adjacent-eof]
 [fixture: architecture/hidden-yaml-three-fences]
@@ -75,6 +80,7 @@ Numeric 項目はなく、数字に見える名前やラベルもテキストで
 選択されたセミコロンは共通の境界規則で拒否します。
 アイコン・修飾子の完全な構成要素間のディレクティブは許可します。
 値はエスケープ、実体、属性の引用符、ソースの改行を保持します。
+
 [fixture: architecture/directive-fields]
 [fixture: architecture/comment-in-quoted-label]
 [fixture: architecture/style-fields] [fixture: architecture/div-directive-name]
@@ -93,8 +99,9 @@ Numeric 項目はなく、数字に見える名前やラベルもテキストで
 
 単位間の ASCII 空白・タブ、可視改行、追加の LF にトークンはありません。
 ネイティブコメントの印は `%%` で、LF/CR の前で終わり、
-LS/PS は内容として保持します。 [fixture: architecture/space-tabs]
-[fixture: architecture/space-lines]
+LS/PS は内容として保持します。
+
+[fixture: architecture/space-tabs] [fixture: architecture/space-lines]
 [fixture: architecture/end-statements-comments]
 [fixture: architecture/space-comment-ls]
 [fixture: architecture/space-comment-ps] [fixture: architecture/end-service-eof]
@@ -102,6 +109,7 @@ LS/PS は内容として保持します。 [fixture: architecture/space-tabs]
 検出が通過した裸のパーセント行と付随する空白・改行は、
 共通の Comments と trivia とし、保持する形式の間でも再読しません。
 先に一致した外側の値は、内部の隠れた形式に見えるテキストを所有します。
+
 [fixture: architecture/detect-empty-braces-bare]
 [fixture: architecture/detect-unclosed-brace-bare]
 [fixture: architecture/div-retained-bare-second-scan-ls]

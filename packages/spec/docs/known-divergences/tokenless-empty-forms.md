@@ -11,42 +11,52 @@ mermaid.js.
 
 Some forms are written but hold nothing. In flowchart there are three:
 
-- an **empty string**, `""`, or an empty markdown string; [fixture:
-  flowchart/lex-empty-string-line] [fixture:
+- an **empty string**, `""`, or an empty markdown string;
+
+  [fixture: flowchart/lex-empty-string-line] [fixture:
   flowchart/header-empty-markdown-string]
+
 - an **empty call**, `call` and the whitespace after it, followed by parentheses
-  with only whitespace between them, as in `click A call ()`; [fixture:
-  flowchart/gram-empty-call-line]
+  with only whitespace between them, as in `click A call ()`;
+
+  [fixture: flowchart/gram-empty-call-line]
+
 - an **empty description block**, `accDescr {}`, with only whitespace between
-  the braces. [fixture: flowchart/db-acc-descr-empty-block-alone]
+  the braces.
+
+  [fixture: flowchart/db-acc-descr-empty-block-alone]
 
 In sequence, whose grammar has no strings and no `call`, there is the empty
 description block only, and so in state, which has no `call` and whose lexer
 reads `""` as a string unit with a token in the statement context, where a click
-statement takes strings. [fixture: state/lex-string-outside-click] [fixture:
-state/gram-click-terminal] In the state context, which `state` enters,
-mermaid.js reads no token for an empty string either, but there it lies only
-where a unit starts, and the tree holds it in every such place: as a
-StateIgnoredText before or after a name, before a body, and before or after the
-string of an alias statement, and as a StateIgnoredStatement after `state` or
-after another statement on its line (see
+statement takes strings.
+
+[fixture: state/lex-string-outside-click] [fixture: state/gram-click-terminal]
+
+In the state context, which `state` enters, mermaid.js reads no token for an
+empty string either, but there it lies only where a unit starts, and the tree
+holds it in every such place: as a StateIgnoredText before or after a name,
+before a body, and before or after the string of an alias statement, and as a
+StateIgnoredStatement after `state` or after another statement on its line (see
 [The state string context](../diagrams/state.md#the-state-context)). So such an
 input is accepted, as in mermaid.js, and is no part of this divergence.
+
 [fixture: state/gram-state-empty-string-before-name] [fixture:
 state/gram-state-empty-string-between-name-and-body] [fixture:
 state/gram-state-empty-strings-around-alias-string] [fixture:
-state/gram-state-empty-string-after-name] In class there are five: the three of
-flowchart, of which the empty string is only `""`, as class has no markdown
-strings, and two that are written in a class name, an **empty backquoted name**,
-two backquotes, and an **empty generic type**, two `~`. In er there are two: the
-empty description block, and **empty backquotes**, two backquotes with nothing
-between them, inside an attribute block, where mermaid.js reads no token for
-them; between two attributes the tree holds them as an item of the block, so
-only those inside an attribute are part of this divergence (see
-[Attributes](../diagrams/er.md#attributes)). In gantt there are three: the empty
-description block, an **empty href**, `href` and two quotes with nothing between
-them, and the empty call, as in flowchart; an empty href and an empty call are
-part of this divergence wherever they stand (see
+state/gram-state-empty-string-after-name]
+
+In class there are five: the three of flowchart, of which the empty string is
+only `""`, as class has no markdown strings, and two that are written in a class
+name, an **empty backquoted name**, two backquotes, and an **empty generic
+type**, two `~`. In er there are two: the empty description block, and **empty
+backquotes**, two backquotes with nothing between them, inside an attribute
+block, where mermaid.js reads no token for them; between two attributes the tree
+holds them as an item of the block, so only those inside an attribute are part
+of this divergence (see [Attributes](../diagrams/er.md#attributes)). In gantt
+there are three: the empty description block, an **empty href**, `href` and two
+quotes with nothing between them, and the empty call, as in flowchart; an empty
+href and an empty call are part of this divergence wherever they stand (see
 [Empty hrefs and empty calls](../diagrams/gantt.md#empty-hrefs-and-empty-calls)).
 In requirement there are two: the empty description block, and the empty string,
 `""`, which is part of this divergence wherever it stands (see
@@ -63,10 +73,12 @@ three: the closed empty description block, the empty string, `""`, and the empty
 markdown string; the two strings are part of this divergence wherever they stand
 (see [Empty strings](../diagrams/quadrant.md#empty-strings)). In block there are
 the same three, and the two strings are part of this divergence wherever they
-stand (see [Empty strings](../diagrams/block.md#empty-strings)). [fixture:
-block/div-empty-string-line] [fixture: block/div-empty-markdown-line] [fixture:
-block/div-empty-block-in-edge] [fixture: quadrant/div-empty-string-alone]
-[fixture: quadrant/div-empty-markdown-string-line] [fixture:
+stand (see [Empty strings](../diagrams/block.md#empty-strings)).
+
+[fixture: block/div-empty-string-line] [fixture: block/div-empty-markdown-line]
+[fixture: block/div-empty-block-in-edge] [fixture:
+quadrant/div-empty-string-alone] [fixture:
+quadrant/div-empty-markdown-string-line] [fixture:
 quadrant/div-empty-block-in-quadrant-text] [fixture:
 er/div-empty-description-block-in-relationship] [fixture:
 er/div-empty-backquotes-between-type-and-name] [fixture:
@@ -91,33 +103,44 @@ flowchart LR
   A
 ```
 
-The example keeps the empty description block as a statement. [fixture:
-flowchart/gram-acc-descr-block-empty]
+The example keeps the empty description block as a statement.
+
+[fixture: flowchart/gram-acc-descr-block-empty]
 
 This document is about these forms where the tree of this specification has no
 place for them: inside a statement, or next to other text in a value.
 
 In kanban, an empty icon `::icon()` and an empty class line `:::` are rejected
 wherever recognized, including before the first node and after a completed
-shape, as in mindmap. [fixture: kanban/db-decoration-empty-class] [fixture:
+shape, as in mindmap.
+
+[fixture: kanban/db-decoration-empty-class] [fixture:
 kanban/db-decoration-empty-icon] [fixture: kanban/div-empty-icon-before-first]
 [fixture: kanban/div-empty-icon-header] [fixture: kanban/div-empty-class-header]
 [fixture: kanban/div-class-before-first-unindented-empty] [fixture:
 kanban/div-class-end-empty] [fixture: kanban/div-empty-icon-after-shape]
-[fixture: kanban/div-empty-class-after-shape] An empty string or markdown string
-inside a shape is also rejected, including before or after a nonempty label (see
-[Empty forms](../diagrams/kanban.md#empty-forms)). [fixture:
-kanban/div-empty-string-before-label] [fixture:
+[fixture: kanban/div-empty-class-after-shape]
+
+An empty string or markdown string inside a shape is also rejected, including
+before or after a nonempty label (see
+[Empty forms](../diagrams/kanban.md#empty-forms)).
+
+[fixture: kanban/div-empty-string-before-label] [fixture:
 kanban/div-empty-markdown-before-label] [fixture:
 kanban/div-empty-string-after-label] [fixture:
 kanban/div-empty-markdown-after-label] [fixture:
 kanban/div-string-before-string] [fixture:
 kanban/div-empty-markdown-before-string]
 
-Bare `""` and empty markdown strings outside a shape are node text. [fixture:
-kanban/db-empty-string-node] [fixture: kanban/db-empty-markdown-node] An empty
-`@{}` is a data block. [fixture: kanban/db-metadata-empty] None of these is a
-discarded empty form.
+Bare `""` and empty markdown strings outside a shape are node text.
+
+[fixture: kanban/db-empty-string-node] [fixture: kanban/db-empty-markdown-node]
+
+An empty `@{}` is a data block.
+
+[fixture: kanban/db-metadata-empty]
+
+None of these is a discarded empty form.
 
 ## The difference
 
@@ -191,8 +214,9 @@ Each example is a whole diagram.
 | 7       | the relation from A to B           | rejected                                     |
 | 8       | the relation from A to B           | the relation, with an empty cardinality at A |
 
-The fixtures record the readings compared in the table. [fixture:
-flowchart/tokens-empty-string-in-label] [fixture:
+The fixtures record the readings compared in the table.
+
+[fixture: flowchart/tokens-empty-string-in-label] [fixture:
 flowchart/gram-click-empty-call-before-callback] [fixture:
 flowchart/gram-label-empty-string] [fixture:
 sequence/gram-empty-description-block-after-arrow] [fixture:
@@ -207,8 +231,10 @@ subgraph name, before the ids of a click statement, and right after the header
 keyword. It rejects the input where what is left is not accepted: where the form
 is all of a value, as in example 3, and where it lies inside what its lexer
 reads as one token, such as an arrow or a number, as in `A --""> B` and
-`linkStyle 0""0 stroke:red`. [fixture: flowchart/lex-empty-string-in-arrow]
-[fixture: flowchart/gram-linkstyle-number-empty-string]
+`linkStyle 0""0 stroke:red`.
+
+[fixture: flowchart/lex-empty-string-in-arrow] [fixture:
+flowchart/gram-linkstyle-number-empty-string]
 
 Where the input without its comment regions
 ([Reading a source](../common.md#reading-a-source)) and without these forms is
@@ -218,38 +244,44 @@ the input. `subgraph a ""`, a line `A`, and a line `end` read as the same lines
 without the empty string, also with a comment line, which is left out too, or an
 empty line, which is kept, after the first line; `A[""x]` reads as `A[x]`, also
 before a U+2028 or a U+2029; and in a Gantt chart, an empty href with a
-directive between its quotes is left out with the directive. [fixture:
-flowchart/db-subgraph-id-trailing-empty-string] [fixture:
+directive between its quotes is left out with the directive.
+
+[fixture: flowchart/db-subgraph-id-trailing-empty-string] [fixture:
 flowchart/db-subgraph-id-trailing-empty-string-comment-line] [fixture:
 flowchart/db-subgraph-id-trailing-empty-string-blank-line] [fixture:
 flowchart/tokens-empty-string-in-label] [fixture:
 flowchart/db-label-leading-empty-string-line-separator] [fixture:
 flowchart/db-label-leading-empty-string-paragraph-separator] [fixture:
-gantt/div-empty-href-directive-between-quotes-before-call] An empty description
-block that the document of its diagram type reads as a statement, once the forms
-before it are left out, is not one of these forms and stays: one where a
-statement starts, and one after the last unit of a statement that only other
-empty description blocks and then the separator of the statement follow. In
-flowchart, a statement also starts right after another description block, and
-the blocks before a separator are described in
+gantt/div-empty-href-directive-between-quotes-before-call]
+
+An empty description block that the document of its diagram type reads as a
+statement, once the forms before it are left out, is not one of these forms and
+stays: one where a statement starts, and one after the last unit of a statement
+that only other empty description blocks and then the separator of the statement
+follow. In flowchart, a statement also starts right after another description
+block, and the blocks before a separator are described in
 [Empty description blocks before a separator](../diagrams/flowchart.md#empty-description-blocks-before-a-separator).
 So blocks written one after another, with only whitespace between them, are
 decided together, by what follows the last of them. In `""accDescr {}` followed
 by a line break and `A`, the block starts a statement once the empty string is
 left out, and so do two or three blocks there, with a space, a tab, or nothing
-between them, also with `A` after them on the same line. [fixture:
-flowchart/lex-empty-string-before-empty-description-block] [fixture:
+between them, also with `A` after them on the same line.
+
+[fixture: flowchart/lex-empty-string-before-empty-description-block] [fixture:
 flowchart/div-empty-string-before-empty-description-blocks] [fixture:
 flowchart/div-empty-string-before-three-empty-description-blocks] [fixture:
 flowchart/div-empty-string-before-glued-empty-description-blocks] [fixture:
 flowchart/div-empty-string-before-tab-empty-description-blocks] [fixture:
-flowchart/div-empty-string-before-empty-description-blocks-then-vertex] In
-`A[""x]` followed by two or three blocks and a line feed, a `;`, or the end of
-the text, the blocks stay too, and so they do with a comment line, an empty
+flowchart/div-empty-string-before-empty-description-blocks-then-vertex]
+
+In `A[""x]` followed by two or three blocks and a line feed, a `;`, or the end
+of the text, the blocks stay too, and so they do with a comment line, an empty
 line, or a directive between two blocks, before a `;` that the line rule ignores
 after the blocks of a style statement, and with a U+2028 or a U+2029 before the
 line feed. mermaid.js gives each of these inputs without the empty string the Db
-of the input. [fixture:
+of the input.
+
+[fixture:
 flowchart/div-empty-string-then-empty-description-blocks-before-line-feed]
 [fixture:
 flowchart/div-empty-string-then-three-empty-description-blocks-before-line-feed]
@@ -272,25 +304,30 @@ flowchart/div-empty-string-then-empty-description-blocks-before-ignored-semicolo
 flowchart/div-empty-string-then-empty-description-blocks-before-line-separator]
 [fixture:
 flowchart/div-empty-string-then-empty-description-blocks-before-paragraph-separator]
+
 In `A`, two or three blocks, and `--> B`, more of the statement follows the last
 block, so all of them are left out, the whitespace on their two sides joins into
-one run, and nothing follows for the input without them. [fixture:
-flowchart/div-empty-description-blocks-before-link] [fixture:
+one run, and nothing follows for the input without them.
+
+[fixture: flowchart/div-empty-description-blocks-before-link] [fixture:
 flowchart/div-three-empty-description-blocks-before-link] [fixture:
 flowchart/div-glued-empty-description-blocks-before-link] [fixture:
-flowchart/div-tab-empty-description-blocks-before-link] Where leaving the forms
-out joins the text on their two sides into other units, nothing follows for the
-input without them, and mermaid.js may read it otherwise. `1""2-->B` without the
-empty string has the one unit `12`. `style A "" ;fill:red` has two spaces after
-`A`, which mermaid.js rejects. In `style A "" fill:#f00;`, whose last `;` the
-line rule ignores, the two spaces join, and mermaid.js gives the input the style
-` fill:#f00` and the input without the empty string `fill:#f00`. In
-`subgraph a ""` followed by a U+2028 or a U+2029, the space before the empty
-string and the U+2028 or U+2029 after it become one run of whitespace, and so do
-the space before the empty string and the space after the directive in
-`subgraph ""%%{init: {}}%% a`. In class, `direction accDescr {} LR` without the
-block is a direction line, while mermaid.js reads the input otherwise (see
-below). [fixture: flowchart/tokens-id-empty-string-between] [fixture:
+flowchart/div-tab-empty-description-blocks-before-link]
+
+Where leaving the forms out joins the text on their two sides into other units,
+nothing follows for the input without them, and mermaid.js may read it
+otherwise. `1""2-->B` without the empty string has the one unit `12`.
+`style A "" ;fill:red` has two spaces after `A`, which mermaid.js rejects. In
+`style A "" fill:#f00;`, whose last `;` the line rule ignores, the two spaces
+join, and mermaid.js gives the input the style ` fill:#f00` and the input
+without the empty string `fill:#f00`. In `subgraph a ""` followed by a U+2028 or
+a U+2029, the space before the empty string and the U+2028 or U+2029 after it
+become one run of whitespace, and so do the space before the empty string and
+the space after the directive in `subgraph ""%%{init: {}}%% a`. In class,
+`direction accDescr {} LR` without the block is a direction line, while
+mermaid.js reads the input otherwise (see below).
+
+[fixture: flowchart/tokens-id-empty-string-between] [fixture:
 flowchart/db-style-empty-string-separator] [fixture:
 flowchart/db-style-empty-string-ignored-semicolon] [fixture:
 flowchart/db-subgraph-id-trailing-empty-string-line-separator] [fixture:
@@ -306,6 +343,7 @@ which it joins without the whitespace: `direction accDescr {} LR` keeps the
 direction `TB` and declares no class, while `direction LR` sets `LR`, and
 `direction accDescr {} LR : x` declares the class `directionLR` with the member
 `x`. So mermaid.js does not read this input as if the block were not there.
+
 [fixture: class/div-empty-description-block-between-direction-and-value]
 [fixture: class/div-empty-description-block-before-direction-value-glued]
 [fixture: class/div-empty-description-block-between-direction-and-value-label]
@@ -314,16 +352,18 @@ In class and state, a block also keeps another rule of mermaid.js that spans
 whitespace from matching: mermaid.js reads `accTitle accDescr {}: t` as the name
 `accTitle` with a member or a description, while `accTitle : t` is a title. This
 specification rejects the input, since the block lies inside that statement.
+
 [fixture: class/div-empty-description-block-between-acc-title-and-colon]
 [fixture: state/div-empty-description-block-between-acc-title-and-colon]
 
 Text that only looks like one of these forms is none of them, and both read it
 the same: in `A""-->B` the quotes are characters of the vertex `A""`,
 `accTitle: ""` has the title `""`, `A[" "]` has a string of one space, and
-`A["call ()"]` has the label `call ()`. [fixture:
-flowchart/lex-empty-quotes-in-id] [fixture: flowchart/lex-acc-title-quotes]
-[fixture: flowchart/gram-label-space-string] [fixture:
-flowchart/gram-label-string-call-text]
+`A["call ()"]` has the label `call ()`.
+
+[fixture: flowchart/lex-empty-quotes-in-id] [fixture:
+flowchart/lex-acc-title-quotes] [fixture: flowchart/gram-label-space-string]
+[fixture: flowchart/gram-label-string-call-text]
 
 The difference goes one way only: mermaid.js accepts and this specification
 rejects. The documents of the diagram types give examples of them in their Known
@@ -344,35 +384,41 @@ divergences sections: [flowchart](../diagrams/flowchart.md#known-divergences),
 Where an author writes one of these forms to mean something empty, mermaid.js
 rejects it too: `A[""]`, `A("")`, `A-->|""|B`, `A -- "" --> B`,
 `click A href ""`, `subgraph ""`, and `click A call ()` are rejected by both.
+
 [fixture: flowchart/gram-label-empty-string] [fixture:
 flowchart/gram-shape-round-empty-string] [fixture:
 flowchart/gram-link-text-empty-string] [fixture:
 flowchart/gram-link-text-dash-empty-string] [fixture:
 flowchart/gram-click-href-empty-string] [fixture:
 flowchart/gram-subgraph-name-empty-string-only] [fixture:
-flowchart/gram-click-empty-call-only] mermaid.js accepts them only where they
-leave nothing, next to other text, where they change nothing that is drawn. This
-toolkit rejects such a text and reports the form. Removing the form gives a text
-that both read the same way, unless the text holds another of the
-[known divergences](../known-divergences.md). mermaid.js usually reads that text
-as it read the one with the form, which it reads as if the form were not there
-(see [The difference](#the-difference)), but not where the form kept apart two
-parts of the text that it reads together once the form is gone: it then reads
-that text otherwise, or rejects it. `style A "" ""fill:red` has the style of a
-space and `fill:red`, while `style A`, two spaces, and `fill:red` has the style
-`fill:red`; `A:""::c` is the vertex `A:::c`, while `A:::c` is the vertex A with
-the class `c`; in class, `direction accDescr {} LR` keeps the direction `TB`,
-while `direction`, two spaces, and `LR` sets `LR`; and `flowchart""TD` is
-accepted, while `flowchartTD` has no header and is rejected by both. [fixture:
-flowchart/db-style-empty-strings-one-space] [fixture:
+flowchart/gram-click-empty-call-only]
+
+mermaid.js accepts them only where they leave nothing, next to other text, where
+they change nothing that is drawn. This toolkit rejects such a text and reports
+the form. Removing the form gives a text that both read the same way, unless the
+text holds another of the [known divergences](../known-divergences.md).
+mermaid.js usually reads that text as it read the one with the form, which it
+reads as if the form were not there (see [The difference](#the-difference)), but
+not where the form kept apart two parts of the text that it reads together once
+the form is gone: it then reads that text otherwise, or rejects it.
+`style A "" ""fill:red` has the style of a space and `fill:red`, while
+`style A`, two spaces, and `fill:red` has the style `fill:red`; `A:""::c` is the
+vertex `A:::c`, while `A:::c` is the vertex A with the class `c`; in class,
+`direction accDescr {} LR` keeps the direction `TB`, while `direction`, two
+spaces, and `LR` sets `LR`; and `flowchart""TD` is accepted, while `flowchartTD`
+has no header and is rejected by both.
+
+[fixture: flowchart/db-style-empty-strings-one-space] [fixture:
 flowchart/db-style-two-spaces-before-style] [fixture:
 flowchart/lex-empty-string-splits-triple-colon] [fixture:
 flowchart/lex-triple-colon-after-id] [fixture:
 class/div-empty-description-block-between-direction-and-value] [fixture:
 class/lex-direction-two-spaces-before-value] [fixture:
 flowchart/header-empty-string-no-space] [fixture:
-flowchart/header-keyword-direction-glued] None of the inputs collected from the
-tests, the documentation, and the demos of mermaid.js contains one of them.
+flowchart/header-keyword-direction-glued]
+
+None of the inputs collected from the tests, the documentation, and the demos of
+mermaid.js contains one of them.
 
 ## Why mermaid.js reads it so
 
@@ -440,6 +486,7 @@ when the form is not empty: an empty string is its two quotes, an empty call its
 [Strings](../diagrams/flowchart.md#strings),
 [Click and callbacks](../diagrams/flowchart.md#click-and-callbacks), and
 [Accessibility values](../diagrams/flowchart.md#accessibility-values)).
+
 [fixture: flowchart/tokens-empty-string-in-label] [fixture:
 flowchart/gram-empty-call-before-link] [fixture:
 flowchart/gram-empty-description-block-before-link]
@@ -452,8 +499,9 @@ known divergence (see [known-divergences.md](../known-divergences.md)). That
 mermaid.js reads no token for a text is not by itself a reason to reject it:
 where the tree has a place, the form is a node, and the input is accepted, as
 with the text that mermaid.js discards around a direction statement, which is a
-[FlowchartIgnoredText](../ast/flowchart.md#flowchartignoredtext). [fixture:
-flowchart/lex-direction-line-swallows-edge] [fixture:
+[FlowchartIgnoredText](../ast/flowchart.md#flowchartignoredtext).
+
+[fixture: flowchart/lex-direction-line-swallows-edge] [fixture:
 flowchart/lex-direction-line-text-after-value]
 
 This specification makes such a form a node where the tree has a place for it,
@@ -470,23 +518,27 @@ separator of
 [class](../diagrams/class.md#empty-description-blocks-before-a-separator),
 [sequence](../diagrams/sequence.md#empty-description-blocks-before-a-separator),
 and [state](../diagrams/state.md#empty-description-blocks-before-a-separator));
+in class, an empty string as a cardinality of a relation or as a tooltip is a
+StringLiteral with the empty value, which the Db reads as none (example 8), and
+an empty generic type at the end of a class name is its two `~` without a
+generic.
+
 [fixture: flowchart/gram-empty-description-block-after-vertex] [fixture:
 class/gram-empty-description-block-after-note] [fixture:
 sequence/gram-empty-description-block-after-autonumber] [fixture:
 flowchart/header-empty-description-block-after-direction] [fixture:
-class/header-empty-description-block] in class, an empty string as a cardinality
-of a relation or as a tooltip is a StringLiteral with the empty value, which the
-Db reads as none (example 8), and an empty generic type at the end of a class
-name is its two `~` without a generic. [fixture: class/gram-link-tooltip-empty]
-[fixture: class/gram-generic-empty-at-end] In state, nothing separates two
-statements, so a statement starts right after each statement:
-`A --> B accDescr {}` is a transition and a description block statement, while
-in `A --> accDescr {} B` the block lies inside the transition, and the input is
-rejected. A block, or a run of blocks with only whitespace between them, after
-which a unit continues the statement before it, a `-->`, a `:::`, or a
-description after a state reference, lies inside that statement too:
-`A accDescr {} --> B` and `A --> B accDescr {} : x` are rejected. [fixture:
-state/gram-empty-description-block-after-transition] [fixture:
+class/header-empty-description-block] [fixture: class/gram-link-tooltip-empty]
+[fixture: class/gram-generic-empty-at-end]
+
+In state, nothing separates two statements, so a statement starts right after
+each statement: `A --> B accDescr {}` is a transition and a description block
+statement, while in `A --> accDescr {} B` the block lies inside the transition,
+and the input is rejected. A block, or a run of blocks with only whitespace
+between them, after which a unit continues the statement before it, a `-->`, a
+`:::`, or a description after a state reference, lies inside that statement too:
+`A accDescr {} --> B` and `A --> B accDescr {} : x` are rejected.
+
+[fixture: state/gram-empty-description-block-after-transition] [fixture:
 state/div-empty-description-block-after-arrow] [fixture:
 state/div-empty-description-block-in-transition] [fixture:
 state/div-empty-description-block-before-label]
@@ -500,9 +552,11 @@ member for an empty string where a member starts in the body of a class:
 `class A {`, a line break, `""`, a line break, and `}` has no member, in
 mermaid.js too. A statement or a member could stand at those places, as an empty
 description block does, but these forms are written with a meaning of their own,
-so the input is rejected. [fixture: flowchart/lex-empty-string-line] [fixture:
-flowchart/lex-empty-string] [fixture: flowchart/gram-empty-call-after-vertex]
-[fixture: class/div-empty-string-statement-start] [fixture:
+so the input is rejected.
+
+[fixture: flowchart/lex-empty-string-line] [fixture: flowchart/lex-empty-string]
+[fixture: flowchart/gram-empty-call-after-vertex] [fixture:
+class/div-empty-string-statement-start] [fixture:
 class/div-empty-string-after-name] [fixture:
 class/div-empty-call-statement-start] [fixture: class/div-empty-call-after-name]
 [fixture: class/div-empty-string-member-start]
@@ -527,19 +581,23 @@ An empty string of the state context, by contrast, lies only where a unit of the
 state context starts, which is at a few fixed places of the composite and alias
 statements, each with its field, as does a block before the `{` of a body, and a
 block before a separator lies after the last unit of a statement, where a
-statement can follow. [fixture:
-state/gram-empty-description-block-before-alias-body-next-line] The places below
-are examples, at least one for each statement node in which mermaid.js accepts
-such a block, with the reason that applies; they do not exhaust the places,
-which the rule above decides. In flowchart:
+statement can follow.
+
+[fixture: state/gram-empty-description-block-before-alias-body-next-line]
+
+The places below are examples, at least one for each statement node in which
+mermaid.js accepts such a block, with the reason that applies; they do not
+exhaust the places, which the rule above decides. In flowchart:
 
 - Between two units of a FlowchartVertexStatement, with its FlowchartVertexGroup
   and FlowchartLink: `A accDescr {}-->B`, `A-->accDescr {}B`,
   `A accDescr {}& B`, `A & accDescr {}B`, `A e1@accDescr {} --> B`,
   `A --> accDescr {}|t| B`, `A -->|t| accDescr {}B`, `A &accDescr {} B[y]`, and
   `A@{ label: x } &accDescr {} A[y]`. Holding it would take a field in that gap
-  (reason a). [fixture: flowchart/gram-empty-description-block-before-link]
-  [fixture: flowchart/div-empty-description-block-after-arrow-glued] [fixture:
+  (reason a).
+
+  [fixture: flowchart/gram-empty-description-block-before-link] [fixture:
+  flowchart/div-empty-description-block-after-arrow-glued] [fixture:
   flowchart/div-empty-description-block-before-ampersand] [fixture:
   flowchart/div-empty-description-block-after-ampersand] [fixture:
   flowchart/div-empty-description-block-after-edge-id] [fixture:
@@ -547,60 +605,76 @@ which the rule above decides. In flowchart:
   flowchart/div-empty-description-block-after-link-label] [fixture:
   flowchart/div-ampersand-empty-block-then-vertex] [fixture:
   flowchart/div-data-block-ampersand-empty-block-then-vertex]
+
 - Between two units of a FlowchartStyleStatement, a FlowchartClassDefStatement,
   a FlowchartClassStatement, or a FlowchartLinkStyleStatement:
   `style A accDescr {} fill:red`, `style A fill:red accDescr {},stroke:blue`,
   `classDef accDescr {}c fill:red`, `class accDescr {}A c`, and
   `linkStyle accDescr {}0 stroke:red`. Holding it would take a field in that gap
-  (reason a). [fixture:
-  flowchart/db-style-first-style-after-empty-description-block] [fixture:
-  flowchart/div-empty-description-block-before-style-comma] [fixture:
+  (reason a).
+
+  [fixture: flowchart/db-style-first-style-after-empty-description-block]
+  [fixture: flowchart/div-empty-description-block-before-style-comma] [fixture:
   flowchart/div-empty-description-block-before-classdef-names] [fixture:
   flowchart/div-empty-description-block-before-class-ids] [fixture:
   flowchart/div-empty-description-block-before-linkstyle-numbers]
+
 - Inside a style, a FlowchartLiteral: `style A fill:accDescr {}red`, and
   `style A fill:red accDescr {} %% c`. A `%%` after other text on its line is no
   comment in flowchart but text (see
   [Comment lines](../common.md#comment-lines)), so the style is `fill:red`, two
   spaces, and `%% c`, with the block inside it. No field can hold it there,
-  inside a value (reason b). [fixture:
-  flowchart/div-empty-description-block-in-style] [fixture:
+  inside a value (reason b).
+
+  [fixture: flowchart/div-empty-description-block-in-style] [fixture:
   flowchart/div-empty-description-block-in-style-before-percent]
+
 - Between two units of a FlowchartClickUrlStatement or a
   FlowchartClickCallbackStatement: `click A accDescr {}href "u"`,
   `click A "u"accDescr {} "t"`, `click A href "u"accDescr {} _blank`, and
   `click A call cb()accDescr {} "t"`. Holding it would take a field in that gap
-  (reason a). [fixture: flowchart/div-empty-description-block-before-href]
-  [fixture: flowchart/div-empty-description-block-before-click-tooltip]
-  [fixture: flowchart/div-empty-description-block-before-link-target] [fixture:
+  (reason a).
+
+  [fixture: flowchart/div-empty-description-block-before-href] [fixture:
+  flowchart/div-empty-description-block-before-click-tooltip] [fixture:
+  flowchart/div-empty-description-block-before-link-target] [fixture:
   flowchart/div-empty-description-block-before-callback-tooltip]
+
 - Between two units of a FlowchartSubgraphStatement:
   `subgraph accDescr {} fe [Front end]`, `subgraph accDescr {}"x"y`, and
   `subgraph fe accDescr {} [Front end]`. Holding it would take a field in that
-  gap (reason a). [fixture:
-  flowchart/div-empty-description-block-before-subgraph-name] [fixture:
-  flowchart/gram-subgraph-name-empty-description-block-then-string] [fixture:
-  flowchart/div-empty-description-block-before-subgraph-title]
+  gap (reason a).
+
+  [fixture: flowchart/div-empty-description-block-before-subgraph-name]
+  [fixture: flowchart/gram-subgraph-name-empty-description-block-then-string]
+  [fixture: flowchart/div-empty-description-block-before-subgraph-title]
+
 - Inside the name of a subgraph, a FlowchartLabel: `subgraph a accDescr {} b`,
   and `subgraph S accDescr {} %% c`, whose `%% c` is text of the name, as above,
   so that its title is `S`, two spaces, and `%% c`. No field can hold it there,
-  inside a value (reason b). [fixture:
-  flowchart/gram-empty-description-block-in-subgraph-name] [fixture:
+  inside a value (reason b).
+
+  [fixture: flowchart/gram-empty-description-block-in-subgraph-name] [fixture:
   flowchart/div-empty-description-block-in-subgraph-name-before-percent]
 
 In class:
 
 - Between two units of a ClassRelationStatement, with its ClassName:
   `A accDescr {} --> B` and `A accDescr {}~T~ <|-- B`. Holding it would take a
-  field in that gap (reason a). [fixture:
-  class/div-empty-description-block-in-statement] [fixture:
+  field in that gap (reason a).
+
+  [fixture: class/div-empty-description-block-in-statement] [fixture:
   class/div-empty-description-block-before-generic]
+
 - Inside a ClassArrow, or inside a name of name parts, an Identifier:
   `A --accDescr {}> B`, `A accDescr {} - B --> C`, whose name is `A-B`, and
   `direction accDescr {} LR` (see above). No field can hold it there, inside a
-  value (reason b). [fixture: class/div-empty-description-block-in-arrow]
-  [fixture: class/div-empty-description-block-in-dashed-name] [fixture:
+  value (reason b).
+
+  [fixture: class/div-empty-description-block-in-arrow] [fixture:
+  class/div-empty-description-block-in-dashed-name] [fixture:
   class/div-empty-description-block-between-direction-and-value]
+
 - Between two units of a ClassNoteStatement, a ClassMemberStatement, a
   ClassLinkStatement, a ClassCallbackStatement, a ClassCssClassStatement, a
   ClassClassDefStatement, a ClassStyleStatement, or a ClassAnnotationStatement:
@@ -610,8 +684,9 @@ In class:
   `click A call f() accDescr {} "t"`, `cssClass accDescr {}"A" c`,
   `cssClass "A" accDescr {} c`, `classDef c accDescr {} fill:red`,
   `style C accDescr {} fill:red`, and `<<interface>> accDescr {} Class01`.
-  Holding it would take a field in that gap (reason a). [fixture:
-  class/div-empty-description-block-before-note-class] [fixture:
+  Holding it would take a field in that gap (reason a).
+
+  [fixture: class/div-empty-description-block-before-note-class] [fixture:
   class/div-empty-description-block-before-member-colon] [fixture:
   class/div-empty-description-block-before-click-class] [fixture:
   class/div-empty-description-block-before-href] [fixture:
@@ -623,77 +698,106 @@ In class:
   class/div-empty-description-block-in-class-def] [fixture:
   class/div-empty-description-block-in-style] [fixture:
   class/div-empty-description-block-after-annotation]
+
 - Inside the name of a ClassAnnotation: `<<accDescr {}interface>> A`. No field
-  can hold it there, inside a value (reason b). [fixture:
-  class/div-empty-description-block-in-annotation]
+  can hold it there, inside a value (reason b).
+
+  [fixture: class/div-empty-description-block-in-annotation]
 
 In sequence:
 
 - Between two units of a SequenceMessageStatement: `A->>accDescr {}B: x`,
   `A() accDescr {}->>()B: x`, `A->> accDescr {}+B: x`, and
   `A->>+ accDescr {}B: x`. Holding it would take a field in that gap (reason a).
+
   [fixture: sequence/gram-empty-description-block-after-arrow] [fixture:
   sequence/div-empty-description-block-after-central-connection] [fixture:
   sequence/div-empty-description-block-before-activation] [fixture:
   sequence/div-empty-description-block-after-activation]
+
 - Between two units of a SequenceNoteStatement: `note accDescr {} left of A: x`,
   `note left of accDescr {} A: x`, and `note over A,accDescr {}B: x`. Holding it
-  would take a field in that gap (reason a). [fixture:
-  sequence/div-empty-description-block-before-note-placement] [fixture:
-  sequence/gram-empty-description-block-after-placement] [fixture:
+  would take a field in that gap (reason a).
+
+  [fixture: sequence/div-empty-description-block-before-note-placement]
+  [fixture: sequence/gram-empty-description-block-after-placement] [fixture:
   sequence/div-empty-description-block-between-note-ids]
+
 - Between two units of a SequenceLinkStatement, a SequenceLinksStatement, a
   SequencePropertiesStatement, or a SequenceDetailsStatement:
   `link accDescr {}A: x@https://u`, `links accDescr {} A: {"a": "https://u"}`,
   `properties accDescr {} A: {}`, and `details accDescr {} A: x`. Holding it
-  would take a field in that gap (reason a). [fixture:
-  sequence/div-empty-description-block-before-link-id] [fixture:
+  would take a field in that gap (reason a).
+
+  [fixture: sequence/div-empty-description-block-before-link-id] [fixture:
   sequence/div-empty-description-block-before-links-id] [fixture:
   sequence/div-empty-description-block-before-properties-id] [fixture:
   sequence/div-empty-description-block-before-details-id]
+
 - Between two units of a SequenceAutonumberStatement:
   `autonumber accDescr {}1 2` and `autonumber accDescr {} off`. Holding it would
-  take a field in that gap (reason a). [fixture:
-  sequence/div-empty-description-block-before-autonumber-numbers] [fixture:
-  sequence/div-empty-description-block-before-autonumber-off]
+  take a field in that gap (reason a).
+
+  [fixture: sequence/div-empty-description-block-before-autonumber-numbers]
+  [fixture: sequence/div-empty-description-block-before-autonumber-off]
+
 - Between `create` and the keyword of a SequenceParticipantStatement or a
   SequenceDestroyStatement: `create accDescr {}participant A` and
   `create accDescr {} destroy A`. Holding it would take a field in that gap
-  (reason a). [fixture: sequence/div-empty-description-block-after-create]
-  [fixture: sequence/div-empty-description-block-before-destroy]
+  (reason a).
+
+  [fixture: sequence/div-empty-description-block-after-create] [fixture:
+  sequence/div-empty-description-block-before-destroy]
 
 In state, all between two units of a statement:
 
 - `A accDescr {} --> B` and `[*] accDescr {} --> A`: a field between the source
-  and the arrow of a StateTransitionStatement. [fixture:
-  state/div-empty-description-block-in-transition] [fixture:
+  and the arrow of a StateTransitionStatement.
+
+  [fixture: state/div-empty-description-block-in-transition] [fixture:
   state/div-empty-description-block-terminal-before-arrow]
+
 - `A --> accDescr {} B` and `A --> accDescr {} [*]`: a field between the arrow
-  and the target of a StateTransitionStatement. [fixture:
-  state/div-empty-description-block-after-arrow] [fixture:
+  and the target of a StateTransitionStatement.
+
+  [fixture: state/div-empty-description-block-after-arrow] [fixture:
   state/div-empty-description-block-before-terminal-target]
+
 - `A --> B accDescr {} : x`: a field before the label of a
-  StateTransitionStatement. [fixture:
-  state/div-empty-description-block-before-label]
+  StateTransitionStatement.
+
+  [fixture: state/div-empty-description-block-before-label]
+
 - `A accDescr {} : x`: a field before the description of a
-  StateDefinitionStatement. [fixture:
-  state/div-empty-description-block-before-description]
+  StateDefinitionStatement.
+
+  [fixture: state/div-empty-description-block-before-description]
+
 - `A accDescr {} :::c --> B` and `A --> B accDescr {} :::c`: a field before the
-  `:::` of a StateReference. [fixture:
-  state/div-empty-description-block-before-class] [fixture:
+  `:::` of a StateReference.
+
+  [fixture: state/div-empty-description-block-before-class] [fixture:
   state/div-empty-description-block-before-target-class]
+
 - `A:::accDescr {}c`: a field between the `:::` and the class of a
-  StateReference. [fixture:
-  state/div-empty-description-block-after-class-separator]
+  StateReference.
+
+  [fixture: state/div-empty-description-block-after-class-separator]
+
 - `click accDescr {} A "u" "t"`: a field before the id of a StateClickStatement.
+
   [fixture: state/div-empty-description-block-in-click-before-id]
+
 - `click A accDescr {} "u" "t"` and `click A href accDescr {} "u"`: a field
-  before the URL of a StateClickStatement. [fixture:
-  state/div-empty-description-block-in-click-before-url] [fixture:
+  before the URL of a StateClickStatement.
+
+  [fixture: state/div-empty-description-block-in-click-before-url] [fixture:
   state/div-empty-description-block-in-click-after-href]
+
 - `click A "u" accDescr {} "t"`: a field before the tooltip of a
-  StateClickStatement. [fixture:
-  state/div-empty-description-block-in-click-before-tooltip]
+  StateClickStatement.
+
+  [fixture: state/div-empty-description-block-in-click-before-tooltip]
 
 In er, all between two units of a statement, where holding the block would take
 a field for that gap (reason a): `A accDescr {} ||--o{ B : x` and
@@ -705,8 +809,9 @@ empty backquotes between the units of an ErAttribute, as in `int `` a` and
 `int a `` PK` (reason a). Between two attributes, before the first, and after
 the last, the tree holds empty backquotes as an ErIgnoredText item of the
 attribute list, so the input is accepted (see
-[Attributes](../diagrams/er.md#attributes)). [fixture:
-er/div-empty-description-block-in-relationship] [fixture:
+[Attributes](../diagrams/er.md#attributes)).
+
+[fixture: er/div-empty-description-block-in-relationship] [fixture:
 er/div-empty-description-block-after-spec] [fixture:
 er/div-empty-description-block-before-class-separator] [fixture:
 er/div-empty-description-block-before-alias] [fixture:
@@ -728,6 +833,7 @@ href or an empty call wherever it stands, `href ""` on a line of its own and
 call that mermaid.js discards whole, as in flowchart; where a statement starts,
 an empty description block is a statement, and the input is accepted (see
 [Empty hrefs and empty calls](../diagrams/gantt.md#empty-hrefs-and-empty-calls)).
+
 [fixture: gantt/div-empty-description-block-between-click-id-and-href] [fixture:
 gantt/div-empty-description-block-between-call-and-href] [fixture:
 gantt/div-empty-href-before-call] [fixture:
@@ -755,6 +861,7 @@ as in flowchart and class. Where a statement starts, an empty description block
 is a statement, and on a line of the body of a requirement or an element it is a
 RequirementIgnoredText item of the body, so the input is accepted (see
 [Empty description blocks](../diagrams/requirement.md#empty-description-blocks)).
+
 [fixture: requirement/div-empty-description-block-between-keyword-and-name]
 [fixture: requirement/div-empty-description-block-after-class-separator]
 [fixture: requirement/div-empty-description-block-before-brace] [fixture:
@@ -786,6 +893,7 @@ root, and an empty string or an empty markdown string before the text of a
 shape, because the tree holds no statement for an icon or a class line that
 mermaid.js discards whole, and no label for a string that it discards whole, as
 in flowchart and class (see [Empty forms](../diagrams/mindmap.md#empty-forms)).
+
 [fixture: mindmap/db-icon-empty] [fixture: mindmap/div-empty-icon-before-root]
 [fixture: mindmap/db-class-empty] [fixture: mindmap/div-empty-class-before-root]
 [fixture: mindmap/div-empty-string-in-shape] [fixture:
@@ -803,8 +911,9 @@ statement for a string that mermaid.js discards whole, as in flowchart and
 class. As the whole title or label, an empty string is a StringLiteral with the
 empty value, which the Db reads as no title and no label, as in class (see
 [Empty description blocks](../diagrams/xychart.md#empty-description-blocks) and
-[Empty strings](../diagrams/xychart.md#empty-strings)). [fixture:
-xychart/div-empty-description-block-inside-title-text] [fixture:
+[Empty strings](../diagrams/xychart.md#empty-strings)).
+
+[fixture: xychart/div-empty-description-block-inside-title-text] [fixture:
 xychart/div-empty-description-block-inside-axis] [fixture:
 xychart/div-empty-description-block-inside-plot] [fixture:
 xychart/div-empty-description-block-inside-values] [fixture:
@@ -844,8 +953,9 @@ holds it as its whole value: `quadrant-1 ""` is rejected by both, and mermaid.js
 reads `x-axis L --> ""` as the axis statement with the arrow and no second text,
 which a second text with the empty value would not give (see
 [Empty description blocks](../diagrams/quadrant.md#empty-description-blocks) and
-[Empty strings](../diagrams/quadrant.md#empty-strings)). [fixture:
-quadrant/div-empty-block-in-classdef] [fixture:
+[Empty strings](../diagrams/quadrant.md#empty-strings)).
+
+[fixture: quadrant/div-empty-block-in-classdef] [fixture:
 quadrant/div-empty-block-in-name] [fixture:
 quadrant/div-empty-block-in-quadrant-text] [fixture:
 quadrant/div-empty-block-in-x-axis-text] [fixture:
@@ -882,11 +992,13 @@ string that mermaid.js discards whole, as in flowchart and class. No label holds
 it as its whole value: `A[""]` and `A -- "" --> B` are rejected by both, and
 glued to an id, `""` is part of the id (see
 [Empty description blocks](../diagrams/block.md#empty-description-blocks) and
-[Empty strings](../diagrams/block.md#empty-strings)). [fixture:
-block/div-empty-block-in-edge] [fixture: block/div-empty-markdown-between]
-[fixture: block/div-empty-markdown-line] [fixture:
-block/div-empty-string-after-edge] [fixture: block/div-empty-string-after-id]
-[fixture: block/div-empty-string-before-block-key] [fixture:
+[Empty strings](../diagrams/block.md#empty-strings)).
+
+[fixture: block/div-empty-block-in-edge] [fixture:
+block/div-empty-markdown-between] [fixture: block/div-empty-markdown-line]
+[fixture: block/div-empty-string-after-edge] [fixture:
+block/div-empty-string-after-id] [fixture:
+block/div-empty-string-before-block-key] [fixture:
 block/div-empty-string-before-columns-number] [fixture:
 block/div-empty-string-before-edge] [fixture: block/div-empty-string-before-end]
 [fixture: block/div-empty-string-before-shape] [fixture:
@@ -912,6 +1024,7 @@ and
 In class, `direction accDescr {}`, a line break, and `LR` is such an input: the
 block keeps the two from forming a direction line, in mermaid.js too, so they
 are two member statements without a label, and the direction stays `TB`.
+
 [fixture: state/gram-click-empty-description-block-after] [fixture:
 flowchart/gram-empty-description-block-after-click-space] [fixture:
 sequence/gram-empty-description-block-after-autonumber-spaces] [fixture:
@@ -927,8 +1040,9 @@ say (see
 [state](../diagrams/state.md#empty-description-blocks-before-a-separator),
 [er](../diagrams/er.md#empty-description-blocks),
 [gantt](../diagrams/gantt.md#empty-description-blocks), and
-[requirement](../diagrams/requirement.md#empty-description-blocks)). [fixture:
-flowchart/header-empty-description-block-after-direction] [fixture:
+[requirement](../diagrams/requirement.md#empty-description-blocks)).
+
+[fixture: flowchart/header-empty-description-block-after-direction] [fixture:
 flowchart/header-empty-description-block-before-semicolon] [fixture:
 flowchart/header-empty-description-block-no-direction] [fixture:
 class/header-empty-description-block] [fixture:
@@ -941,7 +1055,9 @@ requirement/header-empty-description-block]
 Empty kanban decorations and shape strings have their own meaning. mermaid.js
 discards them whole. The empty-form exception applies to them. The tree holds no
 statement or label that changes nothing for these forms, and the input is
-rejected. [fixture: kanban/db-decoration-empty-icon] [fixture:
+rejected.
+
+[fixture: kanban/db-decoration-empty-icon] [fixture:
 kanban/db-decoration-empty-class] [fixture:
 kanban/div-empty-string-before-label] [fixture:
 kanban/div-empty-markdown-before-label]
@@ -952,8 +1068,9 @@ Agentflow shares flowchart's empty-string, empty-markdown-string, and empty-call
 vocabulary. At statement start or after the last unit of a statement an
 IgnoredStatement could hold such a form, but the explicit empty-form exception
 applies there: these are strings or calls with their own written meaning that
-Mermaid discards whole, so no no-effect statement is introduced. [fixture:
-agentflow/div-empty-string-statement] [fixture:
+Mermaid discards whole, so no no-effect statement is introduced.
+
+[fixture: agentflow/div-empty-string-statement] [fixture:
 agentflow/div-empty-markdown-statement] [fixture:
 agentflow/div-empty-call-statement] [fixture:
 agentflow/div-empty-string-before-vertex] [fixture:
@@ -967,6 +1084,7 @@ existing AgentflowName.parts, textBeforeUrl, or textBeforeTooltip field holds a
 recognized erased empty string, empty markdown string, or empty call as
 AgentflowIgnoredText. Accept it as written, like the erased click or closed
 empty description block there. That exception does not apply to those positions.
+
 [fixture: agentflow/lex-empty-string-in-flow-name] [fixture:
 agentflow/lex-empty-call-in-flow-name] [fixture:
 agentflow/lex-empty-markdown-in-flow-name] [fixture:
@@ -983,8 +1101,9 @@ agentflow/lex-mixed-empty-forms-before-url-tooltip]
 At other interior positions without a retained field, such as before an arrow or
 callback name or between the header and direction, reject the recognized erased
 form under tokenless-empty-forms reason 1. Holding it would require splitting a
-leaf or adding an arbitrary structural-gap field. [fixture:
-agentflow/div-empty-string-before-arrow] [fixture:
+leaf or adding an arbitrary structural-gap field.
+
+[fixture: agentflow/div-empty-string-before-arrow] [fixture:
 agentflow/div-empty-call-before-arrow] [fixture:
 agentflow/div-empty-string-before-callback] [fixture:
 agentflow/div-empty-string-after-click] [fixture:
@@ -996,8 +1115,9 @@ header direction they begin the diagram body, and after a flow title/global
 heading they begin that body. Within flow/connector names, AgentflowName.parts
 holds the whole form as AgentflowIgnoredText; existing click textBefore fields
 hold it too. The measured ordinary reading remains representable, so these
-inputs are accepted, not reason-1 rejections. [fixture:
-agentflow/lex-empty-description-before-node] [fixture:
+inputs are accepted, not reason-1 rejections.
+
+[fixture: agentflow/lex-empty-description-before-node] [fixture:
 agentflow/gram-empty-description-after-vertex] [fixture:
 agentflow/gram-empty-description-after-header-direction] [fixture:
 agentflow/gram-empty-description-after-global] [fixture:
@@ -1011,8 +1131,9 @@ split an Identifier, precede a required class name or first style, or stand
 before a style comma. Retaining it would require changing a leaf value or adding
 an arbitrary structural-gap field. A terminal block after a complete class value
 is retained instead. Empty data blocks and whitespace-only strings remain real
-syntax, not erased empty forms. [fixture:
-agentflow/div-empty-description-inside-vertex-id] [fixture:
+syntax, not erased empty forms.
+
+[fixture: agentflow/div-empty-description-inside-vertex-id] [fixture:
 agentflow/div-empty-description-before-class-name] [fixture:
 agentflow/div-empty-description-in-style] [fixture:
 agentflow/div-empty-description-in-classdef] [fixture:

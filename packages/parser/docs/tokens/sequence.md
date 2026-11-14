@@ -56,30 +56,43 @@ or `title:` statement is the whole unit, while that of `accTitle:` is without
 the whitespace at its ends, which mermaid.js trims, and in a box text a U+2028
 or U+2029 counts as no whitespace (see
 [SequenceBoxText](../../../spec/docs/ast/sequence.md#sequenceboxtext)).
+
 [fixture: sequence/db-title-spaces] [fixture:
 sequence/db-acc-title-whitespace-ends] [fixture:
-sequence/db-box-colour-then-spaces-and-line-separator] In a box text, the
-whitespace between the colour candidate and the remainder, which the value of
-the SequenceBoxText holds and neither of its parts does, is a `RawText` token of
-its own, held by the SequenceBoxText; a directive in it cuts it as it cuts any
-token: `box Aqua G` has the tokens `Aqua`, a space, and `G`. [fixture:
-sequence/tokens-box-text-space-between-parts] [fixture:
-sequence/tokens-box-text-directive-between-parts] A directive right after the
-colour candidate is outside that whitespace, so without whitespace there is no
-such token: `box red%%{init: {}}%%-team` has the tokens `red`, the directive,
-and `-team`, and `box red%%{init: {}}%% text` the tokens `red`, the directive, a
-space, and `text`. [fixture:
-sequence/tokens-box-text-directive-between-parts-without-space] [fixture:
-sequence/tokens-box-text-directive-then-space-before-remainder] A `newline` unit
-read from line feeds is whitespace and no token. [fixture:
-sequence/gram-block-empty-text] A directive, a comment region, or an ignored `;`
-inside a token cuts it into fragments, as
+sequence/db-box-colour-then-spaces-and-line-separator]
+
+In a box text, the whitespace between the colour candidate and the remainder,
+which the value of the SequenceBoxText holds and neither of its parts does, is a
+`RawText` token of its own, held by the SequenceBoxText; a directive in it cuts
+it as it cuts any token: `box Aqua G` has the tokens `Aqua`, a space, and `G`.
+
+[fixture: sequence/tokens-box-text-space-between-parts] [fixture:
+sequence/tokens-box-text-directive-between-parts]
+
+A directive right after the colour candidate is outside that whitespace, so
+without whitespace there is no such token: `box red%%{init: {}}%%-team` has the
+tokens `red`, the directive, and `-team`, and `box red%%{init: {}}%% text` the
+tokens `red`, the directive, a space, and `text`.
+
+[fixture: sequence/tokens-box-text-directive-between-parts-without-space]
+[fixture: sequence/tokens-box-text-directive-then-space-before-remainder]
+
+A `newline` unit read from line feeds is whitespace and no token.
+
+[fixture: sequence/gram-block-empty-text]
+
+A directive, a comment region, or an ignored `;` inside a token cuts it into
+fragments, as
 [A token that a directive cuts](../tokens.md#a-token-that-a-directive-cuts)
 says: `title x %%{init: {}}%%` followed by two spaces has the tokens `x` with a
-space and the two spaces, and the title `x` and three spaces. [fixture:
-sequence/tokens-title-directive-then-spaces] A directive or an ignored `;`
-inside a token that is not a `RawText` token makes the input rejected (see
+space and the two spaces, and the title `x` and three spaces.
+
+[fixture: sequence/tokens-title-directive-then-spaces]
+
+A directive or an ignored `;` inside a token that is not a `RawText` token makes
+the input rejected (see
 [Directives inside units](../../../spec/docs/diagrams/sequence.md#directives-inside-units)).
+
 [fixture: sequence/div-directive-in-keyword] [fixture:
 sequence/div-directive-in-arrow] [fixture: sequence/div-directive-in-number]
 [fixture: sequence/div-ignored-semicolon-in-keyword] [fixture:
@@ -88,23 +101,33 @@ sequence/div-ignored-semicolon-in-arrow]
 - A participant id is one `RawText` token, the whitespace inside it included,
   which mermaid.js reads as part of the id, and a directive or an ignored `;`
   cuts it as any text: `participant A %%{init: {}}%% B` has the tokens `A ` and
-  ` B`, and the id `A`, two spaces, and `B`. [fixture:
-  sequence/tokens-directive-participant-spaces] [fixture:
+  ` B`, and the id `A`, two spaces, and `B`.
+
+  [fixture: sequence/tokens-directive-participant-spaces] [fixture:
   sequence/tokens-ignored-semicolon-in-participant-id]
+
 - The keyword `left of` or `right of` is two `Keyword` tokens, one for each
   word. A directive or an ignored `;` next to the space between the words lies
   between the two tokens: `Note left%%{init: {}}%% of A: t` is a note, as in
-  mermaid.js. [fixture: sequence/lex-directive-between-left-and-of] [fixture:
+  mermaid.js.
+
+  [fixture: sequence/lex-directive-between-left-and-of] [fixture:
   sequence/tokens-ignored-semicolon-between-left-and-of]
+
 - The `:` before a text, and the `:` after `accTitle` and `accDescr`, are
-  `Punctuator` tokens of the statement and belong to no field. [fixture:
-  sequence/db-note-over-two] [fixture: sequence/db-acc-title-whitespace-ends]
-  [fixture: sequence/db-acc-descr-line-whitespace-ends]
+  `Punctuator` tokens of the statement and belong to no field.
+
+  [fixture: sequence/db-note-over-two] [fixture:
+  sequence/db-acc-title-whitespace-ends] [fixture:
+  sequence/db-acc-descr-line-whitespace-ends]
+
 - The wrap prefix of a text, such as `wrap:` or `:nowrap:`, is one `Keyword`
   token, the first token of its
-  [SequenceText](../../../spec/docs/ast/sequence.md#sequencetext). [fixture:
-  sequence/db-message-wrap-prefix-without-text] [fixture:
+  [SequenceText](../../../spec/docs/ast/sequence.md#sequencetext).
+
+  [fixture: sequence/db-message-wrap-prefix-without-text] [fixture:
   sequence/lex-wrap-prefix-colon]
+
 - The text of a data block between `@{` and `}` is one `RawText` token with the
   whitespace and line feeds at its ends, which the value of the
   [SequenceDataBlock](../../../spec/docs/ast/sequence.md#sequencedatablock)
@@ -112,14 +135,20 @@ sequence/div-ignored-semicolon-in-arrow]
   feed, and `participant A@{ type: %%{init: {}}%% actor }` the tokens `type:`
   and `actor`, each with the spaces next to it, with the directive between them.
   An empty line before a comment line lies in the comment region, and in neither
-  the value nor a token. [fixture: sequence/gram-data-block-line-break-only]
-  [fixture: sequence/tokens-data-block-directive-inside] [fixture:
+  the value nor a token.
+
+  [fixture: sequence/gram-data-block-line-break-only] [fixture:
+  sequence/tokens-data-block-directive-inside] [fixture:
   sequence/tokens-data-block-directive-line] [fixture:
   sequence/tokens-comment-region-in-data-block] [fixture:
   sequence/tokens-comment-region-blank-line-in-data-block]
+
 - A `;` that ends a statement is a `Punctuator` token that belongs to no
   statement, as a line break belongs to none: `title a;;` has the title `a`,
-  followed by two such tokens. [fixture: sequence/gram-title-then-separators]
+  followed by two such tokens.
+
+  [fixture: sequence/gram-title-then-separators]
+
 - A `;` that the line rule ignores is an `IgnoredSemicolon` token in every
   context, and it cuts a `RawText` token that it lies inside (see
   [Tokens](../tokens.md#tokens)). In `loop style:#x;` the text `style:` leaves
@@ -131,7 +160,9 @@ sequence/div-ignored-semicolon-in-arrow]
   `RawText` tokens ` style:#x` and ` `, and the `;` after
   `participant A@{ "style": "x:#y" }`. In `participant A@{ "style": "x:#y;" }`
   the `;` cuts the data text into the `RawText` tokens ` "style": "x:#y` and
-  `" `. [fixture: sequence/tokens-acc-title-ignored-semicolon] [fixture:
+  `" `.
+
+  [fixture: sequence/tokens-acc-title-ignored-semicolon] [fixture:
   sequence/tokens-acc-descr-ignored-semicolon] [fixture:
   sequence/tokens-acc-descr-block-ignored-semicolon] [fixture:
   sequence/tokens-data-block-ignored-semicolon-alone] [fixture:

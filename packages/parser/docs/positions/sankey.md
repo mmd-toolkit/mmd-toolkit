@@ -17,15 +17,17 @@ The ranges of the nodes of this diagram type, besides the rules of
 
 The range is that of the node in `Root.body` of every diagram (see
 [Node ranges](../positions.md#node-ranges)): from the header keyword to the last
-token of the last record. [fixture: sankey/db-link-basic] [fixture:
-sankey/db-header-beta]
+token of the last record.
+
+[fixture: sankey/db-link-basic] [fixture: sankey/db-header-beta]
 
 ### SankeyLinkStatement
 
 The range runs from its source to its value, the quotes of a string included;
 the spaces around the record and the line feed after it are outside it:
-`  a , b , 1` followed by two spaces covers `a , b , 1`. [fixture:
-sankey/db-fields-trimmed] [fixture: sankey/db-quoted-fields] [fixture:
+`  a , b , 1` followed by two spaces covers `a , b , 1`.
+
+[fixture: sankey/db-fields-trimmed] [fixture: sankey/db-quoted-fields] [fixture:
 sankey/db-spaces-only-source-id-first-record]
 
 ### SankeyIdentifier and SankeyLiteral
@@ -37,6 +39,8 @@ and the range of its spaces, which its one token covers (see
 [Tokens](../tokens/sankey.md#tokens)): the target of `a, ,1` covers the space
 between the commas. It is the only node of this diagram type whose value is not
 the written text of its range: its written text is empty, and the token gives
-the node a place. [fixture: sankey/db-fields-trimmed] [fixture:
-sankey/db-text-with-spaces] [fixture: sankey/db-spaces-only-source-id] [fixture:
+the node a place.
+
+[fixture: sankey/db-fields-trimmed] [fixture: sankey/db-text-with-spaces]
+[fixture: sankey/db-spaces-only-source-id] [fixture:
 sankey/db-spaces-only-target-id] [fixture: sankey/db-spaces-only-value]

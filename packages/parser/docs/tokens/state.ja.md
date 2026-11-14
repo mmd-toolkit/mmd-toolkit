@@ -52,8 +52,10 @@
 
 コメント領域かディレクティブが切る `String` のトークンは、
 `StringFragment` のトークンになります。
+
 [fixture: state/tokens-comment-region-in-alias-string]
 [fixture: state/lex-directive-in-state-string]
+
 [トークンの中のコメント領域](../tokens.ja.md#トークンの中のコメント領域) と、
 [ディレクティブが切るトークン](../tokens.ja.md#ディレクティブが切るトークン)
 を参照。
@@ -64,18 +66,23 @@
 ただし、mermaid.js がその空白を値の一部として読むところは除きます。
 [トークン](../tokens.ja.md#トークン) を参照。
 `second-description` の単位のトークンは単位の全体です。
+
 [fixture: state/db-alias-blank-second-description]
+
 1 行のノートの `:` がそのテキストを始めるところでは、
 その後の `note-text` の単位のトークンは、テキストが持つ始まりの空白を持ちます。
 `note left of A`、空白 2 つ、`: hi` は、トークン `:` と ` hi` を持ちます。
 `:` の後に空白がなければ、テキスト `:hi` はトークン `:` と `hi` を持ちます。
+
 [fixture: state/tokens-note-two-spaces-before-colon-space]
 [fixture: state/lex-note-two-spaces-before-colon]
+
 そのような並びの中のディレクティブ、コメント領域、無視される `;` は、
 並びが `RawText` か `String` のトークンなら、並びを断片に切ります。
 [ディレクティブが切るトークン](../tokens.ja.md#ディレクティブが切るトークン)
 を参照。
 ほかの種類の並びの中では、ディレクティブや無視される `;` は入力を拒否させます。
+
 [fixture: state/lex-directive-in-second-description]
 [fixture: state/tokens-comment-region-in-note-block]
 [fixture: state/tokens-description-ignored-semicolon-inside]
@@ -83,6 +90,7 @@
 [fixture: state/div-directive-in-arrow]
 [fixture: state/div-ignored-semicolon-in-state-name]
 [fixture: state/div-ignored-semicolon-in-state-name-without-body]
+
 [単位の中のディレクティブ](../../../spec/docs/diagrams/state.ja.md#単位の中のディレクティブ)
 を参照。
 
@@ -90,24 +98,33 @@
   語ごとに 1 つの `Keyword` のトークンです。
   2 つの語の間の空白に接したディレクティブは、2 つのトークンの間にあります。
   `note left%%{init: {}}%% of A: t` は、mermaid.js と同じくノートです。
+
   [fixture: state/lex-directive-between-left-and-of]
   [fixture: state/lex-directive-between-end-and-note]
   [fixture: state/lex-directive-between-hide-and-empty]
+
 - 説明は、その `:` からの 1 つの単位で、2 つのトークンです。
   `:` と、周りの空白を除いたテキストです。
+
   [fixture: state/lex-description-without-space]
   [fixture: state/db-label-trimmed]
+
 - 浮いたノートの `"` の単位は、2 つが続くところでも、
   それぞれ 1 つの `Punctuator` のトークンです。
   `note ""x" as N` は 3 つの `"` のトークンを持ち、
   2 つは `RawText` のトークン `x` の前に、1 つはその後にあります。
+
   [fixture: state/lex-floating-note-extra-quote-before-text]
+
 - 空の説明ブロックの単位は、文の `textBeforeBody` の中でも種類を保ちます。
   `Keyword` のトークン `accDescr` と、`Punctuator` のトークン `{` と `}` で、
   StateIgnoredText の範囲の中にあります。
+
   [fixture: state/gram-empty-description-block-after-empty-string-before-body]
+
   [StateIgnoredText](../../../spec/docs/ast/state.ja.md#stateignoredtext)
   を参照。
+
 - 行の規則が無視する `;` は `IgnoredSemicolon` のトークンで、
   中にある `RawText` か `String`
   のトークンを切ります（[トークン](../tokens.ja.md#トークン) を参照）。
@@ -120,12 +137,13 @@
   状態の id です。
   `A : style:#x; B` では、`;` が説明を `RawText` のトークン `style:#x` と、
   `;` の後の空白を含む ` B` に切り、説明は `style:#x B` です。
-  [fixture: state/tokens-classdef-ignored-semicolon] [fixture:
-  state/tokens-acc-title-ignored-semicolon] [fixture:
-  state/tokens-note-block-ignored-semicolon] [fixture:
-  state/tokens-alias-ignored-semicolon] [fixture:
-  state/tokens-description-ignored-semicolon] [fixture:
-  state/tokens-composite-description-ignored-semicolon] [fixture:
-  state/lex-description-then-semicolon] [fixture:
-  state/tokens-description-ignored-semicolon-inside] [fixture:
-  state/tokens-class-ignored-semicolon]
+
+  [fixture: state/tokens-classdef-ignored-semicolon]
+  [fixture: state/tokens-acc-title-ignored-semicolon]
+  [fixture: state/tokens-note-block-ignored-semicolon]
+  [fixture: state/tokens-alias-ignored-semicolon]
+  [fixture: state/tokens-description-ignored-semicolon]
+  [fixture: state/tokens-composite-description-ignored-semicolon]
+  [fixture: state/lex-description-then-semicolon]
+  [fixture: state/tokens-description-ignored-semicolon-inside]
+  [fixture: state/tokens-class-ignored-semicolon]

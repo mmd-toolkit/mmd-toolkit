@@ -56,8 +56,10 @@
 
 コメント領域かディレクティブが切る `String` のトークンは、
 `StringFragment` のトークンになります。
+
 [fixture: flowchart/tokens-string-literal-comment-line]
 [fixture: flowchart/lex-directive-in-click-href-string]
+
 [トークンの中のコメント領域](../tokens.ja.md#トークンの中のコメント領域) と、
 [ディレクティブが切るトークン](../tokens.ja.md#ディレクティブが切るトークン)
 を参照。
@@ -76,6 +78,7 @@
 `A["x" y]` のラベルはトークン `"x"` と ` y` を持ち、
 文字列の後にディレクティブがある `A["x" %%{init: {}}%% y]` では、`"x"`、空白、
 ディレクティブ、` y` を持ちます。
+
 [fixture: flowchart/gram-label-string-then-text]
 [fixture: flowchart/tokens-label-string-then-text-space]
 [fixture: flowchart/tokens-label-string-directive-then-text]
@@ -83,23 +86,30 @@
 [fixture: flowchart/tokens-subgraph-name-string-directive-then-text]
 [fixture: flowchart/db-style-tabs-after-comma]
 [fixture: flowchart/db-subgraph-name-trailing-space]
+
 `click A call f (x)` のコールバックの名前は、
 その後の空白を含むトークン `f` を持ちます。
+
 [fixture: flowchart/tokens-callback-name-trailing-space]
+
 `click A call f( x, y )` の引数は、空白を含むトークン `x, y` を持ちます。
+
 [fixture: flowchart/tokens-callback-arguments-spaces-at-ends]
+
 そのような並びの中のディレクティブ、コメント領域、無視される `;` は、
 並びが `RawText` か `String` のトークンなら、並びを断片に切ります。
 [ディレクティブが切るトークン](../tokens.ja.md#ディレクティブが切るトークン)
 を参照。
 ほかの種類の並びの中では、2 つの単位の間でも、
 ディレクティブや無視される `;` は入力を拒否させます。
+
 [fixture: flowchart/tokens-directive-label-space-after]
 [fixture: flowchart/tokens-comment-region-in-edge-text]
 [fixture: common/entity-css-in-string-label]
 [fixture: flowchart/div-directive-in-id]
 [fixture: flowchart/div-ignored-semicolon-in-id]
 [fixture: flowchart/div-directive-in-circle-opening]
+
 [単位の中のディレクティブ](../../../spec/docs/diagrams/flowchart.ja.md#単位の中のディレクティブ)
 を参照。
 各単位は 1 つの項目に属し 1 つの種類を持つので、
@@ -111,25 +121,34 @@
   各 `,` は `Punctuator` です。
   クリックの文のクリックの id の `click-comma` の単位も同じです。
   `classDef a,,b fill:red` のトークンは、`classDef`、`a`、`,`、`,`、`b`、
-  `fill:red` です。 [fixture: flowchart/db-classdef-names-empty]
+  `fill:red` です。
+
+  [fixture: flowchart/db-classdef-names-empty]
   [fixture: flowchart/gram-click-comma-only-href]
+
 - id は、複数の単位からなる場合でも 1 つのトークンです。
   `12ab` も `A-b` も、それぞれ 1 つの `Identifier` で、
   各文字が `letter` の単位である `日本語` もそうです。
   `stroke-width: 2px` のようなスタイルは 1 つの `RawText` のトークンで、
   `a b` のような subgraph の名前もそうです。
+
   [fixture: flowchart/lex-style-value-with-whitespace]
   [fixture: flowchart/spec-flow-singlenode-9075959f]
   [fixture: flowchart/spec-flow-singlenode-c9da1f2e]
   [fixture: flowchart/lex-letter-id-cjk]
   [fixture: flowchart/db-subgraph-title-inner-spaces]
+
 - 文字列は、開く引用符から閉じる引用符までの 1 つの単位なので、
   1 つの `String` のトークンです。
+
   [fixture: flowchart/gram-label-string-then-text]
+
 - クリックの文では、`call` のトークンと、引数の周りの `(` と `)` のトークンは、
-  文に属し、どの欄にも属しません。 [fixture: flowchart/gram-click-call]
-  [fixture:
-  flowchart/gram-click-empty-call-then-arguments]
+  文に属し、どの欄にも属しません。
+
+  [fixture: flowchart/gram-click-call]
+  [fixture: flowchart/gram-click-empty-call-then-arguments]
+
 - 形を開く区切りは、2 つの単位からなる場合でも 1 つのトークンで、
   閉じる区切りも同じです。
   円の `((` と `))`、六角形の `{{` と `}}` は、`(((` や `[[` と同じく、
@@ -138,11 +157,13 @@
   どの区切り記号の中とも同じく、入力を拒否させます。
   `A(%%{init: {}}%%(x))` は、mermaid.js は円と読みますが、
   そのディレクティブのところで拒否します。
-  [fixture: flowchart/tokens-circle-hexagon-delimiters] [fixture:
-  flowchart/div-directive-in-circle-opening] [fixture:
-  flowchart/div-directive-in-hexagon-closing] [fixture:
-  flowchart/div-ignored-semicolon-in-circle-opening] [fixture:
-  flowchart/gram-circle-gap]
+
+  [fixture: flowchart/tokens-circle-hexagon-delimiters]
+  [fixture: flowchart/div-directive-in-circle-opening]
+  [fixture: flowchart/div-directive-in-hexagon-closing]
+  [fixture: flowchart/div-ignored-semicolon-in-circle-opening]
+  [fixture: flowchart/gram-circle-gap]
+
 - 行単位の規則が無視する `;` は `IgnoredSemicolon` のトークンで、
   中にあるトークンが、ラベル、文字列、subgraph の名前、スタイルなら、
   それを切ります（[トークン](../tokens.ja.md#トークン) を参照）。
@@ -156,30 +177,38 @@
   にあります。
   id、数、キーワード、矢印、ほかの区切り記号の中では、入力を拒否させます。
   `A[style:#x] -;-> B` と `A[style:#x] --> B;b` は、
-  その `;` のところで拒否します。 [fixture: flowchart/tokens-label-semicolon]
-  [fixture:
-  common/entity-style-in-label] [fixture:
-  flowchart/div-ignored-semicolon-in-arrow] [fixture:
-  flowchart/div-ignored-semicolon-in-id]
+  その `;` のところで拒否します。
+
+  [fixture: flowchart/tokens-label-semicolon]
+  [fixture: common/entity-style-in-label]
+  [fixture: flowchart/div-ignored-semicolon-in-arrow]
+  [fixture: flowchart/div-ignored-semicolon-in-id]
   [fixture: common/entity-css-in-string-label]
   [fixture: flowchart/tokens-style-semicolon-ignored]
   [fixture: flowchart/tokens-style-ignored-semicolon-between-values]
   [fixture: flowchart/tokens-subgraph-name-ignored-semicolon]
   [fixture: flowchart/tokens-subgraph-title-ignored-semicolon]
   [fixture: flowchart/tokens-subgraph-title-string-ignored-semicolon]
+
 - 文の区切りの `;` は、文の範囲に入りません。
   文の範囲は、その最初のトークンから最後のトークンまでです。
+
   [fixture: flowchart/tokens-diagram-trailing-separator]
+
 - `A[ ]`、`A-->| |B`、`subgraph S[ ]` のラベルのように、すべて空白のラベルは、
   その空白の `RawText` のトークンを 1 つ持ちます。
   空白だけのどの値も、そうです（[トークン](../tokens.ja.md#トークン) を参照）。
   すべて空白のスタイルはトークンを持たず、その空白の量は何も変えないので、
-  木では null です。 [fixture: flowchart/gram-label-space]
+  木では null です。
+
+  [fixture: flowchart/gram-label-space]
   [fixture: flowchart/tokens-pipe-label-space]
   [fixture: flowchart/tokens-subgraph-title-space]
   [fixture: flowchart/db-style-whitespace-only-value]
+
   [FlowchartStyleStatement](../../../spec/docs/ast/flowchart.ja.md#flowchartstylestatement)
   を参照。
+
 - `@{` と `}` の間のデータブロックのテキストは、
   その `data-text` と `data-quote` の単位で、
   両端の空白と改行を含む 1 つの `RawText` のトークンです。
@@ -188,6 +217,7 @@
   の値に入ります。
   `A@{ }` は空白のトークンを持ちます。
   `A@{`、改行、`shape: rect`、改行、`}` は、改行、`shape: rect`、
-  改行のトークンを持ちます。 [fixture: flowchart/gram-data-block-space-only]
-  [fixture:
-  flowchart/gram-data-consecutive-blocks]
+  改行のトークンを持ちます。
+
+  [fixture: flowchart/gram-data-block-space-only]
+  [fixture: flowchart/gram-data-consecutive-blocks]

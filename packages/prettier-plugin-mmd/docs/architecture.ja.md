@@ -333,6 +333,7 @@ mermaid.js はラベルを、1 つの空白で区切った語ごとに描くの�
 語の中や、語の中の角括弧の隣にある引用符も、ほかと同じく語の文字なので、
 その隣のタブも残します。
 `["A'<タブ>B"]` と `["A[<タブ>B"]` は書かれたまま印字します。
+
 [fixture: quotes/labels-without-quotes]
 [fixture: quotes/labels-with-punctuation-without-quotes]
 [fixture: quotes/labels-that-need-quotes]
@@ -370,7 +371,9 @@ architecture-beta
 mermaid.js が両端の空白を除くからです。
 `group a(cloud)[ API ]` は `group a(cloud)[API]` に、
 `service s(server)["x" ]` は `service s(server)["x"]` になります。
+
 [fixture: label-content/title-edge-whitespace-dropped]
+
 保つ `;` のある行でも同じです。
 ただし、行の規則が読む範囲は除きます（[Semicolons](#semicolons)を参照）。
 その範囲の外の空白を落としても `;` は動かず、増えも減りもしないので、
@@ -389,20 +392,27 @@ mermaid.js が両端の空白を除くからです。
 `service %%{style}%%s0(logos:aws)[#y;]` に、
 `service style1(logos:aws)[ #y ]%%{init:{"a":";"}}%%` は `[#y]` になります。
 `;` がディレクティブの外にある `[ #y; ]` は、空白を残します。
+
 [fixture: label-content/title-padding-line-rule-chars-in-directive]
+
 行の途中の `%%` はコメント行ではないので、規則はそのテキストを読みます。
 `service style3(logos:aws)[ #y ] %% note;` は
 `service style3(logos:aws)[ #y] %% note;` になります。
 注の `;` があるので、規則は `logos:aws` の `:` から合うからです。
 `service classDef(logos:aws)[#a;style: ]%%#c;` は、
 `%%` の後の `#` と `;` も規則に加わるので、変わりません。
+
 [fixture: label-content/title-padding-line-rule-chars-in-comment]
+
 ディレクティブにもコメントにも含まれない U+2028 と U+2029 は、
 規則が読む行を終わらせるので、その前の `:` とその後の `;` は区間を作りません。
+
 [test: architecture/label-content/title-style-rule-ends-at-u2028]
 [test: architecture/label-content/title-style-rule-ends-at-u2029]
+
 コメントやディレクティブを含むタイトルと、U+2028 や U+2029 を含む空白は、
 書かれたまま残します。
+
 [fixture: label-content/title-padding-with-directive-or-semicolon]
 [fixture: label-content/title-padding-in-style-rule-stretch]
 [fixture: label-content/title-padding-after-colon-without-style]
@@ -410,10 +420,13 @@ mermaid.js が両端の空白を除くからです。
 [test: architecture/label-content/title-u2029]
 [test: architecture/label-content/title-with-semicolon-u2028]
 [test: architecture/label-content/title-with-semicolon-u2029]
+
 テキストの中の空白とタブの連なりは、図が同じなので、空白 1 つにして印字します。
 （[同じに描かれるテキスト中の空白の連なり](./compatibility.ja.md#同じに描かれるテキスト中の空白の連なり)）。
 `group labels[A  B]` は `group labels[A B]` と印字します。
+
 [fixture: label-content/bare-padding]
+
 空白だけの値、引用符付きの空値、エスケープ、HTML、entity、
 隠れた形に見える文字は保ちます。
 Db がこれらを区別するためです。
@@ -628,8 +641,8 @@ architecture の要約が title を公開しなくても、文と内容を保ち
 題の終わりのディレクティブは、それぞれの前に空白があれば空白 1 つを置き、
 行末の空白の有無にかかわらず、最後のディレクティブの後の空白を除いて印字します。
 （[同じに描かれるキーワードの後のテキスト](./compatibility.ja.md#同じに描かれるキーワードの後のテキスト)）。
-[fixture: title/title-directives-end-blanks-dropped]
 
+[fixture: title/title-directives-end-blanks-dropped]
 [corpus fixture: architecture/directive-fields]
 
 [fixture: architecture/title/empty-next-statement]
@@ -673,8 +686,8 @@ architecture-beta
 値の終わりのディレクティブは、それぞれの前に空白があれば空白 1 つを置き、
 最後のディレクティブの後の空白を除いて印字します。
 （[同じに描かれるキーワードの後のテキスト](./compatibility.ja.md#同じに描かれるキーワードの後のテキスト)）。
-[fixture: accessibility-lines/acc-directives-end-blanks-dropped]
 
+[fixture: accessibility-lines/acc-directives-end-blanks-dropped]
 [fixture: architecture/accessibility-lines/a11y-empty-comment-gap]
 
 [fixture: architecture/accessibility-lines/accdescr-spacing]
@@ -1191,9 +1204,11 @@ architecture-beta
 行の規則が無視する `;` が変わりうる場合は、各区間の頭から最後の保つ `;` までを、
 書かれたまま残します。
 それ以外の複数行の文は、1 行の文と同じように整形します。
+
 [fixture: semicolons/stretch-kept-rest-formatted]
 [fixture: semicolons/no-stretch-formatted]
 [fixture: semicolons/crossing-comment]
+
 保護された見出し・最初の文は一緒に保ちます。
 選択された1個の削除や style・classDef の条件を満たす語の移動は、
 別のセミコロンを選んで Db を変え得るため、2 回の走査、条件を満たさない語、

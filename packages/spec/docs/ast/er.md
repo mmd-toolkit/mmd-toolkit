@@ -23,8 +23,9 @@ two entities, with a cardinality at each end and a role.
 A StringLiteral of this diagram type is always closed. It is empty only as a
 role or as the comment of an attribute, as in `A ||--o{ B : ""`; an empty string
 as an entity name makes the input rejected, and empty backquotes are no
-StringLiteral (see [Attributes](../diagrams/er.md#attributes)). [fixture:
-er/gram-role-string-empty] [fixture: er/gram-comment-empty] [fixture:
+StringLiteral (see [Attributes](../diagrams/er.md#attributes)).
+
+[fixture: er/gram-role-string-empty] [fixture: er/gram-comment-empty] [fixture:
 er/spec-er-diagram-f4c59d78] [fixture:
 er/gram-empty-backquotes-between-attributes]
 
@@ -65,11 +66,13 @@ unit, `12` and `2.5` included, and a StringLiteral for a `quoted-name` unit; the
 alias in the same way (see [Entities](../diagrams/er.md#entities)). An
 ErIgnoredText in `attributes` is an `empty-backquotes` unit between two
 attributes, before the first, or after the last, which mermaid.js does not read
-(see [Attributes](../diagrams/er.md#attributes)). [fixture:
-er/lex-name-unicode-characters] [fixture: er/lex-name-number] [fixture:
-er/lex-quoted-name] [fixture: er/gram-alias] [fixture: er/gram-alias-string]
-[fixture: er/gram-entity-classes] [fixture: er/gram-attribute] [fixture:
-er/gram-block-empty] [fixture: er/gram-alias-class-block] [fixture:
+(see [Attributes](../diagrams/er.md#attributes)).
+
+[fixture: er/lex-name-unicode-characters] [fixture: er/lex-name-number]
+[fixture: er/lex-quoted-name] [fixture: er/gram-alias] [fixture:
+er/gram-alias-string] [fixture: er/gram-entity-classes] [fixture:
+er/gram-attribute] [fixture: er/gram-block-empty] [fixture:
+er/gram-alias-class-block] [fixture:
 er/gram-empty-backquotes-between-attributes] [fixture:
 er/gram-empty-backquotes-alone]
 
@@ -91,7 +94,9 @@ ErIdentifier for a `word` or a `tilde-word` unit, and a StringLiteral for a
 `backquoted-word` unit, whose `value` is the text between the backquotes. The
 `?` is a unit and no node. A key is an Identifier whose `name` is the key as
 written, `pk` or `PK`. The comment may be empty, with the value of the empty
-string. [fixture: er/gram-attribute] [fixture: er/gram-optional-type] [fixture:
+string.
+
+[fixture: er/gram-attribute] [fixture: er/gram-optional-type] [fixture:
 er/lex-tilde-word] [fixture: er/lex-backquote-word] [fixture:
 er/gram-keys-comma-space] [fixture: er/lex-key-lower-case] [fixture:
 er/gram-comment] [fixture: er/gram-comment-empty] [fixture:
@@ -111,6 +116,7 @@ er/gram-attributes-keys-comment]
 Child fields: `left`, `relationship`, `right`, `role`. The role is a
 StringLiteral for a `string` or a `quoted-name` unit, and an ErIdentifier for a
 `name` unit; a `string` may be empty, with the value of the empty string.
+
 [fixture: er/gram-relationship-symbols] [fixture: er/gram-role-string] [fixture:
 er/gram-role-string-empty] [fixture: er/lex-role-unicode] [fixture:
 er/gram-relationship-both-classes]
@@ -124,9 +130,11 @@ An end of a relationship: the name of the entity, with its classes or without.
 | `name`       | ErIdentifier or StringLiteral | The name of the entity, as in ErEntityStatement.                                                |
 | `cssClasses` | list of ErIdentifier          | The classes after `:::`, separated by `,` units, in source order; empty when there is no `:::`. |
 
-Child fields: `name`, `cssClasses`. [fixture: er/gram-relationship-left-classes]
-[fixture: er/gram-relationship-right-classes] [fixture:
-er/gram-relationship-string-names] [fixture: er/gram-relationship-number-names]
+Child fields: `name`, `cssClasses`.
+
+[fixture: er/gram-relationship-left-classes] [fixture:
+er/gram-relationship-right-classes] [fixture: er/gram-relationship-string-names]
+[fixture: er/gram-relationship-number-names]
 
 ### ErRelationship
 
@@ -145,10 +153,12 @@ No child fields. The cardinality words are `zero-or-one`, `zero-or-more`,
 spelling of the unit: `|o`, `one or zero`, and `zero or one` all give
 `zero-or-one`, and `--` and `to` both give `identifying`. The node has no
 `value`: its units may have whitespace between them, which mermaid.js does not
-read, and the texts of the units are in the tokens. [fixture:
-er/gram-relationship-symbols] [fixture: er/lex-cardinality-words] [fixture:
-er/lex-cardinality-only-one-optionally-to] [fixture: er/lex-md-parent] [fixture:
-er/lex-relationship-spaces-in-spec] [fixture: er/spec-er-diagram-7b5988ee]
+read, and the texts of the units are in the tokens.
+
+[fixture: er/gram-relationship-symbols] [fixture: er/lex-cardinality-words]
+[fixture: er/lex-cardinality-only-one-optionally-to] [fixture: er/lex-md-parent]
+[fixture: er/lex-relationship-spaces-in-spec] [fixture:
+er/spec-er-diagram-7b5988ee]
 
 ### ErSubgraphStatement
 
@@ -163,8 +173,9 @@ er/lex-relationship-spaces-in-spec] [fixture: er/spec-er-diagram-7b5988ee]
 Child fields: `id`, `title`, `body`. The title is a list because the grammar
 reads one or more entity names there, with whitespace between them or not, and
 mermaid.js joins their texts with one space; the whitespace between them is no
-value (see [Subgraphs](../diagrams/er.md#subgraphs)). [fixture:
-er/gram-subgraph] [fixture: er/gram-subgraph-title] [fixture:
+value (see [Subgraphs](../diagrams/er.md#subgraphs)).
+
+[fixture: er/gram-subgraph] [fixture: er/gram-subgraph-title] [fixture:
 er/gram-subgraph-title-string] [fixture: er/gram-subgraph-string-id] [fixture:
 er/gram-subgraph-header-blocks] [fixture: er/gram-subgraph-nested]
 
@@ -180,8 +191,10 @@ Child fields: `textBefore`, `textAfter`. The texts are without the whitespace at
 their ends, and null where only whitespace lies there: `  direction LR` has no
 `textBefore`, and `A ||--o{ B : x direction LR` the `textBefore`
 `A ||--o{ B : x`. The direction is the value in upper case: `direction lr` gives
-`LR`. [fixture: er/gram-direction] [fixture: er/lex-direction-lower-case]
-[fixture: er/lex-direction-leading-space] [fixture:
+`LR`.
+
+[fixture: er/gram-direction] [fixture: er/lex-direction-lower-case] [fixture:
+er/lex-direction-leading-space] [fixture:
 er/lex-direction-line-after-relationship] [fixture:
 er/lex-direction-line-text-after] [fixture: er/lex-direction-value-glued]
 
@@ -197,9 +210,10 @@ er/lex-direction-line-text-after] [fixture: er/lex-direction-value-glued]
 Child fields: `cssClasses`, `styles`. A class name is an ErIdentifier whose
 `name` is the text of its `style-text` unit. A style is the texts of its units
 joined (see [ErLiteral](#erliteral)). The list of styles is never empty: a
-`classDef` without a style is rejected. [fixture: er/gram-classdef] [fixture:
-er/gram-classdef-two-names] [fixture: er/lex-classdef-style-spaces] [fixture:
-er/gram-classdef-without-styles]
+`classDef` without a style is rejected.
+
+[fixture: er/gram-classdef] [fixture: er/gram-classdef-two-names] [fixture:
+er/lex-classdef-style-spaces] [fixture: er/gram-classdef-without-styles]
 
 ### ErClassStatement
 
@@ -211,8 +225,10 @@ er/gram-classdef-without-styles]
 | `cssClasses` | list of ErIdentifier | The classes, separated by `,` units, in source order.                                      |
 
 Child fields: `entities`, `cssClasses`. Each is a `name` unit, an ErIdentifier,
-so neither list holds a number or a quoted name. [fixture: er/gram-class]
-[fixture: er/gram-class-two-lists] [fixture: er/db-class-subgraph]
+so neither list holds a number or a quoted name.
+
+[fixture: er/gram-class] [fixture: er/gram-class-two-lists] [fixture:
+er/db-class-subgraph]
 
 ### ErStyleStatement
 
@@ -224,8 +240,10 @@ so neither list holds a number or a quoted name. [fixture: er/gram-class]
 | `styles`   | list of ErLiteral    | The styles, as in ErClassDefStatement.                                                     |
 
 Child fields: `entities`, `styles`. A name is an ErIdentifier whose `name` is
-the text of its `style-text` unit. [fixture: er/gram-style] [fixture:
-er/gram-style-two-names] [fixture: er/db-style-subgraph]
+the text of its `style-text` unit.
+
+[fixture: er/gram-style] [fixture: er/gram-style-two-names] [fixture:
+er/db-style-subgraph]
 
 ### ErAccTitleStatement
 
@@ -238,9 +256,10 @@ An `accTitle:` statement with its text.
 Child fields: `value`. The whitespace after the `:` is read with it, line feeds
 included, so the text starts on the first line that has one, and the value is
 never null: `accTitle:` with nothing after it is rejected. The value is the text
-without the whitespace at its ends. [fixture: er/gram-acc-title] [fixture:
-er/lex-acc-title-blank-line-then-name] [fixture: er/lex-acc-title-at-end]
-[fixture: er/db-acc-title-trailing-space]
+without the whitespace at its ends.
+
+[fixture: er/gram-acc-title] [fixture: er/lex-acc-title-blank-line-then-name]
+[fixture: er/lex-acc-title-at-end] [fixture: er/db-acc-title-trailing-space]
 
 ### ErAccDescrStatement
 
@@ -251,6 +270,7 @@ An `accDescr:` statement with its text.
 | `value` | ErLiteral | The text after `accDescr:`, up to the end of its line. |
 
 Child fields: `value`. As for ErAccTitleStatement, the value is never null.
+
 [fixture: er/gram-acc-descr] [fixture: er/lex-acc-descr-at-end]
 
 ### ErAccDescrBlockStatement
@@ -267,6 +287,7 @@ Child fields: `value`. `accDescr {}`, `accDescr { }`, and a block of blank lines
 have the value null and change nothing. Such a block is a statement only where a
 statement starts; a block inside a statement makes the input rejected (see
 [Empty description blocks](../diagrams/er.md#empty-description-blocks)).
+
 [fixture: er/gram-acc-descr-block] [fixture: er/gram-acc-descr-block-multiline]
 [fixture: er/gram-acc-descr-block-empty] [fixture:
 er/db-acc-descr-block-whitespace-only] [fixture:
@@ -294,14 +315,18 @@ any whitespace. `A`, U+00A0, and `B` is one entity, `List~a b~ c` has the type
 whitespace and no U+00A0, but may hold the other whitespace characters outside
 ASCII after its first character (see
 [The attribute block context](../diagrams/er.md#the-attribute-block-context)):
-`string name` has the type `string`. [fixture: er/lex-name-nbsp] [fixture:
-er/lex-name-line-separator] [fixture: er/lex-tilde-space-inside] [fixture:
-er/lex-name-number] [fixture: er/gram-attribute] [fixture:
-er/lex-tilde-run-two-words] A comment region inside the name, after a U+2028 or
-a U+2029, is left out of its written text: `A`, U+2028, `%% c`, a line break,
-and `Bar` has the `name` `A`, U+2028, and `Bar` (see
-[Comment regions inside names](../diagrams/er.md#units-and-contexts)). [fixture:
-er/lex-name-line-separator-comment-line]
+`string name` has the type `string`.
+
+[fixture: er/lex-name-nbsp] [fixture: er/lex-name-line-separator] [fixture:
+er/lex-tilde-space-inside] [fixture: er/lex-name-number] [fixture:
+er/gram-attribute] [fixture: er/lex-tilde-run-two-words]
+
+A comment region inside the name, after a U+2028 or a U+2029, is left out of its
+written text: `A`, U+2028, `%% c`, a line break, and `Bar` has the `name` `A`,
+U+2028, and `Bar` (see
+[Comment regions inside names](../diagrams/er.md#units-and-contexts)).
+
+[fixture: er/lex-name-line-separator-comment-line]
 
 ### ErLiteral
 
@@ -318,6 +343,7 @@ drops the whitespace between the units of a style, so `classDef a fill : #f9f`
 has the style `fill:#f9f`, and `classDef a fill:red stroke:blue` the one style
 `fill:redstroke:blue`. An accessibility text is read without the whitespace at
 its ends, which mermaid.js trims, and never consists of whitespace only.
+
 [fixture: er/lex-classdef-style-spaces] [fixture: er/lex-classdef-styles-joined]
 [fixture: er/gram-acc-title] [fixture: er/db-acc-title-trailing-space] [fixture:
 er/lex-acc-descr-block-trailing-spaces]
@@ -334,7 +360,9 @@ between them is one node.
 | ------- | ------ | ------------------------------------------------- |
 | `value` | string | Its written text (see [ast.md](../ast.md#nodes)). |
 
-No child fields. [fixture: er/lex-direction-line-text-before] [fixture:
+No child fields.
+
+[fixture: er/lex-direction-line-text-before] [fixture:
 er/lex-direction-line-text-after] [fixture:
 er/gram-empty-backquotes-between-attributes] [fixture:
 er/gram-empty-backquotes-twice]

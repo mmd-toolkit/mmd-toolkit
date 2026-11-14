@@ -44,7 +44,7 @@ import {
   layoutSubgraphOpening,
 } from "./er-layout.ts"
 import { expectToken, layoutKeywordHeader, toAsciiLowerCase } from "./layout.ts"
-import { isFirstOnItsLine, lineEndOf, lineStartOf } from "./kept-lines.ts"
+import { isFirstOnItsLine, lineEndOf } from "./kept-lines.ts"
 import { indentationOf, printAsWritten } from "./lines.ts"
 import { narrowPath } from "./paths.ts"
 import type { Source } from "./source.ts"
@@ -433,12 +433,7 @@ function statementBlockRules(
     keepsWhitespaceLineAfterComment: false,
     keepsDirectiveLinesUnindented: false,
     keptIndentationOf: (statement) =>
-      isDirectionBroughtToTheColon(source, statement)
-        ? ""
-        : source.text.slice(
-            lineStartOf(source, statement.range[0]),
-            statement.range[0],
-          ),
+      isDirectionBroughtToTheColon(source, statement) ? "" : undefined,
   }
 }
 

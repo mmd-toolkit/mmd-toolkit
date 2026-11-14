@@ -23,8 +23,9 @@ mermaid.js calls it an actor; this document keeps the word actor for the
 participants that the keyword `actor` declares.
 
 This diagram type has no strings in quotes, so no node of it is a StringLiteral:
-a `"` in the text of a message is a character of the text. [fixture:
-sequence/db-message-text-attribute-quote]
+a `"` in the text of a message is a character of the text.
+
+[fixture: sequence/db-message-text-attribute-quote]
 
 ## Nodes
 
@@ -106,28 +107,37 @@ trims the other whitespace at the ends of the parts. So in a box text, U+2028
 and U+2029 count as characters that are not whitespace: the written text of each
 SequenceLiteral is its unit without the other whitespace at its ends, and the
 box text ends where its last part ends; the whitespace between the two parts is
-in the value of the box text and in neither part. [fixture:
-sequence/tokens-box-text-space-between-parts] [fixture:
-sequence/tokens-box-text-directive-then-space-before-remainder] `box red-team`
-followed by U+2028 has the remainder `-team` and U+2028, and with a space before
-and after the U+2028, the remainder `-team`, a space, and U+2028, the space
-after it outside; `box aqua`, two spaces, and U+2028 has the remainder U+2028
-alone, a value of whitespace only; and `box red-team` followed by two spaces has
-the remainder `-team`. [fixture: sequence/db-box-line-separator-at-end]
-[fixture: sequence/db-box-spaces-around-line-separator-at-end] [fixture:
+in the value of the box text and in neither part.
+
+[fixture: sequence/tokens-box-text-space-between-parts] [fixture:
+sequence/tokens-box-text-directive-then-space-before-remainder]
+
+`box red-team` followed by U+2028 has the remainder `-team` and U+2028, and with
+a space before and after the U+2028, the remainder `-team`, a space, and U+2028,
+the space after it outside; `box aqua`, two spaces, and U+2028 has the remainder
+U+2028 alone, a value of whitespace only; and `box red-team` followed by two
+spaces has the remainder `-team`.
+
+[fixture: sequence/db-box-line-separator-at-end] [fixture:
+sequence/db-box-spaces-around-line-separator-at-end] [fixture:
 sequence/db-box-colour-then-spaces-and-line-separator] [fixture:
-sequence/tokens-box-text-trailing-spaces] In `box Gr%%{init: {}}%%oup`, the
-candidate is `Group`, and in `box red%%{init: {}}%%-team`, as in `box red-team`,
-the candidate is `red` and the remainder `-team`. [fixture:
-sequence/tokens-box-text-directive-between-parts-without-space] [fixture:
-sequence/tokens-box-text-directive-in-candidate] [fixture:
-sequence/tokens-box-text-directive-in-remainder] In `box Purple Alice & John`,
-the candidate is `Purple` and the remainder `Alice & John`; in
-`box rgb(34, 56, 0) Group1`, the candidate is `rgb(34, 56, 0)` and the remainder
-`Group1`; in `box red-team`, the candidate is `red` and the remainder `-team`;
-in `box RGB(0, 0, 255) Team`, the candidate is `RGB`; and in `box -x`, there is
-no candidate, and the remainder is `-x`. [fixture:
-sequence/docs-syntax-sequence-diagram-93d3c0ff] [fixture:
+sequence/tokens-box-text-trailing-spaces]
+
+In `box Gr%%{init: {}}%%oup`, the candidate is `Group`, and in
+`box red%%{init: {}}%%-team`, as in `box red-team`, the candidate is `red` and
+the remainder `-team`.
+
+[fixture: sequence/tokens-box-text-directive-between-parts-without-space]
+[fixture: sequence/tokens-box-text-directive-in-candidate] [fixture:
+sequence/tokens-box-text-directive-in-remainder]
+
+In `box Purple Alice & John`, the candidate is `Purple` and the remainder
+`Alice & John`; in `box rgb(34, 56, 0) Group1`, the candidate is
+`rgb(34, 56, 0)` and the remainder `Group1`; in `box red-team`, the candidate is
+`red` and the remainder `-team`; in `box RGB(0, 0, 255) Team`, the candidate is
+`RGB`; and in `box -x`, there is no candidate, and the remainder is `-x`.
+
+[fixture: sequence/docs-syntax-sequence-diagram-93d3c0ff] [fixture:
 sequence/spec-sequence-diagram-97d37793] [fixture:
 sequence/db-box-colour-candidate-word-prefix] [fixture:
 sequence/db-box-colour-function-upper-case] [fixture:
@@ -181,7 +191,9 @@ at the end and `half-stick-top` at the start. So `->` and `-->` have no marker,
 `->>`, `-x`, and `-)` the end markers `arrow`, `cross`, and `open-arrow`,
 `<<->>` the start and end marker `arrow`, `-|\` the end marker `half-arrow-top`,
 and `/|-` the start marker `half-arrow-top`; the same with `--` in place of `-`
-have the line `dotted`. [fixture: sequence/db-arrow-types]
+have the line `dotted`.
+
+[fixture: sequence/db-arrow-types]
 
 ### SequenceAutonumberStatement
 
@@ -234,9 +246,10 @@ included, so the value is the written text of the whole `title-text` unit:
 `title`, two spaces, `x`, and two spaces has the value of a space, `x`, and two
 spaces; `title` followed by four spaces the value of three spaces; and `title`,
 a line break, two spaces, and `A->>B: x` the value of the two spaces and
-`A->>B: x`. [fixture: sequence/db-title-spaces] [fixture:
-sequence/db-title-whitespace-only] [fixture:
-sequence/db-title-next-line-indented]
+`A->>B: x`.
+
+[fixture: sequence/db-title-spaces] [fixture: sequence/db-title-whitespace-only]
+[fixture: sequence/db-title-next-line-indented]
 
 ### SequenceAccTitleStatement
 
@@ -248,7 +261,9 @@ An `accTitle:` statement with its text.
 
 Child fields: `value`. The whitespace after `:` is read with it, line breaks
 included, so the value is null only at the end of the text. `#` and `;` are
-characters of the text. [fixture: sequence/lex-acc-title-line-feed] [fixture:
+characters of the text.
+
+[fixture: sequence/lex-acc-title-line-feed] [fixture:
 sequence/lex-acc-title-at-end] [fixture: sequence/lex-acc-title-hash]
 
 ### SequenceAccDescrStatement
@@ -260,8 +275,9 @@ An `accDescr:` statement with its text.
 | `value` | SequenceLiteral or null | The text after `accDescr:`, up to the end of the line; null when there is none. |
 
 Child fields: `value`. The whitespace after `:` is read with it, line breaks
-included, so the value is null only at the end of the text. [fixture:
-sequence/db-acc-descr-empty-replaces]
+included, so the value is null only at the end of the text.
+
+[fixture: sequence/db-acc-descr-empty-replaces]
 
 ### SequenceAccDescrBlockStatement
 
@@ -274,18 +290,25 @@ text ends inside it.
 | `closed` | boolean                 | Whether the block ends with `}`. It is false when the text ends inside the block.                                       |
 
 Child fields: `value`. The value of `accDescr { x` at the end of the text is
-`x`. [fixture: sequence/db-acc-descr-block-unclosed] `accDescr {` at the end of
-the text has the value null and is not closed. [fixture:
-sequence/lex-acc-descr-block-unclosed-empty] `accDescr {  }` is a closed block
-without text, whose value is null: the whitespace after `{` is read with the
-`{`. Such a block, an empty description block, is a statement where a statement
-starts, also in the body of a box, and after the last unit of a statement,
-before its `newline`, and right after the keyword `sequenceDiagram`, where a
-statement starts, it is the first statement of the diagram's `body` (see
+`x`.
+
+[fixture: sequence/db-acc-descr-block-unclosed]
+
+`accDescr {` at the end of the text has the value null and is not closed.
+
+[fixture: sequence/lex-acc-descr-block-unclosed-empty]
+
+`accDescr {  }` is a closed block without text, whose value is null: the
+whitespace after `{` is read with the `{`. Such a block, an empty description
+block, is a statement where a statement starts, also in the body of a box, and
+after the last unit of a statement, before its `newline`, and right after the
+keyword `sequenceDiagram`, where a statement starts, it is the first statement
+of the diagram's `body` (see
 [sequence.md](../diagrams/sequence.md#empty-description-blocks-before-a-separator));
 elsewhere the input is rejected (see
-[sequence.md](../diagrams/sequence.md#known-divergences)). [fixture:
-sequence/db-acc-descr-spaces-block-keeps] [fixture:
+[sequence.md](../diagrams/sequence.md#known-divergences)).
+
+[fixture: sequence/db-acc-descr-spaces-block-keeps] [fixture:
 sequence/gram-acc-descr-block-empty-then-statement] [fixture:
 sequence/gram-box-empty-description-block-line] [fixture:
 sequence/header-empty-description-block]
@@ -355,8 +378,9 @@ No child fields. An id is one unit. Its name has no whitespace at its ends, and
 whitespace inside it is part of it, also next to a directive inside the unit.
 
 `participant A B` has the participant `A B`, and
-`participant A%%{init: {}}%% c%%B` the participant `A c%%B`. [fixture:
-sequence/lex-id-context-space] [fixture:
+`participant A%%{init: {}}%% c%%B` the participant `A c%%B`.
+
+[fixture: sequence/lex-id-context-space] [fixture:
 sequence/lex-directive-in-id-before-space]
 
 ### SequenceText

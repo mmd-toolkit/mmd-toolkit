@@ -30,7 +30,9 @@ xychart/db-semicolon-statements]
 
 A `newline` unit is all whitespace and makes no token, while a `;` that ends a
 line is a `Punctuator` token: `title T; x-axis [a]` has the tokens `title`, `T`,
-`;`, `x-axis`, `[`, `a`, and `]`. [fixture: xychart/db-semicolon-statements]
+`;`, `x-axis`, `[`, `a`, and `]`.
+
+[fixture: xychart/db-semicolon-statements]
 
 The words of a text without quotes that follow one another with nothing between
 them are one token, and whitespace between two words belongs to no token:
@@ -38,18 +40,20 @@ them are one token, and whitespace between two words belongs to no token:
 eighteen `word` units, and `title Two words` the two tokens `Two` and `words`.
 The text of an accessibility statement is one token, the whitespace between its
 characters and its line feeds included, without the whitespace at its ends:
-`accTitle:` followed by `a b` and spaces has the token `a b`. [fixture:
-xychart/db-title-bare-characters] [fixture: xychart/db-title-bare-words]
-[fixture: xychart/db-acc-title-spaces-trimmed] [fixture:
-xychart/db-acc-descr-block]
+`accTitle:` followed by `a b` and spaces has the token `a b`.
+
+[fixture: xychart/db-title-bare-characters] [fixture:
+xychart/db-title-bare-words] [fixture: xychart/db-acc-title-spaces-trimmed]
+[fixture: xychart/db-acc-descr-block]
 
 An empty string that the grammar takes, as the title of a plot or of an axis or
 as a label, is a `String` token of its two quotes: `line "" [1]` has the
 `String` token `""`. A description block whose text is whitespace only, an empty
 description block, has the tokens of `accDescr`, `{`, and `}` only, and one that
 is not closed has no `}`. An `accTitle:` or `accDescr:` at the end of the text
-without a text has the tokens of the keyword and the `:` only. [fixture:
-xychart/db-grid-empty-plot-title-quoted] [fixture:
+without a text has the tokens of the keyword and the `:` only.
+
+[fixture: xychart/db-grid-empty-plot-title-quoted] [fixture:
 xychart/db-acc-descr-block-empty] [fixture: xychart/db-acc-descr-unclosed-block]
 [fixture: xychart/db-acc-title-empty]
 
@@ -62,8 +66,9 @@ input rejected (see
 the category `a%%{init: {}}%%b` has the `RawText` tokens `a` and `b` with the
 `Directive` token between them, and `title "style:#x;y"` the `StringFragment`
 tokens `"style:#x` and `y"` with the `IgnoredSemicolon` token between them,
-while `ti%%{init: {}}%%tle T` is rejected. [fixture:
-xychart/db-x-axis-band-directive-in-word] [fixture:
+while `ti%%{init: {}}%%tle T` is rejected.
+
+[fixture: xychart/db-x-axis-band-directive-in-word] [fixture:
 xychart/lex-title-style-line-semicolon] [fixture:
 xychart/div-directive-in-keyword] [fixture:
 xychart/div-ignored-semicolon-in-value]

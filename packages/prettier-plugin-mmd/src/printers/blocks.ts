@@ -14,6 +14,7 @@ import {
 import type { KeptLines } from "./kept-lines.ts"
 import {
   holdsJoiningRegion,
+  holdsKeptSemicolon,
   isDroppedSemicolon,
   lineEndOf,
   lineStartOf,
@@ -321,9 +322,11 @@ export interface BlockRules<Statement extends Positioned> {
    * Indentation and parents), so the printer decides the whitespace before the
    * directive. A kanban board, an Ishikawa diagram, a treemap, a tree view,
    * and a Venn diagram decide it from the role of the node in the same way
-   * (docs/kanban.md, Indentation).
+   * (docs/kanban.md, Indentation). It gives nothing where the whitespace
+   * written before the stretch is the indentation, also where the stretch
+   * starts at a directive that stands before the statement on its line.
    */
-  readonly keptIndentationOf?: (statement: Statement) => string
+  readonly keptIndentationOf?: (statement: Statement) => string | undefined
   /**
    * Whether the whitespace before a directive on a line of its own, in the
    * gap after the statement, may be read as text of the statement: the line
@@ -1312,7 +1315,17 @@ export function printInlineGap(
     return ordinaryRule === "space" && !place.atLineStart && !place.atLineEnd
       ? " "
       : ""
-  const gap = readGap(source, start, end, true, {
+  // The `;` that the line rule ignores at the end of a line is dropped from a
+  // kept line as it is from a line of its own, unless the line holds a `;` that
+  // the printer keeps: then every `;` of the line stays as written, so that the
+  // line rule still selects the one it selects (docs/class.md, Semicolons at
+  // the end of a style statement).
+  const keepsSeparators = holdsKeptSemicolon(
+    source,
+    lineStartOf(source, start),
+    lineEndOf(source, start),
+  )
+  const gap = readGap(source, start, end, keepsSeparators, {
     omitted: omittedRanges,
     relocatedWhitespace,
   })

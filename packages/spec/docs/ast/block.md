@@ -28,6 +28,7 @@ and styles give them a look.
 
 Child fields: `body`. The header keyword, `block-beta` or `block`, is not a
 field: both give the same diagram type. A header with no statement is rejected.
+
 [fixture: block/db-name-no-final-line-feed] [fixture:
 block/header-only-block-beta]
 
@@ -50,9 +51,10 @@ Child fields: `node`, `width`, `links`. The width belongs to the first node
 only, since the grammar allows it nowhere else: `A:2 --> B` has the width 2, and
 `A --> B:2` is rejected. A chain of links is one statement: `A --> B --> C` has
 two links, as written, while mermaid.js reads it badly (see
-[Edge statements](../diagrams/block.md#edge-statements)). [fixture:
-block/db-width-before-edge] [fixture: block/db-width-with-label] [fixture:
-block/db-edge-arrow] [fixture: block/db-edge-chain]
+[Edge statements](../diagrams/block.md#edge-statements)).
+
+[fixture: block/db-width-before-edge] [fixture: block/db-width-with-label]
+[fixture: block/db-edge-arrow] [fixture: block/db-edge-chain]
 
 ### BlockNode
 
@@ -63,8 +65,9 @@ A node: an id, with a shape, a block arrow, or neither.
 | `id`    | Identifier                           | The id.                                       |
 | `shape` | BlockShape, BlockArrowShape, or null | The shape or the block arrow; null when none. |
 
-Child fields: `id`, `shape`. [fixture: block/db-shape-square] [fixture:
-block/db-arrow-two]
+Child fields: `id`, `shape`.
+
+[fixture: block/db-shape-square] [fixture: block/db-arrow-two]
 
 ### BlockShape
 
@@ -80,8 +83,10 @@ Child fields: `label`. The opening and the closing are read one after the other
 (see [Shapes](../diagrams/block.md#shapes)), so any opening may meet any
 closing: `A["x")` has the opening `[` and the closing `)`. Which pairs are
 shapes of mermaid.js, and which type the Db gives a pair, is in the summary of
-the tests package. [fixture: block/db-shape-square] [fixture:
-block/db-shape-round] [fixture: block/db-shape-mixed-square-round]
+the tests package.
+
+[fixture: block/db-shape-square] [fixture: block/db-shape-round] [fixture:
+block/db-shape-mixed-square-round]
 
 ### BlockArrowShape
 
@@ -107,9 +112,11 @@ between them are two line terminators (see
 directions `right` and `down` each followed by a space, `(right down)` the
 directions `right` followed by a space and `down`, `( right)` the direction of a
 space and `right`, and `( right , down)` the directions `right` with a space on
-each side and `down`. [fixture: block/db-arrow-two] [fixture:
-block/db-grid-empty-directions] [fixture: block/db-arrow-spaces-around-comma]
-[fixture: block/db-arrow-spaces-around-first] [fixture:
+each side and `down`.
+
+[fixture: block/db-arrow-two] [fixture: block/db-grid-empty-directions]
+[fixture: block/db-arrow-spaces-around-comma] [fixture:
+block/db-arrow-spaces-around-first] [fixture:
 block/db-arrow-comment-line-before-first] [fixture:
 block/db-arrow-directive-before-first] [fixture: block/db-arrow-cr-directive-lf]
 [fixture: block/db-arrow-spaces] [fixture: block/db-arrow-leading-space]
@@ -134,8 +141,9 @@ arrow, and the node it leads to.
 Child fields: `opening`, `label`, `arrow`, `target`. They are in source order.
 The two arrows of a link with a label may have different lines:
 `A -- "text" ==> B` has the opening line `solid` and the line `thick`, and
-mermaid.js reads the edge from the second arrow only. [fixture:
-block/db-edge-label] [fixture: block/db-edge-label-mismatched]
+mermaid.js reads the edge from the second arrow only.
+
+[fixture: block/db-edge-label] [fixture: block/db-edge-label-mismatched]
 
 ### BlockArrow
 
@@ -154,8 +162,9 @@ No child fields. The words are those of FlowchartArrow; the start markers
 `cross` and `circle` and the line `invisible` do not occur, since an id is read
 before an arrow (see [Edges](../diagrams/block.md#edges)). `-->` has the line
 `solid`, the length 2, and the end marker `arrow`, and `<-->` the start marker
-`arrow` too. [fixture: block/db-edge-arrow] [fixture:
-block/db-edge-bidirectional]
+`arrow` too.
+
+[fixture: block/db-edge-arrow] [fixture: block/db-edge-bidirectional]
 
 ### BlockOpeningArrow
 
@@ -169,8 +178,9 @@ The opening arrow of a link with a label, with the fields of
 | `line`        | string | `solid` for `--`, `thick` for `==`, or `dotted` for `-.`. |
 
 No child fields. Unlike a flowchart, its line need not be the line of the arrow
-after the label. [fixture: block/db-edge-label] [fixture:
-block/db-edge-label-mismatched]
+after the label.
+
+[fixture: block/db-edge-label] [fixture: block/db-edge-label-mismatched]
 
 ### BlockSpaceStatement
 
@@ -180,8 +190,9 @@ block/db-edge-label-mismatched]
 | ------- | ---------------------- | -------------------------------------------- |
 | `width` | NumericLiteral or null | The number after `space:`; null for `space`. |
 
-Child fields: `width`. [fixture: block/db-space-plain] [fixture:
-block/db-space-width]
+Child fields: `width`.
+
+[fixture: block/db-space-plain] [fixture: block/db-space-width]
 
 ### BlockColumnsStatement
 
@@ -191,8 +202,9 @@ block/db-space-width]
 | ------- | ---------------------- | --------------------------------------- |
 | `count` | NumericLiteral or null | The number of columns; null for `auto`. |
 
-Child fields: `count`. [fixture: block/db-columns-after-nodes] [fixture:
-block/db-columns-only-auto]
+Child fields: `count`.
+
+[fixture: block/db-columns-after-nodes] [fixture: block/db-columns-only-auto]
 
 ### BlockCompositeStatement
 
@@ -206,7 +218,9 @@ A composite: `block:G`, `block`, or `block-beta`, its statements, and `end`.
 Child fields: `head`, `body`. The head is a node statement as any other, with a
 width and a shape: `block:G:2` and `block:G["label"]`. An edge statement after
 `block:` is the head, as written, which mermaid.js reads as a composite with no
-id. [fixture: block/db-composite-end-crlf] [fixture: block/db-composite-no-id]
+id.
+
+[fixture: block/db-composite-end-crlf] [fixture: block/db-composite-no-id]
 [fixture: block/db-composite-edge-header] [fixture: block/db-composite-width]
 [fixture: block/db-composite-label]
 
@@ -222,9 +236,11 @@ id. [fixture: block/db-composite-end-crlf] [fixture: block/db-composite-no-id]
 
 Child fields: `name`, `styles`. The styles may start on the line after the name:
 `classDef c` followed by a line `class A c` has the one style `class A c`. Which
-whitespace a style holds is under [BlockLiteral](#blockliteral). [fixture:
-block/db-class-def-color-fill] [fixture: block/db-class-def-empty-style]
-[fixture: block/db-spec-class-def-name-only-then-class]
+whitespace a style holds is under [BlockLiteral](#blockliteral).
+
+[fixture: block/db-class-def-color-fill] [fixture:
+block/db-class-def-empty-style] [fixture:
+block/db-spec-class-def-name-only-then-class]
 
 ### BlockClassStatement
 
@@ -243,10 +259,12 @@ mermaid.js reads the id: `class A, B c` has the ids `A` and a space followed by
 followed by `B`. Whitespace before a `,` ends the ids: `class A ,B c` has the
 one id `A` and the name of the class `,B c`. An id is a BlockLiteral, not an
 Identifier, since it may hold whitespace. How mermaid.js looks up such an id in
-its Db is in the summary of the tests package. [fixture:
-block/db-class-def-undefined-use] [fixture: block/db-class-apply-list] [fixture:
-block/db-class-apply-names-spaces] [fixture: block/db-class-apply-list-spaces]
-[fixture: block/db-class-apply-line-feed-after-comma] [fixture:
+its Db is in the summary of the tests package.
+
+[fixture: block/db-class-def-undefined-use] [fixture: block/db-class-apply-list]
+[fixture: block/db-class-apply-names-spaces] [fixture:
+block/db-class-apply-list-spaces] [fixture:
+block/db-class-apply-line-feed-after-comma] [fixture:
 block/db-class-apply-list-space-before-comma] [fixture:
 block/db-class-apply-comment-line-after-comma] [fixture:
 block/db-class-apply-directive-after-comma]
@@ -263,6 +281,7 @@ block/db-class-apply-directive-after-comma]
 Child fields: `id`, `styles`. As in a flowchart, the id is one id with its
 commas, and the Db looks it up as one text (see
 [Rejections outside the grammar](../diagrams/block.md#rejections-outside-the-grammar)).
+
 [fixture: block/db-style-plain]
 
 ### BlockAccDescrBlockStatement
@@ -273,6 +292,7 @@ No child fields. It has no fields. The block diagram has no description: a block
 with text is rejected, and an empty block inside a statement is the known
 divergence `tokenless-empty-forms` (see
 [Empty description blocks](../diagrams/block.md#empty-description-blocks)).
+
 [fixture: block/db-empty-block-line] [fixture: block/div-empty-block-in-edge]
 
 ### BlockLiteral
@@ -301,10 +321,12 @@ a literal of two spaces between two styles. A part with nothing in it is null:
 `style A ,` has two nulls, `style A  , fill:#f00` a null first, and
 `style A fill:#f00,  ` a null last, since the whitespace at the ends of the rest
 of the line belongs to no style. The styles of `classDef` have the same form;
-how the Db trims them is in the summary of the tests package. [fixture:
-block/db-class-apply-names-spaces] [fixture: block/db-class-def-color-fill]
-[fixture: block/db-style-spaces] [fixture: block/db-style-spaces-at-line-ends]
-[fixture: block/db-style-whitespace-only-between-commas] [fixture:
+how the Db trims them is in the summary of the tests package.
+
+[fixture: block/db-class-apply-names-spaces] [fixture:
+block/db-class-def-color-fill] [fixture: block/db-style-spaces] [fixture:
+block/db-style-spaces-at-line-ends] [fixture:
+block/db-style-whitespace-only-between-commas] [fixture:
 block/db-style-tab-only-between-commas] [fixture:
 block/db-class-def-whitespace-only-between-commas] [fixture:
 block/db-class-def-spaces-around-styles] [fixture:

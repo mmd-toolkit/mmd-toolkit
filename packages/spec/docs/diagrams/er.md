@@ -17,6 +17,7 @@ nodes of the tree are defined in [ast/er.md](../ast/er.md).
 Entry 10 of [detection.md](../detection.md) selects this grammar: the text
 starts with `erDiagram`, after whitespace, in exactly this case
 ([`erDetector.ts`](https://github.com/mermaid-js/mermaid/blob/2086904e76c692331e34a45d7cc3bc30860d040e/packages/mermaid/src/diagrams/er/erDetector.ts#L9-L11)).
+
 [fixture: er/header-only] [fixture: er/header-leading-whitespace]
 
 The lexer then reads the header again, case-insensitively and not followed by a
@@ -24,10 +25,12 @@ word character (see [The statement context](#the-statement-context)). So
 `erDiagramX` is detected as an ER diagram and rejected, while `erDiagram-x` is
 the header followed by the entity `-x`. A statement may follow the header on its
 line, after whitespace or not, and the header alone is accepted, also without a
-line feed after it. [fixture: er/header-other-suffix] [fixture:
-er/header-dash-suffix] [fixture: er/header-statement-same-line] [fixture:
-er/header-tab-then-statement] [fixture: er/header-only] [fixture:
-er/header-line-feed-only] [fixture: er/header-crlf-only]
+line feed after it.
+
+[fixture: er/header-other-suffix] [fixture: er/header-dash-suffix] [fixture:
+er/header-statement-same-line] [fixture: er/header-tab-then-statement] [fixture:
+er/header-only] [fixture: er/header-line-feed-only] [fixture:
+er/header-crlf-only]
 
 A line that holds only `%%`, or `%%{ }%%`, which is no directive, before the
 header is a bare `%%` line, which detection reads and passes to find the header,
@@ -38,9 +41,11 @@ rejects the input in both cases, and also with a line of whitespace only after
 the bare line, because the lexer of this diagram has no rule for `%`: the known
 divergence [`bare-percent-line-before-header`](#known-divergences). A directive
 on a line before the header, on the header's line before it, or after the header
-on its line is a directive and nothing else. [fixture:
-er/header-after-bare-percent-line] [fixture: er/header-after-empty-braces-line]
-[fixture: er/header-after-bare-percent-line-and-whitespace-line] [fixture:
+on its line is a directive and nothing else.
+
+[fixture: er/header-after-bare-percent-line] [fixture:
+er/header-after-empty-braces-line] [fixture:
+er/header-after-bare-percent-line-and-whitespace-line] [fixture:
 er/header-after-directive-line] [fixture: er/header-after-directive-same-line]
 [fixture: er/header-then-directive-same-line]
 
@@ -59,19 +64,22 @@ The lexer of mermaid.js for this diagram compares letters case-insensitively
 (see [Notation](../common.md#notation)): `CLASSDEF a fill:red`, `STYLE A …`,
 `ACCTITLE: T`, `DIRECTION tb`, `END`, `A ONE OR MORE TO MANY B : x`,
 `A U--o{ B : x`, and `int id pk` in an attribute block are read as with the
-lower-case words. [fixture: er/lex-classdef-upper-case] [fixture:
-er/lex-style-upper-case] [fixture: er/lex-acc-title-upper-case] [fixture:
-er/lex-direction-upper-case] [fixture: er/lex-end-upper-case] [fixture:
-er/lex-cardinality-words-upper-case] [fixture: er/lex-md-parent-upper-case]
-[fixture: er/lex-key-lower-case] A **keyword** below is a word, matched
-case-insensitively, that is not followed by a word character (see
-[Notation](../common.md#notation)): `ones`, `tomato`, `manyx`, `ending`,
-`classes`, and `styles` are names, while `end` and `many` are keywords wherever
-a unit starts. [fixture: er/lex-keyword-one-prefix] [fixture:
-er/lex-keyword-to-prefix] [fixture: er/lex-keyword-many-prefix] [fixture:
-er/lex-keyword-end-prefix] [fixture: er/lex-keyword-class-prefix] [fixture:
-er/lex-keyword-style-prefix] [fixture: er/gram-end-alone] [fixture:
-er/lex-many-alone]
+lower-case words.
+
+[fixture: er/lex-classdef-upper-case] [fixture: er/lex-style-upper-case]
+[fixture: er/lex-acc-title-upper-case] [fixture: er/lex-direction-upper-case]
+[fixture: er/lex-end-upper-case] [fixture: er/lex-cardinality-words-upper-case]
+[fixture: er/lex-md-parent-upper-case] [fixture: er/lex-key-lower-case]
+
+A **keyword** below is a word, matched case-insensitively, that is not followed
+by a word character (see [Notation](../common.md#notation)): `ones`, `tomato`,
+`manyx`, `ending`, `classes`, and `styles` are names, while `end` and `many` are
+keywords wherever a unit starts.
+
+[fixture: er/lex-keyword-one-prefix] [fixture: er/lex-keyword-to-prefix]
+[fixture: er/lex-keyword-many-prefix] [fixture: er/lex-keyword-end-prefix]
+[fixture: er/lex-keyword-class-prefix] [fixture: er/lex-keyword-style-prefix]
+[fixture: er/gram-end-alone] [fixture: er/lex-many-alone]
 
 ### Units and contexts
 
@@ -100,9 +108,11 @@ style context; `classDef a fill:red` followed by a space, `style A fill:red`
 followed by a tab, `classDef a fill:red` followed by a space and a line break,
 and `style A fill:red;` followed by a space are rejected, because that
 whitespace takes the line feed (rule 2 of the style context), and the text ends
-in the style context. [fixture: er/lex-block-unclosed] [fixture:
-er/lex-block-unclosed-empty] [fixture: er/lex-backquote-unclosed] [fixture:
-er/lex-acc-title-at-end] [fixture: er/lex-acc-title-space-at-end] [fixture:
+in the style context.
+
+[fixture: er/lex-block-unclosed] [fixture: er/lex-block-unclosed-empty]
+[fixture: er/lex-backquote-unclosed] [fixture: er/lex-acc-title-at-end]
+[fixture: er/lex-acc-title-space-at-end] [fixture:
 er/lex-acc-title-line-feed-at-end] [fixture: er/lex-acc-descr-at-end] [fixture:
 er/lex-acc-descr-block-unclosed] [fixture:
 er/lex-acc-descr-block-unclosed-empty] [fixture:
@@ -123,10 +133,12 @@ context, every whitespace character lies between units, line feeds included,
 except where a rule says otherwise. Where a rule of the statement context reads
 whitespace itself, as the rules for `accTitle`, `accDescr`, `end`, a direction
 line, and the `1` of a cardinality do, it reads every whitespace character, line
-feeds included. [fixture: er/lex-name-nbsp] [fixture:
-er/lex-name-line-separator] [fixture: er/lex-name-trailing-nbsp] [fixture:
-er/lex-bom-in-name] [fixture: er/lex-form-feed] [fixture: er/lex-vertical-tab]
-[fixture: er/lex-tab-whitespace] [fixture: er/lex-block-nbsp] [fixture:
+feeds included.
+
+[fixture: er/lex-name-nbsp] [fixture: er/lex-name-line-separator] [fixture:
+er/lex-name-trailing-nbsp] [fixture: er/lex-bom-in-name] [fixture:
+er/lex-form-feed] [fixture: er/lex-vertical-tab] [fixture:
+er/lex-tab-whitespace] [fixture: er/lex-block-nbsp] [fixture:
 er/lex-block-form-feed] [fixture: er/lex-block-vertical-tab] [fixture:
 er/lex-classdef-nbsp] [fixture: er/lex-classdef-line-separator] [fixture:
 er/lex-acc-title-ideographic-space] [fixture: er/lex-end-blank-line-then-name]
@@ -139,55 +151,71 @@ possible, make a `name` unit: `ÀB-c.d*e`, `_a`, an emoji, and `C4Context` are
 names, while `#`, `,`, `;`, `'`, `(`, `)`, `[`, `]`, `{`, `}`, `|`, `:`, `=`,
 `+`, `/`, `&`, `@`, `$`, `!`, `^`, `` ` ``, `~`, and `?` are not characters of a
 name; a line that holds a name and one of them is rejected, as the `?` of
-`Blo?rf` is, unless the character starts a unit of its own. [fixture:
-er/lex-name-unicode-characters] [fixture: er/lex-name-underscore] [fixture:
-er/lex-name-emoji] [fixture: er/lex-c4context-name] [fixture: er/lex-name-hash]
-[fixture: er/lex-name-comma] [fixture: er/lex-semicolon-after-name] [fixture:
-er/lex-single-quote] [fixture: er/spec-er-diagram-039f9cc0] [fixture:
-er/spec-er-diagram-594d55f9] [fixture: er/spec-er-diagram-05b13768] [fixture:
-er/spec-er-diagram-38540142] [fixture: er/spec-er-diagram-3c37dc3e] [fixture:
-er/spec-er-diagram-bd6185fa] [fixture: er/spec-er-diagram-d7ac9ccb] [fixture:
-er/spec-er-diagram-471b8346] [fixture: er/spec-er-diagram-619a550d] [fixture:
-er/spec-er-diagram-20fe2993] [fixture: er/spec-er-diagram-6666d913] [fixture:
-er/spec-er-diagram-7725a167] [fixture: er/spec-er-diagram-99529c2d] [fixture:
-er/spec-er-diagram-cade6c9d] [fixture: er/spec-er-diagram-ec259794] [fixture:
-er/spec-er-diagram-f8b6820d] [fixture: er/spec-er-diagram-aa6cb3a0] [fixture:
-er/spec-er-diagram-94764f48] [fixture: er/spec-er-diagram-95010e73] An entity is
-read as its placeholder before the lexer reads the text (see
+`Blo?rf` is, unless the character starts a unit of its own.
+
+[fixture: er/lex-name-unicode-characters] [fixture: er/lex-name-underscore]
+[fixture: er/lex-name-emoji] [fixture: er/lex-c4context-name] [fixture:
+er/lex-name-hash] [fixture: er/lex-name-comma] [fixture:
+er/lex-semicolon-after-name] [fixture: er/lex-single-quote] [fixture:
+er/spec-er-diagram-039f9cc0] [fixture: er/spec-er-diagram-594d55f9] [fixture:
+er/spec-er-diagram-05b13768] [fixture: er/spec-er-diagram-38540142] [fixture:
+er/spec-er-diagram-3c37dc3e] [fixture: er/spec-er-diagram-bd6185fa] [fixture:
+er/spec-er-diagram-d7ac9ccb] [fixture: er/spec-er-diagram-471b8346] [fixture:
+er/spec-er-diagram-619a550d] [fixture: er/spec-er-diagram-20fe2993] [fixture:
+er/spec-er-diagram-6666d913] [fixture: er/spec-er-diagram-7725a167] [fixture:
+er/spec-er-diagram-99529c2d] [fixture: er/spec-er-diagram-cade6c9d] [fixture:
+er/spec-er-diagram-ec259794] [fixture: er/spec-er-diagram-f8b6820d] [fixture:
+er/spec-er-diagram-aa6cb3a0] [fixture: er/spec-er-diagram-94764f48] [fixture:
+er/spec-er-diagram-95010e73]
+
+An entity is read as its placeholder before the lexer reads the text (see
 [Entities](../common.md#entities)), and the placeholder is made of characters
 outside ASCII, so `A#amp;` is one name, `Aﬂ°amp¶ß`, in the statement context,
 and `"A#amp;"` is the quoted name of the same entity; in an attribute block, the
 `°` of the placeholder is no character of a word, so `a#amp;b` is rejected
-there. [fixture: er/entity-placeholder-in-name] [fixture:
+there.
+
+[fixture: er/entity-placeholder-in-name] [fixture:
 er/entity-placeholder-in-quoted-name] [fixture:
-er/entity-placeholder-in-attribute-word] A `#` or `%%` after a unit on its line
-is no comment: this diagram has no comment rule, so `A # c` and
-`A ||--o{ B : x %% c` are rejected, while a comment line is removed before the
-lexer reads the text (see [Comment lines](../common.md#comment-lines)), also
-inside an attribute block or a subgraph, and inside a string that runs over
-several lines, where it is a comment region of the string. [fixture:
-er/lex-hash-after-name] [fixture: er/lex-percent-after-statement] [fixture:
-er/comment-line] [fixture: er/lex-block-comment-line] [fixture:
+er/entity-placeholder-in-attribute-word]
+
+A `#` or `%%` after a unit on its line is no comment: this diagram has no
+comment rule, so `A # c` and `A ||--o{ B : x %% c` are rejected, while a comment
+line is removed before the lexer reads the text (see
+[Comment lines](../common.md#comment-lines)), also inside an attribute block or
+a subgraph, and inside a string that runs over several lines, where it is a
+comment region of the string.
+
+[fixture: er/lex-hash-after-name] [fixture: er/lex-percent-after-statement]
+[fixture: er/comment-line] [fixture: er/lex-block-comment-line] [fixture:
 er/lex-subgraph-comment-line] [fixture: er/tokens-comment-line-in-role-string]
 [fixture: er/tokens-comment-line-in-comment-string] [fixture:
-er/tokens-comment-line-in-backquoted-word] A comment line that holds the closing
-quote of a string takes it with it, and the string is then not closed:
-`A ||--o{ B : "x`, a line break, and `%% c"` is rejected. [fixture:
-er/lex-comment-line-takes-closing-quote]
+er/tokens-comment-line-in-backquoted-word]
+
+A comment line that holds the closing quote of a string takes it with it, and
+the string is then not closed: `A ||--o{ B : "x`, a line break, and `%% c"` is
+rejected.
+
+[fixture: er/lex-comment-line-takes-closing-quote]
 
 **Comment regions inside names.** A `name` unit and a `word` of an attribute
 block go on across a comment region, as every unit does (see
 [Comment lines](../common.md#comment-lines)): a U+2028 or a U+2029 is a
 character of the name and a comment start, so `A`, U+2028, `%% c`, a line break,
 and `Bar` is the one entity whose name is `A`, U+2028, and `Bar`, and so it is
-with U+2029. [fixture: er/lex-name-line-separator-comment-line] [fixture:
-er/lex-name-paragraph-separator-comment-line] So it is with the whitespace, the
-second U+2028, the line breaks, and the directive that the comment region takes
-between the U+2028 and the `%%`, with a CRLF or a CR ending the comment, with a
-directive inside the comment, with a second comment line, and across a second
-region after a second U+2028, and a U+2028 at the start of the next line is a
-character of the name. [fixture: er/lex-name-line-separator-spaces-comment-line]
-[fixture: er/lex-name-two-line-separators-comment-line] [fixture:
+with U+2029.
+
+[fixture: er/lex-name-line-separator-comment-line] [fixture:
+er/lex-name-paragraph-separator-comment-line]
+
+So it is with the whitespace, the second U+2028, the line breaks, and the
+directive that the comment region takes between the U+2028 and the `%%`, with a
+CRLF or a CR ending the comment, with a directive inside the comment, with a
+second comment line, and across a second region after a second U+2028, and a
+U+2028 at the start of the next line is a character of the name.
+
+[fixture: er/lex-name-line-separator-spaces-comment-line] [fixture:
+er/lex-name-two-line-separators-comment-line] [fixture:
 er/lex-name-line-separator-line-feed-comment-line] [fixture:
 er/lex-name-line-separator-empty-line-comment-line] [fixture:
 er/lex-name-line-separator-directive-comment-line] [fixture:
@@ -196,25 +224,35 @@ er/lex-name-line-separator-comment-line-cr] [fixture:
 er/lex-name-line-separator-comment-line-with-directive] [fixture:
 er/lex-name-line-separator-two-comment-lines] [fixture:
 er/lex-name-two-comment-regions] [fixture:
-er/lex-name-comment-line-line-separator-next] A directive at the start of the
-line after the comment line is no part of the region, which ends with the line
-break of the comment, so it lies inside the name: `A`, U+2028, `%% c`, a line
-break, and `%%{init: {}}%%Bar` is rejected here, while mermaid.js reads the name
-`A`, U+2028, and `Bar` (see
-[Directives inside units](#directives-inside-units)). [fixture:
-er/div-directive-after-comment-line-in-name] A directive followed by whitespace
-there lies between two units and ends the name: `A`, U+2028, `%% c`, a line
-break, and `%%{init: {}}%% Bar` are the entities `A` and U+2028, and `Bar`.
-[fixture: er/lex-name-line-separator-comment-line-directive-space-next] A
-directive right before the U+2028 or U+2029 that starts the region lies inside
+er/lex-name-comment-line-line-separator-next]
+
+A directive at the start of the line after the comment line is no part of the
+region, which ends with the line break of the comment, so it lies inside the
+name: `A`, U+2028, `%% c`, a line break, and `%%{init: {}}%%Bar` is rejected
+here, while mermaid.js reads the name `A`, U+2028, and `Bar` (see
+[Directives inside units](#directives-inside-units)).
+
+[fixture: er/div-directive-after-comment-line-in-name]
+
+A directive followed by whitespace there lies between two units and ends the
+name: `A`, U+2028, `%% c`, a line break, and `%%{init: {}}%% Bar` are the
+entities `A` and U+2028, and `Bar`.
+
+[fixture: er/lex-name-line-separator-comment-line-directive-space-next]
+
+A directive right before the U+2028 or U+2029 that starts the region lies inside
 the name too, since the region starts after that character: `A`,
 `%%{init: {}}%%`, U+2029, `%% c`, a line break, and `B` is rejected here, while
-mermaid.js reads the name `A`, U+2029, and `B`. [fixture:
-er/div-directive-before-comment-line-in-name] Every name goes on across a region
-in this way: an entity of a relationship, a role, an alias, a class after `:::`,
-a name after `classDef`, `class`, or `style`, a class of `class`, the id of a
-subgraph, and the type and the name of an attribute. [fixture:
-er/lex-relationship-first-name-comment-line] [fixture:
+mermaid.js reads the name `A`, U+2029, and `B`.
+
+[fixture: er/div-directive-before-comment-line-in-name]
+
+Every name goes on across a region in this way: an entity of a relationship, a
+role, an alias, a class after `:::`, a name after `classDef`, `class`, or
+`style`, a class of `class`, the id of a subgraph, and the type and the name of
+an attribute.
+
+[fixture: er/lex-relationship-first-name-comment-line] [fixture:
 er/lex-relationship-second-name-comment-line] [fixture:
 er/lex-role-name-comment-line] [fixture: er/lex-alias-name-comment-line]
 [fixture: er/lex-class-shorthand-name-comment-line] [fixture:
@@ -223,95 +261,121 @@ er/lex-class-statement-name-comment-line] [fixture:
 er/lex-style-statement-name-comment-line] [fixture:
 er/lex-subgraph-id-comment-line] [fixture: er/lex-attribute-name-comment-line]
 [fixture: er/lex-class-statement-class-comment-line] [fixture:
-er/lex-attribute-type-comment-line] The name goes on with the characters of a
-name after the region: a line `accDescr {}` after it gives the entity `A`,
-U+2028, and `accDescr` with an empty attribute block, and the line after the
-region is a segment of its own for the line rule of `style` and `classDef`
-lines, so after `classDef c`, U+2028, and a comment line, the line
-`style fill:#f00;` gives the class `c`, U+2028, and `style` with the style
-`fill:#f00`. The line before the region is a segment of its own too, so the line
-rule does not reach a `classDef` or `style` before the U+2028: after
-`classDef c`, U+2028, and a comment line, the `;` of the line `d fill:#f00;` is
-not ignored, and `#f00;` is read as an entity, as in mermaid.js, and so it is
-after `style A`, U+2028, and a comment line. The rule for a direction line does
-not see `direction` at the start of the line after the region, because the text
-before `direction` may hold no U+2028: `A`, U+2028, `%% c`, a line break, and
-`direction LR` are the entities `A`, U+2028, and `direction`, and `LR`, and the
-direction stays `TB`. [fixture:
-er/lex-name-line-separator-comment-line-acc-descr] [fixture:
+er/lex-attribute-type-comment-line]
+
+The name goes on with the characters of a name after the region: a line
+`accDescr {}` after it gives the entity `A`, U+2028, and `accDescr` with an
+empty attribute block, and the line after the region is a segment of its own for
+the line rule of `style` and `classDef` lines, so after `classDef c`, U+2028,
+and a comment line, the line `style fill:#f00;` gives the class `c`, U+2028, and
+`style` with the style `fill:#f00`. The line before the region is a segment of
+its own too, so the line rule does not reach a `classDef` or `style` before the
+U+2028: after `classDef c`, U+2028, and a comment line, the `;` of the line
+`d fill:#f00;` is not ignored, and `#f00;` is read as an entity, as in
+mermaid.js, and so it is after `style A`, U+2028, and a comment line. The rule
+for a direction line does not see `direction` at the start of the line after the
+region, because the text before `direction` may hold no U+2028: `A`, U+2028,
+`%% c`, a line break, and `direction LR` are the entities `A`, U+2028, and
+`direction`, and `LR`, and the direction stays `TB`.
+
+[fixture: er/lex-name-line-separator-comment-line-acc-descr] [fixture:
 er/lex-classdef-name-comment-line-style-line] [fixture:
 er/lex-classdef-name-comment-line-hash-semicolon] [fixture:
 er/lex-style-statement-name-comment-line-hash-semicolon] [fixture:
-er/lex-name-line-separator-comment-line-direction] The name ends where no
-character of a name follows the region: with spaces at the start of the next
-line, an empty line after the comment line, or the end of the text, the name is
-`A` and U+2028. [fixture: er/lex-name-line-separator-comment-line-indented]
-[fixture: er/lex-name-line-separator-comment-line-empty-line] [fixture:
+er/lex-name-line-separator-comment-line-direction]
+
+The name ends where no character of a name follows the region: with spaces at
+the start of the next line, an empty line after the comment line, or the end of
+the text, the name is `A` and U+2028.
+
+[fixture: er/lex-name-line-separator-comment-line-indented] [fixture:
+er/lex-name-line-separator-comment-line-empty-line] [fixture:
 er/lex-name-line-separator-comment-line-last-line] [fixture:
-er/lex-name-line-separator-comment-end-of-text] The statement then goes on as if
-the next line stood on the line of the name, because the line break of the
-comment line lies in the region: `A`, U+2028, `%% c`, a line break, and
-`||--o{ B : x` is a relationship from `A` and U+2028 to `B`, while a line break
-that lies in no region ends the statement, so `A`, a line break, and
-`||--o{ B : x` is rejected; so an attribute block, `:::c`, and the `,b` of the
-class names of a `classDef` on the next line belong to the name before the
-region. [fixture: er/lex-name-line-separator-comment-line-relationship]
-[fixture: er/lex-relationship-spec-next-line] [fixture:
+er/lex-name-line-separator-comment-end-of-text]
+
+The statement then goes on as if the next line stood on the line of the name,
+because the line break of the comment line lies in the region: `A`, U+2028,
+`%% c`, a line break, and `||--o{ B : x` is a relationship from `A` and U+2028
+to `B`, while a line break that lies in no region ends the statement, so `A`, a
+line break, and `||--o{ B : x` is rejected; so an attribute block, `:::c`, and
+the `,b` of the class names of a `classDef` on the next line belong to the name
+before the region.
+
+[fixture: er/lex-name-line-separator-comment-line-relationship] [fixture:
+er/lex-relationship-spec-next-line] [fixture:
 er/lex-name-line-separator-comment-line-attribute-block] [fixture:
 er/lex-name-line-separator-comment-line-class-shorthand] [fixture:
-er/lex-classdef-name-line-separator-comment-line-comma] In the statement
-context, a U+2028 that does not go on with a name before it starts a name,
-unless the comment region or another rule takes it: after a space, a quoted
-name, a number, the header, `:::`, and the `:` of a relationship, it starts a
-name. `A`, a space, U+2028, `%% c`, a line break, and `Bar` are the entities
-`A`, and U+2028 and `Bar`, and `12`, U+2028, `%% c`, a line break, and `ab` the
-entities `12`, and U+2028 and `ab`. [fixture:
-er/lex-name-space-line-separator-comment-line] [fixture:
+er/lex-classdef-name-line-separator-comment-line-comma]
+
+In the statement context, a U+2028 that does not go on with a name before it
+starts a name, unless the comment region or another rule takes it: after a
+space, a quoted name, a number, the header, `:::`, and the `:` of a
+relationship, it starts a name. `A`, a space, U+2028, `%% c`, a line break, and
+`Bar` are the entities `A`, and U+2028 and `Bar`, and `12`, U+2028, `%% c`, a
+line break, and `ab` the entities `12`, and U+2028 and `ab`.
+
+[fixture: er/lex-name-space-line-separator-comment-line] [fixture:
 er/lex-quoted-name-line-separator-comment-line] [fixture:
 er/lex-number-line-separator-comment-line] [fixture:
 er/lex-decimal-line-separator-comment-line] [fixture:
 er/lex-header-line-separator-comment-line] [fixture:
 er/lex-class-shorthand-line-separator-comment-line] [fixture:
-er/lex-role-line-separator-comment-line] At the start of a line, the comment
-region starts at the start of the line and takes the U+2028 or U+2029: a line of
-U+2028 and `%% c` before the line `A` leaves the entity `A`, and so does a line
-of U+2029 and `%% c`. [fixture:
-er/lex-line-separator-comment-line-at-line-start] [fixture:
-er/lex-paragraph-separator-comment-line-at-line-start] Where no comment follows
-it, a U+2028 or a U+2029 at the start of a line starts a name: a line of U+2028
-and `direction LR B` gives the entities U+2028 and `direction`, `LR`, and `B`,
-and the direction stays `TB`, and so it is with U+2029. [fixture:
-er/db-line-separator-at-line-start] [fixture:
-er/db-paragraph-separator-at-line-start] The name ends where no character of a
-name follows: with a space after the U+2028, or a directive and a space, the
-name is the U+2028 alone, and the rule for a direction line then reads the rest
-of the line from there, so a line of U+2028, a space, and `direction LR` gives
-the entity U+2028 and sets the direction `LR`; a U+2028 alone on its line, or at
-the end of the text, is the entity U+2028. [fixture:
-er/db-line-separator-at-line-start-space-next] [fixture:
+er/lex-role-line-separator-comment-line]
+
+At the start of a line, the comment region starts at the start of the line and
+takes the U+2028 or U+2029: a line of U+2028 and `%% c` before the line `A`
+leaves the entity `A`, and so does a line of U+2029 and `%% c`.
+
+[fixture: er/lex-line-separator-comment-line-at-line-start] [fixture:
+er/lex-paragraph-separator-comment-line-at-line-start]
+
+Where no comment follows it, a U+2028 or a U+2029 at the start of a line starts
+a name: a line of U+2028 and `direction LR B` gives the entities U+2028 and
+`direction`, `LR`, and `B`, and the direction stays `TB`, and so it is with
+U+2029.
+
+[fixture: er/db-line-separator-at-line-start] [fixture:
+er/db-paragraph-separator-at-line-start]
+
+The name ends where no character of a name follows: with a space after the
+U+2028, or a directive and a space, the name is the U+2028 alone, and the rule
+for a direction line then reads the rest of the line from there, so a line of
+U+2028, a space, and `direction LR` gives the entity U+2028 and sets the
+direction `LR`; a U+2028 alone on its line, or at the end of the text, is the
+entity U+2028.
+
+[fixture: er/db-line-separator-at-line-start-space-next] [fixture:
 er/lex-line-separator-at-line-start-directive-space-next] [fixture:
 er/db-line-separator-at-line-start-line-feed-next] [fixture:
-er/db-line-separator-at-line-start-end-of-text] After `end`, the U+2028 is
-whitespace that `end` reads, and after `1`, rule 11 of the cardinalities,
-numbers, and relationship lines takes the U+2028 for the whitespace it looks for
-after the `1` and looks past the region: in `A ||--1`, U+2028, `%% c`, a line
-break, and `B : x`, the `1` is `only-one`, and the U+2028 then starts the name
-of the second entity, U+2028 and `B`, while `1`, U+2028, `%% c`, a line break,
-and `B` where a statement starts is rejected. [fixture:
-er/lex-end-line-separator-comment-line] [fixture:
+er/db-line-separator-at-line-start-end-of-text]
+
+After `end`, the U+2028 is whitespace that `end` reads, and after `1`, rule 11
+of the cardinalities, numbers, and relationship lines takes the U+2028 for the
+whitespace it looks for after the `1` and looks past the region: in `A ||--1`,
+U+2028, `%% c`, a line break, and `B : x`, the `1` is `only-one`, and the U+2028
+then starts the name of the second entity, U+2028 and `B`, while `1`, U+2028,
+`%% c`, a line break, and `B` where a statement starts is rejected.
+
+[fixture: er/lex-end-line-separator-comment-line] [fixture:
 er/lex-one-line-separator-comment-line-letter] [fixture:
-er/lex-one-line-separator-comment-line-statement-start] In an attribute block
-and in the style context, a U+2028 that does not go on with a word or a name
-before it is whitespace and lies between units: `string`, a space, U+2028,
-`%% c`, a line break, and `a` in a block is the attribute `a` of type `string`,
-and `classDef`, a space, U+2028, `%% c`, a line break, and `a fill:red` defines
-the class `a`, and so does `classDef a`, a space, U+2028, `%% c`, a line break,
-and `fill:red`. [fixture: er/lex-attribute-space-line-separator-comment-line]
-[fixture: er/lex-classdef-space-line-separator-comment-line] [fixture:
-er/lex-classdef-name-space-line-separator-comment-line] A `%%` with nothing
-after it, and a `%%{` that starts no directive, is no comment and makes the
-input rejected, since `%` is no character of a name, and a directive alone after
-the U+2028 is no comment line, so the line feed after it ends the name.
+er/lex-one-line-separator-comment-line-statement-start]
+
+In an attribute block and in the style context, a U+2028 that does not go on
+with a word or a name before it is whitespace and lies between units: `string`,
+a space, U+2028, `%% c`, a line break, and `a` in a block is the attribute `a`
+of type `string`, and `classDef`, a space, U+2028, `%% c`, a line break, and
+`a fill:red` defines the class `a`, and so does `classDef a`, a space, U+2028,
+`%% c`, a line break, and `fill:red`.
+
+[fixture: er/lex-attribute-space-line-separator-comment-line] [fixture:
+er/lex-classdef-space-line-separator-comment-line] [fixture:
+er/lex-classdef-name-space-line-separator-comment-line]
+
+A `%%` with nothing after it, and a `%%{` that starts no directive, is no
+comment and makes the input rejected, since `%` is no character of a name, and a
+directive alone after the U+2028 is no comment line, so the line feed after it
+ends the name.
+
 [fixture: er/lex-name-line-separator-bare-percent-line] [fixture:
 er/lex-name-line-separator-directive-line] [fixture:
 er/lex-name-line-separator-percent-brace-line]
@@ -339,22 +403,27 @@ after `style` or `classDef` or a class name. The **text units** are a
   `accDescr { a%%{init: {}}%%b }`; `direction LR x%%{init: {}}%%y` sets the
   direction, and `classDef a fi%%{init: {}}%%ll:red` defines the style
   `fill:red`, as in mermaid.js, because a style is the texts of its units joined
-  (see [ErLiteral](../ast/er.md#erliteral)). [fixture:
-  er/lex-directive-in-role-string] [fixture: er/lex-directive-in-quoted-name]
-  [fixture: er/lex-directive-in-comment-string] [fixture:
-  er/lex-directive-in-backquoted-word] [fixture: er/lex-directive-in-tilde-word]
-  [fixture: er/lex-directive-in-acc-title] [fixture:
-  er/lex-directive-in-acc-descr-block] [fixture:
+  (see [ErLiteral](../ast/er.md#erliteral)).
+
+  [fixture: er/lex-directive-in-role-string] [fixture:
+  er/lex-directive-in-quoted-name] [fixture: er/lex-directive-in-comment-string]
+  [fixture: er/lex-directive-in-backquoted-word] [fixture:
+  er/lex-directive-in-tilde-word] [fixture: er/lex-directive-in-acc-title]
+  [fixture: er/lex-directive-in-acc-descr-block] [fixture:
   er/lex-directive-in-direction-text] [fixture: er/lex-directive-in-style-text]
+
 - A directive between two units is allowed whatever their kind:
   `A %%{init: {}}%%||--o{ B : x`, `A ||%%{init: {}}%%--o{ B : x`,
   `A %%{init: {}}%%{` before attributes, `p[%%{init: {}}%%P]`,
   `string%%{init: {}}%%? a` and `int a PK %%{init: {}}%% , FK` in a block are
-  read as without the directive. [fixture: er/lex-directive-between-units]
-  [fixture: er/lex-directive-between-cardinality-and-line] [fixture:
+  read as without the directive.
+
+  [fixture: er/lex-directive-between-units] [fixture:
+  er/lex-directive-between-cardinality-and-line] [fixture:
   er/lex-directive-before-block] [fixture: er/lex-directive-after-alias-open]
   [fixture: er/lex-directive-before-optional-mark] [fixture:
   er/lex-directive-between-keys] [fixture: er/lex-directive-before-key-comma]
+
 - In `A%%{init: {}}%%B`, `1%%{init: {}}%%2`, `1%%{init: {}}%%.5`,
   `A ||--o{ B : x%%{init: {}}%%y`, `A:::c%%{init: {}}%%d`,
   `p[Per%%{init: {}}%%son]`, `subgraph S%%{init: {}}%%T`, `str%%{init: {}}%%ing`
@@ -368,14 +437,15 @@ after `style` or `classDef` or a class name. The **text units** are a
   `many(%%{init: {}}%%0)`, `|%%{init: {}}%%|`, and `::%%{init: {}}%%:` inside a
   keyword, a cardinality, or a delimiter: the input is rejected, while
   mermaid.js accepts it, reading the two parts as one (see
-  [Known divergences](#known-divergences)). [fixture: er/div-directive-in-name]
-  [fixture: er/div-directive-in-number-name] [fixture:
-  er/div-directive-in-decimal-name] [fixture: er/div-directive-in-role-name]
-  [fixture: er/div-directive-in-class-name] [fixture: er/div-directive-in-alias]
-  [fixture: er/div-directive-in-subgraph-id] [fixture:
-  er/div-directive-in-attribute-word] [fixture: er/div-directive-in-key]
-  [fixture: er/div-directive-in-style-id] [fixture:
-  er/div-directive-after-line-separator-at-line-start] [fixture:
+  [Known divergences](#known-divergences)).
+
+  [fixture: er/div-directive-in-name] [fixture: er/div-directive-in-number-name]
+  [fixture: er/div-directive-in-decimal-name] [fixture:
+  er/div-directive-in-role-name] [fixture: er/div-directive-in-class-name]
+  [fixture: er/div-directive-in-alias] [fixture:
+  er/div-directive-in-subgraph-id] [fixture: er/div-directive-in-attribute-word]
+  [fixture: er/div-directive-in-key] [fixture: er/div-directive-in-style-id]
+  [fixture: er/div-directive-after-line-separator-at-line-start] [fixture:
   er/div-directive-in-header-keyword] [fixture:
   er/div-directive-in-subgraph-keyword] [fixture: er/div-directive-in-end]
   [fixture: er/div-directive-in-acc-title-keyword] [fixture:
@@ -395,20 +465,25 @@ of this diagram as follows. A lone CR is a line terminator, read as a line feed
 (see [Line terminators](../common.md#line-terminators)): a direction line, a
 `classDef` and a `style` statement, a relationship, an `accTitle` line, a
 subgraph, and an attribute block are read between lone CRs as between line
-feeds. [fixture: er/lex-cr-only-direction] [fixture: er/lex-cr-only-classdef]
-[fixture: er/lex-cr-only-style] [fixture: er/lex-cr-only-relationship] [fixture:
+feeds.
+
+[fixture: er/lex-cr-only-direction] [fixture: er/lex-cr-only-classdef] [fixture:
+er/lex-cr-only-style] [fixture: er/lex-cr-only-relationship] [fixture:
 er/lex-cr-only-acc-title] [fixture: er/lex-cr-only-subgraph] [fixture:
-er/lex-cr-only-block] A closed directive between two units is read as nothing,
-and the whitespace around it by the rule of the context:
-`accDescr %%{init: {}}%%{ x }`, `accTitle %%{init: {}}%%: x`,
-`direction %%{init: {}}%%LR`, `subgraph %%{init: {}}%%S`,
-`style A %%{init: {}}%%fill:red`, and `end%%{init: {}}%%` followed by a line
-break are read as without the directive, and so is a directive at the end of a
-relationship line, a subgraph header, or an `accTitle` line. At the end of a
-`classDef` or `style` line, the space before the directive takes the line feed
-after it (rule 2 of the style context): `classDef a fill:red %%{init: {}}%%`, a
-line break, and `A` defines `fill:redA`, as the same text without the directive
-does. [fixture: er/lex-directive-between-acc-descr-and-brace] [fixture:
+er/lex-cr-only-block]
+
+A closed directive between two units is read as nothing, and the whitespace
+around it by the rule of the context: `accDescr %%{init: {}}%%{ x }`,
+`accTitle %%{init: {}}%%: x`, `direction %%{init: {}}%%LR`,
+`subgraph %%{init: {}}%%S`, `style A %%{init: {}}%%fill:red`, and
+`end%%{init: {}}%%` followed by a line break are read as without the directive,
+and so is a directive at the end of a relationship line, a subgraph header, or
+an `accTitle` line. At the end of a `classDef` or `style` line, the space before
+the directive takes the line feed after it (rule 2 of the style context):
+`classDef a fill:red %%{init: {}}%%`, a line break, and `A` defines `fill:redA`,
+as the same text without the directive does.
+
+[fixture: er/lex-directive-between-acc-descr-and-brace] [fixture:
 er/lex-directive-between-acc-title-and-colon] [fixture:
 er/lex-directive-between-direction-and-value] [fixture:
 er/lex-directive-between-subgraph-and-id] [fixture:
@@ -418,8 +493,9 @@ er/tokens-closed-directive-end-of-relationship-line] [fixture:
 er/tokens-closed-directive-end-of-subgraph-header] [fixture:
 er/tokens-closed-directive-end-of-acc-title] [fixture:
 er/tokens-closed-directive-end-of-classdef-line] [fixture:
-er/tokens-closed-directive-end-of-style-line] An unclosed directive takes the
-rest of the text (see
+er/tokens-closed-directive-end-of-style-line]
+
+An unclosed directive takes the rest of the text (see
 [Where a directive is](../common.md#where-a-directive-is)):
 `A ||--o{ B : x %%{init: {}` followed by a line `C` has no entity C, with
 whitespace before the directive or without, `erDiagram %%{init: {}` followed by
@@ -427,20 +503,24 @@ a line `A` has no entity, and `classDef a fill:red%%{init: {}` followed by a
 line `A` defines the style `fill:red`; `classDef a fill:red %%{init: {}` with a
 space before the directive is rejected, because the text then ends in the style
 context, and an unclosed directive inside an attribute block takes the `}` of
-the block, so the input is rejected. [fixture:
-er/tokens-unclosed-directive-after-relationship] [fixture:
+the block, so the input is rejected.
+
+[fixture: er/tokens-unclosed-directive-after-relationship] [fixture:
 er/tokens-unclosed-directive-glued-after-role] [fixture:
 er/tokens-unclosed-directive-after-header] [fixture:
 er/tokens-unclosed-directive-glued-after-classdef] [fixture:
 er/tokens-unclosed-directive-after-classdef] [fixture:
-er/tokens-unclosed-directive-in-block] A comment line between a keyword and what
-follows it is removed before the lexer reads the text: `accTitle:`, a comment
-line, and `T` has the title `T`, and so with `accDescr:`, and with `direction`
-and its value; `classDef a fill:red` followed by a space, a comment line, and
-`A` defines `fill:redA`; `subgraph 1`, a comment line, and `A` is rejected, as
-without the comment line; `end`, a comment line, and `B` is accepted; and
-`accDescr {`, a comment line, and `D }` has the description `D`. [fixture:
-er/tokens-comment-line-after-acc-title-colon] [fixture:
+er/tokens-unclosed-directive-in-block]
+
+A comment line between a keyword and what follows it is removed before the lexer
+reads the text: `accTitle:`, a comment line, and `T` has the title `T`, and so
+with `accDescr:`, and with `direction` and its value; `classDef a fill:red`
+followed by a space, a comment line, and `A` defines `fill:redA`; `subgraph 1`,
+a comment line, and `A` is rejected, as without the comment line; `end`, a
+comment line, and `B` is accepted; and `accDescr {`, a comment line, and `D }`
+has the description `D`.
+
+[fixture: er/tokens-comment-line-after-acc-title-colon] [fixture:
 er/tokens-comment-line-after-acc-descr-colon] [fixture:
 er/tokens-comment-line-after-direction] [fixture:
 er/tokens-comment-line-after-classdef-space] [fixture:
@@ -454,107 +534,186 @@ In the statement context, the lexer tries these rules in order:
 
 1. `accTitle`, zero or more whitespace characters, line feeds included, `:`, and
    zero or more whitespace characters, line feeds included: an `accTitle` unit
-   and a `:` unit; enters the title context. [fixture: er/gram-acc-title]
-   [fixture: er/lex-acc-title-no-space] [fixture:
+   and a `:` unit; enters the title context.
+
+   [fixture: er/gram-acc-title] [fixture: er/lex-acc-title-no-space] [fixture:
    er/lex-acc-title-space-before-colon] [fixture:
    er/lex-acc-title-line-feed-after-colon] [fixture:
    er/lex-acc-title-line-feed-before-colon]
+
 2. `accDescr`, zero or more whitespace characters, line feeds included, `:`, and
    zero or more whitespace characters, line feeds included: an `accDescr` unit
-   and a `:` unit; enters the description context. [fixture: er/gram-acc-descr]
+   and a `:` unit; enters the description context.
+
+   [fixture: er/gram-acc-descr]
+
 3. `accDescr`, zero or more whitespace characters, line feeds included, `{`, and
    zero or more whitespace characters, line feeds included: an `accDescr` unit
-   and a `{` unit; enters the description block context. [fixture:
-   er/gram-acc-descr-block] [fixture: er/lex-acc-descr-block-no-space] [fixture:
-   er/lex-acc-descr-block-line-feed-before-brace]
-4. A **direction line** (see below). [fixture: er/gram-direction]
-5. One or more spaces or tabs: nothing. [fixture: er/lex-tab-whitespace]
-6. One or more line feeds: a `newline` unit. [fixture: er/header-blank-lines]
+   and a `{` unit; enters the description block context.
+
+   [fixture: er/gram-acc-descr-block] [fixture: er/lex-acc-descr-block-no-space]
+   [fixture: er/lex-acc-descr-block-line-feed-before-brace]
+
+4. A **direction line** (see below).
+
+   [fixture: er/gram-direction]
+
+5. One or more spaces or tabs: nothing.
+
+   [fixture: er/lex-tab-whitespace]
+
+6. One or more line feeds: a `newline` unit.
+
+   [fixture: er/header-blank-lines]
+
 7. `"`, one or more characters other than `"`, `%`, line feed, U+000B, U+0008,
    and `\`, and `"`: a `quoted-name` unit. `"A B"`, `"A#B"`, and `"<b>A</b>"`
    are quoted names; `""` is no quoted name but an empty `string` (rule 8),
    which no entity name takes, and so is a string with a `%`, a line feed, a
-   U+000B, a U+0008, or a `\` inside. [fixture: er/lex-quoted-name] [fixture:
-   er/lex-quoted-name-hash] [fixture: er/lex-quoted-name-html] [fixture:
-   er/spec-er-diagram-f4c59d78] [fixture: er/spec-er-diagram-c0a2be45] [fixture:
-   er/spec-er-diagram-20d6ae6a] [fixture: er/spec-er-diagram-98428822] [fixture:
-   er/spec-er-diagram-a1c253bf] [fixture: er/spec-er-diagram-a49c73a0]
+   U+000B, a U+0008, or a `\` inside.
+
+   [fixture: er/lex-quoted-name] [fixture: er/lex-quoted-name-hash] [fixture:
+   er/lex-quoted-name-html] [fixture: er/spec-er-diagram-f4c59d78] [fixture:
+   er/spec-er-diagram-c0a2be45] [fixture: er/spec-er-diagram-20d6ae6a] [fixture:
+   er/spec-er-diagram-98428822] [fixture: er/spec-er-diagram-a1c253bf] [fixture:
+   er/spec-er-diagram-a49c73a0]
+
 8. `"`, zero or more characters other than `"`, line feeds included, and `"`: a
-   `string` unit, which may be empty. [fixture: er/gram-role-string] [fixture:
-   er/lex-role-string-percent] [fixture: er/lex-role-string-line-feed] [fixture:
-   er/gram-role-string-empty]
-9. The keyword `erDiagram`: a `header` unit. [fixture: er/header-only]
-10. `{`: a `{` unit; enters the attribute block context. [fixture:
-    er/gram-attribute] [fixture: er/lex-block-no-space]
-11. `#`: a `#` unit, which no rule of the grammar takes. [fixture:
-    er/lex-hash-after-name]
-12. `,`: a `,` unit. [fixture: er/lex-class-list-comma-spaces]
-13. `:::`: a `:::` unit. [fixture: er/gram-entity-classes]
-14. `:`: a `:` unit. [fixture: er/gram-relationship-symbols]
-15. `[`: a `[` unit. [fixture: er/gram-alias]
-16. `]`: a `]` unit. [fixture: er/gram-alias]
-17. The keyword `style`: a `style` unit; enters the style context. [fixture:
-    er/gram-style]
-18. The keyword `classDef`: a `classDef` unit; enters the style context.
-    [fixture: er/gram-classdef]
-19. The keyword `class`: a `class` unit. [fixture: er/gram-class]
-20. The keyword `subgraph`: a `subgraph` unit. [fixture: er/gram-subgraph]
-21. The keyword `end` and zero or more whitespace characters, line feeds
-    included: an `end` unit. [fixture: er/gram-subgraph] [fixture:
-    er/lex-end-blank-line-then-name]
-22. A **cardinality**, a **number**, or a **relationship line** (see below).
+   `string` unit, which may be empty.
+
+   [fixture: er/gram-role-string] [fixture: er/lex-role-string-percent]
+   [fixture: er/lex-role-string-line-feed] [fixture: er/gram-role-string-empty]
+
+9. The keyword `erDiagram`: a `header` unit.
+
+   [fixture: er/header-only]
+
+10. `{`: a `{` unit; enters the attribute block context.
+
+    [fixture: er/gram-attribute] [fixture: er/lex-block-no-space]
+
+11. `#`: a `#` unit, which no rule of the grammar takes.
+
+    [fixture: er/lex-hash-after-name]
+
+12. `,`: a `,` unit.
+
+    [fixture: er/lex-class-list-comma-spaces]
+
+13. `:::`: a `:::` unit.
+
+    [fixture: er/gram-entity-classes]
+
+14. `:`: a `:` unit.
+
     [fixture: er/gram-relationship-symbols]
-23. A name (see [Names](#units-and-contexts)). [fixture:
-    er/lex-name-unicode-characters]
-24. Any other character other than a line feed: an `invalid` unit. [fixture:
-    er/lex-single-quote]
+
+15. `[`: a `[` unit.
+
+    [fixture: er/gram-alias]
+
+16. `]`: a `]` unit.
+
+    [fixture: er/gram-alias]
+
+17. The keyword `style`: a `style` unit; enters the style context.
+
+    [fixture: er/gram-style]
+
+18. The keyword `classDef`: a `classDef` unit; enters the style context.
+
+    [fixture: er/gram-classdef]
+
+19. The keyword `class`: a `class` unit.
+
+    [fixture: er/gram-class]
+
+20. The keyword `subgraph`: a `subgraph` unit.
+
+    [fixture: er/gram-subgraph]
+
+21. The keyword `end` and zero or more whitespace characters, line feeds
+    included: an `end` unit.
+
+    [fixture: er/gram-subgraph] [fixture: er/lex-end-blank-line-then-name]
+
+22. A **cardinality**, a **number**, or a **relationship line** (see below).
+
+    [fixture: er/gram-relationship-symbols]
+
+23. A name (see [Names](#units-and-contexts)).
+
+    [fixture: er/lex-name-unicode-characters]
+
+24. Any other character other than a line feed: an `invalid` unit.
+
+    [fixture: er/lex-single-quote]
 
 The units `#`, `invalid`, a `string` where no role is read, and a `newline`
 where the grammar does not take one are taken by no rule of the grammar, so an
 input with one of them is rejected: `A # c`, `A 'x'`, `"A` and `A ||--o{ B : "x`
 without their closing quote, and `A`, a line break, and `||--o{ B : x` are
-rejected. [fixture: er/lex-hash-after-name] [fixture: er/lex-single-quote]
-[fixture: er/lex-quoted-name-unclosed] [fixture: er/lex-role-string-unclosed]
-[fixture: er/lex-relationship-spec-next-line] Some consequences of the order:
+rejected.
+
+[fixture: er/lex-hash-after-name] [fixture: er/lex-single-quote] [fixture:
+er/lex-quoted-name-unclosed] [fixture: er/lex-role-string-unclosed] [fixture:
+er/lex-relationship-spec-next-line]
+
+Some consequences of the order:
 
 - A keyword is a keyword wherever a unit starts, and a name may not start with
   one: `end` alone, `many` alone, and `1+` alone are rejected, and so is a role
   `one`, `to`, or `end`, while `ending`, `ones`, `tomato`, `manyx`, `classes`,
-  and `styles` are names. [fixture: er/gram-end-alone] [fixture:
-  er/lex-many-alone] [fixture: er/lex-one-plus-alone] [fixture:
-  er/lex-role-keyword-one] [fixture: er/lex-role-keyword-to] [fixture:
-  er/lex-role-keyword-end] [fixture: er/lex-keyword-end-prefix] [fixture:
-  er/lex-keyword-one-prefix] [fixture: er/lex-keyword-to-prefix] [fixture:
-  er/lex-keyword-many-prefix] [fixture: er/lex-keyword-class-prefix] [fixture:
-  er/lex-keyword-style-prefix] `classDefa fill:red`, `classA a`, and
-  `styleA fill:red` hold no keyword: the first is the name `classDefa` followed
-  by `fill` and a `:`, which is rejected, the second is the two names `classA`
-  and `a`, and the third is rejected. [fixture: er/lex-classdef-no-whitespace]
-  [fixture: er/lex-class-no-whitespace] [fixture: er/lex-style-no-whitespace]
+  and `styles` are names.
+
+  [fixture: er/gram-end-alone] [fixture: er/lex-many-alone] [fixture:
+  er/lex-one-plus-alone] [fixture: er/lex-role-keyword-one] [fixture:
+  er/lex-role-keyword-to] [fixture: er/lex-role-keyword-end] [fixture:
+  er/lex-keyword-end-prefix] [fixture: er/lex-keyword-one-prefix] [fixture:
+  er/lex-keyword-to-prefix] [fixture: er/lex-keyword-many-prefix] [fixture:
+  er/lex-keyword-class-prefix] [fixture: er/lex-keyword-style-prefix]
+
+  `classDefa fill:red`, `classA a`, and `styleA fill:red` hold no keyword: the
+  first is the name `classDefa` followed by `fill` and a `:`, which is rejected,
+  the second is the two names `classA` and `a`, and the third is rejected.
+
+  [fixture: er/lex-classdef-no-whitespace] [fixture: er/lex-class-no-whitespace]
+  [fixture: er/lex-style-no-whitespace]
+
 - The `end` unit reads the whitespace after it, line feeds included, so after
   `end` the next line gives no `newline` unit: `end`, a blank line, and `B` is
   the entity B after the subgraph, `end B` on one line is the same, and
   `end B ||--o{ C : x` has the relationship. Where the whitespace after `end`
-  reaches a `classDef` line, that line is read as usual. [fixture:
-  er/lex-end-blank-line-then-name] [fixture: er/lex-end-then-name] [fixture:
-  er/lex-end-then-relationship] [fixture: er/lex-end-space-before-line-feed]
-  [fixture: er/lex-end-line-feeds-then-classdef]
+  reaches a `classDef` line, that line is read as usual.
+
+  [fixture: er/lex-end-blank-line-then-name] [fixture: er/lex-end-then-name]
+  [fixture: er/lex-end-then-relationship] [fixture:
+  er/lex-end-space-before-line-feed] [fixture:
+  er/lex-end-line-feeds-then-classdef]
+
 - A line of `%%` or `#` after a unit is rejected (see
   [Names](#units-and-contexts)). A `;` is no separator and no character of a
   name: `A;` is rejected, except where the line rule ignores it (see
   [`style` and `classDef` lines](../common.md#style-and-classdef-lines)):
   `A ||--o{ Bstyle : "x:#y";` is accepted, with the role `x:#y`, and
-  `A ||--o{ B : "x:#y";` is rejected. [fixture: er/lex-semicolon-after-name]
-  [fixture: er/tokens-ignored-semicolon-after-role] [fixture:
-  er/lex-semicolon-after-role]
+  `A ||--o{ B : "x:#y";` is rejected.
+
+  [fixture: er/lex-semicolon-after-name] [fixture:
+  er/tokens-ignored-semicolon-after-role] [fixture: er/lex-semicolon-after-role]
+
 - A `:` outside a relationship is rejected, and so is `:::` without a name
   before it or without a class after it: `A : x`, `:::c`, `A:::`, and
-  `A:::c:::d` are rejected. [fixture: er/gram-colon-after-name] [fixture:
-  er/gram-class-separator-alone] [fixture:
-  er/gram-class-separator-without-class] [fixture: er/gram-two-class-separators]
+  `A:::c:::d` are rejected.
+
+  [fixture: er/gram-colon-after-name] [fixture: er/gram-class-separator-alone]
+  [fixture: er/gram-class-separator-without-class] [fixture:
+  er/gram-two-class-separators]
+
 - A `}` or `]` that closes nothing, and a `{` right after the header, are
-  rejected. [fixture: er/lex-close-brace-alone] [fixture:
-  er/lex-close-bracket-alone] [fixture: er/gram-header-then-block]
+  rejected.
+
+  [fixture: er/lex-close-brace-alone] [fixture: er/lex-close-bracket-alone]
+  [fixture: er/gram-header-then-block]
 
 **Keywords and what follows them.** A keyword ends at a word boundary, so an
 ASCII digit or letter after it continues a name, while a letter outside ASCII,
@@ -589,6 +748,7 @@ statement that gives `é` the class A, followed by the entity `a`,
 `end` and the entity `é`, and `erDiagramé` the header and the entity `é`;
 `A manyé to one B : x` and `A ||toé|| B : x` are rejected, since a line or a
 cardinality is expected after the keyword, and `directioné LR` is two names.
+
 [fixture: er/lex-keyword-subgraph-then-e-acute] [fixture:
 er/lex-keyword-class-then-e-acute] [fixture: er/lex-keyword-style-then-e-acute]
 [fixture: er/lex-keyword-classdef-then-e-acute] [fixture:
@@ -644,49 +804,86 @@ relationship line, and `number` for a number. The keywords among them are
 compared case-insensitively and are not followed by a word character; the
 spellings that end with a symbol may be followed by anything.
 
-1. The keyword `one or zero`: `zero-or-one`. [fixture:
-   er/lex-cardinality-only-one-optionally-to]
+1. The keyword `one or zero`: `zero-or-one`.
+
+   [fixture: er/lex-cardinality-only-one-optionally-to]
+
 2. The keyword `one or more`, the keyword `one or many`, or `1+`: `one-or-more`.
+
    [fixture: er/lex-cardinality-words] [fixture: er/lex-cardinality-one-or-many]
    [fixture: er/lex-cardinality-plus]
-3. `|o` not followed by a word character: `zero-or-one`. [fixture:
-   er/lex-line-dot-dash] [fixture: er/lex-pipe-o-glued-left]
-4. The keyword `zero or one`: `zero-or-one`. [fixture: er/lex-cardinality-words]
+
+3. `|o` not followed by a word character: `zero-or-one`.
+
+   [fixture: er/lex-line-dot-dash] [fixture: er/lex-pipe-o-glued-left]
+
+4. The keyword `zero or one`: `zero-or-one`.
+
+   [fixture: er/lex-cardinality-words]
+
 5. The keyword `zero or more`, the keyword `zero or many`, or `0+`:
-   `zero-or-more`. [fixture: er/lex-cardinality-one-or-many] [fixture:
-   er/lex-cardinality-plus] [fixture:
-   er/docs-syntax-entity-relationship-diagram-fff06d91]
-6. `}o` not followed by a word character: `zero-or-more`. [fixture:
-   er/lex-o-brace-glued-letter]
+   `zero-or-more`.
+
+   [fixture: er/lex-cardinality-one-or-many] [fixture: er/lex-cardinality-plus]
+   [fixture: er/docs-syntax-entity-relationship-diagram-fff06d91]
+
+6. `}o` not followed by a word character: `zero-or-more`.
+
+   [fixture: er/lex-o-brace-glued-letter]
+
 7. `many(0)`: `zero-or-more`; `many(1)`: `one-or-more`; the keyword `many`:
-   `zero-or-more`. [fixture: er/lex-cardinality-many-zero] [fixture:
-   er/lex-cardinality-many]
-8. `}|`: `one-or-more`. [fixture: er/spec-er-diagram-7b5988ee]
-9. The keyword `one` or the keyword `only one`: `only-one`. [fixture:
-   er/lex-cardinality-many-zero] [fixture:
+   `zero-or-more`.
+
+   [fixture: er/lex-cardinality-many-zero] [fixture: er/lex-cardinality-many]
+
+8. `}|`: `one-or-more`.
+
+   [fixture: er/spec-er-diagram-7b5988ee]
+
+9. The keyword `one` or the keyword `only one`: `only-one`.
+
+   [fixture: er/lex-cardinality-many-zero] [fixture:
    er/lex-cardinality-only-one-optionally-to]
+
 10. One or more ASCII digits, `.`, and one or more ASCII digits: a `number`.
+
     [fixture: er/lex-name-decimal]
+
 11. `1` followed by one or more whitespace characters, line feeds included, and
     an ASCII letter, `_`, `"`, or `'`; or followed by one or more whitespace
     characters, line feeds included, and an ASCII digit; or followed directly by
-    `--`, `..`, `.-`, or `-.`: `only-one`. [fixture:
-    er/lex-one-digit-cardinalities] [fixture: er/spec-er-diagram-155d18bb]
-    [fixture: er/spec-er-diagram-92625f77] [fixture:
-    er/spec-er-diagram-4fd0ae58] [fixture: er/lex-one-before-string] [fixture:
-    er/lex-one-before-underscore] [fixture: er/lex-one-before-number-name]
-    [fixture: er/lex-one-tab]
-12. `1` not followed by a word character: a `number`. [fixture: er/lex-name-one]
-13. One or more ASCII digits: a `number`. [fixture: er/lex-name-number]
+    `--`, `..`, `.-`, or `-.`: `only-one`.
+
+    [fixture: er/lex-one-digit-cardinalities] [fixture:
+    er/spec-er-diagram-155d18bb] [fixture: er/spec-er-diagram-92625f77]
+    [fixture: er/spec-er-diagram-4fd0ae58] [fixture: er/lex-one-before-string]
+    [fixture: er/lex-one-before-underscore] [fixture:
+    er/lex-one-before-number-name] [fixture: er/lex-one-tab]
+
+12. `1` not followed by a word character: a `number`.
+
+    [fixture: er/lex-name-one]
+
+13. One or more ASCII digits: a `number`.
+
+    [fixture: er/lex-name-number]
+
 14. `||`: `only-one`; `o|`: `zero-or-one`; `o{`: `zero-or-more`; `|{`:
-    `one-or-more`. [fixture: er/gram-relationship-symbols] [fixture:
-    er/lex-line-dash-dot] [fixture: er/lex-only-one-symbols]
-15. `u` followed by `.`, `-`, or `|`: `md-parent`. [fixture: er/lex-md-parent]
+    `one-or-more`.
+
+    [fixture: er/gram-relationship-symbols] [fixture: er/lex-line-dash-dot]
+    [fixture: er/lex-only-one-symbols]
+
+15. `u` followed by `.`, `-`, or `|`: `md-parent`.
+
+    [fixture: er/lex-md-parent]
+
 16. `..`: `non-identifying`; `--`: `identifying`; the keyword `to`:
     `identifying`; the keyword `optionally to`: `non-identifying`; `.-`:
-    `non-identifying`; `-.`: `non-identifying`. [fixture:
-    er/spec-er-diagram-7b5988ee] [fixture: er/gram-relationship-symbols]
-    [fixture: er/lex-cardinality-words] [fixture:
+    `non-identifying`; `-.`: `non-identifying`.
+
+    [fixture: er/spec-er-diagram-7b5988ee] [fixture:
+    er/gram-relationship-symbols] [fixture: er/lex-cardinality-words] [fixture:
     er/lex-cardinality-only-one-optionally-to] [fixture: er/lex-line-dot-dash]
     [fixture: er/lex-line-dash-dot] [fixture: er/lex-optionally-to-upper-case]
 
@@ -695,12 +892,15 @@ them, and may have it: `A||--o{B:has` and `A || -- o{ B : has` are the same
 relationship, and so are `A ||to|| B : x`, `A one--one B : x`, `A 1+--0+ B : x`,
 `A many(0)--many(1) B : x`, and `A one or more--one B : x`; word and symbol
 spellings mix, as in `A one or zero--|| B : x` and `A ||--only one B : x`.
+
 [fixture: er/lex-relationship-no-spaces] [fixture:
 er/lex-relationship-spaces-in-spec] [fixture: er/lex-to-glued] [fixture:
 er/lex-one-glued-dashes] [fixture: er/lex-plus-glued] [fixture:
 er/lex-many-paren-glued] [fixture: er/lex-one-or-more-glued] [fixture:
 er/lex-cardinality-word-then-symbol] [fixture:
-er/lex-cardinality-symbol-then-word] Some consequences of the rules:
+er/lex-cardinality-symbol-then-word]
+
+Some consequences of the rules:
 
 - `|o` and `}o` end at a word boundary, the other symbols do not: `A|o--|| B`
   and `A }o--o{B : x` are relationships, `A }|--|{B : x` too, while
@@ -708,11 +908,14 @@ er/lex-cardinality-symbol-then-word] Some consequences of the rules:
   the `|o` or `}o` before the name is no cardinality. `1+`, `0+`, `many(0)`, and
   `many(1)` may be followed by a name: `A 1+--0+x : x` and
   `A many(0)--many(1)x : x` have the entity `x`. The keyword `to` is not:
-  `A ||tox|| B : x` is rejected. [fixture: er/lex-pipe-o-glued-left] [fixture:
-  er/lex-o-brace-glued-letter] [fixture: er/lex-brace-pipe-glued] [fixture:
-  er/lex-pipe-o-glued-letter] [fixture: er/lex-pipe-o-glued-digit] [fixture:
-  er/lex-brace-o-glued-letter] [fixture: er/lex-plus-glued-letter] [fixture:
-  er/lex-many-paren-glued-letter] [fixture: er/lex-to-glued-letter]
+  `A ||tox|| B : x` is rejected.
+
+  [fixture: er/lex-pipe-o-glued-left] [fixture: er/lex-o-brace-glued-letter]
+  [fixture: er/lex-brace-pipe-glued] [fixture: er/lex-pipe-o-glued-letter]
+  [fixture: er/lex-pipe-o-glued-digit] [fixture: er/lex-brace-o-glued-letter]
+  [fixture: er/lex-plus-glued-letter] [fixture: er/lex-many-paren-glued-letter]
+  [fixture: er/lex-to-glued-letter]
+
 - `u` is `md-parent` only right before `.`, `-`, or `|`, on the right as well as
   on the left, and the character after it then starts a name: `A u--o{ B : x`,
   `A u..o{ B : x`, and `A U--o{ B : x` have the cardinality `md-parent` on the
@@ -721,16 +924,21 @@ er/lex-cardinality-symbol-then-word] Some consequences of the rules:
   the name `u` and is rejected, `u` alone is the entity `u`, `Au--o{ B : x` has
   the name `Au` and is rejected, `u--o{ B : x` has no entity before the
   cardinality and is rejected, and `A u|--o{ B : x`, `A ||--u B : x`, and
-  `A ||--u| B : x` are rejected. [fixture: er/lex-md-parent] [fixture:
-  er/lex-md-parent-dots] [fixture: er/lex-md-parent-upper-case] [fixture:
-  er/lex-md-parent-right-glued-name] [fixture: er/lex-md-parent-right-glued-dot]
-  [fixture: er/lex-md-parent-both-glued] [fixture: er/lex-u-then-space]
-  [fixture: er/lex-u-as-name] [fixture: er/lex-u-glued-name] [fixture:
+  `A ||--u| B : x` are rejected.
+
+  [fixture: er/lex-md-parent] [fixture: er/lex-md-parent-dots] [fixture:
+  er/lex-md-parent-upper-case] [fixture: er/lex-md-parent-right-glued-name]
+  [fixture: er/lex-md-parent-right-glued-dot] [fixture:
+  er/lex-md-parent-both-glued] [fixture: er/lex-u-then-space] [fixture:
+  er/lex-u-as-name] [fixture: er/lex-u-glued-name] [fixture:
   er/gram-md-parent-without-left] [fixture: er/lex-md-parent-pipe] [fixture:
   er/lex-md-parent-right] [fixture: er/lex-md-parent-right-pipe]
+
 - A name may start with `o`, but `o{` is a cardinality: `o{` followed by
   attributes is rejected, while `o {` is the entity `o` with its attributes.
+
   [fixture: er/lex-name-o-then-block] [fixture: er/lex-name-o-space-block]
+
 - Rule 11 reads `1` as `only-one` also where a statement starts: `1 A` and
   `1 12` are rejected, and so is `1--1 B : x`, which has no entity before the
   cardinality, while `1 é` is the two entities `1` and `é`, because `é` is no
@@ -742,6 +950,7 @@ er/lex-cardinality-symbol-then-word] Some consequences of the rules:
   rejected, because the `1` after the relationship line is a `number` there, or
   because `12` is one; in `A 1--1 'B' : x` that `1` is `only-one`, since `'` is
   among the characters of rule 11, and the `'` after it is an `invalid` unit.
+
   [fixture: er/lex-one-space-letter] [fixture: er/lex-one-space-digit] [fixture:
   er/lex-one-arrow-no-left] [fixture: er/lex-one-space-e-acute] [fixture:
   er/lex-one-digit-cardinalities] [fixture: er/lex-one-before-string] [fixture:
@@ -750,19 +959,23 @@ er/lex-cardinality-symbol-then-word] Some consequences of the rules:
   er/lex-one-before-dash] [fixture: er/lex-one-before-star] [fixture:
   er/lex-one-before-single-quote] [fixture: er/lex-one-glued-letter] [fixture:
   er/lex-one-before-string-glued] [fixture: er/lex-one-then-two-digits]
+
 - A number ends where a name begins: `1a` is the two entities `1` and `a`, `12a`
   the entities `12` and `a`, `2.5x` the entities `2.5` and `x`, and `12.` the
-  entities `12` and `.`; `12`, `2.5`, and `1` are entities. [fixture:
-  er/lex-name-number-then-letter] [fixture: er/lex-name-number2-then-letter]
-  [fixture: er/lex-name-decimal-then-letter] [fixture:
-  er/lex-name-number-then-dot] [fixture: er/lex-name-number] [fixture:
+  entities `12` and `.`; `12`, `2.5`, and `1` are entities.
+
+  [fixture: er/lex-name-number-then-letter] [fixture:
+  er/lex-name-number2-then-letter] [fixture: er/lex-name-decimal-then-letter]
+  [fixture: er/lex-name-number-then-dot] [fixture: er/lex-name-number] [fixture:
   er/lex-name-decimal] [fixture: er/lex-name-one]
+
 - A relationship line is exactly two characters or a keyword:
   `A ||----o{ B : x`, `A ||---o{ B : x`, and `A ||.-.o{ B : x` are rejected, and
   so are `A ||-- B : x` and `A --o{ B : x`, which lack a cardinality,
-  `A many(2) to one B : x`, and `A one or zeros B : x`. [fixture:
-  er/lex-line-four-dashes] [fixture: er/lex-line-three-dashes] [fixture:
-  er/lex-line-dot-dash-dot] [fixture:
+  `A many(2) to one B : x`, and `A one or zeros B : x`.
+
+  [fixture: er/lex-line-four-dashes] [fixture: er/lex-line-three-dashes]
+  [fixture: er/lex-line-dot-dash-dot] [fixture:
   er/gram-relationship-missing-right-cardinality] [fixture:
   er/gram-relationship-missing-left-cardinality] [fixture:
   er/lex-many-paren-two] [fixture: er/lex-keyword-one-or-zero-suffix]
@@ -793,6 +1006,7 @@ value follows. So `direction TB x direction TB` is read at its last `direction`,
 and `direction TB x` is a `direction-text` unit, while
 `direction TB x direction LR` and `direction TBx direction RL` set `TB` and are
 read at their first `direction`, with the rest as a `direction-text` unit.
+
 [fixture: er/lex-direction-line-text-before] [fixture:
 er/lex-direction-line-after-relationship] [fixture:
 er/lex-direction-line-as-role] [fixture: er/lex-direction-lower-case] [fixture:
@@ -806,10 +1020,12 @@ er/lex-direction-line-percent] [fixture: er/lex-direction-line-semicolon]
 [fixture: er/lex-direction-line-text-after] [fixture:
 er/lex-direction-line-same-value-twice] [fixture:
 er/lex-direction-line-two-values] [fixture:
-er/lex-direction-value-glued-then-other] In the text after the value, a comment
-after a U+2028 or U+2029 is read through, and the text goes on after it (see
-[Comment lines](../common.md#comment-lines)). [fixture:
-er/lex-direction-text-line-separator-then-comment-line] [fixture:
+er/lex-direction-value-glued-then-other]
+
+In the text after the value, a comment after a U+2028 or U+2029 is read through,
+and the text goes on after it (see [Comment lines](../common.md#comment-lines)).
+
+[fixture: er/lex-direction-text-line-separator-then-comment-line] [fixture:
 er/lex-direction-text-line-separator-comment-line-directive-next] [fixture:
 er/lex-direction-text-line-separator-comment-line-space-next] [fixture:
 er/lex-direction-text-line-separator-comment-line-separator-next] [fixture:
@@ -825,15 +1041,17 @@ er/lex-direction-text-line-separator-comment-line-directive-before] [fixture:
 er/lex-direction-text-line-separator-comment-line-line-rule-before] [fixture:
 er/lex-direction-text-line-separator-comment-line-line-rule-after] [fixture:
 er/lex-direction-text-line-separator-comment-line-bare-percent] [fixture:
-er/lex-direction-text-line-separator-comment-line-percent-brace] The whitespace
-between `direction` and its value may hold a line feed, a tab, a U+00A0, or a
-U+2028: `direction`, a line break, and `LR` is a direction line, and so is
-`direction`, U+2028, and `LR`, while the run before `direction` may not hold a
-U+2028: `A`, U+2028, and `direction LR` are the names `A`, U+2028, `direction`
-and `LR`. The text after the value may hold a U+2028 or a U+2029. `direction`
-alone on its line, with no value, is the name `direction`. [fixture:
-er/lex-direction-value-next-line] [fixture: er/lex-direction-value-tab]
-[fixture: er/lex-direction-value-nbsp] [fixture:
+er/lex-direction-text-line-separator-comment-line-percent-brace]
+
+The whitespace between `direction` and its value may hold a line feed, a tab, a
+U+00A0, or a U+2028: `direction`, a line break, and `LR` is a direction line,
+and so is `direction`, U+2028, and `LR`, while the run before `direction` may
+not hold a U+2028: `A`, U+2028, and `direction LR` are the names `A`, U+2028,
+`direction` and `LR`. The text after the value may hold a U+2028 or a U+2029.
+`direction` alone on its line, with no value, is the name `direction`.
+
+[fixture: er/lex-direction-value-next-line] [fixture:
+er/lex-direction-value-tab] [fixture: er/lex-direction-value-nbsp] [fixture:
 er/lex-direction-value-line-separator] [fixture:
 er/lex-line-separator-before-direction] [fixture:
 er/lex-line-separator-after-direction-value] [fixture:
@@ -848,15 +1066,20 @@ the attributes of an entity:
 1. One or more whitespace characters, line feeds included: nothing. A line feed
    makes no unit here, so the attributes need no line structure: `string a` and
    `string b` on one line are two attributes, and `string` and `a` on two lines
-   are one. [fixture: er/gram-attributes-one-line] [fixture:
+   are one.
+
+   [fixture: er/gram-attributes-one-line] [fixture:
    er/gram-attribute-split-lines] [fixture: er/lex-block-nbsp] [fixture:
    er/lex-block-tab] [fixture: er/lex-block-form-feed] [fixture:
    er/lex-block-vertical-tab] [fixture: er/lex-block-crlf] [fixture:
    er/gram-block-blank-lines]
+
 2. `PK`, `FK`, or `UK`, compared case-insensitively, not followed by a word
-   character: a `key` unit. `pk` is a key, and `PKx` is a word. [fixture:
-   er/gram-keys-comma-space] [fixture: er/lex-key-lower-case] [fixture:
-   er/lex-key-prefix-word] [fixture: er/lex-key-line-separator-after]
+   character: a `key` unit. `pk` is a key, and `PKx` is a word.
+
+   [fixture: er/gram-keys-comma-space] [fixture: er/lex-key-lower-case]
+   [fixture: er/lex-key-prefix-word] [fixture: er/lex-key-line-separator-after]
+
 3. A **tilde word**: from the current position, a run of one or more characters
    other than whitespace that holds a `~`, where a second `~` follows on the
    same line segment, a run of characters without line feeds, U+2028, or U+2029;
@@ -879,6 +1102,7 @@ the attributes of an entity:
    entity A with the attribute named `x~y } B { z~w`, and `A {` followed by a
    line `List~int~}` is rejected, because the tilde word takes the `}`; with
    `List~int~ a` on its line and `}` on the next, the `}` lies outside the word.
+
    [fixture: er/lex-tilde-across-close-brace] [fixture:
    er/lex-tilde-across-close-brace-name] [fixture:
    er/lex-tilde-before-close-brace-glued] [fixture:
@@ -891,6 +1115,7 @@ the attributes of an entity:
    er/lex-tilde-in-comment-two-then-word] [fixture: er/lex-tilde-in-comment-two]
    [fixture: er/lex-backquote-containing-tilde] [fixture:
    er/lex-tilde-in-comment-one] [fixture: er/lex-tilde-with-backquote-inside]
+
 4. A **word**: a first character that is `*`, an ASCII letter, `_`, or a
    character from U+00C0 on, characters outside the Basic Multilingual Plane
    included, and then zero or more characters each of which is an ASCII letter,
@@ -902,8 +1127,9 @@ the attributes of an entity:
    no character of a word. The whitespace characters from U+00C0 on, U+2028,
    U+3000, and U+FEFF among them, are characters of a word where they follow its
    first character: `string`, U+2028, and `a` is one word, and so is `str`,
-   U+FEFF, and `ing`, while `str`, U+00A0, and `ing` is two words. [fixture:
-   er/lex-word-brackets] [fixture: er/lex-word-parentheses] [fixture:
+   U+FEFF, and `ing`, while `str`, U+00A0, and `ing` is two words.
+
+   [fixture: er/lex-word-brackets] [fixture: er/lex-word-parentheses] [fixture:
    er/lex-word-dot] [fixture: er/lex-word-star] [fixture:
    er/lex-word-underscore] [fixture: er/lex-word-dash] [fixture:
    er/lex-word-comma] [fixture: er/lex-word-digits-inside] [fixture:
@@ -914,6 +1140,7 @@ the attributes of an entity:
    er/spec-er-diagram-a7625799] [fixture: er/lex-word-copyright] [fixture:
    er/lex-word-hash] [fixture: er/lex-block-line-separator] [fixture:
    er/lex-word-bom-inside] [fixture: er/lex-word-nbsp-inside]
+
 5. `` ` ``, one or more characters other than `` ` ``, line feeds included, and
    `` ` ``: a `backquoted-word` unit, backquotes included. So `` `a b` c `` has
    the type `a b`, and the type of `` `a``, a line break, and ``b` c`` holds the
@@ -921,71 +1148,101 @@ the attributes of an entity:
    are an `empty-backquotes` unit, for which mermaid.js reads no token (see
    [Attributes](#attributes)). The word after the closing backquote starts a new
    unit: `` `a`b c `` is three words and is rejected, and `` `a`? b `` has the
-   type `a` with `?`. [fixture: er/lex-backquote-word] [fixture:
-   er/lex-backquote-line-feed] [fixture: er/lex-backquote-quote-inside]
-   [fixture: er/lex-backquote-both] [fixture: er/lex-backquote-glued] [fixture:
-   er/lex-backquote-optional] [fixture: er/lex-backquote-unclosed]
+   type `a` with `?`.
+
+   [fixture: er/lex-backquote-word] [fixture: er/lex-backquote-line-feed]
+   [fixture: er/lex-backquote-quote-inside] [fixture: er/lex-backquote-both]
+   [fixture: er/lex-backquote-glued] [fixture: er/lex-backquote-optional]
+   [fixture: er/lex-backquote-unclosed]
+
 6. `"`, zero or more characters other than `"`, line feeds included, and `"`: a
    `comment-string` unit, which may be empty. `"c%%d"` is one, and the string
-   needs no whitespace before it: `string a"c"` is accepted. [fixture:
-   er/gram-comment] [fixture: er/gram-comment-empty] [fixture:
+   needs no whitespace before it: `string a"c"` is accepted.
+
+   [fixture: er/gram-comment] [fixture: er/gram-comment-empty] [fixture:
    er/lex-comment-line-feed] [fixture: er/lex-comment-percent] [fixture:
    er/lex-comment-glued] [fixture: er/lex-comment-unclosed]
-7. `}`: a `}` unit; leaves the attribute block context. [fixture:
-   er/gram-attribute]
+
+7. `}`: a `}` unit; leaves the attribute block context.
+
+   [fixture: er/gram-attribute]
+
 8. `?`: a `?` unit. `,`: a `,` unit. Any other character other than a line feed,
    U+2028, and U+2029: an `invalid` unit, which no rule takes, so `%`, `#`, `{`,
    and `~` outside a tilde word are rejected. `?` needs no whitespace before it:
-   `string ? a` and `string? a` are the same. [fixture: er/gram-optional-type]
-   [fixture: er/lex-optional-type-space] [fixture: er/lex-block-percent]
-   [fixture: er/lex-word-hash] [fixture: er/lex-block-brace] [fixture:
-   er/lex-tilde-single]
+   `string ? a` and `string? a` are the same.
+
+   [fixture: er/gram-optional-type] [fixture: er/lex-optional-type-space]
+   [fixture: er/lex-block-percent] [fixture: er/lex-word-hash] [fixture:
+   er/lex-block-brace] [fixture: er/lex-tilde-single]
 
 The rules of the statement context are not tried here: `end`, `direction LR`,
 and `accDescr { x }` after `{` are words, so `end a` is an attribute,
 `direction LR` is the attribute of type `direction`, and `accDescr { x }` is
-rejected at its `{`. [fixture: er/lex-block-keyword-end] [fixture:
-er/lex-direction-in-block] [fixture: er/lex-block-acc-descr] The text may not
-end in this context, nor inside a backquoted word: `A {` with or without
-attributes, and `` `a `` without its closing backquote, are rejected. [fixture:
-er/lex-block-unclosed] [fixture: er/lex-block-unclosed-empty] [fixture:
-er/lex-backquote-unclosed]
+rejected at its `{`.
+
+[fixture: er/lex-block-keyword-end] [fixture: er/lex-direction-in-block]
+[fixture: er/lex-block-acc-descr]
+
+The text may not end in this context, nor inside a backquoted word: `A {` with
+or without attributes, and `` `a `` without its closing backquote, are rejected.
+
+[fixture: er/lex-block-unclosed] [fixture: er/lex-block-unclosed-empty]
+[fixture: er/lex-backquote-unclosed]
 
 ### The style context
 
 The style context is entered by `style` and by `classDef`. It reads the names
 and the styles of the statement:
 
-1. One or more line feeds: a `newline` unit; leaves the style context. [fixture:
-   er/gram-classdef]
+1. One or more line feeds: a `newline` unit; leaves the style context.
+
+   [fixture: er/gram-classdef]
+
 2. One or more whitespace characters, line feeds included: nothing. This rule
    comes after rule 1, so a run of whitespace that starts with a space or a tab
    takes the line feeds inside it, and the statement goes on on the next line:
    `classDef a fill:red`, a space, a line break, and `A` defines the style
    `fill:redA` and has no entity, and so with a tab, and with a blank line
-   between. [fixture: er/lex-classdef-space-before-line-feed] [fixture:
+   between.
+
+   [fixture: er/lex-classdef-space-before-line-feed] [fixture:
    er/lex-style-space-before-line-feed] [fixture:
    er/lex-style-tab-before-line-feed] [fixture:
    er/lex-classdef-space-before-line-feed-then-blank]
-3. `:`: a `:` unit. [fixture: er/gram-classdef]
-4. `,`: a `,` unit. [fixture: er/gram-classdef]
-5. `#`: a `#` unit. [fixture: er/gram-classdef]
+
+3. `:`: a `:` unit.
+
+   [fixture: er/gram-classdef]
+
+4. `,`: a `,` unit.
+
+   [fixture: er/gram-classdef]
+
+5. `#`: a `#` unit.
+
+   [fixture: er/gram-classdef]
+
 6. One or more characters each of which is a character outside ASCII, a word
    character, `-`, or `*`: a `style-text` unit. `.`, `%`, `(`, `)`, and `"` are
    no characters of it, and no rule takes them: `classDef a font-size:1.5em`,
    `classDef a width:50%`, `classDef a fill:rgb(1,2,3)`, `style A.B fill:red`,
    and `classDef a.b fill:red` are rejected. U+00A0 is a character of it:
    `style A fill:red`, U+00A0, a line break, and `B` has the style `fill:red`
-   and U+00A0, and the entity B. [fixture: er/lex-classdef-dot] [fixture:
-   er/lex-classdef-percent] [fixture: er/lex-classdef-parentheses] [fixture:
-   er/lex-style-dot-name] [fixture: er/lex-classdef-dot-name] [fixture:
-   er/lex-style-nbsp-before-line-feed] [fixture: er/lex-classdef-dash-name]
-   [fixture: er/lex-classdef-unicode-name] [fixture: er/lex-classdef-star-style]
+   and U+00A0, and the entity B.
+
+   [fixture: er/lex-classdef-dot] [fixture: er/lex-classdef-percent] [fixture:
+   er/lex-classdef-parentheses] [fixture: er/lex-style-dot-name] [fixture:
+   er/lex-classdef-dot-name] [fixture: er/lex-style-nbsp-before-line-feed]
+   [fixture: er/lex-classdef-dash-name] [fixture: er/lex-classdef-unicode-name]
+   [fixture: er/lex-classdef-star-style]
+
    A comment line after a U+2028 or U+2029 in the unit is removed, and the unit
    goes on after it (see [Comment lines](../common.md#comment-lines)):
    `style A fill:red`, U+2028, `%% c`, a line break, and `x` has the style
-   `fill:red`, U+2028, and `x`. [fixture:
-   er/lex-style-line-separator-then-comment-line] [fixture:
+   `fill:red`, U+2028, and `x`.
+
+   [fixture: er/lex-style-line-separator-then-comment-line] [fixture:
    er/lex-style-line-separator-comment-line-directive-next] [fixture:
    er/lex-style-line-separator-comment-line-space-next] [fixture:
    er/lex-style-line-separator-comment-line-separator-next] [fixture:
@@ -1003,7 +1260,10 @@ and the styles of the statement:
    er/lex-style-line-separator-comment-line-bare-percent] [fixture:
    er/lex-style-line-separator-comment-line-percent-brace] [fixture:
    er/lex-classdef-styles-line-separator-then-comment-line]
-7. `;`: a `;` unit. [fixture: er/lex-classdef-semicolon-line-feed]
+
+7. `;`: a `;` unit.
+
+   [fixture: er/lex-classdef-semicolon-line-feed]
 
 The `;` unit ends the statement, but the lexer stays in the style context until
 a line feed: `classDef a fill:red;`, a line break, and `A` is the class and the
@@ -1017,7 +1277,9 @@ mermaid.js; with `;;`, one `;` remains, and `#f00;` is then read as an entity
 (see [Entities](../common.md#entities)). The style context has no rule for
 `accDescr {`, which is a `style-text` unit and a `{`:
 `classDef a accDescr {} fill:red` and `style A accDescr {} fill:red` are
-rejected. [fixture: er/lex-classdef-semicolon-line-feed] [fixture:
+rejected.
+
+[fixture: er/lex-classdef-semicolon-line-feed] [fixture:
 er/lex-classdef-semicolon-then-name] [fixture: er/lex-style-semicolon-line-feed]
 [fixture: er/lex-style-semicolon-at-end] [fixture:
 er/lex-classdef-ignored-semicolon] [fixture:
@@ -1026,10 +1288,13 @@ er/lex-style-ignored-semicolon] [fixture:
 er/lex-style-ignored-semicolon-then-text] [fixture:
 er/lex-classdef-double-semicolon-entity] [fixture:
 er/lex-classdef-empty-description-block] [fixture:
-er/lex-style-empty-description-block] The keywords `style` and `classDef` need
-whitespace after them only because a name must follow: `classDef` and `class`
-are compared as keywords, so `classDefa` holds neither. [fixture:
-er/lex-classdef-no-whitespace]
+er/lex-style-empty-description-block]
+
+The keywords `style` and `classDef` need whitespace after them only because a
+name must follow: `classDef` and `class` are compared as keywords, so
+`classDefa` holds neither.
+
+[fixture: er/lex-classdef-no-whitespace]
 
 ### Accessibility values
 
@@ -1047,9 +1312,10 @@ accepted. `;`, `#`, `%%`, `{`, `}`, and `accDescr {}` are characters of the
 text: `accTitle: a;b #c %% d` has the title `a;b #c %% d`, and
 `accTitle: T accDescr {}` the title `T accDescr {}`. The whitespace at the end
 of the text, U+00A0 included, is read into the unit and left out of the value
-(see [ErLiteral](../ast/er.md#erliteral)). [fixture: er/gram-acc-title]
-[fixture: er/lex-acc-title-line-feed-after-colon] [fixture:
-er/lex-acc-title-blank-line-then-name] [fixture:
+(see [ErLiteral](../ast/er.md#erliteral)).
+
+[fixture: er/gram-acc-title] [fixture: er/lex-acc-title-line-feed-after-colon]
+[fixture: er/lex-acc-title-blank-line-then-name] [fixture:
 er/lex-acc-title-spaces-then-name] [fixture: er/lex-acc-title-at-end] [fixture:
 er/lex-acc-title-space-at-end] [fixture: er/lex-acc-title-line-feed-at-end]
 [fixture: er/lex-acc-descr-at-end] [fixture: er/gram-acc-title-at-end-with-text]
@@ -1059,10 +1325,13 @@ er/lex-acc-title-then-semicolon] [fixture: er/lex-acc-title-braces] [fixture:
 er/lex-acc-title-empty-description-block] [fixture:
 er/db-acc-title-trailing-space] [fixture: er/lex-acc-title-trailing-nbsp]
 [fixture: er/lex-acc-title-crlf] [fixture: er/lex-acc-title-line-separator]
-[fixture: er/lex-acc-title-tabs] In the text of an accessibility title or
-description, a comment after a U+2028 or U+2029 is read through, and the text
-goes on after it (see [Comment lines](../common.md#comment-lines)). [fixture:
-er/lex-acc-title-line-separator-then-comment-line] [fixture:
+[fixture: er/lex-acc-title-tabs]
+
+In the text of an accessibility title or description, a comment after a U+2028
+or U+2029 is read through, and the text goes on after it (see
+[Comment lines](../common.md#comment-lines)).
+
+[fixture: er/lex-acc-title-line-separator-then-comment-line] [fixture:
 er/lex-acc-descr-line-separator-then-comment-line] [fixture:
 er/lex-acc-title-line-separator-comment-line-directive-next] [fixture:
 er/lex-acc-title-line-separator-comment-line-space-next] [fixture:
@@ -1094,9 +1363,11 @@ first `}`, whitespace at its end included: `accDescr { a {b }` has the
 description `a {b`, `accDescr { D   }` the description `D`, and
 `accDescr { direction LR }` the description `direction LR`. The text may not end
 in this context: `accDescr {`, `accDescr { D`, and `accDescr { D` followed by a
-line `A` are rejected. [fixture: er/gram-acc-descr-block] [fixture:
-er/gram-acc-descr-block-multiline] [fixture: er/gram-acc-descr-block-empty]
-[fixture: er/gram-acc-descr-block-empty-space] [fixture:
+line `A` are rejected.
+
+[fixture: er/gram-acc-descr-block] [fixture: er/gram-acc-descr-block-multiline]
+[fixture: er/gram-acc-descr-block-empty] [fixture:
+er/gram-acc-descr-block-empty-space] [fixture:
 er/db-acc-descr-block-whitespace-only] [fixture:
 er/gram-acc-descr-block-directive-only] [fixture:
 er/gram-acc-descr-block-comment-line-only] [fixture:
@@ -1106,11 +1377,13 @@ er/lex-acc-descr-block-leading-line-feeds] [fixture:
 er/lex-acc-descr-block-direction] [fixture:
 er/lex-acc-descr-block-unclosed-empty] [fixture:
 er/lex-acc-descr-block-unclosed] [fixture:
-er/lex-acc-descr-block-unclosed-lines] A comment line inside the text of a
-description block is removed, also after a U+2028 or U+2029 on a line of the
-text, and the text goes on after it (see
-[Comment lines](../common.md#comment-lines)). [fixture:
-er/lex-acc-descr-block-line-separator-then-comment-line] [fixture:
+er/lex-acc-descr-block-unclosed-lines]
+
+A comment line inside the text of a description block is removed, also after a
+U+2028 or U+2029 on a line of the text, and the text goes on after it (see
+[Comment lines](../common.md#comment-lines)).
+
+[fixture: er/lex-acc-descr-block-line-separator-then-comment-line] [fixture:
 er/lex-acc-descr-block-line-separator-comment-line-directive-next] [fixture:
 er/lex-acc-descr-block-line-separator-comment-line-space-next] [fixture:
 er/lex-acc-descr-block-line-separator-comment-line-separator-next] [fixture:
@@ -1131,8 +1404,10 @@ er/lex-acc-descr-block-line-separator-comment-line-percent-brace]
 The rules that enter these contexts are rules of the statement context only; in
 an attribute block and in the style context, `accTitle` and `accDescr` are words
 (see [The attribute block context](#the-attribute-block-context) and
-[The style context](#the-style-context)). [fixture: er/lex-block-acc-descr]
-[fixture: er/lex-classdef-empty-description-block]
+[The style context](#the-style-context)).
+
+[fixture: er/lex-block-acc-descr] [fixture:
+er/lex-classdef-empty-description-block]
 
 ### Comments
 
@@ -1140,8 +1415,10 @@ This diagram has no comment rule: `#` and `%%` are no comments after a unit, and
 the only comments of the diagram are the comment lines and bare `%%` lines that
 are read before the lexer (see [Names](#units-and-contexts) and
 [Detection](#detection)). Their mark is `%%`, and their value is the text after
-the mark. [fixture: er/comment-line] [fixture: er/lex-percent-after-statement]
-[fixture: er/header-after-bare-percent-line]
+the mark.
+
+[fixture: er/comment-line] [fixture: er/lex-percent-after-statement] [fixture:
+er/header-after-bare-percent-line]
 
 ## Grammar
 
@@ -1197,7 +1474,9 @@ line, and a `newline` unit between them is a `line` of its own.
 statements, `A ||--o{ B : has it` has the role `has` and the entity `it`, and so
 a statement follows a role in quotes, a `}`, a `class` statement, an `accTitle`
 line's start, or a `classDef` and `style` statement on the same line only after
-its separator. [fixture: er/gram-two-relationships-one-line] [fixture:
+its separator.
+
+[fixture: er/gram-two-relationships-one-line] [fixture:
 er/lex-two-names-one-line] [fixture: er/lex-role-then-name] [fixture:
 er/gram-role-string-then-name] [fixture: er/lex-role-string-glued-name]
 [fixture: er/gram-block-then-name-one-line] [fixture:
@@ -1205,11 +1484,14 @@ er/gram-block-one-line-then-name] [fixture: er/gram-class-then-name] [fixture:
 er/gram-class-then-relationship-one-line] [fixture:
 er/gram-acc-title-after-name] [fixture: er/gram-classdef-after-name-one-line]
 [fixture: er/gram-style-after-name-one-line] [fixture:
-er/gram-relationship-then-name-one-line] The grammar of mermaid.js has a rule
-for a `title` statement, but its lexer makes no unit for it
+er/gram-relationship-then-name-one-line]
+
+The grammar of mermaid.js has a rule for a `title` statement, but its lexer
+makes no unit for it
 ([`erDiagram.jison`](https://github.com/mermaid-js/mermaid/blob/2086904e76c692331e34a45d7cc3bc30860d040e/packages/mermaid/src/diagrams/er/parser/erDiagram.jison#L188)),
-so `title T` is the two entities `title` and `T`. [fixture:
-er/gram-title-words-as-names]
+so `title T` is the two entities `title` and `T`.
+
+[fixture: er/gram-title-words-as-names]
 
 ### Entities
 
@@ -1223,8 +1505,9 @@ attribute-block  = "{" block-item* "}"
 
 An entity statement is an entity name, with an alias, classes, and an attribute
 block or without them: `A`, `A[P]`, `A:::c`, `A { … }`, `A[P]:::c { … }`, and
-`"A B"`, `12`, `2.5`, and `1` are entity statements. [fixture:
-er/lex-name-unicode-characters] [fixture: er/gram-alias] [fixture:
+`"A B"`, `12`, `2.5`, and `1` are entity statements.
+
+[fixture: er/lex-name-unicode-characters] [fixture: er/gram-alias] [fixture:
 er/gram-entity-classes] [fixture: er/gram-attribute] [fixture:
 er/gram-alias-class-block] [fixture: er/lex-quoted-name] [fixture:
 er/lex-name-number] [fixture: er/lex-name-decimal] [fixture: er/lex-name-one]
@@ -1237,8 +1520,10 @@ er/lex-name-number] [fixture: er/lex-name-decimal] [fixture: er/lex-name-one]
   takes no relationship on its line: `A:::c[P]`, `p[P] ||--o{ B : x`,
   `p[P]:::c ||--o{ B : x`, `A ||--o{ p[P] : x`, and `A:::c ||--o{ p[P] : x` are
   rejected, while `p[P]:::c`, `p[P] { … }`, `p[P]:::c { … }`, and `p[P]:::c {}`
-  are accepted. [fixture: er/gram-alias] [fixture: er/gram-alias-spaces]
-  [fixture: er/gram-alias-string] [fixture: er/gram-alias-number] [fixture:
+  are accepted.
+
+  [fixture: er/gram-alias] [fixture: er/gram-alias-spaces] [fixture:
+  er/gram-alias-string] [fixture: er/gram-alias-number] [fixture:
   er/gram-alias-one] [fixture: er/gram-alias-string-name] [fixture:
   er/gram-alias-number-name] [fixture: er/gram-alias-one-name] [fixture:
   er/gram-alias-empty] [fixture: er/gram-alias-two-words] [fixture:
@@ -1248,27 +1533,36 @@ er/lex-name-number] [fixture: er/lex-name-decimal] [fixture: er/lex-name-one]
   er/gram-relationship-left-class-right-alias] [fixture:
   er/gram-alias-then-class] [fixture: er/gram-alias-then-block] [fixture:
   er/gram-alias-class-block] [fixture: er/gram-alias-class-empty-block]
+
 - The classes after `:::` are names separated by `,`, with whitespace around the
   `:::` and the `,` or not: `A:::c1,c2`, `A ::: c, d`, and `A:::é,b-c` are
   accepted, while `A:::`, `A:::c,`, `A:::12`, `A:::"c"`, and `A:::c:::d` are
-  rejected. [fixture: er/gram-entity-classes] [fixture:
+  rejected.
+
+  [fixture: er/gram-entity-classes] [fixture:
   er/lex-class-separator-spaces-then-names] [fixture: er/lex-class-list-unicode]
   [fixture: er/gram-class-separator-without-class] [fixture:
   er/gram-class-list-trailing-comma] [fixture: er/lex-class-list-number]
   [fixture: er/lex-class-list-string] [fixture: er/gram-two-class-separators]
+
 - The attribute block starts on the line of the name, right after it or after
   whitespace, and may be empty or hold its attributes on one line or on several:
   `A {}`, `A { }`, `A {`, a line break, and `}`, `A {` with blank lines and `}`,
   `A{`, `A {string a}`, and `A { string a } B` are accepted, the last with the
   entity B after it. `A`, a line break, and `{` is rejected, and so is `A:::c`,
   a line break, and `{`, and `A {} ||--o{ B : x`, where the block comes before a
-  relationship. [fixture: er/gram-block-empty] [fixture:
-  er/gram-block-empty-space] [fixture: er/gram-block-empty-line-feed] [fixture:
-  er/gram-block-blank-lines] [fixture: er/lex-block-no-space] [fixture:
-  er/gram-block-one-line] [fixture: er/gram-block-one-line-then-name] [fixture:
-  er/gram-block-next-line] [fixture: er/gram-classes-then-block-next-line]
-  [fixture: er/gram-block-then-relationship] The same name may have a second
-  block. [fixture: er/db-block-twice]
+  relationship.
+
+  [fixture: er/gram-block-empty] [fixture: er/gram-block-empty-space] [fixture:
+  er/gram-block-empty-line-feed] [fixture: er/gram-block-blank-lines] [fixture:
+  er/lex-block-no-space] [fixture: er/gram-block-one-line] [fixture:
+  er/gram-block-one-line-then-name] [fixture: er/gram-block-next-line] [fixture:
+  er/gram-classes-then-block-next-line] [fixture:
+  er/gram-block-then-relationship]
+
+  The same name may have a second block.
+
+  [fixture: er/db-block-twice]
 
 ### Attributes
 
@@ -1282,8 +1576,9 @@ key-list       = key ( "," key )*
 An attribute is a type, a name, and then its keys and its comment, in this
 order, each of the four parts a unit of the attribute block context:
 `string name`, `string? middleName`, `int id PK, FK`, `string a "c d"`, and
-`int a PK "x"` followed by `string b` are attributes. [fixture:
-er/gram-attribute] [fixture: er/gram-optional-type] [fixture:
+`int a PK "x"` followed by `string b` are attributes.
+
+[fixture: er/gram-attribute] [fixture: er/gram-optional-type] [fixture:
 er/gram-keys-comma-space] [fixture: er/gram-comment] [fixture:
 er/gram-attributes-keys-comment]
 
@@ -1292,27 +1587,32 @@ er/gram-attributes-keys-comment]
   `` `a`? b ``, `List~int~? a`, `int? a~b~`, `` `a` b~c~ ``, and `a~b~ c "d"`
   are attributes. A type without a name, three words, `??`, a `?` after the
   name, a `?` alone, and a `,` alone are rejected: `string`, `string a b`,
-  `string?? a`, `string a?`, `? a`, and `string a , b`. [fixture:
-  er/gram-optional-type] [fixture: er/lex-optional-type-space] [fixture:
-  er/lex-backquote-optional] [fixture: er/lex-tilde-then-optional-mark]
-  [fixture: er/lex-optional-then-tilde-name] [fixture:
-  er/lex-backquote-then-tilde] [fixture: er/lex-tilde-then-comment] [fixture:
-  er/gram-attribute-type-only] [fixture: er/gram-attribute-three-words]
-  [fixture: er/gram-optional-type-twice] [fixture: er/gram-optional-name]
-  [fixture: er/lex-block-question-alone] [fixture: er/lex-block-comma-alone]
+  `string?? a`, `string a?`, `? a`, and `string a , b`.
+
+  [fixture: er/gram-optional-type] [fixture: er/lex-optional-type-space]
+  [fixture: er/lex-backquote-optional] [fixture:
+  er/lex-tilde-then-optional-mark] [fixture: er/lex-optional-then-tilde-name]
+  [fixture: er/lex-backquote-then-tilde] [fixture: er/lex-tilde-then-comment]
+  [fixture: er/gram-attribute-type-only] [fixture:
+  er/gram-attribute-three-words] [fixture: er/gram-optional-type-twice]
+  [fixture: er/gram-optional-name] [fixture: er/lex-block-question-alone]
+  [fixture: er/lex-block-comma-alone]
+
 - The keys are `key` units separated by `,`, with whitespace around the `,` or
   not, and may follow the name on a later line: `PK, FK`, `PK,FK`, `PK ,FK`, and
   `PK, FK, UK` are key lists, and so is `PK` on the line after `int a`. `PK FK`
   without `,`, `PK,` with nothing after it, a key where a type or a name is
   expected, and a word after a key are rejected: `int id PK FK`, `int id PK,`,
   `PK id`, `string PK`, and `int a PK b`; `int id,PK` is the attribute named
-  `id,PK`, because `,` is a character of a word. [fixture:
-  er/gram-keys-comma-space] [fixture: er/gram-keys-comma] [fixture:
+  `id,PK`, because `,` is a character of a word.
+
+  [fixture: er/gram-keys-comma-space] [fixture: er/gram-keys-comma] [fixture:
   er/lex-keys-space-comma] [fixture: er/gram-keys-three] [fixture:
   er/gram-name-then-key-next-line] [fixture: er/gram-keys-space] [fixture:
   er/gram-keys-trailing-comma] [fixture: er/lex-key-as-type] [fixture:
   er/lex-key-as-name] [fixture: er/gram-key-then-word] [fixture:
   er/lex-key-glued-to-name] [fixture: er/lex-key-lower-case]
+
 - The comment is one `comment-string` unit after the name or the keys, with
   whitespace before it or not, also on a later line: `string a "c d"`,
   `string a ""`, `string a"c"`, `int a PK"c"`, and `int a PK` followed by a line
@@ -1320,12 +1620,15 @@ er/gram-attributes-keys-comment]
   before the keys, two comments, and a key after the comment are rejected:
   `string a "c" PK`, `string a "c" "d"`, and `int a "c"` followed by a line
   `PK`. The attribute after a comment needs no whitespace: `int a "c"string b`
-  is two attributes. [fixture: er/gram-comment] [fixture: er/gram-comment-empty]
-  [fixture: er/lex-comment-glued] [fixture: er/lex-key-glued-comment] [fixture:
+  is two attributes.
+
+  [fixture: er/gram-comment] [fixture: er/gram-comment-empty] [fixture:
+  er/lex-comment-glued] [fixture: er/lex-key-glued-comment] [fixture:
   er/gram-keys-then-comment-next-line] [fixture: er/lex-comment-line-feed]
   [fixture: er/lex-comment-percent] [fixture: er/gram-comment-before-keys]
   [fixture: er/gram-comment-two] [fixture: er/gram-comment-then-key-next-line]
   [fixture: er/lex-comment-glued-next-attribute]
+
 - An `empty-backquotes` unit, for which mermaid.js reads no token, is a block
   item where it lies between two attributes, before the first, after the last,
   or alone in the block, and the input is accepted: `int a` followed by two
@@ -1341,8 +1644,9 @@ er/gram-attributes-keys-comment]
   `int a `` PK`, `int a PK `` , FK`, `int a PK, `` FK`, and `int a `` "c"`.
   Units written one after another, with only whitespace between them, are
   decided together, by the unit after the last of them: `int `` `` a` and
-  `int a PK `` `` , FK` are rejected as with one unit. [fixture:
-  er/gram-empty-backquotes-between-attributes] [fixture:
+  `int a PK `` `` , FK` are rejected as with one unit.
+
+  [fixture: er/gram-empty-backquotes-between-attributes] [fixture:
   er/gram-empty-backquotes-before-first] [fixture:
   er/gram-empty-backquotes-after-last] [fixture: er/gram-empty-backquotes-alone]
   [fixture: er/gram-empty-backquotes-twice] [fixture:
@@ -1383,8 +1687,10 @@ whitespace around it or not. `A ||--o{ B`, `A ||--o{ B has`,
 is a number, `12` or `1`, or a keyword. The role ends with its unit: in
 `A ||--o{ B : has it`, `A ||--o{ B : "x" C`, and `A ||--o{ B : "x"C`, the entity
 after it is a statement of its own, and `A ||--o{ B : has many` is rejected,
-because `many` is a keyword. [fixture: er/gram-relationship-symbols] [fixture:
-er/lex-cardinality-words] [fixture: er/gram-relationship-both-classes] [fixture:
+because `many` is a keyword.
+
+[fixture: er/gram-relationship-symbols] [fixture: er/lex-cardinality-words]
+[fixture: er/gram-relationship-both-classes] [fixture:
 er/gram-relationship-left-classes] [fixture: er/gram-relationship-right-classes]
 [fixture: er/db-relationship-self] [fixture: er/gram-relationship-string-names]
 [fixture: er/gram-relationship-number-names] [fixture: er/gram-role-string]
@@ -1395,13 +1701,19 @@ er/gram-role-without-colon] [fixture: er/gram-two-roles] [fixture:
 er/lex-double-colon] [fixture: er/lex-role-number] [fixture: er/lex-role-one]
 [fixture: er/lex-role-keyword-one] [fixture: er/lex-role-then-name] [fixture:
 er/gram-role-string-then-name] [fixture: er/lex-role-string-glued-name]
-[fixture: er/lex-role-then-keyword] The three units of the relationship and the
-role may not be on a line after the first entity: `A`, a line break, and
-`||--o{ B : x`, and `A ||--o{ B :`, a line break, and `x`, are rejected.
+[fixture: er/lex-role-then-keyword]
+
+The three units of the relationship and the role may not be on a line after the
+first entity: `A`, a line break, and `||--o{ B : x`, and `A ||--o{ B :`, a line
+break, and `x`, are rejected.
+
 [fixture: er/lex-relationship-spec-next-line] [fixture: er/lex-role-next-line]
+
 An end may have the name of a subgraph defined before or after the statement;
 how mermaid.js refers the relationship then is in the summary of the tests
-package. [fixture: er/db-relationship-to-subgraph-after] [fixture:
+package.
+
+[fixture: er/db-relationship-to-subgraph-after] [fixture:
 er/db-relationship-to-subgraph-before]
 
 ### Subgraphs
@@ -1419,6 +1731,7 @@ entity names, with whitespace between them or not: `["T 1" x]`, `["a"b]`,
 `[a"b"]`, `[12 3.5]`, `[1]`, and `[a b c]` are titles, and mermaid.js joins the
 names with one space. `subgraph S []`, `subgraph S [T] x`, `subgraph S [T:::c]`,
 `subgraph S ["T`, a line break, and `1"]`, and `subgraph S ["T"]x` are rejected.
+
 [fixture: er/gram-subgraph] [fixture: er/gram-subgraph-title] [fixture:
 er/lex-subgraph-title-no-space] [fixture: er/gram-subgraph-string-id] [fixture:
 er/gram-subgraph-string-id-title] [fixture: er/gram-subgraph-number-id]
@@ -1439,26 +1752,32 @@ er/gram-subgraph-nested-string-id] [fixture: er/gram-subgraph-nested-title]
   [Empty description blocks](#empty-description-blocks)): `subgraph S x`,
   `subgraph S end`, `subgraph S:::c`, and `subgraph S accDescr {} x` are
   rejected, while `subgraph S accDescr {} accDescr {}` and
-  `subgraph S [T] accDescr {}` are accepted. [fixture:
-  er/gram-subgraph-id-then-text] [fixture:
+  `subgraph S [T] accDescr {}` are accepted.
+
+  [fixture: er/gram-subgraph-id-then-text] [fixture:
   er/gram-subgraph-header-then-end-same-line] [fixture:
   er/gram-subgraph-id-class] [fixture: er/gram-subgraph-header-block-then-text]
   [fixture: er/gram-subgraph-header-blocks] [fixture:
   er/gram-subgraph-title-then-block] [fixture:
   er/gram-subgraph-nested-header-blocks]
+
 - The name `1` followed by the line break and a line that starts with an ASCII
   letter, `_`, `"`, `'`, or a digit is `only-one` (see
   [The statement context](#the-statement-context)), so `subgraph 1` followed by
   `A`, by `12`, or by `end`, and `subgraph 1` with a space before its line
-  break, are rejected. [fixture: er/lex-subgraph-one-id] [fixture:
+  break, are rejected.
+
+  [fixture: er/lex-subgraph-one-id] [fixture:
   er/lex-subgraph-one-id-then-number] [fixture: er/lex-subgraph-one-id-then-end]
   [fixture: er/lex-subgraph-one-id-trailing-space]
+
 - The body holds any statements, subgraphs included, and may be empty; a comment
   line and blank lines may lie in it. `end` closes the innermost subgraph and
   must be there: `subgraph S` followed by `A` and the end of the text,
   `subgraph S` alone, `subgraph S` with a line break at the end of the text, and
   `end` after a closed subgraph or alone are rejected, while `subgraph S`, a
   line `A end`, and `subgraph O`, `subgraph I`, `A`, and `end end` are accepted.
+
   [fixture: er/gram-subgraph-nested] [fixture: er/gram-subgraph-relationship]
   [fixture: er/gram-subgraph-alias-inside] [fixture:
   er/db-subgraph-classdef-inside] [fixture: er/db-subgraph-class-inside]
@@ -1474,18 +1793,24 @@ er/gram-subgraph-nested-string-id] [fixture: er/gram-subgraph-nested-title]
   er/gram-subgraph-after-header-same-line] [fixture:
   er/gram-subgraph-unclosed-nested] [fixture: er/gram-subgraph-unclosed-outer]
   [fixture: er/gram-end-after-nested] [fixture:
-  er/gram-subgraph-nested-three-levels] What follows an `end` stands in the
-  subgraph around it, or in the diagram after the outermost `end`, a direction
-  statement included. [fixture: er/db-subgraph-direction-after-nested-end]
-  [fixture: er/db-subgraph-direction-after-nested-ends] [fixture:
+  er/gram-subgraph-nested-three-levels]
+
+  What follows an `end` stands in the subgraph around it, or in the diagram
+  after the outermost `end`, a direction statement included.
+
+  [fixture: er/db-subgraph-direction-after-nested-end] [fixture:
+  er/db-subgraph-direction-after-nested-ends] [fixture:
   er/db-subgraph-direction-after-nested-end-comment-line] [fixture:
   er/db-subgraph-direction-after-nested-end-directive] [fixture:
   er/db-subgraph-direction-after-nested-end-empty-line] [fixture:
   er/db-subgraph-direction-after-nested-end-line-separator] [fixture:
   er/db-subgraph-direction-after-nested-end-empty-block] [fixture:
   er/db-subgraph-direction-after-nested-end-ignored-semicolon]
+
 - An entity may have the name of a subgraph: `S` before or after `subgraph S` is
-  an entity and a subgraph. [fixture: er/db-subgraph-id-as-name-after] [fixture:
+  an entity and a subgraph.
+
+  [fixture: er/db-subgraph-id-as-name-after] [fixture:
   er/db-subgraph-id-as-name-before]
 
 ### Empty description blocks
@@ -1508,9 +1833,11 @@ before `end`; `accDescr {}` followed by `A`, `erDiagram accDescr {}`,
 `accDescr {} end`, and `end accDescr {}` are accepted. Blocks after the name or
 the title of a subgraph, before its line break, are the first statements of its
 body. A block after `direction LR` on its line is part of the text of the
-direction line, and a block after `accTitle:` part of the title. [fixture:
-er/gram-acc-descr-block-empty] [fixture: er/header-empty-description-block]
-[fixture: er/gram-empty-description-block-between-names] [fixture:
+direction line, and a block after `accTitle:` part of the title.
+
+[fixture: er/gram-acc-descr-block-empty] [fixture:
+er/header-empty-description-block] [fixture:
+er/gram-empty-description-block-between-names] [fixture:
 er/gram-empty-description-block-after-classes-then-name] [fixture:
 er/gram-empty-description-block-after-relationship] [fixture:
 er/gram-empty-description-block-after-role-string] [fixture:
@@ -1552,8 +1879,9 @@ between them, are decided together, by the unit after the last of them:
 `} ||--o{ B : x` are rejected, as is `A accDescr {}` followed by a line `{`,
 which mermaid.js rejects too. In the style context and in an attribute block,
 `accDescr` is a word and the `{` is rejected (see
-[The style context](#the-style-context)). [fixture:
-er/div-empty-description-block-in-relationship] [fixture:
+[The style context](#the-style-context)).
+
+[fixture: er/div-empty-description-block-in-relationship] [fixture:
 er/div-empty-description-block-before-spec-no-space] [fixture:
 er/div-empty-description-block-after-classes] [fixture:
 er/div-empty-description-block-before-class-separator] [fixture:
@@ -1602,12 +1930,14 @@ accessibility-statement = "accTitle" ":" title-text
 
 - A direction statement sets the direction of the diagram, or, in a subgraph, of
   that subgraph, and may be written more than once. `direction LR` at the end of
-  the text is one. [fixture: er/gram-direction] [fixture: er/db-direction-twice]
-  [fixture: er/gram-direction-in-subgraph] [fixture:
-  er/db-direction-in-subgraph-twice] [fixture:
-  er/gram-direction-in-nested-subgraph] [fixture: er/lex-direction-at-end]
-  [fixture: er/db-subgraph-direction-after-nested-end] [fixture:
-  er/db-subgraph-direction-after-nested-ends]
+  the text is one.
+
+  [fixture: er/gram-direction] [fixture: er/db-direction-twice] [fixture:
+  er/gram-direction-in-subgraph] [fixture: er/db-direction-in-subgraph-twice]
+  [fixture: er/gram-direction-in-nested-subgraph] [fixture:
+  er/lex-direction-at-end] [fixture: er/db-subgraph-direction-after-nested-end]
+  [fixture: er/db-subgraph-direction-after-nested-ends]
+
 - In a `classDef` and a `style` statement, the names are `style-text` units
   separated by `,`, and they end at the first unit that no `,` precedes; the
   styles then follow, and at least one is needed. The statement ends with a
@@ -1625,10 +1955,11 @@ accessibility-statement = "accTitle" ":" title-text
   styles A and `fill` with `:red`, are accepted. `classDef a`, `classDef a`
   followed by a line `fill:red`, `style A`, `classDef a fill:red,`,
   `classDef a fill:red,,stroke:blue`, `style ,A fill:red`, and
-  `style A,,B fill:red` are rejected. [fixture: er/gram-classdef] [fixture:
-  er/lex-classdef-style-spaces] [fixture: er/lex-classdef-styles-joined]
-  [fixture: er/lex-style-styles-joined] [fixture: er/lex-classdef-comma-spaces]
-  [fixture: er/gram-classdef-two-names] [fixture:
+  `style A,,B fill:red` are rejected.
+
+  [fixture: er/gram-classdef] [fixture: er/lex-classdef-style-spaces] [fixture:
+  er/lex-classdef-styles-joined] [fixture: er/lex-style-styles-joined] [fixture:
+  er/lex-classdef-comma-spaces] [fixture: er/gram-classdef-two-names] [fixture:
   er/lex-classdef-names-comma-space] [fixture: er/gram-classdef-default]
   [fixture: er/lex-classdef-number-style] [fixture: er/lex-classdef-hash-only]
   [fixture: er/lex-classdef-colon-only] [fixture: er/lex-classdef-star-style]
@@ -1642,6 +1973,7 @@ accessibility-statement = "accTitle" ":" title-text
   er/lex-style-dash-name] [fixture: er/lex-style-star-name] [fixture:
   er/lex-style-unicode-name] [fixture: er/gram-style-number-name] [fixture:
   er/lex-style-hash-first]
+
 - A `class` statement is two lists of names separated by `,`, with whitespace
   around the `,` or not: the names of entities or subgraphs, and the classes.
   The first list ends at the first name that no `,` precedes, and the second at
@@ -1649,6 +1981,7 @@ accessibility-statement = "accTitle" ":" title-text
   `class A , B a`, `class A a b`, which has the entity `b` after it, and
   `class A a,b c` are accepted. `class A`, `class A` followed by a line `B`,
   `class A, a`, `class 12 a`, `class "A" a`, and `class A end` are rejected.
+
   [fixture: er/gram-class] [fixture: er/gram-class-two-lists] [fixture:
   er/lex-class-list-comma-spaces] [fixture: er/gram-class-then-name] [fixture:
   er/gram-class-two-lists-then-name] [fixture: er/gram-class-without-classes]
@@ -1656,9 +1989,11 @@ accessibility-statement = "accTitle" ":" title-text
   er/gram-class-trailing-comma] [fixture: er/lex-class-number] [fixture:
   er/lex-class-string] [fixture: er/lex-class-keyword-end] [fixture:
   er/lex-class-unicode]
+
 - An accessibility statement sets the title or the description, and each may be
   written more than once, as a line or as a block, also as an empty block; how
   mermaid.js reads them into its Db is in the summary of the tests package.
+
   [fixture: er/gram-acc-title] [fixture: er/gram-acc-descr] [fixture:
   er/gram-acc-descr-block] [fixture: er/db-acc-title-twice] [fixture:
   er/db-acc-descr-twice] [fixture: er/db-acc-descr-then-block] [fixture:
@@ -1676,10 +2011,11 @@ grammar accepts is accepted.
   input rejected in this specification, while mermaid.js accepts it (see
   [Directives inside units](#directives-inside-units)): inside a name, a number,
   a word or a key of an attribute block, a name after `style`, a keyword, a
-  cardinality, a relationship line, `:::`, or `[`. [fixture:
-  er/div-directive-in-name] [fixture: er/div-directive-in-number-name] [fixture:
-  er/div-directive-in-attribute-word] [fixture: er/div-directive-in-key]
-  [fixture: er/div-directive-in-style-id] [fixture:
+  cardinality, a relationship line, `:::`, or `[`.
+
+  [fixture: er/div-directive-in-name] [fixture: er/div-directive-in-number-name]
+  [fixture: er/div-directive-in-attribute-word] [fixture:
+  er/div-directive-in-key] [fixture: er/div-directive-in-style-id] [fixture:
   er/div-directive-in-subgraph-keyword] [fixture:
   er/div-directive-in-cardinality-words] [fixture:
   er/div-directive-in-cardinality-symbol] [fixture:
@@ -1687,6 +2023,7 @@ grammar accepts is accepted.
   er/div-directive-after-comment-line-in-name] [fixture:
   er/div-directive-before-comment-line-in-name] [fixture:
   er/div-directive-after-line-separator-at-line-start]
+
 - **[`ignored-semicolon-as-token-boundary`](../known-divergences/ignored-semicolon-as-token-boundary.md).**
   On a line that matches the `style` rule or the `classDef` rule, an ignored `;`
   inside a unit other than a text unit and a string unit makes the input
@@ -1699,8 +2036,9 @@ grammar accepts is accepted.
   line, `C::;:c` the `:::` of a class, in `Astyle { string a "c:#" int x;y }`
   and `int x P;K` a word and a key of the block, and after `BclassDef :"#"` too
   the `C;D` is the entity `CD`. After a string, or inside a string unit or a
-  text unit, the reading of mermaid.js is kept. [fixture:
-  er/div-ignored-semicolon-in-name] [fixture:
+  text unit, the reading of mermaid.js is kept.
+
+  [fixture: er/div-ignored-semicolon-in-name] [fixture:
   er/div-ignored-semicolon-in-number] [fixture:
   er/div-ignored-semicolon-in-decimal] [fixture:
   er/div-ignored-semicolon-in-cardinality-symbol] [fixture:
@@ -1717,15 +2055,21 @@ grammar accepts is accepted.
   er/tokens-ignored-semicolon-in-backquoted-word] [fixture:
   er/tokens-ignored-semicolon-in-acc-title] [fixture:
   er/tokens-ignored-semicolon-in-direction-text]
+
 - **[`html-tag-in-frontmatter`](../known-divergences/html-tag-in-frontmatter.md).**
   With `title: <a` in the frontmatter, `A ||--o{ B : "b="c">d"` has the role
   `b='c'>d` in mermaid.js, while here the string ends at its second `"`, and the
   input is rejected; `"b="c">d"` as an entity name is read in the same way.
+
   [fixture: er/div-html-tag-starts-in-frontmatter-role] [fixture:
   er/div-html-tag-starts-in-frontmatter-name]
+
 - **[`embedded-data-opaque`](../known-divergences/embedded-data-opaque.md).** A
   frontmatter that is no valid YAML is accepted in this specification, while
-  mermaid.js rejects it. [fixture: er/div-frontmatter-invalid-yaml]
+  mermaid.js rejects it.
+
+  [fixture: er/div-frontmatter-invalid-yaml]
+
 - **[`tokenless-empty-forms`](../known-divergences/tokenless-empty-forms.md).**
   An empty description block inside a statement, and an `empty-backquotes` unit
   inside an attribute, make the input rejected in this specification, while
@@ -1733,8 +2077,9 @@ grammar accepts is accepted.
   [Empty description blocks](#empty-description-blocks) and
   [Attributes](#attributes)). Where a statement starts, an empty description
   block is a statement, and between two attributes an `empty-backquotes` unit is
-  an item of the block, and the input is accepted. [fixture:
-  er/div-empty-description-block-in-relationship] [fixture:
+  an item of the block, and the input is accepted.
+
+  [fixture: er/div-empty-description-block-in-relationship] [fixture:
   er/div-empty-description-block-before-class-separator] [fixture:
   er/div-empty-description-block-before-block] [fixture:
   er/div-empty-description-block-before-alias] [fixture:
@@ -1748,17 +2093,22 @@ grammar accepts is accepted.
   er/div-empty-backquotes-before-comment] [fixture:
   er/gram-empty-description-block-between-names] [fixture:
   er/gram-empty-backquotes-between-attributes]
+
 - **[`c4-keyword-anywhere`](../known-divergences/c4-keyword-anywhere.md).**
   `C4Container`, `C4Component`, `C4Dynamic`, or `C4Deployment` anywhere after
   the header, as an entity name or a role, makes mermaid.js hand the text to the
   C4 parser, which rejects it; here the text is an ER diagram. `C4Context` is a
-  name in both. [fixture: er/div-c4-keyword-as-name] [fixture:
-  er/div-c4-keyword-as-role] [fixture: er/lex-c4context-name]
+  name in both.
+
+  [fixture: er/div-c4-keyword-as-name] [fixture: er/div-c4-keyword-as-role]
+  [fixture: er/lex-c4context-name]
+
 - **[`bare-percent-line-before-header`](../known-divergences/bare-percent-line-before-header.md).**
   A line of `%%` alone, a line `%%{ }%%`, which is no directive, and a line of
   whitespace only after such a line, before the header, are a comment or nothing
   here, while mermaid.js rejects the input, because the lexer of this diagram
-  has no rule for `%` (see [Detection](#detection)). [fixture:
-  er/header-after-bare-percent-line] [fixture:
+  has no rule for `%` (see [Detection](#detection)).
+
+  [fixture: er/header-after-bare-percent-line] [fixture:
   er/header-after-empty-braces-line] [fixture:
   er/header-after-bare-percent-line-and-whitespace-line]

@@ -19,10 +19,12 @@
 label も空ではありません。
 閉じていない文字列と、空の文字列や空の markdown 文字列は、
 入力を拒否させます（[空の形](../diagrams/mindmap.ja.md#空の形) を参照）。
-[fixture: mindmap/db-node-trailing-whitespace] [fixture:
-mindmap/db-class-trailing-space] [fixture:
-mindmap/db-icon-surrounding-whitespace] [fixture:
-mindmap/lex-string-unclosed] [fixture: mindmap/gram-empty-string-shape]
+
+[fixture: mindmap/db-node-trailing-whitespace]
+[fixture: mindmap/db-class-trailing-space]
+[fixture: mindmap/db-icon-surrounding-whitespace]
+[fixture: mindmap/lex-string-unclosed]
+[fixture: mindmap/gram-empty-string-shape]
 [fixture: mindmap/div-empty-string-in-shape]
 
 **ノード**はマインドマップの箱で、字下げを付けてそれだけの行に書きます。
@@ -42,9 +44,10 @@ mindmap/lex-string-unclosed] [fixture: mindmap/gram-empty-string-shape]
 子の欄: `root`。
 ヘッダーのキーワードは欄ではありません。
 ノードのない図は、ヘッダーの後に空行やコメントがあっても、根 null を持ちます。
-[fixture: mindmap/db-header-only] [fixture:
-mindmap/db-header-then-comment-line-only] [fixture:
-mindmap/db-first-node-unindented]
+
+[fixture: mindmap/db-header-only]
+[fixture: mindmap/db-header-then-comment-line-only]
+[fixture: mindmap/db-first-node-unindented]
 
 ### MindmapNode
 
@@ -75,15 +78,19 @@ c は b の子です。
 字下げにはよりません。
 mermaid.js が最後に足したノードにそれらを与えるからです。
 `id` は終わりの空白を保ちます。
-`a (x)` の id は `a ` です。 [fixture: mindmap/db-indent-tab-levels] [fixture:
-mindmap/db-indent-fullwidth-space] [fixture:
-mindmap/lex-indent-around-directive] [fixture:
-mindmap/db-first-node-on-header-line] [fixture: mindmap/db-indent-root-offset]
-[fixture: mindmap/gram-indent-between-earlier-levels] [fixture:
-mindmap/db-indent-sibling-after-deeper] [fixture:
-mindmap/db-icon-indent-ignored] [fixture: mindmap/gram-icon-then-child]
-[fixture: mindmap/gram-node-text-space-before-shape] [fixture:
-mindmap/db-shape-without-id]
+`a (x)` の id は `a ` です。
+
+[fixture: mindmap/db-indent-tab-levels]
+[fixture: mindmap/db-indent-fullwidth-space]
+[fixture: mindmap/lex-indent-around-directive]
+[fixture: mindmap/db-first-node-on-header-line]
+[fixture: mindmap/db-indent-root-offset]
+[fixture: mindmap/gram-indent-between-earlier-levels]
+[fixture: mindmap/db-indent-sibling-after-deeper]
+[fixture: mindmap/db-icon-indent-ignored]
+[fixture: mindmap/gram-icon-then-child]
+[fixture: mindmap/gram-node-text-space-before-shape]
+[fixture: mindmap/db-shape-without-id]
 
 ### MindmapShape
 
@@ -102,14 +109,15 @@ mindmap/db-shape-without-id]
 mermaid.js がそれらから形の種類をどう読むかは、
 tests
 パッケージの要約にあります（[ノードと形](../diagrams/mindmap.ja.md#ノードと形)
-を参照）。 [fixture: mindmap/db-shape-rect] [fixture: mindmap/db-shape-rounded]
-[fixture:
-mindmap/db-shape-circle] [fixture: mindmap/db-shape-cloud] [fixture:
-mindmap/db-shape-bang] [fixture: mindmap/db-shape-hexagon] [fixture:
-mindmap/db-shape-mismatched-end] [fixture:
-mindmap/gram-shape-round-other-closer] [fixture:
-mindmap/db-shape-cloud-dash-form] [fixture:
-mindmap/gram-shape-dash-opener-without-id]
+を参照）。
+
+[fixture: mindmap/db-shape-rect] [fixture: mindmap/db-shape-rounded]
+[fixture: mindmap/db-shape-circle] [fixture: mindmap/db-shape-cloud]
+[fixture: mindmap/db-shape-bang] [fixture: mindmap/db-shape-hexagon]
+[fixture: mindmap/db-shape-mismatched-end]
+[fixture: mindmap/gram-shape-round-other-closer]
+[fixture: mindmap/db-shape-cloud-dash-form]
+[fixture: mindmap/gram-shape-dash-opener-without-id]
 
 ### MindmapLabel
 
@@ -128,10 +136,12 @@ markdown 文字列の中身は `` "` `` と `` `" `` の間です。
 文字列を始めるからです（[形の文脈](../diagrams/mindmap.ja.md#形の文脈)
 を参照）。
 `a[ "x" ]` は、両端に空白のあるテキスト `"x"` を持ちます。
+
 [fixture: mindmap/db-shape-rect] [fixture: mindmap/gram-shape-text-line-feed]
-[fixture: mindmap/gram-shape-text-quoted-with-space] [fixture:
-mindmap/db-shape-string] [fixture: mindmap/lex-string-line-feed] [fixture:
-mindmap/db-shape-markdown-string] [fixture: mindmap/db-shape-empty-description]
+[fixture: mindmap/gram-shape-text-quoted-with-space]
+[fixture: mindmap/db-shape-string] [fixture: mindmap/lex-string-line-feed]
+[fixture: mindmap/db-shape-markdown-string]
+[fixture: mindmap/db-shape-empty-description]
 
 ### MindmapIconStatement
 
@@ -145,9 +155,10 @@ icon の行です。
 子の欄: `icon`。
 テキストは両端の空白を保ち、行をまたげます。
 空の icon は入力を拒否させるので、空になりません。
-[fixture: mindmap/db-icon-line] [fixture:
-mindmap/db-icon-surrounding-whitespace] [fixture: mindmap/gram-icon-line-feed]
-[fixture: mindmap/db-icon-empty]
+
+[fixture: mindmap/db-icon-line]
+[fixture: mindmap/db-icon-surrounding-whitespace]
+[fixture: mindmap/gram-icon-line-feed] [fixture: mindmap/db-icon-empty]
 
 ### MindmapClassStatement
 
@@ -161,6 +172,7 @@ class の行です。
 子の欄: `cssClass`。
 テキストは両端の空白を保ちます。
 空の class の行は入力を拒否させるので、空になりません。
+
 [fixture: mindmap/db-class-line] [fixture: mindmap/db-class-leading-whitespace]
 [fixture: mindmap/db-class-trailing-space] [fixture: mindmap/db-class-empty]
 
@@ -176,5 +188,6 @@ class の行です。
 子の欄はありません。
 [Identifier](../ast.ja.md#identifier) ではありません。
 ほかのノードはそれを参照せず、文字の間に空白を持てるからです。
-[fixture: mindmap/db-node-trailing-whitespace] [fixture:
-mindmap/lex-keyword-inside-node-text] [fixture: mindmap/db-icon-line]
+
+[fixture: mindmap/db-node-trailing-whitespace]
+[fixture: mindmap/lex-keyword-inside-node-text] [fixture: mindmap/db-icon-line]

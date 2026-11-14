@@ -22,6 +22,7 @@ A backquoted name is a `` ` ``, any characters other than `` ` ``, and a
 `` ` ``; the text of a generic type is any characters other than `~` between two
 `~` (see
 [Strings, backquoted names, and generic types](../diagrams/class.md#strings-backquoted-names-and-generic-types)).
+
 [fixture: class/spec-class-diagram-c327a7be] [fixture:
 class/lex-generic-plain-type]
 
@@ -30,8 +31,10 @@ backquote), with `<<` or `>>`, or with one of the keywords `cssClass`,
 `callback`, `link`, `click`, `note`, and `href`. A text that has one of these
 later, or as the start of a longer word, is read the same by mermaid.js and by
 this specification: `` class `x note` `` and `` class `notex` `` declare the
-classes `x note` and `notex` in both. [fixture:
-class/lex-backquote-keyword-later] [fixture: class/lex-backquote-keyword-prefix]
+classes `x note` and `notex` in both.
+
+[fixture: class/lex-backquote-keyword-later] [fixture:
+class/lex-backquote-keyword-prefix]
 
 ## The difference
 
@@ -88,8 +91,9 @@ Each example is a whole class diagram.
 | 5       | a relation from A, cardinality `1` | a relation from A, with the type `"1"` |
 | 6       | a note `x`                         | rejected                               |
 
-The fixtures record the readings compared in the table. [fixture:
-class/div-backquote-keyword-escaped] [fixture:
+The fixtures record the readings compared in the table.
+
+[fixture: class/div-backquote-keyword-escaped] [fixture:
 class/div-backquote-starts-with-quote] [fixture:
 class/div-generic-starts-with-keyword] [fixture:
 class/div-backquote-around-string] [fixture: class/div-generic-around-string]
@@ -97,6 +101,7 @@ class/div-backquote-around-string] [fixture: class/div-generic-around-string]
 
 Without the backquotes or the `~`, both read the same: `A "1" --> B` is a
 relation from A to B with the cardinality `1` at A, and `note "x"` is a note.
+
 [fixture: class/gram-cardinality-before-arrow] [fixture: class/gram-note-plain]
 
 So where the text starts with one of these units, mermaid.js reads that unit
@@ -105,16 +110,19 @@ as nothing. Most such texts are then no statement, and mermaid.js rejects them;
 where what it reads happens to fit its grammar, as in examples 4 to 6, it reads
 the statement that the text would be without the backquotes or the `~`. This
 specification reads the text between the backquotes or the `~` as the name or
-the type, whatever it starts with. [fixture:
-class/div-backquote-starts-with-double-less-than] [fixture:
+the type, whatever it starts with.
+
+[fixture: class/div-backquote-starts-with-double-less-than] [fixture:
 class/div-backquote-starts-with-double-greater-than] [fixture:
 class/div-generic-starts-with-double-less-than] [fixture:
 class/div-generic-starts-with-double-greater-than] [fixture:
 class/div-backquote-keyword-css-class] [fixture:
 class/div-backquote-keyword-callback] [fixture:
 class/div-backquote-keyword-link] [fixture: class/div-backquote-keyword-click]
-[fixture: class/div-backquote-keyword-href] In example 6, a class name followed
-by a string is no statement, so this specification rejects the text.
+[fixture: class/div-backquote-keyword-href]
+
+In example 6, a class name followed by a string is no statement, so this
+specification rejects the text.
 
 ## What it means for an author
 
@@ -163,6 +171,7 @@ below).
   describes generic types under
   [Generic Types](https://github.com/mermaid-js/mermaid/blob/2086904e76c692331e34a45d7cc3bc30860d040e/packages/mermaid/src/docs/syntax/classDiagram.md#L219-L221).
   Neither says that the text cannot start with a keyword.
+
 - [Issue #4590](https://github.com/mermaid-js/mermaid/issues/4590), "Note "note"
   throws an error", reported that a note whose string is `note` is rejected. A
   contributor replied that the lexer reads the keyword in any state, also inside
@@ -171,7 +180,9 @@ below).
   [pull request #4597](https://github.com/mermaid-js/mermaid/pull/4597), "allow
   notes identical to keywords", which moved the rules of the text of a string
   before the shared rules. The pinned version reads such a note as written.
+
   [fixture: class/spec-class-diagram-61cad801]
+
 - [Issue #6076](https://github.com/mermaid-js/mermaid/issues/6076), "Allow
   puncutation in class names", is open as of 2026-10-02, with the labels
   `Type: Enhancement`, `Status: Approved`, `Contributor needed`, and
