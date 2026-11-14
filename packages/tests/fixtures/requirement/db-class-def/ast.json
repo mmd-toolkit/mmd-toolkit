@@ -8,7 +8,7 @@
         "type": "RequirementClassDefStatement",
         "cssClasses": [
           {
-            "type": "RequirementIdentifier",
+            "type": "Identifier",
             "name": "a",
             "range": [
               28,
@@ -83,7 +83,7 @@
         "type": "RequirementClassDefStatement",
         "cssClasses": [
           {
-            "type": "RequirementIdentifier",
+            "type": "Identifier",
             "name": "b",
             "range": [
               60,
@@ -101,7 +101,7 @@
             }
           },
           {
-            "type": "RequirementIdentifier",
+            "type": "Identifier",
             "name": "c",
             "range": [
               62,
@@ -158,7 +158,7 @@
         "type": "RequirementClassDefStatement",
         "cssClasses": [
           {
-            "type": "RequirementIdentifier",
+            "type": "Identifier",
             "name": "a",
             "range": [
               85,

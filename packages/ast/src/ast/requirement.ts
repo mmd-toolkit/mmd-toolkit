@@ -18,7 +18,7 @@
  * examples other than that of the diagram stand after the header line
  * `requirementDiagram`.
  */
-import type { NodeBase, StringLiteral } from "../ast.ts"
+import type { Identifier, NodeBase, StringLiteral } from "../ast.ts"
 
 /**
  * ast/requirement.md, RequirementDiagram: the body of the diagram type
@@ -64,6 +64,9 @@ export type RequirementKind =
 
 /** ast/requirement.md, RequirementIdentifier and StringLiteral: a name, written without quotes or in quotes. */
 export type RequirementName = RequirementIdentifier | StringLiteral
+
+/** ast/requirement.md, RequirementStyleStatement: a name after `style` or `classDef`, an Identifier, whose position allows no whitespace, or a StringLiteral. */
+export type RequirementStyleName = Identifier | StringLiteral
 
 /**
  * ast/requirement.md, RequirementRequirementStatement: a requirement with
@@ -261,8 +264,8 @@ export interface RequirementDirectionStatement extends NodeBase {
  */
 export interface RequirementStyleStatement extends NodeBase {
   readonly type: "RequirementStyleStatement"
-  /** The names after `style`, in source order: a RequirementIdentifier for a `style-word` unit, a StringLiteral for a `string` unit. */
-  readonly names: readonly RequirementName[]
+  /** The names after `style`, in source order: an Identifier for a `style-word` unit, a StringLiteral for a `string` unit. */
+  readonly names: readonly RequirementStyleName[]
   /** The styles, in source order; never empty. */
   readonly styles: readonly RequirementLiteral[]
 }
@@ -279,7 +282,7 @@ export interface RequirementStyleStatement extends NodeBase {
 export interface RequirementClassDefStatement extends NodeBase {
   readonly type: "RequirementClassDefStatement"
   /** The class names after `classDef`, in source order, each as a name of RequirementStyleStatement. */
-  readonly cssClasses: readonly RequirementName[]
+  readonly cssClasses: readonly RequirementStyleName[]
   /** The styles, as in RequirementStyleStatement. */
   readonly styles: readonly RequirementLiteral[]
 }
@@ -369,7 +372,8 @@ export interface RequirementAccDescrBlockStatement extends NodeBase {
 
 /**
  * ast/requirement.md, RequirementIdentifier: a name written without
- * quotes, an `unquoted-text` or a `style-word` unit. No child fields.
+ * quotes, an `unquoted-text` or a `style-word` unit, except after `style` or
+ * `classDef`, where the name is an Identifier. No child fields.
  *
  * ```text
  * requirement spaced name {

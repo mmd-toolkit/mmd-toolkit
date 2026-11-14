@@ -39,8 +39,12 @@ hold whitespace between its words, as a name of a class diagram that may hold
 whitespace is (see [tokens/class.md](./class.md#tokens)):
 `requirement  spaced name  {` has the one `RawText` token `spaced name`. A
 `style-word` holds no whitespace, and a name of that unit is an `Identifier`
-token. [fixture: requirement/db-requirement-name-spaces] [fixture:
-requirement/db-style-statement]
+token, whether its node is an Identifier, as after `style` and `classDef`, or a
+RequirementIdentifier, as after `class` (see
+[ast/requirement.md](../../../spec/docs/ast/requirement.md#requirementidentifier)).
+[fixture: requirement/db-requirement-name-spaces] [fixture:
+requirement/db-style-statement] [fixture: requirement/db-class-def] [fixture:
+requirement/db-class-statement]
 
 A **token** is a maximal run of units of one item and one kind that follow one
 another with nothing between them. Whitespace belongs to no unit between the

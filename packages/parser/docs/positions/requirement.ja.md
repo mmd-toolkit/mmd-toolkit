@@ -52,6 +52,10 @@
 値は `fill:red` です。 [fixture: requirement/db-requirement-name-spaces]
 [fixture: requirement/db-acc-title-descr]
 [fixture: requirement/lex-style-spaces]
+`style` と `classDef` の後の名前は、
+RequirementIdentifier ではなく Identifier で、
+その範囲は `style-word` のトークンの範囲です。
+[fixture: requirement/db-style-statement] [fixture: requirement/db-class-def]
 
 ### RequirementIgnoredText
 

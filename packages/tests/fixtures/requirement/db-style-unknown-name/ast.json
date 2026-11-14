@@ -84,7 +84,7 @@
         "type": "RequirementStyleStatement",
         "names": [
           {
-            "type": "RequirementIdentifier",
+            "type": "Identifier",
             "name": "r",
             "range": [
               61,
@@ -102,7 +102,7 @@
             }
           },
           {
-            "type": "RequirementIdentifier",
+            "type": "Identifier",
             "name": "missing",
             "range": [
               63,
@@ -120,7 +120,7 @@
             }
           },
           {
-            "type": "RequirementIdentifier",
+            "type": "Identifier",
             "name": "s",
             "range": [
               71,
@@ -177,7 +177,7 @@
         "type": "RequirementStyleStatement",
         "names": [
           {
-            "type": "RequirementIdentifier",
+            "type": "Identifier",
             "name": "missing2",
             "range": [
               88,
@@ -195,7 +195,7 @@
             }
           },
           {
-            "type": "RequirementIdentifier",
+            "type": "Identifier",
             "name": "s",
             "range": [
               97,

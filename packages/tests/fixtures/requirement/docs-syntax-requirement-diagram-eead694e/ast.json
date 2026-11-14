@@ -229,7 +229,7 @@
         "type": "RequirementStyleStatement",
         "names": [
           {
-            "type": "RequirementIdentifier",
+            "type": "Identifier",
             "name": "test_req",
             "range": [
               171,
@@ -322,7 +322,7 @@
         "type": "RequirementStyleStatement",
         "names": [
           {
-            "type": "RequirementIdentifier",
+            "type": "Identifier",
             "name": "test_entity",
             "range": [
               222,

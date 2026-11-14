@@ -44,7 +44,10 @@ at its ends. A style covers its units from the first to the last, the spaces
 between them included, while its value leaves them out: the first style of
 `style r fill: red , stroke : blue` covers `fill: red` and has the value
 `fill:red`. [fixture: requirement/db-requirement-name-spaces] [fixture:
-requirement/db-acc-title-descr] [fixture: requirement/lex-style-spaces]
+requirement/db-acc-title-descr] [fixture: requirement/lex-style-spaces] A name
+after `style` or `classDef` is an Identifier, not a RequirementIdentifier, and
+its range is that of its `style-word` token. [fixture:
+requirement/db-style-statement] [fixture: requirement/db-class-def]
 
 ### RequirementIgnoredText
 

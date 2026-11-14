@@ -45,8 +45,14 @@
 `requirement  spaced name  {` は、
 1 つの `RawText` トークン `spaced name` を持ちます。
 `style-word` は空白を持たず、その単位の名前は `Identifier` トークンです。
+ノードは仕様の
+[`ast/requirement.ja.md`](../../../spec/docs/ast/requirement.ja.md) が、
+`style` と `classDef` の後では Identifier、
+`class` の後では RequirementIdentifier と定めます。
+トークンはどちらも `Identifier` です。
 [fixture: requirement/db-requirement-name-spaces]
-[fixture: requirement/db-style-statement]
+[fixture: requirement/db-style-statement] [fixture: requirement/db-class-def]
+[fixture: requirement/db-class-statement]
 
 **トークン** は、1 つの項目の 1 つの種類の単位が、間に何もなく続く、
 最大の並びです。

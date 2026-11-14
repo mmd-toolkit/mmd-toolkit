@@ -176,7 +176,7 @@
         "type": "RequirementStyleStatement",
         "names": [
           {
-            "type": "RequirementIdentifier",
+            "type": "Identifier",
             "name": "missing",
             "range": [
               77,
@@ -194,7 +194,7 @@
             }
           },
           {
-            "type": "RequirementIdentifier",
+            "type": "Identifier",
             "name": "r",
             "range": [
               85,

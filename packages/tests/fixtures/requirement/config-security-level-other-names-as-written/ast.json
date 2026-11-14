@@ -300,7 +300,7 @@
         "type": "RequirementClassDefStatement",
         "cssClasses": [
           {
-            "type": "RequirementIdentifier",
+            "type": "Identifier",
             "name": "c1",
             "range": [
               164,

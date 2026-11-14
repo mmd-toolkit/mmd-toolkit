@@ -103,7 +103,7 @@
         "type": "RequirementClassDefStatement",
         "cssClasses": [
           {
-            "type": "RequirementIdentifier",
+            "type": "Identifier",
             "name": "a",
             "range": [
               56,
@@ -121,7 +121,7 @@
             }
           },
           {
-            "type": "RequirementIdentifier",
+            "type": "Identifier",
             "name": "a",
             "range": [
               58,
