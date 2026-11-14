@@ -134,13 +134,16 @@ mermaid.js が拒否します。
 空白でもタブでもない空白文字（たとえば U+00A0 や U+2028）があるときは、
 文は書かれたままにします。
 ただし `}` の前の同じ行に空白とタブだけがあれば、`}` は実体の字下げに置きます。
-例外は、`;` が終わらせる行です。
-この行は、その行の文と一緒に書かれたまま印字します。
-詳しくは
+`{` の行を、その行の文と一緒に書かれたまま印字するときも、
+`}` は同じ位置に置きます。
+行の印字については
 [`;` が終わらせる行](./compatibility.ja.md#-が終わらせる行)を参照してください。
-行の規則が無視する `;` の後ろの、`{` と同じ行に U+2028 か U+2029 があるときは、
-`}` は書かれた位置に残ります。
-`"style:#x"; B {`、U+2028、改行、`}` がその例です。
+文のほかの部分は、`{` の後ろの空白や波括弧の間の空行も含めて、書かれたままです。
+行を書かれたままにしているのは、行の規則が無視する `;` と、
+その後ろの U+2028 か U+2029 の位置です。
+後の行にある `}` の前の空白は、行の規則が読む文には入りません。
+`"style:#x"; B {`、U+2029、改行、空白 4 つ、`} A["x;y"]` は、
+`}` を実体の字下げ（空白 2 つ）の後ろに置いて印字します。
 [fixture: attribute-blocks/written-line-empty-block-ignored-semicolon-both-lines]
 [fixture: attribute-blocks/written-line-empty-block-ignored-semicolon-closing-line-ends]
 [fixture: attribute-blocks/written-line-empty-block-ignored-semicolon-in-subgraph]
@@ -162,11 +165,20 @@ mermaid.js が拒否します。
 [test: an empty ER attribute block that stays over several lines with a U+00A0 line between its braces]
 [test: an empty ER attribute block that stays over several lines with U+2029 after its opening brace, after a semicolon that the line rule ignores]
 [test: an empty ER attribute block that stays over several lines with U+2028 on a line between its braces, after a semicolon that the line rule ignores]
+[test: an empty ER attribute block that stays over several lines with U+2029 after its opening brace, after a semicolon that the line rule ignores, and four spaces before its closing brace]
+[test: an empty ER attribute block that stays over several lines with U+2029 after its opening brace, after a semicolon that the line rule ignores, and a tab before its closing brace]
+[test: an empty ER attribute block that stays over several lines with U+2028 after its opening brace, after a semicolon that the line rule ignores, and U+00A0 before its closing brace]
+[test: an empty ER attribute block that stays over several lines with spaces after its opening brace and an empty line before its closing brace, after a semicolon that the line rule ignores and U+2028]
+[test: an empty ER attribute block that stays over several lines with U+2029 after its opening brace, after a semicolon that the line rule ignores, in a subgraph]
+[test: an empty ER attribute block that stays over several lines with U+2029 after its opening brace, after a semicolon that the line rule ignores, before a closing line that a semicolon ends]
 [test: an empty ER attribute block that stays over several lines with U+2028 after its opening brace, after a tilde in an attribute block]
 [test: an empty ER attribute block that stays over several lines with U+2029 after its opening brace, after a tilde in an attribute block]
 [test: an empty ER attribute block that stays over several lines with U+2028 after its opening brace, after a tilde in an attribute block, in a subgraph]
 `}` が、書かれたまま残る行にあるブロックは、`A {`、改行、`}1b` のように、
-属性があってもなくても、その行と一緒に書かれたままにします。
+属性があれば、その行と一緒に書かれたままにします。
+空のブロックは、上と同じく `}` を実体の字下げに置き、
+行の残りは書かれたままにします。
+[fixture: attribute-blocks/written-line-empty-block-closing-brace-on-a-line-read-by-its-place]
 `;` を含み、ほかに書かれたまま残る理由がない行は整形します。
 空の description ブロックがある subgraph の見出しの行も、
 テキストを `:` に寄せると `direction` を持つ `accTitle` と `accDescr` の行も、

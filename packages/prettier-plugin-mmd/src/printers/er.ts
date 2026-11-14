@@ -30,6 +30,7 @@ import {
 import {
   classifyErStatement,
   findAttributeBraces,
+  findEmptyBlockClosingIndentation,
   findSubgraphHeaderEnd,
   hasAttributeBlock,
   isBlockAfterJoinedLine,
@@ -184,7 +185,7 @@ function printDiagram(
       end: source.text.length,
       isTopLevel: true,
     },
-    statementBlockRules(source),
+    statementBlockRules(source, indentationOf(options, 1)),
   )
   const header = openingLine(
     printLine(source, options, layoutKeywordHeader(source, keyword), 0),
@@ -217,7 +218,7 @@ function printSubgraph(
       end: closing.range[0],
       isTopLevel: false,
     },
-    statementBlockRules(source),
+    statementBlockRules(source, indentationOf(options, depth + 1)),
   )
   const header = openingLine(
     printLine(
@@ -346,16 +347,12 @@ function printEmptyBlockOverLines(
       closing.value,
     ]
   }
-  const indentation = between.slice(between.lastIndexOf("\n") + 1)
-  if (![...indentation].every(isSpaceOrTab)) {
+  const indentation = findEmptyBlockClosingIndentation(source, statement)
+  if (indentation === null) {
     return printAsWritten(source, statement.range[0], statement.range[1])
   }
   return [
-    printAsWritten(
-      source,
-      statement.range[0],
-      closing.range[0] - indentation.length,
-    ),
+    printAsWritten(source, statement.range[0], indentation[0]),
     indentationOf(options, depth),
     closing.value,
   ]
@@ -401,12 +398,23 @@ function startsBlockAfterJoinedLine(
  * `BlockRules`): a subgraph and an entity statement with an attribute block
  * hold lines of their own, and no statement is dropped. A comment line is
  * the only comment of the diagram, and it takes no line break after it, so
- * no line of only whitespace is kept after one (docs/er.md, Comments).
+ * no line of only whitespace is kept after one (docs/er.md, Comments). Where
+ * a stretch is printed as written, the `}` of an empty attribute block stands
+ * at `indentation`, the indentation of the statements of the block, as it does
+ * where the statement is printed on its own (docs/er.md, Attribute blocks).
  */
-function statementBlockRules(source: Source): BlockRules<ErStatement> {
+function statementBlockRules(
+  source: Source,
+  indentation: string,
+): BlockRules<ErStatement> {
   return {
     kept: findErKeptLines(source),
     printedEnd: (statement) => printedErEnd(source, statement),
+    writtenReplacements: (statement) => {
+      if (statement.type !== "ErEntityStatement") return []
+      const range = findEmptyBlockClosingIndentation(source, statement)
+      return range === null ? [] : [{ range, text: indentation }]
+    },
     // An ignored `;` after `end` still needs the line's `style` and `:#`
     // trigger (diagrams/er.md, The statement context; docs/er.md,
     // Statements one per line).

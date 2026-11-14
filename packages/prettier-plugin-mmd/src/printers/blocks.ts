@@ -108,6 +108,20 @@ export interface BlockRules<Statement extends Positioned> {
    */
   readonly relocatedWhitespace?: readonly Range[]
   /**
+   * The text that stands in place of a range of a statement where a stretch
+   * is printed as written, for the part of a statement that is not read as it
+   * stands on a line that stays as written: the whitespace before the `}` of an
+   * empty ER attribute block, which is the indentation of the entity
+   * (docs/er.md, Attribute blocks). The ranges of the statements of the stretch
+   * are asked in order, and a statement's own stand in source order without
+   * overlap. The text between them stays as written, with the spellings that
+   * are printed in one form.
+   */
+  readonly writtenReplacements?: (statement: Statement) => readonly {
+    readonly range: Range
+    readonly text: string
+  }[]
+  /**
    * Joining regions are already printed as written by this layout, inside a
    * complete value atom, or in a gap that `keptGapEnd` keeps: skip whole-line
    * joining and verbatim fallback for those regions, so the gaps and the
@@ -768,8 +782,35 @@ export function printBlock<Statement extends Positioned>(
       const last = covered.at(-1)
       const tailStart =
         last === undefined ? stretch.end : rules.printedEnd(last)
-      const written =
-        writtenWithRespellings(source, stretch.start, tailStart) +
+      let written = ""
+      let position = stretch.start
+      for (const statement of covered) {
+        for (const replacement of rules.writtenReplacements?.(statement) ??
+          []) {
+          const [start, end] = replacement.range
+          if (
+            start < statement.range[0] ||
+            end > statement.range[1] ||
+            start > end ||
+            start < stretch.start ||
+            end > tailStart
+          ) {
+            throw new Error(
+              "prettier-plugin-mmd: a replacement in a kept stretch lies outside its statement",
+            )
+          }
+          if (start < position) {
+            throw new Error(
+              "prettier-plugin-mmd: replacements in a kept stretch overlap or are out of order",
+            )
+          }
+          written +=
+            writtenWithRespellings(source, position, start) + replacement.text
+          position = end
+        }
+      }
+      written +=
+        writtenWithRespellings(source, position, tailStart) +
         withoutRelocatedWhitespace(
           source,
           tailStart,

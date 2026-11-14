@@ -2154,7 +2154,7 @@ const erExamples: readonly (readonly [string, string, string])[] = [
   [
     "an empty ER attribute block that stays over several lines with U+2028 after its opening brace",
     'erDiagram\n"style:#x"; B {\u2028\n} A["x;y"]\n',
-    'erDiagram\n  "style:#x"; B {\u2028\n} A["x;y"]\n',
+    'erDiagram\n  "style:#x"; B {\u2028\n  } A["x;y"]\n',
   ],
   [
     "an empty ER attribute block that stays over several lines with a U+00A0 line between its braces",
@@ -2164,7 +2164,37 @@ const erExamples: readonly (readonly [string, string, string])[] = [
   [
     "an empty ER attribute block that stays over several lines with U+2029 after its opening brace, after a semicolon that the line rule ignores",
     'erDiagram\n"style:#x"; B {\u2029\n} A["x;y"]\n',
-    'erDiagram\n  "style:#x"; B {\u2029\n} A["x;y"]\n',
+    'erDiagram\n  "style:#x"; B {\u2029\n  } A["x;y"]\n',
+  ],
+  [
+    "an empty ER attribute block that stays over several lines with U+2029 after its opening brace, after a semicolon that the line rule ignores, and four spaces before its closing brace",
+    'erDiagram\n"style:#x"; B {\u2029\n    } A["x;y"]\n',
+    'erDiagram\n  "style:#x"; B {\u2029\n  } A["x;y"]\n',
+  ],
+  [
+    "an empty ER attribute block that stays over several lines with U+2029 after its opening brace, after a semicolon that the line rule ignores, and a tab before its closing brace",
+    'erDiagram\n"style:#x"; B {\u2029\n\t} A["x;y"]\n',
+    'erDiagram\n  "style:#x"; B {\u2029\n  } A["x;y"]\n',
+  ],
+  [
+    "an empty ER attribute block that stays over several lines with U+2028 after its opening brace, after a semicolon that the line rule ignores, and U+00A0 before its closing brace",
+    'erDiagram\n"style:#x"; B {\u2028\n\u00a0  } A["x;y"]\n',
+    'erDiagram\n  "style:#x"; B {\u2028\n\u00a0  } A["x;y"]\n',
+  ],
+  [
+    "an empty ER attribute block that stays over several lines with spaces after its opening brace and an empty line before its closing brace, after a semicolon that the line rule ignores and U+2028",
+    'erDiagram\n"style:#x"; B {  \u2028\n\n   } A["x;y"]\n',
+    'erDiagram\n  "style:#x"; B {  \u2028\n\n  } A["x;y"]\n',
+  ],
+  [
+    "an empty ER attribute block that stays over several lines with U+2029 after its opening brace, after a semicolon that the line rule ignores, in a subgraph",
+    'erDiagram\nsubgraph G\n"style:#x"; B {\u2029\n} A["x;y"]\nend\n',
+    'erDiagram\n  subgraph G\n    "style:#x"; B {\u2029\n    } A["x;y"]\n  end\n',
+  ],
+  [
+    "an empty ER attribute block that stays over several lines with U+2029 after its opening brace, after a semicolon that the line rule ignores, before a closing line that a semicolon ends",
+    'erDiagram\n"style:#x"; B {\u2029\n    } "style:#x";\u2029\nQ\n',
+    'erDiagram\n  "style:#x"; B {\u2029\n  } "style:#x";\u2029\n  Q\n',
   ],
   [
     "an empty ER attribute block that stays over several lines with U+2028 on a line between its braces, after a semicolon that the line rule ignores",
@@ -2264,12 +2294,12 @@ const erExamples: readonly (readonly [string, string, string])[] = [
   [
     "an empty attribute block of an entity that follows a name that a comment line cuts, and a comment line after U+2028 after its closing brace",
     "erDiagram\nA\u2028%% c\nBar Zed {\n}\u2028%% d\nQux\n",
-    "erDiagram\n  A\u2028%% c\nBar Zed {\n}\u2028%% d\nQux\n",
+    "erDiagram\n  A\u2028%% c\nBar Zed {\n  }\u2028%% d\nQux\n",
   ],
   [
     "an empty attribute block with an empty line before its closing brace, of an entity that follows a name that a comment line cuts, and a comment line after U+2028 after its closing brace",
     "erDiagram\nA\u2028%% c\nBar Zed {\n\n}\u2028%% d\nQux\n",
-    "erDiagram\n  A\u2028%% c\nBar Zed {\n\n}\u2028%% d\nQux\n",
+    "erDiagram\n  A\u2028%% c\nBar Zed {\n\n  }\u2028%% d\nQux\n",
   ],
   [
     "an attribute block of an entity that follows a name that a comment line cuts, and a comment line after U+2028 at the end of the text",
@@ -2309,7 +2339,7 @@ const erExamples: readonly (readonly [string, string, string])[] = [
   [
     "an empty attribute block of an entity that starts the line, and a comment line after U+2028 after its closing brace",
     "erDiagram\nA\u2028%% c\nBar {\n}\u2028%% d\nQux\n",
-    "erDiagram\n  A\u2028%% c\nBar {\n}\u2028%% d\nQux\n",
+    "erDiagram\n  A\u2028%% c\nBar {\n  }\u2028%% d\nQux\n",
   ],
   [
     "two spaces before the opening brace of an entity that follows a name that a comment line cuts",
@@ -2519,7 +2549,7 @@ const erExamples: readonly (readonly [string, string, string])[] = [
   [
     "an empty attribute block of an entity after the end of an ER subgraph and U+2028, and a comment line after U+2028 after its closing brace",
     "erDiagram\nsubgraph S\nend\u2028A {\n}\u2028%% d\nQux\n",
-    "erDiagram\n  subgraph S\n  end\u2028A {\n}\u2028%% d\nQux\n",
+    "erDiagram\n  subgraph S\n  end\u2028A {\n  }\u2028%% d\nQux\n",
   ],
   [
     "an attribute block of an entity after the end of an ER subgraph and U+2028, and a comment line after U+2028 at the end of the text",
@@ -2534,7 +2564,7 @@ const erExamples: readonly (readonly [string, string, string])[] = [
   [
     "an empty attribute block over several lines before a name that is a no-break space and a comment line",
     "erDiagram\nA {\n}\u00a0\n%% c\nQ\n",
-    "erDiagram\n  A {\n}\u00a0\n  %% c\n  Q\n",
+    "erDiagram\n  A {\n  }\u00a0\n  %% c\n  Q\n",
   ],
   [
     "an attribute block over several lines before a name that is a no-break space and a comment line",

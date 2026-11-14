@@ -127,12 +127,16 @@ ends its line and empty lines between the braces draw nothing, and the joined
 form `{ }` drops them too. Where a whitespace character that is no space or tab
 (a U+00A0 or a U+2028, say) stands between the braces, the statement stays as
 written, except that the `}` stands at the indentation of the entity where only
-spaces and tabs precede it on its line. A line that a `;` ends is the one
-exception: it is printed as written with its statements on it (see
-[A line that a `;` ends](./compatibility.md#a-line-that-a--ends)), so where a
-U+2028 or U+2029 follows the `;` that the line rule ignores on the line of the
-`{`, as in `"style:#x"; B {`, U+2028, a line break, and `}`, the `}` stays where
-it is written. [fixture:
+spaces and tabs precede it on its line. The `}` stands there also where the line
+of the `{` is printed as written with its statements on it (see
+[A line that a `;` ends](./compatibility.md#a-line-that-a--ends)), and the rest
+of the text stays as written, the spaces after the `{` and the empty lines
+between the braces included: the place of the `;` that the line rule ignores and
+of the U+2028 or U+2029 after it is what keeps the line as written, and the
+whitespace before a `}` on a later line is no part of the text that the line
+rule reads. `"style:#x"; B {`, U+2029, a line break, four spaces, and
+`} A["x;y"]` are printed with the `}` after the two spaces of the entity.
+[fixture:
 attribute-blocks/written-line-empty-block-ignored-semicolon-both-lines]
 [fixture:
 attribute-blocks/written-line-empty-block-ignored-semicolon-closing-line-ends]
@@ -166,25 +170,43 @@ ER attribute block that stays over several lines with U+2029 after its opening
 brace, after a semicolon that the line rule ignores] [test: an empty ER
 attribute block that stays over several lines with U+2028 on a line between its
 braces, after a semicolon that the line rule ignores] [test: an empty ER
+attribute block that stays over several lines with U+2029 after its opening
+brace, after a semicolon that the line rule ignores, and four spaces before its
+closing brace] [test: an empty ER attribute block that stays over several lines
+with U+2029 after its opening brace, after a semicolon that the line rule
+ignores, and a tab before its closing brace] [test: an empty ER attribute block
+that stays over several lines with U+2028 after its opening brace, after a
+semicolon that the line rule ignores, and U+00A0 before its closing brace]
+[test: an empty ER attribute block that stays over several lines with spaces
+after its opening brace and an empty line before its closing brace, after a
+semicolon that the line rule ignores and U+2028] [test: an empty ER attribute
+block that stays over several lines with U+2029 after its opening brace, after a
+semicolon that the line rule ignores, in a subgraph] [test: an empty ER
+attribute block that stays over several lines with U+2029 after its opening
+brace, after a semicolon that the line rule ignores, before a closing line that
+a semicolon ends] [test: an empty ER attribute block that stays over several
+lines with U+2028 after its opening brace, after a tilde in an attribute block]
+[test: an empty ER attribute block that stays over several lines with U+2029
+after its opening brace, after a tilde in an attribute block] [test: an empty ER
 attribute block that stays over several lines with U+2028 after its opening
-brace, after a tilde in an attribute block] [test: an empty ER attribute block
-that stays over several lines with U+2029 after its opening brace, after a tilde
-in an attribute block] [test: an empty ER attribute block that stays over
-several lines with U+2028 after its opening brace, after a tilde in an attribute
-block, in a subgraph] A block whose `}` stands on a line that stays as written,
-as in `A {`, a line break, and `}1b`, stays as written with that line, whether
-it holds attributes or not. A line that holds a `;` and stays as written for no
-other reason is formatted, and so is the line of a subgraph header that holds an
-empty description block and the line of an `accTitle` or `accDescr` whose text
-goes to the `:` and then holds `direction`; the statements of such a line stay
-together on it. A block on it is printed as a block. An attribute on the line of
-its `{` stays there where that line is one of these lines: after one space where
-the source has whitespace between the `{` and the attribute (a run of spaces and
-tabs becomes one space), and touching the `{` where it touches it. The spaces
-and tabs after a `{` that ends its line are dropped. A block written on one line
-stays on one line, with one space before its `}` (`T {int a}` is `T {int a }`),
-except on a line that holds a `;`, where its `}` goes to a line of its own.
-[fixture: attribute-blocks/semicolon-line-spaces-after-brace] [fixture:
+brace, after a tilde in an attribute block, in a subgraph] A block whose `}`
+stands on a line that stays as written, as in `A {`, a line break, and `}1b`,
+stays as written with that line when it holds attributes; an empty block has its
+`}` at the indentation of the entity, as above, and the rest of the line stays
+as written. [fixture:
+attribute-blocks/written-line-empty-block-closing-brace-on-a-line-read-by-its-place]
+A line that holds a `;` and stays as written for no other reason is formatted,
+and so is the line of a subgraph header that holds an empty description block
+and the line of an `accTitle` or `accDescr` whose text goes to the `:` and then
+holds `direction`; the statements of such a line stay together on it. A block on
+it is printed as a block. An attribute on the line of its `{` stays there where
+that line is one of these lines: after one space where the source has whitespace
+between the `{` and the attribute (a run of spaces and tabs becomes one space),
+and touching the `{` where it touches it. The spaces and tabs after a `{` that
+ends its line are dropped. A block written on one line stays on one line, with
+one space before its `}` (`T {int a}` is `T {int a }`), except on a line that
+holds a `;`, where its `}` goes to a line of its own. [fixture:
+attribute-blocks/semicolon-line-spaces-after-brace] [fixture:
 attribute-blocks/block-on-one-line-space-before-the-closing-brace] [fixture:
 attribute-blocks/subgraph-header-line-spaces-after-brace] [fixture:
 attribute-blocks/accessibility-line-spaces-after-brace] [fixture:

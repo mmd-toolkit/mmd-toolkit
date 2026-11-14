@@ -6,6 +6,7 @@ import type {
   ErStatement,
   ErSubgraphStatement,
   Node,
+  Range,
   Token,
 } from "@mmd-toolkit/ast"
 import type { MermaidAst } from "../parser.ts"
@@ -53,6 +54,7 @@ import {
   findTokenEndingBefore,
   findTokensBetween,
   findTriviaBetween,
+  isSpaceOrTab,
   isStructural,
 } from "./source.ts"
 
@@ -213,6 +215,30 @@ export function isEmptyAttributeBlock(
   return (
     findTriviaBetween(source, opening.range[1], closing.range[0]).length === 0
   )
+}
+
+/**
+ * The spaces and tabs before the `}` on its line in an empty attribute block
+ * over several lines, or null when another character precedes it. Replacing
+ * only this range aligns the `}` with the entity while keeping the rest as
+ * written (docs/er.md, Attribute blocks).
+ */
+export function findEmptyBlockClosingIndentation(
+  source: Source,
+  statement: ErEntityStatement,
+): Range | null {
+  if (
+    !hasAttributeBlock(source, statement) ||
+    !isEmptyAttributeBlock(source, statement)
+  ) {
+    return null
+  }
+  const { opening, closing } = findAttributeBraces(source, statement)
+  const between = source.text.slice(opening.range[1], closing.range[0])
+  const indentation = between.slice(between.lastIndexOf("\n") + 1)
+  return [...indentation].every(isSpaceOrTab)
+    ? [closing.range[0] - indentation.length, closing.range[0]]
+    : null
 }
 
 /** The `{` and the `}` of the attribute block of an entity statement. */
