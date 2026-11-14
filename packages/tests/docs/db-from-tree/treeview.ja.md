@@ -98,7 +98,7 @@
    出典は [変換した形](../db-from-tree.ja.md#変換した形) です。
    要約には図のタイトルの欄がありませんが、
    領域の後の行 `B` はタイトルの一部なので、Db にノード `B` はできません。
-   [fixture: treeview/lex-title-line-separator-then-comment-line]
+   [fixture: treeview/gram-title-line-separator-then-comment-line]
 
 ## 記録との比較
 

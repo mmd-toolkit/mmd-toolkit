@@ -88,7 +88,7 @@ Japanese version: [treeview.ja.md](./treeview.ja.md)
    [The converted form](../db-from-tree.md#the-converted-form)). The summary has
    no field for the title of the diagram, but the line `B` after the region is
    part of the title, so the Db has no node `B`. [fixture:
-   treeview/lex-title-line-separator-then-comment-line]
+   treeview/gram-title-line-separator-then-comment-line]
 
 ## Recorded comparisons
 

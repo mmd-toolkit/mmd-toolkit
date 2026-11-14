@@ -362,32 +362,35 @@ native の hidden directive node にはしない。 [fixture: treeview/comment-i
 そのとき値は次の物理行へ続くので、行の値はそこで終わらない。
 `accTitle: A`、U+2028、`%% c`、改行、`B` のアクセシビリティタイトルは `A`、
 U+2028、`B` である。 [fixture:
-treeview/lex-quoted-name-line-separator-then-comment-line] [fixture:
-treeview/lex-quoted-name-paragraph-separator-then-comment-line] [fixture:
-treeview/lex-bare-name-line-separator-then-comment-line] [fixture:
-treeview/lex-description-line-separator-then-comment-line] [fixture:
-treeview/lex-title-line-separator-then-comment-line] [fixture:
-treeview/lex-acc-title-line-separator-then-comment-line] [fixture:
-treeview/lex-acc-descr-line-separator-then-comment-line] [fixture:
-treeview/lex-acc-descr-block-line-separator-then-comment-line] [fixture:
-treeview/lex-quoted-name-line-separator-comment-line-directive-next] [fixture:
-treeview/lex-quoted-name-line-separator-comment-line-space-next] [fixture:
-treeview/lex-quoted-name-line-separator-comment-line-separator-next] [fixture:
-treeview/lex-quoted-name-line-separator-comment-line-empty-line] [fixture:
+treeview/gram-quoted-name-line-separator-then-comment-line] [fixture:
+treeview/gram-quoted-name-paragraph-separator-then-comment-line] [fixture:
+treeview/gram-bare-name-line-separator-then-comment-line] [fixture:
+treeview/gram-description-line-separator-then-comment-line] [fixture:
+treeview/gram-title-line-separator-then-comment-line] [fixture:
+treeview/gram-acc-title-line-separator-then-comment-line] [fixture:
+treeview/gram-acc-descr-line-separator-then-comment-line] [fixture:
+treeview/gram-acc-descr-block-line-separator-then-comment-line] [fixture:
+treeview/gram-quoted-name-line-separator-comment-line-directive-next] [fixture:
+treeview/gram-quoted-name-line-separator-comment-line-space-next] [fixture:
+treeview/gram-quoted-name-line-separator-comment-line-separator-next] [fixture:
+treeview/gram-quoted-name-line-separator-comment-line-empty-line] [fixture:
 treeview/lex-quoted-name-line-separator-comment-line-end-of-text] [fixture:
-treeview/lex-bare-name-line-separator-comment-line-end-of-text] [fixture:
-treeview/lex-quoted-name-line-separator-comment-line-cr] [fixture:
-treeview/lex-quoted-name-line-separator-comment-line-crlf] [fixture:
-treeview/lex-quoted-name-line-separator-comment-line-two-comment-lines]
+treeview/gram-bare-name-line-separator-comment-line-end-of-text] [fixture:
+treeview/gram-quoted-name-line-separator-comment-line-cr] [fixture:
+treeview/gram-quoted-name-line-separator-comment-line-crlf] [fixture:
+treeview/gram-quoted-name-line-separator-comment-line-two-comment-lines]
 [fixture:
-treeview/lex-quoted-name-line-separator-comment-line-two-regions] [fixture:
-treeview/lex-quoted-name-line-separator-comment-line-spaces-before] [fixture:
-treeview/lex-quoted-name-line-separator-comment-line-line-feed-before] [fixture:
-treeview/lex-quoted-name-line-separator-comment-line-directive-before] [fixture:
-treeview/lex-quoted-name-line-separator-comment-line-line-rule-before] [fixture:
-treeview/lex-quoted-name-line-separator-comment-line-line-rule-after] [fixture:
-treeview/lex-quoted-name-line-separator-comment-line-bare-percent] [fixture:
-treeview/lex-quoted-name-line-separator-comment-line-percent-brace]
+treeview/gram-quoted-name-line-separator-comment-line-two-regions] [fixture:
+treeview/gram-quoted-name-line-separator-comment-line-spaces-before] [fixture:
+treeview/gram-quoted-name-line-separator-comment-line-line-feed-before]
+[fixture:
+treeview/gram-quoted-name-line-separator-comment-line-directive-before]
+[fixture:
+treeview/gram-quoted-name-line-separator-comment-line-line-rule-before]
+[fixture:
+treeview/gram-quoted-name-line-separator-comment-line-line-rule-after] [fixture:
+treeview/gram-quoted-name-line-separator-comment-line-bare-percent] [fixture:
+treeview/gram-quoted-name-line-separator-comment-line-percent-brace]
 
 directive と選択されたセミコロンについて、
 見出し・共通 keyword・語 `icon`・class 名・icon 参照全体は atom とする。
