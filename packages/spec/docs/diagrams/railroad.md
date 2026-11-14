@@ -553,7 +553,7 @@ line value does not end there: `accTitle: A`, U+2028, `%% c`, a line break, and
 `B` has the accessibility title `A`, U+2028, and `B`. [fixture:
 railroad/db-string-line-separator-then-comment-line] [fixture:
 railroad/db-string-paragraph-separator-then-comment-line] [fixture:
-railroad/db-title-line-separator-then-comment-line] [fixture:
+railroad/lex-title-line-separator-then-comment-line] [fixture:
 railroad/db-acc-title-line-separator-then-comment-line] [fixture:
 railroad/db-acc-descr-line-separator-then-comment-line] [fixture:
 railroad/db-acc-descr-block-line-separator-then-comment-line]

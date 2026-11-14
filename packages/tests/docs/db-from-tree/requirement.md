@@ -391,7 +391,7 @@ requirement/db-text-line-separator-then-comment-line], and for its string value.
 [fixture: requirement/db-string-line-separator-then-comment-line] The summary
 has no field for the text after the direction value, so that fixture records
 that the input is accepted. [fixture:
-requirement/db-direction-text-line-separator-then-comment-line]
+requirement/lex-direction-text-line-separator-then-comment-line]
 
 ## The replacement of characters
 

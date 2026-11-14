@@ -555,7 +555,7 @@ reads the text. Neither does the value need to end at a word boundary:
 `direction LR %% c` sets `LR` with the text `%% c`. A comment after a U+2028 or
 U+2029 is the exception: it is read through, and the value goes on after it (see
 [Comment lines](../common.md#comment-lines)). [fixture:
-requirement/db-direction-text-line-separator-then-comment-line] The values are
+requirement/lex-direction-text-line-separator-then-comment-line] The values are
 tried in the order given: if the line has `direction`, whitespace, and `TB`
 anywhere, the value is `TB`, so `direction LR x direction TB` sets `TB`;
 otherwise `BT` is tried, and so on. For a value, the lexer takes the last

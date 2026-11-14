@@ -100,8 +100,8 @@ Japanese version: [treeview.ja.md](./treeview.ja.md)
    treeview/db-quoted-name-paragraph-separator-then-comment-line], and for a
    description annotation. [fixture:
    treeview/db-description-line-separator-then-comment-line] The summary has no
-   field for the title of the diagram, so the fixture of a title records that
-   the input is accepted. [fixture:
+   field for the title of the diagram, but the line `B` after the region is part
+   of the title, so the Db has no node `B`. [fixture:
    treeview/db-title-line-separator-then-comment-line]
 
 ## Recorded comparisons

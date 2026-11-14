@@ -443,7 +443,7 @@ requirement の名前は、U+2028 の後も U+2029 の後も同じように続�
 [fixture: requirement/db-string-line-separator-then-comment-line]
 要約には方向の値の後のテキストの欄がないので、その fixture は、
 入力が受け入れられることを記録します。
-[fixture: requirement/db-direction-text-line-separator-then-comment-line]
+[fixture: requirement/lex-direction-text-line-separator-then-comment-line]
 
 ## 文字の置き換え
 

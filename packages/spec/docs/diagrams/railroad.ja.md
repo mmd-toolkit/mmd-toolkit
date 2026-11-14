@@ -633,7 +633,7 @@ body の文や RailroadIgnoredText にはしない。
 U+2028、`B` である。
 [fixture: railroad/db-string-line-separator-then-comment-line]
 [fixture: railroad/db-string-paragraph-separator-then-comment-line]
-[fixture: railroad/db-title-line-separator-then-comment-line]
+[fixture: railroad/lex-title-line-separator-then-comment-line]
 [fixture: railroad/db-acc-title-line-separator-then-comment-line]
 [fixture: railroad/db-acc-descr-line-separator-then-comment-line]
 [fixture: railroad/db-acc-descr-block-line-separator-then-comment-line]

@@ -127,7 +127,7 @@
    [fixture: architecture/db-icon-text-string-paragraph-separator-then-comment-line]
    要約には図のタイトルの欄がないので、タイトルの fixture は、
    入力が受け入れられることを記録します。
-   [fixture: architecture/db-title-line-separator-then-comment-line]
+   [fixture: architecture/lex-title-line-separator-then-comment-line]
 
 ## 記録した木の検査
 

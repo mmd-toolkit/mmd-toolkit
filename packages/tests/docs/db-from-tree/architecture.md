@@ -103,7 +103,7 @@ architecture/db-mixed] [fixture: architecture/header-beta]
    architecture/db-icon-text-string-paragraph-separator-then-comment-line] The
    summary has no field for the title of the diagram, so the fixture of a title
    records that the input is accepted. [fixture:
-   architecture/db-title-line-separator-then-comment-line]
+   architecture/lex-title-line-separator-then-comment-line]
 
 ## Checking recorded trees
 

@@ -141,7 +141,7 @@ Root.diagramType で IR、EBNF、ABNF、PEG を選び、
    [fixture: railroad/db-string-paragraph-separator-then-comment-line]
    要約には図のタイトルの欄がないので、タイトルの fixture は、
    入力が受け入れられることを記録します。
-   [fixture: railroad/db-title-line-separator-then-comment-line]
+   [fixture: railroad/lex-title-line-separator-then-comment-line]
 
 ## 記録された木の検査
 

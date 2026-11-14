@@ -419,7 +419,7 @@ an alias definition continues too, keeping its leading space. [fixture:
 state/db-second-description-line-separator-then-comment-line] A state
 description continues in the same way after U+2028 or U+2029. [fixture:
 state/db-description-line-separator-then-comment-line] [fixture:
-state/db-description-paragraph-separator-then-comment-line] The summary has no
-field for the text after the direction value, so that fixture records that the
-input is accepted; its direction is `LR`. [fixture:
+state/db-description-paragraph-separator-then-comment-line] The summary keeps no
+text after the direction value, but the line `B` after the region is part of it,
+so the Db has no state `B`, and its direction is `LR`. [fixture:
 state/db-direction-text-line-separator-then-comment-line]

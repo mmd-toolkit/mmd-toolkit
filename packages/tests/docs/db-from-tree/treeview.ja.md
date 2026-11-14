@@ -112,8 +112,8 @@
    [fixture: treeview/db-quoted-name-paragraph-separator-then-comment-line]
    説明の注釈でも同じです。
    [fixture: treeview/db-description-line-separator-then-comment-line]
-   要約には図のタイトルの欄がないので、タイトルの fixture は、
-   入力が受け入れられることを記録します。
+   要約には図のタイトルの欄がありませんが、
+   領域の後の行 `B` はタイトルの一部なので、Db にノード `B` はできません。
    [fixture: treeview/db-title-line-separator-then-comment-line]
 
 ## 記録との比較

@@ -482,6 +482,6 @@ U+2028、`B` です。
 状態の説明は、U+2028 の後も U+2029 の後も同じように続きます。
 [fixture: state/db-description-line-separator-then-comment-line]
 [fixture: state/db-description-paragraph-separator-then-comment-line]
-要約には方向の値の後のテキストの欄がないので、その fixture は、
-入力が受け入れられることを記録し、方向は `LR` です。
+要約は方向の値の後のテキストを持ちませんが、領域の後の行 `B` はその一部なので、
+Db に状態 `B` はできず、方向は `LR` です。
 [fixture: state/db-direction-text-line-separator-then-comment-line]

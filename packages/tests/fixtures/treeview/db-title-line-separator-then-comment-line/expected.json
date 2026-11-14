@@ -1,7 +1,7 @@
 {
   "source": {
     "kind": "authored",
-    "note": "common.md Comment lines: a U+2028 is a comment start, so the comment after it is read through, and the title goes on after it; the Db summary has no field that shows it, so the fixture records that the input is accepted."
+    "note": "common.md Comment lines: a U+2028 is a comment start, so the comment after it is read through, and the title goes on after it, so the line `B` is no node."
   },
   "accepted": true,
   "diagramType": "treeView",

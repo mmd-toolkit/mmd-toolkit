@@ -615,7 +615,7 @@ requirement/lex-keyword-then-e-acute]
 `direction LR %% c` は `LR` を決め、テキスト `%% c` を持ちます。
 U+2028 や U+2029 の後のコメントは例外で、読み飛ばされ、
 値はその後に続きます（[コメント行](../common.ja.md#コメント行) を参照）。
-[fixture: requirement/db-direction-text-line-separator-then-comment-line]
+[fixture: requirement/lex-direction-text-line-separator-then-comment-line]
 値は挙げた順に試されます。
 行のどこかに `direction`、空白、`TB` があれば、値は `TB` なので、
 `direction LR x direction TB` は `TB` を決めます。

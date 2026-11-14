@@ -428,7 +428,7 @@ global な comment region と directive は、
 そのとき値は次の物理行へ続くので、行の値はそこで終わらない。
 `accTitle: A`、U+2028、`%% c`、改行、`B` のアクセシビリティタイトルは `A`、
 U+2028、`B` である。
-[fixture: architecture/db-title-line-separator-then-comment-line]
+[fixture: architecture/lex-title-line-separator-then-comment-line]
 [fixture: architecture/db-acc-title-line-separator-then-comment-line]
 [fixture: architecture/db-acc-descr-line-separator-then-comment-line]
 [fixture: architecture/db-acc-descr-block-line-separator-then-comment-line]
