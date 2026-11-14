@@ -3,16 +3,20 @@
 英語版: [README.md](./README.md)
 
 `@mmd-toolkit/tests` の fixture のための、コマンドラインの道具です。
-fixture の作り直し、追加と印付け、mermaid.js からの入力の収集を行います。
+fixture の作り直し、追加と印付け、mermaid.js からの入力の収集、
+変更が足すか書き換える記録した木の確かめを行います。
 `packages/tests` のパッケージスクリプトから実行します。
 コマンドと規則は
 [maintaining-fixtures.ja.md](../packages/tests/docs/maintaining-fixtures.ja.md)
 にあります。
+記録した木の確かめのコマンドと規則は
+[recorded-trees.ja.md](../packages/tests/docs/recorded-trees.ja.md) にあります。
 
-| ファイル      | スクリプト                                                                                                                 |
-| ------------- | -------------------------------------------------------------------------------------------------------------------------- |
-| `fixtures.ts` | `fixtures:generate`、`fixtures:check`、`fixtures:add`、`fixtures:add-many`、`fixtures:set-divergence`、`fixtures:set-note` |
-| `collect.ts`  | `fixtures:collect`                                                                                                         |
+| ファイル            | スクリプト                                                                                                                 |
+| ------------------- | -------------------------------------------------------------------------------------------------------------------------- |
+| `fixtures.ts`       | `fixtures:generate`、`fixtures:check`、`fixtures:add`、`fixtures:add-many`、`fixtures:set-divergence`、`fixtures:set-note` |
+| `collect.ts`        | `fixtures:collect`                                                                                                         |
+| `recorded-trees.ts` | `recorded-trees:check`                                                                                                     |
 
 ## mermaid から図種の入力を集める
 

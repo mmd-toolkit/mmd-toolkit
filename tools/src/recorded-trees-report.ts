@@ -1,0 +1,273 @@
+/**
+ * The report of the check of the recorded trees of a change, as Markdown
+ * (`packages/tests/docs/recorded-trees.md`, What it prints).
+ */
+import { appendItems } from "../../packages/tests/src/collections.ts"
+import { normalizeSpace } from "./recorded-tree-documents.ts"
+import type { DocumentBlock } from "./recorded-tree-documents.ts"
+import { ANSWERS } from "./recorded-trees.ts"
+import type {
+  AnswerFile,
+  ChangedTree,
+  Place,
+  ReadItem,
+  RecordedTreesReport,
+} from "./recorded-trees.ts"
+
+/** The opening words of a block, on one line. */
+function openingOf(block: DocumentBlock): string {
+  const text = normalizeSpace(block.text)
+  return text.length > 100 ? `${text.slice(0, 100)}…` : text
+}
+
+/** A place, with the text at it on one line. */
+function placeLine(place: Place): string {
+  if (place.text === undefined) return `\`${place.key}\``
+  const text =
+    place.text.length > 80 ? `${place.text.slice(0, 80)}…` : place.text
+  return `\`${place.key}\` ${JSON.stringify(text)}`
+}
+
+/** The lines of the report on the items to read. */
+function itemLines(items: readonly ReadItem[], places: boolean): string[] {
+  const out: string[] = []
+  // The items come in the order of the documents; they are shown by diagram
+  // type, each in that order.
+  const byDiagram = new Map<string, ReadItem[]>()
+  for (const item of items) {
+    const list = byDiagram.get(item.diagram) ?? []
+    list.push(item)
+    byDiagram.set(item.diagram, list)
+  }
+  for (const [diagram, list] of byDiagram) {
+    out.push("", `### ${diagram}`, "")
+    appendItems(
+      out,
+      list.flatMap((item) => itemEntry(item, places)),
+    )
+  }
+  return out
+}
+
+/** The lines of one item to read. */
+function itemEntry(item: ReadItem, places: boolean): string[] {
+  const count = item.trees.reduce((sum, tree) => sum + tree.places.length, 0)
+  const judged =
+    item.judgment?.status === "not-shown"
+      ? `not shown (${item.judgment.reason})`
+      : "not judged yet"
+  const out = [
+    `- \`${item.key}\` (${item.block.document}:${item.block.line}, ${judged}): ${openingOf(item.block)}`,
+    `  - places: ${count} in ${item.trees.length} trees`,
+  ]
+  if (item.block.cases.length > 0) {
+    out.push(`  - cases: ${item.block.cases.join(", ")}`)
+  }
+  for (const section of item.block.sections) {
+    out.push(`  - read with: ${section.target}`)
+  }
+  if (item.answeredHere.length > 0) {
+    out.push(
+      `  - an answer of this change covers ${item.answeredHere.length} of the ${item.trees.length} trees`,
+    )
+  }
+  if (places) {
+    for (const tree of item.trees) {
+      for (const place of tree.places) out.push(`  - ${placeLine(place)}`)
+    }
+  }
+  return out
+}
+
+/** The template of an answer file for what no answer covers. */
+function answerTemplate(report: RecordedTreesReport): AnswerFile {
+  /** The tree of an answer for `changed`. */
+  function tree(changed: ChangedTree): { key: string; fixture: string } {
+    return { key: changed.contentKey, fixture: changed.fixture }
+  }
+
+  return {
+    items: report.readItems
+      .map((item) => ({
+        item: item.key,
+        trees: item.trees
+          .filter(({ tree: changed }) => !item.answeredHere.includes(changed))
+          .map(({ tree: changed }) => tree(changed)),
+        answer: "",
+      }))
+      .filter((item) => item.trees.length > 0),
+    trees: report.unansweredTrees.map((changed) => ({
+      ...tree(changed),
+      answer: "",
+    })),
+  }
+}
+
+/** The report as Markdown, and whether it fails the check. */
+export function formatReport(
+  report: RecordedTreesReport,
+  places: boolean,
+): { text: string; fails: boolean } {
+  const out: string[] = []
+  const problems = report.checked.filter(
+    ({ result }) =>
+      result.kind === "unreadable" ||
+      result.problems.length > 0 ||
+      result.unclassified.length > 0,
+  )
+  const unansweredItems = report.readItems.filter(
+    (item) => item.answeredHere.length < item.trees.length,
+  )
+
+  out.push(`# Recorded trees since ${report.base}`, "", "## Trees checked", "")
+  if (report.everyTree === undefined) {
+    out.push("The changed trees only.")
+  } else {
+    out.push("Every recorded tree, because:")
+    for (const file of report.everyTree.changedFiles) {
+      out.push(
+        `- the change changes ${file}, which decides the result of the check`,
+      )
+    }
+    for (const { file, read } of report.everyTree.untraceable) {
+      out.push(
+        `- ${file} has ${read}, so the files that decide the result cannot be known`,
+      )
+    }
+  }
+
+  const byDiagram = new Map<string, number>()
+  for (const tree of report.changedTrees) {
+    const diagram = tree.diagram ?? "(none)"
+    byDiagram.set(diagram, (byDiagram.get(diagram) ?? 0) + 1)
+  }
+  out.push(
+    "",
+    "## Counts",
+    "",
+    `- trees checked: ${report.checked.length}`,
+    `- changed trees: ${report.changedTrees.length}${byDiagram.size === 0 ? "" : ` (${[...byDiagram].map(([diagram, count]) => `${diagram} ${count}`).join(", ")})`}`,
+    `- removed ast.json: ${report.records.removedTrees.length}`,
+    `- changed parse-error.json: ${report.records.rejections.length}`,
+  )
+
+  out.push("", "## Problems", "")
+  if (problems.length === 0) out.push("None.")
+  for (const { fixture, result } of problems) {
+    if (result.kind === "unreadable") {
+      out.push(`- ${fixture}: ${result.reason}`)
+      continue
+    }
+    for (const problem of result.problems) {
+      out.push(`- ${fixture}: ${problem.where}: ${problem.message}`)
+    }
+    if (result.unclassified.length > 0) {
+      out.push(
+        `- ${fixture}: node types classified neither as a value node nor as a structure node: ${result.unclassified.join(", ")}`,
+      )
+    }
+  }
+  for (const { file, reason } of report.unreadableAnswers) {
+    out.push(`- ${file}: ${reason}`)
+  }
+
+  out.push("", "## Items to read")
+  appendItems(out, itemLines(report.readItems, places))
+  if (report.readItems.length === 0) out.push("", "None.")
+  if (report.answeredItems.length > 0) {
+    out.push(
+      "",
+      `Answered at the base for every changed tree: ${report.answeredItems.length} items.`,
+    )
+    for (const key of report.answeredItems) out.push(`- \`${key}\``)
+  }
+
+  out.push("", "## Sentences that cite each changed tree", "")
+  if (report.changedTrees.length === 0) out.push("None.")
+  for (const tree of report.changedTrees) {
+    const citing = report.citations.get(tree.fixture) ?? []
+    out.push(
+      citing.length > 0
+        ? `- ${tree.fixture}: ${citing.join(", ")}`
+        : `- ${tree.fixture}: no sentence cites it; ${report.newFixtures.has(tree.fixture) ? "this change adds the fixture" : "the base has the fixture"}`,
+    )
+  }
+
+  out.push("", "## Missing answers", "")
+  if (unansweredItems.length === 0 && report.unansweredTrees.length === 0) {
+    out.push("None.")
+  } else {
+    out.push(
+      `- items: ${unansweredItems.length}`,
+      `- trees read against the sentences that cite them: ${report.unansweredTrees.length}`,
+      "",
+      `A template of an answer file (in ${ANSWERS}/):`,
+      "",
+      "```json",
+      JSON.stringify(answerTemplate(report), null, 2),
+      "```",
+    )
+  }
+
+  out.push("", "## Stale rows of the coverage table", "")
+  if (report.staleRows.length === 0) out.push("None.")
+  for (const { row, reason } of report.staleRows) {
+    out.push(`- \`${row.block}\` (${row.diagrams.join(", ")}): ${reason}`)
+  }
+
+  out.push("", "## Items not judged by the coverage table", "")
+  if (report.unjudged.length === 0) out.push("None.")
+  const unjudgedByDocument = new Map<string, number[]>()
+  let unjudgedItems = 0
+  for (const { block, diagrams } of report.unjudged) {
+    unjudgedItems += diagrams.length
+    const list = unjudgedByDocument.get(block.document) ?? []
+    list.push(block.line)
+    unjudgedByDocument.set(block.document, list)
+  }
+  if (report.unjudged.length > 0) {
+    out.push(`${unjudgedItems} items of ${report.unjudged.length} blocks:`, "")
+  }
+  for (const [document, blockLines] of unjudgedByDocument) {
+    out.push(`- ${document}: lines ${blockLines.join(", ")}`)
+  }
+
+  out.push("", "## Items whose key changed", "")
+  if (report.changedItems.length === 0) out.push("None.")
+  for (const item of report.changedItems) {
+    const reasons = [
+      ...(item.ownTextChanged ? ["the text of the block"] : []),
+      ...item.changedSections.map((target) => `the section ${target}`),
+    ]
+    out.push(
+      `- \`${item.block.key}@${item.diagram}\` (${item.block.document}:${item.block.line}): changed: ${reasons.join("; ")}`,
+    )
+    if (item.trees.length === 0) {
+      out.push(
+        "  - no fixture to read: the changed sentences cite none of this diagram type",
+      )
+    }
+    for (const tree of item.trees) {
+      out.push(
+        `  - ${tree.fixture}: ${!tree.exists ? "no such fixture now" : tree.contentKey === undefined ? "no tree (parse-error.json)" : `content key ${tree.contentKey}`}`,
+      )
+      for (const place of tree.places ?? [])
+        out.push(`    - ${placeLine(place)}`)
+    }
+  }
+
+  out.push("", "## Records this check does not read", "")
+  if (report.records.rejections.length === 0) out.push("None.")
+  for (const fixture of report.records.rejections) {
+    out.push(`- ${fixture}/parse-error.json`)
+  }
+
+  return {
+    text: `${out.join("\n")}\n`,
+    fails:
+      problems.length > 0 ||
+      report.unreadableAnswers.length > 0 ||
+      unansweredItems.length > 0 ||
+      report.unansweredTrees.length > 0,
+  }
+}
