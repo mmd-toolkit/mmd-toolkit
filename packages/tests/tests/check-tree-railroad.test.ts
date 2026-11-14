@@ -1623,4 +1623,25 @@ describe("railroad retained openers and comment continuations", () => {
       ),
     ).toBe(true)
   })
+
+  it("reports a fragment after a comment line that follows a native Comment that a line feed ends", () => {
+    // common.md, Comment lines: a comment region cuts a comment that runs to
+    // the end of its line. The `;` comment ends at its line feed, so the text
+    // after the next line's comment line is not its fragment.
+    const built = buildRailroad(
+      "railroad-abnf-beta\n; note\n%% r\nx",
+      "railroadAbnf",
+      (kit) => {
+        kit.comment(";", "; note")
+        kit.comment("%%", "%% r")
+        kit.comment(null, "x")
+        return []
+      },
+    )
+    expect(
+      checkTree(built.source, built.tree).some((p) =>
+        p.message.includes("must belong to an earlier native Comment"),
+      ),
+    ).toBe(true)
+  })
 })

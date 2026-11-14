@@ -180,6 +180,15 @@ const problems: TreeProblem[] = checkTree(text, tree)
   [fixture: state/lex-diagram-comment-across-two-comment-lines]
   [fixture: mindmap/lex-comment-ends-at-line-separator]
 
+  eventmodeling 図と railroad 図の断片には、この辿りは要りません。
+  検査は、字句解析器がテキスト全体から読む native comment を見つけ、
+  断片がその中にあることを求めます。
+  そのため、line feed が終わらせるコメントの後の領域には、
+  断片が属するコメントがなく、その後の断片は報告されます。
+  試験は、
+  `tests/check-tree-eventmodeling.test.ts` と
+  `tests/check-tree-railroad.test.ts` にあります。
+
   [fixture: sequence/tokens-comment-then-ignored-semicolon]
   [fixture: eventmodeling/tokens-comment-line-ignored-semicolon]
   [fixture: state/tokens-ignored-semicolon-in-comment-before-comment-line]

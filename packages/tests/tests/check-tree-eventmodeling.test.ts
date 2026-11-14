@@ -719,6 +719,25 @@ it("reports splitting a native block Comment without a common region", () => {
   )
 })
 
+it("reports a fragment after a comment line that follows a native Comment that a line feed ends", () => {
+  // common.md, Comment lines: a comment region cuts a comment that runs to the
+  // end of its line. The `%%` comment ends at its line feed, so the text after
+  // the next line's comment line is not its fragment.
+  const source = "eventmodeling %% c\n%% r\nx"
+  const built = buildEventmodeling(source, (k) => {
+    k.comment("%%", "%% c")
+    k.comment("%%", "%% r")
+    k.comment(null, "x")
+    return []
+  })
+  const at = source.indexOf("x")
+  expect(checkTree(source, built.tree)).toContainEqual({
+    where: `Comment at ${at}-${at + 1}`,
+    message:
+      "a native Comment must belong to its complete comment match, with no earlier unit enclosing its start",
+  })
+})
+
 it("keeps a comment line inside a native block Comment as a part of its value", () => {
   const source = "eventmodeling /* A\n%% c\nB */ tf 01 evt A"
   const built = buildEventmodeling(source, (k) => {

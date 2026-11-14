@@ -161,6 +161,13 @@ const problems: TreeProblem[] = checkTree(text, tree)
   state/lex-diagram-comment-across-two-comment-lines] [fixture:
   mindmap/lex-comment-ends-at-line-separator]
 
+  An eventmodeling and a railroad fragment need no such walk: the check finds
+  the native comment that the lexer reads over the whole text, and requires the
+  fragment to lie inside it, so a region after a comment that a line feed ends
+  has no comment to belong to, and a fragment after it is reported
+  (`tests/check-tree-eventmodeling.test.ts`,
+  `tests/check-tree-railroad.test.ts`).
+
   [fixture: sequence/tokens-comment-then-ignored-semicolon] [fixture:
   eventmodeling/tokens-comment-line-ignored-semicolon] [fixture:
   state/tokens-ignored-semicolon-in-comment-before-comment-line]
