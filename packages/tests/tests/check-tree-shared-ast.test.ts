@@ -8,6 +8,7 @@ import {
   firstNode,
   problemsOf,
   recordedTree,
+  says,
   setField,
 } from "./check-tree-recorded.ts"
 import type { MutationCase } from "./check-tree-recorded.ts"
@@ -18,8 +19,9 @@ import {
   locationOf,
 } from "./check-tree-trees.ts"
 
-// The conditions of packages/spec/docs/ast.md that no other test of the
-// check of a tree breaks. Each case changes one condition of a valid hand
+// The conditions of packages/spec/docs/ast.md and of the tree documents of
+// the diagram types (packages/spec/docs/ast/<diagram>.md) that no other test
+// of the check of a tree breaks. Each case changes one condition of a valid hand
 // made tree or the recorded tree of a named fixture and expects the problem
 // that `checkTree` reports. The cases do not change the check itself.
 
@@ -11593,6 +11595,191 @@ describe("checkTree: undecoded single-quoted values (ast.md, StringLiteral)", ()
       expect(checkTree(input, broken)).toEqual([])
       setField(node, "value", raw.slice(1, -1).replace("\\n", "\n"))
       expect(checkTree(input, broken)).toContainEqual(testCase.expected)
+    })
+  }
+})
+
+/** Changes the type of the first node in the field `field` of the first node of the type `type` that holds a node there to `to`. */
+function retypeChild(
+  type: string,
+  field: string,
+  to: string,
+): MutationCase["mutate"] {
+  return (root) => {
+    const owner = nodesOf(root).find((node) => {
+      const value = node[field]
+      return (
+        node.type === type &&
+        (Array.isArray(value) ? value.length > 0 : value !== null)
+      )
+    })!
+    const value = owner[field] as CheckedNode | CheckedNode[]
+    setField(Array.isArray(value) ? value[0] : value, "type", to)
+  }
+}
+
+describe("checkTree: the names of a requirement diagram (ast/requirement.md)", () => {
+  // RequirementIdentifier: a name written without quotes in each of these
+  // places is a RequirementIdentifier, so an Identifier there is reported.
+  const requirementIdentifierCases: readonly MutationCase[] = [
+    {
+      name: "fails the name of a requirement as an Identifier",
+      fixture: "db-requirement-defaults",
+      mutate: retypeChild(
+        "RequirementRequirementStatement",
+        "name",
+        "Identifier",
+      ),
+      expected:
+        "the field name holds a Identifier, not a RequirementIdentifier or StringLiteral",
+    },
+    {
+      name: "fails a class after the `:::` of a requirement as an Identifier",
+      fixture: "db-requirement-second-definition-classes",
+      mutate: retypeChild(
+        "RequirementRequirementStatement",
+        "cssClasses",
+        "Identifier",
+      ),
+      expected:
+        "the field cssClasses holds a Identifier, not a RequirementIdentifier or StringLiteral",
+    },
+    {
+      name: "fails the name of an element as an Identifier",
+      fixture: "db-class-shorthand-requirement-and-element",
+      mutate: retypeChild("RequirementElementStatement", "name", "Identifier"),
+      expected:
+        "the field name holds a Identifier, not a RequirementIdentifier or StringLiteral",
+    },
+    {
+      name: "fails a class after the `:::` of an element as an Identifier",
+      fixture: "db-element-definition-again-with-class",
+      mutate: retypeChild(
+        "RequirementElementStatement",
+        "cssClasses",
+        "Identifier",
+      ),
+      expected:
+        "the field cssClasses holds a Identifier, not a RequirementIdentifier or StringLiteral",
+    },
+    {
+      name: "fails the first end of a relationship as an Identifier",
+      fixture: "db-relationship-arrows",
+      mutate: retypeChild(
+        "RequirementRelationshipStatement",
+        "left",
+        "Identifier",
+      ),
+      expected:
+        "the field left holds a Identifier, not a RequirementIdentifier or StringLiteral",
+    },
+    {
+      name: "fails the second end of a relationship as an Identifier",
+      fixture: "db-relationship-arrows",
+      mutate: retypeChild(
+        "RequirementRelationshipStatement",
+        "right",
+        "Identifier",
+      ),
+      expected:
+        "the field right holds a Identifier, not a RequirementIdentifier or StringLiteral",
+    },
+    {
+      name: "fails the name before the `:::` of a shorthand as an Identifier",
+      fixture: "db-class-colon-form",
+      mutate: retypeChild(
+        "RequirementClassShorthandStatement",
+        "name",
+        "Identifier",
+      ),
+      expected:
+        "the field name holds a Identifier, not a RequirementIdentifier or StringLiteral",
+    },
+    {
+      name: "fails a class after the `:::` of a shorthand as an Identifier",
+      fixture: "db-class-colon-form",
+      mutate: retypeChild(
+        "RequirementClassShorthandStatement",
+        "cssClasses",
+        "Identifier",
+      ),
+      expected:
+        "the field cssClasses holds a Identifier, not a RequirementIdentifier or StringLiteral",
+    },
+    {
+      name: "fails a name after `class` as an Identifier",
+      fixture: "db-class-statement",
+      mutate: retypeChild("RequirementClassStatement", "names", "Identifier"),
+      expected:
+        "the field names holds a Identifier, not a RequirementIdentifier or StringLiteral",
+    },
+    {
+      name: "fails a class after `class` as an Identifier",
+      fixture: "db-class-statement",
+      mutate: retypeChild(
+        "RequirementClassStatement",
+        "cssClasses",
+        "Identifier",
+      ),
+      expected:
+        "the field cssClasses holds a Identifier, not a RequirementIdentifier or StringLiteral",
+    },
+    // RequirementStyleStatement: a name for a `string` unit is a
+    // StringLiteral, so an Identifier that holds the string is reported.
+    {
+      name: "fails a quoted name of a style as an Identifier",
+      fixture: "lex-style-string-name",
+      mutate: (root) => {
+        const names = firstNode(root, "RequirementStyleStatement")
+          .names as CheckedNode[]
+        const node = names[0]
+        const { value } = node
+        // The fields of a StringLiteral that an Identifier does not have.
+        for (const field of ["raw", "value", "closed"])
+          delete (node as Record<string, unknown>)[field]
+        setField(node, "type", "Identifier")
+        setField(node, "name", value)
+      },
+      expected:
+        "Identifier at 48-54: the tokens of a Identifier in names are not all of the kind Identifier: String",
+    },
+    // RequirementClassDefStatement: the class names are separated by `,`
+    // units.
+    {
+      name: "fails a class definition without the comma between its classes",
+      fixture: "db-class-def",
+      mutate: (root) => {
+        const statement = nodesOf(root).find(
+          (node) =>
+            node.type === "RequirementClassDefStatement" &&
+            (node.cssClasses as CheckedNode[]).length > 1,
+        )!
+        const [first, second] = statement.cssClasses as CheckedNode[]
+        setField(
+          root,
+          "tokens",
+          root.tokens.filter(
+            (token) =>
+              !(
+                token.value === "," &&
+                token.range[0] >= first.range[1] &&
+                token.range[1] <= second.range[0]
+              ),
+          ),
+        )
+      },
+      expected:
+        'RequirementClassDefStatement at 51-75: the tokens that the node writes itself and its child nodes, in source order: ["\\"classdef\\"","<cssClasses>","<cssClasses>","<styles>"]',
+    },
+  ]
+  for (const testCase of requirementIdentifierCases) {
+    it(testCase.name, () => {
+      const { base, mutated } = problemsOf("requirement", testCase)
+      expect(base).toEqual([])
+      expect(
+        says(mutated, testCase.expected),
+        JSON.stringify(mutated, null, 1),
+      ).toBe(true)
     })
   }
 })

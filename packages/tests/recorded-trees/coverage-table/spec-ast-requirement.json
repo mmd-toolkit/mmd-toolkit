@@ -1,0 +1,262 @@
+{
+  "rows": [
+    {
+      "block": "packages/spec/docs/ast/requirement.md:3874a6467418",
+      "diagrams": ["requirement"],
+      "about": "| `names`  | list of (Identifier or StringLiteral) | The names after `style`, se",
+      "judgment": {
+        "status": "shown",
+        "cases": [
+          {
+            "case": "`names` is a list of nodes.",
+            "tests": [
+              {
+                "file": "check-tree-shape.test.ts",
+                "text": "reports a list that is a string, and a value of another type"
+              }
+            ]
+          },
+          {
+            "case": "Each name is an Identifier or a StringLiteral.",
+            "tests": [
+              {
+                "file": "check-tree-requirement.test.ts",
+                "text": "a name of a style as a RequirementIdentifier"
+              }
+            ]
+          },
+          {
+            "case": "The names are those after `style`, separated by `,` units.",
+            "tests": [
+              {
+                "file": "check-tree-requirement.test.ts",
+                "text": "a style without the comma between its names"
+              }
+            ]
+          },
+          {
+            "case": "The names are in source order.",
+            "tests": [
+              {
+                "file": "check-tree-node-ranges.test.ts",
+                "text": "fails a list that is not in source order"
+              }
+            ]
+          }
+        ]
+      }
+    },
+    {
+      "block": "packages/spec/docs/ast/requirement.md:9bcbf075c3b8",
+      "diagrams": ["requirement"],
+      "about": "Child fields: `names`, `styles`. A name is an [Identifier](../ast.md#identifier)",
+      "judgment": {
+        "status": "shown",
+        "cases": [
+          {
+            "case": "The child fields are `names` and `styles`, in that order.",
+            "tests": [
+              {
+                "file": "check-tree-node-ranges.test.ts",
+                "text": "fails child fields that are not in source order"
+              },
+              {
+                "file": "check-tree-shape.test.ts",
+                "text": "reports a field that the type does not have"
+              }
+            ]
+          },
+          {
+            "case": "A name for a `style-word` unit is an Identifier.",
+            "tests": [
+              {
+                "file": "check-tree-requirement.test.ts",
+                "text": "a name of a style as a RequirementIdentifier"
+              }
+            ]
+          },
+          {
+            "case": "A name for a `string` unit is a StringLiteral.",
+            "tests": [
+              {
+                "file": "check-tree-shared-ast.test.ts",
+                "text": "fails a quoted name of a style as an Identifier"
+              }
+            ]
+          },
+          {
+            "case": "A style is the texts of its units joined.",
+            "tests": [
+              {
+                "file": "check-tree-requirement.test.ts",
+                "text": "a style that is not the texts of its units joined"
+              }
+            ]
+          },
+          {
+            "case": "The list of styles is never empty.",
+            "tests": [
+              {
+                "file": "check-tree-requirement.test.ts",
+                "text": "a style without a style"
+              }
+            ]
+          }
+        ]
+      }
+    },
+    {
+      "block": "packages/spec/docs/ast/requirement.md:5e1cb0944b48",
+      "diagrams": ["requirement"],
+      "about": "| `cssClasses` | list of (Identifier or StringLiteral) | The class names after `",
+      "judgment": {
+        "status": "shown",
+        "cases": [
+          {
+            "case": "`cssClasses` is a list of nodes.",
+            "tests": [
+              {
+                "file": "check-tree-shape.test.ts",
+                "text": "reports a list that is a string, and a value of another type"
+              }
+            ]
+          },
+          {
+            "case": "Each class name is an Identifier or a StringLiteral.",
+            "tests": [
+              {
+                "file": "check-tree-requirement.test.ts",
+                "text": "a class of a class definition as a RequirementIdentifier"
+              }
+            ]
+          },
+          {
+            "case": "The class names are those after `classDef`, separated by `,` units.",
+            "tests": [
+              {
+                "file": "check-tree-shared-ast.test.ts",
+                "text": "fails a class definition without the comma between its classes"
+              }
+            ]
+          },
+          {
+            "case": "The class names are in source order.",
+            "tests": [
+              {
+                "file": "check-tree-node-ranges.test.ts",
+                "text": "fails a list that is not in source order"
+              }
+            ]
+          }
+        ]
+      }
+    },
+    {
+      "block": "packages/spec/docs/ast/requirement.md:329e4487991f",
+      "diagrams": ["requirement"],
+      "about": "A name written without quotes: the name of a requirement or an element, an end\no",
+      "judgment": {
+        "status": "shown",
+        "cases": [
+          {
+            "case": "The name of a requirement or an element written without quotes is a RequirementIdentifier.",
+            "tests": [
+              {
+                "file": "check-tree-shared-ast.test.ts",
+                "text": "fails the name of a requirement as an Identifier"
+              },
+              {
+                "file": "check-tree-shared-ast.test.ts",
+                "text": "fails the name of an element as an Identifier"
+              },
+              {
+                "file": "check-tree-shared-ast.test.ts",
+                "text": "fails the name before the `:::` of a shorthand as an Identifier"
+              }
+            ]
+          },
+          {
+            "case": "An end of a relationship written without quotes is a RequirementIdentifier.",
+            "tests": [
+              {
+                "file": "check-tree-shared-ast.test.ts",
+                "text": "fails the first end of a relationship as an Identifier"
+              },
+              {
+                "file": "check-tree-shared-ast.test.ts",
+                "text": "fails the second end of a relationship as an Identifier"
+              }
+            ]
+          },
+          {
+            "case": "A class after `:::` written without quotes is a RequirementIdentifier.",
+            "tests": [
+              {
+                "file": "check-tree-shared-ast.test.ts",
+                "text": "fails a class after the `:::` of a requirement as an Identifier"
+              },
+              {
+                "file": "check-tree-shared-ast.test.ts",
+                "text": "fails a class after the `:::` of an element as an Identifier"
+              },
+              {
+                "file": "check-tree-shared-ast.test.ts",
+                "text": "fails a class after the `:::` of a shorthand as an Identifier"
+              }
+            ]
+          },
+          {
+            "case": "A name or a class after `class` written without quotes is a RequirementIdentifier.",
+            "tests": [
+              {
+                "file": "check-tree-shared-ast.test.ts",
+                "text": "fails a name after `class` as an Identifier"
+              },
+              {
+                "file": "check-tree-shared-ast.test.ts",
+                "text": "fails a class after `class` as an Identifier"
+              }
+            ]
+          },
+          {
+            "case": "A RequirementIdentifier holds an `unquoted-text` or a `style-word` unit.",
+            "tests": [
+              {
+                "file": "check-tree-requirement.test.ts",
+                "text": "a name as a String token"
+              }
+            ]
+          }
+        ]
+      }
+    },
+    {
+      "block": "packages/spec/docs/ast/requirement.md:87db40b88293",
+      "diagrams": ["requirement"],
+      "about": "A name after `style` or `classDef` is an [Identifier](../ast.md#identifier)\ninst",
+      "judgment": {
+        "status": "shown",
+        "cases": [
+          {
+            "case": "A name after `style` is an Identifier.",
+            "tests": [
+              {
+                "file": "check-tree-requirement.test.ts",
+                "text": "a name of a style as a RequirementIdentifier"
+              }
+            ]
+          },
+          {
+            "case": "A name after `classDef` is an Identifier.",
+            "tests": [
+              {
+                "file": "check-tree-requirement.test.ts",
+                "text": "a class of a class definition as a RequirementIdentifier"
+              }
+            ]
+          }
+        ]
+      }
+    }
+  ]
+}

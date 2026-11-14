@@ -1,0 +1,104 @@
+{
+  "rows": [
+    {
+      "block": "packages/parser/docs/tokens/packet.md:3a313f42f2f6",
+      "diagrams": ["packet"],
+      "about": "Common directives, comment regions and selected semicolons cut text and string\ni",
+      "judgment": {
+        "status": "shown",
+        "cases": [
+          {
+            "case": "A common directive cuts a text item.",
+            "tests": [
+              {
+                "file": "check-tree-shared-tokens.test.ts",
+                "text": "tokens-631-packet-A token is cut at an internal directive"
+              },
+              {
+                "file": "check-tree-shared-tokens.test.ts",
+                "text": "tokens-631-packet-RawText fragments cut by a directive keep their kind"
+              }
+            ]
+          },
+          {
+            "case": "A common directive cuts a string item into `StringFragment` tokens, with the `Directive` token between them.",
+            "tests": [
+              {
+                "file": "check-tree-shared-tokens.test.ts",
+                "text": "tokens-631-packet-String fragments cut by a directive have kind StringFragment"
+              },
+              {
+                "file": "check-tree-shared-tokens.test.ts",
+                "text": "tokens-kind-56-packet-fragment-Directive-before"
+              },
+              {
+                "file": "check-tree-shared-tokens.test.ts",
+                "text": "tokens-kind-56-packet-fragment-Directive-after"
+              },
+              {
+                "file": "check-tree-shared-tokens.test.ts",
+                "text": "tokens-631-packet-The directive between fragments has its Directive token"
+              }
+            ]
+          },
+          {
+            "case": "A comment region cuts a text item.",
+            "tests": [
+              {
+                "file": "check-tree-shared-tokens.test.ts",
+                "text": "tokens-extra-358-packet-region-cut-RawText"
+              }
+            ]
+          },
+          {
+            "case": "A comment region cuts a string item into `StringFragment` tokens.",
+            "tests": [
+              {
+                "file": "check-tree-shared-tokens.test.ts",
+                "text": "tokens-extra-358-packet-region-cut-StringFragment"
+              },
+              {
+                "file": "check-tree-shared-tokens.test.ts",
+                "text": "tokens-kind-56-packet-fragment-Comment-before"
+              },
+              {
+                "file": "check-tree-shared-tokens.test.ts",
+                "text": "tokens-kind-56-packet-fragment-Comment-after"
+              }
+            ]
+          },
+          {
+            "case": "A selected semicolon cuts a text item.",
+            "tests": [
+              {
+                "file": "check-tree-shared-tokens.test.ts",
+                "text": "tokens-118-packet-No other token spans the ignored semicolon"
+              },
+              {
+                "file": "check-tree-shared-tokens.test.ts",
+                "text": "tokens-118-packet-RawText fragments around an ignored semicolon keep their kind"
+              }
+            ]
+          },
+          {
+            "case": "A selected semicolon cuts a string item into `StringFragment` tokens.",
+            "tests": [
+              {
+                "file": "check-tree-shared-tokens.test.ts",
+                "text": "tokens-118-packet-String fragments around an ignored semicolon have kind StringFragment"
+              },
+              {
+                "file": "check-tree-shared-tokens.test.ts",
+                "text": "tokens-kind-56-packet-fragment-IgnoredSemicolon-before"
+              },
+              {
+                "file": "check-tree-shared-tokens.test.ts",
+                "text": "tokens-kind-56-packet-fragment-IgnoredSemicolon-after"
+              }
+            ]
+          }
+        ]
+      }
+    }
+  ]
+}

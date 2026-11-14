@@ -21,8 +21,9 @@ import {
   tokenOf,
 } from "./check-tree-trees.ts"
 
-// The conditions of packages/parser/docs/positions.md that no other test of
-// the check of a tree breaks: how lines, columns, and offsets are counted,
+// The conditions of packages/parser/docs/positions.md, and of the position
+// documents of the diagram types (packages/parser/docs/positions/<diagram>.md),
+// that no other test of the check of a tree breaks: how lines, columns, and offsets are counted,
 // which characters are whitespace, and where the tokens of the frontmatter
 // stand. The trees are made by hand; each case breaks one condition of a
 // valid tree and expects the problem that `checkTree` reports for it.
@@ -863,4 +864,40 @@ describe("checkTree: the whitespace of the frontmatter body is not tokenized", (
       ),
     })
   })
+})
+
+describe("checkTree: the range of a name after `style` or `classDef` (positions/requirement.md)", () => {
+  const cases = [
+    {
+      name: "fails a name of a style whose range covers the space after its token",
+      fixture: "db-style-statement",
+      type: "RequirementStyleStatement",
+      field: "names",
+    },
+    {
+      name: "fails a class of a class definition whose range covers the space after its token",
+      fixture: "db-class-def",
+      type: "RequirementClassDefStatement",
+      field: "cssClasses",
+    },
+  ] as const
+  for (const testCase of cases) {
+    it(testCase.name, () => {
+      const { input, tree } = recordedTree("requirement", testCase.fixture)
+      expect(checkTree(input, tree)).toEqual([])
+      const broken = copyOf(tree)
+      // The last name of the first statement, which a space follows.
+      const names = firstNode(broken, testCase.type)[testCase.field] as {
+        range: readonly [number, number]
+      }[]
+      const name = names[names.length - 1]
+      const range = [name.range[0], name.range[1] + 1] as const
+      setField(name, "range", range)
+      setField(name, "loc", locationOf(input, range))
+      expect(checkTree(input, broken)).toContainEqual({
+        where: `Identifier at ${range[0]}-${range[1]}`,
+        message: "does not run from the start of a token to the end of a token",
+      })
+    })
+  }
 })

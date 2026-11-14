@@ -23,7 +23,9 @@ import {
   frontmatterOf,
 } from "./check-tree-trees.ts"
 
-// The shared token conditions in packages/parser/docs/tokens.md. A named
+// The token conditions in packages/parser/docs/tokens.md and in the token
+// documents of the diagram types (packages/parser/docs/tokens/<diagram>.md). A
+// named
 // recorded tree, or a tree made by hand, is valid before one condition is
 // broken. Every test names its mutation explicitly.
 
@@ -51648,3 +51650,68 @@ for (const testCase of review4SplitStringSemicolonWhitespaceCases) {
     expect(checkTree(input, tree)).toContainEqual(testCase.expected)
   })
 }
+
+describe("checkTree: the tokens of the names of a requirement diagram (tokens/requirement.md)", () => {
+  it("fails a name that holds whitespace split into two RawText tokens", () => {
+    const { input, tree } = recordedTree(
+      "requirement",
+      "db-requirement-name-spaces",
+    )
+    expect(checkTree(input, tree)).toEqual([])
+    const broken = copyOf(tree)
+    const name = broken.tokens.find(
+      (candidate) => candidate.value === "spaced name",
+    )!
+    replaceToken(broken, name, [
+      ["RawText", 0, 6],
+      ["RawText", 7, 11],
+    ])
+    expect(checkTree(input, broken)).toContainEqual({
+      where: "RequirementIdentifier at 32-43",
+      message:
+        'the texts of its tokens joined are not its written text: "spacedname", not "spaced name"',
+    })
+  })
+
+  it("fails the token of a name that holds whitespace widened over the spaces before it", () => {
+    const { input, tree } = recordedTree(
+      "requirement",
+      "db-requirement-name-spaces",
+    )
+    expect(checkTree(input, tree)).toEqual([])
+    const broken = copyOf(tree)
+    const name = broken.tokens.find(
+      (candidate) => candidate.value === "spaced name",
+    )!
+    const range = [31, 43] as const
+    setField(name, "range", range)
+    setField(name, "loc", locationOf(input, range))
+    setField(name, "value", input.slice(...range))
+    expect(checkTree(input, broken)).toContainEqual({
+      where: "RawText at 31-43",
+      message:
+        "starts with whitespace or a line terminator where no value starts",
+    })
+  })
+
+  it("fails a name after `class` as a RawText token", () => {
+    const { input, tree } = recordedTree("requirement", "db-class-statement")
+    expect(checkTree(input, tree)).toEqual([])
+    const broken = copyOf(tree)
+    const name = (
+      firstNode(broken, "RequirementClassStatement").names as {
+        range: readonly [number, number]
+      }[]
+    )[0]
+    setField(
+      broken.tokens.find((candidate) => candidate.range[0] === name.range[0])!,
+      "type",
+      "RawText",
+    )
+    expect(checkTree(input, broken)).toContainEqual({
+      where: "RequirementIdentifier at 57-58",
+      message:
+        "the tokens of a RequirementIdentifier in names are not all of the kind Identifier: RawText",
+    })
+  })
+})

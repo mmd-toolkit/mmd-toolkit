@@ -1,0 +1,42 @@
+{
+  "rows": [
+    {
+      "block": "packages/parser/docs/tokens/requirement.md:0e2461b70984",
+      "diagrams": ["requirement"],
+      "about": "The tokens are made from the units of\n[diagrams/requirement.md](../../../spec/do",
+      "judgment": {
+        "status": "shown",
+        "cases": [
+          {
+            "case": "Every unit that is not all whitespace is a token.",
+            "tests": [
+              {
+                "file": "check-tree-requirement.test.ts",
+                "text": "a string without a token"
+              }
+            ]
+          },
+          {
+            "case": "The token has the kind that the table gives for its item.",
+            "tests": [
+              {
+                "file": "check-tree-requirement.test.ts",
+                "text": "a name as a Keyword token"
+              }
+            ]
+          }
+        ]
+      }
+    },
+    {
+      "block": "packages/parser/docs/tokens/requirement.md:612e60745e5b",
+      "diagrams": ["requirement"],
+      "about": "An unquoted name is a `RawText` token, not an `Identifier` token, because it may",
+      "judgment": {
+        "status": "not-shown",
+        "reason": "rule-misses-condition",
+        "note": "A class after `class` on the line of `class` is a `style-word` unit, an `Identifier` token, but the check takes an `Identifier` or a `RawText` token for every class of a class statement, without telling a class on that line from one after a line feed, which is an `unquoted-text` unit and a `RawText` token. In requirement/db-class-statement (`class r,e a,b`), changing the token of the class `a` at [61,62] to `RawText` is not reported. The other cases are reported: an unquoted name as an `Identifier` token (check-tree-requirement.test.ts, \"the name of a requirement as an Identifier token\"); a name that holds whitespace split into two tokens, or its token widened over the spaces before it; a name after `class` as a `RawText` token (check-tree-shared-tokens.test.ts); and a name after `style` or `classDef` as a `RawText` token (check-tree-requirement.test.ts)."
+      }
+    }
+  ]
+}
