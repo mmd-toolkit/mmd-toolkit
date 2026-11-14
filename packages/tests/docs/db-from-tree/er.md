@@ -80,35 +80,88 @@ er/db-role-attribute-quote] [fixture: er/db-attribute-comment-attribute-quote]
   er/lex-name-line-separator-comment-line-with-directive] [fixture:
   er/lex-name-line-separator-two-comment-lines] [fixture:
   er/lex-name-two-comment-regions] [fixture:
-  er/lex-name-comment-line-line-separator-next] It is so for each name: an
-  entity of a relationship, a role, an alias, a class after `:::`, a name after
-  `classDef`, `class`, or `style`, the id of a subgraph, and the name of an
-  attribute. [fixture: er/lex-relationship-first-name-comment-line] [fixture:
+  er/lex-name-comment-line-line-separator-next] A directive at the start of the
+  line after the comment line lies inside the name, so the input is rejected and
+  has no Db, while a directive followed by a space there lies between two units
+  and ends the name: the entities `A` and U+2028, and `Bar`. [fixture:
+  er/div-directive-after-comment-line-in-name] [fixture:
+  er/lex-name-line-separator-comment-line-directive-space-next] It is so for
+  each name: an entity of a relationship, a role, an alias, a class after `:::`,
+  a name after `classDef`, `class`, or `style`, a class of `class`, the id of a
+  subgraph, and the type and the name of an attribute. [fixture:
+  er/lex-relationship-first-name-comment-line] [fixture:
   er/lex-relationship-second-name-comment-line] [fixture:
   er/lex-role-name-comment-line] [fixture: er/lex-alias-name-comment-line]
   [fixture: er/lex-class-shorthand-name-comment-line] [fixture:
   er/lex-classdef-name-comment-line] [fixture:
   er/lex-class-statement-name-comment-line] [fixture:
   er/lex-style-statement-name-comment-line] [fixture:
-  er/lex-subgraph-id-comment-line] [fixture: er/lex-attribute-name-comment-line]
-  The name goes on with the characters of a name after the region, so a line
-  `accDescr {}` after it is part of the name, and the entity has an empty
-  attribute block, and the line after the region is a segment of its own for the
-  line rule of `style` and `classDef` lines. [fixture:
+  er/lex-class-statement-class-comment-line] [fixture:
+  er/lex-subgraph-id-comment-line] [fixture: er/lex-attribute-type-comment-line]
+  [fixture: er/lex-attribute-name-comment-line]
+- The tree decides what the name before a region and the line after it are, and
+  the Db takes the entities and the values from it. The name goes on with the
+  characters of a name after the region, so a line `accDescr {}` after it is
+  part of the name, and the entity has an empty attribute block. The statement
+  goes on as if the next line stood on the line of the name, because the line
+  break of the comment line lies in the region: a relationship, an attribute
+  block, `:::c`, and the `,b` of the class names of a `classDef` on the next
+  line belong to the name before the region, so `A` and U+2028 is the entity of
+  the relationship, or has the attributes or the class, and `a` and U+2028, and
+  `b`, are both classes with the style. [fixture:
   er/lex-name-line-separator-comment-line-acc-descr] [fixture:
-  er/lex-classdef-name-comment-line-style-line] The name ends where no character
-  of a name follows the region: after spaces at the start of the next line, an
-  empty line after the comment line, or the end of the text, it is `A` and
-  U+2028, and a directive alone after the U+2028 is no comment line, so the line
-  feed after it ends the name. A U+2028 after a space or after a quoted name
-  starts a name of its own. [fixture:
+  er/lex-name-line-separator-comment-line-relationship] [fixture:
+  er/lex-name-line-separator-comment-line-attribute-block] [fixture:
+  er/lex-name-line-separator-comment-line-class-shorthand] [fixture:
+  er/lex-classdef-name-line-separator-comment-line-comma] The line after the
+  region is a segment of its own for the line rule of `style` and `classDef`
+  lines: a line `style fill:#f00;` there ends the style at the `;`, which is
+  ignored, while the `;` of `d fill:#f00;` is not, because the `classDef` before
+  the U+2028 does not reach it, so the style holds the placeholder of the entity
+  `#f00;` and the tree records no ignored `;`. A line `direction LR` after the
+  region is not a direction line: the entities are `A`, U+2028, and `direction`,
+  and `LR`, and the direction stays `TB`. [fixture:
+  er/lex-classdef-name-comment-line-style-line] [fixture:
+  er/lex-classdef-name-comment-line-hash-semicolon] [fixture:
+  er/lex-style-statement-name-comment-line-hash-semicolon] [fixture:
+  er/lex-name-line-separator-comment-line-direction] The name ends where no
+  character of a name follows the region: after spaces at the start of the next
+  line, an empty line after the comment line, or the end of the text, it is `A`
+  and U+2028, and a directive alone after the U+2028 is no comment line, so the
+  line feed after it ends the name. [fixture:
   er/lex-name-line-separator-comment-line-indented] [fixture:
   er/lex-name-line-separator-comment-line-empty-line] [fixture:
   er/lex-name-line-separator-comment-line-last-line] [fixture:
   er/lex-name-line-separator-comment-end-of-text] [fixture:
-  er/lex-name-line-separator-directive-line] [fixture:
-  er/lex-name-space-line-separator-comment-line] [fixture:
-  er/lex-quoted-name-line-separator-comment-line]
+  er/lex-name-line-separator-directive-line] A U+2028 that does not go on with a
+  name before it starts a name: after a space, a quoted name, a number, a
+  decimal number, the header, `:::`, and the `:` of a relationship, so that the
+  entities are `A` and U+2028 and `Bar`, `12` and U+2028 and `ab`, and the class
+  and the role are U+2028 and `c`, and U+2028 and `r`. At the start of a line,
+  the comment region starts at the line start and takes the U+2028, so the
+  entity is `A`. [fixture: er/lex-name-space-line-separator-comment-line]
+  [fixture: er/lex-quoted-name-line-separator-comment-line] [fixture:
+  er/lex-number-line-separator-comment-line] [fixture:
+  er/lex-decimal-line-separator-comment-line] [fixture:
+  er/lex-header-line-separator-comment-line] [fixture:
+  er/lex-class-shorthand-line-separator-comment-line] [fixture:
+  er/lex-role-line-separator-comment-line] [fixture:
+  er/lex-line-separator-comment-line-at-line-start] After `end`, the U+2028 is
+  whitespace that `end` reads, and after the `1` of a relationship it is the
+  whitespace that the `1` looks past, so the `1` is `only-one` and the U+2028
+  starts the name of the second entity. In an attribute block and in the style
+  context, a U+2028 after a space is whitespace between units: the attribute `a`
+  of type `string`, and the class `a` with the style `fill:red`. [fixture:
+  er/lex-end-line-separator-comment-line] [fixture:
+  er/lex-one-line-separator-comment-line-letter] [fixture:
+  er/lex-attribute-space-line-separator-comment-line] [fixture:
+  er/lex-classdef-space-line-separator-comment-line] [fixture:
+  er/lex-classdef-name-space-line-separator-comment-line] The inputs that the
+  specification rejects have no Db: a `1` where a statement starts, a `%%` with
+  nothing after it, and a `%%{` that starts no directive after the U+2028.
+  [fixture: er/gram-one-line-separator-comment-line-statement-start] [fixture:
+  er/lex-name-line-separator-bare-percent-line] [fixture:
+  er/lex-name-line-separator-percent-brace-line]
 - A StringLiteral has the converted form of its range without the delimiters,
   the quotes of a quoted name, a role, and a comment, and the backquotes of a
   word of an attribute, so `"A B"` is the name `A B`, and the id of its entity

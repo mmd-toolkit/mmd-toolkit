@@ -644,7 +644,6 @@ const CASES: readonly Case[] = [
   {
     fixture: "lex-classdef-name-starts-with-line-separator-comment-line",
     statements: [
-      quadrant(1, words("T")),
       classDefAcrossRegion(
         `${LINE_SEPARATOR}%% c\nb`,
         `${LINE_SEPARATOR}b`,
@@ -652,8 +651,53 @@ const CASES: readonly Case[] = [
       ),
     ],
   },
+  {
+    fixture: "lex-classdef-name-line-separator-comment-line-cr",
+    statements: [
+      classDefAcrossRegion(
+        `a${LINE_SEPARATOR}%% c\rb`,
+        `a${LINE_SEPARATOR}b`,
+        "color: #109060",
+      ),
+    ],
+  },
+  {
+    fixture: "lex-classdef-name-line-separator-comment-line-with-directive",
+    statements: [
+      classDefAcrossRegion(
+        `a${LINE_SEPARATOR}%% c %%{init: {}}%%\nb`,
+        `a${LINE_SEPARATOR}b`,
+        "color: #109060",
+      ),
+    ],
+  },
+  {
+    fixture: "lex-classdef-name-comment-line-line-separator-next",
+    statements: [
+      classDefAcrossRegion(
+        `a${LINE_SEPARATOR}%% c\n${LINE_SEPARATOR}b`,
+        `a${LINE_SEPARATOR}${LINE_SEPARATOR}b`,
+        "color: #109060",
+      ),
+    ],
+  },
+  {
+    fixture: "lex-classdef-name-line-separator-comment-line-non-ascii",
+    statements: [
+      classDefAcrossRegion(
+        `a${LINE_SEPARATOR}%% c\né`,
+        `a${LINE_SEPARATOR}é`,
+        "color: #109060",
+      ),
+    ],
+  },
   // The name ends where no character of a name follows the region: a space
-  // there is the whitespace before the styles.
+  // there, or a directive and a space, is the whitespace before the styles.
+  {
+    fixture:
+      "lex-classdef-name-line-separator-comment-line-directive-space-next",
+    statements: [classDef(`a${LINE_SEPARATOR}`, "color: #109060")],
+  },
   {
     fixture: "lex-classdef-name-line-separator-comment-line-space",
     statements: [classDef(`a${LINE_SEPARATOR}`, "color: #109060")],
