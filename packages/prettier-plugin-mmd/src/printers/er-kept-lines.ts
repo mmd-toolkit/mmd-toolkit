@@ -34,8 +34,10 @@ const keptLinesBySource = new WeakMap<Source, KeptLines>()
 const classNameGapsBySource = new WeakMap<Source, ReadonlySet<number>>()
 
 /**
- * The bare names after a U+2028/U+2029-prefixed `class` that an older lexer
- * reads as a class statement. Its whitespace rule consumes line feeds only
+ * The bare names after a `class` that starts with a whitespace character that
+ * the pinned lexer reads as part of a name (a U+2028, a U+2029, a U+00A0, and
+ * the others of `isNameWhitespace`) and that an older lexer reads as a class
+ * statement. Its whitespace rule consumes line feeds only
  * after another whitespace character; comments and directives are removed
  * first, so an intervening comment or blank line does not end that gap.
  * Keep the original gaps through both names (docs/er.md, Statements one per
@@ -50,7 +52,7 @@ export function findErClassNameGaps(source: Source): ReadonlySet<number> {
   function visit(statements: readonly ErStatement[]): void {
     for (const [index, statement] of statements.entries()) {
       if (statement.type === "ErSubgraphStatement") visit(statement.body)
-      if (!isLineSeparator(source.text.charAt(statement.range[0]))) continue
+      if (!isNameWhitespace(source.text.charAt(statement.range[0]))) continue
       const start = skipWhitespaceOnLine(source, statement.range[0])
       const own = textRead(source, start, statement.range[1])
       if (
@@ -184,10 +186,12 @@ function findSubgraphHeaderLines(
  * - An entity statement named by a number of two digits or more, with a
  *   character right after it that continues a name: `12a` is the entities
  *   `12` and `a` to the pinned lexer, and one name to a version that counts.
- * - A statement that starts with a U+2028 or U+2029, with following statements,
+ * - A statement that starts with a whitespace character that is no space or
+ *   tab (a U+2028, a U+2029, a U+00A0, a U+3000, and the others of
+ *   `isNameWhitespace`), with following statements,
  *   where a version that counts reads the text from the
  *   end of the whitespace as a `class` statement or a direction line (see
- *   `startsLineReadAsKeywordByOlderVersions`): the character belongs to the
+ *   `findLineReadAsKeywordByOlderVersions`): the character belongs to the
  *   first name to the pinned lexer, and a version that counts reads it as
  *   whitespace. `class A a` can continue across line feeds after whitespace
  *   (see `findErClassNameGaps`), and
@@ -305,8 +309,9 @@ function indexOfTilde(source: Source, from: number, to: number): number {
 
 /**
  * The line to print as written for the statement at `index`, which starts
- * with a U+2028 or U+2029 that a version that counts reads as whitespace, or
- * null where the statements on lines of their own are read as the line is.
+ * with a whitespace character (`isNameWhitespace`) that a version that counts
+ * reads as whitespace, or null where the statements on lines of their own are
+ * read as the line is.
  * The keyword rules of that version start where the whitespace ends, with the
  * directives removed:
  *
@@ -335,7 +340,7 @@ function findLineReadAsKeywordByOlderVersions(
   index: number,
 ): number | null {
   const statement = statements[index]
-  if (!isLineSeparator(source.text.charAt(statement.range[0]))) return null
+  if (!isNameWhitespace(source.text.charAt(statement.range[0]))) return null
   const start = skipWhitespaceOnLine(source, statement.range[0])
   // A separator that whitespace follows is a name of its own, and the
   // keyword after the whitespace is read the same by every version.
@@ -391,9 +396,10 @@ function skipWhitespaceOnLine(source: Source, offset: number): number {
 }
 
 /**
- * Whether the first entity of a statement is named by whitespace only, a
- * U+2028 or U+2029, after another statement on its line, and the statement goes
- * on after the name: an attribute block, an alias, a CSS class, or a
+ * Whether the first entity of a statement is named by whitespace characters
+ * only (a U+2028, a U+2029, a U+00A0, a U+3000, and the others of
+ * `isNameWhitespace`), after another statement on its line, and the statement
+ * goes on after the name: an attribute block, an alias, a CSS class, or a
  * relationship (`"Alpha"`, the character, and `{ int x }`). The oldest versions
  * that count read the character as whitespace and the rest as part of the
  * statement before it, so the rest cannot start a line of its own there, and
@@ -414,7 +420,7 @@ function startsWithSeparatorBeforeMore(
         : undefined
   return (
     name !== undefined &&
-    isLineSeparator(source.text.charAt(name.range[0])) &&
+    isNameWhitespace(source.text.charAt(name.range[0])) &&
     [...source.text.slice(...name.range)].every(isWhitespace) &&
     !isNameAlone(statement) &&
     !isFirstOnItsLine(source, name.range[0])
@@ -433,9 +439,21 @@ function isNameAlone(
   )
 }
 
-/** Whether a character is a U+2028 or a U+2029. */
-function isLineSeparator(character: string): boolean {
-  return character === "\u2028" || character === "\u2029"
+/**
+ * Whether a character is a whitespace character that a name of the statement
+ * context may start with: every one but a space, a tab, and a line break
+ * (diagrams/er.md, Whitespace). The pinned lexer reads it as part of a name,
+ * and the oldest versions that count read it as whitespace.
+ */
+export function isNameWhitespace(character: string): boolean {
+  return (
+    character !== "" &&
+    isWhitespace(character) &&
+    character !== " " &&
+    character !== "\t" &&
+    character !== "\n" &&
+    character !== "\r"
+  )
 }
 
 /** The letters, digits, and `_` that start at `offset`. */
@@ -469,8 +487,10 @@ function continuesName(character: string): boolean {
 
 /**
  * Whether the name that starts at `nameStart` follows the keyword `end` or
- * `subgraph` so that a version that counts reads both as one name: a U+2028 or
- * U+2029 stands between them, or a character outside ASCII touches the keyword.
+ * `subgraph` so that a version that counts reads both as one name: a whitespace
+ * character that is no space or tab (`isNameWhitespace`: a U+2028, a U+2029, a
+ * U+00A0, and the others) stands between them, or a character outside ASCII
+ * touches the keyword.
  * The pinned lexer ends the keyword there (docs/er.md, Statements one per
  * line). The directives between them are left out, since mermaid.js removes
  * them before it reads the text.
@@ -487,8 +507,7 @@ export function followsSplitKeyword(
     return false
   const gap = textRead(source, keyword.range[1], nameStart)
   return (
-    gap.includes("\u2028") ||
-    gap.includes("\u2029") ||
+    [...gap].some(isNameWhitespace) ||
     (gap === "" && source.text.charAt(nameStart) > "\u007f")
   )
 }

@@ -663,6 +663,11 @@ accessibility-statements/block-not-closed-kept-as-written] [fixture:
 accessibility-statements/block-not-closed-text-on-the-opening-line] [fixture:
 accessibility-statements/block-not-closed-without-text] [fixture:
 accessibility-statements/block-not-closed-after-a-statement-on-its-line]
+
+A directive between the keyword and the colon or the brace, or after them, stays
+where it is, and a block on one line with a directive beside its braces is
+written with the colon first (see
+[A description block on one line](./compatibility.md#a-description-block-on-one-line)).
 [fixture: accessibility-statements/directive-around-colon-and-braces]
 
 Input

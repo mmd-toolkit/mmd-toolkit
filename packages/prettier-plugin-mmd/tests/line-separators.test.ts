@@ -1536,6 +1536,261 @@ const erExamples: readonly (readonly [string, string, string])[] = [
     "erDiagram\n\u2028%% c\n",
     "erDiagram\n  %% c\n",
   ],
+  [
+    "U+00A0 in place of the separator: er/statements-one-per-line/class-names-after-directive-ls",
+    "erDiagram\n\u00a0class %%{init: {}}%%\nA a",
+    "erDiagram\n  \u00a0class %%{init: {}}%%\nA a\n",
+  ],
+  [
+    "U+3000 in place of the separator: er/statements-one-per-line/class-names-after-directive-ls",
+    "erDiagram\n\u3000class %%{init: {}}%%\nA a",
+    "erDiagram\n  \u3000class %%{init: {}}%%\nA a\n",
+  ],
+  [
+    "U+00A0 in place of the separator: er/statements-one-per-line/class-second-name-after-directive-ps",
+    "erDiagram\n\u00a0class A \n%%{init: {}}%%\na",
+    "erDiagram\n  \u00a0class A \n%%{init: {}}%%\na\n",
+  ],
+  [
+    "U+00A0 in place of the separator: er/statements-one-per-line/R63-er-ascii-after-LS-e",
+    'erDiagram\nsubgraph S\nA\nend\u00a0\n\n"X"',
+    'erDiagram\n  subgraph S\n    A\n  end\u00a0\n\n"X"\n',
+  ],
+  [
+    "U+3000 in place of the separator: er/statements-one-per-line/R63-er-ascii-after-LS-e",
+    'erDiagram\nsubgraph S\nA\nend\u3000\n\n"X"',
+    'erDiagram\n  subgraph S\n    A\n  end\u3000\n\n"X"\n',
+  ],
+  [
+    "U+00A0 in place of the separator: er/statements-one-per-line/R44-er-after-separator-LS-e",
+    "erDiagram\nsubgraph S\nA\nend\u00a0\n\nX",
+    "erDiagram\n  subgraph S\n    A\n  end\u00a0\n\nX\n",
+  ],
+  [
+    "U+3000 in place of the separator: er/statements-one-per-line/R44-er-after-separator-LS-e",
+    "erDiagram\nsubgraph S\nA\nend\u3000\n\nX",
+    "erDiagram\n  subgraph S\n    A\n  end\u3000\n\nX\n",
+  ],
+  [
+    "U+00A0 in place of the separator: er/statements-one-per-line/R74-er-LS-g-directive",
+    "erDiagram\nsubgraph S\nA\nend\u00a0%%{init: {}}%%",
+    "erDiagram\n  subgraph S\n    A\n  end\u00a0%%{init: {}}%%\n",
+  ],
+  [
+    "U+3000 in place of the separator: er/statements-one-per-line/R74-er-LS-g-directive",
+    "erDiagram\nsubgraph S\nA\nend\u3000%%{init: {}}%%",
+    "erDiagram\n  subgraph S\n    A\n  end\u3000%%{init: {}}%%\n",
+  ],
+  [
+    "U+00A0 in place of the separator: er/statements-one-per-line/R45-er-class-LS-d",
+    "erDiagram\n\u00a0class \n%% c\nA a",
+    "erDiagram\n  \u00a0class \n%% c\nA a\n",
+  ],
+  [
+    "U+3000 in place of the separator: er/statements-one-per-line/R45-er-class-LS-d",
+    "erDiagram\n\u3000class \n%% c\nA a",
+    "erDiagram\n  \u3000class \n%% c\nA a\n",
+  ],
+  [
+    "U+00A0 in place of the separator: er/statements-one-per-line/R45-er-class-LS-e",
+    "erDiagram\n\u00a0class \n\nA a",
+    "erDiagram\n  \u00a0class \n\nA a\n",
+  ],
+  [
+    "U+00A0 in place of the separator: er/statements-one-per-line/R45-er-second-name-LS-d",
+    "erDiagram\n\u00a0class A \n%% c\na",
+    "erDiagram\n  \u00a0class A \n%% c\na\n",
+  ],
+  [
+    "U+3000 in place of the separator: er/statements-one-per-line/R45-er-second-name-LS-d",
+    "erDiagram\n\u3000class A \n%% c\na",
+    "erDiagram\n  \u3000class A \n%% c\na\n",
+  ],
+  [
+    "U+00A0 in place of the separator: er/statements-one-per-line/R45-er-second-name-LS-e",
+    "erDiagram\n\u00a0class A \n\na",
+    "erDiagram\n  \u00a0class A \n\na\n",
+  ],
+  [
+    "U+00A0 in place of the separator: er/statements-one-per-line/R45-er-nonascii-name-LS-d",
+    "erDiagram\n\u00a0classé \n%% c\na",
+    "erDiagram\n  \u00a0classé \n%% c\na\n",
+  ],
+  [
+    "U+00A0 in place of the separator: er/statements-one-per-line/R45-er-nonascii-name-LS-e",
+    "erDiagram\n\u00a0classé \n\na",
+    "erDiagram\n  \u00a0classé \n\na\n",
+  ],
+  [
+    "U+00A0 in place of the separator: U+2028 between the end of an ER subgraph and the next entity",
+    "erDiagram\nsubgraph S\nA\nend\u00a0B\n",
+    "erDiagram\n  subgraph S\n    A\n  end\u00a0B\n",
+  ],
+  [
+    "U+3000 in place of the separator: U+2028 between the end of an ER subgraph and the next entity",
+    "erDiagram\nsubgraph S\nA\nend\u3000B\n",
+    "erDiagram\n  subgraph S\n    A\n  end\u3000B\n",
+  ],
+  [
+    "U+00A0 in place of the separator: U+2029 between the end of an ER subgraph and a relationship",
+    "erDiagram\nsubgraph S\nA\nend\u00a0B ||--o{ C : x\n",
+    "erDiagram\n  subgraph S\n    A\n  end\u00a0B ||--o{ C : x\n",
+  ],
+  [
+    "U+00A0 in place of the separator: U+2028 after the end of an ER subgraph that nothing follows",
+    "erDiagram\nSUBGRAPH S\nA\nEND\u00a0\n",
+    "erDiagram\n  SUBGRAPH S\n    A\n  END\u00a0\n",
+  ],
+  [
+    "U+3000 in place of the separator: U+2028 after the end of an ER subgraph that nothing follows",
+    "erDiagram\nSUBGRAPH S\nA\nEND\u3000\n",
+    "erDiagram\n  SUBGRAPH S\n    A\n  END\u3000\n",
+  ],
+  [
+    "U+00A0 in place of the separator: a name in quotes after the end of an ER subgraph and a U+2028",
+    'erDiagram\nsubgraph S\nA\nend\u00a0"B"\n',
+    'erDiagram\n  subgraph S\n    A\n  end\u00a0"B"\n',
+  ],
+  [
+    "U+3000 in place of the separator: a name in quotes after the end of an ER subgraph and a U+2028",
+    'erDiagram\nsubgraph S\nA\nend\u3000"B"\n',
+    'erDiagram\n  subgraph S\n    A\n  end\u3000"B"\n',
+  ],
+  [
+    "U+00A0 in place of the separator: a directive between the end of an ER subgraph and a U+2028",
+    "erDiagram\nsubgraph S\nA\nend%%{init: {}}%%\u00a0B\n",
+    "erDiagram\n  subgraph S\n    A\n  end%%{init: {}}%%\u00a0B\n",
+  ],
+  [
+    "U+00A0 in place of the separator: a directive between the end of an ER subgraph and a U+2029 and a name in quotes",
+    'erDiagram\nsubgraph S\nA\nend%%{init: {}}%%\u00a0"B"\n',
+    'erDiagram\n  subgraph S\n    A\n  end%%{init: {}}%%\u00a0"B"\n',
+  ],
+  [
+    "U+00A0 in place of the separator: a line of two ER statements that starts with U+2028",
+    "erDiagram\nA\n\u00a0class-A a\n",
+    "erDiagram\n  A\n  \u00a0class-A a\n",
+  ],
+  [
+    "U+3000 in place of the separator: a line of two ER statements that starts with U+2028",
+    "erDiagram\nA\n\u3000class-A a\n",
+    "erDiagram\n  A\n  \u3000class-A a\n",
+  ],
+  [
+    "U+00A0 in place of the separator: a line that starts with U+2029 and class, and two more statements",
+    "erDiagram\nA\n\u00a0class A a\n",
+    "erDiagram\n  A\n  \u00a0class A a\n",
+  ],
+  [
+    "U+3000 in place of the separator: a line that starts with U+2029 and class, and two more statements",
+    "erDiagram\nA\n\u3000class A a\n",
+    "erDiagram\n  A\n  \u3000class A a\n",
+  ],
+  [
+    "U+00A0 in place of the separator: a statement with U+2028 and class after a space, and two more statements",
+    "erDiagram\nA\nB \u00a0class A a\n",
+    "erDiagram\n  A\n  B \u00a0class A a\n",
+  ],
+  [
+    "U+00A0 in place of the separator: a line that starts with U+2028, class and a character outside ASCII, and one more statement",
+    "erDiagram\nA\n\u00a0classé A\n",
+    "erDiagram\n  A\n  \u00a0classé A\n",
+  ],
+  [
+    "U+00A0 in place of the separator: a line that starts with U+2028 and CLASS in upper case, and two more statements",
+    "erDiagram\nA\n\u00a0CLASS A a\n",
+    "erDiagram\n  A\n  \u00a0CLASS A a\n",
+  ],
+  [
+    "U+00A0 in place of the separator: U+2028 and an attribute block after a name in quotes",
+    'erDiagram\n"Alpha"\u00a0 { int x }\n',
+    'erDiagram\n  "Alpha"\u00a0 { int x }\n',
+  ],
+  [
+    "U+3000 in place of the separator: U+2028 and an attribute block after a name in quotes",
+    'erDiagram\n"Alpha"\u3000 { int x }\n',
+    'erDiagram\n  "Alpha"\u3000 { int x }\n',
+  ],
+  [
+    "U+00A0 in place of the separator: U+2028 and an attribute block touching it after a name in quotes",
+    'erDiagram\n"Alpha"\u00a0{ int x }\n',
+    'erDiagram\n  "Alpha"\u00a0{ int x }\n',
+  ],
+  [
+    "U+3000 in place of the separator: U+2028 and an attribute block touching it after a name in quotes",
+    'erDiagram\n"Alpha"\u3000{ int x }\n',
+    'erDiagram\n  "Alpha"\u3000{ int x }\n',
+  ],
+  [
+    "U+00A0 in place of the separator: U+2028, a directive, and an attribute block after a name in quotes",
+    'erDiagram\n"Alpha"\u00a0%%{x:y}%% { int x }\n',
+    'erDiagram\n  "Alpha"\u00a0%%{x:y}%% { int x }\n',
+  ],
+  [
+    "U+3000 in place of the separator: U+2028, a directive, and an attribute block after a name in quotes",
+    'erDiagram\n"Alpha"\u3000%%{x:y}%% { int x }\n',
+    'erDiagram\n  "Alpha"\u3000%%{x:y}%% { int x }\n',
+  ],
+  [
+    "U+00A0 in place of the separator: U+2029 and a relationship after a name in quotes",
+    'erDiagram\n"Alpha"\u00a0 ||--o{ B : x\n',
+    'erDiagram\n  "Alpha"\u00a0 ||--o{ B : x\n',
+  ],
+  [
+    "U+3000 in place of the separator: U+2029 and a relationship after a name in quotes",
+    'erDiagram\n"Alpha"\u3000 ||--o{ B : x\n',
+    'erDiagram\n  "Alpha"\u3000 ||--o{ B : x\n',
+  ],
+  [
+    "U+00A0 in place of the separator: U+2028 and an alias after a name in quotes",
+    'erDiagram\n"Alpha"\u00a0["x"]\n',
+    'erDiagram\n  "Alpha"\u00a0["x"]\n',
+  ],
+  [
+    "U+3000 in place of the separator: U+2028 and an alias after a name in quotes",
+    'erDiagram\n"Alpha"\u3000["x"]\n',
+    'erDiagram\n  "Alpha"\u3000["x"]\n',
+  ],
+  [
+    "U+00A0 in place of the separator: U+2028 and a CSS class after a name in quotes",
+    'erDiagram\n"Alpha"\u00a0:::c\n',
+    'erDiagram\n  "Alpha"\u00a0:::c\n',
+  ],
+  [
+    "U+3000 in place of the separator: U+2028 and a CSS class after a name in quotes",
+    'erDiagram\n"Alpha"\u3000:::c\n',
+    'erDiagram\n  "Alpha"\u3000:::c\n',
+  ],
+  [
+    "U+00A0, U+2028, and an attribute block after a name in quotes",
+    'erDiagram\n"Anchor" \u00a0\u2028{ int id }\n',
+    'erDiagram\n  "Anchor" \u00a0\u2028{ int id }\n',
+  ],
+  [
+    "U+3000, U+2028, and an attribute block after a name in quotes",
+    'erDiagram\n"Anchor" \u3000\u2028{ int id }\n',
+    'erDiagram\n  "Anchor" \u3000\u2028{ int id }\n',
+  ],
+  [
+    "U+FEFF and an attribute block after a name in quotes",
+    'erDiagram\n"Alpha"\ufeff{ int x }\n',
+    'erDiagram\n  "Alpha"\ufeff{ int x }\n',
+  ],
+  [
+    "U+2003 and an attribute block after a name in quotes",
+    'erDiagram\n"Alpha" \u2003{ int x }\n',
+    'erDiagram\n  "Alpha" \u2003{ int x }\n',
+  ],
+  [
+    "U+3000 and an attribute block after a name in quotes",
+    'erDiagram\n"Alpha" \u3000{ int x }\n',
+    'erDiagram\n  "Alpha" \u3000{ int x }\n',
+  ],
+  [
+    "U+00A0 and a second name after a name in quotes",
+    'erDiagram\n"Alpha"\u00a0 "B"\n',
+    "erDiagram\n  Alpha\n  \u00a0\n  B\n",
+  ],
 ]
 
 /**

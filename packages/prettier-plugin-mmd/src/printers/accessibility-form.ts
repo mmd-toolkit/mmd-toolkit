@@ -28,7 +28,8 @@ import { collapseRuns, staysAsWritten } from "./text-runs.ts"
  * the text holds a `%%`, and where a comment follows the block on its line.
  * The other types read the `%%` as part of the text in both forms, and reject
  * a comment after the `}` of a block or take it into the text of the form with
- * the `:`.
+ * the `:`. So do these types for a comment of their own kind that does not
+ * start with a `%%` (the four railroad types; see `commentsAfterAllowed`).
  */
 const diagramTypesEndingTextAtPercent: ReadonlySet<string> = new Set([
   "architecture",
@@ -375,24 +376,29 @@ export function printAccessibilityLine(
 }
 
 /**
- * Whether the comments that follow a block on its line (there are none, or the
- * diagram type ends the text of the form with the `:` before a `%%`) leave the
- * form with the `:` the same.
+ * Whether the comments that follow a block on its line leave the form with the
+ * `:` the same: there are none, or the diagram type ends the text of the form
+ * with the `:` before a `%%` and they start with a `%%`. A comment of another
+ * kind in such a diagram type (the `; c` of an ABNF diagram, the `# c` of a
+ * PEG diagram, the `(* c *)` of an EBNF diagram, and the comment that opens
+ * with a slash and an asterisk in a railroad and an EBNF diagram) is part of
+ * the text of the form with the `:`.
  */
 function commentsAfterAllowed(source: Source, end: number): boolean {
-  return (
-    (diagramTypesEndingTextAtPercent.has(source.root.diagramType) &&
-      !diagramTypesWithJisonAccessibilityLines.has(source.root.diagramType)) ||
-    // The comments after a statement that follows the block on its line stay
-    // with that statement, which goes to a line of its own.
-    findTriviaBetween(
-      source,
-      end,
-      findStatementAfter(source, end) ?? lineEndOf(source, end),
-    ).every(
-      (item) =>
-        item.type === "Directive" || textRead(source, ...item.range) === "",
-    )
+  const endsTextAtPercent =
+    diagramTypesEndingTextAtPercent.has(source.root.diagramType) &&
+    !diagramTypesWithJisonAccessibilityLines.has(source.root.diagramType)
+  // The comments after a statement that follows the block on its line stay
+  // with that statement, which goes to a line of its own.
+  return findTriviaBetween(
+    source,
+    end,
+    findStatementAfter(source, end) ?? lineEndOf(source, end),
+  ).every(
+    (item) =>
+      item.type === "Directive" ||
+      textRead(source, ...item.range) === "" ||
+      (endsTextAtPercent && source.text.startsWith("%%", item.range[0])),
   )
 }
 

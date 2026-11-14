@@ -23,6 +23,7 @@ import {
   findErClassNameGaps,
   findErKeptLines,
   isDirectionBroughtToTheColon,
+  isNameWhitespace,
   followsSplitKeyword,
 } from "./er-kept-lines.ts"
 import {
@@ -226,11 +227,12 @@ function printSubgraph(
 }
 
 /**
- * The end of the printed statement, including the U+2028 and U+2029 after
- * the `end` of a subgraph, through the last of them before a comment or a
- * directive, or no extension where another statement follows on the line.
- * The block consumes exactly what the closing prints, so a following written
- * gap cannot print the separators again. `end` followed by a U+2028 is the
+ * The end of the printed statement, including the whitespace characters that
+ * are no space or tab (`isNameWhitespace`: a U+2028, a U+2029, a U+00A0, and
+ * the others) after the `end` of a subgraph, through the last of them before a
+ * comment or a directive, or no extension where another statement follows on
+ * the line. The block consumes exactly what the closing prints, so a following
+ * written gap cannot print them again. `end` followed by a U+2028 is the
  * keyword to the pinned lexer, and one name to a version that counts
  * (docs/er.md, Line separators).
  */
@@ -248,7 +250,7 @@ function printedErEnd(source: Source, statement: ErStatement): number {
       break
     const character = source.text.charAt(position)
     if (!isWhitespace(character)) return from
-    if (character === "\u2028" || character === "\u2029") end = position + 1
+    if (isNameWhitespace(character)) end = position + 1
   }
   return end
 }

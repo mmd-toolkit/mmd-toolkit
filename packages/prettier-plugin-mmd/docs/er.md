@@ -394,29 +394,39 @@ statements-one-per-line/number-name-before-directive-kept] [fixture:
 statements-one-per-line/number-name-then-name-split] [corpus fixture:
 er/lex-name-number-then-letter] [corpus fixture:
 er/lex-name-number2-then-letter] A `subgraph` keyword with a character outside
-ASCII, or a U+2028 or U+2029, between it and its name stays as written, and so
-does the statement after an `end` that such a character or separator follows,
-which stays on the line of the `end` with the gap as written: `endé` is the
-keyword `end` and the entity `é` to the pinned version, and one name to some
-versions that count. A U+2028 or U+2029 that ends the line of an `end` stays
-exactly once, also before a comment or directive and before a blank line and
-another statement. [test: er/statements-one-per-line/R63-er-ascii-after-LS-e]
-[test: er/statements-one-per-line/R44-er-after-separator-LS-e] [test:
+ASCII, or a whitespace character that is no space or tab (a U+2028, a U+2029, a
+U+00A0, a U+3000, and the others; diagrams/er.md, Whitespace), between it and
+its name stays as written, and so does the statement after an `end` that such a
+character follows, which stays on the line of the `end` with the gap as written:
+`endé` is the keyword `end` and the entity `é` to the pinned version, and one
+name to some versions that count. A whitespace character of that kind that ends
+the line of an `end` stays exactly once, also before a comment or directive and
+before a blank line and another statement. [test:
+er/statements-one-per-line/R63-er-ascii-after-LS-e] [test:
+er/statements-one-per-line/R44-er-after-separator-LS-e] [test:
 er/statements-one-per-line/R44-er-after-separator-PS-e] [test:
 er/statements-one-per-line/R74-er-LS-g-comment] [test:
 er/statements-one-per-line/R74-er-LS-g-directive] [test:
 er/statements-one-per-line/R74-er-PS-g-comment] [test:
-er/statements-one-per-line/R74-er-PS-g-directive] A statement that starts with
-one also stays with its following statements when some versions that count read
-the text from the end of the whitespace as a `class` statement or as a direction
-line: the character belongs to the first name to the pinned version, and those
-versions read it as whitespace before the keyword. `class A a` goes on over the
-line there, with two names after the keyword. The whitespace before either name
-can continue across line feeds when it starts with another whitespace character.
-In that case, both gaps stay as written, including comment lines, directives and
-blank lines, through the second name. A line feed directly after the keyword or
-first name does not continue the class statement. [test:
-er/statements-one-per-line/R45-er-class-LS-d] [test:
+er/statements-one-per-line/R74-er-PS-g-directive] [test: U+00A0 in place of the
+separator: er/statements-one-per-line/R63-er-ascii-after-LS-e] [test: U+3000 in
+place of the separator: er/statements-one-per-line/R63-er-ascii-after-LS-e]
+[test: U+00A0 in place of the separator:
+er/statements-one-per-line/R44-er-after-separator-LS-e] [test: U+3000 in place
+of the separator: er/statements-one-per-line/R44-er-after-separator-LS-e] [test:
+U+00A0 in place of the separator:
+er/statements-one-per-line/R74-er-LS-g-directive] [test: U+3000 in place of the
+separator: er/statements-one-per-line/R74-er-LS-g-directive] A statement that
+starts with such a character also stays with its following statements when some
+versions that count read the text from the end of the whitespace as a `class`
+statement or as a direction line: the character belongs to the first name to the
+pinned version, and those versions read it as whitespace before the keyword.
+`class A a` goes on over the line there, with two names after the keyword. The
+whitespace before either name can continue across line feeds when it starts with
+another whitespace character. In that case, both gaps stay as written, including
+comment lines, directives and blank lines, through the second name. A line feed
+directly after the keyword or first name does not continue the class statement.
+[test: er/statements-one-per-line/R45-er-class-LS-d] [test:
 er/statements-one-per-line/R45-er-class-LS-e] [test:
 er/statements-one-per-line/R45-er-class-PS-d] [test:
 er/statements-one-per-line/R45-er-class-PS-e] [test:
@@ -482,43 +492,102 @@ U+2028 and class, and a name on the next line] [test: a line that starts with
 U+2028 and class, and two names in quotes] [test: a line that starts with U+2028
 and class, and a name with a class] [test: a line that starts with U+2028, a
 space, and class] [test: a line that starts with U+2028, a space, a name, and a
-direction line] A statement that starts with a whitespace character other than a
-space or a tab (U+2028, U+2029, or a no-break space that comes before one of
-them), after another statement on its line, stays on its line when a comment
-follows that whitespace, with only whitespace, line breaks, and directives
-between: mermaid.js reads the whitespace as the name of an entity and draws that
-entity, while on a line of its own the whitespace belongs to a comment line,
-which takes it with the whitespace and line breaks before its `%%`, and no
-entity is drawn. At the end of its line before a directive, it is split from the
-statement before it like any other statement, and at the start of its line it is
-whitespace before the comment. [test: U+2028 alone after a name in quotes,
-before a comment] [test: U+2029 alone after a name in quotes and a space, before
-a comment] [test: U+2028 alone after the block of an accessibility description,
-before a comment] [test: two U+2028 alone after a name in quotes, before a
-comment] [test: U+00A0 and U+2028 after a name in quotes, before a comment]
-[test: U+00A0 after a name in quotes at the end of its line, and U+2028 and a
-comment on the next line] [test: U+2028 alone after a name in quotes, at the end
-of its line] [test: U+2028 alone after a name in quotes, before a directive]
-[test: U+2028 alone at the start of its line, before a comment] A statement
-whose first entity is named by a U+2028 or U+2029 alone, after another statement
-on its line, and that goes on after the character with an attribute block, an
-alias, a CSS class, or a relationship, stays on its line too (`"Alpha"`, the
-character, and `{ int x }`): the oldest versions that count read the character
-as whitespace and the rest as part of the statement before it, so the rest
-cannot start a line of its own there. A second name after the character is split
-from it, as is a name of the character and other characters (`LR`), which starts
-a line. [test: U+2028 and an attribute block after a name in quotes] [test:
-U+2028 and an attribute block touching it after a name in quotes] [test: U+2028,
-a directive, and an attribute block after a name in quotes] [test: U+2029 and a
-relationship after a name in quotes] [test: U+2028 and an alias after a name in
-quotes] [test: U+2028 and a CSS class after a name in quotes] [test: U+2028 and
-a second name after a name in quotes] A line of several attributes is printed as
-written when an attribute on it that comes after another holds a pair of `~`, as
-in `int a List~int~ b`: the oldest version that counts reads a generic type with
-a rule that runs from the start of an attribute over the rest of the line to the
-second `~`. A line whose only `~` is in a string or in a directive, which
-mermaid.js removes before it reads the text, and an attribute whose own type
-holds the pair, are split. [fixture:
+direction line] [test: U+00A0 in place of the separator:
+er/statements-one-per-line/class-names-after-directive-ls] [test: U+3000 in
+place of the separator:
+er/statements-one-per-line/class-names-after-directive-ls] [test: U+00A0 in
+place of the separator:
+er/statements-one-per-line/class-second-name-after-directive-ps] [test: U+00A0
+in place of the separator: er/statements-one-per-line/R45-er-class-LS-d] [test:
+U+3000 in place of the separator: er/statements-one-per-line/R45-er-class-LS-d]
+[test: U+00A0 in place of the separator:
+er/statements-one-per-line/R45-er-class-LS-e] [test: U+00A0 in place of the
+separator: er/statements-one-per-line/R45-er-second-name-LS-d] [test: U+3000 in
+place of the separator: er/statements-one-per-line/R45-er-second-name-LS-d]
+[test: U+00A0 in place of the separator:
+er/statements-one-per-line/R45-er-second-name-LS-e] [test: U+00A0 in place of
+the separator: er/statements-one-per-line/R45-er-nonascii-name-LS-d] [test:
+U+00A0 in place of the separator:
+er/statements-one-per-line/R45-er-nonascii-name-LS-e] [test: U+00A0 in place of
+the separator: a line of two ER statements that starts with U+2028] [test:
+U+3000 in place of the separator: a line of two ER statements that starts with
+U+2028] [test: U+00A0 in place of the separator: a line that starts with U+2029
+and class, and two more statements] [test: U+3000 in place of the separator: a
+line that starts with U+2029 and class, and two more statements] [test: U+00A0
+in place of the separator: a statement with U+2028 and class after a space, and
+two more statements] [test: U+00A0 in place of the separator: a line that starts
+with U+2028, class and a character outside ASCII, and one more statement] [test:
+U+00A0 in place of the separator: a line that starts with U+2028 and CLASS in
+upper case, and two more statements] [test: U+00A0 in place of the separator:
+U+2028 between the end of an ER subgraph and the next entity] [test: U+3000 in
+place of the separator: U+2028 between the end of an ER subgraph and the next
+entity] [test: U+00A0 in place of the separator: U+2029 between the end of an ER
+subgraph and a relationship] [test: U+00A0 in place of the separator: U+2028
+after the end of an ER subgraph that nothing follows] [test: U+3000 in place of
+the separator: U+2028 after the end of an ER subgraph that nothing follows]
+[test: U+00A0 in place of the separator: a name in quotes after the end of an ER
+subgraph and a U+2028] [test: U+3000 in place of the separator: a name in quotes
+after the end of an ER subgraph and a U+2028] [test: U+00A0 in place of the
+separator: a directive between the end of an ER subgraph and a U+2028] [test:
+U+00A0 in place of the separator: a directive between the end of an ER subgraph
+and a U+2029 and a name in quotes] A statement that starts with a whitespace
+character other than a space or a tab (U+2028, U+2029, or a no-break space that
+comes before one of them), after another statement on its line, stays on its
+line when a comment follows that whitespace, with only whitespace, line breaks,
+and directives between: mermaid.js reads the whitespace as the name of an entity
+and draws that entity, while on a line of its own the whitespace belongs to a
+comment line, which takes it with the whitespace and line breaks before its
+`%%`, and no entity is drawn. At the end of its line before a directive, it is
+split from the statement before it like any other statement, and at the start of
+its line it is whitespace before the comment. [test: U+2028 alone after a name
+in quotes, before a comment] [test: U+2029 alone after a name in quotes and a
+space, before a comment] [test: U+2028 alone after the block of an accessibility
+description, before a comment] [test: two U+2028 alone after a name in quotes,
+before a comment] [test: U+00A0 and U+2028 after a name in quotes, before a
+comment] [test: U+00A0 after a name in quotes at the end of its line, and U+2028
+and a comment on the next line] [test: U+2028 alone after a name in quotes, at
+the end of its line] [test: U+2028 alone after a name in quotes, before a
+directive] [test: U+2028 alone at the start of its line, before a comment] A
+statement whose first entity is named by whitespace characters alone that are no
+space or tab (a U+2028, a U+2029, a U+00A0, a U+3000, a U+FEFF, and the others;
+one or several of them), after another statement on its line, and that goes on
+after the name with an attribute block, an alias, a CSS class, or a
+relationship, stays on its line too (`"Alpha"`, the character, and `{ int x }`):
+the oldest versions that count read the character as whitespace and the rest as
+part of the statement before it, so the rest cannot start a line of its own
+there. A second name after the character is split from it, as is a name of the
+character and other characters (`LR`), which starts a line. [test: U+2028 and an
+attribute block after a name in quotes] [test: U+2028 and an attribute block
+touching it after a name in quotes] [test: U+2028, a directive, and an attribute
+block after a name in quotes] [test: U+2029 and a relationship after a name in
+quotes] [test: U+2028 and an alias after a name in quotes] [test: U+2028 and a
+CSS class after a name in quotes] [test: U+2028 and a second name after a name
+in quotes] [test: U+00A0 in place of the separator: U+2028 and an attribute
+block after a name in quotes] [test: U+3000 in place of the separator: U+2028
+and an attribute block after a name in quotes] [test: U+00A0 in place of the
+separator: U+2028 and an attribute block touching it after a name in quotes]
+[test: U+3000 in place of the separator: U+2028 and an attribute block touching
+it after a name in quotes] [test: U+00A0 in place of the separator: U+2028, a
+directive, and an attribute block after a name in quotes] [test: U+3000 in place
+of the separator: U+2028, a directive, and an attribute block after a name in
+quotes] [test: U+00A0 in place of the separator: U+2029 and a relationship after
+a name in quotes] [test: U+3000 in place of the separator: U+2029 and a
+relationship after a name in quotes] [test: U+00A0 in place of the separator:
+U+2028 and an alias after a name in quotes] [test: U+3000 in place of the
+separator: U+2028 and an alias after a name in quotes] [test: U+00A0 in place of
+the separator: U+2028 and a CSS class after a name in quotes] [test: U+3000 in
+place of the separator: U+2028 and a CSS class after a name in quotes] [test:
+U+00A0, U+2028, and an attribute block after a name in quotes] [test: U+3000,
+U+2028, and an attribute block after a name in quotes] [test: U+FEFF and an
+attribute block after a name in quotes] [test: U+2003 and an attribute block
+after a name in quotes] [test: U+3000 and an attribute block after a name in
+quotes] [test: U+00A0 and a second name after a name in quotes] A line of
+several attributes is printed as written when an attribute on it that comes
+after another holds a pair of `~`, as in `int a List~int~ b`: the oldest version
+that counts reads a generic type with a rule that runs from the start of an
+attribute over the rest of the line to the second `~`. A line whose only `~` is
+in a string or in a directive, which mermaid.js removes before it reads the
+text, and an attribute whose own type holds the pair, are split. [fixture:
 attribute-spacing/attributes-with-tilde-on-one-line-kept] [fixture:
 attribute-spacing/attributes-with-generic-type-later-on-one-line-kept] [fixture:
 attribute-spacing/attributes-with-generic-type-first-on-one-line-split]

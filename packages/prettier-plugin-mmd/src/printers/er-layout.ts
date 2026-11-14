@@ -225,9 +225,10 @@ export function layoutSubgraphOpening(
     // comment line after U+2028 or U+2029).
     return keptAsWritten(statement.range[0], end)
   }
-  // The keyword and a name that a U+2028, a U+2029, or a character outside
-  // ASCII separates from it are one name to a version that counts, so no space
-  // is set between them (docs/er.md, Subgraphs).
+  // The keyword and a name that a whitespace character that is no space or
+  // tab (a U+2028, a U+2029, a U+00A0, ...) or a character outside ASCII
+  // separates from it are one name to a version that counts, so no space is
+  // set between them (docs/er.md, Subgraphs).
   const rules = new Map<number, GapRule>([
     [
       statement.id.range[0],

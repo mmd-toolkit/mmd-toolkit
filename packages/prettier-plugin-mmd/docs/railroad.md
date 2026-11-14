@@ -1223,6 +1223,21 @@ railroad/description-blocks/ebnf-lines] [fixture:
 railroad/description-blocks/ir-lines] [fixture:
 railroad/description-blocks/peg-lines]
 
+A block that a comment of the diagram type's own kind follows on its line stays
+a block (`accDescr { d } ; c` in an ABNF diagram, `(* c *)` or `/* c */` in an
+EBNF diagram, `# c` in a PEG diagram, `/* c */` in a railroad diagram): the form
+with the colon would take the comment as part of its text. A comment that starts
+with a `%%` ends the text, and the block becomes `accDescr: d %% c`. [fixture:
+railroad/description-blocks/abnf-comment-after-block-kept] [fixture:
+railroad/description-blocks/ebnf-iso-comment-after-block-kept] [fixture:
+railroad/description-blocks/ebnf-c-comment-after-block-kept] [fixture:
+railroad/description-blocks/ir-comment-after-block-kept] [fixture:
+railroad/description-blocks/peg-comment-after-block-kept] [fixture:
+railroad/description-blocks/abnf-percent-comment-after-block] [fixture:
+railroad/description-blocks/ebnf-percent-comment-after-block] [fixture:
+railroad/description-blocks/ir-percent-comment-after-block] [fixture:
+railroad/description-blocks/peg-percent-comment-after-block]
+
 Directives keep their complete source. A block with only a comment or a
 directive keeps its contents. [fixture: railroad/description-blocks/abnf-trivia]
 [fixture: railroad/description-blocks/ebnf-trivia] [fixture:
