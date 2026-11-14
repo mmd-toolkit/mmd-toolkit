@@ -74,7 +74,7 @@ eventmodeling: the helper reads the range of a value and leaves the regions out.
 whether the value is a string, a text, or a description block. [fixture:
 flowchart/lex-string-line-separator-then-comment-line] [fixture:
 block/db-string-paragraph-separator-then-comment-line] [fixture:
-gantt/db-title-line-separator-then-comment-line] [fixture:
+gantt/lex-title-line-separator-then-comment-line] [fixture:
 flowchart/lex-square-label-paragraph-separator-then-comment-line] [fixture:
 flowchart/lex-acc-descr-block-line-separator-then-comment-line] A diagram
 document says where the summary has no field for such a value, or takes it from

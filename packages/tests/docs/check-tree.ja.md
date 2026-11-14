@@ -2338,7 +2338,7 @@ const problems: TreeProblem[] = checkTree(text, tree)
   値は、区切りを除き、その内側に書かれた空白を保った、書かれたテキストです。
   その空白もトークンの中にあります。
   U+2028 の後のコメント領域が special sequence を切る場合も同じです。
-  [fixture: railroad/db-ebnf-special-sequence-line-separator-then-comment-line]
+  [fixture: railroad/lex-ebnf-special-sequence-line-separator-then-comment-line]
 - mermaid.js が読まないテキストのノード（無視されるテキストや文）は、
   書かれたものを、単位の間の空白も含めて示し、範囲の中のコメントは除きます。
   その空白はどのトークンの中にもありません。

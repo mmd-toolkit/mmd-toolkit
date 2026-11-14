@@ -661,7 +661,7 @@ const VALUE_CASES: readonly ValueCase[] = [
     type: "RailroadSpecialSequence",
     name: "railroad special sequences keep a U+2028 before a comment region in the fragment before it",
     diagram: "railroad",
-    fixture: "db-ebnf-special-sequence-line-separator-then-comment-line",
+    fixture: "lex-ebnf-special-sequence-line-separator-then-comment-line",
     token: { type: "RawText", value: `?A${LINE_SEPARATOR}` },
     side: "end",
     problems: [

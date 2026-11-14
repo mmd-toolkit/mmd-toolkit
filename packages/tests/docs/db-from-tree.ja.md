@@ -82,7 +82,7 @@ common.md の Where a directive is と Comment lines の規則で、
 `A`、U+2028、`B` の値になります。
 [fixture: flowchart/lex-string-line-separator-then-comment-line]
 [fixture: block/db-string-paragraph-separator-then-comment-line]
-[fixture: gantt/db-title-line-separator-then-comment-line]
+[fixture: gantt/lex-title-line-separator-then-comment-line]
 [fixture: flowchart/lex-square-label-paragraph-separator-then-comment-line]
 [fixture: flowchart/lex-acc-descr-block-line-separator-then-comment-line]
 そのような値の欄が要約にないとき、またほかから取るときは、図種の文書が述べます。

@@ -2071,7 +2071,7 @@ that says so:
   own text; the value is the written text without them, with the whitespace
   written inside them, and that whitespace lies in the tokens, also where a
   comment region after a U+2028 cuts the special sequence. [fixture:
-  railroad/db-ebnf-special-sequence-line-separator-then-comment-line]
+  railroad/lex-ebnf-special-sequence-line-separator-then-comment-line]
 - A node of text that mermaid.js does not read (an ignored text or statement)
   shows what was written, the whitespace between its units too, and the comments
   in its range are left out; that whitespace lies in no token, except in a run
