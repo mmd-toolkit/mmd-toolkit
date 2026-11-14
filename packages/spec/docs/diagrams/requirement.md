@@ -552,16 +552,13 @@ before the comment rules: `% direction LR` and `# c direction LR` set the
 direction, while a comment line `%% direction LR` is removed before the lexer
 reads the text. Neither does the value need to end at a word boundary:
 `direction LRX` sets `LR`, with `X` as a `direction-text` unit, and
-`direction LR %% c` sets `LR` with the text `%% c`. A comment after a U+2028 or
-U+2029 is the exception: it is read through, and the value goes on after it (see
-[Comment lines](../common.md#comment-lines)). [fixture:
-requirement/lex-direction-text-line-separator-then-comment-line] The values are
-tried in the order given: if the line has `direction`, whitespace, and `TB`
-anywhere, the value is `TB`, so `direction LR x direction TB` sets `TB`;
-otherwise `BT` is tried, and so on. For a value, the lexer takes the last
-`direction` of the run that the value follows: `direction BT x direction BT` is
-read at its last `direction`, with `direction BT x` as a `direction-text` unit.
-[fixture: requirement/lex-direction-line-text-before-and-after] [fixture:
+`direction LR %% c` sets `LR` with the text `%% c`. The values are tried in the
+order given: if the line has `direction`, whitespace, and `TB` anywhere, the
+value is `TB`, so `direction LR x direction TB` sets `TB`; otherwise `BT` is
+tried, and so on. For a value, the lexer takes the last `direction` of the run
+that the value follows: `direction BT x direction BT` is read at its last
+`direction`, with `direction BT x` as a `direction-text` unit. [fixture:
+requirement/lex-direction-line-text-before-and-after] [fixture:
 requirement/lex-title-direction] [fixture:
 requirement/lex-direction-line-in-string-name] [fixture:
 requirement/lex-direction-line-word-before] [fixture:
@@ -580,13 +577,44 @@ requirement/lex-direction-line-percent] [fixture:
 requirement/lex-direction-tb-first] [fixture:
 requirement/lex-direction-line-same-value-twice] [fixture:
 requirement/db-direction-lower-case] [fixture:
-requirement/lex-direction-upper-case] The whitespace between `direction` and its
-value may hold a line feed, an empty line, a tab, or a U+2028, while the run
-before `direction` may not hold a U+2028: `a`, U+2028, and `direction LR` is one
-unquoted text, which is no statement, and is rejected. The text after the value
-may hold a U+2028. `direction` alone on its line, with no value, and
-`directionLR` are names, and rejected. [fixture:
-requirement/lex-direction-line-feed-before-value] [fixture:
+requirement/lex-direction-upper-case] In the text after the value, a comment
+after a U+2028 or U+2029 is read through, and the text goes on after it (see
+[Comment lines](../common.md#comment-lines)). [fixture:
+requirement/lex-direction-text-line-separator-then-comment-line] [fixture:
+requirement/lex-direction-text-line-separator-comment-line-directive-next]
+[fixture: requirement/lex-direction-text-line-separator-comment-line-space-next]
+[fixture:
+requirement/lex-direction-text-line-separator-comment-line-separator-next]
+[fixture:
+requirement/gram-direction-text-line-separator-comment-line-empty-line]
+[fixture:
+requirement/lex-direction-text-line-separator-comment-line-end-of-text]
+[fixture: requirement/lex-direction-text-line-separator-comment-line-cr]
+[fixture: requirement/lex-direction-text-line-separator-comment-line-crlf]
+[fixture:
+requirement/lex-direction-text-line-separator-comment-line-two-comment-lines]
+[fixture:
+requirement/lex-direction-text-line-separator-comment-line-two-regions]
+[fixture:
+requirement/lex-direction-text-line-separator-comment-line-spaces-before]
+[fixture:
+requirement/lex-direction-text-line-separator-comment-line-line-feed-before]
+[fixture:
+requirement/lex-direction-text-line-separator-comment-line-directive-before]
+[fixture:
+requirement/lex-direction-text-line-separator-comment-line-line-rule-before]
+[fixture:
+requirement/lex-direction-text-line-separator-comment-line-line-rule-after]
+[fixture:
+requirement/gram-direction-text-line-separator-comment-line-bare-percent]
+[fixture:
+requirement/gram-direction-text-line-separator-comment-line-percent-brace] The
+whitespace between `direction` and its value may hold a line feed, an empty
+line, a tab, or a U+2028, while the run before `direction` may not hold a
+U+2028: `a`, U+2028, and `direction LR` is one unquoted text, which is no
+statement, and is rejected. The text after the value may hold a U+2028.
+`direction` alone on its line, with no value, and `directionLR` are names, and
+rejected. [fixture: requirement/lex-direction-line-feed-before-value] [fixture:
 requirement/lex-direction-blank-line-before-value] [fixture:
 requirement/lex-direction-tab-before-value] [fixture:
 requirement/lex-direction-value-line-separator] [fixture:
@@ -669,13 +697,8 @@ context), so the text starts at the first character that is not whitespace,
 which may be on a later line: `accTitle:`, a line break, and `T` has the title
 `T`. At the end of the text the input is rejected (see
 [Units and contexts](#units-and-contexts)). `;`, `#`, and `%%` are characters of
-the text: `accTitle: a;b #c %% d` has the title `a;b #c %% d`. A comment after a
-U+2028 or U+2029 is the exception: it is read through, and the value goes on
-after it (see [Comment lines](../common.md#comment-lines)). [fixture:
-requirement/db-acc-title-line-separator-then-comment-line] [fixture:
-requirement/db-acc-descr-line-separator-then-comment-line] [fixture:
-requirement/db-acc-descr-block-line-separator-then-comment-line] The whitespace
-at the end of the text is read into the unit and left out of the value (see
+the text: `accTitle: a;b #c %% d` has the title `a;b #c %% d`. The whitespace at
+the end of the text is read into the unit and left out of the value (see
 [RequirementLiteral](../ast/requirement.md#requirementliteral)). An `accTitle`
 line may start wherever a statement starts: right after `}`, after a directive,
 and after a comment line. [fixture: requirement/db-acc-title-descr] [fixture:
@@ -683,7 +706,27 @@ requirement/gram-acc-title-line-feed-then-text] [fixture:
 requirement/lex-acc-title-semicolon-hash-percent] [fixture:
 requirement/lex-acc-title-after-close-brace] [fixture:
 requirement/lex-acc-title-after-directive] [fixture:
-requirement/lex-acc-title-after-comment-line]
+requirement/lex-acc-title-after-comment-line] In the text of an accessibility
+title or description, a comment after a U+2028 or U+2029 is read through, and
+the text goes on after it (see [Comment lines](../common.md#comment-lines)).
+[fixture: requirement/db-acc-title-line-separator-then-comment-line] [fixture:
+requirement/db-acc-descr-line-separator-then-comment-line] [fixture:
+requirement/db-acc-title-line-separator-comment-line-directive-next] [fixture:
+requirement/db-acc-title-line-separator-comment-line-space-next] [fixture:
+requirement/db-acc-title-line-separator-comment-line-separator-next] [fixture:
+requirement/gram-acc-title-line-separator-comment-line-empty-line] [fixture:
+requirement/lex-acc-title-line-separator-comment-line-end-of-text] [fixture:
+requirement/db-acc-title-line-separator-comment-line-cr] [fixture:
+requirement/db-acc-title-line-separator-comment-line-crlf] [fixture:
+requirement/db-acc-title-line-separator-comment-line-two-comment-lines]
+[fixture: requirement/db-acc-title-line-separator-comment-line-two-regions]
+[fixture: requirement/db-acc-title-line-separator-comment-line-spaces-before]
+[fixture: requirement/db-acc-title-line-separator-comment-line-line-feed-before]
+[fixture: requirement/db-acc-title-line-separator-comment-line-directive-before]
+[fixture: requirement/db-acc-title-line-separator-comment-line-line-rule-before]
+[fixture: requirement/db-acc-title-line-separator-comment-line-line-rule-after]
+[fixture: requirement/gram-acc-title-line-separator-comment-line-bare-percent]
+[fixture: requirement/gram-acc-title-line-separator-comment-line-percent-brace]
 
 In the description block context, `}` is a `}` unit and leaves the context, and
 one or more characters other than `}`, line feeds included, are a
@@ -699,7 +742,37 @@ requirement/gram-acc-descr-block-empty] [fixture:
 requirement/gram-acc-descr-block-directive-only] [fixture:
 requirement/gram-acc-descr-block-comment-line-only] [fixture:
 requirement/lex-acc-descr-block-brace-in-text] [fixture:
-requirement/lex-acc-descr-block-unclosed]
+requirement/lex-acc-descr-block-unclosed] A comment line inside the text is
+removed, also after a U+2028 or U+2029 on a line of the text, and the text goes
+on after it (see [Comment lines](../common.md#comment-lines)). [fixture:
+requirement/db-acc-descr-block-line-separator-then-comment-line] [fixture:
+requirement/db-acc-descr-block-line-separator-comment-line-directive-next]
+[fixture: requirement/db-acc-descr-block-line-separator-comment-line-space-next]
+[fixture:
+requirement/db-acc-descr-block-line-separator-comment-line-separator-next]
+[fixture: requirement/db-acc-descr-block-line-separator-comment-line-empty-line]
+[fixture:
+requirement/gram-acc-descr-block-line-separator-comment-line-end-of-text]
+[fixture: requirement/db-acc-descr-block-line-separator-comment-line-cr]
+[fixture: requirement/db-acc-descr-block-line-separator-comment-line-crlf]
+[fixture:
+requirement/db-acc-descr-block-line-separator-comment-line-two-comment-lines]
+[fixture:
+requirement/db-acc-descr-block-line-separator-comment-line-two-regions]
+[fixture:
+requirement/db-acc-descr-block-line-separator-comment-line-spaces-before]
+[fixture:
+requirement/db-acc-descr-block-line-separator-comment-line-line-feed-before]
+[fixture:
+requirement/db-acc-descr-block-line-separator-comment-line-directive-before]
+[fixture:
+requirement/db-acc-descr-block-line-separator-comment-line-line-rule-before]
+[fixture:
+requirement/db-acc-descr-block-line-separator-comment-line-line-rule-after]
+[fixture:
+requirement/db-acc-descr-block-line-separator-comment-line-bare-percent]
+[fixture:
+requirement/gram-acc-descr-block-line-separator-comment-line-percent-brace]
 
 The rules that enter these contexts are rules of the statement context only; in
 the style context, `accDescr` is a `style-word` (see
@@ -750,7 +823,21 @@ after it (see [Comment lines](../common.md#comment-lines)). [fixture:
 requirement/db-name-line-separator-then-comment-line] [fixture:
 requirement/db-name-paragraph-separator-then-comment-line] [fixture:
 requirement/db-text-line-separator-then-comment-line] [fixture:
-requirement/db-string-line-separator-then-comment-line]
+requirement/db-string-line-separator-then-comment-line] [fixture:
+requirement/db-name-line-separator-comment-line-directive-next] [fixture:
+requirement/db-name-line-separator-comment-line-space-next] [fixture:
+requirement/db-name-line-separator-comment-line-separator-next] [fixture:
+requirement/gram-name-line-separator-comment-line-empty-line] [fixture:
+requirement/gram-name-line-separator-comment-line-end-of-text] [fixture:
+requirement/db-name-line-separator-comment-line-cr] [fixture:
+requirement/db-name-line-separator-comment-line-crlf] [fixture:
+requirement/db-name-line-separator-comment-line-two-comment-lines] [fixture:
+requirement/db-name-line-separator-comment-line-two-regions] [fixture:
+requirement/db-name-line-separator-comment-line-spaces-before] [fixture:
+requirement/db-name-line-separator-comment-line-line-feed-before] [fixture:
+requirement/db-name-line-separator-comment-line-directive-before] [fixture:
+requirement/gram-name-line-separator-comment-line-bare-percent] [fixture:
+requirement/gram-name-line-separator-comment-line-percent-brace]
 
 ## Grammar
 

@@ -66,7 +66,31 @@ flowchart/header-after-empty-braces-line]
 [fixture: flowchart/db-square-label-paragraph-separator-then-comment-line]
 [fixture: flowchart/db-string-line-separator-then-comment-line]
 [fixture: flowchart/db-style-line-separator-then-comment-line]
-[fixture: flowchart/db-subgraph-name-line-separator-then-comment-line]
+[fixture: flowchart/db-subgraph-name-line-separator-then-comment-line] [fixture:
+flowchart/db-acc-descr-block-line-separator-comment-line-directive-next]
+[fixture: flowchart/db-acc-descr-block-line-separator-comment-line-space-next]
+[fixture:
+flowchart/db-acc-descr-block-line-separator-comment-line-separator-next]
+[fixture: flowchart/db-acc-descr-block-line-separator-comment-line-empty-line]
+[fixture: flowchart/lex-acc-descr-block-line-separator-comment-line-end-of-text]
+[fixture: flowchart/db-acc-descr-block-line-separator-comment-line-cr]
+[fixture: flowchart/db-acc-descr-block-line-separator-comment-line-crlf]
+[fixture:
+flowchart/db-acc-descr-block-line-separator-comment-line-two-comment-lines]
+[fixture: flowchart/db-acc-descr-block-line-separator-comment-line-two-regions]
+[fixture:
+flowchart/db-acc-descr-block-line-separator-comment-line-spaces-before]
+[fixture:
+flowchart/db-acc-descr-block-line-separator-comment-line-line-feed-before]
+[fixture:
+flowchart/db-acc-descr-block-line-separator-comment-line-directive-before]
+[fixture:
+flowchart/db-acc-descr-block-line-separator-comment-line-line-rule-before]
+[fixture:
+flowchart/db-acc-descr-block-line-separator-comment-line-line-rule-after]
+[fixture: flowchart/db-acc-descr-block-line-separator-comment-line-bare-percent]
+[fixture:
+flowchart/gram-acc-descr-block-line-separator-comment-line-percent-brace]
 最後の文字の後に字句解析器が読む `\n` は、
 図のテキストの一部です（[テキストの終わり](../common.ja.md#テキストの終わり)）。
 規則は、他の改行と同じくそれを読み、それについての条件を確かめます。
@@ -581,9 +605,6 @@ mermaid.js は `direction-text` の単位を読みません。
   `direction TB %% vertical` の `%%` は、
   行の中でテキストの後にあるのでコメントではなく、値の後のテキストの一部で、
   次の行のリンクは読まれます。
-  U+2028 や U+2029 の後のコメントは例外で、読み飛ばされ、
-  値はその後に続きます（[コメント行](../common.ja.md#コメント行) を参照）。
-  [fixture: flowchart/tokens-ignored-text-comment-in-direction-line]
   文字列もこの規則を防ぎません。
   `A["Set direction LR"]-->B` は、`A[Set direction LR]-->B` と同じく方向の行で、
   どちらも頂点も辺も持ちません。
@@ -591,6 +612,37 @@ mermaid.js は `direction-text` の単位を読みません。
   flowchart/lex-direction-line-percent-after-value] [fixture:
   flowchart/lex-direction-line-in-string-label] [fixture:
   flowchart/lex-direction-line-in-label-with-link]
+  値の後のテキストでは、U+2028 や U+2029 の後のコメントは読み飛ばされ、
+  テキストはその後に続きます（[コメント行](../common.ja.md#コメント行)
+  を参照）。 [fixture: flowchart/tokens-ignored-text-comment-in-direction-line]
+  [fixture:
+  flowchart/lex-direction-text-line-separator-comment-line-directive-next]
+  [fixture: flowchart/lex-direction-text-line-separator-comment-line-space-next]
+  [fixture:
+  flowchart/lex-direction-text-line-separator-comment-line-separator-next]
+  [fixture: flowchart/lex-direction-text-line-separator-comment-line-empty-line]
+  [fixture:
+  flowchart/gram-direction-text-line-separator-comment-line-end-of-text]
+  [fixture: flowchart/lex-direction-text-line-separator-comment-line-cr]
+  [fixture: flowchart/lex-direction-text-line-separator-comment-line-crlf]
+  [fixture:
+  flowchart/lex-direction-text-line-separator-comment-line-two-comment-lines]
+  [fixture:
+  flowchart/lex-direction-text-line-separator-comment-line-two-regions]
+  [fixture:
+  flowchart/lex-direction-text-line-separator-comment-line-spaces-before]
+  [fixture:
+  flowchart/lex-direction-text-line-separator-comment-line-line-feed-before]
+  [fixture:
+  flowchart/lex-direction-text-line-separator-comment-line-directive-before]
+  [fixture:
+  flowchart/lex-direction-text-line-separator-comment-line-line-rule-before]
+  [fixture:
+  flowchart/lex-direction-text-line-separator-comment-line-line-rule-after]
+  [fixture:
+  flowchart/lex-direction-text-line-separator-comment-line-bare-percent]
+  [fixture:
+  flowchart/lex-direction-text-line-separator-comment-line-percent-brace]
   subgraph の中で、`direction TB;` は値の後のテキスト `;` を持ち、
   `direction TB; -->B` はテキスト `; -->B` を持つので、リンクは読まれません。
   一方、`-->B` が次の行にあると、リンクに元がなく、入力は拒否されます。

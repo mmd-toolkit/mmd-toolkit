@@ -1,0 +1,25 @@
+{
+  "source": {
+    "kind": "authored",
+    "note": "er.md The style context: a comment line after a U+2028 in the styles of classDef is read through, and the value goes on after it; the Db summary holds `A`, U+2028, and `B`."
+  },
+  "accepted": true,
+  "diagramType": "er",
+  "db": {
+    "direction": "TB",
+    "title": "",
+    "accTitle": "",
+    "accDescr": "",
+    "entities": [],
+    "relationships": [],
+    "classes": [
+      {
+        "id": "c",
+        "styles": [
+          "A B"
+        ]
+      }
+    ],
+    "subGraphs": []
+  }
+}

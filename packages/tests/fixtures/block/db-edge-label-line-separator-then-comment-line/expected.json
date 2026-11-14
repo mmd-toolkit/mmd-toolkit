@@ -1,0 +1,39 @@
+{
+  "source": {
+    "kind": "authored",
+    "note": "block.md Strings: a comment line after a U+2028 in the edge label string is read through, and the value goes on after it; the Db summary holds `A`, U+2028, and `B`."
+  },
+  "accepted": true,
+  "diagramType": "block",
+  "db": {
+    "root": {
+      "type": "composite",
+      "columns": -1,
+      "children": [
+        {
+          "id": "X",
+          "label": "X",
+          "type": "na"
+        },
+        {
+          "id": "Y",
+          "label": "Y",
+          "type": "na"
+        }
+      ]
+    },
+    "unplaced": [],
+    "edges": [
+      {
+        "start": "X",
+        "end": "Y",
+        "label": "A B",
+        "thickness": "normal",
+        "pattern": "solid",
+        "arrowTypeStart": "arrow_open",
+        "arrowTypeEnd": "arrow_point"
+      }
+    ],
+    "classes": []
+  }
+}

@@ -1345,22 +1345,8 @@ the header, and a comment at the end of the text change nothing. A comment takes
 nothing before it: `quadrant-1 ab%% c` has the text `ab`, and
 `x-axis L --> R%% c` the texts `L` and `R`. A `%%` inside a title, an
 accessibility text, a description block, or a string is a character of it, and
-inside the brackets of a point it makes the input rejected. A comment line after
-a U+2028 or U+2029 inside a text, a name, a title, an accessibility text, a
-description block, or a string is removed, its line break included, and the
-value goes on with the next line (see
-[Comment lines](../common.md#comment-lines)): `quadrant-1 a`, U+2028, `%% c`, a
-line break, and `b` has the text `a`, U+2028, and `b`. [fixture:
-quadrant/db-quadrant-text-line-separator-then-comment-line] [fixture:
-quadrant/db-quadrant-text-paragraph-separator-then-comment-line] [fixture:
-quadrant/db-title-line-separator-then-comment-line] [fixture:
-quadrant/db-axis-text-line-separator-then-comment-line] [fixture:
-quadrant/db-point-name-line-separator-then-comment-line] [fixture:
-quadrant/db-acc-title-line-separator-then-comment-line] [fixture:
-quadrant/db-acc-descr-line-separator-then-comment-line] [fixture:
-quadrant/db-acc-descr-block-line-separator-then-comment-line] [fixture:
-quadrant/db-string-line-separator-then-comment-line] A line `%%` alone, and
-`%%{` where no directive starts, such as a line `%%{ }%%`, are comments.
+inside the brackets of a point it makes the input rejected. A line `%%` alone,
+and `%%{` where no directive starts, such as a line `%%{ }%%`, are comments.
 [fixture: quadrant/db-comment-line] [fixture: quadrant/db-comment-line-last]
 [fixture: quadrant/db-comment-line-no-line-feed] [fixture:
 quadrant/db-comment-line-indented] [fixture:
@@ -1405,7 +1391,49 @@ quadrant/gram-grid-comment-glued-classdef-name] [fixture:
 quadrant/gram-grid-comment-point-bare] [fixture:
 quadrant/db-bare-percent-line-after-point] [fixture:
 quadrant/db-comment-glued-after-semicolon] [fixture:
-quadrant/db-empty-braces-line-between-statements]
+quadrant/db-empty-braces-line-between-statements] A comment line after a U+2028
+or U+2029 inside a text, a name, a title, an accessibility text, a description
+block, or a string is removed, its line break included, and the value goes on
+with the next line (see [Comment lines](../common.md#comment-lines)):
+`quadrant-1 a`, U+2028, `%% c`, a line break, and `b` has the text `a`, U+2028,
+and `b`. [fixture: quadrant/db-quadrant-text-line-separator-then-comment-line]
+[fixture: quadrant/db-quadrant-text-paragraph-separator-then-comment-line]
+[fixture: quadrant/db-title-line-separator-then-comment-line] [fixture:
+quadrant/db-axis-text-line-separator-then-comment-line] [fixture:
+quadrant/db-point-name-line-separator-then-comment-line] [fixture:
+quadrant/db-acc-title-line-separator-then-comment-line] [fixture:
+quadrant/db-acc-descr-line-separator-then-comment-line] [fixture:
+quadrant/db-acc-descr-block-line-separator-then-comment-line] [fixture:
+quadrant/db-string-line-separator-then-comment-line] [fixture:
+quadrant/db-quadrant-text-line-separator-comment-line-directive-next] [fixture:
+quadrant/db-quadrant-text-line-separator-comment-line-space-next] [fixture:
+quadrant/db-quadrant-text-line-separator-comment-line-separator-next] [fixture:
+quadrant/gram-quadrant-text-line-separator-comment-line-empty-line] [fixture:
+quadrant/lex-quadrant-text-line-separator-comment-line-end-of-text] [fixture:
+quadrant/db-quadrant-text-line-separator-comment-line-cr] [fixture:
+quadrant/db-quadrant-text-line-separator-comment-line-crlf] [fixture:
+quadrant/db-quadrant-text-line-separator-comment-line-two-comment-lines]
+[fixture: quadrant/db-quadrant-text-line-separator-comment-line-two-regions]
+[fixture: quadrant/db-quadrant-text-line-separator-comment-line-spaces-before]
+[fixture:
+quadrant/db-quadrant-text-line-separator-comment-line-line-feed-before]
+[fixture:
+quadrant/db-quadrant-text-line-separator-comment-line-directive-before]
+[fixture: quadrant/gram-quadrant-text-line-separator-comment-line-bare-percent]
+[fixture: quadrant/gram-quadrant-text-line-separator-comment-line-percent-brace]
+[fixture: quadrant/db-x-right-text-line-separator-then-comment-line] [fixture:
+quadrant/db-y-bottom-text-line-separator-then-comment-line] [fixture:
+quadrant/db-y-top-text-line-separator-then-comment-line] [fixture:
+quadrant/db-x-left-string-line-separator-then-comment-line] [fixture:
+quadrant/db-x-right-string-line-separator-then-comment-line] [fixture:
+quadrant/db-y-bottom-string-line-separator-then-comment-line] [fixture:
+quadrant/db-y-top-string-line-separator-then-comment-line] [fixture:
+quadrant/db-point-name-string-line-separator-then-comment-line] [fixture:
+quadrant/db-x-left-markdown-line-separator-then-comment-line] [fixture:
+quadrant/db-x-right-markdown-line-separator-then-comment-line] [fixture:
+quadrant/db-y-bottom-markdown-line-separator-then-comment-line] [fixture:
+quadrant/db-y-top-markdown-line-separator-then-comment-line] [fixture:
+quadrant/db-point-name-markdown-line-separator-then-comment-line]
 
 mermaid.js reads a comment that is glued to a unit of one character together
 with that character, the lexer reading a run of letters, a run of digits, a run

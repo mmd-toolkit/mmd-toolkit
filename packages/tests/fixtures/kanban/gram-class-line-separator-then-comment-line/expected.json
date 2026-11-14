@@ -1,0 +1,11 @@
+{
+  "source": {
+    "kind": "authored",
+    "note": "kanban.md Lexical structure: class text ends at a U+2028, so `:::a` and `b` after the comment line are two statements on one line; rejected, as without the comment line."
+  },
+  "accepted": false,
+  "error": {
+    "name": "Error",
+    "message": "Parse error on line 4:\nkanban S   I :::a b\n-----------------^\nExpecting 'SPACELINE', 'NL', 'EOF', got 'SPACELIST'"
+  }
+}

@@ -942,7 +942,33 @@ value goes on after it (see [Comment lines](../common.md#comment-lines)).
 xychart/db-string-paragraph-separator-then-comment-line] [fixture:
 xychart/db-acc-title-line-separator-then-comment-line] [fixture:
 xychart/db-acc-descr-line-separator-then-comment-line] [fixture:
-xychart/db-acc-descr-block-line-separator-then-comment-line]
+xychart/db-acc-descr-block-line-separator-then-comment-line] [fixture:
+xychart/db-string-line-separator-comment-line-directive-next] [fixture:
+xychart/db-string-line-separator-comment-line-space-next] [fixture:
+xychart/db-string-line-separator-comment-line-separator-next] [fixture:
+xychart/db-string-line-separator-comment-line-empty-line] [fixture:
+xychart/gram-string-line-separator-comment-line-end-of-text] [fixture:
+xychart/db-string-line-separator-comment-line-cr] [fixture:
+xychart/db-string-line-separator-comment-line-crlf] [fixture:
+xychart/db-string-line-separator-comment-line-two-comment-lines] [fixture:
+xychart/db-string-line-separator-comment-line-two-regions] [fixture:
+xychart/db-string-line-separator-comment-line-spaces-before] [fixture:
+xychart/db-string-line-separator-comment-line-line-feed-before] [fixture:
+xychart/db-string-line-separator-comment-line-directive-before] [fixture:
+xychart/db-string-line-separator-comment-line-line-rule-before] [fixture:
+xychart/db-string-line-separator-comment-line-line-rule-after] [fixture:
+xychart/db-string-line-separator-comment-line-bare-percent] [fixture:
+xychart/db-string-line-separator-comment-line-percent-brace] [fixture:
+xychart/db-x-title-string-line-separator-then-comment-line] [fixture:
+xychart/db-y-title-string-line-separator-then-comment-line] [fixture:
+xychart/db-category-string-line-separator-then-comment-line] [fixture:
+xychart/db-plot-title-string-line-separator-then-comment-line] [fixture:
+xychart/db-point-label-string-line-separator-then-comment-line] [fixture:
+xychart/db-title-words-line-separator-then-comment-line] [fixture:
+xychart/db-x-title-words-line-separator-then-comment-line] [fixture:
+xychart/db-y-title-words-line-separator-then-comment-line] [fixture:
+xychart/db-category-words-line-separator-then-comment-line] [fixture:
+xychart/db-plot-title-words-line-separator-then-comment-line]
 
 mermaid.js reads a comment that is glued to a unit of one character together
 with that character: `title T%% c`, `x-axis T%% c`, `line [1]%% c`,

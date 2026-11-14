@@ -254,8 +254,25 @@ LS、PS、単独の percent、セミコロン、コロン、引用符、バッ�
 共通のコメント領域が取り除くことがあります。
 そのとき値は次の物理行へ続くので、行の値はそこで終わりません。
 `accTitle: A`、U+2028、`%% c`、改行、`B` のアクセシビリティタイトルは `A`、
-U+2028、`B` です。 [fixture: info/lex-line-comment-region-ls]
-[fixture: info/lex-acc-title-line-separator-then-comment-line]
+U+2028、`B` です。 [fixture: info/lex-line-comment-region-ls] [fixture:
+info/lex-acc-title-line-separator-then-comment-line] [fixture:
+info/lex-acc-title-line-separator-comment-line-directive-next] [fixture:
+info/lex-acc-title-line-separator-comment-line-space-next] [fixture:
+info/lex-acc-title-line-separator-comment-line-separator-next] [fixture:
+info/lex-acc-title-line-separator-comment-line-empty-line] [fixture:
+info/lex-acc-title-line-separator-comment-line-end-of-text] [fixture:
+info/lex-acc-title-line-separator-comment-line-cr] [fixture:
+info/lex-acc-title-line-separator-comment-line-crlf] [fixture:
+info/lex-acc-title-line-separator-comment-line-two-comment-lines] [fixture:
+info/lex-acc-title-line-separator-comment-line-two-regions] [fixture:
+info/lex-acc-title-line-separator-comment-line-spaces-before] [fixture:
+info/lex-acc-title-line-separator-comment-line-line-feed-before] [fixture:
+info/lex-acc-title-line-separator-comment-line-directive-before] [fixture:
+info/lex-acc-title-line-separator-comment-line-line-rule-before] [fixture:
+info/lex-acc-title-line-separator-comment-line-line-rule-after] [fixture:
+info/lex-acc-title-line-separator-comment-line-bare-percent] [fixture:
+info/lex-acc-title-line-separator-comment-line-percent-brace] [fixture:
+info/lex-accdescr-line-line-separator-then-comment-line]
 
 ブロックの選択肢は `accDescr`、0 個以上の共通の空白、`{`、
 最初の `}` までの任意の内容を読みます。

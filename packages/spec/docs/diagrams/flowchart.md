@@ -62,13 +62,36 @@ flowchart/db-square-label-line-separator-then-comment-line] [fixture:
 flowchart/db-square-label-paragraph-separator-then-comment-line] [fixture:
 flowchart/db-string-line-separator-then-comment-line] [fixture:
 flowchart/db-style-line-separator-then-comment-line] [fixture:
-flowchart/db-subgraph-name-line-separator-then-comment-line] The `\n` that the
-lexer reads after the last character ([End of text](../common.md#end-of-text))
-is part of the diagram text: the rules read it, and check conditions on it, like
-any other line feed, and `end-of-text` in the grammar is the position after it.
-So `flowchart` alone, without a line break, is accepted: the header context
-reads the added `\n` as the end of the header. [fixture:
-flowchart/header-only-no-line-break] [fixture:
+flowchart/db-subgraph-name-line-separator-then-comment-line] [fixture:
+flowchart/db-acc-descr-block-line-separator-comment-line-directive-next]
+[fixture: flowchart/db-acc-descr-block-line-separator-comment-line-space-next]
+[fixture:
+flowchart/db-acc-descr-block-line-separator-comment-line-separator-next]
+[fixture: flowchart/db-acc-descr-block-line-separator-comment-line-empty-line]
+[fixture: flowchart/lex-acc-descr-block-line-separator-comment-line-end-of-text]
+[fixture: flowchart/db-acc-descr-block-line-separator-comment-line-cr] [fixture:
+flowchart/db-acc-descr-block-line-separator-comment-line-crlf] [fixture:
+flowchart/db-acc-descr-block-line-separator-comment-line-two-comment-lines]
+[fixture: flowchart/db-acc-descr-block-line-separator-comment-line-two-regions]
+[fixture:
+flowchart/db-acc-descr-block-line-separator-comment-line-spaces-before]
+[fixture:
+flowchart/db-acc-descr-block-line-separator-comment-line-line-feed-before]
+[fixture:
+flowchart/db-acc-descr-block-line-separator-comment-line-directive-before]
+[fixture:
+flowchart/db-acc-descr-block-line-separator-comment-line-line-rule-before]
+[fixture:
+flowchart/db-acc-descr-block-line-separator-comment-line-line-rule-after]
+[fixture: flowchart/db-acc-descr-block-line-separator-comment-line-bare-percent]
+[fixture:
+flowchart/gram-acc-descr-block-line-separator-comment-line-percent-brace] The
+`\n` that the lexer reads after the last character
+([End of text](../common.md#end-of-text)) is part of the diagram text: the rules
+read it, and check conditions on it, like any other line feed, and `end-of-text`
+in the grammar is the position after it. So `flowchart` alone, without a line
+break, is accepted: the header context reads the added `\n` as the end of the
+header. [fixture: flowchart/header-only-no-line-break] [fixture:
 flowchart/header-direction-trailing-space] This section describes the diagram's
 own unit rules, item 4 of [Reading a source](../common.md#reading-a-source).
 
@@ -521,19 +544,45 @@ none of them applies, and it takes the rest of the line:
   the subgraph the direction `TB` and reads no link, and in
   `direction TB %% vertical` the `%%`, which follows text on its line, is no
   comment but part of the text after the value, while the link on the next line
-  is read. A comment after a U+2028 or U+2029 is the exception: it is read
-  through, and the value goes on after it (see
-  [Comment lines](../common.md#comment-lines)). [fixture:
-  flowchart/tokens-ignored-text-comment-in-direction-line] A string does not
-  keep the rule out: `A["Set direction LR"]-->B` is a direction line, as
-  `A[Set direction LR]-->B` is, and neither has vertices or edges. [fixture:
-  flowchart/lex-direction-line-then-semicolon-statement] [fixture:
-  flowchart/lex-direction-line-percent-after-value] [fixture:
+  is read. A string does not keep the rule out: `A["Set direction LR"]-->B` is a
+  direction line, as `A[Set direction LR]-->B` is, and neither has vertices or
+  edges. [fixture: flowchart/lex-direction-line-then-semicolon-statement]
+  [fixture: flowchart/lex-direction-line-percent-after-value] [fixture:
   flowchart/lex-direction-line-in-string-label] [fixture:
-  flowchart/lex-direction-line-in-label-with-link] In a subgraph,
-  `direction TB;` has the text `;` after the value, and `direction TB; -->B` the
-  text `; -->B`, so no link is read, while with `-->B` on the next line the link
-  has no source and the input is rejected. [fixture:
+  flowchart/lex-direction-line-in-label-with-link] In the text after the value,
+  a comment after a U+2028 or U+2029 is read through, and the text goes on after
+  it (see [Comment lines](../common.md#comment-lines)). [fixture:
+  flowchart/tokens-ignored-text-comment-in-direction-line] [fixture:
+  flowchart/lex-direction-text-line-separator-comment-line-directive-next]
+  [fixture: flowchart/lex-direction-text-line-separator-comment-line-space-next]
+  [fixture:
+  flowchart/lex-direction-text-line-separator-comment-line-separator-next]
+  [fixture: flowchart/lex-direction-text-line-separator-comment-line-empty-line]
+  [fixture:
+  flowchart/gram-direction-text-line-separator-comment-line-end-of-text]
+  [fixture: flowchart/lex-direction-text-line-separator-comment-line-cr]
+  [fixture: flowchart/lex-direction-text-line-separator-comment-line-crlf]
+  [fixture:
+  flowchart/lex-direction-text-line-separator-comment-line-two-comment-lines]
+  [fixture:
+  flowchart/lex-direction-text-line-separator-comment-line-two-regions]
+  [fixture:
+  flowchart/lex-direction-text-line-separator-comment-line-spaces-before]
+  [fixture:
+  flowchart/lex-direction-text-line-separator-comment-line-line-feed-before]
+  [fixture:
+  flowchart/lex-direction-text-line-separator-comment-line-directive-before]
+  [fixture:
+  flowchart/lex-direction-text-line-separator-comment-line-line-rule-before]
+  [fixture:
+  flowchart/lex-direction-text-line-separator-comment-line-line-rule-after]
+  [fixture:
+  flowchart/lex-direction-text-line-separator-comment-line-bare-percent]
+  [fixture:
+  flowchart/lex-direction-text-line-separator-comment-line-percent-brace] In a
+  subgraph, `direction TB;` has the text `;` after the value, and
+  `direction TB; -->B` the text `; -->B`, so no link is read, while with `-->B`
+  on the next line the link has no source and the input is rejected. [fixture:
   flowchart/lex-direction-line-semicolon-after-value] [fixture:
   flowchart/lex-direction-line-semicolon-link-after-value] [fixture:
   flowchart/lex-direction-line-then-link-without-source]

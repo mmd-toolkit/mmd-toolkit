@@ -164,7 +164,24 @@ cynefin/db-string-paragraph-separator-then-comment-line] [fixture:
 cynefin/db-title-line-separator-then-comment-line] [fixture:
 cynefin/db-acc-title-line-separator-then-comment-line] [fixture:
 cynefin/db-acc-descr-line-separator-then-comment-line] [fixture:
-cynefin/db-acc-descr-block-line-separator-then-comment-line]
+cynefin/db-acc-descr-block-line-separator-then-comment-line] [fixture:
+cynefin/db-string-line-separator-comment-line-directive-next] [fixture:
+cynefin/db-string-line-separator-comment-line-space-next] [fixture:
+cynefin/db-string-line-separator-comment-line-separator-next] [fixture:
+cynefin/db-string-line-separator-comment-line-empty-line] [fixture:
+cynefin/lex-string-line-separator-comment-line-end-of-text] [fixture:
+cynefin/db-string-line-separator-comment-line-cr] [fixture:
+cynefin/db-string-line-separator-comment-line-crlf] [fixture:
+cynefin/db-string-line-separator-comment-line-two-comment-lines] [fixture:
+cynefin/db-string-line-separator-comment-line-two-regions] [fixture:
+cynefin/db-string-line-separator-comment-line-spaces-before] [fixture:
+cynefin/db-string-line-separator-comment-line-line-feed-before] [fixture:
+cynefin/db-string-line-separator-comment-line-directive-before] [fixture:
+cynefin/db-string-line-separator-comment-line-line-rule-before] [fixture:
+cynefin/db-string-line-separator-comment-line-line-rule-after] [fixture:
+cynefin/db-string-line-separator-comment-line-bare-percent] [fixture:
+cynefin/db-string-line-separator-comment-line-percent-brace] [fixture:
+cynefin/db-transition-label-string-line-separator-then-comment-line]
 
 Item and transition-label strings use shared StringLiteral. Its raw preserves
 the entire authored spelling including quotes and common trivia; value preserves

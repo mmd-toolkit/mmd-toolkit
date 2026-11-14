@@ -1,0 +1,17 @@
+{
+  "source": {
+    "kind": "authored",
+    "note": "mindmap.md Units and contexts: a comment line follows a U+2028 in the node text, and another one follows a second U+2028 on the next line; the Db summary holds `A`, U+2028, `x`, U+2028, and `B`."
+  },
+  "accepted": true,
+  "diagramType": "mindmap",
+  "db": {
+    "root": {
+      "nodeId": "A x B",
+      "level": 0,
+      "descr": "A x B",
+      "type": 0,
+      "children": []
+    }
+  }
+}

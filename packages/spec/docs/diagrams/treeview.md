@@ -334,7 +334,23 @@ treeview/db-description-line-separator-then-comment-line] [fixture:
 treeview/db-title-line-separator-then-comment-line] [fixture:
 treeview/db-acc-title-line-separator-then-comment-line] [fixture:
 treeview/db-acc-descr-line-separator-then-comment-line] [fixture:
-treeview/db-acc-descr-block-line-separator-then-comment-line]
+treeview/db-acc-descr-block-line-separator-then-comment-line] [fixture:
+treeview/db-quoted-name-line-separator-comment-line-directive-next] [fixture:
+treeview/db-quoted-name-line-separator-comment-line-space-next] [fixture:
+treeview/db-quoted-name-line-separator-comment-line-separator-next] [fixture:
+treeview/db-quoted-name-line-separator-comment-line-empty-line] [fixture:
+treeview/lex-quoted-name-line-separator-comment-line-end-of-text] [fixture:
+treeview/db-quoted-name-line-separator-comment-line-cr] [fixture:
+treeview/db-quoted-name-line-separator-comment-line-crlf] [fixture:
+treeview/db-quoted-name-line-separator-comment-line-two-comment-lines] [fixture:
+treeview/db-quoted-name-line-separator-comment-line-two-regions] [fixture:
+treeview/db-quoted-name-line-separator-comment-line-spaces-before] [fixture:
+treeview/db-quoted-name-line-separator-comment-line-line-feed-before] [fixture:
+treeview/db-quoted-name-line-separator-comment-line-directive-before] [fixture:
+treeview/db-quoted-name-line-separator-comment-line-line-rule-before] [fixture:
+treeview/db-quoted-name-line-separator-comment-line-line-rule-after] [fixture:
+treeview/db-quoted-name-line-separator-comment-line-bare-percent] [fixture:
+treeview/db-quoted-name-line-separator-comment-line-percent-brace]
 
 For directives and selected semicolons, the header, common keywords, the word
 `icon`, class names and complete icon references are atoms. `:::` and `##` are

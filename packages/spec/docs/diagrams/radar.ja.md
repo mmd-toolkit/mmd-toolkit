@@ -284,12 +284,30 @@ global directive と comment region には共通規則を適用する。
 共通のコメント領域が取り除くことがある。
 そのとき値は次の物理行へ続くので、行の値はそこで終わらない。
 `accTitle: A`、U+2028、`%% c`、改行、`B` のアクセシビリティタイトルは `A`、
-U+2028、`B` である。 [fixture: radar/db-string-line-separator-then-comment-line]
-[fixture: radar/db-string-paragraph-separator-then-comment-line]
-[fixture: radar/db-title-line-separator-then-comment-line]
-[fixture: radar/db-acc-title-line-separator-then-comment-line]
-[fixture: radar/db-acc-descr-line-separator-then-comment-line]
-[fixture: radar/db-acc-descr-block-line-separator-then-comment-line]
+U+2028、`B` である。 [fixture:
+radar/db-string-line-separator-then-comment-line] [fixture:
+radar/db-string-paragraph-separator-then-comment-line] [fixture:
+radar/db-title-line-separator-then-comment-line] [fixture:
+radar/db-acc-title-line-separator-then-comment-line] [fixture:
+radar/db-acc-descr-line-separator-then-comment-line] [fixture:
+radar/db-acc-descr-block-line-separator-then-comment-line] [fixture:
+radar/db-string-line-separator-comment-line-directive-next] [fixture:
+radar/db-string-line-separator-comment-line-space-next] [fixture:
+radar/db-string-line-separator-comment-line-separator-next] [fixture:
+radar/db-string-line-separator-comment-line-empty-line] [fixture:
+radar/lex-string-line-separator-comment-line-end-of-text] [fixture:
+radar/db-string-line-separator-comment-line-cr] [fixture:
+radar/db-string-line-separator-comment-line-crlf] [fixture:
+radar/db-string-line-separator-comment-line-two-comment-lines] [fixture:
+radar/db-string-line-separator-comment-line-two-regions] [fixture:
+radar/db-string-line-separator-comment-line-spaces-before] [fixture:
+radar/db-string-line-separator-comment-line-line-feed-before] [fixture:
+radar/db-string-line-separator-comment-line-directive-before] [fixture:
+radar/db-string-line-separator-comment-line-line-rule-before] [fixture:
+radar/db-string-line-separator-comment-line-line-rule-after] [fixture:
+radar/db-string-line-separator-comment-line-bare-percent] [fixture:
+radar/db-string-line-separator-comment-line-percent-brace] [fixture:
+radar/db-curve-bracket-label-line-separator-then-comment-line]
 
 空の block も含む全 common 形に、可視 EOL または EOF を要求する。
 完成した block に次の文を接着できないが、

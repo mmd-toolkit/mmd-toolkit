@@ -240,6 +240,8 @@ mermaid.js がディレクティブを取り除いた後のテキストを読む
    `%%` の前が空白だけの行のほとんどは、
    [common.ja.md](../common.ja.md#コメント行) のコメント行で、
    字句解析器が読む前に除かれます。
+   そのため、この規則が当たるのは、単位の後の `%%` と、
+   `%%` の後に何もないか `{` が続くためにコメント行でない行です。
    [fixture: class/db-acc-title-line-separator-then-comment-line]
    [fixture: class/db-acc-descr-line-separator-then-comment-line]
    [fixture: class/db-acc-descr-block-line-separator-then-comment-line]
@@ -249,8 +251,22 @@ mermaid.js がディレクティブを取り除いた後のテキストを読む
    [fixture: class/db-generic-line-separator-then-comment-line]
    [fixture: class/db-note-string-line-separator-then-comment-line]
    [fixture: class/db-style-line-separator-then-comment-line]
-   そのため、この規則が当たるのは、単位の後の `%%` と、
-   `%%` の後に何もないか `{` が続くためにコメント行でない行です。
+   [fixture: class/db-acc-title-line-separator-comment-line-directive-next]
+   [fixture: class/db-acc-title-line-separator-comment-line-space-next]
+   [fixture: class/db-acc-title-line-separator-comment-line-separator-next]
+   [fixture: class/lex-acc-title-line-separator-comment-line-empty-line]
+   [fixture: class/lex-acc-title-line-separator-comment-line-end-of-text]
+   [fixture: class/db-acc-title-line-separator-comment-line-cr]
+   [fixture: class/db-acc-title-line-separator-comment-line-crlf]
+   [fixture: class/db-acc-title-line-separator-comment-line-two-comment-lines]
+   [fixture: class/db-acc-title-line-separator-comment-line-two-regions]
+   [fixture: class/db-acc-title-line-separator-comment-line-spaces-before]
+   [fixture: class/db-acc-title-line-separator-comment-line-line-feed-before]
+   [fixture: class/db-acc-title-line-separator-comment-line-directive-before]
+   [fixture: class/db-acc-title-line-separator-comment-line-line-rule-before]
+   [fixture: class/db-acc-title-line-separator-comment-line-line-rule-after]
+   [fixture: class/db-acc-title-line-separator-comment-line-bare-percent]
+   [fixture: class/db-acc-title-line-separator-comment-line-percent-brace]
    空白とそのようなコメントだけの行が、**コメントだけの行**です。
    コメントだけの行は、行として数えず、その直後の空の行も数えません。
    それらの改行には `newline` の単位を読まず、改行はどの単位にも属しません。
@@ -329,16 +345,32 @@ mermaid.js がディレクティブを取り除いた後のテキストを読む
 - ラベル（共有の規則 9）は、`:`、`;`、改行で終わります。
   ラベルの中の `%%` はその一部です。
   `A --> B : x %% c` のラベルは `x %% c` です。
-  U+2028 や U+2029 の後のコメントは例外で、読み飛ばされ、
-  値はその後に続きます（[コメント行](../common.ja.md#コメント行) を参照）。
-  [fixture: class/db-relation-label-line-separator-then-comment-line]
-  [fixture: class/db-relation-label-paragraph-separator-then-comment-line]
   2 つ目の `:` は 2 つ目のラベルを始め、文法はそれを取りません。
   `A --> B : x : y` と `A : foo(a: int)` は拒否されます。
   `;` はどの規則にも当たらないので、`A : x;y` は拒否されます。
   [fixture: class/lex-label-percent] [fixture: class/lex-label-two-colons]
   [fixture: class/lex-label-colon-in-member] [fixture:
   class/lex-label-semicolon]
+  ラベルの中では、U+2028 や U+2029 の後のコメントは読み飛ばされ、
+  ラベルはその後に続きます（[コメント行](../common.ja.md#コメント行) を参照）。
+  [fixture: class/db-relation-label-line-separator-then-comment-line]
+  [fixture: class/db-relation-label-paragraph-separator-then-comment-line]
+  [fixture: class/db-relation-label-line-separator-comment-line-directive-next]
+  [fixture: class/db-relation-label-line-separator-comment-line-space-next]
+  [fixture: class/db-relation-label-line-separator-comment-line-separator-next]
+  [fixture: class/lex-relation-label-line-separator-comment-line-empty-line]
+  [fixture: class/lex-relation-label-line-separator-comment-line-end-of-text]
+  [fixture: class/db-relation-label-line-separator-comment-line-cr]
+  [fixture: class/db-relation-label-line-separator-comment-line-crlf] [fixture:
+  class/db-relation-label-line-separator-comment-line-two-comment-lines]
+  [fixture: class/db-relation-label-line-separator-comment-line-two-regions]
+  [fixture: class/db-relation-label-line-separator-comment-line-spaces-before]
+  [fixture:
+  class/db-relation-label-line-separator-comment-line-line-feed-before]
+  [fixture:
+  class/db-relation-label-line-separator-comment-line-directive-before]
+  [fixture: class/db-relation-label-line-separator-comment-line-bare-percent]
+  [fixture: class/db-relation-label-line-separator-comment-line-percent-brace]
 - `;`、`{`、`}`、`|`、`)` の続かない `(`、`)`、`@`、`^` は、
   文の文脈のどの規則にも当たりません。
   `class A; class B`、`A | B`、`A@B --> C` は拒否されます。
@@ -551,6 +583,22 @@ U+2028 や U+2029 の後のコメントは例外で、読み飛ばされ、
 値はその後に続きます（[コメント行](../common.ja.md#コメント行) を参照）。
 [fixture: class/db-member-name-line-separator-then-comment-line]
 [fixture: class/db-annotation-line-separator-then-comment-line]
+[fixture: class/db-member-name-line-separator-comment-line-directive-next]
+[fixture: class/db-member-name-line-separator-comment-line-space-next]
+[fixture: class/db-member-name-line-separator-comment-line-separator-next]
+[fixture: class/lex-member-name-line-separator-comment-line-empty-line]
+[fixture: class/gram-member-name-line-separator-comment-line-end-of-text]
+[fixture: class/db-member-name-line-separator-comment-line-cr]
+[fixture: class/db-member-name-line-separator-comment-line-crlf]
+[fixture: class/db-member-name-line-separator-comment-line-two-comment-lines]
+[fixture: class/db-member-name-line-separator-comment-line-two-regions]
+[fixture: class/db-member-name-line-separator-comment-line-spaces-before]
+[fixture: class/db-member-name-line-separator-comment-line-line-feed-before]
+[fixture: class/db-member-name-line-separator-comment-line-directive-before]
+[fixture: class/db-member-name-line-separator-comment-line-line-rule-before]
+[fixture: class/db-member-name-line-separator-comment-line-line-rule-after]
+[fixture: class/db-member-name-line-separator-comment-line-bare-percent]
+[fixture: class/gram-member-name-line-separator-comment-line-percent-brace]
 `{` か改行のすぐ後の `[*]` は `[*]` の単位で、文法はそれを取りません。
 そのため、本体の中のそれだけの行の `[*]` と `[*] x` は拒否され、
 本体の中の `{` も拒否されます。

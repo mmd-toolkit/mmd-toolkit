@@ -556,7 +556,40 @@ railroad/db-string-paragraph-separator-then-comment-line] [fixture:
 railroad/lex-title-line-separator-then-comment-line] [fixture:
 railroad/db-acc-title-line-separator-then-comment-line] [fixture:
 railroad/db-acc-descr-line-separator-then-comment-line] [fixture:
-railroad/db-acc-descr-block-line-separator-then-comment-line]
+railroad/db-acc-descr-block-line-separator-then-comment-line] [fixture:
+railroad/db-string-line-separator-comment-line-directive-next] [fixture:
+railroad/db-string-line-separator-comment-line-space-next] [fixture:
+railroad/db-string-line-separator-comment-line-separator-next] [fixture:
+railroad/db-string-line-separator-comment-line-empty-line] [fixture:
+railroad/gram-string-line-separator-comment-line-end-of-text] [fixture:
+railroad/db-string-line-separator-comment-line-cr] [fixture:
+railroad/db-string-line-separator-comment-line-crlf] [fixture:
+railroad/db-string-line-separator-comment-line-two-comment-lines] [fixture:
+railroad/db-string-line-separator-comment-line-two-regions] [fixture:
+railroad/db-string-line-separator-comment-line-spaces-before] [fixture:
+railroad/db-string-line-separator-comment-line-line-feed-before] [fixture:
+railroad/db-string-line-separator-comment-line-directive-before] [fixture:
+railroad/db-string-line-separator-comment-line-line-rule-before] [fixture:
+railroad/db-string-line-separator-comment-line-bare-percent] [fixture:
+railroad/db-string-line-separator-comment-line-percent-brace] [fixture:
+railroad/db-ir-nonterminal-string-line-separator-then-comment-line] [fixture:
+railroad/db-ir-special-string-line-separator-then-comment-line] [fixture:
+railroad/db-ebnf-string-line-separator-then-comment-line] [fixture:
+railroad/db-abnf-string-line-separator-then-comment-line] [fixture:
+railroad/db-peg-string-line-separator-then-comment-line] [fixture:
+railroad/db-ebnf-special-sequence-line-separator-then-comment-line] [fixture:
+railroad/lex-ebnf-title-line-separator-then-comment-line] [fixture:
+railroad/db-ebnf-acc-title-line-separator-then-comment-line] [fixture:
+railroad/db-ebnf-acc-descr-line-separator-then-comment-line] [fixture:
+railroad/db-ebnf-acc-descr-block-line-separator-then-comment-line] [fixture:
+railroad/lex-abnf-title-line-separator-then-comment-line] [fixture:
+railroad/db-abnf-acc-title-line-separator-then-comment-line] [fixture:
+railroad/db-abnf-acc-descr-line-separator-then-comment-line] [fixture:
+railroad/db-abnf-acc-descr-block-line-separator-then-comment-line] [fixture:
+railroad/lex-peg-title-line-separator-then-comment-line] [fixture:
+railroad/db-peg-acc-title-line-separator-then-comment-line] [fixture:
+railroad/db-peg-acc-descr-line-separator-then-comment-line] [fixture:
+railroad/db-peg-acc-descr-block-line-separator-then-comment-line]
 
 ### Common directive and semicolon boundaries
 

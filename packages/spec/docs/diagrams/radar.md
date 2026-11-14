@@ -268,7 +268,24 @@ radar/db-string-paragraph-separator-then-comment-line] [fixture:
 radar/db-title-line-separator-then-comment-line] [fixture:
 radar/db-acc-title-line-separator-then-comment-line] [fixture:
 radar/db-acc-descr-line-separator-then-comment-line] [fixture:
-radar/db-acc-descr-block-line-separator-then-comment-line]
+radar/db-acc-descr-block-line-separator-then-comment-line] [fixture:
+radar/db-string-line-separator-comment-line-directive-next] [fixture:
+radar/db-string-line-separator-comment-line-space-next] [fixture:
+radar/db-string-line-separator-comment-line-separator-next] [fixture:
+radar/db-string-line-separator-comment-line-empty-line] [fixture:
+radar/lex-string-line-separator-comment-line-end-of-text] [fixture:
+radar/db-string-line-separator-comment-line-cr] [fixture:
+radar/db-string-line-separator-comment-line-crlf] [fixture:
+radar/db-string-line-separator-comment-line-two-comment-lines] [fixture:
+radar/db-string-line-separator-comment-line-two-regions] [fixture:
+radar/db-string-line-separator-comment-line-spaces-before] [fixture:
+radar/db-string-line-separator-comment-line-line-feed-before] [fixture:
+radar/db-string-line-separator-comment-line-directive-before] [fixture:
+radar/db-string-line-separator-comment-line-line-rule-before] [fixture:
+radar/db-string-line-separator-comment-line-line-rule-after] [fixture:
+radar/db-string-line-separator-comment-line-bare-percent] [fixture:
+radar/db-string-line-separator-comment-line-percent-brace] [fixture:
+radar/db-curve-bracket-label-line-separator-then-comment-line]
 
 Every common form, even an empty block, requires visible EOL or EOF. The
 following statement may not touch a completed block, although line-value text

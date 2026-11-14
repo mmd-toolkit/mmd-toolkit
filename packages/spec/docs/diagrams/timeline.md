@@ -653,7 +653,21 @@ timeline/db-section-line-separator-then-comment-line] [fixture:
 timeline/db-title-line-separator-then-comment-line] [fixture:
 timeline/db-acc-title-line-separator-then-comment-line] [fixture:
 timeline/db-acc-descr-line-separator-then-comment-line] [fixture:
-timeline/db-acc-descr-block-line-separator-then-comment-line]
+timeline/db-acc-descr-block-line-separator-then-comment-line] [fixture:
+timeline/db-period-line-separator-comment-line-directive-next] [fixture:
+timeline/db-period-line-separator-comment-line-space-next] [fixture:
+timeline/db-period-line-separator-comment-line-separator-next] [fixture:
+timeline/db-period-line-separator-comment-line-empty-line] [fixture:
+timeline/db-period-line-separator-comment-line-end-of-text] [fixture:
+timeline/db-period-line-separator-comment-line-cr] [fixture:
+timeline/db-period-line-separator-comment-line-crlf] [fixture:
+timeline/db-period-line-separator-comment-line-two-comment-lines] [fixture:
+timeline/db-period-line-separator-comment-line-two-regions] [fixture:
+timeline/db-period-line-separator-comment-line-spaces-before] [fixture:
+timeline/db-period-line-separator-comment-line-line-feed-before] [fixture:
+timeline/db-period-line-separator-comment-line-directive-before] [fixture:
+timeline/db-period-line-separator-comment-line-bare-percent] [fixture:
+timeline/db-period-line-separator-comment-line-percent-brace]
 
 mermaid.js reads `%` in one more way, which differs from this rule where a
 character other than `}` and whitespace stands right before `%%` where a unit

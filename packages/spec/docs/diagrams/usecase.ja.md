@@ -339,14 +339,34 @@ JSON と stereotype 文脈に空白を飛ばす規則はなく、内容として
 [fixture: usecase/lex-native-label-separators]
 
 共通のコメント領域は文字列、metadata、JSON、アクセシビリティを含む全域です。
-[fixture: usecase/db-string-line-separator-then-comment-line]
-[fixture: usecase/db-string-paragraph-separator-then-comment-line]
-[fixture: usecase/db-markdown-string-line-separator-then-comment-line]
-[fixture: usecase/db-stereotype-line-separator-then-comment-line]
-[fixture: usecase/db-json-line-separator-then-comment-line]
-[fixture: usecase/db-acc-title-line-separator-then-comment-line]
-[fixture: usecase/db-acc-descr-line-separator-then-comment-line]
-[fixture: usecase/db-acc-descr-block-line-separator-then-comment-line]
+[fixture:
+usecase/db-string-line-separator-then-comment-line] [fixture:
+usecase/db-string-paragraph-separator-then-comment-line] [fixture:
+usecase/db-markdown-string-line-separator-then-comment-line] [fixture:
+usecase/db-stereotype-line-separator-then-comment-line] [fixture:
+usecase/db-json-line-separator-then-comment-line] [fixture:
+usecase/db-acc-title-line-separator-then-comment-line] [fixture:
+usecase/db-acc-descr-line-separator-then-comment-line] [fixture:
+usecase/db-acc-descr-block-line-separator-then-comment-line] [fixture:
+usecase/db-string-line-separator-comment-line-directive-next] [fixture:
+usecase/db-string-line-separator-comment-line-space-next] [fixture:
+usecase/db-string-line-separator-comment-line-separator-next] [fixture:
+usecase/lex-string-line-separator-comment-line-empty-line] [fixture:
+usecase/lex-string-line-separator-comment-line-end-of-text] [fixture:
+usecase/db-string-line-separator-comment-line-cr] [fixture:
+usecase/db-string-line-separator-comment-line-crlf] [fixture:
+usecase/db-string-line-separator-comment-line-two-comment-lines] [fixture:
+usecase/db-string-line-separator-comment-line-two-regions] [fixture:
+usecase/db-string-line-separator-comment-line-spaces-before] [fixture:
+usecase/db-string-line-separator-comment-line-line-feed-before] [fixture:
+usecase/db-string-line-separator-comment-line-directive-before] [fixture:
+usecase/db-string-line-separator-comment-line-line-rule-before] [fixture:
+usecase/db-string-line-separator-comment-line-line-rule-after] [fixture:
+usecase/lex-string-line-separator-comment-line-bare-percent] [fixture:
+usecase/lex-string-line-separator-comment-line-percent-brace] [fixture:
+usecase/db-bare-node-label-line-separator-then-comment-line] [fixture:
+usecase/db-note-label-line-separator-then-comment-line] [fixture:
+usecase/db-css-quoted-component-line-separator-then-comment-line]
 コメント行全体と前の空行を除くことがあります。
 native コメントは異なり、既定文脈だけで、
 %% より前の物理行の文字が ASCII 空白とタブだけの場合に認識します。

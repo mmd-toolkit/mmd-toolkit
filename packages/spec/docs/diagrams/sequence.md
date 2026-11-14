@@ -327,26 +327,76 @@ Some consequences of the order:
   sequence/lex-percent-comment-after-unit] A comment after a U+2028 or U+2029 is
   the exception: it is read through, and the value goes on after it (see
   [Comment lines](../common.md#comment-lines)). [fixture:
-  sequence/db-message-text-line-separator-then-comment-line]
+  sequence/db-message-text-line-separator-then-comment-line] [fixture:
+  sequence/db-message-text-line-separator-comment-line-directive-next] [fixture:
+  sequence/db-message-text-line-separator-comment-line-space-next] [fixture:
+  sequence/db-message-text-line-separator-comment-line-separator-next] [fixture:
+  sequence/gram-message-text-line-separator-comment-line-empty-line] [fixture:
+  sequence/lex-message-text-line-separator-comment-line-end-of-text] [fixture:
+  sequence/db-message-text-line-separator-comment-line-cr] [fixture:
+  sequence/db-message-text-line-separator-comment-line-crlf] [fixture:
+  sequence/db-message-text-line-separator-comment-line-two-comment-lines]
+  [fixture: sequence/db-message-text-line-separator-comment-line-two-regions]
+  [fixture: sequence/db-message-text-line-separator-comment-line-spaces-before]
+  [fixture:
+  sequence/db-message-text-line-separator-comment-line-line-feed-before]
+  [fixture:
+  sequence/db-message-text-line-separator-comment-line-directive-before]
+  [fixture:
+  sequence/lex-message-text-line-separator-comment-line-line-rule-before]
+  [fixture:
+  sequence/db-message-text-line-separator-comment-line-line-rule-after]
+  [fixture: sequence/gram-message-text-line-separator-comment-line-bare-percent]
+  [fixture:
+  sequence/gram-message-text-line-separator-comment-line-percent-brace]
+  [fixture: sequence/db-note-text-line-separator-then-comment-line] [fixture:
+  sequence/db-loop-text-line-separator-then-comment-line] [fixture:
+  sequence/db-alt-text-line-separator-then-comment-line] [fixture:
+  sequence/db-else-text-line-separator-then-comment-line] [fixture:
+  sequence/db-opt-text-line-separator-then-comment-line] [fixture:
+  sequence/db-par-text-line-separator-then-comment-line] [fixture:
+  sequence/db-and-text-line-separator-then-comment-line] [fixture:
+  sequence/db-critical-text-line-separator-then-comment-line] [fixture:
+  sequence/db-option-text-line-separator-then-comment-line] [fixture:
+  sequence/db-break-text-line-separator-then-comment-line] [fixture:
+  sequence/db-rect-text-line-separator-then-comment-line] [fixture:
+  sequence/lex-links-text-line-separator-then-comment-line] [fixture:
+  sequence/db-link-text-line-separator-then-comment-line] [fixture:
+  sequence/lex-properties-text-line-separator-then-comment-line] [fixture:
+  sequence/lex-details-text-line-separator-then-comment-line]
 - A diagram comment starts at its mark, and the unit before it keeps all its
   characters. A number may be followed by `%%`, so `autonumber 5%% c` starts at
   5, as `autonumber 5 %% c` does, and `autonumber 10%% c` starts at 10. One `%`
   after a number does not end it: `autonumber 5% c` is rejected, because the
   lexer reads an id run there. Where `%%` follows a character of an id run, it
   is a character of the run: a line `C%% c` is the id run `C%% c`, a statement
-  without an arrow, and is rejected. A comment after a U+2028 or U+2029 is the
-  exception: it is read through, and the value goes on after it (see
-  [Comment lines](../common.md#comment-lines)). [fixture:
-  sequence/db-id-run-line-separator-then-comment-line] [fixture:
-  sequence/db-id-run-paragraph-separator-then-comment-line] After `:`, it is a
-  character of the text: `A->>B:%% c` has the message `%% c`. mermaid.js reads
-  these inputs otherwise (see [Known divergences](#known-divergences)).
-  [fixture: sequence/lex-percent-comment-takes-number] [fixture:
+  without an arrow, and is rejected. After `:`, it is a character of the text:
+  `A->>B:%% c` has the message `%% c`. mermaid.js reads these inputs otherwise
+  (see [Known divergences](#known-divergences)). [fixture:
+  sequence/lex-percent-comment-takes-number] [fixture:
   sequence/lex-percent-comment-after-space] [fixture:
   sequence/div-comment-after-two-digit-number] [fixture:
   sequence/lex-number-before-single-percent] [fixture:
   sequence/div-comment-after-one-character-id] [fixture:
-  sequence/div-comment-after-text-colon]
+  sequence/div-comment-after-text-colon] In an id run, a comment after a U+2028
+  or U+2029 is read through, and the run goes on after it (see
+  [Comment lines](../common.md#comment-lines)). [fixture:
+  sequence/db-id-run-line-separator-then-comment-line] [fixture:
+  sequence/db-id-run-paragraph-separator-then-comment-line] [fixture:
+  sequence/db-id-run-line-separator-comment-line-directive-next] [fixture:
+  sequence/db-id-run-line-separator-comment-line-space-next] [fixture:
+  sequence/db-id-run-line-separator-comment-line-separator-next] [fixture:
+  sequence/gram-id-run-line-separator-comment-line-empty-line] [fixture:
+  sequence/gram-id-run-line-separator-comment-line-end-of-text] [fixture:
+  sequence/db-id-run-line-separator-comment-line-cr] [fixture:
+  sequence/db-id-run-line-separator-comment-line-crlf] [fixture:
+  sequence/db-id-run-line-separator-comment-line-two-comment-lines] [fixture:
+  sequence/db-id-run-line-separator-comment-line-two-regions] [fixture:
+  sequence/db-id-run-line-separator-comment-line-spaces-before] [fixture:
+  sequence/db-id-run-line-separator-comment-line-line-feed-before] [fixture:
+  sequence/db-id-run-line-separator-comment-line-directive-before] [fixture:
+  sequence/gram-id-run-line-separator-comment-line-bare-percent] [fixture:
+  sequence/gram-id-run-line-separator-comment-line-percent-brace]
 - Rule 2 makes whitespace at the end of a line hide the line break from the
   statements that need a `newline` unit: `autonumber`, two spaces, a line break,
   and `A->>B: y` is rejected, while the same without the spaces is accepted. A
@@ -577,7 +627,24 @@ one. [fixture: sequence/docs-syntax-sequence-diagram-1371ae9a] [fixture:
 sequence/lex-data-block-nested-brace] A comment line inside the content is
 removed, also after a U+2028 or U+2029 inside a string of the content, and the
 content goes on after it (see [Comment lines](../common.md#comment-lines)).
-[fixture: sequence/db-data-alias-line-separator-then-comment-line]
+[fixture: sequence/db-data-alias-line-separator-then-comment-line] [fixture:
+sequence/db-data-alias-line-separator-comment-line-directive-next] [fixture:
+sequence/db-data-alias-line-separator-comment-line-space-next] [fixture:
+sequence/db-data-alias-line-separator-comment-line-separator-next] [fixture:
+sequence/div-data-alias-line-separator-comment-line-empty-line] [fixture:
+sequence/gram-data-alias-line-separator-comment-line-end-of-text] [fixture:
+sequence/db-data-alias-line-separator-comment-line-cr] [fixture:
+sequence/db-data-alias-line-separator-comment-line-crlf] [fixture:
+sequence/db-data-alias-line-separator-comment-line-two-comment-lines] [fixture:
+sequence/db-data-alias-line-separator-comment-line-two-regions] [fixture:
+sequence/db-data-alias-line-separator-comment-line-spaces-before] [fixture:
+sequence/db-data-alias-line-separator-comment-line-line-feed-before] [fixture:
+sequence/db-data-alias-line-separator-comment-line-directive-before] [fixture:
+sequence/db-data-alias-line-separator-comment-line-line-rule-before] [fixture:
+sequence/db-data-alias-line-separator-comment-line-line-rule-after] [fixture:
+sequence/div-data-alias-line-separator-comment-line-bare-percent] [fixture:
+sequence/gram-data-alias-line-separator-comment-line-percent-brace] [fixture:
+sequence/db-data-plain-alias-line-separator-then-comment-line]
 
 ### Accessibility values
 

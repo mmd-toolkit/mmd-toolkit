@@ -427,14 +427,31 @@ global な comment region と directive は、
 共通のコメント領域が取り除くことがある。
 そのとき値は次の物理行へ続くので、行の値はそこで終わらない。
 `accTitle: A`、U+2028、`%% c`、改行、`B` のアクセシビリティタイトルは `A`、
-U+2028、`B` である。
-[fixture: architecture/lex-title-line-separator-then-comment-line]
-[fixture: architecture/db-acc-title-line-separator-then-comment-line]
-[fixture: architecture/db-acc-descr-line-separator-then-comment-line]
-[fixture: architecture/db-acc-descr-block-line-separator-then-comment-line]
-[fixture: architecture/db-bracket-label-line-separator-then-comment-line]
-[fixture: architecture/db-icon-text-string-line-separator-then-comment-line]
-[fixture: architecture/db-icon-text-string-paragraph-separator-then-comment-line]
+U+2028、`B` である。 [fixture:
+architecture/lex-title-line-separator-then-comment-line] [fixture:
+architecture/db-acc-title-line-separator-then-comment-line] [fixture:
+architecture/db-acc-descr-line-separator-then-comment-line] [fixture:
+architecture/db-acc-descr-block-line-separator-then-comment-line] [fixture:
+architecture/db-bracket-label-line-separator-then-comment-line] [fixture:
+architecture/db-icon-text-string-line-separator-then-comment-line] [fixture:
+architecture/db-icon-text-string-paragraph-separator-then-comment-line]
+[fixture: architecture/lex-title-line-separator-comment-line-directive-next]
+[fixture: architecture/lex-title-line-separator-comment-line-space-next]
+[fixture: architecture/lex-title-line-separator-comment-line-separator-next]
+[fixture: architecture/gram-title-line-separator-comment-line-empty-line]
+[fixture: architecture/lex-title-line-separator-comment-line-end-of-text]
+[fixture: architecture/lex-title-line-separator-comment-line-cr] [fixture:
+architecture/lex-title-line-separator-comment-line-crlf] [fixture:
+architecture/lex-title-line-separator-comment-line-two-comment-lines] [fixture:
+architecture/lex-title-line-separator-comment-line-two-regions] [fixture:
+architecture/lex-title-line-separator-comment-line-spaces-before] [fixture:
+architecture/lex-title-line-separator-comment-line-line-feed-before] [fixture:
+architecture/lex-title-line-separator-comment-line-directive-before] [fixture:
+architecture/lex-title-line-separator-comment-line-line-rule-before] [fixture:
+architecture/lex-title-line-separator-comment-line-line-rule-after] [fixture:
+architecture/gram-title-line-separator-comment-line-bare-percent] [fixture:
+architecture/gram-title-line-separator-comment-line-percent-brace] [fixture:
+architecture/db-quoted-bracket-label-line-separator-then-comment-line]
 
 ## 文法
 

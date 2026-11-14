@@ -108,16 +108,65 @@ multiline labels and data blocks. [fixture: kanban/lex-comment-quoted-line]
 kanban/lex-metadata-comment-line] [fixture: kanban/lex-metadata-directive-line]
 [fixture: kanban/db-icon-line-separator-then-comment-line] [fixture:
 kanban/db-data-label-bare-line-separator-then-comment-line] [fixture:
-kanban/db-data-label-quoted-line-separator-then-comment-line] An inline `%%`
-inside node text, a shape label, or class text stays in that text. [fixture:
+kanban/db-data-label-quoted-line-separator-then-comment-line] [fixture:
+kanban/db-icon-line-separator-comment-line-directive-next] [fixture:
+kanban/db-icon-line-separator-comment-line-space-next] [fixture:
+kanban/db-icon-line-separator-comment-line-separator-next] [fixture:
+kanban/db-icon-line-separator-comment-line-empty-line] [fixture:
+kanban/gram-icon-line-separator-comment-line-end-of-text] [fixture:
+kanban/db-icon-line-separator-comment-line-cr] [fixture:
+kanban/db-icon-line-separator-comment-line-crlf] [fixture:
+kanban/db-icon-line-separator-comment-line-two-comment-lines] [fixture:
+kanban/db-icon-line-separator-comment-line-two-regions] [fixture:
+kanban/db-icon-line-separator-comment-line-spaces-before] [fixture:
+kanban/db-icon-line-separator-comment-line-line-feed-before] [fixture:
+kanban/db-icon-line-separator-comment-line-directive-before] [fixture:
+kanban/db-icon-line-separator-comment-line-line-rule-before] [fixture:
+kanban/db-icon-line-separator-comment-line-line-rule-after] [fixture:
+kanban/db-icon-line-separator-comment-line-bare-percent] [fixture:
+kanban/db-icon-line-separator-comment-line-percent-brace] An inline `%%` inside
+node text, a shape label, or class text stays in that text. [fixture:
 kanban/lex-comment-quoted-inline] [fixture: kanban/db-grid-comment-item-id]
 [fixture: kanban/db-grid-comment-item-label-bare] [fixture:
-kanban/db-grid-comment-item-class] A comment after a U+2028 or U+2029 is the
-exception: it is read through, and the value goes on after it (see
-[Comment lines](../common.md#comment-lines)). [fixture:
+kanban/db-grid-comment-item-class] A comment after a U+2028 or U+2029 in node
+text or a shape label is the exception: it is read through, and the text goes on
+after it (see [Comment lines](../common.md#comment-lines)). [fixture:
 kanban/db-node-text-line-separator-then-comment-line] [fixture:
 kanban/db-node-text-paragraph-separator-then-comment-line] [fixture:
-kanban/db-shape-text-line-separator-then-comment-line]
+kanban/db-shape-text-line-separator-then-comment-line] [fixture:
+kanban/db-node-text-line-separator-comment-line-directive-next] [fixture:
+kanban/db-node-text-line-separator-comment-line-space-next] [fixture:
+kanban/db-node-text-line-separator-comment-line-separator-next] [fixture:
+kanban/db-node-text-line-separator-comment-line-empty-line] [fixture:
+kanban/db-node-text-line-separator-comment-line-end-of-text] [fixture:
+kanban/db-node-text-line-separator-comment-line-cr] [fixture:
+kanban/db-node-text-line-separator-comment-line-crlf] [fixture:
+kanban/db-node-text-line-separator-comment-line-two-comment-lines] [fixture:
+kanban/db-node-text-line-separator-comment-line-two-regions] [fixture:
+kanban/db-node-text-line-separator-comment-line-spaces-before] [fixture:
+kanban/db-node-text-line-separator-comment-line-line-feed-before] [fixture:
+kanban/db-node-text-line-separator-comment-line-directive-before] [fixture:
+kanban/db-node-text-line-separator-comment-line-line-rule-before] [fixture:
+kanban/db-node-text-line-separator-comment-line-line-rule-after] [fixture:
+kanban/db-node-text-line-separator-comment-line-bare-percent] [fixture:
+kanban/gram-node-text-line-separator-comment-line-percent-brace] Class text ends
+at a U+2028 or U+2029, so `:::a`, U+2028, `%% c`, a line break, and `b` are two
+statements on one line, as without the comment line, and are rejected. [fixture:
+kanban/gram-class-line-separator-then-comment-line] [fixture:
+kanban/gram-class-line-separator-comment-line-directive-next] [fixture:
+kanban/gram-class-line-separator-comment-line-space-next] [fixture:
+kanban/gram-class-line-separator-comment-line-separator-next] [fixture:
+kanban/lex-class-line-separator-comment-line-empty-line] [fixture:
+kanban/lex-class-line-separator-comment-line-end-of-text] [fixture:
+kanban/gram-class-line-separator-comment-line-cr] [fixture:
+kanban/gram-class-line-separator-comment-line-crlf] [fixture:
+kanban/gram-class-line-separator-comment-line-two-comment-lines] [fixture:
+kanban/gram-class-line-separator-comment-line-two-regions] [fixture:
+kanban/gram-class-line-separator-comment-line-spaces-before] [fixture:
+kanban/gram-class-line-separator-comment-line-line-feed-before] [fixture:
+kanban/gram-class-line-separator-comment-line-directive-before] [fixture:
+kanban/lex-class-line-separator-comment-line-bare-percent] [fixture:
+kanban/lex-class-line-separator-comment-line-percent-brace]
 
 The common rules keep embedded data opaque. [fixture:
 kanban/gram-frontmatter-invalid-yaml] [fixture: kanban/gram-metadata-bad-yaml]
@@ -625,7 +674,23 @@ kanban/lex-comment-quoted-inline] A comment after a U+2028 or U+2029 is the
 exception: it is read through, and the value goes on after it (see
 [Comment lines](../common.md#comment-lines)). [fixture:
 kanban/db-string-line-separator-then-comment-line] [fixture:
-kanban/db-markdown-string-line-separator-then-comment-line]
+kanban/db-markdown-string-line-separator-then-comment-line] [fixture:
+kanban/db-string-line-separator-comment-line-directive-next] [fixture:
+kanban/db-string-line-separator-comment-line-space-next] [fixture:
+kanban/db-string-line-separator-comment-line-separator-next] [fixture:
+kanban/db-string-line-separator-comment-line-empty-line] [fixture:
+kanban/gram-string-line-separator-comment-line-end-of-text] [fixture:
+kanban/db-string-line-separator-comment-line-cr] [fixture:
+kanban/db-string-line-separator-comment-line-crlf] [fixture:
+kanban/db-string-line-separator-comment-line-two-comment-lines] [fixture:
+kanban/db-string-line-separator-comment-line-two-regions] [fixture:
+kanban/db-string-line-separator-comment-line-spaces-before] [fixture:
+kanban/db-string-line-separator-comment-line-line-feed-before] [fixture:
+kanban/db-string-line-separator-comment-line-directive-before] [fixture:
+kanban/db-string-line-separator-comment-line-line-rule-before] [fixture:
+kanban/db-string-line-separator-comment-line-line-rule-after] [fixture:
+kanban/db-string-line-separator-comment-line-bare-percent] [fixture:
+kanban/db-string-line-separator-comment-line-percent-brace]
 
 A line of `%%` alone or `%%{ }%%` is a diagram comment. [fixture:
 kanban/lex-comment-bare] [fixture: kanban/header-after-empty-braces-line] A

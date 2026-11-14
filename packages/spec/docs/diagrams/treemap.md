@@ -384,7 +384,23 @@ treemap/db-class-style-line-separator-then-comment-line] [fixture:
 treemap/db-title-line-separator-then-comment-line] [fixture:
 treemap/db-acc-title-line-separator-then-comment-line] [fixture:
 treemap/db-acc-descr-line-separator-then-comment-line] [fixture:
-treemap/db-acc-descr-block-line-separator-then-comment-line]
+treemap/db-acc-descr-block-line-separator-then-comment-line] [fixture:
+treemap/db-string-line-separator-comment-line-directive-next] [fixture:
+treemap/db-string-line-separator-comment-line-space-next] [fixture:
+treemap/db-string-line-separator-comment-line-separator-next] [fixture:
+treemap/db-string-line-separator-comment-line-empty-line] [fixture:
+treemap/lex-string-line-separator-comment-line-end-of-text] [fixture:
+treemap/db-string-line-separator-comment-line-cr] [fixture:
+treemap/db-string-line-separator-comment-line-crlf] [fixture:
+treemap/db-string-line-separator-comment-line-two-comment-lines] [fixture:
+treemap/db-string-line-separator-comment-line-two-regions] [fixture:
+treemap/db-string-line-separator-comment-line-spaces-before] [fixture:
+treemap/db-string-line-separator-comment-line-line-feed-before] [fixture:
+treemap/db-string-line-separator-comment-line-directive-before] [fixture:
+treemap/db-string-line-separator-comment-line-line-rule-before] [fixture:
+treemap/db-string-line-separator-comment-line-line-rule-after] [fixture:
+treemap/db-string-line-separator-comment-line-bare-percent] [fixture:
+treemap/db-string-line-separator-comment-line-percent-brace]
 
 Ordinary word-start global directives, including `%%{other: x}%%`, are common
 trivia, not native hidden directives. A remaining nonword form such as `%%{!}%%`

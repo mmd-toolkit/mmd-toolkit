@@ -398,18 +398,6 @@ value は mark を除いた内容である。 [fixture: treemap/comment-native-c
 native comment は完全な leaf・selector の構成要素の間に置けるが、
 selector の前で禁じた字下げを隠すことはできない。
 ソースの comment region・directive は共通の所有を保つ。
-値の中の U+2028 か U+2029 の後の物理行の残りは、その改行も含めて、
-共通のコメント領域が取り除くことがある。
-そのとき値は次の物理行へ続くので、行の値はそこで終わらない。
-`accTitle: A`、U+2028、`%% c`、改行、`B` のアクセシビリティタイトルは `A`、
-U+2028、`B` である。
-[fixture: treemap/db-string-line-separator-then-comment-line]
-[fixture: treemap/db-string-paragraph-separator-then-comment-line]
-[fixture: treemap/db-class-style-line-separator-then-comment-line]
-[fixture: treemap/db-title-line-separator-then-comment-line]
-[fixture: treemap/db-acc-title-line-separator-then-comment-line]
-[fixture: treemap/db-acc-descr-line-separator-then-comment-line]
-[fixture: treemap/db-acc-descr-block-line-separator-then-comment-line]
 二つの percent の間の directive を除くと native の mark ができる場合もある。
 [fixture: treemap/comment-in-name] [fixture: treemap/hidden-comment-string]
 [fixture: treemap/hidden-comment-class]
@@ -419,6 +407,34 @@ U+2028、`B` である。
 [fixture: treemap/comment-value-selector-gap]
 [fixture: treemap/comment-selector-forbidden-indent]
 [fixture: treemap/comment-mark-joined-by-directive]
+値の中の U+2028 か U+2029 の後の物理行の残りは、その改行も含めて、
+共通のコメント領域が取り除くことがある。
+そのとき値は次の物理行へ続くので、行の値はそこで終わらない。
+`accTitle: A`、U+2028、`%% c`、改行、`B` のアクセシビリティタイトルは `A`、
+U+2028、`B` である。 [fixture:
+treemap/db-string-line-separator-then-comment-line] [fixture:
+treemap/db-string-paragraph-separator-then-comment-line] [fixture:
+treemap/db-class-style-line-separator-then-comment-line] [fixture:
+treemap/db-title-line-separator-then-comment-line] [fixture:
+treemap/db-acc-title-line-separator-then-comment-line] [fixture:
+treemap/db-acc-descr-line-separator-then-comment-line] [fixture:
+treemap/db-acc-descr-block-line-separator-then-comment-line] [fixture:
+treemap/db-string-line-separator-comment-line-directive-next] [fixture:
+treemap/db-string-line-separator-comment-line-space-next] [fixture:
+treemap/db-string-line-separator-comment-line-separator-next] [fixture:
+treemap/db-string-line-separator-comment-line-empty-line] [fixture:
+treemap/lex-string-line-separator-comment-line-end-of-text] [fixture:
+treemap/db-string-line-separator-comment-line-cr] [fixture:
+treemap/db-string-line-separator-comment-line-crlf] [fixture:
+treemap/db-string-line-separator-comment-line-two-comment-lines] [fixture:
+treemap/db-string-line-separator-comment-line-two-regions] [fixture:
+treemap/db-string-line-separator-comment-line-spaces-before] [fixture:
+treemap/db-string-line-separator-comment-line-line-feed-before] [fixture:
+treemap/db-string-line-separator-comment-line-directive-before] [fixture:
+treemap/db-string-line-separator-comment-line-line-rule-before] [fixture:
+treemap/db-string-line-separator-comment-line-line-rule-after] [fixture:
+treemap/db-string-line-separator-comment-line-bare-percent] [fixture:
+treemap/db-string-line-separator-comment-line-percent-brace]
 
 `%%{other: x}%%` を含む通常の word 始まりの global directive は共通の trivia
 であり、native hidden directive ではない。

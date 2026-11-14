@@ -1,0 +1,29 @@
+{
+  "source": {
+    "kind": "authored",
+    "note": "er.md The style context: a directive lies between a U+2028 in the style and the comment after it; the Db summary holds `fill:red`, U+2028, and `x`."
+  },
+  "accepted": true,
+  "diagramType": "er",
+  "db": {
+    "direction": "TB",
+    "title": "",
+    "accTitle": "",
+    "accDescr": "",
+    "entities": [
+      {
+        "id": "entity-A-0",
+        "attributes": [],
+        "alias": "",
+        "cssStyles": [
+          "fill:red x"
+        ],
+        "name": "A",
+        "classes": []
+      }
+    ],
+    "relationships": [],
+    "classes": [],
+    "subGraphs": []
+  }
+}

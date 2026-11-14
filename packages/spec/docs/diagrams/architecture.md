@@ -396,6 +396,23 @@ architecture/db-acc-descr-block-line-separator-then-comment-line] [fixture:
 architecture/db-bracket-label-line-separator-then-comment-line] [fixture:
 architecture/db-icon-text-string-line-separator-then-comment-line] [fixture:
 architecture/db-icon-text-string-paragraph-separator-then-comment-line]
+[fixture: architecture/lex-title-line-separator-comment-line-directive-next]
+[fixture: architecture/lex-title-line-separator-comment-line-space-next]
+[fixture: architecture/lex-title-line-separator-comment-line-separator-next]
+[fixture: architecture/gram-title-line-separator-comment-line-empty-line]
+[fixture: architecture/lex-title-line-separator-comment-line-end-of-text]
+[fixture: architecture/lex-title-line-separator-comment-line-cr] [fixture:
+architecture/lex-title-line-separator-comment-line-crlf] [fixture:
+architecture/lex-title-line-separator-comment-line-two-comment-lines] [fixture:
+architecture/lex-title-line-separator-comment-line-two-regions] [fixture:
+architecture/lex-title-line-separator-comment-line-spaces-before] [fixture:
+architecture/lex-title-line-separator-comment-line-line-feed-before] [fixture:
+architecture/lex-title-line-separator-comment-line-directive-before] [fixture:
+architecture/lex-title-line-separator-comment-line-line-rule-before] [fixture:
+architecture/lex-title-line-separator-comment-line-line-rule-after] [fixture:
+architecture/gram-title-line-separator-comment-line-bare-percent] [fixture:
+architecture/gram-title-line-separator-comment-line-percent-brace] [fixture:
+architecture/db-quoted-bracket-label-line-separator-then-comment-line]
 
 ## Grammar
 

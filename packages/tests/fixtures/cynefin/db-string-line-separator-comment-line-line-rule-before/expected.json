@@ -1,0 +1,24 @@
+{
+  "source": {
+    "kind": "authored",
+    "note": "cynefin.md Strings and common values: `style:#a` before a U+2028 in the string, and `#b;` on the line after the comment line, a line segment of its own for the line rule of style and classDef lines; the Db summary holds `Astyle:#a`, U+2028, and `ﬂ°b¶ßB`."
+  },
+  "accepted": true,
+  "diagramType": "cynefin",
+  "db": {
+    "title": "",
+    "accTitle": "",
+    "accDescr": "",
+    "domains": [
+      {
+        "name": "complex",
+        "items": [
+          {
+            "label": "Astyle:#a ﬂ°b¶ßB"
+          }
+        ]
+      }
+    ],
+    "transitions": []
+  }
+}

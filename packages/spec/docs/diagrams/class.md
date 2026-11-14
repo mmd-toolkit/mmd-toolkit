@@ -224,13 +224,29 @@ In the statement context, the lexer tries these rules in order:
    class/db-callback-arguments-line-separator-then-comment-line] [fixture:
    class/db-generic-line-separator-then-comment-line] [fixture:
    class/db-note-string-line-separator-then-comment-line] [fixture:
-   class/db-style-line-separator-then-comment-line] A line that holds only
-   whitespace and such a comment is a **comment-only line**. A comment-only line
-   is not counted as a line, and neither are the empty lines right after it: no
-   `newline` unit is read for their line feeds, which belong to no unit. A line
-   of only whitespace after it counts as a line. A comment after a unit ends at
-   the end of its line, and the line feed after it is a `newline` unit (see
-   [Known divergences](#known-divergences)). [fixture:
+   class/db-style-line-separator-then-comment-line] [fixture:
+   class/db-acc-title-line-separator-comment-line-directive-next] [fixture:
+   class/db-acc-title-line-separator-comment-line-space-next] [fixture:
+   class/db-acc-title-line-separator-comment-line-separator-next] [fixture:
+   class/lex-acc-title-line-separator-comment-line-empty-line] [fixture:
+   class/lex-acc-title-line-separator-comment-line-end-of-text] [fixture:
+   class/db-acc-title-line-separator-comment-line-cr] [fixture:
+   class/db-acc-title-line-separator-comment-line-crlf] [fixture:
+   class/db-acc-title-line-separator-comment-line-two-comment-lines] [fixture:
+   class/db-acc-title-line-separator-comment-line-two-regions] [fixture:
+   class/db-acc-title-line-separator-comment-line-spaces-before] [fixture:
+   class/db-acc-title-line-separator-comment-line-line-feed-before] [fixture:
+   class/db-acc-title-line-separator-comment-line-directive-before] [fixture:
+   class/db-acc-title-line-separator-comment-line-line-rule-before] [fixture:
+   class/db-acc-title-line-separator-comment-line-line-rule-after] [fixture:
+   class/db-acc-title-line-separator-comment-line-bare-percent] [fixture:
+   class/db-acc-title-line-separator-comment-line-percent-brace] A line that
+   holds only whitespace and such a comment is a **comment-only line**. A
+   comment-only line is not counted as a line, and neither are the empty lines
+   right after it: no `newline` unit is read for their line feeds, which belong
+   to no unit. A line of only whitespace after it counts as a line. A comment
+   after a unit ends at the end of its line, and the line feed after it is a
+   `newline` unit (see [Known divergences](#known-divergences)). [fixture:
    class/db-member-statement-percent]
 3. `accTitle`, zero or more whitespace, `:`, and zero or more whitespace: an
    `accTitle` unit and a `:` unit; enters the title context. [fixture:
@@ -299,16 +315,32 @@ consequences of the order:
   `callX`, and `A --> call` is rejected. [fixture: class/lex-call-prefix]
   [fixture: class/lex-call-at-end]
 - A label (shared rule 9) ends at `:`, `;`, or a line feed. The `%%` in a label
-  is part of it: `A --> B : x %% c` has the label `x %% c`. A comment after a
-  U+2028 or U+2029 is the exception: it is read through, and the value goes on
-  after it (see [Comment lines](../common.md#comment-lines)). [fixture:
-  class/db-relation-label-line-separator-then-comment-line] [fixture:
-  class/db-relation-label-paragraph-separator-then-comment-line] A second `:`
-  starts a second label, which the grammar does not take: `A --> B : x : y` and
+  is part of it: `A --> B : x %% c` has the label `x %% c`. A second `:` starts
+  a second label, which the grammar does not take: `A --> B : x : y` and
   `A : foo(a: int)` are rejected. A `;` matches no rule, so `A : x;y` is
   rejected. [fixture: class/lex-label-percent] [fixture:
   class/lex-label-two-colons] [fixture: class/lex-label-colon-in-member]
-  [fixture: class/lex-label-semicolon]
+  [fixture: class/lex-label-semicolon] In a label, a comment after a U+2028 or
+  U+2029 is read through, and the label goes on after it (see
+  [Comment lines](../common.md#comment-lines)). [fixture:
+  class/db-relation-label-line-separator-then-comment-line] [fixture:
+  class/db-relation-label-paragraph-separator-then-comment-line] [fixture:
+  class/db-relation-label-line-separator-comment-line-directive-next] [fixture:
+  class/db-relation-label-line-separator-comment-line-space-next] [fixture:
+  class/db-relation-label-line-separator-comment-line-separator-next] [fixture:
+  class/lex-relation-label-line-separator-comment-line-empty-line] [fixture:
+  class/lex-relation-label-line-separator-comment-line-end-of-text] [fixture:
+  class/db-relation-label-line-separator-comment-line-cr] [fixture:
+  class/db-relation-label-line-separator-comment-line-crlf] [fixture:
+  class/db-relation-label-line-separator-comment-line-two-comment-lines]
+  [fixture: class/db-relation-label-line-separator-comment-line-two-regions]
+  [fixture: class/db-relation-label-line-separator-comment-line-spaces-before]
+  [fixture:
+  class/db-relation-label-line-separator-comment-line-line-feed-before]
+  [fixture:
+  class/db-relation-label-line-separator-comment-line-directive-before]
+  [fixture: class/db-relation-label-line-separator-comment-line-bare-percent]
+  [fixture: class/db-relation-label-line-separator-comment-line-percent-brace]
 - `;`, `{`, `}`, `|`, `(` without `)`, `)`, `@`, and `^` match no rule in the
   statement context: `class A; class B`, `A | B`, and `A@B --> C` are rejected.
   [fixture: class/lex-semicolon] [fixture: class/lex-pipe] [fixture:
@@ -506,13 +538,30 @@ class/lex-member-semicolon] A comment after a U+2028 or U+2029 is the exception:
 it is read through, and the value goes on after it (see
 [Comment lines](../common.md#comment-lines)). [fixture:
 class/db-member-name-line-separator-then-comment-line] [fixture:
-class/db-annotation-line-separator-then-comment-line] A `[*]` right after the
-`{` or a line feed is a `[*]` unit, which the grammar does not take, so `[*]`
-and `[*] x` on a line of their own in a body are rejected, and so is a `{` in a
-body. The context has no rule for whitespace, so `  [*]`, with spaces before it,
-is a member line, the attribute `[*]`. [fixture: class/lex-member-edge-state]
-[fixture: class/lex-member-edge-state-then-text] [fixture:
-class/lex-member-open-brace] [fixture: class/lex-member-edge-state-indented]
+class/db-annotation-line-separator-then-comment-line] [fixture:
+class/db-member-name-line-separator-comment-line-directive-next] [fixture:
+class/db-member-name-line-separator-comment-line-space-next] [fixture:
+class/db-member-name-line-separator-comment-line-separator-next] [fixture:
+class/lex-member-name-line-separator-comment-line-empty-line] [fixture:
+class/gram-member-name-line-separator-comment-line-end-of-text] [fixture:
+class/db-member-name-line-separator-comment-line-cr] [fixture:
+class/db-member-name-line-separator-comment-line-crlf] [fixture:
+class/db-member-name-line-separator-comment-line-two-comment-lines] [fixture:
+class/db-member-name-line-separator-comment-line-two-regions] [fixture:
+class/db-member-name-line-separator-comment-line-spaces-before] [fixture:
+class/db-member-name-line-separator-comment-line-line-feed-before] [fixture:
+class/db-member-name-line-separator-comment-line-directive-before] [fixture:
+class/db-member-name-line-separator-comment-line-line-rule-before] [fixture:
+class/db-member-name-line-separator-comment-line-line-rule-after] [fixture:
+class/db-member-name-line-separator-comment-line-bare-percent] [fixture:
+class/gram-member-name-line-separator-comment-line-percent-brace] A `[*]` right
+after the `{` or a line feed is a `[*]` unit, which the grammar does not take,
+so `[*]` and `[*] x` on a line of their own in a body are rejected, and so is a
+`{` in a body. The context has no rule for whitespace, so `  [*]`, with spaces
+before it, is a member line, the attribute `[*]`. [fixture:
+class/lex-member-edge-state] [fixture: class/lex-member-edge-state-then-text]
+[fixture: class/lex-member-open-brace] [fixture:
+class/lex-member-edge-state-indented]
 
 ### Member lines
 

@@ -320,13 +320,32 @@ usecase/db-stereotype-line-separator-then-comment-line] [fixture:
 usecase/db-json-line-separator-then-comment-line] [fixture:
 usecase/db-acc-title-line-separator-then-comment-line] [fixture:
 usecase/db-acc-descr-line-separator-then-comment-line] [fixture:
-usecase/db-acc-descr-block-line-separator-then-comment-line] They can remove
-entire comment lines and preceding blank lines. Native comments are different:
-only default context recognizes a physical line whose prefix before %% contains
-ASCII spaces/tabs only. Its mark is %% and its value runs through the physical
-line, excluding LF; neither U+2028 nor U+2029 ends it. A bare %% or a
-non-directive %%{...} line after the header is a native comment. Native comments
-supply a comment line, not an inline statement suffix. [fixture:
+usecase/db-acc-descr-block-line-separator-then-comment-line] [fixture:
+usecase/db-string-line-separator-comment-line-directive-next] [fixture:
+usecase/db-string-line-separator-comment-line-space-next] [fixture:
+usecase/db-string-line-separator-comment-line-separator-next] [fixture:
+usecase/lex-string-line-separator-comment-line-empty-line] [fixture:
+usecase/lex-string-line-separator-comment-line-end-of-text] [fixture:
+usecase/db-string-line-separator-comment-line-cr] [fixture:
+usecase/db-string-line-separator-comment-line-crlf] [fixture:
+usecase/db-string-line-separator-comment-line-two-comment-lines] [fixture:
+usecase/db-string-line-separator-comment-line-two-regions] [fixture:
+usecase/db-string-line-separator-comment-line-spaces-before] [fixture:
+usecase/db-string-line-separator-comment-line-line-feed-before] [fixture:
+usecase/db-string-line-separator-comment-line-directive-before] [fixture:
+usecase/db-string-line-separator-comment-line-line-rule-before] [fixture:
+usecase/db-string-line-separator-comment-line-line-rule-after] [fixture:
+usecase/lex-string-line-separator-comment-line-bare-percent] [fixture:
+usecase/lex-string-line-separator-comment-line-percent-brace] [fixture:
+usecase/db-bare-node-label-line-separator-then-comment-line] [fixture:
+usecase/db-note-label-line-separator-then-comment-line] [fixture:
+usecase/db-css-quoted-component-line-separator-then-comment-line] They can
+remove entire comment lines and preceding blank lines. Native comments are
+different: only default context recognizes a physical line whose prefix before
+%% contains ASCII spaces/tabs only. Its mark is %% and its value runs through
+the physical line, excluding LF; neither U+2028 nor U+2029 ends it. A bare %% or
+a non-directive %%{...} line after the header is a native comment. Native
+comments supply a comment line, not an inline statement suffix. [fixture:
 usecase/comment-bare-pair], [fixture: usecase/comment-bare-eof], [fixture:
 usecase/comment-u2028], [fixture: usecase/comment-u2029], [fixture:
 usecase/comment-after-actor], [fixture: usecase/comment-after-edge], [fixture:

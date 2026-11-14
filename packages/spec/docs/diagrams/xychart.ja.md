@@ -652,6 +652,7 @@ ASCII の外の文字は、タイトル、分類、軸やプロットのタイ�
 キーワードの後には、空白文字なしで角括弧と引用符が続けられ、
 引用符の中のタイトルの後には角括弧と数が続けられます。
 `x-axis "A"[a]` はタイトル `A` と分類 `a` です。
+[fixture: xychart/db-x-axis-title-quoted-glued-band]
 [fixture: xychart/gram-x-axis-title-bare-digit]
 [fixture: xychart/gram-x-axis-title-bare-digit-before-band]
 [fixture: xychart/gram-x-axis-title-bare-hyphen-digit]
@@ -676,7 +677,6 @@ ASCII の外の文字は、タイトル、分類、軸やプロットのタイ�
 [fixture: xychart/db-x-axis-keyword-glued-bracket]
 [fixture: xychart/db-x-axis-keyword-glued-quote]
 [fixture: xychart/gram-y-axis-glued-bracket]
-[fixture: xychart/db-x-axis-title-quoted-glued-band]
 
 数は指数を持たず、後に数字のない `.` も持ちません。
 `1e3 --> 5` と `1. --> 2` は拒否され、`.5`、`007`、`-0`、`+1`、
@@ -921,15 +921,15 @@ U+00A0、U+2028、U+2029、U+3000、U+FEFF も `:` の前後の空白です。
 [fixture: xychart/db-acc-title-ps-after-colon]
 `accTitle`、コメント行、`: T` はタイトル `T` を持ちます。
 `:`、`;`、`#`、`%%` と、文の文脈の文字は、テキストの文字です。
+[fixture: xychart/db-acc-title-comment-line-before-colon]
+[fixture: xychart/db-acc-descr-comment-line-before-colon]
+[fixture: xychart/db-acc-title-directive-line-before-colon]
+[fixture: xychart/db-acc-descr-directive-line-before-colon]
 [fixture: xychart/db-acc-title] [fixture: xychart/db-acc-descr]
 [fixture: xychart/db-acc-title-no-space]
 [fixture: xychart/db-acc-title-space-before-colon]
 [fixture: xychart/db-acc-title-colon-on-next-line]
 [fixture: xychart/db-acc-descr-colon-on-next-line]
-[fixture: xychart/db-acc-title-comment-line-before-colon]
-[fixture: xychart/db-acc-descr-comment-line-before-colon]
-[fixture: xychart/db-acc-title-directive-line-before-colon]
-[fixture: xychart/db-acc-descr-directive-line-before-colon]
 [fixture: xychart/db-acc-title-two-colons]
 [fixture: xychart/db-acc-title-colon-inside]
 [fixture: xychart/db-acc-title-hash] [fixture: xychart/db-acc-title-semicolon]
@@ -989,6 +989,8 @@ U+00A0 など、表記のほかの空白文字もそこに置けます。
 [fixture: xychart/db-acc-descr-bom-before-brace]
 [fixture: xychart/db-acc-descr-ls-before-brace]
 [fixture: xychart/db-acc-descr-ps-before-brace]
+[fixture: xychart/db-acc-descr-comment-line-before-brace]
+[fixture: xychart/db-acc-descr-directive-line-before-brace]
 `}` がなければ、テキストは図のテキストの終わりまで続きます。
 ブロックの後の 2 つ目の `}` と、テキストの中の波括弧は、その一部ではありません。
 `a } b` に `}` が続くと、ブロックは最初の `}` で終わり、残りは文の文脈で読まれ、
@@ -996,8 +998,6 @@ U+00A0 など、表記のほかの空白文字もそこに置けます。
 [fixture: xychart/db-acc-descr-block-no-space]
 [fixture: xychart/db-acc-descr-block-spaces-inside]
 [fixture: xychart/db-acc-descr-block-line-feed-before-brace]
-[fixture: xychart/db-acc-descr-comment-line-before-brace]
-[fixture: xychart/db-acc-descr-directive-line-before-brace]
 [fixture: xychart/db-acc-descr-block-crlf]
 [fixture: xychart/db-acc-descr-block-cr]
 [fixture: xychart/db-acc-descr-block-line-separator-inside]
@@ -1077,11 +1077,37 @@ U+00A0 など、表記のほかの空白文字もそこに置けます。
 [fixture: xychart/db-title-quoted-percent]
 U+2028 や U+2029 の後のコメントは例外で、読み飛ばされ、
 値はその後に続きます（[コメント行](../common.ja.md#コメント行) を参照）。
-[fixture: xychart/db-string-line-separator-then-comment-line]
-[fixture: xychart/db-string-paragraph-separator-then-comment-line]
-[fixture: xychart/db-acc-title-line-separator-then-comment-line]
-[fixture: xychart/db-acc-descr-line-separator-then-comment-line]
-[fixture: xychart/db-acc-descr-block-line-separator-then-comment-line]
+[fixture: xychart/db-string-line-separator-then-comment-line] [fixture:
+xychart/db-string-paragraph-separator-then-comment-line] [fixture:
+xychart/db-acc-title-line-separator-then-comment-line] [fixture:
+xychart/db-acc-descr-line-separator-then-comment-line] [fixture:
+xychart/db-acc-descr-block-line-separator-then-comment-line] [fixture:
+xychart/db-string-line-separator-comment-line-directive-next] [fixture:
+xychart/db-string-line-separator-comment-line-space-next] [fixture:
+xychart/db-string-line-separator-comment-line-separator-next] [fixture:
+xychart/db-string-line-separator-comment-line-empty-line] [fixture:
+xychart/gram-string-line-separator-comment-line-end-of-text] [fixture:
+xychart/db-string-line-separator-comment-line-cr] [fixture:
+xychart/db-string-line-separator-comment-line-crlf] [fixture:
+xychart/db-string-line-separator-comment-line-two-comment-lines] [fixture:
+xychart/db-string-line-separator-comment-line-two-regions] [fixture:
+xychart/db-string-line-separator-comment-line-spaces-before] [fixture:
+xychart/db-string-line-separator-comment-line-line-feed-before] [fixture:
+xychart/db-string-line-separator-comment-line-directive-before] [fixture:
+xychart/db-string-line-separator-comment-line-line-rule-before] [fixture:
+xychart/db-string-line-separator-comment-line-line-rule-after] [fixture:
+xychart/db-string-line-separator-comment-line-bare-percent] [fixture:
+xychart/db-string-line-separator-comment-line-percent-brace] [fixture:
+xychart/db-x-title-string-line-separator-then-comment-line] [fixture:
+xychart/db-y-title-string-line-separator-then-comment-line] [fixture:
+xychart/db-category-string-line-separator-then-comment-line] [fixture:
+xychart/db-plot-title-string-line-separator-then-comment-line] [fixture:
+xychart/db-point-label-string-line-separator-then-comment-line] [fixture:
+xychart/db-title-words-line-separator-then-comment-line] [fixture:
+xychart/db-x-title-words-line-separator-then-comment-line] [fixture:
+xychart/db-y-title-words-line-separator-then-comment-line] [fixture:
+xychart/db-category-words-line-separator-then-comment-line] [fixture:
+xychart/db-plot-title-words-line-separator-then-comment-line]
 
 mermaid.js は、1 文字の単位にくっついたコメントを、その文字とともに読みます。
 `title T%% c`、`x-axis T%% c`、`line [1]%% c`、`x-axis [a, b]%% c`、

@@ -253,18 +253,34 @@ pie/label-unclosed-single] [fixture: pie/label-escaped-final-quote]
 
 Unescaped line breaks, U+2028 and U+2029 are string content, as are the opposite
 quote, percent pairs, apparent YAML blocks and directive-like forms that survive
-the common directive scan. A comment after a U+2028 or U+2029 is the exception:
-it is read through, and the value goes on after it (see
-[Comment lines](../common.md#comment-lines)). [fixture:
-pie/db-string-line-separator-then-comment-line] [fixture:
-pie/db-string-paragraph-separator-then-comment-line] The earlier string rule
-prevents them from becoming hidden forms. Source whitespace and escape spelling
-stay in StringLiteral. [fixture: pie/label-multiline] [fixture: pie/label-cr]
-[fixture: pie/label-crlf] [fixture: pie/label-ls] [fixture: pie/label-ps]
-[fixture: pie/label-opposite-quote] [fixture: pie/label-punctuation] [fixture:
+the common directive scan. The earlier string rule prevents them from becoming
+hidden forms. Source whitespace and escape spelling stay in StringLiteral.
+[fixture: pie/label-multiline] [fixture: pie/label-cr] [fixture: pie/label-crlf]
+[fixture: pie/label-ls] [fixture: pie/label-ps] [fixture:
+pie/label-opposite-quote] [fixture: pie/label-punctuation] [fixture:
 pie/review-label-hidden-yaml-text] [fixture:
 pie/review-hidden-directive-in-string] [fixture: pie/label-whitespace] [fixture:
-pie/label-unknown-escapes]
+pie/label-unknown-escapes] Inside a string, a comment after a U+2028 or U+2029
+is read through, and the string goes on after it (see
+[Comment lines](../common.md#comment-lines)). [fixture:
+pie/db-string-line-separator-then-comment-line] [fixture:
+pie/db-string-paragraph-separator-then-comment-line] [fixture:
+pie/db-string-line-separator-comment-line-directive-next] [fixture:
+pie/db-string-line-separator-comment-line-space-next] [fixture:
+pie/db-string-line-separator-comment-line-separator-next] [fixture:
+pie/db-string-line-separator-comment-line-empty-line] [fixture:
+pie/lex-string-line-separator-comment-line-end-of-text] [fixture:
+pie/db-string-line-separator-comment-line-cr] [fixture:
+pie/db-string-line-separator-comment-line-crlf] [fixture:
+pie/db-string-line-separator-comment-line-two-comment-lines] [fixture:
+pie/db-string-line-separator-comment-line-two-regions] [fixture:
+pie/db-string-line-separator-comment-line-spaces-before] [fixture:
+pie/db-string-line-separator-comment-line-line-feed-before] [fixture:
+pie/db-string-line-separator-comment-line-directive-before] [fixture:
+pie/db-string-line-separator-comment-line-line-rule-before] [fixture:
+pie/db-string-line-separator-comment-line-line-rule-after] [fixture:
+pie/db-string-line-separator-comment-line-bare-percent] [fixture:
+pie/db-string-line-separator-comment-line-percent-brace]
 
 ### Composite common forms
 
@@ -443,17 +459,36 @@ pie/review-directive-open-no-type] [fixture: pie/comment-single-percent]
 LS/PS do not end a native comment. Common comment regions can cut it and join
 its continuation to later physical-line text. Percent pairs in strings are
 content; in line common values they end the value; inside a description block
-they are content up to its first closing brace. A comment after a U+2028 or
-U+2029 is the exception: it is read through, and the value goes on after it (see
-[Comment lines](../common.md#comment-lines)). [fixture:
-pie/db-acc-descr-block-line-separator-then-comment-line] Common comment-only
-lines are still removed inside all these values. [fixture: pie/comment-ls]
-[fixture: pie/comment-ps] [fixture: pie/lex-comment-ls-region-bridge] [fixture:
+they are content up to its first closing brace. Common comment-only lines are
+still removed inside all these values. [fixture: pie/comment-ls] [fixture:
+pie/comment-ps] [fixture: pie/lex-comment-ls-region-bridge] [fixture:
 pie/label-punctuation] [fixture: pie/title-comment] [fixture:
 pie/acctitle-comment] [fixture: pie/accdescr-comment] [fixture:
 pie/accdescr-block-comment-lines] [fixture: pie/comment-label-line] [fixture:
 pie/comment-label-single-line] [fixture:
-pie/lex-common-values-comment-region-ls]
+pie/lex-common-values-comment-region-ls] [fixture:
+pie/db-title-line-separator-then-comment-line] [fixture:
+pie/db-acc-title-line-separator-then-comment-line] [fixture:
+pie/db-acc-descr-line-separator-then-comment-line] In a description block, a
+comment after a U+2028 or U+2029 is read through, and the description goes on
+after it (see [Comment lines](../common.md#comment-lines)). [fixture:
+pie/db-acc-descr-block-line-separator-then-comment-line] [fixture:
+pie/db-acc-descr-block-line-separator-comment-line-directive-next] [fixture:
+pie/db-acc-descr-block-line-separator-comment-line-space-next] [fixture:
+pie/db-acc-descr-block-line-separator-comment-line-separator-next] [fixture:
+pie/db-acc-descr-block-line-separator-comment-line-empty-line] [fixture:
+pie/lex-acc-descr-block-line-separator-comment-line-end-of-text] [fixture:
+pie/db-acc-descr-block-line-separator-comment-line-cr] [fixture:
+pie/db-acc-descr-block-line-separator-comment-line-crlf] [fixture:
+pie/db-acc-descr-block-line-separator-comment-line-two-comment-lines] [fixture:
+pie/db-acc-descr-block-line-separator-comment-line-two-regions] [fixture:
+pie/db-acc-descr-block-line-separator-comment-line-spaces-before] [fixture:
+pie/db-acc-descr-block-line-separator-comment-line-line-feed-before] [fixture:
+pie/db-acc-descr-block-line-separator-comment-line-directive-before] [fixture:
+pie/db-acc-descr-block-line-separator-comment-line-line-rule-before] [fixture:
+pie/db-acc-descr-block-line-separator-comment-line-line-rule-after] [fixture:
+pie/db-acc-descr-block-line-separator-comment-line-bare-percent] [fixture:
+pie/lex-acc-descr-block-line-separator-comment-line-percent-brace]
 
 ### Global trivia inside values
 

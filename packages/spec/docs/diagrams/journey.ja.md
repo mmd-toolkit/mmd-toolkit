@@ -648,16 +648,6 @@ journey/lex-percent-brace-text-only]
 タスクのデータがその前で止まるからです。
 `%` は、タイトルのテキスト、section のテキスト、タスクのテキスト、
 タスクのデータ、アクセシビリティのタイトルと説明、説明ブロックの文字です。
-U+2028 や U+2029 の後のコメントは例外で、読み飛ばされ、
-値はその後に続きます（[コメント行](../common.ja.md#コメント行) を参照）。
-[fixture: journey/db-title-line-separator-then-comment-line]
-[fixture: journey/db-title-paragraph-separator-then-comment-line]
-[fixture: journey/db-section-line-separator-then-comment-line]
-[fixture: journey/db-task-line-separator-then-comment-line]
-[fixture: journey/db-acc-title-line-separator-then-comment-line]
-[fixture: journey/db-acc-descr-line-separator-then-comment-line]
-[fixture: journey/db-acc-descr-block-line-separator-then-comment-line]
-[fixture: journey/db-person-line-separator-then-comment-line]
 そのため、`A#B: 5` はデータのないタスクのテキスト `A` とコメントで、拒否され、
 `a: 5 %% c` は数でないスコアの部分 `5 %% c` を持ち、
 `A %% B: 5` はタスク `A %% B` です。 [fixture: journey/lex-hash-ends-task-text]
@@ -669,6 +659,36 @@ journey/lex-percent-comment-in-task-data] [fixture:
 journey/lex-percent-comment-in-acc-title] [fixture:
 journey/lex-percent-in-acc-descr] [fixture:
 journey/lex-percent-in-acc-descr-block]
+タイトルのテキスト、section のテキスト、タスクのテキスト、タスクのデータ、
+アクセシビリティのタイトルと説明、説明ブロックでは、
+U+2028 や U+2029 の後のコメントは読み飛ばされ、
+値はその後に続きます（[コメント行](../common.ja.md#コメント行) を参照）。
+[fixture: journey/db-title-line-separator-then-comment-line] [fixture:
+journey/db-title-paragraph-separator-then-comment-line] [fixture:
+journey/db-section-line-separator-then-comment-line] [fixture:
+journey/db-task-line-separator-then-comment-line] [fixture:
+journey/db-acc-title-line-separator-then-comment-line] [fixture:
+journey/db-acc-descr-line-separator-then-comment-line] [fixture:
+journey/db-acc-descr-block-line-separator-then-comment-line] [fixture:
+journey/db-person-line-separator-then-comment-line] [fixture:
+journey/db-title-line-separator-comment-line-directive-next] [fixture:
+journey/db-title-line-separator-comment-line-space-next] [fixture:
+journey/db-title-line-separator-comment-line-separator-next] [fixture:
+journey/gram-title-line-separator-comment-line-empty-line] [fixture:
+journey/db-title-line-separator-comment-line-end-of-text] [fixture:
+journey/db-title-line-separator-comment-line-cr] [fixture:
+journey/db-title-line-separator-comment-line-crlf] [fixture:
+journey/db-title-line-separator-comment-line-two-comment-lines] [fixture:
+journey/db-title-line-separator-comment-line-two-regions] [fixture:
+journey/db-title-line-separator-comment-line-spaces-before] [fixture:
+journey/db-title-line-separator-comment-line-line-feed-before] [fixture:
+journey/db-title-line-separator-comment-line-directive-before] [fixture:
+journey/lex-title-line-separator-comment-line-line-rule-before] [fixture:
+journey/db-title-line-separator-comment-line-line-rule-after] [fixture:
+journey/gram-title-line-separator-comment-line-bare-percent] [fixture:
+journey/gram-title-line-separator-comment-line-percent-brace] [fixture:
+journey/lex-score-part-line-separator-then-comment-line] [fixture:
+journey/lex-ignored-data-line-separator-then-comment-line]
 
 mermaid.js は `%` をもう 1 つの読み方で読みます。
 単位の始まりで、`}` でも空白でもない文字の直後に `%%` があるところで、

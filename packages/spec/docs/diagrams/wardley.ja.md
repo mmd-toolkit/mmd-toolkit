@@ -439,17 +439,6 @@ ignored node を重複して作らない。
 native に見える文字で先の単位が終わることもある。
 hidden form の中でも共有 Directive、comment region、
 選ばれた semicolon の範囲は共通規則のまま。
-値の中の U+2028 か U+2029 の後の物理行の残りは、その改行も含めて、
-共通のコメント領域が取り除くことがある。
-そのとき値は次の物理行へ続くので、行の値はそこで終わらない。
-`accTitle: A`、U+2028、`%% c`、改行、`B` のアクセシビリティタイトルは `A`、
-U+2028、`B` である。
-[fixture: wardley/db-string-line-separator-then-comment-line]
-[fixture: wardley/db-string-paragraph-separator-then-comment-line]
-[fixture: wardley/db-title-line-separator-then-comment-line]
-[fixture: wardley/db-acc-title-line-separator-then-comment-line]
-[fixture: wardley/db-acc-descr-line-separator-then-comment-line]
-[fixture: wardley/db-acc-descr-block-line-separator-then-comment-line]
 その除去による hidden の句読点や comment mark の接合を許す。
 [fixture: wardley/hidden-directive-string] [fixture: wardley/hidden-yaml-string]
 [fixture: wardley/hidden-yaml-title] [fixture: wardley/hidden-yaml-acctitle]
@@ -464,6 +453,47 @@ U+2028、`B` である。
 [fixture: wardley/directive-native-directive-opener]
 [fixture: wardley/lex-selected-native-yaml-opener]
 [fixture: wardley/lex-selected-native-directive-opener]
+値の中の U+2028 か U+2029 の後の物理行の残りは、その改行も含めて、
+共通のコメント領域が取り除くことがある。
+そのとき値は次の物理行へ続くので、行の値はそこで終わらない。
+`accTitle: A`、U+2028、`%% c`、改行、`B` のアクセシビリティタイトルは `A`、
+U+2028、`B` である。 [fixture:
+wardley/db-string-line-separator-then-comment-line] [fixture:
+wardley/db-string-paragraph-separator-then-comment-line] [fixture:
+wardley/db-title-line-separator-then-comment-line] [fixture:
+wardley/db-acc-title-line-separator-then-comment-line] [fixture:
+wardley/db-acc-descr-line-separator-then-comment-line] [fixture:
+wardley/db-acc-descr-block-line-separator-then-comment-line] [fixture:
+wardley/db-string-line-separator-comment-line-directive-next] [fixture:
+wardley/db-string-line-separator-comment-line-space-next] [fixture:
+wardley/db-string-line-separator-comment-line-separator-next] [fixture:
+wardley/db-string-line-separator-comment-line-empty-line] [fixture:
+wardley/gram-string-line-separator-comment-line-end-of-text] [fixture:
+wardley/db-string-line-separator-comment-line-cr] [fixture:
+wardley/db-string-line-separator-comment-line-crlf] [fixture:
+wardley/db-string-line-separator-comment-line-two-comment-lines] [fixture:
+wardley/db-string-line-separator-comment-line-two-regions] [fixture:
+wardley/db-string-line-separator-comment-line-spaces-before] [fixture:
+wardley/db-string-line-separator-comment-line-line-feed-before] [fixture:
+wardley/db-string-line-separator-comment-line-directive-before] [fixture:
+wardley/db-string-line-separator-comment-line-line-rule-before] [fixture:
+wardley/db-string-line-separator-comment-line-line-rule-after] [fixture:
+wardley/db-string-line-separator-comment-line-bare-percent] [fixture:
+wardley/db-string-line-separator-comment-line-percent-brace] [fixture:
+wardley/db-anchor-name-line-separator-then-comment-line] [fixture:
+wardley/db-link-source-name-line-separator-then-comment-line] [fixture:
+wardley/db-link-target-name-line-separator-then-comment-line] [fixture:
+wardley/db-pipeline-parent-name-line-separator-then-comment-line] [fixture:
+wardley/db-pipeline-child-name-line-separator-then-comment-line] [fixture:
+wardley/db-evolve-name-line-separator-then-comment-line] [fixture:
+wardley/db-accelerator-name-line-separator-then-comment-line] [fixture:
+wardley/db-deaccelerator-name-line-separator-then-comment-line] [fixture:
+wardley/db-stage-name-line-separator-then-comment-line] [fixture:
+wardley/db-stage-second-name-line-separator-then-comment-line] [fixture:
+wardley/db-note-string-line-separator-then-comment-line] [fixture:
+wardley/db-annotation-string-line-separator-then-comment-line] [fixture:
+wardley/db-flow-body-line-separator-then-comment-line] [fixture:
+wardley/db-link-label-line-separator-then-comment-line]
 
 whole hidden form は WardleyIgnoredText。
 開始から適格な閉じまでを範囲にし、

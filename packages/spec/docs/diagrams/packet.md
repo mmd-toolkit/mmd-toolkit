@@ -356,21 +356,11 @@ packet/common-block-comment] [fixture: packet/lex-description-comment-only]
 [fixture: packet/lex-description-hidden-first-brace]
 
 Common directives, comment regions and selected semicolons retain their shared
-scope inside values and hidden forms. A common comment region can remove the
-rest of a physical line after U+2028 or U+2029 inside a value, its line break
-included; the value then goes on with the next physical line, so a line value
-does not end there: `accTitle: A`, U+2028, `%% c`, a line break, and `B` has the
-accessibility title `A`, U+2028, and `B`. [fixture:
-packet/db-string-line-separator-then-comment-line] [fixture:
-packet/db-string-paragraph-separator-then-comment-line] [fixture:
-packet/db-title-line-separator-then-comment-line] [fixture:
-packet/db-acc-title-line-separator-then-comment-line] [fixture:
-packet/db-acc-descr-line-separator-then-comment-line] [fixture:
-packet/db-acc-descr-block-line-separator-then-comment-line] Written value fields
-leave them out, while source ranges span internal trivia. Removal can join
-punctuation in hidden delimiters or a native comment mark; it may also occur
-between a complete common keyword and colon/brace/title separator. Fixed-word
-and integer interiors instead follow the atomic divergences below. [fixture:
+scope inside values and hidden forms. Written value fields leave them out, while
+source ranges span internal trivia. Removal can join punctuation in hidden
+delimiters or a native comment mark; it may also occur between a complete common
+keyword and colon/brace/title separator. Fixed-word and integer interiors
+instead follow the atomic divergences below. [fixture:
 packet/directive-label-middle] [fixture: packet/directive-title-value] [fixture:
 packet/directive-acctitle-value] [fixture: packet/directive-accdescr-value]
 [fixture: packet/directive-description-value] [fixture:
@@ -385,7 +375,33 @@ packet/lex-hidden-opener-selected] [fixture: packet/lex-hidden-closer-selected]
 packet/directive-accdescr-colon] [fixture: packet/directive-accdescr-brace]
 [fixture: packet/directive-title-separator] [fixture:
 packet/lex-selected-colon-boundary] [fixture:
-packet/lex-selected-brace-boundary]
+packet/lex-selected-brace-boundary] A common comment region can remove the rest
+of a physical line after U+2028 or U+2029 inside a value, its line break
+included; the value then goes on with the next physical line, so a line value
+does not end there: `accTitle: A`, U+2028, `%% c`, a line break, and `B` has the
+accessibility title `A`, U+2028, and `B`. [fixture:
+packet/db-string-line-separator-then-comment-line] [fixture:
+packet/db-string-paragraph-separator-then-comment-line] [fixture:
+packet/db-title-line-separator-then-comment-line] [fixture:
+packet/db-acc-title-line-separator-then-comment-line] [fixture:
+packet/db-acc-descr-line-separator-then-comment-line] [fixture:
+packet/db-acc-descr-block-line-separator-then-comment-line] [fixture:
+packet/db-string-line-separator-comment-line-directive-next] [fixture:
+packet/db-string-line-separator-comment-line-space-next] [fixture:
+packet/db-string-line-separator-comment-line-separator-next] [fixture:
+packet/db-string-line-separator-comment-line-empty-line] [fixture:
+packet/gram-string-line-separator-comment-line-end-of-text] [fixture:
+packet/db-string-line-separator-comment-line-cr] [fixture:
+packet/db-string-line-separator-comment-line-crlf] [fixture:
+packet/db-string-line-separator-comment-line-two-comment-lines] [fixture:
+packet/db-string-line-separator-comment-line-two-regions] [fixture:
+packet/db-string-line-separator-comment-line-spaces-before] [fixture:
+packet/db-string-line-separator-comment-line-line-feed-before] [fixture:
+packet/db-string-line-separator-comment-line-directive-before] [fixture:
+packet/db-string-line-separator-comment-line-line-rule-before] [fixture:
+packet/db-string-line-separator-comment-line-line-rule-after] [fixture:
+packet/db-string-line-separator-comment-line-bare-percent] [fixture:
+packet/db-string-line-separator-comment-line-percent-brace]
 
 The shared style/classDef line rule selects only qualifying semicolons;
 remaining semicolons reject outside values and never separate packet statements.

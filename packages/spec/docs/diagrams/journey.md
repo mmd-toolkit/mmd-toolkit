@@ -566,27 +566,45 @@ Inside the other units, `#` ends the unit and starts a comment where it stands,
 since a title text, a section text, a task text, and task data stop before it;
 `%` is a character of the text: a title text, a section text, a task text, task
 data, an accessibility title, an accessibility description, and a description
-block. A comment after a U+2028 or U+2029 is the exception: it is read through,
-and the value goes on after it (see
-[Comment lines](../common.md#comment-lines)). [fixture:
-journey/db-title-line-separator-then-comment-line] [fixture:
+block. So `A#B: 5` is the task text `A` without data, followed by a comment, and
+is rejected, `a: 5 %% c` has the score part `5 %% c`, which is no number, and
+`A %% B: 5` is the task `A %% B`. [fixture: journey/lex-hash-ends-task-text]
+[fixture: journey/lex-percent-comment-in-title-text] [fixture:
+journey/lex-percent-comment-in-section-text] [fixture:
+journey/lex-task-text-percent-inside] [fixture:
+journey/lex-percent-comment-in-task-data] [fixture:
+journey/lex-percent-comment-in-acc-title] [fixture:
+journey/lex-percent-in-acc-descr] [fixture:
+journey/lex-percent-in-acc-descr-block] In a title text, a section text, a task
+text, task data, an accessibility title, an accessibility description, and a
+description block, a comment after a U+2028 or U+2029 is read through, and the
+value goes on after it (see [Comment lines](../common.md#comment-lines)).
+[fixture: journey/db-title-line-separator-then-comment-line] [fixture:
 journey/db-title-paragraph-separator-then-comment-line] [fixture:
 journey/db-section-line-separator-then-comment-line] [fixture:
 journey/db-task-line-separator-then-comment-line] [fixture:
 journey/db-acc-title-line-separator-then-comment-line] [fixture:
 journey/db-acc-descr-line-separator-then-comment-line] [fixture:
 journey/db-acc-descr-block-line-separator-then-comment-line] [fixture:
-journey/db-person-line-separator-then-comment-line] So `A#B: 5` is the task text
-`A` without data, followed by a comment, and is rejected, `a: 5 %% c` has the
-score part `5 %% c`, which is no number, and `A %% B: 5` is the task `A %% B`.
-[fixture: journey/lex-hash-ends-task-text] [fixture:
-journey/lex-percent-comment-in-title-text] [fixture:
-journey/lex-percent-comment-in-section-text] [fixture:
-journey/lex-task-text-percent-inside] [fixture:
-journey/lex-percent-comment-in-task-data] [fixture:
-journey/lex-percent-comment-in-acc-title] [fixture:
-journey/lex-percent-in-acc-descr] [fixture:
-journey/lex-percent-in-acc-descr-block]
+journey/db-person-line-separator-then-comment-line] [fixture:
+journey/db-title-line-separator-comment-line-directive-next] [fixture:
+journey/db-title-line-separator-comment-line-space-next] [fixture:
+journey/db-title-line-separator-comment-line-separator-next] [fixture:
+journey/gram-title-line-separator-comment-line-empty-line] [fixture:
+journey/db-title-line-separator-comment-line-end-of-text] [fixture:
+journey/db-title-line-separator-comment-line-cr] [fixture:
+journey/db-title-line-separator-comment-line-crlf] [fixture:
+journey/db-title-line-separator-comment-line-two-comment-lines] [fixture:
+journey/db-title-line-separator-comment-line-two-regions] [fixture:
+journey/db-title-line-separator-comment-line-spaces-before] [fixture:
+journey/db-title-line-separator-comment-line-line-feed-before] [fixture:
+journey/db-title-line-separator-comment-line-directive-before] [fixture:
+journey/lex-title-line-separator-comment-line-line-rule-before] [fixture:
+journey/db-title-line-separator-comment-line-line-rule-after] [fixture:
+journey/gram-title-line-separator-comment-line-bare-percent] [fixture:
+journey/gram-title-line-separator-comment-line-percent-brace] [fixture:
+journey/lex-score-part-line-separator-then-comment-line] [fixture:
+journey/lex-ignored-data-line-separator-then-comment-line]
 
 mermaid.js reads `%` in one more way, which differs from this rule where a
 character other than `}` and whitespace stands right before `%%` at a unit

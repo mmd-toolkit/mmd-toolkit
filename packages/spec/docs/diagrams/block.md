@@ -210,11 +210,45 @@ block/db-composite-end-comment] [fixture: block/db-comment-inside-string-start]
 [fixture: block/db-tail-node-comment] [fixture: block/db-tail-columns-comment]
 [fixture: block/db-tail-space-comment] [fixture: block/db-tail-class-comment]
 [fixture: block/db-tail-class-def-comment] [fixture:
-block/db-tail-style-comment] A comment after a U+2028 or U+2029 is the
-exception: it is read through, and the value goes on after it (see
-[Comment lines](../common.md#comment-lines)). [fixture:
+block/db-tail-style-comment] A comment after a U+2028 or U+2029 in a class name
+or a style is the exception: it is read through, and the value goes on after it
+(see [Comment lines](../common.md#comment-lines)). [fixture:
 block/db-class-name-line-separator-then-comment-line] [fixture:
-block/db-style-line-separator-then-comment-line]
+block/db-style-line-separator-then-comment-line] [fixture:
+block/db-class-name-line-separator-comment-line-directive-next] [fixture:
+block/db-class-name-line-separator-comment-line-space-next] [fixture:
+block/db-class-name-line-separator-comment-line-separator-next] [fixture:
+block/lex-class-name-line-separator-comment-line-empty-line] [fixture:
+block/lex-class-name-line-separator-comment-line-end-of-text] [fixture:
+block/db-class-name-line-separator-comment-line-cr] [fixture:
+block/db-class-name-line-separator-comment-line-crlf] [fixture:
+block/db-class-name-line-separator-comment-line-two-comment-lines] [fixture:
+block/db-class-name-line-separator-comment-line-two-regions] [fixture:
+block/db-class-name-line-separator-comment-line-spaces-before] [fixture:
+block/db-class-name-line-separator-comment-line-line-feed-before] [fixture:
+block/db-class-name-line-separator-comment-line-directive-before] [fixture:
+block/db-class-name-line-separator-comment-line-line-rule-before] [fixture:
+block/db-class-name-line-separator-comment-line-line-rule-after] [fixture:
+block/db-class-name-line-separator-comment-line-bare-percent] [fixture:
+block/db-class-name-line-separator-comment-line-percent-brace] [fixture:
+block/db-classdef-styles-line-separator-then-comment-line] An id ends at a
+U+2028 or U+2029, which separates two ids (see Whitespace and line breaks
+above), so `a`, U+2028, `%% c`, a line break, and `b` are the blocks `a` and
+`b`. [fixture: block/db-id-line-separator-then-comment-line] [fixture:
+block/lex-id-line-separator-comment-line-directive-next] [fixture:
+block/lex-id-line-separator-comment-line-space-next] [fixture:
+block/lex-id-line-separator-comment-line-separator-next] [fixture:
+block/lex-id-line-separator-comment-line-empty-line] [fixture:
+block/lex-id-line-separator-comment-line-end-of-text] [fixture:
+block/lex-id-line-separator-comment-line-cr] [fixture:
+block/lex-id-line-separator-comment-line-crlf] [fixture:
+block/lex-id-line-separator-comment-line-two-comment-lines] [fixture:
+block/lex-id-line-separator-comment-line-two-regions] [fixture:
+block/lex-id-line-separator-comment-line-spaces-before] [fixture:
+block/lex-id-line-separator-comment-line-line-feed-before] [fixture:
+block/lex-id-line-separator-comment-line-directive-before] [fixture:
+block/lex-id-line-separator-comment-line-bare-percent] [fixture:
+block/gram-id-line-separator-comment-line-percent-brace]
 
 **Entities, HTML attribute quotes, and `style` lines.** In a string, a class
 name, and a style, an entity is read as its placeholder (see
@@ -497,23 +531,20 @@ block/db-class-apply-constructor-class] [fixture: block/db-style-proto-id]
 `"` enters the string context, which reads all the characters up to the next `"`
 as a `string` unit and leaves at that `"`. The text may hold any character but
 `"`, line feeds included: whitespace at its ends, brackets, braces, `<`, `>`, an
-arrow, `:`, `;`, `#`, `%%`, keywords, and characters outside ASCII. A comment
-after a U+2028 or U+2029 is the exception: it is read through, and the value
-goes on after it (see [Comment lines](../common.md#comment-lines)). [fixture:
-block/db-string-line-separator-then-comment-line] [fixture:
-block/db-string-paragraph-separator-then-comment-line] A string has no escape,
-and a string that is not closed makes the input rejected. A quote followed by a
-backquote is a markdown string, which no rule of the grammar takes: ``A["`x`"]``
-is rejected. An empty string, `""`, and an empty markdown string read no unit
-(see [Empty strings](#empty-strings)). [fixture: block/db-label-plain] [fixture:
-block/gram-label-empty] [fixture: block/db-label-spaces] [fixture:
-block/db-label-padded] [fixture: block/gram-label-single-quote] [fixture:
-block/gram-label-unquoted] [fixture: block/gram-label-unquoted-space] [fixture:
-block/gram-label-unclosed] [fixture: block/gram-label-unclosed-shape] [fixture:
-block/gram-label-quote-inside] [fixture: block/gram-label-backslash-quote]
-[fixture: block/db-label-backslash] [fixture: block/db-label-escaped-n]
-[fixture: block/db-label-single-quote-inside] [fixture:
-block/gram-label-backtick] [fixture: block/db-label-backtick-inside] [fixture:
+arrow, `:`, `;`, `#`, `%%`, keywords, and characters outside ASCII. A string has
+no escape, and a string that is not closed makes the input rejected. A quote
+followed by a backquote is a markdown string, which no rule of the grammar
+takes: ``A["`x`"]`` is rejected. An empty string, `""`, and an empty markdown
+string read no unit (see [Empty strings](#empty-strings)). [fixture:
+block/db-label-plain] [fixture: block/gram-label-empty] [fixture:
+block/db-label-spaces] [fixture: block/db-label-padded] [fixture:
+block/gram-label-single-quote] [fixture: block/gram-label-unquoted] [fixture:
+block/gram-label-unquoted-space] [fixture: block/gram-label-unclosed] [fixture:
+block/gram-label-unclosed-shape] [fixture: block/gram-label-quote-inside]
+[fixture: block/gram-label-backslash-quote] [fixture: block/db-label-backslash]
+[fixture: block/db-label-escaped-n] [fixture:
+block/db-label-single-quote-inside] [fixture: block/gram-label-backtick]
+[fixture: block/db-label-backtick-inside] [fixture:
 block/gram-label-backtick-start] [fixture: block/db-label-backtick-end]
 [fixture: block/gram-label-markdown] [fixture: block/db-label-round-brackets]
 [fixture: block/db-label-square-brackets] [fixture: block/db-label-braces]
@@ -726,7 +757,30 @@ block/db-grid-style-rule-composite-label] [fixture:
 block/db-grid-classdef-rule-label] [fixture:
 block/db-grid-classdef-rule-block-arrow-label] [fixture:
 block/db-grid-classdef-rule-edge-label] [fixture:
-block/db-grid-classdef-rule-composite-label]
+block/db-grid-classdef-rule-composite-label] Inside a string, a comment after a
+U+2028 or U+2029 is read through, and the string goes on after it (see
+[Comment lines](../common.md#comment-lines)). [fixture:
+block/db-string-line-separator-then-comment-line] [fixture:
+block/db-string-paragraph-separator-then-comment-line] [fixture:
+block/db-string-line-separator-comment-line-directive-next] [fixture:
+block/db-string-line-separator-comment-line-space-next] [fixture:
+block/db-string-line-separator-comment-line-separator-next] [fixture:
+block/db-string-line-separator-comment-line-empty-line] [fixture:
+block/gram-string-line-separator-comment-line-end-of-text] [fixture:
+block/db-string-line-separator-comment-line-cr] [fixture:
+block/db-string-line-separator-comment-line-crlf] [fixture:
+block/db-string-line-separator-comment-line-two-comment-lines] [fixture:
+block/db-string-line-separator-comment-line-two-regions] [fixture:
+block/db-string-line-separator-comment-line-spaces-before] [fixture:
+block/db-string-line-separator-comment-line-line-feed-before] [fixture:
+block/db-string-line-separator-comment-line-directive-before] [fixture:
+block/db-string-line-separator-comment-line-line-rule-before] [fixture:
+block/db-string-line-separator-comment-line-line-rule-after] [fixture:
+block/db-string-line-separator-comment-line-bare-percent] [fixture:
+block/db-string-line-separator-comment-line-percent-brace] [fixture:
+block/db-edge-label-line-separator-then-comment-line] [fixture:
+block/db-block-arrow-label-line-separator-then-comment-line] [fixture:
+block/db-composite-label-line-separator-then-comment-line]
 
 ### Shapes
 
