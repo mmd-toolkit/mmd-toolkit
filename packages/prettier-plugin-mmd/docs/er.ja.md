@@ -119,8 +119,16 @@ U+2028）、波括弧の間に何があっても、行の終わりが ` { }` に
 テキストを `:` に寄せると `direction` を持つ `accTitle` と `accDescr` の行も、
 同じです。
 そのような行の文は、行に一緒に残ります。
-その上にあるブロックはブロックとして印字し、`{` の行にある属性はそこに残り、
-`{` の後ろの空白とタブは落とします。
+その行にあるブロックはブロックとして印字します。
+`{` の行にある属性は、その行が上の行のどれかであれば、そこに残ります。
+`{` と属性の間に空白があれば、空白とタブの連なりは 1 つの空白になり、
+接していれば接したままです。
+行末にある `{` の後ろの空白とタブは落とします。
+1 行に書かれたブロックは 1 行のままですが、
+`;` を含む行では `}` が単独の行に移ります。
+[fixture: attribute-blocks/semicolon-line-spaces-after-brace]
+[fixture: attribute-blocks/subgraph-header-line-spaces-after-brace]
+[fixture: attribute-blocks/accessibility-line-spaces-after-brace]
 [fixture: attribute-blocks/written-line-number-name]
 [fixture: attribute-blocks/written-line-tilde-line]
 [fixture: attribute-blocks/written-line-unclosed-directive]

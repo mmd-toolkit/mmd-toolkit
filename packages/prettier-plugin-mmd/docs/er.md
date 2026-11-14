@@ -116,9 +116,16 @@ stays as written with that line, whether it holds attributes or not. A line that
 holds a `;` and stays as written for no other reason is formatted, and so is the
 line of a subgraph header that holds an empty description block and the line of
 an `accTitle` or `accDescr` whose text goes to the `:` and then holds
-`direction`; the statements of such a line stay together on it: a block on it is
-printed as a block, an attribute on the line of its `{` stays there, and the
-spaces and tabs after the `{` are dropped. [fixture:
+`direction`; the statements of such a line stay together on it. A block on it is
+printed as a block. An attribute on the line of its `{` stays there where that
+line is one of these lines: after one space where the source has whitespace
+between the `{` and the attribute (a run of spaces and tabs becomes one space),
+and touching the `{` where it touches it. The spaces and tabs after a `{` that
+ends its line are dropped. A block written on one line stays on one line, except
+on a line that holds a `;`, where its `}` goes to a line of its own. [fixture:
+attribute-blocks/semicolon-line-spaces-after-brace] [fixture:
+attribute-blocks/subgraph-header-line-spaces-after-brace] [fixture:
+attribute-blocks/accessibility-line-spaces-after-brace] [fixture:
 attribute-blocks/written-line-number-name] [fixture:
 attribute-blocks/written-line-tilde-line] [fixture:
 attribute-blocks/written-line-unclosed-directive] [fixture:
