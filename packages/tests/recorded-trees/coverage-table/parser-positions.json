@@ -1400,6 +1400,15 @@
                 "text": "fails a class diagram that ends after its trailing ignored semicolon"
               }
             ]
+          },
+          {
+            "case": "Its range does not cover a directive after the last of its tokens.",
+            "tests": [
+              {
+                "file": "check-tree-shared-positions.test.ts",
+                "text": "fails a flowchart diagram that runs to a directive after its last token"
+              }
+            ]
           }
         ]
       }

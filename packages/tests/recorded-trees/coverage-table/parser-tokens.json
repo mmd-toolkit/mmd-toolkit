@@ -4637,10 +4637,8 @@
     {
       "block": "packages/parser/docs/tokens.md:86727d33a145",
       "diagrams": [
-        "agentflow",
         "c4",
         "class",
-        "eventmodeling",
         "gantt",
         "gitgraph",
         "info",
@@ -4660,9 +4658,186 @@
       ],
       "about": "A diagram comment is found, as tokens are, as if a `;` that ",
       "judgment": {
-        "status": "not-shown",
-        "reason": "rule-misses-condition",
-        "note": "Each tree is the recorded tree of the named fixture with ` style:#x;` added at the end of a diagram comment, so that the line rule ignores the final `;`, which lies after the comment's last character and is an IgnoredSemicolon token; checkTree returns [] on that tree. Extending the comment over the `;` and removing the IgnoredSemicolon token also returns []: agentflow/comment-after-connector, the comment at 30-37; c4/div-boundary-comment-before-inline-body, the comment at 26-30; class/bare-marker-directive-lines-17d57580, the comment at 21-25; eventmodeling/c4-component-header-lf, the comment at 14-28; gantt/div-percent-brace-after-double-percent-comment-two-spaces, the comment at 24-27; gitgraph/comment-accdescr, the comment at 20-24; info/c4component-flag-comment-lf, the comment at 14-28; ishikawa/comment-header-glued, the comment at 8-15; journey/db-section-ends-at-hash, the comment at 20-23; kanban/db-metadata-before-comment, the comment at 13-17; mindmap/div-header-line-comment-comment-then-blank, the comment at 8-12; pie/accdescr-block-comment, the comment at 18-24; railroad/abnf-comment-before-rule, the comment at 19-28; requirement/db-comment-lines-between-statements, the comment at 48-57; sequence/db-link-url-hash-ends-text, the comment at 49-53; state/db-divider-then-comment-only, the comment at 45-48; timeline/db-comment-before-event-line, the comment at 17-20; treemap/comment-accdescr, the comment at 20-29; treeview/box-comment-indent-carry, the comment at 23-30; venn/db-after-indent-id-label-comment, the comment at 30-34."
+        "status": "shown",
+        "cases": [
+          {
+            "case": "Outside agentflow and eventmodeling, a comment line contains its semicolon as comment text rather than as an ignored-semicolon token",
+            "tests": [
+              {
+                "file": "check-tree-shared-tokens.test.ts",
+                "text": "tokens-228-c4-comment-line-has-no-ignored-semicolon"
+              },
+              {
+                "file": "check-tree-shared-tokens.test.ts",
+                "text": "tokens-228-class-comment-line-has-no-ignored-semicolon"
+              },
+              {
+                "file": "check-tree-shared-tokens.test.ts",
+                "text": "tokens-228-gantt-comment-line-has-no-ignored-semicolon"
+              },
+              {
+                "file": "check-tree-shared-tokens.test.ts",
+                "text": "tokens-228-gitgraph-comment-line-has-no-ignored-semicolon"
+              },
+              {
+                "file": "check-tree-shared-tokens.test.ts",
+                "text": "tokens-228-info-comment-line-has-no-ignored-semicolon"
+              },
+              {
+                "file": "check-tree-shared-tokens.test.ts",
+                "text": "tokens-228-ishikawa-comment-line-has-no-ignored-semicolon"
+              },
+              {
+                "file": "check-tree-shared-tokens.test.ts",
+                "text": "tokens-228-journey-comment-line-has-no-ignored-semicolon"
+              },
+              {
+                "file": "check-tree-shared-tokens.test.ts",
+                "text": "tokens-228-kanban-comment-line-has-no-ignored-semicolon"
+              },
+              {
+                "file": "check-tree-shared-tokens.test.ts",
+                "text": "tokens-228-mindmap-comment-line-has-no-ignored-semicolon"
+              },
+              {
+                "file": "check-tree-shared-tokens.test.ts",
+                "text": "tokens-228-pie-comment-line-has-no-ignored-semicolon"
+              },
+              {
+                "file": "check-tree-shared-tokens.test.ts",
+                "text": "tokens-228-railroad-comment-line-has-no-ignored-semicolon"
+              },
+              {
+                "file": "check-tree-shared-tokens.test.ts",
+                "text": "tokens-228-requirement-comment-line-has-no-ignored-semicolon"
+              },
+              {
+                "file": "check-tree-shared-tokens.test.ts",
+                "text": "tokens-228-sequence-comment-line-has-no-ignored-semicolon"
+              },
+              {
+                "file": "check-tree-shared-tokens.test.ts",
+                "text": "tokens-228-state-comment-line-has-no-ignored-semicolon"
+              },
+              {
+                "file": "check-tree-shared-tokens.test.ts",
+                "text": "tokens-228-timeline-comment-line-has-no-ignored-semicolon"
+              },
+              {
+                "file": "check-tree-shared-tokens.test.ts",
+                "text": "tokens-228-treemap-comment-line-has-no-ignored-semicolon"
+              },
+              {
+                "file": "check-tree-shared-tokens.test.ts",
+                "text": "tokens-228-treeview-comment-line-has-no-ignored-semicolon"
+              },
+              {
+                "file": "check-tree-shared-tokens.test.ts",
+                "text": "tokens-228-venn-comment-line-has-no-ignored-semicolon"
+              }
+            ]
+          },
+          {
+            "case": "A `;` that the line rule ignores after the last character of a diagram comment is an IgnoredSemicolon token, not part of the comment.",
+            "tests": [
+              {
+                "file": "check-tree-shared-tokens.test.ts",
+                "text": "tokens-228b-c4-semicolon-after-diagram-comment"
+              },
+              {
+                "file": "check-tree-shared-tokens.test.ts",
+                "text": "tokens-228b-class-semicolon-after-diagram-comment"
+              },
+              {
+                "file": "check-tree-shared-tokens.test.ts",
+                "text": "tokens-228b-gantt-semicolon-after-diagram-comment"
+              },
+              {
+                "file": "check-tree-shared-tokens.test.ts",
+                "text": "tokens-228b-gitgraph-semicolon-after-diagram-comment"
+              },
+              {
+                "file": "check-tree-shared-tokens.test.ts",
+                "text": "tokens-228b-info-semicolon-after-diagram-comment"
+              },
+              {
+                "file": "check-tree-shared-tokens.test.ts",
+                "text": "tokens-228b-ishikawa-semicolon-after-diagram-comment"
+              },
+              {
+                "file": "check-tree-shared-tokens.test.ts",
+                "text": "tokens-228b-journey-semicolon-after-diagram-comment"
+              },
+              {
+                "file": "check-tree-shared-tokens.test.ts",
+                "text": "tokens-228b-kanban-semicolon-after-diagram-comment"
+              },
+              {
+                "file": "check-tree-shared-tokens.test.ts",
+                "text": "tokens-228b-mindmap-semicolon-after-diagram-comment"
+              },
+              {
+                "file": "check-tree-shared-tokens.test.ts",
+                "text": "tokens-228b-pie-semicolon-after-diagram-comment"
+              },
+              {
+                "file": "check-tree-shared-tokens.test.ts",
+                "text": "tokens-228b-railroad-semicolon-after-diagram-comment"
+              },
+              {
+                "file": "check-tree-shared-tokens.test.ts",
+                "text": "tokens-228b-requirement-semicolon-after-diagram-comment"
+              },
+              {
+                "file": "check-tree-shared-tokens.test.ts",
+                "text": "tokens-228b-sequence-semicolon-after-diagram-comment"
+              },
+              {
+                "file": "check-tree-shared-tokens.test.ts",
+                "text": "tokens-228b-state-semicolon-after-diagram-comment"
+              },
+              {
+                "file": "check-tree-shared-tokens.test.ts",
+                "text": "tokens-228b-timeline-semicolon-after-diagram-comment"
+              },
+              {
+                "file": "check-tree-shared-tokens.test.ts",
+                "text": "tokens-228b-treemap-semicolon-after-diagram-comment"
+              },
+              {
+                "file": "check-tree-shared-tokens.test.ts",
+                "text": "tokens-228b-treeview-semicolon-after-diagram-comment"
+              },
+              {
+                "file": "check-tree-shared-tokens.test.ts",
+                "text": "tokens-228b-venn-semicolon-after-diagram-comment"
+              }
+            ]
+          }
+        ]
+      }
+    },
+    {
+      "block": "packages/parser/docs/tokens.md:86727d33a145",
+      "diagrams": ["agentflow", "eventmodeling"],
+      "about": "A diagram comment is found, as tokens are, as if a `;` that ",
+      "judgment": {
+        "status": "shown",
+        "cases": [
+          {
+            "case": "A `;` that the line rule ignores after the last character of a diagram comment is an IgnoredSemicolon token, not part of the comment.",
+            "tests": [
+              {
+                "file": "check-tree-shared-tokens.test.ts",
+                "text": "tokens-228b-agentflow-semicolon-after-diagram-comment"
+              },
+              {
+                "file": "check-tree-shared-tokens.test.ts",
+                "text": "tokens-228b-eventmodeling-semicolon-after-diagram-comment"
+              }
+            ]
+          }
+        ]
       }
     },
     {
@@ -9525,72 +9700,27 @@
         "timeline",
         "treeview",
         "usecase",
-        "error"
+        "error",
+        "agentflow",
+        "block",
+        "gitgraph",
+        "packet",
+        "pie",
+        "radar",
+        "railroad",
+        "treemap",
+        "venn",
+        "wardley",
+        "xychart",
+        "flowchart",
+        "sequence",
+        "state"
       ],
       "about": "A directive or a `;` that the line rule ignores inside a num",
       "judgment": {
         "status": "no-condition",
-        "kind": "not-in-diagram",
-        "note": "None of the named syntax, tree and token documents defines a grammar position that reads an authored number as a NumericLiteral, whose one-token rule this block states. Numeric-looking data remains text in these diagrams, and derived indentation or other numeric fields are not authored numeric leaves. ErrorDiagram has no child fields or other fields.",
-        "documents": [
-          "packages/spec/docs/diagrams/architecture.md",
-          "packages/spec/docs/ast/architecture.md",
-          "packages/parser/docs/tokens/architecture.md",
-          "packages/spec/docs/diagrams/c4.md",
-          "packages/spec/docs/ast/c4.md",
-          "packages/parser/docs/tokens/c4.md",
-          "packages/spec/docs/diagrams/class.md",
-          "packages/spec/docs/ast/class.md",
-          "packages/parser/docs/tokens/class.md",
-          "packages/spec/docs/diagrams/cynefin.md",
-          "packages/spec/docs/ast/cynefin.md",
-          "packages/parser/docs/tokens/cynefin.md",
-          "packages/spec/docs/diagrams/er.md",
-          "packages/spec/docs/ast/er.md",
-          "packages/parser/docs/tokens/er.md",
-          "packages/spec/docs/diagrams/eventmodeling.md",
-          "packages/spec/docs/ast/eventmodeling.md",
-          "packages/parser/docs/tokens/eventmodeling.md",
-          "packages/spec/docs/diagrams/gantt.md",
-          "packages/spec/docs/ast/gantt.md",
-          "packages/parser/docs/tokens/gantt.md",
-          "packages/spec/docs/diagrams/info.md",
-          "packages/spec/docs/ast/info.md",
-          "packages/parser/docs/tokens/info.md",
-          "packages/spec/docs/diagrams/ishikawa.md",
-          "packages/spec/docs/ast/ishikawa.md",
-          "packages/parser/docs/tokens/ishikawa.md",
-          "packages/spec/docs/diagrams/journey.md",
-          "packages/spec/docs/ast/journey.md",
-          "packages/parser/docs/tokens/journey.md",
-          "packages/spec/docs/diagrams/kanban.md",
-          "packages/spec/docs/ast/kanban.md",
-          "packages/parser/docs/tokens/kanban.md",
-          "packages/spec/docs/diagrams/mindmap.md",
-          "packages/spec/docs/ast/mindmap.md",
-          "packages/parser/docs/tokens/mindmap.md",
-          "packages/spec/docs/diagrams/quadrant.md",
-          "packages/spec/docs/ast/quadrant.md",
-          "packages/parser/docs/tokens/quadrant.md",
-          "packages/spec/docs/diagrams/requirement.md",
-          "packages/spec/docs/ast/requirement.md",
-          "packages/parser/docs/tokens/requirement.md",
-          "packages/spec/docs/diagrams/sankey.md",
-          "packages/spec/docs/ast/sankey.md",
-          "packages/parser/docs/tokens/sankey.md",
-          "packages/spec/docs/diagrams/timeline.md",
-          "packages/spec/docs/ast/timeline.md",
-          "packages/parser/docs/tokens/timeline.md",
-          "packages/spec/docs/diagrams/treeview.md",
-          "packages/spec/docs/ast/treeview.md",
-          "packages/parser/docs/tokens/treeview.md",
-          "packages/spec/docs/diagrams/usecase.md",
-          "packages/spec/docs/ast/usecase.md",
-          "packages/parser/docs/tokens/usecase.md",
-          "packages/spec/docs/ast.md",
-          "packages/spec/docs/common.md",
-          "packages/parser/docs/tokens.md"
-        ]
+        "kind": "not-about-tree",
+        "note": "It says only that a directive or an ignored ; inside a number makes the input rejected."
       }
     },
     {
@@ -9812,28 +9942,6 @@
       }
     },
     {
-      "block": "packages/parser/docs/tokens.md:2d5c23578fe2",
-      "diagrams": [
-        "agentflow",
-        "block",
-        "gitgraph",
-        "packet",
-        "pie",
-        "radar",
-        "railroad",
-        "treemap",
-        "venn",
-        "wardley",
-        "xychart"
-      ],
-      "about": "A directive or a `;` that the line rule ignores inside a num",
-      "judgment": {
-        "status": "no-condition",
-        "kind": "not-about-tree",
-        "note": "It says only that a directive or an ignored ; inside a number makes the input rejected."
-      }
-    },
-    {
       "block": "packages/parser/docs/tokens.md:7611ed5fed62",
       "diagrams": ["flowchart", "sequence", "state"],
       "about": "A NumericLiteral's token is one `Numeric` token, and its ran",
@@ -9844,17 +9952,7 @@
       }
     },
     {
-      "block": "packages/parser/docs/tokens.md:2d5c23578fe2",
-      "diagrams": ["flowchart", "sequence", "state"],
-      "about": "A directive or a `;` that the line rule ignores inside a num",
-      "judgment": {
-        "status": "no-condition",
-        "kind": "not-about-tree",
-        "note": "It says only that a directive or an ignored ; inside a number makes the input rejected."
-      }
-    },
-    {
-      "block": "packages/parser/docs/tokens.md:f7223ce156d4",
+      "block": "packages/parser/docs/tokens.md:dde5a597a4e7",
       "diagrams": [
         "c4",
         "cynefin",
@@ -10000,7 +10098,7 @@
       }
     },
     {
-      "block": "packages/parser/docs/tokens.md:f7223ce156d4",
+      "block": "packages/parser/docs/tokens.md:dde5a597a4e7",
       "diagrams": [
         "agentflow",
         "architecture",
@@ -10318,7 +10416,7 @@
       }
     },
     {
-      "block": "packages/parser/docs/tokens.md:f7223ce156d4",
+      "block": "packages/parser/docs/tokens.md:dde5a597a4e7",
       "diagrams": ["class", "er", "flowchart", "state"],
       "about": "An Identifier's token is the token of its unit. Where the un",
       "judgment": {
@@ -11218,6 +11316,15 @@
                 "text": "tokens-88b-agentflow-afterComment"
               }
             ]
+          },
+          {
+            "case": "Read whitespace before an ignored semicolon stays in its fragment.",
+            "tests": [
+              {
+                "file": "check-tree-shared-tokens.test.ts",
+                "text": "tokens-88c-agentflow-read-whitespace-before-ignored-semicolon"
+              }
+            ]
           }
         ]
       }
@@ -11262,6 +11369,24 @@
               {
                 "file": "check-tree-shared-tokens.test.ts",
                 "text": "tokens-88b-er-afterComment"
+              }
+            ]
+          },
+          {
+            "case": "Read whitespace before an ignored semicolon stays in its fragment.",
+            "tests": [
+              {
+                "file": "check-tree-shared-tokens.test.ts",
+                "text": "tokens-88c-er-read-whitespace-before-ignored-semicolon"
+              }
+            ]
+          },
+          {
+            "case": "Read whitespace after an ignored semicolon stays in its fragment.",
+            "tests": [
+              {
+                "file": "check-tree-shared-tokens.test.ts",
+                "text": "tokens-88c-er-read-whitespace-after-ignored-semicolon"
               }
             ]
           }
@@ -11585,7 +11710,550 @@
       }
     },
     {
-      "block": "packages/parser/docs/tokens.md:5d1035b3b29b",
+      "block": "packages/parser/docs/tokens.md:b8692bcfeaee",
+      "diagrams": ["agentflow"],
+      "about": "A comment lies outside all tokens. A comment region can lie ",
+      "judgment": {
+        "status": "shown",
+        "cases": [
+          {
+            "case": "A comment region cuts a RawText unit and is outside its tokens.",
+            "tests": [
+              {
+                "file": "check-tree-shared-tokens.test.ts",
+                "text": "tokens-extra-358-agentflow-region-cut-RawText"
+              }
+            ]
+          },
+          {
+            "case": "A comment region cuts a quoted String unit into StringFragment tokens.",
+            "tests": [
+              {
+                "file": "check-tree-shared-tokens.test.ts",
+                "text": "tokens-extra-358-agentflow-region-cut-StringFragment"
+              }
+            ]
+          },
+          {
+            "case": "Read whitespace beside a region remains in the adjacent fragment.",
+            "tests": [
+              {
+                "file": "check-tree-shared-tokens.test.ts",
+                "text": "tokens-extra-358-agentflow-read-whitespace-before-comment"
+              }
+            ]
+          },
+          {
+            "case": "The comment region ending line terminator belongs to no token.",
+            "tests": [
+              {
+                "file": "check-tree-shared-tokens.test.ts",
+                "text": "tokens-extra-358-agentflow-ending-line-terminator-outside-token"
+              }
+            ]
+          },
+          {
+            "case": "Whitespace-only lines of the comment region belong to no token.",
+            "tests": [
+              {
+                "file": "check-tree-shared-tokens.test.ts",
+                "text": "tokens-358b-agentflow-region-whitespace-line"
+              }
+            ]
+          },
+          {
+            "case": "An actually empty fragment produces no token.",
+            "tests": [
+              {
+                "file": "check-tree-shared-tokens.test.ts",
+                "text": "tokens-358b-agentflow-empty-fragment"
+              }
+            ]
+          },
+          {
+            "case": "A fragment of whitespace only that mermaid.js does not read as part of the value produces no token.",
+            "tests": [
+              {
+                "file": "check-tree-shared-tokens.test.ts",
+                "text": "tokens-358b-agentflow-unread-whitespace-fragment"
+              }
+            ]
+          }
+        ]
+      }
+    },
+    {
+      "block": "packages/parser/docs/tokens.md:b8692bcfeaee",
+      "diagrams": ["class"],
+      "about": "A comment lies outside all tokens. A comment region can lie ",
+      "judgment": {
+        "status": "shown",
+        "cases": [
+          {
+            "case": "A comment region cuts a RawText unit and is outside its tokens.",
+            "tests": [
+              {
+                "file": "check-tree-shared-tokens.test.ts",
+                "text": "tokens-extra-358-class-region-cut-RawText"
+              }
+            ]
+          },
+          {
+            "case": "A comment region cuts a quoted String unit into StringFragment tokens.",
+            "tests": [
+              {
+                "file": "check-tree-shared-tokens.test.ts",
+                "text": "tokens-extra-358-class-region-cut-StringFragment"
+              }
+            ]
+          },
+          {
+            "case": "Read whitespace beside a region remains in the adjacent fragment.",
+            "tests": [
+              {
+                "file": "check-tree-shared-tokens.test.ts",
+                "text": "tokens-extra-358-class-read-whitespace-before-comment"
+              }
+            ]
+          },
+          {
+            "case": "The comment region ending line terminator belongs to no token.",
+            "tests": [
+              {
+                "file": "check-tree-shared-tokens.test.ts",
+                "text": "tokens-extra-358-class-ending-line-terminator-outside-token"
+              }
+            ]
+          },
+          {
+            "case": "Whitespace-only lines of the comment region belong to no token.",
+            "tests": [
+              {
+                "file": "check-tree-shared-tokens.test.ts",
+                "text": "tokens-358b-class-region-whitespace-line"
+              }
+            ]
+          },
+          {
+            "case": "An actually empty fragment produces no token.",
+            "tests": [
+              {
+                "file": "check-tree-shared-tokens.test.ts",
+                "text": "tokens-358b-class-empty-fragment"
+              }
+            ]
+          },
+          {
+            "case": "A fragment of whitespace only that mermaid.js does not read as part of the value produces no token.",
+            "tests": [
+              {
+                "file": "check-tree-shared-tokens.test.ts",
+                "text": "tokens-358b-class-unread-whitespace-fragment"
+              }
+            ]
+          }
+        ]
+      }
+    },
+    {
+      "block": "packages/parser/docs/tokens.md:b8692bcfeaee",
+      "diagrams": ["er"],
+      "about": "A comment lies outside all tokens. A comment region can lie ",
+      "judgment": {
+        "status": "shown",
+        "cases": [
+          {
+            "case": "A comment region cuts a RawText unit and is outside its tokens.",
+            "tests": [
+              {
+                "file": "check-tree-shared-tokens.test.ts",
+                "text": "tokens-extra-358-er-region-cut-RawText"
+              }
+            ]
+          },
+          {
+            "case": "A comment region cuts a quoted String unit into StringFragment tokens.",
+            "tests": [
+              {
+                "file": "check-tree-shared-tokens.test.ts",
+                "text": "tokens-extra-358-er-region-cut-StringFragment"
+              }
+            ]
+          },
+          {
+            "case": "Read whitespace beside a region remains in the adjacent fragment.",
+            "tests": [
+              {
+                "file": "check-tree-shared-tokens.test.ts",
+                "text": "tokens-extra-358-er-read-whitespace-before-comment"
+              }
+            ]
+          },
+          {
+            "case": "The comment region ending line terminator belongs to no token.",
+            "tests": [
+              {
+                "file": "check-tree-shared-tokens.test.ts",
+                "text": "tokens-extra-358-er-ending-line-terminator-outside-token"
+              }
+            ]
+          },
+          {
+            "case": "Whitespace-only lines of the comment region belong to no token.",
+            "tests": [
+              {
+                "file": "check-tree-shared-tokens.test.ts",
+                "text": "tokens-358b-er-region-whitespace-line"
+              }
+            ]
+          },
+          {
+            "case": "An actually empty fragment produces no token.",
+            "tests": [
+              {
+                "file": "check-tree-shared-tokens.test.ts",
+                "text": "tokens-358b-er-empty-fragment"
+              }
+            ]
+          },
+          {
+            "case": "A fragment of whitespace only that mermaid.js does not read as part of the value produces no token.",
+            "tests": [
+              {
+                "file": "check-tree-shared-tokens.test.ts",
+                "text": "tokens-358b-er-unread-whitespace-fragment"
+              }
+            ]
+          }
+        ]
+      }
+    },
+    {
+      "block": "packages/parser/docs/tokens.md:b8692bcfeaee",
+      "diagrams": ["flowchart"],
+      "about": "A comment lies outside all tokens. A comment region can lie ",
+      "judgment": {
+        "status": "shown",
+        "cases": [
+          {
+            "case": "A comment region cuts a RawText unit and is outside its tokens.",
+            "tests": [
+              {
+                "file": "check-tree-shared-tokens.test.ts",
+                "text": "tokens-extra-358-flowchart-region-cut-RawText"
+              }
+            ]
+          },
+          {
+            "case": "A comment region cuts a quoted String unit into StringFragment tokens.",
+            "tests": [
+              {
+                "file": "check-tree-shared-tokens.test.ts",
+                "text": "tokens-extra-358-flowchart-region-cut-StringFragment"
+              }
+            ]
+          },
+          {
+            "case": "Read whitespace beside a region remains in the adjacent fragment.",
+            "tests": [
+              {
+                "file": "check-tree-shared-tokens.test.ts",
+                "text": "tokens-extra-358-flowchart-read-whitespace-before-comment"
+              }
+            ]
+          },
+          {
+            "case": "The comment region ending line terminator belongs to no token.",
+            "tests": [
+              {
+                "file": "check-tree-shared-tokens.test.ts",
+                "text": "tokens-extra-358-flowchart-ending-line-terminator-outside-token"
+              }
+            ]
+          },
+          {
+            "case": "Whitespace-only lines of the comment region belong to no token.",
+            "tests": [
+              {
+                "file": "check-tree-shared-tokens.test.ts",
+                "text": "tokens-358b-flowchart-region-whitespace-line"
+              }
+            ]
+          },
+          {
+            "case": "An actually empty fragment produces no token.",
+            "tests": [
+              {
+                "file": "check-tree-shared-tokens.test.ts",
+                "text": "tokens-358b-flowchart-empty-fragment"
+              }
+            ]
+          },
+          {
+            "case": "A fragment of whitespace only that mermaid.js does not read as part of the value produces no token.",
+            "tests": [
+              {
+                "file": "check-tree-shared-tokens.test.ts",
+                "text": "tokens-358b-flowchart-unread-whitespace-fragment"
+              }
+            ]
+          }
+        ]
+      }
+    },
+    {
+      "block": "packages/parser/docs/tokens.md:b8692bcfeaee",
+      "diagrams": ["sequence"],
+      "about": "A comment lies outside all tokens. A comment region can lie ",
+      "judgment": {
+        "status": "shown",
+        "cases": [
+          {
+            "case": "A comment region cuts a RawText unit and is outside its tokens.",
+            "tests": [
+              {
+                "file": "check-tree-shared-tokens.test.ts",
+                "text": "tokens-extra-358-sequence-region-cut-RawText"
+              }
+            ]
+          },
+          {
+            "case": "Read whitespace beside a region remains in the adjacent fragment.",
+            "tests": [
+              {
+                "file": "check-tree-shared-tokens.test.ts",
+                "text": "tokens-extra-358-sequence-read-whitespace-before-comment"
+              }
+            ]
+          },
+          {
+            "case": "The comment region ending line terminator belongs to no token.",
+            "tests": [
+              {
+                "file": "check-tree-shared-tokens.test.ts",
+                "text": "tokens-extra-358-sequence-ending-line-terminator-outside-token"
+              }
+            ]
+          },
+          {
+            "case": "Whitespace-only lines of the comment region belong to no token.",
+            "tests": [
+              {
+                "file": "check-tree-shared-tokens.test.ts",
+                "text": "tokens-358b-sequence-region-whitespace-line"
+              }
+            ]
+          },
+          {
+            "case": "An actually empty fragment produces no token.",
+            "tests": [
+              {
+                "file": "check-tree-shared-tokens.test.ts",
+                "text": "tokens-358b-sequence-empty-fragment"
+              }
+            ]
+          },
+          {
+            "case": "A fragment of whitespace only that mermaid.js does not read as part of the value produces no token.",
+            "tests": [
+              {
+                "file": "check-tree-shared-tokens.test.ts",
+                "text": "tokens-358b-sequence-unread-whitespace-fragment"
+              }
+            ]
+          }
+        ]
+      }
+    },
+    {
+      "block": "packages/parser/docs/tokens.md:b8692bcfeaee",
+      "diagrams": ["state"],
+      "about": "A comment lies outside all tokens. A comment region can lie ",
+      "judgment": {
+        "status": "shown",
+        "cases": [
+          {
+            "case": "A comment region cuts a RawText unit and is outside its tokens.",
+            "tests": [
+              {
+                "file": "check-tree-shared-tokens.test.ts",
+                "text": "tokens-extra-358-state-region-cut-RawText"
+              }
+            ]
+          },
+          {
+            "case": "A comment region cuts a quoted String unit into StringFragment tokens.",
+            "tests": [
+              {
+                "file": "check-tree-shared-tokens.test.ts",
+                "text": "tokens-extra-358-state-region-cut-StringFragment"
+              }
+            ]
+          },
+          {
+            "case": "Read whitespace beside a region remains in the adjacent fragment.",
+            "tests": [
+              {
+                "file": "check-tree-shared-tokens.test.ts",
+                "text": "tokens-extra-358-state-read-whitespace-before-comment"
+              }
+            ]
+          },
+          {
+            "case": "The comment region ending line terminator belongs to no token.",
+            "tests": [
+              {
+                "file": "check-tree-shared-tokens.test.ts",
+                "text": "tokens-extra-358-state-ending-line-terminator-outside-token"
+              }
+            ]
+          },
+          {
+            "case": "Whitespace-only lines of the comment region belong to no token.",
+            "tests": [
+              {
+                "file": "check-tree-shared-tokens.test.ts",
+                "text": "tokens-358b-state-region-whitespace-line"
+              }
+            ]
+          },
+          {
+            "case": "An actually empty fragment produces no token.",
+            "tests": [
+              {
+                "file": "check-tree-shared-tokens.test.ts",
+                "text": "tokens-358b-state-empty-fragment"
+              }
+            ]
+          },
+          {
+            "case": "A fragment of whitespace only that mermaid.js does not read as part of the value produces no token.",
+            "tests": [
+              {
+                "file": "check-tree-shared-tokens.test.ts",
+                "text": "tokens-358b-state-unread-whitespace-fragment"
+              }
+            ]
+          }
+        ]
+      }
+    },
+    {
+      "block": "packages/parser/docs/tokens.md:d27dff19fb56",
+      "diagrams": ["agentflow"],
+      "about": "Where several regions lie inside one token, it is cut at eac",
+      "judgment": {
+        "status": "shown",
+        "cases": [
+          {
+            "case": "Every one of several regions cuts the unit.",
+            "tests": [
+              {
+                "file": "check-tree-shared-tokens.test.ts",
+                "text": "tokens-358b-agentflow-several-regions"
+              }
+            ]
+          }
+        ]
+      }
+    },
+    {
+      "block": "packages/parser/docs/tokens.md:d27dff19fb56",
+      "diagrams": ["class"],
+      "about": "Where several regions lie inside one token, it is cut at eac",
+      "judgment": {
+        "status": "shown",
+        "cases": [
+          {
+            "case": "Every one of several regions cuts the unit.",
+            "tests": [
+              {
+                "file": "check-tree-shared-tokens.test.ts",
+                "text": "tokens-358b-class-several-regions"
+              }
+            ]
+          }
+        ]
+      }
+    },
+    {
+      "block": "packages/parser/docs/tokens.md:d27dff19fb56",
+      "diagrams": ["er"],
+      "about": "Where several regions lie inside one token, it is cut at eac",
+      "judgment": {
+        "status": "shown",
+        "cases": [
+          {
+            "case": "Every one of several regions cuts the unit.",
+            "tests": [
+              {
+                "file": "check-tree-shared-tokens.test.ts",
+                "text": "tokens-358b-er-several-regions"
+              }
+            ]
+          }
+        ]
+      }
+    },
+    {
+      "block": "packages/parser/docs/tokens.md:d27dff19fb56",
+      "diagrams": ["flowchart"],
+      "about": "Where several regions lie inside one token, it is cut at eac",
+      "judgment": {
+        "status": "shown",
+        "cases": [
+          {
+            "case": "Every one of several regions cuts the unit.",
+            "tests": [
+              {
+                "file": "check-tree-shared-tokens.test.ts",
+                "text": "tokens-358b-flowchart-several-regions"
+              }
+            ]
+          }
+        ]
+      }
+    },
+    {
+      "block": "packages/parser/docs/tokens.md:d27dff19fb56",
+      "diagrams": ["sequence"],
+      "about": "Where several regions lie inside one token, it is cut at eac",
+      "judgment": {
+        "status": "shown",
+        "cases": [
+          {
+            "case": "Every one of several regions cuts the unit.",
+            "tests": [
+              {
+                "file": "check-tree-shared-tokens.test.ts",
+                "text": "tokens-358b-sequence-several-regions"
+              }
+            ]
+          }
+        ]
+      }
+    },
+    {
+      "block": "packages/parser/docs/tokens.md:d27dff19fb56",
+      "diagrams": ["state"],
+      "about": "Where several regions lie inside one token, it is cut at eac",
+      "judgment": {
+        "status": "shown",
+        "cases": [
+          {
+            "case": "Every one of several regions cuts the unit.",
+            "tests": [
+              {
+                "file": "check-tree-shared-tokens.test.ts",
+                "text": "tokens-358b-state-several-regions"
+              }
+            ]
+          }
+        ]
+      }
+    },
+    {
+      "block": "packages/parser/docs/tokens.md:95fc18f1e5b4",
       "diagrams": [
         "agentflow",
         "class",
@@ -11594,11 +12262,310 @@
         "sequence",
         "state"
       ],
-      "about": "A comment lies outside all tokens. A comment region can lie inside what one unit",
+      "about": "Only `String`, `RawText`, and `Identifier` tokens can hold a",
       "judgment": {
         "status": "not-shown",
         "reason": "rule-misses-condition",
         "note": "class/lex-acc-descr-block-line-separator-then-comment-line: change only token 4 from RawText to Identifier, preserving spelling \"B\", range [30,31], loc, the value node and the complete recorded input. The replacement has a valid spelling and is used by this diagram. The baseline returned []; checkTree() returned []. er: er/lex-acc-descr-block-line-separator-comment-line-cr: change only token 4 from RawText to Identifier, preserving spelling \"b\", range [28,29], loc, the value node and the complete recorded input. The replacement has a valid spelling and is used by this diagram. The baseline returned []; checkTree() returned []. flowchart: flowchart/lex-acc-descr-block-line-separator-comment-line-cr: change only token 5 from RawText to Identifier, preserving spelling \"B\", range [30,31], loc, the value node and the complete recorded input. The replacement has a valid spelling and is used by this diagram. The baseline returned []; checkTree() returned []. sequence: tokens-extra-sequence-358-clean-numeric-fragment: in the fixed hand-built sequence tree for \"sequenceDiagram\\naccDescr {\\nA\\n%% c\\n1\\n}\\n\", change only the RawText token 1 to Numeric, preserving its spelling, range, loc and the value node. Numeric is used by sequence and 1 is a number. The baseline returned []; checkTree() returned [] (shared-final-gaps-probe.log). state: state/lex-acc-descr-block-line-separator-comment-line-cr: change only token 4 from RawText to Identifier, preserving spelling \"B\", range [34,35], loc, the value node and the complete recorded input. The replacement has a valid spelling and is used by this diagram. The baseline returned []; checkTree() returned []. agentflow: agentflow/comment-default-size-above-crlf: change only token 5 from StringFragment to RawText, preserving the right fragment's spelling after\", range [49996,50002], loc, the label value and the complete recorded input. The baseline returned []; checkTree() returned []. RawText is used by agentflow and the fragment itself has no opening quote, but a quoted unit cut by a comment region requires StringFragment. Under the updated Identifier exception, eligible names still require Identifier fragments: er/lex-name-line-separator-comment-line: Root.tokens[1].type at [10,12], Root.tokens[2].type at [17,20] from Identifier to RawText; er/lex-name-two-comment-regions: Root.tokens[1].type at [10,12], Root.tokens[2].type at [17,21], Root.tokens[3].type at [26,29] from Identifier to RawText; er/lex-name-line-separator-comment-line: Root.tokens[1].type at [10,12] from Identifier to Numeric; er/lex-name-paragraph-separator-comment-line: Root.tokens[1].type at [10,12], Root.tokens[2].type at [17,20] from Identifier to RawText. Each mutation changes only that token's type; input, spelling, range, loc, the name node and all other tokens are unchanged. All eight mutations returned []. The earlier ErLiteral RawText-to-Identifier miss also remains a violation: the exception permits Identifier fragments only in eligible names, not in accessibility-description text."
+      }
+    },
+    {
+      "block": "packages/parser/docs/tokens.md:5a6c79245141",
+      "diagrams": ["agentflow"],
+      "about": "The node of the unit, such as a label, a StringLiteral, or a",
+      "judgment": {
+        "status": "shown",
+        "cases": [
+          {
+            "case": "The node of the unit spans its fragments and the region.",
+            "tests": [
+              {
+                "file": "check-tree-shared-tokens.test.ts",
+                "text": "tokens-extra-358-agentflow-unit-spans-region"
+              }
+            ]
+          },
+          {
+            "case": "The value joins the text before and after the region.",
+            "tests": [
+              {
+                "file": "check-tree-shared-tokens.test.ts",
+                "text": "tokens-extra-358-agentflow-value-joins-fragments"
+              }
+            ]
+          }
+        ]
+      }
+    },
+    {
+      "block": "packages/parser/docs/tokens.md:5a6c79245141",
+      "diagrams": ["class"],
+      "about": "The node of the unit, such as a label, a StringLiteral, or a",
+      "judgment": {
+        "status": "shown",
+        "cases": [
+          {
+            "case": "The node of the unit spans its fragments and the region.",
+            "tests": [
+              {
+                "file": "check-tree-shared-tokens.test.ts",
+                "text": "tokens-extra-358-class-unit-spans-region"
+              }
+            ]
+          },
+          {
+            "case": "The value joins the text before and after the region.",
+            "tests": [
+              {
+                "file": "check-tree-shared-tokens.test.ts",
+                "text": "tokens-extra-358-class-value-joins-fragments"
+              }
+            ]
+          }
+        ]
+      }
+    },
+    {
+      "block": "packages/parser/docs/tokens.md:5a6c79245141",
+      "diagrams": ["er"],
+      "about": "The node of the unit, such as a label, a StringLiteral, or a",
+      "judgment": {
+        "status": "shown",
+        "cases": [
+          {
+            "case": "The node of the unit spans its fragments and the region.",
+            "tests": [
+              {
+                "file": "check-tree-shared-tokens.test.ts",
+                "text": "tokens-extra-358-er-unit-spans-region"
+              }
+            ]
+          },
+          {
+            "case": "The value joins the text before and after the region.",
+            "tests": [
+              {
+                "file": "check-tree-shared-tokens.test.ts",
+                "text": "tokens-extra-358-er-value-joins-fragments"
+              }
+            ]
+          }
+        ]
+      }
+    },
+    {
+      "block": "packages/parser/docs/tokens.md:5a6c79245141",
+      "diagrams": ["flowchart"],
+      "about": "The node of the unit, such as a label, a StringLiteral, or a",
+      "judgment": {
+        "status": "shown",
+        "cases": [
+          {
+            "case": "The node of the unit spans its fragments and the region.",
+            "tests": [
+              {
+                "file": "check-tree-shared-tokens.test.ts",
+                "text": "tokens-extra-358-flowchart-unit-spans-region"
+              }
+            ]
+          },
+          {
+            "case": "The value joins the text before and after the region.",
+            "tests": [
+              {
+                "file": "check-tree-shared-tokens.test.ts",
+                "text": "tokens-extra-358-flowchart-value-joins-fragments"
+              }
+            ]
+          }
+        ]
+      }
+    },
+    {
+      "block": "packages/parser/docs/tokens.md:5a6c79245141",
+      "diagrams": ["sequence"],
+      "about": "The node of the unit, such as a label, a StringLiteral, or a",
+      "judgment": {
+        "status": "shown",
+        "cases": [
+          {
+            "case": "The node of the unit spans its fragments and the region.",
+            "tests": [
+              {
+                "file": "check-tree-shared-tokens.test.ts",
+                "text": "tokens-extra-358-sequence-unit-spans-region"
+              }
+            ]
+          },
+          {
+            "case": "The value joins the text before and after the region.",
+            "tests": [
+              {
+                "file": "check-tree-shared-tokens.test.ts",
+                "text": "tokens-extra-358-sequence-value-joins-fragments"
+              }
+            ]
+          }
+        ]
+      }
+    },
+    {
+      "block": "packages/parser/docs/tokens.md:5a6c79245141",
+      "diagrams": ["state"],
+      "about": "The node of the unit, such as a label, a StringLiteral, or a",
+      "judgment": {
+        "status": "shown",
+        "cases": [
+          {
+            "case": "The node of the unit spans its fragments and the region.",
+            "tests": [
+              {
+                "file": "check-tree-shared-tokens.test.ts",
+                "text": "tokens-extra-358-state-unit-spans-region"
+              }
+            ]
+          },
+          {
+            "case": "The value joins the text before and after the region.",
+            "tests": [
+              {
+                "file": "check-tree-shared-tokens.test.ts",
+                "text": "tokens-extra-358-state-value-joins-fragments"
+              }
+            ]
+          }
+        ]
+      }
+    },
+    {
+      "block": "packages/parser/docs/tokens.md:348448907086",
+      "diagrams": ["agentflow"],
+      "about": "A line with only `%%` is no comment line (see [Comment lines",
+      "judgment": {
+        "status": "shown",
+        "cases": [
+          {
+            "case": "A line with only %% is no comment line, so it stays in the fragment after the region.",
+            "tests": [
+              {
+                "file": "check-tree-shared-tokens.test.ts",
+                "text": "tokens-358b-agentflow-percent-line-in-fragment"
+              }
+            ]
+          }
+        ]
+      }
+    },
+    {
+      "block": "packages/parser/docs/tokens.md:348448907086",
+      "diagrams": ["class"],
+      "about": "A line with only `%%` is no comment line (see [Comment lines",
+      "judgment": {
+        "status": "shown",
+        "cases": [
+          {
+            "case": "A line with only %% is no comment line, so it stays in the fragment after the region.",
+            "tests": [
+              {
+                "file": "check-tree-shared-tokens.test.ts",
+                "text": "tokens-358b-class-percent-line-in-fragment"
+              }
+            ]
+          }
+        ]
+      }
+    },
+    {
+      "block": "packages/parser/docs/tokens.md:348448907086",
+      "diagrams": ["er"],
+      "about": "A line with only `%%` is no comment line (see [Comment lines",
+      "judgment": {
+        "status": "shown",
+        "cases": [
+          {
+            "case": "A line with only %% is no comment line, so it stays in the fragment after the region.",
+            "tests": [
+              {
+                "file": "check-tree-shared-tokens.test.ts",
+                "text": "tokens-358b-er-percent-line-in-fragment"
+              }
+            ]
+          }
+        ]
+      }
+    },
+    {
+      "block": "packages/parser/docs/tokens.md:348448907086",
+      "diagrams": ["flowchart"],
+      "about": "A line with only `%%` is no comment line (see [Comment lines",
+      "judgment": {
+        "status": "shown",
+        "cases": [
+          {
+            "case": "A line with only %% is no comment line, so it stays in the fragment after the region.",
+            "tests": [
+              {
+                "file": "check-tree-shared-tokens.test.ts",
+                "text": "tokens-358b-flowchart-percent-line-in-fragment"
+              }
+            ]
+          }
+        ]
+      }
+    },
+    {
+      "block": "packages/parser/docs/tokens.md:348448907086",
+      "diagrams": ["sequence"],
+      "about": "A line with only `%%` is no comment line (see [Comment lines",
+      "judgment": {
+        "status": "shown",
+        "cases": [
+          {
+            "case": "A line with only %% is no comment line, so it stays in the fragment after the region.",
+            "tests": [
+              {
+                "file": "check-tree-shared-tokens.test.ts",
+                "text": "tokens-358b-sequence-percent-line-in-fragment"
+              }
+            ]
+          }
+        ]
+      }
+    },
+    {
+      "block": "packages/parser/docs/tokens.md:348448907086",
+      "diagrams": ["state"],
+      "about": "A line with only `%%` is no comment line (see [Comment lines",
+      "judgment": {
+        "status": "shown",
+        "cases": [
+          {
+            "case": "A line with only %% is no comment line, so it stays in the fragment after the region.",
+            "tests": [
+              {
+                "file": "check-tree-shared-tokens.test.ts",
+                "text": "tokens-358b-state-percent-line-in-fragment"
+              }
+            ]
+          }
+        ]
+      }
+    },
+    {
+      "block": "packages/parser/docs/tokens.md:d71933d056f5",
+      "diagrams": [
+        "agentflow",
+        "class",
+        "er",
+        "flowchart",
+        "sequence",
+        "state"
+      ],
+      "about": "Such regions lie in quoted strings, in the text of labels an",
+      "judgment": {
+        "status": "no-condition",
+        "kind": "not-about-tree",
+        "note": "It lists the units of the input in which a comment region can lie; it states nothing about the tree beyond the sentences of this paragraph before it."
       }
     },
     {
@@ -12292,15 +13259,7 @@
     },
     {
       "block": "packages/parser/docs/tokens.md:c7ee83416bbd",
-      "diagrams": [
-        "block",
-        "cynefin",
-        "eventmodeling",
-        "mindmap",
-        "pie",
-        "treeview",
-        "usecase"
-      ],
+      "diagrams": ["block", "cynefin", "mindmap", "pie", "treeview", "usecase"],
       "about": "A token whose range holds a directive is cut at the directive: a token whose\n  u",
       "judgment": {
         "status": "shown",
@@ -12315,10 +13274,6 @@
               {
                 "file": "check-tree-shared-tokens.test.ts",
                 "text": "tokens-631-cynefin-A token is cut at an internal directive"
-              },
-              {
-                "file": "check-tree-shared-tokens.test.ts",
-                "text": "tokens-631-eventmodeling-A token is cut at an internal directive"
               },
               {
                 "file": "check-tree-shared-tokens.test.ts",
@@ -12351,10 +13306,6 @@
               },
               {
                 "file": "check-tree-shared-tokens.test.ts",
-                "text": "tokens-extra-clean-raw-kind-eventmodeling"
-              },
-              {
-                "file": "check-tree-shared-tokens.test.ts",
                 "text": "tokens-extra-631-clean-raw-kind-hand-mindmap"
               },
               {
@@ -12381,10 +13332,6 @@
               {
                 "file": "check-tree-shared-tokens.test.ts",
                 "text": "tokens-clean-631-quoted-fragment-kind-cynefin"
-              },
-              {
-                "file": "check-tree-shared-tokens.test.ts",
-                "text": "tokens-clean-631-quoted-fragment-kind-eventmodeling"
               },
               {
                 "file": "check-tree-shared-tokens.test.ts",
@@ -12417,10 +13364,6 @@
               },
               {
                 "file": "check-tree-shared-tokens.test.ts",
-                "text": "tokens-631-eventmodeling-Read whitespace adjacent to a directive remains in its fragment"
-              },
-              {
-                "file": "check-tree-shared-tokens.test.ts",
                 "text": "tokens-631-mindmap-Read whitespace adjacent to a directive remains in its fragment"
               },
               {
@@ -12447,10 +13390,6 @@
               {
                 "file": "check-tree-shared-tokens.test.ts",
                 "text": "tokens-631-cynefin-A read whitespace-only fragment has a token"
-              },
-              {
-                "file": "check-tree-shared-tokens.test.ts",
-                "text": "tokens-631-eventmodeling-A read whitespace-only fragment has a token"
               },
               {
                 "file": "check-tree-shared-tokens.test.ts",
@@ -12483,10 +13422,6 @@
               },
               {
                 "file": "check-tree-shared-tokens.test.ts",
-                "text": "tokens-631-eventmodeling-The directive between fragments has its Directive token"
-              },
-              {
-                "file": "check-tree-shared-tokens.test.ts",
                 "text": "tokens-631-mindmap-The directive between fragments has its Directive token"
               },
               {
@@ -12516,10 +13451,6 @@
               },
               {
                 "file": "check-tree-shared-tokens.test.ts",
-                "text": "tokens-631-eventmodeling-A directive-cut value still holds the same written value"
-              },
-              {
-                "file": "check-tree-shared-tokens.test.ts",
                 "text": "tokens-631-mindmap-A directive-cut value still holds the same written value"
               },
               {
@@ -12537,35 +13468,113 @@
             ]
           },
           {
+            "case": "A whitespace-only fragment of a value that a directive cuts has no token when mermaid.js does not read it as part of the value.",
+            "tests": [
+              {
+                "file": "check-tree-shared-tokens.test.ts",
+                "text": "tokens-631b-block-unread-fragment-beside-directive"
+              },
+              {
+                "file": "check-tree-shared-tokens.test.ts",
+                "text": "tokens-631b-cynefin-unread-fragment-beside-directive"
+              },
+              {
+                "file": "check-tree-shared-tokens.test.ts",
+                "text": "tokens-631b-mindmap-unread-fragment-beside-directive"
+              },
+              {
+                "file": "check-tree-shared-tokens.test.ts",
+                "text": "tokens-631b-pie-unread-fragment-beside-directive"
+              },
+              {
+                "file": "check-tree-shared-tokens.test.ts",
+                "text": "tokens-631b-treeview-unread-fragment-beside-directive"
+              },
+              {
+                "file": "check-tree-shared-tokens.test.ts",
+                "text": "tokens-631b-usecase-unread-fragment-beside-directive"
+              }
+            ]
+          }
+        ]
+      }
+    },
+    {
+      "block": "packages/parser/docs/tokens.md:c7ee83416bbd",
+      "diagrams": ["eventmodeling"],
+      "about": "A token whose range holds a directive is cut at the directive: a token whose\n  u",
+      "judgment": {
+        "status": "shown",
+        "cases": [
+          {
+            "case": "A token is cut at an internal directive",
+            "tests": [
+              {
+                "file": "check-tree-shared-tokens.test.ts",
+                "text": "tokens-631-eventmodeling-A token is cut at an internal directive"
+              }
+            ]
+          },
+          {
+            "case": "RawText fragments cut by a directive keep their kind",
+            "tests": [
+              {
+                "file": "check-tree-shared-tokens.test.ts",
+                "text": "tokens-extra-clean-raw-kind-eventmodeling"
+              }
+            ]
+          },
+          {
+            "case": "String fragments cut by a directive have kind StringFragment",
+            "tests": [
+              {
+                "file": "check-tree-shared-tokens.test.ts",
+                "text": "tokens-clean-631-quoted-fragment-kind-eventmodeling"
+              }
+            ]
+          },
+          {
+            "case": "Read whitespace adjacent to a directive remains in its fragment",
+            "tests": [
+              {
+                "file": "check-tree-shared-tokens.test.ts",
+                "text": "tokens-631-eventmodeling-Read whitespace adjacent to a directive remains in its fragment"
+              }
+            ]
+          },
+          {
+            "case": "A read whitespace-only fragment has a token",
+            "tests": [
+              {
+                "file": "check-tree-shared-tokens.test.ts",
+                "text": "tokens-631-eventmodeling-A read whitespace-only fragment has a token"
+              }
+            ]
+          },
+          {
+            "case": "The directive between fragments has its Directive token",
+            "tests": [
+              {
+                "file": "check-tree-shared-tokens.test.ts",
+                "text": "tokens-631-eventmodeling-The directive between fragments has its Directive token"
+              }
+            ]
+          },
+          {
+            "case": "A directive-cut value still holds the same written value",
+            "tests": [
+              {
+                "file": "check-tree-shared-tokens.test.ts",
+                "text": "tokens-631-eventmodeling-A directive-cut value still holds the same written value"
+              }
+            ]
+          },
+          {
             "case": "Whitespace-only text not read as part of a value has no token",
             "tests": [
               {
                 "file": "check-tree-shared-tokens.test.ts",
-                "text": "tokens-631-block-unread-whitespace-after-directive-has-no-token"
-              },
-              {
-                "file": "check-tree-shared-tokens.test.ts",
-                "text": "tokens-631-cynefin-unread-whitespace-after-directive-has-no-token"
-              },
-              {
-                "file": "check-tree-shared-tokens.test.ts",
                 "text": "tokens-631-eventmodeling-unread-whitespace-after-directive-has-no-token"
-              },
-              {
-                "file": "check-tree-shared-tokens.test.ts",
-                "text": "tokens-631-mindmap-unread-whitespace-after-directive-has-no-token"
-              },
-              {
-                "file": "check-tree-shared-tokens.test.ts",
-                "text": "tokens-631-pie-unread-whitespace-after-directive-has-no-token"
-              },
-              {
-                "file": "check-tree-shared-tokens.test.ts",
-                "text": "tokens-631-treeview-unread-whitespace-after-directive-has-no-token"
-              },
-              {
-                "file": "check-tree-shared-tokens.test.ts",
-                "text": "tokens-631-usecase-unread-whitespace-after-directive-has-no-token"
               }
             ]
           }
@@ -12603,15 +13612,6 @@
               {
                 "file": "check-tree-shared-tokens.test.ts",
                 "text": "tokens-631-error-The directive between error word fragments has its token"
-              }
-            ]
-          },
-          {
-            "case": "Whitespace-only text not read as part of a value has no token",
-            "tests": [
-              {
-                "file": "check-tree-shared-tokens.test.ts",
-                "text": "tokens-631-error-unread-whitespace-after-directive-has-no-token"
               }
             ]
           }
@@ -12693,9 +13693,9 @@
       }
     },
     {
-      "block": "packages/parser/docs/tokens.md:5d1035b3b29b",
+      "block": "packages/parser/docs/tokens.md:b8692bcfeaee",
       "diagrams": ["error"],
-      "about": "A comment lies outside all tokens. A comment region can lie inside what one unit",
+      "about": "A comment lies outside all tokens. A comment region can lie ",
       "judgment": {
         "status": "shown",
         "cases": [
@@ -12709,6 +13709,76 @@
             ]
           }
         ]
+      }
+    },
+    {
+      "block": "packages/parser/docs/tokens.md:d27dff19fb56",
+      "diagrams": ["error"],
+      "about": "Where several regions lie inside one token, it is cut at eac",
+      "judgment": {
+        "status": "no-condition",
+        "kind": "not-in-diagram",
+        "note": "The error pseudo-diagram's tokens are runs that a comment region cannot lie inside (A comment is always outside the tokens, in its section), so no unit of its tree spans a region.",
+        "documents": [
+          "packages/spec/docs/common.md",
+          "packages/spec/docs/ast.md",
+          "packages/parser/docs/tokens.md"
+        ]
+      }
+    },
+    {
+      "block": "packages/parser/docs/tokens.md:95fc18f1e5b4",
+      "diagrams": ["error"],
+      "about": "Only `String`, `RawText`, and `Identifier` tokens can hold a",
+      "judgment": {
+        "status": "no-condition",
+        "kind": "not-in-diagram",
+        "note": "The error pseudo-diagram's tokens are runs that a comment region cannot lie inside (A comment is always outside the tokens, in its section), so no unit of its tree spans a region.",
+        "documents": [
+          "packages/spec/docs/common.md",
+          "packages/spec/docs/ast.md",
+          "packages/parser/docs/tokens.md"
+        ]
+      }
+    },
+    {
+      "block": "packages/parser/docs/tokens.md:5a6c79245141",
+      "diagrams": ["error"],
+      "about": "The node of the unit, such as a label, a StringLiteral, or a",
+      "judgment": {
+        "status": "no-condition",
+        "kind": "not-in-diagram",
+        "note": "The error pseudo-diagram's tokens are runs that a comment region cannot lie inside (A comment is always outside the tokens, in its section), so no unit of its tree spans a region.",
+        "documents": [
+          "packages/spec/docs/common.md",
+          "packages/spec/docs/ast.md",
+          "packages/parser/docs/tokens.md"
+        ]
+      }
+    },
+    {
+      "block": "packages/parser/docs/tokens.md:348448907086",
+      "diagrams": ["error"],
+      "about": "A line with only `%%` is no comment line (see [Comment lines",
+      "judgment": {
+        "status": "no-condition",
+        "kind": "not-in-diagram",
+        "note": "The error pseudo-diagram's tokens are runs that a comment region cannot lie inside (A comment is always outside the tokens, in its section), so no unit of its tree spans a region.",
+        "documents": [
+          "packages/spec/docs/common.md",
+          "packages/spec/docs/ast.md",
+          "packages/parser/docs/tokens.md"
+        ]
+      }
+    },
+    {
+      "block": "packages/parser/docs/tokens.md:d71933d056f5",
+      "diagrams": ["error"],
+      "about": "Such regions lie in quoted strings, in the text of labels an",
+      "judgment": {
+        "status": "no-condition",
+        "kind": "not-about-tree",
+        "note": "It lists the units of the input in which a comment region can lie; it states nothing about the tree beyond the sentences of this paragraph before it."
       }
     },
     {
@@ -15752,39 +16822,39 @@
             ]
           },
           {
-            "case": "Whitespace-only text not read as part of the value has no token",
+            "case": "A whitespace-only fragment of a value that a directive cuts has no token when mermaid.js does not read it as part of the value.",
             "tests": [
               {
                 "file": "check-tree-shared-tokens.test.ts",
-                "text": "tokens-631-gantt-prepared-read-whitespace-gap"
+                "text": "tokens-631b-gantt-unread-fragment-beside-directive"
               },
               {
                 "file": "check-tree-shared-tokens.test.ts",
-                "text": "tokens-631-gitgraph-prepared-read-whitespace-gap"
+                "text": "tokens-631b-gitgraph-unread-fragment-beside-directive"
               },
               {
                 "file": "check-tree-shared-tokens.test.ts",
-                "text": "tokens-631-kanban-prepared-read-whitespace-gap"
+                "text": "tokens-631b-kanban-unread-fragment-beside-directive"
               },
               {
                 "file": "check-tree-shared-tokens.test.ts",
-                "text": "tokens-631-quadrant-prepared-read-whitespace-gap"
+                "text": "tokens-631b-quadrant-unread-fragment-beside-directive"
               },
               {
                 "file": "check-tree-shared-tokens.test.ts",
-                "text": "tokens-631-railroad-prepared-read-whitespace-gap"
+                "text": "tokens-631b-railroad-unread-fragment-beside-directive"
               },
               {
                 "file": "check-tree-shared-tokens.test.ts",
-                "text": "tokens-631-requirement-prepared-read-whitespace-gap"
+                "text": "tokens-631b-requirement-unread-fragment-beside-directive"
               },
               {
                 "file": "check-tree-shared-tokens.test.ts",
-                "text": "tokens-631-wardley-prepared-read-whitespace-gap"
+                "text": "tokens-631b-wardley-unread-fragment-beside-directive"
               },
               {
                 "file": "check-tree-shared-tokens.test.ts",
-                "text": "tokens-631-xychart-prepared-read-whitespace-gap"
+                "text": "tokens-631b-xychart-unread-fragment-beside-directive"
               }
             ]
           }
@@ -15862,11 +16932,11 @@
             ]
           },
           {
-            "case": "Whitespace-only text not read as part of the value has no token",
+            "case": "A whitespace-only fragment of a value that a directive cuts has no token when mermaid.js does not read it as part of the value.",
             "tests": [
               {
                 "file": "check-tree-shared-tokens.test.ts",
-                "text": "tokens-631-venn-prepared-read-whitespace-gap"
+                "text": "tokens-631b-venn-unread-fragment-beside-directive"
               }
             ]
           },
@@ -16154,9 +17224,9 @@
       }
     },
     {
-      "block": "packages/parser/docs/tokens.md:5d1035b3b29b",
+      "block": "packages/parser/docs/tokens.md:b8692bcfeaee",
       "diagrams": ["block"],
-      "about": "A comment lies outside all tokens. A comment region can lie inside what one unit",
+      "about": "A comment lies outside all tokens. A comment region can lie ",
       "judgment": {
         "status": "shown",
         "cases": [
@@ -16210,6 +17280,25 @@
             ]
           },
           {
+            "case": "A real whitespace-only fragment trimmed from its value produces no token.",
+            "tests": [
+              {
+                "file": "check-tree-shared-tokens.test.ts",
+                "text": "tokens-extra-trimmed-comment-tail-block"
+              }
+            ]
+          }
+        ]
+      }
+    },
+    {
+      "block": "packages/parser/docs/tokens.md:d27dff19fb56",
+      "diagrams": ["block"],
+      "about": "Where several regions lie inside one token, it is cut at eac",
+      "judgment": {
+        "status": "shown",
+        "cases": [
+          {
             "case": "Every one of several regions cuts the unit.",
             "tests": [
               {
@@ -16221,7 +17310,17 @@
                 "text": "tokens-extra-358-block-several-regions-last-cut"
               }
             ]
-          },
+          }
+        ]
+      }
+    },
+    {
+      "block": "packages/parser/docs/tokens.md:95fc18f1e5b4",
+      "diagrams": ["block"],
+      "about": "Only `String`, `RawText`, and `Identifier` tokens can hold a",
+      "judgment": {
+        "status": "shown",
+        "cases": [
           {
             "case": "RawText fragments retain RawText rather than another valid token kind.",
             "tests": [
@@ -16231,6 +17330,29 @@
               }
             ]
           },
+          {
+            "case": "A comment region cuts a quoted String unit into StringFragment tokens.",
+            "tests": [
+              {
+                "file": "check-tree-shared-tokens.test.ts",
+                "text": "tokens-extra-358-block-region-cut-StringFragment"
+              },
+              {
+                "file": "check-tree-shared-tokens.test.ts",
+                "text": "tokens-extra-string-comment-fragment-kind-block"
+              }
+            ]
+          }
+        ]
+      }
+    },
+    {
+      "block": "packages/parser/docs/tokens.md:5a6c79245141",
+      "diagrams": ["block"],
+      "about": "The node of the unit, such as a label, a StringLiteral, or a",
+      "judgment": {
+        "status": "shown",
+        "cases": [
           {
             "case": "The node of the raw unit spans its fragments and region.",
             "tests": [
@@ -16248,29 +17370,17 @@
                 "text": "tokens-extra-358-block-value-joins-fragments"
               }
             ]
-          },
-          {
-            "case": "A comment region cuts a quoted String unit into StringFragment tokens.",
-            "tests": [
-              {
-                "file": "check-tree-shared-tokens.test.ts",
-                "text": "tokens-extra-358-block-region-cut-StringFragment"
-              },
-              {
-                "file": "check-tree-shared-tokens.test.ts",
-                "text": "tokens-extra-string-comment-fragment-kind-block"
-              }
-            ]
-          },
-          {
-            "case": "A real whitespace-only fragment trimmed from its value produces no token.",
-            "tests": [
-              {
-                "file": "check-tree-shared-tokens.test.ts",
-                "text": "tokens-extra-trimmed-comment-tail-block"
-              }
-            ]
-          },
+          }
+        ]
+      }
+    },
+    {
+      "block": "packages/parser/docs/tokens.md:348448907086",
+      "diagrams": ["block"],
+      "about": "A line with only `%%` is no comment line (see [Comment lines",
+      "judgment": {
+        "status": "shown",
+        "cases": [
           {
             "case": "A bare percent line after the region stays in its StringFragment fragment.",
             "tests": [
@@ -16284,7 +17394,17 @@
       }
     },
     {
-      "block": "packages/parser/docs/tokens.md:5d1035b3b29b",
+      "block": "packages/parser/docs/tokens.md:d71933d056f5",
+      "diagrams": ["block"],
+      "about": "Such regions lie in quoted strings, in the text of labels an",
+      "judgment": {
+        "status": "no-condition",
+        "kind": "not-about-tree",
+        "note": "It lists the units of the input in which a comment region can lie; it states nothing about the tree beyond the sentences of this paragraph before it."
+      }
+    },
+    {
+      "block": "packages/parser/docs/tokens.md:b8692bcfeaee",
       "diagrams": [
         "cynefin",
         "gantt",
@@ -16296,7 +17416,7 @@
         "wardley",
         "xychart"
       ],
-      "about": "A comment lies outside all tokens. A comment region can lie inside what one unit",
+      "about": "A comment lies outside all tokens. A comment region can lie ",
       "judgment": {
         "status": "shown",
         "cases": [
@@ -16546,6 +17666,67 @@
             ]
           },
           {
+            "case": "A real whitespace-only fragment trimmed from its value produces no token.",
+            "tests": [
+              {
+                "file": "check-tree-shared-tokens.test.ts",
+                "text": "tokens-extra-nonread-white-hand-cynefin"
+              },
+              {
+                "file": "check-tree-shared-tokens.test.ts",
+                "text": "tokens-extra-nonread-white-hand-gantt"
+              },
+              {
+                "file": "check-tree-shared-tokens.test.ts",
+                "text": "tokens-extra-nonread-white-hand-gitgraph"
+              },
+              {
+                "file": "check-tree-shared-tokens.test.ts",
+                "text": "tokens-extra-nonread-white-hand-pie"
+              },
+              {
+                "file": "check-tree-shared-tokens.test.ts",
+                "text": "tokens-extra-nonread-white-hand-railroad"
+              },
+              {
+                "file": "check-tree-shared-tokens.test.ts",
+                "text": "tokens-extra-nonread-white-fragment-requirement"
+              },
+              {
+                "file": "check-tree-shared-tokens.test.ts",
+                "text": "tokens-extra-trimmed-comment-tail-usecase"
+              },
+              {
+                "file": "check-tree-shared-tokens.test.ts",
+                "text": "tokens-extra-nonread-white-hand-wardley"
+              },
+              {
+                "file": "check-tree-shared-tokens.test.ts",
+                "text": "tokens-extra-nonread-white-hand-xychart"
+              }
+            ]
+          }
+        ]
+      }
+    },
+    {
+      "block": "packages/parser/docs/tokens.md:d27dff19fb56",
+      "diagrams": [
+        "cynefin",
+        "gantt",
+        "gitgraph",
+        "pie",
+        "railroad",
+        "requirement",
+        "usecase",
+        "wardley",
+        "xychart"
+      ],
+      "about": "Where several regions lie inside one token, it is cut at eac",
+      "judgment": {
+        "status": "shown",
+        "cases": [
+          {
             "case": "Every one of several regions cuts the unit.",
             "tests": [
               {
@@ -16621,7 +17802,27 @@
                 "text": "tokens-extra-358-xychart-several-regions-last-cut"
               }
             ]
-          },
+          }
+        ]
+      }
+    },
+    {
+      "block": "packages/parser/docs/tokens.md:95fc18f1e5b4",
+      "diagrams": [
+        "cynefin",
+        "gantt",
+        "gitgraph",
+        "pie",
+        "railroad",
+        "requirement",
+        "usecase",
+        "wardley",
+        "xychart"
+      ],
+      "about": "Only `String`, `RawText`, and `Identifier` tokens can hold a",
+      "judgment": {
+        "status": "shown",
+        "cases": [
           {
             "case": "RawText fragments retain RawText rather than another valid token kind.",
             "tests": [
@@ -16663,6 +17864,103 @@
               }
             ]
           },
+          {
+            "case": "A comment region cuts a quoted String unit into StringFragment tokens.",
+            "tests": [
+              {
+                "file": "check-tree-shared-tokens.test.ts",
+                "text": "tokens-extra-358-cynefin-region-cut-StringFragment"
+              },
+              {
+                "file": "check-tree-shared-tokens.test.ts",
+                "text": "tokens-extra-string-comment-fragment-kind-cynefin"
+              },
+              {
+                "file": "check-tree-shared-tokens.test.ts",
+                "text": "tokens-extra-358-gantt-region-cut-StringFragment"
+              },
+              {
+                "file": "check-tree-shared-tokens.test.ts",
+                "text": "tokens-extra-string-comment-fragment-kind-gantt"
+              },
+              {
+                "file": "check-tree-shared-tokens.test.ts",
+                "text": "tokens-extra-358-gitgraph-region-cut-StringFragment"
+              },
+              {
+                "file": "check-tree-shared-tokens.test.ts",
+                "text": "tokens-extra-string-comment-fragment-kind-gitgraph"
+              },
+              {
+                "file": "check-tree-shared-tokens.test.ts",
+                "text": "tokens-extra-358-pie-region-cut-StringFragment"
+              },
+              {
+                "file": "check-tree-shared-tokens.test.ts",
+                "text": "tokens-extra-string-comment-fragment-kind-pie"
+              },
+              {
+                "file": "check-tree-shared-tokens.test.ts",
+                "text": "tokens-extra-358-railroad-region-cut-StringFragment"
+              },
+              {
+                "file": "check-tree-shared-tokens.test.ts",
+                "text": "tokens-extra-string-comment-fragment-kind-railroad"
+              },
+              {
+                "file": "check-tree-shared-tokens.test.ts",
+                "text": "tokens-extra-358-requirement-region-cut-StringFragment"
+              },
+              {
+                "file": "check-tree-shared-tokens.test.ts",
+                "text": "tokens-extra-string-comment-fragment-kind-requirement"
+              },
+              {
+                "file": "check-tree-shared-tokens.test.ts",
+                "text": "tokens-extra-358-usecase-region-cut-StringFragment"
+              },
+              {
+                "file": "check-tree-shared-tokens.test.ts",
+                "text": "tokens-extra-string-comment-fragment-kind-usecase"
+              },
+              {
+                "file": "check-tree-shared-tokens.test.ts",
+                "text": "tokens-extra-358-wardley-region-cut-StringFragment"
+              },
+              {
+                "file": "check-tree-shared-tokens.test.ts",
+                "text": "tokens-extra-string-comment-fragment-kind-wardley"
+              },
+              {
+                "file": "check-tree-shared-tokens.test.ts",
+                "text": "tokens-extra-358-xychart-region-cut-StringFragment"
+              },
+              {
+                "file": "check-tree-shared-tokens.test.ts",
+                "text": "tokens-extra-string-comment-fragment-kind-xychart"
+              }
+            ]
+          }
+        ]
+      }
+    },
+    {
+      "block": "packages/parser/docs/tokens.md:5a6c79245141",
+      "diagrams": [
+        "cynefin",
+        "gantt",
+        "gitgraph",
+        "pie",
+        "railroad",
+        "requirement",
+        "usecase",
+        "wardley",
+        "xychart"
+      ],
+      "about": "The node of the unit, such as a label, a StringLiteral, or a",
+      "judgment": {
+        "status": "shown",
+        "cases": [
           {
             "case": "The node of the raw unit spans its fragments and region.",
             "tests": [
@@ -16744,125 +18042,27 @@
                 "text": "tokens-extra-358-xychart-value-joins-fragments"
               }
             ]
-          },
-          {
-            "case": "A comment region cuts a quoted String unit into StringFragment tokens.",
-            "tests": [
-              {
-                "file": "check-tree-shared-tokens.test.ts",
-                "text": "tokens-extra-358-cynefin-region-cut-StringFragment"
-              },
-              {
-                "file": "check-tree-shared-tokens.test.ts",
-                "text": "tokens-extra-string-comment-fragment-kind-cynefin"
-              },
-              {
-                "file": "check-tree-shared-tokens.test.ts",
-                "text": "tokens-extra-358-gantt-region-cut-StringFragment"
-              },
-              {
-                "file": "check-tree-shared-tokens.test.ts",
-                "text": "tokens-extra-string-comment-fragment-kind-gantt"
-              },
-              {
-                "file": "check-tree-shared-tokens.test.ts",
-                "text": "tokens-extra-358-gitgraph-region-cut-StringFragment"
-              },
-              {
-                "file": "check-tree-shared-tokens.test.ts",
-                "text": "tokens-extra-string-comment-fragment-kind-gitgraph"
-              },
-              {
-                "file": "check-tree-shared-tokens.test.ts",
-                "text": "tokens-extra-358-pie-region-cut-StringFragment"
-              },
-              {
-                "file": "check-tree-shared-tokens.test.ts",
-                "text": "tokens-extra-string-comment-fragment-kind-pie"
-              },
-              {
-                "file": "check-tree-shared-tokens.test.ts",
-                "text": "tokens-extra-358-railroad-region-cut-StringFragment"
-              },
-              {
-                "file": "check-tree-shared-tokens.test.ts",
-                "text": "tokens-extra-string-comment-fragment-kind-railroad"
-              },
-              {
-                "file": "check-tree-shared-tokens.test.ts",
-                "text": "tokens-extra-358-requirement-region-cut-StringFragment"
-              },
-              {
-                "file": "check-tree-shared-tokens.test.ts",
-                "text": "tokens-extra-string-comment-fragment-kind-requirement"
-              },
-              {
-                "file": "check-tree-shared-tokens.test.ts",
-                "text": "tokens-extra-358-usecase-region-cut-StringFragment"
-              },
-              {
-                "file": "check-tree-shared-tokens.test.ts",
-                "text": "tokens-extra-string-comment-fragment-kind-usecase"
-              },
-              {
-                "file": "check-tree-shared-tokens.test.ts",
-                "text": "tokens-extra-358-wardley-region-cut-StringFragment"
-              },
-              {
-                "file": "check-tree-shared-tokens.test.ts",
-                "text": "tokens-extra-string-comment-fragment-kind-wardley"
-              },
-              {
-                "file": "check-tree-shared-tokens.test.ts",
-                "text": "tokens-extra-358-xychart-region-cut-StringFragment"
-              },
-              {
-                "file": "check-tree-shared-tokens.test.ts",
-                "text": "tokens-extra-string-comment-fragment-kind-xychart"
-              }
-            ]
-          },
-          {
-            "case": "A real whitespace-only fragment trimmed from its value produces no token.",
-            "tests": [
-              {
-                "file": "check-tree-shared-tokens.test.ts",
-                "text": "tokens-extra-nonread-white-hand-cynefin"
-              },
-              {
-                "file": "check-tree-shared-tokens.test.ts",
-                "text": "tokens-extra-nonread-white-hand-gantt"
-              },
-              {
-                "file": "check-tree-shared-tokens.test.ts",
-                "text": "tokens-extra-nonread-white-hand-gitgraph"
-              },
-              {
-                "file": "check-tree-shared-tokens.test.ts",
-                "text": "tokens-extra-nonread-white-hand-pie"
-              },
-              {
-                "file": "check-tree-shared-tokens.test.ts",
-                "text": "tokens-extra-nonread-white-hand-railroad"
-              },
-              {
-                "file": "check-tree-shared-tokens.test.ts",
-                "text": "tokens-extra-nonread-white-fragment-requirement"
-              },
-              {
-                "file": "check-tree-shared-tokens.test.ts",
-                "text": "tokens-extra-trimmed-comment-tail-usecase"
-              },
-              {
-                "file": "check-tree-shared-tokens.test.ts",
-                "text": "tokens-extra-nonread-white-hand-wardley"
-              },
-              {
-                "file": "check-tree-shared-tokens.test.ts",
-                "text": "tokens-extra-nonread-white-hand-xychart"
-              }
-            ]
-          },
+          }
+        ]
+      }
+    },
+    {
+      "block": "packages/parser/docs/tokens.md:348448907086",
+      "diagrams": [
+        "cynefin",
+        "gantt",
+        "gitgraph",
+        "pie",
+        "railroad",
+        "requirement",
+        "usecase",
+        "wardley",
+        "xychart"
+      ],
+      "about": "A line with only `%%` is no comment line (see [Comment lines",
+      "judgment": {
+        "status": "shown",
+        "cases": [
           {
             "case": "A bare percent line before the region stays in its RawText fragment.",
             "tests": [
@@ -16990,9 +18190,29 @@
       }
     },
     {
-      "block": "packages/parser/docs/tokens.md:5d1035b3b29b",
+      "block": "packages/parser/docs/tokens.md:d71933d056f5",
+      "diagrams": [
+        "cynefin",
+        "gantt",
+        "gitgraph",
+        "pie",
+        "railroad",
+        "requirement",
+        "usecase",
+        "wardley",
+        "xychart"
+      ],
+      "about": "Such regions lie in quoted strings, in the text of labels an",
+      "judgment": {
+        "status": "no-condition",
+        "kind": "not-about-tree",
+        "note": "It lists the units of the input in which a comment region can lie; it states nothing about the tree beyond the sentences of this paragraph before it."
+      }
+    },
+    {
+      "block": "packages/parser/docs/tokens.md:b8692bcfeaee",
       "diagrams": ["quadrant"],
-      "about": "A comment lies outside all tokens. A comment region can lie inside what one unit",
+      "about": "A comment lies outside all tokens. A comment region can lie ",
       "judgment": {
         "status": "shown",
         "cases": [
@@ -17050,6 +18270,58 @@
             ]
           },
           {
+            "case": "A real whitespace-only fragment trimmed from its value produces no token.",
+            "tests": [
+              {
+                "file": "check-tree-shared-tokens.test.ts",
+                "text": "tokens-extra-nonread-white-hand-quadrant"
+              }
+            ]
+          },
+          {
+            "case": "An Identifier name is cut at every comment region; the region and its ending line terminator belong to no token.",
+            "tests": [
+              {
+                "file": "check-tree-shared-tokens.test.ts",
+                "text": "tokens-358-identifier-quadrant-region-merge"
+              },
+              {
+                "file": "check-tree-shared-tokens.test.ts",
+                "text": "tokens-358-identifier-quadrant-paragraph-region-merge"
+              },
+              {
+                "file": "check-tree-shared-tokens.test.ts",
+                "text": "tokens-358-identifier-quadrant-region-inside-token"
+              },
+              {
+                "file": "check-tree-shared-tokens.test.ts",
+                "text": "tokens-358-identifier-quadrant-region-ending-LF-inside-token"
+              },
+              {
+                "file": "check-tree-shared-tokens.test.ts",
+                "text": "tokens-358-identifier-quadrant-paragraph-region-ending-LF-inside-token"
+              },
+              {
+                "file": "check-tree-shared-tokens.test.ts",
+                "text": "tokens-358-identifier-quadrant-several-first-region-merge"
+              },
+              {
+                "file": "check-tree-shared-tokens.test.ts",
+                "text": "tokens-358-identifier-quadrant-several-last-region-merge"
+              }
+            ]
+          }
+        ]
+      }
+    },
+    {
+      "block": "packages/parser/docs/tokens.md:d27dff19fb56",
+      "diagrams": ["quadrant"],
+      "about": "Where several regions lie inside one token, it is cut at eac",
+      "judgment": {
+        "status": "shown",
+        "cases": [
+          {
             "case": "Every one of several regions cuts the unit.",
             "tests": [
               {
@@ -17061,31 +18333,23 @@
                 "text": "tokens-extra-358-quadrant-several-regions-last-cut"
               }
             ]
-          },
+          }
+        ]
+      }
+    },
+    {
+      "block": "packages/parser/docs/tokens.md:95fc18f1e5b4",
+      "diagrams": ["quadrant"],
+      "about": "Only `String`, `RawText`, and `Identifier` tokens can hold a",
+      "judgment": {
+        "status": "shown",
+        "cases": [
           {
             "case": "RawText fragments retain RawText rather than another valid token kind.",
             "tests": [
               {
                 "file": "check-tree-shared-tokens.test.ts",
                 "text": "tokens-extra-clean-raw-fragment-kind-quadrant"
-              }
-            ]
-          },
-          {
-            "case": "The node of the raw unit spans its fragments and region.",
-            "tests": [
-              {
-                "file": "check-tree-shared-tokens.test.ts",
-                "text": "tokens-extra-358-quadrant-unit-spans-region"
-              }
-            ]
-          },
-          {
-            "case": "The value joins the text before and after the region.",
-            "tests": [
-              {
-                "file": "check-tree-shared-tokens.test.ts",
-                "text": "tokens-extra-358-quadrant-value-joins-fragments"
               }
             ]
           },
@@ -17099,42 +18363,6 @@
               {
                 "file": "check-tree-shared-tokens.test.ts",
                 "text": "tokens-extra-string-comment-fragment-kind-quadrant"
-              }
-            ]
-          },
-          {
-            "case": "A real whitespace-only fragment trimmed from its value produces no token.",
-            "tests": [
-              {
-                "file": "check-tree-shared-tokens.test.ts",
-                "text": "tokens-extra-nonread-white-hand-quadrant"
-              }
-            ]
-          },
-          {
-            "case": "A bare percent line before the region stays in its RawText fragment.",
-            "tests": [
-              {
-                "file": "check-tree-shared-tokens.test.ts",
-                "text": "tokens-extra-bare-marker-quadrant-RawText-before"
-              }
-            ]
-          },
-          {
-            "case": "A bare percent line after the region stays in its RawText fragment.",
-            "tests": [
-              {
-                "file": "check-tree-shared-tokens.test.ts",
-                "text": "tokens-extra-bare-marker-quadrant-RawText-after"
-              }
-            ]
-          },
-          {
-            "case": "A bare percent line after the region stays in its StringFragment fragment.",
-            "tests": [
-              {
-                "file": "check-tree-shared-tokens.test.ts",
-                "text": "tokens-extra-bare-marker-quadrant-StringFragment-after"
               }
             ]
           },
@@ -17172,39 +18400,6 @@
               {
                 "file": "check-tree-shared-tokens.test.ts",
                 "text": "tokens-358-identifier-quadrant-several-middle-fragment-RawText"
-              }
-            ]
-          },
-          {
-            "case": "An Identifier name is cut at every comment region; the region and its ending line terminator belong to no token.",
-            "tests": [
-              {
-                "file": "check-tree-shared-tokens.test.ts",
-                "text": "tokens-358-identifier-quadrant-region-merge"
-              },
-              {
-                "file": "check-tree-shared-tokens.test.ts",
-                "text": "tokens-358-identifier-quadrant-paragraph-region-merge"
-              },
-              {
-                "file": "check-tree-shared-tokens.test.ts",
-                "text": "tokens-358-identifier-quadrant-region-inside-token"
-              },
-              {
-                "file": "check-tree-shared-tokens.test.ts",
-                "text": "tokens-358-identifier-quadrant-region-ending-LF-inside-token"
-              },
-              {
-                "file": "check-tree-shared-tokens.test.ts",
-                "text": "tokens-358-identifier-quadrant-paragraph-region-ending-LF-inside-token"
-              },
-              {
-                "file": "check-tree-shared-tokens.test.ts",
-                "text": "tokens-358-identifier-quadrant-several-first-region-merge"
-              },
-              {
-                "file": "check-tree-shared-tokens.test.ts",
-                "text": "tokens-358-identifier-quadrant-several-last-region-merge"
               }
             ]
           },
@@ -17260,9 +18455,84 @@
       }
     },
     {
-      "block": "packages/parser/docs/tokens.md:5d1035b3b29b",
+      "block": "packages/parser/docs/tokens.md:5a6c79245141",
+      "diagrams": ["quadrant"],
+      "about": "The node of the unit, such as a label, a StringLiteral, or a",
+      "judgment": {
+        "status": "shown",
+        "cases": [
+          {
+            "case": "The node of the raw unit spans its fragments and region.",
+            "tests": [
+              {
+                "file": "check-tree-shared-tokens.test.ts",
+                "text": "tokens-extra-358-quadrant-unit-spans-region"
+              }
+            ]
+          },
+          {
+            "case": "The value joins the text before and after the region.",
+            "tests": [
+              {
+                "file": "check-tree-shared-tokens.test.ts",
+                "text": "tokens-extra-358-quadrant-value-joins-fragments"
+              }
+            ]
+          }
+        ]
+      }
+    },
+    {
+      "block": "packages/parser/docs/tokens.md:348448907086",
+      "diagrams": ["quadrant"],
+      "about": "A line with only `%%` is no comment line (see [Comment lines",
+      "judgment": {
+        "status": "shown",
+        "cases": [
+          {
+            "case": "A bare percent line before the region stays in its RawText fragment.",
+            "tests": [
+              {
+                "file": "check-tree-shared-tokens.test.ts",
+                "text": "tokens-extra-bare-marker-quadrant-RawText-before"
+              }
+            ]
+          },
+          {
+            "case": "A bare percent line after the region stays in its RawText fragment.",
+            "tests": [
+              {
+                "file": "check-tree-shared-tokens.test.ts",
+                "text": "tokens-extra-bare-marker-quadrant-RawText-after"
+              }
+            ]
+          },
+          {
+            "case": "A bare percent line after the region stays in its StringFragment fragment.",
+            "tests": [
+              {
+                "file": "check-tree-shared-tokens.test.ts",
+                "text": "tokens-extra-bare-marker-quadrant-StringFragment-after"
+              }
+            ]
+          }
+        ]
+      }
+    },
+    {
+      "block": "packages/parser/docs/tokens.md:d71933d056f5",
+      "diagrams": ["quadrant"],
+      "about": "Such regions lie in quoted strings, in the text of labels an",
+      "judgment": {
+        "status": "no-condition",
+        "kind": "not-about-tree",
+        "note": "It lists the units of the input in which a comment region can lie; it states nothing about the tree beyond the sentences of this paragraph before it."
+      }
+    },
+    {
+      "block": "packages/parser/docs/tokens.md:b8692bcfeaee",
       "diagrams": ["eventmodeling"],
-      "about": "A comment lies outside all tokens. A comment region can lie inside what one unit",
+      "about": "A comment lies outside all tokens. A comment region can lie ",
       "judgment": {
         "status": "shown",
         "cases": [
@@ -17314,7 +18584,17 @@
                 "text": "tokens-extra-real-empty-fragment-hand-eventmodeling"
               }
             ]
-          },
+          }
+        ]
+      }
+    },
+    {
+      "block": "packages/parser/docs/tokens.md:d27dff19fb56",
+      "diagrams": ["eventmodeling"],
+      "about": "Where several regions lie inside one token, it is cut at eac",
+      "judgment": {
+        "status": "shown",
+        "cases": [
           {
             "case": "Every one of several regions cuts the unit.",
             "tests": [
@@ -17327,7 +18607,17 @@
                 "text": "tokens-extra-adjacent-last-cut-eventmodeling"
               }
             ]
-          },
+          }
+        ]
+      }
+    },
+    {
+      "block": "packages/parser/docs/tokens.md:95fc18f1e5b4",
+      "diagrams": ["eventmodeling"],
+      "about": "Only `String`, `RawText`, and `Identifier` tokens can hold a",
+      "judgment": {
+        "status": "shown",
+        "cases": [
           {
             "case": "RawText fragments retain RawText rather than another valid token kind.",
             "tests": [
@@ -17336,7 +18626,17 @@
                 "text": "tokens-extra-clean-raw-kind-eventmodeling"
               }
             ]
-          },
+          }
+        ]
+      }
+    },
+    {
+      "block": "packages/parser/docs/tokens.md:5a6c79245141",
+      "diagrams": ["eventmodeling"],
+      "about": "The node of the unit, such as a label, a StringLiteral, or a",
+      "judgment": {
+        "status": "shown",
+        "cases": [
           {
             "case": "The node of the raw unit spans its fragments and region.",
             "tests": [
@@ -17354,7 +18654,17 @@
                 "text": "tokens-extra-358-eventmodeling-value-joins-fragments"
               }
             ]
-          },
+          }
+        ]
+      }
+    },
+    {
+      "block": "packages/parser/docs/tokens.md:348448907086",
+      "diagrams": ["eventmodeling"],
+      "about": "A line with only `%%` is no comment line (see [Comment lines",
+      "judgment": {
+        "status": "shown",
+        "cases": [
           {
             "case": "A bare percent line before the region stays in its RawText fragment.",
             "tests": [
@@ -17377,9 +18687,19 @@
       }
     },
     {
-      "block": "packages/parser/docs/tokens.md:5d1035b3b29b",
+      "block": "packages/parser/docs/tokens.md:d71933d056f5",
+      "diagrams": ["eventmodeling"],
+      "about": "Such regions lie in quoted strings, in the text of labels an",
+      "judgment": {
+        "status": "no-condition",
+        "kind": "not-about-tree",
+        "note": "It lists the units of the input in which a comment region can lie; it states nothing about the tree beyond the sentences of this paragraph before it."
+      }
+    },
+    {
+      "block": "packages/parser/docs/tokens.md:b8692bcfeaee",
       "diagrams": ["kanban", "mindmap", "treeview", "venn"],
-      "about": "A comment lies outside all tokens. A comment region can lie inside what one unit",
+      "about": "A comment lies outside all tokens. A comment region can lie ",
       "judgment": {
         "status": "shown",
         "cases": [
@@ -17515,7 +18835,17 @@
                 "text": "tokens-extra-real-empty-fragment-venn"
               }
             ]
-          },
+          }
+        ]
+      }
+    },
+    {
+      "block": "packages/parser/docs/tokens.md:d27dff19fb56",
+      "diagrams": ["kanban", "mindmap", "treeview", "venn"],
+      "about": "Where several regions lie inside one token, it is cut at eac",
+      "judgment": {
+        "status": "shown",
+        "cases": [
           {
             "case": "Every one of several regions cuts the unit.",
             "tests": [
@@ -17552,7 +18882,17 @@
                 "text": "tokens-extra-358-venn-several-regions-last-cut"
               }
             ]
-          },
+          }
+        ]
+      }
+    },
+    {
+      "block": "packages/parser/docs/tokens.md:95fc18f1e5b4",
+      "diagrams": ["kanban", "mindmap", "treeview", "venn"],
+      "about": "Only `String`, `RawText`, and `Identifier` tokens can hold a",
+      "judgment": {
+        "status": "shown",
+        "cases": [
           {
             "case": "RawText fragments retain RawText rather than another valid token kind.",
             "tests": [
@@ -17574,6 +18914,53 @@
               }
             ]
           },
+          {
+            "case": "A comment region cuts a quoted String unit into StringFragment tokens.",
+            "tests": [
+              {
+                "file": "check-tree-shared-tokens.test.ts",
+                "text": "tokens-extra-358-kanban-region-cut-StringFragment"
+              },
+              {
+                "file": "check-tree-shared-tokens.test.ts",
+                "text": "tokens-extra-string-comment-fragment-kind-kanban"
+              },
+              {
+                "file": "check-tree-shared-tokens.test.ts",
+                "text": "tokens-extra-358-mindmap-region-cut-StringFragment"
+              },
+              {
+                "file": "check-tree-shared-tokens.test.ts",
+                "text": "tokens-extra-string-comment-fragment-kind-mindmap"
+              },
+              {
+                "file": "check-tree-shared-tokens.test.ts",
+                "text": "tokens-extra-358-treeview-region-cut-StringFragment"
+              },
+              {
+                "file": "check-tree-shared-tokens.test.ts",
+                "text": "tokens-extra-string-comment-fragment-kind-treeview"
+              },
+              {
+                "file": "check-tree-shared-tokens.test.ts",
+                "text": "tokens-extra-358-venn-region-cut-StringFragment"
+              },
+              {
+                "file": "check-tree-shared-tokens.test.ts",
+                "text": "tokens-extra-string-comment-fragment-kind-venn"
+              }
+            ]
+          }
+        ]
+      }
+    },
+    {
+      "block": "packages/parser/docs/tokens.md:5a6c79245141",
+      "diagrams": ["kanban", "mindmap", "treeview", "venn"],
+      "about": "The node of the unit, such as a label, a StringLiteral, or a",
+      "judgment": {
+        "status": "shown",
+        "cases": [
           {
             "case": "The node of the raw unit spans its fragments and region.",
             "tests": [
@@ -17615,44 +19002,17 @@
                 "text": "tokens-extra-358-venn-value-joins-fragments"
               }
             ]
-          },
-          {
-            "case": "A comment region cuts a quoted String unit into StringFragment tokens.",
-            "tests": [
-              {
-                "file": "check-tree-shared-tokens.test.ts",
-                "text": "tokens-extra-358-kanban-region-cut-StringFragment"
-              },
-              {
-                "file": "check-tree-shared-tokens.test.ts",
-                "text": "tokens-extra-string-comment-fragment-kind-kanban"
-              },
-              {
-                "file": "check-tree-shared-tokens.test.ts",
-                "text": "tokens-extra-358-mindmap-region-cut-StringFragment"
-              },
-              {
-                "file": "check-tree-shared-tokens.test.ts",
-                "text": "tokens-extra-string-comment-fragment-kind-mindmap"
-              },
-              {
-                "file": "check-tree-shared-tokens.test.ts",
-                "text": "tokens-extra-358-treeview-region-cut-StringFragment"
-              },
-              {
-                "file": "check-tree-shared-tokens.test.ts",
-                "text": "tokens-extra-string-comment-fragment-kind-treeview"
-              },
-              {
-                "file": "check-tree-shared-tokens.test.ts",
-                "text": "tokens-extra-358-venn-region-cut-StringFragment"
-              },
-              {
-                "file": "check-tree-shared-tokens.test.ts",
-                "text": "tokens-extra-string-comment-fragment-kind-venn"
-              }
-            ]
-          },
+          }
+        ]
+      }
+    },
+    {
+      "block": "packages/parser/docs/tokens.md:348448907086",
+      "diagrams": ["kanban", "mindmap", "treeview", "venn"],
+      "about": "A line with only `%%` is no comment line (see [Comment lines",
+      "judgment": {
+        "status": "shown",
+        "cases": [
           {
             "case": "A bare percent line before the region stays in its RawText fragment.",
             "tests": [
@@ -17717,6 +19077,16 @@
             ]
           }
         ]
+      }
+    },
+    {
+      "block": "packages/parser/docs/tokens.md:d71933d056f5",
+      "diagrams": ["kanban", "mindmap", "treeview", "venn"],
+      "about": "Such regions lie in quoted strings, in the text of labels an",
+      "judgment": {
+        "status": "no-condition",
+        "kind": "not-about-tree",
+        "note": "It lists the units of the input in which a comment region can lie; it states nothing about the tree beyond the sentences of this paragraph before it."
       }
     },
     {
@@ -20959,6 +22329,24 @@
                 "text": "tokens-88b-requirement-last"
               }
             ]
+          },
+          {
+            "case": "A whitespace-only value has tokens of its whitespace.",
+            "tests": [
+              {
+                "file": "check-tree-shared-tokens.test.ts",
+                "text": "tokens-88c-requirement-whitespace-only-value"
+              }
+            ]
+          },
+          {
+            "case": "A whitespace-only value uses the token kind assigned at that position.",
+            "tests": [
+              {
+                "file": "check-tree-shared-tokens.test.ts",
+                "text": "tokens-88c-requirement-whitespace-only-value-kind"
+              }
+            ]
           }
         ]
       }
@@ -21013,6 +22401,33 @@
               {
                 "file": "check-tree-shared-tokens.test.ts",
                 "text": "tokens-88b-requirement-afterComment"
+              }
+            ]
+          },
+          {
+            "case": "Read whitespace before an ignored semicolon stays in its fragment.",
+            "tests": [
+              {
+                "file": "check-tree-shared-tokens.test.ts",
+                "text": "tokens-88c-requirement-read-whitespace-before-ignored-semicolon"
+              }
+            ]
+          },
+          {
+            "case": "Read whitespace after an ignored semicolon stays in its fragment.",
+            "tests": [
+              {
+                "file": "check-tree-shared-tokens.test.ts",
+                "text": "tokens-88c-requirement-read-whitespace-after-ignored-semicolon"
+              }
+            ]
+          },
+          {
+            "case": "Read whitespace after a directive cut stays in its fragment.",
+            "tests": [
+              {
+                "file": "check-tree-shared-tokens.test.ts",
+                "text": "tokens-88c-requirement-read-whitespace-after-directive"
               }
             ]
           }
@@ -21290,6 +22705,24 @@
               {
                 "file": "check-tree-shared-tokens.test.ts",
                 "text": "tokens-88b-sequence-afterComment"
+              }
+            ]
+          },
+          {
+            "case": "Read whitespace before an ignored semicolon stays in its fragment.",
+            "tests": [
+              {
+                "file": "check-tree-shared-tokens.test.ts",
+                "text": "tokens-88c-sequence-read-whitespace-before-ignored-semicolon"
+              }
+            ]
+          },
+          {
+            "case": "Read whitespace after an ignored semicolon stays in its fragment.",
+            "tests": [
+              {
+                "file": "check-tree-shared-tokens.test.ts",
+                "text": "tokens-88c-sequence-read-whitespace-after-ignored-semicolon"
               }
             ]
           }
@@ -23652,21 +25085,12 @@
       }
     },
     {
-      "block": "packages/parser/docs/tokens.md:5d1035b3b29b",
+      "block": "packages/parser/docs/tokens.md:b8692bcfeaee",
       "diagrams": ["architecture"],
-      "about": "A comment lies outside all tokens. A comment region can lie inside what one unit\nreads, for example ",
+      "about": "A comment lies outside all tokens. A comment region can lie ",
       "judgment": {
         "status": "shown",
         "cases": [
-          {
-            "case": "region cut StringFragment",
-            "tests": [
-              {
-                "file": "check-tree-shared-tokens.test.ts",
-                "text": "tokens-extra-358-architecture-region-cut-StringFragment"
-              }
-            ]
-          },
           {
             "case": "ending line terminator outside token",
             "tests": [
@@ -23686,65 +25110,11 @@
             ]
           },
           {
-            "case": "String fragment kind; this minimum kind change also breaks the changed kind's Meaning or Used by condition, which cannot be preserved here",
-            "tests": [
-              {
-                "file": "check-tree-shared-tokens.test.ts",
-                "text": "tokens-extra-358-architecture-String-fragment-kind"
-              }
-            ]
-          },
-          {
-            "case": "unit spans region",
-            "tests": [
-              {
-                "file": "check-tree-shared-tokens.test.ts",
-                "text": "tokens-extra-358-architecture-unit-spans-region"
-              }
-            ]
-          },
-          {
-            "case": "value joins fragments",
-            "tests": [
-              {
-                "file": "check-tree-shared-tokens.test.ts",
-                "text": "tokens-extra-358-architecture-value-joins-fragments"
-              }
-            ]
-          },
-          {
             "case": "region cut RawText",
             "tests": [
               {
                 "file": "check-tree-shared-tokens.test.ts",
                 "text": "tokens-extra-358-architecture-region-cut-RawText"
-              }
-            ]
-          },
-          {
-            "case": "RawText fragment kind; this minimum kind change also breaks the changed kind's Meaning or Used by condition, which cannot be preserved here",
-            "tests": [
-              {
-                "file": "check-tree-shared-tokens.test.ts",
-                "text": "tokens-extra-358-architecture-RawText-fragment-kind"
-              }
-            ]
-          },
-          {
-            "case": "several regions first cut",
-            "tests": [
-              {
-                "file": "check-tree-shared-tokens.test.ts",
-                "text": "tokens-extra-358-architecture-several-regions-first-cut"
-              }
-            ]
-          },
-          {
-            "case": "several regions last cut",
-            "tests": [
-              {
-                "file": "check-tree-shared-tokens.test.ts",
-                "text": "tokens-extra-358-architecture-several-regions-last-cut"
               }
             ]
           },
@@ -23788,9 +25158,131 @@
       }
     },
     {
-      "block": "packages/parser/docs/tokens.md:5d1035b3b29b",
+      "block": "packages/parser/docs/tokens.md:d27dff19fb56",
+      "diagrams": ["architecture"],
+      "about": "Where several regions lie inside one token, it is cut at eac",
+      "judgment": {
+        "status": "shown",
+        "cases": [
+          {
+            "case": "several regions first cut",
+            "tests": [
+              {
+                "file": "check-tree-shared-tokens.test.ts",
+                "text": "tokens-extra-358-architecture-several-regions-first-cut"
+              }
+            ]
+          },
+          {
+            "case": "several regions last cut",
+            "tests": [
+              {
+                "file": "check-tree-shared-tokens.test.ts",
+                "text": "tokens-extra-358-architecture-several-regions-last-cut"
+              }
+            ]
+          }
+        ]
+      }
+    },
+    {
+      "block": "packages/parser/docs/tokens.md:95fc18f1e5b4",
+      "diagrams": ["architecture"],
+      "about": "Only `String`, `RawText`, and `Identifier` tokens can hold a",
+      "judgment": {
+        "status": "shown",
+        "cases": [
+          {
+            "case": "region cut StringFragment",
+            "tests": [
+              {
+                "file": "check-tree-shared-tokens.test.ts",
+                "text": "tokens-extra-358-architecture-region-cut-StringFragment"
+              }
+            ]
+          },
+          {
+            "case": "String fragment kind; this minimum kind change also breaks the changed kind's Meaning or Used by condition, which cannot be preserved here",
+            "tests": [
+              {
+                "file": "check-tree-shared-tokens.test.ts",
+                "text": "tokens-extra-358-architecture-String-fragment-kind"
+              }
+            ]
+          },
+          {
+            "case": "RawText fragment kind; this minimum kind change also breaks the changed kind's Meaning or Used by condition, which cannot be preserved here",
+            "tests": [
+              {
+                "file": "check-tree-shared-tokens.test.ts",
+                "text": "tokens-extra-358-architecture-RawText-fragment-kind"
+              }
+            ]
+          }
+        ]
+      }
+    },
+    {
+      "block": "packages/parser/docs/tokens.md:5a6c79245141",
+      "diagrams": ["architecture"],
+      "about": "The node of the unit, such as a label, a StringLiteral, or a",
+      "judgment": {
+        "status": "shown",
+        "cases": [
+          {
+            "case": "unit spans region",
+            "tests": [
+              {
+                "file": "check-tree-shared-tokens.test.ts",
+                "text": "tokens-extra-358-architecture-unit-spans-region"
+              }
+            ]
+          },
+          {
+            "case": "value joins fragments",
+            "tests": [
+              {
+                "file": "check-tree-shared-tokens.test.ts",
+                "text": "tokens-extra-358-architecture-value-joins-fragments"
+              }
+            ]
+          }
+        ]
+      }
+    },
+    {
+      "block": "packages/parser/docs/tokens.md:348448907086",
+      "diagrams": ["architecture"],
+      "about": "A line with only `%%` is no comment line (see [Comment lines",
+      "judgment": {
+        "status": "shown",
+        "cases": [
+          {
+            "case": "A line with only %% is no comment line, so it stays in the fragment after the region.",
+            "tests": [
+              {
+                "file": "check-tree-shared-tokens.test.ts",
+                "text": "tokens-358b-architecture-percent-line-in-fragment"
+              }
+            ]
+          }
+        ]
+      }
+    },
+    {
+      "block": "packages/parser/docs/tokens.md:d71933d056f5",
+      "diagrams": ["architecture"],
+      "about": "Such regions lie in quoted strings, in the text of labels an",
+      "judgment": {
+        "status": "no-condition",
+        "kind": "not-about-tree",
+        "note": "It lists the units of the input in which a comment region can lie; it states nothing about the tree beyond the sentences of this paragraph before it."
+      }
+    },
+    {
+      "block": "packages/parser/docs/tokens.md:b8692bcfeaee",
       "diagrams": ["c4"],
-      "about": "A comment lies outside all tokens. A comment region can lie inside what one unit\nreads, for example ",
+      "about": "A comment lies outside all tokens. A comment region can lie ",
       "judgment": {
         "status": "shown",
         "cases": [
@@ -23818,69 +25310,6 @@
               {
                 "file": "check-tree-shared-tokens.test.ts",
                 "text": "tokens-extra-358-c4-read-whitespace-before-comment"
-              }
-            ]
-          },
-          {
-            "case": "RawText fragment kind; this minimum kind change also breaks the changed kind's Meaning or Used by condition, which cannot be preserved here",
-            "tests": [
-              {
-                "file": "check-tree-shared-tokens.test.ts",
-                "text": "tokens-extra-358-c4-RawText-fragment-kind"
-              }
-            ]
-          },
-          {
-            "case": "unit spans region",
-            "tests": [
-              {
-                "file": "check-tree-shared-tokens.test.ts",
-                "text": "tokens-extra-358-c4-unit-spans-region"
-              }
-            ]
-          },
-          {
-            "case": "value joins fragments",
-            "tests": [
-              {
-                "file": "check-tree-shared-tokens.test.ts",
-                "text": "tokens-extra-358-c4-value-joins-fragments"
-              }
-            ]
-          },
-          {
-            "case": "several regions first cut",
-            "tests": [
-              {
-                "file": "check-tree-shared-tokens.test.ts",
-                "text": "tokens-extra-358-c4-several-regions-first-cut"
-              }
-            ]
-          },
-          {
-            "case": "several regions last cut",
-            "tests": [
-              {
-                "file": "check-tree-shared-tokens.test.ts",
-                "text": "tokens-extra-358-c4-several-regions-last-cut"
-              }
-            ]
-          },
-          {
-            "case": "region cut StringFragment",
-            "tests": [
-              {
-                "file": "check-tree-shared-tokens.test.ts",
-                "text": "tokens-extra-358-c4-region-cut-StringFragment"
-              }
-            ]
-          },
-          {
-            "case": "String fragment kind; this minimum kind change also breaks the changed kind's Meaning or Used by condition, which cannot be preserved here",
-            "tests": [
-              {
-                "file": "check-tree-shared-tokens.test.ts",
-                "text": "tokens-extra-358-c4-String-fragment-kind"
               }
             ]
           },
@@ -23924,9 +25353,131 @@
       }
     },
     {
-      "block": "packages/parser/docs/tokens.md:5d1035b3b29b",
+      "block": "packages/parser/docs/tokens.md:d27dff19fb56",
+      "diagrams": ["c4"],
+      "about": "Where several regions lie inside one token, it is cut at eac",
+      "judgment": {
+        "status": "shown",
+        "cases": [
+          {
+            "case": "several regions first cut",
+            "tests": [
+              {
+                "file": "check-tree-shared-tokens.test.ts",
+                "text": "tokens-extra-358-c4-several-regions-first-cut"
+              }
+            ]
+          },
+          {
+            "case": "several regions last cut",
+            "tests": [
+              {
+                "file": "check-tree-shared-tokens.test.ts",
+                "text": "tokens-extra-358-c4-several-regions-last-cut"
+              }
+            ]
+          }
+        ]
+      }
+    },
+    {
+      "block": "packages/parser/docs/tokens.md:95fc18f1e5b4",
+      "diagrams": ["c4"],
+      "about": "Only `String`, `RawText`, and `Identifier` tokens can hold a",
+      "judgment": {
+        "status": "shown",
+        "cases": [
+          {
+            "case": "RawText fragment kind; this minimum kind change also breaks the changed kind's Meaning or Used by condition, which cannot be preserved here",
+            "tests": [
+              {
+                "file": "check-tree-shared-tokens.test.ts",
+                "text": "tokens-extra-358-c4-RawText-fragment-kind"
+              }
+            ]
+          },
+          {
+            "case": "region cut StringFragment",
+            "tests": [
+              {
+                "file": "check-tree-shared-tokens.test.ts",
+                "text": "tokens-extra-358-c4-region-cut-StringFragment"
+              }
+            ]
+          },
+          {
+            "case": "String fragment kind; this minimum kind change also breaks the changed kind's Meaning or Used by condition, which cannot be preserved here",
+            "tests": [
+              {
+                "file": "check-tree-shared-tokens.test.ts",
+                "text": "tokens-extra-358-c4-String-fragment-kind"
+              }
+            ]
+          }
+        ]
+      }
+    },
+    {
+      "block": "packages/parser/docs/tokens.md:5a6c79245141",
+      "diagrams": ["c4"],
+      "about": "The node of the unit, such as a label, a StringLiteral, or a",
+      "judgment": {
+        "status": "shown",
+        "cases": [
+          {
+            "case": "unit spans region",
+            "tests": [
+              {
+                "file": "check-tree-shared-tokens.test.ts",
+                "text": "tokens-extra-358-c4-unit-spans-region"
+              }
+            ]
+          },
+          {
+            "case": "value joins fragments",
+            "tests": [
+              {
+                "file": "check-tree-shared-tokens.test.ts",
+                "text": "tokens-extra-358-c4-value-joins-fragments"
+              }
+            ]
+          }
+        ]
+      }
+    },
+    {
+      "block": "packages/parser/docs/tokens.md:348448907086",
+      "diagrams": ["c4"],
+      "about": "A line with only `%%` is no comment line (see [Comment lines",
+      "judgment": {
+        "status": "shown",
+        "cases": [
+          {
+            "case": "A line with only %% is no comment line, so it stays in the fragment after the region.",
+            "tests": [
+              {
+                "file": "check-tree-shared-tokens.test.ts",
+                "text": "tokens-358b-c4-percent-line-in-fragment"
+              }
+            ]
+          }
+        ]
+      }
+    },
+    {
+      "block": "packages/parser/docs/tokens.md:d71933d056f5",
+      "diagrams": ["c4"],
+      "about": "Such regions lie in quoted strings, in the text of labels an",
+      "judgment": {
+        "status": "no-condition",
+        "kind": "not-about-tree",
+        "note": "It lists the units of the input in which a comment region can lie; it states nothing about the tree beyond the sentences of this paragraph before it."
+      }
+    },
+    {
+      "block": "packages/parser/docs/tokens.md:b8692bcfeaee",
       "diagrams": ["info"],
-      "about": "A comment lies outside all tokens. A comment region can lie inside what one unit\nreads, for example ",
+      "about": "A comment lies outside all tokens. A comment region can lie ",
       "judgment": {
         "status": "shown",
         "cases": [
@@ -23954,51 +25505,6 @@
               {
                 "file": "check-tree-shared-tokens.test.ts",
                 "text": "tokens-extra-358-info-read-whitespace-before-comment"
-              }
-            ]
-          },
-          {
-            "case": "RawText fragment kind; this minimum kind change also breaks the changed kind's Meaning or Used by condition, which cannot be preserved here",
-            "tests": [
-              {
-                "file": "check-tree-shared-tokens.test.ts",
-                "text": "tokens-extra-358-info-RawText-fragment-kind"
-              }
-            ]
-          },
-          {
-            "case": "unit spans region",
-            "tests": [
-              {
-                "file": "check-tree-shared-tokens.test.ts",
-                "text": "tokens-extra-358-info-unit-spans-region"
-              }
-            ]
-          },
-          {
-            "case": "value joins fragments",
-            "tests": [
-              {
-                "file": "check-tree-shared-tokens.test.ts",
-                "text": "tokens-extra-358-info-value-joins-fragments"
-              }
-            ]
-          },
-          {
-            "case": "several regions first cut",
-            "tests": [
-              {
-                "file": "check-tree-shared-tokens.test.ts",
-                "text": "tokens-extra-358-info-several-regions-first-cut"
-              }
-            ]
-          },
-          {
-            "case": "several regions last cut",
-            "tests": [
-              {
-                "file": "check-tree-shared-tokens.test.ts",
-                "text": "tokens-extra-358-info-several-regions-last-cut"
               }
             ]
           },
@@ -24042,9 +25548,113 @@
       }
     },
     {
-      "block": "packages/parser/docs/tokens.md:5d1035b3b29b",
+      "block": "packages/parser/docs/tokens.md:d27dff19fb56",
+      "diagrams": ["info"],
+      "about": "Where several regions lie inside one token, it is cut at eac",
+      "judgment": {
+        "status": "shown",
+        "cases": [
+          {
+            "case": "several regions first cut",
+            "tests": [
+              {
+                "file": "check-tree-shared-tokens.test.ts",
+                "text": "tokens-extra-358-info-several-regions-first-cut"
+              }
+            ]
+          },
+          {
+            "case": "several regions last cut",
+            "tests": [
+              {
+                "file": "check-tree-shared-tokens.test.ts",
+                "text": "tokens-extra-358-info-several-regions-last-cut"
+              }
+            ]
+          }
+        ]
+      }
+    },
+    {
+      "block": "packages/parser/docs/tokens.md:95fc18f1e5b4",
+      "diagrams": ["info"],
+      "about": "Only `String`, `RawText`, and `Identifier` tokens can hold a",
+      "judgment": {
+        "status": "shown",
+        "cases": [
+          {
+            "case": "RawText fragment kind; this minimum kind change also breaks the changed kind's Meaning or Used by condition, which cannot be preserved here",
+            "tests": [
+              {
+                "file": "check-tree-shared-tokens.test.ts",
+                "text": "tokens-extra-358-info-RawText-fragment-kind"
+              }
+            ]
+          }
+        ]
+      }
+    },
+    {
+      "block": "packages/parser/docs/tokens.md:5a6c79245141",
+      "diagrams": ["info"],
+      "about": "The node of the unit, such as a label, a StringLiteral, or a",
+      "judgment": {
+        "status": "shown",
+        "cases": [
+          {
+            "case": "unit spans region",
+            "tests": [
+              {
+                "file": "check-tree-shared-tokens.test.ts",
+                "text": "tokens-extra-358-info-unit-spans-region"
+              }
+            ]
+          },
+          {
+            "case": "value joins fragments",
+            "tests": [
+              {
+                "file": "check-tree-shared-tokens.test.ts",
+                "text": "tokens-extra-358-info-value-joins-fragments"
+              }
+            ]
+          }
+        ]
+      }
+    },
+    {
+      "block": "packages/parser/docs/tokens.md:348448907086",
+      "diagrams": ["info"],
+      "about": "A line with only `%%` is no comment line (see [Comment lines",
+      "judgment": {
+        "status": "shown",
+        "cases": [
+          {
+            "case": "A line with only %% is no comment line, so it stays in the fragment after the region.",
+            "tests": [
+              {
+                "file": "check-tree-shared-tokens.test.ts",
+                "text": "tokens-358b-info-percent-line-in-fragment"
+              }
+            ]
+          }
+        ]
+      }
+    },
+    {
+      "block": "packages/parser/docs/tokens.md:d71933d056f5",
+      "diagrams": ["info"],
+      "about": "Such regions lie in quoted strings, in the text of labels an",
+      "judgment": {
+        "status": "no-condition",
+        "kind": "not-about-tree",
+        "note": "It lists the units of the input in which a comment region can lie; it states nothing about the tree beyond the sentences of this paragraph before it."
+      }
+    },
+    {
+      "block": "packages/parser/docs/tokens.md:b8692bcfeaee",
       "diagrams": ["ishikawa"],
-      "about": "A comment lies outside all tokens. A comment region can lie inside what one unit\nreads, for example ",
+      "about": "A comment lies outside all tokens. A comment region can lie ",
       "judgment": {
         "status": "shown",
         "cases": [
@@ -24085,6 +25695,44 @@
             ]
           },
           {
+            "case": "comment region whitespace line ishikawa",
+            "tests": [
+              {
+                "file": "check-tree-shared-tokens.test.ts",
+                "text": "tokens-extra-comment-region-whitespace-line-ishikawa"
+              }
+            ]
+          }
+        ]
+      }
+    },
+    {
+      "block": "packages/parser/docs/tokens.md:d27dff19fb56",
+      "diagrams": ["ishikawa"],
+      "about": "Where several regions lie inside one token, it is cut at eac",
+      "judgment": {
+        "status": "shown",
+        "cases": [
+          {
+            "case": "Every one of several regions cuts the unit.",
+            "tests": [
+              {
+                "file": "check-tree-shared-tokens.test.ts",
+                "text": "tokens-358b-ishikawa-several-regions"
+              }
+            ]
+          }
+        ]
+      }
+    },
+    {
+      "block": "packages/parser/docs/tokens.md:95fc18f1e5b4",
+      "diagrams": ["ishikawa"],
+      "about": "Only `String`, `RawText`, and `Identifier` tokens can hold a",
+      "judgment": {
+        "status": "shown",
+        "cases": [
+          {
             "case": "RawText fragment kind; this minimum kind change also breaks the changed kind's Meaning or Used by condition, which cannot be preserved here",
             "tests": [
               {
@@ -24092,7 +25740,17 @@
                 "text": "tokens-extra-358-ishikawa-RawText-fragment-kind"
               }
             ]
-          },
+          }
+        ]
+      }
+    },
+    {
+      "block": "packages/parser/docs/tokens.md:5a6c79245141",
+      "diagrams": ["ishikawa"],
+      "about": "The node of the unit, such as a label, a StringLiteral, or a",
+      "judgment": {
+        "status": "shown",
+        "cases": [
           {
             "case": "unit spans region",
             "tests": [
@@ -24110,23 +25768,40 @@
                 "text": "tokens-extra-358-ishikawa-value-joins-fragments"
               }
             ]
-          },
-          {
-            "case": "comment region whitespace line ishikawa",
-            "tests": [
-              {
-                "file": "check-tree-shared-tokens.test.ts",
-                "text": "tokens-extra-comment-region-whitespace-line-ishikawa"
-              }
-            ]
           }
         ]
       }
     },
     {
-      "block": "packages/parser/docs/tokens.md:5d1035b3b29b",
+      "block": "packages/parser/docs/tokens.md:348448907086",
+      "diagrams": ["ishikawa"],
+      "about": "A line with only `%%` is no comment line (see [Comment lines",
+      "judgment": {
+        "status": "no-condition",
+        "kind": "not-in-diagram",
+        "note": "Node text of ishikawa does not cross a line break other than one a comment region removes (diagrams/ishikawa.md, Comments), so no line with only %% stays inside a unit after a region.",
+        "documents": [
+          "packages/spec/docs/diagrams/ishikawa.md",
+          "packages/spec/docs/ast/ishikawa.md",
+          "packages/parser/docs/tokens/ishikawa.md",
+          "packages/parser/docs/tokens.md"
+        ]
+      }
+    },
+    {
+      "block": "packages/parser/docs/tokens.md:d71933d056f5",
+      "diagrams": ["ishikawa"],
+      "about": "Such regions lie in quoted strings, in the text of labels an",
+      "judgment": {
+        "status": "no-condition",
+        "kind": "not-about-tree",
+        "note": "It lists the units of the input in which a comment region can lie; it states nothing about the tree beyond the sentences of this paragraph before it."
+      }
+    },
+    {
+      "block": "packages/parser/docs/tokens.md:b8692bcfeaee",
       "diagrams": ["journey"],
-      "about": "A comment lies outside all tokens. A comment region can lie inside what one unit\nreads, for example ",
+      "about": "A comment lies outside all tokens. A comment region can lie ",
       "judgment": {
         "status": "shown",
         "cases": [
@@ -24154,51 +25829,6 @@
               {
                 "file": "check-tree-shared-tokens.test.ts",
                 "text": "tokens-extra-358-journey-read-whitespace-before-comment"
-              }
-            ]
-          },
-          {
-            "case": "RawText fragment kind; this minimum kind change also breaks the changed kind's Meaning or Used by condition, which cannot be preserved here",
-            "tests": [
-              {
-                "file": "check-tree-shared-tokens.test.ts",
-                "text": "tokens-extra-358-journey-RawText-fragment-kind"
-              }
-            ]
-          },
-          {
-            "case": "unit spans region",
-            "tests": [
-              {
-                "file": "check-tree-shared-tokens.test.ts",
-                "text": "tokens-extra-358-journey-unit-spans-region"
-              }
-            ]
-          },
-          {
-            "case": "value joins fragments",
-            "tests": [
-              {
-                "file": "check-tree-shared-tokens.test.ts",
-                "text": "tokens-extra-358-journey-value-joins-fragments"
-              }
-            ]
-          },
-          {
-            "case": "several regions first cut",
-            "tests": [
-              {
-                "file": "check-tree-shared-tokens.test.ts",
-                "text": "tokens-extra-358-journey-several-regions-first-cut"
-              }
-            ]
-          },
-          {
-            "case": "several regions last cut",
-            "tests": [
-              {
-                "file": "check-tree-shared-tokens.test.ts",
-                "text": "tokens-extra-358-journey-several-regions-last-cut"
               }
             ]
           },
@@ -24242,9 +25872,113 @@
       }
     },
     {
-      "block": "packages/parser/docs/tokens.md:5d1035b3b29b",
+      "block": "packages/parser/docs/tokens.md:d27dff19fb56",
+      "diagrams": ["journey"],
+      "about": "Where several regions lie inside one token, it is cut at eac",
+      "judgment": {
+        "status": "shown",
+        "cases": [
+          {
+            "case": "several regions first cut",
+            "tests": [
+              {
+                "file": "check-tree-shared-tokens.test.ts",
+                "text": "tokens-extra-358-journey-several-regions-first-cut"
+              }
+            ]
+          },
+          {
+            "case": "several regions last cut",
+            "tests": [
+              {
+                "file": "check-tree-shared-tokens.test.ts",
+                "text": "tokens-extra-358-journey-several-regions-last-cut"
+              }
+            ]
+          }
+        ]
+      }
+    },
+    {
+      "block": "packages/parser/docs/tokens.md:95fc18f1e5b4",
+      "diagrams": ["journey"],
+      "about": "Only `String`, `RawText`, and `Identifier` tokens can hold a",
+      "judgment": {
+        "status": "shown",
+        "cases": [
+          {
+            "case": "RawText fragment kind; this minimum kind change also breaks the changed kind's Meaning or Used by condition, which cannot be preserved here",
+            "tests": [
+              {
+                "file": "check-tree-shared-tokens.test.ts",
+                "text": "tokens-extra-358-journey-RawText-fragment-kind"
+              }
+            ]
+          }
+        ]
+      }
+    },
+    {
+      "block": "packages/parser/docs/tokens.md:5a6c79245141",
+      "diagrams": ["journey"],
+      "about": "The node of the unit, such as a label, a StringLiteral, or a",
+      "judgment": {
+        "status": "shown",
+        "cases": [
+          {
+            "case": "unit spans region",
+            "tests": [
+              {
+                "file": "check-tree-shared-tokens.test.ts",
+                "text": "tokens-extra-358-journey-unit-spans-region"
+              }
+            ]
+          },
+          {
+            "case": "value joins fragments",
+            "tests": [
+              {
+                "file": "check-tree-shared-tokens.test.ts",
+                "text": "tokens-extra-358-journey-value-joins-fragments"
+              }
+            ]
+          }
+        ]
+      }
+    },
+    {
+      "block": "packages/parser/docs/tokens.md:348448907086",
+      "diagrams": ["journey"],
+      "about": "A line with only `%%` is no comment line (see [Comment lines",
+      "judgment": {
+        "status": "shown",
+        "cases": [
+          {
+            "case": "A line with only %% is no comment line, so it stays in the fragment after the region.",
+            "tests": [
+              {
+                "file": "check-tree-shared-tokens.test.ts",
+                "text": "tokens-358b-journey-percent-line-in-fragment"
+              }
+            ]
+          }
+        ]
+      }
+    },
+    {
+      "block": "packages/parser/docs/tokens.md:d71933d056f5",
+      "diagrams": ["journey"],
+      "about": "Such regions lie in quoted strings, in the text of labels an",
+      "judgment": {
+        "status": "no-condition",
+        "kind": "not-about-tree",
+        "note": "It lists the units of the input in which a comment region can lie; it states nothing about the tree beyond the sentences of this paragraph before it."
+      }
+    },
+    {
+      "block": "packages/parser/docs/tokens.md:b8692bcfeaee",
       "diagrams": ["packet"],
-      "about": "A comment lies outside all tokens. A comment region can lie inside what one unit\nreads, for example ",
+      "about": "A comment lies outside all tokens. A comment region can lie ",
       "judgment": {
         "status": "shown",
         "cases": [
@@ -24272,69 +26006,6 @@
               {
                 "file": "check-tree-shared-tokens.test.ts",
                 "text": "tokens-extra-358-packet-read-whitespace-before-comment"
-              }
-            ]
-          },
-          {
-            "case": "RawText fragment kind; this minimum kind change also breaks the changed kind's Meaning or Used by condition, which cannot be preserved here",
-            "tests": [
-              {
-                "file": "check-tree-shared-tokens.test.ts",
-                "text": "tokens-extra-358-packet-RawText-fragment-kind"
-              }
-            ]
-          },
-          {
-            "case": "unit spans region",
-            "tests": [
-              {
-                "file": "check-tree-shared-tokens.test.ts",
-                "text": "tokens-extra-358-packet-unit-spans-region"
-              }
-            ]
-          },
-          {
-            "case": "value joins fragments",
-            "tests": [
-              {
-                "file": "check-tree-shared-tokens.test.ts",
-                "text": "tokens-extra-358-packet-value-joins-fragments"
-              }
-            ]
-          },
-          {
-            "case": "region cut StringFragment",
-            "tests": [
-              {
-                "file": "check-tree-shared-tokens.test.ts",
-                "text": "tokens-extra-358-packet-region-cut-StringFragment"
-              }
-            ]
-          },
-          {
-            "case": "String fragment kind; this minimum kind change also breaks the changed kind's Meaning or Used by condition, which cannot be preserved here",
-            "tests": [
-              {
-                "file": "check-tree-shared-tokens.test.ts",
-                "text": "tokens-extra-358-packet-String-fragment-kind"
-              }
-            ]
-          },
-          {
-            "case": "several regions first cut",
-            "tests": [
-              {
-                "file": "check-tree-shared-tokens.test.ts",
-                "text": "tokens-extra-358-packet-several-regions-first-cut"
-              }
-            ]
-          },
-          {
-            "case": "several regions last cut",
-            "tests": [
-              {
-                "file": "check-tree-shared-tokens.test.ts",
-                "text": "tokens-extra-358-packet-several-regions-last-cut"
               }
             ]
           },
@@ -24378,9 +26049,131 @@
       }
     },
     {
-      "block": "packages/parser/docs/tokens.md:5d1035b3b29b",
+      "block": "packages/parser/docs/tokens.md:d27dff19fb56",
+      "diagrams": ["packet"],
+      "about": "Where several regions lie inside one token, it is cut at eac",
+      "judgment": {
+        "status": "shown",
+        "cases": [
+          {
+            "case": "several regions first cut",
+            "tests": [
+              {
+                "file": "check-tree-shared-tokens.test.ts",
+                "text": "tokens-extra-358-packet-several-regions-first-cut"
+              }
+            ]
+          },
+          {
+            "case": "several regions last cut",
+            "tests": [
+              {
+                "file": "check-tree-shared-tokens.test.ts",
+                "text": "tokens-extra-358-packet-several-regions-last-cut"
+              }
+            ]
+          }
+        ]
+      }
+    },
+    {
+      "block": "packages/parser/docs/tokens.md:95fc18f1e5b4",
+      "diagrams": ["packet"],
+      "about": "Only `String`, `RawText`, and `Identifier` tokens can hold a",
+      "judgment": {
+        "status": "shown",
+        "cases": [
+          {
+            "case": "RawText fragment kind; this minimum kind change also breaks the changed kind's Meaning or Used by condition, which cannot be preserved here",
+            "tests": [
+              {
+                "file": "check-tree-shared-tokens.test.ts",
+                "text": "tokens-extra-358-packet-RawText-fragment-kind"
+              }
+            ]
+          },
+          {
+            "case": "region cut StringFragment",
+            "tests": [
+              {
+                "file": "check-tree-shared-tokens.test.ts",
+                "text": "tokens-extra-358-packet-region-cut-StringFragment"
+              }
+            ]
+          },
+          {
+            "case": "String fragment kind; this minimum kind change also breaks the changed kind's Meaning or Used by condition, which cannot be preserved here",
+            "tests": [
+              {
+                "file": "check-tree-shared-tokens.test.ts",
+                "text": "tokens-extra-358-packet-String-fragment-kind"
+              }
+            ]
+          }
+        ]
+      }
+    },
+    {
+      "block": "packages/parser/docs/tokens.md:5a6c79245141",
+      "diagrams": ["packet"],
+      "about": "The node of the unit, such as a label, a StringLiteral, or a",
+      "judgment": {
+        "status": "shown",
+        "cases": [
+          {
+            "case": "unit spans region",
+            "tests": [
+              {
+                "file": "check-tree-shared-tokens.test.ts",
+                "text": "tokens-extra-358-packet-unit-spans-region"
+              }
+            ]
+          },
+          {
+            "case": "value joins fragments",
+            "tests": [
+              {
+                "file": "check-tree-shared-tokens.test.ts",
+                "text": "tokens-extra-358-packet-value-joins-fragments"
+              }
+            ]
+          }
+        ]
+      }
+    },
+    {
+      "block": "packages/parser/docs/tokens.md:348448907086",
+      "diagrams": ["packet"],
+      "about": "A line with only `%%` is no comment line (see [Comment lines",
+      "judgment": {
+        "status": "shown",
+        "cases": [
+          {
+            "case": "A line with only %% is no comment line, so it stays in the fragment after the region.",
+            "tests": [
+              {
+                "file": "check-tree-shared-tokens.test.ts",
+                "text": "tokens-358b-packet-percent-line-in-fragment"
+              }
+            ]
+          }
+        ]
+      }
+    },
+    {
+      "block": "packages/parser/docs/tokens.md:d71933d056f5",
+      "diagrams": ["packet"],
+      "about": "Such regions lie in quoted strings, in the text of labels an",
+      "judgment": {
+        "status": "no-condition",
+        "kind": "not-about-tree",
+        "note": "It lists the units of the input in which a comment region can lie; it states nothing about the tree beyond the sentences of this paragraph before it."
+      }
+    },
+    {
+      "block": "packages/parser/docs/tokens.md:b8692bcfeaee",
       "diagrams": ["radar"],
-      "about": "A comment lies outside all tokens. A comment region can lie inside what one unit\nreads, for example ",
+      "about": "A comment lies outside all tokens. A comment region can lie ",
       "judgment": {
         "status": "shown",
         "cases": [
@@ -24408,69 +26201,6 @@
               {
                 "file": "check-tree-shared-tokens.test.ts",
                 "text": "tokens-extra-358-radar-read-whitespace-before-comment"
-              }
-            ]
-          },
-          {
-            "case": "RawText fragment kind; this minimum kind change also breaks the changed kind's Meaning or Used by condition, which cannot be preserved here",
-            "tests": [
-              {
-                "file": "check-tree-shared-tokens.test.ts",
-                "text": "tokens-extra-358-radar-RawText-fragment-kind"
-              }
-            ]
-          },
-          {
-            "case": "unit spans region",
-            "tests": [
-              {
-                "file": "check-tree-shared-tokens.test.ts",
-                "text": "tokens-extra-358-radar-unit-spans-region"
-              }
-            ]
-          },
-          {
-            "case": "value joins fragments",
-            "tests": [
-              {
-                "file": "check-tree-shared-tokens.test.ts",
-                "text": "tokens-extra-358-radar-value-joins-fragments"
-              }
-            ]
-          },
-          {
-            "case": "region cut StringFragment",
-            "tests": [
-              {
-                "file": "check-tree-shared-tokens.test.ts",
-                "text": "tokens-extra-358-radar-region-cut-StringFragment"
-              }
-            ]
-          },
-          {
-            "case": "String fragment kind; this minimum kind change also breaks the changed kind's Meaning or Used by condition, which cannot be preserved here",
-            "tests": [
-              {
-                "file": "check-tree-shared-tokens.test.ts",
-                "text": "tokens-extra-358-radar-String-fragment-kind"
-              }
-            ]
-          },
-          {
-            "case": "several regions first cut",
-            "tests": [
-              {
-                "file": "check-tree-shared-tokens.test.ts",
-                "text": "tokens-extra-358-radar-several-regions-first-cut"
-              }
-            ]
-          },
-          {
-            "case": "several regions last cut",
-            "tests": [
-              {
-                "file": "check-tree-shared-tokens.test.ts",
-                "text": "tokens-extra-358-radar-several-regions-last-cut"
               }
             ]
           },
@@ -24514,21 +26244,134 @@
       }
     },
     {
-      "block": "packages/parser/docs/tokens.md:5d1035b3b29b",
-      "diagrams": ["sankey"],
-      "about": "A comment lies outside all tokens. A comment region can lie inside what one unit\nreads, for example ",
+      "block": "packages/parser/docs/tokens.md:d27dff19fb56",
+      "diagrams": ["radar"],
+      "about": "Where several regions lie inside one token, it is cut at eac",
       "judgment": {
         "status": "shown",
         "cases": [
+          {
+            "case": "several regions first cut",
+            "tests": [
+              {
+                "file": "check-tree-shared-tokens.test.ts",
+                "text": "tokens-extra-358-radar-several-regions-first-cut"
+              }
+            ]
+          },
+          {
+            "case": "several regions last cut",
+            "tests": [
+              {
+                "file": "check-tree-shared-tokens.test.ts",
+                "text": "tokens-extra-358-radar-several-regions-last-cut"
+              }
+            ]
+          }
+        ]
+      }
+    },
+    {
+      "block": "packages/parser/docs/tokens.md:95fc18f1e5b4",
+      "diagrams": ["radar"],
+      "about": "Only `String`, `RawText`, and `Identifier` tokens can hold a",
+      "judgment": {
+        "status": "shown",
+        "cases": [
+          {
+            "case": "RawText fragment kind; this minimum kind change also breaks the changed kind's Meaning or Used by condition, which cannot be preserved here",
+            "tests": [
+              {
+                "file": "check-tree-shared-tokens.test.ts",
+                "text": "tokens-extra-358-radar-RawText-fragment-kind"
+              }
+            ]
+          },
           {
             "case": "region cut StringFragment",
             "tests": [
               {
                 "file": "check-tree-shared-tokens.test.ts",
-                "text": "tokens-extra-358-sankey-region-cut-StringFragment"
+                "text": "tokens-extra-358-radar-region-cut-StringFragment"
               }
             ]
           },
+          {
+            "case": "String fragment kind; this minimum kind change also breaks the changed kind's Meaning or Used by condition, which cannot be preserved here",
+            "tests": [
+              {
+                "file": "check-tree-shared-tokens.test.ts",
+                "text": "tokens-extra-358-radar-String-fragment-kind"
+              }
+            ]
+          }
+        ]
+      }
+    },
+    {
+      "block": "packages/parser/docs/tokens.md:5a6c79245141",
+      "diagrams": ["radar"],
+      "about": "The node of the unit, such as a label, a StringLiteral, or a",
+      "judgment": {
+        "status": "shown",
+        "cases": [
+          {
+            "case": "unit spans region",
+            "tests": [
+              {
+                "file": "check-tree-shared-tokens.test.ts",
+                "text": "tokens-extra-358-radar-unit-spans-region"
+              }
+            ]
+          },
+          {
+            "case": "value joins fragments",
+            "tests": [
+              {
+                "file": "check-tree-shared-tokens.test.ts",
+                "text": "tokens-extra-358-radar-value-joins-fragments"
+              }
+            ]
+          }
+        ]
+      }
+    },
+    {
+      "block": "packages/parser/docs/tokens.md:348448907086",
+      "diagrams": ["radar"],
+      "about": "A line with only `%%` is no comment line (see [Comment lines",
+      "judgment": {
+        "status": "shown",
+        "cases": [
+          {
+            "case": "A line with only %% is no comment line, so it stays in the fragment after the region.",
+            "tests": [
+              {
+                "file": "check-tree-shared-tokens.test.ts",
+                "text": "tokens-358b-radar-percent-line-in-fragment"
+              }
+            ]
+          }
+        ]
+      }
+    },
+    {
+      "block": "packages/parser/docs/tokens.md:d71933d056f5",
+      "diagrams": ["radar"],
+      "about": "Such regions lie in quoted strings, in the text of labels an",
+      "judgment": {
+        "status": "no-condition",
+        "kind": "not-about-tree",
+        "note": "It lists the units of the input in which a comment region can lie; it states nothing about the tree beyond the sentences of this paragraph before it."
+      }
+    },
+    {
+      "block": "packages/parser/docs/tokens.md:b8692bcfeaee",
+      "diagrams": ["sankey"],
+      "about": "A comment lies outside all tokens. A comment region can lie ",
+      "judgment": {
+        "status": "shown",
+        "cases": [
           {
             "case": "ending line terminator outside token",
             "tests": [
@@ -24548,6 +26391,53 @@
             ]
           },
           {
+            "case": "comment region whitespace line sankey",
+            "tests": [
+              {
+                "file": "check-tree-shared-tokens.test.ts",
+                "text": "tokens-extra-comment-region-whitespace-line-sankey"
+              }
+            ]
+          }
+        ]
+      }
+    },
+    {
+      "block": "packages/parser/docs/tokens.md:d27dff19fb56",
+      "diagrams": ["sankey"],
+      "about": "Where several regions lie inside one token, it is cut at eac",
+      "judgment": {
+        "status": "shown",
+        "cases": [
+          {
+            "case": "Every one of several regions cuts the unit.",
+            "tests": [
+              {
+                "file": "check-tree-shared-tokens.test.ts",
+                "text": "tokens-358b-sankey-several-regions"
+              }
+            ]
+          }
+        ]
+      }
+    },
+    {
+      "block": "packages/parser/docs/tokens.md:95fc18f1e5b4",
+      "diagrams": ["sankey"],
+      "about": "Only `String`, `RawText`, and `Identifier` tokens can hold a",
+      "judgment": {
+        "status": "shown",
+        "cases": [
+          {
+            "case": "region cut StringFragment",
+            "tests": [
+              {
+                "file": "check-tree-shared-tokens.test.ts",
+                "text": "tokens-extra-358-sankey-region-cut-StringFragment"
+              }
+            ]
+          },
+          {
             "case": "String fragment kind; this minimum kind change also breaks the changed kind's Meaning or Used by condition, which cannot be preserved here",
             "tests": [
               {
@@ -24555,7 +26445,17 @@
                 "text": "tokens-extra-358-sankey-String-fragment-kind"
               }
             ]
-          },
+          }
+        ]
+      }
+    },
+    {
+      "block": "packages/parser/docs/tokens.md:5a6c79245141",
+      "diagrams": ["sankey"],
+      "about": "The node of the unit, such as a label, a StringLiteral, or a",
+      "judgment": {
+        "status": "shown",
+        "cases": [
           {
             "case": "unit spans region; shortening a quoted unit also breaks its closing-quote condition, which cannot be preserved",
             "tests": [
@@ -24573,16 +26473,17 @@
                 "text": "tokens-extra-358-sankey-value-joins-fragments"
               }
             ]
-          },
-          {
-            "case": "comment region whitespace line sankey",
-            "tests": [
-              {
-                "file": "check-tree-shared-tokens.test.ts",
-                "text": "tokens-extra-comment-region-whitespace-line-sankey"
-              }
-            ]
-          },
+          }
+        ]
+      }
+    },
+    {
+      "block": "packages/parser/docs/tokens.md:348448907086",
+      "diagrams": ["sankey"],
+      "about": "A line with only `%%` is no comment line (see [Comment lines",
+      "judgment": {
+        "status": "shown",
+        "cases": [
           {
             "case": "bare marker sankey StringFragment after",
             "tests": [
@@ -24596,9 +26497,19 @@
       }
     },
     {
-      "block": "packages/parser/docs/tokens.md:5d1035b3b29b",
+      "block": "packages/parser/docs/tokens.md:d71933d056f5",
+      "diagrams": ["sankey"],
+      "about": "Such regions lie in quoted strings, in the text of labels an",
+      "judgment": {
+        "status": "no-condition",
+        "kind": "not-about-tree",
+        "note": "It lists the units of the input in which a comment region can lie; it states nothing about the tree beyond the sentences of this paragraph before it."
+      }
+    },
+    {
+      "block": "packages/parser/docs/tokens.md:b8692bcfeaee",
       "diagrams": ["timeline"],
-      "about": "A comment lies outside all tokens. A comment region can lie inside what one unit\nreads, for example ",
+      "about": "A comment lies outside all tokens. A comment region can lie ",
       "judgment": {
         "status": "shown",
         "cases": [
@@ -24626,51 +26537,6 @@
               {
                 "file": "check-tree-shared-tokens.test.ts",
                 "text": "tokens-extra-358-timeline-read-whitespace-before-comment"
-              }
-            ]
-          },
-          {
-            "case": "RawText fragment kind; this minimum kind change also breaks the changed kind's Meaning or Used by condition, which cannot be preserved here",
-            "tests": [
-              {
-                "file": "check-tree-shared-tokens.test.ts",
-                "text": "tokens-extra-358-timeline-RawText-fragment-kind"
-              }
-            ]
-          },
-          {
-            "case": "unit spans region",
-            "tests": [
-              {
-                "file": "check-tree-shared-tokens.test.ts",
-                "text": "tokens-extra-358-timeline-unit-spans-region"
-              }
-            ]
-          },
-          {
-            "case": "value joins fragments",
-            "tests": [
-              {
-                "file": "check-tree-shared-tokens.test.ts",
-                "text": "tokens-extra-358-timeline-value-joins-fragments"
-              }
-            ]
-          },
-          {
-            "case": "several regions first cut",
-            "tests": [
-              {
-                "file": "check-tree-shared-tokens.test.ts",
-                "text": "tokens-extra-358-timeline-several-regions-first-cut"
-              }
-            ]
-          },
-          {
-            "case": "several regions last cut",
-            "tests": [
-              {
-                "file": "check-tree-shared-tokens.test.ts",
-                "text": "tokens-extra-358-timeline-several-regions-last-cut"
               }
             ]
           },
@@ -24714,9 +26580,113 @@
       }
     },
     {
-      "block": "packages/parser/docs/tokens.md:5d1035b3b29b",
+      "block": "packages/parser/docs/tokens.md:d27dff19fb56",
+      "diagrams": ["timeline"],
+      "about": "Where several regions lie inside one token, it is cut at eac",
+      "judgment": {
+        "status": "shown",
+        "cases": [
+          {
+            "case": "several regions first cut",
+            "tests": [
+              {
+                "file": "check-tree-shared-tokens.test.ts",
+                "text": "tokens-extra-358-timeline-several-regions-first-cut"
+              }
+            ]
+          },
+          {
+            "case": "several regions last cut",
+            "tests": [
+              {
+                "file": "check-tree-shared-tokens.test.ts",
+                "text": "tokens-extra-358-timeline-several-regions-last-cut"
+              }
+            ]
+          }
+        ]
+      }
+    },
+    {
+      "block": "packages/parser/docs/tokens.md:95fc18f1e5b4",
+      "diagrams": ["timeline"],
+      "about": "Only `String`, `RawText`, and `Identifier` tokens can hold a",
+      "judgment": {
+        "status": "shown",
+        "cases": [
+          {
+            "case": "RawText fragment kind; this minimum kind change also breaks the changed kind's Meaning or Used by condition, which cannot be preserved here",
+            "tests": [
+              {
+                "file": "check-tree-shared-tokens.test.ts",
+                "text": "tokens-extra-358-timeline-RawText-fragment-kind"
+              }
+            ]
+          }
+        ]
+      }
+    },
+    {
+      "block": "packages/parser/docs/tokens.md:5a6c79245141",
+      "diagrams": ["timeline"],
+      "about": "The node of the unit, such as a label, a StringLiteral, or a",
+      "judgment": {
+        "status": "shown",
+        "cases": [
+          {
+            "case": "unit spans region",
+            "tests": [
+              {
+                "file": "check-tree-shared-tokens.test.ts",
+                "text": "tokens-extra-358-timeline-unit-spans-region"
+              }
+            ]
+          },
+          {
+            "case": "value joins fragments",
+            "tests": [
+              {
+                "file": "check-tree-shared-tokens.test.ts",
+                "text": "tokens-extra-358-timeline-value-joins-fragments"
+              }
+            ]
+          }
+        ]
+      }
+    },
+    {
+      "block": "packages/parser/docs/tokens.md:348448907086",
+      "diagrams": ["timeline"],
+      "about": "A line with only `%%` is no comment line (see [Comment lines",
+      "judgment": {
+        "status": "shown",
+        "cases": [
+          {
+            "case": "A line with only %% is no comment line, so it stays in the fragment after the region.",
+            "tests": [
+              {
+                "file": "check-tree-shared-tokens.test.ts",
+                "text": "tokens-358b-timeline-percent-line-in-fragment"
+              }
+            ]
+          }
+        ]
+      }
+    },
+    {
+      "block": "packages/parser/docs/tokens.md:d71933d056f5",
+      "diagrams": ["timeline"],
+      "about": "Such regions lie in quoted strings, in the text of labels an",
+      "judgment": {
+        "status": "no-condition",
+        "kind": "not-about-tree",
+        "note": "It lists the units of the input in which a comment region can lie; it states nothing about the tree beyond the sentences of this paragraph before it."
+      }
+    },
+    {
+      "block": "packages/parser/docs/tokens.md:b8692bcfeaee",
       "diagrams": ["treemap"],
-      "about": "A comment lies outside all tokens. A comment region can lie inside what one unit\nreads, for example ",
+      "about": "A comment lies outside all tokens. A comment region can lie ",
       "judgment": {
         "status": "shown",
         "cases": [
@@ -24744,69 +26714,6 @@
               {
                 "file": "check-tree-shared-tokens.test.ts",
                 "text": "tokens-extra-358-treemap-read-whitespace-before-comment"
-              }
-            ]
-          },
-          {
-            "case": "RawText fragment kind; this minimum kind change also breaks the changed kind's Meaning or Used by condition, which cannot be preserved here",
-            "tests": [
-              {
-                "file": "check-tree-shared-tokens.test.ts",
-                "text": "tokens-extra-358-treemap-RawText-fragment-kind"
-              }
-            ]
-          },
-          {
-            "case": "unit spans region",
-            "tests": [
-              {
-                "file": "check-tree-shared-tokens.test.ts",
-                "text": "tokens-extra-358-treemap-unit-spans-region"
-              }
-            ]
-          },
-          {
-            "case": "value joins fragments",
-            "tests": [
-              {
-                "file": "check-tree-shared-tokens.test.ts",
-                "text": "tokens-extra-358-treemap-value-joins-fragments"
-              }
-            ]
-          },
-          {
-            "case": "region cut StringFragment",
-            "tests": [
-              {
-                "file": "check-tree-shared-tokens.test.ts",
-                "text": "tokens-extra-358-treemap-region-cut-StringFragment"
-              }
-            ]
-          },
-          {
-            "case": "String fragment kind; this minimum kind change also breaks the changed kind's Meaning or Used by condition, which cannot be preserved here",
-            "tests": [
-              {
-                "file": "check-tree-shared-tokens.test.ts",
-                "text": "tokens-extra-358-treemap-String-fragment-kind"
-              }
-            ]
-          },
-          {
-            "case": "several regions first cut",
-            "tests": [
-              {
-                "file": "check-tree-shared-tokens.test.ts",
-                "text": "tokens-extra-358-treemap-several-regions-first-cut"
-              }
-            ]
-          },
-          {
-            "case": "several regions last cut",
-            "tests": [
-              {
-                "file": "check-tree-shared-tokens.test.ts",
-                "text": "tokens-extra-358-treemap-several-regions-last-cut"
               }
             ]
           },
@@ -24850,7 +26757,129 @@
       }
     },
     {
-      "block": "packages/parser/docs/tokens.md:f7223ce156d4",
+      "block": "packages/parser/docs/tokens.md:d27dff19fb56",
+      "diagrams": ["treemap"],
+      "about": "Where several regions lie inside one token, it is cut at eac",
+      "judgment": {
+        "status": "shown",
+        "cases": [
+          {
+            "case": "several regions first cut",
+            "tests": [
+              {
+                "file": "check-tree-shared-tokens.test.ts",
+                "text": "tokens-extra-358-treemap-several-regions-first-cut"
+              }
+            ]
+          },
+          {
+            "case": "several regions last cut",
+            "tests": [
+              {
+                "file": "check-tree-shared-tokens.test.ts",
+                "text": "tokens-extra-358-treemap-several-regions-last-cut"
+              }
+            ]
+          }
+        ]
+      }
+    },
+    {
+      "block": "packages/parser/docs/tokens.md:95fc18f1e5b4",
+      "diagrams": ["treemap"],
+      "about": "Only `String`, `RawText`, and `Identifier` tokens can hold a",
+      "judgment": {
+        "status": "shown",
+        "cases": [
+          {
+            "case": "RawText fragment kind; this minimum kind change also breaks the changed kind's Meaning or Used by condition, which cannot be preserved here",
+            "tests": [
+              {
+                "file": "check-tree-shared-tokens.test.ts",
+                "text": "tokens-extra-358-treemap-RawText-fragment-kind"
+              }
+            ]
+          },
+          {
+            "case": "region cut StringFragment",
+            "tests": [
+              {
+                "file": "check-tree-shared-tokens.test.ts",
+                "text": "tokens-extra-358-treemap-region-cut-StringFragment"
+              }
+            ]
+          },
+          {
+            "case": "String fragment kind; this minimum kind change also breaks the changed kind's Meaning or Used by condition, which cannot be preserved here",
+            "tests": [
+              {
+                "file": "check-tree-shared-tokens.test.ts",
+                "text": "tokens-extra-358-treemap-String-fragment-kind"
+              }
+            ]
+          }
+        ]
+      }
+    },
+    {
+      "block": "packages/parser/docs/tokens.md:5a6c79245141",
+      "diagrams": ["treemap"],
+      "about": "The node of the unit, such as a label, a StringLiteral, or a",
+      "judgment": {
+        "status": "shown",
+        "cases": [
+          {
+            "case": "unit spans region",
+            "tests": [
+              {
+                "file": "check-tree-shared-tokens.test.ts",
+                "text": "tokens-extra-358-treemap-unit-spans-region"
+              }
+            ]
+          },
+          {
+            "case": "value joins fragments",
+            "tests": [
+              {
+                "file": "check-tree-shared-tokens.test.ts",
+                "text": "tokens-extra-358-treemap-value-joins-fragments"
+              }
+            ]
+          }
+        ]
+      }
+    },
+    {
+      "block": "packages/parser/docs/tokens.md:348448907086",
+      "diagrams": ["treemap"],
+      "about": "A line with only `%%` is no comment line (see [Comment lines",
+      "judgment": {
+        "status": "shown",
+        "cases": [
+          {
+            "case": "A line with only %% is no comment line, so it stays in the fragment after the region.",
+            "tests": [
+              {
+                "file": "check-tree-shared-tokens.test.ts",
+                "text": "tokens-358b-treemap-percent-line-in-fragment"
+              }
+            ]
+          }
+        ]
+      }
+    },
+    {
+      "block": "packages/parser/docs/tokens.md:d71933d056f5",
+      "diagrams": ["treemap"],
+      "about": "Such regions lie in quoted strings, in the text of labels an",
+      "judgment": {
+        "status": "no-condition",
+        "kind": "not-about-tree",
+        "note": "It lists the units of the input in which a comment region can lie; it states nothing about the tree beyond the sentences of this paragraph before it."
+      }
+    },
+    {
+      "block": "packages/parser/docs/tokens.md:dde5a597a4e7",
       "diagrams": ["gantt"],
       "about": "An Identifier's token is the token of its unit. Where the un",
       "judgment": {
@@ -25151,11 +27180,11 @@
             ]
           },
           {
-            "case": "A whitespace-only fragment not read as part of a value beside a directive has no token",
+            "case": "A whitespace-only fragment of a value that a directive cuts has no token when mermaid.js does not read it as part of the value.",
             "tests": [
               {
                 "file": "check-tree-shared-tokens.test.ts",
-                "text": "tokens-review4-unread-whitespace-only-c4"
+                "text": "tokens-631b-c4-unread-fragment-beside-directive"
               }
             ]
           }
@@ -25224,11 +27253,11 @@
             ]
           },
           {
-            "case": "tokens 631 info unread whitespace after directive has no token",
+            "case": "A whitespace-only fragment of a value that a directive cuts has no token when mermaid.js does not read it as part of the value.",
             "tests": [
               {
                 "file": "check-tree-shared-tokens.test.ts",
-                "text": "tokens-631-info-unread-whitespace-after-directive-has-no-token"
+                "text": "tokens-631b-info-unread-fragment-beside-directive"
               }
             ]
           }
@@ -25370,11 +27399,11 @@
             ]
           },
           {
-            "case": "A whitespace-only fragment not read as part of a value beside a directive has no token",
+            "case": "A whitespace-only fragment of a value that a directive cuts has no token when mermaid.js does not read it as part of the value.",
             "tests": [
               {
                 "file": "check-tree-shared-tokens.test.ts",
-                "text": "tokens-review4-unread-whitespace-only-journey"
+                "text": "tokens-631b-journey-unread-fragment-beside-directive"
               }
             ]
           }
@@ -25452,11 +27481,11 @@
             ]
           },
           {
-            "case": "A whitespace-only fragment not read as part of a value beside a directive has no token",
+            "case": "A whitespace-only fragment of a value that a directive cuts has no token when mermaid.js does not read it as part of the value.",
             "tests": [
               {
                 "file": "check-tree-shared-tokens.test.ts",
-                "text": "tokens-review4-unread-whitespace-only-packet"
+                "text": "tokens-631b-packet-unread-fragment-beside-directive"
               }
             ]
           }
@@ -25534,11 +27563,11 @@
             ]
           },
           {
-            "case": "A whitespace-only fragment not read as part of a value beside a directive has no token",
+            "case": "A whitespace-only fragment of a value that a directive cuts has no token when mermaid.js does not read it as part of the value.",
             "tests": [
               {
                 "file": "check-tree-shared-tokens.test.ts",
-                "text": "tokens-review4-unread-whitespace-only-radar"
+                "text": "tokens-631b-radar-unread-fragment-beside-directive"
               }
             ]
           }
@@ -25680,11 +27709,11 @@
             ]
           },
           {
-            "case": "tokens 631 timeline unread whitespace after directive has no token",
+            "case": "A whitespace-only fragment of a value that a directive cuts has no token when mermaid.js does not read it as part of the value.",
             "tests": [
               {
                 "file": "check-tree-shared-tokens.test.ts",
-                "text": "tokens-631-timeline-unread-whitespace-after-directive-has-no-token"
+                "text": "tokens-631b-timeline-unread-fragment-beside-directive"
               }
             ]
           }
@@ -25762,11 +27791,11 @@
             ]
           },
           {
-            "case": "A whitespace-only fragment not read as part of a value beside a directive has no token",
+            "case": "A whitespace-only fragment of a value that a directive cuts has no token when mermaid.js does not read it as part of the value.",
             "tests": [
               {
                 "file": "check-tree-shared-tokens.test.ts",
-                "text": "tokens-review4-unread-whitespace-only-treemap"
+                "text": "tokens-631b-treemap-unread-fragment-beside-directive"
               }
             ]
           }

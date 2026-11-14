@@ -252,8 +252,8 @@ describe("checkTree: the tokens of the frontmatter come first (positions.md, Inv
 
 describe("checkTree: the range of the diagram node (positions.md, Nodes)", () => {
   // The tokens of the node in Root.body run from its first token to its last,
-  // a separator after the last statement included, an ignored `;` after the
-  // last token not.
+  // a separator after the last statement included, a directive or an ignored
+  // `;` after the last token not.
   for (const [name, diagram, fixture, end, message] of [
     [
       "fails a flowchart diagram that ends before its trailing separator",
@@ -261,6 +261,13 @@ describe("checkTree: the range of the diagram node (positions.md, Nodes)", () =>
       "tokens-diagram-trailing-separator",
       14,
       "does not run from its first token to its last: [0,14], not [0,15]",
+    ],
+    [
+      "fails a flowchart diagram that runs to a directive after its last token",
+      "flowchart",
+      "gram-separator-before-directive",
+      40,
+      "does not run from its first token to its last: [0,40], not [0,25]",
     ],
     [
       "fails a class diagram that ends after its trailing ignored semicolon",

@@ -8818,6 +8818,20 @@ describe("checkTree: grammar-selected shared leaf types (ast.md, Shared leaf nod
       },
     },
     {
+      name: "reports usecase StringLiteral replaced by UsecaseLiteral (db-actor-variants)",
+      diagram: "usecase",
+      fixture: "db-actor-variants",
+      nodeType: "StringLiteral",
+      replacementType: "UsecaseLiteral",
+      valueField: "value",
+      additionalFields: {},
+      expected: {
+        where: "UsecaseMetadataProperty at 144-158",
+        message:
+          "the field value holds a UsecaseLiteral, not a Identifier or StringLiteral",
+      },
+    },
+    {
       name: "reports usecase StringLiteral replaced by UsecaseLiteral (lex-native-single-quoted-keys)",
       diagram: "usecase",
       fixture: "lex-native-single-quoted-keys",
@@ -10336,6 +10350,55 @@ describe("checkTree: shared leaf fields in each diagram (ast.md)", () => {
       closed: false,
     },
     {
+      name: "reports agentflow AgentflowAccDescrBlockStatement marked closed despite its missing closer (db-accessibility-empty-unclosed, unclosed)",
+      diagram: "agentflow",
+      fixture: "db-accessibility-empty-unclosed",
+      nodeType: "AgentflowAccDescrBlockStatement",
+      range: [34, 44],
+      expected: {
+        where: "AgentflowAccDescrBlockStatement at 34-44",
+        message:
+          'the tokens that the node writes itself and its child nodes, in source order: ["accdescr","{"], not ["accdescr","{","}"]',
+      },
+      closed: true,
+    },
+    {
+      name: "reports flowchart FlowchartAccDescrBlockStatement marked closed despite its missing closer (db-acc-descr-unclosed-empty-replaces, unclosed)",
+      diagram: "flowchart",
+      fixture: "db-acc-descr-unclosed-empty-replaces",
+      nodeType: "FlowchartAccDescrBlockStatement",
+      range: [27, 37],
+      expected: {
+        where: "FlowchartAccDescrBlockStatement at 27-37",
+        message: "closed is not whether the last token is `}`: true, not false",
+      },
+      closed: true,
+    },
+    {
+      name: "reports state StateAccDescrBlockStatement marked closed despite its missing closer (db-acc-descr-block-unclosed-takes-lines, unclosed)",
+      diagram: "state",
+      fixture: "db-acc-descr-block-unclosed-takes-lines",
+      nodeType: "StateAccDescrBlockStatement",
+      range: [28, 56],
+      expected: {
+        where: "StateAccDescrBlockStatement at 28-56",
+        message: "closed, which is whether it ends with }: false, not true",
+      },
+      closed: true,
+    },
+    {
+      name: "reports xychart XychartAccDescrBlockStatement marked closed despite its missing closer (db-acc-descr-unclosed-block, unclosed)",
+      diagram: "xychart",
+      fixture: "db-acc-descr-unclosed-block",
+      nodeType: "XychartAccDescrBlockStatement",
+      range: [14, 27],
+      expected: {
+        where: "XychartAccDescrBlockStatement at 14-27",
+        message: "closed, which is whether it ends with }: true, not false",
+      },
+      closed: true,
+    },
+    {
       name: "reports sequence SequenceAccDescrBlockStatement marked closed despite its missing closer (db-acc-descr-block-unclosed-line-separator, unclosed)",
       diagram: "sequence",
       fixture: "db-acc-descr-block-unclosed-line-separator",
@@ -10891,6 +10954,259 @@ describe("checkTree: shared leaf fields in each diagram (ast.md)", () => {
   }
 
   const incorrectDirectiveClosedFlagCases = [
+    {
+      name: "reports agentflow Directive marked closed despite its missing closer (comment-open-directive-takes-lf, unclosed)",
+      diagram: "agentflow",
+      fixture: "comment-open-directive-takes-lf",
+      directiveIndex: 0,
+      expected: {
+        where: "the directives",
+        message:
+          "the directives of the tree are not those of the source: [[[23,32],true]], not [[[23,32],false]]",
+      },
+    },
+    {
+      name: "reports architecture Directive marked closed despite its missing closer (hidden-directive-unclosed, unclosed)",
+      diagram: "architecture",
+      fixture: "hidden-directive-unclosed",
+      directiveIndex: 0,
+      expected: {
+        where: "the directives",
+        message:
+          "the directives of the tree are not those of the source: [[[29,43],true]], not [[[29,43],false]]",
+      },
+    },
+    {
+      name: "reports block Directive marked closed despite its missing closer (db-directive-unclosed-end-of-text, unclosed)",
+      diagram: "block",
+      fixture: "db-directive-unclosed-end-of-text",
+      directiveIndex: 0,
+      expected: {
+        where: "the directives",
+        message:
+          "the directives of the tree are not those of the source: [[[17,28],true]], not [[[17,28],false]]",
+      },
+    },
+    {
+      name: "reports c4 Directive marked closed despite its missing closer (db-unclosed-directive-at-end, unclosed)",
+      diagram: "c4",
+      fixture: "db-unclosed-directive-at-end",
+      directiveIndex: 0,
+      expected: {
+        where: "the directives",
+        message:
+          "the directives of the tree are not those of the source: [[[25,35],true]], not [[[25,35],false]]",
+      },
+    },
+    {
+      name: "reports class Directive marked closed despite its missing closer (bare-marker-directive-lines-eef9f5ec, unclosed)",
+      diagram: "class",
+      fixture: "bare-marker-directive-lines-eef9f5ec",
+      directiveIndex: 0,
+      expected: {
+        where: "the directives",
+        message:
+          "the directives of the tree are not those of the source: [[[18,37],true]], not [[[18,37],false]]",
+      },
+    },
+    {
+      name: "reports cynefin Directive marked closed despite its missing closer (directive-unclosed-string, unclosed)",
+      diagram: "cynefin",
+      fixture: "directive-unclosed-string",
+      directiveIndex: 0,
+      expected: {
+        where: "the directives",
+        message:
+          "the directives of the tree are not those of the source: [[[23,33],true]], not [[[23,33],false]]",
+      },
+    },
+    {
+      name: "reports er Directive marked closed despite its missing closer (tokens-unclosed-directive-after-header, unclosed)",
+      diagram: "er",
+      fixture: "tokens-unclosed-directive-after-header",
+      directiveIndex: 0,
+      expected: {
+        where: "the directives",
+        message:
+          "the directives of the tree are not those of the source: [[[10,23],true]], not [[[10,23],false]]",
+      },
+    },
+    {
+      name: "reports eventmodeling Directive marked closed despite its missing closer (directive-unclosed-tail, unclosed)",
+      diagram: "eventmodeling",
+      fixture: "directive-unclosed-tail",
+      directiveIndex: 0,
+      expected: {
+        where: "the directives",
+        message:
+          "the directives of the tree are not those of the source: [[[26,38],true]], not [[[26,38],false]]",
+      },
+    },
+    {
+      name: "reports flowchart Directive marked closed despite its missing closer (ignored-semicolon-after-directive-11e6218c, unclosed)",
+      diagram: "flowchart",
+      fixture: "ignored-semicolon-after-directive-11e6218c",
+      directiveIndex: 0,
+      expected: {
+        where: "the directives",
+        message:
+          "the directives of the tree are not those of the source: [[[25,36],true]], not [[[25,36],false]]",
+      },
+    },
+    {
+      name: "reports gantt Directive marked closed despite its missing closer (tokens-unclosed-directive-after-header, unclosed)",
+      diagram: "gantt",
+      fixture: "tokens-unclosed-directive-after-header",
+      directiveIndex: 0,
+      expected: {
+        where: "the directives",
+        message:
+          "the directives of the tree are not those of the source: [[[6,24],true]], not [[[6,24],false]]",
+      },
+    },
+    {
+      name: "reports gitgraph Directive marked closed despite its missing closer (comment-unclosed-brace, unclosed)",
+      diagram: "gitgraph",
+      fixture: "comment-unclosed-brace",
+      directiveIndex: 0,
+      expected: {
+        where: "the directives",
+        message:
+          "the directives of the tree are not those of the source: [[[9,19],true]], not [[[9,19],false]]",
+      },
+    },
+    {
+      name: "reports packet Directive marked closed despite its missing closer (directive-unclosed-after-header, unclosed)",
+      diagram: "packet",
+      fixture: "directive-unclosed-after-header",
+      directiveIndex: 0,
+      expected: {
+        where: "the directives",
+        message:
+          "the directives of the tree are not those of the source: [[[7,20],true]], not [[[7,20],false]]",
+      },
+    },
+    {
+      name: "reports pie Directive marked closed despite its missing closer (directive-block-open-eof, unclosed)",
+      diagram: "pie",
+      fixture: "directive-block-open-eof",
+      directiveIndex: 0,
+      expected: {
+        where: "the directives",
+        message:
+          "the directives of the tree are not those of the source: [[[18,26],true]], not [[[18,26],false]]",
+      },
+    },
+    {
+      name: "reports radar Directive marked closed despite its missing closer (directive-unclosed, unclosed)",
+      diagram: "radar",
+      fixture: "directive-unclosed",
+      directiveIndex: 0,
+      expected: {
+        where: "the directives",
+        message:
+          "the directives of the tree are not those of the source: [[[11,28],true]], not [[[11,28],false]]",
+      },
+    },
+    {
+      name: "reports railroad Directive marked closed despite its missing closer (ir-directive-unclosed-tail, unclosed)",
+      diagram: "railroad",
+      fixture: "ir-directive-unclosed-tail",
+      directiveIndex: 0,
+      expected: {
+        where: "the directives",
+        message:
+          "the directives of the tree are not those of the source: [[[32,43],true]], not [[[32,43],false]]",
+      },
+    },
+    {
+      name: "reports requirement Directive marked closed despite its missing closer (tokens-unclosed-directive-after-style, unclosed)",
+      diagram: "requirement",
+      fixture: "tokens-unclosed-directive-after-style",
+      directiveIndex: 0,
+      expected: {
+        where: "the directives",
+        message:
+          "the directives of the tree are not those of the source: [[[54,79],true]], not [[[54,79],false]]",
+      },
+    },
+    {
+      name: "reports sankey Directive marked closed despite its missing closer (db-directive-unclosed-at-end, unclosed)",
+      diagram: "sankey",
+      fixture: "db-directive-unclosed-at-end",
+      directiveIndex: 0,
+      expected: {
+        where: "the directives",
+        message:
+          "the directives of the tree are not those of the source: [[[13,20],true]], not [[[13,20],false]]",
+      },
+    },
+    {
+      name: "reports state Directive marked closed despite its missing closer (directive-unclosed-between-statements, unclosed)",
+      diagram: "state",
+      fixture: "directive-unclosed-between-statements",
+      directiveIndex: 0,
+      expected: {
+        where: "the directives",
+        message:
+          "the directives of the tree are not those of the source: [[[28,65],true]], not [[[28,65],false]]",
+      },
+    },
+    {
+      name: "reports treeview Directive marked closed despite its missing closer (directive-accline-open, unclosed)",
+      diagram: "treeview",
+      fixture: "directive-accline-open",
+      directiveIndex: 0,
+      expected: {
+        where: "the directives",
+        message:
+          "the directives of the tree are not those of the source: [[[25,40],true]], not [[[25,40],false]]",
+      },
+    },
+    {
+      name: "reports usecase Directive marked closed despite its missing closer (comment-open-directive, unclosed)",
+      diagram: "usecase",
+      fixture: "comment-open-directive",
+      directiveIndex: 0,
+      expected: {
+        where: "the directives",
+        message:
+          "the directives of the tree are not those of the source: [[[13,22],true]], not [[[13,22],false]]",
+      },
+    },
+    {
+      name: "reports venn Directive marked closed despite its missing closer (db-after-indent-id-label-unclosed-directive, unclosed)",
+      diagram: "venn",
+      fixture: "db-after-indent-id-label-unclosed-directive",
+      directiveIndex: 0,
+      expected: {
+        where: "the directives",
+        message:
+          "the directives of the tree are not those of the source: [[[29,40],true]], not [[[29,40],false]]",
+      },
+    },
+    {
+      name: "reports wardley Directive marked closed despite its missing closer (tail-accelerator-open-directive, unclosed)",
+      diagram: "wardley",
+      fixture: "tail-accelerator-open-directive",
+      directiveIndex: 0,
+      expected: {
+        where: "the directives",
+        message:
+          "the directives of the tree are not those of the source: [[[37,50],true]], not [[[37,50],false]]",
+      },
+    },
+    {
+      name: "reports xychart Directive marked closed despite its missing closer (db-directive-unclosed-after-categories, unclosed)",
+      diagram: "xychart",
+      fixture: "db-directive-unclosed-after-categories",
+      directiveIndex: 0,
+      expected: {
+        where: "the directives",
+        message:
+          "the directives of the tree are not those of the source: [[[24,31],true]], not [[[24,31],false]]",
+      },
+    },
     {
       name: "reports info Directive marked closed despite its missing closer (directive-unclosed-after-header, unclosed)",
       diagram: "info",

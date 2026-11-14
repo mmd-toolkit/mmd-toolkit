@@ -31977,6 +31977,269 @@ const unreadWhitespaceTokenAddedCases = [
         "starts with whitespace or a line terminator where no value starts",
     },
   },
+  {
+    case: "tokens-631b-block-unread-fragment-beside-directive",
+    diagram: "block",
+    fixture: "db-class-name-line-separator-comment-line-directive-before",
+    index: 6,
+    range: [37, 38],
+    expected: {
+      where: "BlockLiteral at 21-44",
+      message:
+        'the texts of its tokens joined are not its written text: "A\u2028 B", not "A\u2028B"',
+    },
+  },
+  {
+    case: "tokens-631b-cynefin-unread-fragment-beside-directive",
+    diagram: "cynefin",
+    fixture: "lex-string-line-separator-comment-line-directive-before",
+    index: 4,
+    range: [38, 39],
+    expected: {
+      where: "StringLiteral at 21-46",
+      message:
+        "the tokens of the string are not one String token or StringFragment tokens: StringFragment, RawText, StringFragment",
+    },
+  },
+  {
+    case: "tokens-631b-mindmap-unread-fragment-beside-directive",
+    diagram: "mindmap",
+    fixture: "lex-icon-line-separator-comment-line-directive-before",
+    index: 5,
+    range: [33, 34],
+    expected: {
+      where: "MindmapLiteral at 17-40",
+      message:
+        'the texts of its tokens joined are not its written text: "A\u2028 B", not "A\u2028B"',
+    },
+  },
+  {
+    case: "tokens-631b-pie-unread-fragment-beside-directive",
+    diagram: "pie",
+    fixture: "lex-acc-descr-block-line-separator-comment-line-directive-before",
+    index: 5,
+    range: [31, 32],
+    expected: {
+      where: "PieLiteral at 15-38",
+      message:
+        'the texts of its tokens joined are not its written text: "A\u2028 B", not "A\u2028B"',
+    },
+  },
+  {
+    case: "tokens-631b-treeview-unread-fragment-beside-directive",
+    diagram: "treeview",
+    fixture: "gram-quoted-name-line-separator-comment-line-directive-before",
+    index: 3,
+    range: [31, 32],
+    expected: {
+      where: "StringLiteral at 14-39",
+      message:
+        "the tokens of the string are not one String token or StringFragment tokens: StringFragment, RawText, StringFragment",
+    },
+  },
+  {
+    case: "tokens-631b-usecase-unread-fragment-beside-directive",
+    diagram: "usecase",
+    fixture: "lex-string-line-separator-comment-line-directive-before",
+    index: 4,
+    range: [36, 37],
+    expected: {
+      where: "UsecaseLabel at 19-44",
+      message:
+        'the texts of its tokens joined are not its written text: "A\u2028 B", not "A\u2028B"',
+    },
+  },
+  {
+    case: "tokens-631b-gantt-unread-fragment-beside-directive",
+    diagram: "gantt",
+    fixture: "lex-acc-descr-block-line-separator-comment-line-directive-before",
+    index: 5,
+    range: [32, 33],
+    expected: {
+      where: "GanttLiteral at 16-39",
+      message:
+        'the texts of its tokens joined are not its written text: "A\u2028 B", not "A\u2028B"',
+    },
+  },
+  {
+    case: "tokens-631b-gitgraph-unread-fragment-beside-directive",
+    diagram: "gitgraph",
+    fixture: "lex-string-line-separator-comment-line-directive-before",
+    index: 6,
+    range: [36, 37],
+    expected: {
+      where: "StringLiteral at 19-44",
+      message:
+        "the tokens of the string are not one String token or StringFragment tokens: StringFragment, RawText, StringFragment",
+    },
+  },
+  {
+    case: "tokens-631b-kanban-unread-fragment-beside-directive",
+    diagram: "kanban",
+    fixture: "lex-icon-line-separator-comment-line-directive-before",
+    index: 6,
+    range: [38, 39],
+    expected: {
+      where: "KanbanLiteral at 22-45",
+      message:
+        'the texts of its tokens joined are not its written text: "A\u2028 B", not "A\u2028B"',
+    },
+  },
+  {
+    case: "tokens-631b-quadrant-unread-fragment-beside-directive",
+    diagram: "quadrant",
+    fixture: "db-after-acc-descr-directive-word-unclosed",
+    index: 5,
+    range: [39, 40],
+    expected: {
+      where: "QuadrantLiteral at 24-41",
+      message:
+        'the texts of its tokens joined are not its written text: "D  U", not "D U"',
+    },
+  },
+  {
+    case: "tokens-631b-railroad-unread-fragment-beside-directive",
+    diagram: "railroad",
+    fixture: "lex-string-line-separator-comment-line-directive-before",
+    index: 7,
+    range: [44, 45],
+    expected: {
+      where: "StringLiteral at 27-52",
+      message:
+        "the tokens of the string are not one String token or StringFragment tokens: StringFragment, RawText, StringFragment",
+    },
+  },
+  {
+    case: "tokens-631b-requirement-unread-fragment-beside-directive",
+    diagram: "requirement",
+    fixture: "lex-acc-descr-block-line-separator-comment-line-directive-before",
+    index: 5,
+    range: [46, 47],
+    expected: {
+      where: "RequirementLiteral at 30-53",
+      message:
+        'the texts of its tokens joined are not its written text: "A\u2028 B", not "A\u2028B"',
+    },
+  },
+  {
+    case: "tokens-631b-wardley-unread-fragment-beside-directive",
+    diagram: "wardley",
+    fixture: "lex-string-line-separator-comment-line-directive-before",
+    index: 4,
+    range: [40, 41],
+    expected: {
+      where: "StringLiteral at 23-48",
+      message:
+        "the tokens of the string are not one String token or StringFragment tokens: StringFragment, RawText, StringFragment",
+    },
+  },
+  {
+    case: "tokens-631b-xychart-unread-fragment-beside-directive",
+    diagram: "xychart",
+    fixture: "db-directive-between-title-words",
+    index: 4,
+    range: [35, 36],
+    expected: {
+      where: "XychartLiteral at 20-37",
+      message: 'value is not the texts of its tokens joined: "AB", not "A B"',
+    },
+  },
+  {
+    case: "tokens-631b-venn-unread-fragment-beside-directive",
+    diagram: "venn",
+    fixture: "lex-quoted-name-line-separator-comment-line-directive-before",
+    index: 4,
+    range: [31, 32],
+    expected: {
+      where: "StringLiteral at 14-39",
+      message:
+        "the tokens of the string are not one String token or StringFragment tokens: StringFragment, RawText, StringFragment",
+    },
+  },
+  {
+    case: "tokens-631b-c4-unread-fragment-beside-directive",
+    diagram: "c4",
+    fixture: "lex-acc-descr-block-line-separator-comment-line-directive-before",
+    index: 5,
+    range: [36, 37],
+    expected: {
+      where: "C4Literal at 20-43",
+      message:
+        'the texts of its tokens joined are not its written text: "A\u2028 B", not "A\u2028B"',
+    },
+  },
+  {
+    case: "tokens-631b-info-unread-fragment-beside-directive",
+    diagram: "info",
+    fixture: "lex-acc-title-line-separator-comment-line-directive-before",
+    index: 5,
+    range: [31, 32],
+    expected: {
+      where: "InfoLiteral at 14-38",
+      message:
+        'the texts of its tokens joined are not its written text: " A\u2028 B", not " A\u2028B"',
+    },
+  },
+  {
+    case: "tokens-631b-journey-unread-fragment-beside-directive",
+    diagram: "journey",
+    fixture: "lex-title-line-separator-comment-line-directive-before",
+    index: 4,
+    range: [30, 31],
+    expected: {
+      where: "JourneyLiteral at 14-37",
+      message:
+        'the texts of its tokens joined are not its written text: "A\u2028 B", not "A\u2028B"',
+    },
+  },
+  {
+    case: "tokens-631b-packet-unread-fragment-beside-directive",
+    diagram: "packet",
+    fixture: "lex-string-line-separator-comment-line-directive-before",
+    index: 5,
+    range: [26, 27],
+    expected: {
+      where: "StringLiteral at 9-34",
+      message:
+        "the tokens of the string are not one String token or StringFragment tokens: StringFragment, RawText, StringFragment",
+    },
+  },
+  {
+    case: "tokens-631b-radar-unread-fragment-beside-directive",
+    diagram: "radar",
+    fixture: "lex-string-line-separator-comment-line-directive-before",
+    index: 6,
+    range: [35, 36],
+    expected: {
+      where: "StringLiteral at 18-43",
+      message:
+        "the tokens of the string are not one String token or StringFragment tokens: StringFragment, RawText, StringFragment",
+    },
+  },
+  {
+    case: "tokens-631b-timeline-unread-fragment-beside-directive",
+    diagram: "timeline",
+    fixture: "lex-period-line-separator-comment-line-directive-before",
+    index: 3,
+    range: [25, 26],
+    expected: {
+      where: "TimelineLiteral at 9-32",
+      message:
+        'the texts of its tokens joined are not its written text: "A\u2028 B", not "A\u2028B"',
+    },
+  },
+  {
+    case: "tokens-631b-treemap-unread-fragment-beside-directive",
+    diagram: "treemap",
+    fixture: "gram-string-line-separator-comment-line-directive-before",
+    index: 3,
+    range: [25, 26],
+    expected: {
+      where: "StringLiteral at 8-33",
+      message:
+        "the tokens of the string are not one String token or StringFragment tokens: StringFragment, RawText, StringFragment",
+    },
+  },
 ] as const
 
 it.each(unreadWhitespaceTokenAddedCases)(
@@ -32568,6 +32831,879 @@ it.each(commentRegionPercentLineCases)(
     expect(checkTree(input, broken)).toContainEqual(theCase.expected)
   },
 )
+
+// packages/parser/docs/tokens.md, Comment: a `;` that the line rule ignores
+// lies inside a diagram comment only when characters of the comment lie on both
+// sides of it. Each case writes ` style:#x;` at the end of a diagram comment
+// that ends its line, so that the line rule ignores the `;`, which then is an
+// IgnoredSemicolon token after the comment, and extends the comment over it.
+const semicolonAfterDiagramCommentCases = [
+  {
+    id: "tokens-228b-agentflow-semicolon-after-diagram-comment",
+    diagram: "agentflow",
+    fixture: "comment-after-connector",
+    at: 37,
+    expected: {
+      where: "Comment at 30-47",
+      message:
+        "ends with a `;` that the line rule ignores, which is an IgnoredSemicolon token after the comment",
+    },
+  },
+  {
+    id: "tokens-228b-c4-semicolon-after-diagram-comment",
+    diagram: "c4",
+    fixture: "div-boundary-comment-before-inline-body",
+    at: 30,
+    expected: {
+      where: "Comment at 26-40",
+      message:
+        "ends with a `;` that the line rule ignores, which is an IgnoredSemicolon token after the comment",
+    },
+  },
+  {
+    id: "tokens-228b-class-semicolon-after-diagram-comment",
+    diagram: "class",
+    fixture: "bare-marker-directive-lines-17d57580",
+    at: 25,
+    expected: {
+      where: "Comment at 21-35",
+      message:
+        "ends with a `;` that the line rule ignores, which is an IgnoredSemicolon token after the comment",
+    },
+  },
+  {
+    id: "tokens-228b-gantt-semicolon-after-diagram-comment",
+    diagram: "gantt",
+    fixture: "div-percent-brace-after-double-percent-comment-two-spaces",
+    at: 27,
+    expected: {
+      where: "Comment at 24-37",
+      message:
+        "ends with a `;` that the line rule ignores, which is an IgnoredSemicolon token after the comment",
+    },
+  },
+  {
+    id: "tokens-228b-info-semicolon-after-diagram-comment",
+    diagram: "info",
+    fixture: "c4component-flag-comment-lf",
+    at: 28,
+    expected: {
+      where: "Comment at 14-38",
+      message:
+        "ends with a `;` that the line rule ignores, which is an IgnoredSemicolon token after the comment",
+    },
+  },
+  {
+    id: "tokens-228b-gitgraph-semicolon-after-diagram-comment",
+    diagram: "gitgraph",
+    fixture: "comment-accdescr",
+    at: 24,
+    expected: {
+      where: "Comment at 20-34",
+      message:
+        "ends with a `;` that the line rule ignores, which is an IgnoredSemicolon token after the comment",
+    },
+  },
+  {
+    id: "tokens-228b-ishikawa-semicolon-after-diagram-comment",
+    diagram: "ishikawa",
+    fixture: "comment-header-glued",
+    at: 15,
+    expected: {
+      where: "Comment at 8-25",
+      message:
+        "ends with a `;` that the line rule ignores, which is an IgnoredSemicolon token after the comment",
+    },
+  },
+  {
+    id: "tokens-228b-journey-semicolon-after-diagram-comment",
+    diagram: "journey",
+    fixture: "db-section-ends-at-hash",
+    at: 23,
+    expected: {
+      where: "Comment at 20-33",
+      message:
+        "ends with a `;` that the line rule ignores, which is an IgnoredSemicolon token after the comment",
+    },
+  },
+  {
+    id: "tokens-228b-kanban-semicolon-after-diagram-comment",
+    diagram: "kanban",
+    fixture: "db-metadata-before-comment",
+    at: 17,
+    expected: {
+      where: "Comment at 13-27",
+      message:
+        "ends with a `;` that the line rule ignores, which is an IgnoredSemicolon token after the comment",
+    },
+  },
+  {
+    id: "tokens-228b-mindmap-semicolon-after-diagram-comment",
+    diagram: "mindmap",
+    fixture: "div-header-line-comment-comment-then-blank",
+    at: 12,
+    expected: {
+      where: "Comment at 8-22",
+      message:
+        "ends with a `;` that the line rule ignores, which is an IgnoredSemicolon token after the comment",
+    },
+  },
+  {
+    id: "tokens-228b-pie-semicolon-after-diagram-comment",
+    diagram: "pie",
+    fixture: "accdescr-block-comment",
+    at: 24,
+    expected: {
+      where: "Comment at 18-34",
+      message:
+        "ends with a `;` that the line rule ignores, which is an IgnoredSemicolon token after the comment",
+    },
+  },
+  {
+    id: "tokens-228b-requirement-semicolon-after-diagram-comment",
+    diagram: "requirement",
+    fixture: "db-comment-lines-between-statements",
+    at: 57,
+    expected: {
+      where: "Comment at 48-67",
+      message:
+        "ends with a `;` that the line rule ignores, which is an IgnoredSemicolon token after the comment",
+    },
+  },
+  {
+    id: "tokens-228b-state-semicolon-after-diagram-comment",
+    diagram: "state",
+    fixture: "db-divider-then-comment-only",
+    at: 48,
+    expected: {
+      where: "Comment at 45-58",
+      message:
+        "ends with a `;` that the line rule ignores, which is an IgnoredSemicolon token after the comment",
+    },
+  },
+  {
+    id: "tokens-228b-sequence-semicolon-after-diagram-comment",
+    diagram: "sequence",
+    fixture: "db-link-url-hash-ends-text",
+    at: 53,
+    expected: {
+      where: "Comment at 49-63",
+      message:
+        "ends with a `;` that the line rule ignores, which is an IgnoredSemicolon token after the comment",
+    },
+  },
+  {
+    id: "tokens-228b-timeline-semicolon-after-diagram-comment",
+    diagram: "timeline",
+    fixture: "db-comment-before-event-line",
+    at: 20,
+    expected: {
+      where: "Comment at 17-30",
+      message:
+        "ends with a `;` that the line rule ignores, which is an IgnoredSemicolon token after the comment",
+    },
+  },
+  {
+    id: "tokens-228b-venn-semicolon-after-diagram-comment",
+    diagram: "venn",
+    fixture: "db-after-indent-id-label-comment",
+    at: 34,
+    expected: {
+      where: "Comment at 30-44",
+      message:
+        "ends with a `;` that the line rule ignores, which is an IgnoredSemicolon token after the comment",
+    },
+  },
+  {
+    id: "tokens-228b-eventmodeling-semicolon-after-diagram-comment",
+    diagram: "eventmodeling",
+    fixture: "c4-component-header-lf",
+    at: 28,
+    expected: {
+      where: "Comment at 14-38",
+      message:
+        "ends with a `;` that the line rule ignores, which is an IgnoredSemicolon token after the comment",
+    },
+  },
+  {
+    id: "tokens-228b-railroad-semicolon-after-diagram-comment",
+    diagram: "railroad",
+    fixture: "abnf-comment-before-rule",
+    at: 28,
+    expected: {
+      where: "Comment at 19-38",
+      message:
+        "ends with a `;` that the line rule ignores, which is an IgnoredSemicolon token after the comment",
+    },
+  },
+  {
+    id: "tokens-228b-treemap-semicolon-after-diagram-comment",
+    diagram: "treemap",
+    fixture: "comment-accdescr",
+    at: 29,
+    expected: {
+      where: "Comment at 20-39",
+      message:
+        "ends with a `;` that the line rule ignores, which is an IgnoredSemicolon token after the comment",
+    },
+  },
+  {
+    id: "tokens-228b-treeview-semicolon-after-diagram-comment",
+    diagram: "treeview",
+    fixture: "box-comment-indent-carry",
+    at: 30,
+    expected: {
+      where: "Comment at 23-40",
+      message:
+        "ends with a `;` that the line rule ignores, which is an IgnoredSemicolon token after the comment",
+    },
+  },
+] as const
+
+for (const entry of semicolonAfterDiagramCommentCases) {
+  it(`reports ${entry.id}`, () => {
+    const { input, tree } = insertText(
+      entry.diagram,
+      entry.fixture,
+      entry.at,
+      " style:#x;",
+    )
+    const comment = tree.comments.find((item) => item.range[1] === entry.at)!
+    span(input, comment, comment.range[0], entry.at + 9)
+    setField(comment, "value", `${comment.value} style:#x`)
+    setField(
+      tree,
+      "tokens",
+      [
+        ...tree.tokens,
+        tokenOf(input, "IgnoredSemicolon", { text: ";", from: entry.at + 9 }),
+      ].sort((left, right) => left.range[0] - right.range[0]),
+    )
+    expect(checkTree(input, tree)).toEqual([])
+    const broken = copyOf(tree)
+    const extended = broken.comments.find(
+      (item) => item.range[1] === entry.at + 9,
+    )!
+    span(input, extended, extended.range[0], entry.at + 10)
+    setField(extended, "value", `${extended.value};`)
+    setField(
+      broken,
+      "tokens",
+      broken.tokens.filter(
+        (item) =>
+          item.type !== "IgnoredSemicolon" || item.range[0] !== entry.at + 9,
+      ),
+    )
+    expect(checkTree(input, broken)).toContainEqual(entry.expected)
+  })
+}
+
+/**
+ * The recorded tree of `fixture` with the value written at `range`, whose node
+ * has one token, rewritten as `pieces`: each piece is a token, a `Directive`
+ * piece also a directive record, and the value of the node is the texts of the
+ * pieces that are neither a `Directive` nor an `IgnoredSemicolon` joined.
+ */
+function rewriteValue(
+  diagram: DiagramType,
+  fixture: string,
+  range: readonly [number, number],
+  pieces: readonly (readonly [string, string])[],
+): { input: string; tree: CheckedRoot; tokenIndex: number } {
+  const recorded = recordedTree(diagram, fixture)
+  const [start, end] = range
+  const text = pieces.map(([, piece]) => piece).join("")
+  const delta = text.length - (end - start)
+  const input =
+    recorded.input.slice(0, start) + text + recorded.input.slice(end)
+  const tree = copyOf(recorded.tree)
+  const tokenIndex = tree.tokens.findIndex((item) => item.range[0] === start)
+  const node = nodesOf(tree).find(
+    (candidate) =>
+      candidate !== tree &&
+      typeof candidate.value === "string" &&
+      candidate.range[0] === start,
+  )!
+  const placedRecords: Placed[] = [
+    ...nodesOf(tree).filter((item) => item !== tree),
+    ...tree.tokens,
+    ...tree.comments,
+    ...tree.directives,
+  ]
+  for (const placed of placedRecords) {
+    const placedStart =
+      placed.range[0] >= end ? placed.range[0] + delta : placed.range[0]
+    const placedEnd =
+      placed.range[1] >= end ? placed.range[1] + delta : placed.range[1]
+    span(input, placed, placedStart, placedEnd)
+  }
+  span(input, tree, 0, input.length)
+  setField(
+    node,
+    "value",
+    pieces
+      .filter(([kind]) => kind !== "Directive" && kind !== "IgnoredSemicolon")
+      .map(([, piece]) => piece)
+      .join(""),
+  )
+  let offset = start
+  const tokens = pieces.map(([kind, piece]) => {
+    const item = tokenOf(input, kind, { text: piece, from: offset })
+    offset += piece.length
+    return item
+  })
+  setField(tree, "tokens", [
+    ...tree.tokens.slice(0, tokenIndex),
+    ...tokens,
+    ...tree.tokens.slice(tokenIndex + 1),
+  ])
+  const directives = tokens
+    .filter((item) => item.type === "Directive")
+    .map((item) =>
+      directiveOf(input, { text: item.value, from: item.range[0] }),
+    )
+  setField(
+    tree,
+    "directives",
+    [...tree.directives, ...directives].sort(
+      (left, right) => left.range[0] - right.range[0],
+    ),
+  )
+  return { input, tree, tokenIndex }
+}
+
+// packages/parser/docs/tokens.md, Tokens: the whitespace next to a cut that
+// mermaid.js reads as part of the value belongs to the fragment next to it.
+// Each case writes `style:#x ;b` as the text of an accTitle, so that the line
+// rule ignores the `;` and the space before it is read, and leaves the space
+// out of the fragment before the `;`.
+const readWhitespaceBeforeIgnoredSemicolonCases = [
+  {
+    id: "tokens-88c-agentflow-read-whitespace-before-ignored-semicolon",
+    diagram: "agentflow",
+    fixture: "config-other-all-texts",
+    range: [50, 56],
+    expected: {
+      where: "AgentflowLiteral at 50-61",
+      message:
+        'the texts of its tokens joined are not its written text: "style:#xb", not "style:#x b"',
+    },
+  },
+  {
+    id: "tokens-88c-er-read-whitespace-before-ignored-semicolon",
+    diagram: "er",
+    fixture: "config-security-level-other-acc-title",
+    range: [22, 33],
+    expected: {
+      where: "ErLiteral at 22-33",
+      message:
+        'the texts of its tokens joined are not its written text: "style:#xb", not "style:#x b"',
+    },
+  },
+  {
+    id: "tokens-88c-sequence-read-whitespace-before-ignored-semicolon",
+    diagram: "sequence",
+    fixture: "config-security-level-other-acc-title",
+    range: [28, 39],
+    expected: {
+      where: "SequenceLiteral at 28-39",
+      message:
+        'the texts of its tokens joined are not its written text: "style:#xb", not "style:#x b"',
+    },
+  },
+  {
+    id: "tokens-88c-requirement-read-whitespace-before-ignored-semicolon",
+    diagram: "requirement",
+    fixture: "config-security-level-other-acc-title",
+    range: [29, 38],
+    expected: {
+      where: "RequirementLiteral at 29-40",
+      message:
+        'the texts of its tokens joined are not its written text: "style:#xb", not "style:#x b"',
+    },
+  },
+] as const
+
+for (const entry of readWhitespaceBeforeIgnoredSemicolonCases) {
+  it(`reports ${entry.id}`, () => {
+    const { input, tree, tokenIndex } = rewriteValue(
+      entry.diagram,
+      entry.fixture,
+      entry.range,
+      [
+        ["RawText", "style:#x "],
+        ["IgnoredSemicolon", ";"],
+        ["RawText", "b"],
+      ],
+    )
+    expect(checkTree(input, tree)).toEqual([])
+    const broken = copyOf(tree)
+    extendToken(
+      input,
+      broken.tokens[tokenIndex],
+      entry.range[0],
+      entry.range[0] + 8,
+    )
+    expect(checkTree(input, broken)).toContainEqual(entry.expected)
+  })
+}
+
+// The same with `style:#x; b`, where the space after the `;` is read and is
+// left out of the fragment after it.
+const readWhitespaceAfterIgnoredSemicolonCases = [
+  {
+    id: "tokens-88c-agentflow-read-whitespace-after-ignored-semicolon",
+    diagram: "agentflow",
+    fixture: "config-other-all-texts",
+    range: [50, 56],
+    expected: {
+      where: "AgentflowLiteral at 50-61",
+      message:
+        'the texts of its tokens joined are not its written text: "style:#xb", not "style:#x b"',
+    },
+  },
+  {
+    id: "tokens-88c-er-read-whitespace-after-ignored-semicolon",
+    diagram: "er",
+    fixture: "config-security-level-other-acc-title",
+    range: [22, 33],
+    expected: {
+      where: "ErLiteral at 22-33",
+      message:
+        'the texts of its tokens joined are not its written text: "style:#xb", not "style:#x b"',
+    },
+  },
+  {
+    id: "tokens-88c-sequence-read-whitespace-after-ignored-semicolon",
+    diagram: "sequence",
+    fixture: "config-security-level-other-acc-title",
+    range: [28, 39],
+    expected: {
+      where: "SequenceLiteral at 28-39",
+      message:
+        'the texts of its tokens joined are not its written text: "style:#xb", not "style:#x b"',
+    },
+  },
+  {
+    id: "tokens-88c-requirement-read-whitespace-after-ignored-semicolon",
+    diagram: "requirement",
+    fixture: "config-security-level-other-acc-title",
+    range: [29, 38],
+    expected: {
+      where: "RequirementLiteral at 29-40",
+      message:
+        'the texts of its tokens joined are not its written text: "style:#xb", not "style:#x b"',
+    },
+  },
+] as const
+
+for (const entry of readWhitespaceAfterIgnoredSemicolonCases) {
+  it(`reports ${entry.id}`, () => {
+    const { input, tree, tokenIndex } = rewriteValue(
+      entry.diagram,
+      entry.fixture,
+      entry.range,
+      [
+        ["RawText", "style:#x"],
+        ["IgnoredSemicolon", ";"],
+        ["RawText", " b"],
+      ],
+    )
+    expect(checkTree(input, tree)).toEqual([])
+    const broken = copyOf(tree)
+    extendToken(
+      input,
+      broken.tokens[tokenIndex + 2],
+      entry.range[0] + 10,
+      entry.range[0] + 11,
+    )
+    expect(checkTree(input, broken)).toContainEqual(entry.expected)
+  })
+}
+
+it("reports tokens-88c-requirement-read-whitespace-after-directive", () => {
+  // The space after a directive inside an accTitle is read as part of it.
+  const { input, tree, tokenIndex } = rewriteValue(
+    "requirement",
+    "config-security-level-other-acc-title",
+    [29, 38],
+    [
+      ["RawText", "a"],
+      ["Directive", "%%{init: {}}%%"],
+      ["RawText", " b"],
+    ],
+  )
+  expect(checkTree(input, tree)).toEqual([])
+  const broken = copyOf(tree)
+  extendToken(input, broken.tokens[tokenIndex + 2], 45, 46)
+  expect(checkTree(input, broken)).toContainEqual({
+    where: "RequirementLiteral at 29-46",
+    message:
+      'the texts of its tokens joined are not its written text: "ab", not "a b"',
+  })
+})
+
+it("reports tokens-88c-requirement-whitespace-only-value", () => {
+  // A string of one space is a value that mermaid.js reads as whitespace only.
+  const recorded = recordedTree(
+    "requirement",
+    "lex-style-string-then-relationship",
+  )
+  const input = `${recorded.input.slice(0, 54)}" "${recorded.input.slice(57)}`
+  const tree = copyOf(recorded.tree)
+  const string = nodesOf(tree).find(
+    (node) => node.type === "StringLiteral" && node.range[0] === 54,
+  )!
+  setField(string, "raw", '" "')
+  setField(string, "value", " ")
+  setField(
+    tree.tokens.find((item) => item.range[0] === 54)!,
+    "value",
+    '" "',
+  )
+  expect(checkTree(input, tree)).toEqual([])
+  const broken = copyOf(tree)
+  setField(
+    broken,
+    "tokens",
+    broken.tokens.filter((item) => item.range[0] !== 54),
+  )
+  expect(checkTree(input, broken)).toContainEqual({
+    where: "offset 54",
+    message:
+      'the character outside the tokens and comments is not whitespace: "\\""',
+  })
+})
+
+it("reports tokens-88c-requirement-whitespace-only-value-kind", () => {
+  // A string of one space is a value that mermaid.js reads as whitespace only.
+  const recorded = recordedTree(
+    "requirement",
+    "lex-style-string-then-relationship",
+  )
+  const input = `${recorded.input.slice(0, 54)}" "${recorded.input.slice(57)}`
+  const tree = copyOf(recorded.tree)
+  const string = nodesOf(tree).find(
+    (node) => node.type === "StringLiteral" && node.range[0] === 54,
+  )!
+  setField(string, "raw", '" "')
+  setField(string, "value", " ")
+  setField(
+    tree.tokens.find((item) => item.range[0] === 54)!,
+    "value",
+    '" "',
+  )
+  expect(checkTree(input, tree)).toEqual([])
+  const broken = copyOf(tree)
+  setField(
+    broken.tokens.find((item) => item.range[0] === 54)!,
+    "type",
+    "Numeric",
+  )
+  expect(checkTree(input, broken)).toContainEqual({
+    where: "StringLiteral at 54-57",
+    message:
+      "the tokens of the string are not one String token or StringFragment tokens: Numeric",
+  })
+})
+
+// packages/parser/docs/tokens.md, Comment regions in tokens: a fragment of
+// whitespace only that mermaid.js does not read as part of the value is no
+// token. Each case turns the characters of the fragment before a region into
+// spaces, keeping its line terminators (`blank`), so that the unit starts at
+// the fragment after the region and its value is the text after the region,
+// and gives that whitespace a RawText token.
+const commentRegionUnreadFragmentCases = [
+  {
+    id: "tokens-358b-agentflow-unread-whitespace-fragment",
+    diagram: "agentflow",
+    fixture: "comment-default-size-fallback-inline-label",
+    index: 9,
+    blank: "       ",
+    range: [50045, 50052],
+    holder: { type: "AgentflowLabel", range: [50045, 50070] },
+    holderStart: 50064,
+    valueFrom: 7,
+    expected: {
+      where: "RawText at 50045-50052",
+      message:
+        "starts with whitespace or a line terminator where no value starts",
+    },
+  },
+  {
+    id: "tokens-358b-class-unread-whitespace-fragment",
+    diagram: "class",
+    fixture: "lex-acc-descr-block-line-separator-then-comment-line",
+    index: 3,
+    blank: " \u2028",
+    range: [23, 25],
+    holder: { type: "ClassLiteral", range: [23, 31] },
+    holderStart: 30,
+    valueFrom: 2,
+    expected: {
+      where: "RawText at 23-25",
+      message:
+        "starts with whitespace or a line terminator where no value starts",
+    },
+  },
+  {
+    id: "tokens-358b-er-unread-whitespace-fragment",
+    diagram: "er",
+    fixture: "db-acc-descr-block-comment-line",
+    index: 3,
+    blank: " \n",
+    range: [27, 29],
+    holder: { type: "ErLiteral", range: [27, 43] },
+    holderStart: 38,
+    valueFrom: 2,
+    expected: {
+      where: "RawText at 27-29",
+      message:
+        "starts with whitespace or a line terminator where no value starts",
+    },
+  },
+  {
+    id: "tokens-358b-flowchart-unread-whitespace-fragment",
+    diagram: "flowchart",
+    fixture: "html-tag-value-opened-in-comment-line",
+    index: 4,
+    blank: "  \n",
+    range: [15, 18],
+    holder: { type: "FlowchartLabel", range: [15, 31] },
+    holderStart: 25,
+    valueFrom: 3,
+    expected: {
+      where: "RawText at 15-18",
+      message:
+        "starts with whitespace or a line terminator where no value starts",
+    },
+  },
+  {
+    id: "tokens-358b-sequence-unread-whitespace-fragment",
+    diagram: "sequence",
+    fixture: "db-acc-descr-block-line-separator-then-comment-line",
+    index: 3,
+    blank: " \u2028",
+    range: [27, 29],
+    holder: { type: "SequenceLiteral", range: [27, 36] },
+    holderStart: 35,
+    valueFrom: 2,
+    expected: {
+      where: "RawText at 27-29",
+      message:
+        "starts with whitespace or a line terminator where no value starts",
+    },
+  },
+  {
+    id: "tokens-358b-state-unread-whitespace-fragment",
+    diagram: "state",
+    fixture: "lex-acc-descr-block-line-separator-comment-line-cr",
+    index: 3,
+    blank: " \u2028",
+    range: [27, 29],
+    holder: { type: "StateLiteral", range: [27, 35] },
+    holderStart: 34,
+    valueFrom: 2,
+    expected: {
+      where: "RawText at 27-29",
+      message:
+        "starts with whitespace or a line terminator where no value starts",
+    },
+  },
+] as const
+
+for (const entry of commentRegionUnreadFragmentCases) {
+  it(`reports ${entry.id}`, () => {
+    const recorded = recordedTree(entry.diagram, entry.fixture)
+    const [start, end] = entry.range
+    const input =
+      recorded.input.slice(0, start) + entry.blank + recorded.input.slice(end)
+    const tree = copyOf(recorded.tree)
+    setField(
+      tree,
+      "tokens",
+      tree.tokens.filter((_, index) => index !== entry.index),
+    )
+    const holder = nodesOf(tree).find(
+      (node) =>
+        node.type === entry.holder.type &&
+        node.range[0] === entry.holder.range[0] &&
+        node.range[1] === entry.holder.range[1],
+    )!
+    span(input, holder, entry.holderStart, holder.range[1])
+    setField(holder, "value", String(holder.value).slice(entry.valueFrom))
+    expect(checkTree(input, tree)).toEqual([])
+    const broken = copyOf(tree)
+    setField(broken, "tokens", [
+      ...broken.tokens.slice(0, entry.index),
+      tokenOf(input, "RawText", { text: entry.blank, from: start }),
+      ...broken.tokens.slice(entry.index),
+    ])
+    expect(checkTree(input, broken)).toContainEqual(entry.expected)
+  })
+}
+
+// packages/parser/docs/tokens.md, Comment regions in tokens: where several
+// regions lie inside one token, it is cut at each. Each case writes `piece` and
+// a second comment line after the comment line of a recorded region, which
+// makes a second region with a fragment between the two, and joins the first
+// fragment with the one between the regions.
+const commentRegionSecondRegionCases = [
+  {
+    id: "tokens-358b-ishikawa-several-regions",
+    diagram: "ishikawa",
+    fixture: "comment-ls-region-in-text",
+    comment: 0,
+    index: 1,
+    kind: "RawText",
+    piece: "x\u2028",
+    valueAt: 2,
+    expected: {
+      where: "Comment at 11-15",
+      message: "lies inside RawText at 9-18",
+    },
+  },
+  {
+    id: "tokens-358b-agentflow-several-regions",
+    diagram: "agentflow",
+    fixture: "comment-default-size-above-frontmatter",
+    comment: 0,
+    index: 7,
+    kind: "StringFragment",
+    piece: "x\u2028",
+    valueAt: 7,
+    expected: {
+      where: "Comment at 45-50009",
+      message: "lies inside StringFragment at 37-50012",
+    },
+  },
+  {
+    id: "tokens-358b-sankey-several-regions",
+    diagram: "sankey",
+    fixture: "db-quoted-comment-line",
+    comment: 0,
+    index: 1,
+    kind: "StringFragment",
+    piece: "m\n",
+    valueAt: 2,
+    expected: {
+      where: "Comment at 10-14",
+      message: "lies inside StringFragment at 7-17",
+    },
+  },
+] as const
+
+for (const entry of commentRegionSecondRegionCases) {
+  it(`reports ${entry.id}`, () => {
+    const recorded = recordedTree(entry.diagram, entry.fixture)
+    const at = recorded.tree.comments[entry.comment].range[1] + 1
+    const { input, tree } = insertText(
+      entry.diagram,
+      entry.fixture,
+      at,
+      `${entry.piece}%% d\n`,
+    )
+    const between = at + entry.piece.length
+    setField(tree, "tokens", [
+      ...tree.tokens.slice(0, entry.index + 1),
+      tokenOf(input, entry.kind, { text: entry.piece, from: at }),
+      ...tree.tokens.slice(entry.index + 1),
+    ])
+    setField(
+      tree,
+      "comments",
+      [
+        ...tree.comments,
+        commentOf(input, "%%", { text: "%% d", from: between }),
+      ].sort((left, right) => left.range[0] - right.range[0]),
+    )
+    const holder = nodesOf(tree)
+      .filter(
+        (node) =>
+          node !== tree &&
+          typeof node.value === "string" &&
+          node.range[0] < at &&
+          at < node.range[1],
+      )
+      .sort(
+        (left, right) =>
+          left.range[1] - left.range[0] - (right.range[1] - right.range[0]),
+      )[0]
+    const value = String(holder.value)
+    setField(
+      holder,
+      "value",
+      `${value.slice(0, entry.valueAt)}${entry.piece}${value.slice(entry.valueAt)}`,
+    )
+    if ("raw" in holder) setField(holder, "raw", input.slice(...holder.range))
+    expect(checkTree(input, tree)).toEqual([])
+    const broken = copyOf(tree)
+    extendToken(
+      input,
+      broken.tokens[entry.index],
+      broken.tokens[entry.index].range[0],
+      between,
+    )
+    setField(
+      broken,
+      "tokens",
+      broken.tokens.filter((_, index) => index !== entry.index + 1),
+    )
+    expect(checkTree(input, broken)).toContainEqual(entry.expected)
+  })
+}
+
+// Agentflow reads comment regions only in a text longer than 50000 characters
+// (diagrams/agentflow.md), so its cases change the large recorded tree of
+// `comment-default-size-above-crlf`, whose lines end in CRLF.
+it("reports tokens-358b-agentflow-region-whitespace-line", () => {
+  const { input, tree } = insertText(
+    "agentflow",
+    "comment-default-size-above-crlf",
+    30,
+    "  \r\n",
+  )
+  expect(checkTree(input, tree)).toEqual([])
+  const broken = copyOf(tree)
+  const index = broken.tokens.findIndex((item) => item.range[0] >= 30)
+  setField(broken, "tokens", [
+    ...broken.tokens.slice(0, index),
+    tokenOf(input, "StringFragment", { text: "  ", from: 30 }),
+    ...broken.tokens.slice(index),
+  ])
+  expect(checkTree(input, broken)).toContainEqual({
+    where: "StringFragment at 30-32",
+    message: "ends with whitespace or a line terminator where no value ends",
+  })
+})
+
+it("reports tokens-358b-agentflow-percent-line-in-fragment", () => {
+  const { input, tree } = insertText(
+    "agentflow",
+    "comment-default-size-above-crlf",
+    49996,
+    "%%\r\n",
+  )
+  const fragment = tree.tokens.find((item) => item.range[0] === 50000)!
+  extendToken(input, fragment, 49996, fragment.range[1])
+  const label = firstNode(tree, "AgentflowLabel")
+  const value = String(label.value)
+  setField(label, "value", `${value.slice(0, 8)}%%\r\n${value.slice(8)}`)
+  expect(checkTree(input, tree)).toEqual([])
+  const broken = copyOf(tree)
+  setField(
+    broken,
+    "comments",
+    [
+      ...broken.comments,
+      commentOf(input, "%%", { text: "%%", from: 49996 }),
+    ].sort((left, right) => left.range[0] - right.range[0]),
+  )
+  expect(checkTree(input, broken)).toContainEqual({
+    where: "Comment at 49996-49998",
+    message: "lies inside StringFragment at 49996-50006",
+  })
+})
 
 it.each(commentCutTokenRangeCases)(
   "reports a broken comment-cut lexical unit in $case",

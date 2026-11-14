@@ -9767,7 +9767,30 @@
     },
     {
       "block": "packages/spec/docs/ast.md:d3d3203ee151",
-      "diagrams": ["requirement", "sankey", "wardley"],
+      "diagrams": ["sankey", "wardley"],
+      "about": "A name without whitespace, or a single word without quotes",
+      "judgment": {
+        "status": "shown",
+        "cases": [
+          {
+            "case": "A name position that permits whitespace uses its diagram-specific name node.",
+            "tests": [
+              {
+                "file": "check-tree-shared-ast.test.ts",
+                "text": "reports sankey SankeyIdentifier replaced by Identifier (db-header-beta-upper-case)"
+              },
+              {
+                "file": "check-tree-shared-ast.test.ts",
+                "text": "reports wardley WardleyIdentifier replaced by Identifier (db-unquoted-names)"
+              }
+            ]
+          }
+        ]
+      }
+    },
+    {
+      "block": "packages/spec/docs/ast.md:d3d3203ee151",
+      "diagrams": ["requirement"],
       "about": "A name without whitespace, or a single word without quotes",
       "judgment": {
         "status": "shown",
@@ -9778,14 +9801,15 @@
               {
                 "file": "check-tree-shared-ast.test.ts",
                 "text": "reports requirement RequirementIdentifier replaced by Identifier (header-after-bare-percent-line-and-whitespace-line)"
-              },
+              }
+            ]
+          },
+          {
+            "case": "A name without whitespace, the name of a `style` or `classDef` statement, is an Identifier.",
+            "tests": [
               {
                 "file": "check-tree-shared-ast.test.ts",
-                "text": "reports sankey SankeyIdentifier replaced by Identifier (db-header-beta-upper-case)"
-              },
-              {
-                "file": "check-tree-shared-ast.test.ts",
-                "text": "reports wardley WardleyIdentifier replaced by Identifier (db-unquoted-names)"
+                "text": "reports requirement Identifier replaced by RequirementLiteral (db-style-statement)"
               }
             ]
           }
@@ -15623,6 +15647,15 @@
         "status": "shown",
         "cases": [
           {
+            "case": "A double-quoted string is a StringLiteral at this diagram's StringLiteral positions.",
+            "tests": [
+              {
+                "file": "check-tree-shared-ast.test.ts",
+                "text": "reports architecture StringLiteral replaced by ArchitectureLiteral (db-mixed)"
+              }
+            ]
+          },
+          {
             "case": "A single-quoted string closes with its opening quote. Replacing its final quote by a double quote, with input/raw/token text aligned, cannot avoid also breaking the closed-string lexical-unit condition.",
             "tests": [
               {
@@ -15650,6 +15683,15 @@
       "judgment": {
         "status": "shown",
         "cases": [
+          {
+            "case": "A double-quoted string is a StringLiteral at this diagram's StringLiteral positions.",
+            "tests": [
+              {
+                "file": "check-tree-shared-ast.test.ts",
+                "text": "reports cynefin StringLiteral replaced by CynefinLiteral (comment-header)"
+              }
+            ]
+          },
           {
             "case": "A single-quoted string closes with its opening quote. Replacing its final quote by a double quote, with input/raw/token text aligned, cannot avoid also breaking the closed-string lexical-unit condition.",
             "tests": [
@@ -15679,6 +15721,15 @@
         "status": "shown",
         "cases": [
           {
+            "case": "A double-quoted string is a StringLiteral at this diagram's StringLiteral positions.",
+            "tests": [
+              {
+                "file": "check-tree-shared-ast.test.ts",
+                "text": "reports eventmodeling StringLiteral replaced by FlowchartLabel (c4-component-inline)"
+              }
+            ]
+          },
+          {
             "case": "A single-quoted string closes with its opening quote. Replacing its final quote by a double quote, with input/raw/token text aligned, cannot avoid also breaking the closed-string lexical-unit condition.",
             "tests": [
               {
@@ -15706,6 +15757,15 @@
       "judgment": {
         "status": "shown",
         "cases": [
+          {
+            "case": "A double-quoted string is a StringLiteral at this diagram's StringLiteral positions.",
+            "tests": [
+              {
+                "file": "check-tree-shared-ast.test.ts",
+                "text": "reports gitgraph StringLiteral replaced by GitgraphLiteral (comment-bare-string)"
+              }
+            ]
+          },
           {
             "case": "A single-quoted string closes with its opening quote. Replacing its final quote by a double quote, with input/raw/token text aligned, cannot avoid also breaking the closed-string lexical-unit condition.",
             "tests": [
@@ -15735,6 +15795,15 @@
         "status": "shown",
         "cases": [
           {
+            "case": "A double-quoted string is a StringLiteral at this diagram's StringLiteral positions.",
+            "tests": [
+              {
+                "file": "check-tree-shared-ast.test.ts",
+                "text": "reports packet StringLiteral replaced by PacketLiteral (c4-retained-preheader-yaml)"
+              }
+            ]
+          },
+          {
             "case": "A single-quoted string closes with its opening quote. Replacing its final quote by a double quote, with input/raw/token text aligned, cannot avoid also breaking the closed-string lexical-unit condition.",
             "tests": [
               {
@@ -15762,6 +15831,15 @@
       "judgment": {
         "status": "shown",
         "cases": [
+          {
+            "case": "A double-quoted string is a StringLiteral at this diagram's StringLiteral positions.",
+            "tests": [
+              {
+                "file": "check-tree-shared-ast.test.ts",
+                "text": "reports pie StringLiteral replaced by PieLiteral (comment-before-header)"
+              }
+            ]
+          },
           {
             "case": "A single-quoted string closes with its opening quote. Replacing its final quote by a double quote, with input/raw/token text aligned, cannot avoid also breaking the closed-string lexical-unit condition.",
             "tests": [
@@ -15791,6 +15869,15 @@
         "status": "shown",
         "cases": [
           {
+            "case": "A double-quoted string is a StringLiteral at this diagram's StringLiteral positions.",
+            "tests": [
+              {
+                "file": "check-tree-shared-ast.test.ts",
+                "text": "reports radar StringLiteral replaced by RadarLiteral (gram-written-tree)"
+              }
+            ]
+          },
+          {
             "case": "A single-quoted string closes with its opening quote. Replacing its final quote by a double quote, with input/raw/token text aligned, cannot avoid also breaking the closed-string lexical-unit condition.",
             "tests": [
               {
@@ -15818,6 +15905,15 @@
       "judgment": {
         "status": "shown",
         "cases": [
+          {
+            "case": "A double-quoted string is a StringLiteral at this diagram's StringLiteral positions.",
+            "tests": [
+              {
+                "file": "check-tree-shared-ast.test.ts",
+                "text": "reports railroad StringLiteral replaced by RailroadLiteral (abnf-gram-written-tree)"
+              }
+            ]
+          },
           {
             "case": "A single-quoted string closes with its opening quote. Replacing its final quote by a double quote, with input/raw/token text aligned, cannot avoid also breaking the closed-string lexical-unit condition.",
             "tests": [
@@ -15847,6 +15943,15 @@
         "status": "shown",
         "cases": [
           {
+            "case": "A double-quoted string is a StringLiteral at this diagram's StringLiteral positions.",
+            "tests": [
+              {
+                "file": "check-tree-shared-ast.test.ts",
+                "text": "reports treemap StringLiteral replaced by TreemapLiteral (comment-header)"
+              }
+            ]
+          },
+          {
             "case": "A single-quoted string closes with its opening quote. Replacing its final quote by a double quote, with input/raw/token text aligned, cannot avoid also breaking the closed-string lexical-unit condition.",
             "tests": [
               {
@@ -15874,6 +15979,15 @@
       "judgment": {
         "status": "shown",
         "cases": [
+          {
+            "case": "A double-quoted string is a StringLiteral at this diagram's StringLiteral positions.",
+            "tests": [
+              {
+                "file": "check-tree-shared-ast.test.ts",
+                "text": "reports treeview StringLiteral replaced by TreeviewLiteral (gram-written-tree)"
+              }
+            ]
+          },
           {
             "case": "A single-quoted string closes with its opening quote. Replacing its final quote by a double quote, with input/raw/token text aligned, cannot avoid also breaking the closed-string lexical-unit condition.",
             "tests": [
@@ -15903,6 +16017,15 @@
         "status": "shown",
         "cases": [
           {
+            "case": "A double-quoted string is a StringLiteral at this diagram's StringLiteral positions.",
+            "tests": [
+              {
+                "file": "check-tree-shared-ast.test.ts",
+                "text": "reports wardley StringLiteral replaced by WardleyLiteral (c4-component-accelerator)"
+              }
+            ]
+          },
+          {
             "case": "A single-quoted string closes with its opening quote. Replacing its final quote by a double quote, with input/raw/token text aligned, cannot avoid also breaking the closed-string lexical-unit condition.",
             "tests": [
               {
@@ -15930,6 +16053,15 @@
       "judgment": {
         "status": "shown",
         "cases": [
+          {
+            "case": "A double-quoted string is a StringLiteral at this diagram's StringLiteral positions.",
+            "tests": [
+              {
+                "file": "check-tree-shared-ast.test.ts",
+                "text": "reports usecase StringLiteral replaced by UsecaseLiteral (db-actor-variants)"
+              }
+            ]
+          },
           {
             "case": "A single-quoted string closes with its opening quote. Replacing its final quote by a double quote, with input/raw/token text aligned, cannot avoid also breaking the closed-string lexical-unit condition.",
             "tests": [
@@ -16015,6 +16147,24 @@
                 "text": "reports agentflow StringLiteral marked unclosed despite its closing quote (config-other-all-texts, closed)"
               }
             ]
+          },
+          {
+            "case": "An unclosed Directive has closed false.",
+            "tests": [
+              {
+                "file": "check-tree-shared-ast.test.ts",
+                "text": "reports agentflow Directive marked closed despite its missing closer (comment-open-directive-takes-lf, unclosed)"
+              }
+            ]
+          },
+          {
+            "case": "An unclosed description block has closed false.",
+            "tests": [
+              {
+                "file": "check-tree-shared-ast.test.ts",
+                "text": "reports agentflow AgentflowAccDescrBlockStatement marked closed despite its missing closer (db-accessibility-empty-unclosed, unclosed)"
+              }
+            ]
           }
         ]
       }
@@ -16081,6 +16231,15 @@
               {
                 "file": "check-tree-shared-ast.test.ts",
                 "text": "reports architecture StringLiteral marked unclosed despite its closing quote (c4-component-icontext, closed)"
+              }
+            ]
+          },
+          {
+            "case": "An unclosed Directive has closed false.",
+            "tests": [
+              {
+                "file": "check-tree-shared-ast.test.ts",
+                "text": "reports architecture Directive marked closed despite its missing closer (hidden-directive-unclosed, unclosed)"
               }
             ]
           }
@@ -16151,6 +16310,15 @@
                 "text": "reports block StringLiteral marked unclosed despite its closing quote (config-flowchart-html-labels-false, closed)"
               }
             ]
+          },
+          {
+            "case": "An unclosed Directive has closed false.",
+            "tests": [
+              {
+                "file": "check-tree-shared-ast.test.ts",
+                "text": "reports block Directive marked closed despite its missing closer (db-directive-unclosed-end-of-text, unclosed)"
+              }
+            ]
           }
         ]
       }
@@ -16217,6 +16385,15 @@
               {
                 "file": "check-tree-shared-ast.test.ts",
                 "text": "reports c4 StringLiteral marked unclosed despite its closing quote (config-security-level-other, closed)"
+              }
+            ]
+          },
+          {
+            "case": "An unclosed Directive has closed false.",
+            "tests": [
+              {
+                "file": "check-tree-shared-ast.test.ts",
+                "text": "reports c4 Directive marked closed despite its missing closer (db-unclosed-directive-at-end, unclosed)"
               }
             ]
           }
@@ -16331,6 +16508,15 @@
                 "text": "reports class StringLiteral marked unclosed despite its closing quote (config-security-level-loose-click, closed)"
               }
             ]
+          },
+          {
+            "case": "An unclosed Directive has closed false.",
+            "tests": [
+              {
+                "file": "check-tree-shared-ast.test.ts",
+                "text": "reports class Directive marked closed despite its missing closer (bare-marker-directive-lines-eef9f5ec, unclosed)"
+              }
+            ]
           }
         ]
       }
@@ -16399,6 +16585,15 @@
                 "text": "reports cynefin StringLiteral marked unclosed despite its closing quote (c4-component-item, closed)"
               }
             ]
+          },
+          {
+            "case": "An unclosed Directive has closed false.",
+            "tests": [
+              {
+                "file": "check-tree-shared-ast.test.ts",
+                "text": "reports cynefin Directive marked closed despite its missing closer (directive-unclosed-string, unclosed)"
+              }
+            ]
           }
         ]
       }
@@ -16456,6 +16651,15 @@
               {
                 "file": "check-tree-shared-ast.test.ts",
                 "text": "reports er StringLiteral marked unclosed despite its closing quote (config-security-level-antiscript-subgraph-title, closed)"
+              }
+            ]
+          },
+          {
+            "case": "An unclosed Directive has closed false.",
+            "tests": [
+              {
+                "file": "check-tree-shared-ast.test.ts",
+                "text": "reports er Directive marked closed despite its missing closer (tokens-unclosed-directive-after-header, unclosed)"
               }
             ]
           }
@@ -16526,6 +16730,15 @@
                 "text": "reports eventmodeling StringLiteral marked unclosed despite its closing quote (c4-component-inline, closed)"
               }
             ]
+          },
+          {
+            "case": "An unclosed Directive has closed false.",
+            "tests": [
+              {
+                "file": "check-tree-shared-ast.test.ts",
+                "text": "reports eventmodeling Directive marked closed despite its missing closer (directive-unclosed-tail, unclosed)"
+              }
+            ]
           }
         ]
       }
@@ -16594,6 +16807,24 @@
                 "text": "reports flowchart StringLiteral marked unclosed despite its closing quote (click-callback-tooltip, closed)"
               }
             ]
+          },
+          {
+            "case": "An unclosed Directive has closed false.",
+            "tests": [
+              {
+                "file": "check-tree-shared-ast.test.ts",
+                "text": "reports flowchart Directive marked closed despite its missing closer (ignored-semicolon-after-directive-11e6218c, unclosed)"
+              }
+            ]
+          },
+          {
+            "case": "An unclosed description block has closed false.",
+            "tests": [
+              {
+                "file": "check-tree-shared-ast.test.ts",
+                "text": "reports flowchart FlowchartAccDescrBlockStatement marked closed despite its missing closer (db-acc-descr-unclosed-empty-replaces, unclosed)"
+              }
+            ]
           }
         ]
       }
@@ -16651,6 +16882,15 @@
               {
                 "file": "check-tree-shared-ast.test.ts",
                 "text": "reports gantt StringLiteral marked unclosed despite its closing quote (config-security-level-antiscript-click-call, closed)"
+              }
+            ]
+          },
+          {
+            "case": "An unclosed Directive has closed false.",
+            "tests": [
+              {
+                "file": "check-tree-shared-ast.test.ts",
+                "text": "reports gantt Directive marked closed despite its missing closer (tokens-unclosed-directive-after-header, unclosed)"
               }
             ]
           }
@@ -16721,6 +16961,15 @@
                 "text": "reports gitgraph StringLiteral marked unclosed despite its closing quote (comment-bare-string, closed)"
               }
             ]
+          },
+          {
+            "case": "An unclosed Directive has closed false.",
+            "tests": [
+              {
+                "file": "check-tree-shared-ast.test.ts",
+                "text": "reports gitgraph Directive marked closed despite its missing closer (comment-unclosed-brace, unclosed)"
+              }
+            ]
           }
         ]
       }
@@ -16787,6 +17036,15 @@
               {
                 "file": "check-tree-shared-ast.test.ts",
                 "text": "reports packet StringLiteral marked unclosed despite its closing quote (c4-hidden-suffix-lf, closed)"
+              }
+            ]
+          },
+          {
+            "case": "An unclosed Directive has closed false.",
+            "tests": [
+              {
+                "file": "check-tree-shared-ast.test.ts",
+                "text": "reports packet Directive marked closed despite its missing closer (directive-unclosed-after-header, unclosed)"
               }
             ]
           }
@@ -16857,6 +17115,15 @@
                 "text": "reports pie StringLiteral marked unclosed despite its closing quote (accdescr-blank-gap, closed)"
               }
             ]
+          },
+          {
+            "case": "An unclosed Directive has closed false.",
+            "tests": [
+              {
+                "file": "check-tree-shared-ast.test.ts",
+                "text": "reports pie Directive marked closed despite its missing closer (directive-block-open-eof, unclosed)"
+              }
+            ]
           }
         ]
       }
@@ -16923,6 +17190,15 @@
               {
                 "file": "check-tree-shared-ast.test.ts",
                 "text": "reports radar StringLiteral marked unclosed despite its closing quote (c4-component-axis-label, closed)"
+              }
+            ]
+          },
+          {
+            "case": "An unclosed Directive has closed false.",
+            "tests": [
+              {
+                "file": "check-tree-shared-ast.test.ts",
+                "text": "reports radar Directive marked closed despite its missing closer (directive-unclosed, unclosed)"
               }
             ]
           }
@@ -16993,6 +17269,15 @@
                 "text": "reports railroad StringLiteral marked unclosed despite its closing quote (abnf-bare-unicode, closed)"
               }
             ]
+          },
+          {
+            "case": "An unclosed Directive has closed false.",
+            "tests": [
+              {
+                "file": "check-tree-shared-ast.test.ts",
+                "text": "reports railroad Directive marked closed despite its missing closer (ir-directive-unclosed-tail, unclosed)"
+              }
+            ]
           }
         ]
       }
@@ -17050,6 +17335,15 @@
               {
                 "file": "check-tree-shared-ast.test.ts",
                 "text": "reports requirement StringLiteral marked unclosed despite its closing quote (config-security-level-other-names-as-written, closed)"
+              }
+            ]
+          },
+          {
+            "case": "An unclosed Directive has closed false.",
+            "tests": [
+              {
+                "file": "check-tree-shared-ast.test.ts",
+                "text": "reports requirement Directive marked closed despite its missing closer (tokens-unclosed-directive-after-style, unclosed)"
               }
             ]
           }
@@ -17120,6 +17414,15 @@
                 "text": "reports sankey StringLiteral marked unclosed despite its closing quote (config-security-level-other-title-and-ids, closed)"
               }
             ]
+          },
+          {
+            "case": "An unclosed Directive has closed false.",
+            "tests": [
+              {
+                "file": "check-tree-shared-ast.test.ts",
+                "text": "reports sankey Directive marked closed despite its missing closer (db-directive-unclosed-at-end, unclosed)"
+              }
+            ]
           }
         ]
       }
@@ -17177,6 +17480,24 @@
               {
                 "file": "check-tree-shared-ast.test.ts",
                 "text": "reports state StringLiteral marked unclosed despite its closing quote (config-html-labels-false, closed)"
+              }
+            ]
+          },
+          {
+            "case": "An unclosed Directive has closed false.",
+            "tests": [
+              {
+                "file": "check-tree-shared-ast.test.ts",
+                "text": "reports state Directive marked closed despite its missing closer (directive-unclosed-between-statements, unclosed)"
+              }
+            ]
+          },
+          {
+            "case": "An unclosed description block has closed false.",
+            "tests": [
+              {
+                "file": "check-tree-shared-ast.test.ts",
+                "text": "reports state StateAccDescrBlockStatement marked closed despite its missing closer (db-acc-descr-block-unclosed-takes-lines, unclosed)"
               }
             ]
           }
@@ -17247,6 +17568,15 @@
                 "text": "reports treeview StringLiteral marked unclosed despite its closing quote (annotation-comment-gap, closed)"
               }
             ]
+          },
+          {
+            "case": "An unclosed Directive has closed false.",
+            "tests": [
+              {
+                "file": "check-tree-shared-ast.test.ts",
+                "text": "reports treeview Directive marked closed despite its missing closer (directive-accline-open, unclosed)"
+              }
+            ]
           }
         ]
       }
@@ -17313,6 +17643,15 @@
               {
                 "file": "check-tree-shared-ast.test.ts",
                 "text": "reports usecase StringLiteral marked unclosed despite its closing quote (db-actor-variants, closed)"
+              }
+            ]
+          },
+          {
+            "case": "An unclosed Directive has closed false.",
+            "tests": [
+              {
+                "file": "check-tree-shared-ast.test.ts",
+                "text": "reports usecase Directive marked closed despite its missing closer (comment-open-directive, unclosed)"
               }
             ]
           }
@@ -17383,6 +17722,15 @@
                 "text": "reports venn StringLiteral marked unclosed despite its closing quote (config-security-other, closed)"
               }
             ]
+          },
+          {
+            "case": "An unclosed Directive has closed false.",
+            "tests": [
+              {
+                "file": "check-tree-shared-ast.test.ts",
+                "text": "reports venn Directive marked closed despite its missing closer (db-after-indent-id-label-unclosed-directive, unclosed)"
+              }
+            ]
           }
         ]
       }
@@ -17451,6 +17799,15 @@
                 "text": "reports wardley StringLiteral marked unclosed despite its closing quote (c4-component-accelerator, closed)"
               }
             ]
+          },
+          {
+            "case": "An unclosed Directive has closed false.",
+            "tests": [
+              {
+                "file": "check-tree-shared-ast.test.ts",
+                "text": "reports wardley Directive marked closed despite its missing closer (tail-accelerator-open-directive, unclosed)"
+              }
+            ]
           }
         ]
       }
@@ -17517,6 +17874,24 @@
               {
                 "file": "check-tree-shared-ast.test.ts",
                 "text": "reports xychart StringLiteral marked unclosed despite its closing quote (config-security-level-loose-all, closed)"
+              }
+            ]
+          },
+          {
+            "case": "An unclosed Directive has closed false.",
+            "tests": [
+              {
+                "file": "check-tree-shared-ast.test.ts",
+                "text": "reports xychart Directive marked closed despite its missing closer (db-directive-unclosed-after-categories, unclosed)"
+              }
+            ]
+          },
+          {
+            "case": "An unclosed description block has closed false.",
+            "tests": [
+              {
+                "file": "check-tree-shared-ast.test.ts",
+                "text": "reports xychart XychartAccDescrBlockStatement marked closed despite its missing closer (db-acc-descr-unclosed-block, unclosed)"
               }
             ]
           }
