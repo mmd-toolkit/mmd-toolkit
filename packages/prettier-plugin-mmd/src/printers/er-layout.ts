@@ -16,6 +16,7 @@ import {
   holdsJoiningRegion,
   isDroppedSemicolon,
   isFirstOnItsLine,
+  lineStartOf,
   spansKeptBreaks,
 } from "./kept-lines.ts"
 import {
@@ -134,17 +135,36 @@ export function hasAttributeBlock(
 ): boolean {
   if (statement.attributes === null) return false
   if (statement.attributes.length > 0) return true
-  const { opening, closing } = findAttributeBraces(source, statement)
-  const overLines = source.text
-    .slice(opening.range[1], closing.range[0])
-    .includes("\n")
   if (isEmptyAttributeBlock(source, statement)) {
-    return (
-      overLines &&
-      holdsJoiningRegion(source, statement.range[0], opening.range[0])
-    )
+    return isBlockAfterJoinedLine(source, statement)
   }
-  return overLines
+  const { opening, closing } = findAttributeBraces(source, statement)
+  return source.text.slice(opening.range[1], closing.range[0]).includes("\n")
+}
+
+/**
+ * Whether an entity statement has an attribute block whose `}` lies on a later
+ * line than its `{`, after text that a joining region cuts: mermaid.js reads
+ * the text up to the `{` as one line, which is printed as written, and the
+ * attributes and the `}` lie outside that line, so they are printed as the
+ * block of any entity, also where the entity stands after another statement on
+ * the line (docs/er.md, Multi-line statements).
+ */
+export function isBlockAfterJoinedLine(
+  source: Source,
+  statement: ErEntityStatement,
+): boolean {
+  if (statement.attributes === null) return false
+  const { opening, closing } = findAttributeBraces(source, statement)
+  return (
+    lineStartOf(source, closing.range[0]) !==
+      lineStartOf(source, opening.range[0]) &&
+    holdsJoiningRegion(
+      source,
+      lineStartOf(source, statement.range[0]),
+      opening.range[0],
+    )
+  )
 }
 
 /**

@@ -153,7 +153,7 @@ U+2029 is a character of a name and a comment start, so `classDef a`, U+2028,
 `%% c`, a line break, and `b color: #109060` defines the class `a`, U+2028, and
 `b`, and so it is with U+2029. [fixture:
 quadrant/lex-classdef-name-line-separator-comment-line] [fixture:
-quadrant/lex-classdef-name-paragraph-separator-comment-line] The lexer decides
+quadrant/db-classdef-name-paragraph-separator-comment-line] The lexer decides
 what the region takes and where a name ends and starts around it (see
 [Classes](../../../spec/docs/diagrams/quadrant.md#classes)), and the range shows
 it; the text is the same where the region takes spaces, a second U+2028, a line
@@ -162,20 +162,20 @@ where a directive lies in the comment, and across a second comment line or a
 second region after a second U+2028; a U+2028 at the start of the next line, a
 character outside ASCII, and a `-` after the region are characters of the name,
 and a name may start with the U+2028 after `classDef` and a space. [fixture:
-quadrant/lex-classdef-name-line-separator-spaces-comment-line] [fixture:
-quadrant/lex-classdef-name-two-line-separators-comment-line] [fixture:
-quadrant/lex-classdef-name-line-separator-line-feed-comment-line] [fixture:
-quadrant/lex-classdef-name-line-separator-directive-comment-line] [fixture:
-quadrant/lex-classdef-name-line-separator-comment-line-crlf] [fixture:
-quadrant/lex-classdef-name-line-separator-comment-line-cr] [fixture:
-quadrant/lex-classdef-name-line-separator-comment-line-with-directive] [fixture:
-quadrant/lex-classdef-name-line-separator-two-comment-lines] [fixture:
-quadrant/lex-classdef-name-two-comment-regions] [fixture:
-quadrant/lex-classdef-name-comment-line-line-separator-next] [fixture:
-quadrant/lex-classdef-name-line-separator-comment-line-non-ascii] [fixture:
-quadrant/lex-classdef-name-line-separator-comment-line-dash] [fixture:
-quadrant/lex-classdef-name-starts-with-line-separator-comment-line] The styles
-of a point and of its class are not merged, and a class that no point uses is
+quadrant/db-classdef-name-line-separator-spaces-comment-line] [fixture:
+quadrant/db-classdef-name-two-line-separators-comment-line] [fixture:
+quadrant/db-classdef-name-line-separator-line-feed-comment-line] [fixture:
+quadrant/db-classdef-name-line-separator-directive-comment-line] [fixture:
+quadrant/db-classdef-name-line-separator-comment-line-crlf] [fixture:
+quadrant/db-classdef-name-line-separator-comment-line-cr] [fixture:
+quadrant/db-classdef-name-line-separator-comment-line-with-directive] [fixture:
+quadrant/db-classdef-name-line-separator-two-comment-lines] [fixture:
+quadrant/db-classdef-name-two-comment-regions] [fixture:
+quadrant/db-classdef-name-comment-line-line-separator-next] [fixture:
+quadrant/db-classdef-name-line-separator-comment-line-non-ascii] [fixture:
+quadrant/db-classdef-name-line-separator-comment-line-dash] [fixture:
+quadrant/db-classdef-name-starts-with-line-separator-comment-line] The styles of
+a point and of its class are not merged, and a class that no point uses is
 listed. [fixture: quadrant/db-classdef-color] [fixture:
 quadrant/db-classdef-twice-replaces] [fixture: quadrant/db-classdef-two-classes]
 [fixture: quadrant/db-classdef-redefine-order] [fixture:

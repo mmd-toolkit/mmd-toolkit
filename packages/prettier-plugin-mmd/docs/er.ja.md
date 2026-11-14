@@ -2094,6 +2094,9 @@ relationship]
 [U+2028 か U+2029 の後のコメント行](./compatibility.ja.md#u2028-か-u2029-の後のコメント行)
 のとおりです。
 行が終わった所では、次の行は、字下げされた別の文になります。
+ただし、改行の後も文が続く所では、次の行は文の残りで、書かれたまま印字します。
+`accTitle` と `accDescr` の `:` の後、`direction` の後、スタイルの `,` の後、
+キーワード `classDef` の後です。
 [test: an empty line after a comment line after U+2028 inside the name of an ER
 entity]
 [test: a line of only whitespace after a comment line after U+2028 inside the
@@ -2101,6 +2104,30 @@ name of an ER entity]
 [test: a directive line after a comment line after U+2028 inside the name of an
 ER entity]
 [test: a comment line after U+2028 at the end of the text of an ER diagram]
+[test: an empty line after a comment line after U+2028 after the colon of
+accTitle, and the rest of the statement on the next line]
+[test: a directive line after a comment line after U+2028 after the colon of
+accTitle, and the rest of the statement on the next line]
+[test: an empty line after a comment line after U+2028 after the colon of
+accDescr, and the rest of the statement on the next line]
+[test: a directive line after a comment line after U+2028 after the colon of
+accDescr, and the rest of the statement on the next line]
+[test: an empty line after a comment line after U+2028 after direction, and the
+rest of the statement on the next line]
+[test: a directive line after a comment line after U+2028 after direction, and
+the rest of the statement on the next line]
+[test: an empty line after a comment line after U+2028 after a style that a
+comma ends, and the rest of the statement on the next line]
+[test: a directive line after a comment line after U+2028 after a style that a
+comma ends, and the rest of the statement on the next line]
+[test: an empty line after a comment line after U+2028 after the keyword of
+classDef, and the rest of the statement on the next line]
+[test: a directive line after a comment line after U+2028 after the keyword of
+classDef, and the rest of the statement on the next line]
+[test: an empty line after a comment line after U+2029 after the colon of
+accTitle, and the rest of the statement on the next line]
+[test: an empty line after a comment line after U+2028 after the colon of
+accDescr, with CRLF line breaks]
 その行にある `;` は、何であっても、その場所に残ります。
 `style` や `classDef` の文を終わらせる `;`（`Bar fill:red;`）、
 コメント行の後の行に `style` と `:#` があるために行の規則が無視する `;`
@@ -2115,8 +2142,8 @@ U+2028 inside its name]
 inside the name of an ER style statement]
 [test: a semicolon that the line rule ignores, after a comment line after U+2028
 inside the name of an ER class definition]
-行を始める、複数行の属性ブロックを持つエンティティでは、
-書かれたまま印字するのは、ブロックを開く行で、`{` の後ろにあるものも含みます。
+複数行の属性ブロックを持つエンティティでは、書かれたまま印字するのは、
+ブロックを開く行で、`{` の後ろにあるものも含みます。
 その後の属性と `}` は、通常どおり、属性は 1 段深く、`}` は文の位置に置きます。
 複数行の空のブロックは、`{` の後ろに空白、タブ、U+2028 があっても、
 その行の終わりに `{ }` として印字します。
@@ -2144,9 +2171,10 @@ comment line after U+2028 inside the name of an ER entity]
 comment line after U+2028 inside the name of an ER entity]
 [test: an empty attribute block with U+2028 after its opening brace after a
 comment line after U+2028 inside the name of an ER entity]
-行を始めないエンティティは、その終わりまで書かれたまま印字します。
-同じ行の前に別の文がある場合と、行が続く名前が前にある場合です。
-属性と `}` は書かれた位置のままで、空のブロックの `}` もそうです。
+同じ行で別の文の後に立つエンティティと、行が続く名前の後に立つエンティティも、
+同じように印字します。
+`{` までは、その前の隙間と一緒に書かれたままで、属性と `}` は、
+ほかのエンティティと同じ位置に置きます。
 [test: an attribute block of an entity that follows another entity on the line,
 after a comment line after U+2028]
 [test: an attribute block of an entity after a statement on its line, with a
@@ -2157,6 +2185,14 @@ line after U+2028 inside its name]
 line, after a comment line after U+2028]
 [test: an empty attribute block of an entity after a statement on its line,
 after a comment line after U+2028 and a space]
+[test: an attribute and a closing brace with other indentation of an entity that
+follows another entity on the line, after a comment line after U+2028]
+[test: a statement after the closing brace of an entity that follows another
+entity on the line, after a comment line after U+2028]
+[test: an attribute block on one line of an entity that follows another entity
+on the line, after a comment line after U+2028]
+[test: an attribute block inside a subgraph, of an entity that follows another
+entity on the line, after a comment line after U+2028]
 
 入力
 ([multi-line-statements/accessibility-text-joined-input.mmd](../tests/fixtures/er/multi-line-statements/accessibility-text-joined-input.mmd)):

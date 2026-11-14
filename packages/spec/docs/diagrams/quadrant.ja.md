@@ -2335,25 +2335,25 @@ class-def-name      = ( word-of-name | "-" | "," | ":" )+
 `classDef a`、U+2028、`%% c`、改行、`b color: #109060` は、名前が `a`、U+2028、
 `b` のクラスを定め、U+2029 でも同じです。
 [fixture: quadrant/lex-classdef-name-line-separator-comment-line]
-[fixture: quadrant/lex-classdef-name-paragraph-separator-comment-line]
+[fixture: quadrant/db-classdef-name-paragraph-separator-comment-line]
 コメント領域が U+2028 と `%%` の間で取る空白、2 つ目の U+2028、改行、
 ディレクティブ、コメントを終える CRLF か CR、コメントの中のディレクティブ、
 2 つ目のコメント行、2 つ目の U+2028 の後の 2 つ目の領域をまたぐとき、
 次の行の始めの U+2028、領域の後の、名前の文字である ASCII 外の文字か `-`、
 `classDef` とスペースの後の U+2028 から始まる名前でも同じです。
-[fixture: quadrant/lex-classdef-name-line-separator-spaces-comment-line]
-[fixture: quadrant/lex-classdef-name-two-line-separators-comment-line]
-[fixture: quadrant/lex-classdef-name-line-separator-line-feed-comment-line]
-[fixture: quadrant/lex-classdef-name-line-separator-directive-comment-line]
-[fixture: quadrant/lex-classdef-name-line-separator-comment-line-crlf]
-[fixture: quadrant/lex-classdef-name-line-separator-two-comment-lines]
-[fixture: quadrant/lex-classdef-name-two-comment-regions]
-[fixture: quadrant/lex-classdef-name-line-separator-comment-line-dash]
-[fixture: quadrant/lex-classdef-name-starts-with-line-separator-comment-line]
-[fixture: quadrant/lex-classdef-name-line-separator-comment-line-cr]
-[fixture: quadrant/lex-classdef-name-line-separator-comment-line-with-directive]
-[fixture: quadrant/lex-classdef-name-comment-line-line-separator-next]
-[fixture: quadrant/lex-classdef-name-line-separator-comment-line-non-ascii]
+[fixture: quadrant/db-classdef-name-line-separator-spaces-comment-line]
+[fixture: quadrant/db-classdef-name-two-line-separators-comment-line]
+[fixture: quadrant/db-classdef-name-line-separator-line-feed-comment-line]
+[fixture: quadrant/db-classdef-name-line-separator-directive-comment-line]
+[fixture: quadrant/db-classdef-name-line-separator-comment-line-crlf]
+[fixture: quadrant/db-classdef-name-line-separator-two-comment-lines]
+[fixture: quadrant/db-classdef-name-two-comment-regions]
+[fixture: quadrant/db-classdef-name-line-separator-comment-line-dash]
+[fixture: quadrant/db-classdef-name-starts-with-line-separator-comment-line]
+[fixture: quadrant/db-classdef-name-line-separator-comment-line-cr]
+[fixture: quadrant/db-classdef-name-line-separator-comment-line-with-directive]
+[fixture: quadrant/db-classdef-name-comment-line-line-separator-next]
+[fixture: quadrant/db-classdef-name-line-separator-comment-line-non-ascii]
 コメント行の次の行の始めのディレクティブは、
 コメントの改行で終わる領域には含まれず、名前の中にあるので、`classDef a`、
 U+2028、`%% c`、改行、
@@ -2365,7 +2365,7 @@ U+2028、`%% c`、改行、
 そのスペースはスタイルの前の空白となるので、`classDef a`、U+2028、`%% c`、改行、
 `%%{init: {}}%% color: #109060` は名前が `a` と U+2028 のクラスを定めます。
 [fixture:
-quadrant/lex-classdef-name-line-separator-comment-line-directive-space-next]
+quadrant/db-classdef-name-line-separator-comment-line-directive-space-next]
 領域を始める U+2028 や U+2029 の直前のディレクティブも、
 領域がその文字の後で始まるので名前の中にあり、`classDef a`、`%%{init: {}}%%`、
 U+2029、`%% c`、改行、`b color: #109060` はここでは拒否されますが、
@@ -2377,7 +2377,7 @@ mermaid.js は名前が `a`、U+2029、`b` のクラスを定めます。
 名前と U+2028 の間のスペースは入力を拒否させ、
 後ろに何もない `%%` とディレクティブを始めない `%%{` も同じで、
 それらはコメント行ではなく、その行の終わりまで続くこの図種のコメントです。
-[fixture: quadrant/lex-classdef-name-line-separator-comment-line-space]
+[fixture: quadrant/db-classdef-name-line-separator-comment-line-space]
 [fixture: quadrant/gram-classdef-name-line-separator-comment-line-two-spaces]
 [fixture: quadrant/gram-classdef-name-line-separator-comment-line-empty-line]
 [fixture: quadrant/gram-classdef-name-line-separator-comment-line-last-line]
@@ -2392,7 +2392,7 @@ mermaid.js は名前が `a`、U+2029、`b` のクラスを定めます。
 1 行の `classDef ab color:#f00;` は行の規則に一致し、その `;` は無視され、
 クラス `ab` の色は `#f00` です。
 [fixture: quadrant/gram-classdef-name-comment-line-hash-semicolon]
-[fixture: quadrant/lex-classdef-color-hash-semicolon-one-line]
+[fixture: quadrant/db-classdef-color-hash-semicolon-one-line]
 文の中にある領域の後の空の説明ブロックと、領域の後の名前の 2 つの文字の間で、
 `style:#x;b color: #f00` のように行の規則が無視する `;` は、
 どちらもここでは入力を拒否させますが、
@@ -2404,9 +2404,9 @@ mermaid.js は受理します（[既知の差異](#既知の差異) を参照）
 どの `classDef` 行でもそうであるように名前の外にあり、入力は受理され、
 クラスの名前はそれぞれ `a`、U+2028、`style:#x` と、`a`、U+2028、`style` で、
 色はどちらも `#f00` となり、U+2029 でも同じです。 [fixture:
-quadrant/lex-classdef-name-comment-line-style-line-semicolon-after-name]
-[fixture: quadrant/lex-classdef-name-comment-line-style-line] [fixture:
-quadrant/lex-classdef-name-paragraph-separator-comment-line-style-line]
+quadrant/db-classdef-name-comment-line-style-line-semicolon-after-name]
+[fixture: quadrant/db-classdef-name-comment-line-style-line] [fixture:
+quadrant/db-classdef-name-paragraph-separator-comment-line-style-line]
 行の規則が無視するのは、それに一致する行の最後の `;` だけで、
 名前の中の無視されない `;` は、前に `#` と語があるときはエンティティを終え、
 それ以外では `;` の単位となって、mermaid.js と同じく入力を拒否させます。
@@ -2414,7 +2414,7 @@ quadrant/lex-classdef-name-paragraph-separator-comment-line-style-line]
 `#x;` のプレースホルダー、`b` のクラスを定めますが、
 最初の `;` の前に `#` と語がない `style:x;b color:#f00;` と、
 行の規則に一致しない行の `b;c color: #f00` は拒否されます。
-[fixture: quadrant/lex-classdef-name-comment-line-style-line-two-semicolons]
+[fixture: quadrant/db-classdef-name-comment-line-style-line-two-semicolons]
 [fixture:
 quadrant/gram-classdef-name-comment-line-style-line-semicolon-no-entity]
 [fixture: quadrant/gram-classdef-name-comment-line-semicolon-in-name]

@@ -4841,7 +4841,7 @@ er/lex-name-line-separator-comment-line] [corpus fixture:
 er/lex-name-two-comment-regions] [corpus fixture:
 er/lex-quoted-name-line-separator-comment-line] [corpus fixture:
 quadrant/lex-classdef-name-line-separator-comment-line] [corpus fixture:
-quadrant/lex-classdef-name-starts-with-line-separator-comment-line]
+quadrant/db-classdef-name-starts-with-line-separator-comment-line]
 
 A line that mermaid.js reads this way runs over several lines of the source. The
 formatter prints it as written, from its first line to its end, with the
@@ -4905,17 +4905,18 @@ documents of the diagram types say what is theirs:
   only whitespace, and a directive on a line of its own (at its end), and so
   does the end of the text. What the next line is depends on the diagram type.
   Where a statement may go on after a line break, the next line is the rest of
-  it, and it is printed as written too: the rest of an edge in a flowchart, the
-  block of a requirement, the orientation in an xychart. [test: a directive line
-  after a comment line after U+2028, and the rest of an edge on the next line,
-  in a flowchart] [test: an empty line after a comment line after U+2028, and
-  the rest of an edge on the next line, in a flowchart] [test: an empty line
-  after a comment line after U+2028, and the block of a requirement on the next
-  line] [test: a directive line after a comment line after U+2028, and the block
-  of a requirement on the next line] [test: an empty line after a comment line
+  it, and it is printed as written too, for example the rest of an edge in a
+  flowchart, the block of a requirement, and the orientation in an xychart.
+  [test: a directive line after a comment line after U+2028, and the rest of an
+  edge on the next line, in a flowchart] [test: an empty line after a comment
+  line after U+2028, and the rest of an edge on the next line, in a flowchart]
+  [test: an empty line after a comment line after U+2028, and the block of a
+  requirement on the next line] [test: a directive line after a comment line
+  after U+2028, and the block of a requirement on the next line] [test: an empty
+  line after a comment line after U+2028 at the header, and the orientation on
+  the next line, in an xychart] [test: a directive line after a comment line
   after U+2028 at the header, and the orientation on the next line, in an
-  xychart] [test: a directive line after a comment line after U+2028 at the
-  header, and the orientation on the next line, in an xychart]
+  xychart]
 - A U+2028 or U+2029 inside a directive is removed with the directive, so it
   ends no diagram comment and cuts none: the comment fragments before and after
   such a directive stay one comment, printed as written. [test: a diagram

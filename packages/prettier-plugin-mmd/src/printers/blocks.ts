@@ -83,6 +83,15 @@ export interface BlockRules<Statement extends Positioned> {
   /** Attach a unit with its complete source gap instead of choosing a new line. */
   readonly writtenGapBefore?: (statement: Statement) => boolean
   /**
+   * A statement that follows a stretch printed as written on its line and
+   * that is printed on its own, as the block that it holds: the stretch ends
+   * before it, and `writtenGapBefore` attaches it to the line with the gap
+   * before it as written (an entity of an ER diagram whose attribute block
+   * lies outside the line that a joining region joins; docs/er.md,
+   * Multi-line statements).
+   */
+  readonly endsStretchBefore?: (statement: Statement) => boolean
+  /**
    * Where the printed statement starts, when that is before its range: a
    * leading owned form that the layout prints separately before the first atom
    * of a unit (the hidden forms), or the directives that start the line of a
@@ -677,6 +686,9 @@ export function printBlock<Statement extends Positioned>(
       const following = statements[after]
       if (following === undefined || printedStartOf(following) >= lineEnd) {
         return { start, end: Math.max(stretchEnd, lineEnd), first, after }
+      }
+      if (rules.endsStretchBefore?.(following) === true) {
+        return { start, end: stretchEnd, first, after }
       }
       stretchEnd = Math.max(stretchEnd, rules.printedEnd(following))
       after++

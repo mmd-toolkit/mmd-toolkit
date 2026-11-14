@@ -2102,7 +2102,7 @@ joins the unit of the U+2028, and the units join into one name either way (see
 line break, and `b color: #109060` defines the class `a`, U+2028, and `b`, and
 so it is with U+2029. [fixture:
 quadrant/lex-classdef-name-line-separator-comment-line] [fixture:
-quadrant/lex-classdef-name-paragraph-separator-comment-line] So it is with the
+quadrant/db-classdef-name-paragraph-separator-comment-line] So it is with the
 whitespace, the second U+2028, the line breaks, and the directive that the
 comment region takes between the U+2028 and the `%%`, with a CRLF or a CR ending
 the comment, with a directive inside the comment, with a second comment line,
@@ -2110,19 +2110,19 @@ across a second region after a second U+2028, with a U+2028 at the start of the
 next line, with a character outside ASCII or a `-` after the region, which are
 characters of a name, and with a name that starts at the U+2028 after `classDef`
 and a space. [fixture:
-quadrant/lex-classdef-name-line-separator-spaces-comment-line] [fixture:
-quadrant/lex-classdef-name-two-line-separators-comment-line] [fixture:
-quadrant/lex-classdef-name-line-separator-line-feed-comment-line] [fixture:
-quadrant/lex-classdef-name-line-separator-directive-comment-line] [fixture:
-quadrant/lex-classdef-name-line-separator-comment-line-crlf] [fixture:
-quadrant/lex-classdef-name-line-separator-two-comment-lines] [fixture:
-quadrant/lex-classdef-name-two-comment-regions] [fixture:
-quadrant/lex-classdef-name-line-separator-comment-line-dash] [fixture:
-quadrant/lex-classdef-name-starts-with-line-separator-comment-line] [fixture:
-quadrant/lex-classdef-name-line-separator-comment-line-cr] [fixture:
-quadrant/lex-classdef-name-line-separator-comment-line-with-directive] [fixture:
-quadrant/lex-classdef-name-comment-line-line-separator-next] [fixture:
-quadrant/lex-classdef-name-line-separator-comment-line-non-ascii] A directive at
+quadrant/db-classdef-name-line-separator-spaces-comment-line] [fixture:
+quadrant/db-classdef-name-two-line-separators-comment-line] [fixture:
+quadrant/db-classdef-name-line-separator-line-feed-comment-line] [fixture:
+quadrant/db-classdef-name-line-separator-directive-comment-line] [fixture:
+quadrant/db-classdef-name-line-separator-comment-line-crlf] [fixture:
+quadrant/db-classdef-name-line-separator-two-comment-lines] [fixture:
+quadrant/db-classdef-name-two-comment-regions] [fixture:
+quadrant/db-classdef-name-line-separator-comment-line-dash] [fixture:
+quadrant/db-classdef-name-starts-with-line-separator-comment-line] [fixture:
+quadrant/db-classdef-name-line-separator-comment-line-cr] [fixture:
+quadrant/db-classdef-name-line-separator-comment-line-with-directive] [fixture:
+quadrant/db-classdef-name-comment-line-line-separator-next] [fixture:
+quadrant/db-classdef-name-line-separator-comment-line-non-ascii] A directive at
 the start of the line after the comment line is no part of the region, which
 ends with the line break of the comment, so it lies inside the name:
 `classDef a`, U+2028, `%% c`, a line break, and `%%{init: {}}%%b color: #109060`
@@ -2132,7 +2132,7 @@ quadrant/div-directive-after-comment-line-in-classdef-name] A directive followed
 by a space there ends the name, and the space is the whitespace before the
 styles: `classDef a`, U+2028, `%% c`, a line break, and
 `%%{init: {}}%% color: #109060` defines the class `a` and U+2028. [fixture:
-quadrant/lex-classdef-name-line-separator-comment-line-directive-space-next] A
+quadrant/db-classdef-name-line-separator-comment-line-directive-space-next] A
 directive right before the U+2028 or U+2029 that starts the region lies inside
 the name too, since the region starts after that character: `classDef a`,
 `%%{init: {}}%%`, U+2029, `%% c`, a line break, and `b color: #109060` is
@@ -2144,7 +2144,7 @@ the comment line, the end of the text, and a space between the name and the
 U+2028 make the input rejected, and so do a `%%` with nothing after it and a
 `%%{` that starts no directive, which are no comment lines but comments of this
 diagram type that run to the end of their line. [fixture:
-quadrant/lex-classdef-name-line-separator-comment-line-space] [fixture:
+quadrant/db-classdef-name-line-separator-comment-line-space] [fixture:
 quadrant/gram-classdef-name-line-separator-comment-line-two-spaces] [fixture:
 quadrant/gram-classdef-name-line-separator-comment-line-empty-line] [fixture:
 quadrant/gram-classdef-name-line-separator-comment-line-last-line] [fixture:
@@ -2157,7 +2157,7 @@ there is not ignored, and the input is rejected, because `#f00;` in a style is
 an entity, as in mermaid.js, while on one line, `classDef ab color:#f00;`
 matches the rule, its `;` is ignored, and the class `ab` has the colour `#f00`.
 [fixture: quadrant/gram-classdef-name-comment-line-hash-semicolon] [fixture:
-quadrant/lex-classdef-color-hash-semicolon-one-line] An empty description block
+quadrant/db-classdef-color-hash-semicolon-one-line] An empty description block
 after the region, which lies inside the statement, and a `;` that the line rule
 ignores between two characters of the name after the region, as in
 `style:#x;b color: #f00`, both make the input rejected here, while mermaid.js
@@ -2169,9 +2169,9 @@ ignores right after the last character of the name, as in
 outside the name, as on any `classDef` line, and the input is accepted: the
 classes are `a`, U+2028, and `style:#x`, and `a`, U+2028, and `style`, with the
 colour `#f00`, and so it is with U+2029. [fixture:
-quadrant/lex-classdef-name-comment-line-style-line-semicolon-after-name]
-[fixture: quadrant/lex-classdef-name-comment-line-style-line] [fixture:
-quadrant/lex-classdef-name-paragraph-separator-comment-line-style-line] The rule
+quadrant/db-classdef-name-comment-line-style-line-semicolon-after-name]
+[fixture: quadrant/db-classdef-name-comment-line-style-line] [fixture:
+quadrant/db-classdef-name-paragraph-separator-comment-line-style-line] The rule
 ignores only the last `;` of a line that matches it, and a `;` in the name that
 it does not ignore ends an entity where `#` and a word come before it, and is a
 `;` unit otherwise, which makes the input rejected, as in mermaid.js:
@@ -2179,7 +2179,7 @@ it does not ignore ends an entity where `#` and a word come before it, and is a
 placeholder of `#x;`, and `b`, while `style:x;b color:#f00;`, whose first `;`
 follows no `#` and word, and `b;c color: #f00`, on a line that the rule does not
 match, are rejected. [fixture:
-quadrant/lex-classdef-name-comment-line-style-line-two-semicolons] [fixture:
+quadrant/db-classdef-name-comment-line-style-line-two-semicolons] [fixture:
 quadrant/gram-classdef-name-comment-line-style-line-semicolon-no-entity]
 [fixture: quadrant/gram-classdef-name-comment-line-semicolon-in-name]
 

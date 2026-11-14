@@ -89,5 +89,5 @@ after a U+2028 or a U+2029 in it (see
 fragments are `Identifier` tokens, also when the name starts with the U+2028,
 while an ignored `;` after the region lies inside the name and makes the input
 rejected. [fixture: quadrant/lex-classdef-name-line-separator-comment-line]
-[fixture: quadrant/lex-classdef-name-starts-with-line-separator-comment-line]
+[fixture: quadrant/db-classdef-name-starts-with-line-separator-comment-line]
 [fixture: quadrant/div-classdef-name-comment-line-ignored-semicolon]

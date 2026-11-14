@@ -2044,27 +2044,107 @@ const erExamples: readonly (readonly [string, string, string])[] = [
   [
     "an attribute block of an entity that follows another entity on the line, after a comment line after U+2028",
     "erDiagram\nA\u2028%% c\nBar Zed {\nint id\n}\n",
-    "erDiagram\n  A\u2028%% c\nBar Zed {\nint id\n}\n",
+    "erDiagram\n  A\u2028%% c\nBar Zed {\n    int id\n  }\n",
   ],
   [
     "an attribute block of an entity after a statement on its line, with a comment line after U+2028 inside its name",
     "erDiagram\nX A\u2028%% c\nBar {\nint id\n}\n",
-    "erDiagram\n  X A\u2028%% c\nBar {\nint id\n}\n",
+    "erDiagram\n  X A\u2028%% c\nBar {\n    int id\n  }\n",
   ],
   [
     "an attribute block of an entity after a name in quotes, with a comment line after U+2028 inside its name",
     'erDiagram\n"A"\u2028%% c\nBar {\nint id\n}\n',
-    'erDiagram\n  "A"\u2028%% c\nBar {\nint id\n}\n',
+    'erDiagram\n  "A"\u2028%% c\nBar {\n    int id\n  }\n',
   ],
   [
     "an empty attribute block of an entity that follows another entity on the line, after a comment line after U+2028",
     "erDiagram\nA\u2028%% c\nBar Zed {\n}\n",
-    "erDiagram\n  A\u2028%% c\nBar Zed {\n}\n",
+    "erDiagram\n  A\u2028%% c\nBar Zed { }\n",
   ],
   [
     "an empty attribute block of an entity after a statement on its line, after a comment line after U+2028 and a space",
     "erDiagram\nX A\u2028%% c\n {\n}\n",
-    "erDiagram\n  X A\u2028%% c\n {\n}\n",
+    "erDiagram\n  X A\u2028%% c\n { }\n",
+  ],
+  [
+    "an attribute and a closing brace with other indentation of an entity that follows another entity on the line, after a comment line after U+2028",
+    "erDiagram\nA\u2028%% c\nBar Zed {\n        int id\n    }\n",
+    "erDiagram\n  A\u2028%% c\nBar Zed {\n    int id\n  }\n",
+  ],
+  [
+    "a statement after the closing brace of an entity that follows another entity on the line, after a comment line after U+2028",
+    "erDiagram\nA\u2028%% c\nBar Zed {\nint id\n} Q\n",
+    "erDiagram\n  A\u2028%% c\nBar Zed {\n    int id\n  }\n  Q\n",
+  ],
+  [
+    "an attribute block on one line of an entity that follows another entity on the line, after a comment line after U+2028",
+    "erDiagram\nA\u2028%% c\nBar Zed { int id }\n",
+    "erDiagram\n  A\u2028%% c\nBar Zed { int id }\n",
+  ],
+  [
+    "an attribute block inside a subgraph, of an entity that follows another entity on the line, after a comment line after U+2028",
+    "erDiagram\nsubgraph S\nA\u2028%% c\nBar Zed {\nint id\n}\nend\n",
+    "erDiagram\n  subgraph S\n    A\u2028%% c\nBar Zed {\n      int id\n    }\n  end\n",
+  ],
+  [
+    "an empty line after a comment line after U+2028 after the colon of accTitle, and the rest of the statement on the next line",
+    "erDiagram\naccTitle:\u2028%% c\n\n   T\n",
+    "erDiagram\n  accTitle:\u2028%% c\n\n   T\n",
+  ],
+  [
+    "a directive line after a comment line after U+2028 after the colon of accTitle, and the rest of the statement on the next line",
+    "erDiagram\naccTitle:\u2028%% c\n%%{init: {}}%%\n   T\n",
+    "erDiagram\n  accTitle:\u2028%% c\n%%{init: {}}%%\n   T\n",
+  ],
+  [
+    "an empty line after a comment line after U+2028 after the colon of accDescr, and the rest of the statement on the next line",
+    "erDiagram\naccDescr:\u2028%% c\n\n   D\n",
+    "erDiagram\n  accDescr:\u2028%% c\n\n   D\n",
+  ],
+  [
+    "a directive line after a comment line after U+2028 after the colon of accDescr, and the rest of the statement on the next line",
+    "erDiagram\naccDescr:\u2028%% c\n%%{init: {}}%%\n   D\n",
+    "erDiagram\n  accDescr:\u2028%% c\n%%{init: {}}%%\n   D\n",
+  ],
+  [
+    "an empty line after a comment line after U+2028 after direction, and the rest of the statement on the next line",
+    "erDiagram\ndirection\u2028%% c\n\n   LR\n",
+    "erDiagram\n  direction\u2028%% c\n\n   LR\n",
+  ],
+  [
+    "a directive line after a comment line after U+2028 after direction, and the rest of the statement on the next line",
+    "erDiagram\ndirection\u2028%% c\n%%{init: {}}%%\n   LR\n",
+    "erDiagram\n  direction\u2028%% c\n%%{init: {}}%%\n   LR\n",
+  ],
+  [
+    "an empty line after a comment line after U+2028 after a style that a comma ends, and the rest of the statement on the next line",
+    "erDiagram\nstyle A fill:red,\u2028%% c\n\n   stroke:blue\n",
+    "erDiagram\n  style A fill:red,\u2028%% c\n\n   stroke:blue\n",
+  ],
+  [
+    "a directive line after a comment line after U+2028 after a style that a comma ends, and the rest of the statement on the next line",
+    "erDiagram\nstyle A fill:red,\u2028%% c\n%%{init: {}}%%\n   stroke:blue\n",
+    "erDiagram\n  style A fill:red,\u2028%% c\n%%{init: {}}%%\n   stroke:blue\n",
+  ],
+  [
+    "an empty line after a comment line after U+2028 after the keyword of classDef, and the rest of the statement on the next line",
+    "erDiagram\nclassDef\u2028%% c\n\n   c fill:red\n",
+    "erDiagram\n  classDef\u2028%% c\n\n   c fill:red\n",
+  ],
+  [
+    "a directive line after a comment line after U+2028 after the keyword of classDef, and the rest of the statement on the next line",
+    "erDiagram\nclassDef\u2028%% c\n%%{init: {}}%%\n   c fill:red\n",
+    "erDiagram\n  classDef\u2028%% c\n%%{init: {}}%%\n   c fill:red\n",
+  ],
+  [
+    "an empty line after a comment line after U+2029 after the colon of accTitle, and the rest of the statement on the next line",
+    "erDiagram\naccTitle:\u2029%% c\n\n   T\n",
+    "erDiagram\n  accTitle:\u2029%% c\n\n   T\n",
+  ],
+  [
+    "an empty line after a comment line after U+2028 after the colon of accDescr, with CRLF line breaks",
+    "erDiagram\r\naccDescr:\u2028%% c\r\n\r\n   D\r\n",
+    "erDiagram\n  accDescr:\u2028%% c\n\n   D\n",
   ],
 ]
 

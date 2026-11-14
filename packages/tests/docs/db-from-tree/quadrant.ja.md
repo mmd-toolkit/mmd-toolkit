@@ -178,7 +178,7 @@ U+2028 と U+2029 は、名前の文字であるとともにコメントの始�
 `b` のクラスを定めます。
 U+2029 のときも同じです。
 [fixture: quadrant/lex-classdef-name-line-separator-comment-line]
-[fixture: quadrant/lex-classdef-name-paragraph-separator-comment-line]
+[fixture: quadrant/db-classdef-name-paragraph-separator-comment-line]
 領域が何を取るかと、その前後で名前がどこで終わりどこで始まるかは、
 字句解析器が決め、範囲に現れます。
 出典は [クラス](../../../spec/docs/diagrams/quadrant.ja.md#クラス) です。
@@ -188,19 +188,19 @@ U+2029 のときも同じです。
 2 つ目の U+2028 の後の 2 つ目の領域をまたぐときも、同じです。
 次の行の始めの U+2028、領域の後の ASCII 以外の文字や `-` は名前の文字で、
 `classDef` とスペースの後の U+2028 から名前を始めることもできます。
-[fixture: quadrant/lex-classdef-name-line-separator-spaces-comment-line]
-[fixture: quadrant/lex-classdef-name-two-line-separators-comment-line]
-[fixture: quadrant/lex-classdef-name-line-separator-line-feed-comment-line]
-[fixture: quadrant/lex-classdef-name-line-separator-directive-comment-line]
-[fixture: quadrant/lex-classdef-name-line-separator-comment-line-crlf]
-[fixture: quadrant/lex-classdef-name-line-separator-comment-line-cr]
-[fixture: quadrant/lex-classdef-name-line-separator-comment-line-with-directive]
-[fixture: quadrant/lex-classdef-name-line-separator-two-comment-lines]
-[fixture: quadrant/lex-classdef-name-two-comment-regions]
-[fixture: quadrant/lex-classdef-name-comment-line-line-separator-next]
-[fixture: quadrant/lex-classdef-name-line-separator-comment-line-non-ascii]
-[fixture: quadrant/lex-classdef-name-line-separator-comment-line-dash]
-[fixture: quadrant/lex-classdef-name-starts-with-line-separator-comment-line]
+[fixture: quadrant/db-classdef-name-line-separator-spaces-comment-line]
+[fixture: quadrant/db-classdef-name-two-line-separators-comment-line]
+[fixture: quadrant/db-classdef-name-line-separator-line-feed-comment-line]
+[fixture: quadrant/db-classdef-name-line-separator-directive-comment-line]
+[fixture: quadrant/db-classdef-name-line-separator-comment-line-crlf]
+[fixture: quadrant/db-classdef-name-line-separator-comment-line-cr]
+[fixture: quadrant/db-classdef-name-line-separator-comment-line-with-directive]
+[fixture: quadrant/db-classdef-name-line-separator-two-comment-lines]
+[fixture: quadrant/db-classdef-name-two-comment-regions]
+[fixture: quadrant/db-classdef-name-comment-line-line-separator-next]
+[fixture: quadrant/db-classdef-name-line-separator-comment-line-non-ascii]
+[fixture: quadrant/db-classdef-name-line-separator-comment-line-dash]
+[fixture: quadrant/db-classdef-name-starts-with-line-separator-comment-line]
 点とそのクラスのスタイルは併合されず、どの点も使わないクラスも一覧に載ります。
 [fixture: quadrant/db-classdef-color]
 [fixture: quadrant/db-classdef-twice-replaces]

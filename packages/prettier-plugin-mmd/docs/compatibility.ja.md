@@ -5210,7 +5210,7 @@ quadrant 図では、`classDef` のクラスの名前が同じように続きま
 [corpus fixture: er/lex-name-two-comment-regions]
 [corpus fixture: er/lex-quoted-name-line-separator-comment-line]
 [corpus fixture: quadrant/lex-classdef-name-line-separator-comment-line]
-[corpus fixture: quadrant/lex-classdef-name-starts-with-line-separator-comment-line]
+[corpus fixture: quadrant/db-classdef-name-starts-with-line-separator-comment-line]
 
 mermaid.js がこう読む行は、ソースの何行にもまたがります。
 整形は、その行を、最初の行から終わりまで、その上にある文ごと、
@@ -5286,7 +5286,7 @@ a name in quotes] [test: a comment line after U+2028 inside the name of a class]
   そしてテキストの終わりです。
   次の行が何になるかは、図種によります。
   改行の後も文が続く図種では、次の行は文の残りで、それも書かれたまま印字します。
-  flowchart の辺の残り、requirement のブロック、xychart の向きがそうです。
+  たとえば、flowchart の辺の残り、requirement のブロック、xychart の向きです。
   [test: a directive line after a comment line after U+2028, and the rest of an
   edge on the next line, in a flowchart]
   [test: an empty line after a comment line after U+2028, and the rest of an edge

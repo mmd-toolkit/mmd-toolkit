@@ -31,6 +31,7 @@ import {
   findAttributeBraces,
   findSubgraphHeaderEnd,
   hasAttributeBlock,
+  isBlockAfterJoinedLine,
   isEmptyAttributeBlock,
   touchesKeywordWithDash,
   layoutAttribute,
@@ -39,7 +40,7 @@ import {
   layoutSubgraphOpening,
 } from "./er-layout.ts"
 import { expectToken, layoutKeywordHeader, toAsciiLowerCase } from "./layout.ts"
-import { lineEndOf, lineStartOf } from "./kept-lines.ts"
+import { isFirstOnItsLine, lineEndOf, lineStartOf } from "./kept-lines.ts"
 import { indentationOf, printAsWritten } from "./lines.ts"
 import { narrowPath } from "./paths.ts"
 import type { Source } from "./source.ts"
@@ -321,6 +322,24 @@ function findSubgraphEnd(
 }
 
 /**
+ * Whether a statement is an entity whose attribute block lies outside the line
+ * that a joining region joins, and that stands after another statement on that
+ * line: the line up to it is printed as written, and it is printed after the
+ * gap before it as written, with its block as any entity does (see
+ * `isBlockAfterJoinedLine`).
+ */
+function startsBlockAfterJoinedLine(
+  source: Source,
+  statement: ErStatement,
+): boolean {
+  return (
+    statement.type === "ErEntityStatement" &&
+    isBlockAfterJoinedLine(source, statement) &&
+    !isFirstOnItsLine(source, statement.range[0])
+  )
+}
+
+/**
  * The block rules of the statements of an ER diagram and of a subgraph (see
  * `BlockRules`): a subgraph and an entity statement with an attribute block
  * hold lines of their own, and no statement is dropped. A comment line is
@@ -346,7 +365,10 @@ function statementBlockRules(source: Source): BlockRules<ErStatement> {
     writtenGapBefore: (statement) =>
       touchesKeywordWithDash(source, statement.range[0]) ||
       followsSplitKeyword(source, statement.range[0]) ||
-      findErClassNameGaps(source).has(statement.range[0]),
+      findErClassNameGaps(source).has(statement.range[0]) ||
+      startsBlockAfterJoinedLine(source, statement),
+    endsStretchBefore: (statement) =>
+      startsBlockAfterJoinedLine(source, statement),
     isDroppedAtTopLevel: () => false,
     keepsWhitespaceLineAfterComment: false,
     keepsDirectiveLinesUnindented: false,

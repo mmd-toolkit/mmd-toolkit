@@ -552,7 +552,7 @@ const CASES: readonly Case[] = [
     ],
   },
   {
-    fixture: "lex-classdef-name-paragraph-separator-comment-line",
+    fixture: "db-classdef-name-paragraph-separator-comment-line",
     statements: [
       classDefAcrossRegion(
         `a${PARAGRAPH_SEPARATOR}%% c\nb`,
@@ -562,7 +562,7 @@ const CASES: readonly Case[] = [
     ],
   },
   {
-    fixture: "lex-classdef-name-line-separator-spaces-comment-line",
+    fixture: "db-classdef-name-line-separator-spaces-comment-line",
     statements: [
       classDefAcrossRegion(
         `a${LINE_SEPARATOR}  %% c\nb`,
@@ -572,7 +572,7 @@ const CASES: readonly Case[] = [
     ],
   },
   {
-    fixture: "lex-classdef-name-two-line-separators-comment-line",
+    fixture: "db-classdef-name-two-line-separators-comment-line",
     statements: [
       classDefAcrossRegion(
         `a${LINE_SEPARATOR}${LINE_SEPARATOR}%% c\nb`,
@@ -582,7 +582,7 @@ const CASES: readonly Case[] = [
     ],
   },
   {
-    fixture: "lex-classdef-name-line-separator-line-feed-comment-line",
+    fixture: "db-classdef-name-line-separator-line-feed-comment-line",
     statements: [
       classDefAcrossRegion(
         `a${LINE_SEPARATOR}\n%% c\nb`,
@@ -592,7 +592,7 @@ const CASES: readonly Case[] = [
     ],
   },
   {
-    fixture: "lex-classdef-name-line-separator-directive-comment-line",
+    fixture: "db-classdef-name-line-separator-directive-comment-line",
     statements: [
       classDefAcrossRegion(
         `a${LINE_SEPARATOR}%%{init: {}}%% %% c\nb`,
@@ -602,7 +602,7 @@ const CASES: readonly Case[] = [
     ],
   },
   {
-    fixture: "lex-classdef-name-line-separator-comment-line-crlf",
+    fixture: "db-classdef-name-line-separator-comment-line-crlf",
     statements: [
       classDefAcrossRegion(
         `a${LINE_SEPARATOR}%% c\r\nb`,
@@ -612,7 +612,7 @@ const CASES: readonly Case[] = [
     ],
   },
   {
-    fixture: "lex-classdef-name-line-separator-two-comment-lines",
+    fixture: "db-classdef-name-line-separator-two-comment-lines",
     statements: [
       classDefAcrossRegion(
         `a${LINE_SEPARATOR}%% c\n%% d\nb`,
@@ -622,7 +622,7 @@ const CASES: readonly Case[] = [
     ],
   },
   {
-    fixture: "lex-classdef-name-two-comment-regions",
+    fixture: "db-classdef-name-two-comment-regions",
     statements: [
       classDefAcrossRegion(
         `a${LINE_SEPARATOR}%% c\nb${LINE_SEPARATOR}%% d\nc`,
@@ -632,7 +632,7 @@ const CASES: readonly Case[] = [
     ],
   },
   {
-    fixture: "lex-classdef-name-line-separator-comment-line-dash",
+    fixture: "db-classdef-name-line-separator-comment-line-dash",
     statements: [
       classDefAcrossRegion(
         `a${LINE_SEPARATOR}%% c\n-b`,
@@ -642,7 +642,7 @@ const CASES: readonly Case[] = [
     ],
   },
   {
-    fixture: "lex-classdef-name-starts-with-line-separator-comment-line",
+    fixture: "db-classdef-name-starts-with-line-separator-comment-line",
     statements: [
       classDefAcrossRegion(
         `${LINE_SEPARATOR}%% c\nb`,
@@ -652,7 +652,7 @@ const CASES: readonly Case[] = [
     ],
   },
   {
-    fixture: "lex-classdef-name-line-separator-comment-line-cr",
+    fixture: "db-classdef-name-line-separator-comment-line-cr",
     statements: [
       classDefAcrossRegion(
         `a${LINE_SEPARATOR}%% c\rb`,
@@ -662,7 +662,7 @@ const CASES: readonly Case[] = [
     ],
   },
   {
-    fixture: "lex-classdef-name-line-separator-comment-line-with-directive",
+    fixture: "db-classdef-name-line-separator-comment-line-with-directive",
     statements: [
       classDefAcrossRegion(
         `a${LINE_SEPARATOR}%% c %%{init: {}}%%\nb`,
@@ -672,7 +672,7 @@ const CASES: readonly Case[] = [
     ],
   },
   {
-    fixture: "lex-classdef-name-comment-line-line-separator-next",
+    fixture: "db-classdef-name-comment-line-line-separator-next",
     statements: [
       classDefAcrossRegion(
         `a${LINE_SEPARATOR}%% c\n${LINE_SEPARATOR}b`,
@@ -682,7 +682,7 @@ const CASES: readonly Case[] = [
     ],
   },
   {
-    fixture: "lex-classdef-name-line-separator-comment-line-non-ascii",
+    fixture: "db-classdef-name-line-separator-comment-line-non-ascii",
     statements: [
       classDefAcrossRegion(
         `a${LINE_SEPARATOR}%% c\né`,
@@ -695,11 +695,11 @@ const CASES: readonly Case[] = [
   // there, or a directive and a space, is the whitespace before the styles.
   {
     fixture:
-      "lex-classdef-name-line-separator-comment-line-directive-space-next",
+      "db-classdef-name-line-separator-comment-line-directive-space-next",
     statements: [classDef(`a${LINE_SEPARATOR}`, "color: #109060")],
   },
   {
-    fixture: "lex-classdef-name-line-separator-comment-line-space",
+    fixture: "db-classdef-name-line-separator-comment-line-space",
     statements: [classDef(`a${LINE_SEPARATOR}`, "color: #109060")],
   },
   // The summary.

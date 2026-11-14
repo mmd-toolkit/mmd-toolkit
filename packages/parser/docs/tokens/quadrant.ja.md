@@ -100,5 +100,5 @@ U+00A0、U+2028、U+2029、U+3000、U+FEFF は、
 名前が U+2028 で始まるときも、断片は `Identifier` トークンです。
 一方、領域の後の無視される `;` は名前の中にあり、入力を拒否させます。
 [fixture: quadrant/lex-classdef-name-line-separator-comment-line]
-[fixture: quadrant/lex-classdef-name-starts-with-line-separator-comment-line]
+[fixture: quadrant/db-classdef-name-starts-with-line-separator-comment-line]
 [fixture: quadrant/div-classdef-name-comment-line-ignored-semicolon]
