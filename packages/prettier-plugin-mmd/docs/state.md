@@ -80,7 +80,11 @@ composite-states/split] [fixture: composite-states/split-several-statements]
 [fixture: composite-states/split-nested] [fixture:
 composite-states/split-alias-body] [fixture:
 composite-states/divider-on-own-line] [fixture:
-composite-states/split-directive-in-body]
+composite-states/split-directive-in-body] The `}` stays on the line of the last
+statement where a `;` that the line rule ignores follows it on the line
+(`state "style:#x" as S { B --> C };`): a line break before the `}` would part
+the `;` from the text that makes it ignored, and mermaid.js reads it as a state.
+[fixture: composite-states/closing-brace-before-ignored-semicolon-kept]
 
 Input
 ([composite-states/split-input.mmd](../tests/fixtures/state/composite-states/split-input.mmd)):

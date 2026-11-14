@@ -14,6 +14,7 @@ import {
 import type { KeptLines } from "./kept-lines.ts"
 import {
   holdsJoiningRegion,
+  isDroppedSemicolon,
   lineEndOf,
   lineStartOf,
   withJoinedLines,
@@ -842,11 +843,23 @@ export function printBlock<Statement extends Positioned>(
     if (rules.keptClosingJoin !== undefined) return rules.keptClosingJoin
     const closing = findTokenStartingAt(source, bounds.end)
     if (closing === undefined) return null
-    const followed = findTokensBetween(
-      source,
-      closing.range[1],
-      lineEndOf(source, bounds.end),
-    ).some((token) => isStructural(source, token))
+    const lineEnd = lineEndOf(source, bounds.end)
+    // A `;` that the line rule ignores stays with the text on the line that
+    // makes it ignored (`style:#x` before the closing), which a line break
+    // before the closing would part from it.
+    // The `}` that closes a block around this one is on a line of its own
+    // after this block, unless something follows it, so it does not keep the
+    // closing of this block on the line: the second formatting would move it.
+    const followed =
+      findTokensBetween(source, closing.range[1], lineEnd).some(
+        (token) => isStructural(source, token) && token.value !== "}",
+      ) ||
+      [...source.ignoredSemicolons].some(
+        (semicolon) =>
+          closing.range[1] <= semicolon &&
+          semicolon < lineEnd &&
+          !isDroppedSemicolon(source, semicolon),
+      )
     return followed ? " " : null
   }
 

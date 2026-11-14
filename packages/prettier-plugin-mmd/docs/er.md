@@ -535,9 +535,13 @@ block or the `end` of a subgraph on such a line, with a statement after it on
 the line, would go to a line of its own and leave the statement on a line
 without the `;`, so it stays on the line, which is printed with the whitespace
 between its tokens as usual. Where no statement follows it, it stands on a line
-of its own, as in any block. [fixture:
-statements-one-per-line/semicolon-line-block-kept] [fixture:
-statements-one-per-line/semicolon-line-subgraph-end-kept]
+of its own, as in any block, unless a `;` that the line rule ignores follows it
+on the line (`"Alpha" { int x "style:#x" };`): that `;` is ignored because of
+the text before it on its line, so the `}` stays with it, and a line break
+before the `}` would leave the `;` on a line without that text, where it is a
+syntax error. [fixture: statements-one-per-line/semicolon-line-block-kept]
+[fixture: statements-one-per-line/semicolon-line-subgraph-end-kept] [fixture:
+statements-one-per-line/semicolon-after-block-closing-kept]
 
 Input
 ([statements-one-per-line/entities-input.mmd](../tests/fixtures/er/statements-one-per-line/entities-input.mmd)):

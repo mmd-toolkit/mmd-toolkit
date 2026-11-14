@@ -119,6 +119,16 @@ member-bodies/percent-member-kept] [corpus fixture: class/lex-member-percent]
 The start of the member is read after the `;` that the line rule ignores is
 removed: a member written as `%;% c` still starts with `%%`, and stays on the
 line of the `{`. [fixture: member-bodies/percent-member-ignored-semicolon-kept]
+The `}` of a body, and of a namespace, stays on the line of the member before it
+where a `;` that the line rule ignores follows it on the line
+(`class Alpha { +style:#x };`): the `;` is ignored because of the text before
+it, which a line break before the `}` would part from it. The `}` that closes a
+namespace does not keep the `}` of a class body inside it on the line, since it
+stands on a line of its own: `namespace Alpha { class Beta { +style:#x; } }` is
+printed with each `}` on a line of its own. [fixture:
+member-bodies/closing-brace-before-ignored-semicolon-kept] [fixture:
+member-bodies/namespace-closing-brace-before-ignored-semicolon-kept] [fixture:
+member-bodies/nested-closing-braces-after-ignored-semicolon]
 
 Input
 ([member-bodies/split-input.mmd](../tests/fixtures/class/member-bodies/split-input.mmd)):
