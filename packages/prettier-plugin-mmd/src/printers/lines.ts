@@ -7,6 +7,7 @@ import { readGapElement } from "./gap.ts"
 import { walk } from "./layout.ts"
 import type { Source } from "./source.ts"
 import { isSpaceOrTab, isWhitespace } from "./source.ts"
+import { followsOneLineTimelineHeaderDescriptionBlock } from "./timeline-header-line.ts"
 import { writtenWithRespellings } from "./spelling.ts"
 
 const { align, hardline, literalline } = builders
@@ -222,9 +223,12 @@ export function printAsWrittenTrimmed(
  * as it is: each run of spaces and tabs is one space, and every other
  * whitespace character stays where it is, since that version draws it. A
  * comment, a directive, and a `;` that the line rule ignores stay as written,
- * and the whitespace on each side of them is printed in the same way. Null
- * when the gap holds a line break or anything else, which the ordinary rules
- * of the gap print (docs/timeline.md, Header and direction).
+ * and the whitespace on each side of them is printed in the same way. After
+ * a nonempty one-line description block on the header line whose printed
+ * text is not padded on both sides, whitespace before a statement or comment
+ * is one space, except where U+2028/U+2029 stands there.
+ * Null when the gap holds a line break or anything else, which the ordinary
+ * rules of the gap print (docs/timeline.md, Header and direction).
  */
 export function printTextGap(
   source: Source,
@@ -232,9 +236,34 @@ export function printTextGap(
   end: number,
 ): Doc | null {
   const printed: Doc[] = []
+  let gapStart = start
+  if (followsOneLineTimelineHeaderDescriptionBlock(source, start)) {
+    let whitespaceEnd = start
+    while (
+      whitespaceEnd < end &&
+      isSingleSpaceGapWhitespace(source.text[whitespaceEnd])
+    ) {
+      whitespaceEnd++
+    }
+    const next =
+      whitespaceEnd < end
+        ? readGapElement(source, whitespaceEnd).element
+        : undefined
+    // After an eligible header block, whitespace before a statement or comment
+    // draws as one space. Gaps beside directives and semicolons keep the text
+    // rule (docs/timeline.md, Header and direction).
+    if (
+      whitespaceEnd > start &&
+      (whitespaceEnd === end ||
+        (next?.kind === "item" && next.item.type === "Comment"))
+    ) {
+      printed.push(" ")
+      gapStart = whitespaceEnd
+    }
+  }
   let whitespace = ""
   let inRun = false
-  for (let offset = start; offset < end;) {
+  for (let offset = gapStart; offset < end;) {
     const { element, end: next } = readGapElement(source, offset)
     if (element.kind === "item") {
       printed.push(whitespace, printAsWritten(source, offset, next))
@@ -252,6 +281,21 @@ export function printTextGap(
   }
   printed.push(whitespace)
   return printed
+}
+
+/**
+ * Whitespace printed as one space after a one-line header description block:
+ * line breaks and U+2028/U+2029 retain the text rule (docs/timeline.md, Header
+ * and direction).
+ */
+function isSingleSpaceGapWhitespace(character: string): boolean {
+  return (
+    isWhitespace(character) &&
+    character !== "\n" &&
+    character !== "\r" &&
+    character !== "\u2028" &&
+    character !== "\u2029"
+  )
 }
 
 /** Prints items that stand after `doc` on its line. */

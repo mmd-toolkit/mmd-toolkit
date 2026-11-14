@@ -2,7 +2,7 @@ import type { Node, TimelineStatement } from "@mmd-toolkit/ast"
 import { lineStartOf } from "./kept-lines.ts"
 import { expectToken } from "./layout.ts"
 import type { Source } from "./source.ts"
-import { findStructuralToken, textRead } from "./source.ts"
+import { findStructuralToken, isWhitespace, textRead } from "./source.ts"
 
 /** The statements on the lines of the header, found once per source. */
 const headerLineStatementsBySource = new WeakMap<
@@ -66,4 +66,39 @@ export function staysOnTimelineHeaderLine(
   return findTimelineHeaderLineStatements(source).some(
     (found) => found === statement,
   )
+}
+
+/**
+ * Whether the gap follows a nonempty description block on one header line
+ * whose printed text is not padded on both sides. Header text gaps collapse
+ * runs of spaces and tabs without adding or removing padding, so this test
+ * of the brace interior also holds after printing, including directives.
+ * Empty, doubly padded and multi-line blocks keep their text whitespace
+ * (docs/timeline.md, Header and direction).
+ */
+export function followsOneLineTimelineHeaderDescriptionBlock(
+  source: Source,
+  start: number,
+): boolean {
+  return findTimelineHeaderLineStatements(source).some((statement) => {
+    if (
+      statement.type !== "TimelineAccDescrBlockStatement" ||
+      statement.range[1] !== start ||
+      lineStartOf(source, statement.range[0]) !== lineStartOf(source, start - 1)
+    )
+      return false
+    const keyword = expectToken(
+      findStructuralToken(source, statement.range[0]),
+      "the description keyword",
+    )
+    const opening = expectToken(
+      findStructuralToken(source, keyword.range[1]),
+      "the description opener",
+    )
+    const inside = source.text.slice(opening.range[1], start - 1)
+    return (
+      inside.trim() !== "" &&
+      !(isWhitespace(inside[0]) && isWhitespace(inside[inside.length - 1]))
+    )
+  })
 }

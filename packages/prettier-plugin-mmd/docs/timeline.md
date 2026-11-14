@@ -748,10 +748,11 @@ other whitespace character (U+00A0, U+2003, U+2028, and so on) is drawn
 differently from a space, so the formatter leaves it. So the whitespace of the
 line of the header is printed in one form: between two tokens of the line, each
 run of spaces and tabs is one space, nothing is added where the source has no
-whitespace, and every other whitespace character stays where it is.
-`timeline TD    title T` is printed `timeline TD title T`, and `timeline TD`,
-U+00A0, and `title T` stays as it is. The gap before a comment that ends the
-line, and around a directive in it, is printed so too. [fixture:
+whitespace, and every other whitespace character stays where it is, except after
+the `}` of a description block on one line (see below). `timeline TD    title T`
+is printed `timeline TD title T`, and `timeline TD`, U+00A0, and `title T` stays
+as it is. The gap before a comment that ends the line, and around a directive in
+it, is printed so too. [fixture:
 header-and-direction/gap-after-the-direction-spaces-formatted] [fixture:
 header-and-direction/gap-after-the-direction-tab-formatted] [test: U+00A0
 between the direction and a text on the header line] [test: a run of spaces and
@@ -768,8 +769,40 @@ and the statements after it on the line, is printed in the form above:
 `accDescr {  alpha  }` is `accDescr { alpha }`,
 `accDescr   {alpha}    accDescr {beta}` is `accDescr {alpha} accDescr {beta}`,
 and where the source has no whitespace none is printed (`accDescr{ alpha}`). A
-directive beside the braces does not turn the block into the form with the
-colon, as it does elsewhere (see
+whitespace character that is no space or tab (a U+00A0, a U+2003, and so on)
+after the `}` of a block on one line that holds text and is not padded by
+whitespace on both sides, before a statement, a `title`, a `section`, another
+block, or a comment, is drawn as a space is, by every version that counts, and
+so is printed as one space, as is a run of such characters, spaces, and tabs:
+`accDescr {alpha}`, U+00A0, and `Phase : done` are
+`accDescr {alpha} Phase : done`, and so are `accDescr {alpha }` and
+`accDescr { alpha}`. After a block that is padded on both sides
+(`accDescr { alpha }`) and after an empty block (`accDescr {}`), the versions
+that read no direction draw the character and a space differently, so it stays,
+as it does in every other place of the line and after the `}` of a block over
+several lines. [test: U+00A0 before a statement after a padded description block
+on the header line] [test: U+00A0 before a title after a padded description
+block on the header line] [test: U+00A0 before a comment after a padded
+description block on the header line] [test: U+00A0 before a statement after an
+empty description block on the header line] [test: U+00A0 before a statement
+after an empty description block glued to its keyword on the header line] [test:
+U+00A0 after a right-padded description block on the header line] [test: U+00A0
+after a left-padded description block on the header line] [test: U+00A0 after an
+unpadded multi-word description block on the header line] [test: U+00A0 after a
+description block containing a directive on the header line] [test: U+00A0
+before a title after a description block on the header line] [test: U+00A0
+before a section after a description block on the header line] [test: U+00A0
+between two description blocks on the header line] [test: U+00A0 before a period
+with two events after a description block on the header line] [test: U+2003
+before a title after a description block on the header line] [test: a space,
+U+00A0 and a tab after a description block on the header line] [test: U+3000
+after a description block on the header line] [test: U+0085 stays text after a
+description block on the header line] [test: U+00A0 before a directive after a
+description block on the header line] [test: U+00A0 after a directive after a
+description block on the header line] [test: a space and U+2028 after a
+description block on the header line] [test: U+2029 and U+00A0 after a
+description block on the header line] A directive beside the braces does not
+turn the block into the form with the colon, as it does elsewhere (see
 [A description block on one line](./compatibility.md#a-description-block-on-one-line)).
 A `;` that ends the line stays where it is, and so does a comment after the
 block. A period after the block has its later events at the ordinary

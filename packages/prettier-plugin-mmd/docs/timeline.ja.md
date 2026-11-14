@@ -784,6 +784,7 @@ timeline について対象にする版は、どちらの形も同じに描き�
 行の中のトークンの間は、空白とタブの連なりを空白 1 つにします。
 元に空白がない所には、何も足しません。
 ほかの空白文字は、書かれた場所に残します。
+ただし、1 行の説明ブロックの `}` の後ろは別です（下を参照）。
 `timeline TD    title T` は `timeline TD title T` と印字します。
 `timeline TD`、U+00A0、`title T` の形は、そのまま残ります。
 行末のコメントの前の隙間と、行の中の指令のまわりの隙間も、同じように印字します。
@@ -805,6 +806,39 @@ timeline について対象にする版は、どちらの形も同じに描き�
 `accDescr   {alpha}    accDescr {beta}` は、
 `accDescr {alpha} accDescr {beta}` になります。
 元に空白がない所には、何も足しません（`accDescr{ alpha}`）。
+テキストがあり、両側が空白で囲まれていない 1 行のブロックの `}` の後ろ、文、
+`title`、`section`、別のブロック、コメントの前にある、
+空白でもタブでもない空白文字（U+00A0、U+2003 など）は、
+数える版のどれでも空白と同じに描かれるので、空白 1 つに印字します。
+そのような文字と、空白とタブが連なっているときも同じです。
+`accDescr {alpha}`、U+00A0、`Phase : done` は、
+`accDescr {alpha} Phase : done` になり、
+`accDescr {alpha }` と `accDescr { alpha}` も同じです。
+両側が空白で囲まれたブロック（`accDescr { alpha }`）と、
+空のブロック（`accDescr {}`）の後ろでは、方向を読まない版が、
+その文字と空白を別に描くので、文字は残ります。
+行のほかの場所と、複数行のブロックの `}` の後ろでも、書かれた場所に残ります。
+[test: U+00A0 before a statement after a padded description block on the header line]
+[test: U+00A0 before a title after a padded description block on the header line]
+[test: U+00A0 before a comment after a padded description block on the header line]
+[test: U+00A0 before a statement after an empty description block on the header line]
+[test: U+00A0 before a statement after an empty description block glued to its keyword on the header line]
+[test: U+00A0 after a right-padded description block on the header line]
+[test: U+00A0 after a left-padded description block on the header line]
+[test: U+00A0 after an unpadded multi-word description block on the header line]
+[test: U+00A0 after a description block containing a directive on the header line]
+[test: U+00A0 before a title after a description block on the header line]
+[test: U+00A0 before a section after a description block on the header line]
+[test: U+00A0 between two description blocks on the header line]
+[test: U+00A0 before a period with two events after a description block on the header line]
+[test: U+2003 before a title after a description block on the header line]
+[test: a space, U+00A0 and a tab after a description block on the header line]
+[test: U+3000 after a description block on the header line]
+[test: U+0085 stays text after a description block on the header line]
+[test: U+00A0 before a directive after a description block on the header line]
+[test: U+00A0 after a directive after a description block on the header line]
+[test: a space and U+2028 after a description block on the header line]
+[test: U+2029 and U+00A0 after a description block on the header line]
 波括弧の横の指令は、ブロックをコロンの形にしません。
 ほかの所での扱いは、
 [1 行の説明ブロック](./compatibility.ja.md#1-行の説明ブロック) に従います。
