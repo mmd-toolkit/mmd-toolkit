@@ -6250,7 +6250,7 @@
       }
     },
     {
-      "block": "packages/parser/docs/tokens.md:67ae398d8a4c",
+      "block": "packages/parser/docs/tokens.md:2123c18e61fc",
       "diagrams": [
         "agentflow",
         "architecture",
@@ -6285,7 +6285,7 @@
         "wardley",
         "xychart"
       ],
-      "about": "A comment region can also lie inside a diagram comment, which runs to the end of\nits line: a comment",
+      "about": "A comment region can also lie inside a diagram comment, whic",
       "judgment": {
         "status": "not-shown",
         "reason": "rule-misses-condition",
@@ -6293,9 +6293,562 @@
       }
     },
     {
-      "block": "packages/parser/docs/tokens.md:67ae398d8a4c",
+      "block": "packages/parser/docs/tokens.md:a9e4185e2485",
+      "diagrams": [
+        "c4",
+        "class",
+        "gantt",
+        "gitgraph",
+        "info",
+        "ishikawa",
+        "journey",
+        "kanban",
+        "mindmap",
+        "pie",
+        "railroad",
+        "requirement",
+        "sequence",
+        "state",
+        "timeline",
+        "treemap",
+        "treeview",
+        "venn"
+      ],
+      "about": "The fragment after the region has no mark, and its `mark` is",
+      "judgment": {
+        "status": "shown",
+        "cases": [
+          {
+            "case": "The fragment after the region has no mark: its mark is null.",
+            "tests": [
+              {
+                "file": "check-tree-shared-tokens.test.ts",
+                "text": "tokens-290-c4-fragment-mark"
+              },
+              {
+                "file": "check-tree-shared-tokens.test.ts",
+                "text": "tokens-290-class-fragment-mark"
+              },
+              {
+                "file": "check-tree-shared-tokens.test.ts",
+                "text": "tokens-290-gantt-fragment-mark"
+              },
+              {
+                "file": "check-tree-shared-tokens.test.ts",
+                "text": "tokens-290-gitgraph-fragment-mark"
+              },
+              {
+                "file": "check-tree-shared-tokens.test.ts",
+                "text": "tokens-290-info-fragment-mark"
+              },
+              {
+                "file": "check-tree-shared-tokens.test.ts",
+                "text": "tokens-290-ishikawa-fragment-mark"
+              },
+              {
+                "file": "check-tree-shared-tokens.test.ts",
+                "text": "tokens-290-journey-fragment-mark"
+              },
+              {
+                "file": "check-tree-shared-tokens.test.ts",
+                "text": "tokens-290-kanban-fragment-mark"
+              },
+              {
+                "file": "check-tree-shared-tokens.test.ts",
+                "text": "tokens-290-mindmap-fragment-mark"
+              },
+              {
+                "file": "check-tree-shared-tokens.test.ts",
+                "text": "tokens-290-pie-fragment-mark"
+              },
+              {
+                "file": "check-tree-shared-tokens.test.ts",
+                "text": "tokens-290-railroad-fragment-mark"
+              },
+              {
+                "file": "check-tree-shared-tokens.test.ts",
+                "text": "tokens-290-requirement-fragment-mark"
+              },
+              {
+                "file": "check-tree-shared-tokens.test.ts",
+                "text": "tokens-290-sequence-fragment-mark"
+              },
+              {
+                "file": "check-tree-shared-tokens.test.ts",
+                "text": "tokens-290-state-fragment-mark"
+              },
+              {
+                "file": "check-tree-shared-tokens.test.ts",
+                "text": "tokens-290-timeline-fragment-mark"
+              },
+              {
+                "file": "check-tree-shared-tokens.test.ts",
+                "text": "tokens-290-treemap-fragment-mark"
+              },
+              {
+                "file": "check-tree-shared-tokens.test.ts",
+                "text": "tokens-290-treeview-fragment-mark"
+              },
+              {
+                "file": "check-tree-shared-tokens.test.ts",
+                "text": "tokens-290-venn-fragment-mark"
+              }
+            ]
+          },
+          {
+            "case": "Its range starts at its first character.",
+            "tests": [
+              {
+                "file": "check-tree-shared-tokens.test.ts",
+                "text": "tokens-290-c4-fragment-start"
+              },
+              {
+                "file": "check-tree-shared-tokens.test.ts",
+                "text": "tokens-290-class-fragment-start"
+              },
+              {
+                "file": "check-tree-shared-tokens.test.ts",
+                "text": "tokens-290-gantt-fragment-start"
+              },
+              {
+                "file": "check-tree-shared-tokens.test.ts",
+                "text": "tokens-290-gitgraph-fragment-start"
+              },
+              {
+                "file": "check-tree-shared-tokens.test.ts",
+                "text": "tokens-290-info-fragment-start"
+              },
+              {
+                "file": "check-tree-shared-tokens.test.ts",
+                "text": "tokens-290-ishikawa-fragment-start"
+              },
+              {
+                "file": "check-tree-shared-tokens.test.ts",
+                "text": "tokens-290-journey-fragment-start"
+              },
+              {
+                "file": "check-tree-shared-tokens.test.ts",
+                "text": "tokens-290-kanban-fragment-start"
+              },
+              {
+                "file": "check-tree-shared-tokens.test.ts",
+                "text": "tokens-290-mindmap-fragment-start"
+              },
+              {
+                "file": "check-tree-shared-tokens.test.ts",
+                "text": "tokens-290-pie-fragment-start"
+              },
+              {
+                "file": "check-tree-shared-tokens.test.ts",
+                "text": "tokens-290-railroad-fragment-start"
+              },
+              {
+                "file": "check-tree-shared-tokens.test.ts",
+                "text": "tokens-290-requirement-fragment-start"
+              },
+              {
+                "file": "check-tree-shared-tokens.test.ts",
+                "text": "tokens-290-sequence-fragment-start"
+              },
+              {
+                "file": "check-tree-shared-tokens.test.ts",
+                "text": "tokens-290-state-fragment-start"
+              },
+              {
+                "file": "check-tree-shared-tokens.test.ts",
+                "text": "tokens-290-timeline-fragment-start"
+              },
+              {
+                "file": "check-tree-shared-tokens.test.ts",
+                "text": "tokens-290-treemap-fragment-start"
+              },
+              {
+                "file": "check-tree-shared-tokens.test.ts",
+                "text": "tokens-290-treeview-fragment-start"
+              },
+              {
+                "file": "check-tree-shared-tokens.test.ts",
+                "text": "tokens-290-venn-fragment-start"
+              }
+            ]
+          },
+          {
+            "case": "Its value is the source text of its range.",
+            "tests": [
+              {
+                "file": "check-tree-shared-tokens.test.ts",
+                "text": "tokens-290-c4-fragment-value"
+              },
+              {
+                "file": "check-tree-shared-tokens.test.ts",
+                "text": "tokens-290-class-fragment-value"
+              },
+              {
+                "file": "check-tree-shared-tokens.test.ts",
+                "text": "tokens-290-gantt-fragment-value"
+              },
+              {
+                "file": "check-tree-shared-tokens.test.ts",
+                "text": "tokens-290-gitgraph-fragment-value"
+              },
+              {
+                "file": "check-tree-shared-tokens.test.ts",
+                "text": "tokens-290-info-fragment-value"
+              },
+              {
+                "file": "check-tree-shared-tokens.test.ts",
+                "text": "tokens-290-ishikawa-fragment-value"
+              },
+              {
+                "file": "check-tree-shared-tokens.test.ts",
+                "text": "tokens-290-journey-fragment-value"
+              },
+              {
+                "file": "check-tree-shared-tokens.test.ts",
+                "text": "tokens-290-kanban-fragment-value"
+              },
+              {
+                "file": "check-tree-shared-tokens.test.ts",
+                "text": "tokens-290-mindmap-fragment-value"
+              },
+              {
+                "file": "check-tree-shared-tokens.test.ts",
+                "text": "tokens-290-pie-fragment-value"
+              },
+              {
+                "file": "check-tree-shared-tokens.test.ts",
+                "text": "tokens-290-railroad-fragment-value"
+              },
+              {
+                "file": "check-tree-shared-tokens.test.ts",
+                "text": "tokens-290-requirement-fragment-value"
+              },
+              {
+                "file": "check-tree-shared-tokens.test.ts",
+                "text": "tokens-290-sequence-fragment-value"
+              },
+              {
+                "file": "check-tree-shared-tokens.test.ts",
+                "text": "tokens-290-state-fragment-value"
+              },
+              {
+                "file": "check-tree-shared-tokens.test.ts",
+                "text": "tokens-290-timeline-fragment-value"
+              },
+              {
+                "file": "check-tree-shared-tokens.test.ts",
+                "text": "tokens-290-treemap-fragment-value"
+              },
+              {
+                "file": "check-tree-shared-tokens.test.ts",
+                "text": "tokens-290-treeview-fragment-value"
+              },
+              {
+                "file": "check-tree-shared-tokens.test.ts",
+                "text": "tokens-290-venn-fragment-value"
+              }
+            ]
+          }
+        ]
+      }
+    },
+    {
+      "block": "packages/parser/docs/tokens.md:a9e4185e2485",
+      "diagrams": ["agentflow", "eventmodeling"],
+      "about": "The fragment after the region has no mark, and its `mark` is",
+      "judgment": {
+        "status": "no-condition",
+        "kind": "not-in-diagram",
+        "note": "These diagrams see comment lines in their parser input (preserveCommentsWhenParsing), so a comment line after a U+2028 or U+2029 is not gone and cuts no diagram comment; the named documents say how their trees hold comment lines.",
+        "documents": [
+          "packages/spec/docs/diagrams/agentflow.md",
+          "packages/spec/docs/ast/agentflow.md",
+          "packages/parser/docs/tokens/agentflow.md",
+          "packages/spec/docs/diagrams/eventmodeling.md",
+          "packages/spec/docs/ast/eventmodeling.md",
+          "packages/parser/docs/tokens/eventmodeling.md",
+          "packages/parser/docs/tokens.md"
+        ]
+      }
+    },
+    {
+      "block": "packages/parser/docs/tokens.md:a9e4185e2485",
+      "diagrams": [
+        "architecture",
+        "block",
+        "cynefin",
+        "er",
+        "flowchart",
+        "packet",
+        "quadrant",
+        "radar",
+        "sankey",
+        "usecase",
+        "wardley",
+        "xychart"
+      ],
+      "about": "The fragment after the region has no mark, and its `mark` is",
+      "judgment": {
+        "status": "no-condition",
+        "kind": "not-in-diagram",
+        "note": "None of the named documents defines a diagram comment, text that the diagram's own lexer reads as a comment, so no comment region cuts one in these trees.",
+        "documents": [
+          "packages/spec/docs/diagrams/architecture.md",
+          "packages/spec/docs/ast/architecture.md",
+          "packages/parser/docs/tokens/architecture.md",
+          "packages/spec/docs/diagrams/block.md",
+          "packages/spec/docs/ast/block.md",
+          "packages/parser/docs/tokens/block.md",
+          "packages/spec/docs/diagrams/cynefin.md",
+          "packages/spec/docs/ast/cynefin.md",
+          "packages/parser/docs/tokens/cynefin.md",
+          "packages/spec/docs/diagrams/er.md",
+          "packages/spec/docs/ast/er.md",
+          "packages/parser/docs/tokens/er.md",
+          "packages/spec/docs/diagrams/flowchart.md",
+          "packages/spec/docs/ast/flowchart.md",
+          "packages/parser/docs/tokens/flowchart.md",
+          "packages/spec/docs/diagrams/packet.md",
+          "packages/spec/docs/ast/packet.md",
+          "packages/parser/docs/tokens/packet.md",
+          "packages/spec/docs/diagrams/quadrant.md",
+          "packages/spec/docs/ast/quadrant.md",
+          "packages/parser/docs/tokens/quadrant.md",
+          "packages/spec/docs/diagrams/radar.md",
+          "packages/spec/docs/ast/radar.md",
+          "packages/parser/docs/tokens/radar.md",
+          "packages/spec/docs/diagrams/sankey.md",
+          "packages/spec/docs/ast/sankey.md",
+          "packages/parser/docs/tokens/sankey.md",
+          "packages/spec/docs/diagrams/usecase.md",
+          "packages/spec/docs/ast/usecase.md",
+          "packages/parser/docs/tokens/usecase.md",
+          "packages/spec/docs/diagrams/wardley.md",
+          "packages/spec/docs/ast/wardley.md",
+          "packages/parser/docs/tokens/wardley.md",
+          "packages/spec/docs/diagrams/xychart.md",
+          "packages/spec/docs/ast/xychart.md",
+          "packages/parser/docs/tokens/xychart.md",
+          "packages/parser/docs/tokens.md"
+        ]
+      }
+    },
+    {
+      "block": "packages/parser/docs/tokens.md:4033404f4e33",
+      "diagrams": [
+        "c4",
+        "class",
+        "gantt",
+        "gitgraph",
+        "info",
+        "journey",
+        "pie",
+        "railroad",
+        "requirement",
+        "sequence",
+        "state",
+        "timeline",
+        "treemap",
+        "treeview",
+        "venn"
+      ],
+      "about": "Whether a `;` that the line rule ignores lies inside a diagr",
+      "judgment": {
+        "status": "shown",
+        "cases": [
+          {
+            "case": "A `;` that the line rule ignores lies inside the diagram comment when characters of the comment lie on both sides of it, the fragment after the region included.",
+            "tests": [
+              {
+                "file": "check-tree-shared-tokens.test.ts",
+                "text": "tokens-290-c4-semicolon-inside"
+              },
+              {
+                "file": "check-tree-shared-tokens.test.ts",
+                "text": "tokens-290-class-semicolon-inside"
+              },
+              {
+                "file": "check-tree-shared-tokens.test.ts",
+                "text": "tokens-290-gantt-semicolon-inside"
+              },
+              {
+                "file": "check-tree-shared-tokens.test.ts",
+                "text": "tokens-290-gitgraph-semicolon-inside"
+              },
+              {
+                "file": "check-tree-shared-tokens.test.ts",
+                "text": "tokens-290-info-semicolon-inside"
+              },
+              {
+                "file": "check-tree-shared-tokens.test.ts",
+                "text": "tokens-290-journey-semicolon-inside"
+              },
+              {
+                "file": "check-tree-shared-tokens.test.ts",
+                "text": "tokens-290-pie-semicolon-inside"
+              },
+              {
+                "file": "check-tree-shared-tokens.test.ts",
+                "text": "tokens-290-railroad-semicolon-inside"
+              },
+              {
+                "file": "check-tree-shared-tokens.test.ts",
+                "text": "tokens-290-requirement-semicolon-inside"
+              },
+              {
+                "file": "check-tree-shared-tokens.test.ts",
+                "text": "tokens-290-sequence-semicolon-inside"
+              },
+              {
+                "file": "check-tree-shared-tokens.test.ts",
+                "text": "tokens-290-state-semicolon-inside"
+              },
+              {
+                "file": "check-tree-shared-tokens.test.ts",
+                "text": "tokens-290-timeline-semicolon-inside"
+              },
+              {
+                "file": "check-tree-shared-tokens.test.ts",
+                "text": "tokens-290-treemap-semicolon-inside"
+              },
+              {
+                "file": "check-tree-shared-tokens.test.ts",
+                "text": "tokens-290-treeview-semicolon-inside"
+              },
+              {
+                "file": "check-tree-shared-tokens.test.ts",
+                "text": "tokens-290-venn-semicolon-inside"
+              }
+            ]
+          }
+        ]
+      }
+    },
+    {
+      "block": "packages/parser/docs/tokens.md:4033404f4e33",
+      "diagrams": ["ishikawa", "kanban", "mindmap"],
+      "about": "Whether a `;` that the line rule ignores lies inside a diagr",
+      "judgment": {
+        "status": "not-shown",
+        "reason": "rule-misses-condition",
+        "note": "Each tree is the recorded tree of the named fixture with ` style:#x;`, a U+2028, a comment line `%% c`, and `x` added at the end of a diagram comment, so that the `;` has characters of the comment on both sides and lies inside the comment; checkTree returns [] on that tree. Shortening the comment to end before the `;` and adding an IgnoredSemicolon token for it also returns []: ishikawa/comment-header-glued, the comment ending at 15; kanban/db-metadata-before-comment, the comment ending at 17; mindmap/div-header-line-comment-comment-then-blank, the comment ending at 12."
+      }
+    },
+    {
+      "block": "packages/parser/docs/tokens.md:4033404f4e33",
+      "diagrams": ["agentflow", "eventmodeling"],
+      "about": "Whether a `;` that the line rule ignores lies inside a diagr",
+      "judgment": {
+        "status": "no-condition",
+        "kind": "not-in-diagram",
+        "note": "These diagrams see comment lines in their parser input (preserveCommentsWhenParsing), so a comment line after a U+2028 or U+2029 is not gone and cuts no diagram comment; the named documents say how their trees hold comment lines.",
+        "documents": [
+          "packages/spec/docs/diagrams/agentflow.md",
+          "packages/spec/docs/ast/agentflow.md",
+          "packages/parser/docs/tokens/agentflow.md",
+          "packages/spec/docs/diagrams/eventmodeling.md",
+          "packages/spec/docs/ast/eventmodeling.md",
+          "packages/parser/docs/tokens/eventmodeling.md",
+          "packages/parser/docs/tokens.md"
+        ]
+      }
+    },
+    {
+      "block": "packages/parser/docs/tokens.md:4033404f4e33",
+      "diagrams": [
+        "architecture",
+        "block",
+        "cynefin",
+        "er",
+        "flowchart",
+        "packet",
+        "quadrant",
+        "radar",
+        "sankey",
+        "usecase",
+        "wardley",
+        "xychart"
+      ],
+      "about": "Whether a `;` that the line rule ignores lies inside a diagr",
+      "judgment": {
+        "status": "no-condition",
+        "kind": "not-in-diagram",
+        "note": "None of the named documents defines a diagram comment, text that the diagram's own lexer reads as a comment, so no comment region cuts one in these trees.",
+        "documents": [
+          "packages/spec/docs/diagrams/architecture.md",
+          "packages/spec/docs/ast/architecture.md",
+          "packages/parser/docs/tokens/architecture.md",
+          "packages/spec/docs/diagrams/block.md",
+          "packages/spec/docs/ast/block.md",
+          "packages/parser/docs/tokens/block.md",
+          "packages/spec/docs/diagrams/cynefin.md",
+          "packages/spec/docs/ast/cynefin.md",
+          "packages/parser/docs/tokens/cynefin.md",
+          "packages/spec/docs/diagrams/er.md",
+          "packages/spec/docs/ast/er.md",
+          "packages/parser/docs/tokens/er.md",
+          "packages/spec/docs/diagrams/flowchart.md",
+          "packages/spec/docs/ast/flowchart.md",
+          "packages/parser/docs/tokens/flowchart.md",
+          "packages/spec/docs/diagrams/packet.md",
+          "packages/spec/docs/ast/packet.md",
+          "packages/parser/docs/tokens/packet.md",
+          "packages/spec/docs/diagrams/quadrant.md",
+          "packages/spec/docs/ast/quadrant.md",
+          "packages/parser/docs/tokens/quadrant.md",
+          "packages/spec/docs/diagrams/radar.md",
+          "packages/spec/docs/ast/radar.md",
+          "packages/parser/docs/tokens/radar.md",
+          "packages/spec/docs/diagrams/sankey.md",
+          "packages/spec/docs/ast/sankey.md",
+          "packages/parser/docs/tokens/sankey.md",
+          "packages/spec/docs/diagrams/usecase.md",
+          "packages/spec/docs/ast/usecase.md",
+          "packages/parser/docs/tokens/usecase.md",
+          "packages/spec/docs/diagrams/wardley.md",
+          "packages/spec/docs/ast/wardley.md",
+          "packages/parser/docs/tokens/wardley.md",
+          "packages/spec/docs/diagrams/xychart.md",
+          "packages/spec/docs/ast/xychart.md",
+          "packages/parser/docs/tokens/xychart.md",
+          "packages/parser/docs/tokens.md"
+        ]
+      }
+    },
+    {
+      "block": "packages/parser/docs/tokens.md:2123c18e61fc",
       "diagrams": ["error"],
-      "about": "A comment region can also lie inside a diagram comment, which runs to the end of\nits line: a comment",
+      "about": "A comment region can also lie inside a diagram comment, whic",
+      "judgment": {
+        "status": "no-condition",
+        "kind": "not-in-diagram",
+        "note": "The named documents define error-body RawText runs and shared comment regions, but no diagram comment that begins before a common comment region and continues after it. Bare percent text outside a shared comment line remains RawText in the error body, so the block's continuing diagram-comment condition has no case.",
+        "documents": [
+          "packages/spec/docs/ast.md",
+          "packages/spec/docs/common.md",
+          "packages/parser/docs/tokens.md"
+        ]
+      }
+    },
+    {
+      "block": "packages/parser/docs/tokens.md:a9e4185e2485",
+      "diagrams": ["error"],
+      "about": "The fragment after the region has no mark, and its `mark` is",
+      "judgment": {
+        "status": "no-condition",
+        "kind": "not-in-diagram",
+        "note": "The named documents define error-body RawText runs and shared comment regions, but no diagram comment that begins before a common comment region and continues after it. Bare percent text outside a shared comment line remains RawText in the error body, so the block's continuing diagram-comment condition has no case.",
+        "documents": [
+          "packages/spec/docs/ast.md",
+          "packages/spec/docs/common.md",
+          "packages/parser/docs/tokens.md"
+        ]
+      }
+    },
+    {
+      "block": "packages/parser/docs/tokens.md:4033404f4e33",
+      "diagrams": ["error"],
+      "about": "Whether a `;` that the line rule ignores lies inside a diagr",
       "judgment": {
         "status": "no-condition",
         "kind": "not-in-diagram",
@@ -10445,13 +10998,358 @@
       }
     },
     {
-      "block": "packages/parser/docs/tokens.md:c83f840c60f4",
+      "block": "packages/parser/docs/tokens.md:115187f18c1c",
+      "diagrams": ["agentflow", "state"],
+      "about": "The tokens of a value cover the text that mermaid.js reads a",
+      "judgment": {
+        "status": "shown",
+        "cases": [
+          {
+            "case": "The first token starts where the read value text starts.",
+            "tests": [
+              {
+                "file": "check-tree-shared-tokens.test.ts",
+                "text": "tokens-88b-agentflow-first"
+              },
+              {
+                "file": "check-tree-shared-tokens.test.ts",
+                "text": "tokens-88b-state-first"
+              }
+            ]
+          },
+          {
+            "case": "The last token ends where the read value text ends.",
+            "tests": [
+              {
+                "file": "check-tree-shared-tokens.test.ts",
+                "text": "tokens-88b-agentflow-last"
+              },
+              {
+                "file": "check-tree-shared-tokens.test.ts",
+                "text": "tokens-88b-state-last"
+              }
+            ]
+          },
+          {
+            "case": "Whitespace read at the start of a value remains in its tokens.",
+            "tests": [
+              {
+                "file": "check-tree-shared-tokens.test.ts",
+                "text": "tokens-88b-agentflow-readLead"
+              },
+              {
+                "file": "check-tree-shared-tokens.test.ts",
+                "text": "tokens-88b-state-readLead"
+              }
+            ]
+          },
+          {
+            "case": "Whitespace read at the end of a value remains in its tokens.",
+            "tests": [
+              {
+                "file": "check-tree-shared-tokens.test.ts",
+                "text": "tokens-88b-agentflow-readTrail"
+              },
+              {
+                "file": "check-tree-shared-tokens.test.ts",
+                "text": "tokens-88b-state-readTrail"
+              }
+            ]
+          },
+          {
+            "case": "A whitespace-only value has tokens of its whitespace.",
+            "tests": [
+              {
+                "file": "check-tree-shared-tokens.test.ts",
+                "text": "tokens-88b-agentflow-wsOnlyToken"
+              },
+              {
+                "file": "check-tree-shared-tokens.test.ts",
+                "text": "tokens-88b-state-wsOnlyToken"
+              }
+            ]
+          },
+          {
+            "case": "A whitespace-only value uses the token kind assigned at that position.",
+            "tests": [
+              {
+                "file": "check-tree-shared-tokens.test.ts",
+                "text": "tokens-88b-agentflow-wsOnlyKind"
+              },
+              {
+                "file": "check-tree-shared-tokens.test.ts",
+                "text": "tokens-88b-state-wsOnlyKind"
+              }
+            ]
+          }
+        ]
+      }
+    },
+    {
+      "block": "packages/parser/docs/tokens.md:115187f18c1c",
+      "diagrams": ["er"],
+      "about": "The tokens of a value cover the text that mermaid.js reads a",
+      "judgment": {
+        "status": "shown",
+        "cases": [
+          {
+            "case": "The first token starts where the read value text starts.",
+            "tests": [
+              {
+                "file": "check-tree-shared-tokens.test.ts",
+                "text": "tokens-88b-er-first"
+              }
+            ]
+          },
+          {
+            "case": "The last token ends where the read value text ends.",
+            "tests": [
+              {
+                "file": "check-tree-shared-tokens.test.ts",
+                "text": "tokens-88b-er-last"
+              }
+            ]
+          },
+          {
+            "case": "Whitespace read at the end of a value remains in its tokens.",
+            "tests": [
+              {
+                "file": "check-tree-shared-tokens.test.ts",
+                "text": "tokens-88b-er-readTrail"
+              }
+            ]
+          },
+          {
+            "case": "A whitespace-only value has tokens of its whitespace.",
+            "tests": [
+              {
+                "file": "check-tree-shared-tokens.test.ts",
+                "text": "tokens-88b-er-wsOnlyToken"
+              }
+            ]
+          },
+          {
+            "case": "A whitespace-only value uses the token kind assigned at that position.",
+            "tests": [
+              {
+                "file": "check-tree-shared-tokens.test.ts",
+                "text": "tokens-88b-er-wsOnlyKind"
+              }
+            ]
+          }
+        ]
+      }
+    },
+    {
+      "block": "packages/parser/docs/tokens.md:52a098cc4b1d",
       "diagrams": ["agentflow", "er", "state"],
-      "about": "The tokens of a value cover the text that mermaid.js reads as that value: the\nfi",
+      "about": "Whitespace and line terminators that mermaid.js does not rea",
+      "judgment": {
+        "status": "shown",
+        "cases": [
+          {
+            "case": "Whitespace not read as a value belongs to no token.",
+            "tests": [
+              {
+                "file": "check-tree-shared-tokens.test.ts",
+                "text": "tokens-88b-agentflow-unread"
+              },
+              {
+                "file": "check-tree-shared-tokens.test.ts",
+                "text": "tokens-88b-er-unread"
+              },
+              {
+                "file": "check-tree-shared-tokens.test.ts",
+                "text": "tokens-88b-state-unread"
+              }
+            ]
+          }
+        ]
+      }
+    },
+    {
+      "block": "packages/parser/docs/tokens.md:d51bb081e004",
+      "diagrams": ["agentflow"],
+      "about": "This holds also where a directive, a comment region, or an i",
+      "judgment": {
+        "status": "shown",
+        "cases": [
+          {
+            "case": "Read whitespace before a directive cut stays in its fragment.",
+            "tests": [
+              {
+                "file": "check-tree-shared-tokens.test.ts",
+                "text": "tokens-88b-agentflow-beforeDirective"
+              }
+            ]
+          },
+          {
+            "case": "Read whitespace after a directive cut stays in its fragment.",
+            "tests": [
+              {
+                "file": "check-tree-shared-tokens.test.ts",
+                "text": "tokens-88b-agentflow-afterDirective"
+              }
+            ]
+          },
+          {
+            "case": "Read whitespace after an ignored semicolon stays in its fragment.",
+            "tests": [
+              {
+                "file": "check-tree-shared-tokens.test.ts",
+                "text": "tokens-88b-agentflow-afterIgnoredSemicolon"
+              }
+            ]
+          },
+          {
+            "case": "Read whitespace before a comment region stays in its fragment.",
+            "tests": [
+              {
+                "file": "check-tree-shared-tokens.test.ts",
+                "text": "tokens-88b-agentflow-beforeComment"
+              }
+            ]
+          },
+          {
+            "case": "Read whitespace after a comment region stays in its fragment.",
+            "tests": [
+              {
+                "file": "check-tree-shared-tokens.test.ts",
+                "text": "tokens-88b-agentflow-afterComment"
+              }
+            ]
+          }
+        ]
+      }
+    },
+    {
+      "block": "packages/parser/docs/tokens.md:d51bb081e004",
+      "diagrams": ["er"],
+      "about": "This holds also where a directive, a comment region, or an i",
+      "judgment": {
+        "status": "shown",
+        "cases": [
+          {
+            "case": "Read whitespace before a directive cut stays in its fragment.",
+            "tests": [
+              {
+                "file": "check-tree-shared-tokens.test.ts",
+                "text": "tokens-88b-er-beforeDirective"
+              }
+            ]
+          },
+          {
+            "case": "Read whitespace after a directive cut stays in its fragment.",
+            "tests": [
+              {
+                "file": "check-tree-shared-tokens.test.ts",
+                "text": "tokens-88b-er-afterDirective"
+              }
+            ]
+          },
+          {
+            "case": "Read whitespace before a comment region stays in its fragment.",
+            "tests": [
+              {
+                "file": "check-tree-shared-tokens.test.ts",
+                "text": "tokens-88b-er-beforeComment"
+              }
+            ]
+          },
+          {
+            "case": "Read whitespace after a comment region stays in its fragment.",
+            "tests": [
+              {
+                "file": "check-tree-shared-tokens.test.ts",
+                "text": "tokens-88b-er-afterComment"
+              }
+            ]
+          }
+        ]
+      }
+    },
+    {
+      "block": "packages/parser/docs/tokens.md:d51bb081e004",
+      "diagrams": ["state"],
+      "about": "This holds also where a directive, a comment region, or an i",
+      "judgment": {
+        "status": "shown",
+        "cases": [
+          {
+            "case": "Read whitespace before a directive cut stays in its fragment.",
+            "tests": [
+              {
+                "file": "check-tree-shared-tokens.test.ts",
+                "text": "tokens-88b-state-beforeDirective"
+              }
+            ]
+          },
+          {
+            "case": "Read whitespace after a directive cut stays in its fragment.",
+            "tests": [
+              {
+                "file": "check-tree-shared-tokens.test.ts",
+                "text": "tokens-88b-state-afterDirective"
+              }
+            ]
+          },
+          {
+            "case": "Read whitespace before an ignored semicolon stays in its fragment.",
+            "tests": [
+              {
+                "file": "check-tree-shared-tokens.test.ts",
+                "text": "tokens-88b-state-beforeIgnoredSemicolon"
+              }
+            ]
+          },
+          {
+            "case": "Read whitespace after an ignored semicolon stays in its fragment.",
+            "tests": [
+              {
+                "file": "check-tree-shared-tokens.test.ts",
+                "text": "tokens-88b-state-afterIgnoredSemicolon"
+              }
+            ]
+          },
+          {
+            "case": "Read whitespace before a comment region stays in its fragment.",
+            "tests": [
+              {
+                "file": "check-tree-shared-tokens.test.ts",
+                "text": "tokens-88b-state-beforeComment"
+              }
+            ]
+          },
+          {
+            "case": "Read whitespace after a comment region stays in its fragment.",
+            "tests": [
+              {
+                "file": "check-tree-shared-tokens.test.ts",
+                "text": "tokens-88b-state-afterComment"
+              }
+            ]
+          }
+        ]
+      }
+    },
+    {
+      "block": "packages/parser/docs/tokens.md:43afd371383a",
+      "diagrams": ["agentflow", "er", "state"],
+      "about": "This holds for the text that mermaid.js reads as a value. A ",
       "judgment": {
         "status": "not-shown",
         "reason": "rule-misses-condition",
         "note": "state/db-composite-id-terminal-after-empty-string: add one RawText token of the unread space at [42,43] between the units of StateIgnoredText, with its value/range/loc matching the unchanged input and the original ignored-text node unchanged. The baseline returned []; checkTree() returned []. RawText is used by state and an unenclosed whitespace-only fragment has that kind's spelling. er: er/gram-empty-backquotes-run-across-line-feed: insert a RawText token with range [23,26] and matching loc/value over the whitespace between units of an IgnoredText node, preserving the node value. checkTree() returned []. agentflow: agentflow/db-connector-whitespace-title, in the complete fixed whitespace-only quoted-label variant cut by directives x and y: change only the middle whitespace-only StringFragment to RawText, preserving its value/range/loc, the label value and the complete input. The baseline returned []; checkTree() returned []. The quoted value requires StringFragment at that position, but the label-kind check also accepts RawText."
+      }
+    },
+    {
+      "block": "packages/parser/docs/tokens.md:b6d483b66c06",
+      "diagrams": ["agentflow", "er", "state"],
+      "about": "The diagram documents state, at each position, which text me",
+      "judgment": {
+        "status": "no-condition",
+        "kind": "pointer",
+        "note": "It points to the diagram documents for which text mermaid.js reads as a value at each position."
       }
     },
     {
@@ -11721,9 +12619,24 @@
       }
     },
     {
-      "block": "packages/parser/docs/tokens.md:c83f840c60f4",
+      "block": "packages/parser/docs/tokens.md:115187f18c1c",
       "diagrams": ["error"],
-      "about": "The tokens of a value cover the text that mermaid.js reads as that value: the\nfi",
+      "about": "The tokens of a value cover the text that mermaid.js reads a",
+      "judgment": {
+        "status": "no-condition",
+        "kind": "not-in-diagram",
+        "note": "ErrorDiagram has no value nodes, so no text of its tree is read as a value.",
+        "documents": [
+          "packages/spec/docs/common.md",
+          "packages/spec/docs/ast.md",
+          "packages/parser/docs/tokens.md"
+        ]
+      }
+    },
+    {
+      "block": "packages/parser/docs/tokens.md:52a098cc4b1d",
+      "diagrams": ["error"],
+      "about": "Whitespace and line terminators that mermaid.js does not rea",
       "judgment": {
         "status": "shown",
         "cases": [
@@ -11737,6 +12650,46 @@
             ]
           }
         ]
+      }
+    },
+    {
+      "block": "packages/parser/docs/tokens.md:d51bb081e004",
+      "diagrams": ["error"],
+      "about": "This holds also where a directive, a comment region, or an i",
+      "judgment": {
+        "status": "no-condition",
+        "kind": "not-in-diagram",
+        "note": "ErrorDiagram has no value nodes, so no text of its tree is read as a value.",
+        "documents": [
+          "packages/spec/docs/common.md",
+          "packages/spec/docs/ast.md",
+          "packages/parser/docs/tokens.md"
+        ]
+      }
+    },
+    {
+      "block": "packages/parser/docs/tokens.md:43afd371383a",
+      "diagrams": ["error"],
+      "about": "This holds for the text that mermaid.js reads as a value. A ",
+      "judgment": {
+        "status": "no-condition",
+        "kind": "not-in-diagram",
+        "note": "None of the named documents defines a node of text that mermaid.js does not read, whose tokens and inter-unit whitespace this block describes.",
+        "documents": [
+          "packages/spec/docs/common.md",
+          "packages/spec/docs/ast.md",
+          "packages/parser/docs/tokens.md"
+        ]
+      }
+    },
+    {
+      "block": "packages/parser/docs/tokens.md:b6d483b66c06",
+      "diagrams": ["error"],
+      "about": "The diagram documents state, at each position, which text me",
+      "judgment": {
+        "status": "no-condition",
+        "kind": "pointer",
+        "note": "It points to the diagram documents for which text mermaid.js reads as a value at each position."
       }
     },
     {
@@ -15048,9 +16001,9 @@
       }
     },
     {
-      "block": "packages/parser/docs/tokens.md:c83f840c60f4",
+      "block": "packages/parser/docs/tokens.md:115187f18c1c",
       "diagrams": ["xychart"],
-      "about": "The tokens of a value cover the text that mermaid.js reads as that value: the\nfi",
+      "about": "The tokens of a value cover the text that mermaid.js reads a",
       "judgment": {
         "status": "shown",
         "cases": [
@@ -15098,7 +16051,17 @@
                 "text": "tokens-extra-88-whitespace-kind-xychart"
               }
             ]
-          },
+          }
+        ]
+      }
+    },
+    {
+      "block": "packages/parser/docs/tokens.md:52a098cc4b1d",
+      "diagrams": ["xychart"],
+      "about": "Whitespace and line terminators that mermaid.js does not rea",
+      "judgment": {
+        "status": "shown",
+        "cases": [
           {
             "case": "Whitespace not read as a value belongs to no token.",
             "tests": [
@@ -15111,7 +16074,17 @@
                 "text": "tokens-extra-nonread-white-hand-xychart"
               }
             ]
-          },
+          }
+        ]
+      }
+    },
+    {
+      "block": "packages/parser/docs/tokens.md:d51bb081e004",
+      "diagrams": ["xychart"],
+      "about": "This holds also where a directive, a comment region, or an i",
+      "judgment": {
+        "status": "shown",
+        "cases": [
           {
             "case": "Read whitespace next to a directive cut stays in its fragment.",
             "tests": [
@@ -15152,6 +16125,32 @@
             ]
           }
         ]
+      }
+    },
+    {
+      "block": "packages/parser/docs/tokens.md:43afd371383a",
+      "diagrams": ["xychart"],
+      "about": "This holds for the text that mermaid.js reads as a value. A ",
+      "judgment": {
+        "status": "no-condition",
+        "kind": "not-in-diagram",
+        "note": "None of the named documents defines a node of text that mermaid.js does not read, whose tokens and inter-unit whitespace this block describes.",
+        "documents": [
+          "packages/spec/docs/diagrams/xychart.md",
+          "packages/spec/docs/ast/xychart.md",
+          "packages/parser/docs/tokens/xychart.md",
+          "packages/parser/docs/tokens.md"
+        ]
+      }
+    },
+    {
+      "block": "packages/parser/docs/tokens.md:b6d483b66c06",
+      "diagrams": ["xychart"],
+      "about": "The diagram documents state, at each position, which text me",
+      "judgment": {
+        "status": "no-condition",
+        "kind": "pointer",
+        "note": "It points to the diagram documents for which text mermaid.js reads as a value at each position."
       }
     },
     {
@@ -16731,9 +17730,9 @@
       }
     },
     {
-      "block": "packages/parser/docs/tokens.md:c83f840c60f4",
+      "block": "packages/parser/docs/tokens.md:115187f18c1c",
       "diagrams": ["architecture"],
-      "about": "The tokens of a value cover the text that mermaid.js reads as that value: the\nfirst token starts whe",
+      "about": "The tokens of a value cover the text that mermaid.js reads a",
       "judgment": {
         "status": "shown",
         "cases": [
@@ -16752,15 +17751,6 @@
               {
                 "file": "check-tree-shared-tokens.test.ts",
                 "text": "tokens-extra-88-architecture-read-leading-space"
-              }
-            ]
-          },
-          {
-            "case": "keyword trivia",
-            "tests": [
-              {
-                "file": "check-tree-shared-tokens.test.ts",
-                "text": "tokens-extra-88-architecture-keyword-trivia"
               }
             ]
           },
@@ -16792,6 +17782,44 @@
             ]
           },
           {
+            "case": "read trailing space",
+            "tests": [
+              {
+                "file": "check-tree-shared-tokens.test.ts",
+                "text": "tokens-extra-88-architecture-read-trailing-space"
+              }
+            ]
+          }
+        ]
+      }
+    },
+    {
+      "block": "packages/parser/docs/tokens.md:52a098cc4b1d",
+      "diagrams": ["architecture"],
+      "about": "Whitespace and line terminators that mermaid.js does not rea",
+      "judgment": {
+        "status": "shown",
+        "cases": [
+          {
+            "case": "keyword trivia",
+            "tests": [
+              {
+                "file": "check-tree-shared-tokens.test.ts",
+                "text": "tokens-extra-88-architecture-keyword-trivia"
+              }
+            ]
+          }
+        ]
+      }
+    },
+    {
+      "block": "packages/parser/docs/tokens.md:d51bb081e004",
+      "diagrams": ["architecture"],
+      "about": "This holds also where a directive, a comment region, or an i",
+      "judgment": {
+        "status": "shown",
+        "cases": [
+          {
             "case": "read whitespace before Comment",
             "tests": [
               {
@@ -16815,15 +17843,6 @@
               {
                 "file": "check-tree-shared-tokens.test.ts",
                 "text": "tokens-extra-88-architecture-read-whitespace-after-Directive"
-              }
-            ]
-          },
-          {
-            "case": "read trailing space",
-            "tests": [
-              {
-                "file": "check-tree-shared-tokens.test.ts",
-                "text": "tokens-extra-88-architecture-read-trailing-space"
               }
             ]
           },
@@ -16858,21 +17877,41 @@
       }
     },
     {
-      "block": "packages/parser/docs/tokens.md:c83f840c60f4",
-      "diagrams": ["block"],
-      "about": "The tokens of a value cover the text that mermaid.js reads as that value: the\nfirst token starts whe",
+      "block": "packages/parser/docs/tokens.md:43afd371383a",
+      "diagrams": ["architecture"],
+      "about": "This holds for the text that mermaid.js reads as a value. A ",
       "judgment": {
         "status": "shown",
         "cases": [
           {
-            "case": "keyword trivia",
+            "case": "A node of text that mermaid.js does not read has the tokens of its units.",
             "tests": [
               {
                 "file": "check-tree-shared-tokens.test.ts",
-                "text": "tokens-extra-88-block-keyword-trivia"
+                "text": "tokens-88b-architecture-ignored-unit-token"
               }
             ]
-          },
+          }
+        ]
+      }
+    },
+    {
+      "block": "packages/parser/docs/tokens.md:b6d483b66c06",
+      "diagrams": ["architecture"],
+      "about": "The diagram documents state, at each position, which text me",
+      "judgment": {
+        "status": "no-condition",
+        "kind": "pointer",
+        "note": "It points to the diagram documents for which text mermaid.js reads as a value at each position."
+      }
+    },
+    {
+      "block": "packages/parser/docs/tokens.md:115187f18c1c",
+      "diagrams": ["block"],
+      "about": "The tokens of a value cover the text that mermaid.js reads a",
+      "judgment": {
+        "status": "shown",
+        "cases": [
           {
             "case": "first read character",
             "tests": [
@@ -16901,24 +17940,6 @@
             ]
           },
           {
-            "case": "read whitespace before Comment",
-            "tests": [
-              {
-                "file": "check-tree-shared-tokens.test.ts",
-                "text": "tokens-extra-88-block-read-whitespace-before-Comment"
-              }
-            ]
-          },
-          {
-            "case": "read whitespace before Directive",
-            "tests": [
-              {
-                "file": "check-tree-shared-tokens.test.ts",
-                "text": "tokens-extra-88-block-read-whitespace-before-Directive"
-              }
-            ]
-          },
-          {
             "case": "read leading space",
             "tests": [
               {
@@ -16942,6 +17963,53 @@
               {
                 "file": "check-tree-shared-tokens.test.ts",
                 "text": "tokens-extra-88-block-whitespace-only-kind"
+              }
+            ]
+          }
+        ]
+      }
+    },
+    {
+      "block": "packages/parser/docs/tokens.md:52a098cc4b1d",
+      "diagrams": ["block"],
+      "about": "Whitespace and line terminators that mermaid.js does not rea",
+      "judgment": {
+        "status": "shown",
+        "cases": [
+          {
+            "case": "keyword trivia",
+            "tests": [
+              {
+                "file": "check-tree-shared-tokens.test.ts",
+                "text": "tokens-extra-88-block-keyword-trivia"
+              }
+            ]
+          }
+        ]
+      }
+    },
+    {
+      "block": "packages/parser/docs/tokens.md:d51bb081e004",
+      "diagrams": ["block"],
+      "about": "This holds also where a directive, a comment region, or an i",
+      "judgment": {
+        "status": "shown",
+        "cases": [
+          {
+            "case": "read whitespace before Comment",
+            "tests": [
+              {
+                "file": "check-tree-shared-tokens.test.ts",
+                "text": "tokens-extra-88-block-read-whitespace-before-Comment"
+              }
+            ]
+          },
+          {
+            "case": "read whitespace before Directive",
+            "tests": [
+              {
+                "file": "check-tree-shared-tokens.test.ts",
+                "text": "tokens-extra-88-block-read-whitespace-before-Directive"
               }
             ]
           },
@@ -16985,21 +18053,38 @@
       }
     },
     {
-      "block": "packages/parser/docs/tokens.md:c83f840c60f4",
+      "block": "packages/parser/docs/tokens.md:43afd371383a",
+      "diagrams": ["block"],
+      "about": "This holds for the text that mermaid.js reads as a value. A ",
+      "judgment": {
+        "status": "no-condition",
+        "kind": "not-in-diagram",
+        "note": "None of the named documents defines a node of text that mermaid.js does not read, whose tokens and inter-unit whitespace this block describes.",
+        "documents": [
+          "packages/spec/docs/diagrams/block.md",
+          "packages/spec/docs/ast/block.md",
+          "packages/parser/docs/tokens/block.md",
+          "packages/parser/docs/tokens.md"
+        ]
+      }
+    },
+    {
+      "block": "packages/parser/docs/tokens.md:b6d483b66c06",
+      "diagrams": ["block"],
+      "about": "The diagram documents state, at each position, which text me",
+      "judgment": {
+        "status": "no-condition",
+        "kind": "pointer",
+        "note": "It points to the diagram documents for which text mermaid.js reads as a value at each position."
+      }
+    },
+    {
+      "block": "packages/parser/docs/tokens.md:115187f18c1c",
       "diagrams": ["c4"],
-      "about": "The tokens of a value cover the text that mermaid.js reads as that value: the\nfirst token starts whe",
+      "about": "The tokens of a value cover the text that mermaid.js reads a",
       "judgment": {
         "status": "shown",
         "cases": [
-          {
-            "case": "keyword trivia",
-            "tests": [
-              {
-                "file": "check-tree-shared-tokens.test.ts",
-                "text": "tokens-extra-88-c4-keyword-trivia"
-              }
-            ]
-          },
           {
             "case": "read leading space",
             "tests": [
@@ -17046,20 +18131,49 @@
             ]
           },
           {
-            "case": "read whitespace before Comment",
-            "tests": [
-              {
-                "file": "check-tree-shared-tokens.test.ts",
-                "text": "tokens-extra-88-c4-read-whitespace-before-Comment"
-              }
-            ]
-          },
-          {
             "case": "last read character",
             "tests": [
               {
                 "file": "check-tree-shared-tokens.test.ts",
                 "text": "tokens-extra-88-c4-last-read-character"
+              }
+            ]
+          }
+        ]
+      }
+    },
+    {
+      "block": "packages/parser/docs/tokens.md:52a098cc4b1d",
+      "diagrams": ["c4"],
+      "about": "Whitespace and line terminators that mermaid.js does not rea",
+      "judgment": {
+        "status": "shown",
+        "cases": [
+          {
+            "case": "keyword trivia",
+            "tests": [
+              {
+                "file": "check-tree-shared-tokens.test.ts",
+                "text": "tokens-extra-88-c4-keyword-trivia"
+              }
+            ]
+          }
+        ]
+      }
+    },
+    {
+      "block": "packages/parser/docs/tokens.md:d51bb081e004",
+      "diagrams": ["c4"],
+      "about": "This holds also where a directive, a comment region, or an i",
+      "judgment": {
+        "status": "shown",
+        "cases": [
+          {
+            "case": "read whitespace before Comment",
+            "tests": [
+              {
+                "file": "check-tree-shared-tokens.test.ts",
+                "text": "tokens-extra-88-c4-read-whitespace-before-Comment"
               }
             ]
           },
@@ -17112,9 +18226,35 @@
       }
     },
     {
-      "block": "packages/parser/docs/tokens.md:c83f840c60f4",
+      "block": "packages/parser/docs/tokens.md:43afd371383a",
+      "diagrams": ["c4"],
+      "about": "This holds for the text that mermaid.js reads as a value. A ",
+      "judgment": {
+        "status": "no-condition",
+        "kind": "not-in-diagram",
+        "note": "None of the named documents defines a node of text that mermaid.js does not read, whose tokens and inter-unit whitespace this block describes.",
+        "documents": [
+          "packages/spec/docs/diagrams/c4.md",
+          "packages/spec/docs/ast/c4.md",
+          "packages/parser/docs/tokens/c4.md",
+          "packages/parser/docs/tokens.md"
+        ]
+      }
+    },
+    {
+      "block": "packages/parser/docs/tokens.md:b6d483b66c06",
+      "diagrams": ["c4"],
+      "about": "The diagram documents state, at each position, which text me",
+      "judgment": {
+        "status": "no-condition",
+        "kind": "pointer",
+        "note": "It points to the diagram documents for which text mermaid.js reads as a value at each position."
+      }
+    },
+    {
+      "block": "packages/parser/docs/tokens.md:115187f18c1c",
       "diagrams": ["class"],
-      "about": "The tokens of a value cover the text that mermaid.js reads as that value: the\nfirst token starts whe",
+      "about": "The tokens of a value cover the text that mermaid.js reads a",
       "judgment": {
         "status": "not-shown",
         "reason": "rule-misses-condition",
@@ -17122,21 +18262,124 @@
       }
     },
     {
-      "block": "packages/parser/docs/tokens.md:c83f840c60f4",
-      "diagrams": ["cynefin"],
-      "about": "The tokens of a value cover the text that mermaid.js reads as that value: the\nfirst token starts whe",
+      "block": "packages/parser/docs/tokens.md:52a098cc4b1d",
+      "diagrams": ["class"],
+      "about": "Whitespace and line terminators that mermaid.js does not rea",
       "judgment": {
         "status": "shown",
         "cases": [
           {
-            "case": "keyword trivia",
+            "case": "Whitespace not read as a value belongs to no token.",
             "tests": [
               {
                 "file": "check-tree-shared-tokens.test.ts",
-                "text": "tokens-extra-88-cynefin-keyword-trivia"
+                "text": "tokens-88b-class-unread"
+              }
+            ]
+          }
+        ]
+      }
+    },
+    {
+      "block": "packages/parser/docs/tokens.md:d51bb081e004",
+      "diagrams": ["class"],
+      "about": "This holds also where a directive, a comment region, or an i",
+      "judgment": {
+        "status": "shown",
+        "cases": [
+          {
+            "case": "Read whitespace before a directive cut stays in its fragment.",
+            "tests": [
+              {
+                "file": "check-tree-shared-tokens.test.ts",
+                "text": "tokens-88b-class-beforeDirective"
               }
             ]
           },
+          {
+            "case": "Read whitespace after a directive cut stays in its fragment.",
+            "tests": [
+              {
+                "file": "check-tree-shared-tokens.test.ts",
+                "text": "tokens-88b-class-afterDirective"
+              }
+            ]
+          },
+          {
+            "case": "Read whitespace before an ignored semicolon stays in its fragment.",
+            "tests": [
+              {
+                "file": "check-tree-shared-tokens.test.ts",
+                "text": "tokens-88b-class-beforeIgnoredSemicolon"
+              }
+            ]
+          },
+          {
+            "case": "Read whitespace after an ignored semicolon stays in its fragment.",
+            "tests": [
+              {
+                "file": "check-tree-shared-tokens.test.ts",
+                "text": "tokens-88b-class-afterIgnoredSemicolon"
+              }
+            ]
+          },
+          {
+            "case": "Read whitespace before a comment region stays in its fragment.",
+            "tests": [
+              {
+                "file": "check-tree-shared-tokens.test.ts",
+                "text": "tokens-88b-class-beforeComment"
+              }
+            ]
+          },
+          {
+            "case": "Read whitespace after a comment region stays in its fragment.",
+            "tests": [
+              {
+                "file": "check-tree-shared-tokens.test.ts",
+                "text": "tokens-88b-class-afterComment"
+              }
+            ]
+          }
+        ]
+      }
+    },
+    {
+      "block": "packages/parser/docs/tokens.md:43afd371383a",
+      "diagrams": ["class"],
+      "about": "This holds for the text that mermaid.js reads as a value. A ",
+      "judgment": {
+        "status": "shown",
+        "cases": [
+          {
+            "case": "A node of text that mermaid.js does not read has the tokens of its units.",
+            "tests": [
+              {
+                "file": "check-tree-shared-tokens.test.ts",
+                "text": "tokens-88b-class-ignored-unit-token"
+              }
+            ]
+          }
+        ]
+      }
+    },
+    {
+      "block": "packages/parser/docs/tokens.md:b6d483b66c06",
+      "diagrams": ["class"],
+      "about": "The diagram documents state, at each position, which text me",
+      "judgment": {
+        "status": "no-condition",
+        "kind": "pointer",
+        "note": "It points to the diagram documents for which text mermaid.js reads as a value at each position."
+      }
+    },
+    {
+      "block": "packages/parser/docs/tokens.md:115187f18c1c",
+      "diagrams": ["cynefin"],
+      "about": "The tokens of a value cover the text that mermaid.js reads a",
+      "judgment": {
+        "status": "shown",
+        "cases": [
           {
             "case": "last read character",
             "tests": [
@@ -17174,15 +18417,6 @@
             ]
           },
           {
-            "case": "read whitespace before Comment",
-            "tests": [
-              {
-                "file": "check-tree-shared-tokens.test.ts",
-                "text": "tokens-extra-88-cynefin-read-whitespace-before-Comment"
-              }
-            ]
-          },
-          {
             "case": "first read character",
             "tests": [
               {
@@ -17197,6 +18431,44 @@
               {
                 "file": "check-tree-shared-tokens.test.ts",
                 "text": "tokens-extra-88-cynefin-read-trailing-space"
+              }
+            ]
+          }
+        ]
+      }
+    },
+    {
+      "block": "packages/parser/docs/tokens.md:52a098cc4b1d",
+      "diagrams": ["cynefin"],
+      "about": "Whitespace and line terminators that mermaid.js does not rea",
+      "judgment": {
+        "status": "shown",
+        "cases": [
+          {
+            "case": "keyword trivia",
+            "tests": [
+              {
+                "file": "check-tree-shared-tokens.test.ts",
+                "text": "tokens-extra-88-cynefin-keyword-trivia"
+              }
+            ]
+          }
+        ]
+      }
+    },
+    {
+      "block": "packages/parser/docs/tokens.md:d51bb081e004",
+      "diagrams": ["cynefin"],
+      "about": "This holds also where a directive, a comment region, or an i",
+      "judgment": {
+        "status": "shown",
+        "cases": [
+          {
+            "case": "read whitespace before Comment",
+            "tests": [
+              {
+                "file": "check-tree-shared-tokens.test.ts",
+                "text": "tokens-extra-88-cynefin-read-whitespace-before-Comment"
               }
             ]
           },
@@ -17249,21 +18521,41 @@
       }
     },
     {
-      "block": "packages/parser/docs/tokens.md:c83f840c60f4",
-      "diagrams": ["eventmodeling"],
-      "about": "The tokens of a value cover the text that mermaid.js reads as that value: the\nfirst token starts whe",
+      "block": "packages/parser/docs/tokens.md:43afd371383a",
+      "diagrams": ["cynefin"],
+      "about": "This holds for the text that mermaid.js reads as a value. A ",
       "judgment": {
         "status": "shown",
         "cases": [
           {
-            "case": "keyword trivia",
+            "case": "A node of text that mermaid.js does not read has the tokens of its units.",
             "tests": [
               {
                 "file": "check-tree-shared-tokens.test.ts",
-                "text": "tokens-extra-88-eventmodeling-keyword-trivia"
+                "text": "tokens-88b-cynefin-ignored-unit-token"
               }
             ]
-          },
+          }
+        ]
+      }
+    },
+    {
+      "block": "packages/parser/docs/tokens.md:b6d483b66c06",
+      "diagrams": ["cynefin"],
+      "about": "The diagram documents state, at each position, which text me",
+      "judgment": {
+        "status": "no-condition",
+        "kind": "pointer",
+        "note": "It points to the diagram documents for which text mermaid.js reads as a value at each position."
+      }
+    },
+    {
+      "block": "packages/parser/docs/tokens.md:115187f18c1c",
+      "diagrams": ["eventmodeling"],
+      "about": "The tokens of a value cover the text that mermaid.js reads a",
+      "judgment": {
+        "status": "shown",
+        "cases": [
           {
             "case": "last read character",
             "tests": [
@@ -17328,20 +18620,49 @@
             ]
           },
           {
-            "case": "read whitespace before Comment",
-            "tests": [
-              {
-                "file": "check-tree-shared-tokens.test.ts",
-                "text": "tokens-extra-88-eventmodeling-read-whitespace-before-Comment"
-              }
-            ]
-          },
-          {
             "case": "read trailing space",
             "tests": [
               {
                 "file": "check-tree-shared-tokens.test.ts",
                 "text": "tokens-extra-88-eventmodeling-read-trailing-space"
+              }
+            ]
+          }
+        ]
+      }
+    },
+    {
+      "block": "packages/parser/docs/tokens.md:52a098cc4b1d",
+      "diagrams": ["eventmodeling"],
+      "about": "Whitespace and line terminators that mermaid.js does not rea",
+      "judgment": {
+        "status": "shown",
+        "cases": [
+          {
+            "case": "keyword trivia",
+            "tests": [
+              {
+                "file": "check-tree-shared-tokens.test.ts",
+                "text": "tokens-extra-88-eventmodeling-keyword-trivia"
+              }
+            ]
+          }
+        ]
+      }
+    },
+    {
+      "block": "packages/parser/docs/tokens.md:d51bb081e004",
+      "diagrams": ["eventmodeling"],
+      "about": "This holds also where a directive, a comment region, or an i",
+      "judgment": {
+        "status": "shown",
+        "cases": [
+          {
+            "case": "read whitespace before Comment",
+            "tests": [
+              {
+                "file": "check-tree-shared-tokens.test.ts",
+                "text": "tokens-extra-88-eventmodeling-read-whitespace-before-Comment"
               }
             ]
           },
@@ -17394,9 +18715,38 @@
       }
     },
     {
-      "block": "packages/parser/docs/tokens.md:c83f840c60f4",
+      "block": "packages/parser/docs/tokens.md:43afd371383a",
+      "diagrams": ["eventmodeling"],
+      "about": "This holds for the text that mermaid.js reads as a value. A ",
+      "judgment": {
+        "status": "shown",
+        "cases": [
+          {
+            "case": "A node of text that mermaid.js does not read has the tokens of its units.",
+            "tests": [
+              {
+                "file": "check-tree-shared-tokens.test.ts",
+                "text": "tokens-88b-eventmodeling-ignored-unit-token"
+              }
+            ]
+          }
+        ]
+      }
+    },
+    {
+      "block": "packages/parser/docs/tokens.md:b6d483b66c06",
+      "diagrams": ["eventmodeling"],
+      "about": "The diagram documents state, at each position, which text me",
+      "judgment": {
+        "status": "no-condition",
+        "kind": "pointer",
+        "note": "It points to the diagram documents for which text mermaid.js reads as a value at each position."
+      }
+    },
+    {
+      "block": "packages/parser/docs/tokens.md:115187f18c1c",
       "diagrams": ["flowchart"],
-      "about": "The tokens of a value cover the text that mermaid.js reads as that value: the\nfirst token starts whe",
+      "about": "The tokens of a value cover the text that mermaid.js reads a",
       "judgment": {
         "status": "not-shown",
         "reason": "rule-misses-condition",
@@ -17404,21 +18754,124 @@
       }
     },
     {
-      "block": "packages/parser/docs/tokens.md:c83f840c60f4",
-      "diagrams": ["gantt"],
-      "about": "The tokens of a value cover the text that mermaid.js reads as that value: the\nfirst token starts whe",
+      "block": "packages/parser/docs/tokens.md:52a098cc4b1d",
+      "diagrams": ["flowchart"],
+      "about": "Whitespace and line terminators that mermaid.js does not rea",
       "judgment": {
         "status": "shown",
         "cases": [
           {
-            "case": "keyword trivia",
+            "case": "Whitespace not read as a value belongs to no token.",
             "tests": [
               {
                 "file": "check-tree-shared-tokens.test.ts",
-                "text": "tokens-extra-88-gantt-keyword-trivia"
+                "text": "tokens-88b-flowchart-unread"
+              }
+            ]
+          }
+        ]
+      }
+    },
+    {
+      "block": "packages/parser/docs/tokens.md:d51bb081e004",
+      "diagrams": ["flowchart"],
+      "about": "This holds also where a directive, a comment region, or an i",
+      "judgment": {
+        "status": "shown",
+        "cases": [
+          {
+            "case": "Read whitespace before a directive cut stays in its fragment.",
+            "tests": [
+              {
+                "file": "check-tree-shared-tokens.test.ts",
+                "text": "tokens-88b-flowchart-beforeDirective"
               }
             ]
           },
+          {
+            "case": "Read whitespace after a directive cut stays in its fragment.",
+            "tests": [
+              {
+                "file": "check-tree-shared-tokens.test.ts",
+                "text": "tokens-88b-flowchart-afterDirective"
+              }
+            ]
+          },
+          {
+            "case": "Read whitespace before an ignored semicolon stays in its fragment.",
+            "tests": [
+              {
+                "file": "check-tree-shared-tokens.test.ts",
+                "text": "tokens-88b-flowchart-beforeIgnoredSemicolon"
+              }
+            ]
+          },
+          {
+            "case": "Read whitespace after an ignored semicolon stays in its fragment.",
+            "tests": [
+              {
+                "file": "check-tree-shared-tokens.test.ts",
+                "text": "tokens-88b-flowchart-afterIgnoredSemicolon"
+              }
+            ]
+          },
+          {
+            "case": "Read whitespace before a comment region stays in its fragment.",
+            "tests": [
+              {
+                "file": "check-tree-shared-tokens.test.ts",
+                "text": "tokens-88b-flowchart-beforeComment"
+              }
+            ]
+          },
+          {
+            "case": "Read whitespace after a comment region stays in its fragment.",
+            "tests": [
+              {
+                "file": "check-tree-shared-tokens.test.ts",
+                "text": "tokens-88b-flowchart-afterComment"
+              }
+            ]
+          }
+        ]
+      }
+    },
+    {
+      "block": "packages/parser/docs/tokens.md:43afd371383a",
+      "diagrams": ["flowchart"],
+      "about": "This holds for the text that mermaid.js reads as a value. A ",
+      "judgment": {
+        "status": "shown",
+        "cases": [
+          {
+            "case": "A node of text that mermaid.js does not read has the tokens of its units.",
+            "tests": [
+              {
+                "file": "check-tree-shared-tokens.test.ts",
+                "text": "tokens-88b-flowchart-ignored-unit-token"
+              }
+            ]
+          }
+        ]
+      }
+    },
+    {
+      "block": "packages/parser/docs/tokens.md:b6d483b66c06",
+      "diagrams": ["flowchart"],
+      "about": "The diagram documents state, at each position, which text me",
+      "judgment": {
+        "status": "no-condition",
+        "kind": "pointer",
+        "note": "It points to the diagram documents for which text mermaid.js reads as a value at each position."
+      }
+    },
+    {
+      "block": "packages/parser/docs/tokens.md:115187f18c1c",
+      "diagrams": ["gantt"],
+      "about": "The tokens of a value cover the text that mermaid.js reads a",
+      "judgment": {
+        "status": "shown",
+        "cases": [
           {
             "case": "first read character",
             "tests": [
@@ -17447,15 +18900,6 @@
             ]
           },
           {
-            "case": "read whitespace before Comment",
-            "tests": [
-              {
-                "file": "check-tree-shared-tokens.test.ts",
-                "text": "tokens-extra-88-gantt-read-whitespace-before-Comment"
-              }
-            ]
-          },
-          {
             "case": "read leading space",
             "tests": [
               {
@@ -17470,6 +18914,53 @@
               {
                 "file": "check-tree-shared-tokens.test.ts",
                 "text": "tokens-extra-88-gantt-read-trailing-line-ending"
+              }
+            ]
+          },
+          {
+            "case": "88 whitespace kind gantt",
+            "tests": [
+              {
+                "file": "check-tree-shared-tokens.test.ts",
+                "text": "tokens-extra-88-whitespace-kind-gantt"
+              }
+            ]
+          }
+        ]
+      }
+    },
+    {
+      "block": "packages/parser/docs/tokens.md:52a098cc4b1d",
+      "diagrams": ["gantt"],
+      "about": "Whitespace and line terminators that mermaid.js does not rea",
+      "judgment": {
+        "status": "shown",
+        "cases": [
+          {
+            "case": "keyword trivia",
+            "tests": [
+              {
+                "file": "check-tree-shared-tokens.test.ts",
+                "text": "tokens-extra-88-gantt-keyword-trivia"
+              }
+            ]
+          }
+        ]
+      }
+    },
+    {
+      "block": "packages/parser/docs/tokens.md:d51bb081e004",
+      "diagrams": ["gantt"],
+      "about": "This holds also where a directive, a comment region, or an i",
+      "judgment": {
+        "status": "shown",
+        "cases": [
+          {
+            "case": "read whitespace before Comment",
+            "tests": [
+              {
+                "file": "check-tree-shared-tokens.test.ts",
+                "text": "tokens-extra-88-gantt-read-whitespace-before-Comment"
               }
             ]
           },
@@ -17510,15 +19001,6 @@
             ]
           },
           {
-            "case": "88 whitespace kind gantt",
-            "tests": [
-              {
-                "file": "check-tree-shared-tokens.test.ts",
-                "text": "tokens-extra-88-whitespace-kind-gantt"
-              }
-            ]
-          },
-          {
             "case": "Whitespace read before an ignored semicolon belongs to the preceding fragment.",
             "tests": [
               {
@@ -17540,9 +19022,35 @@
       }
     },
     {
-      "block": "packages/parser/docs/tokens.md:c83f840c60f4",
+      "block": "packages/parser/docs/tokens.md:43afd371383a",
+      "diagrams": ["gantt"],
+      "about": "This holds for the text that mermaid.js reads as a value. A ",
+      "judgment": {
+        "status": "no-condition",
+        "kind": "not-in-diagram",
+        "note": "None of the named documents defines a node of text that mermaid.js does not read, whose tokens and inter-unit whitespace this block describes.",
+        "documents": [
+          "packages/spec/docs/diagrams/gantt.md",
+          "packages/spec/docs/ast/gantt.md",
+          "packages/parser/docs/tokens/gantt.md",
+          "packages/parser/docs/tokens.md"
+        ]
+      }
+    },
+    {
+      "block": "packages/parser/docs/tokens.md:b6d483b66c06",
+      "diagrams": ["gantt"],
+      "about": "The diagram documents state, at each position, which text me",
+      "judgment": {
+        "status": "no-condition",
+        "kind": "pointer",
+        "note": "It points to the diagram documents for which text mermaid.js reads as a value at each position."
+      }
+    },
+    {
+      "block": "packages/parser/docs/tokens.md:115187f18c1c",
       "diagrams": ["gitgraph"],
-      "about": "The tokens of a value cover the text that mermaid.js reads as that value: the\nfirst token starts whe",
+      "about": "The tokens of a value cover the text that mermaid.js reads a",
       "judgment": {
         "status": "shown",
         "cases": [
@@ -17583,15 +19091,6 @@
             ]
           },
           {
-            "case": "keyword trivia",
-            "tests": [
-              {
-                "file": "check-tree-shared-tokens.test.ts",
-                "text": "tokens-extra-88-gitgraph-keyword-trivia"
-              }
-            ]
-          },
-          {
             "case": "first read character",
             "tests": [
               {
@@ -17600,6 +19099,44 @@
               }
             ]
           },
+          {
+            "case": "read trailing space",
+            "tests": [
+              {
+                "file": "check-tree-shared-tokens.test.ts",
+                "text": "tokens-extra-88-gitgraph-read-trailing-space"
+              }
+            ]
+          }
+        ]
+      }
+    },
+    {
+      "block": "packages/parser/docs/tokens.md:52a098cc4b1d",
+      "diagrams": ["gitgraph"],
+      "about": "Whitespace and line terminators that mermaid.js does not rea",
+      "judgment": {
+        "status": "shown",
+        "cases": [
+          {
+            "case": "keyword trivia",
+            "tests": [
+              {
+                "file": "check-tree-shared-tokens.test.ts",
+                "text": "tokens-extra-88-gitgraph-keyword-trivia"
+              }
+            ]
+          }
+        ]
+      }
+    },
+    {
+      "block": "packages/parser/docs/tokens.md:d51bb081e004",
+      "diagrams": ["gitgraph"],
+      "about": "This holds also where a directive, a comment region, or an i",
+      "judgment": {
+        "status": "shown",
+        "cases": [
           {
             "case": "read whitespace before Comment",
             "tests": [
@@ -17615,15 +19152,6 @@
               {
                 "file": "check-tree-shared-tokens.test.ts",
                 "text": "tokens-extra-88-gitgraph-read-whitespace-after-Comment"
-              }
-            ]
-          },
-          {
-            "case": "read trailing space",
-            "tests": [
-              {
-                "file": "check-tree-shared-tokens.test.ts",
-                "text": "tokens-extra-88-gitgraph-read-trailing-space"
               }
             ]
           },
@@ -17667,9 +19195,38 @@
       }
     },
     {
-      "block": "packages/parser/docs/tokens.md:c83f840c60f4",
+      "block": "packages/parser/docs/tokens.md:43afd371383a",
+      "diagrams": ["gitgraph"],
+      "about": "This holds for the text that mermaid.js reads as a value. A ",
+      "judgment": {
+        "status": "shown",
+        "cases": [
+          {
+            "case": "A node of text that mermaid.js does not read has the tokens of its units.",
+            "tests": [
+              {
+                "file": "check-tree-shared-tokens.test.ts",
+                "text": "tokens-88b-gitgraph-ignored-unit-token"
+              }
+            ]
+          }
+        ]
+      }
+    },
+    {
+      "block": "packages/parser/docs/tokens.md:b6d483b66c06",
+      "diagrams": ["gitgraph"],
+      "about": "The diagram documents state, at each position, which text me",
+      "judgment": {
+        "status": "no-condition",
+        "kind": "pointer",
+        "note": "It points to the diagram documents for which text mermaid.js reads as a value at each position."
+      }
+    },
+    {
+      "block": "packages/parser/docs/tokens.md:115187f18c1c",
       "diagrams": ["info"],
-      "about": "The tokens of a value cover the text that mermaid.js reads as that value: the\nfirst token starts whe",
+      "about": "The tokens of a value cover the text that mermaid.js reads a",
       "judgment": {
         "status": "shown",
         "cases": [
@@ -17710,15 +19267,6 @@
             ]
           },
           {
-            "case": "keyword trivia",
-            "tests": [
-              {
-                "file": "check-tree-shared-tokens.test.ts",
-                "text": "tokens-extra-88-info-keyword-trivia"
-              }
-            ]
-          },
-          {
             "case": "first read character",
             "tests": [
               {
@@ -17727,6 +19275,44 @@
               }
             ]
           },
+          {
+            "case": "read trailing space",
+            "tests": [
+              {
+                "file": "check-tree-shared-tokens.test.ts",
+                "text": "tokens-extra-88-info-read-trailing-space"
+              }
+            ]
+          }
+        ]
+      }
+    },
+    {
+      "block": "packages/parser/docs/tokens.md:52a098cc4b1d",
+      "diagrams": ["info"],
+      "about": "Whitespace and line terminators that mermaid.js does not rea",
+      "judgment": {
+        "status": "shown",
+        "cases": [
+          {
+            "case": "keyword trivia",
+            "tests": [
+              {
+                "file": "check-tree-shared-tokens.test.ts",
+                "text": "tokens-extra-88-info-keyword-trivia"
+              }
+            ]
+          }
+        ]
+      }
+    },
+    {
+      "block": "packages/parser/docs/tokens.md:d51bb081e004",
+      "diagrams": ["info"],
+      "about": "This holds also where a directive, a comment region, or an i",
+      "judgment": {
+        "status": "shown",
+        "cases": [
           {
             "case": "read whitespace before Comment",
             "tests": [
@@ -17764,15 +19350,6 @@
             ]
           },
           {
-            "case": "read trailing space",
-            "tests": [
-              {
-                "file": "check-tree-shared-tokens.test.ts",
-                "text": "tokens-extra-88-info-read-trailing-space"
-              }
-            ]
-          },
-          {
             "case": "read whitespace after IgnoredSemicolon",
             "tests": [
               {
@@ -17794,9 +19371,38 @@
       }
     },
     {
-      "block": "packages/parser/docs/tokens.md:c83f840c60f4",
+      "block": "packages/parser/docs/tokens.md:43afd371383a",
+      "diagrams": ["info"],
+      "about": "This holds for the text that mermaid.js reads as a value. A ",
+      "judgment": {
+        "status": "shown",
+        "cases": [
+          {
+            "case": "A node of text that mermaid.js does not read has the tokens of its units.",
+            "tests": [
+              {
+                "file": "check-tree-shared-tokens.test.ts",
+                "text": "tokens-88b-info-ignored-unit-token"
+              }
+            ]
+          }
+        ]
+      }
+    },
+    {
+      "block": "packages/parser/docs/tokens.md:b6d483b66c06",
+      "diagrams": ["info"],
+      "about": "The diagram documents state, at each position, which text me",
+      "judgment": {
+        "status": "no-condition",
+        "kind": "pointer",
+        "note": "It points to the diagram documents for which text mermaid.js reads as a value at each position."
+      }
+    },
+    {
+      "block": "packages/parser/docs/tokens.md:115187f18c1c",
       "diagrams": ["ishikawa"],
-      "about": "The tokens of a value cover the text that mermaid.js reads as that value: the\nfirst token starts whe",
+      "about": "The tokens of a value cover the text that mermaid.js reads a",
       "judgment": {
         "status": "shown",
         "cases": [
@@ -17826,22 +19432,42 @@
                 "text": "tokens-extra-88-ishikawa-read-trailing-space"
               }
             ]
-          },
-          {
-            "case": "read whitespace after IgnoredSemicolon",
-            "tests": [
-              {
-                "file": "check-tree-shared-tokens.test.ts",
-                "text": "tokens-extra-88-ishikawa-read-whitespace-after-IgnoredSemicolon"
-              }
-            ]
-          },
+          }
+        ]
+      }
+    },
+    {
+      "block": "packages/parser/docs/tokens.md:52a098cc4b1d",
+      "diagrams": ["ishikawa"],
+      "about": "Whitespace and line terminators that mermaid.js does not rea",
+      "judgment": {
+        "status": "shown",
+        "cases": [
           {
             "case": "keyword trivia",
             "tests": [
               {
                 "file": "check-tree-shared-tokens.test.ts",
                 "text": "tokens-extra-88-ishikawa-keyword-trivia"
+              }
+            ]
+          }
+        ]
+      }
+    },
+    {
+      "block": "packages/parser/docs/tokens.md:d51bb081e004",
+      "diagrams": ["ishikawa"],
+      "about": "This holds also where a directive, a comment region, or an i",
+      "judgment": {
+        "status": "shown",
+        "cases": [
+          {
+            "case": "read whitespace after IgnoredSemicolon",
+            "tests": [
+              {
+                "file": "check-tree-shared-tokens.test.ts",
+                "text": "tokens-extra-88-ishikawa-read-whitespace-after-IgnoredSemicolon"
               }
             ]
           },
@@ -17894,9 +19520,35 @@
       }
     },
     {
-      "block": "packages/parser/docs/tokens.md:c83f840c60f4",
+      "block": "packages/parser/docs/tokens.md:43afd371383a",
+      "diagrams": ["ishikawa"],
+      "about": "This holds for the text that mermaid.js reads as a value. A ",
+      "judgment": {
+        "status": "no-condition",
+        "kind": "not-in-diagram",
+        "note": "None of the named documents defines a node of text that mermaid.js does not read, whose tokens and inter-unit whitespace this block describes.",
+        "documents": [
+          "packages/spec/docs/diagrams/ishikawa.md",
+          "packages/spec/docs/ast/ishikawa.md",
+          "packages/parser/docs/tokens/ishikawa.md",
+          "packages/parser/docs/tokens.md"
+        ]
+      }
+    },
+    {
+      "block": "packages/parser/docs/tokens.md:b6d483b66c06",
+      "diagrams": ["ishikawa"],
+      "about": "The diagram documents state, at each position, which text me",
+      "judgment": {
+        "status": "no-condition",
+        "kind": "pointer",
+        "note": "It points to the diagram documents for which text mermaid.js reads as a value at each position."
+      }
+    },
+    {
+      "block": "packages/parser/docs/tokens.md:115187f18c1c",
       "diagrams": ["journey"],
-      "about": "The tokens of a value cover the text that mermaid.js reads as that value: the\nfirst token starts whe",
+      "about": "The tokens of a value cover the text that mermaid.js reads a",
       "judgment": {
         "status": "shown",
         "cases": [
@@ -17915,15 +19567,6 @@
               {
                 "file": "check-tree-shared-tokens.test.ts",
                 "text": "tokens-extra-88-journey-last-read-character"
-              }
-            ]
-          },
-          {
-            "case": "keyword trivia",
-            "tests": [
-              {
-                "file": "check-tree-shared-tokens.test.ts",
-                "text": "tokens-extra-88-journey-keyword-trivia"
               }
             ]
           },
@@ -17962,7 +19605,36 @@
                 "text": "tokens-extra-88-journey-read-leading-space"
               }
             ]
-          },
+          }
+        ]
+      }
+    },
+    {
+      "block": "packages/parser/docs/tokens.md:52a098cc4b1d",
+      "diagrams": ["journey"],
+      "about": "Whitespace and line terminators that mermaid.js does not rea",
+      "judgment": {
+        "status": "shown",
+        "cases": [
+          {
+            "case": "keyword trivia",
+            "tests": [
+              {
+                "file": "check-tree-shared-tokens.test.ts",
+                "text": "tokens-extra-88-journey-keyword-trivia"
+              }
+            ]
+          }
+        ]
+      }
+    },
+    {
+      "block": "packages/parser/docs/tokens.md:d51bb081e004",
+      "diagrams": ["journey"],
+      "about": "This holds also where a directive, a comment region, or an i",
+      "judgment": {
+        "status": "shown",
+        "cases": [
           {
             "case": "read whitespace before Comment",
             "tests": [
@@ -18021,9 +19693,38 @@
       }
     },
     {
-      "block": "packages/parser/docs/tokens.md:c83f840c60f4",
+      "block": "packages/parser/docs/tokens.md:43afd371383a",
+      "diagrams": ["journey"],
+      "about": "This holds for the text that mermaid.js reads as a value. A ",
+      "judgment": {
+        "status": "shown",
+        "cases": [
+          {
+            "case": "A node of text that mermaid.js does not read has the tokens of its units.",
+            "tests": [
+              {
+                "file": "check-tree-shared-tokens.test.ts",
+                "text": "tokens-88b-journey-ignored-unit-token"
+              }
+            ]
+          }
+        ]
+      }
+    },
+    {
+      "block": "packages/parser/docs/tokens.md:b6d483b66c06",
+      "diagrams": ["journey"],
+      "about": "The diagram documents state, at each position, which text me",
+      "judgment": {
+        "status": "no-condition",
+        "kind": "pointer",
+        "note": "It points to the diagram documents for which text mermaid.js reads as a value at each position."
+      }
+    },
+    {
+      "block": "packages/parser/docs/tokens.md:115187f18c1c",
       "diagrams": ["kanban"],
-      "about": "The tokens of a value cover the text that mermaid.js reads as that value: the\nfirst token starts whe",
+      "about": "The tokens of a value cover the text that mermaid.js reads a",
       "judgment": {
         "status": "shown",
         "cases": [
@@ -18046,29 +19747,11 @@
             ]
           },
           {
-            "case": "keyword trivia",
-            "tests": [
-              {
-                "file": "check-tree-shared-tokens.test.ts",
-                "text": "tokens-extra-88-kanban-keyword-trivia"
-              }
-            ]
-          },
-          {
             "case": "read trailing space",
             "tests": [
               {
                 "file": "check-tree-shared-tokens.test.ts",
                 "text": "tokens-extra-88-kanban-read-trailing-space"
-              }
-            ]
-          },
-          {
-            "case": "read whitespace before Comment",
-            "tests": [
-              {
-                "file": "check-tree-shared-tokens.test.ts",
-                "text": "tokens-extra-88-kanban-read-whitespace-before-Comment"
               }
             ]
           },
@@ -18087,24 +19770,6 @@
               {
                 "file": "check-tree-shared-tokens.test.ts",
                 "text": "tokens-extra-88-kanban-read-trailing-line-ending"
-              }
-            ]
-          },
-          {
-            "case": "read whitespace before Directive",
-            "tests": [
-              {
-                "file": "check-tree-shared-tokens.test.ts",
-                "text": "tokens-extra-88-kanban-read-whitespace-before-Directive"
-              }
-            ]
-          },
-          {
-            "case": "read whitespace after Directive",
-            "tests": [
-              {
-                "file": "check-tree-shared-tokens.test.ts",
-                "text": "tokens-extra-88-kanban-read-whitespace-after-Directive"
               }
             ]
           },
@@ -18132,6 +19797,62 @@
               {
                 "file": "check-tree-shared-tokens.test.ts",
                 "text": "tokens-extra-88-kanban-whitespace-only-kind"
+              }
+            ]
+          }
+        ]
+      }
+    },
+    {
+      "block": "packages/parser/docs/tokens.md:52a098cc4b1d",
+      "diagrams": ["kanban"],
+      "about": "Whitespace and line terminators that mermaid.js does not rea",
+      "judgment": {
+        "status": "shown",
+        "cases": [
+          {
+            "case": "keyword trivia",
+            "tests": [
+              {
+                "file": "check-tree-shared-tokens.test.ts",
+                "text": "tokens-extra-88-kanban-keyword-trivia"
+              }
+            ]
+          }
+        ]
+      }
+    },
+    {
+      "block": "packages/parser/docs/tokens.md:d51bb081e004",
+      "diagrams": ["kanban"],
+      "about": "This holds also where a directive, a comment region, or an i",
+      "judgment": {
+        "status": "shown",
+        "cases": [
+          {
+            "case": "read whitespace before Comment",
+            "tests": [
+              {
+                "file": "check-tree-shared-tokens.test.ts",
+                "text": "tokens-extra-88-kanban-read-whitespace-before-Comment"
+              }
+            ]
+          },
+          {
+            "case": "read whitespace before Directive",
+            "tests": [
+              {
+                "file": "check-tree-shared-tokens.test.ts",
+                "text": "tokens-extra-88-kanban-read-whitespace-before-Directive"
+              }
+            ]
+          },
+          {
+            "case": "read whitespace after Directive",
+            "tests": [
+              {
+                "file": "check-tree-shared-tokens.test.ts",
+                "text": "tokens-extra-88-kanban-read-whitespace-after-Directive"
               }
             ]
           },
@@ -18166,9 +19887,35 @@
       }
     },
     {
-      "block": "packages/parser/docs/tokens.md:c83f840c60f4",
+      "block": "packages/parser/docs/tokens.md:43afd371383a",
+      "diagrams": ["kanban"],
+      "about": "This holds for the text that mermaid.js reads as a value. A ",
+      "judgment": {
+        "status": "no-condition",
+        "kind": "not-in-diagram",
+        "note": "None of the named documents defines a node of text that mermaid.js does not read, whose tokens and inter-unit whitespace this block describes.",
+        "documents": [
+          "packages/spec/docs/diagrams/kanban.md",
+          "packages/spec/docs/ast/kanban.md",
+          "packages/parser/docs/tokens/kanban.md",
+          "packages/parser/docs/tokens.md"
+        ]
+      }
+    },
+    {
+      "block": "packages/parser/docs/tokens.md:b6d483b66c06",
+      "diagrams": ["kanban"],
+      "about": "The diagram documents state, at each position, which text me",
+      "judgment": {
+        "status": "no-condition",
+        "kind": "pointer",
+        "note": "It points to the diagram documents for which text mermaid.js reads as a value at each position."
+      }
+    },
+    {
+      "block": "packages/parser/docs/tokens.md:115187f18c1c",
       "diagrams": ["mindmap"],
-      "about": "The tokens of a value cover the text that mermaid.js reads as that value: the\nfirst token starts whe",
+      "about": "The tokens of a value cover the text that mermaid.js reads a",
       "judgment": {
         "status": "shown",
         "cases": [
@@ -18200,15 +19947,6 @@
             ]
           },
           {
-            "case": "read whitespace before Directive",
-            "tests": [
-              {
-                "file": "check-tree-shared-tokens.test.ts",
-                "text": "tokens-extra-88-mindmap-read-whitespace-before-Directive"
-              }
-            ]
-          },
-          {
             "case": "read trailing space",
             "tests": [
               {
@@ -18218,20 +19956,67 @@
             ]
           },
           {
-            "case": "read whitespace after Directive",
+            "case": "88 whitespace presence mindmap",
             "tests": [
               {
                 "file": "check-tree-shared-tokens.test.ts",
-                "text": "tokens-extra-88-mindmap-read-whitespace-after-Directive"
+                "text": "tokens-extra-88-whitespace-presence-mindmap"
               }
             ]
           },
+          {
+            "case": "88 whitespace kind mindmap",
+            "tests": [
+              {
+                "file": "check-tree-shared-tokens.test.ts",
+                "text": "tokens-extra-88-whitespace-kind-mindmap"
+              }
+            ]
+          }
+        ]
+      }
+    },
+    {
+      "block": "packages/parser/docs/tokens.md:52a098cc4b1d",
+      "diagrams": ["mindmap"],
+      "about": "Whitespace and line terminators that mermaid.js does not rea",
+      "judgment": {
+        "status": "shown",
+        "cases": [
           {
             "case": "keyword trivia",
             "tests": [
               {
                 "file": "check-tree-shared-tokens.test.ts",
                 "text": "tokens-extra-88-mindmap-keyword-trivia"
+              }
+            ]
+          }
+        ]
+      }
+    },
+    {
+      "block": "packages/parser/docs/tokens.md:d51bb081e004",
+      "diagrams": ["mindmap"],
+      "about": "This holds also where a directive, a comment region, or an i",
+      "judgment": {
+        "status": "shown",
+        "cases": [
+          {
+            "case": "read whitespace before Directive",
+            "tests": [
+              {
+                "file": "check-tree-shared-tokens.test.ts",
+                "text": "tokens-extra-88-mindmap-read-whitespace-before-Directive"
+              }
+            ]
+          },
+          {
+            "case": "read whitespace after Directive",
+            "tests": [
+              {
+                "file": "check-tree-shared-tokens.test.ts",
+                "text": "tokens-extra-88-mindmap-read-whitespace-after-Directive"
               }
             ]
           },
@@ -18254,15 +20039,6 @@
             ]
           },
           {
-            "case": "88 whitespace presence mindmap",
-            "tests": [
-              {
-                "file": "check-tree-shared-tokens.test.ts",
-                "text": "tokens-extra-88-whitespace-presence-mindmap"
-              }
-            ]
-          },
-          {
             "case": "88 mindmap read whitespace after IgnoredSemicolon",
             "tests": [
               {
@@ -18279,23 +20055,40 @@
                 "text": "tokens-extra-88-mindmap-read-whitespace-before-IgnoredSemicolon"
               }
             ]
-          },
-          {
-            "case": "88 whitespace kind mindmap",
-            "tests": [
-              {
-                "file": "check-tree-shared-tokens.test.ts",
-                "text": "tokens-extra-88-whitespace-kind-mindmap"
-              }
-            ]
           }
         ]
       }
     },
     {
-      "block": "packages/parser/docs/tokens.md:c83f840c60f4",
+      "block": "packages/parser/docs/tokens.md:43afd371383a",
+      "diagrams": ["mindmap"],
+      "about": "This holds for the text that mermaid.js reads as a value. A ",
+      "judgment": {
+        "status": "no-condition",
+        "kind": "not-in-diagram",
+        "note": "None of the named documents defines a node of text that mermaid.js does not read, whose tokens and inter-unit whitespace this block describes.",
+        "documents": [
+          "packages/spec/docs/diagrams/mindmap.md",
+          "packages/spec/docs/ast/mindmap.md",
+          "packages/parser/docs/tokens/mindmap.md",
+          "packages/parser/docs/tokens.md"
+        ]
+      }
+    },
+    {
+      "block": "packages/parser/docs/tokens.md:b6d483b66c06",
+      "diagrams": ["mindmap"],
+      "about": "The diagram documents state, at each position, which text me",
+      "judgment": {
+        "status": "no-condition",
+        "kind": "pointer",
+        "note": "It points to the diagram documents for which text mermaid.js reads as a value at each position."
+      }
+    },
+    {
+      "block": "packages/parser/docs/tokens.md:115187f18c1c",
       "diagrams": ["packet"],
-      "about": "The tokens of a value cover the text that mermaid.js reads as that value: the\nfirst token starts whe",
+      "about": "The tokens of a value cover the text that mermaid.js reads a",
       "judgment": {
         "status": "shown",
         "cases": [
@@ -18314,15 +20107,6 @@
               {
                 "file": "check-tree-shared-tokens.test.ts",
                 "text": "tokens-extra-88-packet-read-leading-space"
-              }
-            ]
-          },
-          {
-            "case": "keyword trivia",
-            "tests": [
-              {
-                "file": "check-tree-shared-tokens.test.ts",
-                "text": "tokens-extra-88-packet-keyword-trivia"
               }
             ]
           },
@@ -18352,7 +20136,36 @@
                 "text": "tokens-extra-88-packet-whitespace-only-kind"
               }
             ]
-          },
+          }
+        ]
+      }
+    },
+    {
+      "block": "packages/parser/docs/tokens.md:52a098cc4b1d",
+      "diagrams": ["packet"],
+      "about": "Whitespace and line terminators that mermaid.js does not rea",
+      "judgment": {
+        "status": "shown",
+        "cases": [
+          {
+            "case": "keyword trivia",
+            "tests": [
+              {
+                "file": "check-tree-shared-tokens.test.ts",
+                "text": "tokens-extra-88-packet-keyword-trivia"
+              }
+            ]
+          }
+        ]
+      }
+    },
+    {
+      "block": "packages/parser/docs/tokens.md:d51bb081e004",
+      "diagrams": ["packet"],
+      "about": "This holds also where a directive, a comment region, or an i",
+      "judgment": {
+        "status": "shown",
+        "cases": [
           {
             "case": "read whitespace before Comment",
             "tests": [
@@ -18411,21 +20224,41 @@
       }
     },
     {
-      "block": "packages/parser/docs/tokens.md:c83f840c60f4",
-      "diagrams": ["pie"],
-      "about": "The tokens of a value cover the text that mermaid.js reads as that value: the\nfirst token starts whe",
+      "block": "packages/parser/docs/tokens.md:43afd371383a",
+      "diagrams": ["packet"],
+      "about": "This holds for the text that mermaid.js reads as a value. A ",
       "judgment": {
         "status": "shown",
         "cases": [
           {
-            "case": "keyword trivia",
+            "case": "A node of text that mermaid.js does not read has the tokens of its units.",
             "tests": [
               {
                 "file": "check-tree-shared-tokens.test.ts",
-                "text": "tokens-extra-88-pie-keyword-trivia"
+                "text": "tokens-88b-packet-ignored-unit-token"
               }
             ]
-          },
+          }
+        ]
+      }
+    },
+    {
+      "block": "packages/parser/docs/tokens.md:b6d483b66c06",
+      "diagrams": ["packet"],
+      "about": "The diagram documents state, at each position, which text me",
+      "judgment": {
+        "status": "no-condition",
+        "kind": "pointer",
+        "note": "It points to the diagram documents for which text mermaid.js reads as a value at each position."
+      }
+    },
+    {
+      "block": "packages/parser/docs/tokens.md:115187f18c1c",
+      "diagrams": ["pie"],
+      "about": "The tokens of a value cover the text that mermaid.js reads a",
+      "judgment": {
+        "status": "shown",
+        "cases": [
           {
             "case": "first read character",
             "tests": [
@@ -18441,24 +20274,6 @@
               {
                 "file": "check-tree-shared-tokens.test.ts",
                 "text": "tokens-extra-88-pie-last-read-character"
-              }
-            ]
-          },
-          {
-            "case": "read whitespace before Comment",
-            "tests": [
-              {
-                "file": "check-tree-shared-tokens.test.ts",
-                "text": "tokens-extra-88-pie-read-whitespace-before-Comment"
-              }
-            ]
-          },
-          {
-            "case": "read whitespace after Comment",
-            "tests": [
-              {
-                "file": "check-tree-shared-tokens.test.ts",
-                "text": "tokens-extra-88-pie-read-whitespace-after-Comment"
               }
             ]
           },
@@ -18481,24 +20296,6 @@
             ]
           },
           {
-            "case": "read whitespace before Directive",
-            "tests": [
-              {
-                "file": "check-tree-shared-tokens.test.ts",
-                "text": "tokens-extra-88-pie-read-whitespace-before-Directive"
-              }
-            ]
-          },
-          {
-            "case": "read whitespace after Directive",
-            "tests": [
-              {
-                "file": "check-tree-shared-tokens.test.ts",
-                "text": "tokens-extra-88-pie-read-whitespace-after-Directive"
-              }
-            ]
-          },
-          {
             "case": "whitespace only token",
             "tests": [
               {
@@ -18513,6 +20310,71 @@
               {
                 "file": "check-tree-shared-tokens.test.ts",
                 "text": "tokens-extra-88-pie-whitespace-only-kind"
+              }
+            ]
+          }
+        ]
+      }
+    },
+    {
+      "block": "packages/parser/docs/tokens.md:52a098cc4b1d",
+      "diagrams": ["pie"],
+      "about": "Whitespace and line terminators that mermaid.js does not rea",
+      "judgment": {
+        "status": "shown",
+        "cases": [
+          {
+            "case": "keyword trivia",
+            "tests": [
+              {
+                "file": "check-tree-shared-tokens.test.ts",
+                "text": "tokens-extra-88-pie-keyword-trivia"
+              }
+            ]
+          }
+        ]
+      }
+    },
+    {
+      "block": "packages/parser/docs/tokens.md:d51bb081e004",
+      "diagrams": ["pie"],
+      "about": "This holds also where a directive, a comment region, or an i",
+      "judgment": {
+        "status": "shown",
+        "cases": [
+          {
+            "case": "read whitespace before Comment",
+            "tests": [
+              {
+                "file": "check-tree-shared-tokens.test.ts",
+                "text": "tokens-extra-88-pie-read-whitespace-before-Comment"
+              }
+            ]
+          },
+          {
+            "case": "read whitespace after Comment",
+            "tests": [
+              {
+                "file": "check-tree-shared-tokens.test.ts",
+                "text": "tokens-extra-88-pie-read-whitespace-after-Comment"
+              }
+            ]
+          },
+          {
+            "case": "read whitespace before Directive",
+            "tests": [
+              {
+                "file": "check-tree-shared-tokens.test.ts",
+                "text": "tokens-extra-88-pie-read-whitespace-before-Directive"
+              }
+            ]
+          },
+          {
+            "case": "read whitespace after Directive",
+            "tests": [
+              {
+                "file": "check-tree-shared-tokens.test.ts",
+                "text": "tokens-extra-88-pie-read-whitespace-after-Directive"
               }
             ]
           },
@@ -18538,21 +20400,41 @@
       }
     },
     {
-      "block": "packages/parser/docs/tokens.md:c83f840c60f4",
-      "diagrams": ["quadrant"],
-      "about": "The tokens of a value cover the text that mermaid.js reads as that value: the\nfirst token starts whe",
+      "block": "packages/parser/docs/tokens.md:43afd371383a",
+      "diagrams": ["pie"],
+      "about": "This holds for the text that mermaid.js reads as a value. A ",
       "judgment": {
         "status": "shown",
         "cases": [
           {
-            "case": "keyword trivia",
+            "case": "A node of text that mermaid.js does not read has the tokens of its units.",
             "tests": [
               {
                 "file": "check-tree-shared-tokens.test.ts",
-                "text": "tokens-extra-88-quadrant-keyword-trivia"
+                "text": "tokens-88b-pie-ignored-unit-token"
               }
             ]
-          },
+          }
+        ]
+      }
+    },
+    {
+      "block": "packages/parser/docs/tokens.md:b6d483b66c06",
+      "diagrams": ["pie"],
+      "about": "The diagram documents state, at each position, which text me",
+      "judgment": {
+        "status": "no-condition",
+        "kind": "pointer",
+        "note": "It points to the diagram documents for which text mermaid.js reads as a value at each position."
+      }
+    },
+    {
+      "block": "packages/parser/docs/tokens.md:115187f18c1c",
+      "diagrams": ["quadrant"],
+      "about": "The tokens of a value cover the text that mermaid.js reads a",
+      "judgment": {
+        "status": "shown",
+        "cases": [
           {
             "case": "first read character",
             "tests": [
@@ -18571,6 +20453,53 @@
               }
             ]
           },
+          {
+            "case": "88 whitespace presence quadrant",
+            "tests": [
+              {
+                "file": "check-tree-shared-tokens.test.ts",
+                "text": "tokens-extra-88-whitespace-presence-quadrant"
+              }
+            ]
+          },
+          {
+            "case": "88 whitespace kind quadrant",
+            "tests": [
+              {
+                "file": "check-tree-shared-tokens.test.ts",
+                "text": "tokens-extra-88-whitespace-kind-quadrant"
+              }
+            ]
+          }
+        ]
+      }
+    },
+    {
+      "block": "packages/parser/docs/tokens.md:52a098cc4b1d",
+      "diagrams": ["quadrant"],
+      "about": "Whitespace and line terminators that mermaid.js does not rea",
+      "judgment": {
+        "status": "shown",
+        "cases": [
+          {
+            "case": "keyword trivia",
+            "tests": [
+              {
+                "file": "check-tree-shared-tokens.test.ts",
+                "text": "tokens-extra-88-quadrant-keyword-trivia"
+              }
+            ]
+          }
+        ]
+      }
+    },
+    {
+      "block": "packages/parser/docs/tokens.md:d51bb081e004",
+      "diagrams": ["quadrant"],
+      "about": "This holds also where a directive, a comment region, or an i",
+      "judgment": {
+        "status": "shown",
+        "cases": [
           {
             "case": "read whitespace before Comment",
             "tests": [
@@ -18617,24 +20546,6 @@
             ]
           },
           {
-            "case": "88 whitespace presence quadrant",
-            "tests": [
-              {
-                "file": "check-tree-shared-tokens.test.ts",
-                "text": "tokens-extra-88-whitespace-presence-quadrant"
-              }
-            ]
-          },
-          {
-            "case": "88 whitespace kind quadrant",
-            "tests": [
-              {
-                "file": "check-tree-shared-tokens.test.ts",
-                "text": "tokens-extra-88-whitespace-kind-quadrant"
-              }
-            ]
-          },
-          {
             "case": "Whitespace read before an ignored semicolon belongs to the preceding fragment.",
             "tests": [
               {
@@ -18647,21 +20558,38 @@
       }
     },
     {
-      "block": "packages/parser/docs/tokens.md:c83f840c60f4",
+      "block": "packages/parser/docs/tokens.md:43afd371383a",
+      "diagrams": ["quadrant"],
+      "about": "This holds for the text that mermaid.js reads as a value. A ",
+      "judgment": {
+        "status": "no-condition",
+        "kind": "not-in-diagram",
+        "note": "None of the named documents defines a node of text that mermaid.js does not read, whose tokens and inter-unit whitespace this block describes.",
+        "documents": [
+          "packages/spec/docs/diagrams/quadrant.md",
+          "packages/spec/docs/ast/quadrant.md",
+          "packages/parser/docs/tokens/quadrant.md",
+          "packages/parser/docs/tokens.md"
+        ]
+      }
+    },
+    {
+      "block": "packages/parser/docs/tokens.md:b6d483b66c06",
+      "diagrams": ["quadrant"],
+      "about": "The diagram documents state, at each position, which text me",
+      "judgment": {
+        "status": "no-condition",
+        "kind": "pointer",
+        "note": "It points to the diagram documents for which text mermaid.js reads as a value at each position."
+      }
+    },
+    {
+      "block": "packages/parser/docs/tokens.md:115187f18c1c",
       "diagrams": ["radar"],
-      "about": "The tokens of a value cover the text that mermaid.js reads as that value: the\nfirst token starts whe",
+      "about": "The tokens of a value cover the text that mermaid.js reads a",
       "judgment": {
         "status": "shown",
         "cases": [
-          {
-            "case": "keyword trivia",
-            "tests": [
-              {
-                "file": "check-tree-shared-tokens.test.ts",
-                "text": "tokens-extra-88-radar-keyword-trivia"
-              }
-            ]
-          },
           {
             "case": "first read character",
             "tests": [
@@ -18708,6 +20636,44 @@
             ]
           },
           {
+            "case": "read trailing space",
+            "tests": [
+              {
+                "file": "check-tree-shared-tokens.test.ts",
+                "text": "tokens-extra-88-radar-read-trailing-space"
+              }
+            ]
+          }
+        ]
+      }
+    },
+    {
+      "block": "packages/parser/docs/tokens.md:52a098cc4b1d",
+      "diagrams": ["radar"],
+      "about": "Whitespace and line terminators that mermaid.js does not rea",
+      "judgment": {
+        "status": "shown",
+        "cases": [
+          {
+            "case": "keyword trivia",
+            "tests": [
+              {
+                "file": "check-tree-shared-tokens.test.ts",
+                "text": "tokens-extra-88-radar-keyword-trivia"
+              }
+            ]
+          }
+        ]
+      }
+    },
+    {
+      "block": "packages/parser/docs/tokens.md:d51bb081e004",
+      "diagrams": ["radar"],
+      "about": "This holds also where a directive, a comment region, or an i",
+      "judgment": {
+        "status": "shown",
+        "cases": [
+          {
             "case": "read whitespace before Comment",
             "tests": [
               {
@@ -18731,15 +20697,6 @@
               {
                 "file": "check-tree-shared-tokens.test.ts",
                 "text": "tokens-extra-88-radar-read-whitespace-after-Directive"
-              }
-            ]
-          },
-          {
-            "case": "read trailing space",
-            "tests": [
-              {
-                "file": "check-tree-shared-tokens.test.ts",
-                "text": "tokens-extra-88-radar-read-trailing-space"
               }
             ]
           },
@@ -18774,21 +20731,41 @@
       }
     },
     {
-      "block": "packages/parser/docs/tokens.md:c83f840c60f4",
-      "diagrams": ["railroad"],
-      "about": "The tokens of a value cover the text that mermaid.js reads as that value: the\nfirst token starts whe",
+      "block": "packages/parser/docs/tokens.md:43afd371383a",
+      "diagrams": ["radar"],
+      "about": "This holds for the text that mermaid.js reads as a value. A ",
       "judgment": {
         "status": "shown",
         "cases": [
           {
-            "case": "keyword trivia",
+            "case": "A node of text that mermaid.js does not read has the tokens of its units.",
             "tests": [
               {
                 "file": "check-tree-shared-tokens.test.ts",
-                "text": "tokens-extra-88-railroad-keyword-trivia"
+                "text": "tokens-88b-radar-ignored-unit-token"
               }
             ]
-          },
+          }
+        ]
+      }
+    },
+    {
+      "block": "packages/parser/docs/tokens.md:b6d483b66c06",
+      "diagrams": ["radar"],
+      "about": "The diagram documents state, at each position, which text me",
+      "judgment": {
+        "status": "no-condition",
+        "kind": "pointer",
+        "note": "It points to the diagram documents for which text mermaid.js reads as a value at each position."
+      }
+    },
+    {
+      "block": "packages/parser/docs/tokens.md:115187f18c1c",
+      "diagrams": ["railroad"],
+      "about": "The tokens of a value cover the text that mermaid.js reads a",
+      "judgment": {
+        "status": "shown",
+        "cases": [
           {
             "case": "first read character",
             "tests": [
@@ -18842,7 +20819,36 @@
                 "text": "tokens-extra-88-railroad-read-trailing-space"
               }
             ]
-          },
+          }
+        ]
+      }
+    },
+    {
+      "block": "packages/parser/docs/tokens.md:52a098cc4b1d",
+      "diagrams": ["railroad"],
+      "about": "Whitespace and line terminators that mermaid.js does not rea",
+      "judgment": {
+        "status": "shown",
+        "cases": [
+          {
+            "case": "keyword trivia",
+            "tests": [
+              {
+                "file": "check-tree-shared-tokens.test.ts",
+                "text": "tokens-extra-88-railroad-keyword-trivia"
+              }
+            ]
+          }
+        ]
+      }
+    },
+    {
+      "block": "packages/parser/docs/tokens.md:d51bb081e004",
+      "diagrams": ["railroad"],
+      "about": "This holds also where a directive, a comment region, or an i",
+      "judgment": {
+        "status": "shown",
+        "cases": [
           {
             "case": "read whitespace before Comment",
             "tests": [
@@ -18901,9 +20907,122 @@
       }
     },
     {
-      "block": "packages/parser/docs/tokens.md:c83f840c60f4",
+      "block": "packages/parser/docs/tokens.md:43afd371383a",
+      "diagrams": ["railroad"],
+      "about": "This holds for the text that mermaid.js reads as a value. A ",
+      "judgment": {
+        "status": "shown",
+        "cases": [
+          {
+            "case": "A node of text that mermaid.js does not read has the tokens of its units.",
+            "tests": [
+              {
+                "file": "check-tree-shared-tokens.test.ts",
+                "text": "tokens-88b-railroad-ignored-unit-token"
+              }
+            ]
+          }
+        ]
+      }
+    },
+    {
+      "block": "packages/parser/docs/tokens.md:b6d483b66c06",
+      "diagrams": ["railroad"],
+      "about": "The diagram documents state, at each position, which text me",
+      "judgment": {
+        "status": "no-condition",
+        "kind": "pointer",
+        "note": "It points to the diagram documents for which text mermaid.js reads as a value at each position."
+      }
+    },
+    {
+      "block": "packages/parser/docs/tokens.md:115187f18c1c",
       "diagrams": ["requirement"],
-      "about": "The tokens of a value cover the text that mermaid.js reads as that value: the\nfirst token starts whe",
+      "about": "The tokens of a value cover the text that mermaid.js reads a",
+      "judgment": {
+        "status": "shown",
+        "cases": [
+          {
+            "case": "The first token starts where the read value text starts.",
+            "tests": [
+              {
+                "file": "check-tree-shared-tokens.test.ts",
+                "text": "tokens-88b-requirement-first"
+              }
+            ]
+          },
+          {
+            "case": "The last token ends where the read value text ends.",
+            "tests": [
+              {
+                "file": "check-tree-shared-tokens.test.ts",
+                "text": "tokens-88b-requirement-last"
+              }
+            ]
+          }
+        ]
+      }
+    },
+    {
+      "block": "packages/parser/docs/tokens.md:52a098cc4b1d",
+      "diagrams": ["requirement"],
+      "about": "Whitespace and line terminators that mermaid.js does not rea",
+      "judgment": {
+        "status": "shown",
+        "cases": [
+          {
+            "case": "Whitespace not read as a value belongs to no token.",
+            "tests": [
+              {
+                "file": "check-tree-shared-tokens.test.ts",
+                "text": "tokens-88b-requirement-unread"
+              }
+            ]
+          }
+        ]
+      }
+    },
+    {
+      "block": "packages/parser/docs/tokens.md:d51bb081e004",
+      "diagrams": ["requirement"],
+      "about": "This holds also where a directive, a comment region, or an i",
+      "judgment": {
+        "status": "shown",
+        "cases": [
+          {
+            "case": "Read whitespace before a directive cut stays in its fragment.",
+            "tests": [
+              {
+                "file": "check-tree-shared-tokens.test.ts",
+                "text": "tokens-88b-requirement-beforeDirective"
+              }
+            ]
+          },
+          {
+            "case": "Read whitespace before a comment region stays in its fragment.",
+            "tests": [
+              {
+                "file": "check-tree-shared-tokens.test.ts",
+                "text": "tokens-88b-requirement-beforeComment"
+              }
+            ]
+          },
+          {
+            "case": "Read whitespace after a comment region stays in its fragment.",
+            "tests": [
+              {
+                "file": "check-tree-shared-tokens.test.ts",
+                "text": "tokens-88b-requirement-afterComment"
+              }
+            ]
+          }
+        ]
+      }
+    },
+    {
+      "block": "packages/parser/docs/tokens.md:43afd371383a",
+      "diagrams": ["requirement"],
+      "about": "This holds for the text that mermaid.js reads as a value. A ",
       "judgment": {
         "status": "not-shown",
         "reason": "rule-misses-condition",
@@ -18911,9 +21030,19 @@
       }
     },
     {
-      "block": "packages/parser/docs/tokens.md:c83f840c60f4",
+      "block": "packages/parser/docs/tokens.md:b6d483b66c06",
+      "diagrams": ["requirement"],
+      "about": "The diagram documents state, at each position, which text me",
+      "judgment": {
+        "status": "no-condition",
+        "kind": "pointer",
+        "note": "It points to the diagram documents for which text mermaid.js reads as a value at each position."
+      }
+    },
+    {
+      "block": "packages/parser/docs/tokens.md:115187f18c1c",
       "diagrams": ["sankey"],
-      "about": "The tokens of a value cover the text that mermaid.js reads as that value: the\nfirst token starts whe",
+      "about": "The tokens of a value cover the text that mermaid.js reads a",
       "judgment": {
         "status": "shown",
         "cases": [
@@ -18932,15 +21061,6 @@
               {
                 "file": "check-tree-shared-tokens.test.ts",
                 "text": "tokens-extra-88-sankey-last-read-character"
-              }
-            ]
-          },
-          {
-            "case": "read whitespace before Comment",
-            "tests": [
-              {
-                "file": "check-tree-shared-tokens.test.ts",
-                "text": "tokens-extra-88-sankey-read-whitespace-before-Comment"
               }
             ]
           },
@@ -18977,6 +21097,53 @@
               {
                 "file": "check-tree-shared-tokens.test.ts",
                 "text": "tokens-extra-88-sankey-whitespace-only-kind"
+              }
+            ]
+          },
+          {
+            "case": "88 whitespace kind sankey",
+            "tests": [
+              {
+                "file": "check-tree-shared-tokens.test.ts",
+                "text": "tokens-extra-88-whitespace-kind-sankey"
+              }
+            ]
+          }
+        ]
+      }
+    },
+    {
+      "block": "packages/parser/docs/tokens.md:52a098cc4b1d",
+      "diagrams": ["sankey"],
+      "about": "Whitespace and line terminators that mermaid.js does not rea",
+      "judgment": {
+        "status": "shown",
+        "cases": [
+          {
+            "case": "Whitespace not read as a value belongs to no token.",
+            "tests": [
+              {
+                "file": "check-tree-shared-tokens.test.ts",
+                "text": "tokens-88b-sankey-unread"
+              }
+            ]
+          }
+        ]
+      }
+    },
+    {
+      "block": "packages/parser/docs/tokens.md:d51bb081e004",
+      "diagrams": ["sankey"],
+      "about": "This holds also where a directive, a comment region, or an i",
+      "judgment": {
+        "status": "shown",
+        "cases": [
+          {
+            "case": "read whitespace before Comment",
+            "tests": [
+              {
+                "file": "check-tree-shared-tokens.test.ts",
+                "text": "tokens-extra-88-sankey-read-whitespace-before-Comment"
               }
             ]
           },
@@ -19024,23 +21191,40 @@
                 "text": "tokens-extra-88-sankey-read-whitespace-before-IgnoredSemicolon"
               }
             ]
-          },
-          {
-            "case": "88 whitespace kind sankey",
-            "tests": [
-              {
-                "file": "check-tree-shared-tokens.test.ts",
-                "text": "tokens-extra-88-whitespace-kind-sankey"
-              }
-            ]
           }
         ]
       }
     },
     {
-      "block": "packages/parser/docs/tokens.md:c83f840c60f4",
+      "block": "packages/parser/docs/tokens.md:43afd371383a",
+      "diagrams": ["sankey"],
+      "about": "This holds for the text that mermaid.js reads as a value. A ",
+      "judgment": {
+        "status": "no-condition",
+        "kind": "not-in-diagram",
+        "note": "None of the named documents defines a node of text that mermaid.js does not read, whose tokens and inter-unit whitespace this block describes.",
+        "documents": [
+          "packages/spec/docs/diagrams/sankey.md",
+          "packages/spec/docs/ast/sankey.md",
+          "packages/parser/docs/tokens/sankey.md",
+          "packages/parser/docs/tokens.md"
+        ]
+      }
+    },
+    {
+      "block": "packages/parser/docs/tokens.md:b6d483b66c06",
+      "diagrams": ["sankey"],
+      "about": "The diagram documents state, at each position, which text me",
+      "judgment": {
+        "status": "no-condition",
+        "kind": "pointer",
+        "note": "It points to the diagram documents for which text mermaid.js reads as a value at each position."
+      }
+    },
+    {
+      "block": "packages/parser/docs/tokens.md:115187f18c1c",
       "diagrams": ["sequence"],
-      "about": "The tokens of a value cover the text that mermaid.js reads as that value: the\nfirst token starts whe",
+      "about": "The tokens of a value cover the text that mermaid.js reads a",
       "judgment": {
         "status": "not-shown",
         "reason": "rule-misses-condition",
@@ -19048,9 +21232,103 @@
       }
     },
     {
-      "block": "packages/parser/docs/tokens.md:c83f840c60f4",
+      "block": "packages/parser/docs/tokens.md:52a098cc4b1d",
+      "diagrams": ["sequence"],
+      "about": "Whitespace and line terminators that mermaid.js does not rea",
+      "judgment": {
+        "status": "shown",
+        "cases": [
+          {
+            "case": "Whitespace not read as a value belongs to no token.",
+            "tests": [
+              {
+                "file": "check-tree-shared-tokens.test.ts",
+                "text": "tokens-88b-sequence-unread"
+              }
+            ]
+          }
+        ]
+      }
+    },
+    {
+      "block": "packages/parser/docs/tokens.md:d51bb081e004",
+      "diagrams": ["sequence"],
+      "about": "This holds also where a directive, a comment region, or an i",
+      "judgment": {
+        "status": "shown",
+        "cases": [
+          {
+            "case": "Read whitespace before a directive cut stays in its fragment.",
+            "tests": [
+              {
+                "file": "check-tree-shared-tokens.test.ts",
+                "text": "tokens-88b-sequence-beforeDirective"
+              }
+            ]
+          },
+          {
+            "case": "Read whitespace after a directive cut stays in its fragment.",
+            "tests": [
+              {
+                "file": "check-tree-shared-tokens.test.ts",
+                "text": "tokens-88b-sequence-afterDirective"
+              }
+            ]
+          },
+          {
+            "case": "Read whitespace before a comment region stays in its fragment.",
+            "tests": [
+              {
+                "file": "check-tree-shared-tokens.test.ts",
+                "text": "tokens-88b-sequence-beforeComment"
+              }
+            ]
+          },
+          {
+            "case": "Read whitespace after a comment region stays in its fragment.",
+            "tests": [
+              {
+                "file": "check-tree-shared-tokens.test.ts",
+                "text": "tokens-88b-sequence-afterComment"
+              }
+            ]
+          }
+        ]
+      }
+    },
+    {
+      "block": "packages/parser/docs/tokens.md:43afd371383a",
+      "diagrams": ["sequence"],
+      "about": "This holds for the text that mermaid.js reads as a value. A ",
+      "judgment": {
+        "status": "shown",
+        "cases": [
+          {
+            "case": "A node of text that mermaid.js does not read has the tokens of its units.",
+            "tests": [
+              {
+                "file": "check-tree-shared-tokens.test.ts",
+                "text": "tokens-88b-sequence-ignored-unit-token"
+              }
+            ]
+          }
+        ]
+      }
+    },
+    {
+      "block": "packages/parser/docs/tokens.md:b6d483b66c06",
+      "diagrams": ["sequence"],
+      "about": "The diagram documents state, at each position, which text me",
+      "judgment": {
+        "status": "no-condition",
+        "kind": "pointer",
+        "note": "It points to the diagram documents for which text mermaid.js reads as a value at each position."
+      }
+    },
+    {
+      "block": "packages/parser/docs/tokens.md:115187f18c1c",
       "diagrams": ["timeline"],
-      "about": "The tokens of a value cover the text that mermaid.js reads as that value: the\nfirst token starts whe",
+      "about": "The tokens of a value cover the text that mermaid.js reads a",
       "judgment": {
         "status": "shown",
         "cases": [
@@ -19069,15 +21347,6 @@
               {
                 "file": "check-tree-shared-tokens.test.ts",
                 "text": "tokens-extra-88-timeline-last-read-character"
-              }
-            ]
-          },
-          {
-            "case": "keyword trivia",
-            "tests": [
-              {
-                "file": "check-tree-shared-tokens.test.ts",
-                "text": "tokens-extra-88-timeline-keyword-trivia"
               }
             ]
           },
@@ -19116,7 +21385,36 @@
                 "text": "tokens-extra-88-timeline-whitespace-only-kind"
               }
             ]
-          },
+          }
+        ]
+      }
+    },
+    {
+      "block": "packages/parser/docs/tokens.md:52a098cc4b1d",
+      "diagrams": ["timeline"],
+      "about": "Whitespace and line terminators that mermaid.js does not rea",
+      "judgment": {
+        "status": "shown",
+        "cases": [
+          {
+            "case": "keyword trivia",
+            "tests": [
+              {
+                "file": "check-tree-shared-tokens.test.ts",
+                "text": "tokens-extra-88-timeline-keyword-trivia"
+              }
+            ]
+          }
+        ]
+      }
+    },
+    {
+      "block": "packages/parser/docs/tokens.md:d51bb081e004",
+      "diagrams": ["timeline"],
+      "about": "This holds also where a directive, a comment region, or an i",
+      "judgment": {
+        "status": "shown",
+        "cases": [
           {
             "case": "read whitespace before Directive",
             "tests": [
@@ -19175,21 +21473,38 @@
       }
     },
     {
-      "block": "packages/parser/docs/tokens.md:c83f840c60f4",
+      "block": "packages/parser/docs/tokens.md:43afd371383a",
+      "diagrams": ["timeline"],
+      "about": "This holds for the text that mermaid.js reads as a value. A ",
+      "judgment": {
+        "status": "no-condition",
+        "kind": "not-in-diagram",
+        "note": "None of the named documents defines a node of text that mermaid.js does not read, whose tokens and inter-unit whitespace this block describes.",
+        "documents": [
+          "packages/spec/docs/diagrams/timeline.md",
+          "packages/spec/docs/ast/timeline.md",
+          "packages/parser/docs/tokens/timeline.md",
+          "packages/parser/docs/tokens.md"
+        ]
+      }
+    },
+    {
+      "block": "packages/parser/docs/tokens.md:b6d483b66c06",
+      "diagrams": ["timeline"],
+      "about": "The diagram documents state, at each position, which text me",
+      "judgment": {
+        "status": "no-condition",
+        "kind": "pointer",
+        "note": "It points to the diagram documents for which text mermaid.js reads as a value at each position."
+      }
+    },
+    {
+      "block": "packages/parser/docs/tokens.md:115187f18c1c",
       "diagrams": ["treemap"],
-      "about": "The tokens of a value cover the text that mermaid.js reads as that value: the\nfirst token starts whe",
+      "about": "The tokens of a value cover the text that mermaid.js reads a",
       "judgment": {
         "status": "shown",
         "cases": [
-          {
-            "case": "keyword trivia",
-            "tests": [
-              {
-                "file": "check-tree-shared-tokens.test.ts",
-                "text": "tokens-extra-88-treemap-keyword-trivia"
-              }
-            ]
-          },
           {
             "case": "first read character",
             "tests": [
@@ -19243,7 +21558,36 @@
                 "text": "tokens-extra-88-treemap-whitespace-only-kind"
               }
             ]
-          },
+          }
+        ]
+      }
+    },
+    {
+      "block": "packages/parser/docs/tokens.md:52a098cc4b1d",
+      "diagrams": ["treemap"],
+      "about": "Whitespace and line terminators that mermaid.js does not rea",
+      "judgment": {
+        "status": "shown",
+        "cases": [
+          {
+            "case": "keyword trivia",
+            "tests": [
+              {
+                "file": "check-tree-shared-tokens.test.ts",
+                "text": "tokens-extra-88-treemap-keyword-trivia"
+              }
+            ]
+          }
+        ]
+      }
+    },
+    {
+      "block": "packages/parser/docs/tokens.md:d51bb081e004",
+      "diagrams": ["treemap"],
+      "about": "This holds also where a directive, a comment region, or an i",
+      "judgment": {
+        "status": "shown",
+        "cases": [
           {
             "case": "read whitespace before Comment",
             "tests": [
@@ -19302,9 +21646,35 @@
       }
     },
     {
-      "block": "packages/parser/docs/tokens.md:c83f840c60f4",
+      "block": "packages/parser/docs/tokens.md:43afd371383a",
+      "diagrams": ["treemap"],
+      "about": "This holds for the text that mermaid.js reads as a value. A ",
+      "judgment": {
+        "status": "no-condition",
+        "kind": "not-in-diagram",
+        "note": "None of the named documents defines a node of text that mermaid.js does not read, whose tokens and inter-unit whitespace this block describes.",
+        "documents": [
+          "packages/spec/docs/diagrams/treemap.md",
+          "packages/spec/docs/ast/treemap.md",
+          "packages/parser/docs/tokens/treemap.md",
+          "packages/parser/docs/tokens.md"
+        ]
+      }
+    },
+    {
+      "block": "packages/parser/docs/tokens.md:b6d483b66c06",
+      "diagrams": ["treemap"],
+      "about": "The diagram documents state, at each position, which text me",
+      "judgment": {
+        "status": "no-condition",
+        "kind": "pointer",
+        "note": "It points to the diagram documents for which text mermaid.js reads as a value at each position."
+      }
+    },
+    {
+      "block": "packages/parser/docs/tokens.md:115187f18c1c",
       "diagrams": ["treeview"],
-      "about": "The tokens of a value cover the text that mermaid.js reads as that value: the\nfirst token starts whe",
+      "about": "The tokens of a value cover the text that mermaid.js reads a",
       "judgment": {
         "status": "shown",
         "cases": [
@@ -19323,15 +21693,6 @@
               {
                 "file": "check-tree-shared-tokens.test.ts",
                 "text": "tokens-extra-88-treeview-last-read-character"
-              }
-            ]
-          },
-          {
-            "case": "keyword trivia",
-            "tests": [
-              {
-                "file": "check-tree-shared-tokens.test.ts",
-                "text": "tokens-extra-88-treeview-keyword-trivia"
               }
             ]
           },
@@ -19372,24 +21733,6 @@
             ]
           },
           {
-            "case": "read whitespace before Comment",
-            "tests": [
-              {
-                "file": "check-tree-shared-tokens.test.ts",
-                "text": "tokens-extra-88-treeview-read-whitespace-before-Comment"
-              }
-            ]
-          },
-          {
-            "case": "read whitespace after IgnoredSemicolon",
-            "tests": [
-              {
-                "file": "check-tree-shared-tokens.test.ts",
-                "text": "tokens-extra-88-treeview-read-whitespace-after-IgnoredSemicolon"
-              }
-            ]
-          },
-          {
             "case": "read trailing line ending",
             "tests": [
               {
@@ -19404,6 +21747,53 @@
               {
                 "file": "check-tree-shared-tokens.test.ts",
                 "text": "tokens-extra-88-treeview-read-leading-line-ending"
+              }
+            ]
+          }
+        ]
+      }
+    },
+    {
+      "block": "packages/parser/docs/tokens.md:52a098cc4b1d",
+      "diagrams": ["treeview"],
+      "about": "Whitespace and line terminators that mermaid.js does not rea",
+      "judgment": {
+        "status": "shown",
+        "cases": [
+          {
+            "case": "keyword trivia",
+            "tests": [
+              {
+                "file": "check-tree-shared-tokens.test.ts",
+                "text": "tokens-extra-88-treeview-keyword-trivia"
+              }
+            ]
+          }
+        ]
+      }
+    },
+    {
+      "block": "packages/parser/docs/tokens.md:d51bb081e004",
+      "diagrams": ["treeview"],
+      "about": "This holds also where a directive, a comment region, or an i",
+      "judgment": {
+        "status": "shown",
+        "cases": [
+          {
+            "case": "read whitespace before Comment",
+            "tests": [
+              {
+                "file": "check-tree-shared-tokens.test.ts",
+                "text": "tokens-extra-88-treeview-read-whitespace-before-Comment"
+              }
+            ]
+          },
+          {
+            "case": "read whitespace after IgnoredSemicolon",
+            "tests": [
+              {
+                "file": "check-tree-shared-tokens.test.ts",
+                "text": "tokens-extra-88-treeview-read-whitespace-after-IgnoredSemicolon"
               }
             ]
           },
@@ -19447,9 +21837,38 @@
       }
     },
     {
-      "block": "packages/parser/docs/tokens.md:c83f840c60f4",
+      "block": "packages/parser/docs/tokens.md:43afd371383a",
+      "diagrams": ["treeview"],
+      "about": "This holds for the text that mermaid.js reads as a value. A ",
+      "judgment": {
+        "status": "shown",
+        "cases": [
+          {
+            "case": "A node of text that mermaid.js does not read has the tokens of its units.",
+            "tests": [
+              {
+                "file": "check-tree-shared-tokens.test.ts",
+                "text": "tokens-88b-treeview-ignored-unit-token"
+              }
+            ]
+          }
+        ]
+      }
+    },
+    {
+      "block": "packages/parser/docs/tokens.md:b6d483b66c06",
+      "diagrams": ["treeview"],
+      "about": "The diagram documents state, at each position, which text me",
+      "judgment": {
+        "status": "no-condition",
+        "kind": "pointer",
+        "note": "It points to the diagram documents for which text mermaid.js reads as a value at each position."
+      }
+    },
+    {
+      "block": "packages/parser/docs/tokens.md:115187f18c1c",
       "diagrams": ["usecase"],
-      "about": "The tokens of a value cover the text that mermaid.js reads as that value: the\nfirst token starts whe",
+      "about": "The tokens of a value cover the text that mermaid.js reads a",
       "judgment": {
         "status": "shown",
         "cases": [
@@ -19481,15 +21900,6 @@
             ]
           },
           {
-            "case": "keyword trivia",
-            "tests": [
-              {
-                "file": "check-tree-shared-tokens.test.ts",
-                "text": "tokens-extra-88-usecase-keyword-trivia"
-              }
-            ]
-          },
-          {
             "case": "read trailing space",
             "tests": [
               {
@@ -19517,15 +21927,6 @@
             ]
           },
           {
-            "case": "read whitespace before Comment",
-            "tests": [
-              {
-                "file": "check-tree-shared-tokens.test.ts",
-                "text": "tokens-extra-88-usecase-read-whitespace-before-Comment"
-              }
-            ]
-          },
-          {
             "case": "read leading line ending",
             "tests": [
               {
@@ -19540,6 +21941,44 @@
               {
                 "file": "check-tree-shared-tokens.test.ts",
                 "text": "tokens-extra-88-usecase-read-trailing-line-ending"
+              }
+            ]
+          }
+        ]
+      }
+    },
+    {
+      "block": "packages/parser/docs/tokens.md:52a098cc4b1d",
+      "diagrams": ["usecase"],
+      "about": "Whitespace and line terminators that mermaid.js does not rea",
+      "judgment": {
+        "status": "shown",
+        "cases": [
+          {
+            "case": "keyword trivia",
+            "tests": [
+              {
+                "file": "check-tree-shared-tokens.test.ts",
+                "text": "tokens-extra-88-usecase-keyword-trivia"
+              }
+            ]
+          }
+        ]
+      }
+    },
+    {
+      "block": "packages/parser/docs/tokens.md:d51bb081e004",
+      "diagrams": ["usecase"],
+      "about": "This holds also where a directive, a comment region, or an i",
+      "judgment": {
+        "status": "shown",
+        "cases": [
+          {
+            "case": "read whitespace before Comment",
+            "tests": [
+              {
+                "file": "check-tree-shared-tokens.test.ts",
+                "text": "tokens-extra-88-usecase-read-whitespace-before-Comment"
               }
             ]
           },
@@ -19592,21 +22031,38 @@
       }
     },
     {
-      "block": "packages/parser/docs/tokens.md:c83f840c60f4",
+      "block": "packages/parser/docs/tokens.md:43afd371383a",
+      "diagrams": ["usecase"],
+      "about": "This holds for the text that mermaid.js reads as a value. A ",
+      "judgment": {
+        "status": "no-condition",
+        "kind": "not-in-diagram",
+        "note": "None of the named documents defines a node of text that mermaid.js does not read, whose tokens and inter-unit whitespace this block describes.",
+        "documents": [
+          "packages/spec/docs/diagrams/usecase.md",
+          "packages/spec/docs/ast/usecase.md",
+          "packages/parser/docs/tokens/usecase.md",
+          "packages/parser/docs/tokens.md"
+        ]
+      }
+    },
+    {
+      "block": "packages/parser/docs/tokens.md:b6d483b66c06",
+      "diagrams": ["usecase"],
+      "about": "The diagram documents state, at each position, which text me",
+      "judgment": {
+        "status": "no-condition",
+        "kind": "pointer",
+        "note": "It points to the diagram documents for which text mermaid.js reads as a value at each position."
+      }
+    },
+    {
+      "block": "packages/parser/docs/tokens.md:115187f18c1c",
       "diagrams": ["venn"],
-      "about": "The tokens of a value cover the text that mermaid.js reads as that value: the\nfirst token starts whe",
+      "about": "The tokens of a value cover the text that mermaid.js reads a",
       "judgment": {
         "status": "shown",
         "cases": [
-          {
-            "case": "keyword trivia",
-            "tests": [
-              {
-                "file": "check-tree-shared-tokens.test.ts",
-                "text": "tokens-extra-88-venn-keyword-trivia"
-              }
-            ]
-          },
           {
             "case": "first read character",
             "tests": [
@@ -19626,38 +22082,11 @@
             ]
           },
           {
-            "case": "read whitespace before Comment",
-            "tests": [
-              {
-                "file": "check-tree-shared-tokens.test.ts",
-                "text": "tokens-extra-88-venn-read-whitespace-before-Comment"
-              }
-            ]
-          },
-          {
             "case": "last read character",
             "tests": [
               {
                 "file": "check-tree-shared-tokens.test.ts",
                 "text": "tokens-extra-88-venn-last-read-character"
-              }
-            ]
-          },
-          {
-            "case": "read whitespace before Directive",
-            "tests": [
-              {
-                "file": "check-tree-shared-tokens.test.ts",
-                "text": "tokens-extra-88-venn-read-whitespace-before-Directive"
-              }
-            ]
-          },
-          {
-            "case": "read whitespace after Directive",
-            "tests": [
-              {
-                "file": "check-tree-shared-tokens.test.ts",
-                "text": "tokens-extra-88-venn-read-whitespace-after-Directive"
               }
             ]
           },
@@ -19685,6 +22114,62 @@
               {
                 "file": "check-tree-shared-tokens.test.ts",
                 "text": "tokens-extra-88-venn-whitespace-only-kind"
+              }
+            ]
+          }
+        ]
+      }
+    },
+    {
+      "block": "packages/parser/docs/tokens.md:52a098cc4b1d",
+      "diagrams": ["venn"],
+      "about": "Whitespace and line terminators that mermaid.js does not rea",
+      "judgment": {
+        "status": "shown",
+        "cases": [
+          {
+            "case": "keyword trivia",
+            "tests": [
+              {
+                "file": "check-tree-shared-tokens.test.ts",
+                "text": "tokens-extra-88-venn-keyword-trivia"
+              }
+            ]
+          }
+        ]
+      }
+    },
+    {
+      "block": "packages/parser/docs/tokens.md:d51bb081e004",
+      "diagrams": ["venn"],
+      "about": "This holds also where a directive, a comment region, or an i",
+      "judgment": {
+        "status": "shown",
+        "cases": [
+          {
+            "case": "read whitespace before Comment",
+            "tests": [
+              {
+                "file": "check-tree-shared-tokens.test.ts",
+                "text": "tokens-extra-88-venn-read-whitespace-before-Comment"
+              }
+            ]
+          },
+          {
+            "case": "read whitespace before Directive",
+            "tests": [
+              {
+                "file": "check-tree-shared-tokens.test.ts",
+                "text": "tokens-extra-88-venn-read-whitespace-before-Directive"
+              }
+            ]
+          },
+          {
+            "case": "read whitespace after Directive",
+            "tests": [
+              {
+                "file": "check-tree-shared-tokens.test.ts",
+                "text": "tokens-extra-88-venn-read-whitespace-after-Directive"
               }
             ]
           },
@@ -19719,21 +22204,41 @@
       }
     },
     {
-      "block": "packages/parser/docs/tokens.md:c83f840c60f4",
-      "diagrams": ["wardley"],
-      "about": "The tokens of a value cover the text that mermaid.js reads as that value: the\nfirst token starts whe",
+      "block": "packages/parser/docs/tokens.md:43afd371383a",
+      "diagrams": ["venn"],
+      "about": "This holds for the text that mermaid.js reads as a value. A ",
       "judgment": {
         "status": "shown",
         "cases": [
           {
-            "case": "keyword trivia",
+            "case": "A node of text that mermaid.js does not read has the tokens of its units.",
             "tests": [
               {
                 "file": "check-tree-shared-tokens.test.ts",
-                "text": "tokens-extra-88-wardley-keyword-trivia"
+                "text": "tokens-88b-venn-ignored-unit-token"
               }
             ]
-          },
+          }
+        ]
+      }
+    },
+    {
+      "block": "packages/parser/docs/tokens.md:b6d483b66c06",
+      "diagrams": ["venn"],
+      "about": "The diagram documents state, at each position, which text me",
+      "judgment": {
+        "status": "no-condition",
+        "kind": "pointer",
+        "note": "It points to the diagram documents for which text mermaid.js reads as a value at each position."
+      }
+    },
+    {
+      "block": "packages/parser/docs/tokens.md:115187f18c1c",
+      "diagrams": ["wardley"],
+      "about": "The tokens of a value cover the text that mermaid.js reads a",
+      "judgment": {
+        "status": "shown",
+        "cases": [
           {
             "case": "last read character",
             "tests": [
@@ -19771,20 +22276,58 @@
             ]
           },
           {
-            "case": "read whitespace before Comment",
-            "tests": [
-              {
-                "file": "check-tree-shared-tokens.test.ts",
-                "text": "tokens-extra-88-wardley-read-whitespace-before-Comment"
-              }
-            ]
-          },
-          {
             "case": "first read character",
             "tests": [
               {
                 "file": "check-tree-shared-tokens.test.ts",
                 "text": "tokens-extra-88-wardley-first-read-character"
+              }
+            ]
+          },
+          {
+            "case": "read trailing space",
+            "tests": [
+              {
+                "file": "check-tree-shared-tokens.test.ts",
+                "text": "tokens-extra-88-wardley-read-trailing-space"
+              }
+            ]
+          }
+        ]
+      }
+    },
+    {
+      "block": "packages/parser/docs/tokens.md:52a098cc4b1d",
+      "diagrams": ["wardley"],
+      "about": "Whitespace and line terminators that mermaid.js does not rea",
+      "judgment": {
+        "status": "shown",
+        "cases": [
+          {
+            "case": "keyword trivia",
+            "tests": [
+              {
+                "file": "check-tree-shared-tokens.test.ts",
+                "text": "tokens-extra-88-wardley-keyword-trivia"
+              }
+            ]
+          }
+        ]
+      }
+    },
+    {
+      "block": "packages/parser/docs/tokens.md:d51bb081e004",
+      "diagrams": ["wardley"],
+      "about": "This holds also where a directive, a comment region, or an i",
+      "judgment": {
+        "status": "shown",
+        "cases": [
+          {
+            "case": "read whitespace before Comment",
+            "tests": [
+              {
+                "file": "check-tree-shared-tokens.test.ts",
+                "text": "tokens-extra-88-wardley-read-whitespace-before-Comment"
               }
             ]
           },
@@ -19803,15 +22346,6 @@
               {
                 "file": "check-tree-shared-tokens.test.ts",
                 "text": "tokens-extra-88-wardley-read-whitespace-after-Directive"
-              }
-            ]
-          },
-          {
-            "case": "read trailing space",
-            "tests": [
-              {
-                "file": "check-tree-shared-tokens.test.ts",
-                "text": "tokens-extra-88-wardley-read-trailing-space"
               }
             ]
           },
@@ -19843,6 +22377,35 @@
             ]
           }
         ]
+      }
+    },
+    {
+      "block": "packages/parser/docs/tokens.md:43afd371383a",
+      "diagrams": ["wardley"],
+      "about": "This holds for the text that mermaid.js reads as a value. A ",
+      "judgment": {
+        "status": "shown",
+        "cases": [
+          {
+            "case": "A node of text that mermaid.js does not read has the tokens of its units.",
+            "tests": [
+              {
+                "file": "check-tree-shared-tokens.test.ts",
+                "text": "tokens-88b-wardley-ignored-unit-token"
+              }
+            ]
+          }
+        ]
+      }
+    },
+    {
+      "block": "packages/parser/docs/tokens.md:b6d483b66c06",
+      "diagrams": ["wardley"],
+      "about": "The diagram documents state, at each position, which text me",
+      "judgment": {
+        "status": "no-condition",
+        "kind": "pointer",
+        "note": "It points to the diagram documents for which text mermaid.js reads as a value at each position."
       }
     },
     {

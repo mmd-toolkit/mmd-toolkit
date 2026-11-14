@@ -4644,6 +4644,39 @@ const tokenKindReplacementCases = [
     type: "Identifier",
   },
   {
+    case: "tokens-88b-agentflow-wsOnlyKind",
+    fixture: ["agentflow", "db-click-empty-url"],
+    index: 11,
+    problem: {
+      where: "StringLiteral at 73-76",
+      message:
+        "the tokens of the string are not one String token or StringFragment tokens: Numeric",
+    },
+    type: "Numeric",
+  },
+  {
+    case: "tokens-88b-er-wsOnlyKind",
+    fixture: ["er", "db-subgraph-nodes-blank-name"],
+    index: 3,
+    problem: {
+      where: "StringLiteral at 27-32",
+      message:
+        "the tokens of the string are not one String token or StringFragment tokens: Numeric",
+    },
+    type: "Numeric",
+  },
+  {
+    case: "tokens-88b-state-wsOnlyKind",
+    fixture: ["state", "db-alias-blank-end-id-after-transition"],
+    index: 5,
+    problem: {
+      where: "StringLiteral at 32-35",
+      message:
+        "the tokens of the string are not one String token or StringFragment tokens: Numeric",
+    },
+    type: "Numeric",
+  },
+  {
     case: "tokens-kind-56-block-meaning",
     fixture: ["block", "config-flowchart-html-labels-false"],
     index: 3,
@@ -30053,6 +30086,759 @@ const commentCutTokenRangeCases = [
     index: 4,
     range: [33, 36],
   },
+  {
+    case: "tokens-88b-agentflow-first",
+    diagram: "agentflow",
+    fixture: "comment-after-style",
+    expected: {
+      where: "offset 28",
+      message:
+        'the character outside the tokens and comments is not whitespace: "f"',
+    },
+    index: 5,
+    range: [29, 36],
+  },
+  {
+    case: "tokens-88b-agentflow-last",
+    diagram: "agentflow",
+    fixture: "comment-after-style",
+    expected: {
+      where: "offset 35",
+      message:
+        'the character outside the tokens and comments is not whitespace: "d"',
+    },
+    index: 5,
+    range: [28, 35],
+  },
+  {
+    case: "tokens-88b-agentflow-beforeComment",
+    diagram: "agentflow",
+    fixture: "comment-ellipse-body-u2028",
+    expected: {
+      where: "RawText at 21-23",
+      message: "ends with whitespace or a line terminator where no value ends",
+    },
+    index: 4,
+    range: [21, 23],
+  },
+  {
+    case: "tokens-88b-agentflow-afterComment",
+    diagram: "agentflow",
+    fixture: "comment-ellipse-body-u2028",
+    expected: {
+      where: "AgentflowLabel at 21-38",
+      message:
+        'the texts of its tokens joined are not its written text: "a  b", not "a  \\nb"',
+    },
+    index: 5,
+    range: [37, 38],
+  },
+  {
+    case: "tokens-88b-agentflow-readTrail",
+    diagram: "agentflow",
+    fixture: "db-accessibility-unclosed-block",
+    expected: {
+      where: "AgentflowLiteral at 28-35",
+      message: "does not run from the start of a token to the end of a token",
+    },
+    index: 4,
+    range: [28, 34],
+  },
+  {
+    case: "tokens-88b-agentflow-readLead",
+    diagram: "agentflow",
+    fixture: "db-classdef-first-leading-spaces",
+    expected: {
+      where: "RawText at 30-39",
+      message:
+        "starts with whitespace or a line terminator where no value starts",
+    },
+    index: 4,
+    range: [30, 39],
+  },
+  {
+    case: "tokens-88b-agentflow-beforeDirective",
+    diagram: "agentflow",
+    fixture: "db-metadata-comment-directive-body",
+    expected: {
+      where: "RawText at 21-42",
+      message: "ends with whitespace or a line terminator where no value ends",
+    },
+    index: 4,
+    range: [21, 42],
+  },
+  {
+    case: "tokens-88b-agentflow-afterDirective",
+    diagram: "agentflow",
+    fixture: "db-metadata-comment-directive-body",
+    expected: {
+      where: "RawText at 58-71",
+      message:
+        "starts with whitespace or a line terminator where no value starts",
+    },
+    index: 6,
+    range: [58, 71],
+  },
+  {
+    case: "tokens-88b-agentflow-afterIgnoredSemicolon",
+    diagram: "agentflow",
+    fixture: "lex-style-trigger-ls-comment",
+    expected: {
+      where: "AgentflowLabel at 20-43",
+      message:
+        'the texts of its tokens joined are not its written text: "style:#x%% c\\n tail;", not "style:#x\u2028%% c\\n tail;"',
+    },
+    index: 6,
+    range: [31, 43],
+  },
+  {
+    case: "tokens-88b-er-first",
+    diagram: "er",
+    fixture: "config-security-level-antiscript-subgraph-title",
+    expected: {
+      where: "offset 24",
+      message:
+        'the character outside the tokens and comments is not whitespace: "\\""',
+    },
+    index: 4,
+    range: [25, 37],
+  },
+  {
+    case: "tokens-88b-er-last",
+    diagram: "er",
+    fixture: "config-security-level-antiscript-subgraph-title",
+    expected: {
+      where: "offset 36",
+      message:
+        'the character outside the tokens and comments is not whitespace: "\\""',
+    },
+    index: 4,
+    range: [24, 36],
+  },
+  {
+    case: "tokens-88b-er-beforeComment",
+    diagram: "er",
+    fixture: "db-acc-descr-block-comment-line",
+    expected: {
+      where: "ErLiteral at 27-43",
+      message:
+        'the texts of its tokens joined are not its written text: "a    b", not "a\\n    b"',
+    },
+    index: 3,
+    range: [27, 28],
+  },
+  {
+    case: "tokens-88b-er-afterComment",
+    diagram: "er",
+    fixture: "db-acc-descr-block-comment-line",
+    expected: {
+      where: "RawText at 39-43",
+      message:
+        "starts with whitespace or a line terminator where no value starts",
+    },
+    index: 4,
+    range: [39, 43],
+  },
+  {
+    case: "tokens-88b-er-beforeDirective",
+    diagram: "er",
+    fixture: "db-acc-descr-block-directive-line",
+    expected: {
+      where: "RawText at 27-32",
+      message: "ends with whitespace or a line terminator where no value ends",
+    },
+    index: 3,
+    range: [27, 32],
+  },
+  {
+    case: "tokens-88b-er-afterDirective",
+    diagram: "er",
+    fixture: "db-acc-descr-block-directive-line",
+    expected: {
+      where: "RawText at 63-68",
+      message:
+        "starts with whitespace or a line terminator where no value starts",
+    },
+    index: 5,
+    range: [63, 68],
+  },
+  {
+    case: "tokens-88b-er-readTrail",
+    diagram: "er",
+    fixture: "db-style-line-separator",
+    expected: {
+      where: "ErLiteral at 24-33",
+      message: "does not run from the start of a token to the end of a token",
+    },
+    index: 4,
+    range: [24, 32],
+  },
+  {
+    case: "tokens-88b-state-first",
+    diagram: "state",
+    fixture: "config-html-labels-false",
+    expected: {
+      where: "offset 66",
+      message:
+        'the character outside the tokens and comments is not whitespace: "g"',
+    },
+    index: 8,
+    range: [67, 68],
+  },
+  {
+    case: "tokens-88b-state-last",
+    diagram: "state",
+    fixture: "config-html-labels-false",
+    expected: {
+      where: "offset 67",
+      message:
+        'the character outside the tokens and comments is not whitespace: "o"',
+    },
+    index: 8,
+    range: [66, 67],
+  },
+  {
+    case: "tokens-88b-state-readLead",
+    diagram: "state",
+    fixture: "config-security-level-other-alias",
+    expected: {
+      where: "StateLiteral at 71-75",
+      message: "does not run from the start of a token to the end of a token",
+    },
+    index: 10,
+    range: [72, 75],
+  },
+  {
+    case: "tokens-88b-state-beforeDirective",
+    diagram: "state",
+    fixture: "db-acc-descr-block-directive-line",
+    expected: {
+      where: "RawText at 28-30",
+      message: "ends with whitespace or a line terminator where no value ends",
+    },
+    index: 3,
+    range: [28, 30],
+  },
+  {
+    case: "tokens-88b-state-afterDirective",
+    diagram: "state",
+    fixture: "db-acc-descr-block-directive-line",
+    expected: {
+      where: "RawText at 46-48",
+      message:
+        "starts with whitespace or a line terminator where no value starts",
+    },
+    index: 5,
+    range: [46, 48],
+  },
+  {
+    case: "tokens-88b-state-beforeComment",
+    diagram: "state",
+    fixture: "lex-acc-descr-block-line-separator-comment-line-cr",
+    expected: {
+      where: "StateLiteral at 27-35",
+      message:
+        'the texts of its tokens joined are not its written text: "AB", not "A\u2028B"',
+    },
+    index: 3,
+    range: [27, 28],
+  },
+  {
+    case: "tokens-88b-state-afterComment",
+    diagram: "state",
+    fixture: "lex-acc-descr-block-line-separator-comment-line-empty-line",
+    expected: {
+      where: "StateLiteral at 27-36",
+      message:
+        'the texts of its tokens joined are not its written text: "A\u2028B", not "A\u2028\\nB"',
+    },
+    index: 4,
+    range: [35, 36],
+  },
+  {
+    case: "tokens-88b-state-readTrail",
+    diagram: "state",
+    fixture: "lex-alias-colon-id-percent-line-after-b5ac2052",
+    expected: {
+      where: "StateLiteral at 32-35",
+      message: "does not run from the start of a token to the end of a token",
+    },
+    index: 6,
+    range: [32, 34],
+  },
+  {
+    case: "tokens-88b-state-beforeIgnoredSemicolon",
+    diagram: "state",
+    fixture: "name-semicolon-whitespace-00442408",
+    expected: {
+      where: "StateLiteral at 40-47",
+      message:
+        'the texts of its tokens joined are not its written text: "#x;  ", not "#x;   "',
+    },
+    index: 6,
+    range: [40, 43],
+  },
+  {
+    case: "tokens-88b-state-afterIgnoredSemicolon",
+    diagram: "state",
+    fixture: "name-semicolon-whitespace-00442408",
+    expected: {
+      where: "StateLiteral at 40-47",
+      message:
+        'the texts of its tokens joined are not its written text: "#x;  ", not "#x;   "',
+    },
+    index: 8,
+    range: [46, 47],
+  },
+  {
+    case: "tokens-88b-requirement-first",
+    diagram: "requirement",
+    fixture: "config-security-level-other-acc-descr",
+    expected: {
+      where: "offset 29",
+      message:
+        'the character outside the tokens and comments is not whitespace: "a"',
+    },
+    index: 3,
+    range: [30, 38],
+  },
+  {
+    case: "tokens-88b-requirement-last",
+    diagram: "requirement",
+    fixture: "config-security-level-other-acc-descr",
+    expected: {
+      where: "offset 37",
+      message:
+        'the character outside the tokens and comments is not whitespace: "d"',
+    },
+    index: 3,
+    range: [29, 37],
+  },
+  {
+    case: "tokens-88b-requirement-beforeComment",
+    diagram: "requirement",
+    fixture: "lex-acc-descr-block-line-separator-comment-line-cr",
+    expected: {
+      where: "RequirementLiteral at 30-38",
+      message:
+        'the texts of its tokens joined are not its written text: "AB", not "A\u2028B"',
+    },
+    index: 3,
+    range: [30, 31],
+  },
+  {
+    case: "tokens-88b-requirement-beforeDirective",
+    diagram: "requirement",
+    fixture: "lex-acc-descr-block-line-separator-comment-line-directive-before",
+    expected: {
+      where: "RequirementLiteral at 30-53",
+      message:
+        'the texts of its tokens joined are not its written text: "AB", not "A\u2028B"',
+    },
+    index: 3,
+    range: [30, 31],
+  },
+  {
+    case: "tokens-88b-requirement-afterComment",
+    diagram: "requirement",
+    fixture: "lex-acc-descr-block-line-separator-comment-line-empty-line",
+    expected: {
+      where: "RequirementLiteral at 30-39",
+      message:
+        'the texts of its tokens joined are not its written text: "A\u2028B", not "A\u2028\\nB"',
+    },
+    index: 4,
+    range: [38, 39],
+  },
+  {
+    case: "tokens-88b-class-first",
+    diagram: "class",
+    fixture: "bare-marker-directive-lines-17d57580",
+    expected: {
+      where: "offset 15",
+      message:
+        'the character outside the tokens and comments is not whitespace: "-"',
+    },
+    index: 2,
+    range: [16, 17],
+  },
+  {
+    case: "tokens-88b-class-last",
+    diagram: "class",
+    fixture: "bare-marker-directive-lines-17d57580",
+    expected: {
+      where: "offset 57",
+      message:
+        'the character outside the tokens and comments is not whitespace: "e"',
+    },
+    index: 9,
+    range: [51, 57],
+  },
+  {
+    case: "tokens-88b-class-readLead",
+    diagram: "class",
+    fixture: "config-security-level-other-member-annotation",
+    expected: {
+      where: "ClassLiteral at 43-51",
+      message: "does not run from the start of a token to the end of a token",
+    },
+    index: 8,
+    range: [44, 51],
+  },
+  {
+    case: "tokens-88b-class-readTrail",
+    diagram: "class",
+    fixture: "config-security-level-other-member-annotation",
+    expected: {
+      where: "ClassLiteral at 43-51",
+      message: "does not run from the start of a token to the end of a token",
+    },
+    index: 8,
+    range: [43, 50],
+  },
+  {
+    case: "tokens-88b-class-beforeComment",
+    diagram: "class",
+    fixture: "db-note-comment-line-inside-string",
+    expected: {
+      where: "StringLiteral at 32-42",
+      message:
+        'the texts of its tokens joined are not its written text: "ab", not "a\\nb"',
+    },
+    index: 6,
+    range: [32, 34],
+  },
+  {
+    case: "tokens-88b-class-beforeDirective",
+    diagram: "class",
+    fixture: "db-note-directive-line-inside",
+    expected: {
+      where: "StringLiteral at 18-38",
+      message:
+        'the texts of its tokens joined are not its written text: "a\\nb", not "a\\n\\nb"',
+    },
+    index: 2,
+    range: [18, 20],
+  },
+  {
+    case: "tokens-88b-class-afterDirective",
+    diagram: "class",
+    fixture: "db-note-directive-line-inside",
+    expected: {
+      where: "StringLiteral at 18-38",
+      message:
+        'the texts of its tokens joined are not its written text: "a\\nb", not "a\\n\\nb"',
+    },
+    index: 4,
+    range: [36, 38],
+  },
+  {
+    case: "tokens-88b-class-afterComment",
+    diagram: "class",
+    fixture: "lex-acc-title-line-separator-comment-line-separator-next",
+    expected: {
+      where: "ClassLiteral at 23-32",
+      message:
+        'the texts of its tokens joined are not its written text: "A\u2028B", not "A\u2028\u2028B"',
+    },
+    index: 4,
+    range: [31, 32],
+  },
+  {
+    case: "tokens-88b-class-beforeIgnoredSemicolon",
+    diagram: "class",
+    fixture: "tokens-class-def-ignored-semicolon-after-space",
+    expected: {
+      where: "ClassLiteral at 40-62",
+      message:
+        'value is not the texts of its tokens joined: "fill:#f00,color :blue", not "fill:#f00,color:blue"',
+    },
+    index: 7,
+    range: [40, 55],
+  },
+  {
+    case: "tokens-88b-class-afterIgnoredSemicolon",
+    diagram: "class",
+    fixture: "tokens-member-ignored-semicolon-inside",
+    expected: {
+      where: "ClassLiteral at 24-37",
+      message:
+        'the texts of its tokens joined are not its written text: "x style:#ab", not "x style:#a b"',
+    },
+    index: 7,
+    range: [36, 37],
+  },
+  {
+    case: "tokens-88b-flowchart-first",
+    diagram: "flowchart",
+    fixture: "basic-edge",
+    expected: {
+      where: "offset 17",
+      message:
+        'the character outside the tokens and comments is not whitespace: "-"',
+    },
+    index: 3,
+    range: [18, 20],
+  },
+  {
+    case: "tokens-88b-flowchart-last",
+    diagram: "flowchart",
+    fixture: "basic-edge",
+    expected: {
+      where: "offset 19",
+      message:
+        'the character outside the tokens and comments is not whitespace: ">"',
+    },
+    index: 3,
+    range: [17, 19],
+  },
+  {
+    case: "tokens-88b-flowchart-readTrail",
+    diagram: "flowchart",
+    fixture: "comment-lines-after-separator-006f79fb",
+    expected: {
+      where: "FlowchartLabel at 23-25",
+      message: "does not run from the start of a token to the end of a token",
+    },
+    index: 3,
+    range: [23, 24],
+  },
+  {
+    case: "tokens-88b-flowchart-beforeComment",
+    diagram: "flowchart",
+    fixture: "comment-lines-after-separator-0110bf8f",
+    expected: {
+      where: "FlowchartLabel at 22-24",
+      message: "does not run from the start of a token to the end of a token",
+    },
+    index: 3,
+    range: [22, 23],
+  },
+  {
+    case: "tokens-88b-flowchart-beforeDirective",
+    diagram: "flowchart",
+    fixture: "comment-lines-after-separator-01f6c2ba",
+    expected: {
+      where: "FlowchartLabel at 22-26",
+      message: "does not run from the start of a token to the end of a token",
+    },
+    index: 3,
+    range: [22, 25],
+  },
+  {
+    case: "tokens-88b-flowchart-readLead",
+    diagram: "flowchart",
+    fixture: "db-linkstyle-leading-line-separator",
+    expected: {
+      where: "FlowchartLiteral at 42-52",
+      message: "does not run from the start of a token to the end of a token",
+    },
+    index: 9,
+    range: [43, 52],
+  },
+  {
+    case: "tokens-88b-flowchart-afterDirective",
+    diagram: "flowchart",
+    fixture: "gram-label-across-directive",
+    expected: {
+      where: "FlowchartLabel at 15-33",
+      message:
+        'the texts of its tokens joined are not its written text: "x y", not "x  y"',
+    },
+    index: 6,
+    range: [32, 33],
+  },
+  {
+    case: "tokens-88b-flowchart-afterComment",
+    diagram: "flowchart",
+    fixture: "lex-acc-descr-block-line-separator-comment-line-empty-line",
+    expected: {
+      where: "FlowchartLiteral at 23-32",
+      message:
+        'the texts of its tokens joined are not its written text: "A\u2028B", not "A\u2028\\nB"',
+    },
+    index: 5,
+    range: [31, 32],
+  },
+  {
+    case: "tokens-88b-flowchart-beforeIgnoredSemicolon",
+    diagram: "flowchart",
+    fixture: "tokens-ignored-semicolon-label-spaces",
+    expected: {
+      where: "FlowchartLabel at 17-29",
+      message:
+        'the texts of its tokens joined are not its written text: "style:#x y", not "style:#x  y"',
+    },
+    index: 4,
+    range: [17, 25],
+  },
+  {
+    case: "tokens-88b-flowchart-afterIgnoredSemicolon",
+    diagram: "flowchart",
+    fixture: "tokens-ignored-semicolon-label-spaces",
+    expected: {
+      where: "FlowchartLabel at 17-29",
+      message:
+        'the texts of its tokens joined are not its written text: "style:#x y", not "style:#x  y"',
+    },
+    index: 6,
+    range: [28, 29],
+  },
+  {
+    case: "tokens-88b-sequence-first",
+    diagram: "sequence",
+    fixture: "config-init-trailing-comma",
+    expected: {
+      where: "offset 61",
+      message:
+        'the character outside the tokens and comments is not whitespace: "-"',
+    },
+    index: 3,
+    range: [62, 64],
+  },
+  {
+    case: "tokens-88b-sequence-last",
+    diagram: "sequence",
+    fixture: "config-init-trailing-comma",
+    expected: {
+      where: "offset 63",
+      message:
+        'the character outside the tokens and comments is not whitespace: ">"',
+    },
+    index: 3,
+    range: [61, 63],
+  },
+  {
+    case: "tokens-88b-sequence-beforeDirective",
+    diagram: "sequence",
+    fixture: "db-acc-descr-block-directive-line",
+    expected: {
+      where: "SequenceLiteral at 27-45",
+      message:
+        'the texts of its tokens joined are not its written text: "a\\nb", not "a\\n\\nb"',
+    },
+    index: 3,
+    range: [27, 28],
+  },
+  {
+    case: "tokens-88b-sequence-afterDirective",
+    diagram: "sequence",
+    fixture: "db-acc-descr-block-directive-line",
+    expected: {
+      where: "SequenceLiteral at 27-45",
+      message:
+        'the texts of its tokens joined are not its written text: "a\\nb", not "a\\n\\nb"',
+    },
+    index: 5,
+    range: [44, 45],
+  },
+  {
+    case: "tokens-88b-sequence-beforeComment",
+    diagram: "sequence",
+    fixture: "db-acc-descr-block-line-separator-then-comment-line",
+    expected: {
+      where: "SequenceLiteral at 27-36",
+      message:
+        'the texts of its tokens joined are not its written text: "xy", not "x\u2028y"',
+    },
+    index: 3,
+    range: [27, 28],
+  },
+  {
+    case: "tokens-88b-sequence-readLead",
+    diagram: "sequence",
+    fixture: "db-box-line-separator-after-colour-function",
+    expected: {
+      where: "RawText at 33-35",
+      message:
+        "starts with whitespace or a line terminator where no value starts",
+    },
+    index: 3,
+    range: [33, 35],
+  },
+  {
+    case: "tokens-88b-sequence-readTrail",
+    diagram: "sequence",
+    fixture: "db-box-line-separator-at-end",
+    expected: {
+      where: "SequenceBoxText at 20-29",
+      message: "does not run from the start of a token to the end of a token",
+    },
+    index: 3,
+    range: [23, 28],
+  },
+  {
+    case: "tokens-88b-sequence-afterComment",
+    diagram: "sequence",
+    fixture: "div-data-alias-line-separator-comment-line-empty-line",
+    expected: {
+      where: "SequenceDataBlock at 29-51",
+      message:
+        'the texts of its tokens joined are not its written text: "\\"alias\\":\\"A\u2028B\\"", not "\\"alias\\":\\"A\u2028\\nB\\""',
+    },
+    index: 5,
+    range: [48, 50],
+  },
+  {
+    case: "tokens-88b-sankey-first",
+    diagram: "sankey",
+    fixture: "config-security-level-other-title-and-ids",
+    expected: {
+      where: "offset 70",
+      message:
+        'the character outside the tokens and comments is not whitespace: "\\""',
+    },
+    index: 6,
+    range: [71, 91],
+  },
+  {
+    case: "tokens-88b-sankey-last",
+    diagram: "sankey",
+    fixture: "config-security-level-other-title-and-ids",
+    expected: {
+      where: "offset 90",
+      message:
+        'the character outside the tokens and comments is not whitespace: "\\""',
+    },
+    index: 6,
+    range: [70, 90],
+  },
+  {
+    case: "tokens-88b-sankey-beforeComment",
+    diagram: "sankey",
+    fixture: "db-quoted-comment-line",
+    expected: {
+      where: "StringLiteral at 7-17",
+      message:
+        'the texts of its tokens joined are not its written text: "ab", not "a\\nb"',
+    },
+    index: 1,
+    range: [7, 9],
+  },
+  {
+    case: "tokens-88b-sankey-beforeDirective",
+    diagram: "sankey",
+    fixture: "db-quoted-directive-line",
+    expected: {
+      where: "StringLiteral at 7-27",
+      message:
+        'the texts of its tokens joined are not its written text: "a\\nb", not "a\\n\\nb"',
+    },
+    index: 1,
+    range: [7, 9],
+  },
+  {
+    case: "tokens-88b-sankey-afterDirective",
+    diagram: "sankey",
+    fixture: "db-quoted-directive-line",
+    expected: {
+      where: "StringLiteral at 7-27",
+      message:
+        'the texts of its tokens joined are not its written text: "a\\nb", not "a\\n\\nb"',
+    },
+    index: 3,
+    range: [25, 27],
+  },
 ] as const
 
 const commentCutMergedTokenCases = [
@@ -30934,6 +31720,415 @@ const commentCutWrittenValueCases = [
     value: "A\u2028B!",
   },
 ] as const
+
+// packages/parser/docs/tokens.md, Tokens: a value that mermaid.js reads as
+// whitespace only has tokens of that whitespace. Each case removes the one
+// token of such a value.
+const readWhitespaceValueTokenRemovedCases = [
+  {
+    case: "tokens-88b-agentflow-wsOnlyToken",
+    diagram: "agentflow",
+    fixture: "db-click-empty-url",
+    index: 11,
+    expected: {
+      where: "offset 73",
+      message:
+        'the character outside the tokens and comments is not whitespace: "\\""',
+    },
+  },
+  {
+    case: "tokens-88b-er-wsOnlyToken",
+    diagram: "er",
+    fixture: "db-subgraph-nodes-blank-name",
+    index: 3,
+    expected: {
+      where: "offset 27",
+      message:
+        'the character outside the tokens and comments is not whitespace: "\\""',
+    },
+  },
+  {
+    case: "tokens-88b-state-wsOnlyToken",
+    diagram: "state",
+    fixture: "db-alias-blank-end-id-after-transition",
+    index: 5,
+    expected: {
+      where: "offset 32",
+      message:
+        'the character outside the tokens and comments is not whitespace: "\\""',
+    },
+  },
+  {
+    case: "tokens-88b-class-wsOnlyToken",
+    diagram: "class",
+    fixture: "db-cardinality-spaces",
+    index: 2,
+    expected: {
+      where: "offset 15",
+      message:
+        'the character outside the tokens and comments is not whitespace: "\\""',
+    },
+  },
+  {
+    case: "tokens-88b-flowchart-wsOnlyToken",
+    diagram: "flowchart",
+    fixture: "db-class-ids-empty-subgraph-id",
+    index: 3,
+    expected: {
+      where: "offset 22",
+      message:
+        'the character outside the tokens and comments is not whitespace: "\\""',
+    },
+  },
+  {
+    case: "tokens-88b-sequence-wsOnlyToken",
+    diagram: "sequence",
+    fixture: "db-box-colour-then-line-separator",
+    index: 3,
+    expected: {
+      where: "SequenceBoxText at 20-25",
+      message: "does not run from the start of a token to the end of a token",
+    },
+  },
+  {
+    case: "tokens-88b-sankey-wsOnlyToken",
+    diagram: "sankey",
+    fixture: "db-quoted-line-feeds-only",
+    index: 1,
+    expected: {
+      where: "offset 7",
+      message:
+        'the character outside the tokens and comments is not whitespace: "\\""',
+    },
+  },
+] as const
+
+it.each(readWhitespaceValueTokenRemovedCases)(
+  "reports a whitespace-only value without its token in $case",
+  (theCase) => {
+    const { input, tree } = recordedTree(theCase.diagram, theCase.fixture)
+    const broken = copyOf(tree)
+    setField(
+      broken,
+      "tokens",
+      broken.tokens.filter((_, index) => index !== theCase.index),
+    )
+    expect(checkTree(input, broken)).toContainEqual(theCase.expected)
+  },
+)
+
+// packages/parser/docs/tokens.md, Tokens: whitespace that mermaid.js does not
+// read as part of a value belongs to no token. Each case gives a RawText token
+// to such whitespace between two tokens.
+const unreadWhitespaceTokenAddedCases = [
+  {
+    case: "tokens-88b-agentflow-unread",
+    diagram: "agentflow",
+    fixture: "comment-after-connector",
+    index: 1,
+    range: [14, 15],
+    expected: {
+      where: "RawText at 14-15",
+      message:
+        "starts with whitespace or a line terminator where no value starts",
+    },
+  },
+  {
+    case: "tokens-88b-er-unread",
+    diagram: "er",
+    fixture: "config-look-classic",
+    index: 2,
+    range: [13, 14],
+    expected: {
+      where: "RawText at 13-14",
+      message:
+        "starts with whitespace or a line terminator where no value starts",
+    },
+  },
+  {
+    case: "tokens-88b-state-unread",
+    diagram: "state",
+    fixture: "config-html-labels-false",
+    index: 5,
+    range: [57, 58],
+    expected: {
+      where: "RawText at 57-58",
+      message:
+        "starts with whitespace or a line terminator where no value starts",
+    },
+  },
+  {
+    case: "tokens-88b-requirement-unread",
+    diagram: "requirement",
+    fixture: "config-security-level-other-acc-descr",
+    index: 3,
+    range: [28, 29],
+    expected: {
+      where: "RawText at 28-29",
+      message:
+        "starts with whitespace or a line terminator where no value starts",
+    },
+  },
+  {
+    case: "tokens-88b-class-unread",
+    diagram: "class",
+    fixture: "bare-marker-directive-lines-17d57580",
+    index: 2,
+    range: [14, 15],
+    expected: {
+      where: "RawText at 14-15",
+      message:
+        "starts with whitespace or a line terminator where no value starts",
+    },
+  },
+  {
+    case: "tokens-88b-flowchart-unread",
+    diagram: "flowchart",
+    fixture: "basic-edge",
+    index: 1,
+    range: [9, 10],
+    expected: {
+      where: "RawText at 9-10",
+      message:
+        "starts with whitespace or a line terminator where no value starts",
+    },
+  },
+  {
+    case: "tokens-88b-sequence-unread",
+    diagram: "sequence",
+    fixture: "config-init-trailing-comma",
+    index: 6,
+    range: [66, 67],
+    expected: {
+      where: "RawText at 66-67",
+      message:
+        "starts with whitespace or a line terminator where no value starts",
+    },
+  },
+  {
+    case: "tokens-88b-sankey-unread",
+    diagram: "sankey",
+    fixture: "db-directive-unclosed-at-end",
+    index: 6,
+    range: [12, 13],
+    expected: {
+      where: "RawText at 12-13",
+      message:
+        "starts with whitespace or a line terminator where no value starts",
+    },
+  },
+] as const
+
+it.each(unreadWhitespaceTokenAddedCases)(
+  "reports unread whitespace given a token in $case",
+  (theCase) => {
+    const { input, tree } = recordedTree(theCase.diagram, theCase.fixture)
+    const broken = copyOf(tree)
+    const [start, end] = theCase.range
+    setField(broken, "tokens", [
+      ...broken.tokens.slice(0, theCase.index),
+      tokenOf(input, "RawText", { text: input.slice(start, end), from: start }),
+      ...broken.tokens.slice(theCase.index),
+    ])
+    expect(checkTree(input, broken)).toContainEqual(theCase.expected)
+  },
+)
+
+// packages/parser/docs/tokens.md, Tokens: a node of text that mermaid.js does
+// not read has the tokens of its units. Each case removes the token of one
+// unit of such a node.
+const unreadTextUnitTokenRemovedCases = [
+  {
+    case: "tokens-88b-architecture-ignored-unit-token",
+    diagram: "architecture",
+    fixture: "detect-retained-bare-ascii",
+    index: 0,
+    expected: {
+      where: "offset 5",
+      message:
+        'the character outside the tokens and comments is not whitespace: "-"',
+    },
+  },
+  {
+    case: "tokens-88b-cynefin-ignored-unit-token",
+    diagram: "cynefin",
+    fixture: "detect-block-after-directive",
+    index: 1,
+    expected: {
+      where: "offset 14",
+      message:
+        'the character outside the tokens and comments is not whitespace: "-"',
+    },
+  },
+  {
+    case: "tokens-88b-eventmodeling-ignored-unit-token",
+    diagram: "eventmodeling",
+    fixture: "comment-line-inside-hidden-directive",
+    index: 0,
+    expected: {
+      where: "offset 5",
+      message:
+        'the character outside the tokens and comments is not whitespace: "%"',
+    },
+  },
+  {
+    case: "tokens-88b-gitgraph-ignored-unit-token",
+    diagram: "gitgraph",
+    fixture: "db-state-common-forms-preserve-head",
+    index: 22,
+    expected: {
+      where: "offset 109",
+      message:
+        'the character outside the tokens and comments is not whitespace: "%"',
+    },
+  },
+  {
+    case: "tokens-88b-info-ignored-unit-token",
+    diagram: "info",
+    fixture: "detect-block-after-real-frontmatter",
+    index: 3,
+    expected: {
+      where: "offset 21",
+      message:
+        'the character outside the tokens and comments is not whitespace: "-"',
+    },
+  },
+  {
+    case: "tokens-88b-journey-ignored-unit-token",
+    diagram: "journey",
+    fixture: "db-task-extra-colon",
+    index: 8,
+    expected: {
+      where: "offset 19",
+      message:
+        'the character outside the tokens and comments is not whitespace: ":"',
+    },
+  },
+  {
+    case: "tokens-88b-packet-ignored-unit-token",
+    diagram: "packet",
+    fixture: "c4-hidden-suffix-lf",
+    index: 4,
+    expected: {
+      where: "offset 12",
+      message:
+        'the character outside the tokens and comments is not whitespace: "%"',
+    },
+  },
+  {
+    case: "tokens-88b-pie-ignored-unit-token",
+    diagram: "pie",
+    fixture: "detect-block-after-real-frontmatter",
+    index: 3,
+    expected: {
+      where: "offset 22",
+      message:
+        'the character outside the tokens and comments is not whitespace: "-"',
+    },
+  },
+  {
+    case: "tokens-88b-radar-ignored-unit-token",
+    diagram: "radar",
+    fixture: "detect-retained-indent-open-native",
+    index: 1,
+    expected: {
+      where: "offset 13",
+      message:
+        'the character outside the tokens and comments is not whitespace: "-"',
+    },
+  },
+  {
+    case: "tokens-88b-railroad-ignored-unit-token",
+    diagram: "railroad",
+    fixture: "abnf-frontmatter-retained",
+    index: 3,
+    expected: {
+      where: "offset 21",
+      message:
+        'the character outside the tokens and comments is not whitespace: "-"',
+    },
+  },
+  {
+    case: "tokens-88b-treeview-ignored-unit-token",
+    diagram: "treeview",
+    fixture: "ast-annotation-prefixes",
+    index: 3,
+    expected: {
+      where: "offset 25",
+      message:
+        'the character outside the tokens and comments is not whitespace: "\u2502"',
+    },
+  },
+  {
+    case: "tokens-88b-venn-ignored-unit-token",
+    diagram: "venn",
+    fixture: "db-grid-comment-header-line",
+    index: 1,
+    expected: {
+      where: "offset 10",
+      message:
+        'the character outside the tokens and comments is not whitespace: "a"',
+    },
+  },
+  {
+    case: "tokens-88b-wardley-ignored-unit-token",
+    diagram: "wardley",
+    fixture: "detect-block-after-directive",
+    index: 1,
+    expected: {
+      where: "offset 14",
+      message:
+        'the character outside the tokens and comments is not whitespace: "-"',
+    },
+  },
+  {
+    case: "tokens-88b-class-ignored-unit-token",
+    diagram: "class",
+    fixture: "db-direction-then-comment",
+    index: 3,
+    expected: {
+      where: "offset 28",
+      message:
+        'the character outside the tokens and comments is not whitespace: "%"',
+    },
+  },
+  {
+    case: "tokens-88b-flowchart-ignored-unit-token",
+    diagram: "flowchart",
+    fixture: "db-subgraph-dir-after-nested-end-ignored-semicolon",
+    index: 10,
+    expected: {
+      where: "offset 54",
+      message:
+        'the character outside the tokens and comments is not whitespace: "s"',
+    },
+  },
+  {
+    case: "tokens-88b-sequence-ignored-unit-token",
+    diagram: "sequence",
+    fixture: "db-ignored-line-after-wrapped-message",
+    index: 6,
+    expected: {
+      where: "offset 30",
+      message:
+        'the character outside the tokens and comments is not whitespace: ")"',
+    },
+  },
+] as const
+
+it.each(unreadTextUnitTokenRemovedCases)(
+  "reports unread text without the token of a unit in $case",
+  (theCase) => {
+    const { input, tree } = recordedTree(theCase.diagram, theCase.fixture)
+    const broken = copyOf(tree)
+    setField(
+      broken,
+      "tokens",
+      broken.tokens.filter((_, index) => index !== theCase.index),
+    )
+    expect(checkTree(input, broken)).toContainEqual(theCase.expected)
+  },
+)
 
 it.each(commentCutTokenRangeCases)(
   "reports a broken comment-cut lexical unit in $case",
