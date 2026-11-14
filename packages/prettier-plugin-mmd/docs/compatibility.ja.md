@@ -5221,25 +5221,78 @@ mermaid.js がこう読む行は、ソースの何行にもまたがります。
 書かれたまま印字します（[行区切り](./sequence.ja.md#行区切り)を参照）。
 領域が名前の中にあるときも同じです。
 ER 図と quadrant 図が、これにあたります。
-[ER の複数行の文](./er.ja.md#複数行の文)と、
-[quadrant の複数行の文](./quadrant.ja.md#複数行の文)を参照してください。
 [test: a comment line after U+2028 inside the name of an ER entity]
 [test: a comment line after U+2029 inside the name of an ER entity]
 [test: a comment line after U+2028 inside the name of an ER entity that follows
 a name in quotes] [test: a comment line after U+2028 inside the name of a class]
 [test: a comment line after U+2029 inside the name of a class]
-行は、領域が取り除かない最初の改行で終わります。
-そのため、コメント行の後の行にあるものは、その行の一部です。
-タイトルのない `subgraph` 行の名前は、そこにある `;` で終わり、
-`;` はその場所に残ります。
-空の行や空白だけの行は、行を終わらせます。
-ただし、その後にコメント行が続くときは別です。
-コメント行の前にあるそのような行は、領域に入り、領域と一緒に取り除かれます。
-ディレクティブの中の U+2028 や U+2029 はディレクティブと一緒に取り除かれるため、
-図のコメントを終わらせることも、途中で切ることもありません。
-そのようなディレクティブの前後にあるコメントの断片は、1 つのコメントのまま、
-書かれたまま印字します。
-[test: a diagram comment joined past a closed directive that holds U+2028]
+
+行に載るものと行の終わりは、mermaid.js が取り除くものから決まります。
+図種ごとの文書には、その図種だけのことを書きます。
+[ER の複数行の文](./er.ja.md#複数行の文)と、
+[quadrant の複数行の文](./quadrant.ja.md#複数行の文)を参照してください。
+
+- 行は、領域が取り除かない最初の改行で終わります。
+  コメント行の後の行にあるものは、その行の一部です。
+  名前の前にある、最初の行の文と、テキストの後にある、最後の行の文、
+  テキストの後の 2 つ目のコメント行も、その行の一部です。
+  タイトルのない `subgraph` 行の名前は、そこにある `;` で終わり、
+  `;` はその場所に残ります。
+  そのような行の CRLF の改行は、
+  ほかの所と同じく LF で印字します（[行末](#行末)を参照）。
+  [test: a statement on the line after a comment line after U+2028 inside the name
+  of an ER entity]
+  [test: a statement before a name on its line, with a comment line after U+2028
+  inside the name of an ER entity]
+  [test: two comment lines with text between them after U+2028 inside the name of
+  an ER entity]
+  [test: two comment lines with text between them after U+2028 inside the name of
+  a class]
+  [test: a comment line after U+2028 inside the name of an ER entity, with CRLF
+  line breaks]
+  [test: a comment line after U+2028 inside the name of a class, with CRLF line
+  breaks]
+- 空行、空白だけの行、単独の行にあるディレクティブは、
+  その後にコメント行が続くとき、領域に入ります。
+  領域と一緒に取り除かれ、数も順序も問わず、行はそれをまたいで続きます。
+  [test: an empty line and a comment line after a comment line after U+2028 inside
+  the name of an ER entity]
+  [test: a line of only whitespace and a comment line after a comment line after
+  U+2028 inside the name of an ER entity]
+  [test: two empty lines and a comment line after a comment line after U+2028
+  inside the name of an ER entity]
+  [test: a directive line and a comment line after a comment line after U+2028
+  inside the name of an ER entity]
+  [test: an empty line, a directive line, and a comment line after a comment line
+  after U+2028 inside the name of an ER entity]
+  [test: an empty line and a comment line after a comment line after U+2028 inside
+  the name of a class]
+  [test: a line of only whitespace and a comment line after a comment line after
+  U+2028 inside the name of a class]
+  [test: two empty lines and a comment line after a comment line after U+2028
+  inside the name of a class]
+  [test: a directive line and a comment line after a comment line after U+2028
+  inside the name of a class]
+  [test: an empty line, a directive line, and a comment line after a comment line
+  after U+2028 inside the name of a class]
+- その後にコメント行が続かないとき、それらは行を終わらせます。
+  空行、空白だけの行、単独の行にあるディレクティブ（その行の終わりで）、
+  そしてテキストの終わりです。
+  次の行は、字下げされた別の文になります。
+  そこで終わる quadrant 図の `classDef` は未完で、入力は拒否されます。
+  [test: an empty line after a comment line after U+2028 inside the name of an ER
+  entity]
+  [test: a line of only whitespace after a comment line after U+2028 inside the
+  name of an ER entity]
+  [test: a directive line after a comment line after U+2028 inside the name of an
+  ER entity]
+  [test: a comment line after U+2028 at the end of the text of an ER diagram]
+- ディレクティブの中の U+2028 や U+2029
+  はディレクティブと一緒に取り除かれるため、図のコメントを終わらせることも、
+  途中で切ることもありません。
+  そのようなディレクティブの前後にあるコメントの断片は、1 つのコメントのまま、
+  書かれたまま印字します。
+  [test: a diagram comment joined past a closed directive that holds U+2028]
 
 ## フロントマター
 

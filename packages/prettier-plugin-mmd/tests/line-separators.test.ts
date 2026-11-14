@@ -2001,6 +2001,21 @@ const erExamples: readonly (readonly [string, string, string])[] = [
     "erDiagram\nclassDef c\u2028%% c\nstyle fill:#f00;\n",
     "erDiagram\n  classDef c\u2028%% c\nstyle fill:#f00;\n",
   ],
+  [
+    "a directive line and a comment line after a comment line after U+2028 inside the name of an ER entity",
+    "erDiagram\nA\u2028%% c\n%%{init: {}}%%\n%% d\nBar\n",
+    "erDiagram\n  A\u2028%% c\n%%{init: {}}%%\n%% d\nBar\n",
+  ],
+  [
+    "two empty lines and a comment line after a comment line after U+2028 inside the name of an ER entity",
+    "erDiagram\nA\u2028%% c\n\n\n%% d\nBar\n",
+    "erDiagram\n  A\u2028%% c\n\n\n%% d\nBar\n",
+  ],
+  [
+    "an empty line, a directive line, and a comment line after a comment line after U+2028 inside the name of an ER entity",
+    "erDiagram\nA\u2028%% c\n\n%%{init: {}}%%\n%% d\nBar\n",
+    "erDiagram\n  A\u2028%% c\n\n%%{init: {}}%%\n%% d\nBar\n",
+  ],
 ]
 
 /**
@@ -3307,6 +3322,21 @@ const quadrantLineSeparatorExamples: readonly (readonly [
     "a comment line after U+2028 inside the name of a class, with CRLF line breaks",
     "quadrantChart\r\nclassDef a\u2028%% c\r\nb color: #f00\r\n",
     "quadrantChart\n  classDef a\u2028%% c\nb color: #f00\n",
+  ],
+  [
+    "a directive line and a comment line after a comment line after U+2028 inside the name of a class",
+    "quadrantChart\nclassDef a\u2028%% c\n%%{init: {}}%%\n%% d\nb color: #f00\n",
+    "quadrantChart\n  classDef a\u2028%% c\n%%{init: {}}%%\n%% d\nb color: #f00\n",
+  ],
+  [
+    "two empty lines and a comment line after a comment line after U+2028 inside the name of a class",
+    "quadrantChart\nclassDef a\u2028%% c\n\n\n%% d\nb color: #f00\n",
+    "quadrantChart\n  classDef a\u2028%% c\n\n\n%% d\nb color: #f00\n",
+  ],
+  [
+    "an empty line, a directive line, and a comment line after a comment line after U+2028 inside the name of a class",
+    "quadrantChart\nclassDef a\u2028%% c\n\n%%{init: {}}%%\n%% d\nb color: #f00\n",
+    "quadrantChart\n  classDef a\u2028%% c\n\n%%{init: {}}%%\n%% d\nb color: #f00\n",
   ],
 ]
 

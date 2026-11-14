@@ -95,7 +95,7 @@ mermaid.js は属性ブロックを改行に関係なく読むので、同じ属
 コメント行が U+2028 か U+2029 の後で切る実体の行では、1 行にある波括弧は、
 その行と一緒に書かれたままにします。
 別々の行にある波括弧は、
-その行の後に `{ }` と印字します（[複数行の文](#複数行の文)を参照）。
+その行の終わりに `{ }` として印字します（[複数行の文](#複数行の文)を参照）。
 [test: an empty attribute block over several lines after a comment line after
 U+2028 inside the name of an ER entity]
 [test: an empty attribute block on one line after a comment line after U+2028
@@ -2090,39 +2090,9 @@ relationship]
 [test: a comment line after U+2028 inside the name of an ER class statement]
 [test: a comment line after U+2028 inside the name of an ER class definition]
 [test: a comment line after U+2028 inside the name of an ER style statement]
-文は、最初の行から終わりまで、書かれたまま印字します。
-字下げするのは最初の行だけです。
-その行は、mermaid.js が読む行です。
-コメント行の後のテキストは、領域が取り除かない最初の改行まで、その行の一部です。
-名前の前後に同じ行にある文と、テキストの後の 2 つ目のコメント行も、
-その行の一部です。
-[test: a statement on the line after a comment line after U+2028 inside the name
-of an ER entity]
-[test: a statement before a name on its line, with a comment line after U+2028
-inside the name of an ER entity]
-[test: two comment lines with text between them after U+2028 inside the name of
-an ER entity]
-[test: a comment line after U+2028 inside the name of an ER entity, with CRLF
-line breaks]
-行は、mermaid.js が終わらせる所で終わります。
+行に載るものと行の終わりは、
 [U+2028 か U+2029 の後のコメント行](./compatibility.ja.md#u2028-か-u2029-の後のコメント行)
-を参照してください。
-コメント行の後の空行や空白だけの行は、行を終わらせます。
-ただし、その後にコメント行が続くときは、名前が続きます。
-単独の行にあるディレクティブは、その行の終わりで行を終わらせます。
-テキストの終わりも行を終わらせます。
-次の行は、字下げされた別の文になります。
-[test: an empty line after a comment line after U+2028 inside the name of an ER
-entity]
-[test: a comment line after U+2028 at the end of the text of an ER diagram]
-[test: an empty line and a comment line after a comment line after U+2028 inside
-the name of an ER entity]
-[test: a line of only whitespace and a comment line after a comment line after
-U+2028 inside the name of an ER entity]
-[test: a line of only whitespace after a comment line after U+2028 inside the
-name of an ER entity]
-[test: a directive line after a comment line after U+2028 inside the name of an
-ER entity]
+のとおりです。
 その行にある `;` は、何であっても、その場所に残ります。
 `style` や `classDef` の文を終わらせる `;`（`Bar fill:red;`）、
 コメント行の後の行に `style` と `:#` があるために行の規則が無視する `;`
@@ -2139,9 +2109,9 @@ inside the name of an ER style statement]
 inside the name of an ER class definition]
 複数行の属性ブロックを持つエンティティでは、書かれたまま印字するのは、
 ブロックを開く行で、`{` の後ろにあるものも含みます。
-その後の属性と `}` は、通常どおり、1 段深く、文の位置に置きます。
-複数行の空のブロックは、その行の後に `{ }` と印字します。
-空のブロックはどこでもそうだからです。
+その後の属性と `}` は、通常どおり、属性は 1 段深く、`}` は文の位置に置きます。
+複数行の空のブロックは、その行の終わりに `{ }` として印字します。
+ほかの空のブロックと同じです。
 1 行の空のブロックは、その行と一緒に書かれたままにします。
 [test: a comment line after U+2028 inside the name of an ER entity with an
 attribute block over several lines]

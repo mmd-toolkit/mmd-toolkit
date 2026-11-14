@@ -847,23 +847,13 @@ mermaid.js が複数行にわたって読む文は、
 [test: two comment lines after U+2028 inside the name of a class]
 [test: a comment line after U+2028 inside the name of a class, and a point after
 it]
-コメント行の後の空行や空白だけの行は、その後にコメント行が続くとき、
-名前を続けます。
-テキストの後の 2 つ目のコメント行も、名前を続けます。
-[test: an empty line and a comment line after a comment line after U+2028 inside
-the name of a class]
-[test: a line of only whitespace and a comment line after a comment line after
-U+2028 inside the name of a class]
-[test: two comment lines with text between them after U+2028 inside the name of
-a class]
+行に載るものと行の終わりは、
+[U+2028 か U+2029 の後のコメント行](./compatibility.ja.md#u2028-か-u2029-の後のコメント行)
+のとおりです。
 コメント行の後の行にある、行の規則が無視する `;`（`style color:#f00;`）は、
 その場所に残ります。
 [test: a semicolon that the line rule ignores, after a comment line after U+2028
 inside the name of a class]
-そのような文の CRLF の改行は、
-ほかの文と同じく LF で印字します（[行末](./compatibility.ja.md#行末)を参照）。
-[test: a comment line after U+2028 inside the name of a class, with CRLF line
-breaks]
 
 ### 複数行の値
 
