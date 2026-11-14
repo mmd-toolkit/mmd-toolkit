@@ -114,6 +114,69 @@ The prefix tells what a failure on the fixture would be a failure of:
 An input that shows more than one thing takes the prefix of the thing a failure
 on it would be about.
 
+For an input that has `%%`, the list above does not give every reader the same
+prefix: a failure on such an input can be about the units, the statements, or
+the values, and the corpus has the same kind of input under different prefixes
+in one diagram type. The corpus follows the prefixes that each diagram type
+already has, and the table below records them. So a new fixture whose input
+contains `%%` anywhere in its text (whether or not it starts a comment or a
+directive) and whose name, as the author chose it by the list above, has the
+prefix `lex-`, `gram-`, or `db-` takes its prefix by these steps, in order, and
+not by the list. The prefix of such a fixture shows the habit of its diagram
+type, and does not always say what a failure on the fixture would be a failure
+of. A new fixture whose input has no `%%` takes its prefix from the list above;
+these steps do not cover it.
+
+1. An input is accepted if its `expected.json` says that mermaid.js accepts it,
+   and rejected if it has a `parse-error.json`; the two are separate tests, so
+   an input that mermaid.js accepts and the parser rejects is both. The kind of
+   an accepted input is that it has `%%` in its text. The kind of a rejected
+   input, one that has a `parse-error.json`, is how the message in that file
+   begins: `Unexpected character`, `Unexpected token`, or an end of the text
+   (one kind, for `Unexpected end of text` and for a message that ends with
+   `before the end of the text`). A rejected input with another message has no
+   kind, so it has no cell in the table, and step 3 decides.
+2. Look up the diagram type (the folder of the fixture) and the kind in the
+   table below. If the cell names a prefix, the new fixture takes it.
+3. Otherwise (the diagram type has no row, the cell is empty, or the input has
+   no kind) an accepted input takes `lex-`. A rejected input takes `lex-` if its
+   message begins with `Unexpected character` or ends with
+   `before the end of the text` (a rule of the units: a character that no rule
+   of the context reads, a unit that is not closed), and `gram-` in every other
+   case (a rule of the statements and nodes).
+
+The table is the decision itself. It is not a count of the corpus, so it does
+not change when fixtures are added or renamed, and changing a cell changes the
+prefix of every later fixture of that kind. A cell names the prefix of a diagram
+type and a kind where it differs from step 3; an empty cell, a diagram type
+without a row, and an input without a kind take step 3. Step 3 gives the two
+forms of an end of the text different prefixes (`Unexpected end of text` takes
+`gram-`, a message that ends with `before the end of the text` takes `lex-`), so
+a diagram type whose end-of-text fixtures take one prefix has that prefix in its
+cell.
+
+| Diagram type  | Accepted | `Unexpected character` | `Unexpected token` | End of the text |
+| ------------- | -------- | ---------------------- | ------------------ | --------------- |
+| `block`       | `db-`    | `gram-`                |                    | `gram-`         |
+| `c4`          |          |                        |                    | `gram-`         |
+| `class`       |          |                        |                    | `lex-`          |
+| `er`          |          |                        | `lex-`             | `lex-`          |
+| `gantt`       |          |                        | `lex-`             | `lex-`          |
+| `gitgraph`    |          |                        | `lex-`             |                 |
+| `journey`     |          |                        | `lex-`             | `lex-`          |
+| `kanban`      |          | `gram-`                |                    | `gram-`         |
+| `mindmap`     |          |                        |                    | `lex-`          |
+| `quadrant`    | `db-`    | `gram-`                |                    | `gram-`         |
+| `requirement` |          |                        | `lex-`             | `lex-`          |
+| `sankey`      | `db-`    | `gram-`                |                    | `gram-`         |
+| `sequence`    |          |                        |                    | `gram-`         |
+| `state`       |          |                        |                    | `lex-`          |
+| `timeline`    |          |                        |                    | `gram-`         |
+| `treemap`     | `gram-`  | `gram-`                |                    |                 |
+| `treeview`    | `gram-`  |                        |                    |                 |
+| `venn`        |          |                        |                    | `gram-`         |
+| `xychart`     | `db-`    | `gram-`                |                    | `gram-`         |
+
 After the topic, a name may carry marks of what the input holds, in this order
 where there are several: `u2028` or `u2029` (the character is in the input),
 `directive` or `open-directive` (a directive, or one that is not closed), and
@@ -128,12 +191,20 @@ specification (`@mmd-toolkit/parser`), whose tests write them as file snapshots:
 `ast.json` for the inputs the parser accepts, and `parse-error.json` (the
 `message`, `range` and `loc` of the `ParseError`) for the inputs it rejects with
 a `ParseError`. They sit next to the input so that both can be read together.
-Nothing in this package reads, writes or checks them, and this package does not
-depend on the parser: the generator, `add`, `add-many`, `set-divergence`,
-`set-note`, the collector and `loadFixtures()` handle only `input.mmd`,
-`expected.json` and `specified.json`, and leave any other file in a fixture's
-directory as it is. A fixture added here has neither file until the parser's
-tests run.
+This package does not write them and does not depend on the parser: the
+generator, `add`, `add-many`, `set-divergence`, `set-note`, the collector and
+`loadFixtures()` handle only `input.mmd`, `expected.json` and `specified.json`,
+and leave any other file in a fixture's directory as it is. A fixture added here
+has neither file until the parser's tests run. The parser's tests check that the
+parser returns the recorded tree. This package checks that the recorded tree is
+right, in two tests that read `ast.json` and the input and call no parser:
+`tests/check-tree-corpus.test.ts` requires `checkTree()` to find no problem in
+any recorded tree ([check-tree.md](./check-tree.md)), and
+`tests/db-from-tree.test.ts` requires the Db that `dbFromTree()` builds from
+each recorded tree to be the Db of mermaid.js, or the `specified` Db where the
+specification reads the input differently
+([db-from-tree.md](./db-from-tree.md)). Of `parse-error.json`, the second test
+only looks whether it exists, for a fixture without a tree.
 
 **The recorded tree is JSON.** A number that JSON cannot write is `null` in
 `ast.json`, as `JSON.stringify` writes it: the `value` of a NumericLiteral for a

@@ -128,6 +128,76 @@ mermaid.js から取った入力に付けるのと同じ）。
 1 つの入力が複数のものを示すときは、失敗が何についてのものになるかで、
 接頭辞を選びます。
 
+入力に `%%` がある場合、上の一覧は、
+読む人ごとに同じ接頭辞を与えるとは限りません。
+そのような入力の失敗は、単位、文、値のどれについてのものにもなりえ、
+コーパスにも、同じ図種の同じ種類の入力に、別々の接頭辞が付いたものがあります。
+コーパスは、図種ごとにすでにある接頭辞に従っていて、下の表が、
+それを記録しています。
+そこで、入力のテキストのどこかに `%%` があり、名前が、
+作者が上の一覧で選んだ接頭辞として `lex-`、`gram-`、
+`db-` のどれかを持つ新しい fixture は、一覧ではなく、次の手順で、
+順に接頭辞を決めます。
+この `%%` は、コメントやディレクティブを始めるものでなくてもかまいません。
+そのような fixture の接頭辞は、図種の慣習を示し、
+その fixture の失敗が何の失敗かを、いつも示すとは限りません。
+入力に `%%` がない新しい fixture は、上の一覧で接頭辞を決め、
+この手順の対象にはなりません。
+
+1. 入力は、`expected.json` が mermaid.js の受理を示すなら受理される入力で、
+   `parse-error.json` があれば拒否される入力です。
+   この 2 つは別の判定なので、mermaid.js が受理し、パーサーが拒否する入力は、
+   両方に数えます。
+   受理される入力の種類は、テキストに `%%` があることです。
+   拒否される入力（`parse-error.json` があるもの）の種類は、
+   そのファイルのメッセージの始まりです。
+   `Unexpected character`、`Unexpected token`、またはテキストの終わりです。
+   テキストの終わりは、`Unexpected end of text` と、
+   `before the end of the text` で終わるメッセージを合わせて、1 つの種類です。
+   ほかのメッセージの拒否される入力には、種類がなく、表にセルがないので、
+   手順 3 で決まります。
+2. 下の表で、図種（fixture のフォルダ）と種類の組を引きます。
+   そのセルが接頭辞を示していれば、新しい fixture は、その接頭辞にします。
+3. そうでないとき（図種の行がない、セルが空、または種類がないとき）は、
+   受理される入力は `lex-` にします。
+   拒否される入力は、メッセージが `Unexpected character` で始まるか、
+   `before the end of the text` で終わるものなら `lex-` にします（単位の規則:
+   文脈のどの規則も読まない文字、閉じていない単位）。
+   それ以外はすべて `gram-` にします（文とノードの規則）。
+
+表は、決定そのものです。
+コーパスを数えた結果ではないので、fixture を足しても、付け替えても変わらず、
+セルを変えると、その種類の後の fixture すべての接頭辞が変わります。
+セルは、図種と種類の組が、手順 3 と違うときに、その接頭辞を示します。
+空のセル、行のない図種、種類のない入力は、手順 3 で決まります。
+手順 3 は、テキストの終わりの 2 つの形に、別々の接頭辞を与えます。
+`Unexpected end of text` は `gram-`、
+`before the end of the text` で終わるメッセージは `lex-` です。
+そのため、その図種のテキストの終わりの fixture が 1 つの接頭辞を取るときは、
+その接頭辞をセルに書きます。
+
+| 図種          | 受理    | `Unexpected character` | `Unexpected token` | テキストの終わり |
+| ------------- | ------- | ---------------------- | ------------------ | ---------------- |
+| `block`       | `db-`   | `gram-`                |                    | `gram-`          |
+| `c4`          |         |                        |                    | `gram-`          |
+| `class`       |         |                        |                    | `lex-`           |
+| `er`          |         |                        | `lex-`             | `lex-`           |
+| `gantt`       |         |                        | `lex-`             | `lex-`           |
+| `gitgraph`    |         |                        | `lex-`             |                  |
+| `journey`     |         |                        | `lex-`             | `lex-`           |
+| `kanban`      |         | `gram-`                |                    | `gram-`          |
+| `mindmap`     |         |                        |                    | `lex-`           |
+| `quadrant`    | `db-`   | `gram-`                |                    | `gram-`          |
+| `requirement` |         |                        | `lex-`             | `lex-`           |
+| `sankey`      | `db-`   | `gram-`                |                    | `gram-`          |
+| `sequence`    |         |                        |                    | `gram-`          |
+| `state`       |         |                        |                    | `lex-`           |
+| `timeline`    |         |                        |                    | `gram-`          |
+| `treemap`     | `gram-` | `gram-`                |                    |                  |
+| `treeview`    | `gram-` |                        |                    |                  |
+| `venn`        |         |                        |                    | `gram-`          |
+| `xychart`     | `db-`   | `gram-`                |                    | `gram-`          |
+
 話題の後に、入力が持つものの印を付けてよく、複数あるときはこの順です。
 `u2028` か `u2029`（その文字が入力にある）、
 `directive` か `open-directive`（ディレクティブ、または閉じていないもの）、
@@ -144,13 +214,26 @@ mermaid.js から取った入力に付けるのと同じ）。
 `parse-error.json` は parser が `ParseError` で拒否する入力にだけあります。
 `parse-error.json` は、その `ParseError` の `message`、`range`、`loc` です。
 入力と一緒に読めるよう、入力の隣に置きます。
-このパッケージはこれらを読みも書きも検査もせず、parser にも依存しません。
+このパッケージはこれらを書かず、parser にも依存しません。
 生成器、`add`、`add-many`、`set-divergence`、`set-note`、収集の道具、
 `loadFixtures()` が扱うのは `input.mmd`、`expected.json`、
 `specified.json` だけで、
 fixture のディレクトリにあるほかのファイルはそのまま残します。
 ここで足した fixture には、
 parser のテストが走るまでどちらのファイルもありません。
+parser のテストは、parser が記録した木を返すことを確かめます。
+このパッケージは、記録した木が正しいことを、`ast.json` と入力だけを読み、
+parser を呼ばない 2 つのテストで確かめます。
+`tests/check-tree-corpus.test.ts` は、
+記録した木のすべてに `checkTree()` を当て、
+問題がないことを求めます（[check-tree.ja.md](./check-tree.ja.md)）。
+`tests/db-from-tree.test.ts` は、記録した木から `dbFromTree()` で作った Db を、
+mermaid.js の Db と比べ、
+等しいことを求めます（[db-from-tree.ja.md](./db-from-tree.ja.md)）。
+仕様が入力を違って読む場合は、
+mermaid.js の Db の代わりに `specified` の Db と比べます。
+`parse-error.json` について、2 つ目のテストは、
+木のない fixture にそれがあるかどうかだけを見ます。
 
 **記録した木は JSON です。**
 JSON が書けない数は、`JSON.stringify` が書くとおり、
