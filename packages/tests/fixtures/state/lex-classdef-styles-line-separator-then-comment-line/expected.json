@@ -1,0 +1,26 @@
+{
+  "source": {
+    "kind": "authored",
+    "note": "state.md Comments: a comment line after a U+2028 in the styles of classDef is read through, and the value goes on after it; the Db summary holds `A`, U+2028, and `B`."
+  },
+  "accepted": true,
+  "diagramType": "stateDiagram",
+  "db": {
+    "direction": "TB",
+    "title": "",
+    "accTitle": "",
+    "accDescr": "",
+    "states": [],
+    "notes": [],
+    "transitions": [],
+    "classDefs": [
+      {
+        "id": "c",
+        "styles": [
+          "A B"
+        ]
+      }
+    ],
+    "links": []
+  }
+}

@@ -237,6 +237,47 @@ U+3000、U+FEFF がそれらを分けます。
 [fixture: block/db-tail-space-comment] [fixture: block/db-tail-class-comment]
 [fixture: block/db-tail-class-def-comment]
 [fixture: block/db-tail-style-comment]
+クラス名やスタイルの中の U+2028 や U+2029 の後のコメントは例外で、読み飛ばされ、
+値はその後に続きます（[コメント行](../common.ja.md#コメント行) を参照）。
+[fixture: block/db-class-name-line-separator-then-comment-line]
+[fixture: block/db-style-line-separator-then-comment-line]
+[fixture: block/db-class-name-line-separator-comment-line-directive-next]
+[fixture: block/db-class-name-line-separator-comment-line-space-next]
+[fixture: block/db-class-name-line-separator-comment-line-separator-next]
+[fixture: block/db-class-name-line-separator-comment-line-empty-line]
+[fixture: block/db-class-name-line-separator-comment-line-end-of-text]
+[fixture: block/db-class-name-line-separator-comment-line-cr]
+[fixture: block/db-class-name-line-separator-comment-line-crlf]
+[fixture: block/db-class-name-line-separator-comment-line-two-comment-lines]
+[fixture: block/db-class-name-line-separator-comment-line-two-regions]
+[fixture: block/db-class-name-line-separator-comment-line-spaces-before]
+[fixture: block/db-class-name-line-separator-comment-line-line-feed-before]
+[fixture: block/db-class-name-line-separator-comment-line-directive-before]
+[fixture: block/db-class-name-line-separator-comment-line-line-rule-before]
+[fixture: block/db-class-name-line-separator-comment-line-line-rule-after]
+[fixture: block/db-class-name-line-separator-comment-line-bare-percent]
+[fixture: block/db-class-name-line-separator-comment-line-percent-brace]
+[fixture: block/db-classdef-styles-line-separator-then-comment-line]
+id は U+2028 や U+2029 で終わり、
+それが 2 つの id を区切るので（上の「空白と改行」を参照）、`a`、U+2028、`%% c`、
+改行、`b` はブロック `a` と `b` です。
+[fixture: block/db-id-line-separator-then-comment-line]
+[fixture: block/db-id-line-separator-comment-line-directive-next]
+[fixture: block/db-id-line-separator-comment-line-space-next]
+[fixture: block/db-id-line-separator-comment-line-separator-next]
+[fixture: block/db-id-line-separator-comment-line-empty-line]
+[fixture: block/db-id-line-separator-comment-line-end-of-text]
+[fixture: block/db-id-line-separator-comment-line-cr]
+[fixture: block/db-id-line-separator-comment-line-crlf]
+[fixture: block/db-id-line-separator-comment-line-two-comment-lines]
+[fixture: block/db-id-line-separator-comment-line-two-regions]
+[fixture: block/db-id-line-separator-comment-line-spaces-before]
+[fixture: block/db-id-line-separator-comment-line-line-feed-before]
+[fixture: block/db-id-line-separator-comment-line-directive-before]
+[fixture: block/db-id-line-separator-comment-line-line-rule-before]
+[fixture: block/db-id-line-separator-comment-line-line-rule-after]
+[fixture: block/db-id-line-separator-comment-line-bare-percent]
+[fixture: block/gram-id-line-separator-comment-line-percent-brace]
 
 **エンティティ、HTML 属性の引用符、`style` 行。**
 文字列、クラス名、スタイルの中では、エンティティは、
@@ -558,9 +599,10 @@ id は大文字小文字を保ちます。
 端の空白、角括弧、波括弧、`<`、`>`、矢印、`:`、`;`、`#`、`%%`、キーワード、
 ASCII 外の文字です。
 文字列にエスケープはなく、閉じない文字列は入力を拒否させます。
-引用符と逆引用符は markdown 文字列で、文法のどの規則もそれを取らず、
-``A["`x`"]`` は拒否されます。
-空の文字列 `""` と空の markdown 文字列は単位を読みません。
+引用符の後に逆引用符が続くものは markdown 文字列で、
+文法のどの規則もそれを取らず、``A["`x`"]`` は拒否されます。
+空の文字列 `""` と空の markdown
+文字列は単位を読みません（[空の文字列](#空の文字列) を参照）。
 [fixture: block/db-label-plain] [fixture: block/gram-label-empty]
 [fixture: block/db-label-spaces] [fixture: block/db-label-padded]
 [fixture: block/gram-label-single-quote] [fixture: block/gram-label-unquoted]
@@ -821,7 +863,29 @@ ASCII 外の文字です。
 [fixture: block/db-grid-classdef-rule-block-arrow-label]
 [fixture: block/db-grid-classdef-rule-edge-label]
 [fixture: block/db-grid-classdef-rule-composite-label]
-[空の文字列](#空の文字列) を参照してください。
+文字列の中では、U+2028 や U+2029 の後のコメントは読み飛ばされ、
+文字列はその後に続きます（[コメント行](../common.ja.md#コメント行) を参照）。
+[fixture: block/db-string-line-separator-then-comment-line]
+[fixture: block/db-string-paragraph-separator-then-comment-line]
+[fixture: block/db-string-line-separator-comment-line-directive-next]
+[fixture: block/db-string-line-separator-comment-line-space-next]
+[fixture: block/db-string-line-separator-comment-line-separator-next]
+[fixture: block/db-string-line-separator-comment-line-empty-line]
+[fixture: block/gram-string-line-separator-comment-line-end-of-text]
+[fixture: block/db-string-line-separator-comment-line-cr]
+[fixture: block/db-string-line-separator-comment-line-crlf]
+[fixture: block/db-string-line-separator-comment-line-two-comment-lines]
+[fixture: block/db-string-line-separator-comment-line-two-regions]
+[fixture: block/db-string-line-separator-comment-line-spaces-before]
+[fixture: block/db-string-line-separator-comment-line-line-feed-before]
+[fixture: block/db-string-line-separator-comment-line-directive-before]
+[fixture: block/db-string-line-separator-comment-line-line-rule-before]
+[fixture: block/db-string-line-separator-comment-line-line-rule-after]
+[fixture: block/db-string-line-separator-comment-line-bare-percent]
+[fixture: block/db-string-line-separator-comment-line-percent-brace]
+[fixture: block/db-edge-label-line-separator-then-comment-line]
+[fixture: block/db-block-arrow-label-line-separator-then-comment-line]
+[fixture: block/db-composite-label-line-separator-then-comment-line]
 
 ### 形
 

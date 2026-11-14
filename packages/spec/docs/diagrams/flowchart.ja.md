@@ -50,6 +50,48 @@ flowchart/header-after-empty-braces-line]
 行終端を `\n` として、属性の引用符を `'` として、
 エンティティをそのプレースホルダとして読み、
 コメント領域と行単位の規則が無視する `;` は、ないかのように読み進めます。
+[fixture: flowchart/lex-acc-descr-block-line-separator-then-comment-line]
+[fixture: flowchart/lex-acc-descr-line-separator-then-comment-line]
+[fixture: flowchart/lex-acc-title-line-separator-then-comment-line]
+[fixture: flowchart/lex-callback-arguments-line-separator-then-comment-line]
+[fixture: flowchart/lex-callback-name-line-separator-then-comment-line]
+[fixture: flowchart/lex-data-label-bare-line-separator-then-comment-line]
+[fixture: flowchart/lex-data-label-quoted-line-separator-then-comment-line]
+[fixture: flowchart/lex-ellipse-label-line-separator-then-comment-line]
+[fixture: flowchart/lex-link-text-line-separator-then-comment-line]
+[fixture: flowchart/lex-markdown-string-line-separator-then-comment-line]
+[fixture: flowchart/lex-pipe-label-line-separator-then-comment-line]
+[fixture: flowchart/lex-slanted-label-line-separator-then-comment-line]
+[fixture: flowchart/lex-square-label-line-separator-then-comment-line]
+[fixture: flowchart/lex-square-label-paragraph-separator-then-comment-line]
+[fixture: flowchart/lex-string-line-separator-then-comment-line]
+[fixture: flowchart/lex-style-line-separator-then-comment-line]
+[fixture: flowchart/lex-subgraph-name-line-separator-then-comment-line]
+[fixture:
+flowchart/lex-acc-descr-block-line-separator-comment-line-directive-next]
+[fixture: flowchart/lex-acc-descr-block-line-separator-comment-line-space-next]
+[fixture:
+flowchart/lex-acc-descr-block-line-separator-comment-line-separator-next]
+[fixture: flowchart/lex-acc-descr-block-line-separator-comment-line-empty-line]
+[fixture: flowchart/lex-acc-descr-block-line-separator-comment-line-end-of-text]
+[fixture: flowchart/lex-acc-descr-block-line-separator-comment-line-cr]
+[fixture: flowchart/lex-acc-descr-block-line-separator-comment-line-crlf]
+[fixture:
+flowchart/lex-acc-descr-block-line-separator-comment-line-two-comment-lines]
+[fixture: flowchart/lex-acc-descr-block-line-separator-comment-line-two-regions]
+[fixture:
+flowchart/lex-acc-descr-block-line-separator-comment-line-spaces-before]
+[fixture:
+flowchart/lex-acc-descr-block-line-separator-comment-line-line-feed-before]
+[fixture:
+flowchart/lex-acc-descr-block-line-separator-comment-line-directive-before]
+[fixture:
+flowchart/lex-acc-descr-block-line-separator-comment-line-line-rule-before]
+[fixture:
+flowchart/lex-acc-descr-block-line-separator-comment-line-line-rule-after]
+[fixture: flowchart/lex-acc-descr-block-line-separator-comment-line-bare-percent]
+[fixture:
+flowchart/lex-acc-descr-block-line-separator-comment-line-percent-brace]
 最後の文字の後に字句解析器が読む `\n` は、
 図のテキストの一部です（[テキストの終わり](../common.ja.md#テキストの終わり)）。
 規則は、他の改行と同じくそれを読み、それについての条件を確かめます。
@@ -571,6 +613,37 @@ mermaid.js は `direction-text` の単位を読みません。
   flowchart/lex-direction-line-percent-after-value] [fixture:
   flowchart/lex-direction-line-in-string-label] [fixture:
   flowchart/lex-direction-line-in-label-with-link]
+  値の後のテキストでは、U+2028 や U+2029 の後のコメントは読み飛ばされ、
+  テキストはその後に続きます（[コメント行](../common.ja.md#コメント行)
+  を参照）。 [fixture: flowchart/tokens-ignored-text-comment-in-direction-line]
+  [fixture:
+  flowchart/lex-direction-text-line-separator-comment-line-directive-next]
+  [fixture: flowchart/lex-direction-text-line-separator-comment-line-space-next]
+  [fixture:
+  flowchart/lex-direction-text-line-separator-comment-line-separator-next]
+  [fixture: flowchart/lex-direction-text-line-separator-comment-line-empty-line]
+  [fixture:
+  flowchart/lex-direction-text-line-separator-comment-line-end-of-text]
+  [fixture: flowchart/lex-direction-text-line-separator-comment-line-cr]
+  [fixture: flowchart/lex-direction-text-line-separator-comment-line-crlf]
+  [fixture:
+  flowchart/lex-direction-text-line-separator-comment-line-two-comment-lines]
+  [fixture:
+  flowchart/lex-direction-text-line-separator-comment-line-two-regions]
+  [fixture:
+  flowchart/lex-direction-text-line-separator-comment-line-spaces-before]
+  [fixture:
+  flowchart/lex-direction-text-line-separator-comment-line-line-feed-before]
+  [fixture:
+  flowchart/lex-direction-text-line-separator-comment-line-directive-before]
+  [fixture:
+  flowchart/lex-direction-text-line-separator-comment-line-line-rule-before]
+  [fixture:
+  flowchart/lex-direction-text-line-separator-comment-line-line-rule-after]
+  [fixture:
+  flowchart/lex-direction-text-line-separator-comment-line-bare-percent]
+  [fixture:
+  flowchart/lex-direction-text-line-separator-comment-line-percent-brace]
   subgraph の中で、`direction TB;` は値の後のテキスト `;` を持ち、
   `direction TB; -->B` はテキスト `; -->B` を持つので、リンクは読まれません。
   一方、`-->B` が次の行にあると、リンクに元がなく、入力は拒否されます。

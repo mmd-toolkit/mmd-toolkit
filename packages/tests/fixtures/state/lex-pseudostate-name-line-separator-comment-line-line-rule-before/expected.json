@@ -1,0 +1,27 @@
+{
+  "source": {
+    "kind": "authored",
+    "note": "state.md Comments: `style:#a` before a U+2028 in the pseudostate name, and `#b;` on the line after the comment line, a line segment of its own for the line rule of style and classDef lines; accepted, and the Db summary holds no value with the U+2028."
+  },
+  "accepted": true,
+  "diagramType": "stateDiagram",
+  "db": {
+    "direction": "TB",
+    "title": "",
+    "accTitle": "",
+    "accDescr": "",
+    "states": [
+      {
+        "id": "ﬂ°b¶ßB",
+        "shape": "fork",
+        "label": "ﬂ°b¶ßB",
+        "classes": [],
+        "styles": []
+      }
+    ],
+    "notes": [],
+    "transitions": [],
+    "classDefs": [],
+    "links": []
+  }
+}

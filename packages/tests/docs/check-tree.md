@@ -2253,7 +2253,11 @@ takes the whitespace off its side that touches the cut, one case for each side
 `StringFragment`), and requires the check to report the tree with the message of
 its value (the texts of the tokens joined are not the written text). For an
 ignored text it has a case for a directive and one for a comment region, with
-the message that the whitespace next to a cut lies in no token. It also makes,
+the message that the whitespace next to a cut lies in no token. For a value that
+a comment region after a U+2028 or a U+2029 cuts, it has a case for a title of a
+gantt diagram, a backquoted name of a class diagram, and an icon text of an
+architecture diagram (with a U+2029), each taking the separator off the end of
+the fragment before the region, with the message of the value. It also makes,
 from one recorded tree each, the two negative cases of the other exceptions: a
 token that starts with whitespace in a value that began before it, where the
 token before it does not touch it, and a token of whitespace that ends with

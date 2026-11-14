@@ -1,0 +1,18 @@
+{
+  "source": {
+    "kind": "authored",
+    "note": "mindmap.md Lexical structure: `style:#a` before a U+2028 in the icon text, and `#b;` on the line after the comment line, a line segment of its own for the line rule of style and classDef lines; the Db summary holds `Astyle:#a`, U+2028, and `ﬂ°b¶ßB`."
+  },
+  "accepted": true,
+  "diagramType": "mindmap",
+  "db": {
+    "root": {
+      "nodeId": "C",
+      "level": 0,
+      "descr": "C",
+      "type": 0,
+      "icon": "Astyle:#a ﬂ°b¶ßB",
+      "children": []
+    }
+  }
+}
