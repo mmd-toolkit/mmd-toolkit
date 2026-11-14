@@ -137,43 +137,61 @@ fixture would be a failure of.
 2. Look up the diagram type (the folder of the fixture) and the kind in the
    table below. If the cell names a prefix, the new fixture takes it.
 3. Otherwise (the diagram type has no row, the cell is empty, or the input has
-   no kind) an accepted input takes `lex-`. A rejected input takes `lex-` if its
+   no kind) an accepted input takes `lex-` if it has `%%` (a rule of the units:
+   where a comment or a directive can start) and `db-` if it has none (what the
+   fixture checks is a value of the Db). A rejected input takes `lex-` if its
    message begins with `Unexpected character` or ends with
    `before the end of the text` (a rule of the units: a character that no rule
    of the context reads, a unit that is not closed), and `gram-` in every other
    case (a rule of the statements and nodes).
 
-The table is the decision itself. It is not a count of the corpus, so it does
-not change when fixtures are added or renamed, and changing a cell changes the
-prefix of every later fixture of that kind. A cell names the prefix of a diagram
-type and a kind where it differs from step 3; an empty cell, a diagram type
-without a row, and an input without a kind take step 3. Step 3 gives the two
-forms of an end of the text different prefixes (`Unexpected end of text` takes
-`gram-`, a message that ends with `before the end of the text` takes `lex-`), so
-a diagram type whose end-of-text fixtures take one prefix has that prefix in its
-cell.
+The table is the decision itself. It does not change when fixtures are added or
+renamed, and changing a cell changes the prefix of every later fixture of that
+kind. A cell names the prefix of a diagram type and a kind where it differs from
+step 3; an empty cell, a diagram type without a row, and an input without a kind
+take step 3. Step 3 gives the two forms of an end of the text different prefixes
+(`Unexpected end of text` takes `gram-`, a message that ends with
+`before the end of the text` takes `lex-`), so a diagram type whose end-of-text
+fixtures take one prefix has that prefix in its cell.
 
-| Diagram type  | Accepted, with `%%` | Accepted, without `%%` | `Unexpected character` | `Unexpected token` | End of the text |
-| ------------- | ------------------- | ---------------------- | ---------------------- | ------------------ | --------------- |
-| `block`       | `db-`               | `db-`                  | `gram-`                |                    | `gram-`         |
-| `c4`          |                     | `db-`                  |                        |                    | `gram-`         |
-| `class`       |                     |                        |                        |                    | `lex-`          |
-| `er`          |                     |                        |                        | `lex-`             | `lex-`          |
-| `gantt`       |                     |                        |                        | `lex-`             | `lex-`          |
-| `gitgraph`    |                     |                        |                        | `lex-`             |                 |
-| `journey`     |                     |                        |                        | `lex-`             | `lex-`          |
-| `kanban`      |                     |                        | `gram-`                |                    | `gram-`         |
-| `mindmap`     |                     | `db-`                  |                        |                    | `lex-`          |
-| `quadrant`    | `db-`               | `db-`                  | `gram-`                |                    | `gram-`         |
-| `requirement` |                     |                        |                        | `lex-`             | `lex-`          |
-| `sankey`      | `db-`               | `db-`                  | `gram-`                |                    | `gram-`         |
-| `sequence`    |                     | `db-`                  |                        |                    | `gram-`         |
-| `state`       |                     |                        |                        |                    | `lex-`          |
-| `timeline`    |                     | `db-`                  |                        |                    | `gram-`         |
-| `treemap`     | `gram-`             |                        | `gram-`                |                    |                 |
-| `treeview`    | `gram-`             |                        |                        |                    |                 |
-| `venn`        |                     |                        |                        |                    | `gram-`         |
-| `xychart`     | `db-`               | `db-`                  | `gram-`                |                    | `gram-`         |
+The cells were made from the fixtures of main at `d795bf650`, without the
+generated sets (a name that contains `-grid-` or ends with eight hexadecimal
+digits). For each diagram type and kind, the fixtures of that kind were counted
+by their prefixes `lex-`, `gram-`, and `db-`; a rejected fixture counted whether
+or not its input has `%%`, and an input that mermaid.js accepts and the parser
+rejects counted in both kinds. A prefix became a cell when the three prefixes
+together had at least five fixtures and it had at least twice as many as each of
+the other two. A cell that only repeats step 3 was left empty, except in an end
+of the text, where step 3 gives two prefixes and every such cell was written.
+That count is how the cells can be checked and what a change of a cell rests on:
+a change is a decision that names its count. A new fixture does not run the
+count; it reads the table.
+
+| Diagram type    | Accepted, with `%%` | Accepted, without `%%` | `Unexpected character` | `Unexpected token` | End of the text |
+| --------------- | ------------------- | ---------------------- | ---------------------- | ------------------ | --------------- |
+| `block`         | `db-`               |                        | `gram-`                |                    | `gram-`         |
+| `c4`            |                     |                        |                        |                    | `gram-`         |
+| `class`         |                     |                        |                        |                    | `lex-`          |
+| `er`            |                     |                        |                        | `lex-`             | `lex-`          |
+| `eventmodeling` |                     | `lex-`                 |                        |                    |                 |
+| `gantt`         |                     |                        |                        | `lex-`             | `lex-`          |
+| `gitgraph`      |                     | `lex-`                 |                        | `lex-`             |                 |
+| `info`          |                     | `lex-`                 |                        |                    |                 |
+| `ishikawa`      |                     | `lex-`                 |                        |                    |                 |
+| `journey`       |                     | `lex-`                 |                        | `lex-`             | `lex-`          |
+| `kanban`        |                     |                        | `gram-`                |                    | `gram-`         |
+| `mindmap`       |                     |                        |                        |                    | `lex-`          |
+| `pie`           |                     | `lex-`                 |                        |                    |                 |
+| `quadrant`      | `db-`               |                        | `gram-`                |                    | `gram-`         |
+| `requirement`   |                     | `lex-`                 |                        | `lex-`             | `lex-`          |
+| `sankey`        | `db-`               |                        | `gram-`                |                    | `gram-`         |
+| `sequence`      |                     |                        |                        |                    | `gram-`         |
+| `state`         |                     |                        |                        |                    | `lex-`          |
+| `timeline`      |                     |                        |                        |                    | `gram-`         |
+| `treemap`       | `gram-`             |                        | `gram-`                |                    |                 |
+| `treeview`      | `gram-`             |                        |                        |                    |                 |
+| `venn`          |                     |                        |                        |                    | `gram-`         |
+| `xychart`       | `db-`               |                        | `gram-`                |                    | `gram-`         |
 
 After the topic, a name may carry marks of what the input holds, in this order
 where there are several: `u2028` or `u2029` (the character is in the input),
