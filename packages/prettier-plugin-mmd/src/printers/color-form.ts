@@ -1,5 +1,18 @@
 import type { Node } from "@mmd-toolkit/ast"
 import { visitorKeys } from "@mmd-toolkit/parser"
+import { findWrittenWhitespaceEnd } from "./gap.ts"
+import { findAgentflowKeptLines } from "./agentflow-kept-lines.ts"
+import { findClassKeptLines } from "./class-kept-lines.ts"
+import { findFlowchartKeptLines } from "./flowchart-kept-lines.ts"
+import {
+  keepsTrailingLineSeparators,
+  lineEndOf,
+  lineStartOf,
+  withJoinedLines,
+  withUnusualStyleEnds,
+} from "./kept-lines.ts"
+import { findTreemapStyleEnd } from "./treemap-layout.ts"
+import { findStateStyleEnd } from "./state-layout.ts"
 import type { Source } from "./source.ts"
 import { isSpaceOrTab, readDiagramText, textRead } from "./source.ts"
 import { readsStyleAsDescription, styleColorEdits } from "./style-text.ts"
@@ -151,6 +164,58 @@ function findColorFunctionRespellings(
 }
 
 /**
+ * The end of the Db text that the printer keeps for a style. Graph and class
+ * literals can leave their last whitespace outside their range; only the
+ * existing kept-line plan prints that suffix. A treemap can instead drop a
+ * semicolon and the padding inside the literal (docs/compatibility.md, Colors
+ * that are drawn the same; Whitespace at the end of a style).
+ */
+function styleColorEnd(
+  source: Source,
+  statement: Node,
+  style: Node,
+  isLast: boolean,
+): number {
+  const end = style.range[1]
+  // State removes the final semicolon before trimming its Db style. A
+  // classDef removes only the first one, so a later one still joins the word.
+  if (
+    isLast &&
+    (statement.type === "StateClassDefStatement" ||
+      statement.type === "StateStyleStatement") &&
+    style.type === "StateLiteral" &&
+    source.text[end - 1] === ";" &&
+    (statement.type === "StateStyleStatement" ||
+      !textRead(source, style.range[0], end - 1).includes(";"))
+  )
+    return findStateStyleEnd(source, style)
+  if (statement.type === "TreemapClassDefStatement")
+    return Math.min(end, findTreemapStyleEnd(source, statement) ?? end)
+  const { body } = source.root
+  const plan =
+    body.type === "FlowchartDiagram"
+      ? findFlowchartKeptLines(source)
+      : body.type === "AgentflowDiagram"
+        ? findAgentflowKeptLines(source)
+        : body.type === "ClassDiagram"
+          ? findClassKeptLines(source)
+          : undefined
+  if (plan === undefined) return end
+  const readEnd = findWrittenWhitespaceEnd(source, end)
+  // Padding before another comma is still printed with that style.
+  if (!isLast) return readEnd
+  const kept = withUnusualStyleEnds(source, withJoinedLines(source, plan))
+  const line = lineStartOf(source, end)
+  const printedEnd =
+    kept.verbatim.has(line) ||
+    (kept.joined.has(line) &&
+      keepsTrailingLineSeparators(source, end, lineEndOf(source, end)))
+      ? readEnd
+      : end
+  return Math.min(readEnd, printedEnd)
+}
+
+/**
  * Records the respelling in lower case of each color in the text of a style
  * below `node` (see `styleColorEdits`): the form of Prettier's CSS formatter,
  * which draws the same figure, and the space after each comma of a color
@@ -179,10 +244,16 @@ export function findColorRespellings(
         findColorRespellings(source, found, item)
         continue
       }
+      const end = styleColorEnd(
+        source,
+        node,
+        item,
+        !Array.isArray(value) || child === value.at(-1),
+      )
       for (const { range, replacement } of styleColorEdits(
         source,
         item.range[0],
-        item.range[1],
+        end,
       )) {
         found.set(range[0], { end: range[1], text: replacement })
       }

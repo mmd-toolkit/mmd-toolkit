@@ -1805,6 +1805,13 @@ ER 図の `style`、`classDef` 文のスタイルの色が対象です。
 （[同じに描かれる色](./compatibility.ja.md#同じに描かれる色)を参照）。
 [fixture: colors/colors-in-lower-case]
 [fixture: colors/words-that-are-not-colors-as-written]
+スタイルのテキストは空白なしで読むので、色の後ろに空白を挟んで文字が続くと、
+色はより長い語の一部になり、書かれたまま残します。
+`style A fill:#F9F ab` は `style A fill: #F9F ab` と印字します。
+`style A fill:#F9F ;`、改行、`ab` も、
+行の規則が無視する `;` の次の行まで文が続くので、書かれたまま残します。
+[fixture: colors/color-words-as-read]
+[fixture: colors/color-word-over-ignored-semicolon]
 
 入力
 ([colors/colors-in-lower-case-input.mmd](../tests/fixtures/er/colors/colors-in-lower-case-input.mmd)):

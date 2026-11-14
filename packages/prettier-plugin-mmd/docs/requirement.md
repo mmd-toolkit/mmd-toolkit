@@ -1536,7 +1536,10 @@ and `classDef` statements of a requirement diagram are printed so. A color is a
 style; it is never shortened, and a text that is no color stays as written (see
 [Colors that are drawn the same](./compatibility.md#colors-that-are-drawn-the-same)).
 [fixture: colors/colors-in-lower-case] [fixture:
-colors/words-that-are-not-colors-as-written]
+colors/words-that-are-not-colors-as-written] The spaces of the text of a style
+are not read, so a color that characters follow after a space is part of a
+longer word and stays as written: `style r fill:#F9F ab` is printed
+`style r fill: #F9F ab`. [fixture: colors/color-words-as-read]
 
 Input
 ([colors/colors-in-lower-case-input.mmd](../tests/fixtures/requirement/colors/colors-in-lower-case-input.mmd)):

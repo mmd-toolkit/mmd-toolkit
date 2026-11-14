@@ -196,6 +196,25 @@ export function treemapLines(
 }
 
 /**
+ * Where a style ends before a dropped final semicolon, without the whitespace
+ * before it; undefined when no semicolon is dropped (docs/treemap.md, Styles).
+ * Both the printed stretch and the color word use this boundary.
+ */
+export function findTreemapStyleEnd(
+  source: Source,
+  statement: TreemapClassDefStatement,
+): number | undefined {
+  const { style } = statement
+  if (style === null) return undefined
+  const semicolon = endingSemicolonOf(source, statement.range, style)
+  if (semicolon === undefined || !isDroppedSemicolon(source, semicolon))
+    return undefined
+  let end = semicolon
+  while (end > style.range[0] && isWhitespace(source.text[end - 1])) end--
+  return end
+}
+
+/**
  * The style of a `classDef` together with what follows it, printed without the
  * `;` that ends the statement and without the whitespace around that `;`,
  * where the printer drops that `;` (see `isDroppedSemicolon`); none where it
@@ -211,20 +230,17 @@ function findDroppedSemicolonStretches(
     return []
   const [start] = statement.style.range
   const end = statement.range[1]
-  const semicolon = endingSemicolonOf(source, statement.range, statement.style)
-  if (semicolon === undefined || !isDroppedSemicolon(source, semicolon))
-    return []
+  const styleEnd = findTreemapStyleEnd(source, statement)
+  if (styleEnd === undefined) return []
   // The style is printed as in a statement without that `;` (see
   // `normalizeTreemapStyle`), so that a second formatting finds the same text.
-  let styleEnd = semicolon
-  while (styleEnd > start && isWhitespace(source.text[styleEnd - 1])) styleEnd--
   const style: Atom[] = [{ start, end: styleEnd }]
   normalizeTreemapStyle(source, style, statement, styleEnd)
   return [
     {
       start,
       end,
-      doc: style[0].doc ?? printAsWrittenTrimmed(source, start, semicolon),
+      doc: style[0].doc ?? printAsWrittenTrimmed(source, start, styleEnd),
     },
   ]
 }

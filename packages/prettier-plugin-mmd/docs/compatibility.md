@@ -1727,7 +1727,31 @@ an entity, or joins it to the word after the `;`
 so it stays; the `;` that ends the statement is dropped by the formatter, and
 the color before it is printed in lower case. A directive that touches the color
 (`fill:#ABCDEF%%{init: {}}%%`) can join the word before it to the word after it
-once mermaid.js has taken it away, so that color stays as written too. [fixture:
+once mermaid.js has taken it away, so that color stays as written too. In an ER
+diagram and in a requirement diagram the text of a style is read without its
+whitespace (an ER diagram drops spaces, tabs, and line feeds, and so joins the
+line that follows a `;` that the line rule ignores; a requirement diagram drops
+spaces), so a color that more characters follow after whitespace is a word that
+they touch: `style A fill:#F9F ab` is the text `fill:#F9Fab`, whose `#F9Fab` is
+no color, and stays `fill: #F9F ab`, and `style A fill:#F9F stroke:#ABC` is
+printed `fill: #F9F stroke:#abc`. In every diagram type a character that the
+text of the style keeps after a color (a U+2028, a U+2029, a U+00A0, a U+3000,
+and in the other types the whitespace that is no space or tab) makes it a word
+that the character touches, and the color stays, except where the printer
+removes that character at the end of the statement: the color then ends the
+printed text and is printed in lower case at once, so that a second formatting
+changes nothing. [fixture: er/colors/color-words-as-read] [fixture:
+er/colors/color-word-over-ignored-semicolon] [fixture:
+requirement/colors/color-words-as-read] [test: agentflow color words before a
+comma keep their padding] [test: flowchart color words before a comma keep form
+feed] [test: state color before a semicolon follows the trimmed Db end] [test:
+agentflow color at EOF after dropped U+2028] [test: agentflow color before LF
+after dropped U+2028] [test: agentflow color at EOF after dropped U+00A0] [test:
+agentflow color before LF after dropped U+00A0] [test: agentflow color before a
+semicolon after dropped U+00A0] [test: agentflow color after other dropped
+Unicode whitespace] [test: flowchart color after dropped form feed] [test:
+swimlane color after dropped form feed] [test: class color after dropped form
+feed] [test: treemap color before a dropped semicolon and its padding] [fixture:
 flowchart/colors/words-that-are-not-colors-as-written] [fixture:
 flowchart/colors/colors-in-quotes-and-after-a-backslash-as-written] [fixture:
 flowchart/colors/color-before-the-final-semicolon] [fixture:

@@ -1752,7 +1752,13 @@ it: `style CUSTOMER fill:#F9F,stroke:#ABCDEF` is printed
 style; it is never shortened, and a text that is no color stays as written (see
 [Colors that are drawn the same](./compatibility.md#colors-that-are-drawn-the-same)).
 [fixture: colors/colors-in-lower-case] [fixture:
-colors/words-that-are-not-colors-as-written]
+colors/words-that-are-not-colors-as-written] The text of a style is read without
+its whitespace, so a color that characters follow after whitespace is part of a
+longer word and stays as written: `style A fill:#F9F ab` is printed
+`style A fill: #F9F ab`, and `style A fill:#F9F ;`, a line break, and `ab` (the
+unit goes on over the `;` that the line rule ignores) stays as written.
+[fixture: colors/color-words-as-read] [fixture:
+colors/color-word-over-ignored-semicolon]
 
 Input
 ([colors/colors-in-lower-case-input.mmd](../tests/fixtures/er/colors/colors-in-lower-case-input.mmd)):

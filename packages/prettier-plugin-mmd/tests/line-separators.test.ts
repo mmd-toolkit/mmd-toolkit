@@ -31,6 +31,170 @@ function format(text: string, options: Options = {}): Promise<string> {
 }
 
 /**
+ * A character kept in the Db and by the printer continues a color word;
+ * dropped padding does not, including whitespace outside a graph or class
+ * literal's range (docs/compatibility.md, Colors
+ * that are drawn the same). Each type combines the three kept characters.
+ */
+const colorWordsAsRead: readonly (readonly [string, string, string])[] = [
+  [
+    "agentflow color words before a comma keep their padding",
+    "agentflow-beta TB\nA\nstyle A color:#C0FFEE\u00a0,color:#C0FFEE\u2028,color:red\n",
+    "agentflow-beta TB\n  A\n  style A color: #C0FFEE\u00a0, color: #C0FFEE\u2028, color: red\n",
+  ],
+  [
+    "flowchart color words before a comma keep form feed",
+    "flowchart TD\nA\nstyle A fill:#C0FFEE\f,color:red\n",
+    "flowchart TD\n  A\n  style A fill: #C0FFEE\f,color: red\n",
+  ],
+  [
+    "state color before a semicolon follows the trimmed Db end",
+    "stateDiagram-v2\nA\nclassDef c color:#C0FFEE\u2028;\nclassDef d color:#C0FFEE\u2029;\n",
+    "stateDiagram-v2\n  A\n  classDef c color:#c0ffee\u2028;\n  classDef d color:#c0ffee\u2029;\n",
+  ],
+  [
+    "agentflow color at EOF after dropped U+2028",
+    "agentflow-beta TB\nA\nstyle A color:#C0FFEE\u2028",
+    "agentflow-beta TB\n  A\n  style A color: #c0ffee\n",
+  ],
+  [
+    "agentflow color before LF after dropped U+2028",
+    "agentflow-beta TB\nA\nstyle A color:#C0FFEE\u2028\n",
+    "agentflow-beta TB\n  A\n  style A color: #c0ffee\n",
+  ],
+  [
+    "agentflow color at EOF after dropped U+00A0",
+    "agentflow-beta TB\nA\nstyle A color:#C0FFEE\u00a0",
+    "agentflow-beta TB\n  A\n  style A color: #c0ffee\n",
+  ],
+  [
+    "agentflow color before LF after dropped U+00A0",
+    "agentflow-beta TB\nA\nstyle A color:#C0FFEE\u00a0\n",
+    "agentflow-beta TB\n  A\n  style A color: #c0ffee\n",
+  ],
+  [
+    "agentflow color before a semicolon after dropped U+00A0",
+    "agentflow-beta TB\nA\nstyle A color:#C0FFEE\u00a0;\n",
+    "agentflow-beta TB\n  A\n  style A color: #c0ffee\n",
+  ],
+  [
+    "agentflow color after other dropped Unicode whitespace",
+    "agentflow-beta TB\nA\nstyle A color:#C0FFEE\u2029\nstyle A color:#C0FFEE\u3000;\nstyle A color:#C0FFEE\f\n",
+    "agentflow-beta TB\n  A\n  style A color: #c0ffee\n  style A color: #c0ffee\n  style A color: #c0ffee\n",
+  ],
+  [
+    "flowchart color after dropped form feed",
+    "flowchart TD\nA\nstyle A color:#C0FFEE\f;\n",
+    "flowchart TD\n  A\n  style A color: #c0ffee\n",
+  ],
+  [
+    "swimlane color after dropped form feed",
+    "swimlane-beta TB\nA\nstyle A color:#C0FFEE\f\n",
+    "swimlane-beta TB\n  A\n  style A color: #c0ffee\n",
+  ],
+  [
+    "class color after dropped form feed",
+    "classDiagram\nclass A\nstyle A color:#C0FFEE\f",
+    "classDiagram\n  class A\n  style A color: #c0ffee\n",
+  ],
+  [
+    "treemap color before a dropped semicolon and its padding",
+    'treemap-beta\n"Root"\n  "A": 1:::zz\nclassDef zz color:#C0FFEE\u2028;\nclassDef zz color:#C0FFEE\u2029;\nclassDef zz color:#C0FFEE\u00a0;\nclassDef zz color:#C0FFEE\u3000;\nclassDef zz color:#C0FFEE\f;\n',
+    'treemap\n  "Root"\n    "A": 1:::zz\n  classDef zz color: #c0ffee\n  classDef zz color: #c0ffee\n  classDef zz color: #c0ffee\n  classDef zz color: #c0ffee\n  classDef zz color: #c0ffee\n',
+  ],
+  [
+    "color boundary controls",
+    "flowchart TD\nA\nstyle A fill:#F9F,stroke:#ABC,color:#F9F !important\n",
+    "flowchart TD\n  A\n  style A fill: #f9f, stroke: #abc,color: #f9f !important\n",
+  ],
+  [
+    "color function control",
+    "classDiagram\nclass A\nstyle A fill:rgb(#F9F)\n",
+    "classDiagram\n  class A\n  style A fill: rgb(#f9f)\n",
+  ],
+  [
+    "flowchart color words with kept whitespace",
+    "flowchart TD\nA\nstyle A color:#C0FFEE\u2028L,color:#C0FFEE\u2029L,color:#C0FFEE\u00a0L\n",
+    "flowchart TD\n  A\n  style A color:#C0FFEE\u2028L,color:#C0FFEE\u2029L,color:#C0FFEE\u00a0L\n",
+  ],
+  [
+    "swimlane color words with kept whitespace",
+    "swimlane-beta TB\nA\nstyle A color:#C0FFEE\u2028L,color:#C0FFEE\u2029L,color:#C0FFEE\u00a0L\n",
+    "swimlane-beta TB\n  A\n  style A color:#C0FFEE\u2028L,color:#C0FFEE\u2029L,color:#C0FFEE\u00a0L\n",
+  ],
+  [
+    "agentflow color words with kept whitespace",
+    "agentflow-beta TB\nA\nstyle A color:#C0FFEE\u2028L,color:#C0FFEE\u2029L,color:#C0FFEE\u00a0L\n",
+    "agentflow-beta TB\n  A\n  style A color:#C0FFEE\u2028L,color:#C0FFEE\u2029L,color:#C0FFEE\u00a0L\n",
+  ],
+  [
+    "class color words with kept whitespace",
+    "classDiagram\nclass A\nstyle A color:#C0FFEE\u2028L,color:#C0FFEE\u2029L,color:#C0FFEE\u00a0L\n",
+    "classDiagram\n  class A\n  style A color:#C0FFEE\u2028L,color:#C0FFEE\u2029L,color:#C0FFEE\u00a0L\n",
+  ],
+  [
+    "state color words with kept whitespace",
+    "stateDiagram-v2\nA\nclassDef c color:#C0FFEE\u2028L,color:#C0FFEE\u2029L,color:#C0FFEE\u00a0L\n",
+    "stateDiagram-v2\n  A\n  classDef c color:#C0FFEE\u2028L,color:#C0FFEE\u2029L,color:#C0FFEE\u00a0L\n",
+  ],
+  [
+    "er color words with kept whitespace",
+    "erDiagram\nA\nstyle A color:#C0FFEE\u2028L,color:#C0FFEE\u2029L,color:#C0FFEE\u00a0L\n",
+    "erDiagram\n  A\n  style A color:#C0FFEE\u2028L,color:#C0FFEE\u2029L,color:#C0FFEE\u00a0L\n",
+  ],
+  [
+    "block color words with kept whitespace",
+    "block-beta\nA\nstyle A color:#C0FFEE\u2028L,color:#C0FFEE\u2029L,color:#C0FFEE\u00a0L\n",
+    "block-beta\n  A\n  style A color:#C0FFEE\u2028L,color:#C0FFEE\u2029L,color:#C0FFEE\u00a0L\n",
+  ],
+  [
+    "treemap color words with kept whitespace",
+    'treemap-beta\n"Root"\n  "A": 1:::zz\nclassDef zz color:#C0FFEE\u2028L,color:#C0FFEE\u2029L,color:#C0FFEE\u00a0L\n',
+    'treemap\n  "Root"\n    "A": 1:::zz\n  classDef zz color:#C0FFEE\u2028L,color:#C0FFEE\u2029L,color:#C0FFEE\u00a0L\n',
+  ],
+  [
+    "flowchart color before U+2028 and semicolon",
+    "flowchart TD\nA\nstyle A color:#C0FFEE\u2028;\n",
+    "flowchart TD\n  A\n  style A color:#C0FFEE\u2028;\n",
+  ],
+  [
+    "flowchart color before U+2029 and semicolon",
+    "flowchart TD\nA\nstyle A color:#C0FFEE\u2029;\n",
+    "flowchart TD\n  A\n  style A color:#C0FFEE\u2029;\n",
+  ],
+  [
+    "flowchart color before U+00A0 and semicolon",
+    "flowchart TD\nA\nstyle A color:#C0FFEE\u00a0;\n",
+    "flowchart TD\n  A\n  style A color:#C0FFEE\u00a0;\n",
+  ],
+  [
+    "swimlane color before U+2028 and semicolon",
+    "swimlane-beta TB\nA\nstyle A color:#C0FFEE\u2028;\n",
+    "swimlane-beta TB\n  A\n  style A color:#C0FFEE\u2028;\n",
+  ],
+  [
+    "swimlane color before U+2029 and semicolon",
+    "swimlane-beta TB\nA\nstyle A color:#C0FFEE\u2029;\n",
+    "swimlane-beta TB\n  A\n  style A color:#C0FFEE\u2029;\n",
+  ],
+  [
+    "swimlane color before U+00A0 and semicolon",
+    "swimlane-beta TB\nA\nstyle A color:#C0FFEE\u00a0;\n",
+    "swimlane-beta TB\n  A\n  style A color:#C0FFEE\u00a0;\n",
+  ],
+  [
+    "agentflow color before U+2028 and semicolon",
+    "agentflow-beta TB\nA\nstyle A color:#C0FFEE\u2028;\n",
+    "agentflow-beta TB\n  A\n  style A color:#C0FFEE\u2028;\n",
+  ],
+  [
+    "agentflow color before U+2029 and semicolon",
+    "agentflow-beta TB\nA\nstyle A color:#C0FFEE\u2029;\n",
+    "agentflow-beta TB\n  A\n  style A color:#C0FFEE\u2029;\n",
+  ],
+]
+
+/**
  * Each example is a statement with a line separator and its formatted form:
  * the line is printed as written, up to the whitespace before it, which
  * mermaid.js reads as the plugin would not.
@@ -50,6 +214,7 @@ function format(text: string, options: Options = {}): Promise<string> {
  *   whitespace.
  */
 const examples: readonly (readonly [string, string, string])[] = [
+  ...colorWordsAsRead,
   [
     "a state line starting with a directive before U+2028",
     "stateDiagram-v2\n%%{wrap foo}%%\u2028A",
@@ -4917,5 +5082,15 @@ describe("an ishikawa diagram with a node after a comment that ends at a line se
     expect(output).toBe(expected)
     expect(await format(output)).toBe(output)
     expect(writtenTextKeptUpToSeparators(input, output)).toBe(true)
+  })
+})
+
+/** Tabs inside requirement styles are rejected (diagrams/requirement.md, The style context). */
+describe("requirement color words with rejected tabs", () => {
+  it.each([
+    ["style", "requirementDiagram\nstyle A fill:#F9F\tab\n"],
+    ["classDef", "requirementDiagram\nclassDef c fill:#F9F\tab\n"],
+  ])("rejects a tab after the color of %s", async (_kind, input) => {
+    await expect(format(input)).rejects.toThrow("Unexpected character")
   })
 })
