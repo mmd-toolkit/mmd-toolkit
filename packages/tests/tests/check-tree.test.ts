@@ -781,7 +781,7 @@ describe("checkTree: the conditions of every tree", () => {
       {
         where: "Root",
         message:
-          "the diagram type classDiagram is not one of those of a ErrorDiagram: error",
+          "the diagram type classDiagram is not one of those of an ErrorDiagram: error",
       },
     ])
   })

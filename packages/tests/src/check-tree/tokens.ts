@@ -9,7 +9,7 @@ import {
   VALUE_NODE_TYPES,
 } from "./node-types.ts"
 import { KEYWORD_TEXTS } from "./keywords.ts"
-import { label } from "./problems.ts"
+import { label, withArticle } from "./problems.ts"
 import type { Problems } from "./problems.ts"
 import type { CheckedNode, CheckedRoot, CheckedToken } from "./types.ts"
 import { childNodesOf, isNode, nodesOf } from "./walk.ts"
@@ -210,7 +210,7 @@ export function reportCutEntries(
     if (first === undefined) continue
     problems.report(
       label(first),
-      `a ${first.type} token is cut: ${run.map(label).join(", ")} are the fragments of ${JSON.stringify(run.map((token) => token.value).join(""))}`,
+      `${withArticle(first.type)} token is cut: ${run.map(label).join(", ")} are the fragments of ${JSON.stringify(run.map((token) => token.value).join(""))}`,
     )
   }
 }
@@ -246,7 +246,7 @@ export function checkTokensAreNotCut(
     ) {
       problems.report(
         label(token),
-        `a ${token.type} token is cut: ${label(previous)} and this are its fragments`,
+        `${withArticle(token.type)} token is cut: ${label(previous)} and this are its fragments`,
       )
     }
   }

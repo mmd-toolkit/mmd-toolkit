@@ -6,6 +6,17 @@ export function label(placed: Placed): string {
   return `${placed.type} at ${placed.range[0]}-${placed.range[1]}`
 }
 
+/**
+ * `name` after its indefinite article, for the messages: `an Identifier`, `a
+ * Punctuator`. A name that starts with the letter A, E, I, or O has `an`. A name
+ * that starts with U has `a`, because the U of every such name here, those of the
+ * usecase diagram, is read as `you`.
+ */
+export function withArticle(name: string): string {
+  const vowel = name !== "" && "AEIOaeio".includes(name.charAt(0))
+  return `${vowel ? "an" : "a"} ${name}`
+}
+
 /** The problems that the checks of a tree find, in the order they find them. */
 export class Problems {
   public readonly list: TreeProblem[] = []

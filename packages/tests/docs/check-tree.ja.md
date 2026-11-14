@@ -42,6 +42,11 @@ const problems: TreeProblem[] = checkTree(text, tree)
   各項目は、どこ（ノード、トークン、記録）かと、メッセージを持ちます。
   すべてを満たす木では空です。
   最初で止めず、木のすべてを検査するのは、誤った木の被害の全体を見るためです。
+  型の名前を挙げるメッセージは、
+  冠詞を `src/check-tree/problems.ts` の `withArticle()` で付けます。
+  `an Identifier`、`an ErDiagram`、`a Punctuator`、
+  `U` を「ユー」と読む `a UsecaseLiteral` です。
+  `tests/check-tree-article.test.ts` が、すべてのノード型にそれを求めます。
 
 - ディレクティブとコメント行は、木から取らず、
   テキストから見つけます（`src/source-scan.ts` の `scanSource()`、

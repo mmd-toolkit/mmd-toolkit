@@ -1,5 +1,5 @@
 import { isWhitespace, isWordCharacter } from "../db-from-tree/characters.ts"
-import { label } from "./problems.ts"
+import { label, withArticle } from "./problems.ts"
 import type { Problems } from "./problems.ts"
 import { nodeTokensIn } from "./tokens.ts"
 import type { CheckedRoot } from "./types.ts"
@@ -108,7 +108,7 @@ export function checkSharedLeaves(
   problems.expect(
     allowed.includes(root.diagramType),
     "Root",
-    `the diagram type ${root.diagramType} is not one of those of a ${root.body.type}: ${allowed.join(", ")}`,
+    `the diagram type ${root.diagramType} is not one of those of ${withArticle(root.body.type)}: ${allowed.join(", ")}`,
   )
   checkStringTokens(text, root, problems)
 }

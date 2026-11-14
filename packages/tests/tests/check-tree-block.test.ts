@@ -1142,7 +1142,7 @@ describe("checkTree of block trees made by hand", () => {
           checkTree(source, tree).some(
             (problem) =>
               problem.where.startsWith(`${type} at `) &&
-              problem.message.startsWith(`the field ${field} holds a `),
+              problem.message.startsWith(`the field ${field} holds `),
           ),
         ).toBe(true)
       })

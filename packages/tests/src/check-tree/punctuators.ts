@@ -11,7 +11,7 @@ import { CLASS_CLASSIFIER_MARKS, CLASS_VISIBILITY_MARKS } from "./class.ts"
 import { GRAPH_SHAPES } from "./graph-shapes.ts"
 import { KANBAN_PUNCTUATORS } from "./kanban.ts"
 import { MINDMAP_PUNCTUATORS } from "./mindmap.ts"
-import { label } from "./problems.ts"
+import { label, withArticle } from "./problems.ts"
 import type { Problems } from "./problems.ts"
 import { RangeIndex } from "../range-index.ts"
 import { diagramTokensOf } from "./invariants.ts"
@@ -213,7 +213,7 @@ export function checkPunctuatorsAreWhole(
           !identifiers.hasContaining(token.range)
         ),
       label(token),
-      `the Punctuator text ${JSON.stringify(token.value)} is none of those of a ${root.body.type}`,
+      `the Punctuator text ${JSON.stringify(token.value)} is none of those of ${withArticle(root.body.type)}`,
     )
   }
   const jsonBlocks = new RangeIndex(

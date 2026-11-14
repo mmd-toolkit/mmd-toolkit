@@ -6,7 +6,7 @@ import {
 import type { TreeRange } from "../db-from-tree/tree.ts"
 import { checkChildTypes, checkFieldWords } from "./field-rules.ts"
 import type { Problems } from "./problems.ts"
-import { label } from "./problems.ts"
+import { label, withArticle } from "./problems.ts"
 import {
   between,
   checkJoinedOwnText,
@@ -352,14 +352,14 @@ function checkLabel(reading: Reading, node: CheckedNode): void {
     reading.problems.expect(
       written.startsWith(opening) && written.endsWith(closing),
       where,
-      `the written text ${JSON.stringify(written)} of a ${kind} does not start with ${JSON.stringify(opening)} and end with ${JSON.stringify(closing)}`,
+      `the written text ${JSON.stringify(written)} of ${withArticle(kind)} does not start with ${JSON.stringify(opening)} and end with ${JSON.stringify(closing)}`,
     )
   }
   const held = firstHeld(value, LABEL_NEVER_HOLDS.get(kind) ?? [])
   reading.problems.expect(
     held === undefined,
     where,
-    `the value ${JSON.stringify(value)} of a ${kind} holds ${JSON.stringify(held)}, which ends it`,
+    `the value ${JSON.stringify(value)} of ${withArticle(kind)} holds ${JSON.stringify(held)}, which ends it`,
   )
 }
 
@@ -535,7 +535,9 @@ function checkTokensAndRange(reading: Reading, node: CheckedNode): void {
     const isString =
       textOf(node, "kind") !== "text" && node.type === "MindmapLabel"
     const what =
-      node.type === "MindmapLabel" ? `a ${textOf(node, "kind")}` : "a text"
+      node.type === "MindmapLabel"
+        ? withArticle(textOf(node, "kind"))
+        : "a text"
     if (!isString) {
       checkTokenKinds(reading, node, ["RawText"], what)
       return

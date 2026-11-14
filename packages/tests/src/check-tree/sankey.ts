@@ -4,7 +4,7 @@ import {
 } from "../db-from-tree/characters.ts"
 import { checkChildTypes, checkListsWithAnEntry } from "./field-rules.ts"
 import type { FieldTable } from "./field-rules.ts"
-import { label } from "./problems.ts"
+import { label, withArticle } from "./problems.ts"
 import type { Problems } from "./problems.ts"
 import {
   between,
@@ -298,7 +298,7 @@ function checkFieldTokens(
   node: CheckedNode,
   field: string,
 ): void {
-  checkTokenKinds(reading, node, ["RawText"], `a ${node.type}`)
+  checkTokenKinds(reading, node, ["RawText"], withArticle(node.type))
   const tokens = nodeTokensIn(reading.root, node.range)
   const first = tokens[0]
   const last = tokens.at(-1)

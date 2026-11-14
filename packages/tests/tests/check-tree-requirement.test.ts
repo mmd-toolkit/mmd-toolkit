@@ -1124,7 +1124,7 @@ const BROKEN: readonly BrokenCase[] = [
     mutate: retype("r", "RawText"),
     expected: at(
       "Identifier",
-      "the tokens of a Identifier in names are not all of the kind Identifier: RawText",
+      "the tokens of an Identifier in names are not all of the kind Identifier: RawText",
     ),
   },
   {
@@ -1133,7 +1133,7 @@ const BROKEN: readonly BrokenCase[] = [
     mutate: retype("cA", "RawText"),
     expected: at(
       "Identifier",
-      "the tokens of a Identifier in cssClasses are not all of the kind Identifier: RawText",
+      "the tokens of an Identifier in cssClasses are not all of the kind Identifier: RawText",
     ),
   },
   {
@@ -1277,7 +1277,7 @@ const BROKEN: readonly BrokenCase[] = [
     mutate: setOf("Identifier", "name", "r", "type", "RequirementIdentifier"),
     expected: at(
       "RequirementStyleStatement",
-      "the field names holds a RequirementIdentifier, not a Identifier or StringLiteral",
+      "the field names holds a RequirementIdentifier, not an Identifier or StringLiteral",
     ),
   },
   {
@@ -1286,7 +1286,7 @@ const BROKEN: readonly BrokenCase[] = [
     mutate: setOf("Identifier", "name", "cA", "type", "RequirementIdentifier"),
     expected: at(
       "RequirementClassDefStatement",
-      "the field cssClasses holds a RequirementIdentifier, not a Identifier or StringLiteral",
+      "the field cssClasses holds a RequirementIdentifier, not an Identifier or StringLiteral",
     ),
   },
   {
@@ -2388,7 +2388,7 @@ const RECORDED_CASES: readonly MutationCase[] = [
       "RawText",
     ),
     expected:
-      "the tokens of a Identifier in names are not all of the kind Identifier: RawText",
+      "the tokens of an Identifier in names are not all of the kind Identifier: RawText",
   },
   {
     name: "the name of a requirement as an Identifier token",

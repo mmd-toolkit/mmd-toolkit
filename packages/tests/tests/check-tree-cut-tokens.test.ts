@@ -104,7 +104,7 @@ describe("an Identifier that a cut cuts", () => {
         {
           where: "Identifier at 33-34",
           message:
-            "a Identifier token is cut: Identifier at 17-19 and this are its fragments",
+            "an Identifier token is cut: Identifier at 17-19 and this are its fragments",
         },
       ],
     },
@@ -120,7 +120,7 @@ describe("an Identifier that a cut cuts", () => {
         {
           where: "Identifier at 20-21",
           message:
-            "a Identifier token is cut: Identifier at 17-19 and this are its fragments",
+            "an Identifier token is cut: Identifier at 17-19 and this are its fragments",
         },
       ],
     },
@@ -139,12 +139,12 @@ describe("an Identifier that a cut cuts", () => {
         {
           where: "Identifier at 32-33",
           message:
-            "a Identifier token is cut: Identifier at 17-18 and this are its fragments",
+            "an Identifier token is cut: Identifier at 17-18 and this are its fragments",
         },
         {
           where: "Identifier at 34-35",
           message:
-            "a Identifier token is cut: Identifier at 32-33 and this are its fragments",
+            "an Identifier token is cut: Identifier at 32-33 and this are its fragments",
         },
       ],
     },
@@ -510,11 +510,11 @@ describe("a Punctuator that a cut cuts", () => {
       problems: [
         {
           where: "Punctuator at 12-13",
-          message: 'the Punctuator text "|" is none of those of a ErDiagram',
+          message: 'the Punctuator text "|" is none of those of an ErDiagram',
         },
         {
           where: "Punctuator at 27-28",
-          message: 'the Punctuator text "|" is none of those of a ErDiagram',
+          message: 'the Punctuator text "|" is none of those of an ErDiagram',
         },
         {
           where: "Punctuator at 12-13",

@@ -1223,7 +1223,7 @@ export const AGENTFLOW_REJECTION_CASES: readonly AgentflowRejectionCase[] = [
   },
   {
     fixture: "div-empty-string-statement",
-    problem: "the field body holds a AgentflowIgnoredText",
+    problem: "the field body holds an AgentflowIgnoredText",
     make: (kit: Kit): CheckedNode[] => [
       afIgnored(kit, '""', "empty-string"),
       afStatement(kit, one(kit, "A")),

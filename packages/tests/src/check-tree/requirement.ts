@@ -6,7 +6,7 @@ import {
 } from "./field-rules.ts"
 import { NODE_FIELDS } from "./node-fields.ts"
 import type { Problems } from "./problems.ts"
-import { label } from "./problems.ts"
+import { label, withArticle } from "./problems.ts"
 import {
   between,
   checkAccessibilityBlock,
@@ -549,10 +549,10 @@ function checkUnquoted(
       reading,
       node,
       NAME_TOKEN_KINDS[parent?.type ?? ""]?.[field] ?? ["RawText"],
-      `a ${node.type} in ${field}`,
+      `${withArticle(node.type)} in ${field}`,
     )
   } else {
-    checkTokenKinds(reading, node, ["RawText"], `a ${node.type}`)
+    checkTokenKinds(reading, node, ["RawText"], withArticle(node.type))
   }
   // A name, and the value of a field, are units of an unquoted text; the
   // styles and the accessibility texts are not.

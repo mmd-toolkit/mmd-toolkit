@@ -3,7 +3,7 @@ import type { TreeRange } from "../db-from-tree/tree.ts"
 import { checkChildTypes, checkListsWithAnEntry } from "./field-rules.ts"
 import type { FieldTable } from "./field-rules.ts"
 import type { Problems } from "./problems.ts"
-import { label } from "./problems.ts"
+import { label, withArticle } from "./problems.ts"
 import {
   between,
   checkJoinedOwnText,
@@ -147,7 +147,7 @@ function unitStartingWith(text: string): string | undefined {
       !holdsLineTerminator(character) &&
       !(keyword === SECTION_KEYWORD && character === ":")
     ) {
-      return `a ${keyword} statement`
+      return `${withArticle(keyword)} statement`
     }
   }
   if (lower.startsWith(ACC_TITLE_KEYWORD)) {

@@ -1,5 +1,5 @@
 import type { Problems } from "./problems.ts"
-import { label } from "./problems.ts"
+import { label, withArticle } from "./problems.ts"
 import { checkTokensInValueNodes, nodeTokensIn, tokensIn } from "./tokens.ts"
 import type { CheckedNode, CheckedRoot } from "./types.ts"
 import { nodesOf } from "./walk.ts"
@@ -38,7 +38,7 @@ function checkClassArrow(
     problems.expect(
       token.type === "Punctuator",
       where,
-      `the token at ${token.range[0]}-${token.range[1]} is a ${token.type}, not a Punctuator`,
+      `the token at ${token.range[0]}-${token.range[1]} is ${withArticle(token.type)}, not a Punctuator`,
     )
   }
   const written = tokens.map((token) => token.value).join("")

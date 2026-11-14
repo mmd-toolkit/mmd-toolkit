@@ -1,4 +1,4 @@
-import { label } from "./problems.ts"
+import { label, withArticle } from "./problems.ts"
 import { entriesOf, textOf } from "./statement-checks.ts"
 import type { Reading } from "./statement-checks.ts"
 import type { CheckedNode } from "./types.ts"
@@ -27,7 +27,7 @@ export function checkChildTypes(
         reading.problems.expect(
           allowed.includes(child.type),
           label(node),
-          `the field ${field} holds a ${child.type}, not a ${allowed.join(" or ")}`,
+          `the field ${field} holds ${withArticle(child.type)}, not ${withArticle(allowed.join(" or "))}`,
         )
       }
     }

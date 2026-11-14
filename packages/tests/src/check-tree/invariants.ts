@@ -16,7 +16,7 @@ import { tokenIndexOf } from "./token-index.ts"
 import { tokensIn, valueHoldersOf } from "./tokens.ts"
 import { DATA_BLOCK_NODE_TYPES } from "./node-types.ts"
 import { LineRule } from "./line-rule.ts"
-import { label } from "./problems.ts"
+import { label, withArticle } from "./problems.ts"
 import type { Problems } from "./problems.ts"
 import type {
   CheckedComment,
@@ -618,7 +618,7 @@ function checkComments(
           (beforeTheHeader &&
             (MARKS_BEFORE_THE_HEADER[body] ?? []).includes(comment.mark)),
         where,
-        `the mark ${comment.mark} is no mark of the comments of a ${body}`,
+        `the mark ${comment.mark} is no mark of the comments of ${withArticle(body)}`,
       )
       const markEnd = diagramCommentMarkEnd(text, comment, index)
       problems.expectEqual(

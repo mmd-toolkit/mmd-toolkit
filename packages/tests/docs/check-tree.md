@@ -37,7 +37,10 @@ const problems: TreeProblem[] = checkTree(text, tree)
 - The result lists the conditions that do not hold, each with where (a node, a
   token, a record) and a message; it is empty for a tree that satisfies them
   all. Checking all of a tree, not stopping at the first, shows the whole damage
-  of a wrong tree.
+  of a wrong tree. A message that names a type puts the article before it with
+  `withArticle()` of `src/check-tree/problems.ts`: `an Identifier`,
+  `an ErDiagram`, `a Punctuator`, and `a UsecaseLiteral`, whose `U` is read as
+  `you`; `tests/check-tree-article.test.ts` requires it of every node type.
 
 - The directives and the comment lines are found in the text (`scanSource()` of
   `src/source-scan.ts`, also used for the converted form of

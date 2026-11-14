@@ -411,7 +411,7 @@ describe("the check of the text of a Punctuator token", () => {
     expect(textProblems("ErDiagram", "&")).toEqual([
       {
         where: "Punctuator at 0-1",
-        message: 'the Punctuator text "&" is none of those of a ErDiagram',
+        message: 'the Punctuator text "&" is none of those of an ErDiagram',
       },
     ])
   })

@@ -96,7 +96,7 @@ describe("checkTree: the tokens that a cut makes fragments of one token", () => 
         {
           where: `Identifier at ${source.length - 2}-${source.length}`,
           message:
-            "a Identifier token is cut: Identifier at 0-2 and this are its fragments",
+            "an Identifier token is cut: Identifier at 0-2 and this are its fragments",
         },
       ])
     }

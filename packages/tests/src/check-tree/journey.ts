@@ -1,6 +1,6 @@
 import type { TreeRange } from "../db-from-tree/tree.ts"
 import type { Problems } from "./problems.ts"
-import { label } from "./problems.ts"
+import { label, withArticle } from "./problems.ts"
 import {
   between,
   checkAccessibilityBlock,
@@ -202,10 +202,10 @@ export function checkJourneyTree(
       problems.expect(
         textOf(node) !== "",
         label(node),
-        `the value of a ${node.type} is empty`,
+        `the value of ${withArticle(node.type)} is empty`,
       )
       // A text unit, which a directive may cut into several tokens.
-      checkTokenKinds(reading, node, ["RawText"], `a ${node.type}`)
+      checkTokenKinds(reading, node, ["RawText"], withArticle(node.type))
       continue
     }
     const own = ownOf(root, node)
