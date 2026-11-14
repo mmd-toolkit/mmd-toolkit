@@ -277,7 +277,7 @@ id は U+2028 や U+2029 で終わり、
 [fixture: block/db-id-line-separator-comment-line-line-rule-before]
 [fixture: block/db-id-line-separator-comment-line-line-rule-after]
 [fixture: block/lex-id-line-separator-comment-line-bare-percent]
-[fixture: block/lex-id-line-separator-comment-line-percent-brace]
+[fixture: block/gram-id-line-separator-comment-line-percent-brace]
 
 **エンティティ、HTML 属性の引用符、`style` 行。**
 文字列、クラス名、スタイルの中では、エンティティは、
@@ -871,7 +871,7 @@ ASCII 外の文字です。
 [fixture: block/db-string-line-separator-comment-line-space-next]
 [fixture: block/db-string-line-separator-comment-line-separator-next]
 [fixture: block/db-string-line-separator-comment-line-empty-line]
-[fixture: block/lex-string-line-separator-comment-line-end-of-text]
+[fixture: block/gram-string-line-separator-comment-line-end-of-text]
 [fixture: block/db-string-line-separator-comment-line-cr]
 [fixture: block/db-string-line-separator-comment-line-crlf]
 [fixture: block/db-string-line-separator-comment-line-two-comment-lines]

@@ -114,6 +114,19 @@ The prefix tells what a failure on the fixture would be a failure of:
 An input that shows more than one thing takes the prefix of the thing a failure
 on it would be about.
 
+The sentence above does not decide every case. An input that shows where a
+comment starts shows it through a Db value, and a rejected input is rejected by
+a rule of the lexer or by one of the grammar, so the same input can be named in
+two ways. The corpus does not follow one way across the diagram types; it
+follows the way of each diagram. So a new fixture takes the prefix that the
+fixtures of the same diagram and of the same kind already take: for an accepted
+input, a value that a comment or a directive cuts, and for a rejected one, the
+kind of error that the parser reports (an unexpected character, an unexpected
+token, the end of the text). Where the diagram has no fixture of that kind, or
+its fixtures divide about evenly, the prefix of the rule that the fixture is
+written to show decides: `lex-` for a rule of the units, `gram-` for a rule of
+the statements.
+
 After the topic, a name may carry marks of what the input holds, in this order
 where there are several: `u2028` or `u2029` (the character is in the input),
 `directive` or `open-directive` (a directive, or one that is not closed), and

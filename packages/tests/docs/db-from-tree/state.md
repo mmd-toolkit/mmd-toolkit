@@ -403,4 +403,4 @@ left out of a value (see
 [The converted form](../db-from-tree.md#the-converted-form)). The summary keeps
 no text after the direction value, but the line `B` after the region is part of
 it, so the Db has no state `B`, and its direction is `LR`. [fixture:
-state/db-direction-text-line-separator-then-comment-line]
+state/lex-direction-text-line-separator-then-comment-line]

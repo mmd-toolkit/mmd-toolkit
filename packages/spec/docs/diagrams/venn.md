@@ -436,23 +436,23 @@ venn/lex-bare-percent-inside-quoted-name] [fixture:
 venn/lex-bare-percent-inside-bare-label] A comment after a U+2028 or U+2029 is
 the exception: it is read through, and the value goes on after it (see
 [Comment lines](../common.md#comment-lines)). [fixture:
-venn/db-title-line-separator-then-comment-line] [fixture:
-venn/db-title-line-separator-comment-line-directive-next] [fixture:
-venn/db-title-line-separator-comment-line-space-next] [fixture:
-venn/db-title-line-separator-comment-line-separator-next] [fixture:
+venn/lex-title-line-separator-then-comment-line] [fixture:
+venn/lex-title-line-separator-comment-line-directive-next] [fixture:
+venn/lex-title-line-separator-comment-line-space-next] [fixture:
+venn/lex-title-line-separator-comment-line-separator-next] [fixture:
 venn/gram-title-line-separator-comment-line-empty-line] [fixture:
-venn/db-title-line-separator-comment-line-end-of-text] [fixture:
-venn/db-title-line-separator-comment-line-cr] [fixture:
-venn/db-title-line-separator-comment-line-crlf] [fixture:
-venn/db-title-line-separator-comment-line-two-comment-lines] [fixture:
-venn/db-title-line-separator-comment-line-two-regions] [fixture:
-venn/db-title-line-separator-comment-line-spaces-before] [fixture:
-venn/db-title-line-separator-comment-line-line-feed-before] [fixture:
-venn/db-title-line-separator-comment-line-directive-before] [fixture:
+venn/lex-title-line-separator-comment-line-end-of-text] [fixture:
+venn/lex-title-line-separator-comment-line-cr] [fixture:
+venn/lex-title-line-separator-comment-line-crlf] [fixture:
+venn/lex-title-line-separator-comment-line-two-comment-lines] [fixture:
+venn/lex-title-line-separator-comment-line-two-regions] [fixture:
+venn/lex-title-line-separator-comment-line-spaces-before] [fixture:
+venn/lex-title-line-separator-comment-line-line-feed-before] [fixture:
+venn/lex-title-line-separator-comment-line-directive-before] [fixture:
 venn/gram-title-line-separator-comment-line-bare-percent] [fixture:
 venn/gram-title-line-separator-comment-line-percent-brace] [fixture:
-venn/db-title-line-separator-comment-line-line-rule-before] [fixture:
-venn/db-title-line-separator-comment-line-line-rule-after] Inline percent pairs
+venn/lex-title-line-separator-comment-line-line-rule-before] [fixture:
+venn/lex-title-line-separator-comment-line-line-rule-after] Inline percent pairs
 inside a whole string or label are value text. [fixture: venn/db-title-quotes]
 [fixture: venn/db-grid-comment-title] [fixture: venn/db-grid-comment-label-bare]
 [fixture: venn/lex-after-set-label-comment-glued] [fixture:
@@ -461,31 +461,31 @@ venn/lex-bare-percent-inside-quoted-name] [fixture:
 venn/lex-bare-percent-inside-bare-label] A comment after a U+2028 or U+2029 is
 the exception: it is read through, and the value goes on after it (see
 [Comment lines](../common.md#comment-lines)). [fixture:
-venn/db-quoted-name-line-separator-then-comment-line] [fixture:
-venn/db-quoted-name-paragraph-separator-then-comment-line] [fixture:
-venn/db-bare-label-line-separator-then-comment-line] [fixture:
-venn/db-quoted-label-line-separator-then-comment-line] [fixture:
-venn/db-quoted-name-line-separator-comment-line-directive-next] [fixture:
-venn/db-quoted-name-line-separator-comment-line-space-next] [fixture:
-venn/db-quoted-name-line-separator-comment-line-separator-next] [fixture:
-venn/db-quoted-name-line-separator-comment-line-empty-line] [fixture:
+venn/lex-quoted-name-line-separator-then-comment-line] [fixture:
+venn/lex-quoted-name-paragraph-separator-then-comment-line] [fixture:
+venn/lex-bare-label-line-separator-then-comment-line] [fixture:
+venn/lex-quoted-label-line-separator-then-comment-line] [fixture:
+venn/lex-quoted-name-line-separator-comment-line-directive-next] [fixture:
+venn/lex-quoted-name-line-separator-comment-line-space-next] [fixture:
+venn/lex-quoted-name-line-separator-comment-line-separator-next] [fixture:
+venn/lex-quoted-name-line-separator-comment-line-empty-line] [fixture:
 venn/lex-quoted-name-line-separator-comment-line-end-of-text] [fixture:
-venn/db-quoted-name-line-separator-comment-line-cr] [fixture:
-venn/db-quoted-name-line-separator-comment-line-crlf] [fixture:
-venn/db-quoted-name-line-separator-comment-line-two-comment-lines] [fixture:
-venn/db-quoted-name-line-separator-comment-line-two-regions] [fixture:
-venn/db-quoted-name-line-separator-comment-line-spaces-before] [fixture:
-venn/db-quoted-name-line-separator-comment-line-line-feed-before] [fixture:
-venn/db-quoted-name-line-separator-comment-line-directive-before] [fixture:
-venn/db-quoted-name-line-separator-comment-line-line-rule-before] [fixture:
-venn/db-quoted-name-line-separator-comment-line-line-rule-after] [fixture:
-venn/db-quoted-name-line-separator-comment-line-bare-percent] [fixture:
-venn/db-quoted-name-line-separator-comment-line-percent-brace] [fixture:
-venn/db-union-quoted-name-line-separator-then-comment-line] [fixture:
-venn/db-text-quoted-name-line-separator-then-comment-line] [fixture:
-venn/db-style-quoted-name-line-separator-then-comment-line] [fixture:
-venn/db-quoted-text-id-line-separator-then-comment-line] [fixture:
-venn/db-quoted-style-value-line-separator-then-comment-line]
+venn/lex-quoted-name-line-separator-comment-line-cr] [fixture:
+venn/lex-quoted-name-line-separator-comment-line-crlf] [fixture:
+venn/lex-quoted-name-line-separator-comment-line-two-comment-lines] [fixture:
+venn/lex-quoted-name-line-separator-comment-line-two-regions] [fixture:
+venn/lex-quoted-name-line-separator-comment-line-spaces-before] [fixture:
+venn/lex-quoted-name-line-separator-comment-line-line-feed-before] [fixture:
+venn/lex-quoted-name-line-separator-comment-line-directive-before] [fixture:
+venn/lex-quoted-name-line-separator-comment-line-line-rule-before] [fixture:
+venn/lex-quoted-name-line-separator-comment-line-line-rule-after] [fixture:
+venn/lex-quoted-name-line-separator-comment-line-bare-percent] [fixture:
+venn/lex-quoted-name-line-separator-comment-line-percent-brace] [fixture:
+venn/lex-union-quoted-name-line-separator-then-comment-line] [fixture:
+venn/lex-text-quoted-name-line-separator-then-comment-line] [fixture:
+venn/lex-style-quoted-name-line-separator-then-comment-line] [fixture:
+venn/lex-quoted-text-id-line-separator-then-comment-line] [fixture:
+venn/lex-quoted-style-value-line-separator-then-comment-line]
 
 A title keeps every character after its first whitespace separator, including
 further whitespace. [fixture: venn/db-title-padding] [fixture:

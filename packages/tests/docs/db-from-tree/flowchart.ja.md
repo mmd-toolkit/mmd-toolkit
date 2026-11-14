@@ -593,8 +593,8 @@ U+2028 や U+2029 の後のコメント領域は、値から除かれます。
 出典は [変換した形](../db-from-tree.ja.md#変換した形) です。
 データブロックの、書かれたままのラベルと引用符付きのラベルは、
 データブロックの効果がテキストを与え、同じように領域をまたいで続きます。
-[fixture: flowchart/db-data-label-bare-line-separator-then-comment-line]
-[fixture: flowchart/db-data-label-quoted-line-separator-then-comment-line]
+[fixture: flowchart/lex-data-label-bare-line-separator-then-comment-line]
+[fixture: flowchart/lex-data-label-quoted-line-separator-then-comment-line]
 
 ## Db の中のデータブロック
 

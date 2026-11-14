@@ -216,31 +216,31 @@ In the statement context, the lexer tries these rules in order:
    [common.md](../common.md#comment-lines), removed before the lexer reads the
    text, so this rule applies to a `%%` after a unit, and to a line that is no
    comment line because nothing or `{` follows its `%%`. [fixture:
-   class/db-acc-title-line-separator-then-comment-line] [fixture:
-   class/db-acc-descr-line-separator-then-comment-line] [fixture:
-   class/db-acc-descr-block-line-separator-then-comment-line] [fixture:
+   class/lex-acc-title-line-separator-then-comment-line] [fixture:
+   class/lex-acc-descr-line-separator-then-comment-line] [fixture:
+   class/lex-acc-descr-block-line-separator-then-comment-line] [fixture:
    class/db-backquoted-name-line-separator-then-comment-line] [fixture:
-   class/db-callback-name-line-separator-then-comment-line] [fixture:
-   class/db-callback-arguments-line-separator-then-comment-line] [fixture:
-   class/db-generic-line-separator-then-comment-line] [fixture:
-   class/db-note-string-line-separator-then-comment-line] [fixture:
-   class/db-style-line-separator-then-comment-line] [fixture:
-   class/db-acc-title-line-separator-comment-line-directive-next] [fixture:
-   class/db-acc-title-line-separator-comment-line-space-next] [fixture:
-   class/db-acc-title-line-separator-comment-line-separator-next] [fixture:
+   class/lex-callback-name-line-separator-then-comment-line] [fixture:
+   class/lex-callback-arguments-line-separator-then-comment-line] [fixture:
+   class/lex-generic-line-separator-then-comment-line] [fixture:
+   class/lex-note-string-line-separator-then-comment-line] [fixture:
+   class/lex-style-line-separator-then-comment-line] [fixture:
+   class/lex-acc-title-line-separator-comment-line-directive-next] [fixture:
+   class/lex-acc-title-line-separator-comment-line-space-next] [fixture:
+   class/lex-acc-title-line-separator-comment-line-separator-next] [fixture:
    class/lex-acc-title-line-separator-comment-line-empty-line] [fixture:
    class/lex-acc-title-line-separator-comment-line-end-of-text] [fixture:
-   class/db-acc-title-line-separator-comment-line-cr] [fixture:
-   class/db-acc-title-line-separator-comment-line-crlf] [fixture:
-   class/db-acc-title-line-separator-comment-line-two-comment-lines] [fixture:
-   class/db-acc-title-line-separator-comment-line-two-regions] [fixture:
-   class/db-acc-title-line-separator-comment-line-spaces-before] [fixture:
-   class/db-acc-title-line-separator-comment-line-line-feed-before] [fixture:
-   class/db-acc-title-line-separator-comment-line-directive-before] [fixture:
-   class/db-acc-title-line-separator-comment-line-line-rule-before] [fixture:
-   class/db-acc-title-line-separator-comment-line-line-rule-after] [fixture:
-   class/db-acc-title-line-separator-comment-line-bare-percent] [fixture:
-   class/db-acc-title-line-separator-comment-line-percent-brace] A line that
+   class/lex-acc-title-line-separator-comment-line-cr] [fixture:
+   class/lex-acc-title-line-separator-comment-line-crlf] [fixture:
+   class/lex-acc-title-line-separator-comment-line-two-comment-lines] [fixture:
+   class/lex-acc-title-line-separator-comment-line-two-regions] [fixture:
+   class/lex-acc-title-line-separator-comment-line-spaces-before] [fixture:
+   class/lex-acc-title-line-separator-comment-line-line-feed-before] [fixture:
+   class/lex-acc-title-line-separator-comment-line-directive-before] [fixture:
+   class/lex-acc-title-line-separator-comment-line-line-rule-before] [fixture:
+   class/lex-acc-title-line-separator-comment-line-line-rule-after] [fixture:
+   class/lex-acc-title-line-separator-comment-line-bare-percent] [fixture:
+   class/lex-acc-title-line-separator-comment-line-percent-brace] A line that
    holds only whitespace and such a comment is a **comment-only line**. A
    comment-only line is not counted as a line, and neither are the empty lines
    right after it: no `newline` unit is read for their line feeds, which belong
@@ -323,26 +323,26 @@ consequences of the order:
   [fixture: class/lex-label-semicolon] In a label, a comment after a U+2028 or
   U+2029 is read through, and the label goes on after it (see
   [Comment lines](../common.md#comment-lines)). [fixture:
-  class/db-relation-label-line-separator-then-comment-line] [fixture:
-  class/db-relation-label-paragraph-separator-then-comment-line] [fixture:
-  class/db-relation-label-line-separator-comment-line-directive-next] [fixture:
-  class/db-relation-label-line-separator-comment-line-space-next] [fixture:
-  class/db-relation-label-line-separator-comment-line-separator-next] [fixture:
+  class/lex-relation-label-line-separator-then-comment-line] [fixture:
+  class/lex-relation-label-paragraph-separator-then-comment-line] [fixture:
+  class/lex-relation-label-line-separator-comment-line-directive-next] [fixture:
+  class/lex-relation-label-line-separator-comment-line-space-next] [fixture:
+  class/lex-relation-label-line-separator-comment-line-separator-next] [fixture:
   class/lex-relation-label-line-separator-comment-line-empty-line] [fixture:
   class/lex-relation-label-line-separator-comment-line-end-of-text] [fixture:
-  class/db-relation-label-line-separator-comment-line-cr] [fixture:
-  class/db-relation-label-line-separator-comment-line-crlf] [fixture:
-  class/db-relation-label-line-separator-comment-line-two-comment-lines]
-  [fixture: class/db-relation-label-line-separator-comment-line-two-regions]
-  [fixture: class/db-relation-label-line-separator-comment-line-spaces-before]
+  class/lex-relation-label-line-separator-comment-line-cr] [fixture:
+  class/lex-relation-label-line-separator-comment-line-crlf] [fixture:
+  class/lex-relation-label-line-separator-comment-line-two-comment-lines]
+  [fixture: class/lex-relation-label-line-separator-comment-line-two-regions]
+  [fixture: class/lex-relation-label-line-separator-comment-line-spaces-before]
   [fixture:
-  class/db-relation-label-line-separator-comment-line-line-feed-before]
+  class/lex-relation-label-line-separator-comment-line-line-feed-before]
   [fixture:
-  class/db-relation-label-line-separator-comment-line-directive-before]
+  class/lex-relation-label-line-separator-comment-line-directive-before]
   [fixture:
-  class/db-relation-label-line-separator-comment-line-line-rule-before]
-  [fixture: class/db-relation-label-line-separator-comment-line-bare-percent]
-  [fixture: class/db-relation-label-line-separator-comment-line-percent-brace]
+  class/lex-relation-label-line-separator-comment-line-line-rule-before]
+  [fixture: class/lex-relation-label-line-separator-comment-line-bare-percent]
+  [fixture: class/lex-relation-label-line-separator-comment-line-percent-brace]
 - `;`, `{`, `}`, `|`, `(` without `)`, `)`, `@`, and `^` match no rule in the
   statement context: `class A; class B`, `A | B`, and `A@B --> C` are rejected.
   [fixture: class/lex-semicolon] [fixture: class/lex-pipe] [fixture:
@@ -539,24 +539,24 @@ and `~` inside a member line are characters of it: `+x %% c` is the member
 class/lex-member-semicolon] A comment after a U+2028 or U+2029 is the exception:
 it is read through, and the value goes on after it (see
 [Comment lines](../common.md#comment-lines)). [fixture:
-class/db-member-name-line-separator-then-comment-line] [fixture:
-class/db-annotation-line-separator-then-comment-line] [fixture:
-class/db-member-name-line-separator-comment-line-directive-next] [fixture:
-class/db-member-name-line-separator-comment-line-space-next] [fixture:
-class/db-member-name-line-separator-comment-line-separator-next] [fixture:
+class/lex-member-name-line-separator-then-comment-line] [fixture:
+class/lex-annotation-line-separator-then-comment-line] [fixture:
+class/lex-member-name-line-separator-comment-line-directive-next] [fixture:
+class/lex-member-name-line-separator-comment-line-space-next] [fixture:
+class/lex-member-name-line-separator-comment-line-separator-next] [fixture:
 class/lex-member-name-line-separator-comment-line-empty-line] [fixture:
 class/lex-member-name-line-separator-comment-line-end-of-text] [fixture:
-class/db-member-name-line-separator-comment-line-cr] [fixture:
-class/db-member-name-line-separator-comment-line-crlf] [fixture:
-class/db-member-name-line-separator-comment-line-two-comment-lines] [fixture:
-class/db-member-name-line-separator-comment-line-two-regions] [fixture:
-class/db-member-name-line-separator-comment-line-spaces-before] [fixture:
-class/db-member-name-line-separator-comment-line-line-feed-before] [fixture:
-class/db-member-name-line-separator-comment-line-directive-before] [fixture:
-class/db-member-name-line-separator-comment-line-line-rule-before] [fixture:
-class/db-member-name-line-separator-comment-line-line-rule-after] [fixture:
-class/db-member-name-line-separator-comment-line-bare-percent] [fixture:
-class/gram-member-name-line-separator-comment-line-percent-brace] A `[*]` right
+class/lex-member-name-line-separator-comment-line-cr] [fixture:
+class/lex-member-name-line-separator-comment-line-crlf] [fixture:
+class/lex-member-name-line-separator-comment-line-two-comment-lines] [fixture:
+class/lex-member-name-line-separator-comment-line-two-regions] [fixture:
+class/lex-member-name-line-separator-comment-line-spaces-before] [fixture:
+class/lex-member-name-line-separator-comment-line-line-feed-before] [fixture:
+class/lex-member-name-line-separator-comment-line-directive-before] [fixture:
+class/lex-member-name-line-separator-comment-line-line-rule-before] [fixture:
+class/lex-member-name-line-separator-comment-line-line-rule-after] [fixture:
+class/lex-member-name-line-separator-comment-line-bare-percent] [fixture:
+class/lex-member-name-line-separator-comment-line-percent-brace] A `[*]` right
 after the `{` or a line feed is a `[*]` unit, which the grammar does not take,
 so `[*]` and `[*] x` on a line of their own in a body are rejected, and so is a
 `{` in a body. The context has no rule for whitespace, so `  [*]`, with spaces

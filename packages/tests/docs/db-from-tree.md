@@ -72,11 +72,11 @@ after the region, for the values of every diagram except agentflow and
 eventmodeling: the helper reads the range of a value and leaves the regions out.
 `A`, U+2028, `%% c`, a line break, and `B` is the value `A`, U+2028, and `B`,
 whether the value is a string, a text, or a description block. [fixture:
-flowchart/db-string-line-separator-then-comment-line] [fixture:
+flowchart/lex-string-line-separator-then-comment-line] [fixture:
 block/db-string-paragraph-separator-then-comment-line] [fixture:
 gantt/db-title-line-separator-then-comment-line] [fixture:
-flowchart/db-square-label-paragraph-separator-then-comment-line] [fixture:
-flowchart/db-acc-descr-block-line-separator-then-comment-line] A diagram
+flowchart/lex-square-label-paragraph-separator-then-comment-line] [fixture:
+flowchart/lex-acc-descr-block-line-separator-then-comment-line] A diagram
 document says where the summary has no field for such a value, or takes it from
 elsewhere.
 
@@ -113,7 +113,7 @@ ignored, so that the value is `A`, U+2028, and `style:#bB`. [fixture:
 block/db-string-line-separator-comment-line-line-rule-before] [fixture:
 block/db-string-line-separator-comment-line-line-rule-after] A text that ends
 with the comment line leaves the string open and is rejected. [fixture:
-block/lex-string-line-separator-comment-line-end-of-text]
+block/gram-string-line-separator-comment-line-end-of-text]
 
 A value that ends at the U+2028 does not go on after the region: the id of a
 block, the id of a gantt click, the class of a mindmap or kanban node, and the
@@ -123,8 +123,8 @@ break, and `b` are the blocks `a` and `b`; `click a1`, U+2028, `%% c`, a line
 break, and `href "https://e"` give the task `a1` its link; and `state A`,
 U+2028, `%% c`, a line break, and `B <<fork>>` have the one state, the fork `B`.
 [fixture: block/db-id-line-separator-then-comment-line] [fixture:
-gantt/db-click-id-line-separator-then-comment-line-href] [fixture:
-state/db-pseudostate-name-line-separator-then-comment-line] The line after the
+gantt/lex-click-id-line-separator-then-comment-line-href] [fixture:
+state/lex-pseudostate-name-line-separator-then-comment-line] The line after the
 comment line of a class is the rest of the class line, which is rejected, as
 without the comment line. [fixture:
 mindmap/gram-class-line-separator-then-comment-line] [fixture:

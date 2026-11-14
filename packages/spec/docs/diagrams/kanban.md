@@ -113,7 +113,7 @@ kanban/db-icon-line-separator-comment-line-directive-next] [fixture:
 kanban/db-icon-line-separator-comment-line-space-next] [fixture:
 kanban/db-icon-line-separator-comment-line-separator-next] [fixture:
 kanban/db-icon-line-separator-comment-line-empty-line] [fixture:
-kanban/lex-icon-line-separator-comment-line-end-of-text] [fixture:
+kanban/gram-icon-line-separator-comment-line-end-of-text] [fixture:
 kanban/db-icon-line-separator-comment-line-cr] [fixture:
 kanban/db-icon-line-separator-comment-line-crlf] [fixture:
 kanban/db-icon-line-separator-comment-line-two-comment-lines] [fixture:
@@ -149,7 +149,7 @@ kanban/db-node-text-line-separator-comment-line-directive-before] [fixture:
 kanban/db-node-text-line-separator-comment-line-line-rule-before] [fixture:
 kanban/db-node-text-line-separator-comment-line-line-rule-after] [fixture:
 kanban/db-node-text-line-separator-comment-line-bare-percent] [fixture:
-kanban/lex-node-text-line-separator-comment-line-percent-brace] Class text ends
+kanban/gram-node-text-line-separator-comment-line-percent-brace] Class text ends
 at a U+2028 or U+2029, so `:::a`, U+2028, `%% c`, a line break, and `b` are two
 statements on one line, as without the comment line, and are rejected. [fixture:
 kanban/gram-class-line-separator-then-comment-line] [fixture:
@@ -681,7 +681,7 @@ kanban/db-string-line-separator-comment-line-directive-next] [fixture:
 kanban/db-string-line-separator-comment-line-space-next] [fixture:
 kanban/db-string-line-separator-comment-line-separator-next] [fixture:
 kanban/db-string-line-separator-comment-line-empty-line] [fixture:
-kanban/lex-string-line-separator-comment-line-end-of-text] [fixture:
+kanban/gram-string-line-separator-comment-line-end-of-text] [fixture:
 kanban/db-string-line-separator-comment-line-cr] [fixture:
 kanban/db-string-line-separator-comment-line-crlf] [fixture:
 kanban/db-string-line-separator-comment-line-two-comment-lines] [fixture:

@@ -378,30 +378,30 @@ rest of a physical line after U+2028 or U+2029 inside a value, its line break
 included; the value then goes on with the next physical line, so a line value
 does not end there: `accTitle: A`, U+2028, `%% c`, a line break, and `B` has the
 accessibility title `A`, U+2028, and `B`. [fixture:
-treemap/db-string-line-separator-then-comment-line] [fixture:
-treemap/db-string-paragraph-separator-then-comment-line] [fixture:
-treemap/db-class-style-line-separator-then-comment-line] [fixture:
-treemap/db-title-line-separator-then-comment-line] [fixture:
-treemap/db-acc-title-line-separator-then-comment-line] [fixture:
-treemap/db-acc-descr-line-separator-then-comment-line] [fixture:
-treemap/db-acc-descr-block-line-separator-then-comment-line] [fixture:
-treemap/db-string-line-separator-comment-line-directive-next] [fixture:
-treemap/db-string-line-separator-comment-line-space-next] [fixture:
-treemap/db-string-line-separator-comment-line-separator-next] [fixture:
-treemap/db-string-line-separator-comment-line-empty-line] [fixture:
+treemap/lex-string-line-separator-then-comment-line] [fixture:
+treemap/lex-string-paragraph-separator-then-comment-line] [fixture:
+treemap/lex-class-style-line-separator-then-comment-line] [fixture:
+treemap/lex-title-line-separator-then-comment-line] [fixture:
+treemap/lex-acc-title-line-separator-then-comment-line] [fixture:
+treemap/lex-acc-descr-line-separator-then-comment-line] [fixture:
+treemap/lex-acc-descr-block-line-separator-then-comment-line] [fixture:
+treemap/lex-string-line-separator-comment-line-directive-next] [fixture:
+treemap/lex-string-line-separator-comment-line-space-next] [fixture:
+treemap/lex-string-line-separator-comment-line-separator-next] [fixture:
+treemap/lex-string-line-separator-comment-line-empty-line] [fixture:
 treemap/lex-string-line-separator-comment-line-end-of-text] [fixture:
-treemap/db-class-style-line-separator-comment-line-end-of-text] [fixture:
-treemap/db-string-line-separator-comment-line-cr] [fixture:
-treemap/db-string-line-separator-comment-line-crlf] [fixture:
-treemap/db-string-line-separator-comment-line-two-comment-lines] [fixture:
-treemap/db-string-line-separator-comment-line-two-regions] [fixture:
-treemap/db-string-line-separator-comment-line-spaces-before] [fixture:
-treemap/db-string-line-separator-comment-line-line-feed-before] [fixture:
-treemap/db-string-line-separator-comment-line-directive-before] [fixture:
-treemap/db-string-line-separator-comment-line-line-rule-before] [fixture:
-treemap/db-string-line-separator-comment-line-line-rule-after] [fixture:
-treemap/db-string-line-separator-comment-line-bare-percent] [fixture:
-treemap/db-string-line-separator-comment-line-percent-brace]
+treemap/lex-class-style-line-separator-comment-line-end-of-text] [fixture:
+treemap/lex-string-line-separator-comment-line-cr] [fixture:
+treemap/lex-string-line-separator-comment-line-crlf] [fixture:
+treemap/lex-string-line-separator-comment-line-two-comment-lines] [fixture:
+treemap/lex-string-line-separator-comment-line-two-regions] [fixture:
+treemap/lex-string-line-separator-comment-line-spaces-before] [fixture:
+treemap/lex-string-line-separator-comment-line-line-feed-before] [fixture:
+treemap/lex-string-line-separator-comment-line-directive-before] [fixture:
+treemap/lex-string-line-separator-comment-line-line-rule-before] [fixture:
+treemap/lex-string-line-separator-comment-line-line-rule-after] [fixture:
+treemap/lex-string-line-separator-comment-line-bare-percent] [fixture:
+treemap/lex-string-line-separator-comment-line-percent-brace]
 
 Ordinary word-start global directives, including `%%{other: x}%%`, are common
 trivia, not native hidden directives. A remaining nonword form such as `%%{!}%%`

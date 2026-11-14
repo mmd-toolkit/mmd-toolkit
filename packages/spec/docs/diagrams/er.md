@@ -665,7 +665,7 @@ er/lex-direction-line-two-values] [fixture:
 er/lex-direction-value-glued-then-other] In the text after the value, a comment
 after a U+2028 or U+2029 is read through, and the text goes on after it (see
 [Comment lines](../common.md#comment-lines)). [fixture:
-er/db-direction-text-line-separator-then-comment-line] [fixture:
+er/lex-direction-text-line-separator-then-comment-line] [fixture:
 er/lex-direction-text-line-separator-comment-line-directive-next] [fixture:
 er/lex-direction-text-line-separator-comment-line-space-next] [fixture:
 er/lex-direction-text-line-separator-comment-line-separator-next] [fixture:
@@ -841,24 +841,24 @@ and the styles of the statement:
    goes on after it (see [Comment lines](../common.md#comment-lines)):
    `style A fill:red`, U+2028, `%% c`, a line break, and `x` has the style
    `fill:red`, U+2028, and `x`. [fixture:
-   er/db-style-line-separator-then-comment-line] [fixture:
-   er/db-style-line-separator-comment-line-directive-next] [fixture:
-   er/db-style-line-separator-comment-line-space-next] [fixture:
-   er/db-style-line-separator-comment-line-separator-next] [fixture:
-   er/db-style-line-separator-comment-line-empty-line] [fixture:
-   er/db-style-line-separator-comment-line-end-of-text] [fixture:
-   er/db-style-line-separator-comment-line-cr] [fixture:
-   er/db-style-line-separator-comment-line-crlf] [fixture:
-   er/db-style-line-separator-comment-line-two-comment-lines] [fixture:
-   er/db-style-line-separator-comment-line-two-regions] [fixture:
-   er/db-style-line-separator-comment-line-spaces-before] [fixture:
-   er/db-style-line-separator-comment-line-line-feed-before] [fixture:
-   er/db-style-line-separator-comment-line-directive-before] [fixture:
-   er/db-style-line-separator-comment-line-line-rule-before] [fixture:
-   er/db-style-line-separator-comment-line-line-rule-after] [fixture:
+   er/lex-style-line-separator-then-comment-line] [fixture:
+   er/lex-style-line-separator-comment-line-directive-next] [fixture:
+   er/lex-style-line-separator-comment-line-space-next] [fixture:
+   er/lex-style-line-separator-comment-line-separator-next] [fixture:
+   er/lex-style-line-separator-comment-line-empty-line] [fixture:
+   er/lex-style-line-separator-comment-line-end-of-text] [fixture:
+   er/lex-style-line-separator-comment-line-cr] [fixture:
+   er/lex-style-line-separator-comment-line-crlf] [fixture:
+   er/lex-style-line-separator-comment-line-two-comment-lines] [fixture:
+   er/lex-style-line-separator-comment-line-two-regions] [fixture:
+   er/lex-style-line-separator-comment-line-spaces-before] [fixture:
+   er/lex-style-line-separator-comment-line-line-feed-before] [fixture:
+   er/lex-style-line-separator-comment-line-directive-before] [fixture:
+   er/lex-style-line-separator-comment-line-line-rule-before] [fixture:
+   er/lex-style-line-separator-comment-line-line-rule-after] [fixture:
    er/lex-style-line-separator-comment-line-bare-percent] [fixture:
    er/lex-style-line-separator-comment-line-percent-brace] [fixture:
-   er/db-classdef-styles-line-separator-then-comment-line]
+   er/lex-classdef-styles-line-separator-then-comment-line]
 7. `;`: a `;` unit. [fixture: er/lex-classdef-semicolon-line-feed]
 
 The `;` unit ends the statement, but the lexer stays in the style context until
@@ -918,24 +918,24 @@ er/db-acc-title-trailing-space] [fixture: er/lex-acc-title-trailing-nbsp]
 [fixture: er/lex-acc-title-tabs] In the text of an accessibility title or
 description, a comment after a U+2028 or U+2029 is read through, and the text
 goes on after it (see [Comment lines](../common.md#comment-lines)). [fixture:
-er/db-acc-title-line-separator-then-comment-line] [fixture:
-er/db-acc-descr-line-separator-then-comment-line] [fixture:
-er/db-acc-title-line-separator-comment-line-directive-next] [fixture:
-er/db-acc-title-line-separator-comment-line-space-next] [fixture:
-er/db-acc-title-line-separator-comment-line-separator-next] [fixture:
+er/lex-acc-title-line-separator-then-comment-line] [fixture:
+er/lex-acc-descr-line-separator-then-comment-line] [fixture:
+er/lex-acc-title-line-separator-comment-line-directive-next] [fixture:
+er/lex-acc-title-line-separator-comment-line-space-next] [fixture:
+er/lex-acc-title-line-separator-comment-line-separator-next] [fixture:
 er/lex-acc-title-line-separator-comment-line-empty-line] [fixture:
 er/lex-acc-title-line-separator-comment-line-end-of-text] [fixture:
-er/db-acc-title-line-separator-comment-line-cr] [fixture:
-er/db-acc-title-line-separator-comment-line-crlf] [fixture:
-er/db-acc-title-line-separator-comment-line-two-comment-lines] [fixture:
-er/db-acc-title-line-separator-comment-line-two-regions] [fixture:
-er/db-acc-title-line-separator-comment-line-spaces-before] [fixture:
-er/db-acc-title-line-separator-comment-line-line-feed-before] [fixture:
-er/db-acc-title-line-separator-comment-line-directive-before] [fixture:
-er/db-acc-title-line-separator-comment-line-line-rule-before] [fixture:
-er/db-acc-title-line-separator-comment-line-line-rule-after] [fixture:
-er/db-acc-title-line-separator-comment-line-bare-percent] [fixture:
-er/db-acc-title-line-separator-comment-line-percent-brace]
+er/lex-acc-title-line-separator-comment-line-cr] [fixture:
+er/lex-acc-title-line-separator-comment-line-crlf] [fixture:
+er/lex-acc-title-line-separator-comment-line-two-comment-lines] [fixture:
+er/lex-acc-title-line-separator-comment-line-two-regions] [fixture:
+er/lex-acc-title-line-separator-comment-line-spaces-before] [fixture:
+er/lex-acc-title-line-separator-comment-line-line-feed-before] [fixture:
+er/lex-acc-title-line-separator-comment-line-directive-before] [fixture:
+er/lex-acc-title-line-separator-comment-line-line-rule-before] [fixture:
+er/lex-acc-title-line-separator-comment-line-line-rule-after] [fixture:
+er/lex-acc-title-line-separator-comment-line-bare-percent] [fixture:
+er/lex-acc-title-line-separator-comment-line-percent-brace]
 
 In the description block context, `}` is a `}` unit and leaves the context, and
 one or more characters other than `}`, line feeds included, are a
@@ -966,22 +966,22 @@ er/lex-acc-descr-block-unclosed-lines] A comment line inside the text of a
 description block is removed, also after a U+2028 or U+2029 on a line of the
 text, and the text goes on after it (see
 [Comment lines](../common.md#comment-lines)). [fixture:
-er/db-acc-descr-block-line-separator-then-comment-line] [fixture:
-er/db-acc-descr-block-line-separator-comment-line-directive-next] [fixture:
-er/db-acc-descr-block-line-separator-comment-line-space-next] [fixture:
-er/db-acc-descr-block-line-separator-comment-line-separator-next] [fixture:
-er/db-acc-descr-block-line-separator-comment-line-empty-line] [fixture:
+er/lex-acc-descr-block-line-separator-then-comment-line] [fixture:
+er/lex-acc-descr-block-line-separator-comment-line-directive-next] [fixture:
+er/lex-acc-descr-block-line-separator-comment-line-space-next] [fixture:
+er/lex-acc-descr-block-line-separator-comment-line-separator-next] [fixture:
+er/lex-acc-descr-block-line-separator-comment-line-empty-line] [fixture:
 er/lex-acc-descr-block-line-separator-comment-line-end-of-text] [fixture:
-er/db-acc-descr-block-line-separator-comment-line-cr] [fixture:
-er/db-acc-descr-block-line-separator-comment-line-crlf] [fixture:
-er/db-acc-descr-block-line-separator-comment-line-two-comment-lines] [fixture:
-er/db-acc-descr-block-line-separator-comment-line-two-regions] [fixture:
-er/db-acc-descr-block-line-separator-comment-line-spaces-before] [fixture:
-er/db-acc-descr-block-line-separator-comment-line-line-feed-before] [fixture:
-er/db-acc-descr-block-line-separator-comment-line-directive-before] [fixture:
-er/db-acc-descr-block-line-separator-comment-line-line-rule-before] [fixture:
-er/db-acc-descr-block-line-separator-comment-line-line-rule-after] [fixture:
-er/db-acc-descr-block-line-separator-comment-line-bare-percent] [fixture:
+er/lex-acc-descr-block-line-separator-comment-line-cr] [fixture:
+er/lex-acc-descr-block-line-separator-comment-line-crlf] [fixture:
+er/lex-acc-descr-block-line-separator-comment-line-two-comment-lines] [fixture:
+er/lex-acc-descr-block-line-separator-comment-line-two-regions] [fixture:
+er/lex-acc-descr-block-line-separator-comment-line-spaces-before] [fixture:
+er/lex-acc-descr-block-line-separator-comment-line-line-feed-before] [fixture:
+er/lex-acc-descr-block-line-separator-comment-line-directive-before] [fixture:
+er/lex-acc-descr-block-line-separator-comment-line-line-rule-before] [fixture:
+er/lex-acc-descr-block-line-separator-comment-line-line-rule-after] [fixture:
+er/lex-acc-descr-block-line-separator-comment-line-bare-percent] [fixture:
 er/gram-acc-descr-block-line-separator-comment-line-percent-brace]
 
 The rules that enter these contexts are rules of the statement context only; in

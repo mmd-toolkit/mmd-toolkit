@@ -497,8 +497,8 @@ left out of a value (see
 [The converted form](../db-from-tree.md#the-converted-form)). For a bare or
 quoted label in a data block, the data-block effect supplies the text, which
 goes on across the region in the same way. [fixture:
-flowchart/db-data-label-bare-line-separator-then-comment-line] [fixture:
-flowchart/db-data-label-quoted-line-separator-then-comment-line]
+flowchart/lex-data-label-bare-line-separator-then-comment-line] [fixture:
+flowchart/lex-data-label-quoted-line-separator-then-comment-line]
 
 ## Data blocks in the Db
 

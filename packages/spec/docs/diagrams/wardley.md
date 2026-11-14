@@ -400,43 +400,43 @@ the rest of a physical line after U+2028 or U+2029 inside a value, its line
 break included; the value then goes on with the next physical line, so a line
 value does not end there: `accTitle: A`, U+2028, `%% c`, a line break, and `B`
 has the accessibility title `A`, U+2028, and `B`. [fixture:
-wardley/db-string-line-separator-then-comment-line] [fixture:
-wardley/db-string-paragraph-separator-then-comment-line] [fixture:
-wardley/db-title-line-separator-then-comment-line] [fixture:
-wardley/db-acc-title-line-separator-then-comment-line] [fixture:
-wardley/db-acc-descr-line-separator-then-comment-line] [fixture:
-wardley/db-acc-descr-block-line-separator-then-comment-line] [fixture:
-wardley/db-string-line-separator-comment-line-directive-next] [fixture:
-wardley/db-string-line-separator-comment-line-space-next] [fixture:
-wardley/db-string-line-separator-comment-line-separator-next] [fixture:
-wardley/db-string-line-separator-comment-line-empty-line] [fixture:
+wardley/lex-string-line-separator-then-comment-line] [fixture:
+wardley/lex-string-paragraph-separator-then-comment-line] [fixture:
+wardley/lex-title-line-separator-then-comment-line] [fixture:
+wardley/lex-acc-title-line-separator-then-comment-line] [fixture:
+wardley/lex-acc-descr-line-separator-then-comment-line] [fixture:
+wardley/lex-acc-descr-block-line-separator-then-comment-line] [fixture:
+wardley/lex-string-line-separator-comment-line-directive-next] [fixture:
+wardley/lex-string-line-separator-comment-line-space-next] [fixture:
+wardley/lex-string-line-separator-comment-line-separator-next] [fixture:
+wardley/lex-string-line-separator-comment-line-empty-line] [fixture:
 wardley/lex-string-line-separator-comment-line-end-of-text] [fixture:
-wardley/db-title-line-separator-comment-line-end-of-text] [fixture:
-wardley/db-string-line-separator-comment-line-cr] [fixture:
-wardley/db-string-line-separator-comment-line-crlf] [fixture:
-wardley/db-string-line-separator-comment-line-two-comment-lines] [fixture:
-wardley/db-string-line-separator-comment-line-two-regions] [fixture:
-wardley/db-string-line-separator-comment-line-spaces-before] [fixture:
-wardley/db-string-line-separator-comment-line-line-feed-before] [fixture:
-wardley/db-string-line-separator-comment-line-directive-before] [fixture:
-wardley/db-string-line-separator-comment-line-line-rule-before] [fixture:
-wardley/db-string-line-separator-comment-line-line-rule-after] [fixture:
-wardley/db-string-line-separator-comment-line-bare-percent] [fixture:
-wardley/db-string-line-separator-comment-line-percent-brace] [fixture:
-wardley/db-anchor-name-line-separator-then-comment-line] [fixture:
-wardley/db-link-source-name-line-separator-then-comment-line] [fixture:
-wardley/db-link-target-name-line-separator-then-comment-line] [fixture:
-wardley/db-pipeline-parent-name-line-separator-then-comment-line] [fixture:
-wardley/db-pipeline-child-name-line-separator-then-comment-line] [fixture:
-wardley/db-evolve-name-line-separator-then-comment-line] [fixture:
-wardley/db-accelerator-name-line-separator-then-comment-line] [fixture:
-wardley/db-deaccelerator-name-line-separator-then-comment-line] [fixture:
-wardley/db-stage-name-line-separator-then-comment-line] [fixture:
-wardley/db-stage-second-name-line-separator-then-comment-line] [fixture:
-wardley/db-note-string-line-separator-then-comment-line] [fixture:
-wardley/db-annotation-string-line-separator-then-comment-line] [fixture:
-wardley/db-flow-body-line-separator-then-comment-line] [fixture:
-wardley/db-link-label-line-separator-then-comment-line]
+wardley/lex-title-line-separator-comment-line-end-of-text] [fixture:
+wardley/lex-string-line-separator-comment-line-cr] [fixture:
+wardley/lex-string-line-separator-comment-line-crlf] [fixture:
+wardley/lex-string-line-separator-comment-line-two-comment-lines] [fixture:
+wardley/lex-string-line-separator-comment-line-two-regions] [fixture:
+wardley/lex-string-line-separator-comment-line-spaces-before] [fixture:
+wardley/lex-string-line-separator-comment-line-line-feed-before] [fixture:
+wardley/lex-string-line-separator-comment-line-directive-before] [fixture:
+wardley/lex-string-line-separator-comment-line-line-rule-before] [fixture:
+wardley/lex-string-line-separator-comment-line-line-rule-after] [fixture:
+wardley/lex-string-line-separator-comment-line-bare-percent] [fixture:
+wardley/lex-string-line-separator-comment-line-percent-brace] [fixture:
+wardley/lex-anchor-name-line-separator-then-comment-line] [fixture:
+wardley/lex-link-source-name-line-separator-then-comment-line] [fixture:
+wardley/lex-link-target-name-line-separator-then-comment-line] [fixture:
+wardley/lex-pipeline-parent-name-line-separator-then-comment-line] [fixture:
+wardley/lex-pipeline-child-name-line-separator-then-comment-line] [fixture:
+wardley/lex-evolve-name-line-separator-then-comment-line] [fixture:
+wardley/lex-accelerator-name-line-separator-then-comment-line] [fixture:
+wardley/lex-deaccelerator-name-line-separator-then-comment-line] [fixture:
+wardley/lex-stage-name-line-separator-then-comment-line] [fixture:
+wardley/lex-stage-second-name-line-separator-then-comment-line] [fixture:
+wardley/lex-note-string-line-separator-then-comment-line] [fixture:
+wardley/lex-annotation-string-line-separator-then-comment-line] [fixture:
+wardley/lex-flow-body-line-separator-then-comment-line] [fixture:
+wardley/lex-link-label-line-separator-then-comment-line]
 
 A whole hidden form is WardleyIgnoredText, from its opener through its
 qualifying closer, excluding preceding padding and any immediately consumed

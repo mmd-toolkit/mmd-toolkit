@@ -443,29 +443,29 @@ native comment を残し得る。 [fixture: packet/common-block-bare]
 そのとき値は次の物理行へ続くので、行の値はそこで終わらない。
 `accTitle: A`、U+2028、`%% c`、改行、`B` のアクセシビリティタイトルは `A`、
 U+2028、`B` である。 [fixture:
-packet/db-string-line-separator-then-comment-line] [fixture:
-packet/db-string-paragraph-separator-then-comment-line] [fixture:
-packet/db-title-line-separator-then-comment-line] [fixture:
-packet/db-acc-title-line-separator-then-comment-line] [fixture:
-packet/db-acc-descr-line-separator-then-comment-line] [fixture:
-packet/db-acc-descr-block-line-separator-then-comment-line] [fixture:
-packet/db-string-line-separator-comment-line-directive-next] [fixture:
-packet/db-string-line-separator-comment-line-space-next] [fixture:
-packet/db-string-line-separator-comment-line-separator-next] [fixture:
-packet/db-string-line-separator-comment-line-empty-line] [fixture:
+packet/lex-string-line-separator-then-comment-line] [fixture:
+packet/lex-string-paragraph-separator-then-comment-line] [fixture:
+packet/lex-title-line-separator-then-comment-line] [fixture:
+packet/lex-acc-title-line-separator-then-comment-line] [fixture:
+packet/lex-acc-descr-line-separator-then-comment-line] [fixture:
+packet/lex-acc-descr-block-line-separator-then-comment-line] [fixture:
+packet/lex-string-line-separator-comment-line-directive-next] [fixture:
+packet/lex-string-line-separator-comment-line-space-next] [fixture:
+packet/lex-string-line-separator-comment-line-separator-next] [fixture:
+packet/lex-string-line-separator-comment-line-empty-line] [fixture:
 packet/lex-string-line-separator-comment-line-end-of-text] [fixture:
-packet/db-title-line-separator-comment-line-end-of-text] [fixture:
-packet/db-string-line-separator-comment-line-cr] [fixture:
-packet/db-string-line-separator-comment-line-crlf] [fixture:
-packet/db-string-line-separator-comment-line-two-comment-lines] [fixture:
-packet/db-string-line-separator-comment-line-two-regions] [fixture:
-packet/db-string-line-separator-comment-line-spaces-before] [fixture:
-packet/db-string-line-separator-comment-line-line-feed-before] [fixture:
-packet/db-string-line-separator-comment-line-directive-before] [fixture:
-packet/db-string-line-separator-comment-line-line-rule-before] [fixture:
-packet/db-string-line-separator-comment-line-line-rule-after] [fixture:
-packet/db-string-line-separator-comment-line-bare-percent] [fixture:
-packet/db-string-line-separator-comment-line-percent-brace]
+packet/lex-title-line-separator-comment-line-end-of-text] [fixture:
+packet/lex-string-line-separator-comment-line-cr] [fixture:
+packet/lex-string-line-separator-comment-line-crlf] [fixture:
+packet/lex-string-line-separator-comment-line-two-comment-lines] [fixture:
+packet/lex-string-line-separator-comment-line-two-regions] [fixture:
+packet/lex-string-line-separator-comment-line-spaces-before] [fixture:
+packet/lex-string-line-separator-comment-line-line-feed-before] [fixture:
+packet/lex-string-line-separator-comment-line-directive-before] [fixture:
+packet/lex-string-line-separator-comment-line-line-rule-before] [fixture:
+packet/lex-string-line-separator-comment-line-line-rule-after] [fixture:
+packet/lex-string-line-separator-comment-line-bare-percent] [fixture:
+packet/lex-string-line-separator-comment-line-percent-brace]
 
 共通の style/classDef 行の規則は条件に合う semicolon だけを選ぶ。
 残る semicolon は値の外では拒否され、packet の文の区切りにはならない。

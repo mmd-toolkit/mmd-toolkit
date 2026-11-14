@@ -709,22 +709,25 @@ requirement/lex-acc-title-after-directive] [fixture:
 requirement/lex-acc-title-after-comment-line] In the text of an accessibility
 title or description, a comment after a U+2028 or U+2029 is read through, and
 the text goes on after it (see [Comment lines](../common.md#comment-lines)).
-[fixture: requirement/db-acc-title-line-separator-then-comment-line] [fixture:
-requirement/db-acc-descr-line-separator-then-comment-line] [fixture:
-requirement/db-acc-title-line-separator-comment-line-directive-next] [fixture:
-requirement/db-acc-title-line-separator-comment-line-space-next] [fixture:
-requirement/db-acc-title-line-separator-comment-line-separator-next] [fixture:
+[fixture: requirement/lex-acc-title-line-separator-then-comment-line] [fixture:
+requirement/lex-acc-descr-line-separator-then-comment-line] [fixture:
+requirement/lex-acc-title-line-separator-comment-line-directive-next] [fixture:
+requirement/lex-acc-title-line-separator-comment-line-space-next] [fixture:
+requirement/lex-acc-title-line-separator-comment-line-separator-next] [fixture:
 requirement/gram-acc-title-line-separator-comment-line-empty-line] [fixture:
 requirement/lex-acc-title-line-separator-comment-line-end-of-text] [fixture:
-requirement/db-acc-title-line-separator-comment-line-cr] [fixture:
-requirement/db-acc-title-line-separator-comment-line-crlf] [fixture:
-requirement/db-acc-title-line-separator-comment-line-two-comment-lines]
-[fixture: requirement/db-acc-title-line-separator-comment-line-two-regions]
-[fixture: requirement/db-acc-title-line-separator-comment-line-spaces-before]
-[fixture: requirement/db-acc-title-line-separator-comment-line-line-feed-before]
-[fixture: requirement/db-acc-title-line-separator-comment-line-directive-before]
-[fixture: requirement/db-acc-title-line-separator-comment-line-line-rule-before]
-[fixture: requirement/db-acc-title-line-separator-comment-line-line-rule-after]
+requirement/lex-acc-title-line-separator-comment-line-cr] [fixture:
+requirement/lex-acc-title-line-separator-comment-line-crlf] [fixture:
+requirement/lex-acc-title-line-separator-comment-line-two-comment-lines]
+[fixture: requirement/lex-acc-title-line-separator-comment-line-two-regions]
+[fixture: requirement/lex-acc-title-line-separator-comment-line-spaces-before]
+[fixture:
+requirement/lex-acc-title-line-separator-comment-line-line-feed-before]
+[fixture:
+requirement/lex-acc-title-line-separator-comment-line-directive-before]
+[fixture:
+requirement/lex-acc-title-line-separator-comment-line-line-rule-before]
+[fixture: requirement/lex-acc-title-line-separator-comment-line-line-rule-after]
 [fixture: requirement/gram-acc-title-line-separator-comment-line-bare-percent]
 [fixture: requirement/gram-acc-title-line-separator-comment-line-percent-brace]
 
@@ -745,32 +748,34 @@ requirement/lex-acc-descr-block-brace-in-text] [fixture:
 requirement/lex-acc-descr-block-unclosed] A comment line inside the text is
 removed, also after a U+2028 or U+2029 on a line of the text, and the text goes
 on after it (see [Comment lines](../common.md#comment-lines)). [fixture:
-requirement/db-acc-descr-block-line-separator-then-comment-line] [fixture:
-requirement/db-acc-descr-block-line-separator-comment-line-directive-next]
-[fixture: requirement/db-acc-descr-block-line-separator-comment-line-space-next]
+requirement/lex-acc-descr-block-line-separator-then-comment-line] [fixture:
+requirement/lex-acc-descr-block-line-separator-comment-line-directive-next]
 [fixture:
-requirement/db-acc-descr-block-line-separator-comment-line-separator-next]
-[fixture: requirement/db-acc-descr-block-line-separator-comment-line-empty-line]
+requirement/lex-acc-descr-block-line-separator-comment-line-space-next]
+[fixture:
+requirement/lex-acc-descr-block-line-separator-comment-line-separator-next]
+[fixture:
+requirement/lex-acc-descr-block-line-separator-comment-line-empty-line]
 [fixture:
 requirement/lex-acc-descr-block-line-separator-comment-line-end-of-text]
-[fixture: requirement/db-acc-descr-block-line-separator-comment-line-cr]
-[fixture: requirement/db-acc-descr-block-line-separator-comment-line-crlf]
+[fixture: requirement/lex-acc-descr-block-line-separator-comment-line-cr]
+[fixture: requirement/lex-acc-descr-block-line-separator-comment-line-crlf]
 [fixture:
-requirement/db-acc-descr-block-line-separator-comment-line-two-comment-lines]
+requirement/lex-acc-descr-block-line-separator-comment-line-two-comment-lines]
 [fixture:
-requirement/db-acc-descr-block-line-separator-comment-line-two-regions]
+requirement/lex-acc-descr-block-line-separator-comment-line-two-regions]
 [fixture:
-requirement/db-acc-descr-block-line-separator-comment-line-spaces-before]
+requirement/lex-acc-descr-block-line-separator-comment-line-spaces-before]
 [fixture:
-requirement/db-acc-descr-block-line-separator-comment-line-line-feed-before]
+requirement/lex-acc-descr-block-line-separator-comment-line-line-feed-before]
 [fixture:
-requirement/db-acc-descr-block-line-separator-comment-line-directive-before]
+requirement/lex-acc-descr-block-line-separator-comment-line-directive-before]
 [fixture:
-requirement/db-acc-descr-block-line-separator-comment-line-line-rule-before]
+requirement/lex-acc-descr-block-line-separator-comment-line-line-rule-before]
 [fixture:
-requirement/db-acc-descr-block-line-separator-comment-line-line-rule-after]
+requirement/lex-acc-descr-block-line-separator-comment-line-line-rule-after]
 [fixture:
-requirement/db-acc-descr-block-line-separator-comment-line-bare-percent]
+requirement/lex-acc-descr-block-line-separator-comment-line-bare-percent]
 [fixture:
 requirement/gram-acc-descr-block-line-separator-comment-line-percent-brace]
 
@@ -820,23 +825,23 @@ requirement/lex-class-hash-after-classes] [fixture:
 requirement/lex-hash-comment-after-shorthand-string-class] A comment after a
 U+2028 or U+2029 is the exception: it is read through, and the value goes on
 after it (see [Comment lines](../common.md#comment-lines)). [fixture:
-requirement/db-name-line-separator-then-comment-line] [fixture:
-requirement/db-name-paragraph-separator-then-comment-line] [fixture:
-requirement/db-text-line-separator-then-comment-line] [fixture:
-requirement/db-string-line-separator-then-comment-line] [fixture:
-requirement/db-name-line-separator-comment-line-directive-next] [fixture:
-requirement/db-name-line-separator-comment-line-space-next] [fixture:
-requirement/db-name-line-separator-comment-line-separator-next] [fixture:
+requirement/lex-name-line-separator-then-comment-line] [fixture:
+requirement/lex-name-paragraph-separator-then-comment-line] [fixture:
+requirement/lex-text-line-separator-then-comment-line] [fixture:
+requirement/lex-string-line-separator-then-comment-line] [fixture:
+requirement/lex-name-line-separator-comment-line-directive-next] [fixture:
+requirement/lex-name-line-separator-comment-line-space-next] [fixture:
+requirement/lex-name-line-separator-comment-line-separator-next] [fixture:
 requirement/gram-name-line-separator-comment-line-empty-line] [fixture:
 requirement/gram-name-line-separator-comment-line-end-of-text] [fixture:
-requirement/db-relationship-target-line-separator-comment-line-end-of-text]
-[fixture: requirement/db-name-line-separator-comment-line-cr] [fixture:
-requirement/db-name-line-separator-comment-line-crlf] [fixture:
-requirement/db-name-line-separator-comment-line-two-comment-lines] [fixture:
-requirement/db-name-line-separator-comment-line-two-regions] [fixture:
-requirement/db-name-line-separator-comment-line-spaces-before] [fixture:
-requirement/db-name-line-separator-comment-line-line-feed-before] [fixture:
-requirement/db-name-line-separator-comment-line-directive-before] [fixture:
+requirement/lex-relationship-target-line-separator-comment-line-end-of-text]
+[fixture: requirement/lex-name-line-separator-comment-line-cr] [fixture:
+requirement/lex-name-line-separator-comment-line-crlf] [fixture:
+requirement/lex-name-line-separator-comment-line-two-comment-lines] [fixture:
+requirement/lex-name-line-separator-comment-line-two-regions] [fixture:
+requirement/lex-name-line-separator-comment-line-spaces-before] [fixture:
+requirement/lex-name-line-separator-comment-line-line-feed-before] [fixture:
+requirement/lex-name-line-separator-comment-line-directive-before] [fixture:
 requirement/gram-name-line-separator-comment-line-bare-percent] [fixture:
 requirement/gram-name-line-separator-comment-line-percent-brace]
 

@@ -140,7 +140,7 @@ validation serves `checkTree`. JSON interiors stay opaque.
     [The converted form](../db-from-tree.md#the-converted-form)). For JSON, the
     `value` of the node comes from the supplied effect, and has `A`, U+2028, and
     `B` in its `description` property. [fixture:
-    usecase/db-json-line-separator-then-comment-line]
+    usecase/lex-json-line-separator-then-comment-line]
 
 ## Recorded comparisons
 

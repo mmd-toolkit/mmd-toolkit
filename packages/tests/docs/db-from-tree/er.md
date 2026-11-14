@@ -414,7 +414,7 @@ left out of a value (see
 [The converted form](../db-from-tree.md#the-converted-form)). The summary has no
 field for the text after the direction value, so that fixture records that the
 input is accepted: the direction is `LR`, and `y` is not an entity. [fixture:
-er/db-direction-text-line-separator-then-comment-line]
+er/lex-direction-text-line-separator-then-comment-line]
 
 ## The replacement of characters
 

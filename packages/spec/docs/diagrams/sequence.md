@@ -328,40 +328,41 @@ Some consequences of the order:
   the exception: it is read through, and the value goes on after it (see
   [Comment lines](../common.md#comment-lines)). [fixture:
   sequence/db-message-text-line-separator-then-comment-line] [fixture:
-  sequence/db-message-text-line-separator-comment-line-directive-next] [fixture:
-  sequence/db-message-text-line-separator-comment-line-space-next] [fixture:
-  sequence/db-message-text-line-separator-comment-line-separator-next] [fixture:
-  sequence/gram-message-text-line-separator-comment-line-empty-line] [fixture:
-  sequence/lex-message-text-line-separator-comment-line-end-of-text] [fixture:
-  sequence/db-message-text-line-separator-comment-line-cr] [fixture:
-  sequence/db-message-text-line-separator-comment-line-crlf] [fixture:
-  sequence/db-message-text-line-separator-comment-line-two-comment-lines]
-  [fixture: sequence/db-message-text-line-separator-comment-line-two-regions]
-  [fixture: sequence/db-message-text-line-separator-comment-line-spaces-before]
+  sequence/lex-message-text-line-separator-comment-line-directive-next]
+  [fixture: sequence/lex-message-text-line-separator-comment-line-space-next]
   [fixture:
-  sequence/db-message-text-line-separator-comment-line-line-feed-before]
+  sequence/lex-message-text-line-separator-comment-line-separator-next]
+  [fixture: sequence/gram-message-text-line-separator-comment-line-empty-line]
+  [fixture: sequence/lex-message-text-line-separator-comment-line-end-of-text]
+  [fixture: sequence/lex-message-text-line-separator-comment-line-cr] [fixture:
+  sequence/lex-message-text-line-separator-comment-line-crlf] [fixture:
+  sequence/lex-message-text-line-separator-comment-line-two-comment-lines]
+  [fixture: sequence/lex-message-text-line-separator-comment-line-two-regions]
+  [fixture: sequence/lex-message-text-line-separator-comment-line-spaces-before]
   [fixture:
-  sequence/db-message-text-line-separator-comment-line-directive-before]
+  sequence/lex-message-text-line-separator-comment-line-line-feed-before]
+  [fixture:
+  sequence/lex-message-text-line-separator-comment-line-directive-before]
   [fixture:
   sequence/lex-message-text-line-separator-comment-line-line-rule-before]
   [fixture:
-  sequence/db-message-text-line-separator-comment-line-line-rule-after]
+  sequence/lex-message-text-line-separator-comment-line-line-rule-after]
   [fixture: sequence/gram-message-text-line-separator-comment-line-bare-percent]
   [fixture:
   sequence/gram-message-text-line-separator-comment-line-percent-brace]
-  [fixture: sequence/db-note-text-line-separator-then-comment-line] [fixture:
-  sequence/db-loop-text-line-separator-then-comment-line] [fixture:
-  sequence/db-alt-text-line-separator-then-comment-line] [fixture:
-  sequence/db-else-text-line-separator-then-comment-line] [fixture:
-  sequence/db-opt-text-line-separator-then-comment-line] [fixture:
-  sequence/db-par-text-line-separator-then-comment-line] [fixture:
-  sequence/db-and-text-line-separator-then-comment-line] [fixture:
-  sequence/db-critical-text-line-separator-then-comment-line] [fixture:
-  sequence/db-option-text-line-separator-then-comment-line] [fixture:
-  sequence/db-break-text-line-separator-then-comment-line] [fixture:
-  sequence/db-rect-text-line-separator-then-comment-line] [fixture:
+  [fixture: sequence/lex-note-text-line-separator-then-comment-line] [fixture:
+  sequence/lex-loop-text-line-separator-then-comment-line] [fixture:
+  sequence/lex-alt-text-line-separator-then-comment-line] [fixture:
+  sequence/lex-else-text-line-separator-then-comment-line] [fixture:
+  sequence/lex-opt-text-line-separator-then-comment-line] [fixture:
+  sequence/lex-par-text-line-separator-then-comment-line] [fixture:
+  sequence/lex-and-text-line-separator-then-comment-line] [fixture:
+  sequence/lex-critical-text-line-separator-then-comment-line] [fixture:
+  sequence/lex-option-text-line-separator-then-comment-line] [fixture:
+  sequence/lex-break-text-line-separator-then-comment-line] [fixture:
+  sequence/lex-rect-text-line-separator-then-comment-line] [fixture:
   sequence/lex-links-text-line-separator-then-comment-line] [fixture:
-  sequence/db-link-text-line-separator-then-comment-line] [fixture:
+  sequence/lex-link-text-line-separator-then-comment-line] [fixture:
   sequence/lex-properties-text-line-separator-then-comment-line] [fixture:
   sequence/lex-details-text-line-separator-then-comment-line]
 - A diagram comment starts at its mark, and the unit before it keeps all its
@@ -381,22 +382,22 @@ Some consequences of the order:
   sequence/div-comment-after-text-colon] In an id run, a comment after a U+2028
   or U+2029 is read through, and the run goes on after it (see
   [Comment lines](../common.md#comment-lines)). [fixture:
-  sequence/db-id-run-line-separator-then-comment-line] [fixture:
-  sequence/db-id-run-paragraph-separator-then-comment-line] [fixture:
-  sequence/db-id-run-line-separator-comment-line-directive-next] [fixture:
-  sequence/db-id-run-line-separator-comment-line-space-next] [fixture:
-  sequence/db-id-run-line-separator-comment-line-separator-next] [fixture:
+  sequence/lex-id-run-line-separator-then-comment-line] [fixture:
+  sequence/lex-id-run-paragraph-separator-then-comment-line] [fixture:
+  sequence/lex-id-run-line-separator-comment-line-directive-next] [fixture:
+  sequence/lex-id-run-line-separator-comment-line-space-next] [fixture:
+  sequence/lex-id-run-line-separator-comment-line-separator-next] [fixture:
   sequence/gram-id-run-line-separator-comment-line-empty-line] [fixture:
   sequence/gram-id-run-line-separator-comment-line-end-of-text] [fixture:
-  sequence/db-participant-id-run-line-separator-comment-line-end-of-text]
-  [fixture: sequence/db-id-run-line-separator-comment-line-cr] [fixture:
-  sequence/db-id-run-line-separator-comment-line-crlf] [fixture:
-  sequence/db-id-run-line-separator-comment-line-two-comment-lines] [fixture:
-  sequence/db-id-run-line-separator-comment-line-two-regions] [fixture:
-  sequence/db-id-run-line-separator-comment-line-spaces-before] [fixture:
-  sequence/db-id-run-line-separator-comment-line-line-feed-before] [fixture:
-  sequence/db-id-run-line-separator-comment-line-directive-before] [fixture:
-  sequence/db-id-run-line-separator-comment-line-line-rule-after] [fixture:
+  sequence/lex-participant-id-run-line-separator-comment-line-end-of-text]
+  [fixture: sequence/lex-id-run-line-separator-comment-line-cr] [fixture:
+  sequence/lex-id-run-line-separator-comment-line-crlf] [fixture:
+  sequence/lex-id-run-line-separator-comment-line-two-comment-lines] [fixture:
+  sequence/lex-id-run-line-separator-comment-line-two-regions] [fixture:
+  sequence/lex-id-run-line-separator-comment-line-spaces-before] [fixture:
+  sequence/lex-id-run-line-separator-comment-line-line-feed-before] [fixture:
+  sequence/lex-id-run-line-separator-comment-line-directive-before] [fixture:
+  sequence/lex-id-run-line-separator-comment-line-line-rule-after] [fixture:
   sequence/gram-id-run-line-separator-comment-line-bare-percent] [fixture:
   sequence/gram-id-run-line-separator-comment-line-percent-brace]
 - Rule 2 makes whitespace at the end of a line hide the line break from the
@@ -629,24 +630,24 @@ one. [fixture: sequence/docs-syntax-sequence-diagram-1371ae9a] [fixture:
 sequence/lex-data-block-nested-brace] A comment line inside the content is
 removed, also after a U+2028 or U+2029 inside a string of the content, and the
 content goes on after it (see [Comment lines](../common.md#comment-lines)).
-[fixture: sequence/db-data-alias-line-separator-then-comment-line] [fixture:
-sequence/db-data-alias-line-separator-comment-line-directive-next] [fixture:
-sequence/db-data-alias-line-separator-comment-line-space-next] [fixture:
-sequence/db-data-alias-line-separator-comment-line-separator-next] [fixture:
+[fixture: sequence/lex-data-alias-line-separator-then-comment-line] [fixture:
+sequence/lex-data-alias-line-separator-comment-line-directive-next] [fixture:
+sequence/lex-data-alias-line-separator-comment-line-space-next] [fixture:
+sequence/lex-data-alias-line-separator-comment-line-separator-next] [fixture:
 sequence/div-data-alias-line-separator-comment-line-empty-line] [fixture:
 sequence/gram-data-alias-line-separator-comment-line-end-of-text] [fixture:
-sequence/db-data-alias-line-separator-comment-line-cr] [fixture:
-sequence/db-data-alias-line-separator-comment-line-crlf] [fixture:
-sequence/db-data-alias-line-separator-comment-line-two-comment-lines] [fixture:
-sequence/db-data-alias-line-separator-comment-line-two-regions] [fixture:
-sequence/db-data-alias-line-separator-comment-line-spaces-before] [fixture:
-sequence/db-data-alias-line-separator-comment-line-line-feed-before] [fixture:
-sequence/db-data-alias-line-separator-comment-line-directive-before] [fixture:
-sequence/db-data-alias-line-separator-comment-line-line-rule-before] [fixture:
-sequence/db-data-alias-line-separator-comment-line-line-rule-after] [fixture:
+sequence/lex-data-alias-line-separator-comment-line-cr] [fixture:
+sequence/lex-data-alias-line-separator-comment-line-crlf] [fixture:
+sequence/lex-data-alias-line-separator-comment-line-two-comment-lines] [fixture:
+sequence/lex-data-alias-line-separator-comment-line-two-regions] [fixture:
+sequence/lex-data-alias-line-separator-comment-line-spaces-before] [fixture:
+sequence/lex-data-alias-line-separator-comment-line-line-feed-before] [fixture:
+sequence/lex-data-alias-line-separator-comment-line-directive-before] [fixture:
+sequence/lex-data-alias-line-separator-comment-line-line-rule-before] [fixture:
+sequence/lex-data-alias-line-separator-comment-line-line-rule-after] [fixture:
 sequence/div-data-alias-line-separator-comment-line-bare-percent] [fixture:
 sequence/gram-data-alias-line-separator-comment-line-percent-brace] [fixture:
-sequence/db-data-plain-alias-line-separator-then-comment-line]
+sequence/lex-data-plain-alias-line-separator-then-comment-line]
 
 ### Accessibility values
 

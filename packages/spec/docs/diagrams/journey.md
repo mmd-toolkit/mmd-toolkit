@@ -579,28 +579,28 @@ journey/lex-percent-in-acc-descr-block] In a title text, a section text, a task
 text, task data, an accessibility title, an accessibility description, and a
 description block, a comment after a U+2028 or U+2029 is read through, and the
 value goes on after it (see [Comment lines](../common.md#comment-lines)).
-[fixture: journey/db-title-line-separator-then-comment-line] [fixture:
-journey/db-title-paragraph-separator-then-comment-line] [fixture:
-journey/db-section-line-separator-then-comment-line] [fixture:
-journey/db-task-line-separator-then-comment-line] [fixture:
-journey/db-acc-title-line-separator-then-comment-line] [fixture:
-journey/db-acc-descr-line-separator-then-comment-line] [fixture:
-journey/db-acc-descr-block-line-separator-then-comment-line] [fixture:
-journey/db-person-line-separator-then-comment-line] [fixture:
-journey/db-title-line-separator-comment-line-directive-next] [fixture:
-journey/db-title-line-separator-comment-line-space-next] [fixture:
-journey/db-title-line-separator-comment-line-separator-next] [fixture:
+[fixture: journey/lex-title-line-separator-then-comment-line] [fixture:
+journey/lex-title-paragraph-separator-then-comment-line] [fixture:
+journey/lex-section-line-separator-then-comment-line] [fixture:
+journey/lex-task-line-separator-then-comment-line] [fixture:
+journey/lex-acc-title-line-separator-then-comment-line] [fixture:
+journey/lex-acc-descr-line-separator-then-comment-line] [fixture:
+journey/lex-acc-descr-block-line-separator-then-comment-line] [fixture:
+journey/lex-person-line-separator-then-comment-line] [fixture:
+journey/lex-title-line-separator-comment-line-directive-next] [fixture:
+journey/lex-title-line-separator-comment-line-space-next] [fixture:
+journey/lex-title-line-separator-comment-line-separator-next] [fixture:
 journey/gram-title-line-separator-comment-line-empty-line] [fixture:
-journey/db-title-line-separator-comment-line-end-of-text] [fixture:
-journey/db-title-line-separator-comment-line-cr] [fixture:
-journey/db-title-line-separator-comment-line-crlf] [fixture:
-journey/db-title-line-separator-comment-line-two-comment-lines] [fixture:
-journey/db-title-line-separator-comment-line-two-regions] [fixture:
-journey/db-title-line-separator-comment-line-spaces-before] [fixture:
-journey/db-title-line-separator-comment-line-line-feed-before] [fixture:
-journey/db-title-line-separator-comment-line-directive-before] [fixture:
+journey/lex-title-line-separator-comment-line-end-of-text] [fixture:
+journey/lex-title-line-separator-comment-line-cr] [fixture:
+journey/lex-title-line-separator-comment-line-crlf] [fixture:
+journey/lex-title-line-separator-comment-line-two-comment-lines] [fixture:
+journey/lex-title-line-separator-comment-line-two-regions] [fixture:
+journey/lex-title-line-separator-comment-line-spaces-before] [fixture:
+journey/lex-title-line-separator-comment-line-line-feed-before] [fixture:
+journey/lex-title-line-separator-comment-line-directive-before] [fixture:
 journey/lex-title-line-separator-comment-line-line-rule-before] [fixture:
-journey/db-title-line-separator-comment-line-line-rule-after] [fixture:
+journey/lex-title-line-separator-comment-line-line-rule-after] [fixture:
 journey/gram-title-line-separator-comment-line-bare-percent] [fixture:
 journey/gram-title-line-separator-comment-line-percent-brace] [fixture:
 journey/lex-score-part-line-separator-then-comment-line] [fixture:

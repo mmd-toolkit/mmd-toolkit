@@ -77,25 +77,25 @@ The lexer reads the [diagram text](../common.md#reading-a-source) in
 [converted form](../common.md#reading-a-source): each line terminator as `\n`,
 each attribute quote as `'`, each entity as its placeholder, and through comment
 regions and the `;` that the line rule ignores as if they were not there.
-[fixture: mindmap/db-icon-line-separator-then-comment-line] [fixture:
-mindmap/db-string-line-separator-then-comment-line] [fixture:
-mindmap/db-markdown-string-line-separator-then-comment-line] [fixture:
-mindmap/db-icon-line-separator-comment-line-directive-next] [fixture:
-mindmap/db-icon-line-separator-comment-line-space-next] [fixture:
-mindmap/db-icon-line-separator-comment-line-separator-next] [fixture:
-mindmap/db-icon-line-separator-comment-line-empty-line] [fixture:
+[fixture: mindmap/lex-icon-line-separator-then-comment-line] [fixture:
+mindmap/lex-string-line-separator-then-comment-line] [fixture:
+mindmap/lex-markdown-string-line-separator-then-comment-line] [fixture:
+mindmap/lex-icon-line-separator-comment-line-directive-next] [fixture:
+mindmap/lex-icon-line-separator-comment-line-space-next] [fixture:
+mindmap/lex-icon-line-separator-comment-line-separator-next] [fixture:
+mindmap/lex-icon-line-separator-comment-line-empty-line] [fixture:
 mindmap/lex-icon-line-separator-comment-line-end-of-text] [fixture:
-mindmap/db-icon-line-separator-comment-line-cr] [fixture:
-mindmap/db-icon-line-separator-comment-line-crlf] [fixture:
-mindmap/db-icon-line-separator-comment-line-two-comment-lines] [fixture:
-mindmap/db-icon-line-separator-comment-line-two-regions] [fixture:
-mindmap/db-icon-line-separator-comment-line-spaces-before] [fixture:
-mindmap/db-icon-line-separator-comment-line-line-feed-before] [fixture:
-mindmap/db-icon-line-separator-comment-line-directive-before] [fixture:
-mindmap/db-icon-line-separator-comment-line-line-rule-before] [fixture:
-mindmap/db-icon-line-separator-comment-line-line-rule-after] [fixture:
-mindmap/db-icon-line-separator-comment-line-bare-percent] [fixture:
-mindmap/db-icon-line-separator-comment-line-percent-brace] The `\n` that the
+mindmap/lex-icon-line-separator-comment-line-cr] [fixture:
+mindmap/lex-icon-line-separator-comment-line-crlf] [fixture:
+mindmap/lex-icon-line-separator-comment-line-two-comment-lines] [fixture:
+mindmap/lex-icon-line-separator-comment-line-two-regions] [fixture:
+mindmap/lex-icon-line-separator-comment-line-spaces-before] [fixture:
+mindmap/lex-icon-line-separator-comment-line-line-feed-before] [fixture:
+mindmap/lex-icon-line-separator-comment-line-directive-before] [fixture:
+mindmap/lex-icon-line-separator-comment-line-line-rule-before] [fixture:
+mindmap/lex-icon-line-separator-comment-line-line-rule-after] [fixture:
+mindmap/lex-icon-line-separator-comment-line-bare-percent] [fixture:
+mindmap/lex-icon-line-separator-comment-line-percent-brace] The `\n` that the
 lexer reads after the last character ([End of text](../common.md#end-of-text))
 is part of the diagram text. This section describes the diagram's own unit
 rules, item 4 of [Reading a source](../common.md#reading-a-source).
@@ -167,22 +167,22 @@ mindmap/entity-placeholder-in-node-text] [fixture:
 mindmap/entity-placeholder-numeric] In a node text, a comment after a U+2028 or
 U+2029 is read through, and the text goes on after it (see
 [Comment lines](../common.md#comment-lines)). [fixture:
-mindmap/db-node-text-line-separator-then-comment-line] [fixture:
-mindmap/db-node-text-paragraph-separator-then-comment-line] [fixture:
-mindmap/db-node-text-line-separator-comment-line-directive-next] [fixture:
-mindmap/db-node-text-line-separator-comment-line-space-next] [fixture:
-mindmap/db-node-text-line-separator-comment-line-separator-next] [fixture:
+mindmap/lex-node-text-line-separator-then-comment-line] [fixture:
+mindmap/lex-node-text-paragraph-separator-then-comment-line] [fixture:
+mindmap/lex-node-text-line-separator-comment-line-directive-next] [fixture:
+mindmap/lex-node-text-line-separator-comment-line-space-next] [fixture:
+mindmap/lex-node-text-line-separator-comment-line-separator-next] [fixture:
 mindmap/gram-node-text-line-separator-comment-line-empty-line] [fixture:
-mindmap/db-node-text-line-separator-comment-line-end-of-text] [fixture:
-mindmap/db-node-text-line-separator-comment-line-cr] [fixture:
-mindmap/db-node-text-line-separator-comment-line-crlf] [fixture:
-mindmap/db-node-text-line-separator-comment-line-two-comment-lines] [fixture:
-mindmap/db-node-text-line-separator-comment-line-two-regions] [fixture:
-mindmap/db-node-text-line-separator-comment-line-spaces-before] [fixture:
-mindmap/db-node-text-line-separator-comment-line-line-feed-before] [fixture:
-mindmap/db-node-text-line-separator-comment-line-directive-before] [fixture:
-mindmap/db-node-text-line-separator-comment-line-line-rule-before] [fixture:
-mindmap/db-node-text-line-separator-comment-line-line-rule-after] [fixture:
+mindmap/lex-node-text-line-separator-comment-line-end-of-text] [fixture:
+mindmap/lex-node-text-line-separator-comment-line-cr] [fixture:
+mindmap/lex-node-text-line-separator-comment-line-crlf] [fixture:
+mindmap/lex-node-text-line-separator-comment-line-two-comment-lines] [fixture:
+mindmap/lex-node-text-line-separator-comment-line-two-regions] [fixture:
+mindmap/lex-node-text-line-separator-comment-line-spaces-before] [fixture:
+mindmap/lex-node-text-line-separator-comment-line-line-feed-before] [fixture:
+mindmap/lex-node-text-line-separator-comment-line-directive-before] [fixture:
+mindmap/lex-node-text-line-separator-comment-line-line-rule-before] [fixture:
+mindmap/lex-node-text-line-separator-comment-line-line-rule-after] [fixture:
 mindmap/gram-node-text-line-separator-comment-line-bare-percent] [fixture:
 mindmap/lex-node-text-line-separator-comment-line-percent-brace]
 
@@ -383,23 +383,23 @@ mindmap/db-comment-after-node-text] [fixture: mindmap/lex-percent-in-shape-text]
 [fixture: mindmap/lex-percent-in-class] In a shape text, a comment after a
 U+2028 or U+2029 is read through, and the text goes on after it (see
 [Comment lines](../common.md#comment-lines)). [fixture:
-mindmap/db-shape-text-line-separator-then-comment-line] [fixture:
-mindmap/db-shape-text-line-separator-comment-line-directive-next] [fixture:
-mindmap/db-shape-text-line-separator-comment-line-space-next] [fixture:
-mindmap/db-shape-text-line-separator-comment-line-separator-next] [fixture:
-mindmap/db-shape-text-line-separator-comment-line-empty-line] [fixture:
+mindmap/lex-shape-text-line-separator-then-comment-line] [fixture:
+mindmap/lex-shape-text-line-separator-comment-line-directive-next] [fixture:
+mindmap/lex-shape-text-line-separator-comment-line-space-next] [fixture:
+mindmap/lex-shape-text-line-separator-comment-line-separator-next] [fixture:
+mindmap/lex-shape-text-line-separator-comment-line-empty-line] [fixture:
 mindmap/lex-shape-text-line-separator-comment-line-end-of-text] [fixture:
-mindmap/db-shape-text-line-separator-comment-line-cr] [fixture:
-mindmap/db-shape-text-line-separator-comment-line-crlf] [fixture:
-mindmap/db-shape-text-line-separator-comment-line-two-comment-lines] [fixture:
-mindmap/db-shape-text-line-separator-comment-line-two-regions] [fixture:
-mindmap/db-shape-text-line-separator-comment-line-spaces-before] [fixture:
-mindmap/db-shape-text-line-separator-comment-line-line-feed-before] [fixture:
-mindmap/db-shape-text-line-separator-comment-line-directive-before] [fixture:
-mindmap/db-shape-text-line-separator-comment-line-line-rule-before] [fixture:
-mindmap/db-shape-text-line-separator-comment-line-line-rule-after] [fixture:
-mindmap/db-shape-text-line-separator-comment-line-bare-percent] [fixture:
-mindmap/gram-shape-text-line-separator-comment-line-percent-brace] A class ends
+mindmap/lex-shape-text-line-separator-comment-line-cr] [fixture:
+mindmap/lex-shape-text-line-separator-comment-line-crlf] [fixture:
+mindmap/lex-shape-text-line-separator-comment-line-two-comment-lines] [fixture:
+mindmap/lex-shape-text-line-separator-comment-line-two-regions] [fixture:
+mindmap/lex-shape-text-line-separator-comment-line-spaces-before] [fixture:
+mindmap/lex-shape-text-line-separator-comment-line-line-feed-before] [fixture:
+mindmap/lex-shape-text-line-separator-comment-line-directive-before] [fixture:
+mindmap/lex-shape-text-line-separator-comment-line-line-rule-before] [fixture:
+mindmap/lex-shape-text-line-separator-comment-line-line-rule-after] [fixture:
+mindmap/lex-shape-text-line-separator-comment-line-bare-percent] [fixture:
+mindmap/lex-shape-text-line-separator-comment-line-percent-brace] A class ends
 at a U+2028 or U+2029, which leaves the class context, so the line after a
 comment line that follows it is read as the rest of the class line: `:::a`,
 U+2028, `%% c`, a line break, and `b` is a class and a node text on one line,

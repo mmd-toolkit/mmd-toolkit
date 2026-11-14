@@ -363,7 +363,7 @@ state/lex-direction-lower-case] [fixture: state/lex-direction-line-then-comment]
 state/lex-direction-line-after-line-separator] [fixture: state/lex-direction-rl]
 In the text after the value, a comment after a U+2028 or U+2029 is read through,
 and the text goes on after it (see [Comment lines](../common.md#comment-lines)).
-[fixture: state/db-direction-text-line-separator-then-comment-line] [fixture:
+[fixture: state/lex-direction-text-line-separator-then-comment-line] [fixture:
 state/lex-direction-text-line-separator-comment-line-directive-next] [fixture:
 state/lex-direction-text-line-separator-comment-line-space-next] [fixture:
 state/lex-direction-text-line-separator-comment-line-separator-next] [fixture:
@@ -600,21 +600,21 @@ state/lex-alias-comment-after-id] [fixture: state/lex-alias-id-percent-comment]
 state/lex-alias-id-percent-next-line] A comment after a U+2028 or U+2029 is the
 exception: it is read through, and the id goes on after it (see
 [Comment lines](../common.md#comment-lines)). [fixture:
-state/db-alias-id-line-separator-then-comment-line] [fixture:
-state/db-alias-id-line-separator-comment-line-directive-next] [fixture:
-state/db-alias-id-line-separator-comment-line-space-next] [fixture:
-state/db-alias-id-line-separator-comment-line-separator-next] [fixture:
+state/lex-alias-id-line-separator-then-comment-line] [fixture:
+state/lex-alias-id-line-separator-comment-line-directive-next] [fixture:
+state/lex-alias-id-line-separator-comment-line-space-next] [fixture:
+state/lex-alias-id-line-separator-comment-line-separator-next] [fixture:
 state/lex-alias-id-line-separator-comment-line-empty-line] [fixture:
 state/lex-alias-id-line-separator-comment-line-end-of-text] [fixture:
-state/db-alias-id-line-separator-comment-line-cr] [fixture:
-state/db-alias-id-line-separator-comment-line-crlf] [fixture:
-state/db-alias-id-line-separator-comment-line-two-comment-lines] [fixture:
-state/db-alias-id-line-separator-comment-line-two-regions] [fixture:
-state/db-alias-id-line-separator-comment-line-spaces-before] [fixture:
-state/db-alias-id-line-separator-comment-line-line-feed-before] [fixture:
-state/db-alias-id-line-separator-comment-line-directive-before] [fixture:
-state/db-alias-id-line-separator-comment-line-line-rule-before] [fixture:
-state/db-alias-id-line-separator-comment-line-line-rule-after] [fixture:
+state/lex-alias-id-line-separator-comment-line-cr] [fixture:
+state/lex-alias-id-line-separator-comment-line-crlf] [fixture:
+state/lex-alias-id-line-separator-comment-line-two-comment-lines] [fixture:
+state/lex-alias-id-line-separator-comment-line-two-regions] [fixture:
+state/lex-alias-id-line-separator-comment-line-spaces-before] [fixture:
+state/lex-alias-id-line-separator-comment-line-line-feed-before] [fixture:
+state/lex-alias-id-line-separator-comment-line-directive-before] [fixture:
+state/lex-alias-id-line-separator-comment-line-line-rule-before] [fixture:
+state/lex-alias-id-line-separator-comment-line-line-rule-after] [fixture:
 state/lex-alias-id-line-separator-comment-line-bare-percent] [fixture:
 state/lex-alias-id-line-separator-comment-line-percent-brace] When the text
 starts with `%%` and a `{` follows it on its line, the text before the `{`,
@@ -656,28 +656,30 @@ state/lex-alias-colon-before-body-after-comment-line] [fixture:
 state/lex-alias-colon-blank-line-before-brace] In a `second-description`, a
 comment after a U+2028 or U+2029 is read through, and the description goes on
 after it (see [Comment lines](../common.md#comment-lines)). [fixture:
-state/db-second-description-line-separator-then-comment-line] [fixture:
-state/db-second-description-line-separator-comment-line-directive-next]
-[fixture: state/db-second-description-line-separator-comment-line-space-next]
+state/lex-second-description-line-separator-then-comment-line] [fixture:
+state/lex-second-description-line-separator-comment-line-directive-next]
+[fixture: state/lex-second-description-line-separator-comment-line-space-next]
 [fixture:
-state/db-second-description-line-separator-comment-line-separator-next]
-[fixture: state/db-second-description-line-separator-comment-line-empty-line]
-[fixture: state/db-second-description-line-separator-comment-line-end-of-text]
-[fixture: state/db-second-description-line-separator-comment-line-cr] [fixture:
-state/db-second-description-line-separator-comment-line-crlf] [fixture:
-state/db-second-description-line-separator-comment-line-two-comment-lines]
-[fixture: state/db-second-description-line-separator-comment-line-two-regions]
-[fixture: state/db-second-description-line-separator-comment-line-spaces-before]
+state/lex-second-description-line-separator-comment-line-separator-next]
+[fixture: state/lex-second-description-line-separator-comment-line-empty-line]
+[fixture: state/lex-second-description-line-separator-comment-line-end-of-text]
+[fixture: state/lex-second-description-line-separator-comment-line-cr] [fixture:
+state/lex-second-description-line-separator-comment-line-crlf] [fixture:
+state/lex-second-description-line-separator-comment-line-two-comment-lines]
+[fixture: state/lex-second-description-line-separator-comment-line-two-regions]
 [fixture:
-state/db-second-description-line-separator-comment-line-line-feed-before]
+state/lex-second-description-line-separator-comment-line-spaces-before]
 [fixture:
-state/db-second-description-line-separator-comment-line-directive-before]
+state/lex-second-description-line-separator-comment-line-line-feed-before]
+[fixture:
+state/lex-second-description-line-separator-comment-line-directive-before]
 [fixture:
 state/lex-second-description-line-separator-comment-line-line-rule-before]
 [fixture:
-state/db-second-description-line-separator-comment-line-line-rule-after]
-[fixture: state/db-second-description-line-separator-comment-line-bare-percent]
-[fixture: state/db-second-description-line-separator-comment-line-percent-brace]
+state/lex-second-description-line-separator-comment-line-line-rule-after]
+[fixture: state/lex-second-description-line-separator-comment-line-bare-percent]
+[fixture:
+state/lex-second-description-line-separator-comment-line-percent-brace]
 
 ### The classDef, class, and style contexts
 
@@ -910,24 +912,24 @@ state/lex-acc-title-semicolon] [fixture: state/lex-acc-descr-semicolon]
 [fixture: state/lex-acc-title-next-line] In the text of an accessibility title
 or description, a comment after a U+2028 or U+2029 is read through, and the text
 goes on after it (see [Comment lines](../common.md#comment-lines)). [fixture:
-state/db-acc-title-line-separator-then-comment-line] [fixture:
-state/db-acc-descr-line-separator-then-comment-line] [fixture:
-state/db-acc-title-line-separator-comment-line-directive-next] [fixture:
-state/db-acc-title-line-separator-comment-line-space-next] [fixture:
-state/db-acc-title-line-separator-comment-line-separator-next] [fixture:
+state/lex-acc-title-line-separator-then-comment-line] [fixture:
+state/lex-acc-descr-line-separator-then-comment-line] [fixture:
+state/lex-acc-title-line-separator-comment-line-directive-next] [fixture:
+state/lex-acc-title-line-separator-comment-line-space-next] [fixture:
+state/lex-acc-title-line-separator-comment-line-separator-next] [fixture:
 state/lex-acc-title-line-separator-comment-line-empty-line] [fixture:
 state/lex-acc-title-line-separator-comment-line-end-of-text] [fixture:
-state/db-acc-title-line-separator-comment-line-cr] [fixture:
-state/db-acc-title-line-separator-comment-line-crlf] [fixture:
-state/db-acc-title-line-separator-comment-line-two-comment-lines] [fixture:
-state/db-acc-title-line-separator-comment-line-two-regions] [fixture:
-state/db-acc-title-line-separator-comment-line-spaces-before] [fixture:
-state/db-acc-title-line-separator-comment-line-line-feed-before] [fixture:
-state/db-acc-title-line-separator-comment-line-directive-before] [fixture:
-state/db-acc-title-line-separator-comment-line-line-rule-before] [fixture:
-state/db-acc-title-line-separator-comment-line-line-rule-after] [fixture:
-state/db-acc-title-line-separator-comment-line-bare-percent] [fixture:
-state/db-acc-title-line-separator-comment-line-percent-brace]
+state/lex-acc-title-line-separator-comment-line-cr] [fixture:
+state/lex-acc-title-line-separator-comment-line-crlf] [fixture:
+state/lex-acc-title-line-separator-comment-line-two-comment-lines] [fixture:
+state/lex-acc-title-line-separator-comment-line-two-regions] [fixture:
+state/lex-acc-title-line-separator-comment-line-spaces-before] [fixture:
+state/lex-acc-title-line-separator-comment-line-line-feed-before] [fixture:
+state/lex-acc-title-line-separator-comment-line-directive-before] [fixture:
+state/lex-acc-title-line-separator-comment-line-line-rule-before] [fixture:
+state/lex-acc-title-line-separator-comment-line-line-rule-after] [fixture:
+state/lex-acc-title-line-separator-comment-line-bare-percent] [fixture:
+state/lex-acc-title-line-separator-comment-line-percent-brace]
 
 In the description block context, `}` is a `}` unit and leaves the context, and
 one or more other characters are a `description-block-text` unit. The whitespace
@@ -936,23 +938,26 @@ after `{` is read with the `{` unit (rule 13 of the statement context), so
 comment line inside the text is removed, also after a U+2028 or U+2029 on a line
 of the text, and the text goes on after it (see
 [Comment lines](../common.md#comment-lines)). [fixture:
-state/db-acc-descr-block-line-separator-then-comment-line] [fixture:
-state/db-acc-descr-block-line-separator-comment-line-directive-next] [fixture:
-state/db-acc-descr-block-line-separator-comment-line-space-next] [fixture:
-state/db-acc-descr-block-line-separator-comment-line-separator-next] [fixture:
-state/db-acc-descr-block-line-separator-comment-line-empty-line] [fixture:
+state/lex-acc-descr-block-line-separator-then-comment-line] [fixture:
+state/lex-acc-descr-block-line-separator-comment-line-directive-next] [fixture:
+state/lex-acc-descr-block-line-separator-comment-line-space-next] [fixture:
+state/lex-acc-descr-block-line-separator-comment-line-separator-next] [fixture:
+state/lex-acc-descr-block-line-separator-comment-line-empty-line] [fixture:
 state/lex-acc-descr-block-line-separator-comment-line-end-of-text] [fixture:
-state/db-acc-descr-block-line-separator-comment-line-cr] [fixture:
-state/db-acc-descr-block-line-separator-comment-line-crlf] [fixture:
-state/db-acc-descr-block-line-separator-comment-line-two-comment-lines]
-[fixture: state/db-acc-descr-block-line-separator-comment-line-two-regions]
-[fixture: state/db-acc-descr-block-line-separator-comment-line-spaces-before]
-[fixture: state/db-acc-descr-block-line-separator-comment-line-line-feed-before]
-[fixture: state/db-acc-descr-block-line-separator-comment-line-directive-before]
-[fixture: state/db-acc-descr-block-line-separator-comment-line-line-rule-before]
-[fixture: state/db-acc-descr-block-line-separator-comment-line-line-rule-after]
-[fixture: state/db-acc-descr-block-line-separator-comment-line-bare-percent]
-[fixture: state/db-acc-descr-block-line-separator-comment-line-percent-brace]
+state/lex-acc-descr-block-line-separator-comment-line-cr] [fixture:
+state/lex-acc-descr-block-line-separator-comment-line-crlf] [fixture:
+state/lex-acc-descr-block-line-separator-comment-line-two-comment-lines]
+[fixture: state/lex-acc-descr-block-line-separator-comment-line-two-regions]
+[fixture: state/lex-acc-descr-block-line-separator-comment-line-spaces-before]
+[fixture:
+state/lex-acc-descr-block-line-separator-comment-line-line-feed-before]
+[fixture:
+state/lex-acc-descr-block-line-separator-comment-line-directive-before]
+[fixture:
+state/lex-acc-descr-block-line-separator-comment-line-line-rule-before]
+[fixture: state/lex-acc-descr-block-line-separator-comment-line-line-rule-after]
+[fixture: state/lex-acc-descr-block-line-separator-comment-line-bare-percent]
+[fixture: state/lex-acc-descr-block-line-separator-comment-line-percent-brace]
 
 The rules that enter these contexts are rules of the statement context only; in
 a composite body, `accTitle` and `accDescr` are ids (see
@@ -1005,39 +1010,39 @@ state/lex-class-css-class-percent] [fixture: state/lex-pseudostate-name-percent]
 A comment after a U+2028 or U+2029 in these units, a pseudostate name aside, is
 the exception: it is read through, and the value goes on after it (see
 [Comment lines](../common.md#comment-lines)). [fixture:
-state/db-description-line-separator-then-comment-line] [fixture:
-state/db-description-paragraph-separator-then-comment-line] [fixture:
-state/db-string-line-separator-then-comment-line] [fixture:
-state/db-style-line-separator-then-comment-line] [fixture:
-state/db-css-class-line-separator-then-comment-line] [fixture:
-state/db-note-line-line-separator-then-comment-line] [fixture:
-state/db-note-block-line-separator-then-comment-line] [fixture:
-state/db-description-line-separator-comment-line-directive-next] [fixture:
-state/db-description-line-separator-comment-line-space-next] [fixture:
-state/db-description-line-separator-comment-line-separator-next] [fixture:
+state/lex-description-line-separator-then-comment-line] [fixture:
+state/lex-description-paragraph-separator-then-comment-line] [fixture:
+state/lex-string-line-separator-then-comment-line] [fixture:
+state/lex-style-line-separator-then-comment-line] [fixture:
+state/lex-css-class-line-separator-then-comment-line] [fixture:
+state/lex-note-line-line-separator-then-comment-line] [fixture:
+state/lex-note-block-line-separator-then-comment-line] [fixture:
+state/lex-description-line-separator-comment-line-directive-next] [fixture:
+state/lex-description-line-separator-comment-line-space-next] [fixture:
+state/lex-description-line-separator-comment-line-separator-next] [fixture:
 state/lex-description-line-separator-comment-line-empty-line] [fixture:
 state/lex-description-line-separator-comment-line-end-of-text] [fixture:
-state/db-description-line-separator-comment-line-cr] [fixture:
-state/db-description-line-separator-comment-line-crlf] [fixture:
-state/db-description-line-separator-comment-line-two-comment-lines] [fixture:
-state/db-description-line-separator-comment-line-two-regions] [fixture:
-state/db-description-line-separator-comment-line-spaces-before] [fixture:
-state/db-description-line-separator-comment-line-line-feed-before] [fixture:
-state/db-description-line-separator-comment-line-directive-before] [fixture:
-state/db-description-line-separator-comment-line-line-rule-before] [fixture:
-state/db-description-line-separator-comment-line-line-rule-after] [fixture:
-state/db-description-line-separator-comment-line-bare-percent] [fixture:
-state/db-description-line-separator-comment-line-percent-brace] [fixture:
-state/db-transition-label-line-separator-then-comment-line] [fixture:
-state/db-classdef-styles-line-separator-then-comment-line] [fixture:
+state/lex-description-line-separator-comment-line-cr] [fixture:
+state/lex-description-line-separator-comment-line-crlf] [fixture:
+state/lex-description-line-separator-comment-line-two-comment-lines] [fixture:
+state/lex-description-line-separator-comment-line-two-regions] [fixture:
+state/lex-description-line-separator-comment-line-spaces-before] [fixture:
+state/lex-description-line-separator-comment-line-line-feed-before] [fixture:
+state/lex-description-line-separator-comment-line-directive-before] [fixture:
+state/lex-description-line-separator-comment-line-line-rule-before] [fixture:
+state/lex-description-line-separator-comment-line-line-rule-after] [fixture:
+state/lex-description-line-separator-comment-line-bare-percent] [fixture:
+state/lex-description-line-separator-comment-line-percent-brace] [fixture:
+state/lex-transition-label-line-separator-then-comment-line] [fixture:
+state/lex-classdef-styles-line-separator-then-comment-line] [fixture:
 state/lex-floating-note-text-line-separator-then-comment-line] [fixture:
-state/db-click-url-line-separator-then-comment-line] [fixture:
-state/db-click-tooltip-line-separator-then-comment-line] A pseudostate name ends
-before a U+2028 or U+2029, since rule 4 of
+state/lex-click-url-line-separator-then-comment-line] [fixture:
+state/lex-click-tooltip-line-separator-then-comment-line] A pseudostate name
+ends before a U+2028 or U+2029, since rule 4 of
 [the state context](#the-state-context) looks for the mark only up to the next
 one: `state A`, U+2028, `%% c`, a line break, and `B <<fork>>` has the one
 state, the fork `B`, as without the comment line. [fixture:
-state/db-pseudostate-name-line-separator-then-comment-line] [fixture:
+state/lex-pseudostate-name-line-separator-then-comment-line] [fixture:
 state/lex-pseudostate-name-line-separator-comment-line-directive-next] [fixture:
 state/lex-pseudostate-name-line-separator-comment-line-space-next] [fixture:
 state/lex-pseudostate-name-line-separator-comment-line-separator-next] [fixture:

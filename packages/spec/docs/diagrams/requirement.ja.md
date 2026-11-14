@@ -786,22 +786,22 @@ requirement/lex-acc-title-after-comment-line]
 アクセシビリティのタイトルや説明のテキストでは、
 U+2028 や U+2029 の後のコメントは読み飛ばされ、
 テキストはその後に続きます（[コメント行](../common.ja.md#コメント行) を参照）。
-[fixture: requirement/db-acc-title-line-separator-then-comment-line]
-[fixture: requirement/db-acc-descr-line-separator-then-comment-line]
-[fixture: requirement/db-acc-title-line-separator-comment-line-directive-next]
-[fixture: requirement/db-acc-title-line-separator-comment-line-space-next]
-[fixture: requirement/db-acc-title-line-separator-comment-line-separator-next]
+[fixture: requirement/lex-acc-title-line-separator-then-comment-line]
+[fixture: requirement/lex-acc-descr-line-separator-then-comment-line]
+[fixture: requirement/lex-acc-title-line-separator-comment-line-directive-next]
+[fixture: requirement/lex-acc-title-line-separator-comment-line-space-next]
+[fixture: requirement/lex-acc-title-line-separator-comment-line-separator-next]
 [fixture: requirement/gram-acc-title-line-separator-comment-line-empty-line]
 [fixture: requirement/lex-acc-title-line-separator-comment-line-end-of-text]
-[fixture: requirement/db-acc-title-line-separator-comment-line-cr]
-[fixture: requirement/db-acc-title-line-separator-comment-line-crlf] [fixture:
-requirement/db-acc-title-line-separator-comment-line-two-comment-lines]
-[fixture: requirement/db-acc-title-line-separator-comment-line-two-regions]
-[fixture: requirement/db-acc-title-line-separator-comment-line-spaces-before]
-[fixture: requirement/db-acc-title-line-separator-comment-line-line-feed-before]
-[fixture: requirement/db-acc-title-line-separator-comment-line-directive-before]
-[fixture: requirement/db-acc-title-line-separator-comment-line-line-rule-before]
-[fixture: requirement/db-acc-title-line-separator-comment-line-line-rule-after]
+[fixture: requirement/lex-acc-title-line-separator-comment-line-cr]
+[fixture: requirement/lex-acc-title-line-separator-comment-line-crlf] [fixture:
+requirement/lex-acc-title-line-separator-comment-line-two-comment-lines]
+[fixture: requirement/lex-acc-title-line-separator-comment-line-two-regions]
+[fixture: requirement/lex-acc-title-line-separator-comment-line-spaces-before]
+[fixture: requirement/lex-acc-title-line-separator-comment-line-line-feed-before]
+[fixture: requirement/lex-acc-title-line-separator-comment-line-directive-before]
+[fixture: requirement/lex-acc-title-line-separator-comment-line-line-rule-before]
+[fixture: requirement/lex-acc-title-line-separator-comment-line-line-rule-after]
 [fixture: requirement/gram-acc-title-line-separator-comment-line-bare-percent]
 [fixture: requirement/gram-acc-title-line-separator-comment-line-percent-brace]
 
@@ -823,33 +823,33 @@ mermaid.js ではトークンを作りません。
 [fixture: requirement/lex-acc-descr-block-unclosed]
 テキストの中のコメント行は、テキストの行の U+2028 や U+2029 の後でも取り除かれ、
 テキストはその後に続きます（[コメント行](../common.ja.md#コメント行) を参照）。
-[fixture: requirement/db-acc-descr-block-line-separator-then-comment-line]
+[fixture: requirement/lex-acc-descr-block-line-separator-then-comment-line]
 [fixture:
-requirement/db-acc-descr-block-line-separator-comment-line-directive-next]
-[fixture: requirement/db-acc-descr-block-line-separator-comment-line-space-next]
+requirement/lex-acc-descr-block-line-separator-comment-line-directive-next]
+[fixture: requirement/lex-acc-descr-block-line-separator-comment-line-space-next]
 [fixture:
-requirement/db-acc-descr-block-line-separator-comment-line-separator-next]
-[fixture: requirement/db-acc-descr-block-line-separator-comment-line-empty-line]
+requirement/lex-acc-descr-block-line-separator-comment-line-separator-next]
+[fixture: requirement/lex-acc-descr-block-line-separator-comment-line-empty-line]
 [fixture:
 requirement/lex-acc-descr-block-line-separator-comment-line-end-of-text]
-[fixture: requirement/db-acc-descr-block-line-separator-comment-line-cr]
-[fixture: requirement/db-acc-descr-block-line-separator-comment-line-crlf]
+[fixture: requirement/lex-acc-descr-block-line-separator-comment-line-cr]
+[fixture: requirement/lex-acc-descr-block-line-separator-comment-line-crlf]
 [fixture:
-requirement/db-acc-descr-block-line-separator-comment-line-two-comment-lines]
+requirement/lex-acc-descr-block-line-separator-comment-line-two-comment-lines]
 [fixture:
-requirement/db-acc-descr-block-line-separator-comment-line-two-regions]
+requirement/lex-acc-descr-block-line-separator-comment-line-two-regions]
 [fixture:
-requirement/db-acc-descr-block-line-separator-comment-line-spaces-before]
+requirement/lex-acc-descr-block-line-separator-comment-line-spaces-before]
 [fixture:
-requirement/db-acc-descr-block-line-separator-comment-line-line-feed-before]
+requirement/lex-acc-descr-block-line-separator-comment-line-line-feed-before]
 [fixture:
-requirement/db-acc-descr-block-line-separator-comment-line-directive-before]
+requirement/lex-acc-descr-block-line-separator-comment-line-directive-before]
 [fixture:
-requirement/db-acc-descr-block-line-separator-comment-line-line-rule-before]
+requirement/lex-acc-descr-block-line-separator-comment-line-line-rule-before]
 [fixture:
-requirement/db-acc-descr-block-line-separator-comment-line-line-rule-after]
+requirement/lex-acc-descr-block-line-separator-comment-line-line-rule-after]
 [fixture:
-requirement/db-acc-descr-block-line-separator-comment-line-bare-percent]
+requirement/lex-acc-descr-block-line-separator-comment-line-bare-percent]
 [fixture:
 requirement/gram-acc-descr-block-line-separator-comment-line-percent-brace]
 
@@ -903,24 +903,24 @@ class の文は取らないので、
 [fixture: requirement/lex-hash-comment-after-shorthand-string-class]
 U+2028 や U+2029 の後のコメントは例外で、読み飛ばされ、
 値はその後に続きます（[コメント行](../common.ja.md#コメント行) を参照）。
-[fixture: requirement/db-name-line-separator-then-comment-line]
-[fixture: requirement/db-name-paragraph-separator-then-comment-line]
-[fixture: requirement/db-text-line-separator-then-comment-line]
-[fixture: requirement/db-string-line-separator-then-comment-line]
-[fixture: requirement/db-name-line-separator-comment-line-directive-next]
-[fixture: requirement/db-name-line-separator-comment-line-space-next]
-[fixture: requirement/db-name-line-separator-comment-line-separator-next]
+[fixture: requirement/lex-name-line-separator-then-comment-line]
+[fixture: requirement/lex-name-paragraph-separator-then-comment-line]
+[fixture: requirement/lex-text-line-separator-then-comment-line]
+[fixture: requirement/lex-string-line-separator-then-comment-line]
+[fixture: requirement/lex-name-line-separator-comment-line-directive-next]
+[fixture: requirement/lex-name-line-separator-comment-line-space-next]
+[fixture: requirement/lex-name-line-separator-comment-line-separator-next]
 [fixture: requirement/gram-name-line-separator-comment-line-empty-line]
 [fixture: requirement/gram-name-line-separator-comment-line-end-of-text]
 [fixture:
-requirement/db-relationship-target-line-separator-comment-line-end-of-text]
-[fixture: requirement/db-name-line-separator-comment-line-cr]
-[fixture: requirement/db-name-line-separator-comment-line-crlf]
-[fixture: requirement/db-name-line-separator-comment-line-two-comment-lines]
-[fixture: requirement/db-name-line-separator-comment-line-two-regions]
-[fixture: requirement/db-name-line-separator-comment-line-spaces-before]
-[fixture: requirement/db-name-line-separator-comment-line-line-feed-before]
-[fixture: requirement/db-name-line-separator-comment-line-directive-before]
+requirement/lex-relationship-target-line-separator-comment-line-end-of-text]
+[fixture: requirement/lex-name-line-separator-comment-line-cr]
+[fixture: requirement/lex-name-line-separator-comment-line-crlf]
+[fixture: requirement/lex-name-line-separator-comment-line-two-comment-lines]
+[fixture: requirement/lex-name-line-separator-comment-line-two-regions]
+[fixture: requirement/lex-name-line-separator-comment-line-spaces-before]
+[fixture: requirement/lex-name-line-separator-comment-line-line-feed-before]
+[fixture: requirement/lex-name-line-separator-comment-line-directive-before]
 [fixture: requirement/gram-name-line-separator-comment-line-bare-percent]
 [fixture: requirement/gram-name-line-separator-comment-line-percent-brace]
 

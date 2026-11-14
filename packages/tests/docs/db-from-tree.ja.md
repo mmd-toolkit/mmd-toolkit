@@ -80,11 +80,11 @@ common.md の Where a directive is と Comment lines の規則で、
 補助関数は値の範囲を読み、領域を除くためです。
 `A`、U+2028、`%% c`、改行、`B` は、文字列でも、テキストでも、説明ブロックでも、
 `A`、U+2028、`B` の値になります。
-[fixture: flowchart/db-string-line-separator-then-comment-line]
+[fixture: flowchart/lex-string-line-separator-then-comment-line]
 [fixture: block/db-string-paragraph-separator-then-comment-line]
 [fixture: gantt/db-title-line-separator-then-comment-line]
-[fixture: flowchart/db-square-label-paragraph-separator-then-comment-line]
-[fixture: flowchart/db-acc-descr-block-line-separator-then-comment-line]
+[fixture: flowchart/lex-square-label-paragraph-separator-then-comment-line]
+[fixture: flowchart/lex-acc-descr-block-line-separator-then-comment-line]
 そのような値の欄が要約にないとき、またほかから取るときは、図種の文書が述べます。
 
 領域の縁で出会う規則は、値をそのままにします。
@@ -122,7 +122,7 @@ U+2028、`B`）、U+2028 と `%%` の間の空白、改行、ディレクティ�
 [fixture: block/db-string-line-separator-comment-line-line-rule-before]
 [fixture: block/db-string-line-separator-comment-line-line-rule-after]
 コメント行で終わるテキストは、文字列が閉じず、拒否されます。
-[fixture: block/lex-string-line-separator-comment-line-end-of-text]
+[fixture: block/gram-string-line-separator-comment-line-end-of-text]
 
 値が U+2028 で終わる場合は、領域の後へ続きません。
 ブロックの id、gantt の click の id、mindmap と kanban のノードのクラス、
@@ -134,8 +134,8 @@ state の疑似状態の名前がそうです。
 `state A`、U+2028、`%% c`、改行、`B <<fork>>` は、
 fork の `B` だけを状態に持ちます。
 [fixture: block/db-id-line-separator-then-comment-line]
-[fixture: gantt/db-click-id-line-separator-then-comment-line-href]
-[fixture: state/db-pseudostate-name-line-separator-then-comment-line]
+[fixture: gantt/lex-click-id-line-separator-then-comment-line-href]
+[fixture: state/lex-pseudostate-name-line-separator-then-comment-line]
 クラスのコメント行の次の行は、クラスの行の続きとして読まれ、
 コメント行がなくても同じように拒否されます。
 [fixture: mindmap/gram-class-line-separator-then-comment-line]

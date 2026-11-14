@@ -487,19 +487,19 @@ consequences of the order:
   [fixture: gantt/lex-date-in-task-text] [fixture: gantt/lex-date-in-title]
   Inside a text, a comment after a U+2028 or U+2029 is read through, and the
   text goes on after it (see [Comment lines](../common.md#comment-lines)).
-  [fixture: gantt/db-task-line-separator-then-comment-line] [fixture:
-  gantt/db-task-line-separator-comment-line-directive-next] [fixture:
-  gantt/db-task-line-separator-comment-line-space-next] [fixture:
-  gantt/db-task-line-separator-comment-line-separator-next] [fixture:
+  [fixture: gantt/lex-task-line-separator-then-comment-line] [fixture:
+  gantt/lex-task-line-separator-comment-line-directive-next] [fixture:
+  gantt/lex-task-line-separator-comment-line-space-next] [fixture:
+  gantt/lex-task-line-separator-comment-line-separator-next] [fixture:
   gantt/gram-task-line-separator-comment-line-empty-line] [fixture:
   gantt/gram-task-line-separator-comment-line-end-of-text] [fixture:
-  gantt/db-task-line-separator-comment-line-cr] [fixture:
-  gantt/db-task-line-separator-comment-line-crlf] [fixture:
-  gantt/db-task-line-separator-comment-line-two-comment-lines] [fixture:
-  gantt/db-task-line-separator-comment-line-two-regions] [fixture:
-  gantt/db-task-line-separator-comment-line-spaces-before] [fixture:
-  gantt/db-task-line-separator-comment-line-line-feed-before] [fixture:
-  gantt/db-task-line-separator-comment-line-directive-before] [fixture:
+  gantt/lex-task-line-separator-comment-line-cr] [fixture:
+  gantt/lex-task-line-separator-comment-line-crlf] [fixture:
+  gantt/lex-task-line-separator-comment-line-two-comment-lines] [fixture:
+  gantt/lex-task-line-separator-comment-line-two-regions] [fixture:
+  gantt/lex-task-line-separator-comment-line-spaces-before] [fixture:
+  gantt/lex-task-line-separator-comment-line-line-feed-before] [fixture:
+  gantt/lex-task-line-separator-comment-line-directive-before] [fixture:
   gantt/gram-task-line-separator-comment-line-bare-percent] [fixture:
   gantt/gram-task-line-separator-comment-line-percent-brace]
 - The statements are ended by their own units, not by line feeds: a `newline`
@@ -728,22 +728,22 @@ gantt/gram-acc-descr-line-feed-then-text] [fixture: gantt/lex-acc-title-at-end]
 gantt/lex-acc-descr-at-end] In the text of an accessibility title or
 description, a comment after a U+2028 or U+2029 is read through, and the text
 goes on after it (see [Comment lines](../common.md#comment-lines)). [fixture:
-gantt/db-acc-title-line-separator-then-comment-line] [fixture:
-gantt/db-acc-descr-line-separator-then-comment-line] [fixture:
-gantt/db-acc-title-line-separator-comment-line-directive-next] [fixture:
-gantt/db-acc-title-line-separator-comment-line-space-next] [fixture:
-gantt/db-acc-title-line-separator-comment-line-separator-next] [fixture:
+gantt/lex-acc-title-line-separator-then-comment-line] [fixture:
+gantt/lex-acc-descr-line-separator-then-comment-line] [fixture:
+gantt/lex-acc-title-line-separator-comment-line-directive-next] [fixture:
+gantt/lex-acc-title-line-separator-comment-line-space-next] [fixture:
+gantt/lex-acc-title-line-separator-comment-line-separator-next] [fixture:
 gantt/gram-acc-title-line-separator-comment-line-empty-line] [fixture:
 gantt/lex-acc-title-line-separator-comment-line-end-of-text] [fixture:
-gantt/db-acc-title-line-separator-comment-line-cr] [fixture:
-gantt/db-acc-title-line-separator-comment-line-crlf] [fixture:
-gantt/db-acc-title-line-separator-comment-line-two-comment-lines] [fixture:
-gantt/db-acc-title-line-separator-comment-line-two-regions] [fixture:
-gantt/db-acc-title-line-separator-comment-line-spaces-before] [fixture:
-gantt/db-acc-title-line-separator-comment-line-line-feed-before] [fixture:
-gantt/db-acc-title-line-separator-comment-line-directive-before] [fixture:
-gantt/db-acc-title-line-separator-comment-line-line-rule-before] [fixture:
-gantt/db-acc-title-line-separator-comment-line-line-rule-after] [fixture:
+gantt/lex-acc-title-line-separator-comment-line-cr] [fixture:
+gantt/lex-acc-title-line-separator-comment-line-crlf] [fixture:
+gantt/lex-acc-title-line-separator-comment-line-two-comment-lines] [fixture:
+gantt/lex-acc-title-line-separator-comment-line-two-regions] [fixture:
+gantt/lex-acc-title-line-separator-comment-line-spaces-before] [fixture:
+gantt/lex-acc-title-line-separator-comment-line-line-feed-before] [fixture:
+gantt/lex-acc-title-line-separator-comment-line-directive-before] [fixture:
+gantt/lex-acc-title-line-separator-comment-line-line-rule-before] [fixture:
+gantt/lex-acc-title-line-separator-comment-line-line-rule-after] [fixture:
 gantt/gram-acc-title-line-separator-comment-line-bare-percent] [fixture:
 gantt/gram-acc-title-line-separator-comment-line-percent-brace]
 
@@ -769,22 +769,25 @@ gantt/lex-acc-descr-block-unclosed] [fixture:
 gantt/gram-acc-descr-block-double-close] A comment line inside the text is
 removed, also after a U+2028 or U+2029 on a line of the text, and the text goes
 on after it (see [Comment lines](../common.md#comment-lines)). [fixture:
-gantt/db-acc-descr-block-line-separator-then-comment-line] [fixture:
-gantt/db-acc-descr-block-line-separator-comment-line-directive-next] [fixture:
-gantt/db-acc-descr-block-line-separator-comment-line-space-next] [fixture:
-gantt/db-acc-descr-block-line-separator-comment-line-separator-next] [fixture:
-gantt/db-acc-descr-block-line-separator-comment-line-empty-line] [fixture:
+gantt/lex-acc-descr-block-line-separator-then-comment-line] [fixture:
+gantt/lex-acc-descr-block-line-separator-comment-line-directive-next] [fixture:
+gantt/lex-acc-descr-block-line-separator-comment-line-space-next] [fixture:
+gantt/lex-acc-descr-block-line-separator-comment-line-separator-next] [fixture:
+gantt/lex-acc-descr-block-line-separator-comment-line-empty-line] [fixture:
 gantt/lex-acc-descr-block-line-separator-comment-line-end-of-text] [fixture:
-gantt/db-acc-descr-block-line-separator-comment-line-cr] [fixture:
-gantt/db-acc-descr-block-line-separator-comment-line-crlf] [fixture:
-gantt/db-acc-descr-block-line-separator-comment-line-two-comment-lines]
-[fixture: gantt/db-acc-descr-block-line-separator-comment-line-two-regions]
-[fixture: gantt/db-acc-descr-block-line-separator-comment-line-spaces-before]
-[fixture: gantt/db-acc-descr-block-line-separator-comment-line-line-feed-before]
-[fixture: gantt/db-acc-descr-block-line-separator-comment-line-directive-before]
-[fixture: gantt/db-acc-descr-block-line-separator-comment-line-line-rule-before]
-[fixture: gantt/db-acc-descr-block-line-separator-comment-line-line-rule-after]
-[fixture: gantt/db-acc-descr-block-line-separator-comment-line-bare-percent]
+gantt/lex-acc-descr-block-line-separator-comment-line-cr] [fixture:
+gantt/lex-acc-descr-block-line-separator-comment-line-crlf] [fixture:
+gantt/lex-acc-descr-block-line-separator-comment-line-two-comment-lines]
+[fixture: gantt/lex-acc-descr-block-line-separator-comment-line-two-regions]
+[fixture: gantt/lex-acc-descr-block-line-separator-comment-line-spaces-before]
+[fixture:
+gantt/lex-acc-descr-block-line-separator-comment-line-line-feed-before]
+[fixture:
+gantt/lex-acc-descr-block-line-separator-comment-line-directive-before]
+[fixture:
+gantt/lex-acc-descr-block-line-separator-comment-line-line-rule-before]
+[fixture: gantt/lex-acc-descr-block-line-separator-comment-line-line-rule-after]
+[fixture: gantt/lex-acc-descr-block-line-separator-comment-line-bare-percent]
 [fixture: gantt/gram-acc-descr-block-line-separator-comment-line-percent-brace]
 
 ### Comments
@@ -973,28 +976,28 @@ gantt/lex-percent-brace-glued-in-title-text] In the units listed above other
 than a click id, a comment after a U+2028 or U+2029 is read through, and the
 value goes on after it (see [Comment lines](../common.md#comment-lines)).
 [fixture: gantt/db-title-line-separator-then-comment-line] [fixture:
-gantt/db-section-line-separator-then-comment-line] [fixture:
-gantt/db-axis-format-line-separator-then-comment-line] [fixture:
-gantt/db-axis-format-paragraph-separator-then-comment-line] [fixture:
-gantt/db-today-marker-line-separator-then-comment-line] [fixture:
-gantt/db-callback-name-line-separator-then-comment-line] [fixture:
-gantt/db-callback-arguments-line-separator-then-comment-line] [fixture:
-gantt/db-url-line-separator-then-comment-line] [fixture:
-gantt/db-task-data-line-separator-then-comment-line] [fixture:
-gantt/db-title-line-separator-comment-line-directive-next] [fixture:
-gantt/db-title-line-separator-comment-line-space-next] [fixture:
-gantt/db-title-line-separator-comment-line-separator-next] [fixture:
+gantt/lex-section-line-separator-then-comment-line] [fixture:
+gantt/lex-axis-format-line-separator-then-comment-line] [fixture:
+gantt/lex-axis-format-paragraph-separator-then-comment-line] [fixture:
+gantt/lex-today-marker-line-separator-then-comment-line] [fixture:
+gantt/lex-callback-name-line-separator-then-comment-line] [fixture:
+gantt/lex-callback-arguments-line-separator-then-comment-line] [fixture:
+gantt/lex-url-line-separator-then-comment-line] [fixture:
+gantt/lex-task-data-line-separator-then-comment-line] [fixture:
+gantt/lex-title-line-separator-comment-line-directive-next] [fixture:
+gantt/lex-title-line-separator-comment-line-space-next] [fixture:
+gantt/lex-title-line-separator-comment-line-separator-next] [fixture:
 gantt/gram-title-line-separator-comment-line-empty-line] [fixture:
-gantt/db-title-line-separator-comment-line-end-of-text] [fixture:
-gantt/db-title-line-separator-comment-line-cr] [fixture:
-gantt/db-title-line-separator-comment-line-crlf] [fixture:
-gantt/db-title-line-separator-comment-line-two-comment-lines] [fixture:
-gantt/db-title-line-separator-comment-line-two-regions] [fixture:
-gantt/db-title-line-separator-comment-line-spaces-before] [fixture:
-gantt/db-title-line-separator-comment-line-line-feed-before] [fixture:
-gantt/db-title-line-separator-comment-line-directive-before] [fixture:
-gantt/db-title-line-separator-comment-line-line-rule-before] [fixture:
-gantt/db-title-line-separator-comment-line-line-rule-after] [fixture:
+gantt/lex-title-line-separator-comment-line-end-of-text] [fixture:
+gantt/lex-title-line-separator-comment-line-cr] [fixture:
+gantt/lex-title-line-separator-comment-line-crlf] [fixture:
+gantt/lex-title-line-separator-comment-line-two-comment-lines] [fixture:
+gantt/lex-title-line-separator-comment-line-two-regions] [fixture:
+gantt/lex-title-line-separator-comment-line-spaces-before] [fixture:
+gantt/lex-title-line-separator-comment-line-line-feed-before] [fixture:
+gantt/lex-title-line-separator-comment-line-directive-before] [fixture:
+gantt/lex-title-line-separator-comment-line-line-rule-before] [fixture:
+gantt/lex-title-line-separator-comment-line-line-rule-after] [fixture:
 gantt/gram-title-line-separator-comment-line-bare-percent] [fixture:
 gantt/gram-title-line-separator-comment-line-percent-brace] A click id ends at a
 U+2028 or U+2029, which leaves the click context (rule 1 of
@@ -1003,7 +1006,7 @@ follows it is read in the statement context: after a task with the id `a1`,
 `click a1`, U+2028, `%% c`, a line break, and `href "https://e"` sets the link
 of `a1`, while `click a1`, U+2028, `%% c`, a line break, and
 `b href "https://e"` is rejected. [fixture:
-gantt/db-click-id-line-separator-then-comment-line-href] [fixture:
+gantt/lex-click-id-line-separator-then-comment-line-href] [fixture:
 gantt/gram-click-id-line-separator-then-comment-line] [fixture:
 gantt/lex-click-id-line-separator-comment-line-directive-next] [fixture:
 gantt/lex-click-id-line-separator-comment-line-space-next] [fixture:

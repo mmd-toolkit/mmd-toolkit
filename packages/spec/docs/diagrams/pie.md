@@ -263,24 +263,24 @@ pie/review-hidden-directive-in-string] [fixture: pie/label-whitespace] [fixture:
 pie/label-unknown-escapes] Inside a string, a comment after a U+2028 or U+2029
 is read through, and the string goes on after it (see
 [Comment lines](../common.md#comment-lines)). [fixture:
-pie/db-string-line-separator-then-comment-line] [fixture:
-pie/db-string-paragraph-separator-then-comment-line] [fixture:
-pie/db-string-line-separator-comment-line-directive-next] [fixture:
-pie/db-string-line-separator-comment-line-space-next] [fixture:
-pie/db-string-line-separator-comment-line-separator-next] [fixture:
-pie/db-string-line-separator-comment-line-empty-line] [fixture:
+pie/lex-string-line-separator-then-comment-line] [fixture:
+pie/lex-string-paragraph-separator-then-comment-line] [fixture:
+pie/lex-string-line-separator-comment-line-directive-next] [fixture:
+pie/lex-string-line-separator-comment-line-space-next] [fixture:
+pie/lex-string-line-separator-comment-line-separator-next] [fixture:
+pie/lex-string-line-separator-comment-line-empty-line] [fixture:
 pie/lex-string-line-separator-comment-line-end-of-text] [fixture:
-pie/db-string-line-separator-comment-line-cr] [fixture:
-pie/db-string-line-separator-comment-line-crlf] [fixture:
-pie/db-string-line-separator-comment-line-two-comment-lines] [fixture:
-pie/db-string-line-separator-comment-line-two-regions] [fixture:
-pie/db-string-line-separator-comment-line-spaces-before] [fixture:
-pie/db-string-line-separator-comment-line-line-feed-before] [fixture:
-pie/db-string-line-separator-comment-line-directive-before] [fixture:
-pie/db-string-line-separator-comment-line-line-rule-before] [fixture:
-pie/db-string-line-separator-comment-line-line-rule-after] [fixture:
-pie/db-string-line-separator-comment-line-bare-percent] [fixture:
-pie/db-string-line-separator-comment-line-percent-brace]
+pie/lex-string-line-separator-comment-line-cr] [fixture:
+pie/lex-string-line-separator-comment-line-crlf] [fixture:
+pie/lex-string-line-separator-comment-line-two-comment-lines] [fixture:
+pie/lex-string-line-separator-comment-line-two-regions] [fixture:
+pie/lex-string-line-separator-comment-line-spaces-before] [fixture:
+pie/lex-string-line-separator-comment-line-line-feed-before] [fixture:
+pie/lex-string-line-separator-comment-line-directive-before] [fixture:
+pie/lex-string-line-separator-comment-line-line-rule-before] [fixture:
+pie/lex-string-line-separator-comment-line-line-rule-after] [fixture:
+pie/lex-string-line-separator-comment-line-bare-percent] [fixture:
+pie/lex-string-line-separator-comment-line-percent-brace]
 
 ### Composite common forms
 
@@ -467,27 +467,27 @@ pie/acctitle-comment] [fixture: pie/accdescr-comment] [fixture:
 pie/accdescr-block-comment-lines] [fixture: pie/comment-label-line] [fixture:
 pie/comment-label-single-line] [fixture:
 pie/lex-common-values-comment-region-ls] [fixture:
-pie/db-title-line-separator-then-comment-line] [fixture:
-pie/db-acc-title-line-separator-then-comment-line] [fixture:
-pie/db-acc-descr-line-separator-then-comment-line] In a description block, a
+pie/lex-title-line-separator-then-comment-line] [fixture:
+pie/lex-acc-title-line-separator-then-comment-line] [fixture:
+pie/lex-acc-descr-line-separator-then-comment-line] In a description block, a
 comment after a U+2028 or U+2029 is read through, and the description goes on
 after it (see [Comment lines](../common.md#comment-lines)). [fixture:
-pie/db-acc-descr-block-line-separator-then-comment-line] [fixture:
-pie/db-acc-descr-block-line-separator-comment-line-directive-next] [fixture:
-pie/db-acc-descr-block-line-separator-comment-line-space-next] [fixture:
-pie/db-acc-descr-block-line-separator-comment-line-separator-next] [fixture:
-pie/db-acc-descr-block-line-separator-comment-line-empty-line] [fixture:
+pie/lex-acc-descr-block-line-separator-then-comment-line] [fixture:
+pie/lex-acc-descr-block-line-separator-comment-line-directive-next] [fixture:
+pie/lex-acc-descr-block-line-separator-comment-line-space-next] [fixture:
+pie/lex-acc-descr-block-line-separator-comment-line-separator-next] [fixture:
+pie/lex-acc-descr-block-line-separator-comment-line-empty-line] [fixture:
 pie/lex-acc-descr-block-line-separator-comment-line-end-of-text] [fixture:
-pie/db-acc-descr-block-line-separator-comment-line-cr] [fixture:
-pie/db-acc-descr-block-line-separator-comment-line-crlf] [fixture:
-pie/db-acc-descr-block-line-separator-comment-line-two-comment-lines] [fixture:
-pie/db-acc-descr-block-line-separator-comment-line-two-regions] [fixture:
-pie/db-acc-descr-block-line-separator-comment-line-spaces-before] [fixture:
-pie/db-acc-descr-block-line-separator-comment-line-line-feed-before] [fixture:
-pie/db-acc-descr-block-line-separator-comment-line-directive-before] [fixture:
-pie/db-acc-descr-block-line-separator-comment-line-line-rule-before] [fixture:
-pie/db-acc-descr-block-line-separator-comment-line-line-rule-after] [fixture:
-pie/db-acc-descr-block-line-separator-comment-line-bare-percent] [fixture:
+pie/lex-acc-descr-block-line-separator-comment-line-cr] [fixture:
+pie/lex-acc-descr-block-line-separator-comment-line-crlf] [fixture:
+pie/lex-acc-descr-block-line-separator-comment-line-two-comment-lines] [fixture:
+pie/lex-acc-descr-block-line-separator-comment-line-two-regions] [fixture:
+pie/lex-acc-descr-block-line-separator-comment-line-spaces-before] [fixture:
+pie/lex-acc-descr-block-line-separator-comment-line-line-feed-before] [fixture:
+pie/lex-acc-descr-block-line-separator-comment-line-directive-before] [fixture:
+pie/lex-acc-descr-block-line-separator-comment-line-line-rule-before] [fixture:
+pie/lex-acc-descr-block-line-separator-comment-line-line-rule-after] [fixture:
+pie/lex-acc-descr-block-line-separator-comment-line-bare-percent] [fixture:
 pie/lex-acc-descr-block-line-separator-comment-line-percent-brace]
 
 ### Global trivia inside values
