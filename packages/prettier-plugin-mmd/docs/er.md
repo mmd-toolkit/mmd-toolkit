@@ -1515,6 +1515,11 @@ er/lex-acc-title-direction] [corpus fixture: er/lex-acc-descr-block-direction]
 er/lex-direction-value-glued] [corpus fixture: er/lex-direction-value-tab]
 [corpus fixture: er/lex-direction-value-next-line]
 
+A line with an `accTitle` or `accDescr` statement whose text goes to the `:` and
+then holds `direction`, after a directive that is not closed, stays as written,
+and the directive before it is printed once. [fixture:
+accessibility-statements/direction-text-after-unclosed-directive]
+
 Input
 ([accessibility-statements/text-on-next-line-joined-input.mmd](../tests/fixtures/er/accessibility-statements/text-on-next-line-joined-input.mmd)):
 
