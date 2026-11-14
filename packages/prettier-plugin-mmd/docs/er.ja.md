@@ -1563,10 +1563,14 @@ subgraph の中でも 1 桁目を保ちます（diagrams/er.md、方向の行）
 [corpus fixture: er/lex-direction-value-tab]
 [corpus fixture: er/lex-direction-value-next-line]
 
-`accTitle` か `accDescr` の文のテキストが `:` まで進んでから、
-`direction` を含む行は、閉じていないディレクティブの後でも書かれたまま残り、
-その前のディレクティブは 1 回だけ印字します。
+別の文の後ろにある `accTitle:` か `accDescr:` の文で、
+次の行のテキストが `direction` と値である行は、書かれたまま残ります。
+その文の前に同じ行でディレクティブがあるときは、1 回だけ印字します。
+閉じていないディレクティブ（次の行を取ります）も、
+同じ行にある閉じたディレクティブも同じです。
 [fixture: accessibility-statements/direction-text-after-unclosed-directive]
+[fixture: accessibility-statements/direction-text-after-closed-directive-on-the-line]
+[fixture: accessibility-statements/direction-text-of-accdescr-after-directive]
 
 入力
 ([accessibility-statements/text-on-next-line-joined-input.mmd](../tests/fixtures/er/accessibility-statements/text-on-next-line-joined-input.mmd)):
