@@ -2157,10 +2157,24 @@ there is not ignored, and the input is rejected, because `#f00;` in a style is
 an entity, as in mermaid.js. [fixture:
 quadrant/gram-classdef-name-comment-line-hash-semicolon] An empty description
 block after the region lies inside the statement, and a `;` that the line rule
-ignores after the region lies inside the name; both make the input rejected
-here, while mermaid.js accepts it (see [Known divergences](#known-divergences)).
-[fixture: quadrant/div-classdef-name-comment-line-empty-description-block]
-[fixture: quadrant/div-classdef-name-comment-line-ignored-semicolon]
+ignores in the name after the region, as in `style:#x;b color: #f00`, lies
+inside the name; both make the input rejected here, while mermaid.js accepts it
+(see [Known divergences](#known-divergences)). [fixture:
+quadrant/div-classdef-name-comment-line-empty-description-block] [fixture:
+quadrant/div-classdef-name-comment-line-ignored-semicolon] Where the `;` that
+the rule ignores is at the end of the line, after the styles, it lies outside
+the name, as on any `classDef` line, and the input is accepted: `classDef a`,
+U+2028, `%% c`, a line break, and `style color:#f00;` defines the class `a`,
+U+2028, and `style` with the colour `#f00`, and so it is with U+2029. [fixture:
+quadrant/lex-classdef-name-comment-line-style-line] [fixture:
+quadrant/lex-classdef-name-paragraph-separator-comment-line-style-line] With a
+second `;` at the end of the line, the rule ignores that last one, and the `;`
+in the name ends an entity: `style:#x;b color: #f00;` there gives the class `a`,
+U+2028, `style:`, the placeholder of `#x;`, and `b`. [fixture:
+quadrant/lex-classdef-name-comment-line-style-line-two-semicolons] A `;` in the
+name on a line without `style` is a `;` unit, and the input is rejected, as in
+mermaid.js: `b;c color: #f00` there. [fixture:
+quadrant/gram-classdef-name-comment-line-semicolon-in-name]
 
 ### Empty description blocks
 

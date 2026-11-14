@@ -1,0 +1,11 @@
+{
+  "source": {
+    "kind": "authored",
+    "note": "quadrant.md Classes: the line `b;c color: #f00` after the region does not match the style rule, so its `;` is a `;` unit inside the classDef statement; rejected."
+  },
+  "accepted": false,
+  "error": {
+    "name": "Error",
+    "message": "Parse error on line 2:\n...ntChartclassDef a b;c color: #f00\n----------------------^\nExpecting 'ALPHA', 'NUM', 'NODE_STRING', 'DOWN', 'MINUS', 'DEFAULT', 'COMMA', 'COLON', 'AMP', 'BRKT', 'MULT', 'UNICODE_TEXT', 'SPACE', got 'SEMI'"
+  }
+}

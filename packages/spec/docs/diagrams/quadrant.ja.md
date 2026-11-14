@@ -2390,11 +2390,25 @@ mermaid.js は名前が `a`、U+2029、`b` のクラスを定めます。
 スタイルの `#f00;` は mermaid.js と同じくエンティティなので、
 入力は拒否されます。
 [fixture: quadrant/gram-classdef-name-comment-line-hash-semicolon]
-領域の後の空の説明ブロックは文の中にあり、領域の後の、
-行の規則が無視する `;` は名前の中にあり、どちらもここでは入力を拒否させますが、
+領域の後の空の説明ブロックは文の中にあり、領域の後の名前の中で、
+`style:#x;b color: #f00` のように行の規則が無視する `;` は名前の中にあり、
+どちらもここでは入力を拒否させますが、
 mermaid.js は受理します（[既知の差異](#既知の差異) を参照）。
 [fixture: quadrant/div-classdef-name-comment-line-empty-description-block]
 [fixture: quadrant/div-classdef-name-comment-line-ignored-semicolon]
+行の規則が無視する `;` がスタイルの後の行の終わりにあるときは、
+どの `classDef` 行でもそうであるように名前の外にあり、入力は受理され、
+`classDef a`、U+2028、`%% c`、改行、`style color:#f00;` は、色 `#f00` を持ち、
+名前が `a`、U+2028、`style` のクラスを定め、U+2029 でも同じです。
+[fixture: quadrant/lex-classdef-name-comment-line-style-line] [fixture:
+quadrant/lex-classdef-name-paragraph-separator-comment-line-style-line]
+行の終わりに 2 つ目の `;` があるときは、行の規則は最後の `;` を無視し、
+名前の中の `;` はエンティティを終えるので、そこの `style:#x;b color: #f00;` は、
+名前が `a`、U+2028、`style:`、`#x;` のプレースホルダー、`b` のクラスを定めます。
+[fixture: quadrant/lex-classdef-name-comment-line-style-line-two-semicolons]
+`style` のない行の名前の中の `;` は `;` の単位であり、
+そこの `b;c color: #f00` は mermaid.js と同じく拒否されます。
+[fixture: quadrant/gram-classdef-name-comment-line-semicolon-in-name]
 
 ### 空の説明ブロック
 
