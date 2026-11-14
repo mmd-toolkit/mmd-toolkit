@@ -1912,14 +1912,12 @@ railroad では、大域的なディレクティブを除いた後の原文の�
 またがる行をすべて保ちます。
 
 [fixture: railroad/semicolons/native-terminal-value]
-
-ここでいう行は、mermaid.js が1行として読む範囲全体です。
-
 [fixture: railroad/semicolons/ir-word-unclosed-directive-lines]
 [fixture: railroad/semicolons/ebnf-word-unclosed-directive-lines]
 [fixture: railroad/semicolons/abnf-word-unclosed-directive-lines]
 [fixture: railroad/semicolons/peg-word-unclosed-directive-lines]
 
+ここでいう行は、mermaid.js が1行として読む範囲全体です。
 U+2028 や U+2029 の後のコメント行が、語を含む行の前、後、
 両方のテキストをつなぐ場合も、つながる原文の行をすべて保ちます。
 最初の行の字下げは本文の1段に揃え、中身と2行目以降の列は書かれたままです。

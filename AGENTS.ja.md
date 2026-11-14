@@ -230,8 +230,9 @@ Mermaid 記法（`.mmd`）について、mermaid.js が持つ全図種を対象�
   - 文章は 80 桁で折り返す。
     英語は Prettier が折り返す（`pnpm run format:check`）。
     日本語は書き手が折り返し、`pnpm run lint:md` が確かめる。
-  - fixture の引用は、文の中に置かず、
-    文の後ろの引用の段落に置く（`pnpm run lint:docs`）。
+  - fixture の引用は、文の中に置かず、文の後ろの引用の段落か、
+    表の行の `fixture` の列（英語の文書では
+    `Fixtures`）のセルに置く（`pnpm run lint:docs`）。
   - Mermaid のテキストのコードブロックの info string は `mmd` にし、
     フォーマッターが印字する形で書く。
     例外は、書き方そのものを示すための例である。

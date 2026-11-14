@@ -1075,7 +1075,7 @@ usecase/gram-metadata-tail-newline-before-comma-newline]
 | Final business actor conflict        | The first declaration occurrence, with `A business actor must have normal or hollow geometry`.                                                                               | [fixture: usecase/spec-usecase-parser-3f58fb81]                                                                                                                |
 | Final business rectangle conflict    | The first declaration occurrence, with `A rectangle cannot be a business usecase`.                                                                                           | [fixture: usecase/spec-usecase-parser-49661584]                                                                                                                |
 
-Lexical and grammar cases:.
+Lexical and grammar cases:
 
 [fixture: usecase/lex-plain-crlf] [fixture: usecase/lex-plain-escaped-quote]
 [fixture: usecase/lex-markdown-unclosed] [fixture: usecase/gram-empty-label]
@@ -1097,7 +1097,7 @@ usecase/gram-classdef-json-prefix-mode] [fixture:
 usecase/gram-style-json-prefix-after-word-mode] [fixture:
 usecase/gram-style-json-prefix-after-hash-mode]
 
-Namespace, compatibility and reference cases:.
+Namespace, compatibility and reference cases:
 
 [fixture: usecase/gram-generated-label-repeat] [fixture:
 usecase/gram-bare-declaration-label-conflict] [fixture:
@@ -1108,7 +1108,7 @@ usecase/gram-json-duplicate-id] [fixture: usecase/spec-usecase-parser-31b56285]
 [fixture: usecase/gram-classes-on-reference-only] [fixture:
 usecase/gram-classes-on-quoted-reference-only]
 
-Relationship and target cases:.
+Relationship and target cases:
 
 [fixture: usecase/spec-usecase-parser-81a7a3d7] [fixture:
 usecase/spec-usecase-parser-70ebd0e2] [fixture:
@@ -1118,7 +1118,7 @@ usecase/spec-usecase-parser-800c93e6] [fixture: usecase/gram-note-unresolved]
 usecase/gram-metadata-empty] [fixture: usecase/gram-class-unknown] [fixture:
 usecase/gram-style-unknown]
 
-Native property and final-geometry cases:.
+Native property and final-geometry cases:
 
 [fixture: usecase/gram-native-quoted-business] [fixture:
 usecase/gram-metadata-unknown-key] [fixture:

@@ -15,14 +15,14 @@
 
 ## トークン
 
-| 種類         | 対象                                                                        | fixtures | fixture                                                                                                                                                                        |
-| ------------ | --------------------------------------------------------------------------- | -------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------ |
-| `Keyword`    | 正確な小文字のヘッダー、IR コンストラクター、メタデータのキーワード。       |          | [fixture: railroad/ir-gram-written-tree] [fixture: railroad/ebnf-gram-written-tree] [fixture: railroad/abnf-gram-written-tree] [fixture: railroad/peg-gram-written-tree]       |
-| `Identifier` | 宣言名と自然方言の参照。                                                    |          | [fixture: railroad/ir-keywords-long-rule-name] [fixture: railroad/ebnf-name-dash] [fixture: railroad/abnf-db-prototype-names] [fixture: railroad/peg-db-prototype-names]       |
-| `Numeric`    | 先頭のゼロを含む ABNF の各十進カウント全体。                                |          | [fixture: railroad/abnf-gram-written-tree] [fixture: railroad/abnf-db-repeat-leading-zero] [fixture: railroad/abnf-db-repeat-overflow]                                         |
-| `String`     | 空文字列も含む、両方の引用符付きの文字列全体。                              |          | [fixture: railroad/ir-db-empty-strings] [fixture: railroad/ebnf-db-empty-string] [fixture: railroad/abnf-db-empty-string] [fixture: railroad/peg-db-empty-string]              |
-| `Punctuator` | 各代入、区切り、接頭・接尾演算子、反復の星、PEG のドット。                  |          | [fixture: railroad/ir-gram-written-tree] [fixture: railroad/ebnf-gram-written-tree] [fixture: railroad/abnf-gram-written-tree] [fixture: railroad/peg-gram-written-tree]       |
-| `RawText`    | メタデータ値、native の隠れた形式全体、EBNF 特殊列全体、ABNF 数値形式全体。 |          | [fixture: railroad/ir-common-whitespace-shapes] [fixture: railroad/ir-native-ownership] [fixture: railroad/ebnf-special-whitespace] [fixture: railroad/abnf-numval-boundaries] |
+| 種類         | 対象                                                                        | fixture                                                                                                                                                                        |
+| ------------ | --------------------------------------------------------------------------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------ |
+| `Keyword`    | 正確な小文字のヘッダー、IR コンストラクター、メタデータのキーワード。       | [fixture: railroad/ir-gram-written-tree] [fixture: railroad/ebnf-gram-written-tree] [fixture: railroad/abnf-gram-written-tree] [fixture: railroad/peg-gram-written-tree]       |
+| `Identifier` | 宣言名と自然方言の参照。                                                    | [fixture: railroad/ir-keywords-long-rule-name] [fixture: railroad/ebnf-name-dash] [fixture: railroad/abnf-db-prototype-names] [fixture: railroad/peg-db-prototype-names]       |
+| `Numeric`    | 先頭のゼロを含む ABNF の各十進カウント全体。                                | [fixture: railroad/abnf-gram-written-tree] [fixture: railroad/abnf-db-repeat-leading-zero] [fixture: railroad/abnf-db-repeat-overflow]                                         |
+| `String`     | 空文字列も含む、両方の引用符付きの文字列全体。                              | [fixture: railroad/ir-db-empty-strings] [fixture: railroad/ebnf-db-empty-string] [fixture: railroad/abnf-db-empty-string] [fixture: railroad/peg-db-empty-string]              |
+| `Punctuator` | 各代入、区切り、接頭・接尾演算子、反復の星、PEG のドット。                  | [fixture: railroad/ir-gram-written-tree] [fixture: railroad/ebnf-gram-written-tree] [fixture: railroad/abnf-gram-written-tree] [fixture: railroad/peg-gram-written-tree]       |
+| `RawText`    | メタデータ値、native の隠れた形式全体、EBNF 特殊列全体、ABNF 数値形式全体。 | [fixture: railroad/ir-common-whitespace-shapes] [fixture: railroad/ir-native-ownership] [fixture: railroad/ebnf-special-whitespace] [fixture: railroad/abnf-numval-boundaries] |
 
 `::=` と `<-` はそれぞれ 1 つのアトムです。
 ABNF の星付き反復は、書かれた最小値、星、最大値に分かれます。

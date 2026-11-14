@@ -170,7 +170,8 @@ pnpm run -s lint:chars
 `pnpm run lint:docs` は、
 仕様と parser と tests の文書の fixture の引用が何も指さないとき、
 これらの文書と整形ツールの文書で、
-引用が引用の段落か `Fixtures` のセルの外にあるとき、
+引用が引用の段落か `fixture` の列（英語の文書では
+`Fixtures`）のセルの外にあるとき、
 mermaid.js へのリンクが pin した commit を指さないとき、
 英語の原本のない `.ja.md` があるときに失敗する。
 pin した commit は `packages/spec/docs/index.md` に記録してある。

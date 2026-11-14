@@ -1871,19 +1871,17 @@ all statements, comments and native hidden forms on the line, with their inner
 spacing. Do not join the line to either neighbor. When removing a directive
 forms one of these strings across physical lines, keep every contributing line.
 
-[fixture: railroad/semicolons/native-terminal-value]
-
-Here a line is the complete range that mermaid.js reads as one line.
-
-[fixture: railroad/semicolons/ir-word-unclosed-directive-lines] [fixture:
+[fixture: railroad/semicolons/native-terminal-value] [fixture:
+railroad/semicolons/ir-word-unclosed-directive-lines] [fixture:
 railroad/semicolons/ebnf-word-unclosed-directive-lines] [fixture:
 railroad/semicolons/abnf-word-unclosed-directive-lines] [fixture:
 railroad/semicolons/peg-word-unclosed-directive-lines]
 
-A comment line after U+2028 or U+2029 can join text before or after the line
-containing the word, or on both sides: keep all the connected source lines too.
-The first source line uses one body indentation step; the contents and the
-columns of later source lines remain written.
+Here a line is the complete range that mermaid.js reads as one line. A comment
+line after U+2028 or U+2029 can join text before or after the line containing
+the word, or on both sides: keep all the connected source lines too. The first
+source line uses one body indentation step; the contents and the columns of
+later source lines remain written.
 
 [test: railroad/semicolons/ir-style-comment-before-ls] [test:
 railroad/semicolons/ir-style-comment-after-ls] [test:

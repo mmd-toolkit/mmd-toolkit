@@ -5,9 +5,10 @@
 // Citation form is also checked in packages/prettier-plugin-mmd/docs, including
 // its corpus fixture and test citations; its own tests check their existence.
 // Code and placeholders are not citations. Citation paragraphs cannot start a
-// document or immediately follow a heading. Links and their anchors are checked
-// by `pnpm run lint:md`. Japanese versions behind their English are information,
-// not errors: they cite other fixtures or have other heading levels.
+// document, be a list item's first paragraph, or immediately follow a heading.
+// Links and their anchors are checked by `pnpm run lint:md`. Japanese versions
+// behind their English are information, not errors: they cite other fixtures or
+// have other heading levels.
 import { existsSync, readFileSync, readdirSync } from "node:fs"
 import path from "node:path"
 import markdown from "@eslint/markdown"
@@ -57,7 +58,7 @@ function headingLevels(file) {
  */
 function sourceCitations(text, formatter) {
   const pattern = formatter
-    ? /\[(?:fixture|corpus\s+fixture):\s+([^\s\]]+)\]|\[test:\s+([^\]]+)\]/gu
+    ? /\[(?:fixture|corpus\s+fixture):\s+([^\s\]]+)\]|\[test:\s+([^\s\]][^\]]*)\]/gu
     : /\[fixture:\s+([^\s\]]+)\]/gu
   return [...text.matchAll(pattern)].filter((match) =>
     match[1] === undefined
@@ -135,11 +136,19 @@ function citationFormProblems(file, text) {
         .slice(0, index)
         .filter((sibling) => sibling.type !== "yaml")
         .at(-1)
+      const firstInListItem =
+        parent.type === "listItem" &&
+        parent.children.find((sibling) => sibling.type === "paragraph") === node
       if (
+        firstInListItem ||
         previous?.type === "heading" ||
         (parent.type === "root" && previous === undefined)
       ) {
-        const place = previous ? "after a heading" : "at the document start"
+        const place = firstInListItem
+          ? "as the first paragraph of a list item"
+          : previous
+            ? "after a heading"
+            : "at the document start"
         found.push(
           `citation form: ${shown}:${node.position.start.line}: citation paragraph ${place}`,
         )
