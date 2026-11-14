@@ -27,15 +27,18 @@ starts with a string has no indentation, and a line of only a directive is a
 line of whitespace once the directive is removed, which is a field without a
 comma (diagrams/sankey.md, Characters and Diagram and records). It rejects a tab
 anywhere, so a tab could not indent the others. One column for every line avoids
-a mix of columns. [fixture: indentation/header-and-records-at-the-first-column]
-[fixture: indentation/quoted-first-record-at-the-first-column] [fixture:
+a mix of columns.
+
+[fixture: indentation/header-and-records-at-the-first-column] [fixture:
+indentation/quoted-first-record-at-the-first-column] [fixture:
 indentation/written-indentation-dropped] [fixture: indentation/tab-width-4]
 [fixture: indentation/use-tabs]
 
 The indentation of a comment line is no part of the Db and could be kept, but it
 is dropped too, so that every line stands in one column, and a directive line
-stands there in any case. [fixture:
-indentation/comment-lines-at-the-first-column] [fixture:
+stands there in any case.
+
+[fixture: indentation/comment-lines-at-the-first-column] [fixture:
 indentation/directive-lines-at-the-first-column]
 
 Input
@@ -89,25 +92,36 @@ decides (see
 mermaid.js also rejects a space next to a quote, so a string can have no space
 before it (`a, "b",1` is rejected), and a space after each comma would give one
 record two shapes, a space before a field without quotes and none before a
-string. The whitespace inside a field stays. [fixture:
-commas/spaces-around-commas-dropped] [fixture: commas/space-after-comma-dropped]
-[fixture: commas/spaces-inside-fields-kept] A directive next to a comma touches
-it, as a comma has no space beside it (see [Directives](#directives)), and a
-field of spaces only is printed as one space: `a,   %%{init: {}}%%,1` is printed
-`a, %%{init: {}}%%,1`. [fixture: directives/next-to-commas] A space next to a
-quote is rejected by mermaid.js, so a string touches its commas, and the space
-before a field after a string, which is read as the whitespace of that field, is
-dropped. [fixture: commas/quoted-fields-touch-commas]
+string. The whitespace inside a field stays.
+
+[fixture: commas/spaces-around-commas-dropped] [fixture:
+commas/space-after-comma-dropped] [fixture: commas/spaces-inside-fields-kept]
+
+A directive next to a comma touches it, as a comma has no space beside it (see
+[Directives](#directives)), and a field of spaces only is printed as one space:
+`a,   %%{init: {}}%%,1` is printed `a, %%{init: {}}%%,1`.
+
+[fixture: directives/next-to-commas]
+
+A space next to a quote is rejected by mermaid.js, so a string touches its
+commas, and the space before a field after a string, which is read as the
+whitespace of that field, is dropped.
+
+[fixture: commas/quoted-fields-touch-commas]
 
 A field of spaces only is a field with an empty text, and an empty field is
 rejected, so it is printed as one space: the number of the spaces is not in the
 Db, and one is the least that keeps the field. A value of spaces only before
-another record ends its line with that space. [fixture:
-commas/spaces-only-field-is-one-space] [fixture:
+another record ends its line with that space.
+
+[fixture: commas/spaces-only-field-is-one-space] [fixture:
 commas/spaces-only-value-before-another-record] [fixture:
 commas/spaces-only-value-then-comment-line] [fixture:
-blank-lines/after-a-value-of-spaces-only] The whitespace at the end of a record
-is dropped. [fixture: commas/trailing-whitespace-dropped]
+blank-lines/after-a-value-of-spaces-only]
+
+The whitespace at the end of a record is dropped.
+
+[fixture: commas/trailing-whitespace-dropped]
 
 A `;` is a character of a field. The line rule of mermaid.js ignores the last
 `;` of a line that holds `style` or `classDef`, a `:` after it, a `#` after
@@ -116,17 +130,23 @@ the `#`. So the whitespace between a `:` and a later `#` of such a line keeps
 whether it is there, even where it lies around a comma, and is one space where
 it is there, since the rule asks only whether some is there and not how much.
 The whitespace elsewhere on the line does not change which `;` is ignored.
+
 [fixture: commas/style-line-colon-and-hash-in-two-fields-kept] [fixture:
 commas/style-line-colon-and-hash-touching-kept] [fixture:
 commas/style-line-spaces-between-colon-and-hash-become-one] [fixture:
 commas/semicolon-fields] [fixture: commas/style-line] [fixture:
-commas/style-line-in-another-field] A `;` that the rule ignores at the end of a
-line is kept: without it, the last `;` of the line is another one, and
-`style:#x,b;c,1;` has the target `b;c`, where `style:#x,b;c,1` has the target
-`bc`. [fixture: commas/ignored-semicolon-at-the-end-kept] A line that dropping a
-`;` would change the end of is printed as written, the whitespace around its
-commas included: an ignored `;` next to another `;`. [fixture:
-commas/semicolon-ends-the-line-kept]
+commas/style-line-in-another-field]
+
+A `;` that the rule ignores at the end of a line is kept: without it, the last
+`;` of the line is another one, and `style:#x,b;c,1;` has the target `b;c`,
+where `style:#x,b;c,1` has the target `bc`.
+
+[fixture: commas/ignored-semicolon-at-the-end-kept]
+
+A line that dropping a `;` would change the end of is printed as written, the
+whitespace around its commas included: an ignored `;` next to another `;`.
+
+[fixture: commas/semicolon-ends-the-line-kept]
 
 Input
 ([commas/spaces-around-commas-dropped-input.mmd](../tests/fixtures/sankey/commas/spaces-around-commas-dropped-input.mmd)):
@@ -193,9 +213,11 @@ and the target of a link without quotes 83 times against 4 in quotes (see
 is printed `a,b,1`, `"a b"` is `a b`, and `" a "` is `a`. A field with a text
 that is not plain stays in quotes: a comma or a doubled quote, which a field
 without quotes cannot hold, a line break, a `;`, a `#`, a `%%`, or any other
-character, and a string with a directive in it. [fixture:
-quotes/plain-text-without-quotes] [fixture: quotes/symbols-without-quotes]
-[fixture: quotes/plain-text-with-spaces-without-quotes] [fixture:
+character, and a string with a directive in it.
+
+[fixture: quotes/plain-text-without-quotes] [fixture:
+quotes/symbols-without-quotes] [fixture:
+quotes/plain-text-with-spaces-without-quotes] [fixture:
 quotes/spaces-at-the-ends-left-out] [fixture:
 quotes/comma-and-doubled-quotes-kept] [fixture:
 quotes/other-characters-keep-the-quotes] [fixture:
@@ -258,11 +280,14 @@ at the start of the integer part (`007`), more than 15 digits, `-0`, `1_0` and
 such as `abc`, which is read as `NaN`. A value in quotes is printed without them
 when its text is plain, and then in the form of the value: `"1.0"` is printed
 `1`, and `"+1"` stays as written, since a `+` is not a plain character.
-[fixture: quotes/values-in-quotes-without-quotes] A `%%` or a `#` after the
-value is a character of the field, not a comment, and stays with it, so the
-field is no plain decimal and stays as written. [fixture: values/shortest-form]
-[fixture: values/forms-kept] [fixture: values/shortest-form-with-trivia]
-[fixture: values/text-after-the-value-kept]
+
+[fixture: quotes/values-in-quotes-without-quotes]
+
+A `%%` or a `#` after the value is a character of the field, not a comment, and
+stays with it, so the field is no plain decimal and stays as written.
+
+[fixture: values/shortest-form] [fixture: values/forms-kept] [fixture:
+values/shortest-form-with-trivia] [fixture: values/text-after-the-value-kept]
 
 Input
 ([values/text-after-the-value-kept-input.mmd](../tests/fixtures/sankey/values/text-after-the-value-kept-input.mmd)):
@@ -288,6 +313,7 @@ A string may go over lines. The lines are part of the string, the whitespace at
 the start of a later line is part of its value, and empty lines and comment
 lines inside it are printed as written, so a string is one piece that the
 printer does not reformat. The fields around it are formatted as elsewhere.
+
 [fixture: multi-line-strings/string-over-lines] [fixture:
 multi-line-strings/empty-line-in-string] [fixture:
 multi-line-strings/comment-line-in-string] [fixture:
@@ -319,11 +345,17 @@ d,e,2
 ### Blank lines
 
 Runs of empty lines become one empty line, and empty lines at the start and the
-end of the body are dropped, also right after the header. [fixture:
-blank-lines/collapsed] [fixture: blank-lines/after-the-header-dropped] [fixture:
-blank-lines/end-of-text-dropped] The empty lines around comment lines and
-directive lines are handled in the same way. [fixture:
-blank-lines/around-comment-lines] [fixture: blank-lines/around-directive-lines]
+end of the body are dropped, also right after the header.
+
+[fixture: blank-lines/collapsed] [fixture: blank-lines/after-the-header-dropped]
+[fixture: blank-lines/end-of-text-dropped]
+
+The empty lines around comment lines and directive lines are handled in the same
+way.
+
+[fixture: blank-lines/around-comment-lines] [fixture:
+blank-lines/around-directive-lines]
+
 These are the rules of the other diagram types, so that this diagram type has no
 rule of its own: the empty line that the documentation of mermaid.js writes
 after the header is dropped like any other at the start of the body.
@@ -359,11 +391,18 @@ versions that count read `sankey-beta` only (see
 [Forms kept for versions of mermaid.js that count](./compatibility.md#forms-kept-for-versions-of-mermaidjs-that-count)),
 so the printer keeps the spelling that the author wrote. It stands at the first
 column, and nothing follows it on its line, since mermaid.js rejects anything
-but a directive or a comment line there. [fixture: header/sankey] [fixture:
-header/sankey-beta] [fixture: header/upper-case-beta] [fixture:
-header/leading-whitespace-dropped] A directive glued to the header stays glued.
-[fixture: header/directive-glued-to-the-header] A comment line or a directive
-line before the header, and comment lines after it, stay where they are.
+but a directive or a comment line there.
+
+[fixture: header/sankey] [fixture: header/sankey-beta] [fixture:
+header/upper-case-beta] [fixture: header/leading-whitespace-dropped]
+
+A directive glued to the header stays glued.
+
+[fixture: header/directive-glued-to-the-header]
+
+A comment line or a directive line before the header, and comment lines after
+it, stay where they are.
+
 [fixture: header/comment-line-before-the-header] [fixture:
 header/directive-line-before-the-header] [fixture:
 header/comment-lines-after-the-header]
@@ -406,11 +445,16 @@ a,b,1
 
 A comment is a line that starts with `%%`, and it is removed before mermaid.js
 reads the text. Its text and mark are kept as written, and it stands at the
-first column, like every other line (see [Indentation](#indentation)). [fixture:
-comments/lines-at-the-first-column] [fixture: comments/text-kept] [fixture:
-comments/comment-line-only-in-the-body] A `%%` or a `#` inside a record is a
-character of a field, not a comment, and stays with the field. [fixture:
-comments/percent-in-fields-kept] [fixture: comments/hash-in-fields-kept]
+first column, like every other line (see [Indentation](#indentation)).
+
+[fixture: comments/lines-at-the-first-column] [fixture: comments/text-kept]
+[fixture: comments/comment-line-only-in-the-body]
+
+A `%%` or a `#` inside a record is a character of a field, not a comment, and
+stays with the field.
+
+[fixture: comments/percent-in-fields-kept] [fixture:
+comments/hash-in-fields-kept]
 
 Input
 ([comments/lines-at-the-first-column-input.mmd](../tests/fixtures/sankey/comments/lines-at-the-first-column-input.mmd)):
@@ -439,20 +483,28 @@ c,d,2
 ### Directives
 
 A directive on a line of its own stands at the first column: whitespace before
-it would leave a line of whitespace, which mermaid.js rejects. [fixture:
-directives/kept] A directive after a value keeps whether whitespace is written
-before it: where it is, one space stands there, and where it touches, it keeps
-touching, as in the other diagram types. A directive at the start of a record
-keeps whether whitespace is written between it and the record: touching stays
-touching, and whitespace becomes one space. [fixture:
-directives/after-the-value] [fixture: directives/at-the-start-of-a-record] A
-directive next to a comma is placed as under
+it would leave a line of whitespace, which mermaid.js rejects.
+
+[fixture: directives/kept]
+
+A directive after a value keeps whether whitespace is written before it: where
+it is, one space stands there, and where it touches, it keeps touching, as in
+the other diagram types. A directive at the start of a record keeps whether
+whitespace is written between it and the record: touching stays touching, and
+whitespace becomes one space.
+
+[fixture: directives/after-the-value] [fixture:
+directives/at-the-start-of-a-record]
+
+A directive next to a comma is placed as under
 [Directives](./flowchart.md#directives): a comma has no space beside it, so the
 directive touches it (see [Commas](#commas) for a field of spaces only).
+
 [fixture: directives/next-to-commas]
 
 A directive inside a field or a string is part of the text and stays. A
 directive that is not closed takes the rest of the text, and is kept as written.
+
 [fixture: directives/inside-fields-kept] [fixture:
 directives/unclosed-at-the-end-kept]
 
@@ -480,12 +532,19 @@ e,f,3 %%{init: {}}%%
 
 As in a flowchart: the YAML between the `---` lines is formatted with Prettier's
 YAML formatter, and the `---` lines are kept as written, with the spaces and
-tabs at the end of each. [fixture: frontmatter-yaml/formatted] [fixture:
+tabs at the end of each.
+
+[fixture: frontmatter-yaml/formatted] [fixture:
 frontmatter-yaml/closing-delimiter-whitespace-kept] [fixture:
-frontmatter-yaml/sankey-settings] The YAML is kept as written when Prettier
-cannot read it. [fixture: frontmatter-yaml/malformed-kept] A comment line
-between the frontmatter and the header is kept. [fixture:
-frontmatter-yaml/comment-after-frontmatter-before-header]
+frontmatter-yaml/sankey-settings]
+
+The YAML is kept as written when Prettier cannot read it.
+
+[fixture: frontmatter-yaml/malformed-kept]
+
+A comment line between the frontmatter and the header is kept.
+
+[fixture: frontmatter-yaml/comment-after-frontmatter-before-header]
 
 Input
 ([frontmatter-yaml/sankey-settings-input.mmd](../tests/fixtures/sankey/frontmatter-yaml/sankey-settings-input.mmd)):
@@ -519,11 +578,15 @@ mermaid.js accepts a tab, U+00A0, U+3000, U+2028, U+2029, and U+FEFF only at the
 end of the text, where whitespace is dropped before the text is read. They are
 dropped from the output, and the text ends with the line break after the last
 record. The examples are written as strings, in which `\u00a0` is U+00A0,
-`\u3000` is U+3000, and `\n` is a line break. [test: U+00A0 at the end of the
-text] [test: U+3000 at the end of the text without a line feed] [test: U+2028 at
-the end of the text without a line feed] [test: U+2029 at the end of the text]
-[test: U+FEFF at the end of the text without a line feed] [test: a tab at the
-end of the text without a line feed] [test: U+00A0 on a line of its own at the
-end of the text] A comment line at the end of the text keeps its characters, a
-U+00A0 included, as a comment does elsewhere. [test: U+00A0 at the end of the
-last comment line of the text]
+`\u3000` is U+3000, and `\n` is a line break.
+
+[test: U+00A0 at the end of the text] [test: U+3000 at the end of the text
+without a line feed] [test: U+2028 at the end of the text without a line feed]
+[test: U+2029 at the end of the text] [test: U+FEFF at the end of the text
+without a line feed] [test: a tab at the end of the text without a line feed]
+[test: U+00A0 on a line of its own at the end of the text]
+
+A comment line at the end of the text keeps its characters, a U+00A0 included,
+as a comment does elsewhere.
+
+[test: U+00A0 at the end of the last comment line of the text]

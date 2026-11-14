@@ -46,22 +46,30 @@ of another diagram type (see [detection.md](./detection.md)).
   character, and so is a lone surrogate, a surrogate code unit that is not part
   of a surrogate pair; a lone surrogate is not a valid code point in well-formed
   text, but it still counts as one character.
+
 - **Whitespace** is any of U+0009–U+000D, U+0020, U+00A0, U+1680, U+2000–U+200A,
   U+2028, U+2029, U+202F, U+205F, U+3000, and U+FEFF. It includes the byte order
   mark. This is the set that the patterns in mermaid.js treat as whitespace.
+
   [fixture: common/whitespace-characters] [fixture:
   sequence/lex-whitespace-characters-around-text]
+
 - A **line terminator** is `\r\n`, a lone `\r`, or a lone `\n`. U+2028 and
   U+2029 are not line terminators.
+
 - **Line whitespace** is whitespace that is not part of a line terminator.
+
 - A **line** is a maximal run of characters without a line terminator. A
   **whitespace-only line** is a line that is empty or consists of line
   whitespace.
+
 - A **word character** is an ASCII letter (`A`–`Z`, `a`–`z`), an ASCII digit
   (`0`–`9`), or `_`. A **word** is a maximal run of word characters. No other
   letter or digit is a word character.
+
 - A **line segment** is a maximal run of characters that contains no line
   terminator, U+2028, or U+2029.
+
 - Two characters match **case-insensitively** when they are the same character,
   or when both are in the Basic Multilingual Plane (U+0000–U+FFFF) and have the
   same canonical form. The canonical form of a BMP character is its uppercase,
@@ -73,13 +81,16 @@ of another diagram type (see [detection.md](./detection.md)).
   LONG S does not match `s` or `S` (its uppercase is the ASCII `S`), U+212A
   KELVIN SIGN does not match `k` (`k` becomes `K`, U+212A stays itself), and no
   character outside the BMP matches another character. This is how the
-  case-insensitive detectors of mermaid.js compare. [fixture:
-  common/detect-case-kelvin-sign] [fixture: common/detect-case-long-s]
+  case-insensitive detectors of mermaid.js compare.
+
+  [fixture: common/detect-case-kelvin-sign] [fixture: common/detect-case-long-s]
+
 - A **token** is the general name for what a lexer cuts out of a text and hands
   to its grammar, as in "mermaid.js reads no token for an empty string". The
   rules of this specification read units instead (see
   [Terminology](./index.md#terminology)); the word names no record of an
   implementation.
+
 - Grammar rules use this notation. A rule is written as its name, `=`, and its
   definition. Text in double quotes is literal text; a double quote itself is
   written in single quotes. Items written one after another follow one another
@@ -87,12 +98,16 @@ of another diagram type (see [detection.md](./detection.md)).
   input is read by the alternative with which the rest of the grammar reads it
   too. In a state diagram, `definition-statement`, the first alternative of
   `statement`, reads the `A` of `A --> B` but leaves the `-->`, which no rule
-  reads next, so `A --> B` is a `transition-statement`. [fixture:
-  state/lex-two-transitions-one-line] Where two alternatives could read the same
-  units, the diagram document says which reading is taken. An item followed by
-  `?` is optional, by `*` repeats zero or more times, and by `+` repeats one or
-  more times. Parentheses group items. Unless a rule says otherwise, `*` and `+`
-  take as many repetitions as possible.
+  reads next, so `A --> B` is a `transition-statement`.
+
+  [fixture: state/lex-two-transitions-one-line]
+
+  Where two alternatives could read the same units, the diagram document says
+  which reading is taken. An item followed by `?` is optional, by `*` repeats
+  zero or more times, and by `+` repeats one or more times. Parentheses group
+  items. Unless a rule says otherwise, `*` and `+` take as many repetitions as
+  possible.
+
 - The rules of a diagram's lexer are written in words. Where such a rule reads a
   repetition, such as "one or more characters other than …" or "zero or more
   whitespace", without saying how many, it reads as many characters as it can
@@ -105,8 +120,10 @@ of another diagram type (see [detection.md](./detection.md)).
   ends at the first line `end note` after it, because that rule reads as few
   characters as possible: `note right of A`, `x`, `end note`, `B`,
   `note left of B`, `y`, and `end note` on seven lines are two notes, `x` on A
-  and `y` on B. [fixture: flowchart/gram-click-call] [fixture:
-  state/lex-note-block-two-notes]
+  and `y` on B.
+
+  [fixture: flowchart/gram-click-call] [fixture: state/lex-note-block-two-notes]
+
 - Every rule reads the source with the rule of
   [Line terminators](#line-terminators) applied, so each line terminator counts
   as a single line break.
@@ -128,6 +145,7 @@ instead, and the two readings give the same results for every rule here:
 Where a length is measured instead, the unit is the UTF-16 code unit, and the
 text says so: the `maxTextSize` limit below and treeview
 [branch columns](./diagrams/treeview.md#columns-and-prefix-indentation).
+
 [fixture: treeview/box-column-nonbmp-discriminating]
 
 ## mermaid.js and this specification
@@ -173,8 +191,9 @@ and eventmodeling Dbs do so: their parsers receive comment lines and leading
 whitespace, unless the source after the complete frontmatter trivia, including
 whitespace-only lines after the closing --- line, without its directives and
 with each `\r\n` counted as one, is longer than `maxTextSize` UTF-16 code units,
-in which case Step 5 applies as usual. [fixture:
-agentflow/comment-default-size-equal-crlf] [fixture:
+in which case Step 5 applies as usual.
+
+[fixture: agentflow/comment-default-size-equal-crlf] [fixture:
 agentflow/comment-default-size-above-crlf] [fixture:
 agentflow/comment-default-size-equal-inline-directive] [fixture:
 agentflow/comment-default-size-above-inline-directive] [fixture:
@@ -195,8 +214,9 @@ eventmodeling/comment-default-size-above-frontmatter] [fixture:
 eventmodeling/frontmatter-extra-trivia-below] [fixture:
 eventmodeling/frontmatter-extra-trivia-boundary] [fixture:
 eventmodeling/frontmatter-extra-trivia-above] [fixture:
-eventmodeling/frontmatter-extra-whitespace-line-boundary] `maxTextSize` can only
-be set by the site configuration (see
+eventmodeling/frontmatter-extra-whitespace-line-boundary]
+
+`maxTextSize` can only be set by the site configuration (see
 [The effective configuration](../../tests/docs/configuration.md#the-effective-configuration));
 it is 50000 by default. The agentflow and eventmodeling documents say how their
 lexers treat them.
@@ -261,7 +281,9 @@ header. The block remains diagram text: pie, gitgraph, info, packet,
 architecture, radar, railroad, wardley, cynefin and eventmodeling apply their
 hidden YAML rules. The cited flowchart, sequence, class, state, agentflow,
 block, ishikawa, usecase and venn cases reject it. It is not common frontmatter
-or trivia. [fixture: pie/frontmatter-nonleading-comment] [fixture:
+or trivia.
+
+[fixture: pie/frontmatter-nonleading-comment] [fixture:
 gitgraph/lex-yaml-after-comment] [fixture: info/frontmatter-nonleading-comment]
 [fixture: packet/detect-one-block] [fixture:
 pie/lex-yaml-leading-config-not-applied] [fixture:
@@ -311,7 +333,9 @@ YAML properties. Passed bare lines and accompanying trivia are not read again,
 including between retained forms; native closing boundaries still apply. Its
 [detection rules](./diagrams/wardley.md#detection) distinguish the one-block
 skip, stopping cases and both prefix orders, while its [tree](./ast/wardley.md)
-assigns owners. [fixture: wardley/detect-block-after-directive] [fixture:
+assigns owners.
+
+[fixture: wardley/detect-block-after-directive] [fixture:
 wardley/detect-real-before-retained-secondscan] [fixture:
 wardley/detect-retained-two] [fixture: wardley/prefix-yaml-after-secondscan]
 [fixture: wardley/prefix-yaml-before-secondscan] [fixture:
@@ -325,8 +349,9 @@ are not configuration. Passed bare lines and accompanying whitespace/line breaks
 are shared Comments and trivia, also between retained forms; native closing
 boundaries still apply. Its [detection rules](./diagrams/cynefin.md#detection)
 distinguish the one-block skip, stopping cases and both prefix orders, and its
-[tree](./ast/cynefin.md) assigns named owners. [fixture:
-cynefin/detect-real-before-retained-secondscan] [fixture:
+[tree](./ast/cynefin.md) assigns named owners.
+
+[fixture: cynefin/detect-real-before-retained-secondscan] [fixture:
 cynefin/detect-retained-yaml-properties] [fixture:
 cynefin/prefix-yaml-before-secondscan] [fixture:
 cynefin/prefix-yaml-after-secondscan] [fixture: cynefin/detect-retained-two]
@@ -341,8 +366,9 @@ frontmatter, the single retained-block skip, passed bare lines and the second
 directive scan; its [tree](./ast/eventmodeling.md#gap-ownership) owns retained
 forms. Native general whitespace includes LS and PS, so the cited passed-line
 and no-passed-line controls both accept. Its EM_* metadata rules do not use the
-common metadata converter. [fixture:
-eventmodeling/detect-real-retained-secondscan] [fixture:
+common metadata converter.
+
+[fixture: eventmodeling/detect-real-retained-secondscan] [fixture:
 eventmodeling/detect-retained-two] [fixture:
 eventmodeling/detect-secondscan-yaml] [fixture:
 eventmodeling/detect-yaml-secondscan] [fixture:
@@ -358,8 +384,9 @@ not read again. Its
 [direct box rules](./diagrams/treeview.md#box-drawing-reading) interpret
 prefixes and decoration on original source lines, also inside quoted names and
 accessibility blocks; the [tree](./ast/treeview.md#gap-ownership) keeps those
-forms in named owners or enclosing leaves. [fixture:
-treeview/detect-block-after-directive] [fixture:
+forms in named owners or enclosing leaves.
+
+[fixture: treeview/detect-block-after-directive] [fixture:
 treeview/detect-secondscan-singleline] [fixture:
 treeview/detect-secondscan-bare-ascii] [fixture: treeview/box-written-tree]
 [fixture: treeview/box-multiline-quoted] [fixture:
@@ -369,6 +396,7 @@ treeview/box-block-decoration]
 
 Lexical rule: the lexer reads `\r\n` and a lone `\r` as `\n`. A lone `\r` is
 therefore a line break everywhere, including inside frontmatter and directives.
+
 [fixture: common/cr-only] [fixture: common/crlf] [fixture:
 common/frontmatter-lone-cr] [fixture: common/directive-spans-lone-cr]
 
@@ -377,14 +405,16 @@ left out: a `\r` and a `\n` with a directive or a comment region between them
 are two line terminators, in every rule, as in mermaid.js, which reads line
 terminators before it removes directives and comment lines. So `A[a`, a lone
 `\r`, a directive, `\n`, and `b]` has the Db label `a`, two line feeds, and `b`.
+
 [fixture: flowchart/lex-lone-cr-directive-lf-label]
 
 Conversion: every line terminator is `\n` in the converted form of a text. The
 values of the tree keep line terminators as written.
 
 U+2028 and U+2029 are not line terminators. They are line whitespace. `A-->B`
-U+2028 `C-->D` is one line and is rejected. [fixture:
-common/u2028-is-not-newline]
+U+2028 `C-->D` is one line and is rejected.
+
+[fixture: common/u2028-is-not-newline]
 
 ## HTML attribute quotes
 
@@ -399,8 +429,9 @@ attribute-part  = (any character except ">")*
 The attribute part may span lines, and it ends at the first `>`. A `<` that is
 not followed by a word character, or after which no `>` follows anywhere in the
 text, does not start a tag; the search continues with the next `<`. Tags do not
-overlap: the search continues after the end of the previous tag. [fixture:
-common/html-attribute-quotes-no-word-after-lt] [fixture:
+overlap: the search continues after the end of the previous tag.
+
+[fixture: common/html-attribute-quotes-no-word-after-lt] [fixture:
 common/html-attribute-quotes-digit-tag-name] [fixture:
 common/html-attribute-quotes-no-closing-gt] [fixture:
 common/html-attribute-quotes-tag-over-lines] [fixture:
@@ -416,13 +447,16 @@ quoted-value    = "=" '"' (any character except '"')* '"'
 The lexer reads the two `"` of each quoted value as `'`. The replacement has the
 same length, so no other character moves. Tags and quoted values are found in
 the characters of the text as written, directives, comment lines, and the `;`
-that the line rule ignores included. The frontmatter is not searched. [fixture:
-flowchart/html-tag-starts-in-frontmatter] [fixture:
+that the line rule ignores included. The frontmatter is not searched.
+
+[fixture: flowchart/html-tag-starts-in-frontmatter] [fixture:
 common/html-attribute-quotes-space-around-equals]
 
 Conversion: the same characters are `'` in the converted form of a text. The
 label of `A[<a href="u">t</a>]` is `<a href='u'>t</a>` in the Db, while its
-value in the tree keeps the `"`. [fixture: common/html-attribute-quotes]
+value in the tree keeps the `"`.
+
+[fixture: common/html-attribute-quotes]
 
 Reading the `"` as `'` matters for acceptance: in flowchart, a `"` inside label
 text starts a quoted string, so the same label without this rule would be
@@ -439,26 +473,37 @@ this specification follows it on purpose, with its consequences:
 - A tag can start on a comment line. `%% <a` on a comment line starts a tag that
   reaches the `>` in `A[b="c">d]`, so the label is `b='c'>d`. Before
   `accTitle: b="c">d`, the same comment line makes the accessible title
-  `b='c'>d`. [fixture: flowchart/html-tag-starts-in-comment-line] [fixture:
+  `b='c'>d`.
+
+  [fixture: flowchart/html-tag-starts-in-comment-line] [fixture:
   flowchart/html-tag-starts-in-comment-line-acc-title]
+
 - A tag can reach across a directive. `A[<a %%{init: {}}%% href="u">t]` has the
-  label `<a  href='u'>t`. [fixture:
-  flowchart/html-tag-attributes-cross-directive]
+  label `<a  href='u'>t`.
+
+  [fixture: flowchart/html-tag-attributes-cross-directive]
+
 - A `>` on a comment line ends a tag. In `A[<b]`, a comment line `%% >`, and
   `B[c="d">e]`, the tag `<b` ends on the comment line, so the `"` of `B` stays,
-  and the flowchart grammar rejects it. [fixture:
-  flowchart/html-tag-closed-in-comment-line]
+  and the flowchart grammar rejects it.
+
+  [fixture: flowchart/html-tag-closed-in-comment-line]
+
 - A `"` on a comment line can end or start a quoted value. In `A[<a b="c`, a
   comment line `%% "`, and `d">e]`, the value `="c` ends on the comment line, so
   the `"` after `d` stays, and the flowchart grammar rejects it. In `A[<a`, a
   comment line `%% x="`, and `y" z>e]`, a value starts at the `="` on the
   comment line and ends at the `"` after `y`, so the label is `<a`, a line
-  break, and `y' z>e`. [fixture:
-  flowchart/html-tag-value-closed-in-comment-line] [fixture:
+  break, and `y' z>e`.
+
+  [fixture: flowchart/html-tag-value-closed-in-comment-line] [fixture:
   flowchart/html-tag-value-opened-in-comment-line]
+
 - A `;` that the line rule ignores still counts. In `A[<a style:#x=;"u">t]`,
   `=;"u"` is not a quoted value, so the `"` stay, and the flowchart grammar
-  rejects them. [fixture: flowchart/html-tag-ignored-semicolon-in-value]
+  rejects them.
+
+  [fixture: flowchart/html-tag-ignored-semicolon-in-value]
 
 ## Frontmatter
 
@@ -470,33 +515,47 @@ The source has frontmatter when all of the following hold:
    _indent_ (zero or more line whitespace characters), `---`, and optional line
    whitespace, and a line terminator ends it. A line break before it prevents
    frontmatter. A byte order mark is line whitespace, so it becomes part of the
-   indent. [fixture: common/frontmatter-leading-newline] [fixture:
+   indent.
+
+   [fixture: common/frontmatter-leading-newline] [fixture:
    common/frontmatter-bom] [fixture: common/frontmatter-bom-both-delimiters]
+
 2. `----` is not `---` followed by line whitespace, so it does not open
-   frontmatter. [fixture: common/frontmatter-four-dashes]
+   frontmatter.
+
+   [fixture: common/frontmatter-four-dashes]
+
 3. A **delimiter line** consists of exactly the opening indent, `---`, and
    optional line whitespace, and a line terminator ends it. The indent must
    equal the opening indent character for character, so an indented `---` inside
    a YAML block scalar does not close the frontmatter, and a byte order mark
    before the opening delimiter must be repeated before the closing one. Text
    after `---`, or a line at the very end of the text without a line terminator,
-   is not a delimiter line. [fixture: common/frontmatter-indented] [fixture:
+   is not a delimiter line.
+
+   [fixture: common/frontmatter-indented] [fixture:
    common/frontmatter-indent-mismatch] [fixture:
    common/frontmatter-nested-dashes] [fixture:
    common/frontmatter-closing-trailing-text] [fixture:
-   common/frontmatter-no-newline-after] With the delimiters indented by two
-   spaces, `---` indented by six spaces in a block scalar of the body is not a
-   delimiter line, and the title is `---` and a line feed; with the body at
-   column zero and the `---` of the block scalar indented by two spaces, that
-   line closes the frontmatter, and the input is rejected. [fixture:
-   common/frontmatter-indented-block-scalar-dashes] [fixture:
-   common/frontmatter-indented-closing-in-body] `--- !!map` is not a delimiter
-   line, so `---`, `%YAML 1.2`, `--- !!map`, `title: x`, and `---` is
-   frontmatter with the title `x`, while with `--- !!map` split into `---` and
-   `!!map`, the `---` line closes the frontmatter after `%YAML 1.2`, and the
-   input is rejected. [fixture:
-   common/frontmatter-yaml-document-marker-with-tag] [fixture:
+   common/frontmatter-no-newline-after]
+
+   With the delimiters indented by two spaces, `---` indented by six spaces in a
+   block scalar of the body is not a delimiter line, and the title is `---` and
+   a line feed; with the body at column zero and the `---` of the block scalar
+   indented by two spaces, that line closes the frontmatter, and the input is
+   rejected.
+
+   [fixture: common/frontmatter-indented-block-scalar-dashes] [fixture:
+   common/frontmatter-indented-closing-in-body]
+
+   `--- !!map` is not a delimiter line, so `---`, `%YAML 1.2`, `--- !!map`,
+   `title: x`, and `---` is frontmatter with the title `x`, while with
+   `--- !!map` split into `---` and `!!map`, the `---` line closes the
+   frontmatter after `%YAML 1.2`, and the input is rejected.
+
+   [fixture: common/frontmatter-yaml-document-marker-with-tag] [fixture:
    common/frontmatter-yaml-document-marker-split]
+
 4. The **first content line** is the first line after the opening line that is
    not whitespace-only. The **closing line** is the first delimiter line after
    the first content line, and the **body** is the lines from the first content
@@ -504,24 +563,33 @@ The source has frontmatter when all of the following hold:
    line and the first content line are part of the frontmatter but not of the
    body. For example, `---`, a whitespace-only line, `---`, and `---` is
    frontmatter whose body is the third line and whose closing line is the
-   fourth. [fixture: common/frontmatter-blank-line-then-two-delimiters]
+   fourth.
+
+   [fixture: common/frontmatter-blank-line-then-two-delimiters]
+
 5. When there is no delimiter line after the first content line, but the first
    content line itself is a delimiter line and at least one whitespace-only line
    lies between the opening line and it, then the first content line is the
    closing line and the body is the last of those whitespace-only lines. This is
    how `---`, an empty line, and `---` is frontmatter with an empty body, and
    how `---`, a line of spaces, and `---` is frontmatter whose body is that
-   line. [fixture: common/frontmatter-blank-line-then-delimiter-only] In every
-   other case there is no frontmatter; in particular `---` directly followed by
-   `---` is not frontmatter. [fixture: common/frontmatter-empty-body] [fixture:
+   line.
+
+   [fixture: common/frontmatter-blank-line-then-delimiter-only]
+
+   In every other case there is no frontmatter; in particular `---` directly
+   followed by `---` is not frontmatter.
+
+   [fixture: common/frontmatter-empty-body] [fixture:
    common/frontmatter-adjacent-delimiters]
 
 The frontmatter trivia extends from the start of the source through the line
 terminator of the closing line and any whitespace-only lines after it, with
 their line terminators. A whitespace-only line at the end of the source that has
 no line terminator is not part of it. The indentation of the next line that is
-not whitespace-only is not part of it. [fixture:
-common/frontmatter-blank-lines-after-closing] [fixture:
+not whitespace-only is not part of it.
+
+[fixture: common/frontmatter-blank-lines-after-closing] [fixture:
 common/frontmatter-whitespace-line-at-end] [fixture:
 common/frontmatter-indented-line-after]
 
@@ -546,7 +614,9 @@ not apply. The rejecting controls below establish the scope of rejection, not a
 claim about all other diagram types. Leading whitespace, a byte order mark on
 the opening fence only, a comment line or a directive can expose this case.
 Matching byte order marks on both fences can instead satisfy the real
-frontmatter rule. [fixture: pie/frontmatter-nonleading-comment] [fixture:
+frontmatter rule.
+
+[fixture: pie/frontmatter-nonleading-comment] [fixture:
 gitgraph/lex-yaml-after-comment] [fixture: info/frontmatter-nonleading-comment]
 [fixture: packet/detect-one-block] [fixture:
 pie/lex-yaml-leading-config-not-applied] [fixture:
@@ -573,6 +643,7 @@ second-scan directive; a second-scan directive may instead follow the skipped
 block. Real leading frontmatter may precede this separate retained block.
 Leading indentation at the detection point is trivia, so equal indentation on
 the two nonleading fences leaves only the closer indented and prevents the skip.
+
 [fixture: pie/detect-two-nonleading-blocks] [fixture:
 pie/detect-block-after-real-frontmatter] [fixture:
 pie/detect-second-scan-directive-before-block] [fixture:
@@ -586,6 +657,7 @@ and a closing fence with no following line break leave `---` at the detection
 point and select the rejecting `---` pseudo-diagram. A bare `%%` line, including
 a percent-brace line on which no directive starts, before an otherwise matching
 block also prevents this one skip: the block is not at the detection point.
+
 [fixture: common/frontmatter-indent-closing-only] [fixture:
 common/frontmatter-indent-different-depths] [fixture:
 common/frontmatter-four-dashes] [fixture:
@@ -600,6 +672,7 @@ pie/detect-block-after-bare-brace-line]
 The `error` pseudo-diagram also accepts a line break, byte order mark or comment
 line before a matching block and then `error`; its condition leaves out the
 block. The block's title and configuration are not applied there either.
+
 [fixture: common/frontmatter-bom-error] [fixture:
 common/detect-lone-cr-directive-lf] [fixture: common/detect-lone-cr-comment-lf]
 [fixture: common/detect-frontmatter-after-line-break-error] [fixture:
@@ -630,33 +703,47 @@ free-text  = (any character except U+2028 and U+2029)*
 ```
 
 - Whitespace includes line terminators, so every `whitespace*` may cross line
-  breaks. [fixture: common/directive-whitespace-before-name] [fixture:
+  breaks.
+
+  [fixture: common/directive-whitespace-before-name] [fixture:
   common/directive-line-feed-before-name]
+
 - After the name, `whitespace* ":"` is taken when a `:` follows the name and its
-  whitespace; otherwise the directive has no colon. [fixture:
-  sequence/config-wrap-directive] [fixture:
+  whitespace; otherwise the directive has no colon.
+
+  [fixture: sequence/config-wrap-directive] [fixture:
   common/directive-whitespace-before-colon] [fixture:
   common/directive-whitespace-before-colon-applies] [fixture:
   common/directive-line-feed-before-colon-applies]
+
 - The argument is a `word` when the first character after the whitespace is a
   word character. Otherwise it is `free-text`, which stops before the first
   `}%%`, before U+2028 or U+2029, or at the end of the text, whichever comes
-  first. It may be empty. [fixture: common/directive-u2028] [fixture:
-  common/directive-empty-argument]
+  first. It may be empty.
+
+  [fixture: common/directive-u2028] [fixture: common/directive-empty-argument]
+
 - The `whitespace*` after the argument takes all whitespace that follows,
   including line breaks. The closing `}%%` is then taken if it follows. So when
   a free-text argument stops before U+2028 or U+2029, that character is taken as
   whitespace, and a `}%%` right after it still closes the directive:
   `%%{init: {'theme':'dark'}` U+2028 `}%%` is one closed directive that sets the
-  theme. [fixture: common/directive-u2028-before-closing]
+  theme.
+
+  [fixture: common/directive-u2028-before-closing]
 
 After a directive the search continues where it ends; directives do not overlap.
 A `%%{` that is not followed by zero or more whitespace characters and then a
 word character does not start a directive, and the search continues with the
-next character. [fixture: common/directive-non-word-start] The rule of
-[Line terminators](#line-terminators) applies, so a directive may span a lone
-`\r` or `\r\n` exactly as in mermaid.js, which normalizes line breaks before it
-removes directives. [fixture: common/directive-spans-lone-cr]
+next character.
+
+[fixture: common/directive-non-word-start]
+
+The rule of [Line terminators](#line-terminators) applies, so a directive may
+span a lone `\r` or `\r\n` exactly as in mermaid.js, which normalizes line
+breaks before it removes directives.
+
+[fixture: common/directive-spans-lone-cr]
 
 Whether a directive starts at a position does not depend on the diagram's
 syntax, on the context the lexer is in, or on comments: a directive can start
@@ -664,36 +751,54 @@ inside a comment line and in the middle of what would otherwise be a unit.
 Consequences, each confirmed against mermaid.js:
 
 - The closing `}%%` is optional. A directive with a free-text argument and no
-  `}%%` extends to the end of the text. [fixture: common/directive-unclosed]
+  `}%%` extends to the end of the text.
+
+  [fixture: common/directive-unclosed]
+
   Right after the header, it takes the rest of the diagram: `flowchart LR`,
   `%%{init: {"theme": "dark"}}`, and `A-->B` has no vertices and no edges.
+
   [fixture: common/directive-unclosed-after-header]
+
 - `%%{` followed by a word starts a directive even when no directive was
   intended: `%%{wrap` at the end of a line followed by `A-->B` on the next line
   takes `A` as its word argument, because the whitespace before the argument
-  crosses the line break. [fixture: common/directive-name-only-unclosed] After
-  `A-->B`, the lines `%%{wrap` and `C-->D` give the directive the argument `C`,
-  and the rest of the line, `-->D`, continues the link before it: the edges are
-  A to B and B to D. [fixture:
-  common/directive-word-argument-unclosed-next-line]
+  crosses the line break.
+
+  [fixture: common/directive-name-only-unclosed]
+
+  After `A-->B`, the lines `%%{wrap` and `C-->D` give the directive the argument
+  `C`, and the rest of the line, `-->D`, continues the link before it: the edges
+  are A to B and B to D.
+
+  [fixture: common/directive-word-argument-unclosed-next-line]
+
 - When the argument starts with a word character, the argument is only that
   word. `%%{init: dark foo}%%` ends after `dark `, and `foo}%%` is ordinary
-  text. [fixture: common/directive-word-argument-then-more]
+  text.
+
+  [fixture: common/directive-word-argument-then-more]
+
 - `%%{` not followed by a word, such as `%%{ }%%` or `%%{-x}%%`, is not a
   directive. It is also not a comment line (see below), so it is
   [diagram text](#reading-a-source), which each diagram's lexer reads: on the
   line after a vertex, flowchart rejects `%%{}`, and sequence and class read it
   as a diagram comment. state rejects it after a state, and after `state X`
   reads its `%%` as text that mermaid.js does not read before a body, and `{}`
-  as the empty body of X. [fixture: common/directive-empty-braces] [fixture:
+  as the empty body of X.
+
+  [fixture: common/directive-empty-braces] [fixture:
   flowchart/lex-percent-brace-line-after-vertex] [fixture:
   sequence/lex-percent-brace-line-after-message] [fixture:
   class/lex-percent-brace-line-after-class] [fixture:
   state/lex-percent-brace-line-after-reference] [fixture:
   state/lex-percent-brace-line-after-state] [fixture:
   common/directive-non-word-start]
+
 - Neither the name nor its case matters: `%%{INIT: ...}%%` is a directive like
-  `%%{init: ...}%%`. [fixture: common/directive-uppercase]
+  `%%{init: ...}%%`.
+
+  [fixture: common/directive-uppercase]
 
 ### A directive is a token boundary
 
@@ -709,7 +814,9 @@ inside a directive is left out with it, so a directive that spans several lines
 does not end a line. The one exception is
 [HTML attribute quotes](#html-attribute-quotes): mermaid.js finds them before it
 removes directives, so they are found in the text as written, directives
-included. [fixture: flowchart/html-tag-attributes-cross-directive]
+included.
+
+[fixture: flowchart/html-tag-attributes-cross-directive]
 
 So the units and the values that a diagram's lexer reads are those of the text
 without its directives, and a match of the line rule, an entity, or the `%%` of
@@ -735,47 +842,66 @@ a comment can have a directive between two of its characters.
   unit of whitespace only, such as a `space` or a `newline` unit, is not inside
   the unit: whitespace reads the same with or without it, as in
   `A --> %%{init: {}}%% B`, whose arrow unit reads the whitespace around it, and
-  in `accTitle %%{init: {}}%% : x` in sequence. [fixture:
-  flowchart/lex-directive-after-arrow] [fixture:
+  in `accTitle %%{init: {}}%% : x` in sequence.
+
+  [fixture: flowchart/lex-directive-after-arrow] [fixture:
   flowchart/db-subgraph-id-directive-in-statement-space] [fixture:
   sequence/lex-acc-title-directive-before-colon]
 
 - A directive inside a comment region is read through with the region, as the
   lexer reads through the whole region (see [Comment lines](#comment-lines)),
   also inside what one unit reads. A directive after the comment's `%%` is part
-  of the comment; one before it is not. [fixture:
-  common/comment-region-directive-in-string] [fixture:
+  of the comment; one before it is not.
+
+  [fixture: common/comment-region-directive-in-string] [fixture:
   common/comment-directive-in-string]
 
 A directive between two units, or in whitespace that a unit reads at its start
-or its end, behaves exactly as in mermaid.js. [fixture:
-common/directive-mid-line] [fixture: common/directive-after-link] [fixture:
-common/comment-after-directive] [fixture: common/directive-joins-lines]
+or its end, behaves exactly as in mermaid.js.
+
+[fixture: common/directive-mid-line] [fixture: common/directive-after-link]
+[fixture: common/comment-after-directive] [fixture:
+common/directive-joins-lines]
 
 Because the lexer reads the text without the directive, a directive inside a
 text unit or a string unit also gives the result of mermaid.js. In flowchart,
 the label of `A[x%%{init: {}}%%y]` is `xy`. `flowchart%%{init: {}}%%LR` is
-rejected, as in mermaid.js, because the text is `flowchartLR`. [fixture:
-common/directive-in-label-text] [fixture:
-common/directive-between-header-and-direction] In a string, the whitespace
-around the directive stays: the label of `A["a %%{init: {}}%% b"]` is `a`, two
-spaces, and `b`, and the quotes of a directive inside a string do not end the
-string. [fixture: common/directive-in-string] [fixture:
-flowchart/lex-directive-in-string-with-quotes] A directive in whitespace between
-two units changes nothing: `flowchart %%{init: {}}%%LR` has the direction `LR`,
-and `style A %%{init: {}}%%fill:red` the style `fill:red`, while
+rejected, as in mermaid.js, because the text is `flowchartLR`.
+
+[fixture: common/directive-in-label-text] [fixture:
+common/directive-between-header-and-direction]
+
+In a string, the whitespace around the directive stays: the label of
+`A["a %%{init: {}}%% b"]` is `a`, two spaces, and `b`, and the quotes of a
+directive inside a string do not end the string.
+
+[fixture: common/directive-in-string] [fixture:
+flowchart/lex-directive-in-string-with-quotes]
+
+A directive in whitespace between two units changes nothing:
+`flowchart %%{init: {}}%%LR` has the direction `LR`, and
+`style A %%{init: {}}%%fill:red` the style `fill:red`, while
 `style A%%{init: {}}%%fill:red` is rejected, because the text is
-`style Afill:red`. [fixture: common/directive-in-header-whitespace] [fixture:
+`style Afill:red`.
+
+[fixture: common/directive-in-header-whitespace] [fixture:
 common/directive-after-style-space] [fixture:
-common/directive-between-id-and-style] `A[mysty%%{init: {}}%%le:#x;]` has the
-label `mystyle:#x`, because the line matches the `style` rule, and the label of
-`A[a#qu%%{init: {}}%%ot;b]` has the placeholder of the entity `#quot;`, both as
-in mermaid.js. [fixture: common/directive-in-style-rule] [fixture:
-common/directive-in-entity] A directive inside a name, a keyword, a delimiter,
-an arrow, or a number makes the input rejected, while mermaid.js accepts it:
-mermaid.js reads `end%%{init: {}}%%x` as the vertex `endx`, not the keyword
-`end`, and here the directive lies inside a name. [fixture:
-common/directive-keyword-followed-by-text] See
+common/directive-between-id-and-style]
+
+`A[mysty%%{init: {}}%%le:#x;]` has the label `mystyle:#x`, because the line
+matches the `style` rule, and the label of `A[a#qu%%{init: {}}%%ot;b]` has the
+placeholder of the entity `#quot;`, both as in mermaid.js.
+
+[fixture: common/directive-in-style-rule] [fixture: common/directive-in-entity]
+
+A directive inside a name, a keyword, a delimiter, an arrow, or a number makes
+the input rejected, while mermaid.js accepts it: mermaid.js reads
+`end%%{init: {}}%%x` as the vertex `endx`, not the keyword `end`, and here the
+directive lies inside a name.
+
+[fixture: common/directive-keyword-followed-by-text]
+
+See
 [`directive-as-token-boundary`](./known-divergences/directive-as-token-boundary.md).
 
 A directive on a comment line after its `%%` is part of the comment, and one
@@ -798,27 +924,35 @@ conditions:
    whitespace and directives. A `%%` after other text on its line is no comment
    and stays in the text: `subgraph S %% group` has the title `S %% group`,
    `accTitle: Title %% note` the title `Title %% note`, and
-   `style A fill:red %% red` the style `fill:red %% red`. [fixture:
-   common/comment-mid-line-subgraph-name] [fixture:
+   `style A fill:red %% red` the style `fill:red %% red`.
+
+   [fixture: common/comment-mid-line-subgraph-name] [fixture:
    common/comment-mid-line-acc-title] [fixture: common/comment-mid-line-style]
+
 2. The first character after the `%%` that is not part of a directive exists, is
    not `{`, and is not part of a line terminator. So a line with only `%%` is no
    comment line, and inside a text of several lines it is part of the text: the
    edge text of `A -->|a`, a line `%%`, and `b| B` in flowchart is `a`, the line
-   `%%`, and `b`, and so is a subgraph title written the same way. [fixture:
-   flowchart/lex-percent-line-in-edge-label] [fixture:
+   `%%`, and `b`, and so is a subgraph title written the same way.
+
+   [fixture: flowchart/lex-percent-line-in-edge-label] [fixture:
    flowchart/lex-percent-line-in-subgraph-title]
 
 A comment extends from the first `%` of its `%%` to the end of its line, that
 is, to the next line terminator that is not part of a directive; U+2028 and
-U+2029 do not end it. [fixture:
-common/comment-line-separator-inside-comment-line] A line terminator is part of
-a directive when it lies in what the directive scan takes, the whitespace after
-the argument included (see [Where a directive is](#where-a-directive-is)), so a
-directive in a comment can carry the comment over line breaks: after `X`, the
-lines `%% %%{wrap`, `A`, and `B --> C` are one comment, because the directive
-takes `A` and the line break after it, and mermaid.js reads neither `A` nor
-`B --> C`. [fixture: common/comment-directive-word-argument-takes-next-lines]
+U+2029 do not end it.
+
+[fixture: common/comment-line-separator-inside-comment-line]
+
+A line terminator is part of a directive when it lies in what the directive scan
+takes, the whitespace after the argument included (see
+[Where a directive is](#where-a-directive-is)), so a directive in a comment can
+carry the comment over line breaks: after `X`, the lines `%% %%{wrap`, `A`, and
+`B --> C` are one comment, because the directive takes `A` and the line break
+after it, and mermaid.js reads neither `A` nor `B --> C`.
+
+[fixture: common/comment-directive-word-argument-takes-next-lines]
+
 When no line terminator follows that is not part of a directive, the comment
 extends to the end of the text; it then does not include the whitespace at its
 end that a directive took, as the directive does not (see
@@ -832,84 +966,121 @@ whitespace-only lines directly before the comment line. The lexer finds it at
 that comment start: from there it looks ahead over whitespace, line terminators,
 and directives, and when it reaches a comment, the region starts where the
 look-ahead started. Comment regions do not overlap. The whole region is trivia.
-[fixture: common/comment-blank-line-before-in-string] In the tree, only its
-directives appear, in `Root.directives`; its whitespace and line terminators
-belong to no node. The region still matters beyond them: its line terminators
-are not diagram text, and inside a unit the lexer reads through the whole
-region, as described below.
 
-- Comment lines may be indented with any line whitespace. [fixture:
-  common/comment-indented]
+[fixture: common/comment-blank-line-before-in-string]
+
+In the tree, only its directives appear, in `Root.directives`; its whitespace
+and line terminators belong to no node. The region still matters beyond them:
+its line terminators are not diagram text, and inside a unit the lexer reads
+through the whole region, as described below.
+
+- Comment lines may be indented with any line whitespace.
+
+  [fixture: common/comment-indented]
+
 - A `%%` after other text on its line is not a comment. `A-->B %% note` passes
-  `%% note` to the diagram's grammar, which rejects it in flowchart. [fixture:
-  common/comment-trailing]
+  `%% note` to the diagram's grammar, which rejects it in flowchart.
+
+  [fixture: common/comment-trailing]
+
 - U+2028 and U+2029 are comment starts although they are not line terminators.
   In `A-->B` U+2028 `%% note`, the `%% note` is a comment and the statement
-  before it is accepted; the same holds for U+2029. [fixture:
-  common/comment-after-u2028] [fixture: common/comment-after-u2029] A comment
-  region starts right after U+2028 when only whitespace follows up to the `%%`:
-  in `error` U+2028, two spaces, and `%% c`, the region is the two spaces and
-  the comment. When whitespace and a second U+2028 come before the `%%`, the
-  region starts at the earliest comment start, right after the first U+2028.
+  before it is accepted; the same holds for U+2029.
+
+  [fixture: common/comment-after-u2028] [fixture: common/comment-after-u2029]
+
+  A comment region starts right after U+2028 when only whitespace follows up to
+  the `%%`: in `error` U+2028, two spaces, and `%% c`, the region is the two
+  spaces and the comment. When whitespace and a second U+2028 come before the
+  `%%`, the region starts at the earliest comment start, right after the first
+  U+2028.
+
   [fixture: common/whitespace-cut-at-comment-region] [fixture:
   common/whitespace-cut-at-earliest-comment-start]
+
 - A line containing only `%%` is not a comment line, because a comment needs a
   character after `%%`. In flowchart it declares a node named `%%`. `%%`
-  followed by a space is a comment line. [fixture: common/comment-bare]
-  [fixture: common/comment-bare-with-space] So a `%%` line among lines that are
-  commented out is a statement: after `A-->B`, the lines `%% C-->D`, `%%`, and
-  `%% D-->E` give the vertex `%%` besides two comments, while with an empty line
-  or `%%` and a space in place of the `%%` line, all of them are comments.
+  followed by a space is a comment line.
+
+  [fixture: common/comment-bare] [fixture: common/comment-bare-with-space]
+
+  So a `%%` line among lines that are commented out is a statement: after
+  `A-->B`, the lines `%% C-->D`, `%%`, and `%% D-->E` give the vertex `%%`
+  besides two comments, while with an empty line or `%%` and a space in place of
+  the `%%` line, all of them are comments.
+
   [fixture: common/comment-bare-between-comment-lines] [fixture:
   common/comment-bare-between-comment-lines-empty] [fixture:
-  common/comment-bare-between-comment-lines-space] Inside a label, such a line
-  stays in the text: `A[a`, a line break, `%%`, a line break, and `b]` has the
-  label `a`, a line feed, `%%`, a line feed, and `b`. [fixture:
-  common/comment-bare-line-in-label] So it is in a string: `A["first`, a line
-  break, `%%`, a line break, and `third"]` has the label `first`, a line feed,
-  `%%`, a line feed, and `third`, while `%%` and a space on a line of its own is
-  a comment line, also inside a label: `A[a`, a line break, `%%` and a space, a
-  line break, and `b]` has the label `a`, a line feed, and `b`. [fixture:
-  common/comment-bare-line-in-string-label] [fixture:
-  common/comment-percent-space-line-in-label] It stays as well in a description
-  block, also after a comment line, in the string of a tooltip, and in a title
-  on the line after `accTitle:`. [fixture:
-  flowchart/lex-acc-descr-block-bare-marker-line-after-comment-line] [fixture:
-  flowchart/lex-tooltip-bare-marker-line] [fixture:
+  common/comment-bare-between-comment-lines-space]
+
+  Inside a label, such a line stays in the text: `A[a`, a line break, `%%`, a
+  line break, and `b]` has the label `a`, a line feed, `%%`, a line feed, and
+  `b`.
+
+  [fixture: common/comment-bare-line-in-label]
+
+  So it is in a string: `A["first`, a line break, `%%`, a line break, and
+  `third"]` has the label `first`, a line feed, `%%`, a line feed, and `third`,
+  while `%%` and a space on a line of its own is a comment line, also inside a
+  label: `A[a`, a line break, `%%` and a space, a line break, and `b]` has the
+  label `a`, a line feed, and `b`.
+
+  [fixture: common/comment-bare-line-in-string-label] [fixture:
+  common/comment-percent-space-line-in-label]
+
+  It stays as well in a description block, also after a comment line, in the
+  string of a tooltip, and in a title on the line after `accTitle:`.
+
+  [fixture: flowchart/lex-acc-descr-block-bare-marker-line-after-comment-line]
+  [fixture: flowchart/lex-tooltip-bare-marker-line] [fixture:
   flowchart/lex-acc-title-bare-marker-next-line]
+
 - A text that consists only of comment lines has no diagram text and is rejected
-  by detection. [fixture: common/comment-only]
+  by detection.
+
+  [fixture: common/comment-only]
+
 - Directives are left out, so the line `%%{init: {}}%% %% c` is a directive
   followed by a comment, and `%%%{init: {}}%%% c` is a comment line whose `%%`
   is its first and its last `%`, with the directive between them, as in
   mermaid.js. The line `%%%%{init: {}}%%` is not a comment line: once the
   directive is left out, nothing follows its `%%`. In flowchart it declares the
   node `%%`, as in mermaid.js. A directive after the `%%` of a comment line is
-  part of the comment line. [fixture: common/comment-after-directive] [fixture:
+  part of the comment line.
+
+  [fixture: common/comment-after-directive] [fixture:
   common/comment-percent-joined-by-directive] [fixture:
   flowchart/comment-percent-before-directive] [fixture:
   common/directive-in-comment]
+
 - A line that starts with `%%{` and is not a directive is not a comment line
-  either, because the character after `%%` is `{`. [fixture:
-  common/directive-empty-braces]
+  either, because the character after `%%` is `{`.
+
+  [fixture: common/directive-empty-braces]
 
 Comment lines are recognized independently of the diagram's syntax and of the
 context the lexer is in. The lexer reads through a comment region as if it were
 not there: a unit whose text continues across a comment region, such as a
 multi-line quoted label, is one unit, and its value is the text before and after
-the region joined. [fixture: common/comment-in-string] [fixture:
+the region joined.
+
+[fixture: common/comment-in-string] [fixture:
 common/comment-blank-line-before-in-string]
 
 This keeps acceptance as in mermaid.js even when the comment line contains
 characters that are special inside the unit, such as a `"` inside a quoted
-label. [fixture: common/comment-with-quote-in-string]
+label.
+
+[fixture: common/comment-with-quote-in-string]
 
 A comment region cuts a diagram comment in the same way, a comment that a
 diagram's own lexer reads to the end of its line. Its line goes on past a
 comment line that follows a U+2028 or U+2029 on it, because mermaid.js reads the
 text without the comment line: in state, after `A %% x`, U+2029, a line
 `%% end`, and a line `B`, the diagram comment goes on with `B`, which mermaid.js
-does not read. [fixture: state/lex-diagram-comment-across-comment-line]
+does not read.
+
+[fixture: state/lex-diagram-comment-across-comment-line]
 
 ## Leading whitespace
 
@@ -918,7 +1089,9 @@ comment lines, in
 [`cleanupComments()`](https://github.com/mermaid-js/mermaid/blob/2086904e76c692331e34a45d7cc3bc30860d040e/packages/mermaid/src/diagram-api/comments.ts#L6-L8).
 Whitespace, line terminators, directives, and comment regions before the first
 unit of the diagram's lexer are trivia and are not seen by the diagram's
-grammar. [fixture: common/leading-whitespace-before-header] [fixture:
+grammar.
+
+[fixture: common/leading-whitespace-before-header] [fixture:
 common/leading-trivia-before-header]
 
 ## Diagram detection
@@ -931,20 +1104,24 @@ point satisfies the [Frontmatter](#frontmatter) shape, detection passes it once
 before looking for bare `%%` lines. The block remains diagram text for the
 selected diagram to read; see Frontmatter for pie, gitgraph, info, packet,
 architecture, radar, railroad, wardley, cynefin, eventmodeling and rejecting
-controls. [fixture: pie/frontmatter-nonleading-comment] [fixture:
+controls.
+
+[fixture: pie/frontmatter-nonleading-comment] [fixture:
 gitgraph/lex-yaml-after-comment] [fixture: info/frontmatter-nonleading-comment]
 [fixture: packet/detect-one-block] [fixture:
 pie/lex-yaml-leading-config-not-applied] [fixture:
 common/directive-before-frontmatter] [fixture:
 common/frontmatter-nonleading-sequence] [fixture:
 common/frontmatter-nonleading-class] [fixture:
-common/frontmatter-nonleading-state] From there, detection reads and passes the
-**bare `%%` lines**, if there are any: a line whose diagram text, after line
-whitespace, begins with `%%` followed by a line terminator, the end of the text,
-or `{` where no directive starts, neither in the source nor in the reading once
-more below; the whole line is skipped, whatever follows on it, a header among
-it: `%%{ }%%` and `sequenceDiagram` on one line leave no header, and the text is
-rejected. Such a line is neither a comment line nor a directive (see
+common/frontmatter-nonleading-state]
+
+From there, detection reads and passes the **bare `%%` lines**, if there are
+any: a line whose diagram text, after line whitespace, begins with `%%` followed
+by a line terminator, the end of the text, or `{` where no directive starts,
+neither in the source nor in the reading once more below; the whole line is
+skipped, whatever follows on it, a header among it: `%%{ }%%` and
+`sequenceDiagram` on one line leave no header, and the text is rejected. Such a
+line is neither a comment line nor a directive (see
 [Comment lines](#comment-lines)); the whitespace, line terminators, directives,
 and comment regions between bare `%%` lines are trivia, passed with them. A bare
 `%%` line may be indented and may end with any line terminator. With the
@@ -962,9 +1139,11 @@ order would skip the first line as a bare `%%` line and find no header at
 `wrap}%%`. `%%{`, a comment line, and `sequenceDiagram` hold such a directive:
 it takes the keyword as its name, and `A` on the next line as its argument, so
 no header follows, and the text is rejected, as in mermaid.js, whose second scan
-for directives finds the same directive. [fixture:
-radar/detect-secondscan-native] [fixture: radar/detect-secondscan-native-glued]
-[fixture: wardley/detect-block-after-directive] [fixture:
+for directives finds the same directive.
+
+[fixture: radar/detect-secondscan-native] [fixture:
+radar/detect-secondscan-native-glued] [fixture:
+wardley/detect-block-after-directive] [fixture:
 cynefin/detect-block-after-directive] [fixture:
 eventmodeling/detect-real-retained-secondscan]
 
@@ -973,8 +1152,10 @@ usecase and venn inputs, such a directive makes the input rejected: where it is
 closed and a header follows, as in `%%{`, a line `%%{wrap}%%`, and
 `x}%%flowchart LR`, detection reaches the header, and the cited rejecting
 controls agree with mermaid.js, whose lexer reads `%%{` and `x}%%` as text
-before the header. [fixture: flowchart/detect-directive-across-directive]
-[fixture: sequence/detect-directive-across-directive] [fixture:
+before the header.
+
+[fixture: flowchart/detect-directive-across-directive] [fixture:
+sequence/detect-directive-across-directive] [fixture:
 class/detect-directive-across-directive] [fixture:
 state/detect-directive-across-directive] [fixture:
 agentflow/detect-directive-second-scan-preheader] [fixture:
@@ -990,8 +1171,9 @@ InfoIgnoredText, PacketIgnoredText, ArchitectureIgnoredText, RadarIgnoredText,
 RailroadIgnoredText, WardleyIgnoredText, CynefinIgnoredText or
 EventmodelingIgnoredText in textBeforeHeader. The lines `%%{`, `%% gap`,
 `wrap}%%`, and `pie` are accepted; gluing `pie` immediately to the closer
-rejects, because the hidden form's closing boundary is not satisfied. [fixture:
-pie/lex-hidden-directive-second-detection-scan] [fixture:
+rejects, because the hidden form's closing boundary is not satisfied.
+
+[fixture: pie/lex-hidden-directive-second-detection-scan] [fixture:
 pie/lex-hidden-directive-second-detection-scan-glued] [fixture:
 gitgraph/lex-hidden-directive-second-scan] [fixture:
 gitgraph/lex-hidden-directive-second-scan-glued] [fixture:
@@ -1010,8 +1192,10 @@ unreadable. Source directives inside that Comment remain shared Directives,
 without creating another ignored-text node. Passed bare lines and accompanying
 whitespace remain Comments and trivia under the same rule above; treemap's
 visible indentation can reject ASCII gaps as well as Unicode gaps when Mermaid
-reads them again. [fixture: treemap/detect-retained-body-yaml-no-native]
-[fixture: treemap/detect-second-scan-single-line-comment] [fixture:
+reads them again.
+
+[fixture: treemap/detect-retained-body-yaml-no-native] [fixture:
+treemap/detect-second-scan-single-line-comment] [fixture:
 treemap/detect-second-scan-multiline-rejected] [fixture:
 treemap/div-bare-retained-ascii-header] [fixture:
 treemap/div-bare-retained-unicode-header]
@@ -1042,9 +1226,11 @@ line; and so is a text in which a directive or a comment line takes the header,
 as `%%{`, a line break, and `sequenceDiagram` do, where the directive takes the
 keyword as its name, and `%%`, U+2028, and `sequenceDiagram`, where the comment
 line holds the keyword; and so is a text whose first unit is an empty
-description block, `accDescr {}`, before the header. [fixture: common/empty]
-[fixture: common/comment-only] [fixture: common/bare-percent-line-only]
-[fixture: gitgraph/div-detect-retained-directive-bare-bom] [fixture:
+description block, `accDescr {}`, before the header.
+
+[fixture: common/empty] [fixture: common/comment-only] [fixture:
+common/bare-percent-line-only] [fixture:
+gitgraph/div-detect-retained-directive-bare-bom] [fixture:
 gitgraph/div-lex-preheader-bare-between-retained-unicode] [fixture:
 packet/div-detect-yaml-bare-directive-ls] [fixture:
 common/bare-percent-line-only-with-line-feed] [fixture:
@@ -1088,11 +1274,15 @@ state/header-after-bare-percent-line] [fixture:
 flowchart/header-after-bare-percent-line] [fixture:
 sequence/header-after-hash-line] [fixture: sequence/header-after-semicolon-line]
 [fixture: sequence/header-after-bare-percent-on-same-line] [fixture:
-class/header-after-hash-line] [detection.md](./detection.md) lists all 39
-detectors in order, with their conditions, and each diagram document refers to
-its entry in its Detection section. [fixture: radar/retained-yaml-control]
-[fixture: wardley/prefix-secondscan] [fixture: wardley/detect-secondscan-glued]
-[fixture: cynefin/prefix-two-secondscans] [fixture:
+class/header-after-hash-line]
+
+[detection.md](./detection.md) lists all 39 detectors in order, with their
+conditions, and each diagram document refers to its entry in its Detection
+section.
+
+[fixture: radar/retained-yaml-control] [fixture: wardley/prefix-secondscan]
+[fixture: wardley/detect-secondscan-glued] [fixture:
+cynefin/prefix-two-secondscans] [fixture:
 eventmodeling/detect-real-retained-secondscan]
 
 A detector reads no further than its keyword and the character after it, except
@@ -1112,6 +1302,7 @@ a sequence diagram, while `flow%%{init: {}}%%chart LR` is detected as a
 flowchart and then rejected, because the directive lies inside the header
 keyword (see
 [`directive-as-token-boundary`](./known-divergences/directive-as-token-boundary.md)).
+
 [fixture: common/leading-trivia-before-header] [fixture:
 common/leading-whitespace-before-header] [fixture:
 common/detect-line-separator-before-header] [fixture:
@@ -1153,6 +1344,7 @@ Two pseudo-diagrams are registered before all real diagrams:
   `x}%%error` is accepted, because the diagram text `%%{`, two line breaks,
   `x}%%error` holds a directive, while with `error` in place of `x}%%error` the
   directive takes `error` as its word argument and the text is rejected.
+
   [fixture: common/error-pseudo-diagram] [fixture: common/error-uppercase]
   [fixture: common/error-trailing-comment-line] [fixture:
   common/error-trailing-blank-lines] [fixture: common/error-directive-adjacent]
@@ -1176,6 +1368,7 @@ Two pseudo-diagrams are registered before all real diagrams:
   common/detect-directive-across-directive-closed] [fixture:
   common/detect-directive-joined-by-directive] [fixture:
   common/detect-directive-across-directive]
+
 - `---`: the diagram text at the position reached starts with `---`, as for
   every detector but `error`. Its parser always throws, so the input is
   rejected. This is what becomes of a `---` block that is not frontmatter
@@ -1183,9 +1376,11 @@ Two pseudo-diagrams are registered before all real diagrams:
   `a: b`, `---`, and `error`, the position reached is at the first `---`, while
   the condition of `error` looks from the detection point, where the block is
   not, and so does not leave it out; and so after a directive that detection
-  finds once more, as in `%%{`, a comment line, and `wrap}%%---`. [fixture:
-  common/frontmatter-four-dashes] [fixture: common/frontmatter-leading-newline]
-  [fixture: common/error-bare-percent-line-then-frontmatter-block] [fixture:
+  finds once more, as in `%%{`, a comment line, and `wrap}%%---`.
+
+  [fixture: common/frontmatter-four-dashes] [fixture:
+  common/frontmatter-leading-newline] [fixture:
+  common/error-bare-percent-line-then-frontmatter-block] [fixture:
   common/detect-dashes-after-directive-found-once-more]
 
 mermaid.js decides the diagram type on a text that it rewrites first. In
@@ -1203,8 +1398,9 @@ above give the same result: a bare `%%` line is a comment in both where the
 lexer of mermaid.js reads it as one, and only where it does not do the two
 differ (the known divergence above); a directive that only the second scan finds
 is passed by detection in both and rejected by both in the diagram types shown
-by the rejecting controls below. [fixture:
-flowchart/detect-directive-across-directive] [fixture:
+by the rejecting controls below.
+
+[fixture: flowchart/detect-directive-across-directive] [fixture:
 sequence/detect-directive-across-directive] [fixture:
 class/detect-directive-across-directive] [fixture:
 state/detect-directive-across-directive] [fixture:
@@ -1218,8 +1414,9 @@ A matching nonleading `---` block is passed by detection in both and read by the
 selected diagram: pie, gitgraph, info, packet, architecture, radar, railroad,
 wardley, cynefin and eventmodeling apply their hidden YAML rules and retain a
 matching block as ignored text. The cited rejecting controls have the scope
-stated under [Frontmatter](#frontmatter). [fixture:
-common/directive-before-frontmatter] [fixture:
+stated under [Frontmatter](#frontmatter).
+
+[fixture: common/directive-before-frontmatter] [fixture:
 common/frontmatter-indent-mismatch] [fixture: common/frontmatter-bom] [fixture:
 agentflow/db-frontmatter-after-comment] [fixture:
 block/gram-frontmatter-comment-before] [fixture:
@@ -1239,8 +1436,10 @@ reads otherwise is the known divergence
 whose header is another diagram's and whose diagram text holds `C4Container`,
 `C4Component`, `C4Dynamic`, or `C4Deployment` after it is handed to the C4
 parser by mermaid.js and read as the diagram of its header here. `C4Context`
-counts at the start only, in both. [fixture: common/detect-c4-anywhere]
-[fixture: common/detect-c4context-only-at-start]
+counts at the start only, in both.
+
+[fixture: common/detect-c4-anywhere] [fixture:
+common/detect-c4context-only-at-start]
 
 When the text has an init directive, mermaid.js also runs the detectors once
 more on a text derived differently, and that run can reject the input; this
@@ -1251,8 +1450,9 @@ specification does not run it (see
 Architecture also reads retained YAML and second-scan directives as
 ArchitectureIgnoredText in ArchitectureDiagram.textBeforeHeader. Passed bare
 lines and accompanying whitespace and line breaks are not read again. Retained
-forms still require their native closing boundaries. [fixture:
-architecture/detect-retained-before-second-scan] [fixture:
+forms still require their native closing boundaries.
+
+[fixture: architecture/detect-retained-before-second-scan] [fixture:
 architecture/detect-two-second-scan-forms] [fixture:
 architecture/detect-second-scan-glued] [fixture:
 architecture/div-retained-bare-second-scan-ls] [fixture:
@@ -1261,8 +1461,9 @@ architecture/retained-yaml-no-bare]
 Radar also reads retained YAML and second-scan directives as RadarIgnoredText in
 RadarDiagram.textBeforeHeader. Detection-passed bare lines and accompanying
 whitespace and line breaks are not read again. Retained forms still require
-their native closing boundaries. [fixture:
-radar/detect-yaml-before-secondscan-native] [fixture:
+their native closing boundaries.
+
+[fixture: radar/detect-yaml-before-secondscan-native] [fixture:
 radar/detect-secondscan-before-yaml-native] [fixture:
 radar/detect-secondscan-native-twice] [fixture:
 radar/div-detect-yaml-bare-secondscan-native-ls] [fixture:
@@ -1275,6 +1476,7 @@ not read again. The single YAML skip precedes bare lines and the second scan,
 and retained forms still require their native closing boundary.
 [Railroad detection](./diagrams/railroad.md#detection) defines the stopping
 cases and [its tree](./ast/railroad.md#gap-ownership) defines ownership.
+
 [fixture: railroad/ir-yaml-before-secondscan-real] [fixture:
 railroad/ebnf-yaml-before-secondscan-real] [fixture:
 railroad/abnf-yaml-before-secondscan-real] [fixture:
@@ -1298,6 +1500,7 @@ no segment: in sequence, the line
 `participant A@{ "style": "x:#y" };participant C%%{init: {}`, U+2029, and
 `;participant D` is one segment, whose last `;`, after the U+2029, is ignored,
 so the line declares the participants A and `Cparticipant D`, as in mermaid.js.
+
 [fixture: sequence/tokens-directive-paragraph-separator-keeps-segment] [fixture:
 sequence/tokens-directive-paragraph-separator-then-semicolon]
 
@@ -1308,8 +1511,9 @@ which `;` is ignored:
 - A line terminator, U+2028, or U+2029, also right after a closed directive, and
   a line feed before a comment line end the segment. The last `;` of the first
   line, between `C` and `participant E`, is ignored, and the participants are A,
-  `Cparticipant E`, D, and B. [fixture:
-  sequence/tokens-ignored-semicolon-separator-line-feed] [fixture:
+  `Cparticipant E`, D, and B.
+
+  [fixture: sequence/tokens-ignored-semicolon-separator-line-feed] [fixture:
   sequence/tokens-ignored-semicolon-separator-carriage-return] [fixture:
   sequence/tokens-ignored-semicolon-separator-crlf] [fixture:
   sequence/tokens-ignored-semicolon-separator-line-separator] [fixture:
@@ -1318,22 +1522,27 @@ which `;` is ignored:
   [fixture:
   sequence/tokens-ignored-semicolon-separator-closed-directive-paragraph-separator]
   [fixture: sequence/tokens-ignored-semicolon-separator-comment-line]
+
 - With no separator, with a closed directive, and with an unclosed directive
   whose argument ends before a U+2028 or U+2029 that it then takes as
   whitespace, the segment goes on, and the `;` after the separator is ignored:
-  the participants are A, C, `Eparticipant D`, and B. [fixture:
-  sequence/tokens-ignored-semicolon-separator-none] [fixture:
+  the participants are A, C, `Eparticipant D`, and B.
+
+  [fixture: sequence/tokens-ignored-semicolon-separator-none] [fixture:
   sequence/tokens-ignored-semicolon-separator-closed-directive] [fixture:
   sequence/tokens-ignored-semicolon-separator-unclosed-directive-line-separator]
   [fixture:
   sequence/tokens-ignored-semicolon-separator-unclosed-directive-paragraph-separator]
+
 - An unclosed directive whose free-text argument meets a line terminator takes
   the rest of the text, and so does one whose free-text argument starts after
   the separator, as when a U+2028 or U+2029 right after its name or its `:` is
   taken as whitespace: in `%%{wrap`, U+2028, and `;participant D`, the argument
   is `;participant D` and all that follows. The last `;` of the segment is then
   the one between `C` and `participant E`, and the participants are A and
-  `Cparticipant E`. [fixture:
+  `Cparticipant E`.
+
+  [fixture:
   sequence/tokens-ignored-semicolon-separator-unclosed-directive-line-feed]
   [fixture:
   sequence/tokens-ignored-semicolon-separator-unclosed-directive-carriage-return]
@@ -1342,8 +1551,9 @@ which `;` is ignored:
 
 For agentflow and eventmodeling, comment regions are not left out (see
 [mermaid.js and this specification](#mermaidjs-and-this-specification)), so the
-rule also applies to comment lines. [fixture:
-eventmodeling/comment-line-ignored-semicolon-in-data] [fixture:
+rule also applies to comment lines.
+
+[fixture: eventmodeling/comment-line-ignored-semicolon-in-data] [fixture:
 eventmodeling/tokens-comment-line-ignored-semicolon] [fixture:
 eventmodeling/tokens-comment-line-semicolon-before-text]
 
@@ -1357,9 +1567,11 @@ A line segment **matches the `style` rule** when it contains, in this order:
 When a segment matches, the lexer ignores its last `;`: it reads through that
 `;` as if it were not there, and the grammar does not see it. Then the same is
 done with `classDef` in place of `style` in item 1, on the segment without the
-`;` that the `style` rule ignored. [fixture:
-common/entity-style-then-classdef-rule] mermaid.js removes such a `;` from the
-text in
+`;` that the `style` rule ignored.
+
+[fixture: common/entity-style-then-classdef-rule]
+
+mermaid.js removes such a `;` from the text in
 [`encodeEntities()`](https://github.com/mermaid-js/mermaid/blob/2086904e76c692331e34a45d7cc3bc30860d040e/packages/mermaid/src/utils.ts#L895-L917);
 this specification keeps it in the source and only ignores it. Like a directive,
 the ignored `;` may lie inside a text or a string, and between two units (see
@@ -1368,6 +1580,7 @@ name, a number, a keyword, an arrow, or a delimiter, it makes the input
 rejected, while mermaid.js accepts it: `A[style:#x] --> B;b` has the vertex `Bb`
 in mermaid.js, and `A[style:#x] -;-> B` the edge `-->`; see
 [`ignored-semicolon-as-token-boundary`](./known-divergences/ignored-semicolon-as-token-boundary.md).
+
 [fixture: flowchart/div-ignored-semicolon-in-id] [fixture:
 flowchart/div-ignored-semicolon-in-arrow]
 
@@ -1377,43 +1590,60 @@ The rule is meant to keep a CSS colour such as `#f00;` in a `style` or
 - It matches `style` anywhere in a line, including inside a label.
   `A[mystyle:#x;]` matches, so its `;` is ignored, and it has the label
   `mystyle:#x`, while `A[mystyle: #x;]` does not match (whitespace separates the
-  `:` from the `#`) and has the label `mystyle: ﬂ°x¶ß`. [fixture:
-  common/entity-style-in-label] [fixture: common/entity-style-in-label-space]
+  `:` from the `#`) and has the label `mystyle: ﬂ°x¶ß`.
+
+  [fixture: common/entity-style-in-label] [fixture:
+  common/entity-style-in-label-space]
+
   Other characters may come between the `:` and the `#`, as long as none is
   whitespace: `A[style:a#b;]` matches and has the label `style:a#b`, while
   `A[style:a #b;]` does not match and has the label `style:a`, a space, and the
-  placeholder of `#b;`. [fixture: common/entity-style-colon-text-before-hash]
-  [fixture: common/entity-style-colon-space-before-hash] This includes the HTML
-  `style` attribute of a label:
+  placeholder of `#b;`.
+
+  [fixture: common/entity-style-colon-text-before-hash] [fixture:
+  common/entity-style-colon-space-before-hash]
+
+  This includes the HTML `style` attribute of a label:
   `A[<span style='color:#f00;font-weight:bold;'>x</span>]` matches, so its last
   `;` is ignored and `#f00;` is an entity;
   `A[<span style='color:red;background:#fff;'>x</span>];` ignores its separator,
   so `#fff;` is an entity, while without the separator the last `;` is the one
-  after `#fff`, and the label keeps `#fff`. [fixture:
-  common/entity-css-in-label] [fixture:
+  after `#fff`, and the label keeps `#fff`.
+
+  [fixture: common/entity-css-in-label] [fixture:
   common/entity-css-in-label-separator-ignored] [fixture:
-  common/entity-css-in-label-last-semicolon-ignored] It is so also when the
-  label is a string, `A["<span style='color:#f00;font-weight:bold;'>x</span>"]`,
-  and in the text of a link,
-  `A-- <span style='color:#f00;font-weight:bold;'>t</span> -->B`. [fixture:
-  common/entity-css-in-string-label] [fixture: common/entity-css-in-link-text]
+  common/entity-css-in-label-last-semicolon-ignored]
+
+  It is so also when the label is a string,
+  `A["<span style='color:#f00;font-weight:bold;'>x</span>"]`, and in the text of
+  a link, `A-- <span style='color:#f00;font-weight:bold;'>t</span> -->B`.
+
+  [fixture: common/entity-css-in-string-label] [fixture:
+  common/entity-css-in-link-text]
+
   Without a `#` after a `:`, the line does not match, and
   `A[<span style='color:red;font-size:12px'>x</span>]` keeps both its `;`. In
   `A[<span style='color:#35;f00;font-weight:bold'>x</span>]` the line matches,
   so the `;` after `f00` is ignored, and `#35;` is an entity: the label has its
-  placeholder followed by `f00font-weight:bold`. [fixture:
-  common/entity-css-in-label-no-hash] [fixture:
+  placeholder followed by `f00font-weight:bold`.
+
+  [fixture: common/entity-css-in-label-no-hash] [fixture:
   common/entity-css-numeric-entity-then-semicolon]
+
 - It ignores only the last `;` of the line. In `style A fill:#f00;B-->C` the
   ignored `;` is the one that separates the two statements, and
   `style A fill:#fff;color:#000;` keeps `#fff;`, which is then an entity. The
-  flowchart grammar rejects both. [fixture:
-  common/entity-style-semicolon-separator] [fixture:
-  common/entity-style-two-colours] `style A fill:#f00; style B fill:#0f0` is one
-  statement, because its only `;` is ignored: A has the one style
-  `fill:#f00 style B fill:#0f0`, and B none. [fixture:
-  common/entity-style-semicolon-between-statements] Two labels on one line share
-  the one ignored `;`: in
+  flowchart grammar rejects both.
+
+  [fixture: common/entity-style-semicolon-separator] [fixture:
+  common/entity-style-two-colours]
+
+  `style A fill:#f00; style B fill:#0f0` is one statement, because its only `;`
+  is ignored: A has the one style `fill:#f00 style B fill:#0f0`, and B none.
+
+  [fixture: common/entity-style-semicolon-between-statements]
+
+  Two labels on one line share the one ignored `;`: in
   `A[<span style='color:#f00;'>a</span>] --> B[<span style='color:#00f;'>b</span>]`,
   it is the one in the label of B, so `#f00;` in the label of A is an entity,
   while on two lines neither label has one. A `;` between two declarations can
@@ -1422,27 +1652,35 @@ The rule is meant to keep a CSS colour such as `#f00;` in a `style` or
   `color:#333font-size:12px`, and between two styles, as in
   `classDef c fill:#f00;stroke:#0f0`, which has the one style
   `fill:#f00stroke:#0f0`; `style A fill:#f00;stroke:#0f0;` ignores only its last
-  `;`, so `#f00;` is an entity, and the style rejects it. [fixture:
-  common/entity-css-two-labels-one-line] [fixture:
+  `;`, so `#f00;` is an entity, and the style rejects it.
+
+  [fixture: common/entity-css-two-labels-one-line] [fixture:
   common/entity-css-two-labels-two-lines] [fixture:
   common/entity-css-semicolon-between-declarations] [fixture:
   common/entity-style-last-semicolon-only-ignored] [fixture:
-  common/entity-classdef-semicolon-between-styles] The ignored `;` can also lie
-  between two styles: `style A fill:#f00;stroke:#0f0` has the one style
-  `fill:#f00stroke:#0f0`. [fixture:
-  common/entity-style-semicolon-between-styles]
+  common/entity-classdef-semicolon-between-styles]
+
+  The ignored `;` can also lie between two styles:
+  `style A fill:#f00;stroke:#0f0` has the one style `fill:#f00stroke:#0f0`.
+
+  [fixture: common/entity-style-semicolon-between-styles]
+
 - It is case-sensitive. `linkStyle 0 stroke:#f00;` does not match `style`, so
   `#f00;` is an entity, and the flowchart grammar rejects the line. Without the
   final `;`, or with a colour that is not `#`-prefixed before it, the same line
-  is accepted. [fixture: common/entity-linkstyle-colour] [fixture:
+  is accepted.
+
+  [fixture: common/entity-linkstyle-colour] [fixture:
   common/entity-linkstyle-colour-no-semicolon] [fixture:
   common/entity-linkstyle-named-colour-semicolon]
+
 - The last `;` may be the separator after a label: `A[style:#x;];` ignores the
   separator, so the `;` in the label stays, `#x;` is an entity, and the label is
   `style:` and the placeholder, also when the label is the string `"style:#x;"`,
   while `A[style:#x;]` ignores the `;` in the label and has the label
   `style:#x`. The line of an accessibility statement is a line like any other:
   `accTitle: style:#x;y;` has the title `style:`, the placeholder, and `y`.
+
   [fixture: common/entity-style-separator-ignored] [fixture:
   common/entity-style-label-semicolon-ignored] [fixture:
   common/entity-style-separator-ignored-string] [fixture:
@@ -1451,17 +1689,22 @@ The rule is meant to keep a CSS colour such as `#f00;` in a `style` or
 ## Entities
 
 Entities are found from left to right, outside comment regions (for agentflow
-and eventmodeling, comment regions are not left out, as for the line rule;
-[fixture: eventmodeling/comment-line-entity-in-data]), in the text without its
-directives: the characters before and after a directive follow one another, so
-an entity can have a directive between two of its characters. Such a directive
-lies inside the unit that holds the entity, and the rule of
+and eventmodeling, comment regions are not left out, as for the line rule), in
+the text without its directives: the characters before and after a directive
+follow one another, so an entity can have a directive between two of its
+characters.
+
+[fixture: eventmodeling/comment-line-entity-in-data]
+
+Such a directive lies inside the unit that holds the entity, and the rule of
 [A directive is a token boundary](#a-directive-is-a-token-boundary) applies to
 it: in a text unit and in a string, the entity is read as in mermaid.js.
+
 [fixture: common/directive-in-entity] [fixture:
-flowchart/lex-directive-in-string-entity] An entity consists of these
-consecutive characters, where the `;` is not one that the line rule above
-ignores:
+flowchart/lex-directive-in-string-entity]
+
+An entity consists of these consecutive characters, where the `;` is not one
+that the line rule above ignores:
 
 ```text
 entity = "#" word ";"
@@ -1483,6 +1726,7 @@ make no entity, and the messages are `x` and `y`: in sequence, the text of a
 message ends at `#`, which starts a diagram comment that takes the rest of its
 line (see
 [The statement context](./diagrams/sequence.md#the-statement-context)).
+
 [fixture: common/entity-hash-inside-word-second-hash-starts] [fixture:
 common/entity-double-hash] [fixture: common/entity-cut-by-line-terminator]
 [fixture: common/entity-not-across-comment-line] [fixture:
@@ -1511,45 +1755,57 @@ match inside a placeholder there, so this changes no acceptance; in flowchart,
 such rules are those of the link text contexts and of the ellipse context. A
 rule that would read only the first characters of a placeholder is not changed:
 in flowchart, the letter rule reads U+FB02, but no rule reads the U+00B0 after
-it, so `A#x;-->B` is rejected. [fixture: flowchart/lex-link-text-entity-dash]
-[fixture: flowchart/lex-ellipse-entity-start] [fixture:
-flowchart/lex-entity-in-vertex-id] Where the placeholder characters are allowed
-depends on the diagram's lexer; in flowchart they are allowed in label text and
-rejected in node ids and style values. See each diagram document.
+it, so `A#x;-->B` is rejected.
+
+[fixture: flowchart/lex-link-text-entity-dash] [fixture:
+flowchart/lex-ellipse-entity-start] [fixture: flowchart/lex-entity-in-vertex-id]
+
+Where the placeholder characters are allowed depends on the diagram's lexer; in
+flowchart they are allowed in label text and rejected in node ids and style
+values. See each diagram document.
 
 Conversion: an entity is its placeholder in the converted form of a text.
 mermaid.js decodes placeholders back into HTML entities only when it renders the
 diagram, so the Db holds the placeholder form. The label of `A[a #amp; b]` is
-`a ﬂ°amp¶ß b` in the Db, while its value in the tree is `a #amp; b`. [fixture:
-common/entity-named] [fixture: common/entity-numeric]
+`a ﬂ°amp¶ß b` in the Db, while its value in the tree is `a #amp; b`.
 
-`#+123;` is not an entity, because `+` is not a word character. [fixture:
-common/entity-plus]
+[fixture: common/entity-named] [fixture: common/entity-numeric]
+
+`#+123;` is not an entity, because `+` is not a word character.
+
+[fixture: common/entity-plus]
 
 Entities are found in label text whether or not the line rule matches:
 `A[Issue #123; fixed]` has the placeholder of the numeric entity `#123;`, and
 `A[<span style='color: #f00; font-weight: bold'>x</span>]`, which the line rule
 does not match, has the placeholder of `#f00;`, while `#f00` without a `;`, as
-in `A[<span style='color:#f00'>x</span>]`, stays as written. [fixture:
-common/entity-css-in-label-spaces] [fixture:
+in `A[<span style='color:#f00'>x</span>]`, stays as written.
+
+[fixture: common/entity-css-in-label-spaces] [fixture:
 common/entity-css-in-label-no-semicolon] [fixture:
-common/entity-numeric-in-label-text] Outside a tag too, `A[color: #f00; is red]`
-has the placeholder of `#f00;`. [fixture: common/entity-in-label-outside-tag]
+common/entity-numeric-in-label-text]
+
+Outside a tag too, `A[color: #f00; is red]` has the placeholder of `#f00;`.
+
+[fixture: common/entity-in-label-outside-tag]
 
 ## End of text
 
 Lexical rule: mermaid.js appends `\n` to the text before parsing. The end of the
 text therefore behaves as a line terminator for the diagram's grammar: a diagram
-whose last statement has no line break is read as if it had one. [fixture:
-flowchart/header-only-no-line-break] [fixture: common/cr-only] The appended `\n`
-is not part of the source, so it adds no node to the tree.
+whose last statement has no line break is read as if it had one.
+
+[fixture: flowchart/header-only-no-line-break] [fixture: common/cr-only]
+
+The appended `\n` is not part of the source, so it adds no node to the tree.
 
 ## Whitespace
 
 Every diagram lexer decides for itself which characters are whitespace. Lexers
 built from mermaid.js's patterns usually treat all whitespace as defined in
-[Notation](#notation), including U+00A0 and U+FEFF, as whitespace. [fixture:
-common/nbsp-as-space] [fixture: common/bom-mid-text]
+[Notation](#notation), including U+00A0 and U+FEFF, as whitespace.
+
+[fixture: common/nbsp-as-space] [fixture: common/bom-mid-text]
 
 ## Known divergences
 

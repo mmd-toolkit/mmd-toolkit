@@ -79,19 +79,21 @@ child nodes by their ranges.
 The **written text** of a unit is its source text without the whitespace and
 line terminators that the unit reads before or after it, such as those around an
 arrow in flowchart, whose written text is `-->` in `A --> %%{init: {}}%% B`.
-[fixture: flowchart/lex-directive-after-arrow] The written text of a value runs
-from the start of the written text of its first unit to the end of that of its
-last unit, with the whitespace and line terminators between its units. Both
-leave out what lies there but is not written as part of the value: the
-directives, the comment regions, the `;` that the line rule ignores, and the
-empty description blocks before the separator of a statement, each a statement
-of its own. Nothing else is left out, added, or rewritten: line terminators,
-attribute quotes, and entities stay as the author wrote them, not in
-[converted form](./common.md#reading-a-source), which is how the lexer reads a
-text. A written text therefore starts or ends with whitespace or a line
-terminator only where a unit has whitespace among its own characters, as a
-backquoted name of a class diagram that is not closed has at the end of the text
-(see below); other whitespace written around a node belongs to no node. The
+
+[fixture: flowchart/lex-directive-after-arrow]
+
+The written text of a value runs from the start of the written text of its first
+unit to the end of that of its last unit, with the whitespace and line
+terminators between its units. Both leave out what lies there but is not written
+as part of the value: the directives, the comment regions, the `;` that the line
+rule ignores, and the empty description blocks before the separator of a
+statement, each a statement of its own. Nothing else is left out, added, or
+rewritten: line terminators, attribute quotes, and entities stay as the author
+wrote them, not in [converted form](./common.md#reading-a-source), which is how
+the lexer reads a text. A written text therefore starts or ends with whitespace
+or a line terminator only where a unit has whitespace among its own characters,
+as a backquoted name of a class diagram that is not closed has at the end of the
+text (see below); other whitespace written around a node belongs to no node. The
 value of a leaf node is its written text, or the part of it that its node type
 names: a [NumericLiteral](#numericliteral) holds the number that its written
 text writes, and an [Identifier](#identifier), a
@@ -104,14 +106,17 @@ starts with, or the text of a data block between `@{` and `}`, it keeps the
 whitespace written inside those delimiters, at its ends too: the label of
 `A[" x "]` has the value of a space, `x`, and a space, and the first data block
 of `A@{`, a line break, `shape: rect`, a line break, and `}` has the value of a
-line feed, `shape: rect`, and a line feed. [fixture:
-flowchart/tokens-label-string-inner-whitespace] [fixture:
-flowchart/gram-data-consecutive-blocks] The two literal nodes,
-[StringLiteral](#stringliteral) and [NumericLiteral](#numericliteral), also have
-the field `raw`, as ESTree's `Literal` does: it is the source text of the
-literal from its first to its last character, with nothing left out, so it keeps
-what the written text leaves out, such as the quotes of a string and a directive
-or a comment region inside the string.
+line feed, `shape: rect`, and a line feed.
+
+[fixture: flowchart/tokens-label-string-inner-whitespace] [fixture:
+flowchart/gram-data-consecutive-blocks]
+
+The two literal nodes, [StringLiteral](#stringliteral) and
+[NumericLiteral](#numericliteral), also have the field `raw`, as ESTree's
+`Literal` does: it is the source text of the literal from its first to its last
+character, with nothing left out, so it keeps what the written text leaves out,
+such as the quotes of a string and a directive or a comment region inside the
+string.
 
 A node of text that mermaid.js does not read, a node type named
 `<Diagram>IgnoredText` or `<Diagram>IgnoredStatement` (see
@@ -124,24 +129,28 @@ are part of it, and a comment is not: after `state "d" as A`, the lines
 `state %% c` and `state {` with a body give A the `textBeforeBody` of `state`, a
 space, a line feed, two spaces, and `state`, and in
 `state X "" %%{init: {}}%% ""` followed by a line `{` with a body, it is the two
-empty strings with the two spaces between them. [fixture:
-state/tokens-ignored-text-comment-between-units] [fixture:
+empty strings with the two spaces between them.
+
+[fixture: state/tokens-ignored-text-comment-between-units] [fixture:
 state/tokens-ignored-text-hash-comment-between-units] [fixture:
 state/tokens-ignored-text-directive-between-empty-strings] [fixture:
 state/tokens-ignored-statement-directive-between-empty-strings] [fixture:
 class/tokens-ignored-text-directive-before-direction] [fixture:
 class/tokens-ignored-text-directive-after-direction] [fixture:
-flowchart/tokens-ignored-text-directive-before-direction] A diagram comment that
-a comment region cuts (see [Comment lines](./common.md#comment-lines)) is left
-out whole, the whitespace inside it included, while the line feed that ends it
-stays: in `state X "" %% c`, U+2028, and `%% d`, followed by a line `[*]` and a
-line `accDescr {} {` with a body, the comment `%% c` goes on with the line
-`[*]`, and the `textBeforeBody` of X is `""`, a space, a line feed, two spaces,
-and `accDescr {}`; so it is with `#c` in place of `%% c`, with U+2029 in place
-of U+2028, with a space before the U+2028, with spaces before `[*]`, with a line
-of only spaces in place of `[*]`, and with `x` and a space in place of `[*]`,
-the space included in the comment. [fixture:
-state/tokens-ignored-text-comment-cut-by-comment-line] [fixture:
+flowchart/tokens-ignored-text-directive-before-direction]
+
+A diagram comment that a comment region cuts (see
+[Comment lines](./common.md#comment-lines)) is left out whole, the whitespace
+inside it included, while the line feed that ends it stays: in
+`state X "" %% c`, U+2028, and `%% d`, followed by a line `[*]` and a line
+`accDescr {} {` with a body, the comment `%% c` goes on with the line `[*]`, and
+the `textBeforeBody` of X is `""`, a space, a line feed, two spaces, and
+`accDescr {}`; so it is with `#c` in place of `%% c`, with U+2029 in place of
+U+2028, with a space before the U+2028, with spaces before `[*]`, with a line of
+only spaces in place of `[*]`, and with `x` and a space in place of `[*]`, the
+space included in the comment.
+
+[fixture: state/tokens-ignored-text-comment-cut-by-comment-line] [fixture:
 state/tokens-ignored-text-hash-comment-cut-by-comment-line] [fixture:
 state/tokens-ignored-text-comment-cut-by-comment-line-paragraph-separator]
 [fixture:
@@ -267,9 +276,10 @@ the diagram sections below: a
 [`WardleyDiagram`](./ast/wardley.md#wardleydiagram), a
 [`CynefinDiagram`](./ast/cynefin.md#cynefindiagram), an
 [`EventmodelingDiagram`](./ast/eventmodeling.md#eventmodelingdiagram), or a
-[`TreeviewDiagram`](./ast/treeview.md#treeviewdiagram). [fixture:
-treeview/gram-written-tree] [fixture: eventmodeling/gram-written-tree] [fixture:
-cynefin/db-all-fields] [fixture: wardley/db-all-fields] [fixture:
+[`TreeviewDiagram`](./ast/treeview.md#treeviewdiagram).
+
+[fixture: treeview/gram-written-tree] [fixture: eventmodeling/gram-written-tree]
+[fixture: cynefin/db-all-fields] [fixture: wardley/db-all-fields] [fixture:
 railroad/ir-gram-written-tree] [fixture: railroad/ebnf-gram-written-tree]
 [fixture: railroad/abnf-gram-written-tree] [fixture:
 railroad/peg-gram-written-tree] [fixture: treemap/gram-written-tree] [fixture:
@@ -367,8 +377,9 @@ units, so the name contains none.
 A string in quotes: double quotes, or, for the backquoted names of class
 diagrams and the backquoted attribute words of ER diagrams, backquotes. A
 single-quoted string is also a StringLiteral where a diagram's lexical rules
-accept it; it closes with the same quote, and no escapes are decoded. [fixture:
-usecase/lex-native-single-quoted-keys] [fixture:
+accept it; it closes with the same quote, and no escapes are decoded.
+
+[fixture: usecase/lex-native-single-quoted-keys] [fixture:
 usecase/lex-native-string-backslashes]
 
 | Field    | Type    | Meaning                                                                                                                                                                                                                                                                                  |
@@ -382,11 +393,15 @@ No child fields.
 `click A href "u"` has the URL with the value `u` and the `raw` `"u"`; in
 `click A "u" "one`, a line break, `%% c`, a line break, and `two"`, the tooltip
 has the value `one`, a line feed, and `two`, and its `raw` is the whole string,
-the comment line included. [fixture: flowchart/gram-click-href] [fixture:
-flowchart/tokens-string-literal-comment-line] In the same way, the URL of
-`click A href "u%%{init: {}}%%v"` has the value `uv`, and its `raw` is the whole
-string, the directive included. [fixture:
-flowchart/lex-directive-in-click-href-string]
+the comment line included.
+
+[fixture: flowchart/gram-click-href] [fixture:
+flowchart/tokens-string-literal-comment-line]
+
+In the same way, the URL of `click A href "u%%{init: {}}%%v"` has the value
+`uv`, and its `raw` is the whole string, the directive included.
+
+[fixture: flowchart/lex-directive-in-click-href-string]
 
 A string is closed by the next matching quote, as its diagram's lexical rules
 define. Where a diagram accepts a string that is not closed when the text ends,
@@ -397,19 +412,25 @@ directive or a comment region, the whitespace and line terminators at the end
 included, which mermaid.js reads into the name; line feeds inside it are part of
 it too. A directive after that last character is not part of the string:
 `A --> `, `` `b``, a space, and `%%{init: {}}%%` at the end of the text has the
-string `` `b`` and the space, with the value `b` and a space. [fixture:
-class/lex-backquote-unclosed-directive-at-end] In a class diagram, `class`,
-`` `x``, a line break, and `%%{init: {}}%%` followed by a line break has the
-value `x` and two line feeds, the line feed after the directive included.
-[fixture: class/lex-backquote-unclosed-directive-after-line-break] Its `raw` has
-no closing quote, and its `value` is its written text without the opening quote.
-Its `closed` is false, as the `closed` of a [Directive](#directive) and of a
-description block such as
+string `` `b`` and the space, with the value `b` and a space.
+
+[fixture: class/lex-backquote-unclosed-directive-at-end]
+
+In a class diagram, `class`, `` `x``, a line break, and `%%{init: {}}%%`
+followed by a line break has the value `x` and two line feeds, the line feed
+after the directive included.
+
+[fixture: class/lex-backquote-unclosed-directive-after-line-break]
+
+Its `raw` has no closing quote, and its `value` is its written text without the
+opening quote. Its `closed` is false, as the `closed` of a
+[Directive](#directive) and of a description block such as
 [FlowchartAccDescrBlockStatement](./ast/flowchart.md#flowchartaccdescrblockstatement)
 is for those that are not closed; every other StringLiteral has `closed` true. A
 tool reads whether a string is closed from this field, and need not compare the
 characters of `raw`: a backquote alone on the last line is a backquoted name
 that is not closed, whose `raw` is the backquote and the line feed after it.
+
 [fixture: class/lex-backquote-unclosed-alone] [fixture:
 class/lex-backquote-unclosed] [fixture:
 class/tokens-backquote-unclosed-trailing-whitespace]
@@ -426,22 +447,34 @@ A number.
 No child fields.
 
 In `linkStyle 0,1 stroke:red`, the first number has the value zero and the `raw`
-`0`. [fixture: flowchart/db-linkstyle-shared-fill] Which forms a number may take
-is decided by the grammar of its position: in flowchart only digits, so every
-number is an integer; in sequence also a fraction, so `autonumber .5` starts at
-the number one half, with the `raw` `.5`, and `autonumber 05` at five. [fixture:
-sequence/db-autonumber-fraction] [fixture: sequence/db-autonumber-leading-zero]
+`0`.
+
+[fixture: flowchart/db-linkstyle-shared-fill]
+
+Which forms a number may take is decided by the grammar of its position: in
+flowchart only digits, so every number is an integer; in sequence also a
+fraction, so `autonumber .5` starts at the number one half, with the `raw` `.5`,
+and `autonumber 05` at five.
+
+[fixture: sequence/db-autonumber-fraction] [fixture:
+sequence/db-autonumber-leading-zero]
+
 The value is the double nearest to the number written, which may differ from it:
 in an XY chart, `bar [` followed by twenty nines and `]` has the value one
 followed by twenty zeros, and `line [.` followed by four hundred zeros and `1]`
-has the value zero. [fixture: xychart/db-plot-values-large] [fixture:
-xychart/db-plot-values-underflow] A number too large for a double is infinity,
-or minus infinity with a `-`, as mermaid.js reads it: in an XY chart, `bar [`
-followed by four hundred nines and `]` has the value infinity, and the same
-number after `-` minus infinity; a range, a scale width, the start and the step
-of `autonumber`, and a link style number may be such a number too, which as a
-link style number is out of range. [fixture: xychart/db-plot-values-overflow]
-[fixture: xychart/db-plot-values-negative-overflow] [fixture:
+has the value zero.
+
+[fixture: xychart/db-plot-values-large] [fixture:
+xychart/db-plot-values-underflow]
+
+A number too large for a double is infinity, or minus infinity with a `-`, as
+mermaid.js reads it: in an XY chart, `bar [` followed by four hundred nines and
+`]` has the value infinity, and the same number after `-` minus infinity; a
+range, a scale width, the start and the step of `autonumber`, and a link style
+number may be such a number too, which as a link style number is out of range.
+
+[fixture: xychart/db-plot-values-overflow] [fixture:
+xychart/db-plot-values-negative-overflow] [fixture:
 xychart/db-x-axis-range-overflow] [fixture:
 xychart/db-y-axis-range-negative-overflow] [fixture:
 state/gram-scale-width-overflow] [fixture:
@@ -459,10 +492,12 @@ requires a following digit, whereas digits before a dot allow no digits after
 it. `1,234.50`, `1_234.50`, `1.2.3` and `.` therefore have values 1234.5, 1, 1.2
 and NaN respectively. raw keeps the entire original spelling, including the
 parts not read as the numeric prefix. This position-specific definition changes
-no other diagram's numeric grammar. [fixture: treemap/db-number-comma] [fixture:
-treemap/db-number-underscore] [fixture: treemap/db-number-multiple-dots]
-[fixture: treemap/db-number-nan] [fixture: treemap/lex-number-dot-underscore]
-[fixture: treemap/number-leading-dot] [fixture: treemap/number-trailing-dot]
+no other diagram's numeric grammar.
+
+[fixture: treemap/db-number-comma] [fixture: treemap/db-number-underscore]
+[fixture: treemap/db-number-multiple-dots] [fixture: treemap/db-number-nan]
+[fixture: treemap/lex-number-dot-underscore] [fixture:
+treemap/number-leading-dot] [fixture: treemap/number-trailing-dot]
 
 ## Diagram nodes
 
@@ -471,25 +506,46 @@ in a document of their own under `ast/`:
 
 - [Flowchart](./ast/flowchart.md): the diagram types `flowchart-v2`,
   `flowchart-elk`, and `swimlane`.
+
 - [Sequence](./ast/sequence.md): the diagram type `sequence`.
+
 - [Class](./ast/class.md): the diagram type `classDiagram`.
+
 - [State](./ast/state.md): the diagram type `stateDiagram`.
+
 - [ER](./ast/er.md): the diagram type `er`.
+
 - [Gantt](./ast/gantt.md): the diagram type `gantt`.
+
 - [Journey](./ast/journey.md): the diagram type `journey`.
+
 - [Requirement](./ast/requirement.md): the diagram type `requirement`.
+
 - [Mindmap](./ast/mindmap.md): the diagram type `mindmap`.
+
 - [Timeline](./ast/timeline.md): the diagram type `timeline`.
+
 - [Sankey](./ast/sankey.md): the diagram type `sankey`.
+
 - [XY chart](./ast/xychart.md): the diagram type `xychart`.
+
 - [Quadrant chart](./ast/quadrant.md): the diagram type `quadrantChart`.
+
 - [Block diagram](./ast/block.md): the diagram type `block`.
+
 - [Kanban](./ast/kanban.md): the diagram type `kanban`.
+
 - [Venn](./ast/venn.md): the diagram type `venn`.
+
 - [Ishikawa](./ast/ishikawa.md): the diagram type `ishikawa`.
+
 - [Agentflow](./ast/agentflow.md): the diagram type `agentflow`.
+
 - [Usecase](./ast/usecase.md): the diagram type `usecase`.
-- [Pie](./ast/pie.md): the diagram type `pie`. [fixture: pie/header-only]
+
+- [Pie](./ast/pie.md): the diagram type `pie`.
+
+  [fixture: pie/header-only]
 
 The name of every node type of a diagram type starts with the name of the
 diagram type, such as `FlowchartVertex`, because node types share one set of
@@ -500,42 +556,54 @@ mermaid.js does not read is named `<Diagram>IgnoredText`, or
 `FlowchartIgnoredText` and `StateIgnoredStatement`, and no other node type has a
 name that ends so.
 
-- [gitgraph](./ast/gitgraph.md): the diagram type `gitGraph`. [fixture:
-  gitgraph/header-only]
+- [gitgraph](./ast/gitgraph.md): the diagram type `gitGraph`.
 
-- [Info](./ast/info.md): the diagram type `info`. [fixture: info/header-lf]
+  [fixture: gitgraph/header-only]
 
-- [Packet](./ast/packet.md): the diagram type `packet`. [fixture:
-  packet/gram-mixed]
+- [Info](./ast/info.md): the diagram type `info`.
+
+  [fixture: info/header-lf]
+
+- [Packet](./ast/packet.md): the diagram type `packet`.
+
+  [fixture: packet/gram-mixed]
 
 - [Architecture](./ast/architecture.md): the diagram type `architecture`.
+
   [fixture: architecture/header-beta] [fixture: architecture/db-mixed]
 
-- [Radar](./ast/radar.md): the diagram type `radar`. [fixture:
-  radar/gram-written-tree]
+- [Radar](./ast/radar.md): the diagram type `radar`.
 
-- [Treemap](./ast/treemap.md): the diagram type `treemap`. [fixture:
-  treemap/gram-written-tree]
+  [fixture: radar/gram-written-tree]
+
+- [Treemap](./ast/treemap.md): the diagram type `treemap`.
+
+  [fixture: treemap/gram-written-tree]
 
 - [Railroad](./ast/railroad.md): the diagram types `railroad`, `railroadEbnf`,
   `railroadAbnf` and `railroadPeg`. Root.diagramType selects their dialect; the
-  shared diagram node has no header-kind field. [fixture:
-  railroad/ir-gram-written-tree] [fixture: railroad/ebnf-gram-written-tree]
-  [fixture: railroad/abnf-gram-written-tree] [fixture:
-  railroad/peg-gram-written-tree]
+  shared diagram node has no header-kind field.
+
+  [fixture: railroad/ir-gram-written-tree] [fixture:
+  railroad/ebnf-gram-written-tree] [fixture: railroad/abnf-gram-written-tree]
+  [fixture: railroad/peg-gram-written-tree]
 
 - [Wardley](./ast/wardley.md): the diagram type `wardley`; bare names use
   WardleyIdentifier because their positions permit whitespace. Quoted names use
-  shared StringLiteral. [fixture: wardley/db-all-fields] [fixture:
-  wardley/db-id-underscore] [fixture: wardley/db-unquoted-names] [fixture:
-  wardley/lex-string-conversion]
+  shared StringLiteral.
+
+  [fixture: wardley/db-all-fields] [fixture: wardley/db-id-underscore] [fixture:
+  wardley/db-unquoted-names] [fixture: wardley/lex-string-conversion]
+
 - [Cynefin](./ast/cynefin.md): the diagram type `cynefin`; fixed domain words
   are string fields, and item/transition labels use shared StringLiteral.
+
   [fixture: cynefin/db-all-fields] [fixture: cynefin/lex-string-conversion]
 
 - [eventmodeling](./ast/eventmodeling.md): digit-string names use Identifier;
   dotted names use EventmodelingQualifiedName with head/tail members. All
   occurrences, tags and unassigned GWT type words remain authored nodes.
+
   [fixture: eventmodeling/gram-written-tree] [fixture:
   eventmodeling/db-source-leading-zero] [fixture:
   eventmodeling/lex-qualified-hidden-components] [fixture:
@@ -543,5 +611,6 @@ name that ends so.
 
 - [Treeview](./ast/treeview.md): diagram type `treeView`. Bare names use
   TreeviewIdentifier, quoted names StringLiteral, and class/icon names
-  Identifier. Prefixes and decorations preserve authored box drawing. [fixture:
-  treeview/gram-written-tree] [fixture: treeview/box-written-tree]
+  Identifier. Prefixes and decorations preserve authored box drawing.
+
+  [fixture: treeview/gram-written-tree] [fixture: treeview/box-written-tree]

@@ -46,6 +46,7 @@ class のどれでもプレースホルダです。
 これは文字列、マークダウン文字列、形のテキスト、icon の中でのことです。
 各属性の引用符は `'` として読みます。
 これはノードのテキスト、形のテキスト、icon、class の中でのことです。
+
 [fixture: mindmap/entity-placeholder-in-node-text]
 [fixture: mindmap/entity-placeholder-numeric]
 [fixture: mindmap/entity-placeholder-in-description]
@@ -69,11 +70,13 @@ class のどれでもプレースホルダです。
   ノードのテキストは終わりの空白を保ち、形の前のノードのテキストも同じです。
   `a (x)` の id は `a ` です。
   icon と class は、両端の空白を保ちます。
+
   [fixture: mindmap/db-node-trailing-whitespace]
   [fixture: mindmap/gram-node-text-space-before-shape]
   [fixture: mindmap/db-icon-surrounding-whitespace]
   [fixture: mindmap/db-class-leading-whitespace]
   [fixture: mindmap/db-class-trailing-space]
+
 - MindmapLabel は、その範囲の変換した形を持ちます。
   範囲は、文字列の区切り（両端の `"`）と、
   markdown 文字列の区切り（`` "` `` と `` `" ``）を含みます。
@@ -81,12 +84,14 @@ class のどれでもプレースホルダです。
   文字列は両端に 1 文字ずつ、markdown 文字列は 2 文字ずつです。
   そのため、区切りの中にあるディレクティブは、切り落とす位置を動かしません。
   テキストは空白と改行をすべて保ち、文字列は引用符の間にあるものを保ちます。
+
   [fixture: mindmap/db-shape-string] [fixture: mindmap/db-shape-markdown-string]
   [fixture: mindmap/docs-syntax-mindmap-d3468819]
   [fixture: mindmap/gram-shape-text-line-feed]
   [fixture: mindmap/gram-shape-text-quoted-with-space]
   [fixture: mindmap/lex-string-line-feed]
   [fixture: mindmap/lex-markdown-string-line-feed]
+
 - ディレクティブがテキストの単位の中にあっても、変換した形にはないので、
   テキストにもありません。
   `a%%{init: {}}%%b` はノード `ab` で、
@@ -94,6 +99,7 @@ class のどれでもプレースホルダです。
   `:::a%%{init: {}}%%b` の class は `ab` です。
   `a[x%%{init: {}}%%y]` と `a["x%%{init: {}}%%y"]` のテキストは `xy` です。
   ノードのテキストの終わりにあるディレクティブは、テキストの一部ではありません。
+
   [fixture: mindmap/lex-directive-in-node-text]
   [fixture: mindmap/lex-directive-in-icon]
   [fixture: mindmap/lex-directive-in-class]
@@ -105,9 +111,11 @@ class のどれでもプレースホルダです。
   [fixture: mindmap/lex-directive-in-icon-with-spaces]
   [fixture: mindmap/lex-directive-in-shape-text-with-spaces]
   [fixture: mindmap/db-directive-after-node-text]
+
 - 行規則が無視する `;` も、テキストの中では変換した形にありません。
   `style:#x;y` はノード `style:#xy` で、
   `a[style:#x;y]` のテキストは `style:#xy` です。
+
   [fixture: mindmap/tokens-ignored-semicolon-in-node-text]
   [fixture: mindmap/tokens-ignored-semicolon-in-shape-text]
 
@@ -117,6 +125,7 @@ class のどれでもプレースホルダです。
 ヘッダーの後ろに空白やコメント行が続くときも同じです。
 そうでなければ、木の根の要約です。
 フロントマターは何も変えず、この図はタイトルを持ちません。
+
 [fixture: mindmap/db-header-only]
 [fixture: mindmap/db-header-only-trailing-spaces]
 [fixture: mindmap/db-header-then-comment-line-only]
@@ -131,6 +140,7 @@ Db はノードを出現順に足し、ノードを、
 [字下げと親](../../../spec/docs/diagrams/mindmap.ja.md#字下げと親) を参照。
 builder は、ノードの子を level を比べずに木から、出現順に取ります。
 同じテキストの 2 つのノードは、2 つのノードです。
+
 [fixture: mindmap/db-indent-parent-is-nearest-shallower]
 [fixture: mindmap/db-indent-sibling-after-deeper]
 [fixture: mindmap/gram-indent-between-earlier-levels]
@@ -145,6 +155,7 @@ builder は、ノードの子を level を比べずに木から、出現順に�
 タブも U+3000 も 1 文字です。
 子は、親より何文字多く字下げしてもかまいません。
 子の level は、その文字数に親の level を足したものです。
+
 [fixture: mindmap/db-first-node-unindented]
 [fixture: mindmap/db-indent-root-offset]
 [fixture: mindmap/db-first-node-on-header-line]
@@ -161,6 +172,7 @@ builder は、ノードの子を level を比べずに木から、出現順に�
 ノードのテキストと形があるノードは、ノードのテキストを `nodeId` に、
 ラベルのテキストを `descr` に持ちます。
 形だけのノードは、ラベルのテキストを両方に持ちます。
+
 [fixture: mindmap/db-first-node-unindented] [fixture: mindmap/db-shape-rect]
 [fixture: mindmap/db-shape-without-id]
 [fixture: mindmap/db-shape-without-id-circle]
@@ -172,6 +184,7 @@ builder は、ノードの子を level を比べずに木から、出現順に�
 `[` は 2、`((` は 3、`)` は 4、`))` は 5、`{{` は 6、`(-` と `-)` は 0 です。
 `(` は closer からも決まり、`)` なら 1、それ以外の closer なら 4 です。
 ほかの opener では closer は何も決めないので、`[text)` は 2、`((x)` は 3 です。
+
 [fixture: mindmap/db-shape-rect] [fixture: mindmap/db-shape-rounded]
 [fixture: mindmap/db-shape-circle] [fixture: mindmap/db-shape-cloud]
 [fixture: mindmap/db-shape-bang] [fixture: mindmap/db-shape-hexagon]
@@ -199,9 +212,11 @@ Db は、それらを最後に足したノードに渡します。
 同じ種類の 2 行目は 1 行目を置き換えます。
 そのような行のないノードは、要約に `icon` も `class` も持ちません。
 icon の行と class の行は互いに独立で、
-単語 `icon` の大文字小文字は関係ありません。 [fixture: mindmap/db-icon-line]
-[fixture: mindmap/db-class-line] [fixture: mindmap/db-icon-twice]
-[fixture: mindmap/db-class-twice] [fixture: mindmap/db-icon-and-class-on-child]
+単語 `icon` の大文字小文字は関係ありません。
+
+[fixture: mindmap/db-icon-line] [fixture: mindmap/db-class-line]
+[fixture: mindmap/db-icon-twice] [fixture: mindmap/db-class-twice]
+[fixture: mindmap/db-icon-and-class-on-child]
 [fixture: mindmap/db-icon-indent-ignored]
 [fixture: mindmap/gram-icon-then-child]
 [fixture: mindmap/db-icon-case-insensitive]
@@ -222,6 +237,7 @@ class です。
 要約のテキストは、これですべてです。
 形のないノードと形だけのノードは、`nodeId` と `descr` に同じテキストを持ち、
 それぞれに 1 回ずつ置き換えます。
+
 [fixture: mindmap/config-security-level-other-texts]
 [fixture: mindmap/config-security-level-other-html-labels-false]
 [fixture: mindmap/config-security-level-other-shape-only]

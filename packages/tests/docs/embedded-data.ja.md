@@ -29,6 +29,7 @@ title はフロントマターの `title` に左右され、
 specified の読みは、自分の `embedded` を持つことがあります。
 mermaid.js が入力を拒否するとき、その読みが、
 ディレクティブの設定やデータブロックの効果を持つ場合です。
+
 [fixture: class/div-comment-then-directive-line-sets-config]
 [fixture: sequence/div-comment-after-number-with-data-block]
 
@@ -52,6 +53,7 @@ mermaid.js が入力を拒否するとき、その読みが、
 値を置き換えます。
 `getDefaultConfig()` と `embeddedValuesOf()` は、
 `dbFromTree()` に数の値を渡します。
+
 [fixture: packet/config-frontmatter-row-infinity]
 [fixture: packet/config-frontmatter-row-negative-infinity]
 [fixture: packet/config-frontmatter-row-nan]
@@ -110,6 +112,7 @@ flowchart では、`A@{ ... }@{ ... }` のように間を空けずに続くブ�
 
 kanban の 1 つのノードに隣り合う `@{ ... }` ブロックは、
 中身を連結した 1 つの接尾部として読み、そのグループに 1 つの効果を記録します。
+
 [fixture: kanban/db-metadata-adjacent-comma]
 [fixture: kanban/db-metadata-adjacent-empty]
 [fixture: kanban/db-metadata-two-items]
@@ -134,8 +137,9 @@ effect は JSON 宣言の記述順で、前方参照があると Db の Map 順�
 usecase のパッチは `commit` で公開モデルを捕捉し、JSON 文をソース順にたどって、
 Mermaid が読んだ値を取得します。
 JSON の内部を読み直しません。
-`clear` は effect をリセットします。 [fixture: usecase/gram-json-empty]
-[fixture: usecase/db-json-source-map-order]
+`clear` は effect をリセットします。
+
+[fixture: usecase/gram-json-empty] [fixture: usecase/db-json-source-map-order]
 [fixture: usecase/db-native-metadata-not-yaml]
 
 ### 記録のしかた
@@ -177,6 +181,7 @@ kanban の Db のパッチは
 共有 Db の状態はモジュール変数にあるため、Db を消去し、
 元のノード追加と装飾の呼び出しでそれまでの状態を復元します。
 次の解析の前に Db の `clear()` とともに記録した効果と問題も消します。
+
 [fixture: kanban/db-metadata-all] [fixture: kanban/db-metadata-repeated-id]
 [fixture: kanban/db-decoration-icon-twice] [fixture: kanban/header-only-lf]
 
@@ -203,8 +208,9 @@ sequence 図には、そのような欄はありません。
 kanban の `ticket`、`priority`、`assigned` はブロックだけが設定し、
 `label` はノードの説明でも決まり、`icon` はアイコン装飾でも設定できます。
 ノードの要約が公開する欄だけが効果に加わるため、列の `assigned`、`priority`、
-`icon` と固定の `shape` は何も加えません。 [fixture: kanban/db-metadata-all]
-[fixture: kanban/db-metadata-section-assigned]
+`icon` と固定の `shape` は何も加えません。
+
+[fixture: kanban/db-metadata-all] [fixture: kanban/db-metadata-section-assigned]
 [fixture: kanban/db-metadata-section-priority]
 [fixture: kanban/db-metadata-section-icon]
 [fixture: kanban/db-metadata-shape-lower]

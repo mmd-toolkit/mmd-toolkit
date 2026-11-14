@@ -20,8 +20,9 @@ flowchart LR
   A --> B
 ```
 
-The example places an `init` directive before the header. [fixture:
-common/directive-init-theme]
+The example places an `init` directive before the header.
+
+[fixture: common/directive-init-theme]
 
 mermaid.js removes every directive from the text before it reads the diagram,
 wherever the directive is, and joins the text before and after it. This
@@ -35,58 +36,73 @@ name of an ER entity, which may contain U+00A0, is one, and so is a click id of
 gantt. A name that the document counts as a text unit, such as the id of a
 participant in a sequence diagram, a class name, an attribute word of ER written
 with `~`, the description of a gantt task, or an unquoted name of a requirement
-diagram, is read as a text. [fixture: sequence/div-directive-in-wrap-prefix]
-[fixture: sequence/lex-directive-in-participant-id] [fixture:
-class/lex-directive-in-name] [fixture: er/div-directive-in-name] [fixture:
-er/lex-directive-in-tilde-word] [fixture: gantt/div-directive-in-click-id]
-[fixture: gantt/lex-directive-in-task-text] [fixture:
-requirement/lex-directive-in-name]
+diagram, is read as a text.
+
+[fixture: sequence/div-directive-in-wrap-prefix] [fixture:
+sequence/lex-directive-in-participant-id] [fixture: class/lex-directive-in-name]
+[fixture: er/div-directive-in-name] [fixture: er/lex-directive-in-tilde-word]
+[fixture: gantt/div-directive-in-click-id] [fixture:
+gantt/lex-directive-in-task-text] [fixture: requirement/lex-directive-in-name]
 
 In kanban, a directive inside `kanban`, a shape opener or closer, `::icon(`,
 `:::`, or the data opener `@{` is rejected. mermaid.js joins the two parts and
-accepts the input. [fixture: kanban/header-directive-inside] [fixture:
-kanban/div-directive-opener] [fixture: kanban/div-directive-closer] [fixture:
+accepts the input.
+
+[fixture: kanban/header-directive-inside] [fixture: kanban/div-directive-opener]
+[fixture: kanban/div-directive-closer] [fixture:
 kanban/div-directive-icon-marker] [fixture: kanban/div-directive-class-marker]
 [fixture: kanban/div-directive-data-marker]
 
 Node text, shape text, icon text, class text, strings, and data content may
-contain a directive. [fixture: kanban/db-grid-directive-item-id] [fixture:
+contain a directive.
+
+[fixture: kanban/db-grid-directive-item-id] [fixture:
 kanban/db-grid-directive-item-label-bare] [fixture:
 kanban/db-grid-directive-item-icon] [fixture:
 kanban/db-grid-directive-item-class] [fixture: kanban/lex-label-directive-line]
-[fixture: kanban/db-metadata-directive] A directive between complete data blocks
-is allowed (see
+[fixture: kanban/db-metadata-directive]
+
+A directive between complete data blocks is allowed (see
 [Directives inside units](../diagrams/kanban.md#directives-inside-units)).
+
 [fixture: kanban/db-metadata-adjacent-directive]
 
 In C4, a directive inside a header keyword, call keyword, `accTitle`, or
-`accDescr` is rejected, while mermaid.js joins its parts. [fixture:
-c4/lex-directive-keyword] [fixture: c4/div-directive-header] [fixture:
+`accDescr` is rejected, while mermaid.js joins its parts.
+
+[fixture: c4/lex-directive-keyword] [fixture: c4/div-directive-header] [fixture:
 c4/div-acc-title-directive] [fixture: c4/div-acc-block-marker-directive]
 
 Bare arguments and named keys are text units and may contain directives, as may
-quoted arguments and title or description text. [fixture:
-c4/lex-directive-bare-alias] [fixture: c4/lex-directive-named-key] [fixture:
-c4/lex-directive-quoted] [fixture: c4/lex-title-directive-value]
+quoted arguments and title or description text.
+
+[fixture: c4/lex-directive-bare-alias] [fixture: c4/lex-directive-named-key]
+[fixture: c4/lex-directive-quoted] [fixture: c4/lex-title-directive-value]
 
 The equals sign and opening quote of a named value are separate delimiters, so a
-directive between them is allowed. [fixture:
-c4/lex-directive-named-equals-quote]
+directive between them is allowed.
+
+[fixture: c4/lex-directive-named-equals-quote]
 
 In venn, a directive inside the header, a statement keyword, a name, a size, a
 numeric text id, or an identifier or number of a bare style value is rejected
-here. [fixture: venn/header-directive-inside] [fixture:
-venn/lex-directive-in-set] [fixture: venn/lex-directive-in-union] [fixture:
-venn/lex-directive-in-text] [fixture: venn/lex-directive-in-style] [fixture:
-venn/lex-directive-in-title] [fixture: venn/db-grid-directive-identifier-bare]
-[fixture: venn/db-grid-directive-size] [fixture:
-venn/db-grid-directive-style-key] [fixture: venn/db-grid-directive-text-number]
-[fixture: venn/db-grid-directive-style-value] [fixture:
-venn/div-directive-union-target] [fixture: venn/div-directive-text-id] [fixture:
-venn/div-directive-style-target] [fixture: venn/div-directive-style-value-word]
-[fixture: venn/div-directive-style-value-number] [fixture:
+here.
+
+[fixture: venn/header-directive-inside] [fixture: venn/lex-directive-in-set]
+[fixture: venn/lex-directive-in-union] [fixture: venn/lex-directive-in-text]
+[fixture: venn/lex-directive-in-style] [fixture: venn/lex-directive-in-title]
+[fixture: venn/db-grid-directive-identifier-bare] [fixture:
+venn/db-grid-directive-size] [fixture: venn/db-grid-directive-style-key]
+[fixture: venn/db-grid-directive-text-number] [fixture:
+venn/db-grid-directive-style-value] [fixture: venn/div-directive-union-target]
+[fixture: venn/div-directive-text-id] [fixture: venn/div-directive-style-target]
+[fixture: venn/div-directive-style-value-word] [fixture:
+venn/div-directive-style-value-number] [fixture:
 venn/lex-unterminated-directive-next-line] [fixture:
-venn/lex-unterminated-colon-directive-next-line] mermaid.js joins the parts.
+venn/lex-unterminated-colon-directive-next-line]
+
+mermaid.js joins the parts.
+
 [fixture: venn/header-directive-inside] [fixture: venn/lex-directive-in-set]
 [fixture: venn/lex-directive-in-union] [fixture: venn/lex-directive-in-text]
 [fixture: venn/lex-directive-in-style] [fixture: venn/lex-directive-in-title]
@@ -101,13 +117,18 @@ venn/lex-unterminated-directive-next-line] [fixture:
 venn/lex-unterminated-colon-directive-next-line]
 
 Venn strings, label content, title content, and whole color units can contain
-directives. [fixture: venn/lex-identifier-directive-middle] [fixture:
+directives.
+
+[fixture: venn/lex-identifier-directive-middle] [fixture:
 venn/db-grid-directive-label-bare] [fixture: venn/lex-label-directive-middle]
 [fixture: venn/lex-style-directive-middle] [fixture:
 venn/lex-title-directive-middle] [fixture: venn/lex-directive-style-value-color]
 [fixture: venn/lex-style-value-rgb-directive-in-comma] [fixture:
-venn/lex-directive-label-delimiter-gap] The bracket and quote of a label are
-separate delimiters. [fixture: venn/lex-identifier-directive-middle] [fixture:
+venn/lex-directive-label-delimiter-gap]
+
+The bracket and quote of a label are separate delimiters.
+
+[fixture: venn/lex-identifier-directive-middle] [fixture:
 venn/db-grid-directive-label-bare] [fixture: venn/lex-label-directive-middle]
 [fixture: venn/lex-style-directive-middle] [fixture:
 venn/lex-title-directive-middle] [fixture: venn/lex-directive-style-value-color]
@@ -116,19 +137,24 @@ venn/lex-directive-label-delimiter-gap]
 
 In Ishikawa, a directive splitting the selected `ishikawa` or `ishikawa-beta`
 keyword, including before `-beta` in a complete beta header, is rejected here.
-mermaid.js joins the parts and accepts these inputs. [fixture:
-ishikawa/directive-in-header] [fixture: ishikawa/directive-in-beta-header]
-[fixture: ishikawa/div-directive-beta-prefix]
+mermaid.js joins the parts and accepts these inputs.
+
+[fixture: ishikawa/directive-in-header] [fixture:
+ishikawa/directive-in-beta-header] [fixture: ishikawa/div-directive-beta-prefix]
 
 If the beta word boundary fails, the suffix is node text after the stable header
 and may contain a directive, also immediately before `-betaX`. Numeric-looking
 node text may contain directives too. These inputs are accepted by both and have
-no divergence mark. [fixture: ishikawa/lex-directive-before-beta-fallback-text]
-[fixture: ishikawa/lex-directive-in-beta-fallback-text] [fixture:
+no divergence mark.
+
+[fixture: ishikawa/lex-directive-before-beta-fallback-text] [fixture:
+ishikawa/lex-directive-in-beta-fallback-text] [fixture:
 ishikawa/lex-directive-in-numeric-looking-text]
 
 Node text is prose, including quotes, and may contain directives; its value
-leaves them out. [fixture: ishikawa/directive-root-middle] [fixture:
+leaves them out.
+
+[fixture: ishikawa/directive-root-middle] [fixture:
 ishikawa/directive-in-quoted-root] [fixture: ishikawa/directive-child-middle]
 
 ## The difference
@@ -196,8 +222,9 @@ Each example is a whole diagram.
 | 6       | the vertex A with the label `a`, two spaces, and `b` | the same           |
 | 7       | the vertex A with the label `xy`                     | the same           |
 
-The fixtures record the readings compared in the table. [fixture:
-sequence/div-directive-in-keyword] [fixture:
+The fixtures record the readings compared in the table.
+
+[fixture: sequence/div-directive-in-keyword] [fixture:
 flowchart/div-directive-in-style-separator] [fixture:
 flowchart/div-directive-in-id] [fixture:
 flowchart/div-directive-in-arrow-length] [fixture:
@@ -210,12 +237,17 @@ and a number cannot have a directive inside them; such an input is rejected.
 Where mermaid.js rejects the text without its directives, both reject the input:
 `flow%%{init: {}}%%chart LR` followed by a line `A-->` is rejected by the
 flowchart grammar of mermaid.js, and by this specification because the directive
-lies inside the header keyword. [fixture:
-common/directive-splits-header-keyword] Followed by a line `A-->B` instead, the
-same header gives a flowchart in mermaid.js, and is rejected by this
-specification. [fixture: common/directive-in-header-keyword] The difference goes
-one way only: this specification never accepts an input that mermaid.js rejects,
-and it gives every input that both accept the same Db.
+lies inside the header keyword.
+
+[fixture: common/directive-splits-header-keyword]
+
+Followed by a line `A-->B` instead, the same header gives a flowchart in
+mermaid.js, and is rejected by this specification.
+
+[fixture: common/directive-in-header-keyword]
+
+The difference goes one way only: this specification never accepts an input that
+mermaid.js rejects, and it gives every input that both accept the same Db.
 
 Each diagram document lists the units of its own that this concerns, in its
 Known divergences section:
@@ -269,8 +301,9 @@ flow/connector/global/end keywords, three arrow kinds, opening arrow, edge id,
 shape/property delimiters, click ids, interpolation name, and linkStyle indices.
 Their spelling spans both sides of the removed directive. An Identifier or arrow
 sibling cannot hold that internal text without changing its value or delimiter;
-apply reason 2 rather than reconstructing the atom. [fixture:
-agentflow/div-directive-in-header] [fixture:
+apply reason 2 rather than reconstructing the atom.
+
+[fixture: agentflow/div-directive-in-header] [fixture:
 agentflow/div-directive-in-flow-keyword] [fixture:
 agentflow/div-directive-in-connector-keyword] [fixture:
 agentflow/div-directive-in-global-keyword] [fixture:
@@ -285,8 +318,9 @@ Flow/connector Name fragments, labels, styles, accessibility text, callback
 text, strings, and opaque data interiors already retain directives as common
 trivia. In particular, a metadata key is data text. Complete-unit pipe
 boundaries stay accepted. These cases need no mark; a joined input already
-rejected by Mermaid needs none either. [fixture:
-agentflow/lex-directive-in-flow-name-text] [fixture:
+rejected by Mermaid needs none either.
+
+[fixture: agentflow/lex-directive-in-flow-name-text] [fixture:
 agentflow/lex-directive-in-classdef-value] [fixture:
 agentflow/lex-directive-in-metadata-key] [fixture:
 agentflow/lex-directive-in-pipe-boundary] [fixture:
@@ -301,6 +335,7 @@ key/value, word within a CSS property name, arrow, or compound `@{`, `:::`,
 cannot contain it as a child or sibling and remain a whole unit. Mermaid accepts
 the joined spellings; the whole-unit rule rejects them for reason 2, rather than
 copying its preprocessing. This rule introduces no reverse-direction acceptance.
+
 [fixture: usecase/div-directive-in-header] [fixture:
 usecase/div-directive-in-id] [fixture: usecase/div-directive-splits-operator]
 [fixture: usecase/div-lex-directive-in-metadata-key] [fixture:
@@ -316,19 +351,27 @@ CSS property names are name units that may include the internal HWS of
 `-- color`. A directive in that HWS is accepted as trivia: the name node can
 hold the text around it just as a string or raw-text node can. Mermaid reads
 `--` and the following word as separate units with or without the directive, so
-nothing is joined and reason 2 does not apply. [fixture:
-usecase/lex-directive-css-name-gap] [fixture:
-usecase/lex-class-property-custom-gap] A directive inside the word, as in
-`co%%{init: {}}%%lor`, remains this divergence. [fixture:
-usecase/div-directive-css-property]
+nothing is joined and reason 2 does not apply.
+
+[fixture: usecase/lex-directive-css-name-gap] [fixture:
+usecase/lex-class-property-custom-gap]
+
+A directive inside the word, as in `co%%{init: {}}%%lor`, remains this
+divergence.
+
+[fixture: usecase/div-directive-css-property]
 
 CSS values, quoted native metadata keys/values, labels, stereotypes, and JSON
-contents retain their written text and allow trivia fragments. [fixture:
-usecase/lex-directive-css-number] [fixture:
-usecase/lex-directive-native-quoted-key] The json-prefix matcher packages json,
-id and @ together, but they are separate authored components: a directive
-between the complete id and @ or between @ and { is allowed; native `@{` is
-atomic. [fixture: usecase/lex-directive-whole-json-prefix-boundary] [fixture:
+contents retain their written text and allow trivia fragments.
+
+[fixture: usecase/lex-directive-css-number] [fixture:
+usecase/lex-directive-native-quoted-key]
+
+The json-prefix matcher packages json, id and @ together, but they are separate
+authored components: a directive between the complete id and @ or between @ and
+{ is allowed; native `@{` is atomic.
+
+[fixture: usecase/lex-directive-whole-json-prefix-boundary] [fixture:
 usecase/lex-directive-in-json-declaration-at]
 
 ### Pie
@@ -345,9 +388,10 @@ allowed trivia. Hidden forms retain their own written text and do not join
 numeric fragments. These accepted forms need no divergence. The differing
 fixtures below are all accepted by mermaid.js and rejected here; this rule adds
 no pie input accepted here and rejected by mermaid.js. An unclosed global
-directive that both reject is not marked. [fixture: pie/div-directive-in-header]
-[fixture: pie/div-directive-in-showdata] [fixture:
-pie/div-directive-in-title-keyword] [fixture:
+directive that both reject is not marked.
+
+[fixture: pie/div-directive-in-header] [fixture: pie/div-directive-in-showdata]
+[fixture: pie/div-directive-in-title-keyword] [fixture:
 pie/div-directive-in-acctitle-keyword] [fixture:
 pie/div-directive-in-accdescr-keyword] [fixture: pie/div-directive-number]
 [fixture: pie/div-review-directive-number-sign] [fixture:
@@ -367,7 +411,9 @@ complete component without joining its spelling. The direct atomic rule
 therefore rejects these Mermaid-accepted inputs under reason 2. It introduces no
 input accepted only here. A directive between an option word and colon, or
 inside quoted text, is allowed; both-rejected glued boundary cases carry no
-mark. [fixture: gitgraph/div-directive-in-header] [fixture:
+mark.
+
+[fixture: gitgraph/div-directive-in-header] [fixture:
 gitgraph/div-directive-in-commit] [fixture:
 gitgraph/div-directive-in-option-keyword] [fixture:
 gitgraph/div-directive-in-type] [fixture: gitgraph/div-directive-in-number]
@@ -383,6 +429,7 @@ fixed keyword. The direct atomic rule rejects a directive inside info, showInfo,
 title, accTitle or accDescr although Mermaid joins its parts; this is reason 2.
 It adds no reverse acceptance. Complete component boundaries and value/hidden
 text are allowed; independently invalid joined inputs remain rejected by both.
+
 [fixture: info/div-directive-header-middle] [fixture:
 info/div-directive-flag-middle] [fixture: info/div-directive-title-middle]
 [fixture: info/div-directive-acctitle-middle] [fixture:
@@ -396,12 +443,14 @@ info/lex-yaml-opener-global] [fixture: info/lex-directive-rejected-tail]
 Shared Directive records hold the text, but a fixed word or integer has no
 internal component boundary. The direct atomic rule rejects their split forms
 under reason 2. A complete keyword/colon or keyword/brace boundary and value
-text are nondiffering controls. [fixture: packet/directive-header-middle]
-[fixture: packet/directive-beta-middle] [fixture: packet/directive-title-middle]
-[fixture: packet/directive-acctitle-middle] [fixture:
-packet/directive-accdescr-middle] [fixture: packet/directive-number-middle]
-[fixture: packet/directive-acctitle-colon] [fixture:
-packet/directive-accdescr-brace] [fixture: packet/directive-label-middle]
+text are nondiffering controls.
+
+[fixture: packet/directive-header-middle] [fixture:
+packet/directive-beta-middle] [fixture: packet/directive-title-middle] [fixture:
+packet/directive-acctitle-middle] [fixture: packet/directive-accdescr-middle]
+[fixture: packet/directive-number-middle] [fixture:
+packet/directive-acctitle-colon] [fixture: packet/directive-accdescr-brace]
+[fixture: packet/directive-label-middle]
 
 ### Architecture
 
@@ -412,7 +461,9 @@ indivisible component and has no ignored-text position. Mermaid joins those
 pieces; this specification rejects them. A text/string value can retain the
 written content with its directive omitted, so it is accepted instead. An
 unclosed directive that joins a declaration ID to later text follows the same
-name boundary rule. [fixture: architecture/directive-icon-delimiters] [fixture:
+name boundary rule.
+
+[fixture: architecture/directive-icon-delimiters] [fixture:
 architecture/directive-group-delimiters] [fixture:
 architecture/div-directive-name] [fixture: architecture/div-directive-icon-name]
 [fixture: architecture/div-directive-group-word] [fixture:
@@ -427,11 +478,13 @@ including true/false, circle/polygon and a common keyword. First ask whether a
 node can preserve that reading: RadarIgnoredText can hold a whole native hidden
 form, but has no slot inside an indivisible atom. The remaining difference
 therefore follows the direct boundary rule rather than concatenating atom
-fragments in preprocessing. [fixture: radar/directive-header-middle] [fixture:
-radar/directive-axis-name] [fixture: radar/directive-curve-name] [fixture:
-radar/directive-number] [fixture: radar/directive-reference] [fixture:
-radar/div-directive-boolean-atom] [fixture: radar/div-directive-graticule-atom]
-[fixture: radar/div-directive-common-keyword]
+fragments in preprocessing.
+
+[fixture: radar/directive-header-middle] [fixture: radar/directive-axis-name]
+[fixture: radar/directive-curve-name] [fixture: radar/directive-number]
+[fixture: radar/directive-reference] [fixture: radar/div-directive-boolean-atom]
+[fixture: radar/div-directive-graticule-atom] [fixture:
+radar/div-directive-common-keyword]
 
 Between complete authored components a global directive is allowed: header word
 and colon; common keyword and colon or brace; a label bracket and its string;
@@ -439,7 +492,9 @@ entry name, optional colon and number; and members and their commas. Its removal
 must still leave a valid lexical boundary. A native form stays in its named gap
 or body slot, whereas a global directive uses the shared root list. Strings,
 common values and native-form contents can contain global directives without
-splitting an atom. [fixture: radar/gram-directive-composite-header] [fixture:
+splitting an atom.
+
+[fixture: radar/gram-directive-composite-header] [fixture:
 radar/directive-common-colon] [fixture: radar/common-block-directive-gap]
 [fixture: radar/directive-common] [fixture: radar/directive-label-before-open]
 [fixture: radar/directive-label-after-open] [fixture:
@@ -467,7 +522,9 @@ the directive-spanning authored value, so no rejection is added there. A
 directive between complete components is allowed when required whitespace
 remains. Mermaid's removed-directive reading and the marked accepted fixtures
 establish the difference; missing-whitespace and invalid-suffix controls still
-reject in both readings. [fixture: treemap/directive-header-middle] [fixture:
+reject in both readings.
+
+[fixture: treemap/directive-header-middle] [fixture:
 treemap/div-directive-beta-header] [fixture: treemap/directive-class-keyword]
 [fixture: treemap/directive-class-name] [fixture:
 treemap/directive-common-keyword] [fixture: treemap/directive-number] [fixture:
@@ -487,10 +544,11 @@ compound assignment as an authored atom. A common directive inside one splits it
 and rejects. Metadata keywords, their colon/brace and values are separate
 components. ABNF repeat bounds and star are separate components; its percent
 numeric value is a text unit. Directives between complete repeat components or
-within string/text values remain allowed. [fixture:
-railroad/ir-div-directive-header] [fixture: railroad/ir-directive-keyword-glued]
-[fixture: railroad/ir-directive-name] [fixture:
-railroad/ir-directive-description-keyword] [fixture:
+within string/text values remain allowed.
+
+[fixture: railroad/ir-div-directive-header] [fixture:
+railroad/ir-directive-keyword-glued] [fixture: railroad/ir-directive-name]
+[fixture: railroad/ir-directive-description-keyword] [fixture:
 railroad/ebnf-div-directive-assignment] [fixture:
 railroad/peg-directive-operator] [fixture:
 railroad/abnf-directive-repeat-number] [fixture: railroad/abnf-directive-repeat]
@@ -504,6 +562,7 @@ accepted. A shared Directive record also preserves a split atom’s source, but 
 expression or ignored-text sibling represents that atom as one authored unit.
 The second answer is therefore reason 2: use the direct boundary rule instead of
 Mermaid’s deletion-and-gluing order. No new divergence identifier is introduced.
+
 [fixture: railroad/ir-native-ownership] [fixture:
 railroad/ebnf-native-ownership] [fixture: railroad/abnf-native-ownership]
 [fixture: railroad/peg-native-ownership] [fixture:
@@ -517,12 +576,14 @@ authored text wherever the syntax permits text. Fixed words, numbers, ID-form
 names and indivisible arrow, port or marker glyphs have no internal authored
 gap, so joining their fragments would require a different lexical rule, even
 though their raw source can be retained. The existing reason-2 atomic-boundary
-rule therefore rejects such splits. [fixture: wardley/directive-keyword-middle]
-[fixture: wardley/directive-header-inside] [fixture:
-wardley/directive-id-inside] [fixture: wardley/directive-strategy-inside]
-[fixture: wardley/directive-arrow-inside] [fixture:
-wardley/directive-port-inside] [fixture: wardley/directive-flow-marker-inside]
-[fixture: wardley/directive-number]
+rule therefore rejects such splits.
+
+[fixture: wardley/directive-keyword-middle] [fixture:
+wardley/directive-header-inside] [fixture: wardley/directive-id-inside]
+[fixture: wardley/directive-strategy-inside] [fixture:
+wardley/directive-arrow-inside] [fixture: wardley/directive-port-inside]
+[fixture: wardley/directive-flow-marker-inside] [fixture:
+wardley/directive-number]
 
 The authored components of coordinates, signed offsets and parenthesized
 decorations are separate boundaries. A labeled flow similarly has a plus, a
@@ -530,10 +591,11 @@ quoted label and an end marker. Global directives may occur between these
 complete parts, inside strings or spaced-name text, and inside native hidden
 punctuation. This does not permit ordinary padding or native hidden text inside
 the composite flow unit. A directive is not made indivisible merely because
-Mermaid matches the whole coordinate or decoration with one terminal. [fixture:
-wardley/directive-coordinate-parts] [fixture: wardley/directive-offset-sign]
-[fixture: wardley/directive-strategy-parts] [fixture:
-wardley/directive-parenthesized-inertia-parts] [fixture:
+Mermaid matches the whole coordinate or decoration with one terminal.
+
+[fixture: wardley/directive-coordinate-parts] [fixture:
+wardley/directive-offset-sign] [fixture: wardley/directive-strategy-parts]
+[fixture: wardley/directive-parenthesized-inertia-parts] [fixture:
 wardley/directive-flow-before-label] [fixture:
 wardley/directive-flow-after-label] [fixture: wardley/directive-name-inside]
 [fixture: wardley/directive-native-opener-split] [fixture:
@@ -545,7 +607,9 @@ Shared directive records can hold a directive’s source, but a fixed
 header/domain/common word or indivisible arrow has no internal authored gap.
 Reject a global directive inside such an atom. Complete component boundaries and
 text interiors remain allowed; native hidden forms already have nodes and need
-no divergence. [fixture: cynefin/directive-header-inside] [fixture:
+no divergence.
+
+[fixture: cynefin/directive-header-inside] [fixture:
 cynefin/directive-domain-inside] [fixture: cynefin/directive-arrow-inside]
 [fixture: cynefin/directive-common-keyword] [fixture:
 cynefin/directive-title-inside] [fixture: cynefin/directive-block-inside]
@@ -562,8 +626,9 @@ and
 [public adapter](https://github.com/mermaid-js/mermaid/blob/2086904e76c692331e34a45d7cc3bc30860d040e/packages/mermaid/src/diagrams/cynefin/cynefinParser.ts#L8-L19)
 read the result of the common preprocessing/detection pipeline. The
 [Cynefin syntax](../diagrams/cynefin.md) states the direct rule and
-[tree](../ast/cynefin.md) retains its authored forms. [fixture:
-cynefin/db-all-fields]
+[tree](../ast/cynefin.md) retains its authored forms.
+
+[fixture: cynefin/db-all-fields]
 
 ### eventmodeling
 
@@ -576,8 +641,10 @@ backticks/type word/body, qualified-name dots/segments and reference
 delimiters/name are separate components, so their boundaries remain permitted
 when the remaining lexical text is valid. Native comment marks and ignored
 fences have their own whole Comment/IgnoredText owners; they are not rejected
-merely for being hidden. [fixture: eventmodeling/directive-header-inside]
-[fixture: eventmodeling/directive-id-inside] [fixture:
+merely for being hidden.
+
+[fixture: eventmodeling/directive-header-inside] [fixture:
+eventmodeling/directive-id-inside] [fixture:
 eventmodeling/directive-number-inside] [fixture:
 eventmodeling/directive-arrow-inside] [fixture:
 eventmodeling/directive-reference-inside] [fixture:
@@ -604,6 +671,7 @@ components, so directives between them are allowed. The
 [diagram syntax](../diagrams/treeview.md#comments-and-boundaries) defines these
 boundaries from
 [treeView.langium](https://github.com/mermaid-js/mermaid/blob/2086904e76c692331e34a45d7cc3bc30860d040e/packages/parser/src/language/treeView/treeView.langium#L15-L64).
+
 [fixture: treeview/directive-header-inside] [fixture:
 treeview/directive-class-inside] [fixture:
 treeview/directive-description-inside] [fixture:

@@ -7,7 +7,9 @@
 構文と受理条件は [diagrams/info.md](../diagrams/info.ja.md) にあります。
 フィールドは書かれた値を保ちます。
 任意の値はなければ null、ない一覧は空で、一覧はソース順です。
-子の欄は巡回順を示します。 [fixture: info/header-lf] [fixture: info/common-all]
+子の欄は巡回順を示します。
+
+[fixture: info/header-lf] [fixture: info/common-all]
 [fixture: info/common-flag-all] [fixture: info/title-repeat-empty]
 [fixture: info/acctitle-repeat-empty] [fixture: info/accdescr-line-repeat]
 [fixture: info/accdescr-block-repeat]
@@ -28,9 +30,10 @@
 最後に書かれた見出し・フラグ・本文の形までです。
 無関係な外側の空白は除きます。
 固定の見出しはキーワードであり、独立したノードではありません。
-有効な title や version のフィールドを合成しません。 [fixture: info/header-lf]
-[fixture: info/header-inline-flag] [fixture: info/common-all]
-[fixture: info/frontmatter-nonleading-comment]
+有効な title や version のフィールドを合成しません。
+
+[fixture: info/header-lf] [fixture: info/header-inline-flag]
+[fixture: info/common-all] [fixture: info/frontmatter-nonleading-comment]
 [fixture: info/detect-second-scan-directive]
 
 textBeforeHeader は検出点から残された通常の隠れた形を持ちます。
@@ -39,6 +42,7 @@ textBeforeHeader は検出点から残された通常の隠れた形を持ちま
 共に通した空白・改行はトリビアであり、読み直しません。
 残された形の間に通過したトリビアがある場合も同じです。
 通常の隠れた形の境界は引き続き受理を決めます。
+
 [fixture: info/frontmatter-nonleading-comment]
 [fixture: info/detect-second-scan-directive]
 [fixture: info/lex-detect-preheader-empty-braces]
@@ -54,10 +58,12 @@ showInfo はフラグのキーワードを書いた場合だけ真です。
 info とフラグの間の隠れた形はすべて textBeforeShowInfo に属します。
 フラグがなければその一覧は空で、見出しの後の形は body の先頭になります。
 フラグの後の隠れた形も body の先頭になります。
-そこにコメントを重複して置きません。 [fixture: info/header-lf]
-[fixture: info/header-inline-flag] [fixture: info/header-flag-next-line]
-[fixture: info/hidden-directive-body] [fixture: info/hidden-yaml-body]
-[fixture: info/lex-flag-hidden-two] [fixture: info/lex-hidden-without-flag]
+そこにコメントを重複して置きません。
+
+[fixture: info/header-lf] [fixture: info/header-inline-flag]
+[fixture: info/header-flag-next-line] [fixture: info/hidden-directive-body]
+[fixture: info/hidden-yaml-body] [fixture: info/lex-flag-hidden-two]
+[fixture: info/lex-hidden-without-flag]
 [fixture: info/hidden-directive-flag-next-common]
 [fixture: info/hidden-yaml-after-flag]
 [fixture: info/hidden-directive-close-glued]
@@ -67,6 +73,7 @@ InfoAccDescrStatement、InfoAccDescrBlockStatement、InfoIgnoredText です。
 info が共通の値を公開しなくても、繰り返しと空の文をすべて保ちます。
 空行とコメントだけの行は本文項目を作りません。
 隠れた形の前に可視の EOL があれば、前の文の接尾ではなく本文項目になります。
+
 [fixture: info/common-all] [fixture: info/common-blank-lines]
 [fixture: info/title-repeat-empty] [fixture: info/acctitle-repeat-empty]
 [fixture: info/accdescr-line-repeat] [fixture: info/accdescr-block-repeat]
@@ -85,6 +92,7 @@ value は title と ASCII space/tab のちょうど 1
 区切りがない場合やその後に内容がない場合は null です。
 2 個目の区切りは空白のリテラルです。
 共通のディレクティブだけなら null の内容になることがあります。
+
 [fixture: info/title-empty] [fixture: info/title-tabs]
 [fixture: info/lex-title-one-space] [fixture: info/lex-title-one-tab]
 [fixture: info/lex-title-two-spaces] [fixture: info/lex-title-directive-only]
@@ -97,6 +105,7 @@ EOL と無関係な外側の空白を除きます。
 その EOL より後の形は body に属します。
 空の文と繰り返す文も、別々の出現として保ちます。
 通常のコメントは共有 Comment であり、隠れた接尾ではありません。
+
 [fixture: info/title-empty] [fixture: info/title-tabs]
 [fixture: info/lex-title-one-space] [fixture: info/lex-title-one-tab]
 [fixture: info/lex-title-two-spaces] [fixture: info/lex-title-directive-only]
@@ -112,8 +121,10 @@ EOL と無関係な外側の空白を除きます。
 
 value はコロンの直後から行の値の終わりまでのテキストで、両端の空白を保ちます。
 共通のトリビアを除いた後に内容がない場合だけ null です。
-空白だけの内容はリテラルです。 [fixture: info/acctitle-empty]
-[fixture: info/acctitle-gap] [fixture: info/acctitle-repeat-empty]
+空白だけの内容はリテラルです。
+
+[fixture: info/acctitle-empty] [fixture: info/acctitle-gap]
+[fixture: info/acctitle-repeat-empty]
 [fixture: info/lex-acctitle-directive-only]
 
 子の欄: `value`、`textAfter`。
@@ -124,6 +135,7 @@ EOL と無関係な外側の空白を除きます。
 その EOL より後の形は body に属します。
 空の文と繰り返す文も、別々の出現として保ちます。
 通常のコメントは共有 Comment であり、隠れた接尾ではありません。
+
 [fixture: info/acctitle-empty] [fixture: info/acctitle-gap]
 [fixture: info/acctitle-repeat-empty]
 [fixture: info/lex-acctitle-directive-only]
@@ -141,6 +153,7 @@ value はコロンの直後から行の値の終わりまでの行テキスト�
 共通のトリビアを除いた後に内容がない場合だけ null です。
 空白だけの内容はリテラルです。
 コロンの後の波括弧に見える値も、この行の形のままです。
+
 [fixture: info/accdescr-line-empty] [fixture: info/accdescr-line-repeat]
 [fixture: info/lex-accdescr-directive-only]
 [fixture: info/lex-accdescr-line-whitespace]
@@ -154,6 +167,7 @@ EOL と無関係な外側の空白を除きます。
 その EOL より後の形は body に属します。
 空の文と繰り返す文も、別々の出現として保ちます。
 通常のコメントは共有 Comment であり、隠れた接尾ではありません。
+
 [fixture: info/accdescr-line-empty] [fixture: info/accdescr-line-repeat]
 [fixture: info/lex-accdescr-directive-only]
 [fixture: info/lex-accdescr-line-whitespace]
@@ -173,11 +187,12 @@ value は波括弧の内部で、外側の両端の共通の空白だけを除�
 内部の字下げ、ソースの改行、裸の percent 行、引用符、
 バックスラッシュは書かれたテキストのままです。
 最初の閉じ波括弧が必須なので closed フィールドは不要です。
-空のブロックもこの文です。 [fixture: info/accdescr-block-empty]
-[fixture: info/space-block-interior] [fixture: info/accdescr-block-quoted]
-[fixture: info/comment-bare-block] [fixture: info/lex-block-directive-only]
-[fixture: info/lex-block-comment-only] [fixture: info/lex-block-whitespace-only]
-[fixture: info/accdescr-block-open]
+空のブロックもこの文です。
+
+[fixture: info/accdescr-block-empty] [fixture: info/space-block-interior]
+[fixture: info/accdescr-block-quoted] [fixture: info/comment-bare-block]
+[fixture: info/lex-block-directive-only] [fixture: info/lex-block-comment-only]
+[fixture: info/lex-block-whitespace-only] [fixture: info/accdescr-block-open]
 
 子の欄: `value`、`textAfter`。
 範囲: accDescr から最初の閉じ波括弧までで、最後の textAfter の形まで広げます。
@@ -186,6 +201,7 @@ EOL と無関係な外側の空白を除きます。
 その EOL より後の形は body に属します。
 空の文と繰り返す文も、別々の出現として保ちます。
 通常のコメントは共有 Comment であり、隠れた接尾ではありません。
+
 [fixture: info/accdescr-block-empty] [fixture: info/space-block-interior]
 [fixture: info/accdescr-block-quoted] [fixture: info/comment-bare-block]
 [fixture: info/lex-block-directive-only] [fixture: info/lex-block-comment-only]
@@ -207,13 +223,14 @@ null に空のリテラルを作りません。
 属性の引用符、文字参照、エスケープの綴りも含め、他のソース文字をすべて保ちます。
 引用されたように見えるテキストも StringLiteral ではなく InfoLiteral であり、
 引用符は閉じなくてもかまいません。
-空白の縮約やエスケープの復号は適用しません。 [fixture: info/title-tabs]
-[fixture: info/title-open-quote] [fixture: info/title-double-quotes]
-[fixture: info/directive-title-value] [fixture: info/directive-block-value]
-[fixture: info/comment-block] [fixture: info/lex-line-comment-region-ls]
-[fixture: info/style-title] [fixture: info/html-all-common]
-[fixture: info/line-crlf] [fixture: info/space-block-interior]
-[fixture: info/lex-title-one-tab]
+空白の縮約やエスケープの復号は適用しません。
+
+[fixture: info/title-tabs] [fixture: info/title-open-quote]
+[fixture: info/title-double-quotes] [fixture: info/directive-title-value]
+[fixture: info/directive-block-value] [fixture: info/comment-block]
+[fixture: info/lex-line-comment-region-ls] [fixture: info/style-title]
+[fixture: info/html-all-common] [fixture: info/line-crlf]
+[fixture: info/space-block-interior] [fixture: info/lex-title-one-tab]
 
 ### InfoIgnoredText
 
@@ -228,8 +245,9 @@ null に空のリテラルを作りません。
 内部のソースの改行や空白は保ちます。
 追加の LF はソースの範囲や値に入りません。
 どちらの形も閉じが必要なので closed フィールドは不要です。
-空の本文もフェンスを持つ空でない値になります。 [fixture: info/hidden-yaml-empty]
-[fixture: info/hidden-yaml-open-padding]
+空の本文もフェンスを持つ空でない値になります。
+
+[fixture: info/hidden-yaml-empty] [fixture: info/hidden-yaml-open-padding]
 [fixture: info/hidden-directive-padding]
 [fixture: info/hidden-directive-nonqualifying-closer]
 [fixture: info/hidden-directive-cr] [fixture: info/hidden-directive-crlf]
@@ -244,6 +262,7 @@ value から共通のディレクティブ・コメント領域・選ばれた�
 内部で認識する大域的なディレクティブは、独立した共通の効果を保ちます。
 失敗したディレクティブ風の形は共有 Comment であり、このノードではありません。
 先に始まった行・ブロックの値は、内部の隠れた形に見えるテキストを持ちます。
+
 [fixture: info/hidden-yaml-config-ignored]
 [fixture: info/lex-hidden-nested-global] [fixture: info/lex-yaml-common-comment]
 [fixture: info/lex-hidden-common-comment]
@@ -261,6 +280,7 @@ YAML の本文ありの優先順位により、
 隣接する 3 本のフェンスは空の形と別の開きではなく一つの一致になります。
 空でない 2 ブロックは別々のままにできます。
 その範囲は [字句規則](../diagrams/info.ja.md#隠れた-yaml) が決めます。
+
 [fixture: info/frontmatter-nonleading-comment] [fixture: info/hidden-yaml-body]
 [fixture: info/lex-hidden-without-flag] [fixture: info/lex-hidden-tail-two]
 [fixture: info/lex-yaml-three-fences]

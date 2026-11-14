@@ -70,23 +70,27 @@ GanttAccDescrStatement、GanttAccDescrBlockStatement のいずれかです。
 その中にディレクティブがあってもよく、
 名前はディレクティブを除いた書かれたテキストです。
 `do%%{init: {}}%%ne` は、mermaid.js と同じくタグ `done` です。
+
 [fixture: gantt/gram-task-tag-cut-by-directive]
+
 [単位の中のディレクティブ](../diagrams/gantt.ja.md#単位の中のディレクティブ)
 を参照してください。
 `a : 1d` は説明 `a ` と 1 つの項目 `1d` を持ち、
 `a : done, 1d` はタグ `done` と項目 `1d`、`a : , ,` は 3 つの null の項目、
 `a : id1,, 1d` は項目 `id1`、null、`1d`、
 `a : my id, after a b, until c` は項目 `my id`、`after a b`、
-`until c` を持ちます。 [fixture: gantt/gram-task]
-[fixture: gantt/gram-task-one-item] [fixture:
-gantt/gram-task-tag-then-item] [fixture: gantt/gram-task-two-tags] [fixture:
-gantt/gram-task-tag-repeated] [fixture: gantt/gram-task-tags-upper-case]
-[fixture: gantt/gram-task-tag-after-item] [fixture:
-gantt/gram-task-empty-items] [fixture: gantt/gram-task-empty-middle-item]
-[fixture: gantt/gram-task-trailing-comma] [fixture:
-gantt/gram-task-four-items] [fixture: gantt/gram-task-id-with-spaces] [fixture:
-gantt/gram-task-after-ids] [fixture: gantt/gram-task-until] [fixture:
-gantt/lex-task-text-trailing-spaces] [fixture: gantt/gram-task-tags-only]
+`until c` を持ちます。
+
+[fixture: gantt/gram-task] [fixture: gantt/gram-task-one-item]
+[fixture: gantt/gram-task-tag-then-item] [fixture: gantt/gram-task-two-tags]
+[fixture: gantt/gram-task-tag-repeated]
+[fixture: gantt/gram-task-tags-upper-case]
+[fixture: gantt/gram-task-tag-after-item] [fixture: gantt/gram-task-empty-items]
+[fixture: gantt/gram-task-empty-middle-item]
+[fixture: gantt/gram-task-trailing-comma] [fixture: gantt/gram-task-four-items]
+[fixture: gantt/gram-task-id-with-spaces] [fixture: gantt/gram-task-after-ids]
+[fixture: gantt/gram-task-until] [fixture: gantt/lex-task-text-trailing-spaces]
+[fixture: gantt/gram-task-tags-only]
 
 ### GanttClickStatement
 
@@ -114,10 +118,12 @@ id は解決されません。
 どのタスクも名指さない id も書かれたとおりに一覧にあります。
 URL は空にならず、
 常に閉じています（[href の文脈](../diagrams/gantt.ja.md#href-の文脈) を参照）。
-[fixture: gantt/gram-click-href] [fixture: gantt/gram-click-call] [fixture:
-gantt/gram-click-href-then-call] [fixture: gantt/gram-click-call-then-href]
-[fixture: gantt/gram-click-ids-list] [fixture:
-gantt/gram-click-ids-trailing-comma] [fixture: gantt/gram-click-ids-comma-only]
+
+[fixture: gantt/gram-click-href] [fixture: gantt/gram-click-call]
+[fixture: gantt/gram-click-href-then-call]
+[fixture: gantt/gram-click-call-then-href] [fixture: gantt/gram-click-ids-list]
+[fixture: gantt/gram-click-ids-trailing-comma]
+[fixture: gantt/gram-click-ids-comma-only]
 [fixture: gantt/gram-click-ids-two-commas] [fixture: gantt/gram-click-id-colon]
 [fixture: gantt/gram-click-id-quotes] [fixture: gantt/gram-click-unknown-id]
 [fixture: gantt/gram-click-href-line-feed-inside]
@@ -137,13 +143,14 @@ click の文の call の部分。
 `call f( )` は null の引数、`call f( 1)` は空白と `1` の引数、
 `call f(a, "b,c")` は引数 `a, "b,c"` を持ちます。
 mermaid.js はそれをコールバックを結ぶときにだけ分けます。
-[fixture: gantt/gram-click-call] [fixture:
-gantt/gram-click-call-name-space-before-parenthesis] [fixture:
-gantt/gram-click-call-name-line-feed-before-parenthesis] [fixture:
-gantt/gram-click-call-blank-arguments] [fixture:
-gantt/gram-click-call-arguments-leading-space] [fixture:
-gantt/gram-click-call-arguments-quoted-comma] [fixture:
-gantt/gram-click-call-arguments-line-feed]
+
+[fixture: gantt/gram-click-call]
+[fixture: gantt/gram-click-call-name-space-before-parenthesis]
+[fixture: gantt/gram-click-call-name-line-feed-before-parenthesis]
+[fixture: gantt/gram-click-call-blank-arguments]
+[fixture: gantt/gram-click-call-arguments-leading-space]
+[fixture: gantt/gram-click-call-arguments-quoted-comma]
+[fixture: gantt/gram-click-call-arguments-line-feed]
 
 ### GanttDateFormatStatement
 
@@ -158,6 +165,7 @@ gantt/gram-click-call-arguments-line-feed]
 `dateFormat`、空白 2 つ、`X` は空白と `X` の値を持ちます。
 テキストは `#`、`;`、
 改行の前で終わります（[文の文脈](../diagrams/gantt.ja.md#文の文脈) を参照）。
+
 [fixture: gantt/db-date-format] [fixture: gantt/lex-dateformat-two-spaces]
 [fixture: gantt/lex-dateformat-trailing-spaces]
 
@@ -170,7 +178,9 @@ gantt/gram-click-call-arguments-line-feed]
 | `value` | GanttLiteral | `axisFormat` と 1 つの空白文字の後の、行の終わりまでのテキスト。 |
 
 子の欄: `value`。
-GanttDateFormatStatement と同じです。 [fixture: gantt/db-axis-format]
+GanttDateFormatStatement と同じです。
+
+[fixture: gantt/db-axis-format]
 
 ### GanttTickIntervalStatement
 
@@ -181,7 +191,9 @@ GanttDateFormatStatement と同じです。 [fixture: gantt/db-axis-format]
 | `value` | GanttLiteral | `tickInterval` と 1 つの空白文字の後の、行の終わりまでのテキスト。 |
 
 子の欄: `value`。
-GanttDateFormatStatement と同じです。 [fixture: gantt/db-tick-interval]
+GanttDateFormatStatement と同じです。
+
+[fixture: gantt/db-tick-interval]
 
 ### GanttTodayMarkerStatement
 
@@ -193,6 +205,7 @@ GanttDateFormatStatement と同じです。 [fixture: gantt/db-tick-interval]
 
 子の欄: `value`。
 テキストは `#` を含められ、`;` と改行の前で終わります。
+
 [fixture: gantt/db-today-marker] [fixture: gantt/db-today-marker-off]
 [fixture: gantt/lex-todaymarker-hash]
 
@@ -210,9 +223,11 @@ GanttDateFormatStatement と同じです。 [fixture: gantt/db-tick-interval]
 [Identifier](../ast.ja.md#identifier) です。
 大文字小文字を保ち、mermaid.js はそれを小文字にします。
 間に何もないコンマと、空白だけのリストのテキストは項目を作りません。
-[fixture: gantt/db-includes-tokens] [fixture:
-gantt/lex-excludes-commas-and-spaces] [fixture:
-gantt/lex-excludes-upper-case-items] [fixture: gantt/lex-excludes-empty-items]
+
+[fixture: gantt/db-includes-tokens]
+[fixture: gantt/lex-excludes-commas-and-spaces]
+[fixture: gantt/lex-excludes-upper-case-items]
+[fixture: gantt/lex-excludes-empty-items]
 [fixture: gantt/lex-excludes-whitespace-value]
 
 ### GanttExcludesStatement
@@ -224,14 +239,17 @@ gantt/lex-excludes-upper-case-items] [fixture: gantt/lex-excludes-empty-items]
 | ------- | ------------------- | ----------------------------------------------------------- |
 | `items` | Identifier のリスト | リストのテキストの項目。GanttIncludesStatement と同じです。 |
 
-子の欄: `items`。 [fixture: gantt/db-excludes-tokens] [fixture:
-gantt/db-excludes-merged-lines]
+子の欄: `items`。
+
+[fixture: gantt/db-excludes-tokens] [fixture: gantt/db-excludes-merged-lines]
 
 ### GanttInclusiveEndDatesStatement
 
 `inclusiveEndDates` の文。
 子の欄はありません。
-ほかの欄もありません。 [fixture: gantt/db-inclusive-end-dates]
+ほかの欄もありません。
+
+[fixture: gantt/db-inclusive-end-dates]
 
 ### GanttWeekdayStatement
 
@@ -245,8 +263,9 @@ gantt/db-excludes-merged-lines]
 子の欄はありません。
 曜日は固定の集合の語なので string の欄で、
 テキストの大文字小文字によらず小文字です。
-トークンは書かれた大文字小文字を保ちます。 [fixture: gantt/db-weekday-last-wins]
-[fixture: gantt/lex-day-mixed-case]
+トークンは書かれた大文字小文字を保ちます。
+
+[fixture: gantt/db-weekday-last-wins] [fixture: gantt/lex-day-mixed-case]
 
 ### GanttWeekendStatement
 
@@ -257,8 +276,9 @@ gantt/db-excludes-merged-lines]
 | ----- | ------ | ------------------------------------ |
 | `day` | string | `friday` か `saturday`。小文字です。 |
 
-子の欄はありません。 [fixture: gantt/db-weekend-friday] [fixture:
-gantt/db-weekend-saturday]
+子の欄はありません。
+
+[fixture: gantt/db-weekend-friday] [fixture: gantt/db-weekend-saturday]
 
 ### GanttTitleStatement
 
@@ -270,9 +290,10 @@ gantt/db-weekend-saturday]
 
 子の欄: `value`。
 値は両端の空白を保ち、`:`、`#`、`;`、`%%` を文字として持ちます。
+
 [fixture: gantt/db-title-statement] [fixture: gantt/lex-title-two-spaces]
-[fixture: gantt/lex-title-trailing-spaces] [fixture:
-gantt/lex-title-hash-semicolon-percent]
+[fixture: gantt/lex-title-trailing-spaces]
+[fixture: gantt/lex-title-hash-semicolon-percent]
 
 ### GanttSectionStatement
 
@@ -284,9 +305,10 @@ gantt/lex-title-hash-semicolon-percent]
 
 子の欄: `name`。
 名前は空白を含みうるテキストで、何も参照しないので GanttLiteral です。
-両端の空白を保ちます。 [fixture: gantt/db-sections]
-[fixture: gantt/lex-section-two-spaces] [fixture:
-gantt/lex-section-trailing-spaces]
+両端の空白を保ちます。
+
+[fixture: gantt/db-sections] [fixture: gantt/lex-section-two-spaces]
+[fixture: gantt/lex-section-trailing-spaces]
 
 ### GanttAccTitleStatement
 
@@ -300,8 +322,11 @@ gantt/lex-section-trailing-spaces]
 `:` の後の空白は改行を含めて一緒に読まれるので、
 テキストは最初にテキストのある行から始まり、値は null になりません。
 後ろに何もない `accTitle:` は拒否されます。
-値は両端の空白を除いたテキストです。 [fixture: gantt/gram-acc-title] [fixture:
-gantt/gram-acc-title-line-feed-then-text] [fixture: gantt/lex-acc-title-at-end]
+値は両端の空白を除いたテキストです。
+
+[fixture: gantt/gram-acc-title]
+[fixture: gantt/gram-acc-title-line-feed-then-text]
+[fixture: gantt/lex-acc-title-at-end]
 [fixture: gantt/gram-acc-title-trailing-spaces]
 
 ### GanttAccDescrStatement
@@ -314,6 +339,7 @@ gantt/gram-acc-title-line-feed-then-text] [fixture: gantt/lex-acc-title-at-end]
 
 子の欄: `value`。
 GanttAccTitleStatement と同じく、値は null になりません。
+
 [fixture: gantt/gram-acc-descr] [fixture: gantt/lex-acc-descr-at-end]
 
 ### GanttAccDescrBlockStatement
@@ -331,12 +357,14 @@ GanttAccTitleStatement と同じく、値は null になりません。
 `accDescr {}`、`accDescr { }`、空行のブロックは値 null を持ち、何も変えません。
 そのようなブロックが文であるのは文の始まる位置だけで、
 click の文の中のブロックは入力を拒否させます。
+
 [fixture: gantt/gram-acc-descr-block]
 [fixture: gantt/gram-acc-descr-block-multiline]
 [fixture: gantt/gram-acc-descr-block-empty]
 [fixture: gantt/gram-acc-descr-block-whitespace-only]
 [fixture: gantt/div-empty-description-block-between-click-id-and-href]
 [fixture: gantt/lex-acc-descr-block-unclosed]
+
 [空の説明ブロック](../diagrams/gantt.ja.md#空の説明ブロック)
 を参照してください。
 
@@ -358,12 +386,13 @@ click の文の中のブロックは入力を拒否させます。
 タスクのデータの項目は両端に空白を持たず、アクセシビリティのテキストは、
 mermaid.js が切り落とす両端の空白を除いて読まれます。
 コールバック引数、コールバック名、説明ブロックの中の改行は値の一部です。
-[fixture: gantt/lex-task-text-trailing-spaces] [fixture:
-gantt/lex-title-two-spaces] [fixture: gantt/lex-title-trailing-spaces]
-[fixture: gantt/lex-dateformat-two-spaces] [fixture:
-gantt/gram-click-call-name-space-before-parenthesis] [fixture:
-gantt/gram-click-call-arguments-leading-space] [fixture:
-gantt/lex-task-items-nbsp-trimmed] [fixture:
-gantt/gram-acc-title-trailing-spaces] [fixture:
-gantt/gram-click-call-arguments-line-feed] [fixture:
-gantt/gram-acc-descr-block-multiline]
+
+[fixture: gantt/lex-task-text-trailing-spaces]
+[fixture: gantt/lex-title-two-spaces] [fixture: gantt/lex-title-trailing-spaces]
+[fixture: gantt/lex-dateformat-two-spaces]
+[fixture: gantt/gram-click-call-name-space-before-parenthesis]
+[fixture: gantt/gram-click-call-arguments-leading-space]
+[fixture: gantt/lex-task-items-nbsp-trimmed]
+[fixture: gantt/gram-acc-title-trailing-spaces]
+[fixture: gantt/gram-click-call-arguments-line-feed]
+[fixture: gantt/gram-acc-descr-block-multiline]

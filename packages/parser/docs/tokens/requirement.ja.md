@@ -45,6 +45,7 @@
 `requirement  spaced name  {` は、
 1 つの `RawText` トークン `spaced name` を持ちます。
 `style-word` は空白を持たず、その単位の名前は `Identifier` トークンです。
+
 [fixture: requirement/db-requirement-name-spaces]
 [fixture: requirement/db-style-statement]
 
@@ -57,9 +58,12 @@
 `blue` です。
 一方、`style r fill:red` は 1 つのトークン `fill:red` を持ちます。
 `style r fill:red #c` は、1 つのスタイル `fill:red#c` の、
-トークン `fill:red` と `#c` を持ちます。 [fixture: requirement/lex-style-spaces]
+トークン `fill:red` と `#c` を持ちます。
+
+[fixture: requirement/lex-style-spaces]
 [fixture: requirement/db-style-statement]
 [fixture: requirement/lex-style-hash-after-style]
+
 ほかの項目はどれも 1 つの単位で、したがって 1 つのトークンです。
 
 トークンは両端に空白を持ちません。
@@ -78,6 +82,7 @@ mermaid.js が値をトリムするアクセシビリティのテキストも、
 `accDescr {`、`  line 1` の行、`  line 2` の行、`}` だけの行は、`line 1`、
 改行とインデント、`line 2` のトークンを持ちます。
 字句解析器がブロックのテキストに読み込む、`}` の前の改行は含みません。
+
 [fixture: requirement/db-requirement-name-spaces]
 [fixture: requirement/db-requirement-value-spaces]
 [fixture: requirement/lex-whitespace-nbsp-after-name]
@@ -100,6 +105,7 @@ mermaid.js が値をトリムするアクセシビリティのテキストも、
 `RawText` トークン `fi` と `ll:red` を持ちます。
 一方、名前の `Identifier` トークンの中にディレクティブがある、
 `style r%%{init: {}}%%x fill:red` は拒否されます。
+
 [fixture: requirement/lex-directive-in-name]
 [fixture: requirement/lex-directive-in-style]
 [fixture: requirement/div-directive-in-style-name]
@@ -108,8 +114,10 @@ mermaid.js が値をトリムするアクセシビリティのテキストも、
 - 空の説明ブロックは、文としても本文の項目としても、
   `Keyword` トークン `accDescr` と、
   `Punctuator` トークン `{` と `}` を持ちます。
+
   [fixture: requirement/gram-acc-descr-block-empty]
   [fixture: requirement/gram-empty-description-block-in-body]
+
 - 行の規則が無視する `;` は `IgnoredSemicolon` トークンです。
   `accTitle: style:#x a;b` は、`RawText` トークン `style:#x a` と `b` と、
   その間の `IgnoredSemicolon` トークンを持ちます。
@@ -117,6 +125,7 @@ mermaid.js が値をトリムするアクセシビリティのテキストも、
   `RawText` トークン `b` と `c` と、その間の `IgnoredSemicolon` トークンです。
   `style r fill:#f00;` は、`RawText` トークン `fill:#f00` と、
   `IgnoredSemicolon` トークン `;` で終わります。
+
   [fixture: requirement/tokens-ignored-semicolon-in-acc-title]
   [fixture: requirement/tokens-ignored-semicolon-in-name]
   [fixture: requirement/tokens-ignored-semicolon-in-style]

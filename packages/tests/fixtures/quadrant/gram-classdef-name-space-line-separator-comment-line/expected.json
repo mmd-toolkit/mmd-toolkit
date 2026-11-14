@@ -1,0 +1,11 @@
+{
+  "source": {
+    "kind": "authored",
+    "note": "quadrant.md Classes: the space after the name ends it, and the U+2028 after it is no style, so the input is rejected by both."
+  },
+  "accepted": false,
+  "error": {
+    "name": "Error",
+    "message": "Parse error on line 2:\n...antChartclassDef a  b color: #109060\n----------------------^\nExpecting 'ALPHA', 'NUM', 'NODE_STRING', 'MINUS', 'COLON', 'BRKT', 'UNIT', 'SPACE', 'STYLE', 'PCT', got 'UNICODE_TEXT'"
+  }
+}

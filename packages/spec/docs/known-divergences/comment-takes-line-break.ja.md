@@ -26,10 +26,10 @@ classDiagram
 文の後のコメントも、テキストの最後の行にあるときは同じで、
 後にディレクティブだけの行が続くときもそうです。
 `%%` の前にディレクティブだけがある行も、コメント行です。
-[fixture: class/lex-comment-own-line] [fixture:
-class/lex-comment-on-last-line] [fixture:
-class/lex-comment-then-directive-at-end] [fixture:
-class/lex-directive-then-comment-line]
+
+[fixture: class/lex-comment-own-line] [fixture: class/lex-comment-on-last-line]
+[fixture: class/lex-comment-then-directive-at-end]
+[fixture: class/lex-directive-then-comment-line]
 
 ## 差異
 
@@ -94,10 +94,13 @@ class/lex-directive-then-comment-line]
 
 例 2 の空の行の代わりに空白だけの行があれば、
 どちらも関係とクラス Fish を読みます。
-[fixture: class/div-comment-then-statement] [fixture:
-class/div-comment-then-empty-line] [fixture: class/div-comment-joins-member]
-[fixture: class/div-comment-splits-relation] [fixture:
-class/div-comment-after-header] [fixture: class/lex-comment-on-last-line]
+
+[fixture: class/div-comment-then-statement]
+[fixture: class/div-comment-then-empty-line]
+[fixture: class/div-comment-joins-member]
+[fixture: class/div-comment-splits-relation]
+[fixture: class/div-comment-after-header]
+[fixture: class/lex-comment-on-last-line]
 [fixture: class/lex-comment-then-spaces-line]
 
 つまり mermaid.js は、そのようなコメントの次の行を、前の文の続きとして読みます。
@@ -109,6 +112,7 @@ class/div-comment-after-header] [fixture: class/lex-comment-on-last-line]
 mermaid.js はコメントの後と `%%` の後の改行を取って改行を 1 つ読み、
 この仕様は 2 つ読んで、テキストを拒否します。
 関係の後のコメントがなければ、どちらも拒否します。
+
 [fixture: class/div-comment-then-comment-only-line]
 
 ガントチャートでは、
@@ -126,6 +130,7 @@ call の部分の後の `%` の前に空白があるか `%%` のときはどち�
 を参照）。
 gantt では差異は一方向です。
 mermaid.js が受理し、この仕様が拒否します。
+
 [fixture: gantt/div-percent-comment-takes-line-feed-after-click-id]
 [fixture: gantt/div-percent-comment-takes-line-feed-after-call]
 [fixture: gantt/div-percent-comment-takes-line-feeds-after-call]
@@ -136,6 +141,7 @@ mermaid.js が受理し、この仕様が拒否します。
 
 C4 では見出し、呼び出し、境界の後の図のコメントは、
 この仕様では後続の行終端子をコメントの外に残します。
+
 [fixture: c4/header-component-comment-glued]
 [fixture: c4/header-component-comment-on-header-line]
 [fixture: c4/header-container-comment-glued]
@@ -152,12 +158,14 @@ C4 では見出し、呼び出し、境界の後の図のコメントは、
 
 mermaid.js は後続の連続する LF を取り、必須の区切りを失うこれらの入力を拒否し、
 コメントの後に空行がある場合も同じです。
+
 [fixture: c4/div-header-comment-blank-recovery]
 [fixture: c4/div-comment-between-blank-recovery]
 [fixture: c4/div-diagram-comment-u2028] [fixture: c4/div-diagram-comment-u2029]
 
 コメントの後のスペースだけの行は C4 のコメント規則を止め、
 区切られた文を両者とも受理します。
+
 [fixture: c4/header-header-comment-spaces-recovery]
 [fixture: c4/lex-comment-between-spaces-recovery]
 
@@ -183,8 +191,10 @@ mermaid.js の字句解析器は、
 空白の後のディレクティブは空白だけの行を残します。
 `A <|-- B %% c`、行 `%%{init: {}}%%`、`class C` は、mermaid.js では拒否され、
 ディレクティブの前に空白があれば、どちらも関係とクラス C を読みます。
-[fixture: class/div-comment-then-directive-line] [fixture:
-class/lex-comment-then-indented-directive-line]
+
+[fixture: class/div-comment-then-directive-line]
+[fixture: class/lex-comment-then-indented-directive-line]
+
 ただし mermaid.js は、字句解析器がテキストを読む前に、`%%` の後に文字のある、
 ディレクティブでないコメント行を、
 すぐ前の空白だけの行と一緒に除きます（mermaid.js の
@@ -192,7 +202,9 @@ class/lex-comment-then-indented-directive-line]
 そのようなコメント行のすぐ前の空白の行はなくなり、何も止めません。
 `A --> B %% c`、空白の行、`%% x`、`A : +int age` は、例 3 と同じく、
 mermaid.js では、ラベル `+int age` を持つ A から `BA` への 1 つの関係です。
+
 [fixture: class/div-comment-then-spaces-line-then-comment-line]
+
 gantt の字句解析器は、
 単独の `%` で始まるコメントに同じ形の規則を持ち（mermaid.js の
 [`gantt.jison`](https://github.com/mermaid-js/mermaid/blob/2086904e76c692331e34a45d7cc3bc30860d040e/packages/mermaid/src/diagrams/gantt/parser/gantt.jison#L30-L30)）、

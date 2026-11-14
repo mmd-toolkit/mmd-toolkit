@@ -39,8 +39,11 @@ A **token** is a run of units of one item that follow one another, without the
 whitespace at its ends unless the unit keeps it. The string of a link part, its
 `"` units and the `url-text` between them, is one `String` token from its
 opening to its closing quote: `href "u"` has the `Keyword` token `href` and the
-`String` token `"u"`. [fixture: gantt/gram-click-href] Every other item is one
-unit, and so one token.
+`String` token `"u"`.
+
+[fixture: gantt/gram-click-href]
+
+Every other item is one unit, and so one token.
 
 A token holds no whitespace at its ends, except where mermaid.js reads it as
 part of a value (see [Tokens](../tokens.md#tokens)). The units whose values keep
@@ -51,13 +54,18 @@ spaces); a `setting-text`, a `marker-text`, a `title-text`, and a `section-text`
 `title T` and two spaces the token `T` and two spaces); a `callback-name`, the
 whitespace and line feeds before its `(` included (`call f ()` has the token `f`
 and a space); and a `callback-arguments` unit (`call f( 1)` has the token of a
-space and `1`). [fixture: gantt/lex-task-text-trailing-spaces] [fixture:
+space and `1`).
+
+[fixture: gantt/lex-task-text-trailing-spaces] [fixture:
 gantt/lex-dateformat-two-spaces] [fixture: gantt/lex-title-trailing-spaces]
 [fixture: gantt/gram-click-call-name-space-before-parenthesis] [fixture:
 gantt/gram-click-call-name-line-feed-before-parenthesis] [fixture:
-gantt/gram-click-call-arguments-leading-space] An accessibility text, whose
-value mermaid.js trims, and an item of task data, whose unit has no whitespace
-at its ends, leave it out: `accTitle: T` and two spaces has the token `T`.
+gantt/gram-click-call-arguments-leading-space]
+
+An accessibility text, whose value mermaid.js trims, and an item of task data,
+whose unit has no whitespace at its ends, leave it out: `accTitle: T` and two
+spaces has the token `T`.
+
 [fixture: gantt/gram-acc-title-trailing-spaces] [fixture:
 gantt/lex-task-items-nbsp-trimmed]
 
@@ -65,7 +73,9 @@ At the end of a title text or a section text, a closed directive ends nothing
 and the whitespace before it stays in the token, and a CR or a CRLF ends the
 text as a line feed does: `title T %%{init: {}}%%` has the token `T` and a
 space, `title T%%{init: {}}%%` the token `T`, and `title T` followed by a CRLF
-the token `T`. [fixture: gantt/lex-directive-at-end-of-title-line] [fixture:
+the token `T`.
+
+[fixture: gantt/lex-directive-at-end-of-title-line] [fixture:
 gantt/lex-directive-glued-at-end-of-title] [fixture:
 gantt/lex-directive-at-end-of-section-line] [fixture:
 gantt/lex-directive-glued-at-end-of-section] [fixture:
@@ -80,6 +90,7 @@ of any other kind, a directive or an ignored `;` makes the input rejected (see
 [Directives inside units](../../../spec/docs/diagrams/gantt.md#directives-inside-units)):
 `a : 1%%{init: {}}%%d` has the `RawText` tokens `1` and `d` with the `Directive`
 token between them, while `click id%%{init: {}}%%1 href "u"` is rejected.
+
 [fixture: gantt/lex-directive-in-task-data] [fixture:
 gantt/lex-directive-in-task-text] [fixture: gantt/lex-directive-in-href-string]
 [fixture: gantt/tokens-ignored-semicolon-in-href-string] [fixture:
@@ -91,13 +102,19 @@ gantt/div-ignored-semicolon-in-click-id]
   `RawText` tokens `done` and `1d`. A directive inside a tag cuts its token as
   that of any text unit, and the name of the tag is its text without the
   directive: `a : do%%{init: {}}%%ne, t1, 2024-01-01, 1d` has the tag `done`,
-  with the `RawText` tokens `do` and `ne`. [fixture:
-  gantt/gram-task-tag-then-item] [fixture: gantt/gram-task-tag-cut-by-directive]
+  with the `RawText` tokens `do` and `ne`.
+
+  [fixture: gantt/gram-task-tag-then-item] [fixture:
+  gantt/gram-task-tag-cut-by-directive]
+
 - An empty description block that is a statement has the `Keyword` token
-  `accDescr` and the `Punctuator` tokens `{` and `}`. [fixture:
-  gantt/gram-acc-descr-block-empty]
+  `accDescr` and the `Punctuator` tokens `{` and `}`.
+
+  [fixture: gantt/gram-acc-descr-block-empty]
+
 - A `;` that the line rule ignores is an `IgnoredSemicolon` token: in
   `title a;b style:#x;`, the first `;` is not the last of its line and is a
   character of the `RawText` token `a;b style:#x`, and the last `;` is an
-  `IgnoredSemicolon` token. [fixture:
-  gantt/tokens-ignored-semicolon-in-title-text]
+  `IgnoredSemicolon` token.
+
+  [fixture: gantt/tokens-ignored-semicolon-in-title-text]
