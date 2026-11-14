@@ -897,12 +897,10 @@ placeholder of the entity `#quot;`, both as in mermaid.js.
 A directive inside a name, a keyword, a delimiter, an arrow, or a number makes
 the input rejected, while mermaid.js accepts it: mermaid.js reads
 `end%%{init: {}}%%x` as the vertex `endx`, not the keyword `end`, and here the
-directive lies inside a name.
+directive lies inside a name. See
+[`directive-as-token-boundary`](./known-divergences/directive-as-token-boundary.md).
 
 [fixture: common/directive-keyword-followed-by-text]
-
-See
-[`directive-as-token-boundary`](./known-divergences/directive-as-token-boundary.md).
 
 A directive on a comment line after its `%%` is part of the comment, and one
 before the `%%` is not (see [Comment lines](#comment-lines)). Each diagram

@@ -91,6 +91,7 @@ quadrant では 3 つです。
 2 つの文字列は、どこにあってもこの差異に入ります。
 [空の文字列](../diagrams/quadrant.ja.md#空の文字列) を参照してください。
 block でも同じ 3 つで、2 つの文字列はどこにあってもこの差異に入ります。
+[空の文字列](../diagrams/block.ja.md#空の文字列) を参照してください。
 
 [fixture: block/div-empty-string-line] [fixture: block/div-empty-markdown-line]
 [fixture: block/div-empty-block-in-edge]
@@ -111,8 +112,6 @@ block でも同じ 3 つで、2 つの文字列はどこにあってもこの差
 [fixture: mindmap/div-empty-markdown-string-in-shape]
 [fixture: xychart/div-empty-string-line]
 [fixture: xychart/div-empty-description-block-in-categories]
-
-[空の文字列](../diagrams/block.ja.md#空の文字列) を参照してください。
 
 それだけの行の空の説明ブロックは、そのふつうの書き方で、
 何も変えない説明ブロックの文です。
@@ -144,6 +143,7 @@ kanban では mindmap と同様、
 [fixture: kanban/div-empty-class-after-shape]
 
 形の中の空の文字列と markdown 文字列も、空でないラベルの前後を含めて拒否します。
+[空の形](../diagrams/kanban.ja.md#空の形) を参照してください。
 
 [fixture: kanban/div-empty-string-before-label]
 [fixture: kanban/div-empty-markdown-before-label]
@@ -151,8 +151,6 @@ kanban では mindmap と同様、
 [fixture: kanban/div-empty-markdown-after-label]
 [fixture: kanban/div-string-before-string]
 [fixture: kanban/div-empty-markdown-before-string]
-
-[空の形](../diagrams/kanban.ja.md#空の形) を参照してください。
 
 形の外の裸の `""` と空の markdown 文字列はノード本文です。
 
@@ -954,6 +952,8 @@ flowchart と class と同じく、mermaid.js が丸ごと捨てる文字列を�
 木は文として持たないからです。
 タイトル全体やラベル全体では、空の文字列は空の値の StringLiteral で、
 class と同じく、Db はそれをタイトルなし、ラベルなしと読みます。
+[空の説明ブロック](../diagrams/xychart.ja.md#空の説明ブロック) と、
+[空の文字列](../diagrams/xychart.ja.md#空の文字列) を参照してください。
 
 [fixture: xychart/div-empty-description-block-inside-title-text]
 [fixture: xychart/div-empty-description-block-inside-axis]
@@ -982,9 +982,6 @@ class と同じく、Db はそれをタイトルなし、ラベルなしと読�
 [fixture: xychart/db-empty-string-as-x-axis-title-before-band]
 [fixture: xychart/db-label-empty-string]
 
-[空の説明ブロック](../diagrams/xychart.ja.md#空の説明ブロック) と、
-[空の文字列](../diagrams/xychart.ja.md#空の文字列) を参照してください。
-
 quadrant では、文の中の閉じた空の説明ブロックです。
 テキストや名前の中、点の `]` とそのスタイルの間、
 `classDef` のクラスの名前とそのスタイルの間で、
@@ -999,6 +996,8 @@ flowchart と class と同じく、mermaid.js が丸ごと捨てる文字列を�
 `quadrant-1 ""` は両方が拒否し、mermaid.js は `x-axis L --> ""` を、
 矢印を持ち 2 つ目のテキストのない軸の文と読み、
 空の値の 2 つ目のテキストではそうなりません。
+[空の説明ブロック](../diagrams/quadrant.ja.md#空の説明ブロック) と、
+[空の文字列](../diagrams/quadrant.ja.md#空の文字列) を参照してください。
 
 [fixture: quadrant/div-empty-block-in-classdef]
 [fixture: quadrant/div-empty-block-in-name]
@@ -1028,9 +1027,6 @@ flowchart と class と同じく、mermaid.js が丸ごと捨てる文字列を�
 [fixture: quadrant/db-empty-block-after-point]
 [fixture: quadrant/db-empty-block-before-statement]
 
-[空の説明ブロック](../diagrams/quadrant.ja.md#空の説明ブロック) と、
-[空の文字列](../diagrams/quadrant.ja.md#空の文字列) を参照してください。
-
 アクセシビリティの文のない block では、文の中の閉じた空の説明ブロックです。
 矢印とそれが行き着くノードの間などで、どの欄も持てません（理由 a と b）。
 文が始まるところでは、欄のない説明ブロックの文です。
@@ -1042,6 +1038,8 @@ flowchart と class と同じく、mermaid.js が丸ごと捨てる文字列を�
 どのラベルもそれを値全体として持たず、
 `A[""]` と `A -- "" --> B` は両方が拒否し、
 id にくっついた `""` は id の一部です。
+[空の説明ブロック](../diagrams/block.ja.md#空の説明ブロック) と、
+[空の文字列](../diagrams/block.ja.md#空の文字列) を参照してください。
 
 [fixture: block/div-empty-block-in-edge]
 [fixture: block/div-empty-markdown-between]
@@ -1061,9 +1059,6 @@ id にくっついた `""` は id の一部です。
 [fixture: block/db-empty-block-line] [fixture: block/db-empty-block-between]
 [fixture: block/db-empty-string-glued-to-id]
 [fixture: block/gram-empty-block-only]
-
-[空の説明ブロック](../diagrams/block.ja.md#空の説明ブロック) と、
-[空の文字列](../diagrams/block.ja.md#空の文字列) を参照してください。
 
 文の最後の単位の後、その区切りの前では、
 state の `click A "u" "t" accDescr {}` のように、ブロックは文です。
@@ -1088,6 +1083,14 @@ class の `direction accDescr {}`、改行、`LR` もそのような入力です
 ヘッダーの後、その区切りの前でも、ブロックは文で、受理される入力は、
 ブロックのない同じ入力の Db を持ちます。
 ヘッダーの後でどこが受理されるかは、図の文書が述べるとおり、図種によります。
+[flowchart](../diagrams/flowchart.ja.md#区切りの前の空の説明ブロック)、
+[class](../diagrams/class.ja.md#区切りの前の空の説明ブロック)、
+[sequence](../diagrams/sequence.ja.md#区切りの前の空の説明ブロック)、
+[state](../diagrams/state.ja.md#区切りの前の空の説明ブロック)、
+[er](../diagrams/er.ja.md#空の説明ブロック)、
+[gantt](../diagrams/gantt.ja.md#空の説明ブロック)、
+[requirement](../diagrams/requirement.ja.md#空の説明ブロック)
+を参照してください。
 
 [fixture: flowchart/header-empty-description-block-after-direction]
 [fixture: flowchart/header-empty-description-block-before-semicolon]
@@ -1098,15 +1101,6 @@ class の `direction accDescr {}`、改行、`LR` もそのような入力です
 [fixture: er/header-empty-description-block]
 [fixture: gantt/gram-empty-description-block-after-header]
 [fixture: requirement/header-empty-description-block]
-
-[flowchart](../diagrams/flowchart.ja.md#区切りの前の空の説明ブロック)、
-[class](../diagrams/class.ja.md#区切りの前の空の説明ブロック)、
-[sequence](../diagrams/sequence.ja.md#区切りの前の空の説明ブロック)、
-[state](../diagrams/state.ja.md#区切りの前の空の説明ブロック)、
-[er](../diagrams/er.ja.md#空の説明ブロック)、
-[gantt](../diagrams/gantt.ja.md#空の説明ブロック)、
-[requirement](../diagrams/requirement.ja.md#空の説明ブロック)
-を参照してください。
 
 kanban の空の装飾と形の文字列はそれ自体の意味を持ちます。
 mermaid.js はそれらを丸ごと捨てます。

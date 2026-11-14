@@ -161,6 +161,7 @@ U+2028 は行終端ではなく、値の中にそのまま残ります。
   それを除いたテキストを持ちます。
   名前、数、キー、属性ブロックの語では、`;` がその単位を切り、
   入力は拒否されます。
+  [既知の差異](../../../spec/docs/diagrams/er.ja.md#既知の差異)を参照。
 
   [fixture: er/db-entity-name-quoted-ignored-semicolon]
   [fixture: er/db-alias-ignored-semicolon]
@@ -171,8 +172,6 @@ U+2028 は行終端ではなく、値の中にそのまま残ります。
   [fixture: er/div-ignored-semicolon-in-name]
   [fixture: er/div-ignored-semicolon-in-key]
   [fixture: er/div-ignored-semicolon-in-attribute-word]
-
-  [既知の差異](../../../spec/docs/diagrams/er.ja.md#既知の差異)を参照。
 
 - style の値は、
   その ErLiteral の中にあるトークンの変換した形をつないだものです。

@@ -297,10 +297,9 @@ id とスタイルを持つ `style`: `style A fill:#f00`。
 子の欄: `id`、`styles`。
 flowchart と同じく、id はコンマも含む 1 つの id で、Db は、
 それを 1 つのテキストとして探します。
+[文法の外の拒否](../diagrams/block.ja.md#文法の外の拒否) を参照してください。
 
 [fixture: block/db-style-plain]
-
-[文法の外の拒否](../diagrams/block.ja.md#文法の外の拒否) を参照してください。
 
 ### BlockAccDescrBlockStatement
 
@@ -311,11 +310,10 @@ flowchart と同じく、id はコンマも含む 1 つの id で、Db は、
 block diagram には説明がありません。
 テキストを持つブロックは拒否され、
 文の中の空のブロックは既知の差異 `tokenless-empty-forms` です。
-
-[fixture: block/db-empty-block-line] [fixture: block/div-empty-block-in-edge]
-
 [空の説明ブロック](../diagrams/block.ja.md#空の説明ブロック)
 を参照してください。
+
+[fixture: block/db-empty-block-line] [fixture: block/div-empty-block-in-edge]
 
 ### BlockLiteral
 

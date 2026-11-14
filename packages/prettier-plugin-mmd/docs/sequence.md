@@ -634,13 +634,11 @@ than the function. The whitespace before a comma, immediately after the opening
 colors/functions-beside-comments-and-directives]
 
 A directive within a channel is removed before the function is recognized, and
-stays as written while the commas take their ordinary spacing.
-
-[fixture: colors/directive-in-channel]
-
-See
+stays as written while the commas take their ordinary spacing. See
 [Colors that are drawn the same](./compatibility.md#colors-that-are-drawn-the-same)
 for the versions that were run and the Db.
+
+[fixture: colors/directive-in-channel]
 
 Input
 ([colors/functions-spaced-input.mmd](../tests/fixtures/sequence/colors/functions-spaced-input.mmd)):

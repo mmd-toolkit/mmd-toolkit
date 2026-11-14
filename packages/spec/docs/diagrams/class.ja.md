@@ -366,11 +366,10 @@ mermaid.js がディレクティブを取り除いた後のテキストを読む
     [fixture: class/lex-call-two-spaces]
 
 11. `"`: 文字列。
-
-    [fixture: class/lex-string-multi-line]
-
     [文字列、バッククォートの名前、ジェネリクスの型](#文字列バッククォートの名前ジェネリクスの型)
     を参照してください。
+
+    [fixture: class/lex-string-multi-line]
 
 12. キーワード `style` と `classDef`: キーワードの名前の単位。
 
@@ -568,11 +567,10 @@ mermaid.js は `direction-text` の単位を読みません。
    [fixture: class/lex-generic-multi-line]
 
 5. `` ` ``: バッククォートの名前。
-
-   [fixture: class/gram-name-word-then-backquoted]
-
    [文字列、バッククォートの名前、ジェネリクスの型](#文字列バッククォートの名前ジェネリクスの型)
    を参照してください。
+
+   [fixture: class/gram-name-word-then-backquoted]
 
 6. キーワード `_self`、`_blank`、`_parent`、`_top`: `link-target` の単位。
 
@@ -1702,12 +1700,11 @@ class 図に当てはまり、次のように表れます。
   mermaid.js はそれを受理します。
   `cla%%{init: {}}%%ss A`、`A -%%{init: {}}%%-> B`、
   `class A:%%{init: {}}%%::c` です。
+  [単位の中のディレクティブ](#単位の中のディレクティブ) を参照してください。
 
   [fixture: class/div-directive-in-keyword]
   [fixture: class/div-directive-in-line]
   [fixture: class/div-directive-in-triple-colon]
-
-  [単位の中のディレクティブ](#単位の中のディレクティブ) を参照してください。
 
 - **[`ignored-semicolon-as-token-boundary`](../known-divergences/ignored-semicolon-as-token-boundary.ja.md)。**
   多重度 `"style:#x"` の後では行が `style` の規則に当たり、

@@ -414,11 +414,10 @@ mermaid.js がディレクティブを取り除いた後のテキストを読む
 
 23. `:` と、`#`、`;`、改行の前までのその行の残り: `:` の単位と、その後の残りを、
     テキスト部分として読んだもの。
+    [テキスト部分](#テキスト部分) を参照してください。
 
     [fixture: sequence/lex-empty-text] [fixture: sequence/lex-hash-ends-text]
     [fixture: sequence/spec-sequence-diagram-543d2299]
-
-    [テキスト部分](#テキスト部分) を参照してください。
 
 24. `+`、`-`、`()`: そのテキストを名前とする単位。
 
@@ -896,10 +895,10 @@ mermaid.js は、`box` の後の空白を飛ばした後、
 それはテキストではないので、その中のディレクティブは入力を拒否させます。
 一方、mermaid.js は `A->>B: wr%%{init: {}}%%ap:x` を受理し、
 メッセージ `x` を折り返します。
+[単位の中のディレクティブ](#単位の中のディレクティブ) を参照してください。
 
 [fixture: sequence/div-directive-in-wrap-prefix]
 
-[単位の中のディレクティブ](#単位の中のディレクティブ) を参照してください。
 折り返しの接頭辞は `wrap:` か `nowrap:` で、前に `:` を 1 つ置いてもよく、
 大文字小文字を区別して比べます。
 残りは、すべて空白でなければ `text` の単位です。
@@ -1114,11 +1113,11 @@ box-text              = color-candidate text? | text
 
 `create` は、`destroy` を含め、どの参加者の文の前にも置けます。
 `create destroy A` は `create` の付いた destroy の文です。
+[文法の外での拒否](#文法の外での拒否) を参照してください。
 
 [fixture: sequence/gram-create-destroy]
 [fixture: sequence/spec-sequence-diagram-a7618b16]
 
-[文法の外での拒否](#文法の外での拒否) を参照してください。
 箱が持てるのは、参加者の文、空の説明ブロック、空の行だけで、
 `create` もメッセージも置けません。
 
@@ -1491,13 +1490,12 @@ E だけが作られるのを待ち、次のメッセージは E へ向かわな
   mermaid.js はそれを受理します。
   `parti%%{init: {}}%%cipant A`、`A-%%{init: {}}%%>>B: x`、
   `autonumber 1%%{init: {}}%%0`、`A->>B: wr%%{init: {}}%%ap:x` がそうです。
+  [単位の中のディレクティブ](#単位の中のディレクティブ) を参照してください。
 
   [fixture: sequence/div-directive-in-keyword]
   [fixture: sequence/div-directive-in-arrow]
   [fixture: sequence/div-directive-in-number]
   [fixture: sequence/div-directive-in-wrap-prefix]
-
-  [単位の中のディレクティブ](#単位の中のディレクティブ) を参照してください。
 
 - **[`ignored-semicolon-as-token-boundary`](../known-divergences/ignored-semicolon-as-token-boundary.ja.md)。**
   `participant Z@{ "style": "x:#y" };` の後のような、

@@ -43,14 +43,13 @@ mermaid.js の Db と同じくここでは**頂点**（vertex）と呼びます�
 この図種の StringLiteral（click の文の URL と tooltip）は、
 常に閉じていて空ではありません。
 空の文字列 `""` は `empty-string` の単位で、文法のどの規則も取りません。
+[文字列](../diagrams/flowchart.ja.md#文字列) を参照してください。
 
 [fixture: flowchart/lex-empty-string-line]
 [fixture: flowchart/gram-click-href-empty-string]
 [fixture: flowchart/gram-click-href-tooltip-empty-string]
 [fixture: flowchart/gram-click-call-tooltip-empty-string]
 [fixture: flowchart/gram-click-callback-tooltip-empty-string]
-
-[文字列](../diagrams/flowchart.ja.md#文字列) を参照してください。
 
 ## ノード
 
@@ -273,11 +272,10 @@ FlowchartAccDescrStatement、FlowchartAccDescrBlockStatement のどれかです�
 
 子の欄はありません。
 木は値を読みません。
-
-[fixture: flowchart/gram-data-consecutive-blocks]
-
 [`embedded-data-opaque`](../known-divergences/embedded-data-opaque.ja.md)
 を参照してください。
+
+[fixture: flowchart/gram-data-consecutive-blocks]
 
 ### FlowchartIgnoredText
 
@@ -456,11 +454,10 @@ URL にリンクするクリックの文です。
 [fixture: flowchart/lex-click-id-comma]
 
 文はほかに `click` の単位を持ちません。
-
-[fixture: flowchart/gram-click-href]
-
 [クリックとコールバック](../diagrams/flowchart.ja.md#クリックとコールバック)
 を参照してください。
+
+[fixture: flowchart/gram-click-href]
 
 ### FlowchartLinkStyleStatement
 
@@ -568,11 +565,10 @@ subgraph の名前の後では、その subgraph の本体の最初の文で、�
 [flowchart.ja.md](../diagrams/flowchart.ja.md#区切りの前の空の説明ブロック)
 を参照してください。
 ほかの場所では文の中にあり、入力は拒否されます。
+[flowchart.ja.md](../diagrams/flowchart.ja.md#アクセシビリティの値)
+を参照してください。
 
 [fixture: flowchart/gram-acc-descr-block-empty]
 [fixture: flowchart/db-acc-descr-empty-block-keeps]
 [fixture: flowchart/gram-empty-description-block-after-vertex]
 [fixture: flowchart/header-empty-description-block-after-direction]
-
-[flowchart.ja.md](../diagrams/flowchart.ja.md#アクセシビリティの値)
-を参照してください。

@@ -26,12 +26,11 @@ ASCII の外の空白文字で終わる名前やロールがそうです。
 空になるのは、`A ||--o{ B : ""` のようなロールと、属性のコメントのときだけです。
 実体の名前としての空の文字列は入力を拒否させ、
 空のバッククォートは StringLiteral ではありません。
+[属性](../diagrams/er.ja.md#属性) を参照してください。
 
 [fixture: er/gram-role-string-empty] [fixture: er/gram-comment-empty]
 [fixture: er/spec-er-diagram-f4c59d78]
 [fixture: er/gram-empty-backquotes-between-attributes]
-
-[属性](../diagrams/er.ja.md#属性) を参照してください。
 
 ## ノード
 
@@ -309,6 +308,7 @@ ErAccTitleStatement と同じく、値が nullになることはありません�
 `accDescr {}`、`accDescr { }`、空行のブロックは値 null で、何も変えません。
 そのようなブロックが文になるのは文が始まるところだけで、
 文の中のブロックは入力を拒否させます。
+[空の説明ブロック](../diagrams/er.ja.md#空の説明ブロック) を参照してください。
 
 [fixture: er/gram-acc-descr-block] [fixture: er/gram-acc-descr-block-multiline]
 [fixture: er/gram-acc-descr-block-empty]
@@ -316,8 +316,6 @@ ErAccTitleStatement と同じく、値が nullになることはありません�
 [fixture: er/gram-empty-description-block-between-names]
 [fixture: er/div-empty-description-block-in-relationship]
 [fixture: er/lex-acc-descr-block-unclosed]
-
-[空の説明ブロック](../diagrams/er.ja.md#空の説明ブロック) を参照してください。
 
 ### ErIdentifier
 

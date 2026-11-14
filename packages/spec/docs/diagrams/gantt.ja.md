@@ -102,6 +102,7 @@ click の id はタスクの id と書かれたとおりに比べられます。
 `gantt2` はヘッダーを持たず、`inclusiveEndDatesx`、`topAxisx`、
 `weekday mondayx` はタスクのテキストで、`titles`、`title-x`、`clickx`、`hrefx`、
 `callx` も、語の後に空白が続かないのでタスクのテキストです。
+[キーワードとその後に続くもの](#文の文脈) を参照してください。
 
 [fixture: gantt/header-digit-suffix]
 [fixture: gantt/lex-inclusive-word-suffix-task]
@@ -111,8 +112,6 @@ click の id はタスクの id と書かれたとおりに比べられます。
 [fixture: gantt/lex-click-word-suffix-task]
 [fixture: gantt/lex-href-word-suffix-task]
 [fixture: gantt/lex-call-word-suffix-task]
-
-[キーワードとその後に続くもの](#文の文脈) を参照してください。
 
 ### 単位と文脈
 
@@ -284,6 +283,7 @@ mermaid.js がディレクティブを除いた後のテキストを読むのと
   `acc%%{init: {}}%%Title:`、
   `acc%%{init: {}}%%Descr {` ではキーワードの中にあります。
   入力は拒否され、mermaid.js は 2 つの部分を 1 つとして読んで受理します。
+  [既知の差異](#既知の差異) を参照してください。
 
   [fixture: gantt/div-directive-in-click-id]
   [fixture: gantt/div-directive-in-list-item]
@@ -299,8 +299,6 @@ mermaid.js がディレクティブを除いた後のテキストを読むのと
   [fixture: gantt/div-directive-in-call-keyword]
   [fixture: gantt/div-directive-in-acc-title-keyword]
   [fixture: gantt/div-directive-in-acc-descr-keyword]
-
-  [既知の差異](#既知の差異) を参照してください。
 
 **単位の間のトリビア。**
 [common.ja.md](../common.ja.md) のトリビアは、
@@ -1883,6 +1881,7 @@ Db は日付を、テキストを解析するときではなく、
   `excludes week;ends` は `;` のない文として読まれます。
   テキストの単位か文字列の単位の中、および 2 つの単位の間では、
   mermaid.js の読みが保たれます。
+  [単位の間のトリビア](#単位の中のディレクティブ) を参照してください。
 
   [fixture: gantt/div-ignored-semicolon-in-click-id]
   [fixture: gantt/div-ignored-semicolon-in-call-keyword]
@@ -1896,8 +1895,6 @@ Db は日付を、テキストを解析するときではなく、
   [fixture: gantt/tokens-ignored-semicolon-in-title-text]
   [fixture: gantt/tokens-ignored-semicolon-in-href-string]
   [fixture: gantt/tokens-ignored-semicolon-between-keyword-and-text]
-
-  [単位の間のトリビア](#単位の中のディレクティブ) を参照してください。
 
 - **[`html-tag-in-frontmatter`](../known-divergences/html-tag-in-frontmatter.ja.md)。**
   フロントマターに `title: <a` があるとき、
@@ -2008,9 +2005,8 @@ Db は日付を、テキストを解析するときではなく、
   mermaid.js は入力を拒否します。
   その字句解析器が、`%%` の後の改行を、
   ヘッダーの前の `newline` の単位として読むからです。
+  [検出](#検出) を参照してください。
 
   [fixture: gantt/header-after-bare-percent-line]
   [fixture: gantt/header-after-empty-braces-line]
   [fixture: gantt/header-after-bare-percent-line-and-whitespace-line]
-
-  [検出](#検出) を参照してください。

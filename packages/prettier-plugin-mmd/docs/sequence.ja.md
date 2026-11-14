@@ -651,11 +651,10 @@ mermaid.js の正規表現が最後の `)` まで読むので、書かれたま�
 
 成分の中のディレクティブは、関数を認識する前に取り除かれます。
 ディレクティブは書かれたまま残し、コンマの空白には通常の規則を適用します。
-
-[fixture: colors/directive-in-channel]
-
 実行した版と Db は、
 [同じに描かれる色](./compatibility.ja.md#同じに描かれる色)を参照してください。
+
+[fixture: colors/directive-in-channel]
 
 入力
 ([colors/functions-spaced-input.mmd](../tests/fixtures/sequence/colors/functions-spaced-input.mmd)):

@@ -75,14 +75,14 @@
 切られた `String` トークンは `StringFragment` トークンになります。
 ほかの種類のトークンの中では、
 ディレクティブや無視される `;` は入力を拒否させます。
+[単位の中のディレクティブ](../../../spec/docs/diagrams/er.ja.md#単位の中のディレクティブ)
+を参照。
 
 [fixture: er/lex-directive-in-role-string]
 [fixture: er/tokens-comment-line-in-role-string]
 [fixture: er/tokens-ignored-semicolon-in-role-string]
 [fixture: er/div-directive-in-name] [fixture: er/div-ignored-semicolon-in-name]
 
-[単位の中のディレクティブ](../../../spec/docs/diagrams/er.ja.md#単位の中のディレクティブ)
-を参照。
 コメント領域は、`Identifier` トークンも切ります。
 名前は、その中の U+2028 か U+2029 の後で、領域をまたいで続くからです。
 [トークンの中のコメント領域](../tokens.ja.md#トークンの中のコメント領域)

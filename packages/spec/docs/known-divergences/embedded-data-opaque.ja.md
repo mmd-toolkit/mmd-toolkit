@@ -56,12 +56,11 @@ kanban ではフロントマターと `@{ ... }` の中身は解析しません�
 [fixture: kanban/gram-metadata-empty-multiline]
 
 メタデータの型と形名の綴りは検査しません。
+[データブロック](../diagrams/kanban.ja.md#データブロック) を参照してください。
 
 [fixture: kanban/gram-metadata-shape-number]
 [fixture: kanban/gram-metadata-shape-camel]
 [fixture: kanban/gram-metadata-shape-underscore]
-
-[データブロック](../diagrams/kanban.ja.md#データブロック) を参照してください。
 
 kanban の隣り合うデータブロックは別々のノードに保ちます。
 

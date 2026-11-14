@@ -194,12 +194,11 @@ mermaid.js は、
 [HTML 属性の引用符](../common.ja.md#html-属性の引用符) を参照してください。
 どの図種でも、タイトルのようなフロントマターから得る値は、
 mermaid.js が得るものと同じです。
+[フロントマターの設定](../../../tests/docs/configuration.ja.md#フロントマターの設定)
+を参照してください。
 
 [fixture: pie/frontmatter-html]
 [fixture: flowchart/frontmatter-title-html-attribute]
-
-[フロントマターの設定](../../../tests/docs/configuration.ja.md#フロントマターの設定)
-を参照してください。
 
 タグがフロントマターの境界を越えて本文まで続くことは、
 mermaid.js の処理の順から生じます。

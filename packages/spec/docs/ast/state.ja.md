@@ -28,11 +28,10 @@ mermaid.js がそれを読むところだけです（[ノード](../ast.ja.md#�
 `state "" as A` のような空の説明は入力を拒否させ、
 state の文脈の空の文字列は StringLiteral ではなく、
 mermaid.js が読まないテキストです。
+[state の文脈](../diagrams/state.ja.md#state-の文脈) を参照してください。
 
 [fixture: state/lex-click-empty-strings] [fixture: state/lex-alias-empty-string]
 [fixture: state/gram-state-empty-string-alone]
-
-[state の文脈](../diagrams/state.ja.md#state-の文脈) を参照してください。
 
 ## ノード
 
@@ -317,11 +316,10 @@ id は空白を持てます。
 
 引用符は文の単位で、どの欄にも属しません。
 テキストの前と後に、それぞれ 2 つ以上あることもあります。
+[ノートの文脈](../diagrams/state.ja.md#ノートの文脈) を参照してください。
 
 [fixture: state/lex-floating-note-extra-quote-before-text]
 [fixture: state/lex-floating-note-whitespace-text]
-
-[ノートの文脈](../diagrams/state.ja.md#ノートの文脈) を参照してください。
 
 ### StateClickStatement
 
@@ -337,11 +335,10 @@ id は空白を持てます。
 click の文とその改行の間の空の説明ブロックは、その一部ではなく、
 その後の StateAccDescrBlockStatement です。
 `click A "u" "t" accDescr {}` は 2 つの文です。
+[click の文](../diagrams/state.ja.md#click-の文) を参照してください。
 
 [fixture: state/gram-click-empty-description-block-after]
 [fixture: state/gram-click-tooltip] [fixture: state/gram-click-href]
-
-[click の文](../diagrams/state.ja.md#click-の文) を参照してください。
 
 ### StateClassDefStatement
 
@@ -481,6 +478,7 @@ click の文とその改行の間のブロックも同じです。
 `A accDescr {} --> B` や `A --> B accDescr {} : x` のようにその文の中にあり、
 `A --> accDescr {} B` のように文の単位の間にあるブロックも同じです。
 そのとき入力は拒否されます。
+[state.ja.md](../diagrams/state.ja.md#ほかの文) を参照してください。
 
 [fixture: state/db-acc-descr-empty-block-keeps]
 [fixture: state/gram-empty-description-block-statement]
@@ -489,8 +487,6 @@ click の文とその改行の間のブロックも同じです。
 [fixture: state/div-empty-description-block-before-label]
 [fixture: state/div-empty-description-block-after-arrow]
 [fixture: state/header-empty-description-block]
-
-[state.ja.md](../diagrams/state.ja.md#ほかの文) を参照してください。
 
 ### StateScaleStatement
 
