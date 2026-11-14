@@ -88,7 +88,9 @@ export interface BlockRules<Statement extends Positioned> {
    * before it, and `writtenGapBefore` attaches it to the line with the gap
    * before it as written (an entity of an ER diagram whose attribute block
    * lies outside the line that a joining region joins; docs/er.md,
-   * Multi-line statements).
+   * Multi-line statements). Where the last line of the statement is kept, the
+   * stretch goes on over it, as it does over a statement that holds statements
+   * and starts it.
    */
   readonly endsStretchBefore?: (statement: Statement) => boolean
   /**
@@ -687,7 +689,10 @@ export function printBlock<Statement extends Positioned>(
       if (following === undefined || printedStartOf(following) >= lineEnd) {
         return { start, end: Math.max(stretchEnd, lineEnd), first, after }
       }
-      if (rules.endsStretchBefore?.(following) === true) {
+      if (
+        rules.endsStretchBefore?.(following) === true &&
+        !isKept(rules.printedEnd(following) - 1)
+      ) {
         return { start, end: stretchEnd, first, after }
       }
       stretchEnd = Math.max(stretchEnd, rules.printedEnd(following))

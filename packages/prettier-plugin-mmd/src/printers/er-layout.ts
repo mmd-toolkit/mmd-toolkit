@@ -344,7 +344,13 @@ export function layoutBlockOpening(
   statement: ErEntityStatement,
   opening: Token,
 ): AtomLayout {
-  if (holdsJoiningRegion(source, statement.range[0], opening.range[1])) {
+  if (
+    holdsJoiningRegion(
+      source,
+      lineStartOf(source, statement.range[0]),
+      opening.range[1],
+    )
+  ) {
     return keptAsWritten(statement.range[0], opening.range[1])
   }
   const rules = entityHeaderRules(source, statement)
