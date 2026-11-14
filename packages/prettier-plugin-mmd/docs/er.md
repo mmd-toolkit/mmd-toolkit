@@ -104,12 +104,27 @@ to the `{` stays as written, see
 line stays as written, and the attributes after it and the `}` stand as those of
 any entity. An empty block over several lines ends the line with ` { }`,
 whatever stands after the `{` (spaces, a tab, a U+2028) or between the braces,
-but not where a `~` stands before its `{` on a line that stays as written: the
-`}` and the rest of the closing line would join the line of the `{`, and the
-oldest versions that count read the rest of a line that holds a `~` with a rule
-that takes the longer, the longer the line is, so a line that they draw could
-become one that they do not draw. [fixture:
-attribute-blocks/written-line-tilde-line] [fixture:
+but not where the `}` and the rest of the closing line would join the line of
+the `{` and be read otherwise, so that the statement stays as written. The line
+rule of mermaid.js (see
+[Semicolons](#semicolons-at-the-end-of-a-style-statement)) ignores the last `;`
+of a line that matches it, so in the joined line it can ignore another `;` than
+in the two lines: in `"style:#x"; B {`, a line break, and `} A["x;y"]`, it
+ignores the `;` after the string in the first line, and the `;` inside
+`A["x;y"]` in the joined line, which leaves the first one a separator that
+mermaid.js rejects. The lines join where the rule ignores the same `;` in both
+ways, as in `"style:#x"; B {`, a line break, and `}`. And a `~` before the `{`
+on a line that stays as written keeps the lines apart too: the oldest versions
+that count read the rest of a line that holds a `~` with a rule that takes the
+longer, the longer the line is, so a line that they draw could become one that
+they do not draw. [fixture:
+attribute-blocks/written-line-empty-block-ignored-semicolon-both-lines]
+[fixture:
+attribute-blocks/written-line-empty-block-ignored-semicolon-closing-line-ends]
+[fixture:
+attribute-blocks/written-line-empty-block-ignored-semicolon-in-subgraph]
+[fixture: attribute-blocks/empty-block-joined-where-the-lines-read-the-same]
+[fixture: attribute-blocks/written-line-tilde-line] [fixture:
 attribute-blocks/written-line-tilde-line-closing-remainder] A block whose `}`
 stands on a line that stays as written, as in `A {`, a line break, and `}1b`,
 stays as written with that line, whether it holds attributes or not. A line that

@@ -106,11 +106,26 @@ mermaid.js は属性ブロックを改行に関係なく読むので、同じ属
 ほかの実体と同じに置きます。
 そのため、複数行にまたがる空のブロックは、`{` の後ろに何があっても（空白、タブ、
 U+2028）、波括弧の間に何があっても、行の終わりが ` { }` になります。
-ただし、書かれたまま残る行で、`{` の前に `~` があるときは別です。
-`}` と閉じる行の残りが `{` の行につながるからです。
+ただし、`}` と閉じる行の残りが `{` の行につながると、別の読みになるときは別で、
+その文は書かれたままにします。
+mermaid.js の行の規則（[セミコロン](#スタイル文の末尾のセミコロン)を参照）は、
+規則に合う行の最後の `;` を無視するので、つないだ行では、
+2 つの行のときと別の `;` を無視することがあります。
+`"style:#x"; B {`、改行、`} A["x;y"]` は、
+最初の行では `"style:#x"` の後ろの `;` を無視しますが、
+つないだ行では `A["x;y"]` の中の `;` を無視し、最初の `;` が区切りとして残って、
+mermaid.js が拒否します。
+規則が、どちらでも同じ `;` を無視するときは、`"style:#x"; B {`、改行、
+`}` のように、行をつなぎます。
+`{` の前に `~` があり、書かれたまま残る行も、行を離したままにします。
 数える版のうち最も古いものは、`~` を含む行の残りを、
 行が長いほど時間がかかる規則で読むので、その版が描ける行が、
-描けない行になりかねません。 [fixture: attribute-blocks/written-line-tilde-line]
+描けない行になりかねません。
+[fixture: attribute-blocks/written-line-empty-block-ignored-semicolon-both-lines]
+[fixture: attribute-blocks/written-line-empty-block-ignored-semicolon-closing-line-ends]
+[fixture: attribute-blocks/written-line-empty-block-ignored-semicolon-in-subgraph]
+[fixture: attribute-blocks/empty-block-joined-where-the-lines-read-the-same]
+[fixture: attribute-blocks/written-line-tilde-line]
 [fixture: attribute-blocks/written-line-tilde-line-closing-remainder]
 `}` が、書かれたまま残る行にあるブロックは、`A {`、改行、`}1b` のように、
 属性があってもなくても、その行と一緒に書かれたままにします。

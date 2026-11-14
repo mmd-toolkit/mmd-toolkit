@@ -32,7 +32,7 @@ import {
   findSubgraphHeaderEnd,
   hasAttributeBlock,
   isBlockAfterJoinedLine,
-  isEmptyBlockAfterTilde,
+  keepsEmptyBlockLines,
   isEmptyAttributeBlock,
   touchesKeywordWithDash,
   layoutAttribute,
@@ -109,7 +109,7 @@ export function printEr(
         depth,
       )
     case "entity":
-      if (isEmptyBlockAfterTilde(source, classified.statement)) {
+      if (keepsEmptyBlockLines(source, classified.statement)) {
         return printAsWritten(source, node.range[0], node.range[1])
       }
       if (hasAttributeBlock(source, classified.statement)) {
@@ -267,8 +267,9 @@ function printedErEnd(source: Source, statement: ErStatement): number {
  * the `}` (docs/er.md, Attribute blocks). An empty block over several lines,
  * which `hasAttributeBlock` takes for a block, is printed as `{ }` after the
  * line up to the `{`, whatever stands between the braces, as every empty block
- * is, also where its line stays as written (docs/er.md, Attribute blocks and
- * Multi-line statements).
+ * is, also where its line stays as written, unless its lines stay over several
+ * lines (`keepsEmptyBlockLines`, which `printEr` asks first; docs/er.md,
+ * Attribute blocks and Multi-line statements).
  */
 function printAttributeBlock(
   path: AstPath<MermaidAst>,

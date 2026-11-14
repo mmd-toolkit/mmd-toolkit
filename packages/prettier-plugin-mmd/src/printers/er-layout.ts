@@ -27,6 +27,7 @@ import {
   keepFirstGapLineTails,
   keptAsWritten,
   layoutDescriptionBlock,
+  spansLinesThatCannotJoin,
   toAsciiLowerCase,
 } from "./layout.ts"
 import {
@@ -141,24 +142,33 @@ export function hasAttributeBlock(
 
 /**
  * Whether an entity statement has an empty attribute block over several lines
- * and stands on a kept line with a `~` before its `{`. The `{ }` that it is
- * printed as would put the `}` and what follows it on the closing line on that
- * line, and the rule that mermaid.js 10.9.8 reads such a line with takes the
- * longer, the longer the text after the `~` is, so the statement stays as
- * written (docs/er.md, Attribute blocks).
+ * that stays over them. The `{ }` that it is otherwise printed as puts the `}`
+ * and what follows it on the closing line on the line of the `{`, and the
+ * joined line is not read as the two lines were:
+ *
+ * - The line rule of mermaid.js ignores the last `;` of a line that matches
+ *   it, so in the joined line it can ignore another `;` than it does in each of
+ *   the two lines (`spansLinesThatCannotJoin`, the one decision about joining
+ *   lines; common.md, The `style` and `classDef` lines).
+ * - The oldest versions that count read the text after a `~` with a rule that
+ *   takes the longer, the longer the line is, so a line that holds a `~` before
+ *   the `{` and stays as written could become one that they do not draw.
+ *
+ * The statement is then printed as written (docs/er.md, Attribute blocks).
  */
-export function isEmptyBlockAfterTilde(
+export function keepsEmptyBlockLines(
   source: Source,
   statement: ErEntityStatement,
 ): boolean {
   if (!hasAttributeBlock(source, statement)) return false
   if (!isEmptyAttributeBlock(source, statement)) return false
-  const { opening } = findAttributeBraces(source, statement)
+  const { opening, closing } = findAttributeBraces(source, statement)
   return (
-    isErLineKept(source, opening.range[0]) &&
-    source.text
-      .slice(lineStartOf(source, opening.range[0]), opening.range[0])
-      .includes("~")
+    spansLinesThatCannotJoin(source, opening.range[0], closing.range[1]) ||
+    (isErLineKept(source, opening.range[0]) &&
+      source.text
+        .slice(lineStartOf(source, opening.range[0]), opening.range[0])
+        .includes("~"))
   )
 }
 
