@@ -2351,10 +2351,13 @@ const problems: TreeProblem[] = checkTree(text, tree)
   書かれたテキストから両端の空白を除いたもので、文字の間の空白を含み、
   トークンは書かれたテキストです。
 - 文字列、文字列で始まるラベル、
-  文字列かマークダウン文字列である mindmap 図のラベル、データブロックには、
+  文字列かマークダウン文字列である mindmap 図のラベル、データブロック、
+  railroad 図の special sequence（2 つの疑問符）には、
   そのテキストに属する区切りがあります。
   値は、区切りを除き、その内側に書かれた空白を保った、書かれたテキストです。
   その空白もトークンの中にあります。
+  U+2028 の後のコメント領域が special sequence を切る場合も同じです。
+  [fixture: railroad/db-ebnf-special-sequence-line-separator-then-comment-line]
 - mermaid.js が読まないテキストのノード（無視されるテキストや文）は、
   書かれたものを、単位の間の空白も含めて示し、範囲の中のコメントは除きます。
   その空白はどのトークンの中にもありません。

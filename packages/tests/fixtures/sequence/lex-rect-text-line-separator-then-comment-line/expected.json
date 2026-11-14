@@ -1,0 +1,33 @@
+{
+  "source": {
+    "kind": "authored",
+    "note": "sequence.md The statement context: a comment line after a U+2028 in the rect text is read through, and the value goes on after it; the Db summary holds `A`, U+2028, and `B`."
+  },
+  "accepted": true,
+  "diagramType": "sequence",
+  "db": {
+    "title": "",
+    "accTitle": "",
+    "accDescr": "",
+    "actors": [],
+    "boxes": [],
+    "createdActors": [],
+    "destroyedActors": [],
+    "messages": [
+      {
+        "message": "A B",
+        "wrap": false,
+        "type": 22,
+        "activate": false,
+        "centralConnection": 0
+      },
+      {
+        "message": "",
+        "wrap": false,
+        "type": 23,
+        "activate": false,
+        "centralConnection": 0
+      }
+    ]
+  }
+}

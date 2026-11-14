@@ -2082,9 +2082,12 @@ that says so:
   ends, the whitespace between its characters included, and the tokens are the
   written text.
 - A string, a label that starts with a string, a label of a mindmap diagram that
-  is a string or a markdown string, and a data block have delimiters that belong
-  to their own text; the value is the written text without them, with the
-  whitespace written inside them, and that whitespace lies in the tokens.
+  is a string or a markdown string, a data block, and a special sequence of a
+  railroad diagram (its two question marks) have delimiters that belong to their
+  own text; the value is the written text without them, with the whitespace
+  written inside them, and that whitespace lies in the tokens, also where a
+  comment region after a U+2028 cuts the special sequence. [fixture:
+  railroad/db-ebnf-special-sequence-line-separator-then-comment-line]
 - A node of text that mermaid.js does not read (an ignored text or statement)
   shows what was written, the whitespace between its units too, and the comments
   in its range are left out; that whitespace lies in no token, except in a run

@@ -375,7 +375,34 @@ packet/lex-hidden-opener-selected] [fixture: packet/lex-hidden-closer-selected]
 packet/directive-accdescr-colon] [fixture: packet/directive-accdescr-brace]
 [fixture: packet/directive-title-separator] [fixture:
 packet/lex-selected-colon-boundary] [fixture:
-packet/lex-selected-brace-boundary]
+packet/lex-selected-brace-boundary] A common comment region can remove the rest
+of a physical line after U+2028 or U+2029 inside a value, its line break
+included; the value then goes on with the next physical line, so a line value
+does not end there: `accTitle: A`, U+2028, `%% c`, a line break, and `B` has the
+accessibility title `A`, U+2028, and `B`. [fixture:
+packet/lex-string-line-separator-then-comment-line] [fixture:
+packet/lex-string-paragraph-separator-then-comment-line] [fixture:
+packet/lex-title-line-separator-then-comment-line] [fixture:
+packet/lex-acc-title-line-separator-then-comment-line] [fixture:
+packet/lex-acc-descr-line-separator-then-comment-line] [fixture:
+packet/lex-acc-descr-block-line-separator-then-comment-line] [fixture:
+packet/lex-string-line-separator-comment-line-directive-next] [fixture:
+packet/lex-string-line-separator-comment-line-space-next] [fixture:
+packet/lex-string-line-separator-comment-line-separator-next] [fixture:
+packet/lex-string-line-separator-comment-line-empty-line] [fixture:
+packet/lex-string-line-separator-comment-line-end-of-text] [fixture:
+packet/lex-title-line-separator-comment-line-end-of-text] [fixture:
+packet/lex-string-line-separator-comment-line-cr] [fixture:
+packet/lex-string-line-separator-comment-line-crlf] [fixture:
+packet/lex-string-line-separator-comment-line-two-comment-lines] [fixture:
+packet/lex-string-line-separator-comment-line-two-regions] [fixture:
+packet/lex-string-line-separator-comment-line-spaces-before] [fixture:
+packet/lex-string-line-separator-comment-line-line-feed-before] [fixture:
+packet/lex-string-line-separator-comment-line-directive-before] [fixture:
+packet/lex-string-line-separator-comment-line-line-rule-before] [fixture:
+packet/lex-string-line-separator-comment-line-line-rule-after] [fixture:
+packet/lex-string-line-separator-comment-line-bare-percent] [fixture:
+packet/lex-string-line-separator-comment-line-percent-brace]
 
 The shared style/classDef line rule selects only qualifying semicolons;
 remaining semicolons reject outside values and never separate packet statements.

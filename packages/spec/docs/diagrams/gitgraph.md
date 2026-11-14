@@ -253,7 +253,43 @@ still have their shared effect inside values; these are distinct from native
 diagram comments. [fixture: gitgraph/lex-hidden-directive-string] [fixture:
 gitgraph/lex-hidden-directive-block] [fixture: gitgraph/lex-yaml-string]
 [fixture: gitgraph/lex-yaml-block] [fixture: gitgraph/comment-bare-string]
-[fixture: gitgraph/comment-block] [fixture: gitgraph/directive-in-string]
+[fixture: gitgraph/comment-block] [fixture: gitgraph/directive-in-string] A
+common comment region can remove the rest of a physical line after U+2028 or
+U+2029 inside a value, its line break included; the value then goes on with the
+next physical line, so a line value does not end there: `accTitle: A`, U+2028,
+`%% c`, a line break, and `B` has the accessibility title `A`, U+2028, and `B`.
+[fixture: gitgraph/lex-string-line-separator-then-comment-line] [fixture:
+gitgraph/lex-string-paragraph-separator-then-comment-line] [fixture:
+gitgraph/lex-title-line-separator-then-comment-line] [fixture:
+gitgraph/lex-acc-title-line-separator-then-comment-line] [fixture:
+gitgraph/lex-acc-descr-line-separator-then-comment-line] [fixture:
+gitgraph/lex-acc-descr-block-line-separator-then-comment-line] [fixture:
+gitgraph/lex-string-line-separator-comment-line-directive-next] [fixture:
+gitgraph/lex-string-line-separator-comment-line-space-next] [fixture:
+gitgraph/lex-string-line-separator-comment-line-separator-next] [fixture:
+gitgraph/lex-string-line-separator-comment-line-empty-line] [fixture:
+gitgraph/lex-string-line-separator-comment-line-end-of-text] [fixture:
+gitgraph/lex-title-line-separator-comment-line-end-of-text] [fixture:
+gitgraph/lex-string-line-separator-comment-line-cr] [fixture:
+gitgraph/lex-string-line-separator-comment-line-crlf] [fixture:
+gitgraph/lex-string-line-separator-comment-line-two-comment-lines] [fixture:
+gitgraph/lex-string-line-separator-comment-line-two-regions] [fixture:
+gitgraph/lex-string-line-separator-comment-line-spaces-before] [fixture:
+gitgraph/lex-string-line-separator-comment-line-line-feed-before] [fixture:
+gitgraph/lex-string-line-separator-comment-line-directive-before] [fixture:
+gitgraph/lex-string-line-separator-comment-line-line-rule-before] [fixture:
+gitgraph/lex-string-line-separator-comment-line-line-rule-after] [fixture:
+gitgraph/lex-string-line-separator-comment-line-bare-percent] [fixture:
+gitgraph/lex-string-line-separator-comment-line-percent-brace] [fixture:
+gitgraph/lex-quoted-branch-ref-line-separator-then-comment-line] [fixture:
+gitgraph/lex-message-string-line-separator-then-comment-line] [fixture:
+gitgraph/lex-tag-string-line-separator-then-comment-line] [fixture:
+gitgraph/lex-parent-string-line-separator-then-comment-line] [fixture:
+gitgraph/lex-merge-branch-string-line-separator-then-comment-line] [fixture:
+gitgraph/lex-merge-id-string-line-separator-then-comment-line] [fixture:
+gitgraph/lex-merge-tag-string-line-separator-then-comment-line] [fixture:
+gitgraph/lex-cherry-pick-id-string-line-separator-then-comment-line] [fixture:
+gitgraph/lex-cherry-pick-tag-string-line-separator-then-comment-line]
 
 ### Composite common forms
 

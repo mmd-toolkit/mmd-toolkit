@@ -83,6 +83,12 @@ Japanese version: [treeview.ja.md](./treeview.ja.md)
    condition or a published field. [fixture: treeview/db-all-fields] [fixture:
    treeview/config-drawing-site] [fixture: treeview/config-frontmatter-drawing]
    [fixture: treeview/config-init-drawing]
+7. **Comment regions in values.** A comment region after a U+2028 or a U+2029 is
+   left out of a value (see
+   [The converted form](../db-from-tree.md#the-converted-form)). The summary has
+   no field for the title of the diagram, but the line `B` after the region is
+   part of the title, so the Db has no node `B`. [fixture:
+   treeview/gram-title-line-separator-then-comment-line]
 
 ## Recorded comparisons
 

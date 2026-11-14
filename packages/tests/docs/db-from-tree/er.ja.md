@@ -535,6 +535,13 @@ title はフロントマターのもので、文字の置き換えをします�
 [fixture: er/db-acc-descr-block-ignored-semicolon]
 [fixture: er/db-subgraph-nodes-acc-title]
 
+**値の中のコメント領域。**
+U+2028 や U+2029 の後のコメント領域は、値から除かれます。
+出典は [変換した形](../db-from-tree.ja.md#変換した形) です。
+要約には方向の値の後のテキストの欄がないので、その fixture は、
+入力が受け入れられることを記録し、方向は `LR` で、`y` は実体になりません。
+[fixture: er/lex-direction-text-line-separator-then-comment-line]
+
 ## 文字の置き換え
 
 Db が `sanitizeText` に通すテキストは 4 つで、title、`accTitle`、`accDescr`、

@@ -1,0 +1,15 @@
+{
+  "source": {
+    "kind": "authored",
+    "note": "journey.md Comments: a space at the start of the line after a comment line that follows a U+2028 in the title; the Db summary holds `A`, U+2028, and ` B`."
+  },
+  "accepted": true,
+  "diagramType": "journey",
+  "db": {
+    "title": "A  B",
+    "accTitle": "",
+    "accDescr": "",
+    "sections": [],
+    "tasks": []
+  }
+}

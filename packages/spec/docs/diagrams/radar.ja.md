@@ -280,6 +280,35 @@ global directive と comment region には共通規則を適用する。
 [fixture: radar/lex-common-description-only-directive]
 [fixture: radar/lex-common-description-only-comment]
 [fixture: radar/gram-native-description-gap]
+値の中の U+2028 か U+2029 の後の物理行の残りは、その改行も含めて、
+共通のコメント領域が取り除くことがある。
+そのとき値は次の物理行へ続くので、行の値はそこで終わらない。
+`accTitle: A`、U+2028、`%% c`、改行、`B` のアクセシビリティタイトルは `A`、
+U+2028、`B` である。 [fixture:
+radar/lex-string-line-separator-then-comment-line] [fixture:
+radar/lex-string-paragraph-separator-then-comment-line] [fixture:
+radar/lex-title-line-separator-then-comment-line] [fixture:
+radar/lex-acc-title-line-separator-then-comment-line] [fixture:
+radar/lex-acc-descr-line-separator-then-comment-line] [fixture:
+radar/lex-acc-descr-block-line-separator-then-comment-line] [fixture:
+radar/lex-string-line-separator-comment-line-directive-next] [fixture:
+radar/lex-string-line-separator-comment-line-space-next] [fixture:
+radar/lex-string-line-separator-comment-line-separator-next] [fixture:
+radar/lex-string-line-separator-comment-line-empty-line] [fixture:
+radar/lex-string-line-separator-comment-line-end-of-text] [fixture:
+radar/lex-title-line-separator-comment-line-end-of-text] [fixture:
+radar/lex-string-line-separator-comment-line-cr] [fixture:
+radar/lex-string-line-separator-comment-line-crlf] [fixture:
+radar/lex-string-line-separator-comment-line-two-comment-lines] [fixture:
+radar/lex-string-line-separator-comment-line-two-regions] [fixture:
+radar/lex-string-line-separator-comment-line-spaces-before] [fixture:
+radar/lex-string-line-separator-comment-line-line-feed-before] [fixture:
+radar/lex-string-line-separator-comment-line-directive-before] [fixture:
+radar/lex-string-line-separator-comment-line-line-rule-before] [fixture:
+radar/lex-string-line-separator-comment-line-line-rule-after] [fixture:
+radar/lex-string-line-separator-comment-line-bare-percent] [fixture:
+radar/lex-string-line-separator-comment-line-percent-brace] [fixture:
+radar/lex-curve-bracket-label-line-separator-then-comment-line]
 
 空の block も含む全 common 形に、可視 EOL または EOF を要求する。
 完成した block に次の文を接着できないが、

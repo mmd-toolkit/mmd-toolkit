@@ -1,0 +1,20 @@
+{
+  "source": {
+    "kind": "authored",
+    "note": "treemap.md Comments and authored boundaries: `style:#a` before a U+2028 in the string, and `#b;` on the line after the comment line, a line segment of its own for the line rule of style and classDef lines; the Db summary holds `Astyle:#a`, U+2028, and `ﬂ°b¶ßB`."
+  },
+  "accepted": true,
+  "diagramType": "treemap",
+  "db": {
+    "title": "",
+    "accTitle": "",
+    "accDescr": "",
+    "nodes": [
+      {
+        "name": "Astyle:#a ﬂ°b¶ßB",
+        "value": 1
+      }
+    ],
+    "classDefs": []
+  }
+}

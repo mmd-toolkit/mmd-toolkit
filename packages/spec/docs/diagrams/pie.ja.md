@@ -281,6 +281,27 @@ Infinity の綴り、語の接尾辞は拒否します。
 [fixture: pie/review-label-hidden-yaml-text]
 [fixture: pie/review-hidden-directive-in-string] [fixture: pie/label-whitespace]
 [fixture: pie/label-unknown-escapes]
+文字列の中では、U+2028 や U+2029 の後のコメントは読み飛ばされ、
+文字列はその後に続きます（[コメント行](../common.ja.md#コメント行) を参照）。
+[fixture:
+pie/lex-string-line-separator-then-comment-line] [fixture:
+pie/lex-string-paragraph-separator-then-comment-line] [fixture:
+pie/lex-string-line-separator-comment-line-directive-next] [fixture:
+pie/lex-string-line-separator-comment-line-space-next] [fixture:
+pie/lex-string-line-separator-comment-line-separator-next] [fixture:
+pie/lex-string-line-separator-comment-line-empty-line] [fixture:
+pie/lex-string-line-separator-comment-line-end-of-text] [fixture:
+pie/lex-string-line-separator-comment-line-cr] [fixture:
+pie/lex-string-line-separator-comment-line-crlf] [fixture:
+pie/lex-string-line-separator-comment-line-two-comment-lines] [fixture:
+pie/lex-string-line-separator-comment-line-two-regions] [fixture:
+pie/lex-string-line-separator-comment-line-spaces-before] [fixture:
+pie/lex-string-line-separator-comment-line-line-feed-before] [fixture:
+pie/lex-string-line-separator-comment-line-directive-before] [fixture:
+pie/lex-string-line-separator-comment-line-line-rule-before] [fixture:
+pie/lex-string-line-separator-comment-line-line-rule-after] [fixture:
+pie/lex-string-line-separator-comment-line-bare-percent] [fixture:
+pie/lex-string-line-separator-comment-line-percent-brace]
 
 ### 共通の複合した形
 
@@ -481,12 +502,36 @@ LS/PS は図のコメントを終えません。
 文字列のパーセント対は内容、共通の行の値では値の終わり、
 説明ブロックでは最初の閉じ波括弧までの内容です。
 どの値の中でも、共通のコメントだけの行は除きます。 [fixture: pie/comment-ls]
-[fixture: pie/comment-ps] [fixture: pie/lex-comment-ls-region-bridge]
-[fixture: pie/label-punctuation] [fixture: pie/title-comment]
-[fixture: pie/acctitle-comment] [fixture: pie/accdescr-comment]
-[fixture: pie/accdescr-block-comment-lines] [fixture: pie/comment-label-line]
-[fixture: pie/comment-label-single-line]
-[fixture: pie/lex-common-values-comment-region-ls]
+[fixture:
+pie/comment-ps] [fixture: pie/lex-comment-ls-region-bridge] [fixture:
+pie/label-punctuation] [fixture: pie/title-comment] [fixture:
+pie/acctitle-comment] [fixture: pie/accdescr-comment] [fixture:
+pie/accdescr-block-comment-lines] [fixture: pie/comment-label-line] [fixture:
+pie/comment-label-single-line] [fixture:
+pie/lex-common-values-comment-region-ls] [fixture:
+pie/lex-title-line-separator-then-comment-line] [fixture:
+pie/lex-acc-title-line-separator-then-comment-line] [fixture:
+pie/lex-acc-descr-line-separator-then-comment-line]
+説明ブロックでは、U+2028 や U+2029 の後のコメントは読み飛ばされ、
+説明はその後に続きます（[コメント行](../common.ja.md#コメント行) を参照）。
+[fixture:
+pie/lex-acc-descr-block-line-separator-then-comment-line] [fixture:
+pie/lex-acc-descr-block-line-separator-comment-line-directive-next] [fixture:
+pie/lex-acc-descr-block-line-separator-comment-line-space-next] [fixture:
+pie/lex-acc-descr-block-line-separator-comment-line-separator-next] [fixture:
+pie/lex-acc-descr-block-line-separator-comment-line-empty-line] [fixture:
+pie/lex-acc-descr-block-line-separator-comment-line-end-of-text] [fixture:
+pie/lex-acc-descr-block-line-separator-comment-line-cr] [fixture:
+pie/lex-acc-descr-block-line-separator-comment-line-crlf] [fixture:
+pie/lex-acc-descr-block-line-separator-comment-line-two-comment-lines] [fixture:
+pie/lex-acc-descr-block-line-separator-comment-line-two-regions] [fixture:
+pie/lex-acc-descr-block-line-separator-comment-line-spaces-before] [fixture:
+pie/lex-acc-descr-block-line-separator-comment-line-line-feed-before] [fixture:
+pie/lex-acc-descr-block-line-separator-comment-line-directive-before] [fixture:
+pie/lex-acc-descr-block-line-separator-comment-line-line-rule-before] [fixture:
+pie/lex-acc-descr-block-line-separator-comment-line-line-rule-after] [fixture:
+pie/lex-acc-descr-block-line-separator-comment-line-bare-percent] [fixture:
+pie/lex-acc-descr-block-line-separator-comment-line-percent-brace]
 
 ### 値の中の共通のトリビア
 

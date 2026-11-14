@@ -546,7 +546,52 @@ regions are distinct and may remove source lines before this native reading.
 railroad/ebnf-enclosing-string-hidden] [fixture:
 railroad/abnf-enclosing-string-hidden] [fixture:
 railroad/peg-comment-in-literal] [fixture: railroad/ir-common-block-comment]
-[fixture: railroad/ir-common-block-gap-comment]
+[fixture: railroad/ir-common-block-gap-comment] A common comment region can
+remove the rest of a physical line after U+2028 or U+2029 inside a value, its
+line break included; the value then goes on with the next physical line, so a
+line value does not end there: `accTitle: A`, U+2028, `%% c`, a line break, and
+`B` has the accessibility title `A`, U+2028, and `B`. [fixture:
+railroad/lex-string-line-separator-then-comment-line] [fixture:
+railroad/lex-string-paragraph-separator-then-comment-line] [fixture:
+railroad/lex-title-line-separator-then-comment-line] [fixture:
+railroad/lex-acc-title-line-separator-then-comment-line] [fixture:
+railroad/lex-acc-descr-line-separator-then-comment-line] [fixture:
+railroad/lex-acc-descr-block-line-separator-then-comment-line] [fixture:
+railroad/lex-string-line-separator-comment-line-directive-next] [fixture:
+railroad/lex-string-line-separator-comment-line-space-next] [fixture:
+railroad/lex-string-line-separator-comment-line-separator-next] [fixture:
+railroad/lex-string-line-separator-comment-line-empty-line] [fixture:
+railroad/lex-string-line-separator-comment-line-end-of-text] [fixture:
+railroad/lex-acc-title-line-separator-comment-line-end-of-text] [fixture:
+railroad/lex-string-line-separator-comment-line-cr] [fixture:
+railroad/lex-string-line-separator-comment-line-crlf] [fixture:
+railroad/lex-string-line-separator-comment-line-two-comment-lines] [fixture:
+railroad/lex-string-line-separator-comment-line-two-regions] [fixture:
+railroad/lex-string-line-separator-comment-line-spaces-before] [fixture:
+railroad/lex-string-line-separator-comment-line-line-feed-before] [fixture:
+railroad/lex-string-line-separator-comment-line-directive-before] [fixture:
+railroad/lex-string-line-separator-comment-line-line-rule-before] [fixture:
+railroad/lex-string-line-separator-comment-line-bare-percent] [fixture:
+railroad/lex-string-line-separator-comment-line-percent-brace] [fixture:
+railroad/lex-ir-nonterminal-string-line-separator-then-comment-line] [fixture:
+railroad/lex-ir-special-string-line-separator-then-comment-line] [fixture:
+railroad/lex-ebnf-string-line-separator-then-comment-line] [fixture:
+railroad/lex-abnf-string-line-separator-then-comment-line] [fixture:
+railroad/lex-peg-string-line-separator-then-comment-line] [fixture:
+railroad/db-ebnf-special-sequence-line-separator-then-comment-line] [fixture:
+railroad/lex-ebnf-title-line-separator-then-comment-line] [fixture:
+railroad/lex-ebnf-acc-title-line-separator-then-comment-line] [fixture:
+railroad/lex-ebnf-acc-descr-line-separator-then-comment-line] [fixture:
+railroad/lex-ebnf-acc-descr-block-line-separator-then-comment-line] [fixture:
+railroad/lex-abnf-title-line-separator-then-comment-line] [fixture:
+railroad/lex-abnf-acc-title-line-separator-then-comment-line] [fixture:
+railroad/lex-abnf-acc-descr-line-separator-then-comment-line] [fixture:
+railroad/lex-abnf-acc-descr-block-line-separator-then-comment-line] [fixture:
+railroad/lex-peg-title-line-separator-then-comment-line] [fixture:
+railroad/lex-peg-acc-title-line-separator-then-comment-line] [fixture:
+railroad/lex-peg-acc-descr-line-separator-then-comment-line] [fixture:
+railroad/lex-peg-acc-descr-block-line-separator-then-comment-line] [fixture:
+railroad/lex-string-line-separator-comment-line-line-rule-after]
 
 ### Common directive and semicolon boundaries
 

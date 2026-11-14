@@ -885,6 +885,25 @@ er/lex-direction-line-text-after] [fixture:
 er/lex-direction-line-same-value-twice] [fixture:
 er/lex-direction-line-two-values] [fixture:
 er/lex-direction-value-glued-then-other]
+値の後のテキストでは、U+2028 や U+2029 の後のコメントは読み飛ばされ、
+テキストはその後に続きます（[コメント行](../common.ja.md#コメント行) を参照）。
+[fixture: er/lex-direction-text-line-separator-then-comment-line]
+[fixture: er/lex-direction-text-line-separator-comment-line-directive-next]
+[fixture: er/lex-direction-text-line-separator-comment-line-space-next]
+[fixture: er/lex-direction-text-line-separator-comment-line-separator-next]
+[fixture: er/lex-direction-text-line-separator-comment-line-empty-line]
+[fixture: er/lex-direction-text-line-separator-comment-line-end-of-text]
+[fixture: er/lex-direction-text-line-separator-comment-line-cr]
+[fixture: er/lex-direction-text-line-separator-comment-line-crlf]
+[fixture: er/lex-direction-text-line-separator-comment-line-two-comment-lines]
+[fixture: er/lex-direction-text-line-separator-comment-line-two-regions]
+[fixture: er/lex-direction-text-line-separator-comment-line-spaces-before]
+[fixture: er/lex-direction-text-line-separator-comment-line-line-feed-before]
+[fixture: er/lex-direction-text-line-separator-comment-line-directive-before]
+[fixture: er/lex-direction-text-line-separator-comment-line-line-rule-before]
+[fixture: er/lex-direction-text-line-separator-comment-line-line-rule-after]
+[fixture: er/lex-direction-text-line-separator-comment-line-bare-percent]
+[fixture: er/lex-direction-text-line-separator-comment-line-percent-brace]
 `direction` と値の間の空白には、改行、タブ、U+00A0、U+2028 を置けます。
 `direction`、改行、`LR` は方向の行で、`direction`、U+2028、`LR` も同じです。
 一方、`direction` の前の並びには U+2028 を置けません。
@@ -1065,6 +1084,28 @@ style の文脈には `style` と `classDef` で入ります。
    er/lex-classdef-dot-name] [fixture: er/lex-style-nbsp-before-line-feed]
    [fixture: er/lex-classdef-dash-name] [fixture: er/lex-classdef-unicode-name]
    [fixture: er/lex-classdef-star-style]
+   単位の中の U+2028 や U+2029 の後のコメント行は取り除かれ、
+   単位はその後に続き（[コメント行](../common.ja.md#コメント行) を参照）、
+   `style A fill:red`、U+2028、`%% c`、改行、`x` は、`fill:red`、U+2028、
+   `x` からなるスタイルを持ちます。
+   [fixture: er/lex-style-line-separator-then-comment-line]
+   [fixture: er/lex-style-line-separator-comment-line-directive-next]
+   [fixture: er/lex-style-line-separator-comment-line-space-next]
+   [fixture: er/lex-style-line-separator-comment-line-separator-next]
+   [fixture: er/lex-style-line-separator-comment-line-empty-line]
+   [fixture: er/lex-style-line-separator-comment-line-end-of-text]
+   [fixture: er/lex-style-line-separator-comment-line-cr]
+   [fixture: er/lex-style-line-separator-comment-line-crlf]
+   [fixture: er/lex-style-line-separator-comment-line-two-comment-lines]
+   [fixture: er/lex-style-line-separator-comment-line-two-regions]
+   [fixture: er/lex-style-line-separator-comment-line-spaces-before]
+   [fixture: er/lex-style-line-separator-comment-line-line-feed-before]
+   [fixture: er/lex-style-line-separator-comment-line-directive-before]
+   [fixture: er/lex-style-line-separator-comment-line-line-rule-before]
+   [fixture: er/lex-style-line-separator-comment-line-line-rule-after]
+   [fixture: er/lex-style-line-separator-comment-line-bare-percent]
+   [fixture: er/lex-style-line-separator-comment-line-percent-brace]
+   [fixture: er/lex-classdef-styles-line-separator-then-comment-line]
 7. `;`: `;` の単位。 [fixture: er/lex-classdef-semicolon-line-feed]
 
 `;` の単位は文を終えますが、字句解析器は改行まで style の文脈にとどまります。
@@ -1133,6 +1174,27 @@ er/lex-acc-title-empty-description-block] [fixture:
 er/db-acc-title-trailing-space] [fixture: er/lex-acc-title-trailing-nbsp]
 [fixture: er/lex-acc-title-crlf] [fixture: er/lex-acc-title-line-separator]
 [fixture: er/lex-acc-title-tabs]
+アクセシビリティのタイトルや説明のテキストでは、
+U+2028 や U+2029 の後のコメントは読み飛ばされ、
+テキストはその後に続きます（[コメント行](../common.ja.md#コメント行) を参照）。
+[fixture: er/lex-acc-title-line-separator-then-comment-line]
+[fixture: er/lex-acc-descr-line-separator-then-comment-line]
+[fixture: er/lex-acc-title-line-separator-comment-line-directive-next]
+[fixture: er/lex-acc-title-line-separator-comment-line-space-next]
+[fixture: er/lex-acc-title-line-separator-comment-line-separator-next]
+[fixture: er/lex-acc-title-line-separator-comment-line-empty-line]
+[fixture: er/lex-acc-title-line-separator-comment-line-end-of-text]
+[fixture: er/lex-acc-title-line-separator-comment-line-cr]
+[fixture: er/lex-acc-title-line-separator-comment-line-crlf]
+[fixture: er/lex-acc-title-line-separator-comment-line-two-comment-lines]
+[fixture: er/lex-acc-title-line-separator-comment-line-two-regions]
+[fixture: er/lex-acc-title-line-separator-comment-line-spaces-before]
+[fixture: er/lex-acc-title-line-separator-comment-line-line-feed-before]
+[fixture: er/lex-acc-title-line-separator-comment-line-directive-before]
+[fixture: er/lex-acc-title-line-separator-comment-line-line-rule-before]
+[fixture: er/lex-acc-title-line-separator-comment-line-line-rule-after]
+[fixture: er/lex-acc-title-line-separator-comment-line-bare-percent]
+[fixture: er/lex-acc-title-line-separator-comment-line-percent-brace]
 
 説明ブロックの文脈では、`}` が `}` の単位で文脈を出て、
 改行を含む `}` 以外の文字 1 つ以上が `description-block-text` の単位です。
@@ -1160,6 +1222,26 @@ er/lex-acc-descr-block-direction] [fixture:
 er/lex-acc-descr-block-unclosed-empty] [fixture:
 er/lex-acc-descr-block-unclosed]
 [fixture: er/lex-acc-descr-block-unclosed-lines]
+説明ブロックのテキストの中のコメント行は、
+テキストの行の U+2028 や U+2029 の後のものも取り除かれ、
+テキストはその後に続きます（[コメント行](../common.ja.md#コメント行) を参照）。
+[fixture: er/lex-acc-descr-block-line-separator-then-comment-line]
+[fixture: er/lex-acc-descr-block-line-separator-comment-line-directive-next]
+[fixture: er/lex-acc-descr-block-line-separator-comment-line-space-next]
+[fixture: er/lex-acc-descr-block-line-separator-comment-line-separator-next]
+[fixture: er/lex-acc-descr-block-line-separator-comment-line-empty-line]
+[fixture: er/lex-acc-descr-block-line-separator-comment-line-end-of-text]
+[fixture: er/lex-acc-descr-block-line-separator-comment-line-cr]
+[fixture: er/lex-acc-descr-block-line-separator-comment-line-crlf]
+[fixture: er/lex-acc-descr-block-line-separator-comment-line-two-comment-lines]
+[fixture: er/lex-acc-descr-block-line-separator-comment-line-two-regions]
+[fixture: er/lex-acc-descr-block-line-separator-comment-line-spaces-before]
+[fixture: er/lex-acc-descr-block-line-separator-comment-line-line-feed-before]
+[fixture: er/lex-acc-descr-block-line-separator-comment-line-directive-before]
+[fixture: er/lex-acc-descr-block-line-separator-comment-line-line-rule-before]
+[fixture: er/lex-acc-descr-block-line-separator-comment-line-line-rule-after]
+[fixture: er/lex-acc-descr-block-line-separator-comment-line-bare-percent]
+[fixture: er/lex-acc-descr-block-line-separator-comment-line-percent-brace]
 
 これらの文脈に入る規則は文の文脈の規則だけです。
 属性ブロックと style の文脈では、`accTitle` と `accDescr` は語です。

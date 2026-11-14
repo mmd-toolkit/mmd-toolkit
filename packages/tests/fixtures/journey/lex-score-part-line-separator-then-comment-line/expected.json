@@ -1,0 +1,22 @@
+{
+  "source": {
+    "kind": "authored",
+    "note": "journey.md Comments: a comment line after a U+2028 in the score part is read through, and the value goes on after it; the score is `A`, U+2028, and `B`, which is no number, so the Db summary holds it as `NaN`."
+  },
+  "accepted": true,
+  "diagramType": "journey",
+  "db": {
+    "title": "",
+    "accTitle": "",
+    "accDescr": "",
+    "sections": [],
+    "tasks": [
+      {
+        "section": "",
+        "task": "T",
+        "people": [],
+        "score": "NaN"
+      }
+    ]
+  }
+}

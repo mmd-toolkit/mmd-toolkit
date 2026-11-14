@@ -1,0 +1,24 @@
+{
+  "source": {
+    "kind": "authored",
+    "note": "journey.md Comments: a comment line after a U+2028 in the ignored data is read through, and the value goes on after it; accepted, and the Db summary holds no ignored data."
+  },
+  "accepted": true,
+  "diagramType": "journey",
+  "db": {
+    "title": "",
+    "accTitle": "",
+    "accDescr": "",
+    "sections": [],
+    "tasks": [
+      {
+        "section": "",
+        "task": "T",
+        "people": [
+          "P"
+        ],
+        "score": 5
+      }
+    ]
+  }
+}

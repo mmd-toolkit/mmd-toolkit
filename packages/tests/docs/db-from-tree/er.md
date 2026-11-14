@@ -448,6 +448,13 @@ er/db-acc-descr-block-line-separator] [fixture:
 er/db-acc-descr-block-ignored-semicolon] [fixture:
 er/db-subgraph-nodes-acc-title]
 
+**Comment regions in values.** A comment region after a U+2028 or a U+2029 is
+left out of a value (see
+[The converted form](../db-from-tree.md#the-converted-form)). The summary has no
+field for the text after the direction value, so that fixture records that the
+input is accepted: the direction is `LR`, and `y` is not an entity. [fixture:
+er/lex-direction-text-line-separator-then-comment-line]
+
 ## The replacement of characters
 
 The Db passes four texts through `sanitizeText`: the title, `accTitle`,

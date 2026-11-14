@@ -258,7 +258,35 @@ radar/lex-common-hidden-yaml-block-owner] [fixture:
 radar/lex-common-hidden-percent-block-owner] [fixture:
 radar/lex-common-description-only-directive] [fixture:
 radar/lex-common-description-only-comment] [fixture:
-radar/gram-native-description-gap]
+radar/gram-native-description-gap] A common comment region can remove the rest
+of a physical line after U+2028 or U+2029 inside a value, its line break
+included; the value then goes on with the next physical line, so a line value
+does not end there: `accTitle: A`, U+2028, `%% c`, a line break, and `B` has the
+accessibility title `A`, U+2028, and `B`. [fixture:
+radar/lex-string-line-separator-then-comment-line] [fixture:
+radar/lex-string-paragraph-separator-then-comment-line] [fixture:
+radar/lex-title-line-separator-then-comment-line] [fixture:
+radar/lex-acc-title-line-separator-then-comment-line] [fixture:
+radar/lex-acc-descr-line-separator-then-comment-line] [fixture:
+radar/lex-acc-descr-block-line-separator-then-comment-line] [fixture:
+radar/lex-string-line-separator-comment-line-directive-next] [fixture:
+radar/lex-string-line-separator-comment-line-space-next] [fixture:
+radar/lex-string-line-separator-comment-line-separator-next] [fixture:
+radar/lex-string-line-separator-comment-line-empty-line] [fixture:
+radar/lex-string-line-separator-comment-line-end-of-text] [fixture:
+radar/lex-title-line-separator-comment-line-end-of-text] [fixture:
+radar/lex-string-line-separator-comment-line-cr] [fixture:
+radar/lex-string-line-separator-comment-line-crlf] [fixture:
+radar/lex-string-line-separator-comment-line-two-comment-lines] [fixture:
+radar/lex-string-line-separator-comment-line-two-regions] [fixture:
+radar/lex-string-line-separator-comment-line-spaces-before] [fixture:
+radar/lex-string-line-separator-comment-line-line-feed-before] [fixture:
+radar/lex-string-line-separator-comment-line-directive-before] [fixture:
+radar/lex-string-line-separator-comment-line-line-rule-before] [fixture:
+radar/lex-string-line-separator-comment-line-line-rule-after] [fixture:
+radar/lex-string-line-separator-comment-line-bare-percent] [fixture:
+radar/lex-string-line-separator-comment-line-percent-brace] [fixture:
+radar/lex-curve-bracket-label-line-separator-then-comment-line]
 
 Every common form, even an empty block, requires visible EOL or EOF. The
 following statement may not touch a completed block, although line-value text

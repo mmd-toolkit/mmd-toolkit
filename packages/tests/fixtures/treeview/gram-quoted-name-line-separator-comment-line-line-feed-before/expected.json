@@ -1,0 +1,19 @@
+{
+  "source": {
+    "kind": "authored",
+    "note": "treeview.md Comments and boundaries: a line feed lies between a U+2028 in the quoted name and the comment line after it; the Db summary holds `A`, U+2028, and `B`."
+  },
+  "accepted": true,
+  "diagramType": "treeView",
+  "db": {
+    "accTitle": "",
+    "accDescr": "",
+    "nodes": [
+      {
+        "name": "A B",
+        "nodeType": "file",
+        "children": []
+      }
+    ]
+  }
+}

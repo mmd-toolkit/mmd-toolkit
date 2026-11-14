@@ -1,0 +1,12 @@
+{
+  "source": {
+    "kind": "authored",
+    "note": "known-divergences.md, embedded-data-opaque: an empty line after a comment line that follows a U+2028 in the alias in the data block; mermaid.js rejects the YAML of the data block, which then holds a line feed inside a quoted string, while this specification keeps the data as written."
+  },
+  "knownDivergence": "embedded-data-opaque",
+  "accepted": false,
+  "error": {
+    "name": "YAMLException",
+    "message": "a whitespace character is expected after the key-value separator within a block mapping (1:9)\n\n 1 | \"alias\":\"A \n-------------^\n 2 | B\""
+  }
+}

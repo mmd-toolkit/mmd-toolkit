@@ -1,0 +1,9 @@
+{
+  "source": {
+    "kind": "authored",
+    "note": "info.md Composite common forms: spaces lie between a U+2028 in the accessibility title and the comment after it; accepted, and the Db summary holds no value with the U+2028."
+  },
+  "accepted": true,
+  "diagramType": "info",
+  "db": {}
+}

@@ -322,7 +322,39 @@ treeview/comment-in-quotes] [fixture: treeview/tail-description-comment]
 [fixture: treeview/common-block-bare-percent] [fixture:
 treeview/common-title-percent-boundary] [fixture:
 treeview/detect-secondscan-singleline] [fixture:
-treeview/comment-native-mark-directive]
+treeview/comment-native-mark-directive] A common comment region can remove the
+rest of a physical line after U+2028 or U+2029 inside a value, its line break
+included; the value then goes on with the next physical line, so a line value
+does not end there: `accTitle: A`, U+2028, `%% c`, a line break, and `B` has the
+accessibility title `A`, U+2028, and `B`. [fixture:
+treeview/gram-quoted-name-line-separator-then-comment-line] [fixture:
+treeview/gram-quoted-name-paragraph-separator-then-comment-line] [fixture:
+treeview/gram-bare-name-line-separator-then-comment-line] [fixture:
+treeview/gram-description-line-separator-then-comment-line] [fixture:
+treeview/gram-title-line-separator-then-comment-line] [fixture:
+treeview/gram-acc-title-line-separator-then-comment-line] [fixture:
+treeview/gram-acc-descr-line-separator-then-comment-line] [fixture:
+treeview/gram-acc-descr-block-line-separator-then-comment-line] [fixture:
+treeview/gram-quoted-name-line-separator-comment-line-directive-next] [fixture:
+treeview/gram-quoted-name-line-separator-comment-line-space-next] [fixture:
+treeview/gram-quoted-name-line-separator-comment-line-separator-next] [fixture:
+treeview/gram-quoted-name-line-separator-comment-line-empty-line] [fixture:
+treeview/lex-quoted-name-line-separator-comment-line-end-of-text] [fixture:
+treeview/gram-bare-name-line-separator-comment-line-end-of-text] [fixture:
+treeview/gram-quoted-name-line-separator-comment-line-cr] [fixture:
+treeview/gram-quoted-name-line-separator-comment-line-crlf] [fixture:
+treeview/gram-quoted-name-line-separator-comment-line-two-comment-lines]
+[fixture: treeview/gram-quoted-name-line-separator-comment-line-two-regions]
+[fixture: treeview/gram-quoted-name-line-separator-comment-line-spaces-before]
+[fixture:
+treeview/gram-quoted-name-line-separator-comment-line-line-feed-before]
+[fixture:
+treeview/gram-quoted-name-line-separator-comment-line-directive-before]
+[fixture:
+treeview/gram-quoted-name-line-separator-comment-line-line-rule-before]
+[fixture: treeview/gram-quoted-name-line-separator-comment-line-line-rule-after]
+[fixture: treeview/gram-quoted-name-line-separator-comment-line-bare-percent]
+[fixture: treeview/gram-quoted-name-line-separator-comment-line-percent-brace]
 
 For directives and selected semicolons, the header, common keywords, the word
 `icon`, class names and complete icon references are atoms. `:::` and `##` are

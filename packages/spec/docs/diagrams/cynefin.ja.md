@@ -167,7 +167,7 @@ string は対になる単一引用符または二重引用符を使い、空で�
 backslash の後には CR、LF、U+2028、U+2029 以外の一文字が必要である。
 単独の backslash、escape した行区切り、対応する閉じの欠落は拒否する。
 他方の引用符では閉じない。
-共通の除去は内側にも適用する。 [fixture: cynefin/db-empty-texts]
+全域の共通の除去は、内側にも適用する。 [fixture: cynefin/db-empty-texts]
 [fixture: cynefin/lex-string-escaped-quotes]
 [fixture: cynefin/lex-string-conversion] [fixture: cynefin/line-string-values]
 [fixture: cynefin/lex-string-open-double]
@@ -178,6 +178,35 @@ backslash の後には CR、LF、U+2028、U+2029 以外の一文字が必要で�
 [fixture: cynefin/lex-string-escaped-ps]
 [fixture: cynefin/directive-every-field]
 [fixture: cynefin/comment-line-in-string]
+値の中の U+2028 か U+2029 の後の物理行の残りは、その改行も含めて、
+共通のコメント領域が取り除くことがある。
+そのとき値は次の物理行へ続くので、行の値はそこで終わらない。
+`accTitle: A`、U+2028、`%% c`、改行、`B` のアクセシビリティタイトルは `A`、
+U+2028、`B` である。 [fixture:
+cynefin/lex-string-line-separator-then-comment-line] [fixture:
+cynefin/lex-string-paragraph-separator-then-comment-line] [fixture:
+cynefin/lex-title-line-separator-then-comment-line] [fixture:
+cynefin/lex-acc-title-line-separator-then-comment-line] [fixture:
+cynefin/lex-acc-descr-line-separator-then-comment-line] [fixture:
+cynefin/lex-acc-descr-block-line-separator-then-comment-line] [fixture:
+cynefin/lex-string-line-separator-comment-line-directive-next] [fixture:
+cynefin/lex-string-line-separator-comment-line-space-next] [fixture:
+cynefin/lex-string-line-separator-comment-line-separator-next] [fixture:
+cynefin/lex-string-line-separator-comment-line-empty-line] [fixture:
+cynefin/lex-string-line-separator-comment-line-end-of-text] [fixture:
+cynefin/lex-title-line-separator-comment-line-end-of-text] [fixture:
+cynefin/lex-string-line-separator-comment-line-cr] [fixture:
+cynefin/lex-string-line-separator-comment-line-crlf] [fixture:
+cynefin/lex-string-line-separator-comment-line-two-comment-lines] [fixture:
+cynefin/lex-string-line-separator-comment-line-two-regions] [fixture:
+cynefin/lex-string-line-separator-comment-line-spaces-before] [fixture:
+cynefin/lex-string-line-separator-comment-line-line-feed-before] [fixture:
+cynefin/lex-string-line-separator-comment-line-directive-before] [fixture:
+cynefin/lex-string-line-separator-comment-line-line-rule-before] [fixture:
+cynefin/lex-string-line-separator-comment-line-line-rule-after] [fixture:
+cynefin/lex-string-line-separator-comment-line-bare-percent] [fixture:
+cynefin/lex-string-line-separator-comment-line-percent-brace] [fixture:
+cynefin/lex-transition-label-string-line-separator-then-comment-line]
 
 項目と遷移ラベルの文字列は共有の StringLiteral を使う。
 raw は引用符と共通の trivia を含む書かれた全体を保ち、

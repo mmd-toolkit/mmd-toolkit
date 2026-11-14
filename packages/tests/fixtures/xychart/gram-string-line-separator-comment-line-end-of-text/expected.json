@@ -1,0 +1,11 @@
+{
+  "source": {
+    "kind": "authored",
+    "note": "xychart.md Comments: the text ends with a comment line that follows a U+2028 in the string; rejected."
+  },
+  "accepted": false,
+  "error": {
+    "name": "Error",
+    "message": "Parse error on line 3:\n...hart-betatitle \"A \n---------------------^\nExpecting 'title', 'X_AXIS', 'Y_AXIS', 'LINE', 'BAR', 'acc_title', 'acc_descr', 'acc_descr_multiline_value', 'SQUARE_BRACES_START', 'SQUARE_BRACES_END', 'COMMA', 'NUMBER_WITH_DECIMAL', 'NEWLINE', 'SEMI', 'EOF', got 'STR'"
+  }
+}
