@@ -1,0 +1,34 @@
+{
+  "source": {
+    "kind": "authored",
+    "note": "quadrant.md Classes: on the line `style:#x;b color: #f00;` after the region, the style rule ignores the last `;`, so the `;` in the name is not ignored and ends the entity `#x;`; the class `a`, U+2028, `style:`, the placeholder of `#x;`, and `b`, with the colour `#f00`."
+  },
+  "accepted": true,
+  "diagramType": "quadrantChart",
+  "db": {
+    "title": "",
+    "accTitle": "",
+    "accDescr": "",
+    "quadrants": [
+      "",
+      "",
+      "",
+      ""
+    ],
+    "xAxis": {
+      "left": "",
+      "right": ""
+    },
+    "yAxis": {
+      "bottom": "",
+      "top": ""
+    },
+    "points": [],
+    "classes": [
+      {
+        "name": "a style:ﬂ°x¶ßb",
+        "color": "#f00"
+      }
+    ]
+  }
+}

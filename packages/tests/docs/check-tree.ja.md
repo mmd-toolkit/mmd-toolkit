@@ -150,6 +150,25 @@ const problems: TreeProblem[] = checkTree(text, tree)
   行の規則が無視する `;` が切れば切れ目の数より 1 つ多い `StringFragment`
   トークンです。
   出典は parser/docs/tokens.md の String tokens です。
+- **コメント領域をまたぐ名前。**
+  `Identifier` のトークンをコメント領域が切るのは、
+  名前が U+2028 か U+2029 を持つときだけです。
+  それがコメントの始まりだからです。
+  断片は `Identifier` のトークンで、
+  領域の連なり（コメント行が続けば 1 つの連なりです）の前の断片は、
+  その最初の領域を始める区切りで終わり、領域はどの断片にも入りません。
+  出典は parser/docs/tokens.md の Comment regions in tokens です。
+  トークンをつないだものが名前の書かれたテキストなので、
+  領域の前の断片に区切りがなければ、値の規則が報告します。
+  領域をまたぐ 1 つのトークン、遅く始まる断片、木にない領域は、
+  コメントがどのトークンにも入らないという条件と、
+  トークンの外のすべての文字が空白であるという条件が報告します。
+  断片の種類は、quadrant の図では検査しますが、ER の図では検査しません。
+  検査しないものは、下の一覧にあります。
+  [fixture: er/lex-name-line-separator-comment-line]
+  [fixture: er/lex-name-two-comment-regions]
+  [fixture: quadrant/lex-classdef-name-line-separator-comment-line]
+  [fixture: er/lex-name-line-separator-two-comment-lines]
 - **切られないトークン。**
   ディレクティブと行の規則が無視する `;` は、
   `String`（そのときは `StringFragment` のトークン）と `RawText`
@@ -2417,6 +2436,14 @@ null になりうる欄は、ソースがそれを書く所で null にし、書
   という条件。
   行の規則を 2 か所に書かないために、トークンは与えられたものとして扱い、
   その正しさは Db の比べに任せます。
+- ER の図の名前のトークンの種類。
+  quadrant の図の検査は `QuadrantIdentifier` のトークンの種類を調べますが、
+  ER の図の検査は `ErIdentifier` のトークンの種類を調べません。
+  コメント領域をまたぐ名前の断片や、領域のない名前のトークンが、
+  別の種類（`Identifier` の代わりに `RawText`）で書かれていても、
+  報告されません。
+  ER の種類の表はユニットごとで（チルダの語は `RawText` です）、
+  検査は独立した規則になるので、まだ書いていません。
 
 ## テスト
 
@@ -2553,7 +2580,8 @@ fixture の元の木に問題がないことも求めます。
 値のメッセージ（トークンをつないだテキストが書かれたテキストと違う）で求めます。
 無視されるテキストには、ディレクティブとコメント領域の場合が 1 つずつあり、
 切れ目の隣の空白がどのトークンにもないというメッセージで求めます。
-U+2028 や U+2029 の後のコメント領域が切る値には、gantt の title、
+U+2028 や U+2029 の後のコメント領域が切る値には、
+ER の名前と quadrant のクラス名の `Identifier` のトークン、gantt の title、
 class のバッククォートの名前、
 architecture のアイコンのテキスト（U+2029）の場合があります。
 いずれも領域の前の断片の終わりから区切りの文字を取り、値のメッセージで求めます。

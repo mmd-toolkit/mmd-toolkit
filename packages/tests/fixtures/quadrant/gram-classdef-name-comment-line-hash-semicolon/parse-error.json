@@ -1,0 +1,17 @@
+{
+  "message": "A style must be radius, color, stroke-color, or stroke-width with a value of its form",
+  "range": [
+    32,
+    38
+  ],
+  "loc": {
+    "start": {
+      "line": 3,
+      "column": 2
+    },
+    "end": {
+      "line": 3,
+      "column": 8
+    }
+  }
+}

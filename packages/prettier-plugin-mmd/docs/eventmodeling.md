@@ -424,6 +424,11 @@ items two; the source-frame line is not a new top-level statement. [fixture:
 eventmodeling/gwt-clauses-and-items/header-completion-comment] [fixture:
 eventmodeling/gwt-clauses-and-items/header-directive-continuation]
 
+A clause that follows the directive of a continued GWT header keeps the
+whitespace before it as written, and a directive that follows its item on its
+line stays on that line: `given evt A %%{{tail}}%%` stays on one line. [fixture:
+eventmodeling/gwt-clauses-and-items/clause-after-header-directive-with-tail-directive]
+
 Put `gwt 99` at column one, each clause keyword one step deeper and every item
 another step deeper. This shows the authored clause/item relationship without
 inventing closing punctuation. Keep required given/then, optional when, item
@@ -843,6 +848,12 @@ Forms at authored body boundaries keep their line through GWT clause and item
 openings too. The header and nested bodies share that decision so moving an item
 cannot remove an enclosing opening's protection on the next formatting.
 
+A hidden form that follows the `}` of a description block over several lines on
+its line stays on that line: `eventmodeling accDescr {A`, a line break, and
+`B} %%{{native}}%%` stay as they are, where the form went to a line of its own
+before. [fixture:
+eventmodeling/hidden-forms/native-after-description-block-end-stays-on-its-line]
+
 [fixture: eventmodeling/hidden-forms/header-inline-gwt-item-directive]
 
 [fixture: eventmodeling/hidden-forms/header-inline-gwt-item-yaml]
@@ -1007,6 +1018,16 @@ inside values and unfinished EOF endings. Standalone starts align with the
 owning body. Common boundaries retain the full original gap instead of this
 ordinary spacing; a removed directive cannot replace required whitespace.
 
+A directive that is not closed takes the whitespace after its argument, line
+breaks included, so the next line goes on its line, which is printed as written
+(see
+[A line that a directive that is not closed joins](./compatibility.md#a-line-that-a-directive-that-is-not-closed-joins)),
+also where the directive stands after the `}` of a description block over
+several lines: `accDescr {alpha`, a line break, `beta} %%{wrap foo`, a line
+break, and ` tf 23 evt End` stay as they are, with the whitespace before `tf`.
+[fixture:
+eventmodeling/global-directives/description-block-end-line-with-unclosed-directive-kept]
+
 [fixture: eventmodeling/global-directives/directive-same-line-contacts]
 
 [fixture:
@@ -1064,6 +1085,12 @@ indentation. Keep a child body's opening edge on the protected line too, so a
 second formatting cannot split it differently. This grammar has no grammatical
 semicolon, so `verbatimStyleLines` is false: a `style` or `classDef` word alone
 does not freeze the whole line.
+
+A line that holds a `;` keeps its statements together, also where the `;` stands
+in the last line of a description block over several lines and a statement
+follows its `}`: `accDescr {x`, a line break, and `y;}` stay with
+`tf 17 evt End` on one line. [fixture:
+eventmodeling/semicolons/description-block-end-line-keeps-next-statement]
 
 [fixture: eventmodeling/semicolons/native-gwt-value]
 

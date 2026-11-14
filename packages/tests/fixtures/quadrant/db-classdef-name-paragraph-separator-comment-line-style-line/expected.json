@@ -1,0 +1,34 @@
+{
+  "source": {
+    "kind": "authored",
+    "note": "quadrant.md Classes: the line `style color:#f00;` after a comment line that follows a U+2029 matches the style rule, and the `;` it ignores is at the end of the line, outside the name; the class `a`, U+2029, and `style` with the colour `#f00`."
+  },
+  "accepted": true,
+  "diagramType": "quadrantChart",
+  "db": {
+    "title": "",
+    "accTitle": "",
+    "accDescr": "",
+    "quadrants": [
+      "",
+      "",
+      "",
+      ""
+    ],
+    "xAxis": {
+      "left": "",
+      "right": ""
+    },
+    "yAxis": {
+      "bottom": "",
+      "top": ""
+    },
+    "points": [],
+    "classes": [
+      {
+        "name": "a style",
+        "color": "#f00"
+      }
+    ]
+  }
+}
