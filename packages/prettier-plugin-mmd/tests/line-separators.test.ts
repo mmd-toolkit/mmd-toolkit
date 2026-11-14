@@ -2212,6 +2212,16 @@ const erExamples: readonly (readonly [string, string, string])[] = [
     'erDiagram\n  subgraph G\n  X "style:#x"; B {\n  } A["x;y"]\n  C {\n  }\nend "style:#x";\u2028Q\n',
   ],
   [
+    "an empty ER attribute block in a subgraph whose end line stays as written, after a comment line that joins its line to the line before",
+    'erDiagram\nsubgraph G\nY\u2028%% c\n    "style:#x"; B {  \n\n        } A["x;y"]\nend "style:#x";\u2028Q\n',
+    'erDiagram\n  subgraph G\nY\u2028%% c\n    "style:#x"; B {\n    } A["x;y"]\nend "style:#x";\u2028Q\n',
+  ],
+  [
+    "an empty ER attribute block in a subgraph whose end line stays as written, after a directive over two lines",
+    'erDiagram\nsubgraph G\n  %%{init:\n{}}%% "style:#x"; B {  \n\n    } A["x;y"]\nend "style:#x";\u2028Q\n',
+    'erDiagram\n  subgraph G\n  %%{init:\n{}}%% "style:#x"; B {\n} A["x;y"]\nend "style:#x";\u2028Q\n',
+  ],
+  [
     "an empty ER attribute block in a subgraph whose end line stays as written, and a block with an attribute",
     'erDiagram\nsubgraph G\n  "style:#x"; B {\n    int id\n    } A["x;y"]\nend "style:#x";\u2028Q\n',
     'erDiagram\n  subgraph G\n  "style:#x"; B {\n    int id\n    } A["x;y"]\nend "style:#x";\u2028Q\n',

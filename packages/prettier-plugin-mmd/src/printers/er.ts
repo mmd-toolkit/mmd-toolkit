@@ -465,7 +465,9 @@ function emptyBlockReplacement(
  * The empty blocks inside a subgraph printed as written, in source order. Its
  * body keeps its written lines, so each `}` uses the spaces and tabs at the
  * start of its entity's line, also after another statement on that line
- * (docs/er.md, Attribute blocks).
+ * (docs/er.md, Attribute blocks). That line starts after a line feed, and not
+ * where `lineStartOf` puts it: a line that a comment line or an unclosed
+ * directive joins to the line before still has its own written indentation.
  */
 function subgraphEmptyBlockReplacements(
   source: Source,

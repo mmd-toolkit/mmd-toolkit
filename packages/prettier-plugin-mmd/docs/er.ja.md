@@ -158,6 +158,8 @@ mermaid.js が拒否します。
 [test: an empty ER attribute block in a subgraph whose end line stays as written, in a subgraph after a tab]
 [test: an empty ER attribute block in a subgraph whose end line stays as written, with two empty blocks after a statement]
 [test: an empty ER attribute block in a subgraph whose end line stays as written, and a block with an attribute]
+[test: an empty ER attribute block in a subgraph whose end line stays as written, after a directive over two lines]
+[test: an empty ER attribute block in a subgraph whose end line stays as written, after a comment line that joins its line to the line before]
 [test: an empty ER attribute block in a subgraph whose end line stays as written, and U+00A0 before the closing brace]
 [fixture: attribute-blocks/written-line-empty-block-ignored-semicolon-both-lines]
 [fixture: attribute-blocks/written-line-empty-block-ignored-semicolon-closing-line-ends]
