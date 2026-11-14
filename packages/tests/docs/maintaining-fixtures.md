@@ -138,12 +138,14 @@ fixture would be a failure of.
    table below. If the cell names a prefix, the new fixture takes it.
 3. Otherwise (the diagram type has no row, the cell is empty, or the input has
    no kind) an accepted input takes `lex-` if it has `%%` (a rule of the units:
-   where a comment or a directive can start) and `db-` if it has none (what the
-   fixture checks is a value of the Db). A rejected input takes `lex-` if its
-   message begins with `Unexpected character` or ends with
-   `before the end of the text` (a rule of the units: a character that no rule
-   of the context reads, a unit that is not closed), and `gram-` in every other
-   case (a rule of the statements and nodes).
+   where a comment or a directive can start) and `db-` if it has none (the most
+   common prefix of such fixtures: in main at `d795bf650`, 5,134 of the 9,199
+   accepted fixtures without `%%` that carry `lex-`, `gram-`, or `db-`, without
+   the generated sets). A rejected input takes `lex-` if its message begins with
+   `Unexpected character` or ends with `before the end of the text` (a rule of
+   the units: a character that no rule of the context reads, a unit that is not
+   closed), and `gram-` in every other case (a rule of the statements and
+   nodes).
 
 The table is the decision itself. It does not change when fixtures are added or
 renamed, and changing a cell changes the prefix of every later fixture of that
