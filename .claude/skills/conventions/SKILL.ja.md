@@ -193,12 +193,13 @@ AGENTS.md は、それぞれを 1 行で述べ、守らせる検査の名前を�
   [AGENTS.md の「行動原則」](../../../AGENTS.ja.md#行動原則) が挙げるもの。
   fixture は文と一緒に書き、mermaid.js で 1 回確かめ、
   文から引く（`[fixture: …]`）。
-  収集器が mermaid.js から取る入力は例外で、まとめて取り、
-  文とともに書かないので、文が引かなくてよい。
+  収集器が mermaid.js から取る入力、
+  つまり `expected.json` の `source` の `kind` が `mermaid` の fixture
+  は例外で、まとめて取り、文とともに書かないので、文が引かなくてよい。
   文が引くものは、ほかの fixture と同じく、その文と照らして読む。
-  名前は、
+  集め方と名前の付け方は、
   [maintaining-fixtures.ja.md の「mermaid から取った入力」の節](../../../packages/tests/docs/maintaining-fixtures.ja.md#mermaid-から取った入力)
-  が定める `<source>-<file>-<hash>` の形を持つ。
+  にある。
   どこで見つかった失敗も、コーパスの fixture（か整形の fixture）と、
   欠けていた文で閉じる。
   パッケージの中の一覧にだけ残した入力は、残したことにならない。

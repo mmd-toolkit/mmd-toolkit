@@ -45,8 +45,9 @@ The reviewer edits nothing in the working tree.
   against the parser or the specification, whichever is wrong; a changed tree
   that the author gives no answer for is a finding; and a fixture that the
   change added and that no sentence cites is a finding against the
-  specification, unless the collector took it from mermaid.js (the skill
-  conventions, Running tests). The review report carries the answers.
+  specification, unless its `source` has `kind` `mermaid`, an input that the
+  collector took from mermaid.js (the skill conventions, Running tests). The
+  review report carries the answers.
 - A review of a branch or a pull request covers the whole of it, also when the
   request names only its last commit: every file it changed since its base, and
   the released behavior that the same sentences govern. What an earlier round
@@ -78,8 +79,11 @@ against the sentence. The list is written in the first round, in full, before
 the implementation is read, and the report carries it next to the author's table
 of cases (the conventions skill asks the author for one): the two lists are
 compared, and the cases in neither are the review's own contribution. The
-reviewer builds no product of places and strings: a product repeats one rule as
-many times as it has contexts and names no question.
+reviewer builds no product over places or strings that no sentence names: such a
+product repeats one rule as many times as it has contexts and names no question.
+The places and the strings that a sentence names, with the other rules that meet
+it at those places, are cases of the sentence, and the reviewer lists them (the
+skill conventions, Running tests).
 
 The shapes below name the other rules to think of at each sentence. A review
 that leaves one out says which and why.
