@@ -2588,9 +2588,9 @@ requirement/accessibility-statements/block-starts-on-a-kept-line-text-on-the-bra
 [fixture:
 requirement/accessibility-statements/block-starts-on-a-kept-line-statement-after-the-brace]
 [fixture:
-quadrant/accessibility-statements/block-starts-on-a-kept-line-text-on-the-brace-line]
+quadrant/titles-and-accessibility-statements/block-starts-on-a-kept-line-text-on-the-brace-line]
 [fixture:
-quadrant/accessibility-statements/block-starts-on-a-kept-line-statement-after-the-brace]
+quadrant/titles-and-accessibility-statements/block-starts-on-a-kept-line-statement-after-the-brace]
 [fixture: flowchart/accessibility-lines/block-text-with-semicolon] [fixture:
 c4/description-blocks/block-after-an-empty-block] [fixture:
 treeview/modes/ordinary-block] [fixture:
