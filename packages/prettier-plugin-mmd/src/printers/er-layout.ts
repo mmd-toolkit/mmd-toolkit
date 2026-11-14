@@ -32,6 +32,7 @@ import {
 } from "./layout.ts"
 import {
   followsSplitKeyword,
+  holdsAttributeTildeBefore,
   isDirectionBroughtToTheColon,
   isErLineKept,
 } from "./er-kept-lines.ts"
@@ -150,9 +151,10 @@ export function hasAttributeBlock(
  *   it, so in the joined line it can ignore another `;` than it does in each of
  *   the two lines (`spansLinesThatCannotJoin`, the one decision about joining
  *   lines; common.md, The `style` and `classDef` lines).
- * - The oldest versions that count read the text after a `~` with a rule that
- *   takes the longer, the longer the line is, so a line that holds a `~` before
- *   the `{` and stays as written could become one that they do not draw.
+ * - The oldest versions that count read the text after a `~` in an attribute
+ *   block with a rule that takes the longer, the longer the line is, so a line
+ *   that stays as written and holds such a `~` before the `{` could become one
+ *   that they do not draw (`holdsAttributeTildeBefore`).
  *
  * The statement is then printed as written (docs/er.md, Attribute blocks).
  */
@@ -166,9 +168,7 @@ export function keepsEmptyBlockLines(
   return (
     spansLinesThatCannotJoin(source, opening.range[0], closing.range[1]) ||
     (isErLineKept(source, opening.range[0]) &&
-      source.text
-        .slice(lineStartOf(source, opening.range[0]), opening.range[0])
-        .includes("~"))
+      holdsAttributeTildeBefore(source, opening.range[0]))
   )
 }
 

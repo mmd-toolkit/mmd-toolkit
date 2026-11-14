@@ -850,6 +850,12 @@ GWT 節・項目の隙間を保ちます。
 見出しと入れ子の本文で同じ判断を使い、
 項目の移動によって次の整形で外側の開きの保護が失われないようにします。
 
+説明ブロックが複数行にわたるとき、その `}` の後ろにある隠れた形は、
+同じ行に残ります。
+`eventmodeling accDescr {A`、改行、`B} %%{{native}}%%` は、そのまま残ります。
+以前は、その形が自分の行に移っていました。
+[fixture: eventmodeling/hidden-forms/native-after-description-block-end-stays-on-its-line]
+
 [fixture: eventmodeling/hidden-forms/header-inline-gwt-item-directive]
 
 [fixture: eventmodeling/hidden-forms/header-inline-gwt-item-yaml]

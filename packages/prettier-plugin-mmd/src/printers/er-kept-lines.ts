@@ -155,6 +155,49 @@ export function isErLineKept(source: Source, offset: number): boolean {
   return kept.joined.has(line) || kept.verbatim.has(line)
 }
 
+/** The offsets of the `~` inside the attribute blocks of each source. */
+const attributeTildesBySource = new WeakMap<Source, readonly number[]>()
+
+/**
+ * Whether a `~` that mermaid.js reads inside an attribute block stands before
+ * `offset` on its line. The oldest version that counts reads the text after
+ * such a `~` with a rule that takes the longer, the longer the line is; a `~`
+ * in a name in quotes, in a directive, or in a comment is no such `~`
+ * (docs/er.md, Attribute blocks).
+ */
+export function holdsAttributeTildeBefore(
+  source: Source,
+  offset: number,
+): boolean {
+  let tildes = attributeTildesBySource.get(source)
+  if (tildes === undefined) {
+    tildes = findAttributeTildes(source, diagramOf(source).body)
+    attributeTildesBySource.set(source, tildes)
+  }
+  const line = lineStartOf(source, offset)
+  return tildes.some((tilde) => line <= tilde && tilde < offset)
+}
+
+/** The offset of the first `~` that mermaid.js reads in each attribute item. */
+function findAttributeTildes(
+  source: Source,
+  statements: readonly ErStatement[],
+): number[] {
+  const tildes: number[] = []
+  for (const statement of statements) {
+    if (statement.type === "ErSubgraphStatement") {
+      appendItems(tildes, findAttributeTildes(source, statement.body))
+    }
+    if (statement.type !== "ErEntityStatement" || statement.attributes === null)
+      continue
+    for (const item of statement.attributes) {
+      const tilde = indexOfTilde(source, item.range[0], item.range[1])
+      if (tilde !== -1) tildes.push(tilde)
+    }
+  }
+  return tildes
+}
+
 /** The body of the ER diagram of a source. */
 function diagramOf(
   source: Source,

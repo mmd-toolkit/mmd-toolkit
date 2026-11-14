@@ -848,6 +848,12 @@ Forms at authored body boundaries keep their line through GWT clause and item
 openings too. The header and nested bodies share that decision so moving an item
 cannot remove an enclosing opening's protection on the next formatting.
 
+A hidden form that follows the `}` of a description block over several lines on
+its line stays on that line: `eventmodeling accDescr {A`, a line break, and
+`B} %%{{native}}%%` stay as they are, where the form went to a line of its own
+before. [fixture:
+eventmodeling/hidden-forms/native-after-description-block-end-stays-on-its-line]
+
 [fixture: eventmodeling/hidden-forms/header-inline-gwt-item-directive]
 
 [fixture: eventmodeling/hidden-forms/header-inline-gwt-item-yaml]

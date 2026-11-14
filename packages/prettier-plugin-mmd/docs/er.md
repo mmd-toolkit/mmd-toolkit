@@ -113,11 +113,16 @@ in the two lines: in `"style:#x"; B {`, a line break, and `} A["x;y"]`, it
 ignores the `;` after the string in the first line, and the `;` inside
 `A["x;y"]` in the joined line, which leaves the first one a separator that
 mermaid.js rejects. The lines join where the rule ignores the same `;` in both
-ways, as in `"style:#x"; B {`, a line break, and `}`. And a `~` before the `{`
-on a line that stays as written keeps the lines apart too: the oldest versions
-that count read the rest of a line that holds a `~` with a rule that takes the
-longer, the longer the line is, so a line that they draw could become one that
-they do not draw. [fixture:
+ways, as in `"style:#x"; B {`, a line break, and `}`. And a `~` inside an
+attribute block that stands before the `{` on its line, on a line that stays as
+written, keeps the lines apart too: the oldest versions that count read the rest
+of the line after such a `~` with a rule that takes the longer, the longer the
+line is, so a line that they draw could become one that they do not draw. A `~`
+in a name in quotes or in a directive is read by no such rule, and the lines
+join: `A["x;~y"] B {`, a line break, and `}` are `A["x;~y"] B { }`. Where the
+lines stay apart, the `}` stands at the indentation of the entity, as the `}` of
+any block does, where only spaces and tabs stand before it on its line.
+[fixture:
 attribute-blocks/written-line-empty-block-ignored-semicolon-both-lines]
 [fixture:
 attribute-blocks/written-line-empty-block-ignored-semicolon-closing-line-ends]
@@ -125,20 +130,29 @@ attribute-blocks/written-line-empty-block-ignored-semicolon-closing-line-ends]
 attribute-blocks/written-line-empty-block-ignored-semicolon-in-subgraph]
 [fixture: attribute-blocks/empty-block-joined-where-the-lines-read-the-same]
 [fixture: attribute-blocks/written-line-tilde-line] [fixture:
-attribute-blocks/written-line-tilde-line-closing-remainder] A block whose `}`
-stands on a line that stays as written, as in `A {`, a line break, and `}1b`,
-stays as written with that line, whether it holds attributes or not. A line that
-holds a `;` and stays as written for no other reason is formatted, and so is the
-line of a subgraph header that holds an empty description block and the line of
-an `accTitle` or `accDescr` whose text goes to the `:` and then holds
-`direction`; the statements of such a line stay together on it. A block on it is
-printed as a block. An attribute on the line of its `{` stays there where that
-line is one of these lines: after one space where the source has whitespace
-between the `{` and the attribute (a run of spaces and tabs becomes one space),
-and touching the `{` where it touches it. The spaces and tabs after a `{` that
-ends its line are dropped. A block written on one line stays on one line, except
-on a line that holds a `;`, where its `}` goes to a line of its own. [fixture:
-attribute-blocks/semicolon-line-spaces-after-brace] [fixture:
+attribute-blocks/written-line-tilde-line-closing-remainder] [fixture:
+attribute-blocks/empty-block-joined-where-the-tilde-is-not-in-an-attribute-block]
+[fixture:
+attribute-blocks/written-line-empty-block-tilde-attribute-on-a-semicolon-line]
+[fixture:
+attribute-blocks/written-line-empty-block-tilde-in-a-string-of-an-attribute]
+[fixture:
+attribute-blocks/written-line-empty-block-closing-brace-at-the-indentation-of-the-entity]
+A block whose `}` stands on a line that stays as written, as in `A {`, a line
+break, and `}1b`, stays as written with that line, whether it holds attributes
+or not. A line that holds a `;` and stays as written for no other reason is
+formatted, and so is the line of a subgraph header that holds an empty
+description block and the line of an `accTitle` or `accDescr` whose text goes to
+the `:` and then holds `direction`; the statements of such a line stay together
+on it. A block on it is printed as a block. An attribute on the line of its `{`
+stays there where that line is one of these lines: after one space where the
+source has whitespace between the `{` and the attribute (a run of spaces and
+tabs becomes one space), and touching the `{` where it touches it. The spaces
+and tabs after a `{` that ends its line are dropped. A block written on one line
+stays on one line, with one space before its `}` (`T {int a}` is `T {int a }`),
+except on a line that holds a `;`, where its `}` goes to a line of its own.
+[fixture: attribute-blocks/semicolon-line-spaces-after-brace] [fixture:
+attribute-blocks/block-on-one-line-space-before-the-closing-brace] [fixture:
 attribute-blocks/subgraph-header-line-spaces-after-brace] [fixture:
 attribute-blocks/accessibility-line-spaces-after-brace] [fixture:
 attribute-blocks/written-line-number-name] [fixture:

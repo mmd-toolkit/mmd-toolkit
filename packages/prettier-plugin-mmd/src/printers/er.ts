@@ -49,6 +49,7 @@ import {
   findTokenEndingBefore,
   findTokenStartingAt,
   findTriviaAt,
+  isSpaceOrTab,
   isWhitespace,
   skipRemoved,
 } from "./source.ts"
@@ -110,7 +111,12 @@ export function printEr(
       )
     case "entity":
       if (keepsEmptyBlockLines(source, classified.statement)) {
-        return printAsWritten(source, node.range[0], node.range[1])
+        return printEmptyBlockOverLines(
+          options,
+          source,
+          classified.statement,
+          depth,
+        )
       }
       if (hasAttributeBlock(source, classified.statement)) {
         return printAttributeBlock(
@@ -307,6 +313,35 @@ function printAttributeBlock(
     depth,
     options,
   )
+}
+
+/**
+ * Prints an entity statement whose empty attribute block stays over several
+ * lines (see `keepsEmptyBlockLines`): as written, except that the `}` stands at
+ * the indentation of the entity, as the `}` of any block does, where only
+ * spaces and tabs stand before it on its line (docs/er.md, Attribute blocks).
+ */
+function printEmptyBlockOverLines(
+  options: ParserOptions<MermaidAst>,
+  source: Source,
+  statement: ErEntityStatement,
+  depth: number,
+): Doc {
+  const { opening, closing } = findAttributeBraces(source, statement)
+  const between = source.text.slice(opening.range[1], closing.range[0])
+  const indentation = between.slice(between.lastIndexOf("\n") + 1)
+  if (![...indentation].every(isSpaceOrTab)) {
+    return printAsWritten(source, statement.range[0], statement.range[1])
+  }
+  return [
+    printAsWritten(
+      source,
+      statement.range[0],
+      closing.range[0] - indentation.length,
+    ),
+    indentationOf(options, depth),
+    closing.value,
+  ]
 }
 
 /** The `end` that closes a subgraph: its last token. */

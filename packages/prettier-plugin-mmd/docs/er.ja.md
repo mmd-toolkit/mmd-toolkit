@@ -117,16 +117,26 @@ mermaid.js の行の規則（[セミコロン](#スタイル文の末尾のセ�
 mermaid.js が拒否します。
 規則が、どちらでも同じ `;` を無視するときは、`"style:#x"; B {`、改行、
 `}` のように、行をつなぎます。
-`{` の前に `~` があり、書かれたまま残る行も、行を離したままにします。
-数える版のうち最も古いものは、`~` を含む行の残りを、
+`{` の前の同じ行に、属性ブロックの中の `~` があり、書かれたまま残る行も、
+行を離したままにします。
+数える版のうち最も古いものは、そのような `~` の後ろの行の残りを、
 行が長いほど時間がかかる規則で読むので、その版が描ける行が、
 描けない行になりかねません。
+引用符の名前やディレクティブの中の `~` は、そのような規則に読まれないので、
+行をつなぎます。
+`A["x;~y"] B {`、改行、`}` は、`A["x;~y"] B { }` です。
+行を離したままにするとき、`}` の前に空白とタブだけがあれば、`}` は、
+ほかのブロックの `}` と同じく、実体の字下げに置きます。
 [fixture: attribute-blocks/written-line-empty-block-ignored-semicolon-both-lines]
 [fixture: attribute-blocks/written-line-empty-block-ignored-semicolon-closing-line-ends]
 [fixture: attribute-blocks/written-line-empty-block-ignored-semicolon-in-subgraph]
 [fixture: attribute-blocks/empty-block-joined-where-the-lines-read-the-same]
 [fixture: attribute-blocks/written-line-tilde-line]
 [fixture: attribute-blocks/written-line-tilde-line-closing-remainder]
+[fixture: attribute-blocks/empty-block-joined-where-the-tilde-is-not-in-an-attribute-block]
+[fixture: attribute-blocks/written-line-empty-block-tilde-attribute-on-a-semicolon-line]
+[fixture: attribute-blocks/written-line-empty-block-tilde-in-a-string-of-an-attribute]
+[fixture: attribute-blocks/written-line-empty-block-closing-brace-at-the-indentation-of-the-entity]
 `}` が、書かれたまま残る行にあるブロックは、`A {`、改行、`}1b` のように、
 属性があってもなくても、その行と一緒に書かれたままにします。
 `;` を含み、ほかに書かれたまま残る理由がない行は整形します。
@@ -139,9 +149,11 @@ mermaid.js が拒否します。
 `{` と属性の間に空白があれば、空白とタブの連なりは 1 つの空白になり、
 接していれば接したままです。
 行末にある `{` の後ろの空白とタブは落とします。
-1 行に書かれたブロックは 1 行のままですが、
-`;` を含む行では `}` が単独の行に移ります。
+1 行に書かれたブロックは 1 行のままで、
+`}` の前に空白が 1 つ入ります（`T {int a}` は `T {int a }` です）。
+ただし `;` を含む行では `}` が単独の行に移ります。
 [fixture: attribute-blocks/semicolon-line-spaces-after-brace]
+[fixture: attribute-blocks/block-on-one-line-space-before-the-closing-brace]
 [fixture: attribute-blocks/subgraph-header-line-spaces-after-brace]
 [fixture: attribute-blocks/accessibility-line-spaces-after-brace]
 [fixture: attribute-blocks/written-line-number-name]
