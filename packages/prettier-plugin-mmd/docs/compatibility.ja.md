@@ -2754,6 +2754,14 @@ treeView、ユースケース、wardley の図（残りの 12 図種）では、
 ほかの文と同じく独立した行に移します。
 `accDescr { %%{init: {}}%% a } A` は、
 `accDescr: %%{init: {}}%%a` と `A` の 2 行になります。
+数えるのは、ブロックが終わる行です。
+文を同じ行に保つ行で始まり、そうでない行で終わるブロックも、コロンの形で印字し、
+`}` の後の文は独立した行に移します。
+`A["x;y"] accDescr {`、`d`、`} Z` は、`A["x;y"] accDescr: d` と `Z` に、
+1 回で置き換わります。
+1 回目はブロックのまま、2 回目にコロンの形になる、ということはありません。
+ブロックが終わる行が文を同じ行に保つ行のとき（`} B["x;y"]`）は、
+ブロックのままです。
 文を同じ行に保つ行のブロックは、その行の最後の文で、後ろに空白、コメント、
 ディレクティブだけが続く場合に、コロンの形で印字します。
 `A --> B; accDescr {a;b}` は `A --> B; accDescr: a;b` になり、
@@ -2763,6 +2771,23 @@ C4 図で空のブロックの後にあるブロック `accDescr {}accDescr {D}`
 キーワードの前とキーワードと `{` の間の描画の文字は、印字せずに描き直すため、
 それらの文字があることは、ブロックを残す理由になりません。
 [fixture: flowchart/accessibility-lines/block-last-on-a-line-with-a-semicolon]
+[fixture: c4/description-blocks/block-starts-on-kept-line-statement-after-brace]
+[fixture: c4/description-blocks/block-starts-on-kept-line-semicolon-text-statement-after-brace]
+[fixture: c4/description-blocks/block-ends-on-kept-line-statement-after-brace]
+[fixture: er/accessibility-statements/block-starts-on-a-kept-line-statement-after-the-brace]
+[fixture: er/accessibility-statements/block-starts-on-a-kept-line-block-after-the-brace]
+[fixture: er/accessibility-statements/block-starts-on-a-kept-line-text-on-the-brace-line]
+[fixture: er/accessibility-statements/block-starts-on-a-direction-line-statement-after-the-brace]
+[fixture: er/accessibility-statements/block-followed-by-a-statement-on-a-kept-line-kept]
+[fixture: state/multi-line-values/block-starts-on-a-kept-line-statement-after-the-brace]
+[fixture: xychart/accessibility-statements/block-starts-on-a-kept-line-statement-after-the-brace]
+[fixture: journey/accessibility-statements/block-starts-on-a-kept-line-text-on-the-brace-line]
+[fixture: gantt/accessibility-statements/block-starts-on-a-kept-line-text-on-the-brace-line]
+[fixture: gantt/accessibility-statements/block-starts-on-a-kept-line-statement-after-the-brace]
+[fixture: requirement/accessibility-statements/block-starts-on-a-kept-line-text-on-the-brace-line]
+[fixture: requirement/accessibility-statements/block-starts-on-a-kept-line-statement-after-the-brace]
+[fixture: quadrant/titles-and-accessibility-statements/block-starts-on-a-kept-line-text-on-the-brace-line]
+[fixture: quadrant/titles-and-accessibility-statements/block-starts-on-a-kept-line-statement-after-the-brace]
 [fixture: flowchart/accessibility-lines/block-text-with-semicolon]
 [fixture: c4/description-blocks/block-after-an-empty-block]
 [fixture: treeview/modes/ordinary-block]
@@ -2869,6 +2894,31 @@ C4 図で空のブロックの後にあるブロック `accDescr {}accDescr {D}`
   [fixture: flowchart/accessibility-lines/block-before-another-statement-on-a-kept-line]
   [fixture: flowchart/accessibility-lines/block-on-style-line-kept]
   [fixture: c4/statements-one-per-line/description-null-adjacency]
+- 本文に `;` があり、コロンの形にすると、本文が書かれたまま残る行に移り、
+  mermaid.js の行の規則（[`;` を含む行](#-を含む行)を参照）が、
+  ブロックのときとは別の `;` を無視する場合です。
+  ブロックの最後の行が、`;` が終わらせる行になる場合も同じです。
+  その行は、[`;` が終わらせる行](#-が終わらせる行)を参照してください。
+  規則は、ブロックが立つ行にある、ブロックの前の文も読みます。
+  `A["style:#x"]; accDescr {`、`d;e`、`} Z` では、ブロックのままなら、
+  規則は文字列の後ろの `;` を無視しますが、
+  コロンの形では `d;e` の `;` を無視し、最初の `;` が区切りとして残ります。
+  mermaid.js は、ER の図ではそれを拒否し、flowchart では別の本文として読みます。
+  ブロックはそのまま残します。
+  [fixture: er/accessibility-statements/block-text-semicolon-after-style-text-statement-after-brace]
+  [fixture: er/accessibility-statements/block-text-semicolon-after-style-text-no-following-statement]
+  [fixture: er/accessibility-statements/block-text-semicolon-after-style-text-on-opening-line]
+  [fixture: er/accessibility-statements/block-text-semicolon-after-style-text-on-closing-line]
+  [fixture: flowchart/accessibility-lines/block-text-semicolon-after-style-text-kept]
+  [fixture: state/multi-line-values/block-last-line-ended-by-semicolon-kept]
+  [test: flowchart LS semicolon inside block]
+  [test: flowchart PS semicolon inside block]
+  ブロックの前の文が別の行に印字されるとき、または規則が、
+  どちらの形でも同じ `;` を無視するときは、ブロックをコロンの形で印字します。
+  [fixture: flowchart/accessibility-lines/block-text-semicolon-after-plain-text-converted]
+  [fixture: er/accessibility-statements/block-text-semicolon-after-style-text-on-separate-printed-line-statement-after-brace]
+  [fixture: er/accessibility-statements/block-text-semicolon-after-style-text-on-separate-printed-line-no-following-statement]
+  [fixture: er/accessibility-statements/block-text-semicolon-after-style-text-on-separate-printed-line-on-closing-line]
 - architecture、cynefin、gitGraph、info、packet、pie、radar、railroad、treemap、
   treeView、wardley の図で、本文に `%%`、U+2028、U+2029 がある場合です。
   これらの図種は、
