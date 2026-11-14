@@ -330,6 +330,66 @@ describe("checkTree: unclosed directive records (ast.md, Directive)", () => {
   })
 })
 
+describe("checkTree: where an unclosed directive ends (ast.md, Directive)", () => {
+  // Each recorded directive is extended by one character past the end of its
+  // argument: the whitespace after a word argument, or the U+2028 or U+2029
+  // that stops a free-text argument.
+  for (const [name, diagram, fixture, expected] of [
+    [
+      "fails an unclosed directive that takes the line feed after its word argument",
+      "common",
+      "comment-directive-word-argument-takes-next-lines",
+      "the directives of the tree are not those of the source: [[[18,28],false]], not [[[18,27],false]]",
+    ],
+    [
+      "fails an unclosed directive that takes the U+2028 that stops its argument",
+      "ishikawa",
+      "directive-open-object-u2028",
+      "the directives of the tree are not those of the source: [[[10,22],false]], not [[[10,21],false]]",
+    ],
+    [
+      "fails an unclosed directive that takes the U+2029 that stops its argument",
+      "ishikawa",
+      "directive-open-object-u2029",
+      "the directives of the tree are not those of the source: [[[13,25],false]], not [[[13,24],false]]",
+    ],
+  ] as const) {
+    it(name, () => {
+      const { input, tree } = recordedTree(diagram, fixture)
+      const broken = copyOf(tree)
+      const directive = broken.directives[0]
+      const range = [directive.range[0], directive.range[1] + 1] as const
+      setField(directive, "range", range)
+      setField(directive, "loc", locationOf(input, range))
+      expect(checkTree(input, broken)).toContainEqual({
+        where: "the directives",
+        message: expected,
+      })
+    })
+  }
+
+  it("fails an unclosed directive whose name is not the directive's name", () => {
+    const { input, tree } = recordedTree("common", "directive-unclosed")
+    const broken = copyOf(tree)
+    setField(broken.directives[0], "name", "xinit")
+    expect(checkTree(input, broken)).toContainEqual({
+      where: "Directive at 19-42",
+      message: 'name: "xinit", not "init"',
+    })
+  })
+
+  it("fails an unclosed directive whose value is not what is written after its opening", () => {
+    const { input, tree } = recordedTree("common", "directive-unclosed")
+    const broken = copyOf(tree)
+    setField(broken.directives[0], "value", 'init: {"x": 1}\nC-->Dx')
+    expect(checkTree(input, broken)).toContainEqual({
+      where: "Directive at 19-42",
+      message:
+        'value: "init: {\\"x\\": 1}\\nC-->Dx", not "init: {\\"x\\": 1}\\nC-->D"',
+    })
+  })
+})
+
 describe("checkTree: frontmatter records (ast.md, Frontmatter)", () => {
   const text = "---\n  title: Test\n---\nerror"
   const root = handMadeRoot(text, {
@@ -2063,20 +2123,28 @@ describe("checkTree: another diagram's number read as a treemap number", () => {
 })
 
 describe("checkTree: unread text keeps the leaf type of its diagram", () => {
-  it("reports a child node added to an unread-text leaf", () => {
-    const { input, tree } = recordedTree(
-      "flowchart",
-      "db-subgraph-dir-after-nested-end-ignored-semicolon",
-    )
-    const node = firstNode(tree, "FlowchartIgnoredText")
-    setField(node, "children", [{ ...node }])
-    expect(checkTree(input, tree)).toEqual([
-      {
-        where: "FlowchartIgnoredText at 54-64",
-        message: "has the field children, which its type does not have",
-      },
-    ])
-  })
+  const leafCases = [
+    {
+      name: "reports a child node added to an unread-text leaf",
+      diagram: "flowchart",
+      fixture: "db-subgraph-dir-after-nested-end-ignored-semicolon",
+      type: "FlowchartIgnoredText",
+      where: "FlowchartIgnoredText at 54-64",
+    },
+  ] as const
+  for (const testCase of leafCases) {
+    it(testCase.name, () => {
+      const { input, tree } = recordedTree(testCase.diagram, testCase.fixture)
+      const node = firstNode(tree, testCase.type)
+      setField(node, "children", [{ ...node }])
+      expect(checkTree(input, tree)).toEqual([
+        {
+          where: testCase.where,
+          message: "has the field children, which its type does not have",
+        },
+      ])
+    })
+  }
 
   for (const [diagram, fixture, type, literal, field] of [
     [
@@ -2195,29 +2263,55 @@ describe("checkTree: unread text keeps the leaf type of its diagram", () => {
 })
 
 describe("checkTree: the remaining shared AST conditions", () => {
+  // An empty description block where a statement starts is a description
+  // block statement without text (ast.md, Diagram nodes). Each case gives
+  // that node the type of the description statement of its diagram and
+  // keeps its other fields.
   const emptyDescriptionTypeCases = [
     {
-      name: "reports block empty-description-type (db-composite-after-outermost-end-empty-block)",
+      name: "fails an empty description block of agentflow retyped as AgentflowAccDescrStatement",
+      diagram: "agentflow",
+      fixture: "db-accessibility-empty-block",
+      nodeType: "AgentflowAccDescrBlockStatement",
+      range: [34, 45],
+      replacementType: "AgentflowAccDescrStatement",
+      expected: {
+        where: "AgentflowAccDescrStatement at 34-45",
+        message: "has the field closed, which its type does not have",
+      },
+    },
+    {
+      name: "fails an empty description block of architecture retyped as ArchitectureAccDescrStatement",
+      diagram: "architecture",
+      fixture: "common-empty-block-after-value",
+      nodeType: "ArchitectureAccDescrBlockStatement",
+      range: [34, 45],
+      replacementType: "ArchitectureAccDescrStatement",
+      expected: {
+        where: "ArchitectureAccDescrStatement at 34-45",
+        message:
+          'the common statement\'s fixed components: "accDescr{}", not "accDescr:"',
+      },
+    },
+    {
+      name: "fails an empty description block of block retyped as BlockAccDescrStatement",
       diagram: "block",
       fixture: "db-composite-after-outermost-end-empty-block",
       nodeType: "BlockAccDescrBlockStatement",
       range: [37, 48],
-      replacementType: "BlockLiteral",
-      value: "accDescr {}",
+      replacementType: "BlockAccDescrStatement",
       expected: {
-        where: "BlockLiteral at 37-48",
-        message:
-          'the texts of its tokens joined are not its written text: "accDescr{}", not "accDescr {}"',
+        where: "BlockAccDescrStatement at 37-48",
+        message: "is of a type that the specification does not define",
       },
     },
     {
-      name: "reports c4 empty-description-type (db-empty-block-inline-after-shape)",
+      name: "fails an empty description block of c4 retyped as C4AccDescrStatement",
       diagram: "c4",
       fixture: "db-empty-block-inline-after-shape",
       nodeType: "C4AccDescrBlockStatement",
       range: [41, 52],
       replacementType: "C4AccDescrStatement",
-      value: null,
       expected: {
         where: "C4AccDescrStatement at 41-52",
         message:
@@ -2225,55 +2319,290 @@ describe("checkTree: the remaining shared AST conditions", () => {
       },
     },
     {
-      name: "reports gantt empty-description-type (db-acc-descr-then-empty-block)",
+      name: "fails an empty description block of class retyped as ClassAccDescrStatement",
+      diagram: "class",
+      fixture: "db-acc-descr-empty-block-before-separator-keeps-block",
+      nodeType: "ClassAccDescrBlockStatement",
+      range: [51, 62],
+      replacementType: "ClassAccDescrStatement",
+      expected: {
+        where: "ClassAccDescrStatement at 51-62",
+        message: "the field value is null, not a node",
+      },
+    },
+    {
+      name: "fails an empty description block of cynefin retyped as CynefinAccDescrStatement",
+      diagram: "cynefin",
+      fixture: "common-block-comment-only",
+      nodeType: "CynefinAccDescrBlockStatement",
+      range: [13, 36],
+      replacementType: "CynefinAccDescrStatement",
+      expected: {
+        where: "CynefinAccDescrStatement at 13-36",
+        message:
+          'the common statement\'s fixed components: "accDescr{}", not "accDescr:"',
+      },
+    },
+    {
+      name: "fails an empty description block of er retyped as ErAccDescrStatement",
+      diagram: "er",
+      fixture: "db-acc-descr-block-then-empty",
+      nodeType: "ErAccDescrBlockStatement",
+      range: [25, 36],
+      replacementType: "ErAccDescrStatement",
+      expected: {
+        where: "ErAccDescrStatement at 25-36",
+        message: "the field value is null, not a node",
+      },
+    },
+    {
+      name: "fails an empty description block of eventmodeling retyped as EventmodelingAccDescrStatement",
+      diagram: "eventmodeling",
+      fixture: "common-description-repeat",
+      nodeType: "EventmodelingAccDescrBlockStatement",
+      range: [45, 56],
+      replacementType: "EventmodelingAccDescrStatement",
+      expected: {
+        where: "EventmodelingAccDescrStatement at 45-56",
+        message:
+          "the common statement must be its complete composite unit at the current position after common removals",
+      },
+    },
+    {
+      name: "fails an empty description block of flowchart retyped as FlowchartAccDescrStatement",
+      diagram: "flowchart",
+      fixture: "comment-lines-after-separator-006f79fb",
+      nodeType: "FlowchartAccDescrBlockStatement",
+      range: [25, 36],
+      replacementType: "FlowchartAccDescrStatement",
+      expected: {
+        where: "FlowchartAccDescrStatement at 25-36",
+        message: "has the field closed, which its type does not have",
+      },
+    },
+    {
+      name: "fails an empty description block of gantt retyped as GanttAccDescrStatement",
       diagram: "gantt",
       fixture: "db-acc-descr-then-empty-block",
       nodeType: "GanttAccDescrBlockStatement",
       range: [18, 29],
       replacementType: "GanttAccDescrStatement",
-      value: null,
       expected: {
         where: "GanttAccDescrStatement at 18-29",
         message: "the field value is null, not a node",
       },
     },
     {
-      name: "reports quadrant empty-description-type (db-acc-descr-block-empty)",
+      name: "fails an empty description block of gitgraph retyped as GitgraphAccDescrStatement",
+      diagram: "gitgraph",
+      fixture: "accdescr-repeat-empty",
+      nodeType: "GitgraphAccDescrBlockStatement",
+      range: [42, 53],
+      replacementType: "GitgraphAccDescrStatement",
+      expected: {
+        where: "GitgraphAccDescrStatement at 42-53",
+        message:
+          'the common statement\'s fixed components: "accDescr{}", not "accDescr:"',
+      },
+    },
+    {
+      name: "fails an empty description block of info retyped as InfoAccDescrStatement",
+      diagram: "info",
+      fixture: "accdescr-block-empty",
+      nodeType: "InfoAccDescrBlockStatement",
+      range: [5, 16],
+      replacementType: "InfoAccDescrStatement",
+      expected: {
+        where: "InfoAccDescrStatement at 5-16",
+        message:
+          'the common statement\'s fixed components: "accDescr{}", not "accDescr:"',
+      },
+    },
+    {
+      name: "fails an empty description block of journey retyped as JourneyAccDescrStatement",
+      diagram: "journey",
+      fixture: "gram-acc-descr-block-empty",
+      nodeType: "JourneyAccDescrBlockStatement",
+      range: [10, 21],
+      replacementType: "JourneyAccDescrStatement",
+      expected: {
+        where: "JourneyAccDescrStatement at 10-21",
+        message: "the field value is null, not a node",
+      },
+    },
+    {
+      name: "fails an empty description block of packet retyped as PacketAccDescrStatement",
+      diagram: "packet",
+      fixture: "accdescr-block-repeat",
+      nodeType: "PacketAccDescrBlockStatement",
+      range: [43, 54],
+      replacementType: "PacketAccDescrStatement",
+      expected: {
+        where: "PacketAccDescrStatement at 43-54",
+        message:
+          'the common statement\'s fixed components: "accDescr{}", not "accDescr:"',
+      },
+    },
+    {
+      name: "fails an empty description block of pie retyped as PieAccDescrStatement",
+      diagram: "pie",
+      fixture: "accdescr-empty-block-last",
+      nodeType: "PieAccDescrBlockStatement",
+      range: [20, 31],
+      replacementType: "PieAccDescrStatement",
+      expected: {
+        where: "PieAccDescrStatement at 20-31",
+        message:
+          'the common statement\'s fixed components: "accDescr{}", not "accDescr:"',
+      },
+    },
+    {
+      name: "fails an empty description block of quadrant retyped as QuadrantAccDescrStatement",
       diagram: "quadrant",
       fixture: "db-acc-descr-block-empty",
       nodeType: "QuadrantAccDescrBlockStatement",
       range: [14, 26],
       replacementType: "QuadrantAccDescrStatement",
-      value: null,
       expected: {
         where: "QuadrantAccDescrStatement at 14-26",
         message: "the field value is null, not a node",
       },
     },
     {
-      name: "reports timeline empty-description-type (db-acc-descr-block-braces-only)",
+      name: "fails an empty description block of radar retyped as RadarAccDescrStatement",
+      diagram: "radar",
+      fixture: "common-block-empty-interleaved",
+      nodeType: "RadarAccDescrBlockStatement",
+      range: [35, 46],
+      replacementType: "RadarAccDescrStatement",
+      expected: {
+        where: "RadarAccDescrStatement at 35-46",
+        message:
+          'the common statement\'s fixed components: "accDescr{}", not "accDescr:"',
+      },
+    },
+    {
+      name: "fails an empty description block of railroad retyped as RailroadAccDescrStatement",
+      diagram: "railroad",
+      fixture: "abnf-common-repeat-empty",
+      nodeType: "RailroadAccDescrBlockStatement",
+      range: [79, 90],
+      replacementType: "RailroadAccDescrStatement",
+      expected: {
+        where: "RailroadAccDescrStatement at 79-90",
+        message:
+          'the common statement\'s fixed components: "accDescr{}", not "accDescr:"',
+      },
+    },
+    {
+      name: "fails an empty description block of requirement retyped as RequirementAccDescrStatement",
+      diagram: "requirement",
+      fixture: "db-empty-description-block-keeps-acc-descr-block",
+      nodeType: "RequirementAccDescrBlockStatement",
+      range: [34, 47],
+      replacementType: "RequirementAccDescrStatement",
+      expected: {
+        where: "RequirementAccDescrStatement at 34-47",
+        message: "the field value is null, not a node",
+      },
+    },
+    {
+      name: "fails an empty description block of sequence retyped as SequenceAccDescrStatement",
+      diagram: "sequence",
+      fixture: "db-acc-descr-block-comment-only-after-message",
+      nodeType: "SequenceAccDescrBlockStatement",
+      range: [25, 42],
+      replacementType: "SequenceAccDescrStatement",
+      expected: {
+        where: "SequenceAccDescrStatement at 25-42",
+        message: "has the field closed, which its type does not have",
+      },
+    },
+    {
+      name: "fails an empty description block of state retyped as StateAccDescrStatement",
+      diagram: "state",
+      fixture: "db-acc-descr-comment-block-keeps",
+      nodeType: "StateAccDescrBlockStatement",
+      range: [28, 45],
+      replacementType: "StateAccDescrStatement",
+      expected: {
+        where: "StateAccDescrStatement at 28-45",
+        message: "has the field closed, which its type does not have",
+      },
+    },
+    {
+      name: "fails an empty description block of timeline retyped as TimelineAccDescrStatement",
       diagram: "timeline",
       fixture: "db-acc-descr-block-braces-only",
       nodeType: "TimelineAccDescrBlockStatement",
       range: [11, 22],
       replacementType: "TimelineAccDescrStatement",
-      value: null,
       expected: {
         where: "TimelineAccDescrStatement at 11-22",
         message: "the field value is null, not a node",
       },
     },
     {
-      name: "reports xychart empty-description-type (db-acc-descr-block-empty)",
+      name: "fails an empty description block of treemap retyped as TreemapAccDescrStatement",
+      diagram: "treemap",
+      fixture: "common-block-comment-only",
+      nodeType: "TreemapAccDescrBlockStatement",
+      range: [8, 31],
+      replacementType: "TreemapAccDescrStatement",
+      expected: {
+        where: "TreemapAccDescrStatement at 8-31",
+        message:
+          'the common statement\'s fixed components: "accDescr{}", not "accDescr:"',
+      },
+    },
+    {
+      name: "fails an empty description block of treeview retyped as TreeviewAccDescrStatement",
+      diagram: "treeview",
+      fixture: "ast-common-removal-only-values",
+      nodeType: "TreeviewAccDescrBlockStatement",
+      range: [83, 108],
+      replacementType: "TreeviewAccDescrStatement",
+      expected: {
+        where: "TreeviewAccDescrStatement at 83-108",
+        message: "has the field textBeforeOpen, which its type does not have",
+      },
+    },
+    {
+      name: "fails an empty description block of usecase retyped as UsecaseAccDescrStatement",
+      diagram: "usecase",
+      fixture: "db-accdescr-empty",
+      nodeType: "UsecaseAccDescrBlockStatement",
+      range: [30, 41],
+      replacementType: "UsecaseAccDescrStatement",
+      expected: {
+        where: "UsecaseAccDescrStatement at 30-41",
+        message:
+          'the tokens that the node writes itself and its child nodes, in source order: ["accDescr","{","}"], not ["accDescr",":"]',
+      },
+    },
+    {
+      name: "fails an empty description block of wardley retyped as WardleyAccDescrStatement",
+      diagram: "wardley",
+      fixture: "common-empty-interleaved",
+      nodeType: "WardleyAccDescrBlockStatement",
+      range: [30, 41],
+      replacementType: "WardleyAccDescrStatement",
+      expected: {
+        where: "WardleyAccDescrStatement at 30-41",
+        message:
+          'the common statement\'s fixed components: "accDescr{}", not "accDescr:"',
+      },
+    },
+    {
+      name: "fails an empty description block of xychart retyped as XychartAccDescrStatement",
       diagram: "xychart",
       fixture: "db-acc-descr-block-empty",
       nodeType: "XychartAccDescrBlockStatement",
       range: [14, 25],
       replacementType: "XychartAccDescrStatement",
-      value: null,
       expected: {
         where: "XychartAccDescrStatement at 14-25",
-        message: "the statement has no text and a statement follows it",
+        message: "has the field closed, which its type does not have",
       },
     },
   ] as const
@@ -2287,17 +2616,57 @@ describe("checkTree: the remaining shared AST conditions", () => {
           candidate.range[0] === testCase.range[0] &&
           candidate.range[1] === testCase.range[1],
       )!
-      const before = { ...node }
-      for (const field of Object.keys(node)) Reflect.deleteProperty(node, field)
-      Object.assign(node, {
-        type: testCase.replacementType,
-        range: before.range,
-        loc: before.loc,
-        value: testCase.value,
-      })
+      setField(node, "type", testCase.replacementType)
       expect(checkTree(input, broken)).toContainEqual(testCase.expected)
     })
   }
+
+  it("fails an empty description block on a line of a requirement body retyped as RequirementAccDescrBlockStatement", () => {
+    // ast.md, Diagram nodes: where no statement starts, the block is a
+    // RequirementIgnoredText.
+    const { input, tree } = recordedTree(
+      "requirement",
+      "gram-empty-description-block-in-body",
+    )
+    const broken = copyOf(tree)
+    setField(
+      firstNode(broken, "RequirementIgnoredText"),
+      "type",
+      "RequirementAccDescrBlockStatement",
+    )
+    expect(checkTree(input, broken)).toContainEqual({
+      where: "RequirementAccDescrBlockStatement at 35-46",
+      message: "the field value is string, not a node or null",
+    })
+  })
+
+  it("fails an eventmodeling string closed at the first of its matching quotes", () => {
+    // ast.md, StringLiteral: the lexical rules of eventmodeling close an inline
+    // string at the last matching quote of its line. Ending the string at the
+    // first one leaves the rest of the unit outside every token.
+    const { input, tree } = recordedTree(
+      "eventmodeling",
+      "lex-inline-quote-greedy",
+    )
+    const broken = copyOf(tree)
+    const string = firstNode(broken, "StringLiteral")
+    setField(string, "range", [26, 31])
+    setField(string, "loc", locationOf(input, [26, 31]))
+    setField(string, "raw", '"one"')
+    setField(string, "value", "one")
+    const tokens = [...broken.tokens]
+    tokens[5] = {
+      ...tokens[5],
+      value: '"one"',
+      range: [26, 31],
+      loc: locationOf(input, [26, 31]),
+    }
+    setField(broken, "tokens", tokens)
+    expect(checkTree(input, broken)).toContainEqual({
+      where: "StringLiteral at 26-31",
+      message: "the string must be the complete greedy same-line inline unit",
+    })
+  })
 
   const quotedStringTypeCases = [
     {
@@ -2840,91 +3209,47 @@ describe("checkTree: the remaining shared AST conditions", () => {
 
   const names = [
     {
-      name: "reports c4 whitespace-bearing name represented by Identifier",
-      diagram: "c4",
-      fixture: "lex-named-key-multiline",
-      type: "C4NamedAttribute",
-      field: "key",
-      expected: {
-        where: "Identifier at 25-38",
-        message: "name holds whitespace",
-      },
-    },
-    {
-      name: "reports gantt whitespace-bearing name represented by Identifier",
-      diagram: "gantt",
-      fixture: "gram-click-call-name-space-before-parenthesis",
-      type: "GanttCallback",
-      field: "name",
-      expected: {
-        where: "Identifier at 45-47",
-        message: "name holds whitespace",
-      },
-    },
-    {
-      name: "reports block whitespace-bearing name represented by Identifier",
+      name: "reports block whitespace-permitting name position represented by Identifier",
       diagram: "block",
-      fixture: "db-class-apply-names-spaces",
+      fixture: "db-class-apply-constructor-class",
       type: "BlockClassStatement",
       field: "cssClass",
       expected: {
-        where: "Identifier at 25-28",
-        message: "name holds whitespace",
+        where: "BlockClassStatement at 17-36",
+        message: "the field cssClass holds a Identifier, not a BlockLiteral",
       },
     },
     {
-      name: "reports flowchart whitespace-bearing name represented by Identifier",
-      diagram: "flowchart",
-      fixture: "tokens-callback-name-trailing-space",
-      type: "FlowchartClickCallbackStatement",
-      field: "callback",
-      expected: {
-        where: "Identifier at 28-30",
-        message: "name holds whitespace",
-      },
-    },
-    {
-      name: "reports agentflow whitespace-bearing name represented by Identifier",
+      name: "reports agentflow whitespace-permitting name position represented by Identifier",
       diagram: "agentflow",
-      fixture: "db-call-name-space-before-parentheses",
+      fixture: "entity-callback-arguments",
       type: "AgentflowClickCallbackStatement",
       field: "callback",
       expected: {
-        where: "Identifier at 33-36",
-        message: "name holds whitespace",
+        where: "Identifier at 33-35",
+        message: "the callback kind must follow its bare or call spelling",
       },
     },
     {
-      name: "reports state whitespace-bearing name represented by Identifier",
-      diagram: "state",
-      fixture: "lex-fork-spaced-id",
-      type: "StatePseudostateDefinitionStatement",
-      field: "id",
-      expected: {
-        where: "Identifier at 24-27",
-        message: "name holds whitespace",
-      },
-    },
-    {
-      name: "reports journey whitespace-bearing name represented by Identifier",
-      diagram: "journey",
-      fixture: "lex-section-two-spaces",
-      type: "JourneySectionStatement",
-      field: "name",
-      expected: {
-        where: "Identifier at 18-20",
-        message: "name holds whitespace",
-      },
-    },
-    {
-      name: "reports timeline whitespace-bearing name represented by Identifier",
+      name: "reports timeline whitespace-permitting name position represented by Identifier",
       diagram: "timeline",
-      fixture: "db-section-trailing-spaces",
+      fixture: "db-section-statement",
       type: "TimelineSectionStatement",
       field: "name",
       expected: {
-        where: "Identifier at 19-23",
-        message: "name holds whitespace",
+        where: "TimelineSectionStatement at 11-20",
+        message: "the field name holds a Identifier, not a TimelineLiteral",
+      },
+    },
+    {
+      name: "reports c4 whitespace-permitting name position represented by Identifier",
+      diagram: "c4",
+      fixture: "spec-c4-named-attributes-bd7f9fb7",
+      type: "C4NamedAttribute",
+      field: "key",
+      expected: {
+        where: "C4NamedAttribute at 34-43",
+        message: "the field key holds a Identifier, not a C4Literal",
       },
     },
   ] as const
@@ -2943,6 +3268,26 @@ describe("checkTree: the remaining shared AST conditions", () => {
       expect(checkTree(input, tree)).toContainEqual(testCase.expected)
     })
   }
+
+  it("reports a one-segment eventmodeling qualified name represented by Identifier", () => {
+    const { input, tree } = recordedTree("eventmodeling", "db-qualified-names")
+    const node = firstNode(tree, "EventmodelingQualifiedName")
+    const before = { ...node }
+    for (const field of Object.keys(node)) Reflect.deleteProperty(node, field)
+    Object.assign(node, {
+      type: "Identifier",
+      name: (before.head as CheckedNode).name,
+      range: before.range,
+      loc: before.loc,
+    })
+    expect(checkTree(input, tree)).toEqual([
+      {
+        where: "EventmodelingTimeFrameStatement at 14-25",
+        message:
+          "the field entityIdentifier holds a Identifier, not a EventmodelingQualifiedName",
+      },
+    ])
+  })
 
   it("reports a digit-only Treeview icon name represented by NumericLiteral", () => {
     const recorded = recordedTree("treeview", "annotation-icon-underscore")
@@ -7837,6 +8182,21 @@ describe("checkTree: grammar-selected shared leaf types (ast.md, Shared leaf nod
       },
     },
     {
+      name: "reports requirement Identifier replaced by RequirementLiteral (db-style-statement)",
+      diagram: "requirement",
+      fixture: "db-style-statement",
+      nodeType: "Identifier",
+      replacementType: "RequirementLiteral",
+      valueField: "value",
+      sourceField: "name",
+      additionalFields: {},
+      expected: {
+        where: "RequirementStyleStatement at 51-82",
+        message:
+          "the field names holds a RequirementLiteral, not a Identifier or StringLiteral",
+      },
+    },
+    {
       name: "reports treemap Identifier replaced by TreemapLiteral (gram-written-tree)",
       diagram: "treemap",
       fixture: "gram-written-tree",
@@ -9687,6 +10047,211 @@ describe("checkTree: shared leaf fields in each diagram (ast.md)", () => {
 
   const incorrectLeafClosedFlagCases = [
     {
+      name: "reports agentflow StringLiteral marked unclosed despite its closing quote (config-other-all-texts, closed)",
+      diagram: "agentflow",
+      fixture: "config-other-all-texts",
+      nodeType: "StringLiteral",
+      range: [156, 177],
+      expected: {
+        where: "StringLiteral at 156-177",
+        message: "closed: false, not true",
+      },
+      closed: false,
+    },
+    {
+      name: "reports architecture StringLiteral marked unclosed despite its closing quote (c4-component-icontext, closed)",
+      diagram: "architecture",
+      fixture: "c4-component-icontext",
+      nodeType: "StringLiteral",
+      range: [30, 43],
+      expected: {
+        where: "StringLiteral at 30-43",
+        message: "closed: false, not true",
+      },
+      closed: false,
+    },
+    {
+      name: "reports block StringLiteral marked unclosed despite its closing quote (config-flowchart-html-labels-false, closed)",
+      diagram: "block",
+      fixture: "config-flowchart-html-labels-false",
+      nodeType: "StringLiteral",
+      range: [15, 36],
+      expected: {
+        where: "StringLiteral at 15-36",
+        message: "closed: false, not true",
+      },
+      closed: false,
+    },
+    {
+      name: "reports c4 StringLiteral marked unclosed despite its closing quote (config-security-level-other, closed)",
+      diagram: "c4",
+      fixture: "config-security-level-other",
+      nodeType: "StringLiteral",
+      range: [70, 88],
+      expected: {
+        where: "StringLiteral at 70-88",
+        message: "closed: false, not true",
+      },
+      closed: false,
+    },
+    {
+      name: "reports cynefin StringLiteral marked unclosed despite its closing quote (c4-component-item, closed)",
+      diagram: "cynefin",
+      fixture: "c4-component-item",
+      nodeType: "StringLiteral",
+      range: [21, 34],
+      expected: {
+        where: "StringLiteral at 21-34",
+        message: "closed: false, not true",
+      },
+      closed: false,
+    },
+    {
+      name: "reports flowchart StringLiteral marked unclosed despite its closing quote (click-callback-tooltip, closed)",
+      diagram: "flowchart",
+      fixture: "click-callback-tooltip",
+      nodeType: "StringLiteral",
+      range: [42, 57],
+      expected: {
+        where: "StringLiteral at 42-57",
+        message: "closed: false, not true",
+      },
+      closed: false,
+    },
+    {
+      name: "reports gitgraph StringLiteral marked unclosed despite its closing quote (comment-bare-string, closed)",
+      diagram: "gitgraph",
+      fixture: "comment-bare-string",
+      nodeType: "StringLiteral",
+      range: [20, 28],
+      expected: {
+        where: "StringLiteral at 20-28",
+        message: "closed: false, not true",
+      },
+      closed: false,
+    },
+    {
+      name: "reports packet StringLiteral marked unclosed despite its closing quote (c4-hidden-suffix-lf, closed)",
+      diagram: "packet",
+      fixture: "c4-hidden-suffix-lf",
+      nodeType: "StringLiteral",
+      range: [9, 12],
+      expected: {
+        where: "StringLiteral at 9-12",
+        message: "closed: false, not true",
+      },
+      closed: false,
+    },
+    {
+      name: "reports pie StringLiteral marked unclosed despite its closing quote (accdescr-blank-gap, closed)",
+      diagram: "pie",
+      fixture: "accdescr-blank-gap",
+      nodeType: "StringLiteral",
+      range: [15, 18],
+      expected: {
+        where: "StringLiteral at 15-18",
+        message: "closed: false, not true",
+      },
+      closed: false,
+    },
+    {
+      name: "reports radar StringLiteral marked unclosed despite its closing quote (c4-component-axis-label, closed)",
+      diagram: "radar",
+      fixture: "c4-component-axis-label",
+      nodeType: "StringLiteral",
+      range: [18, 31],
+      expected: {
+        where: "StringLiteral at 18-31",
+        message: "closed: false, not true",
+      },
+      closed: false,
+    },
+    {
+      name: "reports railroad StringLiteral marked unclosed despite its closing quote (abnf-bare-unicode, closed)",
+      diagram: "railroad",
+      fixture: "abnf-bare-unicode",
+      nodeType: "StringLiteral",
+      range: [27, 30],
+      expected: {
+        where: "StringLiteral at 27-30",
+        message: "closed: false, not true",
+      },
+      closed: false,
+    },
+    {
+      name: "reports sankey StringLiteral marked unclosed despite its closing quote (config-security-level-other-title-and-ids, closed)",
+      diagram: "sankey",
+      fixture: "config-security-level-other-title-and-ids",
+      nodeType: "StringLiteral",
+      range: [70, 91],
+      expected: {
+        where: "StringLiteral at 70-91",
+        message: "closed: false, not true",
+      },
+      closed: false,
+    },
+    {
+      name: "reports treeview StringLiteral marked unclosed despite its closing quote (annotation-comment-gap, closed)",
+      diagram: "treeview",
+      fixture: "annotation-comment-gap",
+      nodeType: "StringLiteral",
+      range: [14, 20],
+      expected: {
+        where: "StringLiteral at 14-20",
+        message:
+          "the name must be one complete first-priority bare or closed quoted unit",
+      },
+      closed: false,
+    },
+    {
+      name: "reports usecase StringLiteral marked unclosed despite its closing quote (db-actor-variants, closed)",
+      diagram: "usecase",
+      fixture: "db-actor-variants",
+      nodeType: "StringLiteral",
+      range: [149, 158],
+      expected: {
+        where: "StringLiteral at 149-158",
+        message: "closed: false, not true",
+      },
+      closed: false,
+    },
+    {
+      name: "reports venn StringLiteral marked unclosed despite its closing quote (config-security-other, closed)",
+      diagram: "venn",
+      fixture: "config-security-other",
+      nodeType: "StringLiteral",
+      range: [37, 47],
+      expected: {
+        where: "StringLiteral at 37-47",
+        message: "closed: false, not true",
+      },
+      closed: false,
+    },
+    {
+      name: "reports wardley StringLiteral marked unclosed despite its closing quote (c4-component-accelerator, closed)",
+      diagram: "wardley",
+      fixture: "c4-component-accelerator",
+      nodeType: "StringLiteral",
+      range: [25, 38],
+      expected: {
+        where: "StringLiteral at 25-38",
+        message: "closed: false, not true",
+      },
+      closed: false,
+    },
+    {
+      name: "reports xychart StringLiteral marked unclosed despite its closing quote (config-security-level-loose-all, closed)",
+      diagram: "xychart",
+      fixture: "config-security-level-loose-all",
+      nodeType: "StringLiteral",
+      range: [20, 31],
+      expected: {
+        where: "StringLiteral at 20-31",
+        message: "closed: false, not true",
+      },
+      closed: false,
+    },
+    {
       name: "reports treemap StringLiteral marked unclosed despite its closing quote (comment-header, first)",
       diagram: "treemap",
       fixture: "comment-header",
@@ -9694,6 +10259,78 @@ describe("checkTree: shared leaf fields in each diagram (ast.md)", () => {
       range: [18, 21],
       expected: {
         where: "StringLiteral at 18-21",
+        message: "closed: false, not true",
+      },
+      closed: false,
+    },
+    {
+      name: "reports class StringLiteral marked unclosed despite its closing quote (config-security-level-loose-click, closed)",
+      diagram: "class",
+      fixture: "config-security-level-loose-click",
+      nodeType: "StringLiteral",
+      range: [64, 69],
+      expected: {
+        where: "StringLiteral at 64-69",
+        message: "closed: false, not true",
+      },
+      closed: false,
+    },
+    {
+      name: "reports er StringLiteral marked unclosed despite its closing quote (config-security-level-antiscript-subgraph-title, closed)",
+      diagram: "er",
+      fixture: "config-security-level-antiscript-subgraph-title",
+      nodeType: "StringLiteral",
+      range: [24, 37],
+      expected: {
+        where: "StringLiteral at 24-37",
+        message: "closed: false, not true",
+      },
+      closed: false,
+    },
+    {
+      name: "reports eventmodeling StringLiteral marked unclosed despite its closing quote (c4-component-inline, closed)",
+      diagram: "eventmodeling",
+      fixture: "c4-component-inline",
+      nodeType: "StringLiteral",
+      range: [26, 39],
+      expected: {
+        where: "StringLiteral at 26-39",
+        message: "closed: false, not true",
+      },
+      closed: false,
+    },
+    {
+      name: "reports gantt StringLiteral marked unclosed despite its closing quote (config-security-level-antiscript-click-call, closed)",
+      diagram: "gantt",
+      fixture: "config-security-level-antiscript-click-call",
+      nodeType: "StringLiteral",
+      range: [65, 86],
+      expected: {
+        where: "StringLiteral at 65-86",
+        message: "closed: false, not true",
+      },
+      closed: false,
+    },
+    {
+      name: "reports requirement StringLiteral marked unclosed despite its closing quote (config-security-level-other-names-as-written, closed)",
+      diagram: "requirement",
+      fixture: "config-security-level-other-names-as-written",
+      nodeType: "StringLiteral",
+      range: [31, 38],
+      expected: {
+        where: "StringLiteral at 31-38",
+        message: "closed: false, not true",
+      },
+      closed: false,
+    },
+    {
+      name: "reports state StringLiteral marked unclosed despite its closing quote (config-html-labels-false, closed)",
+      diagram: "state",
+      fixture: "config-html-labels-false",
+      nodeType: "StringLiteral",
+      range: [102, 123],
+      expected: {
+        where: "StringLiteral at 102-123",
         message: "closed: false, not true",
       },
       closed: false,
@@ -10359,6 +10996,286 @@ describe("checkTree: shared leaf fields in each diagram (ast.md)", () => {
       const { input, tree } = recordedTree(testCase.diagram, testCase.fixture)
       const broken = copyOf(tree)
       setField(broken.directives[testCase.directiveIndex], "closed", true)
+      expect(checkTree(input, broken)).toContainEqual(testCase.expected)
+    })
+  }
+})
+describe("checkTree: written gaps and unconverted text (ast.md, Nodes)", () => {
+  // These mutations exercise the common WrittenText/value check. The diagram
+  // supplies the authored form; no diagram-specific shape is changed.
+  const writtenTextCases = [
+    {
+      name: "reports written text without the space between string and text units",
+      diagram: "flowchart",
+      fixture: "gram-link-text-string-space-text",
+      type: "FlowchartLabel",
+      range: [17, 22],
+      value: "ax",
+      expected: 'value is not its written text: "ax", not "a x"',
+    },
+    {
+      name: "reports a written line terminator replaced by its converted line feed",
+      diagram: "flowchart",
+      fixture: "lex-lone-cr-directive-lf-label",
+      type: "FlowchartLabel",
+      range: [15, 26],
+      value: "a\n\nb",
+      expected: 'value is not its written text: "a\\n\\nb", not "a\\r\\nb"',
+    },
+    {
+      name: "reports written attribute quotes replaced by converted quotes",
+      diagram: "common",
+      fixture: "html-attribute-quotes",
+      type: "FlowchartLabel",
+      range: [15, 32],
+      value: "<a href='u'>t</a>",
+      expected:
+        'value is not its written text: "<a href=\'u\'>t</a>", not "<a href=\\"u\\">t</a>"',
+    },
+    {
+      name: "reports a written entity replaced by its converted placeholder",
+      diagram: "common",
+      fixture: "entity-style-acc-title",
+      type: "FlowchartLiteral",
+      range: [23, 33],
+      value: "style:ﬂ°x¶ßy",
+      expected:
+        'value is not its written text: "style:ﬂ°x¶ßy", not "style:#x;y"',
+    },
+  ] as const
+  for (const testCase of writtenTextCases) {
+    it(testCase.name, () => {
+      const { input, tree } = recordedTree(testCase.diagram, testCase.fixture)
+      const node = nodesOf(tree).find(
+        (candidate) =>
+          candidate.type === testCase.type &&
+          candidate.range[0] === testCase.range[0] &&
+          candidate.range[1] === testCase.range[1],
+      )!
+      setField(node, "value", testCase.value)
+      expect(checkTree(input, tree)).toContainEqual({
+        where: `${testCase.type} at ${testCase.range[0]}-${testCase.range[1]}`,
+        message: testCase.expected,
+      })
+    })
+  }
+
+  it("reports written text without the line feed between string and text units", () => {
+    const recorded = recordedTree(
+      "flowchart",
+      "gram-link-text-string-space-text",
+    )
+    // diagrams/flowchart.md, The link text contexts, reads a line feed in
+    // text. Replace the gap by that accepted spelling before breaking its value.
+    const input = recorded.input.replace('"a" x', '"a"\nx')
+    const tree = copyOf(recorded.tree)
+    for (const node of nodesOf(tree))
+      setField(node, "loc", locationOf(input, node.range))
+    for (const token of tree.tokens) {
+      setField(token, "loc", locationOf(input, token.range))
+      setField(token, "value", input.slice(...token.range))
+    }
+    setField(firstNode(tree, "FlowchartLabel"), "value", "a\nx")
+    expect(checkTree(input, tree)).toEqual([])
+    setField(firstNode(tree, "FlowchartLabel"), "value", "ax")
+    expect(checkTree(input, tree)).toEqual([
+      {
+        where: "FlowchartLabel at 17-22",
+        message: 'value is not its written text: "ax", not "a\\nx"',
+      },
+    ])
+  })
+})
+
+describe("checkTree: undecoded single-quoted values (ast.md, StringLiteral)", () => {
+  const decodedEscapeCases = [
+    {
+      name: "reports architecture single-quoted string with decoded escape (c4-component-icontext)",
+      diagram: "architecture",
+      fixture: "c4-component-icontext",
+      nodeType: "StringLiteral",
+      range: [30, 43],
+      valueOwners: [],
+      expected: {
+        where: "StringLiteral at 30-43",
+        message:
+          'value is not its written text: "\\nComponent", not "\\\\nComponent"',
+      },
+    },
+    {
+      name: "reports cynefin single-quoted string with decoded escape (lex-string-unknown-single)",
+      diagram: "cynefin",
+      fixture: "lex-string-unknown-single",
+      nodeType: "StringLiteral",
+      range: [21, 38],
+      valueOwners: [],
+      expected: {
+        where: "StringLiteral at 21-38",
+        message:
+          'value is not its written text: "\\nqb\\\\u0041c\\\\x41", not "\\\\nqb\\\\u0041c\\\\x41"',
+      },
+    },
+    {
+      name: "reports eventmodeling single-quoted string with decoded escape (data-all-types)",
+      diagram: "eventmodeling",
+      fixture: "data-all-types",
+      nodeType: "StringLiteral",
+      range: [117, 123],
+      valueOwners: [],
+      expected: {
+        where: "StringLiteral at 117-123",
+        message: 'value is not its written text: "\\nlt", not "\\\\nlt"',
+      },
+    },
+    {
+      name: "reports gitgraph single-quoted string with decoded escape (db-compare-bare-and-quoted)",
+      diagram: "gitgraph",
+      fixture: "db-compare-bare-and-quoted",
+      nodeType: "StringLiteral",
+      range: [78, 87],
+      valueOwners: [],
+      expected: {
+        where: "StringLiteral at 78-87",
+        message: 'value is not its written text: "\\nature", not "\\\\nature"',
+      },
+    },
+    {
+      name: "reports packet single-quoted string with decoded escape (db-label-single-escapes)",
+      diagram: "packet",
+      fixture: "db-label-single-escapes",
+      nodeType: "StringLiteral",
+      range: [9, 20],
+      valueOwners: [],
+      expected: {
+        where: "StringLiteral at 9-20",
+        message:
+          'value is not its written text: "\\nn\\\\q\\\\\'\\\\\\\\", not "\\\\nn\\\\q\\\\\'\\\\\\\\"',
+      },
+    },
+    {
+      name: "reports pie single-quoted string with decoded escape (label-single-escapes)",
+      diagram: "pie",
+      fixture: "label-single-escapes",
+      nodeType: "StringLiteral",
+      range: [4, 16],
+      valueOwners: [],
+      expected: {
+        where: "StringLiteral at 4-16",
+        message:
+          'value is not its written text: "\\nnB\\\\tC\\\\\\\\D", not "\\\\nnB\\\\tC\\\\\\\\D"',
+      },
+    },
+    {
+      name: "reports radar single-quoted string with decoded escape (comment-label)",
+      diagram: "radar",
+      fixture: "comment-label",
+      nodeType: "StringLiteral",
+      range: [35, 42],
+      valueOwners: [],
+      expected: {
+        where: "StringLiteral at 35-42",
+        message: 'value is not its written text: "\\n% d", not "\\\\n% d"',
+      },
+    },
+    {
+      name: "reports railroad single-quoted string with decoded escape (ebnf-div-html-frontmatter-rule-single)",
+      diagram: "railroad",
+      fixture: "ebnf-div-html-frontmatter-rule-single",
+      nodeType: "StringLiteral",
+      range: [41, 49],
+      valueOwners: [],
+      expected: {
+        where: "StringLiteral at 41-49",
+        message:
+          'value is not its written text: "\\n\\"y\\">", not "\\\\n\\"y\\">"',
+      },
+    },
+    {
+      name: "reports treemap single-quoted string with decoded escape (div-html-frontmatter-reverse)",
+      diagram: "treemap",
+      fixture: "div-html-frontmatter-reverse",
+      nodeType: "StringLiteral",
+      range: [26, 34],
+      valueOwners: [],
+      expected: {
+        where: "StringLiteral at 26-34",
+        message:
+          'value is not its written text: "\\n\\"y\\">", not "\\\\n\\"y\\">"',
+      },
+    },
+    {
+      name: "reports treeview single-quoted string with decoded escape (db-quote-conversion)",
+      diagram: "treeview",
+      fixture: "db-quote-conversion",
+      nodeType: "StringLiteral",
+      range: [31, 39],
+      valueOwners: [],
+      expected: {
+        where: "StringLiteral at 31-39",
+        message:
+          'value is not its written text: "\\nnb\\\\q", not "\\\\nnb\\\\q"',
+      },
+    },
+    {
+      name: "reports wardley single-quoted string with decoded escape (c4-component-flow-label)",
+      diagram: "wardley",
+      fixture: "c4-component-flow-label",
+      nodeType: "StringLiteral",
+      range: [16, 29],
+      valueOwners: [
+        {
+          type: "WardleyArrow",
+          range: [15, 30],
+        },
+      ],
+      expected: {
+        where: "StringLiteral at 16-29",
+        message:
+          'value is not its written text: "\\nComponent", not "\\\\nComponent"',
+      },
+    },
+    {
+      name: "reports usecase single-quoted string with decoded escape (lex-native-single-quote-comment-region-control)",
+      diagram: "usecase",
+      fixture: "lex-native-single-quote-comment-region-control",
+      nodeType: "StringLiteral",
+      range: [27, 39],
+      valueOwners: [],
+      expected: {
+        where: "StringLiteral at 27-39",
+        message:
+          'value is not its written text: "\\nrst\u2028last", not "\\\\nrst\u2028last"',
+      },
+    },
+  ] as const
+  for (const testCase of decodedEscapeCases) {
+    it(testCase.name, () => {
+      const recorded = recordedTree(testCase.diagram, testCase.fixture)
+      const broken = copyOf(recorded.tree)
+      const start = testCase.range[0] + 1
+      const input = `${recorded.input.slice(0, start)}\\n${recorded.input.slice(start + 2)}`
+      const node = nodesOf(broken).find(
+        (candidate) =>
+          candidate.type === testCase.nodeType &&
+          candidate.range[0] === testCase.range[0] &&
+          candidate.range[1] === testCase.range[1],
+      )!
+      for (const token of broken.tokens)
+        setField(token, "value", input.slice(...token.range))
+      for (const owner of testCase.valueOwners) {
+        const valueOwner = nodesOf(broken).find(
+          (candidate) =>
+            candidate.type === owner.type &&
+            candidate.range[0] === owner.range[0] &&
+            candidate.range[1] === owner.range[1],
+        )!
+        setField(valueOwner, "value", input.slice(...valueOwner.range))
+      }
+      const raw = input.slice(...node.range)
+      setField(node, "raw", raw)
+      setField(node, "value", raw.slice(1, -1))
+      expect(checkTree(input, broken)).toEqual([])
+      setField(node, "value", raw.slice(1, -1).replace("\\n", "\n"))
       expect(checkTree(input, broken)).toContainEqual(testCase.expected)
     })
   }

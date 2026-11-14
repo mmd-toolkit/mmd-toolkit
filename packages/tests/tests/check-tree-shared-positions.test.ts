@@ -250,6 +250,39 @@ describe("checkTree: the tokens of the frontmatter come first (positions.md, Inv
   })
 })
 
+describe("checkTree: the range of the diagram node (positions.md, Nodes)", () => {
+  // The tokens of the node in Root.body run from its first token to its last,
+  // a separator after the last statement included, an ignored `;` after the
+  // last token not.
+  for (const [name, diagram, fixture, end, message] of [
+    [
+      "fails a flowchart diagram that ends before its trailing separator",
+      "flowchart",
+      "tokens-diagram-trailing-separator",
+      14,
+      "does not run from its first token to its last: [0,14], not [0,15]",
+    ],
+    [
+      "fails a class diagram that ends after its trailing ignored semicolon",
+      "class",
+      "tokens-class-def-ignored-semicolon",
+      46,
+      "does not run from its first token to its last: [0,46], not [0,45]",
+    ],
+  ] as const) {
+    it(name, () => {
+      const { input, tree } = recordedTree(diagram, fixture)
+      const broken = copyOf(tree)
+      setField(broken.body, "range", [0, end])
+      setField(broken.body, "loc", locationOf(input, [0, end]))
+      expect(checkTree(input, broken)).toContainEqual({
+        where: "Root.body",
+        message,
+      })
+    })
+  }
+})
+
 describe("checkTree: an unclosed agentflow accDescr block reaches the end of the source (positions.md, Nodes)", () => {
   // `accDescr {open`, a line feed, `A`, and a line feed, with no closing `}`:
   // the statement and the diagram run to the end of the source.

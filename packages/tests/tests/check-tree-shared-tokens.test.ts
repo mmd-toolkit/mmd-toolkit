@@ -305,6 +305,69 @@ describe("checkTree: error (tokens.md)", () => {
   })
 })
 
+describe("checkTree: the runs of the error pseudo-diagram (tokens.md)", () => {
+  it("fails an error run split into two RawText tokens", () => {
+    const { input, tree } = recordedTree(
+      "common",
+      "config-init-detection-rejects",
+    )
+    const broken = copyOf(tree)
+    replaceToken(broken, broken.tokens[1], [
+      ["RawText", 0, 1],
+      ["RawText", 1, 5],
+    ])
+    expect(checkTree(input, broken)).toContainEqual({
+      where: "RawText at 16-20",
+      message: "touches the token before it",
+    })
+  })
+
+  it("fails an error RawText token that runs across a space", () => {
+    const { input, tree } = recordedTree(
+      "common",
+      "detect-directive-joined-by-directive",
+    )
+    const broken = copyOf(tree)
+    const tokens = [...broken.tokens]
+    tokens.splice(0, 2, tokenOf(input, "RawText", "error %%"))
+    setField(broken, "tokens", tokens)
+    expect(checkTree(input, broken)).toContainEqual({
+      where: "RawText at 0-8",
+      message: "holds whitespace or a line terminator",
+    })
+  })
+
+  it("fails an error RawText token that runs across a directive", () => {
+    const { input, tree } = recordedTree(
+      "common",
+      "detect-directive-joined-by-directive",
+    )
+    const broken = copyOf(tree)
+    const tokens = [...broken.tokens]
+    tokens.splice(1, 3, tokenOf(input, "RawText", "%%%%{wrap}%%{x}%%"))
+    setField(broken, "tokens", tokens)
+    expect(checkTree(input, broken)).toContainEqual({
+      where: "Directive at 8-18",
+      message: "lies inside RawText at 6-23",
+    })
+  })
+
+  it("fails an ErrorDiagram that ends before its last token", () => {
+    const { input, tree } = recordedTree(
+      "common",
+      "detect-directive-across-directive-closed",
+    )
+    const broken = copyOf(tree)
+    setField(broken.body, "range", [0, 23])
+    setField(broken.body, "loc", locationOf(input, [0, 23]))
+    expect(checkTree(input, broken)).toContainEqual({
+      where: "Root.body",
+      message:
+        "does not run from its first token to its last: [0,23], not [0,24]",
+    })
+  })
+})
+
 describe("checkTree: common/entity-css-in-string-label (tokens.md)", () => {
   const { input, tree } = recordedTree("common", "entity-css-in-string-label")
 
@@ -2588,6 +2651,114 @@ describe("checkTree: native block comment bounds (tokens.md)", () => {
 // Token-kind conditions of packages/parser/docs/tokens.md.
 const tokenKindReplacementCases = [
   {
+    case: "tokens-358-identifier-quadrant-several-middle-fragment-RawText",
+    fixture: ["quadrant", "db-classdef-name-two-comment-regions"],
+    index: 3,
+    type: "RawText",
+    problem: {
+      where: "QuadrantIdentifier at 23-38",
+      message:
+        'the kinds of the tokens of the node: ["Identifier","RawText","Identifier"], not ["Identifier","Identifier","Identifier"]',
+    },
+  },
+  {
+    case: "tokens-358-identifier-quadrant-left-fragment-RawText",
+    fixture: ["quadrant", "lex-classdef-name-line-separator-comment-line"],
+    index: 2,
+    problem: {
+      where: "QuadrantIdentifier at 23-31",
+      message:
+        'the kinds of the tokens of the node: ["RawText","Identifier"], not ["Identifier","Identifier"]',
+    },
+    type: "RawText",
+  },
+  {
+    case: "tokens-358-identifier-quadrant-right-fragment-RawText",
+    fixture: ["quadrant", "lex-classdef-name-line-separator-comment-line"],
+    index: 3,
+    problem: {
+      where: "QuadrantIdentifier at 23-31",
+      message:
+        'the kinds of the tokens of the node: ["Identifier","RawText"], not ["Identifier","Identifier"]',
+    },
+    type: "RawText",
+  },
+  {
+    case: "tokens-358-identifier-quadrant-paragraph-region-left-RawText",
+    fixture: ["quadrant", "db-classdef-name-paragraph-separator-comment-line"],
+    index: 2,
+    problem: {
+      where: "QuadrantIdentifier at 23-31",
+      message:
+        'the kinds of the tokens of the node: ["RawText","Identifier"], not ["Identifier","Identifier"]',
+    },
+    type: "RawText",
+  },
+  {
+    case: "tokens-358-identifier-quadrant-paragraph-region-right-RawText",
+    fixture: ["quadrant", "db-classdef-name-paragraph-separator-comment-line"],
+    index: 3,
+    problem: {
+      where: "QuadrantIdentifier at 23-31",
+      message:
+        'the kinds of the tokens of the node: ["Identifier","RawText"], not ["Identifier","Identifier"]',
+    },
+    type: "RawText",
+  },
+  {
+    case: "tokens-358-identifier-quadrant-Numeric-fragment",
+    fixture: ["quadrant", "lex-classdef-name-line-separator-comment-line"],
+    index: 2,
+    problem: {
+      where: "QuadrantIdentifier at 23-31",
+      message:
+        'the kinds of the tokens of the node: ["Numeric","Identifier"], not ["Identifier","Identifier"]',
+    },
+    type: "Numeric",
+  },
+  {
+    case: "tokens-358-identifier-er-Keyword-fragment",
+    fixture: ["er", "lex-name-line-separator-comment-line"],
+    index: 1,
+    problem: {
+      where: 'Keyword at 10-12 of "A\u2028"',
+      message: "lies in the value node ErIdentifier at 10-20",
+    },
+    type: "Keyword",
+  },
+  {
+    case: "tokens-358-identifier-er-Punctuator-fragment",
+    fixture: ["er", "lex-name-line-separator-comment-line"],
+    index: 1,
+    problem: {
+      where: 'Punctuator at 10-12 of "A\u2028"',
+      message: "lies in the value node ErIdentifier at 10-20",
+    },
+    type: "Punctuator",
+  },
+  {
+    case: "tokens-358-identifier-quadrant-Keyword-fragment",
+    fixture: ["quadrant", "lex-classdef-name-line-separator-comment-line"],
+    index: 2,
+    problem: {
+      where: "QuadrantIdentifier at 23-31",
+      message:
+        'the kinds of the tokens of the node: ["Keyword","Identifier"], not ["Identifier","Identifier"]',
+    },
+    type: "Keyword",
+  },
+  {
+    case: "tokens-358-identifier-quadrant-Punctuator-fragment",
+    fixture: ["quadrant", "lex-classdef-name-line-separator-comment-line"],
+    index: 2,
+    problem: {
+      where: "QuadrantIdentifier at 23-31",
+      message:
+        'the kinds of the tokens of the node: ["Punctuator","Identifier"], not ["Identifier","Identifier"]',
+    },
+    type: "Punctuator",
+  },
+  {
     case: "tokens-kind-30-architecture-type-string",
     fixture: ["architecture", "c4-component-header-eof-comment"],
     index: 0,
@@ -4001,6 +4172,454 @@ const tokenKindReplacementCases = [
       message: 'a String token does not start with a quote: "A title"',
     },
     type: "String",
+  },
+  {
+    case: "tokens-kind-56-architecture-meaning",
+    fixture: ["architecture", "c4-component-icontext"],
+    index: 3,
+    problem: {
+      where: "StringLiteral at 30-43",
+      message:
+        "the tokens of the string are not one String token or StringFragment tokens: StringFragment",
+    },
+    type: "StringFragment",
+  },
+  {
+    case: "tokens-kind-56-architecture-fragment-Comment-after",
+    fixture: [
+      "architecture",
+      "lex-icon-text-string-line-separator-then-comment-line",
+    ],
+    index: 4,
+    problem: {
+      where: "StringLiteral at 28-38",
+      message:
+        "the tokens of the string are not one String token or StringFragment tokens: StringFragment, String",
+    },
+    type: "String",
+  },
+  {
+    case: "tokens-kind-56-architecture-fragment-Comment-before",
+    fixture: [
+      "architecture",
+      "lex-icon-text-string-line-separator-then-comment-line",
+    ],
+    index: 3,
+    problem: {
+      where: "StringLiteral at 28-38",
+      message:
+        "the tokens of the string are not one String token or StringFragment tokens: String, StringFragment",
+    },
+    type: "String",
+  },
+  {
+    case: "tokens-kind-56-architecture-fragment-Directive-after",
+    fixture: ["architecture", "directive-at-value-start-end"],
+    index: 5,
+    problem: {
+      where: "StringLiteral at 30-68",
+      message:
+        "the tokens of the string are not one String token or StringFragment tokens: StringFragment, String, StringFragment",
+    },
+    type: "String",
+  },
+  {
+    case: "tokens-kind-56-architecture-fragment-Directive-before",
+    fixture: ["architecture", "directive-at-value-start-end"],
+    index: 3,
+    problem: {
+      where: "StringLiteral at 30-68",
+      message:
+        "the tokens of the string are not one String token or StringFragment tokens: String, StringFragment, StringFragment",
+    },
+    type: "String",
+  },
+  {
+    case: "tokens-kind-56-architecture-fragment-IgnoredSemicolon-after",
+    fixture: ["architecture", "style-fields"],
+    index: 22,
+    problem: {
+      where: "StringLiteral at 144-167",
+      message:
+        "the tokens of the string are not one String token or StringFragment tokens: StringFragment, String",
+    },
+    type: "String",
+  },
+  {
+    case: "tokens-kind-56-architecture-fragment-IgnoredSemicolon-before",
+    fixture: ["architecture", "style-fields"],
+    index: 20,
+    problem: {
+      where: "StringLiteral at 144-167",
+      message:
+        "the tokens of the string are not one String token or StringFragment tokens: String, StringFragment",
+    },
+    type: "String",
+  },
+  {
+    case: "tokens-kind-56-c4-meaning",
+    fixture: ["c4", "config-security-level-other"],
+    index: 10,
+    problem: {
+      where: "StringLiteral at 70-88",
+      message:
+        "the tokens of the string are not one String token or StringFragment tokens: StringFragment",
+    },
+    type: "StringFragment",
+  },
+  {
+    case: "tokens-kind-56-c4-fragment-Comment-after",
+    fixture: ["c4", "db-grid-comment-line-alias-argument-quoted"],
+    index: 4,
+    problem: {
+      where: "StringLiteral at 17-27",
+      message:
+        "the tokens of the string are not one String token or StringFragment tokens: StringFragment, String",
+    },
+    type: "String",
+  },
+  {
+    case: "tokens-kind-56-c4-fragment-Comment-before",
+    fixture: ["c4", "db-grid-comment-line-alias-argument-quoted"],
+    index: 3,
+    problem: {
+      where: "StringLiteral at 17-27",
+      message:
+        "the tokens of the string are not one String token or StringFragment tokens: String, StringFragment",
+    },
+    type: "String",
+  },
+  {
+    case: "tokens-kind-56-c4-fragment-Directive-after",
+    fixture: ["c4", "db-grid-directive-alias-argument-quoted"],
+    index: 5,
+    problem: {
+      where: "StringLiteral at 17-35",
+      message:
+        "the tokens of the string are not one String token or StringFragment tokens: StringFragment, String",
+    },
+    type: "String",
+  },
+  {
+    case: "tokens-kind-56-c4-fragment-Directive-before",
+    fixture: ["c4", "db-grid-directive-alias-argument-quoted"],
+    index: 3,
+    problem: {
+      where: "StringLiteral at 17-35",
+      message:
+        "the tokens of the string are not one String token or StringFragment tokens: String, StringFragment",
+    },
+    type: "String",
+  },
+  {
+    case: "tokens-kind-56-c4-fragment-IgnoredSemicolon-after",
+    fixture: ["c4", "db-grid-classdef-rule-alias-argument-quoted"],
+    index: 5,
+    problem: {
+      where: "StringLiteral at 17-34",
+      message:
+        "the tokens of the string are not one String token or StringFragment tokens: StringFragment, String",
+    },
+    type: "String",
+  },
+  {
+    case: "tokens-kind-56-c4-fragment-IgnoredSemicolon-before",
+    fixture: ["c4", "db-grid-classdef-rule-alias-argument-quoted"],
+    index: 3,
+    problem: {
+      where: "StringLiteral at 17-34",
+      message:
+        "the tokens of the string are not one String token or StringFragment tokens: String, StringFragment",
+    },
+    type: "String",
+  },
+  {
+    case: "tokens-kind-56-packet-meaning",
+    fixture: ["packet", "c4-hidden-suffix-lf"],
+    index: 3,
+    problem: {
+      where: "StringLiteral at 9-12",
+      message:
+        "the tokens of the string are not one String token or StringFragment tokens: StringFragment",
+    },
+    type: "StringFragment",
+  },
+  {
+    case: "tokens-kind-56-packet-fragment-Comment-after",
+    fixture: ["packet", "lex-label-comment-line"],
+    index: 4,
+    problem: {
+      where: "StringLiteral at 9-25",
+      message:
+        "the tokens of the string are not one String token or StringFragment tokens: StringFragment, String",
+    },
+    type: "String",
+  },
+  {
+    case: "tokens-kind-56-packet-fragment-Comment-before",
+    fixture: ["packet", "lex-label-comment-line"],
+    index: 3,
+    problem: {
+      where: "StringLiteral at 9-25",
+      message:
+        "the tokens of the string are not one String token or StringFragment tokens: String, StringFragment",
+    },
+    type: "String",
+  },
+  {
+    case: "tokens-kind-56-packet-fragment-Directive-after",
+    fixture: ["packet", "directive-label-end"],
+    index: 5,
+    problem: {
+      where: "StringLiteral at 9-25",
+      message:
+        "the tokens of the string are not one String token or StringFragment tokens: StringFragment, String",
+    },
+    type: "String",
+  },
+  {
+    case: "tokens-kind-56-packet-fragment-Directive-before",
+    fixture: ["packet", "directive-label-end"],
+    index: 3,
+    problem: {
+      where: "StringLiteral at 9-25",
+      message:
+        "the tokens of the string are not one String token or StringFragment tokens: String, StringFragment",
+    },
+    type: "String",
+  },
+  {
+    case: "tokens-kind-56-packet-fragment-IgnoredSemicolon-after",
+    fixture: [
+      "packet",
+      "lex-string-line-separator-comment-line-line-rule-after",
+    ],
+    index: 6,
+    problem: {
+      where: "StringLiteral at 9-28",
+      message:
+        "the tokens of the string are not one String token or StringFragment tokens: StringFragment, StringFragment, String",
+    },
+    type: "String",
+  },
+  {
+    case: "tokens-kind-56-packet-fragment-IgnoredSemicolon-before",
+    fixture: [
+      "packet",
+      "lex-string-line-separator-comment-line-line-rule-after",
+    ],
+    index: 4,
+    problem: {
+      where: "StringLiteral at 9-28",
+      message:
+        "the tokens of the string are not one String token or StringFragment tokens: StringFragment, String, StringFragment",
+    },
+    type: "String",
+  },
+  {
+    case: "tokens-kind-56-radar-meaning",
+    fixture: ["radar", "c4-component-axis-label"],
+    index: 4,
+    problem: {
+      where: "StringLiteral at 18-31",
+      message:
+        "the tokens of the string are not one String token or StringFragment tokens: StringFragment",
+    },
+    type: "StringFragment",
+  },
+  {
+    case: "tokens-kind-56-radar-fragment-Comment-after",
+    fixture: [
+      "radar",
+      "lex-curve-bracket-label-line-separator-then-comment-line",
+    ],
+    index: 7,
+    problem: {
+      where: "StringLiteral at 26-36",
+      message:
+        "the tokens of the string are not one String token or StringFragment tokens: StringFragment, String",
+    },
+    type: "String",
+  },
+  {
+    case: "tokens-kind-56-radar-fragment-Comment-before",
+    fixture: [
+      "radar",
+      "lex-curve-bracket-label-line-separator-then-comment-line",
+    ],
+    index: 6,
+    problem: {
+      where: "StringLiteral at 26-36",
+      message:
+        "the tokens of the string are not one String token or StringFragment tokens: String, StringFragment",
+    },
+    type: "String",
+  },
+  {
+    case: "tokens-kind-56-radar-fragment-Directive-after",
+    fixture: ["radar", "directive-axis-label"],
+    index: 6,
+    problem: {
+      where: "StringLiteral at 18-35",
+      message:
+        "the tokens of the string are not one String token or StringFragment tokens: StringFragment, String",
+    },
+    type: "String",
+  },
+  {
+    case: "tokens-kind-56-radar-fragment-Directive-before",
+    fixture: ["radar", "directive-axis-label"],
+    index: 4,
+    problem: {
+      where: "StringLiteral at 18-35",
+      message:
+        "the tokens of the string are not one String token or StringFragment tokens: String, StringFragment",
+    },
+    type: "String",
+  },
+  {
+    case: "tokens-kind-56-radar-fragment-IgnoredSemicolon-after",
+    fixture: [
+      "radar",
+      "lex-string-line-separator-comment-line-line-rule-after",
+    ],
+    index: 7,
+    problem: {
+      where: "StringLiteral at 18-37",
+      message:
+        "the tokens of the string are not one String token or StringFragment tokens: StringFragment, StringFragment, String",
+    },
+    type: "String",
+  },
+  {
+    case: "tokens-kind-56-radar-fragment-IgnoredSemicolon-before",
+    fixture: [
+      "radar",
+      "lex-string-line-separator-comment-line-line-rule-after",
+    ],
+    index: 5,
+    problem: {
+      where: "StringLiteral at 18-37",
+      message:
+        "the tokens of the string are not one String token or StringFragment tokens: StringFragment, String, StringFragment",
+    },
+    type: "String",
+  },
+  {
+    case: "tokens-kind-56-treemap-meaning",
+    fixture: ["treemap", "c4-component-leaf"],
+    index: 1,
+    problem: {
+      where: "StringLiteral at 8-21",
+      message:
+        "the tokens of the string are not one String token or StringFragment tokens: StringFragment",
+    },
+    type: "StringFragment",
+  },
+  {
+    case: "tokens-kind-56-treemap-fragment-Comment-after",
+    fixture: ["treemap", "gram-string-line-separator-comment-line-cr"],
+    index: 2,
+    problem: {
+      where: "StringLiteral at 8-18",
+      message:
+        "the tokens of the string are not one String token or StringFragment tokens: StringFragment, String",
+    },
+    type: "String",
+  },
+  {
+    case: "tokens-kind-56-treemap-fragment-Comment-before",
+    fixture: ["treemap", "gram-string-line-separator-comment-line-cr"],
+    index: 1,
+    problem: {
+      where: "StringLiteral at 8-18",
+      message:
+        "the tokens of the string are not one String token or StringFragment tokens: String, StringFragment",
+    },
+    type: "String",
+  },
+  {
+    case: "tokens-kind-56-treemap-fragment-Directive-after",
+    fixture: ["treemap", "directive-name-end"],
+    index: 3,
+    problem: {
+      where: "StringLiteral at 8-25",
+      message:
+        "the tokens of the string are not one String token or StringFragment tokens: StringFragment, String",
+    },
+    type: "String",
+  },
+  {
+    case: "tokens-kind-56-treemap-fragment-Directive-before",
+    fixture: ["treemap", "directive-name-end"],
+    index: 1,
+    problem: {
+      where: "StringLiteral at 8-25",
+      message:
+        "the tokens of the string are not one String token or StringFragment tokens: String, StringFragment",
+    },
+    type: "String",
+  },
+  {
+    case: "tokens-kind-56-treemap-fragment-IgnoredSemicolon-after",
+    fixture: [
+      "treemap",
+      "gram-string-line-separator-comment-line-line-rule-after",
+    ],
+    index: 4,
+    problem: {
+      where: "StringLiteral at 8-27",
+      message:
+        "the tokens of the string are not one String token or StringFragment tokens: StringFragment, StringFragment, String",
+    },
+    type: "String",
+  },
+  {
+    case: "tokens-kind-56-treemap-fragment-IgnoredSemicolon-before",
+    fixture: [
+      "treemap",
+      "gram-string-line-separator-comment-line-line-rule-after",
+    ],
+    index: 2,
+    problem: {
+      where: "StringLiteral at 8-27",
+      message:
+        "the tokens of the string are not one String token or StringFragment tokens: StringFragment, String, StringFragment",
+    },
+    type: "String",
+  },
+  {
+    case: "tokens-598-gantt-tag-token-kind",
+    fixture: ["gantt", "gram-task-tag-then-item"],
+    index: 3,
+    problem: {
+      where: "Identifier at 10-14",
+      message:
+        "the tokens of a tag are not all of the kind RawText: Identifier",
+    },
+    type: "Identifier",
+  },
+  {
+    case: "tokens-598-gantt-tag-cut-by-directive-before",
+    fixture: ["gantt", "gram-task-tag-cut-by-directive"],
+    index: 3,
+    problem: {
+      where: "Identifier at 10-28",
+      message:
+        "the tokens of a tag are not all of the kind RawText: Identifier, RawText",
+    },
+    type: "Identifier",
+  },
+  {
+    case: "tokens-598-gantt-tag-cut-by-directive-after",
+    fixture: ["gantt", "gram-task-tag-cut-by-directive"],
+    index: 5,
+    problem: {
+      where: "Identifier at 10-28",
+      message:
+        "the tokens of a tag are not all of the kind RawText: RawText, Identifier",
+    },
+    type: "Identifier",
   },
   {
     case: "tokens-kind-56-block-meaning",
@@ -7272,6 +7891,140 @@ it.each(splitQuotedStringTokenCases)(
   },
 )
 
+it.each([
+  {
+    case: "tokens-review4-88-cynefin-after-directive",
+    diagram: "cynefin",
+    fixture: "lex-string-line-separator-comment-line-directive-next",
+    input: 'cynefin-beta\ncomplex "A\u2028%% c\n%%{init:{}}%% B"\n',
+    nodeType: "StringLiteral",
+    value: "A\u2028 B",
+    fields: [{ key: "raw", value: '"A\u2028%% c\n%%{init:{}}%% B"' }],
+    directiveIndex: 3,
+    directiveSpan: [29, 42],
+    fragmentSpan: [42, 45],
+    expected: {
+      where: "StringLiteral at 21-45",
+      message:
+        'the texts of its tokens joined are not its written text: "A\u2028B", not "A\u2028 B"',
+    },
+  },
+  {
+    case: "tokens-review4-88-gantt-after-directive",
+    diagram: "gantt",
+    fixture: "lex-acc-descr-block-line-separator-comment-line-directive-next",
+    input: "gantt\naccDescr {A\u2028%% c\n%%{init:{}}%% B}\n",
+    nodeType: "GanttLiteral",
+    value: "A\u2028 B",
+    fields: [],
+    directiveIndex: 4,
+    directiveSpan: [23, 36],
+    fragmentSpan: [36, 38],
+    expected: {
+      where: "GanttLiteral at 16-38",
+      message:
+        'the texts of its tokens joined are not its written text: "A\u2028B", not "A\u2028 B"',
+    },
+  },
+  {
+    case: "tokens-review4-88-gitgraph-after-directive",
+    diagram: "gitgraph",
+    fixture: "lex-string-line-separator-comment-line-directive-next",
+    input: 'gitGraph\ncommit id:"A\u2028%% c\n%%{init:{}}%% B"\n',
+    nodeType: "StringLiteral",
+    value: "A\u2028 B",
+    fields: [{ key: "raw", value: '"A\u2028%% c\n%%{init:{}}%% B"' }],
+    directiveIndex: 5,
+    directiveSpan: [27, 40],
+    fragmentSpan: [40, 43],
+    expected: {
+      where: "StringLiteral at 19-43",
+      message:
+        'the texts of its tokens joined are not its written text: "A\u2028B", not "A\u2028 B"',
+    },
+  },
+  {
+    case: "tokens-review4-88-info-after-directive",
+    diagram: "info",
+    fixture: "lex-acc-title-line-separator-comment-line-directive-next",
+    input: "info\naccTitle: A\u2028%% c\n%%{init:{}}%% B\n",
+    nodeType: "InfoLiteral",
+    value: " A\u2028 B",
+    fields: [],
+    directiveIndex: 4,
+    directiveSpan: [22, 35],
+    fragmentSpan: [35, 37],
+    expected: {
+      where: "InfoLiteral at 14-37",
+      message:
+        'the texts of its tokens joined are not its written text: " A\u2028B", not " A\u2028 B"',
+    },
+  },
+  {
+    case: "tokens-review4-88-journey-after-directive",
+    diagram: "journey",
+    fixture: "lex-title-line-separator-comment-line-directive-next",
+    input: "journey\ntitle A\u2028%% c\n%%{init:{}}%% B\n",
+    nodeType: "JourneyLiteral",
+    value: "A\u2028 B",
+    fields: [],
+    directiveIndex: 3,
+    directiveSpan: [21, 34],
+    fragmentSpan: [34, 36],
+    expected: {
+      where: "JourneyLiteral at 14-36",
+      message:
+        'the texts of its tokens joined are not its written text: "A\u2028B", not "A\u2028 B"',
+    },
+  },
+  {
+    case: "tokens-review4-88-packet-after-directive",
+    diagram: "packet",
+    fixture: "lex-string-line-separator-comment-line-directive-next",
+    input: 'packet\n0:"A\u2028%% c\n%%{init:{}}%% B"\n',
+    nodeType: "StringLiteral",
+    value: "A\u2028 B",
+    fields: [{ key: "raw", value: '"A\u2028%% c\n%%{init:{}}%% B"' }],
+    directiveIndex: 4,
+    directiveSpan: [17, 30],
+    fragmentSpan: [30, 33],
+    expected: {
+      where: "StringLiteral at 9-33",
+      message:
+        'the texts of its tokens joined are not its written text: "A\u2028B", not "A\u2028 B"',
+    },
+  },
+] as const)(
+  "reports omitted read whitespace after a directive in $case",
+  (theCase) => {
+    const input = theCase.input
+    const broken = copyOf(recordedTree(theCase.diagram, theCase.fixture).tree)
+    const valueNode = firstNode(broken, theCase.nodeType)
+    setField(valueNode, "value", theCase.value)
+    for (const field of theCase.fields)
+      setField(valueNode, field.key, field.value)
+    const directive = broken.directives[0]
+    span(input, directive, theCase.directiveSpan[0], theCase.directiveSpan[1])
+    setField(directive, "value", "init:{}")
+    extendToken(
+      input,
+      broken.tokens[theCase.directiveIndex],
+      theCase.directiveSpan[0],
+      theCase.directiveSpan[1],
+    )
+    // The fixed input moves one space from inside the directive into the value;
+    // its nodes and records keep the same source length. Only this fragment
+    // drops the read space after the directive.
+    extendToken(
+      input,
+      broken.tokens[theCase.directiveIndex + 1],
+      theCase.fragmentSpan[0] + 1,
+      theCase.fragmentSpan[1],
+    )
+    expect(checkTree(input, broken)).toContainEqual(theCase.expected)
+  },
+)
+
 const sharedTokenValueCases: readonly {
   readonly testCase: string
   readonly diagram: DiagramType
@@ -7279,6 +8032,54 @@ const sharedTokenValueCases: readonly {
   readonly mutate: (input: string, broken: CheckedRoot) => void
   readonly expected: { readonly where: string; readonly message: string }
 }[] = [
+  {
+    testCase: "tokens-358-identifier-er-name-joins-fragments",
+    diagram: "er",
+    fixture: "lex-name-line-separator-comment-line",
+    mutate: (_input, broken) => {
+      setField(firstNode(broken, "ErIdentifier"), "name", "A\u2028Bar!")
+    },
+    expected: {
+      where: "ErIdentifier at 10-20",
+      message: 'name is not its written text: "A\u2028Bar!", not "A\u2028Bar"',
+    },
+  },
+  {
+    testCase: "tokens-358-identifier-er-paragraph-name-joins-fragments",
+    diagram: "er",
+    fixture: "lex-name-paragraph-separator-comment-line",
+    mutate: (_input, broken) => {
+      setField(firstNode(broken, "ErIdentifier"), "name", "A\u2029Bar!")
+    },
+    expected: {
+      where: "ErIdentifier at 10-20",
+      message: 'name is not its written text: "A\u2029Bar!", not "A\u2029Bar"',
+    },
+  },
+  {
+    testCase: "tokens-358-identifier-quadrant-name-joins-fragments",
+    diagram: "quadrant",
+    fixture: "lex-classdef-name-line-separator-comment-line",
+    mutate: (_input, broken) => {
+      setField(firstNode(broken, "QuadrantIdentifier"), "name", "a\u2028b!")
+    },
+    expected: {
+      where: "QuadrantIdentifier at 23-31",
+      message: 'name is not its written text: "a\u2028b!", not "a\u2028b"',
+    },
+  },
+  {
+    testCase: "tokens-358-identifier-quadrant-paragraph-name-joins-fragments",
+    diagram: "quadrant",
+    fixture: "db-classdef-name-paragraph-separator-comment-line",
+    mutate: (_input, broken) => {
+      setField(firstNode(broken, "QuadrantIdentifier"), "name", "a\u2029b!")
+    },
+    expected: {
+      where: "QuadrantIdentifier at 23-31",
+      message: 'name is not its written text: "a\u2029b!", not "a\u2029b"',
+    },
+  },
   {
     testCase: "tokens-518-block-NumericLiteral has a Numeric token",
     diagram: "block",
@@ -8188,6 +8989,107 @@ const sharedTokenValueCases: readonly {
     expected: {
       where: "Identifier at 18-20",
       message: "name holds whitespace",
+    },
+  },
+  {
+    testCase: "tokens-592-gantt-Identifier has one token",
+    diagram: "gantt",
+    fixture: "db-click-href-attribute-quote",
+    mutate: (_input, broken) => {
+      const original = broken.tokens[9]
+      replaceToken(broken, original, [
+        [original.type, 0, 1],
+        [original.type, 1, original.value.length],
+      ])
+    },
+    expected: {
+      where: "Identifier at 36-39",
+      message: "has 2 tokens, not the one that a node of this type has",
+    },
+  },
+  {
+    testCase: "tokens-592-gantt-Identifier and its token have the same range",
+    diagram: "gantt",
+    fixture: "db-click-href-attribute-quote",
+    mutate: (input, broken) => {
+      const node = nodesOf(broken)[8]
+      span(input, node, 36, 37)
+      setField(node, "name", input.slice(36, 37))
+    },
+    expected: {
+      where: "Identifier at 36-37",
+      message: "does not run from the start of a token to the end of a token",
+    },
+  },
+  {
+    testCase:
+      "tokens-592-gantt-Identifier tokens exclude surrounding whitespace",
+    diagram: "gantt",
+    fixture: "db-click-href-attribute-quote",
+    mutate: (input, broken) => {
+      const node = nodesOf(broken)[8]
+      const end = node.range[1]
+      for (const candidate of nodesOf(broken)) {
+        if (candidate !== broken && candidate.range[1] === end)
+          span(input, candidate, candidate.range[0], end + 1)
+      }
+      setField(node, "name", input.slice(...node.range))
+      extendToken(input, broken.tokens[9], broken.tokens[9].range[0], end + 1)
+    },
+    expected: {
+      where: "Identifier at 36-40",
+      message: "name holds whitespace",
+    },
+  },
+  {
+    testCase: "tokens-592-requirement-Identifier has one token",
+    diagram: "requirement",
+    fixture: "spec-requirement-diagram-0799fd14",
+    mutate: (_input, broken) => {
+      const original = broken.tokens[6]
+      replaceToken(broken, original, [
+        [original.type, 0, 1],
+        [original.type, 1, original.value.length],
+      ])
+    },
+    expected: {
+      where: "Identifier at 51-58",
+      message: "has 2 tokens, not the one that a node of this type has",
+    },
+  },
+  {
+    testCase:
+      "tokens-592-requirement-Identifier and its token have the same range",
+    diagram: "requirement",
+    fixture: "spec-requirement-diagram-0799fd14",
+    mutate: (input, broken) => {
+      const node = nodesOf(broken)[5]
+      span(input, node, 51, 52)
+      setField(node, "name", input.slice(51, 52))
+    },
+    expected: {
+      where: "Identifier at 51-52",
+      message: "does not run from the start of a token to the end of a token",
+    },
+  },
+  {
+    testCase:
+      "tokens-592-requirement-Identifier tokens exclude surrounding whitespace",
+    diagram: "requirement",
+    fixture: "spec-requirement-diagram-0799fd14",
+    mutate: (input, broken) => {
+      const node = nodesOf(broken)[5]
+      const end = node.range[1]
+      for (const candidate of nodesOf(broken)) {
+        if (candidate !== broken && candidate.range[1] === end)
+          span(input, candidate, candidate.range[0], end + 1)
+      }
+      setField(node, "name", input.slice(...node.range))
+      extendToken(input, broken.tokens[6], broken.tokens[6].range[0], end + 1)
+    },
+    expected: {
+      where: "Identifier at 51-59",
+      message: 'the Identifier starts or ends with whitespace: "myClass "',
     },
   },
   {
@@ -17328,182 +18230,54 @@ const sharedTokenValueCases: readonly {
     },
   },
   {
-    testCase: "tokens-599-rejudged-block-token",
+    testCase: "tokens-review4-name-token-kind-block",
     diagram: "block",
-    fixture: "db-class-apply-names-spaces",
+    fixture: "db-class-apply-constructor-class",
     mutate: (_input, broken) => {
-      setField(broken.tokens[4], "type", "Identifier")
+      setField(token(broken, "constructor"), "type", "Identifier")
     },
     expected: {
-      where: "BlockLiteral at 25-28",
+      where: "BlockLiteral at 25-36",
       message: "the tokens of the value are not RawText",
     },
   },
   {
-    testCase: "tokens-599-rejudged-block-node",
-    diagram: "block",
-    fixture: "db-class-apply-names-spaces",
-    mutate: (_input, broken) => {
-      const valueNode = nodesOf(broken).find(
-        (n) => n.type === "BlockLiteral" && n.range[0] === 25,
-      )!
-      setField(valueNode, "type", "Identifier")
-      setField(valueNode, "name", "c d")
-      Reflect.deleteProperty(valueNode, "value")
-    },
-    expected: {
-      where: "Identifier at 25-28",
-      message: "name holds whitespace",
-    },
-  },
-  {
-    testCase: "tokens-599-rejudged-agentflow-token",
+    testCase: "tokens-review4-name-token-kind-agentflow",
     diagram: "agentflow",
-    fixture: "db-call-name-space-before-parentheses",
+    fixture: "entity-callback-arguments",
     mutate: (_input, broken) => {
-      setField(broken.tokens[6], "type", "Identifier")
+      setField(token(broken, "go"), "type", "Identifier")
     },
     expected: {
-      where: "AgentflowLiteral at 33-36",
+      where: "AgentflowLiteral at 33-35",
       message:
         "the tokens of an Agentflow value are not all of the kind RawText: Identifier",
     },
   },
   {
-    testCase: "tokens-599-rejudged-agentflow-node",
-    diagram: "agentflow",
-    fixture: "db-call-name-space-before-parentheses",
-    mutate: (_input, broken) => {
-      const valueNode = nodesOf(broken).find(
-        (n) => n.type === "AgentflowLiteral" && n.range[0] === 33,
-      )!
-      setField(valueNode, "type", "Identifier")
-      setField(valueNode, "name", "go ")
-      Reflect.deleteProperty(valueNode, "value")
-    },
-    expected: {
-      where: "Identifier at 33-36",
-      message: "name holds whitespace",
-    },
-  },
-  {
-    testCase: "tokens-599-rejudged-gantt-token",
-    diagram: "gantt",
-    fixture: "gram-click-call-name-with-space",
-    mutate: (_input, broken) => {
-      setField(broken.tokens[11], "type", "Identifier")
-    },
-    expected: {
-      where: "GanttLiteral at 45-48",
-      message:
-        "the tokens of a GanttLiteral are not all of the kind RawText: Identifier",
-    },
-  },
-  {
-    testCase: "tokens-599-rejudged-gantt-node",
-    diagram: "gantt",
-    fixture: "gram-click-call-name-with-space",
-    mutate: (_input, broken) => {
-      const valueNode = nodesOf(broken).find(
-        (n) => n.type === "GanttLiteral" && n.range[0] === 45,
-      )!
-      setField(valueNode, "type", "Identifier")
-      setField(valueNode, "name", "f g")
-      Reflect.deleteProperty(valueNode, "value")
-    },
-    expected: {
-      where: "Identifier at 45-48",
-      message: "name holds whitespace",
-    },
-  },
-  {
-    testCase: "tokens-599-rejudged-journey-token",
-    diagram: "journey",
-    fixture: "lex-section-two-spaces",
-    mutate: (_input, broken) => {
-      setField(broken.tokens[2], "type", "Identifier")
-    },
-    expected: {
-      where: "JourneyLiteral at 18-20",
-      message:
-        "the tokens of a JourneyLiteral are not all of the kind RawText: Identifier",
-    },
-  },
-  {
-    testCase: "tokens-599-rejudged-journey-node",
-    diagram: "journey",
-    fixture: "lex-section-two-spaces",
-    mutate: (_input, broken) => {
-      const valueNode = nodesOf(broken).find(
-        (n) => n.type === "JourneyLiteral" && n.range[0] === 18,
-      )!
-      setField(valueNode, "type", "Identifier")
-      setField(valueNode, "name", " S")
-      Reflect.deleteProperty(valueNode, "value")
-    },
-    expected: {
-      where: "Identifier at 18-20",
-      message: "name holds whitespace",
-    },
-  },
-  {
-    testCase: "tokens-599-rejudged-timeline-token",
+    testCase: "tokens-review4-name-token-kind-timeline",
     diagram: "timeline",
-    fixture: "db-section-trailing-spaces",
+    fixture: "db-section-statement",
     mutate: (_input, broken) => {
-      setField(broken.tokens[2], "type", "Identifier")
+      setField(token(broken, "S"), "type", "Identifier")
     },
     expected: {
-      where: "TimelineLiteral at 19-23",
+      where: "TimelineLiteral at 19-20",
       message:
         "the tokens of a TimelineLiteral are not all of the kind RawText: Identifier",
     },
   },
   {
-    testCase: "tokens-599-rejudged-timeline-node",
-    diagram: "timeline",
-    fixture: "db-section-trailing-spaces",
-    mutate: (_input, broken) => {
-      const valueNode = nodesOf(broken).find(
-        (n) => n.type === "TimelineLiteral" && n.range[0] === 19,
-      )!
-      setField(valueNode, "type", "Identifier")
-      setField(valueNode, "name", "S   ")
-      Reflect.deleteProperty(valueNode, "value")
-    },
-    expected: {
-      where: "Identifier at 19-23",
-      message: "name holds whitespace",
-    },
-  },
-  {
-    testCase: "tokens-599-rejudged-c4-token",
+    testCase: "tokens-review4-name-token-kind-c4",
     diagram: "c4",
-    fixture: "lex-named-key-multiline",
+    fixture: "spec-c4-named-attributes-bd7f9fb7",
     mutate: (_input, broken) => {
-      setField(broken.tokens[8], "type", "Identifier")
+      setField(token(broken, "link"), "type", "Identifier")
     },
     expected: {
-      where: "C4Literal at 25-38",
+      where: "C4Literal at 35-39",
       message:
         "the tokens of a C4Literal are not all of the kind RawText: Identifier",
-    },
-  },
-  {
-    testCase: "tokens-599-rejudged-c4-node",
-    diagram: "c4",
-    fixture: "lex-named-key-multiline",
-    mutate: (_input, broken) => {
-      const valueNode = nodesOf(broken).find(
-        (n) => n.type === "C4Literal" && n.range[0] === 25,
-      )!
-      setField(valueNode, "type", "Identifier")
-      setField(valueNode, "name", "first\n second")
-      Reflect.deleteProperty(valueNode, "value")
-    },
-    expected: {
-      where: "Identifier at 25-38",
-      message: "name holds whitespace",
     },
   },
 ]
@@ -17516,6 +18290,349 @@ for (const testCase of sharedTokenValueCases) {
     expect(checkTree(input, broken)).toContainEqual(testCase.expected)
   })
 }
+
+it.each([
+  {
+    case: "tokens-review4-read-whitespace-only-architecture",
+    diagram: "architecture",
+    fixture: "db-acc-descr-block-two-lines-before-statement",
+    input:
+      "architecture-beta\naccDescr {\nA%%{x}%%                             %%{y}%%B\n}\nservice api(server)[API]\n",
+    index: 3,
+    nodeType: "ArchitectureLiteral",
+    nodeRange: [29, 74],
+    value: "A                             B",
+    pieces: [
+      ["RawText", 29, 30],
+      ["Directive", 30, 37],
+      ["RawText", 37, 66],
+      ["Directive", 66, 73],
+      ["RawText", 73, 74],
+    ],
+    xRange: [30, 37],
+    yRange: [66, 73],
+    expected: {
+      where: "ArchitectureLiteral at 29-74",
+      message:
+        'the texts of its tokens joined are not its written text: "AB", not "A                             B"',
+    },
+  },
+  {
+    case: "tokens-review4-read-whitespace-only-c4",
+    diagram: "c4",
+    fixture: "db-acc-descr-three-forms-block-two-lines-differ",
+    input:
+      "C4Context\naccDescription Customers\naccDescr {\nA%%{x}%%       %%{y}%%B\n}\naccDescr: Customers\n",
+    index: 5,
+    nodeType: "C4Literal",
+    nodeRange: [46, 69],
+    value: "A       B",
+    pieces: [
+      ["RawText", 46, 47],
+      ["Directive", 47, 54],
+      ["RawText", 54, 61],
+      ["Directive", 61, 68],
+      ["RawText", 68, 69],
+    ],
+    xRange: [47, 54],
+    yRange: [61, 68],
+    expected: {
+      where: "C4Literal at 46-69",
+      message:
+        'the texts of its tokens joined are not its written text: "AB", not "A       B"',
+    },
+  },
+  {
+    case: "tokens-review4-read-whitespace-only-ishikawa",
+    diagram: "ishikawa",
+    fixture: "config-security-other",
+    input: "ishikawa\nA%%{x}%%   %%{y}%%B\n <i>Cause</i><BR>next\n",
+    index: 1,
+    nodeType: "IshikawaLiteral",
+    nodeRange: [9, 28],
+    value: "A   B",
+    pieces: [
+      ["RawText", 9, 10],
+      ["Directive", 10, 17],
+      ["RawText", 17, 20],
+      ["Directive", 20, 27],
+      ["RawText", 27, 28],
+    ],
+    xRange: [10, 17],
+    yRange: [20, 27],
+    expected: {
+      where: "IshikawaLiteral at 9-28",
+      message:
+        'the texts of its tokens joined are not its written text: "AB", not "A   B"',
+    },
+  },
+  {
+    case: "tokens-review4-read-whitespace-only-journey",
+    diagram: "journey",
+    fixture: "db-acc-descr-block",
+    input: "journey\n  accDescr {\n   A%%{x}%%    %%{y}%%B\n  }\n",
+    index: 3,
+    nodeType: "JourneyLiteral",
+    nodeRange: [24, 44],
+    value: "A    B",
+    pieces: [
+      ["RawText", 24, 25],
+      ["Directive", 25, 32],
+      ["RawText", 32, 36],
+      ["Directive", 36, 43],
+      ["RawText", 43, 44],
+    ],
+    xRange: [25, 32],
+    yRange: [36, 43],
+    expected: {
+      where: "JourneyLiteral at 24-44",
+      message:
+        'the texts of its tokens joined are not its written text: "AB", not "A    B"',
+    },
+  },
+  {
+    case: "tokens-review4-read-whitespace-only-packet",
+    diagram: "packet",
+    fixture: "db-acc-descr-block-two-lines-before-statement",
+    input:
+      'packet\naccDescr {\nA%%{x}%%                         %%{y}%%B\n}\n0-15: "Source Port"\n',
+    index: 3,
+    nodeType: "PacketLiteral",
+    nodeRange: [18, 59],
+    value: "A                         B",
+    pieces: [
+      ["RawText", 18, 19],
+      ["Directive", 19, 26],
+      ["RawText", 26, 51],
+      ["Directive", 51, 58],
+      ["RawText", 58, 59],
+    ],
+    xRange: [19, 26],
+    yRange: [51, 58],
+    expected: {
+      where: "PacketLiteral at 18-59",
+      message:
+        'the texts of its tokens joined are not its written text: "AB", not "A                         B"',
+    },
+  },
+  {
+    case: "tokens-review4-read-whitespace-only-radar",
+    diagram: "radar",
+    fixture: "db-acc-descr-block-two-lines-before-axes",
+    input:
+      "radar-beta\naccDescr {\nA%%{x}%%      %%{y}%%B\n}\naxis A, B, C\ncurve sales{1, 2, 3}\n",
+    index: 3,
+    nodeType: "RadarLiteral",
+    nodeRange: [22, 44],
+    value: "A      B",
+    pieces: [
+      ["RawText", 22, 23],
+      ["Directive", 23, 30],
+      ["RawText", 30, 36],
+      ["Directive", 36, 43],
+      ["RawText", 43, 44],
+    ],
+    xRange: [23, 30],
+    yRange: [36, 43],
+    expected: {
+      where: "RadarLiteral at 22-44",
+      message:
+        'the texts of its tokens joined are not its written text: "AB", not "A      B"',
+    },
+  },
+  {
+    case: "tokens-review4-read-whitespace-only-sankey",
+    diagram: "sankey",
+    fixture: "config-security-level-other-title-and-ids",
+    input:
+      '---\ntitle: T<b>x</b> & <i>z\n---\nsankey\nA<b>x</b> & <script>y</script>,"A%%{x}%%   %%{y}%%B",1\n',
+    index: 6,
+    nodeType: "StringLiteral",
+    nodeRange: [70, 91],
+    value: "A   B",
+    pieces: [
+      ["StringFragment", 70, 72],
+      ["Directive", 72, 79],
+      ["StringFragment", 79, 82],
+      ["Directive", 82, 89],
+      ["StringFragment", 89, 91],
+    ],
+    xRange: [72, 79],
+    yRange: [82, 89],
+    expected: {
+      where: "StringLiteral at 70-91",
+      message:
+        "the tokens of the string are not one String token or StringFragment tokens: StringFragment, StringFragment",
+    },
+  },
+  {
+    case: "tokens-review4-read-whitespace-only-treemap",
+    diagram: "treemap",
+    fixture: "comment-class",
+    input: 'treemap\nclassDef styled A%%{x}%%    %%{y}%%B\n"A":::styled',
+    index: 3,
+    nodeType: "TreemapLiteral",
+    nodeRange: [24, 44],
+    value: "A    B",
+    pieces: [
+      ["RawText", 24, 25],
+      ["Directive", 25, 32],
+      ["RawText", 32, 36],
+      ["Directive", 36, 43],
+      ["RawText", 43, 44],
+    ],
+    xRange: [25, 32],
+    yRange: [36, 43],
+    expected: {
+      where: "TreemapLiteral at 24-44",
+      message:
+        'the texts of its tokens joined are not its written text: "AB", not "A    B"',
+    },
+  },
+] as const)(
+  "reports a missing whitespace-only directive fragment in $case",
+  (theCase) => {
+    const input = theCase.input
+    const tree = copyOf(recordedTree(theCase.diagram, theCase.fixture).tree)
+    const valueNode = nodesOf(tree).find(
+      (node) =>
+        node.type === theCase.nodeType &&
+        node.range[0] === theCase.nodeRange[0] &&
+        node.range[1] === theCase.nodeRange[1],
+    )!
+    // The fixed input replaces one value with equal-length authored text.
+    // Every range stays the same; line/column locations follow the new text.
+    for (const node of nodesOf(tree))
+      span(input, node, node.range[0], node.range[1])
+    for (const item of tree.tokens)
+      extendToken(input, item, item.range[0], item.range[1])
+    setField(valueNode, "value", theCase.value)
+    if ("raw" in valueNode)
+      setField(valueNode, "raw", input.slice(...theCase.nodeRange))
+    const fragments = theCase.pieces.map(([type, start, end]) => ({
+      type,
+      value: input.slice(start, end),
+      range: [start, end],
+      loc: locationOf(input, [start, end]),
+    }))
+    setField(tree, "tokens", [
+      ...tree.tokens.slice(0, theCase.index),
+      ...fragments,
+      ...tree.tokens.slice(theCase.index + 1),
+    ])
+    setField(tree, "directives", [
+      directiveOf(input, { text: "%%{x}%%", from: theCase.xRange[0] }),
+      directiveOf(input, { text: "%%{y}%%", from: theCase.yRange[0] }),
+    ])
+    // tokens.md, A token that a directive cuts: read whitespace between
+    // directives is a fragment token even when it is whitespace only.
+    expect(checkTree(input, tree)).toEqual([])
+    const broken = copyOf(tree)
+    setField(broken, "tokens", [
+      ...broken.tokens.slice(0, theCase.index + 2),
+      ...broken.tokens.slice(theCase.index + 3),
+    ])
+    expect(checkTree(input, broken)).toContainEqual(theCase.expected)
+  },
+)
+
+it.each([
+  {
+    case: "tokens-review4-unread-whitespace-only-c4",
+    diagram: "c4",
+    fixture: "db-directive-drawing-config",
+    span: [107, 108],
+  },
+  {
+    case: "tokens-review4-unread-whitespace-only-ishikawa",
+    diagram: "ishikawa",
+    fixture: "directive-header-suffix",
+    span: [22, 23],
+  },
+  {
+    case: "tokens-review4-unread-whitespace-only-journey",
+    diagram: "journey",
+    fixture: "header-then-directive-same-line",
+    span: [21, 24],
+  },
+  {
+    case: "tokens-review4-unread-whitespace-only-packet",
+    diagram: "packet",
+    fixture: "directive-header-space-control",
+    span: [16, 17],
+  },
+  {
+    case: "tokens-review4-unread-whitespace-only-radar",
+    diagram: "radar",
+    fixture: "directive-header-space",
+    span: [23, 24],
+  },
+  {
+    case: "tokens-review4-unread-whitespace-only-sankey",
+    diagram: "sankey",
+    fixture: "db-directive-sankey-settings",
+    span: [44, 45],
+  },
+  {
+    case: "tokens-review4-unread-whitespace-only-treemap",
+    diagram: "treemap",
+    fixture: "common-accdescr-directive-gap",
+    span: [32, 33],
+  },
+] as const)(
+  "reports a token for unread whitespace beside a directive in $case",
+  (theCase) => {
+    const { input, tree } = recordedTree(theCase.diagram, theCase.fixture)
+    const broken = copyOf(tree)
+    setField(
+      broken,
+      "tokens",
+      [
+        ...broken.tokens,
+        {
+          type: "RawText",
+          value: input.slice(...theCase.span),
+          range: theCase.span,
+          loc: locationOf(input, theCase.span),
+        },
+      ].sort((a, b) => a.range[0] - b.range[0]),
+    )
+    expect(checkTree(input, broken)).toContainEqual({
+      where: `RawText at ${theCase.span.join("-")}`,
+      message:
+        "starts with whitespace or a line terminator where no value starts",
+    })
+  },
+)
+
+it("reports tokens-review4-unread-whitespace-only-architecture", () => {
+  const tree = copyOf(
+    recordedTree("architecture", "common-description-block-directive").tree,
+  )
+  const input = "architecture-beta\naccDescr {\n \n%%{unknown: {}}%%\nB\n}\n"
+  const valueNode = firstNode(tree, "ArchitectureLiteral")
+  span(input, valueNode, 49, 50)
+  setField(valueNode, "value", "B")
+  setField(tree, "tokens", [
+    ...tree.tokens.slice(0, 3),
+    ...tree.tokens.slice(4),
+  ])
+  extendToken(input, tree.tokens[4], 49, 50)
+  // tokens.md, A token that a directive cuts: the leading whitespace-only
+  // fragment is outside the trimmed description value and has no token.
+  expect(checkTree(input, tree)).toEqual([])
+  const broken = copyOf(tree)
+  setField(broken, "tokens", [
+    ...broken.tokens.slice(0, 3),
+    tokenOf(input, "RawText", { text: " \n", from: 29 }),
+    ...broken.tokens.slice(3),
+  ])
+  expect(checkTree(input, broken)).toContainEqual({
+    where: "RawText at 29-31",
+    message:
+      "starts with whitespace or a line terminator where no value starts",
+  })
+})
 
 const frontmatterTokenCases: readonly {
   readonly testCase: string
@@ -19236,6 +20353,874 @@ const sharedCommentMissingRecordCases = [
     },
     directives: [],
   },
+  {
+    id: "tokens-228-agentflow-comment-line-record",
+    condition: "A comment line produces a Comment record",
+    diagram: "agentflow",
+    fixture: "header-only",
+    input: "%% c\nagentflow-beta",
+    prefixLength: 5,
+    commentText: "%% c",
+    commentFrom: 0,
+    expected: {
+      where: "comment line at 0-4",
+      message: "is no comment of the tree",
+    },
+    directives: [],
+  },
+  {
+    id: "tokens-228-architecture-comment-line-record",
+    condition: "A comment line produces a Comment record",
+    diagram: "architecture",
+    fixture: "spec-architecture-08253aa2",
+    input: "%% c\narchitecture-beta",
+    prefixLength: 5,
+    commentText: "%% c",
+    commentFrom: 0,
+    expected: {
+      where: "comment line at 0-4",
+      message: "is no comment of the tree",
+    },
+    directives: [],
+  },
+  {
+    id: "tokens-228-c4-comment-line-record",
+    condition: "A comment line produces a Comment record",
+    diagram: "c4",
+    fixture: "gram-person-comma-only",
+    input: "%% c\nC4Context\nPerson(,)\n",
+    prefixLength: 5,
+    commentText: "%% c",
+    commentFrom: 0,
+    expected: {
+      where: "comment line at 0-4",
+      message: "is no comment of the tree",
+    },
+    directives: [],
+  },
+  {
+    id: "tokens-228-class-comment-line-record",
+    condition: "A comment line produces a Comment record",
+    diagram: "class",
+    fixture: "gram-name-alone",
+    input: "%% c\nclassDiagram\nFoo\n",
+    prefixLength: 5,
+    commentText: "%% c",
+    commentFrom: 0,
+    expected: {
+      where: "comment line at 0-4",
+      message: "is no comment of the tree",
+    },
+    directives: [],
+  },
+  {
+    id: "tokens-228-cynefin-comment-line-record",
+    condition: "A comment line produces a Comment record",
+    diagram: "cynefin",
+    fixture: "header-only",
+    input: "%% c\ncynefin-beta",
+    prefixLength: 5,
+    commentText: "%% c",
+    commentFrom: 0,
+    expected: {
+      where: "comment line at 0-4",
+      message: "is no comment of the tree",
+    },
+    directives: [],
+  },
+  {
+    id: "tokens-228-eventmodeling-comment-line-record",
+    condition: "A comment line produces a Comment record",
+    diagram: "eventmodeling",
+    fixture: "header-only",
+    input: "%% c\neventmodeling",
+    prefixLength: 5,
+    commentText: "%% c",
+    commentFrom: 0,
+    expected: {
+      where: "comment line at 0-4",
+      message: "is no comment of the tree",
+    },
+    directives: [],
+  },
+  {
+    id: "tokens-228-gantt-comment-line-record",
+    condition: "A comment line produces a Comment record",
+    diagram: "gantt",
+    fixture: "header-only",
+    input: "%% c\ngantt",
+    prefixLength: 5,
+    commentText: "%% c",
+    commentFrom: 0,
+    expected: {
+      where: "comment line at 0-4",
+      message: "is no comment of the tree",
+    },
+    directives: [],
+  },
+  {
+    id: "tokens-228-gitgraph-comment-line-record",
+    condition: "A comment line produces a Comment record",
+    diagram: "gitgraph",
+    fixture: "header-only",
+    input: "%% c\ngitGraph\n",
+    prefixLength: 5,
+    commentText: "%% c",
+    commentFrom: 0,
+    expected: {
+      where: "comment line at 0-4",
+      message: "is no comment of the tree",
+    },
+    directives: [],
+  },
+  {
+    id: "tokens-228-info-comment-line-record",
+    condition: "A comment line produces a Comment record",
+    diagram: "info",
+    fixture: "spec-info-06271baf",
+    input: "%% c\ninfo",
+    prefixLength: 5,
+    commentText: "%% c",
+    commentFrom: 0,
+    expected: {
+      where: "comment line at 0-4",
+      message: "is no comment of the tree",
+    },
+    directives: [],
+  },
+  {
+    id: "tokens-228-ishikawa-comment-line-record",
+    condition: "A comment line produces a Comment record",
+    diagram: "ishikawa",
+    fixture: "header-only-lf",
+    input: "%% c\nishikawa\n",
+    prefixLength: 5,
+    commentText: "%% c",
+    commentFrom: 0,
+    expected: {
+      where: "comment line at 0-4",
+      message: "is no comment of the tree",
+    },
+    directives: [],
+  },
+  {
+    id: "tokens-228-journey-comment-line-record",
+    condition: "A comment line produces a Comment record",
+    diagram: "journey",
+    fixture: "header-only",
+    input: "%% c\njourney",
+    prefixLength: 5,
+    commentText: "%% c",
+    commentFrom: 0,
+    expected: {
+      where: "comment line at 0-4",
+      message: "is no comment of the tree",
+    },
+    directives: [],
+  },
+  {
+    id: "tokens-228-kanban-comment-line-record",
+    condition: "A comment line produces a Comment record",
+    diagram: "kanban",
+    fixture: "header-only-lf",
+    input: "%% c\nkanban\n",
+    prefixLength: 5,
+    commentText: "%% c",
+    commentFrom: 0,
+    expected: {
+      where: "comment line at 0-4",
+      message: "is no comment of the tree",
+    },
+    directives: [],
+  },
+  {
+    id: "tokens-228-mindmap-comment-line-record",
+    condition: "A comment line produces a Comment record",
+    diagram: "mindmap",
+    fixture: "db-header-only",
+    input: "%% c\nmindmap\n",
+    prefixLength: 5,
+    commentText: "%% c",
+    commentFrom: 0,
+    expected: {
+      where: "comment line at 0-4",
+      message: "is no comment of the tree",
+    },
+    directives: [],
+  },
+  {
+    id: "tokens-228-packet-comment-line-record",
+    condition: "A comment line produces a Comment record",
+    diagram: "packet",
+    fixture: "spec-packet-7426afc4",
+    input: "%% c\npacket",
+    prefixLength: 5,
+    commentText: "%% c",
+    commentFrom: 0,
+    expected: {
+      where: "comment line at 0-4",
+      message: "is no comment of the tree",
+    },
+    directives: [],
+  },
+  {
+    id: "tokens-228-pie-comment-line-record",
+    condition: "A comment line produces a Comment record",
+    diagram: "pie",
+    fixture: "header-only",
+    input: "%% c\npie",
+    prefixLength: 5,
+    commentText: "%% c",
+    commentFrom: 0,
+    expected: {
+      where: "comment line at 0-4",
+      message: "is no comment of the tree",
+    },
+    directives: [],
+  },
+  {
+    id: "tokens-228-quadrant-comment-line-record",
+    condition: "A comment line produces a Comment record",
+    diagram: "quadrant",
+    fixture: "spec-quadrant-jison-fe2d2340",
+    input: "%% c\nquadrantChart",
+    prefixLength: 5,
+    commentText: "%% c",
+    commentFrom: 0,
+    expected: {
+      where: "comment line at 0-4",
+      message: "is no comment of the tree",
+    },
+    directives: [],
+  },
+  {
+    id: "tokens-228-radar-comment-line-record",
+    condition: "A comment line produces a Comment record",
+    diagram: "radar",
+    fixture: "spec-radar-test-ts-f0c0291e",
+    input: "%% c\nradar-beta",
+    prefixLength: 5,
+    commentText: "%% c",
+    commentFrom: 0,
+    expected: {
+      where: "comment line at 0-4",
+      message: "is no comment of the tree",
+    },
+    directives: [],
+  },
+  {
+    id: "tokens-228-railroad-comment-line-record",
+    condition: "A comment line produces a Comment record",
+    diagram: "railroad",
+    fixture: "ir-header-only",
+    input: "%% c\nrailroad-beta",
+    prefixLength: 5,
+    commentText: "%% c",
+    commentFrom: 0,
+    expected: {
+      where: "comment line at 0-4",
+      message: "is no comment of the tree",
+    },
+    directives: [],
+  },
+  {
+    id: "tokens-228-requirement-comment-line-record",
+    condition: "A comment line produces a Comment record",
+    diagram: "requirement",
+    fixture: "header-only",
+    input: "%% c\nrequirementDiagram",
+    prefixLength: 5,
+    commentText: "%% c",
+    commentFrom: 0,
+    expected: {
+      where: "comment line at 0-4",
+      message: "is no comment of the tree",
+    },
+    directives: [],
+  },
+  {
+    id: "tokens-228-sequence-comment-line-record",
+    condition: "A comment line produces a Comment record",
+    diagram: "sequence",
+    fixture: "spec-sequence-diagram-536f52ac",
+    input: "%% c\nsequenceDiagram",
+    prefixLength: 5,
+    commentText: "%% c",
+    commentFrom: 0,
+    expected: {
+      where: "comment line at 0-4",
+      message: "is no comment of the tree",
+    },
+    directives: [],
+  },
+  {
+    id: "tokens-228-state-comment-line-record",
+    condition: "A comment line produces a Comment record",
+    diagram: "state",
+    fixture: "header-only",
+    input: "%% c\nstateDiagram\n",
+    prefixLength: 5,
+    commentText: "%% c",
+    commentFrom: 0,
+    expected: {
+      where: "comment line at 0-4",
+      message: "is no comment of the tree",
+    },
+    directives: [],
+  },
+  {
+    id: "tokens-228-timeline-comment-line-record",
+    condition: "A comment line produces a Comment record",
+    diagram: "timeline",
+    fixture: "header-without-line-feed",
+    input: "%% c\ntimeline",
+    prefixLength: 5,
+    commentText: "%% c",
+    commentFrom: 0,
+    expected: {
+      where: "comment line at 0-4",
+      message: "is no comment of the tree",
+    },
+    directives: [],
+  },
+  {
+    id: "tokens-228-treemap-comment-line-record",
+    condition: "A comment line produces a Comment record",
+    diagram: "treemap",
+    fixture: "spec-treemap-test-ts-892fa294",
+    input: "%% c\ntreemap",
+    prefixLength: 5,
+    commentText: "%% c",
+    commentFrom: 0,
+    expected: {
+      where: "comment line at 0-4",
+      message: "is no comment of the tree",
+    },
+    directives: [],
+  },
+  {
+    id: "tokens-228-treeview-comment-line-record",
+    condition: "A comment line produces a Comment record",
+    diagram: "treeview",
+    fixture: "header-only",
+    input: "%% c\ntreeView-beta\n",
+    prefixLength: 5,
+    commentText: "%% c",
+    commentFrom: 0,
+    expected: {
+      where: "comment line at 0-4",
+      message: "is no comment of the tree",
+    },
+    directives: [],
+  },
+  {
+    id: "tokens-228-usecase-comment-line-record",
+    condition: "A comment line produces a Comment record",
+    diagram: "usecase",
+    fixture: "spec-usecase-parser-7ae00acb",
+    input: "%% c\nusecase-beta",
+    prefixLength: 5,
+    commentText: "%% c",
+    commentFrom: 0,
+    expected: {
+      where: "comment line at 0-4",
+      message: "is no comment of the tree",
+    },
+    directives: [],
+  },
+  {
+    id: "tokens-228-venn-comment-line-record",
+    condition: "A comment line produces a Comment record",
+    diagram: "venn",
+    fixture: "header-only",
+    input: "%% c\nvenn-beta",
+    prefixLength: 5,
+    commentText: "%% c",
+    commentFrom: 0,
+    expected: {
+      where: "comment line at 0-4",
+      message: "is no comment of the tree",
+    },
+    directives: [],
+  },
+  {
+    id: "tokens-228-wardley-comment-line-record",
+    condition: "A comment line produces a Comment record",
+    diagram: "wardley",
+    fixture: "header-only",
+    input: "%% c\nwardley-beta",
+    prefixLength: 5,
+    commentText: "%% c",
+    commentFrom: 0,
+    expected: {
+      where: "comment line at 0-4",
+      message: "is no comment of the tree",
+    },
+    directives: [],
+  },
+  {
+    id: "tokens-228-xychart-comment-line-record",
+    condition: "A comment line produces a Comment record",
+    diagram: "xychart",
+    fixture: "header-without-line-feed",
+    input: "%% c\nxychart-beta",
+    prefixLength: 5,
+    commentText: "%% c",
+    commentFrom: 0,
+    expected: {
+      where: "comment line at 0-4",
+      message: "is no comment of the tree",
+    },
+    directives: [],
+  },
+  {
+    id: "tokens-228-agentflow-preheader-bare-record",
+    condition: "A detection-passed bare %% line produces a diagram Comment",
+    diagram: "agentflow",
+    fixture: "header-only",
+    input: "%%\nagentflow-beta",
+    prefixLength: 3,
+    commentText: "%%",
+    commentFrom: 0,
+    expected: {
+      where: "offset 0",
+      message:
+        'the character outside the tokens and comments is not whitespace: "%"',
+    },
+    directives: [],
+  },
+  {
+    id: "tokens-228-architecture-preheader-bare-record",
+    condition: "A detection-passed bare %% line produces a diagram Comment",
+    diagram: "architecture",
+    fixture: "spec-architecture-08253aa2",
+    input: "%%\narchitecture-beta",
+    prefixLength: 3,
+    commentText: "%%",
+    commentFrom: 0,
+    expected: {
+      where: "offset 0",
+      message:
+        'the character outside the tokens and comments is not whitespace: "%"',
+    },
+    directives: [],
+  },
+  {
+    id: "tokens-228-c4-preheader-bare-record",
+    condition: "A detection-passed bare %% line produces a diagram Comment",
+    diagram: "c4",
+    fixture: "gram-person-comma-only",
+    input: "%%\nC4Context\nPerson(,)\n",
+    prefixLength: 3,
+    commentText: "%%",
+    commentFrom: 0,
+    expected: {
+      where: "offset 0",
+      message:
+        'the character outside the tokens and comments is not whitespace: "%"',
+    },
+    directives: [],
+  },
+  {
+    id: "tokens-228-class-preheader-bare-record",
+    condition: "A detection-passed bare %% line produces a diagram Comment",
+    diagram: "class",
+    fixture: "gram-name-alone",
+    input: "%%\nclassDiagram\nFoo\n",
+    prefixLength: 3,
+    commentText: "%%",
+    commentFrom: 0,
+    expected: {
+      where: "offset 0",
+      message:
+        'the character outside the tokens and comments is not whitespace: "%"',
+    },
+    directives: [],
+  },
+  {
+    id: "tokens-228-cynefin-preheader-bare-record",
+    condition: "A detection-passed bare %% line produces a diagram Comment",
+    diagram: "cynefin",
+    fixture: "header-only",
+    input: "%%\ncynefin-beta",
+    prefixLength: 3,
+    commentText: "%%",
+    commentFrom: 0,
+    expected: {
+      where: "offset 0",
+      message:
+        'the character outside the tokens and comments is not whitespace: "%"',
+    },
+    directives: [],
+  },
+  {
+    id: "tokens-228-eventmodeling-preheader-bare-record",
+    condition: "A detection-passed bare %% line produces a diagram Comment",
+    diagram: "eventmodeling",
+    fixture: "header-only",
+    input: "%%\neventmodeling",
+    prefixLength: 3,
+    commentText: "%%",
+    commentFrom: 0,
+    expected: {
+      where: "offset 0",
+      message:
+        'the character outside the tokens and comments is not whitespace: "%"',
+    },
+    directives: [],
+  },
+  {
+    id: "tokens-228-gantt-preheader-bare-record",
+    condition: "A detection-passed bare %% line produces a diagram Comment",
+    diagram: "gantt",
+    fixture: "header-only",
+    input: "%%\ngantt",
+    prefixLength: 3,
+    commentText: "%%",
+    commentFrom: 0,
+    expected: {
+      where: "offset 0",
+      message:
+        'the character outside the tokens and comments is not whitespace: "%"',
+    },
+    directives: [],
+  },
+  {
+    id: "tokens-228-gitgraph-preheader-bare-record",
+    condition: "A detection-passed bare %% line produces a diagram Comment",
+    diagram: "gitgraph",
+    fixture: "header-only",
+    input: "%%\ngitGraph\n",
+    prefixLength: 3,
+    commentText: "%%",
+    commentFrom: 0,
+    expected: {
+      where: "offset 0",
+      message:
+        'the character outside the tokens and comments is not whitespace: "%"',
+    },
+    directives: [],
+  },
+  {
+    id: "tokens-228-info-preheader-bare-record",
+    condition: "A detection-passed bare %% line produces a diagram Comment",
+    diagram: "info",
+    fixture: "spec-info-06271baf",
+    input: "%%\ninfo",
+    prefixLength: 3,
+    commentText: "%%",
+    commentFrom: 0,
+    expected: {
+      where: "offset 0",
+      message:
+        'the character outside the tokens and comments is not whitespace: "%"',
+    },
+    directives: [],
+  },
+  {
+    id: "tokens-228-ishikawa-preheader-bare-record",
+    condition: "A detection-passed bare %% line produces a diagram Comment",
+    diagram: "ishikawa",
+    fixture: "header-only-lf",
+    input: "%%\nishikawa\n",
+    prefixLength: 3,
+    commentText: "%%",
+    commentFrom: 0,
+    expected: {
+      where: "offset 0",
+      message:
+        'the character outside the tokens and comments is not whitespace: "%"',
+    },
+    directives: [],
+  },
+  {
+    id: "tokens-228-journey-preheader-bare-record",
+    condition: "A detection-passed bare %% line produces a diagram Comment",
+    diagram: "journey",
+    fixture: "header-only",
+    input: "%%\njourney",
+    prefixLength: 3,
+    commentText: "%%",
+    commentFrom: 0,
+    expected: {
+      where: "offset 0",
+      message:
+        'the character outside the tokens and comments is not whitespace: "%"',
+    },
+    directives: [],
+  },
+  {
+    id: "tokens-228-kanban-preheader-bare-record",
+    condition: "A detection-passed bare %% line produces a diagram Comment",
+    diagram: "kanban",
+    fixture: "header-only-lf",
+    input: "%%\nkanban\n",
+    prefixLength: 3,
+    commentText: "%%",
+    commentFrom: 0,
+    expected: {
+      where: "offset 0",
+      message:
+        'the character outside the tokens and comments is not whitespace: "%"',
+    },
+    directives: [],
+  },
+  {
+    id: "tokens-228-mindmap-preheader-bare-record",
+    condition: "A detection-passed bare %% line produces a diagram Comment",
+    diagram: "mindmap",
+    fixture: "db-header-only",
+    input: "%%\nmindmap\n",
+    prefixLength: 3,
+    commentText: "%%",
+    commentFrom: 0,
+    expected: {
+      where: "offset 0",
+      message:
+        'the character outside the tokens and comments is not whitespace: "%"',
+    },
+    directives: [],
+  },
+  {
+    id: "tokens-228-packet-preheader-bare-record",
+    condition: "A detection-passed bare %% line produces a diagram Comment",
+    diagram: "packet",
+    fixture: "spec-packet-7426afc4",
+    input: "%%\npacket",
+    prefixLength: 3,
+    commentText: "%%",
+    commentFrom: 0,
+    expected: {
+      where: "offset 0",
+      message:
+        'the character outside the tokens and comments is not whitespace: "%"',
+    },
+    directives: [],
+  },
+  {
+    id: "tokens-228-pie-preheader-bare-record",
+    condition: "A detection-passed bare %% line produces a diagram Comment",
+    diagram: "pie",
+    fixture: "header-only",
+    input: "%%\npie",
+    prefixLength: 3,
+    commentText: "%%",
+    commentFrom: 0,
+    expected: {
+      where: "offset 0",
+      message:
+        'the character outside the tokens and comments is not whitespace: "%"',
+    },
+    directives: [],
+  },
+  {
+    id: "tokens-228-quadrant-preheader-bare-record",
+    condition: "A detection-passed bare %% line produces a diagram Comment",
+    diagram: "quadrant",
+    fixture: "spec-quadrant-jison-fe2d2340",
+    input: "%%\nquadrantChart",
+    prefixLength: 3,
+    commentText: "%%",
+    commentFrom: 0,
+    expected: {
+      where: "offset 0",
+      message:
+        'the character outside the tokens and comments is not whitespace: "%"',
+    },
+    directives: [],
+  },
+  {
+    id: "tokens-228-radar-preheader-bare-record",
+    condition: "A detection-passed bare %% line produces a diagram Comment",
+    diagram: "radar",
+    fixture: "spec-radar-test-ts-f0c0291e",
+    input: "%%\nradar-beta",
+    prefixLength: 3,
+    commentText: "%%",
+    commentFrom: 0,
+    expected: {
+      where: "offset 0",
+      message:
+        'the character outside the tokens and comments is not whitespace: "%"',
+    },
+    directives: [],
+  },
+  {
+    id: "tokens-228-railroad-preheader-bare-record",
+    condition: "A detection-passed bare %% line produces a diagram Comment",
+    diagram: "railroad",
+    fixture: "ir-header-only",
+    input: "%%\nrailroad-beta",
+    prefixLength: 3,
+    commentText: "%%",
+    commentFrom: 0,
+    expected: {
+      where: "offset 0",
+      message:
+        'the character outside the tokens and comments is not whitespace: "%"',
+    },
+    directives: [],
+  },
+  {
+    id: "tokens-228-requirement-preheader-bare-record",
+    condition: "A detection-passed bare %% line produces a diagram Comment",
+    diagram: "requirement",
+    fixture: "header-only",
+    input: "%%\nrequirementDiagram",
+    prefixLength: 3,
+    commentText: "%%",
+    commentFrom: 0,
+    expected: {
+      where: "offset 0",
+      message:
+        'the character outside the tokens and comments is not whitespace: "%"',
+    },
+    directives: [],
+  },
+  {
+    id: "tokens-228-sequence-preheader-bare-record",
+    condition: "A detection-passed bare %% line produces a diagram Comment",
+    diagram: "sequence",
+    fixture: "spec-sequence-diagram-536f52ac",
+    input: "%%\nsequenceDiagram",
+    prefixLength: 3,
+    commentText: "%%",
+    commentFrom: 0,
+    expected: {
+      where: "offset 0",
+      message:
+        'the character outside the tokens and comments is not whitespace: "%"',
+    },
+    directives: [],
+  },
+  {
+    id: "tokens-228-state-preheader-bare-record",
+    condition: "A detection-passed bare %% line produces a diagram Comment",
+    diagram: "state",
+    fixture: "header-only",
+    input: "%%\nstateDiagram\n",
+    prefixLength: 3,
+    commentText: "%%",
+    commentFrom: 0,
+    expected: {
+      where: "offset 0",
+      message:
+        'the character outside the tokens and comments is not whitespace: "%"',
+    },
+    directives: [],
+  },
+  {
+    id: "tokens-228-timeline-preheader-bare-record",
+    condition: "A detection-passed bare %% line produces a diagram Comment",
+    diagram: "timeline",
+    fixture: "header-without-line-feed",
+    input: "%%\ntimeline",
+    prefixLength: 3,
+    commentText: "%%",
+    commentFrom: 0,
+    expected: {
+      where: "offset 0",
+      message:
+        'the character outside the tokens and comments is not whitespace: "%"',
+    },
+    directives: [],
+  },
+  {
+    id: "tokens-228-treemap-preheader-bare-record",
+    condition: "A detection-passed bare %% line produces a diagram Comment",
+    diagram: "treemap",
+    fixture: "spec-treemap-test-ts-892fa294",
+    input: "%%\ntreemap",
+    prefixLength: 3,
+    commentText: "%%",
+    commentFrom: 0,
+    expected: {
+      where: "offset 0",
+      message:
+        'the character outside the tokens and comments is not whitespace: "%"',
+    },
+    directives: [],
+  },
+  {
+    id: "tokens-228-treeview-preheader-bare-record",
+    condition: "A detection-passed bare %% line produces a diagram Comment",
+    diagram: "treeview",
+    fixture: "header-only",
+    input: "%%\ntreeView-beta\n",
+    prefixLength: 3,
+    commentText: "%%",
+    commentFrom: 0,
+    expected: {
+      where: "offset 0",
+      message:
+        'the character outside the tokens and comments is not whitespace: "%"',
+    },
+    directives: [],
+  },
+  {
+    id: "tokens-228-usecase-preheader-bare-record",
+    condition: "A detection-passed bare %% line produces a diagram Comment",
+    diagram: "usecase",
+    fixture: "spec-usecase-parser-7ae00acb",
+    input: "%%\nusecase-beta",
+    prefixLength: 3,
+    commentText: "%%",
+    commentFrom: 0,
+    expected: {
+      where: "offset 0",
+      message:
+        'the character outside the tokens and comments is not whitespace: "%"',
+    },
+    directives: [],
+  },
+  {
+    id: "tokens-228-venn-preheader-bare-record",
+    condition: "A detection-passed bare %% line produces a diagram Comment",
+    diagram: "venn",
+    fixture: "header-only",
+    input: "%%\nvenn-beta",
+    prefixLength: 3,
+    commentText: "%%",
+    commentFrom: 0,
+    expected: {
+      where: "offset 0",
+      message:
+        'the character outside the tokens and comments is not whitespace: "%"',
+    },
+    directives: [],
+  },
+  {
+    id: "tokens-228-wardley-preheader-bare-record",
+    condition: "A detection-passed bare %% line produces a diagram Comment",
+    diagram: "wardley",
+    fixture: "header-only",
+    input: "%%\nwardley-beta",
+    prefixLength: 3,
+    commentText: "%%",
+    commentFrom: 0,
+    expected: {
+      where: "offset 0",
+      message:
+        'the character outside the tokens and comments is not whitespace: "%"',
+    },
+    directives: [],
+  },
+  {
+    id: "tokens-228-xychart-preheader-bare-record",
+    condition: "A detection-passed bare %% line produces a diagram Comment",
+    diagram: "xychart",
+    fixture: "header-without-line-feed",
+    input: "%%\nxychart-beta",
+    prefixLength: 3,
+    commentText: "%%",
+    commentFrom: 0,
+    expected: {
+      where: "offset 0",
+      message:
+        'the character outside the tokens and comments is not whitespace: "%"',
+    },
+    directives: [],
+  },
 ] as const
 
 const sharedCommentWrongMarkCases = [
@@ -19302,6 +21287,467 @@ const sharedCommentWrongMarkCases = [
     expected: {
       where: "Comment at 0-2",
       message: "the mark # is no mark of the comments of a SankeyDiagram",
+    },
+    mark: "#",
+    value: "%",
+    directives: [],
+  },
+  {
+    id: "tokens-228-agentflow-preheader-bare-mark",
+    condition: "A detection-passed bare %% line has mark %%",
+    diagram: "agentflow",
+    fixture: "header-only",
+    input: "%%\nagentflow-beta",
+    prefixLength: 3,
+    commentText: "%%",
+    commentFrom: 0,
+    expected: {
+      where: "Comment at 0-2",
+      message: "the mark # is no mark of the comments of a AgentflowDiagram",
+    },
+    mark: "#",
+    value: "%",
+    directives: [],
+  },
+  {
+    id: "tokens-228-architecture-preheader-bare-mark",
+    condition: "A detection-passed bare %% line has mark %%",
+    diagram: "architecture",
+    fixture: "spec-architecture-08253aa2",
+    input: "%%\narchitecture-beta",
+    prefixLength: 3,
+    commentText: "%%",
+    commentFrom: 0,
+    expected: {
+      where: "Comment at 0-2",
+      message: "the mark # is no mark of the comments of a ArchitectureDiagram",
+    },
+    mark: "#",
+    value: "%",
+    directives: [],
+  },
+  {
+    id: "tokens-228-c4-preheader-bare-mark",
+    condition: "A detection-passed bare %% line has mark %%",
+    diagram: "c4",
+    fixture: "gram-person-comma-only",
+    input: "%%\nC4Context\nPerson(,)\n",
+    prefixLength: 3,
+    commentText: "%%",
+    commentFrom: 0,
+    expected: {
+      where: "Comment at 0-2",
+      message: "the mark # is no mark of the comments of a C4Diagram",
+    },
+    mark: "#",
+    value: "%",
+    directives: [],
+  },
+  {
+    id: "tokens-228-class-preheader-bare-mark",
+    condition: "A detection-passed bare %% line has mark %%",
+    diagram: "class",
+    fixture: "gram-name-alone",
+    input: "%%\nclassDiagram\nFoo\n",
+    prefixLength: 3,
+    commentText: "%%",
+    commentFrom: 0,
+    expected: {
+      where: "Comment at 0-2",
+      message: "the mark # is no mark of the comments of a ClassDiagram",
+    },
+    mark: "#",
+    value: "%",
+    directives: [],
+  },
+  {
+    id: "tokens-228-cynefin-preheader-bare-mark",
+    condition: "A detection-passed bare %% line has mark %%",
+    diagram: "cynefin",
+    fixture: "header-only",
+    input: "%%\ncynefin-beta",
+    prefixLength: 3,
+    commentText: "%%",
+    commentFrom: 0,
+    expected: {
+      where: "Comment at 0-2",
+      message: "the mark # is no mark of the comments of a CynefinDiagram",
+    },
+    mark: "#",
+    value: "%",
+    directives: [],
+  },
+  {
+    id: "tokens-228-eventmodeling-preheader-bare-mark",
+    condition: "A detection-passed bare %% line has mark %%",
+    diagram: "eventmodeling",
+    fixture: "header-only",
+    input: "%%\neventmodeling",
+    prefixLength: 3,
+    commentText: "%%",
+    commentFrom: 0,
+    expected: {
+      where: "Comment at 0-2",
+      message: "the mark is no native eventmodeling comment mark",
+    },
+    mark: "#",
+    value: "%",
+    directives: [],
+  },
+  {
+    id: "tokens-228-gantt-preheader-bare-mark",
+    condition: "A detection-passed bare %% line has mark %%",
+    diagram: "gantt",
+    fixture: "header-only",
+    input: "%%\ngantt",
+    prefixLength: 3,
+    commentText: "%%",
+    commentFrom: 0,
+    expected: {
+      where: "Comment at 0-2",
+      message: "the mark # is no mark of the comments of a GanttDiagram",
+    },
+    mark: "#",
+    value: "%",
+    directives: [],
+  },
+  {
+    id: "tokens-228-gitgraph-preheader-bare-mark",
+    condition: "A detection-passed bare %% line has mark %%",
+    diagram: "gitgraph",
+    fixture: "header-only",
+    input: "%%\ngitGraph\n",
+    prefixLength: 3,
+    commentText: "%%",
+    commentFrom: 0,
+    expected: {
+      where: "Comment at 0-2",
+      message: "the mark # is no mark of the comments of a GitgraphDiagram",
+    },
+    mark: "#",
+    value: "%",
+    directives: [],
+  },
+  {
+    id: "tokens-228-info-preheader-bare-mark",
+    condition: "A detection-passed bare %% line has mark %%",
+    diagram: "info",
+    fixture: "spec-info-06271baf",
+    input: "%%\ninfo",
+    prefixLength: 3,
+    commentText: "%%",
+    commentFrom: 0,
+    expected: {
+      where: "Comment at 0-2",
+      message: "the mark # is no mark of the comments of a InfoDiagram",
+    },
+    mark: "#",
+    value: "%",
+    directives: [],
+  },
+  {
+    id: "tokens-228-ishikawa-preheader-bare-mark",
+    condition: "A detection-passed bare %% line has mark %%",
+    diagram: "ishikawa",
+    fixture: "header-only-lf",
+    input: "%%\nishikawa\n",
+    prefixLength: 3,
+    commentText: "%%",
+    commentFrom: 0,
+    expected: {
+      where: "Comment at 0-2",
+      message: "the mark # is no mark of the comments of a IshikawaDiagram",
+    },
+    mark: "#",
+    value: "%",
+    directives: [],
+  },
+  {
+    id: "tokens-228-journey-preheader-bare-mark",
+    condition: "A detection-passed bare %% line has mark %%",
+    diagram: "journey",
+    fixture: "header-only",
+    input: "%%\njourney",
+    prefixLength: 3,
+    commentText: "%%",
+    commentFrom: 0,
+    expected: { where: "Comment at 0-2", message: 'mark: "#", not "%%"' },
+    mark: "#",
+    value: "%",
+    directives: [],
+  },
+  {
+    id: "tokens-228-kanban-preheader-bare-mark",
+    condition: "A detection-passed bare %% line has mark %%",
+    diagram: "kanban",
+    fixture: "header-only-lf",
+    input: "%%\nkanban\n",
+    prefixLength: 3,
+    commentText: "%%",
+    commentFrom: 0,
+    expected: {
+      where: "Comment at 0-2",
+      message: "the mark # is no mark of the comments of a KanbanDiagram",
+    },
+    mark: "#",
+    value: "%",
+    directives: [],
+  },
+  {
+    id: "tokens-228-mindmap-preheader-bare-mark",
+    condition: "A detection-passed bare %% line has mark %%",
+    diagram: "mindmap",
+    fixture: "db-header-only",
+    input: "%%\nmindmap\n",
+    prefixLength: 3,
+    commentText: "%%",
+    commentFrom: 0,
+    expected: {
+      where: "Comment at 0-2",
+      message: "the mark # is no mark of the comments of a MindmapDiagram",
+    },
+    mark: "#",
+    value: "%",
+    directives: [],
+  },
+  {
+    id: "tokens-228-packet-preheader-bare-mark",
+    condition: "A detection-passed bare %% line has mark %%",
+    diagram: "packet",
+    fixture: "spec-packet-7426afc4",
+    input: "%%\npacket",
+    prefixLength: 3,
+    commentText: "%%",
+    commentFrom: 0,
+    expected: {
+      where: "Comment at 0-2",
+      message: "the mark # is no mark of the comments of a PacketDiagram",
+    },
+    mark: "#",
+    value: "%",
+    directives: [],
+  },
+  {
+    id: "tokens-228-pie-preheader-bare-mark",
+    condition: "A detection-passed bare %% line has mark %%",
+    diagram: "pie",
+    fixture: "header-only",
+    input: "%%\npie",
+    prefixLength: 3,
+    commentText: "%%",
+    commentFrom: 0,
+    expected: {
+      where: "Comment at 0-2",
+      message: "the mark # is no mark of the comments of a PieDiagram",
+    },
+    mark: "#",
+    value: "%",
+    directives: [],
+  },
+  {
+    id: "tokens-228-quadrant-preheader-bare-mark",
+    condition: "A detection-passed bare %% line has mark %%",
+    diagram: "quadrant",
+    fixture: "spec-quadrant-jison-fe2d2340",
+    input: "%%\nquadrantChart",
+    prefixLength: 3,
+    commentText: "%%",
+    commentFrom: 0,
+    expected: {
+      where: "Comment at 0-2",
+      message: "the mark # is no mark of the comments of a QuadrantDiagram",
+    },
+    mark: "#",
+    value: "%",
+    directives: [],
+  },
+  {
+    id: "tokens-228-radar-preheader-bare-mark",
+    condition: "A detection-passed bare %% line has mark %%",
+    diagram: "radar",
+    fixture: "spec-radar-test-ts-f0c0291e",
+    input: "%%\nradar-beta",
+    prefixLength: 3,
+    commentText: "%%",
+    commentFrom: 0,
+    expected: {
+      where: "Comment at 0-2",
+      message: "the mark # is no mark of the comments of a RadarDiagram",
+    },
+    mark: "#",
+    value: "%",
+    directives: [],
+  },
+  {
+    id: "tokens-228-railroad-preheader-bare-mark",
+    condition: "A detection-passed bare %% line has mark %%",
+    diagram: "railroad",
+    fixture: "ir-header-only",
+    input: "%%\nrailroad-beta",
+    prefixLength: 3,
+    commentText: "%%",
+    commentFrom: 0,
+    expected: {
+      where: "Comment at 0-2",
+      message: "a detection-passed bare line has mark %%",
+    },
+    mark: "#",
+    value: "%",
+    directives: [],
+  },
+  {
+    id: "tokens-228-requirement-preheader-bare-mark",
+    condition: "A detection-passed bare %% line has mark %%",
+    diagram: "requirement",
+    fixture: "header-only",
+    input: "%%\nrequirementDiagram",
+    prefixLength: 3,
+    commentText: "%%",
+    commentFrom: 0,
+    expected: { where: "Comment at 0-2", message: 'mark: "#", not "%%"' },
+    mark: "#",
+    value: "%",
+    directives: [],
+  },
+  {
+    id: "tokens-228-sequence-preheader-bare-mark",
+    condition: "A detection-passed bare %% line has mark %%",
+    diagram: "sequence",
+    fixture: "spec-sequence-diagram-536f52ac",
+    input: "%%\nsequenceDiagram",
+    prefixLength: 3,
+    commentText: "%%",
+    commentFrom: 0,
+    expected: { where: "Comment at 0-2", message: 'mark: "#", not "%%"' },
+    mark: "#",
+    value: "%",
+    directives: [],
+  },
+  {
+    id: "tokens-228-state-preheader-bare-mark",
+    condition: "A detection-passed bare %% line has mark %%",
+    diagram: "state",
+    fixture: "header-only",
+    input: "%%\nstateDiagram\n",
+    prefixLength: 3,
+    commentText: "%%",
+    commentFrom: 0,
+    expected: { where: "Comment at 0-2", message: 'mark: "#", not "%%"' },
+    mark: "#",
+    value: "%",
+    directives: [],
+  },
+  {
+    id: "tokens-228-timeline-preheader-bare-mark",
+    condition: "A detection-passed bare %% line has mark %%",
+    diagram: "timeline",
+    fixture: "header-without-line-feed",
+    input: "%%\ntimeline",
+    prefixLength: 3,
+    commentText: "%%",
+    commentFrom: 0,
+    expected: { where: "Comment at 0-2", message: 'mark: "#", not "%%"' },
+    mark: "#",
+    value: "%",
+    directives: [],
+  },
+  {
+    id: "tokens-228-treemap-preheader-bare-mark",
+    condition: "A detection-passed bare %% line has mark %%",
+    diagram: "treemap",
+    fixture: "spec-treemap-test-ts-892fa294",
+    input: "%%\ntreemap",
+    prefixLength: 3,
+    commentText: "%%",
+    commentFrom: 0,
+    expected: {
+      where: "Comment at 0-2",
+      message: "the mark # is no mark of the comments of a TreemapDiagram",
+    },
+    mark: "#",
+    value: "%",
+    directives: [],
+  },
+  {
+    id: "tokens-228-treeview-preheader-bare-mark",
+    condition: "A detection-passed bare %% line has mark %%",
+    diagram: "treeview",
+    fixture: "header-only",
+    input: "%%\ntreeView-beta\n",
+    prefixLength: 3,
+    commentText: "%%",
+    commentFrom: 0,
+    expected: {
+      where: "Comment at 0-2",
+      message: "the mark # is no mark of the comments of a TreeviewDiagram",
+    },
+    mark: "#",
+    value: "%",
+    directives: [],
+  },
+  {
+    id: "tokens-228-usecase-preheader-bare-mark",
+    condition: "A detection-passed bare %% line has mark %%",
+    diagram: "usecase",
+    fixture: "spec-usecase-parser-7ae00acb",
+    input: "%%\nusecase-beta",
+    prefixLength: 3,
+    commentText: "%%",
+    commentFrom: 0,
+    expected: {
+      where: "Comment at 0-2",
+      message: "the mark # is no mark of the comments of a UsecaseDiagram",
+    },
+    mark: "#",
+    value: "%",
+    directives: [],
+  },
+  {
+    id: "tokens-228-venn-preheader-bare-mark",
+    condition: "A detection-passed bare %% line has mark %%",
+    diagram: "venn",
+    fixture: "header-only",
+    input: "%%\nvenn-beta",
+    prefixLength: 3,
+    commentText: "%%",
+    commentFrom: 0,
+    expected: {
+      where: "Comment at 0-2",
+      message: "the mark # is no mark of the comments of a VennDiagram",
+    },
+    mark: "#",
+    value: "%",
+    directives: [],
+  },
+  {
+    id: "tokens-228-wardley-preheader-bare-mark",
+    condition: "A detection-passed bare %% line has mark %%",
+    diagram: "wardley",
+    fixture: "header-only",
+    input: "%%\nwardley-beta",
+    prefixLength: 3,
+    commentText: "%%",
+    commentFrom: 0,
+    expected: {
+      where: "Comment at 0-2",
+      message: "the mark # is no mark of the comments of a WardleyDiagram",
+    },
+    mark: "#",
+    value: "%",
+    directives: [],
+  },
+  {
+    id: "tokens-228-xychart-preheader-bare-mark",
+    condition: "A detection-passed bare %% line has mark %%",
+    diagram: "xychart",
+    fixture: "header-without-line-feed",
+    input: "%%\nxychart-beta",
+    prefixLength: 3,
+    commentText: "%%",
+    commentFrom: 0,
+    expected: {
+      where: "Comment at 0-2",
+      message: "the mark # is no mark of the comments of a XychartDiagram",
     },
     mark: "#",
     value: "%",
@@ -19397,6 +21843,538 @@ const sharedCommentRegionTokenCases = [
     diagram: "common",
     fixture: "error-trailing-percent",
     input: "%% c\n \nerror %% x\n",
+    prefixLength: 7,
+    commentText: "%% c",
+    commentFrom: 0,
+    expected: {
+      where: "RawText at 4-5",
+      message:
+        "starts with whitespace or a line terminator where no value starts",
+    },
+    tokenType: "RawText",
+    tokenFrom: 4,
+    tokenText: "\n",
+    directives: [],
+  },
+  {
+    id: "tokens-228-agentflow-comment-region-newline-has-no-token",
+    condition: "The comment region’s terminating line feed is outside tokens",
+    diagram: "agentflow",
+    fixture: "header-only",
+    input: "%% c\n \nagentflow-beta",
+    prefixLength: 7,
+    commentText: "%% c",
+    commentFrom: 0,
+    expected: {
+      where: "RawText at 4-5",
+      message:
+        "starts with whitespace or a line terminator where no value starts",
+    },
+    tokenType: "RawText",
+    tokenFrom: 4,
+    tokenText: "\n",
+    directives: [],
+  },
+  {
+    id: "tokens-228-architecture-comment-region-newline-has-no-token",
+    condition: "The comment region’s terminating line feed is outside tokens",
+    diagram: "architecture",
+    fixture: "spec-architecture-08253aa2",
+    input: "%% c\n \narchitecture-beta",
+    prefixLength: 7,
+    commentText: "%% c",
+    commentFrom: 0,
+    expected: {
+      where: "RawText at 4-5",
+      message:
+        "starts with whitespace or a line terminator where no value starts",
+    },
+    tokenType: "RawText",
+    tokenFrom: 4,
+    tokenText: "\n",
+    directives: [],
+  },
+  {
+    id: "tokens-228-c4-comment-region-newline-has-no-token",
+    condition: "The comment region’s terminating line feed is outside tokens",
+    diagram: "c4",
+    fixture: "gram-person-comma-only",
+    input: "%% c\n \nC4Context\nPerson(,)\n",
+    prefixLength: 7,
+    commentText: "%% c",
+    commentFrom: 0,
+    expected: {
+      where: "RawText at 4-5",
+      message:
+        "starts with whitespace or a line terminator where no value starts",
+    },
+    tokenType: "RawText",
+    tokenFrom: 4,
+    tokenText: "\n",
+    directives: [],
+  },
+  {
+    id: "tokens-228-class-comment-region-newline-has-no-token",
+    condition: "The comment region’s terminating line feed is outside tokens",
+    diagram: "class",
+    fixture: "gram-name-alone",
+    input: "%% c\n \nclassDiagram\nFoo\n",
+    prefixLength: 7,
+    commentText: "%% c",
+    commentFrom: 0,
+    expected: {
+      where: "RawText at 4-5",
+      message:
+        "starts with whitespace or a line terminator where no value starts",
+    },
+    tokenType: "RawText",
+    tokenFrom: 4,
+    tokenText: "\n",
+    directives: [],
+  },
+  {
+    id: "tokens-228-cynefin-comment-region-newline-has-no-token",
+    condition: "The comment region’s terminating line feed is outside tokens",
+    diagram: "cynefin",
+    fixture: "header-only",
+    input: "%% c\n \ncynefin-beta",
+    prefixLength: 7,
+    commentText: "%% c",
+    commentFrom: 0,
+    expected: {
+      where: "RawText at 4-5",
+      message:
+        "starts with whitespace or a line terminator where no value starts",
+    },
+    tokenType: "RawText",
+    tokenFrom: 4,
+    tokenText: "\n",
+    directives: [],
+  },
+  {
+    id: "tokens-228-eventmodeling-comment-region-newline-has-no-token",
+    condition: "The comment region’s terminating line feed is outside tokens",
+    diagram: "eventmodeling",
+    fixture: "header-only",
+    input: "%% c\n \neventmodeling",
+    prefixLength: 7,
+    commentText: "%% c",
+    commentFrom: 0,
+    expected: {
+      where: "RawText at 4-5",
+      message:
+        "starts with whitespace or a line terminator where no value starts",
+    },
+    tokenType: "RawText",
+    tokenFrom: 4,
+    tokenText: "\n",
+    directives: [],
+  },
+  {
+    id: "tokens-228-gantt-comment-region-newline-has-no-token",
+    condition: "The comment region’s terminating line feed is outside tokens",
+    diagram: "gantt",
+    fixture: "header-only",
+    input: "%% c\n \ngantt",
+    prefixLength: 7,
+    commentText: "%% c",
+    commentFrom: 0,
+    expected: {
+      where: "RawText at 4-5",
+      message:
+        "starts with whitespace or a line terminator where no value starts",
+    },
+    tokenType: "RawText",
+    tokenFrom: 4,
+    tokenText: "\n",
+    directives: [],
+  },
+  {
+    id: "tokens-228-gitgraph-comment-region-newline-has-no-token",
+    condition: "The comment region’s terminating line feed is outside tokens",
+    diagram: "gitgraph",
+    fixture: "header-only",
+    input: "%% c\n \ngitGraph\n",
+    prefixLength: 7,
+    commentText: "%% c",
+    commentFrom: 0,
+    expected: {
+      where: "RawText at 4-5",
+      message:
+        "starts with whitespace or a line terminator where no value starts",
+    },
+    tokenType: "RawText",
+    tokenFrom: 4,
+    tokenText: "\n",
+    directives: [],
+  },
+  {
+    id: "tokens-228-info-comment-region-newline-has-no-token",
+    condition: "The comment region’s terminating line feed is outside tokens",
+    diagram: "info",
+    fixture: "spec-info-06271baf",
+    input: "%% c\n \ninfo",
+    prefixLength: 7,
+    commentText: "%% c",
+    commentFrom: 0,
+    expected: {
+      where: "RawText at 4-5",
+      message:
+        "starts with whitespace or a line terminator where no value starts",
+    },
+    tokenType: "RawText",
+    tokenFrom: 4,
+    tokenText: "\n",
+    directives: [],
+  },
+  {
+    id: "tokens-228-ishikawa-comment-region-newline-has-no-token",
+    condition: "The comment region’s terminating line feed is outside tokens",
+    diagram: "ishikawa",
+    fixture: "header-only-lf",
+    input: "%% c\n \nishikawa\n",
+    prefixLength: 7,
+    commentText: "%% c",
+    commentFrom: 0,
+    expected: {
+      where: "RawText at 4-5",
+      message:
+        "starts with whitespace or a line terminator where no value starts",
+    },
+    tokenType: "RawText",
+    tokenFrom: 4,
+    tokenText: "\n",
+    directives: [],
+  },
+  {
+    id: "tokens-228-journey-comment-region-newline-has-no-token",
+    condition: "The comment region’s terminating line feed is outside tokens",
+    diagram: "journey",
+    fixture: "header-only",
+    input: "%% c\n \njourney",
+    prefixLength: 7,
+    commentText: "%% c",
+    commentFrom: 0,
+    expected: {
+      where: "RawText at 4-5",
+      message:
+        "starts with whitespace or a line terminator where no value starts",
+    },
+    tokenType: "RawText",
+    tokenFrom: 4,
+    tokenText: "\n",
+    directives: [],
+  },
+  {
+    id: "tokens-228-kanban-comment-region-newline-has-no-token",
+    condition: "The comment region’s terminating line feed is outside tokens",
+    diagram: "kanban",
+    fixture: "header-only-lf",
+    input: "%% c\n \nkanban\n",
+    prefixLength: 7,
+    commentText: "%% c",
+    commentFrom: 0,
+    expected: {
+      where: "RawText at 4-5",
+      message:
+        "starts with whitespace or a line terminator where no value starts",
+    },
+    tokenType: "RawText",
+    tokenFrom: 4,
+    tokenText: "\n",
+    directives: [],
+  },
+  {
+    id: "tokens-228-mindmap-comment-region-newline-has-no-token",
+    condition: "The comment region’s terminating line feed is outside tokens",
+    diagram: "mindmap",
+    fixture: "db-header-only",
+    input: "%% c\n \nmindmap\n",
+    prefixLength: 7,
+    commentText: "%% c",
+    commentFrom: 0,
+    expected: {
+      where: "RawText at 4-5",
+      message:
+        "starts with whitespace or a line terminator where no value starts",
+    },
+    tokenType: "RawText",
+    tokenFrom: 4,
+    tokenText: "\n",
+    directives: [],
+  },
+  {
+    id: "tokens-228-packet-comment-region-newline-has-no-token",
+    condition: "The comment region’s terminating line feed is outside tokens",
+    diagram: "packet",
+    fixture: "spec-packet-7426afc4",
+    input: "%% c\n \npacket",
+    prefixLength: 7,
+    commentText: "%% c",
+    commentFrom: 0,
+    expected: {
+      where: "RawText at 4-5",
+      message:
+        "starts with whitespace or a line terminator where no value starts",
+    },
+    tokenType: "RawText",
+    tokenFrom: 4,
+    tokenText: "\n",
+    directives: [],
+  },
+  {
+    id: "tokens-228-pie-comment-region-newline-has-no-token",
+    condition: "The comment region’s terminating line feed is outside tokens",
+    diagram: "pie",
+    fixture: "header-only",
+    input: "%% c\n \npie",
+    prefixLength: 7,
+    commentText: "%% c",
+    commentFrom: 0,
+    expected: {
+      where: "RawText at 4-5",
+      message:
+        "starts with whitespace or a line terminator where no value starts",
+    },
+    tokenType: "RawText",
+    tokenFrom: 4,
+    tokenText: "\n",
+    directives: [],
+  },
+  {
+    id: "tokens-228-quadrant-comment-region-newline-has-no-token",
+    condition: "The comment region’s terminating line feed is outside tokens",
+    diagram: "quadrant",
+    fixture: "spec-quadrant-jison-fe2d2340",
+    input: "%% c\n \nquadrantChart",
+    prefixLength: 7,
+    commentText: "%% c",
+    commentFrom: 0,
+    expected: {
+      where: "RawText at 4-5",
+      message:
+        "starts with whitespace or a line terminator where no value starts",
+    },
+    tokenType: "RawText",
+    tokenFrom: 4,
+    tokenText: "\n",
+    directives: [],
+  },
+  {
+    id: "tokens-228-radar-comment-region-newline-has-no-token",
+    condition: "The comment region’s terminating line feed is outside tokens",
+    diagram: "radar",
+    fixture: "spec-radar-test-ts-f0c0291e",
+    input: "%% c\n \nradar-beta",
+    prefixLength: 7,
+    commentText: "%% c",
+    commentFrom: 0,
+    expected: {
+      where: "RawText at 4-5",
+      message:
+        "starts with whitespace or a line terminator where no value starts",
+    },
+    tokenType: "RawText",
+    tokenFrom: 4,
+    tokenText: "\n",
+    directives: [],
+  },
+  {
+    id: "tokens-228-railroad-comment-region-newline-has-no-token",
+    condition: "The comment region’s terminating line feed is outside tokens",
+    diagram: "railroad",
+    fixture: "ir-header-only",
+    input: "%% c\n \nrailroad-beta",
+    prefixLength: 7,
+    commentText: "%% c",
+    commentFrom: 0,
+    expected: {
+      where: "RawText at 4-5",
+      message:
+        "starts with whitespace or a line terminator where no value starts",
+    },
+    tokenType: "RawText",
+    tokenFrom: 4,
+    tokenText: "\n",
+    directives: [],
+  },
+  {
+    id: "tokens-228-requirement-comment-region-newline-has-no-token",
+    condition: "The comment region’s terminating line feed is outside tokens",
+    diagram: "requirement",
+    fixture: "header-only",
+    input: "%% c\n \nrequirementDiagram",
+    prefixLength: 7,
+    commentText: "%% c",
+    commentFrom: 0,
+    expected: {
+      where: "RawText at 4-5",
+      message:
+        "starts with whitespace or a line terminator where no value starts",
+    },
+    tokenType: "RawText",
+    tokenFrom: 4,
+    tokenText: "\n",
+    directives: [],
+  },
+  {
+    id: "tokens-228-sequence-comment-region-newline-has-no-token",
+    condition: "The comment region’s terminating line feed is outside tokens",
+    diagram: "sequence",
+    fixture: "spec-sequence-diagram-536f52ac",
+    input: "%% c\n \nsequenceDiagram",
+    prefixLength: 7,
+    commentText: "%% c",
+    commentFrom: 0,
+    expected: {
+      where: "RawText at 4-5",
+      message:
+        "starts with whitespace or a line terminator where no value starts",
+    },
+    tokenType: "RawText",
+    tokenFrom: 4,
+    tokenText: "\n",
+    directives: [],
+  },
+  {
+    id: "tokens-228-state-comment-region-newline-has-no-token",
+    condition: "The comment region’s terminating line feed is outside tokens",
+    diagram: "state",
+    fixture: "header-only",
+    input: "%% c\n \nstateDiagram\n",
+    prefixLength: 7,
+    commentText: "%% c",
+    commentFrom: 0,
+    expected: {
+      where: "RawText at 4-5",
+      message:
+        "starts with whitespace or a line terminator where no value starts",
+    },
+    tokenType: "RawText",
+    tokenFrom: 4,
+    tokenText: "\n",
+    directives: [],
+  },
+  {
+    id: "tokens-228-timeline-comment-region-newline-has-no-token",
+    condition: "The comment region’s terminating line feed is outside tokens",
+    diagram: "timeline",
+    fixture: "header-without-line-feed",
+    input: "%% c\n \ntimeline",
+    prefixLength: 7,
+    commentText: "%% c",
+    commentFrom: 0,
+    expected: {
+      where: "RawText at 4-5",
+      message:
+        "starts with whitespace or a line terminator where no value starts",
+    },
+    tokenType: "RawText",
+    tokenFrom: 4,
+    tokenText: "\n",
+    directives: [],
+  },
+  {
+    id: "tokens-228-treemap-comment-region-newline-has-no-token",
+    condition: "The comment region’s terminating line feed is outside tokens",
+    diagram: "treemap",
+    fixture: "spec-treemap-test-ts-892fa294",
+    input: "%% c\n \ntreemap",
+    prefixLength: 7,
+    commentText: "%% c",
+    commentFrom: 0,
+    expected: {
+      where: "RawText at 4-5",
+      message:
+        "starts with whitespace or a line terminator where no value starts",
+    },
+    tokenType: "RawText",
+    tokenFrom: 4,
+    tokenText: "\n",
+    directives: [],
+  },
+  {
+    id: "tokens-228-treeview-comment-region-newline-has-no-token",
+    condition: "The comment region’s terminating line feed is outside tokens",
+    diagram: "treeview",
+    fixture: "header-only",
+    input: "%% c\n \ntreeView-beta\n",
+    prefixLength: 7,
+    commentText: "%% c",
+    commentFrom: 0,
+    expected: {
+      where: "RawText at 4-5",
+      message:
+        "starts with whitespace or a line terminator where no value starts",
+    },
+    tokenType: "RawText",
+    tokenFrom: 4,
+    tokenText: "\n",
+    directives: [],
+  },
+  {
+    id: "tokens-228-usecase-comment-region-newline-has-no-token",
+    condition: "The comment region’s terminating line feed is outside tokens",
+    diagram: "usecase",
+    fixture: "spec-usecase-parser-7ae00acb",
+    input: "%% c\n \nusecase-beta",
+    prefixLength: 7,
+    commentText: "%% c",
+    commentFrom: 0,
+    expected: {
+      where: "RawText at 4-5",
+      message:
+        "starts with whitespace or a line terminator where no value starts",
+    },
+    tokenType: "RawText",
+    tokenFrom: 4,
+    tokenText: "\n",
+    directives: [],
+  },
+  {
+    id: "tokens-228-venn-comment-region-newline-has-no-token",
+    condition: "The comment region’s terminating line feed is outside tokens",
+    diagram: "venn",
+    fixture: "header-only",
+    input: "%% c\n \nvenn-beta",
+    prefixLength: 7,
+    commentText: "%% c",
+    commentFrom: 0,
+    expected: {
+      where: "RawText at 4-5",
+      message:
+        "starts with whitespace or a line terminator where no value starts",
+    },
+    tokenType: "RawText",
+    tokenFrom: 4,
+    tokenText: "\n",
+    directives: [],
+  },
+  {
+    id: "tokens-228-wardley-comment-region-newline-has-no-token",
+    condition: "The comment region’s terminating line feed is outside tokens",
+    diagram: "wardley",
+    fixture: "header-only",
+    input: "%% c\n \nwardley-beta",
+    prefixLength: 7,
+    commentText: "%% c",
+    commentFrom: 0,
+    expected: {
+      where: "RawText at 4-5",
+      message:
+        "starts with whitespace or a line terminator where no value starts",
+    },
+    tokenType: "RawText",
+    tokenFrom: 4,
+    tokenText: "\n",
+    directives: [],
+  },
+  {
+    id: "tokens-228-xychart-comment-region-newline-has-no-token",
+    condition: "The comment region’s terminating line feed is outside tokens",
+    diagram: "xychart",
+    fixture: "header-without-line-feed",
+    input: "%% c\n \nxychart-beta",
     prefixLength: 7,
     commentText: "%% c",
     commentFrom: 0,
@@ -19731,6 +22709,1016 @@ const sharedCommentFollowingCharacterCases = [
       },
     ],
   },
+  {
+    id: "tokens-228-agentflow-unclosed-directive-excludes-trailing-space",
+    condition:
+      "A comment ending at its unclosed directive excludes scanned trailing whitespace",
+    diagram: "agentflow",
+    fixture: "header-only",
+    input: "agentflow-beta\n%% %%{init: { \n \n",
+    prefixLength: 0,
+    commentText: "%% %%{init: {",
+    commentFrom: 15,
+    expected: {
+      where: "Comment at 15-29",
+      message:
+        "does not end where the directive that takes the rest of the text ends",
+    },
+    range: [15, 29],
+    value: " %%{init: { ",
+    directives: [{ text: "%%{init: {", from: 18 }],
+  },
+  {
+    id: "tokens-228-architecture-unclosed-directive-excludes-trailing-space",
+    condition:
+      "A comment ending at its unclosed directive excludes scanned trailing whitespace",
+    diagram: "architecture",
+    fixture: "spec-architecture-08253aa2",
+    input: "architecture-beta\n%% %%{init: { \n \n",
+    prefixLength: 0,
+    commentText: "%% %%{init: {",
+    commentFrom: 18,
+    expected: {
+      where: "Comment at 18-32",
+      message: "the range of a comment line: [18,32], not [18,31]",
+    },
+    range: [18, 32],
+    value: " %%{init: { ",
+    directives: [{ text: "%%{init: {", from: 21 }],
+  },
+  {
+    id: "tokens-228-c4-unclosed-directive-excludes-trailing-space",
+    condition:
+      "A comment ending at its unclosed directive excludes scanned trailing whitespace",
+    diagram: "c4",
+    fixture: "gram-person-comma-only",
+    input: "C4Context\nPerson(,)\n%% %%{init: { \n \n",
+    prefixLength: 0,
+    commentText: "%% %%{init: {",
+    commentFrom: 20,
+    expected: {
+      where: "Comment at 20-34",
+      message: "the range of a comment line: [20,34], not [20,33]",
+    },
+    range: [20, 34],
+    value: " %%{init: { ",
+    directives: [{ text: "%%{init: {", from: 23 }],
+  },
+  {
+    id: "tokens-228-class-unclosed-directive-excludes-trailing-space",
+    condition:
+      "A comment ending at its unclosed directive excludes scanned trailing whitespace",
+    diagram: "class",
+    fixture: "gram-name-alone",
+    input: "classDiagram\nFoo\n%% %%{init: { \n \n",
+    prefixLength: 0,
+    commentText: "%% %%{init: {",
+    commentFrom: 17,
+    expected: {
+      where: "Comment at 17-31",
+      message: "the range of a comment line: [17,31], not [17,30]",
+    },
+    range: [17, 31],
+    value: " %%{init: { ",
+    directives: [{ text: "%%{init: {", from: 20 }],
+  },
+  {
+    id: "tokens-228-cynefin-unclosed-directive-excludes-trailing-space",
+    condition:
+      "A comment ending at its unclosed directive excludes scanned trailing whitespace",
+    diagram: "cynefin",
+    fixture: "header-only",
+    input: "cynefin-beta\n%% %%{init: { \n \n",
+    prefixLength: 0,
+    commentText: "%% %%{init: {",
+    commentFrom: 13,
+    expected: {
+      where: "Comment at 13-27",
+      message: "the range of a comment line: [13,27], not [13,26]",
+    },
+    range: [13, 27],
+    value: " %%{init: { ",
+    directives: [{ text: "%%{init: {", from: 16 }],
+  },
+  {
+    id: "tokens-228-eventmodeling-unclosed-directive-excludes-trailing-space",
+    condition:
+      "A comment ending at its unclosed directive excludes scanned trailing whitespace",
+    diagram: "eventmodeling",
+    fixture: "header-only",
+    input: "eventmodeling\n%% %%{init: { \n \n",
+    prefixLength: 0,
+    commentText: "%% %%{init: {",
+    commentFrom: 14,
+    expected: {
+      where: "Comment at 14-28",
+      message:
+        "does not end where the directive that takes the rest of the text ends",
+    },
+    range: [14, 28],
+    value: " %%{init: { ",
+    directives: [{ text: "%%{init: {", from: 17 }],
+  },
+  {
+    id: "tokens-228-gantt-unclosed-directive-excludes-trailing-space",
+    condition:
+      "A comment ending at its unclosed directive excludes scanned trailing whitespace",
+    diagram: "gantt",
+    fixture: "header-only",
+    input: "gantt\n%% %%{init: { \n \n",
+    prefixLength: 0,
+    commentText: "%% %%{init: {",
+    commentFrom: 6,
+    expected: {
+      where: "Comment at 6-20",
+      message: "the range of a comment line: [6,20], not [6,19]",
+    },
+    range: [6, 20],
+    value: " %%{init: { ",
+    directives: [{ text: "%%{init: {", from: 9 }],
+  },
+  {
+    id: "tokens-228-gitgraph-unclosed-directive-excludes-trailing-space",
+    condition:
+      "A comment ending at its unclosed directive excludes scanned trailing whitespace",
+    diagram: "gitgraph",
+    fixture: "header-only",
+    input: "gitGraph\n%% %%{init: { \n \n",
+    prefixLength: 0,
+    commentText: "%% %%{init: {",
+    commentFrom: 9,
+    expected: {
+      where: "Comment at 9-23",
+      message: "the range of a comment line: [9,23], not [9,22]",
+    },
+    range: [9, 23],
+    value: " %%{init: { ",
+    directives: [{ text: "%%{init: {", from: 12 }],
+  },
+  {
+    id: "tokens-228-info-unclosed-directive-excludes-trailing-space",
+    condition:
+      "A comment ending at its unclosed directive excludes scanned trailing whitespace",
+    diagram: "info",
+    fixture: "spec-info-06271baf",
+    input: "info\n%% %%{init: { \n \n",
+    prefixLength: 0,
+    commentText: "%% %%{init: {",
+    commentFrom: 5,
+    expected: {
+      where: "Comment at 5-19",
+      message: "the range of a comment line: [5,19], not [5,18]",
+    },
+    range: [5, 19],
+    value: " %%{init: { ",
+    directives: [{ text: "%%{init: {", from: 8 }],
+  },
+  {
+    id: "tokens-228-ishikawa-unclosed-directive-excludes-trailing-space",
+    condition:
+      "A comment ending at its unclosed directive excludes scanned trailing whitespace",
+    diagram: "ishikawa",
+    fixture: "header-only-lf",
+    input: "ishikawa\n%% %%{init: { \n \n",
+    prefixLength: 0,
+    commentText: "%% %%{init: {",
+    commentFrom: 9,
+    expected: {
+      where: "Comment at 9-23",
+      message: "the range of a comment line: [9,23], not [9,22]",
+    },
+    range: [9, 23],
+    value: " %%{init: { ",
+    directives: [{ text: "%%{init: {", from: 12 }],
+  },
+  {
+    id: "tokens-228-journey-unclosed-directive-excludes-trailing-space",
+    condition:
+      "A comment ending at its unclosed directive excludes scanned trailing whitespace",
+    diagram: "journey",
+    fixture: "header-only",
+    input: "journey\n%% %%{init: { \n \n",
+    prefixLength: 0,
+    commentText: "%% %%{init: {",
+    commentFrom: 8,
+    expected: {
+      where: "Comment at 8-22",
+      message: "the range of a comment line: [8,22], not [8,21]",
+    },
+    range: [8, 22],
+    value: " %%{init: { ",
+    directives: [{ text: "%%{init: {", from: 11 }],
+  },
+  {
+    id: "tokens-228-kanban-unclosed-directive-excludes-trailing-space",
+    condition:
+      "A comment ending at its unclosed directive excludes scanned trailing whitespace",
+    diagram: "kanban",
+    fixture: "header-only-lf",
+    input: "kanban\n%% %%{init: { \n \n",
+    prefixLength: 0,
+    commentText: "%% %%{init: {",
+    commentFrom: 7,
+    expected: {
+      where: "Comment at 7-21",
+      message: "the range of a comment line: [7,21], not [7,20]",
+    },
+    range: [7, 21],
+    value: " %%{init: { ",
+    directives: [{ text: "%%{init: {", from: 10 }],
+  },
+  {
+    id: "tokens-228-mindmap-unclosed-directive-excludes-trailing-space",
+    condition:
+      "A comment ending at its unclosed directive excludes scanned trailing whitespace",
+    diagram: "mindmap",
+    fixture: "db-header-only",
+    input: "mindmap\n%% %%{init: { \n \n",
+    prefixLength: 0,
+    commentText: "%% %%{init: {",
+    commentFrom: 8,
+    expected: {
+      where: "Comment at 8-22",
+      message: "the range of a comment line: [8,22], not [8,21]",
+    },
+    range: [8, 22],
+    value: " %%{init: { ",
+    directives: [{ text: "%%{init: {", from: 11 }],
+  },
+  {
+    id: "tokens-228-packet-unclosed-directive-excludes-trailing-space",
+    condition:
+      "A comment ending at its unclosed directive excludes scanned trailing whitespace",
+    diagram: "packet",
+    fixture: "spec-packet-7426afc4",
+    input: "packet\n%% %%{init: { \n \n",
+    prefixLength: 0,
+    commentText: "%% %%{init: {",
+    commentFrom: 7,
+    expected: {
+      where: "Comment at 7-21",
+      message: "the range of a comment line: [7,21], not [7,20]",
+    },
+    range: [7, 21],
+    value: " %%{init: { ",
+    directives: [{ text: "%%{init: {", from: 10 }],
+  },
+  {
+    id: "tokens-228-pie-unclosed-directive-excludes-trailing-space",
+    condition:
+      "A comment ending at its unclosed directive excludes scanned trailing whitespace",
+    diagram: "pie",
+    fixture: "header-only",
+    input: "pie\n%% %%{init: { \n \n",
+    prefixLength: 0,
+    commentText: "%% %%{init: {",
+    commentFrom: 4,
+    expected: {
+      where: "Comment at 4-18",
+      message: "the range of a comment line: [4,18], not [4,17]",
+    },
+    range: [4, 18],
+    value: " %%{init: { ",
+    directives: [{ text: "%%{init: {", from: 7 }],
+  },
+  {
+    id: "tokens-228-quadrant-unclosed-directive-excludes-trailing-space",
+    condition:
+      "A comment ending at its unclosed directive excludes scanned trailing whitespace",
+    diagram: "quadrant",
+    fixture: "spec-quadrant-jison-fe2d2340",
+    input: "quadrantChart\n%% %%{init: { \n \n",
+    prefixLength: 0,
+    commentText: "%% %%{init: {",
+    commentFrom: 14,
+    expected: {
+      where: "Comment at 14-28",
+      message: "the range of a comment line: [14,28], not [14,27]",
+    },
+    range: [14, 28],
+    value: " %%{init: { ",
+    directives: [{ text: "%%{init: {", from: 17 }],
+  },
+  {
+    id: "tokens-228-radar-unclosed-directive-excludes-trailing-space",
+    condition:
+      "A comment ending at its unclosed directive excludes scanned trailing whitespace",
+    diagram: "radar",
+    fixture: "spec-radar-test-ts-f0c0291e",
+    input: "radar-beta\n%% %%{init: { \n \n",
+    prefixLength: 0,
+    commentText: "%% %%{init: {",
+    commentFrom: 11,
+    expected: {
+      where: "Comment at 11-25",
+      message: "the range of a comment line: [11,25], not [11,24]",
+    },
+    range: [11, 25],
+    value: " %%{init: { ",
+    directives: [{ text: "%%{init: {", from: 14 }],
+  },
+  {
+    id: "tokens-228-railroad-unclosed-directive-excludes-trailing-space",
+    condition:
+      "A comment ending at its unclosed directive excludes scanned trailing whitespace",
+    diagram: "railroad",
+    fixture: "ir-header-only",
+    input: "railroad-beta\n%% %%{init: { \n \n",
+    prefixLength: 0,
+    commentText: "%% %%{init: {",
+    commentFrom: 14,
+    expected: {
+      where: "Comment at 14-28",
+      message: "the range of a comment line: [14,28], not [14,27]",
+    },
+    range: [14, 28],
+    value: " %%{init: { ",
+    directives: [{ text: "%%{init: {", from: 17 }],
+  },
+  {
+    id: "tokens-228-requirement-unclosed-directive-excludes-trailing-space",
+    condition:
+      "A comment ending at its unclosed directive excludes scanned trailing whitespace",
+    diagram: "requirement",
+    fixture: "header-only",
+    input: "requirementDiagram\n%% %%{init: { \n \n",
+    prefixLength: 0,
+    commentText: "%% %%{init: {",
+    commentFrom: 19,
+    expected: {
+      where: "Comment at 19-33",
+      message: "the range of a comment line: [19,33], not [19,32]",
+    },
+    range: [19, 33],
+    value: " %%{init: { ",
+    directives: [{ text: "%%{init: {", from: 22 }],
+  },
+  {
+    id: "tokens-228-sequence-unclosed-directive-excludes-trailing-space",
+    condition:
+      "A comment ending at its unclosed directive excludes scanned trailing whitespace",
+    diagram: "sequence",
+    fixture: "spec-sequence-diagram-536f52ac",
+    input: "sequenceDiagram\n%% %%{init: { \n \n",
+    prefixLength: 0,
+    commentText: "%% %%{init: {",
+    commentFrom: 16,
+    expected: {
+      where: "Comment at 16-30",
+      message: "the range of a comment line: [16,30], not [16,29]",
+    },
+    range: [16, 30],
+    value: " %%{init: { ",
+    directives: [{ text: "%%{init: {", from: 19 }],
+  },
+  {
+    id: "tokens-228-state-unclosed-directive-excludes-trailing-space",
+    condition:
+      "A comment ending at its unclosed directive excludes scanned trailing whitespace",
+    diagram: "state",
+    fixture: "header-only",
+    input: "stateDiagram\n%% %%{init: { \n \n",
+    prefixLength: 0,
+    commentText: "%% %%{init: {",
+    commentFrom: 13,
+    expected: {
+      where: "Comment at 13-27",
+      message: "the range of a comment line: [13,27], not [13,26]",
+    },
+    range: [13, 27],
+    value: " %%{init: { ",
+    directives: [{ text: "%%{init: {", from: 16 }],
+  },
+  {
+    id: "tokens-228-timeline-unclosed-directive-excludes-trailing-space",
+    condition:
+      "A comment ending at its unclosed directive excludes scanned trailing whitespace",
+    diagram: "timeline",
+    fixture: "header-without-line-feed",
+    input: "timeline\n%% %%{init: { \n \n",
+    prefixLength: 0,
+    commentText: "%% %%{init: {",
+    commentFrom: 9,
+    expected: {
+      where: "Comment at 9-23",
+      message: "the range of a comment line: [9,23], not [9,22]",
+    },
+    range: [9, 23],
+    value: " %%{init: { ",
+    directives: [{ text: "%%{init: {", from: 12 }],
+  },
+  {
+    id: "tokens-228-treemap-unclosed-directive-excludes-trailing-space",
+    condition:
+      "A comment ending at its unclosed directive excludes scanned trailing whitespace",
+    diagram: "treemap",
+    fixture: "spec-treemap-test-ts-892fa294",
+    input: "treemap\n%% %%{init: { \n \n",
+    prefixLength: 0,
+    commentText: "%% %%{init: {",
+    commentFrom: 8,
+    expected: {
+      where: "Comment at 8-22",
+      message: "the range of a comment line: [8,22], not [8,21]",
+    },
+    range: [8, 22],
+    value: " %%{init: { ",
+    directives: [{ text: "%%{init: {", from: 11 }],
+  },
+  {
+    id: "tokens-228-treeview-unclosed-directive-excludes-trailing-space",
+    condition:
+      "A comment ending at its unclosed directive excludes scanned trailing whitespace",
+    diagram: "treeview",
+    fixture: "header-only",
+    input: "treeView-beta\n%% %%{init: { \n \n",
+    prefixLength: 0,
+    commentText: "%% %%{init: {",
+    commentFrom: 14,
+    expected: {
+      where: "Comment at 14-28",
+      message: "the range of a comment line: [14,28], not [14,27]",
+    },
+    range: [14, 28],
+    value: " %%{init: { ",
+    directives: [{ text: "%%{init: {", from: 17 }],
+  },
+  {
+    id: "tokens-228-usecase-unclosed-directive-excludes-trailing-space",
+    condition:
+      "A comment ending at its unclosed directive excludes scanned trailing whitespace",
+    diagram: "usecase",
+    fixture: "spec-usecase-parser-7ae00acb",
+    input: "usecase-beta\n%% %%{init: { \n \n",
+    prefixLength: 0,
+    commentText: "%% %%{init: {",
+    commentFrom: 13,
+    expected: {
+      where: "Comment at 13-27",
+      message: "the range of a comment line: [13,27], not [13,26]",
+    },
+    range: [13, 27],
+    value: " %%{init: { ",
+    directives: [{ text: "%%{init: {", from: 16 }],
+  },
+  {
+    id: "tokens-228-venn-unclosed-directive-excludes-trailing-space",
+    condition:
+      "A comment ending at its unclosed directive excludes scanned trailing whitespace",
+    diagram: "venn",
+    fixture: "header-only",
+    input: "venn-beta\n%% %%{init: { \n \n",
+    prefixLength: 0,
+    commentText: "%% %%{init: {",
+    commentFrom: 10,
+    expected: {
+      where: "Comment at 10-24",
+      message: "the range of a comment line: [10,24], not [10,23]",
+    },
+    range: [10, 24],
+    value: " %%{init: { ",
+    directives: [{ text: "%%{init: {", from: 13 }],
+  },
+  {
+    id: "tokens-228-wardley-unclosed-directive-excludes-trailing-space",
+    condition:
+      "A comment ending at its unclosed directive excludes scanned trailing whitespace",
+    diagram: "wardley",
+    fixture: "header-only",
+    input: "wardley-beta\n%% %%{init: { \n \n",
+    prefixLength: 0,
+    commentText: "%% %%{init: {",
+    commentFrom: 13,
+    expected: {
+      where: "Comment at 13-27",
+      message: "the range of a comment line: [13,27], not [13,26]",
+    },
+    range: [13, 27],
+    value: " %%{init: { ",
+    directives: [{ text: "%%{init: {", from: 16 }],
+  },
+  {
+    id: "tokens-228-xychart-unclosed-directive-excludes-trailing-space",
+    condition:
+      "A comment ending at its unclosed directive excludes scanned trailing whitespace",
+    diagram: "xychart",
+    fixture: "header-without-line-feed",
+    input: "xychart-beta\n%% %%{init: { \n \n",
+    prefixLength: 0,
+    commentText: "%% %%{init: {",
+    commentFrom: 13,
+    expected: {
+      where: "Comment at 13-27",
+      message: "the range of a comment line: [13,27], not [13,26]",
+    },
+    range: [13, 27],
+    value: " %%{init: { ",
+    directives: [{ text: "%%{init: {", from: 16 }],
+  },
+  {
+    id: "tokens-228-agentflow-unclosed-directive-excludes-trailing-lf",
+    condition:
+      "A comment ending at its unclosed directive excludes a final scanned line feed",
+    diagram: "agentflow",
+    fixture: "header-only",
+    input: "agentflow-beta\n%% %%{init: {\n",
+    prefixLength: 0,
+    commentText: "%% %%{init: {",
+    commentFrom: 15,
+    expected: {
+      where: "Comment at 15-29",
+      message: "ends with a line terminator",
+    },
+    range: [15, 29],
+    value: " %%{init: {\n",
+    directives: [{ text: "%%{init: {", from: 18 }],
+  },
+  {
+    id: "tokens-228-architecture-unclosed-directive-excludes-trailing-lf",
+    condition:
+      "A comment ending at its unclosed directive excludes a final scanned line feed",
+    diagram: "architecture",
+    fixture: "spec-architecture-08253aa2",
+    input: "architecture-beta\n%% %%{init: {\n",
+    prefixLength: 0,
+    commentText: "%% %%{init: {",
+    commentFrom: 18,
+    expected: {
+      where: "Comment at 18-32",
+      message: "the range of a comment line: [18,32], not [18,31]",
+    },
+    range: [18, 32],
+    value: " %%{init: {\n",
+    directives: [{ text: "%%{init: {", from: 21 }],
+  },
+  {
+    id: "tokens-228-c4-unclosed-directive-excludes-trailing-lf",
+    condition:
+      "A comment ending at its unclosed directive excludes a final scanned line feed",
+    diagram: "c4",
+    fixture: "gram-person-comma-only",
+    input: "C4Context\nPerson(,)\n%% %%{init: {\n",
+    prefixLength: 0,
+    commentText: "%% %%{init: {",
+    commentFrom: 20,
+    expected: {
+      where: "Comment at 20-34",
+      message: "the range of a comment line: [20,34], not [20,33]",
+    },
+    range: [20, 34],
+    value: " %%{init: {\n",
+    directives: [{ text: "%%{init: {", from: 23 }],
+  },
+  {
+    id: "tokens-228-class-unclosed-directive-excludes-trailing-lf",
+    condition:
+      "A comment ending at its unclosed directive excludes a final scanned line feed",
+    diagram: "class",
+    fixture: "gram-name-alone",
+    input: "classDiagram\nFoo\n%% %%{init: {\n",
+    prefixLength: 0,
+    commentText: "%% %%{init: {",
+    commentFrom: 17,
+    expected: {
+      where: "Comment at 17-31",
+      message: "the range of a comment line: [17,31], not [17,30]",
+    },
+    range: [17, 31],
+    value: " %%{init: {\n",
+    directives: [{ text: "%%{init: {", from: 20 }],
+  },
+  {
+    id: "tokens-228-cynefin-unclosed-directive-excludes-trailing-lf",
+    condition:
+      "A comment ending at its unclosed directive excludes a final scanned line feed",
+    diagram: "cynefin",
+    fixture: "header-only",
+    input: "cynefin-beta\n%% %%{init: {\n",
+    prefixLength: 0,
+    commentText: "%% %%{init: {",
+    commentFrom: 13,
+    expected: {
+      where: "Comment at 13-27",
+      message: "the range of a comment line: [13,27], not [13,26]",
+    },
+    range: [13, 27],
+    value: " %%{init: {\n",
+    directives: [{ text: "%%{init: {", from: 16 }],
+  },
+  {
+    id: "tokens-228-eventmodeling-unclosed-directive-excludes-trailing-lf",
+    condition:
+      "A comment ending at its unclosed directive excludes a final scanned line feed",
+    diagram: "eventmodeling",
+    fixture: "header-only",
+    input: "eventmodeling\n%% %%{init: {\n",
+    prefixLength: 0,
+    commentText: "%% %%{init: {",
+    commentFrom: 14,
+    expected: {
+      where: "Comment at 14-28",
+      message: "ends with a line terminator",
+    },
+    range: [14, 28],
+    value: " %%{init: {\n",
+    directives: [{ text: "%%{init: {", from: 17 }],
+  },
+  {
+    id: "tokens-228-gantt-unclosed-directive-excludes-trailing-lf",
+    condition:
+      "A comment ending at its unclosed directive excludes a final scanned line feed",
+    diagram: "gantt",
+    fixture: "header-only",
+    input: "gantt\n%% %%{init: {\n",
+    prefixLength: 0,
+    commentText: "%% %%{init: {",
+    commentFrom: 6,
+    expected: {
+      where: "Comment at 6-20",
+      message: "the range of a comment line: [6,20], not [6,19]",
+    },
+    range: [6, 20],
+    value: " %%{init: {\n",
+    directives: [{ text: "%%{init: {", from: 9 }],
+  },
+  {
+    id: "tokens-228-gitgraph-unclosed-directive-excludes-trailing-lf",
+    condition:
+      "A comment ending at its unclosed directive excludes a final scanned line feed",
+    diagram: "gitgraph",
+    fixture: "header-only",
+    input: "gitGraph\n%% %%{init: {\n",
+    prefixLength: 0,
+    commentText: "%% %%{init: {",
+    commentFrom: 9,
+    expected: {
+      where: "Comment at 9-23",
+      message: "the range of a comment line: [9,23], not [9,22]",
+    },
+    range: [9, 23],
+    value: " %%{init: {\n",
+    directives: [{ text: "%%{init: {", from: 12 }],
+  },
+  {
+    id: "tokens-228-info-unclosed-directive-excludes-trailing-lf",
+    condition:
+      "A comment ending at its unclosed directive excludes a final scanned line feed",
+    diagram: "info",
+    fixture: "spec-info-06271baf",
+    input: "info\n%% %%{init: {\n",
+    prefixLength: 0,
+    commentText: "%% %%{init: {",
+    commentFrom: 5,
+    expected: {
+      where: "Comment at 5-19",
+      message: "the range of a comment line: [5,19], not [5,18]",
+    },
+    range: [5, 19],
+    value: " %%{init: {\n",
+    directives: [{ text: "%%{init: {", from: 8 }],
+  },
+  {
+    id: "tokens-228-ishikawa-unclosed-directive-excludes-trailing-lf",
+    condition:
+      "A comment ending at its unclosed directive excludes a final scanned line feed",
+    diagram: "ishikawa",
+    fixture: "header-only-lf",
+    input: "ishikawa\n%% %%{init: {\n",
+    prefixLength: 0,
+    commentText: "%% %%{init: {",
+    commentFrom: 9,
+    expected: {
+      where: "Comment at 9-23",
+      message: "the range of a comment line: [9,23], not [9,22]",
+    },
+    range: [9, 23],
+    value: " %%{init: {\n",
+    directives: [{ text: "%%{init: {", from: 12 }],
+  },
+  {
+    id: "tokens-228-journey-unclosed-directive-excludes-trailing-lf",
+    condition:
+      "A comment ending at its unclosed directive excludes a final scanned line feed",
+    diagram: "journey",
+    fixture: "header-only",
+    input: "journey\n%% %%{init: {\n",
+    prefixLength: 0,
+    commentText: "%% %%{init: {",
+    commentFrom: 8,
+    expected: {
+      where: "Comment at 8-22",
+      message: "the range of a comment line: [8,22], not [8,21]",
+    },
+    range: [8, 22],
+    value: " %%{init: {\n",
+    directives: [{ text: "%%{init: {", from: 11 }],
+  },
+  {
+    id: "tokens-228-kanban-unclosed-directive-excludes-trailing-lf",
+    condition:
+      "A comment ending at its unclosed directive excludes a final scanned line feed",
+    diagram: "kanban",
+    fixture: "header-only-lf",
+    input: "kanban\n%% %%{init: {\n",
+    prefixLength: 0,
+    commentText: "%% %%{init: {",
+    commentFrom: 7,
+    expected: {
+      where: "Comment at 7-21",
+      message: "the range of a comment line: [7,21], not [7,20]",
+    },
+    range: [7, 21],
+    value: " %%{init: {\n",
+    directives: [{ text: "%%{init: {", from: 10 }],
+  },
+  {
+    id: "tokens-228-mindmap-unclosed-directive-excludes-trailing-lf",
+    condition:
+      "A comment ending at its unclosed directive excludes a final scanned line feed",
+    diagram: "mindmap",
+    fixture: "db-header-only",
+    input: "mindmap\n%% %%{init: {\n",
+    prefixLength: 0,
+    commentText: "%% %%{init: {",
+    commentFrom: 8,
+    expected: {
+      where: "Comment at 8-22",
+      message: "the range of a comment line: [8,22], not [8,21]",
+    },
+    range: [8, 22],
+    value: " %%{init: {\n",
+    directives: [{ text: "%%{init: {", from: 11 }],
+  },
+  {
+    id: "tokens-228-packet-unclosed-directive-excludes-trailing-lf",
+    condition:
+      "A comment ending at its unclosed directive excludes a final scanned line feed",
+    diagram: "packet",
+    fixture: "spec-packet-7426afc4",
+    input: "packet\n%% %%{init: {\n",
+    prefixLength: 0,
+    commentText: "%% %%{init: {",
+    commentFrom: 7,
+    expected: {
+      where: "Comment at 7-21",
+      message: "the range of a comment line: [7,21], not [7,20]",
+    },
+    range: [7, 21],
+    value: " %%{init: {\n",
+    directives: [{ text: "%%{init: {", from: 10 }],
+  },
+  {
+    id: "tokens-228-pie-unclosed-directive-excludes-trailing-lf",
+    condition:
+      "A comment ending at its unclosed directive excludes a final scanned line feed",
+    diagram: "pie",
+    fixture: "header-only",
+    input: "pie\n%% %%{init: {\n",
+    prefixLength: 0,
+    commentText: "%% %%{init: {",
+    commentFrom: 4,
+    expected: {
+      where: "Comment at 4-18",
+      message: "the range of a comment line: [4,18], not [4,17]",
+    },
+    range: [4, 18],
+    value: " %%{init: {\n",
+    directives: [{ text: "%%{init: {", from: 7 }],
+  },
+  {
+    id: "tokens-228-quadrant-unclosed-directive-excludes-trailing-lf",
+    condition:
+      "A comment ending at its unclosed directive excludes a final scanned line feed",
+    diagram: "quadrant",
+    fixture: "spec-quadrant-jison-fe2d2340",
+    input: "quadrantChart\n%% %%{init: {\n",
+    prefixLength: 0,
+    commentText: "%% %%{init: {",
+    commentFrom: 14,
+    expected: {
+      where: "Comment at 14-28",
+      message: "the range of a comment line: [14,28], not [14,27]",
+    },
+    range: [14, 28],
+    value: " %%{init: {\n",
+    directives: [{ text: "%%{init: {", from: 17 }],
+  },
+  {
+    id: "tokens-228-radar-unclosed-directive-excludes-trailing-lf",
+    condition:
+      "A comment ending at its unclosed directive excludes a final scanned line feed",
+    diagram: "radar",
+    fixture: "spec-radar-test-ts-f0c0291e",
+    input: "radar-beta\n%% %%{init: {\n",
+    prefixLength: 0,
+    commentText: "%% %%{init: {",
+    commentFrom: 11,
+    expected: {
+      where: "Comment at 11-25",
+      message: "the range of a comment line: [11,25], not [11,24]",
+    },
+    range: [11, 25],
+    value: " %%{init: {\n",
+    directives: [{ text: "%%{init: {", from: 14 }],
+  },
+  {
+    id: "tokens-228-railroad-unclosed-directive-excludes-trailing-lf",
+    condition:
+      "A comment ending at its unclosed directive excludes a final scanned line feed",
+    diagram: "railroad",
+    fixture: "ir-header-only",
+    input: "railroad-beta\n%% %%{init: {\n",
+    prefixLength: 0,
+    commentText: "%% %%{init: {",
+    commentFrom: 14,
+    expected: {
+      where: "Comment at 14-28",
+      message: "the range of a comment line: [14,28], not [14,27]",
+    },
+    range: [14, 28],
+    value: " %%{init: {\n",
+    directives: [{ text: "%%{init: {", from: 17 }],
+  },
+  {
+    id: "tokens-228-requirement-unclosed-directive-excludes-trailing-lf",
+    condition:
+      "A comment ending at its unclosed directive excludes a final scanned line feed",
+    diagram: "requirement",
+    fixture: "header-only",
+    input: "requirementDiagram\n%% %%{init: {\n",
+    prefixLength: 0,
+    commentText: "%% %%{init: {",
+    commentFrom: 19,
+    expected: {
+      where: "Comment at 19-33",
+      message: "the range of a comment line: [19,33], not [19,32]",
+    },
+    range: [19, 33],
+    value: " %%{init: {\n",
+    directives: [{ text: "%%{init: {", from: 22 }],
+  },
+  {
+    id: "tokens-228-sequence-unclosed-directive-excludes-trailing-lf",
+    condition:
+      "A comment ending at its unclosed directive excludes a final scanned line feed",
+    diagram: "sequence",
+    fixture: "spec-sequence-diagram-536f52ac",
+    input: "sequenceDiagram\n%% %%{init: {\n",
+    prefixLength: 0,
+    commentText: "%% %%{init: {",
+    commentFrom: 16,
+    expected: {
+      where: "Comment at 16-30",
+      message: "the range of a comment line: [16,30], not [16,29]",
+    },
+    range: [16, 30],
+    value: " %%{init: {\n",
+    directives: [{ text: "%%{init: {", from: 19 }],
+  },
+  {
+    id: "tokens-228-state-unclosed-directive-excludes-trailing-lf",
+    condition:
+      "A comment ending at its unclosed directive excludes a final scanned line feed",
+    diagram: "state",
+    fixture: "header-only",
+    input: "stateDiagram\n%% %%{init: {\n",
+    prefixLength: 0,
+    commentText: "%% %%{init: {",
+    commentFrom: 13,
+    expected: {
+      where: "Comment at 13-27",
+      message: "the range of a comment line: [13,27], not [13,26]",
+    },
+    range: [13, 27],
+    value: " %%{init: {\n",
+    directives: [{ text: "%%{init: {", from: 16 }],
+  },
+  {
+    id: "tokens-228-timeline-unclosed-directive-excludes-trailing-lf",
+    condition:
+      "A comment ending at its unclosed directive excludes a final scanned line feed",
+    diagram: "timeline",
+    fixture: "header-without-line-feed",
+    input: "timeline\n%% %%{init: {\n",
+    prefixLength: 0,
+    commentText: "%% %%{init: {",
+    commentFrom: 9,
+    expected: {
+      where: "Comment at 9-23",
+      message: "the range of a comment line: [9,23], not [9,22]",
+    },
+    range: [9, 23],
+    value: " %%{init: {\n",
+    directives: [{ text: "%%{init: {", from: 12 }],
+  },
+  {
+    id: "tokens-228-treemap-unclosed-directive-excludes-trailing-lf",
+    condition:
+      "A comment ending at its unclosed directive excludes a final scanned line feed",
+    diagram: "treemap",
+    fixture: "spec-treemap-test-ts-892fa294",
+    input: "treemap\n%% %%{init: {\n",
+    prefixLength: 0,
+    commentText: "%% %%{init: {",
+    commentFrom: 8,
+    expected: {
+      where: "Comment at 8-22",
+      message: "the range of a comment line: [8,22], not [8,21]",
+    },
+    range: [8, 22],
+    value: " %%{init: {\n",
+    directives: [{ text: "%%{init: {", from: 11 }],
+  },
+  {
+    id: "tokens-228-treeview-unclosed-directive-excludes-trailing-lf",
+    condition:
+      "A comment ending at its unclosed directive excludes a final scanned line feed",
+    diagram: "treeview",
+    fixture: "header-only",
+    input: "treeView-beta\n%% %%{init: {\n",
+    prefixLength: 0,
+    commentText: "%% %%{init: {",
+    commentFrom: 14,
+    expected: {
+      where: "Comment at 14-28",
+      message: "the range of a comment line: [14,28], not [14,27]",
+    },
+    range: [14, 28],
+    value: " %%{init: {\n",
+    directives: [{ text: "%%{init: {", from: 17 }],
+  },
+  {
+    id: "tokens-228-usecase-unclosed-directive-excludes-trailing-lf",
+    condition:
+      "A comment ending at its unclosed directive excludes a final scanned line feed",
+    diagram: "usecase",
+    fixture: "spec-usecase-parser-7ae00acb",
+    input: "usecase-beta\n%% %%{init: {\n",
+    prefixLength: 0,
+    commentText: "%% %%{init: {",
+    commentFrom: 13,
+    expected: {
+      where: "Comment at 13-27",
+      message: "the range of a comment line: [13,27], not [13,26]",
+    },
+    range: [13, 27],
+    value: " %%{init: {\n",
+    directives: [{ text: "%%{init: {", from: 16 }],
+  },
+  {
+    id: "tokens-228-venn-unclosed-directive-excludes-trailing-lf",
+    condition:
+      "A comment ending at its unclosed directive excludes a final scanned line feed",
+    diagram: "venn",
+    fixture: "header-only",
+    input: "venn-beta\n%% %%{init: {\n",
+    prefixLength: 0,
+    commentText: "%% %%{init: {",
+    commentFrom: 10,
+    expected: {
+      where: "Comment at 10-24",
+      message: "the range of a comment line: [10,24], not [10,23]",
+    },
+    range: [10, 24],
+    value: " %%{init: {\n",
+    directives: [{ text: "%%{init: {", from: 13 }],
+  },
+  {
+    id: "tokens-228-wardley-unclosed-directive-excludes-trailing-lf",
+    condition:
+      "A comment ending at its unclosed directive excludes a final scanned line feed",
+    diagram: "wardley",
+    fixture: "header-only",
+    input: "wardley-beta\n%% %%{init: {\n",
+    prefixLength: 0,
+    commentText: "%% %%{init: {",
+    commentFrom: 13,
+    expected: {
+      where: "Comment at 13-27",
+      message: "the range of a comment line: [13,27], not [13,26]",
+    },
+    range: [13, 27],
+    value: " %%{init: {\n",
+    directives: [{ text: "%%{init: {", from: 16 }],
+  },
+  {
+    id: "tokens-228-xychart-unclosed-directive-excludes-trailing-lf",
+    condition:
+      "A comment ending at its unclosed directive excludes a final scanned line feed",
+    diagram: "xychart",
+    fixture: "header-without-line-feed",
+    input: "xychart-beta\n%% %%{init: {\n",
+    prefixLength: 0,
+    commentText: "%% %%{init: {",
+    commentFrom: 13,
+    expected: {
+      where: "Comment at 13-27",
+      message: "the range of a comment line: [13,27], not [13,26]",
+    },
+    range: [13, 27],
+    value: " %%{init: {\n",
+    directives: [{ text: "%%{init: {", from: 16 }],
+  },
 ] as const
 
 const sharedCommentFollowingCharacterWithPrefixCases = [
@@ -20027,6 +24015,1014 @@ const sharedCommentTrimmedWhitespaceCases = [
     value: " c ",
     directives: [],
   },
+  {
+    id: "tokens-228-agentflow-closed-directive-keeps-trailing-space",
+    condition:
+      "After a closed directive a comment keeps whitespace before its line feed",
+    diagram: "agentflow",
+    fixture: "header-only",
+    input: "agentflow-beta\n%% %%{wrap}%%  \n",
+    prefixLength: 0,
+    commentText: "%% %%{wrap}%%  ",
+    commentFrom: 15,
+    expected: {
+      where: "Comment at 15-29",
+      message: "does not end where its line ends",
+    },
+    range: [15, 29],
+    value: " %%{wrap}%% ",
+    directives: [{ text: "%%{wrap}%%", from: 18 }],
+  },
+  {
+    id: "tokens-228-architecture-closed-directive-keeps-trailing-space",
+    condition:
+      "After a closed directive a comment keeps whitespace before its line feed",
+    diagram: "architecture",
+    fixture: "spec-architecture-08253aa2",
+    input: "architecture-beta\n%% %%{wrap}%%  \n",
+    prefixLength: 0,
+    commentText: "%% %%{wrap}%%  ",
+    commentFrom: 18,
+    expected: {
+      where: "Comment at 18-32",
+      message: "the range of a comment line: [18,32], not [18,33]",
+    },
+    range: [18, 32],
+    value: " %%{wrap}%% ",
+    directives: [{ text: "%%{wrap}%%", from: 21 }],
+  },
+  {
+    id: "tokens-228-c4-closed-directive-keeps-trailing-space",
+    condition:
+      "After a closed directive a comment keeps whitespace before its line feed",
+    diagram: "c4",
+    fixture: "gram-person-comma-only",
+    input: "C4Context\nPerson(,)\n%% %%{wrap}%%  \n",
+    prefixLength: 0,
+    commentText: "%% %%{wrap}%%  ",
+    commentFrom: 20,
+    expected: {
+      where: "Comment at 20-34",
+      message: "the range of a comment line: [20,34], not [20,35]",
+    },
+    range: [20, 34],
+    value: " %%{wrap}%% ",
+    directives: [{ text: "%%{wrap}%%", from: 23 }],
+  },
+  {
+    id: "tokens-228-class-closed-directive-keeps-trailing-space",
+    condition:
+      "After a closed directive a comment keeps whitespace before its line feed",
+    diagram: "class",
+    fixture: "gram-name-alone",
+    input: "classDiagram\nFoo\n%% %%{wrap}%%  \n",
+    prefixLength: 0,
+    commentText: "%% %%{wrap}%%  ",
+    commentFrom: 17,
+    expected: {
+      where: "Comment at 17-31",
+      message: "the range of a comment line: [17,31], not [17,32]",
+    },
+    range: [17, 31],
+    value: " %%{wrap}%% ",
+    directives: [{ text: "%%{wrap}%%", from: 20 }],
+  },
+  {
+    id: "tokens-228-cynefin-closed-directive-keeps-trailing-space",
+    condition:
+      "After a closed directive a comment keeps whitespace before its line feed",
+    diagram: "cynefin",
+    fixture: "header-only",
+    input: "cynefin-beta\n%% %%{wrap}%%  \n",
+    prefixLength: 0,
+    commentText: "%% %%{wrap}%%  ",
+    commentFrom: 13,
+    expected: {
+      where: "Comment at 13-27",
+      message: "the range of a comment line: [13,27], not [13,28]",
+    },
+    range: [13, 27],
+    value: " %%{wrap}%% ",
+    directives: [{ text: "%%{wrap}%%", from: 16 }],
+  },
+  {
+    id: "tokens-228-eventmodeling-closed-directive-keeps-trailing-space",
+    condition:
+      "After a closed directive a comment keeps whitespace before its line feed",
+    diagram: "eventmodeling",
+    fixture: "header-only",
+    input: "eventmodeling\n%% %%{wrap}%%  \n",
+    prefixLength: 0,
+    commentText: "%% %%{wrap}%%  ",
+    commentFrom: 14,
+    expected: {
+      where: "Comment at 14-28",
+      message: "does not end where its line ends",
+    },
+    range: [14, 28],
+    value: " %%{wrap}%% ",
+    directives: [{ text: "%%{wrap}%%", from: 17 }],
+  },
+  {
+    id: "tokens-228-gantt-closed-directive-keeps-trailing-space",
+    condition:
+      "After a closed directive a comment keeps whitespace before its line feed",
+    diagram: "gantt",
+    fixture: "header-only",
+    input: "gantt\n%% %%{wrap}%%  \n",
+    prefixLength: 0,
+    commentText: "%% %%{wrap}%%  ",
+    commentFrom: 6,
+    expected: {
+      where: "Comment at 6-20",
+      message: "the range of a comment line: [6,20], not [6,21]",
+    },
+    range: [6, 20],
+    value: " %%{wrap}%% ",
+    directives: [{ text: "%%{wrap}%%", from: 9 }],
+  },
+  {
+    id: "tokens-228-gitgraph-closed-directive-keeps-trailing-space",
+    condition:
+      "After a closed directive a comment keeps whitespace before its line feed",
+    diagram: "gitgraph",
+    fixture: "header-only",
+    input: "gitGraph\n%% %%{wrap}%%  \n",
+    prefixLength: 0,
+    commentText: "%% %%{wrap}%%  ",
+    commentFrom: 9,
+    expected: {
+      where: "Comment at 9-23",
+      message: "the range of a comment line: [9,23], not [9,24]",
+    },
+    range: [9, 23],
+    value: " %%{wrap}%% ",
+    directives: [{ text: "%%{wrap}%%", from: 12 }],
+  },
+  {
+    id: "tokens-228-info-closed-directive-keeps-trailing-space",
+    condition:
+      "After a closed directive a comment keeps whitespace before its line feed",
+    diagram: "info",
+    fixture: "spec-info-06271baf",
+    input: "info\n%% %%{wrap}%%  \n",
+    prefixLength: 0,
+    commentText: "%% %%{wrap}%%  ",
+    commentFrom: 5,
+    expected: {
+      where: "Comment at 5-19",
+      message: "the range of a comment line: [5,19], not [5,20]",
+    },
+    range: [5, 19],
+    value: " %%{wrap}%% ",
+    directives: [{ text: "%%{wrap}%%", from: 8 }],
+  },
+  {
+    id: "tokens-228-ishikawa-closed-directive-keeps-trailing-space",
+    condition:
+      "After a closed directive a comment keeps whitespace before its line feed",
+    diagram: "ishikawa",
+    fixture: "header-only-lf",
+    input: "ishikawa\n%% %%{wrap}%%  \n",
+    prefixLength: 0,
+    commentText: "%% %%{wrap}%%  ",
+    commentFrom: 9,
+    expected: {
+      where: "Comment at 9-23",
+      message: "the range of a comment line: [9,23], not [9,24]",
+    },
+    range: [9, 23],
+    value: " %%{wrap}%% ",
+    directives: [{ text: "%%{wrap}%%", from: 12 }],
+  },
+  {
+    id: "tokens-228-journey-closed-directive-keeps-trailing-space",
+    condition:
+      "After a closed directive a comment keeps whitespace before its line feed",
+    diagram: "journey",
+    fixture: "header-only",
+    input: "journey\n%% %%{wrap}%%  \n",
+    prefixLength: 0,
+    commentText: "%% %%{wrap}%%  ",
+    commentFrom: 8,
+    expected: {
+      where: "Comment at 8-22",
+      message: "the range of a comment line: [8,22], not [8,23]",
+    },
+    range: [8, 22],
+    value: " %%{wrap}%% ",
+    directives: [{ text: "%%{wrap}%%", from: 11 }],
+  },
+  {
+    id: "tokens-228-kanban-closed-directive-keeps-trailing-space",
+    condition:
+      "After a closed directive a comment keeps whitespace before its line feed",
+    diagram: "kanban",
+    fixture: "header-only-lf",
+    input: "kanban\n%% %%{wrap}%%  \n",
+    prefixLength: 0,
+    commentText: "%% %%{wrap}%%  ",
+    commentFrom: 7,
+    expected: {
+      where: "Comment at 7-21",
+      message: "the range of a comment line: [7,21], not [7,22]",
+    },
+    range: [7, 21],
+    value: " %%{wrap}%% ",
+    directives: [{ text: "%%{wrap}%%", from: 10 }],
+  },
+  {
+    id: "tokens-228-mindmap-closed-directive-keeps-trailing-space",
+    condition:
+      "After a closed directive a comment keeps whitespace before its line feed",
+    diagram: "mindmap",
+    fixture: "db-header-only",
+    input: "mindmap\n%% %%{wrap}%%  \n",
+    prefixLength: 0,
+    commentText: "%% %%{wrap}%%  ",
+    commentFrom: 8,
+    expected: {
+      where: "Comment at 8-22",
+      message: "the range of a comment line: [8,22], not [8,23]",
+    },
+    range: [8, 22],
+    value: " %%{wrap}%% ",
+    directives: [{ text: "%%{wrap}%%", from: 11 }],
+  },
+  {
+    id: "tokens-228-packet-closed-directive-keeps-trailing-space",
+    condition:
+      "After a closed directive a comment keeps whitespace before its line feed",
+    diagram: "packet",
+    fixture: "spec-packet-7426afc4",
+    input: "packet\n%% %%{wrap}%%  \n",
+    prefixLength: 0,
+    commentText: "%% %%{wrap}%%  ",
+    commentFrom: 7,
+    expected: {
+      where: "Comment at 7-21",
+      message: "the range of a comment line: [7,21], not [7,22]",
+    },
+    range: [7, 21],
+    value: " %%{wrap}%% ",
+    directives: [{ text: "%%{wrap}%%", from: 10 }],
+  },
+  {
+    id: "tokens-228-pie-closed-directive-keeps-trailing-space",
+    condition:
+      "After a closed directive a comment keeps whitespace before its line feed",
+    diagram: "pie",
+    fixture: "header-only",
+    input: "pie\n%% %%{wrap}%%  \n",
+    prefixLength: 0,
+    commentText: "%% %%{wrap}%%  ",
+    commentFrom: 4,
+    expected: {
+      where: "Comment at 4-18",
+      message: "the range of a comment line: [4,18], not [4,19]",
+    },
+    range: [4, 18],
+    value: " %%{wrap}%% ",
+    directives: [{ text: "%%{wrap}%%", from: 7 }],
+  },
+  {
+    id: "tokens-228-quadrant-closed-directive-keeps-trailing-space",
+    condition:
+      "After a closed directive a comment keeps whitespace before its line feed",
+    diagram: "quadrant",
+    fixture: "spec-quadrant-jison-fe2d2340",
+    input: "quadrantChart\n%% %%{wrap}%%  \n",
+    prefixLength: 0,
+    commentText: "%% %%{wrap}%%  ",
+    commentFrom: 14,
+    expected: {
+      where: "Comment at 14-28",
+      message: "the range of a comment line: [14,28], not [14,29]",
+    },
+    range: [14, 28],
+    value: " %%{wrap}%% ",
+    directives: [{ text: "%%{wrap}%%", from: 17 }],
+  },
+  {
+    id: "tokens-228-radar-closed-directive-keeps-trailing-space",
+    condition:
+      "After a closed directive a comment keeps whitespace before its line feed",
+    diagram: "radar",
+    fixture: "spec-radar-test-ts-f0c0291e",
+    input: "radar-beta\n%% %%{wrap}%%  \n",
+    prefixLength: 0,
+    commentText: "%% %%{wrap}%%  ",
+    commentFrom: 11,
+    expected: {
+      where: "Comment at 11-25",
+      message: "the range of a comment line: [11,25], not [11,26]",
+    },
+    range: [11, 25],
+    value: " %%{wrap}%% ",
+    directives: [{ text: "%%{wrap}%%", from: 14 }],
+  },
+  {
+    id: "tokens-228-railroad-closed-directive-keeps-trailing-space",
+    condition:
+      "After a closed directive a comment keeps whitespace before its line feed",
+    diagram: "railroad",
+    fixture: "ir-header-only",
+    input: "railroad-beta\n%% %%{wrap}%%  \n",
+    prefixLength: 0,
+    commentText: "%% %%{wrap}%%  ",
+    commentFrom: 14,
+    expected: {
+      where: "Comment at 14-28",
+      message: "the range of a comment line: [14,28], not [14,29]",
+    },
+    range: [14, 28],
+    value: " %%{wrap}%% ",
+    directives: [{ text: "%%{wrap}%%", from: 17 }],
+  },
+  {
+    id: "tokens-228-requirement-closed-directive-keeps-trailing-space",
+    condition:
+      "After a closed directive a comment keeps whitespace before its line feed",
+    diagram: "requirement",
+    fixture: "header-only",
+    input: "requirementDiagram\n%% %%{wrap}%%  \n",
+    prefixLength: 0,
+    commentText: "%% %%{wrap}%%  ",
+    commentFrom: 19,
+    expected: {
+      where: "Comment at 19-33",
+      message: "the range of a comment line: [19,33], not [19,34]",
+    },
+    range: [19, 33],
+    value: " %%{wrap}%% ",
+    directives: [{ text: "%%{wrap}%%", from: 22 }],
+  },
+  {
+    id: "tokens-228-sequence-closed-directive-keeps-trailing-space",
+    condition:
+      "After a closed directive a comment keeps whitespace before its line feed",
+    diagram: "sequence",
+    fixture: "spec-sequence-diagram-536f52ac",
+    input: "sequenceDiagram\n%% %%{wrap}%%  \n",
+    prefixLength: 0,
+    commentText: "%% %%{wrap}%%  ",
+    commentFrom: 16,
+    expected: {
+      where: "Comment at 16-30",
+      message: "the range of a comment line: [16,30], not [16,31]",
+    },
+    range: [16, 30],
+    value: " %%{wrap}%% ",
+    directives: [{ text: "%%{wrap}%%", from: 19 }],
+  },
+  {
+    id: "tokens-228-state-closed-directive-keeps-trailing-space",
+    condition:
+      "After a closed directive a comment keeps whitespace before its line feed",
+    diagram: "state",
+    fixture: "header-only",
+    input: "stateDiagram\n%% %%{wrap}%%  \n",
+    prefixLength: 0,
+    commentText: "%% %%{wrap}%%  ",
+    commentFrom: 13,
+    expected: {
+      where: "Comment at 13-27",
+      message: "the range of a comment line: [13,27], not [13,28]",
+    },
+    range: [13, 27],
+    value: " %%{wrap}%% ",
+    directives: [{ text: "%%{wrap}%%", from: 16 }],
+  },
+  {
+    id: "tokens-228-timeline-closed-directive-keeps-trailing-space",
+    condition:
+      "After a closed directive a comment keeps whitespace before its line feed",
+    diagram: "timeline",
+    fixture: "header-without-line-feed",
+    input: "timeline\n%% %%{wrap}%%  \n",
+    prefixLength: 0,
+    commentText: "%% %%{wrap}%%  ",
+    commentFrom: 9,
+    expected: {
+      where: "Comment at 9-23",
+      message: "the range of a comment line: [9,23], not [9,24]",
+    },
+    range: [9, 23],
+    value: " %%{wrap}%% ",
+    directives: [{ text: "%%{wrap}%%", from: 12 }],
+  },
+  {
+    id: "tokens-228-treemap-closed-directive-keeps-trailing-space",
+    condition:
+      "After a closed directive a comment keeps whitespace before its line feed",
+    diagram: "treemap",
+    fixture: "spec-treemap-test-ts-892fa294",
+    input: "treemap\n%% %%{wrap}%%  \n",
+    prefixLength: 0,
+    commentText: "%% %%{wrap}%%  ",
+    commentFrom: 8,
+    expected: {
+      where: "Comment at 8-22",
+      message: "the range of a comment line: [8,22], not [8,23]",
+    },
+    range: [8, 22],
+    value: " %%{wrap}%% ",
+    directives: [{ text: "%%{wrap}%%", from: 11 }],
+  },
+  {
+    id: "tokens-228-treeview-closed-directive-keeps-trailing-space",
+    condition:
+      "After a closed directive a comment keeps whitespace before its line feed",
+    diagram: "treeview",
+    fixture: "header-only",
+    input: "treeView-beta\n%% %%{wrap}%%  \n",
+    prefixLength: 0,
+    commentText: "%% %%{wrap}%%  ",
+    commentFrom: 14,
+    expected: {
+      where: "Comment at 14-28",
+      message: "the range of a comment line: [14,28], not [14,29]",
+    },
+    range: [14, 28],
+    value: " %%{wrap}%% ",
+    directives: [{ text: "%%{wrap}%%", from: 17 }],
+  },
+  {
+    id: "tokens-228-usecase-closed-directive-keeps-trailing-space",
+    condition:
+      "After a closed directive a comment keeps whitespace before its line feed",
+    diagram: "usecase",
+    fixture: "spec-usecase-parser-7ae00acb",
+    input: "usecase-beta\n%% %%{wrap}%%  \n",
+    prefixLength: 0,
+    commentText: "%% %%{wrap}%%  ",
+    commentFrom: 13,
+    expected: {
+      where: "Comment at 13-27",
+      message: "the range of a comment line: [13,27], not [13,28]",
+    },
+    range: [13, 27],
+    value: " %%{wrap}%% ",
+    directives: [{ text: "%%{wrap}%%", from: 16 }],
+  },
+  {
+    id: "tokens-228-venn-closed-directive-keeps-trailing-space",
+    condition:
+      "After a closed directive a comment keeps whitespace before its line feed",
+    diagram: "venn",
+    fixture: "header-only",
+    input: "venn-beta\n%% %%{wrap}%%  \n",
+    prefixLength: 0,
+    commentText: "%% %%{wrap}%%  ",
+    commentFrom: 10,
+    expected: {
+      where: "Comment at 10-24",
+      message: "the range of a comment line: [10,24], not [10,25]",
+    },
+    range: [10, 24],
+    value: " %%{wrap}%% ",
+    directives: [{ text: "%%{wrap}%%", from: 13 }],
+  },
+  {
+    id: "tokens-228-wardley-closed-directive-keeps-trailing-space",
+    condition:
+      "After a closed directive a comment keeps whitespace before its line feed",
+    diagram: "wardley",
+    fixture: "header-only",
+    input: "wardley-beta\n%% %%{wrap}%%  \n",
+    prefixLength: 0,
+    commentText: "%% %%{wrap}%%  ",
+    commentFrom: 13,
+    expected: {
+      where: "Comment at 13-27",
+      message: "the range of a comment line: [13,27], not [13,28]",
+    },
+    range: [13, 27],
+    value: " %%{wrap}%% ",
+    directives: [{ text: "%%{wrap}%%", from: 16 }],
+  },
+  {
+    id: "tokens-228-xychart-closed-directive-keeps-trailing-space",
+    condition:
+      "After a closed directive a comment keeps whitespace before its line feed",
+    diagram: "xychart",
+    fixture: "header-without-line-feed",
+    input: "xychart-beta\n%% %%{wrap}%%  \n",
+    prefixLength: 0,
+    commentText: "%% %%{wrap}%%  ",
+    commentFrom: 13,
+    expected: {
+      where: "Comment at 13-27",
+      message: "the range of a comment line: [13,27], not [13,28]",
+    },
+    range: [13, 27],
+    value: " %%{wrap}%% ",
+    directives: [{ text: "%%{wrap}%%", from: 16 }],
+  },
+  {
+    id: "tokens-228-agentflow-ordinary-comment-keeps-eof-spaces",
+    condition:
+      "A comment ending at EOF keeps its trailing whitespace when no directive scan takes it",
+    diagram: "agentflow",
+    fixture: "header-only",
+    input: "agentflow-beta\n%% c  ",
+    prefixLength: 0,
+    commentText: "%% c  ",
+    commentFrom: 15,
+    expected: {
+      where: "Comment at 15-20",
+      message: "does not end where its line ends",
+    },
+    range: [15, 20],
+    value: " c ",
+    directives: [],
+  },
+  {
+    id: "tokens-228-architecture-ordinary-comment-keeps-eof-spaces",
+    condition:
+      "A comment ending at EOF keeps its trailing whitespace when no directive scan takes it",
+    diagram: "architecture",
+    fixture: "spec-architecture-08253aa2",
+    input: "architecture-beta\n%% c  ",
+    prefixLength: 0,
+    commentText: "%% c  ",
+    commentFrom: 18,
+    expected: {
+      where: "Comment at 18-23",
+      message: "the range of a comment line: [18,23], not [18,24]",
+    },
+    range: [18, 23],
+    value: " c ",
+    directives: [],
+  },
+  {
+    id: "tokens-228-c4-ordinary-comment-keeps-eof-spaces",
+    condition:
+      "A comment ending at EOF keeps its trailing whitespace when no directive scan takes it",
+    diagram: "c4",
+    fixture: "gram-person-comma-only",
+    input: "C4Context\nPerson(,)\n%% c  ",
+    prefixLength: 0,
+    commentText: "%% c  ",
+    commentFrom: 20,
+    expected: {
+      where: "Comment at 20-25",
+      message: "the range of a comment line: [20,25], not [20,26]",
+    },
+    range: [20, 25],
+    value: " c ",
+    directives: [],
+  },
+  {
+    id: "tokens-228-class-ordinary-comment-keeps-eof-spaces",
+    condition:
+      "A comment ending at EOF keeps its trailing whitespace when no directive scan takes it",
+    diagram: "class",
+    fixture: "gram-name-alone",
+    input: "classDiagram\nFoo\n%% c  ",
+    prefixLength: 0,
+    commentText: "%% c  ",
+    commentFrom: 17,
+    expected: {
+      where: "Comment at 17-22",
+      message: "the range of a comment line: [17,22], not [17,23]",
+    },
+    range: [17, 22],
+    value: " c ",
+    directives: [],
+  },
+  {
+    id: "tokens-228-cynefin-ordinary-comment-keeps-eof-spaces",
+    condition:
+      "A comment ending at EOF keeps its trailing whitespace when no directive scan takes it",
+    diagram: "cynefin",
+    fixture: "header-only",
+    input: "cynefin-beta\n%% c  ",
+    prefixLength: 0,
+    commentText: "%% c  ",
+    commentFrom: 13,
+    expected: {
+      where: "Comment at 13-18",
+      message: "the range of a comment line: [13,18], not [13,19]",
+    },
+    range: [13, 18],
+    value: " c ",
+    directives: [],
+  },
+  {
+    id: "tokens-228-eventmodeling-ordinary-comment-keeps-eof-spaces",
+    condition:
+      "A comment ending at EOF keeps its trailing whitespace when no directive scan takes it",
+    diagram: "eventmodeling",
+    fixture: "header-only",
+    input: "eventmodeling\n%% c  ",
+    prefixLength: 0,
+    commentText: "%% c  ",
+    commentFrom: 14,
+    expected: {
+      where: "Comment at 14-19",
+      message: "does not end where its line ends",
+    },
+    range: [14, 19],
+    value: " c ",
+    directives: [],
+  },
+  {
+    id: "tokens-228-gantt-ordinary-comment-keeps-eof-spaces",
+    condition:
+      "A comment ending at EOF keeps its trailing whitespace when no directive scan takes it",
+    diagram: "gantt",
+    fixture: "header-only",
+    input: "gantt\n%% c  ",
+    prefixLength: 0,
+    commentText: "%% c  ",
+    commentFrom: 6,
+    expected: {
+      where: "Comment at 6-11",
+      message: "the range of a comment line: [6,11], not [6,12]",
+    },
+    range: [6, 11],
+    value: " c ",
+    directives: [],
+  },
+  {
+    id: "tokens-228-gitgraph-ordinary-comment-keeps-eof-spaces",
+    condition:
+      "A comment ending at EOF keeps its trailing whitespace when no directive scan takes it",
+    diagram: "gitgraph",
+    fixture: "header-only",
+    input: "gitGraph\n%% c  ",
+    prefixLength: 0,
+    commentText: "%% c  ",
+    commentFrom: 9,
+    expected: {
+      where: "Comment at 9-14",
+      message: "the range of a comment line: [9,14], not [9,15]",
+    },
+    range: [9, 14],
+    value: " c ",
+    directives: [],
+  },
+  {
+    id: "tokens-228-info-ordinary-comment-keeps-eof-spaces",
+    condition:
+      "A comment ending at EOF keeps its trailing whitespace when no directive scan takes it",
+    diagram: "info",
+    fixture: "spec-info-06271baf",
+    input: "info\n%% c  ",
+    prefixLength: 0,
+    commentText: "%% c  ",
+    commentFrom: 5,
+    expected: {
+      where: "Comment at 5-10",
+      message: "the range of a comment line: [5,10], not [5,11]",
+    },
+    range: [5, 10],
+    value: " c ",
+    directives: [],
+  },
+  {
+    id: "tokens-228-ishikawa-ordinary-comment-keeps-eof-spaces",
+    condition:
+      "A comment ending at EOF keeps its trailing whitespace when no directive scan takes it",
+    diagram: "ishikawa",
+    fixture: "header-only-lf",
+    input: "ishikawa\n%% c  ",
+    prefixLength: 0,
+    commentText: "%% c  ",
+    commentFrom: 9,
+    expected: {
+      where: "Comment at 9-14",
+      message: "the range of a comment line: [9,14], not [9,15]",
+    },
+    range: [9, 14],
+    value: " c ",
+    directives: [],
+  },
+  {
+    id: "tokens-228-journey-ordinary-comment-keeps-eof-spaces",
+    condition:
+      "A comment ending at EOF keeps its trailing whitespace when no directive scan takes it",
+    diagram: "journey",
+    fixture: "header-only",
+    input: "journey\n%% c  ",
+    prefixLength: 0,
+    commentText: "%% c  ",
+    commentFrom: 8,
+    expected: {
+      where: "Comment at 8-13",
+      message: "the range of a comment line: [8,13], not [8,14]",
+    },
+    range: [8, 13],
+    value: " c ",
+    directives: [],
+  },
+  {
+    id: "tokens-228-kanban-ordinary-comment-keeps-eof-spaces",
+    condition:
+      "A comment ending at EOF keeps its trailing whitespace when no directive scan takes it",
+    diagram: "kanban",
+    fixture: "header-only-lf",
+    input: "kanban\n%% c  ",
+    prefixLength: 0,
+    commentText: "%% c  ",
+    commentFrom: 7,
+    expected: {
+      where: "Comment at 7-12",
+      message: "the range of a comment line: [7,12], not [7,13]",
+    },
+    range: [7, 12],
+    value: " c ",
+    directives: [],
+  },
+  {
+    id: "tokens-228-mindmap-ordinary-comment-keeps-eof-spaces",
+    condition:
+      "A comment ending at EOF keeps its trailing whitespace when no directive scan takes it",
+    diagram: "mindmap",
+    fixture: "db-header-only",
+    input: "mindmap\n%% c  ",
+    prefixLength: 0,
+    commentText: "%% c  ",
+    commentFrom: 8,
+    expected: {
+      where: "Comment at 8-13",
+      message: "the range of a comment line: [8,13], not [8,14]",
+    },
+    range: [8, 13],
+    value: " c ",
+    directives: [],
+  },
+  {
+    id: "tokens-228-packet-ordinary-comment-keeps-eof-spaces",
+    condition:
+      "A comment ending at EOF keeps its trailing whitespace when no directive scan takes it",
+    diagram: "packet",
+    fixture: "spec-packet-7426afc4",
+    input: "packet\n%% c  ",
+    prefixLength: 0,
+    commentText: "%% c  ",
+    commentFrom: 7,
+    expected: {
+      where: "Comment at 7-12",
+      message: "the range of a comment line: [7,12], not [7,13]",
+    },
+    range: [7, 12],
+    value: " c ",
+    directives: [],
+  },
+  {
+    id: "tokens-228-pie-ordinary-comment-keeps-eof-spaces",
+    condition:
+      "A comment ending at EOF keeps its trailing whitespace when no directive scan takes it",
+    diagram: "pie",
+    fixture: "header-only",
+    input: "pie\n%% c  ",
+    prefixLength: 0,
+    commentText: "%% c  ",
+    commentFrom: 4,
+    expected: {
+      where: "Comment at 4-9",
+      message: "the range of a comment line: [4,9], not [4,10]",
+    },
+    range: [4, 9],
+    value: " c ",
+    directives: [],
+  },
+  {
+    id: "tokens-228-quadrant-ordinary-comment-keeps-eof-spaces",
+    condition:
+      "A comment ending at EOF keeps its trailing whitespace when no directive scan takes it",
+    diagram: "quadrant",
+    fixture: "spec-quadrant-jison-fe2d2340",
+    input: "quadrantChart\n%% c  ",
+    prefixLength: 0,
+    commentText: "%% c  ",
+    commentFrom: 14,
+    expected: {
+      where: "Comment at 14-19",
+      message: "the range of a comment line: [14,19], not [14,20]",
+    },
+    range: [14, 19],
+    value: " c ",
+    directives: [],
+  },
+  {
+    id: "tokens-228-radar-ordinary-comment-keeps-eof-spaces",
+    condition:
+      "A comment ending at EOF keeps its trailing whitespace when no directive scan takes it",
+    diagram: "radar",
+    fixture: "spec-radar-test-ts-f0c0291e",
+    input: "radar-beta\n%% c  ",
+    prefixLength: 0,
+    commentText: "%% c  ",
+    commentFrom: 11,
+    expected: {
+      where: "Comment at 11-16",
+      message: "the range of a comment line: [11,16], not [11,17]",
+    },
+    range: [11, 16],
+    value: " c ",
+    directives: [],
+  },
+  {
+    id: "tokens-228-railroad-ordinary-comment-keeps-eof-spaces",
+    condition:
+      "A comment ending at EOF keeps its trailing whitespace when no directive scan takes it",
+    diagram: "railroad",
+    fixture: "ir-header-only",
+    input: "railroad-beta\n%% c  ",
+    prefixLength: 0,
+    commentText: "%% c  ",
+    commentFrom: 14,
+    expected: {
+      where: "Comment at 14-19",
+      message: "the range of a comment line: [14,19], not [14,20]",
+    },
+    range: [14, 19],
+    value: " c ",
+    directives: [],
+  },
+  {
+    id: "tokens-228-requirement-ordinary-comment-keeps-eof-spaces",
+    condition:
+      "A comment ending at EOF keeps its trailing whitespace when no directive scan takes it",
+    diagram: "requirement",
+    fixture: "header-only",
+    input: "requirementDiagram\n%% c  ",
+    prefixLength: 0,
+    commentText: "%% c  ",
+    commentFrom: 19,
+    expected: {
+      where: "Comment at 19-24",
+      message: "the range of a comment line: [19,24], not [19,25]",
+    },
+    range: [19, 24],
+    value: " c ",
+    directives: [],
+  },
+  {
+    id: "tokens-228-sequence-ordinary-comment-keeps-eof-spaces",
+    condition:
+      "A comment ending at EOF keeps its trailing whitespace when no directive scan takes it",
+    diagram: "sequence",
+    fixture: "spec-sequence-diagram-536f52ac",
+    input: "sequenceDiagram\n%% c  ",
+    prefixLength: 0,
+    commentText: "%% c  ",
+    commentFrom: 16,
+    expected: {
+      where: "Comment at 16-21",
+      message: "the range of a comment line: [16,21], not [16,22]",
+    },
+    range: [16, 21],
+    value: " c ",
+    directives: [],
+  },
+  {
+    id: "tokens-228-state-ordinary-comment-keeps-eof-spaces",
+    condition:
+      "A comment ending at EOF keeps its trailing whitespace when no directive scan takes it",
+    diagram: "state",
+    fixture: "header-only",
+    input: "stateDiagram\n%% c  ",
+    prefixLength: 0,
+    commentText: "%% c  ",
+    commentFrom: 13,
+    expected: {
+      where: "Comment at 13-18",
+      message: "the range of a comment line: [13,18], not [13,19]",
+    },
+    range: [13, 18],
+    value: " c ",
+    directives: [],
+  },
+  {
+    id: "tokens-228-timeline-ordinary-comment-keeps-eof-spaces",
+    condition:
+      "A comment ending at EOF keeps its trailing whitespace when no directive scan takes it",
+    diagram: "timeline",
+    fixture: "header-without-line-feed",
+    input: "timeline\n%% c  ",
+    prefixLength: 0,
+    commentText: "%% c  ",
+    commentFrom: 9,
+    expected: {
+      where: "Comment at 9-14",
+      message: "the range of a comment line: [9,14], not [9,15]",
+    },
+    range: [9, 14],
+    value: " c ",
+    directives: [],
+  },
+  {
+    id: "tokens-228-treemap-ordinary-comment-keeps-eof-spaces",
+    condition:
+      "A comment ending at EOF keeps its trailing whitespace when no directive scan takes it",
+    diagram: "treemap",
+    fixture: "spec-treemap-test-ts-892fa294",
+    input: "treemap\n%% c  ",
+    prefixLength: 0,
+    commentText: "%% c  ",
+    commentFrom: 8,
+    expected: {
+      where: "Comment at 8-13",
+      message: "the range of a comment line: [8,13], not [8,14]",
+    },
+    range: [8, 13],
+    value: " c ",
+    directives: [],
+  },
+  {
+    id: "tokens-228-treeview-ordinary-comment-keeps-eof-spaces",
+    condition:
+      "A comment ending at EOF keeps its trailing whitespace when no directive scan takes it",
+    diagram: "treeview",
+    fixture: "header-only",
+    input: "treeView-beta\n%% c  ",
+    prefixLength: 0,
+    commentText: "%% c  ",
+    commentFrom: 14,
+    expected: {
+      where: "Comment at 14-19",
+      message: "the range of a comment line: [14,19], not [14,20]",
+    },
+    range: [14, 19],
+    value: " c ",
+    directives: [],
+  },
+  {
+    id: "tokens-228-usecase-ordinary-comment-keeps-eof-spaces",
+    condition:
+      "A comment ending at EOF keeps its trailing whitespace when no directive scan takes it",
+    diagram: "usecase",
+    fixture: "spec-usecase-parser-7ae00acb",
+    input: "usecase-beta\n%% c  ",
+    prefixLength: 0,
+    commentText: "%% c  ",
+    commentFrom: 13,
+    expected: {
+      where: "Comment at 13-18",
+      message: "the range of a comment line: [13,18], not [13,19]",
+    },
+    range: [13, 18],
+    value: " c ",
+    directives: [],
+  },
+  {
+    id: "tokens-228-venn-ordinary-comment-keeps-eof-spaces",
+    condition:
+      "A comment ending at EOF keeps its trailing whitespace when no directive scan takes it",
+    diagram: "venn",
+    fixture: "header-only",
+    input: "venn-beta\n%% c  ",
+    prefixLength: 0,
+    commentText: "%% c  ",
+    commentFrom: 10,
+    expected: {
+      where: "Comment at 10-15",
+      message: "the range of a comment line: [10,15], not [10,16]",
+    },
+    range: [10, 15],
+    value: " c ",
+    directives: [],
+  },
+  {
+    id: "tokens-228-wardley-ordinary-comment-keeps-eof-spaces",
+    condition:
+      "A comment ending at EOF keeps its trailing whitespace when no directive scan takes it",
+    diagram: "wardley",
+    fixture: "header-only",
+    input: "wardley-beta\n%% c  ",
+    prefixLength: 0,
+    commentText: "%% c  ",
+    commentFrom: 13,
+    expected: {
+      where: "Comment at 13-18",
+      message: "the range of a comment line: [13,18], not [13,19]",
+    },
+    range: [13, 18],
+    value: " c ",
+    directives: [],
+  },
+  {
+    id: "tokens-228-xychart-ordinary-comment-keeps-eof-spaces",
+    condition:
+      "A comment ending at EOF keeps its trailing whitespace when no directive scan takes it",
+    diagram: "xychart",
+    fixture: "header-without-line-feed",
+    input: "xychart-beta\n%% c  ",
+    prefixLength: 0,
+    commentText: "%% c  ",
+    commentFrom: 13,
+    expected: {
+      where: "Comment at 13-18",
+      message: "the range of a comment line: [13,18], not [13,19]",
+    },
+    range: [13, 18],
+    value: " c ",
+    directives: [],
+  },
 ] as const
 
 const sharedCommentInteriorLineBreakCases = [
@@ -20145,6 +25141,510 @@ const sharedCommentInteriorLineBreakCases = [
       },
     ],
   },
+  {
+    id: "tokens-228-agentflow-directive-takes-interior-line-feed",
+    condition:
+      "A directive can take an interior line feed so the comment continues after it",
+    diagram: "agentflow",
+    fixture: "header-only",
+    input: "agentflow-beta\n%% %%{wrap\nx\nrest\n",
+    prefixLength: 0,
+    commentText: "%% %%{wrap\nx\nrest",
+    commentFrom: 15,
+    expected: {
+      where: "Comment at 15-25",
+      message: "ends at a line terminator that a directive takes",
+    },
+    range: [15, 25],
+    value: " %%{wrap",
+    directives: [{ text: "%%{wrap\nx", from: 18 }],
+  },
+  {
+    id: "tokens-228-architecture-directive-takes-interior-line-feed",
+    condition:
+      "A directive can take an interior line feed so the comment continues after it",
+    diagram: "architecture",
+    fixture: "spec-architecture-08253aa2",
+    input: "architecture-beta\n%% %%{wrap\nx\nrest\n",
+    prefixLength: 0,
+    commentText: "%% %%{wrap\nx\nrest",
+    commentFrom: 18,
+    expected: {
+      where: "Comment at 18-28",
+      message: "the range of a comment line: [18,28], not [18,35]",
+    },
+    range: [18, 28],
+    value: " %%{wrap",
+    directives: [{ text: "%%{wrap\nx", from: 21 }],
+  },
+  {
+    id: "tokens-228-c4-directive-takes-interior-line-feed",
+    condition:
+      "A directive can take an interior line feed so the comment continues after it",
+    diagram: "c4",
+    fixture: "gram-person-comma-only",
+    input: "C4Context\nPerson(,)\n%% %%{wrap\nx\nrest\n",
+    prefixLength: 0,
+    commentText: "%% %%{wrap\nx\nrest",
+    commentFrom: 20,
+    expected: {
+      where: "Comment at 20-30",
+      message: "the range of a comment line: [20,30], not [20,37]",
+    },
+    range: [20, 30],
+    value: " %%{wrap",
+    directives: [{ text: "%%{wrap\nx", from: 23 }],
+  },
+  {
+    id: "tokens-228-class-directive-takes-interior-line-feed",
+    condition:
+      "A directive can take an interior line feed so the comment continues after it",
+    diagram: "class",
+    fixture: "gram-name-alone",
+    input: "classDiagram\nFoo\n%% %%{wrap\nx\nrest\n",
+    prefixLength: 0,
+    commentText: "%% %%{wrap\nx\nrest",
+    commentFrom: 17,
+    expected: {
+      where: "Comment at 17-27",
+      message: "the range of a comment line: [17,27], not [17,34]",
+    },
+    range: [17, 27],
+    value: " %%{wrap",
+    directives: [{ text: "%%{wrap\nx", from: 20 }],
+  },
+  {
+    id: "tokens-228-cynefin-directive-takes-interior-line-feed",
+    condition:
+      "A directive can take an interior line feed so the comment continues after it",
+    diagram: "cynefin",
+    fixture: "header-only",
+    input: "cynefin-beta\n%% %%{wrap\nx\nrest\n",
+    prefixLength: 0,
+    commentText: "%% %%{wrap\nx\nrest",
+    commentFrom: 13,
+    expected: {
+      where: "Comment at 13-23",
+      message: "the range of a comment line: [13,23], not [13,30]",
+    },
+    range: [13, 23],
+    value: " %%{wrap",
+    directives: [{ text: "%%{wrap\nx", from: 16 }],
+  },
+  {
+    id: "tokens-228-eventmodeling-directive-takes-interior-line-feed",
+    condition:
+      "A directive can take an interior line feed so the comment continues after it",
+    diagram: "eventmodeling",
+    fixture: "header-only",
+    input: "eventmodeling\n%% %%{wrap\nx\nrest\n",
+    prefixLength: 0,
+    commentText: "%% %%{wrap\nx\nrest",
+    commentFrom: 14,
+    expected: {
+      where: "Comment at 14-24",
+      message: "ends at a line terminator that a directive takes",
+    },
+    range: [14, 24],
+    value: " %%{wrap",
+    directives: [{ text: "%%{wrap\nx", from: 17 }],
+  },
+  {
+    id: "tokens-228-gantt-directive-takes-interior-line-feed",
+    condition:
+      "A directive can take an interior line feed so the comment continues after it",
+    diagram: "gantt",
+    fixture: "header-only",
+    input: "gantt\n%% %%{wrap\nx\nrest\n",
+    prefixLength: 0,
+    commentText: "%% %%{wrap\nx\nrest",
+    commentFrom: 6,
+    expected: {
+      where: "Comment at 6-16",
+      message: "the range of a comment line: [6,16], not [6,23]",
+    },
+    range: [6, 16],
+    value: " %%{wrap",
+    directives: [{ text: "%%{wrap\nx", from: 9 }],
+  },
+  {
+    id: "tokens-228-gitgraph-directive-takes-interior-line-feed",
+    condition:
+      "A directive can take an interior line feed so the comment continues after it",
+    diagram: "gitgraph",
+    fixture: "header-only",
+    input: "gitGraph\n%% %%{wrap\nx\nrest\n",
+    prefixLength: 0,
+    commentText: "%% %%{wrap\nx\nrest",
+    commentFrom: 9,
+    expected: {
+      where: "Comment at 9-19",
+      message: "the range of a comment line: [9,19], not [9,26]",
+    },
+    range: [9, 19],
+    value: " %%{wrap",
+    directives: [{ text: "%%{wrap\nx", from: 12 }],
+  },
+  {
+    id: "tokens-228-info-directive-takes-interior-line-feed",
+    condition:
+      "A directive can take an interior line feed so the comment continues after it",
+    diagram: "info",
+    fixture: "spec-info-06271baf",
+    input: "info\n%% %%{wrap\nx\nrest\n",
+    prefixLength: 0,
+    commentText: "%% %%{wrap\nx\nrest",
+    commentFrom: 5,
+    expected: {
+      where: "Comment at 5-15",
+      message: "the range of a comment line: [5,15], not [5,22]",
+    },
+    range: [5, 15],
+    value: " %%{wrap",
+    directives: [{ text: "%%{wrap\nx", from: 8 }],
+  },
+  {
+    id: "tokens-228-ishikawa-directive-takes-interior-line-feed",
+    condition:
+      "A directive can take an interior line feed so the comment continues after it",
+    diagram: "ishikawa",
+    fixture: "header-only-lf",
+    input: "ishikawa\n%% %%{wrap\nx\nrest\n",
+    prefixLength: 0,
+    commentText: "%% %%{wrap\nx\nrest",
+    commentFrom: 9,
+    expected: {
+      where: "Comment at 9-19",
+      message: "the range of a comment line: [9,19], not [9,26]",
+    },
+    range: [9, 19],
+    value: " %%{wrap",
+    directives: [{ text: "%%{wrap\nx", from: 12 }],
+  },
+  {
+    id: "tokens-228-journey-directive-takes-interior-line-feed",
+    condition:
+      "A directive can take an interior line feed so the comment continues after it",
+    diagram: "journey",
+    fixture: "header-only",
+    input: "journey\n%% %%{wrap\nx\nrest\n",
+    prefixLength: 0,
+    commentText: "%% %%{wrap\nx\nrest",
+    commentFrom: 8,
+    expected: {
+      where: "Comment at 8-18",
+      message: "the range of a comment line: [8,18], not [8,25]",
+    },
+    range: [8, 18],
+    value: " %%{wrap",
+    directives: [{ text: "%%{wrap\nx", from: 11 }],
+  },
+  {
+    id: "tokens-228-kanban-directive-takes-interior-line-feed",
+    condition:
+      "A directive can take an interior line feed so the comment continues after it",
+    diagram: "kanban",
+    fixture: "header-only-lf",
+    input: "kanban\n%% %%{wrap\nx\nrest\n",
+    prefixLength: 0,
+    commentText: "%% %%{wrap\nx\nrest",
+    commentFrom: 7,
+    expected: {
+      where: "Comment at 7-17",
+      message: "the range of a comment line: [7,17], not [7,24]",
+    },
+    range: [7, 17],
+    value: " %%{wrap",
+    directives: [{ text: "%%{wrap\nx", from: 10 }],
+  },
+  {
+    id: "tokens-228-mindmap-directive-takes-interior-line-feed",
+    condition:
+      "A directive can take an interior line feed so the comment continues after it",
+    diagram: "mindmap",
+    fixture: "db-header-only",
+    input: "mindmap\n%% %%{wrap\nx\nrest\n",
+    prefixLength: 0,
+    commentText: "%% %%{wrap\nx\nrest",
+    commentFrom: 8,
+    expected: {
+      where: "Comment at 8-18",
+      message: "the range of a comment line: [8,18], not [8,25]",
+    },
+    range: [8, 18],
+    value: " %%{wrap",
+    directives: [{ text: "%%{wrap\nx", from: 11 }],
+  },
+  {
+    id: "tokens-228-packet-directive-takes-interior-line-feed",
+    condition:
+      "A directive can take an interior line feed so the comment continues after it",
+    diagram: "packet",
+    fixture: "spec-packet-7426afc4",
+    input: "packet\n%% %%{wrap\nx\nrest\n",
+    prefixLength: 0,
+    commentText: "%% %%{wrap\nx\nrest",
+    commentFrom: 7,
+    expected: {
+      where: "Comment at 7-17",
+      message: "the range of a comment line: [7,17], not [7,24]",
+    },
+    range: [7, 17],
+    value: " %%{wrap",
+    directives: [{ text: "%%{wrap\nx", from: 10 }],
+  },
+  {
+    id: "tokens-228-pie-directive-takes-interior-line-feed",
+    condition:
+      "A directive can take an interior line feed so the comment continues after it",
+    diagram: "pie",
+    fixture: "header-only",
+    input: "pie\n%% %%{wrap\nx\nrest\n",
+    prefixLength: 0,
+    commentText: "%% %%{wrap\nx\nrest",
+    commentFrom: 4,
+    expected: {
+      where: "Comment at 4-14",
+      message: "the range of a comment line: [4,14], not [4,21]",
+    },
+    range: [4, 14],
+    value: " %%{wrap",
+    directives: [{ text: "%%{wrap\nx", from: 7 }],
+  },
+  {
+    id: "tokens-228-quadrant-directive-takes-interior-line-feed",
+    condition:
+      "A directive can take an interior line feed so the comment continues after it",
+    diagram: "quadrant",
+    fixture: "spec-quadrant-jison-fe2d2340",
+    input: "quadrantChart\n%% %%{wrap\nx\nrest\n",
+    prefixLength: 0,
+    commentText: "%% %%{wrap\nx\nrest",
+    commentFrom: 14,
+    expected: {
+      where: "Comment at 14-24",
+      message: "the range of a comment line: [14,24], not [14,31]",
+    },
+    range: [14, 24],
+    value: " %%{wrap",
+    directives: [{ text: "%%{wrap\nx", from: 17 }],
+  },
+  {
+    id: "tokens-228-radar-directive-takes-interior-line-feed",
+    condition:
+      "A directive can take an interior line feed so the comment continues after it",
+    diagram: "radar",
+    fixture: "spec-radar-test-ts-f0c0291e",
+    input: "radar-beta\n%% %%{wrap\nx\nrest\n",
+    prefixLength: 0,
+    commentText: "%% %%{wrap\nx\nrest",
+    commentFrom: 11,
+    expected: {
+      where: "Comment at 11-21",
+      message: "the range of a comment line: [11,21], not [11,28]",
+    },
+    range: [11, 21],
+    value: " %%{wrap",
+    directives: [{ text: "%%{wrap\nx", from: 14 }],
+  },
+  {
+    id: "tokens-228-railroad-directive-takes-interior-line-feed",
+    condition:
+      "A directive can take an interior line feed so the comment continues after it",
+    diagram: "railroad",
+    fixture: "ir-header-only",
+    input: "railroad-beta\n%% %%{wrap\nx\nrest\n",
+    prefixLength: 0,
+    commentText: "%% %%{wrap\nx\nrest",
+    commentFrom: 14,
+    expected: {
+      where: "Comment at 14-24",
+      message: "the range of a comment line: [14,24], not [14,31]",
+    },
+    range: [14, 24],
+    value: " %%{wrap",
+    directives: [{ text: "%%{wrap\nx", from: 17 }],
+  },
+  {
+    id: "tokens-228-requirement-directive-takes-interior-line-feed",
+    condition:
+      "A directive can take an interior line feed so the comment continues after it",
+    diagram: "requirement",
+    fixture: "header-only",
+    input: "requirementDiagram\n%% %%{wrap\nx\nrest\n",
+    prefixLength: 0,
+    commentText: "%% %%{wrap\nx\nrest",
+    commentFrom: 19,
+    expected: {
+      where: "Comment at 19-29",
+      message: "the range of a comment line: [19,29], not [19,36]",
+    },
+    range: [19, 29],
+    value: " %%{wrap",
+    directives: [{ text: "%%{wrap\nx", from: 22 }],
+  },
+  {
+    id: "tokens-228-sequence-directive-takes-interior-line-feed",
+    condition:
+      "A directive can take an interior line feed so the comment continues after it",
+    diagram: "sequence",
+    fixture: "spec-sequence-diagram-536f52ac",
+    input: "sequenceDiagram\n%% %%{wrap\nx\nrest\n",
+    prefixLength: 0,
+    commentText: "%% %%{wrap\nx\nrest",
+    commentFrom: 16,
+    expected: {
+      where: "Comment at 16-26",
+      message: "the range of a comment line: [16,26], not [16,33]",
+    },
+    range: [16, 26],
+    value: " %%{wrap",
+    directives: [{ text: "%%{wrap\nx", from: 19 }],
+  },
+  {
+    id: "tokens-228-state-directive-takes-interior-line-feed",
+    condition:
+      "A directive can take an interior line feed so the comment continues after it",
+    diagram: "state",
+    fixture: "header-only",
+    input: "stateDiagram\n%% %%{wrap\nx\nrest\n",
+    prefixLength: 0,
+    commentText: "%% %%{wrap\nx\nrest",
+    commentFrom: 13,
+    expected: {
+      where: "Comment at 13-23",
+      message: "the range of a comment line: [13,23], not [13,30]",
+    },
+    range: [13, 23],
+    value: " %%{wrap",
+    directives: [{ text: "%%{wrap\nx", from: 16 }],
+  },
+  {
+    id: "tokens-228-timeline-directive-takes-interior-line-feed",
+    condition:
+      "A directive can take an interior line feed so the comment continues after it",
+    diagram: "timeline",
+    fixture: "header-without-line-feed",
+    input: "timeline\n%% %%{wrap\nx\nrest\n",
+    prefixLength: 0,
+    commentText: "%% %%{wrap\nx\nrest",
+    commentFrom: 9,
+    expected: {
+      where: "Comment at 9-19",
+      message: "the range of a comment line: [9,19], not [9,26]",
+    },
+    range: [9, 19],
+    value: " %%{wrap",
+    directives: [{ text: "%%{wrap\nx", from: 12 }],
+  },
+  {
+    id: "tokens-228-treemap-directive-takes-interior-line-feed",
+    condition:
+      "A directive can take an interior line feed so the comment continues after it",
+    diagram: "treemap",
+    fixture: "spec-treemap-test-ts-892fa294",
+    input: "treemap\n%% %%{wrap\nx\nrest\n",
+    prefixLength: 0,
+    commentText: "%% %%{wrap\nx\nrest",
+    commentFrom: 8,
+    expected: {
+      where: "Comment at 8-18",
+      message: "the range of a comment line: [8,18], not [8,25]",
+    },
+    range: [8, 18],
+    value: " %%{wrap",
+    directives: [{ text: "%%{wrap\nx", from: 11 }],
+  },
+  {
+    id: "tokens-228-treeview-directive-takes-interior-line-feed",
+    condition:
+      "A directive can take an interior line feed so the comment continues after it",
+    diagram: "treeview",
+    fixture: "header-only",
+    input: "treeView-beta\n%% %%{wrap\nx\nrest\n",
+    prefixLength: 0,
+    commentText: "%% %%{wrap\nx\nrest",
+    commentFrom: 14,
+    expected: {
+      where: "Comment at 14-24",
+      message: "the range of a comment line: [14,24], not [14,31]",
+    },
+    range: [14, 24],
+    value: " %%{wrap",
+    directives: [{ text: "%%{wrap\nx", from: 17 }],
+  },
+  {
+    id: "tokens-228-usecase-directive-takes-interior-line-feed",
+    condition:
+      "A directive can take an interior line feed so the comment continues after it",
+    diagram: "usecase",
+    fixture: "spec-usecase-parser-7ae00acb",
+    input: "usecase-beta\n%% %%{wrap\nx\nrest\n",
+    prefixLength: 0,
+    commentText: "%% %%{wrap\nx\nrest",
+    commentFrom: 13,
+    expected: {
+      where: "Comment at 13-23",
+      message: "the range of a comment line: [13,23], not [13,30]",
+    },
+    range: [13, 23],
+    value: " %%{wrap",
+    directives: [{ text: "%%{wrap\nx", from: 16 }],
+  },
+  {
+    id: "tokens-228-venn-directive-takes-interior-line-feed",
+    condition:
+      "A directive can take an interior line feed so the comment continues after it",
+    diagram: "venn",
+    fixture: "header-only",
+    input: "venn-beta\n%% %%{wrap\nx\nrest\n",
+    prefixLength: 0,
+    commentText: "%% %%{wrap\nx\nrest",
+    commentFrom: 10,
+    expected: {
+      where: "Comment at 10-20",
+      message: "the range of a comment line: [10,20], not [10,27]",
+    },
+    range: [10, 20],
+    value: " %%{wrap",
+    directives: [{ text: "%%{wrap\nx", from: 13 }],
+  },
+  {
+    id: "tokens-228-wardley-directive-takes-interior-line-feed",
+    condition:
+      "A directive can take an interior line feed so the comment continues after it",
+    diagram: "wardley",
+    fixture: "header-only",
+    input: "wardley-beta\n%% %%{wrap\nx\nrest\n",
+    prefixLength: 0,
+    commentText: "%% %%{wrap\nx\nrest",
+    commentFrom: 13,
+    expected: {
+      where: "Comment at 13-23",
+      message: "the range of a comment line: [13,23], not [13,30]",
+    },
+    range: [13, 23],
+    value: " %%{wrap",
+    directives: [{ text: "%%{wrap\nx", from: 16 }],
+  },
+  {
+    id: "tokens-228-xychart-directive-takes-interior-line-feed",
+    condition:
+      "A directive can take an interior line feed so the comment continues after it",
+    diagram: "xychart",
+    fixture: "header-without-line-feed",
+    input: "xychart-beta\n%% %%{wrap\nx\nrest\n",
+    prefixLength: 0,
+    commentText: "%% %%{wrap\nx\nrest",
+    commentFrom: 13,
+    expected: {
+      where: "Comment at 13-23",
+      message: "the range of a comment line: [13,23], not [13,30]",
+    },
+    range: [13, 23],
+    value: " %%{wrap",
+    directives: [{ text: "%%{wrap\nx", from: 16 }],
+  },
 ] as const
 
 const sharedCommentIgnoredSemicolonCases = [
@@ -20239,6 +25739,594 @@ const sharedCommentIgnoredSemicolonCases = [
     diagram: "common",
     fixture: "error-trailing-percent",
     input: "%% style:#f;\nerror %% x\n",
+    prefixLength: 13,
+    commentText: "%% style:#f;",
+    commentFrom: 0,
+    expected: {
+      where: "Comment at 0-11",
+      message: "the range of a comment line: [0,11], not [0,12]",
+    },
+    range: [0, 11],
+    value: " style:#f",
+    tokenType: "IgnoredSemicolon",
+    tokenText: ";",
+    semicolonAt: 11,
+    directives: [],
+  },
+  {
+    id: "tokens-228-agentflow-comment-line-has-no-ignored-semicolon",
+    condition:
+      "Outside agentflow and eventmodeling, a comment line contains its semicolon as comment text rather than as an ignored-semicolon token",
+    diagram: "agentflow",
+    fixture: "header-only",
+    input: "%% style:#f;\nagentflow-beta",
+    prefixLength: 13,
+    commentText: "%% style:#f;",
+    commentFrom: 0,
+    expected: {
+      where: "Comment at 0-11",
+      message: "the range of a comment line: [0,11], not [0,12]",
+    },
+    range: [0, 11],
+    value: " style:#f",
+    tokenType: "IgnoredSemicolon",
+    tokenText: ";",
+    semicolonAt: 11,
+    directives: [],
+  },
+  {
+    id: "tokens-228-architecture-comment-line-has-no-ignored-semicolon",
+    condition:
+      "Outside agentflow and eventmodeling, a comment line contains its semicolon as comment text rather than as an ignored-semicolon token",
+    diagram: "architecture",
+    fixture: "spec-architecture-08253aa2",
+    input: "%% style:#f;\narchitecture-beta",
+    prefixLength: 13,
+    commentText: "%% style:#f;",
+    commentFrom: 0,
+    expected: {
+      where: "Comment at 0-11",
+      message: "the range of a comment line: [0,11], not [0,12]",
+    },
+    range: [0, 11],
+    value: " style:#f",
+    tokenType: "IgnoredSemicolon",
+    tokenText: ";",
+    semicolonAt: 11,
+    directives: [],
+  },
+  {
+    id: "tokens-228-c4-comment-line-has-no-ignored-semicolon",
+    condition:
+      "Outside agentflow and eventmodeling, a comment line contains its semicolon as comment text rather than as an ignored-semicolon token",
+    diagram: "c4",
+    fixture: "gram-person-comma-only",
+    input: "%% style:#f;\nC4Context\nPerson(,)\n",
+    prefixLength: 13,
+    commentText: "%% style:#f;",
+    commentFrom: 0,
+    expected: {
+      where: "Comment at 0-11",
+      message: "the range of a comment line: [0,11], not [0,12]",
+    },
+    range: [0, 11],
+    value: " style:#f",
+    tokenType: "IgnoredSemicolon",
+    tokenText: ";",
+    semicolonAt: 11,
+    directives: [],
+  },
+  {
+    id: "tokens-228-class-comment-line-has-no-ignored-semicolon",
+    condition:
+      "Outside agentflow and eventmodeling, a comment line contains its semicolon as comment text rather than as an ignored-semicolon token",
+    diagram: "class",
+    fixture: "gram-name-alone",
+    input: "%% style:#f;\nclassDiagram\nFoo\n",
+    prefixLength: 13,
+    commentText: "%% style:#f;",
+    commentFrom: 0,
+    expected: {
+      where: "Comment at 0-11",
+      message: "the range of a comment line: [0,11], not [0,12]",
+    },
+    range: [0, 11],
+    value: " style:#f",
+    tokenType: "IgnoredSemicolon",
+    tokenText: ";",
+    semicolonAt: 11,
+    directives: [],
+  },
+  {
+    id: "tokens-228-cynefin-comment-line-has-no-ignored-semicolon",
+    condition:
+      "Outside agentflow and eventmodeling, a comment line contains its semicolon as comment text rather than as an ignored-semicolon token",
+    diagram: "cynefin",
+    fixture: "header-only",
+    input: "%% style:#f;\ncynefin-beta",
+    prefixLength: 13,
+    commentText: "%% style:#f;",
+    commentFrom: 0,
+    expected: {
+      where: "Comment at 0-11",
+      message: "the range of a comment line: [0,11], not [0,12]",
+    },
+    range: [0, 11],
+    value: " style:#f",
+    tokenType: "IgnoredSemicolon",
+    tokenText: ";",
+    semicolonAt: 11,
+    directives: [],
+  },
+  {
+    id: "tokens-228-eventmodeling-comment-line-has-no-ignored-semicolon",
+    condition:
+      "Outside agentflow and eventmodeling, a comment line contains its semicolon as comment text rather than as an ignored-semicolon token",
+    diagram: "eventmodeling",
+    fixture: "header-only",
+    input: "%% style:#f;\neventmodeling",
+    prefixLength: 13,
+    commentText: "%% style:#f;",
+    commentFrom: 0,
+    expected: {
+      where: "Comment at 0-11",
+      message: "the range of a comment line: [0,11], not [0,12]",
+    },
+    range: [0, 11],
+    value: " style:#f",
+    tokenType: "IgnoredSemicolon",
+    tokenText: ";",
+    semicolonAt: 11,
+    directives: [],
+  },
+  {
+    id: "tokens-228-gantt-comment-line-has-no-ignored-semicolon",
+    condition:
+      "Outside agentflow and eventmodeling, a comment line contains its semicolon as comment text rather than as an ignored-semicolon token",
+    diagram: "gantt",
+    fixture: "header-only",
+    input: "%% style:#f;\ngantt",
+    prefixLength: 13,
+    commentText: "%% style:#f;",
+    commentFrom: 0,
+    expected: {
+      where: "Comment at 0-11",
+      message: "the range of a comment line: [0,11], not [0,12]",
+    },
+    range: [0, 11],
+    value: " style:#f",
+    tokenType: "IgnoredSemicolon",
+    tokenText: ";",
+    semicolonAt: 11,
+    directives: [],
+  },
+  {
+    id: "tokens-228-gitgraph-comment-line-has-no-ignored-semicolon",
+    condition:
+      "Outside agentflow and eventmodeling, a comment line contains its semicolon as comment text rather than as an ignored-semicolon token",
+    diagram: "gitgraph",
+    fixture: "header-only",
+    input: "%% style:#f;\ngitGraph\n",
+    prefixLength: 13,
+    commentText: "%% style:#f;",
+    commentFrom: 0,
+    expected: {
+      where: "Comment at 0-11",
+      message: "the range of a comment line: [0,11], not [0,12]",
+    },
+    range: [0, 11],
+    value: " style:#f",
+    tokenType: "IgnoredSemicolon",
+    tokenText: ";",
+    semicolonAt: 11,
+    directives: [],
+  },
+  {
+    id: "tokens-228-info-comment-line-has-no-ignored-semicolon",
+    condition:
+      "Outside agentflow and eventmodeling, a comment line contains its semicolon as comment text rather than as an ignored-semicolon token",
+    diagram: "info",
+    fixture: "spec-info-06271baf",
+    input: "%% style:#f;\ninfo",
+    prefixLength: 13,
+    commentText: "%% style:#f;",
+    commentFrom: 0,
+    expected: {
+      where: "Comment at 0-11",
+      message: "the range of a comment line: [0,11], not [0,12]",
+    },
+    range: [0, 11],
+    value: " style:#f",
+    tokenType: "IgnoredSemicolon",
+    tokenText: ";",
+    semicolonAt: 11,
+    directives: [],
+  },
+  {
+    id: "tokens-228-ishikawa-comment-line-has-no-ignored-semicolon",
+    condition:
+      "Outside agentflow and eventmodeling, a comment line contains its semicolon as comment text rather than as an ignored-semicolon token",
+    diagram: "ishikawa",
+    fixture: "header-only-lf",
+    input: "%% style:#f;\nishikawa\n",
+    prefixLength: 13,
+    commentText: "%% style:#f;",
+    commentFrom: 0,
+    expected: {
+      where: "Comment at 0-11",
+      message: "the range of a comment line: [0,11], not [0,12]",
+    },
+    range: [0, 11],
+    value: " style:#f",
+    tokenType: "IgnoredSemicolon",
+    tokenText: ";",
+    semicolonAt: 11,
+    directives: [],
+  },
+  {
+    id: "tokens-228-journey-comment-line-has-no-ignored-semicolon",
+    condition:
+      "Outside agentflow and eventmodeling, a comment line contains its semicolon as comment text rather than as an ignored-semicolon token",
+    diagram: "journey",
+    fixture: "header-only",
+    input: "%% style:#f;\njourney",
+    prefixLength: 13,
+    commentText: "%% style:#f;",
+    commentFrom: 0,
+    expected: {
+      where: "Comment at 0-11",
+      message: "the range of a comment line: [0,11], not [0,12]",
+    },
+    range: [0, 11],
+    value: " style:#f",
+    tokenType: "IgnoredSemicolon",
+    tokenText: ";",
+    semicolonAt: 11,
+    directives: [],
+  },
+  {
+    id: "tokens-228-kanban-comment-line-has-no-ignored-semicolon",
+    condition:
+      "Outside agentflow and eventmodeling, a comment line contains its semicolon as comment text rather than as an ignored-semicolon token",
+    diagram: "kanban",
+    fixture: "header-only-lf",
+    input: "%% style:#f;\nkanban\n",
+    prefixLength: 13,
+    commentText: "%% style:#f;",
+    commentFrom: 0,
+    expected: {
+      where: "Comment at 0-11",
+      message: "the range of a comment line: [0,11], not [0,12]",
+    },
+    range: [0, 11],
+    value: " style:#f",
+    tokenType: "IgnoredSemicolon",
+    tokenText: ";",
+    semicolonAt: 11,
+    directives: [],
+  },
+  {
+    id: "tokens-228-mindmap-comment-line-has-no-ignored-semicolon",
+    condition:
+      "Outside agentflow and eventmodeling, a comment line contains its semicolon as comment text rather than as an ignored-semicolon token",
+    diagram: "mindmap",
+    fixture: "db-header-only",
+    input: "%% style:#f;\nmindmap\n",
+    prefixLength: 13,
+    commentText: "%% style:#f;",
+    commentFrom: 0,
+    expected: {
+      where: "Comment at 0-11",
+      message: "the range of a comment line: [0,11], not [0,12]",
+    },
+    range: [0, 11],
+    value: " style:#f",
+    tokenType: "IgnoredSemicolon",
+    tokenText: ";",
+    semicolonAt: 11,
+    directives: [],
+  },
+  {
+    id: "tokens-228-packet-comment-line-has-no-ignored-semicolon",
+    condition:
+      "Outside agentflow and eventmodeling, a comment line contains its semicolon as comment text rather than as an ignored-semicolon token",
+    diagram: "packet",
+    fixture: "spec-packet-7426afc4",
+    input: "%% style:#f;\npacket",
+    prefixLength: 13,
+    commentText: "%% style:#f;",
+    commentFrom: 0,
+    expected: {
+      where: "Comment at 0-11",
+      message: "the range of a comment line: [0,11], not [0,12]",
+    },
+    range: [0, 11],
+    value: " style:#f",
+    tokenType: "IgnoredSemicolon",
+    tokenText: ";",
+    semicolonAt: 11,
+    directives: [],
+  },
+  {
+    id: "tokens-228-pie-comment-line-has-no-ignored-semicolon",
+    condition:
+      "Outside agentflow and eventmodeling, a comment line contains its semicolon as comment text rather than as an ignored-semicolon token",
+    diagram: "pie",
+    fixture: "header-only",
+    input: "%% style:#f;\npie",
+    prefixLength: 13,
+    commentText: "%% style:#f;",
+    commentFrom: 0,
+    expected: {
+      where: "Comment at 0-11",
+      message: "the range of a comment line: [0,11], not [0,12]",
+    },
+    range: [0, 11],
+    value: " style:#f",
+    tokenType: "IgnoredSemicolon",
+    tokenText: ";",
+    semicolonAt: 11,
+    directives: [],
+  },
+  {
+    id: "tokens-228-quadrant-comment-line-has-no-ignored-semicolon",
+    condition:
+      "Outside agentflow and eventmodeling, a comment line contains its semicolon as comment text rather than as an ignored-semicolon token",
+    diagram: "quadrant",
+    fixture: "spec-quadrant-jison-fe2d2340",
+    input: "%% style:#f;\nquadrantChart",
+    prefixLength: 13,
+    commentText: "%% style:#f;",
+    commentFrom: 0,
+    expected: {
+      where: "Comment at 0-11",
+      message: "the range of a comment line: [0,11], not [0,12]",
+    },
+    range: [0, 11],
+    value: " style:#f",
+    tokenType: "IgnoredSemicolon",
+    tokenText: ";",
+    semicolonAt: 11,
+    directives: [],
+  },
+  {
+    id: "tokens-228-radar-comment-line-has-no-ignored-semicolon",
+    condition:
+      "Outside agentflow and eventmodeling, a comment line contains its semicolon as comment text rather than as an ignored-semicolon token",
+    diagram: "radar",
+    fixture: "spec-radar-test-ts-f0c0291e",
+    input: "%% style:#f;\nradar-beta",
+    prefixLength: 13,
+    commentText: "%% style:#f;",
+    commentFrom: 0,
+    expected: {
+      where: "Comment at 0-11",
+      message: "the range of a comment line: [0,11], not [0,12]",
+    },
+    range: [0, 11],
+    value: " style:#f",
+    tokenType: "IgnoredSemicolon",
+    tokenText: ";",
+    semicolonAt: 11,
+    directives: [],
+  },
+  {
+    id: "tokens-228-railroad-comment-line-has-no-ignored-semicolon",
+    condition:
+      "Outside agentflow and eventmodeling, a comment line contains its semicolon as comment text rather than as an ignored-semicolon token",
+    diagram: "railroad",
+    fixture: "ir-header-only",
+    input: "%% style:#f;\nrailroad-beta",
+    prefixLength: 13,
+    commentText: "%% style:#f;",
+    commentFrom: 0,
+    expected: {
+      where: "Comment at 0-11",
+      message: "the range of a comment line: [0,11], not [0,12]",
+    },
+    range: [0, 11],
+    value: " style:#f",
+    tokenType: "IgnoredSemicolon",
+    tokenText: ";",
+    semicolonAt: 11,
+    directives: [],
+  },
+  {
+    id: "tokens-228-requirement-comment-line-has-no-ignored-semicolon",
+    condition:
+      "Outside agentflow and eventmodeling, a comment line contains its semicolon as comment text rather than as an ignored-semicolon token",
+    diagram: "requirement",
+    fixture: "header-only",
+    input: "%% style:#f;\nrequirementDiagram",
+    prefixLength: 13,
+    commentText: "%% style:#f;",
+    commentFrom: 0,
+    expected: {
+      where: "Comment at 0-11",
+      message: "the range of a comment line: [0,11], not [0,12]",
+    },
+    range: [0, 11],
+    value: " style:#f",
+    tokenType: "IgnoredSemicolon",
+    tokenText: ";",
+    semicolonAt: 11,
+    directives: [],
+  },
+  {
+    id: "tokens-228-sequence-comment-line-has-no-ignored-semicolon",
+    condition:
+      "Outside agentflow and eventmodeling, a comment line contains its semicolon as comment text rather than as an ignored-semicolon token",
+    diagram: "sequence",
+    fixture: "spec-sequence-diagram-536f52ac",
+    input: "%% style:#f;\nsequenceDiagram",
+    prefixLength: 13,
+    commentText: "%% style:#f;",
+    commentFrom: 0,
+    expected: {
+      where: "Comment at 0-11",
+      message: "the range of a comment line: [0,11], not [0,12]",
+    },
+    range: [0, 11],
+    value: " style:#f",
+    tokenType: "IgnoredSemicolon",
+    tokenText: ";",
+    semicolonAt: 11,
+    directives: [],
+  },
+  {
+    id: "tokens-228-state-comment-line-has-no-ignored-semicolon",
+    condition:
+      "Outside agentflow and eventmodeling, a comment line contains its semicolon as comment text rather than as an ignored-semicolon token",
+    diagram: "state",
+    fixture: "header-only",
+    input: "%% style:#f;\nstateDiagram\n",
+    prefixLength: 13,
+    commentText: "%% style:#f;",
+    commentFrom: 0,
+    expected: {
+      where: "Comment at 0-11",
+      message: "the range of a comment line: [0,11], not [0,12]",
+    },
+    range: [0, 11],
+    value: " style:#f",
+    tokenType: "IgnoredSemicolon",
+    tokenText: ";",
+    semicolonAt: 11,
+    directives: [],
+  },
+  {
+    id: "tokens-228-timeline-comment-line-has-no-ignored-semicolon",
+    condition:
+      "Outside agentflow and eventmodeling, a comment line contains its semicolon as comment text rather than as an ignored-semicolon token",
+    diagram: "timeline",
+    fixture: "header-without-line-feed",
+    input: "%% style:#f;\ntimeline",
+    prefixLength: 13,
+    commentText: "%% style:#f;",
+    commentFrom: 0,
+    expected: {
+      where: "Comment at 0-11",
+      message: "the range of a comment line: [0,11], not [0,12]",
+    },
+    range: [0, 11],
+    value: " style:#f",
+    tokenType: "IgnoredSemicolon",
+    tokenText: ";",
+    semicolonAt: 11,
+    directives: [],
+  },
+  {
+    id: "tokens-228-treemap-comment-line-has-no-ignored-semicolon",
+    condition:
+      "Outside agentflow and eventmodeling, a comment line contains its semicolon as comment text rather than as an ignored-semicolon token",
+    diagram: "treemap",
+    fixture: "spec-treemap-test-ts-892fa294",
+    input: "%% style:#f;\ntreemap",
+    prefixLength: 13,
+    commentText: "%% style:#f;",
+    commentFrom: 0,
+    expected: {
+      where: "Comment at 0-11",
+      message: "the range of a comment line: [0,11], not [0,12]",
+    },
+    range: [0, 11],
+    value: " style:#f",
+    tokenType: "IgnoredSemicolon",
+    tokenText: ";",
+    semicolonAt: 11,
+    directives: [],
+  },
+  {
+    id: "tokens-228-treeview-comment-line-has-no-ignored-semicolon",
+    condition:
+      "Outside agentflow and eventmodeling, a comment line contains its semicolon as comment text rather than as an ignored-semicolon token",
+    diagram: "treeview",
+    fixture: "header-only",
+    input: "%% style:#f;\ntreeView-beta\n",
+    prefixLength: 13,
+    commentText: "%% style:#f;",
+    commentFrom: 0,
+    expected: {
+      where: "Comment at 0-11",
+      message: "the range of a comment line: [0,11], not [0,12]",
+    },
+    range: [0, 11],
+    value: " style:#f",
+    tokenType: "IgnoredSemicolon",
+    tokenText: ";",
+    semicolonAt: 11,
+    directives: [],
+  },
+  {
+    id: "tokens-228-usecase-comment-line-has-no-ignored-semicolon",
+    condition:
+      "Outside agentflow and eventmodeling, a comment line contains its semicolon as comment text rather than as an ignored-semicolon token",
+    diagram: "usecase",
+    fixture: "spec-usecase-parser-7ae00acb",
+    input: "%% style:#f;\nusecase-beta",
+    prefixLength: 13,
+    commentText: "%% style:#f;",
+    commentFrom: 0,
+    expected: {
+      where: "Comment at 0-11",
+      message: "the range of a comment line: [0,11], not [0,12]",
+    },
+    range: [0, 11],
+    value: " style:#f",
+    tokenType: "IgnoredSemicolon",
+    tokenText: ";",
+    semicolonAt: 11,
+    directives: [],
+  },
+  {
+    id: "tokens-228-venn-comment-line-has-no-ignored-semicolon",
+    condition:
+      "Outside agentflow and eventmodeling, a comment line contains its semicolon as comment text rather than as an ignored-semicolon token",
+    diagram: "venn",
+    fixture: "header-only",
+    input: "%% style:#f;\nvenn-beta",
+    prefixLength: 13,
+    commentText: "%% style:#f;",
+    commentFrom: 0,
+    expected: {
+      where: "Comment at 0-11",
+      message: "the range of a comment line: [0,11], not [0,12]",
+    },
+    range: [0, 11],
+    value: " style:#f",
+    tokenType: "IgnoredSemicolon",
+    tokenText: ";",
+    semicolonAt: 11,
+    directives: [],
+  },
+  {
+    id: "tokens-228-wardley-comment-line-has-no-ignored-semicolon",
+    condition:
+      "Outside agentflow and eventmodeling, a comment line contains its semicolon as comment text rather than as an ignored-semicolon token",
+    diagram: "wardley",
+    fixture: "header-only",
+    input: "%% style:#f;\nwardley-beta",
+    prefixLength: 13,
+    commentText: "%% style:#f;",
+    commentFrom: 0,
+    expected: {
+      where: "Comment at 0-11",
+      message: "the range of a comment line: [0,11], not [0,12]",
+    },
+    range: [0, 11],
+    value: " style:#f",
+    tokenType: "IgnoredSemicolon",
+    tokenText: ";",
+    semicolonAt: 11,
+    directives: [],
+  },
+  {
+    id: "tokens-228-xychart-comment-line-has-no-ignored-semicolon",
+    condition:
+      "Outside agentflow and eventmodeling, a comment line contains its semicolon as comment text rather than as an ignored-semicolon token",
+    diagram: "xychart",
+    fixture: "header-without-line-feed",
+    input: "%% style:#f;\nxychart-beta",
     prefixLength: 13,
     commentText: "%% style:#f;",
     commentFrom: 0,
@@ -20568,6 +26656,322 @@ for (const entry of sharedCommentIgnoredSemicolonCases) {
         tokenOf(input, entry.tokenType, {
           text: entry.tokenText,
           from: entry.semicolonAt,
+        }),
+      ].sort((left, right) => left.range[0] - right.range[0]),
+    )
+    expect(checkTree(input, broken)).toContainEqual(entry.expected)
+  })
+}
+
+// packages/parser/docs/tokens.md, Comment: a `%%` that is not a comment line
+// is diagram text that the lexer reads. Each case makes such a `%%`, which the
+// recorded tree holds in a token, a Comment record and changes nothing else, so
+// the comment also lies inside that token.
+const nonCommentPercentInTokenCases = [
+  {
+    id: "tokens-228-agentflow-noncomment-percent-in-token",
+    diagram: "agentflow",
+    fixture: "comment-double-percent-inside-id",
+    range: [19, 25],
+    expected: {
+      where: "Comment at 19-25",
+      message: "lies inside Identifier at 18-25",
+    },
+  },
+  {
+    id: "tokens-228-architecture-noncomment-percent-in-token",
+    diagram: "architecture",
+    fixture: "detect-retained-bare-second-scan",
+    range: [34, 36],
+    expected: {
+      where: "Comment at 34-36",
+      message: "lies inside RawText at 29-36",
+    },
+  },
+  {
+    id: "tokens-228-c4-noncomment-percent-in-token",
+    diagram: "c4",
+    fixture: "db-accdescr-comment",
+    range: [22, 32],
+    expected: {
+      where: "Comment at 22-32",
+      message: "lies inside RawText at 20-32",
+    },
+  },
+  {
+    id: "tokens-228-class-noncomment-percent-in-token",
+    diagram: "class",
+    fixture: "db-direction-then-comment",
+    range: [28, 39],
+    expected: {
+      where: "Comment at 28-39",
+      message: "lies inside RawText at 28-39",
+    },
+  },
+  {
+    id: "tokens-228-cynefin-noncomment-percent-in-token",
+    diagram: "cynefin",
+    fixture: "comment-in-string",
+    range: [23, 33],
+    expected: {
+      where: "Comment at 23-33",
+      message:
+        "a native Comment cannot start inside a STRING or composite description block",
+    },
+  },
+  {
+    id: "tokens-228-eventmodeling-noncomment-percent-in-token",
+    diagram: "eventmodeling",
+    fixture: "comment-inline-data",
+    range: [28, 60],
+    expected: {
+      where: "Comment at 28-60",
+      message:
+        "a native Comment must belong to its complete comment match, with no earlier unit enclosing its start",
+    },
+  },
+  {
+    id: "tokens-228-gantt-noncomment-percent-in-token",
+    diagram: "gantt",
+    fixture: "docs-syntax-gantt-15ddee04",
+    range: [1329, 1348],
+    expected: {
+      where: "Comment at 1329-1348",
+      message: "lies inside RawText at 1324-1348",
+    },
+  },
+  {
+    id: "tokens-228-gitgraph-noncomment-percent-in-token",
+    diagram: "gitgraph",
+    fixture: "comment-bare-string",
+    range: [23, 25],
+    expected: {
+      where: "Comment at 23-25",
+      message:
+        "a native Comment cannot start inside a STRING or composite description block",
+    },
+  },
+  {
+    id: "tokens-228-info-noncomment-percent-in-token",
+    diagram: "info",
+    fixture: "comment-bare-block",
+    range: [18, 20],
+    expected: {
+      where: "Comment at 18-20",
+      message:
+        "a native Comment cannot start inside a STRING or composite description block",
+    },
+  },
+  {
+    id: "tokens-228-ishikawa-noncomment-percent-in-token",
+    diagram: "ishikawa",
+    fixture: "comment-child-inline-eof",
+    range: [13, 20],
+    expected: {
+      where: "Comment at 13-20",
+      message: "lies inside RawText at 12-20",
+    },
+  },
+  {
+    id: "tokens-228-journey-noncomment-percent-in-token",
+    diagram: "journey",
+    fixture: "div-comment-after-indented-task-text-start",
+    range: [10, 16],
+    expected: {
+      where: "Comment at 10-16",
+      message: "lies inside RawText at 9-13",
+    },
+  },
+  {
+    id: "tokens-228-kanban-noncomment-percent-in-token",
+    diagram: "kanban",
+    fixture: "db-grid-comment-item-class",
+    range: [20, 25],
+    expected: {
+      where: "Comment at 20-25",
+      message: "lies inside RawText at 19-25",
+    },
+  },
+  {
+    id: "tokens-228-mindmap-noncomment-percent-in-token",
+    diagram: "mindmap",
+    fixture: "db-comment-after-node-text",
+    range: [15, 19],
+    expected: {
+      where: "Comment at 15-19",
+      message: "lies inside RawText at 10-19",
+    },
+  },
+  {
+    id: "tokens-228-packet-noncomment-percent-in-token",
+    diagram: "packet",
+    fixture: "c4-hidden-suffix-lf",
+    range: [27, 29],
+    expected: {
+      where: "Comment at 27-29",
+      message: "lies inside RawText at 12-29",
+    },
+  },
+  {
+    id: "tokens-228-pie-noncomment-percent-in-token",
+    diagram: "pie",
+    fixture: "accdescr-block-comment-lines",
+    range: [33, 42],
+    expected: {
+      where: "Comment at 33-42",
+      message:
+        "a native Comment cannot start inside a STRING or composite description block",
+    },
+  },
+  {
+    id: "tokens-228-quadrant-noncomment-percent-in-token",
+    diagram: "quadrant",
+    fixture: "db-acc-descr-block-comment-kept",
+    range: [27, 31],
+    expected: {
+      where: "Comment at 27-31",
+      message: "lies inside RawText at 25-31",
+    },
+  },
+  {
+    id: "tokens-228-radar-noncomment-percent-in-token",
+    diagram: "radar",
+    fixture: "comment-label",
+    range: [20, 26],
+    expected: {
+      where: "Comment at 20-26",
+      message:
+        "a native Comment cannot start inside a STRING or composite description block",
+    },
+  },
+  {
+    id: "tokens-228-railroad-noncomment-percent-in-token",
+    diagram: "railroad",
+    fixture: "abnf-enclosing-string-hidden",
+    range: [39, 53],
+    expected: {
+      where: "Comment at 39-53",
+      message:
+        "a native Comment cannot start inside an earlier enclosing value or hidden form",
+    },
+  },
+  {
+    id: "tokens-228-requirement-noncomment-percent-in-token",
+    diagram: "requirement",
+    fixture: "lex-acc-descr-block-line-separator-comment-line-bare-percent",
+    range: [32, 34],
+    expected: {
+      where: "Comment at 32-34",
+      message: "lies inside RawText at 30-36",
+    },
+  },
+  {
+    id: "tokens-228-sequence-noncomment-percent-in-token",
+    diagram: "sequence",
+    fixture: "db-unclosed-directive-in-message-text",
+    range: [45, 47],
+    expected: {
+      where: "Comment at 45-47",
+      message: "lies inside RawText at 41-47",
+    },
+  },
+  {
+    id: "tokens-228-state-noncomment-percent-in-token",
+    diagram: "state",
+    fixture: "lex-acc-descr-block-line-separator-comment-line-bare-percent",
+    range: [29, 31],
+    expected: {
+      where: "Comment at 29-31",
+      message: "lies inside RawText at 27-33",
+    },
+  },
+  {
+    id: "tokens-228-timeline-noncomment-percent-in-token",
+    diagram: "timeline",
+    fixture: "db-acc-descr-block-hash-and-percent",
+    range: [32, 36],
+    expected: {
+      where: "Comment at 32-36",
+      message: "lies inside RawText at 24-36",
+    },
+  },
+  {
+    id: "tokens-228-treemap-noncomment-percent-in-token",
+    diagram: "treemap",
+    fixture: "comment-class",
+    range: [33, 44],
+    expected: {
+      where: "Comment at 33-44",
+      message:
+        "a native Comment cannot start inside an earlier composite or string",
+    },
+  },
+  {
+    id: "tokens-228-treeview-noncomment-percent-in-token",
+    diagram: "treeview",
+    fixture: "comment-in-bare",
+    range: [15, 24],
+    expected: {
+      where: "Comment at 15-24",
+      message:
+        "a native Comment cannot start inside an earlier name or composite payload",
+    },
+  },
+  {
+    id: "tokens-228-usecase-noncomment-percent-in-token",
+    diagram: "usecase",
+    fixture: "comment-after-acctitle",
+    range: [29, 38],
+    expected: {
+      where: "Comment at 29-38",
+      message: "lies inside RawText at 22-38",
+    },
+  },
+  {
+    id: "tokens-228-venn-noncomment-percent-in-token",
+    diagram: "venn",
+    fixture: "db-grid-comment-identifier-quoted",
+    range: [16, 22],
+    expected: {
+      where: "Comment at 16-22",
+      message: "lies inside String at 14-22",
+    },
+  },
+  {
+    id: "tokens-228-wardley-noncomment-percent-in-token",
+    diagram: "wardley",
+    fixture: "comment-in-string",
+    range: [21, 31],
+    expected: {
+      where: "Comment at 21-31",
+      message:
+        "a native Comment cannot start inside a STRING or composite description block",
+    },
+  },
+  {
+    id: "tokens-228-xychart-noncomment-percent-in-token",
+    diagram: "xychart",
+    fixture: "db-acc-descr-block-percent",
+    range: [26, 32],
+    expected: {
+      where: "Comment at 26-32",
+      message: "lies inside RawText at 24-30",
+    },
+  },
+] as const
+
+for (const entry of nonCommentPercentInTokenCases) {
+  it(`reports ${entry.id}`, () => {
+    const { input, tree } = recordedTree(entry.diagram, entry.fixture)
+    const broken = copyOf(tree)
+    setField(
+      broken,
+      "comments",
+      [
+        ...broken.comments,
+        commentOf(input, "%%", {
+          text: input.slice(entry.range[0], entry.range[1]),
+          from: entry.range[0],
         }),
       ].sort((left, right) => left.range[0] - right.range[0]),
     )
@@ -21461,6 +27865,98 @@ it.each([
 )
 
 const commentCutTokenRangeCases = [
+  {
+    case: "tokens-358-identifier-er-region-inside-token",
+    diagram: "er",
+    fixture: "lex-name-line-separator-comment-line",
+    index: 1,
+    range: [10, 17],
+    expected: {
+      where: "Comment at 12-16",
+      message: "lies inside Identifier at 10-17",
+    },
+  },
+  {
+    case: "tokens-358-identifier-er-region-ending-LF-inside-token",
+    diagram: "er",
+    fixture: "lex-name-line-separator-comment-line",
+    index: 2,
+    range: [16, 20],
+    expected: {
+      where: "Identifier at 16-20",
+      message:
+        "starts with whitespace or a line terminator where no value starts",
+    },
+  },
+  {
+    case: "tokens-358-identifier-er-several-first-region-inside-token",
+    diagram: "er",
+    fixture: "lex-name-two-comment-regions",
+    index: 1,
+    range: [10, 17],
+    expected: {
+      where: "Comment at 12-16",
+      message: "lies inside Identifier at 10-17",
+    },
+  },
+  {
+    case: "tokens-358-identifier-er-several-last-region-inside-token",
+    diagram: "er",
+    fixture: "lex-name-two-comment-regions",
+    index: 2,
+    range: [17, 26],
+    expected: {
+      where: "Comment at 21-25",
+      message: "lies inside Identifier at 17-26",
+    },
+  },
+  {
+    case: "tokens-358-identifier-quadrant-region-inside-token",
+    diagram: "quadrant",
+    fixture: "lex-classdef-name-line-separator-comment-line",
+    index: 2,
+    range: [23, 30],
+    expected: {
+      where: "Comment at 25-29",
+      message: "lies inside Identifier at 23-30",
+    },
+  },
+  {
+    case: "tokens-358-identifier-quadrant-region-ending-LF-inside-token",
+    diagram: "quadrant",
+    fixture: "lex-classdef-name-line-separator-comment-line",
+    index: 3,
+    range: [29, 31],
+    expected: {
+      where: "Identifier at 29-31",
+      message:
+        "starts with whitespace or a line terminator where no value starts",
+    },
+  },
+  {
+    case: "tokens-358-identifier-er-paragraph-region-ending-LF-inside-token",
+    diagram: "er",
+    fixture: "lex-name-paragraph-separator-comment-line",
+    index: 2,
+    range: [16, 20],
+    expected: {
+      where: "Identifier at 16-20",
+      message:
+        "starts with whitespace or a line terminator where no value starts",
+    },
+  },
+  {
+    case: "tokens-358-identifier-quadrant-paragraph-region-ending-LF-inside-token",
+    diagram: "quadrant",
+    fixture: "db-classdef-name-paragraph-separator-comment-line",
+    index: 3,
+    range: [29, 31],
+    expected: {
+      where: "Identifier at 29-31",
+      message:
+        "starts with whitespace or a line terminator where no value starts",
+    },
+  },
   {
     case: "tokens-extra-358-block-ending-line-terminator-outside-token",
     diagram: "block",
@@ -22366,6 +28862,102 @@ const commentCutTokenRangeCases = [
 ] as const
 
 const commentCutMergedTokenCases = [
+  {
+    case: "tokens-358-identifier-quadrant-several-first-region-merge",
+    diagram: "quadrant",
+    fixture: "db-classdef-name-two-comment-regions",
+    first: 2,
+    second: 3,
+    range: [23, 32],
+    expected: {
+      where: "Comment at 25-29",
+      message: "lies inside Identifier at 23-32",
+    },
+  },
+  {
+    case: "tokens-358-identifier-quadrant-several-last-region-merge",
+    diagram: "quadrant",
+    fixture: "db-classdef-name-two-comment-regions",
+    first: 3,
+    second: 4,
+    range: [30, 38],
+    expected: {
+      where: "Comment at 32-36",
+      message: "lies inside Identifier at 30-38",
+    },
+  },
+  {
+    case: "tokens-358-identifier-er-region-merge",
+    diagram: "er",
+    fixture: "lex-name-line-separator-comment-line",
+    first: 1,
+    second: 2,
+    range: [10, 20],
+    expected: {
+      where: "Comment at 12-16",
+      message: "lies inside Identifier at 10-20",
+    },
+  },
+  {
+    case: "tokens-358-identifier-er-several-first-region-merge",
+    diagram: "er",
+    fixture: "lex-name-two-comment-regions",
+    first: 1,
+    second: 2,
+    range: [10, 21],
+    expected: {
+      where: "Comment at 12-16",
+      message: "lies inside Identifier at 10-21",
+    },
+  },
+  {
+    case: "tokens-358-identifier-er-several-last-region-merge",
+    diagram: "er",
+    fixture: "lex-name-two-comment-regions",
+    first: 2,
+    second: 3,
+    range: [17, 29],
+    expected: {
+      where: "Comment at 21-25",
+      message: "lies inside Identifier at 17-29",
+    },
+  },
+  {
+    case: "tokens-358-identifier-quadrant-region-merge",
+    diagram: "quadrant",
+    fixture: "lex-classdef-name-line-separator-comment-line",
+    first: 2,
+    second: 3,
+    range: [23, 31],
+    expected: {
+      where: "Comment at 25-29",
+      message: "lies inside Identifier at 23-31",
+    },
+  },
+  {
+    case: "tokens-358-identifier-er-paragraph-region-merge",
+    diagram: "er",
+    fixture: "lex-name-paragraph-separator-comment-line",
+    first: 1,
+    second: 2,
+    range: [10, 20],
+    expected: {
+      where: "Comment at 12-16",
+      message: "lies inside Identifier at 10-20",
+    },
+  },
+  {
+    case: "tokens-358-identifier-quadrant-paragraph-region-merge",
+    diagram: "quadrant",
+    fixture: "db-classdef-name-paragraph-separator-comment-line",
+    first: 2,
+    second: 3,
+    range: [23, 31],
+    expected: {
+      where: "Comment at 25-29",
+      message: "lies inside Identifier at 23-31",
+    },
+  },
   {
     case: "tokens-extra-358-block-region-cut-RawText",
     diagram: "block",
@@ -31042,6 +37634,30 @@ it.each([
     },
   },
   {
+    case: "tokens-clean-592-gantt-Identifier-token-kind",
+    diagram: "gantt",
+    fixture: "db-click-href-attribute-quote",
+    index: 9,
+    kind: "RawText",
+    expected: {
+      where: "Identifier at 36-39",
+      message:
+        "the tokens of an id are not all of the kind Identifier: RawText",
+    },
+  },
+  {
+    case: "tokens-clean-592-requirement-Identifier-token-kind",
+    diagram: "requirement",
+    fixture: "spec-requirement-diagram-0799fd14",
+    index: 6,
+    kind: "RawText",
+    expected: {
+      where: "Identifier at 51-58",
+      message:
+        "the tokens of a Identifier in cssClasses are not all of the kind Identifier: RawText",
+    },
+  },
+  {
     case: "tokens-clean-592-radar-Identifier-token-kind",
     diagram: "radar",
     fixture: "lex-header-as-declaration",
@@ -32674,7 +39290,7 @@ it.each([
         span: [169, 189],
       },
       {
-        type: "RequirementIdentifier",
+        type: "Identifier",
         range: [164, 166],
         span: [178, 180],
       },
@@ -39467,3 +46083,712 @@ it.each([
     expect(output).toContainEqual(theCase.expected)
   },
 )
+
+const commentCutForbiddenKindTokenCases = [
+  {
+    case: "tokens-358-identifier-er-Numeric-owns-region",
+    diagram: "er",
+    fixture: "lex-name-line-separator-comment-line",
+    first: 1,
+    second: 2,
+    range: [10, 20],
+    kind: "Numeric",
+    expected: {
+      where: "Comment at 12-16",
+      message: "lies inside Numeric at 10-20",
+    },
+  },
+  {
+    case: "tokens-358-identifier-er-paragraph-Numeric-owns-region",
+    diagram: "er",
+    fixture: "lex-name-paragraph-separator-comment-line",
+    first: 1,
+    second: 2,
+    range: [10, 20],
+    kind: "Numeric",
+    expected: {
+      where: "Comment at 12-16",
+      message: "lies inside Numeric at 10-20",
+    },
+  },
+  {
+    case: "tokens-358-identifier-quadrant-Numeric-owns-region",
+    diagram: "quadrant",
+    fixture: "lex-classdef-name-line-separator-comment-line",
+    first: 2,
+    second: 3,
+    range: [23, 31],
+    kind: "Numeric",
+    expected: {
+      where: "Comment at 25-29",
+      message: "lies inside Numeric at 23-31",
+    },
+  },
+  {
+    case: "tokens-358-identifier-quadrant-paragraph-Numeric-owns-region",
+    diagram: "quadrant",
+    fixture: "db-classdef-name-paragraph-separator-comment-line",
+    first: 2,
+    second: 3,
+    range: [23, 31],
+    kind: "Numeric",
+    expected: {
+      where: "Comment at 25-29",
+      message: "lies inside Numeric at 23-31",
+    },
+  },
+] as const
+
+it.each(commentCutForbiddenKindTokenCases)(
+  "reports a forbidden token kind owning a comment region in $case",
+  (theCase) => {
+    const { input, tree } = recordedTree(theCase.diagram, theCase.fixture)
+    // packages/parser/docs/tokens.md, Comment regions in tokens: these name
+    // positions keep U+2028 or U+2029 and have Identifier fragments.
+    expect(checkTree(input, tree)).toEqual([])
+    const broken = copyOf(tree)
+    extendToken(
+      input,
+      broken.tokens[theCase.first],
+      theCase.range[0],
+      theCase.range[1],
+    )
+    setField(broken.tokens[theCase.first], "type", theCase.kind)
+    setField(broken, "tokens", [
+      ...broken.tokens.slice(0, theCase.second),
+      ...broken.tokens.slice(theCase.second + 1),
+    ])
+    expect(checkTree(input, broken)).toContainEqual(theCase.expected)
+  },
+)
+
+const commentCutShortenedNameNodeCases = [
+  {
+    case: "tokens-358-identifier-er-name-stops-before-region",
+    diagram: "er",
+    fixture: "lex-name-line-separator-comment-line",
+    nodeType: "ErIdentifier",
+    end: 12,
+    name: "A\u2028",
+    expected: {
+      where: 'Identifier at 17-20 of "Bar"',
+      message: "lies in no value node",
+    },
+  },
+  {
+    case: "tokens-358-identifier-er-paragraph-name-stops-before-region",
+    diagram: "er",
+    fixture: "lex-name-paragraph-separator-comment-line",
+    nodeType: "ErIdentifier",
+    end: 12,
+    name: "A\u2029",
+    expected: {
+      where: 'Identifier at 17-20 of "Bar"',
+      message: "lies in no value node",
+    },
+  },
+  {
+    case: "tokens-358-identifier-quadrant-name-stops-before-region",
+    diagram: "quadrant",
+    fixture: "lex-classdef-name-line-separator-comment-line",
+    nodeType: "QuadrantIdentifier",
+    end: 25,
+    name: "a\u2028",
+    expected: {
+      where: 'Identifier at 30-31 of "b"',
+      message: "lies in no value node",
+    },
+  },
+  {
+    case: "tokens-358-identifier-quadrant-paragraph-name-stops-before-region",
+    diagram: "quadrant",
+    fixture: "db-classdef-name-paragraph-separator-comment-line",
+    nodeType: "QuadrantIdentifier",
+    end: 25,
+    name: "a\u2029",
+    expected: {
+      where: 'Identifier at 30-31 of "b"',
+      message: "lies in no value node",
+    },
+  },
+] as const
+
+it.each(commentCutShortenedNameNodeCases)(
+  "reports an Identifier name stopping before its comment region in $case",
+  (theCase) => {
+    const { input, tree } = recordedTree(theCase.diagram, theCase.fixture)
+    // packages/parser/docs/tokens.md, Comment regions in tokens: a name node
+    // spans its Identifier fragments and the intervening comment region.
+    expect(checkTree(input, tree)).toEqual([])
+    const broken = copyOf(tree)
+    const name = firstNode(broken, theCase.nodeType)
+    span(input, name, name.range[0], theCase.end)
+    setField(name, "name", theCase.name)
+    expect(checkTree(input, broken)).toContainEqual(theCase.expected)
+  },
+)
+
+// tokens.md, Whitespace at the ends of tokens: these fixed, same-length
+// replacements keep read whitespace next to an ignored semicolon. Only the
+// following shortening of one fragment breaks the condition.
+const review4SemicolonWhitespaceCases = [
+  {
+    case: "tokens-review4-88-architecture-before-semicolon",
+    diagram: "architecture",
+    fixture: "style-quoted-lines",
+    from: "red;",
+    to: "re ;",
+    nodeType: "StringLiteral",
+    nodeRange: [30, 60],
+    written: {
+      value: "line\nstyle A fill:#re \nlast",
+      raw: '"line\nstyle A fill:#re ;\nlast"',
+    },
+    tokenSpans: [],
+    tokenIndex: 3,
+    tokenRange: [30, 52],
+    expected: {
+      where: "StringLiteral at 30-60",
+      message:
+        'the texts of its tokens joined are not its written text: "line\\nstyle A fill:#re\\nlast", not "line\\nstyle A fill:#re \\nlast"',
+    },
+  },
+  {
+    case: "tokens-review4-88-block-before-semicolon",
+    diagram: "block",
+    fixture: "db-class-def-colon-hash-semicolon",
+    from: "f00;",
+    to: "f0 ;",
+    nodeType: "BlockLiteral",
+    nodeRange: [24, 35],
+    written: { value: "fill:#f0 x" },
+    tokenSpans: [],
+    tokenIndex: 3,
+    tokenRange: [24, 32],
+    expected: {
+      where: "BlockLiteral at 24-35",
+      message:
+        'the texts of its tokens joined are not its written text: "fill:#f0x", not "fill:#f0 x"',
+    },
+  },
+  {
+    case: "tokens-review4-88-c4-before-semicolon",
+    diagram: "c4",
+    fixture: "db-grid-classdef-rule-acc-descr",
+    from: "#x;yb",
+    to: "# ; b",
+    nodeType: "C4Literal",
+    nodeRange: [20, 35],
+    written: { value: "aclassDef:#  b" },
+    tokenSpans: [],
+    tokenIndex: 3,
+    tokenRange: [20, 31],
+    expected: {
+      where: "C4Literal at 20-35",
+      message:
+        'the texts of its tokens joined are not its written text: "aclassDef:# b", not "aclassDef:#  b"',
+    },
+  },
+  {
+    case: "tokens-review4-88-c4-after-semicolon",
+    diagram: "c4",
+    fixture: "db-grid-classdef-rule-acc-descr",
+    from: "#x;yb",
+    to: "# ; b",
+    nodeType: "C4Literal",
+    nodeRange: [20, 35],
+    written: { value: "aclassDef:#  b" },
+    tokenSpans: [],
+    tokenIndex: 5,
+    tokenRange: [34, 35],
+    expected: {
+      where: "C4Literal at 20-35",
+      message:
+        'the texts of its tokens joined are not its written text: "aclassDef:# b", not "aclassDef:#  b"',
+    },
+  },
+  {
+    case: "tokens-review4-88-cynefin-before-semicolon",
+    diagram: "cynefin",
+    fixture: "lex-string-line-separator-comment-line-line-rule-after",
+    from: "#b;",
+    to: "# ;",
+    nodeType: "StringLiteral",
+    nodeRange: [21, 40],
+    written: { value: "A\u2028style:# B", raw: '"A\u2028%% c\nstyle:# ;B"' },
+    tokenSpans: [],
+    tokenIndex: 3,
+    tokenRange: [29, 36],
+    expected: {
+      where: "StringLiteral at 21-40",
+      message:
+        'the texts of its tokens joined are not its written text: "A\u2028style:#B", not "A\u2028style:# B"',
+    },
+  },
+  {
+    case: "tokens-review4-88-eventmodeling-before-semicolon",
+    diagram: "eventmodeling",
+    fixture: "gram-nested-block-selected-semicolon",
+    from: "a;b",
+    to: " ; ",
+    nodeType: "EventmodelingLiteral",
+    nodeRange: [40, 54],
+    written: { value: "\nstyle:#x   \n" },
+    tokenSpans: [],
+    tokenIndex: 11,
+    tokenRange: [40, 50],
+    expected: {
+      where: "EventmodelingLiteral at 40-54",
+      message:
+        'the texts of its tokens joined are not its written text: "\\nstyle:#x  \\n", not "\\nstyle:#x   \\n"',
+    },
+  },
+  {
+    case: "tokens-review4-88-eventmodeling-after-semicolon",
+    diagram: "eventmodeling",
+    fixture: "gram-nested-block-selected-semicolon",
+    from: "a;b",
+    to: " ; ",
+    nodeType: "EventmodelingLiteral",
+    nodeRange: [40, 54],
+    written: { value: "\nstyle:#x   \n" },
+    tokenSpans: [],
+    tokenIndex: 13,
+    tokenRange: [53, 54],
+    expected: {
+      where: "EventmodelingLiteral at 40-54",
+      message:
+        'the texts of its tokens joined are not its written text: "\\nstyle:#x  \\n", not "\\nstyle:#x   \\n"',
+    },
+  },
+  {
+    case: "tokens-review4-88-gantt-before-semicolon",
+    diagram: "gantt",
+    fixture: "lex-acc-descr-block-line-separator-comment-line-line-rule-after",
+    from: "#b;",
+    to: "# ;",
+    nodeType: "GanttLiteral",
+    nodeRange: [16, 33],
+    written: { value: "A\u2028style:# B" },
+    tokenSpans: [],
+    tokenIndex: 4,
+    tokenRange: [23, 30],
+    expected: {
+      where: "GanttLiteral at 16-33",
+      message:
+        'the texts of its tokens joined are not its written text: "A\u2028style:#B", not "A\u2028style:# B"',
+    },
+  },
+  {
+    case: "tokens-review4-88-gitgraph-before-semicolon",
+    diagram: "gitgraph",
+    fixture: "lex-string-line-separator-comment-line-line-rule-after",
+    from: "#b;",
+    to: "# ;",
+    nodeType: "StringLiteral",
+    nodeRange: [19, 38],
+    written: { value: "A\u2028style:# B", raw: '"A\u2028%% c\nstyle:# ;B"' },
+    tokenSpans: [],
+    tokenIndex: 5,
+    tokenRange: [27, 34],
+    expected: {
+      where: "StringLiteral at 19-38",
+      message:
+        'the texts of its tokens joined are not its written text: "A\u2028style:#B", not "A\u2028style:# B"',
+    },
+  },
+  {
+    case: "tokens-review4-88-info-before-semicolon",
+    diagram: "info",
+    fixture: "lex-acc-title-line-separator-comment-line-line-rule-after",
+    from: "#b;",
+    to: "# ;",
+    nodeType: "InfoLiteral",
+    nodeRange: [14, 32],
+    written: { value: " A\u2028style:# B" },
+    tokenSpans: [],
+    tokenIndex: 4,
+    tokenRange: [22, 29],
+    expected: {
+      where: "InfoLiteral at 14-32",
+      message:
+        'the texts of its tokens joined are not its written text: " A\u2028style:#B", not " A\u2028style:# B"',
+    },
+  },
+  {
+    case: "tokens-review4-88-ishikawa-before-semicolon",
+    diagram: "ishikawa",
+    fixture: "lex-header-ignored-semicolon-in-text",
+    from: "ishi;kawa",
+    to: "ish ;kawa",
+    nodeType: "IshikawaLiteral",
+    nodeRange: [9, 27],
+    written: { value: "style:#x ish kawa" },
+    tokenSpans: [],
+    tokenIndex: 1,
+    tokenRange: [9, 21],
+    expected: {
+      where: "IshikawaLiteral at 9-27",
+      message:
+        'the texts of its tokens joined are not its written text: "style:#x ishkawa", not "style:#x ish kawa"',
+    },
+  },
+  {
+    case: "tokens-review4-88-journey-before-semicolon",
+    diagram: "journey",
+    fixture: "tokens-ignored-semicolon-in-title-text",
+    from: "S;T",
+    to: " ; ",
+    nodeType: "JourneyLiteral",
+    nodeRange: [38, 41],
+    written: { value: "  " },
+    tokenSpans: [],
+    tokenIndex: 6,
+    tokenRange: [38, 38],
+    expected: {
+      where: "JourneyLiteral at 38-41",
+      message:
+        'the texts of its tokens joined are not its written text: " ", not "  "',
+    },
+  },
+  {
+    case: "tokens-review4-88-journey-after-semicolon",
+    diagram: "journey",
+    fixture: "tokens-ignored-semicolon-in-title-text",
+    from: "S;T",
+    to: " ; ",
+    nodeType: "JourneyLiteral",
+    nodeRange: [38, 41],
+    written: { value: "  " },
+    tokenSpans: [],
+    tokenIndex: 8,
+    tokenRange: [41, 41],
+    expected: {
+      where: "JourneyLiteral at 38-41",
+      message:
+        'the texts of its tokens joined are not its written text: " ", not "  "',
+    },
+  },
+  {
+    case: "tokens-review4-88-packet-before-semicolon",
+    diagram: "packet",
+    fixture: "style-label",
+    from: "f00;",
+    to: "f ; ",
+    nodeType: "StringLiteral",
+    nodeRange: [9, 29],
+    written: { value: "style x fill:#f  ", raw: '"style x fill:#f ; "' },
+    tokenSpans: [
+      { index: 3, range: [9, 26] },
+      { index: 4, range: [26, 27] },
+      { index: 5, range: [27, 29] },
+    ],
+    tokenIndex: 3,
+    tokenRange: [9, 25],
+    expected: {
+      where: "StringLiteral at 9-29",
+      message:
+        'the texts of its tokens joined are not its written text: "style x fill:#f ", not "style x fill:#f  "',
+    },
+  },
+  {
+    case: "tokens-review4-88-packet-after-semicolon",
+    diagram: "packet",
+    fixture: "style-label",
+    from: "f00;",
+    to: "f ; ",
+    nodeType: "StringLiteral",
+    nodeRange: [9, 29],
+    written: { value: "style x fill:#f  ", raw: '"style x fill:#f ; "' },
+    tokenSpans: [
+      { index: 3, range: [9, 26] },
+      { index: 4, range: [26, 27] },
+      { index: 5, range: [27, 29] },
+    ],
+    tokenIndex: 5,
+    tokenRange: [28, 29],
+    expected: {
+      where: "StringLiteral at 9-29",
+      message:
+        'the texts of its tokens joined are not its written text: "style x fill:#f ", not "style x fill:#f  "',
+    },
+  },
+  {
+    case: "tokens-review4-88-pie-before-semicolon",
+    diagram: "pie",
+    fixture: "lex-acc-descr-block-line-separator-comment-line-line-rule-after",
+    from: "#b;",
+    to: "# ;",
+    nodeType: "PieLiteral",
+    nodeRange: [15, 32],
+    written: { value: "A\u2028style:# B" },
+    tokenSpans: [],
+    tokenIndex: 4,
+    tokenRange: [22, 29],
+    expected: {
+      where: "PieLiteral at 15-32",
+      message:
+        'the texts of its tokens joined are not its written text: "A\u2028style:#B", not "A\u2028style:# B"',
+    },
+  },
+  {
+    case: "tokens-review4-88-quadrant-before-semicolon",
+    diagram: "quadrant",
+    fixture: "db-grid-style-acc-descr",
+    from: "#x;y",
+    to: "# ;y",
+    nodeType: "QuadrantLiteral",
+    nodeRange: [24, 34],
+    written: { value: "style:# y" },
+    tokenSpans: [],
+    tokenIndex: 3,
+    tokenRange: [24, 31],
+    expected: {
+      where: "QuadrantLiteral at 24-34",
+      message:
+        'the texts of its tokens joined are not its written text: "style:#y", not "style:# y"',
+    },
+  },
+  {
+    case: "tokens-review4-88-railroad-before-semicolon",
+    diagram: "railroad",
+    fixture: "ir-style-quoted-lines",
+    from: "f00;",
+    to: "f0 ;",
+    nodeType: "StringLiteral",
+    nodeRange: [27, 46],
+    written: { value: "a\nstyle x:#f0 \nb", raw: '"a\nstyle x:#f0 ;\nb"' },
+    tokenSpans: [],
+    tokenIndex: 5,
+    tokenRange: [27, 41],
+    expected: {
+      where: "StringLiteral at 27-46",
+      message:
+        'the texts of its tokens joined are not its written text: "a\\nstyle x:#f0\\nb", not "a\\nstyle x:#f0 \\nb"',
+    },
+  },
+  {
+    case: "tokens-review4-88-timeline-before-semicolon",
+    diagram: "timeline",
+    fixture: "lex-title-semicolon-in-style-line",
+    from: "#x;y",
+    to: "# ; ",
+    nodeType: "TimelineLiteral",
+    nodeRange: [17, 27],
+    written: { value: "style:#  " },
+    tokenSpans: [],
+    tokenIndex: 2,
+    tokenRange: [17, 24],
+    expected: {
+      where: "TimelineLiteral at 17-27",
+      message:
+        'the texts of its tokens joined are not its written text: "style:# ", not "style:#  "',
+    },
+  },
+  {
+    case: "tokens-review4-88-timeline-after-semicolon",
+    diagram: "timeline",
+    fixture: "lex-title-semicolon-in-style-line",
+    from: "#x;y",
+    to: "# ; ",
+    nodeType: "TimelineLiteral",
+    nodeRange: [17, 27],
+    written: { value: "style:#  " },
+    tokenSpans: [],
+    tokenIndex: 4,
+    tokenRange: [27, 27],
+    expected: {
+      where: "TimelineLiteral at 17-27",
+      message:
+        'the texts of its tokens joined are not its written text: "style:# ", not "style:#  "',
+    },
+  },
+  {
+    case: "tokens-review4-88-treemap-before-semicolon",
+    diagram: "treemap",
+    fixture: "gram-string-line-separator-comment-line-line-rule-after",
+    from: "#b;",
+    to: "# ;",
+    nodeType: "StringLiteral",
+    nodeRange: [8, 27],
+    written: { value: "A\u2028style:# B", raw: '"A\u2028%% c\nstyle:# ;B"' },
+    tokenSpans: [],
+    tokenIndex: 2,
+    tokenRange: [16, 23],
+    expected: {
+      where: "StringLiteral at 8-27",
+      message:
+        'the texts of its tokens joined are not its written text: "A\u2028style:#B", not "A\u2028style:# B"',
+    },
+  },
+  {
+    case: "tokens-review4-88-treeview-before-semicolon",
+    diagram: "treeview",
+    fixture: "block-physical-selected-semicolon",
+    from: "#x;",
+    to: "# ;",
+    nodeType: "TreeviewLiteral",
+    nodeRange: [24, 39],
+    written: { value: "style:# \n│\ntwo" },
+    tokenSpans: [],
+    tokenIndex: 3,
+    tokenRange: [24, 31],
+    expected: {
+      where: "TreeviewLiteral at 24-39",
+      message:
+        'the texts of its tokens joined are not its written text: "style:#\\n│\\ntwo", not "style:# \\n│\\ntwo"',
+    },
+  },
+  {
+    case: "tokens-review4-88-usecase-before-semicolon",
+    diagram: "usecase",
+    fixture: "lex-string-line-separator-comment-line-line-rule-after",
+    from: "#b;",
+    to: "# ;",
+    nodeType: "UsecaseLabel",
+    nodeRange: [19, 38],
+    written: { value: "A\u2028style:# B" },
+    tokenSpans: [],
+    tokenIndex: 3,
+    tokenRange: [27, 34],
+    expected: {
+      where: "UsecaseLabel at 19-38",
+      message:
+        'the texts of its tokens joined are not its written text: "A\u2028style:#B", not "A\u2028style:# B"',
+    },
+  },
+  {
+    case: "tokens-review4-88-venn-before-semicolon",
+    diagram: "venn",
+    fixture: "db-grid-classdef-rule-identifier-quoted",
+    from: "#x;",
+    to: "# ;",
+    nodeType: "StringLiteral",
+    nodeRange: [14, 31],
+    written: { value: "aclassDef:# yb", raw: '"aclassDef:# ;yb"' },
+    tokenSpans: [],
+    tokenIndex: 2,
+    tokenRange: [14, 26],
+    expected: {
+      where: "StringLiteral at 14-31",
+      message:
+        'the texts of its tokens joined are not its written text: "aclassDef:#yb", not "aclassDef:# yb"',
+    },
+  },
+  {
+    case: "tokens-review4-88-wardley-before-semicolon",
+    diagram: "wardley",
+    fixture: "style-quoted-lines",
+    from: "#b;",
+    to: "# ;",
+    nodeType: "StringLiteral",
+    nodeRange: [18, 33],
+    written: { value: "A\nstyle:# \nC", raw: '"A\nstyle:# ;\nC"' },
+    tokenSpans: [],
+    tokenIndex: 2,
+    tokenRange: [18, 28],
+    expected: {
+      where: "StringLiteral at 18-33",
+      message:
+        'the texts of its tokens joined are not its written text: "A\\nstyle:#\\nC", not "A\\nstyle:# \\nC"',
+    },
+  },
+] as const
+
+for (const testCase of review4SemicolonWhitespaceCases) {
+  it(testCase.case, () => {
+    const recorded = recordedTree(testCase.diagram, testCase.fixture)
+    const input = recorded.input.replace(testCase.from, testCase.to)
+    const tree = recorded.tree
+    const node = nodesOf(tree).find(
+      (candidate) =>
+        candidate.type === testCase.nodeType &&
+        candidate.range[0] === testCase.nodeRange[0] &&
+        candidate.range[1] === testCase.nodeRange[1],
+    )!
+    Object.assign(node, testCase.written)
+    for (const edit of testCase.tokenSpans)
+      extendToken(input, tree.tokens[edit.index], edit.range[0], edit.range[1])
+    for (const item of tree.tokens)
+      setField(item, "value", input.slice(...item.range))
+    extendToken(
+      input,
+      tree.tokens[testCase.tokenIndex],
+      testCase.tokenRange[0],
+      testCase.tokenRange[1],
+    )
+    expect(checkTree(input, tree)).toContainEqual(testCase.expected)
+  })
+}
+
+// Radar's authored style line becomes a semicolon cut rather than one String
+// token; both fragments and the IgnoredSemicolon are prepared before one
+// fragment loses a character that the StringLiteral still reads.
+const review4SplitStringSemicolonWhitespaceCases = [
+  {
+    case: "tokens-review4-88-radar-before-semicolon",
+    diagram: "radar",
+    fixture: "style-quoted-lines",
+    from: "A: #red;",
+    to: "A:x#re ;",
+    nodeType: "StringLiteral",
+    nodeRange: [18, 47],
+    written: {
+      value: "before\nstyle A:x#re \nafter",
+      raw: '"before\nstyle A:x#re ;\nafter"',
+    },
+    tokenSpans: [],
+    tokenIndex: 4,
+    tokenRange: [18, 38],
+    expected: {
+      where: "StringLiteral at 18-47",
+      message:
+        'the texts of its tokens joined are not its written text: "before\\nstyle A:x#re\\nafter", not "before\\nstyle A:x#re \\nafter"',
+    },
+  },
+  {
+    case: "tokens-review4-88-radar-after-semicolon",
+    diagram: "radar",
+    fixture: "style-quoted-lines",
+    from: "A: #red;",
+    to: "A:x#re ;",
+    nodeType: "StringLiteral",
+    nodeRange: [18, 47],
+    written: {
+      value: "before\nstyle A:x#re \nafter",
+      raw: '"before\nstyle A:x#re ;\nafter"',
+    },
+    tokenSpans: [],
+    tokenIndex: 6,
+    tokenRange: [41, 47],
+    expected: {
+      where: "StringLiteral at 18-47",
+      message:
+        'the texts of its tokens joined are not its written text: "before\\nstyle A:x#re after", not "before\\nstyle A:x#re \\nafter"',
+    },
+  },
+] as const
+
+for (const testCase of review4SplitStringSemicolonWhitespaceCases) {
+  it(testCase.case, () => {
+    const recorded = recordedTree(testCase.diagram, testCase.fixture)
+    const input = recorded.input.replace(testCase.from, testCase.to)
+    const tree = recorded.tree
+    const node = firstNode(tree, testCase.nodeType)
+    Object.assign(node, testCase.written)
+    for (const item of tree.tokens)
+      setField(item, "value", input.slice(...item.range))
+    replaceToken(tree, tree.tokens[4], [
+      ["StringFragment", 0, 21],
+      ["IgnoredSemicolon", 21, 22],
+      ["StringFragment", 22, 29],
+    ])
+    extendToken(
+      input,
+      tree.tokens[testCase.tokenIndex],
+      testCase.tokenRange[0],
+      testCase.tokenRange[1],
+    )
+    expect(checkTree(input, tree)).toContainEqual(testCase.expected)
+  })
+}

@@ -1237,7 +1237,7 @@
       }
     },
     {
-      "block": "packages/parser/docs/positions.md:e49d81e445e2",
+      "block": "packages/parser/docs/positions.md:b58b90205da7",
       "diagrams": [
         "agentflow",
         "architecture",
@@ -1278,6 +1278,210 @@
         "status": "not-shown",
         "reason": "rule-misses-condition",
         "note": "The range of a node must identify its own construct. In sequence/db-message-activate-target, moving the first SequenceMessageStatement's start from 16 to 0, the start of the diagram-header token, and updating its loc leaves every check without a report. The statement then starts before its own first token."
+      }
+    },
+    {
+      "block": "packages/parser/docs/positions.md:09fe93579bb7",
+      "diagrams": [
+        "agentflow",
+        "architecture",
+        "block",
+        "c4",
+        "class",
+        "cynefin",
+        "er",
+        "eventmodeling",
+        "flowchart",
+        "gantt",
+        "gitgraph",
+        "info",
+        "ishikawa",
+        "journey",
+        "kanban",
+        "mindmap",
+        "packet",
+        "pie",
+        "quadrant",
+        "radar",
+        "railroad",
+        "requirement",
+        "sankey",
+        "sequence",
+        "state",
+        "timeline",
+        "treemap",
+        "treeview",
+        "usecase",
+        "venn",
+        "wardley",
+        "xychart",
+        "error"
+      ],
+      "about": "An `IgnoredSemicolon` token, which no grammar reads, is like",
+      "judgment": {
+        "status": "shown",
+        "cases": [
+          {
+            "case": "An IgnoredSemicolon token is the token of no node: no node range starts or ends at it.",
+            "tests": [
+              {
+                "file": "check-tree-shared-tokens.test.ts",
+                "text": "fails a diagram node range starting at an ignored semicolon token"
+              }
+            ]
+          }
+        ]
+      }
+    },
+    {
+      "block": "packages/parser/docs/positions.md:24c89030f6ef",
+      "diagrams": [
+        "agentflow",
+        "architecture",
+        "block",
+        "c4",
+        "class",
+        "cynefin",
+        "er",
+        "eventmodeling",
+        "flowchart",
+        "gantt",
+        "gitgraph",
+        "info",
+        "ishikawa",
+        "journey",
+        "kanban",
+        "mindmap",
+        "packet",
+        "pie",
+        "quadrant",
+        "radar",
+        "railroad",
+        "requirement",
+        "sankey",
+        "sequence",
+        "state",
+        "timeline",
+        "treemap",
+        "treeview",
+        "usecase",
+        "venn",
+        "wardley",
+        "xychart",
+        "error"
+      ],
+      "about": "So the tokens of the node in `Root.body` are all the tokens ",
+      "judgment": {
+        "status": "shown",
+        "cases": [
+          {
+            "case": "The node in Root.body runs from its first token to its last.",
+            "tests": [
+              {
+                "file": "check-tree-shared-tokens.test.ts",
+                "text": "fails an ErrorDiagram that ends before its last token"
+              }
+            ]
+          },
+          {
+            "case": "Its range covers a separator after the last statement, as in the flowchart diagram of `A;`.",
+            "tests": [
+              {
+                "file": "check-tree-shared-positions.test.ts",
+                "text": "fails a flowchart diagram that ends before its trailing separator"
+              }
+            ]
+          },
+          {
+            "case": "Its range does not cover an ignored `;` after the last of its tokens, as in a class diagram whose last line is `classDef c fill:#f00;`.",
+            "tests": [
+              {
+                "file": "check-tree-shared-positions.test.ts",
+                "text": "fails a class diagram that ends after its trailing ignored semicolon"
+              }
+            ]
+          }
+        ]
+      }
+    },
+    {
+      "block": "packages/parser/docs/positions.md:7514bd849ffa",
+      "diagrams": [
+        "architecture",
+        "block",
+        "c4",
+        "class",
+        "cynefin",
+        "er",
+        "eventmodeling",
+        "flowchart",
+        "gantt",
+        "gitgraph",
+        "info",
+        "ishikawa",
+        "journey",
+        "kanban",
+        "mindmap",
+        "packet",
+        "pie",
+        "quadrant",
+        "radar",
+        "railroad",
+        "requirement",
+        "sankey",
+        "sequence",
+        "state",
+        "timeline",
+        "treemap",
+        "treeview",
+        "usecase",
+        "venn",
+        "wardley",
+        "xychart",
+        "error"
+      ],
+      "about": "The range of a node covers the ranges of all its child nodes",
+      "judgment": {
+        "status": "shown",
+        "cases": [
+          {
+            "case": "The range of a node covers the ranges of all its child nodes.",
+            "tests": [
+              {
+                "file": "check-tree-shared-positions.test.ts",
+                "text": "fails a child that ends after the end of its parent"
+              }
+            ]
+          }
+        ]
+      }
+    },
+    {
+      "block": "packages/parser/docs/positions.md:7514bd849ffa",
+      "diagrams": ["agentflow"],
+      "about": "The range of a node covers the ranges of all its child nodes",
+      "judgment": {
+        "status": "shown",
+        "cases": [
+          {
+            "case": "The range of a node covers the ranges of all its child nodes.",
+            "tests": [
+              {
+                "file": "check-tree-shared-positions.test.ts",
+                "text": "fails a child that ends after the end of its parent"
+              }
+            ]
+          },
+          {
+            "case": "An unclosed AgentflowAccDescrBlockStatement and its containing diagram reach source EOF.",
+            "tests": [
+              {
+                "file": "check-tree-shared-positions.test.ts",
+                "text": "fails the statement or the diagram when it ends before the end of the source"
+              }
+            ]
+          }
+        ]
       }
     },
     {

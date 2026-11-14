@@ -44,6 +44,8 @@ export type NoConditionKind =
   | "pointer"
   /** It gives the reason of other sentences. */
   | "reason"
+  /** It says only what a tool does, how the specification is written, or whether an input is accepted. */
+  | "not-about-tree"
   /** The named documents define nothing that gives the block, in its words, a case in these trees. */
   | "not-in-diagram"
 
@@ -155,10 +157,11 @@ function judgmentProblem(judgment: unknown): string | undefined {
       return (judgment.kind === "introduction" ||
         judgment.kind === "pointer" ||
         judgment.kind === "reason" ||
+        judgment.kind === "not-about-tree" ||
         judgment.kind === "not-in-diagram") &&
         typeof judgment.note === "string"
         ? undefined
-        : "states no condition without a kind (introduction, pointer, reason or not-in-diagram) and a note"
+        : "states no condition without a kind (introduction, pointer, reason, not-about-tree or not-in-diagram) and a note"
     default:
       return "has a status other than shown, not-shown and no-condition"
   }

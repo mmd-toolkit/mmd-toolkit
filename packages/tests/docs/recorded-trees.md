@@ -184,12 +184,14 @@ who reads the table, and is not compared. A judgment is one of:
   tokens, or the positions, or has no case in those diagrams. Its `kind` says
   why, with a `note`: `introduction` (it introduces the document or a part of
   it), `pointer` (it points to the document or the section that holds the
-  conditions), `reason` (it gives the reason of other sentences), or
-  `not-in-diagram` (the diagram documents give the block no case in their
-  trees). For `not-in-diagram`, the judgment also has `documents`, a nonempty
-  list of document paths from the repository root. No other kind of judgment has
-  this field. The documents are the diagram's syntax document
-  (`packages/spec/docs/diagrams/<diagram>.md`), its tree document
+  conditions), `reason` (it gives the reason of other sentences),
+  `not-about-tree` (it says only what a tool does, how the specification is
+  written, or whether an input is accepted, which the description of `shown`
+  says no tree can break), or `not-in-diagram` (the diagram documents give the
+  block no case in their trees). For `not-in-diagram`, the judgment also has
+  `documents`, a nonempty list of document paths from the repository root. No
+  other kind of judgment has this field. The documents are the diagram's syntax
+  document (`packages/spec/docs/diagrams/<diagram>.md`), its tree document
   (`packages/spec/docs/ast/<diagram>.md`), and any other document on which the
   judgment relies. For `error`, `packages/spec/docs/common.md` defines its
   detection and `packages/spec/docs/ast.md` defines `ErrorDiagram`. The `note`

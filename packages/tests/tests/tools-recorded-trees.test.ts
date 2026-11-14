@@ -938,6 +938,21 @@ describe("readCoverageTable", () => {
     })
   })
 
+  it("reads no-condition with kind not-about-tree", () => {
+    const notAboutTree = {
+      ...row,
+      judgment: {
+        status: "no-condition",
+        kind: "not-about-tree",
+        note: "The block says only that an input is rejected.",
+      },
+    }
+    expect(tableOf({ "a.json": { rows: [notAboutTree] } })).toEqual({
+      rows: [notAboutTree],
+      unreadable: [],
+    })
+  })
+
   it("reads no-condition with kind not-in-diagram", () => {
     const notInDiagram = {
       ...row,
@@ -1124,7 +1139,7 @@ describe("readCoverageTable", () => {
         {
           file: `${COVERAGE_TABLE}/f.json`,
           reason:
-            "rows[0] states no condition without a kind (introduction, pointer, reason or not-in-diagram) and a note",
+            "rows[0] states no condition without a kind (introduction, pointer, reason, not-about-tree or not-in-diagram) and a note",
         },
         {
           file: `${COVERAGE_TABLE}/g.json`,
@@ -1138,7 +1153,7 @@ describe("readCoverageTable", () => {
         {
           file: `${COVERAGE_TABLE}/i.json`,
           reason:
-            "rows[0] states no condition without a kind (introduction, pointer, reason or not-in-diagram) and a note",
+            "rows[0] states no condition without a kind (introduction, pointer, reason, not-about-tree or not-in-diagram) and a note",
         },
       ],
     })
