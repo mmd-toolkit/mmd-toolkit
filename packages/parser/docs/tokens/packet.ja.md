@@ -60,6 +60,9 @@
 
 共通ディレクティブ、コメント領域、選択されたセミコロンは、
 テキストと文字列の項目を分割します。
+分割された `String` の断片は `StringFragment` のトークンで、
+`0: "A%%{init:{}}%%B"` は、`StringFragment` のトークン `"A` と `B"`、
+その間の `Directive` のトークンを持ちます。
 固定キーワードや整数の内部の分割は、共通の不可分な境界規則で拒否します。
 
 [fixture: packet/directive-label-middle] [fixture: packet/directive-title-value]
