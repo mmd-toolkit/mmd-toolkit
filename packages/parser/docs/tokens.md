@@ -907,4 +907,7 @@ The other name nodes use RawText as follows:
 
   [fixture: flowchart/tokens-directive-label-space-after] [fixture:
   flowchart/tokens-directives-label-space-between] [fixture:
-  common/directive-in-string]
+  common/directive-in-string] [fixture:
+  ishikawa/tokens-space-between-directive-and-comment-region-after-line-separator]
+  [fixture:
+  ishikawa/tokens-space-between-directive-and-comment-region-after-paragraph-separator]
