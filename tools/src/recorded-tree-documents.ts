@@ -363,7 +363,10 @@ export interface Section {
 /**
  * The sections of a document by the anchors of their headings: each from its
  * heading to the next heading of the same depth or a smaller one. The anchors
- * are made as `pnpm run lint:md` makes them to check a link (`github-slugger`).
+ * are made as `pnpm run lint:md` makes them to check a link: with
+ * `github-slugger`, which its rule `markdown-links/no-missing-fragments`
+ * (`eslint-plugin-markdown-links`) uses, so that a link that the lint accepts
+ * names a section here.
  */
 export function sectionsOf(
   text: string,

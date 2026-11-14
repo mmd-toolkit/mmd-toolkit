@@ -9,6 +9,7 @@ import { ANSWERS } from "./recorded-trees.ts"
 import type {
   AnswerFile,
   ChangedTree,
+  HeldBlock,
   Place,
   ReadItem,
   RecordedTreesReport,
@@ -75,6 +76,24 @@ function itemEntry(item: ReadItem, places: boolean): string[] {
     for (const tree of item.trees) {
       for (const place of tree.places) out.push(`  - ${placeLine(place)}`)
     }
+  }
+  return out
+}
+
+/** The items not judged, counted and listed by document and line. */
+function unjudgedLines(unjudged: readonly HeldBlock[]): string[] {
+  if (unjudged.length === 0) return []
+  const byDocument = new Map<string, number[]>()
+  let items = 0
+  for (const { block, diagrams } of unjudged) {
+    items += diagrams.length
+    const list = byDocument.get(block.document) ?? []
+    list.push(block.line)
+    byDocument.set(block.document, list)
+  }
+  const out = [`${items} items of ${unjudged.length} blocks:`, ""]
+  for (const [document, blockLines] of byDocument) {
+    out.push(`- ${document}: lines ${blockLines.join(", ")}`)
   }
   return out
 }
@@ -209,28 +228,30 @@ export function formatReport(
     )
   }
 
+  const newStale = report.staleRows.filter((stale) => !stale.atBase)
+  const oldStale = report.staleRows.filter((stale) => stale.atBase)
   out.push("", "## Stale rows of the coverage table", "")
-  if (report.staleRows.length === 0) out.push("None.")
-  for (const { row, reason } of report.staleRows) {
+  out.push(
+    `Made stale or added by this change: ${newStale.length === 0 ? "none." : ""}`,
+  )
+  for (const { row, reason } of newStale) {
+    out.push(`- \`${row.block}\` (${row.diagrams.join(", ")}): ${reason}`)
+  }
+  out.push("", `Stale at the base too: ${oldStale.length === 0 ? "none." : ""}`)
+  for (const { row, reason } of oldStale) {
     out.push(`- \`${row.block}\` (${row.diagrams.join(", ")}): ${reason}`)
   }
 
   out.push("", "## Items not judged by the coverage table", "")
-  if (report.unjudged.length === 0) out.push("None.")
-  const unjudgedByDocument = new Map<string, number[]>()
-  let unjudgedItems = 0
-  for (const { block, diagrams } of report.unjudged) {
-    unjudgedItems += diagrams.length
-    const list = unjudgedByDocument.get(block.document) ?? []
-    list.push(block.line)
-    unjudgedByDocument.set(block.document, list)
-  }
-  if (report.unjudged.length > 0) {
-    out.push(`${unjudgedItems} items of ${report.unjudged.length} blocks:`, "")
-  }
-  for (const [document, blockLines] of unjudgedByDocument) {
-    out.push(`- ${document}: lines ${blockLines.join(", ")}`)
-  }
+  out.push(
+    `Added or left not judged by this change: ${report.unjudged.length === 0 ? "none." : ""}`,
+  )
+  appendItems(out, unjudgedLines(report.unjudged))
+  out.push(
+    "",
+    `Not judged at the base too: ${report.unjudgedAtBase.length === 0 ? "none." : ""}`,
+  )
+  appendItems(out, unjudgedLines(report.unjudgedAtBase))
 
   out.push("", "## Items whose key changed", "")
   if (report.changedItems.length === 0) out.push("None.")

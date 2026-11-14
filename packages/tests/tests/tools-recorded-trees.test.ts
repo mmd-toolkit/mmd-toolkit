@@ -1,8 +1,14 @@
-import { mkdirSync, mkdtempSync, rmSync, writeFileSync } from "node:fs"
+import {
+  mkdirSync,
+  mkdtempSync,
+  readdirSync,
+  rmSync,
+  writeFileSync,
+} from "node:fs"
 import os from "node:os"
 import path from "node:path"
 import { afterEach, beforeEach, describe, expect, it } from "vitest"
-import type { CoverageRow } from "../src/check-tree/coverage.ts"
+import type { CoverageRow } from "../src/check-tree/coverage-table/index.ts"
 import type { CheckedRoot } from "../src/check-tree/types.ts"
 import { nodesOf } from "../src/check-tree/walk.ts"
 import {
@@ -25,7 +31,10 @@ import {
   documentBlocksOf,
   placesOf,
 } from "../../../tools/src/recorded-trees.ts"
-import { runtimeReadsOfSource } from "../../../tools/src/runtime-imports.ts"
+import {
+  runtimeReadsOf,
+  runtimeReadsOfSource,
+} from "../../../tools/src/runtime-imports.ts"
 
 /** A reader of documents held in memory, by path from the root of the repository. */
 function memoryReader(files: Record<string, string>): DocumentReader {
@@ -614,5 +623,30 @@ describe("keyTextOf", () => {
     ).toBe(
       "under ErEntity\nA condition here.\n## X Words.\npackages/spec/docs/common.md#y names no section",
     )
+  })
+})
+
+describe("the coverage table", () => {
+  it("imports nothing outside its directory, so that the table of a commit can be taken out and imported", () => {
+    const directory = path.join(
+      import.meta.dirname,
+      "../src/check-tree/coverage-table",
+    )
+    const outside: string[] = []
+    for (const name of readdirSync(directory, {
+      recursive: true,
+      encoding: "utf8",
+    })) {
+      if (!name.endsWith(".ts")) continue
+      const file = path.join(directory, name)
+      const reads = runtimeReadsOf(file)
+      for (const imported of reads.relative) {
+        const target = path.resolve(path.dirname(file), imported)
+        if (!target.startsWith(`${directory}${path.sep}`))
+          outside.push(`${name}: ${imported}`)
+      }
+      for (const read of reads.untraceable) outside.push(`${name}: ${read}`)
+    }
+    expect(outside).toEqual([])
   })
 })

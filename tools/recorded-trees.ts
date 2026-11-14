@@ -16,7 +16,7 @@ import {
 import { formatReport } from "./src/recorded-trees-report.ts"
 
 /** Runs the command and returns its exit code. */
-function main(): number {
+async function main(): Promise<number> {
   let values: { base?: string; places?: boolean }
   try {
     ;({ values } = parseArgs({
@@ -44,7 +44,7 @@ function main(): number {
       throw new RecordedTreesUsageError("not in a git repository")
     }
     const { base, changed } = changeSince(root, values.base)
-    const report = checkRecordedTrees(root, base, changed, {
+    const report = await checkRecordedTrees(root, base, changed, {
       places: values.places === true,
     })
     const { text, fails } = formatReport(report, values.places === true)
@@ -59,6 +59,6 @@ function main(): number {
   }
 }
 
-process.exitCode = main()
+process.exitCode = await main()
 
 /* eslint-enable no-console -- end of the command-line tool */

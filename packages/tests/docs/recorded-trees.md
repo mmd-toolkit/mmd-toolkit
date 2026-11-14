@@ -108,8 +108,10 @@ A block that links to a heading of `packages/spec/docs/common.md` or of a
 document of `packages/spec/docs/diagrams/` reads its words as that section
 defines them, so the section goes with the item. A section runs from its heading
 to the next heading of the same depth or a smaller one. Its anchor is made from
-the heading as `pnpm run lint:md` makes it to check a link (`github-slugger`). A
-link without an anchor names no section.
+the heading as `pnpm run lint:md` makes it to check a link: with
+`github-slugger`, which the rule `markdown-links/no-missing-fragments` uses, so
+that a link that the lint accepts names a section here. A link without an anchor
+names no section.
 
 ## Keys
 
@@ -134,10 +136,13 @@ The key of an item is `<block key>@<diagram>`. The content key of a tree is
 
 ## The coverage table
 
-`packages/tests/src/check-tree/coverage.ts` holds the table. A row gives one
-judgment of one block (`block`, its key) for the diagram types it names
-(`diagrams`); `about` holds the opening words of the block for a person who
-reads the table, and is not compared. A judgment is one of:
+The table is in `packages/tests/src/check-tree/coverage-table/`: `index.ts`
+holds its types and `COVERAGE`, all its rows. Its files import nothing outside
+the directory, so that the command can take the table of the base out of the
+commit and import it (see What it prints). A row gives one judgment of one block
+(`block`, its key) for the diagram types it names (`diagrams`); `about` holds
+the opening words of the block for a person who reads the table, and is not
+compared. A judgment is one of:
 
 - `shown`: for each case that the block distinguishes, a test case in which
   `checkTree()` reports a tree that breaks the condition. A case is named by its
@@ -157,9 +162,9 @@ items to read are those that are not `shown`, judged or not.
 A change that makes a row stale, or that adds a block, has the judgment made
 again by `packages/tests` in the same pull request: the coverage table is a
 shared interface of the documents of the tree. The review of the change checks
-that the command lists no stale row and no item that is not judged; the command
-does not fail on them, so that a change of the documents alone is not stopped by
-a machine.
+that the command lists no stale row and no item that is not judged that the
+change adds, beside those that the base has already; the command does not fail
+on them, so that a change of the documents alone is not stopped by a machine.
 
 ## Answers
 
@@ -235,9 +240,14 @@ The command prints Markdown, the same on a terminal and in the log of CI:
    says whether the change adds its fixture.
 6. The missing answers, and a template of an answer file with the keys filled
    and the answers empty. The command writes no file.
-7. The stale rows of the coverage table, with why.
+7. The stale rows of the coverage table, with why: first those that the change
+   makes stale or adds, then those that are stale at the base too. A row is
+   compared with the table of the base, read with the documents and the test
+   files of the base; when the change changes none of them, every stale row is
+   one of the base.
 8. The items of every document that the table does not judge, by document and
-   line.
+   line: first those that the change adds or leaves not judged where the base
+   judged them, then those that the base does not judge either.
 9. The items whose key changed since the base, with what changed (the text of
    the block, or which section) and the fixtures to read against the new text:
    those of the block when its own text changed; and, in each section that

@@ -7,13 +7,23 @@
  * report; `packages/tests/docs/recorded-trees.md` defines what it holds.
  */
 import { execFileSync } from "node:child_process"
-import { existsSync, readFileSync, readdirSync } from "node:fs"
+import {
+  existsSync,
+  mkdirSync,
+  mkdtempSync,
+  readFileSync,
+  readdirSync,
+  rmSync,
+  writeFileSync,
+} from "node:fs"
+import os from "node:os"
 import path from "node:path"
-import { COVERAGE } from "../../packages/tests/src/check-tree/coverage.ts"
+import { pathToFileURL } from "node:url"
+import { COVERAGE } from "../../packages/tests/src/check-tree/coverage-table/index.ts"
 import type {
   CoverageJudgment,
   CoverageRow,
-} from "../../packages/tests/src/check-tree/coverage.ts"
+} from "../../packages/tests/src/check-tree/coverage-table/index.ts"
 import {
   STRUCTURE_NODE_TYPES,
   VALUE_NODE_TYPES,
@@ -57,6 +67,8 @@ const DOCUMENT_DIRECTORIES: readonly string[] = [
 ]
 /** The test files that the cases of the coverage table are in. */
 const COVERAGE_TESTS = "packages/tests/tests"
+/** The coverage table, whose files import nothing outside this directory. */
+export const COVERAGE_DIRECTORY = "packages/tests/src/check-tree/coverage-table"
 /** The documents searched for the sentences that cite a fixture, and the form of their citation. */
 const CITING_DOCUMENTS: readonly {
   readonly directory: string
@@ -369,6 +381,68 @@ export function coverageOf(
     }
   }
   return { judgments, staleRows }
+}
+
+/**
+ * The rows of the coverage table at the commit `commit`, none when it has no
+ * table.
+ */
+export async function coverageRowsAt(
+  root: string,
+  commit: string,
+): Promise<readonly CoverageRow[]> {
+  const reader = commitReader(root, commit)
+  const files = lines(
+    git(root, [
+      "ls-tree",
+      "-r",
+      "--name-only",
+      commit,
+      `${COVERAGE_DIRECTORY}/`,
+    ]),
+  ).map((file) => ({
+    file: file.slice(COVERAGE_DIRECTORY.length + 1),
+    text: reader.read(file) ?? "",
+  }))
+  return coverageRowsOf(files)
+}
+
+/**
+ * The rows of a coverage table whose files, relative to its directory, are
+ * `files`, none when it has no `index.ts`. The files are written to a
+ * directory of their own and imported from there: they import nothing
+ * outside it.
+ */
+export async function coverageRowsOf(
+  files: readonly { readonly file: string; readonly text: string }[],
+): Promise<readonly CoverageRow[]> {
+  if (!files.some(({ file }) => file === "index.ts")) return []
+  const directory = mkdtempSync(path.join(os.tmpdir(), "recorded-trees-"))
+  try {
+    for (const { file, text } of files) {
+      const target = path.join(directory, file)
+      mkdirSync(path.dirname(target), { recursive: true })
+      writeFileSync(target, text)
+    }
+    const table = (await import(
+      pathToFileURL(path.join(directory, "index.ts")).href
+    )) as { readonly COVERAGE: readonly CoverageRow[] }
+    return table.COVERAGE
+  } finally {
+    rmSync(directory, { recursive: true, force: true })
+  }
+}
+
+/** The blocks with the diagram types whose items a coverage table does not judge. */
+function unjudgedOf(blocks: DocumentBlocks, coverage: Coverage): HeldBlock[] {
+  return blocks.list
+    .map(({ block, diagrams }) => ({
+      block,
+      diagrams: diagrams.filter(
+        (diagram) => !coverage.judgments.has(itemKeyOf(block, diagram)),
+      ),
+    }))
+    .filter((held) => held.diagrams.length > 0)
 }
 
 // ---------------------------------------------------------------------------
@@ -788,9 +862,12 @@ export interface RecordedTreesReport {
   /** The changed trees that no answer of the reading by citing sentences covers. */
   readonly unansweredTrees: readonly ChangedTree[]
   readonly unreadableAnswers: Answers["unreadable"]
-  readonly staleRows: readonly StaleRow[]
-  /** The blocks of every document with the diagram types that the coverage table does not judge. */
+  /** The stale rows, each with whether the base has it as a stale row too. */
+  readonly staleRows: readonly (StaleRow & { readonly atBase: boolean })[]
+  /** The blocks of every document with the diagram types that the coverage table does not judge and the base judged or did not have. */
   readonly unjudged: readonly HeldBlock[]
+  /** The blocks with the diagram types that neither the table of now nor that of the base judges. */
+  readonly unjudgedAtBase: readonly HeldBlock[]
   readonly changedItems: readonly (ChangedItem & {
     readonly trees: readonly ChangedItemFixture[]
   })[]
@@ -830,12 +907,12 @@ export function changeSince(
  * `root` change since the commit `base`; with `places`, the report holds
  * every place of the fixtures of the changed items as well.
  */
-export function checkRecordedTrees(
+export async function checkRecordedTrees(
   root: string,
   base: string,
   changed: readonly string[],
   options: { readonly places: boolean },
-): RecordedTreesReport {
+): Promise<RecordedTreesReport> {
   const records = changedRecordsOf(root, changed)
   const everyTree = everyTreeReasonOf(root, changed)
   const checked = (
@@ -885,6 +962,46 @@ export function checkRecordedTrees(
   const coverage = coverageOf(COVERAGE, now.byKey, (file) =>
     working.read(`${COVERAGE_TESTS}/${file}`),
   )
+  // A stale row or an item that is not judged is the change's own only when
+  // the base does not have it so. Without a change to the documents, the
+  // table, or the test files, the base has the same ones.
+  const tableChanged = changed.some((file) =>
+    [...DOCUMENT_DIRECTORIES, COVERAGE_DIRECTORY, COVERAGE_TESTS].some(
+      (directory) => file.startsWith(`${directory}/`),
+    ),
+  )
+  const baseCoverage = tableChanged
+    ? coverageOf(await coverageRowsAt(root, base), before.byKey, (file) =>
+        atBase.read(`${COVERAGE_TESTS}/${file}`),
+      )
+    : coverage
+  const baseStale = new Set(
+    baseCoverage.staleRows.map((stale) => JSON.stringify(stale.row)),
+  )
+  const baseUnjudged = new Set(
+    unjudgedOf(before, baseCoverage).flatMap(({ block, diagrams }) =>
+      diagrams.map((diagram) => itemKeyOf(block, diagram)),
+    ),
+  )
+  const unjudged = unjudgedOf(now, coverage)
+
+  /**
+   * The blocks of `unjudged` with those of their diagram types whose item the
+   * base does not judge either, for `notJudgedAtBase`, or else whose item the
+   * base judged or did not have.
+   */
+  function unjudgedWhere(notJudgedAtBase: boolean): HeldBlock[] {
+    return unjudged
+      .map(({ block, diagrams }) => ({
+        block,
+        diagrams: diagrams.filter(
+          (diagram) =>
+            baseUnjudged.has(itemKeyOf(block, diagram)) === notJudgedAtBase,
+        ),
+      }))
+      .filter((held) => held.diagrams.length > 0)
+  }
+
   const baseAnswers = answersIn(atBase)
   const workingAnswers = answersIn(working)
 
@@ -971,15 +1088,12 @@ export function checkRecordedTrees(
         !workingAnswers.trees.has(tree.contentKey),
     ),
     unreadableAnswers: workingAnswers.unreadable,
-    staleRows: coverage.staleRows,
-    unjudged: now.list
-      .map(({ block, diagrams }) => ({
-        block,
-        diagrams: diagrams.filter(
-          (diagram) => !coverage.judgments.has(itemKeyOf(block, diagram)),
-        ),
-      }))
-      .filter((held) => held.diagrams.length > 0),
+    staleRows: coverage.staleRows.map((stale) => ({
+      ...stale,
+      atBase: baseStale.has(JSON.stringify(stale.row)),
+    })),
+    unjudged: unjudgedWhere(false),
+    unjudgedAtBase: unjudgedWhere(true),
     changedItems: changedItems.map((item) => ({
       ...item,
       trees: item.fixtures.map((fixture) => {
