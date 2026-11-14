@@ -109,20 +109,3 @@ corpus tests also check recorded kanban trees and common detection fixtures.
    kanban/db-frontmatter-drawing-config] [fixture:
    kanban/db-title-not-statement] [fixture: kanban/db-acc-title-not-statement]
    [fixture: kanban/db-acc-descr-not-statement]
-10. **Comment regions in values.** A U+2028 or a U+2029 is a character of a
-    value and a comment start, so a comment region after it is not in the
-    converted form, and the value goes on after the region (see
-    [Comment lines](../../../spec/docs/common.md#comment-lines)): `A`, U+2028,
-    `%% c`, a line break, and `B` has the node text `A`, U+2028, and `B`, used
-    for both id and label. U+2029 splits node text in the same way. [fixture:
-    kanban/db-node-text-line-separator-then-comment-line] [fixture:
-    kanban/db-node-text-paragraph-separator-then-comment-line] The same holds
-    for shape label text, [fixture:
-    kanban/db-shape-text-line-separator-then-comment-line] for a string,
-    [fixture: kanban/db-string-line-separator-then-comment-line] for a markdown
-    string, [fixture:
-    kanban/db-markdown-string-line-separator-then-comment-line] for an item
-    icon, [fixture: kanban/db-icon-line-separator-then-comment-line] and for a
-    data-suffix label, bare [fixture:
-    kanban/db-data-label-bare-line-separator-then-comment-line] or quoted.
-    [fixture: kanban/db-data-label-quoted-line-separator-then-comment-line]

@@ -87,22 +87,11 @@ architecture/db-mixed] [fixture: architecture/header-beta]
    [fixture: architecture/db-align-forward-repeat] [fixture:
    architecture/db-align-layout-conflict] [fixture: architecture/header-beta]
    [fixture: architecture/config-drawing-only]
-7. **Comment regions in values.** A U+2028 or a U+2029 is a character of a value
-   and a comment start, so a comment region after it is not in the converted
-   form, and the value goes on after the region (see
-   [Comment lines](../../../spec/docs/common.md#comment-lines)): `accTitle: A`,
-   U+2028, `%% c`, a line break, and `B` has the accessibility title `A`,
-   U+2028, and `B`. The same holds for the accessibility description, for a
-   description block, for the title of a service in brackets, and for the text
-   of an icon string, which U+2029 splits in the same way. [fixture:
-   architecture/db-acc-title-line-separator-then-comment-line] [fixture:
-   architecture/db-acc-descr-line-separator-then-comment-line] [fixture:
-   architecture/db-acc-descr-block-line-separator-then-comment-line] [fixture:
-   architecture/db-bracket-label-line-separator-then-comment-line] [fixture:
-   architecture/db-icon-text-string-line-separator-then-comment-line] [fixture:
-   architecture/db-icon-text-string-paragraph-separator-then-comment-line] The
-   summary has no field for the title of the diagram, so the fixture of a title
-   records that the input is accepted. [fixture:
+7. **Comment regions in values.** A comment region after a U+2028 or a U+2029 is
+   left out of a value as in every diagram (see
+   [The converted form](../db-from-tree.md#the-converted-form)). The summary has
+   no field for the title of the diagram, so the fixture of a title records that
+   the input is accepted. [fixture:
    architecture/lex-title-line-separator-then-comment-line]
 
 ## Checking recorded trees

@@ -160,15 +160,3 @@ shared HTML quote-context scan reads the source once.
     venn/config-security-other-html-false] [fixture:
     venn/config-security-other-root-false-flowchart-true] [fixture:
     venn/config-security-other-root-true-flowchart-false]
-11. **Comment regions in values.** A U+2028 or a U+2029 is a character of a
-    value and a comment start, so a comment region after it is not in the
-    converted form, and the value goes on after the region (see
-    [Comment lines](../../../spec/docs/common.md#comment-lines)): `title A`,
-    U+2028, `%% c`, a line break, and `B` has the diagram title `A`, U+2028, and
-    `B`. [fixture: venn/db-title-line-separator-then-comment-line] The same
-    holds for a quoted set name, with U+2029 as well [fixture:
-    venn/db-quoted-name-line-separator-then-comment-line] [fixture:
-    venn/db-quoted-name-paragraph-separator-then-comment-line], for a bare label
-    [fixture: venn/db-bare-label-line-separator-then-comment-line], and for a
-    quoted label. [fixture:
-    venn/db-quoted-label-line-separator-then-comment-line]

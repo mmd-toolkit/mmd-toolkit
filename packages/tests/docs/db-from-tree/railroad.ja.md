@@ -125,20 +125,8 @@ Root.diagramType で IR、EBNF、ABNF、PEG を選び、
    [fixture: railroad/peg-db-predicate-quote-newline]
 
 8. **値の中のコメント領域。**
-   U+2028 と U+2029 は、値の文字であるとともにコメントの始まりなので、
-   その後のコメント領域は変換した形にありません。
-   値は領域の後へ続きます。
-   出典は [コメント行](../../../spec/docs/common.ja.md#コメント行) です。
-   `accTitle: A`、U+2028、`%% c`、改行、`B` のアクセシビリティのタイトルは、
-   `A`、U+2028、`B` です。
-   [fixture: railroad/db-acc-title-line-separator-then-comment-line]
-   アクセシビリティの説明でも同じです。
-   [fixture: railroad/db-acc-descr-line-separator-then-comment-line]
-   説明ブロックでも同じです。
-   [fixture: railroad/db-acc-descr-block-line-separator-then-comment-line]
-   IR の terminal call の文字列の値でも同じで、U+2029 も同じように値を割ります。
-   [fixture: railroad/db-string-line-separator-then-comment-line]
-   [fixture: railroad/db-string-paragraph-separator-then-comment-line]
+   U+2028 や U+2029 の後のコメント領域は、どの図種でも値から除かれます。
+   出典は [変換した形](../db-from-tree.ja.md#変換した形) です。
    要約には図のタイトルの欄がないので、タイトルの fixture は、
    入力が受け入れられることを記録します。
    [fixture: railroad/lex-title-line-separator-then-comment-line]

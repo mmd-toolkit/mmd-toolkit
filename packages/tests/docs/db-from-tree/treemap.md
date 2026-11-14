@@ -79,23 +79,6 @@ Japanese version: [treemap.ja.md](./treemap.ja.md)
    colours. [fixture: treemap/db-all-fields] [fixture:
    treemap/config-drawing-only] [fixture: treemap/config-frontmatter-drawing]
    [fixture: treemap/config-init-drawing]
-7. **Comment regions in values.** A U+2028 or a U+2029 is a character of a value
-   and a comment start, so a comment region after it is not in the converted
-   form, and the value goes on after the region (see
-   [Comment lines](../../../spec/docs/common.md#comment-lines)): `accTitle: A`,
-   U+2028, `%% c`, a line break, and `B` has the accessibility title `A`,
-   U+2028, and `B`. [fixture:
-   treemap/db-acc-title-line-separator-then-comment-line] The same holds for the
-   accessibility description [fixture:
-   treemap/db-acc-descr-line-separator-then-comment-line], for a description
-   block [fixture: treemap/db-acc-descr-block-line-separator-then-comment-line],
-   for the diagram title [fixture:
-   treemap/db-title-line-separator-then-comment-line], for a node name in a
-   string, with U+2029 as well [fixture:
-   treemap/db-string-line-separator-then-comment-line] [fixture:
-   treemap/db-string-paragraph-separator-then-comment-line], and for a class
-   definition style. [fixture:
-   treemap/db-class-style-line-separator-then-comment-line]
 
 ## Recorded comparisons
 

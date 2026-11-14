@@ -111,20 +111,8 @@
    [fixture: architecture/header-beta]
    [fixture: architecture/config-drawing-only]
 7. **値の中のコメント領域。**
-   U+2028 と U+2029 は、値の文字であるとともにコメントの始まりなので、
-   その後のコメント領域は変換した形にありません。
-   値は領域の後へ続きます。
-   出典は [コメント行](../../../spec/docs/common.ja.md#コメント行) です。
-   `accTitle: A`、U+2028、`%% c`、改行、`B` のアクセシビリティのタイトルは、
-   `A`、U+2028、`B` です。
-   アクセシビリティの説明、説明ブロック、角括弧の中のサービスのタイトル、
-   アイコンの文字列のテキストでも同じで、U+2029 も同じように値を割ります。
-   [fixture: architecture/db-acc-title-line-separator-then-comment-line]
-   [fixture: architecture/db-acc-descr-line-separator-then-comment-line]
-   [fixture: architecture/db-acc-descr-block-line-separator-then-comment-line]
-   [fixture: architecture/db-bracket-label-line-separator-then-comment-line]
-   [fixture: architecture/db-icon-text-string-line-separator-then-comment-line]
-   [fixture: architecture/db-icon-text-string-paragraph-separator-then-comment-line]
+   U+2028 や U+2029 の後のコメント領域は、どの図種でも値から除かれます。
+   出典は [変換した形](../db-from-tree.ja.md#変換した形) です。
    要約には図のタイトルの欄がないので、タイトルの fixture は、
    入力が受け入れられることを記録します。
    [fixture: architecture/lex-title-line-separator-then-comment-line]

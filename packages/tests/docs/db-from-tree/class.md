@@ -353,26 +353,3 @@ without a label, changes nothing: a line `Foo` declares no class, and neither
 does `Class A`, the name `ClassA` (see
 [Lexical structure](../../../spec/docs/diagrams/class.md#lexical-structure)).
 [fixture: class/gram-name-alone] [fixture: class/lex-keyword-upper-case]
-
-**Comment regions in values.** A U+2028 or a U+2029 is a character of a value
-and a comment start, so a comment region after it is not in the converted form,
-and the value goes on after the region (see
-[Comment lines](../../../spec/docs/common.md#comment-lines)): `accTitle: A`,
-U+2028, `%% c`, a line break, and `B` has the accessibility title `A`, U+2028,
-and `B`. [fixture: class/db-acc-title-line-separator-then-comment-line] The same
-holds for the accessibility description [fixture:
-class/db-acc-descr-line-separator-then-comment-line], and for a description
-block. [fixture: class/db-acc-descr-block-line-separator-then-comment-line] It
-also holds for a backquoted class name [fixture:
-class/db-backquoted-name-line-separator-then-comment-line], a generic type
-[fixture: class/db-generic-line-separator-then-comment-line], a member name
-[fixture: class/db-member-name-line-separator-then-comment-line], an annotation
-line [fixture: class/db-annotation-line-separator-then-comment-line], the string
-of a note [fixture: class/db-note-string-line-separator-then-comment-line], the
-callback name [fixture:
-class/db-callback-name-line-separator-then-comment-line], the callback arguments
-[fixture: class/db-callback-arguments-line-separator-then-comment-line], and a
-style. [fixture: class/db-style-line-separator-then-comment-line] A relation
-label continues in the same way after U+2028 or U+2029. [fixture:
-class/db-relation-label-line-separator-then-comment-line] [fixture:
-class/db-relation-label-paragraph-separator-then-comment-line]

@@ -11,12 +11,11 @@ or effective title is synthesized. [fixture: info/header-lf] [fixture:
 info/header-inline-flag] [fixture: info/common-all] [fixture:
 info/common-flag-all] [fixture: info/hidden-yaml-body]
 
-A U+2028 or a U+2029 inside the value of a common statement is a comment start,
-so a comment region after it is not in the value, which goes on after the region
-(see [Comment lines](../../../spec/docs/common.md#comment-lines)):
-`accTitle: A`, U+2028, `%% c`, a line break, and `B` has the title `A`, U+2028,
-and `B`, which the summary does not keep, so the fixture records that the input
-is accepted. [fixture: info/lex-acc-title-line-separator-then-comment-line]
+A comment region after a U+2028 or a U+2029 is left out of a value as in every
+diagram (see [The converted form](../db-from-tree.md#the-converted-form)). The
+summary does not keep the accessibility title, so the fixture of an `accTitle`
+that goes on across a region records that the input is accepted. [fixture:
+info/lex-acc-title-line-separator-then-comment-line]
 
 Frontmatter and directives still supply shared embedded values, but the info
 adapter publishes none of them to its Db. [fixture: info/frontmatter-title]

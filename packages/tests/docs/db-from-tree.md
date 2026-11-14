@@ -66,6 +66,20 @@ what the text cannot give alone:
   on the line segment and on the diagram,
 - the end of the frontmatter, where the text starts.
 
+A U+2028 or a U+2029 inside a value is a character of it and a comment start, so
+a comment region after it is not in the converted form, and the value goes on
+after the region, for the values of every diagram: the helper reads the range of
+a value and leaves the regions out. `A`, U+2028, `%% c`, a line break, and `B`
+is the value `A`, U+2028, and `B`, whether the value is a string, a text, or a
+description block. [fixture:
+flowchart/db-string-line-separator-then-comment-line] [fixture:
+block/db-string-paragraph-separator-then-comment-line] [fixture:
+gantt/db-title-line-separator-then-comment-line] [fixture:
+flowchart/db-square-label-paragraph-separator-then-comment-line] [fixture:
+flowchart/db-acc-descr-block-line-separator-then-comment-line] A diagram
+document says where the summary has no field for such a value, or takes it from
+elsewhere.
+
 Leading whitespace is not read, and the end of the text is one more `\n`. In
 flowchart, the whitespace after a `}` up to its last line feed is one line feed.
 Agentflow retains leading whitespace and lexical comments at or below the

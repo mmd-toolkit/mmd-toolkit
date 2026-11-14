@@ -492,36 +492,13 @@ flowchart/db-acc-descr-block-then-empty-line] [fixture:
 flowchart/db-acc-descr-empty-block-keeps] [fixture:
 flowchart/db-acc-descr-empty-block-after-block]
 
-**Comment regions in values.** A U+2028 or a U+2029 is a character of a value
-and a comment start, so a comment region after it is not in the converted form,
-and the value goes on after the region (see
-[Comment lines](../../../spec/docs/common.md#comment-lines)): `accTitle: A`,
-U+2028, `%% c`, a line break, and `B` has the accessibility title `A`, U+2028,
-and `B`. [fixture: flowchart/db-acc-title-line-separator-then-comment-line] The
-same holds for the accessibility description [fixture:
-flowchart/db-acc-descr-line-separator-then-comment-line], for a description
-block [fixture: flowchart/db-acc-descr-block-line-separator-then-comment-line],
-for a square label, which U+2029 splits in the same way [fixture:
-flowchart/db-square-label-line-separator-then-comment-line] [fixture:
-flowchart/db-square-label-paragraph-separator-then-comment-line], for a slanted
-label [fixture: flowchart/db-slanted-label-line-separator-then-comment-line],
-for an ellipse label [fixture:
-flowchart/db-ellipse-label-line-separator-then-comment-line], for a string
-[fixture: flowchart/db-string-line-separator-then-comment-line], and for a
-markdown string. [fixture:
-flowchart/db-markdown-string-line-separator-then-comment-line] It also holds for
-a pipe label [fixture:
-flowchart/db-pipe-label-line-separator-then-comment-line], for link text
-[fixture: flowchart/db-link-text-line-separator-then-comment-line], for a
-subgraph name used as its title [fixture:
-flowchart/db-subgraph-name-line-separator-then-comment-line], for a style
-[fixture: flowchart/db-style-line-separator-then-comment-line], for a callback
-name [fixture: flowchart/db-callback-name-line-separator-then-comment-line], and
-for callback arguments. [fixture:
-flowchart/db-callback-arguments-line-separator-then-comment-line] For a bare or
-quoted label in a data block, the data-block effect supplies the same text.
-[fixture: flowchart/db-data-label-bare-line-separator-then-comment-line]
-[fixture: flowchart/db-data-label-quoted-line-separator-then-comment-line]
+**Comment regions in values.** A comment region after a U+2028 or a U+2029 is
+left out of a value as in every diagram (see
+[The converted form](../db-from-tree.md#the-converted-form)). For a bare or
+quoted label in a data block, the data-block effect supplies the text, which
+goes on across the region in the same way. [fixture:
+flowchart/db-data-label-bare-line-separator-then-comment-line] [fixture:
+flowchart/db-data-label-quoted-line-separator-then-comment-line]
 
 ## Data blocks in the Db
 

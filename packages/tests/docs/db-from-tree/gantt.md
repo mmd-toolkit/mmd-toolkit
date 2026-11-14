@@ -303,30 +303,6 @@ section names in the order of the statements, `tasks` in source order, `links`,
 and `clickCalls`. A task has `section`, `raw`, `task`, `classes`, the `id`
 unless it has none, the flags it has, and `order`.
 
-**Comment regions in values.** A U+2028 or a U+2029 is a character of a value
-and a comment start, so a comment region after it is not in the converted form,
-and the value goes on after the region (see
-[Comment lines](../../../spec/docs/common.md#comment-lines)): `accTitle:A`,
-U+2028, `%% c`, a line break, and `B` has the accessibility title `A`, U+2028,
-and `B`. [fixture: gantt/db-acc-title-line-separator-then-comment-line] The same
-holds for the accessibility description [fixture:
-gantt/db-acc-descr-line-separator-then-comment-line], for a description block
-[fixture: gantt/db-acc-descr-block-line-separator-then-comment-line], for the
-diagram title [fixture: gantt/db-title-line-separator-then-comment-line], for a
-section name [fixture: gantt/db-section-line-separator-then-comment-line], for
-an axis format, which U+2029 splits in the same way [fixture:
-gantt/db-axis-format-line-separator-then-comment-line] [fixture:
-gantt/db-axis-format-paragraph-separator-then-comment-line], and for a
-`todayMarker` value. [fixture:
-gantt/db-today-marker-line-separator-then-comment-line] It also holds for a task
-description [fixture: gantt/db-task-line-separator-then-comment-line], for the
-first of three task data items, which becomes the task id [fixture:
-gantt/db-task-data-line-separator-then-comment-line], for a callback name
-[fixture: gantt/db-callback-name-line-separator-then-comment-line], for callback
-arguments [fixture:
-gantt/db-callback-arguments-line-separator-then-comment-line], and for a URL
-string. [fixture: gantt/db-url-line-separator-then-comment-line]
-
 ## The replacement of characters
 
 The Db passes three texts through `sanitizeText`: the title, `accTitle`, and

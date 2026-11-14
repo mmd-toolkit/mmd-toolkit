@@ -79,21 +79,6 @@ radar/db-all-fields] [fixture: radar/error-reference-label]
    radar/config-frontmatter-options-cannot-reject] [fixture:
    radar/config-init-options-cannot-reject]
 
-7. **Comment regions in values.** A U+2028 or a U+2029 is a character of a value
-   and a comment start, so a comment region after it is not in the converted
-   form, and the value goes on after the region (see
-   [Comment lines](../../../spec/docs/common.md#comment-lines)): `accTitle: A`,
-   U+2028, `%% c`, a line break, and `B` has the accessibility title `A`,
-   U+2028, and `B`. [fixture:
-   radar/db-acc-title-line-separator-then-comment-line] The same holds for the
-   diagram title, [fixture: radar/db-title-line-separator-then-comment-line] for
-   the accessibility description, [fixture:
-   radar/db-acc-descr-line-separator-then-comment-line] for a description block,
-   [fixture: radar/db-acc-descr-block-line-separator-then-comment-line] and for
-   an axis label written as a string, which U+2029 splits in the same way.
-   [fixture: radar/db-string-line-separator-then-comment-line] [fixture:
-   radar/db-string-paragraph-separator-then-comment-line]
-
 ## Recorded comparisons
 
 Use `specified.json` when present, otherwise `expected.json`, and obtain shared

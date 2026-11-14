@@ -63,17 +63,6 @@ Japanese version: [pie.ja.md](./pie.ja.md)
    pie/config-security-other] [fixture: pie/config-other-root-false] [fixture:
    pie/showdata-section-inline] [fixture: pie/config-drawing-only]
 
-6. **Comment regions in values.** A U+2028 or a U+2029 is a character of a value
-   and a comment start, so a comment region after it is not in the converted
-   form, and the value goes on after the region (see
-   [Comment lines](../../../spec/docs/common.md#comment-lines)): `"A`, U+2028,
-   `%% c`, a line break, and `B": 1` has the section label `A`, U+2028, and `B`.
-   U+2029 splits the string label in the same way. [fixture:
-   pie/db-string-line-separator-then-comment-line] [fixture:
-   pie/db-string-paragraph-separator-then-comment-line] The same holds for a
-   description block. [fixture:
-   pie/db-acc-descr-block-line-separator-then-comment-line]
-
 ## Recorded comparisons
 
 Use `specified.json` where present, otherwise `expected.json`. Atomic directive

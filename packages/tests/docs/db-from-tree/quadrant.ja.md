@@ -188,31 +188,6 @@ Db が持つものが要約になります。
 タイトル、アクセシビリティのタイトルと説明、象限の 4 つのテキスト、2 つの軸、
 点、クラスです。 [fixture: quadrant/config-settings-chart]
 
-**値の中のコメント領域。**
-U+2028 と U+2029 は、値の文字であるとともにコメントの始まりなので、
-その後のコメント領域は変換した形にありません。
-値は領域の後へ続きます。
-出典は [コメント行](../../../spec/docs/common.ja.md#コメント行) です。
-`quadrant-1 a`、U+2028、`%% c`、改行、`b` の第 1 象限のテキストは、`a`、U+2028、
-`b` です。
-U+2029 も同じように象限のテキストを割ります。
-[fixture: quadrant/db-quadrant-text-line-separator-then-comment-line]
-[fixture: quadrant/db-quadrant-text-paragraph-separator-then-comment-line]
-引用符で囲んだ象限のテキストでも同じです。
-[fixture: quadrant/db-string-line-separator-then-comment-line]
-図のタイトルでも同じです。
-[fixture: quadrant/db-title-line-separator-then-comment-line]
-x 軸の最初のテキストでも同じです。
-[fixture: quadrant/db-axis-text-line-separator-then-comment-line]
-点の名前でも同じです。
-[fixture: quadrant/db-point-name-line-separator-then-comment-line]
-アクセシビリティのタイトルでも同じです。
-[fixture: quadrant/db-acc-title-line-separator-then-comment-line]
-アクセシビリティの説明でも同じです。
-[fixture: quadrant/db-acc-descr-line-separator-then-comment-line]
-説明ブロックでも同じです。
-[fixture: quadrant/db-acc-descr-block-line-separator-then-comment-line]
-
 ## 文字の置き換え
 
 Db は、テキストを `sanitizeText` に通します。

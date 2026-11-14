@@ -130,24 +130,3 @@
    [fixture: kanban/db-title-not-statement]
    [fixture: kanban/db-acc-title-not-statement]
    [fixture: kanban/db-acc-descr-not-statement]
-10. **値の中のコメント領域。**
-    U+2028 と U+2029 は、値の文字であるとともにコメントの始まりなので、
-    その後のコメント領域は変換した形にありません。
-    値は領域の後へ続きます。
-    出典は [コメント行](../../../spec/docs/common.ja.md#コメント行) です。
-    `A`、U+2028、`%% c`、改行、`B` のノードのテキストは、`A`、U+2028、`B` で、
-    id と label の両方に使われます。
-    U+2029 も同じようにノードのテキストを割ります。
-    [fixture: kanban/db-node-text-line-separator-then-comment-line]
-    [fixture: kanban/db-node-text-paragraph-separator-then-comment-line]
-    形のラベルのテキストでも同じです。
-    [fixture: kanban/db-shape-text-line-separator-then-comment-line]
-    文字列でも同じです。
-    [fixture: kanban/db-string-line-separator-then-comment-line]
-    Markdown 文字列でも同じです。
-    [fixture: kanban/db-markdown-string-line-separator-then-comment-line]
-    項目のアイコンでも同じです。
-    [fixture: kanban/db-icon-line-separator-then-comment-line]
-    データ接尾辞のラベルでも、引用符のない形とある形で同じです。
-    [fixture: kanban/db-data-label-bare-line-separator-then-comment-line]
-    [fixture: kanban/db-data-label-quoted-line-separator-then-comment-line]

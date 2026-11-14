@@ -162,25 +162,6 @@ quadrant/db-classdef-prototype-used]
 title and description, the four texts of the quadrants, the two axes, the
 points, and the classes. [fixture: quadrant/config-settings-chart]
 
-**Comment regions in values.** A U+2028 or a U+2029 is a character of a value
-and a comment start, so a comment region after it is not in the converted form,
-and the value goes on after the region (see
-[Comment lines](../../../spec/docs/common.md#comment-lines)): `quadrant-1 a`,
-U+2028, `%% c`, a line break, and `b` has the first quadrant text `a`, U+2028,
-and `b`. U+2029 splits quadrant text in the same way. [fixture:
-quadrant/db-quadrant-text-line-separator-then-comment-line] [fixture:
-quadrant/db-quadrant-text-paragraph-separator-then-comment-line] The same holds
-for quoted quadrant text, [fixture:
-quadrant/db-string-line-separator-then-comment-line] for the diagram title,
-[fixture: quadrant/db-title-line-separator-then-comment-line] for the first text
-of the x axis, [fixture: quadrant/db-axis-text-line-separator-then-comment-line]
-for a point name, [fixture:
-quadrant/db-point-name-line-separator-then-comment-line] for the accessibility
-title, [fixture: quadrant/db-acc-title-line-separator-then-comment-line] for the
-accessibility description, [fixture:
-quadrant/db-acc-descr-line-separator-then-comment-line] and for a description
-block. [fixture: quadrant/db-acc-descr-block-line-separator-then-comment-line]
-
 ## The replacement of characters
 
 The Db passes the texts through `sanitizeText`: the title (of the frontmatter

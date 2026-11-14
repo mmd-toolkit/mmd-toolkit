@@ -458,30 +458,8 @@ state/db-acc-title-empty-replaces] [fixture: state/db-acc-descr-empty-replaces]
 state/db-acc-descr-empty-block-keeps-then-transition]
 
 **値の中のコメント領域。**
-U+2028 と U+2029 は、値の文字であるとともにコメントの始まりなので、
-その後のコメント領域は変換した形にありません。
-値は領域の後へ続きます。
-出典は [コメント行](../../../spec/docs/common.ja.md#コメント行) です。
-`accTitle: A`、U+2028、`%% c`、改行、`B` のアクセシビリティのタイトルは、`A`、
-U+2028、`B` です。
-[fixture: state/db-acc-title-line-separator-then-comment-line]
-アクセシビリティの説明でも同じです。
-[fixture: state/db-acc-descr-line-separator-then-comment-line]
-説明ブロックでも同じです。
-[fixture: state/db-acc-descr-block-line-separator-then-comment-line]
-別名の定義の id、CSS クラス、別名の定義の文字列、スタイル、
-行のノートのテキスト、ブロックのノートのテキストでも同じです。
-[fixture: state/db-alias-id-line-separator-then-comment-line]
-[fixture: state/db-css-class-line-separator-then-comment-line]
-[fixture: state/db-string-line-separator-then-comment-line]
-[fixture: state/db-style-line-separator-then-comment-line]
-[fixture: state/db-note-line-line-separator-then-comment-line]
-[fixture: state/db-note-block-line-separator-then-comment-line]
-別名の定義の 2 つ目の説明も続き、先頭の空白を保ちます。
-[fixture: state/db-second-description-line-separator-then-comment-line]
-状態の説明は、U+2028 の後も U+2029 の後も同じように続きます。
-[fixture: state/db-description-line-separator-then-comment-line]
-[fixture: state/db-description-paragraph-separator-then-comment-line]
+U+2028 や U+2029 の後のコメント領域は、どの図種でも値から除かれます。
+出典は [変換した形](../db-from-tree.ja.md#変換した形) です。
 要約は方向の値の後のテキストを持ちませんが、領域の後の行 `B` はその一部なので、
 Db に状態 `B` はできず、方向は `LR` です。
 [fixture: state/db-direction-text-line-separator-then-comment-line]

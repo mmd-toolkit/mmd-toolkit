@@ -398,28 +398,9 @@ state/db-acc-title-empty-replaces] [fixture: state/db-acc-descr-empty-replaces]
 [fixture: state/db-acc-descr-empty-block-keeps] [fixture:
 state/db-acc-descr-empty-block-keeps-then-transition]
 
-**Comment regions in values.** A U+2028 or a U+2029 is a character of a value
-and a comment start, so a comment region after it is not in the converted form,
-and the value goes on after the region (see
-[Comment lines](../../../spec/docs/common.md#comment-lines)): `accTitle: A`,
-U+2028, `%% c`, a line break, and `B` has the accessibility title `A`, U+2028,
-and `B`. [fixture: state/db-acc-title-line-separator-then-comment-line] The same
-holds for the accessibility description [fixture:
-state/db-acc-descr-line-separator-then-comment-line], and for a description
-block. [fixture: state/db-acc-descr-block-line-separator-then-comment-line] It
-also holds for the id of an alias definition [fixture:
-state/db-alias-id-line-separator-then-comment-line], a CSS class [fixture:
-state/db-css-class-line-separator-then-comment-line], the string of an alias
-definition [fixture: state/db-string-line-separator-then-comment-line], a style
-[fixture: state/db-style-line-separator-then-comment-line], the text of a line
-note [fixture: state/db-note-line-line-separator-then-comment-line], and the
-text of a block note. [fixture:
-state/db-note-block-line-separator-then-comment-line] The second description of
-an alias definition continues too, keeping its leading space. [fixture:
-state/db-second-description-line-separator-then-comment-line] A state
-description continues in the same way after U+2028 or U+2029. [fixture:
-state/db-description-line-separator-then-comment-line] [fixture:
-state/db-description-paragraph-separator-then-comment-line] The summary keeps no
-text after the direction value, but the line `B` after the region is part of it,
-so the Db has no state `B`, and its direction is `LR`. [fixture:
+**Comment regions in values.** A comment region after a U+2028 or a U+2029 is
+left out of a value as in every diagram (see
+[The converted form](../db-from-tree.md#the-converted-form)). The summary keeps
+no text after the direction value, but the line `B` after the region is part of
+it, so the Db has no state `B`, and its direction is `LR`. [fixture:
 state/db-direction-text-line-separator-then-comment-line]

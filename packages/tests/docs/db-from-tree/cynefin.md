@@ -53,21 +53,6 @@ cynefin/gram-transition-first]
    cynefin/db-transition-duplicates] [fixture: cynefin/gram-transition-first]
    [fixture: cynefin/db-self-loops] [fixture: cynefin/db-empty-texts] [fixture:
    cynefin/hidden-all-unit-gaps]
-5. **Comment regions in values.** A U+2028 or a U+2029 is a character of a value
-   and a comment start, so a comment region after it is not in the converted
-   form, and the value goes on after the region (see
-   [Comment lines](../../../spec/docs/common.md#comment-lines)): `accTitle: A`,
-   U+2028, `%% c`, a line break, and `B` has the accessibility title `A`,
-   U+2028, and `B`. [fixture:
-   cynefin/db-acc-title-line-separator-then-comment-line] The same holds for the
-   accessibility description [fixture:
-   cynefin/db-acc-descr-line-separator-then-comment-line], for a description
-   block [fixture: cynefin/db-acc-descr-block-line-separator-then-comment-line],
-   for the diagram title [fixture:
-   cynefin/db-title-line-separator-then-comment-line], and for an item label
-   string, which U+2029 splits in the same way. [fixture:
-   cynefin/db-string-line-separator-then-comment-line] [fixture:
-   cynefin/db-string-paragraph-separator-then-comment-line]
 
 ## Recorded comparisons
 

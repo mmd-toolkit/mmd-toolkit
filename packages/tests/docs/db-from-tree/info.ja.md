@@ -12,12 +12,11 @@ showInfo、共通の 4 形式、hidden text は Db の欄に寄与しない。
 info/common-all] [fixture: info/common-flag-all]
 [fixture: info/hidden-yaml-body]
 
-共通の文の値の中の U+2028 と U+2029 はコメントの始まりなので、
-その後のコメント領域は値にありません。
-値は領域の後へ続きます。
-出典は [コメント行](../../../spec/docs/common.ja.md#コメント行) です。
-`accTitle: A`、U+2028、`%% c`、改行、`B` のタイトルは `A`、U+2028、`B` です。
-要約はそれを持たないので、fixture は入力が受け入れられることを記録します。
+U+2028 や U+2029 の後のコメント領域は、どの図種でも値から除かれます。
+出典は [変換した形](../db-from-tree.ja.md#変換した形) です。
+要約はアクセシビリティのタイトルを持たないので、
+領域をまたいで続く `accTitle` の fixture は、
+入力が受け入れられることを記録します。
 [fixture: info/lex-acc-title-line-separator-then-comment-line]
 
 frontmatter・directive は共有の埋め込み値を与えるが、

@@ -217,28 +217,6 @@ U+3000、U+2028、U+FEFF）除かれます。
 要約は、[db-summaries.md](../db-summaries.ja.md#timeline) の欄を持ちます。
 上の値、文の順に並べた section の名前の `sections`、ソースの順の `tasks` です。
 
-**値の中のコメント領域。**
-U+2028 と U+2029 は、値の文字であるとともにコメントの始まりなので、
-その後のコメント領域は変換した形にありません。
-値は領域の後へ続きます。
-出典は [コメント行](../../../spec/docs/common.ja.md#コメント行) です。
-`accTitle: A`、U+2028、`%% c`、改行、`B` のアクセシビリティのタイトルは、`A`、
-U+2028、`B` です。
-[fixture: timeline/db-acc-title-line-separator-then-comment-line]
-アクセシビリティの説明でも同じです。
-[fixture: timeline/db-acc-descr-line-separator-then-comment-line]
-説明ブロックでも同じです。
-[fixture: timeline/db-acc-descr-block-line-separator-then-comment-line]
-図のタイトルでも同じです。
-[fixture: timeline/db-title-line-separator-then-comment-line]
-section の名前でも同じです。
-[fixture: timeline/db-section-line-separator-then-comment-line]
-period でも同じで、U+2029 も同じように値を割ります。
-[fixture: timeline/db-period-line-separator-then-comment-line]
-[fixture: timeline/db-period-paragraph-separator-then-comment-line]
-event でも同じです。
-[fixture: timeline/db-event-line-separator-then-comment-line]
-
 ## 文字の置き換え
 
 Db は、title、`accTitle`、
