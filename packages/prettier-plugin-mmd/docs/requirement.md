@@ -1040,6 +1040,21 @@ where other statements follow on it (`accDescr {x}; title direction RL`), the
 start. [fixture:
 accessibility-statements/semicolon-line-with-direction-text-first-column]
 
+An `accTitle:` or `accDescr:` statement that stands after another statement on
+its line (`accDescr { x } accTitle:`) keeps its text on the next line, where
+that line holds `direction` and a value, and the line keeps its indentation as
+written; the whitespace inside the line is formatted as usual, so
+`accDescr {x}    accTitle:` is `accDescr { x } accTitle:`. A directive that
+stands before the statement on its line is printed once, whether it is a
+directive that is not closed, which takes the next line, or a closed directive
+on the same line. [fixture:
+accessibility-statements/direction-text-after-closed-directive-on-the-line]
+[fixture: accessibility-statements/direction-text-after-unclosed-directive]
+[fixture: accessibility-statements/direction-text-of-accdescr-after-directive]
+[fixture:
+accessibility-statements/direction-text-whitespace-in-the-line-formatted]
+[fixture: accessibility-statements/direction-text-line-keeps-its-indentation]
+
 Input
 ([accessibility-statements/colon-touches-keyword-input.mmd](../tests/fixtures/requirement/accessibility-statements/colon-touches-keyword-input.mmd)):
 
