@@ -4580,13 +4580,31 @@
     },
     {
       "block": "packages/parser/docs/tokens.md:86727d33a145",
+      "diagrams": ["usecase"],
+      "about": "A diagram comment is found, as tokens are, as if a `;` that ",
+      "judgment": {
+        "status": "shown",
+        "cases": [
+          {
+            "case": "Outside agentflow and eventmodeling, a comment line contains its semicolon as comment text rather than as an ignored-semicolon token",
+            "tests": [
+              {
+                "file": "check-tree-shared-tokens.test.ts",
+                "text": "tokens-228-usecase-comment-line-has-no-ignored-semicolon"
+              }
+            ]
+          }
+        ]
+      }
+    },
+    {
+      "block": "packages/parser/docs/tokens.md:86727d33a145",
       "diagrams": [
         "architecture",
         "cynefin",
         "packet",
         "quadrant",
         "radar",
-        "usecase",
         "wardley",
         "xychart"
       ],
@@ -4619,15 +4637,44 @@
               },
               {
                 "file": "check-tree-shared-tokens.test.ts",
-                "text": "tokens-228-usecase-comment-line-has-no-ignored-semicolon"
-              },
-              {
-                "file": "check-tree-shared-tokens.test.ts",
                 "text": "tokens-228-wardley-comment-line-has-no-ignored-semicolon"
               },
               {
                 "file": "check-tree-shared-tokens.test.ts",
                 "text": "tokens-228-xychart-comment-line-has-no-ignored-semicolon"
+              }
+            ]
+          },
+          {
+            "case": "A `;` that the line rule ignores after the last character of a diagram comment is an IgnoredSemicolon token, not part of the comment.",
+            "tests": [
+              {
+                "file": "check-tree-shared-tokens.test.ts",
+                "text": "tokens-228c-architecture-double-percent-comment-then-ignored-semicolon"
+              },
+              {
+                "file": "check-tree-shared-tokens.test.ts",
+                "text": "tokens-228c-cynefin-double-percent-comment-then-ignored-semicolon"
+              },
+              {
+                "file": "check-tree-shared-tokens.test.ts",
+                "text": "tokens-228c-packet-double-percent-comment-then-ignored-semicolon"
+              },
+              {
+                "file": "check-tree-shared-tokens.test.ts",
+                "text": "tokens-228c-quadrant-double-percent-comment-then-ignored-semicolon"
+              },
+              {
+                "file": "check-tree-shared-tokens.test.ts",
+                "text": "tokens-228c-radar-double-percent-comment-then-ignored-semicolon"
+              },
+              {
+                "file": "check-tree-shared-tokens.test.ts",
+                "text": "tokens-228c-wardley-double-percent-comment-then-ignored-semicolon"
+              },
+              {
+                "file": "check-tree-shared-tokens.test.ts",
+                "text": "tokens-228c-xychart-double-percent-comment-then-ignored-semicolon"
               }
             ]
           }
@@ -4742,75 +4789,147 @@
             "tests": [
               {
                 "file": "check-tree-shared-tokens.test.ts",
-                "text": "tokens-228b-c4-semicolon-after-diagram-comment"
+                "text": "tokens-228c-c4-double-percent-comment-then-ignored-semicolon"
               },
               {
                 "file": "check-tree-shared-tokens.test.ts",
-                "text": "tokens-228b-class-semicolon-after-diagram-comment"
+                "text": "tokens-228c-class-double-percent-comment-then-ignored-semicolon"
               },
               {
                 "file": "check-tree-shared-tokens.test.ts",
-                "text": "tokens-228b-gantt-semicolon-after-diagram-comment"
+                "text": "tokens-228c-gantt-double-percent-comment-then-ignored-semicolon"
               },
               {
                 "file": "check-tree-shared-tokens.test.ts",
-                "text": "tokens-228b-gitgraph-semicolon-after-diagram-comment"
+                "text": "tokens-228c-gantt-percent-comment-then-ignored-semicolon"
               },
               {
                 "file": "check-tree-shared-tokens.test.ts",
-                "text": "tokens-228b-info-semicolon-after-diagram-comment"
+                "text": "tokens-228c-gitgraph-double-percent-comment-then-ignored-semicolon"
               },
               {
                 "file": "check-tree-shared-tokens.test.ts",
-                "text": "tokens-228b-ishikawa-semicolon-after-diagram-comment"
+                "text": "tokens-228c-info-double-percent-comment-then-ignored-semicolon"
               },
               {
                 "file": "check-tree-shared-tokens.test.ts",
-                "text": "tokens-228b-journey-semicolon-after-diagram-comment"
+                "text": "tokens-228c-ishikawa-double-percent-comment-then-ignored-semicolon-then-line-separator-comment-line"
               },
               {
                 "file": "check-tree-shared-tokens.test.ts",
-                "text": "tokens-228b-kanban-semicolon-after-diagram-comment"
+                "text": "tokens-228c-ishikawa-double-percent-comment-then-ignored-semicolon-then-paragraph-separator-comment-line"
               },
               {
                 "file": "check-tree-shared-tokens.test.ts",
-                "text": "tokens-228b-mindmap-semicolon-after-diagram-comment"
+                "text": "tokens-228c-journey-double-percent-comment-then-ignored-semicolon"
               },
               {
                 "file": "check-tree-shared-tokens.test.ts",
-                "text": "tokens-228b-pie-semicolon-after-diagram-comment"
+                "text": "tokens-228c-journey-percent-comment-then-ignored-semicolon"
               },
               {
                 "file": "check-tree-shared-tokens.test.ts",
-                "text": "tokens-228b-railroad-semicolon-after-diagram-comment"
+                "text": "tokens-228c-kanban-double-percent-comment-then-ignored-semicolon-then-line-separator-comment-line"
               },
               {
                 "file": "check-tree-shared-tokens.test.ts",
-                "text": "tokens-228b-requirement-semicolon-after-diagram-comment"
+                "text": "tokens-228c-kanban-double-percent-comment-then-ignored-semicolon-then-paragraph-separator-comment-line"
               },
               {
                 "file": "check-tree-shared-tokens.test.ts",
-                "text": "tokens-228b-sequence-semicolon-after-diagram-comment"
+                "text": "tokens-228c-mindmap-double-percent-comment-then-ignored-semicolon"
               },
               {
                 "file": "check-tree-shared-tokens.test.ts",
-                "text": "tokens-228b-state-semicolon-after-diagram-comment"
+                "text": "tokens-228c-mindmap-double-percent-comment-then-ignored-semicolon-then-line-separator-comment-line"
               },
               {
                 "file": "check-tree-shared-tokens.test.ts",
-                "text": "tokens-228b-timeline-semicolon-after-diagram-comment"
+                "text": "tokens-228c-mindmap-double-percent-comment-then-ignored-semicolon-then-paragraph-separator-comment-line"
               },
               {
                 "file": "check-tree-shared-tokens.test.ts",
-                "text": "tokens-228b-treemap-semicolon-after-diagram-comment"
+                "text": "tokens-228c-pie-double-percent-comment-then-ignored-semicolon"
               },
               {
                 "file": "check-tree-shared-tokens.test.ts",
-                "text": "tokens-228b-treeview-semicolon-after-diagram-comment"
+                "text": "tokens-228c-railroad-double-percent-comment-then-ignored-semicolon"
               },
               {
                 "file": "check-tree-shared-tokens.test.ts",
-                "text": "tokens-228b-venn-semicolon-after-diagram-comment"
+                "text": "tokens-228c-railroad-hash-comment-then-ignored-semicolon"
+              },
+              {
+                "file": "check-tree-shared-tokens.test.ts",
+                "text": "tokens-228c-railroad-paren-star-comment-then-ignored-semicolon"
+              },
+              {
+                "file": "check-tree-shared-tokens.test.ts",
+                "text": "tokens-228c-railroad-semicolon-comment-then-ignored-semicolon"
+              },
+              {
+                "file": "check-tree-shared-tokens.test.ts",
+                "text": "tokens-228c-railroad-slash-star-comment-then-ignored-semicolon"
+              },
+              {
+                "file": "check-tree-shared-tokens.test.ts",
+                "text": "tokens-228c-requirement-hash-comment-then-ignored-semicolon"
+              },
+              {
+                "file": "check-tree-shared-tokens.test.ts",
+                "text": "tokens-228c-requirement-percent-comment-then-ignored-semicolon"
+              },
+              {
+                "file": "check-tree-shared-tokens.test.ts",
+                "text": "tokens-228c-sequence-comment-then-ignored-semicolon"
+              },
+              {
+                "file": "check-tree-shared-tokens.test.ts",
+                "text": "tokens-228c-sequence-double-percent-comment-then-ignored-semicolon"
+              },
+              {
+                "file": "check-tree-shared-tokens.test.ts",
+                "text": "tokens-228c-sequence-loop-comment-then-ignored-semicolon"
+              },
+              {
+                "file": "check-tree-shared-tokens.test.ts",
+                "text": "tokens-228c-sequence-percent-comment-then-ignored-semicolon"
+              },
+              {
+                "file": "check-tree-shared-tokens.test.ts",
+                "text": "tokens-228c-sequence-title-comment-then-ignored-semicolon"
+              },
+              {
+                "file": "check-tree-shared-tokens.test.ts",
+                "text": "tokens-228c-state-double-percent-comment-then-ignored-semicolon"
+              },
+              {
+                "file": "check-tree-shared-tokens.test.ts",
+                "text": "tokens-228c-state-hash-comment-then-ignored-semicolon"
+              },
+              {
+                "file": "check-tree-shared-tokens.test.ts",
+                "text": "tokens-228c-timeline-double-percent-comment-then-ignored-semicolon"
+              },
+              {
+                "file": "check-tree-shared-tokens.test.ts",
+                "text": "tokens-228c-timeline-hash-comment-then-ignored-semicolon"
+              },
+              {
+                "file": "check-tree-shared-tokens.test.ts",
+                "text": "tokens-228c-timeline-percent-comment-then-ignored-semicolon"
+              },
+              {
+                "file": "check-tree-shared-tokens.test.ts",
+                "text": "tokens-228c-treemap-double-percent-comment-then-ignored-semicolon"
+              },
+              {
+                "file": "check-tree-shared-tokens.test.ts",
+                "text": "tokens-228c-treeview-double-percent-comment-then-ignored-semicolon"
+              },
+              {
+                "file": "check-tree-shared-tokens.test.ts",
+                "text": "tokens-228c-venn-double-percent-comment-then-ignored-semicolon"
               }
             ]
           }
@@ -4829,11 +4948,19 @@
             "tests": [
               {
                 "file": "check-tree-shared-tokens.test.ts",
-                "text": "tokens-228b-agentflow-semicolon-after-diagram-comment"
+                "text": "tokens-228c-agentflow-double-percent-comment-then-ignored-semicolon"
               },
               {
                 "file": "check-tree-shared-tokens.test.ts",
-                "text": "tokens-228b-eventmodeling-semicolon-after-diagram-comment"
+                "text": "tokens-228c-eventmodeling-double-percent-comment-then-ignored-semicolon"
+              },
+              {
+                "file": "check-tree-shared-tokens.test.ts",
+                "text": "tokens-228c-eventmodeling-slash-slash-comment-then-ignored-semicolon"
+              },
+              {
+                "file": "check-tree-shared-tokens.test.ts",
+                "text": "tokens-228c-eventmodeling-slash-star-comment-then-ignored-semicolon"
               }
             ]
           }
@@ -6439,10 +6566,7 @@
         "gantt",
         "gitgraph",
         "info",
-        "ishikawa",
         "journey",
-        "kanban",
-        "mindmap",
         "packet",
         "pie",
         "quadrant",
@@ -6468,6 +6592,28 @@
       }
     },
     {
+      "block": "packages/parser/docs/tokens.md:2123c18e61fc",
+      "diagrams": ["ishikawa", "kanban", "mindmap"],
+      "about": "A comment region can also lie inside a diagram comment, whic",
+      "judgment": {
+        "status": "no-condition",
+        "kind": "not-in-diagram",
+        "note": "A diagram comment of these types ends at the U+2028 or U+2029 that ends its line segment (diagrams/ishikawa.md, Comments: \"After a diagram comment ends at U+2028 or U+2029, rules resume at that separator\"; diagrams/kanban.md: \"The end of a diagram comment is a newline unit, also at U+2028 or U+2029\"; diagrams/mindmap.md, Comments: text \"that runs to the end of its line segment\"), so a comment line after the separator lies outside the comment and no comment region cuts a diagram comment in these trees.",
+        "documents": [
+          "packages/spec/docs/diagrams/ishikawa.md",
+          "packages/spec/docs/ast/ishikawa.md",
+          "packages/parser/docs/tokens/ishikawa.md",
+          "packages/spec/docs/diagrams/kanban.md",
+          "packages/spec/docs/ast/kanban.md",
+          "packages/parser/docs/tokens/kanban.md",
+          "packages/spec/docs/diagrams/mindmap.md",
+          "packages/spec/docs/ast/mindmap.md",
+          "packages/parser/docs/tokens/mindmap.md",
+          "packages/parser/docs/tokens.md"
+        ]
+      }
+    },
+    {
       "block": "packages/parser/docs/tokens.md:a9e4185e2485",
       "diagrams": [
         "c4",
@@ -6475,10 +6621,7 @@
         "gantt",
         "gitgraph",
         "info",
-        "ishikawa",
         "journey",
-        "kanban",
-        "mindmap",
         "pie",
         "railroad",
         "requirement",
@@ -6518,19 +6661,7 @@
               },
               {
                 "file": "check-tree-shared-tokens.test.ts",
-                "text": "tokens-290-ishikawa-fragment-mark"
-              },
-              {
-                "file": "check-tree-shared-tokens.test.ts",
                 "text": "tokens-290-journey-fragment-mark"
-              },
-              {
-                "file": "check-tree-shared-tokens.test.ts",
-                "text": "tokens-290-kanban-fragment-mark"
-              },
-              {
-                "file": "check-tree-shared-tokens.test.ts",
-                "text": "tokens-290-mindmap-fragment-mark"
               },
               {
                 "file": "check-tree-shared-tokens.test.ts",
@@ -6595,19 +6726,7 @@
               },
               {
                 "file": "check-tree-shared-tokens.test.ts",
-                "text": "tokens-290-ishikawa-fragment-start"
-              },
-              {
-                "file": "check-tree-shared-tokens.test.ts",
                 "text": "tokens-290-journey-fragment-start"
-              },
-              {
-                "file": "check-tree-shared-tokens.test.ts",
-                "text": "tokens-290-kanban-fragment-start"
-              },
-              {
-                "file": "check-tree-shared-tokens.test.ts",
-                "text": "tokens-290-mindmap-fragment-start"
               },
               {
                 "file": "check-tree-shared-tokens.test.ts",
@@ -6672,19 +6791,7 @@
               },
               {
                 "file": "check-tree-shared-tokens.test.ts",
-                "text": "tokens-290-ishikawa-fragment-value"
-              },
-              {
-                "file": "check-tree-shared-tokens.test.ts",
                 "text": "tokens-290-journey-fragment-value"
-              },
-              {
-                "file": "check-tree-shared-tokens.test.ts",
-                "text": "tokens-290-kanban-fragment-value"
-              },
-              {
-                "file": "check-tree-shared-tokens.test.ts",
-                "text": "tokens-290-mindmap-fragment-value"
               },
               {
                 "file": "check-tree-shared-tokens.test.ts",
@@ -6729,6 +6836,145 @@
     },
     {
       "block": "packages/parser/docs/tokens.md:a9e4185e2485",
+      "diagrams": [
+        "architecture",
+        "cynefin",
+        "packet",
+        "quadrant",
+        "radar",
+        "wardley",
+        "xychart"
+      ],
+      "about": "The fragment after the region has no mark, and its `mark` is",
+      "judgment": {
+        "status": "shown",
+        "cases": [
+          {
+            "case": "The fragment after the region has no mark: its mark is null.",
+            "tests": [
+              {
+                "file": "check-tree-shared-tokens.test.ts",
+                "text": "tokens-290b-architecture-fragment-mark"
+              },
+              {
+                "file": "check-tree-shared-tokens.test.ts",
+                "text": "tokens-290b-cynefin-fragment-mark"
+              },
+              {
+                "file": "check-tree-shared-tokens.test.ts",
+                "text": "tokens-290b-packet-fragment-mark"
+              },
+              {
+                "file": "check-tree-shared-tokens.test.ts",
+                "text": "tokens-290b-quadrant-fragment-mark"
+              },
+              {
+                "file": "check-tree-shared-tokens.test.ts",
+                "text": "tokens-290b-radar-fragment-mark"
+              },
+              {
+                "file": "check-tree-shared-tokens.test.ts",
+                "text": "tokens-290b-wardley-fragment-mark"
+              },
+              {
+                "file": "check-tree-shared-tokens.test.ts",
+                "text": "tokens-290b-xychart-fragment-mark"
+              }
+            ]
+          },
+          {
+            "case": "Its range starts at its first character.",
+            "tests": [
+              {
+                "file": "check-tree-shared-tokens.test.ts",
+                "text": "tokens-290b-architecture-fragment-start"
+              },
+              {
+                "file": "check-tree-shared-tokens.test.ts",
+                "text": "tokens-290b-cynefin-fragment-start"
+              },
+              {
+                "file": "check-tree-shared-tokens.test.ts",
+                "text": "tokens-290b-packet-fragment-start"
+              },
+              {
+                "file": "check-tree-shared-tokens.test.ts",
+                "text": "tokens-290b-quadrant-fragment-start"
+              },
+              {
+                "file": "check-tree-shared-tokens.test.ts",
+                "text": "tokens-290b-radar-fragment-start"
+              },
+              {
+                "file": "check-tree-shared-tokens.test.ts",
+                "text": "tokens-290b-wardley-fragment-start"
+              },
+              {
+                "file": "check-tree-shared-tokens.test.ts",
+                "text": "tokens-290b-xychart-fragment-start"
+              }
+            ]
+          },
+          {
+            "case": "Its value is the source text of its range.",
+            "tests": [
+              {
+                "file": "check-tree-shared-tokens.test.ts",
+                "text": "tokens-290b-architecture-fragment-value"
+              },
+              {
+                "file": "check-tree-shared-tokens.test.ts",
+                "text": "tokens-290b-cynefin-fragment-value"
+              },
+              {
+                "file": "check-tree-shared-tokens.test.ts",
+                "text": "tokens-290b-packet-fragment-value"
+              },
+              {
+                "file": "check-tree-shared-tokens.test.ts",
+                "text": "tokens-290b-quadrant-fragment-value"
+              },
+              {
+                "file": "check-tree-shared-tokens.test.ts",
+                "text": "tokens-290b-radar-fragment-value"
+              },
+              {
+                "file": "check-tree-shared-tokens.test.ts",
+                "text": "tokens-290b-wardley-fragment-value"
+              },
+              {
+                "file": "check-tree-shared-tokens.test.ts",
+                "text": "tokens-290b-xychart-fragment-value"
+              }
+            ]
+          }
+        ]
+      }
+    },
+    {
+      "block": "packages/parser/docs/tokens.md:a9e4185e2485",
+      "diagrams": ["ishikawa", "kanban", "mindmap"],
+      "about": "The fragment after the region has no mark, and its `mark` is",
+      "judgment": {
+        "status": "no-condition",
+        "kind": "not-in-diagram",
+        "note": "A diagram comment of these types ends at the U+2028 or U+2029 that ends its line segment (diagrams/ishikawa.md, Comments: \"After a diagram comment ends at U+2028 or U+2029, rules resume at that separator\"; diagrams/kanban.md: \"The end of a diagram comment is a newline unit, also at U+2028 or U+2029\"; diagrams/mindmap.md, Comments: text \"that runs to the end of its line segment\"), so a comment line after the separator lies outside the comment and no comment region cuts a diagram comment in these trees.",
+        "documents": [
+          "packages/spec/docs/diagrams/ishikawa.md",
+          "packages/spec/docs/ast/ishikawa.md",
+          "packages/parser/docs/tokens/ishikawa.md",
+          "packages/spec/docs/diagrams/kanban.md",
+          "packages/spec/docs/ast/kanban.md",
+          "packages/parser/docs/tokens/kanban.md",
+          "packages/spec/docs/diagrams/mindmap.md",
+          "packages/spec/docs/ast/mindmap.md",
+          "packages/parser/docs/tokens/mindmap.md",
+          "packages/parser/docs/tokens.md"
+        ]
+      }
+    },
+    {
+      "block": "packages/parser/docs/tokens.md:a9e4185e2485",
       "diagrams": ["agentflow", "eventmodeling"],
       "about": "The fragment after the region has no mark, and its `mark` is",
       "judgment": {
@@ -6748,62 +6994,28 @@
     },
     {
       "block": "packages/parser/docs/tokens.md:a9e4185e2485",
-      "diagrams": [
-        "architecture",
-        "block",
-        "cynefin",
-        "er",
-        "flowchart",
-        "packet",
-        "quadrant",
-        "radar",
-        "sankey",
-        "usecase",
-        "wardley",
-        "xychart"
-      ],
+      "diagrams": ["block", "er", "flowchart", "sankey", "usecase"],
       "about": "The fragment after the region has no mark, and its `mark` is",
       "judgment": {
         "status": "no-condition",
         "kind": "not-in-diagram",
         "note": "None of the named documents defines a diagram comment, text that the diagram's own lexer reads as a comment, so no comment region cuts one in these trees.",
         "documents": [
-          "packages/spec/docs/diagrams/architecture.md",
-          "packages/spec/docs/ast/architecture.md",
-          "packages/parser/docs/tokens/architecture.md",
           "packages/spec/docs/diagrams/block.md",
           "packages/spec/docs/ast/block.md",
           "packages/parser/docs/tokens/block.md",
-          "packages/spec/docs/diagrams/cynefin.md",
-          "packages/spec/docs/ast/cynefin.md",
-          "packages/parser/docs/tokens/cynefin.md",
           "packages/spec/docs/diagrams/er.md",
           "packages/spec/docs/ast/er.md",
           "packages/parser/docs/tokens/er.md",
           "packages/spec/docs/diagrams/flowchart.md",
           "packages/spec/docs/ast/flowchart.md",
           "packages/parser/docs/tokens/flowchart.md",
-          "packages/spec/docs/diagrams/packet.md",
-          "packages/spec/docs/ast/packet.md",
-          "packages/parser/docs/tokens/packet.md",
-          "packages/spec/docs/diagrams/quadrant.md",
-          "packages/spec/docs/ast/quadrant.md",
-          "packages/parser/docs/tokens/quadrant.md",
-          "packages/spec/docs/diagrams/radar.md",
-          "packages/spec/docs/ast/radar.md",
-          "packages/parser/docs/tokens/radar.md",
           "packages/spec/docs/diagrams/sankey.md",
           "packages/spec/docs/ast/sankey.md",
           "packages/parser/docs/tokens/sankey.md",
           "packages/spec/docs/diagrams/usecase.md",
           "packages/spec/docs/ast/usecase.md",
           "packages/parser/docs/tokens/usecase.md",
-          "packages/spec/docs/diagrams/wardley.md",
-          "packages/spec/docs/ast/wardley.md",
-          "packages/parser/docs/tokens/wardley.md",
-          "packages/spec/docs/diagrams/xychart.md",
-          "packages/spec/docs/ast/xychart.md",
-          "packages/parser/docs/tokens/xychart.md",
           "packages/parser/docs/tokens.md"
         ]
       }
@@ -6901,12 +7113,75 @@
     },
     {
       "block": "packages/parser/docs/tokens.md:4033404f4e33",
+      "diagrams": [
+        "architecture",
+        "cynefin",
+        "packet",
+        "quadrant",
+        "radar",
+        "wardley",
+        "xychart"
+      ],
+      "about": "Whether a `;` that the line rule ignores lies inside a diagr",
+      "judgment": {
+        "status": "shown",
+        "cases": [
+          {
+            "case": "A `;` that the line rule ignores lies inside the diagram comment when characters of the comment lie on both sides of it, the fragment after the region included.",
+            "tests": [
+              {
+                "file": "check-tree-shared-tokens.test.ts",
+                "text": "tokens-290b-architecture-semicolon-inside"
+              },
+              {
+                "file": "check-tree-shared-tokens.test.ts",
+                "text": "tokens-290b-cynefin-semicolon-inside"
+              },
+              {
+                "file": "check-tree-shared-tokens.test.ts",
+                "text": "tokens-290b-packet-semicolon-inside"
+              },
+              {
+                "file": "check-tree-shared-tokens.test.ts",
+                "text": "tokens-290b-quadrant-semicolon-inside"
+              },
+              {
+                "file": "check-tree-shared-tokens.test.ts",
+                "text": "tokens-290b-radar-semicolon-inside"
+              },
+              {
+                "file": "check-tree-shared-tokens.test.ts",
+                "text": "tokens-290b-wardley-semicolon-inside"
+              },
+              {
+                "file": "check-tree-shared-tokens.test.ts",
+                "text": "tokens-290b-xychart-semicolon-inside"
+              }
+            ]
+          }
+        ]
+      }
+    },
+    {
+      "block": "packages/parser/docs/tokens.md:4033404f4e33",
       "diagrams": ["ishikawa", "kanban", "mindmap"],
       "about": "Whether a `;` that the line rule ignores lies inside a diagr",
       "judgment": {
-        "status": "not-shown",
-        "reason": "rule-misses-condition",
-        "note": "Each tree is the recorded tree of the named fixture with ` style:#x;`, a U+2028, a comment line `%% c`, and `x` added at the end of a diagram comment, so that the `;` has characters of the comment on both sides and lies inside the comment; checkTree returns [] on that tree. Shortening the comment to end before the `;` and adding an IgnoredSemicolon token for it also returns []: ishikawa/comment-header-glued, the comment ending at 15; kanban/db-metadata-before-comment, the comment ending at 17; mindmap/div-header-line-comment-comment-then-blank, the comment ending at 12."
+        "status": "no-condition",
+        "kind": "not-in-diagram",
+        "note": "A diagram comment of these types ends at the U+2028 or U+2029 that ends its line segment (diagrams/ishikawa.md, Comments: \"After a diagram comment ends at U+2028 or U+2029, rules resume at that separator\"; diagrams/kanban.md: \"The end of a diagram comment is a newline unit, also at U+2028 or U+2029\"; diagrams/mindmap.md, Comments: text \"that runs to the end of its line segment\"), so a comment line after the separator lies outside the comment and no comment region cuts a diagram comment in these trees.",
+        "documents": [
+          "packages/spec/docs/diagrams/ishikawa.md",
+          "packages/spec/docs/ast/ishikawa.md",
+          "packages/parser/docs/tokens/ishikawa.md",
+          "packages/spec/docs/diagrams/kanban.md",
+          "packages/spec/docs/ast/kanban.md",
+          "packages/parser/docs/tokens/kanban.md",
+          "packages/spec/docs/diagrams/mindmap.md",
+          "packages/spec/docs/ast/mindmap.md",
+          "packages/parser/docs/tokens/mindmap.md",
+          "packages/parser/docs/tokens.md"
+        ]
       }
     },
     {
@@ -6930,62 +7205,28 @@
     },
     {
       "block": "packages/parser/docs/tokens.md:4033404f4e33",
-      "diagrams": [
-        "architecture",
-        "block",
-        "cynefin",
-        "er",
-        "flowchart",
-        "packet",
-        "quadrant",
-        "radar",
-        "sankey",
-        "usecase",
-        "wardley",
-        "xychart"
-      ],
+      "diagrams": ["block", "er", "flowchart", "sankey", "usecase"],
       "about": "Whether a `;` that the line rule ignores lies inside a diagr",
       "judgment": {
         "status": "no-condition",
         "kind": "not-in-diagram",
         "note": "None of the named documents defines a diagram comment, text that the diagram's own lexer reads as a comment, so no comment region cuts one in these trees.",
         "documents": [
-          "packages/spec/docs/diagrams/architecture.md",
-          "packages/spec/docs/ast/architecture.md",
-          "packages/parser/docs/tokens/architecture.md",
           "packages/spec/docs/diagrams/block.md",
           "packages/spec/docs/ast/block.md",
           "packages/parser/docs/tokens/block.md",
-          "packages/spec/docs/diagrams/cynefin.md",
-          "packages/spec/docs/ast/cynefin.md",
-          "packages/parser/docs/tokens/cynefin.md",
           "packages/spec/docs/diagrams/er.md",
           "packages/spec/docs/ast/er.md",
           "packages/parser/docs/tokens/er.md",
           "packages/spec/docs/diagrams/flowchart.md",
           "packages/spec/docs/ast/flowchart.md",
           "packages/parser/docs/tokens/flowchart.md",
-          "packages/spec/docs/diagrams/packet.md",
-          "packages/spec/docs/ast/packet.md",
-          "packages/parser/docs/tokens/packet.md",
-          "packages/spec/docs/diagrams/quadrant.md",
-          "packages/spec/docs/ast/quadrant.md",
-          "packages/parser/docs/tokens/quadrant.md",
-          "packages/spec/docs/diagrams/radar.md",
-          "packages/spec/docs/ast/radar.md",
-          "packages/parser/docs/tokens/radar.md",
           "packages/spec/docs/diagrams/sankey.md",
           "packages/spec/docs/ast/sankey.md",
           "packages/parser/docs/tokens/sankey.md",
           "packages/spec/docs/diagrams/usecase.md",
           "packages/spec/docs/ast/usecase.md",
           "packages/parser/docs/tokens/usecase.md",
-          "packages/spec/docs/diagrams/wardley.md",
-          "packages/spec/docs/ast/wardley.md",
-          "packages/parser/docs/tokens/wardley.md",
-          "packages/spec/docs/diagrams/xychart.md",
-          "packages/spec/docs/ast/xychart.md",
-          "packages/parser/docs/tokens/xychart.md",
           "packages/parser/docs/tokens.md"
         ]
       }
@@ -13566,15 +13807,6 @@
               {
                 "file": "check-tree-shared-tokens.test.ts",
                 "text": "tokens-631-eventmodeling-A directive-cut value still holds the same written value"
-              }
-            ]
-          },
-          {
-            "case": "Whitespace-only text not read as part of a value has no token",
-            "tests": [
-              {
-                "file": "check-tree-shared-tokens.test.ts",
-                "text": "tokens-631-eventmodeling-unread-whitespace-after-directive-has-no-token"
               }
             ]
           }

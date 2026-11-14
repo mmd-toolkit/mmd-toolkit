@@ -27046,27 +27046,6 @@ const cutDiagramCommentMarkCases = [
     expected: { where: "Comment at 30-31", message: 'mark: "%%", not "%"' },
   },
   {
-    id: "tokens-290-ishikawa-fragment-mark",
-    diagram: "ishikawa",
-    fixture: "comment-header-glued",
-    at: 15,
-    expected: { where: "Comment at 21-22", message: 'mark: "%%", not "%"' },
-  },
-  {
-    id: "tokens-290-kanban-fragment-mark",
-    diagram: "kanban",
-    fixture: "db-metadata-before-comment",
-    at: 17,
-    expected: { where: "Comment at 23-24", message: 'mark: "%%", not "%"' },
-  },
-  {
-    id: "tokens-290-mindmap-fragment-mark",
-    diagram: "mindmap",
-    fixture: "div-header-line-comment-comment-then-blank",
-    at: 12,
-    expected: { where: "Comment at 18-19", message: 'mark: "%%", not "%"' },
-  },
-  {
     id: "tokens-290-requirement-fragment-mark",
     diagram: "requirement",
     fixture: "db-comment-lines-between-statements",
@@ -27187,36 +27166,6 @@ const cutDiagramCommentValueCases = [
     at: 24,
     expected: {
       where: "Comment at 30-31",
-      message: 'value of a fragment: "xx", not "x"',
-    },
-  },
-  {
-    id: "tokens-290-ishikawa-fragment-value",
-    diagram: "ishikawa",
-    fixture: "comment-header-glued",
-    at: 15,
-    expected: {
-      where: "Comment at 21-22",
-      message: 'value of a fragment: "xx", not "x"',
-    },
-  },
-  {
-    id: "tokens-290-kanban-fragment-value",
-    diagram: "kanban",
-    fixture: "db-metadata-before-comment",
-    at: 17,
-    expected: {
-      where: "Comment at 23-24",
-      message: 'value of a fragment: "xx", not "x"',
-    },
-  },
-  {
-    id: "tokens-290-mindmap-fragment-value",
-    diagram: "mindmap",
-    fixture: "div-header-line-comment-comment-then-blank",
-    at: 12,
-    expected: {
-      where: "Comment at 18-19",
       message: 'value of a fragment: "xx", not "x"',
     },
   },
@@ -27370,36 +27319,6 @@ const cutDiagramCommentStartCases = [
     at: 24,
     expected: {
       where: "Comment at 29-31",
-      message: "has no mark and follows no comment region",
-    },
-  },
-  {
-    id: "tokens-290-ishikawa-fragment-start",
-    diagram: "ishikawa",
-    fixture: "comment-header-glued",
-    at: 15,
-    expected: {
-      where: "Comment at 20-22",
-      message: "has no mark and follows no comment region",
-    },
-  },
-  {
-    id: "tokens-290-kanban-fragment-start",
-    diagram: "kanban",
-    fixture: "db-metadata-before-comment",
-    at: 17,
-    expected: {
-      where: "Comment at 22-24",
-      message: "has no mark and follows no comment region",
-    },
-  },
-  {
-    id: "tokens-290-mindmap-fragment-start",
-    diagram: "mindmap",
-    fixture: "div-header-line-comment-comment-then-blank",
-    at: 12,
-    expected: {
-      where: "Comment at 17-19",
       message: "has no mark and follows no comment region",
     },
   },
@@ -27741,6 +27660,317 @@ for (const entry of cutDiagramCommentSemicolonCases) {
       [
         ...broken.tokens,
         tokenOf(input, "IgnoredSemicolon", { text: ";", from: semicolon }),
+      ].sort((left, right) => left.range[0] - right.range[0]),
+    )
+    expect(checkTree(input, broken)).toContainEqual(entry.expected)
+  })
+}
+
+/**
+ * The recorded tree of the fixture
+ * `tokens-double-percent-comment-then-ignored-semicolon` of `diagram`, a line
+ * that ends in a diagram comment `%% style:#x` and an ignored `;`, with
+ * a U+2028, a comment line `%% c`, a line feed and `x` written after it: the
+ * comment line cuts the diagram comment, whose fragment after the region is
+ * `x` with no mark, and the `;`, which now has characters of the comment on
+ * both sides, lies inside the comment (packages/parser/docs/tokens.md,
+ * Comment).
+ */
+function cutCommentAfterSemicolon(diagram: DiagramType): {
+  input: string
+  tree: CheckedRoot
+  end: number
+} {
+  const recorded = recordedTree(
+    diagram,
+    "tokens-double-percent-comment-then-ignored-semicolon",
+  )
+  const end = recorded.input.length
+  const input = `${recorded.input}\u2028%% c\nx`
+  const tree = copyOf(recorded.tree)
+  span(input, tree, 0, input.length)
+  const semicolon = tree.tokens.findIndex(
+    (item) => item.type === "IgnoredSemicolon",
+  )
+  const comment = tree.comments.find(
+    (item) => item.range[1] === tree.tokens[semicolon].range[0],
+  )!
+  span(input, comment, comment.range[0], end)
+  setField(comment, "value", `${comment.value};`)
+  setField(
+    tree,
+    "tokens",
+    tree.tokens.filter((_, index) => index !== semicolon),
+  )
+  setField(tree, "comments", [
+    ...tree.comments,
+    commentOf(input, "%%", { text: "%% c", from: end + 1 }),
+    commentOf(input, null, { text: "x", from: end + 6 }),
+  ])
+  return { input, tree, end }
+}
+
+const cutCommentAfterSemicolonMarkCases = [
+  {
+    id: "tokens-290b-architecture-fragment-mark",
+    diagram: "architecture",
+    expected: { where: "Comment at 48-49", message: 'mark: "%%", not "%"' },
+  },
+  {
+    id: "tokens-290b-cynefin-fragment-mark",
+    diagram: "cynefin",
+    expected: { where: "Comment at 43-44", message: 'mark: "%%", not "%"' },
+  },
+  {
+    id: "tokens-290b-packet-fragment-mark",
+    diagram: "packet",
+    expected: { where: "Comment at 32-33", message: 'mark: "%%", not "%"' },
+  },
+  {
+    id: "tokens-290b-quadrant-fragment-mark",
+    diagram: "quadrant",
+    expected: { where: "Comment at 47-48", message: 'mark: "%%", not "%"' },
+  },
+  {
+    id: "tokens-290b-radar-fragment-mark",
+    diagram: "radar",
+    expected: { where: "Comment at 36-37", message: 'mark: "%%", not "%"' },
+  },
+  {
+    id: "tokens-290b-wardley-fragment-mark",
+    diagram: "wardley",
+    expected: { where: "Comment at 53-54", message: 'mark: "%%", not "%"' },
+  },
+  {
+    id: "tokens-290b-xychart-fragment-mark",
+    diagram: "xychart",
+    expected: { where: "Comment at 36-37", message: 'mark: "%%", not "%"' },
+  },
+] as const
+
+const cutCommentAfterSemicolonValueCases = [
+  {
+    id: "tokens-290b-architecture-fragment-value",
+    diagram: "architecture",
+    expected: {
+      where: "Comment at 48-49",
+      message: 'value of a fragment: "xx", not "x"',
+    },
+  },
+  {
+    id: "tokens-290b-cynefin-fragment-value",
+    diagram: "cynefin",
+    expected: {
+      where: "Comment at 43-44",
+      message: 'value of a fragment: "xx", not "x"',
+    },
+  },
+  {
+    id: "tokens-290b-packet-fragment-value",
+    diagram: "packet",
+    expected: {
+      where: "Comment at 32-33",
+      message: 'value of a fragment: "xx", not "x"',
+    },
+  },
+  {
+    id: "tokens-290b-quadrant-fragment-value",
+    diagram: "quadrant",
+    expected: {
+      where: "Comment at 47-48",
+      message: 'value of a fragment: "xx", not "x"',
+    },
+  },
+  {
+    id: "tokens-290b-radar-fragment-value",
+    diagram: "radar",
+    expected: {
+      where: "Comment at 36-37",
+      message: 'value of a fragment: "xx", not "x"',
+    },
+  },
+  {
+    id: "tokens-290b-wardley-fragment-value",
+    diagram: "wardley",
+    expected: {
+      where: "Comment at 53-54",
+      message: 'value of a fragment: "xx", not "x"',
+    },
+  },
+  {
+    id: "tokens-290b-xychart-fragment-value",
+    diagram: "xychart",
+    expected: {
+      where: "Comment at 36-37",
+      message: 'value of a fragment: "xx", not "x"',
+    },
+  },
+] as const
+
+const cutCommentAfterSemicolonStartCases = [
+  {
+    id: "tokens-290b-architecture-fragment-start",
+    diagram: "architecture",
+    expected: {
+      where: "Comment at 47-49",
+      message: "has no mark and follows no comment region",
+    },
+  },
+  {
+    id: "tokens-290b-cynefin-fragment-start",
+    diagram: "cynefin",
+    expected: {
+      where: "Comment at 42-44",
+      message: "has no mark and follows no comment region",
+    },
+  },
+  {
+    id: "tokens-290b-packet-fragment-start",
+    diagram: "packet",
+    expected: {
+      where: "Comment at 31-33",
+      message: "has no mark and follows no comment region",
+    },
+  },
+  {
+    id: "tokens-290b-quadrant-fragment-start",
+    diagram: "quadrant",
+    expected: {
+      where: "Comment at 46-48",
+      message: "has no mark and follows no comment region",
+    },
+  },
+  {
+    id: "tokens-290b-radar-fragment-start",
+    diagram: "radar",
+    expected: {
+      where: "Comment at 35-37",
+      message: "has no mark and follows no comment region",
+    },
+  },
+  {
+    id: "tokens-290b-wardley-fragment-start",
+    diagram: "wardley",
+    expected: {
+      where: "Comment at 52-54",
+      message: "has no mark and follows no comment region",
+    },
+  },
+  {
+    id: "tokens-290b-xychart-fragment-start",
+    diagram: "xychart",
+    expected: {
+      where: "Comment at 35-37",
+      message: "has no mark and follows no comment region",
+    },
+  },
+] as const
+
+const cutCommentAfterSemicolonInsideCases = [
+  {
+    id: "tokens-290b-architecture-semicolon-inside",
+    diagram: "architecture",
+    expected: {
+      where: "Comment at 30-41",
+      message: "does not end where its line ends",
+    },
+  },
+  {
+    id: "tokens-290b-cynefin-semicolon-inside",
+    diagram: "cynefin",
+    expected: {
+      where: "Comment at 25-36",
+      message: "does not end where its line ends",
+    },
+  },
+  {
+    id: "tokens-290b-packet-semicolon-inside",
+    diagram: "packet",
+    expected: {
+      where: "Comment at 14-25",
+      message: "does not end where its line ends",
+    },
+  },
+  {
+    id: "tokens-290b-quadrant-semicolon-inside",
+    diagram: "quadrant",
+    expected: {
+      where: "Comment at 29-40",
+      message: "does not end where its line ends",
+    },
+  },
+  {
+    id: "tokens-290b-radar-semicolon-inside",
+    diagram: "radar",
+    expected: {
+      where: "Comment at 18-29",
+      message: "does not end where its line ends",
+    },
+  },
+  {
+    id: "tokens-290b-wardley-semicolon-inside",
+    diagram: "wardley",
+    expected: {
+      where: "Comment at 35-46",
+      message: "does not end where its line ends",
+    },
+  },
+  {
+    id: "tokens-290b-xychart-semicolon-inside",
+    diagram: "xychart",
+    expected: {
+      where: "Comment at 18-29",
+      message: "does not end where its line ends",
+    },
+  },
+] as const
+
+for (const entry of cutCommentAfterSemicolonMarkCases) {
+  it(`reports ${entry.id}`, () => {
+    const { input, tree } = cutCommentAfterSemicolon(entry.diagram)
+    expect(checkTree(input, tree)).toEqual([])
+    const broken = copyOf(tree)
+    setField(cutFragment(broken), "mark", "%%")
+    expect(checkTree(input, broken)).toContainEqual(entry.expected)
+  })
+}
+
+for (const entry of cutCommentAfterSemicolonValueCases) {
+  it(`reports ${entry.id}`, () => {
+    const { input, tree } = cutCommentAfterSemicolon(entry.diagram)
+    expect(checkTree(input, tree)).toEqual([])
+    const broken = copyOf(tree)
+    setField(cutFragment(broken), "value", "xx")
+    expect(checkTree(input, broken)).toContainEqual(entry.expected)
+  })
+}
+
+for (const entry of cutCommentAfterSemicolonStartCases) {
+  it(`reports ${entry.id}`, () => {
+    const { input, tree } = cutCommentAfterSemicolon(entry.diagram)
+    expect(checkTree(input, tree)).toEqual([])
+    const broken = copyOf(tree)
+    const fragment = cutFragment(broken)
+    span(input, fragment, fragment.range[0] - 1, fragment.range[1])
+    setField(fragment, "value", input.slice(...fragment.range))
+    expect(checkTree(input, broken)).toContainEqual(entry.expected)
+  })
+}
+
+for (const entry of cutCommentAfterSemicolonInsideCases) {
+  it(`reports ${entry.id}`, () => {
+    const { input, tree, end } = cutCommentAfterSemicolon(entry.diagram)
+    expect(checkTree(input, tree)).toEqual([])
+    const broken = copyOf(tree)
+    const comment = broken.comments.find((item) => item.range[1] === end)!
+    span(input, comment, comment.range[0], end - 1)
+    setField(comment, "value", comment.value.slice(0, -1))
+    setField(
+      broken,
+      "tokens",
+      [
+        ...broken.tokens,
+        tokenOf(input, "IgnoredSemicolon", { text: ";", from: end - 1 }),
       ].sort((left, right) => left.range[0] - right.range[0]),
     )
     expect(checkTree(input, broken)).toContainEqual(entry.expected)
@@ -32834,226 +33064,573 @@ it.each(commentRegionPercentLineCases)(
 
 // packages/parser/docs/tokens.md, Comment: a `;` that the line rule ignores
 // lies inside a diagram comment only when characters of the comment lie on both
-// sides of it. Each case writes ` style:#x;` at the end of a diagram comment
-// that ends its line, so that the line rule ignores the `;`, which then is an
-// IgnoredSemicolon token after the comment, and extends the comment over it.
+// sides of it, and otherwise it is an IgnoredSemicolon token. Each case
+// extends a recorded diagram comment over the IgnoredSemicolon token right
+// after it and removes the token.
 const semicolonAfterDiagramCommentCases = [
   {
-    id: "tokens-228b-agentflow-semicolon-after-diagram-comment",
+    id: "tokens-228c-agentflow-double-percent-comment-then-ignored-semicolon",
     diagram: "agentflow",
-    fixture: "comment-after-connector",
-    at: 37,
+    fixture: "tokens-double-percent-comment-then-ignored-semicolon",
+    comment: 0,
+    token: 3,
     expected: {
-      where: "Comment at 30-47",
+      where: "Comment at 20-32",
       message:
         "ends with a `;` that the line rule ignores, which is an IgnoredSemicolon token after the comment",
     },
   },
   {
-    id: "tokens-228b-c4-semicolon-after-diagram-comment",
+    id: "tokens-228c-architecture-double-percent-comment-then-ignored-semicolon",
+    diagram: "architecture",
+    fixture: "tokens-double-percent-comment-then-ignored-semicolon",
+    comment: 0,
+    token: 3,
+    expected: {
+      where: "Comment at 30-42",
+      message:
+        "ends with a `;` that the line rule ignores, which is an IgnoredSemicolon token after the comment",
+    },
+  },
+  {
+    id: "tokens-228c-c4-double-percent-comment-then-ignored-semicolon",
     diagram: "c4",
-    fixture: "div-boundary-comment-before-inline-body",
-    at: 30,
+    fixture: "tokens-double-percent-comment-then-ignored-semicolon",
+    comment: 0,
+    token: 7,
     expected: {
-      where: "Comment at 26-40",
+      where: "Comment at 24-36",
       message:
         "ends with a `;` that the line rule ignores, which is an IgnoredSemicolon token after the comment",
     },
   },
   {
-    id: "tokens-228b-class-semicolon-after-diagram-comment",
+    id: "tokens-228c-class-double-percent-comment-then-ignored-semicolon",
     diagram: "class",
-    fixture: "bare-marker-directive-lines-17d57580",
-    at: 25,
+    fixture: "tokens-double-percent-comment-then-ignored-semicolon",
+    comment: 0,
+    token: 7,
     expected: {
-      where: "Comment at 21-35",
+      where: "Comment at 30-42",
       message:
         "ends with a `;` that the line rule ignores, which is an IgnoredSemicolon token after the comment",
     },
   },
   {
-    id: "tokens-228b-gantt-semicolon-after-diagram-comment",
-    diagram: "gantt",
-    fixture: "div-percent-brace-after-double-percent-comment-two-spaces",
-    at: 27,
+    id: "tokens-228c-cynefin-double-percent-comment-then-ignored-semicolon",
+    diagram: "cynefin",
+    fixture: "tokens-double-percent-comment-then-ignored-semicolon",
+    comment: 0,
+    token: 3,
     expected: {
-      where: "Comment at 24-37",
+      where: "Comment at 25-37",
       message:
         "ends with a `;` that the line rule ignores, which is an IgnoredSemicolon token after the comment",
     },
   },
   {
-    id: "tokens-228b-info-semicolon-after-diagram-comment",
-    diagram: "info",
-    fixture: "c4component-flag-comment-lf",
-    at: 28,
-    expected: {
-      where: "Comment at 14-38",
-      message:
-        "ends with a `;` that the line rule ignores, which is an IgnoredSemicolon token after the comment",
-    },
-  },
-  {
-    id: "tokens-228b-gitgraph-semicolon-after-diagram-comment",
-    diagram: "gitgraph",
-    fixture: "comment-accdescr",
-    at: 24,
-    expected: {
-      where: "Comment at 20-34",
-      message:
-        "ends with a `;` that the line rule ignores, which is an IgnoredSemicolon token after the comment",
-    },
-  },
-  {
-    id: "tokens-228b-ishikawa-semicolon-after-diagram-comment",
-    diagram: "ishikawa",
-    fixture: "comment-header-glued",
-    at: 15,
-    expected: {
-      where: "Comment at 8-25",
-      message:
-        "ends with a `;` that the line rule ignores, which is an IgnoredSemicolon token after the comment",
-    },
-  },
-  {
-    id: "tokens-228b-journey-semicolon-after-diagram-comment",
-    diagram: "journey",
-    fixture: "db-section-ends-at-hash",
-    at: 23,
-    expected: {
-      where: "Comment at 20-33",
-      message:
-        "ends with a `;` that the line rule ignores, which is an IgnoredSemicolon token after the comment",
-    },
-  },
-  {
-    id: "tokens-228b-kanban-semicolon-after-diagram-comment",
-    diagram: "kanban",
-    fixture: "db-metadata-before-comment",
-    at: 17,
-    expected: {
-      where: "Comment at 13-27",
-      message:
-        "ends with a `;` that the line rule ignores, which is an IgnoredSemicolon token after the comment",
-    },
-  },
-  {
-    id: "tokens-228b-mindmap-semicolon-after-diagram-comment",
-    diagram: "mindmap",
-    fixture: "div-header-line-comment-comment-then-blank",
-    at: 12,
-    expected: {
-      where: "Comment at 8-22",
-      message:
-        "ends with a `;` that the line rule ignores, which is an IgnoredSemicolon token after the comment",
-    },
-  },
-  {
-    id: "tokens-228b-pie-semicolon-after-diagram-comment",
-    diagram: "pie",
-    fixture: "accdescr-block-comment",
-    at: 24,
-    expected: {
-      where: "Comment at 18-34",
-      message:
-        "ends with a `;` that the line rule ignores, which is an IgnoredSemicolon token after the comment",
-    },
-  },
-  {
-    id: "tokens-228b-requirement-semicolon-after-diagram-comment",
-    diagram: "requirement",
-    fixture: "db-comment-lines-between-statements",
-    at: 57,
-    expected: {
-      where: "Comment at 48-67",
-      message:
-        "ends with a `;` that the line rule ignores, which is an IgnoredSemicolon token after the comment",
-    },
-  },
-  {
-    id: "tokens-228b-state-semicolon-after-diagram-comment",
-    diagram: "state",
-    fixture: "db-divider-then-comment-only",
-    at: 48,
-    expected: {
-      where: "Comment at 45-58",
-      message:
-        "ends with a `;` that the line rule ignores, which is an IgnoredSemicolon token after the comment",
-    },
-  },
-  {
-    id: "tokens-228b-sequence-semicolon-after-diagram-comment",
-    diagram: "sequence",
-    fixture: "db-link-url-hash-ends-text",
-    at: 53,
-    expected: {
-      where: "Comment at 49-63",
-      message:
-        "ends with a `;` that the line rule ignores, which is an IgnoredSemicolon token after the comment",
-    },
-  },
-  {
-    id: "tokens-228b-timeline-semicolon-after-diagram-comment",
-    diagram: "timeline",
-    fixture: "db-comment-before-event-line",
-    at: 20,
-    expected: {
-      where: "Comment at 17-30",
-      message:
-        "ends with a `;` that the line rule ignores, which is an IgnoredSemicolon token after the comment",
-    },
-  },
-  {
-    id: "tokens-228b-venn-semicolon-after-diagram-comment",
-    diagram: "venn",
-    fixture: "db-after-indent-id-label-comment",
-    at: 34,
-    expected: {
-      where: "Comment at 30-44",
-      message:
-        "ends with a `;` that the line rule ignores, which is an IgnoredSemicolon token after the comment",
-    },
-  },
-  {
-    id: "tokens-228b-eventmodeling-semicolon-after-diagram-comment",
+    id: "tokens-228c-eventmodeling-double-percent-comment-then-ignored-semicolon",
     diagram: "eventmodeling",
-    fixture: "c4-component-header-lf",
-    at: 28,
+    fixture: "tokens-double-percent-comment-then-ignored-semicolon",
+    comment: 0,
+    token: 5,
     expected: {
-      where: "Comment at 14-38",
+      where: "Comment at 26-38",
       message:
         "ends with a `;` that the line rule ignores, which is an IgnoredSemicolon token after the comment",
     },
   },
   {
-    id: "tokens-228b-railroad-semicolon-after-diagram-comment",
+    id: "tokens-228c-eventmodeling-slash-slash-comment-then-ignored-semicolon",
+    diagram: "eventmodeling",
+    fixture: "tokens-slash-slash-comment-then-ignored-semicolon",
+    comment: 0,
+    token: 5,
+    expected: {
+      where: "Comment at 26-38",
+      message:
+        "ends with a `;` that the line rule ignores, which is an IgnoredSemicolon token after the comment",
+    },
+  },
+  {
+    id: "tokens-228c-eventmodeling-slash-star-comment-then-ignored-semicolon",
+    diagram: "eventmodeling",
+    fixture: "tokens-slash-star-comment-then-ignored-semicolon",
+    comment: 0,
+    token: 5,
+    expected: {
+      where: "EventmodelingDiagram at 0-25",
+      message: "no complete lexical unit at source offset 40",
+    },
+  },
+  {
+    id: "tokens-228c-gantt-double-percent-comment-then-ignored-semicolon",
+    diagram: "gantt",
+    fixture: "tokens-double-percent-comment-then-ignored-semicolon",
+    comment: 0,
+    token: 5,
+    expected: {
+      where: "Comment at 21-33",
+      message:
+        "ends with a `;` that the line rule ignores, which is an IgnoredSemicolon token after the comment",
+    },
+  },
+  {
+    id: "tokens-228c-gantt-percent-comment-then-ignored-semicolon",
+    diagram: "gantt",
+    fixture: "tokens-percent-comment-then-ignored-semicolon",
+    comment: 0,
+    token: 2,
+    expected: {
+      where: "Comment at 23-34",
+      message:
+        "ends with a `;` that the line rule ignores, which is an IgnoredSemicolon token after the comment",
+    },
+  },
+  {
+    id: "tokens-228c-gitgraph-double-percent-comment-then-ignored-semicolon",
+    diagram: "gitgraph",
+    fixture: "tokens-double-percent-comment-then-ignored-semicolon",
+    comment: 0,
+    token: 2,
+    expected: {
+      where: "Comment at 16-28",
+      message:
+        "ends with a `;` that the line rule ignores, which is an IgnoredSemicolon token after the comment",
+    },
+  },
+  {
+    id: "tokens-228c-info-double-percent-comment-then-ignored-semicolon",
+    diagram: "info",
+    fixture: "tokens-double-percent-comment-then-ignored-semicolon",
+    comment: 0,
+    token: 2,
+    expected: {
+      where: "Comment at 14-26",
+      message:
+        "ends with a `;` that the line rule ignores, which is an IgnoredSemicolon token after the comment",
+    },
+  },
+  {
+    id: "tokens-228c-ishikawa-double-percent-comment-then-ignored-semicolon-then-line-separator-comment-line",
+    diagram: "ishikawa",
+    fixture:
+      "tokens-double-percent-comment-then-ignored-semicolon-then-line-separator-comment-line",
+    comment: 0,
+    token: 1,
+    expected: {
+      where: "Comment at 9-21",
+      message:
+        "ends with a `;` that the line rule ignores, which is an IgnoredSemicolon token after the comment",
+    },
+  },
+  {
+    id: "tokens-228c-ishikawa-double-percent-comment-then-ignored-semicolon-then-paragraph-separator-comment-line",
+    diagram: "ishikawa",
+    fixture:
+      "tokens-double-percent-comment-then-ignored-semicolon-then-paragraph-separator-comment-line",
+    comment: 0,
+    token: 1,
+    expected: {
+      where: "Comment at 9-21",
+      message:
+        "ends with a `;` that the line rule ignores, which is an IgnoredSemicolon token after the comment",
+    },
+  },
+  {
+    id: "tokens-228c-journey-double-percent-comment-then-ignored-semicolon",
+    diagram: "journey",
+    fixture: "tokens-double-percent-comment-then-ignored-semicolon",
+    comment: 0,
+    token: 5,
+    expected: {
+      where: "Comment at 25-37",
+      message:
+        "ends with a `;` that the line rule ignores, which is an IgnoredSemicolon token after the comment",
+    },
+  },
+  {
+    id: "tokens-228c-journey-percent-comment-then-ignored-semicolon",
+    diagram: "journey",
+    fixture: "tokens-percent-comment-then-ignored-semicolon",
+    comment: 0,
+    token: 4,
+    expected: {
+      where: "Comment at 21-32",
+      message:
+        "ends with a `;` that the line rule ignores, which is an IgnoredSemicolon token after the comment",
+    },
+  },
+  {
+    id: "tokens-228c-kanban-double-percent-comment-then-ignored-semicolon-then-line-separator-comment-line",
+    diagram: "kanban",
+    fixture:
+      "tokens-double-percent-comment-then-ignored-semicolon-then-line-separator-comment-line",
+    comment: 0,
+    token: 5,
+    expected: {
+      where: "Comment at 13-25",
+      message:
+        "ends with a `;` that the line rule ignores, which is an IgnoredSemicolon token after the comment",
+    },
+  },
+  {
+    id: "tokens-228c-kanban-double-percent-comment-then-ignored-semicolon-then-paragraph-separator-comment-line",
+    diagram: "kanban",
+    fixture:
+      "tokens-double-percent-comment-then-ignored-semicolon-then-paragraph-separator-comment-line",
+    comment: 0,
+    token: 5,
+    expected: {
+      where: "Comment at 13-25",
+      message:
+        "ends with a `;` that the line rule ignores, which is an IgnoredSemicolon token after the comment",
+    },
+  },
+  {
+    id: "tokens-228c-mindmap-double-percent-comment-then-ignored-semicolon",
+    diagram: "mindmap",
+    fixture: "tokens-double-percent-comment-then-ignored-semicolon",
+    comment: 0,
+    token: 6,
+    expected: {
+      where: "Comment at 19-31",
+      message:
+        "ends with a `;` that the line rule ignores, which is an IgnoredSemicolon token after the comment",
+    },
+  },
+  {
+    id: "tokens-228c-mindmap-double-percent-comment-then-ignored-semicolon-then-line-separator-comment-line",
+    diagram: "mindmap",
+    fixture:
+      "tokens-double-percent-comment-then-ignored-semicolon-then-line-separator-comment-line",
+    comment: 0,
+    token: 6,
+    expected: {
+      where: "Comment at 20-32",
+      message:
+        "ends with a `;` that the line rule ignores, which is an IgnoredSemicolon token after the comment",
+    },
+  },
+  {
+    id: "tokens-228c-mindmap-double-percent-comment-then-ignored-semicolon-then-paragraph-separator-comment-line",
+    diagram: "mindmap",
+    fixture:
+      "tokens-double-percent-comment-then-ignored-semicolon-then-paragraph-separator-comment-line",
+    comment: 0,
+    token: 6,
+    expected: {
+      where: "Comment at 20-32",
+      message:
+        "ends with a `;` that the line rule ignores, which is an IgnoredSemicolon token after the comment",
+    },
+  },
+  {
+    id: "tokens-228c-packet-double-percent-comment-then-ignored-semicolon",
+    diagram: "packet",
+    fixture: "tokens-double-percent-comment-then-ignored-semicolon",
+    comment: 0,
+    token: 4,
+    expected: {
+      where: "Comment at 14-26",
+      message:
+        "ends with a `;` that the line rule ignores, which is an IgnoredSemicolon token after the comment",
+    },
+  },
+  {
+    id: "tokens-228c-pie-double-percent-comment-then-ignored-semicolon",
+    diagram: "pie",
+    fixture: "tokens-double-percent-comment-then-ignored-semicolon",
+    comment: 0,
+    token: 4,
+    expected: {
+      where: "Comment at 11-23",
+      message:
+        "ends with a `;` that the line rule ignores, which is an IgnoredSemicolon token after the comment",
+    },
+  },
+  {
+    id: "tokens-228c-quadrant-double-percent-comment-then-ignored-semicolon",
+    diagram: "quadrant",
+    fixture: "tokens-double-percent-comment-then-ignored-semicolon",
+    comment: 0,
+    token: 5,
+    expected: {
+      where: "Comment at 29-41",
+      message:
+        "ends with a `;` that the line rule ignores, which is an IgnoredSemicolon token after the comment",
+    },
+  },
+  {
+    id: "tokens-228c-radar-double-percent-comment-then-ignored-semicolon",
+    diagram: "radar",
+    fixture: "tokens-double-percent-comment-then-ignored-semicolon",
+    comment: 0,
+    token: 3,
+    expected: {
+      where: "Comment at 18-30",
+      message:
+        "ends with a `;` that the line rule ignores, which is an IgnoredSemicolon token after the comment",
+    },
+  },
+  {
+    id: "tokens-228c-railroad-double-percent-comment-then-ignored-semicolon",
     diagram: "railroad",
-    fixture: "abnf-comment-before-rule",
-    at: 28,
+    fixture: "tokens-double-percent-comment-then-ignored-semicolon",
+    comment: 0,
+    token: 3,
     expected: {
-      where: "Comment at 19-38",
+      where: "Comment at 22-34",
       message:
         "ends with a `;` that the line rule ignores, which is an IgnoredSemicolon token after the comment",
     },
   },
   {
-    id: "tokens-228b-treemap-semicolon-after-diagram-comment",
+    id: "tokens-228c-railroad-hash-comment-then-ignored-semicolon",
+    diagram: "railroad",
+    fixture: "tokens-hash-comment-then-ignored-semicolon",
+    comment: 0,
+    token: 4,
+    expected: {
+      where: "Comment at 27-38",
+      message:
+        "ends with a `;` that the line rule ignores, which is an IgnoredSemicolon token after the comment",
+    },
+  },
+  {
+    id: "tokens-228c-railroad-paren-star-comment-then-ignored-semicolon",
+    diagram: "railroad",
+    fixture: "tokens-paren-star-comment-then-ignored-semicolon",
+    comment: 0,
+    token: 4,
+    expected: {
+      where: "Comment at 27-42",
+      message: 'value of a native Comment: " style:#x ;", not " style:#x *);"',
+    },
+  },
+  {
+    id: "tokens-228c-railroad-semicolon-comment-then-ignored-semicolon",
+    diagram: "railroad",
+    fixture: "tokens-semicolon-comment-then-ignored-semicolon",
+    comment: 0,
+    token: 4,
+    expected: {
+      where: "Comment at 26-37",
+      message:
+        "ends with a `;` that the line rule ignores, which is an IgnoredSemicolon token after the comment",
+    },
+  },
+  {
+    id: "tokens-228c-railroad-slash-star-comment-then-ignored-semicolon",
+    diagram: "railroad",
+    fixture: "tokens-slash-star-comment-then-ignored-semicolon",
+    comment: 0,
+    token: 4,
+    expected: {
+      where: "Comment at 27-42",
+      message: 'value of a native Comment: " style:#x ;", not " style:#x */;"',
+    },
+  },
+  {
+    id: "tokens-228c-requirement-hash-comment-then-ignored-semicolon",
+    diagram: "requirement",
+    fixture: "tokens-hash-comment-then-ignored-semicolon",
+    comment: 0,
+    token: 5,
+    expected: {
+      where: "Comment at 37-48",
+      message:
+        "ends with a `;` that the line rule ignores, which is an IgnoredSemicolon token after the comment",
+    },
+  },
+  {
+    id: "tokens-228c-requirement-percent-comment-then-ignored-semicolon",
+    diagram: "requirement",
+    fixture: "tokens-percent-comment-then-ignored-semicolon",
+    comment: 0,
+    token: 4,
+    expected: {
+      where: "Comment at 35-46",
+      message:
+        "ends with a `;` that the line rule ignores, which is an IgnoredSemicolon token after the comment",
+    },
+  },
+  {
+    id: "tokens-228c-sequence-comment-then-ignored-semicolon",
+    diagram: "sequence",
+    fixture: "tokens-comment-then-ignored-semicolon",
+    comment: 0,
+    token: 6,
+    expected: {
+      where: "Comment at 25-35",
+      message:
+        "ends with a `;` that the line rule ignores, which is an IgnoredSemicolon token after the comment",
+    },
+  },
+  {
+    id: "tokens-228c-sequence-double-percent-comment-then-ignored-semicolon",
+    diagram: "sequence",
+    fixture: "tokens-double-percent-comment-then-ignored-semicolon",
+    comment: 0,
+    token: 2,
+    expected: {
+      where: "Comment at 27-39",
+      message:
+        "ends with a `;` that the line rule ignores, which is an IgnoredSemicolon token after the comment",
+    },
+  },
+  {
+    id: "tokens-228c-sequence-loop-comment-then-ignored-semicolon",
+    diagram: "sequence",
+    fixture: "tokens-loop-comment-then-ignored-semicolon",
+    comment: 0,
+    token: 3,
+    expected: {
+      where: "Comment at 27-30",
+      message:
+        "ends with a `;` that the line rule ignores, which is an IgnoredSemicolon token after the comment",
+    },
+  },
+  {
+    id: "tokens-228c-sequence-percent-comment-then-ignored-semicolon",
+    diagram: "sequence",
+    fixture: "tokens-percent-comment-then-ignored-semicolon",
+    comment: 0,
+    token: 2,
+    expected: {
+      where: "Comment at 27-38",
+      message:
+        "ends with a `;` that the line rule ignores, which is an IgnoredSemicolon token after the comment",
+    },
+  },
+  {
+    id: "tokens-228c-sequence-title-comment-then-ignored-semicolon",
+    diagram: "sequence",
+    fixture: "tokens-title-comment-then-ignored-semicolon",
+    comment: 0,
+    token: 3,
+    expected: {
+      where: "Comment at 29-32",
+      message:
+        "ends with a `;` that the line rule ignores, which is an IgnoredSemicolon token after the comment",
+    },
+  },
+  {
+    id: "tokens-228c-state-double-percent-comment-then-ignored-semicolon",
+    diagram: "state",
+    fixture: "tokens-double-percent-comment-then-ignored-semicolon",
+    comment: 0,
+    token: 4,
+    expected: {
+      where: "Comment at 24-36",
+      message:
+        "ends with a `;` that the line rule ignores, which is an IgnoredSemicolon token after the comment",
+    },
+  },
+  {
+    id: "tokens-228c-state-hash-comment-then-ignored-semicolon",
+    diagram: "state",
+    fixture: "tokens-hash-comment-then-ignored-semicolon",
+    comment: 0,
+    token: 4,
+    expected: {
+      where: "Comment at 24-35",
+      message:
+        "ends with a `;` that the line rule ignores, which is an IgnoredSemicolon token after the comment",
+    },
+  },
+  {
+    id: "tokens-228c-timeline-double-percent-comment-then-ignored-semicolon",
+    diagram: "timeline",
+    fixture: "tokens-double-percent-comment-then-ignored-semicolon",
+    comment: 0,
+    token: 5,
+    expected: {
+      where: "Comment at 23-35",
+      message:
+        "ends with a `;` that the line rule ignores, which is an IgnoredSemicolon token after the comment",
+    },
+  },
+  {
+    id: "tokens-228c-timeline-hash-comment-then-ignored-semicolon",
+    diagram: "timeline",
+    fixture: "tokens-hash-comment-then-ignored-semicolon",
+    comment: 0,
+    token: 2,
+    expected: {
+      where: "Comment at 13-24",
+      message:
+        "ends with a `;` that the line rule ignores, which is an IgnoredSemicolon token after the comment",
+    },
+  },
+  {
+    id: "tokens-228c-timeline-percent-comment-then-ignored-semicolon",
+    diagram: "timeline",
+    fixture: "tokens-percent-comment-then-ignored-semicolon",
+    comment: 0,
+    token: 5,
+    expected: {
+      where: "Comment at 23-34",
+      message:
+        "ends with a `;` that the line rule ignores, which is an IgnoredSemicolon token after the comment",
+    },
+  },
+  {
+    id: "tokens-228c-treemap-double-percent-comment-then-ignored-semicolon",
     diagram: "treemap",
-    fixture: "comment-accdescr",
-    at: 29,
+    fixture: "tokens-double-percent-comment-then-ignored-semicolon",
+    comment: 0,
+    token: 3,
     expected: {
-      where: "Comment at 20-39",
+      where: "Comment at 16-28",
       message:
         "ends with a `;` that the line rule ignores, which is an IgnoredSemicolon token after the comment",
     },
   },
   {
-    id: "tokens-228b-treeview-semicolon-after-diagram-comment",
+    id: "tokens-228c-treeview-double-percent-comment-then-ignored-semicolon",
     diagram: "treeview",
-    fixture: "box-comment-indent-carry",
-    at: 30,
+    fixture: "tokens-double-percent-comment-then-ignored-semicolon",
+    comment: 0,
+    token: 2,
     expected: {
-      where: "Comment at 23-40",
+      where: "Comment at 18-30",
+      message:
+        "ends with a `;` that the line rule ignores, which is an IgnoredSemicolon token after the comment",
+    },
+  },
+  {
+    id: "tokens-228c-venn-double-percent-comment-then-ignored-semicolon",
+    diagram: "venn",
+    fixture: "tokens-double-percent-comment-then-ignored-semicolon",
+    comment: 0,
+    token: 3,
+    expected: {
+      where: "Comment at 16-28",
+      message:
+        "ends with a `;` that the line rule ignores, which is an IgnoredSemicolon token after the comment",
+    },
+  },
+  {
+    id: "tokens-228c-wardley-double-percent-comment-then-ignored-semicolon",
+    diagram: "wardley",
+    fixture: "tokens-double-percent-comment-then-ignored-semicolon",
+    comment: 0,
+    token: 8,
+    expected: {
+      where: "Comment at 35-47",
+      message:
+        "ends with a `;` that the line rule ignores, which is an IgnoredSemicolon token after the comment",
+    },
+  },
+  {
+    id: "tokens-228c-xychart-double-percent-comment-then-ignored-semicolon",
+    diagram: "xychart",
+    fixture: "tokens-double-percent-comment-then-ignored-semicolon",
+    comment: 0,
+    token: 3,
+    expected: {
+      where: "Comment at 18-30",
       message:
         "ends with a `;` that the line rule ignores, which is an IgnoredSemicolon token after the comment",
     },
@@ -33062,37 +33639,16 @@ const semicolonAfterDiagramCommentCases = [
 
 for (const entry of semicolonAfterDiagramCommentCases) {
   it(`reports ${entry.id}`, () => {
-    const { input, tree } = insertText(
-      entry.diagram,
-      entry.fixture,
-      entry.at,
-      " style:#x;",
-    )
-    const comment = tree.comments.find((item) => item.range[1] === entry.at)!
-    span(input, comment, comment.range[0], entry.at + 9)
-    setField(comment, "value", `${comment.value} style:#x`)
-    setField(
-      tree,
-      "tokens",
-      [
-        ...tree.tokens,
-        tokenOf(input, "IgnoredSemicolon", { text: ";", from: entry.at + 9 }),
-      ].sort((left, right) => left.range[0] - right.range[0]),
-    )
-    expect(checkTree(input, tree)).toEqual([])
+    const { input, tree } = recordedTree(entry.diagram, entry.fixture)
     const broken = copyOf(tree)
-    const extended = broken.comments.find(
-      (item) => item.range[1] === entry.at + 9,
-    )!
-    span(input, extended, extended.range[0], entry.at + 10)
-    setField(extended, "value", `${extended.value};`)
+    const comment = broken.comments[entry.comment]
+    const semicolon = broken.tokens[entry.token]
+    span(input, comment, comment.range[0], semicolon.range[1])
+    setField(comment, "value", `${comment.value};`)
     setField(
       broken,
       "tokens",
-      broken.tokens.filter(
-        (item) =>
-          item.type !== "IgnoredSemicolon" || item.range[0] !== entry.at + 9,
-      ),
+      broken.tokens.filter((_, index) => index !== entry.token),
     )
     expect(checkTree(input, broken)).toContainEqual(entry.expected)
   })
