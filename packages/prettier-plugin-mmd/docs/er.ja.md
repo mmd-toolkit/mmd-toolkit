@@ -2058,8 +2058,15 @@ mermaid.js が複数行にわたって読む文は、
 `classDef`、`style` の文の中の名前が、これにあたります。
 文は、最初の行から終わりまで、書かれたまま印字します。
 字下げするのは最初の行だけです。
-複数行の属性ブロックを持つエンティティでは、ブロックを開く行がそれにあたり、
-属性はその下に、通常どおり置きます。
+複数行の属性ブロックを持つエンティティで、
+書かれたまま印字するのは `{` までです。
+属性と `}` は、その下に通常どおり置きます。
+行は、mermaid.js が終わらせる所で終わります。
+[U+2028 か U+2029 の後のコメント行](./compatibility.ja.md#u2028-か-u2029-の後のコメント行)
+を参照してください。
+コメント行の後の空行は行を終わらせ、次の行は字下げされた別の文になります。
+テキストの終わりも行を終わらせます。
+`style` や `classDef` の文を終わらせる `;` は、その場所に残ります。
 [test: a comment line after U+2028 inside the name of an ER entity]
 [test: a comment line after U+2029 inside the name of an ER entity]
 [test: two comment lines after U+2028 inside the name of an ER entity]
@@ -2088,6 +2095,9 @@ relationship]
 [test: a comment line after U+2028 inside the name of an ER class statement]
 [test: a comment line after U+2028 inside the name of an ER class definition]
 [test: a comment line after U+2028 inside the name of an ER style statement]
+[test: an empty line after a comment line after U+2028 inside the name of an ER entity]
+[test: a comment line after U+2028 at the end of the text of an ER diagram]
+[test: a comment line after U+2028 inside the name of an ER style statement that ends with a semicolon]
 
 入力
 ([multi-line-statements/accessibility-text-joined-input.mmd](../tests/fixtures/er/multi-line-statements/accessibility-text-joined-input.mmd)):

@@ -1891,6 +1891,21 @@ const erExamples: readonly (readonly [string, string, string])[] = [
     "erDiagram\nstyle A\u2028%% c\nBar fill:#f00\n",
     "erDiagram\n  style A\u2028%% c\nBar fill:#f00\n",
   ],
+  [
+    "an empty line after a comment line after U+2028 inside the name of an ER entity",
+    "erDiagram\nA\u2028%% c\n\nBar\n",
+    "erDiagram\n  A\u2028%% c\n\n  Bar\n",
+  ],
+  [
+    "a comment line after U+2028 at the end of the text of an ER diagram",
+    "erDiagram\nA\u2028%% c",
+    "erDiagram\n  A\u2028%% c\n",
+  ],
+  [
+    "a comment line after U+2028 inside the name of an ER style statement that ends with a semicolon",
+    "erDiagram\nstyle A\u2028%% c\nBar fill:#f00;\n",
+    "erDiagram\n  style A\u2028%% c\nBar fill:#f00;\n",
+  ],
 ]
 
 /**

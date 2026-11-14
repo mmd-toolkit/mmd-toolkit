@@ -1998,30 +1998,38 @@ joining region is part of such a statement: `A`, U+2028, `%% c`, and a line
 stands: in an entity, at an end of a relationship, as the name or the type of an
 attribute, as the name or the title of a subgraph, or in a `class`, `classDef`,
 or `style` statement. The statement is printed as written from its first line to
-its end, and only its first line is indented; of an entity with an attribute
-block over several lines, that is the line that opens the block, and the
-attributes stand below it as usual. [test: a comment line after U+2028 inside
-the name of an ER entity] [test: a comment line after U+2029 inside the name of
-an ER entity] [test: two comment lines after U+2028 inside the name of an ER
-entity] [test: a directive and a comment line after U+2028 inside the name of an
-ER entity] [test: a comment line after U+2028 inside the name of an ER entity
-that follows a name in quotes] [test: an indented line after a comment line
-after U+2028 inside the name of an ER entity] [test: a comment line after U+2028
-inside the name of an ER entity with an alias] [test: a comment line after
-U+2028 inside the name of an ER entity with an attribute block on one line]
-[test: a comment line after U+2028 inside the name of an ER entity with an
-attribute block over several lines] [test: a comment line after U+2028 inside
-the name of an ER entity with a CSS class] [test: a comment line after U+2028
-inside the first entity of an ER relationship] [test: a comment line after
-U+2028 inside the second entity of an ER relationship] [test: a comment line
-after U+2028 inside both entities of an ER relationship] [test: a comment line
-after U+2028 inside the name of an ER attribute] [test: a comment line after
-U+2028 inside the type of an ER attribute] [test: a comment line after U+2028
-inside the name of an ER subgraph] [test: a comment line after U+2028 inside the
-title of an ER subgraph] [test: a comment line after U+2028 inside the name of
-an ER class statement] [test: a comment line after U+2028 inside the name of an
-ER class definition] [test: a comment line after U+2028 inside the name of an ER
-style statement]
+its end, and only its first line is indented. Of an entity with an attribute
+block over several lines, what is printed as written ends with the `{` that
+opens the block, and the attributes and the `}` stand below it as usual. The
+line ends where mermaid.js ends it (see
+[A comment line after U+2028 or U+2029](./compatibility.md#a-comment-line-after-u2028-or-u2029)):
+an empty line after the comment line ends it, and the next line is a statement
+of its own, which is indented. The end of the text ends it too. A `;` that ends
+a `style` or `classDef` statement stays where it is. [test: a comment line after
+U+2028 inside the name of an ER entity] [test: a comment line after U+2029
+inside the name of an ER entity] [test: two comment lines after U+2028 inside
+the name of an ER entity] [test: a directive and a comment line after U+2028
+inside the name of an ER entity] [test: a comment line after U+2028 inside the
+name of an ER entity that follows a name in quotes] [test: an indented line
+after a comment line after U+2028 inside the name of an ER entity] [test: a
+comment line after U+2028 inside the name of an ER entity with an alias] [test:
+a comment line after U+2028 inside the name of an ER entity with an attribute
+block on one line] [test: a comment line after U+2028 inside the name of an ER
+entity with an attribute block over several lines] [test: a comment line after
+U+2028 inside the name of an ER entity with a CSS class] [test: a comment line
+after U+2028 inside the first entity of an ER relationship] [test: a comment
+line after U+2028 inside the second entity of an ER relationship] [test: a
+comment line after U+2028 inside both entities of an ER relationship] [test: a
+comment line after U+2028 inside the name of an ER attribute] [test: a comment
+line after U+2028 inside the type of an ER attribute] [test: a comment line
+after U+2028 inside the name of an ER subgraph] [test: a comment line after
+U+2028 inside the title of an ER subgraph] [test: a comment line after U+2028
+inside the name of an ER class statement] [test: a comment line after U+2028
+inside the name of an ER class definition] [test: a comment line after U+2028
+inside the name of an ER style statement] [test: an empty line after a comment
+line after U+2028 inside the name of an ER entity] [test: a comment line after
+U+2028 at the end of the text of an ER diagram] [test: a comment line after
+U+2028 inside the name of an ER style statement that ends with a semicolon]
 
 Input
 ([multi-line-statements/accessibility-text-joined-input.mmd](../tests/fixtures/er/multi-line-statements/accessibility-text-joined-input.mmd)):
