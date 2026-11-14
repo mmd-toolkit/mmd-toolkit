@@ -280,19 +280,75 @@ function mayBeCut(kind: TokenKind): boolean {
  * whitespace: one before the place and one after it. The tree of
  * `reference` is compared with mermaid.js on its own, so its tokens can be
  * relied on; a token that may not be cut is whole in it, since the parser
- * rejects a tree where one is cut.
+ * rejects a tree where a directive or a `;` cuts one, except that a comment
+ * region cuts an `Identifier` token into fragments ({@link fragmentsOf}).
+ * A place after that region and before the next fragment lies inside the
+ * token too, while a place in the region is read through with it.
  */
 function isInsideTokenThatMayNotBeCut(
   reference: string,
   root: Root,
   at: number,
 ): boolean {
-  return root.tokens.some(
+  const insideToken = root.tokens.some(
     (token) =>
       !mayBeCut(token.type) &&
       holdsNonWhitespace(reference, token.range[0], at) &&
       holdsNonWhitespace(reference, at, token.range[1]),
   )
+  return (
+    insideToken ||
+    fragmentsOf(root).some(
+      (fragments) => fragments.regionEnd < at && at <= fragments.next.range[0],
+    )
+  )
+}
+
+/**
+ * docs/tokens.md, Comment regions in tokens: the places where a comment
+ * region cuts an `Identifier` token, the one kind of token that may not be
+ * cut ({@link mayBeCut}) and may hold a comment region, into two
+ * fragments, as an ER name across a comment line after a U+2028. Two
+ * tokens are such fragments when both are `Identifier` tokens, follow one
+ * another in `root.tokens`, lie inside the range of one node without child
+ * nodes, and have a comment between them. Each place has the next fragment
+ * and the end of the last comment before it.
+ */
+function fragmentsOf(
+  root: Root,
+): { readonly next: Root["tokens"][number]; readonly regionEnd: number }[] {
+  const leaves: Range[] = []
+  const hasChild: boolean[] = []
+  traverseNodes(root, {
+    enterNode() {
+      if (hasChild.length > 0) hasChild[hasChild.length - 1] = true
+      hasChild.push(false)
+    },
+    leaveNode(node) {
+      if (hasChild.pop() === false) leaves.push(node.range)
+    },
+  })
+  const found: {
+    readonly next: Root["tokens"][number]
+    readonly regionEnd: number
+  }[] = []
+  for (const [index, token] of root.tokens.entries()) {
+    const next = root.tokens[index + 1]
+    if (next === undefined) continue
+    if (token.type !== "Identifier" || next.type !== "Identifier") continue
+    const inOneLeaf = leaves.some(
+      ([start, end]) => start <= token.range[0] && next.range[1] <= end,
+    )
+    if (!inOneLeaf) continue
+    const between = root.comments.filter(
+      (comment) =>
+        token.range[1] <= comment.range[0] && comment.range[1] <= next.range[0],
+    )
+    const last = between.at(-1)
+    if (last === undefined) continue
+    found.push({ next, regionEnd: last.range[1] })
+  }
+  return found
 }
 
 /** Whether the text of `text` from `start` to `end` holds a character that is not whitespace. */
