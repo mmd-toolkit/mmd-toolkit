@@ -1022,3 +1022,115 @@ describe("checkTree: a diagram comment and the `;` that the line rule ignores", 
     })
   }
 })
+
+describe("checkTree: a fragment of a diagram comment after a comment region", () => {
+  // common.md, Comment lines: a comment region cuts a diagram comment that a
+  // diagram's lexer reads to the end of its line, and the line goes on after
+  // the region: the text after it is a fragment without a mark. Where a
+  // U+2028 or a U+2029 ends the diagram comment (mindmap, ishikawa, kanban),
+  // or a line feed ends it, the comment line cuts nothing, and the text after
+  // it is the next line, which the diagram reads.
+  const NOT_CUT =
+    "has no mark and follows a comment region that cuts no diagram comment"
+
+  /** The tree of `source` whose comments are the diagram comment `%% c` at its first `%%`, the comment lines `%% r` and `%% s`, and the fragments at `fragments` (each one character, `x` or `y`). */
+  function withFragments(
+    source: string,
+    bodyType: string,
+    fragments: readonly number[],
+  ): CheckedRoot {
+    const start = source.indexOf("%% c")
+    const diagramComment: CommentSpec = {
+      mark: "%%",
+      range: [start, start + 4],
+    }
+    const specs: CommentSpec[] = [
+      diagramComment,
+      ...["%% r", "%% s"]
+        .map((line) => source.indexOf(line))
+        .filter((at) => at !== -1)
+        .map((at): CommentSpec => ({ mark: "%%", range: [at, at + 4] })),
+      ...fragments.map((at): CommentSpec => ({
+        mark: null,
+        range: [at, at + 1],
+      })),
+    ].sort((a, b) => a.range[0] - b.range[0])
+    return treeWith(source, bodyType, specs)
+  }
+
+  for (const bodyType of [
+    "MindmapDiagram",
+    "IshikawaDiagram",
+    "KanbanDiagram",
+  ]) {
+    for (const separator of ["\u2028", "\u2029", "\n"]) {
+      it(`fails the text after a comment line as a fragment in a ${bodyType} where the comment ends before ${separator === "\n" ? "a line feed" : separator === "\u2028" ? "a U+2028" : "a U+2029"}`, () => {
+        const source = `header\nA %% c${separator}%% r\nx\n`
+        const at = source.indexOf("x")
+        expect(
+          checkTree(source, withFragments(source, bodyType, [at])),
+        ).toContainEqual({
+          where: `Comment at ${at}-${at + 1}`,
+          message: NOT_CUT,
+        })
+        // As a character of the next line, it is no comment.
+        expect(checkTree(source, withFragments(source, bodyType, []))).toEqual(
+          [],
+        )
+      })
+    }
+  }
+
+  for (const bodyType of ["SequenceDiagram", "StateDiagram", "ClassDiagram"]) {
+    it(`passes the fragment after a comment line that cuts a ${bodyType} comment, also after two comment lines, and after a fragment`, () => {
+      for (const separator of ["\u2028", "\u2029"]) {
+        const one = `header\nA %% c${separator}%% r\nx\n`
+        expect(
+          checkTree(one, withFragments(one, bodyType, [one.indexOf("x")])),
+        ).toEqual([])
+        const two = `header\nA %% c${separator}%% r\n%% s\nx\n`
+        expect(
+          checkTree(two, withFragments(two, bodyType, [two.indexOf("x")])),
+        ).toEqual([])
+        const after = `header\nA %% c${separator}%% r\nx${separator}%% s\ny\n`
+        expect(
+          checkTree(
+            after,
+            withFragments(after, bodyType, [
+              after.indexOf("x"),
+              after.indexOf("y"),
+            ]),
+          ),
+        ).toEqual([])
+      }
+    })
+
+    it(`fails the text after a comment line as a fragment in a ${bodyType} where a line feed ends the comment, or no comment comes before the line`, () => {
+      const lineFeed = "header\nA %% c\n%% r\nx\n"
+      const at = lineFeed.indexOf("x")
+      expect(
+        checkTree(lineFeed, withFragments(lineFeed, bodyType, [at])),
+      ).toContainEqual({
+        where: `Comment at ${at}-${at + 1}`,
+        message: NOT_CUT,
+      })
+      const alone = "header\n%% r\nx\n"
+      const aloneAt = alone.indexOf("x")
+      expect(
+        checkTree(
+          alone,
+          treeWith(alone, bodyType, [
+            {
+              mark: "%%",
+              range: [alone.indexOf("%% r"), alone.indexOf("%% r") + 4],
+            },
+            { mark: null, range: [aloneAt, aloneAt + 1] },
+          ]),
+        ),
+      ).toContainEqual({
+        where: `Comment at ${aloneAt}-${aloneAt + 1}`,
+        message: NOT_CUT,
+      })
+    })
+  }
+})

@@ -117,7 +117,8 @@ const problems: TreeProblem[] = checkTree(text, tree)
   journey 図と requirement 図と timeline 図の図のコメントは、印 `#`、`%%`、
   `%` を持ち、mindmap 図、xychart 図、C4 図、quadrant chart の図のコメントは、
   印 `%%` を持ちます。
-  印のない断片は、コメント領域に続きます（parser/docs/tokens.md の Comment、
+  印のない断片は、
+  図のコメントを切るコメント領域に続きます（parser/docs/tokens.md の Comment、
   [common.md](../../spec/docs/common.md#comment-lines) の Comment lines）。
   原文のコメント行は、すべて木のコメントです。
   ただし、
@@ -162,6 +163,22 @@ const problems: TreeProblem[] = checkTree(text, tree)
   コメント全体が `;` の先の領域まで続くからです。
   mindmap 図、ishikawa 図、kanban 図で U+2028 や U+2029 が終わらせるコメントは、
   次の行の区間にあるコメント領域に切られないので、問います。
+
+  コメント領域は、行の終わりまで走る図のコメントを切り、行は領域の後も続くので、
+  領域の後のテキストは、印のない断片です。
+  図のコメントや断片の終わりと領域の間に、同じ行の空白だけがあるとき、または、
+  領域が行を始め、その行を、図のコメントを切る別の領域が終えるとき、
+  領域は図のコメントを切ります。
+  line feed が終わらせるコメントを切る領域はなく、
+  U+2028 や U+2029 も終わらせる mindmap 図、ishikawa 図、
+  kanban 図のコメントを切る領域もありません。
+  そのような領域の後のテキストは、図が読む次の行です。
+  そのため、そこにある断片は、コメントに続かないコメント行の後の断片と同じく、
+  報告します。
+
+  [fixture: state/lex-diagram-comment-across-comment-line]
+  [fixture: state/lex-diagram-comment-across-two-comment-lines]
+  [fixture: mindmap/lex-comment-ends-at-line-separator]
 
   [fixture: sequence/tokens-comment-then-ignored-semicolon]
   [fixture: eventmodeling/tokens-comment-line-ignored-semicolon]
@@ -2752,6 +2769,16 @@ mindmap 図、ishikawa 図、kanban 図では、U+2028 や U+2029 が、
 `;` がトークンであることを求めます。
 sequence 図、state 図、class 図では、そのコメント行が切るコメントも作り、
 `;` がその中にあることを求めます。
+さらに、コメント行の後のテキストを印のない断片とする木も作ります。
+mindmap 図、ishikawa 図、kanban 図では、U+2028、U+2029、
+line feed の後のコメント行の次の文字が対象で、どれも報告されることを求め、
+その文字をトークンとする木は受け入れられることを求めます。
+sequence 図、state 図、class 図では、
+line feed が終わらせるコメントの次のコメント行と、
+コメントのないコメント行の次の文字が対象で、報告されることを求めます。
+コメント行が U+2028 や U+2029 の後でコメントを切る木は、
+コメント行が 2 行続く場合と、断片の後に別のコメント行が来る場合も、
+受け入れられることを求めます。
 `tests/check-tree-sequence.test.ts` と `tests/check-tree-eventmodeling.test.ts`
 は、記録した木からトークンを除き、コメントを `;` まで覆わせて、
 同じことを求めます。

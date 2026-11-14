@@ -120,23 +120,56 @@ function regionFollowsOnLine(
 }
 
 /**
- * parser/docs/tokens.md, Comment: whether a comment region ends right before
- * `offset`, with only line whitespace between, as before a fragment of a
- * diagram comment that has no mark.
+ * parser/docs/tokens.md, Comment: the start of the comment region that ends
+ * right before `offset`, with only line whitespace between, as before a
+ * fragment of a diagram comment that has no mark; undefined where none does.
  */
-function followsRegion(
+function regionStartBefore(
   text: string,
   offset: number,
-  ends: ReadonlySet<number>,
-): boolean {
+  startByEnd: ReadonlyMap<number, number>,
+): number | undefined {
   let current = offset
   for (;;) {
-    const position = current
-    if (ends.has(position)) return true
-    if (current === 0) return false
+    const start = startByEnd.get(current)
+    if (start !== undefined) return start
+    if (current === 0) return undefined
     const code = text.charCodeAt(current - 1)
-    if (!isWhitespace(code) || isLineTerminatorCode(code)) return false
+    if (!isWhitespace(code) || isLineTerminatorCode(code)) return undefined
     current -= 1
+  }
+}
+
+/**
+ * common.md, Comment lines, last paragraph: whether the comment region that
+ * starts at `regionStart` cuts a diagram comment, a comment that runs to the
+ * end of its line. It does when only whitespace of its line lies between the
+ * end of a diagram comment (`diagramCommentEnds`) and the region, or when the
+ * region starts a line that another region that cuts one ends: the line goes
+ * on past the comment lines.
+ */
+function regionCutsDiagramComment(
+  text: string,
+  regionStart: number,
+  regionStartByEnd: ReadonlyMap<number, number>,
+  diagramCommentEnds: ReadonlySet<number>,
+): boolean {
+  let start = regionStart
+  for (;;) {
+    let before = start
+    while (
+      before > 0 &&
+      isWhitespace(text.charCodeAt(before - 1)) &&
+      !isLineTerminatorCode(text.charCodeAt(before - 1))
+    ) {
+      before -= 1
+    }
+    if (before > 0 && !isLineTerminatorCode(text.charCodeAt(before - 1))) {
+      return diagramCommentEnds.has(before)
+    }
+    const previous = regionStartByEnd.get(before)
+    if (previous === undefined) return false
+    start = previous
   }
 }
 
@@ -155,7 +188,7 @@ function afterDirectivesAt(index: CommentIndex, offset: number): number {
 export class CommentIndex {
   public readonly regionStarts: ReadonlySet<number>
 
-  public readonly regionEnds: ReadonlySet<number>
+  public readonly regionStartByEnd: ReadonlyMap<number, number>
 
   public readonly directiveEnds: ReadonlyMap<number, number>
 
@@ -166,7 +199,7 @@ export class CommentIndex {
   public constructor(scan: SourceScan, regions: readonly TreeRange[]) {
     // Comment boundaries repeatedly consult the same source regions and directives.
     this.regionStarts = new Set(regions.map(([start]) => start))
-    this.regionEnds = new Set(regions.map(([, end]) => end))
+    this.regionStartByEnd = new Map(regions.map(([start, end]) => [end, start]))
     this.directiveEnds = new Map(
       scan.directives.map((directive) => [
         directive.range[0],
@@ -464,6 +497,12 @@ function checkComments(
   const lineStarts = new Map<number, ScannedCommentLine>(
     scan.commentLines.map((line) => [line.commentStart, line]),
   )
+  // The diagram comments and the fragments of them: where each ends.
+  const diagramCommentEnds = new Set(
+    root.comments
+      .filter((comment) => !lineStarts.has(comment.range[0]))
+      .map((comment) => comment.range[1]),
+  )
   const body = root.body.type
   const endsComment = COMMENT_ENDS_AT_LINE_SEGMENT.has(body)
     ? isLineSegmentEndCode
@@ -505,8 +544,8 @@ function checkComments(
       const mark = comment.mark ?? ""
       if (comment.mark === null)
         problems.expect(
-          followsRegion(text, comment.range[0], index.regionEnds) &&
-            !isWhitespaceAt(text, comment.range[0]),
+          regionStartBefore(text, comment.range[0], index.regionStartByEnd) !==
+            undefined && !isWhitespaceAt(text, comment.range[0]),
           where,
           "an unmarked native comment fragment must follow a common region",
         )
@@ -527,10 +566,28 @@ function checkComments(
           "ends with whitespace before a comment region",
         )
     } else if (comment.mark === null) {
+      const regionStart = regionStartBefore(
+        text,
+        comment.range[0],
+        index.regionStartByEnd,
+      )
       problems.expect(
-        followsRegion(text, comment.range[0], index.regionEnds),
+        regionStart !== undefined,
         where,
         "has no mark and follows no comment region",
+      )
+      // Where a U+2028 or a U+2029 ends a diagram comment, no region cuts one.
+      problems.expect(
+        regionStart === undefined ||
+          (!COMMENT_ENDS_AT_LINE_SEGMENT.has(body) &&
+            regionCutsDiagramComment(
+              text,
+              regionStart,
+              index.regionStartByEnd,
+              diagramCommentEnds,
+            )),
+        where,
+        "has no mark and follows a comment region that cuts no diagram comment",
       )
       problems.expect(
         !isWhitespaceAt(text, comment.range[0]),

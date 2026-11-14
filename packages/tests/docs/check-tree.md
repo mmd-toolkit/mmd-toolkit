@@ -106,7 +106,8 @@ const problems: TreeProblem[] = checkTree(text, tree)
   diagram comments, and a journey diagram and a requirement diagram the marks
   `#`, `%%`, and `%`, a timeline diagram the same marks, a mindmap diagram, an
   xychart diagram, a C4 diagram, and a quadrant chart the mark `%%`; a fragment
-  without a mark follows a comment region (parser/docs/tokens.md, Comment;
+  without a mark follows a comment region that cuts a diagram comment
+  (parser/docs/tokens.md, Comment;
   [common.md](../../spec/docs/common.md#comment-lines), Comment lines). Every
   comment line of the source is a comment of the tree, except in agentflow and
   eventmodeling when the text is not longer than `maxTextSize`: there the lexer
@@ -145,6 +146,20 @@ const problems: TreeProblem[] = checkTree(text, tree)
   region cuts is not asked, because the whole comment goes on past the `;` into
   the region. A mindmap, ishikawa, or kanban comment that a U+2028 or a U+2029
   ends is not cut by a region on the next line segment, so it is asked.
+
+  A comment region cuts a diagram comment that runs to the end of its line, and
+  the line goes on after the region: the text after it is a fragment without a
+  mark. A region cuts one when only whitespace of its line lies between the end
+  of a diagram comment or of a fragment and the region, or when it starts a line
+  that another region that cuts one ends. No region cuts a comment that a line
+  feed ends, and none cuts a mindmap, ishikawa, or kanban comment, which a
+  U+2028 or a U+2029 ends too; the text after such a region is the next line,
+  which the diagram reads, so the check reports a fragment there, as it does one
+  after a comment line that follows no comment.
+
+  [fixture: state/lex-diagram-comment-across-comment-line] [fixture:
+  state/lex-diagram-comment-across-two-comment-lines] [fixture:
+  mindmap/lex-comment-ends-at-line-separator]
 
   [fixture: sequence/tokens-comment-then-ignored-semicolon] [fixture:
   eventmodeling/tokens-comment-line-ignored-semicolon] [fixture:
@@ -2484,24 +2499,33 @@ U+2029, and no rule at all, where the `;` is a character of the comment. For a
 mindmap, an ishikawa, and a kanban diagram it also makes the comment that a
 U+2028 or a U+2029 ends before a comment line, which must have the `;` as a
 token, and for a sequence, a state, and a class diagram the comment that such a
-comment line cuts, which must have the `;` inside it.
-`tests/check-tree-sequence.test.ts` and `tests/check-tree-eventmodeling.test.ts`
-do the same with a recorded tree whose token is removed and whose comment is
-made to cover the `;`. `tests/check-tree-cut-tokens.test.ts` is a list of named
-cases, each of which takes the recorded tree of a named fixture and writes a
-directive, or a `;` that the line rule ignores, once, twice, or three times,
-inside one of its tokens, as a parser that cuts the token would record the text.
-The cases are an `Identifier`, a `Numeric`, a `Keyword` (into two fragments in
-each diagram, and into three and four in a flowchart), a `Punctuator` (into two
-fragments in each diagram, where the fragments of a sequence, class, state, and
-ER diagram are texts that the diagram lacks, and into three in a flowchart), and
-a `String` cut into `String` tokens, each cut by a directive or by a `;`. For
-each, the test requires the check to report the problems of the condition that
-the case names, with their exact places and messages, and requires the unedited
-tree of the fixture to have none. A `String` cut into `StringFragment` tokens
-and a `RawText` cut into `RawText` tokens by a directive, in several diagrams,
-are required to have no problem at all. For the `;` that the line rule ignores,
-the recorded trees of `common/entity-css-in-string-label` and
+comment line cuts, which must have the `;` inside it. It also makes trees whose
+text after a comment line is a fragment without a mark. In a mindmap, ishikawa,
+and kanban diagram, the character after a comment line that follows a U+2028, a
+U+2029, or a line feed ends a diagram comment must be reported, and the tree
+with that character as a token accepted. In a sequence, state, and class
+diagram, the character after the comment line that a line feed ending the
+comment precedes, and after a comment line with no comment before it, must be
+reported. A comment line after a U+2028 or a U+2029 that cuts a comment is
+accepted also with two comment lines, and with a fragment before another comment
+line. `tests/check-tree-sequence.test.ts` and
+`tests/check-tree-eventmodeling.test.ts` do the same with a recorded tree whose
+token is removed and whose comment is made to cover the `;`.
+`tests/check-tree-cut-tokens.test.ts` is a list of named cases, each of which
+takes the recorded tree of a named fixture and writes a directive, or a `;` that
+the line rule ignores, once, twice, or three times, inside one of its tokens, as
+a parser that cuts the token would record the text. The cases are an
+`Identifier`, a `Numeric`, a `Keyword` (into two fragments in each diagram, and
+into three and four in a flowchart), a `Punctuator` (into two fragments in each
+diagram, where the fragments of a sequence, class, state, and ER diagram are
+texts that the diagram lacks, and into three in a flowchart), and a `String` cut
+into `String` tokens, each cut by a directive or by a `;`. For each, the test
+requires the check to report the problems of the condition that the case names,
+with their exact places and messages, and requires the unedited tree of the
+fixture to have none. A `String` cut into `StringFragment` tokens and a
+`RawText` cut into `RawText` tokens by a directive, in several diagrams, are
+required to have no problem at all. For the `;` that the line rule ignores, the
+recorded trees of `common/entity-css-in-string-label` and
 `common/entity-css-semicolon-between-declarations`, with `StringFragment` and
 `RawText` tokens respectively, are required to have no problem. The same file
 makes, by hand, the trees of a run of `Punctuator` fragments of `:::` that cuts
