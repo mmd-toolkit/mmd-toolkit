@@ -89,9 +89,15 @@ braces on different lines all declare the entity without attributes. The form
 `{ }` is the one of the other diagram types. [fixture:
 attribute-blocks/empty-unified] [corpus fixture: er/gram-block-empty] [corpus
 fixture: er/gram-block-empty-space] [corpus fixture:
-er/gram-block-empty-line-feed] [corpus fixture: er/gram-block-blank-lines] A
-block without attributes that holds a directive on the line of its braces keeps
-the directive there, as written, and a block that holds a comment line or a
+er/gram-block-empty-line-feed] [corpus fixture: er/gram-block-blank-lines] On a
+line of the entity that a comment line after U+2028 or U+2029 cuts, braces on
+one line stay as written with the line, and braces on different lines are
+printed `{ }` after it (see [Multi-line statements](#multi-line-statements)).
+[test: an empty attribute block over several lines after a comment line after
+U+2028 inside the name of an ER entity] [test: an empty attribute block on one
+line after a comment line after U+2028 inside the name of an ER entity] A block
+without attributes that holds a directive on the line of its braces keeps the
+directive there, as written, and a block that holds a comment line or a
 directive on a line of its own is printed as a block. [fixture:
 attribute-blocks/empty-with-directive-kept] [fixture:
 attribute-blocks/empty-with-comment-line-over-lines] [fixture:
@@ -1997,39 +2003,77 @@ joining region is part of such a statement: `A`, U+2028, `%% c`, and a line
 `Bar` are the one name `A`, U+2028, `Bar`. It makes no difference where the name
 stands: in an entity, at an end of a relationship, as the name or the type of an
 attribute, as the name or the title of a subgraph, or in a `class`, `classDef`,
-or `style` statement. The statement is printed as written from its first line to
-its end, and only its first line is indented. Of an entity with an attribute
-block over several lines, what is printed as written ends with the `{` that
-opens the block, and the attributes and the `}` stand below it as usual. The
-line ends where mermaid.js ends it (see
-[A comment line after U+2028 or U+2029](./compatibility.md#a-comment-line-after-u2028-or-u2029)):
-an empty line after the comment line ends it, and the next line is a statement
-of its own, which is indented. The end of the text ends it too. A `;` that ends
-a `style` or `classDef` statement stays where it is. [test: a comment line after
-U+2028 inside the name of an ER entity] [test: a comment line after U+2029
-inside the name of an ER entity] [test: two comment lines after U+2028 inside
-the name of an ER entity] [test: a directive and a comment line after U+2028
+or `style` statement. [test: a comment line after U+2028 inside the name of an
+ER entity] [test: a comment line after U+2029 inside the name of an ER entity]
+[test: two comment lines after U+2028 inside the name of an ER entity] [test: a
+directive and a comment line after U+2028 inside the name of an ER entity]
+[test: a comment line after U+2028 inside the name of an ER entity that follows
+a name in quotes] [test: an indented line after a comment line after U+2028
 inside the name of an ER entity] [test: a comment line after U+2028 inside the
-name of an ER entity that follows a name in quotes] [test: an indented line
-after a comment line after U+2028 inside the name of an ER entity] [test: a
-comment line after U+2028 inside the name of an ER entity with an alias] [test:
-a comment line after U+2028 inside the name of an ER entity with an attribute
-block on one line] [test: a comment line after U+2028 inside the name of an ER
-entity with an attribute block over several lines] [test: a comment line after
-U+2028 inside the name of an ER entity with a CSS class] [test: a comment line
-after U+2028 inside the first entity of an ER relationship] [test: a comment
-line after U+2028 inside the second entity of an ER relationship] [test: a
-comment line after U+2028 inside both entities of an ER relationship] [test: a
-comment line after U+2028 inside the name of an ER attribute] [test: a comment
-line after U+2028 inside the type of an ER attribute] [test: a comment line
-after U+2028 inside the name of an ER subgraph] [test: a comment line after
+name of an ER entity with an alias] [test: a comment line after U+2028 inside
+the name of an ER entity with an attribute block on one line] [test: a comment
+line after U+2028 inside the name of an ER entity with a CSS class] [test: a
+comment line after U+2028 inside the first entity of an ER relationship] [test:
+a comment line after U+2028 inside the second entity of an ER relationship]
+[test: a comment line after U+2028 inside both entities of an ER relationship]
+[test: a comment line after U+2028 inside the name of an ER attribute] [test: a
+comment line after U+2028 inside the type of an ER attribute] [test: a comment
+line after U+2028 inside the name of an ER subgraph] [test: a comment line after
 U+2028 inside the title of an ER subgraph] [test: a comment line after U+2028
 inside the name of an ER class statement] [test: a comment line after U+2028
 inside the name of an ER class definition] [test: a comment line after U+2028
-inside the name of an ER style statement] [test: an empty line after a comment
-line after U+2028 inside the name of an ER entity] [test: a comment line after
-U+2028 at the end of the text of an ER diagram] [test: a comment line after
-U+2028 inside the name of an ER style statement that ends with a semicolon]
+inside the name of an ER style statement] The statement is printed as written
+from its first line to its end, and only its first line is indented. The line is
+the one that mermaid.js reads: the text after the comment line, up to the first
+line break that no region removes, is part of it, with the statements that stand
+on it before and after the name, and with a second comment line after text.
+[test: a statement on the line after a comment line after U+2028 inside the name
+of an ER entity] [test: a statement before a name on its line, with a comment
+line after U+2028 inside the name of an ER entity] [test: two comment lines with
+text between them after U+2028 inside the name of an ER entity] [test: a comment
+line after U+2028 inside the name of an ER entity, with CRLF line breaks] The
+line ends where mermaid.js ends it (see
+[A comment line after U+2028 or U+2029](./compatibility.md#a-comment-line-after-u2028-or-u2029)).
+An empty line or a line of only whitespace after the comment line ends it,
+unless a comment line follows that line: then the name goes on. A directive on a
+line of its own ends the line at its end, and the end of the text ends it too.
+The next line is a statement of its own, which is indented. [test: an empty line
+after a comment line after U+2028 inside the name of an ER entity] [test: a
+comment line after U+2028 at the end of the text of an ER diagram] [test: an
+empty line and a comment line after a comment line after U+2028 inside the name
+of an ER entity] [test: a line of only whitespace and a comment line after a
+comment line after U+2028 inside the name of an ER entity] [test: a line of only
+whitespace after a comment line after U+2028 inside the name of an ER entity]
+[test: a directive line after a comment line after U+2028 inside the name of an
+ER entity] A `;` on that line stays where it is, whatever it is: the `;` that
+ends a `style` or `classDef` statement (`Bar fill:red;`), the `;` that the line
+rule ignores because the line after the comment line has `style` and `:#`
+(`style fill:#f00;`), and the `;` of a character entity (`Bar fill:#f00;`).
+[test: a character entity at the end of an ER style statement, after a comment
+line after U+2028 inside its name] [test: a semicolon that ends an ER style
+statement, after a comment line after U+2028 inside its name] [test: a semicolon
+that ends an ER class definition, after a comment line after U+2028 inside its
+name] [test: a semicolon that the line rule ignores, after a comment line after
+U+2028 inside the name of an ER style statement] [test: a semicolon that the
+line rule ignores, after a comment line after U+2028 inside the name of an ER
+class definition] Of an entity with an attribute block over several lines, what
+is printed as written is the line that opens the block, with what follows the
+`{` on it. The attributes after it and the `}` are printed as usual, one level
+deeper and at the level of the statement. An empty block over several lines is
+printed `{ }` after that line, as an empty block is anywhere; an empty block on
+one line stays as written with its line. [test: a comment line after U+2028
+inside the name of an ER entity with an attribute block over several lines]
+[test: an attribute on the line of the opening brace after a comment line after
+U+2028 inside the name of an ER entity] [test: two attributes, the first on the
+line of the opening brace, after a comment line after U+2028 inside the name of
+an ER entity] [test: an empty attribute block over several lines after a comment
+line after U+2028 inside the name of an ER entity] [test: an empty attribute
+block with an indented closing brace after a comment line after U+2028 inside
+the name of an ER entity] [test: an empty attribute block with an empty line
+before its closing brace after a comment line after U+2028 inside the name of an
+ER entity] [test: an empty attribute block on one line after a comment line
+after U+2028 inside the name of an ER entity] [test: an empty attribute block
+over several lines after a comment line after U+2028 and a space]
 
 Input
 ([multi-line-statements/accessibility-text-joined-input.mmd](../tests/fixtures/er/multi-line-statements/accessibility-text-joined-input.mmd)):

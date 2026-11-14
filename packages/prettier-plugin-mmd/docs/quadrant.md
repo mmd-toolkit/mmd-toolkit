@@ -811,7 +811,18 @@ after U+2028 inside the name of a class] [test: a comment line after U+2029
 inside the name of a class] [test: a comment line after a U+2028 that starts the
 name of a class] [test: two comment lines after U+2028 inside the name of a
 class] [test: a comment line after U+2028 inside the name of a class, and a
-point after it]
+point after it] The name goes on across an empty line or a line of only
+whitespace when a comment line follows it, and across a second comment line
+after text. [test: an empty line and a comment line after a comment line after
+U+2028 inside the name of a class] [test: a line of only whitespace and a
+comment line after a comment line after U+2028 inside the name of a class]
+[test: two comment lines with text between them after U+2028 inside the name of
+a class] A `;` that the line rule ignores on the line after the comment line
+(`style color:#f00;`) stays where it is. [test: a semicolon that the line rule
+ignores, after a comment line after U+2028 inside the name of a class] The CRLF
+line breaks of such a statement are printed as LF, as everywhere (see
+[Line endings](./compatibility.md#line-endings)). [test: a comment line after
+U+2028 inside the name of a class, with CRLF line breaks]
 
 ### Multi-line values
 

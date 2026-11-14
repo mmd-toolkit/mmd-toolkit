@@ -31,6 +31,7 @@ import {
   findAttributeBraces,
   findSubgraphHeaderEnd,
   hasAttributeBlock,
+  isEmptyAttributeBlock,
   touchesKeywordWithDash,
   layoutAttribute,
   layoutBlockOpening,
@@ -290,7 +291,18 @@ function printAttributeBlock(
     block,
     false,
   )
-  return printClosedBlock(header, block, closing.value, depth, options)
+  // The `}` of an empty block, which `hasAttributeBlock` takes for a block
+  // only where a joining region cuts the line of the entity, follows the `{`
+  // with one space, as in every empty block.
+  return printClosedBlock(
+    header,
+    isEmptyAttributeBlock(source, statement)
+      ? { ...block, closingJoin: " " }
+      : block,
+    closing.value,
+    depth,
+    options,
+  )
 }
 
 /** The `end` that closes a subgraph: its last token. */

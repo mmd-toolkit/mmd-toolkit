@@ -92,6 +92,14 @@ mermaid.js は属性ブロックを改行に関係なく読むので、同じ属
 [corpus fixture: er/gram-block-empty-space]
 [corpus fixture: er/gram-block-empty-line-feed]
 [corpus fixture: er/gram-block-blank-lines]
+コメント行が U+2028 か U+2029 の後で切る実体の行では、1 行にある波括弧は、
+その行と一緒に書かれたままにします。
+別々の行にある波括弧は、
+その行の後に `{ }` と印字します（[複数行の文](#複数行の文)を参照）。
+[test: an empty attribute block over several lines after a comment line after
+U+2028 inside the name of an ER entity]
+[test: an empty attribute block on one line after a comment line after U+2028
+inside the name of an ER entity]
 波括弧と同じ行にディレクティブがある属性のないブロックは、
 ディレクティブをその行に書かれたまま残します。
 コメント行や、行に単独で置かれたディレクティブがあるブロックは、
@@ -2056,17 +2064,6 @@ mermaid.js が複数行にわたって読む文は、
 名前がどこにあっても同じです。
 エンティティ、関係の端、属性の名前と型、サブグラフの名前と題、`class`、
 `classDef`、`style` の文の中の名前が、これにあたります。
-文は、最初の行から終わりまで、書かれたまま印字します。
-字下げするのは最初の行だけです。
-複数行の属性ブロックを持つエンティティで、
-書かれたまま印字するのは `{` までです。
-属性と `}` は、その下に通常どおり置きます。
-行は、mermaid.js が終わらせる所で終わります。
-[U+2028 か U+2029 の後のコメント行](./compatibility.ja.md#u2028-か-u2029-の後のコメント行)
-を参照してください。
-コメント行の後の空行は行を終わらせ、次の行は字下げされた別の文になります。
-テキストの終わりも行を終わらせます。
-`style` や `classDef` の文を終わらせる `;` は、その場所に残ります。
 [test: a comment line after U+2028 inside the name of an ER entity]
 [test: a comment line after U+2029 inside the name of an ER entity]
 [test: two comment lines after U+2028 inside the name of an ER entity]
@@ -2080,8 +2077,6 @@ ER entity]
 alias]
 [test: a comment line after U+2028 inside the name of an ER entity with an
 attribute block on one line]
-[test: a comment line after U+2028 inside the name of an ER entity with an
-attribute block over several lines]
 [test: a comment line after U+2028 inside the name of an ER entity with a CSS
 class] [test: a comment line after U+2028 inside the first entity of an ER
 relationship]
@@ -2095,9 +2090,75 @@ relationship]
 [test: a comment line after U+2028 inside the name of an ER class statement]
 [test: a comment line after U+2028 inside the name of an ER class definition]
 [test: a comment line after U+2028 inside the name of an ER style statement]
-[test: an empty line after a comment line after U+2028 inside the name of an ER entity]
+文は、最初の行から終わりまで、書かれたまま印字します。
+字下げするのは最初の行だけです。
+その行は、mermaid.js が読む行です。
+コメント行の後のテキストは、領域が取り除かない最初の改行まで、その行の一部です。
+名前の前後に同じ行にある文と、テキストの後の 2 つ目のコメント行も、
+その行の一部です。
+[test: a statement on the line after a comment line after U+2028 inside the name
+of an ER entity]
+[test: a statement before a name on its line, with a comment line after U+2028
+inside the name of an ER entity]
+[test: two comment lines with text between them after U+2028 inside the name of
+an ER entity]
+[test: a comment line after U+2028 inside the name of an ER entity, with CRLF
+line breaks]
+行は、mermaid.js が終わらせる所で終わります。
+[U+2028 か U+2029 の後のコメント行](./compatibility.ja.md#u2028-か-u2029-の後のコメント行)
+を参照してください。
+コメント行の後の空行や空白だけの行は、行を終わらせます。
+ただし、その後にコメント行が続くときは、名前が続きます。
+単独の行にあるディレクティブは、その行の終わりで行を終わらせます。
+テキストの終わりも行を終わらせます。
+次の行は、字下げされた別の文になります。
+[test: an empty line after a comment line after U+2028 inside the name of an ER
+entity]
 [test: a comment line after U+2028 at the end of the text of an ER diagram]
-[test: a comment line after U+2028 inside the name of an ER style statement that ends with a semicolon]
+[test: an empty line and a comment line after a comment line after U+2028 inside
+the name of an ER entity]
+[test: a line of only whitespace and a comment line after a comment line after
+U+2028 inside the name of an ER entity]
+[test: a line of only whitespace after a comment line after U+2028 inside the
+name of an ER entity]
+[test: a directive line after a comment line after U+2028 inside the name of an
+ER entity]
+その行にある `;` は、何であっても、その場所に残ります。
+`style` や `classDef` の文を終わらせる `;`（`Bar fill:red;`）、
+コメント行の後の行に `style` と `:#` があるために行の規則が無視する `;`
+（`style fill:#f00;`）、文字実体の `;`（`Bar fill:#f00;`）のどれも同じです。
+[test: a character entity at the end of an ER style statement, after a comment
+line after U+2028 inside its name]
+[test: a semicolon that ends an ER style statement, after a comment line after
+U+2028 inside its name]
+[test: a semicolon that ends an ER class definition, after a comment line after
+U+2028 inside its name]
+[test: a semicolon that the line rule ignores, after a comment line after U+2028
+inside the name of an ER style statement]
+[test: a semicolon that the line rule ignores, after a comment line after U+2028
+inside the name of an ER class definition]
+複数行の属性ブロックを持つエンティティでは、書かれたまま印字するのは、
+ブロックを開く行で、`{` の後ろにあるものも含みます。
+その後の属性と `}` は、通常どおり、1 段深く、文の位置に置きます。
+複数行の空のブロックは、その行の後に `{ }` と印字します。
+空のブロックはどこでもそうだからです。
+1 行の空のブロックは、その行と一緒に書かれたままにします。
+[test: a comment line after U+2028 inside the name of an ER entity with an
+attribute block over several lines]
+[test: an attribute on the line of the opening brace after a comment line after
+U+2028 inside the name of an ER entity]
+[test: two attributes, the first on the line of the opening brace, after a
+comment line after U+2028 inside the name of an ER entity]
+[test: an empty attribute block over several lines after a comment line after
+U+2028 inside the name of an ER entity]
+[test: an empty attribute block with an indented closing brace after a comment
+line after U+2028 inside the name of an ER entity]
+[test: an empty attribute block with an empty line before its closing brace
+after a comment line after U+2028 inside the name of an ER entity]
+[test: an empty attribute block on one line after a comment line after U+2028
+inside the name of an ER entity]
+[test: an empty attribute block over several lines after a comment line after
+U+2028 and a space]
 
 入力
 ([multi-line-statements/accessibility-text-joined-input.mmd](../tests/fixtures/er/multi-line-statements/accessibility-text-joined-input.mmd)):

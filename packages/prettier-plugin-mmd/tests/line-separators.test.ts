@@ -1902,9 +1902,104 @@ const erExamples: readonly (readonly [string, string, string])[] = [
     "erDiagram\n  A\u2028%% c\n",
   ],
   [
-    "a comment line after U+2028 inside the name of an ER style statement that ends with a semicolon",
+    "a character entity at the end of an ER style statement, after a comment line after U+2028 inside its name",
     "erDiagram\nstyle A\u2028%% c\nBar fill:#f00;\n",
     "erDiagram\n  style A\u2028%% c\nBar fill:#f00;\n",
+  ],
+  [
+    "an empty line and a comment line after a comment line after U+2028 inside the name of an ER entity",
+    "erDiagram\nA\u2028%% c\n\n%% d\nBar\n",
+    "erDiagram\n  A\u2028%% c\n\n%% d\nBar\n",
+  ],
+  [
+    "a line of only whitespace and a comment line after a comment line after U+2028 inside the name of an ER entity",
+    "erDiagram\nA\u2028%% c\n  \n%% d\nBar\n",
+    "erDiagram\n  A\u2028%% c\n  \n%% d\nBar\n",
+  ],
+  [
+    "a line of only whitespace after a comment line after U+2028 inside the name of an ER entity",
+    "erDiagram\nA\u2028%% c\n  \nBar\n",
+    "erDiagram\n  A\u2028%% c\n  \n  Bar\n",
+  ],
+  [
+    "a directive line after a comment line after U+2028 inside the name of an ER entity",
+    "erDiagram\nA\u2028%% c\n%%{init: {}}%%\nBar\n",
+    "erDiagram\n  A\u2028%% c\n%%{init: {}}%%\n  Bar\n",
+  ],
+  [
+    "two comment lines with text between them after U+2028 inside the name of an ER entity",
+    "erDiagram\nA\u2028%% c\nBar\u2028%% d\nBaz\n",
+    "erDiagram\n  A\u2028%% c\nBar\u2028%% d\nBaz\n",
+  ],
+  [
+    "a statement on the line after a comment line after U+2028 inside the name of an ER entity",
+    "erDiagram\nA\u2028%% c\nBar Zed\n",
+    "erDiagram\n  A\u2028%% c\nBar Zed\n",
+  ],
+  [
+    "a statement before a name on its line, with a comment line after U+2028 inside the name of an ER entity",
+    "erDiagram\nX A\u2028%% c\nBar\n",
+    "erDiagram\n  X A\u2028%% c\nBar\n",
+  ],
+  [
+    "a comment line after U+2028 inside the name of an ER entity, with CRLF line breaks",
+    "erDiagram\r\nA\u2028%% c\r\nBar\r\n",
+    "erDiagram\n  A\u2028%% c\nBar\n",
+  ],
+  [
+    "an attribute on the line of the opening brace after a comment line after U+2028 inside the name of an ER entity",
+    "erDiagram\nA\u2028%% c\nBar {int id\n}\n",
+    "erDiagram\n  A\u2028%% c\nBar {int id\n  }\n",
+  ],
+  [
+    "two attributes, the first on the line of the opening brace, after a comment line after U+2028 inside the name of an ER entity",
+    "erDiagram\nA\u2028%% c\nBar {int id\nstring name\n}\n",
+    "erDiagram\n  A\u2028%% c\nBar {int id\n    string name\n  }\n",
+  ],
+  [
+    "an empty attribute block over several lines after a comment line after U+2028 inside the name of an ER entity",
+    "erDiagram\nA\u2028%% c\nBar {\n}\n",
+    "erDiagram\n  A\u2028%% c\nBar { }\n",
+  ],
+  [
+    "an empty attribute block with an indented closing brace after a comment line after U+2028 inside the name of an ER entity",
+    "erDiagram\nA\u2028%% c\nBar {\n    }\n",
+    "erDiagram\n  A\u2028%% c\nBar { }\n",
+  ],
+  [
+    "an empty attribute block with an empty line before its closing brace after a comment line after U+2028 inside the name of an ER entity",
+    "erDiagram\nA\u2028%% c\nBar {\n\n}\n",
+    "erDiagram\n  A\u2028%% c\nBar { }\n",
+  ],
+  [
+    "an empty attribute block on one line after a comment line after U+2028 inside the name of an ER entity",
+    "erDiagram\nA\u2028%% c\nBar {}\n",
+    "erDiagram\n  A\u2028%% c\nBar {}\n",
+  ],
+  [
+    "an empty attribute block over several lines after a comment line after U+2028 and a space",
+    "erDiagram\nA\u2028%% c\n {\n}\n",
+    "erDiagram\n  A\u2028%% c\n { }\n",
+  ],
+  [
+    "a semicolon that ends an ER style statement, after a comment line after U+2028 inside its name",
+    "erDiagram\nstyle A\u2028%% c\nBar fill:red;\n",
+    "erDiagram\n  style A\u2028%% c\nBar fill:red;\n",
+  ],
+  [
+    "a semicolon that ends an ER class definition, after a comment line after U+2028 inside its name",
+    "erDiagram\nclassDef A\u2028%% c\nb fill:red;\n",
+    "erDiagram\n  classDef A\u2028%% c\nb fill:red;\n",
+  ],
+  [
+    "a semicolon that the line rule ignores, after a comment line after U+2028 inside the name of an ER style statement",
+    "erDiagram\nstyle A\u2028%% c\nstyle fill:#f00;\n",
+    "erDiagram\n  style A\u2028%% c\nstyle fill:#f00;\n",
+  ],
+  [
+    "a semicolon that the line rule ignores, after a comment line after U+2028 inside the name of an ER class definition",
+    "erDiagram\nclassDef c\u2028%% c\nstyle fill:#f00;\n",
+    "erDiagram\n  classDef c\u2028%% c\nstyle fill:#f00;\n",
   ],
 ]
 
@@ -3187,6 +3282,31 @@ const quadrantLineSeparatorExamples: readonly (readonly [
     "a comment line after U+2028 inside the name of a class, and a point after it",
     "quadrantChart\nclassDef A\u2028%% c\nBar color: #ff0000\nP: [0.1, 0.2]\n",
     "quadrantChart\n  classDef A\u2028%% c\nBar color: #ff0000\n  P: [0.1, 0.2]\n",
+  ],
+  [
+    "an empty line and a comment line after a comment line after U+2028 inside the name of a class",
+    "quadrantChart\nclassDef a\u2028%% c\n\n%% d\nb color: #f00\n",
+    "quadrantChart\n  classDef a\u2028%% c\n\n%% d\nb color: #f00\n",
+  ],
+  [
+    "a line of only whitespace and a comment line after a comment line after U+2028 inside the name of a class",
+    "quadrantChart\nclassDef a\u2028%% c\n  \n%% d\nb color: #f00\n",
+    "quadrantChart\n  classDef a\u2028%% c\n  \n%% d\nb color: #f00\n",
+  ],
+  [
+    "two comment lines with text between them after U+2028 inside the name of a class",
+    "quadrantChart\nclassDef a\u2028%% c\nb\u2028%% d\nc color: #f00\n",
+    "quadrantChart\n  classDef a\u2028%% c\nb\u2028%% d\nc color: #f00\n",
+  ],
+  [
+    "a semicolon that the line rule ignores, after a comment line after U+2028 inside the name of a class",
+    "quadrantChart\nclassDef a\u2028%% c\nstyle color:#f00;\n",
+    "quadrantChart\n  classDef a\u2028%% c\nstyle color:#f00;\n",
+  ],
+  [
+    "a comment line after U+2028 inside the name of a class, with CRLF line breaks",
+    "quadrantChart\r\nclassDef a\u2028%% c\r\nb color: #f00\r\n",
+    "quadrantChart\n  classDef a\u2028%% c\nb color: #f00\n",
   ],
 ]
 

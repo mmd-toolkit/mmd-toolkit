@@ -123,7 +123,10 @@ export function classifyErStatement(
  * empty block, with nothing but whitespace between its braces, is printed
  * as `{ }` on the line of the entity (see `isEmptyAttributeBlock`), and a
  * block without attributes on one line keeps its comments and directives on
- * that line (docs/er.md, Attribute blocks).
+ * that line (docs/er.md, Attribute blocks). An empty block over several lines
+ * after a line that a joining region cuts is a block too: the line of the
+ * entity is printed as written up to the `{`, and the `}` follows it with one
+ * space (docs/er.md, Multi-line statements).
  */
 export function hasAttributeBlock(
   source: Source,
@@ -131,9 +134,17 @@ export function hasAttributeBlock(
 ): boolean {
   if (statement.attributes === null) return false
   if (statement.attributes.length > 0) return true
-  if (isEmptyAttributeBlock(source, statement)) return false
   const { opening, closing } = findAttributeBraces(source, statement)
-  return source.text.slice(opening.range[1], closing.range[0]).includes("\n")
+  const overLines = source.text
+    .slice(opening.range[1], closing.range[0])
+    .includes("\n")
+  if (isEmptyAttributeBlock(source, statement)) {
+    return (
+      overLines &&
+      holdsJoiningRegion(source, statement.range[0], opening.range[0])
+    )
+  }
+  return overLines
 }
 
 /**
