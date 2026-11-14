@@ -1,0 +1,11 @@
+{
+  "source": {
+    "kind": "authored",
+    "note": "kanban.md Lexical structure: spaces lie between a U+2028 in the class and the comment after it; rejected."
+  },
+  "accepted": false,
+  "error": {
+    "name": "Error",
+    "message": "Parse error on line 4:\nkanban S   I :::a b\n-----------------^\nExpecting 'SPACELINE', 'NL', 'EOF', got 'SPACELIST'"
+  }
+}

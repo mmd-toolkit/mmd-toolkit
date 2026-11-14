@@ -1,0 +1,40 @@
+{
+  "source": {
+    "kind": "authored",
+    "note": "state.md Comments: a comment line after a U+2028 in the transition label is read through, and the value goes on after it; the Db summary holds `A`, U+2028, and `B`."
+  },
+  "accepted": true,
+  "diagramType": "stateDiagram",
+  "db": {
+    "direction": "TB",
+    "title": "",
+    "accTitle": "",
+    "accDescr": "",
+    "states": [
+      {
+        "id": "X",
+        "shape": "rect",
+        "label": "X",
+        "classes": [],
+        "styles": []
+      },
+      {
+        "id": "Y",
+        "shape": "rect",
+        "label": "Y",
+        "classes": [],
+        "styles": []
+      }
+    ],
+    "notes": [],
+    "transitions": [
+      {
+        "start": "X",
+        "end": "Y",
+        "label": "A B"
+      }
+    ],
+    "classDefs": [],
+    "links": []
+  }
+}

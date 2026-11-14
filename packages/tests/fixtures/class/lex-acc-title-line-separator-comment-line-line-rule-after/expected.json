@@ -1,0 +1,19 @@
+{
+  "source": {
+    "kind": "authored",
+    "note": "class.md The statement context: `style:#b;` on the line after a comment line that follows a U+2028 in the accessibility title, a line segment of its own for the line rule of style and classDef lines; the Db summary holds `A`, U+2028, and `style:#bB`."
+  },
+  "accepted": true,
+  "diagramType": "classDiagram",
+  "db": {
+    "direction": "TB",
+    "title": "",
+    "accTitle": "A style:#bB",
+    "accDescr": "",
+    "classes": [],
+    "relations": [],
+    "notes": [],
+    "namespaces": [],
+    "interfaces": []
+  }
+}

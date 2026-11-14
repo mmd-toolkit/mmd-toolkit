@@ -1,0 +1,28 @@
+{
+  "source": {
+    "kind": "authored",
+    "note": "state.md Comments: `style:#a` before a U+2028 in the description, and `#b;` on the line after the comment line, a line segment of its own for the line rule of style and classDef lines; the Db summary holds `Astyle:#a`, U+2028, and `ﬂ°b¶ßB`."
+  },
+  "accepted": true,
+  "diagramType": "stateDiagram",
+  "db": {
+    "direction": "TB",
+    "title": "",
+    "accTitle": "",
+    "accDescr": "",
+    "states": [
+      {
+        "id": "X",
+        "shape": "rect",
+        "label": "Astyle:#a ﬂ°b¶ßB",
+        "description": [],
+        "classes": [],
+        "styles": []
+      }
+    ],
+    "notes": [],
+    "transitions": [],
+    "classDefs": [],
+    "links": []
+  }
+}

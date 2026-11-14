@@ -1,0 +1,25 @@
+{
+  "source": {
+    "kind": "authored",
+    "note": "common.md Comment lines: a U+2028 is a comment start, but eventmodeling reads comment lines itself, so at or below maxTextSize the comment line stays in the block: the value of the data is `{`, a line break, `a`, U+2028, `%% c`, a line break, `b`, a line break, `}`, and a line break."
+  },
+  "accepted": true,
+  "diagramType": "eventmodeling",
+  "db": {
+    "accTitle": "",
+    "accDescr": "",
+    "frames": [
+      {
+        "kind": "time",
+        "name": "01",
+        "modelEntityType": "evt",
+        "entityIdentifier": "A",
+        "sourceFrames": [],
+        "data": {
+          "kind": "block",
+          "value": "{\na %% c\nb\n}\n"
+        }
+      }
+    ]
+  }
+}

@@ -1,0 +1,27 @@
+{
+  "source": {
+    "kind": "authored",
+    "note": "state.md Comments: a pseudostate name ends before a U+2028, since rule 4 of the state context looks for the mark only up to the next one, so `state A`, U+2028, a comment line, and `B <<fork>>` has the one state, the fork `B`, as without the comment line."
+  },
+  "accepted": true,
+  "diagramType": "stateDiagram",
+  "db": {
+    "direction": "TB",
+    "title": "",
+    "accTitle": "",
+    "accDescr": "",
+    "states": [
+      {
+        "id": "B",
+        "shape": "fork",
+        "label": "B",
+        "classes": [],
+        "styles": []
+      }
+    ],
+    "notes": [],
+    "transitions": [],
+    "classDefs": [],
+    "links": []
+  }
+}

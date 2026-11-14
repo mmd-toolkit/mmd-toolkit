@@ -1,0 +1,11 @@
+{
+  "source": {
+    "kind": "authored",
+    "note": "gantt.md Comments: an empty line after a comment line that follows a U+2028 in the click id; rejected."
+  },
+  "accepted": false,
+  "error": {
+    "name": "Error",
+    "message": "Parse error on line 3:\n...-01-01, 1dclick a1 href \"https://e\"\n----------------------^\nExpecting 'callbackname', 'href', got 'NL'"
+  }
+}

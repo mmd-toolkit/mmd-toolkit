@@ -1,0 +1,18 @@
+{
+  "source": {
+    "kind": "authored",
+    "note": "mindmap.md Lexical structure: a comment line follows a U+2028 in the icon text, and another one follows a second U+2028 on the next line; the Db summary holds `A`, U+2028, `x`, U+2028, and `B`."
+  },
+  "accepted": true,
+  "diagramType": "mindmap",
+  "db": {
+    "root": {
+      "nodeId": "C",
+      "level": 0,
+      "descr": "C",
+      "type": 0,
+      "icon": "A x B",
+      "children": []
+    }
+  }
+}

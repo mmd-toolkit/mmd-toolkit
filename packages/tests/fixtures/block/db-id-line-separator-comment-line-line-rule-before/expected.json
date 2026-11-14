@@ -1,0 +1,37 @@
+{
+  "source": {
+    "kind": "authored",
+    "note": "block.md Units and contexts: `style:#x` in the label of `a` lies in the line segment before a U+2028 that ends the id `b`, and `#y;` in the label of `c` on the line after the comment line is a line segment of its own for the line rule of style and classDef lines, which it does not match, so its `;` is not ignored; the label of `c` is the placeholder of `#y;`."
+  },
+  "accepted": true,
+  "diagramType": "block",
+  "db": {
+    "root": {
+      "type": "composite",
+      "columns": -1,
+      "children": [
+        {
+          "id": "a",
+          "label": "style:#x",
+          "type": "square",
+          "widthInColumns": 1
+        },
+        {
+          "id": "b",
+          "label": "b",
+          "type": "na",
+          "widthInColumns": 1
+        },
+        {
+          "id": "c",
+          "label": "ﬂ°y¶ß",
+          "type": "square",
+          "widthInColumns": 1
+        }
+      ]
+    },
+    "unplaced": [],
+    "edges": [],
+    "classes": []
+  }
+}

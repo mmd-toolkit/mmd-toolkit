@@ -1,0 +1,24 @@
+{
+  "source": {
+    "kind": "authored",
+    "note": "kanban.md Lexical structure: a line feed lies between a U+2028 in the icon text and the comment line after it; the Db summary holds `A`, U+2028, and `B`."
+  },
+  "accepted": true,
+  "diagramType": "kanban",
+  "db": {
+    "nodes": [
+      {
+        "id": "S",
+        "label": "S",
+        "isGroup": true
+      },
+      {
+        "id": "C",
+        "label": "C",
+        "isGroup": false,
+        "parentId": "S",
+        "icon": "A B"
+      }
+    ]
+  }
+}

@@ -106,11 +106,69 @@ multiline labels and data blocks. [fixture: kanban/lex-comment-quoted-line]
 [fixture: kanban/lex-id-comment-line] [fixture: kanban/lex-id-directive-line]
 [fixture: kanban/lex-label-comment-line] [fixture:
 kanban/lex-metadata-comment-line] [fixture: kanban/lex-metadata-directive-line]
-An inline `%%` inside node text, a shape label, or class text stays in that
-text. [fixture: kanban/lex-comment-quoted-inline] [fixture:
-kanban/db-grid-comment-item-id] [fixture:
-kanban/db-grid-comment-item-label-bare] [fixture:
-kanban/db-grid-comment-item-class]
+[fixture: kanban/lex-icon-line-separator-then-comment-line] [fixture:
+kanban/lex-data-label-bare-line-separator-then-comment-line] [fixture:
+kanban/lex-data-label-quoted-line-separator-then-comment-line] [fixture:
+kanban/lex-icon-line-separator-comment-line-directive-next] [fixture:
+kanban/lex-icon-line-separator-comment-line-space-next] [fixture:
+kanban/lex-icon-line-separator-comment-line-separator-next] [fixture:
+kanban/lex-icon-line-separator-comment-line-empty-line] [fixture:
+kanban/gram-icon-line-separator-comment-line-end-of-text] [fixture:
+kanban/lex-icon-line-separator-comment-line-cr] [fixture:
+kanban/lex-icon-line-separator-comment-line-crlf] [fixture:
+kanban/lex-icon-line-separator-comment-line-two-comment-lines] [fixture:
+kanban/lex-icon-line-separator-comment-line-two-regions] [fixture:
+kanban/lex-icon-line-separator-comment-line-spaces-before] [fixture:
+kanban/lex-icon-line-separator-comment-line-line-feed-before] [fixture:
+kanban/lex-icon-line-separator-comment-line-directive-before] [fixture:
+kanban/lex-icon-line-separator-comment-line-line-rule-before] [fixture:
+kanban/lex-icon-line-separator-comment-line-line-rule-after] [fixture:
+kanban/lex-icon-line-separator-comment-line-bare-percent] [fixture:
+kanban/lex-icon-line-separator-comment-line-percent-brace] An inline `%%` inside
+node text, a shape label, or class text stays in that text. [fixture:
+kanban/lex-comment-quoted-inline] [fixture: kanban/db-grid-comment-item-id]
+[fixture: kanban/db-grid-comment-item-label-bare] [fixture:
+kanban/db-grid-comment-item-class] A comment after a U+2028 or U+2029 in node
+text or a shape label is the exception: it is read through, and the text goes on
+after it (see [Comment lines](../common.md#comment-lines)). [fixture:
+kanban/lex-node-text-line-separator-then-comment-line] [fixture:
+kanban/lex-node-text-paragraph-separator-then-comment-line] [fixture:
+kanban/lex-shape-text-line-separator-then-comment-line] [fixture:
+kanban/lex-node-text-line-separator-comment-line-directive-next] [fixture:
+kanban/lex-node-text-line-separator-comment-line-space-next] [fixture:
+kanban/lex-node-text-line-separator-comment-line-separator-next] [fixture:
+kanban/lex-node-text-line-separator-comment-line-empty-line] [fixture:
+kanban/lex-node-text-line-separator-comment-line-end-of-text] [fixture:
+kanban/lex-node-text-line-separator-comment-line-cr] [fixture:
+kanban/lex-node-text-line-separator-comment-line-crlf] [fixture:
+kanban/lex-node-text-line-separator-comment-line-two-comment-lines] [fixture:
+kanban/lex-node-text-line-separator-comment-line-two-regions] [fixture:
+kanban/lex-node-text-line-separator-comment-line-spaces-before] [fixture:
+kanban/lex-node-text-line-separator-comment-line-line-feed-before] [fixture:
+kanban/lex-node-text-line-separator-comment-line-directive-before] [fixture:
+kanban/lex-node-text-line-separator-comment-line-line-rule-before] [fixture:
+kanban/lex-node-text-line-separator-comment-line-line-rule-after] [fixture:
+kanban/lex-node-text-line-separator-comment-line-bare-percent] [fixture:
+kanban/gram-node-text-line-separator-comment-line-percent-brace] Class text ends
+at a U+2028 or U+2029, so `:::a`, U+2028, `%% c`, a line break, and `b` are two
+statements on one line, as without the comment line, and are rejected. [fixture:
+kanban/gram-class-line-separator-then-comment-line] [fixture:
+kanban/gram-class-line-separator-comment-line-directive-next] [fixture:
+kanban/gram-class-line-separator-comment-line-space-next] [fixture:
+kanban/gram-class-line-separator-comment-line-separator-next] [fixture:
+kanban/lex-class-line-separator-comment-line-empty-line] [fixture:
+kanban/lex-class-line-separator-comment-line-end-of-text] [fixture:
+kanban/gram-class-line-separator-comment-line-cr] [fixture:
+kanban/gram-class-line-separator-comment-line-crlf] [fixture:
+kanban/gram-class-line-separator-comment-line-two-comment-lines] [fixture:
+kanban/gram-class-line-separator-comment-line-two-regions] [fixture:
+kanban/gram-class-line-separator-comment-line-spaces-before] [fixture:
+kanban/gram-class-line-separator-comment-line-line-feed-before] [fixture:
+kanban/gram-class-line-separator-comment-line-directive-before] [fixture:
+kanban/gram-class-line-separator-comment-line-line-rule-before] [fixture:
+kanban/gram-class-line-separator-comment-line-line-rule-after] [fixture:
+kanban/lex-class-line-separator-comment-line-bare-percent] [fixture:
+kanban/lex-class-line-separator-comment-line-percent-brace]
 
 The common rules keep embedded data opaque. [fixture:
 kanban/gram-frontmatter-invalid-yaml] [fixture: kanban/gram-metadata-bad-yaml]
@@ -614,7 +672,27 @@ An ordinary `#` or single `%` is node text. [fixture: kanban/lex-comment-hash]
 or shape label stays in that text. [fixture: kanban/lex-after-bare-comment]
 [fixture: kanban/lex-after-bare-comment-glued] [fixture:
 kanban/db-grid-comment-item-label-bare] [fixture:
-kanban/lex-comment-quoted-inline]
+kanban/lex-comment-quoted-inline] A comment after a U+2028 or U+2029 is the
+exception: it is read through, and the value goes on after it (see
+[Comment lines](../common.md#comment-lines)). [fixture:
+kanban/lex-string-line-separator-then-comment-line] [fixture:
+kanban/lex-markdown-string-line-separator-then-comment-line] [fixture:
+kanban/lex-string-line-separator-comment-line-directive-next] [fixture:
+kanban/lex-string-line-separator-comment-line-space-next] [fixture:
+kanban/lex-string-line-separator-comment-line-separator-next] [fixture:
+kanban/lex-string-line-separator-comment-line-empty-line] [fixture:
+kanban/gram-string-line-separator-comment-line-end-of-text] [fixture:
+kanban/lex-string-line-separator-comment-line-cr] [fixture:
+kanban/lex-string-line-separator-comment-line-crlf] [fixture:
+kanban/lex-string-line-separator-comment-line-two-comment-lines] [fixture:
+kanban/lex-string-line-separator-comment-line-two-regions] [fixture:
+kanban/lex-string-line-separator-comment-line-spaces-before] [fixture:
+kanban/lex-string-line-separator-comment-line-line-feed-before] [fixture:
+kanban/lex-string-line-separator-comment-line-directive-before] [fixture:
+kanban/lex-string-line-separator-comment-line-line-rule-before] [fixture:
+kanban/lex-string-line-separator-comment-line-line-rule-after] [fixture:
+kanban/lex-string-line-separator-comment-line-bare-percent] [fixture:
+kanban/lex-string-line-separator-comment-line-percent-brace]
 
 A line of `%%` alone or `%%{ }%%` is a diagram comment. [fixture:
 kanban/lex-comment-bare] [fixture: kanban/header-after-empty-braces-line] A

@@ -1,0 +1,11 @@
+{
+  "source": {
+    "kind": "authored",
+    "note": "gantt.md Comments: a click id ends at a U+2028, which leaves the click context, and `b href \"https://e\"` after the comment line is read in the statement context, where `b` is a task text without data; rejected."
+  },
+  "accepted": false,
+  "error": {
+    "name": "Error",
+    "message": "Parse error on line 3:\n...-01-01, 1dclick a1 b href \"https://e\"\n----------------------^\nExpecting 'callbackname', 'href', got 'taskTxt'"
+  }
+}

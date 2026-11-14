@@ -1,0 +1,11 @@
+{
+  "source": {
+    "kind": "authored",
+    "note": "mindmap.md Comments: a `%%{ }%%`, which starts no directive and no comment, follows a U+2028 in the class; rejected."
+  },
+  "accepted": false,
+  "error": {
+    "name": "Error",
+    "message": "There can be only one root. No parent could be found for (\"b\")"
+  }
+}

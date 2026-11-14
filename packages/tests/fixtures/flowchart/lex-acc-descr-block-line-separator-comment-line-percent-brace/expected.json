@@ -1,0 +1,11 @@
+{
+  "source": {
+    "kind": "authored",
+    "note": "flowchart.md Lexical structure: a `%%{ }%%`, which starts no directive and no comment, follows a U+2028 in the description block; rejected."
+  },
+  "accepted": false,
+  "error": {
+    "name": "Error",
+    "message": "Lexical error on line 3. Unrecognized text.\n...ccDescr {A %%{ }%%B}\n----------------------^"
+  }
+}

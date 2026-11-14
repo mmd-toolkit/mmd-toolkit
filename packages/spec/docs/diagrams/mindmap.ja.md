@@ -85,6 +85,25 @@ mindmap/db-frontmatter-before-header]
 各行終端を `\n` として、各属性の引用符を `'` として、
 各エンティティをそのプレースホルダーとして、
 コメント領域と行の規則が無視する `;` はないものとして読みます。
+[fixture: mindmap/lex-icon-line-separator-then-comment-line]
+[fixture: mindmap/lex-string-line-separator-then-comment-line]
+[fixture: mindmap/lex-markdown-string-line-separator-then-comment-line]
+[fixture: mindmap/lex-icon-line-separator-comment-line-directive-next]
+[fixture: mindmap/lex-icon-line-separator-comment-line-space-next]
+[fixture: mindmap/lex-icon-line-separator-comment-line-separator-next]
+[fixture: mindmap/lex-icon-line-separator-comment-line-empty-line]
+[fixture: mindmap/lex-icon-line-separator-comment-line-end-of-text]
+[fixture: mindmap/lex-icon-line-separator-comment-line-cr]
+[fixture: mindmap/lex-icon-line-separator-comment-line-crlf]
+[fixture: mindmap/lex-icon-line-separator-comment-line-two-comment-lines]
+[fixture: mindmap/lex-icon-line-separator-comment-line-two-regions]
+[fixture: mindmap/lex-icon-line-separator-comment-line-spaces-before]
+[fixture: mindmap/lex-icon-line-separator-comment-line-line-feed-before]
+[fixture: mindmap/lex-icon-line-separator-comment-line-directive-before]
+[fixture: mindmap/lex-icon-line-separator-comment-line-line-rule-before]
+[fixture: mindmap/lex-icon-line-separator-comment-line-line-rule-after]
+[fixture: mindmap/lex-icon-line-separator-comment-line-bare-percent]
+[fixture: mindmap/lex-icon-line-separator-comment-line-percent-brace]
 最後の文字の後に字句解析器が読む `\n` は、
 図のテキストの一部です（[テキストの終わり](../common.ja.md#テキストの終わり)）。
 この節は、[ソースの読み方](../common.ja.md#ソースの読み方) の項目 4 である、
@@ -164,6 +183,26 @@ mindmap/lex-node-text-close-brace] [fixture:
 mindmap/lex-node-text-double-close-brace] [fixture:
 mindmap/entity-placeholder-in-node-text] [fixture:
 mindmap/entity-placeholder-numeric]
+ノードのテキストでは、U+2028 や U+2029 の後のコメントは読み飛ばされ、
+テキストはその後に続きます（[コメント行](../common.ja.md#コメント行) を参照）。
+[fixture: mindmap/lex-node-text-line-separator-then-comment-line]
+[fixture: mindmap/lex-node-text-paragraph-separator-then-comment-line]
+[fixture: mindmap/lex-node-text-line-separator-comment-line-directive-next]
+[fixture: mindmap/lex-node-text-line-separator-comment-line-space-next]
+[fixture: mindmap/lex-node-text-line-separator-comment-line-separator-next]
+[fixture: mindmap/gram-node-text-line-separator-comment-line-empty-line]
+[fixture: mindmap/lex-node-text-line-separator-comment-line-end-of-text]
+[fixture: mindmap/lex-node-text-line-separator-comment-line-cr]
+[fixture: mindmap/lex-node-text-line-separator-comment-line-crlf]
+[fixture: mindmap/lex-node-text-line-separator-comment-line-two-comment-lines]
+[fixture: mindmap/lex-node-text-line-separator-comment-line-two-regions]
+[fixture: mindmap/lex-node-text-line-separator-comment-line-spaces-before]
+[fixture: mindmap/lex-node-text-line-separator-comment-line-line-feed-before]
+[fixture: mindmap/lex-node-text-line-separator-comment-line-directive-before]
+[fixture: mindmap/lex-node-text-line-separator-comment-line-line-rule-before]
+[fixture: mindmap/lex-node-text-line-separator-comment-line-line-rule-after]
+[fixture: mindmap/gram-node-text-line-separator-comment-line-bare-percent]
+[fixture: mindmap/lex-node-text-line-separator-comment-line-percent-brace]
 
 ### 単位の中のディレクティブ
 
@@ -383,6 +422,46 @@ mindmap/lex-comment-after-shape-glued] [fixture: mindmap/lex-comment-after-icon]
 [fixture: mindmap/lex-comment-ends-at-line-separator] [fixture:
 mindmap/db-comment-after-node-text] [fixture: mindmap/lex-percent-in-shape-text]
 [fixture: mindmap/lex-percent-in-class]
+形のテキストでは、U+2028 や U+2029 の後のコメントは読み飛ばされ、
+テキストはその後に続きます（[コメント行](../common.ja.md#コメント行) を参照）。
+[fixture: mindmap/lex-shape-text-line-separator-then-comment-line]
+[fixture: mindmap/lex-shape-text-line-separator-comment-line-directive-next]
+[fixture: mindmap/lex-shape-text-line-separator-comment-line-space-next]
+[fixture: mindmap/lex-shape-text-line-separator-comment-line-separator-next]
+[fixture: mindmap/lex-shape-text-line-separator-comment-line-empty-line]
+[fixture: mindmap/lex-shape-text-line-separator-comment-line-end-of-text]
+[fixture: mindmap/lex-shape-text-line-separator-comment-line-cr]
+[fixture: mindmap/lex-shape-text-line-separator-comment-line-crlf]
+[fixture: mindmap/lex-shape-text-line-separator-comment-line-two-comment-lines]
+[fixture: mindmap/lex-shape-text-line-separator-comment-line-two-regions]
+[fixture: mindmap/lex-shape-text-line-separator-comment-line-spaces-before]
+[fixture: mindmap/lex-shape-text-line-separator-comment-line-line-feed-before]
+[fixture: mindmap/lex-shape-text-line-separator-comment-line-directive-before]
+[fixture: mindmap/lex-shape-text-line-separator-comment-line-line-rule-before]
+[fixture: mindmap/lex-shape-text-line-separator-comment-line-line-rule-after]
+[fixture: mindmap/lex-shape-text-line-separator-comment-line-bare-percent]
+[fixture: mindmap/lex-shape-text-line-separator-comment-line-percent-brace]
+class は U+2028 や U+2029 で終わり、class の文脈を出るので、
+その後のコメント行の次の行は class 行の残りとして読まれます。
+`:::a`、U+2028、`%% c`、改行、`b` は 1 行の class とノードのテキストで、
+コメント行がない場合と同じく拒否されます。
+[fixture: mindmap/gram-class-line-separator-then-comment-line]
+[fixture: mindmap/gram-class-line-separator-comment-line-directive-next]
+[fixture: mindmap/gram-class-line-separator-comment-line-space-next]
+[fixture: mindmap/gram-class-line-separator-comment-line-separator-next]
+[fixture: mindmap/gram-class-line-separator-comment-line-empty-line]
+[fixture: mindmap/lex-class-line-separator-comment-line-end-of-text]
+[fixture: mindmap/gram-class-line-separator-comment-line-cr]
+[fixture: mindmap/gram-class-line-separator-comment-line-crlf]
+[fixture: mindmap/gram-class-line-separator-comment-line-two-comment-lines]
+[fixture: mindmap/gram-class-line-separator-comment-line-two-regions]
+[fixture: mindmap/gram-class-line-separator-comment-line-spaces-before]
+[fixture: mindmap/gram-class-line-separator-comment-line-line-feed-before]
+[fixture: mindmap/gram-class-line-separator-comment-line-directive-before]
+[fixture: mindmap/gram-class-line-separator-comment-line-line-rule-before]
+[fixture: mindmap/gram-class-line-separator-comment-line-line-rule-after]
+[fixture: mindmap/gram-class-line-separator-comment-line-bare-percent]
+[fixture: mindmap/gram-class-line-separator-comment-line-percent-brace]
 
 ## 文法
 

@@ -87,6 +87,12 @@ architecture/db-mixed] [fixture: architecture/header-beta]
    [fixture: architecture/db-align-forward-repeat] [fixture:
    architecture/db-align-layout-conflict] [fixture: architecture/header-beta]
    [fixture: architecture/config-drawing-only]
+7. **Comment regions in values.** A comment region after a U+2028 or a U+2029 is
+   left out of a value (see
+   [The converted form](../db-from-tree.md#the-converted-form)). The summary has
+   no field for the title of the diagram, so the fixture of a title records that
+   the input is accepted. [fixture:
+   architecture/lex-title-line-separator-then-comment-line]
 
 ## Checking recorded trees
 

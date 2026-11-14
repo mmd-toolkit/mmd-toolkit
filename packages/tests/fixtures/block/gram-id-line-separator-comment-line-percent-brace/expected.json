@@ -1,0 +1,11 @@
+{
+  "source": {
+    "kind": "authored",
+    "note": "block.md Units and contexts: a `%%{ }%%`, which starts no directive and no comment, follows a U+2028 in the id; rejected."
+  },
+  "accepted": false,
+  "error": {
+    "name": "Error",
+    "message": "Lexical error on line 2. Unrecognized text.\nblock-betaa %%{ }%%b\n---------------^"
+  }
+}

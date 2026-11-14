@@ -384,7 +384,35 @@ architecture/lex-bare-percent-in-quoted-label] [fixture:
 architecture/comment-in-quoted-label] [fixture:
 architecture/common-description-block-comment] [fixture:
 architecture/comment-directive-in-mark] [fixture:
-architecture/comment-directive-in-value]
+architecture/comment-directive-in-value] A common comment region can remove the
+rest of a physical line after U+2028 or U+2029 inside a value, its line break
+included; the value then goes on with the next physical line, so a line value
+does not end there: `accTitle: A`, U+2028, `%% c`, a line break, and `B` has the
+accessibility title `A`, U+2028, and `B`. [fixture:
+architecture/lex-title-line-separator-then-comment-line] [fixture:
+architecture/lex-acc-title-line-separator-then-comment-line] [fixture:
+architecture/lex-acc-descr-line-separator-then-comment-line] [fixture:
+architecture/lex-acc-descr-block-line-separator-then-comment-line] [fixture:
+architecture/lex-bracket-label-line-separator-then-comment-line] [fixture:
+architecture/lex-icon-text-string-line-separator-then-comment-line] [fixture:
+architecture/db-icon-text-string-paragraph-separator-then-comment-line]
+[fixture: architecture/lex-title-line-separator-comment-line-directive-next]
+[fixture: architecture/lex-title-line-separator-comment-line-space-next]
+[fixture: architecture/lex-title-line-separator-comment-line-separator-next]
+[fixture: architecture/gram-title-line-separator-comment-line-empty-line]
+[fixture: architecture/lex-title-line-separator-comment-line-end-of-text]
+[fixture: architecture/lex-title-line-separator-comment-line-cr] [fixture:
+architecture/lex-title-line-separator-comment-line-crlf] [fixture:
+architecture/lex-title-line-separator-comment-line-two-comment-lines] [fixture:
+architecture/lex-title-line-separator-comment-line-two-regions] [fixture:
+architecture/lex-title-line-separator-comment-line-spaces-before] [fixture:
+architecture/lex-title-line-separator-comment-line-line-feed-before] [fixture:
+architecture/lex-title-line-separator-comment-line-directive-before] [fixture:
+architecture/lex-title-line-separator-comment-line-line-rule-before] [fixture:
+architecture/lex-title-line-separator-comment-line-line-rule-after] [fixture:
+architecture/gram-title-line-separator-comment-line-bare-percent] [fixture:
+architecture/gram-title-line-separator-comment-line-percent-brace] [fixture:
+architecture/lex-quoted-bracket-label-line-separator-then-comment-line]
 
 ## Grammar
 
