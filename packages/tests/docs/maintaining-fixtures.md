@@ -128,12 +128,20 @@ specification (`@mmd-toolkit/parser`), whose tests write them as file snapshots:
 `ast.json` for the inputs the parser accepts, and `parse-error.json` (the
 `message`, `range` and `loc` of the `ParseError`) for the inputs it rejects with
 a `ParseError`. They sit next to the input so that both can be read together.
-Nothing in this package reads, writes or checks them, and this package does not
-depend on the parser: the generator, `add`, `add-many`, `set-divergence`,
-`set-note`, the collector and `loadFixtures()` handle only `input.mmd`,
-`expected.json` and `specified.json`, and leave any other file in a fixture's
-directory as it is. A fixture added here has neither file until the parser's
-tests run.
+This package does not write them and does not depend on the parser: the
+generator, `add`, `add-many`, `set-divergence`, `set-note`, the collector and
+`loadFixtures()` handle only `input.mmd`, `expected.json` and `specified.json`,
+and leave any other file in a fixture's directory as it is. A fixture added here
+has neither file until the parser's tests run. The parser's tests check that the
+parser returns the recorded tree. This package checks that the recorded tree is
+right, in two tests that read `ast.json` and the input and call no parser:
+`tests/check-tree-corpus.test.ts` requires `checkTree()` to find no problem in
+any recorded tree ([check-tree.md](./check-tree.md)), and
+`tests/db-from-tree.test.ts` requires the Db that `dbFromTree()` builds from
+each recorded tree to be the Db of mermaid.js, or the `specified` Db where the
+specification reads the input differently
+([db-from-tree.md](./db-from-tree.md)). Of `parse-error.json`, the second test
+only looks whether it exists, for a fixture without a tree.
 
 **The recorded tree is JSON.** A number that JSON cannot write is `null` in
 `ast.json`, as `JSON.stringify` writes it: the `value` of a NumericLiteral for a

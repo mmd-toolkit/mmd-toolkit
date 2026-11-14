@@ -144,13 +144,26 @@ mermaid.js から取った入力に付けるのと同じ）。
 `parse-error.json` は parser が `ParseError` で拒否する入力にだけあります。
 `parse-error.json` は、その `ParseError` の `message`、`range`、`loc` です。
 入力と一緒に読めるよう、入力の隣に置きます。
-このパッケージはこれらを読みも書きも検査もせず、parser にも依存しません。
+このパッケージはこれらを書かず、parser にも依存しません。
 生成器、`add`、`add-many`、`set-divergence`、`set-note`、収集の道具、
 `loadFixtures()` が扱うのは `input.mmd`、`expected.json`、
 `specified.json` だけで、
 fixture のディレクトリにあるほかのファイルはそのまま残します。
 ここで足した fixture には、
 parser のテストが走るまでどちらのファイルもありません。
+parser のテストは、parser が記録した木を返すことを確かめます。
+このパッケージは、記録した木が正しいことを、`ast.json` と入力だけを読み、
+parser を呼ばない 2 つのテストで確かめます。
+`tests/check-tree-corpus.test.ts` は、
+記録した木のすべてに `checkTree()` を当て、
+問題がないことを求めます（[check-tree.ja.md](./check-tree.ja.md)）。
+`tests/db-from-tree.test.ts` は、記録した木から `dbFromTree()` で作った Db を、
+mermaid.js の Db と比べ、
+等しいことを求めます（[db-from-tree.ja.md](./db-from-tree.ja.md)）。
+仕様が入力を違って読む場合は、
+mermaid.js の Db の代わりに `specified` の Db と比べます。
+`parse-error.json` について、2 つ目のテストは、
+木のない fixture にそれがあるかどうかだけを見ます。
 
 **記録した木は JSON です。**
 JSON が書けない数は、`JSON.stringify` が書くとおり、

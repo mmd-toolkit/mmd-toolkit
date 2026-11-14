@@ -156,9 +156,7 @@ const VALUE_FIELD_REPORTS: Readonly<
   "RailroadIgnoredText.kind": { message: "the field kind is " },
   "RailroadIgnoredText.value": { message: "value is not its written text" },
   "RailroadNumericValue.value": { message: "value is not its written text" },
-  "RailroadSpecialSequence.value": {
-    message: "value is not its written special-sequence interior",
-  },
+  "RailroadSpecialSequence.value": { message: "value is not its written text" },
   "RailroadPostfixExpression.operator": { message: "the field operator is " },
   "RailroadPredicateExpression.operator": { message: "the field operator is " },
   "TreemapLiteral.value": { message: "value is not its written text" },

@@ -78,9 +78,61 @@ gantt/db-title-line-separator-then-comment-line] [fixture:
 flowchart/db-square-label-paragraph-separator-then-comment-line] [fixture:
 flowchart/db-acc-descr-block-line-separator-then-comment-line] A diagram
 document says where the summary has no field for such a value, or takes it from
-elsewhere. Agentflow and eventmodeling leave the comment regions out of the
-converted form only for a source longer than `maxTextSize`, so at or below it
-the rule above does not apply to them; their documents are
+elsewhere.
+
+The rules that meet the region at its edges leave the value as it is, as the
+strings of a block diagram show. A directive at the start of the line after the
+comment line is left out, so that the value is `A`, U+2028, and `B`. [fixture:
+block/db-string-line-separator-comment-line-directive-next] A space there is in
+the value: `A`, U+2028, a space, and `B`. [fixture:
+block/db-string-line-separator-comment-line-space-next] So is a second U+2028:
+`A`, two U+2028, and `B`. [fixture:
+block/db-string-line-separator-comment-line-separator-next] An empty line is a
+line feed in the value: `A`, U+2028, a line feed, and `B`. [fixture:
+block/db-string-line-separator-comment-line-empty-line] A lone CR and a CRLF end
+the comment line as a line feed does. [fixture:
+block/db-string-line-separator-comment-line-cr] [fixture:
+block/db-string-line-separator-comment-line-crlf] A second comment line, a
+second U+2028 with a comment line after it (`A`, U+2028, `x`, U+2028, and `B`),
+and spaces, a line feed, or a directive between the U+2028 and the `%%` are left
+out in the same way. [fixture:
+block/db-string-line-separator-comment-line-two-comment-lines] [fixture:
+block/db-string-line-separator-comment-line-two-regions] [fixture:
+block/db-string-line-separator-comment-line-spaces-before] [fixture:
+block/db-string-line-separator-comment-line-line-feed-before] [fixture:
+block/db-string-line-separator-comment-line-directive-before] A `%%` with
+nothing after it, and a `%%{ }%%`, which starts no directive and no comment, are
+text of the value, with the line feed after them: `A`, U+2028, `%%`, a line
+feed, and `B`. [fixture:
+block/db-string-line-separator-comment-line-bare-percent] [fixture:
+block/db-string-line-separator-comment-line-percent-brace] The line after the
+comment line is a line segment of its own for the line rule of `style` and
+`classDef` lines: in `Astyle:#a`, U+2028, a comment line, and `#b;B`, the `#b;`
+is an entity, and in `A`, U+2028, a comment line, and `style:#b;B`, the `;` is
+ignored, so that the value is `A`, U+2028, and `style:#bB`. [fixture:
+block/db-string-line-separator-comment-line-line-rule-before] [fixture:
+block/db-string-line-separator-comment-line-line-rule-after] A text that ends
+with the comment line leaves the string open and is rejected. [fixture:
+block/gram-string-line-separator-comment-line-end-of-text]
+
+A value that ends at the U+2028 does not go on after the region: the id of a
+block, the id of a gantt click, the class of a mindmap or kanban node, and the
+name of a state pseudostate. The region is left out in the same way, and what
+follows it is the next unit, which the tree holds. `a`, U+2028, `%% c`, a line
+break, and `b` are the blocks `a` and `b`; `click a1`, U+2028, `%% c`, a line
+break, and `href "https://e"` give the task `a1` its link; and `state A`,
+U+2028, `%% c`, a line break, and `B <<fork>>` have the one state, the fork `B`.
+[fixture: block/db-id-line-separator-then-comment-line] [fixture:
+gantt/db-click-id-line-separator-then-comment-line-href] [fixture:
+state/db-pseudostate-name-line-separator-then-comment-line] The line after the
+comment line of a class is the rest of the class line, which is rejected, as
+without the comment line. [fixture:
+mindmap/gram-class-line-separator-then-comment-line] [fixture:
+kanban/gram-class-line-separator-then-comment-line]
+
+Agentflow and eventmodeling leave the comment regions out of the converted form
+only for a source longer than `maxTextSize`, so at or below it the rule above
+does not apply to them; their documents are
 [db-from-tree/agentflow.md](./db-from-tree/agentflow.md) and
 [db-from-tree/eventmodeling.md](./db-from-tree/eventmodeling.md). In an
 agentflow label, `first`, U+2028, `%% c`, a line break, and `second` is the
