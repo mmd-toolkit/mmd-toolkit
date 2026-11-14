@@ -131,6 +131,15 @@ the space after it, the `IgnoredSemicolon` token, and `:blue`, and so does
 [fixture: class/tokens-style-ignored-semicolon-after-space] [fixture:
 class/tokens-class-def-ignored-semicolon-after-space]
 
+The `accDescr` of eventmodeling is the exception: mermaid.js keeps its leading
+indentation and the whitespace between `accDescr` and its `{` as part of the
+value, but they belong to no token (see
+[Eventmodeling](./tokens/eventmodeling.md#tokens)).
+
+[fixture: eventmodeling/gram-common-leading-directive-both-sides] [fixture:
+eventmodeling/gram-common-block-leading-directive] [fixture:
+eventmodeling/common-inline]
+
 This holds for the text that mermaid.js reads as a value. A node of text that
 mermaid.js does not read (see [Nodes](../../spec/docs/ast.md#nodes)), such as a
 StateIgnoredText, has the tokens of its units, and the whitespace and line

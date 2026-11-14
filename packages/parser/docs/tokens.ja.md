@@ -136,6 +136,15 @@ class 図の `style A fill:#f00,color ;:blue` は、
 [fixture: class/tokens-style-ignored-semicolon-after-space]
 [fixture: class/tokens-class-def-ignored-semicolon-after-space]
 
+eventmodeling の `accDescr` は例外です。
+mermaid.js は先頭の字下げと、`accDescr` とその `{` の間の空白を、
+値の一部として保ちますが、どのトークンにも属しません。
+[Eventmodeling](./tokens/eventmodeling.ja.md#トークン) を参照。
+
+[fixture: eventmodeling/gram-common-leading-directive-both-sides]
+[fixture: eventmodeling/gram-common-block-leading-directive]
+[fixture: eventmodeling/common-inline]
+
 これは、mermaid.js が値として読むテキストについての決まりです。
 StateIgnoredText のような、
 mermaid.js
