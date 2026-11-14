@@ -36,6 +36,7 @@ import {
   accessibilityRules,
   collectTextEndEdits,
   trimTextAfterKeyword,
+  trimmedTextEnd,
 } from "./statement-rules.ts"
 import type { Source } from "./source.ts"
 import {
@@ -417,7 +418,8 @@ function trimEventEnds(
   const edits: TextEdit[] = []
   for (const event of events) {
     const [from, to] = event.range
-    let contentEnd = to
+    const textEnd = trimmedTextEnd(source, from, to, isSpaceOrTab)
+    let contentEnd = textEnd.end
     while (contentEnd > from && isSpaceOrTab(source.text[contentEnd - 1])) {
       contentEnd--
     }
@@ -427,6 +429,7 @@ function trimEventEnds(
     // event stay (docs/compatibility.md, Texts after a keyword that are drawn
     // the same).
     if (
+      textEnd.trailingBlanks !== null ||
       findTriviaBetween(source, to, to + 1).some(
         (item) => item.type === "Directive" && item.range[0] === to,
       ) ||
