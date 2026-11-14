@@ -661,12 +661,16 @@ Db の等しい外側の空白から 1 つを選び、引用符に見える文�
 テキストのない `title` は、
 同じ行のディレクティブかコメントの前に空白が書かれていれば、
 その最初のものの前に空白 1 つを置いて印字します。
-空白が 1 文字でもそれ以上でも、タブでも、
+空白が 1 文字でもそれ以上でも、タブでも同じです。
+ディレクティブの前では、
 空白と U+2028 か U+2029 の組でも同じです（空白だけの title は、
 値のない `title` です）。
 キーワードとディレクティブの間に何も書かれていなければ、空白は置きません。
 `title`、空白 1 つ、`%%{init: {}}%%` はそのまま印字し、`title`、空白 3 つ、
 `%%{init: {}}%%` も同じ形に印字します。
+次の行と合わせて読まれるコメントの前に U+2028 か U+2029 がある形（`title`、
+空白 2 つ、その文字、`%% c` の後に行が続く形）は、行を書かれたまま残します。
+コメントが、その文字の後から始まるからです。
 キーワードの後の 1 文字の空白は、mermaid.js にとってキーワードの一部なので、
 テキストのない title はキーワードで終わります。
 その 1 文字は、テキストのある title の後の空白と同じく、行の隙間です。
@@ -680,6 +684,7 @@ Db の等しい外側の空白から 1 つを選び、引用符に見える文�
 [test: treemap/title/bare-title-directive-space-and-line-separator]
 [test: treemap/title/bare-title-directive-space-and-paragraph-separator]
 [test: treemap/title/bare-title-directive-spaces-and-line-separator]
+[test: treemap/title/bare-title-comment-after-line-separator-kept]
 
 空の title の次のコメント行は次の文にそろえ、title の値にはしません。
 [fixture: treemap/title/empty-next-comment]

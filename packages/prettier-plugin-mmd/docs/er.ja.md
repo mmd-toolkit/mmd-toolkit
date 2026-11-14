@@ -517,6 +517,20 @@ mermaid.js は、その空白を実体の名前として読み、その実体を
 [test: U+2028 alone after a name in quotes, at the end of its line]
 [test: U+2028 alone after a name in quotes, before a directive]
 [test: U+2028 alone at the start of its line, before a comment]
+最初の実体の名前が U+2028 か U+2029 だけの文が、同じ行のほかの文の後にあり、
+その文字の後に、属性ブロック、別名、CSS のクラス、関係が続くときも、
+その行に残します（`"Alpha"`、その文字、`{ int x }`）。
+対象にする版のうち古いものは、その文字を空白として読み、
+残りを前の文の一部として読むので、残りが行を始めることはできないからです。
+その文字の後の 2 つ目の名前は、分けます。
+その文字とほかの文字からなる名前（`LR`）も、行を始めるので、分けます。
+[test: U+2028 and an attribute block after a name in quotes]
+[test: U+2028 and an attribute block touching it after a name in quotes]
+[test: U+2028, a directive, and an attribute block after a name in quotes]
+[test: U+2029 and a relationship after a name in quotes]
+[test: U+2028 and an alias after a name in quotes]
+[test: U+2028 and a CSS class after a name in quotes]
+[test: U+2028 and a second name after a name in quotes]
 複数の属性がある行は、その行の後ろの属性が、
 `int a List~int~ b` のように `~` を 2 つ持つときに、書かれたまま印字します。
 対象にする版のうち最も古い版が、ジェネリクスの型を、

@@ -238,6 +238,7 @@ ELK の配置のパッケージのどのリリースも、
 | [ER](./er.ja.md#1-行に-1-文)                                | `endé`、`end` と U+2028 か U+2029 と文、`subgraphé`、`subgraph` と U+2028 と名前               | `end` と `é` を別の行に。区切りは空白にして印字 | [2](./printed-form.ja.md#2-prettier-にない種類の隙間) | 11.7.0 が違って描く。10.9.8 は `endé` と `subgraphé` を拒否する                                                     | [fixture: er/statements-one-per-line/end-then-name-outside-ascii-kept]             |
 | [ER](./er.ja.md#1-行に-1-文)                                | `class` と名前 2 つ、または方向の行の前にある U+2028 か U+2029 と、同じ行に後ろの文がある行    | 各文を別の行に                                  | [2](./printed-form.ja.md#2-prettier-にない種類の隙間) | 11.7.0 が `class` の行を拒否し、`direction` の行を違って描く                                                        | [test: a line of two ER statements that starts with U+2028]                        |
 | [ER](./er.ja.md#1-行に-1-文)                                | 同じ行の別の属性の後にある、`~` が 2 つの属性（`int a List~int~ b`）                           | 属性を 1 行ずつに                               | [2](./printed-form.ja.md#2-prettier-にない種類の隙間) | 10.9.8 は、最初の属性の型を 2 つ目の `~` までとして読む                                                             | [fixture: er/attribute-spacing/attributes-with-tilde-on-one-line-kept]             |
+| [ER](./er.ja.md#1-行に-1-文)                                | `"Alpha"`、U+2028 か U+2029、その後の `{ int x }`、別名、CSS のクラス、関係                    | `Alpha` と、その文字で始まる文を別の行に        | [2](./printed-form.ja.md#2-prettier-にない種類の隙間) | 10.9.8 と 11.7.0 が、その文字を空白として読み、その文字で始まって残りが続く行を拒否する                             | [test: U+2028 and an attribute block after a name in quotes]                       |
 | [treemap](./treemap.ja.md#title)                            | 行頭の `title T`                                                                               | 1 段深い `  title T`                            | [1](./printed-form.ja.md#1-記号の横の空白)            | 11.8.1 が、字下げされた title、`accTitle`、`accDescr` を拒否する                                                    | [fixture: treemap/title/line-start-kept]                                           |
 | [ishikawa](./ishikawa.ja.md#indentation)                    | `ishikawa`、`R`、`  A`、` B`、`  C` を書かれたまま                                             | すべてのノードを深さの位置に置く形              | [1](./printed-form.ja.md#1-記号の横の空白)            | 11.13.0 が、深さで印字したテキストを書かれたテキストと違って描く                                                    | [fixture: ishikawa/indentation/indent-relative-zero]                               |
 | [Wardley](./wardley.ja.md#link)                             | `Alpha-->Beta` を `Alpha--> Beta` と印字                                                       | `Alpha- -> Beta`                                | [1](./printed-form.ja.md#1-記号の横の空白)            | 11.14.0 が、名前の `-` を拒否する                                                                                   | [fixture: wardley/links/link-long-glued]                                           |
@@ -2153,6 +2154,11 @@ mermaid.js は、トークンの異なる綴りの一部を同じトークンと
 テキストとコメントの間に U+2028 か U+2029 があると、
 その間に入る引用符がコメントをテキストの一部にするか、
 引用符のない名前がその文字を越えて続くからです。
+[test: usecase: U+2028, a space, and a comment after a label text]
+[test: usecase: U+2028, a directive, and a comment after a label text]
+[test: usecase: U+2028, a space, and a comment after a note text that holds a percent mark]
+[test: U+2028 and a comment after the target in quotes of a relationship, with a statement after the comment]
+[test: U+2028 and a comment after a value in quotes, with a statement after the comment]
 [fixture: sequence/keyword-case/kept-line-in-one-form]
 [fixture: gantt/keyword-case/kept-line-in-one-form]
 例は、[構文のページ][mermaid-syntax-pages]の、

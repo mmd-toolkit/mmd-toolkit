@@ -693,6 +693,10 @@ mermaid.js はそのブロックのテキストを読まず、印字が `}` を�
 [fixture: accessibility-statements/block-lines-kept]
 [fixture: accessibility-statements/block-closing-brace-at-the-level-of-the-statement]
 [fixture: accessibility-statements/block-then-statement-on-the-closing-line]
+ブロックに続く文の後のコメントは、その文のものです。
+その文は別の行に移るので、このコメントは、
+ブロックを書かれたまま残す理由になりません。
+[fixture: accessibility-statements/block-then-statement-and-comment-on-the-closing-line]
 [fixture: accessibility-statements/block-comment-and-empty-lines-kept]
 [fixture: accessibility-statements/block-not-closed-kept-as-written]
 [fixture: accessibility-statements/block-not-closed-text-on-the-opening-line]
