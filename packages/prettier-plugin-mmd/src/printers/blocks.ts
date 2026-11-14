@@ -29,6 +29,7 @@ import {
   joinLines,
   lineBreakBetween,
   printAsWritten,
+  printTextGap,
   withLeading,
   withTrailing,
 } from "./lines.ts"
@@ -82,6 +83,13 @@ export interface BlockRules<Statement extends Positioned> {
   readonly omittedRanges?: readonly Range[]
   /** Attach a unit with its complete source gap instead of choosing a new line. */
   readonly writtenGapBefore?: (statement: Statement) => boolean
+  /**
+   * The unit stays on the line of the previous one in a kept line, and its gap
+   * is the whitespace of a text that a version of mermaid.js draws as it is:
+   * `printTextGap` prints it. The whitespace before a comment that ends the
+   * line is printed so too.
+   */
+  readonly textGapBefore?: (statement: Statement) => boolean
   /**
    * A statement that follows a stretch printed as written on its line and
    * that is printed on its own, as the block that it holds: the stretch ends
@@ -827,24 +835,29 @@ export function printBlock<Statement extends Positioned>(
     const parts: Doc[] = []
     let position = stretch.start
     for (const [index, statement] of covered.entries()) {
+      const textGap =
+        rules.textGapBefore?.(statement) === true
+          ? printTextGap(source, position, printedStartOf(statement))
+          : null
       parts.push(
         rules.writtenGapBefore?.(statement) === true
           ? printAsWritten(source, position, printedStartOf(statement))
-          : printInlineGap(
-              source,
-              position,
-              printedStartOf(statement),
-              {
-                atLineStart:
-                  position === stretch.start &&
-                  (stretch.start !== bounds.start ||
-                    rules.keepsOpeningLine === false),
-                atLineEnd: false,
-              },
-              rules.keptInlineGapEnd,
-              rules.inlineGapBefore?.(statement),
-              rules.omittedRanges,
-            ),
+          : (textGap ??
+              printInlineGap(
+                source,
+                position,
+                printedStartOf(statement),
+                {
+                  atLineStart:
+                    position === stretch.start &&
+                    (stretch.start !== bounds.start ||
+                      rules.keepsOpeningLine === false),
+                  atLineEnd: false,
+                },
+                rules.keptInlineGapEnd,
+                rules.inlineGapBefore?.(statement),
+                rules.omittedRanges,
+              )),
         (index === covered.length - 1
           ? accessibilityLineOf(statement, true)
           : undefined) ?? docs[stretch.first + index],
@@ -856,8 +869,18 @@ export function printBlock<Statement extends Positioned>(
     // whitespace after the last statement stays as written where it holds
     // one (docs/state.md, Line separators).
     const written = source.text.slice(position, stretch.end)
+    // The whitespace before a comment at the end of a line of text that a
+    // version of mermaid.js draws as it is, as in the line of a header, is
+    // part of that text (`printTextGap`).
+    const textTrailing =
+      last !== undefined &&
+      rules.textGapBefore?.(last) === true &&
+      written.trim() !== ""
+        ? printTextGap(source, position, stretch.end)
+        : null
     const trailing =
-      written.trim() === "" &&
+      textTrailing ??
+      (written.trim() === "" &&
       (written.includes("\u2028") || written.includes("\u2029"))
         ? printAsWritten(source, position, stretch.end)
         : printInlineGap(
@@ -872,7 +895,7 @@ export function printBlock<Statement extends Positioned>(
             undefined,
             rules.omittedRanges,
             rules.relocatedWhitespace,
-          )
+          ))
     // The spaces and tabs after the printed end of the last statement are not
     // printed, so the statement ends the line, with the whitespace that it
     // takes (the one after the `:` of a task, say).

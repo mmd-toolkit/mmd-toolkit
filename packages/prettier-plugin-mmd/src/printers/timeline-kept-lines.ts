@@ -6,6 +6,7 @@ import {
   lineStartOf,
 } from "./kept-lines.ts"
 import type { Source } from "./source.ts"
+import { findTimelineHeaderLineStatements } from "./timeline-header-line.ts"
 
 /** The kept lines of each source, found once per source. */
 const keptLinesBySource = new WeakMap<Source, KeptLines>()
@@ -24,6 +25,11 @@ const keptLinesBySource = new WeakMap<Source, KeptLines>()
  *   space that only the `:` after it keeps from being trailing whitespace.
  *   A statement moves to a line of its own only when no such whitespace
  *   would be left at the end of the line before it.
+ * - The lines of the statements that stay on the line of the header or on the
+ *   line where a description block of that line ends. The versions of
+ *   mermaid.js that read no direction draw each of these lines as text, so
+ *   the statements on a line stay together and the whitespace between them is
+ *   that of a text (docs/timeline.md, Header and direction).
  */
 export function findTimelineKeptLines(source: Source): KeptLines {
   const cached = keptLinesBySource.get(source)
@@ -32,12 +38,24 @@ export function findTimelineKeptLines(source: Source): KeptLines {
     joined: new Set([
       ...findLinesWithOwnSemicolons(source),
       ...findLinesEndingInTextWhitespace(source),
+      ...findLinesOfHeaderLineStatements(source),
     ]),
     verbatim: findLinesEndedBySemicolon(source),
     ownIndentation: new Set(),
   }
   keptLinesBySource.set(source, kept)
   return kept
+}
+
+/**
+ * The lines of the statements that stay on a line of the header, where the
+ * statements after a description block stand on the line where it ends.
+ */
+function findLinesOfHeaderLineStatements(source: Source): number[] {
+  return findTimelineHeaderLineStatements(source).flatMap((statement) => [
+    lineStartOf(source, statement.range[0]),
+    lineStartOf(source, statement.range[1] - 1),
+  ])
 }
 
 /**

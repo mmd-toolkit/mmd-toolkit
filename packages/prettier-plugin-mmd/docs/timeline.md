@@ -727,7 +727,7 @@ read no direction: they read the words after `timeline` as the text of a period,
 and the others read the direction. So `timeline td` and `timeline TD` are
 periods that differ by their case there, and `td` is not printed `TD`, though
 the examples in the documentation of mermaid.js write `TD`. The text that
-follows a direction stays on the line of the header, after its gap as written:
+follows a direction stays on the line of the header, after its gap:
 `timeline TD title T` is one period in those versions, and `timeline TD`
 followed by a line `title T` is a period and a title, and likewise
 `timeline TD LR` (a direction and the period `LR`) and `timeline LR 2004 : a`. A
@@ -745,6 +745,134 @@ header-and-direction/direction-then-period-stays] [fixture:
 header-and-direction/text-after-a-directive-over-lines-stays] [fixture:
 header-and-direction/text-after-the-header-without-direction-moves] [fixture:
 header-and-direction/direction-on-its-own-line-is-a-period]
+
+The versions that read no direction draw the text after the direction as a text:
+a run of spaces and tabs is one space there, and in most places of the line any
+other whitespace character (U+00A0, U+2003, U+2028, and so on) is drawn
+differently from a space, so the formatter leaves it. So the whitespace of the
+line of the header is printed in one form: between two tokens of the line, each
+run of spaces and tabs is one space, nothing is added where the source has no
+whitespace, and every other whitespace character stays where it is, except after
+the `}` of a description block on one line (see below). `timeline TD    title T`
+is printed `timeline TD title T`, and `timeline TD`, U+00A0, and `title T` stays
+as it is. The gap before a comment that ends the line, and around a directive in
+it, is printed so too. [fixture:
+header-and-direction/gap-after-the-direction-spaces-formatted] [fixture:
+header-and-direction/gap-after-the-direction-tab-formatted] [test: U+00A0
+between the direction and a text on the header line] [test: a run of spaces and
+tabs around U+00A0 between the direction and a text on the header line]
+
+A description block that starts on the line of the header, after the direction,
+is part of that text, and so are the lines of a block over several lines and the
+statements that follow its `}` on that line. Such a block is printed as a block,
+never as `accDescr: alpha`, with the statements after it where they are:
+`timeline TD accDescr {alpha} Phase : done` is one period with the event `done`
+in those versions, and neither `accDescr: alpha` nor a line of its own for
+`Phase : done` draws the same. The whitespace between its tokens, and between it
+and the statements after it on the line, is printed in the form above:
+`accDescr {  alpha  }` is `accDescr { alpha }`,
+`accDescr   {alpha}    accDescr {beta}` is `accDescr {alpha} accDescr {beta}`,
+and where the source has no whitespace none is printed (`accDescr{ alpha}`). A
+whitespace character that is no space or tab (a U+00A0, a U+2003, and so on)
+after the `}` of a block on one line that holds text and is not padded by
+whitespace on both sides, before a statement, a `title`, a `section`, another
+block, or a comment, is drawn as a space is, by every version that counts, and
+so is printed as one space, as is a run of such characters, spaces, and tabs:
+`accDescr {alpha}`, U+00A0, and `Phase : done` are
+`accDescr {alpha} Phase : done`, and so are `accDescr {alpha }` and
+`accDescr { alpha}`. After a block that is padded on both sides
+(`accDescr { alpha }`) and after an empty block (`accDescr {}`), the versions
+that read no direction draw the character and a space differently, so it stays,
+as it does in every other place of the line and after the `}` of a block over
+several lines. [test: U+00A0 before a statement after a padded description block
+on the header line] [test: U+00A0 before a title after a padded description
+block on the header line] [test: U+00A0 before a comment after a padded
+description block on the header line] [test: U+00A0 before a statement after an
+empty description block on the header line] [test: U+00A0 before a statement
+after an empty description block glued to its keyword on the header line] [test:
+U+00A0 after a right-padded description block on the header line] [test: U+00A0
+after a left-padded description block on the header line] [test: U+00A0 after an
+unpadded multi-word description block on the header line] [test: U+00A0 after a
+description block containing a directive on the header line] [test: U+00A0
+before a title after a description block on the header line] [test: U+00A0
+before a section after a description block on the header line] [test: U+00A0
+between two description blocks on the header line] [test: U+00A0 before a period
+with two events after a description block on the header line] [test: U+2003
+before a title after a description block on the header line] [test: a space,
+U+00A0 and a tab after a description block on the header line] [test: U+3000
+after a description block on the header line] [test: U+0085 stays text after a
+description block on the header line] [test: U+00A0 before a directive after a
+description block on the header line] [test: U+00A0 after a directive after a
+description block on the header line] [test: a space and U+2028 after a
+description block on the header line] [test: U+2029 and U+00A0 after a
+description block on the header line] A directive beside the braces does not
+turn the block into the form with the colon, as it does elsewhere (see
+[A description block on one line](./compatibility.md#a-description-block-on-one-line)).
+A `;` that ends the line stays where it is, and so does a comment after the
+block. A period after the block has its later events at the ordinary
+continuation indentation, as one right after the header does. [fixture:
+header-and-direction/description-block-glued-on-the-header-line-kept] [fixture:
+header-and-direction/description-block-empty-with-space-on-the-header-line-kept]
+[fixture:
+header-and-direction/description-block-with-spaces-on-the-header-line-formatted]
+[fixture:
+header-and-direction/description-block-wide-gaps-on-the-header-line-formatted]
+[fixture:
+header-and-direction/description-block-touching-on-the-header-line-kept]
+[fixture:
+header-and-direction/description-block-then-period-on-the-header-line-kept]
+[fixture:
+header-and-direction/description-block-then-wide-gap-period-on-the-header-line-formatted]
+[fixture:
+header-and-direction/description-block-then-period-events-on-the-header-line-formatted]
+[fixture:
+header-and-direction/description-block-then-block-on-the-header-line-kept]
+[fixture:
+header-and-direction/description-block-then-semicolon-on-the-header-line-kept]
+[fixture:
+header-and-direction/description-block-then-comment-on-the-header-line-formatted]
+[fixture:
+header-and-direction/description-block-directive-beside-the-braces-on-the-header-line-kept]
+[fixture:
+header-and-direction/description-block-directives-in-the-gaps-on-the-header-line-formatted]
+[test: U+00A0 between the direction and a description block on the header line]
+[test: U+00A0 between the keyword and the brace of a description block on the
+header line] [test: U+00A0 inside the braces of a description block on the
+header line] [test: U+00A0 after a description block on the header line] [test:
+a run of spaces around U+00A0 after a description block on the header line]
+[test: U+2003 between two description blocks on the header line] [test: U+00A0
+before a comment after a description block on the header line] [test: U+2028
+after a description block on the header line] [test: U+2029 between the
+direction and a description block on the header line] [test: U+2029 between two
+description blocks on the header line]
+
+A block over several lines keeps its lines, since those versions draw each line
+of it as the text of a period: its text lines are indented as in any block, its
+`}` stands at the indentation of the statement, a block without text keeps a
+line break between its braces (`accDescr {` and `}`), where the printed `{}`
+would join the lines, and a blank line in it stays as one. The statements after
+the `}` stay on its line, one after another, and the gaps between them are
+printed in the same form. [fixture:
+header-and-direction/description-block-over-lines-on-the-header-line-formatted]
+[fixture:
+header-and-direction/description-block-over-lines-then-period-on-the-header-line-formatted]
+[fixture:
+header-and-direction/description-block-over-lines-then-block-over-lines-on-the-header-line-formatted]
+[fixture:
+header-and-direction/description-block-over-lines-blank-line-on-the-header-line-formatted]
+[fixture:
+header-and-direction/description-block-over-lines-directive-before-the-text-on-the-header-line-formatted]
+[fixture:
+header-and-direction/description-block-empty-over-lines-on-the-header-line-formatted]
+[fixture:
+header-and-direction/description-block-empty-over-lines-blank-line-on-the-header-line-formatted]
+[test: U+00A0 after the closing brace of a description block over lines on the
+header line] [test: U+2028 after the closing brace of a description block over
+lines on the header line]
+
+A block after a header without a direction goes to a line of its own, as any
+text there does. [fixture:
+header-and-direction/description-block-after-the-header-without-direction-moves]
 
 A comment after the direction stays on the line (see [Comments](#comments)), and
 a directive before it or after it is placed as everywhere else (see

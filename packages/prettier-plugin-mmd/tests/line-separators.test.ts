@@ -3530,6 +3530,26 @@ const timelineLineSeparatorExamples: readonly (readonly [
     "timeline\n  title\u2029 # c\n  2004 : a\n",
   ],
   [
+    "U+2028 after a description block on the header line",
+    "timeline TD accDescr {alpha}\u2028Phase : done\n",
+    "timeline TD accDescr {alpha}\u2028Phase : done\n",
+  ],
+  [
+    "U+2029 between the direction and a description block on the header line",
+    "timeline TD\u2029accDescr {alpha}\n",
+    "timeline TD\u2029accDescr {alpha}\n",
+  ],
+  [
+    "U+2028 after the closing brace of a description block over lines on the header line",
+    "timeline TD accDescr {\nalpha\n}\u2028Phase : done\n",
+    "timeline TD accDescr {\n    alpha\n  }\u2028Phase : done\n",
+  ],
+  [
+    "U+2029 between two description blocks on the header line",
+    "timeline TD accDescr {a}\u2029accDescr {b}\n",
+    "timeline TD accDescr {a}\u2029accDescr {b}\n",
+  ],
+  [
     "a line separator and a comment line after the closing brace of a description block that starts on the line of the timeline header, before a period",
     "timeline LR accDescr {\nalpha}\u2028%% joined\nPhase : done\n",
     "timeline LR accDescr {\nalpha}\u2028%% joined\nPhase : done\n",
@@ -3541,7 +3561,9 @@ const timelineLineSeparatorExamples: readonly (readonly [
  * or a tab: where a rule reads one whitespace character it is printed as a
  * space, between statements it is dropped, and in a text, and in the
  * whitespace before the colon of a period, it stays (docs/timeline.md,
- * Whitespace characters).
+ * Whitespace characters). After a one-line description block on the header
+ * line, whitespace other than U+2028/U+2029 is one space; U+0085 is text,
+ * not whitespace (docs/timeline.md, Header and direction).
  */
 const timelineWhitespaceExamples: readonly (readonly [
   string,
@@ -3602,6 +3624,291 @@ const timelineWhitespaceExamples: readonly (readonly [
     "U+00A0 inside a section name",
     "timeline\nsection S\u00a0T\n",
     "timeline\n  section S\u00a0T\n",
+  ],
+  [
+    "U+00A0 between the direction and a text on the header line",
+    "timeline TD\u00a0title T\n",
+    "timeline TD\u00a0title T\n",
+  ],
+  [
+    "a run of spaces and tabs around U+00A0 between the direction and a text on the header line",
+    "timeline TD  \u00a0\t title T\n",
+    "timeline TD \u00a0 title T\n",
+  ],
+  [
+    "U+00A0 between the direction and a description block on the header line",
+    "timeline TD\u00a0accDescr {alpha}\n",
+    "timeline TD\u00a0accDescr {alpha}\n",
+  ],
+  [
+    "U+00A0 between the keyword and the brace of a description block on the header line",
+    "timeline TD accDescr\u00a0{alpha}\n",
+    "timeline TD accDescr\u00a0{alpha}\n",
+  ],
+  [
+    "U+00A0 inside the braces of a description block on the header line",
+    "timeline TD accDescr {\u00a0alpha   \u00a0}\n",
+    "timeline TD accDescr {\u00a0alpha \u00a0}\n",
+  ],
+  [
+    "U+00A0 after a description block on the header line",
+    "timeline TD accDescr {alpha}\u00a0Phase : done\n",
+    "timeline TD accDescr {alpha} Phase : done\n",
+  ],
+  [
+    "a run of spaces around U+00A0 after a description block on the header line",
+    "timeline TD accDescr {alpha}  \u00a0  Phase : done\n",
+    "timeline TD accDescr {alpha} Phase : done\n",
+  ],
+  [
+    "U+2003 between two description blocks on the header line",
+    "timeline TD accDescr {a}\u2003accDescr {b}\n",
+    "timeline TD accDescr {a} accDescr {b}\n",
+  ],
+  [
+    "U+00A0 before a comment after a description block on the header line",
+    "timeline TD accDescr {alpha}\u00a0%% c\n",
+    "timeline TD accDescr {alpha} %% c\n",
+  ],
+  [
+    "U+00A0 after the closing brace of a description block over lines on the header line",
+    "timeline TD accDescr {\nalpha\n}\u00a0Phase : done\n",
+    "timeline TD accDescr {\n    alpha\n  }\u00a0Phase : done\n",
+  ],
+  [
+    "U+00A0 before a title after a description block on the header line",
+    "timeline TD accDescr {alpha}\u00a0title T\n",
+    "timeline TD accDescr {alpha} title T\n",
+  ],
+  [
+    "U+00A0 before a section after a description block on the header line",
+    "timeline TD accDescr {alpha}\u00a0section S\n",
+    "timeline TD accDescr {alpha} section S\n",
+  ],
+  [
+    "U+00A0 between two description blocks on the header line",
+    "timeline TD accDescr {alpha}\u00a0accDescr {beta}\n",
+    "timeline TD accDescr {alpha} accDescr {beta}\n",
+  ],
+  [
+    "U+00A0 before a period with two events after a description block on the header line",
+    "timeline TD accDescr {alpha}\u00a0Phase : done : e1\n",
+    "timeline TD accDescr {alpha} Phase : done : e1\n",
+  ],
+  [
+    "U+2003 before a title after a description block on the header line",
+    "timeline TD accDescr {alpha}\u2003title T\n",
+    "timeline TD accDescr {alpha} title T\n",
+  ],
+  [
+    "a space, U+00A0 and a tab after a description block on the header line",
+    "timeline TD accDescr {alpha} \u00a0\tPhase : done\n",
+    "timeline TD accDescr {alpha} Phase : done\n",
+  ],
+  [
+    "U+000B after a description block on the header line",
+    "timeline TD accDescr {alpha}\u000bPhase : done\n",
+    "timeline TD accDescr {alpha} Phase : done\n",
+  ],
+  [
+    "U+000C after a description block on the header line",
+    "timeline TD accDescr {alpha}\u000cPhase : done\n",
+    "timeline TD accDescr {alpha} Phase : done\n",
+  ],
+  [
+    "U+1680 after a description block on the header line",
+    "timeline TD accDescr {alpha}\u1680Phase : done\n",
+    "timeline TD accDescr {alpha} Phase : done\n",
+  ],
+  [
+    "U+2000 after a description block on the header line",
+    "timeline TD accDescr {alpha}\u2000Phase : done\n",
+    "timeline TD accDescr {alpha} Phase : done\n",
+  ],
+  [
+    "U+200A after a description block on the header line",
+    "timeline TD accDescr {alpha}\u200aPhase : done\n",
+    "timeline TD accDescr {alpha} Phase : done\n",
+  ],
+  [
+    "U+202F after a description block on the header line",
+    "timeline TD accDescr {alpha}\u202fPhase : done\n",
+    "timeline TD accDescr {alpha} Phase : done\n",
+  ],
+  [
+    "U+205F after a description block on the header line",
+    "timeline TD accDescr {alpha}\u205fPhase : done\n",
+    "timeline TD accDescr {alpha} Phase : done\n",
+  ],
+  [
+    "U+3000 after a description block on the header line",
+    "timeline TD accDescr {alpha}\u3000Phase : done\n",
+    "timeline TD accDescr {alpha} Phase : done\n",
+  ],
+  [
+    "U+FEFF after a description block on the header line",
+    "timeline TD accDescr {alpha}\ufeffPhase : done\n",
+    "timeline TD accDescr {alpha} Phase : done\n",
+  ],
+  [
+    "U+0085 stays text after a description block on the header line",
+    "timeline TD accDescr {alpha}\u0085Phase : done\n",
+    "timeline TD accDescr {alpha}\u0085Phase : done\n",
+  ],
+  [
+    "no whitespace after a description block on the header line",
+    "timeline TD accDescr {alpha}Phase : done\n",
+    "timeline TD accDescr {alpha}Phase : done\n",
+  ],
+  [
+    "U+00A0 before a directive after a description block on the header line",
+    "timeline TD accDescr {alpha}\u00a0%%{init: {}}%%Phase : done\n",
+    "timeline TD accDescr {alpha}\u00a0%%{init: {}}%%Phase : done\n",
+  ],
+  [
+    "U+00A0 after a directive after a description block on the header line",
+    "timeline TD accDescr {alpha}%%{init: {}}%%\u00a0Phase : done\n",
+    "timeline TD accDescr {alpha}%%{init: {}}%%\u00a0Phase : done\n",
+  ],
+  [
+    "a space and U+2028 after a description block on the header line",
+    "timeline TD accDescr {alpha} \u2028Phase : done\n",
+    "timeline TD accDescr {alpha} \u2028Phase : done\n",
+  ],
+  [
+    "U+2029 and U+00A0 after a description block on the header line",
+    "timeline TD accDescr {alpha}\u2029\u00a0Phase : done\n",
+    "timeline TD accDescr {alpha}\u2029\u00a0Phase : done\n",
+  ],
+  [
+    "U+00A0 before a statement after a padded description block on the header line",
+    "timeline TD accDescr { alpha }\u00a0Phase : done\n",
+    "timeline TD accDescr { alpha }\u00a0Phase : done\n",
+  ],
+  [
+    "U+00A0 before a title after a padded description block on the header line",
+    "timeline TD accDescr { alpha }\u00a0title T\n",
+    "timeline TD accDescr { alpha }\u00a0title T\n",
+  ],
+  [
+    "U+00A0 before a section after a padded description block on the header line",
+    "timeline TD accDescr { alpha }\u00a0section S\n",
+    "timeline TD accDescr { alpha }\u00a0section S\n",
+  ],
+  [
+    "U+00A0 before another block after a padded description block on the header line",
+    "timeline TD accDescr { alpha }\u00a0accDescr {beta}\n",
+    "timeline TD accDescr { alpha }\u00a0accDescr {beta}\n",
+  ],
+  [
+    "U+00A0 before a comment after a padded description block on the header line",
+    "timeline TD accDescr { alpha }\u00a0%% c\n",
+    "timeline TD accDescr { alpha }\u00a0%% c\n",
+  ],
+  [
+    "U+00A0 before a statement after an empty description block on the header line",
+    "timeline TD accDescr {}\u00a0Phase : done\n",
+    "timeline TD accDescr {}\u00a0Phase : done\n",
+  ],
+  [
+    "U+00A0 before a title after an empty description block on the header line",
+    "timeline TD accDescr {}\u00a0title T\n",
+    "timeline TD accDescr {}\u00a0title T\n",
+  ],
+  [
+    "U+00A0 before a section after an empty description block on the header line",
+    "timeline TD accDescr {}\u00a0section S\n",
+    "timeline TD accDescr {}\u00a0section S\n",
+  ],
+  [
+    "U+00A0 before another block after an empty description block on the header line",
+    "timeline TD accDescr {}\u00a0accDescr {beta}\n",
+    "timeline TD accDescr {}\u00a0accDescr {beta}\n",
+  ],
+  [
+    "U+00A0 before a comment after an empty description block on the header line",
+    "timeline TD accDescr {}\u00a0%% c\n",
+    "timeline TD accDescr {}\u00a0%% c\n",
+  ],
+  [
+    "U+00A0 before a statement after an empty description block glued to its keyword on the header line",
+    "timeline TD accDescr{}\u00a0Phase : done\n",
+    "timeline TD accDescr{}\u00a0Phase : done\n",
+  ],
+  [
+    "U+00A0 before a title after an empty description block glued to its keyword on the header line",
+    "timeline TD accDescr{}\u00a0title T\n",
+    "timeline TD accDescr{}\u00a0title T\n",
+  ],
+  [
+    "U+00A0 before a section after an empty description block glued to its keyword on the header line",
+    "timeline TD accDescr{}\u00a0section S\n",
+    "timeline TD accDescr{}\u00a0section S\n",
+  ],
+  [
+    "U+00A0 before another block after an empty description block glued to its keyword on the header line",
+    "timeline TD accDescr{}\u00a0accDescr {beta}\n",
+    "timeline TD accDescr{}\u00a0accDescr {beta}\n",
+  ],
+  [
+    "U+00A0 before a comment after an empty description block glued to its keyword on the header line",
+    "timeline TD accDescr{}\u00a0%% c\n",
+    "timeline TD accDescr{}\u00a0%% c\n",
+  ],
+  [
+    "U+00A0 after an unpadded description block on the header line",
+    "timeline TD accDescr {alpha}\u00a0Phase : done\n",
+    "timeline TD accDescr {alpha} Phase : done\n",
+  ],
+  [
+    "U+00A0 after a right-padded description block on the header line",
+    "timeline TD accDescr {alpha }\u00a0Phase : done\n",
+    "timeline TD accDescr {alpha } Phase : done\n",
+  ],
+  [
+    "U+00A0 after a left-padded description block on the header line",
+    "timeline TD accDescr { alpha}\u00a0Phase : done\n",
+    "timeline TD accDescr { alpha} Phase : done\n",
+  ],
+  [
+    "U+00A0 after an unpadded multi-word description block on the header line",
+    "timeline TD accDescr {a b}\u00a0Phase : done\n",
+    "timeline TD accDescr {a b} Phase : done\n",
+  ],
+  [
+    "U+00A0 after a description block containing a directive on the header line",
+    "timeline TD accDescr {%%{init: {}}%%alpha}\u00a0Phase : done\n",
+    "timeline TD accDescr {%%{init: {}}%%alpha} Phase : done\n",
+  ],
+  [
+    "U+00A0 stays after wide padding on the header line",
+    "timeline TD accDescr {  alpha  }\u00a0Phase : done\n",
+    "timeline TD accDescr { alpha }\u00a0Phase : done\n",
+  ],
+  [
+    "U+00A0 stays after tab padding on the header line",
+    "timeline TD accDescr {\talpha\t}\u00a0Phase : done\n",
+    "timeline TD accDescr { alpha }\u00a0Phase : done\n",
+  ],
+  [
+    "U+00A0 stays after multi-word padding on the header line",
+    "timeline TD accDescr { a b }\u00a0Phase : done\n",
+    "timeline TD accDescr { a b }\u00a0Phase : done\n",
+  ],
+  [
+    "U+00A0 stays after an empty block with whitespace on the header line",
+    "timeline TD accDescr {  }\u00a0Phase : done\n",
+    "timeline TD accDescr { }\u00a0Phase : done\n",
+  ],
+  [
+    "U+00A0 stays after an empty glued block with whitespace on the header line",
+    "timeline TD accDescr{ }\u00a0Phase : done\n",
+    "timeline TD accDescr{ }\u00a0Phase : done\n",
+  ],
+  [
+    "U+00A0 stays after padding around a directive on the header line",
+    "timeline TD accDescr { %%{init: {}}%%alpha }\u00a0Phase : done\n",
+    "timeline TD accDescr { %%{init: {}}%%alpha }\u00a0Phase : done\n",
   ],
 ]
 
