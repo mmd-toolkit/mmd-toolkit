@@ -32470,6 +32470,42 @@ const unreadWhitespaceTokenAddedCases = [
         "the tokens of the string are not one String token or StringFragment tokens: StringFragment, RawText, StringFragment",
     },
   },
+  {
+    case: "tokens-134-eventmodeling-accdescr-leading-indentation",
+    diagram: "eventmodeling",
+    fixture: "gram-common-leading-directive-both-sides",
+    index: 6,
+    range: [40, 42],
+    expected: {
+      where: "RawText at 40-42",
+      message:
+        "starts with whitespace or a line terminator where no value starts",
+    },
+  },
+  {
+    case: "tokens-134-eventmodeling-accdescr-space-before-brace",
+    diagram: "eventmodeling",
+    fixture: "gram-common-block-leading-directive",
+    index: 7,
+    range: [45, 46],
+    expected: {
+      where: "RawText at 45-46",
+      message:
+        "starts with whitespace or a line terminator where no value starts",
+    },
+  },
+  {
+    case: "tokens-134-eventmodeling-accdescr-inline-space-before-brace",
+    diagram: "eventmodeling",
+    fixture: "common-inline",
+    index: 9,
+    range: [46, 47],
+    expected: {
+      where: "RawText at 46-47",
+      message:
+        "starts with whitespace or a line terminator where no value starts",
+    },
+  },
 ] as const
 
 it.each(unreadWhitespaceTokenAddedCases)(
