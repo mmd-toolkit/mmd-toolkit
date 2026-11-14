@@ -16,6 +16,7 @@ import {
   diagramTypesWithJisonAccessibilityLines,
   isReadAsAccValueByOlderVersions,
 } from "./acc-value-join.ts"
+import { spansLinesThatCannotJoin } from "./layout.ts"
 import { printedToken } from "./spelling.ts"
 import { treeviewBoxCharacters } from "./treeview-characters.ts"
 import { collapseRuns, staysAsWritten } from "./text-runs.ts"
@@ -332,10 +333,13 @@ function followingOf(
  * writes such a block with the `:` before the text is read, so that the rules
  * of the diagram type print the whitespace next to the directive. The caller
  * prints the statement on a line of its own, where no statement stays with it
- * on its line, as the form with the `:` runs to the end of the line; where
- * statements stay together on a line, it passes `endsItsLine` for the last of
- * them, and the statement stays as written where anything but whitespace and
- * trivia follows it on its line.
+ * on its line, as the form with the `:` runs to the end of the line. Where
+ * what the source holds after the statement stays on its printed line, the
+ * caller passes `keepsFollowingOnItsLine`. The statement then stays as written
+ * where anything but whitespace and trivia follows it on its line. The caller
+ * passes `printedFrom` at the first preceding statement that stays on the
+ * printed line, or at the block itself when it is printed alone; for a stretch,
+ * it is the stretch start, but never before the source line of the block.
  */
 export function printAccessibilityLine(
   source: Source,
@@ -345,7 +349,8 @@ export function printAccessibilityLine(
         readonly range: readonly [number, number]
       }
     | undefined,
-  endsItsLine = false,
+  printedFrom: number,
+  keepsFollowingOnItsLine = false,
   omitted: readonly Range[] = [],
 ): string | undefined {
   const block = readDescriptionBlock(source, statement, omitted)
@@ -354,8 +359,20 @@ export function printAccessibilityLine(
     statement === undefined ||
     block.beforeBrace.length > 0 ||
     block.beforeText.length > 0 ||
-    (endsItsLine && holdsStatementAfter(source, statement.range[1])) ||
+    (keepsFollowingOnItsLine &&
+      holdsStatementAfter(source, statement.range[1])) ||
     !commentsAfterAllowed(source, statement.range[1])
+  ) {
+    return undefined
+  }
+  // Keep the block where joining its lines changes the ignored `;` or the
+  // end of its last line. Include only preceding statements that stay on its
+  // printed line, since the line rule reads them too (docs/compatibility.md,
+  // A description block on one line).
+  if (
+    spansLinesThatCannotJoin(source, printedFrom, statement.range[1], {
+      ignoresTrivia: true,
+    })
   ) {
     return undefined
   }

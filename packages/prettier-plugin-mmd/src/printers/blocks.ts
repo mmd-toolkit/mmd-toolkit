@@ -627,12 +627,17 @@ export function printBlock<Statement extends Positioned>(
   /**
    * The line `accDescr: text` that stands for a unit that is a description
    * block on one line (see `printAccessibilityLine`), with what the printer
-   * puts before the statement, or undefined. `endsItsLine` is true where the
-   * unit is the last of the statements that stay together on a line.
+   * puts before the statement, or undefined. `keepsFollowingOnItsLine` is
+   * true where what the source holds after the statement stays on its printed
+   * line, so a following statement cannot go to a line of its own
+   * (docs/compatibility.md, A description block on one line). `printedFrom`
+   * is the stretch start, no earlier than the source line of the block, or
+   * the statement start when it is printed on a line of its own.
    */
   function accessibilityLineOf(
     unit: Statement,
-    endsItsLine: boolean,
+    printedFrom: number,
+    keepsFollowingOnItsLine: boolean,
   ): Doc | undefined {
     const only: OnlyStatement | undefined =
       rules.onlyStatementOf === undefined
@@ -642,7 +647,8 @@ export function printBlock<Statement extends Positioned>(
     const line = printAccessibilityLine(
       source,
       only.statement,
-      endsItsLine,
+      printedFrom,
+      keepsFollowingOnItsLine,
       only.omitted,
     )
     if (line === undefined) return undefined
@@ -718,12 +724,14 @@ export function printBlock<Statement extends Positioned>(
   }
 
   /**
-   * Whether anything stays after the last statement of a stretch on its printed
-   * line: what the stretch keeps after it on its line (a `;` that the line rule
-   * does not remove), or a statement that the gap before it attaches to the
+   * Whether what the source holds after the last statement of a stretch stays
+   * on its printed line, so a following statement cannot go to a line of its
+   * own: what the stretch keeps after it (a `;` that the line rule does not
+   * remove), or a statement that the gap before it attaches to the
    * line (`BlockRules.writtenGapBefore`). A statement that the stretch does not
    * cover goes to a line of its own, so the last statement is printed alone on
-   * its line, as one that starts a line is (see `accessibilityLineOf`).
+   * its line, as one that starts a line is (docs/compatibility.md, A
+   * description block on one line; see `accessibilityLineOf`).
    */
   function staysAfterStretch(stretch: Stretch, last: Statement): boolean {
     const after = findStatementAfter(source, rules.printedEnd(last))
@@ -794,6 +802,7 @@ export function printBlock<Statement extends Positioned>(
         (index === covered.length - 1
           ? accessibilityLineOf(
               statement,
+              Math.max(stretch.start, lineStartOf(source, statement.range[0])),
               staysAfterStretch(stretch, statement),
             )
           : undefined) ?? docs[stretch.first + index],
@@ -970,7 +979,8 @@ export function printBlock<Statement extends Positioned>(
       pushLine({
         doc: withLeading(
           gap.leading,
-          accessibilityLineOf(statement, false) ?? docs[index],
+          accessibilityLineOf(statement, statement.range[0], false) ??
+            docs[index],
         ),
         ...writtenBreak,
         ...(writtenIndentation === undefined ? {} : { writtenIndentation }),

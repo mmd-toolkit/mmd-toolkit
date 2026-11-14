@@ -2564,6 +2564,10 @@ and in a C4 diagram a block after an empty block, `accDescr {}accDescr {D}`, is
 box), the characters of the drawing before the keyword and between the keyword
 and the `{` are redrawn, not printed, so they do not keep the block. [fixture:
 flowchart/accessibility-lines/block-last-on-a-line-with-a-semicolon] [fixture:
+c4/description-blocks/block-starts-on-kept-line-statement-after-brace] [fixture:
+c4/description-blocks/block-starts-on-kept-line-semicolon-text-statement-after-brace]
+[fixture: c4/description-blocks/block-ends-on-kept-line-statement-after-brace]
+[fixture:
 er/accessibility-statements/block-starts-on-a-kept-line-statement-after-the-brace]
 [fixture:
 er/accessibility-statements/block-starts-on-a-kept-line-block-after-the-brace]
@@ -2697,6 +2701,38 @@ block holds, or would not be read as the block is:
   flowchart/accessibility-lines/block-before-another-statement-on-a-kept-line]
   [fixture: flowchart/accessibility-lines/block-on-style-line-kept] [fixture:
   c4/statements-one-per-line/description-null-adjacency]
+- The text holds a `;`, and the form with the colon would put the text on a line
+  that stays as written, so that the line rule of mermaid.js (see
+  [Lines that hold a `;`](#lines-that-hold-a-)) ignores another `;` than it does
+  in the block, or the last line of the block is a line that a `;` ends (see
+  [A line that a `;` ends](#a-line-that-a--ends)). The rule reads the statements
+  before the block on the line that it would stand on: in
+  `A["style:#x"]; accDescr {`, `d;e`, and `} Z`, the rule ignores the `;` after
+  the string with the block, and the `;` of `d;e` in the form with the colon,
+  which leaves the first `;` as a separator that mermaid.js rejects (an ER
+  diagram) or reads as other text (a flowchart). The block stays as it is.
+  [fixture:
+  er/accessibility-statements/block-text-semicolon-after-style-text-statement-after-brace]
+  [fixture:
+  er/accessibility-statements/block-text-semicolon-after-style-text-no-following-statement]
+  [fixture:
+  er/accessibility-statements/block-text-semicolon-after-style-text-on-opening-line]
+  [fixture:
+  er/accessibility-statements/block-text-semicolon-after-style-text-on-closing-line]
+  [fixture:
+  flowchart/accessibility-lines/block-text-semicolon-after-style-text-kept]
+  [fixture: state/multi-line-values/block-last-line-ended-by-semicolon-kept]
+  [test: flowchart LS semicolon inside block] [test: flowchart PS semicolon
+  inside block] Where the statement before the block is printed on a line of its
+  own, or the rule ignores the same `;` in both forms, the block is printed in
+  the form with the colon. [fixture:
+  flowchart/accessibility-lines/block-text-semicolon-after-plain-text-converted]
+  [fixture:
+  er/accessibility-statements/block-text-semicolon-after-style-text-on-separate-printed-line-statement-after-brace]
+  [fixture:
+  er/accessibility-statements/block-text-semicolon-after-style-text-on-separate-printed-line-no-following-statement]
+  [fixture:
+  er/accessibility-statements/block-text-semicolon-after-style-text-on-separate-printed-line-on-closing-line]
 - The text holds a `%%`, or a U+2028 or U+2029, in an architecture, cynefin,
   gitGraph, info, packet, pie, radar, railroad, treemap, treeView, or wardley
   diagram. These diagram types read the description with
