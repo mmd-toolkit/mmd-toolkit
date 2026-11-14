@@ -31443,6 +31443,66 @@ const commentCutMergedTokenCases = [
     second: 5,
     range: [28, 38],
   },
+  {
+    case: "tokens-358b-class-several-regions",
+    diagram: "class",
+    fixture: "lex-acc-title-line-separator-comment-line-two-regions",
+    expected: {
+      where: "Comment at 25-29",
+      message: "lies inside RawText at 23-32",
+    },
+    first: 3,
+    second: 4,
+    range: [23, 32],
+  },
+  {
+    case: "tokens-358b-er-several-regions",
+    diagram: "er",
+    fixture: "lex-acc-descr-block-line-separator-comment-line-two-regions",
+    expected: {
+      where: "Comment at 23-27",
+      message: "lies inside RawText at 21-30",
+    },
+    first: 3,
+    second: 4,
+    range: [21, 30],
+  },
+  {
+    case: "tokens-358b-flowchart-several-regions",
+    diagram: "flowchart",
+    fixture: "lex-acc-descr-block-line-separator-comment-line-two-regions",
+    expected: {
+      where: "Comment at 25-29",
+      message: "lies inside RawText at 23-32",
+    },
+    first: 4,
+    second: 5,
+    range: [23, 32],
+  },
+  {
+    case: "tokens-358b-sequence-several-regions",
+    diagram: "sequence",
+    fixture: "lex-data-alias-line-separator-comment-line-two-regions",
+    expected: {
+      where: "Comment at 42-46",
+      message: "lies inside RawText at 31-49",
+    },
+    first: 4,
+    second: 5,
+    range: [31, 49],
+  },
+  {
+    case: "tokens-358b-state-several-regions",
+    diagram: "state",
+    fixture: "lex-acc-descr-block-line-separator-comment-line-two-regions",
+    expected: {
+      where: "Comment at 29-33",
+      message: "lies inside RawText at 27-36",
+    },
+    first: 3,
+    second: 4,
+    range: [27, 36],
+  },
 ] as const
 
 const commentCutWrittenValueCases = [
@@ -32125,6 +32185,385 @@ it.each(unreadTextUnitTokenRemovedCases)(
       broken,
       "tokens",
       broken.tokens.filter((_, index) => index !== theCase.index),
+    )
+    expect(checkTree(input, broken)).toContainEqual(theCase.expected)
+  },
+)
+
+/**
+ * The recorded tree of `fixture` with `text` written at `at`: everything at or
+ * after `at` moves by its length, and a record that runs across `at` grows by
+ * it.
+ */
+function insertText(
+  diagram: DiagramType,
+  fixture: string,
+  at: number,
+  text: string,
+): { input: string; tree: CheckedRoot } {
+  const recorded = recordedTree(diagram, fixture)
+  const input = recorded.input.slice(0, at) + text + recorded.input.slice(at)
+  const tree = copyOf(recorded.tree)
+  const placedRecords: Placed[] = [
+    ...nodesOf(tree).filter((node) => node !== tree),
+    ...tree.tokens,
+    ...tree.comments,
+    ...tree.directives,
+  ]
+  for (const placed of placedRecords) {
+    const start =
+      placed.range[0] >= at ? placed.range[0] + text.length : placed.range[0]
+    const end =
+      placed.range[1] > at ? placed.range[1] + text.length : placed.range[1]
+    span(input, placed, start, end)
+  }
+  span(input, tree, 0, input.length)
+  return { input, tree }
+}
+
+// packages/parser/docs/tokens.md, Comment regions in tokens: a fragment that is
+// empty is no token. Each case adds an empty token where a comment region ends
+// inside a unit.
+const commentRegionEmptyFragmentCases = [
+  {
+    case: "tokens-358b-agentflow-empty-fragment",
+    diagram: "agentflow",
+    fixture: "comment-ellipse-body-u2028",
+    index: 5,
+    point: 36,
+    kind: "RawText",
+  },
+  {
+    case: "tokens-358b-class-empty-fragment",
+    diagram: "class",
+    fixture: "db-note-comment-line-inside-string",
+    index: 7,
+    point: 39,
+    kind: "StringFragment",
+  },
+  {
+    case: "tokens-358b-er-empty-fragment",
+    diagram: "er",
+    fixture: "db-acc-descr-block-comment-line",
+    index: 4,
+    point: 37,
+    kind: "RawText",
+  },
+  {
+    case: "tokens-358b-flowchart-empty-fragment",
+    diagram: "flowchart",
+    fixture: "html-tag-value-opened-in-comment-line",
+    index: 5,
+    point: 24,
+    kind: "RawText",
+  },
+  {
+    case: "tokens-358b-sequence-empty-fragment",
+    diagram: "sequence",
+    fixture: "db-acc-descr-block-line-separator-then-comment-line",
+    index: 4,
+    point: 34,
+    kind: "RawText",
+  },
+  {
+    case: "tokens-358b-state-empty-fragment",
+    diagram: "state",
+    fixture: "lex-acc-descr-block-line-separator-comment-line-cr",
+    index: 4,
+    point: 33,
+    kind: "RawText",
+  },
+] as const
+
+it.each(commentRegionEmptyFragmentCases)(
+  "reports an empty fragment given a token in $case",
+  (theCase) => {
+    const { input, tree } = recordedTree(theCase.diagram, theCase.fixture)
+    const broken = copyOf(tree)
+    setField(broken, "tokens", [
+      ...broken.tokens.slice(0, theCase.index),
+      tokenOf(input, theCase.kind, { text: "", from: theCase.point }),
+      ...broken.tokens.slice(theCase.index),
+    ])
+    expect(checkTree(input, broken)).toContainEqual({
+      where: `${theCase.kind} at ${theCase.point}-${theCase.point}`,
+      message: "is empty",
+    })
+  },
+)
+
+// packages/parser/docs/tokens.md, Comment regions in tokens: the
+// whitespace-only lines of a region lie outside every token. Each case writes a
+// line of two spaces right before a comment line inside a unit, which makes it
+// part of the region (packages/spec/docs/common.md, Comment lines), and gives
+// it a RawText token.
+const commentRegionWhitespaceLineCases = [
+  {
+    case: "tokens-358b-class-region-whitespace-line",
+    diagram: "class",
+    fixture: "lex-acc-descr-block-line-separator-then-comment-line",
+    at: 25,
+    expected: {
+      where: "RawText at 25-27",
+      message: "ends with whitespace or a line terminator where no value ends",
+    },
+  },
+  {
+    case: "tokens-358b-er-region-whitespace-line",
+    diagram: "er",
+    fixture: "db-acc-descr-block-comment-line",
+    at: 33,
+    expected: {
+      where: "RawText at 33-35",
+      message:
+        "starts with whitespace or a line terminator where no value starts",
+    },
+  },
+  {
+    case: "tokens-358b-flowchart-region-whitespace-line",
+    diagram: "flowchart",
+    fixture: "html-tag-value-opened-in-comment-line",
+    at: 18,
+    expected: {
+      where: "RawText at 18-20",
+      message: "ends with whitespace or a line terminator where no value ends",
+    },
+  },
+  {
+    case: "tokens-358b-sequence-region-whitespace-line",
+    diagram: "sequence",
+    fixture: "db-acc-descr-block-line-separator-then-comment-line",
+    at: 30,
+    expected: {
+      where: "RawText at 30-32",
+      message:
+        "starts with whitespace or a line terminator where no value starts",
+    },
+  },
+  {
+    case: "tokens-358b-state-region-whitespace-line",
+    diagram: "state",
+    fixture: "lex-acc-descr-block-line-separator-comment-line-cr",
+    at: 29,
+    expected: {
+      where: "RawText at 29-31",
+      message: "ends with whitespace or a line terminator where no value ends",
+    },
+  },
+] as const
+
+it.each(commentRegionWhitespaceLineCases)(
+  "reports a whitespace-only line of a region given a token in $case",
+  (theCase) => {
+    const { input, tree } = insertText(
+      theCase.diagram,
+      theCase.fixture,
+      theCase.at,
+      "  \n",
+    )
+    expect(checkTree(input, tree)).toEqual([])
+    const broken = copyOf(tree)
+    const index = broken.tokens.findIndex((item) => item.range[0] >= theCase.at)
+    setField(broken, "tokens", [
+      ...broken.tokens.slice(0, index),
+      tokenOf(input, "RawText", { text: "  ", from: theCase.at }),
+      ...broken.tokens.slice(index),
+    ])
+    expect(checkTree(input, broken)).toContainEqual(theCase.expected)
+  },
+)
+
+// packages/parser/docs/tokens.md, Comment regions in tokens: a line with only
+// `%%` is no comment line, so it stays in the fragment after the region. Each
+// case writes such a line after a comment line inside a unit, gives it to the
+// fragment after the region and to the value of the unit at `valueAt`, and
+// makes the `%%` a Comment record.
+const commentRegionPercentLineCases = [
+  {
+    case: "tokens-358b-class-percent-line-in-fragment",
+    diagram: "class",
+    fixture: "lex-acc-descr-block-line-separator-then-comment-line",
+    comment: 0,
+    expected: {
+      where: "Comment at 30-32",
+      message: "lies inside RawText at 30-34",
+    },
+    valueAt: 2,
+  },
+  {
+    case: "tokens-358b-er-percent-line-in-fragment",
+    diagram: "er",
+    fixture: "db-acc-descr-block-comment-line",
+    comment: 0,
+    expected: {
+      where: "Comment at 38-40",
+      message: "the mark %% is no mark of the comments of a ErDiagram",
+    },
+    valueAt: 2,
+  },
+  {
+    case: "tokens-358b-sequence-percent-line-in-fragment",
+    diagram: "sequence",
+    fixture: "db-acc-descr-block-line-separator-then-comment-line",
+    comment: 0,
+    expected: {
+      where: "Comment at 35-37",
+      message: "lies inside RawText at 35-39",
+    },
+    valueAt: 2,
+  },
+  {
+    case: "tokens-358b-flowchart-percent-line-in-fragment",
+    diagram: "flowchart",
+    fixture: "html-tag-value-opened-in-comment-line",
+    comment: 0,
+    expected: {
+      where: "Comment at 25-27",
+      message: "the mark %% is no mark of the comments of a FlowchartDiagram",
+    },
+    valueAt: 3,
+  },
+  {
+    case: "tokens-358b-state-percent-line-in-fragment",
+    diagram: "state",
+    fixture: "lex-acc-descr-block-line-separator-comment-line-cr",
+    comment: 0,
+    expected: {
+      where: "Comment at 34-36",
+      message: "lies inside RawText at 34-38",
+    },
+    valueAt: 2,
+  },
+  {
+    case: "tokens-358b-journey-percent-line-in-fragment",
+    diagram: "journey",
+    fixture: "lex-acc-descr-block-line-separator-then-comment-line",
+    comment: 0,
+    expected: {
+      where: "Comment at 25-27",
+      message: "lies inside RawText at 25-29",
+    },
+    valueAt: 2,
+  },
+  {
+    case: "tokens-358b-packet-percent-line-in-fragment",
+    diagram: "packet",
+    fixture: "common-block-comment",
+    comment: 0,
+    expected: {
+      where: "Comment at 31-33",
+      message: "lies inside RawText at 31-35",
+    },
+    valueAt: 2,
+  },
+  {
+    case: "tokens-358b-radar-percent-line-in-fragment",
+    diagram: "radar",
+    fixture: "common-block-comment",
+    comment: 0,
+    expected: {
+      where: "Comment at 34-36",
+      message: "lies inside RawText at 34-38",
+    },
+    valueAt: 2,
+  },
+  {
+    case: "tokens-358b-timeline-percent-line-in-fragment",
+    diagram: "timeline",
+    fixture: "lex-acc-descr-block-line-separator-then-comment-line",
+    comment: 0,
+    expected: {
+      where: "Comment at 27-29",
+      message: "lies inside RawText at 27-31",
+    },
+    valueAt: 2,
+  },
+  {
+    case: "tokens-358b-treemap-percent-line-in-fragment",
+    diagram: "treemap",
+    fixture: "common-block-comment",
+    comment: 0,
+    expected: {
+      where: "Comment at 32-34",
+      message: "lies inside RawText at 32-36",
+    },
+    valueAt: 2,
+  },
+  {
+    case: "tokens-358b-architecture-percent-line-in-fragment",
+    diagram: "architecture",
+    fixture: "comment-in-quoted-label",
+    comment: 0,
+    expected: {
+      where: "Comment at 42-44",
+      message: "lies inside StringFragment at 42-47",
+    },
+    valueAt: 2,
+  },
+  {
+    case: "tokens-358b-c4-percent-line-in-fragment",
+    diagram: "c4",
+    fixture: "db-grid-comment-line-acc-descr-block",
+    comment: 0,
+    expected: {
+      where: "Comment at 28-30",
+      message: "lies inside RawText at 28-32",
+    },
+    valueAt: 2,
+  },
+  {
+    case: "tokens-358b-info-percent-line-in-fragment",
+    diagram: "info",
+    fixture: "comment-block",
+    comment: 0,
+    expected: {
+      where: "Comment at 23-25",
+      message: "lies inside RawText at 23-27",
+    },
+    valueAt: 2,
+  },
+] as const
+
+it.each(commentRegionPercentLineCases)(
+  "reports a percent line after a region made a comment in $case",
+  (theCase) => {
+    const recorded = recordedTree(theCase.diagram, theCase.fixture)
+    const at = recorded.tree.comments[theCase.comment].range[1] + 1
+    const { input, tree } = insertText(
+      theCase.diagram,
+      theCase.fixture,
+      at,
+      "%%\n",
+    )
+    const fragment = tree.tokens.find((item) => item.range[0] === at + 3)!
+    extendToken(input, fragment, at, fragment.range[1])
+    const holder = nodesOf(tree)
+      .filter(
+        (node) =>
+          node !== tree &&
+          typeof node.value === "string" &&
+          node.range[0] < at &&
+          at < node.range[1],
+      )
+      .sort(
+        (left, right) =>
+          left.range[1] - left.range[0] - (right.range[1] - right.range[0]),
+      )[0]
+    const value = String(holder.value)
+    setField(
+      holder,
+      "value",
+      `${value.slice(0, theCase.valueAt)}%%\n${value.slice(theCase.valueAt)}`,
+    )
+    expect(checkTree(input, tree)).toEqual([])
+    const broken = copyOf(tree)
+    setField(
+      broken,
+      "comments",
+      [
+        ...broken.comments,
+        commentOf(input, "%%", { text: "%%", from: at }),
+      ].sort((left, right) => left.range[0] - right.range[0]),
     )
     expect(checkTree(input, broken)).toContainEqual(theCase.expected)
   },
