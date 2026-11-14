@@ -702,6 +702,12 @@ mermaid.js はそのブロックのテキストを読まず、印字が `}` を�
 [fixture: accessibility-statements/block-not-closed-text-on-the-opening-line]
 [fixture: accessibility-statements/block-not-closed-without-text]
 [fixture: accessibility-statements/block-not-closed-after-a-statement-on-its-line]
+
+キーワードとコロンまたは括弧の間や、その後ろにあるディレクティブは、
+その位置に残します。
+括弧の横にディレクティブがある 1 行のブロックは、まずコロンの形にして、
+[1 行の説明ブロック](./compatibility.ja.md#1-行の説明ブロック)
+に従って印字します。
 [fixture: accessibility-statements/directive-around-colon-and-braces]
 
 入力

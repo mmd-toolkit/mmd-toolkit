@@ -1250,6 +1250,23 @@ Db で LF 後の字下げが取り除かれるためです。
 [fixture: railroad/description-blocks/ir-lines]
 [fixture: railroad/description-blocks/peg-lines]
 
+同じ行の後ろにその図種固有のコメントが続くブロックは、
+ブロックのまま残します（ABNF 図では `accDescr { d } ; c`、
+EBNF 図では `(* c *)` または `/* c */`、PEG 図では `# c`、
+railroad 図では `/* c */`）。
+コロンの形では、そのコメントが本文の一部になるからです。
+`%%` で始まるコメントは本文を終えるので、
+ブロックは `accDescr: d %% c` になります。
+[fixture: railroad/description-blocks/abnf-comment-after-block-kept]
+[fixture: railroad/description-blocks/ebnf-iso-comment-after-block-kept]
+[fixture: railroad/description-blocks/ebnf-c-comment-after-block-kept]
+[fixture: railroad/description-blocks/ir-comment-after-block-kept]
+[fixture: railroad/description-blocks/peg-comment-after-block-kept]
+[fixture: railroad/description-blocks/abnf-percent-comment-after-block]
+[fixture: railroad/description-blocks/ebnf-percent-comment-after-block]
+[fixture: railroad/description-blocks/ir-percent-comment-after-block]
+[fixture: railroad/description-blocks/peg-percent-comment-after-block]
+
 ディレクティブは原文全体を保ちます。
 コメントかディレクティブだけのブロックも内容を残します。
 [fixture: railroad/description-blocks/abnf-trivia]

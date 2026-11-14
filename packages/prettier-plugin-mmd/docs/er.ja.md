@@ -407,13 +407,14 @@ mermaid.js は、テキストを読む前にディレクティブを取り除く
 [fixture: statements-one-per-line/number-name-then-name-split]
 [corpus fixture: er/lex-name-number-then-letter]
 [corpus fixture: er/lex-name-number2-then-letter]
-`subgraph` キーワードと名前の間に ASCII 外の文字か U+2028、U+2029 があれば、
-書かれたままにします。
-`end` の後にそうした文字や区切りが続く文も、`end` の行に、
+`subgraph` キーワードと名前の間に ASCII 外の文字か、
+空白とタブ以外の空白文字（U+2028、U+2029、U+00A0、U+3000 など。diagrams/er.md、
+空白）があれば、書かれたままにします。
+`end` の後にそうした文字が続く文も、`end` の行に、
 隙間を書かれたままにして残します。
 `endé` は、固定した版ではキーワード `end` と実体 `é` ですが、
 対象にする版の一部では 1 つの名前だからです。
-`end` の行の終わりにある U+2028 や U+2029 は、1 回だけ残します。
+`end` の行の終わりにある同じ種類の空白文字は、1 回だけ残します。
 コメントやディレクティブの前や、空行を挟んで別の文が続くときも同じです。
 [test: er/statements-one-per-line/R63-er-ascii-after-LS-e]
 [test: er/statements-one-per-line/R44-er-after-separator-LS-e]
@@ -422,7 +423,13 @@ mermaid.js は、テキストを読む前にディレクティブを取り除く
 [test: er/statements-one-per-line/R74-er-LS-g-directive]
 [test: er/statements-one-per-line/R74-er-PS-g-comment]
 [test: er/statements-one-per-line/R74-er-PS-g-directive]
-U+2028 や U+2029 で始まる文も、対象にする版の一部がテキストを、
+[test: U+00A0 in place of the separator: er/statements-one-per-line/R63-er-ascii-after-LS-e]
+[test: U+3000 in place of the separator: er/statements-one-per-line/R63-er-ascii-after-LS-e]
+[test: U+00A0 in place of the separator: er/statements-one-per-line/R44-er-after-separator-LS-e]
+[test: U+3000 in place of the separator: er/statements-one-per-line/R44-er-after-separator-LS-e]
+[test: U+00A0 in place of the separator: er/statements-one-per-line/R74-er-LS-g-directive]
+[test: U+3000 in place of the separator: er/statements-one-per-line/R74-er-LS-g-directive]
+そうした文字で始まる文も、対象にする版の一部がテキストを、
 空白の終わりから `class` の文、または方向の行として読む場合は、
 後ろの文と一緒に残します。
 固定した版は、その文字を最初の名前の一部として読みますが、
@@ -498,6 +505,33 @@ U+2028 や U+2029 で始まる文も、対象にする版の一部がテキス�
 [test: a line that starts with U+2028 and class, and a name with a class]
 [test: a line that starts with U+2028, a space, and class]
 [test: a line that starts with U+2028, a space, a name, and a direction line]
+[test: U+00A0 in place of the separator: er/statements-one-per-line/class-names-after-directive-ls]
+[test: U+3000 in place of the separator: er/statements-one-per-line/class-names-after-directive-ls]
+[test: U+00A0 in place of the separator: er/statements-one-per-line/class-second-name-after-directive-ps]
+[test: U+00A0 in place of the separator: er/statements-one-per-line/R45-er-class-LS-d]
+[test: U+3000 in place of the separator: er/statements-one-per-line/R45-er-class-LS-d]
+[test: U+00A0 in place of the separator: er/statements-one-per-line/R45-er-class-LS-e]
+[test: U+00A0 in place of the separator: er/statements-one-per-line/R45-er-second-name-LS-d]
+[test: U+3000 in place of the separator: er/statements-one-per-line/R45-er-second-name-LS-d]
+[test: U+00A0 in place of the separator: er/statements-one-per-line/R45-er-second-name-LS-e]
+[test: U+00A0 in place of the separator: er/statements-one-per-line/R45-er-nonascii-name-LS-d]
+[test: U+00A0 in place of the separator: er/statements-one-per-line/R45-er-nonascii-name-LS-e]
+[test: U+00A0 in place of the separator: a line of two ER statements that starts with U+2028]
+[test: U+3000 in place of the separator: a line of two ER statements that starts with U+2028]
+[test: U+00A0 in place of the separator: a line that starts with U+2029 and class, and two more statements]
+[test: U+3000 in place of the separator: a line that starts with U+2029 and class, and two more statements]
+[test: U+00A0 in place of the separator: a statement with U+2028 and class after a space, and two more statements]
+[test: U+00A0 in place of the separator: a line that starts with U+2028, class and a character outside ASCII, and one more statement]
+[test: U+00A0 in place of the separator: a line that starts with U+2028 and CLASS in upper case, and two more statements]
+[test: U+00A0 in place of the separator: U+2028 between the end of an ER subgraph and the next entity]
+[test: U+3000 in place of the separator: U+2028 between the end of an ER subgraph and the next entity]
+[test: U+00A0 in place of the separator: U+2029 between the end of an ER subgraph and a relationship]
+[test: U+00A0 in place of the separator: U+2028 after the end of an ER subgraph that nothing follows]
+[test: U+3000 in place of the separator: U+2028 after the end of an ER subgraph that nothing follows]
+[test: U+00A0 in place of the separator: a name in quotes after the end of an ER subgraph and a U+2028]
+[test: U+3000 in place of the separator: a name in quotes after the end of an ER subgraph and a U+2028]
+[test: U+00A0 in place of the separator: a directive between the end of an ER subgraph and a U+2028]
+[test: U+00A0 in place of the separator: a directive between the end of an ER subgraph and a U+2029 and a name in quotes]
 空白とタブ以外の空白文字（U+2028、U+2029、
 その前に置かれたノーブレークスペース）で始まる文は、同じ行のほかの文の後にあり、
 その空白の後に、空白、改行、ディレクティブだけを挟んでコメントが続くとき、
@@ -517,8 +551,9 @@ mermaid.js は、その空白を実体の名前として読み、その実体を
 [test: U+2028 alone after a name in quotes, at the end of its line]
 [test: U+2028 alone after a name in quotes, before a directive]
 [test: U+2028 alone at the start of its line, before a comment]
-最初の実体の名前が U+2028 か U+2029 だけの文が、同じ行のほかの文の後にあり、
-その文字の後に、属性ブロック、別名、CSS のクラス、関係が続くときも、
+最初の実体の名前が空白とタブ以外の空白文字だけ（U+2028、U+2029、U+00A0、U+3000、
+U+FEFF などが 1 つか複数）の文が、同じ行のほかの文の後にあり、その名前の後に、
+属性ブロック、別名、CSS のクラス、関係が続くときも、
 その行に残します（`"Alpha"`、その文字、`{ int x }`）。
 対象にする版のうち、最も古いいくつかの版は、その文字を空白として読み、
 残りを前の文の一部として読むので、残りが行を始めることはできないからです。
@@ -531,6 +566,24 @@ mermaid.js は、その空白を実体の名前として読み、その実体を
 [test: U+2028 and an alias after a name in quotes]
 [test: U+2028 and a CSS class after a name in quotes]
 [test: U+2028 and a second name after a name in quotes]
+[test: U+00A0 in place of the separator: U+2028 and an attribute block after a name in quotes]
+[test: U+3000 in place of the separator: U+2028 and an attribute block after a name in quotes]
+[test: U+00A0 in place of the separator: U+2028 and an attribute block touching it after a name in quotes]
+[test: U+3000 in place of the separator: U+2028 and an attribute block touching it after a name in quotes]
+[test: U+00A0 in place of the separator: U+2028, a directive, and an attribute block after a name in quotes]
+[test: U+3000 in place of the separator: U+2028, a directive, and an attribute block after a name in quotes]
+[test: U+00A0 in place of the separator: U+2029 and a relationship after a name in quotes]
+[test: U+3000 in place of the separator: U+2029 and a relationship after a name in quotes]
+[test: U+00A0 in place of the separator: U+2028 and an alias after a name in quotes]
+[test: U+3000 in place of the separator: U+2028 and an alias after a name in quotes]
+[test: U+00A0 in place of the separator: U+2028 and a CSS class after a name in quotes]
+[test: U+3000 in place of the separator: U+2028 and a CSS class after a name in quotes]
+[test: U+00A0, U+2028, and an attribute block after a name in quotes]
+[test: U+3000, U+2028, and an attribute block after a name in quotes]
+[test: U+FEFF and an attribute block after a name in quotes]
+[test: U+2003 and an attribute block after a name in quotes]
+[test: U+3000 and an attribute block after a name in quotes]
+[test: U+00A0 and a second name after a name in quotes]
 複数の属性がある行は、その行の後ろの属性が、
 `int a List~int~ b` のように `~` を 2 つ持つときに、書かれたまま印字します。
 対象にする版のうち最も古い版が、ジェネリクスの型を、
