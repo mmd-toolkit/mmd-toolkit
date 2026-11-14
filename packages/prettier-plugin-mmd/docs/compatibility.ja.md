@@ -2754,6 +2754,14 @@ treeView、ユースケース、wardley の図（残りの 12 図種）では、
 ほかの文と同じく独立した行に移します。
 `accDescr { %%{init: {}}%% a } A` は、
 `accDescr: %%{init: {}}%%a` と `A` の 2 行になります。
+数えるのは、ブロックが終わる行です。
+文を同じ行に保つ行で始まり、そうでない行で終わるブロックも、コロンの形で印字し、
+`}` の後の文は独立した行に移します。
+`A["x;y"] accDescr {`、`d`、`} Z` は、`A["x;y"] accDescr: d` と `Z` に、
+1 回で置き換わります。
+1 回目はブロックのまま、2 回目にコロンの形になる、ということはありません。
+ブロックが終わる行が文を同じ行に保つ行のとき（`} B["x;y"]`）は、
+ブロックのままです。
 文を同じ行に保つ行のブロックは、その行の最後の文で、後ろに空白、コメント、
 ディレクティブだけが続く場合に、コロンの形で印字します。
 `A --> B; accDescr {a;b}` は `A --> B; accDescr: a;b` になり、
@@ -2763,6 +2771,13 @@ C4 図で空のブロックの後にあるブロック `accDescr {}accDescr {D}`
 キーワードの前とキーワードと `{` の間の描画の文字は、印字せずに描き直すため、
 それらの文字があることは、ブロックを残す理由になりません。
 [fixture: flowchart/accessibility-lines/block-last-on-a-line-with-a-semicolon]
+[fixture: er/accessibility-statements/block-starts-on-a-kept-line-statement-after-the-brace]
+[fixture: er/accessibility-statements/block-starts-on-a-kept-line-block-after-the-brace]
+[fixture: er/accessibility-statements/block-starts-on-a-kept-line-text-on-the-brace-line]
+[fixture: er/accessibility-statements/block-starts-on-a-direction-line-statement-after-the-brace]
+[fixture: er/accessibility-statements/block-followed-by-a-statement-on-a-kept-line-kept]
+[fixture: state/multi-line-values/block-starts-on-a-kept-line-statement-after-the-brace]
+[fixture: xychart/accessibility-statements/block-starts-on-a-kept-line-statement-after-the-brace]
 [fixture: flowchart/accessibility-lines/block-text-with-semicolon]
 [fixture: c4/description-blocks/block-after-an-empty-block]
 [fixture: treeview/modes/ordinary-block]

@@ -4,6 +4,7 @@ import type { Range } from "@mmd-toolkit/ast"
 import type { MermaidAst } from "../parser.ts"
 import type { Gap, ItemRun } from "./gap.ts"
 import { printAccessibilityLine } from "./accessibility-form.ts"
+import { findStatementAfter } from "./accessibility-lines.ts"
 import type { GapRule } from "./atoms.ts"
 import {
   endsWithSpaceOrTab,
@@ -717,6 +718,23 @@ export function printBlock<Statement extends Positioned>(
   }
 
   /**
+   * Whether anything stays after the last statement of a stretch on its printed
+   * line: what the stretch keeps after it on its line (a `;` that the line rule
+   * does not remove), or a statement that the gap before it attaches to the
+   * line (`BlockRules.writtenGapBefore`). A statement that the stretch does not
+   * cover goes to a line of its own, so the last statement is printed alone on
+   * its line, as one that starts a line is (see `accessibilityLineOf`).
+   */
+  function staysAfterStretch(stretch: Stretch, last: Statement): boolean {
+    const after = findStatementAfter(source, rules.printedEnd(last))
+    if (after !== undefined && after < stretch.end) return true
+    const following = statements[stretch.after]
+    return (
+      following !== undefined && rules.writtenGapBefore?.(following) === true
+    )
+  }
+
+  /**
    * Prints a stretch: as written, with the spellings that are printed in one
    * form (see `writtenWithRespellings`), when one of its lines is verbatim or
    * it holds a statement that holds statements, and otherwise its statements
@@ -774,7 +792,10 @@ export function printBlock<Statement extends Positioned>(
               rules.omittedRanges,
             ),
         (index === covered.length - 1
-          ? accessibilityLineOf(statement, true)
+          ? accessibilityLineOf(
+              statement,
+              staysAfterStretch(stretch, statement),
+            )
           : undefined) ?? docs[stretch.first + index],
       )
       position = rules.printedEnd(statement)

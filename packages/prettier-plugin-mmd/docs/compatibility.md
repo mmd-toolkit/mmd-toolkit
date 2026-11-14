@@ -2549,16 +2549,35 @@ diagram types that end the text of the form with the colon before a `%%`, as the
 list below says. A statement that follows the block on its line goes to a line
 of its own, as any statement does, where the line does not keep its statements
 together: `accDescr { %%{init: {}}%% a } A` is `accDescr: %%{init: {}}%%a` and
-`A`, on two lines. A block on a line that keeps its statements together is
-printed in the form with the colon where it is the last statement of the line
-and only whitespace, comments, and directives follow it:
-`A --> B; accDescr {a;b}` is `A --> B; accDescr: a;b`, and in a C4 diagram a
-block after an empty block, `accDescr {}accDescr {D}`, is
+`A`, on two lines. The line that counts is the one that the block ends on: a
+block that starts on a line that keeps its statements together and ends on one
+that does not is printed in the form with the colon too, with the statement
+after its `}` on a line of its own, so that `A["x;y"] accDescr {`, `d`, and
+`} Z` are `A["x;y"] accDescr: d` and `Z` at once, and not the block the first
+time and the form with the colon the second. Where the line that the block ends
+on keeps its statements together, as in `} B["x;y"]`, the block stays. A block
+on a line that keeps its statements together is printed in the form with the
+colon where it is the last statement of the line and only whitespace, comments,
+and directives follow it: `A --> B; accDescr {a;b}` is `A --> B; accDescr: a;b`,
+and in a C4 diagram a block after an empty block, `accDescr {}accDescr {D}`, is
 `accDescr {}accDescr: D`. In a treeView diagram drawn with branch characters (a
 box), the characters of the drawing before the keyword and between the keyword
 and the `{` are redrawn, not printed, so they do not keep the block. [fixture:
 flowchart/accessibility-lines/block-last-on-a-line-with-a-semicolon] [fixture:
-flowchart/accessibility-lines/block-text-with-semicolon] [fixture:
+er/accessibility-statements/block-starts-on-a-kept-line-statement-after-the-brace]
+[fixture:
+er/accessibility-statements/block-starts-on-a-kept-line-block-after-the-brace]
+[fixture:
+er/accessibility-statements/block-starts-on-a-kept-line-text-on-the-brace-line]
+[fixture:
+er/accessibility-statements/block-starts-on-a-direction-line-statement-after-the-brace]
+[fixture:
+er/accessibility-statements/block-followed-by-a-statement-on-a-kept-line-kept]
+[fixture:
+state/multi-line-values/block-starts-on-a-kept-line-statement-after-the-brace]
+[fixture:
+xychart/accessibility-statements/block-starts-on-a-kept-line-statement-after-the-brace]
+[fixture: flowchart/accessibility-lines/block-text-with-semicolon] [fixture:
 c4/description-blocks/block-after-an-empty-block] [fixture:
 treeview/modes/ordinary-block] [fixture:
 treeview/modes/box-common-block-zero-column] [fixture:
