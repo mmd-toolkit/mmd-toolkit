@@ -933,6 +933,16 @@ Mermaidは順に試す方向の選択肢と、その選択肢内の最後の出�
 [fixture: direction/zero-description-indented]
 [fixture: direction/zero-style-direction]
 
+印字器が 1 行に保つ行で、先頭の桁から中身のある説明ブロックで始まり、
+同じ区間のブロックの後ろに direction の文がある行も、字下げを元のまま保ちます。
+行の文は通常の規則で印字します。
+字下げすると、direction 行がブロックごと読み、
+説明は空になるためです（[字下げ](./flowchart.ja.md#字下げ)を参照）。
+[fixture: direction/joined-direction-column-zero]
+[fixture: direction/split-direction-after-description]
+[fixture: direction/unclosed-directive-before-direction]
+[test: agentflow direction after a U+2029 and a comment line]
+
 入力（エスケープ表記）: `"agentflow-beta TB\nflow F\ndirection TD\nA\nend"`。
 [fixture: direction/direction-td-change-unsafe]
 

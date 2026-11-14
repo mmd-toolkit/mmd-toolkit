@@ -134,6 +134,27 @@ accDescr: d ; direction LR
   end
 ```
 
+A line that the printer keeps together, that starts at the first column with a
+description block that has a text, and that holds a direction statement after
+the block in the same segment of the line, is kept at its written indentation
+too. At the first column the lexer reads `accDescr {D;}` as the block and then
+the direction line; after an indentation the first whitespace character starts a
+direction line that takes the block with it, and the description is empty. The
+statements of the line are printed by their ordinary rules, and the line stays
+on one line. A block without a text reads the same empty description with and
+without the indentation, a line that the printer splits has its statements on
+lines of their own, and what a line feed, a U+2028, or a U+2029 ends is another
+segment, which the direction line does not reach back over: none of these is
+kept at its column by this rule. [fixture:
+indentation/joined-direction-column-zero] [fixture:
+indentation/swimlane-joined-direction-column-zero] [fixture:
+indentation/joined-direction-separators-and-trivia] [fixture:
+indentation/unclosed-directive-before-direction] [fixture:
+indentation/split-direction-after-description] [fixture:
+indentation/empty-description-before-direction-control] [fixture:
+indentation/whitespace-description-before-direction-control] [test: flowchart
+direction after a U+2028 and a joined comment line]
+
 ### Statements one per line
 
 A `;` that the line rule ignores after a word does not separate it from the next

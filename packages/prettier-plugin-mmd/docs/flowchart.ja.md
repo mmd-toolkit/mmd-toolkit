@@ -140,6 +140,27 @@ accDescr: d ; direction LR
   end
 ```
 
+印字器が 1 行に保つ行で、先頭の桁から中身のある説明ブロックで始まり、
+同じ区間のブロックの後ろに direction の文がある行は、字下げも元のまま保ちます。
+先頭の桁では、字句解析器は `accDescr {D;}` をブロックとして読み、
+そのあとを direction 行として読みます。
+字下げすると、最初の空白文字から始まる direction 行がブロックごと読み、
+説明は空になります。
+行の文は通常の規則で印字し、行は 1 行のままです。
+中身のないブロックは、字下げがあってもなくても同じ空の説明を読みます。
+印字器が分ける行は、文を別々の行に印字します。
+改行、U+2028、U+2029 で終わる部分は別の区間で、
+direction 行はそれより前へは届きません。
+どれもこの規則では桁を保ちません。
+[fixture: indentation/joined-direction-column-zero]
+[fixture: indentation/swimlane-joined-direction-column-zero]
+[fixture: indentation/joined-direction-separators-and-trivia]
+[fixture: indentation/unclosed-directive-before-direction]
+[fixture: indentation/split-direction-after-description]
+[fixture: indentation/empty-description-before-direction-control]
+[fixture: indentation/whitespace-description-before-direction-control]
+[test: flowchart direction after a U+2028 and a joined comment line]
+
 ### 1 行に 1 文
 
 語の後で行の規則が無視する `;` は、その語と次に残る `;` を分けません。

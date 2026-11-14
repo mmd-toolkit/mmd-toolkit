@@ -861,6 +861,17 @@ direction/planned-description-direction] [fixture:
 direction/zero-title-indented] [fixture: direction/zero-description-indented]
 [fixture: direction/zero-style-direction]
 
+A line that the printer keeps together, that starts at the first column with a
+description block that has a text, and that holds a direction statement after
+the block in the same segment of the line keeps its written indentation as well,
+with its statements printed by the ordinary rules: indented, the direction line
+would take the block with it and the description would be empty (see
+[Indentation](./flowchart.md#indentation)). [fixture:
+direction/joined-direction-column-zero] [fixture:
+direction/split-direction-after-description] [fixture:
+direction/unclosed-directive-before-direction] [test: agentflow direction after
+a U+2029 and a comment line]
+
 Input (escaped): `"agentflow-beta TB\nflow F\ndirection TD\nA\nend"`. [fixture:
 direction/direction-td-change-unsafe]
 

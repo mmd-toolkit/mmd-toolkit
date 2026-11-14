@@ -592,6 +592,16 @@ const sequenceExamples: readonly (readonly [string, string, string])[] = [
  */
 const flowchartExamples: readonly (readonly [string, string, string])[] = [
   [
+    "flowchart direction after a U+2028 and a joined comment line",
+    "flowchart TD\naccDescr {D;}\u2028%% c\ndirection TB;\n",
+    "flowchart TD\n  accDescr {D;}\u2028%% c\ndirection TB;\n",
+  ],
+  [
+    "agentflow direction after a U+2029 and a comment line",
+    "agentflow-beta TB\naccDescr {D;}\u2029%% c\ndirection TB;\n",
+    "agentflow-beta TB\n  accDescr {D;} %% c\n  direction TB;\n",
+  ],
+  [
     "U+2028 after a `;` before an edge id",
     "flowchart LR\nA[style:#x];\u2028e1@-->B\n",
     "flowchart LR\n  A[style:#x];\u2028e1@-->B\n",
