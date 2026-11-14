@@ -579,6 +579,26 @@ const BROKEN_TREES: readonly BrokenTree[] = [
     type: "RawText",
     message: "touches the token before it",
   },
+  // parser/docs/tokens.md, Comment: a `;` that the line rule ignores and no
+  // character of the comment follows is a token after the comment.
+  {
+    name: "a diagram comment that ends with the `;` that the line rule ignores, which has no token",
+    fixture: "sequence/tokens-comment-then-ignored-semicolon",
+    mutate: (root) => {
+      const comment = root.comments[0]
+      const semicolon = findToken(root, "IgnoredSemicolon")
+      Object.assign(root, {
+        tokens: root.tokens.filter((token) => token !== semicolon),
+      })
+      Object.assign(comment, {
+        range: [comment.range[0], semicolon.range[1]],
+        value: comment.value + semicolon.value,
+      })
+    },
+    type: "Comment",
+    message:
+      "ends with a `;` that the line rule ignores, which is an IgnoredSemicolon token after the comment",
+  },
 ]
 
 /** The recorded tree and the input of `fixture`. */

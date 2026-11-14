@@ -44,7 +44,8 @@ const problems: TreeProblem[] = checkTree(text, tree)
   [db-from-tree.md](./db-from-tree.md)), not taken from the tree, so that a
   comment or a directive that the tree lacks is found. The tree gives the
   `IgnoredSemicolon` tokens: which `;` the line rule ignores depends on the line
-  segment and on the diagram.
+  segment and on the diagram. Only the end of a diagram comment reads the line
+  rule from the text (Comments).
 
 - HTML attribute-quote positions use the same shared conversion as the Db: they
   are found once over the whole source after the frontmatter, including comments
@@ -133,6 +134,20 @@ const problems: TreeProblem[] = checkTree(text, tree)
   railroad/ir-comment-c-open-mark-directive] [fixture:
   railroad/ebnf-comment-c-open-mark-directive] [fixture:
   railroad/ebnf-comment-iso-open-mark-directive]
+
+  A diagram comment does not end with a `;` that the line rule ignores: such a
+  `;` after which no character of the comment follows is an `IgnoredSemicolon`
+  token after the comment (parser/docs/tokens.md, Comment). The check finds
+  which `;` the line rule ignores in the text, in each line segment without its
+  directives and the comment regions (`LineRule` of
+  `src/check-tree/line-rule.ts`), so that a comment that covers such a `;` is
+  reported whether or not the tree has the token. A comment that a comment
+  region follows on its line is not asked, because the whole comment goes on
+  past the `;` into the region.
+
+  [fixture: sequence/tokens-comment-then-ignored-semicolon] [fixture:
+  eventmodeling/tokens-comment-line-ignored-semicolon] [fixture:
+  state/tokens-ignored-semicolon-in-comment-before-comment-line]
 
 - **Directives.** The directives of the tree are those of the scan, each with
   its `closed` and the range of the match without the whitespace at its end
@@ -2459,21 +2474,29 @@ line terminator to be reported with its exact message.
 `tests/check-tree-comments.test.ts` makes, by hand, a diagram comment and a
 comment line that end at a line feed, a CRLF, a lone CR, and the end of the
 text, and requires the range that ends after the line terminator to be reported.
-`tests/check-tree-cut-tokens.test.ts` is a list of named cases, each of which
-takes the recorded tree of a named fixture and writes a directive, or a `;` that
-the line rule ignores, once, twice, or three times, inside one of its tokens, as
-a parser that cuts the token would record the text. The cases are an
-`Identifier`, a `Numeric`, a `Keyword` (into two fragments in each diagram, and
-into three and four in a flowchart), a `Punctuator` (into two fragments in each
-diagram, where the fragments of a sequence, class, state, and ER diagram are
-texts that the diagram lacks, and into three in a flowchart), and a `String` cut
-into `String` tokens, each cut by a directive or by a `;`. For each, the test
-requires the check to report the problems of the condition that the case names,
-with their exact places and messages, and requires the unedited tree of the
-fixture to have none. A `String` cut into `StringFragment` tokens and a
-`RawText` cut into `RawText` tokens by a directive, in several diagrams, are
-required to have no problem at all. For the `;` that the line rule ignores, the
-recorded trees of `common/entity-css-in-string-label` and
+It also makes, by hand, a diagram comment that ends with the `;` that the line
+rule ignores, in each diagram type that has diagram comments and with each of
+their marks, and requires it to be reported, and the comment that ends before
+that `;`, with the `IgnoredSemicolon` token, to be accepted; further cases give
+the line a `classDef` rule, both rules, a second `;`, a directive, a U+2028 or a
+U+2029, and no rule at all, where the `;` is a character of the comment.
+`tests/check-tree-sequence.test.ts` and `tests/check-tree-eventmodeling.test.ts`
+do the same with a recorded tree whose token is removed and whose comment is
+made to cover the `;`. `tests/check-tree-cut-tokens.test.ts` is a list of named
+cases, each of which takes the recorded tree of a named fixture and writes a
+directive, or a `;` that the line rule ignores, once, twice, or three times,
+inside one of its tokens, as a parser that cuts the token would record the text.
+The cases are an `Identifier`, a `Numeric`, a `Keyword` (into two fragments in
+each diagram, and into three and four in a flowchart), a `Punctuator` (into two
+fragments in each diagram, where the fragments of a sequence, class, state, and
+ER diagram are texts that the diagram lacks, and into three in a flowchart), and
+a `String` cut into `String` tokens, each cut by a directive or by a `;`. For
+each, the test requires the check to report the problems of the condition that
+the case names, with their exact places and messages, and requires the unedited
+tree of the fixture to have none. A `String` cut into `StringFragment` tokens
+and a `RawText` cut into `RawText` tokens by a directive, in several diagrams,
+are required to have no problem at all. For the `;` that the line rule ignores,
+the recorded trees of `common/entity-css-in-string-label` and
 `common/entity-css-semicolon-between-declarations`, with `StringFragment` and
 `RawText` tokens respectively, are required to have no problem. The same file
 makes, by hand, the trees of a run of `Punctuator` fragments of `:::` that cuts

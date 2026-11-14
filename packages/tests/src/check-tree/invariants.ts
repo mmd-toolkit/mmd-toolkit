@@ -15,6 +15,7 @@ import { indexAtOrAfter, RangeIndex } from "../range-index.ts"
 import { tokenIndexOf } from "./token-index.ts"
 import { tokensIn, valueHoldersOf } from "./tokens.ts"
 import { DATA_BLOCK_NODE_TYPES } from "./node-types.ts"
+import { LineRule } from "./line-rule.ts"
 import { label } from "./problems.ts"
 import type { Problems } from "./problems.ts"
 import type {
@@ -290,11 +291,12 @@ function isLineSegmentEndCode(code: number): boolean {
  * comment region follows it on its line, after U+2028 or U+2029, it is a
  * fragment and ends at its last character that is not whitespace; and a `;`
  * that the line rule ignores and that is the last character of its line is an
- * `IgnoredSemicolon` token after it. No comment ends with a line terminator,
- * and it runs past a line terminator only where a directive in it takes that
- * line terminator. Where the document of the diagram ends a diagram comment at
- * the end of its line segment ({@link COMMENT_ENDS_AT_LINE_SEGMENT}), a U+2028
- * or a U+2029 ends it too, and `endsComment` says so.
+ * `IgnoredSemicolon` token after it, never the last character of the comment.
+ * No comment ends with a line terminator, and it runs past a line terminator
+ * only where a directive in it takes that line terminator. Where the document
+ * of the diagram ends a diagram comment at the end of its line segment
+ * ({@link COMMENT_ENDS_AT_LINE_SEGMENT}), a U+2028 or a U+2029 ends it too, and
+ * `endsComment` says so.
  */
 export function checkDiagramCommentEnd(
   text: string,
@@ -303,6 +305,7 @@ export function checkDiagramCommentEnd(
   endsComment: (code: number) => boolean,
   problems: Problems,
   index: CommentIndex,
+  lineRule: LineRule,
 ): void {
   const where = label(comment)
   const end = comment.range[1]
@@ -340,6 +343,13 @@ export function checkDiagramCommentEnd(
     )
     return
   }
+  // A `;` that the line rule ignores and that no character of the comment
+  // follows is a token after the comment, not the end of it.
+  problems.expect(
+    !lineRule.ignores(end - 1),
+    where,
+    "ends with a `;` that the line rule ignores, which is an IgnoredSemicolon token after the comment",
+  )
   const after = ignoredSemicolonStarts.has(end) ? end + 1 : end
   const atLineEnd = after === text.length || endsComment(text.charCodeAt(after))
   problems.expect(atLineEnd, where, "does not end where its line ends")
@@ -423,6 +433,7 @@ function checkComments(
 ): void {
   const regions = scan.commentLines.map((line) => line.region)
   const index = new CommentIndex(scan, regions)
+  const lineRule = new LineRule(text, root.frontmatter?.range[1] ?? 0, scan)
   const commentStarts = new Set(
     root.comments.map((comment) => comment.range[0]),
   )
@@ -488,6 +499,7 @@ function checkComments(
           endsComment,
           problems,
           index,
+          lineRule,
         )
       else if (regionFollowsOnLine(text, comment.range[1], index.regionStarts))
         problems.expect(
@@ -519,6 +531,7 @@ function checkComments(
         endsComment,
         problems,
         index,
+        lineRule,
       )
     } else {
       // The header is the first token of the diagram, where the body starts;
@@ -555,6 +568,7 @@ function checkComments(
         endsComment,
         problems,
         index,
+        lineRule,
       )
     }
   }
@@ -1005,6 +1019,23 @@ function checkRaw(
 }
 
 /**
+ * The directives and the comment lines of the text of `root`. Where the diagram
+ * keeps a comment line in its statements (agentflow, eventmodeling), only the
+ * comment lines before its body are comment regions.
+ */
+export function scanOfTree(text: string, root: CheckedRoot): SourceScan {
+  const found = scanSource(text, root.frontmatter?.range[1] ?? 0)
+  return preservesCommentLines(text, root)
+    ? {
+        ...found,
+        commentLines: found.commentLines.filter(
+          (line) => line.commentStart < root.body.range[0],
+        ),
+      }
+    : found
+}
+
+/**
  * Checks the conditions that ast.md and positions.md state for every tree,
  * whatever its diagram, in the order of positions.md, Invariants. Problems are
  * added to `problems`.
@@ -1015,15 +1046,7 @@ export function checkInvariants(
   problems: Problems,
 ): void {
   const nodes = nodesOf(root)
-  const found = scanSource(text, root.frontmatter?.range[1] ?? 0)
-  const scan = preservesCommentLines(text, root)
-    ? {
-        ...found,
-        commentLines: found.commentLines.filter(
-          (line) => line.commentStart < root.body.range[0],
-        ),
-      }
-    : found
+  const scan = scanOfTree(text, root)
   const records: Placed[] = [
     ...(root.frontmatter === null ? [] : [root.frontmatter]),
     ...root.comments,

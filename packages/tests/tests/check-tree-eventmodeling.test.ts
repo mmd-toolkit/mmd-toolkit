@@ -25,7 +25,7 @@ import {
 import { ignored, withPreheader } from "./statement-tree-built.ts"
 import { itFailsEach, nodeWith } from "./check-tree-built.ts"
 import type { BrokenCase, Built } from "./check-tree-built.ts"
-import { setField } from "./check-tree-recorded.ts"
+import { copyOf, recordedTree, setField } from "./check-tree-recorded.ts"
 import { commentOf, locationOf } from "./check-tree-trees.ts"
 
 /** Each optional member owns its own leading native form, without an EOL field. */
@@ -746,4 +746,30 @@ it("reports taking a later YAML closer after an earlier qualifying body-present 
   expect(JSON.stringify(checkTree(built.source, built.tree))).toContain(
     "complete hidden YAML or DIRECTIVE form",
   )
+})
+
+it("fails a native Comment that ends with the `;` that the line rule ignores, which is an IgnoredSemicolon token after it", () => {
+  // tokens.md, Comment: the `;` of `%% style A fill:#f00;` lies after the
+  // comment, as a token, because no character of the comment follows it.
+  const { input, tree } = recordedTree(
+    "eventmodeling",
+    "tokens-comment-line-ignored-semicolon",
+  )
+  expect(checkTree(input, tree)).toEqual([])
+  const broken = copyOf(tree)
+  const comment = broken.comments[0]
+  const range = [comment.range[0], comment.range[1] + 1] as const
+  setField(
+    broken,
+    "tokens",
+    broken.tokens.filter((token) => token.type !== "IgnoredSemicolon"),
+  )
+  setField(comment, "range", range)
+  setField(comment, "loc", locationOf(input, range))
+  setField(comment, "value", input.slice(range[0] + 2, range[1]))
+  expect(checkTree(input, broken)).toContainEqual({
+    where: `Comment at ${range[0]}-${range[1]}`,
+    message:
+      "ends with a `;` that the line rule ignores, which is an IgnoredSemicolon token after the comment",
+  })
 })

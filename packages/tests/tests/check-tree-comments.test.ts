@@ -9,6 +9,7 @@ import type {
   TreeProblem,
 } from "../src/check-tree/types.ts"
 import type { TreeRange } from "../src/db-from-tree/tree.ts"
+import type { Piece } from "./check-tree-trees.ts"
 import {
   directiveOf,
   handMadeRoot,
@@ -58,7 +59,7 @@ function treeWith(
   bodyType: string,
   comments: readonly CommentSpec[],
   directives: readonly CheckedDirective[] = [],
-  extraTokens: readonly (readonly [string, string])[] = [],
+  extraTokens: readonly (readonly [string, string | Piece])[] = [],
 ): CheckedRoot {
   const records: CheckedComment[] = comments.map((spec) => {
     const markLength = spec.mark === null ? 0 : spec.mark.length
@@ -775,5 +776,191 @@ describe("checkTree: where a diagram comment ends, further", () => {
         `Comment at ${at}-${source.indexOf(";")}: does not end where its line ends`,
       ),
     ).toBe(true)
+  })
+})
+
+describe("checkTree: a diagram comment and the `;` that the line rule ignores", () => {
+  // parser/docs/tokens.md, Comment: a diagram comment is found as if a `;` that
+  // the line rule ignores were not there, so such a `;` lies inside the comment
+  // when characters of the comment lie on both sides of it, and otherwise it is
+  // an `IgnoredSemicolon` token after the comment.
+  const ENDS_WITH_IGNORED =
+    "ends with a `;` that the line rule ignores, which is an IgnoredSemicolon token after the comment"
+
+  // The diagram types that have diagram comments after their header, with
+  // their marks (the comment of a mark alone before the header, which every
+  // type has, is not here); eventmodeling has its own check, in its test file.
+  const COMMENT_MARKS: readonly (readonly [string, readonly string[]])[] = [
+    ["TreeviewDiagram", ["%%"]],
+    ["CynefinDiagram", ["%%"]],
+    ["WardleyDiagram", ["%%"]],
+    ["TreemapDiagram", ["%%"]],
+    ["RadarDiagram", ["%%"]],
+    ["ArchitectureDiagram", ["%%"]],
+    ["GitgraphDiagram", ["%%"]],
+    ["InfoDiagram", ["%%"]],
+    ["PacketDiagram", ["%%"]],
+    ["PieDiagram", ["%%"]],
+    ["UsecaseDiagram", ["%%"]],
+    ["AgentflowDiagram", ["%%"]],
+    ["SequenceDiagram", ["#", "%%", "%"]],
+    ["ClassDiagram", ["%%"]],
+    ["StateDiagram", ["#", "%%"]],
+    ["GanttDiagram", ["%%", "%"]],
+    ["JourneyDiagram", ["#", "%%", "%"]],
+    ["RequirementDiagram", ["#", "%%", "%"]],
+    ["MindmapDiagram", ["%%"]],
+    ["IshikawaDiagram", ["%%"]],
+    ["KanbanDiagram", ["%%"]],
+    ["C4Diagram", ["%%"]],
+    ["VennDiagram", ["%%"]],
+    ["TimelineDiagram", ["#", "%%", "%"]],
+    ["XychartDiagram", ["%%"]],
+    ["QuadrantDiagram", ["%%"]],
+    ["RailroadDiagram", ["%%", "#", ";"]],
+  ]
+
+  for (const [bodyType, marks] of COMMENT_MARKS) {
+    for (const mark of marks) {
+      it(`fails a ${bodyType} comment with the mark ${mark} that ends with the \`;\` that the line rule ignores, and passes it before that \`;\` with its token`, () => {
+        const source = `header\nA ${mark} style:#x;\n`
+        const at = source.indexOf(mark)
+        const semicolon = source.indexOf(";", at + mark.length)
+        const before = treeWith(
+          source,
+          bodyType,
+          [{ mark, range: [at, semicolon] }],
+          [],
+          [["IgnoredSemicolon", { text: ";", from: semicolon }]],
+        )
+        expect(checkTree(source, before)).toEqual([])
+        const covering = treeWith(source, bodyType, [
+          { mark, range: [at, semicolon + 1] },
+        ])
+        expect(checkTree(source, covering)).toContainEqual({
+          where: `Comment at ${at}-${semicolon + 1}`,
+          message: ENDS_WITH_IGNORED,
+        })
+      })
+    }
+  }
+
+  /** The tree of a sequence diagram whose comment is the whole text of its line after `A->>B: x `, with an `IgnoredSemicolon` token at each of `semicolons`. */
+  function sequenceWith(
+    source: string,
+    commentEnd: number,
+    semicolons: readonly number[] = [],
+  ): CheckedRoot {
+    return treeWith(
+      source,
+      "SequenceDiagram",
+      [{ mark: "#", range: [source.indexOf("#"), commentEnd] }],
+      [],
+      semicolons.map((offset) => [
+        "IgnoredSemicolon",
+        { text: ";", from: offset },
+      ]),
+    )
+  }
+
+  it("passes a comment that ends with a `;` that the line rule does not ignore", () => {
+    // No `style` or `classDef` on the line, or no `:` and `#` after it: the
+    // `;` is a character of the comment.
+    for (const line of [
+      "A->>B: x #c;",
+      "A->>B: x #style;",
+      "A->>B: x #style:x;",
+      "A->>B: x #style: #x;",
+      "A->>B: x #style:#x",
+      "A->>B: x #classDef a #x;",
+    ]) {
+      const source = `sequenceDiagram\n${line}\n`
+      expect(
+        checkTree(source, sequenceWith(source, source.length - 1)),
+        line,
+      ).toEqual([])
+    }
+  })
+
+  it("fails a comment that ends with the `;` of a `classDef` line", () => {
+    const source = "sequenceDiagram\nA->>B: x #classDef a:#x;\n"
+    const end = source.length - 1
+    expect(
+      says(checkTree(source, sequenceWith(source, end)), ENDS_WITH_IGNORED),
+    ).toBe(true)
+    expect(checkTree(source, sequenceWith(source, end - 1, [end - 1]))).toEqual(
+      [],
+    )
+  })
+
+  it("fails a comment that ends with the last `;` where both rules match, and passes the comment that ends before it", () => {
+    // `style` ignores the last `;`, and `classDef` the one that is then the
+    // last, so both are tokens or inside the comment, and the comment that
+    // ends at the last one has its character at the end of the line.
+    const source = "sequenceDiagram\nA->>B: x #classDef a:#x; style:#y;\n"
+    const last = source.lastIndexOf(";")
+    expect(
+      says(
+        checkTree(source, sequenceWith(source, last + 1)),
+        ENDS_WITH_IGNORED,
+      ),
+    ).toBe(true)
+    expect(
+      says(
+        checkTree(source, sequenceWith(source, last, [last])),
+        ENDS_WITH_IGNORED,
+      ),
+    ).toBe(false)
+  })
+
+  it("lets a comment end with a `;` that is not the last of its line", () => {
+    // Only the last `;` of the line is ignored: in `;;` the second is the
+    // token, and the first is a character of the comment.
+    const source = "sequenceDiagram\nA->>B: x #style:#x;;\n"
+    const second = source.lastIndexOf(";")
+    expect(checkTree(source, sequenceWith(source, second, [second]))).toEqual(
+      [],
+    )
+    expect(
+      says(
+        checkTree(source, sequenceWith(source, second + 1)),
+        ENDS_WITH_IGNORED,
+      ),
+    ).toBe(true)
+  })
+
+  it("keeps a `;` that the line rule ignores inside a comment when characters of the comment follow it", () => {
+    const source = "sequenceDiagram\nA->>B: x #style:#x; y\n"
+    expect(checkTree(source, sequenceWith(source, source.length - 1))).toEqual(
+      [],
+    )
+  })
+
+  it("reads each line segment alone: a U+2028 or a U+2029 in the comment ends the segment of the rule", () => {
+    // The `;` at the end of the text is the last `;` of its own segment `y;`,
+    // which has no `style`: it is a character of the comment. The `;` before
+    // the separator is the one that the line rule ignores, and it lies inside
+    // the comment, with `y;` after it.
+    for (const separator of ["\u2028", "\u2029"]) {
+      const source = `sequenceDiagram\nA->>B: x #style:#x;${separator}y;\n`
+      expect(
+        checkTree(source, sequenceWith(source, source.length - 1)),
+      ).toEqual([])
+    }
+  })
+
+  it("reads the line without the directives that lie in it", () => {
+    // `style%%{init: {}}%%:#x;` is `style:#x;` without the directive: the `;`
+    // is ignored although `style` and `:#x;` are not next to each other.
+    const source = "sequenceDiagram\nA->>B: x #style%%{init: {}}%%:#x;\n"
+    const directive = directiveOf(source, { text: "%%{init: {}}%%" })
+    const at = source.indexOf("#style")
+    const root = treeWith(
+      source,
+      "SequenceDiagram",
+      [{ mark: "#", range: [at, source.length - 1] }],
+      [directive],
+    )
+    expect(says(checkTree(source, root), ENDS_WITH_IGNORED)).toBe(true)
   })
 })

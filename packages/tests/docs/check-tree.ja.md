@@ -49,6 +49,8 @@ const problems: TreeProblem[] = checkTree(text, tree)
   木にないコメントやディレクティブを見つけるためです。
   木から取るのは `IgnoredSemicolon` のトークンです。
   行の規則がどの `;` を無視するかは、行の区切りと図種に依ります。
+  行の規則をテキストから読むのは、
+  図のコメントの終わりだけです（「コメント」の項）。
 
 - HTML 属性の引用符の位置は、Db と同じ共有の変換で、
   フロントマターの後のソース全体から一度求めます。
@@ -145,6 +147,23 @@ const problems: TreeProblem[] = checkTree(text, tree)
   [fixture: railroad/ir-comment-c-open-mark-directive]
   [fixture: railroad/ebnf-comment-c-open-mark-directive]
   [fixture: railroad/ebnf-comment-iso-open-mark-directive]
+
+  図のコメントは、行の規則が無視する `;` で終わりません。
+  そのような `;` の後にコメントの文字が続かないときは、
+  コメントの後の `IgnoredSemicolon` のトークンです（parser/docs/tokens.md の
+  Comment）。
+  検査は、行の規則がどの `;` を無視するかを、テキストから見つけます。
+  行の区間ごとに、
+  ディレクティブとコメント領域を除いて読みます（`src/check-tree/line-rule.ts` の
+  `LineRule`）。
+  そのため、そのような `;` を覆うコメントは、
+  木にトークンがあってもなくても報告します。
+  コメント領域が同じ行で後に続くコメントは、問いません。
+  コメント全体が `;` の先の領域まで続くからです。
+
+  [fixture: sequence/tokens-comment-then-ignored-semicolon]
+  [fixture: eventmodeling/tokens-comment-line-ignored-semicolon]
+  [fixture: state/tokens-ignored-semicolon-in-comment-before-comment-line]
 
 - **ディレクティブ。**
   木のディレクティブは走査が見つけたものと同じで、`closed` と、
@@ -2719,6 +2738,16 @@ class 図と ER 図のスタイルは後者です。
 `tests/check-tree-comments.test.ts` は、図のコメントとコメント行が line feed、
 CRLF、単独の CR、テキストの終わりで終わる木を手で作り、
 行終端子の後ろで終わる範囲が報告されることを求めます。
+さらに、行の規則が無視する `;` で終わる図のコメントを、
+図のコメントを持つ各図種とその各印で手で作り、報告されることを求めます。
+その `;` の前で終わり、`IgnoredSemicolon` のトークンを持つコメントは、
+受け入れられることを求めます。
+そのほかの場合は、行に `classDef` の規則がある、両方の規則がある、
+`;` が 2 つ続く、ディレクティブがある、U+2028 や U+2029 がある、
+規則がまったくなくて `;` がコメントの文字である、です。
+`tests/check-tree-sequence.test.ts` と `tests/check-tree-eventmodeling.test.ts`
+は、記録した木からトークンを除き、コメントを `;` まで覆わせて、
+同じことを求めます。
 `tests/check-tree-cut-tokens.test.ts` は、名前を付けた場合の一覧です。
 各場合は、名前を挙げた fixture の記録した木を取り、そのトークンの 1 つの中に、
 ディレクティブ、または行の規則が無視する `;` を、1 回から 3 回書きます。

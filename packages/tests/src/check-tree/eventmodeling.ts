@@ -19,7 +19,12 @@ import {
 } from "./field-rules.ts"
 import type { FieldTable } from "./field-rules.ts"
 import { label } from "./problems.ts"
-import { checkDiagramCommentEnd, CommentIndex } from "./invariants.ts"
+import {
+  checkDiagramCommentEnd,
+  CommentIndex,
+  scanOfTree,
+} from "./invariants.ts"
+import { LineRule } from "./line-rule.ts"
 import type { Problems } from "./problems.ts"
 import {
   childOf,
@@ -530,6 +535,11 @@ function checkComments(
   const scan = scanSource(reading.text, reading.root.frontmatter?.range[1] ?? 0)
   const regions = scan.commentLines.map((line) => line.region)
   const commentIndex = new CommentIndex(scan, regions)
+  const lineRule = new LineRule(
+    reading.text,
+    reading.root.frontmatter?.range[1] ?? 0,
+    scanOfTree(reading.text, reading.root),
+  )
   const semicolons = new Set(
     reading.root.tokens
       .filter((token) => token.type === "IgnoredSemicolon")
@@ -608,6 +618,7 @@ function checkComments(
         isLineTerminatorCode,
         reading.problems,
         commentIndex,
+        lineRule,
       )
     const mark =
       kind === "percent-comment"
