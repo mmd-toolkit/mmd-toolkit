@@ -153,6 +153,29 @@ JSON の内部は不透明に保ちます。
    [fixture: usecase/db-acctitle-empty] [fixture: usecase/db-accdescr-empty]
    [fixture: usecase/config-security-other]
    [fixture: usecase/config-security-other-root-false]
+10. **値の中のコメント領域。**
+    U+2028 と U+2029 は、値の文字であるとともにコメントの始まりなので、
+    その後のコメント領域は変換した形にありません。
+    値は領域の後へ続きます。
+    出典は [コメント行](../../../spec/docs/common.ja.md#コメント行) です。
+    `accTitle: A`、U+2028、`%% c`、改行、`B` のアクセシビリティのタイトルは、
+    `A`、U+2028、`B` です。
+    [fixture: usecase/db-acc-title-line-separator-then-comment-line]
+    アクセシビリティの説明でも同じです。
+    [fixture: usecase/db-acc-descr-line-separator-then-comment-line]
+    説明ブロックでも同じです。
+    [fixture: usecase/db-acc-descr-block-line-separator-then-comment-line]
+    通常の文字列で書いた actor のラベルでも同じで、
+    U+2029 も同じように値を割ります。
+    [fixture: usecase/db-string-line-separator-then-comment-line]
+    [fixture: usecase/db-string-paragraph-separator-then-comment-line]
+    markdown 文字列で書いた actor のラベルでも同じです。
+    [fixture: usecase/db-markdown-string-line-separator-then-comment-line]
+    usecase のステレオタイプでも同じです。
+    [fixture: usecase/db-stereotype-line-separator-then-comment-line]
+    JSON のノードの `value` は、供給された effect から取り、
+    `description` プロパティに `A`、U+2028、`B` を持ちます。
+    [fixture: usecase/db-json-line-separator-then-comment-line]
 
 ## 記録との比較
 

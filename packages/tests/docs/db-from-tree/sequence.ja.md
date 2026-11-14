@@ -507,6 +507,19 @@ U+2028 か U+2029 で終わる行の直後のコメント行は、その行を�
 [fixture: sequence/db-message-text-line-separator-then-directive-line]
 [fixture: sequence/db-message-text-line-separator-then-empty-line]
 
+**値の中のコメント領域。**
+U+2028 と U+2029 は、値の文字であるとともにコメントの始まりなので、
+その後のコメント領域は変換した形にありません。
+値は領域の後へ続きます。
+出典は [コメント行](../../../spec/docs/common.ja.md#コメント行) です。
+`A`、U+2028、`%% c`、改行、`B->>C: x` は、id が `A`、U+2028、
+`B` の参加者からのメッセージになります。
+U+2029 も同じように id run を割ります。
+[fixture: sequence/db-id-run-line-separator-then-comment-line]
+[fixture: sequence/db-id-run-paragraph-separator-then-comment-line]
+参加者のデータブロックの alias の文字列でも同じで、参加者の説明は `A`、U+2028、
+`B` です。 [fixture: sequence/db-data-alias-line-separator-then-comment-line]
+
 ## 矢印
 
 メッセージの `type` は、その矢印の線と記号から決まる番号です。

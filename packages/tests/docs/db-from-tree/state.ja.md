@@ -456,3 +456,32 @@ state/db-acc-descr-unclosed-keeps-title]
 state/db-acc-title-empty-replaces] [fixture: state/db-acc-descr-empty-replaces]
 [fixture: state/db-acc-descr-empty-block-keeps] [fixture:
 state/db-acc-descr-empty-block-keeps-then-transition]
+
+**値の中のコメント領域。**
+U+2028 と U+2029 は、値の文字であるとともにコメントの始まりなので、
+その後のコメント領域は変換した形にありません。
+値は領域の後へ続きます。
+出典は [コメント行](../../../spec/docs/common.ja.md#コメント行) です。
+`accTitle: A`、U+2028、`%% c`、改行、`B` のアクセシビリティのタイトルは、`A`、
+U+2028、`B` です。
+[fixture: state/db-acc-title-line-separator-then-comment-line]
+アクセシビリティの説明でも同じです。
+[fixture: state/db-acc-descr-line-separator-then-comment-line]
+説明ブロックでも同じです。
+[fixture: state/db-acc-descr-block-line-separator-then-comment-line]
+別名の定義の id、CSS クラス、別名の定義の文字列、スタイル、
+行のノートのテキスト、ブロックのノートのテキストでも同じです。
+[fixture: state/db-alias-id-line-separator-then-comment-line]
+[fixture: state/db-css-class-line-separator-then-comment-line]
+[fixture: state/db-string-line-separator-then-comment-line]
+[fixture: state/db-style-line-separator-then-comment-line]
+[fixture: state/db-note-line-line-separator-then-comment-line]
+[fixture: state/db-note-block-line-separator-then-comment-line]
+別名の定義の 2 つ目の説明も続き、先頭の空白を保ちます。
+[fixture: state/db-second-description-line-separator-then-comment-line]
+状態の説明は、U+2028 の後も U+2029 の後も同じように続きます。
+[fixture: state/db-description-line-separator-then-comment-line]
+[fixture: state/db-description-paragraph-separator-then-comment-line]
+要約には方向の値の後のテキストの欄がないので、その fixture は、
+入力が受け入れられることを記録し、方向は `LR` です。
+[fixture: state/db-direction-text-line-separator-then-comment-line]

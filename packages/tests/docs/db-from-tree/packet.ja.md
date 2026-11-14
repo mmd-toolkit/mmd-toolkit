@@ -122,6 +122,24 @@ builder は parser の拒否検査を繰り返しません。
    [fixture: packet/config-init-row-nan-token]
    [fixture: packet/config-init-row-infinity-token]
 
+7. **値の中のコメント領域。**
+   U+2028 と U+2029 は、値の文字であるとともにコメントの始まりなので、
+   その後のコメント領域は変換した形にありません。
+   値は領域の後へ続きます。
+   出典は [コメント行](../../../spec/docs/common.ja.md#コメント行) です。
+   `accTitle:A`、U+2028、`%% c`、改行、`B` のアクセシビリティのタイトルは、`A`、
+   U+2028、`B` です。
+   [fixture: packet/db-acc-title-line-separator-then-comment-line]
+   図のタイトルでも同じです。
+   [fixture: packet/db-title-line-separator-then-comment-line]
+   アクセシビリティの説明でも同じです。
+   [fixture: packet/db-acc-descr-line-separator-then-comment-line]
+   説明ブロックでも同じです。
+   [fixture: packet/db-acc-descr-block-line-separator-then-comment-line]
+   文字列で書かれたブロックのラベルでも同じで、U+2029 も同じように値を割ります。
+   [fixture: packet/db-string-line-separator-then-comment-line]
+   [fixture: packet/db-string-paragraph-separator-then-comment-line]
+
 ## 記録との比較
 
 `specified.json` があればそれを、なければ `expected.json` を使い、

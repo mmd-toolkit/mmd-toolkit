@@ -235,6 +235,22 @@ line は、読んだあとのラベルの 1 つでも空でなければ、
 [fixture: xychart/db-data-everything]
 [fixture: xychart/db-data-xy-title-and-plots]
 
+**値の中のコメント領域。**
+U+2028 と U+2029 は、値の文字であるとともにコメントの始まりなので、
+その後のコメント領域は変換した形にありません。
+値は領域の後へ続きます。
+出典は [コメント行](../../../spec/docs/common.ja.md#コメント行) です。
+`accTitle: A`、U+2028、`%% c`、改行、`B` のアクセシビリティのタイトルは、`A`、
+U+2028、`B` です。
+[fixture: xychart/db-acc-title-line-separator-then-comment-line]
+アクセシビリティの説明でも同じです。
+[fixture: xychart/db-acc-descr-line-separator-then-comment-line]
+説明ブロックでも同じです。
+[fixture: xychart/db-acc-descr-block-line-separator-then-comment-line]
+引用符で囲んだ図のタイトルの文字列でも同じで、U+2029 も同じように値を割ります。
+[fixture: xychart/db-string-line-separator-then-comment-line]
+[fixture: xychart/db-string-paragraph-separator-then-comment-line]
+
 ## 文字の置き換え
 
 Db は、次のテキストを `sanitizeText` に通します。

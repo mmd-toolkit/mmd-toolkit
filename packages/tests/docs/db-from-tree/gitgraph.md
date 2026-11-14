@@ -88,6 +88,21 @@ the builder does not repeat the parser's acceptance checks.
    gitgraph/number-precision] [fixture: gitgraph/number-overflow] [fixture:
    gitgraph/header-only] [fixture: gitgraph/header-tb] [fixture:
    gitgraph/header-bt]
+7. **Comment regions in values.** A U+2028 or a U+2029 is a character of a value
+   and a comment start, so a comment region after it is not in the converted
+   form, and the value goes on after the region (see
+   [Comment lines](../../../spec/docs/common.md#comment-lines)): `accTitle:A`,
+   U+2028, `%% c`, a line break, and `B` has the accessibility title `A`,
+   U+2028, and `B`. [fixture:
+   gitgraph/db-acc-title-line-separator-then-comment-line] The same holds for
+   the accessibility description [fixture:
+   gitgraph/db-acc-descr-line-separator-then-comment-line], for a description
+   block [fixture:
+   gitgraph/db-acc-descr-block-line-separator-then-comment-line], for the
+   diagram title [fixture: gitgraph/db-title-line-separator-then-comment-line],
+   and for a commit id string, which U+2029 splits in the same way. [fixture:
+   gitgraph/db-string-line-separator-then-comment-line] [fixture:
+   gitgraph/db-string-paragraph-separator-then-comment-line]
 
 ## Recorded comparisons
 

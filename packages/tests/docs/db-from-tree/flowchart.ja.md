@@ -588,6 +588,46 @@ flowchart/db-acc-descr-block-then-empty-line] [fixture:
 flowchart/db-acc-descr-empty-block-keeps] [fixture:
 flowchart/db-acc-descr-empty-block-after-block]
 
+**値の中のコメント領域。**
+U+2028 と U+2029 は、値の文字であるとともにコメントの始まりなので、
+その後のコメント領域は変換した形にありません。
+値は領域の後へ続きます。
+出典は [コメント行](../../../spec/docs/common.ja.md#コメント行) です。
+`accTitle: A`、U+2028、`%% c`、改行、`B` のアクセシビリティのタイトルは、`A`、
+U+2028、`B` です。
+[fixture: flowchart/db-acc-title-line-separator-then-comment-line]
+アクセシビリティの説明でも同じです。
+[fixture: flowchart/db-acc-descr-line-separator-then-comment-line]
+説明ブロックでも同じです。
+[fixture: flowchart/db-acc-descr-block-line-separator-then-comment-line]
+角括弧のラベルでも同じで、U+2029 も同じように値を割ります。
+[fixture: flowchart/db-square-label-line-separator-then-comment-line]
+[fixture: flowchart/db-square-label-paragraph-separator-then-comment-line]
+傾いた形のラベルでも同じです。
+[fixture: flowchart/db-slanted-label-line-separator-then-comment-line]
+楕円のラベルでも同じです。
+[fixture: flowchart/db-ellipse-label-line-separator-then-comment-line]
+文字列でも同じです。
+[fixture: flowchart/db-string-line-separator-then-comment-line]
+markdown 文字列でも同じです。
+[fixture: flowchart/db-markdown-string-line-separator-then-comment-line]
+パイプのラベルでも同じです。
+[fixture: flowchart/db-pipe-label-line-separator-then-comment-line]
+リンクのテキストでも同じです。
+[fixture: flowchart/db-link-text-line-separator-then-comment-line]
+タイトルに使う subgraph の名前でも同じです。
+[fixture: flowchart/db-subgraph-name-line-separator-then-comment-line]
+スタイルでも同じです。
+[fixture: flowchart/db-style-line-separator-then-comment-line]
+コールバック名でも同じです。
+[fixture: flowchart/db-callback-name-line-separator-then-comment-line]
+コールバック引数でも同じです。
+[fixture: flowchart/db-callback-arguments-line-separator-then-comment-line]
+データブロックの裸または引用したラベルには、
+データブロックの効果が同じテキストを与えます。
+[fixture: flowchart/db-data-label-bare-line-separator-then-comment-line]
+[fixture: flowchart/db-data-label-quoted-line-separator-then-comment-line]
+
 ## Db の中のデータブロック
 
 データブロックが設定する値は、

@@ -373,6 +373,26 @@ class `default`, which the summary leaves out, so a statement that names
 requirements, elements, relationships, and class definitions in the order of the
 lists.
 
+**Comment regions in values.** A U+2028 or a U+2029 is a character of a value
+and a comment start, so a comment region after it is not in the converted form,
+and the value goes on after the region (see
+[Comment lines](../../../spec/docs/common.md#comment-lines)): `accTitle: A`,
+U+2028, `%% c`, a line break, and `B` has the accessibility title `A`, U+2028,
+and `B`. [fixture: requirement/db-acc-title-line-separator-then-comment-line]
+The same holds for the accessibility description [fixture:
+requirement/db-acc-descr-line-separator-then-comment-line], and for a
+description block. [fixture:
+requirement/db-acc-descr-block-line-separator-then-comment-line] A requirement
+name continues in the same way after U+2028 or U+2029. [fixture:
+requirement/db-name-line-separator-then-comment-line] [fixture:
+requirement/db-name-paragraph-separator-then-comment-line] The same holds for
+the unquoted value of a `text` field [fixture:
+requirement/db-text-line-separator-then-comment-line], and for its string value.
+[fixture: requirement/db-string-line-separator-then-comment-line] The summary
+has no field for the text after the direction value, so that fixture records
+that the input is accepted. [fixture:
+requirement/db-direction-text-line-separator-then-comment-line]
+
 ## The replacement of characters
 
 The Db passes three texts through `sanitizeText`: the title, `accTitle`, and

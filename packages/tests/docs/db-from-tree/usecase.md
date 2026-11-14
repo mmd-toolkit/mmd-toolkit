@@ -135,6 +135,27 @@ validation serves `checkTree`. JSON interiors stay opaque.
    [fixture: usecase/db-acctitle-empty] [fixture: usecase/db-accdescr-empty]
    [fixture: usecase/config-security-other] [fixture:
    usecase/config-security-other-root-false]
+10. **Comment regions in values.** A U+2028 or a U+2029 is a character of a
+    value and a comment start, so a comment region after it is not in the
+    converted form, and the value goes on after the region (see
+    [Comment lines](../../../spec/docs/common.md#comment-lines)): `accTitle: A`,
+    U+2028, `%% c`, a line break, and `B` has the accessibility title `A`,
+    U+2028, and `B`. [fixture:
+    usecase/db-acc-title-line-separator-then-comment-line] The same holds for
+    the accessibility description [fixture:
+    usecase/db-acc-descr-line-separator-then-comment-line], for a description
+    block [fixture:
+    usecase/db-acc-descr-block-line-separator-then-comment-line], for an actor
+    label in a plain string, with U+2029 as well [fixture:
+    usecase/db-string-line-separator-then-comment-line] [fixture:
+    usecase/db-string-paragraph-separator-then-comment-line], for an actor label
+    in a markdown string [fixture:
+    usecase/db-markdown-string-line-separator-then-comment-line], and for a
+    usecase stereotype. [fixture:
+    usecase/db-stereotype-line-separator-then-comment-line] For JSON, the node's
+    `value` comes from the supplied effect and has `A`, U+2028, and `B` in its
+    `description` property. [fixture:
+    usecase/db-json-line-separator-then-comment-line]
 
 ## Recorded comparisons
 

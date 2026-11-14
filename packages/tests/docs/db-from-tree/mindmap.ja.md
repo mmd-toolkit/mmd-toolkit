@@ -212,6 +212,24 @@ icon の行と class の行は互いに独立で、
 装飾があるときは `icon` と `class` を持ちます。
 [db-summaries.ja.md](../db-summaries.ja.md#mindmap) のとおりです。
 
+**値の中のコメント領域。**
+U+2028 と U+2029 は、値の文字であるとともにコメントの始まりなので、
+その後のコメント領域は変換した形にありません。
+値は領域の後へ続きます。
+出典は [コメント行](../../../spec/docs/common.ja.md#コメント行) です。
+`A`、U+2028、`%% c`、改行、`B` のノードのテキストは、`A`、U+2028、`B` で、
+`nodeId` と `descr` の両方に使われます。
+U+2029 も同じようにノードのテキストを割ります。
+[fixture: mindmap/db-node-text-line-separator-then-comment-line]
+[fixture: mindmap/db-node-text-paragraph-separator-then-comment-line]
+形のテキストでも同じです。
+[fixture: mindmap/db-shape-text-line-separator-then-comment-line]
+文字列でも同じです。
+[fixture: mindmap/db-string-line-separator-then-comment-line]
+Markdown 文字列でも同じです。
+[fixture: mindmap/db-markdown-string-line-separator-then-comment-line]
+icon でも同じです。 [fixture: mindmap/db-icon-line-separator-then-comment-line]
+
 ## 文字の置き換え
 
 Db が `sanitizeText` に通すノードのテキストは 4 つで、id、説明、icon、

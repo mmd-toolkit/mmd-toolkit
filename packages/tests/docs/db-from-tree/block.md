@@ -222,6 +222,18 @@ The shape pairs of step 10:
 | `[/`  | `\]`  | `trapezoid`           | [fixture: block/db-shape-trapezoid]           |
 | `[\`  | `/]`  | `inv_trapezoid`       | [fixture: block/db-shape-inv-trapezoid]       |
 
+**Comment regions in values.** A U+2028 or a U+2029 is a character of a value
+and a comment start, so a comment region after it is not in the converted form,
+and the value goes on after the region (see
+[Comment lines](../../../spec/docs/common.md#comment-lines)): `x["A`, U+2028,
+`%% c`, a line break, and `B"]` gives `x` the label `A`, U+2028, and `B`; U+2029
+splits the string in the same way. [fixture:
+block/db-string-line-separator-then-comment-line] [fixture:
+block/db-string-paragraph-separator-then-comment-line] The same holds for the
+class name of a class application [fixture:
+block/db-class-name-line-separator-then-comment-line] and for the text of a
+style. [fixture: block/db-style-line-separator-then-comment-line]
+
 ## The replacement of characters
 
 27. Apply `textReplacementOf(embedded.config)` of

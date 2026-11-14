@@ -40,6 +40,21 @@ frontmatter 内の HTML による値の違いもその読みを使う。
 [fixture: wardley/div-html-frontmatter-value]
 [fixture: wardley/line-block-values]
 
+値の中の U+2028 と U+2029 は、値の文字であるとともにコメントの始まりなので、
+その後のコメント領域は変換した形にありません。
+値は領域の後へ続きます。
+出典は [コメント行](../../../spec/docs/common.ja.md#コメント行) です。
+`title A`、U+2028、`%% c`、改行、`B` の title は `A`、U+2028、`B` です。
+accessibility title、accessibility description、description block、
+文字列でも同じで、文字列のテキストは component の `id` と `label` です。
+U+2029 も同じように文字列を割ります。
+[fixture: wardley/db-title-line-separator-then-comment-line]
+[fixture: wardley/db-acc-title-line-separator-then-comment-line]
+[fixture: wardley/db-acc-descr-line-separator-then-comment-line]
+[fixture: wardley/db-acc-descr-block-line-separator-then-comment-line]
+[fixture: wardley/db-string-line-separator-then-comment-line]
+[fixture: wardley/db-string-paragraph-separator-then-comment-line]
+
 数は double に直してから 1 と比較する。
 1 以下なら 100 倍し、それより大きい値は百分率として保つ。
 座標対は可視性・進化の順で書かれ、進化を x、可視性を y に公開する。

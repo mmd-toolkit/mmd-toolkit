@@ -426,6 +426,18 @@ sequence/db-box-line-separator-then-comment-line] [fixture:
 sequence/db-message-text-line-separator-then-directive-line] [fixture:
 sequence/db-message-text-line-separator-then-empty-line]
 
+**Comment regions in values.** A U+2028 or a U+2029 is a character of a value
+and a comment start, so a comment region after it is not in the converted form,
+and the value goes on after the region (see
+[Comment lines](../../../spec/docs/common.md#comment-lines)): `A`, U+2028,
+`%% c`, a line break, and `B->>C: x` has a message from the id `A`, U+2028, and
+`B`. U+2029 splits the id run in the same way. [fixture:
+sequence/db-id-run-line-separator-then-comment-line] [fixture:
+sequence/db-id-run-paragraph-separator-then-comment-line] The same holds for the
+alias string in a participant data block, which gives the participant the
+description `A`, U+2028, and `B`. [fixture:
+sequence/db-data-alias-line-separator-then-comment-line]
+
 ## The arrows
 
 The `type` of a message is a number given by the line and the markers of its

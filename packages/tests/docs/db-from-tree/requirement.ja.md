@@ -422,6 +422,29 @@ requirement と element は、どれも最初にクラス `default` を持ちま
 上の値と、列の順に並べた requirement、element、リレーションシップ、
 クラス定義です。
 
+**値の中のコメント領域。**
+U+2028 と U+2029 は、値の文字であるとともにコメントの始まりなので、
+その後のコメント領域は変換した形にありません。
+値は領域の後へ続きます。
+出典は [コメント行](../../../spec/docs/common.ja.md#コメント行) です。
+`accTitle: A`、U+2028、`%% c`、改行、`B` のアクセシビリティのタイトルは、`A`、
+U+2028、`B` です。
+[fixture: requirement/db-acc-title-line-separator-then-comment-line]
+アクセシビリティの説明でも同じです。
+[fixture: requirement/db-acc-descr-line-separator-then-comment-line]
+説明ブロックでも同じです。
+[fixture: requirement/db-acc-descr-block-line-separator-then-comment-line]
+requirement の名前は、U+2028 の後も U+2029 の後も同じように続きます。
+[fixture: requirement/db-name-line-separator-then-comment-line]
+[fixture: requirement/db-name-paragraph-separator-then-comment-line]
+`text` 欄の引用符のない値でも同じです。
+[fixture: requirement/db-text-line-separator-then-comment-line]
+その文字列の値でも同じです。
+[fixture: requirement/db-string-line-separator-then-comment-line]
+要約には方向の値の後のテキストの欄がないので、その fixture は、
+入力が受け入れられることを記録します。
+[fixture: requirement/db-direction-text-line-separator-then-comment-line]
+
 ## 文字の置き換え
 
 Db が `sanitizeText` に通すテキストは 3 つで、タイトル、`accTitle`、

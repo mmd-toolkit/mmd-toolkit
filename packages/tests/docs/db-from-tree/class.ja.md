@@ -435,3 +435,29 @@ class/db-acc-descr-line-replaces-block]
 `Foo` の行はクラスを宣言せず、名前 `ClassA` である `Class A` も同じです。
 [fixture: class/gram-name-alone] [fixture: class/lex-keyword-upper-case]
 [字句構造](../../../spec/docs/diagrams/class.ja.md#字句構造) を参照。
+
+**値の中のコメント領域。**
+U+2028 と U+2029 は、値の文字であるとともにコメントの始まりなので、
+その後のコメント領域は変換した形にありません。
+値は領域の後へ続きます。
+出典は [コメント行](../../../spec/docs/common.ja.md#コメント行) です。
+`accTitle: A`、U+2028、`%% c`、改行、`B` のアクセシビリティのタイトルは、`A`、
+U+2028、`B` です。
+[fixture: class/db-acc-title-line-separator-then-comment-line]
+アクセシビリティの説明でも同じです。
+[fixture: class/db-acc-descr-line-separator-then-comment-line]
+説明ブロックでも同じです。
+[fixture: class/db-acc-descr-block-line-separator-then-comment-line]
+バッククォートのクラスの名前、ジェネリクスの型、メンバーの名前、注釈の行、
+ノートの文字列、コールバックの名前と引数、スタイルでも同じです。
+[fixture: class/db-backquoted-name-line-separator-then-comment-line]
+[fixture: class/db-generic-line-separator-then-comment-line]
+[fixture: class/db-member-name-line-separator-then-comment-line]
+[fixture: class/db-annotation-line-separator-then-comment-line]
+[fixture: class/db-note-string-line-separator-then-comment-line]
+[fixture: class/db-callback-name-line-separator-then-comment-line]
+[fixture: class/db-callback-arguments-line-separator-then-comment-line]
+[fixture: class/db-style-line-separator-then-comment-line]
+関係のラベルは、U+2028 の後も U+2029 の後も同じように続きます。
+[fixture: class/db-relation-label-line-separator-then-comment-line]
+[fixture: class/db-relation-label-paragraph-separator-then-comment-line]

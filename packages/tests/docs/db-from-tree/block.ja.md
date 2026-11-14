@@ -272,6 +272,21 @@
 | `[/`  | `\]`  | `trapezoid`           | [fixture: block/db-shape-trapezoid]           |
 | `[\`  | `/]`  | `inv_trapezoid`       | [fixture: block/db-shape-inv-trapezoid]       |
 
+**値の中のコメント領域。**
+U+2028 と U+2029 は、値の文字であるとともにコメントの始まりなので、
+その後のコメント領域は変換した形にありません。
+値は領域の後へ続きます。
+出典は [コメント行](../../../spec/docs/common.ja.md#コメント行) です。
+`x["A`、U+2028、`%% c`、改行、`B"]` は、`x` にラベル `A`、U+2028、
+`B` を与えます。
+U+2029 も同じように文字列を割ります。
+[fixture: block/db-string-line-separator-then-comment-line]
+[fixture: block/db-string-paragraph-separator-then-comment-line]
+クラス適用のクラス名でも同じです。
+[fixture: block/db-class-name-line-separator-then-comment-line]
+スタイルのテキストでも同じです。
+[fixture: block/db-style-line-separator-then-comment-line]
+
 ## 文字の置き換え
 
 27. [db-from-tree.md](../db-from-tree.md#the-replacement-of-characters) の

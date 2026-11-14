@@ -366,6 +366,38 @@ click の文は、id でタスクを参照し、呼び出し部分があれば�
 タスクは `section`、`raw`、`task`、`classes`、`id`（なければなし）、
 立っているフラグ、`order` を持ちます。
 
+**値の中のコメント領域。**
+U+2028 と U+2029 は、値の文字であるとともにコメントの始まりなので、
+その後のコメント領域は変換した形にありません。
+値は領域の後へ続きます。
+出典は [コメント行](../../../spec/docs/common.ja.md#コメント行) です。
+`accTitle:A`、U+2028、`%% c`、改行、`B` のアクセシビリティのタイトルは、`A`、
+U+2028、`B` です。
+[fixture: gantt/db-acc-title-line-separator-then-comment-line]
+アクセシビリティの説明でも同じです。
+[fixture: gantt/db-acc-descr-line-separator-then-comment-line]
+説明ブロックでも同じです。
+[fixture: gantt/db-acc-descr-block-line-separator-then-comment-line]
+図のタイトルでも同じです。
+[fixture: gantt/db-title-line-separator-then-comment-line]
+section の名前でも同じです。
+[fixture: gantt/db-section-line-separator-then-comment-line]
+軸の書式でも同じで、U+2029 も同じように値を割ります。
+[fixture: gantt/db-axis-format-line-separator-then-comment-line]
+[fixture: gantt/db-axis-format-paragraph-separator-then-comment-line]
+`todayMarker` の値でも同じです。
+[fixture: gantt/db-today-marker-line-separator-then-comment-line]
+タスクの説明でも同じです。
+[fixture: gantt/db-task-line-separator-then-comment-line]
+タスクのデータが 3 項目のとき、タスクの id になる最初の項目でも同じです。
+[fixture: gantt/db-task-data-line-separator-then-comment-line]
+コールバック名でも同じです。
+[fixture: gantt/db-callback-name-line-separator-then-comment-line]
+コールバック引数でも同じです。
+[fixture: gantt/db-callback-arguments-line-separator-then-comment-line]
+URL の文字列でも同じです。
+[fixture: gantt/db-url-line-separator-then-comment-line]
+
 ## 文字の置き換え
 
 Db が `sanitizeText` に通すテキストは 3 つで、タイトル、`accTitle`、

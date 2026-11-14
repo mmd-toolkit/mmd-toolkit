@@ -89,6 +89,24 @@
    [fixture: radar/config-frontmatter-options-cannot-reject]
    [fixture: radar/config-init-options-cannot-reject]
 
+7. **値の中のコメント領域。**
+   U+2028 と U+2029 は、値の文字であるとともにコメントの始まりなので、
+   その後のコメント領域は変換した形にありません。
+   値は領域の後へ続きます。
+   出典は [コメント行](../../../spec/docs/common.ja.md#コメント行) です。
+   `accTitle: A`、U+2028、`%% c`、改行、`B` のアクセシビリティのタイトルは、
+   `A`、U+2028、`B` です。
+   [fixture: radar/db-acc-title-line-separator-then-comment-line]
+   図のタイトルでも同じです。
+   [fixture: radar/db-title-line-separator-then-comment-line]
+   アクセシビリティの説明でも同じです。
+   [fixture: radar/db-acc-descr-line-separator-then-comment-line]
+   説明ブロックでも同じです。
+   [fixture: radar/db-acc-descr-block-line-separator-then-comment-line]
+   文字列で書かれた軸のラベルでも同じで、U+2029 も同じように値を割ります。
+   [fixture: radar/db-string-line-separator-then-comment-line]
+   [fixture: radar/db-string-paragraph-separator-then-comment-line]
+
 ## 記録との比較
 
 `specified.json` があれば使い、なければ `expected.json` を使う。

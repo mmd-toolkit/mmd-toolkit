@@ -80,6 +80,18 @@
    [fixture: pie/config-other-root-false] [fixture: pie/showdata-section-inline]
    [fixture: pie/config-drawing-only]
 
+6. **値の中のコメント領域。**
+   U+2028 と U+2029 は、値の文字であるとともにコメントの始まりなので、
+   その後のコメント領域は変換した形にありません。
+   値は領域の後へ続きます。
+   出典は [コメント行](../../../spec/docs/common.ja.md#コメント行) です。
+   `"A`、U+2028、`%% c`、改行、`B": 1` の区分のラベルは、`A`、U+2028、`B` です。
+   U+2029 も同じように文字列のラベルを割ります。
+   [fixture: pie/db-string-line-separator-then-comment-line]
+   [fixture: pie/db-string-paragraph-separator-then-comment-line]
+   説明ブロックでも同じです。
+   [fixture: pie/db-acc-descr-block-line-separator-then-comment-line]
+
 ## 記録された結果との比較
 
 `specified.json` があれば使い、なければ `expected.json` を使う。

@@ -36,6 +36,21 @@ wardley/frontmatter-empty-body-title] [fixture:
 wardley/config-security-level-other] [fixture:
 wardley/div-html-frontmatter-value] [fixture: wardley/line-block-values]
 
+A U+2028 or a U+2029 inside a value is a character of it and a comment start, so
+a comment region after it is not in the converted form, and the value goes on
+after the region (see
+[Comment lines](../../../spec/docs/common.md#comment-lines)): `title A`, U+2028,
+`%% c`, a line break, and `B` has the title `A`, U+2028, and `B`. The same holds
+for the accessibility title, the accessibility description, a description block,
+and a string, whose text is the `id` and the `label` of the component, U+2029
+splitting a string in the same way. [fixture:
+wardley/db-title-line-separator-then-comment-line] [fixture:
+wardley/db-acc-title-line-separator-then-comment-line] [fixture:
+wardley/db-acc-descr-line-separator-then-comment-line] [fixture:
+wardley/db-acc-descr-block-line-separator-then-comment-line] [fixture:
+wardley/db-string-line-separator-then-comment-line] [fixture:
+wardley/db-string-paragraph-separator-then-comment-line]
+
 Read numbers as doubles before comparing with 1. Values at most 1 become 100
 times that value; larger values remain percentages. Coordinate pairs are written
 as visibility then evolution, and publish evolution as x and visibility as y.

@@ -212,6 +212,27 @@ Db は、メソッドに渡されたものを保ちます。
 要約は [db-summaries.ja.md](../db-summaries.ja.md#journey) の欄を持ちます。
 上の値、文の順に並べた section の名前の `sections`、ソースの順の `tasks` です。
 
+**値の中のコメント領域。**
+U+2028 と U+2029 は、値の文字であるとともにコメントの始まりなので、
+その後のコメント領域は変換した形にありません。
+値は領域の後へ続きます。
+出典は [コメント行](../../../spec/docs/common.ja.md#コメント行) です。
+`accTitle:A`、U+2028、`%% c`、改行、`B` のアクセシビリティのタイトルは、`A`、
+U+2028、`B` です。
+[fixture: journey/db-acc-title-line-separator-then-comment-line]
+アクセシビリティの説明でも同じです。
+[fixture: journey/db-acc-descr-line-separator-then-comment-line]
+説明ブロックでも同じです。
+[fixture: journey/db-acc-descr-block-line-separator-then-comment-line]
+図のタイトルでも同じで、U+2029 も同じように値を割ります。
+[fixture: journey/db-title-line-separator-then-comment-line]
+[fixture: journey/db-title-paragraph-separator-then-comment-line]
+section の名前でも同じです。
+[fixture: journey/db-section-line-separator-then-comment-line]
+タスクの説明でも同じです。
+[fixture: journey/db-task-line-separator-then-comment-line]
+人でも同じです。 [fixture: journey/db-person-line-separator-then-comment-line]
+
 ## 文字の置き換え
 
 Db が `sanitizeText` に通すテキストは 3 つで、タイトル、`accTitle`、

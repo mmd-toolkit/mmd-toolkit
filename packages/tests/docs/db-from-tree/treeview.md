@@ -83,6 +83,26 @@ Japanese version: [treeview.ja.md](./treeview.ja.md)
    condition or a published field. [fixture: treeview/db-all-fields] [fixture:
    treeview/config-drawing-site] [fixture: treeview/config-frontmatter-drawing]
    [fixture: treeview/config-init-drawing]
+7. **Comment regions in values.** A U+2028 or a U+2029 is a character of a value
+   and a comment start, so a comment region after it is not in the converted
+   form, and the value goes on after the region (see
+   [Comment lines](../../../spec/docs/common.md#comment-lines)): `accTitle: A`,
+   U+2028, `%% c`, a line break, and `B` has the accessibility title `A`,
+   U+2028, and `B`. [fixture:
+   treeview/db-acc-title-line-separator-then-comment-line] The same holds for
+   the accessibility description [fixture:
+   treeview/db-acc-descr-line-separator-then-comment-line], for a description
+   block [fixture:
+   treeview/db-acc-descr-block-line-separator-then-comment-line], for a bare
+   name [fixture: treeview/db-bare-name-line-separator-then-comment-line], for a
+   quoted name, with U+2029 as well [fixture:
+   treeview/db-quoted-name-line-separator-then-comment-line] [fixture:
+   treeview/db-quoted-name-paragraph-separator-then-comment-line], and for a
+   description annotation. [fixture:
+   treeview/db-description-line-separator-then-comment-line] The summary has no
+   field for the title of the diagram, so the fixture of a title records that
+   the input is accepted. [fixture:
+   treeview/db-title-line-separator-then-comment-line]
 
 ## Recorded comparisons
 

@@ -409,6 +409,20 @@ er/db-acc-descr-block-line-separator] [fixture:
 er/db-acc-descr-block-ignored-semicolon] [fixture:
 er/db-subgraph-nodes-acc-title]
 
+**Comment regions in values.** A U+2028 or a U+2029 is a character of a value
+and a comment start, so a comment region after it is not in the converted form,
+and the value goes on after the region (see
+[Comment lines](../../../spec/docs/common.md#comment-lines)): `accTitle: a`,
+U+2028, `%% c`, a line break, and `b` has the accessibility title `a`, U+2028,
+and `b`. [fixture: er/db-acc-title-line-separator-then-comment-line] The same
+holds for the accessibility description [fixture:
+er/db-acc-descr-line-separator-then-comment-line], the text of a description
+block [fixture: er/db-acc-descr-block-line-separator-then-comment-line], and a
+style. [fixture: er/db-style-line-separator-then-comment-line] The summary has
+no field for the text after the direction value, so that fixture records that
+the input is accepted: the direction is `LR`, and `y` is not an entity.
+[fixture: er/db-direction-text-line-separator-then-comment-line]
+
 ## The replacement of characters
 
 The Db passes four texts through `sanitizeText`: the title, `accTitle`,

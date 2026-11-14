@@ -173,6 +173,20 @@ mindmap/db-icon-case-insensitive] [fixture: mindmap/db-class-then-icon-on-node]
 and `children`, and `icon` and `class` where a decoration gave them, as in
 [db-summaries.md](../db-summaries.md#mindmap).
 
+**Comment regions in values.** A U+2028 or a U+2029 is a character of a value
+and a comment start, so a comment region after it is not in the converted form,
+and the value goes on after the region (see
+[Comment lines](../../../spec/docs/common.md#comment-lines)): `A`, U+2028,
+`%% c`, a line break, and `B` has the node text `A`, U+2028, and `B`, used for
+both `nodeId` and `descr`. U+2029 splits node text in the same way. [fixture:
+mindmap/db-node-text-line-separator-then-comment-line] [fixture:
+mindmap/db-node-text-paragraph-separator-then-comment-line] The same holds for
+the text of a shape, [fixture:
+mindmap/db-shape-text-line-separator-then-comment-line] for a string, [fixture:
+mindmap/db-string-line-separator-then-comment-line] for a markdown string,
+[fixture: mindmap/db-markdown-string-line-separator-then-comment-line] and for
+an icon. [fixture: mindmap/db-icon-line-separator-then-comment-line]
+
 ## The replacement of characters
 
 The Db passes four texts of a node through `sanitizeText`: the id, the

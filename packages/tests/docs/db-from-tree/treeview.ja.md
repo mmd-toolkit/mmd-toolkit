@@ -93,6 +93,28 @@
    [fixture: treeview/db-all-fields] [fixture: treeview/config-drawing-site]
    [fixture: treeview/config-frontmatter-drawing]
    [fixture: treeview/config-init-drawing]
+7. **値の中のコメント領域。**
+   U+2028 と U+2029 は、値の文字であるとともにコメントの始まりなので、
+   その後のコメント領域は変換した形にありません。
+   値は領域の後へ続きます。
+   出典は [コメント行](../../../spec/docs/common.ja.md#コメント行) です。
+   `accTitle: A`、U+2028、`%% c`、改行、`B` のアクセシビリティのタイトルは、
+   `A`、U+2028、`B` です。
+   [fixture: treeview/db-acc-title-line-separator-then-comment-line]
+   アクセシビリティの説明でも同じです。
+   [fixture: treeview/db-acc-descr-line-separator-then-comment-line]
+   説明ブロックでも同じです。
+   [fixture: treeview/db-acc-descr-block-line-separator-then-comment-line]
+   bare 名でも同じです。
+   [fixture: treeview/db-bare-name-line-separator-then-comment-line]
+   引用名でも同じで、U+2029 も同じように値を割ります。
+   [fixture: treeview/db-quoted-name-line-separator-then-comment-line]
+   [fixture: treeview/db-quoted-name-paragraph-separator-then-comment-line]
+   説明の注釈でも同じです。
+   [fixture: treeview/db-description-line-separator-then-comment-line]
+   要約には図のタイトルの欄がないので、タイトルの fixture は、
+   入力が受け入れられることを記録します。
+   [fixture: treeview/db-title-line-separator-then-comment-line]
 
 ## 記録との比較
 

@@ -65,6 +65,23 @@
    [fixture: cynefin/db-transition-duplicates]
    [fixture: cynefin/gram-transition-first] [fixture: cynefin/db-self-loops]
    [fixture: cynefin/db-empty-texts] [fixture: cynefin/hidden-all-unit-gaps]
+5. **値の中のコメント領域。**
+   U+2028 と U+2029 は、値の文字であるとともにコメントの始まりなので、
+   その後のコメント領域は変換した形にありません。
+   値は領域の後へ続きます。
+   出典は [コメント行](../../../spec/docs/common.ja.md#コメント行) です。
+   `accTitle: A`、U+2028、`%% c`、改行、`B` のアクセシビリティのタイトルは、
+   `A`、U+2028、`B` です。
+   [fixture: cynefin/db-acc-title-line-separator-then-comment-line]
+   アクセシビリティの説明でも同じです。
+   [fixture: cynefin/db-acc-descr-line-separator-then-comment-line]
+   説明ブロックでも同じです。
+   [fixture: cynefin/db-acc-descr-block-line-separator-then-comment-line]
+   図のタイトルでも同じです。
+   [fixture: cynefin/db-title-line-separator-then-comment-line]
+   項目のラベルの文字列でも同じで、U+2029 も同じように値を割ります。
+   [fixture: cynefin/db-string-line-separator-then-comment-line]
+   [fixture: cynefin/db-string-paragraph-separator-then-comment-line]
 
 ## 記録との比較
 
