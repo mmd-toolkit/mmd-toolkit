@@ -22360,6 +22360,19 @@
                 "text": "tokens-598-gantt-tag-cut-by-directive-after"
               }
             ]
+          },
+          {
+            "case": "The fragments of a Gantt task tag that an ignored ; cuts are RawText tokens.",
+            "tests": [
+              {
+                "file": "check-tree-shared-tokens.test.ts",
+                "text": "tokens-598-gantt-tag-cut-by-ignored-semicolon-before"
+              },
+              {
+                "file": "check-tree-shared-tokens.test.ts",
+                "text": "tokens-598-gantt-tag-cut-by-ignored-semicolon-after"
+              }
+            ]
           }
         ]
       }

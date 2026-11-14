@@ -4600,6 +4600,28 @@ const tokenKindReplacementCases = [
     type: "Identifier",
   },
   {
+    case: "tokens-598-gantt-tag-cut-by-ignored-semicolon-before",
+    fixture: ["gantt", "gram-task-tag-cut-by-ignored-semicolon"],
+    index: 7,
+    problem: {
+      where: "Identifier at 32-37",
+      message:
+        "the tokens of a tag are not all of the kind RawText: Identifier, RawText",
+    },
+    type: "Identifier",
+  },
+  {
+    case: "tokens-598-gantt-tag-cut-by-ignored-semicolon-after",
+    fixture: ["gantt", "gram-task-tag-cut-by-ignored-semicolon"],
+    index: 9,
+    problem: {
+      where: "Identifier at 32-37",
+      message:
+        "the tokens of a tag are not all of the kind RawText: RawText, Identifier",
+    },
+    type: "Identifier",
+  },
+  {
     case: "tokens-598-gantt-tag-cut-by-directive-before",
     fixture: ["gantt", "gram-task-tag-cut-by-directive"],
     index: 3,
@@ -26896,6 +26918,796 @@ for (const entry of sharedCommentIgnoredSemicolonCases) {
           text: entry.tokenText,
           from: entry.semicolonAt,
         }),
+      ].sort((left, right) => left.range[0] - right.range[0]),
+    )
+    expect(checkTree(input, broken)).toContainEqual(entry.expected)
+  })
+}
+
+/**
+ * The recorded tree of `fixture` with `text`, a U+2028, a comment line `%% c`,
+ * a line feed and `x` written at `at`, the end of a diagram comment that ends
+ * its line: the comment line is a comment region that cuts the diagram
+ * comment, whose fragment after the region is `x` with no mark
+ * (packages/parser/docs/tokens.md, Comment). Everything after `at` moves by
+ * the added length.
+ */
+function cutDiagramComment(
+  diagram: DiagramType,
+  fixture: string,
+  at: number,
+  text: string,
+): { input: string; tree: CheckedRoot } {
+  const recorded = recordedTree(diagram, fixture)
+  const added = `${text}\u2028%% c\nx`
+  const input = recorded.input.slice(0, at) + added + recorded.input.slice(at)
+  const tree = copyOf(recorded.tree)
+  const comment = tree.comments.find((item) => item.range[1] === at)!
+  const placedRecords: Placed[] = [
+    ...nodesOf(tree).filter((node) => node !== tree),
+    ...tree.tokens,
+    ...tree.comments,
+    ...tree.directives,
+  ]
+  for (const placed of placedRecords) {
+    if (placed === comment) continue
+    const start =
+      placed.range[0] > at ? placed.range[0] + added.length : placed.range[0]
+    const end =
+      placed.range[1] >= at && placed.range[0] < at
+        ? placed.range[1] + added.length
+        : placed.range[1] > at
+          ? placed.range[1] + added.length
+          : placed.range[1]
+    span(input, placed, start, end)
+  }
+  span(input, tree, 0, input.length)
+  const end = at + text.length
+  span(input, comment, comment.range[0], end)
+  setField(comment, "value", comment.value + text)
+  const fragment = commentOf(input, null, { text: "x", from: end + 6 })
+  setField(
+    tree,
+    "comments",
+    [
+      ...tree.comments,
+      commentOf(input, "%%", { text: "%% c", from: end + 1 }),
+      fragment,
+    ].sort((left, right) => left.range[0] - right.range[0]),
+  )
+  return { input, tree }
+}
+
+/** The fragment after the comment region of a tree that `cutDiagramComment` built. */
+function cutFragment(tree: CheckedRoot): CheckedRoot["comments"][number] {
+  return tree.comments.find((item) => item.mark === null)!
+}
+
+const cutDiagramCommentMarkCases = [
+  {
+    id: "tokens-290-c4-fragment-mark",
+    diagram: "c4",
+    fixture: "div-boundary-comment-before-inline-body",
+    at: 30,
+    expected: { where: "Comment at 36-37", message: 'mark: "%%", not "%"' },
+  },
+  {
+    id: "tokens-290-class-fragment-mark",
+    diagram: "class",
+    fixture: "bare-marker-directive-lines-17d57580",
+    at: 25,
+    expected: { where: "Comment at 31-32", message: 'mark: "%%", not "%"' },
+  },
+  {
+    id: "tokens-290-gantt-fragment-mark",
+    diagram: "gantt",
+    fixture: "div-percent-brace-after-double-percent-comment-two-spaces",
+    at: 27,
+    expected: { where: "Comment at 33-34", message: 'mark: "%%", not "%"' },
+  },
+  {
+    id: "tokens-290-gitgraph-fragment-mark",
+    diagram: "gitgraph",
+    fixture: "comment-accdescr",
+    at: 24,
+    expected: { where: "Comment at 30-31", message: 'mark: "%%", not "%"' },
+  },
+  {
+    id: "tokens-290-ishikawa-fragment-mark",
+    diagram: "ishikawa",
+    fixture: "comment-header-glued",
+    at: 15,
+    expected: { where: "Comment at 21-22", message: 'mark: "%%", not "%"' },
+  },
+  {
+    id: "tokens-290-kanban-fragment-mark",
+    diagram: "kanban",
+    fixture: "db-metadata-before-comment",
+    at: 17,
+    expected: { where: "Comment at 23-24", message: 'mark: "%%", not "%"' },
+  },
+  {
+    id: "tokens-290-mindmap-fragment-mark",
+    diagram: "mindmap",
+    fixture: "div-header-line-comment-comment-then-blank",
+    at: 12,
+    expected: { where: "Comment at 18-19", message: 'mark: "%%", not "%"' },
+  },
+  {
+    id: "tokens-290-requirement-fragment-mark",
+    diagram: "requirement",
+    fixture: "db-comment-lines-between-statements",
+    at: 57,
+    expected: { where: "Comment at 63-64", message: 'mark: "%%", not "%"' },
+  },
+  {
+    id: "tokens-290-timeline-fragment-mark",
+    diagram: "timeline",
+    fixture: "db-comment-before-event-line",
+    at: 20,
+    expected: { where: "Comment at 26-27", message: 'mark: "%%", not "%"' },
+  },
+  {
+    id: "tokens-290-treemap-fragment-mark",
+    diagram: "treemap",
+    fixture: "comment-accdescr",
+    at: 29,
+    expected: { where: "Comment at 35-36", message: 'mark: "%%", not "%"' },
+  },
+  {
+    id: "tokens-290-treeview-fragment-mark",
+    diagram: "treeview",
+    fixture: "box-comment-indent-carry",
+    at: 30,
+    expected: { where: "Comment at 36-37", message: 'mark: "%%", not "%"' },
+  },
+  {
+    id: "tokens-290-info-fragment-mark",
+    diagram: "info",
+    fixture: "c4component-flag-comment-lf",
+    at: 28,
+    expected: { where: "Comment at 34-35", message: 'mark: "%%", not "%"' },
+  },
+  {
+    id: "tokens-290-journey-fragment-mark",
+    diagram: "journey",
+    fixture: "db-section-ends-at-hash",
+    at: 23,
+    expected: { where: "Comment at 29-30", message: 'mark: "%%", not "%"' },
+  },
+  {
+    id: "tokens-290-pie-fragment-mark",
+    diagram: "pie",
+    fixture: "accdescr-block-comment",
+    at: 24,
+    expected: { where: "Comment at 30-31", message: 'mark: "%%", not "%"' },
+  },
+  {
+    id: "tokens-290-railroad-fragment-mark",
+    diagram: "railroad",
+    fixture: "abnf-comment-before-rule",
+    at: 28,
+    expected: {
+      where: "Comment at 19-28",
+      message:
+        "the native Comment must end at its first lexical closer or physical line end",
+    },
+  },
+  {
+    id: "tokens-290-sequence-fragment-mark",
+    diagram: "sequence",
+    fixture: "db-link-url-hash-ends-text",
+    at: 53,
+    expected: { where: "Comment at 59-60", message: 'mark: "%%", not "%"' },
+  },
+  {
+    id: "tokens-290-state-fragment-mark",
+    diagram: "state",
+    fixture: "db-divider-then-comment-only",
+    at: 48,
+    expected: { where: "Comment at 54-55", message: 'mark: "%%", not "%"' },
+  },
+  {
+    id: "tokens-290-venn-fragment-mark",
+    diagram: "venn",
+    fixture: "db-after-indent-id-label-comment",
+    at: 34,
+    expected: { where: "Comment at 40-41", message: 'mark: "%%", not "%"' },
+  },
+] as const
+
+const cutDiagramCommentValueCases = [
+  {
+    id: "tokens-290-c4-fragment-value",
+    diagram: "c4",
+    fixture: "div-boundary-comment-before-inline-body",
+    at: 30,
+    expected: {
+      where: "Comment at 36-37",
+      message: 'value of a fragment: "xx", not "x"',
+    },
+  },
+  {
+    id: "tokens-290-class-fragment-value",
+    diagram: "class",
+    fixture: "bare-marker-directive-lines-17d57580",
+    at: 25,
+    expected: {
+      where: "Comment at 31-32",
+      message: 'value of a fragment: "xx", not "x"',
+    },
+  },
+  {
+    id: "tokens-290-gantt-fragment-value",
+    diagram: "gantt",
+    fixture: "div-percent-brace-after-double-percent-comment-two-spaces",
+    at: 27,
+    expected: {
+      where: "Comment at 33-34",
+      message: 'value of a fragment: "xx", not "x"',
+    },
+  },
+  {
+    id: "tokens-290-gitgraph-fragment-value",
+    diagram: "gitgraph",
+    fixture: "comment-accdescr",
+    at: 24,
+    expected: {
+      where: "Comment at 30-31",
+      message: 'value of a fragment: "xx", not "x"',
+    },
+  },
+  {
+    id: "tokens-290-ishikawa-fragment-value",
+    diagram: "ishikawa",
+    fixture: "comment-header-glued",
+    at: 15,
+    expected: {
+      where: "Comment at 21-22",
+      message: 'value of a fragment: "xx", not "x"',
+    },
+  },
+  {
+    id: "tokens-290-kanban-fragment-value",
+    diagram: "kanban",
+    fixture: "db-metadata-before-comment",
+    at: 17,
+    expected: {
+      where: "Comment at 23-24",
+      message: 'value of a fragment: "xx", not "x"',
+    },
+  },
+  {
+    id: "tokens-290-mindmap-fragment-value",
+    diagram: "mindmap",
+    fixture: "div-header-line-comment-comment-then-blank",
+    at: 12,
+    expected: {
+      where: "Comment at 18-19",
+      message: 'value of a fragment: "xx", not "x"',
+    },
+  },
+  {
+    id: "tokens-290-requirement-fragment-value",
+    diagram: "requirement",
+    fixture: "db-comment-lines-between-statements",
+    at: 57,
+    expected: {
+      where: "Comment at 63-64",
+      message: 'value of a fragment: "xx", not "x"',
+    },
+  },
+  {
+    id: "tokens-290-timeline-fragment-value",
+    diagram: "timeline",
+    fixture: "db-comment-before-event-line",
+    at: 20,
+    expected: {
+      where: "Comment at 26-27",
+      message: 'value of a fragment: "xx", not "x"',
+    },
+  },
+  {
+    id: "tokens-290-treemap-fragment-value",
+    diagram: "treemap",
+    fixture: "comment-accdescr",
+    at: 29,
+    expected: {
+      where: "Comment at 35-36",
+      message: 'value of a fragment: "xx", not "x"',
+    },
+  },
+  {
+    id: "tokens-290-treeview-fragment-value",
+    diagram: "treeview",
+    fixture: "box-comment-indent-carry",
+    at: 30,
+    expected: {
+      where: "Comment at 36-37",
+      message: 'value of a fragment: "xx", not "x"',
+    },
+  },
+  {
+    id: "tokens-290-info-fragment-value",
+    diagram: "info",
+    fixture: "c4component-flag-comment-lf",
+    at: 28,
+    expected: {
+      where: "Comment at 34-35",
+      message: 'value of a fragment: "xx", not "x"',
+    },
+  },
+  {
+    id: "tokens-290-journey-fragment-value",
+    diagram: "journey",
+    fixture: "db-section-ends-at-hash",
+    at: 23,
+    expected: {
+      where: "Comment at 29-30",
+      message: 'value of a fragment: "xx", not "x"',
+    },
+  },
+  {
+    id: "tokens-290-pie-fragment-value",
+    diagram: "pie",
+    fixture: "accdescr-block-comment",
+    at: 24,
+    expected: {
+      where: "Comment at 30-31",
+      message: 'value of a fragment: "xx", not "x"',
+    },
+  },
+  {
+    id: "tokens-290-railroad-fragment-value",
+    diagram: "railroad",
+    fixture: "abnf-comment-before-rule",
+    at: 28,
+    expected: {
+      where: "Comment at 34-35",
+      message: 'value of a native Comment: "xx", not "x"',
+    },
+  },
+  {
+    id: "tokens-290-sequence-fragment-value",
+    diagram: "sequence",
+    fixture: "db-link-url-hash-ends-text",
+    at: 53,
+    expected: {
+      where: "Comment at 59-60",
+      message: 'value of a fragment: "xx", not "x"',
+    },
+  },
+  {
+    id: "tokens-290-state-fragment-value",
+    diagram: "state",
+    fixture: "db-divider-then-comment-only",
+    at: 48,
+    expected: {
+      where: "Comment at 54-55",
+      message: 'value of a fragment: "xx", not "x"',
+    },
+  },
+  {
+    id: "tokens-290-venn-fragment-value",
+    diagram: "venn",
+    fixture: "db-after-indent-id-label-comment",
+    at: 34,
+    expected: {
+      where: "Comment at 40-41",
+      message: 'value of a fragment: "xx", not "x"',
+    },
+  },
+] as const
+
+const cutDiagramCommentStartCases = [
+  {
+    id: "tokens-290-c4-fragment-start",
+    diagram: "c4",
+    fixture: "div-boundary-comment-before-inline-body",
+    at: 30,
+    expected: {
+      where: "Comment at 35-37",
+      message: "has no mark and follows no comment region",
+    },
+  },
+  {
+    id: "tokens-290-class-fragment-start",
+    diagram: "class",
+    fixture: "bare-marker-directive-lines-17d57580",
+    at: 25,
+    expected: {
+      where: "Comment at 30-32",
+      message: "has no mark and follows no comment region",
+    },
+  },
+  {
+    id: "tokens-290-gantt-fragment-start",
+    diagram: "gantt",
+    fixture: "div-percent-brace-after-double-percent-comment-two-spaces",
+    at: 27,
+    expected: {
+      where: "Comment at 32-34",
+      message: "has no mark and follows no comment region",
+    },
+  },
+  {
+    id: "tokens-290-gitgraph-fragment-start",
+    diagram: "gitgraph",
+    fixture: "comment-accdescr",
+    at: 24,
+    expected: {
+      where: "Comment at 29-31",
+      message: "has no mark and follows no comment region",
+    },
+  },
+  {
+    id: "tokens-290-ishikawa-fragment-start",
+    diagram: "ishikawa",
+    fixture: "comment-header-glued",
+    at: 15,
+    expected: {
+      where: "Comment at 20-22",
+      message: "has no mark and follows no comment region",
+    },
+  },
+  {
+    id: "tokens-290-kanban-fragment-start",
+    diagram: "kanban",
+    fixture: "db-metadata-before-comment",
+    at: 17,
+    expected: {
+      where: "Comment at 22-24",
+      message: "has no mark and follows no comment region",
+    },
+  },
+  {
+    id: "tokens-290-mindmap-fragment-start",
+    diagram: "mindmap",
+    fixture: "div-header-line-comment-comment-then-blank",
+    at: 12,
+    expected: {
+      where: "Comment at 17-19",
+      message: "has no mark and follows no comment region",
+    },
+  },
+  {
+    id: "tokens-290-requirement-fragment-start",
+    diagram: "requirement",
+    fixture: "db-comment-lines-between-statements",
+    at: 57,
+    expected: {
+      where: "Comment at 62-64",
+      message: "has no mark and follows no comment region",
+    },
+  },
+  {
+    id: "tokens-290-timeline-fragment-start",
+    diagram: "timeline",
+    fixture: "db-comment-before-event-line",
+    at: 20,
+    expected: {
+      where: "Comment at 25-27",
+      message: "has no mark and follows no comment region",
+    },
+  },
+  {
+    id: "tokens-290-treemap-fragment-start",
+    diagram: "treemap",
+    fixture: "comment-accdescr",
+    at: 29,
+    expected: {
+      where: "Comment at 34-36",
+      message: "has no mark and follows no comment region",
+    },
+  },
+  {
+    id: "tokens-290-treeview-fragment-start",
+    diagram: "treeview",
+    fixture: "box-comment-indent-carry",
+    at: 30,
+    expected: {
+      where: "Comment at 35-37",
+      message: "has no mark and follows no comment region",
+    },
+  },
+  {
+    id: "tokens-290-info-fragment-start",
+    diagram: "info",
+    fixture: "c4component-flag-comment-lf",
+    at: 28,
+    expected: {
+      where: "Comment at 33-35",
+      message: "has no mark and follows no comment region",
+    },
+  },
+  {
+    id: "tokens-290-journey-fragment-start",
+    diagram: "journey",
+    fixture: "db-section-ends-at-hash",
+    at: 23,
+    expected: {
+      where: "Comment at 28-30",
+      message: "has no mark and follows no comment region",
+    },
+  },
+  {
+    id: "tokens-290-pie-fragment-start",
+    diagram: "pie",
+    fixture: "accdescr-block-comment",
+    at: 24,
+    expected: {
+      where: "Comment at 29-31",
+      message: "has no mark and follows no comment region",
+    },
+  },
+  {
+    id: "tokens-290-railroad-fragment-start",
+    diagram: "railroad",
+    fixture: "abnf-comment-before-rule",
+    at: 28,
+    expected: {
+      where: "Comment at 33-35",
+      message:
+        "an unmarked native comment fragment must follow a common region",
+    },
+  },
+  {
+    id: "tokens-290-sequence-fragment-start",
+    diagram: "sequence",
+    fixture: "db-link-url-hash-ends-text",
+    at: 53,
+    expected: {
+      where: "Comment at 58-60",
+      message: "has no mark and follows no comment region",
+    },
+  },
+  {
+    id: "tokens-290-state-fragment-start",
+    diagram: "state",
+    fixture: "db-divider-then-comment-only",
+    at: 48,
+    expected: {
+      where: "Comment at 53-55",
+      message: "has no mark and follows no comment region",
+    },
+  },
+  {
+    id: "tokens-290-venn-fragment-start",
+    diagram: "venn",
+    fixture: "db-after-indent-id-label-comment",
+    at: 34,
+    expected: {
+      where: "Comment at 39-41",
+      message: "has no mark and follows no comment region",
+    },
+  },
+] as const
+
+const cutDiagramCommentSemicolonCases = [
+  {
+    id: "tokens-290-c4-semicolon-inside",
+    diagram: "c4",
+    fixture: "div-boundary-comment-before-inline-body",
+    at: 30,
+    expected: {
+      where: "Comment at 26-39",
+      message: "does not end where its line ends",
+    },
+  },
+  {
+    id: "tokens-290-class-semicolon-inside",
+    diagram: "class",
+    fixture: "bare-marker-directive-lines-17d57580",
+    at: 25,
+    expected: {
+      where: "Comment at 21-34",
+      message: "does not end where its line ends",
+    },
+  },
+  {
+    id: "tokens-290-gantt-semicolon-inside",
+    diagram: "gantt",
+    fixture: "div-percent-brace-after-double-percent-comment-two-spaces",
+    at: 27,
+    expected: {
+      where: "Comment at 24-36",
+      message: "does not end where its line ends",
+    },
+  },
+  {
+    id: "tokens-290-gitgraph-semicolon-inside",
+    diagram: "gitgraph",
+    fixture: "comment-accdescr",
+    at: 24,
+    expected: {
+      where: "Comment at 20-33",
+      message: "does not end where its line ends",
+    },
+  },
+  {
+    id: "tokens-290-requirement-semicolon-inside",
+    diagram: "requirement",
+    fixture: "db-comment-lines-between-statements",
+    at: 57,
+    expected: {
+      where: "Comment at 48-66",
+      message: "does not end where its line ends",
+    },
+  },
+  {
+    id: "tokens-290-timeline-semicolon-inside",
+    diagram: "timeline",
+    fixture: "db-comment-before-event-line",
+    at: 20,
+    expected: {
+      where: "Comment at 17-29",
+      message: "does not end where its line ends",
+    },
+  },
+  {
+    id: "tokens-290-treemap-semicolon-inside",
+    diagram: "treemap",
+    fixture: "comment-accdescr",
+    at: 29,
+    expected: {
+      where: "Comment at 20-38",
+      message: "does not end where its line ends",
+    },
+  },
+  {
+    id: "tokens-290-treeview-semicolon-inside",
+    diagram: "treeview",
+    fixture: "box-comment-indent-carry",
+    at: 30,
+    expected: {
+      where: "Comment at 23-39",
+      message: "does not end where its line ends",
+    },
+  },
+  {
+    id: "tokens-290-info-semicolon-inside",
+    diagram: "info",
+    fixture: "c4component-flag-comment-lf",
+    at: 28,
+    expected: {
+      where: "Comment at 14-37",
+      message: "does not end where its line ends",
+    },
+  },
+  {
+    id: "tokens-290-journey-semicolon-inside",
+    diagram: "journey",
+    fixture: "db-section-ends-at-hash",
+    at: 23,
+    expected: {
+      where: "Comment at 20-32",
+      message: "does not end where its line ends",
+    },
+  },
+  {
+    id: "tokens-290-pie-semicolon-inside",
+    diagram: "pie",
+    fixture: "accdescr-block-comment",
+    at: 24,
+    expected: {
+      where: "Comment at 18-33",
+      message: "does not end where its line ends",
+    },
+  },
+  {
+    id: "tokens-290-railroad-semicolon-inside",
+    diagram: "railroad",
+    fixture: "abnf-comment-before-rule",
+    at: 28,
+    expected: {
+      where: "Comment at 19-37",
+      message: "does not end where its line ends",
+    },
+  },
+  {
+    id: "tokens-290-sequence-semicolon-inside",
+    diagram: "sequence",
+    fixture: "db-link-url-hash-ends-text",
+    at: 53,
+    expected: {
+      where: "Comment at 49-62",
+      message: "does not end where its line ends",
+    },
+  },
+  {
+    id: "tokens-290-state-semicolon-inside",
+    diagram: "state",
+    fixture: "db-divider-then-comment-only",
+    at: 48,
+    expected: {
+      where: "Comment at 45-57",
+      message: "does not end where its line ends",
+    },
+  },
+  {
+    id: "tokens-290-venn-semicolon-inside",
+    diagram: "venn",
+    fixture: "db-after-indent-id-label-comment",
+    at: 34,
+    expected: {
+      where: "Comment at 30-43",
+      message: "does not end where its line ends",
+    },
+  },
+] as const
+
+for (const entry of cutDiagramCommentMarkCases) {
+  it(`reports ${entry.id}`, () => {
+    const { input, tree } = cutDiagramComment(
+      entry.diagram,
+      entry.fixture,
+      entry.at,
+      "",
+    )
+    expect(checkTree(input, tree)).toEqual([])
+    const broken = copyOf(tree)
+    setField(cutFragment(broken), "mark", "%%")
+    expect(checkTree(input, broken)).toContainEqual(entry.expected)
+  })
+}
+
+for (const entry of cutDiagramCommentValueCases) {
+  it(`reports ${entry.id}`, () => {
+    const { input, tree } = cutDiagramComment(
+      entry.diagram,
+      entry.fixture,
+      entry.at,
+      "",
+    )
+    expect(checkTree(input, tree)).toEqual([])
+    const broken = copyOf(tree)
+    setField(cutFragment(broken), "value", "xx")
+    expect(checkTree(input, broken)).toContainEqual(entry.expected)
+  })
+}
+
+for (const entry of cutDiagramCommentStartCases) {
+  it(`reports ${entry.id}`, () => {
+    const { input, tree } = cutDiagramComment(
+      entry.diagram,
+      entry.fixture,
+      entry.at,
+      "",
+    )
+    expect(checkTree(input, tree)).toEqual([])
+    const broken = copyOf(tree)
+    const fragment = cutFragment(broken)
+    span(input, fragment, fragment.range[0] - 1, fragment.range[1])
+    setField(fragment, "value", input.slice(...fragment.range))
+    expect(checkTree(input, broken)).toContainEqual(entry.expected)
+  })
+}
+
+// The `;` before the region has characters of the comment on both sides, the
+// fragment after the region included, so it lies inside the comment. Each
+// case makes it an IgnoredSemicolon token after a shortened comment.
+for (const entry of cutDiagramCommentSemicolonCases) {
+  it(`reports ${entry.id}`, () => {
+    const { input, tree } = cutDiagramComment(
+      entry.diagram,
+      entry.fixture,
+      entry.at,
+      " style:#x;",
+    )
+    expect(checkTree(input, tree)).toEqual([])
+    const broken = copyOf(tree)
+    const semicolon = entry.at + " style:#x".length
+    const comment = broken.comments.find(
+      (item) => item.range[1] === semicolon + 1,
+    )!
+    span(input, comment, comment.range[0], semicolon)
+    setField(comment, "value", comment.value.slice(0, -1))
+    setField(
+      broken,
+      "tokens",
+      [
+        ...broken.tokens,
+        tokenOf(input, "IgnoredSemicolon", { text: ";", from: semicolon }),
       ].sort((left, right) => left.range[0] - right.range[0]),
     )
     expect(checkTree(input, broken)).toContainEqual(entry.expected)
