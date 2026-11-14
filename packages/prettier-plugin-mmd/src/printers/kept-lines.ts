@@ -541,6 +541,49 @@ function followsLineSeparator(source: Source, offset: number): boolean {
 }
 
 /**
+ * Keep the style terminator when removing it would let the style continue
+ * after a removed comment line (diagrams/er.md, The style context;
+ * common.md, Comment lines). Use the source's comment regions, which already
+ * distinguish indentation, blank lines, directives, and a bare `%%`.
+ * A directive before the comment on the same line belongs to that region;
+ * a directive-only preceding line is the next nonempty line instead.
+ */
+function keepsStyleTerminatorBeforeComment(
+  source: Source,
+  offset: number,
+): boolean {
+  const lineFeed = source.text.indexOf("\n", offset)
+  if (lineFeed < 0) return false
+  const region = source.commentRegions.find(([start]) => start === lineFeed + 1)
+  if (region === undefined) return false
+  const trivia = findTriviaBetween(source, region[0], region[1])
+  const first = trivia.at(0)
+  const comment = trivia.find((item) => item.type === "Comment")
+  if (first === undefined || comment === undefined) return false
+  if (
+    first.type === "Directive" &&
+    source.text.indexOf("\n", first.range[0]) < comment.range[0]
+  )
+    return false
+  if (textRead(source, region[1], source.text.length).trim() === "")
+    return false
+  const readsLineFeeds =
+    source.root.body.type === "FlowchartDiagram" ||
+    source.root.body.type === "AgentflowDiagram"
+  let before = offset - 1
+  while (before >= 0) {
+    const character = source.text[before]
+    if (!isSpaceOrTab(character) && !(readsLineFeeds && character === "\n"))
+      break
+    before--
+  }
+  return (
+    (source.text[before] === "\u2028" || source.text[before] === "\u2029") &&
+    endsStyleStatement(source, offset)
+  )
+}
+
+/**
  * Whether the printer drops the `;` at `offset`: one that the line rule
  * ignores at the end of its line, which is dropped as a `;` that separates
  * statements is, since mermaid.js removes it from the text, and the `;` that
@@ -552,17 +595,27 @@ function followsLineSeparator(source: Source, offset: number): boolean {
  * statements, unless it ends such a statement: there the line that holds it is
  * kept as written, with the `;`. Required punctuation is never dropped,
  * including selected semicolons in a diagram with required terminators (see
- * `semicolonRulesOf`).
+ * `semicolonRulesOf`). A style terminator after U+2028 or U+2029 stays
+ * before a removed comment line with text after it: otherwise the style
+ * takes that text (diagrams/er.md, The style context).
  */
 export function isDroppedSemicolon(source: Source, offset: number): boolean {
+  if (source.text[offset] !== ";") return false
+  const { kind } = semicolonRulesOf(source)
+  if (
+    kind === "separators" &&
+    !source.ignoredSemicolons.has(offset) &&
+    endsStyleStatement(source, offset)
+  )
+    return !keepsStyleTerminatorBeforeComment(source, offset)
   if (
     !isLastOnItsLine(source, offset) ||
     source.root.comments.some((comment) => comment.range[1] === offset) ||
-    followsLineSeparator(source, offset)
+    followsLineSeparator(source, offset) ||
+    keepsStyleTerminatorBeforeComment(source, offset)
   ) {
     return false
   }
-  const { kind } = semicolonRulesOf(source)
   if (source.ignoredSemicolons.has(offset)) {
     return (
       kind === "separators" ||
@@ -642,6 +695,11 @@ interface StyleSemicolons {
  * dropped.
  */
 const styleStatementTypes: ReadonlySet<string> = new Set([
+  "FlowchartClassDefStatement",
+  "FlowchartStyleStatement",
+  "AgentflowClassDefStatement",
+  "AgentflowStyleStatement",
+  "QuadrantClassDefStatement",
   "ClassClassDefStatement",
   "ClassStyleStatement",
   "StateClassDefStatement",
@@ -735,12 +793,17 @@ function styleSemicolonsOf(source: Source): StyleSemicolons {
 }
 
 /**
- * Whether the `;` that the line rule ignores at `offset` ends a `classDef` or
- * `style` statement: only whitespace and directives lie between the end of the
- * statement and the `;`.
+ * Whether the `;` at `offset` ends a `classDef` or `style` statement: a
+ * terminator in its range, or one after it with only whitespace and directives
+ * between. Flowchart and agentflow styles read through line feeds too
+ * (diagrams/flowchart.md, Style, class, and link style statements).
  */
-function endsStyleStatement(source: Source, offset: number): boolean {
-  const { ends } = styleSemicolonsOf(source)
+export function endsStyleStatement(source: Source, offset: number): boolean {
+  const { ends, terminators } = styleSemicolonsOf(source)
+  if (terminators.has(offset)) return true
+  const readsLineFeeds =
+    source.root.body.type === "FlowchartDiagram" ||
+    source.root.body.type === "AgentflowDiagram"
   let position = offset
   while (position > 0) {
     if (ends.has(position)) return true
@@ -750,7 +813,8 @@ function endsStyleStatement(source: Source, offset: number): boolean {
       continue
     }
     const character = source.text[position - 1]
-    if (character === "\n" || !isWhitespace(character)) return false
+    if ((!readsLineFeeds && character === "\n") || !isWhitespace(character))
+      return false
     position--
   }
   return false

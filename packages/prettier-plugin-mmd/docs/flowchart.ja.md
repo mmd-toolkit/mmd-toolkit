@@ -618,6 +618,26 @@ flowchart LR
 [test: U+2029 after a `;` before an edge id]
 [test: U+2029 after a `;` and a space before an edge id]
 
+U+2028 または U+2029 の後ろにある、
+`style` や `classDef` の文を終わらせる `;` は、間に空白と改行だけがあり、
+その `;` の行にコメント行が続くときは残します。
+理由は ER の図と同じです。
+詳しくは、
+[スタイル文の末尾のセミコロン](./er.ja.md#スタイル文の末尾のセミコロン)
+を参照してください。
+この文は改行をまたいで読むので、`;` がないと、コメント行の後ろまで続き、
+その後ろの文を取り込みます。
+指令の行、テキストの終わり、文が続くときは、`;` を削除します。
+[fixture: semicolons/style-terminator-comment-and-directive-controls]
+[test: flowchart LF before terminator and comments]
+[test: swimlane LF before terminator and comments]
+[test: flowchart directive before a comment on the same line]
+[test: swimlane directive before a comment on the same line]
+[test: flowchart directive, direct, NBSP and bare percent controls]
+[test: flowchart comment at EOF control]
+[test: swimlane directive, direct and NBSP controls]
+[test: swimlane comment at EOF control]
+
 ### 空行
 
 連続する空行は 1 つの空行にします。

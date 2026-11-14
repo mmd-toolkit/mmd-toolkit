@@ -601,6 +601,21 @@ before an edge id] [test: U+2028 after a `;` and a space before an edge id]
 [test: U+2029 after a `;` before an edge id] [test: U+2029 after a `;` and a
 space before an edge id]
 
+A `;` that ends a `style` or `classDef` statement and stands after a U+2028 or
+U+2029, with only whitespace and line feeds between them, stays where a comment
+line follows its line, for the reason given for an ER diagram (see
+[Semicolons at the end of a style statement](./er.md#semicolons-at-the-end-of-a-style-statement)):
+the statement reads through line feeds, so without the `;` it goes on after the
+comment line and takes the statement after it. Where a directive line, the end
+of the text, or a statement follows, the `;` is dropped. [fixture:
+semicolons/style-terminator-comment-and-directive-controls] [test: flowchart LF
+before terminator and comments] [test: swimlane LF before terminator and
+comments] [test: flowchart directive before a comment on the same line] [test:
+swimlane directive before a comment on the same line] [test: flowchart
+directive, direct, NBSP and bare percent controls] [test: flowchart comment at
+EOF control] [test: swimlane directive, direct and NBSP controls] [test:
+swimlane comment at EOF control]
+
 ### Blank lines
 
 A run of empty lines becomes one empty line, as Prettier does for code: an empty

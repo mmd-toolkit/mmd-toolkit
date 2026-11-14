@@ -2027,6 +2027,27 @@ erDiagram
   style A fill: #0f0, stroke: #00f
 ```
 
+U+2028 または U+2029 の後ろにある、
+`classDef` や `style` の文を終わらせる `;` は、間に空白とタブだけがあり、
+その `;` の行にコメント行が続くときは残します。
+`;` がないと、文は mermaid.js が取り除くコメント行の後ろまで続き、
+その後ろの文を取り込むからです。
+詳しくは、
+仕様の [style の文脈](../../spec/docs/diagrams/er.ja.md#style-の文脈)
+を参照してください。
+`style A fill:red`、U+2028、`;`、改行、`%% c`、改行、`x` は、
+`;` と entity `x` を保ちます。
+指令の行、テキストの終わり、文が続くときは、上のとおり `;` を削除します。
+[fixture: semicolons-at-the-end-of-a-style-statement/comment-and-directive-controls]
+[test: ER direct comments] [test: ER two comment lines]
+[test: ER empty lines before comments] [test: ER directives on comment lines]
+[test: ER directives before comments on the same line]
+[test: ER indented comments] [test: ER indented following statements]
+[test: ER tab and whitespace-only line before a comment]
+[test: ER style comment at EOF control]
+[test: ER classDef comment at EOF control]
+[test: ER directive lines, direct statements, NBSP controls]
+
 ### 複数行の文
 
 mermaid.js が複数行にわたって読む文は、

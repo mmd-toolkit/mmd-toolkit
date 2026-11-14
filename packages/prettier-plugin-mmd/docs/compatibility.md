@@ -3527,6 +3527,17 @@ class/labels/semicolon-line-kept] [fixture:
 state/descriptions-and-labels/semicolon-line-kept] See
 [Statements one per line](./flowchart.md#statements-one-per-line).
 
+A `;` that ends a `classDef` or `style` statement is kept where a U+2028 or
+U+2029 stands before it and a comment line follows its line: without the `;` the
+statement goes on after the comment line, which mermaid.js removes, and takes
+the statement after it (see
+[Semicolons at the end of a style statement](./er.md#semicolons-at-the-end-of-a-style-statement)
+and [Semicolons](./flowchart.md#semicolons)). [fixture:
+er/semicolons-at-the-end-of-a-style-statement/comment-and-directive-controls]
+[fixture: flowchart/semicolons/style-terminator-comment-and-directive-controls]
+[test: block style terminators before comments after U+2028 and U+2029] [test:
+treemap style terminators before comments after U+2028 and U+2029]
+
 In class, state, ER, requirement, block, Venn and usecase diagrams, line-ending
 `classDef` and `style` semicolons are dropped where this leaves the Db
 unchanged. This includes the ignored terminator and its preceding whitespace,
