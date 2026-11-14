@@ -762,7 +762,8 @@ task, its token is a `RawText` token, which a directive or an ignored `;` cuts
 as any text: `a : do%%{init: {}}%%ne, t1, 2024-01-01, 1d` has the tag `done`
 with the `RawText` tokens `do` and `ne` (see [Gantt](./tokens/gantt.md#tokens)).
 
-[fixture: gantt/gram-task-tag-cut-by-directive]
+[fixture: gantt/gram-task-tag-cut-by-directive] [fixture:
+gantt/gram-task-tag-cut-by-ignored-semicolon]
 
 A name that may contain whitespace is a name node of the diagram type instead
 (see [Shared leaf nodes](../../spec/docs/ast.md#shared-leaf-nodes)). Its tokens

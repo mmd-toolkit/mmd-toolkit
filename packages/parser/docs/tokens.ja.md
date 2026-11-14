@@ -820,7 +820,8 @@ Identifier のトークンは、その単位のトークンです。
 `RawText` のトークン `do` と `ne` を持ちます。
 [gantt](./tokens/gantt.ja.md#トークン) を参照。
 
-[fixture: gantt/gram-task-tag-cut-by-directive]
+[fixture: gantt/gram-task-tag-cut-by-directive] [fixture:
+gantt/gram-task-tag-cut-by-ignored-semicolon]
 
 空白を含みうる名前は、代わりに図種の名前のノードです。
 [共通の葉のノード](../../spec/docs/ast.ja.md#共通の葉のノード) を参照。
