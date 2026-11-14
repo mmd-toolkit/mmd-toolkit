@@ -273,18 +273,31 @@ er/lex-decimal-line-separator-comment-line] [fixture:
 er/lex-header-line-separator-comment-line] [fixture:
 er/lex-class-shorthand-line-separator-comment-line] [fixture:
 er/lex-role-line-separator-comment-line] At the start of a line, the comment
-region starts at the start of the line and takes the U+2028: a line of U+2028
-and `%% c` before the line `A` leaves the entity `A`. [fixture:
-er/lex-line-separator-comment-line-at-line-start] Where no comment follows it, a
-U+2028 at the start of a line starts a name: a line of U+2028 and
-`direction LR B` gives the entities U+2028 and `direction`, `LR`, and `B`, and
-the direction stays `TB`. [fixture: er/db-line-separator-at-line-start] After
-`end`, the U+2028 is whitespace that `end` reads, and after `1`, rule 11 of the
-cardinalities, numbers, and relationship lines takes the U+2028 for the
-whitespace it looks for after the `1` and looks past the region: in `A ||--1`,
-U+2028, `%% c`, a line break, and `B : x`, the `1` is `only-one`, and the U+2028
-then starts the name of the second entity, U+2028 and `B`, while `1`, U+2028,
-`%% c`, a line break, and `B` where a statement starts is rejected. [fixture:
+region starts at the start of the line and takes the U+2028 or U+2029: a line of
+U+2028 and `%% c` before the line `A` leaves the entity `A`, and so does a line
+of U+2029 and `%% c`. [fixture:
+er/lex-line-separator-comment-line-at-line-start] [fixture:
+er/lex-paragraph-separator-comment-line-at-line-start] Where no comment follows
+it, a U+2028 or a U+2029 at the start of a line starts a name: a line of U+2028
+and `direction LR B` gives the entities U+2028 and `direction`, `LR`, and `B`,
+and the direction stays `TB`, and so it is with U+2029. [fixture:
+er/db-line-separator-at-line-start] [fixture:
+er/db-paragraph-separator-at-line-start] The name ends where no character of a
+name follows: with a space after the U+2028, or a directive and a space, the
+name is the U+2028 alone, and the rule for a direction line then reads the rest
+of the line from there, so a line of U+2028, a space, and `direction LR` gives
+the entity U+2028 and sets the direction `LR`; a U+2028 alone on its line, or at
+the end of the text, is the entity U+2028. [fixture:
+er/db-line-separator-at-line-start-space-next] [fixture:
+er/lex-line-separator-at-line-start-directive-space-next] [fixture:
+er/db-line-separator-at-line-start-line-feed-next] [fixture:
+er/db-line-separator-at-line-start-end-of-text] After `end`, the U+2028 is
+whitespace that `end` reads, and after `1`, rule 11 of the cardinalities,
+numbers, and relationship lines takes the U+2028 for the whitespace it looks for
+after the `1` and looks past the region: in `A ||--1`, U+2028, `%% c`, a line
+break, and `B : x`, the `1` is `only-one`, and the U+2028 then starts the name
+of the second entity, U+2028 and `B`, while `1`, U+2028, `%% c`, a line break,
+and `B` where a statement starts is rejected. [fixture:
 er/lex-end-line-separator-comment-line] [fixture:
 er/lex-one-line-separator-comment-line-letter] [fixture:
 er/lex-one-line-separator-comment-line-statement-start] In an attribute block

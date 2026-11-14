@@ -300,13 +300,26 @@ mermaid.js と同じく `#f00;` はエンティティとして読まれ、`style
 [fixture: er/lex-header-line-separator-comment-line]
 [fixture: er/lex-class-shorthand-line-separator-comment-line]
 [fixture: er/lex-role-line-separator-comment-line]
-行の始めでは、コメント領域は行の始めから始まって U+2028 を取るので、
-行 `A` の前の U+2028 と `%% c` の行は、実体 `A` を残します。
+行の始めでは、コメント領域は行の始めから始まって U+2028 や U+2029 を取るので、
+行 `A` の前の U+2028 と `%% c` の行は、実体 `A` を残し、
+U+2029 と `%% c` の行も同じです。
 [fixture: er/lex-line-separator-comment-line-at-line-start]
-後にコメントが続かないとき、行の始めの U+2028 は名前を始めるので、
+[fixture: er/lex-paragraph-separator-comment-line-at-line-start]
+後にコメントが続かないとき、行の始めの U+2028 や U+2029 は名前を始めるので、
 U+2028 と `direction LR B` の行は、実体 U+2028 と `direction`、`LR`、
-`B` になり、方向は `TB` のままです。
+`B` になり、方向は `TB` のままで、U+2029 でも同じです。
 [fixture: er/db-line-separator-at-line-start]
+[fixture: er/db-paragraph-separator-at-line-start]
+名前は、名前の字が後に続かないところで終わります。
+U+2028 の後に空白、またはディレクティブと空白が続くとき、名前は U+2028 だけで、
+方向の行の規則はそこから行の残りを読むので、U+2028、空白、
+`direction LR` の行は、実体 U+2028 になり、方向を `LR` にします。
+行に U+2028 だけがあるときと、テキストが U+2028 で終わるときも、
+実体 U+2028 になります。
+[fixture: er/db-line-separator-at-line-start-space-next]
+[fixture: er/lex-line-separator-at-line-start-directive-space-next]
+[fixture: er/db-line-separator-at-line-start-line-feed-next]
+[fixture: er/db-line-separator-at-line-start-end-of-text]
 `end` の後では、U+2028 は `end` が読む空白で、`1` の後では、
 濃度と数と関係の線の規則 11 が、`1` の後に探す空白として U+2028 を取り、
 領域を越えて先を見るので、`A ||--1`、U+2028、`%% c`、改行、
