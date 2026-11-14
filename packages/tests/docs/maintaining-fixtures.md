@@ -114,13 +114,20 @@ The prefix tells what a failure on the fixture would be a failure of:
 An input that shows more than one thing takes the prefix of the thing a failure
 on it would be about.
 
-The sentence above does not decide every case. The corpus follows the prefixes
-that each diagram type already has, so a new fixture whose input has `%%` (a
-comment or a directive) and whose prefix is `lex-`, `gram-`, or `db-` takes its
-prefix by these steps, in order. The fixtures of main (the base of the pull
-request) that the steps count are those of the same diagram type and the same
-kind, without the generated sets (a name that contains `-grid-` or ends with
-eight hexadecimal digits).
+For an input that has `%%`, the list above does not give every reader the same
+prefix: a failure on such an input can be about the units, the statements, or
+the values, and the corpus has the same kind of input under different prefixes
+in one diagram type. The corpus follows the prefixes that each diagram type
+already has, so a new fixture whose input contains `%%` anywhere in its text
+(whether or not it starts a comment or a directive) and that the list above
+gives the prefix `lex-`, `gram-`, or `db-` takes its prefix by these steps, in
+order, and not by the list. The prefix of such a fixture shows the habit of its
+diagram type, and does not always say what a failure on the fixture would be a
+failure of. The fixtures that the steps count are those of main as it stands at
+the merge base of the pull request, of the same diagram type (the folder of the
+fixture) and the same kind, without the generated sets (a name that contains
+`-grid-` or ends with eight hexadecimal digits). A new fixture whose input has
+no `%%` takes its prefix from the list above; these steps do not cover it.
 
 1. An input is accepted if its `expected.json` says that mermaid.js accepts it,
    and rejected if it has a `parse-error.json`; the two are separate tests, so
