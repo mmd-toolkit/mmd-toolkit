@@ -1554,9 +1554,9 @@ U+2029 以外の 1 文字と 1 つ以上の数字が続くもの（省略可）�
 [fixture: quadrant/db-empty-braces-line-between-statements]
 テキスト、名前、タイトル、アクセシビリティのテキスト、説明ブロック、
 文字列の中の U+2028 や U+2029 の後のコメント行は、その改行ごと取り除かれ、
-値は次の行に続き（[コメント行](../common.ja.md#コメント行) を参照）、
-`quadrant-1 a`、U+2028、`%% c`、改行、`b` はテキスト `a`、U+2028、
-`b` を持ちます。
+値は次の行に続き（[コメント行](../common.ja.md#コメント行) と、
+クラスの名前については [クラス](#クラス) を参照）、`quadrant-1 a`、U+2028、
+`%% c`、改行、`b` はテキスト `a`、U+2028、`b` を持ちます。
 [fixture: quadrant/db-quadrant-text-line-separator-then-comment-line]
 [fixture: quadrant/db-quadrant-text-paragraph-separator-then-comment-line]
 [fixture: quadrant/db-title-line-separator-then-comment-line] [fixture:

@@ -1396,11 +1396,12 @@ quadrant/db-comment-glued-after-semicolon] [fixture:
 quadrant/db-empty-braces-line-between-statements] A comment line after a U+2028
 or U+2029 inside a text, a name, a title, an accessibility text, a description
 block, or a string is removed, its line break included, and the value goes on
-with the next line (see [Comment lines](../common.md#comment-lines)):
-`quadrant-1 a`, U+2028, `%% c`, a line break, and `b` has the text `a`, U+2028,
-and `b`. [fixture: quadrant/db-quadrant-text-line-separator-then-comment-line]
-[fixture: quadrant/db-quadrant-text-paragraph-separator-then-comment-line]
-[fixture: quadrant/db-title-line-separator-then-comment-line] [fixture:
+with the next line (see [Comment lines](../common.md#comment-lines), and
+[Classes](#classes) for the name of a class): `quadrant-1 a`, U+2028, `%% c`, a
+line break, and `b` has the text `a`, U+2028, and `b`. [fixture:
+quadrant/db-quadrant-text-line-separator-then-comment-line] [fixture:
+quadrant/db-quadrant-text-paragraph-separator-then-comment-line] [fixture:
+quadrant/db-title-line-separator-then-comment-line] [fixture:
 quadrant/db-axis-text-line-separator-then-comment-line] [fixture:
 quadrant/db-point-name-line-separator-then-comment-line] [fixture:
 quadrant/db-acc-title-line-separator-then-comment-line] [fixture:
