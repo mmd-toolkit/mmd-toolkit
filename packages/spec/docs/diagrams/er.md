@@ -205,10 +205,15 @@ break, and `%%{init: {}}%%Bar` is rejected here, while mermaid.js reads the name
 er/div-directive-after-comment-line-in-name] A directive followed by whitespace
 there lies between two units and ends the name: `A`, U+2028, `%% c`, a line
 break, and `%%{init: {}}%% Bar` are the entities `A` and U+2028, and `Bar`.
-[fixture: er/lex-name-line-separator-comment-line-directive-space-next] So it is
-for every name: an entity of a relationship, a role, an alias, a class after
-`:::`, a name after `classDef`, `class`, or `style`, a class of `class`, the id
-of a subgraph, and the type and the name of an attribute. [fixture:
+[fixture: er/lex-name-line-separator-comment-line-directive-space-next] A
+directive right before the U+2028 or U+2029 that starts the region lies inside
+the name too, since the region starts after that character: `A`,
+`%%{init: {}}%%`, U+2029, `%% c`, a line break, and `B` is rejected here, while
+mermaid.js reads the name `A`, U+2029, and `B`. [fixture:
+er/div-directive-before-comment-line-in-name] Every name goes on across a region
+in this way: an entity of a relationship, a role, an alias, a class after `:::`,
+a name after `classDef`, `class`, or `style`, a class of `class`, the id of a
+subgraph, and the type and the name of an attribute. [fixture:
 er/lex-relationship-first-name-comment-line] [fixture:
 er/lex-relationship-second-name-comment-line] [fixture:
 er/lex-role-name-comment-line] [fixture: er/lex-alias-name-comment-line]
@@ -1578,7 +1583,8 @@ grammar accepts is accepted.
   er/div-directive-in-cardinality-words] [fixture:
   er/div-directive-in-cardinality-symbol] [fixture:
   er/div-directive-in-class-separator] [fixture:
-  er/div-directive-after-comment-line-in-name]
+  er/div-directive-after-comment-line-in-name] [fixture:
+  er/div-directive-before-comment-line-in-name]
 - **[`ignored-semicolon-as-token-boundary`](../known-divergences/ignored-semicolon-as-token-boundary.md).**
   On a line that matches the `style` rule or the `classDef` rule, an ignored `;`
   inside a unit other than a text unit and a string unit makes the input

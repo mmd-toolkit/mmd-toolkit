@@ -231,9 +231,13 @@ U+2029 を使ったときも同じです。
 `A`、U+2028、`%% c`、改行、`%%{init: {}}%% Bar` は、
 名前が `A` と U+2028 の実体と、実体 `Bar` です。
 [fixture: er/lex-name-line-separator-comment-line-directive-space-next]
-どの名前でも同じで、関係の実体、ロール、別名、`:::` の後のクラス、`classDef`、
-`class`、`style` の後の名前、`class` のクラス、subgraph の id、
-属性の型と名前もそうです。
+領域を始める U+2028 や U+2029 の直前のディレクティブも、
+領域がその文字の後で始まるので名前の中にあり、`A`、`%%{init: {}}%%`、U+2029、
+`%% c`、改行、`B` はここでは拒否されますが、mermaid.js は名前を `A`、U+2029、
+`B` と読みます。 [fixture: er/div-directive-before-comment-line-in-name]
+どの名前もこのように領域をまたいで続き、関係の実体、ロール、別名、
+`:::` の後のクラス、`classDef`、`class`、`style` の後の名前、`class` のクラス、
+subgraph の id、属性の型と名前もそうです。
 [fixture: er/lex-relationship-first-name-comment-line]
 [fixture: er/lex-relationship-second-name-comment-line]
 [fixture: er/lex-role-name-comment-line]
@@ -1757,7 +1761,8 @@ accessibility-statement = "accTitle" ":" title-text
   er/div-directive-in-cardinality-words] [fixture:
   er/div-directive-in-cardinality-symbol] [fixture:
   er/div-directive-in-class-separator] [fixture:
-  er/div-directive-after-comment-line-in-name]
+  er/div-directive-after-comment-line-in-name] [fixture:
+  er/div-directive-before-comment-line-in-name]
 - **[`ignored-semicolon-as-token-boundary`](../known-divergences/ignored-semicolon-as-token-boundary.ja.md)。**
   `style` の規則か `classDef` の規則に合う行で、
   テキストの単位と文字列の単位以外の単位の中にある無視される `;` は、

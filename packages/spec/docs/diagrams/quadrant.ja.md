@@ -723,6 +723,7 @@ mermaid.js がディレクティブを除いた後のテキストを読むとお
   [fixture: quadrant/div-grid-directive-class-name]
   [fixture: quadrant/div-grid-directive-classdef-name]
   [fixture: quadrant/div-directive-after-comment-line-in-classdef-name]
+  [fixture: quadrant/div-directive-before-comment-line-in-classdef-name]
   [fixture: quadrant/div-quadrant-directive-in-keyword]
   [fixture: quadrant/div-x-axis-directive-in-arrow]
   [fixture: quadrant/div-x-axis-directive-in-keyword]
@@ -2363,7 +2364,13 @@ U+2028、`%% c`、改行、
 そこの、後ろにスペースのあるディレクティブは名前を終え、
 そのスペースはスタイルの前の空白となるので、`classDef a`、U+2028、`%% c`、改行、
 `%%{init: {}}%% color: #109060` は名前が `a` と U+2028 のクラスを定めます。
-[fixture: quadrant/lex-classdef-name-line-separator-comment-line-directive-space-next]
+[fixture:
+quadrant/lex-classdef-name-line-separator-comment-line-directive-space-next]
+領域を始める U+2028 や U+2029 の直前のディレクティブも、
+領域がその文字の後で始まるので名前の中にあり、`classDef a`、`%%{init: {}}%%`、
+U+2029、`%% c`、改行、`b color: #109060` はここでは拒否されますが、
+mermaid.js は名前が `a`、U+2029、`b` のクラスを定めます。
+[fixture: quadrant/div-directive-before-comment-line-in-classdef-name]
 次の行の始めのスペースは名前を終え、スタイルの前の空白となるので、
 クラスは `a` と U+2028 です。
 そこの 2 つのスペース、コメント行の後の空行、テキストの終わり、

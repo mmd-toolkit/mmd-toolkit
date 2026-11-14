@@ -154,8 +154,9 @@ const problems: TreeProblem[] = checkTree(text, tree)
   `Identifier` のトークンをコメント領域が切るのは、
   名前が U+2028 か U+2029 を持つときだけです。
   それがコメントの始まりだからです。
-  断片は `Identifier` のトークンで、領域の前の断片はどれも、
-  その領域を始める区切りで終わり、領域はどの断片にも入りません。
+  断片は `Identifier` のトークンで、
+  領域の連なり（コメント行が続けば 1 つの連なりです）の前の断片は、
+  その最初の領域を始める区切りで終わり、領域はどの断片にも入りません。
   出典は parser/docs/tokens.md の Comment regions in tokens です。
   トークンをつないだものが名前の書かれたテキストなので、
   領域の前の断片に区切りがなければ、値の規則が報告します。
@@ -167,6 +168,7 @@ const problems: TreeProblem[] = checkTree(text, tree)
   [fixture: er/lex-name-line-separator-comment-line]
   [fixture: er/lex-name-two-comment-regions]
   [fixture: quadrant/lex-classdef-name-line-separator-comment-line]
+  [fixture: er/lex-name-line-separator-two-comment-lines]
 - **切られないトークン。**
   ディレクティブと行の規則が無視する `;` は、
   `String`（そのときは `StringFragment` のトークン）と `RawText`

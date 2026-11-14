@@ -646,6 +646,7 @@ other units, the header, the keywords, the arrow, `:::`, a `class-name`, `-`,
   quadrant/div-grid-directive-class-name] [fixture:
   quadrant/div-grid-directive-classdef-name] [fixture:
   quadrant/div-directive-after-comment-line-in-classdef-name] [fixture:
+  quadrant/div-directive-before-comment-line-in-classdef-name] [fixture:
   quadrant/div-quadrant-directive-in-keyword] [fixture:
   quadrant/div-x-axis-directive-in-arrow] [fixture:
   quadrant/div-x-axis-directive-in-keyword] [fixture:
@@ -2132,10 +2133,15 @@ by a space there ends the name, and the space is the whitespace before the
 styles: `classDef a`, U+2028, `%% c`, a line break, and
 `%%{init: {}}%% color: #109060` defines the class `a` and U+2028. [fixture:
 quadrant/lex-classdef-name-line-separator-comment-line-directive-space-next] A
-space at the start of the next line ends the name and is the whitespace before
-the styles, so the class is `a` and U+2028. Two spaces there, an empty line
-after the comment line, the end of the text, and a space between the name and
-the U+2028 make the input rejected, and so do a `%%` with nothing after it and a
+directive right before the U+2028 or U+2029 that starts the region lies inside
+the name too, since the region starts after that character: `classDef a`,
+`%%{init: {}}%%`, U+2029, `%% c`, a line break, and `b color: #109060` is
+rejected here, while mermaid.js defines the class `a`, U+2029, and `b`.
+[fixture: quadrant/div-directive-before-comment-line-in-classdef-name] A space
+at the start of the next line ends the name and is the whitespace before the
+styles, so the class is `a` and U+2028. Two spaces there, an empty line after
+the comment line, the end of the text, and a space between the name and the
+U+2028 make the input rejected, and so do a `%%` with nothing after it and a
 `%%{` that starts no directive, which are no comment lines but comments of this
 diagram type that run to the end of their line. [fixture:
 quadrant/lex-classdef-name-line-separator-comment-line-space] [fixture:
