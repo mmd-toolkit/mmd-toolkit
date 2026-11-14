@@ -4029,10 +4029,11 @@ mermaid.js は、`style`、続いて空白をはさまずに `#` が後に続く
 空白がないときと同じく `style fill:#f00;` と印字します。
 1 回目に空白を残し、2 回目に取り除くことはしません。
 末尾を削るテキストが対象です。
-timeline、treeView、radar、use case、cynefin、info、pie、gitGraph、packet、
-architecture、treemap、ishikawa の各図のテキストと、Gantt 図のタイトルです。
+timeline、journey、treeView、radar、use case、cynefin、info、pie、gitGraph、
+packet、architecture、treemap、ishikawa の各図のテキストと、
+Gantt 図のタイトルです。
 末尾の空白が Db の一部になるテキストは、空白を残します。
-Gantt 図のセクション名と `todayMarker`(`section style:#x;y; ` と空白 1 つ)は、
+Gantt 図のセクション名と `todayMarker`（`section style:#x;y; ` と空白 1 つ）は、
 書かれたままです。
 行の規則が無視しない `;` はテキストの一部で、前の空白とともに残ります。
 空白の後ろの U+2028 や U+2029 はテキストの文字で、末尾を削る対象ではないので、
@@ -4044,6 +4045,7 @@ Gantt 図のセクション名と `todayMarker`(`section style:#x;y; ` と空白
 [fixture: timeline/statements-one-per-line/ignored-semicolon-trailing-event-space]
 [fixture: timeline/statements-one-per-line/ignored-semicolon-trailing-event-directive]
 [fixture: timeline/statements-one-per-line/nonignored-semicolon-trailing-space]
+[fixture: journey/statements-one-per-line/ignored-semicolon-trailing-space-title]
 [fixture: treeview/semicolons/ignored-semicolon-trailing-space]
 [fixture: treeview/semicolons/ignored-semicolon-trailing-tab]
 [fixture: treeview/semicolons/ignored-semicolon-trailing-directive]

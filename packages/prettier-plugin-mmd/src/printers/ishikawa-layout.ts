@@ -12,6 +12,7 @@ import {
 } from "./indentation-lines.ts"
 import type { LeadingDirectives } from "./indentation-lines.ts"
 import { keptAsWritten, replaceInAtoms } from "./layout.ts"
+import type { TextEdit } from "./layout.ts"
 import {
   collectTextEndEdits,
   endsWithDirectives,
@@ -153,9 +154,9 @@ export function layoutIshikawaLine(
       start,
       end: textEnd.trailingBlanks === null ? end : line.range[1],
     })
-    const edits = []
+    const edits: TextEdit[] = []
     if (end < textEnd.end)
-      edits.push({ range: [end, textEnd.end] as const, replacement: "" })
+      edits.push({ range: [end, textEnd.end], replacement: "" })
     if (textEnd.trailingBlanks !== null)
       edits.push({ range: textEnd.trailingBlanks, replacement: "" })
     replaceInAtoms(source, atoms, edits)

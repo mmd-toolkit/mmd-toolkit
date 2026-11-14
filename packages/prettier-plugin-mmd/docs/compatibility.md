@@ -3778,14 +3778,15 @@ remove it in the second. The text is therefore decided as it is without the
 whitespace after the `;`: a title `style fill:#f00 ;` followed by a space is
 printed `style fill:#f00;`, as it is without the space, and not with the space
 at the first formatting and without it at the second. This holds for the texts
-that the formatter trims at their end: those of a timeline, treeView, radar, use
-case, cynefin, info, pie, gitGraph, packet, architecture, treemap, and ishikawa
-diagram, and the title of a Gantt chart. A text whose whitespace at the end is
-part of the Db keeps it: the name of a Gantt section and its `todayMarker`,
-`section style:#x;y; ` followed by a space, stay as written. A `;` that the line
-rule does not ignore is part of the text and stays with the whitespace before
-it. A U+2028 or U+2029 after the whitespace is a character of the text, which
-the formatter does not trim at its end, so nothing changes there.
+that the formatter trims at their end: those of a timeline, journey, treeView,
+radar, use case, cynefin, info, pie, gitGraph, packet, architecture, treemap,
+and ishikawa diagram, and the title of a Gantt chart. A text whose whitespace at
+the end is part of the Db keeps it: the name of a Gantt section and its
+`todayMarker`, `section style:#x;y; ` followed by a space, stay as written. A
+`;` that the line rule does not ignore is part of the text and stays with the
+whitespace before it. A U+2028 or U+2029 after the whitespace is a character of
+the text, which the formatter does not trim at its end, so nothing changes
+there.
 
 [fixture: timeline/statements-one-per-line/ignored-semicolon-trailing-space]
 [fixture: timeline/statements-one-per-line/ignored-semicolon-trailing-tab]
@@ -3795,6 +3796,8 @@ timeline/statements-one-per-line/ignored-semicolon-trailing-event-space]
 [fixture:
 timeline/statements-one-per-line/ignored-semicolon-trailing-event-directive]
 [fixture: timeline/statements-one-per-line/nonignored-semicolon-trailing-space]
+[fixture:
+journey/statements-one-per-line/ignored-semicolon-trailing-space-title]
 [fixture: treeview/semicolons/ignored-semicolon-trailing-space] [fixture:
 treeview/semicolons/ignored-semicolon-trailing-tab] [fixture:
 treeview/semicolons/ignored-semicolon-trailing-directive] [fixture:
