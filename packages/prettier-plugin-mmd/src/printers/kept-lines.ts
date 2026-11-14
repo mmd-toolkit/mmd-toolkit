@@ -208,13 +208,44 @@ export function findLinesWithOwnSemicolons(
     }
   }
   for (const comment of root.comments) {
-    addSemicolonsIn(comment.range)
+    addSemicolonsIn([
+      comment.range[0],
+      ignoredSemicolonAtCommentEnd(source, comment.range) ?? comment.range[1],
+    ])
   }
   for (const offset of source.ignoredSemicolons) {
     if (rules.kind === "required" || !isLastOnItsLine(source, offset))
       lines.add(lineStartOf(source, offset))
   }
   return lines
+}
+
+/**
+ * The ignored `;` at a comment's printed end, or undefined. Spaces and tabs
+ * after it disappear at a hard line break, so it keeps neither the line nor
+ * that whitespace, just like the IgnoredSemicolon token in the printed text.
+ * Other comment characters remain as written (common.md, `style` and
+ * `classDef` lines; docs/sequence.md, Statements one per line).
+ */
+export function ignoredSemicolonAtCommentEnd(
+  source: Source,
+  range: Range,
+): number | undefined {
+  if (semicolonRulesOf(source).kind !== "separators") return undefined
+  let end = range[1]
+  while (end > range[0] && isSpaceOrTab(source.text[end - 1])) end--
+  const semicolon = end - 1
+  return source.text[semicolon] === ";" &&
+    isLastOnItsLine(source, semicolon) &&
+    ignoredSemicolonsIn(
+      readSegments(
+        source,
+        lineStartOf(source, semicolon),
+        lineEndOf(source, semicolon),
+      ),
+    ).includes(semicolon)
+    ? semicolon
+    : undefined
 }
 
 /**

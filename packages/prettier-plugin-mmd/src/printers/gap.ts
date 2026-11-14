@@ -1,7 +1,11 @@
 import type { Node, Range, Token } from "@mmd-toolkit/ast"
 import type { Doc } from "prettier"
 import { utils } from "prettier/doc"
-import { isDroppedSemicolon, isInsideStyleRuleStretch } from "./kept-lines.ts"
+import {
+  isDroppedSemicolon,
+  isInsideStyleRuleStretch,
+  ignoredSemicolonAtCommentEnd,
+} from "./kept-lines.ts"
 import type { Source, Trivia } from "./source.ts"
 import {
   findCoveringRange,
@@ -708,9 +712,17 @@ function toRun(
           isSemicolon: part.item.type === "IgnoredSemicolon",
         }))
       : null,
-    endsWithWhitespace: endsWithSpaceOrTab(
-      source.text.slice(printed.item.range[0], printed.item.range[1]),
-    ),
+    // The same comment-end decision that allows statements to split also
+    // lets hardline remove the whitespace (docs/sequence.md, Statements one
+    // per line).
+    endsWithWhitespace:
+      endsWithSpaceOrTab(
+        source.text.slice(printed.item.range[0], printed.item.range[1]),
+      ) &&
+      !(
+        printed.item.type === "Comment" &&
+        ignoredSemicolonAtCommentEnd(source, printed.item.range) !== undefined
+      ),
   }
 }
 

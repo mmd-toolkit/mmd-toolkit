@@ -1097,9 +1097,22 @@ sequenceDiagram
 [corpus fixture: sequence/tokens-comment-then-ignored-semicolon]
 [corpus fixture: sequence/tokens-loop-comment-then-ignored-semicolon]
 [fixture: comments/semicolon-after-percent-comment-kept]
-その `;` の後に空白が書かれていると、`;` はコメントの中にあり、
+その `;` の後に空白と、さらに文字が書かれていると、`;` はコメントの中にあり、
 コメントごと印字されます。 [fixture: comments/semicolon-inside-comment-kept]
 片方で落とし、片方で残すと、2 回目の整形が 1 回目と違う結果になります。
+`;` の後に、行の終わりまで空白だけがあるときは、その空白は印字せず、
+行は空白がないときと同じに決めます。
+`;` はその行の最後の `;` になり、行の文を一緒に残さないので、`accDescr {}` と、
+`A->>B: x #style:#x;` に空白が続くメッセージは、
+空白がないときと同じく 2 行に印字します。
+1 回目に 1 行、2 回目に 2 行にはしません。
+[fixture: statements-one-per-line/message-comment-ignored-semicolon-trailing-whitespace]
+[fixture: statements-one-per-line/loop-comment-ignored-semicolon-trailing-whitespace]
+[fixture: statements-one-per-line/autonumber-comment-ignored-semicolon-trailing-whitespace]
+[test: an ignored `;` at a message comment end before U+2029 and a directive]
+[test: an ignored `;` at an autonumber comment end before U+2029 and a directive]
+行の規則が無視しない `;` は、コメントの中に残り、行も一緒に残ります。
+[fixture: statements-one-per-line/comment-nonignored-semicolon-trailing-whitespace]
 
 入力
 ([comments/semicolon-after-comment-kept-input.mmd](../tests/fixtures/sequence/comments/semicolon-after-comment-kept-input.mmd)):
