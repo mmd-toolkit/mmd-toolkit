@@ -133,6 +133,17 @@ CSS クラスの後の、空白だけの行を中に持つ本体も `{ }` にし
 メンバーの先頭は、行の規則が無視する `;` を取り除いた後に読みます。
 `%;% c` と書かれたメンバーも `%%` で始まるので、`{` の行に残します。
 [fixture: member-bodies/percent-member-ignored-semicolon-kept]
+本体と namespace の `}` は、同じ行の後ろに行の規則が無視する `;` が続く場合、
+その前のメンバーの行に残します（`class Alpha { +style:#x };`）。
+その `;` は前のテキストがあるために無視されますが、`}` の前で改行すると、
+`;` がそのテキストから切り離されます。
+namespace を閉じる `}` は、それ自体が単独の行に置かれるので、
+内側のクラスの本体の `}` を同じ行に残す理由にはなりません。
+`namespace Alpha { class Beta { +style:#x; } }` は、
+それぞれの `}` を単独の行に置いて印字します。
+[fixture: member-bodies/closing-brace-before-ignored-semicolon-kept]
+[fixture: member-bodies/namespace-closing-brace-before-ignored-semicolon-kept]
+[fixture: member-bodies/nested-closing-braces-after-ignored-semicolon]
 
 入力
 ([member-bodies/split-input.mmd](../tests/fixtures/class/member-bodies/split-input.mmd)):

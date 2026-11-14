@@ -520,7 +520,7 @@ mermaid.js は、その空白を実体の名前として読み、その実体を
 最初の実体の名前が U+2028 か U+2029 だけの文が、同じ行のほかの文の後にあり、
 その文字の後に、属性ブロック、別名、CSS のクラス、関係が続くときも、
 その行に残します（`"Alpha"`、その文字、`{ int x }`）。
-対象にする版のうち古いものは、その文字を空白として読み、
+対象にする版のうち最も古いものは、その文字を空白として読み、
 残りを前の文の一部として読むので、残りが行を始めることはできないからです。
 その文字の後の 2 つ目の名前は、分けます。
 その文字とほかの文字からなる名前（`LR`）も、行を始めるので、分けます。
@@ -554,9 +554,14 @@ mermaid.js の行の規則は行のテキストを読み、テキストを別の
 行の上で後ろに文を従えているときは、`}` や `end` が単独の行に移り、
 文は `;` のない行に残ってしまうので、行に残し、
 行はトークンの間の空白を通常どおりにして印字します。
-後ろに文がなければ、ほかのブロックと同じく単独の行に置きます。
+後ろに文がなければ、ほかのブロックと同じく単独の行に置きますが、
+同じ行の後ろに行の規則が無視する `;` が続く場合は例外です。
+`"Alpha" { int x "style:#x" };` のように、
+その `;` は同じ行の前のテキストによって無視されるので、`}` もその行に残します。
+`}` の前で改行すると、`;` がそのテキストのない行に残り、構文エラーになります。
 [fixture: statements-one-per-line/semicolon-line-block-kept]
 [fixture: statements-one-per-line/semicolon-line-subgraph-end-kept]
+[fixture: statements-one-per-line/semicolon-after-block-closing-kept]
 
 入力
 ([statements-one-per-line/entities-input.mmd](../tests/fixtures/er/statements-one-per-line/entities-input.mmd)):

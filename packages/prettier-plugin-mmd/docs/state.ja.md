@@ -82,6 +82,11 @@ stateDiagram-v2
 [fixture: composite-states/split-alias-body]
 [fixture: composite-states/divider-on-own-line]
 [fixture: composite-states/split-directive-in-body]
+`}` は、同じ行の後ろに行の規則が無視する `;` が続く場合、
+最後の文の行に残します（`state "style:#x" as S { B --> C };`）。
+`}` の前で改行すると、`;` が無視される理由となるテキストから切り離され、
+mermaid.js がそれを状態として読むためです。
+[fixture: composite-states/closing-brace-before-ignored-semicolon-kept]
 
 入力
 ([composite-states/split-input.mmd](../tests/fixtures/state/composite-states/split-input.mmd)):
