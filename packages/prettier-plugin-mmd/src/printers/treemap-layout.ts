@@ -26,7 +26,7 @@ import {
   lineEndOf,
   lineStartOf,
 } from "./kept-lines.ts"
-import { printAsWrittenTrimmed } from "./lines.ts"
+import { printAsWritten } from "./lines.ts"
 import type { Source } from "./source.ts"
 import {
   findTokenStartingAt,
@@ -215,32 +215,33 @@ function findDroppedSemicolonStretches(
   const semicolon = endingSemicolonOf(source, statement.range, statement.style)
   if (semicolon === undefined || !isDroppedSemicolon(source, semicolon))
     return []
-  // A character that CSS does not read as whitespace, before the `;` or after
-  // one that the line rule ignores, is a character of the last style:
-  // mermaid.js draws another figure without it, so the style and the `;` stay
-  // as written (docs/compatibility.md, Whitespace at the end of a style).
-  for (
-    let before = semicolon;
-    before > start && isWhitespace(source.text[before - 1]);
-    before--
-  ) {
-    if (keepsStyleEndCharacter(statement.type, source.text[before - 1]))
-      return []
-  }
+  // A character that CSS does not read as whitespace, after a `;` that the
+  // line rule ignores, is a character of the last style: mermaid.js draws
+  // another figure without it, so the style and the `;` stay as written
+  // (docs/compatibility.md, Whitespace at the end of a style).
   for (let after = semicolon + 1; after < end; after++) {
     if (keepsStyleEndCharacter(statement.type, source.text[after])) return []
   }
+  // The style ends where the `;` and the whitespace before it end, except
+  // that a character that CSS does not read as whitespace before the `;` stays
+  // with the style, which is then printed as written up to it: the spaces,
+  // tabs, and form feeds after it go with the `;`.
+  let styleEnd = semicolon
+  while (
+    styleEnd > start &&
+    isWhitespace(source.text[styleEnd - 1]) &&
+    !keepsStyleEndCharacter(statement.type, source.text[styleEnd - 1])
+  )
+    styleEnd--
   // The style is printed as in a statement without that `;` (see
   // `normalizeTreemapStyle`), so that a second formatting finds the same text.
-  let styleEnd = semicolon
-  while (styleEnd > start && isWhitespace(source.text[styleEnd - 1])) styleEnd--
   const style: Atom[] = [{ start, end: styleEnd }]
   normalizeTreemapStyle(source, style, statement, styleEnd)
   return [
     {
       start,
       end,
-      doc: style[0].doc ?? printAsWrittenTrimmed(source, start, semicolon),
+      doc: style[0].doc ?? printAsWritten(source, start, styleEnd),
     },
   ]
 }

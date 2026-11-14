@@ -529,13 +529,16 @@ CSS はこれらを空白として読まないので、最後のスタイルの�
 詳しくは、
 [スタイルの末尾の空白](./compatibility.ja.md#スタイルの末尾の空白)
 を参照してください。
-消すのは `;` だけです。
+消すのは `;` と、最後のそれらの文字の後ろの空白、タブ、改ページだけです。
 `classDef zz fill:red`、U+00A0、`;` は、`classDef zz fill: red`、
 U+00A0 と印字します。
+`classDef zz fill:red`、U+2028、空白、`;` は、`classDef zz fill:red`、
+U+2028 と印字します。
 U+2028 か U+2029 を含む行は、`;` だけを消して書かれたまま残します。
 行の規則が無視する `;` の後ろにそれらの文字があるときは、
 `;` も含めて書かれたまま残します。
 
+[test: treemap spaces and tabs after U+2028 or U+2029 go with the dropped terminator]
 [test: treemap/line-terminators-and-unicode/unicode-values]
 [test: treemap/semicolons/class-terminator-unicode-space-before-kept]
 [test: treemap style terminators dropped and whitespace that CSS does not read kept]
@@ -599,8 +602,15 @@ U+2028 か U+2029 が `;` の前にあり、間に空白があってもよく、
 文字とともに `;` を残します。
 `;` がないと、文は mermaid.js が取り除くコメント行の後ろまで続き、
 その後ろの文を取り込むからです。
+コメント行の後ろがテキストの終わりのときは、何も続かないので、
+文字と `;` の間に空白でもタブでもない空白があるときだけ、`;` を残します。
+コメント行がその空白を取ってしまうからです。
+詳しくは、
+[スタイル文の末尾のセミコロン](./er.ja.md#スタイル文の末尾のセミコロン)
+を参照してください。
 
 [test: treemap style terminators kept after U+2028 and U+2029 before comments]
+[test: treemap a comment line at the end of the text keeps the terminator after whitespace that is no space or tab]
 [test: treemap whitespace after U+2028 and U+2029 keeps the terminator before comments]
 [test: treemap directive and comment lines after a style terminator that follows U+2028]
 [test: treemap style terminators dropped with a form feed, a space, and a tab]

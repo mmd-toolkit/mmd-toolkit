@@ -667,7 +667,7 @@ flowchart LR
 [test: U+2029 after a `;` before an edge id]
 [test: U+2029 after a `;` and a space before an edge id]
 
-U+2028 または U+2029 の後ろにある、
+文と同じ行でその後ろにある U+2028 または U+2029 の後ろにある、
 `style` や `classDef` の文を終わらせる `;` は、間に空白と改行だけがあり、
 その `;` の行にコメント行が続くときは残します。
 理由は ER の図と同じです。
@@ -678,8 +678,11 @@ U+2028 または U+2029 の後ろにある、
 その後ろの文を取り込みます。
 `;` とコメント行の間の指令の行は、コメント行とともに取り除かれるので、
 何も変えません。
-テキストの終わりや文が続くとき（指令の行のあとに文が続くときも）は、
-`;` を削除します。
+コメント行の後ろがテキストの終わりのときは、文字と `;` の間に、
+空白でもタブでもない空白が次の改行の前にあるときだけ、`;` を残します。
+コメント行がなく、文やテキストの終わりが続くときは、`;` を削除します。
+文の後ろの改行の後にある文字は、改行が文を終えているので、文に属しません。
+そのときも `;` を削除します。
 
 [fixture: semicolons/style-terminator-comment-and-directive-controls]
 [test: flowchart LF before terminator and comments]
@@ -691,6 +694,10 @@ U+2028 または U+2029 の後ろにある、
 [test: flowchart comment at EOF control]
 [test: swimlane directive, direct and NBSP controls]
 [test: swimlane comment at EOF control]
+[test: flowchart a line feed before U+2028 ended the style, so the terminator is dropped]
+[test: swimlane a line feed before U+2028 ended the style, so the terminator is dropped]
+[test: flowchart whitespace after a line feed after U+2028 is no text of the style]
+[test: flowchart whitespace after U+2028 on the line of the style keeps the terminator before a comment line at the end of the text]
 
 ### 空行
 

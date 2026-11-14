@@ -5774,6 +5774,46 @@ describe("style semicolons", () => {
       'treemap\n  classDef aa fill:coral\u2028\u00a0;\n  %% c\n  "x": 1\n  classDef bb fill:coral\u2029\u00a0\u2028 ;\n  %% d\n  "y": 2\n  classDef cc fill:red\t\u000b\f\u00a0\u2028\u2029\u3000\ufeff;\n  %% e\n  "z": 3\n',
     ],
     [
+      "treemap a comment line at the end of the text keeps the terminator after whitespace that is no space or tab",
+      "treemap\nclassDef aa fill:red\u2028\u00a0;\n%% c\nclassDef bb fill:red\u2028\u2028;\n%% d\n",
+      "treemap\n  classDef aa fill:red\u2028\u00a0;\n  %% c\n  classDef bb fill:red\u2028\u2028;\n  %% d\n",
+    ],
+    [
+      "treemap spaces and tabs after U+2028 or U+2029 go with the dropped terminator",
+      'treemap\nclassDef aa fill:red\u2028 ;\n"x": 1\nclassDef bb fill:red\u2028\t;\n"y": 2\nclassDef cc fill:red\u2029 ;\n',
+      'treemap\n  classDef aa fill:red\u2028\n  "x": 1\n  classDef bb fill:red\u2028\n  "y": 2\n  classDef cc fill:red\u2029\n',
+    ],
+    [
+      "ER a comment line at the end of the text keeps the terminator after whitespace that is no space or tab",
+      "erDiagram\nA\nstyle A fill:red\u2028\u00a0;\n%% c\nclassDef c fill:red\u2028\u2028;\n%% d\n",
+      "erDiagram\n  A\n  style A fill:red\u2028\u00a0;\n  %% c\n  classDef c fill:red\u2028\u2028;\n  %% d\n",
+    ],
+    [
+      "ER a terminator after spaces and tabs is dropped before a comment line at the end of the text",
+      "erDiagram\nA\nstyle A fill:red\u2028 ;\n%% c\nclassDef c fill:red\u2029\t;\n%% d\n",
+      "erDiagram\n  A\n  style A fill: red\n  %% c\n  classDef c fill:red\u2029\n  %% d\n",
+    ],
+    [
+      "flowchart a line feed before U+2028 ended the style, so the terminator is dropped",
+      "flowchart LR\nA --> B\nstyle A fill:red\n\u2028;\n%% c\nx\nclassDef k fill:red\n\u2029 ;\n%% d\ny\n",
+      "flowchart LR\n  A --> B\n  style A fill: red\n  %% c\n  x\n  classDef k fill: red\n  %% d\n  y\n",
+    ],
+    [
+      "swimlane a line feed before U+2028 ended the style, so the terminator is dropped",
+      "swimlane-beta TB\nsubgraph L\nA --> B\nend\nstyle A fill:red\n\u2028;\n%% c\nx\n",
+      "swimlane-beta TB\n  subgraph L\n    A --> B\n  end\n  style A fill: red\n  %% c\n  x\n",
+    ],
+    [
+      "flowchart whitespace after a line feed after U+2028 is no text of the style",
+      "flowchart LR\nA --> B\nstyle A fill:red\u2028\n\u00a0;\n%% c\n",
+      "flowchart LR\n  A --> B\n  style A fill:red\u2028\n  %% c\n",
+    ],
+    [
+      "flowchart whitespace after U+2028 on the line of the style keeps the terminator before a comment line at the end of the text",
+      "flowchart LR\nA --> B\nstyle A fill:red\u2028\u00a0\n;\n%% c\n",
+      "flowchart LR\n  A --> B\n  style A fill:red\u2028\u00a0\n  ;\n  %% c\n",
+    ],
+    [
       "treemap directive and comment lines after a style terminator that follows U+2028",
       'treemap\nclassDef aa fill:coral\u2028;\n%%{init: {}}%%\n%% c\n"x": 1\n',
       'treemap\n  classDef aa fill:coral\u2028;\n%%{init: {}}%%\n  %% c\n  "x": 1\n',

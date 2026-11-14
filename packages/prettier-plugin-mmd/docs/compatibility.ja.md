@@ -4037,10 +4037,14 @@ mermaid.js は、`style`、続いて空白をはさまずに `#` が後に続く
 
 flowchart、swimlane、
 agentflow の図の `classDef` と `style` を終わらせる `;` と、
-treemap の `classDef` を終わらせる `;` は、U+2028 または U+2029 が前にあり、
+treemap の `classDef` を終わらせる `;` は、
+文の行で U+2028 または U+2029 が前にあり、
 その `;` の行にコメント行が続くときは、間に指令の行があっても残します。
 `;` がないと、文は mermaid.js が取り除くコメント行の後ろまで続き、
 その後ろの文を取り込むからです。
+コメント行の後ろがテキストの終わりのときは、何も続かないので、
+文字と `;` の間に空白でもタブでもない空白があるときだけ、`;` を残します。
+コメント行がその空白を取ってしまうからです。
 [セミコロン](./flowchart.ja.md#セミコロン)と
 [Semicolons](./treemap.ja.md#semicolons)を参照してください。
 これらの文は、
@@ -4049,10 +4053,11 @@ treemap の `classDef` を終わらせる `;` は、U+2028 または U+2029 が�
 [fixture: flowchart/semicolons/style-terminator-comment-and-directive-controls]
 [test: treemap style terminators kept after U+2028 and U+2029 before comments]
 [test: treemap whitespace after U+2028 and U+2029 keeps the terminator before comments]
+[test: treemap a comment line at the end of the text keeps the terminator after whitespace that is no space or tab]
 
-ER の図は、その文字がなくても同じ図を描くので、
-U+2028 または U+2029 と `;` の間に空白とタブしかないときは、
-`;` といっしょにその文字を削除します。
+ER の図は、その文字がなくても同じ図を描くので、コメント行の後ろに文が続き、
+最初の U+2028 または U+2029 の後ろに U+2028、U+2029、空白、タブしかないときは、
+`;` といっしょにそれらを削除します。
 文字の前に空白があるときも同じです。
 `style A fill: red` と印字し、コメント行とその後ろの文は残ります。
 mermaid.js は、前に空白がないとき、
@@ -4063,7 +4068,7 @@ mermaid.js は、前に空白がないとき、
 詳しくは、
 [スタイル文の末尾のセミコロン](./er.ja.md#スタイル文の末尾のセミコロン)
 を参照してください。
-間にほかの空白があるときは、`;` を残します。
+文字の後ろにほかの空白があるときは、`;` を残します。
 block 図はコメント行の後ろまで読み続けないので、`;` とその文字を削除し、
 `classDef c fill: coral` と印字します。
 
@@ -4072,6 +4077,7 @@ block 図はコメント行の後ろまで読み続けないので、`;` とそ�
 [test: ER whitespace before the character goes with the terminator]
 [test: ER directive lines before a comment line]
 [test: ER whitespace other than spaces and tabs after the character keeps the terminator]
+[test: ER a comment line at the end of the text keeps the terminator after whitespace that is no space or tab]
 
 class、state、ER、requirement、block、Venn、usecase の図では、
 `classDef` と `style` の行末のセミコロンを、Db が変わらない形で削除します。

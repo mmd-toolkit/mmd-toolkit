@@ -3784,21 +3784,26 @@ See [Statements one per line](./flowchart.md#statements-one-per-line).
 
 A `;` that ends a `classDef` or `style` statement is kept in a flowchart,
 swimlane, and agentflow diagram, and a `;` that ends a `classDef` is kept in a
-treemap, where a U+2028 or U+2029 stands before it and a comment line follows
-its line, directive lines between them included: without the `;` the statement
-goes on after the comment line, which mermaid.js removes, and takes the
-statement after it (see [Semicolons](./flowchart.md#semicolons) and
-[Semicolons](./treemap.md#semicolons)). These statements keep the character too
-(see [Whitespace at the end of a style](#whitespace-at-the-end-of-a-style)).
+treemap, where a U+2028 or U+2029 stands before it on the line of the statement
+and a comment line follows its line, directive lines between them included:
+without the `;` the statement goes on after the comment line, which mermaid.js
+removes, and takes the statement after it (see
+[Semicolons](./flowchart.md#semicolons) and
+[Semicolons](./treemap.md#semicolons)). Where the end of the text follows the
+comment line, nothing continues, and the `;` stays only where whitespace that is
+no space or tab stands between the character and the `;`, which the comment line
+would take with it. These statements keep the character too (see
+[Whitespace at the end of a style](#whitespace-at-the-end-of-a-style)).
 
 [fixture: flowchart/semicolons/style-terminator-comment-and-directive-controls]
 [test: treemap style terminators kept after U+2028 and U+2029 before comments]
 [test: treemap whitespace after U+2028 and U+2029 keeps the terminator before
 comments]
 
-An ER diagram draws the same figure without the character, so it drops the `;`
-together with the U+2028 or U+2029 where only spaces and tabs stand between
-them, also where whitespace stands before the character: the line is printed
+An ER diagram draws the same figure without the character, so where a statement
+follows the comment line, it drops the `;` together with the U+2028 or U+2029
+and what stands after it, if that is nothing but U+2028, U+2029, spaces, and
+tabs, also where whitespace stands before the character: the line is printed
 `style A fill: red`, and the comment line and the statement after it stay.
 mermaid.js keeps the character in the text of the last style where no whitespace
 stands before it, so the Db of the printed text differs from that of the written
@@ -3806,9 +3811,9 @@ text by that character: a difference of the kind of
 [Whitespace at the end of a style](#whitespace-at-the-end-of-a-style), which the
 tests compare without (see
 [Semicolons at the end of a style statement](./er.md#semicolons-at-the-end-of-a-style-statement)).
-Where other whitespace stands between them, the `;` stays. A block diagram does
-not read on after the comment line, and drops the `;` and the character: the
-line is printed `classDef c fill: coral`.
+Where other whitespace stands after the character, the `;` stays. A block
+diagram does not read on after the comment line, and drops the `;` and the
+character: the line is printed `classDef c fill: coral`.
 
 [fixture:
 er/semicolons-at-the-end-of-a-style-statement/comment-and-directive-controls]
