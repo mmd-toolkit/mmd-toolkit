@@ -1,4 +1,5 @@
 import type { AstPath, Doc, ParserOptions } from "prettier"
+import { builders } from "prettier/doc"
 import type {
   ErAttribute,
   ErDiagram,
@@ -53,6 +54,8 @@ import {
   isWhitespace,
   skipRemoved,
 } from "./source.ts"
+
+const { literalline } = builders
 
 /**
  * Prints the body of an ER diagram and the nodes below it, to the end of the
@@ -317,9 +320,11 @@ function printAttributeBlock(
 
 /**
  * Prints an entity statement whose empty attribute block stays over several
- * lines (see `keepsEmptyBlockLines`): as written, except that the `}` stands at
- * the indentation of the entity, as the `}` of any block does, where only
- * spaces and tabs stand before it on its line (docs/er.md, Attribute blocks).
+ * lines (see `keepsEmptyBlockLines`): spaces, tabs, and line feeds between the
+ * braces become one line break before the `}` at the indentation of the entity.
+ * Otherwise it stays as written, except that the `}` stands at that indentation
+ * where only spaces and tabs precede it on its line (docs/er.md, Attribute
+ * blocks).
  */
 function printEmptyBlockOverLines(
   options: ParserOptions<MermaidAst>,
@@ -329,6 +334,18 @@ function printEmptyBlockOverLines(
 ): Doc {
   const { opening, closing } = findAttributeBraces(source, statement)
   const between = source.text.slice(opening.range[1], closing.range[0])
+  if (
+    [...between].every(
+      (character) => isSpaceOrTab(character) || character === "\n",
+    )
+  ) {
+    return [
+      printAsWritten(source, statement.range[0], opening.range[1]),
+      literalline,
+      indentationOf(options, depth),
+      closing.value,
+    ]
+  }
   const indentation = between.slice(between.lastIndexOf("\n") + 1)
   if (![...indentation].every(isSpaceOrTab)) {
     return printAsWritten(source, statement.range[0], statement.range[1])

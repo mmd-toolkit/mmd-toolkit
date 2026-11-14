@@ -102,12 +102,12 @@ mermaid.js は属性ブロックを改行に関係なく読むので、同じ属
 `1` と次の名前の接触、空白でもタブでもない空白文字、`class` の後の隙間です。
 コメント行がつなぐ行も例外で、
 `{` までを書かれたままにします（[複数行の文](#複数行の文)を参照）。
-`{` の後ろにあるものは、その行に書かれたまま残し、その後の属性と `}` は、
-ほかの実体と同じに置きます。
+空でないブロックでは、`{` の後ろにあるものは、その行に書かれたまま残し、
+その後の属性と `}` は、ほかの実体と同じに置きます。
 そのため、複数行にまたがる空のブロックは、`{` の後ろに何があっても（空白、タブ、
 U+2028）、波括弧の間に何があっても、行の終わりが ` { }` になります。
 ただし、`}` と閉じる行の残りが `{` の行につながると、別の読みになるときは別で、
-その文は書かれたままにします。
+行を離したままにします。
 mermaid.js の行の規則（[セミコロン](#スタイル文の末尾のセミコロン)を参照）は、
 規則に合う行の最後の `;` を無視するので、つないだ行では、
 2 つの行のときと別の `;` を無視することがあります。
@@ -125,8 +125,15 @@ mermaid.js が拒否します。
 引用符の名前やディレクティブの中の `~` は、そのような規則に読まれないので、
 行をつなぎます。
 `A["x;~y"] B {`、改行、`}` は、`A["x;~y"] B { }` です。
-行を離したままにするとき、`}` の前に空白とタブだけがあれば、`}` は、
-ほかのブロックの `}` と同じく、実体の字下げに置きます。
+行を離したままにするとき、波括弧の間に空白とタブと改行だけがあれば、
+文は `{` までを書かれたまま印字し、改行を 1 つ置き、
+実体の字下げに `}` を置きます。
+行末の `{` の後ろの空白と、波括弧の間の空行は何も描かず、
+つないだ形の `{ }` でも落とすからです。
+波括弧の間に、空白でもタブでもない空白文字（たとえば U+00A0）があるときは、
+文は書かれたままにします。
+ただし `}` の前の同じ行に空白とタブだけがあれば、`}` は実体の字下げに置きます。
+U+2028 か U+2029 があるときは、`}` まで書かれたままにします。
 [fixture: attribute-blocks/written-line-empty-block-ignored-semicolon-both-lines]
 [fixture: attribute-blocks/written-line-empty-block-ignored-semicolon-closing-line-ends]
 [fixture: attribute-blocks/written-line-empty-block-ignored-semicolon-in-subgraph]
@@ -137,6 +144,15 @@ mermaid.js が拒否します。
 [fixture: attribute-blocks/written-line-empty-block-tilde-attribute-on-a-semicolon-line]
 [fixture: attribute-blocks/written-line-empty-block-tilde-in-a-string-of-an-attribute]
 [fixture: attribute-blocks/written-line-empty-block-closing-brace-at-the-indentation-of-the-entity]
+[fixture: attribute-blocks/written-line-empty-block-spaces-after-the-brace-dropped]
+[fixture: attribute-blocks/written-line-empty-block-tab-after-the-brace-dropped]
+[fixture: attribute-blocks/written-line-empty-block-empty-line-dropped]
+[fixture: attribute-blocks/written-line-empty-block-whitespace-only-line-dropped]
+[fixture: attribute-blocks/written-line-empty-block-tilde-whitespace-and-empty-line-dropped]
+[fixture: attribute-blocks/written-line-empty-block-in-subgraph-whitespace-dropped]
+[test: an empty ER attribute block that stays over several lines with U+00A0 after its opening brace]
+[test: an empty ER attribute block that stays over several lines with U+2028 after its opening brace]
+[test: an empty ER attribute block that stays over several lines with a U+00A0 line between its braces]
 `}` が、書かれたまま残る行にあるブロックは、`A {`、改行、`}1b` のように、
 属性があってもなくても、その行と一緒に書かれたままにします。
 `;` を含み、ほかに書かれたまま残る理由がない行は整形します。
@@ -708,7 +724,7 @@ U+FEFF などが 1 つか複数）の文が、同じ行のほかの文の後に�
 [属性ブロック](#属性ブロック)と同じに、ブロックとして印字します。
 行の文はその行に一緒に残り、文の単位の間の空白は、
 mermaid.js が行をどう読むかを決めないかぎり通常どおり整形します。
-`{` の後ろにあるものは書かれたまま残り、
+空でないブロックでは、`{` の後ろにあるものは書かれたまま残り、
 属性と `}` はほかの実体と同じに置きます。
 そのため、`1A {`、改行、`}` は、`1A { }` になります。
 [fixture: attribute-blocks/written-line-number-name]
@@ -2312,16 +2328,15 @@ U+2028 inside its name]
 inside the name of an ER style statement]
 [test: a semicolon that the line rule ignores, after a comment line after U+2028
 inside the name of an ER class definition]
-複数行の属性ブロックを持つエンティティでは、書かれたまま印字するのは、
+空でない複数行の属性ブロックを持つエンティティでは、書かれたまま印字するのは、
 ブロックを開く行で、`{` の後ろにあるものと、そこで始まる属性が続く行も含みます。
 その後の属性と `}` は、通常どおり、属性は 1 段深く、`}` は文の位置に置きます。
 ただし `}` が、U+2028 か U+2029 の後のコメント行が始まる行にあるときは、
 ブロックはその行と一緒に書かれたままにします。
 `}` が書かれたまま残るどの行にあるときも、同じです。
 [属性ブロック](#属性ブロック)を参照してください。
-複数行の空のブロックは、`{` の後ろに空白、タブ、U+2028 があっても、
-その行の終わりに `{ }` として印字します。
-ほかの空のブロックと同じです。
+行をつなげられるとき、複数行の空のブロックは、行の終わりが `{ }` になります。
+`{` の後ろに空白、タブ、U+2028 があっても同じで、ほかの空のブロックと同じです。
 1 行の空のブロックは、その行と一緒に書かれたままにします。
 [test: a comment line after U+2028 inside the name of an ER entity with an
 attribute block over several lines]

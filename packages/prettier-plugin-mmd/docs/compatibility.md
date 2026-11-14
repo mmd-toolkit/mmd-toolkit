@@ -4076,13 +4076,14 @@ An entity on any of these lines that holds an attribute block over several lines
 is printed as a block (see [Attribute blocks](./er.md#attribute-blocks)): the
 statements of the line stay together on it, with the whitespace between their
 units formatted as usual where it does not decide how mermaid.js reads the line,
-what follows the `{` on its line stays as written, and the attributes after it
-and the `}` stand as those of any entity, so that `1A {`, a line break, and `}`
-become `1A { }`. [fixture: er/attribute-blocks/written-line-number-name]
-[fixture: er/attribute-blocks/written-line-tilde-line] [test: an empty attribute
-block over several lines after U+2028 and class] [test: an empty attribute block
-over several lines after a name in quotes and U+2028] [test: an attribute block
-over several lines of an entity after a statement that starts with U+2028 and a
+what follows the `{` on its line stays as written in a nonempty block, and the
+attributes after it and the `}` stand as those of any entity, so that `1A {`, a
+line break, and `}` become `1A { }`. [fixture:
+er/attribute-blocks/written-line-number-name] [fixture:
+er/attribute-blocks/written-line-tilde-line] [test: an empty attribute block
+over several lines after U+2028 and class] [test: an empty attribute block over
+several lines after a name in quotes and U+2028] [test: an attribute block over
+several lines of an entity after a statement that starts with U+2028 and a
 comment line]
 
 - A closing `end` with an ignored `;` stays on the line that supplies the
@@ -4881,21 +4882,21 @@ comment line cuts is printed as written as well (see
 [Line separators](./sequence.md#line-separators)). The same holds where the
 region lies inside a name, in an ER diagram and in a quadrant chart. In an ER
 diagram, the block of an entity on such a line is the one part that is not
-printed as written to its end: the line up to the `{`, and what follows the `{`
-on its line, stay as written, and the attributes after it and the `}` stand as
-those of any entity, unless the `}` stands on a line that holds the start of
-such a comment line (see [ER](./er.md#multi-line-statements)). [test: a comment
-line after U+2028 inside the name of an ER entity with an attribute block over
-several lines] [test: an attribute block of an entity that follows another
-entity on the line, after a comment line after U+2028] [test: an attribute block
-of an entity that follows a name that a comment line cuts, and a comment line
-after U+2028 after its closing brace] [test: two spaces before the opening brace
-of an entity that follows a name that a comment line cuts] [test: a comment line
-after U+2028 inside the name of an ER entity] [test: a comment line after U+2029
-inside the name of an ER entity] [test: a comment line after U+2028 inside the
-name of an ER entity that follows a name in quotes] [test: a comment line after
-U+2028 inside the name of a class] [test: a comment line after U+2029 inside the
-name of a class]
+printed as written to its end: the line up to the `{` stays as written, as does
+what follows the `{` on its line in a nonempty block, and the attributes after
+it and the `}` stand as those of any entity, unless the `}` stands on a line
+that holds the start of such a comment line (see
+[ER](./er.md#multi-line-statements)). [test: a comment line after U+2028 inside
+the name of an ER entity with an attribute block over several lines] [test: an
+attribute block of an entity that follows another entity on the line, after a
+comment line after U+2028] [test: an attribute block of an entity that follows a
+name that a comment line cuts, and a comment line after U+2028 after its closing
+brace] [test: two spaces before the opening brace of an entity that follows a
+name that a comment line cuts] [test: a comment line after U+2028 inside the
+name of an ER entity] [test: a comment line after U+2029 inside the name of an
+ER entity] [test: a comment line after U+2028 inside the name of an ER entity
+that follows a name in quotes] [test: a comment line after U+2028 inside the
+name of a class] [test: a comment line after U+2029 inside the name of a class]
 
 What the line holds, and where it ends, follow from what mermaid.js removes. The
 documents of the diagram types say what is theirs:

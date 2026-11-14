@@ -2147,6 +2147,21 @@ const erExamples: readonly (readonly [string, string, string])[] = [
     "erDiagram\n  accDescr:\u2028%% c\n\n   D\n",
   ],
   [
+    "an empty ER attribute block that stays over several lines with U+00A0 after its opening brace",
+    'erDiagram\n"style:#x"; B {\u00a0\n} A["x;y"]\n',
+    'erDiagram\n  "style:#x"; B {\u00a0\n  } A["x;y"]\n',
+  ],
+  [
+    "an empty ER attribute block that stays over several lines with U+2028 after its opening brace",
+    'erDiagram\n"style:#x"; B {\u2028\n} A["x;y"]\n',
+    'erDiagram\n  "style:#x"; B {\u2028\n} A["x;y"]\n',
+  ],
+  [
+    "an empty ER attribute block that stays over several lines with a U+00A0 line between its braces",
+    'erDiagram\n"style:#x"; B {\n\u00a0\n} A["x;y"]\n',
+    'erDiagram\n  "style:#x"; B {\n\u00a0\n  } A["x;y"]\n',
+  ],
+  [
     "an empty attribute block over several lines after a name in quotes and U+2028",
     'erDiagram\n"Z"\u2028 {\n}\n',
     'erDiagram\n  "Z"\u2028 { }\n',
