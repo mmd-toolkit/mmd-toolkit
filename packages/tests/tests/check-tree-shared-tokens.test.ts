@@ -9485,6 +9485,245 @@ const sharedTokenValueCases: readonly {
   },
   {
     testCase:
+      "tokens-118-agentflow-An ignored semicolon is no node and is no node token",
+    diagram: "agentflow",
+    fixture: "gram-empty-description-after-data-ignored-semicolon",
+    mutate: (_input, broken) => {
+      setField(broken, "body", broken.tokens[9])
+    },
+    expected: {
+      where: "IgnoredSemicolon at 53-54",
+      message: "is of a type that the specification does not define",
+    },
+  },
+  {
+    testCase:
+      "tokens-118-agentflow-An ignored semicolon has kind IgnoredSemicolon rather than grammar Punctuator",
+    diagram: "agentflow",
+    fixture: "gram-empty-description-after-data-ignored-semicolon",
+    mutate: (_input, broken) => {
+      setField(broken.tokens[9], "type", "Punctuator")
+    },
+    expected: {
+      where: "Root.body",
+      message:
+        "does not run from its first token to its last: [0,52], not [0,54]",
+    },
+  },
+  {
+    testCase:
+      "tokens-118-agentflow-A written node value leaves out the ignored semicolon",
+    diagram: "agentflow",
+    fixture: "lex-both-style-triggers",
+    mutate: (_input, broken) => {
+      setField(nodesOf(broken)[7], "value", "style classDef A fill:#abc;")
+    },
+    expected: {
+      where: "AgentflowLabel at 20-50",
+      message:
+        'value is not its written text: "style classDef A fill:#abc;", not "style classDef A fill:#abc"',
+    },
+  },
+  {
+    testCase:
+      "tokens-118-class-An ignored semicolon is no node and is no node token",
+    diagram: "class",
+    fixture: "db-note-ignored-semicolon",
+    mutate: (_input, broken) => {
+      setField(broken, "body", broken.tokens[3])
+    },
+    expected: {
+      where: "IgnoredSemicolon at 27-28",
+      message: "is of a type that the specification does not define",
+    },
+  },
+  {
+    testCase:
+      "tokens-118-class-An ignored semicolon has kind IgnoredSemicolon rather than grammar Punctuator",
+    diagram: "class",
+    fixture: "db-note-ignored-semicolon",
+    mutate: (_input, broken) => {
+      setField(broken.tokens[3], "type", "Punctuator")
+    },
+    expected: {
+      where: "StringLiteral at 18-30",
+      message:
+        "the tokens of the string are not one String token or StringFragment tokens: StringFragment, Punctuator, StringFragment",
+    },
+  },
+  {
+    testCase:
+      "tokens-118-class-A written node value leaves out the ignored semicolon",
+    diagram: "class",
+    fixture: "db-note-ignored-semicolon",
+    mutate: (_input, broken) => {
+      setField(nodesOf(broken)[3], "value", "style:#xy;")
+    },
+    expected: {
+      where: "StringLiteral at 18-30",
+      message: 'value is not its written text: "style:#xy;", not "style:#xy"',
+    },
+  },
+  {
+    testCase:
+      "tokens-118-er-An ignored semicolon is no node and is no node token",
+    diagram: "er",
+    fixture: "db-acc-descr-block-ignored-semicolon",
+    mutate: (_input, broken) => {
+      setField(broken, "body", broken.tokens[4])
+    },
+    expected: {
+      where: "IgnoredSemicolon at 37-38",
+      message: "is of a type that the specification does not define",
+    },
+  },
+  {
+    testCase:
+      "tokens-118-er-An ignored semicolon has kind IgnoredSemicolon rather than grammar Punctuator",
+    diagram: "er",
+    fixture: "db-acc-title-ignored-semicolon",
+    mutate: (_input, broken) => {
+      setField(broken.tokens[4], "type", "Punctuator")
+    },
+    expected: {
+      where: "Root.body",
+      message:
+        "does not run from its first token to its last: [0,32], not [0,33]",
+    },
+  },
+  {
+    testCase:
+      "tokens-118-er-A written node value leaves out the ignored semicolon",
+    diagram: "er",
+    fixture: "db-alias-ignored-semicolon",
+    mutate: (_input, broken) => {
+      setField(nodesOf(broken)[4], "value", "style:#x;")
+    },
+    expected: {
+      where: "StringLiteral at 14-25",
+      message: 'value is not its written text: "style:#x;", not "style:#x"',
+    },
+  },
+  {
+    testCase:
+      "tokens-118-flowchart-An ignored semicolon is no node and is no node token",
+    diagram: "flowchart",
+    fixture: "db-converted-ignored-semicolon-in-tooltip",
+    mutate: (_input, broken) => {
+      setField(broken, "body", broken.tokens[7])
+    },
+    expected: {
+      where: "IgnoredSemicolon at 36-37",
+      message: "is of a type that the specification does not define",
+    },
+  },
+  {
+    testCase:
+      "tokens-118-flowchart-An ignored semicolon has kind IgnoredSemicolon rather than grammar Punctuator",
+    diagram: "flowchart",
+    fixture: "db-converted-ignored-semicolon-in-tooltip",
+    mutate: (_input, broken) => {
+      setField(broken.tokens[7], "type", "Punctuator")
+    },
+    expected: {
+      where: "StringLiteral at 27-39",
+      message:
+        "the tokens of the string are not one String token or StringFragment tokens: StringFragment, Punctuator, StringFragment",
+    },
+  },
+  {
+    testCase:
+      "tokens-118-flowchart-A written node value leaves out the ignored semicolon",
+    diagram: "flowchart",
+    fixture: "db-converted-ignored-semicolon-in-tooltip",
+    mutate: (_input, broken) => {
+      setField(nodesOf(broken)[9], "value", "style:#cd;")
+    },
+    expected: {
+      where: "StringLiteral at 27-39",
+      message: 'value is not its written text: "style:#cd;", not "style:#cd"',
+    },
+  },
+  {
+    testCase:
+      "tokens-118-sequence-An ignored semicolon is no node and is no node token",
+    diagram: "sequence",
+    fixture: "db-message-text-ignored-semicolon",
+    mutate: (_input, broken) => {
+      setField(broken, "body", broken.tokens[12])
+    },
+    expected: {
+      where: "IgnoredSemicolon at 58-59",
+      message: "is of a type that the specification does not define",
+    },
+  },
+  {
+    testCase:
+      "tokens-118-sequence-An ignored semicolon has kind IgnoredSemicolon rather than grammar Punctuator",
+    diagram: "sequence",
+    fixture: "db-message-text-ignored-semicolon",
+    mutate: (_input, broken) => {
+      setField(broken.tokens[12], "type", "Punctuator")
+    },
+    expected: {
+      where: "SequenceLiteral at 57-60",
+      message: 'value is not its written text: "xy", not "x;y"',
+    },
+  },
+  {
+    testCase:
+      "tokens-118-sequence-A written node value leaves out the ignored semicolon",
+    diagram: "sequence",
+    fixture: "db-message-text-ignored-semicolon",
+    mutate: (_input, broken) => {
+      setField(nodesOf(broken)[10], "value", "xy;")
+    },
+    expected: {
+      where: "SequenceLiteral at 57-60",
+      message: 'value is not its written text: "xy;", not "xy"',
+    },
+  },
+  {
+    testCase:
+      "tokens-118-state-An ignored semicolon is no node and is no node token",
+    diagram: "state",
+    fixture: "db-acc-descr-block-ignored-semicolon",
+    mutate: (_input, broken) => {
+      setField(broken, "body", broken.tokens[4])
+    },
+    expected: {
+      where: "IgnoredSemicolon at 36-37",
+      message: "is of a type that the specification does not define",
+    },
+  },
+  {
+    testCase:
+      "tokens-118-state-An ignored semicolon has kind IgnoredSemicolon rather than grammar Punctuator",
+    diagram: "state",
+    fixture: "db-acc-descr-block-ignored-semicolon",
+    mutate: (_input, broken) => {
+      setField(broken.tokens[4], "type", "Punctuator")
+    },
+    expected: {
+      where: "Punctuator at 36-37",
+      message: 'the Punctuator text ";" is none of those of a StateDiagram',
+    },
+  },
+  {
+    testCase:
+      "tokens-118-state-A written node value leaves out the ignored semicolon",
+    diagram: "state",
+    fixture: "db-classdef-ignored-semicolon-last-only",
+    mutate: (_input, broken) => {
+      setField(nodesOf(broken)[5], "value", "de;")
+    },
+    expected: {
+      where: "StateLiteral at 36-39",
+      message: 'value is not its written text: "de;", not "de"',
+    },
+  },
+  {
+    testCase:
       "tokens-118-block-An ignored semicolon has kind IgnoredSemicolon rather than grammar Punctuator",
     diagram: "block",
     fixture: "db-arrow-ignored-semicolon-before-later-comma",
@@ -28859,6 +29098,149 @@ const commentCutTokenRangeCases = [
     index: 3,
     range: [27, 34],
   },
+  {
+    case: "tokens-extra-358-agentflow-read-whitespace-before-comment",
+    diagram: "agentflow",
+    fixture: "comment-default-size-above-crlf",
+    expected: {
+      where: "StringFragment at 21-29",
+      message: "ends with whitespace or a line terminator where no value ends",
+    },
+    index: 4,
+    range: [21, 29],
+  },
+  {
+    case: "tokens-extra-358-agentflow-ending-line-terminator-outside-token",
+    diagram: "agentflow",
+    fixture: "comment-default-size-above-frontmatter",
+    expected: {
+      where: "AgentflowLabel at 37-50016",
+      message:
+        'the texts of its tokens joined are not its written text: "before\\n\\nafter", not "before\\nafter"',
+    },
+    index: 8,
+    range: [50009, 50016],
+  },
+  {
+    case: "tokens-extra-358-class-read-whitespace-before-comment",
+    diagram: "class",
+    fixture: "db-note-comment-line-inside-string",
+    expected: {
+      where: "StringLiteral at 32-42",
+      message:
+        'the texts of its tokens joined are not its written text: "ab", not "a\\nb"',
+    },
+    index: 6,
+    range: [32, 34],
+  },
+  {
+    case: "tokens-extra-358-class-ending-line-terminator-outside-token",
+    diagram: "class",
+    fixture: "db-note-comment-line-inside-string",
+    expected: {
+      where: "StringFragment at 39-42",
+      message:
+        "starts with whitespace or a line terminator where no value starts",
+    },
+    index: 7,
+    range: [39, 42],
+  },
+  {
+    case: "tokens-extra-358-er-read-whitespace-before-comment",
+    diagram: "er",
+    fixture: "db-acc-descr-block-comment-line",
+    expected: {
+      where: "ErLiteral at 27-43",
+      message:
+        'the texts of its tokens joined are not its written text: "a    b", not "a\\n    b"',
+    },
+    index: 3,
+    range: [27, 28],
+  },
+  {
+    case: "tokens-extra-358-er-ending-line-terminator-outside-token",
+    diagram: "er",
+    fixture: "db-acc-descr-block-comment-line",
+    expected: {
+      where: "RawText at 37-43",
+      message:
+        "starts with whitespace or a line terminator where no value starts",
+    },
+    index: 4,
+    range: [37, 43],
+  },
+  {
+    case: "tokens-extra-358-flowchart-read-whitespace-before-comment",
+    diagram: "flowchart",
+    fixture: "html-tag-value-opened-in-comment-line",
+    expected: {
+      where: "FlowchartLabel at 15-31",
+      message:
+        'the texts of its tokens joined are not its written text: "<ay\\" z>e", not "<a\\ny\\" z>e"',
+    },
+    index: 4,
+    range: [15, 17],
+  },
+  {
+    case: "tokens-extra-358-flowchart-ending-line-terminator-outside-token",
+    diagram: "flowchart",
+    fixture: "html-tag-value-opened-in-comment-line",
+    expected: {
+      where: "RawText at 24-31",
+      message:
+        "starts with whitespace or a line terminator where no value starts",
+    },
+    index: 5,
+    range: [24, 31],
+  },
+  {
+    case: "tokens-extra-358-sequence-read-whitespace-before-comment",
+    diagram: "sequence",
+    fixture: "db-acc-descr-block-line-separator-then-comment-line",
+    expected: {
+      where: "SequenceLiteral at 27-36",
+      message:
+        'the texts of its tokens joined are not its written text: "xy", not "x\u2028y"',
+    },
+    index: 3,
+    range: [27, 28],
+  },
+  {
+    case: "tokens-extra-358-sequence-ending-line-terminator-outside-token",
+    diagram: "sequence",
+    fixture: "db-acc-descr-block-line-separator-then-comment-line",
+    expected: {
+      where: "RawText at 34-36",
+      message:
+        "starts with whitespace or a line terminator where no value starts",
+    },
+    index: 4,
+    range: [34, 36],
+  },
+  {
+    case: "tokens-extra-358-state-read-whitespace-before-comment",
+    diagram: "state",
+    fixture: "lex-acc-descr-block-line-separator-comment-line-cr",
+    expected: {
+      where: "StateLiteral at 27-35",
+      message:
+        'the texts of its tokens joined are not its written text: "AB", not "A\u2028B"',
+    },
+    index: 3,
+    range: [27, 28],
+  },
+  {
+    case: "tokens-extra-358-state-ending-line-terminator-outside-token",
+    diagram: "state",
+    fixture: "lex-acc-descr-block-line-separator-comment-line-empty-line",
+    expected: {
+      where: "RawText at 33-36",
+      message:
+        "starts with whitespace or a line terminator where no value starts",
+    },
+    index: 4,
+    range: [33, 36],
+  },
 ] as const
 
 const commentCutMergedTokenCases = [
@@ -29331,6 +29713,138 @@ const commentCutMergedTokenCases = [
     second: 3,
     range: [19, 34],
   },
+  {
+    case: "tokens-extra-358-agentflow-region-cut-StringFragment",
+    diagram: "agentflow",
+    fixture: "comment-default-size-above-crlf",
+    expected: {
+      where: "Comment at 30-49994",
+      message: "lies inside StringFragment at 21-50002",
+    },
+    first: 4,
+    second: 5,
+    range: [21, 50002],
+  },
+  {
+    case: "tokens-extra-358-agentflow-region-cut-RawText",
+    diagram: "agentflow",
+    fixture: "comment-default-size-fallback-inline-label",
+    expected: {
+      where: "Comment at 50052-50064",
+      message: "lies inside RawText at 50045-50070",
+    },
+    first: 9,
+    second: 10,
+    range: [50045, 50070],
+  },
+  {
+    case: "tokens-extra-358-class-region-cut-StringFragment",
+    diagram: "class",
+    fixture: "db-note-comment-line-inside-string",
+    expected: {
+      where: "Comment at 35-39",
+      message: "lies inside StringFragment at 32-42",
+    },
+    first: 6,
+    second: 7,
+    range: [32, 42],
+  },
+  {
+    case: "tokens-extra-358-class-region-cut-RawText",
+    diagram: "class",
+    fixture: "lex-acc-descr-block-line-separator-then-comment-line",
+    expected: {
+      where: "Comment at 25-29",
+      message: "lies inside RawText at 23-31",
+    },
+    first: 3,
+    second: 4,
+    range: [23, 31],
+  },
+  {
+    case: "tokens-extra-358-er-region-cut-RawText",
+    diagram: "er",
+    fixture: "db-acc-descr-block-comment-line",
+    expected: {
+      where: "Comment at 33-37",
+      message: "lies inside RawText at 27-43",
+    },
+    first: 3,
+    second: 4,
+    range: [27, 43],
+  },
+  {
+    case: "tokens-extra-358-er-region-cut-StringFragment",
+    diagram: "er",
+    fixture: "tokens-comment-line-in-backquoted-word",
+    expected: {
+      where: "Comment at 18-22",
+      message: "lies inside StringFragment at 15-25",
+    },
+    first: 3,
+    second: 4,
+    range: [15, 25],
+  },
+  {
+    case: "tokens-extra-358-flowchart-region-cut-RawText",
+    diagram: "flowchart",
+    fixture: "html-tag-value-opened-in-comment-line",
+    expected: {
+      where: "Comment at 18-24",
+      message: "lies inside RawText at 15-31",
+    },
+    first: 4,
+    second: 5,
+    range: [15, 31],
+  },
+  {
+    case: "tokens-extra-358-flowchart-region-cut-StringFragment",
+    diagram: "flowchart",
+    fixture: "lex-brace-string-comment-line",
+    expected: {
+      where: "Comment at 20-24",
+      message: "lies inside StringFragment at 15-29",
+    },
+    first: 4,
+    second: 5,
+    range: [15, 29],
+  },
+  {
+    case: "tokens-extra-358-sequence-region-cut-RawText",
+    diagram: "sequence",
+    fixture: "db-acc-descr-block-line-separator-then-comment-line",
+    expected: {
+      where: "Comment at 30-34",
+      message: "lies inside RawText at 27-36",
+    },
+    first: 3,
+    second: 4,
+    range: [27, 36],
+  },
+  {
+    case: "tokens-extra-358-state-region-cut-RawText",
+    diagram: "state",
+    fixture: "lex-acc-descr-block-line-separator-comment-line-cr",
+    expected: {
+      where: "Comment at 29-33",
+      message: "lies inside RawText at 27-35",
+    },
+    first: 3,
+    second: 4,
+    range: [27, 35],
+  },
+  {
+    case: "tokens-extra-358-state-region-cut-StringFragment",
+    diagram: "state",
+    fixture: "lex-click-tooltip-line-separator-then-comment-line",
+    expected: {
+      where: "Comment at 31-35",
+      message: "lies inside StringFragment at 28-38",
+    },
+    first: 4,
+    second: 5,
+    range: [28, 38],
+  },
 ] as const
 
 const commentCutWrittenValueCases = [
@@ -29532,6 +30046,80 @@ const commentCutWrittenValueCases = [
     nodeType: "XychartLiteral",
     nodeRange: [25, 34],
     value: "a\n b!",
+  },
+  {
+    case: "tokens-extra-358-agentflow-value-joins-fragments",
+    diagram: "agentflow",
+    fixture: "comment-default-size-above-crlf",
+    expected: {
+      where: "AgentflowLabel at 21-50002",
+      message:
+        'value is not its written text: "before\\r\\nafter!", not "before\\r\\nafter"',
+    },
+    nodeType: "AgentflowLabel",
+    nodeRange: [21, 50002],
+    value: "before\r\nafter!",
+  },
+  {
+    case: "tokens-extra-358-class-value-joins-fragments",
+    diagram: "class",
+    fixture: "db-note-comment-line-inside-string",
+    expected: {
+      where: "StringLiteral at 32-42",
+      message: 'value is not its written text: "a\\nb!", not "a\\nb"',
+    },
+    nodeType: "StringLiteral",
+    nodeRange: [32, 42],
+    value: "a\nb!",
+  },
+  {
+    case: "tokens-extra-358-er-value-joins-fragments",
+    diagram: "er",
+    fixture: "db-acc-descr-block-comment-line",
+    expected: {
+      where: "ErLiteral at 27-43",
+      message: 'value is not its written text: "a\\n    b!", not "a\\n    b"',
+    },
+    nodeType: "ErLiteral",
+    nodeRange: [27, 43],
+    value: "a\n    b!",
+  },
+  {
+    case: "tokens-extra-358-flowchart-value-joins-fragments",
+    diagram: "flowchart",
+    fixture: "html-tag-value-opened-in-comment-line",
+    expected: {
+      where: "FlowchartLabel at 15-31",
+      message:
+        'value is not its written text: "<a\\ny\\" z>e!", not "<a\\ny\\" z>e"',
+    },
+    nodeType: "FlowchartLabel",
+    nodeRange: [15, 31],
+    value: '<a\ny" z>e!',
+  },
+  {
+    case: "tokens-extra-358-sequence-value-joins-fragments",
+    diagram: "sequence",
+    fixture: "db-acc-descr-block-line-separator-then-comment-line",
+    expected: {
+      where: "SequenceLiteral at 27-36",
+      message: 'value is not its written text: "x\u2028y!", not "x\u2028y"',
+    },
+    nodeType: "SequenceLiteral",
+    nodeRange: [27, 36],
+    value: "x\u2028y!",
+  },
+  {
+    case: "tokens-extra-358-state-value-joins-fragments",
+    diagram: "state",
+    fixture: "lex-acc-descr-block-line-separator-comment-line-cr",
+    expected: {
+      where: "StateLiteral at 27-35",
+      message: 'value is not its written text: "A\u2028B!", not "A\u2028B"',
+    },
+    nodeType: "StateLiteral",
+    nodeRange: [27, 35],
+    value: "A\u2028B!",
   },
 ] as const
 
@@ -36807,6 +37395,80 @@ const commentCutShortenedValueNodeCases = [
     },
     end: 27,
     value: "a",
+  },
+  {
+    case: "tokens-extra-358-agentflow-unit-spans-region",
+    diagram: "agentflow",
+    fixture: "comment-default-size-above-crlf",
+    holder: { type: "AgentflowLabel", range: [21, 50002] },
+    expected: {
+      where: "AgentflowLabel at 21-30",
+      message:
+        'value is not its written text: "before\\r\\nafter", not "before\\r\\n"',
+    },
+    end: 30,
+    value: "before\r\nafter",
+  },
+  {
+    case: "tokens-extra-358-class-unit-spans-region",
+    diagram: "class",
+    fixture: "db-note-comment-line-inside-string",
+    holder: { type: "StringLiteral", range: [32, 42] },
+    expected: {
+      where: "StringLiteral at 32-35",
+      message: 'raw: "\\"a\\n%% c\\nb\\"", not "\\"a\\n"',
+    },
+    end: 35,
+    value: "a\nb",
+  },
+  {
+    case: "tokens-extra-358-er-unit-spans-region",
+    diagram: "er",
+    fixture: "db-acc-descr-block-comment-line",
+    holder: { type: "ErLiteral", range: [27, 43] },
+    expected: {
+      where: "RawText at 38-43",
+      message:
+        "starts with whitespace or a line terminator where no value starts",
+    },
+    end: 29,
+    value: "a\n    b",
+  },
+  {
+    case: "tokens-extra-358-flowchart-unit-spans-region",
+    diagram: "flowchart",
+    fixture: "html-tag-value-opened-in-comment-line",
+    holder: { type: "FlowchartLabel", range: [15, 31] },
+    expected: {
+      where: "FlowchartLabel at 15-18",
+      message: 'value is not its written text: "<a\\ny\\" z>e", not "<a\\n"',
+    },
+    end: 18,
+    value: '<a\ny" z>e',
+  },
+  {
+    case: "tokens-extra-358-sequence-unit-spans-region",
+    diagram: "sequence",
+    fixture: "db-acc-descr-block-line-separator-then-comment-line",
+    holder: { type: "SequenceLiteral", range: [27, 36] },
+    expected: {
+      where: "SequenceLiteral at 27-29",
+      message: 'value is not its written text: "x\u2028y", not "x\u2028"',
+    },
+    end: 29,
+    value: "x\u2028y",
+  },
+  {
+    case: "tokens-extra-358-state-unit-spans-region",
+    diagram: "state",
+    fixture: "lex-acc-descr-block-line-separator-comment-line-cr",
+    holder: { type: "StateLiteral", range: [27, 35] },
+    expected: {
+      where: "StateLiteral at 27-29",
+      message: 'value is not its written text: "A\u2028B", not "A\u2028"',
+    },
+    end: 29,
+    value: "A\u2028B",
   },
 ] as const
 

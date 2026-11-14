@@ -6289,7 +6289,7 @@
       "judgment": {
         "status": "not-shown",
         "reason": "rule-misses-condition",
-        "note": "info/lex-comment-ls-bridge: Read swallowed showInfo fragment as keyword and flag, preserving all ranges The region-cut diagram-comment text is no longer represented as its unmarked Comment fragment. checkTree() returned []. journey: journey/lex-title-line-separator-comment-line-line-rule-before: Set unmarked fragment #b;B mark to #, and set value to b;B The region-cut diagram-comment text is no longer represented as its unmarked Comment fragment. checkTree() returned []. sequence: sequence/lex-hash-comment-across-comment-line: Read swallowed C->>D: z fragment as SequenceMessageStatement, preserving all source fields and spans The region-cut diagram-comment text is no longer represented as its unmarked Comment fragment. checkTree() returned []. venn: venn/lex-diagram-comment-cut-ls-following-real-statement: Read swallowed set B fragment as VennSubsetStatement, preserving all source fields and spans The region-cut diagram-comment text is no longer represented as its unmarked Comment fragment. checkTree() returned []. state: state/lex-diagram-comment-across-comment-line: Read swallowed unmarked fragment B as StateDefinitionStatement instead of Comment, keeping all source spans and values consistent. The region-cut diagram-comment text is no longer represented as its unmarked Comment fragment. checkTree() returned []. architecture: The fixed hand-made input \"architecture-beta\\n%%{ %% c\\n%%\" uses the header/body of architecture/c4-component-header-eof-comment. A region-cut native Comment correctly has an unmarked final fragment whose source is %%. Its baseline checkTree() result was []. Retype that final fragment as mark %% and value empty, without changing its source span. The Vitest probe returned []. Evidence: shared-extra-probe.log. cynefin: The fixed hand-made input \"cynefin-beta\\n%%{ %% c\\n%%\" uses the header/body of cynefin/bare-before-1680. A region-cut native Comment correctly has an unmarked final fragment whose source is %%. Its baseline checkTree() result was []. Retype that final fragment as mark %% and value empty, without changing its source span. The Vitest probe returned []. Evidence: shared-extra-probe.log. gantt: The fixed hand-made input \"gantt\\n%%{ %% c\\n%%\" uses the header/body of gantt/div-percent-brace-after-glued-percent-comment. A region-cut native Comment correctly has an unmarked final fragment whose source is %%. Its baseline checkTree() result was []. Retype that final fragment as mark %% and value empty, without changing its source span. The Vitest probe returned []. Evidence: shared-extra-probe.log. gitgraph: The fixed hand-made input \"gitGraph\\n%%{ %% c\\n%%\" uses the header/body of gitgraph/comment-bare-before-header. A region-cut native Comment correctly has an unmarked final fragment whose source is %%. Its baseline checkTree() result was []. Retype that final fragment as mark %% and value empty, without changing its source span. The Vitest probe returned []. Evidence: shared-extra-probe.log. ishikawa: The fixed hand-made input \"ishikawa\\n%%{ %% c\\n%%\" uses the header/body of ishikawa/gram-root-comment-only-document. A region-cut native Comment correctly has an unmarked final fragment whose source is %%. Its baseline checkTree() result was []. Retype that final fragment as mark %% and value empty, without changing its source span. The Vitest probe returned []. Evidence: shared-extra-probe.log. packet: The fixed hand-made input \"packet\\n%%{ %% c\\n%%\" uses the header/body of packet/bare-before-header-1680. A region-cut native Comment correctly has an unmarked final fragment whose source is %%. Its baseline checkTree() result was []. Retype that final fragment as mark %% and value empty, without changing its source span. The Vitest probe returned []. Evidence: shared-extra-probe.log. pie: The fixed hand-made input \"pie\\n%%{ %% c\\n%%\" uses the header/body of pie/comment-only-eof. A region-cut native Comment correctly has an unmarked final fragment whose source is %%. Its baseline checkTree() result was []. Retype that final fragment as mark %% and value empty, without changing its source span. The Vitest probe returned []. Evidence: shared-extra-probe.log. quadrant: The fixed hand-made input \"quadrantChart\\n%%{ %% c\\n%%\" uses the header/body of quadrant/header-after-bare-percent-line. A region-cut native Comment correctly has an unmarked final fragment whose source is %%. Its baseline checkTree() result was []. Retype that final fragment as mark %% and value empty, without changing its source span. The Vitest probe returned []. Evidence: shared-extra-probe.log. radar: The fixed hand-made input \"radar-beta\\n%%{ %% c\\n%%\" uses the header/body of radar/bare-before-header-1680. A region-cut native Comment correctly has an unmarked final fragment whose source is %%. Its baseline checkTree() result was []. Retype that final fragment as mark %% and value empty, without changing its source span. The Vitest probe returned []. Evidence: shared-extra-probe.log. requirement: The fixed hand-made input \"requirementdiagram\\n%%{ %% c\\n%%\" uses the header/body of requirement/header-lower-case-d. A region-cut native Comment correctly has an unmarked final fragment whose source is %%. Its baseline checkTree() result was []. Retype that final fragment as mark %% and value empty, without changing its source span. The Vitest probe returned []. Evidence: shared-extra-probe.log. timeline: The fixed hand-made input \"timeline\\n%%{ %% c\\n%%\" uses the header/body of timeline/db-header-only. A region-cut native Comment correctly has an unmarked final fragment whose source is %%. Its baseline checkTree() result was []. Retype that final fragment as mark %% and value empty, without changing its source span. The Vitest probe returned []. Evidence: shared-extra-probe.log. treemap: The fixed hand-made input \"treemap\\n%%{ %% c\\n%%\" uses the header/body of treemap/bare-before-header-1680. A region-cut native Comment correctly has an unmarked final fragment whose source is %%. Its baseline checkTree() result was []. Retype that final fragment as mark %% and value empty, without changing its source span. The Vitest probe returned []. Evidence: shared-extra-probe.log. treeview: The fixed hand-made input \"treeView-beta\\n%%{ %% c\\n%%\" uses the header/body of treeview/header-only. A region-cut native Comment correctly has an unmarked final fragment whose source is %%. Its baseline checkTree() result was []. Retype that final fragment as mark %% and value empty, without changing its source span. The Vitest probe returned []. Evidence: shared-extra-probe.log. wardley: The fixed hand-made input \"wardley-beta\\n%%{ %% c\\n%%\" uses the header/body of wardley/bare-before-1680. A region-cut native Comment correctly has an unmarked final fragment whose source is %%. Its baseline checkTree() result was []. Retype that final fragment as mark %% and value empty, without changing its source span. The Vitest probe returned []. Evidence: shared-extra-probe.log. c4: The fixed hand-made input \"C4Component\\nPerson(a, \\\"A\\\")\\n%%{ %% c\\n%%\" uses the header/body of c4/header-component-minimal. A region-cut native Comment correctly has an unmarked final fragment whose source is %%. Its baseline checkTree() result was []. Retype that final fragment as mark %% and value empty, without changing its source span. The Vitest probe returned []. Evidence: shared-extra-probe.log. class: The fixed hand-made input \"classDiagram-v2\\nclass A\\n%%{ %% c\\n%%\" uses the header/body of class/header-v2. A region-cut native Comment correctly has an unmarked final fragment whose source is %%. Its baseline checkTree() result was []. Retype that final fragment as mark %% and value empty, without changing its source span. The Vitest probe returned []. Evidence: shared-extra-probe.log. xychart: The fixed hand-made input \"xychart-beta\\n%%{ %% c\\n%%\" uses the header/body of xychart/db-header-beta-only. A region-cut native Comment correctly has an unmarked final fragment whose source is %%. Its baseline checkTree() result was []. Retype that final fragment as mark %% and value empty, without changing its source span. The Vitest probe returned []. Evidence: shared-extra-probe.log. block: Prepend the fixed source prefix \"%%{ %% c\\n%%\\n\" to block/header-indented, shifting its existing nodes/tokens by 12 and retaining its complete source body. common.md, Diagram detection (lines 941-950 and 1019-1030), reads the prefix after common-region removal as one bare line, %%{ followed by U+2028 and %%. tokens.md, Comment, cuts that same Comment at the common region, so its continuation at [9,11] has null mark and value %%. The baseline checkTree() result was []. Retype just that continuation as mark %% and value empty, preserving its range/loc. The Vitest checkTree() result was []. er: Prepend the fixed source prefix \"%%{ %% c\\n%%\\n\" to er/header-only, shifting its existing nodes/tokens by 12 and retaining its complete source body. common.md, Diagram detection (lines 941-950 and 1019-1030), reads the prefix after common-region removal as one bare line, %%{ followed by U+2028 and %%. tokens.md, Comment, cuts that same Comment at the common region, so its continuation at [9,11] has null mark and value %%. The baseline checkTree() result was []. Retype just that continuation as mark %% and value empty, preserving its range/loc. The Vitest checkTree() result was []. flowchart: Prepend the fixed source prefix \"%%{ %% c\\n%%\\n\" to flowchart/db-direction-statement-top-level-no-header-direction, shifting its existing nodes/tokens by 12 and retaining its complete source body. common.md, Diagram detection (lines 941-950 and 1019-1030), reads the prefix after common-region removal as one bare line, %%{ followed by U+2028 and %%. tokens.md, Comment, cuts that same Comment at the common region, so its continuation at [9,11] has null mark and value %%. The baseline checkTree() result was []. Retype just that continuation as mark %% and value empty, preserving its range/loc. The Vitest checkTree() result was []. sankey: Prepend the fixed source prefix \"%%{ %% c\\n%%\\n\" to sankey/db-link-basic, shifting its existing nodes/tokens by 12 and retaining its complete source body. common.md, Diagram detection (lines 941-950 and 1019-1030), reads the prefix after common-region removal as one bare line, %%{ followed by U+2028 and %%. tokens.md, Comment, cuts that same Comment at the common region, so its continuation at [9,11] has null mark and value %%. The baseline checkTree() result was []. Retype just that continuation as mark %% and value empty, preserving its range/loc. The Vitest checkTree() result was []. mindmap: Prepend the fixed source prefix \"%%{ %% c\\n%%\\n\" to mindmap/db-header-only, shifting its existing nodes/tokens by 12 and retaining its complete source body. common.md, Diagram detection (lines 941-950 and 1019-1030), reads the prefix after common-region removal as one bare line, %%{ followed by U+2028 and %%. tokens.md, Comment, cuts that same Comment at the common region, so its continuation at [9,11] has null mark and value %%. The baseline checkTree() result was []. Retype just that continuation as mark %% and value empty, preserving its range/loc. The Vitest checkTree() result was []. kanban: Prepend the fixed source prefix \"%%{ %% c\\n%%\\n\" to kanban/header-only-lf, shifting its existing nodes/tokens by 12 and retaining its complete source body. common.md, Diagram detection (lines 941-950 and 1019-1030), reads the prefix after common-region removal as one bare line, %%{ followed by U+2028 and %%. tokens.md, Comment, cuts that same Comment at the common region, so its continuation at [9,11] has null mark and value %%. The baseline checkTree() result was []. Retype just that continuation as mark %% and value empty, preserving its range/loc. The Vitest checkTree() result was []. usecase: Prepend the fixed source prefix \"%%{ %% c\\n%%\\n\" to usecase/comment-after-acctitle, shifting its existing nodes/tokens by 12 and retaining its complete source body. common.md, Diagram detection (lines 941-950 and 1019-1030), reads the prefix after common-region removal as one bare line, %%{ followed by U+2028 and %%. tokens.md, Comment, cuts that same Comment at the common region, so its continuation at [9,11] has null mark and value %%. The baseline checkTree() result was []. Retype just that continuation as mark %% and value empty, preserving its range/loc. The Vitest checkTree() result was []. railroad: Use the fixed source \"railroad-beta\\n%%{ %% c\\n%%{! style:#f;\\n\". Represent the region-cut comment by its marked first fragment, the shared comment line, and the unmarked final fragment, ending before the trailing semicolon; keep that semicolon as its own IgnoredSemicolon token. The baseline checkTree() result was []. Absorb the semicolon into the unmarked final fragment, update its value/range/loc consistently, and remove only that semicolon's token. No comment character follows the semicolon, so it incorrectly became part of the whole comment. The Vitest checkTree() result was []. eventmodeling: Retain the complete recorded input/tree of eventmodeling/comment-default-size-above-crlf and append the fixed suffix \"\\n%%{ %% c\\n%%{! style:#f;\\n\". Represent the region-cut comment by its marked first fragment, the shared comment line, and the unmarked final fragment, ending before the trailing semicolon; keep that semicolon as its own IgnoredSemicolon token. The baseline checkTree() result was []. Absorb the semicolon into the unmarked final fragment, update its value/range/loc consistently, and remove only that semicolon's token. No comment character follows the semicolon, so it incorrectly became part of the whole comment. The Vitest checkTree() result was []. agentflow: Keep the entire recorded input/tree of agentflow/comment-default-size-above-crlf unchanged, append the fixed suffix \"\\n%%{ %% c\\n%%\", extend Root.range/loc, and append the native first fragment, shared Comment line, and unmarked final fragment as Comments. The recorded-size source exceeds the comment-preservation limit. The baseline checkTree() result was []. Retype the final continuation from null mark/value %% to mark %% and empty value, preserving its range/loc. The Vitest checkTree() result was []."
+        "note": "info/lex-comment-ls-bridge: Read swallowed showInfo fragment as keyword and flag, preserving all ranges The region-cut diagram-comment text is no longer represented as its unmarked Comment fragment. checkTree() returned []. journey: journey/lex-title-line-separator-comment-line-line-rule-before: Set unmarked fragment #b;B mark to #, and set value to b;B The region-cut diagram-comment text is no longer represented as its unmarked Comment fragment. checkTree() returned []. sequence: sequence/lex-hash-comment-across-comment-line: Read swallowed C->>D: z fragment as SequenceMessageStatement, preserving all source fields and spans The region-cut diagram-comment text is no longer represented as its unmarked Comment fragment. checkTree() returned []. venn: venn/lex-diagram-comment-cut-ls-following-real-statement: Read swallowed set B fragment as VennSubsetStatement, preserving all source fields and spans The region-cut diagram-comment text is no longer represented as its unmarked Comment fragment. checkTree() returned []. state: state/lex-diagram-comment-across-comment-line: Read swallowed unmarked fragment B as StateDefinitionStatement instead of Comment, keeping all source spans and values consistent. The region-cut diagram-comment text is no longer represented as its unmarked Comment fragment. checkTree() returned []. architecture: The fixed hand-made input \"architecture-beta\\n%%{\u2028%% c\\n%%\" uses the header/body of architecture/c4-component-header-eof-comment. A region-cut native Comment correctly has an unmarked final fragment whose source is %%. Its baseline checkTree() result was []. Retype that final fragment as mark %% and value empty, without changing its source span. The Vitest probe returned []. Evidence: shared-extra-probe.log. cynefin: The fixed hand-made input \"cynefin-beta\\n%%{\u2028%% c\\n%%\" uses the header/body of cynefin/bare-before-1680. A region-cut native Comment correctly has an unmarked final fragment whose source is %%. Its baseline checkTree() result was []. Retype that final fragment as mark %% and value empty, without changing its source span. The Vitest probe returned []. Evidence: shared-extra-probe.log. gantt: The fixed hand-made input \"gantt\\n%%{\u2028%% c\\n%%\" uses the header/body of gantt/div-percent-brace-after-glued-percent-comment. A region-cut native Comment correctly has an unmarked final fragment whose source is %%. Its baseline checkTree() result was []. Retype that final fragment as mark %% and value empty, without changing its source span. The Vitest probe returned []. Evidence: shared-extra-probe.log. gitgraph: The fixed hand-made input \"gitGraph\\n%%{\u2028%% c\\n%%\" uses the header/body of gitgraph/comment-bare-before-header. A region-cut native Comment correctly has an unmarked final fragment whose source is %%. Its baseline checkTree() result was []. Retype that final fragment as mark %% and value empty, without changing its source span. The Vitest probe returned []. Evidence: shared-extra-probe.log. ishikawa: The fixed hand-made input \"ishikawa\\n%%{\u2028%% c\\n%%\" uses the header/body of ishikawa/gram-root-comment-only-document. A region-cut native Comment correctly has an unmarked final fragment whose source is %%. Its baseline checkTree() result was []. Retype that final fragment as mark %% and value empty, without changing its source span. The Vitest probe returned []. Evidence: shared-extra-probe.log. packet: The fixed hand-made input \"packet\\n%%{\u2028%% c\\n%%\" uses the header/body of packet/bare-before-header-1680. A region-cut native Comment correctly has an unmarked final fragment whose source is %%. Its baseline checkTree() result was []. Retype that final fragment as mark %% and value empty, without changing its source span. The Vitest probe returned []. Evidence: shared-extra-probe.log. pie: The fixed hand-made input \"pie\\n%%{\u2028%% c\\n%%\" uses the header/body of pie/comment-only-eof. A region-cut native Comment correctly has an unmarked final fragment whose source is %%. Its baseline checkTree() result was []. Retype that final fragment as mark %% and value empty, without changing its source span. The Vitest probe returned []. Evidence: shared-extra-probe.log. quadrant: The fixed hand-made input \"quadrantChart\\n%%{\u2028%% c\\n%%\" uses the header/body of quadrant/header-after-bare-percent-line. A region-cut native Comment correctly has an unmarked final fragment whose source is %%. Its baseline checkTree() result was []. Retype that final fragment as mark %% and value empty, without changing its source span. The Vitest probe returned []. Evidence: shared-extra-probe.log. radar: The fixed hand-made input \"radar-beta\\n%%{\u2028%% c\\n%%\" uses the header/body of radar/bare-before-header-1680. A region-cut native Comment correctly has an unmarked final fragment whose source is %%. Its baseline checkTree() result was []. Retype that final fragment as mark %% and value empty, without changing its source span. The Vitest probe returned []. Evidence: shared-extra-probe.log. requirement: The fixed hand-made input \"requirementdiagram\\n%%{\u2028%% c\\n%%\" uses the header/body of requirement/header-lower-case-d. A region-cut native Comment correctly has an unmarked final fragment whose source is %%. Its baseline checkTree() result was []. Retype that final fragment as mark %% and value empty, without changing its source span. The Vitest probe returned []. Evidence: shared-extra-probe.log. timeline: The fixed hand-made input \"timeline\\n%%{\u2028%% c\\n%%\" uses the header/body of timeline/db-header-only. A region-cut native Comment correctly has an unmarked final fragment whose source is %%. Its baseline checkTree() result was []. Retype that final fragment as mark %% and value empty, without changing its source span. The Vitest probe returned []. Evidence: shared-extra-probe.log. treemap: The fixed hand-made input \"treemap\\n%%{\u2028%% c\\n%%\" uses the header/body of treemap/bare-before-header-1680. A region-cut native Comment correctly has an unmarked final fragment whose source is %%. Its baseline checkTree() result was []. Retype that final fragment as mark %% and value empty, without changing its source span. The Vitest probe returned []. Evidence: shared-extra-probe.log. treeview: The fixed hand-made input \"treeView-beta\\n%%{\u2028%% c\\n%%\" uses the header/body of treeview/header-only. A region-cut native Comment correctly has an unmarked final fragment whose source is %%. Its baseline checkTree() result was []. Retype that final fragment as mark %% and value empty, without changing its source span. The Vitest probe returned []. Evidence: shared-extra-probe.log. wardley: The fixed hand-made input \"wardley-beta\\n%%{\u2028%% c\\n%%\" uses the header/body of wardley/bare-before-1680. A region-cut native Comment correctly has an unmarked final fragment whose source is %%. Its baseline checkTree() result was []. Retype that final fragment as mark %% and value empty, without changing its source span. The Vitest probe returned []. Evidence: shared-extra-probe.log. c4: The fixed hand-made input \"C4Component\\nPerson(a, \\\"A\\\")\\n%%{\u2028%% c\\n%%\" uses the header/body of c4/header-component-minimal. A region-cut native Comment correctly has an unmarked final fragment whose source is %%. Its baseline checkTree() result was []. Retype that final fragment as mark %% and value empty, without changing its source span. The Vitest probe returned []. Evidence: shared-extra-probe.log. class: The fixed hand-made input \"classDiagram-v2\\nclass A\\n%%{\u2028%% c\\n%%\" uses the header/body of class/header-v2. A region-cut native Comment correctly has an unmarked final fragment whose source is %%. Its baseline checkTree() result was []. Retype that final fragment as mark %% and value empty, without changing its source span. The Vitest probe returned []. Evidence: shared-extra-probe.log. xychart: The fixed hand-made input \"xychart-beta\\n%%{\u2028%% c\\n%%\" uses the header/body of xychart/db-header-beta-only. A region-cut native Comment correctly has an unmarked final fragment whose source is %%. Its baseline checkTree() result was []. Retype that final fragment as mark %% and value empty, without changing its source span. The Vitest probe returned []. Evidence: shared-extra-probe.log. block: Prepend the fixed source prefix \"%%{\u2028%% c\\n%%\\n\" to block/header-indented, shifting its existing nodes/tokens by 12 and retaining its complete source body. common.md, Diagram detection (lines 941-950 and 1019-1030), reads the prefix after common-region removal as one bare line, %%{ followed by U+2028 and %%. tokens.md, Comment, cuts that same Comment at the common region, so its continuation at [9,11] has null mark and value %%. The baseline checkTree() result was []. Retype just that continuation as mark %% and value empty, preserving its range/loc. The Vitest checkTree() result was []. er: Prepend the fixed source prefix \"%%{\u2028%% c\\n%%\\n\" to er/header-only, shifting its existing nodes/tokens by 12 and retaining its complete source body. common.md, Diagram detection (lines 941-950 and 1019-1030), reads the prefix after common-region removal as one bare line, %%{ followed by U+2028 and %%. tokens.md, Comment, cuts that same Comment at the common region, so its continuation at [9,11] has null mark and value %%. The baseline checkTree() result was []. Retype just that continuation as mark %% and value empty, preserving its range/loc. The Vitest checkTree() result was []. flowchart: Prepend the fixed source prefix \"%%{\u2028%% c\\n%%\\n\" to flowchart/db-direction-statement-top-level-no-header-direction, shifting its existing nodes/tokens by 12 and retaining its complete source body. common.md, Diagram detection (lines 941-950 and 1019-1030), reads the prefix after common-region removal as one bare line, %%{ followed by U+2028 and %%. tokens.md, Comment, cuts that same Comment at the common region, so its continuation at [9,11] has null mark and value %%. The baseline checkTree() result was []. Retype just that continuation as mark %% and value empty, preserving its range/loc. The Vitest checkTree() result was []. sankey: Prepend the fixed source prefix \"%%{\u2028%% c\\n%%\\n\" to sankey/db-link-basic, shifting its existing nodes/tokens by 12 and retaining its complete source body. common.md, Diagram detection (lines 941-950 and 1019-1030), reads the prefix after common-region removal as one bare line, %%{ followed by U+2028 and %%. tokens.md, Comment, cuts that same Comment at the common region, so its continuation at [9,11] has null mark and value %%. The baseline checkTree() result was []. Retype just that continuation as mark %% and value empty, preserving its range/loc. The Vitest checkTree() result was []. mindmap: Prepend the fixed source prefix \"%%{\u2028%% c\\n%%\\n\" to mindmap/db-header-only, shifting its existing nodes/tokens by 12 and retaining its complete source body. common.md, Diagram detection (lines 941-950 and 1019-1030), reads the prefix after common-region removal as one bare line, %%{ followed by U+2028 and %%. tokens.md, Comment, cuts that same Comment at the common region, so its continuation at [9,11] has null mark and value %%. The baseline checkTree() result was []. Retype just that continuation as mark %% and value empty, preserving its range/loc. The Vitest checkTree() result was []. kanban: Prepend the fixed source prefix \"%%{\u2028%% c\\n%%\\n\" to kanban/header-only-lf, shifting its existing nodes/tokens by 12 and retaining its complete source body. common.md, Diagram detection (lines 941-950 and 1019-1030), reads the prefix after common-region removal as one bare line, %%{ followed by U+2028 and %%. tokens.md, Comment, cuts that same Comment at the common region, so its continuation at [9,11] has null mark and value %%. The baseline checkTree() result was []. Retype just that continuation as mark %% and value empty, preserving its range/loc. The Vitest checkTree() result was []. usecase: Prepend the fixed source prefix \"%%{\u2028%% c\\n%%\\n\" to usecase/comment-after-acctitle, shifting its existing nodes/tokens by 12 and retaining its complete source body. common.md, Diagram detection (lines 941-950 and 1019-1030), reads the prefix after common-region removal as one bare line, %%{ followed by U+2028 and %%. tokens.md, Comment, cuts that same Comment at the common region, so its continuation at [9,11] has null mark and value %%. The baseline checkTree() result was []. Retype just that continuation as mark %% and value empty, preserving its range/loc. The Vitest checkTree() result was []. railroad: Use the fixed source \"railroad-beta\\n%%{\u2028%% c\\n%%{! style:#f;\\n\". Represent the region-cut comment by its marked first fragment, the shared comment line, and the unmarked final fragment, ending before the trailing semicolon; keep that semicolon as its own IgnoredSemicolon token. The baseline checkTree() result was []. Absorb the semicolon into the unmarked final fragment, update its value/range/loc consistently, and remove only that semicolon's token. No comment character follows the semicolon, so it incorrectly became part of the whole comment. The Vitest checkTree() result was []. eventmodeling: Retain the complete recorded input/tree of eventmodeling/comment-default-size-above-crlf and append the fixed suffix \"\\n%%{\u2028%% c\\n%%{! style:#f;\\n\". Represent the region-cut comment by its marked first fragment, the shared comment line, and the unmarked final fragment, ending before the trailing semicolon; keep that semicolon as its own IgnoredSemicolon token. The baseline checkTree() result was []. Absorb the semicolon into the unmarked final fragment, update its value/range/loc consistently, and remove only that semicolon's token. No comment character follows the semicolon, so it incorrectly became part of the whole comment. The Vitest checkTree() result was []. agentflow: Keep the entire recorded input/tree of agentflow/comment-default-size-above-crlf unchanged, append the fixed suffix \"\\n%%{\u2028%% c\\n%%\", extend Root.range/loc, and append the native first fragment, shared Comment line, and unmarked final fragment as Comments. The recorded-size source exceeds the comment-preservation limit. The baseline checkTree() result was []. Retype the final continuation from null mark/value %% to mark %% and empty value, preserving its range/loc. The Vitest checkTree() result was []."
       }
     },
     {
@@ -10455,7 +10455,7 @@
       }
     },
     {
-      "block": "packages/parser/docs/tokens.md:0774fd303841",
+      "block": "packages/parser/docs/tokens.md:391305b28828",
       "diagrams": [
         "agentflow",
         "class",
@@ -10464,11 +10464,226 @@
         "sequence",
         "state"
       ],
-      "about": "The lexer reads through a `;` that the\n[`style` and `classDef` line rule](../../",
+      "about": "The lexer reads through a `;` that the [`style` and `classDe",
       "judgment": {
         "status": "not-shown",
         "reason": "rule-misses-condition",
         "note": "class/lex-acc-title-line-separator-comment-line-line-rule-after: change only token 6 from RawText to Identifier, preserving spelling \"B\", range [39,40], loc, the value node and the complete recorded input. The replacement has a valid spelling and is used by this diagram. The baseline returned []; checkTree() returned []. er: er/lex-acc-descr-block-line-separator-comment-line-line-rule-after: change only token 6 from RawText to Identifier, preserving spelling \"b\", range [37,38], loc, the value node and the complete recorded input. The replacement has a valid spelling and is used by this diagram. The baseline returned []; checkTree() returned []. flowchart: flowchart/lex-acc-descr-block-line-separator-comment-line-line-rule-after: change only token 7 from RawText to Identifier, preserving spelling \"B\", range [39,40], loc, the value node and the complete recorded input. The replacement has a valid spelling and is used by this diagram. The baseline returned []; checkTree() returned []. sequence: tokens-extra-sequence-118-clean-numeric-fragment: in the fixed hand-built sequence tree for \"sequenceDiagram\\ntitle style:#f;1\\n\", change only the RawText token 1 to Numeric, preserving its spelling, range, loc and the value node. Numeric is used by sequence and 1 is a number. The baseline returned []; checkTree() returned [] (shared-final-gaps-probe.log). state: state/db-classdef-ignored-semicolon-last-only: change only token 7 from RawText to Identifier, preserving spelling \"e\", range [38,39], loc, the value node and the complete recorded input. The replacement has a valid spelling and is used by this diagram. The baseline returned []; checkTree() returned []. agentflow: Use the fixed input whose first line is agentflow-beta TB and second line is A[\"style classDef:#x; ;\"], with a final line feed and the shape of agentflow/lex-both-style-triggers. The style and classDef line rules each ignore one semicolon, so the label has three StringFragment tokens and two IgnoredSemicolon tokens. Its baseline checkTree() result was []. Change only the whitespace-only middle StringFragment at [39,40] to RawText, preserving its range/loc/value and the label value. RawText is allowed in agentflow and a space satisfies its free-text meaning, but this fragment of the cut String must remain StringFragment. The Vitest checkTree() result was []."
+      }
+    },
+    {
+      "block": "packages/parser/docs/tokens.md:933a0e1d50fd",
+      "diagrams": ["agentflow", "class", "er", "sequence", "state"],
+      "about": "In `A[\"<span style='color:#f00;font-weight:bold;'>x</span>\"]",
+      "judgment": {
+        "status": "no-condition",
+        "kind": "not-in-diagram",
+        "note": "The block is an example of a flowchart label, `A[\"<span style='color:#f00;font-weight:bold;'>x</span>\"]`; none of the named documents defines that label.",
+        "documents": [
+          "packages/spec/docs/diagrams/agentflow.md",
+          "packages/spec/docs/ast/agentflow.md",
+          "packages/parser/docs/tokens/agentflow.md",
+          "packages/spec/docs/diagrams/class.md",
+          "packages/spec/docs/ast/class.md",
+          "packages/parser/docs/tokens/class.md",
+          "packages/spec/docs/diagrams/er.md",
+          "packages/spec/docs/ast/er.md",
+          "packages/parser/docs/tokens/er.md",
+          "packages/spec/docs/diagrams/sequence.md",
+          "packages/spec/docs/ast/sequence.md",
+          "packages/parser/docs/tokens/sequence.md",
+          "packages/spec/docs/diagrams/state.md",
+          "packages/spec/docs/ast/state.md",
+          "packages/parser/docs/tokens/state.md",
+          "packages/parser/docs/tokens.md"
+        ]
+      }
+    },
+    {
+      "block": "packages/parser/docs/tokens.md:933a0e1d50fd",
+      "diagrams": ["flowchart"],
+      "about": "In `A[\"<span style='color:#f00;font-weight:bold;'>x</span>\"]",
+      "judgment": {
+        "status": "shown",
+        "cases": [
+          {
+            "case": "The label's quoted string is cut by the ignored `;` into StringFragment tokens; no token spans the `;`.",
+            "tests": [
+              {
+                "file": "check-tree-shared-tokens.test.ts",
+                "text": "fails a string fragment spanning its ignored semicolon"
+              }
+            ]
+          },
+          {
+            "case": "The `;` after `bold` is an IgnoredSemicolon token, not a grammar Punctuator.",
+            "tests": [
+              {
+                "file": "check-tree-shared-tokens.test.ts",
+                "text": "fails an ignored semicolon retyped as a grammar punctuator"
+              }
+            ]
+          },
+          {
+            "case": "The label's value leaves out the ignored `;`.",
+            "tests": [
+              {
+                "file": "check-tree-shared-tokens.test.ts",
+                "text": "fails an ignored semicolon included in a label value"
+              }
+            ]
+          }
+        ]
+      }
+    },
+    {
+      "block": "packages/parser/docs/tokens.md:c87c6c8fafbb",
+      "diagrams": [
+        "agentflow",
+        "class",
+        "er",
+        "flowchart",
+        "sequence",
+        "state"
+      ],
+      "about": "An `IgnoredSemicolon` token is the token of no node, and may",
+      "judgment": {
+        "status": "shown",
+        "cases": [
+          {
+            "case": "An ignored semicolon is no node and is no node token",
+            "tests": [
+              {
+                "file": "check-tree-shared-tokens.test.ts",
+                "text": "tokens-118-agentflow-An ignored semicolon is no node and is no node token"
+              },
+              {
+                "file": "check-tree-shared-tokens.test.ts",
+                "text": "tokens-118-class-An ignored semicolon is no node and is no node token"
+              },
+              {
+                "file": "check-tree-shared-tokens.test.ts",
+                "text": "tokens-118-er-An ignored semicolon is no node and is no node token"
+              },
+              {
+                "file": "check-tree-shared-tokens.test.ts",
+                "text": "tokens-118-flowchart-An ignored semicolon is no node and is no node token"
+              },
+              {
+                "file": "check-tree-shared-tokens.test.ts",
+                "text": "tokens-118-sequence-An ignored semicolon is no node and is no node token"
+              },
+              {
+                "file": "check-tree-shared-tokens.test.ts",
+                "text": "tokens-118-state-An ignored semicolon is no node and is no node token"
+              }
+            ]
+          },
+          {
+            "case": "A written node value leaves out the ignored semicolon",
+            "tests": [
+              {
+                "file": "check-tree-shared-tokens.test.ts",
+                "text": "tokens-118-agentflow-A written node value leaves out the ignored semicolon"
+              },
+              {
+                "file": "check-tree-shared-tokens.test.ts",
+                "text": "tokens-118-class-A written node value leaves out the ignored semicolon"
+              },
+              {
+                "file": "check-tree-shared-tokens.test.ts",
+                "text": "tokens-118-er-A written node value leaves out the ignored semicolon"
+              },
+              {
+                "file": "check-tree-shared-tokens.test.ts",
+                "text": "tokens-118-flowchart-A written node value leaves out the ignored semicolon"
+              },
+              {
+                "file": "check-tree-shared-tokens.test.ts",
+                "text": "tokens-118-sequence-A written node value leaves out the ignored semicolon"
+              },
+              {
+                "file": "check-tree-shared-tokens.test.ts",
+                "text": "tokens-118-state-A written node value leaves out the ignored semicolon"
+              }
+            ]
+          },
+          {
+            "case": "An ignored semicolon has kind IgnoredSemicolon rather than grammar Punctuator",
+            "tests": [
+              {
+                "file": "check-tree-shared-tokens.test.ts",
+                "text": "tokens-118-agentflow-An ignored semicolon has kind IgnoredSemicolon rather than grammar Punctuator"
+              },
+              {
+                "file": "check-tree-shared-tokens.test.ts",
+                "text": "tokens-118-class-An ignored semicolon has kind IgnoredSemicolon rather than grammar Punctuator"
+              },
+              {
+                "file": "check-tree-shared-tokens.test.ts",
+                "text": "tokens-118-er-An ignored semicolon has kind IgnoredSemicolon rather than grammar Punctuator"
+              },
+              {
+                "file": "check-tree-shared-tokens.test.ts",
+                "text": "tokens-118-flowchart-An ignored semicolon has kind IgnoredSemicolon rather than grammar Punctuator"
+              },
+              {
+                "file": "check-tree-shared-tokens.test.ts",
+                "text": "tokens-118-sequence-An ignored semicolon has kind IgnoredSemicolon rather than grammar Punctuator"
+              },
+              {
+                "file": "check-tree-shared-tokens.test.ts",
+                "text": "tokens-118-state-An ignored semicolon has kind IgnoredSemicolon rather than grammar Punctuator"
+              }
+            ]
+          }
+        ]
+      }
+    },
+    {
+      "block": "packages/parser/docs/tokens.md:e74d3c4fffec",
+      "diagrams": [
+        "agentflow",
+        "class",
+        "er",
+        "flowchart",
+        "sequence",
+        "state"
+      ],
+      "about": "The grammar does not read an ignored `;`, so it never makes ",
+      "judgment": {
+        "status": "shown",
+        "cases": [
+          {
+            "case": "An ignored semicolon is no node and is no node token",
+            "tests": [
+              {
+                "file": "check-tree-shared-tokens.test.ts",
+                "text": "tokens-118-agentflow-An ignored semicolon is no node and is no node token"
+              },
+              {
+                "file": "check-tree-shared-tokens.test.ts",
+                "text": "tokens-118-class-An ignored semicolon is no node and is no node token"
+              },
+              {
+                "file": "check-tree-shared-tokens.test.ts",
+                "text": "tokens-118-er-An ignored semicolon is no node and is no node token"
+              },
+              {
+                "file": "check-tree-shared-tokens.test.ts",
+                "text": "tokens-118-flowchart-An ignored semicolon is no node and is no node token"
+              },
+              {
+                "file": "check-tree-shared-tokens.test.ts",
+                "text": "tokens-118-sequence-An ignored semicolon is no node and is no node token"
+              },
+              {
+                "file": "check-tree-shared-tokens.test.ts",
+                "text": "tokens-118-state-An ignored semicolon is no node and is no node token"
+              }
+            ]
+          }
+        ]
       }
     },
     {
@@ -10506,7 +10721,7 @@
       }
     },
     {
-      "block": "packages/parser/docs/tokens.md:0774fd303841",
+      "block": "packages/parser/docs/tokens.md:391305b28828",
       "diagrams": [
         "block",
         "cynefin",
@@ -10524,7 +10739,7 @@
         "wardley",
         "xychart"
       ],
-      "about": "The lexer reads through a `;` that the\n[`style` and `classDef` line rule](../../",
+      "about": "The lexer reads through a `;` that the [`style` and `classDe",
       "judgment": {
         "status": "shown",
         "cases": [
@@ -10590,71 +10805,6 @@
               {
                 "file": "check-tree-shared-tokens.test.ts",
                 "text": "tokens-118-xychart-An ignored semicolon has its own token"
-              }
-            ]
-          },
-          {
-            "case": "An ignored semicolon has kind IgnoredSemicolon rather than grammar Punctuator",
-            "tests": [
-              {
-                "file": "check-tree-shared-tokens.test.ts",
-                "text": "tokens-118-block-An ignored semicolon has kind IgnoredSemicolon rather than grammar Punctuator"
-              },
-              {
-                "file": "check-tree-shared-tokens.test.ts",
-                "text": "tokens-118-cynefin-An ignored semicolon has kind IgnoredSemicolon rather than grammar Punctuator"
-              },
-              {
-                "file": "check-tree-shared-tokens.test.ts",
-                "text": "tokens-118-eventmodeling-An ignored semicolon has kind IgnoredSemicolon rather than grammar Punctuator"
-              },
-              {
-                "file": "check-tree-shared-tokens.test.ts",
-                "text": "tokens-118-gantt-An ignored semicolon has kind IgnoredSemicolon rather than grammar Punctuator"
-              },
-              {
-                "file": "check-tree-shared-tokens.test.ts",
-                "text": "tokens-118-kanban-An ignored semicolon has kind IgnoredSemicolon rather than grammar Punctuator"
-              },
-              {
-                "file": "check-tree-shared-tokens.test.ts",
-                "text": "tokens-118-mindmap-An ignored semicolon has kind IgnoredSemicolon rather than grammar Punctuator"
-              },
-              {
-                "file": "check-tree-shared-tokens.test.ts",
-                "text": "tokens-118-pie-An ignored semicolon has kind IgnoredSemicolon rather than grammar Punctuator"
-              },
-              {
-                "file": "check-tree-shared-tokens.test.ts",
-                "text": "tokens-118-quadrant-An ignored semicolon has kind IgnoredSemicolon rather than grammar Punctuator"
-              },
-              {
-                "file": "check-tree-shared-tokens.test.ts",
-                "text": "tokens-118-railroad-An ignored semicolon has kind IgnoredSemicolon rather than grammar Punctuator"
-              },
-              {
-                "file": "check-tree-shared-tokens.test.ts",
-                "text": "tokens-118-requirement-An ignored semicolon has kind IgnoredSemicolon rather than grammar Punctuator"
-              },
-              {
-                "file": "check-tree-shared-tokens.test.ts",
-                "text": "tokens-118-treeview-An ignored semicolon has kind IgnoredSemicolon rather than grammar Punctuator"
-              },
-              {
-                "file": "check-tree-shared-tokens.test.ts",
-                "text": "tokens-118-usecase-An ignored semicolon has kind IgnoredSemicolon rather than grammar Punctuator"
-              },
-              {
-                "file": "check-tree-shared-tokens.test.ts",
-                "text": "tokens-118-venn-An ignored semicolon has kind IgnoredSemicolon rather than grammar Punctuator"
-              },
-              {
-                "file": "check-tree-shared-tokens.test.ts",
-                "text": "tokens-118-wardley-An ignored semicolon has kind IgnoredSemicolon rather than grammar Punctuator"
-              },
-              {
-                "file": "check-tree-shared-tokens.test.ts",
-                "text": "tokens-118-xychart-An ignored semicolon has kind IgnoredSemicolon rather than grammar Punctuator"
               }
             ]
           },
@@ -10852,6 +11002,171 @@
                 "text": "tokens-118-clean-semicolon-white-kind-xychart"
               }
             ]
+          }
+        ]
+      }
+    },
+    {
+      "block": "packages/parser/docs/tokens.md:933a0e1d50fd",
+      "diagrams": [
+        "block",
+        "cynefin",
+        "eventmodeling",
+        "gantt",
+        "kanban",
+        "mindmap",
+        "pie",
+        "quadrant",
+        "railroad",
+        "requirement",
+        "treeview",
+        "usecase",
+        "venn",
+        "wardley",
+        "xychart"
+      ],
+      "about": "In `A[\"<span style='color:#f00;font-weight:bold;'>x</span>\"]",
+      "judgment": {
+        "status": "no-condition",
+        "kind": "not-in-diagram",
+        "note": "The block is an example of a flowchart label, `A[\"<span style='color:#f00;font-weight:bold;'>x</span>\"]`; none of the named documents defines that label.",
+        "documents": [
+          "packages/spec/docs/diagrams/block.md",
+          "packages/spec/docs/ast/block.md",
+          "packages/parser/docs/tokens/block.md",
+          "packages/spec/docs/diagrams/cynefin.md",
+          "packages/spec/docs/ast/cynefin.md",
+          "packages/parser/docs/tokens/cynefin.md",
+          "packages/spec/docs/diagrams/eventmodeling.md",
+          "packages/spec/docs/ast/eventmodeling.md",
+          "packages/parser/docs/tokens/eventmodeling.md",
+          "packages/spec/docs/diagrams/gantt.md",
+          "packages/spec/docs/ast/gantt.md",
+          "packages/parser/docs/tokens/gantt.md",
+          "packages/spec/docs/diagrams/kanban.md",
+          "packages/spec/docs/ast/kanban.md",
+          "packages/parser/docs/tokens/kanban.md",
+          "packages/spec/docs/diagrams/mindmap.md",
+          "packages/spec/docs/ast/mindmap.md",
+          "packages/parser/docs/tokens/mindmap.md",
+          "packages/spec/docs/diagrams/pie.md",
+          "packages/spec/docs/ast/pie.md",
+          "packages/parser/docs/tokens/pie.md",
+          "packages/spec/docs/diagrams/quadrant.md",
+          "packages/spec/docs/ast/quadrant.md",
+          "packages/parser/docs/tokens/quadrant.md",
+          "packages/spec/docs/diagrams/railroad.md",
+          "packages/spec/docs/ast/railroad.md",
+          "packages/parser/docs/tokens/railroad.md",
+          "packages/spec/docs/diagrams/requirement.md",
+          "packages/spec/docs/ast/requirement.md",
+          "packages/parser/docs/tokens/requirement.md",
+          "packages/spec/docs/diagrams/treeview.md",
+          "packages/spec/docs/ast/treeview.md",
+          "packages/parser/docs/tokens/treeview.md",
+          "packages/spec/docs/diagrams/usecase.md",
+          "packages/spec/docs/ast/usecase.md",
+          "packages/parser/docs/tokens/usecase.md",
+          "packages/spec/docs/diagrams/venn.md",
+          "packages/spec/docs/ast/venn.md",
+          "packages/parser/docs/tokens/venn.md",
+          "packages/spec/docs/diagrams/wardley.md",
+          "packages/spec/docs/ast/wardley.md",
+          "packages/parser/docs/tokens/wardley.md",
+          "packages/spec/docs/diagrams/xychart.md",
+          "packages/spec/docs/ast/xychart.md",
+          "packages/parser/docs/tokens/xychart.md",
+          "packages/parser/docs/tokens.md"
+        ]
+      }
+    },
+    {
+      "block": "packages/parser/docs/tokens.md:c87c6c8fafbb",
+      "diagrams": [
+        "block",
+        "cynefin",
+        "eventmodeling",
+        "gantt",
+        "kanban",
+        "mindmap",
+        "pie",
+        "quadrant",
+        "railroad",
+        "requirement",
+        "treeview",
+        "usecase",
+        "venn",
+        "wardley",
+        "xychart"
+      ],
+      "about": "An `IgnoredSemicolon` token is the token of no node, and may",
+      "judgment": {
+        "status": "shown",
+        "cases": [
+          {
+            "case": "An ignored semicolon has kind IgnoredSemicolon rather than grammar Punctuator",
+            "tests": [
+              {
+                "file": "check-tree-shared-tokens.test.ts",
+                "text": "tokens-118-block-An ignored semicolon has kind IgnoredSemicolon rather than grammar Punctuator"
+              },
+              {
+                "file": "check-tree-shared-tokens.test.ts",
+                "text": "tokens-118-cynefin-An ignored semicolon has kind IgnoredSemicolon rather than grammar Punctuator"
+              },
+              {
+                "file": "check-tree-shared-tokens.test.ts",
+                "text": "tokens-118-eventmodeling-An ignored semicolon has kind IgnoredSemicolon rather than grammar Punctuator"
+              },
+              {
+                "file": "check-tree-shared-tokens.test.ts",
+                "text": "tokens-118-gantt-An ignored semicolon has kind IgnoredSemicolon rather than grammar Punctuator"
+              },
+              {
+                "file": "check-tree-shared-tokens.test.ts",
+                "text": "tokens-118-kanban-An ignored semicolon has kind IgnoredSemicolon rather than grammar Punctuator"
+              },
+              {
+                "file": "check-tree-shared-tokens.test.ts",
+                "text": "tokens-118-mindmap-An ignored semicolon has kind IgnoredSemicolon rather than grammar Punctuator"
+              },
+              {
+                "file": "check-tree-shared-tokens.test.ts",
+                "text": "tokens-118-pie-An ignored semicolon has kind IgnoredSemicolon rather than grammar Punctuator"
+              },
+              {
+                "file": "check-tree-shared-tokens.test.ts",
+                "text": "tokens-118-quadrant-An ignored semicolon has kind IgnoredSemicolon rather than grammar Punctuator"
+              },
+              {
+                "file": "check-tree-shared-tokens.test.ts",
+                "text": "tokens-118-railroad-An ignored semicolon has kind IgnoredSemicolon rather than grammar Punctuator"
+              },
+              {
+                "file": "check-tree-shared-tokens.test.ts",
+                "text": "tokens-118-requirement-An ignored semicolon has kind IgnoredSemicolon rather than grammar Punctuator"
+              },
+              {
+                "file": "check-tree-shared-tokens.test.ts",
+                "text": "tokens-118-treeview-An ignored semicolon has kind IgnoredSemicolon rather than grammar Punctuator"
+              },
+              {
+                "file": "check-tree-shared-tokens.test.ts",
+                "text": "tokens-118-usecase-An ignored semicolon has kind IgnoredSemicolon rather than grammar Punctuator"
+              },
+              {
+                "file": "check-tree-shared-tokens.test.ts",
+                "text": "tokens-118-venn-An ignored semicolon has kind IgnoredSemicolon rather than grammar Punctuator"
+              },
+              {
+                "file": "check-tree-shared-tokens.test.ts",
+                "text": "tokens-118-wardley-An ignored semicolon has kind IgnoredSemicolon rather than grammar Punctuator"
+              },
+              {
+                "file": "check-tree-shared-tokens.test.ts",
+                "text": "tokens-118-xychart-An ignored semicolon has kind IgnoredSemicolon rather than grammar Punctuator"
+              }
+            ]
           },
           {
             "case": "An ignored semicolon is no node and is no node token",
@@ -10980,6 +11295,97 @@
               {
                 "file": "check-tree-shared-tokens.test.ts",
                 "text": "tokens-118-xychart-A written node value leaves out the ignored semicolon"
+              }
+            ]
+          }
+        ]
+      }
+    },
+    {
+      "block": "packages/parser/docs/tokens.md:e74d3c4fffec",
+      "diagrams": [
+        "block",
+        "cynefin",
+        "eventmodeling",
+        "gantt",
+        "kanban",
+        "mindmap",
+        "pie",
+        "quadrant",
+        "railroad",
+        "requirement",
+        "treeview",
+        "usecase",
+        "venn",
+        "wardley",
+        "xychart"
+      ],
+      "about": "The grammar does not read an ignored `;`, so it never makes ",
+      "judgment": {
+        "status": "shown",
+        "cases": [
+          {
+            "case": "An ignored semicolon is no node and is no node token",
+            "tests": [
+              {
+                "file": "check-tree-shared-tokens.test.ts",
+                "text": "tokens-118-block-An ignored semicolon is no node and is no node token"
+              },
+              {
+                "file": "check-tree-shared-tokens.test.ts",
+                "text": "tokens-118-cynefin-An ignored semicolon is no node and is no node token"
+              },
+              {
+                "file": "check-tree-shared-tokens.test.ts",
+                "text": "tokens-118-eventmodeling-An ignored semicolon is no node and is no node token"
+              },
+              {
+                "file": "check-tree-shared-tokens.test.ts",
+                "text": "tokens-118-gantt-An ignored semicolon is no node and is no node token"
+              },
+              {
+                "file": "check-tree-shared-tokens.test.ts",
+                "text": "tokens-118-kanban-An ignored semicolon is no node and is no node token"
+              },
+              {
+                "file": "check-tree-shared-tokens.test.ts",
+                "text": "tokens-118-mindmap-An ignored semicolon is no node and is no node token"
+              },
+              {
+                "file": "check-tree-shared-tokens.test.ts",
+                "text": "tokens-118-pie-An ignored semicolon is no node and is no node token"
+              },
+              {
+                "file": "check-tree-shared-tokens.test.ts",
+                "text": "tokens-118-quadrant-An ignored semicolon is no node and is no node token"
+              },
+              {
+                "file": "check-tree-shared-tokens.test.ts",
+                "text": "tokens-118-railroad-An ignored semicolon is no node and is no node token"
+              },
+              {
+                "file": "check-tree-shared-tokens.test.ts",
+                "text": "tokens-118-requirement-An ignored semicolon is no node and is no node token"
+              },
+              {
+                "file": "check-tree-shared-tokens.test.ts",
+                "text": "tokens-118-treeview-An ignored semicolon is no node and is no node token"
+              },
+              {
+                "file": "check-tree-shared-tokens.test.ts",
+                "text": "tokens-118-usecase-An ignored semicolon is no node and is no node token"
+              },
+              {
+                "file": "check-tree-shared-tokens.test.ts",
+                "text": "tokens-118-venn-An ignored semicolon is no node and is no node token"
+              },
+              {
+                "file": "check-tree-shared-tokens.test.ts",
+                "text": "tokens-118-wardley-An ignored semicolon is no node and is no node token"
+              },
+              {
+                "file": "check-tree-shared-tokens.test.ts",
+                "text": "tokens-118-xychart-An ignored semicolon is no node and is no node token"
               }
             ]
           }
@@ -14524,9 +14930,9 @@
       }
     },
     {
-      "block": "packages/parser/docs/tokens.md:0774fd303841",
+      "block": "packages/parser/docs/tokens.md:391305b28828",
       "diagrams": ["gitgraph"],
-      "about": "The lexer reads through an ignored semicolon; its fragments keep their kind.",
+      "about": "The lexer reads through a `;` that the [`style` and `classDe",
       "judgment": {
         "status": "shown",
         "cases": [
@@ -14536,15 +14942,6 @@
               {
                 "file": "check-tree-shared-tokens.test.ts",
                 "text": "tokens-118-gitgraph-An ignored semicolon has its own token"
-              }
-            ]
-          },
-          {
-            "case": "An ignored semicolon has kind IgnoredSemicolon rather than grammar Punctuator",
-            "tests": [
-              {
-                "file": "check-tree-shared-tokens.test.ts",
-                "text": "tokens-118-gitgraph-An ignored semicolon has kind IgnoredSemicolon rather than grammar Punctuator"
               }
             ]
           },
@@ -14567,6 +14964,50 @@
             ]
           },
           {
+            "case": "RawText fragments around an ignored semicolon keep their kind",
+            "tests": [
+              {
+                "file": "check-tree-shared-tokens.test.ts",
+                "text": "tokens-118-gitgraph-raw-semicolon-fragment-kind"
+              }
+            ]
+          }
+        ]
+      }
+    },
+    {
+      "block": "packages/parser/docs/tokens.md:933a0e1d50fd",
+      "diagrams": ["gitgraph"],
+      "about": "In `A[\"<span style='color:#f00;font-weight:bold;'>x</span>\"]",
+      "judgment": {
+        "status": "no-condition",
+        "kind": "not-in-diagram",
+        "note": "The block is an example of a flowchart label, `A[\"<span style='color:#f00;font-weight:bold;'>x</span>\"]`; none of the named documents defines that label.",
+        "documents": [
+          "packages/spec/docs/diagrams/gitgraph.md",
+          "packages/spec/docs/ast/gitgraph.md",
+          "packages/parser/docs/tokens/gitgraph.md",
+          "packages/parser/docs/tokens.md"
+        ]
+      }
+    },
+    {
+      "block": "packages/parser/docs/tokens.md:c87c6c8fafbb",
+      "diagrams": ["gitgraph"],
+      "about": "An `IgnoredSemicolon` token is the token of no node, and may",
+      "judgment": {
+        "status": "shown",
+        "cases": [
+          {
+            "case": "An ignored semicolon has kind IgnoredSemicolon rather than grammar Punctuator",
+            "tests": [
+              {
+                "file": "check-tree-shared-tokens.test.ts",
+                "text": "tokens-118-gitgraph-An ignored semicolon has kind IgnoredSemicolon rather than grammar Punctuator"
+              }
+            ]
+          },
+          {
             "case": "An ignored semicolon is no node and is no node token",
             "tests": [
               {
@@ -14583,13 +15024,23 @@
                 "text": "tokens-118-gitgraph-A written node value leaves out the ignored semicolon"
               }
             ]
-          },
+          }
+        ]
+      }
+    },
+    {
+      "block": "packages/parser/docs/tokens.md:e74d3c4fffec",
+      "diagrams": ["gitgraph"],
+      "about": "The grammar does not read an ignored `;`, so it never makes ",
+      "judgment": {
+        "status": "shown",
+        "cases": [
           {
-            "case": "RawText fragments around an ignored semicolon keep their kind",
+            "case": "An ignored semicolon is no node and is no node token",
             "tests": [
               {
                 "file": "check-tree-shared-tokens.test.ts",
-                "text": "tokens-118-gitgraph-raw-semicolon-fragment-kind"
+                "text": "tokens-118-gitgraph-An ignored semicolon is no node and is no node token"
               }
             ]
           }
@@ -19395,9 +19846,9 @@
       }
     },
     {
-      "block": "packages/parser/docs/tokens.md:0774fd303841",
+      "block": "packages/parser/docs/tokens.md:391305b28828",
       "diagrams": ["architecture"],
-      "about": "The lexer reads through a `;` that the\n[`style` and `classDef` line rule](../../spec/docs/common.md#",
+      "about": "The lexer reads through a `;` that the [`style` and `classDe",
       "judgment": {
         "status": "shown",
         "cases": [
@@ -19407,15 +19858,6 @@
               {
                 "file": "check-tree-shared-tokens.test.ts",
                 "text": "tokens-118-architecture-An ignored semicolon has its own token"
-              }
-            ]
-          },
-          {
-            "case": "An ignored semicolon has kind IgnoredSemicolon rather than grammar Punctuator; this minimum kind change also breaks the changed kind's Meaning or Used by condition, which cannot be preserved here",
-            "tests": [
-              {
-                "file": "check-tree-shared-tokens.test.ts",
-                "text": "tokens-118-architecture-An ignored semicolon has kind IgnoredSemicolon rather than grammar Punctuator"
               }
             ]
           },
@@ -19445,6 +19887,41 @@
                 "text": "tokens-118-architecture-String fragments around an ignored semicolon have kind StringFragment"
               }
             ]
+          }
+        ]
+      }
+    },
+    {
+      "block": "packages/parser/docs/tokens.md:933a0e1d50fd",
+      "diagrams": ["architecture"],
+      "about": "In `A[\"<span style='color:#f00;font-weight:bold;'>x</span>\"]",
+      "judgment": {
+        "status": "no-condition",
+        "kind": "not-in-diagram",
+        "note": "The block is an example of a flowchart label, `A[\"<span style='color:#f00;font-weight:bold;'>x</span>\"]`; none of the named documents defines that label.",
+        "documents": [
+          "packages/spec/docs/diagrams/architecture.md",
+          "packages/spec/docs/ast/architecture.md",
+          "packages/parser/docs/tokens/architecture.md",
+          "packages/parser/docs/tokens.md"
+        ]
+      }
+    },
+    {
+      "block": "packages/parser/docs/tokens.md:c87c6c8fafbb",
+      "diagrams": ["architecture"],
+      "about": "An `IgnoredSemicolon` token is the token of no node, and may",
+      "judgment": {
+        "status": "shown",
+        "cases": [
+          {
+            "case": "An ignored semicolon has kind IgnoredSemicolon rather than grammar Punctuator; this minimum kind change also breaks the changed kind's Meaning or Used by condition, which cannot be preserved here",
+            "tests": [
+              {
+                "file": "check-tree-shared-tokens.test.ts",
+                "text": "tokens-118-architecture-An ignored semicolon has kind IgnoredSemicolon rather than grammar Punctuator"
+              }
+            ]
           },
           {
             "case": "An ignored semicolon is no node and is no node token",
@@ -19468,9 +19945,28 @@
       }
     },
     {
-      "block": "packages/parser/docs/tokens.md:0774fd303841",
+      "block": "packages/parser/docs/tokens.md:e74d3c4fffec",
+      "diagrams": ["architecture"],
+      "about": "The grammar does not read an ignored `;`, so it never makes ",
+      "judgment": {
+        "status": "shown",
+        "cases": [
+          {
+            "case": "An ignored semicolon is no node and is no node token",
+            "tests": [
+              {
+                "file": "check-tree-shared-tokens.test.ts",
+                "text": "tokens-118-architecture-An ignored semicolon is no node and is no node token"
+              }
+            ]
+          }
+        ]
+      }
+    },
+    {
+      "block": "packages/parser/docs/tokens.md:391305b28828",
       "diagrams": ["c4"],
-      "about": "The lexer reads through a `;` that the\n[`style` and `classDef` line rule](../../spec/docs/common.md#",
+      "about": "The lexer reads through a `;` that the [`style` and `classDe",
       "judgment": {
         "status": "shown",
         "cases": [
@@ -19480,15 +19976,6 @@
               {
                 "file": "check-tree-shared-tokens.test.ts",
                 "text": "tokens-118-c4-An ignored semicolon has its own token"
-              }
-            ]
-          },
-          {
-            "case": "An ignored semicolon has kind IgnoredSemicolon rather than grammar Punctuator; this minimum kind change also breaks the changed kind's Meaning or Used by condition, which cannot be preserved here",
-            "tests": [
-              {
-                "file": "check-tree-shared-tokens.test.ts",
-                "text": "tokens-118-c4-An ignored semicolon has kind IgnoredSemicolon rather than grammar Punctuator"
               }
             ]
           },
@@ -19518,6 +20005,41 @@
                 "text": "tokens-118-c4-String fragments around an ignored semicolon have kind StringFragment"
               }
             ]
+          }
+        ]
+      }
+    },
+    {
+      "block": "packages/parser/docs/tokens.md:933a0e1d50fd",
+      "diagrams": ["c4"],
+      "about": "In `A[\"<span style='color:#f00;font-weight:bold;'>x</span>\"]",
+      "judgment": {
+        "status": "no-condition",
+        "kind": "not-in-diagram",
+        "note": "The block is an example of a flowchart label, `A[\"<span style='color:#f00;font-weight:bold;'>x</span>\"]`; none of the named documents defines that label.",
+        "documents": [
+          "packages/spec/docs/diagrams/c4.md",
+          "packages/spec/docs/ast/c4.md",
+          "packages/parser/docs/tokens/c4.md",
+          "packages/parser/docs/tokens.md"
+        ]
+      }
+    },
+    {
+      "block": "packages/parser/docs/tokens.md:c87c6c8fafbb",
+      "diagrams": ["c4"],
+      "about": "An `IgnoredSemicolon` token is the token of no node, and may",
+      "judgment": {
+        "status": "shown",
+        "cases": [
+          {
+            "case": "An ignored semicolon has kind IgnoredSemicolon rather than grammar Punctuator; this minimum kind change also breaks the changed kind's Meaning or Used by condition, which cannot be preserved here",
+            "tests": [
+              {
+                "file": "check-tree-shared-tokens.test.ts",
+                "text": "tokens-118-c4-An ignored semicolon has kind IgnoredSemicolon rather than grammar Punctuator"
+              }
+            ]
           },
           {
             "case": "An ignored semicolon is no node and is no node token",
@@ -19541,9 +20063,28 @@
       }
     },
     {
-      "block": "packages/parser/docs/tokens.md:0774fd303841",
+      "block": "packages/parser/docs/tokens.md:e74d3c4fffec",
+      "diagrams": ["c4"],
+      "about": "The grammar does not read an ignored `;`, so it never makes ",
+      "judgment": {
+        "status": "shown",
+        "cases": [
+          {
+            "case": "An ignored semicolon is no node and is no node token",
+            "tests": [
+              {
+                "file": "check-tree-shared-tokens.test.ts",
+                "text": "tokens-118-c4-An ignored semicolon is no node and is no node token"
+              }
+            ]
+          }
+        ]
+      }
+    },
+    {
+      "block": "packages/parser/docs/tokens.md:391305b28828",
       "diagrams": ["info"],
-      "about": "The lexer reads through a `;` that the\n[`style` and `classDef` line rule](../../spec/docs/common.md#",
+      "about": "The lexer reads through a `;` that the [`style` and `classDe",
       "judgment": {
         "status": "shown",
         "cases": [
@@ -19553,15 +20094,6 @@
               {
                 "file": "check-tree-shared-tokens.test.ts",
                 "text": "tokens-118-info-An ignored semicolon has its own token"
-              }
-            ]
-          },
-          {
-            "case": "An ignored semicolon has kind IgnoredSemicolon rather than grammar Punctuator; this minimum kind change also breaks the changed kind's Meaning or Used by condition, which cannot be preserved here",
-            "tests": [
-              {
-                "file": "check-tree-shared-tokens.test.ts",
-                "text": "tokens-118-info-An ignored semicolon has kind IgnoredSemicolon rather than grammar Punctuator"
               }
             ]
           },
@@ -19580,6 +20112,41 @@
               {
                 "file": "check-tree-shared-tokens.test.ts",
                 "text": "tokens-118-info-RawText fragments around an ignored semicolon keep their kind"
+              }
+            ]
+          }
+        ]
+      }
+    },
+    {
+      "block": "packages/parser/docs/tokens.md:933a0e1d50fd",
+      "diagrams": ["info"],
+      "about": "In `A[\"<span style='color:#f00;font-weight:bold;'>x</span>\"]",
+      "judgment": {
+        "status": "no-condition",
+        "kind": "not-in-diagram",
+        "note": "The block is an example of a flowchart label, `A[\"<span style='color:#f00;font-weight:bold;'>x</span>\"]`; none of the named documents defines that label.",
+        "documents": [
+          "packages/spec/docs/diagrams/info.md",
+          "packages/spec/docs/ast/info.md",
+          "packages/parser/docs/tokens/info.md",
+          "packages/parser/docs/tokens.md"
+        ]
+      }
+    },
+    {
+      "block": "packages/parser/docs/tokens.md:c87c6c8fafbb",
+      "diagrams": ["info"],
+      "about": "An `IgnoredSemicolon` token is the token of no node, and may",
+      "judgment": {
+        "status": "shown",
+        "cases": [
+          {
+            "case": "An ignored semicolon has kind IgnoredSemicolon rather than grammar Punctuator; this minimum kind change also breaks the changed kind's Meaning or Used by condition, which cannot be preserved here",
+            "tests": [
+              {
+                "file": "check-tree-shared-tokens.test.ts",
+                "text": "tokens-118-info-An ignored semicolon has kind IgnoredSemicolon rather than grammar Punctuator"
               }
             ]
           },
@@ -19605,9 +20172,28 @@
       }
     },
     {
-      "block": "packages/parser/docs/tokens.md:0774fd303841",
+      "block": "packages/parser/docs/tokens.md:e74d3c4fffec",
+      "diagrams": ["info"],
+      "about": "The grammar does not read an ignored `;`, so it never makes ",
+      "judgment": {
+        "status": "shown",
+        "cases": [
+          {
+            "case": "An ignored semicolon is no node and is no node token",
+            "tests": [
+              {
+                "file": "check-tree-shared-tokens.test.ts",
+                "text": "tokens-118-info-An ignored semicolon is no node and is no node token"
+              }
+            ]
+          }
+        ]
+      }
+    },
+    {
+      "block": "packages/parser/docs/tokens.md:391305b28828",
       "diagrams": ["ishikawa"],
-      "about": "The lexer reads through a `;` that the\n[`style` and `classDef` line rule](../../spec/docs/common.md#",
+      "about": "The lexer reads through a `;` that the [`style` and `classDe",
       "judgment": {
         "status": "shown",
         "cases": [
@@ -19617,15 +20203,6 @@
               {
                 "file": "check-tree-shared-tokens.test.ts",
                 "text": "tokens-118-ishikawa-An ignored semicolon has its own token"
-              }
-            ]
-          },
-          {
-            "case": "An ignored semicolon has kind IgnoredSemicolon rather than grammar Punctuator; this minimum kind change also breaks the changed kind's Meaning or Used by condition, which cannot be preserved here",
-            "tests": [
-              {
-                "file": "check-tree-shared-tokens.test.ts",
-                "text": "tokens-118-ishikawa-An ignored semicolon has kind IgnoredSemicolon rather than grammar Punctuator"
               }
             ]
           },
@@ -19644,6 +20221,41 @@
               {
                 "file": "check-tree-shared-tokens.test.ts",
                 "text": "tokens-118-ishikawa-RawText fragments around an ignored semicolon keep their kind"
+              }
+            ]
+          }
+        ]
+      }
+    },
+    {
+      "block": "packages/parser/docs/tokens.md:933a0e1d50fd",
+      "diagrams": ["ishikawa"],
+      "about": "In `A[\"<span style='color:#f00;font-weight:bold;'>x</span>\"]",
+      "judgment": {
+        "status": "no-condition",
+        "kind": "not-in-diagram",
+        "note": "The block is an example of a flowchart label, `A[\"<span style='color:#f00;font-weight:bold;'>x</span>\"]`; none of the named documents defines that label.",
+        "documents": [
+          "packages/spec/docs/diagrams/ishikawa.md",
+          "packages/spec/docs/ast/ishikawa.md",
+          "packages/parser/docs/tokens/ishikawa.md",
+          "packages/parser/docs/tokens.md"
+        ]
+      }
+    },
+    {
+      "block": "packages/parser/docs/tokens.md:c87c6c8fafbb",
+      "diagrams": ["ishikawa"],
+      "about": "An `IgnoredSemicolon` token is the token of no node, and may",
+      "judgment": {
+        "status": "shown",
+        "cases": [
+          {
+            "case": "An ignored semicolon has kind IgnoredSemicolon rather than grammar Punctuator; this minimum kind change also breaks the changed kind's Meaning or Used by condition, which cannot be preserved here",
+            "tests": [
+              {
+                "file": "check-tree-shared-tokens.test.ts",
+                "text": "tokens-118-ishikawa-An ignored semicolon has kind IgnoredSemicolon rather than grammar Punctuator"
               }
             ]
           },
@@ -19669,9 +20281,28 @@
       }
     },
     {
-      "block": "packages/parser/docs/tokens.md:0774fd303841",
+      "block": "packages/parser/docs/tokens.md:e74d3c4fffec",
+      "diagrams": ["ishikawa"],
+      "about": "The grammar does not read an ignored `;`, so it never makes ",
+      "judgment": {
+        "status": "shown",
+        "cases": [
+          {
+            "case": "An ignored semicolon is no node and is no node token",
+            "tests": [
+              {
+                "file": "check-tree-shared-tokens.test.ts",
+                "text": "tokens-118-ishikawa-An ignored semicolon is no node and is no node token"
+              }
+            ]
+          }
+        ]
+      }
+    },
+    {
+      "block": "packages/parser/docs/tokens.md:391305b28828",
       "diagrams": ["journey"],
-      "about": "The lexer reads through a `;` that the\n[`style` and `classDef` line rule](../../spec/docs/common.md#",
+      "about": "The lexer reads through a `;` that the [`style` and `classDe",
       "judgment": {
         "status": "shown",
         "cases": [
@@ -19681,15 +20312,6 @@
               {
                 "file": "check-tree-shared-tokens.test.ts",
                 "text": "tokens-118-journey-An ignored semicolon has its own token"
-              }
-            ]
-          },
-          {
-            "case": "An ignored semicolon has kind IgnoredSemicolon rather than grammar Punctuator; this minimum kind change also breaks the changed kind's Meaning or Used by condition, which cannot be preserved here",
-            "tests": [
-              {
-                "file": "check-tree-shared-tokens.test.ts",
-                "text": "tokens-118-journey-An ignored semicolon has kind IgnoredSemicolon rather than grammar Punctuator"
               }
             ]
           },
@@ -19708,6 +20330,41 @@
               {
                 "file": "check-tree-shared-tokens.test.ts",
                 "text": "tokens-118-journey-RawText fragments around an ignored semicolon keep their kind"
+              }
+            ]
+          }
+        ]
+      }
+    },
+    {
+      "block": "packages/parser/docs/tokens.md:933a0e1d50fd",
+      "diagrams": ["journey"],
+      "about": "In `A[\"<span style='color:#f00;font-weight:bold;'>x</span>\"]",
+      "judgment": {
+        "status": "no-condition",
+        "kind": "not-in-diagram",
+        "note": "The block is an example of a flowchart label, `A[\"<span style='color:#f00;font-weight:bold;'>x</span>\"]`; none of the named documents defines that label.",
+        "documents": [
+          "packages/spec/docs/diagrams/journey.md",
+          "packages/spec/docs/ast/journey.md",
+          "packages/parser/docs/tokens/journey.md",
+          "packages/parser/docs/tokens.md"
+        ]
+      }
+    },
+    {
+      "block": "packages/parser/docs/tokens.md:c87c6c8fafbb",
+      "diagrams": ["journey"],
+      "about": "An `IgnoredSemicolon` token is the token of no node, and may",
+      "judgment": {
+        "status": "shown",
+        "cases": [
+          {
+            "case": "An ignored semicolon has kind IgnoredSemicolon rather than grammar Punctuator; this minimum kind change also breaks the changed kind's Meaning or Used by condition, which cannot be preserved here",
+            "tests": [
+              {
+                "file": "check-tree-shared-tokens.test.ts",
+                "text": "tokens-118-journey-An ignored semicolon has kind IgnoredSemicolon rather than grammar Punctuator"
               }
             ]
           },
@@ -19733,9 +20390,28 @@
       }
     },
     {
-      "block": "packages/parser/docs/tokens.md:0774fd303841",
+      "block": "packages/parser/docs/tokens.md:e74d3c4fffec",
+      "diagrams": ["journey"],
+      "about": "The grammar does not read an ignored `;`, so it never makes ",
+      "judgment": {
+        "status": "shown",
+        "cases": [
+          {
+            "case": "An ignored semicolon is no node and is no node token",
+            "tests": [
+              {
+                "file": "check-tree-shared-tokens.test.ts",
+                "text": "tokens-118-journey-An ignored semicolon is no node and is no node token"
+              }
+            ]
+          }
+        ]
+      }
+    },
+    {
+      "block": "packages/parser/docs/tokens.md:391305b28828",
       "diagrams": ["packet"],
-      "about": "The lexer reads through a `;` that the\n[`style` and `classDef` line rule](../../spec/docs/common.md#",
+      "about": "The lexer reads through a `;` that the [`style` and `classDe",
       "judgment": {
         "status": "shown",
         "cases": [
@@ -19745,15 +20421,6 @@
               {
                 "file": "check-tree-shared-tokens.test.ts",
                 "text": "tokens-118-packet-An ignored semicolon has its own token"
-              }
-            ]
-          },
-          {
-            "case": "An ignored semicolon has kind IgnoredSemicolon rather than grammar Punctuator; this minimum kind change also breaks the changed kind's Meaning or Used by condition, which cannot be preserved here",
-            "tests": [
-              {
-                "file": "check-tree-shared-tokens.test.ts",
-                "text": "tokens-118-packet-An ignored semicolon has kind IgnoredSemicolon rather than grammar Punctuator"
               }
             ]
           },
@@ -19783,6 +20450,41 @@
                 "text": "tokens-118-packet-String fragments around an ignored semicolon have kind StringFragment"
               }
             ]
+          }
+        ]
+      }
+    },
+    {
+      "block": "packages/parser/docs/tokens.md:933a0e1d50fd",
+      "diagrams": ["packet"],
+      "about": "In `A[\"<span style='color:#f00;font-weight:bold;'>x</span>\"]",
+      "judgment": {
+        "status": "no-condition",
+        "kind": "not-in-diagram",
+        "note": "The block is an example of a flowchart label, `A[\"<span style='color:#f00;font-weight:bold;'>x</span>\"]`; none of the named documents defines that label.",
+        "documents": [
+          "packages/spec/docs/diagrams/packet.md",
+          "packages/spec/docs/ast/packet.md",
+          "packages/parser/docs/tokens/packet.md",
+          "packages/parser/docs/tokens.md"
+        ]
+      }
+    },
+    {
+      "block": "packages/parser/docs/tokens.md:c87c6c8fafbb",
+      "diagrams": ["packet"],
+      "about": "An `IgnoredSemicolon` token is the token of no node, and may",
+      "judgment": {
+        "status": "shown",
+        "cases": [
+          {
+            "case": "An ignored semicolon has kind IgnoredSemicolon rather than grammar Punctuator; this minimum kind change also breaks the changed kind's Meaning or Used by condition, which cannot be preserved here",
+            "tests": [
+              {
+                "file": "check-tree-shared-tokens.test.ts",
+                "text": "tokens-118-packet-An ignored semicolon has kind IgnoredSemicolon rather than grammar Punctuator"
+              }
+            ]
           },
           {
             "case": "An ignored semicolon is no node and is no node token",
@@ -19806,9 +20508,28 @@
       }
     },
     {
-      "block": "packages/parser/docs/tokens.md:0774fd303841",
+      "block": "packages/parser/docs/tokens.md:e74d3c4fffec",
+      "diagrams": ["packet"],
+      "about": "The grammar does not read an ignored `;`, so it never makes ",
+      "judgment": {
+        "status": "shown",
+        "cases": [
+          {
+            "case": "An ignored semicolon is no node and is no node token",
+            "tests": [
+              {
+                "file": "check-tree-shared-tokens.test.ts",
+                "text": "tokens-118-packet-An ignored semicolon is no node and is no node token"
+              }
+            ]
+          }
+        ]
+      }
+    },
+    {
+      "block": "packages/parser/docs/tokens.md:391305b28828",
       "diagrams": ["radar"],
-      "about": "The lexer reads through a `;` that the\n[`style` and `classDef` line rule](../../spec/docs/common.md#",
+      "about": "The lexer reads through a `;` that the [`style` and `classDe",
       "judgment": {
         "status": "shown",
         "cases": [
@@ -19818,15 +20539,6 @@
               {
                 "file": "check-tree-shared-tokens.test.ts",
                 "text": "tokens-118-radar-An ignored semicolon has its own token"
-              }
-            ]
-          },
-          {
-            "case": "An ignored semicolon has kind IgnoredSemicolon rather than grammar Punctuator; this minimum kind change also breaks the changed kind's Meaning or Used by condition, which cannot be preserved here",
-            "tests": [
-              {
-                "file": "check-tree-shared-tokens.test.ts",
-                "text": "tokens-118-radar-An ignored semicolon has kind IgnoredSemicolon rather than grammar Punctuator"
               }
             ]
           },
@@ -19856,6 +20568,41 @@
                 "text": "tokens-118-radar-String fragments around an ignored semicolon have kind StringFragment"
               }
             ]
+          }
+        ]
+      }
+    },
+    {
+      "block": "packages/parser/docs/tokens.md:933a0e1d50fd",
+      "diagrams": ["radar"],
+      "about": "In `A[\"<span style='color:#f00;font-weight:bold;'>x</span>\"]",
+      "judgment": {
+        "status": "no-condition",
+        "kind": "not-in-diagram",
+        "note": "The block is an example of a flowchart label, `A[\"<span style='color:#f00;font-weight:bold;'>x</span>\"]`; none of the named documents defines that label.",
+        "documents": [
+          "packages/spec/docs/diagrams/radar.md",
+          "packages/spec/docs/ast/radar.md",
+          "packages/parser/docs/tokens/radar.md",
+          "packages/parser/docs/tokens.md"
+        ]
+      }
+    },
+    {
+      "block": "packages/parser/docs/tokens.md:c87c6c8fafbb",
+      "diagrams": ["radar"],
+      "about": "An `IgnoredSemicolon` token is the token of no node, and may",
+      "judgment": {
+        "status": "shown",
+        "cases": [
+          {
+            "case": "An ignored semicolon has kind IgnoredSemicolon rather than grammar Punctuator; this minimum kind change also breaks the changed kind's Meaning or Used by condition, which cannot be preserved here",
+            "tests": [
+              {
+                "file": "check-tree-shared-tokens.test.ts",
+                "text": "tokens-118-radar-An ignored semicolon has kind IgnoredSemicolon rather than grammar Punctuator"
+              }
+            ]
           },
           {
             "case": "An ignored semicolon is no node and is no node token",
@@ -19879,9 +20626,28 @@
       }
     },
     {
-      "block": "packages/parser/docs/tokens.md:0774fd303841",
+      "block": "packages/parser/docs/tokens.md:e74d3c4fffec",
+      "diagrams": ["radar"],
+      "about": "The grammar does not read an ignored `;`, so it never makes ",
+      "judgment": {
+        "status": "shown",
+        "cases": [
+          {
+            "case": "An ignored semicolon is no node and is no node token",
+            "tests": [
+              {
+                "file": "check-tree-shared-tokens.test.ts",
+                "text": "tokens-118-radar-An ignored semicolon is no node and is no node token"
+              }
+            ]
+          }
+        ]
+      }
+    },
+    {
+      "block": "packages/parser/docs/tokens.md:391305b28828",
       "diagrams": ["sankey"],
-      "about": "The lexer reads through a `;` that the\n[`style` and `classDef` line rule](../../spec/docs/common.md#",
+      "about": "The lexer reads through a `;` that the [`style` and `classDe",
       "judgment": {
         "status": "shown",
         "cases": [
@@ -19891,15 +20657,6 @@
               {
                 "file": "check-tree-shared-tokens.test.ts",
                 "text": "tokens-118-sankey-An ignored semicolon has its own token"
-              }
-            ]
-          },
-          {
-            "case": "An ignored semicolon has kind IgnoredSemicolon rather than grammar Punctuator; this minimum kind change also breaks the changed kind's Meaning or Used by condition, which cannot be preserved here",
-            "tests": [
-              {
-                "file": "check-tree-shared-tokens.test.ts",
-                "text": "tokens-118-sankey-An ignored semicolon has kind IgnoredSemicolon rather than grammar Punctuator"
               }
             ]
           },
@@ -19929,6 +20686,41 @@
                 "text": "tokens-118-sankey-String fragments around an ignored semicolon have kind StringFragment"
               }
             ]
+          }
+        ]
+      }
+    },
+    {
+      "block": "packages/parser/docs/tokens.md:933a0e1d50fd",
+      "diagrams": ["sankey"],
+      "about": "In `A[\"<span style='color:#f00;font-weight:bold;'>x</span>\"]",
+      "judgment": {
+        "status": "no-condition",
+        "kind": "not-in-diagram",
+        "note": "The block is an example of a flowchart label, `A[\"<span style='color:#f00;font-weight:bold;'>x</span>\"]`; none of the named documents defines that label.",
+        "documents": [
+          "packages/spec/docs/diagrams/sankey.md",
+          "packages/spec/docs/ast/sankey.md",
+          "packages/parser/docs/tokens/sankey.md",
+          "packages/parser/docs/tokens.md"
+        ]
+      }
+    },
+    {
+      "block": "packages/parser/docs/tokens.md:c87c6c8fafbb",
+      "diagrams": ["sankey"],
+      "about": "An `IgnoredSemicolon` token is the token of no node, and may",
+      "judgment": {
+        "status": "shown",
+        "cases": [
+          {
+            "case": "An ignored semicolon has kind IgnoredSemicolon rather than grammar Punctuator; this minimum kind change also breaks the changed kind's Meaning or Used by condition, which cannot be preserved here",
+            "tests": [
+              {
+                "file": "check-tree-shared-tokens.test.ts",
+                "text": "tokens-118-sankey-An ignored semicolon has kind IgnoredSemicolon rather than grammar Punctuator"
+              }
+            ]
           },
           {
             "case": "An ignored semicolon is no node and is no node token",
@@ -19952,9 +20744,28 @@
       }
     },
     {
-      "block": "packages/parser/docs/tokens.md:0774fd303841",
+      "block": "packages/parser/docs/tokens.md:e74d3c4fffec",
+      "diagrams": ["sankey"],
+      "about": "The grammar does not read an ignored `;`, so it never makes ",
+      "judgment": {
+        "status": "shown",
+        "cases": [
+          {
+            "case": "An ignored semicolon is no node and is no node token",
+            "tests": [
+              {
+                "file": "check-tree-shared-tokens.test.ts",
+                "text": "tokens-118-sankey-An ignored semicolon is no node and is no node token"
+              }
+            ]
+          }
+        ]
+      }
+    },
+    {
+      "block": "packages/parser/docs/tokens.md:391305b28828",
       "diagrams": ["timeline"],
-      "about": "The lexer reads through a `;` that the\n[`style` and `classDef` line rule](../../spec/docs/common.md#",
+      "about": "The lexer reads through a `;` that the [`style` and `classDe",
       "judgment": {
         "status": "shown",
         "cases": [
@@ -19964,15 +20775,6 @@
               {
                 "file": "check-tree-shared-tokens.test.ts",
                 "text": "tokens-118-timeline-An ignored semicolon has its own token"
-              }
-            ]
-          },
-          {
-            "case": "An ignored semicolon has kind IgnoredSemicolon rather than grammar Punctuator; this minimum kind change also breaks the changed kind's Meaning or Used by condition, which cannot be preserved here",
-            "tests": [
-              {
-                "file": "check-tree-shared-tokens.test.ts",
-                "text": "tokens-118-timeline-An ignored semicolon has kind IgnoredSemicolon rather than grammar Punctuator"
               }
             ]
           },
@@ -19991,6 +20793,41 @@
               {
                 "file": "check-tree-shared-tokens.test.ts",
                 "text": "tokens-118-timeline-RawText fragments around an ignored semicolon keep their kind"
+              }
+            ]
+          }
+        ]
+      }
+    },
+    {
+      "block": "packages/parser/docs/tokens.md:933a0e1d50fd",
+      "diagrams": ["timeline"],
+      "about": "In `A[\"<span style='color:#f00;font-weight:bold;'>x</span>\"]",
+      "judgment": {
+        "status": "no-condition",
+        "kind": "not-in-diagram",
+        "note": "The block is an example of a flowchart label, `A[\"<span style='color:#f00;font-weight:bold;'>x</span>\"]`; none of the named documents defines that label.",
+        "documents": [
+          "packages/spec/docs/diagrams/timeline.md",
+          "packages/spec/docs/ast/timeline.md",
+          "packages/parser/docs/tokens/timeline.md",
+          "packages/parser/docs/tokens.md"
+        ]
+      }
+    },
+    {
+      "block": "packages/parser/docs/tokens.md:c87c6c8fafbb",
+      "diagrams": ["timeline"],
+      "about": "An `IgnoredSemicolon` token is the token of no node, and may",
+      "judgment": {
+        "status": "shown",
+        "cases": [
+          {
+            "case": "An ignored semicolon has kind IgnoredSemicolon rather than grammar Punctuator; this minimum kind change also breaks the changed kind's Meaning or Used by condition, which cannot be preserved here",
+            "tests": [
+              {
+                "file": "check-tree-shared-tokens.test.ts",
+                "text": "tokens-118-timeline-An ignored semicolon has kind IgnoredSemicolon rather than grammar Punctuator"
               }
             ]
           },
@@ -20016,9 +20853,28 @@
       }
     },
     {
-      "block": "packages/parser/docs/tokens.md:0774fd303841",
+      "block": "packages/parser/docs/tokens.md:e74d3c4fffec",
+      "diagrams": ["timeline"],
+      "about": "The grammar does not read an ignored `;`, so it never makes ",
+      "judgment": {
+        "status": "shown",
+        "cases": [
+          {
+            "case": "An ignored semicolon is no node and is no node token",
+            "tests": [
+              {
+                "file": "check-tree-shared-tokens.test.ts",
+                "text": "tokens-118-timeline-An ignored semicolon is no node and is no node token"
+              }
+            ]
+          }
+        ]
+      }
+    },
+    {
+      "block": "packages/parser/docs/tokens.md:391305b28828",
       "diagrams": ["treemap"],
-      "about": "The lexer reads through a `;` that the\n[`style` and `classDef` line rule](../../spec/docs/common.md#",
+      "about": "The lexer reads through a `;` that the [`style` and `classDe",
       "judgment": {
         "status": "shown",
         "cases": [
@@ -20028,15 +20884,6 @@
               {
                 "file": "check-tree-shared-tokens.test.ts",
                 "text": "tokens-118-treemap-An ignored semicolon has its own token"
-              }
-            ]
-          },
-          {
-            "case": "An ignored semicolon has kind IgnoredSemicolon rather than grammar Punctuator; this minimum kind change also breaks the changed kind's Meaning or Used by condition, which cannot be preserved here",
-            "tests": [
-              {
-                "file": "check-tree-shared-tokens.test.ts",
-                "text": "tokens-118-treemap-An ignored semicolon has kind IgnoredSemicolon rather than grammar Punctuator"
               }
             ]
           },
@@ -20066,6 +20913,41 @@
                 "text": "tokens-118-treemap-String fragments around an ignored semicolon have kind StringFragment"
               }
             ]
+          }
+        ]
+      }
+    },
+    {
+      "block": "packages/parser/docs/tokens.md:933a0e1d50fd",
+      "diagrams": ["treemap"],
+      "about": "In `A[\"<span style='color:#f00;font-weight:bold;'>x</span>\"]",
+      "judgment": {
+        "status": "no-condition",
+        "kind": "not-in-diagram",
+        "note": "The block is an example of a flowchart label, `A[\"<span style='color:#f00;font-weight:bold;'>x</span>\"]`; none of the named documents defines that label.",
+        "documents": [
+          "packages/spec/docs/diagrams/treemap.md",
+          "packages/spec/docs/ast/treemap.md",
+          "packages/parser/docs/tokens/treemap.md",
+          "packages/parser/docs/tokens.md"
+        ]
+      }
+    },
+    {
+      "block": "packages/parser/docs/tokens.md:c87c6c8fafbb",
+      "diagrams": ["treemap"],
+      "about": "An `IgnoredSemicolon` token is the token of no node, and may",
+      "judgment": {
+        "status": "shown",
+        "cases": [
+          {
+            "case": "An ignored semicolon has kind IgnoredSemicolon rather than grammar Punctuator; this minimum kind change also breaks the changed kind's Meaning or Used by condition, which cannot be preserved here",
+            "tests": [
+              {
+                "file": "check-tree-shared-tokens.test.ts",
+                "text": "tokens-118-treemap-An ignored semicolon has kind IgnoredSemicolon rather than grammar Punctuator"
+              }
+            ]
           },
           {
             "case": "An ignored semicolon is no node and is no node token",
@@ -20089,9 +20971,28 @@
       }
     },
     {
-      "block": "packages/parser/docs/tokens.md:0774fd303841",
+      "block": "packages/parser/docs/tokens.md:e74d3c4fffec",
+      "diagrams": ["treemap"],
+      "about": "The grammar does not read an ignored `;`, so it never makes ",
+      "judgment": {
+        "status": "shown",
+        "cases": [
+          {
+            "case": "An ignored semicolon is no node and is no node token",
+            "tests": [
+              {
+                "file": "check-tree-shared-tokens.test.ts",
+                "text": "tokens-118-treemap-An ignored semicolon is no node and is no node token"
+              }
+            ]
+          }
+        ]
+      }
+    },
+    {
+      "block": "packages/parser/docs/tokens.md:391305b28828",
       "diagrams": ["error"],
-      "about": "The lexer reads through a `;` that the\n[`style` and `classDef` line rule](../../spec/docs/common.md#",
+      "about": "The lexer reads through a `;` that the [`style` and `classDe",
       "judgment": {
         "status": "shown",
         "cases": [
@@ -20101,15 +21002,6 @@
               {
                 "file": "check-tree-shared-tokens.test.ts",
                 "text": "tokens-118-error-An ignored semicolon has its own token"
-              }
-            ]
-          },
-          {
-            "case": "An ignored semicolon has kind IgnoredSemicolon rather than grammar Punctuator; this minimum kind change also breaks the changed kind's Meaning or Used by condition, which cannot be preserved here",
-            "tests": [
-              {
-                "file": "check-tree-shared-tokens.test.ts",
-                "text": "tokens-118-error-An ignored semicolon has kind IgnoredSemicolon rather than grammar Punctuator"
               }
             ]
           },
@@ -20130,7 +21022,60 @@
                 "text": "tokens-118-error-RawText error word fragments around an ignored semicolon keep their kind"
               }
             ]
+          }
+        ]
+      }
+    },
+    {
+      "block": "packages/parser/docs/tokens.md:933a0e1d50fd",
+      "diagrams": ["error"],
+      "about": "In `A[\"<span style='color:#f00;font-weight:bold;'>x</span>\"]",
+      "judgment": {
+        "status": "no-condition",
+        "kind": "not-in-diagram",
+        "note": "The block is an example of a flowchart label, `A[\"<span style='color:#f00;font-weight:bold;'>x</span>\"]`; none of the named documents defines that label.",
+        "documents": [
+          "packages/spec/docs/common.md",
+          "packages/spec/docs/ast.md",
+          "packages/parser/docs/tokens.md"
+        ]
+      }
+    },
+    {
+      "block": "packages/parser/docs/tokens.md:c87c6c8fafbb",
+      "diagrams": ["error"],
+      "about": "An `IgnoredSemicolon` token is the token of no node, and may",
+      "judgment": {
+        "status": "shown",
+        "cases": [
+          {
+            "case": "An ignored semicolon has kind IgnoredSemicolon rather than grammar Punctuator; this minimum kind change also breaks the changed kind's Meaning or Used by condition, which cannot be preserved here",
+            "tests": [
+              {
+                "file": "check-tree-shared-tokens.test.ts",
+                "text": "tokens-118-error-An ignored semicolon has kind IgnoredSemicolon rather than grammar Punctuator"
+              }
+            ]
           },
+          {
+            "case": "An ignored semicolon is no node and is no node token",
+            "tests": [
+              {
+                "file": "check-tree-shared-tokens.test.ts",
+                "text": "tokens-118-error-An ignored semicolon is no node and is no node token"
+              }
+            ]
+          }
+        ]
+      }
+    },
+    {
+      "block": "packages/parser/docs/tokens.md:e74d3c4fffec",
+      "diagrams": ["error"],
+      "about": "The grammar does not read an ignored `;`, so it never makes ",
+      "judgment": {
+        "status": "shown",
+        "cases": [
           {
             "case": "An ignored semicolon is no node and is no node token",
             "tests": [
