@@ -747,10 +747,10 @@ through child fields, and its `name` is the texts of its units joined in order
 (see [Identifier](../../spec/docs/ast.md#identifier)). A token is only in
 `Root.tokens`, and its `value` is the source text of its range.
 
-An Identifier's token is the token of its unit. Where the unit is a name unit,
-it is one `Identifier` token, whose range is that of the node: no whitespace
-lies inside or between its units, and a directive or a `;` that the line rule
-ignores inside it makes the input rejected (see
+An Identifier's tokens are the tokens of its units. Where they are name units,
+the node has one `Identifier` token, whose range is that of the node: no
+whitespace lies inside or between its units, and a directive or a `;` that the
+line rule ignores inside it makes the input rejected (see
 [A directive is a token boundary](../../spec/docs/common.md#a-directive-is-a-token-boundary)).
 `A%%{init: {}}%%B-->C` is rejected at the directive.
 
