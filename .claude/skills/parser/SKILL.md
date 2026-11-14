@@ -453,35 +453,42 @@ for acceptance without adding configuration parameters or options to `parse()`.
 
    Read each new tree also against the sentences that cite its fixture, so that
    every tree is read for the case that it was added for. Find the citations at
-   the root of the repository; `grep` also finds a document that is not
-   committed yet, and runs in a copy without `.git`:
+   the root of the repository, with the folder of the fixture under
+   `packages/tests/fixtures/`, the one that `show-trees` takes (`common` for a
+   fixture of `common/`); `grep` also finds a document that is not committed
+   yet, and runs in a copy without `.git`:
 
    ```sh
-   grep -rn -F --include='*.md' --exclude='*.ja.md' "<diagram>/<fixture>]" packages/spec/docs packages/parser/docs packages/tests/docs packages/prettier-plugin-mmd/docs
+   grep -rn -F --include='*.md' --exclude='*.ja.md' "<folder>/<fixture>]" packages/spec/docs packages/parser/docs packages/tests/docs packages/prettier-plugin-mmd/docs
    ```
 
-   A citation that runs over two lines is found on the line that holds the name.
-   In the documents of the formatter, only `[corpus fixture: ...]` cites a
-   fixture of the corpus; a `[fixture: ...]` there names a fixture of the
-   formatter, and a line that holds one is no citation of this fixture. The
-   sentence that cites the fixture is the paragraph, the list item, or the table
-   row that holds the citation; read it whole. For each such sentence, say which
-   case the fixture shows (what is accepted, what is read as what, or how a text
-   is printed), and compare the parts of the tree that the case touches (nodes,
+   A citation is told by the bracket around the name, which starts on the line
+   before the one found when the citation runs over two lines. In the documents
+   of the specification, the parser, and the tests, a name inside
+   `[fixture: ...]` cites the fixture. In the documents of the formatter, only a
+   name inside `[corpus fixture: ...]` does; a `[fixture: ...]` there names a
+   fixture of the formatter, also when it starts on the same line. The sentence
+   that cites the fixture is the paragraph, the list item, or the table row that
+   holds the citation; read it whole. For each such sentence, say which case the
+   fixture shows (what is accepted, what is read as what, or how a text is
+   printed), and compare the parts of the tree that the case touches (nodes,
    tokens, comments, positions) with what the sentence says of them and with
    what the documents of the tree say of those node types and token kinds:
    `packages/spec/docs/ast.md` and `ast/<diagram>.md`, and this package's
    `docs/tokens.md`, `docs/tokens/<diagram>.md`, `docs/positions.md`, and
-   `docs/positions/<diagram>.md`. The diagram is that of the body node of the
-   tree (`FlowchartDiagram` is `flowchart`), also for a fixture of `common/`.
-   When the case touches no part of the tree, as a sentence of the formatter on
-   how a text is printed may, say so. Show one answer for each tree in the
-   result: the sentences, the case, the parts compared, the paragraphs compared
-   with, and whether they agree; that a tree was read is no answer. A tree that
-   no sentence cites gets an answer that says so, and is not compared. When the
-   work added its fixture (its `input.mmd` is not on `origin/main`), report the
-   missing sentence to the specification: a fixture is written with the sentence
-   that cites it (the skill `conventions`, Running tests).
+   `docs/positions/<diagram>.md`, where the diagram is that of the body node of
+   the tree (`FlowchartDiagram` is `flowchart`), also for a fixture of
+   `common/`. When the case touches no part of the tree, as a sentence of the
+   formatter on how a text is printed may, say so. Show one answer for each tree
+   in the result: the sentences, the case, the parts compared, the paragraphs
+   compared with, and whether they agree; that a tree was read is no answer. A
+   tree that no sentence cites gets an answer that says so, and is not compared.
+   When the work added its fixture, report the missing sentence to the
+   specification: a fixture is written with the sentence that cites it (the
+   skill `conventions`, Running tests). Whether the work added it is the one
+   thing here that needs the history of the repository:
+   `git cat-file -e origin/main:packages/tests/fixtures/<folder>/<fixture>/input.mmd`
+   fails for a fixture that the work added.
 
 4. Use `-u` only for a change that changes existing results. Before such a
    change, copy the fixtures to a new directory outside the repository; after
