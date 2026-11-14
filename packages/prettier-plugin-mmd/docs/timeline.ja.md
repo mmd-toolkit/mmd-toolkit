@@ -776,6 +776,24 @@ timeline について対象にする版は、どちらの形も同じに描き�
 [fixture: header-and-direction/text-after-the-header-without-direction-moves]
 [fixture: header-and-direction/direction-on-its-own-line-is-a-period]
 
+方向を読まない版は、方向の後ろのテキストを描きます。
+そのため、そこにあり、ヘッダーの行で終わる description ブロックは、
+その行の残りと一緒に、書かれたまま印字します。
+波括弧の中の空白と、ブロックの後ろにある同じ行の文は、そのまま残ります。
+`timeline TD accDescr {alpha} Phase : done` は、これらの版では、
+event `done` を持つ 1 つの period です。
+`{ alpha }` にしても、`Phase : done` を自分の行に移しても、同じには描きません。
+複数行にわたるブロックは、ほかのブロックと同じに印字します。
+方向のないヘッダーの後ろのブロックは、そこのテキストと同じく、
+自分の行に移します。
+[fixture: header-and-direction/description-block-glued-on-the-header-line-kept]
+[fixture: header-and-direction/description-block-empty-with-space-on-the-header-line-kept]
+[fixture: header-and-direction/description-block-with-spaces-on-the-header-line-kept]
+[fixture: header-and-direction/description-block-then-period-on-the-header-line-kept]
+[fixture: header-and-direction/description-block-then-block-on-the-header-line-kept]
+[fixture: header-and-direction/description-block-over-lines-on-the-header-line-formatted]
+[fixture: header-and-direction/description-block-after-the-header-without-direction-moves]
+
 方向の後ろのコメントは行に残します（[コメント](#コメント)を参照）。
 方向の前後の指令は、ほかと同じように置きます（[指令](#指令)を参照）。
 行末の空白は落とします。

@@ -742,6 +742,28 @@ header-and-direction/text-after-a-directive-over-lines-stays] [fixture:
 header-and-direction/text-after-the-header-without-direction-moves] [fixture:
 header-and-direction/direction-on-its-own-line-is-a-period]
 
+The versions that read no direction draw the text after the direction, so a
+description block that stands there and ends on the line of the header is
+printed as written, with the rest of the line: the whitespace inside its braces
+and the statements after it on the line stay as they are.
+`timeline TD accDescr {alpha} Phase : done` is one period with the event `done`
+there, and neither `{ alpha }` nor a line of its own for `Phase : done` draws
+the same. A block over several lines is printed as any block, and a block after
+a header without a direction goes to a line of its own, as any text there does.
+[fixture: header-and-direction/description-block-glued-on-the-header-line-kept]
+[fixture:
+header-and-direction/description-block-empty-with-space-on-the-header-line-kept]
+[fixture:
+header-and-direction/description-block-with-spaces-on-the-header-line-kept]
+[fixture:
+header-and-direction/description-block-then-period-on-the-header-line-kept]
+[fixture:
+header-and-direction/description-block-then-block-on-the-header-line-kept]
+[fixture:
+header-and-direction/description-block-over-lines-on-the-header-line-formatted]
+[fixture:
+header-and-direction/description-block-after-the-header-without-direction-moves]
+
 A comment after the direction stays on the line (see [Comments](#comments)), and
 a directive before it or after it is placed as everywhere else (see
 [Directives](#directives)). The whitespace at the end of the line is dropped.
