@@ -132,9 +132,9 @@ eight hexadecimal digits).
    `before the end of the text`. A rejected input with another message has no
    kind.
 2. Count the fixtures of that kind whose prefix is `lex-` or `db-` (accepted) or
-   `lex-` or `gram-` (rejected). If there are at least five and one prefix has
-   at least twice as many as the other, the new fixture takes the prefix that
-   has more.
+   `lex-` or `gram-` (rejected). If the two prefixes together have at least five
+   fixtures, and one prefix has at least twice as many as the other, the new
+   fixture takes the prefix that has more.
 3. Otherwise an accepted input takes `lex-`. A rejected input takes `lex-` if
    its message begins with `Unexpected character` or ends with
    `before the end of the text` (a rule of the units: a character that no rule
