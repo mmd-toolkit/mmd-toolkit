@@ -44,7 +44,7 @@ export type NoConditionKind =
   | "pointer"
   /** It gives the reason of other sentences. */
   | "reason"
-  /** The diagram documents define no node type, field or token kind that gives the block a case in their trees. */
+  /** The named documents define nothing that gives the block, in its words, a case in these trees. */
   | "not-in-diagram"
 
 /** The judgment of a block for some diagram types. */
@@ -62,8 +62,16 @@ export type CoverageJudgment =
     }
   | {
       readonly status: "no-condition"
-      readonly kind: NoConditionKind
-      /** Why the block has no tree condition for these diagrams; for not-in-diagram, which documents lack which definitions. */
+      readonly kind: Exclude<NoConditionKind, "not-in-diagram">
+      /** Why the block has no tree condition for these diagrams. */
+      readonly note: string
+    }
+  | {
+      readonly status: "no-condition"
+      readonly kind: "not-in-diagram"
+      /** The syntax and tree documents of the diagrams, and any other documents the judgment relies on, relative to the repository root. */
+      readonly documents: readonly string[]
+      /** What none of the named documents defines, in the words of the block. */
       readonly note: string
     }
 
@@ -102,6 +110,12 @@ function isStrings(value: unknown): value is readonly string[] {
 /** Why `judgment` is not a judgment of the table, or undefined when it is one. */
 function judgmentProblem(judgment: unknown): string | undefined {
   if (!isRecord(judgment)) return "has no judgment object"
+  if (
+    "documents" in judgment &&
+    !(judgment.status === "no-condition" && judgment.kind === "not-in-diagram")
+  ) {
+    return "has documents without kind not-in-diagram of no-condition"
+  }
   switch (judgment.status) {
     case "shown":
       return Array.isArray(judgment.cases) &&
@@ -130,6 +144,14 @@ function judgmentProblem(judgment: unknown): string | undefined {
         ? undefined
         : "is not shown without a reason (no-rule or rule-misses-condition) and a note"
     case "no-condition":
+      if (
+        judgment.kind === "not-in-diagram" &&
+        (!isStrings(judgment.documents) ||
+          judgment.documents.length === 0 ||
+          judgment.documents.some((document) => document === ""))
+      ) {
+        return "states not-in-diagram without nonempty documents of nonempty strings"
+      }
       return (judgment.kind === "introduction" ||
         judgment.kind === "pointer" ||
         judgment.kind === "reason" ||
@@ -223,7 +245,9 @@ export interface Coverage {
  * its block is there with the same key, its diagram types are among those the
  * block holds for, every test it names is in its test file (`testFile` gives
  * the text of a test file of `packages/tests/tests/`), and no earlier row
- * covers one of its items.
+ * covers one of its items. A not-in-diagram judgment also needs every named
+ * document to exist. If the row is unchanged from `base`, its documents must
+ * be unchanged too; a changed row records the new judgment.
  */
 export function coverageOf(
   rows: readonly CoverageRow[],
@@ -232,9 +256,15 @@ export function coverageOf(
     { readonly block: DocumentBlock; readonly diagrams: readonly string[] }
   >,
   testFile: (file: string) => string | undefined,
+  reader: DocumentReader,
+  base?: {
+    readonly reader: DocumentReader
+    readonly rows: readonly CoverageRow[]
+  },
 ): Coverage {
   const judgments = new Map<string, CoverageJudgment>()
   const staleRows: StaleRow[] = []
+  const baseRows = new Set(base?.rows.map((row) => JSON.stringify(row)))
   for (const row of rows) {
     const current = blocks.get(row.block)
     const missingTest =
@@ -252,6 +282,20 @@ export function coverageOf(
     const covered = row.diagrams.find((diagram) =>
       judgments.has(`${row.block}@${diagram}`),
     )
+    const documents =
+      row.judgment.status === "no-condition" &&
+      row.judgment.kind === "not-in-diagram"
+        ? row.judgment.documents
+        : []
+    const missingDocument = documents.find(
+      (document) => reader.read(document) === undefined,
+    )
+    const changedDocument =
+      base !== undefined && baseRows.has(JSON.stringify(row))
+        ? documents.find(
+            (document) => reader.read(document) !== base.reader.read(document),
+          )
+        : undefined
     const reason =
       current === undefined
         ? "no block has this key now: its text, its node type, or a section it links to changed, or it was removed"
@@ -261,7 +305,11 @@ export function coverageOf(
             ? `the block does not hold for the diagram type ${otherDiagram}`
             : covered !== undefined
               ? `an earlier row covers the diagram type ${covered}`
-              : undefined
+              : missingDocument !== undefined
+                ? `the document ${missingDocument} is not there now; judge the row again`
+                : changedDocument !== undefined
+                  ? `the document ${changedDocument} changed since the base; judge the row again`
+                  : undefined
     if (reason !== undefined) {
       staleRows.push({ row, reason })
       continue

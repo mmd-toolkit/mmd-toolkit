@@ -185,13 +185,19 @@ who reads the table, and is not compared. A judgment is one of:
   why, with a `note`: `introduction` (it introduces the document or a part of
   it), `pointer` (it points to the document or the section that holds the
   conditions), `reason` (it gives the reason of other sentences), or
-  `not-in-diagram` (the diagram documents define no node type, field, or token
-  kind that gives the block a case in their trees). For `not-in-diagram`, the
-  `note` names which documents do not define what. The row may remain if a
-  diagram document later defines it, because the new blocks in that document
-  receive judgments of their own. A sentence written as an example of a
-  condition is a case of that condition, and a block that mixes a condition with
-  an introduction states a condition.
+  `not-in-diagram` (the diagram documents give the block no case in their
+  trees). For `not-in-diagram`, the judgment also has `documents`, a nonempty
+  list of document paths from the repository root. No other kind of judgment has
+  this field. The documents are the diagram's syntax document
+  (`packages/spec/docs/diagrams/<diagram>.md`), its tree document
+  (`packages/spec/docs/ast/<diagram>.md`), and any other document on which the
+  judgment relies. For `error`, `packages/spec/docs/common.md` defines its
+  detection and `packages/spec/docs/ast.md` defines `ErrorDiagram`. The `note`
+  says that none of these documents defines what the block describes, in the
+  words of the block, rather than merely naming a node type that they do not
+  define. A sentence written as an example of a condition is a case of that
+  condition, and a block that mixes a condition with an introduction states a
+  condition.
 
 The type notation in
 [How fields are described](../../spec/docs/ast.md#how-fields-are-described)
@@ -208,9 +214,12 @@ cannot be read does.
 An item without a row is not judged yet. A row counts only when its block has
 that key now, every test of every named case is still in its test file, the
 block holds for each of its diagram types, and no earlier row covers one of its
-items. Otherwise it is stale: the command lists it, and its items are read
-again. The items to read are those that are neither `shown` nor `no-condition`,
-judged or not.
+items. A row that fails any of these requirements is stale. A `not-in-diagram`
+row also becomes stale when a named document is missing now, or when its text
+changed since the base and the row is unchanged from the base table. Changing
+the row records a new judgment of the changed documents. The command lists stale
+rows, and their items are read again. The items to read are those that are
+neither `shown` nor `no-condition`, judged or not.
 
 A change that makes a row stale, or that adds a block, has the judgment made
 again by `packages/tests` in the same pull request: the coverage table is a

@@ -636,6 +636,7 @@ describe("coverageOf", () => {
       ],
       held,
       tests,
+      memoryReader({}),
     )
     expect([...coverage.judgments.keys()]).toEqual([`${block.key}@er`])
     expect(coverage.staleRows).toEqual([])
@@ -677,7 +678,7 @@ describe("coverageOf", () => {
         judgment: { status: "not-shown", reason: "no-rule", note: "" },
       },
     ]
-    const coverage = coverageOf(rows, held, tests)
+    const coverage = coverageOf(rows, held, tests, memoryReader({}))
     expect(coverage.staleRows.map((stale) => stale.reason)).toEqual([
       "no block has this key now: its text, its node type, or a section it links to changed, or it was removed",
       'the test file check-tree-er.test.ts no longer holds "er/other"',
@@ -730,6 +731,7 @@ describe("coverageOf", () => {
       ],
       held,
       tests,
+      memoryReader({}),
     )
     expect(coverage.judgments.size).toBe(0)
     expect(coverage.staleRows.map((row) => row.reason)).toEqual([
@@ -753,12 +755,120 @@ describe("coverageOf with a block that states no condition", () => {
       ],
       new Map([[block.key, { block, diagrams: ["er"] }]]),
       () => undefined,
+      memoryReader({}),
     )
     expect(coverage.staleRows).toEqual([])
     expect(coverage.judgments.get(`${block.key}@er`)?.status).toBe(
       "no-condition",
     )
   })
+})
+
+describe("coverageOf with not-in-diagram documents", () => {
+  const [block] = blocks("A condition.\n")
+  const held = new Map([[block.key, { block, diagrams: ["er"] }]])
+  const syntax = "packages/spec/docs/diagrams/er.md"
+  const tree = "packages/spec/docs/ast/er.md"
+  const row = {
+    block: block.key,
+    diagrams: ["er"],
+    about: "A condition.",
+    judgment: {
+      status: "no-condition",
+      kind: "not-in-diagram",
+      documents: [syntax, tree],
+      note: "Neither document defines anything to which the condition applies.",
+    },
+  } satisfies CoverageRow
+  const base = {
+    rows: [row],
+    reader: memoryReader({ [syntax]: "Syntax.", [tree]: "Tree." }),
+  }
+
+  it.each([syntax, tree])(
+    "makes an unchanged row stale when its document %s changes",
+    (document) => {
+      const coverage = coverageOf(
+        [row],
+        held,
+        () => undefined,
+        memoryReader({
+          [syntax]: "Syntax.",
+          [tree]: "Tree.",
+          [document]: "Changed.",
+        }),
+        base,
+      )
+      expect(coverage.judgments.size).toBe(0)
+      expect(coverage.staleRows).toEqual([
+        {
+          row,
+          reason: `the document ${document} changed since the base; judge the row again`,
+        },
+      ])
+    },
+  )
+
+  it("counts a row judged again after its document changes", () => {
+    const judgedAgain: CoverageRow = {
+      ...row,
+      judgment: { ...row.judgment, note: "The new syntax still has no case." },
+    }
+    const coverage = coverageOf(
+      [judgedAgain],
+      held,
+      () => undefined,
+      memoryReader({ [syntax]: "New syntax.", [tree]: "Tree." }),
+      base,
+    )
+    expect(coverage.staleRows).toEqual([])
+    expect(coverage.judgments.get(`${block.key}@er`)).toEqual(
+      judgedAgain.judgment,
+    )
+  })
+
+  it("counts an unchanged row whose documents are unchanged", () => {
+    const coverage = coverageOf([row], held, () => undefined, base.reader, base)
+    expect(coverage.staleRows).toEqual([])
+    expect(coverage.judgments.get(`${block.key}@er`)).toEqual(row.judgment)
+  })
+
+  it("counts a new row after its document changes", () => {
+    const coverage = coverageOf(
+      [row],
+      held,
+      () => undefined,
+      memoryReader({ [syntax]: "New syntax.", [tree]: "Tree." }),
+      { ...base, rows: [] },
+    )
+    expect(coverage.staleRows).toEqual([])
+    expect(coverage.judgments.get(`${block.key}@er`)).toEqual(row.judgment)
+  })
+
+  it.each([syntax, tree])(
+    "makes a row stale when its document %s is missing now",
+    (document) => {
+      const files: Record<string, string> = {
+        [syntax]: "Syntax.",
+        [tree]: "Tree.",
+      }
+      delete files[document]
+      const coverage = coverageOf(
+        [row],
+        held,
+        () => undefined,
+        memoryReader(files),
+        base,
+      )
+      expect(coverage.judgments.size).toBe(0)
+      expect(coverage.staleRows).toEqual([
+        {
+          row,
+          reason: `the document ${document} is not there now; judge the row again`,
+        },
+      ])
+    },
+  )
 })
 
 describe("readCoverageTable", () => {
@@ -834,12 +944,87 @@ describe("readCoverageTable", () => {
       judgment: {
         status: "no-condition",
         kind: "not-in-diagram",
-        note: "The diagram document defines no node type for this condition.",
+        documents: [
+          "packages/spec/docs/diagrams/er.md",
+          "packages/spec/docs/ast/er.md",
+        ],
+        note: "Neither document defines anything to which the condition applies.",
       },
     }
     expect(tableOf({ "a.json": { rows: [notInDiagram] } })).toEqual({
       rows: [notInDiagram],
       unreadable: [],
+    })
+  })
+
+  it.each([
+    ["missing documents", undefined],
+    ["empty documents", []],
+    ["documents that are no list", "packages/spec/docs/ast/er.md"],
+    ["a nonstring document", [1]],
+    ["an empty document", [""]],
+  ])("rejects not-in-diagram with %s", (_name, documents) => {
+    expect(
+      tableOf({
+        "a.json": {
+          rows: [
+            {
+              ...row,
+              judgment: {
+                status: "no-condition",
+                kind: "not-in-diagram",
+                note: "The documents define no case.",
+                ...(documents === undefined ? {} : { documents }),
+              },
+            },
+          ],
+        },
+      }),
+    ).toEqual({
+      rows: [],
+      unreadable: [
+        {
+          file: `${COVERAGE_TABLE}/a.json`,
+          reason:
+            "rows[0] states not-in-diagram without nonempty documents of nonempty strings",
+        },
+      ],
+    })
+  })
+
+  it.each([
+    { status: "no-condition", kind: "introduction", note: "" },
+    { status: "no-condition", kind: "pointer", note: "" },
+    { status: "no-condition", kind: "reason", note: "" },
+    { status: "not-shown", reason: "no-rule", note: "" },
+    {
+      status: "shown",
+      cases: [{ case: "A condition.", tests: [{ file: "a", text: "a" }] }],
+    },
+  ])("rejects documents on another judgment: $status $kind", (judgment) => {
+    expect(
+      tableOf({
+        "a.json": {
+          rows: [
+            {
+              ...row,
+              judgment: {
+                ...judgment,
+                documents: ["packages/spec/docs/ast/er.md"],
+              },
+            },
+          ],
+        },
+      }),
+    ).toEqual({
+      rows: [],
+      unreadable: [
+        {
+          file: `${COVERAGE_TABLE}/a.json`,
+          reason:
+            "rows[0] has documents without kind not-in-diagram of no-condition",
+        },
+      ],
     })
   })
 
@@ -1369,4 +1554,65 @@ describe("checkRecordedTrees and failsOf, on a repository of one change", () => 
     ])
     expect(failsOf(report)).toBe(true)
   })
+
+  it.each([
+    "packages/spec/docs/diagrams/er.md",
+    "packages/tests/docs/er-notes.md",
+  ])(
+    "lists an unchanged not-in-diagram row as made stale by a change to %s",
+    (document) => {
+      const treeDocument = "packages/spec/docs/ast/er.md"
+      const files = {
+        [treeDocument]: "A condition.\n",
+        "packages/spec/docs/diagrams/er.md": "Syntax.\n",
+        "packages/tests/docs/er-notes.md": "Notes.\n",
+      }
+      for (const [file, text] of Object.entries(files)) {
+        mkdirSync(path.dirname(path.join(root, file)), { recursive: true })
+        writeFileSync(path.join(root, file), text)
+      }
+      const [block] = blocks(files[treeDocument])
+      const row = {
+        block: block.key,
+        diagrams: ["er"],
+        about: "A condition.",
+        judgment: {
+          status: "no-condition",
+          kind: "not-in-diagram",
+          documents: Object.keys(files),
+          note: "None of the documents defines a case of this condition.",
+        },
+      } satisfies CoverageRow
+      mkdirSync(path.join(root, COVERAGE_TABLE), { recursive: true })
+      const tableFile = path.join(root, COVERAGE_TABLE, "a.json")
+      writeFileSync(tableFile, JSON.stringify({ rows: [row] }))
+      git("add", ".")
+      git("commit", "--quiet", "-m", "judgment")
+      writeFileSync(path.join(root, document), "Changed.\n")
+
+      const report = check()
+      const reason = `the document ${document} changed since the base; judge the row again`
+      expect(report.staleRows).toEqual([{ row, reason, atBase: false }])
+      expect(report.unjudged.some((held) => held.block.key === block.key)).toBe(
+        true,
+      )
+      expect(formatReport(report, false)).toContain(
+        `Made stale or added by this change: \n- \`${block.key}\` (er): ${reason}\n\nStale at the base too: none.`,
+      )
+
+      const judgedAgain: CoverageRow = {
+        ...row,
+        judgment: {
+          ...row.judgment,
+          note: "The changed document still defines no case of this condition.",
+        },
+      }
+      writeFileSync(tableFile, JSON.stringify({ rows: [judgedAgain] }))
+      const rechecked = check()
+      expect(rechecked.staleRows).toEqual([])
+      expect(
+        rechecked.unjudged.some((held) => held.block.key === block.key),
+      ).toBe(false)
+    },
+  )
 })

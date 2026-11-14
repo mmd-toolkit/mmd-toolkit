@@ -343,63 +343,88 @@ describe("checkTree: every kind of positioned record carries range and loc", () 
     expect(checkTree(text, root)).toEqual([])
   })
 
-  for (const [name, pick] of [
-    [
-      "fails a token without range or loc",
-      (tree: CheckedRoot) => tree.tokens[0],
-    ],
-    [
-      "fails a comment without range or loc",
-      (tree: CheckedRoot) => tree.comments[0],
-    ],
-    [
-      "fails a directive without range or loc",
-      (tree: CheckedRoot) => tree.directives[0],
-    ],
-    [
-      "fails frontmatter without range or loc",
-      (tree: CheckedRoot) => tree.frontmatter,
-    ],
-  ] as const) {
-    it(name, () => {
-      for (const field of ["range", "loc"]) {
+  const positionedRecordCases = [
+    {
+      name: "fails a token without range or loc",
+      pick: (tree: CheckedRoot) => tree.tokens[0],
+      missingFields: [
+        { field: "range", message: "has no type and no range" },
+        { field: "loc", message: "has a loc that is no location" },
+      ],
+    },
+    {
+      name: "fails a comment without range or loc",
+      pick: (tree: CheckedRoot) => tree.comments[0],
+      missingFields: [
+        { field: "range", message: "has no type and no range" },
+        { field: "loc", message: "has a loc that is no location" },
+      ],
+    },
+    {
+      name: "fails a directive without range or loc",
+      pick: (tree: CheckedRoot) => tree.directives[0],
+      missingFields: [
+        { field: "range", message: "has no type and no range" },
+        { field: "loc", message: "has a loc that is no location" },
+      ],
+    },
+    {
+      name: "fails frontmatter without range or loc",
+      pick: (tree: CheckedRoot) => tree.frontmatter,
+      missingFields: [
+        {
+          field: "range",
+          message: "the field frontmatter is object, not a node or null",
+        },
+        { field: "loc", message: "has a loc that is no location" },
+      ],
+    },
+  ] as const
+  for (const testCase of positionedRecordCases) {
+    it(testCase.name, () => {
+      for (const { field, message } of testCase.missingFields) {
         const broken = copyOf(root)
-        const record = pick(broken)
+        const record = testCase.pick(broken)
         if (record === null || record === undefined)
           throw new Error("unexpected tree")
         Reflect.deleteProperty(record, field)
         const problems = checkTree(text, broken)
         expect(problems, field).toHaveLength(1)
-        expect(problems[0]?.message, field).toContain(
-          field === "range"
-            ? record.type === "Frontmatter"
-              ? "the field frontmatter is object, not a node or null"
-              : "has no type and no range"
-            : "has a loc that is no location",
-        )
+        expect(problems[0]?.message, field).toContain(message)
       }
     })
   }
 })
 
 describe("checkTree: the missing cases of positions.md", () => {
-  for (const [name, field, inBody, problem] of [
+  const missingRootPositionCases = [
     [
       "fails a Root without range",
       "range",
-      false,
       { where: "the tree", message: "is no node: it has no type and no range" },
     ],
     [
       "fails a Root without loc",
       "loc",
-      false,
       { where: "Root at 0-37", message: "has a loc that is no location" },
     ],
+  ] as const
+  for (const [name, field, problem] of missingRootPositionCases) {
+    it(name, () => {
+      const { input, tree } = recordedTree(
+        "sequence",
+        "db-message-activate-target",
+      )
+      const broken = copyOf(tree)
+      Reflect.deleteProperty(broken, field)
+      expect(checkTree(input, broken)).toEqual([problem])
+    })
+  }
+
+  const missingBodyPositionCases = [
     [
       "fails a node in the body without range",
       "range",
-      true,
       {
         where: "SequenceMessageStatement at 16-25",
         message: "the field from is object, not a node",
@@ -408,23 +433,20 @@ describe("checkTree: the missing cases of positions.md", () => {
     [
       "fails a node in the body without loc",
       "loc",
-      true,
       {
         where: "SequenceIdentifier at 16-17",
         message: "has a loc that is no location",
       },
     ],
-  ] as const) {
+  ] as const
+  for (const [name, field, problem] of missingBodyPositionCases) {
     it(name, () => {
       const { input, tree } = recordedTree(
         "sequence",
         "db-message-activate-target",
       )
       const broken = copyOf(tree)
-      Reflect.deleteProperty(
-        inBody ? firstNode(broken, "SequenceIdentifier") : broken,
-        field,
-      )
+      Reflect.deleteProperty(firstNode(broken, "SequenceIdentifier"), field)
       expect(checkTree(input, broken)).toEqual([problem])
     })
   }

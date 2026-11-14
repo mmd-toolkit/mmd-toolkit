@@ -20,12 +20,7 @@ import type {
 import { nodesOf } from "../../packages/tests/src/check-tree/walk.ts"
 import { getFixturesRoot } from "../../packages/tests/src/index.ts"
 import type { FixtureSource } from "../../packages/tests/src/index.ts"
-import {
-  COVERAGE_TABLE,
-  coverageOf,
-  isRead,
-  readCoverageTable,
-} from "./coverage-table.ts"
+import { coverageOf, isRead, readCoverageTable } from "./coverage-table.ts"
 import type {
   Coverage,
   CoverageJudgment,
@@ -907,24 +902,23 @@ export function checkRecordedTrees(
   })
 
   const table = readCoverageTable(working, new Set(allDiagramsOf(now)))
-  const coverage = coverageOf(table.rows, now.byKey, (file) =>
-    working.read(`${COVERAGE_TESTS}/${file}`),
+  const baseTable = readCoverageTable(atBase, new Set(allDiagramsOf(before)))
+  const coverage = coverageOf(
+    table.rows,
+    now.byKey,
+    (file) => working.read(`${COVERAGE_TESTS}/${file}`),
+    working,
+    { reader: atBase, rows: baseTable.rows },
   )
   // A stale row or an item that is not judged is the change's own only when
-  // the base does not have it so. Without a change to the documents, the
-  // table, or the test files, the base has the same ones.
-  const tableChanged = changed.some((file) =>
-    [...DOCUMENT_DIRECTORIES, COVERAGE_TABLE, COVERAGE_TESTS].some(
-      (directory) => file.startsWith(`${directory}/`),
-    ),
+  // the base does not have it so. Read the base separately: a not-in-diagram
+  // row can rely on a document outside the directories of the tree documents.
+  const baseCoverage = coverageOf(
+    baseTable.rows,
+    before.byKey,
+    (file) => atBase.read(`${COVERAGE_TESTS}/${file}`),
+    atBase,
   )
-  const baseCoverage = tableChanged
-    ? coverageOf(
-        readCoverageTable(atBase, new Set(allDiagramsOf(before))).rows,
-        before.byKey,
-        (file) => atBase.read(`${COVERAGE_TESTS}/${file}`),
-      )
-    : coverage
   const baseStale = new Set(
     baseCoverage.staleRows.map((stale) => JSON.stringify(stale.row)),
   )
