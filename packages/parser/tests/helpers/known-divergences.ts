@@ -10,7 +10,6 @@ import { checkPacketBlocks } from "../../src/diagrams/packet/acceptance.ts"
 import type { MermaidConfig } from "@mmd-toolkit/tests"
 import type { Range, Root, TokenKind } from "@mmd-toolkit/ast"
 import { ParseError, parse, traverseNodes } from "../../src/index.ts"
-import { isWhitespace } from "../../src/character-classes.ts"
 import { findDirectives } from "../../src/directives.ts"
 import { exceedsMaxEdges } from "@mmd-toolkit/tests"
 import { detectDiagram } from "../../src/detection.ts"
@@ -238,15 +237,13 @@ function cutsInsideTokens(
   }))
   for (const [index, directive] of directives.entries()) {
     const at = inReference(removals[index].at)
-    if (isInsideTokenThatMayNotBeCut(reference, root, at)) {
+    if (isInsideTokenThatMayNotBeCut(root, at)) {
       inside.directives.push(directive.range)
     }
   }
   for (const { semicolons } of segments) {
     for (const semicolon of semicolons) {
-      if (
-        !isInsideTokenThatMayNotBeCut(reference, root, inReference(semicolon))
-      ) {
+      if (!isInsideTokenThatMayNotBeCut(root, inReference(semicolon))) {
         continue
       }
       // Where the `;` lies in `text`: its offset in the text without
@@ -274,38 +271,31 @@ function mayBeCut(kind: TokenKind): boolean {
 }
 
 /**
- * Whether the place `at` of the reference input `reference` lies inside a
- * token of `root`, the tree of `reference`, that may not be cut
- * ({@link mayBeCut}), between two of its characters that are not
- * whitespace: one before the place and one after it. The tree of
- * `reference` is compared with mermaid.js on its own, so its tokens can be
- * relied on; a token that may not be cut is whole in it, since the parser
- * rejects a tree where a directive or a `;` cuts one, except that a comment
- * region cuts an `Identifier` token into fragments ({@link fragmentsOf}).
- * The fragments are one token: a place after a character of a fragment that
- * is not whitespace and before the region, such as before the U+2028 that
- * starts the region, and a place after the region and before the next
- * fragment, lie inside it, while a place in the region is read through with
- * it.
+ * common.md, A directive is a token boundary: whether the place `at` of the
+ * reference input lies inside a unit that may not be cut, that is, inside
+ * the range of a token of `root`, the tree of the reference input, of a
+ * kind that may not be cut ({@link mayBeCut}): after its first character
+ * and before its last. Such a token is the range of its unit and nothing
+ * else: a character that a diagram counts as a character of a name, as
+ * U+2028 or U+00A0 in an ER name, is inside it, and whitespace that a unit
+ * reads at its start or its end is not (`docs/tokens.md`, Tokens). The tree
+ * of the reference input is compared with mermaid.js on its own, so its
+ * tokens can be relied on; a token that may not be cut is whole in it, since
+ * the parser rejects a tree where a directive or a `;` cuts one, except that
+ * a comment region cuts an `Identifier` token into fragments
+ * ({@link fragmentsOf}). The fragments are one token: a place after the
+ * region and before the next fragment lies inside it too, while a place in
+ * the region is read through with it.
  */
-function isInsideTokenThatMayNotBeCut(
-  reference: string,
-  root: Root,
-  at: number,
-): boolean {
+function isInsideTokenThatMayNotBeCut(root: Root, at: number): boolean {
   const insideToken = root.tokens.some(
     (token) =>
-      !mayBeCut(token.type) &&
-      holdsNonWhitespace(reference, token.range[0], at) &&
-      holdsNonWhitespace(reference, at, token.range[1]),
+      !mayBeCut(token.type) && token.range[0] < at && at < token.range[1],
   )
   return (
     insideToken ||
     fragmentsOf(root).some(
-      ({ previous, regionEnd, next }) =>
-        (holdsNonWhitespace(reference, previous.range[0], at) &&
-          at < previous.range[1]) ||
-        (regionEnd < at && at <= next.range[0]),
+      ({ regionEnd, next }) => regionEnd < at && at <= next.range[0],
     )
   )
 }
@@ -317,11 +307,10 @@ function isInsideTokenThatMayNotBeCut(
  * fragments, as an ER name across a comment line after a U+2028. Two
  * tokens are such fragments when both are `Identifier` tokens, follow one
  * another in `root.tokens`, lie inside the range of one node without child
- * nodes, and have a comment between them. Each place has the fragments
- * before and after it and the end of the last comment between them.
+ * nodes, and have a comment between them. Each place has the fragment
+ * after it and the end of the last comment before that fragment.
  */
 function fragmentsOf(root: Root): {
-  readonly previous: Root["tokens"][number]
   readonly next: Root["tokens"][number]
   readonly regionEnd: number
 }[] {
@@ -337,7 +326,6 @@ function fragmentsOf(root: Root): {
     },
   })
   const found: {
-    readonly previous: Root["tokens"][number]
     readonly next: Root["tokens"][number]
     readonly regionEnd: number
   }[] = []
@@ -355,18 +343,9 @@ function fragmentsOf(root: Root): {
     )
     const last = between.at(-1)
     if (last === undefined) continue
-    found.push({ previous: token, next, regionEnd: last.range[1] })
+    found.push({ next, regionEnd: last.range[1] })
   }
   return found
-}
-
-/** Whether the text of `text` from `start` to `end` holds a character that is not whitespace. */
-function holdsNonWhitespace(text: string, start: number, end: number): boolean {
-  for (let offset = start; offset < end; offset += 1) {
-    const codePoint = text.codePointAt(offset)
-    if (codePoint !== undefined && !isWhitespace(codePoint)) return true
-  }
-  return false
 }
 
 /** Whether the rejection `outcome` is at the range `range`. */

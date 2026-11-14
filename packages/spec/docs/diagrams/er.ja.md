@@ -303,6 +303,10 @@ mermaid.js と同じく `#f00;` はエンティティとして読まれ、`style
 行の始めでは、コメント領域は行の始めから始まって U+2028 を取るので、
 行 `A` の前の U+2028 と `%% c` の行は、実体 `A` を残します。
 [fixture: er/lex-line-separator-comment-line-at-line-start]
+後にコメントが続かないとき、行の始めの U+2028 は名前を始めるので、
+U+2028 と `direction LR B` の行は、実体 U+2028 と `direction`、`LR`、
+`B` になり、方向は `TB` のままです。
+[fixture: er/db-line-separator-at-line-start]
 `end` の後では、U+2028 は `end` が読む空白で、`1` の後では、
 濃度と数と関係の線の規則 11 が、`1` の後に探す空白として U+2028 を取り、
 領域を越えて先を見るので、`A ||--1`、U+2028、`%% c`、改行、
@@ -378,8 +382,9 @@ mermaid.js がディレクティブを除いた後のテキストを読むとお
   `A ||--o{ B : x%%{init: {}}%%y`、`A:::c%%{init: {}}%%d`、
   `p[Per%%{init: {}}%%son]`、`subgraph S%%{init: {}}%%T`、
   ブロックの中の `str%%{init: {}}%%ing` と `P%%{init: {}}%%K`、
-  `style A%%{init: {}}%%B fill:red` では、
-  ディレクティブは名前の単位の中にあります。
+  `style A%%{init: {}}%%B fill:red` と、
+  名前を始める行の始めの U+2028 の後に `%%{init: {}}%%` と `direction LR B`
+  が続く行では、ディレクティブは名前の単位の中にあります。
   `er%%{init: {}}%%Diagram`、`sub%%{init: {}}%%graph`、`e%%{init: {}}%%nd`、
   `acc%%{init: {}}%%Title:`、`class%%{init: {}}%%Def`、`cl%%{init: {}}%%ass`、
   `st%%{init: {}}%%yle`、`dir%%{init: {}}%%ection LR`、
@@ -394,6 +399,7 @@ mermaid.js がディレクティブを除いた後のテキストを読むとお
   [fixture: er/div-directive-in-subgraph-id]
   [fixture: er/div-directive-in-attribute-word]
   [fixture: er/div-directive-in-key] [fixture: er/div-directive-in-style-id]
+  [fixture: er/div-directive-after-line-separator-at-line-start]
   [fixture: er/div-directive-in-header-keyword]
   [fixture: er/div-directive-in-subgraph-keyword]
   [fixture: er/div-directive-in-end]
@@ -1844,7 +1850,8 @@ accessibility-statement = "accTitle" ":" title-text
   er/div-directive-in-cardinality-symbol] [fixture:
   er/div-directive-in-class-separator] [fixture:
   er/div-directive-after-comment-line-in-name] [fixture:
-  er/div-directive-before-comment-line-in-name]
+  er/div-directive-before-comment-line-in-name] [fixture:
+  er/div-directive-after-line-separator-at-line-start]
 - **[`ignored-semicolon-as-token-boundary`](../known-divergences/ignored-semicolon-as-token-boundary.ja.md)。**
   `style` の規則か `classDef` の規則に合う行で、
   テキストの単位と文字列の単位以外の単位の中にある無視される `;` は、

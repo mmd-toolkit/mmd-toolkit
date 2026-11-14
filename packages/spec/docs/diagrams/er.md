@@ -275,13 +275,16 @@ er/lex-class-shorthand-line-separator-comment-line] [fixture:
 er/lex-role-line-separator-comment-line] At the start of a line, the comment
 region starts at the start of the line and takes the U+2028: a line of U+2028
 and `%% c` before the line `A` leaves the entity `A`. [fixture:
-er/lex-line-separator-comment-line-at-line-start] After `end`, the U+2028 is
-whitespace that `end` reads, and after `1`, rule 11 of the cardinalities,
-numbers, and relationship lines takes the U+2028 for the whitespace it looks for
-after the `1` and looks past the region: in `A ||--1`, U+2028, `%% c`, a line
-break, and `B : x`, the `1` is `only-one`, and the U+2028 then starts the name
-of the second entity, U+2028 and `B`, while `1`, U+2028, `%% c`, a line break,
-and `B` where a statement starts is rejected. [fixture:
+er/lex-line-separator-comment-line-at-line-start] Where no comment follows it, a
+U+2028 at the start of a line starts a name: a line of U+2028 and
+`direction LR B` gives the entities U+2028 and `direction`, `LR`, and `B`, and
+the direction stays `TB`. [fixture: er/db-line-separator-at-line-start] After
+`end`, the U+2028 is whitespace that `end` reads, and after `1`, rule 11 of the
+cardinalities, numbers, and relationship lines takes the U+2028 for the
+whitespace it looks for after the `1` and looks past the region: in `A ||--1`,
+U+2028, `%% c`, a line break, and `B : x`, the `1` is `only-one`, and the U+2028
+then starts the name of the second entity, U+2028 and `B`, while `1`, U+2028,
+`%% c`, a line break, and `B` where a statement starts is rejected. [fixture:
 er/lex-end-line-separator-comment-line] [fixture:
 er/lex-one-line-separator-comment-line-letter] [fixture:
 er/lex-one-line-separator-comment-line-statement-start] In an attribute block
@@ -342,21 +345,24 @@ after `style` or `classDef` or a class name. The **text units** are a
 - In `A%%{init: {}}%%B`, `1%%{init: {}}%%2`, `1%%{init: {}}%%.5`,
   `A ||--o{ B : x%%{init: {}}%%y`, `A:::c%%{init: {}}%%d`,
   `p[Per%%{init: {}}%%son]`, `subgraph S%%{init: {}}%%T`, `str%%{init: {}}%%ing`
-  and `P%%{init: {}}%%K` in a block, and `style A%%{init: {}}%%B fill:red`, the
-  directive lies inside a name unit, and in `er%%{init: {}}%%Diagram`,
-  `sub%%{init: {}}%%graph`, `e%%{init: {}}%%nd`, `acc%%{init: {}}%%Title:`,
-  `class%%{init: {}}%%Def`, `cl%%{init: {}}%%ass`, `st%%{init: {}}%%yle`,
-  `dir%%{init: {}}%%ection LR`, `direction L%%{init: {}}%%R`,
-  `one or %%{init: {}}%%more`, `1%%{init: {}}%%+`, `many(%%{init: {}}%%0)`,
-  `|%%{init: {}}%%|`, and `::%%{init: {}}%%:` inside a keyword, a cardinality,
-  or a delimiter: the input is rejected, while mermaid.js accepts it, reading
-  the two parts as one (see [Known divergences](#known-divergences)). [fixture:
-  er/div-directive-in-name] [fixture: er/div-directive-in-number-name] [fixture:
+  and `P%%{init: {}}%%K` in a block, `style A%%{init: {}}%%B fill:red`, and a
+  line of U+2028, `%%{init: {}}%%`, and `direction LR B`, where the U+2028
+  starts a name, the directive lies inside a name unit, and in
+  `er%%{init: {}}%%Diagram`, `sub%%{init: {}}%%graph`, `e%%{init: {}}%%nd`,
+  `acc%%{init: {}}%%Title:`, `class%%{init: {}}%%Def`, `cl%%{init: {}}%%ass`,
+  `st%%{init: {}}%%yle`, `dir%%{init: {}}%%ection LR`,
+  `direction L%%{init: {}}%%R`, `one or %%{init: {}}%%more`, `1%%{init: {}}%%+`,
+  `many(%%{init: {}}%%0)`, `|%%{init: {}}%%|`, and `::%%{init: {}}%%:` inside a
+  keyword, a cardinality, or a delimiter: the input is rejected, while
+  mermaid.js accepts it, reading the two parts as one (see
+  [Known divergences](#known-divergences)). [fixture: er/div-directive-in-name]
+  [fixture: er/div-directive-in-number-name] [fixture:
   er/div-directive-in-decimal-name] [fixture: er/div-directive-in-role-name]
   [fixture: er/div-directive-in-class-name] [fixture: er/div-directive-in-alias]
   [fixture: er/div-directive-in-subgraph-id] [fixture:
   er/div-directive-in-attribute-word] [fixture: er/div-directive-in-key]
   [fixture: er/div-directive-in-style-id] [fixture:
+  er/div-directive-after-line-separator-at-line-start] [fixture:
   er/div-directive-in-header-keyword] [fixture:
   er/div-directive-in-subgraph-keyword] [fixture: er/div-directive-in-end]
   [fixture: er/div-directive-in-acc-title-keyword] [fixture:
@@ -1666,7 +1672,8 @@ grammar accepts is accepted.
   er/div-directive-in-cardinality-symbol] [fixture:
   er/div-directive-in-class-separator] [fixture:
   er/div-directive-after-comment-line-in-name] [fixture:
-  er/div-directive-before-comment-line-in-name]
+  er/div-directive-before-comment-line-in-name] [fixture:
+  er/div-directive-after-line-separator-at-line-start]
 - **[`ignored-semicolon-as-token-boundary`](../known-divergences/ignored-semicolon-as-token-boundary.md).**
   On a line that matches the `style` rule or the `classDef` rule, an ignored `;`
   inside a unit other than a text unit and a string unit makes the input
