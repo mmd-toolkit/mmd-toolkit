@@ -374,6 +374,20 @@ name depends only on the input and where it was first found, so collecting again
 after mermaid.js changes adds only new inputs and renames nothing. Two different
 inputs of one file whose hashes begin alike stop the run, to be named by hand.
 
+A fixture whose name has this form is not written with a sentence, and a
+sentence need not cite it. Its input is mermaid.js's own, taken in bulk from its
+tests, its documents, and its demos, so that what the parser and `dbFromTree()`
+do with the inputs is checked against what mermaid.js does; by how it is made,
+it answers no one sentence. The name says so: a source word (`spec`, `docs`, or
+`demo`; for railroad, a notation word, `abnf`, `ebnf`, `ir`, or `peg`, stands in
+front of it), the file, and the eight hexadecimal digits of the hash. Every
+fixture whose `source` has `kind` `mermaid` has such a name, and no fixture
+written here has one. The tree of such a fixture is checked by `checkTree()`, by
+the Db that `dbFromTree()` builds from it against the Db of mermaid.js, and by
+the parser's comparison of its output with the recorded tree; no one reads it
+against a sentence. An input that the parser rejects has no tree, only the
+`parse-error.json` that the parser's tests compare.
+
 How to prepare the checkout and run the collection, and how to check the inputs
 mermaid.js rejects, is in [tools/README.md](../../../tools/README.md).
 
