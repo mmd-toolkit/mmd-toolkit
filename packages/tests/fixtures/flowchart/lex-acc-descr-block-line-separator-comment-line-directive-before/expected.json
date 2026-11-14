@@ -1,0 +1,23 @@
+{
+  "source": {
+    "kind": "authored",
+    "note": "flowchart.md Lexical structure: a directive lies between a U+2028 in the description block and the comment after it; the Db summary holds `A`, U+2028, and `B`."
+  },
+  "accepted": true,
+  "diagramType": "flowchart-v2",
+  "db": {
+    "direction": "TB",
+    "title": "",
+    "accTitle": "",
+    "accDescr": "A B",
+    "vertices": [],
+    "edges": [],
+    "edgeDefaults": {
+      "interpolate": null,
+      "style": null
+    },
+    "classDefs": [],
+    "subgraphs": [],
+    "tooltips": []
+  }
+}

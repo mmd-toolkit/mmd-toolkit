@@ -1,0 +1,31 @@
+{
+  "source": {
+    "kind": "authored",
+    "note": "block.md Units and contexts: an id ends at a U+2028, which separates two ids, so `a` and `b` after the comment line are the blocks `a` and `b`."
+  },
+  "accepted": true,
+  "diagramType": "block",
+  "db": {
+    "root": {
+      "type": "composite",
+      "columns": -1,
+      "children": [
+        {
+          "id": "a",
+          "label": "a",
+          "type": "na",
+          "widthInColumns": 1
+        },
+        {
+          "id": "b",
+          "label": "b",
+          "type": "na",
+          "widthInColumns": 1
+        }
+      ]
+    },
+    "unplaced": [],
+    "edges": [],
+    "classes": []
+  }
+}

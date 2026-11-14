@@ -1,0 +1,17 @@
+{
+  "source": {
+    "kind": "authored",
+    "note": "mindmap.md Comments: a `%%` with nothing after it follows a U+2028 in the shape text and starts no comment; the Db summary holds `A`, U+2028, `%%`, a line feed, and `B`."
+  },
+  "accepted": true,
+  "diagramType": "mindmap",
+  "db": {
+    "root": {
+      "nodeId": "C",
+      "level": 0,
+      "descr": "A %%\nB",
+      "type": 2,
+      "children": []
+    }
+  }
+}

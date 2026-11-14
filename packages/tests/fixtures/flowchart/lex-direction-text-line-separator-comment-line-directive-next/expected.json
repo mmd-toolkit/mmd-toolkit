@@ -1,0 +1,32 @@
+{
+  "source": {
+    "kind": "authored",
+    "note": "flowchart.md The statement context: a directive at the start of the line after a comment line that follows a U+2028 in the text after the direction; accepted, and the Db summary holds no value with the U+2028."
+  },
+  "accepted": true,
+  "diagramType": "flowchart-v2",
+  "db": {
+    "direction": "TB",
+    "title": "",
+    "accTitle": "",
+    "accDescr": "",
+    "vertices": [],
+    "edges": [],
+    "edgeDefaults": {
+      "interpolate": null,
+      "style": null
+    },
+    "classDefs": [],
+    "subgraphs": [
+      {
+        "id": "S",
+        "nodes": [],
+        "title": "S",
+        "classes": [],
+        "dir": "LR",
+        "labelType": "text"
+      }
+    ],
+    "tooltips": []
+  }
+}

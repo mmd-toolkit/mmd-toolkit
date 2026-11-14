@@ -74,6 +74,86 @@ common.md の Where a directive is と Comment lines の規則で、
 - フロントマターの終わり。
   テキストはそこから始まります。
 
+値の中の U+2028 と U+2029 は、値の文字であるとともにコメントの始まりなので、
+その後のコメント領域は変換した形になく、値は領域の後へ続きます。
+これは agentflow と eventmodeling を除くどの図種の値でも同じで、
+補助関数は値の範囲を読み、領域を除くためです。
+`A`、U+2028、`%% c`、改行、`B` は、文字列でも、テキストでも、説明ブロックでも、
+`A`、U+2028、`B` の値になります。
+[fixture: flowchart/lex-string-line-separator-then-comment-line]
+[fixture: block/db-string-paragraph-separator-then-comment-line]
+[fixture: gantt/db-title-line-separator-then-comment-line]
+[fixture: flowchart/lex-square-label-paragraph-separator-then-comment-line]
+[fixture: flowchart/lex-acc-descr-block-line-separator-then-comment-line]
+そのような値の欄が要約にないとき、またほかから取るときは、図種の文書が述べます。
+
+領域の縁で出会う規則は、値をそのままにします。
+ブロック図の文字列が、それを示します。
+コメント行の次の行の先頭にあるディレクティブは除かれ、値は `A`、U+2028、
+`B` になります。
+[fixture: block/db-string-line-separator-comment-line-directive-next]
+そこにある空白は値に入り、値は `A`、U+2028、空白、`B` になります。
+[fixture: block/db-string-line-separator-comment-line-space-next]
+2 つ目の U+2028 も値に入り、値は `A`、U+2028 が 2 つ、`B` になります。
+[fixture: block/db-string-line-separator-comment-line-separator-next]
+空行は改行として値に入り、値は `A`、U+2028、改行、`B` になります。
+[fixture: block/db-string-line-separator-comment-line-empty-line]
+単独の CR と CRLF は、LF と同じようにコメント行を終えます。
+[fixture: block/db-string-line-separator-comment-line-cr]
+[fixture: block/db-string-line-separator-comment-line-crlf]
+2 つ目のコメント行、2 つ目の U+2028 とその後のコメント行（`A`、U+2028、`x`、
+U+2028、`B`）、U+2028 と `%%` の間の空白、改行、ディレクティブも、
+同じように除かれます。
+[fixture: block/db-string-line-separator-comment-line-two-comment-lines]
+[fixture: block/db-string-line-separator-comment-line-two-regions]
+[fixture: block/db-string-line-separator-comment-line-spaces-before]
+[fixture: block/db-string-line-separator-comment-line-line-feed-before]
+[fixture: block/db-string-line-separator-comment-line-directive-before]
+後ろに何もない `%%` と、ディレクティブもコメントも始めない `%%{ }%%` は、
+値のテキストで、その後の改行も値に入ります。
+値は `A`、U+2028、`%%`、改行、`B` です。
+[fixture: block/db-string-line-separator-comment-line-bare-percent]
+[fixture: block/db-string-line-separator-comment-line-percent-brace]
+コメント行の次の行は、`style` と `classDef` の行の規則にとって、
+それだけで 1 つの行区間です。
+`Astyle:#a`、U+2028、コメント行、`#b;B` では `#b;` は実体です。
+`A`、U+2028、コメント行、`style:#b;B` では `;` が無視され、値は `A`、U+2028、
+`style:#bB` です。
+[fixture: block/db-string-line-separator-comment-line-line-rule-before]
+[fixture: block/db-string-line-separator-comment-line-line-rule-after]
+コメント行で終わるテキストは、文字列が閉じず、拒否されます。
+[fixture: block/gram-string-line-separator-comment-line-end-of-text]
+
+値が U+2028 で終わる場合は、領域の後へ続きません。
+ブロックの id、gantt の click の id、mindmap と kanban のノードのクラス、
+state の疑似状態の名前がそうです。
+領域は同じように除かれ、その後に続くものは次の単位で、木が持ちます。
+`a`、U+2028、`%% c`、改行、`b` は、ブロック `a` と `b` です。
+`click a1`、U+2028、`%% c`、改行、`href "https://e"` は、
+タスク `a1` にリンクを与えます。
+`state A`、U+2028、`%% c`、改行、`B <<fork>>` は、
+fork の `B` だけを状態に持ちます。
+[fixture: block/db-id-line-separator-then-comment-line]
+[fixture: gantt/lex-click-id-line-separator-then-comment-line-href]
+[fixture: state/lex-pseudostate-name-line-separator-then-comment-line]
+クラスのコメント行の次の行は、クラスの行の続きとして読まれ、
+コメント行がなくても同じように拒否されます。
+[fixture: mindmap/gram-class-line-separator-then-comment-line]
+[fixture: kanban/gram-class-line-separator-then-comment-line]
+
+agentflow と eventmodeling は、`maxTextSize` より長いソースでだけ、
+コメント領域を変換した形から除くので、
+`maxTextSize` 以下では上の規則は当たりません。
+両図種の文書は、
+[db-from-tree/agentflow.ja.md](./db-from-tree/agentflow.ja.md) と
+[db-from-tree/eventmodeling.ja.md](./db-from-tree/eventmodeling.ja.md) です。
+agentflow のラベルでは、`first`、U+2028、`%% c`、改行、`second` は、`first`、
+U+2028、改行、`second` の値になります。
+[fixture: agentflow/lex-comment-in-label-after-ls]
+eventmodeling のデータブロックでは、コメント行は値に残り、`a`、U+2028、`%% c`、
+改行、`b` は書かれたままで値に入ります。
+[fixture: eventmodeling/lex-block-line-separator-then-comment-line]
+
 先頭の空白は読みません。
 テキストの終わりには、`\n` がもう 1 つあります。
 flowchart では、`}` の後の空白は、最後の改行までを 1 つの改行として読みます。

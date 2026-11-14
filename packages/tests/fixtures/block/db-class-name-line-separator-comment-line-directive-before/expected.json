@@ -1,0 +1,28 @@
+{
+  "source": {
+    "kind": "authored",
+    "note": "block.md Units and contexts: a directive lies between a U+2028 in the class name and the comment after it; the Db summary holds `A`, U+2028, and `B`."
+  },
+  "accepted": true,
+  "diagramType": "block",
+  "db": {
+    "root": {
+      "type": "composite",
+      "columns": -1,
+      "children": [
+        {
+          "id": "x",
+          "label": "x",
+          "type": "na",
+          "widthInColumns": 1,
+          "classes": [
+            "A B"
+          ]
+        }
+      ]
+    },
+    "unplaced": [],
+    "edges": [],
+    "classes": []
+  }
+}

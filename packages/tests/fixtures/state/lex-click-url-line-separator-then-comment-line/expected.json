@@ -1,0 +1,25 @@
+{
+  "source": {
+    "kind": "authored",
+    "note": "state.md Comments: a comment line after a U+2028 in the click URL is read through, and the value goes on after it; the Db summary holds `\"A`, U+2028, and `B\"`."
+  },
+  "accepted": true,
+  "diagramType": "stateDiagram",
+  "db": {
+    "direction": "TB",
+    "title": "",
+    "accTitle": "",
+    "accDescr": "",
+    "states": [],
+    "notes": [],
+    "transitions": [],
+    "classDefs": [],
+    "links": [
+      {
+        "state": "X",
+        "url": "\"A B\"",
+        "tooltip": ""
+      }
+    ]
+  }
+}

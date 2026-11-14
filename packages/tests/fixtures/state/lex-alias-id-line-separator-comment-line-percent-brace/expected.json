@@ -1,0 +1,43 @@
+{
+  "source": {
+    "kind": "authored",
+    "note": "state.md The state context: a `%%{ }%%`, which starts no directive and no comment, follows a U+2028 in the alias id; accepted, and the Db summary holds no value with the U+2028."
+  },
+  "accepted": true,
+  "diagramType": "stateDiagram",
+  "db": {
+    "direction": "TB",
+    "title": "",
+    "accTitle": "",
+    "accDescr": "",
+    "states": [
+      {
+        "id": "A",
+        "shape": "rect",
+        "label": "x",
+        "description": [],
+        "classes": [],
+        "styles": []
+      },
+      {
+        "id": "%%",
+        "shape": "roundedWithTitle",
+        "label": "%%",
+        "classes": [],
+        "styles": [],
+        "dir": "TB"
+      },
+      {
+        "id": "B",
+        "shape": "rect",
+        "label": "B",
+        "classes": [],
+        "styles": []
+      }
+    ],
+    "notes": [],
+    "transitions": [],
+    "classDefs": [],
+    "links": []
+  }
+}

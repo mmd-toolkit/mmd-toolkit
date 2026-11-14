@@ -1,0 +1,42 @@
+{
+  "source": {
+    "kind": "authored",
+    "note": "common.md Comment lines: a U+2028 is a comment start, so the comment after it is read through, and the section goes on after it: its value is `A`, U+2028, `B`."
+  },
+  "accepted": true,
+  "diagramType": "gantt",
+  "db": {
+    "dateFormat": "",
+    "axisFormat": "",
+    "todayMarker": "",
+    "includes": [],
+    "excludes": [],
+    "inclusiveEndDates": false,
+    "weekday": "sunday",
+    "weekend": "saturday",
+    "title": "",
+    "accTitle": "",
+    "accDescr": "",
+    "sections": [
+      "A B"
+    ],
+    "tasks": [
+      {
+        "section": "A B",
+        "raw": {
+          "startTime": {
+            "type": "prevTaskEnd"
+          },
+          "endTime": {
+            "data": "1d"
+          }
+        },
+        "task": "T",
+        "classes": [],
+        "id": "task1",
+        "order": 0
+      }
+    ],
+    "links": []
+  }
+}

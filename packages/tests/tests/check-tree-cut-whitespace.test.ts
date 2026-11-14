@@ -207,6 +207,45 @@ describe("the whitespace before a comment region", () => {
       ],
     },
     {
+      name: "is in the RawText token before it: a title without the U+2028 is reported",
+      diagram: "gantt",
+      fixture: "db-title-line-separator-then-comment-line",
+      token: { type: "RawText", value: "A\u2028" },
+      side: "end",
+      problems: [
+        {
+          where: "GanttLiteral at 12-20",
+          message: `${JOINED}: "AB", not "A\u2028B"`,
+        },
+      ],
+    },
+    {
+      name: "is in the StringFragment token before it: a backquoted name without the U+2028 is reported",
+      diagram: "class",
+      fixture: "db-backquoted-name-line-separator-then-comment-line",
+      token: { type: "StringFragment", value: "`A\u2028" },
+      side: "end",
+      problems: [
+        {
+          where: "StringLiteral at 19-29",
+          message: `${JOINED}: "AB", not "A\u2028B"`,
+        },
+      ],
+    },
+    {
+      name: "is in the StringFragment token before it: an icon text without the U+2029 is reported",
+      diagram: "architecture",
+      fixture: "db-icon-text-string-paragraph-separator-then-comment-line",
+      token: { type: "StringFragment", value: '"A\u2029' },
+      side: "end",
+      problems: [
+        {
+          where: "StringLiteral at 28-38",
+          message: `${JOINED}: "AB", not "A\u2029B"`,
+        },
+      ],
+    },
+    {
       name: "is in the RawText token before it: an ignored text without it is reported, the line terminator being U+2028",
       diagram: "flowchart",
       fixture: "tokens-ignored-text-comment-in-direction-line",

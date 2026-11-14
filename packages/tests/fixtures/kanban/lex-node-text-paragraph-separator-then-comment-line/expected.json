@@ -1,0 +1,17 @@
+{
+  "source": {
+    "kind": "authored",
+    "note": "common.md Comment lines: a U+2029 is a comment start as a U+2028 is, so the comment after it is read through, and the node text goes on after it: its value is `A`, U+2029, `B`."
+  },
+  "accepted": true,
+  "diagramType": "kanban",
+  "db": {
+    "nodes": [
+      {
+        "id": "A B",
+        "label": "A B",
+        "isGroup": true
+      }
+    ]
+  }
+}

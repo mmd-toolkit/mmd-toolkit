@@ -242,6 +242,31 @@ mermaid.js がディレクティブを取り除いた後のテキストを読む
    字句解析器が読む前に除かれます。
    そのため、この規則が当たるのは、単位の後の `%%` と、
    `%%` の後に何もないか `{` が続くためにコメント行でない行です。
+   [fixture: class/lex-acc-title-line-separator-then-comment-line]
+   [fixture: class/lex-acc-descr-line-separator-then-comment-line]
+   [fixture: class/lex-acc-descr-block-line-separator-then-comment-line]
+   [fixture: class/db-backquoted-name-line-separator-then-comment-line]
+   [fixture: class/lex-callback-name-line-separator-then-comment-line]
+   [fixture: class/lex-callback-arguments-line-separator-then-comment-line]
+   [fixture: class/lex-generic-line-separator-then-comment-line]
+   [fixture: class/lex-note-string-line-separator-then-comment-line]
+   [fixture: class/lex-style-line-separator-then-comment-line]
+   [fixture: class/lex-acc-title-line-separator-comment-line-directive-next]
+   [fixture: class/lex-acc-title-line-separator-comment-line-space-next]
+   [fixture: class/lex-acc-title-line-separator-comment-line-separator-next]
+   [fixture: class/lex-acc-title-line-separator-comment-line-empty-line]
+   [fixture: class/lex-acc-title-line-separator-comment-line-end-of-text]
+   [fixture: class/lex-acc-title-line-separator-comment-line-cr]
+   [fixture: class/lex-acc-title-line-separator-comment-line-crlf]
+   [fixture: class/lex-acc-title-line-separator-comment-line-two-comment-lines]
+   [fixture: class/lex-acc-title-line-separator-comment-line-two-regions]
+   [fixture: class/lex-acc-title-line-separator-comment-line-spaces-before]
+   [fixture: class/lex-acc-title-line-separator-comment-line-line-feed-before]
+   [fixture: class/lex-acc-title-line-separator-comment-line-directive-before]
+   [fixture: class/lex-acc-title-line-separator-comment-line-line-rule-before]
+   [fixture: class/lex-acc-title-line-separator-comment-line-line-rule-after]
+   [fixture: class/lex-acc-title-line-separator-comment-line-bare-percent]
+   [fixture: class/lex-acc-title-line-separator-comment-line-percent-brace]
    空白とそのようなコメントだけの行が、**コメントだけの行**です。
    コメントだけの行は、行として数えず、その直後の空の行も数えません。
    それらの改行には `newline` の単位を読まず、改行はどの単位にも属しません。
@@ -326,6 +351,28 @@ mermaid.js がディレクティブを取り除いた後のテキストを読む
   [fixture: class/lex-label-percent] [fixture: class/lex-label-two-colons]
   [fixture: class/lex-label-colon-in-member] [fixture:
   class/lex-label-semicolon]
+  ラベルの中では、U+2028 や U+2029 の後のコメントは読み飛ばされ、
+  ラベルはその後に続きます（[コメント行](../common.ja.md#コメント行) を参照）。
+  [fixture: class/lex-relation-label-line-separator-then-comment-line]
+  [fixture: class/lex-relation-label-paragraph-separator-then-comment-line]
+  [fixture: class/lex-relation-label-line-separator-comment-line-directive-next]
+  [fixture: class/lex-relation-label-line-separator-comment-line-space-next]
+  [fixture: class/lex-relation-label-line-separator-comment-line-separator-next]
+  [fixture: class/lex-relation-label-line-separator-comment-line-empty-line]
+  [fixture: class/lex-relation-label-line-separator-comment-line-end-of-text]
+  [fixture: class/lex-relation-label-line-separator-comment-line-cr]
+  [fixture: class/lex-relation-label-line-separator-comment-line-crlf] [fixture:
+  class/lex-relation-label-line-separator-comment-line-two-comment-lines]
+  [fixture: class/lex-relation-label-line-separator-comment-line-two-regions]
+  [fixture: class/lex-relation-label-line-separator-comment-line-spaces-before]
+  [fixture:
+  class/lex-relation-label-line-separator-comment-line-line-feed-before]
+  [fixture:
+  class/lex-relation-label-line-separator-comment-line-directive-before]
+  [fixture:
+  class/lex-relation-label-line-separator-comment-line-line-rule-before]
+  [fixture: class/lex-relation-label-line-separator-comment-line-bare-percent]
+  [fixture: class/lex-relation-label-line-separator-comment-line-percent-brace]
 - `;`、`{`、`}`、`|`、`)` の続かない `(`、`)`、`@`、`^` は、
   文の文脈のどの規則にも当たりません。
   `class A; class B`、`A | B`、`A@B --> C` は拒否されます。
@@ -534,6 +581,26 @@ mermaid.js はそれにトークンを読まず、入力を受理します。
 メンバーの行の中の `%%`、`;`、`[*]`、`~` は、その行の文字です。
 `+x %% c` はメンバー `x %% c` です。 [fixture: class/lex-member-percent]
 [fixture: class/lex-member-semicolon]
+U+2028 や U+2029 の後のコメントは例外で、読み飛ばされ、
+値はその後に続きます（[コメント行](../common.ja.md#コメント行) を参照）。
+[fixture: class/lex-member-name-line-separator-then-comment-line]
+[fixture: class/lex-annotation-line-separator-then-comment-line]
+[fixture: class/lex-member-name-line-separator-comment-line-directive-next]
+[fixture: class/lex-member-name-line-separator-comment-line-space-next]
+[fixture: class/lex-member-name-line-separator-comment-line-separator-next]
+[fixture: class/lex-member-name-line-separator-comment-line-empty-line]
+[fixture: class/lex-member-name-line-separator-comment-line-end-of-text]
+[fixture: class/lex-member-name-line-separator-comment-line-cr]
+[fixture: class/lex-member-name-line-separator-comment-line-crlf]
+[fixture: class/lex-member-name-line-separator-comment-line-two-comment-lines]
+[fixture: class/lex-member-name-line-separator-comment-line-two-regions]
+[fixture: class/lex-member-name-line-separator-comment-line-spaces-before]
+[fixture: class/lex-member-name-line-separator-comment-line-line-feed-before]
+[fixture: class/lex-member-name-line-separator-comment-line-directive-before]
+[fixture: class/lex-member-name-line-separator-comment-line-line-rule-before]
+[fixture: class/lex-member-name-line-separator-comment-line-line-rule-after]
+[fixture: class/lex-member-name-line-separator-comment-line-bare-percent]
+[fixture: class/lex-member-name-line-separator-comment-line-percent-brace]
 `{` か改行のすぐ後の `[*]` は `[*]` の単位で、文法はそれを取りません。
 そのため、本体の中のそれだけの行の `[*]` と `[*] x` は拒否され、
 本体の中の `{` も拒否されます。

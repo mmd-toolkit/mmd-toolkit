@@ -1,0 +1,11 @@
+{
+  "source": {
+    "kind": "authored",
+    "note": "mindmap.md Comments: `style:#b;` on the line after a comment line that follows a U+2028; a class ends at the U+2028, so the line after the comment line is a node text on the line of the class; rejected."
+  },
+  "accepted": false,
+  "error": {
+    "name": "Error",
+    "message": "Parse error on line 3:\nmindmaproot:::a style:#bb\n---------------^\nExpecting 'SPACELINE', 'NL', 'EOF', got 'SPACELIST'"
+  }
+}
