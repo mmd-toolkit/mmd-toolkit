@@ -324,7 +324,8 @@ state 図には文を区切るものがなく、
 [fixture: statements-one-per-line/split-then-comment]
 [fixture: statements-one-per-line/split-with-directive-between]
 次の 2 つは、行に書かれたまま残します。
-対象にする版のうち古いものが、行の残りをコメントや文の一部として読むからです。
+対象にする版のうち、最も古いいくつかの版が、
+行の残りをコメントや文の一部として読むからです。
 詳しくは
 [対象にする版の mermaid.js のために残す形](./compatibility.ja.md#対象にする版の-mermaidjs-のために残す形)
 を参照してください。
