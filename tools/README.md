@@ -3,14 +3,18 @@
 Japanese version: [README.ja.md](./README.ja.md)
 
 Command-line tools for the fixtures of `@mmd-toolkit/tests`: regenerating them,
-adding and marking them, collecting inputs from mermaid.js. Run them through the
-package scripts of `packages/tests`; the commands and rules are in
-[maintaining-fixtures.md](../packages/tests/docs/maintaining-fixtures.md).
+adding and marking them, collecting inputs from mermaid.js, and checking the
+recorded trees that a change adds or rewrites. Run them through the package
+scripts of `packages/tests`; the commands and rules are in
+[maintaining-fixtures.md](../packages/tests/docs/maintaining-fixtures.md), and
+those of the check of the recorded trees in
+[recorded-trees.md](../packages/tests/docs/recorded-trees.md).
 
-| File          | Script                                                                                                                     |
-| ------------- | -------------------------------------------------------------------------------------------------------------------------- |
-| `fixtures.ts` | `fixtures:generate`, `fixtures:check`, `fixtures:add`, `fixtures:add-many`, `fixtures:set-divergence`, `fixtures:set-note` |
-| `collect.ts`  | `fixtures:collect`                                                                                                         |
+| File                | Script                                                                                                                     |
+| ------------------- | -------------------------------------------------------------------------------------------------------------------------- |
+| `fixtures.ts`       | `fixtures:generate`, `fixtures:check`, `fixtures:add`, `fixtures:add-many`, `fixtures:set-divergence`, `fixtures:set-note` |
+| `collect.ts`        | `fixtures:collect`                                                                                                         |
+| `recorded-trees.ts` | `recorded-trees:check`                                                                                                     |
 
 ## Collecting the inputs of a diagram type from mermaid
 

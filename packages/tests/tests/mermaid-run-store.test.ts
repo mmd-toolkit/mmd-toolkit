@@ -19,7 +19,6 @@ import { isDeepStrictEqual } from "node:util"
 import { serialize } from "node:v8"
 import { deflateSync } from "node:zlib"
 import { build } from "tsdown"
-import ts from "typescript"
 import {
   afterAll,
   afterEach,
@@ -34,6 +33,7 @@ import type { DiagramType } from "../src/index.ts"
 import { loadFixture } from "../src/index.ts"
 import type { MermaidConfig, MermaidRun } from "../src/mermaid.ts"
 import { relativeWithSlashes } from "../src/paths.ts"
+import { runtimeReadsOf } from "../../../tools/src/runtime-imports.ts"
 import type { RunMermaidOptions } from "../src/run-mermaid-options.ts"
 import {
   detectDiagramType,
@@ -931,7 +931,7 @@ describe("codeIdentityOf", () => {
     for (let file = waiting.pop(); file !== undefined; file = waiting.pop()) {
       if (reached.has(file)) continue
       reached.add(file)
-      for (const imported of runtimeImportsOf(path.join(source, file))) {
+      for (const imported of runtimeReadsOf(path.join(source, file)).relative) {
         waiting.push(
           relativeWithSlashes(
             source,
@@ -943,53 +943,6 @@ describe("codeIdentityOf", () => {
     expect([...reached].sort()).toEqual([...RESULT_FILES].sort())
   })
 })
-
-/**
- * The relative paths that `file` imports or exports from at run time, read
- * with the TypeScript parser: the import and export declarations, but not
- * those of types only, which Node.js removes, and the calls of `import()`
- * anywhere in the file.
- */
-function runtimeImportsOf(file: string): string[] {
-  const source = ts.createSourceFile(
-    file,
-    readFileSync(file, "utf8"),
-    ts.ScriptTarget.Latest,
-  )
-  const paths: string[] = []
-
-  /** Adds the path that `specifier` names, if it is a relative one. */
-  function add(specifier: ts.Node | undefined): void {
-    if (
-      specifier !== undefined &&
-      ts.isStringLiteral(specifier) &&
-      specifier.text.startsWith(".")
-    ) {
-      paths.push(specifier.text)
-    }
-  }
-
-  /** Looks for imports in `node` and everything in it. */
-  function visit(node: ts.Node): void {
-    if (
-      ts.isImportDeclaration(node) &&
-      node.importClause?.isTypeOnly !== true
-    ) {
-      add(node.moduleSpecifier)
-    } else if (ts.isExportDeclaration(node) && !node.isTypeOnly) {
-      add(node.moduleSpecifier)
-    } else if (
-      ts.isCallExpression(node) &&
-      node.expression.kind === ts.SyntaxKind.ImportKeyword
-    ) {
-      add(node.arguments[0])
-    }
-    ts.forEachChild(node, visit)
-  }
-
-  visit(source)
-  return paths
-}
 
 describe("stored results of mermaid.js", () => {
   /**

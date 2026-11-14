@@ -86,7 +86,19 @@ extraction procedure, not the rules that the tree implements.
    detection-passed bare lines and their Unicode trivia, and with passed trivia
    between retained forms. Include controls without a passed line. Check that
    ordinary body gaps stay strict. Derive these cases from each sentence and its
-   rule intersections, not from corpus success alone.
+   rule intersections, not from corpus success alone. A test of a broken tree is
+   kept only where `checkTree()` reports the break when the test runs. A break
+   that it does not report is a miss of the checker: it is not written as a
+   test, but recorded in the `note` of the block's row in the coverage table,
+   which is then `not-shown`, with the reason `rule-misses-condition` when a
+   rule of `checkTree()` is about the condition and `no-rule` when none is
+   ([recorded-trees.md](../../../packages/tests/docs/recorded-trees.md)). The
+   note names the fixture, the field or the node that was changed, and that no
+   problem was reported. Whether to add a rule for it is decided apart. A test
+   that expects no report (`[]`) is written only to confirm what the documents
+   allow, and names in a comment the document and the section of the sentence
+   that allows it, as the tests of block do
+   (`diagrams/block.md, Directives inside units`).
 8. Document the builder in `docs/db-from-tree/<diagram>.md` and the checks in
    `docs/check-tree.md`, both with Japanese pairs and fixtures for each
    distinguishing case. Before trees are recorded, implement from the

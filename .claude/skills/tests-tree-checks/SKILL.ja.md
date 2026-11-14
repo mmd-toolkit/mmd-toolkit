@@ -88,6 +88,22 @@ SKILL [tests](../tests/SKILL.ja.md#51-保持する形式と埋め込みデータ
    通過した行がない対照も含める。
    本文の通常の隙間が厳密なままであることも確かめる。
    コーパスの成功だけでなく、各文と規則の接点から場合を導く。
+   壊した木のテストは、
+   テストを走らせて `checkTree()` が壊れを報告するときだけ残す。
+   報告しない壊れは、検査の見落としであり、テストにはせず、確かめの表の、
+   そのブロックの行の `note` に書く。
+   その行は `not-shown` になり、理由は、
+   `checkTree()` にその条件についての決まりがあれば `rule-misses-condition`、
+   なければ `no-rule` である。
+   行の形は、
+   [recorded-trees.ja.md](../../../packages/tests/docs/recorded-trees.ja.md)
+   にある。
+   注には、壊した fixture と、替えた欄か節点と、報告がなかったことを書く。
+   決まりを足すかは、別に決める。
+   報告がない（`[]`）ことを期待するテストは、
+   文書が許すことを確かめるときだけ書き、その許しを言う文の文書と節を、
+   block のテストのように、
+   コメントで名指す（`diagrams/block.md, Directives inside units`）。
 8. builder を `docs/db-from-tree/<図種>.md`、
    検査を `docs/check-tree.md` に書く。
    どちらも日本語の対を持たせ、区別する場合ごとに fixture を引用する。

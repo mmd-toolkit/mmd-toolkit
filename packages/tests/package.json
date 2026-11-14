@@ -46,7 +46,8 @@
     "fixtures:add-many": "node ../../tools/fixtures.ts add-many",
     "fixtures:collect": "node ../../tools/collect.ts",
     "fixtures:set-divergence": "node ../../tools/fixtures.ts set-divergence",
-    "fixtures:set-note": "node ../../tools/fixtures.ts set-note"
+    "fixtures:set-note": "node ../../tools/fixtures.ts set-note",
+    "recorded-trees:check": "node ../../tools/recorded-trees.ts"
   },
   "devDependencies": {
     "@csstools/css-color-parser": "^4.2.4",

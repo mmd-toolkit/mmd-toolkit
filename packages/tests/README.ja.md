@@ -334,6 +334,9 @@ pin した mermaid.js を Node で動かします。
   を作ることと、その読む欄。
 - [docs/check-tree.ja.md](./docs/check-tree.ja.md):
   記録した木が仕様の条件を満たすことの検査。
+- [docs/recorded-trees.ja.md](./docs/recorded-trees.ja.md): 保守する人向け。
+  変更が足すか書き換える記録した木の確かめ、`checkTree()` の確かめの表、
+  人が読む条件の答え。
 - [docs/maintaining-fixtures.ja.md](./docs/maintaining-fixtures.ja.md):
   保守する人向け。
   fixture を足す、変える、改名する、集める方法。

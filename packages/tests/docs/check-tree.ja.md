@@ -2357,7 +2357,7 @@ const problems: TreeProblem[] = checkTree(text, tree)
   値は、区切りを除き、その内側に書かれた空白を保った、書かれたテキストです。
   その空白もトークンの中にあります。
   U+2028 の後のコメント領域が special sequence を切る場合も同じです。
-  [fixture: railroad/db-ebnf-special-sequence-line-separator-then-comment-line]
+  [fixture: railroad/lex-ebnf-special-sequence-line-separator-then-comment-line]
 - mermaid.js が読まないテキストのノード（無視されるテキストや文）は、
   書かれたものを、単位の間の空白も含めて示し、範囲の中のコメントは除きます。
   その空白はどのトークンの中にもありません。
@@ -2547,8 +2547,13 @@ flowchart では 3 つにも。sequence、class、state、ER の断片は、
 場所とメッセージを正確に報告することを求め、
 fixture の元の木に問題がないことも求めます。
 `String` を `StringFragment` のトークンに、
-`RawText` を `RawText` のトークンに切った木は、ディレクティブでも `;` でも、
-複数の図種で、問題がまったくないことを求めます。
+`RawText` を `RawText` のトークンにディレクティブで切った木は、複数の図種で、
+問題がまったくないことを求めます。
+行の規則が無視する `;` には、
+`common/entity-css-in-string-label` と
+`common/entity-css-semicolon-between-declarations` の記録した木を使います。
+それぞれ `StringFragment` と `RawText` のトークンを持ち、
+問題がないことを求めます。
 同じファイルは、`:::` の断片の連続に、切れ目が前に `)`、後ろに `(`、
 または両方をつないだ木を手で作り、
 `:::` の連続の問題が 1 つだけあることを求めます。

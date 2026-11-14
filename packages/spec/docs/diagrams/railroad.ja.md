@@ -658,7 +658,7 @@ railroad/lex-ir-special-string-line-separator-then-comment-line] [fixture:
 railroad/lex-ebnf-string-line-separator-then-comment-line] [fixture:
 railroad/lex-abnf-string-line-separator-then-comment-line] [fixture:
 railroad/lex-peg-string-line-separator-then-comment-line] [fixture:
-railroad/db-ebnf-special-sequence-line-separator-then-comment-line] [fixture:
+railroad/lex-ebnf-special-sequence-line-separator-then-comment-line] [fixture:
 railroad/lex-ebnf-title-line-separator-then-comment-line] [fixture:
 railroad/lex-ebnf-acc-title-line-separator-then-comment-line] [fixture:
 railroad/lex-ebnf-acc-descr-line-separator-then-comment-line] [fixture:

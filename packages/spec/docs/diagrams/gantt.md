@@ -975,7 +975,7 @@ gantt/lex-percent-brace-in-task-data] [fixture:
 gantt/lex-percent-brace-glued-in-title-text] In the units listed above other
 than a click id, a comment after a U+2028 or U+2029 is read through, and the
 value goes on after it (see [Comment lines](../common.md#comment-lines)).
-[fixture: gantt/db-title-line-separator-then-comment-line] [fixture:
+[fixture: gantt/lex-title-line-separator-then-comment-line] [fixture:
 gantt/lex-section-line-separator-then-comment-line] [fixture:
 gantt/lex-axis-format-line-separator-then-comment-line] [fixture:
 gantt/lex-axis-format-paragraph-separator-then-comment-line] [fixture:

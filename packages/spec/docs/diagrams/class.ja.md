@@ -245,7 +245,7 @@ mermaid.js がディレクティブを取り除いた後のテキストを読む
    [fixture: class/lex-acc-title-line-separator-then-comment-line]
    [fixture: class/lex-acc-descr-line-separator-then-comment-line]
    [fixture: class/lex-acc-descr-block-line-separator-then-comment-line]
-   [fixture: class/db-backquoted-name-line-separator-then-comment-line]
+   [fixture: class/lex-backquoted-name-line-separator-then-comment-line]
    [fixture: class/lex-callback-name-line-separator-then-comment-line]
    [fixture: class/lex-callback-arguments-line-separator-then-comment-line]
    [fixture: class/lex-generic-line-separator-then-comment-line]

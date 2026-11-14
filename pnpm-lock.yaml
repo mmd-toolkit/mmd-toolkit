@@ -220,6 +220,9 @@ importers:
       eslint-plugin-yml:
         specifier: ^3.0.0
         version: 3.8.1(eslint@10.11.0)
+      github-slugger:
+        specifier: ^2.0.0
+        version: 2.0.0
       prettier:
         specifier: ^3.9.0
         version: 3.9.9
