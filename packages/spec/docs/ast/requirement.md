@@ -210,27 +210,27 @@ requirement/lex-direction-in-relationship-line]
 
 `style r,e fill:#f9f,stroke:#333`.
 
-| Field    | Type                                             | Meaning                                                           |
-| -------- | ------------------------------------------------ | ----------------------------------------------------------------- |
-| `names`  | list of (RequirementIdentifier or StringLiteral) | The names after `style`, separated by `,` units, in source order. |
-| `styles` | list of RequirementLiteral                       | The styles, separated by `,` units, in source order.              |
+| Field    | Type                                  | Meaning                                                           |
+| -------- | ------------------------------------- | ----------------------------------------------------------------- |
+| `names`  | list of (Identifier or StringLiteral) | The names after `style`, separated by `,` units, in source order. |
+| `styles` | list of RequirementLiteral            | The styles, separated by `,` units, in source order.              |
 
-Child fields: `names`, `styles`. A name is a RequirementIdentifier for a
-`style-word` unit and a StringLiteral for a `string` unit. A style is the texts
-of its units joined (see [RequirementLiteral](#requirementliteral)). The list of
-styles is never empty: a `style` statement without a style is rejected.
-[fixture: requirement/db-style-statement] [fixture:
-requirement/lex-style-string-name] [fixture:
-requirement/lex-style-without-style]
+Child fields: `names`, `styles`. A name is an [Identifier](../ast.md#identifier)
+for a `style-word` unit, as the position reads a name without whitespace, and a
+StringLiteral for a `string` unit. A style is the texts of its units joined (see
+[RequirementLiteral](#requirementliteral)). The list of styles is never empty: a
+`style` statement without a style is rejected. [fixture:
+requirement/db-style-statement] [fixture: requirement/lex-style-string-name]
+[fixture: requirement/lex-style-without-style]
 
 ### RequirementClassDefStatement
 
 `classDef a,b fill:#f9f,stroke:#333`.
 
-| Field        | Type                                             | Meaning                                                                    |
-| ------------ | ------------------------------------------------ | -------------------------------------------------------------------------- |
-| `cssClasses` | list of (RequirementIdentifier or StringLiteral) | The class names after `classDef`, separated by `,` units, in source order. |
-| `styles`     | list of RequirementLiteral                       | The styles, as in RequirementStyleStatement.                               |
+| Field        | Type                                  | Meaning                                                                    |
+| ------------ | ------------------------------------- | -------------------------------------------------------------------------- |
+| `cssClasses` | list of (Identifier or StringLiteral) | The class names after `classDef`, separated by `,` units, in source order. |
+| `styles`     | list of RequirementLiteral            | The styles, as in RequirementStyleStatement.                               |
 
 Child fields: `cssClasses`, `styles`. A class name is as a name of
 RequirementStyleStatement. [fixture: requirement/db-class-def] [fixture:
@@ -322,8 +322,8 @@ requirement/lex-acc-descr-block-unclosed]
 ### RequirementIdentifier
 
 A name written without quotes: the name of a requirement or an element, an end
-of a relationship, a class name, and a name after `style`, `classDef`, or
-`class`: an `unquoted-text` or a `style-word` unit.
+of a relationship, a class after `:::`, and a name or a class after `class`: an
+`unquoted-text` or a `style-word` unit.
 
 | Field  | Type   | Meaning                                                               |
 | ------ | ------ | --------------------------------------------------------------------- |
@@ -339,7 +339,11 @@ part of its written text. [fixture: requirement/db-requirement-name-spaces]
 requirement/lex-whitespace-nbsp-after-name] [fixture:
 requirement/lex-whitespace-line-separator-in-name] [fixture:
 requirement/gram-requirement-class-space] [fixture:
-requirement/db-style-statement]
+requirement/db-class-statement] A name after `style` or `classDef` is an
+[Identifier](../ast.md#identifier) instead: its position reads only a
+`style-word` unit, which holds no whitespace, or a string (see
+[RequirementStyleStatement](#requirementstylestatement)). [fixture:
+requirement/db-style-statement] [fixture: requirement/db-class-def]
 
 ### RequirementLiteral
 

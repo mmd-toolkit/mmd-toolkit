@@ -954,7 +954,8 @@ requirement/lex-relationship-target-line-separator-comment-line-end-of-text]
 | 文が始まるところの `empty-description-block`                                                       | テキストのない RequirementAccDescrBlockStatement。それだけで 1 つの文                         |
 | 本体の中の `empty-description-block`                                                               | RequirementIgnoredText。`body` のリストの項目                                                 |
 | `string`                                                                                           | StringLiteral                                                                                 |
-| 名前である `unquoted-text`、名前である `style-word`                                                | RequirementIdentifier                                                                         |
+| `style` か `classDef` の後の名前である `style-word`                                                | Identifier                                                                                    |
+| 名前である `unquoted-text`、`class` の後の名前かクラスである `style-word`                          | RequirementIdentifier                                                                         |
 | 値である `unquoted-text`、`style-item`、`title-text`、`description-text`、`description-block-text` | RequirementLiteral                                                                            |
 | `direction-text`                                                                                   | RequirementIgnoredText                                                                        |
 

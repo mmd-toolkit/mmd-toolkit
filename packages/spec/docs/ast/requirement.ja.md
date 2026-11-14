@@ -230,14 +230,15 @@ requirement/lex-direction-in-relationship-line]
 
 `style r,e fill:#f9f,stroke:#333` です。
 
-| 欄       | 型                                                 | 意味                                                   |
-| -------- | -------------------------------------------------- | ------------------------------------------------------ |
-| `names`  | （RequirementIdentifier か StringLiteral）のリスト | `style` の後の、`,` の単位で区切った名前。ソースの順。 |
-| `styles` | RequirementLiteral のリスト                        | `,` の単位で区切ったスタイル。ソースの順。             |
+| 欄       | 型                                      | 意味                                                   |
+| -------- | --------------------------------------- | ------------------------------------------------------ |
+| `names`  | （Identifier か StringLiteral）のリスト | `style` の後の、`,` の単位で区切った名前。ソースの順。 |
+| `styles` | RequirementLiteral のリスト             | `,` の単位で区切ったスタイル。ソースの順。             |
 
 子の欄: `names`、`styles`。
-名前は、`style-word` の単位では RequirementIdentifier、
+名前は、`style-word` の単位では [Identifier](../ast.ja.md#identifier)、
 `string` の単位では StringLiteral です。
+その位置は空白のない名前を読むからです。
 スタイルは、
 その単位のテキストをつないだものです（[RequirementLiteral](#requirementliteral)
 を参照）。
@@ -251,10 +252,10 @@ requirement/lex-style-without-style]
 
 `classDef a,b fill:#f9f,stroke:#333` です。
 
-| 欄           | 型                                                 | 意味                                                          |
-| ------------ | -------------------------------------------------- | ------------------------------------------------------------- |
-| `cssClasses` | （RequirementIdentifier か StringLiteral）のリスト | `classDef` の後の、`,` の単位で区切ったクラス名。ソースの順。 |
-| `styles`     | RequirementLiteral のリスト                        | スタイル。RequirementStyleStatement と同じです。              |
+| 欄           | 型                                      | 意味                                                          |
+| ------------ | --------------------------------------- | ------------------------------------------------------------- |
+| `cssClasses` | （Identifier か StringLiteral）のリスト | `classDef` の後の、`,` の単位で区切ったクラス名。ソースの順。 |
+| `styles`     | RequirementLiteral のリスト             | スタイル。RequirementStyleStatement と同じです。              |
 
 子の欄: `cssClasses`、`styles`。
 クラス名は RequirementStyleStatement の名前と同じです。
@@ -357,8 +358,8 @@ requirement/lex-acc-descr-at-end]
 ### RequirementIdentifier
 
 引用符なしで書いた名前です。
-要求や要素の名前、関係の端、クラス名、`style`、`classDef`、
-`class` の後の名前で、`unquoted-text` か `style-word` の単位です。
+要求や要素の名前、関係の端、`:::` の後のクラス、`class` の後の名前とクラスで、
+`unquoted-text` か `style-word` の単位です。
 
 | 欄     | 型     | 意味                                                                       |
 | ------ | ------ | -------------------------------------------------------------------------- |
@@ -376,7 +377,12 @@ requirement/lex-whitespace-nbsp-in-name] [fixture:
 requirement/lex-whitespace-nbsp-after-name] [fixture:
 requirement/lex-whitespace-line-separator-in-name] [fixture:
 requirement/gram-requirement-class-space] [fixture:
-requirement/db-style-statement]
+requirement/db-class-statement]
+`style` と `classDef` の後の名前は、
+代わりに [Identifier](../ast.ja.md#identifier) です。
+その位置は、空白を持たない `style-word` の単位か、文字列しか読まないからです。
+[RequirementStyleStatement](#requirementstylestatement) を参照してください。
+[fixture: requirement/db-style-statement] [fixture: requirement/db-class-def]
 
 ### RequirementLiteral
 
