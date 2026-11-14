@@ -178,13 +178,15 @@ venn の字句解析器は、行の始まりをまたいで暗黙の text モー
 木は書かれた値を保持します。
 
 Ishikawa の文法は書かれた字下げを保ち、根の字下げにはよらず、
-最初の原因の字下げを使って親を選びます。 [fixture: ishikawa/db-indent-clamped]
-[fixture: ishikawa/db-indent-root-deeper]
+最初の原因の字下げを使って親を選びます。
+
+[fixture: ishikawa/db-indent-clamped] [fixture: ishikawa/db-indent-root-deeper]
 
 architecture は
 [仕様](../../spec/docs/diagrams/architecture.md)の順序付き字句規則、文法、
 登録条件を実装します。
 共通 lexer が複合値と隠れた形式を読み、木は記述順と gap の所有を保持します。
+
 [fixture: architecture/db-mixed]
 [fixture: architecture/hidden-directive-unit-gaps]
 
@@ -228,6 +230,7 @@ data・shape・callback などの共通生成規則には、
 2 つの図種で違うので、それぞれが持ちます。
 既存の共通 reader、方向行規則、Unicode 文字の補助も使います。
 テキストのラッパーは、終了波括弧後の最初の LF に直結する行空白だけを畳みます。
+
 [fixture: agentflow/lex-brace-string-keeps-blank-line]
 [fixture: agentflow/lex-brace-line-whitespace-ls]
 [fixture: agentflow/lex-brace-ls-without-lf]
@@ -237,6 +240,7 @@ frontmatter と directive の除去後、
 SourceLexer は共通コメント領域を除去せずに行区間を読みます。
 先頭の trivia と独自のコメントは、その図の字句解析器が読みます。
 上限を超える場合は、どちらも共通のコメント除去経路を使います。
+
 [fixture: agentflow/comment-default-size-equal-crlf]
 [fixture: agentflow/comment-default-size-above-crlf]
 [fixture: agentflow/comment-default-size-equal-inline-directive]
@@ -262,6 +266,7 @@ JSON とステレオタイプには排他的な文脈を使います。
 `src/diagrams/usecase/rejections.ts` が行います。
 JSON table の本文は不透明で、
 仕様の波括弧と文字列の釣り合いだけで終わりを探します。
+
 [fixture: usecase/db-all-fields] [fixture: usecase/lex-keyword-longer-number]
 [fixture: usecase/gram-native-final-invalid-then-valid]
 [fixture: usecase/div-json-balanced-invalid-array]
@@ -272,10 +277,11 @@ pie の字句解析器は、仕様の優先順位で、最初に一致した規�
 セクションの値は、double 変換後にゼロ未満なら拒否します。
 検出はフロントマター形のブロックを 1 回だけ通過し、pie のために保持します。
 pie は 2 回目の走査のディレクティブも読みます。
-検出が通過した裸の行はコメントのままです。 [fixture: pie/db-all-fields]
-[fixture: pie/frontmatter-nonleading-comment]
-[fixture: pie/lex-hidden-directive-second-detection-scan] [fixture:
-pie/lex-hidden-before-colon-lf]
+検出が通過した裸の行はコメントのままです。
+
+[fixture: pie/db-all-fields] [fixture: pie/frontmatter-nonleading-comment]
+[fixture: pie/lex-hidden-directive-second-detection-scan]
+[fixture: pie/lex-hidden-before-colon-lf]
 [fixture: pie/review-hidden-directive-after-title]
 [fixture: pie/number-negative] [fixture: pie/number-negative-zero]
 
@@ -285,8 +291,9 @@ info の字句解析器は、
 再帰下降は共通文と隠し形式を
 [指定の隙間](../../spec/docs/ast/info.md#nodes)に保持します。
 検出は保持したヘッダー前の形式を字句解析器へ渡し、
-パーセントだけの行のトリビアは 1 回だけ通過します。 [fixture: info/common-all]
-[fixture: info/lex-flag-hidden-two]
+パーセントだけの行のトリビアは 1 回だけ通過します。
+
+[fixture: info/common-all] [fixture: info/lex-flag-hidden-two]
 [fixture: info/div-detect-yaml-bare-directive]
 
 gitgraph の構文解析器は、字句単位から復号した比較値を、
@@ -295,6 +302,7 @@ gitgraph の構文解析器は、字句単位から復号した比較値を、
 ソース順の branch・HEAD・同一性・置換・直近の parent の規則を適用します。
 外部設定を持つテストも同じ内部ソース解析を使い、
 公開 API の parse(text) には設定引数を追加しません。
+
 [fixture: gitgraph/db-compare-escape-once]
 [fixture: gitgraph/db-state-replacement-source-origin]
 [fixture: gitgraph/db-state-empty-ids-are-fresh]
@@ -308,6 +316,7 @@ src/common-form-unit-lexer.ts で info と共通の形式を共有します。
 共通のトークン検査の後、src/diagrams/packet/acceptance.ts が、
 順序どおりの倍精度演算とデフォルト幅 32 の行反復を適用します。
 テストは同じ解析へ外部サイトの幅を適用し、parse(text) の API は固定のままです。
+
 [fixture: packet/gram-mixed] [fixture: packet/gram-hidden-range-gap-spaced]
 [fixture: packet/db-explicit-start-rounded]
 [fixture: packet/config-fraction-reject]
@@ -318,6 +327,7 @@ radar の lexer は [最初に一致する字句規則](../../spec/docs/diagrams
 hidden form の gap を保持します。
 共通のトークン検査後、各名前付き曲線に宣言された全軸名があることを確かめます。
 後から宣言した軸も対象で、radar 設定は受理を変えません。
+
 [fixture: radar/gram-written-tree] [fixture: radar/lex-hidden-entry-comma]
 [fixture: radar/db-forward-axis] [fixture: radar/error-reference-missing]
 [fixture: radar/config-site-invalid-cannot-rescue]
@@ -332,6 +342,7 @@ section は子を持ち、
 検出の到達位置を保持し、保持されたネイティブコメントの周囲でも、
 通過した bare 行の trivia を除外します。
 公開の受理条件にルート数、数値の有限性、設定による検査を加えません。
+
 [fixture: treemap/gram-written-tree] [fixture: treemap/db-header-tail-space]
 [fixture: treemap/div-retained-before-bare-unicode-line]
 [fixture: treemap/db-empty-names] [fixture: treemap/db-number-nan]
@@ -341,6 +352,7 @@ Railroad は 4 方言で 1 つの authored AST を保持します。
 各方言は専用の順序付き字句規則と式文法を持ち、一致する終端、メタデータ、
 名前付き hidden gap、自然方言のリストとグループの生成規則だけを共有します。
 設定や意味による追加の受理条件はありません。
+
 [fixture: railroad/ir-gram-written-tree]
 [fixture: railroad/ebnf-native-ownership]
 [fixture: railroad/abnf-directive-repeat]
@@ -357,6 +369,7 @@ Treeview は
 共通形式の reader から、
 一致する title・アクセシビリティ行と native comment の読みを共有する。
 ブロック reader は、必須の開始波括弧の前にある罫線形式も保持する。
+
 [fixture: treeview/gram-written-tree] [fixture: treeview/box-written-tree]
-[fixture: treeview/box-prefix-common-block-two-prefixes] [fixture:
-treeview/ast-prefix-inside-and-outside]
+[fixture: treeview/box-prefix-common-block-two-prefixes]
+[fixture: treeview/ast-prefix-inside-and-outside]

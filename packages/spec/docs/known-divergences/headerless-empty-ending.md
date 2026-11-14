@@ -21,10 +21,12 @@ classDiagram
 The header is the word `classDiagram` with no word character after it (see
 [Detection](../diagrams/class.md#detection)). A text that starts with
 `classDiagramX`, `classDiagram2`, or `classDiagramclassDiagram` is detected as a
-class diagram, but has no header. [fixture: class/header-word-after-keyword]
-[fixture: class/header-digit-after-keyword] [fixture:
-class/header-keyword-twice] This document is about such a text, when it ends
-with an empty value.
+class diagram, but has no header.
+
+[fixture: class/header-word-after-keyword] [fixture:
+class/header-digit-after-keyword] [fixture: class/header-keyword-twice]
+
+This document is about such a text, when it ends with an empty value.
 
 ## The difference
 
@@ -84,8 +86,9 @@ Each example is a whole text.
 | 5       | an empty diagram                 | rejected           |
 | 6       | an empty diagram                 | rejected           |
 
-The fixtures record the readings compared in the table. [fixture:
-class/div-headerless-relation-empty-title] [fixture:
+The fixtures record the readings compared in the table.
+
+[fixture: class/div-headerless-relation-empty-title] [fixture:
 class/header-word-relation-title] [fixture:
 class/lex-acc-title-at-end-after-relation] [fixture:
 class/div-headerless-empty-call] [fixture: class/div-headerless-empty-string]
@@ -97,8 +100,9 @@ whitespace after it, `click A call`, and a string opened at the end of
 `callback A "`, `link A "`, or `click A href "`. Then it accepts the text and
 reads its statements, and reads the word in place of the header as a statement
 that adds nothing. The same endings after a correct header are rejected by both.
-This specification rejects every text without a header. [fixture:
-class/div-headerless-empty-title] [fixture:
+This specification rejects every text without a header.
+
+[fixture: class/div-headerless-empty-title] [fixture:
 class/header-word-after-keyword-title] [fixture:
 class/div-headerless-empty-description-block] [fixture:
 class/div-headerless-link-string-opened] [fixture:

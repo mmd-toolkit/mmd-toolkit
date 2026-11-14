@@ -20,6 +20,7 @@
 のノードとも同じ定めに従います（[ノードの範囲](../positions.ja.md#ノードの範囲)
 を参照）。
 ヘッダーのキーワードから、最後のトークンまでです。
+
 [fixture: quadrant/db-point-plain]
 
 ### 文
@@ -32,6 +33,7 @@
 `x-axis L -->` は行の全体を覆い、
 `A: [0.3, 0.6] radius: 10, color: #f00` は `#f00` までを覆います。
 説明ブロックは、テキストの行にわたって、その `}` までを覆います。
+
 [fixture: quadrant/db-title-keyword-alone]
 [fixture: quadrant/db-x-axis-left-with-arrow] [fixture: quadrant/db-style-two]
 [fixture: quadrant/db-acc-descr-block-lines]
@@ -46,6 +48,7 @@
 文字列や markdown 文字列で始まるテキストでは、範囲は開きの引用符からで、
 値は引用符とバッククォートを含みません。
 `quadrant-1 "a" b` は `"a" b` を覆い、値は `a b` です。
+
 [fixture: quadrant/db-quadrant-spaces-trimmed]
 [fixture: quadrant/db-quadrant-quoted-then-bare]
 [fixture: quadrant/db-name-markdown]
@@ -62,6 +65,7 @@
 題、アクセシビリティのテキスト、説明ブロックのテキストは、
 両端の Notation の空白を U+00A0 も含めて除いたテキストを覆います。
 説明ブロックでは、`{` の後の空白と `}` の前の空白の間の行を覆います。
+
 [fixture: quadrant/db-point-plain] [fixture: quadrant/db-style-two]
 [fixture: quadrant/db-acc-descr-block-lines] [fixture: quadrant/db-class-plain]
 [fixture: quadrant/db-classdef-two-styles]

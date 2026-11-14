@@ -23,7 +23,9 @@ mermaid.js は各入力とその出力を同じ Db として読みます。
 この図を持つ対象の版は、どれも大文字小文字を問わずに名前を読み、
 同じに描くからです。
 詳しくは [ヘッダーの名前](./compatibility.ja.md#ヘッダーの名前)
-を参照してください。 [fixture: ishikawa/header/header-column]
+を参照してください。
+
+[fixture: ishikawa/header/header-column]
 [fixture: ishikawa/header/header-stable]
 [fixture: ishikawa/header/header-case-alternative]
 [fixture: ishikawa/header/header-lowercase]
@@ -32,7 +34,9 @@ mermaid.js は各入力とその出力を同じ Db として読みます。
 外側の空白は除きます。
 beta の境界に合わない接尾辞は根のテキストに残します。
 接するコメントとディレクティブは後の規則に従います。
+
 [fixture: ishikawa/header/header-beta-fallback]
+
 見出しの直後に、`-beta` という語で始まる根が続く場合は、根を自分の行に移します。
 間にあるのが指令だけの場合も同じで、
 指令は見出しを読む前に取り除かれます（`ishikawa-beta-beta` は、
@@ -42,6 +46,7 @@ beta の境界に合わない接尾辞は根のテキストに残します。
 閉じていないディレクティブが次の行をつなぐことで、根が見出しの行に残る場合は、
 見出しも書かれたままにします。
 `-betax` や `-x` のような根は、この語ではないので、見出しを短くします。
+
 [fixture: ishikawa/header/header-beta-then-beta-root]
 [fixture: ishikawa/header/header-beta-then-beta-root-kept]
 [fixture: ishikawa/header/header-beta-directive-then-beta-root-kept]
@@ -73,6 +78,7 @@ ishikawa
 どの節も、その前にあるそれより浅い最も近い節より深く、根まで同じで、
 見出しの行にある根は、見出しとテキストの間の空白を字下げとします。
 そうした字下げは、書かれた幅を持ち込まずに、同じ順序付きの木を作ります。
+
 [fixture: ishikawa/indentation/indent-flatten-unsafe]
 [fixture: ishikawa/indentation/indent-sibling-causes]
 [fixture: ishikawa/indentation/indent-zero-unclamped-unsafe]
@@ -91,6 +97,7 @@ ishikawa
 通常の規則に従います。
 根がそのように続く場合は、図全体が通常の規則に従います。
 対象にする版はどれもそのような根を拒否するため、字下げは図に影響しません。
+
 [test: ishikawa: header-spaced-directive-comment-ls]
 [fixture: ishikawa/indentation/indent-clamped]
 [fixture: ishikawa/indentation/indent-depth]
@@ -105,6 +112,7 @@ ishikawa
 `tabWidth: 0` でも 1 文字以上にします。
 `useTabs` では 1 段にタブを 1 つ使います。
 親子を保つため、段の幅は正である必要があります。
+
 [fixture: ishikawa/indentation/indent-four]
 [fixture: ishikawa/indentation/indent-tabs]
 [fixture: ishikawa/indentation/indent-zero]
@@ -162,6 +170,7 @@ Ishikawa の見出しは、
 これは、書かれた字下げが入れ子だけで木を示すときです（[字下げ](#indentation)）。
 見出しと根の間の空白より深くない原因があるときは、根は見出しの行に残り、
 原因は書かれた字下げを残します。
+
 [fixture: ishikawa/root-on-header-line/header-root-irregular-kept]
 [fixture: ishikawa/root-on-header-line/header-root-directive-irregular-kept]
 [fixture: ishikawa/root-on-header-line/header-root]
@@ -192,6 +201,7 @@ ishikawa
 入力の根がすべての原因より深くても浅くても同じです。
 根の字下げは親を決めないため、1 列目でも Db は同じですが、
 他の印字処理の本文の約束に揃えます。
+
 [fixture: ishikawa/root-indentation/root-alone]
 [fixture: ishikawa/root-indentation/root-deeper]
 [fixture: ishikawa/root-indentation/root-column-one]
@@ -200,6 +210,7 @@ ishikawa
 子孫は独立して木の深さを使います。
 見出しとディレクティブの組として保つ根は、その接続を保ちます。
 根のない本文のコメントとディレクティブも、同じ本文の深さを使います。
+
 [fixture: ishikawa/root-indentation/rootless-comment]
 [fixture: ishikawa/root-indentation/rootless-directives]
 
@@ -222,6 +233,7 @@ ishikawa
 普通の空行の連続は 1 つにして、余分な連続を除き、まとまりを残します。
 本文の端の普通の空行は除きます。
 先頭の共通コメントやディレクティブだけの行の後も同じです。
+
 [fixture: ishikawa/blank-lines/blank-runs]
 [fixture: ishikawa/blank-lines/blank-around-trivia]
 
@@ -233,6 +245,7 @@ ishikawa
 空白で離れていても変わりません（[コメント](#comments) を参照）。
 コメントの前のディレクティブに mermaid.js が取り除く改行があっても同じです。
 最後の図コメントの後の隙間は、末尾まで全体を保ちます。
+
 [fixture: ishikawa/blank-lines/blank-comment-accepted]
 [fixture: ishikawa/blank-lines/blank-header-comment-accepted]
 [fixture: ishikawa/blank-lines/blank-spaced-header-comment-accepted]
@@ -244,6 +257,7 @@ ishikawa
 
 空白だけの行は空行ですが、埋め込まれた結合やディレクティブ内は保ちます。
 仕様上の空行とコメントの差異は、Mermaid の組合せを修復せず整形します。
+
 [fixture: ishikawa/blank-lines/blank-comment-div]
 [fixture: ishikawa/blank-lines/blank-header-div]
 [corpus fixture: ishikawa/div-beta-header-trailing-space-node]
@@ -293,15 +307,18 @@ ishikawa
 独立したコメントは次の節点に、末尾では最後の節点に揃えます。
 節点との関係を示すためです。
 見出しより前のコメントは 1 列目に置きます。
+
 [fixture: ishikawa/comments/comments-align]
 [fixture: ishikawa/comments/comment-on-separate-line]
 
 本物の見出し末尾コメントは、接するか空白があるかを保ち、
 外側の空白の連続を 1 つにします。
+
 [fixture: ishikawa/comments/comment-header-gap]
 [fixture: ishikawa/comments/comment-header-touch]
 
 印、内容、コメント末尾の空白は全体を保ちます。
+
 [fixture: ishikawa/comments/comment-spaces]
 [fixture: ishikawa/comments/comments-bare-braces]
 [fixture: ishikawa/comments/header-comment-spaces]
@@ -309,6 +326,7 @@ ishikawa
 
 節点のテキスト開始後の `%%` は、引用符らしい形の中も文字列です。
 `#` と単独の `%` も普通の節点テキストです。
+
 [fixture: ishikawa/comments/comment-detach-unsafe]
 [fixture: ishikawa/comments/comment-inline-value]
 [corpus fixture: ishikawa/div-c4-inline-percent-eof]
@@ -335,15 +353,18 @@ ishikawa
 
 独立したディレクティブは内容と順序を保ち、コメントと同じように揃えます。
 埋め込みデータを解釈せず、節点との関係を示すためです。
+
 [fixture: ishikawa/standalone-directives/directives-align]
 
 見出しの前に接するディレクティブは接したままにします。
+
 [fixture: ishikawa/standalone-directives/directive-before-header-glued]
 
 見出し行で見出しに接するディレクティブは見出し側に残し、
 空白で離れた根を次の行へ移します。
 根の字下げは親を決めないため、
 根を見出しのディレクティブの下へ移しても読みは変わりません。
+
 [fixture: ishikawa/standalone-directives/header-touching-directive]
 [fixture: ishikawa/standalone-directives/header-two-touching-directives]
 
@@ -352,27 +373,31 @@ ishikawa
 見出し側に残すと、ディレクティブを除いた見出しの行末に空白が残り、
 Mermaid が拒否するためです。
 kanban が見出し行のディレクティブを節点と一緒に移すのと同じ理由です。
+
 [fixture: ishikawa/standalone-directives/header-spaced-directive]
 [fixture: ishikawa/standalone-directives/header-spaced-multiline-directive]
 [fixture: ishikawa/standalone-directives/header-spaced-two-directives]
 [fixture: ishikawa/standalone-directives/header-spaced-directive-comment]
 [fixture: ishikawa/standalone-directives/header-beta-spaced-directive]
-[fixture: ishikawa/standalone-directives/header-spaced-directive-kept] [fixture:
-ishikawa/standalone-directives/header-spaced-directive-literal-percent]
+[fixture: ishikawa/standalone-directives/header-spaced-directive-kept]
+[fixture: ishikawa/standalone-directives/header-spaced-directive-literal-percent]
 [test: ishikawa: header-spaced-directive-comment-ls]
 
 移したディレクティブの後ろの隙間は、
 [同じ行のディレクティブ](#inline-directives) により根の字下げに数えます。
 既定の根の深さでは、後ろの空白が 1 つなら前も 1 つです。
+
 [fixture: ishikawa/standalone-directives/header-spaced-directive-tabs]
 [fixture: ishikawa/standalone-directives/header-spaced-directive-zero]
 
 複数のディレクティブでは、見出しに接する接頭部を見出し側に残し、
-最初の区切りの空白より後を根と一緒に移します。 [fixture:
-ishikawa/standalone-directives/header-touching-prefix-spaced-directive]
+最初の区切りの空白より後を根と一緒に移します。
+
+[fixture: ishikawa/standalone-directives/header-touching-prefix-spaced-directive]
 
 根に接するディレクティブは、書かれた見出しと根の組全体を保ちます。
 作者が書いたディレクティブと根のテキストの関係を保つためです。
+
 [fixture: ishikawa/standalone-directives/directive-header-touch-root]
 [fixture: ishikawa/standalone-directives/header-directive-touching-root]
 [fixture: ishikawa/standalone-directives/header-two-directives-touching-root]
@@ -380,10 +405,12 @@ ishikawa/standalone-directives/header-touching-prefix-spaced-directive]
 
 同じ行に根がなければ、ディレクティブとコメントは見出しとの接続を保ちます。
 仕様の `div-` 入力も同じです。
+
 [fixture: ishikawa/standalone-directives/directive-header-separated]
 [corpus fixture: ishikawa/div-header-space-directive-node]
 
 閉じたもの、複数行のもの、単語の引数、EOF までのものも境界を保ちます。
+
 [fixture: ishikawa/standalone-directives/directive-open-eof]
 
 入力（エスケープ表記）:
@@ -436,6 +463,7 @@ ishikawa
 
 テキスト中のディレクティブの両側の空白は、書かれたとおり保ちます。
 ディレクティブの除去は両側をつなぐだけで、空白を補わないためです。
+
 [fixture: ishikawa/inline-directives/directive-gap-trim-unsafe]
 [fixture: ishikawa/inline-directives/directive-single-space-gaps]
 [fixture: ishikawa/inline-directives/directive-in-value]
@@ -448,6 +476,7 @@ ishikawa
 残りを最初のディレクティブの前に、設定の文字で補います。
 kanban の配分を再利用し、複数行の内容と継続列を保ち、
 任意の入力の字下げを残さないためです。
+
 [fixture: ishikawa/inline-directives/directive-leading]
 [fixture: ishikawa/inline-directives/directive-leading-wide]
 [fixture: ishikawa/inline-directives/directive-two-leading]
@@ -478,6 +507,7 @@ ishikawa
 Mermaid がテキストの両端の空白を除くので、除いても Db と図は同じです。
 改行しない空白、バイト順マーク、Unicode の区切り文字、全角空白など、
 それ以外の末尾の空白文字は書かれたまま保ちます。
+
 [fixture: ishikawa/trailing-whitespace/trailing-colon-dropped]
 [fixture: ishikawa/trailing-whitespace/trailing-kept-semicolon]
 [fixture: ishikawa/trailing-whitespace/trailing-value-dropped]
@@ -494,12 +524,14 @@ Mermaid がテキストの両端の空白を除くので、除いても Db と�
 最後のディレクティブの後に空白が続くときも続かないときも、
 テキストの中の連なりは空白 1 つにして印字します。
 （[同じに描かれるキーワードの後のテキスト](./compatibility.ja.md#同じに描かれるキーワードの後のテキスト)）。
+
 [fixture: ishikawa/trailing-whitespace/directives-end-blanks-dropped]
 [fixture: ishikawa/trailing-whitespace/trailing-directive-gap-collapsed]
 [fixture: ishikawa/trailing-whitespace/trailing-directive-continuation]
 
 [ヘッダー](#header) と [空行](#blank-lines) の規則で除くのは、
 見出し行の外側の余白だけで、それはテキストの値ではありません。
+
 [fixture: ishikawa/trailing-whitespace/trailing-header-div]
 
 入力と出力（エスケープ表記）:
@@ -529,6 +561,7 @@ Mermaid がテキストの両端の空白を除くので、除いても Db と�
 引用符、バッククォート、空に見える文字列や括弧や呼び出し、閉じ忘れ、数、句読点、
 実体参照、HTML、プロトタイプの名前もテキストです。
 title、アクセシビリティ、style、装飾、データらしい形も同じです。
+
 [fixture: ishikawa/node-text/values-opaque]
 [fixture: ishikawa/node-text/values-quote-unsafe]
 [fixture: ishikawa/node-text/unquoted-root]
@@ -536,11 +569,13 @@ title、アクセシビリティ、style、装飾、データらしい形も同�
 
 他の文法のトークン間隔や値変換は適用しません。
 Db からラベルを再構築せず、書かれた形と設定による読みを保つためです。
+
 [fixture: ishikawa/node-text/values-spacing-unsafe]
 [fixture: ishikawa/node-text/value-single-space-and-colon]
 
 C4 に見えるテキストも仕様の読みではテキストとして保ちます。
 Mermaid がソース全体から C4 を検出して拒否する入力も同じです。
+
 [corpus fixture: ishikawa/detect-c4-component-root]
 [corpus fixture: ishikawa/detect-c4-container-text]
 [corpus fixture: ishikawa/detect-c4-deployment-suffix]
@@ -582,6 +617,7 @@ ishikawa
 セミコロンはすべて残します。
 Ishikawa の節点を分けるセミコロンはありません。
 共有の厳密な綴りの `style`、続く `classDef` が無視するものも残します。
+
 [fixture: ishikawa/line-rule-and-kept-lines/semicolon-plain]
 [fixture: ishikawa/line-rule-and-kept-lines/semicolon-split-unsafe]
 [fixture: ishikawa/line-rule-and-kept-lines/separate-cause]
@@ -594,6 +630,7 @@ Ishikawa の節点を分けるセミコロンはありません。
 外側の字下げは印字処理の空白ですが、テキストの文字は、
 末尾の空白とタブを除いて書かれたまま保ちます。
 （[末尾の空白](#trailing-whitespace)を参照）。
+
 [fixture: ishikawa/line-rule-and-kept-lines/line-rule-kept]
 [fixture: ishikawa/line-rule-and-kept-lines/line-rule-double-pass]
 [fixture: ishikawa/line-rule-and-kept-lines/line-rule-directive-trigger]
@@ -603,6 +640,7 @@ Ishikawa の節点を分けるセミコロンはありません。
 コロンとハッシュ記号の隙間、不一致、実体参照、Unicode の区間境界、
 閉じていないディレクティブを止めるセミコロンの違いも保ちます。
 変えると選ばれるセミコロンが変わるためです。
+
 [fixture: ishikawa/line-rule-and-kept-lines/line-rule-colon-unsafe]
 [fixture: ishikawa/line-rule-and-kept-lines/line-rule-spaced-hash]
 [fixture: ishikawa/line-rule-and-kept-lines/line-rule-nonmatches]
@@ -626,6 +664,7 @@ ishikawa
 
 `printWidth` に合わせて節点を折り返したり結合したりしません。
 引用符らしいテキスト内でも、普通の物理改行は節点を分けるためです。
+
 [fixture: ishikawa/physical-lines/long-no-wrap]
 [fixture: ishikawa/physical-lines/long-wrap-unsafe]
 [fixture: ishikawa/physical-lines/separate-cause-lines]
@@ -639,6 +678,7 @@ ishikawa
 物理行を 1 つのテキストにつなぐことがあります。
 その領域全体、内部の空行、後の継続列を保ちます。
 物理行を一律に節点とせず、木と値のテキストを保つためです。
+
 [test: ishikawa: joined-common-region]
 [test: ishikawa: joined-deeper-continuation]
 
@@ -665,6 +705,7 @@ ishikawa
 と印字します（[ヘッダー](#header) を参照）。
 兄弟の順序と繰返しは順序付き Db の木の一部なので、ソート、重複除去、
 同じラベルのまとめは行いません。
+
 [fixture: ishikawa/case-and-order/case-order-kept]
 [fixture: ishikawa/case-and-order/deduplicate-unsafe]
 [fixture: ishikawa/case-and-order/single-cause]
@@ -694,10 +735,12 @@ CRLF と単独の CR は、共有の `endOfLine` で正規化し、設定の LF�
 CR で出力します。
 引用符らしい形、ディレクティブ、フロントマター、コメントの隙間も同じです。
 Mermaid はこれらを LF と読み、Ishikawa に文字列の引用文脈はないため、
-入力の終端バイトを保つ必要はありません。 [test: ishikawa: cr-lines]
-[corpus fixture: ishikawa/lex-crlf-lines] [test: ishikawa: crlf-quoted-nodes]
-[test: ishikawa: crlf-directive] [test: ishikawa: eol-cr]
-[test: ishikawa: eol-crlf] [test: ishikawa: cr-frontmatter-comment]
+入力の終端バイトを保つ必要はありません。
+
+[test: ishikawa: cr-lines] [corpus fixture: ishikawa/lex-crlf-lines]
+[test: ishikawa: crlf-quoted-nodes] [test: ishikawa: crlf-directive]
+[test: ishikawa: eol-cr] [test: ishikawa: eol-crlf]
+[test: ishikawa: cr-frontmatter-comment]
 
 拒否される裸の見出しは拒否したままにします。
 LS と PS は別の文脈による規則に従います。
@@ -716,14 +759,18 @@ LS と PS は別の文脈による規則に従います。
 テキストやディレクティブ内の LS (`\u2028`) と PS (`\u2029`) は文字です。
 テキストの末尾でも保ちます。
 その後の空白とタブは除き、その前の空白とタブは残します。
+
 [test: ishikawa: spaces after a trailing line separator]
+
 LF は [物理行](#physical-lines) の規則で、普通の節点の行を分けます。
+
 [fixture: ishikawa/line-separators/lf-root-and-cause]
 [fixture: ishikawa/line-separators/lf-sibling-causes]
 [test: ishikawa: ls-ps-values] [test: ishikawa: ls-value-split-unsafe]
 [test: ishikawa: ps-value-split-unsafe] [test: ishikawa: ls-ps-line-rule]
 
 空白だけの行は空行としてまとめ、先頭の区切り文字は字下げに直します。
+
 [test: ishikawa: unicode-blank-lines]
 [corpus fixture: ishikawa/div-header-ls-line-node]
 [corpus fixture: ishikawa/div-header-ps-line-node]
@@ -737,6 +784,7 @@ LF に置き換えても木は保てますが、
 区切りを保つほうが kanban の境界を保つ選択に揃い、
 Mermaid のコメントと空行の組合せを修復する別の方針も要りません。
 LF のコメント終端は新しい行を始め、字下げの文字としては数えません。
+
 [fixture: ishikawa/line-separators/lf-comment-boundary]
 [test: ishikawa: ls-comment-boundary] [test: ishikawa: kept-comment-ls-before]
 [test: ishikawa: kept-comment-ps-after]
@@ -764,6 +812,7 @@ LF のコメント終端は新しい行を始め、字下げの文字として�
 コメントの組合せを修復する別の方針を作らず、書かれた境界と親子を保つためです。
 保持区間は実際のコメント終端でだけ切り、
 完全なテキストやディレクティブの内部の区切り文字では切りません。
+
 [test: ishikawa: ls-common-swallows]
 [corpus fixture: ishikawa/div-header-inline-comment-ls-node]
 [corpus fixture: ishikawa/div-header-inline-comment-ps-node]
@@ -772,6 +821,7 @@ LF のコメント終端は新しい行を始め、字下げの文字として�
 最初の節点の前で、図のコメントを終える LS や PS に続く 2 つの LF は、
 書かれたまま保ちます。
 Mermaid がコメントと空行を組み合わせる読み方を保つためです。
+
 [test: ishikawa: ls-comment-two-lf-before-root]
 [test: ishikawa: ps-comment-two-lf-before-root]
 
@@ -792,6 +842,7 @@ Mermaid がコメントと空行を組み合わせる読み方を保つためで
 Mermaid は字下げの文字を 1 文字ずつ数えるので、
 タブを見かけの幅に広げると後の行が Mermaid の読みより深くなり、
 後ろの行が `A` の子になって Db が変わるためです。
+
 [corpus fixture: ishikawa/lex-space-positions]
 [corpus fixture: ishikawa/lex-tab-positions]
 [fixture: ishikawa/whitespace-characters/space-indentation]
@@ -820,10 +871,12 @@ Mermaid は字下げの文字を 1 文字ずつ数えるので、
 テキストの内部の文字と、空白でもタブでもない末尾の文字は、
 書かれた値として保ちます。
 NEL、ゼロ幅空白、NUL、補助平面の文字もテキストです。
+
 [test: ishikawa: unicode-value-kept] [test: ishikawa: nel-zero-width-text]
 
 ファイル先頭の BOM と BOM とフロントマターの制限は、
 互換性の文書にある Prettier の共有の処理に従います。
+
 [test: ishikawa: leading-bom]
 
 入力（エスケープ表記）:
@@ -847,6 +900,7 @@ ishikawa
 
 共有のガード付き Prettier YAML 整形で、安全な設定を整形します。
 区切りと閉じる行の余白は保ちます。
+
 [fixture: ishikawa/frontmatter-yaml/frontmatter-yaml]
 [fixture: ishikawa/frontmatter-yaml/frontmatter-width-config]
 [fixture: ishikawa/frontmatter-yaml/closing-delimiter-padding]
@@ -855,13 +909,16 @@ ishikawa
 YAML の字下げは `tabWidth: 0` でも最低 1 つの空白を使います。
 理由は、
 [フロントマター](./compatibility.ja.md#フロントマター)を参照してください。
+
 [fixture: ishikawa/frontmatter-yaml/zero-width-block-scalar-title]
 [fixture: ishikawa/frontmatter-yaml/zero-width-nested-title]
 [fixture: ishikawa/frontmatter-yaml/zero-width-nested-config]
 
 不正な YAML、字下げされた YAML、HTML 処理の影響を受ける YAML、
 区切りの危険がある YAML は、フロントマターの境界をまたいで始まるタグも含めて、
-書かれたまま保ちます。 [fixture: ishikawa/frontmatter-yaml/frontmatter-indented]
+書かれたまま保ちます。
+
+[fixture: ishikawa/frontmatter-yaml/frontmatter-indented]
 [fixture: ishikawa/frontmatter-yaml/frontmatter-malformed]
 [corpus fixture: ishikawa/frontmatter-malformed]
 [corpus fixture: ishikawa/frontmatter-html-title]
@@ -876,6 +933,7 @@ YAML の字下げは `tabWidth: 0` でも最低 1 つの空白を使います。
 根はフロントマターの title を上書きします。
 根がない場合の空、null、数、空白の title は記録した読みを保ち、
 アクセシビリティのメタデータは Ishikawa の文を作りません。
+
 [fixture: ishikawa/frontmatter-yaml/frontmatter-rootless]
 [corpus fixture: ishikawa/frontmatter-empty-title-rootless]
 [corpus fixture: ishikawa/frontmatter-null-title-rootless]
@@ -909,6 +967,7 @@ ishikawa
 普通の受理した入力は、設定の改行 1 つで終えます。
 受理した根のない本文も同じです。
 共有のファイルの約束に従い、末尾の任意の空行の連続を除くためです。
+
 [corpus fixture: ishikawa/gram-root-eof]
 [corpus fixture: ishikawa/header-only-blank]
 [corpus fixture: ishikawa/header-only-lf]
@@ -919,6 +978,7 @@ ishikawa
 最後の図コメントの隙間全体と EOF までの開いたディレクティブは、
 書かれた終わりを保ちます。
 末尾のテキストの余白は、末尾の空白に従い除きます。
+
 [fixture: ishikawa/final-newline/final-comment]
 [corpus fixture: ishikawa/directive-open-root-eof]
 [fixture: ishikawa/final-newline/final-value-spaces]
@@ -945,6 +1005,7 @@ Mermaid コードブロックに同じ規則を適用します。
 コードブロック、リスト、引用の字下げはホストが補います。
 タブや幅 0 の設定も含め、図の深さを Markdown の入れ物から独立させ、
 解析に失敗した本文は整形を辞退するためです。
+
 [fixture: ishikawa/markdown-fences/markdown-top-payload]
 [fixture: ishikawa/markdown-fences/markdown-list-payload]
 
@@ -952,12 +1013,15 @@ Mermaid コードブロックに同じ規則を適用します。
 プラグインも全てのテキストからその空白を除くので、
 最終行のテキストはどちらも同じ終わり方になります。
 （[末尾の空白](#trailing-whitespace)を参照）。
+
 [fixture: ishikawa/markdown-fences/markdown-last-spaces]
 [fixture: ishikawa/markdown-fences/markdown-unpadded-payload]
 
 辞退したコードブロックはホストにとって普通のコードであり、
 全ての行の末尾の空白とタブを除きます。
+
 [test: ishikawa Markdown: declined-nonfinal-trailing-whitespace]
+
 ホストの出力と、字下げを除いた図の読みを分けて検査します。
 
 入力（エスケープ表記）:
@@ -994,6 +1058,7 @@ Markdown コードブロックの整形を辞退します。
 キーワードの中のディレクティブを修復しません。
 たとえば、改行のない裸の `ishikawa` は構文エラーのままです。
 仕様のトークン境界の差異も、拒否したままにします。
+
 [corpus fixture: ishikawa/header-only]
 [corpus fixture: ishikawa/header-beta-only]
 [corpus fixture: ishikawa/detect-semicolon-in-header]

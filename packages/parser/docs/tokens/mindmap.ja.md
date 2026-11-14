@@ -34,6 +34,7 @@
 引用符を含む `String` トークン `"text with ( paren"` を持ちます。
 `::icon(fa fa-book)` は、`Keyword` トークン `::icon(`、
 `RawText` トークン `fa fa-book`、`Punctuator` トークン `)` を持ちます。
+
 [fixture: mindmap/db-shape-string] [fixture: mindmap/db-icon-line]
 
 トークンは両端に空白を持ちません。
@@ -50,6 +51,7 @@
 `:::  x` の class は、2 つの空白と `x` です。
 形のテキストは、中の改行を持ちます。
 `a[x`、改行、`y]` は、`x`、改行、`y` のトークンを持ちます。
+
 [fixture: mindmap/db-node-trailing-whitespace]
 [fixture: mindmap/gram-shape-text-quoted-with-space]
 [fixture: mindmap/db-icon-surrounding-whitespace]
@@ -74,6 +76,7 @@ opener `((` の中にディレクティブがある `a(%%{init: {}}%%(x))` は�
 markdown 文字列の区切りの 2 文字の間のディレクティブも、トークンを切ります。
 ``a["`x`%%{init: {}}%%"]`` は、
 `StringFragment` トークン `` "`x` `` と `"` を持ちます。
+
 [fixture: mindmap/lex-directive-in-node-text]
 [fixture: mindmap/lex-directive-in-markdown-string]
 [fixture: mindmap/div-directive-in-opener]
@@ -82,4 +85,5 @@ markdown 文字列の区切りの 2 文字の間のディレクティブも、�
 行の規則が無視する `;` は `IgnoredSemicolon` トークンです。
 ノードのテキスト `style:#x;y` は、`RawText` トークン `style:#x` と `y` と、
 その間の `IgnoredSemicolon` トークンを持ちます。
+
 [fixture: mindmap/tokens-ignored-semicolon-in-node-text]

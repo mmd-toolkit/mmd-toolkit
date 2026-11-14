@@ -87,6 +87,7 @@ ESLint の visitor keys で、
 単位がその前か後に読む空白と行終端を除いたものです。
 flowchart の矢印の前後の空白がその例で、
 `A --> %%{init: {}}%% B` の矢印の書かれたテキストは `-->` です。
+
 [fixture: flowchart/lex-directive-after-arrow]
 
 値の書かれたテキストは、その最初の単位の書かれたテキストの始まりから、
@@ -116,6 +117,7 @@ class 図のスタイル（[ClassLiteral](./ast/class.ja.md#classliteral) を参
 `A[" x "]` のラベルの値は、空白、`x`、空白です。
 `A@{`、改行、`shape: rect`、改行、`}` の最初のデータブロックの値は、改行、
 `shape: rect`、改行です。
+
 [fixture: flowchart/tokens-label-string-inner-whitespace]
 [fixture: flowchart/gram-data-consecutive-blocks]
 
@@ -138,6 +140,7 @@ mermaid.js が読まないテキストのノード、
 `state`、空白、改行、空白 2 つ、`state` の `textBeforeBody` を与え、
 本体のある行 `{` が続く `state X "" %%{init: {}}%% ""` では、
 それは 2 つの空の文字列とその間の空白 2 つです。
+
 [fixture: state/tokens-ignored-text-comment-between-units]
 [fixture: state/tokens-ignored-text-hash-comment-between-units]
 [fixture: state/tokens-ignored-text-directive-between-empty-strings]
@@ -155,6 +158,7 @@ X の `textBeforeBody` は、`""`、空白、改行、空白 2 つ、`accDescr {
 U+2028 の前に空白があっても、`[*]` の前に空白があっても、
 `[*]` の代わりに空白だけの行があっても、
 `[*]` の代わりに `x` と空白があっても同じで、その空白もコメントに入ります。
+
 [fixture: state/tokens-ignored-text-comment-cut-by-comment-line]
 [fixture: state/tokens-ignored-text-hash-comment-cut-by-comment-line]
 [fixture: state/tokens-ignored-text-comment-cut-by-comment-line-paragraph-separator]
@@ -294,6 +298,7 @@ mermaid.js はこれらを
 [`CynefinDiagram`](./ast/cynefin.ja.md#cynefindiagram)、
 [`EventmodelingDiagram`](./ast/eventmodeling.ja.md#eventmodelingdiagram)、
 [`TreeviewDiagram`](./ast/treeview.ja.md#treeviewdiagram) のどれかです。
+
 [fixture: treeview/gram-written-tree] [fixture: eventmodeling/gram-written-tree]
 [fixture: cynefin/db-all-fields] [fixture: wardley/db-all-fields]
 [fixture: railroad/ir-gram-written-tree]
@@ -402,6 +407,7 @@ ESTree と同じく、識別子かどうかは構文上の形で決まり、
 ER 図のバッククォートの属性の語では、バッククォートです。
 図の字句規則が許す位置では、一重引用符の文字列も StringLiteral です。
 同じ引用符で閉じ、escape は復号しません。
+
 [fixture: usecase/lex-native-single-quoted-keys]
 [fixture: usecase/lex-native-string-backslashes]
 
@@ -416,11 +422,13 @@ ER 図のバッククォートの属性の語では、バッククォートで�
 `click A href "u"` の URL の値は `u` で、`raw` は `"u"` です。
 `click A "u" "one`、改行、`%% c`、改行、`two"` では、ツールチップの値は `one`、
 改行、`two` で、その `raw` はコメント行を含む文字列の全体です。
+
 [fixture: flowchart/gram-click-href]
 [fixture: flowchart/tokens-string-literal-comment-line]
 
 同じように、`click A href "u%%{init: {}}%%v"` の URL の値は `uv` で、
 その `raw` はディレクティブを含む文字列の全体です。
+
 [fixture: flowchart/lex-directive-in-click-href-string]
 
 文字列は図の字句規則に従い、次の対応する引用符で閉じます。
@@ -435,10 +443,12 @@ mermaid.js がそれらを名前に読むからです。
 その最後の文字の後のディレクティブは、文字列の一部ではありません。
 テキストの終わりの `A --> `、`` `b``、空白、`%%{init: {}}%%` は、
 文字列 `` `b`` と空白を持ち、値は `b` と空白です。
+
 [fixture: class/lex-backquote-unclosed-directive-at-end]
 
 class 図で、`class`、`` `x``、改行、`%%{init: {}}%%`、改行は、
 ディレクティブの後の改行を含めて、値 `x` と改行 2 つを持ちます。
+
 [fixture: class/lex-backquote-unclosed-directive-after-line-break]
 
 `raw` は閉じの引用符を持たず、
@@ -452,6 +462,7 @@ class 図で、`class`、`` `x``、改行、`%%{init: {}}%%`、改行は、
 `raw` の文字を比べる必要はありません。
 最後の行のバッククォート 1 つは、閉じていないバッククォートの名前で、
 その `raw` は、バッククォートとその後の改行です。
+
 [fixture: class/lex-backquote-unclosed-alone]
 [fixture: class/lex-backquote-unclosed]
 [fixture: class/tokens-backquote-unclosed-trailing-whitespace]
@@ -468,18 +479,22 @@ class 図で、`class`、`` `x``、改行、`%%{init: {}}%%`、改行は、
 子の欄はありません。
 
 `linkStyle 0,1 stroke:red` の最初の数の値は 0 で、`raw` は `0` です。
+
 [fixture: flowchart/db-linkstyle-shared-fill]
 
 数が取れる形は、その位置の文法が決めます。
 flowchart では数字だけなので、どの数も整数です。
 sequence では小数も取れるので、`autonumber .5` は 2 分の 1 から始まり、
 その `raw` は `.5` です。
-`autonumber 05` は 5 から始まります。 [fixture: sequence/db-autonumber-fraction]
+`autonumber 05` は 5 から始まります。
+
+[fixture: sequence/db-autonumber-fraction]
 [fixture: sequence/db-autonumber-leading-zero]
 
 値は書かれた数に最も近い倍精度の数で、書かれた数と違うことがあります。
 XY chart で、`bar [`、20 個の 9、`]` は値が 1 の後に 20 個の 0 が続く数で、
 `line [.`、400 個の 0、`1]` は値が 0 です。
+
 [fixture: xychart/db-plot-values-large]
 [fixture: xychart/db-plot-values-underflow]
 
@@ -489,6 +504,7 @@ XY chart で、`bar [`、400 個の 9、`]` は値が無限大で、
 `-` の後の同じ数はマイナス無限大です。
 範囲、scale の幅、`autonumber` の始まりと増分、
 linkStyle の番号もそのような数になれ、linkStyle の番号では範囲の外です。
+
 [fixture: xychart/db-plot-values-overflow]
 [fixture: xychart/db-plot-values-negative-overflow]
 [fixture: xychart/db-x-axis-range-overflow]
@@ -512,6 +528,7 @@ dot より前に数字があれば後続の数字はなくてもかまいませ�
 NaN となります。
 raw は数の先頭部分として読まれない文字も含め、元の綴り全体を保ちます。
 この位置に限った定義は、ほかの図種の数の文法を変えません。
+
 [fixture: treemap/db-number-comma] [fixture: treemap/db-number-underscore]
 [fixture: treemap/db-number-multiple-dots] [fixture: treemap/db-number-nan]
 [fixture: treemap/lex-number-dot-underscore]
@@ -523,25 +540,46 @@ raw は数の先頭部分として読まれない文字も含め、元の綴り�
 
 - [Flowchart](./ast/flowchart.ja.md): 図種 `flowchart-v2`、`flowchart-elk`、
   `swimlane`。
+
 - [Sequence](./ast/sequence.ja.md): 図種 `sequence`。
+
 - [Class](./ast/class.ja.md): 図種 `classDiagram`。
+
 - [State](./ast/state.ja.md): 図種 `stateDiagram`。
+
 - [ER](./ast/er.ja.md): 図種 `er`。
+
 - [Gantt](./ast/gantt.ja.md): 図種 `gantt`。
+
 - [Journey](./ast/journey.ja.md): 図種 `journey`。
+
 - [Requirement](./ast/requirement.ja.md): 図種 `requirement`。
+
 - [Mindmap](./ast/mindmap.ja.md): 図種 `mindmap`。
+
 - [Timeline](./ast/timeline.ja.md): 図種 `timeline`。
+
 - [Sankey](./ast/sankey.ja.md): 図種 `sankey`。
+
 - [XY chart](./ast/xychart.ja.md): 図種 `xychart`。
+
 - [Quadrant chart](./ast/quadrant.ja.md): 図種 `quadrantChart`。
+
 - [Block diagram](./ast/block.ja.md): 図種 `block`。
+
 - [Kanban](./ast/kanban.ja.md): 図種 `kanban`。
+
 - [Venn](./ast/venn.ja.md): 図種 `venn`。
+
 - [Ishikawa](./ast/ishikawa.ja.md): 図種 `ishikawa`。
+
 - [Agentflow](./ast/agentflow.ja.md): 図種 `agentflow`。
+
 - [Usecase](./ast/usecase.ja.md): 図種 `usecase`。
-- [Pie](./ast/pie.ja.md): 図種 `pie`。 [fixture: pie/header-only]
+
+- [Pie](./ast/pie.ja.md): 図種 `pie`。
+
+  [fixture: pie/header-only]
 
 図種のノードの型の名前は、`FlowchartVertex` のように、
 どれもその図種の名前で始めます。
@@ -554,24 +592,34 @@ mermaid.js が読まないテキストのノードの型は `<図種>IgnoredText
 ほかのノードの型の名前は、そのように終わりません。
 
 - [gitgraph](./ast/gitgraph.ja.md): 図種 `gitGraph`。
+
   [fixture: gitgraph/header-only]
 
-- [Info](./ast/info.ja.md): 図種 `info`。 [fixture: info/header-lf]
+- [Info](./ast/info.ja.md): 図種 `info`。
 
-- [Packet](./ast/packet.ja.md): 図種 `packet`。 [fixture: packet/gram-mixed]
+  [fixture: info/header-lf]
+
+- [Packet](./ast/packet.ja.md): 図種 `packet`。
+
+  [fixture: packet/gram-mixed]
 
 - [Architecture](./ast/architecture.ja.md): 図種 `architecture`。
+
   [fixture: architecture/header-beta] [fixture: architecture/db-mixed]
 
-- [Radar](./ast/radar.ja.md): 図種 `radar`。 [fixture: radar/gram-written-tree]
+- [Radar](./ast/radar.ja.md): 図種 `radar`。
+
+  [fixture: radar/gram-written-tree]
 
 - [Treemap](./ast/treemap.ja.md): 図種 `treemap`。
+
   [fixture: treemap/gram-written-tree]
 
 - [Railroad](./ast/railroad.ja.md): 図種 `railroad`、`railroadEbnf`、
   `railroadAbnf`、`railroadPeg`。
   方言は Root.diagramType で選び、
   共通する図の node に見出しの kind の欄は持ちません。
+
   [fixture: railroad/ir-gram-written-tree]
   [fixture: railroad/ebnf-gram-written-tree]
   [fixture: railroad/abnf-gram-written-tree]
@@ -579,17 +627,21 @@ mermaid.js が読まないテキストのノードの型は `<図種>IgnoredText
 
 - [Wardley](./ast/wardley.ja.md): 図種 `wardley`。
   名前の位置は空白を許すため bare name は WardleyIdentifier、
-  引用した名は共有 StringLiteral を使います。 [fixture: wardley/db-all-fields]
-  [fixture: wardley/db-id-underscore] [fixture: wardley/db-unquoted-names]
-  [fixture: wardley/lex-string-conversion]
+  引用した名は共有 StringLiteral を使います。
+
+  [fixture: wardley/db-all-fields] [fixture: wardley/db-id-underscore]
+  [fixture: wardley/db-unquoted-names] [fixture: wardley/lex-string-conversion]
+
 - [Cynefin](./ast/cynefin.ja.md): 図種は `cynefin`。
   固定の領域の語は文字列の欄とし、
   項目と遷移のラベルは共有の StringLiteral を使います。
+
   [fixture: cynefin/db-all-fields] [fixture: cynefin/lex-string-conversion]
 
 - [eventmodeling](./ast/eventmodeling.ja.md): 数字列の名前は Identifier、
   dot の名前は head/tail member を持つ EventmodelingQualifiedName を使います。
   全出現、tag、unassigned な GWT の型の語も書かれた node に保ちます。
+
   [fixture: eventmodeling/gram-written-tree]
   [fixture: eventmodeling/db-source-leading-zero]
   [fixture: eventmodeling/lex-qualified-hidden-components]
@@ -598,5 +650,6 @@ mermaid.js が読まないテキストのノードの型は `<図種>IgnoredText
 - [Treeview](./ast/treeview.ja.md): 図種は `treeView`。
   bare 名は TreeviewIdentifier、引用名は StringLiteral、
   class/icon 名は Identifier。
-  prefix と装飾に書かれた罫線を保ちます。 [fixture: treeview/gram-written-tree]
-  [fixture: treeview/box-written-tree]
+  prefix と装飾に書かれた罫線を保ちます。
+
+  [fixture: treeview/gram-written-tree] [fixture: treeview/box-written-tree]

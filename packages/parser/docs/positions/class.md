@@ -21,19 +21,25 @@ The range is that of the node in `Root.body` of every diagram (see
 ### ClassArrow
 
 Each relation end and the line are tokens of their own; the range of the arrow
-runs from the first to the last. [fixture: class/gram-relation-spaces]
+runs from the first to the last.
+
+[fixture: class/gram-relation-spaces]
 
 ### ClassDirectionStatement
 
-The range covers the whole direction line. [fixture:
-class/lex-direction-line-in-label]
+The range covers the whole direction line.
+
+[fixture: class/lex-direction-line-in-label]
 
 ### ClassAnnotation
 
-The range runs from `<<` to `>>`. [fixture: class/db-annotation-after-relation]
+The range runs from `<<` to `>>`.
+
+[fixture: class/db-annotation-after-relation]
 
 ### ClassLiteral
 
 Where a text of only whitespace is a value, as in `class A~ ~` and `<<  >>` in a
-body, it has a token of that whitespace. [fixture: class/tokens-generic-blank]
-[fixture: class/tokens-annotation-blank]
+body, it has a token of that whitespace.
+
+[fixture: class/tokens-generic-blank] [fixture: class/tokens-annotation-blank]

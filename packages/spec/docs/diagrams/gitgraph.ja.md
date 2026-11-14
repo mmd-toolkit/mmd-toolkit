@@ -23,15 +23,17 @@
 [detection.md](../detection.md) の項目 19 は、
 大文字と小文字を区別して接頭辞 `gitGraph` を選び、末尾の境界を要求しません。
 接尾辞つきの見出しも検出しますが、以下の規則で拒否されます。
-`gitgraph` と `GitGraph` は別名ではありません。 [fixture: gitgraph/header-only]
-[fixture: gitgraph/detect-letter-suffix] [fixture: gitgraph/detect-lowercase]
-[fixture: gitgraph/detect-uppercase]
+`gitgraph` と `GitGraph` は別名ではありません。
+
+[fixture: gitgraph/header-only] [fixture: gitgraph/detect-letter-suffix]
+[fixture: gitgraph/detect-lowercase] [fixture: gitgraph/detect-uppercase]
 
 見出しは `gitGraph`、`gitGraph:`、`gitGraph :`、
 または `gitGraph` に `LR`・`TB`・`BT` と必須のコロンが続く形です。
 コロンは見出しを閉じ、方向や文の一部ではありません。
 分離したコロンや方向の前に、読み飛ばされない改行は置けません。
 `gitGraph:commit` は受理し、接着した `gitGraph:` の後の方向は拒否します。
+
 [fixture: gitgraph/header-only] [fixture: gitgraph/header-colon]
 [fixture: gitgraph/header-spaced-colon] [fixture: gitgraph/header-lr]
 [fixture: gitgraph/header-tb] [fixture: gitgraph/header-bt]
@@ -45,6 +47,7 @@
 HTML 属性の引用符、エンティティ、選択されるセミコロンを適用します。
 本文だけの HTML 規則でも、
 フロントマターのタイトルは Mermaid がフロントマターから得る値です。
+
 [fixture: gitgraph/frontmatter-title] [fixture: gitgraph/frontmatter-config]
 [fixture: gitgraph/directive-in-string] [fixture: gitgraph/entity-all-fields]
 [fixture: gitgraph/html-all-texts]
@@ -59,6 +62,7 @@ YAML のプロパティを適用せず GitgraphIgnoredText に持ちます。
 実際のフロントマターの後にも置けます。
 2 個目や 2 回目の走査の後のブロックは通過しません。
 残したブロックの後に 2 回目の走査の形を置くことはできます。
+
 [fixture: gitgraph/lex-yaml-after-comment]
 [fixture: gitgraph/detect-block-after-real-frontmatter]
 [fixture: gitgraph/detect-two-nonleading-blocks]
@@ -72,6 +76,7 @@ YAML のプロパティを適用せず GitgraphIgnoredText に持ちます。
 囲みが 3 行隣接すると、中央の行が共通の本文行になります。
 検出に一致しても、固有の開始や終了の境界は緩和されません。
 開始側の非 ASCII の空白や終了後の読めない Unicode の空白は拒否します。
+
 [fixture: gitgraph/lex-nonleading-adjacent-detection]
 [fixture: gitgraph/detect-retained-unclosed]
 [fixture: gitgraph/detect-retained-mismatched-indent]
@@ -91,6 +96,7 @@ YAML のプロパティを適用せず GitgraphIgnoredText に持ちます。
 印が `%%` の共有 Comment です。
 無視するテキストのノードではありません。
 これらの行と一緒に通過した空白・改行は、どちらも読み直しません。
+
 [fixture: gitgraph/lex-hidden-directive-second-scan]
 [fixture: gitgraph/lex-hidden-directive-second-scan-glued]
 [fixture: gitgraph/detect-two-second-scan-forms]
@@ -104,6 +110,7 @@ Mermaid は CR 変換後の ASCII の空白・タブ・LF 以外をそこで拒�
 [bare-percent-line-before-header](../known-divergences/bare-percent-line-before-header.md)
 として受理します。
 裸の行を通過していなければ、後の Unicode の空白は通常の字句規則に従います。
+
 [fixture: gitgraph/div-detect-bare-before-header-ls]
 [fixture: gitgraph/div-detect-bare-bom-line]
 [fixture: gitgraph/detect-bare-before-header-space]
@@ -123,6 +130,7 @@ Mermaid は CR 変換後の ASCII の空白・タブ・LF 以外をそこで拒�
 各単位の開始で次の順に最初の一致を取り、その後から繰り返します。
 一般的な最長一致は行いません。
 読めない文字や残った単位があれば、有効な接頭部の後でも図全体を拒否します。
+
 [fixture: gitgraph/lex-error-before-statement]
 [fixture: gitgraph/lex-error-after-valid-prefix]
 [fixture: gitgraph/gram-error-recovered-statement]
@@ -146,6 +154,7 @@ Mermaid は CR 変換後の ASCII の空白・タブ・LF 以外をそこで拒�
 
 説明、タイトル、文字列、隠れた形、参照の競合は上記の順に決めます。
 真偽値、一般の符号つき数、一般の識別子という別の選択肢はありません。
+
 [fixture: gitgraph/gram-all-fields]
 [fixture: gitgraph/lex-reference-common-prefix]
 [fixture: gitgraph/lex-reference-boolean-spellings]
@@ -161,6 +170,7 @@ Mermaid は CR 変換後の ASCII の空白・タブ・LF 以外をそこで拒�
 共通のディレクティブと選択されたセミコロンを除いたテキストで判定し、
 除いたディレクティブだけでは境界になりません。
 接着した `gitGraph:` にはこの条件がありません。
+
 [fixture: gitgraph/header-glued-direction]
 [fixture: gitgraph/header-colon-commit-inline]
 [fixture: gitgraph/directive-after-header-glued]
@@ -176,6 +186,7 @@ Mermaid は CR 変換後の ASCII の空白・タブ・LF 以外をそこで拒�
 title の接頭部は裸の参照より先に読み、`titleA` は裸の分岐名になりません。
 区切りのない `accTitleA` と `accDescrA` は名前になります。
 引用符で囲むと、これらの競合を避けられます。
+
 [fixture: gitgraph/lex-reference-keyword-prefixes]
 [fixture: gitgraph/lex-reference-reserved]
 [fixture: gitgraph/lex-reference-lr-prefix]
@@ -195,6 +206,7 @@ option の語 `id`・`msg`・`tag`・`type`・`parent`・`order` とコロンは
 それ以外では導入部を連続して書きます。
 コロンと値の間には隠れた形を置けます。
 語の中のディレクティブは既存の差異です。
+
 [fixture: gitgraph/lex-option-global-before-colon]
 [fixture: gitgraph/lex-order-global-before-colon]
 [fixture: gitgraph/lex-parent-global-before-colon]
@@ -210,6 +222,7 @@ option の語 `id`・`msg`・`tag`・`type`・`parent`・`order` とコロンは
 方向にダッシュを接着すると、裸の参照がその部分を先に持つ場合があります。
 `TB---` は `TB` と隠れた YAML ではありません。
 完全な方向とコロンの境界には共通の trivia を置けます。
+
 [fixture: gitgraph/header-hidden-before-colon]
 [fixture: gitgraph/header-hidden-before-direction]
 [fixture: gitgraph/header-hidden-before-direction-colon]
@@ -226,6 +239,7 @@ option の語 `id`・`msg`・`tag`・`type`・`parent`・`order` とコロンは
 0 の選択肢にはこの判定がなく、後者は末尾の条件を満たすよう一致を短くできます。
 order は符号、先頭の 0、小数、指数、非有限値の語を拒否します。
 精度の損失や桁あふれだけでは、有効な綴りを拒否しません。
+
 [fixture: gitgraph/number-zero] [fixture: gitgraph/number-negative-zero]
 [fixture: gitgraph/number-plus] [fixture: gitgraph/number-leading-zero]
 [fixture: gitgraph/number-decimal] [fixture: gitgraph/number-exponent]
@@ -241,6 +255,7 @@ order は符号、先頭の 0、小数、指数、非有限値の語を拒否し
 整数の優先順により `1`・`1abc`・`0.1`・`0..1`・`12.3` は名前にならず、
 `1.5`・`1.2.3`・`9.x` は名前になります。
 末尾の複数のダッシュと、最後のダッシュの前のドットは受理します。
+
 [fixture: gitgraph/lex-reference-shape]
 [fixture: gitgraph/lex-reference-trailing-dot]
 [fixture: gitgraph/lex-reference-trailing-slash]
@@ -263,6 +278,7 @@ order は符号、先頭の 0、小数、指数、非有限値の語を拒否し
 エスケープした引用符は文字列を閉じません。
 エスケープしていない改行・LS・PS は内容になります。
 閉じる引用符は必須で、木ではエスケープの綴りを復号せず保ちます。
+
 [fixture: gitgraph/gram-commit-single-quotes]
 [fixture: gitgraph/gram-commit-empty-values]
 [fixture: gitgraph/lex-string-escapes] [fixture: gitgraph/lex-string-multiline]
@@ -277,48 +293,51 @@ order は符号、先頭の 0、小数、指数、非有限値の語を拒否し
 隠れた YAML／DIRECTIVE に見える形や裸の `%%` を内容として持ちます。
 値の中でも、共通のディレクティブとソースのコメント領域は共通の効果を持ちます。
 これらは図固有のコメントとは別です。
+
 [fixture: gitgraph/lex-hidden-directive-string]
 [fixture: gitgraph/lex-hidden-directive-block]
 [fixture: gitgraph/lex-yaml-string] [fixture: gitgraph/lex-yaml-block]
 [fixture: gitgraph/comment-bare-string] [fixture: gitgraph/comment-block]
 [fixture: gitgraph/directive-in-string]
+
 値の中の U+2028 か U+2029 の後の物理行の残りは、その改行も含めて、
 共通のコメント領域が取り除くことがあります。
 そのとき値は次の物理行へ続くので、行の値はそこで終わりません。
 `accTitle: A`、U+2028、`%% c`、改行、`B` のアクセシビリティタイトルは `A`、
 U+2028、`B` です。
-[fixture: gitgraph/lex-string-line-separator-then-comment-line] [fixture:
-gitgraph/lex-string-paragraph-separator-then-comment-line] [fixture:
-gitgraph/lex-title-line-separator-then-comment-line] [fixture:
-gitgraph/lex-acc-title-line-separator-then-comment-line] [fixture:
-gitgraph/lex-acc-descr-line-separator-then-comment-line] [fixture:
-gitgraph/lex-acc-descr-block-line-separator-then-comment-line] [fixture:
-gitgraph/lex-string-line-separator-comment-line-directive-next] [fixture:
-gitgraph/lex-string-line-separator-comment-line-space-next] [fixture:
-gitgraph/lex-string-line-separator-comment-line-separator-next] [fixture:
-gitgraph/lex-string-line-separator-comment-line-empty-line] [fixture:
-gitgraph/lex-string-line-separator-comment-line-end-of-text] [fixture:
-gitgraph/lex-title-line-separator-comment-line-end-of-text] [fixture:
-gitgraph/lex-string-line-separator-comment-line-cr] [fixture:
-gitgraph/lex-string-line-separator-comment-line-crlf] [fixture:
-gitgraph/lex-string-line-separator-comment-line-two-comment-lines] [fixture:
-gitgraph/lex-string-line-separator-comment-line-two-regions] [fixture:
-gitgraph/lex-string-line-separator-comment-line-spaces-before] [fixture:
-gitgraph/lex-string-line-separator-comment-line-line-feed-before] [fixture:
-gitgraph/lex-string-line-separator-comment-line-directive-before] [fixture:
-gitgraph/lex-string-line-separator-comment-line-line-rule-before] [fixture:
-gitgraph/lex-string-line-separator-comment-line-line-rule-after] [fixture:
-gitgraph/lex-string-line-separator-comment-line-bare-percent] [fixture:
-gitgraph/lex-string-line-separator-comment-line-percent-brace] [fixture:
-gitgraph/lex-quoted-branch-ref-line-separator-then-comment-line] [fixture:
-gitgraph/lex-message-string-line-separator-then-comment-line] [fixture:
-gitgraph/lex-tag-string-line-separator-then-comment-line] [fixture:
-gitgraph/lex-parent-string-line-separator-then-comment-line] [fixture:
-gitgraph/lex-merge-branch-string-line-separator-then-comment-line] [fixture:
-gitgraph/lex-merge-id-string-line-separator-then-comment-line] [fixture:
-gitgraph/lex-merge-tag-string-line-separator-then-comment-line] [fixture:
-gitgraph/lex-cherry-pick-id-string-line-separator-then-comment-line] [fixture:
-gitgraph/lex-cherry-pick-tag-string-line-separator-then-comment-line]
+
+[fixture: gitgraph/lex-string-line-separator-then-comment-line]
+[fixture: gitgraph/lex-string-paragraph-separator-then-comment-line]
+[fixture: gitgraph/lex-title-line-separator-then-comment-line]
+[fixture: gitgraph/lex-acc-title-line-separator-then-comment-line]
+[fixture: gitgraph/lex-acc-descr-line-separator-then-comment-line]
+[fixture: gitgraph/lex-acc-descr-block-line-separator-then-comment-line]
+[fixture: gitgraph/lex-string-line-separator-comment-line-directive-next]
+[fixture: gitgraph/lex-string-line-separator-comment-line-space-next]
+[fixture: gitgraph/lex-string-line-separator-comment-line-separator-next]
+[fixture: gitgraph/lex-string-line-separator-comment-line-empty-line]
+[fixture: gitgraph/lex-string-line-separator-comment-line-end-of-text]
+[fixture: gitgraph/lex-title-line-separator-comment-line-end-of-text]
+[fixture: gitgraph/lex-string-line-separator-comment-line-cr]
+[fixture: gitgraph/lex-string-line-separator-comment-line-crlf]
+[fixture: gitgraph/lex-string-line-separator-comment-line-two-comment-lines]
+[fixture: gitgraph/lex-string-line-separator-comment-line-two-regions]
+[fixture: gitgraph/lex-string-line-separator-comment-line-spaces-before]
+[fixture: gitgraph/lex-string-line-separator-comment-line-line-feed-before]
+[fixture: gitgraph/lex-string-line-separator-comment-line-directive-before]
+[fixture: gitgraph/lex-string-line-separator-comment-line-line-rule-before]
+[fixture: gitgraph/lex-string-line-separator-comment-line-line-rule-after]
+[fixture: gitgraph/lex-string-line-separator-comment-line-bare-percent]
+[fixture: gitgraph/lex-string-line-separator-comment-line-percent-brace]
+[fixture: gitgraph/lex-quoted-branch-ref-line-separator-then-comment-line]
+[fixture: gitgraph/lex-message-string-line-separator-then-comment-line]
+[fixture: gitgraph/lex-tag-string-line-separator-then-comment-line]
+[fixture: gitgraph/lex-parent-string-line-separator-then-comment-line]
+[fixture: gitgraph/lex-merge-branch-string-line-separator-then-comment-line]
+[fixture: gitgraph/lex-merge-id-string-line-separator-then-comment-line]
+[fixture: gitgraph/lex-merge-tag-string-line-separator-then-comment-line]
+[fixture: gitgraph/lex-cherry-pick-id-string-line-separator-then-comment-line]
+[fixture: gitgraph/lex-cherry-pick-tag-string-line-separator-then-comment-line]
 
 ### 共通の複合形
 
@@ -328,11 +347,13 @@ gitgraph/lex-cherry-pick-tag-string-line-separator-then-comment-line]
 `acc-title-line` は `accTitle`、0 個以上の ASCII の空白・タブ、コロン、
 空でもよい行のテキストを読み、`acc-descr-line` は `accDescr` で同じ形です。
 行のテキストは最初の `%%` か物理的な行末で終わり、次の行を値に取りません。
-コロンの前の Unicode の空白は拒否します。 [fixture: gitgraph/title-tab]
-[fixture: gitgraph/title-next-line] [fixture: gitgraph/acctitle-next-line]
-[fixture: gitgraph/accdescr-next-line] [fixture: gitgraph/title-nbsp]
-[fixture: gitgraph/acctitle-nbsp-colon] [fixture: gitgraph/accdescr-nbsp-colon]
-[fixture: gitgraph/comment-title] [fixture: gitgraph/lex-description-line-null]
+コロンの前の Unicode の空白は拒否します。
+
+[fixture: gitgraph/title-tab] [fixture: gitgraph/title-next-line]
+[fixture: gitgraph/acctitle-next-line] [fixture: gitgraph/accdescr-next-line]
+[fixture: gitgraph/title-nbsp] [fixture: gitgraph/acctitle-nbsp-colon]
+[fixture: gitgraph/accdescr-nbsp-colon] [fixture: gitgraph/comment-title]
+[fixture: gitgraph/lex-description-line-null]
 
 行の値の中の LS・PS、単独の `%`、セミコロン、コロン、引用符、
 逆斜線は通常のテキストです。
@@ -341,6 +362,7 @@ gitgraph/lex-cherry-pick-tag-string-line-separator-then-comment-line]
 最初の `}` までの内容を読みます。
 波括弧は入れ子にならず、引用符と逆斜線は閉じを保護しません。
 閉じていないブロックは拒否し、コロンがあれば波括弧の前でも行の形になります。
+
 [fixture: gitgraph/eol-title-ls] [fixture: gitgraph/eol-acctitle-semicolons]
 [fixture: gitgraph/common-title-open-quote]
 [fixture: gitgraph/common-block-quoted-escape]
@@ -360,6 +382,7 @@ LF は読み飛ばされない改行で、共通の CR・CRLF 変換により、
 物理的な各行終端を 1 個の LF として読みます。
 追加する LF の前の EOF も含め、ほかの共通の空白は通常の区切りになりません。
 ただし、囲む値の内容や共通の先頭 trivia にはなれます。
+
 [fixture: gitgraph/lex-tab] [fixture: gitgraph/lex-cr]
 [fixture: gitgraph/lex-crlf] [fixture: gitgraph/lex-ls]
 [fixture: gitgraph/lex-ps] [fixture: gitgraph/lex-body-nbsp]
@@ -374,6 +397,7 @@ LS・PS は値の中に残ります。
 1 個の `%` はコメントではありません。
 書かれた 2 個の `%` の間には共通のディレクティブを置けます。
 隠れた DIRECTIVE が一致しなければ、この規則に戻る場合があります。
+
 [fixture: gitgraph/comment-commit-glued]
 [fixture: gitgraph/comment-native-ls-content]
 [fixture: gitgraph/comment-native-ps-content]
@@ -390,7 +414,9 @@ LF が隠れた YAML を開きます。
 その後の字下げのない `---` まで読みます。
 閉じの直後は LF、共通の空白、または EOF でなければいけません。
 本文がある一致がなければ、開始の LF の直後が閉じの、空の本文を試します。
-YAML の内容は検証しません。 [fixture: gitgraph/lex-yaml-invalid-body]
+YAML の内容は検証しません。
+
+[fixture: gitgraph/lex-yaml-invalid-body]
 [fixture: gitgraph/lex-yaml-empty-body]
 [fixture: gitgraph/lex-yaml-three-adjacent-fences]
 [fixture: gitgraph/lex-yaml-empty-first-spare-line]
@@ -403,6 +429,7 @@ YAML の内容は検証しません。 [fixture: gitgraph/lex-yaml-invalid-body]
 `---x` のような不適格な行は後の閉じまで本文に残り、
 字下げした閉じは一致しません。
 先行する行の値や裸の参照が、開始のダッシュに見える部分を既に持つ場合もあります。
+
 [fixture: gitgraph/lex-yaml-empty-then-nonempty]
 [fixture: gitgraph/lex-yaml-empty-followed-later-block]
 [fixture: gitgraph/lex-hidden-yaml-two-empty-in-gap]
@@ -421,6 +448,7 @@ YAML の内容は検証しません。 [fixture: gitgraph/lex-yaml-invalid-body]
 本文は空でも、改行・LS・PS を含んでも構いません。
 境界を満たさない閉じは、適格な閉じまで本文に残します。
 適格な閉じがなければ、後のコメントの規則を試します。
+
 [fixture: gitgraph/lex-hidden-directive-between-option-value]
 [fixture: gitgraph/lex-hidden-directive-boundary-word]
 [fixture: gitgraph/lex-hidden-directive-boundary-ls]
@@ -433,6 +461,7 @@ YAML の内容は検証しません。 [fixture: gitgraph/lex-yaml-invalid-body]
 完了した文と次の文を区切る唯一の LF を消費すると、入力を拒否します。
 追加の LF や、閉じの後の ASCII の空白・タブがあれば、必要な EOL が残ります。
 元の EOF では追加される LF を消費しても、EOF が EOL を満たします。
+
 [fixture: gitgraph/lex-hidden-directive-after-commit]
 [fixture: gitgraph/lex-hidden-directive-commit-spare-lf]
 [fixture: gitgraph/lex-hidden-directive-commit-closing-space]
@@ -446,6 +475,7 @@ branch、checkout、switch、merge、cherry-pick と 4 個の共通の形にも�
 行の値の後の YAML に見える形は、隠れた末尾ではなく行の内容です。
 文の完全な構成要素の間には隠れた形を置けます。
 その隙間で消費された LF は、それ自体では文を終わらせません。
+
 [fixture: gitgraph/lex-hidden-directive-after-branch]
 [fixture: gitgraph/lex-hidden-directive-after-checkout]
 [fixture: gitgraph/lex-hidden-directive-after-switch]
@@ -464,6 +494,7 @@ branch、checkout、switch、merge、cherry-pick と 4 個の共通の形にも�
 形の中の共通のディレクティブとコメント領域は trivia で、
 認識された init ディレクティブの設定の効果は独立して保ちます。
 隠れた形自体はフロントマターや設定にはなりません。
+
 [fixture: gitgraph/lex-hidden-yaml-global-directive-body]
 [fixture: gitgraph/lex-hidden-yaml-global-comment-body]
 [fixture: gitgraph/lex-hidden-directive-global-comment-body]
@@ -475,8 +506,9 @@ branch、checkout、switch、merge、cherry-pick と 4 個の共通の形にも�
 
 記法は [common.md](../common.md#notation) に従います。
 隠れた形は [ast/gitgraph.md](../ast/gitgraph.md) の隙間や本文の場所に入り、
-読み飛ばされない文法の単位を追加しません。 [fixture: gitgraph/header-only]
-[fixture: gitgraph/gram-all-fields]
+読み飛ばされない文法の単位を追加しません。
+
+[fixture: gitgraph/header-only] [fixture: gitgraph/gram-all-fields]
 [fixture: gitgraph/lex-hidden-directive-between-option-value]
 
 ```text
@@ -529,6 +561,7 @@ cherry-pick の id・parent・tag も任意の順で繰り返せます。
 すべての出現をソース順に保ちます。
 branch は必須の名前の後に order を高々 1 個置けます。
 checkout と switch は名前をちょうど 1 個要求します。
+
 [fixture: gitgraph/header-only] [fixture: gitgraph/gram-commit-repeated-options]
 [fixture: gitgraph/gram-merge-repeated-options]
 [fixture: gitgraph/gram-cherry-pick-repeated-options]
@@ -542,6 +575,7 @@ cherry-pick の type や裸の message、2 個目の見出し、未対応の res
 完了した説明のブロックにも EOL が必要です。
 追加される LF により、最後の文は書かれた行終端なしで終われます。
 その LF はソースの文字ではありません。
+
 [fixture: gitgraph/gram-commit-msg-missing]
 [fixture: gitgraph/gram-commit-unknown-option]
 [fixture: gitgraph/gram-merge-message]
@@ -564,6 +598,7 @@ cherry-pick の type や裸の message、2 個目の見出し、未対応の res
 ルートの既定値 `securityLevel: strict` は、
 この未設定の gitgraph の値を補いません。
 変換後の値は、[以下の比較規則](#比較値)で定義します。
+
 [fixture: gitgraph/db-duplicate-main]
 [fixture: gitgraph/db-duplicate-converted-branch]
 [fixture: gitgraph/html-all-texts] [fixture: gitgraph/config-security-strict]
@@ -576,11 +611,14 @@ cherry-pick の type や裸の message、2 個目の見出し、未対応の res
 上記の既定値を使います。
 比較の参照ではこの鍵だけを除き、
 Mermaid が導くタイトルや Db にだけ効く設定を残します。
+
 [fixture: gitgraph/div-frontmatter-main-branch-preserves-title]
 [fixture: gitgraph/div-frontmatter-html-labels-default-comparison]
 [fixture: gitgraph/div-init-html-labels-default-comparison]
+
 埋め込み設定により mermaid.js の受理が変わる入力は、両方向でこの差異です。
 mermaid.js が受理してこの仕様が拒否する場合も、その逆の場合も含みます。
+
 [fixture: gitgraph/docs-community-contributing-05cdc44b]
 [fixture: gitgraph/docs-syntax-gitgraph-2ea99686]
 [fixture: gitgraph/div-frontmatter-main-branch-duplicate-default-accepted]
@@ -592,6 +630,7 @@ mermaid.js が受理してこの仕様が拒否する場合も、その逆の場
 root の `securityLevel` と `gitGraph.securityLevel` を変更できません。
 これらの設定の試みは、Mermaid が既に除きます。
 gitgraph の値は、テキストの外のサイト設定では与えられます。
+
 [fixture: gitgraph/frontmatter-security-level-secure]
 [fixture: gitgraph/directive-security-level-secure]
 [fixture: gitgraph/config-gitgraph-loose]
@@ -604,7 +643,9 @@ gitgraph の値は、テキストの外のサイト設定では与えられま�
 `gitGraph.htmlLabels` の無効化や `gitGraph.securityLevel` の loose への変更は、
 エスケープを変えます。
 ルートの `htmlLabels` や `securityLevel` だけを変えても、
-この比較値は変わりません。 [fixture: gitgraph/config-main-branch]
+この比較値は変わりません。
+
+[fixture: gitgraph/config-main-branch]
 [fixture: gitgraph/config-gitgraph-html-false]
 [fixture: gitgraph/config-gitgraph-loose] [fixture: gitgraph/config-html-false]
 [fixture: gitgraph/config-security-loose]
@@ -612,23 +653,33 @@ gitgraph の値は、テキストの外のサイト設定では与えられま�
 設定の例は、サイトの設定と内容を解釈しない埋め込み設定を区別します。
 
 - 初期分岐名が `trunk`、その順序が 5 になります。
+
   [fixture: gitgraph/config-main-branch]
+
 - 初期分岐名が空の文字列になり、`main` に戻しません。
+
   [fixture: gitgraph/config-main-empty-name]
+
 - 初期分岐名がそのままの `<b>main</b>` になり、
   書かれた分岐名や参照名に適用するエスケープを行いません。
+
   [fixture: gitgraph/config-main-html]
+
 - 初期分岐名が `__proto__` になり、通常の名前として扱います。
+
   [fixture: gitgraph/config-main-prototype]
+
 - Mermaid は init ディレクティブから初期名 `trunk` と順序 3 を得ます。
   ここでは引数の内容を解釈しないため、
   受理条件には引き続き `main` と既定のエスケープを使います。
+
   [fixture: gitgraph/directive-config]
 
 #### 比較値
 
 比較値は、[エンティティの規則](../common.ja.md#エンティティ) で、
 エンティティ参照をプレースホルダの文字列に置き換えた後の値です。
+
 [fixture: gitgraph/db-compare-entity-placeholder-duplicate]
 [fixture: gitgraph/db-compare-entity-literal-hash-distinct]
 
@@ -638,6 +689,7 @@ commit・merge の commit id、cherry-pick の元の id と parent id に適用�
 裸の参照はその文字を使います。
 どちらの引用符の文字列も、内部の下記のエスケープを 1 回だけ復号して使います。
 結果の文字が同じ裸の参照と引用文字列は、等しい値として比較します。
+
 [fixture: gitgraph/db-compare-bare-and-quoted]
 [fixture: gitgraph/db-compare-branch-lookups]
 [fixture: gitgraph/db-duplicate-converted-branch]
@@ -648,6 +700,7 @@ commit・merge の commit id、cherry-pick の元の id と parent id に適用�
 
 引用文字列の次の逆斜線の組は、表の文字として比較します。
 各組は書かれた 2 文字だけを取り、後続の数字でゼロのエスケープを伸ばしません。
+
 [fixture: gitgraph/db-compare-escape-backspace]
 [fixture: gitgraph/db-compare-escape-form-feed]
 [fixture: gitgraph/db-compare-escape-line-feed]
@@ -673,6 +726,7 @@ commit・merge の commit id、cherry-pick の元の id と parent id に適用�
 16 進・Unicode・8 進のエスケープはありません。
 `\x41` は x41、`\u0041` は u0041 になり、どちらも A にはなりません。
 先の組が作った逆斜線を、もう一度復号しません。
+
 [fixture: gitgraph/db-duplicate-converted-branch]
 [fixture: gitgraph/db-converted-duplicate-id]
 [fixture: gitgraph/db-compare-escape-double-quote]
@@ -688,6 +742,7 @@ commit・merge の commit id、cherry-pick の元の id と parent id に適用�
 文字列に書かれた CR・CRLF は比較の前に LF になります。
 一方、復号した `\r` は CR で、その LF とは異なります。
 逆斜線に物理的な改行・LS・PS が続く形は、文字列の規則で引き続き拒否します。
+
 [fixture: gitgraph/db-compare-physical-line-endings]
 [fixture: gitgraph/db-compare-escape-carriage-return]
 [fixture: gitgraph/lex-string-backslash-lf]
@@ -700,6 +755,7 @@ commit・merge の commit id、cherry-pick の元の id と parent id に適用�
 空の名前と空白だけの名前も異なります。
 commit id、cherry-pick の元と親でも同じく保ち、
 空白のない値で空白つきの id を参照することはできません。
+
 [fixture: gitgraph/db-compare-padding-and-case]
 [fixture: gitgraph/db-compare-inner-whitespace]
 [fixture: gitgraph/db-compare-empty-and-whitespace]
@@ -726,6 +782,7 @@ commit id、cherry-pick の元と親でも同じく保ち、
 同じ分岐の checkout にどちらの綴りも使え、
 両方の分岐を作ると重複として拒否します。
 比較する値だけの規則で、木のソースのテキストは置き換えません。
+
 [fixture: gitgraph/db-compare-br-overlap-checkout-accepted]
 [fixture: gitgraph/db-compare-br-overlap-branch-rejected]
 [fixture: gitgraph/db-compare-default-html]
@@ -742,6 +799,7 @@ commit id、cherry-pick の元と親でも同じく保ち、
 書かれた同一性の指定がないことを意味します。
 cherry-pick の元の欠落や空は拒否し、parent の欠落や空は親の表明を与えません。
 空白だけの id は空ではありません。
+
 [fixture: gitgraph/gram-commit-repeated-options]
 [fixture: gitgraph/db-overwritten-invalid-source]
 [fixture: gitgraph/db-overwritten-invalid-merge-id]
@@ -763,6 +821,7 @@ cherry-pick の元の欠落や空は拒否し、parent の欠落や空は親の�
 同一性の参照は、置換も含め、常に現在の定義を意味します。
 merge commit とは、現在の定義が merge で作られたものです。
 通常の commit の表示用 type や merge の type option は、この区別を変えません。
+
 [fixture: gitgraph/db-generated-ids] [fixture: gitgraph/gram-all-fields]
 [fixture: gitgraph/db-three-definitions]
 [fixture: gitgraph/db-state-visual-type-still-merge]
@@ -771,8 +830,9 @@ merge commit とは、現在の定義が merge で作られたものです。
 初めは `main` 分岐だけがあり、その先端は空です。
 `main` が現在の分岐で、HEAD も空、commit の定義はありません。
 この初期名を変えるのは、上記のテキストの外のサイト設定だけです。
-空の先端には commit の定義がありません。 [fixture: gitgraph/header-only]
-[fixture: gitgraph/db-state-empty-branch-heads]
+空の先端には commit の定義がありません。
+
+[fixture: gitgraph/header-only] [fixture: gitgraph/db-state-empty-branch-heads]
 [fixture: gitgraph/db-merge-self-empty]
 [fixture: gitgraph/db-merge-empty-current]
 [fixture: gitgraph/db-merge-empty-other]
@@ -784,7 +844,9 @@ merge commit とは、現在の定義が merge で作られたものです。
 通常の commit と merge は、代わりに空でない比較 id を指定できます。
 cherry-pick は常に無名の同一性を作ります。
 記録の generated-commit-N は要約用の綴りで、
-その同一性を参照する名前ではありません。 [fixture: gitgraph/db-generated-ids]
+その同一性を参照する名前ではありません。
+
+[fixture: gitgraph/db-generated-ids]
 [fixture: gitgraph/db-generated-name-collision]
 [fixture: gitgraph/db-random-shaped-custom-id]
 [fixture: gitgraph/db-state-empty-ids-are-fresh]
@@ -795,6 +857,7 @@ cherry-pick は常に無名の同一性を作ります。
 親は HEAD が空なら空、そうでなければ直前の HEAD の同一性 1 個です。
 id は上記の同一性の規則に従います。
 この定義を HEAD にし、現在の分岐の先端だけをその同一性にします。
+
 [fixture: gitgraph/db-three-definitions]
 [fixture: gitgraph/db-state-empty-branch-heads]
 [fixture: gitgraph/db-state-checkout-head] [fixture: gitgraph/db-duplicate-id]
@@ -808,7 +871,9 @@ order の有無でこの履歴への効果は変わりません。
 order は表示順を指定し、選択する HEAD や親の同一性を変えません。
 成功した checkout・switch は、指定の分岐を現在の分岐にし、
 同じ方法でその先端から HEAD を復元します。
-commit は作らず、どの先端も変えません。 [fixture: gitgraph/db-generated-ids]
+commit は作らず、どの先端も変えません。
+
+[fixture: gitgraph/db-generated-ids]
 [fixture: gitgraph/db-state-empty-branch-heads]
 [fixture: gitgraph/db-state-checkout-head] [fixture: gitgraph/gram-branch-order]
 [fixture: gitgraph/gram-branch-order-tie] [fixture: gitgraph/gram-checkout]
@@ -820,8 +885,10 @@ commit は作らず、どの先端も変えません。 [fixture: gitgraph/db-ge
 空でない比較 id が指定されていればそれを使い、
 なければ新しい無名の同一性を使います。
 新しい commit を HEAD にし、現在の分岐の先端だけを進めます。
-元の分岐の先端は変えません。 [fixture: gitgraph/db-generated-ids]
-[fixture: gitgraph/gram-all-fields] [fixture: gitgraph/gram-merge-empty-id]
+元の分岐の先端は変えません。
+
+[fixture: gitgraph/db-generated-ids] [fixture: gitgraph/gram-all-fields]
+[fixture: gitgraph/gram-merge-empty-id]
 [fixture: gitgraph/db-state-merge-head-and-source]
 
 成功した cherry-pick は、元の id を現在の定義に解決し、
@@ -831,7 +898,9 @@ commit は作らず、どの先端も変えません。 [fixture: gitgraph/db-ge
 parent option は、元についての受理条件の表明だけです。
 新しい親の列を選んだり、元の同一性を表明した親に置き換えたりしません。
 新しい commit を HEAD にし、現在の分岐の先端だけを進めます。
-元の分岐の先端は変えません。 [fixture: gitgraph/gram-cherry-pick]
+元の分岐の先端は変えません。
+
+[fixture: gitgraph/gram-cherry-pick]
 [fixture: gitgraph/gram-cherry-pick-merge-parent]
 [fixture: gitgraph/db-ordinary-parent-accepted]
 [fixture: gitgraph/db-cherry-source-ancestor-on-current-tip]
@@ -845,6 +914,7 @@ parent option は、元についての受理条件の表明だけです。
 HEAD は置換後の定義になり、通常の commit と同じく現在の分岐の先端を設定します。
 自己参照する親や循環を許します。
 merge を通常の定義に置き換えた後は、以後の判定で merge ではありません。
+
 [fixture: gitgraph/db-duplicate-id] [fixture: gitgraph/db-three-definitions]
 [fixture: gitgraph/db-converted-duplicate-id]
 [fixture: gitgraph/db-duplicate-earlier-id-current-head]
@@ -855,7 +925,9 @@ merge を通常の定義に置き換えた後は、以後の判定で merge で�
 方向、共通のタイトル・アクセシビリティの文、message、tag、隠れた形、コメント、
 空白は、この履歴の状態を変えません。
 type option は表示を変えるもので、ここで定めた分岐の先端、HEAD、
-親の同一性は変えません。 [fixture: gitgraph/gram-all-fields]
+親の同一性は変えません。
+
+[fixture: gitgraph/gram-all-fields]
 [fixture: gitgraph/db-state-common-forms-preserve-head]
 [fixture: gitgraph/db-state-visual-type-still-merge]
 
@@ -864,6 +936,7 @@ type option は表示を変えるもので、ここで定めた分岐の先端�
 最初の commit の同一性を b も共有し、次の commit で b だけが進みます。
 checkout は最初の commit を HEAD に戻し、
 merge はその同一性と b の新しい先端を順に親として、新しい同一性を作ります。
+
 [fixture: gitgraph/db-generated-ids]
 
 #### 拒否
@@ -875,89 +948,92 @@ merge はその同一性と b の新しい先端を順に親として、新し�
 祖先の探索は行いません。
 根拠は
 [gitGraphAst.ts](https://github.com/mermaid-js/mermaid/blob/2086904e76c692331e34a45d7cc3bc30860d040e/packages/mermaid/src/diagrams/git/gitGraphAst.ts#L49-L394)
-です。 [fixture: gitgraph/db-merge-self]
+です。
+
+[fixture: gitgraph/db-merge-self]
 [fixture: gitgraph/db-cherry-pick-invalid-parent]
 [fixture: gitgraph/db-ordinary-parent-accepted]
 [fixture: gitgraph/db-cherry-source-ancestor-on-current-tip]
 [fixture: gitgraph/db-state-replacement-source-origin]
 
-| 操作                                                            | 拒否条件                                                                                                                                           |
-| --------------------------------------------------------------- | -------------------------------------------------------------------------------------------------------------------------------------------------- |
-| branch                                                          | 初期分岐（既定では `main`）を含め、既存の分岐の実効名を拒否します。初期名のサイト設定の変更は、上記のとおり設定を持つ側が適用します。              |
-|                                                                 |
-| [fixture: gitgraph/db-duplicate-branch]                         |
-|                                                                 |
-| [fixture: gitgraph/db-duplicate-main]                           |
-|                                                                 |
-| [fixture: gitgraph/db-duplicate-converted-branch]               |
-|                                                                 |
-| checkout / switch                                               | 存在しない分岐の実効名を拒否します。                                                                                                               |
-|                                                                 |
-| [fixture: gitgraph/db-checkout-unknown]                         |
-|                                                                 |
-| [fixture: gitgraph/db-switch-unknown]                           |
-|                                                                 |
-| merge                                                           | 両方の先端があり、現在の先端の commit が指定された元の分岐で作られた場合は拒否します。                                                             |
-|                                                                 |
-| [fixture: gitgraph/db-merge-current-created-on-source]          |
-|                                                                 |
-| [fixture: gitgraph/db-merge-same-current-origin-different-head] |
-|                                                                 |
-| merge                                                           | commit がなくても、現在の分岐への自己 merge を拒否します。                                                                                         |
-|                                                                 |
-| [fixture: gitgraph/db-merge-self]                               |
-|                                                                 |
-| [fixture: gitgraph/db-merge-self-empty]                         |
-|                                                                 |
-| merge                                                           | 現在の先端に commit の定義がない場合、元の分岐が未知の場合、元の先端に commit の定義がない場合、両方の先端が同じ現在の定義を指す場合は拒否します。 |
-|                                                                 |
-| [fixture: gitgraph/db-merge-empty-current]                      |
-|                                                                 |
-| [fixture: gitgraph/db-merge-unknown]                            |
-|                                                                 |
-| [fixture: gitgraph/db-merge-unknown-generated-prefix]           |
-|                                                                 |
-| [fixture: gitgraph/db-merge-empty-other]                        |
-|                                                                 |
-| [fixture: gitgraph/db-merge-same-head]                          |
-| merge                                                           | 空でない実効 custom id が既存の commit を指せば拒否します。                                                                                        |
-|                                                                 |
-| [fixture: gitgraph/db-merge-duplicate-id]                       |
-|                                                                 |
-| [fixture: gitgraph/db-overwritten-invalid-merge-id]             |
-|                                                                 |
-| cherry-pick                                                     | 元の実効 id が欠落、空、または未知なら拒否します。                                                                                                 |
-|                                                                 |
-| [fixture: gitgraph/db-cherry-pick-missing]                      |
-|                                                                 |
-| [fixture: gitgraph/db-cherry-pick-empty-id]                     |
-|                                                                 |
-| [fixture: gitgraph/db-cherry-pick-unknown]                      |
-|                                                                 |
-| cherry-pick                                                     | 元が merge でなくても、空でない実効 parent が元の直接の親でなければ拒否します。                                                                    |
-|                                                                 |
-| [fixture: gitgraph/db-cherry-pick-invalid-parent]               |
-|                                                                 |
-| [fixture: gitgraph/db-ordinary-parent-accepted]                 |
-|                                                                 |
-| cherry-pick                                                     | merge が元なら、実効 parent の欠落や空を拒否します。見た目の custom type ではこの条件を除けません。                                                |
-|                                                                 |
-| [fixture: gitgraph/db-cherry-pick-merge-no-parent]              |
-|                                                                 |
-| [fixture: gitgraph/db-merge-empty-parent]                       |
-|                                                                 |
-| [fixture: gitgraph/gram-cherry-pick-merge-parent]               |
-|                                                                 |
-| cherry-pick                                                     | 元が現在の分岐で作られた場合、または現在の分岐の先端に commit の定義がなければ拒否します。                                                         |
-|                                                                 |
-| [fixture: gitgraph/db-cherry-pick-same-branch]                  |
-|                                                                 |
-| [fixture: gitgraph/db-cherry-pick-empty-current]                |
-|                                                                 |
+| 操作              | 拒否条件                                                                                                                                           | fixture                                                         |
+| ----------------- | -------------------------------------------------------------------------------------------------------------------------------------------------- | --------------------------------------------------------------- |
+| branch            | 初期分岐（既定では `main`）を含め、既存の分岐の実効名を拒否します。初期名のサイト設定の変更は、上記のとおり設定を持つ側が適用します。              |                                                                 |
+|                   |                                                                                                                                                    |                                                                 |
+|                   |                                                                                                                                                    | [fixture: gitgraph/db-duplicate-branch]                         |
+|                   |                                                                                                                                                    |                                                                 |
+|                   |                                                                                                                                                    | [fixture: gitgraph/db-duplicate-main]                           |
+|                   |                                                                                                                                                    |                                                                 |
+|                   |                                                                                                                                                    | [fixture: gitgraph/db-duplicate-converted-branch]               |
+|                   |                                                                                                                                                    |                                                                 |
+| checkout / switch | 存在しない分岐の実効名を拒否します。                                                                                                               |                                                                 |
+|                   |                                                                                                                                                    |                                                                 |
+|                   |                                                                                                                                                    | [fixture: gitgraph/db-checkout-unknown]                         |
+|                   |                                                                                                                                                    |                                                                 |
+|                   |                                                                                                                                                    | [fixture: gitgraph/db-switch-unknown]                           |
+|                   |                                                                                                                                                    |                                                                 |
+| merge             | 両方の先端があり、現在の先端の commit が指定された元の分岐で作られた場合は拒否します。                                                             |                                                                 |
+|                   |                                                                                                                                                    |                                                                 |
+|                   |                                                                                                                                                    | [fixture: gitgraph/db-merge-current-created-on-source]          |
+|                   |                                                                                                                                                    |                                                                 |
+|                   |                                                                                                                                                    | [fixture: gitgraph/db-merge-same-current-origin-different-head] |
+|                   |                                                                                                                                                    |                                                                 |
+| merge             | commit がなくても、現在の分岐への自己 merge を拒否します。                                                                                         |                                                                 |
+|                   |                                                                                                                                                    |                                                                 |
+|                   |                                                                                                                                                    | [fixture: gitgraph/db-merge-self]                               |
+|                   |                                                                                                                                                    |                                                                 |
+|                   |                                                                                                                                                    | [fixture: gitgraph/db-merge-self-empty]                         |
+|                   |                                                                                                                                                    |                                                                 |
+| merge             | 現在の先端に commit の定義がない場合、元の分岐が未知の場合、元の先端に commit の定義がない場合、両方の先端が同じ現在の定義を指す場合は拒否します。 |                                                                 |
+|                   |                                                                                                                                                    |                                                                 |
+|                   |                                                                                                                                                    | [fixture: gitgraph/db-merge-empty-current]                      |
+|                   |                                                                                                                                                    |                                                                 |
+|                   |                                                                                                                                                    | [fixture: gitgraph/db-merge-unknown]                            |
+|                   |                                                                                                                                                    |                                                                 |
+|                   |                                                                                                                                                    | [fixture: gitgraph/db-merge-unknown-generated-prefix]           |
+|                   |                                                                                                                                                    |                                                                 |
+|                   |                                                                                                                                                    | [fixture: gitgraph/db-merge-empty-other]                        |
+|                   |                                                                                                                                                    |                                                                 |
+|                   |                                                                                                                                                    | [fixture: gitgraph/db-merge-same-head]                          |
+| merge             | 空でない実効 custom id が既存の commit を指せば拒否します。                                                                                        |                                                                 |
+|                   |                                                                                                                                                    |                                                                 |
+|                   |                                                                                                                                                    | [fixture: gitgraph/db-merge-duplicate-id]                       |
+|                   |                                                                                                                                                    |                                                                 |
+|                   |                                                                                                                                                    | [fixture: gitgraph/db-overwritten-invalid-merge-id]             |
+|                   |                                                                                                                                                    |                                                                 |
+| cherry-pick       | 元の実効 id が欠落、空、または未知なら拒否します。                                                                                                 |                                                                 |
+|                   |                                                                                                                                                    |                                                                 |
+|                   |                                                                                                                                                    | [fixture: gitgraph/db-cherry-pick-missing]                      |
+|                   |                                                                                                                                                    |                                                                 |
+|                   |                                                                                                                                                    | [fixture: gitgraph/db-cherry-pick-empty-id]                     |
+|                   |                                                                                                                                                    |                                                                 |
+|                   |                                                                                                                                                    | [fixture: gitgraph/db-cherry-pick-unknown]                      |
+|                   |                                                                                                                                                    |                                                                 |
+| cherry-pick       | 元が merge でなくても、空でない実効 parent が元の直接の親でなければ拒否します。                                                                    |                                                                 |
+|                   |                                                                                                                                                    |                                                                 |
+|                   |                                                                                                                                                    | [fixture: gitgraph/db-cherry-pick-invalid-parent]               |
+|                   |                                                                                                                                                    |                                                                 |
+|                   |                                                                                                                                                    | [fixture: gitgraph/db-ordinary-parent-accepted]                 |
+|                   |                                                                                                                                                    |                                                                 |
+| cherry-pick       | merge が元なら、実効 parent の欠落や空を拒否します。見た目の custom type ではこの条件を除けません。                                                |                                                                 |
+|                   |                                                                                                                                                    |                                                                 |
+|                   |                                                                                                                                                    | [fixture: gitgraph/db-cherry-pick-merge-no-parent]              |
+|                   |                                                                                                                                                    |                                                                 |
+|                   |                                                                                                                                                    | [fixture: gitgraph/db-merge-empty-parent]                       |
+|                   |                                                                                                                                                    |                                                                 |
+|                   |                                                                                                                                                    | [fixture: gitgraph/gram-cherry-pick-merge-parent]               |
+|                   |                                                                                                                                                    |                                                                 |
+| cherry-pick       | 元が現在の分岐で作られた場合、または現在の分岐の先端に commit の定義がなければ拒否します。                                                         |                                                                 |
+|                   |                                                                                                                                                    |                                                                 |
+|                   |                                                                                                                                                    | [fixture: gitgraph/db-cherry-pick-same-branch]                  |
+|                   |                                                                                                                                                    |                                                                 |
+|                   |                                                                                                                                                    | [fixture: gitgraph/db-cherry-pick-empty-current]                |
+|                   |                                                                                                                                                    |                                                                 |
 
 祖先関係ではなく作成した分岐を判定し、
 merge を通じて既に到達できる元も cherry-pick できます。
 cherry-pick の対象 ID を指定する option はありません。
+
 [fixture: gitgraph/db-overwritten-invalid-source]
 [fixture: gitgraph/db-overwritten-invalid-merge-id]
 [fixture: gitgraph/gram-cherry-pick-repeated-options]
@@ -966,6 +1042,7 @@ cherry-pick の対象 ID を指定する option はありません。
 
 未知の分岐や、cherry-pick・merge の条件の不成立は拒否します。
 木で表せることだけでは、逆方向の差異にはなりません。
+
 [fixture: gitgraph/db-duplicate-id] [fixture: gitgraph/db-three-definitions]
 [fixture: gitgraph/db-generated-name-collision]
 [fixture: gitgraph/db-duplicate-replaces-merge-type]
@@ -981,6 +1058,7 @@ cherry-pick の対象 ID を指定する option はありません。
 受理に使う比較値と履歴は、その要約ではなく、上記で定義します。
 書かれた葉や option・文のすべての出現を木に残します。
 描画の要約で省かれる message も、木には保ちます。
+
 [fixture: gitgraph/gram-all-fields] [fixture: gitgraph/lex-string-escapes]
 [fixture: gitgraph/number-precision] [fixture: gitgraph/db-generated-ids]
 [fixture: gitgraph/gram-commit-repeated-options]
@@ -1000,6 +1078,7 @@ cherry-pick の対象 ID を指定する option はありません。
 この仕様だけが受理する逆方向の入力はありません。
 option の語とコロンの間や引用文字列の中は許し、
 両方が拒否する接着した境界の例には印を付けません。
+
 [fixture: gitgraph/div-directive-in-header]
 [fixture: gitgraph/div-directive-in-commit]
 [fixture: gitgraph/div-directive-in-option-keyword]
@@ -1017,6 +1096,7 @@ option の語とコロンの間や引用文字列の中は許し、
 理由 2 によりこの仕様では拒否し、逆方向の受理はありません。
 option の語とコロンの境界や完全な数の後なら trivia です。
 選択されないセミコロンは両方で拒否します。
+
 [fixture: gitgraph/div-style-semicolon-in-order-keyword]
 [fixture: gitgraph/div-style-semicolon-in-order-number]
 [fixture: gitgraph/div-lex-selected-semicolon-type-word]
@@ -1032,6 +1112,7 @@ option の語とコロンの境界や完全な数の後なら trivia です。
 Mermaid だけが受理する場合、ここだけが受理する場合があります。
 フロントマターのタイトルは Mermaid が得る値を保ち、
 結果の同じ通常の本文のタグやフロントマターのタグには印を付けません。
+
 [fixture: gitgraph/div-frontmatter-cross-title-value]
 [fixture: gitgraph/div-frontmatter-cross-string-enable]
 [fixture: gitgraph/div-frontmatter-cross-string-block]
@@ -1046,17 +1127,22 @@ Mermaid が拒否する先頭の不正な YAML は、ここでは受理します
 [比較する Db](../known-divergences/embedded-data-opaque.ja.md#比較する-db)
 の規則により、`specified.json` はその Db と埋め込み値を比較のために記録します。
 この 2 つのフロントマターでは、その Db は初期分岐 `main` だけの空の履歴です。
+
 [fixture: gitgraph/div-frontmatter-invalid-yaml]
 [fixture: gitgraph/div-frontmatter-html-invalid-yaml]
+
 埋め込み設定は、ここでの受理に使う初期分岐とエスケープの既定値を変えません。
 設定により、Mermaid が受理してここでは拒否する場合も、その逆の場合もあります。
+
 [fixture: gitgraph/docs-community-contributing-05cdc44b]
 [fixture: gitgraph/docs-syntax-gitgraph-2ea99686]
 [fixture: gitgraph/div-frontmatter-main-branch-duplicate-default-accepted]
 [fixture: gitgraph/div-frontmatter-main-branch-checkout-default-accepted]
 [fixture: gitgraph/div-init-main-branch-duplicate-default-accepted]
+
 先頭以外の不正な隠れた YAML は GitgraphIgnoredText に持て、既に一致します。
 Mermaid が受理する不正な init 引数も差異ではありません。
+
 [fixture: gitgraph/div-frontmatter-invalid-yaml]
 [fixture: gitgraph/div-frontmatter-html-invalid-yaml]
 [fixture: gitgraph/lex-yaml-invalid-body]
@@ -1070,6 +1156,7 @@ C4 の語を書かれたまま持てます。
 ここでは受理します。
 Mermaid が受理する入力をこの規則で拒否することはありません。
 後の `C4Context` や、LF で終わるコメントの対照例は一致します。
+
 [fixture: gitgraph/div-detect-c4container-id]
 [fixture: gitgraph/div-detect-c4component-branch]
 [fixture: gitgraph/div-detect-c4dynamic-message]
@@ -1089,6 +1176,7 @@ Mermaid が受理する入力をこの規則で拒否することはありませ
 理由 2 の逆方向として、固有の読み方がそこで拒否する共通の空白を受理します。
 Mermaid が受理する入力を拒否することはありません。
 裸の行を通過していなければ、同じ Unicode の空白も通常の字句規則で拒否します。
+
 [fixture: gitgraph/div-detect-bare-before-header-ls]
 [fixture: gitgraph/div-detect-bare-nbsp-line]
 [fixture: gitgraph/div-detect-retained-directive-bare-bom]
@@ -1102,6 +1190,7 @@ Mermaid が受理する入力を拒否することはありません。
 空の引用 option と説明のブロックには固有の構文があり、
 tokenless-empty-forms は適用しません。
 上流の導入の散文が小文字でも、見出しの別名にはしません。
+
 [fixture: gitgraph/gram-commit-empty-values]
 [fixture: gitgraph/lex-description-block-only-directive]
 [fixture: gitgraph/db-duplicate-id] [fixture: gitgraph/detect-lowercase]

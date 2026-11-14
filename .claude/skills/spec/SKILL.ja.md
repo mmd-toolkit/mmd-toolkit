@@ -169,6 +169,9 @@ pnpm run -s lint:chars
 `pnpm run lint:md` は、リンクかそのアンカーが何も指さないときに失敗する。
 `pnpm run lint:docs` は、
 仕様と parser と tests の文書の fixture の引用が何も指さないとき、
+これらの文書と整形ツールの文書で、
+引用が引用の段落か `fixture` の列（英語の文書では
+`Fixtures`）のセルの外にあるとき、
 mermaid.js へのリンクが pin した commit を指さないとき、
 英語の原本のない `.ja.md` があるときに失敗する。
 pin した commit は `packages/spec/docs/index.md` に記録してある。
@@ -276,7 +279,8 @@ pin した commit は `packages/spec/docs/index.md` に記録してある。
    入力の見た目だけで判断しない。
 3. なければ足す（2.3）。
    対照の例（規則が当たらない最も近い入力）も足す。
-4. 仕様の文に `[fixture: <category>/<name>]` で引く。
+4. 仕様の文の後ろの、その文の引用の段落に、
+   `[fixture: <category>/<name>]` で引く（スキル conventions の「文書」）。
    英語と日本語の両方に、同じ集合を引く。
 5. mermaid.js と仕様の判断が違う入力（Known divergences）には、
    `fixtures:set-divergence` で識別子を付ける。
@@ -296,7 +300,9 @@ pin した commit は `packages/spec/docs/index.md` に記録してある。
    接する規則は、
    [AGENTS.md の「行動原則」](../../../AGENTS.ja.md#行動原則) が挙げるもの。
    場合ごとに、文についての 1 つの問いに答える入力を 1 つ書く。
-   場所と文字列の積は書かず、乱数や数（シード、件数）で入力を選ばない。
+   場所と文字列の積は、
+   スキル conventions の「テストの実行」が認めるときだけ書き、乱数や数（シード、
+   件数）で入力を選ばない。
 2. 場合ごとに、mermaid.js と、
    parser の `parse()` と `dbOf()` で 1 回確かめる（2.1）。
    parser がまだ読まない図種では、mermaid.js の結果を、文が言うことと比べる。

@@ -28,7 +28,9 @@
 `root`、`::icon(x)` の行、`  a` の行では、
 根は 3 つの行を `root` から `a` まで覆い、ノード `a` は `a` を覆います。
 `root`、`    a`、`      b`、`    c` の 4 行では、ノード `a` は、`a`、改行、
-字下げ、`b` を覆います。 [fixture: mindmap/gram-icon-then-child]
+字下げ、`b` を覆います。
+
+[fixture: mindmap/gram-icon-then-child]
 [fixture: mindmap/db-indent-sibling-after-deeper]
 [fixture: mindmap/db-first-node-on-header-line]
 
@@ -38,6 +40,7 @@
 class の行は、`:::` から class の終わりまでです。
 トークンが残す class の終わりの空白も含みます。
 `:::a b` と 2 つの空白は、2 つの空白も覆います。
+
 [fixture: mindmap/db-shape-rect] [fixture: mindmap/db-icon-line]
 [fixture: mindmap/db-class-trailing-space]
 
@@ -51,6 +54,8 @@ class の行は、`:::` から class の終わりまでです。
 値は `**bold** text` です。
 ディレクティブが区切りを切るところでも同じです。
 ノードのテキスト、形のテキスト、icon、class の値は、
-その範囲の書かれたテキストです。 [fixture: mindmap/db-shape-markdown-string]
+その範囲の書かれたテキストです。
+
+[fixture: mindmap/db-shape-markdown-string]
 [fixture: mindmap/lex-directive-between-backquote-and-quote]
 [fixture: mindmap/db-node-trailing-whitespace]

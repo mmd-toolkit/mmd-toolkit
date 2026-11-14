@@ -63,8 +63,9 @@ builds in `lib/`, so rebuild them before running one:
 | `tests/sequence-layout.test.ts`      | Which ids the sequence printer takes for ids that a following space would make another unit: the numbers and `title`, next to which no space is put around an arrow.                                                                                                                                                                                                                                                                                                                                                                                                      |
 
 The plugin API test also passes a bounded range to `prettier.format`, checking
-the node-location callbacks used by Prettier's partial-format traversal. [test:
-provides node ranges for Prettier's partial formatting]
+the node-location callbacks used by Prettier's partial-format traversal.
+
+[test: provides node ranges for Prettier's partial formatting]
 
 The corpus tests run one diagram type per file so that Vitest can run them in
 parallel. `tests/corpus.test.ts` loads common fixtures;
