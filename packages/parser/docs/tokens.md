@@ -339,14 +339,24 @@ gantt/tokens-double-percent-comment-then-ignored-semicolon] [fixture:
 gantt/tokens-percent-comment-then-ignored-semicolon] [fixture:
 gitgraph/tokens-double-percent-comment-then-ignored-semicolon] [fixture:
 info/tokens-double-percent-comment-then-ignored-semicolon] [fixture:
-journey/tokens-double-percent-comment-then-ignored-semicolon] [fixture:
-journey/tokens-ignored-semicolon-in-hash-comment] [fixture:
+ishikawa/tokens-double-percent-comment-then-ignored-semicolon-then-line-separator-comment-line]
+[fixture:
+ishikawa/tokens-double-percent-comment-then-ignored-semicolon-then-paragraph-separator-comment-line]
+[fixture: journey/tokens-double-percent-comment-then-ignored-semicolon]
+[fixture: journey/tokens-ignored-semicolon-in-hash-comment] [fixture:
 journey/tokens-percent-comment-then-ignored-semicolon] [fixture:
 kanban/lex-indent-comment-ls-selected-semicolon-touching] [fixture:
 kanban/lex-indent-comment-ps-selected-semicolon-indent-directive] [fixture:
 kanban/lex-indent-comment-ps-selected-semicolon-touching] [fixture:
-mindmap/tokens-double-percent-comment-then-ignored-semicolon] [fixture:
-packet/tokens-double-percent-comment-then-ignored-semicolon] [fixture:
+kanban/tokens-double-percent-comment-then-ignored-semicolon-then-line-separator-comment-line]
+[fixture:
+kanban/tokens-double-percent-comment-then-ignored-semicolon-then-paragraph-separator-comment-line]
+[fixture: mindmap/tokens-double-percent-comment-then-ignored-semicolon]
+[fixture:
+mindmap/tokens-double-percent-comment-then-ignored-semicolon-then-line-separator-comment-line]
+[fixture:
+mindmap/tokens-double-percent-comment-then-ignored-semicolon-then-paragraph-separator-comment-line]
+[fixture: packet/tokens-double-percent-comment-then-ignored-semicolon] [fixture:
 pie/tokens-double-percent-comment-then-ignored-semicolon] [fixture:
 quadrant/tokens-double-percent-comment-then-ignored-semicolon] [fixture:
 radar/tokens-double-percent-comment-then-ignored-semicolon] [fixture:
