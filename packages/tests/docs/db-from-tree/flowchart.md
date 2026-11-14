@@ -492,6 +492,14 @@ flowchart/db-acc-descr-block-then-empty-line] [fixture:
 flowchart/db-acc-descr-empty-block-keeps] [fixture:
 flowchart/db-acc-descr-empty-block-after-block]
 
+**Comment regions in values.** A comment region after a U+2028 or a U+2029 is
+left out of a value (see
+[The converted form](../db-from-tree.md#the-converted-form)). For a bare or
+quoted label in a data block, the data-block effect supplies the text, which
+goes on across the region in the same way. [fixture:
+flowchart/lex-data-label-bare-line-separator-then-comment-line] [fixture:
+flowchart/lex-data-label-quoted-line-separator-then-comment-line]
+
 ## Data blocks in the Db
 
 The values that a data block sets come from `dataBlockEffects` of

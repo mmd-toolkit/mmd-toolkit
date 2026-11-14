@@ -1,0 +1,11 @@
+{
+  "source": {
+    "kind": "authored",
+    "note": "gantt.md Comments: `style:#b;` on the line after a comment line that follows a U+2028; a click id ends at the U+2028, and the text after the comment line, which does not start with `href` or `call`, is read as a task text without data; rejected."
+  },
+  "accepted": false,
+  "error": {
+    "name": "Error",
+    "message": "Parse error on line 3:\n...-01-01, 1dclick a1 style:#bhref \"https:\n----------------------^\nExpecting 'callbackname', 'href', got 'taskTxt'"
+  }
+}

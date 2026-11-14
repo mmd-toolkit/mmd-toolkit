@@ -423,6 +423,35 @@ global な comment region と directive は、
 [fixture: architecture/common-description-block-comment]
 [fixture: architecture/comment-directive-in-mark]
 [fixture: architecture/comment-directive-in-value]
+値の中の U+2028 か U+2029 の後の物理行の残りは、その改行も含めて、
+共通のコメント領域が取り除くことがある。
+そのとき値は次の物理行へ続くので、行の値はそこで終わらない。
+`accTitle: A`、U+2028、`%% c`、改行、`B` のアクセシビリティタイトルは `A`、
+U+2028、`B` である。 [fixture:
+architecture/lex-title-line-separator-then-comment-line] [fixture:
+architecture/lex-acc-title-line-separator-then-comment-line] [fixture:
+architecture/lex-acc-descr-line-separator-then-comment-line] [fixture:
+architecture/lex-acc-descr-block-line-separator-then-comment-line] [fixture:
+architecture/lex-bracket-label-line-separator-then-comment-line] [fixture:
+architecture/lex-icon-text-string-line-separator-then-comment-line] [fixture:
+architecture/db-icon-text-string-paragraph-separator-then-comment-line]
+[fixture: architecture/lex-title-line-separator-comment-line-directive-next]
+[fixture: architecture/lex-title-line-separator-comment-line-space-next]
+[fixture: architecture/lex-title-line-separator-comment-line-separator-next]
+[fixture: architecture/gram-title-line-separator-comment-line-empty-line]
+[fixture: architecture/lex-title-line-separator-comment-line-end-of-text]
+[fixture: architecture/lex-title-line-separator-comment-line-cr] [fixture:
+architecture/lex-title-line-separator-comment-line-crlf] [fixture:
+architecture/lex-title-line-separator-comment-line-two-comment-lines] [fixture:
+architecture/lex-title-line-separator-comment-line-two-regions] [fixture:
+architecture/lex-title-line-separator-comment-line-spaces-before] [fixture:
+architecture/lex-title-line-separator-comment-line-line-feed-before] [fixture:
+architecture/lex-title-line-separator-comment-line-directive-before] [fixture:
+architecture/lex-title-line-separator-comment-line-line-rule-before] [fixture:
+architecture/lex-title-line-separator-comment-line-line-rule-after] [fixture:
+architecture/gram-title-line-separator-comment-line-bare-percent] [fixture:
+architecture/gram-title-line-separator-comment-line-percent-brace] [fixture:
+architecture/lex-quoted-bracket-label-line-separator-then-comment-line]
 
 ## 文法
 

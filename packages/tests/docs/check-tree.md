@@ -2276,22 +2276,24 @@ takes the whitespace off its side that touches the cut, one case for each side
 `StringFragment`), and requires the check to report the tree with the message of
 its value (the texts of the tokens joined are not the written text). For an
 ignored text it has a case for a directive and one for a comment region, with
-the message that the whitespace next to a cut lies in no token. For the
-`Identifier` token of an ER name and of a quadrant class name before a comment
-region, it takes the U+2028 off the end of the token that precedes the region,
-with the message of the value. It also makes, from one recorded tree each, the
-two negative cases of the other exceptions: a token that starts with whitespace
-in a value that began before it, where the token before it does not touch it,
-and a token of whitespace that ends with whitespace in the middle of a value,
-where no token follows it. The check must report each with its message.
-`tests/check-tree-node-types.test.ts` requires the tables of node types of the
-check to classify the node types that the tree documents of the specification
-define, and no others. `tests/check-tree.test.ts` and
-`tests/check-tree-*.test.ts` break a tree, one condition at a time, and require
-the check to report it. The conditions that every tree satisfies (positions, the
-placement of every character, the order of the tokens, the cuts, the comments,
-the directives, and the frontmatter) are broken mostly on hand-made trees
-(`check-tree.test.ts`, `check-tree-comments.test.ts`,
+the message that the whitespace next to a cut lies in no token. For a value that
+a comment region after a U+2028 or a U+2029 cuts, it has a case for the
+`Identifier` token of an ER name and of a quadrant class name, a title of a
+gantt diagram, a backquoted name of a class diagram, and an icon text of an
+architecture diagram (with a U+2029), each taking the separator off the end of
+the fragment before the region, with the message of the value. It also makes,
+from one recorded tree each, the two negative cases of the other exceptions: a
+token that starts with whitespace in a value that began before it, where the
+token before it does not touch it, and a token of whitespace that ends with
+whitespace in the middle of a value, where no token follows it. The check must
+report each with its message. `tests/check-tree-node-types.test.ts` requires the
+tables of node types of the check to classify the node types that the tree
+documents of the specification define, and no others. `tests/check-tree.test.ts`
+and `tests/check-tree-*.test.ts` break a tree, one condition at a time, and
+require the check to report it. The conditions that every tree satisfies
+(positions, the placement of every character, the order of the tokens, the cuts,
+the comments, the directives, and the frontmatter) are broken mostly on
+hand-made trees (`check-tree.test.ts`, `check-tree-comments.test.ts`,
 `check-tree-cut-units.test.ts`). The form of a tree, its fields and values, the
 whitespace at the ends of tokens, the literals, and the conditions of a diagram
 are broken on recorded trees, those of a diagram on the recorded trees of named

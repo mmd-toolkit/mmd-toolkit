@@ -1,0 +1,17 @@
+{
+  "source": {
+    "kind": "authored",
+    "note": "mindmap.md Comments: `style:#a` before a U+2028 in the shape text, and `#b;` on the line after the comment line, a line segment of its own for the line rule of style and classDef lines; the Db summary holds `Astyle:#a`, U+2028, and `ﬂ°b¶ßB`."
+  },
+  "accepted": true,
+  "diagramType": "mindmap",
+  "db": {
+    "root": {
+      "nodeId": "C",
+      "level": 0,
+      "descr": "Astyle:#a ﬂ°b¶ßB",
+      "type": 2,
+      "children": []
+    }
+  }
+}

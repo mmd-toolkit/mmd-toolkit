@@ -422,6 +422,25 @@ state/lex-direction-lower-case] [fixture: state/lex-direction-line-then-comment]
 [fixture: state/lex-direction-line-value-then-text]
 [fixture: state/lex-direction-line-after-line-separator]
 [fixture: state/lex-direction-rl]
+値の後のテキストでは、U+2028 や U+2029 の後のコメントは読み飛ばされ、
+テキストはその後に続きます（[コメント行](../common.ja.md#コメント行) を参照）。
+[fixture: state/lex-direction-text-line-separator-then-comment-line]
+[fixture: state/lex-direction-text-line-separator-comment-line-directive-next]
+[fixture: state/lex-direction-text-line-separator-comment-line-space-next]
+[fixture: state/lex-direction-text-line-separator-comment-line-separator-next]
+[fixture: state/lex-direction-text-line-separator-comment-line-empty-line]
+[fixture: state/lex-direction-text-line-separator-comment-line-end-of-text]
+[fixture: state/lex-direction-text-line-separator-comment-line-cr]
+[fixture: state/lex-direction-text-line-separator-comment-line-crlf] [fixture:
+state/lex-direction-text-line-separator-comment-line-two-comment-lines]
+[fixture: state/lex-direction-text-line-separator-comment-line-two-regions]
+[fixture: state/lex-direction-text-line-separator-comment-line-spaces-before]
+[fixture: state/lex-direction-text-line-separator-comment-line-line-feed-before]
+[fixture: state/lex-direction-text-line-separator-comment-line-directive-before]
+[fixture: state/lex-direction-text-line-separator-comment-line-line-rule-before]
+[fixture: state/lex-direction-text-line-separator-comment-line-line-rule-after]
+[fixture: state/lex-direction-text-line-separator-comment-line-bare-percent]
+[fixture: state/lex-direction-text-line-separator-comment-line-percent-brace]
 `direction` と値の間の空白は改行を含められます。
 `direction`、改行、`LR` は方向の行です。
 [fixture: state/lex-direction-value-next-line]
@@ -678,6 +697,25 @@ id は `{` の前と `%%` の前で空でもかまいません。
 [fixture: state/lex-alias-comment-after-id] [fixture:
 state/lex-alias-id-percent-comment] [fixture: state/lex-alias-id-percent-word]
 [fixture: state/lex-alias-id-percent-next-line]
+U+2028 や U+2029 の後のコメントは例外で、読み飛ばされ、
+id はその後に続きます（[コメント行](../common.ja.md#コメント行) を参照）。
+[fixture: state/lex-alias-id-line-separator-then-comment-line]
+[fixture: state/lex-alias-id-line-separator-comment-line-directive-next]
+[fixture: state/lex-alias-id-line-separator-comment-line-space-next]
+[fixture: state/lex-alias-id-line-separator-comment-line-separator-next]
+[fixture: state/lex-alias-id-line-separator-comment-line-empty-line]
+[fixture: state/lex-alias-id-line-separator-comment-line-end-of-text]
+[fixture: state/lex-alias-id-line-separator-comment-line-cr]
+[fixture: state/lex-alias-id-line-separator-comment-line-crlf]
+[fixture: state/lex-alias-id-line-separator-comment-line-two-comment-lines]
+[fixture: state/lex-alias-id-line-separator-comment-line-two-regions]
+[fixture: state/lex-alias-id-line-separator-comment-line-spaces-before]
+[fixture: state/lex-alias-id-line-separator-comment-line-line-feed-before]
+[fixture: state/lex-alias-id-line-separator-comment-line-directive-before]
+[fixture: state/lex-alias-id-line-separator-comment-line-line-rule-before]
+[fixture: state/lex-alias-id-line-separator-comment-line-line-rule-after]
+[fixture: state/lex-alias-id-line-separator-comment-line-bare-percent]
+[fixture: state/lex-alias-id-line-separator-comment-line-percent-brace]
 テキストが `%%` で始まり、その行で `{` が続くときは、`{` の前のテキストが、
 終わりの空白を除いて、代わりに mermaid.js が読まない `ignored-text` の単位で、
 `alias-id` はありません。
@@ -718,6 +756,32 @@ state/lex-alias-third-part] [fixture: state/db-alias-colon-empty-second]
 [fixture: state/lex-alias-colon-before-body-next-line] [fixture:
 state/lex-alias-colon-before-body-after-comment-line] [fixture:
 state/lex-alias-colon-blank-line-before-brace]
+`second-description` では、U+2028 や U+2029 の後のコメントは読み飛ばされ、
+説明はその後に続きます（[コメント行](../common.ja.md#コメント行) を参照）。
+[fixture: state/lex-second-description-line-separator-then-comment-line]
+[fixture:
+state/lex-second-description-line-separator-comment-line-directive-next]
+[fixture: state/lex-second-description-line-separator-comment-line-space-next]
+[fixture:
+state/lex-second-description-line-separator-comment-line-separator-next]
+[fixture: state/lex-second-description-line-separator-comment-line-empty-line]
+[fixture: state/lex-second-description-line-separator-comment-line-end-of-text]
+[fixture: state/lex-second-description-line-separator-comment-line-cr]
+[fixture: state/lex-second-description-line-separator-comment-line-crlf]
+[fixture:
+state/lex-second-description-line-separator-comment-line-two-comment-lines]
+[fixture: state/lex-second-description-line-separator-comment-line-two-regions]
+[fixture: state/lex-second-description-line-separator-comment-line-spaces-before]
+[fixture:
+state/lex-second-description-line-separator-comment-line-line-feed-before]
+[fixture:
+state/lex-second-description-line-separator-comment-line-directive-before]
+[fixture:
+state/lex-second-description-line-separator-comment-line-line-rule-before]
+[fixture:
+state/lex-second-description-line-separator-comment-line-line-rule-after]
+[fixture: state/lex-second-description-line-separator-comment-line-bare-percent]
+[fixture: state/lex-second-description-line-separator-comment-line-percent-brace]
 
 ### classDef、class、style の文脈
 
@@ -989,12 +1053,52 @@ state/lex-floating-note-as-next-line]
 [fixture: state/lex-acc-title-semicolon]
 [fixture: state/lex-acc-descr-semicolon] [fixture:
 state/lex-acc-title-next-line]
+アクセシビリティのタイトルや説明のテキストでは、
+U+2028 や U+2029 の後のコメントは読み飛ばされ、
+テキストはその後に続きます（[コメント行](../common.ja.md#コメント行) を参照）。
+[fixture: state/lex-acc-title-line-separator-then-comment-line]
+[fixture: state/lex-acc-descr-line-separator-then-comment-line]
+[fixture: state/lex-acc-title-line-separator-comment-line-directive-next]
+[fixture: state/lex-acc-title-line-separator-comment-line-space-next]
+[fixture: state/lex-acc-title-line-separator-comment-line-separator-next]
+[fixture: state/lex-acc-title-line-separator-comment-line-empty-line]
+[fixture: state/lex-acc-title-line-separator-comment-line-end-of-text]
+[fixture: state/lex-acc-title-line-separator-comment-line-cr]
+[fixture: state/lex-acc-title-line-separator-comment-line-crlf]
+[fixture: state/lex-acc-title-line-separator-comment-line-two-comment-lines]
+[fixture: state/lex-acc-title-line-separator-comment-line-two-regions]
+[fixture: state/lex-acc-title-line-separator-comment-line-spaces-before]
+[fixture: state/lex-acc-title-line-separator-comment-line-line-feed-before]
+[fixture: state/lex-acc-title-line-separator-comment-line-directive-before]
+[fixture: state/lex-acc-title-line-separator-comment-line-line-rule-before]
+[fixture: state/lex-acc-title-line-separator-comment-line-line-rule-after]
+[fixture: state/lex-acc-title-line-separator-comment-line-bare-percent]
+[fixture: state/lex-acc-title-line-separator-comment-line-percent-brace]
 
 説明のブロックの文脈では、`}` は `}` の単位で文脈を出て、
 ほかの 1 つ以上の文字は `description-block-text` の単位です。
 `{` の後の空白は `{` の単位と一緒に読まれるので（文の文脈の規則 13）、
 `accDescr {  }` はテキストを持ちません。
 [fixture: state/db-acc-descr-empty-block-keeps]
+テキストの中のコメント行は、テキストの行の U+2028 や U+2029 の後でも取り除かれ、
+テキストはその後に続きます（[コメント行](../common.ja.md#コメント行) を参照）。
+[fixture: state/lex-acc-descr-block-line-separator-then-comment-line]
+[fixture: state/lex-acc-descr-block-line-separator-comment-line-directive-next]
+[fixture: state/lex-acc-descr-block-line-separator-comment-line-space-next]
+[fixture: state/lex-acc-descr-block-line-separator-comment-line-separator-next]
+[fixture: state/lex-acc-descr-block-line-separator-comment-line-empty-line]
+[fixture: state/lex-acc-descr-block-line-separator-comment-line-end-of-text]
+[fixture: state/lex-acc-descr-block-line-separator-comment-line-cr]
+[fixture: state/lex-acc-descr-block-line-separator-comment-line-crlf] [fixture:
+state/lex-acc-descr-block-line-separator-comment-line-two-comment-lines]
+[fixture: state/lex-acc-descr-block-line-separator-comment-line-two-regions]
+[fixture: state/lex-acc-descr-block-line-separator-comment-line-spaces-before]
+[fixture: state/lex-acc-descr-block-line-separator-comment-line-line-feed-before]
+[fixture: state/lex-acc-descr-block-line-separator-comment-line-directive-before]
+[fixture: state/lex-acc-descr-block-line-separator-comment-line-line-rule-before]
+[fixture: state/lex-acc-descr-block-line-separator-comment-line-line-rule-after]
+[fixture: state/lex-acc-descr-block-line-separator-comment-line-bare-percent]
+[fixture: state/lex-acc-descr-block-line-separator-comment-line-percent-brace]
 
 これらの文脈に入る規則は、文の文脈だけの規則です。
 合成状態の本体では、
@@ -1054,6 +1158,63 @@ state/lex-hash-in-description] [fixture: state/lex-percent-in-label]
 [fixture: state/lex-alias-percent-in-string] [fixture: state/lex-style-percent]
 [fixture: state/lex-class-css-class-percent]
 [fixture: state/lex-pseudostate-name-percent]
+これらの単位では、疑似状態の名前を除き、
+U+2028 や U+2029 の後のコメントは例外で、読み飛ばされ、
+値はその後に続きます（[コメント行](../common.ja.md#コメント行) を参照）。
+[fixture: state/lex-description-line-separator-then-comment-line]
+[fixture: state/lex-description-paragraph-separator-then-comment-line]
+[fixture: state/lex-string-line-separator-then-comment-line]
+[fixture: state/lex-style-line-separator-then-comment-line]
+[fixture: state/lex-css-class-line-separator-then-comment-line]
+[fixture: state/lex-note-line-line-separator-then-comment-line]
+[fixture: state/lex-note-block-line-separator-then-comment-line]
+[fixture: state/lex-description-line-separator-comment-line-directive-next]
+[fixture: state/lex-description-line-separator-comment-line-space-next]
+[fixture: state/lex-description-line-separator-comment-line-separator-next]
+[fixture: state/lex-description-line-separator-comment-line-empty-line]
+[fixture: state/lex-description-line-separator-comment-line-end-of-text]
+[fixture: state/lex-description-line-separator-comment-line-cr]
+[fixture: state/lex-description-line-separator-comment-line-crlf]
+[fixture: state/lex-description-line-separator-comment-line-two-comment-lines]
+[fixture: state/lex-description-line-separator-comment-line-two-regions]
+[fixture: state/lex-description-line-separator-comment-line-spaces-before]
+[fixture: state/lex-description-line-separator-comment-line-line-feed-before]
+[fixture: state/lex-description-line-separator-comment-line-directive-before]
+[fixture: state/lex-description-line-separator-comment-line-line-rule-before]
+[fixture: state/lex-description-line-separator-comment-line-line-rule-after]
+[fixture: state/lex-description-line-separator-comment-line-bare-percent]
+[fixture: state/lex-description-line-separator-comment-line-percent-brace]
+[fixture: state/lex-transition-label-line-separator-then-comment-line]
+[fixture: state/lex-classdef-styles-line-separator-then-comment-line]
+[fixture: state/lex-floating-note-text-line-separator-then-comment-line]
+[fixture: state/lex-click-url-line-separator-then-comment-line]
+[fixture: state/lex-click-tooltip-line-separator-then-comment-line]
+疑似状態の名前は U+2028 や U+2029 の前で終わります。
+[state の文脈](#state-の文脈) の規則 4 は、
+次の U+2028 や U+2029 までしか印を探さないので、`state A`、U+2028、`%% c`、
+改行、`B <<fork>>` は、コメント行がない場合と同じく、状態を 1 つ、
+fork `B` だけ持ちます。
+[fixture: state/lex-pseudostate-name-line-separator-then-comment-line]
+[fixture: state/lex-pseudostate-name-line-separator-comment-line-directive-next]
+[fixture: state/lex-pseudostate-name-line-separator-comment-line-space-next]
+[fixture: state/lex-pseudostate-name-line-separator-comment-line-separator-next]
+[fixture: state/lex-pseudostate-name-line-separator-comment-line-empty-line]
+[fixture: state/lex-pseudostate-name-line-separator-comment-line-end-of-text]
+[fixture: state/lex-pseudostate-name-line-separator-comment-line-cr]
+[fixture: state/lex-pseudostate-name-line-separator-comment-line-crlf] [fixture:
+state/lex-pseudostate-name-line-separator-comment-line-two-comment-lines]
+[fixture: state/lex-pseudostate-name-line-separator-comment-line-two-regions]
+[fixture: state/lex-pseudostate-name-line-separator-comment-line-spaces-before]
+[fixture:
+state/lex-pseudostate-name-line-separator-comment-line-line-feed-before]
+[fixture:
+state/lex-pseudostate-name-line-separator-comment-line-directive-before]
+[fixture:
+state/lex-pseudostate-name-line-separator-comment-line-line-rule-before]
+[fixture:
+state/lex-pseudostate-name-line-separator-comment-line-line-rule-after]
+[fixture: state/lex-pseudostate-name-line-separator-comment-line-bare-percent]
+[fixture: state/lex-pseudostate-name-line-separator-comment-line-percent-brace]
 id の中では、`#` は文字です。
 `A#1` は状態です。 [fixture: state/lex-hash-in-id]
 エンティティは、字句解析器がテキストを読む前に、その置き換えの文字として、

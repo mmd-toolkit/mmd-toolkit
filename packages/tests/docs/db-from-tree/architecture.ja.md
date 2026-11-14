@@ -110,6 +110,12 @@
    [fixture: architecture/db-align-layout-conflict]
    [fixture: architecture/header-beta]
    [fixture: architecture/config-drawing-only]
+7. **値の中のコメント領域。**
+   U+2028 や U+2029 の後のコメント領域は、値から除かれます。
+   出典は [変換した形](../db-from-tree.ja.md#変換した形) です。
+   要約には図のタイトルの欄がないので、タイトルの fixture は、
+   入力が受け入れられることを記録します。
+   [fixture: architecture/lex-title-line-separator-then-comment-line]
 
 ## 記録した木の検査
 
