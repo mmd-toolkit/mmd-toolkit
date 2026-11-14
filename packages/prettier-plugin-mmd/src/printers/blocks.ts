@@ -17,8 +17,7 @@ import {
   isDroppedSemicolon,
   lineEndOf,
   lineStartOf,
-  withJoinedLines,
-  withUnusualStyleEnds,
+  completeKeptLines,
 } from "./kept-lines.ts"
 import { toAsciiLowerCase } from "./layout.ts"
 import type { Line } from "./lines.ts"
@@ -91,6 +90,17 @@ export interface BlockRules<Statement extends Positioned> {
    */
   readonly textGapBefore?: (statement: Statement) => boolean
   /**
+   * A statement that follows a stretch printed as written on its line and
+   * that is printed on its own, as the block that it holds: the stretch ends
+   * before it, and `writtenGapBefore` attaches it to the line with the gap
+   * before it as written (an entity of an ER diagram whose attribute block
+   * lies outside the line that a joining region joins; docs/er.md,
+   * Multi-line statements). Where the last line of the statement is kept, the
+   * stretch goes on over it, as it does over a statement that holds statements
+   * and starts it.
+   */
+  readonly endsStretchBefore?: (statement: Statement) => boolean
+  /**
    * Where the printed statement starts, when that is before its range: a
    * leading owned form that the layout prints separately before the first atom
    * of a unit (the hidden forms), or the directives that start the line of a
@@ -105,6 +115,20 @@ export interface BlockRules<Statement extends Positioned> {
    * indentation.
    */
   readonly relocatedWhitespace?: readonly Range[]
+  /**
+   * The text that stands in place of a range of a statement where a stretch
+   * is printed as written, for the part of a statement that is not read as it
+   * stands on a line that stays as written: the whitespace before the `}` of an
+   * empty ER attribute block, which is the indentation of the entity
+   * (docs/er.md, Attribute blocks). The ranges of the statements of the stretch
+   * are asked in order, and a statement's own stand in source order without
+   * overlap. The text between them stays as written, with the spellings that
+   * are printed in one form.
+   */
+  readonly writtenReplacements?: (statement: Statement) => readonly {
+    readonly range: Range
+    readonly text: string
+  }[]
   /**
    * Joining regions are already printed as written by this layout, inside a
    * complete value atom, or in a gap that `keptGapEnd` keeps: skip whole-line
@@ -427,13 +451,10 @@ export function printBlock<Statement extends Positioned>(
   rules: BlockRules<Statement>,
 ): PrintedBlock {
   const { statements } = bounds
-  const kept = withUnusualStyleEnds(
+  const kept = completeKeptLines(
     source,
-    withJoinedLines(
-      source,
-      rules.kept,
-      rules.joiningRegionsPrintedAsWritten !== true,
-    ),
+    rules.kept,
+    rules.joiningRegionsPrintedAsWritten !== true,
   )
   const lines: Line[] = []
   let headerTrailing: ItemRun | null = null
@@ -663,6 +684,23 @@ export function printBlock<Statement extends Positioned>(
   }
 
   /**
+   * Whether a statement starts a stretch where it stands on its own: it ends
+   * on a kept line, or it holds no statements and starts on one. A statement
+   * that holds statements and starts on a kept line without ending on one
+   * prints that line as the opening line of its block. This is the one
+   * decision of which statements a kept line holds together: the stretch of a
+   * statement that is attached to the line before it by its gap, the stretch
+   * of one that starts a line, and where a stretch ends before a statement
+   * (`endsStretchBefore`) all ask it.
+   */
+  function startsStretchAt(statement: Statement): boolean {
+    return (
+      isKept(rules.printedEnd(statement) - 1) ||
+      (!rules.holdsStatements(statement) && isKept(printedStartOf(statement)))
+    )
+  }
+
+  /**
    * The stretch that starts at `start`, with the statements from `first` to
    * before `after` and the text up to `end`: while the line it ends on is
    * kept, it extends over the rest of that line and every statement that
@@ -685,6 +723,12 @@ export function printBlock<Statement extends Positioned>(
       const following = statements[after]
       if (following === undefined || printedStartOf(following) >= lineEnd) {
         return { start, end: Math.max(stretchEnd, lineEnd), first, after }
+      }
+      if (
+        rules.endsStretchBefore?.(following) === true &&
+        !startsStretchAt(following)
+      ) {
+        return { start, end: stretchEnd, first, after }
       }
       stretchEnd = Math.max(stretchEnd, rules.printedEnd(following))
       after++
@@ -746,8 +790,35 @@ export function printBlock<Statement extends Positioned>(
       const last = covered.at(-1)
       const tailStart =
         last === undefined ? stretch.end : rules.printedEnd(last)
-      const written =
-        writtenWithRespellings(source, stretch.start, tailStart) +
+      let written = ""
+      let position = stretch.start
+      for (const statement of covered) {
+        for (const replacement of rules.writtenReplacements?.(statement) ??
+          []) {
+          const [start, end] = replacement.range
+          if (
+            start < statement.range[0] ||
+            end > statement.range[1] ||
+            start > end ||
+            start < stretch.start ||
+            end > tailStart
+          ) {
+            throw new Error(
+              "prettier-plugin-mmd: a replacement in a kept stretch lies outside its statement",
+            )
+          }
+          if (start < position) {
+            throw new Error(
+              "prettier-plugin-mmd: replacements in a kept stretch overlap or are out of order",
+            )
+          }
+          written +=
+            writtenWithRespellings(source, position, start) + replacement.text
+          position = end
+        }
+      }
+      written +=
+        writtenWithRespellings(source, position, tailStart) +
         withoutRelocatedWhitespace(
           source,
           tailStart,
@@ -900,30 +971,41 @@ export function printBlock<Statement extends Positioned>(
     const index = next
     const statement = statements[index]
     const end = rules.printedEnd(statement)
+    const startsStretch = startsStretchAt(statement)
     if (rules.writtenGapBefore?.(statement) === true) {
       // The gap is part of the unit's lexical boundary, including whitespace
       // across removed trivia. Preserve it before ordinary line selection
       // (docs/eventmodeling.md, Common boundaries).
       const previous = lines.pop()
+      // A statement that starts a stretch where it stands on its own is part
+      // of the stretch of its line also after a gap: the stretch is printed
+      // after the gap, so that the rest of the line stays on the line.
+      const stretch = startsStretch
+        ? findStretch(printedStartOf(statement), index, index + 1, end)
+        : undefined
+      const printed = stretch === undefined ? undefined : printStretch(stretch)
       pushLine({
         ...(previous ?? { blankBefore: false }),
         doc: [
           previous?.doc ?? "",
           printAsWritten(source, offset, printedStartOf(statement)),
-          docs[index],
+          printed?.doc ?? docs[index],
         ],
-        endsWithWhitespace: endsWithSpaceOrTab(
-          source.text.slice(printedStartOf(statement), end),
-        ),
+        endsWithWhitespace:
+          printed?.endsWithWhitespace ??
+          endsWithSpaceOrTab(source.text.slice(printedStartOf(statement), end)),
       })
       if (previous === undefined) continuesOpeningLine = true
-      next++
-      offset = end
+      if (stretch === undefined) {
+        next++
+        offset = end
+      } else {
+        stretchEndsWithComment = endsWithComment(stretch.end)
+        next = stretch.after
+        offset = stretch.end
+      }
       continue
     }
-    const startsStretch =
-      isKept(end - 1) ||
-      (!rules.holdsStatements(statement) && isKept(printedStartOf(statement)))
     if (
       !startsStretch &&
       bounds.isTopLevel &&

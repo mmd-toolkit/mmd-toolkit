@@ -159,6 +159,10 @@ mermaid.js の行の規則は、`style` と、その後ろの `:`、
 そのため、そのような行の文は行に残し、間の空白はほかと同じく整えて、
 `;` は書かれたまま残します。
 [fixture: statements-one-per-line/ignored-semicolon-line-kept]
+`;` が、複数行の `accDescr` ブロックのテキストの最後の行にあり、
+その `}` の後ろに文が続くときも同じです。
+`accDescr {`、改行、`alpha;}` は、`Phase : done` と同じ行に残ります。
+[fixture: statements-one-per-line/description-block-end-line-keeps-next-statement]
 
 入力
 ([statements-one-per-line/header-direction-then-title-input.mmd](../tests/fixtures/timeline/statements-one-per-line/header-direction-then-title-input.mmd)):
@@ -1492,6 +1496,13 @@ U+2028 と U+2029 は空白やタブではなくテキストの文字なので�
 その後の空白はテキスト末尾のほかの空白と一緒に除き、前の空白は残します。
 [test: U+2029 and spaces at the end of a timeline title]
 [test: U+2028 and spaces at the end of the last event of a line]
+U+2028 か U+2029 の後のコメント行は、次の行をその行につなぎ、
+その行は最後まで書かれたまま残ります。
+ヘッダーと同じ行で始まる description block の `}` の後と、
+period の前でも同じです（詳しくは、
+[U+2028 か U+2029 の後のコメント行](./compatibility.ja.md#u2028-か-u2029-の後のコメント行)
+を参照）。
+[test: a line separator and a comment line after the closing brace of a description block that starts on the line of the timeline header, before a period]
 
 ### 空白文字
 

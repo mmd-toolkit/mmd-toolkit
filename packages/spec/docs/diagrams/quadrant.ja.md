@@ -722,6 +722,8 @@ mermaid.js がディレクティブを除いた後のテキストを読むとお
   [fixture: quadrant/div-directive-in-keyword-title]
   [fixture: quadrant/div-grid-directive-class-name]
   [fixture: quadrant/div-grid-directive-classdef-name]
+  [fixture: quadrant/div-directive-after-comment-line-in-classdef-name]
+  [fixture: quadrant/div-directive-before-comment-line-in-classdef-name]
   [fixture: quadrant/div-quadrant-directive-in-keyword]
   [fixture: quadrant/div-x-axis-directive-in-arrow]
   [fixture: quadrant/div-x-axis-directive-in-keyword]
@@ -1552,9 +1554,9 @@ U+2029 以外の 1 文字と 1 つ以上の数字が続くもの（省略可）�
 [fixture: quadrant/db-empty-braces-line-between-statements]
 テキスト、名前、タイトル、アクセシビリティのテキスト、説明ブロック、
 文字列の中の U+2028 や U+2029 の後のコメント行は、その改行ごと取り除かれ、
-値は次の行に続き（[コメント行](../common.ja.md#コメント行) を参照）、
-`quadrant-1 a`、U+2028、`%% c`、改行、`b` はテキスト `a`、U+2028、
-`b` を持ちます。
+値は次の行に続き（[コメント行](../common.ja.md#コメント行) と、
+クラスの名前については [クラス](#クラス) を参照）、`quadrant-1 a`、U+2028、
+`%% c`、改行、`b` はテキスト `a`、U+2028、`b` を持ちます。
 [fixture: quadrant/db-quadrant-text-line-separator-then-comment-line]
 [fixture: quadrant/db-quadrant-text-paragraph-separator-then-comment-line]
 [fixture: quadrant/db-title-line-separator-then-comment-line] [fixture:
@@ -2368,6 +2370,99 @@ class-def-name      = ( word-of-name | "-" | "," | ":" )+
 [fixture: quadrant/db-classdef-radius-semicolon]
 [fixture: quadrant/db-classdef-tabs]
 [fixture: quadrant/db-classdef-name-colon-between-letters]
+
+名前の中の U+2028 と U+2029 は語の文字であるとともにコメントの始まりで、
+名前はその後のコメント領域をまたいで続きます。
+領域は名前の 2 つの単位の間にあるか、次の行が ASCII 外の文字で始まるときには、
+その文字が U+2028 の単位につながるので 1 つの単位の中にあり、
+どちらでも単位はつながり、
+1 つの名前になります（[コメント行](../common.ja.md#コメント行) を参照）。
+`classDef a`、U+2028、`%% c`、改行、`b color: #109060` は、名前が `a`、U+2028、
+`b` のクラスを定め、U+2029 でも同じです。
+[fixture: quadrant/lex-classdef-name-line-separator-comment-line]
+[fixture: quadrant/db-classdef-name-paragraph-separator-comment-line]
+コメント領域が U+2028 と `%%` の間で取る空白、2 つ目の U+2028、改行、
+ディレクティブ、コメントを終える CRLF か CR、コメントの中のディレクティブ、
+2 つ目のコメント行、2 つ目の U+2028 の後の 2 つ目の領域をまたぐとき、
+次の行の始めの U+2028、領域の後の、名前の文字である ASCII 外の文字か `-`、
+`classDef` とスペースの後の U+2028 から始まる名前でも同じです。
+[fixture: quadrant/db-classdef-name-line-separator-spaces-comment-line]
+[fixture: quadrant/db-classdef-name-two-line-separators-comment-line]
+[fixture: quadrant/db-classdef-name-line-separator-line-feed-comment-line]
+[fixture: quadrant/db-classdef-name-line-separator-directive-comment-line]
+[fixture: quadrant/db-classdef-name-line-separator-comment-line-crlf]
+[fixture: quadrant/db-classdef-name-line-separator-two-comment-lines]
+[fixture: quadrant/db-classdef-name-two-comment-regions]
+[fixture: quadrant/db-classdef-name-line-separator-comment-line-dash]
+[fixture: quadrant/db-classdef-name-starts-with-line-separator-comment-line]
+[fixture: quadrant/db-classdef-name-line-separator-comment-line-cr]
+[fixture: quadrant/db-classdef-name-line-separator-comment-line-with-directive]
+[fixture: quadrant/db-classdef-name-comment-line-line-separator-next]
+[fixture: quadrant/db-classdef-name-line-separator-comment-line-non-ascii]
+コメント行の次の行の始めのディレクティブは、
+コメントの改行で終わる領域には含まれず、名前の中にあるので、`classDef a`、
+U+2028、`%% c`、改行、
+`%%{init: {}}%%b color: #109060`
+はここでは拒否されます（[単位の中のディレクティブ](#単位の中のディレクティブ)
+を参照）が、mermaid.js は名前が `a`、U+2028、`b` のクラスを定めます。
+[fixture: quadrant/div-directive-after-comment-line-in-classdef-name]
+そこの、後ろにスペースのあるディレクティブは名前を終え、
+そのスペースはスタイルの前の空白となるので、`classDef a`、U+2028、`%% c`、改行、
+`%%{init: {}}%% color: #109060` は名前が `a` と U+2028 のクラスを定めます。
+[fixture:
+quadrant/db-classdef-name-line-separator-comment-line-directive-space-next]
+領域を始める U+2028 や U+2029 の直前のディレクティブも、
+領域がその文字の後で始まるので名前の中にあり、`classDef a`、`%%{init: {}}%%`、
+U+2029、`%% c`、改行、`b color: #109060` はここでは拒否されますが、
+mermaid.js は名前が `a`、U+2029、`b` のクラスを定めます。
+[fixture: quadrant/div-directive-before-comment-line-in-classdef-name]
+次の行の始めのスペースは名前を終え、スタイルの前の空白となるので、
+クラスは `a` と U+2028 です。
+そこの 2 つのスペース、コメント行の後の空行、テキストの終わり、
+名前と U+2028 の間のスペースは入力を拒否させ、
+後ろに何もない `%%` とディレクティブを始めない `%%{` も同じで、
+それらはコメント行ではなく、その行の終わりまで続くこの図種のコメントです。
+[fixture: quadrant/db-classdef-name-line-separator-comment-line-space]
+[fixture: quadrant/gram-classdef-name-line-separator-comment-line-two-spaces]
+[fixture: quadrant/gram-classdef-name-line-separator-comment-line-empty-line]
+[fixture: quadrant/gram-classdef-name-line-separator-comment-line-last-line]
+[fixture: quadrant/gram-classdef-name-space-line-separator-comment-line]
+[fixture: quadrant/gram-classdef-name-line-separator-bare-percent-line]
+[fixture: quadrant/gram-classdef-name-line-separator-percent-brace-line]
+領域の後の行は `style` 行と `classDef` 行の行の規則にとって、
+領域の前の `classDef` を含まない独立した区間なので、
+そこの `b color:#f00;` の `;` は無視されず、
+スタイルの `#f00;` はエンティティなので、
+入力は mermaid.js と同じく拒否されますが、
+1 行の `classDef ab color:#f00;` は行の規則に一致し、その `;` は無視され、
+クラス `ab` の色は `#f00` です。
+[fixture: quadrant/gram-classdef-name-comment-line-hash-semicolon]
+[fixture: quadrant/db-classdef-color-hash-semicolon-one-line]
+文の中にある領域の後の空の説明ブロックと、領域の後の名前の 2 つの文字の間で、
+`style:#x;b color: #f00` のように行の規則が無視する `;` は、
+どちらもここでは入力を拒否させますが、
+mermaid.js は受理します（[既知の差異](#既知の差異) を参照）。
+[fixture: quadrant/div-classdef-name-comment-line-empty-description-block]
+[fixture: quadrant/div-classdef-name-comment-line-ignored-semicolon]
+`style:#x; color: #f00` のように名前の最後の文字のすぐ後や、
+`style color:#f00;` のようにスタイルの後で行の規則が無視する `;` は、
+どの `classDef` 行でもそうであるように名前の外にあり、入力は受理され、
+クラスの名前はそれぞれ `a`、U+2028、`style:#x` と、`a`、U+2028、`style` で、
+色はどちらも `#f00` となり、U+2029 でも同じです。 [fixture:
+quadrant/db-classdef-name-comment-line-style-line-semicolon-after-name]
+[fixture: quadrant/db-classdef-name-comment-line-style-line] [fixture:
+quadrant/db-classdef-name-paragraph-separator-comment-line-style-line]
+行の規則が無視するのは、それに一致する行の最後の `;` だけで、
+名前の中の無視されない `;` は、前に `#` と語があるときはエンティティを終え、
+それ以外では `;` の単位となって、mermaid.js と同じく入力を拒否させます。
+そこの `style:#x;b color: #f00;` は、名前が `a`、U+2028、`style:`、
+`#x;` のプレースホルダー、`b` のクラスを定めますが、
+最初の `;` の前に `#` と語がない `style:x;b color:#f00;` と、
+行の規則に一致しない行の `b;c color: #f00` は拒否されます。
+[fixture: quadrant/db-classdef-name-comment-line-style-line-two-semicolons]
+[fixture:
+quadrant/gram-classdef-name-comment-line-style-line-semicolon-no-entity]
+[fixture: quadrant/gram-classdef-name-comment-line-semicolon-in-name]
 
 ### 空の説明ブロック
 

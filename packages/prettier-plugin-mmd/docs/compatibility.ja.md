@@ -240,6 +240,7 @@ ELK の配置のパッケージのどのリリースも、
 | [ER](./er.ja.md#1-行に-1-文)                                | `endé`、`end` と空白とタブ以外の空白文字（U+2028、U+2029、U+00A0 など）と文、`subgraphé`、`subgraph` と同じ種類の文字と名前                           | `end` と `é` を別の行に。区切りは空白にして印字 | [2](./printed-form.ja.md#2-prettier-にない種類の隙間) | 11.7.0 が違って描く。10.9.8 は `endé` と `subgraphé` を拒否する                                                     | [fixture: er/statements-one-per-line/end-then-name-outside-ascii-kept]                                                                                      |
 | [ER](./er.ja.md#1-行に-1-文)                                | `class` と名前 2 つ、または方向の行の前にある空白とタブ以外の空白文字（U+2028、U+2029、U+00A0 など）と、同じ行に後ろの文がある行                      | 各文を別の行に                                  | [2](./printed-form.ja.md#2-prettier-にない種類の隙間) | 11.7.0 が `class` の行を拒否し、`direction` の行を違って描く                                                        | [test: a line of two ER statements that starts with U+2028] [test: U+00A0 in place of the separator: a line of two ER statements that starts with U+2028]   |
 | [ER](./er.ja.md#1-行に-1-文)                                | 同じ行の別の属性の後にある、`~` が 2 つの属性（`int a List~int~ b`）                                                                                  | 属性を 1 行ずつに                               | [2](./printed-form.ja.md#2-prettier-にない種類の隙間) | 10.9.8 は、最初の属性の型を 2 つ目の `~` までとして読む                                                             | [fixture: er/attribute-spacing/attributes-with-tilde-on-one-line-kept]                                                                                      |
+| [ER](./er.ja.md#属性ブロック)                               | 書かれたまま残る行で、属性ブロックの中の `~` の後ろにある複数行の空のブロック（`T { int a List~int~ b } A {`、改行、`}`、さらに続くテキスト）         | `{` の後ろの `{ }`、閉じる行の残りを付ける      | [2](./printed-form.ja.md#2-prettier-にない種類の隙間) | 10.9.8 は、属性の `~` の後ろに長いテキストがある行を描かない                                                        | [fixture: er/attribute-blocks/written-line-tilde-line-closing-remainder]                                                                                    |
 | [ER](./er.ja.md#1-行に-1-文)                                | `"Alpha"`、空白とタブ以外の空白文字（U+2028、U+2029、U+00A0 など）、その後の `{ int x }`、別名、CSS のクラス、関係                                    | `Alpha` と、その文字で始まる文を別の行に        | [2](./printed-form.ja.md#2-prettier-にない種類の隙間) | 10.9.8 と 11.7.0 が、その文字を空白として読み、その文字で始まって残りが続く行を拒否する                             | [test: U+2028 and an attribute block after a name in quotes] [test: U+00A0 in place of the separator: U+2028 and an attribute block after a name in quotes] |
 | [treemap](./treemap.ja.md#title)                            | 行頭の `title T`                                                                                                                                      | 1 段深い `  title T`                            | [1](./printed-form.ja.md#1-記号の横の空白)            | 11.8.1 が、字下げされた title、`accTitle`、`accDescr` を拒否する                                                    | [fixture: treemap/title/line-start-kept]                                                                                                                    |
 | [ishikawa](./ishikawa.ja.md#indentation)                    | `ishikawa`、`R`、`  A`、` B`、`  C` を書かれたまま                                                                                                    | すべてのノードを深さの位置に置く形              | [1](./printed-form.ja.md#1-記号の横の空白)            | 11.13.0 が、深さで印字したテキストを書かれたテキストと違って描く                                                    | [fixture: ishikawa/indentation/indent-relative-zero]                                                                                                        |
@@ -3944,6 +3945,15 @@ U+2029 を空白にすると拒否されます。
 2 つ目の `;` がないと、行末の空白が改行を隠すので、拒否されます。
 [corpus fixture: sequence/ignored-semicolon-then-separator-line-1902f8c5]
 
+ER 図では、そのような行にある、複数行の属性ブロックを持つ実体は、
+ブロックとして印字し、行の単位の間の空白は通常どおり整形します。
+[属性ブロック](./er.ja.md#属性ブロック)を参照してください。
+`"style:#x" ;`、U+2028、` A {`、改行、`}` は、`"style:#x"; `、U+2028、
+` A { }` になります。
+波括弧の間に属性があるときは、行は ` A {` で終わります。
+[test: an empty attribute block over several lines after a semicolon that the line rule ignores and U+2028]
+[test: an attribute block over several lines after a semicolon that the line rule ignores and U+2028]
+
 [1 行に 1 文](./flowchart.ja.md#1-行に-1-文)を参照してください。
 
 ## 閉じていないディレクティブがつなぐ行
@@ -3979,6 +3989,11 @@ class 図と state 図では、その行送りの後の文は、その段の字�
 印字するときはディレクティブの一部として読み、書かれたまま印字します。
 ER 図の `"style:#x" end; %%{x: w B` は、書かれたまま残ります。
 [fixture: er/directives/unclosed-directive-argument-then-text-kept]
+そのような行にある ER の実体が複数行の属性ブロックを持つときは、
+ブロックとして印字します（[属性ブロック](./er.ja.md#属性ブロック)を参照）。
+`%%{wrap foo`、改行、`A {`、改行、`}` は、`%%{wrap foo`、改行、
+`A { }` になります。
+[fixture: er/attribute-blocks/written-line-unclosed-directive]
 
 `init` のような自由なテキストの引数を持ち、`}%%` で閉じないディレクティブは、
 テキストの終わりまで続きます（仕様の
@@ -4391,6 +4406,20 @@ mermaid.js は、一部の ER の行を、置かれた場所や周りの空白�
 [アクセシビリティの文](./er.ja.md#アクセシビリティの文)、
 [1 行に 1 文](./er.ja.md#1-行に-1-文)、
 [関係の空白](./er.ja.md#関係の空白)を参照してください。
+
+これらの行のどれでも、複数行の属性ブロックを持つ実体は、
+ブロックとして印字します（[属性ブロック](./er.ja.md#属性ブロック)を参照）。
+行の文はその行に一緒に残り、文の単位の間の空白は、
+mermaid.js が行をどう読むかを決めないかぎり、通常どおり整形します。
+空でないブロックでは、`{` の後ろにあるものは書かれたまま残り、
+その後の属性と `}` はほかの実体と同じに置きます。
+そのため、`1A {`、改行、`}` は、`1A { }` になります。
+[fixture: er/attribute-blocks/written-line-number-name]
+[fixture: er/attribute-blocks/written-line-tilde-line]
+[test: an empty attribute block over several lines after U+2028 and class]
+[test: an empty attribute block over several lines after a name in quotes and U+2028]
+
+[test: an attribute block over several lines of an entity after a statement that starts with U+2028 and a comment line]
 
 - 閉じる `end` の後に無視される `;` があるときは、`"style:#x" end;` のように、
   行規則の根拠を持つ行に残します。
@@ -5208,26 +5237,120 @@ mermaid.js は、本文を読む前に、コメント行を取り除きます。
 `%%` の後に何もない行や、ディレクティブではないのに `%%{` で始まる行も、
 領域ではありません。
 mermaid.js はこれらをコメント行として取り除かず、class 図が自分で読みます。
+領域の後ろに空白がなければ、その後のテキストは前のテキストに続きます。
+ER 図では、`A`、U+2028、`%% c`、行 `Bar` が 1 つの名前になります。
+その名前は `A`、U+2028、`Bar` です。
+quadrant 図では、`classDef` のクラスの名前が同じように続きます。
+[corpus fixture: er/lex-name-line-separator-comment-line]
+[corpus fixture: er/lex-name-two-comment-regions]
+[corpus fixture: er/lex-quoted-name-line-separator-comment-line]
+[corpus fixture: quadrant/lex-classdef-name-line-separator-comment-line]
+[corpus fixture: quadrant/db-classdef-name-starts-with-line-separator-comment-line]
 
 mermaid.js がこう読む行は、ソースの何行にもまたがります。
 整形は、その行を、最初の行から終わりまで、その上にある文ごと、
 書かれたまま印字します。
 文の間の空白は整形せず、コメント行の後の行も字下げしません。
 これはすべての文、ブロックの開始行、ヘッダーに共通の 1 つの規則です。
+例外は mindmap です。
+mindmap は、ノードのコメント行を、ノードの段の自分の行に置きます。
+[行区切り文字](./mindmap.ja.md#行区切り文字)を参照してください。
 そのようなコメント行が途中で切る図のコメントも、
 書かれたまま印字します（[行区切り](./sequence.ja.md#行区切り)を参照）。
-行は、領域が取り除かない最初の改行で終わります。
-そのため、コメント行の後の行にあるものは、その行の一部です。
-タイトルのない `subgraph` 行の名前は、そこにある `;` で終わり、
-`;` はその場所に残ります。
-空の行や空白だけの行は、行を終わらせます。
-ただし、その後にコメント行が続くときは別です。
-コメント行の前にあるそのような行は、領域に入り、領域と一緒に取り除かれます。
-ディレクティブの中の U+2028 や U+2029 はディレクティブと一緒に取り除かれるため、
-図のコメントを終わらせることも、途中で切ることもありません。
-そのようなディレクティブの前後にあるコメントの断片は、1 つのコメントのまま、
-書かれたまま印字します。
-[test: a diagram comment joined past a closed directive that holds U+2028]
+領域が名前の中にあるときも同じです。
+ER 図と quadrant 図が、これにあたります。
+ER 図では、そのような行にある実体のブロックだけは、
+最後まで書かれたままにはしません。
+`{` までの行は書かれたまま残り、空でないブロックでは、
+`{` の後ろにあるものも書かれたまま残り、その後の属性と `}` は、
+ほかの実体と同じに置きます。
+ただし `}` が、そのようなコメント行が始まる行にあるときは、
+書かれたまま残ります（[ER](./er.ja.md#複数行の文)を参照）。
+[test: a comment line after U+2028 inside the name of an ER entity with an attribute block over several lines]
+[test: an attribute block of an entity that follows another entity on the line, after a comment line after U+2028]
+[test: an attribute block of an entity that follows a name that a comment line cuts, and a comment line after U+2028 after its closing brace]
+[test: two spaces before the opening brace of an entity that follows a name that a comment line cuts]
+[test: a comment line after U+2028 inside the name of an ER entity]
+[test: a comment line after U+2029 inside the name of an ER entity]
+[test: a comment line after U+2028 inside the name of an ER entity that follows
+a name in quotes] [test: a comment line after U+2028 inside the name of a class]
+[test: a comment line after U+2029 inside the name of a class]
+
+行に載るものと行の終わりは、mermaid.js が取り除くものから決まります。
+図種ごとの文書には、その図種のことを書きます。
+[ER](./er.ja.md#複数行の文)、[quadrant](./quadrant.ja.md#複数行の文)、
+[class](./class.ja.md#複数行の文)、[block](./block.ja.md#行区切り文字)、
+[sequence](./sequence.ja.md#行区切り)、
+[flowchart](./flowchart.ja.md#複数行の文)、[state](./state.ja.md#行区切り文字)、
+[mindmap](./mindmap.ja.md#行区切り文字)を参照してください。
+
+- 行は、領域が取り除かない最初の改行で終わります。
+  コメント行の後の行にあるものは、その行の一部です。
+  最初の行で領域の前にある文と、最後の行でテキストの後にある文、
+  テキストの後の 2 つ目のコメント行も、その行の一部です。
+  タイトルのない `subgraph` 行の名前は、そこにある `;` で終わり、
+  `;` はその場所に残ります。
+  そのような行の CRLF の改行は、
+  ほかの所と同じく LF で印字します（[行末](#行末)を参照）。
+  [test: a statement on the line after a comment line after U+2028 inside the name
+  of an ER entity]
+  [test: a statement before a name on its line, with a comment line after U+2028
+  inside the name of an ER entity]
+  [test: two comment lines with text between them after U+2028 inside the name of
+  an ER entity]
+  [test: two comment lines with text between them after U+2028 inside the name of
+  a class]
+  [test: a comment line after U+2028 inside the name of an ER entity, with CRLF
+  line breaks]
+  [test: a comment line after U+2028 inside the name of a class, with CRLF line
+  breaks]
+- 空行、空白だけの行、単独の行にあるディレクティブは、
+  その後にコメント行が続くとき、領域に入ります。
+  領域と一緒に取り除かれ、数も順序も問わず、行はそれをまたいで続きます。
+  [test: an empty line and a comment line after a comment line after U+2028 inside
+  the name of an ER entity]
+  [test: a line of only whitespace and a comment line after a comment line after
+  U+2028 inside the name of an ER entity]
+  [test: two empty lines and a comment line after a comment line after U+2028
+  inside the name of an ER entity]
+  [test: a directive line and a comment line after a comment line after U+2028
+  inside the name of an ER entity]
+  [test: an empty line, a directive line, and a comment line after a comment line
+  after U+2028 inside the name of an ER entity]
+  [test: an empty line and a comment line after a comment line after U+2028 inside
+  the name of a class]
+  [test: a line of only whitespace and a comment line after a comment line after
+  U+2028 inside the name of a class]
+  [test: two empty lines and a comment line after a comment line after U+2028
+  inside the name of a class]
+  [test: a directive line and a comment line after a comment line after U+2028
+  inside the name of a class]
+  [test: an empty line, a directive line, and a comment line after a comment line
+  after U+2028 inside the name of a class]
+- その後にコメント行が続かないとき、それらは行を終わらせます。
+  空行、空白だけの行、単独の行にあるディレクティブ（その行の終わりで）、
+  そしてテキストの終わりです。
+  次の行が何になるかは、図種によります。
+  改行の後も文が続く図種では、次の行は文の残りで、それも書かれたまま印字します。
+  たとえば、flowchart の辺の残り、requirement のブロック、xychart の向きです。
+  [test: a directive line after a comment line after U+2028, and the rest of an
+  edge on the next line, in a flowchart]
+  [test: an empty line after a comment line after U+2028, and the rest of an edge
+  on the next line, in a flowchart]
+  [test: an empty line after a comment line after U+2028, and the block of a
+  requirement on the next line]
+  [test: a directive line after a comment line after U+2028, and the block of a
+  requirement on the next line]
+  [test: an empty line after a comment line after U+2028 at the header, and the
+  orientation on the next line, in an xychart]
+  [test: a directive line after a comment line after U+2028 at the header, and the
+  orientation on the next line, in an xychart]
+- ディレクティブの中の U+2028 や U+2029
+  はディレクティブと一緒に取り除かれるため、図のコメントを終わらせることも、
+  途中で切ることもありません。
+  そのようなディレクティブの前後にあるコメントの断片は、1 つのコメントのまま、
+  書かれたまま印字します。
+  [test: a diagram comment joined past a closed directive that holds U+2028]
 
 ## フロントマター
 

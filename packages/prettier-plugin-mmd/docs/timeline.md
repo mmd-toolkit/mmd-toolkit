@@ -150,7 +150,11 @@ stop ignoring a `;`, or ignore another. After `accDescr { style:#x }`, `a;b : e`
 is the period `ab `, while `a;b : e` on a line of its own is the period `a;b `.
 So the statements of such a line stay on it, with the whitespace between them
 formatted as anywhere else, and the `;` stays as written. [fixture:
-statements-one-per-line/ignored-semicolon-line-kept]
+statements-one-per-line/ignored-semicolon-line-kept] The same holds where the
+`;` stands in the last line of the text of an `accDescr` block over several
+lines and a statement follows its `}`: `accDescr {`, a line break, and `alpha;}`
+stay with `Phase : done` on one line. [fixture:
+statements-one-per-line/description-block-end-line-keeps-next-statement]
 
 Input
 ([statements-one-per-line/header-direction-then-title-input.mmd](../tests/fixtures/timeline/statements-one-per-line/header-direction-then-title-input.mmd)):
@@ -1456,6 +1460,14 @@ characters of the text and no spaces or tabs: the spaces after one are left out
 with the other whitespace at the end of the text, and the spaces before it stay.
 [test: U+2029 and spaces at the end of a timeline title] [test: U+2028 and
 spaces at the end of the last event of a line]
+
+A comment line after U+2028 or U+2029 joins the next line to its line, and the
+line stays as written to its end, also after the `}` of a description block that
+starts on the line of the header, and before a period (see
+[A comment line after U+2028 or U+2029](./compatibility.md#a-comment-line-after-u2028-or-u2029)).
+[test: a line separator and a comment line after the closing brace of a
+description block that starts on the line of the timeline header, before a
+period]
 
 ### Whitespace characters
 

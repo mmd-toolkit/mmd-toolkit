@@ -221,6 +221,7 @@ whatever the other versions are, so it has no row.
 | [ER](./er.md#statements-one-per-line)                          | a whitespace character that is no space or tab (U+2028, U+2029, U+00A0, ...) before `class` and two names, or before a direction line, with a statement after it on its line                                   | each statement on a line of its own                                   | [2](./printed-form.md#2-a-gap-of-a-kind-that-prettier-does-not-have) | 11.7.0 rejects the `class` line and draws the `direction` line differently                                  | [test: a line of two ER statements that starts with U+2028] [test: U+00A0 in place of the separator: a line of two ER statements that starts with U+2028]   |
 | [ER](./er.md#statements-one-per-line)                          | `"Alpha"`, a whitespace character that is no space or tab (U+2028, U+2029, U+00A0, ...), and `{ int x }`, an alias, a CSS class, or a relationship                                                             | `Alpha`, and the statement of the character on a line of its own      | [2](./printed-form.md#2-a-gap-of-a-kind-that-prettier-does-not-have) | 10.9.8 and 11.7.0 read the character as whitespace, and reject a line that starts with it before the rest   | [test: U+2028 and an attribute block after a name in quotes] [test: U+00A0 in place of the separator: U+2028 and an attribute block after a name in quotes] |
 | [ER](./er.md#statements-one-per-line)                          | an attribute with a pair of `~` after another attribute on its line (`int a List~int~ b`)                                                                                                                      | one attribute on each line                                            | [2](./printed-form.md#2-a-gap-of-a-kind-that-prettier-does-not-have) | 10.9.8 reads the line up to the second `~` as the type of its first attribute                               | [fixture: er/attribute-spacing/attributes-with-tilde-on-one-line-kept]                                                                                      |
+| [ER](./er.md#attribute-blocks)                                 | an empty block over several lines on a line that stays as written, after a `~` in an attribute block (`T { int a List~int~ b } A {`, a line break, `}`, and more text)                                         | `{ }` after the `{`, with the rest of the closing line                | [2](./printed-form.md#2-a-gap-of-a-kind-that-prettier-does-not-have) | 10.9.8 does not draw a line that holds a `~` of an attribute and a long text after it                       | [fixture: er/attribute-blocks/written-line-tilde-line-closing-remainder]                                                                                    |
 | [treemap](./treemap.md#title)                                  | `title T` at the start of its line                                                                                                                                                                             | `  title T` one step in                                               | [1](./printed-form.md#1-the-whitespace-beside-a-mark)                | 11.8.1 rejects a title, `accTitle`, and `accDescr` that is indented                                         | [fixture: treemap/title/line-start-kept]                                                                                                                    |
 | [ishikawa](./ishikawa.md#indentation)                          | `ishikawa`, `R`, `  A`, ` B`, `  C` as written                                                                                                                                                                 | every node at its depth                                               | [1](./printed-form.md#1-the-whitespace-beside-a-mark)                | 11.13.0 draws the text printed by depth differently from the written text                                   | [fixture: ishikawa/indentation/indent-relative-zero]                                                                                                        |
 | [Wardley](./wardley.md#links)                                  | `Alpha-->Beta` printed `Alpha--> Beta`                                                                                                                                                                         | `Alpha- -> Beta`                                                      | [1](./printed-form.md#1-the-whitespace-beside-a-mark)                | 11.14.0 rejects a name with a `-`                                                                           | [fixture: wardley/links/link-long-glued]                                                                                                                    |
@@ -3642,6 +3643,15 @@ break, and `;` is accepted, and without the second `;` the whitespace at the end
 of the line hides the line break, and it is rejected. [corpus fixture:
 sequence/ignored-semicolon-then-separator-line-1902f8c5]
 
+In an ER diagram, an entity on such a line that holds an attribute block over
+several lines is printed as a block, and the whitespace between the units of the
+line is formatted as usual (see [Attribute blocks](./er.md#attribute-blocks)):
+`"style:#x" ;`, U+2028, ` A {`, a line break, and `}` become `"style:#x"; `,
+U+2028, ` A { }`, and with an attribute between the braces the line ends with
+` A {`. [test: an empty attribute block over several lines after a semicolon
+that the line rule ignores and U+2028] [test: an attribute block over several
+lines after a semicolon that the line rule ignores and U+2028]
+
 See [Statements one per line](./flowchart.md#statements-one-per-line).
 
 ## A line that a directive that is not closed joins
@@ -3675,7 +3685,11 @@ the diagram, while `%%{x: wB` has the argument `wB`. The tree leaves that
 whitespace outside the directive, but the printers read it as a part of the
 directive and print it as written: `"style:#x" end; %%{x: w B` of an ER diagram
 stays as it is. [fixture:
-er/directives/unclosed-directive-argument-then-text-kept]
+er/directives/unclosed-directive-argument-then-text-kept] An ER entity on such a
+line that holds an attribute block over several lines is printed as a block (see
+[Attribute blocks](./er.md#attribute-blocks)): `%%{wrap foo`, a line break,
+`A {`, a line break, and `}` become `%%{wrap foo`, a line break, and `A { }`.
+[fixture: er/attribute-blocks/written-line-unclosed-directive]
 
 A directive with a free-text argument, such as `init`, and no `}%%` extends to
 the end of the text (the specification's
@@ -4062,6 +4076,20 @@ around them decide, so formatting keeps them as they are written. See
 [Accessibility statements](./er.md#accessibility-statements),
 [Statements one per line](./er.md#statements-one-per-line), and
 [Relationship spacing](./er.md#relationship-spacing).
+
+An entity on any of these lines that holds an attribute block over several lines
+is printed as a block (see [Attribute blocks](./er.md#attribute-blocks)): the
+statements of the line stay together on it, with the whitespace between their
+units formatted as usual where it does not decide how mermaid.js reads the line,
+what follows the `{` on its line stays as written in a nonempty block, and the
+attributes after it and the `}` stand as those of any entity, so that `1A {`, a
+line break, and `}` become `1A { }`. [fixture:
+er/attribute-blocks/written-line-number-name] [fixture:
+er/attribute-blocks/written-line-tilde-line] [test: an empty attribute block
+over several lines after U+2028 and class] [test: an empty attribute block over
+several lines after a name in quotes and U+2028] [test: an attribute block over
+several lines of an entity after a statement that starts with U+2028 and a
+comment line]
 
 - A closing `end` with an ignored `;` stays on the line that supplies the
   line-rule trigger, as in `"style:#x" end;`. An ignored `;` after a `class` or
@@ -4837,24 +4865,106 @@ common/comment-after-u2028] [corpus fixture:
 flowchart/comment-lines-after-separator-006f79fb] A `#` comment is no such
 region: the lexer of its diagram reads it. Nor is a `%%` with nothing after it,
 or a line that starts with `%%{` without being a directive: mermaid.js does not
-remove these as comment lines, and a class diagram reads them itself.
+remove these as comment lines, and a class diagram reads them itself. Where no
+whitespace stands after the region, the text after it goes on with the text
+before it: in an ER diagram, `A`, U+2028, `%% c`, and a line `Bar` are the one
+name `A`, U+2028, `Bar`, and in a quadrant chart the name of a class of
+`classDef` goes on in the same way. [corpus fixture:
+er/lex-name-line-separator-comment-line] [corpus fixture:
+er/lex-name-two-comment-regions] [corpus fixture:
+er/lex-quoted-name-line-separator-comment-line] [corpus fixture:
+quadrant/lex-classdef-name-line-separator-comment-line] [corpus fixture:
+quadrant/db-classdef-name-starts-with-line-separator-comment-line]
 
 A line that mermaid.js reads this way runs over several lines of the source. The
 formatter prints it as written, from its first line to its end, with the
 statements that stand on it: it does not format the whitespace between them, and
 it does not indent the lines after the comment line. This is one rule for every
-statement, block opening, and header; a diagram comment that such a comment line
-cuts is printed as written as well (see
-[Line separators](./sequence.md#line-separators)). The line ends at the first
-line break that no region removes, so what stands on the line after the comment
-lines is part of it: a `;` there ends the name of a `subgraph` line without a
-title and stays where it is. An empty line or a line of only whitespace ends the
-line, unless a comment line follows it: before a comment line, such lines belong
-to the region and are removed with it. A U+2028 or U+2029 inside a directive is
-removed with the directive, so it ends no diagram comment and cuts none: the
-comment fragments before and after such a directive stay one comment, printed as
-written. [test: a diagram comment joined past a closed directive that holds
-U+2028]
+statement, block opening, and header, but for a mindmap, which puts the comment
+line of a node on a line of its own at the level of the node (see
+[Line separators](./mindmap.md#line-separators)). A diagram comment that such a
+comment line cuts is printed as written as well (see
+[Line separators](./sequence.md#line-separators)). The same holds where the
+region lies inside a name, in an ER diagram and in a quadrant chart. In an ER
+diagram, the block of an entity on such a line is the one part that is not
+printed as written to its end: the line up to the `{` stays as written, as does
+what follows the `{` on its line in a nonempty block, and the attributes after
+it and the `}` stand as those of any entity, unless the `}` stands on a line
+that holds the start of such a comment line (see
+[ER](./er.md#multi-line-statements)). [test: a comment line after U+2028 inside
+the name of an ER entity with an attribute block over several lines] [test: an
+attribute block of an entity that follows another entity on the line, after a
+comment line after U+2028] [test: an attribute block of an entity that follows a
+name that a comment line cuts, and a comment line after U+2028 after its closing
+brace] [test: two spaces before the opening brace of an entity that follows a
+name that a comment line cuts] [test: a comment line after U+2028 inside the
+name of an ER entity] [test: a comment line after U+2029 inside the name of an
+ER entity] [test: a comment line after U+2028 inside the name of an ER entity
+that follows a name in quotes] [test: a comment line after U+2028 inside the
+name of a class] [test: a comment line after U+2029 inside the name of a class]
+
+What the line holds, and where it ends, follow from what mermaid.js removes. The
+documents of the diagram types say what is theirs:
+[ER](./er.md#multi-line-statements),
+[quadrant](./quadrant.md#multi-line-statements),
+[class](./class.md#multi-line-statements), [block](./block.md#line-separators),
+[sequence](./sequence.md#line-separators),
+[flowchart](./flowchart.md#multi-line-statements),
+[state](./state.md#line-separators), and
+[mindmap](./mindmap.md#line-separators).
+
+- The line ends at the first line break that no region removes. What stands on
+  the line after the comment lines is part of it: the statements that stand on
+  its first line before the region and on its last line after the text, and a
+  second comment line after text. A `;` there ends the name of a `subgraph` line
+  without a title and stays where it is. The CRLF line breaks of such a line are
+  printed as LF, as everywhere (see [Line endings](#line-endings)). [test: a
+  statement on the line after a comment line after U+2028 inside the name of an
+  ER entity] [test: a statement before a name on its line, with a comment line
+  after U+2028 inside the name of an ER entity] [test: two comment lines with
+  text between them after U+2028 inside the name of an ER entity] [test: two
+  comment lines with text between them after U+2028 inside the name of a class]
+  [test: a comment line after U+2028 inside the name of an ER entity, with CRLF
+  line breaks] [test: a comment line after U+2028 inside the name of a class,
+  with CRLF line breaks]
+- An empty line, a line of only whitespace, and a directive on a line of its own
+  belong to the region when a comment line follows them: they are removed with
+  it, in any number and in any order, and the line goes on across them. [test:
+  an empty line and a comment line after a comment line after U+2028 inside the
+  name of an ER entity] [test: a line of only whitespace and a comment line
+  after a comment line after U+2028 inside the name of an ER entity] [test: two
+  empty lines and a comment line after a comment line after U+2028 inside the
+  name of an ER entity] [test: a directive line and a comment line after a
+  comment line after U+2028 inside the name of an ER entity] [test: an empty
+  line, a directive line, and a comment line after a comment line after U+2028
+  inside the name of an ER entity] [test: an empty line and a comment line after
+  a comment line after U+2028 inside the name of a class] [test: a line of only
+  whitespace and a comment line after a comment line after U+2028 inside the
+  name of a class] [test: two empty lines and a comment line after a comment
+  line after U+2028 inside the name of a class] [test: a directive line and a
+  comment line after a comment line after U+2028 inside the name of a class]
+  [test: an empty line, a directive line, and a comment line after a comment
+  line after U+2028 inside the name of a class]
+- Without a comment line after them, they end the line: an empty line, a line of
+  only whitespace, and a directive on a line of its own (at its end), and so
+  does the end of the text. What the next line is depends on the diagram type.
+  Where a statement may go on after a line break, the next line is the rest of
+  it, and it is printed as written too, for example the rest of an edge in a
+  flowchart, the block of a requirement, and the orientation in an xychart.
+  [test: a directive line after a comment line after U+2028, and the rest of an
+  edge on the next line, in a flowchart] [test: an empty line after a comment
+  line after U+2028, and the rest of an edge on the next line, in a flowchart]
+  [test: an empty line after a comment line after U+2028, and the block of a
+  requirement on the next line] [test: a directive line after a comment line
+  after U+2028, and the block of a requirement on the next line] [test: an empty
+  line after a comment line after U+2028 at the header, and the orientation on
+  the next line, in an xychart] [test: a directive line after a comment line
+  after U+2028 at the header, and the orientation on the next line, in an
+  xychart]
+- A U+2028 or U+2029 inside a directive is removed with the directive, so it
+  ends no diagram comment and cuts none: the comment fragments before and after
+  such a directive stay one comment, printed as written. [test: a diagram
+  comment joined past a closed directive that holds U+2028]
 
 ## Frontmatter
 

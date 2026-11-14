@@ -428,6 +428,12 @@ GWT の見出しがコメントやディレクティブの後に続く場合、�
 [fixture: eventmodeling/gwt-clauses-and-items/header-completion-comment]
 [fixture: eventmodeling/gwt-clauses-and-items/header-directive-continuation]
 
+続いた GWT の見出しのディレクティブの後にある節は、
+その前の空白を書かれたままにします。
+同じ行で項目の後ろにあるディレクティブは、その行に残ります。
+`given evt A %%{{tail}}%%` は 1 行のままです。
+[fixture: eventmodeling/gwt-clauses-and-items/clause-after-header-directive-with-tail-directive]
+
 `gwt 99` は第 1 列、節キーワードはさらに 1 段、各項目はさらに 1 段深くします。
 架空の閉じ記号を足さず、書かれた節と項目の関係を見せます。
 必須の given・then、任意の when、項目の順序・反復・型語を保ちます。
@@ -844,6 +850,12 @@ GWT 節・項目の隙間を保ちます。
 見出しと入れ子の本文で同じ判断を使い、
 項目の移動によって次の整形で外側の開きの保護が失われないようにします。
 
+説明ブロックが複数行にわたるとき、その `}` の後ろにある隠れた形は、
+同じ行に残ります。
+`eventmodeling accDescr {A`、改行、`B} %%{{native}}%%` は、そのまま残ります。
+以前は、その形が自分の行に移っていました。
+[fixture: eventmodeling/hidden-forms/native-after-description-block-end-stays-on-its-line]
+
 [fixture: eventmodeling/hidden-forms/header-inline-gwt-item-directive]
 
 [fixture: eventmodeling/hidden-forms/header-inline-gwt-item-yaml]
@@ -1013,6 +1025,15 @@ CRLF は 1 単位、サロゲートペアは 2 単位と数えます。
 共通文の境界は普通の空白規則でなく原文隙間全体を保ちます。
 除去されるディレクティブ自体は必要な空白の代わりになりません。
 
+閉じていないディレクティブは、引数の後の空白を、改行も含めて取ります。
+そのため次の行はその行に続き、その行は書かれたまま印字します（詳しくは、
+[閉じていないディレクティブがつなぐ行](./compatibility.ja.md#閉じていないディレクティブがつなぐ行)
+を参照）。
+複数行の description block の `}` の後にそのディレクティブがあるときも同じで、
+`accDescr {alpha`、改行、`beta} %%{wrap foo`、改行、` tf 23 evt End` は、
+`tf` の前の空白も含めて、そのまま残ります。
+[fixture: eventmodeling/global-directives/description-block-end-line-with-unclosed-directive-kept]
+
 [fixture: eventmodeling/global-directives/directive-same-line-contacts]
 
 [fixture: eventmodeling/global-directives/directive-follows-split-next-statement]
@@ -1068,6 +1089,12 @@ tf %%{wrap}%%01 evt Alpha %%{wrap}%%->> %%{wrap}%%02
 子の本文の開始境界も保護行に残し、次の整形で分かれ方が変わるのを防ぎます。
 文法上のセミコロンがないため `verbatimStyleLines` は `false` です。
 `style` や `classDef` だけでは行全体を固定しません。
+
+`;` を含む行は、その行の文をまとめて残します。
+複数行の description block の最後の行に `;` があり、
+その `}` の後ろに文が続くときも同じです。
+`accDescr {x`、改行、`y;}` は、`tf 17 evt End` と同じ行に残ります。
+[fixture: eventmodeling/semicolons/description-block-end-line-keeps-next-statement]
 
 [fixture: eventmodeling/semicolons/native-gwt-value]
 
