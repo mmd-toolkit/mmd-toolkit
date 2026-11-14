@@ -1367,9 +1367,22 @@ classDiagram
 [fixture: semicolons-at-the-end-of-a-style-statement/blank-and-comment-lines]
 メンバーのセミコロンはスタイル文の外なので保ちます。
 [fixture: semicolons-at-the-end-of-a-style-statement/member-semicolons-kept]
+空の説明ブロックの後ろにある文も例外ではありません。
+mermaid.js は、空の説明ブロックのトークンを読みません。
+詳しくは [空の説明ブロック](#空の説明ブロック) を参照してください。
+そのため `accDescr {} style A fill:#f00;` の `;` は、
+単独の行のときと同じく行の規則が無視するので、落とします。
+`;` を残すと、行の規則に合わなくなった `fill: #f00` の後ろに立つので、
+mermaid.js は値の文字として読むか、拒否します。
+[fixture: semicolons-at-the-end-of-a-style-statement/style-after-empty-block-terminator-dropped]
+[fixture: semicolons-at-the-end-of-a-style-statement/classdef-after-empty-block-terminator-dropped]
+[fixture: semicolons-at-the-end-of-a-style-statement/style-after-empty-block-tab-before-terminator-dropped]
+[fixture: semicolons-at-the-end-of-a-style-statement/style-after-empty-block-directive-before-terminator]
+[fixture: semicolons-at-the-end-of-a-style-statement/style-after-member-and-two-empty-blocks-terminator-dropped]
 
 同じ行でセミコロンの後にディレクティブが続く場合は、`;` を保ちます。
 [fixture: semicolons-at-the-end-of-a-style-statement/trailing-items-kept]
+[fixture: semicolons-at-the-end-of-a-style-statement/style-after-empty-block-directive-after-terminator-kept]
 同じ行で `%%` のテキストが続く場合も保ちます。
 ここではスタイルの文字列の一部です。
 [fixture: semicolons-at-the-end-of-a-style-statement/trailing-items-kept]
