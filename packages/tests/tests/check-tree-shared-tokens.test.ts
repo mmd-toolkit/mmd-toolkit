@@ -1897,3 +1897,479 @@ describe("checkTree: class/db-acc-title-entity (tokens.md, unchanged node values
     })
   })
 })
+
+describe("checkTree: cases of the shared token conditions", () => {
+  it("fails a Directive token value that contains only its content", () => {
+    const input = "error %%{wrap}%%"
+    const tree = handMadeRoot(input, {
+      tokens: [
+        ["RawText", "error"],
+        ["Directive", "%%{wrap}%%"],
+      ],
+      directives: [directiveOf(input, "%%{wrap}%%")],
+    })
+    expect(checkTree(input, tree)).toEqual([])
+    setField(tree.tokens[1], "value", "wrap")
+    expect(checkTree(input, tree)).toContainEqual({
+      where: "Directive at 6-16",
+      message: 'value: "wrap", not "%%{wrap}%%"',
+    })
+  })
+
+  it("fails a Root.tokens entry with an unknown token kind", () => {
+    const tree = handMadeRoot("error", { tokens: [["RawText", "error"]] })
+    expect(checkTree("error", tree)).toEqual([])
+    setField(tree.tokens[0], "type", "OtherToken")
+    expect(checkTree("error", tree)).toContainEqual({
+      where: "OtherToken at 0-5",
+      message: 'kind: "OtherToken", not "RawText"',
+    })
+  })
+
+  it.each([
+    {
+      case: "a token whose written CRLF is converted to LF",
+      fixture: "tokens-string-crlf-in-note",
+      before: '"a\r\nb"',
+      after: '"a\nb"',
+    },
+    {
+      case: "a token whose attribute quotes are converted",
+      fixture: "db-class-def-attribute-quote",
+      before: 'x:<a b="c">y</a>',
+      after: "x:<a b='c'>y</a>",
+    },
+    {
+      case: "a token whose entity is converted to its placeholder",
+      fixture: "db-acc-title-entity",
+      before: "x#amp;y",
+      after: "x\uFB02\u00B0amp\u00B6\u00DFy",
+    },
+  ])("fails $case", ({ fixture, before, after }) => {
+    const { input, tree } = recordedTree("class", fixture)
+    expect(checkTree(input, tree)).toEqual([])
+    const broken = copyOf(tree)
+    setField(token(broken, before), "value", after)
+    expect(checkTree(input, broken)).toContainEqual({
+      where: `${token(tree, before).type} at ${token(tree, before).range.join("-")}`,
+      message: `value: ${JSON.stringify(after)}, not ${JSON.stringify(before)}`,
+    })
+  })
+
+  it("fails an unclosed StringLiteral recorded as closed", () => {
+    const { input, tree } = recordedTree(
+      "class",
+      "lex-backquote-unclosed-alone",
+    )
+    expect(checkTree(input, tree)).toEqual([])
+    const broken = copyOf(tree)
+    setField(firstNode(broken, "StringLiteral"), "closed", true)
+    expect(checkTree(input, broken)).toContainEqual({
+      where: "StringLiteral at 21-23",
+      message: "closed: true, not false",
+    })
+  })
+
+  it("fails a closing quote added to an unclosed String token", () => {
+    const { input, tree } = recordedTree(
+      "class",
+      "lex-backquote-unclosed-alone",
+    )
+    expect(checkTree(input, tree)).toEqual([])
+    const broken = copyOf(tree)
+    setField(token(broken, "`\n"), "value", "`\n`")
+    expect(checkTree(input, broken)).toContainEqual({
+      where: "String at 21-23",
+      message: 'value: "`\\n`", not "`\\n"',
+    })
+  })
+
+  it("fails a comment-cut string fragment retyped as String", () => {
+    const { input, tree } = recordedTree(
+      "flowchart",
+      "tokens-string-literal-comment-line",
+    )
+    const broken = copyOf(tree)
+    setField(token(broken, '"one\n'), "type", "String")
+    expect(
+      checkTree(input, broken).some(
+        (problem) =>
+          problem.where === "StringLiteral at 27-41" &&
+          problem.message.includes("StringFragment"),
+      ),
+    ).toBe(true)
+  })
+
+  it("fails a directive-cut unclosed string fragment retyped as String", () => {
+    const { input, tree } = recordedTree(
+      "class",
+      "tokens-backquote-unclosed-directive-between-spaces",
+    )
+    expect(checkTree(input, tree)).toEqual([])
+    const broken = copyOf(tree)
+    setField(token(broken, "`a "), "type", "String")
+    expect(
+      checkTree(input, broken).some(
+        (problem) =>
+          problem.where === "StringLiteral at 21-41" &&
+          problem.message.includes("StringFragment"),
+      ),
+    ).toBe(true)
+  })
+
+  it("fails the two empty-frontmatter delimiter tokens merged into one", () => {
+    const { input, tree } = recordedTree("common", "frontmatter-empty-body")
+    expect(checkTree(input, tree)).toEqual([])
+    const broken = copyOf(tree)
+    extendToken(
+      input,
+      broken.tokens[0],
+      broken.tokens[0].range[0],
+      broken.tokens[1].range[1],
+    )
+    setField(broken, "tokens", [broken.tokens[0], ...broken.tokens.slice(2)])
+    expect(
+      checkTree(input, broken).some(
+        (problem) =>
+          problem.where === "the tokens in the range of the frontmatter",
+      ),
+    ).toBe(true)
+  })
+
+  it.each([
+    {
+      case: "a whitespace-only value",
+      diagram: "class",
+      fixture: "db-generic-blank",
+      value: " ",
+    },
+    {
+      case: "a whitespace fragment after a directive",
+      diagram: "sequence",
+      fixture: "tokens-title-directive-then-spaces",
+      value: "  ",
+    },
+    {
+      case: "a whitespace fragment after an ignored semicolon",
+      diagram: "state",
+      fixture: "tokens-alias-ignored-semicolon-then-spaces",
+      value: "  ",
+    },
+    {
+      case: "a value line separator before a comment region",
+      diagram: "flowchart",
+      fixture: "comment-lines-after-separator-0e277222",
+      value: "\u2028",
+    },
+  ] as const)(
+    "fails a missing token of $case",
+    ({ diagram, fixture, value }) => {
+      const { input, tree } = recordedTree(diagram, fixture)
+      expect(checkTree(input, tree)).toEqual([])
+      const broken = copyOf(tree)
+      setField(
+        broken,
+        "tokens",
+        broken.tokens.filter((item) => item.value !== value),
+      )
+      expect(
+        checkTree(input, broken).some((problem) =>
+          problem.message.includes("token"),
+        ),
+      ).toBe(true)
+    },
+  )
+
+  it("fails distinct comments in reverse source order", () => {
+    const input = "error\n%% first\n%% second\n"
+    const tree = handMadeRoot(input, {
+      tokens: [["RawText", "error"]],
+      comments: [
+        commentOf(input, "%%", "%% first"),
+        commentOf(input, "%%", "%% second"),
+      ],
+    })
+    expect(checkTree(input, tree)).toEqual([])
+    const broken = copyOf(tree)
+    setField(broken, "comments", [...broken.comments].reverse())
+    expect(checkTree(input, broken)).toContainEqual({
+      where: "Comment at 6-14",
+      message: "overlaps the Comment before it, or comes before it",
+    })
+  })
+
+  it("fails a separate token of a grammatical statement line terminator", () => {
+    const { input, tree } = recordedTree("class", "gram-name-spaces")
+    expect(checkTree(input, tree)).toEqual([])
+    const broken = copyOf(tree)
+    setField(broken, "tokens", [
+      ...broken.tokens,
+      tokenOf(input, "RawText", { text: "\n", from: input.length - 1 }),
+    ])
+    expect(
+      checkTree(input, broken).some(
+        (problem) =>
+          problem.where.startsWith("RawText") &&
+          problem.message.includes("whitespace"),
+      ),
+    ).toBe(true)
+  })
+
+  it.each([
+    {
+      case: "railroad ISO block mark",
+      diagram: "railroad",
+      fixture: "ebnf-comment-iso",
+      index: 0,
+    },
+    {
+      case: "railroad C block mark",
+      diagram: "railroad",
+      fixture: "ebnf-comment-iso",
+      index: 1,
+    },
+    {
+      case: "railroad semicolon mark",
+      diagram: "railroad",
+      fixture: "abnf-comment-semicolon-ls",
+      index: 0,
+    },
+    {
+      case: "eventmodeling block mark",
+      diagram: "eventmodeling",
+      fixture: "comment-native",
+      index: 0,
+    },
+    {
+      case: "eventmodeling line mark",
+      diagram: "eventmodeling",
+      fixture: "comment-native",
+      index: 2,
+    },
+  ] as const)("fails a wrong $case", ({ diagram, fixture, index }) => {
+    const { input, tree } = recordedTree(diagram, fixture)
+    expect(checkTree(input, tree)).toEqual([])
+    const broken = copyOf(tree)
+    setField(broken.comments[index], "mark", "%%")
+    expect(
+      checkTree(input, broken).some(
+        (problem) =>
+          problem.message.includes("mark") ||
+          problem.message.includes("native Comment"),
+      ),
+    ).toBe(true)
+  })
+
+  it("fails a diagram-comment value that drops its directive", () => {
+    const { input, tree } = recordedTree(
+      "sequence",
+      "tokens-diagram-comment-directive-at-end",
+    )
+    const broken = copyOf(tree)
+    setField(broken.comments[0], "value", "c ")
+    expect(checkTree(input, broken)).toContainEqual({
+      where: "Comment at 25-42",
+      message: 'value of a diagram comment: "c ", not "c %%{init: {}}%%"',
+    })
+  })
+
+  it("fails a diagram-comment range ending before its internal directive", () => {
+    const { input, tree } = recordedTree(
+      "sequence",
+      "tokens-diagram-comment-directive-at-end",
+    )
+    const broken = copyOf(tree)
+    span(input, broken.comments[0], 25, 28)
+    setField(broken.comments[0], "value", "c ")
+    expect(
+      checkTree(input, broken).some(
+        (problem) =>
+          problem.where === "Comment at 25-28" &&
+          problem.message.includes("end"),
+      ),
+    ).toBe(true)
+  })
+
+  it.each([
+    {
+      case: "the common split mark",
+      diagram: "common",
+      fixture: "comment-percent-joined-by-directive",
+    },
+    {
+      case: "the diagram split mark",
+      diagram: "sequence",
+      fixture: "lex-diagram-comment-directive-between-marks",
+    },
+  ] as const)(
+    "fails a comment range starting after the directive in $case",
+    ({ diagram, fixture }) => {
+      const { input, tree } = recordedTree(diagram, fixture)
+      expect(checkTree(input, tree)).toEqual([])
+      const broken = copyOf(tree)
+      const comment = broken.comments[0]
+      span(input, comment, broken.directives[0].range[1], comment.range[1])
+      expect(
+        checkTree(input, broken).some(
+          (problem) =>
+            problem.where.startsWith("Comment") &&
+            (problem.message.includes("mark") ||
+              problem.message.includes("range")),
+        ),
+      ).toBe(true)
+    },
+  )
+
+  it.each([
+    {
+      case: "railroad ISO block value",
+      diagram: "railroad",
+      fixture: "ebnf-comment-iso",
+      index: 0,
+      closer: "*)",
+    },
+    {
+      case: "railroad C block value",
+      diagram: "railroad",
+      fixture: "ebnf-comment-iso",
+      index: 1,
+      closer: "*/",
+    },
+    {
+      case: "eventmodeling block value",
+      diagram: "eventmodeling",
+      fixture: "comment-native",
+      index: 0,
+      closer: "*/",
+    },
+  ] as const)(
+    "fails a closer retained in $case",
+    ({ diagram, fixture, index, closer }) => {
+      const { input, tree } = recordedTree(diagram, fixture)
+      expect(checkTree(input, tree)).toEqual([])
+      const broken = copyOf(tree)
+      setField(
+        broken.comments[index],
+        "value",
+        broken.comments[index].value + closer,
+      )
+      expect(
+        checkTree(input, broken).some((problem) =>
+          problem.message.includes("value"),
+        ),
+      ).toBe(true)
+    },
+  )
+
+  it("fails a directive split into two Directive tokens", () => {
+    const { input, tree } = recordedTree("common", "error-directive-adjacent")
+    const broken = copyOf(tree)
+    replaceToken(broken, token(broken, "%%{wrap}%%"), [
+      ["Directive", 0, 3],
+      ["Directive", 3, 10],
+    ])
+    expect(checkTree(input, broken)).toContainEqual({
+      where: "the Directive tokens",
+      message:
+        "are not those of the directives outside all other tokens and all comments: [[5,8],[8,15]], not [[5,15]]",
+    })
+  })
+
+  it("fails a final line-feed-only fragment omitted from an unclosed string", () => {
+    const { input, tree } = recordedTree(
+      "class",
+      "lex-backquote-unclosed-directive-after-line-break",
+    )
+    expect(checkTree(input, tree)).toEqual([])
+    const broken = copyOf(tree)
+    setField(
+      broken,
+      "tokens",
+      broken.tokens.filter((item) => item.value !== "\n"),
+    )
+    expect(
+      checkTree(input, broken).some(
+        (problem) =>
+          problem.where === "StringLiteral at 19-37" &&
+          problem.message.includes("token"),
+      ),
+    ).toBe(true)
+  })
+
+  it("fails a label value retaining its directive", () => {
+    const { input, tree } = recordedTree("common", "directive-in-string")
+    const broken = copyOf(tree)
+    const node = firstNode(broken, "FlowchartLabel")
+    setField(node, "value", input.slice(node.range[0], node.range[1]))
+    expect(
+      checkTree(input, broken).some(
+        (problem) =>
+          problem.where.startsWith("FlowchartLabel") &&
+          problem.message.startsWith("value"),
+      ),
+    ).toBe(true)
+  })
+
+  it.each([
+    {
+      case: "opening indentation",
+      fixture: "frontmatter-indented",
+      start: 0,
+      end: 26,
+      message: "does not start with ---",
+    },
+    {
+      case: "the opening delimiter",
+      fixture: "frontmatter-indented",
+      start: 3,
+      end: 26,
+      message: "does not start with ---",
+    },
+    {
+      case: "the closing delimiter",
+      fixture: "frontmatter-indented",
+      start: 2,
+      end: 25,
+      message: "does not end with ---",
+    },
+    {
+      case: "trailing delimiter whitespace",
+      fixture: "frontmatter-blanks-after-delimiters",
+      start: 0,
+      end: 20,
+      message: "does not end with ---",
+    },
+  ])(
+    "fails a frontmatter record range including or omitting $case",
+    ({ fixture, start, end, message }) => {
+      const { input, tree } = recordedTree("common", fixture)
+      expect(checkTree(input, tree)).toEqual([])
+      const broken = copyOf(tree)
+      span(input, broken.frontmatter!, start, end)
+      expect(checkTree(input, broken)).toContainEqual({
+        where: `Frontmatter at ${start}-${end}`,
+        message,
+      })
+    },
+  )
+
+  it("fails blank lines after frontmatter included in its record range", () => {
+    const input = "---\ntitle: x\n---\n\nerror"
+    const tree = handMadeRoot(input, {
+      tokens: [
+        ["Punctuator", "---"],
+        ["RawText", "title: x"],
+        ["Punctuator", { text: "---", from: 4 }],
+        ["RawText", "error"],
+      ],
+      frontmatter: frontmatterOf(input, "---\ntitle: x\n---", [4, 12]),
+    })
+    expect(checkTree(input, tree)).toEqual([])
+    const broken = copyOf(tree)
+    span(input, broken.frontmatter!, 0, 18)
+    expect(checkTree(input, broken)).toContainEqual({
+      where: "Frontmatter at 0-18",
+      message: "does not end with ---",
+    })
+  })
+})

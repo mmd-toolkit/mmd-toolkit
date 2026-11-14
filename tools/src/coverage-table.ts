@@ -15,11 +15,18 @@ import type {
 export const COVERAGE_TABLE = "packages/tests/recorded-trees/coverage-table"
 
 /** A test case in which `checkTree` reports a tree that breaks the condition. */
-export interface CoverageCase {
+export interface CoverageTest {
   /** The test file, relative to `packages/tests/tests/`. */
   readonly file: string
   /** A string that the test file holds and that names the case, such as its title. */
   readonly text: string
+}
+
+/** One case that the block distinguishes, with the tests that show it is checked. */
+export interface CoverageCase {
+  /** The condition of this case, in the words of the block. */
+  readonly case: string
+  readonly tests: readonly CoverageTest[]
 }
 
 /** Why `checkTree` is not shown to check a condition. */
@@ -42,7 +49,7 @@ export type NoConditionKind =
 export type CoverageJudgment =
   | {
       readonly status: "shown"
-      /** For each case that the block distinguishes, a test case that breaks it. */
+      /** Every case that the block distinguishes, each with tests that break its condition. */
       readonly cases: readonly CoverageCase[]
     }
   | {
@@ -100,12 +107,20 @@ function judgmentProblem(judgment: unknown): string | undefined {
         judgment.cases.every(
           (entry) =>
             isRecord(entry) &&
-            typeof entry.file === "string" &&
-            typeof entry.text === "string" &&
-            entry.text !== "",
+            typeof entry.case === "string" &&
+            entry.case !== "" &&
+            Array.isArray(entry.tests) &&
+            entry.tests.length > 0 &&
+            entry.tests.every(
+              (test) =>
+                isRecord(test) &&
+                typeof test.file === "string" &&
+                typeof test.text === "string" &&
+                test.text !== "",
+            ),
         )
         ? undefined
-        : "is shown without cases of { file, text }"
+        : "is shown without cases of { case, tests: [{ file, text }] }, with a nonempty case and tests"
     case "not-shown":
       return (judgment.reason === "no-rule" ||
         judgment.reason === "rule-misses-condition") &&
@@ -203,7 +218,7 @@ export interface Coverage {
 /**
  * Reads the rows `rows` against the blocks of a version: a row counts when
  * its block is there with the same key, its diagram types are among those the
- * block holds for, every case it names is in its test file (`testFile` gives
+ * block holds for, every test it names is in its test file (`testFile` gives
  * the text of a test file of `packages/tests/tests/`), and no earlier row
  * covers one of its items.
  */
@@ -219,12 +234,14 @@ export function coverageOf(
   const staleRows: StaleRow[] = []
   for (const row of rows) {
     const current = blocks.get(row.block)
-    const missingCase =
+    const missingTest =
       row.judgment.status === "shown"
-        ? row.judgment.cases.find(
-            (testCase) =>
-              testFile(testCase.file)?.includes(testCase.text) !== true,
-          )
+        ? row.judgment.cases
+            .flatMap((entry) => entry.tests)
+            .find(
+              (testCase) =>
+                testFile(testCase.file)?.includes(testCase.text) !== true,
+            )
         : undefined
     const otherDiagram = row.diagrams.find(
       (diagram) => current?.diagrams.includes(diagram) !== true,
@@ -235,8 +252,8 @@ export function coverageOf(
     const reason =
       current === undefined
         ? "no block has this key now: its text, its node type, or a section it links to changed, or it was removed"
-        : missingCase !== undefined
-          ? `the test file ${missingCase.file} no longer holds ${JSON.stringify(missingCase.text)}`
+        : missingTest !== undefined
+          ? `the test file ${missingTest.file} no longer holds ${JSON.stringify(missingTest.text)}`
           : otherDiagram !== undefined
             ? `the block does not hold for the diagram type ${otherDiagram}`
             : covered !== undefined

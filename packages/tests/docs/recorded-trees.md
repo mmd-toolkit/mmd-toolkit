@@ -162,13 +162,17 @@ names (`diagrams`), each named, so that a diagram type added later is not judged
 until a row names it; `about` holds the opening words of the block for a person
 who reads the table, and is not compared. A judgment is one of:
 
-- `shown`: for each case that the block distinguishes, a test case in which
-  `checkTree()` reports a tree that breaks the condition (`cases`). A case is
-  named by its test file under `packages/tests/tests/` (`file`) and a string
-  that the file holds (`text`), such as the title of the test, written out in
-  the file, or the name of the fixture that it breaks; the string is looked for
-  in the text of the file, so a title that a test builds at run time cannot name
-  a case.
+- `shown`: every case that the block distinguishes is named in `cases`, as
+  `{ "case": "<condition in words>", "tests": [{ "file": "…", "text": "…" }] }`.
+  `case` is a nonempty string in the words of the block, and `tests` holds one
+  or more test references. Each test shows `checkTree()` reporting a tree that
+  breaks that case's condition of this block; breaking another block's condition
+  does not show it. A permission (`may`) or a term's definition alone is not a
+  case. Each test is named by its file under `packages/tests/tests/` (`file`)
+  and a string that the file holds (`text`), such as the title of the test,
+  written out in the file, or the name of the fixture that it breaks. The string
+  is looked for in the text of the file, so a title that a test builds at run
+  time cannot name a test.
 - `not-shown`: why (`reason`), with a `note`. `no-rule`: no rule of
   `checkTree()` is about the condition. `rule-misses-condition`: a rule is about
   it, but a case that breaks a part of it is not reported.
@@ -181,17 +185,24 @@ who reads the table, and is not compared. A judgment is one of:
   condition, and a block that mixes a condition with an introduction states a
   condition.
 
+The type notation in
+[How fields are described](../../spec/docs/ast.md#how-fields-are-described)
+defines conditions on the fields in the tables. Its blocks are judged as
+conditions, so a change to a type's meaning makes those items read again. Their
+cases distinguish the value kinds and the placement of lists and `null` that the
+notation describes, including a fraction in a `number` field being allowed.
+
 The command checks every file of the table when it reads it: a file that is not
 JSON, or whose rows are not of this form or name a diagram type that the
 documents do not have, gives no rows and fails the check, as an answer file that
 cannot be read does.
 
 An item without a row is not judged yet. A row counts only when its block has
-that key now, every case that it names is still in its test file, the block
-holds for each of its diagram types, and no earlier row covers one of its items.
-Otherwise it is stale: the command lists it, and its items are read again. The
-items to read are those that are neither `shown` nor `no-condition`, judged or
-not.
+that key now, every test of every named case is still in its test file, the
+block holds for each of its diagram types, and no earlier row covers one of its
+items. Otherwise it is stale: the command lists it, and its items are read
+again. The items to read are those that are neither `shown` nor `no-condition`,
+judged or not.
 
 A change that makes a row stale, or that adds a block, has the judgment made
 again by `packages/tests` in the same pull request: the coverage table is a
@@ -274,7 +285,12 @@ The command prints Markdown, the same on a terminal and in the log of CI:
    `[corpus fixture: <diagram>/<name>]` of those of
    `packages/prettier-plugin-mmd/docs`, whose `[fixture: <diagram>/<name>]`
    names fixtures of the formatter. A tree that no sentence cites says whether
-   the change adds its fixture.
+   the change adds its fixture and whether it is a collected input, read from
+   `source.kind` in `expected.json`. A collected input (`mermaid`) needs no
+   sentence to cite it; an authored input (`authored`) is not collected. When
+   the source kind cannot be read, it says that the status is unknown. Only an
+   uncited authored fixture that the change adds gets a reminder to tell
+   `packages/spec` that a sentence needs to cite it.
 6. The missing answers, and a template of an answer file with the keys filled
    and the answers empty. The command writes no file.
 7. The stale rows of the coverage table, with why: first those that the change

@@ -6,12 +6,19 @@ import type {
   Location,
 } from "../src/check-tree/types.ts"
 import { nodesOf } from "../src/check-tree/walk.ts"
-import { copyOf, recordedTree, setField } from "./check-tree-recorded.ts"
 import {
+  copyOf,
+  firstNode,
+  recordedTree,
+  setField,
+} from "./check-tree-recorded.ts"
+import {
+  commentOf,
   directiveOf,
   frontmatterOf,
   handMadeRoot,
   locationOf,
+  tokenOf,
 } from "./check-tree-trees.ts"
 
 // The conditions of packages/parser/docs/positions.md that no other test of
@@ -313,6 +320,439 @@ describe("checkTree: a sankey field of spaces only has the token of its spaces (
     expect(checkTree(input, broken)).toContainEqual({
       where: "SankeyIdentifier at 9-10",
       message: "does not run from the start of a token to the end of a token",
+    })
+  })
+})
+
+describe("checkTree: every kind of positioned record carries range and loc", () => {
+  const text = "---\na: 1\n---\n%%{init: {}}%% error\n%% c"
+  const root = handMadeRoot(text, {
+    frontmatter: frontmatterOf(text, "---\na: 1\n---", [4, 8]),
+    directives: [directiveOf(text, "%%{init: {}}%%")],
+    comments: [commentOf(text, "%%", "%% c")],
+    tokens: [
+      ["Punctuator", "---"],
+      ["RawText", "a: 1"],
+      ["Punctuator", { text: "---", from: 4 }],
+      ["Directive", "%%{init: {}}%%"],
+      ["RawText", "error"],
+    ],
+  })
+
+  it("passes the positioned records before their fields are removed", () => {
+    expect(checkTree(text, root)).toEqual([])
+  })
+
+  for (const [name, pick] of [
+    [
+      "fails a token without range or loc",
+      (tree: CheckedRoot) => tree.tokens[0],
+    ],
+    [
+      "fails a comment without range or loc",
+      (tree: CheckedRoot) => tree.comments[0],
+    ],
+    [
+      "fails a directive without range or loc",
+      (tree: CheckedRoot) => tree.directives[0],
+    ],
+    [
+      "fails frontmatter without range or loc",
+      (tree: CheckedRoot) => tree.frontmatter,
+    ],
+  ] as const) {
+    it(name, () => {
+      for (const field of ["range", "loc"]) {
+        const broken = copyOf(root)
+        const record = pick(broken)
+        if (record === null || record === undefined)
+          throw new Error("unexpected tree")
+        Reflect.deleteProperty(record, field)
+        const problems = checkTree(text, broken)
+        expect(problems, field).toHaveLength(1)
+        expect(problems[0]?.message, field).toContain(
+          field === "range"
+            ? record.type === "Frontmatter"
+              ? "the field frontmatter is object, not a node or null"
+              : "has no type and no range"
+            : "has a loc that is no location",
+        )
+      }
+    })
+  }
+})
+
+describe("checkTree: the missing cases of positions.md", () => {
+  it("fails a root whose start offset is not zero", () => {
+    const text = " error"
+    const root = handMadeRoot(text, { tokens: [["RawText", "error"]] })
+    expect(checkTree(text, root)).toEqual([])
+    expect(
+      checkTree(text, {
+        ...root,
+        range: [1, text.length],
+        loc: locationOf(text, [1, text.length]),
+      }),
+    ).toContainEqual({
+      where: "Root",
+      message: "the root does not cover the whole input: [1,6], not [0,6]",
+    })
+  })
+
+  it("fails a child that ends after the end of its parent", () => {
+    const { input, tree } = recordedTree(
+      "sequence",
+      "db-message-activate-target",
+    )
+    const broken = copyOf(tree)
+    const child = firstNode(broken, "SequenceIdentifier")
+    setField(child, "range", [16, 26])
+    setField(child, "loc", locationOf(input, [16, 26]))
+    expect(checkTree(input, broken)).toContainEqual({
+      where: "SequenceIdentifier at 16-26",
+      message: "lies outside SequenceMessageStatement at 16-25",
+    })
+  })
+
+  it("fails two Directive tokens for the same directive", () => {
+    const text = "error %%{init: {}}%%"
+    const root = handMadeRoot(text, {
+      directives: [directiveOf(text, "%%{init: {}}%%")],
+      tokens: [
+        ["RawText", "error"],
+        ["Directive", "%%{init: {}}%%"],
+      ],
+    })
+    expect(checkTree(text, root)).toEqual([])
+    const directive = root.tokens[1]
+    if (directive === undefined) throw new Error("unexpected tree")
+    expect(
+      checkTree(text, { ...root, tokens: [...root.tokens, directive] }),
+    ).toContainEqual({
+      where: "the Directive tokens",
+      message:
+        "are not those of the directives outside all other tokens and all comments: [[6,20],[6,20]], not [[6,20]]",
+    })
+  })
+
+  it("fails a Directive token whose range differs from its directive", () => {
+    const text = "error %%{init: {}}%%"
+    const root = handMadeRoot(text, {
+      directives: [directiveOf(text, "%%{init: {}}%%")],
+      tokens: [
+        ["RawText", "error"],
+        ["Directive", "%%{init: {}}%%"],
+      ],
+    })
+    const broken = withToken(root, 1, () =>
+      tokenOf(text, "Directive", "%%{init: {}}%"),
+    )
+    expect(checkTree(text, broken)).toContainEqual({
+      where: "the Directive tokens",
+      message:
+        "are not those of the directives outside all other tokens and all comments: [[6,19]], not [[6,20]]",
+    })
+  })
+
+  it("fails a Directive token for a directive after the mark inside a comment", () => {
+    const text = "error\n%% c %%{init: {}}%%"
+    const root = handMadeRoot(text, {
+      directives: [directiveOf(text, "%%{init: {}}%%")],
+      comments: [commentOf(text, "%%", "%% c %%{init: {}}%%")],
+      tokens: [["RawText", "error"]],
+    })
+    expect(checkTree(text, root)).toEqual([])
+    expect(
+      checkTree(text, {
+        ...root,
+        tokens: [...root.tokens, tokenOf(text, "Directive", "%%{init: {}}%%")],
+      }),
+    ).toContainEqual({
+      where: "the Directive tokens",
+      message:
+        "are not those of the directives outside all other tokens and all comments: [[11,25]], not []",
+    })
+  })
+
+  it("fails a Directive token for a directive between the percents of a comment mark", () => {
+    const text = "error\n%%%{init: {}}%%% c"
+    const root = handMadeRoot(text, {
+      directives: [directiveOf(text, "%%{init: {}}%%")],
+      comments: [commentOf(text, "%%", "%%%{init: {}}%%% c", " c")],
+      tokens: [["RawText", "error"]],
+    })
+    expect(checkTree(text, root)).toEqual([])
+    expect(
+      checkTree(text, {
+        ...root,
+        tokens: [...root.tokens, tokenOf(text, "Directive", "%%{init: {}}%%")],
+      }),
+    ).toContainEqual({
+      where: "the Directive tokens",
+      message:
+        "are not those of the directives outside all other tokens and all comments: [[7,21]], not []",
+    })
+  })
+
+  it("fails a nonempty comment range shorter than its mark", () => {
+    const text = "error\n%% c"
+    const root = handMadeRoot(text, {
+      tokens: [["RawText", "error"]],
+      comments: [commentOf(text, "%%", "%% c")],
+    })
+    const comment = root.comments[0]
+    if (comment === undefined) throw new Error("unexpected tree")
+    expect(checkTree(text, root)).toEqual([])
+    expect(
+      checkTree(text, {
+        ...root,
+        comments: [
+          {
+            ...comment,
+            range: [6, 7],
+            loc: locationOf(text, [6, 7]),
+            value: "",
+          },
+        ],
+      }).some((problem) => problem.where === "Comment at 6-7"),
+    ).toBe(true)
+  })
+
+  it("fails a nonempty directive range shorter than its mark", () => {
+    const text = "error %%{init: {}}%%"
+    const root = handMadeRoot(text, {
+      tokens: [
+        ["RawText", "error"],
+        ["Directive", "%%{init: {}}%%"],
+      ],
+      directives: [directiveOf(text, "%%{init: {}}%%")],
+    })
+    const directive = root.directives[0]
+    if (directive === undefined) throw new Error("unexpected tree")
+    expect(checkTree(text, root)).toEqual([])
+    expect(
+      checkTree(text, {
+        ...root,
+        directives: [
+          {
+            ...directive,
+            range: [6, 7],
+            loc: locationOf(text, [6, 7]),
+            value: "",
+            name: "",
+            closed: false,
+          },
+        ],
+      }).some(
+        (problem) =>
+          problem.where === "the directives" &&
+          problem.message.startsWith(
+            "the directives of the tree are not those of the source",
+          ),
+      ),
+    ).toBe(true)
+  })
+})
+
+describe("checkTree: the two ends and units of a position", () => {
+  const text = "error\nx"
+  const root = handMadeRoot(text, {
+    tokens: [
+      ["RawText", "error"],
+      ["RawText", "x"],
+    ],
+  })
+
+  it("fails a start offset that is not an integer", () => {
+    const broken = withToken(root, 0, (token) => ({
+      ...token,
+      range: [0.5, 5],
+    }))
+    expect(checkTree(text, broken)).toEqual([
+      {
+        where: "RawText at 0.5-5",
+        message: "has a range that is no offset pair",
+      },
+    ])
+  })
+
+  it("fails a start position that is not a position", () => {
+    const broken = copyOf(root)
+    const token = broken.tokens[0]
+    if (token === undefined) throw new Error("unexpected tree")
+    setField(token.loc, "start", null)
+    expect(checkTree(text, broken)).toEqual([
+      { where: "RawText at 0-5", message: "has a loc that is no location" },
+    ])
+  })
+
+  it("fails an end position that is not a position", () => {
+    const broken = copyOf(root)
+    const token = broken.tokens[0]
+    if (token === undefined) throw new Error("unexpected tree")
+    setField(token.loc, "end", null)
+    expect(checkTree(text, broken)).toEqual([
+      { where: "RawText at 0-5", message: "has a loc that is no location" },
+    ])
+  })
+
+  it("fails a line counted from zero and a column counted from one", () => {
+    for (const loc of [location([0, 0], [0, 5]), location([1, 1], [1, 6])]) {
+      expect(
+        checkTree(
+          text,
+          withToken(root, 0, (token) => ({ ...token, loc })),
+        ),
+      ).toContainEqual({
+        where: "RawText at 0-5",
+        message: expect.stringContaining("loc:"),
+      })
+    }
+  })
+
+  it("fails a loc that does not count a line feed as a line end", () => {
+    expect(
+      checkTree(
+        text,
+        withToken(root, 1, (token) => ({
+          ...token,
+          loc: location([1, 6], [1, 7]),
+        })),
+      ),
+    ).toContainEqual({
+      where: "RawText at 6-7",
+      message: expect.stringContaining("loc:"),
+    })
+  })
+})
+
+describe("checkTree: whitespace at cut boundaries must belong to a value", () => {
+  it("fails whitespace at either side of a directive outside a value", () => {
+    const text = "error x %%{init: {}}%% y"
+    for (const [before, after] of [
+      ["x ", "y"],
+      ["x", " y"],
+    ]) {
+      const root = handMadeRoot(text, {
+        directives: [directiveOf(text, "%%{init: {}}%%")],
+        tokens: [
+          ["RawText", "error"],
+          ["RawText", before],
+          ["Directive", "%%{init: {}}%%"],
+          ["RawText", after],
+        ],
+      })
+      expect(checkTree(text, root)).toContainEqual({
+        where: expect.stringContaining("RawText at"),
+        message: expect.stringContaining(
+          "with whitespace or a line terminator where no value",
+        ),
+      })
+    }
+  })
+
+  it("fails whitespace at either side of a comment region outside a value", () => {
+    const text = "error x\n%% c\ny"
+    for (const [before, after] of [
+      ["x\n", "y"],
+      ["x", "\ny"],
+    ]) {
+      const root = handMadeRoot(text, {
+        comments: [commentOf(text, "%%", "%% c")],
+        tokens: [
+          ["RawText", "error"],
+          ["RawText", before],
+          ["RawText", after],
+        ],
+      })
+      expect(checkTree(text, root)).toContainEqual({
+        where: expect.stringContaining("RawText at"),
+        message: expect.stringContaining(
+          "with whitespace or a line terminator where no value",
+        ),
+      })
+    }
+  })
+
+  it("fails whitespace at either side of an ignored semicolon outside a value", () => {
+    const text = "error x ; y"
+    for (const [before, after] of [
+      ["x ", "y"],
+      ["x", " y"],
+    ]) {
+      const root = handMadeRoot(text, {
+        tokens: [
+          ["RawText", "error"],
+          ["RawText", before],
+          ["IgnoredSemicolon", ";"],
+          ["RawText", after],
+        ],
+      })
+      expect(checkTree(text, root)).toContainEqual({
+        where: expect.stringContaining("RawText at"),
+        message: expect.stringContaining(
+          "with whitespace or a line terminator where no value",
+        ),
+      })
+    }
+  })
+})
+
+describe("checkTree: a value read as empty has no token", () => {
+  it("fails a nonempty whitespace token for an empty accessibility title", () => {
+    const recorded = recordedTree("flowchart", "gram-acc-title-empty-at-end")
+    const text = `${recorded.input} `
+    const root = copyOf(recorded.tree)
+    setField(root, "range", [0, text.length])
+    setField(root, "loc", locationOf(text, [0, text.length]))
+    expect(checkTree(text, root)).toEqual([])
+    const token = tokenOf(text, "RawText", {
+      text: " ",
+      from: recorded.input.length,
+    })
+    expect(
+      checkTree(text, { ...root, tokens: [...root.tokens, token] }),
+    ).toContainEqual({
+      where: `RawText at ${recorded.input.length}-${text.length}`,
+      message:
+        "starts with whitespace or a line terminator where no value starts",
+    })
+  })
+})
+
+describe("checkTree: the whitespace of the frontmatter body is not tokenized", () => {
+  it("fails a frontmatter body token that is all whitespace", () => {
+    const text = "---\n \n---\nerror"
+    const root = handMadeRoot(text, {
+      frontmatter: frontmatterOf(text, "---\n \n---", [4, 5]),
+      tokens: [
+        ["Punctuator", "---"],
+        ["Punctuator", { text: "---", from: 4 }],
+        ["RawText", "error"],
+      ],
+    })
+    expect(checkTree(text, root)).toEqual([])
+    const opening = root.tokens[0]
+    const closing = root.tokens[1]
+    const error = root.tokens[2]
+    if (opening === undefined || closing === undefined || error === undefined) {
+      throw new Error("unexpected tree")
+    }
+    expect(
+      checkTree(text, {
+        ...root,
+        tokens: [
+          opening,
+          tokenOf(text, "RawText", { text: " ", from: 4 }),
+          closing,
+          error,
+        ],
+      }),
+    ).toContainEqual({
+      where: "the tokens in the range of the frontmatter",
+      message: expect.stringContaining(
+        "are not the opening delimiter, the body, and the closing delimiter",
+      ),
     })
   })
 })

@@ -86,12 +86,98 @@
         "status": "shown",
         "cases": [
           {
-            "file": "check-tree-shape.test.ts",
-            "text": "reports a range that is no pair of offsets, and a loc that lacks its end or itself"
+            "case": "A node carries range.",
+            "tests": [
+              {
+                "file": "check-tree-shape.test.ts",
+                "text": "reports a range that is no pair of offsets, and a loc that lacks its end or itself"
+              }
+            ]
           },
           {
-            "file": "check-tree-shape.test.ts",
-            "text": "reports a range that is no offset pair and a loc that is no location"
+            "case": "A node carries loc.",
+            "tests": [
+              {
+                "file": "check-tree-shape.test.ts",
+                "text": "reports a range that is no pair of offsets, and a loc that lacks its end or itself"
+              },
+              {
+                "file": "check-tree-shape.test.ts",
+                "text": "reports a range that is no offset pair and a loc that is no location"
+              }
+            ]
+          },
+          {
+            "case": "A token carries range.",
+            "tests": [
+              {
+                "file": "check-tree-shared-positions.test.ts",
+                "text": "fails a token without range or loc"
+              }
+            ]
+          },
+          {
+            "case": "A token carries loc.",
+            "tests": [
+              {
+                "file": "check-tree-shared-positions.test.ts",
+                "text": "fails a token without range or loc"
+              }
+            ]
+          },
+          {
+            "case": "A comment carries range.",
+            "tests": [
+              {
+                "file": "check-tree-shared-positions.test.ts",
+                "text": "fails a comment without range or loc"
+              }
+            ]
+          },
+          {
+            "case": "A comment carries loc.",
+            "tests": [
+              {
+                "file": "check-tree-shared-positions.test.ts",
+                "text": "fails a comment without range or loc"
+              }
+            ]
+          },
+          {
+            "case": "A directive carries range.",
+            "tests": [
+              {
+                "file": "check-tree-shared-positions.test.ts",
+                "text": "fails a directive without range or loc"
+              }
+            ]
+          },
+          {
+            "case": "A directive carries loc.",
+            "tests": [
+              {
+                "file": "check-tree-shared-positions.test.ts",
+                "text": "fails a directive without range or loc"
+              }
+            ]
+          },
+          {
+            "case": "Frontmatter carries range.",
+            "tests": [
+              {
+                "file": "check-tree-shared-positions.test.ts",
+                "text": "fails frontmatter without range or loc"
+              }
+            ]
+          },
+          {
+            "case": "Frontmatter carries loc.",
+            "tests": [
+              {
+                "file": "check-tree-shared-positions.test.ts",
+                "text": "fails frontmatter without range or loc"
+              }
+            ]
           }
         ]
       }
@@ -138,12 +224,22 @@
         "status": "shown",
         "cases": [
           {
-            "file": "check-tree.test.ts",
-            "text": "fails when a token is missing"
+            "case": "Characters that are not whitespace or line terminators are covered by tokens.",
+            "tests": [
+              {
+                "file": "check-tree.test.ts",
+                "text": "fails when a token is missing"
+              }
+            ]
           },
           {
-            "file": "check-tree.test.ts",
-            "text": "fails when a comment, or the token of a directive or of the frontmatter, is missing"
+            "case": "Characters that belong to comments are covered by comments.",
+            "tests": [
+              {
+                "file": "check-tree.test.ts",
+                "text": "fails when a comment, or the token of a directive or of the frontmatter, is missing"
+              }
+            ]
           }
         ]
       }
@@ -190,8 +286,31 @@
         "status": "shown",
         "cases": [
           {
-            "file": "check-tree-shape.test.ts",
-            "text": "reports a range that is no pair of offsets, and a loc that lacks its end or itself"
+            "case": "The offset pair has exactly two offsets.",
+            "tests": [
+              {
+                "file": "check-tree-shape.test.ts",
+                "text": "reports a range that is no pair of offsets, and a loc that lacks its end or itself"
+              }
+            ]
+          },
+          {
+            "case": "The start offset is an integer.",
+            "tests": [
+              {
+                "file": "check-tree-shared-positions.test.ts",
+                "text": "fails a start offset that is not an integer"
+              }
+            ]
+          },
+          {
+            "case": "The end offset is an integer.",
+            "tests": [
+              {
+                "file": "check-tree-shape.test.ts",
+                "text": "reports a range that is no pair of offsets, and a loc that lacks its end or itself"
+              }
+            ]
           }
         ]
       }
@@ -282,24 +401,67 @@
         "status": "shown",
         "cases": [
           {
-            "file": "check-tree.test.ts",
-            "text": "fails when a token's range is shifted, or its value is not the source text of its range"
+            "case": "Offsets count a character outside the Basic Multilingual Plane as two UTF-16 code units.",
+            "tests": [
+              {
+                "file": "check-tree-shared-positions.test.ts",
+                "text": "an offset that counts a character outside the Basic Multilingual Plane as one"
+              }
+            ]
           },
           {
-            "file": "check-tree.test.ts",
-            "text": "fails when the content fields of a comment, a directive, or the frontmatter are not the text of their ranges"
+            "case": "A token's value is the source text between its offsets.",
+            "tests": [
+              {
+                "file": "check-tree.test.ts",
+                "text": "fails when a token's range is shifted, or its value is not the source text of its range"
+              }
+            ]
           },
           {
-            "file": "check-tree-literals.test.ts",
-            "text": "a StringLiteral whose raw is not its text"
+            "case": "A comment's text is the source text between its offsets.",
+            "tests": [
+              {
+                "file": "check-tree.test.ts",
+                "text": "fails when the content fields of a comment, a directive, or the frontmatter are not the text of their ranges"
+              }
+            ]
           },
           {
-            "file": "check-tree-literals.test.ts",
-            "text": "a NumericLiteral whose raw is not its text"
+            "case": "A directive's text is the source text between its offsets.",
+            "tests": [
+              {
+                "file": "check-tree.test.ts",
+                "text": "fails when the content fields of a comment, a directive, or the frontmatter are not the text of their ranges"
+              }
+            ]
           },
           {
-            "file": "check-tree-shared-positions.test.ts",
-            "text": "an offset that counts a character outside the Basic Multilingual Plane as one"
+            "case": "Frontmatter's text is the source text between its offsets.",
+            "tests": [
+              {
+                "file": "check-tree.test.ts",
+                "text": "fails when the content fields of a comment, a directive, or the frontmatter are not the text of their ranges"
+              }
+            ]
+          },
+          {
+            "case": "A StringLiteral's raw is the source text between its offsets.",
+            "tests": [
+              {
+                "file": "check-tree-literals.test.ts",
+                "text": "a StringLiteral whose raw is not its text"
+              }
+            ]
+          },
+          {
+            "case": "A NumericLiteral's raw is the source text between its offsets.",
+            "tests": [
+              {
+                "file": "check-tree-literals.test.ts",
+                "text": "a NumericLiteral whose raw is not its text"
+              }
+            ]
           }
         ]
       }
@@ -346,16 +508,49 @@
         "status": "shown",
         "cases": [
           {
-            "file": "check-tree-shape.test.ts",
-            "text": "reports a range that is no pair of offsets, and a loc that lacks its end or itself"
+            "case": "A range has exactly two offsets.",
+            "tests": [
+              {
+                "file": "check-tree-shape.test.ts",
+                "text": "reports a range that is no pair of offsets, and a loc that lacks its end or itself"
+              }
+            ]
           },
           {
-            "file": "check-tree.test.ts",
-            "text": "fails when a range lies outside the input"
+            "case": "Its start offset is an integer.",
+            "tests": [
+              {
+                "file": "check-tree-shared-positions.test.ts",
+                "text": "fails a start offset that is not an integer"
+              }
+            ]
           },
           {
-            "file": "check-tree-shared-positions.test.ts",
-            "text": "a range whose end offset is the last character, not the one after it"
+            "case": "Its end offset is an integer.",
+            "tests": [
+              {
+                "file": "check-tree-shape.test.ts",
+                "text": "reports a range that is no pair of offsets, and a loc that lacks its end or itself"
+              }
+            ]
+          },
+          {
+            "case": "The start offset is zero based.",
+            "tests": [
+              {
+                "file": "check-tree-shape.test.ts",
+                "text": "reports a range that is no pair of offsets, and a loc that lacks its end or itself"
+              }
+            ]
+          },
+          {
+            "case": "The end offset is exclusive.",
+            "tests": [
+              {
+                "file": "check-tree-shared-positions.test.ts",
+                "text": "a range whose end offset is the last character, not the one after it"
+              }
+            ]
           }
         ]
       }
@@ -402,24 +597,49 @@
         "status": "shown",
         "cases": [
           {
-            "file": "check-tree-shape.test.ts",
-            "text": "reports a range that is no offset pair and a loc that is no location"
+            "case": "A location has a start position.",
+            "tests": [
+              {
+                "file": "check-tree-shared-positions.test.ts",
+                "text": "fails a start position that is not a position"
+              }
+            ]
           },
           {
-            "file": "check-tree-shape.test.ts",
-            "text": "reports a range that is no pair of offsets, and a loc that lacks its end or itself"
+            "case": "A location has an end position.",
+            "tests": [
+              {
+                "file": "check-tree-shared-positions.test.ts",
+                "text": "fails an end position that is not a position"
+              }
+            ]
           },
           {
-            "file": "check-tree.test.ts",
-            "text": "fails when the loc of a comment, a directive, the frontmatter, or the body is not the place of its range"
+            "case": "A line is counted from one.",
+            "tests": [
+              {
+                "file": "check-tree-shared-positions.test.ts",
+                "text": "fails a line counted from zero and a column counted from one"
+              }
+            ]
           },
           {
-            "file": "check-tree.test.ts",
-            "text": "fails when a token's range is shifted, or its value is not the source text of its range"
+            "case": "A column is counted from zero.",
+            "tests": [
+              {
+                "file": "check-tree-shared-positions.test.ts",
+                "text": "fails a line counted from zero and a column counted from one"
+              }
+            ]
           },
           {
-            "file": "check-tree-shared-positions.test.ts",
-            "text": "a column that counts a character outside the Basic Multilingual Plane as one"
+            "case": "A column counts UTF-16 code units.",
+            "tests": [
+              {
+                "file": "check-tree-shared-positions.test.ts",
+                "text": "a column that counts a character outside the Basic Multilingual Plane as one"
+              }
+            ]
           }
         ]
       }
@@ -466,20 +686,49 @@
         "status": "shown",
         "cases": [
           {
-            "file": "check-tree.test.ts",
-            "text": "fails when the loc of a comment, a directive, the frontmatter, or the body is not the place of its range"
+            "case": "CRLF ends one line.",
+            "tests": [
+              {
+                "file": "check-tree-shared-positions.test.ts",
+                "text": "as two line ends"
+              }
+            ]
           },
           {
-            "file": "check-tree-shared-positions.test.ts",
-            "text": "as two line ends"
+            "case": "A lone CR ends one line.",
+            "tests": [
+              {
+                "file": "check-tree-shared-positions.test.ts",
+                "text": "does not count a lone"
+              }
+            ]
           },
           {
-            "file": "check-tree-shared-positions.test.ts",
-            "text": "does not count a lone"
+            "case": "LF ends one line.",
+            "tests": [
+              {
+                "file": "check-tree-shared-positions.test.ts",
+                "text": "fails a loc that does not count a line feed as a line end"
+              }
+            ]
           },
           {
-            "file": "check-tree-shared-positions.test.ts",
-            "text": "counts a U+2028 or a U+2029 as a line end"
+            "case": "U+2028 does not end a line.",
+            "tests": [
+              {
+                "file": "check-tree-shared-positions.test.ts",
+                "text": "counts a U+2028 or a U+2029 as a line end"
+              }
+            ]
+          },
+          {
+            "case": "U+2029 does not end a line.",
+            "tests": [
+              {
+                "file": "check-tree-shared-positions.test.ts",
+                "text": "counts a U+2028 or a U+2029 as a line end"
+              }
+            ]
           }
         ]
       }
@@ -526,12 +775,22 @@
         "status": "shown",
         "cases": [
           {
-            "file": "check-tree.test.ts",
-            "text": "fails when the loc of a comment, a directive, the frontmatter, or the body is not the place of its range"
+            "case": "The line number is an integer.",
+            "tests": [
+              {
+                "file": "check-tree-shared-positions.test.ts",
+                "text": "a line or a column that is not an integer"
+              }
+            ]
           },
           {
-            "file": "check-tree-shared-positions.test.ts",
-            "text": "a line or a column that is not an integer"
+            "case": "The line number is counted from one.",
+            "tests": [
+              {
+                "file": "check-tree-shared-positions.test.ts",
+                "text": "fails a line counted from zero and a column counted from one"
+              }
+            ]
           }
         ]
       }
@@ -578,20 +837,31 @@
         "status": "shown",
         "cases": [
           {
-            "file": "check-tree.test.ts",
-            "text": "fails when a token's range is shifted, or its value is not the source text of its range"
+            "case": "The column is an integer.",
+            "tests": [
+              {
+                "file": "check-tree-shared-positions.test.ts",
+                "text": "a line or a column that is not an integer"
+              }
+            ]
           },
           {
-            "file": "check-tree.test.ts",
-            "text": "fails when the loc of a comment, a directive, the frontmatter, or the body is not the place of its range"
+            "case": "The column is counted from zero.",
+            "tests": [
+              {
+                "file": "check-tree-shared-positions.test.ts",
+                "text": "fails a line counted from zero and a column counted from one"
+              }
+            ]
           },
           {
-            "file": "check-tree-shared-positions.test.ts",
-            "text": "a line or a column that is not an integer"
-          },
-          {
-            "file": "check-tree-shared-positions.test.ts",
-            "text": "a column that counts a character outside the Basic Multilingual Plane as one"
+            "case": "The column counts UTF-16 code units.",
+            "tests": [
+              {
+                "file": "check-tree-shared-positions.test.ts",
+                "text": "a column that counts a character outside the Basic Multilingual Plane as one"
+              }
+            ]
           }
         ]
       }
@@ -638,12 +908,22 @@
         "status": "shown",
         "cases": [
           {
-            "file": "check-tree-shape.test.ts",
-            "text": "reports a range that is no offset pair and a loc that is no location"
+            "case": "The start is a position record.",
+            "tests": [
+              {
+                "file": "check-tree-shared-positions.test.ts",
+                "text": "fails a start position that is not a position"
+              }
+            ]
           },
           {
-            "file": "check-tree.test.ts",
-            "text": "fails when the loc of a comment, a directive, the frontmatter, or the body is not the place of its range"
+            "case": "The start identifies the first character.",
+            "tests": [
+              {
+                "file": "check-tree.test.ts",
+                "text": "fails when the loc of a comment, a directive, the frontmatter, or the body is not the place of its range"
+              }
+            ]
           }
         ]
       }
@@ -690,16 +970,26 @@
         "status": "shown",
         "cases": [
           {
-            "file": "check-tree-shape.test.ts",
-            "text": "reports a range that is no pair of offsets, and a loc that lacks its end or itself"
+            "case": "The end is a position record.",
+            "tests": [
+              {
+                "file": "check-tree-shared-positions.test.ts",
+                "text": "fails an end position that is not a position"
+              }
+            ]
           },
           {
-            "file": "check-tree.test.ts",
-            "text": "fails when a token's range is shifted, or its value is not the source text of its range"
-          },
-          {
-            "file": "check-tree.test.ts",
-            "text": "fails when the loc of a comment, a directive, the frontmatter, or the body is not the place of its range"
+            "case": "The end identifies the position after the last character.",
+            "tests": [
+              {
+                "file": "check-tree.test.ts",
+                "text": "fails when a token's range is shifted, or its value is not the source text of its range"
+              },
+              {
+                "file": "check-tree.test.ts",
+                "text": "fails when the loc of a comment, a directive, the frontmatter, or the body is not the place of its range"
+              }
+            ]
           }
         ]
       }
@@ -746,12 +1036,22 @@
         "status": "shown",
         "cases": [
           {
-            "file": "check-tree-shared-positions.test.ts",
-            "text": "an offset that counts a character outside the Basic Multilingual Plane as one"
+            "case": "A character outside the Basic Multilingual Plane advances range offsets by two.",
+            "tests": [
+              {
+                "file": "check-tree-shared-positions.test.ts",
+                "text": "an offset that counts a character outside the Basic Multilingual Plane as one"
+              }
+            ]
           },
           {
-            "file": "check-tree-shared-positions.test.ts",
-            "text": "a column that counts a character outside the Basic Multilingual Plane as one"
+            "case": "A character outside the Basic Multilingual Plane advances the column by two.",
+            "tests": [
+              {
+                "file": "check-tree-shared-positions.test.ts",
+                "text": "a column that counts a character outside the Basic Multilingual Plane as one"
+              }
+            ]
           }
         ]
       }
@@ -839,25 +1139,9 @@
       ],
       "about": "| `range` | offset pair | Where the node is in the source. |",
       "judgment": {
-        "status": "shown",
-        "cases": [
-          {
-            "file": "check-tree-shape.test.ts",
-            "text": "reports a range that is no pair of offsets, and a loc that lacks its end or itself"
-          },
-          {
-            "file": "check-tree-node-ranges.test.ts",
-            "text": "fails a node that starts before its parent"
-          },
-          {
-            "file": "check-tree-node-ranges.test.ts",
-            "text": "fails a node that ends where no token ends"
-          },
-          {
-            "file": "check-tree.test.ts",
-            "text": "fails when a range lies outside the input"
-          }
-        ]
+        "status": "not-shown",
+        "reason": "rule-misses-condition",
+        "note": "The range of a node must identify its own construct. In sequence/db-message-activate-target, moving the first SequenceMessageStatement's start from 16 to 0, the start of the diagram-header token, and updating its loc leaves every check without a report. The statement then starts before its own first token."
       }
     },
     {
@@ -902,16 +1186,26 @@
         "status": "shown",
         "cases": [
           {
-            "file": "check-tree-shape.test.ts",
-            "text": "reports a range that is no offset pair and a loc that is no location"
+            "case": "A node has a location record.",
+            "tests": [
+              {
+                "file": "check-tree-shape.test.ts",
+                "text": "reports a range that is no offset pair and a loc that is no location"
+              },
+              {
+                "file": "check-tree-shape.test.ts",
+                "text": "reports a range that is no pair of offsets, and a loc that lacks its end or itself"
+              }
+            ]
           },
           {
-            "file": "check-tree-shape.test.ts",
-            "text": "reports a range that is no pair of offsets, and a loc that lacks its end or itself"
-          },
-          {
-            "file": "check-tree.test.ts",
-            "text": "fails when the loc of a comment, a directive, the frontmatter, or the body is not the place of its range"
+            "case": "The location is the same place as its range.",
+            "tests": [
+              {
+                "file": "check-tree.test.ts",
+                "text": "fails when the loc of a comment, a directive, the frontmatter, or the body is not the place of its range"
+              }
+            ]
           }
         ]
       }
@@ -955,37 +1249,9 @@
       ],
       "about": "A node's range normally runs from the start of its first tok",
       "judgment": {
-        "status": "shown",
-        "cases": [
-          {
-            "file": "check-tree-node-ranges.test.ts",
-            "text": "fails a node that ends where no token ends"
-          },
-          {
-            "file": "check-tree.test.ts",
-            "text": "fails when the body does not run from its first token to its last"
-          },
-          {
-            "file": "check-tree.test.ts",
-            "text": "fails when the root does not cover the whole input"
-          },
-          {
-            "file": "check-tree.test.ts",
-            "text": "fails when the body covers an IgnoredSemicolon token after its last token"
-          },
-          {
-            "file": "check-tree-node-ranges.test.ts",
-            "text": "fails a node that starts before its parent"
-          },
-          {
-            "file": "check-tree-shared-positions.test.ts",
-            "text": "the statement or the diagram when it ends before the end of the source"
-          },
-          {
-            "file": "check-tree-shared-positions.test.ts",
-            "text": "a token added for the end of the source"
-          }
-        ]
+        "status": "not-shown",
+        "reason": "rule-misses-condition",
+        "note": "The range of a node must identify its own construct. In sequence/db-message-activate-target, moving the first SequenceMessageStatement's start from 16 to 0, the start of the diagram-header token, and updating its loc leaves every check without a report. The statement then starts before its own first token."
       }
     },
     {
@@ -1030,8 +1296,22 @@
         "status": "shown",
         "cases": [
           {
-            "file": "check-tree.test.ts",
-            "text": "fails when the root does not cover the whole input"
+            "case": "Root.range starts at zero.",
+            "tests": [
+              {
+                "file": "check-tree-shared-positions.test.ts",
+                "text": "fails a root whose start offset is not zero"
+              }
+            ]
+          },
+          {
+            "case": "Root.range ends at input.length.",
+            "tests": [
+              {
+                "file": "check-tree.test.ts",
+                "text": "fails when the root does not cover the whole input"
+              }
+            ]
           }
         ]
       }
@@ -1122,16 +1402,31 @@
         "status": "shown",
         "cases": [
           {
-            "file": "check-tree.test.ts",
-            "text": "fails when a token is missing"
+            "case": "A non-whitespace character outside comments has a token.",
+            "tests": [
+              {
+                "file": "check-tree.test.ts",
+                "text": "fails when a token is missing"
+              }
+            ]
           },
           {
-            "file": "check-tree.test.ts",
-            "text": "fails when a comment, or the token of a directive or of the frontmatter, is missing"
+            "case": "A character of a comment is covered by the comment.",
+            "tests": [
+              {
+                "file": "check-tree.test.ts",
+                "text": "fails when a comment, or the token of a directive or of the frontmatter, is missing"
+              }
+            ]
           },
           {
-            "file": "check-tree-shared-positions.test.ts",
-            "text": "U+200B, U+0085, and U+180E, which are not whitespace, outside the tokens"
+            "case": "Characters outside the defined whitespace set need tokens or comments.",
+            "tests": [
+              {
+                "file": "check-tree-shared-positions.test.ts",
+                "text": "U+200B, U+0085, and U+180E, which are not whitespace, outside the tokens"
+              }
+            ]
           }
         ]
       }
@@ -1178,12 +1473,40 @@
         "status": "shown",
         "cases": [
           {
-            "file": "check-tree.test.ts",
-            "text": "fails when a token's range is shifted, or its value is not the source text of its range"
+            "case": "Token.value equals the source text of its range.",
+            "tests": [
+              {
+                "file": "check-tree.test.ts",
+                "text": "fails when a token's range is shifted, or its value is not the source text of its range"
+              }
+            ]
           },
           {
-            "file": "check-tree.test.ts",
-            "text": "fails when the content fields of a comment, a directive, or the frontmatter are not the text of their ranges"
+            "case": "A comment's text equals the source text of its range.",
+            "tests": [
+              {
+                "file": "check-tree.test.ts",
+                "text": "fails when the content fields of a comment, a directive, or the frontmatter are not the text of their ranges"
+              }
+            ]
+          },
+          {
+            "case": "A directive's text equals the source text of its range.",
+            "tests": [
+              {
+                "file": "check-tree.test.ts",
+                "text": "fails when the content fields of a comment, a directive, or the frontmatter are not the text of their ranges"
+              }
+            ]
+          },
+          {
+            "case": "Frontmatter's text equals the source text of its range.",
+            "tests": [
+              {
+                "file": "check-tree.test.ts",
+                "text": "fails when the content fields of a comment, a directive, or the frontmatter are not the text of their ranges"
+              }
+            ]
           }
         ]
       }
@@ -1230,8 +1553,22 @@
         "status": "shown",
         "cases": [
           {
-            "file": "check-tree.test.ts",
-            "text": "fails when tokens overlap or are out of order"
+            "case": "Tokens are in source order.",
+            "tests": [
+              {
+                "file": "check-tree.test.ts",
+                "text": "fails when tokens overlap or are out of order"
+              }
+            ]
+          },
+          {
+            "case": "Tokens do not overlap.",
+            "tests": [
+              {
+                "file": "check-tree.test.ts",
+                "text": "fails when tokens overlap or are out of order"
+              }
+            ]
           }
         ]
       }
@@ -1278,16 +1615,67 @@
         "status": "shown",
         "cases": [
           {
-            "file": "check-tree.test.ts",
-            "text": " error"
+            "case": "Leading whitespace or a line terminator outside a value boundary is forbidden.",
+            "tests": [
+              {
+                "file": "check-tree.test.ts",
+                "text": "fails when a token starts or ends with whitespace or a line terminator where no value starts or ends"
+              }
+            ]
           },
           {
-            "file": "check-tree-cut-whitespace.test.ts",
-            "text": "is not allowed where the token before does not touch the token"
+            "case": "Trailing whitespace or a line terminator outside a value boundary is forbidden.",
+            "tests": [
+              {
+                "file": "check-tree.test.ts",
+                "text": "fails when a token starts or ends with whitespace or a line terminator where no value starts or ends"
+              }
+            ]
           },
           {
-            "file": "check-tree-cut-whitespace.test.ts",
-            "text": "is not allowed where no token follows it"
+            "case": "Whitespace next to a directive cut must belong to a value.",
+            "tests": [
+              {
+                "file": "check-tree-shared-positions.test.ts",
+                "text": "fails whitespace at either side of a directive outside a value"
+              }
+            ]
+          },
+          {
+            "case": "Whitespace next to a comment-region cut must belong to a value.",
+            "tests": [
+              {
+                "file": "check-tree-shared-positions.test.ts",
+                "text": "fails whitespace at either side of a comment region outside a value"
+              }
+            ]
+          },
+          {
+            "case": "Whitespace next to an ignored-semicolon cut must belong to a value.",
+            "tests": [
+              {
+                "file": "check-tree-shared-positions.test.ts",
+                "text": "fails whitespace at either side of an ignored semicolon outside a value"
+              }
+            ]
+          },
+          {
+            "case": "A continuing token's leading whitespace needs a preceding token that touches it.",
+            "tests": [
+              {
+                "file": "check-tree-cut-whitespace.test.ts",
+                "text": "is not allowed where the token before does not touch the token"
+              }
+            ]
+          },
+          {
+            "case": "An all-whitespace continuing token's trailing whitespace needs a following value token that touches it.",
+            "tests": [
+              {
+                "file": "check-tree-cut-whitespace.test.ts",
+                "text": "is not allowed where no token follows it"
+              }
+            ]
           }
         ]
       }
@@ -1334,12 +1722,22 @@
         "status": "shown",
         "cases": [
           {
-            "file": "check-tree.test.ts",
-            "text": "fails when a comment region lies inside a token"
+            "case": "A comment is not wholly inside a token.",
+            "tests": [
+              {
+                "file": "check-tree.test.ts",
+                "text": "fails when a comment region lies inside a token"
+              }
+            ]
           },
           {
-            "file": "check-tree.test.ts",
-            "text": "fails when a comment lies partly inside a token"
+            "case": "A comment does not partly overlap a token.",
+            "tests": [
+              {
+                "file": "check-tree.test.ts",
+                "text": "fails when a comment lies partly inside a token"
+              }
+            ]
           }
         ]
       }
@@ -1386,16 +1784,67 @@
         "status": "shown",
         "cases": [
           {
-            "file": "check-tree.test.ts",
-            "text": "fails when a directive lies inside a token"
+            "case": "A directive lies inside no other token.",
+            "tests": [
+              {
+                "file": "check-tree.test.ts",
+                "text": "fails when a directive lies inside a token"
+              }
+            ]
           },
           {
-            "file": "check-tree.test.ts",
-            "text": "fails when a comment, or the token of a directive or of the frontmatter, is missing"
+            "case": "A directive outside all comments and other tokens has a Directive token.",
+            "tests": [
+              {
+                "file": "check-tree.test.ts",
+                "text": "fails when a comment, or the token of a directive or of the frontmatter, is missing"
+              }
+            ]
           },
           {
-            "file": "check-tree.test.ts",
-            "text": "fails when a Directive token has no directive"
+            "case": "Such a directive has exactly one Directive token.",
+            "tests": [
+              {
+                "file": "check-tree-shared-positions.test.ts",
+                "text": "fails two Directive tokens for the same directive"
+              }
+            ]
+          },
+          {
+            "case": "Its Directive token has the directive's range.",
+            "tests": [
+              {
+                "file": "check-tree-shared-positions.test.ts",
+                "text": "fails a Directive token whose range differs from its directive"
+              }
+            ]
+          },
+          {
+            "case": "Every Directive token has a directive record outside all other tokens and comments.",
+            "tests": [
+              {
+                "file": "check-tree.test.ts",
+                "text": "fails when a Directive token has no directive"
+              }
+            ]
+          },
+          {
+            "case": "A directive after a comment's mark has no Directive token.",
+            "tests": [
+              {
+                "file": "check-tree-shared-positions.test.ts",
+                "text": "fails a Directive token for a directive after the mark inside a comment"
+              }
+            ]
+          },
+          {
+            "case": "A directive between the percents of a comment's mark has no Directive token.",
+            "tests": [
+              {
+                "file": "check-tree-shared-positions.test.ts",
+                "text": "fails a Directive token for a directive between the percents of a comment mark"
+              }
+            ]
           }
         ]
       }
@@ -1486,8 +1935,22 @@
         "status": "shown",
         "cases": [
           {
-            "file": "check-tree.test.ts",
-            "text": "fails when comments or directives overlap"
+            "case": "No two comments overlap.",
+            "tests": [
+              {
+                "file": "check-tree.test.ts",
+                "text": "fails when comments or directives overlap"
+              }
+            ]
+          },
+          {
+            "case": "No two directives overlap.",
+            "tests": [
+              {
+                "file": "check-tree.test.ts",
+                "text": "fails when comments or directives overlap"
+              }
+            ]
           }
         ]
       }
@@ -1534,20 +1997,67 @@
         "status": "shown",
         "cases": [
           {
-            "file": "check-tree.test.ts",
-            "text": "fails when the frontmatter is not divided into its delimiters and its body"
+            "case": "Frontmatter starts with an opening delimiter token.",
+            "tests": [
+              {
+                "file": "check-tree.test.ts",
+                "text": "fails when the frontmatter is not divided into its delimiters and its body"
+              }
+            ]
           },
           {
-            "file": "check-tree.test.ts",
-            "text": "has no token for a body that is whitespace, and a token of the body without the whitespace around it"
+            "case": "A non-whitespace frontmatter body has a body token.",
+            "tests": [
+              {
+                "file": "check-tree.test.ts",
+                "text": "fails when the frontmatter is not divided into its delimiters and its body"
+              }
+            ]
           },
           {
-            "file": "check-tree.test.ts",
-            "text": "fails a comment or a directive in the frontmatter"
+            "case": "An all-whitespace frontmatter body has no body token.",
+            "tests": [
+              {
+                "file": "check-tree-shared-positions.test.ts",
+                "text": "fails a frontmatter body token that is all whitespace"
+              }
+            ]
           },
           {
-            "file": "check-tree-shared-positions.test.ts",
-            "text": "the token of a directive before the tokens of the frontmatter"
+            "case": "Frontmatter ends with a closing delimiter token.",
+            "tests": [
+              {
+                "file": "check-tree.test.ts",
+                "text": "fails when the frontmatter is not divided into its delimiters and its body"
+              }
+            ]
+          },
+          {
+            "case": "Frontmatter tokens precede the other tokens.",
+            "tests": [
+              {
+                "file": "check-tree-shared-positions.test.ts",
+                "text": "the token of a directive before the tokens of the frontmatter"
+              }
+            ]
+          },
+          {
+            "case": "Frontmatter precedes all comments.",
+            "tests": [
+              {
+                "file": "check-tree.test.ts",
+                "text": "fails a comment or a directive in the frontmatter"
+              }
+            ]
+          },
+          {
+            "case": "Frontmatter precedes all directives.",
+            "tests": [
+              {
+                "file": "check-tree.test.ts",
+                "text": "fails a comment or a directive in the frontmatter"
+              }
+            ]
           }
         ]
       }
@@ -1591,29 +2101,9 @@
       ],
       "about": "Except for node types that explicitly extend to source EOF a",
       "judgment": {
-        "status": "shown",
-        "cases": [
-          {
-            "file": "check-tree-node-ranges.test.ts",
-            "text": "fails a node that ends where no token ends"
-          },
-          {
-            "file": "check-tree.test.ts",
-            "text": "fails when the body does not run from its first token to its last"
-          },
-          {
-            "file": "check-tree.test.ts",
-            "text": "fails when the root does not cover the whole input"
-          },
-          {
-            "file": "check-tree-node-ranges.test.ts",
-            "text": "fails a tree whose text has no token"
-          },
-          {
-            "file": "check-tree-flowchart.test.ts",
-            "text": "a label that is all whitespace without its token"
-          }
-        ]
+        "status": "not-shown",
+        "reason": "rule-misses-condition",
+        "note": "The range of a node must identify its own construct. In sequence/db-message-activate-target, moving the first SequenceMessageStatement's start from 16 to 0, the start of the diagram-header token, and updating its loc leaves every check without a report. The statement then starts before its own first token."
       }
     },
     {
@@ -1658,20 +2148,49 @@
         "status": "shown",
         "cases": [
           {
-            "file": "check-tree-node-ranges.test.ts",
-            "text": "fails a node that starts before its parent"
+            "case": "A child starts no earlier than its parent.",
+            "tests": [
+              {
+                "file": "check-tree-node-ranges.test.ts",
+                "text": "fails a node that starts before its parent"
+              }
+            ]
           },
           {
-            "file": "check-tree-node-ranges.test.ts",
-            "text": "fails child nodes that overlap"
+            "case": "A child ends no later than its parent.",
+            "tests": [
+              {
+                "file": "check-tree-shared-positions.test.ts",
+                "text": "fails a child that ends after the end of its parent"
+              }
+            ]
           },
           {
-            "file": "check-tree-node-ranges.test.ts",
-            "text": "fails child fields that are not in source order"
+            "case": "Child nodes do not overlap.",
+            "tests": [
+              {
+                "file": "check-tree-node-ranges.test.ts",
+                "text": "fails child nodes that overlap"
+              }
+            ]
           },
           {
-            "file": "check-tree-node-ranges.test.ts",
-            "text": "fails a list that is not in source order"
+            "case": "Child fields are in source order, except where their documents specify another order.",
+            "tests": [
+              {
+                "file": "check-tree-node-ranges.test.ts",
+                "text": "fails child fields that are not in source order"
+              }
+            ]
+          },
+          {
+            "case": "Each child list is in source order.",
+            "tests": [
+              {
+                "file": "check-tree-node-ranges.test.ts",
+                "text": "fails a list that is not in source order"
+              }
+            ]
           }
         ]
       }
@@ -1718,12 +2237,22 @@
         "status": "shown",
         "cases": [
           {
-            "file": "check-tree-literals.test.ts",
-            "text": "a StringLiteral whose raw is not its text"
+            "case": "StringLiteral.raw equals the source text of its range.",
+            "tests": [
+              {
+                "file": "check-tree-literals.test.ts",
+                "text": "a StringLiteral whose raw is not its text"
+              }
+            ]
           },
           {
-            "file": "check-tree-literals.test.ts",
-            "text": "a NumericLiteral whose raw is not its text"
+            "case": "NumericLiteral.raw equals the source text of its range.",
+            "tests": [
+              {
+                "file": "check-tree-literals.test.ts",
+                "text": "a NumericLiteral whose raw is not its text"
+              }
+            ]
           }
         ]
       }
@@ -1770,12 +2299,85 @@
         "status": "shown",
         "cases": [
           {
-            "file": "check-tree.test.ts",
-            "text": "fails when a token, a comment, or a directive is empty"
+            "case": "A token has a nonempty range.",
+            "tests": [
+              {
+                "file": "check-tree.test.ts",
+                "text": "fails when a token, a comment, or a directive is empty"
+              }
+            ]
           },
           {
-            "file": "check-tree-shared-positions.test.ts",
-            "text": "the field without the token of its space"
+            "case": "A comment has a nonempty range.",
+            "tests": [
+              {
+                "file": "check-tree.test.ts",
+                "text": "fails when a token, a comment, or a directive is empty"
+              }
+            ]
+          },
+          {
+            "case": "A directive has a nonempty range.",
+            "tests": [
+              {
+                "file": "check-tree.test.ts",
+                "text": "fails when a token, a comment, or a directive is empty"
+              }
+            ]
+          },
+          {
+            "case": "A value read as empty has no token.",
+            "tests": [
+              {
+                "file": "check-tree-shared-positions.test.ts",
+                "text": "fails a nonempty whitespace token for an empty accessibility title"
+              }
+            ]
+          },
+          {
+            "case": "An empty fragment has no token.",
+            "tests": [
+              {
+                "file": "check-tree.test.ts",
+                "text": "fails when a token, a comment, or a directive is empty"
+              }
+            ]
+          },
+          {
+            "case": "An empty fragment has no comment.",
+            "tests": [
+              {
+                "file": "check-tree.test.ts",
+                "text": "fails when a token, a comment, or a directive is empty"
+              }
+            ]
+          },
+          {
+            "case": "A comment holds at least its mark.",
+            "tests": [
+              {
+                "file": "check-tree-shared-positions.test.ts",
+                "text": "fails a nonempty comment range shorter than its mark"
+              }
+            ]
+          },
+          {
+            "case": "A directive holds at least its mark.",
+            "tests": [
+              {
+                "file": "check-tree-shared-positions.test.ts",
+                "text": "fails a nonempty directive range shorter than its mark"
+              }
+            ]
+          },
+          {
+            "case": "A sankey field of spaces only has the token of its spaces.",
+            "tests": [
+              {
+                "file": "check-tree-shared-positions.test.ts",
+                "text": "the field without the token of its space"
+              }
+            ]
           }
         ]
       }
@@ -1822,12 +2424,67 @@
         "status": "shown",
         "cases": [
           {
-            "file": "check-tree.test.ts",
-            "text": "fails when a token's range is shifted, or its value is not the source text of its range"
+            "case": "Token.value equals the source text of its range.",
+            "tests": [
+              {
+                "file": "check-tree.test.ts",
+                "text": "fails when a token's range is shifted, or its value is not the source text of its range"
+              }
+            ]
           },
           {
-            "file": "check-tree.test.ts",
-            "text": "fails when the content fields of a comment, a directive, or the frontmatter are not the text of their ranges"
+            "case": "A comment's text equals the source text of its range.",
+            "tests": [
+              {
+                "file": "check-tree.test.ts",
+                "text": "fails when the content fields of a comment, a directive, or the frontmatter are not the text of their ranges"
+              }
+            ]
+          },
+          {
+            "case": "A directive's text equals the source text of its range.",
+            "tests": [
+              {
+                "file": "check-tree.test.ts",
+                "text": "fails when the content fields of a comment, a directive, or the frontmatter are not the text of their ranges"
+              }
+            ]
+          },
+          {
+            "case": "Frontmatter's text equals the source text of its range.",
+            "tests": [
+              {
+                "file": "check-tree.test.ts",
+                "text": "fails when the content fields of a comment, a directive, or the frontmatter are not the text of their ranges"
+              }
+            ]
+          },
+          {
+            "case": "A node's value leaves out comment regions.",
+            "tests": [
+              {
+                "file": "check-tree-shared-tokens.test.ts",
+                "text": "fails a string value retaining its comment region"
+              }
+            ]
+          },
+          {
+            "case": "A node's value leaves out directives.",
+            "tests": [
+              {
+                "file": "check-tree-shared-tokens.test.ts",
+                "text": "fails a label value retaining its directive"
+              }
+            ]
+          },
+          {
+            "case": "A node's value leaves out ignored semicolons.",
+            "tests": [
+              {
+                "file": "check-tree-shared-tokens.test.ts",
+                "text": "fails an ignored semicolon included in a label value"
+              }
+            ]
           }
         ]
       }

@@ -86,48 +86,92 @@
         "status": "shown",
         "cases": [
           {
-            "file": "check-tree.test.ts",
-            "text": "fails when a token is missing"
+            "case": "Every token is held by Root.tokens",
+            "tests": [
+              {
+                "file": "check-tree.test.ts",
+                "text": "fails when a token is missing"
+              }
+            ]
           },
           {
-            "file": "check-tree.test.ts",
-            "text": "fails when a comment, or the token of a directive or of the frontmatter, is missing"
+            "case": "Tokens are in source order",
+            "tests": [
+              {
+                "file": "check-tree.test.ts",
+                "text": "fails when tokens overlap or are out of order"
+              }
+            ]
           },
           {
-            "file": "check-tree.test.ts",
-            "text": "fails when tokens overlap or are out of order"
+            "case": "Every comment is held by Root.comments",
+            "tests": [
+              {
+                "file": "check-tree.test.ts",
+                "text": "fails a comment line of the text that is no comment of the tree"
+              }
+            ]
           },
           {
-            "file": "check-tree.test.ts",
-            "text": "fails a comment line of the text that is no comment of the tree"
+            "case": "Comments are in source order",
+            "tests": [
+              {
+                "file": "check-tree-shared-tokens.test.ts",
+                "text": "fails distinct comments in reverse source order"
+              }
+            ]
           },
           {
-            "file": "check-tree.test.ts",
-            "text": "fails when comments or directives overlap"
+            "case": "Every non-whitespace character is in a token or comment",
+            "tests": [
+              {
+                "file": "check-tree.test.ts",
+                "text": "fails when a token is missing"
+              },
+              {
+                "file": "check-tree.test.ts",
+                "text": "fails when a comment, or the token of a directive or of the frontmatter, is missing"
+              }
+            ]
           },
           {
-            "file": "check-tree.test.ts",
-            "text": "fails when a Directive token has no directive"
+            "case": "Directives have Directive tokens and records",
+            "tests": [
+              {
+                "file": "check-tree.test.ts",
+                "text": "fails when a Directive token has no directive"
+              },
+              {
+                "file": "check-tree.test.ts",
+                "text": "fails a directive that the tree lacks, an extra one, one with another `closed`, and one with whitespace at its end"
+              }
+            ]
           },
           {
-            "file": "check-tree.test.ts",
-            "text": "fails when the frontmatter is not divided into its delimiters and its body"
+            "case": "Frontmatter delimiters and body have tokens and a record",
+            "tests": [
+              {
+                "file": "check-tree.test.ts",
+                "text": "fails when the frontmatter is not divided into its delimiters and its body"
+              },
+              {
+                "file": "check-tree-shared-tokens.test.ts",
+                "text": "fails a frontmatter field that holds text instead of its record"
+              }
+            ]
           },
           {
-            "file": "check-tree.test.ts",
-            "text": "fails a directive that the tree lacks, an extra one, one with another `closed`, and one with whitespace at its end"
-          },
-          {
-            "file": "check-tree.test.ts",
-            "text": "fails when a comment region lies inside a token"
-          },
-          {
-            "file": "check-tree.test.ts",
-            "text": "fails when a comment lies partly inside a token"
-          },
-          {
-            "file": "check-tree-shared-tokens.test.ts",
-            "text": "fails a frontmatter field that holds text instead of its record"
+            "case": "Comments are outside tokens",
+            "tests": [
+              {
+                "file": "check-tree.test.ts",
+                "text": "fails when a comment region lies inside a token"
+              },
+              {
+                "file": "check-tree.test.ts",
+                "text": "fails when a comment lies partly inside a token"
+              }
+            ]
           }
         ]
       }
@@ -174,40 +218,49 @@
         "status": "shown",
         "cases": [
           {
-            "file": "check-tree-cut-tokens.test.ts",
-            "text": "is reported when a directive cuts it into two"
+            "case": "A directive has its token",
+            "tests": [
+              {
+                "file": "check-tree.test.ts",
+                "text": "fails when a comment, or the token of a directive or of the frontmatter, is missing"
+              }
+            ]
           },
           {
-            "file": "check-tree-cut-tokens.test.ts",
-            "text": "is reported when a directive cuts a number of a sequence diagram into two"
+            "case": "Frontmatter delimiters and body have tokens",
+            "tests": [
+              {
+                "file": "check-tree.test.ts",
+                "text": "fails when the frontmatter is not divided into its delimiters and its body"
+              }
+            ]
           },
           {
-            "file": "check-tree-cut-tokens.test.ts",
-            "text": "is reported in a flowchart when a directive cuts `subgraph` into two"
+            "case": "Tokens are listed in Root.tokens",
+            "tests": [
+              {
+                "file": "check-tree-shape.test.ts",
+                "text": "reports the records of the root that are missing or of another kind, without throwing"
+              }
+            ]
           },
           {
-            "file": "check-tree-cut-tokens.test.ts",
-            "text": "is reported in a flowchart when a directive cuts `(((` into `(` and `((`"
+            "case": "A token is not a node",
+            "tests": [
+              {
+                "file": "check-tree-shared-tokens.test.ts",
+                "text": "fails a token used as the diagram node"
+              }
+            ]
           },
           {
-            "file": "check-tree-cut-tokens.test.ts",
-            "text": "is reported when a directive cuts it: the second fragment starts with no quote and the first is not closed"
-          },
-          {
-            "file": "check-tree.test.ts",
-            "text": "fails when the frontmatter is not divided into its delimiters and its body"
-          },
-          {
-            "file": "check-tree-shape.test.ts",
-            "text": "reports the records of the root that are missing or of another kind, without throwing"
-          },
-          {
-            "file": "check-tree-shared-tokens.test.ts",
-            "text": "fails a token used as the diagram node"
-          },
-          {
-            "file": "check-tree-shared-tokens.test.ts",
-            "text": "fails a token stored in an extra field of a node"
+            "case": "A token is not the value of a node field",
+            "tests": [
+              {
+                "file": "check-tree-shared-tokens.test.ts",
+                "text": "fails a token stored in an extra field of a node"
+              }
+            ]
           }
         ]
       }
@@ -254,12 +307,22 @@
         "status": "shown",
         "cases": [
           {
-            "file": "check-tree-shape.test.ts",
-            "text": "reports a record of the root whose fields are wrong"
+            "case": "Token.value is a string",
+            "tests": [
+              {
+                "file": "check-tree-shape.test.ts",
+                "text": "reports a record of the root whose fields are wrong"
+              }
+            ]
           },
           {
-            "file": "check-tree.test.ts",
-            "text": "fails when a token's range is shifted, or its value is not the source text of its range"
+            "case": "Token.value is the source text of its range",
+            "tests": [
+              {
+                "file": "check-tree.test.ts",
+                "text": "fails when a token's range is shifted, or its value is not the source text of its range"
+              }
+            ]
           }
         ]
       }
@@ -306,12 +369,22 @@
         "status": "shown",
         "cases": [
           {
-            "file": "check-tree.test.ts",
-            "text": "fails when a range lies outside the input"
+            "case": "A token range is an offset pair",
+            "tests": [
+              {
+                "file": "check-tree-shared-tokens.test.ts",
+                "text": "fails a token range that is not an offset pair"
+              }
+            ]
           },
           {
-            "file": "check-tree-shared-tokens.test.ts",
-            "text": "fails a token range that is not an offset pair"
+            "case": "The token range lies in the source",
+            "tests": [
+              {
+                "file": "check-tree.test.ts",
+                "text": "fails when a range lies outside the input"
+              }
+            ]
           }
         ]
       }
@@ -358,12 +431,22 @@
         "status": "shown",
         "cases": [
           {
-            "file": "check-tree.test.ts",
-            "text": "fails when a token's range is shifted, or its value is not the source text of its range"
+            "case": "Token.loc is a location",
+            "tests": [
+              {
+                "file": "check-tree-shared-tokens.test.ts",
+                "text": "fails a token loc that has no end position"
+              }
+            ]
           },
           {
-            "file": "check-tree-shared-tokens.test.ts",
-            "text": "fails a token loc that has no end position"
+            "case": "Token.loc gives the same source span as range",
+            "tests": [
+              {
+                "file": "check-tree.test.ts",
+                "text": "fails when a token's range is shifted, or its value is not the source text of its range"
+              }
+            ]
           }
         ]
       }
@@ -410,36 +493,103 @@
         "status": "shown",
         "cases": [
           {
-            "file": "check-tree.test.ts",
-            "text": "fails when a token's range is shifted, or its value is not the source text of its range"
+            "case": "Token.value is the source text of its range",
+            "tests": [
+              {
+                "file": "check-tree.test.ts",
+                "text": "fails when a token's range is shifted, or its value is not the source text of its range"
+              }
+            ]
           },
           {
-            "file": "check-tree.test.ts",
-            "text": "fails when a comment region lies inside a token"
+            "case": "A token keeps written line terminators",
+            "tests": [
+              {
+                "file": "check-tree-shared-tokens.test.ts",
+                "text": "a token whose written CRLF is converted to LF"
+              }
+            ]
           },
           {
-            "file": "check-tree-shared-tokens.test.ts",
-            "text": "fails a string fragment spanning its ignored semicolon"
+            "case": "A token keeps written attribute quotes",
+            "tests": [
+              {
+                "file": "check-tree-shared-tokens.test.ts",
+                "text": "a token whose attribute quotes are converted"
+              }
+            ]
           },
           {
-            "file": "check-tree-shared-tokens.test.ts",
-            "text": "fails a string value whose written CRLF is converted to LF"
+            "case": "A token keeps written entities",
+            "tests": [
+              {
+                "file": "check-tree-shared-tokens.test.ts",
+                "text": "a token whose entity is converted to its placeholder"
+              }
+            ]
           },
           {
-            "file": "check-tree-shared-tokens.test.ts",
-            "text": "fails a string value retaining its comment region"
+            "case": "A comment region cuts a token",
+            "tests": [
+              {
+                "file": "check-tree.test.ts",
+                "text": "fails when a comment region lies inside a token"
+              }
+            ]
           },
           {
-            "file": "check-tree-shared-tokens.test.ts",
-            "text": "fails an ignored semicolon included in a label value"
+            "case": "An ignored semicolon cuts a token",
+            "tests": [
+              {
+                "file": "check-tree-shared-tokens.test.ts",
+                "text": "fails a string fragment spanning its ignored semicolon"
+              }
+            ]
           },
           {
-            "file": "check-tree-shared-tokens.test.ts",
-            "text": "fails a node value whose attribute quotes are converted"
+            "case": "Node values skip comment regions",
+            "tests": [
+              {
+                "file": "check-tree-shared-tokens.test.ts",
+                "text": "fails a string value retaining its comment region"
+              }
+            ]
           },
           {
-            "file": "check-tree-shared-tokens.test.ts",
-            "text": "fails a node value whose entity is converted to its placeholder"
+            "case": "Node values skip ignored semicolons",
+            "tests": [
+              {
+                "file": "check-tree-shared-tokens.test.ts",
+                "text": "fails an ignored semicolon included in a label value"
+              }
+            ]
+          },
+          {
+            "case": "Node values keep written line terminators",
+            "tests": [
+              {
+                "file": "check-tree-shared-tokens.test.ts",
+                "text": "fails a string value whose written CRLF is converted to LF"
+              }
+            ]
+          },
+          {
+            "case": "Node values keep written attribute quotes",
+            "tests": [
+              {
+                "file": "check-tree-shared-tokens.test.ts",
+                "text": "fails a node value whose attribute quotes are converted"
+              }
+            ]
+          },
+          {
+            "case": "Node values keep written entities",
+            "tests": [
+              {
+                "file": "check-tree-shared-tokens.test.ts",
+                "text": "fails a node value whose entity is converted to its placeholder"
+              }
+            ]
           }
         ]
       }
@@ -530,8 +680,31 @@
         "status": "shown",
         "cases": [
           {
-            "file": "check-tree-literals.test.ts",
-            "text": "a closed StringLiteral recorded as not closed"
+            "case": "A closed string is recorded with closed true",
+            "tests": [
+              {
+                "file": "check-tree-literals.test.ts",
+                "text": "a closed StringLiteral recorded as not closed"
+              }
+            ]
+          },
+          {
+            "case": "An unclosed string is recorded with closed false",
+            "tests": [
+              {
+                "file": "check-tree-shared-tokens.test.ts",
+                "text": "fails an unclosed StringLiteral recorded as closed"
+              }
+            ]
+          },
+          {
+            "case": "An unclosed string has no closing quote on its token",
+            "tests": [
+              {
+                "file": "check-tree-shared-tokens.test.ts",
+                "text": "fails a closing quote added to an unclosed String token"
+              }
+            ]
           }
         ]
       }
@@ -578,20 +751,85 @@
         "status": "shown",
         "cases": [
           {
-            "file": "check-tree.test.ts",
-            "text": "fails when a token starts or ends with whitespace or a line terminator where no value starts or ends"
+            "case": "Whitespace outside a read value has no token",
+            "tests": [
+              {
+                "file": "check-tree-shared-tokens.test.ts",
+                "text": "fails a whitespace-only token outside every value"
+              }
+            ]
           },
           {
-            "file": "check-tree.test.ts",
-            "text": "fails when a token's range is shifted, or its value is not the source text of its range"
+            "case": "A whitespace-only read value has its token",
+            "tests": [
+              {
+                "file": "check-tree-shared-tokens.test.ts",
+                "text": "a whitespace-only value"
+              }
+            ]
           },
           {
-            "file": "check-tree-shared-tokens.test.ts",
-            "text": "fails a whitespace-only token outside every value"
+            "case": "Read whitespace between directive cuts has its token",
+            "tests": [
+              {
+                "file": "check-tree-shared-tokens.test.ts",
+                "text": "fails a read whitespace fragment between directives omitted from tokens"
+              }
+            ]
           },
           {
-            "file": "check-tree-shared-tokens.test.ts",
-            "text": "fails a line terminator represented by an extra node field"
+            "case": "Read whitespace between a directive and a value end has its token",
+            "tests": [
+              {
+                "file": "check-tree-shared-tokens.test.ts",
+                "text": "a whitespace fragment after a directive"
+              }
+            ]
+          },
+          {
+            "case": "Read whitespace between an ignored semicolon and a value end has its token",
+            "tests": [
+              {
+                "file": "check-tree-shared-tokens.test.ts",
+                "text": "a whitespace fragment after an ignored semicolon"
+              }
+            ]
+          },
+          {
+            "case": "Read line whitespace next to a comment region has its token",
+            "tests": [
+              {
+                "file": "check-tree-shared-tokens.test.ts",
+                "text": "a value line separator before a comment region"
+              }
+            ]
+          },
+          {
+            "case": "A grammatical line terminator has no separate token",
+            "tests": [
+              {
+                "file": "check-tree-shared-tokens.test.ts",
+                "text": "fails a separate token of a grammatical statement line terminator"
+              }
+            ]
+          },
+          {
+            "case": "A grammatical line terminator has no node",
+            "tests": [
+              {
+                "file": "check-tree-shared-tokens.test.ts",
+                "text": "fails a line terminator represented by an extra node field"
+              }
+            ]
+          },
+          {
+            "case": "Whitespace inside a token remains part of it",
+            "tests": [
+              {
+                "file": "check-tree-shared-tokens.test.ts",
+                "text": "a token whose written CRLF is converted to LF"
+              }
+            ]
           }
         ]
       }
@@ -679,21 +917,9 @@
       ],
       "about": "| `comments` | list of Comment | Every comment, in source or",
       "judgment": {
-        "status": "shown",
-        "cases": [
-          {
-            "file": "check-tree-shape.test.ts",
-            "text": "reports the records of the root that are missing or of another kind, without throwing"
-          },
-          {
-            "file": "check-tree.test.ts",
-            "text": "fails a comment line of the text that is no comment of the tree"
-          },
-          {
-            "file": "check-tree.test.ts",
-            "text": "fails when comments or directives overlap"
-          }
-        ]
+        "status": "not-shown",
+        "reason": "rule-misses-condition",
+        "note": "The list and its order are checked, but its entry type is not: changing a comment record in Root.comments to type OtherComment leaves checkTree without a report."
       }
     },
     {
@@ -738,28 +964,66 @@
         "status": "shown",
         "cases": [
           {
-            "file": "check-tree-shape.test.ts",
-            "text": "reports the records of the root that are missing or of another kind, without throwing"
+            "case": "Root.tokens is a list of token records",
+            "tests": [
+              {
+                "file": "check-tree-shape.test.ts",
+                "text": "reports the records of the root that are missing or of another kind, without throwing"
+              }
+            ]
           },
           {
-            "file": "check-tree.test.ts",
-            "text": "fails when a token is missing"
+            "case": "The list holds every diagram token",
+            "tests": [
+              {
+                "file": "check-tree.test.ts",
+                "text": "fails when a token is missing"
+              }
+            ]
           },
           {
-            "file": "check-tree.test.ts",
-            "text": "fails when a comment, or the token of a directive or of the frontmatter, is missing"
+            "case": "The list holds Directive tokens",
+            "tests": [
+              {
+                "file": "check-tree.test.ts",
+                "text": "fails when a comment, or the token of a directive or of the frontmatter, is missing"
+              },
+              {
+                "file": "check-tree.test.ts",
+                "text": "fails when a Directive token has no directive"
+              }
+            ]
           },
           {
-            "file": "check-tree.test.ts",
-            "text": "fails when a Directive token has no directive"
+            "case": "The list holds frontmatter tokens",
+            "tests": [
+              {
+                "file": "check-tree.test.ts",
+                "text": "fails when a comment, or the token of a directive or of the frontmatter, is missing"
+              },
+              {
+                "file": "check-tree.test.ts",
+                "text": "fails when the frontmatter is not divided into its delimiters and its body"
+              }
+            ]
           },
           {
-            "file": "check-tree.test.ts",
-            "text": "fails when the frontmatter is not divided into its delimiters and its body"
+            "case": "Tokens are in source order",
+            "tests": [
+              {
+                "file": "check-tree.test.ts",
+                "text": "fails when tokens overlap or are out of order"
+              }
+            ]
           },
           {
-            "file": "check-tree.test.ts",
-            "text": "fails when tokens overlap or are out of order"
+            "case": "List entries have a token kind",
+            "tests": [
+              {
+                "file": "check-tree-shared-tokens.test.ts",
+                "text": "fails a Root.tokens entry with an unknown token kind"
+              }
+            ]
           }
         ]
       }
@@ -806,16 +1070,31 @@
         "status": "shown",
         "cases": [
           {
-            "file": "check-tree.test.ts",
-            "text": "fails when a comment, or the token of a directive or of the frontmatter, is missing"
+            "case": "Root.comments is a list rather than a child field",
+            "tests": [
+              {
+                "file": "check-tree-shared-tokens.test.ts",
+                "text": "fails Root.comments represented as one child record"
+              }
+            ]
           },
           {
-            "file": "check-tree-shared-tokens.test.ts",
-            "text": "fails Root.comments represented as one child record"
+            "case": "Root.tokens is a list rather than a child field",
+            "tests": [
+              {
+                "file": "check-tree-shared-tokens.test.ts",
+                "text": "fails Root.tokens represented as one child record"
+              }
+            ]
           },
           {
-            "file": "check-tree-shared-tokens.test.ts",
-            "text": "fails Root.tokens represented as one child record"
+            "case": "Non-whitespace characters at directives and frontmatter are covered",
+            "tests": [
+              {
+                "file": "check-tree.test.ts",
+                "text": "fails when a comment, or the token of a directive or of the frontmatter, is missing"
+              }
+            ]
           }
         ]
       }
@@ -862,60 +1141,165 @@
         "status": "shown",
         "cases": [
           {
-            "file": "check-tree-shape.test.ts",
-            "text": "reports the records of the root that are missing or of another kind, without throwing"
+            "case": "Comments are records in Root.comments",
+            "tests": [
+              {
+                "file": "check-tree-shape.test.ts",
+                "text": "reports the records of the root that are missing or of another kind, without throwing"
+              }
+            ]
           },
           {
-            "file": "check-tree.test.ts",
-            "text": "fails when the content fields of a comment, a directive, or the frontmatter are not the text of their ranges"
+            "case": "No node holds a comment as a child",
+            "tests": [
+              {
+                "file": "check-tree-shared-tokens.test.ts",
+                "text": "fails a comment stored as a child of a diagram node"
+              }
+            ]
           },
           {
-            "file": "check-tree.test.ts",
-            "text": "fails a directive that the tree lacks, an extra one, one with another `closed`, and one with whitespace at its end"
+            "case": "Comments have ranges",
+            "tests": [
+              {
+                "file": "check-tree-shared-tokens.test.ts",
+                "text": "fails a comment record without a range"
+              }
+            ]
           },
           {
-            "file": "check-tree.test.ts",
-            "text": "fails when a comment region lies inside a token"
+            "case": "Comments have locations",
+            "tests": [
+              {
+                "file": "check-tree-shared-tokens.test.ts",
+                "text": "fails a comment record without a loc"
+              }
+            ]
           },
           {
-            "file": "check-tree.test.ts",
-            "text": "fails when a Directive token has no directive"
+            "case": "Directives have ranges",
+            "tests": [
+              {
+                "file": "check-tree-shared-tokens.test.ts",
+                "text": "fails a directive record without a range"
+              }
+            ]
           },
           {
-            "file": "check-tree.test.ts",
-            "text": "fails when the frontmatter is not divided into its delimiters and its body"
+            "case": "Directives have locations",
+            "tests": [
+              {
+                "file": "check-tree-shared-tokens.test.ts",
+                "text": "fails a directive record without a loc"
+              }
+            ]
           },
           {
-            "file": "check-tree.test.ts",
-            "text": "fails when a token's range is shifted, or its value is not the source text of its range"
+            "case": "Frontmatter has a range",
+            "tests": [
+              {
+                "file": "check-tree-shared-tokens.test.ts",
+                "text": "fails a frontmatter record without a range"
+              }
+            ]
           },
           {
-            "file": "check-tree-shared-tokens.test.ts",
-            "text": "fails a comment stored as a child of a diagram node"
+            "case": "Frontmatter has a location",
+            "tests": [
+              {
+                "file": "check-tree-shared-tokens.test.ts",
+                "text": "fails a frontmatter record without a loc"
+              }
+            ]
           },
           {
-            "file": "check-tree-shared-tokens.test.ts",
-            "text": "fails a comment record without a range"
+            "case": "Comment content is its source text",
+            "tests": [
+              {
+                "file": "check-tree.test.ts",
+                "text": "fails when the content fields of a comment, a directive, or the frontmatter are not the text of their ranges"
+              }
+            ]
           },
           {
-            "file": "check-tree-shared-tokens.test.ts",
-            "text": "fails a directive record without a range"
+            "case": "Directive content is its source text",
+            "tests": [
+              {
+                "file": "check-tree-shared-ast.test.ts",
+                "text": "reports an unclosed directive value that stops before its last character"
+              }
+            ]
           },
           {
-            "file": "check-tree-shared-tokens.test.ts",
-            "text": "fails a frontmatter record without a range"
+            "case": "Frontmatter content is its source text",
+            "tests": [
+              {
+                "file": "check-tree.test.ts",
+                "text": "fails when the content fields of a comment, a directive, or the frontmatter are not the text of their ranges"
+              }
+            ]
           },
           {
-            "file": "check-tree-shared-tokens.test.ts",
-            "text": "fails a comment record without a loc"
+            "case": "A comment is outside tokens",
+            "tests": [
+              {
+                "file": "check-tree.test.ts",
+                "text": "fails when a comment region lies inside a token"
+              }
+            ]
           },
           {
-            "file": "check-tree-shared-tokens.test.ts",
-            "text": "fails a directive record without a loc"
+            "case": "An external directive has a matching Directive token",
+            "tests": [
+              {
+                "file": "check-tree.test.ts",
+                "text": "fails when a comment, or the token of a directive or of the frontmatter, is missing"
+              },
+              {
+                "file": "check-tree.test.ts",
+                "text": "fails a directive that the tree lacks, an extra one, one with another `closed`, and one with whitespace at its end"
+              },
+              {
+                "file": "check-tree.test.ts",
+                "text": "fails when a Directive token has no directive"
+              }
+            ]
           },
           {
-            "file": "check-tree-shared-tokens.test.ts",
-            "text": "fails a frontmatter record without a loc"
+            "case": "Frontmatter with a body is divided into three tokens",
+            "tests": [
+              {
+                "file": "check-tree.test.ts",
+                "text": "fails when the frontmatter is not divided into its delimiters and its body"
+              }
+            ]
+          },
+          {
+            "case": "Empty frontmatter is divided into two delimiter tokens",
+            "tests": [
+              {
+                "file": "check-tree-shared-tokens.test.ts",
+                "text": "fails the two empty-frontmatter delimiter tokens merged into one"
+              }
+            ]
+          },
+          {
+            "case": "Directive token value is the whole source text",
+            "tests": [
+              {
+                "file": "check-tree-shared-tokens.test.ts",
+                "text": "fails a Directive token value that contains only its content"
+              }
+            ]
+          },
+          {
+            "case": "Directive record value is its content",
+            "tests": [
+              {
+                "file": "check-tree-shared-ast.test.ts",
+                "text": "reports an unclosed directive value that stops before its last character"
+              }
+            ]
           }
         ]
       }
@@ -1006,20 +1390,80 @@
         "status": "shown",
         "cases": [
           {
-            "file": "check-tree-fields.test.ts",
-            "text": "fixture: \"comment-after-directive\""
+            "case": "A common comment line has mark %%",
+            "tests": [
+              {
+                "file": "check-tree-fields.test.ts",
+                "text": "fixture: \"comment-after-directive\""
+              }
+            ]
           },
           {
-            "file": "check-tree-comments.test.ts",
-            "text": "fails a mark that a flowchart or a class diagram does not have"
+            "case": "Diagram comments use the marks their diagram defines",
+            "tests": [
+              {
+                "file": "check-tree-comments.test.ts",
+                "text": "fails a mark that a flowchart or a class diagram does not have"
+              },
+              {
+                "file": "check-tree-comments.test.ts",
+                "text": "fails a sequence comment whose mark is not the one that the text writes"
+              }
+            ]
           },
           {
-            "file": "check-tree-comments.test.ts",
-            "text": "fails a sequence comment whose mark is not the one that the text writes"
+            "case": "Railroad ISO comments have mark (*",
+            "tests": [
+              {
+                "file": "check-tree-shared-tokens.test.ts",
+                "text": "railroad ISO block mark"
+              }
+            ]
           },
           {
-            "file": "check-tree-comments.test.ts",
-            "text": "fails a fragment without a mark that follows no comment region, or with whitespace before the region, and comments that overlap"
+            "case": "Railroad C comments have mark /*",
+            "tests": [
+              {
+                "file": "check-tree-shared-tokens.test.ts",
+                "text": "railroad C block mark"
+              }
+            ]
+          },
+          {
+            "case": "Railroad line comments have mark ;",
+            "tests": [
+              {
+                "file": "check-tree-shared-tokens.test.ts",
+                "text": "railroad semicolon mark"
+              }
+            ]
+          },
+          {
+            "case": "Eventmodeling block comments have mark /*",
+            "tests": [
+              {
+                "file": "check-tree-shared-tokens.test.ts",
+                "text": "eventmodeling block mark"
+              }
+            ]
+          },
+          {
+            "case": "Eventmodeling line comments have mark //",
+            "tests": [
+              {
+                "file": "check-tree-shared-tokens.test.ts",
+                "text": "eventmodeling line mark"
+              }
+            ]
+          },
+          {
+            "case": "A fragment after a comment region has mark null",
+            "tests": [
+              {
+                "file": "check-tree-comments.test.ts",
+                "text": "fails a fragment without a mark that follows no comment region, or with whitespace before the region, and comments that overlap"
+              }
+            ]
           }
         ]
       }
@@ -1066,20 +1510,62 @@
         "status": "shown",
         "cases": [
           {
-            "file": "check-tree.test.ts",
-            "text": "fails when the content fields of a comment, a directive, or the frontmatter are not the text of their ranges"
+            "case": "Comment.value is a string",
+            "tests": [
+              {
+                "file": "check-tree-shared-tokens.test.ts",
+                "text": "fails a comment value that is not a string"
+              }
+            ]
           },
           {
-            "file": "check-tree-comments.test.ts",
-            "text": "fails a diagram comment whose value is not the text after its mark"
+            "case": "Common comment value is its source content",
+            "tests": [
+              {
+                "file": "check-tree.test.ts",
+                "text": "fails when the content fields of a comment, a directive, or the frontmatter are not the text of their ranges"
+              }
+            ]
           },
           {
-            "file": "check-tree-railroad.test.ts",
-            "text": "C closer joined by a directive"
+            "case": "Diagram comment value is its source content",
+            "tests": [
+              {
+                "file": "check-tree-comments.test.ts",
+                "text": "fails a diagram comment whose value is not the text after its mark"
+              }
+            ]
           },
           {
-            "file": "check-tree-shared-tokens.test.ts",
-            "text": "fails a comment value that is not a string"
+            "case": "Railroad C block comment value excludes its closer",
+            "tests": [
+              {
+                "file": "check-tree-railroad.test.ts",
+                "text": "C closer joined by a directive"
+              },
+              {
+                "file": "check-tree-shared-tokens.test.ts",
+                "text": "railroad C block value"
+              }
+            ]
+          },
+          {
+            "case": "Railroad ISO block comment value excludes its closer",
+            "tests": [
+              {
+                "file": "check-tree-shared-tokens.test.ts",
+                "text": "railroad ISO block value"
+              }
+            ]
+          },
+          {
+            "case": "Eventmodeling block comment value excludes its closer",
+            "tests": [
+              {
+                "file": "check-tree-shared-tokens.test.ts",
+                "text": "eventmodeling block value"
+              }
+            ]
           }
         ]
       }
@@ -1126,12 +1612,67 @@
         "status": "shown",
         "cases": [
           {
-            "file": "check-tree-comments.test.ts",
-            "text": "fails a mark that a flowchart or a class diagram does not have"
+            "case": "A split common mark excludes its intervening directive",
+            "tests": [
+              {
+                "file": "check-tree-shared-tokens.test.ts",
+                "text": "fails a comment mark containing its intervening directive"
+              }
+            ]
           },
           {
-            "file": "check-tree-shared-tokens.test.ts",
-            "text": "fails a comment mark containing its intervening directive"
+            "case": "Diagram comments use their authored mark",
+            "tests": [
+              {
+                "file": "check-tree-comments.test.ts",
+                "text": "fails a mark that a flowchart or a class diagram does not have"
+              }
+            ]
+          },
+          {
+            "case": "Railroad ISO mark is (*",
+            "tests": [
+              {
+                "file": "check-tree-shared-tokens.test.ts",
+                "text": "railroad ISO block mark"
+              }
+            ]
+          },
+          {
+            "case": "Railroad C mark is /*",
+            "tests": [
+              {
+                "file": "check-tree-shared-tokens.test.ts",
+                "text": "railroad C block mark"
+              }
+            ]
+          },
+          {
+            "case": "Railroad line mark is ;",
+            "tests": [
+              {
+                "file": "check-tree-shared-tokens.test.ts",
+                "text": "railroad semicolon mark"
+              }
+            ]
+          },
+          {
+            "case": "Eventmodeling block mark is /*",
+            "tests": [
+              {
+                "file": "check-tree-shared-tokens.test.ts",
+                "text": "eventmodeling block mark"
+              }
+            ]
+          },
+          {
+            "case": "Eventmodeling line mark is //",
+            "tests": [
+              {
+                "file": "check-tree-shared-tokens.test.ts",
+                "text": "eventmodeling line mark"
+              }
+            ]
           }
         ]
       }
@@ -1178,12 +1719,22 @@
         "status": "shown",
         "cases": [
           {
-            "file": "check-tree-shared-tokens.test.ts",
-            "text": "fails a shared directive record omitted from a native comment mark"
+            "case": "Directives inside native comment marks remain records",
+            "tests": [
+              {
+                "file": "check-tree-shared-tokens.test.ts",
+                "text": "fails a shared directive record omitted from a native comment mark"
+              }
+            ]
           },
           {
-            "file": "check-tree-shared-tokens.test.ts",
-            "text": "fails a shared directive record omitted from a native comment closer"
+            "case": "Directives inside native comment closers remain records",
+            "tests": [
+              {
+                "file": "check-tree-shared-tokens.test.ts",
+                "text": "fails a shared directive record omitted from a native comment closer"
+              }
+            ]
           }
         ]
       }
@@ -1230,24 +1781,85 @@
         "status": "shown",
         "cases": [
           {
-            "file": "check-tree-shared-tokens.test.ts",
-            "text": "fails a comment range ending before its internal directive"
+            "case": "A common comment range includes a directive after its mark",
+            "tests": [
+              {
+                "file": "check-tree-shared-tokens.test.ts",
+                "text": "fails a comment range ending before its internal directive"
+              }
+            ]
           },
           {
-            "file": "check-tree-shared-tokens.test.ts",
-            "text": "fails a comment range including a preceding directive"
+            "case": "A directive before the common comment mark is outside its range",
+            "tests": [
+              {
+                "file": "check-tree-shared-tokens.test.ts",
+                "text": "fails a comment range including a preceding directive"
+              }
+            ]
           },
           {
-            "file": "check-tree-shared-tokens.test.ts",
-            "text": "fails a split comment mark whose value starts after the first percent"
+            "case": "A common split mark has its directive inside the range",
+            "tests": [
+              {
+                "file": "check-tree-shared-tokens.test.ts",
+                "text": "case: \"the common split mark\""
+              }
+            ]
           },
           {
-            "file": "check-tree-shared-tokens.test.ts",
-            "text": "fails a diagram-comment mark retaining a directive in its spelling"
+            "case": "A diagram split mark has its directive inside the range",
+            "tests": [
+              {
+                "file": "check-tree-shared-tokens.test.ts",
+                "text": "case: \"the diagram split mark\""
+              }
+            ]
           },
           {
-            "file": "check-tree-shared-tokens.test.ts",
-            "text": "fails a directive token inside a diagram comment"
+            "case": "The common comment value starts after the last percent of a split mark",
+            "tests": [
+              {
+                "file": "check-tree-shared-tokens.test.ts",
+                "text": "fails a split comment mark whose value starts after the first percent"
+              }
+            ]
+          },
+          {
+            "case": "A split diagram mark excludes its directive",
+            "tests": [
+              {
+                "file": "check-tree-shared-tokens.test.ts",
+                "text": "fails a diagram-comment mark retaining a directive in its spelling"
+              }
+            ]
+          },
+          {
+            "case": "Diagram comment value retains directives after its mark",
+            "tests": [
+              {
+                "file": "check-tree-shared-tokens.test.ts",
+                "text": "fails a diagram-comment value that drops its directive"
+              }
+            ]
+          },
+          {
+            "case": "A diagram comment range includes its internal directive",
+            "tests": [
+              {
+                "file": "check-tree-shared-tokens.test.ts",
+                "text": "fails a diagram-comment range ending before its internal directive"
+              }
+            ]
+          },
+          {
+            "case": "A directive inside a diagram comment has no Directive token",
+            "tests": [
+              {
+                "file": "check-tree-shared-tokens.test.ts",
+                "text": "fails a directive token inside a diagram comment"
+              }
+            ]
           }
         ]
       }
@@ -1294,24 +1906,49 @@
         "status": "shown",
         "cases": [
           {
-            "file": "check-tree.test.ts",
-            "text": "fails when a directive lies inside a token"
+            "case": "A directive cuts a token outside comment regions",
+            "tests": [
+              {
+                "file": "check-tree.test.ts",
+                "text": "fails when a directive lies inside a token"
+              }
+            ]
           },
           {
-            "file": "check-tree-shared-tokens.test.ts",
-            "text": "fails a Directive token added inside a common comment"
+            "case": "A directive inside a comment has no Directive token",
+            "tests": [
+              {
+                "file": "check-tree-shared-tokens.test.ts",
+                "text": "fails a Directive token added inside a common comment"
+              }
+            ]
           },
           {
-            "file": "check-tree-shared-tokens.test.ts",
-            "text": "fails a directive in a comment region included in a string token"
+            "case": "A directive inside a comment region lies outside token fragments",
+            "tests": [
+              {
+                "file": "check-tree-shared-tokens.test.ts",
+                "text": "fails a directive in a comment region included in a string token"
+              }
+            ]
           },
           {
-            "file": "check-tree-shared-tokens.test.ts",
-            "text": "fails a comment region record starting at its preceding directive"
+            "case": "The comment region starts after a preceding directive",
+            "tests": [
+              {
+                "file": "check-tree-shared-tokens.test.ts",
+                "text": "fails a comment region record starting at its preceding directive"
+              }
+            ]
           },
           {
-            "file": "check-tree-shared-tokens.test.ts",
-            "text": "fails a directive token omitted before a comment mark in a string"
+            "case": "A directive before the comment mark in a string has its token",
+            "tests": [
+              {
+                "file": "check-tree-shared-tokens.test.ts",
+                "text": "fails a directive token omitted before a comment mark in a string"
+              }
+            ]
           }
         ]
       }
@@ -1402,12 +2039,22 @@
         "status": "shown",
         "cases": [
           {
-            "file": "check-tree.test.ts",
-            "text": "fails when the content fields of a comment, a directive, or the frontmatter are not the text of their ranges"
+            "case": "Frontmatter.valueRange is an offset pair",
+            "tests": [
+              {
+                "file": "check-tree-shared-tokens.test.ts",
+                "text": "fails a frontmatter valueRange that is not an offset pair"
+              }
+            ]
           },
           {
-            "file": "check-tree-shared-tokens.test.ts",
-            "text": "fails a frontmatter valueRange that is not an offset pair"
+            "case": "Frontmatter.valueRange locates its source content",
+            "tests": [
+              {
+                "file": "check-tree.test.ts",
+                "text": "fails when the content fields of a comment, a directive, or the frontmatter are not the text of their ranges"
+              }
+            ]
           }
         ]
       }
@@ -1454,20 +2101,49 @@
         "status": "shown",
         "cases": [
           {
-            "file": "check-tree.test.ts",
-            "text": "fails when the frontmatter is not divided into its delimiters and its body"
+            "case": "The record starts at the opening delimiter",
+            "tests": [
+              {
+                "file": "check-tree-shared-tokens.test.ts",
+                "text": "case: \"the opening delimiter\""
+              }
+            ]
           },
           {
-            "file": "check-tree-shared-tokens.test.ts",
-            "text": "fails frontmatter opening indentation included in its token"
+            "case": "The record ends at the closing delimiter",
+            "tests": [
+              {
+                "file": "check-tree-shared-tokens.test.ts",
+                "text": "case: \"the closing delimiter\""
+              }
+            ]
           },
           {
-            "file": "check-tree-shared-tokens.test.ts",
-            "text": "fails whitespace after frontmatter closing delimiter included in its token"
+            "case": "Opening indentation is outside the record",
+            "tests": [
+              {
+                "file": "check-tree-shared-tokens.test.ts",
+                "text": "case: \"opening indentation\""
+              }
+            ]
           },
           {
-            "file": "check-tree-shared-tokens.test.ts",
-            "text": "fails blank lines after frontmatter included in the closing token"
+            "case": "Whitespace after the closing delimiter is outside the record",
+            "tests": [
+              {
+                "file": "check-tree-shared-tokens.test.ts",
+                "text": "case: \"trailing delimiter whitespace\""
+              }
+            ]
+          },
+          {
+            "case": "Blank lines after the closing delimiter are outside the record",
+            "tests": [
+              {
+                "file": "check-tree-shared-tokens.test.ts",
+                "text": "fails blank lines after frontmatter included in its record range"
+              }
+            ]
           }
         ]
       }
@@ -1514,24 +2190,62 @@
         "status": "shown",
         "cases": [
           {
-            "file": "check-tree.test.ts",
-            "text": "fails when the frontmatter is not divided into its delimiters and its body"
+            "case": "Frontmatter delimiters and body are separate tokens",
+            "tests": [
+              {
+                "file": "check-tree.test.ts",
+                "text": "fails when the frontmatter is not divided into its delimiters and its body"
+              }
+            ]
           },
           {
-            "file": "check-tree.test.ts",
-            "text": "fails when a Directive token has no directive"
+            "case": "Line breaks and indentation between them are layout",
+            "tests": [
+              {
+                "file": "check-tree-shared-tokens.test.ts",
+                "text": "fails frontmatter opening indentation included in its token"
+              },
+              {
+                "file": "check-tree-shared-tokens.test.ts",
+                "text": "fails blank lines after frontmatter included in the closing token"
+              }
+            ]
           },
           {
-            "file": "check-tree.test.ts",
-            "text": "fails a directive that the tree lacks, an extra one, one with another `closed`, and one with whitespace at its end"
+            "case": "A directive is one token",
+            "tests": [
+              {
+                "file": "check-tree-shared-tokens.test.ts",
+                "text": "fails a directive split into two Directive tokens"
+              }
+            ]
           },
           {
-            "file": "check-tree-shared-tokens.test.ts",
-            "text": "fails a directive record without its name field"
+            "case": "A directive record holds its name",
+            "tests": [
+              {
+                "file": "check-tree-shared-tokens.test.ts",
+                "text": "fails a directive record without its name field"
+              }
+            ]
           },
           {
-            "file": "check-tree-shared-tokens.test.ts",
-            "text": "fails a diagram range including frontmatter tokens"
+            "case": "A directive record holds its argument",
+            "tests": [
+              {
+                "file": "check-tree-shared-ast.test.ts",
+                "text": "reports an unclosed directive value that stops before its last character"
+              }
+            ]
+          },
+          {
+            "case": "Frontmatter tokens lie outside the diagram range",
+            "tests": [
+              {
+                "file": "check-tree-shared-tokens.test.ts",
+                "text": "fails a diagram range including frontmatter tokens"
+              }
+            ]
           }
         ]
       }
@@ -1578,48 +2292,102 @@
         "status": "shown",
         "cases": [
           {
-            "file": "check-tree-string-tokens.test.ts",
-            "text": "click-callback-tooltip"
+            "case": "An uncut StringLiteral has one String token",
+            "tests": [
+              {
+                "file": "check-tree-string-tokens.test.ts",
+                "text": "click-callback-tooltip"
+              },
+              {
+                "file": "check-tree-shared-tokens.test.ts",
+                "text": "fails an uncut string split into two String tokens"
+              }
+            ]
           },
           {
-            "file": "check-tree-literals.test.ts",
-            "text": "a StringLiteral whose raw is not its text"
+            "case": "The opening quote belongs to the token",
+            "tests": [
+              {
+                "file": "check-tree-shared-tokens.test.ts",
+                "text": "fails a String token missing its opening quote"
+              }
+            ]
           },
           {
-            "file": "check-tree-string-tokens.test.ts",
-            "text": "db-directive-in-quotes"
+            "case": "The closing quote belongs to the token",
+            "tests": [
+              {
+                "file": "check-tree-shared-tokens.test.ts",
+                "text": "fails a String token missing its closing quote"
+              }
+            ]
           },
           {
-            "file": "check-tree-cut-tokens.test.ts",
-            "text": "is reported when a directive cuts it: the second fragment starts with no quote and the first is not closed"
+            "case": "The node range equals its uncut token range",
+            "tests": [
+              {
+                "file": "check-tree-shared-tokens.test.ts",
+                "text": "fails an uncut StringLiteral range omitting its closing quote"
+              }
+            ]
           },
           {
-            "file": "check-tree-cut-tokens.test.ts",
-            "text": "is reported when a `;` cuts it: the second fragment starts with no quote and the first is not closed"
+            "case": "The raw text equals the token value",
+            "tests": [
+              {
+                "file": "check-tree-literals.test.ts",
+                "text": "a StringLiteral whose raw is not its text"
+              }
+            ]
           },
           {
-            "file": "check-tree-shared-tokens.test.ts",
-            "text": "fails an uncut string split into two String tokens"
+            "case": "A directive cuts the string into StringFragments",
+            "tests": [
+              {
+                "file": "check-tree-string-tokens.test.ts",
+                "text": "db-directive-in-quotes"
+              },
+              {
+                "file": "check-tree-cut-tokens.test.ts",
+                "text": "is reported when a directive cuts it: the second fragment starts with no quote and the first is not closed"
+              }
+            ]
           },
           {
-            "file": "check-tree-shared-tokens.test.ts",
-            "text": "fails a String token missing its opening quote"
+            "case": "An ignored semicolon cuts the string into StringFragments",
+            "tests": [
+              {
+                "file": "check-tree-cut-tokens.test.ts",
+                "text": "is reported when a `;` cuts it: the second fragment starts with no quote and the first is not closed"
+              }
+            ]
           },
           {
-            "file": "check-tree-shared-tokens.test.ts",
-            "text": "fails a String token missing its closing quote"
+            "case": "A comment region cuts the string into StringFragments",
+            "tests": [
+              {
+                "file": "check-tree-shared-tokens.test.ts",
+                "text": "fails a comment-cut string fragment retyped as String"
+              }
+            ]
           },
           {
-            "file": "check-tree-shared-tokens.test.ts",
-            "text": "fails an uncut StringLiteral range omitting its closing quote"
+            "case": "A cut string range starts at its first fragment",
+            "tests": [
+              {
+                "file": "check-tree-shared-tokens.test.ts",
+                "text": "fails a cut string node starting at its last fragment"
+              }
+            ]
           },
           {
-            "file": "check-tree-shared-tokens.test.ts",
-            "text": "fails a string node ending before its final comment-cut fragment"
-          },
-          {
-            "file": "check-tree-shared-tokens.test.ts",
-            "text": "fails a cut string node starting at its last fragment"
+            "case": "A cut string range ends at its last fragment",
+            "tests": [
+              {
+                "file": "check-tree-shared-tokens.test.ts",
+                "text": "fails a string node ending before its final comment-cut fragment"
+              }
+            ]
           }
         ]
       }
@@ -1666,32 +2434,67 @@
         "status": "shown",
         "cases": [
           {
-            "file": "check-tree-string-tokens.test.ts",
-            "text": "db-directive-in-quotes"
+            "case": "The unclosed String token ends at its written end",
+            "tests": [
+              {
+                "file": "check-tree-shared-tokens.test.ts",
+                "text": "fails an unclosed string token shortened before its written end"
+              }
+            ]
           },
           {
-            "file": "check-tree-cut-tokens.test.ts",
-            "text": "is reported when a directive cuts it: the second fragment starts with no quote and the first is not closed"
+            "case": "The unclosed StringLiteral range ends at its written end",
+            "tests": [
+              {
+                "file": "check-tree-shared-tokens.test.ts",
+                "text": "fails an unclosed StringLiteral range shortened before its written end"
+              }
+            ]
           },
           {
-            "file": "check-tree-shared-tokens.test.ts",
-            "text": "fails an unclosed string token shortened before its written end"
+            "case": "A following directive is outside the unclosed string range",
+            "tests": [
+              {
+                "file": "check-tree-shared-tokens.test.ts",
+                "text": "fails an unclosed string range including a following directive"
+              }
+            ]
           },
           {
-            "file": "check-tree-shared-tokens.test.ts",
-            "text": "fails an unclosed StringLiteral range shortened before its written end"
+            "case": "An internal directive cuts the unclosed string into fragments",
+            "tests": [
+              {
+                "file": "check-tree-shared-tokens.test.ts",
+                "text": "fails a directive-cut unclosed string fragment retyped as String"
+              }
+            ]
           },
           {
-            "file": "check-tree-shared-tokens.test.ts",
-            "text": "fails an unclosed string range including a following directive"
+            "case": "Whitespace beside the internal directive remains in the fragments",
+            "tests": [
+              {
+                "file": "check-tree-shared-tokens.test.ts",
+                "text": "fails an unclosed string fragment missing its space after a directive"
+              }
+            ]
           },
           {
-            "file": "check-tree-shared-tokens.test.ts",
-            "text": "fails an unclosed string fragment missing its space after a directive"
+            "case": "A final read line feed remains in the fragment with text",
+            "tests": [
+              {
+                "file": "check-tree-shared-tokens.test.ts",
+                "text": "fails an unclosed string fragment missing its final line feed"
+              }
+            ]
           },
           {
-            "file": "check-tree-shared-tokens.test.ts",
-            "text": "fails an unclosed string fragment missing its final line feed"
+            "case": "A final line feed after a directive is a fragment on its own",
+            "tests": [
+              {
+                "file": "check-tree-shared-tokens.test.ts",
+                "text": "fails a final line-feed-only fragment omitted from an unclosed string"
+              }
+            ]
           }
         ]
       }
@@ -1738,8 +2541,13 @@
         "status": "shown",
         "cases": [
           {
-            "file": "check-tree-shared-tokens.test.ts",
-            "text": "fails a bare percent line omitted from error tokens"
+            "case": "A detection-passed bare percent line remains a token",
+            "tests": [
+              {
+                "file": "check-tree-shared-tokens.test.ts",
+                "text": "fails a bare percent line omitted from error tokens"
+              }
+            ]
           }
         ]
       }
@@ -1786,12 +2594,22 @@
         "status": "shown",
         "cases": [
           {
-            "file": "check-tree-shared-tokens.test.ts",
-            "text": "fails two whitespace-separated error runs merged into one token"
+            "case": "Whitespace separates the error, percent and x runs",
+            "tests": [
+              {
+                "file": "check-tree-shared-tokens.test.ts",
+                "text": "fails two whitespace-separated error runs merged into one token"
+              }
+            ]
           },
           {
-            "file": "check-tree-shared-tokens.test.ts",
-            "text": "fails trailing error text misrepresented as a comment"
+            "case": "Trailing percent text is not a comment",
+            "tests": [
+              {
+                "file": "check-tree-shared-tokens.test.ts",
+                "text": "fails trailing error text misrepresented as a comment"
+              }
+            ]
           }
         ]
       }
@@ -1838,8 +2656,13 @@
         "status": "shown",
         "cases": [
           {
-            "file": "check-tree-shared-tokens.test.ts",
-            "text": "fails an error directive retyped as RawText"
+            "case": "A directive immediately after error has its Directive token",
+            "tests": [
+              {
+                "file": "check-tree-shared-tokens.test.ts",
+                "text": "fails an error directive retyped as RawText"
+              }
+            ]
           }
         ]
       }
@@ -1886,8 +2709,13 @@
         "status": "shown",
         "cases": [
           {
-            "file": "check-tree-shared-tokens.test.ts",
-            "text": "fails error tokens ordered before their preceding directive"
+            "case": "The Directive token is between error and the following runs",
+            "tests": [
+              {
+                "file": "check-tree-shared-tokens.test.ts",
+                "text": "fails error tokens ordered before their preceding directive"
+              }
+            ]
           }
         ]
       }
@@ -1934,12 +2762,22 @@
         "status": "shown",
         "cases": [
           {
-            "file": "check-tree-shared-tokens.test.ts",
-            "text": "fails an error comment line omitted from its comments"
+            "case": "A comment line between error runs is outside the tokens",
+            "tests": [
+              {
+                "file": "check-tree-shared-tokens.test.ts",
+                "text": "fails an error comment line omitted from its comments"
+              }
+            ]
           },
           {
-            "file": "check-tree-shared-tokens.test.ts",
-            "text": "fails malformed directive-like error text recorded as a directive"
+            "case": "Malformed directive-like text remains error tokens",
+            "tests": [
+              {
+                "file": "check-tree-shared-tokens.test.ts",
+                "text": "fails malformed directive-like error text recorded as a directive"
+              }
+            ]
           }
         ]
       }
@@ -1986,8 +2824,13 @@
         "status": "shown",
         "cases": [
           {
-            "file": "check-tree-shared-tokens.test.ts",
-            "text": "fails the Directive token omitted between error word fragments"
+            "case": "A directive inside error splits its run and has a Directive token",
+            "tests": [
+              {
+                "file": "check-tree-shared-tokens.test.ts",
+                "text": "fails the Directive token omitted between error word fragments"
+              }
+            ]
           }
         ]
       }
@@ -2034,20 +2877,40 @@
         "status": "shown",
         "cases": [
           {
-            "file": "check-tree-values.test.ts",
-            "text": "Identifier"
+            "case": "An Identifier node is reached through body child fields",
+            "tests": [
+              {
+                "file": "check-tree-shared-tokens.test.ts",
+                "text": "fails an Identifier stored outside the body child fields"
+              }
+            ]
           },
           {
-            "file": "check-tree.test.ts",
-            "text": "fails when a token's range is shifted, or its value is not the source text of its range"
+            "case": "Identifier.name joins the texts of its units",
+            "tests": [
+              {
+                "file": "check-tree-values.test.ts",
+                "text": "Identifier"
+              }
+            ]
           },
           {
-            "file": "check-tree-shared-tokens.test.ts",
-            "text": "fails an Identifier stored outside the body child fields"
+            "case": "A token is only in Root.tokens",
+            "tests": [
+              {
+                "file": "check-tree-shared-tokens.test.ts",
+                "text": "fails a token stored in an extra field of a node"
+              }
+            ]
           },
           {
-            "file": "check-tree-shared-tokens.test.ts",
-            "text": "fails a token stored in an extra field of a node"
+            "case": "Token.value is its source text",
+            "tests": [
+              {
+                "file": "check-tree.test.ts",
+                "text": "fails when a token's range is shifted, or its value is not the source text of its range"
+              }
+            ]
           }
         ]
       }

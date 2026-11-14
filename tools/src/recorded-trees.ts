@@ -19,6 +19,7 @@ import type {
 } from "../../packages/tests/src/check-tree/types.ts"
 import { nodesOf } from "../../packages/tests/src/check-tree/walk.ts"
 import { getFixturesRoot } from "../../packages/tests/src/index.ts"
+import type { FixtureSource } from "../../packages/tests/src/index.ts"
 import {
   COVERAGE_TABLE,
   coverageOf,
@@ -278,6 +279,8 @@ export interface CheckedTree {
 /** A changed tree, read for its items. */
 export interface ChangedTree {
   readonly fixture: string
+  /** The kind of the fixture's source, or undefined when it cannot be read. */
+  readonly sourceKind: FixtureSource["kind"] | undefined
   /** The tree, or undefined when it cannot be read or breaks the specification. */
   readonly root: CheckedRoot | undefined
   /** The diagram type of its items, or undefined when it has none. */
@@ -340,6 +343,22 @@ function readTree(root: string, fixture: string): CheckedRoot | undefined {
     return JSON.parse(
       readFileSync(path.join(root, FIXTURES, fixture, "ast.json"), "utf8"),
     ) as CheckedRoot
+  } catch {
+    return undefined
+  }
+}
+
+/** Reads the kind of the fixture's source if it can be read. */
+function sourceKindOf(
+  root: string,
+  fixture: string,
+): FixtureSource["kind"] | undefined {
+  try {
+    const expected = JSON.parse(
+      readFileSync(path.join(root, FIXTURES, fixture, "expected.json"), "utf8"),
+    ) as { readonly source?: { readonly kind?: unknown } } | null
+    const kind = expected?.source?.kind
+    return kind === "mermaid" || kind === "authored" ? kind : undefined
   } catch {
     return undefined
   }
@@ -877,6 +896,7 @@ export function checkRecordedTrees(
       placed.set(fixture, placedTreeOf(root, fixture, tree))
     return {
       fixture,
+      sourceKind: sourceKindOf(root, fixture),
       root: tree,
       diagram:
         tree === undefined

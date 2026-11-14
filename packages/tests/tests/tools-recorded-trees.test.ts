@@ -3,6 +3,7 @@ import {
   copyFileSync,
   mkdirSync,
   mkdtempSync,
+  readFileSync,
   rmSync,
   writeFileSync,
 } from "node:fs"
@@ -47,7 +48,10 @@ import {
   everyTreeReasonFrom,
   placesOf,
 } from "../../../tools/src/recorded-trees.ts"
-import { failsOf } from "../../../tools/src/recorded-trees-report.ts"
+import {
+  failsOf,
+  formatReport,
+} from "../../../tools/src/recorded-trees-report.ts"
 import { runtimeReadsOfSource } from "../../../tools/src/runtime-imports.ts"
 
 /** A reader of documents held in memory, by path from the root of the repository. */
@@ -605,7 +609,12 @@ describe("coverageOf", () => {
   const held = new Map([[block.key, { block, diagrams: ["er", "gantt"] }]])
   const shown: CoverageRow["judgment"] = {
     status: "shown",
-    cases: [{ file: "check-tree-er.test.ts", text: "er/gram-alias" }],
+    cases: [
+      {
+        case: "A condition.",
+        tests: [{ file: "check-tree-er.test.ts", text: "er/gram-alias" }],
+      },
+    ],
   }
 
   /** The text of a test file of this test. */
@@ -646,7 +655,12 @@ describe("coverageOf", () => {
         about: "",
         judgment: {
           status: "shown",
-          cases: [{ file: "check-tree-er.test.ts", text: "er/other" }],
+          cases: [
+            {
+              case: "A condition.",
+              tests: [{ file: "check-tree-er.test.ts", text: "er/other" }],
+            },
+          ],
         },
       },
       {
@@ -671,6 +685,57 @@ describe("coverageOf", () => {
       "an earlier row covers the diagram type gantt",
     ])
     expect([...coverage.judgments.keys()]).toEqual([`${block.key}@gantt`])
+  })
+
+  it("checks every test of every case, including a missing file", () => {
+    const coverage = coverageOf(
+      [
+        {
+          block: block.key,
+          diagrams: ["er"],
+          about: "",
+          judgment: {
+            status: "shown",
+            cases: [
+              {
+                case: "The first condition.",
+                tests: [
+                  { file: "check-tree-er.test.ts", text: "er/gram-alias" },
+                  { file: "check-tree-er.test.ts", text: "er/other" },
+                ],
+              },
+            ],
+          },
+        },
+        {
+          block: block.key,
+          diagrams: ["gantt"],
+          about: "",
+          judgment: {
+            status: "shown",
+            cases: [
+              {
+                case: "The first condition.",
+                tests: [
+                  { file: "check-tree-er.test.ts", text: "er/gram-alias" },
+                ],
+              },
+              {
+                case: "The second condition.",
+                tests: [{ file: "missing.test.ts", text: "gantt/other" }],
+              },
+            ],
+          },
+        },
+      ],
+      held,
+      tests,
+    )
+    expect(coverage.judgments.size).toBe(0)
+    expect(coverage.staleRows.map((row) => row.reason)).toEqual([
+      'the test file check-tree-er.test.ts no longer holds "er/other"',
+      'the test file missing.test.ts no longer holds "gantt/other"',
+    ])
   })
 })
 
@@ -737,6 +802,73 @@ describe("readCoverageTable", () => {
     })
   })
 
+  it("reads named cases with one or more test references", () => {
+    const shown = {
+      ...row,
+      judgment: {
+        status: "shown",
+        cases: [
+          {
+            case: "The first condition.",
+            tests: [
+              { file: "a.test.ts", text: "first" },
+              { file: "b.test.ts", text: "also first" },
+            ],
+          },
+          {
+            case: "The second condition.",
+            tests: [{ file: "b.test.ts", text: "second" }],
+          },
+        ],
+      },
+    }
+    expect(tableOf({ "a.json": { rows: [shown] } })).toEqual({
+      rows: [shown],
+      unreadable: [],
+    })
+  })
+
+  it.each([
+    ["the former flat references", [{ file: "a.test.ts", text: "a" }]],
+    ["a missing case", [{ tests: [{ file: "a.test.ts", text: "a" }] }]],
+    [
+      "an empty case",
+      [{ case: "", tests: [{ file: "a.test.ts", text: "a" }] }],
+    ],
+    [
+      "a nonstring case",
+      [{ case: 1, tests: [{ file: "a.test.ts", text: "a" }] }],
+    ],
+    ["missing tests", [{ case: "A condition." }]],
+    ["empty tests", [{ case: "A condition.", tests: [] }]],
+    ["tests that are no list", [{ case: "A condition.", tests: {} }]],
+    ["a test that is no object", [{ case: "A condition.", tests: [null] }]],
+    ["a missing file", [{ case: "A condition.", tests: [{ text: "a" }] }]],
+    [
+      "a missing text",
+      [{ case: "A condition.", tests: [{ file: "a.test.ts" }] }],
+    ],
+    [
+      "an empty text",
+      [{ case: "A condition.", tests: [{ file: "a.test.ts", text: "" }] }],
+    ],
+  ])("rejects shown with %s", (_name, cases) => {
+    expect(
+      tableOf({
+        "a.json": { rows: [{ ...row, judgment: { status: "shown", cases } }] },
+      }),
+    ).toEqual({
+      rows: [],
+      unreadable: [
+        {
+          file: `${COVERAGE_TABLE}/a.json`,
+          reason:
+            "rows[0] is shown without cases of { case, tests: [{ file, text }] }, with a nonempty case and tests",
+        },
+      ],
+    })
+  })
+
   it("names a file that is not of the form of the table, and takes no row of it", () => {
     const table = tableOf({
       "a.json": "{",
@@ -773,7 +905,8 @@ describe("readCoverageTable", () => {
         },
         {
           file: `${COVERAGE_TABLE}/d.json`,
-          reason: "rows[0] is shown without cases of { file, text }",
+          reason:
+            "rows[0] is shown without cases of { case, tests: [{ file, text }] }, with a nonempty case and tests",
         },
         {
           file: `${COVERAGE_TABLE}/e.json`,
@@ -804,7 +937,12 @@ describe("readCoverageTable", () => {
       true,
     )
     expect(
-      isRead({ status: "shown", cases: [{ file: "a.test.ts", text: "a" }] }),
+      isRead({
+        status: "shown",
+        cases: [
+          { case: "A condition.", tests: [{ file: "a.test.ts", text: "a" }] },
+        ],
+      }),
     ).toBe(false)
     expect(isRead({ status: "no-condition", kind: "pointer", note: "" })).toBe(
       false,
@@ -1069,7 +1207,7 @@ describe("checkRecordedTrees and failsOf, on a repository of one change", () => 
     mkdirSync(path.join(root, "packages/tests/fixtures", fixture), {
       recursive: true,
     })
-    for (const name of ["input.mmd", "ast.json"]) {
+    for (const name of ["input.mmd", "ast.json", "expected.json"]) {
       copyFileSync(
         path.join(getFixturesRoot(), fixture, name),
         path.join(root, "packages/tests/fixtures", fixture, name),
@@ -1104,6 +1242,57 @@ describe("checkRecordedTrees and failsOf, on a repository of one change", () => 
       "pie/header-only",
     ])
     expect(failsOf(report)).toBe(true)
+  })
+
+  it("distinguishes uncited collected and authored inputs added by the change", () => {
+    copyFixture("info/spec-info-06271baf")
+    const report = check()
+    expect(
+      report.changedTrees.map(({ fixture, sourceKind }) => ({
+        fixture,
+        sourceKind,
+      })),
+    ).toEqual([
+      { fixture: "info/spec-info-06271baf", sourceKind: "mermaid" },
+      { fixture: "pie/header-only", sourceKind: "authored" },
+    ])
+    const output = formatReport(report, false)
+    expect(output).toContain(
+      "- info/spec-info-06271baf: no sentence cites it; this change adds the fixture; it is a collected input (source kind mermaid), which no sentence needs to cite\n",
+    )
+    expect(output).toContain(
+      "- pie/header-only: no sentence cites it; this change adds the fixture; it is not a collected input (source kind authored); tell packages/spec that a sentence needs to cite it\n",
+    )
+  })
+
+  it("does not ask for a spec sentence for an uncited authored fixture at the base", () => {
+    git("add", ".")
+    git("commit", "--quiet", "-m", "fixture")
+    const treeFile = path.join(root, changedFixture, "ast.json")
+    writeFileSync(treeFile, `\n${readFileSync(treeFile, "utf8")}`)
+    const output = formatReport(check(), false)
+    expect(output).toContain(
+      "- pie/header-only: no sentence cites it; the base has the fixture; it is not a collected input (source kind authored)\n",
+    )
+    expect(output).not.toContain("tell packages/spec")
+  })
+
+  it.each([
+    ["missing expected.json", undefined],
+    ["invalid JSON", "{"],
+    ["no source", "{}"],
+    ["an unknown source kind", '{"source":{"kind":"unknown"}}'],
+  ])("shows collected-input status as unknown with %s", (_name, text) => {
+    const expectedFile = path.join(root, changedFixture, "expected.json")
+    if (text === undefined) rmSync(expectedFile)
+    else writeFileSync(expectedFile, text)
+    const report = check()
+    expect(report.changedTrees[0].sourceKind).toBeUndefined()
+    const output = formatReport(report, false)
+    expect(output).toContain(
+      "- pie/header-only: no sentence cites it; this change adds the fixture; whether it is a collected input is unknown (expected.json source kind cannot be read)\n",
+    )
+    expect(output).not.toContain("tell packages/spec")
   })
 
   it("passes when an answer file of the change covers its content, and fails when the answer is empty", () => {

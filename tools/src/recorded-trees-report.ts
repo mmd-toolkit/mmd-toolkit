@@ -241,10 +241,26 @@ export function formatReport(
   if (report.changedTrees.length === 0) out.push("None.")
   for (const tree of report.changedTrees) {
     const citing = report.citations.get(tree.fixture) ?? []
+    if (citing.length > 0) {
+      out.push(`- ${tree.fixture}: ${citing.join(", ")}`)
+      continue
+    }
+    const added = report.newFixtures.has(tree.fixture)
+    let source: string
+    if (tree.sourceKind === "mermaid") {
+      source =
+        "it is a collected input (source kind mermaid), which no sentence needs to cite"
+    } else if (tree.sourceKind === "authored") {
+      source = "it is not a collected input (source kind authored)"
+      if (added) {
+        source += "; tell packages/spec that a sentence needs to cite it"
+      }
+    } else {
+      source =
+        "whether it is a collected input is unknown (expected.json source kind cannot be read)"
+    }
     out.push(
-      citing.length > 0
-        ? `- ${tree.fixture}: ${citing.join(", ")}`
-        : `- ${tree.fixture}: no sentence cites it; ${report.newFixtures.has(tree.fixture) ? "this change adds the fixture" : "the base has the fixture"}`,
+      `- ${tree.fixture}: no sentence cites it; ${added ? "this change adds the fixture" : "the base has the fixture"}; ${source}`,
     )
   }
 

@@ -5,9 +5,11 @@ import { nodesOf } from "../src/check-tree/walk.ts"
 import {
   copyOf,
   firstNode,
+  problemsOf,
   recordedTree,
   setField,
 } from "./check-tree-recorded.ts"
+import type { MutationCase } from "./check-tree-recorded.ts"
 import {
   directiveOf,
   frontmatterOf,
@@ -1688,5 +1690,290 @@ describe("checkTree: ignored statement type names (ast.md, Diagram nodes)", () =
         message: "is of a type that the specification does not define",
       },
     ])
+  })
+})
+
+describe("checkTree: cases named by the shared AST conditions", () => {
+  const flowchartCases: readonly MutationCase[] = [
+    {
+      name: "reports a fractional value in an integer arrow-length field",
+      fixture: "lex-directive-after-arrow",
+      mutate(root) {
+        setField(firstNode(root, "FlowchartArrow"), "length", 2.5)
+      },
+      expected: "the fields of the arrow",
+    },
+    {
+      name: "reports a parenthesized list type replaced by a null list",
+      fixture: "gram-click-comma-only-href",
+      mutate(root) {
+        setField(firstNode(root, "FlowchartClickUrlStatement"), "ids", null)
+      },
+      expected: "the field ids is null, not a list",
+    },
+    {
+      name: "reports a parenthesized list element that is no node or null",
+      fixture: "gram-click-comma-only-href",
+      mutate(root) {
+        setField(firstNode(root, "FlowchartClickUrlStatement"), "ids", [5])
+      },
+      expected: "is no node: it has no type and no range",
+    },
+    {
+      name: "reports a comma vertex id split into several authored ids",
+      fixture: "gram-vertex-id-comma",
+      mutate(root) {
+        const vertex = firstNode(root, "FlowchartVertex")
+        const id = vertex.id as CheckedNode
+        setField(vertex, "id", [
+          {
+            ...id,
+            name: "A",
+            range: [id.range[0], id.range[0] + 1],
+            loc: {
+              start: id.loc.start,
+              end: {
+                line: id.loc.start.line,
+                column: id.loc.start.column + 1,
+              },
+            },
+          },
+          {
+            ...id,
+            name: "B",
+            range: [id.range[1] - 1, id.range[1]],
+            loc: {
+              start: {
+                line: id.loc.end.line,
+                column: id.loc.end.column - 1,
+              },
+              end: id.loc.end,
+            },
+          },
+        ])
+      },
+      expected: "the field id is a list, not a node",
+    },
+    {
+      name: "reports the comma-separated class ids collapsed into one node",
+      fixture: "db-class-on-edge-and-subgraph",
+      mutate(root) {
+        const node = firstNode(root, "FlowchartClassStatement")
+        const ids = node.ids as CheckedNode[]
+        const first = ids[0]
+        const last = ids.at(-1)!
+        setField(node, "ids", {
+          ...first,
+          name: ids.map((id) => String(id.name)).join(","),
+          range: [first.range[0], last.range[1]],
+          loc: { start: first.loc.start, end: last.loc.end },
+        })
+      },
+      expected: "the field ids is object, not a list",
+    },
+    {
+      name: "reports a StringLiteral raw value with its internal directive removed",
+      fixture: "lex-directive-in-click-href-string",
+      mutate(root) {
+        setField(firstNode(root, "StringLiteral"), "raw", '"uv"')
+      },
+      expected: 'raw: "\\"uv\\"", not',
+    },
+    {
+      name: "reports a StringLiteral raw value with its comment region removed",
+      fixture: "tokens-string-literal-comment-line",
+      mutate(root) {
+        const node = nodesOf(root).find(
+          (candidate) =>
+            candidate.type === "StringLiteral" &&
+            candidate.value === "one\ntwo",
+        )!
+        setField(node, "raw", '"one\ntwo"')
+      },
+      expected: 'raw: "\\"one\\ntwo\\"", not',
+    },
+  ]
+  for (const testCase of flowchartCases) {
+    it(testCase.name, () => {
+      const { base, mutated } = problemsOf("flowchart", testCase)
+      expect(base).toEqual([])
+      expect(mutated.map((problem) => problem.message)).toContainEqual(
+        expect.stringContaining(testCase.expected),
+      )
+    })
+  }
+
+  const stateCases: readonly MutationCase[] = [
+    {
+      name: "reports ignored text that retains an ordinary percent comment",
+      fixture: "tokens-ignored-text-comment-between-units",
+      mutate(root) {
+        setField(
+          firstNode(root, "StateIgnoredText"),
+          "value",
+          "state %% c\n  state",
+        )
+      },
+      expected: "value is not its written text",
+    },
+    {
+      name: "reports ignored text that retains an ordinary hash comment",
+      fixture: "tokens-ignored-text-hash-comment-between-units",
+      mutate(root) {
+        setField(
+          firstNode(root, "StateIgnoredText"),
+          "value",
+          "state # c\n  state",
+        )
+      },
+      expected: "value is not its written text",
+    },
+    {
+      name: "reports ignored text that retains a directive between empty strings",
+      fixture: "tokens-ignored-text-directive-between-empty-strings",
+      mutate(root) {
+        setField(
+          firstNode(root, "StateIgnoredText"),
+          "value",
+          '"" %%{init: {}}%% ""',
+        )
+      },
+      expected: "value is not its written text",
+    },
+    {
+      name: "reports ignored text that loses a space between empty strings",
+      fixture: "tokens-ignored-text-directive-between-empty-strings",
+      mutate(root) {
+        setField(firstNode(root, "StateIgnoredText"), "value", '"" ""')
+      },
+      expected: "value is not its written text",
+    },
+  ]
+  for (const testCase of stateCases) {
+    it(testCase.name, () => {
+      const { base, mutated } = problemsOf("state", testCase)
+      expect(base).toEqual([])
+      expect(
+        mutated.some((problem) => problem.message.includes(testCase.expected)),
+      ).toBe(true)
+    })
+  }
+
+  it("passes a fractional number and the node and null elements of a parenthesized list", () => {
+    const fraction = recordedTree("treemap", "number-leading-dot")
+    expect(firstNode(fraction.tree, "NumericLiteral").value).toBe(0.5)
+    expect(checkTree(fraction.input, fraction.tree)).toEqual([])
+    const holes = recordedTree("flowchart", "gram-click-comma-only-href")
+    expect(firstNode(holes.tree, "FlowchartClickUrlStatement").ids).toEqual([
+      null,
+      null,
+    ])
+    expect(checkTree(holes.input, holes.tree)).toEqual([])
+    const names = recordedTree(
+      "flowchart",
+      "lex-directive-in-click-href-string",
+    )
+    expect(
+      firstNode(names.tree, "FlowchartClickUrlStatement").ids,
+    ).toHaveLength(1)
+    expect(checkTree(names.input, names.tree)).toEqual([])
+  })
+
+  it("passes a nullable field with null and with its named node type", () => {
+    const plain = handMadeRoot("error", { tokens: [["RawText", "error"]] })
+    expect(plain.frontmatter).toBeNull()
+    expect(checkTree("error", plain)).toEqual([])
+    const text = "---\ntitle: X\n---\nerror"
+    const withFrontmatter = handMadeRoot(text, {
+      tokens: [
+        ["Punctuator", "---"],
+        ["RawText", "title: X"],
+        ["Punctuator", { text: "---", from: 3 }],
+        ["RawText", "error"],
+      ],
+      frontmatter: frontmatterOf(text, "---\ntitle: X\n---", [4, 13]),
+    })
+    expect(checkTree(text, withFrontmatter)).toEqual([])
+  })
+
+  it("reports an unclosed directive value that stops before its last character", () => {
+    const text = "error\n%%{init: one"
+    const root = handMadeRoot(text, {
+      tokens: [
+        ["RawText", "error"],
+        ["Directive", "%%{init: one"],
+      ],
+      directives: [directiveOf(text, "%%{init: one")],
+    })
+    expect(checkTree(text, root)).toEqual([])
+    setField(root.directives[0], "value", "init: on")
+    expect(checkTree(text, root)).toContainEqual({
+      where: "Directive at 6-18",
+      message: 'value: "init: on", not "init: one"',
+    })
+  })
+
+  it("reports a StringLiteral raw value with its ignored semicolon removed", () => {
+    const { input, tree } = recordedTree(
+      "requirement",
+      "tokens-ignored-semicolon-in-string-value",
+    )
+    expect(checkTree(input, tree)).toEqual([])
+    setField(firstNode(tree, "StringLiteral"), "raw", '"style:#x ab"')
+    expect(
+      checkTree(input, tree).some((problem) =>
+        problem.message.startsWith("raw:"),
+      ),
+    ).toBe(true)
+  })
+
+  it("reports a StringLiteral raw value with its nested quotes removed", () => {
+    const { input, tree } = recordedTree(
+      "flowchart",
+      "gram-string-nested-empty-markdown",
+    )
+    expect(checkTree(input, tree)).toEqual([])
+    setField(firstNode(tree, "StringLiteral"), "raw", '"u"')
+    expect(
+      checkTree(input, tree).some((problem) =>
+        problem.message.startsWith("raw:"),
+      ),
+    ).toBe(true)
+  })
+
+  it("reports a StringLiteral raw value whose backslash spelling was decoded", () => {
+    const { input, tree } = recordedTree(
+      "usecase",
+      "lex-native-string-backslashes",
+    )
+    expect(checkTree(input, tree)).toEqual([])
+    setField(firstNode(tree, "StringLiteral"), "raw", '"fa\nuser"')
+    expect(
+      checkTree(input, tree).some((problem) =>
+        problem.message.startsWith("raw:"),
+      ),
+    ).toBe(true)
+  })
+
+  it("reports a treemap leading-dot fraction recorded without the fraction", () => {
+    const { input, tree } = recordedTree("treemap", "number-leading-dot")
+    expect(checkTree(input, tree)).toEqual([])
+    setField(firstNode(tree, "NumericLiteral"), "value", 5)
+    expect(checkTree(input, tree)).toContainEqual({
+      where: "NumericLiteral at 12-14",
+      message:
+        "value is not the number that its written text writes: 5, not 0.5",
+    })
+  })
+
+  it("reports a treemap trailing-dot number recorded as a fraction", () => {
+    const { input, tree } = recordedTree("treemap", "number-trailing-dot")
+    expect(checkTree(input, tree)).toEqual([])
+    setField(firstNode(tree, "NumericLiteral"), "value", 0.5)
+    expect(checkTree(input, tree)).toContainEqual({
+      where: "NumericLiteral at 12-14",
+      message:
+        "value is not the number that its written text writes: 0.5, not 5",
+    })
   })
 })

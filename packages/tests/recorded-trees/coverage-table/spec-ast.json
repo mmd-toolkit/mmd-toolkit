@@ -42,8 +42,22 @@
         "status": "shown",
         "cases": [
           {
-            "file": "check-tree-shape.test.ts",
-            "text": "sequence/db-message-activate-target"
+            "case": "An implementation uses the node type names defined by the specification.",
+            "tests": [
+              {
+                "file": "check-tree-shape.test.ts",
+                "text": "reports a type that the specification does not define"
+              }
+            ]
+          },
+          {
+            "case": "An implementation uses the field names defined by the specification.",
+            "tests": [
+              {
+                "file": "check-tree-shape.test.ts",
+                "text": "reports a field that the type does not have"
+              }
+            ]
           }
         ]
       }
@@ -90,12 +104,22 @@
         "status": "shown",
         "cases": [
           {
-            "file": "check-tree-shape.test.ts",
-            "text": "sequence/db-message-activate-target"
+            "case": "Root holds the parts shared by all diagrams.",
+            "tests": [
+              {
+                "file": "check-tree-shape.test.ts",
+                "text": "reports the records of the root that are missing or of another kind, without throwing"
+              }
+            ]
           },
           {
-            "file": "check-tree-leaves.test.ts",
-            "text": "db-message-activate-target"
+            "case": "The body node type depends on the diagram type.",
+            "tests": [
+              {
+                "file": "check-tree-leaves.test.ts",
+                "text": "db-message-activate-target"
+              }
+            ]
           }
         ]
       }
@@ -142,12 +166,31 @@
         "status": "shown",
         "cases": [
           {
-            "file": "check-tree-requirement.test.ts",
-            "text": "the value of a field as a RequirementIdentifier"
+            "case": "The structure follows the meaning of its position.",
+            "tests": [
+              {
+                "file": "check-tree-requirement.test.ts",
+                "text": "the value of a field as a RequirementIdentifier"
+              }
+            ]
           },
           {
-            "file": "check-tree-node-ranges.test.ts",
-            "text": "db-message-activate-target"
+            "case": "A comma in a vertex id stays in one name rather than becoming a list.",
+            "tests": [
+              {
+                "file": "check-tree-shared-ast.test.ts",
+                "text": "reports a comma vertex id split into several authored ids"
+              }
+            ]
+          },
+          {
+            "case": "Comma-separated names after class stay a list rather than one joined name.",
+            "tests": [
+              {
+                "file": "check-tree-shared-ast.test.ts",
+                "text": "reports the comma-separated class ids collapsed into one node"
+              }
+            ]
           }
         ]
       }
@@ -235,9 +278,49 @@
       ],
       "about": "**integer**, **string**, and **boolean** have their usual me",
       "judgment": {
-        "status": "no-condition",
-        "kind": "introduction",
-        "note": "It defines the words of the types that the tables of fields use; the conditions are in the rows that use them."
+        "status": "shown",
+        "cases": [
+          {
+            "case": "An integer field holds an integer, without a fraction.",
+            "tests": [
+              {
+                "file": "check-tree-shared-ast.test.ts",
+                "text": "reports a fractional value in an integer arrow-length field"
+              }
+            ]
+          },
+          {
+            "case": "A string field holds a string.",
+            "tests": [
+              {
+                "file": "check-tree-shared-ast.test.ts",
+                "text": "fails an Identifier name that is a number"
+              }
+            ]
+          },
+          {
+            "case": "A boolean field holds a boolean.",
+            "tests": [
+              {
+                "file": "check-tree-shared-ast.test.ts",
+                "text": "fails a directive closed flag that is a string"
+              }
+            ]
+          },
+          {
+            "case": "A number field holds a number and may include a fraction.",
+            "tests": [
+              {
+                "file": "check-tree-shared-ast.test.ts",
+                "text": "fails a NumericLiteral value that is a string"
+              },
+              {
+                "file": "check-tree-shared-ast.test.ts",
+                "text": "passes a fractional number and the node and null elements of a parenthesized list"
+              }
+            ]
+          }
+        ]
       }
     },
     {
@@ -279,9 +362,9 @@
       ],
       "about": "**list of**, followed by a type, is a sequence of values of ",
       "judgment": {
-        "status": "no-condition",
-        "kind": "introduction",
-        "note": "It defines the words of the types that the tables of fields use; the conditions are in the rows that use them."
+        "status": "not-shown",
+        "reason": "rule-misses-condition",
+        "note": "A list must contain values of the type after list of, in order. Replacing Root.directives[0].type with WrongDirective in an otherwise valid directive list is not reported. List shape and order have rules, but the prescribed record type is not checked."
       }
     },
     {
@@ -323,9 +406,9 @@
       ],
       "about": "A type followed by **or null** is either a value of that typ",
       "judgment": {
-        "status": "no-condition",
-        "kind": "introduction",
-        "note": "It defines the words of the types that the tables of fields use; the conditions are in the rows that use them."
+        "status": "not-shown",
+        "reason": "rule-misses-condition",
+        "note": "A type followed by or null requires either a value of that type or null. Null and correctly typed values pass, and null in a required field is reported, but Root.frontmatter with type WrongFrontmatter passes; the non-null branch is not required to have its prescribed type."
       }
     },
     {
@@ -367,9 +450,9 @@
       ],
       "about": "Parentheses group a type: **list of (Identifier or null)** i",
       "judgment": {
-        "status": "no-condition",
-        "kind": "introduction",
-        "note": "It defines the words of the types that the tables of fields use; the conditions are in the rows that use them."
+        "status": "not-shown",
+        "reason": "rule-misses-condition",
+        "note": "Parentheses apply or null to each element rather than to the list. A null list and an element that is no node are reported, but replacing an Identifier in FlowchartClickUrlStatement.ids by NumericLiteral with raw A and value null is not reported; the element is neither Identifier nor null."
       }
     },
     {
@@ -411,9 +494,9 @@
       ],
       "about": "A node type name, such as **Identifier**, is a node of that ",
       "judgment": {
-        "status": "no-condition",
-        "kind": "introduction",
-        "note": "It defines the words of the types that the tables of fields use; the conditions are in the rows that use them."
+        "status": "not-shown",
+        "reason": "rule-misses-condition",
+        "note": "A node type name requires that exact node type. Replacing FlowchartVertex.id, whose type is Identifier, by NumericLiteral with raw A and value null is not reported. The shape check accepts a node of another known type at that field."
       }
     },
     {
@@ -455,13 +538,9 @@
       ],
       "about": "Every field is set when the node is created and is never cha",
       "judgment": {
-        "status": "shown",
-        "cases": [
-          {
-            "file": "check-tree-shape.test.ts",
-            "text": "sequence/db-message-activate-target"
-          }
-        ]
+        "status": "not-shown",
+        "reason": "no-rule",
+        "note": "The conditions are that every field is set at creation and that no field changes afterwards. checkTree sees the current tree, not its creation or modification history. Replacing Root.body after creation by an equal valid copy is not reported. Missing current fields are a different condition and their old test is removed."
       }
     },
     {
@@ -550,12 +629,22 @@
         "status": "shown",
         "cases": [
           {
-            "file": "check-tree-shape.test.ts",
-            "text": "sequence/db-message-activate-target"
+            "case": "The type field is a string.",
+            "tests": [
+              {
+                "file": "check-tree-shared-ast.test.ts",
+                "text": "fails an ErrorDiagram with a numeric type"
+              }
+            ]
           },
           {
-            "file": "check-tree-shared-ast.test.ts",
-            "text": "fails an ErrorDiagram with a numeric type"
+            "case": "The type string names a node type defined by the specification.",
+            "tests": [
+              {
+                "file": "check-tree-shape.test.ts",
+                "text": "reports a type that the specification does not define"
+              }
+            ]
           }
         ]
       }
@@ -599,13 +688,9 @@
       ],
       "about": "Each node type adds its own fields, and a node's child nodes",
       "judgment": {
-        "status": "shown",
-        "cases": [
-          {
-            "file": "check-tree-shape.test.ts",
-            "text": "sequence/db-message-activate-target"
-          }
-        ]
+        "status": "not-shown",
+        "reason": "rule-misses-condition",
+        "note": "Own fields and child values have shape rules, but checkTree has no rule that checks a tool visiting only child fields in their declared order, or the Child fields / No child fields notation in the specification. Those are properties of a tool or document rather than of the tree passed to checkTree; a malformed current field does not break those conditions."
       }
     },
     {
@@ -650,8 +735,31 @@
         "status": "shown",
         "cases": [
           {
-            "file": "check-tree-node-ranges.test.ts",
-            "text": "db-message-activate-target"
+            "case": "Child nodes do not overlap.",
+            "tests": [
+              {
+                "file": "check-tree-node-ranges.test.ts",
+                "text": "fails child nodes that overlap"
+              }
+            ]
+          },
+          {
+            "case": "A child list is in source order.",
+            "tests": [
+              {
+                "file": "check-tree-node-ranges.test.ts",
+                "text": "fails a list that is not in source order"
+              }
+            ]
+          },
+          {
+            "case": "Child fields follow source order where their node type requires it.",
+            "tests": [
+              {
+                "file": "check-tree-node-ranges.test.ts",
+                "text": "fails child fields that are not in source order"
+              }
+            ]
           }
         ]
       }
@@ -698,20 +806,138 @@
         "status": "shown",
         "cases": [
           {
-            "file": "check-tree-values.test.ts",
-            "text": "StateIgnoredText"
+            "case": "IgnoredText preserves its written value.",
+            "tests": [
+              {
+                "file": "check-tree-values.test.ts",
+                "text": "StateIgnoredText"
+              }
+            ]
           },
           {
-            "file": "check-tree-values.test.ts",
-            "text": "StateIgnoredStatement"
+            "case": "IgnoredStatement preserves its written value.",
+            "tests": [
+              {
+                "file": "check-tree-values.test.ts",
+                "text": "StateIgnoredStatement"
+              }
+            ]
           },
           {
-            "file": "check-tree-values.test.ts",
-            "text": "tokens-ignored-text-comment-cut-end-crlf"
+            "case": "Whitespace and line terminators between ignored units stay in the value.",
+            "tests": [
+              {
+                "file": "check-tree-shared-ast.test.ts",
+                "text": "reports ignored text that loses a space between empty strings"
+              },
+              {
+                "file": "check-tree-values.test.ts",
+                "text": "tokens-ignored-text-comment-cut-end-crlf"
+              }
+            ]
           },
           {
-            "file": "check-tree-values.test.ts",
-            "text": "tokens-ignored-text-comment-cut-by-comment-line"
+            "case": "An ordinary percent comment is left out.",
+            "tests": [
+              {
+                "file": "check-tree-shared-ast.test.ts",
+                "text": "reports ignored text that retains an ordinary percent comment"
+              }
+            ]
+          },
+          {
+            "case": "An ordinary hash comment is left out.",
+            "tests": [
+              {
+                "file": "check-tree-shared-ast.test.ts",
+                "text": "reports ignored text that retains an ordinary hash comment"
+              }
+            ]
+          },
+          {
+            "case": "A directive between empty strings is left out while both surrounding spaces remain.",
+            "tests": [
+              {
+                "file": "check-tree-shared-ast.test.ts",
+                "text": "reports ignored text that retains a directive between empty strings"
+              },
+              {
+                "file": "check-tree-shared-ast.test.ts",
+                "text": "reports ignored text that loses a space between empty strings"
+              }
+            ]
+          },
+          {
+            "case": "A cut diagram comment is left out whole, keeping the ending line feed: tokens-ignored-text-comment-cut-by-comment-line.",
+            "tests": [
+              {
+                "file": "check-tree-values.test.ts",
+                "text": "tokens-ignored-text-comment-cut-by-comment-line"
+              }
+            ]
+          },
+          {
+            "case": "A cut diagram comment is left out whole, keeping the ending line feed: tokens-ignored-text-hash-comment-cut-by-comment-line.",
+            "tests": [
+              {
+                "file": "check-tree-values.test.ts",
+                "text": "tokens-ignored-text-hash-comment-cut-by-comment-line"
+              }
+            ]
+          },
+          {
+            "case": "A cut diagram comment is left out whole, keeping the ending line feed: tokens-ignored-text-comment-cut-by-comment-line-paragraph-separator.",
+            "tests": [
+              {
+                "file": "check-tree-values.test.ts",
+                "text": "tokens-ignored-text-comment-cut-by-comment-line-paragraph-separator"
+              }
+            ]
+          },
+          {
+            "case": "A cut diagram comment is left out whole, keeping the ending line feed: tokens-ignored-text-hash-comment-cut-by-comment-line-paragraph-separator.",
+            "tests": [
+              {
+                "file": "check-tree-values.test.ts",
+                "text": "tokens-ignored-text-hash-comment-cut-by-comment-line-paragraph-separator"
+              }
+            ]
+          },
+          {
+            "case": "A cut diagram comment is left out whole, keeping the ending line feed: tokens-ignored-text-comment-cut-space-before-separator.",
+            "tests": [
+              {
+                "file": "check-tree-values.test.ts",
+                "text": "tokens-ignored-text-comment-cut-space-before-separator"
+              }
+            ]
+          },
+          {
+            "case": "A cut diagram comment is left out whole, keeping the ending line feed: tokens-ignored-text-comment-cut-spaces-after-region.",
+            "tests": [
+              {
+                "file": "check-tree-values.test.ts",
+                "text": "tokens-ignored-text-comment-cut-spaces-after-region"
+              }
+            ]
+          },
+          {
+            "case": "A cut diagram comment is left out whole, keeping the ending line feed: tokens-ignored-text-comment-cut-spaces-line-after-region.",
+            "tests": [
+              {
+                "file": "check-tree-values.test.ts",
+                "text": "tokens-ignored-text-comment-cut-spaces-line-after-region"
+              }
+            ]
+          },
+          {
+            "case": "A cut diagram comment is left out whole, keeping the ending line feed: tokens-ignored-text-comment-cut-fragment-trailing-space.",
+            "tests": [
+              {
+                "file": "check-tree-values.test.ts",
+                "text": "tokens-ignored-text-comment-cut-fragment-trailing-space"
+              }
+            ]
           }
         ]
       }
@@ -755,13 +981,9 @@
       ],
       "about": "A child field whose value is a list may have null elements w",
       "judgment": {
-        "status": "shown",
-        "cases": [
-          {
-            "file": "check-tree-shape.test.ts",
-            "text": "sequence/db-message-activate-target"
-          }
-        ]
+        "status": "not-shown",
+        "reason": "no-rule",
+        "note": "The permission to put null elements in a list is not a condition to break. The condition is that a tool walking the tree skips permitted null elements. checkTree has no rule about another tool visiting those elements. The valid comma-only click list with two null elements passes (passes a fractional number and the node and null elements of a parenthesized list); rejecting a null in a non-nullable list is a different condition and its old test is removed."
       }
     },
     {
@@ -850,12 +1072,22 @@
         "status": "shown",
         "cases": [
           {
-            "file": "check-tree-leaves.test.ts",
-            "text": "lex-directive-name-next-line-after-state-name"
+            "case": "The directive name is a string.",
+            "tests": [
+              {
+                "file": "check-tree-shared-ast.test.ts",
+                "text": "fails a directive name that is a number"
+              }
+            ]
           },
           {
-            "file": "check-tree-shared-ast.test.ts",
-            "text": "fails a directive name that is a number"
+            "case": "The directive name is the scanned directive name.",
+            "tests": [
+              {
+                "file": "check-tree-leaves.test.ts",
+                "text": "lex-directive-name-next-line-after-state-name"
+              }
+            ]
           }
         ]
       }
@@ -902,12 +1134,31 @@
         "status": "shown",
         "cases": [
           {
-            "file": "check-tree-fields.test.ts",
-            "text": "Directive.value"
+            "case": "The directive value is a string.",
+            "tests": [
+              {
+                "file": "check-tree-shared-ast.test.ts",
+                "text": "fails a directive value that is an object"
+              }
+            ]
           },
           {
-            "file": "check-tree-shared-ast.test.ts",
-            "text": "fails a directive value that is an object"
+            "case": "A closed directive value is the text between its delimiters.",
+            "tests": [
+              {
+                "file": "check-tree-fields.test.ts",
+                "text": "Directive.value"
+              }
+            ]
+          },
+          {
+            "case": "An unclosed directive value runs to the end of the directive.",
+            "tests": [
+              {
+                "file": "check-tree-shared-ast.test.ts",
+                "text": "reports an unclosed directive value that stops before its last character"
+              }
+            ]
           }
         ]
       }
@@ -954,12 +1205,31 @@
         "status": "shown",
         "cases": [
           {
-            "file": "check-tree.test.ts",
-            "text": "fails a directive that the tree lacks, an extra one, one with another `closed`, and one with whitespace at its end"
+            "case": "The closed flag is boolean.",
+            "tests": [
+              {
+                "file": "check-tree-shared-ast.test.ts",
+                "text": "fails a directive closed flag that is a string"
+              }
+            ]
           },
           {
-            "file": "check-tree-shared-ast.test.ts",
-            "text": "fails a directive closed flag that is a string"
+            "case": "A directive ending in }%% has closed true.",
+            "tests": [
+              {
+                "file": "check-tree.test.ts",
+                "text": "fails a directive that the tree lacks, an extra one, one with another `closed`, and one with whitespace at its end"
+              }
+            ]
+          },
+          {
+            "case": "An unclosed directive has closed false.",
+            "tests": [
+              {
+                "file": "check-tree-shared-ast.test.ts",
+                "text": "fails an unclosed directive marked closed"
+              }
+            ]
           }
         ]
       }
@@ -1094,12 +1364,22 @@
         "status": "shown",
         "cases": [
           {
-            "file": "check-tree-fields.test.ts",
-            "text": "Frontmatter.value"
+            "case": "The frontmatter value is a string.",
+            "tests": [
+              {
+                "file": "check-tree-shared-ast.test.ts",
+                "text": "fails a frontmatter value that is an object"
+              }
+            ]
           },
           {
-            "file": "check-tree-shared-ast.test.ts",
-            "text": "fails a frontmatter value that is an object"
+            "case": "The frontmatter value is its YAML source text.",
+            "tests": [
+              {
+                "file": "check-tree-fields.test.ts",
+                "text": "Frontmatter.value"
+              }
+            ]
           }
         ]
       }
@@ -1146,8 +1426,13 @@
         "status": "shown",
         "cases": [
           {
-            "file": "check-tree-shape.test.ts",
-            "text": "sequence/db-message-activate-target"
+            "case": "The root has type Root.",
+            "tests": [
+              {
+                "file": "check-tree-shape.test.ts",
+                "text": "reports a tree that is no Root, and an object that is no node"
+              }
+            ]
           }
         ]
       }
@@ -1192,12 +1477,22 @@
         "status": "shown",
         "cases": [
           {
-            "file": "check-tree-fields.test.ts",
-            "text": "Root.diagramType"
+            "case": "diagramType is one of the defined DiagramType strings.",
+            "tests": [
+              {
+                "file": "check-tree-fields.test.ts",
+                "text": "Root.diagramType"
+              }
+            ]
           },
           {
-            "file": "check-tree-leaves.test.ts",
-            "text": "db-message-activate-target"
+            "case": "The diagram type id is that of the diagram body.",
+            "tests": [
+              {
+                "file": "check-tree-leaves.test.ts",
+                "text": "db-message-activate-target"
+              }
+            ]
           }
         ]
       }
@@ -1254,12 +1549,22 @@
         "status": "shown",
         "cases": [
           {
-            "file": "check-tree-shape.test.ts",
-            "text": "sequence/db-message-activate-target"
+            "case": "The body field holds a node.",
+            "tests": [
+              {
+                "file": "check-tree-shape.test.ts",
+                "text": "reports the records of the root that are missing or of another kind, without throwing"
+              }
+            ]
           },
           {
-            "file": "check-tree-node-ranges.test.ts",
-            "text": "fails a body of a type that is no diagram"
+            "case": "The body is one of the DiagramBody node types.",
+            "tests": [
+              {
+                "file": "check-tree-node-ranges.test.ts",
+                "text": "fails a body of a type that is no diagram"
+              }
+            ]
           }
         ]
       }
@@ -1303,21 +1608,9 @@
       ],
       "about": "| `directives` | list of Directive | Every directive, in sou",
       "judgment": {
-        "status": "shown",
-        "cases": [
-          {
-            "file": "check-tree-shape.test.ts",
-            "text": "sequence/db-message-activate-target"
-          },
-          {
-            "file": "check-tree.test.ts",
-            "text": "fails a directive that the tree lacks, an extra one, one with another `closed`, and one with whitespace at its end"
-          },
-          {
-            "file": "check-tree-shared-ast.test.ts",
-            "text": "fails directives listed in reverse source order"
-          }
-        ]
+        "status": "not-shown",
+        "reason": "rule-misses-condition",
+        "note": "Every directive must be a Directive record, in source order. Missing, extra, reordered and non-list directives are reported, but changing a directive record type to WrongDirective is not reported, so not all cases of list of Directive are shown."
       }
     },
     {
@@ -1360,8 +1653,13 @@
         "status": "shown",
         "cases": [
           {
-            "file": "check-tree-leaves.test.ts",
-            "text": "db-message-activate-target"
+            "case": "The diagram type id is the id of its diagram body.",
+            "tests": [
+              {
+                "file": "check-tree-leaves.test.ts",
+                "text": "db-message-activate-target"
+              }
+            ]
           }
         ]
       }
@@ -1418,8 +1716,13 @@
         "status": "shown",
         "cases": [
           {
-            "file": "check-tree-fields.test.ts",
-            "text": "Root.diagramType"
+            "case": "DiagramType is one of the enumerated strings.",
+            "tests": [
+              {
+                "file": "check-tree-fields.test.ts",
+                "text": "Root.diagramType"
+              }
+            ]
           }
         ]
       }
@@ -1466,8 +1769,13 @@
         "status": "shown",
         "cases": [
           {
-            "file": "check-tree-shared-ast.test.ts",
-            "text": "fails a pseudo-diagram id of three dashes"
+            "case": "The --- pseudo-diagram is not a DiagramType of any tree.",
+            "tests": [
+              {
+                "file": "check-tree-shared-ast.test.ts",
+                "text": "fails a pseudo-diagram id of three dashes"
+              }
+            ]
           }
         ]
       }
@@ -1514,8 +1822,13 @@
         "status": "shown",
         "cases": [
           {
-            "file": "check-tree-node-ranges.test.ts",
-            "text": "fails a body of a type that is no diagram"
+            "case": "DiagramBody is ErrorDiagram or a diagram body type defined by the specification.",
+            "tests": [
+              {
+                "file": "check-tree-node-ranges.test.ts",
+                "text": "fails a body of a type that is no diagram"
+              }
+            ]
           }
         ]
       }
@@ -1562,12 +1875,22 @@
         "status": "shown",
         "cases": [
           {
-            "file": "check-tree-shared-ast.test.ts",
-            "text": "fails an ErrorDiagram replaced by a catch-all Node"
+            "case": "The node type is ErrorDiagram.",
+            "tests": [
+              {
+                "file": "check-tree-shared-ast.test.ts",
+                "text": "fails an ErrorDiagram replaced by a catch-all Node"
+              }
+            ]
           },
           {
-            "file": "check-tree-shared-ast.test.ts",
-            "text": "fails a generic children list added to ErrorDiagram"
+            "case": "ErrorDiagram has no child fields or other fields.",
+            "tests": [
+              {
+                "file": "check-tree-shared-ast.test.ts",
+                "text": "fails a generic children list added to ErrorDiagram"
+              }
+            ]
           }
         ]
       }
@@ -1614,8 +1937,13 @@
         "status": "shown",
         "cases": [
           {
-            "file": "check-tree.test.ts",
-            "text": "reports every condition that does not hold, not only the first"
+            "case": "The error pseudo-diagram has diagramType error.",
+            "tests": [
+              {
+                "file": "check-tree.test.ts",
+                "text": "reports every condition that does not hold, not only the first"
+              }
+            ]
           }
         ]
       }
@@ -1659,45 +1987,9 @@
       ],
       "about": "The first three have the same form in every diagram type, so",
       "judgment": {
-        "status": "shown",
-        "cases": [
-          {
-            "file": "check-tree-values.test.ts",
-            "text": "FlowchartArrow"
-          },
-          {
-            "file": "check-tree-values.test.ts",
-            "text": "SequenceArrow"
-          },
-          {
-            "file": "check-tree-fields.test.ts",
-            "text": "SequenceArrow.line"
-          },
-          {
-            "file": "check-tree-shared-ast.test.ts",
-            "text": "fails a shared Identifier with a diagram-specific field"
-          },
-          {
-            "file": "check-tree-shared-ast.test.ts",
-            "text": "fails a shared StringLiteral with a diagram-specific field"
-          },
-          {
-            "file": "check-tree-shared-ast.test.ts",
-            "text": "fails a shared NumericLiteral with a diagram-specific field"
-          },
-          {
-            "file": "check-tree-shared-ast.test.ts",
-            "text": "fails an arrow line word replaced by a node"
-          },
-          {
-            "file": "check-tree-shared-ast.test.ts",
-            "text": "fails an arrow replaced by its text"
-          },
-          {
-            "file": "check-tree-shared-ast.test.ts",
-            "text": "fails an arrow with a renamed marker field"
-          }
-        ]
+        "status": "not-shown",
+        "reason": "rule-misses-condition",
+        "note": "Shared leaf forms, fixed-word fields and arrow values have rules, but a diagram-specific literal and label must keep their diagram-specific types. Replacing FlowchartLiteral by Identifier with the same written name, or FlowchartLabel by StringLiteral with matching raw, value and closed, is not reported."
       }
     },
     {
@@ -1739,13 +2031,9 @@
       ],
       "about": "Text that the author writes but that the diagram does not re",
       "judgment": {
-        "status": "shown",
-        "cases": [
-          {
-            "file": "check-tree-shared-ast.test.ts",
-            "text": "fails an authored ignored-text node replaced by its text"
-          }
-        ]
+        "status": "not-shown",
+        "reason": "rule-misses-condition",
+        "note": "Authored unread text has a leaf node and its shape is checked, but checkTree has no rule deciding whether the parser must accept such text before proposing a rejection as a known divergence. It receives an already-built tree and never compares parser acceptance or the reason for rejection. Replacing the leaf by a string only breaks its field shape, not those acceptance conditions."
       }
     },
     {
@@ -1790,12 +2078,22 @@
         "status": "shown",
         "cases": [
           {
-            "file": "check-tree-block.test.ts",
-            "text": "an Identifier value unlike its token"
+            "case": "Identifier.name is a string.",
+            "tests": [
+              {
+                "file": "check-tree-shared-ast.test.ts",
+                "text": "fails an Identifier name that is a number"
+              }
+            ]
           },
           {
-            "file": "check-tree-shared-ast.test.ts",
-            "text": "fails an Identifier name that is a number"
+            "case": "Identifier.name is the written texts of its units joined in order.",
+            "tests": [
+              {
+                "file": "check-tree-block.test.ts",
+                "text": "an Identifier value unlike its token"
+              }
+            ]
           }
         ]
       }
@@ -1842,8 +2140,13 @@
         "status": "shown",
         "cases": [
           {
-            "file": "check-tree-shared-ast.test.ts",
-            "text": "fails children added to an Identifier"
+            "case": "Identifier has no child fields.",
+            "tests": [
+              {
+                "file": "check-tree-shared-ast.test.ts",
+                "text": "fails children added to an Identifier"
+              }
+            ]
           }
         ]
       }
@@ -1890,12 +2193,22 @@
         "status": "shown",
         "cases": [
           {
-            "file": "check-tree-block.test.ts",
-            "text": "an Identifier value unlike its token"
+            "case": "The name joins the written texts of the lexer units in order.",
+            "tests": [
+              {
+                "file": "check-tree-block.test.ts",
+                "text": "an Identifier value unlike its token"
+              }
+            ]
           },
           {
-            "file": "check-tree-shared-ast.test.ts",
-            "text": "fails whitespace added to an Identifier name"
+            "case": "The name has no whitespace inside or between its units.",
+            "tests": [
+              {
+                "file": "check-tree-shared-ast.test.ts",
+                "text": "fails whitespace added to an Identifier name"
+              }
+            ]
           }
         ]
       }
@@ -1942,16 +2255,31 @@
         "status": "shown",
         "cases": [
           {
-            "file": "check-tree-class.test.ts",
-            "text": "a StringLiteral value that is not its text"
+            "case": "The string value is a string.",
+            "tests": [
+              {
+                "file": "check-tree-shared-ast.test.ts",
+                "text": "fails a StringLiteral value that is a number"
+              }
+            ]
           },
           {
-            "file": "check-tree-shared-ast.test.ts",
-            "text": "fails a StringLiteral value that is a number"
+            "case": "One pair of quotes is excluded from the written content.",
+            "tests": [
+              {
+                "file": "check-tree-class.test.ts",
+                "text": "a StringLiteral value that is not its text"
+              }
+            ]
           },
           {
-            "file": "check-tree-shared-ast.test.ts",
-            "text": "fails a StringLiteral value that retains nested delimiters"
+            "case": "All nested delimiters are excluded from the written content.",
+            "tests": [
+              {
+                "file": "check-tree-shared-ast.test.ts",
+                "text": "fails a StringLiteral value that retains nested delimiters"
+              }
+            ]
           }
         ]
       }
@@ -1998,12 +2326,76 @@
         "status": "shown",
         "cases": [
           {
-            "file": "check-tree-literals.test.ts",
-            "text": "a StringLiteral whose raw is not its text"
+            "case": "The raw field is a string.",
+            "tests": [
+              {
+                "file": "check-tree-shared-ast.test.ts",
+                "text": "fails a StringLiteral raw value that is a number"
+              }
+            ]
           },
           {
-            "file": "check-tree-shared-ast.test.ts",
-            "text": "fails a StringLiteral raw value that is a number"
+            "case": "A closed raw string runs from its opening quote to its closing quote.",
+            "tests": [
+              {
+                "file": "check-tree-literals.test.ts",
+                "text": "a StringLiteral whose raw is not its text"
+              }
+            ]
+          },
+          {
+            "case": "An unclosed raw string runs from its opening quote to its last character.",
+            "tests": [
+              {
+                "file": "check-tree-shared-ast.test.ts",
+                "text": "fails an unclosed backquoted raw value with a closing quote added"
+              }
+            ]
+          },
+          {
+            "case": "Internal quotes are retained.",
+            "tests": [
+              {
+                "file": "check-tree-shared-ast.test.ts",
+                "text": "reports a StringLiteral raw value with its nested quotes removed"
+              }
+            ]
+          },
+          {
+            "case": "An internal directive is retained.",
+            "tests": [
+              {
+                "file": "check-tree-shared-ast.test.ts",
+                "text": "reports a StringLiteral raw value with its internal directive removed"
+              }
+            ]
+          },
+          {
+            "case": "An internal comment region is retained.",
+            "tests": [
+              {
+                "file": "check-tree-shared-ast.test.ts",
+                "text": "reports a StringLiteral raw value with its comment region removed"
+              }
+            ]
+          },
+          {
+            "case": "An internal ignored semicolon is retained.",
+            "tests": [
+              {
+                "file": "check-tree-shared-ast.test.ts",
+                "text": "reports a StringLiteral raw value with its ignored semicolon removed"
+              }
+            ]
+          },
+          {
+            "case": "The source spelling is not converted or decoded.",
+            "tests": [
+              {
+                "file": "check-tree-shared-ast.test.ts",
+                "text": "reports a StringLiteral raw value whose backslash spelling was decoded"
+              }
+            ]
           }
         ]
       }
@@ -2050,12 +2442,31 @@
         "status": "shown",
         "cases": [
           {
-            "file": "check-tree-literals.test.ts",
-            "text": "a closed StringLiteral recorded as not closed"
+            "case": "The closed field is boolean.",
+            "tests": [
+              {
+                "file": "check-tree-shared-ast.test.ts",
+                "text": "fails a StringLiteral closed flag that is a string"
+              }
+            ]
           },
           {
-            "file": "check-tree-shared-ast.test.ts",
-            "text": "fails a StringLiteral closed flag that is a string"
+            "case": "A string ending in its closing quote has closed true.",
+            "tests": [
+              {
+                "file": "check-tree-literals.test.ts",
+                "text": "a closed StringLiteral recorded as not closed"
+              }
+            ]
+          },
+          {
+            "case": "A string without its closing quote has closed false.",
+            "tests": [
+              {
+                "file": "check-tree-shared-ast.test.ts",
+                "text": "fails an unclosed backquoted name marked closed"
+              }
+            ]
           }
         ]
       }
@@ -2102,8 +2513,13 @@
         "status": "shown",
         "cases": [
           {
-            "file": "check-tree-shared-ast.test.ts",
-            "text": "fails children added to a StringLiteral"
+            "case": "StringLiteral has no child fields.",
+            "tests": [
+              {
+                "file": "check-tree-shared-ast.test.ts",
+                "text": "fails children added to a StringLiteral"
+              }
+            ]
           }
         ]
       }
@@ -2147,13 +2563,9 @@
       ],
       "about": "A number.",
       "judgment": {
-        "status": "shown",
-        "cases": [
-          {
-            "file": "check-tree-sequence.test.ts",
-            "text": "a NumericLiteral whose value is not the number that its written text writes"
-          }
-        ]
+        "status": "not-shown",
+        "reason": "rule-misses-condition",
+        "note": "A NumericLiteral represents a number. A FlowchartVertex.id replaced by NumericLiteral with the nonnumeric source spelling raw A and value null (the JSON representation of NaN) is not reported. The old case changed one number to another and only broke the separate value-field condition."
       }
     },
     {
@@ -2198,16 +2610,31 @@
         "status": "shown",
         "cases": [
           {
-            "file": "check-tree-sequence.test.ts",
-            "text": "a NumericLiteral whose value is not the number that its written text writes"
+            "case": "The value is a number.",
+            "tests": [
+              {
+                "file": "check-tree-shared-ast.test.ts",
+                "text": "fails a NumericLiteral value that is a string"
+              }
+            ]
           },
           {
-            "file": "check-tree-xychart.test.ts",
-            "text": "tells Infinity from -Infinity in a tree in memory"
+            "case": "The value is the number written by its source text.",
+            "tests": [
+              {
+                "file": "check-tree-sequence.test.ts",
+                "text": "a NumericLiteral whose value is not the number that its written text writes"
+              }
+            ]
           },
           {
-            "file": "check-tree-shared-ast.test.ts",
-            "text": "fails a NumericLiteral value that is a string"
+            "case": "The value is the corresponding double, including its sign for infinity.",
+            "tests": [
+              {
+                "file": "check-tree-xychart.test.ts",
+                "text": "tells Infinity from -Infinity in a tree in memory"
+              }
+            ]
           }
         ]
       }
@@ -2254,12 +2681,22 @@
         "status": "shown",
         "cases": [
           {
-            "file": "check-tree-literals.test.ts",
-            "text": "a NumericLiteral whose raw is not its text"
+            "case": "The raw number is a string.",
+            "tests": [
+              {
+                "file": "check-tree-shared-ast.test.ts",
+                "text": "fails a NumericLiteral raw value that is a number"
+              }
+            ]
           },
           {
-            "file": "check-tree-shared-ast.test.ts",
-            "text": "fails a NumericLiteral raw value that is a number"
+            "case": "The raw number preserves its complete source spelling.",
+            "tests": [
+              {
+                "file": "check-tree-literals.test.ts",
+                "text": "a NumericLiteral whose raw is not its text"
+              }
+            ]
           }
         ]
       }
@@ -2306,8 +2743,13 @@
         "status": "shown",
         "cases": [
           {
-            "file": "check-tree-shared-ast.test.ts",
-            "text": "fails children added to a NumericLiteral"
+            "case": "NumericLiteral has no child fields.",
+            "tests": [
+              {
+                "file": "check-tree-shared-ast.test.ts",
+                "text": "fails children added to a NumericLiteral"
+              }
+            ]
           }
         ]
       }
@@ -2354,24 +2796,80 @@
         "status": "shown",
         "cases": [
           {
-            "file": "check-tree-treemap.test.ts",
-            "text": "number field converted with Number"
+            "case": "Commas are removed when reading the decimal prefix.",
+            "tests": [
+              {
+                "file": "check-tree-treemap.test.ts",
+                "text": "number field converted with Number"
+              }
+            ]
           },
           {
-            "file": "check-tree-shared-ast.test.ts",
-            "text": "fails a treemap value read past its first underscore"
+            "case": "The decimal prefix stops at the first underscore.",
+            "tests": [
+              {
+                "file": "check-tree-shared-ast.test.ts",
+                "text": "fails a treemap value read past its first underscore"
+              }
+            ]
           },
           {
-            "file": "check-tree-shared-ast.test.ts",
-            "text": "fails a treemap value read past its second dot"
+            "case": "The decimal prefix stops at an extra dot.",
+            "tests": [
+              {
+                "file": "check-tree-shared-ast.test.ts",
+                "text": "fails a treemap value read past its second dot"
+              }
+            ]
           },
           {
-            "file": "check-tree-shared-ast.test.ts",
-            "text": "fails a treemap dot without a digit read as zero"
+            "case": "A spelling without a decimal prefix has value NaN.",
+            "tests": [
+              {
+                "file": "check-tree-shared-ast.test.ts",
+                "text": "fails a treemap dot without a digit read as zero"
+              }
+            ]
           },
           {
-            "file": "check-tree-shared-ast.test.ts",
-            "text": "fails a treemap raw value with its unread suffix omitted"
+            "case": "A leading dot needs a following digit.",
+            "tests": [
+              {
+                "file": "check-tree-shared-ast.test.ts",
+                "text": "reports a treemap leading-dot fraction recorded without the fraction"
+              },
+              {
+                "file": "check-tree-shared-ast.test.ts",
+                "text": "fails a treemap dot without a digit read as zero"
+              }
+            ]
+          },
+          {
+            "case": "Digits before a dot permit no digits after it.",
+            "tests": [
+              {
+                "file": "check-tree-shared-ast.test.ts",
+                "text": "reports a treemap trailing-dot number recorded as a fraction"
+              }
+            ]
+          },
+          {
+            "case": "Raw keeps the complete spelling including the unread suffix.",
+            "tests": [
+              {
+                "file": "check-tree-shared-ast.test.ts",
+                "text": "fails a treemap raw value with its unread suffix omitted"
+              }
+            ]
+          },
+          {
+            "case": "Other diagram numeric grammars retain their own definition.",
+            "tests": [
+              {
+                "file": "check-tree-shared-ast.test.ts",
+                "text": "fails a flowchart NumericLiteral value changed to a fraction"
+              }
+            ]
           }
         ]
       }
@@ -2462,28 +2960,58 @@
         "status": "shown",
         "cases": [
           {
-            "file": "check-tree-shared-ast.test.ts",
-            "text": "fails a diagram node without its diagram prefix"
+            "case": "Diagram-specific node type names start with the diagram prefix.",
+            "tests": [
+              {
+                "file": "check-tree-shared-ast.test.ts",
+                "text": "fails a diagram node without its diagram prefix"
+              }
+            ]
           },
           {
-            "file": "check-tree-shared-ast.test.ts",
-            "text": "fails a diagram prefix added to the shared Identifier type"
+            "case": "Shared leaf node names have no diagram prefix.",
+            "tests": [
+              {
+                "file": "check-tree-shared-ast.test.ts",
+                "text": "fails a diagram prefix added to the shared Identifier type"
+              }
+            ]
           },
           {
-            "file": "check-tree-shared-ast.test.ts",
-            "text": "fails an ignored-text node without its IgnoredText suffix"
+            "case": "Unread text node types end in IgnoredText.",
+            "tests": [
+              {
+                "file": "check-tree-shared-ast.test.ts",
+                "text": "fails an ignored-text node without its IgnoredText suffix"
+              }
+            ]
           },
           {
-            "file": "check-tree-shared-ast.test.ts",
-            "text": "fails an ignored statement without its IgnoredStatement suffix"
+            "case": "Unread statement node types end in IgnoredStatement.",
+            "tests": [
+              {
+                "file": "check-tree-shared-ast.test.ts",
+                "text": "fails an ignored statement without its IgnoredStatement suffix"
+              }
+            ]
           },
           {
-            "file": "check-tree-shared-ast.test.ts",
-            "text": "fails a normal diagram node with an IgnoredText suffix"
+            "case": "Other node types do not end in IgnoredText.",
+            "tests": [
+              {
+                "file": "check-tree-shared-ast.test.ts",
+                "text": "fails a normal diagram node with an IgnoredText suffix"
+              }
+            ]
           },
           {
-            "file": "check-tree-shared-ast.test.ts",
-            "text": "fails a normal diagram node with an IgnoredStatement suffix"
+            "case": "Other node types do not end in IgnoredStatement.",
+            "tests": [
+              {
+                "file": "check-tree-shared-ast.test.ts",
+                "text": "fails a normal diagram node with an IgnoredStatement suffix"
+              }
+            ]
           }
         ]
       }
