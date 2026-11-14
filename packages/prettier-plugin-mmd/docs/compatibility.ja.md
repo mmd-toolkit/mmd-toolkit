@@ -3830,6 +3830,17 @@ flowchart/statements-one-per-line/compat-semicolon-in-label-without-style-kept]
 [fixture: state/descriptions-and-labels/semicolon-line-kept]
 [1 行に 1 文](./flowchart.ja.md#1-行に-1-文)を参照してください。
 
+U+2028 または U+2029 が前にあり、その `;` の行にコメント行が続くときは、
+`classDef` や `style` の文を終わらせる `;` を残します。
+`;` がないと、文は mermaid.js が取り除くコメント行の後ろまで続き、
+その後ろの文を取り込むからです。
+[スタイル文の末尾のセミコロン](./er.ja.md#スタイル文の末尾のセミコロン)と
+[セミコロン](./flowchart.ja.md#セミコロン)を参照してください。
+[fixture: er/semicolons-at-the-end-of-a-style-statement/comment-and-directive-controls]
+[fixture: flowchart/semicolons/style-terminator-comment-and-directive-controls]
+[test: block style terminators before comments after U+2028 and U+2029]
+[test: treemap style terminators before comments after U+2028 and U+2029]
+
 class、state、ER、requirement、block、Venn、usecase の図では、
 `classDef` と `style` の行末のセミコロンを、Db が変わらない形で削除します。
 無視される終端は直前の空白と一緒に削除し、

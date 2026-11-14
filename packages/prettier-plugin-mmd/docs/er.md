@@ -1971,6 +1971,23 @@ erDiagram
   style A fill: #0f0, stroke: #00f
 ```
 
+A `;` that ends a `classDef` or `style` statement and stands after a U+2028 or
+U+2029, with only spaces and tabs between them, stays where a comment line
+follows its line: without the `;` the statement goes on after the comment line,
+which mermaid.js removes (the specification's
+[The style context](../../spec/docs/diagrams/er.md#the-style-context)), and
+takes the statement after it, so `style A fill:red`, U+2028, `;`, a line break,
+`%% c`, a line break, and `x` keeps the `;` and the entity `x`. Where a
+directive line, the end of the text, or a statement follows, the `;` is dropped
+as above. [fixture:
+semicolons-at-the-end-of-a-style-statement/comment-and-directive-controls]
+[test: ER direct comments] [test: ER two comment lines] [test: ER empty lines
+before comments] [test: ER directives on comment lines] [test: ER directives
+before comments on the same line] [test: ER indented comments] [test: ER
+indented following statements] [test: ER tab and whitespace-only line before a
+comment] [test: ER style comment at EOF control] [test: ER classDef comment at
+EOF control] [test: ER directive lines, direct statements, NBSP controls]
+
 ### Multi-line statements
 
 A statement that mermaid.js reads over several lines is printed on one line
