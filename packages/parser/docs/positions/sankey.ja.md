@@ -20,6 +20,7 @@
 のノードとも同じ定めに従います（[ノードの範囲](../positions.ja.md#ノードの範囲)
 を参照）。
 ヘッダーのキーワードから、最後のレコードの最後のトークンまでです。
+
 [fixture: sankey/db-link-basic] [fixture: sankey/db-header-beta]
 
 ### SankeyLinkStatement
@@ -27,6 +28,7 @@
 範囲は、source から value までで、文字列の引用符を含みます。
 レコードの周りの空白と、その後の改行は、範囲の外にあります。
 `  a , b , 1` と 2 つの空白は、`a , b , 1` を覆います。
+
 [fixture: sankey/db-fields-trimmed] [fixture: sankey/db-quoted-fields]
 [fixture: sankey/db-spaces-only-source-id-first-record]
 
@@ -41,6 +43,7 @@
 `a, ,1` の target は、2 つのコンマの間の空白を覆います。
 この図種で、値が範囲の書かれたテキストでないノードは、これだけです。
 書かれたテキストは空で、トークンがノードに位置を与えます。
+
 [fixture: sankey/db-fields-trimmed] [fixture: sankey/db-text-with-spaces]
 [fixture: sankey/db-spaces-only-source-id]
 [fixture: sankey/db-spaces-only-target-id]

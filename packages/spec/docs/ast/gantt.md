@@ -66,10 +66,14 @@ A tag is one `data-item` unit, a text unit, so a directive may lie inside it,
 and its name is the written text without the directive: `do%%{init: {}}%%ne` is
 the tag `done`, as in mermaid.js (see
 [Directives inside units](../diagrams/gantt.md#directives-inside-units)).
-[fixture: gantt/gram-task-tag-cut-by-directive] `a : 1d` has the description
-`a ` and the one item `1d`; `a : done, 1d` the tag `done` and the item `1d`;
-`a : , ,` three null items; `a : id1,, 1d` the items `id1`, null, and `1d`; and
-`a : my id, after a b, until c` the items `my id`, `after a b`, and `until c`.
+
+[fixture: gantt/gram-task-tag-cut-by-directive]
+
+`a : 1d` has the description `a ` and the one item `1d`; `a : done, 1d` the tag
+`done` and the item `1d`; `a : , ,` three null items; `a : id1,, 1d` the items
+`id1`, null, and `1d`; and `a : my id, after a b, until c` the items `my id`,
+`after a b`, and `until c`.
+
 [fixture: gantt/gram-task] [fixture: gantt/gram-task-one-item] [fixture:
 gantt/gram-task-tag-then-item] [fixture: gantt/gram-task-two-tags] [fixture:
 gantt/gram-task-tag-repeated] [fixture: gantt/gram-task-tags-upper-case]
@@ -99,8 +103,9 @@ whitespace, in which `,` is the separator and every other character, `:` and `"`
 among them, is a character of the id, so it is an
 [Identifier](../ast.md#identifier). The ids are not resolved: an id that names
 no task is in the list as written. The URL is never empty and always closed (see
-[The href context](../diagrams/gantt.md#the-href-context)). [fixture:
-gantt/gram-click-href] [fixture: gantt/gram-click-call] [fixture:
+[The href context](../diagrams/gantt.md#the-href-context)).
+
+[fixture: gantt/gram-click-href] [fixture: gantt/gram-click-call] [fixture:
 gantt/gram-click-href-then-call] [fixture: gantt/gram-click-call-then-href]
 [fixture: gantt/gram-click-ids-list] [fixture:
 gantt/gram-click-ids-trailing-comma] [fixture: gantt/gram-click-ids-comma-only]
@@ -120,8 +125,9 @@ The call part of a click statement: a callback name and its arguments.
 Child fields: `name`, `args`. `call f()` has the name `f` and null arguments,
 `call f ()` the name `f` and a space, `call f( )` null arguments, `call f( 1)`
 the arguments of a space and `1`, and `call f(a, "b,c")` the arguments
-`a, "b,c"`, which mermaid.js splits only when it binds the callback. [fixture:
-gantt/gram-click-call] [fixture:
+`a, "b,c"`, which mermaid.js splits only when it binds the callback.
+
+[fixture: gantt/gram-click-call] [fixture:
 gantt/gram-click-call-name-space-before-parenthesis] [fixture:
 gantt/gram-click-call-name-line-feed-before-parenthesis] [fixture:
 gantt/gram-click-call-blank-arguments] [fixture:
@@ -140,9 +146,10 @@ A `dateFormat` statement.
 Child fields: `value`. The value keeps the whitespace at its ends: `dateFormat`
 and two spaces before `X` has the value of a space and `X`. The text ends before
 `#`, `;`, and a line feed (see
-[The statement context](../diagrams/gantt.md#the-statement-context)). [fixture:
-gantt/db-date-format] [fixture: gantt/lex-dateformat-two-spaces] [fixture:
-gantt/lex-dateformat-trailing-spaces]
+[The statement context](../diagrams/gantt.md#the-statement-context)).
+
+[fixture: gantt/db-date-format] [fixture: gantt/lex-dateformat-two-spaces]
+[fixture: gantt/lex-dateformat-trailing-spaces]
 
 ### GanttAxisFormatStatement
 
@@ -152,8 +159,9 @@ An `axisFormat` statement.
 | ------- | ------------ | --------------------------------------------------------------------------------- |
 | `value` | GanttLiteral | The text after `axisFormat` and one whitespace character, to the end of the line. |
 
-Child fields: `value`. As for GanttDateFormatStatement. [fixture:
-gantt/db-axis-format]
+Child fields: `value`. As for GanttDateFormatStatement.
+
+[fixture: gantt/db-axis-format]
 
 ### GanttTickIntervalStatement
 
@@ -163,8 +171,9 @@ A `tickInterval` statement.
 | ------- | ------------ | ----------------------------------------------------------------------------------- |
 | `value` | GanttLiteral | The text after `tickInterval` and one whitespace character, to the end of the line. |
 
-Child fields: `value`. As for GanttDateFormatStatement. [fixture:
-gantt/db-tick-interval]
+Child fields: `value`. As for GanttDateFormatStatement.
+
+[fixture: gantt/db-tick-interval]
 
 ### GanttTodayMarkerStatement
 
@@ -175,8 +184,10 @@ A `todayMarker` statement.
 | `value` | GanttLiteral | The text after `todayMarker` and one whitespace character, to the end of the line. |
 
 Child fields: `value`. The text may hold `#` and ends before `;` and a line
-feed. [fixture: gantt/db-today-marker] [fixture: gantt/db-today-marker-off]
-[fixture: gantt/lex-todaymarker-hash]
+feed.
+
+[fixture: gantt/db-today-marker] [fixture: gantt/db-today-marker-off] [fixture:
+gantt/lex-todaymarker-hash]
 
 ### GanttIncludesStatement
 
@@ -190,7 +201,9 @@ time.
 Child fields: `items`. An item is a maximal run of characters that are neither
 whitespace nor `,`, so it is an [Identifier](../ast.md#identifier); it keeps its
 case, which mermaid.js lowers. Commas with nothing between them, and a list text
-of whitespace only, give no item. [fixture: gantt/db-includes-tokens] [fixture:
+of whitespace only, give no item.
+
+[fixture: gantt/db-includes-tokens] [fixture:
 gantt/lex-excludes-commas-and-spaces] [fixture:
 gantt/lex-excludes-upper-case-items] [fixture: gantt/lex-excludes-empty-items]
 [fixture: gantt/lex-excludes-whitespace-value]
@@ -203,12 +216,14 @@ An `excludes` statement: the dates and days that the chart leaves out.
 | ------- | ------------------ | ---------------------------------------------------------- |
 | `items` | list of Identifier | The items of the list text, as for GanttIncludesStatement. |
 
-Child fields: `items`. [fixture: gantt/db-excludes-tokens] [fixture:
-gantt/db-excludes-merged-lines]
+Child fields: `items`.
+
+[fixture: gantt/db-excludes-tokens] [fixture: gantt/db-excludes-merged-lines]
 
 ### GanttInclusiveEndDatesStatement
 
 An `inclusiveEndDates` statement. No child fields. It has no other fields.
+
 [fixture: gantt/db-inclusive-end-dates]
 
 ### GanttWeekdayStatement
@@ -221,6 +236,7 @@ A `weekday` statement: the first day of the week.
 
 No child fields. The day is a word from a fixed set, so it is a string field, in
 lower case whatever its case in the text; the token keeps the written case.
+
 [fixture: gantt/db-weekday-last-wins] [fixture: gantt/lex-day-mixed-case]
 
 ### GanttWeekendStatement
@@ -231,8 +247,9 @@ A `weekend` statement: the first day of the weekend.
 | ----- | ------ | -------------------------------------- |
 | `day` | string | `friday` or `saturday`, in lower case. |
 
-No child fields. [fixture: gantt/db-weekend-friday] [fixture:
-gantt/db-weekend-saturday]
+No child fields.
+
+[fixture: gantt/db-weekend-friday] [fixture: gantt/db-weekend-saturday]
 
 ### GanttTitleStatement
 
@@ -243,8 +260,10 @@ A `title` statement.
 | `value` | GanttLiteral | The text after `title` and one whitespace character, to the end of the line. |
 
 Child fields: `value`. The value keeps the whitespace at its ends and holds `:`,
-`#`, `;`, and `%%` as characters. [fixture: gantt/db-title-statement] [fixture:
-gantt/lex-title-two-spaces] [fixture: gantt/lex-title-trailing-spaces] [fixture:
+`#`, `;`, and `%%` as characters.
+
+[fixture: gantt/db-title-statement] [fixture: gantt/lex-title-two-spaces]
+[fixture: gantt/lex-title-trailing-spaces] [fixture:
 gantt/lex-title-hash-semicolon-percent]
 
 ### GanttSectionStatement
@@ -257,6 +276,7 @@ A `section` statement.
 
 Child fields: `name`. The name is a text that may contain whitespace, which
 nothing refers to, so it is a GanttLiteral; it keeps the whitespace at its ends.
+
 [fixture: gantt/db-sections] [fixture: gantt/lex-section-two-spaces] [fixture:
 gantt/lex-section-trailing-spaces]
 
@@ -271,7 +291,9 @@ An `accTitle:` statement with its text.
 Child fields: `value`. The whitespace after the `:` is read with it, line feeds
 included, so the text starts on the first line that has one, and the value is
 never null: `accTitle:` with nothing after it is rejected. The value is the text
-without the whitespace at its ends. [fixture: gantt/gram-acc-title] [fixture:
+without the whitespace at its ends.
+
+[fixture: gantt/gram-acc-title] [fixture:
 gantt/gram-acc-title-line-feed-then-text] [fixture: gantt/lex-acc-title-at-end]
 [fixture: gantt/gram-acc-title-trailing-spaces]
 
@@ -284,6 +306,7 @@ An `accDescr:` statement with its text.
 | `value` | GanttLiteral | The text after `accDescr:`, up to the end of its line. |
 
 Child fields: `value`. As for GanttAccTitleStatement, the value is never null.
+
 [fixture: gantt/gram-acc-descr] [fixture: gantt/lex-acc-descr-at-end]
 
 ### GanttAccDescrBlockStatement
@@ -300,6 +323,7 @@ Child fields: `value`. `accDescr {}`, `accDescr { }`, and a block of blank lines
 have the value null and change nothing. Such a block is a statement only where a
 statement starts; a block inside a click statement makes the input rejected (see
 [Empty description blocks](../diagrams/gantt.md#empty-description-blocks)).
+
 [fixture: gantt/gram-acc-descr-block] [fixture:
 gantt/gram-acc-descr-block-multiline] [fixture:
 gantt/gram-acc-descr-block-empty] [fixture:
@@ -324,9 +348,11 @@ keeps the whitespace and line feeds before the `(`, and callback arguments keep
 the whitespace at their ends; an item of task data has none, and an
 accessibility text is read without the whitespace at its ends, which mermaid.js
 trims. A line feed inside callback arguments, a callback name, or a description
-block is part of the value. [fixture: gantt/lex-task-text-trailing-spaces]
-[fixture: gantt/lex-title-two-spaces] [fixture: gantt/lex-title-trailing-spaces]
-[fixture: gantt/lex-dateformat-two-spaces] [fixture:
+block is part of the value.
+
+[fixture: gantt/lex-task-text-trailing-spaces] [fixture:
+gantt/lex-title-two-spaces] [fixture: gantt/lex-title-trailing-spaces] [fixture:
+gantt/lex-dateformat-two-spaces] [fixture:
 gantt/gram-click-call-name-space-before-parenthesis] [fixture:
 gantt/gram-click-call-arguments-leading-space] [fixture:
 gantt/lex-task-items-nbsp-trimmed] [fixture:

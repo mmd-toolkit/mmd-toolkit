@@ -55,11 +55,13 @@ Db can be derived. Embedded configuration can change acceptance in either
 direction. Its comparison reference omits only blocks rejected during Mermaid's
 configuration derivation and removes only the specification-named acceptance
 keys from valid text configuration. Keep the other derived values, including
-Mermaid's frontmatter title and Db settings such as `wrap`. [fixture:
-gitgraph/div-frontmatter-main-branch-preserves-title] [fixture:
-sequence/div-invalid-frontmatter-preserves-wrap-directive] Keep a missing
-comparison Db explicit rather than inventing one or treating mermaid.js's
-rejection as the specification's rejection.
+Mermaid's frontmatter title and Db settings such as `wrap`.
+
+[fixture: gitgraph/div-frontmatter-main-branch-preserves-title] [fixture:
+sequence/div-invalid-frontmatter-preserves-wrap-directive]
+
+Keep a missing comparison Db explicit rather than inventing one or treating
+mermaid.js's rejection as the specification's rejection.
 
 ## Special characters in the inputs
 
@@ -231,8 +233,9 @@ field, since no other field can hold such a number. The `raw` of the node has
 the number as written, and `checkTree()` accepts `null`, `Infinity`, and
 `-Infinity` for the `value` of a NumericLiteral whose written text is such a
 number, and no `null` for any other. `dbFromTree()` reads the number from the
-text of the node, so it needs no conversion. [fixture:
-xychart/db-plot-values-overflow]
+text of the node, so it needs no conversion.
+
+[fixture: xychart/db-plot-values-overflow]
 
 ## Exports for the tools
 

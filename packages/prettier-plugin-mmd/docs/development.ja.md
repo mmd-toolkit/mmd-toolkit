@@ -65,6 +65,7 @@ plugin のソースを import して Node で動かすスクリプトは、
 
 プラグイン API のテストでは、範囲を指定して `prettier.format` に渡し、
 Prettier の部分整形の走査が使うノード位置のコールバックも確かめます。
+
 [test: provides node ranges for Prettier's partial formatting]
 
 コーパスのテストは Vitest が並列に実行できるよう、図種ごとにファイルを分けます。

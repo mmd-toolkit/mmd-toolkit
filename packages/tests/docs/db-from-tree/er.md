@@ -37,9 +37,11 @@ class name, a style, the id and the title of a subgraph, and the accessibility
 texts. The same form has each line terminator, `\r\n` and a lone `\r` too, as
 `\n`, in a backquoted word, a comment, and a role string, and each attribute
 quote as `'`, in a quoted name, a role string, and a comment; U+2028 is no line
-terminator and stays in a value. [fixture: er/entity-placeholder-in-name]
-[fixture: er/entity-placeholder-in-quoted-name] [fixture: er/db-alias-entity]
-[fixture: er/db-role-entity] [fixture: er/db-role-quoted-entity] [fixture:
+terminator and stays in a value.
+
+[fixture: er/entity-placeholder-in-name] [fixture:
+er/entity-placeholder-in-quoted-name] [fixture: er/db-alias-entity] [fixture:
+er/db-role-entity] [fixture: er/db-role-quoted-entity] [fixture:
 er/db-attribute-comment-entity] [fixture: er/db-attribute-backquoted-entity]
 [fixture: er/db-class-name-entity] [fixture: er/db-style-entity] [fixture:
 er/db-class-def-entity] [fixture: er/db-subgraph-id-entity] [fixture:
@@ -56,24 +58,32 @@ er/db-role-attribute-quote] [fixture: er/db-attribute-comment-attribute-quote]
 - An ErIdentifier has the converted form of its range. Its `name` is the written
   text, which the tree keeps, and the Db has the text as mermaid.js reads it. So
   `A`, U+00A0, and `B` is one name with the no-break space in it, and a number
-  such as `12` or `2.5` is the name with those digits. [fixture:
-  er/db-entity-name-no-break-space] [fixture: er/db-entity-name-line-separator]
-  [fixture: er/db-entity-name-numbers] [fixture: er/db-alias-line-separator]
+  such as `12` or `2.5` is the name with those digits.
+
+  [fixture: er/db-entity-name-no-break-space] [fixture:
+  er/db-entity-name-line-separator] [fixture: er/db-entity-name-numbers]
+  [fixture: er/db-alias-line-separator]
+
 - A comment region inside a name is not in its text, as a comment line inside a
   string is not: the name is the converted form of its range, which leaves out
   comment regions (see
   [The converted form](../db-from-tree.md#the-converted-form)). A U+2028 or a
   U+2029 is a character of a name and a comment start, so `A`, U+2028, `%% c`, a
   line break, and `Bar` is one entity whose name is `A`, U+2028, and `Bar`, and
-  so it is with U+2029. [fixture: er/lex-name-line-separator-comment-line]
-  [fixture: er/lex-name-paragraph-separator-comment-line] The lexer decides what
-  the region takes and where a name ends and starts around it (see
+  so it is with U+2029.
+
+  [fixture: er/lex-name-line-separator-comment-line] [fixture:
+  er/lex-name-paragraph-separator-comment-line]
+
+  The lexer decides what the region takes and where a name ends and starts
+  around it (see
   [Comment regions inside names](../../../spec/docs/diagrams/er.md#units-and-contexts)),
   and the range shows it; the text is the same where the region takes spaces, a
   second U+2028, or line breaks before the comment line, or a directive before
   the `%%`, where a CRLF or a CR ends the comment, where a directive lies in the
   comment, and across a second comment line or a second region after a second
   U+2028; a U+2028 at the start of the next line is a character of the name.
+
   [fixture: er/lex-name-line-separator-spaces-comment-line] [fixture:
   er/lex-name-two-line-separators-comment-line] [fixture:
   er/lex-name-line-separator-line-feed-comment-line] [fixture:
@@ -84,11 +94,13 @@ er/db-role-attribute-quote] [fixture: er/db-attribute-comment-attribute-quote]
   er/lex-name-line-separator-comment-line-with-directive] [fixture:
   er/lex-name-line-separator-two-comment-lines] [fixture:
   er/lex-name-two-comment-regions] [fixture:
-  er/lex-name-comment-line-line-separator-next] It is so for each name: an
-  entity of a relationship, a role, an alias, a class after `:::`, a name after
-  `classDef`, `class`, or `style`, a class of `class`, the id of a subgraph, and
-  the type and the name of an attribute. [fixture:
-  er/lex-relationship-first-name-comment-line] [fixture:
+  er/lex-name-comment-line-line-separator-next]
+
+  It is so for each name: an entity of a relationship, a role, an alias, a class
+  after `:::`, a name after `classDef`, `class`, or `style`, a class of `class`,
+  the id of a subgraph, and the type and the name of an attribute.
+
+  [fixture: er/lex-relationship-first-name-comment-line] [fixture:
   er/lex-relationship-second-name-comment-line] [fixture:
   er/lex-role-name-comment-line] [fixture: er/lex-alias-name-comment-line]
   [fixture: er/lex-class-shorthand-name-comment-line] [fixture:
@@ -98,18 +110,24 @@ er/db-role-attribute-quote] [fixture: er/db-attribute-comment-attribute-quote]
   er/lex-class-statement-class-comment-line] [fixture:
   er/lex-subgraph-id-comment-line] [fixture: er/lex-attribute-type-comment-line]
   [fixture: er/lex-attribute-name-comment-line]
+
 - A StringLiteral has the converted form of its range without the delimiters,
   the quotes of a quoted name, a role, and a comment, and the backquotes of a
   word of an attribute, so `"A B"` is the name `A B`, and the id of its entity
   is `entity-A B-0`. A quoted name and the bare name with the same text are one
-  entity. [fixture: er/db-entity-name-quoted-spaces] [fixture:
+  entity.
+
+  [fixture: er/db-entity-name-quoted-spaces] [fixture:
   er/db-entity-name-quoted-same-as-bare] [fixture:
   er/db-entity-name-quoted-line-separator] [fixture: er/db-role-quoted]
   [fixture: er/db-attribute-backquoted] [fixture:
   er/db-attribute-comment-spaces]
+
 - A directive inside a string or a text unit is not in the converted form, and
   so not in the text: the role `x%%{init: {}}%%y` is `xy`. A comment line inside
-  a string is not either. [fixture: er/lex-directive-in-role-string] [fixture:
+  a string is not either.
+
+  [fixture: er/lex-directive-in-role-string] [fixture:
   er/lex-directive-in-quoted-name] [fixture: er/lex-directive-in-comment-string]
   [fixture: er/lex-directive-in-backquoted-word] [fixture:
   er/lex-directive-in-tilde-word] [fixture: er/lex-directive-in-acc-title]
@@ -117,11 +135,13 @@ er/db-role-attribute-quote] [fixture: er/db-attribute-comment-attribute-quote]
   er/tokens-comment-line-in-role-string] [fixture:
   er/tokens-comment-line-in-comment-string] [fixture:
   er/tokens-comment-line-in-backquoted-word]
+
 - A `;` that the line rule ignores is not in the converted form either, inside a
   string or a text, so a quoted name, an alias, a comment, a role, and a title
   of a subgraph hold the text without it. At a name, a number, a key, or a word
   of an attribute block the `;` cuts the unit, and the input is rejected (see
   [Known divergences](../../../spec/docs/diagrams/er.md#known-divergences)).
+
   [fixture: er/db-entity-name-quoted-ignored-semicolon] [fixture:
   er/db-alias-ignored-semicolon] [fixture:
   er/db-subgraph-title-ignored-semicolon] [fixture:
@@ -130,19 +150,24 @@ er/db-role-attribute-quote] [fixture: er/db-attribute-comment-attribute-quote]
   er/tokens-ignored-semicolon-in-role-string] [fixture:
   er/div-ignored-semicolon-in-name] [fixture: er/div-ignored-semicolon-in-key]
   [fixture: er/div-ignored-semicolon-in-attribute-word]
+
 - The value of a style is the converted forms of the tokens inside its
   ErLiteral, joined. The whitespace between the units of a style is no token, so
   it is no part of the value: `classDef a fill : #f9f` defines `fill:#f9f`, and
   `classDef a fill:red stroke:blue` the one style `fill:redstroke:blue`, while a
   whitespace character that belongs to a unit, such as U+2028, stays. An entity
   inside a style is its placeholder, and the `;` that the line rule ignores is
-  not in the value. [fixture: er/lex-classdef-style-spaces] [fixture:
+  not in the value.
+
+  [fixture: er/lex-classdef-style-spaces] [fixture:
   er/lex-classdef-styles-joined] [fixture: er/lex-style-styles-joined] [fixture:
   er/db-class-def-line-separator] [fixture: er/db-style-line-separator]
   [fixture: er/db-style-ignored-semicolon-last-only] [fixture:
   er/db-class-def-ignored-semicolon] [fixture: er/lex-directive-in-style-text]
+
 - The text of an accessibility statement is the converted form of the range of
   its ErLiteral without the whitespace at its ends, as mermaid.js trims it.
+
   [fixture: er/db-acc-title-trailing-space] [fixture: er/db-acc-title-spaces]
   [fixture: er/lex-acc-descr-block-trailing-spaces]
 
@@ -157,10 +182,12 @@ statement and a description block with text its text without the whitespace at
 its ends; and a direction statement and a description block without text none. A
 comment line, a directive line, an empty line, and a line of whitespace between
 statements are no statements. An empty description block between two entities
-leaves both executed. [fixture: er/db-comment-line] [fixture:
-er/db-directive-line] [fixture: er/db-empty-line] [fixture:
-er/db-whitespace-line] [fixture: er/gram-empty-description-block-between-names]
-[fixture: er/header-empty-description-block]
+leaves both executed.
+
+[fixture: er/db-comment-line] [fixture: er/db-directive-line] [fixture:
+er/db-empty-line] [fixture: er/db-whitespace-line] [fixture:
+er/gram-empty-description-block-between-names] [fixture:
+er/header-empty-description-block]
 
 **Entities.** The entities are kept by name, in the order in which a statement
 first names them.
@@ -170,30 +197,39 @@ first names them.
   statement adds the entity of its left name and then that of its right name,
   then the relationship, then the classes of the left entity and then those of
   the right one. A `class` statement, a `style` statement, and a `classDef`
-  statement add none. [fixture: er/db-name-twice] [fixture:
-  er/db-class-undefined-entity] [fixture: er/db-style-undefined-entity]
-  [fixture: er/db-class-def-unused]
+  statement add none.
+
+  [fixture: er/db-name-twice] [fixture: er/db-class-undefined-entity] [fixture:
+  er/db-style-undefined-entity] [fixture: er/db-class-def-unused]
+
 - The `id` of a new entity is `entity-<name>-<number>`, where the number is how
   many entities existed when it was made: they are numbered from 0 in the order
   of their first appearance, wherever it is, in a relationship, an entity
   statement with an alias, classes, or a block, and the body of a subgraph.
-  Names are case-sensitive. [fixture: er/basic-entity] [fixture:
-  er/db-entity-ids-first-appearance] [fixture: er/db-entity-ids-statement-kinds]
-  [fixture: er/db-entity-names-case]
+  Names are case-sensitive.
+
+  [fixture: er/basic-entity] [fixture: er/db-entity-ids-first-appearance]
+  [fixture: er/db-entity-ids-statement-kinds] [fixture: er/db-entity-names-case]
+
 - A relationship from an entity to itself has the same `id` at both ends.
+
   [fixture: er/db-entity-relationship-self] [fixture: er/db-relationship-self]
+
 - An entity may have the name of a subgraph, before it or after it: both exist.
+
   [fixture: er/db-subgraph-id-as-name-after] [fixture:
   er/db-subgraph-id-as-name-before]
+
 - `alias` is the text of the alias of the statement, or the empty text. A
   statement adds its alias to an entity that has none, also to one that a
   relationship made, and never changes one that has an alias; a statement
-  without an alias changes nothing. [fixture: er/db-alias-first-kept] [fixture:
-  er/db-alias-set-after-entity] [fixture: er/db-alias-after-relationship]
-  [fixture: er/db-alias-after-plain] [fixture: er/db-alias-second-ignored]
-  [fixture: er/db-alias-forms] [fixture: er/db-alias-with-attributes] [fixture:
-  er/db-alias-with-class] [fixture: er/db-alias-empty-block] [fixture:
-  er/db-alias-first-kept-directive-line]
+  without an alias changes nothing.
+
+  [fixture: er/db-alias-first-kept] [fixture: er/db-alias-set-after-entity]
+  [fixture: er/db-alias-after-relationship] [fixture: er/db-alias-after-plain]
+  [fixture: er/db-alias-second-ignored] [fixture: er/db-alias-forms] [fixture:
+  er/db-alias-with-attributes] [fixture: er/db-alias-with-class] [fixture:
+  er/db-alias-empty-block] [fixture: er/db-alias-first-kept-directive-line]
 
 **Attributes.** An entity statement with a block appends the attributes of the
 block, in the written order, to those the entity has, so the attributes of two
@@ -201,9 +237,10 @@ blocks of one entity add up, also an attribute of the same name, and a block
 without attributes adds none. An item of the block that is an ErIgnoredText, an
 `empty-backquotes` unit, is no attribute. A comment line, a directive line, an
 empty line, and a line of whitespace in a block are no text, and `direction RL`
-in a block is an attribute. [fixture: er/db-attribute-order] [fixture:
-er/db-attribute-blocks-add-up] [fixture: er/db-block-twice] [fixture:
-er/db-attribute-block-empty] [fixture:
+in a block is an attribute.
+
+[fixture: er/db-attribute-order] [fixture: er/db-attribute-blocks-add-up]
+[fixture: er/db-block-twice] [fixture: er/db-attribute-block-empty] [fixture:
 er/db-attribute-block-empty-after-attributes] [fixture:
 er/db-attribute-block-entity-from-relationship] [fixture:
 er/db-attribute-block-one-line] [fixture:
@@ -224,21 +261,29 @@ An attribute has these four values.
 - `type` is the text of its `dataType`, with `?` appended when `optional` is
   true. The word may carry a length, generic marks, brackets, and `_`, `-`, `.`;
   a tilde word keeps its inner whitespace; a backquoted word has no backquotes,
-  and may hold spaces; U+2028 inside a word stays. [fixture:
-  er/db-attribute-type-question-mark] [fixture: er/db-attribute-type-length]
-  [fixture: er/db-attribute-type-generic] [fixture:
+  and may hold spaces; U+2028 inside a word stays.
+
+  [fixture: er/db-attribute-type-question-mark] [fixture:
+  er/db-attribute-type-length] [fixture: er/db-attribute-type-generic] [fixture:
   er/db-attribute-type-brackets] [fixture: er/db-attribute-name-characters]
   [fixture: er/db-attribute-backquoted] [fixture:
   er/db-attribute-name-line-separator] [fixture: er/lex-backquote-optional]
   [fixture: er/lex-tilde-then-optional-mark] [fixture:
   er/lex-tilde-space-inside]
-- `name` is the text of its `name`. [fixture: er/db-attribute-order] [fixture:
-  er/db-attribute-backquoted]
+
+- `name` is the text of its `name`.
+
+  [fixture: er/db-attribute-order] [fixture: er/db-attribute-backquoted]
+
 - `keys` are the texts of its keys, in order, as written, a repeated key twice,
-  and the empty list when there is none. [fixture: er/db-attribute-keys]
-  [fixture: er/db-attribute-keys-case] [fixture: er/db-attribute-defaults]
+  and the empty list when there is none.
+
+  [fixture: er/db-attribute-keys] [fixture: er/db-attribute-keys-case] [fixture:
+  er/db-attribute-defaults]
+
 - `comment` is the text of its comment between the quotes, with its spaces, the
   empty text when the comment is empty, and the empty text when there is none.
+
   [fixture: er/db-attribute-comment-with-keys] [fixture:
   er/db-attribute-comment-spaces] [fixture: er/db-attribute-comment-empty]
   [fixture: er/db-attribute-defaults]
@@ -257,6 +302,7 @@ of a subgraph is its trimmed text (see **Subgraphs**).
   entity name, in that order, in the order of the classes. A `class` statement
   adds its classes, in order, to the targets of each of its names, in the order
   of the names. A class given twice is kept twice. No `classDef` is needed.
+
   [fixture: er/db-class-separator] [fixture:
   er/db-class-separator-relationship-first] [fixture:
   er/db-class-separator-relationship-second] [fixture:
@@ -271,8 +317,10 @@ of a subgraph is its trimmed text (see **Subgraphs**).
   er/db-subgraph-class-before-definition] [fixture:
   er/db-subgraph-same-id-class-last] [fixture:
   er/db-subgraph-entity-and-subgraph-style] [fixture: er/db-class-subgraph]
+
 - A `style` statement adds its styles, in order, to the `cssStyles` of the
   targets of each of its names. The styles of several statements add up.
+
   [fixture: er/db-style-statement] [fixture: er/db-style-twice] [fixture:
   er/db-style-id-list-spaces] [fixture: er/db-style-undefined-entity] [fixture:
   er/db-style-before-entity] [fixture: er/db-style-non-ascii] [fixture:
@@ -289,6 +337,7 @@ of a subgraph is its trimmed text (see **Subgraphs**).
   so a relationship in its own body, or before it, refers to the entity, and one
   after it to the subgraph; the entity is made all the same. The name is not
   trimmed: `" S "` is no subgraph `S`. A subgraph without nodes counts.
+
   [fixture: er/db-relationship-to-subgraph-after] [fixture:
   er/db-relationship-to-subgraph-before] [fixture:
   er/db-subgraph-relationship-after] [fixture:
@@ -298,11 +347,15 @@ of a subgraph is its trimmed text (see **Subgraphs**).
   er/db-subgraph-relationship-empty-subgraph] [fixture:
   er/db-subgraph-id-trimmed] [fixture: er/db-relationship-quoted-entities]
   [fixture: er/db-relationship-source-order]
+
 - `roleA` is the text of the role: a name, a quoted name, or a string, which may
-  be empty. [fixture: er/db-role-word] [fixture: er/db-role-quoted] [fixture:
+  be empty.
+
+  [fixture: er/db-role-word] [fixture: er/db-role-quoted] [fixture:
   er/db-role-quoted-empty] [fixture: er/db-role-quoted-percent] [fixture:
   er/db-role-non-ascii] [fixture: er/db-role-line-separator] [fixture:
   er/db-role-quoted-line-separator]
+
 - `cardA` is the name of the `rightCardinality` of the relationship and `cardB`
   that of its `leftCardinality`. The line gives `relType`. The names are in
   capitals with `_` for `-`, written out in this table:
@@ -333,12 +386,13 @@ definition of each of its names, which it makes at the end of the list when
 there is none. A second `classDef` of a name adds its styles to the first and
 does not move it. A definition that no entity uses is kept, and a name `default`
 is a name like any other. The styles are the texts of the styles of the
-statement, with `color` ones included. [fixture: er/db-class-def-styles]
-[fixture: er/db-class-def-several-styles] [fixture: er/db-class-def-twice]
-[fixture: er/db-class-def-twice-empty-line] [fixture: er/db-class-def-ids]
-[fixture: er/db-class-def-unused] [fixture: er/db-class-def-default] [fixture:
-er/db-classdef-twice] [fixture: er/db-classdef-color-style] [fixture:
-er/db-class-def-semicolon-separator]
+statement, with `color` ones included.
+
+[fixture: er/db-class-def-styles] [fixture: er/db-class-def-several-styles]
+[fixture: er/db-class-def-twice] [fixture: er/db-class-def-twice-empty-line]
+[fixture: er/db-class-def-ids] [fixture: er/db-class-def-unused] [fixture:
+er/db-class-def-default] [fixture: er/db-classdef-twice] [fixture:
+er/db-classdef-color-style] [fixture: er/db-class-def-semicolon-separator]
 
 **Subgraphs.** A subgraph statement executes its body, and then adds the
 subgraph, which is returned as its id: an inner subgraph is added before the one
@@ -346,28 +400,35 @@ around it. A subgraph has these values.
 
 - `id` is the text of the id without the whitespace at its ends, which includes
   U+2028. A quoted id keeps its inner spaces. Two subgraphs may have one id.
+
   [fixture: er/db-subgraph-id-quoted] [fixture: er/db-subgraph-id-trimmed]
   [fixture: er/db-subgraph-string-id-trimmed] [fixture:
   er/db-subgraph-id-line-separator] [fixture: er/db-subgraph-same-id-twice]
   [fixture: er/db-subgraph-nested-same-id]
+
 - `title` is the texts of the names of the bracket, joined by one space, or the
   text of the id without a bracket; then the replacement of characters (see
   below), and then the text without the whitespace at its ends. An HTML tag in
   the text stays as written: only the replacement of characters changes the
-  title, and the renderer sanitizes a tag later. [fixture:
-  er/db-subgraph-title-html] [fixture: er/db-subgraph-title-words] [fixture:
-  er/db-subgraph-title-quoted] [fixture: er/db-subgraph-title-spaces-collapse]
-  [fixture: er/db-subgraph-title-quoted-and-bare] [fixture:
-  er/db-subgraph-title-trimmed] [fixture: er/db-subgraph-title-line-separator]
-  [fixture: er/db-subgraph-no-title] [fixture: er/db-subgraph-id-quoted]
+  title, and the renderer sanitizes a tag later.
+
+  [fixture: er/db-subgraph-title-html] [fixture: er/db-subgraph-title-words]
+  [fixture: er/db-subgraph-title-quoted] [fixture:
+  er/db-subgraph-title-spaces-collapse] [fixture:
+  er/db-subgraph-title-quoted-and-bare] [fixture: er/db-subgraph-title-trimmed]
+  [fixture: er/db-subgraph-title-line-separator] [fixture:
+  er/db-subgraph-no-title] [fixture: er/db-subgraph-id-quoted]
+
 - `nodes` are the values that the statements of the body returned, in order,
   without those that are blank and those whose trimmed text equals the trimmed
   text of an earlier value, and then without those that an earlier subgraph
   lists, compared as they are. A value is kept as it is, with its spaces. An
   empty subgraph has none. A nested subgraph ends first, so a name it lists is
-  not a node of the one around it. [fixture: er/db-subgraph-empty] [fixture:
-  er/db-subgraph-nested] [fixture: er/db-subgraph-nodes-relationship] [fixture:
-  er/db-subgraph-nodes-block] [fixture: er/db-subgraph-nodes-alias] [fixture:
+  not a node of the one around it.
+
+  [fixture: er/db-subgraph-empty] [fixture: er/db-subgraph-nested] [fixture:
+  er/db-subgraph-nodes-relationship] [fixture: er/db-subgraph-nodes-block]
+  [fixture: er/db-subgraph-nodes-alias] [fixture:
   er/db-subgraph-nodes-class-separator] [fixture:
   er/db-subgraph-nodes-untrimmed] [fixture:
   er/db-subgraph-nodes-trimmed-then-untrimmed] [fixture:
@@ -379,9 +440,11 @@ around it. A subgraph has these values.
   er/db-subgraph-same-entity-two-subgraphs] [fixture:
   er/db-subgraph-member-nested-and-outer] [fixture:
   er/db-subgraph-nested-entity-in-both]
+
 - The values of the other statements are the keyword of a `class`, `classDef`,
   or `style` statement, as written in any case, and the trimmed text of an
   accessibility statement, which is neither replaced nor joined by line feeds.
+
   [fixture: er/db-subgraph-nodes-class-statement] [fixture:
   er/db-subgraph-nodes-class-def-statement] [fixture:
   er/db-subgraph-nodes-style-statement] [fixture: er/db-subgraph-class-inside]
@@ -395,29 +458,39 @@ around it. A subgraph has these values.
   er/db-subgraph-nodes-acc-descr-block-lines] [fixture:
   er/config-security-level-other-subgraph-node-acc-title] [fixture:
   er/db-subgraph-nodes-all-statements]
+
 - A direction statement gives no node, and an empty description block gives none
   and changes nothing, in the body as at the start of the body, after the
-  header. [fixture: er/db-subgraph-direction-only] [fixture:
+  header.
+
+  [fixture: er/db-subgraph-direction-only] [fixture:
   er/db-subgraph-nodes-empty-description-block] [fixture:
   er/gram-empty-description-block-first-in-subgraph] [fixture:
   er/gram-subgraph-header-blocks]
+
 - A comment line, a directive line, an empty line, and a line of whitespace in
-  the body are no statements. [fixture: er/db-subgraph-nodes-comment-line]
-  [fixture: er/db-subgraph-nodes-directive-line] [fixture:
+  the body are no statements.
+
+  [fixture: er/db-subgraph-nodes-comment-line] [fixture:
+  er/db-subgraph-nodes-directive-line] [fixture:
   er/db-subgraph-nodes-empty-line] [fixture:
   er/db-subgraph-nodes-whitespace-line]
+
 - `classes` and `cssStyles` start empty, and are filled by the statements after
   the end of the subgraph (see **Classes and styles**).
+
 - `dir` is the direction of the last direction statement among the statements of
   the body, not those of a nested subgraph, and is absent when there is none.
+
   [fixture: er/db-subgraph-direction] [fixture: er/db-subgraph-direction-nested]
   [fixture: er/db-direction-in-subgraph-twice]
 
 **Direction, title, and accessibility.** `direction` is the direction of the
 last direction statement among the statements of the body of the diagram, not of
 those in a subgraph, or `TB`. The title is that of the frontmatter, with the
-replacement of characters; a line `title T` is two entities. [fixture:
-er/db-direction-values] [fixture: er/db-direction-case] [fixture:
+replacement of characters; a line `title T` is two entities.
+
+[fixture: er/db-direction-values] [fixture: er/db-direction-case] [fixture:
 er/db-direction-twice] [fixture: er/db-subgraph-direction-top-level] [fixture:
 er/db-direction-line-text-before] [fixture: er/db-direction-line-text-after]
 [fixture: er/db-title-frontmatter] [fixture: er/db-title-frontmatter-quoted]
@@ -431,6 +504,7 @@ replaced by one line feed, and then with the replacement of characters. A
 description block without text changes nothing. The text may start on a later
 line: `accTitle:` followed by a line `A` gives the title `A`. In
 `accTitle: style:#x;y;` the last `;` is ignored, and `#x;` is an entity.
+
 [fixture: er/db-acc-title-line] [fixture: er/db-acc-title-spaces] [fixture:
 er/db-acc-title-replaces] [fixture: er/db-acc-title-twice] [fixture:
 er/db-acc-title-empty-takes-next-line] [fixture:
@@ -452,8 +526,9 @@ er/db-subgraph-nodes-acc-title]
 left out of a value (see
 [The converted form](../db-from-tree.md#the-converted-form)). The summary has no
 field for the text after the direction value, so that fixture records that the
-input is accepted: the direction is `LR`, and `y` is not an entity. [fixture:
-er/lex-direction-text-line-separator-then-comment-line]
+input is accepted: the direction is `LR`, and `y` is not an entity.
+
+[fixture: er/lex-direction-text-line-separator-then-comment-line]
 
 ## The replacement of characters
 
@@ -466,8 +541,9 @@ styles are as written. The title of a subgraph is replaced after its words are
 joined and before it is trimmed; without a bracket it is the text of the id. The
 nodes of a subgraph are not replaced: an `accTitle` in the body gives the
 diagram the replaced title, and the subgraph the text as written as a node. The
-`accDescr` is replaced after its lines are joined. [fixture:
-er/config-security-level-other-diagram-title] [fixture:
+`accDescr` is replaced after its lines are joined.
+
+[fixture: er/config-security-level-other-diagram-title] [fixture:
 er/config-security-level-other-acc-title] [fixture:
 er/config-security-level-other-acc-descr] [fixture:
 er/config-security-level-other-acc-descr-block] [fixture:

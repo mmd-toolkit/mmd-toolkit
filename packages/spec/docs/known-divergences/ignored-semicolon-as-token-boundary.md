@@ -19,9 +19,12 @@ reads it (see
 [`style` and `classDef` lines](../common.md#style-and-classdef-lines)). Then the
 same is done with `classDef` in place of `style`, on the line without the `;`
 that the `style` rule ignored, so a line can have a second ignored `;`.
-[fixture: common/entity-style-then-classdef-rule] The rule keeps the `;` that
-ends a colour, as in `style A fill:#f00;`, from making the colour an
-[entity](../common.md#entities), a character reference of the form `#name;`.
+
+[fixture: common/entity-style-then-classdef-rule]
+
+The rule keeps the `;` that ends a colour, as in `style A fill:#f00;`, from
+making the colour an [entity](../common.md#entities), a character reference of
+the form `#name;`.
 
 The rule looks at the text alone, so the ignored `;` can lie anywhere in the
 line: inside a label, between two words, or inside a name, a number, a keyword,
@@ -31,8 +34,9 @@ contain whitespace: the name of an ER entity, which may contain U+00A0, is one.
 A name that the document counts as a text unit, such as the id of a participant
 in a sequence diagram, a class name, or an attribute word of ER written with
 `~`, an unquoted name of a requirement diagram, or a node text of a mindmap, may
-hold an ignored `;`. [fixture:
-sequence/tokens-ignored-semicolon-separator-line-feed] [fixture:
+hold an ignored `;`.
+
+[fixture: sequence/tokens-ignored-semicolon-separator-line-feed] [fixture:
 class/tokens-ignored-semicolon-in-relation-name] [fixture:
 er/div-ignored-semicolon-in-name] [fixture:
 er/tokens-ignored-semicolon-in-tilde-word] [fixture:
@@ -97,8 +101,9 @@ Each example is a whole diagram.
 | 5       | the vertex A with the class c                               | rejected           |
 | 6       | the vertex A with the label `style:#x`, two spaces, and `y` | the same           |
 
-The fixtures record the readings compared in the table. [fixture:
-flowchart/div-ignored-semicolon-in-id] [fixture:
+The fixtures record the readings compared in the table.
+
+[fixture: flowchart/div-ignored-semicolon-in-id] [fixture:
 sequence/div-ignored-semicolon-in-autonumber-start] [fixture:
 flowchart/div-ignored-semicolon-in-keyword] [fixture:
 flowchart/div-ignored-semicolon-in-arrow] [fixture:
@@ -115,65 +120,92 @@ same Db.
 In a state diagram, the ignored `;` can lie inside the name after `state`, which
 may hold `style`, a `:`, and a `#`: mermaid.js reads `state style:#x;B` followed
 by a body as the composite state `style:#xB`, and this specification rejects it.
+
 [fixture: state/div-ignored-semicolon-in-state-name] [fixture:
-state/div-ignored-semicolon-in-state-name-without-body] The other statements
-that can hold `style`, a `:`, and a `#` read the rest of their line as a text.
-In an ER diagram, the `style`, the `:`, and the `#` may lie anywhere on the line
-before the `;`: in an entity name such as `Bstyle`, in the `:` of a relationship
-and its role `"#"`, or in an attribute comment `"c:#"`. So the ignored `;` can
-lie inside a name, a number, a cardinality, a relationship line, a keyword,
-`:::`, or a word or a key of an attribute block: mermaid.js reads
-`A ||--o{ Bstyle :"#" C;D` as a relationship to Bstyle and the entity `CD`, and
-this specification rejects it. [fixture: er/div-ignored-semicolon-in-name]
-[fixture: er/div-ignored-semicolon-in-attribute-word] [fixture:
-er/div-ignored-semicolon-in-relationship-line] In a Gantt chart, the `style`,
-the `:`, and the `#` may lie in the URL string or the callback arguments of a
-click statement, in a description block before the statement on its line, or in
-the click ids themselves, so the ignored `;` can lie inside a click id, a
-keyword, or an item of `includes` or `excludes`: mermaid.js reads
-`click style:#y,id;1 href "u"` as a link of `id1` and
+state/div-ignored-semicolon-in-state-name-without-body]
+
+The other statements that can hold `style`, a `:`, and a `#` read the rest of
+their line as a text. In an ER diagram, the `style`, the `:`, and the `#` may
+lie anywhere on the line before the `;`: in an entity name such as `Bstyle`, in
+the `:` of a relationship and its role `"#"`, or in an attribute comment
+`"c:#"`. So the ignored `;` can lie inside a name, a number, a cardinality, a
+relationship line, a keyword, `:::`, or a word or a key of an attribute block:
+mermaid.js reads `A ||--o{ Bstyle :"#" C;D` as a relationship to Bstyle and the
+entity `CD`, and this specification rejects it.
+
+[fixture: er/div-ignored-semicolon-in-name] [fixture:
+er/div-ignored-semicolon-in-attribute-word] [fixture:
+er/div-ignored-semicolon-in-relationship-line]
+
+In a Gantt chart, the `style`, the `:`, and the `#` may lie in the URL string or
+the callback arguments of a click statement, in a description block before the
+statement on its line, or in the click ids themselves, so the ignored `;` can
+lie inside a click id, a keyword, or an item of `includes` or `excludes`:
+mermaid.js reads `click style:#y,id;1 href "u"` as a link of `id1` and
 `click id1 href "style:#x" ca;ll f()` as a call, and this specification rejects
-them. [fixture: gantt/div-ignored-semicolon-in-click-id] [fixture:
+them.
+
+[fixture: gantt/div-ignored-semicolon-in-click-id] [fixture:
 gantt/div-ignored-semicolon-in-call-keyword] [fixture:
-gantt/div-ignored-semicolon-in-list-item] In a user journey diagram, a `#` ends
-a title text, a section text, a task text, and task data, and starts a comment,
-so the `style`, the `:`, and the `#` lie in a description block before the
-statement on its line, and the ignored `;` can lie inside a keyword: mermaid.js
-reads `accDescr { style:#x } ti;tle T` as the title `T` and
-`accDescr { style:#x } sec;tion S` as the section `S`, and this specification
-rejects them. [fixture: journey/div-ignored-semicolon-in-title-keyword]
-[fixture: journey/div-ignored-semicolon-in-section-keyword] In a requirement
-diagram, the `style`, the `:`, and the `#` may lie in a string name before the
-`;`, such as `"style:#x"`, so the ignored `;` can lie inside a keyword:
-mermaid.js reads `"style:#x" - sati;sfies -> b` as a relationship with the
-relation `satisfies`, and this specification rejects it. [fixture:
-requirement/div-ignored-semicolon-in-relationship-keyword] In a mindmap, the
-`style`, the `:`, and the `#` may lie in a node text before the `;`, so the
-ignored `;` can lie inside an opener or a closer: mermaid.js reads
-`style:#x{;{b}}` as a node with the hexagon shape and the text `b`, and this
-specification rejects it. [fixture: mindmap/div-ignored-semicolon-in-opener] In
-a timeline, as in a user journey diagram, the `style`, the `:`, and the `#` lie
-in a description block before the statement on its line, and the ignored `;` can
+gantt/div-ignored-semicolon-in-list-item]
+
+In a user journey diagram, a `#` ends a title text, a section text, a task text,
+and task data, and starts a comment, so the `style`, the `:`, and the `#` lie in
+a description block before the statement on its line, and the ignored `;` can
 lie inside a keyword: mermaid.js reads `accDescr { style:#x } ti;tle T` as the
-title `T`, and so with `sec;tion S` and `accTi;tle: T`, and this specification
-rejects them. [fixture: timeline/div-ignored-semicolon-in-title-keyword]
-[fixture: timeline/div-ignored-semicolon-in-section-keyword] [fixture:
-timeline/div-ignored-semicolon-in-acc-title-keyword] In an XY chart, the
-`style`, the `:`, and the `#` may lie in a string before the `;`, such as
-`"style:#a"`, so the ignored `;` can lie inside a value or a keyword: mermaid.js
-reads `line "style:#a" [1;2]` as a line with the value 12, and
-`title "style:#a" li;ne [1]` as a title and a line, and this specification
-rejects them. [fixture: xychart/div-ignored-semicolon-in-value] [fixture:
-xychart/div-ignored-semicolon-in-keyword] In a quadrant chart, the `style` or
-`classDef`, the `:`, and the `#` may lie in the name of a class of `classDef`,
-which is a name, so the ignored `;` lies inside the name: mermaid.js reads
-`classDef style:#x;y color: #f00` as the class `style:#xy`, and this
-specification rejects it. [fixture: quadrant/div-grid-style-classdef-name] In a
-block diagram, the `style`, the `:`, and the `#` may lie in a string before the
-`;`, such as the label `"style:#a"`, so the ignored `;` can lie inside an id or
-a keyword: mermaid.js reads `A["style:#a"] B;C` with the id `BC` and
+title `T` and `accDescr { style:#x } sec;tion S` as the section `S`, and this
+specification rejects them.
+
+[fixture: journey/div-ignored-semicolon-in-title-keyword] [fixture:
+journey/div-ignored-semicolon-in-section-keyword]
+
+In a requirement diagram, the `style`, the `:`, and the `#` may lie in a string
+name before the `;`, such as `"style:#x"`, so the ignored `;` can lie inside a
+keyword: mermaid.js reads `"style:#x" - sati;sfies -> b` as a relationship with
+the relation `satisfies`, and this specification rejects it.
+
+[fixture: requirement/div-ignored-semicolon-in-relationship-keyword]
+
+In a mindmap, the `style`, the `:`, and the `#` may lie in a node text before
+the `;`, so the ignored `;` can lie inside an opener or a closer: mermaid.js
+reads `style:#x{;{b}}` as a node with the hexagon shape and the text `b`, and
+this specification rejects it.
+
+[fixture: mindmap/div-ignored-semicolon-in-opener]
+
+In a timeline, as in a user journey diagram, the `style`, the `:`, and the `#`
+lie in a description block before the statement on its line, and the ignored `;`
+can lie inside a keyword: mermaid.js reads `accDescr { style:#x } ti;tle T` as
+the title `T`, and so with `sec;tion S` and `accTi;tle: T`, and this
+specification rejects them.
+
+[fixture: timeline/div-ignored-semicolon-in-title-keyword] [fixture:
+timeline/div-ignored-semicolon-in-section-keyword] [fixture:
+timeline/div-ignored-semicolon-in-acc-title-keyword]
+
+In an XY chart, the `style`, the `:`, and the `#` may lie in a string before the
+`;`, such as `"style:#a"`, so the ignored `;` can lie inside a value or a
+keyword: mermaid.js reads `line "style:#a" [1;2]` as a line with the value 12,
+and `title "style:#a" li;ne [1]` as a title and a line, and this specification
+rejects them.
+
+[fixture: xychart/div-ignored-semicolon-in-value] [fixture:
+xychart/div-ignored-semicolon-in-keyword]
+
+In a quadrant chart, the `style` or `classDef`, the `:`, and the `#` may lie in
+the name of a class of `classDef`, which is a name, so the ignored `;` lies
+inside the name: mermaid.js reads `classDef style:#x;y color: #f00` as the class
+`style:#xy`, and this specification rejects it.
+
+[fixture: quadrant/div-grid-style-classdef-name]
+
+In a block diagram, the `style`, the `:`, and the `#` may lie in a string before
+the `;`, such as the label `"style:#a"`, so the ignored `;` can lie inside an id
+or a keyword: mermaid.js reads `A["style:#a"] B;C` with the id `BC` and
 `A["style:#a"] col;umns 2` with `columns 2`, and this specification rejects
-them. [fixture: block/div-ignored-semicolon-in-id] [fixture:
+them.
+
+[fixture: block/div-ignored-semicolon-in-id] [fixture:
 block/div-ignored-semicolon-in-keyword]
 
 Each diagram document lists where this shows, in its Known divergences section:
@@ -193,30 +225,39 @@ Each diagram document lists where this shows, in its Known divergences section:
 
 In kanban, the selected semicolon inside an opener or closer splits the
 delimiter and is rejected. mermaid.js accepts `style:#x{;{b}}` and
-`style:#x{{b};}` as the same shape as `style:#x{{b}}`. [fixture:
-kanban/div-semicolon-opener] [fixture: kanban/div-semicolon-closer] [fixture:
-kanban/gram-semicolon-text-reference]
+`style:#x{{b};}` as the same shape as `style:#x{{b}}`.
+
+[fixture: kanban/div-semicolon-opener] [fixture: kanban/div-semicolon-closer]
+[fixture: kanban/gram-semicolon-text-reference]
 
 Inside node text, label text, a string, or data content, the selected semicolon
-is ignored. [fixture: kanban/lex-id-style-rule] [fixture:
-kanban/lex-id-classdef-rule] [fixture: kanban/lex-label-style-rule] [fixture:
-kanban/lex-metadata-style-rule] A semicolon on the next line is not selected:
-`::ic;on` after a line holding `style:#x` is node text (see
+is ignored.
+
+[fixture: kanban/lex-id-style-rule] [fixture: kanban/lex-id-classdef-rule]
+[fixture: kanban/lex-label-style-rule] [fixture: kanban/lex-metadata-style-rule]
+
+A semicolon on the next line is not selected: `::ic;on` after a line holding
+`style:#x` is node text (see
 [Directives inside units](../diagrams/kanban.md#directives-inside-units)).
+
 [fixture: kanban/lex-label-style-rule-other-line] [fixture:
 kanban/lex-semicolon-icon-marker]
 
 In C4, `accDescr { style:#x }Pers;on(a,"A")` is rejected here because the
 selected semicolon lies inside the call keyword; mermaid.js removes it and
-accepts the call. [fixture: c4/div-semicolon-call-keyword-after-block]
+accepts the call.
+
+[fixture: c4/div-semicolon-call-keyword-after-block]
 
 A selected semicolon inside bare argument text or a named key is trivia, and one
-between `=` and the opening quote is trivia between delimiters. [fixture:
-c4/lex-semicolon-text-selected] [fixture: c4/lex-semicolon-key-selected]
-[fixture: c4/lex-semicolon-delimiter-selected]
+between `=` and the opening quote is trivia between delimiters.
+
+[fixture: c4/lex-semicolon-text-selected] [fixture:
+c4/lex-semicolon-key-selected] [fixture: c4/lex-semicolon-delimiter-selected]
 
 In venn, the selected semicolon inside a name, size, text id, statement keyword,
 property key, or an identifier or number in a bare style value is rejected here.
+
 [fixture: venn/div-ignored-semicolon-set-name-selected] [fixture:
 venn/div-ignored-semicolon-size] [fixture:
 venn/div-ignored-semicolon-text-id-selected] [fixture:
@@ -224,7 +265,10 @@ venn/div-ignored-semicolon-text-number-selected] [fixture:
 venn/div-ignored-semicolon-set-keyword-selected] [fixture:
 venn/div-ignored-semicolon-title-keyword-selected] [fixture:
 venn/div-ignored-semicolon-style-key-selected] [fixture:
-venn/div-ignored-semicolon-style-value-selected] mermaid.js joins the parts.
+venn/div-ignored-semicolon-style-value-selected]
+
+mermaid.js joins the parts.
+
 [fixture: venn/div-ignored-semicolon-set-name-selected] [fixture:
 venn/div-ignored-semicolon-size] [fixture:
 venn/div-ignored-semicolon-text-id-selected] [fixture:
@@ -236,7 +280,9 @@ venn/div-ignored-semicolon-style-value-selected] [fixture:
 venn/div-ignored-semicolon-style-value-number-selected]
 
 A selected semicolon inside a whole venn color unit is trivia and does not cause
-this divergence. [fixture: venn/lex-style-hex-ignored-semicolon] [fixture:
+this divergence.
+
+[fixture: venn/lex-style-hex-ignored-semicolon] [fixture:
 venn/lex-style-rgb-ignored-semicolon]
 
 ## What it means for an author
@@ -280,6 +326,7 @@ In agentflow, a selected semicolon inside an id, class name, click id, edge id,
 linkStyle number, keyword, arrow, or compound delimiter cannot be retained by an
 EmptyStatement without splitting that atom or changing its value. Mermaid joins
 the parts; the existing direct whole-unit rule rejects them under reason 2.
+
 [fixture: agentflow/div-ignored-semicolon-in-id] [fixture:
 agentflow/div-ignored-semicolon-in-css-class] [fixture:
 agentflow/div-ignored-semicolon-in-click-id] [fixture:
@@ -292,6 +339,7 @@ agentflow/div-ignored-semicolon-in-data-block-start]
 Name text, labels, styles, and opaque metadata keys retain the selected
 semicolon as trivia; it is not an Identifier boundary there. A semicolon at a
 complete pipe boundary also changes no unit. Those controls remain unmarked.
+
 [fixture: agentflow/lex-ignored-semicolon-in-flow-name-text] [fixture:
 agentflow/lex-ignored-semicolon-in-metadata-key] [fixture:
 agentflow/lex-ignored-semicolon-in-pipe-boundary]
@@ -303,8 +351,10 @@ inside an atomic name, keyword, arrow or delimiter, including a word within a
 CSS property name. An empty statement cannot stand inside that atom. Mermaid
 accepts the joined id, include word, arrow, metadata key/value or delimiter; the
 direct whole-unit rule rejects it for reason 2. No Mermaid rejection becomes
-accepted under this rule. [fixture: usecase/div-semicolon-identifier-selected]
-[fixture: usecase/div-semicolon-keyword-selected] [fixture:
+accepted under this rule.
+
+[fixture: usecase/div-semicolon-identifier-selected] [fixture:
+usecase/div-semicolon-keyword-selected] [fixture:
 usecase/div-semicolon-joins-arrow-selected] [fixture:
 usecase/div-semicolon-native-key-valid] [fixture:
 usecase/div-semicolon-native-value-selected] [fixture:
@@ -317,6 +367,7 @@ In CSS property names in `style` and `classDef`, a selected `;` in the HWS
 between `--` and the following word is accepted as trivia. UsecaseIdentifier can
 hold the surrounding text; `--` and the word remain separate units with or
 without the semicolon, so nothing is joined and reason 2 does not apply.
+
 [fixture: usecase/lex-semicolon-css-name-gap] [fixture:
 usecase/lex-semicolon-classdef-css-name-gap]
 
@@ -324,8 +375,10 @@ In labels, CSS values, strings and opaque JSON, existing text nodes already hold
 the written content and the semicolon can be trivia. A selected semicolon
 between complete units is allowed too. A semicolon before the selection trigger,
 or an independently invalid joined diagram, remains an ordinary rejection with
-no divergence mark. [fixture: usecase/lex-semicolon-complete-unit-boundary]
-[fixture: usecase/lex-semicolon-css-number-text] [fixture:
+no divergence mark.
+
+[fixture: usecase/lex-semicolon-complete-unit-boundary] [fixture:
+usecase/lex-semicolon-css-number-text] [fixture:
 usecase/lex-semicolon-joins-id-selected] [fixture:
 usecase/lex-semicolon-native-key-selected]
 
@@ -342,8 +395,9 @@ then accepts the joined atom, while this specification rejects it. There is no
 reverse-direction pie input introduced by this rule. A semicolon inside a label
 or value is kept as written text with the shared ignored-semicolon record, and
 an ignored semicolon inside a hidden block does not split that block; these
-forms are not marked when the result agrees. [fixture:
-pie/div-atomic-semicolon-number] [fixture:
+forms are not marked when the result agrees.
+
+[fixture: pie/div-atomic-semicolon-number] [fixture:
 pie/div-selected-semicolon-title-keyword] [fixture:
 pie/div-selected-semicolon-showdata] [fixture:
 pie/div-selected-semicolon-acctitle] [fixture:
@@ -359,8 +413,9 @@ reference or integer does not. Selected semicolons strictly inside those atoms
 reject here although Mermaid joins them. This uses reason 2 and has no
 acceptance in the reverse direction. A selected semicolon at the option
 word/colon boundary or after a complete number is trivia; an unselected
-semicolon rejects in both readings. [fixture:
-gitgraph/div-style-semicolon-in-order-keyword] [fixture:
+semicolon rejects in both readings.
+
+[fixture: gitgraph/div-style-semicolon-in-order-keyword] [fixture:
 gitgraph/div-style-semicolon-in-order-number] [fixture:
 gitgraph/div-lex-selected-semicolon-type-word] [fixture:
 gitgraph/div-lex-selected-semicolon-bare-reference-valid] [fixture:
@@ -376,19 +431,22 @@ rejects selected semicolons inside showInfo, title, accTitle and both accDescr
 forms although Mermaid joins them. There is no reverse acceptance. Complete
 component boundaries and hidden/value text agree; an unselected semicolon, a
 split header rejected before selection, or another invalid tail remains
-unmarked. [fixture: info/div-selected-showinfo] [fixture:
-info/div-selected-title] [fixture: info/div-selected-acctitle] [fixture:
-info/div-selected-accdescr-line] [fixture: info/div-selected-accdescr-block]
-[fixture: info/lex-selected-colon-boundary] [fixture:
-info/lex-selected-brace-boundary] [fixture: info/lex-hidden-opener-selected]
-[fixture: info/lex-selected-header] [fixture:
-info/lex-selected-keyword-rejected-tail] [fixture: info/end-header-semicolon]
+unmarked.
+
+[fixture: info/div-selected-showinfo] [fixture: info/div-selected-title]
+[fixture: info/div-selected-acctitle] [fixture: info/div-selected-accdescr-line]
+[fixture: info/div-selected-accdescr-block] [fixture:
+info/lex-selected-colon-boundary] [fixture: info/lex-selected-brace-boundary]
+[fixture: info/lex-hidden-opener-selected] [fixture: info/lex-selected-header]
+[fixture: info/lex-selected-keyword-rejected-tail] [fixture:
+info/end-header-semicolon]
 
 ### Packet
 
 A selected character is trivia, but cannot split a fixed word or integer.
 Complete component boundaries and hidden punctuation can contain it. Detection
 precedes selection, so a split header can reject before this difference arises.
+
 [fixture: packet/div-selected-title-interior] [fixture:
 packet/div-selected-acctitle-interior] [fixture:
 packet/div-selected-accdescr-line-interior] [fixture:
@@ -405,8 +463,9 @@ common line rule select a later semicolon inside a parent ID or the in keyword.
 Mermaid joins the ID or keyword; this specification rejects the split atom. An
 ArchitectureIgnoredText cannot stand inside that name or keyword. A selected
 semicolon within a text value instead follows the common reading; its authored
-range still covers the original characters. [fixture:
-architecture/div-semicolon-parent-id] [fixture:
+range still covers the original characters.
+
+[fixture: architecture/div-semicolon-parent-id] [fixture:
 architecture/div-semicolon-in-keyword] [fixture:
 architecture/gram-semicolon-parent-reference] [fixture:
 architecture/style-fields]
@@ -418,17 +477,19 @@ number or fixed keyword, including boolean and graticule words. First ask
 whether the tree can preserve the reading: it cannot place an ignored-text node
 inside such an atom. The specification rejects that split atom instead of
 reproducing concatenation caused by the preprocessing order. This is the
-existing boundary divergence, not a new identifier. [fixture:
-radar/div-semicolon-id] [fixture: radar/div-semicolon-number] [fixture:
-radar/div-semicolon-keyword] [fixture: radar/div-semicolon-boolean-atom]
-[fixture: radar/div-semicolon-graticule-atom]
+existing boundary divergence, not a new identifier.
+
+[fixture: radar/div-semicolon-id] [fixture: radar/div-semicolon-number]
+[fixture: radar/div-semicolon-keyword] [fixture:
+radar/div-semicolon-boolean-atom] [fixture: radar/div-semicolon-graticule-atom]
 
 A selected semicolon between complete authored units or inside string,
 common-value or native hidden text is retained as common trivia. A whole native
 form can have RadarIgnoredText ownership and is accepted. Ordinary remaining
 semicolons still are not radar statement separators. Thus a tree slot exists for
-hidden text, but does not require accepting a split atom. [fixture:
-radar/gram-semicolon-between-units] [fixture:
+hidden text, but does not require accepting a split atom.
+
+[fixture: radar/gram-semicolon-between-units] [fixture:
 radar/lex-hidden-yaml-opener-selected-control] [fixture:
 radar/lex-hidden-native-opener-selected] [fixture: radar/style-fields] [fixture:
 radar/style-controls] [fixture: radar/tail-option-semicolon]
@@ -442,8 +503,9 @@ without copying the removal pipeline. Mermaid joins them when the common line
 rule selects that semicolon. The marked fixtures retain the written text and
 reject here; a semicolon before the required hash is not selected and rejects in
 both readings. Class style remains one literal, with no new rejection for
-ignored semicolons inside its text. [fixture:
-treemap/div-semicolon-selector-atom] [fixture:
+ignored semicolons inside its text.
+
+[fixture: treemap/div-semicolon-selector-atom] [fixture:
 treemap/div-semicolon-number-atom] [fixture: treemap/div-semicolon-style-marker]
 [fixture: treemap/div-semicolon-class-keyword-style-trigger] [fixture:
 treemap/div-semicolon-class-name-style-trigger] [fixture:
@@ -459,8 +521,9 @@ decimal count or compound assignment. It does not split quoted/text values,
 including ABNF numeric-value text. Between a repeat bound and star, or between a
 complete repeat and its primary, a selected semicolon likewise does not split
 components or change acceptance. These semicolons are common trivia, distinct
-from ABNF’s native semicolon comments and visible rule terminators. [fixture:
-railroad/ir-div-semicolon-rule-name] [fixture:
+from ABNF’s native semicolon comments and visible rule terminators.
+
+[fixture: railroad/ir-div-semicolon-rule-name] [fixture:
 railroad/ir-div-semicolon-constructor-keyword] [fixture:
 railroad/ir-div-semicolon-title-keyword] [fixture:
 railroad/abnf-div-semicolon-repeat-number] [fixture:
@@ -478,7 +541,9 @@ common trivia, but an ignored-text child cannot make the two
 name/keyword/count/delimiter fragments one authored atom. The second answer is
 reason 2: the direct boundary rule applies instead of Mermaid’s preprocessing
 order. The existing identifier records only inputs read differently by that
-rule. [fixture: railroad/ir-native-ownership] [fixture:
+rule.
+
+[fixture: railroad/ir-native-ownership] [fixture:
 railroad/ebnf-native-ownership] [fixture: railroad/abnf-native-ownership]
 [fixture: railroad/peg-native-ownership] [fixture:
 railroad/abnf-div-semicolon-repeat-number]
@@ -492,8 +557,9 @@ ID-form name or indivisible arrow, port or marker still needs fragment joining
 rather than an authored gap. The existing reason-2 rule rejects these atomic
 splits. Coordinate, offset and decoration components remain separate boundaries;
 labeled flows also permit selected trivia between their plus, quoted label and
-complete end marker. Unselected semicolons are not separators. [fixture:
-wardley/lex-selected-decimal-inside] [fixture:
+complete end marker. Unselected semicolons are not separators.
+
+[fixture: wardley/lex-selected-decimal-inside] [fixture:
 wardley/lex-selected-label-keyword] [fixture:
 wardley/lex-selected-strategy-inside] [fixture:
 wardley/lex-selected-target-id-inside] [fixture:
@@ -511,12 +577,13 @@ wardley/lex-selected-keyword-inside]
 Only actually selected semicolons obey the same atomic boundary rule. Shared
 trivia can hold the punctuation, but cannot create an internal gap in a fixed
 word or -->. Component boundaries, string text and native fence punctuation
-remain allowed; arbitrary semicolons are not separators. [fixture:
-cynefin/semicolon-complex-inside] [fixture: cynefin/semicolon-clear-inside]
-[fixture: cynefin/semicolon-arrow-inside] [fixture:
-cynefin/semicolon-title-inside] [fixture: cynefin/semicolon-acctitle-inside]
-[fixture: cynefin/semicolon-block-inside] [fixture:
-cynefin/semicolon-colon-header-selected-parts] [fixture:
+remain allowed; arbitrary semicolons are not separators.
+
+[fixture: cynefin/semicolon-complex-inside] [fixture:
+cynefin/semicolon-clear-inside] [fixture: cynefin/semicolon-arrow-inside]
+[fixture: cynefin/semicolon-title-inside] [fixture:
+cynefin/semicolon-acctitle-inside] [fixture: cynefin/semicolon-block-inside]
+[fixture: cynefin/semicolon-colon-header-selected-parts] [fixture:
 cynefin/semicolon-arrow-parts] [fixture:
 cynefin/selected-colon-label-components] [fixture:
 cynefin/selected-native-yaml-opener] [fixture:
@@ -530,8 +597,9 @@ and
 [public adapter](https://github.com/mermaid-js/mermaid/blob/2086904e76c692331e34a45d7cc3bc30860d040e/packages/mermaid/src/diagrams/cynefin/cynefinParser.ts#L8-L19)
 read the result of the common preprocessing/detection pipeline. The
 [Cynefin syntax](../diagrams/cynefin.md) states the direct rule and
-[tree](../ast/cynefin.md) retains its authored forms. [fixture:
-cynefin/db-all-fields]
+[tree](../ast/cynefin.md) retains its authored forms.
+
+[fixture: cynefin/db-all-fields]
 
 ### eventmodeling
 
@@ -542,8 +610,9 @@ change that unit. Mermaid accepts the selected-semicolon cases inside those
 atoms; this specification rejects them. A selected semicolon between a dot and a
 complete name, between reference components or between type-tag components
 splits no atom and remains permitted. Ordinary semicolons still reject, and
-selecting the last semicolon does not remove earlier ones. [fixture:
-eventmodeling/lex-semicolon-identifier-inside] [fixture:
+selecting the last semicolon does not remove earlier ones.
+
+[fixture: eventmodeling/lex-semicolon-identifier-inside] [fixture:
 eventmodeling/lex-semicolon-frame-id-inside] [fixture:
 eventmodeling/semicolon-arrow-inside] [fixture:
 eventmodeling/semicolon-reference-inside] [fixture:
@@ -572,7 +641,9 @@ the direct boundary rule. Gaps between components and text/string interiors
 remain allowed. An unselected semicolon is ordinary text; a semicolon-split
 header normally fails earlier detection and is not a marked divergence. The
 [diagram syntax](../diagrams/treeview.md#comments-and-boundaries) defines the
-scope. [fixture: treeview/semicolon-class-inside] [fixture:
+scope.
+
+[fixture: treeview/semicolon-class-inside] [fixture:
 treeview/semicolon-description-inside] [fixture:
 treeview/semicolon-class-value-inside] [fixture:
 treeview/semicolon-icon-value-inside] [fixture:

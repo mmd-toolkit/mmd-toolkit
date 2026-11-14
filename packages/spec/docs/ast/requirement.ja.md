@@ -18,10 +18,12 @@
 この図種の StringLiteral（名前、クラス、値）は、常に閉じていて空ではありません。
 閉じる引用符のない `"` と空の文字列は、
 入力を拒否させます（[文字列](../diagrams/requirement.ja.md#単位と文脈)
-を参照）。 [fixture: requirement/lex-string-unclosed] [fixture:
-requirement/gram-requirement-name-empty-string] [fixture:
-requirement/gram-requirement-value-empty-string] [fixture:
-requirement/div-empty-string-before-value]
+を参照）。
+
+[fixture: requirement/lex-string-unclosed]
+[fixture: requirement/gram-requirement-name-empty-string]
+[fixture: requirement/gram-requirement-value-empty-string]
+[fixture: requirement/div-empty-string-before-value]
 
 **要求**は図の箱で、id、テキスト、リスク、検証の方法を持ちます。
 **要素**は図の箱で、型と文書の参照を持ちます。
@@ -71,7 +73,9 @@ RequirementAccDescrStatement、RequirementAccDescrBlockStatement のいずれか
 名前は、`unquoted-text` の単位では RequirementIdentifier、
 `string` の単位では StringLiteral で、各クラスも同じです。
 `body` の RequirementIgnoredText は、本体の行にある空の説明ブロックで、
-mermaid.js は読みません。 [fixture: requirement/db-requirement-all-fields]
+mermaid.js は読みません。
+
+[fixture: requirement/db-requirement-all-fields]
 [fixture: requirement/spec-requirement-diagram-d1dc0373]
 [fixture: requirement/spec-requirement-diagram-17e0a905]
 [fixture: requirement/spec-requirement-diagram-f221edee]
@@ -86,6 +90,7 @@ mermaid.js は読みません。 [fixture: requirement/db-requirement-all-fields
 [fixture: requirement/gram-empty-description-block-in-body]
 [fixture: requirement/db-requirement-second-definition-classes]
 [fixture: requirement/db-requirement-name-repeated]
+
 [空の説明ブロック](../diagrams/requirement.ja.md#空の説明ブロック)
 を参照してください。
 
@@ -107,10 +112,11 @@ mermaid.js は読みません。 [fixture: requirement/db-requirement-all-fields
 `ID: 1` のフィールドは `id` です。
 値は、`unquoted-text` の単位では RequirementLiteral、
 `string` の単位では StringLiteral です。
-[fixture: requirement/db-requirement-all-fields] [fixture:
-requirement/db-requirement-quoted-values] [fixture:
-requirement/db-requirement-value-spaces] [fixture:
-requirement/db-keywords-upper-case]
+
+[fixture: requirement/db-requirement-all-fields]
+[fixture: requirement/db-requirement-quoted-values]
+[fixture: requirement/db-requirement-value-spaces]
+[fixture: requirement/db-keywords-upper-case]
 
 ### RequirementRiskField
 
@@ -124,9 +130,10 @@ requirement/db-keywords-upper-case]
 子の欄はありません。
 リスクは、書かれた大文字小文字によらず、キーワードを小文字にした語です。
 `risk: High` と `RISK: HIGH` のリスクは `high` です。
-[fixture: requirement/db-requirement-all-fields] [fixture:
-requirement/lex-risk-method-mixed-case] [fixture:
-requirement/db-keywords-upper-case]
+
+[fixture: requirement/db-requirement-all-fields]
+[fixture: requirement/lex-risk-method-mixed-case]
+[fixture: requirement/db-keywords-upper-case]
 
 ### RequirementVerifyMethodField
 
@@ -140,9 +147,10 @@ requirement/db-keywords-upper-case]
 子の欄はありません。
 方法は、書かれた大文字小文字によらず、キーワードを小文字にした語です。
 `verifymethod: Test` の方法は `test` です。
-[fixture: requirement/db-requirement-all-fields] [fixture:
-requirement/lex-risk-method-mixed-case] [fixture:
-requirement/spec-requirement-diagram-1e009b06]
+
+[fixture: requirement/db-requirement-all-fields]
+[fixture: requirement/lex-risk-method-mixed-case]
+[fixture: requirement/spec-requirement-diagram-1e009b06]
 
 ### RequirementElementStatement
 
@@ -157,12 +165,13 @@ requirement/spec-requirement-diagram-1e009b06]
 
 子の欄: `name`、`cssClasses`、`body`。
 RequirementRequirementStatement と同じです。
-[fixture: requirement/db-element-fields] [fixture:
-requirement/db-element-defaults] [fixture:
-requirement/db-class-in-definition] [fixture:
-requirement/gram-empty-description-block-in-element-body]
-[fixture: requirement/db-element-definition-with-class-of-requirement] [fixture:
-requirement/db-element-name-repeated]
+
+[fixture: requirement/db-element-fields]
+[fixture: requirement/db-element-defaults]
+[fixture: requirement/db-class-in-definition]
+[fixture: requirement/gram-empty-description-block-in-element-body]
+[fixture: requirement/db-element-definition-with-class-of-requirement]
+[fixture: requirement/db-element-name-repeated]
 
 ### RequirementElementField
 
@@ -177,10 +186,11 @@ requirement/db-element-name-repeated]
 子の欄: `value`。
 フィールドは、書かれた大文字小文字によらず、キーワードを小文字にした語です。
 `docRef: d` のフィールドは `docref` です。
-値は RequirementValueField と同じです。 [fixture: requirement/db-element-fields]
-[fixture:
-requirement/gram-element-docref-quoted-url] [fixture:
-requirement/db-keywords-upper-case]
+値は RequirementValueField と同じです。
+
+[fixture: requirement/db-element-fields]
+[fixture: requirement/gram-element-docref-quoted-url]
+[fixture: requirement/db-keywords-upper-case]
 
 ### RequirementRelationshipStatement
 
@@ -199,11 +209,12 @@ requirement/db-keywords-upper-case]
 `traces` のどれかで、書かれた大文字小文字によらず小文字です。
 欄は名前が書かれた順を保ちます。
 矢印は元から先を指すので、`b <- copies - a` は a から b への関係です。
-[fixture: requirement/db-relationship-arrows] [fixture:
-requirement/gram-relationship-backward-glued] [fixture:
-requirement/lex-relationship-upper-case] [fixture:
-requirement/db-relationship-quoted-names] [fixture:
-requirement/db-relationship-undefined-names]
+
+[fixture: requirement/db-relationship-arrows]
+[fixture: requirement/gram-relationship-backward-glued]
+[fixture: requirement/lex-relationship-upper-case]
+[fixture: requirement/db-relationship-quoted-names]
+[fixture: requirement/db-relationship-undefined-names]
 
 ### RequirementDirectionStatement
 
@@ -220,11 +231,12 @@ requirement/db-relationship-undefined-names]
 を持ちます。
 方向は値を大文字にしたものです。
 `direction rl` は `RL` になります。
-[fixture: requirement/spec-requirement-diagram-08cfba06] [fixture:
-requirement/db-direction-lower-case] [fixture:
-requirement/lex-direction-line-text-before-and-after] [fixture:
-requirement/lex-direction-value-suffix] [fixture:
-requirement/lex-direction-in-relationship-line]
+
+[fixture: requirement/spec-requirement-diagram-08cfba06]
+[fixture: requirement/db-direction-lower-case]
+[fixture: requirement/lex-direction-line-text-before-and-after]
+[fixture: requirement/lex-direction-value-suffix]
+[fixture: requirement/lex-direction-in-relationship-line]
 
 ### RequirementStyleStatement
 
@@ -243,9 +255,10 @@ requirement/lex-direction-in-relationship-line]
 を参照）。
 スタイルのリストは空になりません。
 スタイルのない `style` の文は拒否されます。
-[fixture: requirement/db-style-statement] [fixture:
-requirement/lex-style-string-name] [fixture:
-requirement/lex-style-without-style]
+
+[fixture: requirement/db-style-statement]
+[fixture: requirement/lex-style-string-name]
+[fixture: requirement/lex-style-without-style]
 
 ### RequirementClassDefStatement
 
@@ -258,9 +271,10 @@ requirement/lex-style-without-style]
 
 子の欄: `cssClasses`、`styles`。
 クラス名は RequirementStyleStatement の名前と同じです。
-[fixture: requirement/db-class-def] [fixture:
-requirement/lex-classdef-string-name] [fixture:
-requirement/lex-classdef-without-style]
+
+[fixture: requirement/db-class-def]
+[fixture: requirement/lex-classdef-string-name]
+[fixture: requirement/lex-classdef-without-style]
 
 ### RequirementClassStatement
 
@@ -277,9 +291,11 @@ requirement/lex-classdef-without-style]
 `string` の単位では StringLiteral です。
 `unquoted-text` の単位がそこに来るのは、
 文がその行を終える改行の後に続くときです。
+
 [fixture: requirement/db-class-statement]
 [fixture: requirement/gram-class-string-class]
 [fixture: requirement/lex-class-list-next-line]
+
 [style の文脈](../diagrams/requirement.ja.md#style-の文脈) を参照してください。
 
 ### RequirementClassShorthandStatement
@@ -295,10 +311,11 @@ RequirementClassStatement と同じく、その名前の要求か要素にクラ
 
 子の欄: `name`、`cssClasses`。
 RequirementClassStatement ではないのは、書き方が違うからです。
-名前は 1 つで、`class` がありません。 [fixture: requirement/db-class-colon-form]
-[fixture:
-requirement/gram-class-shorthand-spaced] [fixture:
-requirement/lex-style-string-then-shorthand]
+名前は 1 つで、`class` がありません。
+
+[fixture: requirement/db-class-colon-form]
+[fixture: requirement/gram-class-shorthand-spaced]
+[fixture: requirement/lex-style-string-then-shorthand]
 
 ### RequirementAccTitleStatement
 
@@ -312,10 +329,11 @@ requirement/lex-style-string-then-shorthand]
 `:` の後の空白は改行を含めて一緒に読まれるので、
 テキストは最初にテキストのある行から始まり、値は null になりません。
 後ろに何もない `accTitle:` は拒否されます。
-値は両端の空白を除いたテキストです。 [fixture: requirement/db-acc-title-descr]
-[fixture:
-requirement/gram-acc-title-line-feed-then-text] [fixture:
-requirement/lex-acc-title-at-end]
+値は両端の空白を除いたテキストです。
+
+[fixture: requirement/db-acc-title-descr]
+[fixture: requirement/gram-acc-title-line-feed-then-text]
+[fixture: requirement/lex-acc-title-at-end]
 
 ### RequirementAccDescrStatement
 
@@ -327,8 +345,9 @@ requirement/lex-acc-title-at-end]
 
 子の欄: `value`。
 RequirementAccTitleStatement と同じく、値は null になりません。
-[fixture: requirement/db-acc-title-descr] [fixture:
-requirement/lex-acc-descr-at-end]
+
+[fixture: requirement/db-acc-title-descr]
+[fixture: requirement/lex-acc-descr-at-end]
 
 ### RequirementAccDescrBlockStatement
 
@@ -345,12 +364,15 @@ requirement/lex-acc-descr-at-end]
 `accDescr {}` と、ディレクティブだけを持つブロックは、値 null を持ち、
 何も変えません。
 そのようなブロックは、文が始まるところでは文で、本体の行では本体の項目です。
-文の中のブロックは入力を拒否させます。 [fixture: requirement/db-acc-descr-block]
+文の中のブロックは入力を拒否させます。
+
+[fixture: requirement/db-acc-descr-block]
 [fixture: requirement/gram-acc-descr-block-empty]
 [fixture: requirement/gram-acc-descr-block-directive-only]
 [fixture: requirement/gram-empty-description-block-after-close-brace]
 [fixture: requirement/div-empty-description-block-in-relationship]
 [fixture: requirement/lex-acc-descr-block-unclosed]
+
 [空の説明ブロック](../diagrams/requirement.ja.md#空の説明ブロック)
 を参照してください。
 
@@ -371,12 +393,13 @@ requirement/lex-acc-descr-at-end]
 `b` は 1 つの名前です。
 その行の名前の後ろの空白は、U+00A0 を含めて単位と一緒に読まれ、
 書かれたテキストには入りません。
-[fixture: requirement/db-requirement-name-spaces] [fixture:
-requirement/lex-whitespace-nbsp-in-name] [fixture:
-requirement/lex-whitespace-nbsp-after-name] [fixture:
-requirement/lex-whitespace-line-separator-in-name] [fixture:
-requirement/gram-requirement-class-space] [fixture:
-requirement/db-style-statement]
+
+[fixture: requirement/db-requirement-name-spaces]
+[fixture: requirement/lex-whitespace-nbsp-in-name]
+[fixture: requirement/lex-whitespace-nbsp-after-name]
+[fixture: requirement/lex-whitespace-line-separator-in-name]
+[fixture: requirement/gram-requirement-class-space]
+[fixture: requirement/db-style-statement]
 
 ### RequirementLiteral
 
@@ -401,10 +424,12 @@ mermaid.js はスタイルの単位の間の空白を落とすので、
 を持ちます。
 アクセシビリティのテキストは、mermaid.js が取り除く両端の空白なしで読まれ、
 空白だけになることはありません。
-[fixture: requirement/db-requirement-value-spaces] [fixture:
-requirement/lex-style-spaces] [fixture: requirement/lex-style-no-comma]
-[fixture: requirement/db-acc-title-descr] [fixture:
-requirement/db-acc-descr-block]
+
+[fixture: requirement/db-requirement-value-spaces]
+[fixture: requirement/lex-style-spaces]
+[fixture: requirement/lex-style-no-comma]
+[fixture: requirement/db-acc-title-descr]
+[fixture: requirement/db-acc-descr-block]
 
 ### RequirementIgnoredText
 
@@ -421,12 +446,13 @@ requirement/db-acc-descr-block]
 `accDescr {`・改行・`}` のようなブロックのテキストを持つ 1 つのノードです。
 行のどこにあっても同じで、`{` の後、フィールドの前、値が文字列のフィールドの後、
 `}` の前にあります。
-[fixture: requirement/lex-direction-line-text-before-and-after] [fixture:
-requirement/gram-empty-description-block-in-body] [fixture:
-requirement/gram-empty-description-block-after-brace] [fixture:
-requirement/gram-empty-description-block-before-field] [fixture:
-requirement/gram-empty-description-block-after-string-value] [fixture:
-requirement/gram-empty-description-block-before-close-brace] [fixture:
-requirement/gram-empty-description-block-space-in-body]
-[fixture: requirement/gram-empty-description-block-multiline-in-body] [fixture:
-requirement/gram-empty-description-blocks-adjacent-in-body]
+
+[fixture: requirement/lex-direction-line-text-before-and-after]
+[fixture: requirement/gram-empty-description-block-in-body]
+[fixture: requirement/gram-empty-description-block-after-brace]
+[fixture: requirement/gram-empty-description-block-before-field]
+[fixture: requirement/gram-empty-description-block-after-string-value]
+[fixture: requirement/gram-empty-description-block-before-close-brace]
+[fixture: requirement/gram-empty-description-block-space-in-body]
+[fixture: requirement/gram-empty-description-block-multiline-in-body]
+[fixture: requirement/gram-empty-description-blocks-adjacent-in-body]

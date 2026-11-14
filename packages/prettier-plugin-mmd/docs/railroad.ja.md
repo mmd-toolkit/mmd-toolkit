@@ -268,8 +268,8 @@ EBNF の2形は同じ Db で、mermaid.js の文書の例は `=` を 35 回使�
 （[キーワードや記号の別の綴り](./compatibility.ja.md#キーワードや記号の別の綴り)
 を参照）。
 複合記号は1つのトークンのままにします。
-[fixture: railroad/assignment/ebnf-assignment-equals]
 
+[fixture: railroad/assignment/ebnf-assignment-equals]
 [fixture: railroad/assignment/abnf-spaces]
 
 [fixture: railroad/assignment/ebnf-spellings]
@@ -683,7 +683,9 @@ railroad-ebnf-beta
 規則名は空白を含まないため、
 文字列にその連なりを含む nonterminal はどの規則も参照せず、
 その文字列はほかの文字列と同じに印字します。
+
 [fixture: railroad/quotes/ir-string-runs-collapsed]
+
 IR、EBNF、PEG は両方の引用符とバックスラッシュエスケープを認めます。
 `'` で囲んだ文字列は `"` で囲んで印字しますが、内容に `'`、`"`、
 バックスラッシュ、改行、U+2028、U+2029、バッククォート、`&`、`#`、
@@ -692,10 +694,10 @@ IR、EBNF、PEG は両方の引用符とバックスラッシュエスケープ�
 `singleQuote` は読みません。
 ABNF は二重引用符だけを認め、バックスラッシュを普通の文字として読みます。
 内容の両端の空白の除去やエスケープの誤解釈で Db が変わります。
+
 [fixture: railroad/quotes/ir-single-quote-sensitive-kept]
 [fixture: railroad/quotes/ebnf-single-quote-sensitive-kept]
 [fixture: railroad/quotes/peg-single-quote-sensitive-kept]
-
 [fixture: railroad/quotes/abnf-backslash]
 
 [fixture: railroad/quotes/abnf-empty-and-text]
@@ -811,10 +813,10 @@ EBNF、ABNF、PEG では、最外周の選択の代入直後と、
 区切り記号は後の選択肢とまとめるため、その直後の通常の改行はつなげます。
 他の式の余白は詰め、1 行の規則に改行は足しません。
 `printWidth` は図の改行位置を決めません。
+
 [fixture: railroad/long-lines/ebnf-written-alternatives]
 [fixture: railroad/long-lines/abnf-written-alternatives]
 [fixture: railroad/long-lines/peg-written-alternatives]
-
 [fixture: railroad/long-lines/ir-comments-kept]
 
 [fixture: railroad/long-lines/ir-directive-kept]
@@ -1046,8 +1048,8 @@ last";
 題の終わりのディレクティブは、それぞれの前に空白があれば空白 1 つを置き、
 行末の空白の有無にかかわらず、最後のディレクティブの後の空白を除いて印字します。
 （[同じに描かれるキーワードの後のテキスト](./compatibility.ja.md#同じに描かれるキーワードの後のテキスト)）。
-[fixture: title/title-directives-end-blanks-dropped]
 
+[fixture: title/title-directives-end-blanks-dropped]
 [fixture: railroad/title/abnf-next-line]
 
 [fixture: railroad/title/abnf-prefix]
@@ -1157,8 +1159,8 @@ railroad-peg-beta
 値の終わりのディレクティブは、それぞれの前に空白があれば空白 1 つを置き、
 最後のディレクティブの後の空白を除いて印字します。
 （[同じに描かれるキーワードの後のテキスト](./compatibility.ja.md#同じに描かれるキーワードの後のテキスト)）。
-[fixture: accessibility-lines/acc-directives-end-blanks-dropped]
 
+[fixture: accessibility-lines/acc-directives-end-blanks-dropped]
 [fixture: railroad/accessibility-lines/abnf-empty]
 
 [fixture: railroad/accessibility-lines/abnf-values]
@@ -1236,6 +1238,7 @@ railroad-peg-beta
 波括弧を保つブロックでは、`accDescr` と `{` の間に空白 1 つを置きます。
 キーワードと開始括弧の間が空白だけなら、同じ行にまとめます。
 空白だけの内部は、囲む内容がないため `{}` にします。
+
 [fixture: railroad/description-blocks/abnf-edges]
 [fixture: railroad/description-blocks/ebnf-edges]
 [fixture: railroad/description-blocks/ir-edges]
@@ -1245,6 +1248,7 @@ railroad-peg-beta
 通常の説明本文と独立したコメント行を文より 1 段深くします。
 Db で LF 後の字下げが取り除かれるためです。
 改行、内部の空行、行末空白を保ち、独立した閉じ括弧を文と同じ段にそろえます。
+
 [fixture: railroad/description-blocks/abnf-lines]
 [fixture: railroad/description-blocks/ebnf-lines]
 [fixture: railroad/description-blocks/ir-lines]
@@ -1257,6 +1261,7 @@ railroad 図では `/* c */`）。
 コロンの形では、そのコメントが本文の一部になるからです。
 `%%` で始まるコメントは本文を終えるので、
 ブロックは `accDescr: d %% c` になります。
+
 [fixture: railroad/description-blocks/abnf-comment-after-block-kept]
 [fixture: railroad/description-blocks/ebnf-iso-comment-after-block-kept]
 [fixture: railroad/description-blocks/ebnf-c-comment-after-block-kept]
@@ -1269,6 +1274,7 @@ railroad 図では `/* c */`）。
 
 ディレクティブは原文全体を保ちます。
 コメントかディレクティブだけのブロックも内容を残します。
+
 [fixture: railroad/description-blocks/abnf-trivia]
 [fixture: railroad/description-blocks/ebnf-trivia]
 [fixture: railroad/description-blocks/ir-trivia]
@@ -1904,12 +1910,13 @@ railroad では、大域的なディレクティブを除いた後の原文の�
 前後の行とは結合しません。
 ディレクティブの除去で、これらの文字列が複数の物理行をまたいでできる場合は、
 またがる行をすべて保ちます。
-[fixture: railroad/semicolons/native-terminal-value]
 
+[fixture: railroad/semicolons/native-terminal-value]
 [fixture: railroad/semicolons/ir-word-unclosed-directive-lines]
 [fixture: railroad/semicolons/ebnf-word-unclosed-directive-lines]
 [fixture: railroad/semicolons/abnf-word-unclosed-directive-lines]
 [fixture: railroad/semicolons/peg-word-unclosed-directive-lines]
+
 ここでいう行は、mermaid.js が1行として読む範囲全体です。
 U+2028 や U+2029 の後のコメント行が、語を含む行の前、後、
 両方のテキストをつなぐ場合も、つながる原文の行をすべて保ちます。
@@ -1957,8 +1964,8 @@ railroad では、規則の必須終端や ABNF のコメントの印がその�
 ディレクティブの除去で接する文字は対象にします。
 ヘッダの前の行にある大域的なディレクティブも同じように除かれ、
 その後の本文の行は、従来どおり保つか整形します。
-[fixture: railroad/semicolons/ir-word-after-leading-directive]
 
+[fixture: railroad/semicolons/ir-word-after-leading-directive]
 [fixture: railroad/semicolons/abnf-comment-marker-spaced]
 
 [fixture: railroad/semicolons/abnf-comment-marker-multiline]

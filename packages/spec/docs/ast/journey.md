@@ -21,8 +21,9 @@ A **task** is a step of the journey, with a description, a score, and the people
 who take part in it; a **section** groups the tasks after it.
 
 This diagram type has no strings in quotes, so no node of it is a StringLiteral:
-a `"` in a task text is a character of the text. [fixture:
-journey/lex-quotes-in-task-text]
+a `"` in a task text is a character of the text.
+
+[fixture: journey/lex-quotes-in-task-text]
 
 ## Nodes
 
@@ -68,8 +69,10 @@ least one element.
 `A: 5:` one null person; `A: : x` no score; `A:  3 : x` the score `3`;
 `A: abc: x` the score `abc`; `A: 5, 6: Me` the score `5, 6`; and
 `A: 3: a,b: c, d` the people `a` and `b` and the `textAfter` `: c, d`, and
-`A: 5: Me:` the `textAfter` `:`. [fixture: journey/db-task-score-only] [fixture:
-journey/db-task-people] [fixture: journey/db-task-people-empty-item] [fixture:
+`A: 5: Me:` the `textAfter` `:`.
+
+[fixture: journey/db-task-score-only] [fixture: journey/db-task-people]
+[fixture: journey/db-task-people-empty-item] [fixture:
 journey/db-task-people-blank] [fixture: journey/gram-task-second-colon-at-end]
 [fixture: journey/db-task-score-empty] [fixture: journey/db-task-score-spaces]
 [fixture: journey/db-task-score-not-a-number] [fixture:
@@ -85,10 +88,11 @@ A `title` statement.
 | `value` | JourneyLiteral | The text after `title` and one whitespace character, up to a `#`, a `;`, or a line feed. |
 
 Child fields: `value`. The value keeps the whitespace at its ends and holds `:`
-and `%%` as characters. [fixture: journey/db-title-statement] [fixture:
-journey/lex-title-two-spaces] [fixture: journey/lex-title-trailing-spaces]
-[fixture: journey/lex-title-colon-inside] [fixture:
-journey/lex-title-percent-inside]
+and `%%` as characters.
+
+[fixture: journey/db-title-statement] [fixture: journey/lex-title-two-spaces]
+[fixture: journey/lex-title-trailing-spaces] [fixture:
+journey/lex-title-colon-inside] [fixture: journey/lex-title-percent-inside]
 
 ### JourneySectionStatement
 
@@ -100,9 +104,11 @@ A `section` statement.
 
 Child fields: `name`. The name is a text that may contain whitespace, which
 nothing refers to, so it is a JourneyLiteral; it keeps the whitespace at its
-ends, and a name of whitespace only is a value of that whitespace. [fixture:
-journey/db-sections] [fixture: journey/lex-section-two-spaces] [fixture:
-journey/db-section-ends-at-hash] [fixture: journey/lex-section-whitespace-only]
+ends, and a name of whitespace only is a value of that whitespace.
+
+[fixture: journey/db-sections] [fixture: journey/lex-section-two-spaces]
+[fixture: journey/db-section-ends-at-hash] [fixture:
+journey/lex-section-whitespace-only]
 
 ### JourneyAccTitleStatement
 
@@ -115,7 +121,9 @@ An `accTitle:` statement with its text.
 Child fields: `value`. The whitespace after the `:` is read with it, line feeds
 included, so the text starts on the first line that has one, and the value is
 never null: `accTitle:` with nothing after it is rejected. The value is the text
-without the whitespace at its ends. [fixture: journey/db-acc-title] [fixture:
+without the whitespace at its ends.
+
+[fixture: journey/db-acc-title] [fixture:
 journey/gram-acc-title-line-feed-then-text] [fixture:
 journey/lex-acc-title-at-end] [fixture: journey/gram-acc-title-trailing-spaces]
 
@@ -128,6 +136,7 @@ An `accDescr:` statement with its text.
 | `value` | JourneyLiteral | The text after `accDescr:`, up to the end of its line. |
 
 Child fields: `value`. As for JourneyAccTitleStatement, the value is never null.
+
 [fixture: journey/db-acc-descr] [fixture: journey/lex-acc-descr-at-end]
 
 ### JourneyAccDescrBlockStatement
@@ -141,8 +150,10 @@ may not end inside it.
 | `value` | JourneyLiteral or null | The text between `accDescr {` and `}`, without the whitespace at its ends; null when only whitespace lies between them. |
 
 Child fields: `value`. `accDescr {}`, `accDescr { }`, and a block of blank lines
-have the value null and change nothing. [fixture: journey/db-acc-descr-block]
-[fixture: journey/gram-acc-descr-block-empty] [fixture:
+have the value null and change nothing.
+
+[fixture: journey/db-acc-descr-block] [fixture:
+journey/gram-acc-descr-block-empty] [fixture:
 journey/gram-acc-descr-block-whitespace-only] [fixture:
 journey/lex-acc-descr-block-unclosed]
 
@@ -160,7 +171,9 @@ that unit as written: a description keeps the whitespace before the colon, and a
 title and a section name keep the whitespace at their ends; a score and a person
 have none, and an accessibility text is read without the whitespace at its ends,
 which mermaid.js trims. A line feed inside a description block is part of the
-value. [fixture: journey/db-task-description-spaces] [fixture:
+value.
+
+[fixture: journey/db-task-description-spaces] [fixture:
 journey/lex-title-two-spaces] [fixture: journey/lex-title-trailing-spaces]
 [fixture: journey/lex-task-score-nbsp-trimmed] [fixture:
 journey/gram-acc-title-trailing-spaces] [fixture: journey/db-acc-descr-block]
@@ -177,7 +190,8 @@ type, the text of task data from its third colon (see
 
 No child fields. The value starts with the third colon and runs to the end of
 the data, without the whitespace at its end; further colons are characters of
-it: `A: 5: Me: x` followed by two spaces has the value `: x`. [fixture:
-journey/db-task-extra-colon] [fixture: journey/gram-task-third-colon-at-end]
-[fixture: journey/gram-task-four-colons] [fixture:
-journey/gram-task-ignored-data-trailing-spaces]
+it: `A: 5: Me: x` followed by two spaces has the value `: x`.
+
+[fixture: journey/db-task-extra-colon] [fixture:
+journey/gram-task-third-colon-at-end] [fixture: journey/gram-task-four-colons]
+[fixture: journey/gram-task-ignored-data-trailing-spaces]

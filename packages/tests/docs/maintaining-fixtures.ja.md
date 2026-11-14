@@ -63,8 +63,10 @@ fixture の読み方は [README](../README.ja.md) にあります。
 正しいテキスト内設定から、仕様が名指しする受理条件の鍵だけを除きます。
 ほかの導出値は保ちます。
 Mermaid の frontmatter タイトルや、`wrap` など Db に効く設定も保ちます。
+
 [fixture: gitgraph/div-frontmatter-main-branch-preserves-title]
 [fixture: sequence/div-invalid-frontmatter-preserves-wrap-directive]
+
 比較 Db がないことを明示し、Db を作り出したり、
 mermaid.js の拒否を仕様の拒否と扱ったりしません。
 
@@ -270,6 +272,7 @@ NumericLiteral の `value` がそうで、ほかの欄はそのような数を�
 `Infinity`、`-Infinity` を認めます。
 ほかの `value` の `null` は認めません。
 `dbFromTree()` はノードのテキストから数を読むので、変換は要りません。
+
 [fixture: xychart/db-plot-values-overflow]
 
 ## 道具のための export

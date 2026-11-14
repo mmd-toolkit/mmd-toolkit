@@ -11,7 +11,9 @@
 と、
 インポート先の
 [common.langium](https://github.com/mermaid-js/mermaid/blob/2086904e76c692331e34a45d7cc3bc30860d040e/packages/parser/src/language/common/common.langium#L1-L34)
-に従います。 [fixture: info/header-lf] [fixture: info/common-all]
+に従います。
+
+[fixture: info/header-lf] [fixture: info/common-all]
 
 ## 検出
 
@@ -19,18 +21,20 @@
 小文字の接頭辞 `info` を接尾の境界なしで選びます。
 `information` は info と検出されますが、字句規則が拒否します。
 `Info` と `INFO` は別名ではなく、
-分割した見出しや見出しのない入力も info を選びません。 [fixture: info/header-lf]
-[fixture: info/detect-lower-suffix] [fixture: info/detect-titlecase]
-[fixture: info/detect-uppercase] [fixture: info/detect-header-split]
-[fixture: info/detect-bare-only]
+分割した見出しや見出しのない入力も info を選びません。
+
+[fixture: info/header-lf] [fixture: info/detect-lower-suffix]
+[fixture: info/detect-titlecase] [fixture: info/detect-uppercase]
+[fixture: info/detect-header-split] [fixture: info/detect-bare-only]
 
 共通の先頭トリビア、実際のフロントマター、ディレクティブ、コメント領域、
 HTML 属性の引用符、文字参照、選ばれたセミコロンの規則が適用されます。
 フロントマターの title は全図種で Mermaid が求める値であり、
-info の文にはなりません。 [fixture: info/frontmatter-title]
-[fixture: info/frontmatter-html] [fixture: info/frontmatter-config]
-[fixture: info/directive-config] [fixture: info/html-all-common]
-[fixture: info/style-title]
+info の文にはなりません。
+
+[fixture: info/frontmatter-title] [fixture: info/frontmatter-html]
+[fixture: info/frontmatter-config] [fixture: info/directive-config]
+[fixture: info/html-all-common] [fixture: info/style-title]
 
 検出点では、裸のパーセント対の行や 2 回目のディレクティブ走査より前に、
 共通の [フロントマター](../common.ja.md#フロントマター)
@@ -39,6 +43,7 @@ info の文にはなりません。 [fixture: info/frontmatter-title]
 info は隠れた YAML の規則を適用し、
 一致するブロックを textBeforeHeader の InfoIgnoredText として保持します。
 その YAML のプロパティーは適用せず、不正な YAML も受理します。
+
 [fixture: info/frontmatter-nonleading-comment]
 [fixture: info/frontmatter-nonleading-lf]
 [fixture: info/frontmatter-bom-opening]
@@ -50,6 +55,7 @@ info は隠れた YAML の規則を適用し、
 2 つ目のブロック、2 回目の走査の後のブロック、
 通過した裸の行の後のブロックは飛ばしません。
 先頭の空白の除去で閉じだけが字下げされたままとなり、飛ばせないこともあります。
+
 [fixture: info/detect-block-after-real-frontmatter]
 [fixture: info/detect-block-before-second-scan]
 [fixture: info/detect-two-blocks]
@@ -63,6 +69,7 @@ info は隠れた YAML の規則を適用し、
 隣接する 3 行のフェンスなら本文の行を持てます。
 検出を通っても通常の境界は緩めません。
 開きの Unicode 空白や、閉じの後の読めない空白は拒否します。
+
 [fixture: info/lex-detect-preheader-adjacent]
 [fixture: info/lex-preheader-unclosed]
 [fixture: info/lex-preheader-mismatched-indent]
@@ -80,6 +87,7 @@ info は隠れた YAML の規則を適用し、
 mark が `%%` の共有 Comment であり、InfoIgnoredText ではありません。
 その行と共に通した空白・改行は読み直しません。
 残された形は、到達した見出しだけからではなく検出点から読みます。
+
 [fixture: info/detect-second-scan-directive]
 [fixture: info/detect-second-scan-glued]
 [fixture: info/lex-detect-preheader-empty-braces]
@@ -96,6 +104,7 @@ Mermaid はその位置で ASCII の space・tab・ LF 以外を拒否します�
 として受理します。
 裸の行を通さなければ、
 残された接頭の形の後の空白には通常の字句規則が適用されます。
+
 [fixture: info/div-bare-before-header-1680]
 [fixture: info/div-bare-before-header-2000]
 [fixture: info/div-bare-before-header-2001]
@@ -146,10 +155,11 @@ Mermaid はその位置で ASCII の space・tab・ LF 以外を拒否します�
 の変換後の図のテキストを読み、上記の通過した区間を除きます。
 単位の先頭では次の順で最初に一致する規則を取り、その後から再開します。
 一般的な最長一致は使いません。
-読めない文字は入力全体を拒否させます。 [fixture: info/common-all]
-[fixture: info/hidden-directive-body] [fixture: info/hidden-yaml-body]
-[fixture: info/comment-bare-body] [fixture: info/error-after-prefix]
-[fixture: info/error-after-common]
+読めない文字は入力全体を拒否させます。
+
+[fixture: info/common-all] [fixture: info/hidden-directive-body]
+[fixture: info/hidden-yaml-body] [fixture: info/comment-bare-body]
+[fixture: info/error-after-prefix] [fixture: info/error-after-common]
 
 1. `showInfo`。
 2. `info`。
@@ -166,6 +176,7 @@ Mermaid はその位置で ASCII の space・tab・ LF 以外を拒否します�
 追加の単位を供給しません。
 単独の文字列、空文字列、真偽値、数、名前は拒否します。
 引用されたように見える共通のテキストは普通のテキストのままです。
+
 [fixture: info/terminal-string-double] [fixture: info/terminal-string-single]
 [fixture: info/lex-empty-quotes-standalone] [fixture: info/terminal-boolean]
 [fixture: info/terminal-number] [fixture: info/terminal-id]
@@ -178,14 +189,16 @@ Mermaid はその位置で ASCII の space・tab・ LF 以外を拒否します�
 共通のディレクティブと選ばれたセミコロンを除いて境界を判断します。
 除いたディレクティブだけでは境界になりません。
 英字、数字、下線、ダッシュ、Unicode の文字、コロン、hash、単独の percent、
-波括弧、引用符は境界になりません。 [fixture: info/detect-lower-suffix]
-[fixture: info/detect-digit-suffix] [fixture: info/detect-underscore-suffix]
-[fixture: info/detect-dash-suffix] [fixture: info/detect-unicode-suffix]
-[fixture: info/detect-colon] [fixture: info/flag-letter-suffix]
-[fixture: info/flag-digit-suffix] [fixture: info/flag-underscore-suffix]
-[fixture: info/flag-dash-suffix] [fixture: info/flag-unicode-suffix]
-[fixture: info/flag-colon-suffix] [fixture: info/flag-uppercase]
-[fixture: info/flag-lowercase] [fixture: info/directive-header-glued]
+波括弧、引用符は境界になりません。
+
+[fixture: info/detect-lower-suffix] [fixture: info/detect-digit-suffix]
+[fixture: info/detect-underscore-suffix] [fixture: info/detect-dash-suffix]
+[fixture: info/detect-unicode-suffix] [fixture: info/detect-colon]
+[fixture: info/flag-letter-suffix] [fixture: info/flag-digit-suffix]
+[fixture: info/flag-underscore-suffix] [fixture: info/flag-dash-suffix]
+[fixture: info/flag-unicode-suffix] [fixture: info/flag-colon-suffix]
+[fixture: info/flag-uppercase] [fixture: info/flag-lowercase]
+[fixture: info/directive-header-glued]
 [fixture: info/directive-header-space-control]
 [fixture: info/directive-flag-glued] [fixture: info/lex-header-hash]
 [fixture: info/lex-header-percent] [fixture: info/lex-header-brace]
@@ -199,6 +212,7 @@ NBSP・BOM などの共通の空白は境界を満たしても、通常の間隔
 共通の CR と CRLF はそれぞれ 1 つの LF になります。
 LS・PS などの共通の空白は、元の EOF も含め、
 値・ブロックの開きの間隔・共通の先頭トリビアが持つ位置でだけ読めます。
+
 [fixture: info/space-header-tab] [fixture: info/space-header-nbsp]
 [fixture: info/space-header-bom] [fixture: info/space-leading-unicode]
 [fixture: info/space-trailing-unicode] [fixture: info/line-cr]
@@ -218,6 +232,7 @@ LS・PS などの共通の空白は、元の EOF も含め、
 空でもよい行テキストを読み、`acc-descr-line` は `accDescr` で同じ形を読みます。
 区切りやコロン前の Unicode 空白は拒否します。
 info/showInfo の境界ではなく、各構成要素の規則が適用されます。
+
 [fixture: info/title-empty] [fixture: info/title-tabs]
 [fixture: info/acctitle-empty] [fixture: info/acctitle-gap]
 [fixture: info/accdescr-line-empty] [fixture: info/space-title-separator-nbsp]
@@ -234,13 +249,14 @@ LS、PS、単独の percent、セミコロン、コロン、引用符、バッ�
 引用符は閉じなくてもよく、エスケープは文字列構文ではありません。
 同じ行の後のキーワードも内容です。
 空の値は、空行・ディレクティブ行・コメント行を挟んでも、
-次の物理行を内容として取りません。 [fixture: info/comment-title]
-[fixture: info/comment-acctitle] [fixture: info/comment-accdescr]
-[fixture: info/common-line-leading-percent] [fixture: info/title-open-quote]
-[fixture: info/title-double-quotes] [fixture: info/title-single-quotes]
-[fixture: info/acctitle-quoted] [fixture: info/accdescr-line-quoted]
-[fixture: info/title-consumes-next-keyword] [fixture: info/acctitle-next-line]
-[fixture: info/common-title-comment-gap]
+次の物理行を内容として取りません。
+
+[fixture: info/comment-title] [fixture: info/comment-acctitle]
+[fixture: info/comment-accdescr] [fixture: info/common-line-leading-percent]
+[fixture: info/title-open-quote] [fixture: info/title-double-quotes]
+[fixture: info/title-single-quotes] [fixture: info/acctitle-quoted]
+[fixture: info/accdescr-line-quoted] [fixture: info/title-consumes-next-keyword]
+[fixture: info/acctitle-next-line] [fixture: info/common-title-comment-gap]
 [fixture: info/common-acctitle-comment-gap] [fixture: info/lex-title-blank-gap]
 [fixture: info/lex-acctitle-blank-gap] [fixture: info/lex-accdescr-blank-gap]
 [fixture: info/lex-title-directive-gap]
@@ -250,29 +266,32 @@ LS、PS、単独の percent、セミコロン、コロン、引用符、バッ�
 [fixture: info/end-acctitle-semicolons] [fixture: info/end-accdescr-semicolons]
 [fixture: info/line-ls-in-value] [fixture: info/line-ps-in-value]
 [fixture: info/lex-block-colon-first]
+
 値の中の U+2028 か U+2029 の後の物理行の残りは、その改行も含めて、
 共通のコメント領域が取り除くことがあります。
 そのとき値は次の物理行へ続くので、行の値はそこで終わりません。
 `accTitle: A`、U+2028、`%% c`、改行、`B` のアクセシビリティタイトルは `A`、
-U+2028、`B` です。 [fixture: info/lex-line-comment-region-ls] [fixture:
-info/lex-acc-title-line-separator-then-comment-line] [fixture:
-info/lex-acc-title-line-separator-comment-line-directive-next] [fixture:
-info/lex-acc-title-line-separator-comment-line-space-next] [fixture:
-info/lex-acc-title-line-separator-comment-line-separator-next] [fixture:
-info/lex-acc-title-line-separator-comment-line-empty-line] [fixture:
-info/lex-acc-title-line-separator-comment-line-end-of-text] [fixture:
-info/lex-acc-title-line-separator-comment-line-cr] [fixture:
-info/lex-acc-title-line-separator-comment-line-crlf] [fixture:
-info/lex-acc-title-line-separator-comment-line-two-comment-lines] [fixture:
-info/lex-acc-title-line-separator-comment-line-two-regions] [fixture:
-info/lex-acc-title-line-separator-comment-line-spaces-before] [fixture:
-info/lex-acc-title-line-separator-comment-line-line-feed-before] [fixture:
-info/lex-acc-title-line-separator-comment-line-directive-before] [fixture:
-info/lex-acc-title-line-separator-comment-line-line-rule-before] [fixture:
-info/lex-acc-title-line-separator-comment-line-line-rule-after] [fixture:
-info/lex-acc-title-line-separator-comment-line-bare-percent] [fixture:
-info/lex-acc-title-line-separator-comment-line-percent-brace] [fixture:
-info/lex-accdescr-line-line-separator-then-comment-line]
+U+2028、`B` です。
+
+[fixture: info/lex-line-comment-region-ls]
+[fixture: info/lex-acc-title-line-separator-then-comment-line]
+[fixture: info/lex-acc-title-line-separator-comment-line-directive-next]
+[fixture: info/lex-acc-title-line-separator-comment-line-space-next]
+[fixture: info/lex-acc-title-line-separator-comment-line-separator-next]
+[fixture: info/lex-acc-title-line-separator-comment-line-empty-line]
+[fixture: info/lex-acc-title-line-separator-comment-line-end-of-text]
+[fixture: info/lex-acc-title-line-separator-comment-line-cr]
+[fixture: info/lex-acc-title-line-separator-comment-line-crlf]
+[fixture: info/lex-acc-title-line-separator-comment-line-two-comment-lines]
+[fixture: info/lex-acc-title-line-separator-comment-line-two-regions]
+[fixture: info/lex-acc-title-line-separator-comment-line-spaces-before]
+[fixture: info/lex-acc-title-line-separator-comment-line-line-feed-before]
+[fixture: info/lex-acc-title-line-separator-comment-line-directive-before]
+[fixture: info/lex-acc-title-line-separator-comment-line-line-rule-before]
+[fixture: info/lex-acc-title-line-separator-comment-line-line-rule-after]
+[fixture: info/lex-acc-title-line-separator-comment-line-bare-percent]
+[fixture: info/lex-acc-title-line-separator-comment-line-percent-brace]
+[fixture: info/lex-accdescr-line-line-separator-then-comment-line]
 
 ブロックの選択肢は `accDescr`、0 個以上の共通の空白、`{`、
 最初の `}` までの任意の内容を読みます。
@@ -284,6 +303,7 @@ info/lex-accdescr-line-line-separator-then-comment-line]
 追加の開き波括弧は内容です。
 閉じ波括弧は必須です。
 波括弧の前でもコロンがあれば行の形を選びます。
+
 [fixture: info/accdescr-block-gap-lf] [fixture: info/accdescr-block-gap-ls]
 [fixture: info/accdescr-block-gap-bom] [fixture: info/common-block-blank-gap]
 [fixture: info/common-accdescr-directive-gap]
@@ -305,6 +325,7 @@ LF が隠れた YAML を開きます。
 その直後は LF・共通の空白・EOF のいずれかです。
 この形が一致しない場合だけ、開きの LF の直後が閉じとなる空本文を試します。
 本文は LF・LS・PS を含み、YAML の検証はしません。
+
 [fixture: info/hidden-yaml-body] [fixture: info/hidden-yaml-open-padding]
 [fixture: info/hidden-yaml-empty] [fixture: info/hidden-yaml-invalid]
 [fixture: info/lex-yaml-body-separators] [fixture: info/lex-yaml-close-space]
@@ -317,8 +338,9 @@ LF が隠れた YAML を開きます。
 条件を満たさない閉じは、後に適切な閉じがあれば本文のままです。
 最初の本文に適切な閉じがあれば、空でない 2 ブロックは別々のままです。
 字下げした閉じ、開きの Unicode 空白、開きの 4 本のダッシュ、
-閉じの欠落は拒否します。 [fixture: info/lex-yaml-three-fences]
-[fixture: info/lex-yaml-two-empty]
+閉じの欠落は拒否します。
+
+[fixture: info/lex-yaml-three-fences] [fixture: info/lex-yaml-two-empty]
 [fixture: info/lex-yaml-empty-before-later-block]
 [fixture: info/hidden-yaml-nonqualifying-closer]
 [fixture: info/lex-yaml-two-before-flag] [fixture: info/hidden-yaml-indent]
@@ -330,6 +352,7 @@ LF が隠れた YAML を開きます。
 行の値は後続の YAML のダッシュを取り、説明ブロックは YAML に見える行を持ちます。
 隠れた形は単位の位置にある一つの InfoIgnoredText ノードであり、
 大域的な除去や固定キーワードの結合ではありません。
+
 [fixture: info/hidden-yaml-after-title]
 [fixture: info/hidden-yaml-after-acctitle]
 [fixture: info/hidden-yaml-after-accdescr]
@@ -345,6 +368,7 @@ LF が隠れた YAML を開きます。
 条件を満たさない閉じは飛ばして後の閉じを使えます。
 適切な閉じがなければ通常のコメント規則を試すため、
 同じ行に接着したフラグがコメントの内容になることがあります。
+
 [fixture: info/hidden-directive-padding]
 [fixture: info/hidden-directive-nonqualifying-closer]
 [fixture: info/hidden-directive-first-close]
@@ -359,6 +383,7 @@ LF が隠れた YAML を開きます。
 余分な LF や閉じの直後の ASCII space/tab があれば EOL を保てます。
 元の EOF では追加の LF を消費しても、EOF が EOL を満たせます。
 消費した LF は無視テキストの範囲外です。
+
 [fixture: info/hidden-directive-after-title]
 [fixture: info/hidden-directive-title-spare-lf]
 [fixture: info/hidden-directive-title-space]
@@ -393,12 +418,13 @@ mark は `%%`、value は mark の後で、前の文字と終端の LF は含め
 裸の形と 3 個の percent の形は許します。
 LS・PS は終端になりません。
 共通のディレクティブは 2 個の percent を分離でき、
-共通のコメント領域は内容を切れます。 [fixture: info/comment-header]
-[fixture: info/comment-flag] [fixture: info/comment-title]
-[fixture: info/comment-acctitle] [fixture: info/comment-accdescr]
-[fixture: info/comment-after-block] [fixture: info/comment-eof]
-[fixture: info/comment-bare-body] [fixture: info/comment-triple]
-[fixture: info/lex-comment-single-percent]
+共通のコメント領域は内容を切れます。
+
+[fixture: info/comment-header] [fixture: info/comment-flag]
+[fixture: info/comment-title] [fixture: info/comment-acctitle]
+[fixture: info/comment-accdescr] [fixture: info/comment-after-block]
+[fixture: info/comment-eof] [fixture: info/comment-bare-body]
+[fixture: info/comment-triple] [fixture: info/lex-comment-single-percent]
 [fixture: info/lex-comment-split-mark] [fixture: info/lex-comment-ls-bridge]
 [fixture: info/lex-native-comment-ps]
 
@@ -408,6 +434,7 @@ LS・PS は終端になりません。
 ディレクティブに見える内容でも最初の `}` がブロックを閉じ、
 残った `%%` をコメント規則が読みます。
 その後にブロックの残りのテキストがあると拒否されます。
+
 [fixture: info/comment-bare-block] [fixture: info/comment-block]
 [fixture: info/hidden-directive-block-first-brace]
 [fixture: info/hidden-directive-inside-block]
@@ -420,6 +447,7 @@ LS・PS は終端になりません。
 共通の style/classDef 規則で隠れたテキスト内のセミコロンを選んだりできます。
 完全なキーワードとコロン・波括弧の間も共通のトリビアを許します。
 固定キーワードの内部には後述の原子的な差異が適用されます。
+
 [fixture: info/directive-title-value] [fixture: info/directive-acctitle-value]
 [fixture: info/directive-accdescr-value] [fixture: info/directive-block-value]
 [fixture: info/directive-acctitle-colon] [fixture: info/directive-block-brace]
@@ -441,6 +469,7 @@ LS・PS は終端になりません。
 残るセミコロンは拒否します。
 セミコロンが文の区切りになるわけではありません。
 HTML と文字参照の変換は共通の範囲を保ち、書かれた値はそのままです。
+
 [fixture: info/style-block-end-semicolon] [fixture: info/style-block-end-double]
 [fixture: info/style-block-end-upper] [fixture: info/style-block-end-nohash]
 [fixture: info/style-block-end-colon-space] [fixture: info/style-block-end-ls]
@@ -466,10 +495,11 @@ eol = newline+ | end-of-text
 任意のフラグの前には可視の改行を置け、
 コメント行・ディレクティブ行・隠れた形の前も含みます。
 フラグは共通の形より前に 1 回だけ置けます。
-空のブロックでも、その機会を終わらせます。 [fixture: info/header-lf]
-[fixture: info/header-inline-flag] [fixture: info/header-flag-next-line]
-[fixture: info/header-blank-lines] [fixture: info/header-common-inline]
-[fixture: info/header-flag-common-inline]
+空のブロックでも、その機会を終わらせます。
+
+[fixture: info/header-lf] [fixture: info/header-inline-flag]
+[fixture: info/header-flag-next-line] [fixture: info/header-blank-lines]
+[fixture: info/header-common-inline] [fixture: info/header-flag-common-inline]
 [fixture: info/comment-between-header-flag] [fixture: info/lex-flag-hidden-two]
 [fixture: info/lex-flag-global-directive-gap]
 [fixture: info/header-repeated-flag] [fixture: info/header-common-then-flag]
@@ -484,6 +514,7 @@ eol = newline+ | end-of-text
 2 つ目の見出し、未対応の単位、遅いフラグ、
 区切りのない完成したブロックと共通の形は拒否します。
 ただし行の値は、後のキーワードに見えるものを内容にできます。
+
 [fixture: info/common-blank-lines] [fixture: info/end-block-eof]
 [fixture: info/end-common-eof] [fixture: info/hidden-directive-between-common]
 [fixture: info/hidden-yaml-between-common]
@@ -506,10 +537,11 @@ eol = newline+ | end-of-text
 ソースの木は Mermaid の最終的な共通の断片ではありません。
 導出した値と公開の扱いは
 [info の要約](../../../tests/docs/db-summaries.ja.md#info) が定め、
-書かれたノードの代わりにはしません。 [fixture: info/common-all]
-[fixture: info/common-flag-all] [fixture: info/title-repeat-empty]
-[fixture: info/acctitle-repeat-empty] [fixture: info/accdescr-line-repeat]
-[fixture: info/accdescr-block-repeat]
+書かれたノードの代わりにはしません。
+
+[fixture: info/common-all] [fixture: info/common-flag-all]
+[fixture: info/title-repeat-empty] [fixture: info/acctitle-repeat-empty]
+[fixture: info/accdescr-line-repeat] [fixture: info/accdescr-block-repeat]
 
 ### 文法外の拒否
 
@@ -520,6 +552,7 @@ eol = newline+ | end-of-text
 [info のアダプター](https://github.com/mermaid-js/mermaid/blob/2086904e76c692331e34a45d7cc3bc30860d040e/packages/mermaid/src/diagrams/info/infoParser.ts#L6-L11)
 は意味による拒否を加えません。
 共通の検出と埋め込みデータの規則は引き続き適用されます。
+
 [fixture: info/error-after-prefix] [fixture: info/error-after-common]
 [fixture: info/spec-info-1b111b64] [fixture: info/terminal-number]
 [fixture: info/div-frontmatter-invalid-yaml]
@@ -535,6 +568,7 @@ accDescr 内のディレクティブを拒否しますが、Mermaid は断片を
 これは理由 2 で、逆方向の受理は加えません。
 完全な構成要素の境界や値・隠れたテキストでは許し、
 結合後も不正な入力は両方が拒否します。
+
 [fixture: info/div-directive-header-middle]
 [fixture: info/div-directive-flag-middle]
 [fixture: info/div-directive-title-middle]
@@ -553,9 +587,10 @@ accDescr 内のディレクティブを拒否しますが、Mermaid は断片を
 逆方向の受理はありません。
 完全な構成要素の境界や隠れたテキスト・値では一致します。
 選ばれないセミコロン、選択前に拒否される分割した見出し、
-別の不正な接尾には印を付けません。 [fixture: info/div-selected-showinfo]
-[fixture: info/div-selected-title] [fixture: info/div-selected-acctitle]
-[fixture: info/div-selected-accdescr-line]
+別の不正な接尾には印を付けません。
+
+[fixture: info/div-selected-showinfo] [fixture: info/div-selected-title]
+[fixture: info/div-selected-acctitle] [fixture: info/div-selected-accdescr-line]
 [fixture: info/div-selected-accdescr-block]
 [fixture: info/lex-selected-colon-boundary]
 [fixture: info/lex-selected-brace-boundary]
@@ -574,6 +609,7 @@ Mermaid が拒否してもここでは受理します。
 この 2 つのフロントマターでは、その Db は `{}` です。
 この規則で Mermaid が受理する入力を拒否することはありません。
 不正な隠れた YAML と記録済みの不正な init 引数は両方が受理し、印を付けません。
+
 [fixture: info/div-frontmatter-invalid-yaml]
 [fixture: info/div-frontmatter-html-invalid-yaml]
 [fixture: info/hidden-yaml-preheader-invalid]
@@ -588,6 +624,7 @@ Mermaid が受理する入力を拒否しません。
 C4Context、除いたフロントマター・ディレクティブ、
 LF で終わるコメントの対照例は一致し、
 別の理由で不正な info の本文は引き続き拒否します。
+
 [fixture: info/div-c4container-title] [fixture: info/div-c4component-acctitle]
 [fixture: info/div-c4dynamic-line] [fixture: info/div-c4deployment-block]
 [fixture: info/div-c4container-header-comment-eof]
@@ -605,6 +642,7 @@ LF で終わるコメントの対照例は一致し、
 Mermaid が通常の読み直しで拒否する空白を受理します。
 Mermaid が受理する入力を拒否しません。
 ASCII の対照例は一致し、裸の行を通さない Unicode の間隔は通常どおり拒否します。
+
 [fixture: info/div-bare-before-header-bom] [fixture: info/div-bare-line-ls]
 [fixture: info/div-detect-retained-yaml-bare-ls]
 [fixture: info/div-detect-retained-directive-bare-bom]
@@ -620,6 +658,7 @@ tokenless-empty-forms は不要です。
 フロントマターを越える引用符の変換は、この文法も比較できる空の要約も変えません。
 従って対照例に html-tag-in-frontmatter の印はありません。
 引用符の変換後に拒否される YAML は上記の不透明なデータの場合です。
+
 [fixture: info/hidden-yaml-empty] [fixture: info/accdescr-block-empty]
 [fixture: info/lex-block-empty-inline] [fixture: info/comment-title]
 [fixture: info/comment-after-block] [fixture: info/frontmatter-html]

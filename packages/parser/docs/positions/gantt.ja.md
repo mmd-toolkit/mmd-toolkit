@@ -26,6 +26,7 @@
 最後のトークンは、最後の項目か、後の項目が null のときは最後の `,` か、
 データが空白だけのときは `:` です。
 `a : 1d,` は `a : 1d,` を覆い、`a :` と 3 つの空白は `a :` を覆います。
+
 [fixture: gantt/gram-task] [fixture: gantt/gram-task-trailing-comma]
 [fixture: gantt/lex-task-data-whitespace-only]
 
@@ -33,17 +34,20 @@
 
 範囲は、`click` から、ソースの順で最後の部分の最後のトークンまでです。
 それはリンクの閉じの `"` か、call の `)` で、子の欄の順にはよりません。
+
 [fixture: gantt/gram-click-href] [fixture: gantt/gram-click-call-then-href]
 
 ### GanttCallback
 
-範囲は `call` から `)` までです。 [fixture: gantt/gram-click-call]
-[fixture: gantt/gram-click-call-arguments]
+範囲は `call` から `)` までです。
+
+[fixture: gantt/gram-click-call] [fixture: gantt/gram-click-call-arguments]
 
 ### GanttIncludesStatement と GanttExcludesStatement
 
 範囲は、キーワードから、リストのテキストの最後の項目か `,` までです。
 リストのテキストが空白だけの文は、キーワードだけを覆います。
+
 [fixture: gantt/db-includes-tokens] [fixture: gantt/db-excludes-tokens]
 [fixture: gantt/lex-excludes-whitespace-value]
 
@@ -51,6 +55,7 @@
 
 範囲は、キーワードから、テキストの空白でない最後の文字までです。
 値が除く行末の空白は、範囲の外にあります。
+
 [fixture: gantt/gram-acc-title-trailing-spaces]
 
 ### GanttLiteral
@@ -60,5 +65,6 @@
 値はその範囲の書かれたテキストです。
 `a  : 1d` の説明は、`a` とコロンの前の 2 つの空白を覆います。
 `title T` と 2 つの空白のタイトルは、`T` と 2 つの空白を覆います。
+
 [fixture: gantt/lex-task-text-trailing-spaces]
 [fixture: gantt/lex-title-trailing-spaces]

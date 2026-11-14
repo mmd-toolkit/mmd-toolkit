@@ -46,9 +46,11 @@ or a comment line cuts, while one inside the word makes the input rejected:
 `right`, the `RawText` token of the space, the `Punctuator` token `,`, and the
 `Keyword` token `down`. The whitespace after a `,` is in no token. The class
 name of `class` is one `RawText` token, with the whitespace inside it:
-`class A c d` has the `RawText` token `c d`. [fixture: block/db-edge-label]
-[fixture: block/db-columns-plain] [fixture: block/db-arrow-spaces-around-first]
-[fixture: block/db-arrow-directive-before-first] [fixture:
+`class A c d` has the `RawText` token `c d`.
+
+[fixture: block/db-edge-label] [fixture: block/db-columns-plain] [fixture:
+block/db-arrow-spaces-around-first] [fixture:
+block/db-arrow-directive-before-first] [fixture:
 block/db-arrow-comment-line-before-first] [fixture:
 block/db-class-apply-names-spaces]
 
@@ -63,6 +65,7 @@ word makes the input rejected, as inside every id. The id of `style` is one
 `style A, B` would be one token `A, B`, which no accepted input has, since no
 block has an id with whitespace (see
 [Rejections outside the grammar](../../../spec/docs/diagrams/block.md#rejections-outside-the-grammar)).
+
 [fixture: block/db-class-apply-list-spaces] [fixture:
 block/db-class-apply-line-feed-after-comma] [fixture:
 block/db-grid-comma-style-id] [fixture: block/div-grid-directive-class-apply-id]
@@ -75,9 +78,10 @@ and the last ends at its last such character. `style A fill:#f00 , stroke:#333`
 has the `RawText` tokens `fill:#f00` with the space after it and `stroke:#333`
 with the space before it, and a part that is all whitespace, as in
 `style A fill:red,  ,stroke:#333`, is a `RawText` token of that whitespace. An
-empty part makes no token. [fixture: block/db-style-spaces] [fixture:
-block/db-style-spaces-at-line-ends] [fixture:
-block/db-style-whitespace-only-between-commas] [fixture:
+empty part makes no token.
+
+[fixture: block/db-style-spaces] [fixture: block/db-style-spaces-at-line-ends]
+[fixture: block/db-style-whitespace-only-between-commas] [fixture:
 block/db-class-def-spaces-around-styles] [fixture:
 block/db-class-def-leading-comma] [fixture: block/db-style-only-comma]
 
@@ -89,6 +93,7 @@ directive or an ignored `;` makes the input rejected (see
 [Directives inside units](../../../spec/docs/diagrams/block.md#directives-inside-units)):
 `A -- "a%%{init: {}}%%b" --> B` has the `StringFragment` tokens `"a` and `b"`
 with a `Directive` token between them, while `A%%{init: {}}%%B` is rejected.
+
 [fixture: block/db-edge-label-directive] [fixture:
 block/db-grid-directive-style-text] [fixture: block/db-class-apply-directive]
 [fixture: block/div-directive-in-id] [fixture:
