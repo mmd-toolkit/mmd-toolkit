@@ -1,0 +1,29 @@
+{
+  "source": {
+    "kind": "authored",
+    "note": "tokens.md Comments: the `;` that the line rule ignores right after a `%` comment is an IgnoredSemicolon token, not part of the comment."
+  },
+  "accepted": true,
+  "diagramType": "requirement",
+  "db": {
+    "direction": "TB",
+    "title": "",
+    "accTitle": "",
+    "accDescr": "",
+    "requirements": [
+      {
+        "name": "r",
+        "type": "Requirement",
+        "requirementId": "1",
+        "text": "",
+        "risk": "",
+        "verifyMethod": "",
+        "cssStyles": [],
+        "classes": []
+      }
+    ],
+    "elements": [],
+    "relationships": [],
+    "classes": []
+  }
+}

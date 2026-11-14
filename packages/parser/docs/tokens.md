@@ -326,7 +326,52 @@ segments (see
 
 [fixture: sequence/tokens-comment-then-ignored-semicolon] [fixture:
 eventmodeling/tokens-comment-line-ignored-semicolon] [fixture:
-eventmodeling/tokens-comment-line-semicolon-before-text]
+eventmodeling/tokens-comment-line-semicolon-before-text] [fixture:
+agentflow/tokens-double-percent-comment-then-ignored-semicolon] [fixture:
+architecture/tokens-double-percent-comment-then-ignored-semicolon] [fixture:
+c4/tokens-double-percent-comment-then-ignored-semicolon] [fixture:
+class/tokens-double-percent-comment-then-ignored-semicolon] [fixture:
+cynefin/tokens-double-percent-comment-then-ignored-semicolon] [fixture:
+eventmodeling/tokens-double-percent-comment-then-ignored-semicolon] [fixture:
+eventmodeling/tokens-slash-slash-comment-then-ignored-semicolon] [fixture:
+eventmodeling/tokens-slash-star-comment-then-ignored-semicolon] [fixture:
+gantt/tokens-double-percent-comment-then-ignored-semicolon] [fixture:
+gantt/tokens-percent-comment-then-ignored-semicolon] [fixture:
+gitgraph/tokens-double-percent-comment-then-ignored-semicolon] [fixture:
+info/tokens-double-percent-comment-then-ignored-semicolon] [fixture:
+journey/tokens-double-percent-comment-then-ignored-semicolon] [fixture:
+journey/tokens-ignored-semicolon-in-hash-comment] [fixture:
+journey/tokens-percent-comment-then-ignored-semicolon] [fixture:
+kanban/lex-indent-comment-ls-selected-semicolon-touching] [fixture:
+kanban/lex-indent-comment-ps-selected-semicolon-indent-directive] [fixture:
+kanban/lex-indent-comment-ps-selected-semicolon-touching] [fixture:
+mindmap/tokens-double-percent-comment-then-ignored-semicolon] [fixture:
+packet/tokens-double-percent-comment-then-ignored-semicolon] [fixture:
+pie/tokens-double-percent-comment-then-ignored-semicolon] [fixture:
+quadrant/tokens-double-percent-comment-then-ignored-semicolon] [fixture:
+radar/tokens-double-percent-comment-then-ignored-semicolon] [fixture:
+railroad/tokens-double-percent-comment-then-ignored-semicolon] [fixture:
+railroad/tokens-hash-comment-then-ignored-semicolon] [fixture:
+railroad/tokens-paren-star-comment-then-ignored-semicolon] [fixture:
+railroad/tokens-semicolon-comment-then-ignored-semicolon] [fixture:
+railroad/tokens-slash-star-comment-then-ignored-semicolon] [fixture:
+requirement/tokens-hash-comment-then-ignored-semicolon] [fixture:
+requirement/tokens-percent-comment-then-ignored-semicolon] [fixture:
+sequence/lex-id-run-line-separator-comment-line-line-rule-after] [fixture:
+sequence/tokens-double-percent-comment-then-ignored-semicolon] [fixture:
+sequence/tokens-loop-comment-then-ignored-semicolon] [fixture:
+sequence/tokens-percent-comment-then-ignored-semicolon] [fixture:
+sequence/tokens-title-comment-then-ignored-semicolon] [fixture:
+state/tokens-double-percent-comment-then-ignored-semicolon] [fixture:
+state/tokens-hash-comment-then-ignored-semicolon] [fixture:
+timeline/tokens-double-percent-comment-then-ignored-semicolon] [fixture:
+timeline/tokens-hash-comment-then-ignored-semicolon] [fixture:
+timeline/tokens-percent-comment-then-ignored-semicolon] [fixture:
+treemap/tokens-double-percent-comment-then-ignored-semicolon] [fixture:
+treeview/tokens-double-percent-comment-then-ignored-semicolon] [fixture:
+venn/tokens-double-percent-comment-then-ignored-semicolon] [fixture:
+wardley/tokens-double-percent-comment-then-ignored-semicolon] [fixture:
+xychart/tokens-double-percent-comment-then-ignored-semicolon]
 
 A diagram whose Db sets
 [`preserveCommentsWhenParsing`](https://github.com/mermaid-js/mermaid/blob/2086904e76c692331e34a45d7cc3bc30860d040e/packages/mermaid/src/Diagram.ts#L66-L76)

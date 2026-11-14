@@ -1,0 +1,24 @@
+{
+  "source": {
+    "kind": "authored",
+    "note": "tokens.md Comments: the `;` that the line rule ignores right after a `%` comment is an IgnoredSemicolon token, not part of the comment."
+  },
+  "accepted": true,
+  "diagramType": "gantt",
+  "db": {
+    "dateFormat": "",
+    "axisFormat": "",
+    "todayMarker": "",
+    "includes": [],
+    "excludes": [],
+    "inclusiveEndDates": true,
+    "weekday": "sunday",
+    "weekend": "saturday",
+    "title": "",
+    "accTitle": "",
+    "accDescr": "",
+    "sections": [],
+    "tasks": [],
+    "links": []
+  }
+}

@@ -1,0 +1,26 @@
+{
+  "source": {
+    "kind": "authored",
+    "note": "tokens.md Comments: the `;` that the line rule ignores right after a `%%` comment is an IgnoredSemicolon token, not part of the comment."
+  },
+  "accepted": true,
+  "diagramType": "xychart",
+  "db": {
+    "orientation": "vertical",
+    "title": "A",
+    "accTitle": "",
+    "accDescr": "",
+    "xAxis": {
+      "type": "band",
+      "title": "",
+      "categories": []
+    },
+    "yAxis": {
+      "type": "linear",
+      "title": "",
+      "min": "Infinity",
+      "max": "-Infinity"
+    },
+    "plots": []
+  }
+}
