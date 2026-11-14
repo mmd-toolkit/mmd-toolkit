@@ -856,6 +856,16 @@ const flowchartExamples: readonly (readonly [string, string, string])[] = [
     "flowchart LR\nA-->B\nstyle A fill:#f00 ,\u2029color:white\n",
     "flowchart LR\n  A --> B\n  style A fill:#f00 ,\u2029color:white\n",
   ],
+  [
+    "a directive line after a comment line after U+2028, and the rest of an edge on the next line, in a flowchart",
+    "flowchart TD\nA   -->   B\u2028%% c\n%%{init: {}}%%\n   -->   C\n",
+    "flowchart TD\n  A   -->   B\u2028%% c\n%%{init: {}}%%\n   -->   C\n",
+  ],
+  [
+    "an empty line after a comment line after U+2028, and the rest of an edge on the next line, in a flowchart",
+    "flowchart TD\nA   -->   B\u2028%% c\n\n   -->   C\n",
+    "flowchart TD\n  A   -->   B\u2028%% c\n\n   -->   C\n",
+  ],
 ]
 
 /**
@@ -2016,6 +2026,46 @@ const erExamples: readonly (readonly [string, string, string])[] = [
     "erDiagram\nA\u2028%% c\n\n%%{init: {}}%%\n%% d\nBar\n",
     "erDiagram\n  A\u2028%% c\n\n%%{init: {}}%%\n%% d\nBar\n",
   ],
+  [
+    "an empty attribute block with spaces after its opening brace after a comment line after U+2028 inside the name of an ER entity",
+    "erDiagram\nA\u2028%% c\nBar {  \n}\n",
+    "erDiagram\n  A\u2028%% c\nBar { }\n",
+  ],
+  [
+    "an empty attribute block with a tab after its opening brace after a comment line after U+2028 inside the name of an ER entity",
+    "erDiagram\nA\u2028%% c\nBar {\t\n}\n",
+    "erDiagram\n  A\u2028%% c\nBar { }\n",
+  ],
+  [
+    "an empty attribute block with U+2028 after its opening brace after a comment line after U+2028 inside the name of an ER entity",
+    "erDiagram\nA\u2028%% c\nBar {\u2028\n}\n",
+    "erDiagram\n  A\u2028%% c\nBar { }\n",
+  ],
+  [
+    "an attribute block of an entity that follows another entity on the line, after a comment line after U+2028",
+    "erDiagram\nA\u2028%% c\nBar Zed {\nint id\n}\n",
+    "erDiagram\n  A\u2028%% c\nBar Zed {\nint id\n}\n",
+  ],
+  [
+    "an attribute block of an entity after a statement on its line, with a comment line after U+2028 inside its name",
+    "erDiagram\nX A\u2028%% c\nBar {\nint id\n}\n",
+    "erDiagram\n  X A\u2028%% c\nBar {\nint id\n}\n",
+  ],
+  [
+    "an attribute block of an entity after a name in quotes, with a comment line after U+2028 inside its name",
+    'erDiagram\n"A"\u2028%% c\nBar {\nint id\n}\n',
+    'erDiagram\n  "A"\u2028%% c\nBar {\nint id\n}\n',
+  ],
+  [
+    "an empty attribute block of an entity that follows another entity on the line, after a comment line after U+2028",
+    "erDiagram\nA\u2028%% c\nBar Zed {\n}\n",
+    "erDiagram\n  A\u2028%% c\nBar Zed {\n}\n",
+  ],
+  [
+    "an empty attribute block of an entity after a statement on its line, after a comment line after U+2028 and a space",
+    "erDiagram\nX A\u2028%% c\n {\n}\n",
+    "erDiagram\n  X A\u2028%% c\n {\n}\n",
+  ],
 ]
 
 /**
@@ -2418,6 +2468,16 @@ const requirementLineSeparatorExamples: readonly (readonly [
     "U+2028 and a comment after the class in quotes of a class statement, with a statement after the comment",
     'requirementDiagram\nrequirement r {\n}\nclass r\n"c"\u2028%% c\naccDescr {}\n',
     'requirementDiagram\n  requirement r {\n  }\n  class r\n"c"\u2028%% c\naccDescr {}\n',
+  ],
+  [
+    "an empty line after a comment line after U+2028, and the block of a requirement on the next line",
+    "requirementDiagram\nrequirement\u2028%% heading\n\n r {\nid: 1\ntext: t\nrisk: low\nverifymethod: test\n}\n",
+    "requirementDiagram\n  requirement\u2028%% heading\n\n r {\n    id: 1\n    text: t\n    risk: low\n    verifymethod: test\n  }\n",
+  ],
+  [
+    "a directive line after a comment line after U+2028, and the block of a requirement on the next line",
+    "requirementDiagram\nrequirement\u2028%% heading\n%%{init: {}}%%\n r {\nid: 1\ntext: t\nrisk: low\nverifymethod: test\n}\n",
+    "requirementDiagram\n  requirement\u2028%% heading\n%%{init: {}}%%\n r {\n    id: 1\n    text: t\n    risk: low\n    verifymethod: test\n  }\n",
   ],
 ]
 
@@ -3096,6 +3156,16 @@ const xychartLineSeparatorExamples: readonly (readonly [
     "U+2028 at the end of the text",
     "xychart\ntitle T\u2028",
     'xychart\n  title "T"\n',
+  ],
+  [
+    "an empty line after a comment line after U+2028 at the header, and the orientation on the next line, in an xychart",
+    "xychart-beta\u2028%% orientation\n\n horizontal\n",
+    "xychart-beta\u2028%% orientation\n\n horizontal\n",
+  ],
+  [
+    "a directive line after a comment line after U+2028 at the header, and the orientation on the next line, in an xychart",
+    "xychart-beta\u2028%% orientation\n%%{init: {}}%%\n horizontal\n",
+    "xychart-beta\u2028%% orientation\n%%{init: {}}%%\n horizontal\n",
   ],
 ]
 

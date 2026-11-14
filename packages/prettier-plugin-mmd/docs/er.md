@@ -1990,12 +1990,12 @@ multi-line-statements/direction-value-joined] [fixture:
 multi-line-statements/style-over-lines-joined] A statement with a comment or
 directive keeps its line breaks; structural continuations and intervening trivia
 stand one level deeper. Whitespace inside values and before the first line break
-of each gap stays unchanged. Joining regions keep the whole statement as
-written. A line break stays where joining it, with one space or with nothing,
-could change which `;` the line rule ignores, and where a `;` ends the last
-line; any other line break is joined as usual, also in a statement that holds a
-`;`. A statement that keeps a line break keeps its styles as written. [fixture:
-multi-line-statements/semicolon-joining-changes-kept] [fixture:
+of each gap stays unchanged. A joining region keeps the line that it joins as
+written (see below). A line break stays where joining it, with one space or with
+nothing, could change which `;` the line rule ignores, and where a `;` ends the
+last line; any other line break is joined as usual, also in a statement that
+holds a `;`. A statement that keeps a line break keeps its styles as written.
+[fixture: multi-line-statements/semicolon-joining-changes-kept] [fixture:
 multi-line-statements/style-comment-continuation] [fixture:
 multi-line-statements/comment-line-inside-kept] [fixture:
 multi-line-statements/directive-inside-kept] A name that goes on across a
@@ -2025,35 +2025,58 @@ inside the name of an ER class definition] [test: a comment line after U+2028
 inside the name of an ER style statement] What the line holds and where it ends
 follow
 [A comment line after U+2028 or U+2029](./compatibility.md#a-comment-line-after-u2028-or-u2029).
-A `;` on that line stays where it is, whatever it is: the `;` that ends a
-`style` or `classDef` statement (`Bar fill:red;`), the `;` that the line rule
-ignores because the line after the comment line has `style` and `:#`
-(`style fill:#f00;`), and the `;` of a character entity (`Bar fill:#f00;`).
-[test: a character entity at the end of an ER style statement, after a comment
-line after U+2028 inside its name] [test: a semicolon that ends an ER style
-statement, after a comment line after U+2028 inside its name] [test: a semicolon
-that ends an ER class definition, after a comment line after U+2028 inside its
-name] [test: a semicolon that the line rule ignores, after a comment line after
-U+2028 inside the name of an ER style statement] [test: a semicolon that the
-line rule ignores, after a comment line after U+2028 inside the name of an ER
-class definition] Of an entity with an attribute block over several lines, what
-is printed as written is the line that opens the block, with what follows the
-`{` on it. The attributes after it and the `}` are printed as usual, one level
-deeper and at the level of the statement. An empty block over several lines is
-printed `{ }` at the end of that line, as any other empty block is; an empty
-block on one line stays as written with its line. [test: a comment line after
-U+2028 inside the name of an ER entity with an attribute block over several
-lines] [test: an attribute on the line of the opening brace after a comment line
-after U+2028 inside the name of an ER entity] [test: two attributes, the first
-on the line of the opening brace, after a comment line after U+2028 inside the
-name of an ER entity] [test: an empty attribute block over several lines after a
-comment line after U+2028 inside the name of an ER entity] [test: an empty
-attribute block with an indented closing brace after a comment line after U+2028
-inside the name of an ER entity] [test: an empty attribute block with an empty
-line before its closing brace after a comment line after U+2028 inside the name
-of an ER entity] [test: an empty attribute block on one line after a comment
-line after U+2028 inside the name of an ER entity] [test: an empty attribute
-block over several lines after a comment line after U+2028 and a space]
+Where it ends, the next line is a statement of its own, which is indented.
+[test: an empty line after a comment line after U+2028 inside the name of an ER
+entity] [test: a line of only whitespace after a comment line after U+2028
+inside the name of an ER entity] [test: a directive line after a comment line
+after U+2028 inside the name of an ER entity] [test: a comment line after U+2028
+at the end of the text of an ER diagram] A `;` on that line stays where it is,
+whatever it is: the `;` that ends a `style` or `classDef` statement
+(`Bar fill:red;`), the `;` that the line rule ignores because the line after the
+comment line has `style` and `:#` (`style fill:#f00;`), and the `;` of a
+character entity (`Bar fill:#f00;`). [test: a character entity at the end of an
+ER style statement, after a comment line after U+2028 inside its name] [test: a
+semicolon that ends an ER style statement, after a comment line after U+2028
+inside its name] [test: a semicolon that ends an ER class definition, after a
+comment line after U+2028 inside its name] [test: a semicolon that the line rule
+ignores, after a comment line after U+2028 inside the name of an ER style
+statement] [test: a semicolon that the line rule ignores, after a comment line
+after U+2028 inside the name of an ER class definition] Of an entity with an
+attribute block over several lines that starts its line, what is printed as
+written is the line that opens the block, with what follows the `{` on it. The
+attributes after it and the `}` are printed as usual, one level deeper and at
+the level of the statement. An empty block over several lines is printed `{ }`
+at the end of that line, whatever stands after the `{` (spaces, a tab, a
+U+2028), as any other empty block is; an empty block on one line stays as
+written with its line. [test: a comment line after U+2028 inside the name of an
+ER entity with an attribute block over several lines] [test: an attribute on the
+line of the opening brace after a comment line after U+2028 inside the name of
+an ER entity] [test: two attributes, the first on the line of the opening brace,
+after a comment line after U+2028 inside the name of an ER entity] [test: an
+empty attribute block over several lines after a comment line after U+2028
+inside the name of an ER entity] [test: an empty attribute block with an
+indented closing brace after a comment line after U+2028 inside the name of an
+ER entity] [test: an empty attribute block with an empty line before its closing
+brace after a comment line after U+2028 inside the name of an ER entity] [test:
+an empty attribute block on one line after a comment line after U+2028 inside
+the name of an ER entity] [test: an empty attribute block over several lines
+after a comment line after U+2028 and a space] [test: an empty attribute block
+with spaces after its opening brace after a comment line after U+2028 inside the
+name of an ER entity] [test: an empty attribute block with a tab after its
+opening brace after a comment line after U+2028 inside the name of an ER entity]
+[test: an empty attribute block with U+2028 after its opening brace after a
+comment line after U+2028 inside the name of an ER entity] An entity that does
+not start its line, because another statement stands before it on the line or
+because a name stands before it that the line goes on with, is printed as
+written to its end, its attributes and its `}` where they were written, and so
+is the `}` of an empty block. [test: an attribute block of an entity that
+follows another entity on the line, after a comment line after U+2028] [test: an
+attribute block of an entity after a statement on its line, with a comment line
+after U+2028 inside its name] [test: an attribute block of an entity after a
+name in quotes, with a comment line after U+2028 inside its name] [test: an
+empty attribute block of an entity that follows another entity on the line,
+after a comment line after U+2028] [test: an empty attribute block of an entity
+after a statement on its line, after a comment line after U+2028 and a space]
 
 Input
 ([multi-line-statements/accessibility-text-joined-input.mmd](../tests/fixtures/er/multi-line-statements/accessibility-text-joined-input.mmd)):

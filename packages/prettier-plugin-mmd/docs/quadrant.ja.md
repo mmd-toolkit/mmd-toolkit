@@ -850,6 +850,7 @@ it]
 行に載るものと行の終わりは、
 [U+2028 か U+2029 の後のコメント行](./compatibility.ja.md#u2028-か-u2029-の後のコメント行)
 のとおりです。
+スタイルの前で行が終わるとき、`classDef` は未完で、入力は拒否されます。
 コメント行の後の行にある、行の規則が無視する `;`（`style color:#f00;`）は、
 その場所に残ります。
 [test: a semicolon that the line rule ignores, after a comment line after U+2028

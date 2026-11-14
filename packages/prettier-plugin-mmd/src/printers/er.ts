@@ -259,7 +259,11 @@ function printedErEnd(source: Source, statement: ErStatement): number {
 /**
  * Prints an entity statement with its attribute block: the line of the
  * entity with its `{`, the attributes one level deeper, one on each line, and
- * the `}` (docs/er.md, Attribute blocks).
+ * the `}` (docs/er.md, Attribute blocks). An empty block, which
+ * `hasAttributeBlock` takes for a block only where a joining region cuts the
+ * line of the entity, is printed as `{ }` after the line as written up to the
+ * `{`, whatever stands between the braces, as every empty block is (docs/er.md,
+ * Multi-line statements).
  */
 function printAttributeBlock(
   path: AstPath<MermaidAst>,
@@ -270,6 +274,15 @@ function printAttributeBlock(
   depth: number,
 ): Doc {
   const { opening, closing } = findAttributeBraces(source, statement)
+  const opened = printLine(
+    source,
+    options,
+    layoutBlockOpening(source, statement, opening),
+    depth,
+  )
+  if (isEmptyAttributeBlock(source, statement)) {
+    return [opened, " ", closing.value]
+  }
   const block = printBlock<ErAttribute | ErIgnoredText>(
     narrowPath(path, statement.type).map(print, "attributes"),
     source,
@@ -281,24 +294,9 @@ function printAttributeBlock(
     },
     attributeBlockRules(source),
   )
-  const header = openingLine(
-    printLine(
-      source,
-      options,
-      layoutBlockOpening(source, statement, opening),
-      depth,
-    ),
-    block,
-    false,
-  )
-  // The `}` of an empty block, which `hasAttributeBlock` takes for a block
-  // only where a joining region cuts the line of the entity, follows the `{`
-  // with one space, as in every empty block.
   return printClosedBlock(
-    header,
-    isEmptyAttributeBlock(source, statement)
-      ? { ...block, closingJoin: " " }
-      : block,
+    openingLine(opened, block, false),
+    block,
     closing.value,
     depth,
     options,

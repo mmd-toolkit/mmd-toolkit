@@ -4847,8 +4847,10 @@ A line that mermaid.js reads this way runs over several lines of the source. The
 formatter prints it as written, from its first line to its end, with the
 statements that stand on it: it does not format the whitespace between them, and
 it does not indent the lines after the comment line. This is one rule for every
-statement, block opening, and header; a diagram comment that such a comment line
-cuts is printed as written as well (see
+statement, block opening, and header, but for a mindmap, which puts the comment
+line of a node on a line of its own at the level of the node (see
+[Line separators](./mindmap.md#line-separators)). A diagram comment that such a
+comment line cuts is printed as written as well (see
 [Line separators](./sequence.md#line-separators)). The same holds where the
 region lies inside a name, in an ER diagram and in a quadrant chart. [test: a
 comment line after U+2028 inside the name of an ER entity] [test: a comment line
@@ -4858,13 +4860,18 @@ line after U+2028 inside the name of a class] [test: a comment line after U+2029
 inside the name of a class]
 
 What the line holds, and where it ends, follow from what mermaid.js removes. The
-documents of the diagram types add only what is theirs
-([ER](./er.md#multi-line-statements) and
-[quadrant](./quadrant.md#multi-line-statements)).
+documents of the diagram types say what is theirs:
+[ER](./er.md#multi-line-statements),
+[quadrant](./quadrant.md#multi-line-statements),
+[class](./class.md#multi-line-statements), [block](./block.md#line-separators),
+[sequence](./sequence.md#line-separators),
+[flowchart](./flowchart.md#multi-line-statements),
+[state](./state.md#line-separators), and
+[mindmap](./mindmap.md#line-separators).
 
 - The line ends at the first line break that no region removes. What stands on
-  the line after the comment lines is part of it: the statements that stand
-  before the name on its first line and after the text on its last line, and a
+  the line after the comment lines is part of it: the statements that stand on
+  its first line before the region and on its last line after the text, and a
   second comment line after text. A `;` there ends the name of a `subgraph` line
   without a title and stays where it is. The CRLF line breaks of such a line are
   printed as LF, as everywhere (see [Line endings](#line-endings)). [test: a
@@ -4896,13 +4903,19 @@ documents of the diagram types add only what is theirs
   line after U+2028 inside the name of a class]
 - Without a comment line after them, they end the line: an empty line, a line of
   only whitespace, and a directive on a line of its own (at its end), and so
-  does the end of the text. The next line is a statement of its own, which is
-  indented. A `classDef` of a quadrant chart that ends there is incomplete, and
-  the input is rejected. [test: an empty line after a comment line after U+2028
-  inside the name of an ER entity] [test: a line of only whitespace after a
-  comment line after U+2028 inside the name of an ER entity] [test: a directive
-  line after a comment line after U+2028 inside the name of an ER entity] [test:
-  a comment line after U+2028 at the end of the text of an ER diagram]
+  does the end of the text. What the next line is depends on the diagram type.
+  Where a statement may go on after a line break, the next line is the rest of
+  it, and it is printed as written too: the rest of an edge in a flowchart, the
+  block of a requirement, the orientation in an xychart. [test: a directive line
+  after a comment line after U+2028, and the rest of an edge on the next line,
+  in a flowchart] [test: an empty line after a comment line after U+2028, and
+  the rest of an edge on the next line, in a flowchart] [test: an empty line
+  after a comment line after U+2028, and the block of a requirement on the next
+  line] [test: a directive line after a comment line after U+2028, and the block
+  of a requirement on the next line] [test: an empty line after a comment line
+  after U+2028 at the header, and the orientation on the next line, in an
+  xychart] [test: a directive line after a comment line after U+2028 at the
+  header, and the orientation on the next line, in an xychart]
 - A U+2028 or U+2029 inside a directive is removed with the directive, so it
   ends no diagram comment and cuts none: the comment fragments before and after
   such a directive stay one comment, printed as written. [test: a diagram

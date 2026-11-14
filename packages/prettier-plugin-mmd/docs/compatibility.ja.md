@@ -5217,6 +5217,9 @@ mermaid.js がこう読む行は、ソースの何行にもまたがります。
 書かれたまま印字します。
 文の間の空白は整形せず、コメント行の後の行も字下げしません。
 これはすべての文、ブロックの開始行、ヘッダーに共通の 1 つの規則です。
+例外は mindmap です。
+mindmap は、ノードのコメント行を、ノードの段の自分の行に置きます。
+[行区切り文字](./mindmap.ja.md#行区切り文字)を参照してください。
 そのようなコメント行が途中で切る図のコメントも、
 書かれたまま印字します（[行区切り](./sequence.ja.md#行区切り)を参照）。
 領域が名前の中にあるときも同じです。
@@ -5228,13 +5231,16 @@ a name in quotes] [test: a comment line after U+2028 inside the name of a class]
 [test: a comment line after U+2029 inside the name of a class]
 
 行に載るものと行の終わりは、mermaid.js が取り除くものから決まります。
-図種ごとの文書には、その図種だけのことを書きます。
-[ER の複数行の文](./er.ja.md#複数行の文)と、
-[quadrant の複数行の文](./quadrant.ja.md#複数行の文)を参照してください。
+図種ごとの文書には、その図種のことを書きます。
+[ER](./er.ja.md#複数行の文)、[quadrant](./quadrant.ja.md#複数行の文)、
+[class](./class.ja.md#複数行の文)、[block](./block.ja.md#行区切り文字)、
+[sequence](./sequence.ja.md#行区切り)、
+[flowchart](./flowchart.ja.md#複数行の文)、[state](./state.ja.md#行区切り文字)、
+[mindmap](./mindmap.ja.md#行区切り文字)を参照してください。
 
 - 行は、領域が取り除かない最初の改行で終わります。
   コメント行の後の行にあるものは、その行の一部です。
-  名前の前にある、最初の行の文と、テキストの後にある、最後の行の文、
+  最初の行で領域の前にある文と、最後の行でテキストの後にある文、
   テキストの後の 2 つ目のコメント行も、その行の一部です。
   タイトルのない `subgraph` 行の名前は、そこにある `;` で終わり、
   `;` はその場所に残ります。
@@ -5278,15 +5284,21 @@ a name in quotes] [test: a comment line after U+2028 inside the name of a class]
 - その後にコメント行が続かないとき、それらは行を終わらせます。
   空行、空白だけの行、単独の行にあるディレクティブ（その行の終わりで）、
   そしてテキストの終わりです。
-  次の行は、字下げされた別の文になります。
-  そこで終わる quadrant 図の `classDef` は未完で、入力は拒否されます。
-  [test: an empty line after a comment line after U+2028 inside the name of an ER
-  entity]
-  [test: a line of only whitespace after a comment line after U+2028 inside the
-  name of an ER entity]
-  [test: a directive line after a comment line after U+2028 inside the name of an
-  ER entity]
-  [test: a comment line after U+2028 at the end of the text of an ER diagram]
+  次の行が何になるかは、図種によります。
+  改行の後も文が続く図種では、次の行は文の残りで、それも書かれたまま印字します。
+  flowchart の辺の残り、requirement のブロック、xychart の向きがそうです。
+  [test: a directive line after a comment line after U+2028, and the rest of an
+  edge on the next line, in a flowchart]
+  [test: an empty line after a comment line after U+2028, and the rest of an edge
+  on the next line, in a flowchart]
+  [test: an empty line after a comment line after U+2028, and the block of a
+  requirement on the next line]
+  [test: a directive line after a comment line after U+2028, and the block of a
+  requirement on the next line]
+  [test: an empty line after a comment line after U+2028 at the header, and the
+  orientation on the next line, in an xychart]
+  [test: a directive line after a comment line after U+2028 at the header, and the
+  orientation on the next line, in an xychart]
 - ディレクティブの中の U+2028 や U+2029
   はディレクティブと一緒に取り除かれるため、図のコメントを終わらせることも、
   途中で切ることもありません。

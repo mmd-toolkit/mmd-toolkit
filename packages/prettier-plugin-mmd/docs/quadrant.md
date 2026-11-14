@@ -813,7 +813,8 @@ name of a class] [test: two comment lines after U+2028 inside the name of a
 class] [test: a comment line after U+2028 inside the name of a class, and a
 point after it] What the line holds and where it ends follow
 [A comment line after U+2028 or U+2029](./compatibility.md#a-comment-line-after-u2028-or-u2029).
-A `;` that the line rule ignores on the line after the comment line
+Where it ends before the styles, the `classDef` is incomplete, and the input is
+rejected. A `;` that the line rule ignores on the line after the comment line
 (`style color:#f00;`) stays where it is. [test: a semicolon that the line rule
 ignores, after a comment line after U+2028 inside the name of a class]
 

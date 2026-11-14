@@ -2049,7 +2049,7 @@ mermaid.js が複数行にわたって読む文は、
 コメント行やディレクティブがある文は改行を残し、
 構造の続きの行と間の注釈を 1 段深く置きます。
 値の中の空白と、各隙間の最初の改行の前の空白は保ちます。
-コメントで結合される領域では、文全体を原文のまま残します。
+コメントで結合される領域は、それがつなぐ行を原文のまま残します（下を参照）。
 改行を空白 1 つか何も挟まずにつなぐと、
 行の規則が無視する `;` が変わりうる場合と、最後の行を `;` が終える場合は、
 その改行を残します。
@@ -2093,6 +2093,14 @@ relationship]
 行に載るものと行の終わりは、
 [U+2028 か U+2029 の後のコメント行](./compatibility.ja.md#u2028-か-u2029-の後のコメント行)
 のとおりです。
+行が終わった所では、次の行は、字下げされた別の文になります。
+[test: an empty line after a comment line after U+2028 inside the name of an ER
+entity]
+[test: a line of only whitespace after a comment line after U+2028 inside the
+name of an ER entity]
+[test: a directive line after a comment line after U+2028 inside the name of an
+ER entity]
+[test: a comment line after U+2028 at the end of the text of an ER diagram]
 その行にある `;` は、何であっても、その場所に残ります。
 `style` や `classDef` の文を終わらせる `;`（`Bar fill:red;`）、
 コメント行の後の行に `style` と `:#` があるために行の規則が無視する `;`
@@ -2107,10 +2115,11 @@ U+2028 inside its name]
 inside the name of an ER style statement]
 [test: a semicolon that the line rule ignores, after a comment line after U+2028
 inside the name of an ER class definition]
-複数行の属性ブロックを持つエンティティでは、書かれたまま印字するのは、
-ブロックを開く行で、`{` の後ろにあるものも含みます。
+行を始める、複数行の属性ブロックを持つエンティティでは、
+書かれたまま印字するのは、ブロックを開く行で、`{` の後ろにあるものも含みます。
 その後の属性と `}` は、通常どおり、属性は 1 段深く、`}` は文の位置に置きます。
-複数行の空のブロックは、その行の終わりに `{ }` として印字します。
+複数行の空のブロックは、`{` の後ろに空白、タブ、U+2028 があっても、
+その行の終わりに `{ }` として印字します。
 ほかの空のブロックと同じです。
 1 行の空のブロックは、その行と一緒に書かれたままにします。
 [test: a comment line after U+2028 inside the name of an ER entity with an
@@ -2129,6 +2138,25 @@ after a comment line after U+2028 inside the name of an ER entity]
 inside the name of an ER entity]
 [test: an empty attribute block over several lines after a comment line after
 U+2028 and a space]
+[test: an empty attribute block with spaces after its opening brace after a
+comment line after U+2028 inside the name of an ER entity]
+[test: an empty attribute block with a tab after its opening brace after a
+comment line after U+2028 inside the name of an ER entity]
+[test: an empty attribute block with U+2028 after its opening brace after a
+comment line after U+2028 inside the name of an ER entity]
+行を始めないエンティティは、その終わりまで書かれたまま印字します。
+同じ行の前に別の文がある場合と、行が続く名前が前にある場合です。
+属性と `}` は書かれた位置のままで、空のブロックの `}` もそうです。
+[test: an attribute block of an entity that follows another entity on the line,
+after a comment line after U+2028]
+[test: an attribute block of an entity after a statement on its line, with a
+comment line after U+2028 inside its name]
+[test: an attribute block of an entity after a name in quotes, with a comment
+line after U+2028 inside its name]
+[test: an empty attribute block of an entity that follows another entity on the
+line, after a comment line after U+2028]
+[test: an empty attribute block of an entity after a statement on its line,
+after a comment line after U+2028 and a space]
 
 入力
 ([multi-line-statements/accessibility-text-joined-input.mmd](../tests/fixtures/er/multi-line-statements/accessibility-text-joined-input.mmd)):
