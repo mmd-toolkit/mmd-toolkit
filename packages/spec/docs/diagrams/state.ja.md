@@ -404,6 +404,9 @@ mermaid.js は `direction-text` の単位を読みません。
 値の後のテキストは `%%` を持てます。
 `direction LR %% c` は方向 `LR` を決め、
 `%% c` はコメントでなく `direction-text` の単位です。
+U+2028 や U+2029 の後のコメントは例外で、読み飛ばされ、
+値はその後に続きます（[コメント行](../common.ja.md#コメント行) を参照）。
+[fixture: state/db-direction-text-line-separator-then-comment-line]
 値は語の境目で終わらなくてもかまいません。
 `direction TBX` は `TB` を決め、`X` は `direction-text` の単位です。
 値は書かれた順に試します。
@@ -678,6 +681,9 @@ id は `{` の前と `%%` の前で空でもかまいません。
 [fixture: state/lex-alias-comment-after-id] [fixture:
 state/lex-alias-id-percent-comment] [fixture: state/lex-alias-id-percent-word]
 [fixture: state/lex-alias-id-percent-next-line]
+U+2028 や U+2029 の後のコメントは例外で、読み飛ばされ、
+id はその後に続きます（[コメント行](../common.ja.md#コメント行) を参照）。
+[fixture: state/db-alias-id-line-separator-then-comment-line]
 テキストが `%%` で始まり、その行で `{` が続くときは、`{` の前のテキストが、
 終わりの空白を除いて、代わりに mermaid.js が読まない `ignored-text` の単位で、
 `alias-id` はありません。
@@ -983,6 +989,11 @@ state/lex-floating-note-as-next-line]
 文脈を出ます。
 `#`、`;`、`%%` はその文字です。
 `accTitle: a;b #c %% d` のタイトルは `a;b #c %% d` です。
+U+2028 や U+2029 の後のコメントは例外で、読み飛ばされ、
+値はその後に続きます（[コメント行](../common.ja.md#コメント行) を参照）。
+[fixture: state/db-acc-title-line-separator-then-comment-line]
+[fixture: state/db-acc-descr-line-separator-then-comment-line]
+[fixture: state/db-acc-descr-block-line-separator-then-comment-line]
 `:` の後の空白は、
 改行も含めて `:` の単位と一緒に読まれるので（文の文脈の規則 11 と 12）、
 テキストは次の行にあってもかまいません。
@@ -1054,6 +1065,16 @@ state/lex-hash-in-description] [fixture: state/lex-percent-in-label]
 [fixture: state/lex-alias-percent-in-string] [fixture: state/lex-style-percent]
 [fixture: state/lex-class-css-class-percent]
 [fixture: state/lex-pseudostate-name-percent]
+U+2028 や U+2029 の後のコメントは例外で、読み飛ばされ、
+値はその後に続きます（[コメント行](../common.ja.md#コメント行) を参照）。
+[fixture: state/db-description-line-separator-then-comment-line]
+[fixture: state/db-description-paragraph-separator-then-comment-line]
+[fixture: state/db-string-line-separator-then-comment-line]
+[fixture: state/db-style-line-separator-then-comment-line]
+[fixture: state/db-css-class-line-separator-then-comment-line]
+[fixture: state/db-note-line-line-separator-then-comment-line]
+[fixture: state/db-note-block-line-separator-then-comment-line]
+[fixture: state/db-second-description-line-separator-then-comment-line]
 id の中では、`#` は文字です。
 `A#1` は状態です。 [fixture: state/lex-hash-in-id]
 エンティティは、字句解析器がテキストを読む前に、その置き換えの文字として、

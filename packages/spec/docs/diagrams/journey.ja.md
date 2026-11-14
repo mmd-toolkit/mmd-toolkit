@@ -648,6 +648,16 @@ journey/lex-percent-brace-text-only]
 タスクのデータがその前で止まるからです。
 `%` は、タイトルのテキスト、section のテキスト、タスクのテキスト、
 タスクのデータ、アクセシビリティのタイトルと説明、説明ブロックの文字です。
+U+2028 や U+2029 の後のコメントは例外で、読み飛ばされ、
+値はその後に続きます（[コメント行](../common.ja.md#コメント行) を参照）。
+[fixture: journey/db-title-line-separator-then-comment-line]
+[fixture: journey/db-title-paragraph-separator-then-comment-line]
+[fixture: journey/db-section-line-separator-then-comment-line]
+[fixture: journey/db-task-line-separator-then-comment-line]
+[fixture: journey/db-acc-title-line-separator-then-comment-line]
+[fixture: journey/db-acc-descr-line-separator-then-comment-line]
+[fixture: journey/db-acc-descr-block-line-separator-then-comment-line]
+[fixture: journey/db-person-line-separator-then-comment-line]
 そのため、`A#B: 5` はデータのないタスクのテキスト `A` とコメントで、拒否され、
 `a: 5 %% c` は数でないスコアの部分 `5 %% c` を持ち、
 `A %% B: 5` はタスク `A %% B` です。 [fixture: journey/lex-hash-ends-task-text]

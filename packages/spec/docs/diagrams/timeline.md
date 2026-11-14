@@ -643,7 +643,17 @@ timeline/db-period-percent-inside] [fixture: timeline/db-event-single-percent]
 timeline/db-acc-descr-percent] [fixture: timeline/db-section-single-percent]
 [fixture: timeline/db-acc-title-single-percent] [fixture:
 timeline/db-acc-descr-single-percent] [fixture:
-timeline/db-acc-descr-block-single-percent]
+timeline/db-acc-descr-block-single-percent] A comment after a U+2028 or U+2029
+is the exception: it is read through, and the value goes on after it (see
+[Comment lines](../common.md#comment-lines)). [fixture:
+timeline/db-period-line-separator-then-comment-line] [fixture:
+timeline/db-period-paragraph-separator-then-comment-line] [fixture:
+timeline/db-event-line-separator-then-comment-line] [fixture:
+timeline/db-section-line-separator-then-comment-line] [fixture:
+timeline/db-title-line-separator-then-comment-line] [fixture:
+timeline/db-acc-title-line-separator-then-comment-line] [fixture:
+timeline/db-acc-descr-line-separator-then-comment-line] [fixture:
+timeline/db-acc-descr-block-line-separator-then-comment-line]
 
 mermaid.js reads `%` in one more way, which differs from this rule where a
 character other than `}` and whitespace stands right before `%%` where a unit

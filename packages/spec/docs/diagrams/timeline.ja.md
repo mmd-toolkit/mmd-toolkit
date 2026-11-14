@@ -743,6 +743,16 @@ timeline/db-section-percent] [fixture: timeline/db-acc-title-percent]
 [fixture: timeline/db-acc-title-single-percent]
 [fixture: timeline/db-acc-descr-single-percent]
 [fixture: timeline/db-acc-descr-block-single-percent]
+U+2028 や U+2029 の後のコメントは例外で、読み飛ばされ、
+値はその後に続きます（[コメント行](../common.ja.md#コメント行) を参照）。
+[fixture: timeline/db-period-line-separator-then-comment-line]
+[fixture: timeline/db-period-paragraph-separator-then-comment-line]
+[fixture: timeline/db-event-line-separator-then-comment-line]
+[fixture: timeline/db-section-line-separator-then-comment-line]
+[fixture: timeline/db-title-line-separator-then-comment-line]
+[fixture: timeline/db-acc-title-line-separator-then-comment-line]
+[fixture: timeline/db-acc-descr-line-separator-then-comment-line]
+[fixture: timeline/db-acc-descr-block-line-separator-then-comment-line]
 
 mermaid.js は `%` をもう 1 つの読み方で読みます。
 それがこの規則と違うのは、単位が始まるところで、

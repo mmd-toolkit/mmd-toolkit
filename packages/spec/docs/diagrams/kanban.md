@@ -106,11 +106,18 @@ multiline labels and data blocks. [fixture: kanban/lex-comment-quoted-line]
 [fixture: kanban/lex-id-comment-line] [fixture: kanban/lex-id-directive-line]
 [fixture: kanban/lex-label-comment-line] [fixture:
 kanban/lex-metadata-comment-line] [fixture: kanban/lex-metadata-directive-line]
-An inline `%%` inside node text, a shape label, or class text stays in that
-text. [fixture: kanban/lex-comment-quoted-inline] [fixture:
-kanban/db-grid-comment-item-id] [fixture:
-kanban/db-grid-comment-item-label-bare] [fixture:
-kanban/db-grid-comment-item-class]
+[fixture: kanban/db-icon-line-separator-then-comment-line] [fixture:
+kanban/db-data-label-bare-line-separator-then-comment-line] [fixture:
+kanban/db-data-label-quoted-line-separator-then-comment-line] An inline `%%`
+inside node text, a shape label, or class text stays in that text. [fixture:
+kanban/lex-comment-quoted-inline] [fixture: kanban/db-grid-comment-item-id]
+[fixture: kanban/db-grid-comment-item-label-bare] [fixture:
+kanban/db-grid-comment-item-class] A comment after a U+2028 or U+2029 is the
+exception: it is read through, and the value goes on after it (see
+[Comment lines](../common.md#comment-lines)). [fixture:
+kanban/db-node-text-line-separator-then-comment-line] [fixture:
+kanban/db-node-text-paragraph-separator-then-comment-line] [fixture:
+kanban/db-shape-text-line-separator-then-comment-line]
 
 The common rules keep embedded data opaque. [fixture:
 kanban/gram-frontmatter-invalid-yaml] [fixture: kanban/gram-metadata-bad-yaml]
@@ -614,7 +621,11 @@ An ordinary `#` or single `%` is node text. [fixture: kanban/lex-comment-hash]
 or shape label stays in that text. [fixture: kanban/lex-after-bare-comment]
 [fixture: kanban/lex-after-bare-comment-glued] [fixture:
 kanban/db-grid-comment-item-label-bare] [fixture:
-kanban/lex-comment-quoted-inline]
+kanban/lex-comment-quoted-inline] A comment after a U+2028 or U+2029 is the
+exception: it is read through, and the value goes on after it (see
+[Comment lines](../common.md#comment-lines)). [fixture:
+kanban/db-string-line-separator-then-comment-line] [fixture:
+kanban/db-markdown-string-line-separator-then-comment-line]
 
 A line of `%%` alone or `%%{ }%%` is a diagram comment. [fixture:
 kanban/lex-comment-bare] [fixture: kanban/header-after-empty-braces-line] A

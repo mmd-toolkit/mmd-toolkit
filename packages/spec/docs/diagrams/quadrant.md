@@ -1345,8 +1345,22 @@ the header, and a comment at the end of the text change nothing. A comment takes
 nothing before it: `quadrant-1 ab%% c` has the text `ab`, and
 `x-axis L --> R%% c` the texts `L` and `R`. A `%%` inside a title, an
 accessibility text, a description block, or a string is a character of it, and
-inside the brackets of a point it makes the input rejected. A line `%%` alone,
-and `%%{` where no directive starts, such as a line `%%{ }%%`, are comments.
+inside the brackets of a point it makes the input rejected. A comment line after
+a U+2028 or U+2029 inside a text, a name, a title, an accessibility text, a
+description block, or a string is removed, its line break included, and the
+value goes on with the next line (see
+[Comment lines](../common.md#comment-lines)): `quadrant-1 a`, U+2028, `%% c`, a
+line break, and `b` has the text `a`, U+2028, and `b`. [fixture:
+quadrant/db-quadrant-text-line-separator-then-comment-line] [fixture:
+quadrant/db-quadrant-text-paragraph-separator-then-comment-line] [fixture:
+quadrant/db-title-line-separator-then-comment-line] [fixture:
+quadrant/db-axis-text-line-separator-then-comment-line] [fixture:
+quadrant/db-point-name-line-separator-then-comment-line] [fixture:
+quadrant/db-acc-title-line-separator-then-comment-line] [fixture:
+quadrant/db-acc-descr-line-separator-then-comment-line] [fixture:
+quadrant/db-acc-descr-block-line-separator-then-comment-line] [fixture:
+quadrant/db-string-line-separator-then-comment-line] A line `%%` alone, and
+`%%{` where no directive starts, such as a line `%%{ }%%`, are comments.
 [fixture: quadrant/db-comment-line] [fixture: quadrant/db-comment-line-last]
 [fixture: quadrant/db-comment-line-no-line-feed] [fixture:
 quadrant/db-comment-line-indented] [fixture:

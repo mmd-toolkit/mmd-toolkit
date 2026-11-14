@@ -253,11 +253,15 @@ pie/label-unclosed-single] [fixture: pie/label-escaped-final-quote]
 
 Unescaped line breaks, U+2028 and U+2029 are string content, as are the opposite
 quote, percent pairs, apparent YAML blocks and directive-like forms that survive
-the common directive scan. The earlier string rule prevents them from becoming
-hidden forms. Source whitespace and escape spelling stay in StringLiteral.
-[fixture: pie/label-multiline] [fixture: pie/label-cr] [fixture: pie/label-crlf]
-[fixture: pie/label-ls] [fixture: pie/label-ps] [fixture:
-pie/label-opposite-quote] [fixture: pie/label-punctuation] [fixture:
+the common directive scan. A comment after a U+2028 or U+2029 is the exception:
+it is read through, and the value goes on after it (see
+[Comment lines](../common.md#comment-lines)). [fixture:
+pie/db-string-line-separator-then-comment-line] [fixture:
+pie/db-string-paragraph-separator-then-comment-line] The earlier string rule
+prevents them from becoming hidden forms. Source whitespace and escape spelling
+stay in StringLiteral. [fixture: pie/label-multiline] [fixture: pie/label-cr]
+[fixture: pie/label-crlf] [fixture: pie/label-ls] [fixture: pie/label-ps]
+[fixture: pie/label-opposite-quote] [fixture: pie/label-punctuation] [fixture:
 pie/review-label-hidden-yaml-text] [fixture:
 pie/review-hidden-directive-in-string] [fixture: pie/label-whitespace] [fixture:
 pie/label-unknown-escapes]
@@ -439,9 +443,12 @@ pie/review-directive-open-no-type] [fixture: pie/comment-single-percent]
 LS/PS do not end a native comment. Common comment regions can cut it and join
 its continuation to later physical-line text. Percent pairs in strings are
 content; in line common values they end the value; inside a description block
-they are content up to its first closing brace. Common comment-only lines are
-still removed inside all these values. [fixture: pie/comment-ls] [fixture:
-pie/comment-ps] [fixture: pie/lex-comment-ls-region-bridge] [fixture:
+they are content up to its first closing brace. A comment after a U+2028 or
+U+2029 is the exception: it is read through, and the value goes on after it (see
+[Comment lines](../common.md#comment-lines)). [fixture:
+pie/db-acc-descr-block-line-separator-then-comment-line] Common comment-only
+lines are still removed inside all these values. [fixture: pie/comment-ls]
+[fixture: pie/comment-ps] [fixture: pie/lex-comment-ls-region-bridge] [fixture:
 pie/label-punctuation] [fixture: pie/title-comment] [fixture:
 pie/acctitle-comment] [fixture: pie/accdescr-comment] [fixture:
 pie/accdescr-block-comment-lines] [fixture: pie/comment-label-line] [fixture:

@@ -731,6 +731,9 @@ er/lex-cardinality-symbol-then-word]
 `direction LRX` は `LR` を設定し、`X` は `direction-text` の単位です。
 `direction LR %% c` はテキスト `%% c` を伴って `LR` を設定し、
 `direction LR;` はテキスト `;` を伴って設定します。
+U+2028 や U+2029 の後のコメントは例外で、読み飛ばされ、
+値はその後に続きます（[コメント行](../common.ja.md#コメント行) を参照）。
+[fixture: er/db-direction-text-line-separator-then-comment-line]
 値は挙げた順に試されます。
 行のどこかに `direction`、空白、`TB` があれば値は `TB` で、
 なければ `BT` を試し、以下同様です。
@@ -928,8 +931,13 @@ style の文脈には `style` と `classDef` で入ります。
    `classDef a.b fill:red` は拒否されます。
    U+00A0 はその文字です。
    `style A fill:red`、U+00A0、改行、`B` はスタイル `fill:red` と U+00A0、
-   実体 B を持ちます。 [fixture: er/lex-classdef-dot]
-   [fixture: er/lex-classdef-percent] [fixture:
+   実体 B を持ちます。
+   単位の中の U+2028 や U+2029 の後のコメント行は取り除かれ、
+   単位はその後に続き（[コメント行](../common.ja.md#コメント行) を参照）、
+   `style A fill:red`、U+2028、`%% c`、改行、`x` は、`fill:red`、U+2028、
+   `x` からなるスタイルを持ちます。
+   [fixture: er/db-style-line-separator-then-comment-line]
+   [fixture: er/lex-classdef-dot] [fixture: er/lex-classdef-percent] [fixture:
    er/lex-classdef-parentheses] [fixture: er/lex-style-dot-name] [fixture:
    er/lex-classdef-dot-name] [fixture: er/lex-style-nbsp-before-line-feed]
    [fixture: er/lex-classdef-dash-name] [fixture: er/lex-classdef-unicode-name]
@@ -987,6 +995,10 @@ style の文脈には `accDescr {` の規則がなく、
 `;`、`#`、`%%`、`{`、`}`、`accDescr {}` はテキストの文字です。
 `accTitle: a;b #c %% d` はタイトル `a;b #c %% d` を持ち、
 `accTitle: T accDescr {}` はタイトル `T accDescr {}` を持ちます。
+U+2028 や U+2029 の後のコメントは例外で、読み飛ばされ、
+値はその後に続きます（[コメント行](../common.ja.md#コメント行) を参照）。
+[fixture: er/db-acc-title-line-separator-then-comment-line]
+[fixture: er/db-acc-descr-line-separator-then-comment-line]
 テキストの終わりの空白は U+00A0 を含めて単位に読まれ、
 値からは除かれます（[ErLiteral](../ast/er.ja.md#erliteral) を参照）。
 [fixture: er/gram-acc-title] [fixture: er/lex-acc-title-line-feed-after-colon]
@@ -1014,6 +1026,9 @@ er/db-acc-title-trailing-space] [fixture: er/lex-acc-title-trailing-nbsp]
 テキストは最初の `}` まで、終わりの空白を含めて続きます。
 `accDescr { a {b }` は説明 `a {b`、`accDescr { D   }` は説明 `D`、
 `accDescr { direction LR }` は説明 `direction LR` を持ちます。
+その中のコメント行は、テキストの行の U+2028 や U+2029 の後のものも取り除かれ、
+テキストはその後に続きます（[コメント行](../common.ja.md#コメント行) を参照）。
+[fixture: er/db-acc-descr-block-line-separator-then-comment-line]
 テキストはこの文脈では終われません。
 `accDescr {`、`accDescr { D`、`accDescr { D` と行 `A` は拒否されます。
 [fixture: er/gram-acc-descr-block] [fixture:

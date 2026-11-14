@@ -237,6 +237,10 @@ U+3000、U+FEFF がそれらを分けます。
 [fixture: block/db-tail-space-comment] [fixture: block/db-tail-class-comment]
 [fixture: block/db-tail-class-def-comment]
 [fixture: block/db-tail-style-comment]
+U+2028 や U+2029 の後のコメントは例外で、読み飛ばされ、
+値はその後に続きます（[コメント行](../common.ja.md#コメント行) を参照）。
+[fixture: block/db-class-name-line-separator-then-comment-line]
+[fixture: block/db-style-line-separator-then-comment-line]
 
 **エンティティ、HTML 属性の引用符、`style` 行。**
 文字列、クラス名、スタイルの中では、エンティティは、
@@ -557,6 +561,10 @@ id は大文字小文字を保ちます。
 テキストは改行も含めて `"` 以外のどの文字も持てます。
 端の空白、角括弧、波括弧、`<`、`>`、矢印、`:`、`;`、`#`、`%%`、キーワード、
 ASCII 外の文字です。
+U+2028 や U+2029 の後のコメントは例外で、読み飛ばされ、
+値はその後に続きます（[コメント行](../common.ja.md#コメント行) を参照）。
+[fixture: block/db-string-line-separator-then-comment-line]
+[fixture: block/db-string-paragraph-separator-then-comment-line]
 文字列にエスケープはなく、閉じない文字列は入力を拒否させます。
 引用符と逆引用符は markdown 文字列で、文法のどの規則もそれを取らず、
 ``A["`x`"]`` は拒否されます。

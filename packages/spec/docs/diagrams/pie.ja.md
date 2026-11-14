@@ -273,6 +273,10 @@ Infinity の綴り、語の接尾辞は拒否します。
 エスケープしていない改行、U+2028、U+2029 は文字列の内容です。
 反対側の引用符、パーセント対、見かけの YAML ブロック、
 共通の走査後に残るディレクティブのような形も内容です。
+U+2028 や U+2029 の後のコメントは例外で、読み飛ばされ、
+値はその後に続きます（[コメント行](../common.ja.md#コメント行) を参照）。
+[fixture: pie/db-string-line-separator-then-comment-line]
+[fixture: pie/db-string-paragraph-separator-then-comment-line]
 先の文字列規則が読むので、隠れた形にはなりません。
 空白とエスケープの綴りは StringLiteral に保ちます。
 [fixture: pie/label-multiline] [fixture: pie/label-cr] [fixture: pie/label-crlf]
@@ -480,6 +484,9 @@ LS/PS は図のコメントを終えません。
 続きを後の物理行のテキストに結び付ける場合があります。
 文字列のパーセント対は内容、共通の行の値では値の終わり、
 説明ブロックでは最初の閉じ波括弧までの内容です。
+U+2028 や U+2029 の後のコメントは例外で、読み飛ばされ、
+値はその後に続きます（[コメント行](../common.ja.md#コメント行) を参照）。
+[fixture: pie/db-acc-descr-block-line-separator-then-comment-line]
 どの値の中でも、共通のコメントだけの行は除きます。 [fixture: pie/comment-ls]
 [fixture: pie/comment-ps] [fixture: pie/lex-comment-ls-region-bridge]
 [fixture: pie/label-punctuation] [fixture: pie/title-comment]

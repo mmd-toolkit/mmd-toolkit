@@ -546,6 +546,9 @@ gantt/lex-task-colon-only]
 
 - 単位の始まる位置の `%` は、その行の単位の直後でも、常にコメントです。
   テキストの中ではテキストの文字です（[コメント](#コメント) を参照）。
+  U+2028 や U+2029 の後のコメントは例外で、読み飛ばされ、
+  値はその後に続きます（[コメント行](../common.ja.md#コメント行) を参照）。
+  [fixture: gantt/db-task-line-separator-then-comment-line]
   日付で始まる行は拒否され、その行のほかのテキストの後の日付や、
   タイトルの中の日付はテキストです。
   [fixture: gantt/lex-single-percent-comment-glued] [fixture:
@@ -792,6 +795,11 @@ gantt/lex-callback-arguments-unclosed]
 その行の終わりまで続き、`;`、`#`、`:`、`%%` を含めます。
 `accTitle:`、改行、`title X` はアクセシビリティのタイトル `title X` を持ち、
 タイトルは持ちません。
+U+2028 や U+2029 の後のコメントは例外で、読み飛ばされ、
+値はその後に続きます（[コメント行](../common.ja.md#コメント行) を参照）。
+[fixture: gantt/db-acc-title-line-separator-then-comment-line]
+[fixture: gantt/db-acc-descr-line-separator-then-comment-line]
+[fixture: gantt/db-acc-descr-block-line-separator-then-comment-line]
 テキストはこれらの文脈では終われないので、
 空白のほかに何も続かない `accTitle:` は拒否されます。
 [fixture: gantt/gram-acc-title] [fixture: gantt/gram-acc-title-hash-semicolon]
@@ -1004,6 +1012,17 @@ gantt/lex-percent-comment-glued-after-header-blank-line]
 タイトルのテキスト、section のテキスト、設定のテキスト、タスクのデータ、
 アクセシビリティのタイトル、コールバック名、コールバック引数、URL 文字列、
 そして click の id（id の文字）です。
+U+2028 や U+2029 の後のコメントは例外で、読み飛ばされ、
+値はその後に続きます（[コメント行](../common.ja.md#コメント行) を参照）。
+[fixture: gantt/db-title-line-separator-then-comment-line]
+[fixture: gantt/db-section-line-separator-then-comment-line]
+[fixture: gantt/db-axis-format-line-separator-then-comment-line]
+[fixture: gantt/db-axis-format-paragraph-separator-then-comment-line]
+[fixture: gantt/db-today-marker-line-separator-then-comment-line]
+[fixture: gantt/db-callback-name-line-separator-then-comment-line]
+[fixture: gantt/db-callback-arguments-line-separator-then-comment-line]
+[fixture: gantt/db-url-line-separator-then-comment-line]
+[fixture: gantt/db-task-data-line-separator-then-comment-line]
 click の id の後のコメントは行を終え、click の文に部分がないので、
 `click id1 %% c` は拒否されます。
 `click id1 %%{ }%%`、改行、`href "u"` も同じ理由でどちらでも拒否され、

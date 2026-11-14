@@ -642,14 +642,18 @@ after it closes nothing and is rejected; only rules 1 to 3 come before it, so
 `accTitle: direction LR` is a title. Neither does the value need to end at a
 word boundary: `direction LRX` sets `LR`, and `X` is a `direction-text` unit;
 `direction LR %% c` sets `LR` with the text `%% c`, and `direction LR;` with the
-text `;`. The values are tried in the order given: if the line has `direction`,
-whitespace, and `TB` anywhere, the value is `TB`; otherwise `BT` is tried, and
-so on. For a value, the lexer takes the last `direction` of the run that the
-value follows. So `direction TB x direction TB` is read at its last `direction`,
-and `direction TB x` is a `direction-text` unit, while
-`direction TB x direction LR` and `direction TBx direction RL` set `TB` and are
-read at their first `direction`, with the rest as a `direction-text` unit.
-[fixture: er/lex-direction-line-text-before] [fixture:
+text `;`. A comment after a U+2028 or U+2029 is the exception: it is read
+through, and the value goes on after it (see
+[Comment lines](../common.md#comment-lines)). [fixture:
+er/db-direction-text-line-separator-then-comment-line] The values are tried in
+the order given: if the line has `direction`, whitespace, and `TB` anywhere, the
+value is `TB`; otherwise `BT` is tried, and so on. For a value, the lexer takes
+the last `direction` of the run that the value follows. So
+`direction TB x direction TB` is read at its last `direction`, and
+`direction TB x` is a `direction-text` unit, while `direction TB x direction LR`
+and `direction TBx direction RL` set `TB` and are read at their first
+`direction`, with the rest as a `direction-text` unit. [fixture:
+er/lex-direction-line-text-before] [fixture:
 er/lex-direction-line-after-relationship] [fixture:
 er/lex-direction-line-as-role] [fixture: er/lex-direction-lower-case] [fixture:
 er/lex-direction-upper-case] [fixture: er/lex-direction-leading-space] [fixture:
@@ -812,11 +816,16 @@ and the styles of the statement:
    `classDef a width:50%`, `classDef a fill:rgb(1,2,3)`, `style A.B fill:red`,
    and `classDef a.b fill:red` are rejected. U+00A0 is a character of it:
    `style A fill:red`, U+00A0, a line break, and `B` has the style `fill:red`
-   and U+00A0, and the entity B. [fixture: er/lex-classdef-dot] [fixture:
-   er/lex-classdef-percent] [fixture: er/lex-classdef-parentheses] [fixture:
-   er/lex-style-dot-name] [fixture: er/lex-classdef-dot-name] [fixture:
-   er/lex-style-nbsp-before-line-feed] [fixture: er/lex-classdef-dash-name]
-   [fixture: er/lex-classdef-unicode-name] [fixture: er/lex-classdef-star-style]
+   and U+00A0, and the entity B. A comment line after a U+2028 or U+2029 in the
+   unit is removed, and the unit goes on after it (see
+   [Comment lines](../common.md#comment-lines)): `style A fill:red`, U+2028,
+   `%% c`, a line break, and `x` has the style `fill:red`, U+2028, and `x`.
+   [fixture: er/db-style-line-separator-then-comment-line] [fixture:
+   er/lex-classdef-dot] [fixture: er/lex-classdef-percent] [fixture:
+   er/lex-classdef-parentheses] [fixture: er/lex-style-dot-name] [fixture:
+   er/lex-classdef-dot-name] [fixture: er/lex-style-nbsp-before-line-feed]
+   [fixture: er/lex-classdef-dash-name] [fixture: er/lex-classdef-unicode-name]
+   [fixture: er/lex-classdef-star-style]
 7. `;`: a `;` unit. [fixture: er/lex-classdef-semicolon-line-feed]
 
 The `;` unit ends the statement, but the lexer stays in the style context until
@@ -859,10 +868,14 @@ input is rejected: `accTitle:`, also followed by a space or a line break, and
 `accDescr:` are rejected, while `accTitle: T` at the end of the text is
 accepted. `;`, `#`, `%%`, `{`, `}`, and `accDescr {}` are characters of the
 text: `accTitle: a;b #c %% d` has the title `a;b #c %% d`, and
-`accTitle: T accDescr {}` the title `T accDescr {}`. The whitespace at the end
-of the text, U+00A0 included, is read into the unit and left out of the value
-(see [ErLiteral](../ast/er.md#erliteral)). [fixture: er/gram-acc-title]
-[fixture: er/lex-acc-title-line-feed-after-colon] [fixture:
+`accTitle: T accDescr {}` the title `T accDescr {}`. A comment after a U+2028 or
+U+2029 is the exception: it is read through, and the value goes on after it (see
+[Comment lines](../common.md#comment-lines)). [fixture:
+er/db-acc-title-line-separator-then-comment-line] [fixture:
+er/db-acc-descr-line-separator-then-comment-line] The whitespace at the end of
+the text, U+00A0 included, is read into the unit and left out of the value (see
+[ErLiteral](../ast/er.md#erliteral)). [fixture: er/gram-acc-title] [fixture:
+er/lex-acc-title-line-feed-after-colon] [fixture:
 er/lex-acc-title-blank-line-then-name] [fixture:
 er/lex-acc-title-spaces-then-name] [fixture: er/lex-acc-title-at-end] [fixture:
 er/lex-acc-title-space-at-end] [fixture: er/lex-acc-title-line-feed-at-end]
@@ -886,12 +899,15 @@ an **empty description block** (see
 [Empty description blocks](#empty-description-blocks)). The text runs to the
 first `}`, whitespace at its end included: `accDescr { a {b }` has the
 description `a {b`, `accDescr { D   }` the description `D`, and
-`accDescr { direction LR }` the description `direction LR`. The text may not end
-in this context: `accDescr {`, `accDescr { D`, and `accDescr { D` followed by a
-line `A` are rejected. [fixture: er/gram-acc-descr-block] [fixture:
-er/gram-acc-descr-block-multiline] [fixture: er/gram-acc-descr-block-empty]
-[fixture: er/gram-acc-descr-block-empty-space] [fixture:
-er/db-acc-descr-block-whitespace-only] [fixture:
+`accDescr { direction LR }` the description `direction LR`. A comment line
+inside it is removed, also after a U+2028 or U+2029 on a line of the text, and
+the text goes on after it (see [Comment lines](../common.md#comment-lines)).
+[fixture: er/db-acc-descr-block-line-separator-then-comment-line] The text may
+not end in this context: `accDescr {`, `accDescr { D`, and `accDescr { D`
+followed by a line `A` are rejected. [fixture: er/gram-acc-descr-block]
+[fixture: er/gram-acc-descr-block-multiline] [fixture:
+er/gram-acc-descr-block-empty] [fixture: er/gram-acc-descr-block-empty-space]
+[fixture: er/db-acc-descr-block-whitespace-only] [fixture:
 er/gram-acc-descr-block-directive-only] [fixture:
 er/gram-acc-descr-block-comment-line-only] [fixture:
 er/lex-acc-descr-block-brace-in-text] [fixture:

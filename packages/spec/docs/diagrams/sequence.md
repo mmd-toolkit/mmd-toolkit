@@ -324,17 +324,24 @@ Some consequences of the order:
   [fixture: sequence/lex-hash-inside-id-run] [fixture:
   sequence/lex-percent-in-text] [fixture: sequence/lex-hash-ends-text] [fixture:
   sequence/lex-hash-comment-after-unit] [fixture:
-  sequence/lex-percent-comment-after-unit]
+  sequence/lex-percent-comment-after-unit] A comment after a U+2028 or U+2029 is
+  the exception: it is read through, and the value goes on after it (see
+  [Comment lines](../common.md#comment-lines)). [fixture:
+  sequence/db-message-text-line-separator-then-comment-line]
 - A diagram comment starts at its mark, and the unit before it keeps all its
   characters. A number may be followed by `%%`, so `autonumber 5%% c` starts at
   5, as `autonumber 5 %% c` does, and `autonumber 10%% c` starts at 10. One `%`
   after a number does not end it: `autonumber 5% c` is rejected, because the
   lexer reads an id run there. Where `%%` follows a character of an id run, it
   is a character of the run: a line `C%% c` is the id run `C%% c`, a statement
-  without an arrow, and is rejected. After `:`, it is a character of the text:
-  `A->>B:%% c` has the message `%% c`. mermaid.js reads these inputs otherwise
-  (see [Known divergences](#known-divergences)). [fixture:
-  sequence/lex-percent-comment-takes-number] [fixture:
+  without an arrow, and is rejected. A comment after a U+2028 or U+2029 is the
+  exception: it is read through, and the value goes on after it (see
+  [Comment lines](../common.md#comment-lines)). [fixture:
+  sequence/db-id-run-line-separator-then-comment-line] [fixture:
+  sequence/db-id-run-paragraph-separator-then-comment-line] After `:`, it is a
+  character of the text: `A->>B:%% c` has the message `%% c`. mermaid.js reads
+  these inputs otherwise (see [Known divergences](#known-divergences)).
+  [fixture: sequence/lex-percent-comment-takes-number] [fixture:
   sequence/lex-percent-comment-after-space] [fixture:
   sequence/div-comment-after-two-digit-number] [fixture:
   sequence/lex-number-before-single-percent] [fixture:
@@ -567,7 +574,10 @@ The data context is entered by `@{` after an id:
 
 A data block therefore ends at the first `}`, and its content cannot contain
 one. [fixture: sequence/docs-syntax-sequence-diagram-1371ae9a] [fixture:
-sequence/lex-data-block-nested-brace]
+sequence/lex-data-block-nested-brace] A comment line inside the content is
+removed, also after a U+2028 or U+2029 inside a string of the content, and the
+content goes on after it (see [Comment lines](../common.md#comment-lines)).
+[fixture: sequence/db-data-alias-line-separator-then-comment-line]
 
 ### Accessibility values
 

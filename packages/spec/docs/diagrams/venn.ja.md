@@ -465,6 +465,9 @@ U+0085 は空白ではありません。 [fixture: venn/lex-tab-header-before]
 [fixture: venn/lex-after-text-string-comment-glued]
 [fixture: venn/lex-bare-percent-inside-quoted-name]
 [fixture: venn/lex-bare-percent-inside-bare-label]
+U+2028 や U+2029 の後のコメントは例外で、読み飛ばされ、
+値はその後に続きます（[コメント行](../common.ja.md#コメント行) を参照）。
+[fixture: venn/db-title-line-separator-then-comment-line]
 文字列かラベル全体の中の行内の連続する `%` は値のテキストです。
 [fixture: venn/db-title-quotes] [fixture: venn/db-grid-comment-title]
 [fixture: venn/db-grid-comment-label-bare]
@@ -472,6 +475,12 @@ U+0085 は空白ではありません。 [fixture: venn/lex-tab-header-before]
 [fixture: venn/lex-after-text-string-comment-glued]
 [fixture: venn/lex-bare-percent-inside-quoted-name]
 [fixture: venn/lex-bare-percent-inside-bare-label]
+U+2028 や U+2029 の後のコメントは例外で、読み飛ばされ、
+値はその後に続きます（[コメント行](../common.ja.md#コメント行) を参照）。
+[fixture: venn/db-quoted-name-line-separator-then-comment-line]
+[fixture: venn/db-quoted-name-paragraph-separator-then-comment-line]
+[fixture: venn/db-bare-label-line-separator-then-comment-line]
+[fixture: venn/db-quoted-label-line-separator-then-comment-line]
 
 タイトルは最初の空白の区切りの後の文字を、追加の空白も含めて保持します。
 [fixture: venn/db-title-padding] [fixture: venn/db-title-only-whitespace]

@@ -85,6 +85,9 @@ mindmap/db-frontmatter-before-header]
 各行終端を `\n` として、各属性の引用符を `'` として、
 各エンティティをそのプレースホルダーとして、
 コメント領域と行の規則が無視する `;` はないものとして読みます。
+[fixture: mindmap/db-icon-line-separator-then-comment-line]
+[fixture: mindmap/db-string-line-separator-then-comment-line]
+[fixture: mindmap/db-markdown-string-line-separator-then-comment-line]
 最後の文字の後に字句解析器が読む `\n` は、
 図のテキストの一部です（[テキストの終わり](../common.ja.md#テキストの終わり)）。
 この節は、[ソースの読み方](../common.ja.md#ソースの読み方) の項目 4 である、
@@ -147,6 +150,10 @@ mindmap/lex-indent-around-directive]
 最初の文字の後の `]`、`:`、`#`、`"`、`%%`、`:::`、U+2028 はその文字です。
 `a]b`、`a: b # c`、`a"b`、`root %% c`、`a:::b`、`a`、U+2028、
 `b` はノードのテキストで、ほかのどの規則も読まない `::x` と `-x` もそうです。
+U+2028 や U+2029 の後のコメントは例外で、読み飛ばされ、
+値はその後に続きます（[コメント行](../common.ja.md#コメント行) を参照）。
+[fixture: mindmap/db-node-text-line-separator-then-comment-line]
+[fixture: mindmap/db-node-text-paragraph-separator-then-comment-line]
 単独の `{`、`}`、ノードのテキストの後の `}}` は、どの規則も読みません。
 `a{b`、`a}b`、`a}}` は拒否されます。
 エンティティは 1
@@ -375,6 +382,9 @@ U+2028 か U+2029 の後のテキストは新しい行として読まれ、
 その字下げはその文字から始まります。
 `a[x] %% c`、U+2028、`y` は、ノード `a[x]` と、1 文字の字下げのノード `y` です。
 ノードのテキスト、形のテキスト、class の中では、`%%` はテキストの文字です。
+U+2028 や U+2029 の後のコメントは例外で、読み飛ばされ、
+値はその後に続きます（[コメント行](../common.ja.md#コメント行) を参照）。
+[fixture: mindmap/db-shape-text-line-separator-then-comment-line]
 図のコメントの**印**は `%%` で、その値はその後のテキストです。 [fixture:
 mindmap/lex-comment-after-header] [fixture:
 mindmap/lex-comment-after-header-glued] [fixture:

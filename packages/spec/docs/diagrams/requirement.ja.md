@@ -613,6 +613,9 @@ requirement/lex-keyword-then-e-acute]
 値も語の境目で終わる必要はありません。
 `direction LRX` は `LR` を決め、`X` は `direction-text` の単位です。
 `direction LR %% c` は `LR` を決め、テキスト `%% c` を持ちます。
+U+2028 や U+2029 の後のコメントは例外で、読み飛ばされ、
+値はその後に続きます（[コメント行](../common.ja.md#コメント行) を参照）。
+[fixture: requirement/db-direction-text-line-separator-then-comment-line]
 値は挙げた順に試されます。
 行のどこかに `direction`、空白、`TB` があれば、値は `TB` なので、
 `direction LR x direction TB` は `TB` を決めます。
@@ -734,6 +737,11 @@ requirement/lex-style-trailing-spaces]
 テキストの終わりでは入力は拒否されます（[単位と文脈](#単位と文脈) を参照）。
 `;`、`#`、`%%` はテキストの文字です。
 `accTitle: a;b #c %% d` のタイトルは `a;b #c %% d` です。
+U+2028 や U+2029 の後のコメントは例外で、読み飛ばされ、
+値はその後に続きます（[コメント行](../common.ja.md#コメント行) を参照）。
+[fixture: requirement/db-acc-title-line-separator-then-comment-line]
+[fixture: requirement/db-acc-descr-line-separator-then-comment-line]
+[fixture: requirement/db-acc-descr-block-line-separator-then-comment-line]
 テキストの終わりの空白は単位に読み込まれ、値からは外されます。
 [RequirementLiteral](../ast/requirement.ja.md#requirementliteral)
 を参照してください。
@@ -812,6 +820,12 @@ class の文は取らないので、
 requirement/lex-style-hash-after-style]
 [fixture: requirement/lex-hash-comment-after-shorthand-string-class]
 [fixture: requirement/lex-class-hash-after-classes]
+U+2028 や U+2029 の後のコメントは例外で、読み飛ばされ、
+値はその後に続きます（[コメント行](../common.ja.md#コメント行) を参照）。
+[fixture: requirement/db-name-line-separator-then-comment-line]
+[fixture: requirement/db-name-paragraph-separator-then-comment-line]
+[fixture: requirement/db-text-line-separator-then-comment-line]
+[fixture: requirement/db-string-line-separator-then-comment-line]
 
 ## 文法
 

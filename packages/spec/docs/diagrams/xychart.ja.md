@@ -1075,6 +1075,13 @@ U+00A0 など、表記のほかの空白文字もそこに置けます。
 [fixture: xychart/db-grid-comment-plot-title-quoted]
 [fixture: xychart/db-grid-comment-label]
 [fixture: xychart/db-title-quoted-percent]
+U+2028 や U+2029 の後のコメントは例外で、読み飛ばされ、
+値はその後に続きます（[コメント行](../common.ja.md#コメント行) を参照）。
+[fixture: xychart/db-string-line-separator-then-comment-line]
+[fixture: xychart/db-string-paragraph-separator-then-comment-line]
+[fixture: xychart/db-acc-title-line-separator-then-comment-line]
+[fixture: xychart/db-acc-descr-line-separator-then-comment-line]
+[fixture: xychart/db-acc-descr-block-line-separator-then-comment-line]
 
 mermaid.js は、1 文字の単位にくっついたコメントを、その文字とともに読みます。
 `title T%% c`、`x-axis T%% c`、`line [1]%% c`、`x-axis [a, b]%% c`、

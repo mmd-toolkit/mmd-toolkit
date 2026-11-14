@@ -123,11 +123,19 @@ CRLF と単独の CR は改行です。 [fixture: kanban/lex-crlf-quoted-value]
 [fixture: kanban/lex-label-comment-line]
 [fixture: kanban/lex-metadata-comment-line]
 [fixture: kanban/lex-metadata-directive-line]
+[fixture: kanban/db-icon-line-separator-then-comment-line]
+[fixture: kanban/db-data-label-bare-line-separator-then-comment-line]
+[fixture: kanban/db-data-label-quoted-line-separator-then-comment-line]
 ノード本文、形のラベル、class 本文の途中の `%%` はそのテキストの一部です。
 [fixture: kanban/lex-comment-quoted-inline]
 [fixture: kanban/db-grid-comment-item-id]
 [fixture: kanban/db-grid-comment-item-label-bare]
 [fixture: kanban/db-grid-comment-item-class]
+U+2028 や U+2029 の後のコメントは例外で、読み飛ばされ、
+値はその後に続きます（[コメント行](../common.ja.md#コメント行) を参照）。
+[fixture: kanban/db-node-text-line-separator-then-comment-line]
+[fixture: kanban/db-node-text-paragraph-separator-then-comment-line]
+[fixture: kanban/db-shape-text-line-separator-then-comment-line]
 
 共通規則は埋め込みデータを解析しません。
 [fixture: kanban/gram-frontmatter-invalid-yaml]
@@ -706,6 +714,10 @@ class 本文を読むと class の文脈を出ます。
 [fixture: kanban/lex-after-bare-comment-glued]
 [fixture: kanban/db-grid-comment-item-label-bare]
 [fixture: kanban/lex-comment-quoted-inline]
+U+2028 や U+2029 の後のコメントは例外で、読み飛ばされ、
+値はその後に続きます（[コメント行](../common.ja.md#コメント行) を参照）。
+[fixture: kanban/db-string-line-separator-then-comment-line]
+[fixture: kanban/db-markdown-string-line-separator-then-comment-line]
 
 `%%` だけの行と `%%{ }%%` の行は図のコメントです。
 [fixture: kanban/lex-comment-bare]

@@ -935,7 +935,14 @@ xychart/db-grid-comment-category-quoted] [fixture:
 xychart/db-grid-comment-y-title-bare] [fixture:
 xychart/db-grid-comment-y-title-quoted] [fixture:
 xychart/db-grid-comment-plot-title-quoted] [fixture:
-xychart/db-grid-comment-label] [fixture: xychart/db-title-quoted-percent]
+xychart/db-grid-comment-label] [fixture: xychart/db-title-quoted-percent] A
+comment after a U+2028 or U+2029 is the exception: it is read through, and the
+value goes on after it (see [Comment lines](../common.md#comment-lines)).
+[fixture: xychart/db-string-line-separator-then-comment-line] [fixture:
+xychart/db-string-paragraph-separator-then-comment-line] [fixture:
+xychart/db-acc-title-line-separator-then-comment-line] [fixture:
+xychart/db-acc-descr-line-separator-then-comment-line] [fixture:
+xychart/db-acc-descr-block-line-separator-then-comment-line]
 
 mermaid.js reads a comment that is glued to a unit of one character together
 with that character: `title T%% c`, `x-axis T%% c`, `line [1]%% c`,

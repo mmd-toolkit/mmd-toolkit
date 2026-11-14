@@ -433,13 +433,22 @@ venn/db-grid-comment-label-bare] [fixture:
 venn/lex-after-set-label-comment-glued] [fixture:
 venn/lex-after-text-string-comment-glued] [fixture:
 venn/lex-bare-percent-inside-quoted-name] [fixture:
-venn/lex-bare-percent-inside-bare-label] Inline percent pairs inside a whole
-string or label are value text. [fixture: venn/db-title-quotes] [fixture:
+venn/lex-bare-percent-inside-bare-label] A comment after a U+2028 or U+2029 is
+the exception: it is read through, and the value goes on after it (see
+[Comment lines](../common.md#comment-lines)). [fixture:
+venn/db-title-line-separator-then-comment-line] Inline percent pairs inside a
+whole string or label are value text. [fixture: venn/db-title-quotes] [fixture:
 venn/db-grid-comment-title] [fixture: venn/db-grid-comment-label-bare] [fixture:
 venn/lex-after-set-label-comment-glued] [fixture:
 venn/lex-after-text-string-comment-glued] [fixture:
 venn/lex-bare-percent-inside-quoted-name] [fixture:
-venn/lex-bare-percent-inside-bare-label]
+venn/lex-bare-percent-inside-bare-label] A comment after a U+2028 or U+2029 is
+the exception: it is read through, and the value goes on after it (see
+[Comment lines](../common.md#comment-lines)). [fixture:
+venn/db-quoted-name-line-separator-then-comment-line] [fixture:
+venn/db-quoted-name-paragraph-separator-then-comment-line] [fixture:
+venn/db-bare-label-line-separator-then-comment-line] [fixture:
+venn/db-quoted-label-line-separator-then-comment-line]
 
 A title keeps every character after its first whitespace separator, including
 further whitespace. [fixture: venn/db-title-padding] [fixture:

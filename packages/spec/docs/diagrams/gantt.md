@@ -480,9 +480,11 @@ consequences of the order:
 
 - A `%` where a unit starts is always a comment, also right after a unit on its
   line; inside a text it is a character of the text (see [Comments](#comments)).
-  A line that starts with a date is rejected, while a date after other text on
-  its line, or in a title, is text. [fixture:
-  gantt/lex-single-percent-comment-glued] [fixture:
+  A comment after a U+2028 or U+2029 is the exception: it is read through, and
+  the value goes on after it (see [Comment lines](../common.md#comment-lines)).
+  [fixture: gantt/db-task-line-separator-then-comment-line] A line that starts
+  with a date is rejected, while a date after other text on its line, or in a
+  title, is text. [fixture: gantt/lex-single-percent-comment-glued] [fixture:
   gantt/lex-percent-comment-in-title-text] [fixture: gantt/lex-date-line]
   [fixture: gantt/lex-date-in-task-text] [fixture: gantt/lex-date-in-title]
 - The statements are ended by their own units, not by line feeds: a `newline`
@@ -697,11 +699,16 @@ context. The whitespace after the colon, line feeds included, is read with the
 colon, so the text starts at the first character that is not whitespace, on the
 line of the colon or on a later line, and runs to the end of that line, `;`,
 `#`, `:`, and `%%` included: `accTitle:`, a line feed, and `title X` has the
-accessibility title `title X` and no title. The text may not end in these
-contexts, so `accTitle:` with nothing but whitespace after it is rejected.
-[fixture: gantt/gram-acc-title] [fixture: gantt/gram-acc-title-hash-semicolon]
-[fixture: gantt/gram-acc-title-two-colons] [fixture:
-gantt/lex-percent-comment-in-acc-title] [fixture:
+accessibility title `title X` and no title. A comment after a U+2028 or U+2029
+is the exception: it is read through, and the value goes on after it (see
+[Comment lines](../common.md#comment-lines)). [fixture:
+gantt/db-acc-title-line-separator-then-comment-line] [fixture:
+gantt/db-acc-descr-line-separator-then-comment-line] [fixture:
+gantt/db-acc-descr-block-line-separator-then-comment-line] The text may not end
+in these contexts, so `accTitle:` with nothing but whitespace after it is
+rejected. [fixture: gantt/gram-acc-title] [fixture:
+gantt/gram-acc-title-hash-semicolon] [fixture: gantt/gram-acc-title-two-colons]
+[fixture: gantt/lex-percent-comment-in-acc-title] [fixture:
 gantt/gram-acc-title-line-feed-then-text] [fixture:
 gantt/gram-acc-title-blank-lines-then-text] [fixture:
 gantt/gram-acc-title-takes-title-line] [fixture:
@@ -894,11 +901,21 @@ gantt/lex-percent-comment-glued-after-header-blank-line]
 Inside the other units, `%` is a character of the text: a title text, a section
 text, a setting text, task data, an accessibility title, a callback name,
 callback arguments, a URL string, and a click id, where it is a character of the
-id. A comment after a click id ends the line, and the click statement has no
-part, so `click id1 %% c` is rejected; `click id1 %%{ }%%`, a line feed, and
-`href "u"` is rejected in both for the same reason, and so is `a : 1d; %%{ }%%`,
-whose `; ` is a task text without data. [fixture:
-gantt/lex-percent-comment-in-title-text] [fixture:
+id. A comment after a U+2028 or U+2029 is the exception: it is read through, and
+the value goes on after it (see [Comment lines](../common.md#comment-lines)).
+[fixture: gantt/db-title-line-separator-then-comment-line] [fixture:
+gantt/db-section-line-separator-then-comment-line] [fixture:
+gantt/db-axis-format-line-separator-then-comment-line] [fixture:
+gantt/db-axis-format-paragraph-separator-then-comment-line] [fixture:
+gantt/db-today-marker-line-separator-then-comment-line] [fixture:
+gantt/db-callback-name-line-separator-then-comment-line] [fixture:
+gantt/db-callback-arguments-line-separator-then-comment-line] [fixture:
+gantt/db-url-line-separator-then-comment-line] [fixture:
+gantt/db-task-data-line-separator-then-comment-line] A comment after a click id
+ends the line, and the click statement has no part, so `click id1 %% c` is
+rejected; `click id1 %%{ }%%`, a line feed, and `href "u"` is rejected in both
+for the same reason, and so is `a : 1d; %%{ }%%`, whose `; ` is a task text
+without data. [fixture: gantt/lex-percent-comment-in-title-text] [fixture:
 gantt/lex-percent-comment-in-section-text] [fixture:
 gantt/lex-percent-comment-in-setting-text] [fixture:
 gantt/lex-percent-comment-in-task-data] [fixture:

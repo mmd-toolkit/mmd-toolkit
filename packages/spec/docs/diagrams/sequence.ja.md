@@ -374,6 +374,9 @@ mermaid.js がディレクティブを取り除いた後のテキストを読む
   [fixture: sequence/lex-hash-ends-text] [fixture:
   sequence/lex-hash-comment-after-unit] [fixture:
   sequence/lex-percent-comment-after-unit]
+  U+2028 や U+2029 の後のコメントは例外で、読み飛ばされ、
+  値はその後に続きます（[コメント行](../common.ja.md#コメント行) を参照）。
+  [fixture: sequence/db-message-text-line-separator-then-comment-line]
 - 図のコメントはその印から始まり、その前の単位は文字をすべて保ちます。
   数の後には `%%` が続いてよいので、
   `autonumber 5%% c` は `autonumber 5 %% c` と同じく 5 から始まり、
@@ -382,6 +385,10 @@ mermaid.js がディレクティブを取り除いた後のテキストを読む
   そこでは字句解析器が id の並びを読むので、`autonumber 5% c` は拒否されます。
   id の並びの文字の後の `%%` は、その並びの文字です。
   行 `C%% c` は id の並び `C%% c` で、矢印のない文なので拒否されます。
+  U+2028 や U+2029 の後のコメントは例外で、読み飛ばされ、
+  値はその後に続きます（[コメント行](../common.ja.md#コメント行) を参照）。
+  [fixture: sequence/db-id-run-line-separator-then-comment-line]
+  [fixture: sequence/db-id-run-paragraph-separator-then-comment-line]
   `:` の後では、テキストの文字です。
   `A->>B:%% c` のメッセージは `%% c` です。
   mermaid.js はこれらの入力を別に読みます（[既知の差異](#既知の差異) を参照）。
@@ -637,6 +644,9 @@ sequence/tokens-box-text-trailing-spaces]
 そのため、データブロックは最初の `}` で終わり、その中身は `}` を含められません。
 [fixture: sequence/docs-syntax-sequence-diagram-1371ae9a] [fixture:
 sequence/lex-data-block-nested-brace]
+中身にあるコメント行は、中身の文字列の中の U+2028 や U+2029 の後でも取り除かれ、
+中身はその後に続きます（[コメント行](../common.ja.md#コメント行) を参照）。
+[fixture: sequence/db-data-alias-line-separator-then-comment-line]
 
 ### アクセシビリティの値
 

@@ -552,13 +552,16 @@ before the comment rules: `% direction LR` and `# c direction LR` set the
 direction, while a comment line `%% direction LR` is removed before the lexer
 reads the text. Neither does the value need to end at a word boundary:
 `direction LRX` sets `LR`, with `X` as a `direction-text` unit, and
-`direction LR %% c` sets `LR` with the text `%% c`. The values are tried in the
-order given: if the line has `direction`, whitespace, and `TB` anywhere, the
-value is `TB`, so `direction LR x direction TB` sets `TB`; otherwise `BT` is
-tried, and so on. For a value, the lexer takes the last `direction` of the run
-that the value follows: `direction BT x direction BT` is read at its last
-`direction`, with `direction BT x` as a `direction-text` unit. [fixture:
-requirement/lex-direction-line-text-before-and-after] [fixture:
+`direction LR %% c` sets `LR` with the text `%% c`. A comment after a U+2028 or
+U+2029 is the exception: it is read through, and the value goes on after it (see
+[Comment lines](../common.md#comment-lines)). [fixture:
+requirement/db-direction-text-line-separator-then-comment-line] The values are
+tried in the order given: if the line has `direction`, whitespace, and `TB`
+anywhere, the value is `TB`, so `direction LR x direction TB` sets `TB`;
+otherwise `BT` is tried, and so on. For a value, the lexer takes the last
+`direction` of the run that the value follows: `direction BT x direction BT` is
+read at its last `direction`, with `direction BT x` as a `direction-text` unit.
+[fixture: requirement/lex-direction-line-text-before-and-after] [fixture:
 requirement/lex-title-direction] [fixture:
 requirement/lex-direction-line-in-string-name] [fixture:
 requirement/lex-direction-line-word-before] [fixture:
@@ -666,8 +669,13 @@ context), so the text starts at the first character that is not whitespace,
 which may be on a later line: `accTitle:`, a line break, and `T` has the title
 `T`. At the end of the text the input is rejected (see
 [Units and contexts](#units-and-contexts)). `;`, `#`, and `%%` are characters of
-the text: `accTitle: a;b #c %% d` has the title `a;b #c %% d`. The whitespace at
-the end of the text is read into the unit and left out of the value (see
+the text: `accTitle: a;b #c %% d` has the title `a;b #c %% d`. A comment after a
+U+2028 or U+2029 is the exception: it is read through, and the value goes on
+after it (see [Comment lines](../common.md#comment-lines)). [fixture:
+requirement/db-acc-title-line-separator-then-comment-line] [fixture:
+requirement/db-acc-descr-line-separator-then-comment-line] [fixture:
+requirement/db-acc-descr-block-line-separator-then-comment-line] The whitespace
+at the end of the text is read into the unit and left out of the value (see
 [RequirementLiteral](../ast/requirement.md#requirementliteral)). An `accTitle`
 line may start wherever a statement starts: right after `}`, after a directive,
 and after a comment line. [fixture: requirement/db-acc-title-descr] [fixture:
@@ -736,7 +744,13 @@ requirement/lex-name-percent] [fixture: requirement/lex-value-hash] [fixture:
 requirement/lex-string-hash-percent] [fixture:
 requirement/lex-style-hash-after-style] [fixture:
 requirement/lex-class-hash-after-classes] [fixture:
-requirement/lex-hash-comment-after-shorthand-string-class]
+requirement/lex-hash-comment-after-shorthand-string-class] A comment after a
+U+2028 or U+2029 is the exception: it is read through, and the value goes on
+after it (see [Comment lines](../common.md#comment-lines)). [fixture:
+requirement/db-name-line-separator-then-comment-line] [fixture:
+requirement/db-name-paragraph-separator-then-comment-line] [fixture:
+requirement/db-text-line-separator-then-comment-line] [fixture:
+requirement/db-string-line-separator-then-comment-line]
 
 ## Grammar
 

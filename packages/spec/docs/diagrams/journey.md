@@ -566,10 +566,21 @@ Inside the other units, `#` ends the unit and starts a comment where it stands,
 since a title text, a section text, a task text, and task data stop before it;
 `%` is a character of the text: a title text, a section text, a task text, task
 data, an accessibility title, an accessibility description, and a description
-block. So `A#B: 5` is the task text `A` without data, followed by a comment, and
-is rejected, `a: 5 %% c` has the score part `5 %% c`, which is no number, and
-`A %% B: 5` is the task `A %% B`. [fixture: journey/lex-hash-ends-task-text]
-[fixture: journey/lex-percent-comment-in-title-text] [fixture:
+block. A comment after a U+2028 or U+2029 is the exception: it is read through,
+and the value goes on after it (see
+[Comment lines](../common.md#comment-lines)). [fixture:
+journey/db-title-line-separator-then-comment-line] [fixture:
+journey/db-title-paragraph-separator-then-comment-line] [fixture:
+journey/db-section-line-separator-then-comment-line] [fixture:
+journey/db-task-line-separator-then-comment-line] [fixture:
+journey/db-acc-title-line-separator-then-comment-line] [fixture:
+journey/db-acc-descr-line-separator-then-comment-line] [fixture:
+journey/db-acc-descr-block-line-separator-then-comment-line] [fixture:
+journey/db-person-line-separator-then-comment-line] So `A#B: 5` is the task text
+`A` without data, followed by a comment, and is rejected, `a: 5 %% c` has the
+score part `5 %% c`, which is no number, and `A %% B: 5` is the task `A %% B`.
+[fixture: journey/lex-hash-ends-task-text] [fixture:
+journey/lex-percent-comment-in-title-text] [fixture:
 journey/lex-percent-comment-in-section-text] [fixture:
 journey/lex-task-text-percent-inside] [fixture:
 journey/lex-percent-comment-in-task-data] [fixture:

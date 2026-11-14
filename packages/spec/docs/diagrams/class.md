@@ -215,7 +215,16 @@ In the statement context, the lexer tries these rules in order:
    whitespace before `%%` are comment lines of
    [common.md](../common.md#comment-lines), removed before the lexer reads the
    text, so this rule applies to a `%%` after a unit, and to a line that is no
-   comment line because nothing or `{` follows its `%%`. A line that holds only
+   comment line because nothing or `{` follows its `%%`. [fixture:
+   class/db-acc-title-line-separator-then-comment-line] [fixture:
+   class/db-acc-descr-line-separator-then-comment-line] [fixture:
+   class/db-acc-descr-block-line-separator-then-comment-line] [fixture:
+   class/db-backquoted-name-line-separator-then-comment-line] [fixture:
+   class/db-callback-name-line-separator-then-comment-line] [fixture:
+   class/db-callback-arguments-line-separator-then-comment-line] [fixture:
+   class/db-generic-line-separator-then-comment-line] [fixture:
+   class/db-note-string-line-separator-then-comment-line] [fixture:
+   class/db-style-line-separator-then-comment-line] A line that holds only
    whitespace and such a comment is a **comment-only line**. A comment-only line
    is not counted as a line, and neither are the empty lines right after it: no
    `newline` unit is read for their line feeds, which belong to no unit. A line
@@ -290,8 +299,12 @@ consequences of the order:
   `callX`, and `A --> call` is rejected. [fixture: class/lex-call-prefix]
   [fixture: class/lex-call-at-end]
 - A label (shared rule 9) ends at `:`, `;`, or a line feed. The `%%` in a label
-  is part of it: `A --> B : x %% c` has the label `x %% c`. A second `:` starts
-  a second label, which the grammar does not take: `A --> B : x : y` and
+  is part of it: `A --> B : x %% c` has the label `x %% c`. A comment after a
+  U+2028 or U+2029 is the exception: it is read through, and the value goes on
+  after it (see [Comment lines](../common.md#comment-lines)). [fixture:
+  class/db-relation-label-line-separator-then-comment-line] [fixture:
+  class/db-relation-label-paragraph-separator-then-comment-line] A second `:`
+  starts a second label, which the grammar does not take: `A --> B : x : y` and
   `A : foo(a: int)` are rejected. A `;` matches no rule, so `A : x;y` is
   rejected. [fixture: class/lex-label-percent] [fixture:
   class/lex-label-two-colons] [fixture: class/lex-label-colon-in-member]
@@ -489,13 +502,17 @@ class/lex-member-empty-string-after-brace-space] [fixture:
 class/gram-member-empty-string-before-empty-description-block] `%%`, `;`, `[*]`,
 and `~` inside a member line are characters of it: `+x %% c` is the member
 `x %% c`. [fixture: class/lex-member-percent] [fixture:
-class/lex-member-semicolon] A `[*]` right after the `{` or a line feed is a
-`[*]` unit, which the grammar does not take, so `[*]` and `[*] x` on a line of
-their own in a body are rejected, and so is a `{` in a body. The context has no
-rule for whitespace, so `  [*]`, with spaces before it, is a member line, the
-attribute `[*]`. [fixture: class/lex-member-edge-state] [fixture:
-class/lex-member-edge-state-then-text] [fixture: class/lex-member-open-brace]
-[fixture: class/lex-member-edge-state-indented]
+class/lex-member-semicolon] A comment after a U+2028 or U+2029 is the exception:
+it is read through, and the value goes on after it (see
+[Comment lines](../common.md#comment-lines)). [fixture:
+class/db-member-name-line-separator-then-comment-line] [fixture:
+class/db-annotation-line-separator-then-comment-line] A `[*]` right after the
+`{` or a line feed is a `[*]` unit, which the grammar does not take, so `[*]`
+and `[*] x` on a line of their own in a body are rejected, and so is a `{` in a
+body. The context has no rule for whitespace, so `  [*]`, with spaces before it,
+is a member line, the attribute `[*]`. [fixture: class/lex-member-edge-state]
+[fixture: class/lex-member-edge-state-then-text] [fixture:
+class/lex-member-open-brace] [fixture: class/lex-member-edge-state-indented]
 
 ### Member lines
 

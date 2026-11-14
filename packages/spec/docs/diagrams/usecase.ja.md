@@ -339,6 +339,14 @@ JSON と stereotype 文脈に空白を飛ばす規則はなく、内容として
 [fixture: usecase/lex-native-label-separators]
 
 共通のコメント領域は文字列、metadata、JSON、アクセシビリティを含む全域です。
+[fixture: usecase/db-string-line-separator-then-comment-line]
+[fixture: usecase/db-string-paragraph-separator-then-comment-line]
+[fixture: usecase/db-markdown-string-line-separator-then-comment-line]
+[fixture: usecase/db-stereotype-line-separator-then-comment-line]
+[fixture: usecase/db-json-line-separator-then-comment-line]
+[fixture: usecase/db-acc-title-line-separator-then-comment-line]
+[fixture: usecase/db-acc-descr-line-separator-then-comment-line]
+[fixture: usecase/db-acc-descr-block-line-separator-then-comment-line]
 コメント行全体と前の空行を除くことがあります。
 native コメントは異なり、既定文脈だけで、
 %% より前の物理行の文字が ASCII 空白とタブだけの場合に認識します。

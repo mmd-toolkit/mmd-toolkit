@@ -210,7 +210,11 @@ block/db-composite-end-comment] [fixture: block/db-comment-inside-string-start]
 [fixture: block/db-tail-node-comment] [fixture: block/db-tail-columns-comment]
 [fixture: block/db-tail-space-comment] [fixture: block/db-tail-class-comment]
 [fixture: block/db-tail-class-def-comment] [fixture:
-block/db-tail-style-comment]
+block/db-tail-style-comment] A comment after a U+2028 or U+2029 is the
+exception: it is read through, and the value goes on after it (see
+[Comment lines](../common.md#comment-lines)). [fixture:
+block/db-class-name-line-separator-then-comment-line] [fixture:
+block/db-style-line-separator-then-comment-line]
 
 **Entities, HTML attribute quotes, and `style` lines.** In a string, a class
 name, and a style, an entity is read as its placeholder (see
@@ -493,20 +497,23 @@ block/db-class-apply-constructor-class] [fixture: block/db-style-proto-id]
 `"` enters the string context, which reads all the characters up to the next `"`
 as a `string` unit and leaves at that `"`. The text may hold any character but
 `"`, line feeds included: whitespace at its ends, brackets, braces, `<`, `>`, an
-arrow, `:`, `;`, `#`, `%%`, keywords, and characters outside ASCII. A string has
-no escape, and a string that is not closed makes the input rejected. A quote
-followed by a backquote is a markdown string, which no rule of the grammar
-takes: ``A["`x`"]`` is rejected. An empty string, `""`, and an empty markdown
-string read no unit (see [Empty strings](#empty-strings)). [fixture:
-block/db-label-plain] [fixture: block/gram-label-empty] [fixture:
-block/db-label-spaces] [fixture: block/db-label-padded] [fixture:
-block/gram-label-single-quote] [fixture: block/gram-label-unquoted] [fixture:
-block/gram-label-unquoted-space] [fixture: block/gram-label-unclosed] [fixture:
-block/gram-label-unclosed-shape] [fixture: block/gram-label-quote-inside]
-[fixture: block/gram-label-backslash-quote] [fixture: block/db-label-backslash]
-[fixture: block/db-label-escaped-n] [fixture:
-block/db-label-single-quote-inside] [fixture: block/gram-label-backtick]
-[fixture: block/db-label-backtick-inside] [fixture:
+arrow, `:`, `;`, `#`, `%%`, keywords, and characters outside ASCII. A comment
+after a U+2028 or U+2029 is the exception: it is read through, and the value
+goes on after it (see [Comment lines](../common.md#comment-lines)). [fixture:
+block/db-string-line-separator-then-comment-line] [fixture:
+block/db-string-paragraph-separator-then-comment-line] A string has no escape,
+and a string that is not closed makes the input rejected. A quote followed by a
+backquote is a markdown string, which no rule of the grammar takes: ``A["`x`"]``
+is rejected. An empty string, `""`, and an empty markdown string read no unit
+(see [Empty strings](#empty-strings)). [fixture: block/db-label-plain] [fixture:
+block/gram-label-empty] [fixture: block/db-label-spaces] [fixture:
+block/db-label-padded] [fixture: block/gram-label-single-quote] [fixture:
+block/gram-label-unquoted] [fixture: block/gram-label-unquoted-space] [fixture:
+block/gram-label-unclosed] [fixture: block/gram-label-unclosed-shape] [fixture:
+block/gram-label-quote-inside] [fixture: block/gram-label-backslash-quote]
+[fixture: block/db-label-backslash] [fixture: block/db-label-escaped-n]
+[fixture: block/db-label-single-quote-inside] [fixture:
+block/gram-label-backtick] [fixture: block/db-label-backtick-inside] [fixture:
 block/gram-label-backtick-start] [fixture: block/db-label-backtick-end]
 [fixture: block/gram-label-markdown] [fixture: block/db-label-round-brackets]
 [fixture: block/db-label-square-brackets] [fixture: block/db-label-braces]

@@ -1501,6 +1501,20 @@ U+2029 以外の 1 文字と 1 つ以上の数字が続くもの（省略可）�
 `x-axis L --> R%% c` はテキスト `L` と `R` を持ちます。
 タイトル、アクセシビリティのテキスト、説明ブロック、
 文字列の中の `%%` はその文字で、点の角括弧の中では入力を拒否させます。
+テキスト、名前、タイトル、アクセシビリティのテキスト、説明ブロック、
+文字列の中の U+2028 や U+2029 の後のコメント行は、その改行ごと取り除かれ、
+値は次の行に続き（[コメント行](../common.ja.md#コメント行) を参照）、
+`quadrant-1 a`、U+2028、`%% c`、改行、`b` はテキスト `a`、U+2028、
+`b` を持ちます。
+[fixture: quadrant/db-quadrant-text-line-separator-then-comment-line]
+[fixture: quadrant/db-quadrant-text-paragraph-separator-then-comment-line]
+[fixture: quadrant/db-title-line-separator-then-comment-line]
+[fixture: quadrant/db-axis-text-line-separator-then-comment-line]
+[fixture: quadrant/db-point-name-line-separator-then-comment-line]
+[fixture: quadrant/db-acc-title-line-separator-then-comment-line]
+[fixture: quadrant/db-acc-descr-line-separator-then-comment-line]
+[fixture: quadrant/db-acc-descr-block-line-separator-then-comment-line]
+[fixture: quadrant/db-string-line-separator-then-comment-line]
 `%%` だけの行と、`%%{ }%%` の行のようにディレクティブが始まらない `%%{` は、
 コメントです。 [fixture: quadrant/db-comment-line]
 [fixture: quadrant/db-comment-line-last]

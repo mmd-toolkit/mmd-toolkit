@@ -45,13 +45,30 @@ flowchart/header-after-empty-braces-line]
 The lexer reads the [diagram text](../common.md#reading-a-source) in
 [converted form](../common.md#reading-a-source): each line terminator as `\n`,
 each attribute quote as `'`, each entity as its placeholder, and through comment
-regions and the `;` that the line rule ignores as if they were not there. The
-`\n` that the lexer reads after the last character
-([End of text](../common.md#end-of-text)) is part of the diagram text: the rules
-read it, and check conditions on it, like any other line feed, and `end-of-text`
-in the grammar is the position after it. So `flowchart` alone, without a line
-break, is accepted: the header context reads the added `\n` as the end of the
-header. [fixture: flowchart/header-only-no-line-break] [fixture:
+regions and the `;` that the line rule ignores as if they were not there.
+[fixture: flowchart/db-acc-descr-block-line-separator-then-comment-line]
+[fixture: flowchart/db-acc-descr-line-separator-then-comment-line] [fixture:
+flowchart/db-acc-title-line-separator-then-comment-line] [fixture:
+flowchart/db-callback-arguments-line-separator-then-comment-line] [fixture:
+flowchart/db-callback-name-line-separator-then-comment-line] [fixture:
+flowchart/db-data-label-bare-line-separator-then-comment-line] [fixture:
+flowchart/db-data-label-quoted-line-separator-then-comment-line] [fixture:
+flowchart/db-ellipse-label-line-separator-then-comment-line] [fixture:
+flowchart/db-link-text-line-separator-then-comment-line] [fixture:
+flowchart/db-markdown-string-line-separator-then-comment-line] [fixture:
+flowchart/db-pipe-label-line-separator-then-comment-line] [fixture:
+flowchart/db-slanted-label-line-separator-then-comment-line] [fixture:
+flowchart/db-square-label-line-separator-then-comment-line] [fixture:
+flowchart/db-square-label-paragraph-separator-then-comment-line] [fixture:
+flowchart/db-string-line-separator-then-comment-line] [fixture:
+flowchart/db-style-line-separator-then-comment-line] [fixture:
+flowchart/db-subgraph-name-line-separator-then-comment-line] The `\n` that the
+lexer reads after the last character ([End of text](../common.md#end-of-text))
+is part of the diagram text: the rules read it, and check conditions on it, like
+any other line feed, and `end-of-text` in the grammar is the position after it.
+So `flowchart` alone, without a line break, is accepted: the header context
+reads the added `\n` as the end of the header. [fixture:
+flowchart/header-only-no-line-break] [fixture:
 flowchart/header-direction-trailing-space] This section describes the diagram's
 own unit rules, item 4 of [Reading a source](../common.md#reading-a-source).
 
@@ -504,10 +521,14 @@ none of them applies, and it takes the rest of the line:
   the subgraph the direction `TB` and reads no link, and in
   `direction TB %% vertical` the `%%`, which follows text on its line, is no
   comment but part of the text after the value, while the link on the next line
-  is read. A string does not keep the rule out: `A["Set direction LR"]-->B` is a
-  direction line, as `A[Set direction LR]-->B` is, and neither has vertices or
-  edges. [fixture: flowchart/lex-direction-line-then-semicolon-statement]
-  [fixture: flowchart/lex-direction-line-percent-after-value] [fixture:
+  is read. A comment after a U+2028 or U+2029 is the exception: it is read
+  through, and the value goes on after it (see
+  [Comment lines](../common.md#comment-lines)). [fixture:
+  flowchart/tokens-ignored-text-comment-in-direction-line] A string does not
+  keep the rule out: `A["Set direction LR"]-->B` is a direction line, as
+  `A[Set direction LR]-->B` is, and neither has vertices or edges. [fixture:
+  flowchart/lex-direction-line-then-semicolon-statement] [fixture:
+  flowchart/lex-direction-line-percent-after-value] [fixture:
   flowchart/lex-direction-line-in-string-label] [fixture:
   flowchart/lex-direction-line-in-label-with-link] In a subgraph,
   `direction TB;` has the text `;` after the value, and `direction TB; -->B` the

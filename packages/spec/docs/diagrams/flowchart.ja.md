@@ -50,6 +50,23 @@ flowchart/header-after-empty-braces-line]
 行終端を `\n` として、属性の引用符を `'` として、
 エンティティをそのプレースホルダとして読み、
 コメント領域と行単位の規則が無視する `;` は、ないかのように読み進めます。
+[fixture: flowchart/db-acc-descr-block-line-separator-then-comment-line]
+[fixture: flowchart/db-acc-descr-line-separator-then-comment-line]
+[fixture: flowchart/db-acc-title-line-separator-then-comment-line]
+[fixture: flowchart/db-callback-arguments-line-separator-then-comment-line]
+[fixture: flowchart/db-callback-name-line-separator-then-comment-line]
+[fixture: flowchart/db-data-label-bare-line-separator-then-comment-line]
+[fixture: flowchart/db-data-label-quoted-line-separator-then-comment-line]
+[fixture: flowchart/db-ellipse-label-line-separator-then-comment-line]
+[fixture: flowchart/db-link-text-line-separator-then-comment-line]
+[fixture: flowchart/db-markdown-string-line-separator-then-comment-line]
+[fixture: flowchart/db-pipe-label-line-separator-then-comment-line]
+[fixture: flowchart/db-slanted-label-line-separator-then-comment-line]
+[fixture: flowchart/db-square-label-line-separator-then-comment-line]
+[fixture: flowchart/db-square-label-paragraph-separator-then-comment-line]
+[fixture: flowchart/db-string-line-separator-then-comment-line]
+[fixture: flowchart/db-style-line-separator-then-comment-line]
+[fixture: flowchart/db-subgraph-name-line-separator-then-comment-line]
 最後の文字の後に字句解析器が読む `\n` は、
 図のテキストの一部です（[テキストの終わり](../common.ja.md#テキストの終わり)）。
 規則は、他の改行と同じくそれを読み、それについての条件を確かめます。
@@ -564,6 +581,9 @@ mermaid.js は `direction-text` の単位を読みません。
   `direction TB %% vertical` の `%%` は、
   行の中でテキストの後にあるのでコメントではなく、値の後のテキストの一部で、
   次の行のリンクは読まれます。
+  U+2028 や U+2029 の後のコメントは例外で、読み飛ばされ、
+  値はその後に続きます（[コメント行](../common.ja.md#コメント行) を参照）。
+  [fixture: flowchart/tokens-ignored-text-comment-in-direction-line]
   文字列もこの規則を防ぎません。
   `A["Set direction LR"]-->B` は、`A[Set direction LR]-->B` と同じく方向の行で、
   どちらも頂点も辺も持ちません。

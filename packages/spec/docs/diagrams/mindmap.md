@@ -76,11 +76,13 @@ mindmap/db-frontmatter-before-header]
 The lexer reads the [diagram text](../common.md#reading-a-source) in
 [converted form](../common.md#reading-a-source): each line terminator as `\n`,
 each attribute quote as `'`, each entity as its placeholder, and through comment
-regions and the `;` that the line rule ignores as if they were not there. The
-`\n` that the lexer reads after the last character
-([End of text](../common.md#end-of-text)) is part of the diagram text. This
-section describes the diagram's own unit rules, item 4 of
-[Reading a source](../common.md#reading-a-source).
+regions and the `;` that the line rule ignores as if they were not there.
+[fixture: mindmap/db-icon-line-separator-then-comment-line] [fixture:
+mindmap/db-string-line-separator-then-comment-line] [fixture:
+mindmap/db-markdown-string-line-separator-then-comment-line] The `\n` that the
+lexer reads after the last character ([End of text](../common.md#end-of-text))
+is part of the diagram text. This section describes the diagram's own unit
+rules, item 4 of [Reading a source](../common.md#reading-a-source).
 
 The lexer of mermaid.js for this diagram compares letters case-insensitively
 (see [Notation](../common.md#notation)): `::ICON(x)` is an icon, and `MindMap`
@@ -132,10 +134,14 @@ whitespace at its end, which mermaid.js keeps in the node: `root` followed by
 three spaces is the node `root   `. `]`, `:`, `#`, `"`, `%%`, `:::`, and U+2028
 after the first character are characters of it: `a]b`, `a: b # c`, `a"b`,
 `root %% c`, `a:::b`, and `a`, U+2028, `b` are node texts, and so are `::x` and
-`-x`, which no other rule reads. A single `{`, a `}`, and `}}` after a node text
-are read by no rule: `a{b`, `a}b`, and `a}}` are rejected. An entity is one
-placeholder (see [Entities](../common.md#entities)). [fixture:
-mindmap/db-node-trailing-whitespace] [fixture:
+`-x`, which no other rule reads. A comment after a U+2028 or U+2029 is the
+exception: it is read through, and the value goes on after it (see
+[Comment lines](../common.md#comment-lines)). [fixture:
+mindmap/db-node-text-line-separator-then-comment-line] [fixture:
+mindmap/db-node-text-paragraph-separator-then-comment-line] A single `{`, a `}`,
+and `}}` after a node text are read by no rule: `a{b`, `a}b`, and `a}}` are
+rejected. An entity is one placeholder (see [Entities](../common.md#entities)).
+[fixture: mindmap/db-node-trailing-whitespace] [fixture:
 mindmap/lex-node-text-closing-bracket] [fixture:
 mindmap/db-text-with-colon-and-hash] [fixture: mindmap/db-text-with-quote]
 [fixture: mindmap/db-comment-after-node-text] [fixture:
@@ -334,7 +340,10 @@ icon, with whitespace before it or not. It runs to the end of its line segment
 it, and the text after a U+2028 or a U+2029 is read as a new line, whose
 indentation starts with that character: `a[x] %% c`, U+2028, and `y` is the node
 `a[x]` and the node `y` at the indentation of one character. Inside a node text,
-a shape text, and a class, `%%` is a character of the text. The **mark** of a
+a shape text, and a class, `%%` is a character of the text. A comment after a
+U+2028 or U+2029 is the exception: it is read through, and the value goes on
+after it (see [Comment lines](../common.md#comment-lines)). [fixture:
+mindmap/db-shape-text-line-separator-then-comment-line] The **mark** of a
 diagram comment is `%%`, and its value is the text after it. [fixture:
 mindmap/lex-comment-after-header] [fixture:
 mindmap/lex-comment-after-header-glued] [fixture:

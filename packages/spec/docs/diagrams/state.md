@@ -346,16 +346,20 @@ not read. The rule is tried before the id rule, so it takes the whole line:
 `A --> B direction LR`, and `Direction lr` is a direction line. It is also tried
 before the comment rules, so the text after the value may hold `%%`:
 `direction LR %% c` sets the direction `LR`, and `%% c` is a `direction-text`
-unit, not a comment. Neither does the value need to end at a word boundary:
-`direction TBX` sets `TB`, and `X` is a `direction-text` unit. The values are
-tried in the order given: if the line has `direction`, whitespace, and `TB`
-anywhere, the value is `TB`; otherwise `BT` is tried, and so on. For a value,
-the lexer takes the last `direction` of the run that the value follows. So
-`direction TB x direction TB` is read at its last `direction`, and
-`direction TB x` is a `direction-text` unit, while `direction TB x direction LR`
-sets `TB` and is read at its first `direction`, with `x direction LR` as a
-`direction-text` unit. [fixture: state/lex-direction-line-same-value-twice]
-[fixture: state/lex-direction-line-two-values] [fixture:
+unit, not a comment. A comment after a U+2028 or U+2029 is the exception: it is
+read through, and the value goes on after it (see
+[Comment lines](../common.md#comment-lines)). [fixture:
+state/db-direction-text-line-separator-then-comment-line] Neither does the value
+need to end at a word boundary: `direction TBX` sets `TB`, and `X` is a
+`direction-text` unit. The values are tried in the order given: if the line has
+`direction`, whitespace, and `TB` anywhere, the value is `TB`; otherwise `BT` is
+tried, and so on. For a value, the lexer takes the last `direction` of the run
+that the value follows. So `direction TB x direction TB` is read at its last
+`direction`, and `direction TB x` is a `direction-text` unit, while
+`direction TB x direction LR` sets `TB` and is read at its first `direction`,
+with `x direction LR` as a `direction-text` unit. [fixture:
+state/lex-direction-line-same-value-twice] [fixture:
+state/lex-direction-line-two-values] [fixture:
 state/lex-direction-line-in-description] [fixture:
 state/lex-direction-line-same-line-transition] [fixture:
 state/lex-direction-lower-case] [fixture: state/lex-direction-line-then-comment]
@@ -578,12 +582,15 @@ state/lex-alias-id-spaces] [fixture: state/lex-alias-id-trailing-spaces]
 [fixture: state/lex-alias-without-id] [fixture:
 state/lex-alias-comment-after-id] [fixture: state/lex-alias-id-percent-comment]
 [fixture: state/lex-alias-id-percent-word] [fixture:
-state/lex-alias-id-percent-next-line] When the text starts with `%%` and a `{`
-follows it on its line, the text before the `{`, without the whitespace at its
-end, is an `ignored-text` unit instead, which mermaid.js does not read, and
-there is no `alias-id`: `state "d" as %%{}` and `state "d" as %% c {` are alias
-definitions without an id, with a body. [fixture:
-state/lex-alias-id-ignored-percent-brace] [fixture:
+state/lex-alias-id-percent-next-line] A comment after a U+2028 or U+2029 is the
+exception: it is read through, and the id goes on after it (see
+[Comment lines](../common.md#comment-lines)). [fixture:
+state/db-alias-id-line-separator-then-comment-line] When the text starts with
+`%%` and a `{` follows it on its line, the text before the `{`, without the
+whitespace at its end, is an `ignored-text` unit instead, which mermaid.js does
+not read, and there is no `alias-id`: `state "d" as %%{}` and
+`state "d" as %% c {` are alias definitions without an id, with a body.
+[fixture: state/lex-alias-id-ignored-percent-brace] [fixture:
 state/lex-alias-id-ignored-percent-before-body]
 
 When the alias statement has no body, the lexer divides the `alias-id` at its
@@ -841,9 +848,14 @@ context. [fixture: state/lex-floating-note-id-spaces]
 In the title context and in the description context, the rest of the line, zero
 or more characters other than line feed, is a `title-text` or `description-text`
 unit, and the context is left. `#`, `;`, and `%%` are characters of it:
-`accTitle: a;b #c %% d` has the title `a;b #c %% d`. The whitespace after `:` is
-read with the `:` unit, line feeds included (rules 11 and 12 of the statement
-context), so the text may be on the next line. [fixture:
+`accTitle: a;b #c %% d` has the title `a;b #c %% d`. A comment after a U+2028 or
+U+2029 is the exception: it is read through, and the value goes on after it (see
+[Comment lines](../common.md#comment-lines)). [fixture:
+state/db-acc-title-line-separator-then-comment-line] [fixture:
+state/db-acc-descr-line-separator-then-comment-line] [fixture:
+state/db-acc-descr-block-line-separator-then-comment-line] The whitespace after
+`:` is read with the `:` unit, line feeds included (rules 11 and 12 of the
+statement context), so the text may be on the next line. [fixture:
 state/lex-acc-title-semicolon] [fixture: state/lex-acc-descr-semicolon]
 [fixture: state/lex-acc-title-next-line]
 
@@ -900,11 +912,21 @@ state/lex-percent-in-description] [fixture: state/lex-hash-in-description]
 [fixture: state/lex-classdef-percent] [fixture:
 state/lex-alias-percent-in-string] [fixture: state/lex-style-percent] [fixture:
 state/lex-class-css-class-percent] [fixture: state/lex-pseudostate-name-percent]
-Within an id, `#` is a character: `A#1` is a state. [fixture:
-state/lex-hash-in-id] An entity is read as its placeholder before the lexer
-reads the text (see [Entities](../common.md#entities)), so `#amp;` starts no
-comment: `A --> B #amp; x` is a transition followed by the states `#amp;` and
-`x`. [fixture: state/lex-entity-in-id]
+A comment after a U+2028 or U+2029 is the exception: it is read through, and the
+value goes on after it (see [Comment lines](../common.md#comment-lines)).
+[fixture: state/db-description-line-separator-then-comment-line] [fixture:
+state/db-description-paragraph-separator-then-comment-line] [fixture:
+state/db-string-line-separator-then-comment-line] [fixture:
+state/db-style-line-separator-then-comment-line] [fixture:
+state/db-css-class-line-separator-then-comment-line] [fixture:
+state/db-note-line-line-separator-then-comment-line] [fixture:
+state/db-note-block-line-separator-then-comment-line] [fixture:
+state/db-second-description-line-separator-then-comment-line] Within an id, `#`
+is a character: `A#1` is a state. [fixture: state/lex-hash-in-id] An entity is
+read as its placeholder before the lexer reads the text (see
+[Entities](../common.md#entities)), so `#amp;` starts no comment:
+`A --> B #amp; x` is a transition followed by the states `#amp;` and `x`.
+[fixture: state/lex-entity-in-id]
 
 The documentation of mermaid.js says, under
 [Comments](https://github.com/mermaid-js/mermaid/blob/2086904e76c692331e34a45d7cc3bc30860d040e/packages/mermaid/src/docs/syntax/stateDiagram.md#L311-L324),
