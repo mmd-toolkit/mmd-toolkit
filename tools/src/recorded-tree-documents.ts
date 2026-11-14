@@ -194,6 +194,10 @@ interface RawBlock {
   readonly parts: readonly MarkdownNode[]
   /** The text of the own parts, as written. */
   readonly text: string
+  /** The text for the key: a table row's nonempty cells joined with ` | `. */
+  readonly keyText: string
+  /** The fixtures cited in the block or in citation-only paragraphs after it. */
+  readonly cases: string[]
   /** The offset of the block in the document. */
   readonly offset: number
   /** The headings that the block is under, the outermost first. */
@@ -205,30 +209,48 @@ interface RawBlock {
 /**
  * The blocks of a Markdown document: every paragraph outside a list and a
  * table, every item of a list, and every row of the body of a table. The line
- * `Japanese version: …` is no block.
+ * `Japanese version: …` and citation-only paragraphs are no blocks. The
+ * latter add their cases to the last block, or every row of its table.
  */
 function rawBlocksOf(text: string, document: string): RawBlock[] {
   const blocks: RawBlock[] = []
   const headings: { text: string; depth: number }[] = []
+  let previous: RawBlock[] = []
+
+  /** The source text of `node`. */
+  function sourceOf(node: MarkdownNode): string {
+    return text.slice(node.position?.start.offset, node.position?.end.offset)
+  }
 
   /** Adds the block `node`, whose own parts are `parts`. */
   function add(
     node: MarkdownNode,
     parts: readonly MarkdownNode[],
     kindCell: string | undefined,
-  ): void {
-    blocks.push({
+  ): RawBlock {
+    const blockText = parts.map(sourceOf).join("\n")
+    const block: RawBlock = {
       node,
       parts,
-      text: parts
-        .map((part) =>
-          text.slice(part.position?.start.offset, part.position?.end.offset),
-        )
-        .join("\n"),
+      text: blockText,
+      // A cell's range includes table delimiters; its children's ranges do not.
+      keyText:
+        node.type === "tableRow"
+          ? node
+              .children!.map((cell) =>
+                withoutCitations(cell.children!.map(sourceOf).join("")),
+              )
+              .filter((cell) => cell !== "")
+              .join(" | ")
+          : withoutCitations(blockText),
+      cases: citationsIn(blockText).map((citation) => citation.fixture),
       offset: node.position?.start.offset ?? 0,
       headings: headings.map((heading) => heading.text),
       kindCell,
-    })
+    }
+    blocks.push(block)
+    previous = [block]
+    return block
   }
 
   /** Reads the blocks in `node`. */
@@ -242,7 +264,14 @@ function rawBlocksOf(text: string, document: string): RawBlock[] {
         return
       }
       case "paragraph": {
-        if (!plainText(node).startsWith("Japanese version:")) {
+        const paragraph = sourceOf(node)
+        if (withoutCitations(paragraph) === "") {
+          for (const block of previous) {
+            for (const { fixture } of citationsIn(paragraph)) {
+              block.cases.push(fixture)
+            }
+          }
+        } else if (!plainText(node).startsWith("Japanese version:")) {
           add(node, [node], undefined)
         }
         return
@@ -258,9 +287,11 @@ function rawBlocksOf(text: string, document: string): RawBlock[] {
       }
       case "table": {
         const kinds = firstCellOf(node.children![0]) === "Kind"
+        const rows: RawBlock[] = []
         for (const row of node.children!.slice(1)) {
-          add(row, [row], kinds ? firstCellOf(row) : undefined)
+          rows.push(add(row, [row], kinds ? firstCellOf(row) : undefined))
         }
+        if (rows.length > 0) previous = rows
         return
       }
       case "code":
@@ -368,8 +399,8 @@ export function sectionsOf(
       blocks: blocks
         .filter((block) => block.offset >= start && block.offset < end)
         .map((block) => ({
-          ownKeyText: withoutCitations(block.text),
-          cases: citationsIn(block.text).map((citation) => citation.fixture),
+          ownKeyText: block.keyText,
+          cases: block.cases,
         })),
     })
   })
@@ -389,7 +420,7 @@ export function blocksOf(
     const nodeType = raw.headings.findLast((heading) =>
       vocabulary.nodeTypes.has(heading),
     )
-    const hash = shortHash(keyTextOf(nodeType, raw.text, linked))
+    const hash = shortHash(keyTextOf(nodeType, raw.keyText, linked))
     const count = (seen.get(hash) ?? 0) + 1
     seen.set(hash, count)
     return {
@@ -404,8 +435,8 @@ export function blocksOf(
             ? { kind: "token", tokenKind: raw.kindCell }
             : { kind: "other" },
       sections: linked,
-      cases: citationsIn(raw.text).map((citation) => citation.fixture),
-      ownKeyText: keyTextOf(nodeType, raw.text, []),
+      cases: raw.cases,
+      ownKeyText: keyTextOf(nodeType, raw.keyText, []),
       // Two blocks of one document with the same key text are told apart by
       // their order.
       key: `${document}:${hash}${count === 1 ? "" : `.${count}`}`,

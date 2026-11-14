@@ -86,6 +86,12 @@ a paragraph outside a list and a table, an item of a list (its own text: not the
 lists and the tables in it, whose items and rows are blocks of their own), or a
 row of the body of a table. The line `Japanese version: …` is no block.
 
+A paragraph with only whitespace left after its fixture citations are removed is
+no block. Its citations are added to the cases of the last preceding block in
+the same document. If that block is a row of a table, every body row of that
+table receives the citations. Code and HTML are skipped because they are not
+blocks. Without a preceding block, the citations are assigned nowhere.
+
 An item is a block and a diagram type. A block of `<document>/<diagram>.md`
 holds for that diagram type; a block of `ast.md`, `tokens.md` or `positions.md`
 holds for every diagram type and for `error`, the trees whose body is an
@@ -131,10 +137,15 @@ line:
   `<target> names no section` when the anchor names no heading.
 
 Every part is taken without its fixture citations, and with every run of
-whitespace made one space. A citation names a case and does not change the
-condition, and Prettier may wrap the text again, so neither changes the key.
-When two blocks of one document have the same key text, the second has `.2`
-after its hash, the third `.3`.
+whitespace made one space. For a table row, the text in the key is formed from
+the source text of each cell: remove its fixture citations, make every run of
+whitespace one space, omit empty cells, and join the rest with `|`, with one
+space on each side of the pipe. Adding a citation-only column, or moving
+citations into it, therefore keeps the key. The text of the row shown to a
+reader stays as written in the source. A citation names a case and does not
+change the condition, and Prettier may wrap the text again, so neither changes
+the key. When two blocks of one document have the same key text, the second has
+`.2` after its hash, the third `.3`.
 
 The key of an item is `<block key>@<diagram>`. The content key of a tree is
 `<input>:<tree>`, the git blob ids of its `input.mmd` and `ast.json`.

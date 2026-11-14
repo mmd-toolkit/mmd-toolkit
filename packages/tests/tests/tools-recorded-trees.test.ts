@@ -312,6 +312,72 @@ describe("blocksOf", () => {
     expect(blocks(document)[0].cases).toEqual(["er/gram-alias"])
   })
 
+  it("adds a following citation-only paragraph to every row of a table, without a block of its own", () => {
+    const rows = blocks(
+      [
+        "| Kind | Units |",
+        "| --- | --- |",
+        "| `Identifier` | the names [fixture: er/names] |",
+        "| `RawText` | the text |",
+        "",
+        "[fixture: er/a] [fixture:",
+        "  er/b]",
+        "",
+        "[fixture: er/c]",
+        "",
+      ].join("\n"),
+    )
+    expect(rows.map((block) => [block.text, block.cases])).toEqual([
+      [
+        "| `Identifier` | the names [fixture: er/names] |",
+        ["er/names", "er/a", "er/b", "er/c"],
+      ],
+      ["| `RawText` | the text |", ["er/a", "er/b", "er/c"]],
+    ])
+  })
+
+  it("adds a citation-only paragraph to the last preceding paragraph", () => {
+    const read = blocks(
+      "Earlier.\n\nA condition. [fixture: er/a]\n\n[fixture: er/b]\n",
+    )
+    expect(read.map((block) => [block.text, block.cases])).toEqual([
+      ["Earlier.", []],
+      ["A condition. [fixture: er/a]", ["er/a", "er/b"]],
+    ])
+    expect(read[1].key).toBe(blocks("A condition.\n")[0].key)
+  })
+
+  it("skips code and HTML when adding a citation-only paragraph to its preceding block", () => {
+    const read = blocks(
+      [
+        "A condition.",
+        "",
+        "```mmd",
+        "erDiagram",
+        "```",
+        "",
+        "[fixture: er/code]",
+        "",
+        "<div>HTML</div>",
+        "",
+        "[fixture: er/html]",
+        "",
+      ].join("\n"),
+    )
+    expect(read.map((block) => [block.text, block.cases])).toEqual([
+      ["A condition.", ["er/code", "er/html"]],
+    ])
+  })
+
+  it("ignores a citation-only paragraph when no block precedes it", () => {
+    expect(
+      blocks("# ER\n\n[fixture: er/a]\n\nA condition.\n").map((block) => [
+        block.text,
+        block.cases,
+      ]),
+    ).toEqual([["A condition.", []]])
+  })
+
   it("keeps the key when the text is wrapped again or a citation is added", () => {
     const [before] = blocks("Some words of a condition.\n")
     const [rewrapped] = blocks("Some words\nof a condition.\n")
@@ -323,6 +389,31 @@ describe("blocksOf", () => {
     expect(before.key).toMatch(
       /^packages\/spec\/docs\/ast\/er\.md:[0-9a-f]{12}$/u,
     )
+  })
+
+  it("keeps a table row's key when a citation-only cell is added", () => {
+    const [before] = blocks(
+      "| Kind | Units |\n| --- | --- |\n| `Identifier` | the names |\n",
+    )
+    const [cited] = blocks(
+      "| Kind | Units | Fixtures |\n| --- | --- | --- |\n| `Identifier` | the names | [fixture: er/a] |\n",
+    )
+    expect(cited.key).toBe(before.key)
+    expect(cited.ownKeyText).toBe("`Identifier` | the names")
+    expect(cited.text).toBe("| `Identifier` | the names | [fixture: er/a] |")
+    expect(cited.cases).toEqual(["er/a"])
+  })
+
+  it("keeps a table row's key when citations move from its text to a citation-only cell", () => {
+    const [before] = blocks(
+      "| Kind | Units |\n| --- | --- |\n| `Identifier` | the  names [fixture: er/a] |\n",
+    )
+    const [moved] = blocks(
+      "| Kind | Units | Fixtures |\n| --- | --- | --- |\n| `Identifier` | the names | [fixture: er/a] |\n",
+    )
+    expect(moved.key).toBe(before.key)
+    expect(moved.ownKeyText).toBe(before.ownKeyText)
+    expect(moved.cases).toEqual(before.cases)
   })
 
   it("changes the key when the node type above the block changes", () => {
@@ -397,6 +488,17 @@ describe("sectionsOf", () => {
         { ownKeyText: "Two.", cases: [] },
       ],
     })
+  })
+
+  it("keeps the cases of citation-only paragraphs with the rows of a section's table", () => {
+    const sections = sectionsOf(
+      "# Names\n\n| Kind | Meaning |\n| --- | --- |\n| A | a word |\n| B | two words |\n\n[fixture: er/a]\n",
+      "x.md",
+    )
+    expect(sections.get("names")?.blocks).toEqual([
+      { ownKeyText: "A | a word", cases: ["er/a"] },
+      { ownKeyText: "B | two words", cases: ["er/a"] },
+    ])
   })
 })
 

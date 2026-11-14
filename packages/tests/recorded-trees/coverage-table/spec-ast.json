@@ -509,7 +509,7 @@
       }
     },
     {
-      "block": "packages/spec/docs/ast.md:f71037319131",
+      "block": "packages/spec/docs/ast.md:5d88a472eda1",
       "diagrams": [
         "agentflow",
         "architecture",
@@ -809,7 +809,7 @@
       }
     },
     {
-      "block": "packages/spec/docs/ast.md:086697f96593",
+      "block": "packages/spec/docs/ast.md:d7853c37bcdd",
       "diagrams": [
         "agentflow",
         "architecture",
@@ -861,7 +861,7 @@
       }
     },
     {
-      "block": "packages/spec/docs/ast.md:d9a0176d9925",
+      "block": "packages/spec/docs/ast.md:eb2d935c592c",
       "diagrams": [
         "agentflow",
         "architecture",
@@ -913,7 +913,7 @@
       }
     },
     {
-      "block": "packages/spec/docs/ast.md:59990cde3a18",
+      "block": "packages/spec/docs/ast.md:29152f8a6319",
       "diagrams": [
         "agentflow",
         "architecture",
@@ -1053,7 +1053,7 @@
       }
     },
     {
-      "block": "packages/spec/docs/ast.md:f0c74c563542",
+      "block": "packages/spec/docs/ast.md:e94efdc3959a",
       "diagrams": [
         "agentflow",
         "architecture",
@@ -1153,7 +1153,7 @@
       }
     },
     {
-      "block": "packages/spec/docs/ast.md:853ae84025e0",
+      "block": "packages/spec/docs/ast.md:fee48dbd6f16",
       "diagrams": [
         "agentflow",
         "architecture",
@@ -1203,7 +1203,7 @@
       }
     },
     {
-      "block": "packages/spec/docs/ast.md:853ae84025e0",
+      "block": "packages/spec/docs/ast.md:fee48dbd6f16",
       "diagrams": ["flowchart", "railroad"],
       "about": "| `diagramType` | DiagramType | The diagram type id as merma",
       "judgment": {
@@ -1213,7 +1213,7 @@
       }
     },
     {
-      "block": "packages/spec/docs/ast.md:da0b9106d062",
+      "block": "packages/spec/docs/ast.md:493eb8fca94a",
       "diagrams": [
         "agentflow",
         "architecture",
@@ -1265,7 +1265,7 @@
       }
     },
     {
-      "block": "packages/spec/docs/ast.md:da2e0d4740c1",
+      "block": "packages/spec/docs/ast.md:8f74680bd7be",
       "diagrams": [
         "agentflow",
         "architecture",
@@ -1749,7 +1749,7 @@
       }
     },
     {
-      "block": "packages/spec/docs/ast.md:b0ed7ba56d08",
+      "block": "packages/spec/docs/ast.md:31ada58d5890",
       "diagrams": [
         "agentflow",
         "architecture",
@@ -1901,7 +1901,7 @@
       }
     },
     {
-      "block": "packages/spec/docs/ast.md:2ab41875f11f",
+      "block": "packages/spec/docs/ast.md:9c88c542766f",
       "diagrams": [
         "agentflow",
         "architecture",
@@ -1957,7 +1957,7 @@
       }
     },
     {
-      "block": "packages/spec/docs/ast.md:b6e62017ae2c",
+      "block": "packages/spec/docs/ast.md:2cc9c47be26f",
       "diagrams": [
         "agentflow",
         "architecture",
@@ -2009,7 +2009,7 @@
       }
     },
     {
-      "block": "packages/spec/docs/ast.md:1633796fe39f",
+      "block": "packages/spec/docs/ast.md:dd545cce2483",
       "diagrams": [
         "agentflow",
         "architecture",
@@ -2157,7 +2157,7 @@
       }
     },
     {
-      "block": "packages/spec/docs/ast.md:731dd7a581f4",
+      "block": "packages/spec/docs/ast.md:b9a9ec59c91b",
       "diagrams": [
         "agentflow",
         "architecture",
@@ -2213,7 +2213,7 @@
       }
     },
     {
-      "block": "packages/spec/docs/ast.md:e7b6e1c056dd",
+      "block": "packages/spec/docs/ast.md:69a18a24487d",
       "diagrams": [
         "agentflow",
         "architecture",
