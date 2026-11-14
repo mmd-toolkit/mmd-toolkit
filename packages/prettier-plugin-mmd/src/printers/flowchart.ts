@@ -8,11 +8,7 @@ import type { MermaidAst } from "../parser.ts"
 import { printAtoms } from "./atoms.ts"
 import type { StatementListsOf } from "./data-blocks.ts"
 import { formatDataBlocks, writtenIndentationRule } from "./data-blocks.ts"
-import {
-  endsStyleStatement,
-  isDroppedSemicolon,
-  lineEndOf,
-} from "./kept-lines.ts"
+import { keepsStyleTerminator, lineEndOf } from "./kept-lines.ts"
 import type { BlockRules } from "./blocks.ts"
 import {
   openingLine,
@@ -224,8 +220,7 @@ function flowchartBlockRules(
     // removed comment (docs/flowchart.md, Semicolons).
     isDroppedAtTopLevel: (statement) =>
       statement.type === "FlowchartEmptyStatement" &&
-      (!endsStyleStatement(source, statement.range[0]) ||
-        isDroppedSemicolon(source, statement.range[0])),
+      !keepsStyleTerminator(source, statement.range[0]),
     keepsWhitespaceLineAfterComment: false,
     keepsDirectiveLinesUnindented: false,
   }

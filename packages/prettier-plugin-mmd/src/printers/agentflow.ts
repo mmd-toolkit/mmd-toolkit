@@ -10,7 +10,7 @@ import { printAtoms } from "./atoms.ts"
 import type { StatementListsOf } from "./data-blocks.ts"
 import { formatDataBlocks, writtenIndentationRule } from "./data-blocks.ts"
 import { findAgentflowKeptLines } from "./agentflow-kept-lines.ts"
-import { endsStyleStatement, isDroppedSemicolon } from "./kept-lines.ts"
+import { keepsStyleTerminator } from "./kept-lines.ts"
 import type { BlockRules } from "./blocks.ts"
 import {
   openingLine,
@@ -240,8 +240,7 @@ function agentflowBlockRules(
     ),
     isDroppedAtTopLevel: (statement) =>
       statement.type === "AgentflowEmptyStatement" &&
-      (!endsStyleStatement(source, statement.range[0]) ||
-        isDroppedSemicolon(source, statement.range[0])),
+      !keepsStyleTerminator(source, statement.range[0]),
     keepsWhitespaceLineAfterComment: false,
     // A real comment after a separator needs no retained semicolon, unlike
     // flowchart's percent-as-vertex text (docs/agentflow.md, Comments).

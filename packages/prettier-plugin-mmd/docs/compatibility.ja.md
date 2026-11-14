@@ -4018,17 +4018,24 @@ mermaid.js は、`style`、続いて空白をはさまずに `#` が後に続く
 
 [1 行に 1 文](./flowchart.ja.md#1-行に-1-文)を参照してください。
 
-U+2028 または U+2029 が前にあり、その `;` の行にコメント行が続くときは、
+ER、flowchart、swimlane、agentflow の図で、U+2028 または U+2029 が前にあり、
+その `;` の行にコメント行が続くときは、間に指令の行があっても、
 `classDef` や `style` の文を終わらせる `;` を残します。
 `;` がないと、文は mermaid.js が取り除くコメント行の後ろまで続き、
 その後ろの文を取り込むからです。
 [スタイル文の末尾のセミコロン](./er.ja.md#スタイル文の末尾のセミコロン)と
 [セミコロン](./flowchart.ja.md#セミコロン)を参照してください。
+block 図と treemap は、コメント行の後ろまで読み続けません。
+ER の図で文字の前に空白があるときは、これまでと同じく、
+`;` とその空白と文字をいっしょに削除します。
+`classDef c fill: coral` と印字し、コメント行とその後ろの文は残ります。
 
 [fixture: er/semicolons-at-the-end-of-a-style-statement/comment-and-directive-controls]
 [fixture: flowchart/semicolons/style-terminator-comment-and-directive-controls]
-[test: block style terminators before comments after U+2028 and U+2029]
-[test: treemap style terminators before comments after U+2028 and U+2029]
+[test: block style terminators and U+2028 and U+2029 dropped before comments]
+[test: treemap style terminators and U+2028 and U+2029 dropped before comments]
+[test: ER whitespace before the character goes with the terminator]
+[test: ER directive lines before a comment line]
 
 class、state、ER、requirement、block、Venn、usecase の図では、
 `classDef` と `style` の行末のセミコロンを、Db が変わらない形で削除します。

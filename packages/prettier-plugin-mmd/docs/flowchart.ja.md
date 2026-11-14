@@ -676,12 +676,16 @@ U+2028 または U+2029 の後ろにある、
 を参照してください。
 この文は改行をまたいで読むので、`;` がないと、コメント行の後ろまで続き、
 その後ろの文を取り込みます。
-指令の行、テキストの終わり、文が続くときは、`;` を削除します。
+`;` とコメント行の間の指令の行は、コメント行とともに取り除かれるので、
+何も変えません。
+テキストの終わりや文が続くとき（指令の行のあとに文が続くときも）は、
+`;` を削除します。
 
 [fixture: semicolons/style-terminator-comment-and-directive-controls]
 [test: flowchart LF before terminator and comments]
 [test: swimlane LF before terminator and comments]
 [test: flowchart directive before a comment on the same line]
+[test: flowchart directive line before a comment line]
 [test: swimlane directive before a comment on the same line]
 [test: flowchart directive, direct, NBSP and bare percent controls]
 [test: flowchart comment at EOF control]

@@ -2443,7 +2443,15 @@ U+2028 または U+2029 の後ろにある、
 を参照してください。
 `style A fill:red`、U+2028、`;`、改行、`%% c`、改行、`x` は、
 `;` と entity `x` を保ちます。
-指令の行、テキストの終わり、文が続くときは、上のとおり `;` を削除します。
+`;` とコメント行の間の指令の行は、コメント行とともに取り除かれるので、
+何も変えません。
+テキストの終わりや文が続くとき（指令の行のあとに文が続くときも）は、
+上のとおり `;` を削除します。
+U+2028 や U+2029 の前に空白があるときは、
+`;` とその空白と文字をいっしょに削除します。
+これまでと同じです。
+`style A fill:red`、空白、U+2028、`;`、改行、`%% c`、改行、`x` は、
+`style A fill: red`、改行、`%% c`、改行、`x` と印字します。
 
 [fixture: semicolons-at-the-end-of-a-style-statement/comment-and-directive-controls]
 [test: ER direct comments] [test: ER two comment lines]
@@ -2454,6 +2462,11 @@ U+2028 または U+2029 の後ろにある、
 [test: ER style comment at EOF control]
 [test: ER classDef comment at EOF control]
 [test: ER directive lines, direct statements, NBSP controls]
+[test: ER directive lines before a comment line]
+[test: ER directive line then a statement after a style terminator]
+[test: ER an unclosed directive line before a comment line]
+[test: flowchart directive line before a comment line]
+[test: ER whitespace before the character goes with the terminator]
 
 ### 複数行の文
 

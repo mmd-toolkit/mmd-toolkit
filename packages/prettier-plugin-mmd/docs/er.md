@@ -2470,9 +2470,14 @@ follows its line: without the `;` the statement goes on after the comment line,
 which mermaid.js removes (the specification's
 [The style context](../../spec/docs/diagrams/er.md#the-style-context)), and
 takes the statement after it, so `style A fill:red`, U+2028, `;`, a line break,
-`%% c`, a line break, and `x` keeps the `;` and the entity `x`. Where a
-directive line, the end of the text, or a statement follows, the `;` is dropped
-as above.
+`%% c`, a line break, and `x` keeps the `;` and the entity `x`. Directive lines
+between the `;` and the comment line are removed with it, so they change
+nothing. Where the end of the text or a statement follows, a directive line and
+a statement included, the `;` is dropped as above. Where whitespace stands
+before the U+2028 or U+2029, the `;` and that whitespace and character are
+dropped together, as they were: `style A fill:red`, a space, U+2028, `;`, a line
+break, `%% c`, a line break, and `x` is printed `style A fill: red`, a line
+break, `%% c`, a line break, and `x`.
 
 [fixture:
 semicolons-at-the-end-of-a-style-statement/comment-and-directive-controls]
@@ -2481,7 +2486,11 @@ before comments] [test: ER directives on comment lines] [test: ER directives
 before comments on the same line] [test: ER indented comments] [test: ER
 indented following statements] [test: ER tab and whitespace-only line before a
 comment] [test: ER style comment at EOF control] [test: ER classDef comment at
-EOF control] [test: ER directive lines, direct statements, NBSP controls]
+EOF control] [test: ER directive lines, direct statements, NBSP controls] [test:
+ER directive lines before a comment line] [test: ER directive line then a
+statement after a style terminator] [test: ER an unclosed directive line before
+a comment line] [test: flowchart directive line before a comment line] [test: ER
+whitespace before the character goes with the terminator]
 
 ### Multi-line statements
 

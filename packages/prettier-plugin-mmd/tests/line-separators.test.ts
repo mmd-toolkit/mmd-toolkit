@@ -5754,19 +5754,44 @@ describe("Venn whitespace and line boundaries", () => {
 describe("style semicolons", () => {
   it.each([
     [
-      "block style terminators before comments after U+2028 and U+2029",
+      "block style terminators and U+2028 and U+2029 dropped before comments",
       "block\nA\nclassDef c fill:coral\u2028;\n%% c\nx\nclassDef d fill:coral\u2029;\n%% d\ny\n",
-      "block\n  A\n  classDef c fill:coral\u2028;\n  %% c\n  x\n  classDef d fill:coral\u2029;\n  %% d\n  y\n",
+      "block\n  A\n  classDef c fill: coral\n  %% c\n  x\n  classDef d fill: coral\n  %% d\n  y\n",
     ],
     [
-      "treemap style terminators before comments after U+2028 and U+2029",
+      "treemap style terminators and U+2028 and U+2029 dropped before comments",
       'treemap\nclassDef aa fill:coral\u2028;\n%% c\n"x": 1\nclassDef bb fill:coral\u2029;\n%% d\n"y": 2\n',
-      'treemap\n  classDef aa fill:coral\u2028;\n  %% c\n  "x": 1\n  classDef bb fill:coral\u2029;\n  %% d\n  "y": 2\n',
+      'treemap\n  classDef aa fill: coral\n  %% c\n  "x": 1\n  classDef bb fill: coral\n  %% d\n  "y": 2\n',
     ],
     [
       "ER directives before comments on the same line",
       "erDiagram\nA\nstyle A fill:coral\u2028;\n%%{init: {}}%% %% c\nx\nclassDef c fill:coral\u2029;\n%%{init: {}}%% %% d\ny\n",
       "erDiagram\n  A\n  style A fill:coral\u2028;\n  %%{init: {}}%% %% c\n  x\n  classDef c fill:coral\u2029;\n  %%{init: {}}%% %% d\n  y\n",
+    ],
+    [
+      "ER directive lines before a comment line",
+      "erDiagram\nA\nstyle A fill:coral\u2028;\n%%{init: {}}%%\n%% c\nx\nstyle A fill:coral\u2029;\n%%{init: {}}%%\n%%{init: {}}%%\n%% c\ny\nclassDef c fill:coral\u2028;\n%%{init: {}}%%\n%% c\nz\n",
+      "erDiagram\n  A\n  style A fill:coral\u2028;\n  %%{init: {}}%%\n  %% c\n  x\n  style A fill:coral\u2029;\n  %%{init: {}}%%\n  %%{init: {}}%%\n  %% c\n  y\n  classDef c fill:coral\u2028;\n  %%{init: {}}%%\n  %% c\n  z\n",
+    ],
+    [
+      "ER directive line then a statement after a style terminator",
+      "erDiagram\nA\nstyle A fill:coral\u2028;\n%%{init: {}}%%\nx\n",
+      "erDiagram\n  A\n  style A fill:coral\u2028\n  %%{init: {}}%%\n  x\n",
+    ],
+    [
+      "ER an unclosed directive line before a comment line",
+      "erDiagram\nA\nstyle A fill:coral\u2028;\n%%{init: x\n%% c\nx\n",
+      "erDiagram\n  A\n  style A fill:coral\u2028;\n  %%{init: x\n%% c\n  x\n",
+    ],
+    [
+      "flowchart directive line before a comment line",
+      "flowchart LR\nA --> B\nstyle A fill:coral\u2028;\n%%{init: {}}%%\n%% c\nx\n",
+      "flowchart LR\n  A --> B\n  style A fill:coral\u2028;\n  %%{init: {}}%%\n  %% c\n  x\n",
+    ],
+    [
+      "ER whitespace before the character goes with the terminator",
+      "erDiagram\nA\nstyle A fill:coral \u2028;\n%% c\nx\nstyle A fill:coral\t\u2029;\n%% c\ny\n",
+      "erDiagram\n  A\n  style A fill: coral\n  %% c\n  x\n  style A fill: coral\n  %% c\n  y\n",
     ],
     [
       "flowchart directive before a comment on the same line",

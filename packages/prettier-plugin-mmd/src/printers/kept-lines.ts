@@ -545,26 +545,28 @@ function followsLineSeparator(source: Source, offset: number): boolean {
  * after a removed comment line (diagrams/er.md, The style context;
  * common.md, Comment lines). Use the source's comment regions, which already
  * distinguish indentation, blank lines, directives, and a bare `%%`.
- * A directive before the comment on the same line belongs to that region;
- * a directive-only preceding line is the next nonempty line instead.
+ * A directive before the comment, on its line or on lines of its own after
+ * the style, belongs to that region: the directive lines are removed with it.
  */
 function keepsStyleTerminatorBeforeComment(
   source: Source,
   offset: number,
 ): boolean {
+  const bodyType = source.root.body.type
+  if (
+    bodyType !== "ErDiagram" &&
+    bodyType !== "FlowchartDiagram" &&
+    bodyType !== "AgentflowDiagram"
+  )
+    return false
   const lineFeed = source.text.indexOf("\n", offset)
   if (lineFeed < 0) return false
   const region = source.commentRegions.find(([start]) => start === lineFeed + 1)
   if (region === undefined) return false
-  const trivia = findTriviaBetween(source, region[0], region[1])
-  const first = trivia.at(0)
-  const comment = trivia.find((item) => item.type === "Comment")
-  if (first === undefined || comment === undefined) return false
-  if (
-    first.type === "Directive" &&
-    source.text.indexOf("\n", first.range[0]) < comment.range[0]
+  const comment = findTriviaBetween(source, region[0], region[1]).find(
+    (item) => item.type === "Comment",
   )
-    return false
+  if (comment === undefined) return false
   if (textRead(source, region[1], source.text.length).trim() === "")
     return false
   const readsLineFeeds =
@@ -577,8 +579,11 @@ function keepsStyleTerminatorBeforeComment(
       break
     before--
   }
+  // Where an ER diagram has whitespace before the character, the terminator
+  // and that whitespace go together (docs/er.md, Semicolons).
   return (
     (source.text[before] === "\u2028" || source.text[before] === "\u2029") &&
+    !(bodyType === "ErDiagram" && isSpaceOrTab(source.text[before - 1])) &&
     endsStyleStatement(source, offset)
   )
 }
@@ -600,14 +605,6 @@ function keepsStyleTerminatorBeforeComment(
  * takes that text (diagrams/er.md, The style context).
  */
 export function isDroppedSemicolon(source: Source, offset: number): boolean {
-  if (source.text[offset] !== ";") return false
-  const { kind } = semicolonRulesOf(source)
-  if (
-    kind === "separators" &&
-    !source.ignoredSemicolons.has(offset) &&
-    endsStyleStatement(source, offset)
-  )
-    return !keepsStyleTerminatorBeforeComment(source, offset)
   if (
     !isLastOnItsLine(source, offset) ||
     source.root.comments.some((comment) => comment.range[1] === offset) ||
@@ -616,6 +613,7 @@ export function isDroppedSemicolon(source: Source, offset: number): boolean {
   ) {
     return false
   }
+  const { kind } = semicolonRulesOf(source)
   if (source.ignoredSemicolons.has(offset)) {
     return (
       kind === "separators" ||
@@ -623,6 +621,23 @@ export function isDroppedSemicolon(source: Source, offset: number): boolean {
     )
   }
   return kind === "text" && styleSemicolonsOf(source).terminators.has(offset)
+}
+
+/**
+ * Whether the printer keeps the `;` at `offset` that separates statements and
+ * ends a `classDef` or `style` statement, which the printer drops otherwise as
+ * it drops a `;` that separates statements: one after U+2028 or U+2029 that
+ * stays before a removed comment line with text after it, since the style
+ * would take that text without it (see `keepsStyleTerminatorBeforeComment`).
+ */
+export function keepsStyleTerminator(source: Source, offset: number): boolean {
+  return (
+    source.text[offset] === ";" &&
+    semicolonRulesOf(source).kind === "separators" &&
+    !source.ignoredSemicolons.has(offset) &&
+    endsStyleStatement(source, offset) &&
+    keepsStyleTerminatorBeforeComment(source, offset)
+  )
 }
 
 /**

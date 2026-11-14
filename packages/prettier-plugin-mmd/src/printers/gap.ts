@@ -2,9 +2,9 @@ import type { Node, Range, Token } from "@mmd-toolkit/ast"
 import type { Doc } from "prettier"
 import { utils } from "prettier/doc"
 import {
-  endsStyleStatement,
   isDroppedSemicolon,
   isInsideStyleRuleStretch,
+  keepsStyleTerminator,
 } from "./kept-lines.ts"
 import type { Source, Trivia } from "./source.ts"
 import {
@@ -566,8 +566,7 @@ function scanLines(
         const staysWithPrevious =
           !keepsSeparators &&
           (isAfterKeptLineSeparator(source, start, offset) ||
-            (endsStyleStatement(source, offset) &&
-              !isDroppedSemicolon(source, offset)))
+            keepsStyleTerminator(source, offset))
         addPart(element.token, !(keepsSeparators || staysWithPrevious))
         // A `;` that stays after a U+2028 or U+2029 ends what stands with
         // the thing before the gap, as a `;` that is dropped does.

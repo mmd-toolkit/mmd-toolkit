@@ -3769,18 +3769,25 @@ state/descriptions-and-labels/semicolon-line-kept]
 
 See [Statements one per line](./flowchart.md#statements-one-per-line).
 
-A `;` that ends a `classDef` or `style` statement is kept where a U+2028 or
-U+2029 stands before it and a comment line follows its line: without the `;` the
-statement goes on after the comment line, which mermaid.js removes, and takes
-the statement after it (see
+A `;` that ends a `classDef` or `style` statement is kept in an ER, flowchart,
+swimlane, and agentflow diagram where a U+2028 or U+2029 stands before it and a
+comment line follows its line, directive lines between them included: without
+the `;` the statement goes on after the comment line, which mermaid.js removes,
+and takes the statement after it (see
 [Semicolons at the end of a style statement](./er.md#semicolons-at-the-end-of-a-style-statement)
-and [Semicolons](./flowchart.md#semicolons)).
+and [Semicolons](./flowchart.md#semicolons)). A block diagram and a treemap do
+not read on after the comment line, and an ER diagram with whitespace before the
+character drops the `;` with that whitespace and the character, as before: the
+line is printed `classDef c fill: coral`, and the comment line and the statement
+after it stay.
 
 [fixture:
 er/semicolons-at-the-end-of-a-style-statement/comment-and-directive-controls]
 [fixture: flowchart/semicolons/style-terminator-comment-and-directive-controls]
-[test: block style terminators before comments after U+2028 and U+2029] [test:
-treemap style terminators before comments after U+2028 and U+2029]
+[test: block style terminators and U+2028 and U+2029 dropped before comments]
+[test: treemap style terminators and U+2028 and U+2029 dropped before comments]
+[test: ER whitespace before the character goes with the terminator] [test: ER
+directive lines before a comment line]
 
 In class, state, ER, requirement, block, Venn and usecase diagrams, line-ending
 `classDef` and `style` semicolons are dropped where this leaves the Db

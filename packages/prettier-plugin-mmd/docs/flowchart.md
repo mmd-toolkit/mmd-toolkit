@@ -668,16 +668,19 @@ U+2029, with only whitespace and line feeds between them, stays where a comment
 line follows its line, for the reason given for an ER diagram (see
 [Semicolons at the end of a style statement](./er.md#semicolons-at-the-end-of-a-style-statement)):
 the statement reads through line feeds, so without the `;` it goes on after the
-comment line and takes the statement after it. Where a directive line, the end
-of the text, or a statement follows, the `;` is dropped.
+comment line and takes the statement after it. Directive lines between the `;`
+and the comment line are removed with it, so they change nothing. Where the end
+of the text or a statement follows, a directive line and a statement included,
+the `;` is dropped.
 
 [fixture: semicolons/style-terminator-comment-and-directive-controls] [test:
 flowchart LF before terminator and comments] [test: swimlane LF before
 terminator and comments] [test: flowchart directive before a comment on the same
-line] [test: swimlane directive before a comment on the same line] [test:
-flowchart directive, direct, NBSP and bare percent controls] [test: flowchart
-comment at EOF control] [test: swimlane directive, direct and NBSP controls]
-[test: swimlane comment at EOF control]
+line] [test: flowchart directive line before a comment line] [test: swimlane
+directive before a comment on the same line] [test: flowchart directive, direct,
+NBSP and bare percent controls] [test: flowchart comment at EOF control] [test:
+swimlane directive, direct and NBSP controls] [test: swimlane comment at EOF
+control]
 
 ### Blank lines
 
