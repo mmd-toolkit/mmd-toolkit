@@ -38,11 +38,12 @@ missing reading is found by the command and not by memory.
 The exit code is 1 when a checked tree has a problem of `checkTree()`, when a
 record cannot be read (its `ast.json` is not JSON or its `input.mmd` is
 missing), when a tree has a node type that is classified neither as a value node
-nor as a structure node, when an answer file cannot be read, or when an item or
-a changed tree has no answer. It is 2 for a wrong use of the command and for an
-error of git (a base that does not exist, a history too shallow for the merge
-base). It is 0 otherwise: stale rows of the table, items that the table does not
-judge yet, and items whose key changed do not fail it.
+nor as a structure node, when an answer file or a file of the coverage table
+cannot be read, or when an item or a changed tree has no answer. It is 2 for a
+wrong use of the command (no `--base`, or `--base` given twice), outside a git
+repository, and for an error of git (a base that does not exist, a history too
+shallow for the merge base). It is 0 otherwise: stale rows of the table, items
+that the table does not judge yet, and items whose key changed do not fail it.
 
 ## The changed trees
 
@@ -65,11 +66,15 @@ recorded tree, and says which file made it.
 
 The files that the runner reaches import only relative paths, by import and
 export declarations. If one of them imports a package or a built-in module of
-Node.js, calls `import()` or the global `require()`, or uses `import.meta`, the
-files that decide the result cannot be known, and the command checks every
-recorded tree and names the file and the read. The runner itself imports only
-built-in modules of Node.js and relative paths: the version of a package that it
-imported could change the result without changing a file of the repository.
+Node.js, calls `import()`, uses `import.meta`, or names one of the globals
+`process`, `globalThis`, `global`, `require`, `eval`, and `Function`, through
+which a module reads a built-in module, the environment, or code made at run
+time, the files that decide the result cannot be known; the command then checks
+every recorded tree and names the file and the read. The names are read in the
+syntax tree, so a member such as `this.require` is no read. The runner itself
+may import built-in modules of Node.js, since it reads the files of the trees,
+and nothing else of that kind: the version of a package that it imported could
+change the result without changing a file of the repository.
 
 ## The blocks and the items
 
@@ -101,8 +106,8 @@ for the whole tree. An item with no place in a tree is still read: a token of a
 wrong kind is a place of the row of that kind, not of the row of the kind it
 should have.
 
-The cases of an item are the fixtures that its block cites (`[fixture: …]`): a
-help for reading, not a part of the answer.
+The cases of an item are the fixtures that its block cites
+(`[fixture: <diagram>/<name>]`): a help for reading, not a part of the answer.
 
 A block that links to a heading of `packages/spec/docs/common.md` or of a
 document of `packages/spec/docs/diagrams/` reads its words as that section
@@ -136,28 +141,46 @@ The key of an item is `<block key>@<diagram>`. The content key of a tree is
 
 ## The coverage table
 
-The table is in `packages/tests/src/check-tree/coverage-table/`: `index.ts`
-holds its types and `COVERAGE`, all its rows. Its files import nothing outside
-the directory, so that the command can take the table of the base out of the
-commit and import it (see What it prints). A row gives one judgment of one block
-(`block`, its key) for the diagram types it names (`diagrams`); `about` holds
-the opening words of the block for a person who reads the table, and is not
-compared. A judgment is one of:
+The table is data that the command reads from two versions, the working tree and
+the base, as it reads the answers, so it is kept beside them: a JSON file for
+each document of the tree in `packages/tests/recorded-trees/coverage-table/`,
+named after the document (`parser-positions.json` for
+`packages/parser/docs/positions.md`), each an object with a list `rows`. A row
+gives one judgment of one block (`block`, its key) for the diagram types it
+names (`diagrams`), each named, so that a diagram type added later is not judged
+until a row names it; `about` holds the opening words of the block for a person
+who reads the table, and is not compared. A judgment is one of:
 
 - `shown`: for each case that the block distinguishes, a test case in which
-  `checkTree()` reports a tree that breaks the condition. A case is named by its
-  test file under `packages/tests/tests/` and a string that the file holds, such
-  as the name of the fixture that it breaks; a title is not used, since a test
-  may build its title.
-- `not-shown`: why, with a note. `no-rule`: no rule of `checkTree()` is about
-  the condition. `rule-misses-condition`: a rule is about it, but a case that
-  breaks a part of it is not reported.
+  `checkTree()` reports a tree that breaks the condition (`cases`). A case is
+  named by its test file under `packages/tests/tests/` (`file`) and a string
+  that the file holds (`text`), such as the title of the test, written out in
+  the file, or the name of the fixture that it breaks; the string is looked for
+  in the text of the file, so a title that a test builds at run time cannot name
+  a case.
+- `not-shown`: why (`reason`), with a `note`. `no-rule`: no rule of
+  `checkTree()` is about the condition. `rule-misses-condition`: a rule is about
+  it, but a case that breaks a part of it is not reported.
+- `no-condition`: the block states no condition of the tree: it says nothing of
+  the nodes, the fields, the values, the tokens, or the positions. Its `kind`
+  says what it is instead, with a `note`: `introduction` (it introduces the
+  document or a part of it), `pointer` (it points to the document or the section
+  that holds the conditions), or `reason` (it gives the reason of other
+  sentences). A sentence written as an example of a condition is a case of that
+  condition, and a block that mixes a condition with an introduction states a
+  condition.
+
+The command checks every file of the table when it reads it: a file that is not
+JSON, or whose rows are not of this form or name a diagram type that the
+documents do not have, gives no rows and fails the check, as an answer file that
+cannot be read does.
 
 An item without a row is not judged yet. A row counts only when its block has
 that key now, every case that it names is still in its test file, the block
 holds for each of its diagram types, and no earlier row covers one of its items.
 Otherwise it is stale: the command lists it, and its items are read again. The
-items to read are those that are not `shown`, judged or not.
+items to read are those that are neither `shown` nor `no-condition`, judged or
+not.
 
 A change that makes a row stale, or that adds a block, has the judgment made
 again by `packages/tests` in the same pull request: the coverage table is a
@@ -200,6 +223,8 @@ is merged and not rewritten by a later change:
 - `fixture` is for a person who reads the file. It is not compared: a renamed
   tree is still covered by its content, and the name is not corrected when it
   goes out of date.
+- An answer whose text is empty or whitespace only, as the template that the
+  command prints has it, answers nothing.
 
 An item has an answer for a changed tree when an answer of any file covers the
 item and the content key of the tree; a changed tree has an answer when an entry
@@ -226,18 +251,19 @@ The command prints Markdown, the same on a terminal and in the log of CI:
    changed `parse-error.json`.
 3. The problems: each problem of `checkTree()` with its tree, the records that
    cannot be read, the node types that are not classified, and the answer files
-   that cannot be read.
+   and the files of the coverage table that cannot be read.
 4. The items to read, by diagram type: the key, the document and the line, the
    judgment (not shown, or not judged yet), the opening of the block, the number
    of places, the cases, the sections to read with it, and whether an answer of
    the change covers it; the places themselves with `--places`. Then the items
    that the base answers.
 5. For each changed tree, the sentences that cite its fixture: the
-   `[fixture: …]` of the documents of `packages/spec/docs`,
+   `[fixture: <diagram>/<name>]` of the documents of `packages/spec/docs`,
    `packages/parser/docs` and `packages/tests/docs`, and the
-   `[corpus fixture: …]` of those of `packages/prettier-plugin-mmd/docs`, whose
-   `[fixture: …]` names fixtures of the formatter. A tree that no sentence cites
-   says whether the change adds its fixture.
+   `[corpus fixture: <diagram>/<name>]` of those of
+   `packages/prettier-plugin-mmd/docs`, whose `[fixture: <diagram>/<name>]`
+   names fixtures of the formatter. A tree that no sentence cites says whether
+   the change adds its fixture.
 6. The missing answers, and a template of an answer file with the keys filled
    and the answers empty. The command writes no file.
 7. The stale rows of the coverage table, with why: first those that the change

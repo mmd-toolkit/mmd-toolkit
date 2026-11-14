@@ -1,0 +1,2232 @@
+{
+  "rows": [
+    {
+      "block": "packages/parser/docs/positions.md:eced16de0de3",
+      "diagrams": [
+        "agentflow",
+        "architecture",
+        "block",
+        "c4",
+        "class",
+        "cynefin",
+        "er",
+        "eventmodeling",
+        "flowchart",
+        "gantt",
+        "gitgraph",
+        "info",
+        "ishikawa",
+        "journey",
+        "kanban",
+        "mindmap",
+        "packet",
+        "pie",
+        "quadrant",
+        "radar",
+        "railroad",
+        "requirement",
+        "sankey",
+        "sequence",
+        "state",
+        "timeline",
+        "treemap",
+        "treeview",
+        "usecase",
+        "venn",
+        "wardley",
+        "xychart",
+        "error"
+      ],
+      "about": "This document defines the positions in the tree that `@mmd-t",
+      "judgment": {
+        "status": "no-condition",
+        "kind": "introduction",
+        "note": "It introduces the document: the `range` and `loc` of the tree and its invariants."
+      }
+    },
+    {
+      "block": "packages/parser/docs/positions.md:5e1885404a17",
+      "diagrams": [
+        "agentflow",
+        "architecture",
+        "block",
+        "c4",
+        "class",
+        "cynefin",
+        "er",
+        "eventmodeling",
+        "flowchart",
+        "gantt",
+        "gitgraph",
+        "info",
+        "ishikawa",
+        "journey",
+        "kanban",
+        "mindmap",
+        "packet",
+        "pie",
+        "quadrant",
+        "radar",
+        "railroad",
+        "requirement",
+        "sankey",
+        "sequence",
+        "state",
+        "timeline",
+        "treemap",
+        "treeview",
+        "usecase",
+        "venn",
+        "wardley",
+        "xychart",
+        "error"
+      ],
+      "about": "**Positioned.** Every node, token, comment, directive, and f",
+      "judgment": {
+        "status": "shown",
+        "cases": [
+          {
+            "file": "check-tree-shape.test.ts",
+            "text": "reports a range that is no pair of offsets, and a loc that lacks its end or itself"
+          },
+          {
+            "file": "check-tree-shape.test.ts",
+            "text": "reports a range that is no offset pair and a loc that is no location"
+          }
+        ]
+      }
+    },
+    {
+      "block": "packages/parser/docs/positions.md:906b1e573ba8",
+      "diagrams": [
+        "agentflow",
+        "architecture",
+        "block",
+        "c4",
+        "class",
+        "cynefin",
+        "er",
+        "eventmodeling",
+        "flowchart",
+        "gantt",
+        "gitgraph",
+        "info",
+        "ishikawa",
+        "journey",
+        "kanban",
+        "mindmap",
+        "packet",
+        "pie",
+        "quadrant",
+        "radar",
+        "railroad",
+        "requirement",
+        "sankey",
+        "sequence",
+        "state",
+        "timeline",
+        "treemap",
+        "treeview",
+        "usecase",
+        "venn",
+        "wardley",
+        "xychart",
+        "error"
+      ],
+      "about": "**Lossless.** The tree loses nothing of the input. Every cha",
+      "judgment": {
+        "status": "shown",
+        "cases": [
+          {
+            "file": "check-tree.test.ts",
+            "text": "fails when a token is missing"
+          },
+          {
+            "file": "check-tree.test.ts",
+            "text": "fails when a comment, or the token of a directive or of the frontmatter, is missing"
+          }
+        ]
+      }
+    },
+    {
+      "block": "packages/parser/docs/positions.md:2a3df268d471",
+      "diagrams": [
+        "agentflow",
+        "architecture",
+        "block",
+        "c4",
+        "class",
+        "cynefin",
+        "er",
+        "eventmodeling",
+        "flowchart",
+        "gantt",
+        "gitgraph",
+        "info",
+        "ishikawa",
+        "journey",
+        "kanban",
+        "mindmap",
+        "packet",
+        "pie",
+        "quadrant",
+        "radar",
+        "railroad",
+        "requirement",
+        "sankey",
+        "sequence",
+        "state",
+        "timeline",
+        "treemap",
+        "treeview",
+        "usecase",
+        "venn",
+        "wardley",
+        "xychart",
+        "error"
+      ],
+      "about": "**offset pair** is two integers, a start offset and an end o",
+      "judgment": {
+        "status": "shown",
+        "cases": [
+          {
+            "file": "check-tree-shape.test.ts",
+            "text": "reports a range that is no pair of offsets, and a loc that lacks its end or itself"
+          }
+        ]
+      }
+    },
+    {
+      "block": "packages/parser/docs/positions.md:26753843a4ab",
+      "diagrams": [
+        "agentflow",
+        "architecture",
+        "block",
+        "c4",
+        "class",
+        "cynefin",
+        "er",
+        "eventmodeling",
+        "flowchart",
+        "gantt",
+        "gitgraph",
+        "info",
+        "ishikawa",
+        "journey",
+        "kanban",
+        "mindmap",
+        "packet",
+        "pie",
+        "quadrant",
+        "radar",
+        "railroad",
+        "requirement",
+        "sankey",
+        "sequence",
+        "state",
+        "timeline",
+        "treemap",
+        "treeview",
+        "usecase",
+        "venn",
+        "wardley",
+        "xychart",
+        "error"
+      ],
+      "about": "**position** and **location** are the records described unde",
+      "judgment": {
+        "status": "no-condition",
+        "kind": "pointer",
+        "note": "It points to the section Positions, where the records are defined."
+      }
+    },
+    {
+      "block": "packages/parser/docs/positions.md:1e8bafe2b0ee",
+      "diagrams": [
+        "agentflow",
+        "architecture",
+        "block",
+        "c4",
+        "class",
+        "cynefin",
+        "er",
+        "eventmodeling",
+        "flowchart",
+        "gantt",
+        "gitgraph",
+        "info",
+        "ishikawa",
+        "journey",
+        "kanban",
+        "mindmap",
+        "packet",
+        "pie",
+        "quadrant",
+        "radar",
+        "railroad",
+        "requirement",
+        "sankey",
+        "sequence",
+        "state",
+        "timeline",
+        "treemap",
+        "treeview",
+        "usecase",
+        "venn",
+        "wardley",
+        "xychart",
+        "error"
+      ],
+      "about": "Offsets count UTF-16 code units, as ESTree and Prettier do. ",
+      "judgment": {
+        "status": "shown",
+        "cases": [
+          {
+            "file": "check-tree.test.ts",
+            "text": "fails when a token's range is shifted, or its value is not the source text of its range"
+          },
+          {
+            "file": "check-tree.test.ts",
+            "text": "fails when the content fields of a comment, a directive, or the frontmatter are not the text of their ranges"
+          },
+          {
+            "file": "check-tree-literals.test.ts",
+            "text": "a StringLiteral whose raw is not its text"
+          },
+          {
+            "file": "check-tree-literals.test.ts",
+            "text": "a NumericLiteral whose raw is not its text"
+          },
+          {
+            "file": "check-tree-shared-positions.test.ts",
+            "text": "an offset that counts a character outside the Basic Multilingual Plane as one"
+          }
+        ]
+      }
+    },
+    {
+      "block": "packages/parser/docs/positions.md:d9cd33993ce3",
+      "diagrams": [
+        "agentflow",
+        "architecture",
+        "block",
+        "c4",
+        "class",
+        "cynefin",
+        "er",
+        "eventmodeling",
+        "flowchart",
+        "gantt",
+        "gitgraph",
+        "info",
+        "ishikawa",
+        "journey",
+        "kanban",
+        "mindmap",
+        "packet",
+        "pie",
+        "quadrant",
+        "radar",
+        "railroad",
+        "requirement",
+        "sankey",
+        "sequence",
+        "state",
+        "timeline",
+        "treemap",
+        "treeview",
+        "usecase",
+        "venn",
+        "wardley",
+        "xychart",
+        "error"
+      ],
+      "about": "A `range` is an offset pair: a 0-based start offset and an e",
+      "judgment": {
+        "status": "shown",
+        "cases": [
+          {
+            "file": "check-tree-shape.test.ts",
+            "text": "reports a range that is no pair of offsets, and a loc that lacks its end or itself"
+          },
+          {
+            "file": "check-tree.test.ts",
+            "text": "fails when a range lies outside the input"
+          },
+          {
+            "file": "check-tree-shared-positions.test.ts",
+            "text": "a range whose end offset is the last character, not the one after it"
+          }
+        ]
+      }
+    },
+    {
+      "block": "packages/parser/docs/positions.md:3200f18a16ba",
+      "diagrams": [
+        "agentflow",
+        "architecture",
+        "block",
+        "c4",
+        "class",
+        "cynefin",
+        "er",
+        "eventmodeling",
+        "flowchart",
+        "gantt",
+        "gitgraph",
+        "info",
+        "ishikawa",
+        "journey",
+        "kanban",
+        "mindmap",
+        "packet",
+        "pie",
+        "quadrant",
+        "radar",
+        "railroad",
+        "requirement",
+        "sankey",
+        "sequence",
+        "state",
+        "timeline",
+        "treemap",
+        "treeview",
+        "usecase",
+        "venn",
+        "wardley",
+        "xychart",
+        "error"
+      ],
+      "about": "A `loc` is a location: a `start` and an `end` position. Each",
+      "judgment": {
+        "status": "shown",
+        "cases": [
+          {
+            "file": "check-tree-shape.test.ts",
+            "text": "reports a range that is no offset pair and a loc that is no location"
+          },
+          {
+            "file": "check-tree-shape.test.ts",
+            "text": "reports a range that is no pair of offsets, and a loc that lacks its end or itself"
+          },
+          {
+            "file": "check-tree.test.ts",
+            "text": "fails when the loc of a comment, a directive, the frontmatter, or the body is not the place of its range"
+          },
+          {
+            "file": "check-tree.test.ts",
+            "text": "fails when a token's range is shifted, or its value is not the source text of its range"
+          },
+          {
+            "file": "check-tree-shared-positions.test.ts",
+            "text": "a column that counts a character outside the Basic Multilingual Plane as one"
+          }
+        ]
+      }
+    },
+    {
+      "block": "packages/parser/docs/positions.md:95d46cd6e465",
+      "diagrams": [
+        "agentflow",
+        "architecture",
+        "block",
+        "c4",
+        "class",
+        "cynefin",
+        "er",
+        "eventmodeling",
+        "flowchart",
+        "gantt",
+        "gitgraph",
+        "info",
+        "ishikawa",
+        "journey",
+        "kanban",
+        "mindmap",
+        "packet",
+        "pie",
+        "quadrant",
+        "radar",
+        "railroad",
+        "requirement",
+        "sankey",
+        "sequence",
+        "state",
+        "timeline",
+        "treemap",
+        "treeview",
+        "usecase",
+        "venn",
+        "wardley",
+        "xychart",
+        "error"
+      ],
+      "about": "`\\r\\n`, a lone `\\r`, and `\\n` each end a line, because these",
+      "judgment": {
+        "status": "shown",
+        "cases": [
+          {
+            "file": "check-tree.test.ts",
+            "text": "fails when the loc of a comment, a directive, the frontmatter, or the body is not the place of its range"
+          },
+          {
+            "file": "check-tree-shared-positions.test.ts",
+            "text": "as two line ends"
+          },
+          {
+            "file": "check-tree-shared-positions.test.ts",
+            "text": "does not count a lone"
+          },
+          {
+            "file": "check-tree-shared-positions.test.ts",
+            "text": "counts a U+2028 or a U+2029 as a line end"
+          }
+        ]
+      }
+    },
+    {
+      "block": "packages/parser/docs/positions.md:651ed8af4ca2",
+      "diagrams": [
+        "agentflow",
+        "architecture",
+        "block",
+        "c4",
+        "class",
+        "cynefin",
+        "er",
+        "eventmodeling",
+        "flowchart",
+        "gantt",
+        "gitgraph",
+        "info",
+        "ishikawa",
+        "journey",
+        "kanban",
+        "mindmap",
+        "packet",
+        "pie",
+        "quadrant",
+        "radar",
+        "railroad",
+        "requirement",
+        "sankey",
+        "sequence",
+        "state",
+        "timeline",
+        "treemap",
+        "treeview",
+        "usecase",
+        "venn",
+        "wardley",
+        "xychart",
+        "error"
+      ],
+      "about": "| position | `line` | integer | Line number, counted from 1.",
+      "judgment": {
+        "status": "shown",
+        "cases": [
+          {
+            "file": "check-tree.test.ts",
+            "text": "fails when the loc of a comment, a directive, the frontmatter, or the body is not the place of its range"
+          },
+          {
+            "file": "check-tree-shared-positions.test.ts",
+            "text": "a line or a column that is not an integer"
+          }
+        ]
+      }
+    },
+    {
+      "block": "packages/parser/docs/positions.md:5e0c04333d8a",
+      "diagrams": [
+        "agentflow",
+        "architecture",
+        "block",
+        "c4",
+        "class",
+        "cynefin",
+        "er",
+        "eventmodeling",
+        "flowchart",
+        "gantt",
+        "gitgraph",
+        "info",
+        "ishikawa",
+        "journey",
+        "kanban",
+        "mindmap",
+        "packet",
+        "pie",
+        "quadrant",
+        "radar",
+        "railroad",
+        "requirement",
+        "sankey",
+        "sequence",
+        "state",
+        "timeline",
+        "treemap",
+        "treeview",
+        "usecase",
+        "venn",
+        "wardley",
+        "xychart",
+        "error"
+      ],
+      "about": "| position | `column` | integer | Column, counted from 0 in ",
+      "judgment": {
+        "status": "shown",
+        "cases": [
+          {
+            "file": "check-tree.test.ts",
+            "text": "fails when a token's range is shifted, or its value is not the source text of its range"
+          },
+          {
+            "file": "check-tree.test.ts",
+            "text": "fails when the loc of a comment, a directive, the frontmatter, or the body is not the place of its range"
+          },
+          {
+            "file": "check-tree-shared-positions.test.ts",
+            "text": "a line or a column that is not an integer"
+          },
+          {
+            "file": "check-tree-shared-positions.test.ts",
+            "text": "a column that counts a character outside the Basic Multilingual Plane as one"
+          }
+        ]
+      }
+    },
+    {
+      "block": "packages/parser/docs/positions.md:fb0bc356db28",
+      "diagrams": [
+        "agentflow",
+        "architecture",
+        "block",
+        "c4",
+        "class",
+        "cynefin",
+        "er",
+        "eventmodeling",
+        "flowchart",
+        "gantt",
+        "gitgraph",
+        "info",
+        "ishikawa",
+        "journey",
+        "kanban",
+        "mindmap",
+        "packet",
+        "pie",
+        "quadrant",
+        "radar",
+        "railroad",
+        "requirement",
+        "sankey",
+        "sequence",
+        "state",
+        "timeline",
+        "treemap",
+        "treeview",
+        "usecase",
+        "venn",
+        "wardley",
+        "xychart",
+        "error"
+      ],
+      "about": "| location | `start` | position | Position of the first char",
+      "judgment": {
+        "status": "shown",
+        "cases": [
+          {
+            "file": "check-tree-shape.test.ts",
+            "text": "reports a range that is no offset pair and a loc that is no location"
+          },
+          {
+            "file": "check-tree.test.ts",
+            "text": "fails when the loc of a comment, a directive, the frontmatter, or the body is not the place of its range"
+          }
+        ]
+      }
+    },
+    {
+      "block": "packages/parser/docs/positions.md:a2a4d972dc2e",
+      "diagrams": [
+        "agentflow",
+        "architecture",
+        "block",
+        "c4",
+        "class",
+        "cynefin",
+        "er",
+        "eventmodeling",
+        "flowchart",
+        "gantt",
+        "gitgraph",
+        "info",
+        "ishikawa",
+        "journey",
+        "kanban",
+        "mindmap",
+        "packet",
+        "pie",
+        "quadrant",
+        "radar",
+        "railroad",
+        "requirement",
+        "sankey",
+        "sequence",
+        "state",
+        "timeline",
+        "treemap",
+        "treeview",
+        "usecase",
+        "venn",
+        "wardley",
+        "xychart",
+        "error"
+      ],
+      "about": "| location | `end` | position | Position just after the last",
+      "judgment": {
+        "status": "shown",
+        "cases": [
+          {
+            "file": "check-tree-shape.test.ts",
+            "text": "reports a range that is no pair of offsets, and a loc that lacks its end or itself"
+          },
+          {
+            "file": "check-tree.test.ts",
+            "text": "fails when a token's range is shifted, or its value is not the source text of its range"
+          },
+          {
+            "file": "check-tree.test.ts",
+            "text": "fails when the loc of a comment, a directive, the frontmatter, or the body is not the place of its range"
+          }
+        ]
+      }
+    },
+    {
+      "block": "packages/parser/docs/positions.md:31bba4429b4d",
+      "diagrams": [
+        "agentflow",
+        "architecture",
+        "block",
+        "c4",
+        "class",
+        "cynefin",
+        "er",
+        "eventmodeling",
+        "flowchart",
+        "gantt",
+        "gitgraph",
+        "info",
+        "ishikawa",
+        "journey",
+        "kanban",
+        "mindmap",
+        "packet",
+        "pie",
+        "quadrant",
+        "radar",
+        "railroad",
+        "requirement",
+        "sankey",
+        "sequence",
+        "state",
+        "timeline",
+        "treemap",
+        "treeview",
+        "usecase",
+        "venn",
+        "wardley",
+        "xychart",
+        "error"
+      ],
+      "about": "The specification uses two units on purpose. The rules of [c",
+      "judgment": {
+        "status": "shown",
+        "cases": [
+          {
+            "file": "check-tree-shared-positions.test.ts",
+            "text": "an offset that counts a character outside the Basic Multilingual Plane as one"
+          },
+          {
+            "file": "check-tree-shared-positions.test.ts",
+            "text": "a column that counts a character outside the Basic Multilingual Plane as one"
+          }
+        ]
+      }
+    },
+    {
+      "block": "packages/parser/docs/positions.md:22051b39511a",
+      "diagrams": [
+        "agentflow",
+        "architecture",
+        "block",
+        "c4",
+        "class",
+        "cynefin",
+        "er",
+        "eventmodeling",
+        "flowchart",
+        "gantt",
+        "gitgraph",
+        "info",
+        "ishikawa",
+        "journey",
+        "kanban",
+        "mindmap",
+        "packet",
+        "pie",
+        "quadrant",
+        "radar",
+        "railroad",
+        "requirement",
+        "sankey",
+        "sequence",
+        "state",
+        "timeline",
+        "treemap",
+        "treeview",
+        "usecase",
+        "venn",
+        "wardley",
+        "xychart",
+        "error"
+      ],
+      "about": "Every node has these fields besides those of [`ast.md`](../.",
+      "judgment": {
+        "status": "no-condition",
+        "kind": "introduction",
+        "note": "It leads in to the table of the fields of every node below it; the conditions are in those rows, which have rows of their own."
+      }
+    },
+    {
+      "block": "packages/parser/docs/positions.md:b2719c4f9fb8",
+      "diagrams": [
+        "agentflow",
+        "architecture",
+        "block",
+        "c4",
+        "class",
+        "cynefin",
+        "er",
+        "eventmodeling",
+        "flowchart",
+        "gantt",
+        "gitgraph",
+        "info",
+        "ishikawa",
+        "journey",
+        "kanban",
+        "mindmap",
+        "packet",
+        "pie",
+        "quadrant",
+        "radar",
+        "railroad",
+        "requirement",
+        "sankey",
+        "sequence",
+        "state",
+        "timeline",
+        "treemap",
+        "treeview",
+        "usecase",
+        "venn",
+        "wardley",
+        "xychart",
+        "error"
+      ],
+      "about": "| `range` | offset pair | Where the node is in the source. |",
+      "judgment": {
+        "status": "shown",
+        "cases": [
+          {
+            "file": "check-tree-shape.test.ts",
+            "text": "reports a range that is no pair of offsets, and a loc that lacks its end or itself"
+          },
+          {
+            "file": "check-tree-node-ranges.test.ts",
+            "text": "fails a node that starts before its parent"
+          },
+          {
+            "file": "check-tree-node-ranges.test.ts",
+            "text": "fails a node that ends where no token ends"
+          },
+          {
+            "file": "check-tree.test.ts",
+            "text": "fails when a range lies outside the input"
+          }
+        ]
+      }
+    },
+    {
+      "block": "packages/parser/docs/positions.md:c8a24dcc9a26",
+      "diagrams": [
+        "agentflow",
+        "architecture",
+        "block",
+        "c4",
+        "class",
+        "cynefin",
+        "er",
+        "eventmodeling",
+        "flowchart",
+        "gantt",
+        "gitgraph",
+        "info",
+        "ishikawa",
+        "journey",
+        "kanban",
+        "mindmap",
+        "packet",
+        "pie",
+        "quadrant",
+        "radar",
+        "railroad",
+        "requirement",
+        "sankey",
+        "sequence",
+        "state",
+        "timeline",
+        "treemap",
+        "treeview",
+        "usecase",
+        "venn",
+        "wardley",
+        "xychart",
+        "error"
+      ],
+      "about": "| `loc` | location | The same place as lines and columns. |",
+      "judgment": {
+        "status": "shown",
+        "cases": [
+          {
+            "file": "check-tree-shape.test.ts",
+            "text": "reports a range that is no offset pair and a loc that is no location"
+          },
+          {
+            "file": "check-tree-shape.test.ts",
+            "text": "reports a range that is no pair of offsets, and a loc that lacks its end or itself"
+          },
+          {
+            "file": "check-tree.test.ts",
+            "text": "fails when the loc of a comment, a directive, the frontmatter, or the body is not the place of its range"
+          }
+        ]
+      }
+    },
+    {
+      "block": "packages/parser/docs/positions.md:e49d81e445e2",
+      "diagrams": [
+        "agentflow",
+        "architecture",
+        "block",
+        "c4",
+        "class",
+        "cynefin",
+        "er",
+        "eventmodeling",
+        "flowchart",
+        "gantt",
+        "gitgraph",
+        "info",
+        "ishikawa",
+        "journey",
+        "kanban",
+        "mindmap",
+        "packet",
+        "pie",
+        "quadrant",
+        "radar",
+        "railroad",
+        "requirement",
+        "sankey",
+        "sequence",
+        "state",
+        "timeline",
+        "treemap",
+        "treeview",
+        "usecase",
+        "venn",
+        "wardley",
+        "xychart",
+        "error"
+      ],
+      "about": "A node's range normally runs from the start of its first tok",
+      "judgment": {
+        "status": "shown",
+        "cases": [
+          {
+            "file": "check-tree-node-ranges.test.ts",
+            "text": "fails a node that ends where no token ends"
+          },
+          {
+            "file": "check-tree.test.ts",
+            "text": "fails when the body does not run from its first token to its last"
+          },
+          {
+            "file": "check-tree.test.ts",
+            "text": "fails when the root does not cover the whole input"
+          },
+          {
+            "file": "check-tree.test.ts",
+            "text": "fails when the body covers an IgnoredSemicolon token after its last token"
+          },
+          {
+            "file": "check-tree-node-ranges.test.ts",
+            "text": "fails a node that starts before its parent"
+          },
+          {
+            "file": "check-tree-shared-positions.test.ts",
+            "text": "the statement or the diagram when it ends before the end of the source"
+          },
+          {
+            "file": "check-tree-shared-positions.test.ts",
+            "text": "a token added for the end of the source"
+          }
+        ]
+      }
+    },
+    {
+      "block": "packages/parser/docs/positions.md:9d21d4a3ce87",
+      "diagrams": [
+        "agentflow",
+        "architecture",
+        "block",
+        "c4",
+        "class",
+        "cynefin",
+        "er",
+        "eventmodeling",
+        "flowchart",
+        "gantt",
+        "gitgraph",
+        "info",
+        "ishikawa",
+        "journey",
+        "kanban",
+        "mindmap",
+        "packet",
+        "pie",
+        "quadrant",
+        "radar",
+        "railroad",
+        "requirement",
+        "sankey",
+        "sequence",
+        "state",
+        "timeline",
+        "treemap",
+        "treeview",
+        "usecase",
+        "venn",
+        "wardley",
+        "xychart",
+        "error"
+      ],
+      "about": "`Root.range` is `[0, input.length]`. [fixture: common/crlf]",
+      "judgment": {
+        "status": "shown",
+        "cases": [
+          {
+            "file": "check-tree.test.ts",
+            "text": "fails when the root does not cover the whole input"
+          }
+        ]
+      }
+    },
+    {
+      "block": "packages/parser/docs/positions.md:f695cb4f3f0a",
+      "diagrams": [
+        "agentflow",
+        "architecture",
+        "block",
+        "c4",
+        "class",
+        "cynefin",
+        "er",
+        "eventmodeling",
+        "flowchart",
+        "gantt",
+        "gitgraph",
+        "info",
+        "ishikawa",
+        "journey",
+        "kanban",
+        "mindmap",
+        "packet",
+        "pie",
+        "quadrant",
+        "radar",
+        "railroad",
+        "requirement",
+        "sankey",
+        "sequence",
+        "state",
+        "timeline",
+        "treemap",
+        "treeview",
+        "usecase",
+        "venn",
+        "wardley",
+        "xychart",
+        "error"
+      ],
+      "about": "Every tree satisfies these conditions:",
+      "judgment": {
+        "status": "no-condition",
+        "kind": "introduction",
+        "note": "It leads in to the list of the invariants below it; the conditions are in those items, which have rows of their own."
+      }
+    },
+    {
+      "block": "packages/parser/docs/positions.md:4e94cc409e7d",
+      "diagrams": [
+        "agentflow",
+        "architecture",
+        "block",
+        "c4",
+        "class",
+        "cynefin",
+        "er",
+        "eventmodeling",
+        "flowchart",
+        "gantt",
+        "gitgraph",
+        "info",
+        "ishikawa",
+        "journey",
+        "kanban",
+        "mindmap",
+        "packet",
+        "pie",
+        "quadrant",
+        "radar",
+        "railroad",
+        "requirement",
+        "sankey",
+        "sequence",
+        "state",
+        "timeline",
+        "treemap",
+        "treeview",
+        "usecase",
+        "venn",
+        "wardley",
+        "xychart",
+        "error"
+      ],
+      "about": "Every character of the input is in a token or a comment, or ",
+      "judgment": {
+        "status": "shown",
+        "cases": [
+          {
+            "file": "check-tree.test.ts",
+            "text": "fails when a token is missing"
+          },
+          {
+            "file": "check-tree.test.ts",
+            "text": "fails when a comment, or the token of a directive or of the frontmatter, is missing"
+          },
+          {
+            "file": "check-tree-shared-positions.test.ts",
+            "text": "U+200B, U+0085, and U+180E, which are not whitespace, outside the tokens"
+          }
+        ]
+      }
+    },
+    {
+      "block": "packages/parser/docs/positions.md:425d9a25f16f",
+      "diagrams": [
+        "agentflow",
+        "architecture",
+        "block",
+        "c4",
+        "class",
+        "cynefin",
+        "er",
+        "eventmodeling",
+        "flowchart",
+        "gantt",
+        "gitgraph",
+        "info",
+        "ishikawa",
+        "journey",
+        "kanban",
+        "mindmap",
+        "packet",
+        "pie",
+        "quadrant",
+        "radar",
+        "railroad",
+        "requirement",
+        "sankey",
+        "sequence",
+        "state",
+        "timeline",
+        "treemap",
+        "treeview",
+        "usecase",
+        "venn",
+        "wardley",
+        "xychart",
+        "error"
+      ],
+      "about": "The text of every token, comment, directive, and frontmatter",
+      "judgment": {
+        "status": "shown",
+        "cases": [
+          {
+            "file": "check-tree.test.ts",
+            "text": "fails when a token's range is shifted, or its value is not the source text of its range"
+          },
+          {
+            "file": "check-tree.test.ts",
+            "text": "fails when the content fields of a comment, a directive, or the frontmatter are not the text of their ranges"
+          }
+        ]
+      }
+    },
+    {
+      "block": "packages/parser/docs/positions.md:0ad61f246a26",
+      "diagrams": [
+        "agentflow",
+        "architecture",
+        "block",
+        "c4",
+        "class",
+        "cynefin",
+        "er",
+        "eventmodeling",
+        "flowchart",
+        "gantt",
+        "gitgraph",
+        "info",
+        "ishikawa",
+        "journey",
+        "kanban",
+        "mindmap",
+        "packet",
+        "pie",
+        "quadrant",
+        "radar",
+        "railroad",
+        "requirement",
+        "sankey",
+        "sequence",
+        "state",
+        "timeline",
+        "treemap",
+        "treeview",
+        "usecase",
+        "venn",
+        "wardley",
+        "xychart",
+        "error"
+      ],
+      "about": "`Root.tokens` is in source order, and its tokens do not over",
+      "judgment": {
+        "status": "shown",
+        "cases": [
+          {
+            "file": "check-tree.test.ts",
+            "text": "fails when tokens overlap or are out of order"
+          }
+        ]
+      }
+    },
+    {
+      "block": "packages/parser/docs/positions.md:10b6eb33c086",
+      "diagrams": [
+        "agentflow",
+        "architecture",
+        "block",
+        "c4",
+        "class",
+        "cynefin",
+        "er",
+        "eventmodeling",
+        "flowchart",
+        "gantt",
+        "gitgraph",
+        "info",
+        "ishikawa",
+        "journey",
+        "kanban",
+        "mindmap",
+        "packet",
+        "pie",
+        "quadrant",
+        "radar",
+        "railroad",
+        "requirement",
+        "sankey",
+        "sequence",
+        "state",
+        "timeline",
+        "treemap",
+        "treeview",
+        "usecase",
+        "venn",
+        "wardley",
+        "xychart",
+        "error"
+      ],
+      "about": "A token starts or ends with whitespace or a line terminator ",
+      "judgment": {
+        "status": "shown",
+        "cases": [
+          {
+            "file": "check-tree.test.ts",
+            "text": " error"
+          },
+          {
+            "file": "check-tree-cut-whitespace.test.ts",
+            "text": "is not allowed where the token before does not touch the token"
+          },
+          {
+            "file": "check-tree-cut-whitespace.test.ts",
+            "text": "is not allowed where no token follows it"
+          }
+        ]
+      }
+    },
+    {
+      "block": "packages/parser/docs/positions.md:a797e307ad5c",
+      "diagrams": [
+        "agentflow",
+        "architecture",
+        "block",
+        "c4",
+        "class",
+        "cynefin",
+        "er",
+        "eventmodeling",
+        "flowchart",
+        "gantt",
+        "gitgraph",
+        "info",
+        "ishikawa",
+        "journey",
+        "kanban",
+        "mindmap",
+        "packet",
+        "pie",
+        "quadrant",
+        "radar",
+        "railroad",
+        "requirement",
+        "sankey",
+        "sequence",
+        "state",
+        "timeline",
+        "treemap",
+        "treeview",
+        "usecase",
+        "venn",
+        "wardley",
+        "xychart",
+        "error"
+      ],
+      "about": "A comment lies outside all tokens. [fixture: common/comment-",
+      "judgment": {
+        "status": "shown",
+        "cases": [
+          {
+            "file": "check-tree.test.ts",
+            "text": "fails when a comment region lies inside a token"
+          },
+          {
+            "file": "check-tree.test.ts",
+            "text": "fails when a comment lies partly inside a token"
+          }
+        ]
+      }
+    },
+    {
+      "block": "packages/parser/docs/positions.md:c31fdc18def7",
+      "diagrams": [
+        "agentflow",
+        "architecture",
+        "block",
+        "c4",
+        "class",
+        "cynefin",
+        "er",
+        "eventmodeling",
+        "flowchart",
+        "gantt",
+        "gitgraph",
+        "info",
+        "ishikawa",
+        "journey",
+        "kanban",
+        "mindmap",
+        "packet",
+        "pie",
+        "quadrant",
+        "radar",
+        "railroad",
+        "requirement",
+        "sankey",
+        "sequence",
+        "state",
+        "timeline",
+        "treemap",
+        "treeview",
+        "usecase",
+        "venn",
+        "wardley",
+        "xychart",
+        "error"
+      ],
+      "about": "A directive lies inside no other token. It may lie inside a ",
+      "judgment": {
+        "status": "shown",
+        "cases": [
+          {
+            "file": "check-tree.test.ts",
+            "text": "fails when a directive lies inside a token"
+          },
+          {
+            "file": "check-tree.test.ts",
+            "text": "fails when a comment, or the token of a directive or of the frontmatter, is missing"
+          },
+          {
+            "file": "check-tree.test.ts",
+            "text": "fails when a Directive token has no directive"
+          }
+        ]
+      }
+    },
+    {
+      "block": "packages/parser/docs/positions.md:ff3e962ba826",
+      "diagrams": [
+        "agentflow",
+        "architecture",
+        "block",
+        "c4",
+        "class",
+        "cynefin",
+        "er",
+        "eventmodeling",
+        "flowchart",
+        "gantt",
+        "gitgraph",
+        "info",
+        "ishikawa",
+        "journey",
+        "kanban",
+        "mindmap",
+        "packet",
+        "pie",
+        "quadrant",
+        "radar",
+        "railroad",
+        "requirement",
+        "sankey",
+        "sequence",
+        "state",
+        "timeline",
+        "treemap",
+        "treeview",
+        "usecase",
+        "venn",
+        "wardley",
+        "xychart",
+        "error"
+      ],
+      "about": "Every `;` that the line rule ignores and that lies outside a",
+      "judgment": {
+        "status": "not-shown",
+        "reason": "no-rule",
+        "note": "No check compares the IgnoredSemicolon tokens with the `;` that the line rule ignores: in an error diagram, `error x;` with its `;` as an IgnoredSemicolon token, and `error %% style:#f;` with the `;` inside the RawText token, both pass."
+      }
+    },
+    {
+      "block": "packages/parser/docs/positions.md:c49c168bec49",
+      "diagrams": [
+        "agentflow",
+        "architecture",
+        "block",
+        "c4",
+        "class",
+        "cynefin",
+        "er",
+        "eventmodeling",
+        "flowchart",
+        "gantt",
+        "gitgraph",
+        "info",
+        "ishikawa",
+        "journey",
+        "kanban",
+        "mindmap",
+        "packet",
+        "pie",
+        "quadrant",
+        "radar",
+        "railroad",
+        "requirement",
+        "sankey",
+        "sequence",
+        "state",
+        "timeline",
+        "treemap",
+        "treeview",
+        "usecase",
+        "venn",
+        "wardley",
+        "xychart",
+        "error"
+      ],
+      "about": "No two comments overlap, and no two directives overlap. [fix",
+      "judgment": {
+        "status": "shown",
+        "cases": [
+          {
+            "file": "check-tree.test.ts",
+            "text": "fails when comments or directives overlap"
+          }
+        ]
+      }
+    },
+    {
+      "block": "packages/parser/docs/positions.md:7090eb2390cc",
+      "diagrams": [
+        "agentflow",
+        "architecture",
+        "block",
+        "c4",
+        "class",
+        "cynefin",
+        "er",
+        "eventmodeling",
+        "flowchart",
+        "gantt",
+        "gitgraph",
+        "info",
+        "ishikawa",
+        "journey",
+        "kanban",
+        "mindmap",
+        "packet",
+        "pie",
+        "quadrant",
+        "radar",
+        "railroad",
+        "requirement",
+        "sankey",
+        "sequence",
+        "state",
+        "timeline",
+        "treemap",
+        "treeview",
+        "usecase",
+        "venn",
+        "wardley",
+        "xychart",
+        "error"
+      ],
+      "about": "When there is frontmatter, the first tokens are the tokens i",
+      "judgment": {
+        "status": "shown",
+        "cases": [
+          {
+            "file": "check-tree.test.ts",
+            "text": "fails when the frontmatter is not divided into its delimiters and its body"
+          },
+          {
+            "file": "check-tree.test.ts",
+            "text": "has no token for a body that is whitespace, and a token of the body without the whitespace around it"
+          },
+          {
+            "file": "check-tree.test.ts",
+            "text": "fails a comment or a directive in the frontmatter"
+          },
+          {
+            "file": "check-tree-shared-positions.test.ts",
+            "text": "the token of a directive before the tokens of the frontmatter"
+          }
+        ]
+      }
+    },
+    {
+      "block": "packages/parser/docs/positions.md:d2a37c02fdb8",
+      "diagrams": [
+        "agentflow",
+        "architecture",
+        "block",
+        "c4",
+        "class",
+        "cynefin",
+        "er",
+        "eventmodeling",
+        "flowchart",
+        "gantt",
+        "gitgraph",
+        "info",
+        "ishikawa",
+        "journey",
+        "kanban",
+        "mindmap",
+        "packet",
+        "pie",
+        "quadrant",
+        "radar",
+        "railroad",
+        "requirement",
+        "sankey",
+        "sequence",
+        "state",
+        "timeline",
+        "treemap",
+        "treeview",
+        "usecase",
+        "venn",
+        "wardley",
+        "xychart",
+        "error"
+      ],
+      "about": "Except for node types that explicitly extend to source EOF a",
+      "judgment": {
+        "status": "shown",
+        "cases": [
+          {
+            "file": "check-tree-node-ranges.test.ts",
+            "text": "fails a node that ends where no token ends"
+          },
+          {
+            "file": "check-tree.test.ts",
+            "text": "fails when the body does not run from its first token to its last"
+          },
+          {
+            "file": "check-tree.test.ts",
+            "text": "fails when the root does not cover the whole input"
+          },
+          {
+            "file": "check-tree-node-ranges.test.ts",
+            "text": "fails a tree whose text has no token"
+          },
+          {
+            "file": "check-tree-flowchart.test.ts",
+            "text": "a label that is all whitespace without its token"
+          }
+        ]
+      }
+    },
+    {
+      "block": "packages/parser/docs/positions.md:59f930b12a01",
+      "diagrams": [
+        "agentflow",
+        "architecture",
+        "block",
+        "c4",
+        "class",
+        "cynefin",
+        "er",
+        "eventmodeling",
+        "flowchart",
+        "gantt",
+        "gitgraph",
+        "info",
+        "ishikawa",
+        "journey",
+        "kanban",
+        "mindmap",
+        "packet",
+        "pie",
+        "quadrant",
+        "radar",
+        "railroad",
+        "requirement",
+        "sankey",
+        "sequence",
+        "state",
+        "timeline",
+        "treemap",
+        "treeview",
+        "usecase",
+        "venn",
+        "wardley",
+        "xychart",
+        "error"
+      ],
+      "about": "The range of a node covers the ranges of its child nodes. Th",
+      "judgment": {
+        "status": "shown",
+        "cases": [
+          {
+            "file": "check-tree-node-ranges.test.ts",
+            "text": "fails a node that starts before its parent"
+          },
+          {
+            "file": "check-tree-node-ranges.test.ts",
+            "text": "fails child nodes that overlap"
+          },
+          {
+            "file": "check-tree-node-ranges.test.ts",
+            "text": "fails child fields that are not in source order"
+          },
+          {
+            "file": "check-tree-node-ranges.test.ts",
+            "text": "fails a list that is not in source order"
+          }
+        ]
+      }
+    },
+    {
+      "block": "packages/parser/docs/positions.md:9d8528fa891b",
+      "diagrams": [
+        "agentflow",
+        "architecture",
+        "block",
+        "c4",
+        "class",
+        "cynefin",
+        "er",
+        "eventmodeling",
+        "flowchart",
+        "gantt",
+        "gitgraph",
+        "info",
+        "ishikawa",
+        "journey",
+        "kanban",
+        "mindmap",
+        "packet",
+        "pie",
+        "quadrant",
+        "radar",
+        "railroad",
+        "requirement",
+        "sankey",
+        "sequence",
+        "state",
+        "timeline",
+        "treemap",
+        "treeview",
+        "usecase",
+        "venn",
+        "wardley",
+        "xychart",
+        "error"
+      ],
+      "about": "The `raw` of a node that has it, a StringLiteral or a Numeri",
+      "judgment": {
+        "status": "shown",
+        "cases": [
+          {
+            "file": "check-tree-literals.test.ts",
+            "text": "a StringLiteral whose raw is not its text"
+          },
+          {
+            "file": "check-tree-literals.test.ts",
+            "text": "a NumericLiteral whose raw is not its text"
+          }
+        ]
+      }
+    },
+    {
+      "block": "packages/parser/docs/positions.md:5fd55d093330",
+      "diagrams": [
+        "agentflow",
+        "architecture",
+        "block",
+        "c4",
+        "class",
+        "cynefin",
+        "er",
+        "eventmodeling",
+        "flowchart",
+        "gantt",
+        "gitgraph",
+        "info",
+        "ishikawa",
+        "journey",
+        "kanban",
+        "mindmap",
+        "packet",
+        "pie",
+        "quadrant",
+        "radar",
+        "railroad",
+        "requirement",
+        "sankey",
+        "sequence",
+        "state",
+        "timeline",
+        "treemap",
+        "treeview",
+        "usecase",
+        "venn",
+        "wardley",
+        "xychart",
+        "error"
+      ],
+      "about": "No token, comment, or directive has an empty range: a value ",
+      "judgment": {
+        "status": "shown",
+        "cases": [
+          {
+            "file": "check-tree.test.ts",
+            "text": "fails when a token, a comment, or a directive is empty"
+          },
+          {
+            "file": "check-tree-shared-positions.test.ts",
+            "text": "the field without the token of its space"
+          }
+        ]
+      }
+    },
+    {
+      "block": "packages/parser/docs/positions.md:449ff4a746ce",
+      "diagrams": [
+        "agentflow",
+        "architecture",
+        "block",
+        "c4",
+        "class",
+        "cynefin",
+        "er",
+        "eventmodeling",
+        "flowchart",
+        "gantt",
+        "gitgraph",
+        "info",
+        "ishikawa",
+        "journey",
+        "kanban",
+        "mindmap",
+        "packet",
+        "pie",
+        "quadrant",
+        "radar",
+        "railroad",
+        "requirement",
+        "sankey",
+        "sequence",
+        "state",
+        "timeline",
+        "treemap",
+        "treeview",
+        "usecase",
+        "venn",
+        "wardley",
+        "xychart",
+        "error"
+      ],
+      "about": "The second condition is about the source text: `Token.value`",
+      "judgment": {
+        "status": "shown",
+        "cases": [
+          {
+            "file": "check-tree.test.ts",
+            "text": "fails when a token's range is shifted, or its value is not the source text of its range"
+          },
+          {
+            "file": "check-tree.test.ts",
+            "text": "fails when the content fields of a comment, a directive, or the frontmatter are not the text of their ranges"
+          }
+        ]
+      }
+    },
+    {
+      "block": "packages/parser/docs/positions.md:b0d6b51f4d55",
+      "diagrams": [
+        "agentflow",
+        "architecture",
+        "block",
+        "c4",
+        "class",
+        "cynefin",
+        "er",
+        "eventmodeling",
+        "flowchart",
+        "gantt",
+        "gitgraph",
+        "info",
+        "ishikawa",
+        "journey",
+        "kanban",
+        "mindmap",
+        "packet",
+        "pie",
+        "quadrant",
+        "radar",
+        "railroad",
+        "requirement",
+        "sankey",
+        "sequence",
+        "state",
+        "timeline",
+        "treemap",
+        "treeview",
+        "usecase",
+        "venn",
+        "wardley",
+        "xychart",
+        "error"
+      ],
+      "about": "Packet ranges are defined in [packet](./positions/packet.md#",
+      "judgment": {
+        "status": "no-condition",
+        "kind": "pointer",
+        "note": "It points to `positions/packet.md`, which states the ranges of packet."
+      }
+    },
+    {
+      "block": "packages/parser/docs/positions.md:3335df4c28b7",
+      "diagrams": [
+        "agentflow",
+        "architecture",
+        "block",
+        "c4",
+        "class",
+        "cynefin",
+        "er",
+        "eventmodeling",
+        "flowchart",
+        "gantt",
+        "gitgraph",
+        "info",
+        "ishikawa",
+        "journey",
+        "kanban",
+        "mindmap",
+        "packet",
+        "pie",
+        "quadrant",
+        "radar",
+        "railroad",
+        "requirement",
+        "sankey",
+        "sequence",
+        "state",
+        "timeline",
+        "treemap",
+        "treeview",
+        "usecase",
+        "venn",
+        "wardley",
+        "xychart",
+        "error"
+      ],
+      "about": "Architecture ranges are defined in [architecture](./position",
+      "judgment": {
+        "status": "no-condition",
+        "kind": "pointer",
+        "note": "It points to `positions/architecture.md`, which states the ranges of architecture."
+      }
+    },
+    {
+      "block": "packages/parser/docs/positions.md:2e8be292449a",
+      "diagrams": [
+        "agentflow",
+        "architecture",
+        "block",
+        "c4",
+        "class",
+        "cynefin",
+        "er",
+        "eventmodeling",
+        "flowchart",
+        "gantt",
+        "gitgraph",
+        "info",
+        "ishikawa",
+        "journey",
+        "kanban",
+        "mindmap",
+        "packet",
+        "pie",
+        "quadrant",
+        "radar",
+        "railroad",
+        "requirement",
+        "sankey",
+        "sequence",
+        "state",
+        "timeline",
+        "treemap",
+        "treeview",
+        "usecase",
+        "venn",
+        "wardley",
+        "xychart",
+        "error"
+      ],
+      "about": "Radar ranges are defined in [radar](./positions/radar.md#ran",
+      "judgment": {
+        "status": "no-condition",
+        "kind": "pointer",
+        "note": "It points to `positions/radar.md`, which states the ranges of radar."
+      }
+    },
+    {
+      "block": "packages/parser/docs/positions.md:ed577819a7a7",
+      "diagrams": [
+        "agentflow",
+        "architecture",
+        "block",
+        "c4",
+        "class",
+        "cynefin",
+        "er",
+        "eventmodeling",
+        "flowchart",
+        "gantt",
+        "gitgraph",
+        "info",
+        "ishikawa",
+        "journey",
+        "kanban",
+        "mindmap",
+        "packet",
+        "pie",
+        "quadrant",
+        "radar",
+        "railroad",
+        "requirement",
+        "sankey",
+        "sequence",
+        "state",
+        "timeline",
+        "treemap",
+        "treeview",
+        "usecase",
+        "venn",
+        "wardley",
+        "xychart",
+        "error"
+      ],
+      "about": "Treemap ranges are defined in [treemap](./positions/treemap.",
+      "judgment": {
+        "status": "no-condition",
+        "kind": "pointer",
+        "note": "It points to `positions/treemap.md`, which states the ranges of treemap."
+      }
+    },
+    {
+      "block": "packages/parser/docs/positions.md:0aaf811c69bd",
+      "diagrams": [
+        "agentflow",
+        "architecture",
+        "block",
+        "c4",
+        "class",
+        "cynefin",
+        "er",
+        "eventmodeling",
+        "flowchart",
+        "gantt",
+        "gitgraph",
+        "info",
+        "ishikawa",
+        "journey",
+        "kanban",
+        "mindmap",
+        "packet",
+        "pie",
+        "quadrant",
+        "radar",
+        "railroad",
+        "requirement",
+        "sankey",
+        "sequence",
+        "state",
+        "timeline",
+        "treemap",
+        "treeview",
+        "usecase",
+        "venn",
+        "wardley",
+        "xychart",
+        "error"
+      ],
+      "about": "Railroad ranges follow [railroad](./positions/railroad.md#ra",
+      "judgment": {
+        "status": "no-condition",
+        "kind": "pointer",
+        "note": "It points to `positions/railroad.md`, which states the ranges of railroad."
+      }
+    },
+    {
+      "block": "packages/parser/docs/positions.md:d7fa1c025675",
+      "diagrams": [
+        "agentflow",
+        "architecture",
+        "block",
+        "c4",
+        "class",
+        "cynefin",
+        "er",
+        "eventmodeling",
+        "flowchart",
+        "gantt",
+        "gitgraph",
+        "info",
+        "ishikawa",
+        "journey",
+        "kanban",
+        "mindmap",
+        "packet",
+        "pie",
+        "quadrant",
+        "radar",
+        "railroad",
+        "requirement",
+        "sankey",
+        "sequence",
+        "state",
+        "timeline",
+        "treemap",
+        "treeview",
+        "usecase",
+        "venn",
+        "wardley",
+        "xychart",
+        "error"
+      ],
+      "about": "Wardley ranges follow [wardley](./positions/wardley.md#range",
+      "judgment": {
+        "status": "no-condition",
+        "kind": "pointer",
+        "note": "It points to `positions/wardley.md`, which states the ranges of wardley."
+      }
+    },
+    {
+      "block": "packages/parser/docs/positions.md:c812248d2ab5",
+      "diagrams": [
+        "agentflow",
+        "architecture",
+        "block",
+        "c4",
+        "class",
+        "cynefin",
+        "er",
+        "eventmodeling",
+        "flowchart",
+        "gantt",
+        "gitgraph",
+        "info",
+        "ishikawa",
+        "journey",
+        "kanban",
+        "mindmap",
+        "packet",
+        "pie",
+        "quadrant",
+        "radar",
+        "railroad",
+        "requirement",
+        "sankey",
+        "sequence",
+        "state",
+        "timeline",
+        "treemap",
+        "treeview",
+        "usecase",
+        "venn",
+        "wardley",
+        "xychart",
+        "error"
+      ],
+      "about": "Cynefin ranges follow [cynefin](./positions/cynefin.md#range",
+      "judgment": {
+        "status": "no-condition",
+        "kind": "pointer",
+        "note": "It points to `positions/cynefin.md`, which states the ranges of cynefin."
+      }
+    },
+    {
+      "block": "packages/parser/docs/positions.md:35d8aa6deb60",
+      "diagrams": [
+        "agentflow",
+        "architecture",
+        "block",
+        "c4",
+        "class",
+        "cynefin",
+        "er",
+        "eventmodeling",
+        "flowchart",
+        "gantt",
+        "gitgraph",
+        "info",
+        "ishikawa",
+        "journey",
+        "kanban",
+        "mindmap",
+        "packet",
+        "pie",
+        "quadrant",
+        "radar",
+        "railroad",
+        "requirement",
+        "sankey",
+        "sequence",
+        "state",
+        "timeline",
+        "treemap",
+        "treeview",
+        "usecase",
+        "venn",
+        "wardley",
+        "xychart",
+        "error"
+      ],
+      "about": "Eventmodeling ranges follow [eventmodeling](./positions/even",
+      "judgment": {
+        "status": "no-condition",
+        "kind": "pointer",
+        "note": "It points to `positions/eventmodeling.md`, which states the ranges of eventmodeling."
+      }
+    },
+    {
+      "block": "packages/parser/docs/positions.md:8989ffd8858b",
+      "diagrams": [
+        "agentflow",
+        "architecture",
+        "block",
+        "c4",
+        "class",
+        "cynefin",
+        "er",
+        "eventmodeling",
+        "flowchart",
+        "gantt",
+        "gitgraph",
+        "info",
+        "ishikawa",
+        "journey",
+        "kanban",
+        "mindmap",
+        "packet",
+        "pie",
+        "quadrant",
+        "radar",
+        "railroad",
+        "requirement",
+        "sankey",
+        "sequence",
+        "state",
+        "timeline",
+        "treemap",
+        "treeview",
+        "usecase",
+        "venn",
+        "wardley",
+        "xychart",
+        "error"
+      ],
+      "about": "Treeview ranges follow [treeview](./positions/treeview.md#ra",
+      "judgment": {
+        "status": "no-condition",
+        "kind": "pointer",
+        "note": "It points to `positions/treeview.md`, which states the ranges of treeview."
+      }
+    }
+  ]
+}

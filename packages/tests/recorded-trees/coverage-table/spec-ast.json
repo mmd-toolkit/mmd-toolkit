@@ -1,0 +1,2492 @@
+{
+  "rows": [
+    {
+      "block": "packages/spec/docs/ast.md:60704d4065e2",
+      "diagrams": [
+        "agentflow",
+        "architecture",
+        "block",
+        "c4",
+        "class",
+        "cynefin",
+        "er",
+        "eventmodeling",
+        "flowchart",
+        "gantt",
+        "gitgraph",
+        "info",
+        "ishikawa",
+        "journey",
+        "kanban",
+        "mindmap",
+        "packet",
+        "pie",
+        "quadrant",
+        "radar",
+        "railroad",
+        "requirement",
+        "sankey",
+        "sequence",
+        "state",
+        "timeline",
+        "treemap",
+        "treeview",
+        "usecase",
+        "venn",
+        "wardley",
+        "xychart",
+        "error"
+      ],
+      "about": "This document defines the abstract syntax tree of Mermaid te",
+      "judgment": {
+        "status": "shown",
+        "cases": [
+          {
+            "file": "check-tree-shape.test.ts",
+            "text": "sequence/db-message-activate-target"
+          }
+        ]
+      }
+    },
+    {
+      "block": "packages/spec/docs/ast.md:e0598b529233",
+      "diagrams": [
+        "agentflow",
+        "architecture",
+        "block",
+        "c4",
+        "class",
+        "cynefin",
+        "er",
+        "eventmodeling",
+        "flowchart",
+        "gantt",
+        "gitgraph",
+        "info",
+        "ishikawa",
+        "journey",
+        "kanban",
+        "mindmap",
+        "packet",
+        "pie",
+        "quadrant",
+        "radar",
+        "railroad",
+        "requirement",
+        "sankey",
+        "sequence",
+        "state",
+        "timeline",
+        "treemap",
+        "treeview",
+        "usecase",
+        "venn",
+        "wardley",
+        "xychart",
+        "error"
+      ],
+      "about": "**Diagram-agnostic root.** The root holds the parts shared b",
+      "judgment": {
+        "status": "shown",
+        "cases": [
+          {
+            "file": "check-tree-shape.test.ts",
+            "text": "sequence/db-message-activate-target"
+          },
+          {
+            "file": "check-tree-leaves.test.ts",
+            "text": "db-message-activate-target"
+          }
+        ]
+      }
+    },
+    {
+      "block": "packages/spec/docs/ast.md:e52c8a33fae5",
+      "diagrams": [
+        "agentflow",
+        "architecture",
+        "block",
+        "c4",
+        "class",
+        "cynefin",
+        "er",
+        "eventmodeling",
+        "flowchart",
+        "gantt",
+        "gitgraph",
+        "info",
+        "ishikawa",
+        "journey",
+        "kanban",
+        "mindmap",
+        "packet",
+        "pie",
+        "quadrant",
+        "radar",
+        "railroad",
+        "requirement",
+        "sankey",
+        "sequence",
+        "state",
+        "timeline",
+        "treemap",
+        "treeview",
+        "usecase",
+        "venn",
+        "wardley",
+        "xychart",
+        "error"
+      ],
+      "about": "**Structure as written.** The tree shows the structure that ",
+      "judgment": {
+        "status": "shown",
+        "cases": [
+          {
+            "file": "check-tree-requirement.test.ts",
+            "text": "the value of a field as a RequirementIdentifier"
+          },
+          {
+            "file": "check-tree-node-ranges.test.ts",
+            "text": "db-message-activate-target"
+          }
+        ]
+      }
+    },
+    {
+      "block": "packages/spec/docs/ast.md:c78431cb9b14",
+      "diagrams": [
+        "agentflow",
+        "architecture",
+        "block",
+        "c4",
+        "class",
+        "cynefin",
+        "er",
+        "eventmodeling",
+        "flowchart",
+        "gantt",
+        "gitgraph",
+        "info",
+        "ishikawa",
+        "journey",
+        "kanban",
+        "mindmap",
+        "packet",
+        "pie",
+        "quadrant",
+        "radar",
+        "railroad",
+        "requirement",
+        "sankey",
+        "sequence",
+        "state",
+        "timeline",
+        "treemap",
+        "treeview",
+        "usecase",
+        "venn",
+        "wardley",
+        "xychart",
+        "error"
+      ],
+      "about": "Each node type below has a table of its fields, with a name,",
+      "judgment": {
+        "status": "no-condition",
+        "kind": "introduction",
+        "note": "It introduces the tables of fields of the node types and how they write types."
+      }
+    },
+    {
+      "block": "packages/spec/docs/ast.md:201ab2bea8ba",
+      "diagrams": [
+        "agentflow",
+        "architecture",
+        "block",
+        "c4",
+        "class",
+        "cynefin",
+        "er",
+        "eventmodeling",
+        "flowchart",
+        "gantt",
+        "gitgraph",
+        "info",
+        "ishikawa",
+        "journey",
+        "kanban",
+        "mindmap",
+        "packet",
+        "pie",
+        "quadrant",
+        "radar",
+        "railroad",
+        "requirement",
+        "sankey",
+        "sequence",
+        "state",
+        "timeline",
+        "treemap",
+        "treeview",
+        "usecase",
+        "venn",
+        "wardley",
+        "xychart",
+        "error"
+      ],
+      "about": "**integer**, **string**, and **boolean** have their usual me",
+      "judgment": {
+        "status": "no-condition",
+        "kind": "introduction",
+        "note": "It defines the words of the types that the tables of fields use; the conditions are in the rows that use them."
+      }
+    },
+    {
+      "block": "packages/spec/docs/ast.md:88b6988da659",
+      "diagrams": [
+        "agentflow",
+        "architecture",
+        "block",
+        "c4",
+        "class",
+        "cynefin",
+        "er",
+        "eventmodeling",
+        "flowchart",
+        "gantt",
+        "gitgraph",
+        "info",
+        "ishikawa",
+        "journey",
+        "kanban",
+        "mindmap",
+        "packet",
+        "pie",
+        "quadrant",
+        "radar",
+        "railroad",
+        "requirement",
+        "sankey",
+        "sequence",
+        "state",
+        "timeline",
+        "treemap",
+        "treeview",
+        "usecase",
+        "venn",
+        "wardley",
+        "xychart",
+        "error"
+      ],
+      "about": "**list of**, followed by a type, is a sequence of values of ",
+      "judgment": {
+        "status": "no-condition",
+        "kind": "introduction",
+        "note": "It defines the words of the types that the tables of fields use; the conditions are in the rows that use them."
+      }
+    },
+    {
+      "block": "packages/spec/docs/ast.md:1b52b869f0f8",
+      "diagrams": [
+        "agentflow",
+        "architecture",
+        "block",
+        "c4",
+        "class",
+        "cynefin",
+        "er",
+        "eventmodeling",
+        "flowchart",
+        "gantt",
+        "gitgraph",
+        "info",
+        "ishikawa",
+        "journey",
+        "kanban",
+        "mindmap",
+        "packet",
+        "pie",
+        "quadrant",
+        "radar",
+        "railroad",
+        "requirement",
+        "sankey",
+        "sequence",
+        "state",
+        "timeline",
+        "treemap",
+        "treeview",
+        "usecase",
+        "venn",
+        "wardley",
+        "xychart",
+        "error"
+      ],
+      "about": "A type followed by **or null** is either a value of that typ",
+      "judgment": {
+        "status": "no-condition",
+        "kind": "introduction",
+        "note": "It defines the words of the types that the tables of fields use; the conditions are in the rows that use them."
+      }
+    },
+    {
+      "block": "packages/spec/docs/ast.md:1d1deb47065e",
+      "diagrams": [
+        "agentflow",
+        "architecture",
+        "block",
+        "c4",
+        "class",
+        "cynefin",
+        "er",
+        "eventmodeling",
+        "flowchart",
+        "gantt",
+        "gitgraph",
+        "info",
+        "ishikawa",
+        "journey",
+        "kanban",
+        "mindmap",
+        "packet",
+        "pie",
+        "quadrant",
+        "radar",
+        "railroad",
+        "requirement",
+        "sankey",
+        "sequence",
+        "state",
+        "timeline",
+        "treemap",
+        "treeview",
+        "usecase",
+        "venn",
+        "wardley",
+        "xychart",
+        "error"
+      ],
+      "about": "Parentheses group a type: **list of (Identifier or null)** i",
+      "judgment": {
+        "status": "no-condition",
+        "kind": "introduction",
+        "note": "It defines the words of the types that the tables of fields use; the conditions are in the rows that use them."
+      }
+    },
+    {
+      "block": "packages/spec/docs/ast.md:e1c6549d2683",
+      "diagrams": [
+        "agentflow",
+        "architecture",
+        "block",
+        "c4",
+        "class",
+        "cynefin",
+        "er",
+        "eventmodeling",
+        "flowchart",
+        "gantt",
+        "gitgraph",
+        "info",
+        "ishikawa",
+        "journey",
+        "kanban",
+        "mindmap",
+        "packet",
+        "pie",
+        "quadrant",
+        "radar",
+        "railroad",
+        "requirement",
+        "sankey",
+        "sequence",
+        "state",
+        "timeline",
+        "treemap",
+        "treeview",
+        "usecase",
+        "venn",
+        "wardley",
+        "xychart",
+        "error"
+      ],
+      "about": "A node type name, such as **Identifier**, is a node of that ",
+      "judgment": {
+        "status": "no-condition",
+        "kind": "introduction",
+        "note": "It defines the words of the types that the tables of fields use; the conditions are in the rows that use them."
+      }
+    },
+    {
+      "block": "packages/spec/docs/ast.md:00c47936e5c1",
+      "diagrams": [
+        "agentflow",
+        "architecture",
+        "block",
+        "c4",
+        "class",
+        "cynefin",
+        "er",
+        "eventmodeling",
+        "flowchart",
+        "gantt",
+        "gitgraph",
+        "info",
+        "ishikawa",
+        "journey",
+        "kanban",
+        "mindmap",
+        "packet",
+        "pie",
+        "quadrant",
+        "radar",
+        "railroad",
+        "requirement",
+        "sankey",
+        "sequence",
+        "state",
+        "timeline",
+        "treemap",
+        "treeview",
+        "usecase",
+        "venn",
+        "wardley",
+        "xychart",
+        "error"
+      ],
+      "about": "Every field is set when the node is created and is never cha",
+      "judgment": {
+        "status": "shown",
+        "cases": [
+          {
+            "file": "check-tree-shape.test.ts",
+            "text": "sequence/db-message-activate-target"
+          }
+        ]
+      }
+    },
+    {
+      "block": "packages/spec/docs/ast.md:2c0b6858abd1",
+      "diagrams": [
+        "agentflow",
+        "architecture",
+        "block",
+        "c4",
+        "class",
+        "cynefin",
+        "er",
+        "eventmodeling",
+        "flowchart",
+        "gantt",
+        "gitgraph",
+        "info",
+        "ishikawa",
+        "journey",
+        "kanban",
+        "mindmap",
+        "packet",
+        "pie",
+        "quadrant",
+        "radar",
+        "railroad",
+        "requirement",
+        "sankey",
+        "sequence",
+        "state",
+        "timeline",
+        "treemap",
+        "treeview",
+        "usecase",
+        "venn",
+        "wardley",
+        "xychart",
+        "error"
+      ],
+      "about": "Every node has these fields:",
+      "judgment": {
+        "status": "no-condition",
+        "kind": "introduction",
+        "note": "It leads in to the table of the fields of every node below it; the conditions are in those rows, which have rows of their own."
+      }
+    },
+    {
+      "block": "packages/spec/docs/ast.md:f71037319131",
+      "diagrams": [
+        "agentflow",
+        "architecture",
+        "block",
+        "c4",
+        "class",
+        "cynefin",
+        "er",
+        "eventmodeling",
+        "flowchart",
+        "gantt",
+        "gitgraph",
+        "info",
+        "ishikawa",
+        "journey",
+        "kanban",
+        "mindmap",
+        "packet",
+        "pie",
+        "quadrant",
+        "radar",
+        "railroad",
+        "requirement",
+        "sankey",
+        "sequence",
+        "state",
+        "timeline",
+        "treemap",
+        "treeview",
+        "usecase",
+        "venn",
+        "wardley",
+        "xychart",
+        "error"
+      ],
+      "about": "| `type` | string | The name of the node type, such as `Root",
+      "judgment": {
+        "status": "shown",
+        "cases": [
+          {
+            "file": "check-tree-shape.test.ts",
+            "text": "sequence/db-message-activate-target"
+          },
+          {
+            "file": "check-tree-shared-ast.test.ts",
+            "text": "fails an ErrorDiagram with a numeric type"
+          }
+        ]
+      }
+    },
+    {
+      "block": "packages/spec/docs/ast.md:30e59027cd2e",
+      "diagrams": [
+        "agentflow",
+        "architecture",
+        "block",
+        "c4",
+        "class",
+        "cynefin",
+        "er",
+        "eventmodeling",
+        "flowchart",
+        "gantt",
+        "gitgraph",
+        "info",
+        "ishikawa",
+        "journey",
+        "kanban",
+        "mindmap",
+        "packet",
+        "pie",
+        "quadrant",
+        "radar",
+        "railroad",
+        "requirement",
+        "sankey",
+        "sequence",
+        "state",
+        "timeline",
+        "treemap",
+        "treeview",
+        "usecase",
+        "venn",
+        "wardley",
+        "xychart",
+        "error"
+      ],
+      "about": "Each node type adds its own fields, and a node's child nodes",
+      "judgment": {
+        "status": "shown",
+        "cases": [
+          {
+            "file": "check-tree-shape.test.ts",
+            "text": "sequence/db-message-activate-target"
+          }
+        ]
+      }
+    },
+    {
+      "block": "packages/spec/docs/ast.md:fa21a84499ac",
+      "diagrams": [
+        "agentflow",
+        "architecture",
+        "block",
+        "c4",
+        "class",
+        "cynefin",
+        "er",
+        "eventmodeling",
+        "flowchart",
+        "gantt",
+        "gitgraph",
+        "info",
+        "ishikawa",
+        "journey",
+        "kanban",
+        "mindmap",
+        "packet",
+        "pie",
+        "quadrant",
+        "radar",
+        "railroad",
+        "requirement",
+        "sankey",
+        "sequence",
+        "state",
+        "timeline",
+        "treemap",
+        "treeview",
+        "usecase",
+        "venn",
+        "wardley",
+        "xychart",
+        "error"
+      ],
+      "about": "The child nodes do not overlap. A list in a child field is i",
+      "judgment": {
+        "status": "shown",
+        "cases": [
+          {
+            "file": "check-tree-node-ranges.test.ts",
+            "text": "db-message-activate-target"
+          }
+        ]
+      }
+    },
+    {
+      "block": "packages/spec/docs/ast.md:a34651967214",
+      "diagrams": [
+        "agentflow",
+        "architecture",
+        "block",
+        "c4",
+        "class",
+        "cynefin",
+        "er",
+        "eventmodeling",
+        "flowchart",
+        "gantt",
+        "gitgraph",
+        "info",
+        "ishikawa",
+        "journey",
+        "kanban",
+        "mindmap",
+        "packet",
+        "pie",
+        "quadrant",
+        "radar",
+        "railroad",
+        "requirement",
+        "sankey",
+        "sequence",
+        "state",
+        "timeline",
+        "treemap",
+        "treeview",
+        "usecase",
+        "venn",
+        "wardley",
+        "xychart",
+        "error"
+      ],
+      "about": "A node of text that mermaid.js does not read, a node type na",
+      "judgment": {
+        "status": "shown",
+        "cases": [
+          {
+            "file": "check-tree-values.test.ts",
+            "text": "StateIgnoredText"
+          },
+          {
+            "file": "check-tree-values.test.ts",
+            "text": "StateIgnoredStatement"
+          },
+          {
+            "file": "check-tree-values.test.ts",
+            "text": "tokens-ignored-text-comment-cut-end-crlf"
+          },
+          {
+            "file": "check-tree-values.test.ts",
+            "text": "tokens-ignored-text-comment-cut-by-comment-line"
+          }
+        ]
+      }
+    },
+    {
+      "block": "packages/spec/docs/ast.md:f36621f36476",
+      "diagrams": [
+        "agentflow",
+        "architecture",
+        "block",
+        "c4",
+        "class",
+        "cynefin",
+        "er",
+        "eventmodeling",
+        "flowchart",
+        "gantt",
+        "gitgraph",
+        "info",
+        "ishikawa",
+        "journey",
+        "kanban",
+        "mindmap",
+        "packet",
+        "pie",
+        "quadrant",
+        "radar",
+        "railroad",
+        "requirement",
+        "sankey",
+        "sequence",
+        "state",
+        "timeline",
+        "treemap",
+        "treeview",
+        "usecase",
+        "venn",
+        "wardley",
+        "xychart",
+        "error"
+      ],
+      "about": "A child field whose value is a list may have null elements w",
+      "judgment": {
+        "status": "shown",
+        "cases": [
+          {
+            "file": "check-tree-shape.test.ts",
+            "text": "sequence/db-message-activate-target"
+          }
+        ]
+      }
+    },
+    {
+      "block": "packages/spec/docs/ast.md:0eeae2c2cfdb",
+      "diagrams": [
+        "agentflow",
+        "architecture",
+        "block",
+        "c4",
+        "class",
+        "cynefin",
+        "er",
+        "eventmodeling",
+        "flowchart",
+        "gantt",
+        "gitgraph",
+        "info",
+        "ishikawa",
+        "journey",
+        "kanban",
+        "mindmap",
+        "packet",
+        "pie",
+        "quadrant",
+        "radar",
+        "railroad",
+        "requirement",
+        "sankey",
+        "sequence",
+        "state",
+        "timeline",
+        "treemap",
+        "treeview",
+        "usecase",
+        "venn",
+        "wardley",
+        "xychart",
+        "error"
+      ],
+      "about": "`type` is `Directive`.",
+      "judgment": {
+        "status": "not-shown",
+        "reason": "rule-misses-condition",
+        "note": "The check of the shape reports a directive record without its `type`, but not one whose `type` is another string: a directive record whose `type` is `WrongDirective` passes."
+      }
+    },
+    {
+      "block": "packages/spec/docs/ast.md:086697f96593",
+      "diagrams": [
+        "agentflow",
+        "architecture",
+        "block",
+        "c4",
+        "class",
+        "cynefin",
+        "er",
+        "eventmodeling",
+        "flowchart",
+        "gantt",
+        "gitgraph",
+        "info",
+        "ishikawa",
+        "journey",
+        "kanban",
+        "mindmap",
+        "packet",
+        "pie",
+        "quadrant",
+        "radar",
+        "railroad",
+        "requirement",
+        "sankey",
+        "sequence",
+        "state",
+        "timeline",
+        "treemap",
+        "treeview",
+        "usecase",
+        "venn",
+        "wardley",
+        "xychart",
+        "error"
+      ],
+      "about": "| `name` | string | The directive name, for example `init` i",
+      "judgment": {
+        "status": "shown",
+        "cases": [
+          {
+            "file": "check-tree-leaves.test.ts",
+            "text": "lex-directive-name-next-line-after-state-name"
+          },
+          {
+            "file": "check-tree-shared-ast.test.ts",
+            "text": "fails a directive name that is a number"
+          }
+        ]
+      }
+    },
+    {
+      "block": "packages/spec/docs/ast.md:d9a0176d9925",
+      "diagrams": [
+        "agentflow",
+        "architecture",
+        "block",
+        "c4",
+        "class",
+        "cynefin",
+        "er",
+        "eventmodeling",
+        "flowchart",
+        "gantt",
+        "gitgraph",
+        "info",
+        "ishikawa",
+        "journey",
+        "kanban",
+        "mindmap",
+        "packet",
+        "pie",
+        "quadrant",
+        "radar",
+        "railroad",
+        "requirement",
+        "sankey",
+        "sequence",
+        "state",
+        "timeline",
+        "treemap",
+        "treeview",
+        "usecase",
+        "venn",
+        "wardley",
+        "xychart",
+        "error"
+      ],
+      "about": "| `value` | string | The text between `%%{` and `}%%`, or to",
+      "judgment": {
+        "status": "shown",
+        "cases": [
+          {
+            "file": "check-tree-fields.test.ts",
+            "text": "Directive.value"
+          },
+          {
+            "file": "check-tree-shared-ast.test.ts",
+            "text": "fails a directive value that is an object"
+          }
+        ]
+      }
+    },
+    {
+      "block": "packages/spec/docs/ast.md:59990cde3a18",
+      "diagrams": [
+        "agentflow",
+        "architecture",
+        "block",
+        "c4",
+        "class",
+        "cynefin",
+        "er",
+        "eventmodeling",
+        "flowchart",
+        "gantt",
+        "gitgraph",
+        "info",
+        "ishikawa",
+        "journey",
+        "kanban",
+        "mindmap",
+        "packet",
+        "pie",
+        "quadrant",
+        "radar",
+        "railroad",
+        "requirement",
+        "sankey",
+        "sequence",
+        "state",
+        "timeline",
+        "treemap",
+        "treeview",
+        "usecase",
+        "venn",
+        "wardley",
+        "xychart",
+        "error"
+      ],
+      "about": "| `closed` | boolean | Whether the directive ends with `}%%`",
+      "judgment": {
+        "status": "shown",
+        "cases": [
+          {
+            "file": "check-tree.test.ts",
+            "text": "fails a directive that the tree lacks, an extra one, one with another `closed`, and one with whitespace at its end"
+          },
+          {
+            "file": "check-tree-shared-ast.test.ts",
+            "text": "fails a directive closed flag that is a string"
+          }
+        ]
+      }
+    },
+    {
+      "block": "packages/spec/docs/ast.md:e2419bd603c3",
+      "diagrams": [
+        "agentflow",
+        "architecture",
+        "block",
+        "c4",
+        "class",
+        "cynefin",
+        "er",
+        "eventmodeling",
+        "flowchart",
+        "gantt",
+        "gitgraph",
+        "info",
+        "ishikawa",
+        "journey",
+        "kanban",
+        "mindmap",
+        "packet",
+        "pie",
+        "quadrant",
+        "radar",
+        "railroad",
+        "requirement",
+        "sankey",
+        "sequence",
+        "state",
+        "timeline",
+        "treemap",
+        "treeview",
+        "usecase",
+        "venn",
+        "wardley",
+        "xychart",
+        "error"
+      ],
+      "about": "`Root.directives` plays no part in configuration: this speci",
+      "judgment": {
+        "status": "no-condition",
+        "kind": "reason",
+        "note": "It says why `Root.directives` plays no part in configuration; what the tree holds of a directive is stated at Directive."
+      }
+    },
+    {
+      "block": "packages/spec/docs/ast.md:0ef315d2d4d7",
+      "diagrams": [
+        "agentflow",
+        "architecture",
+        "block",
+        "c4",
+        "class",
+        "cynefin",
+        "er",
+        "eventmodeling",
+        "flowchart",
+        "gantt",
+        "gitgraph",
+        "info",
+        "ishikawa",
+        "journey",
+        "kanban",
+        "mindmap",
+        "packet",
+        "pie",
+        "quadrant",
+        "radar",
+        "railroad",
+        "requirement",
+        "sankey",
+        "sequence",
+        "state",
+        "timeline",
+        "treemap",
+        "treeview",
+        "usecase",
+        "venn",
+        "wardley",
+        "xychart",
+        "error"
+      ],
+      "about": "`type` is `Frontmatter`.",
+      "judgment": {
+        "status": "not-shown",
+        "reason": "rule-misses-condition",
+        "note": "The check of the shape reports a frontmatter record without its `type`, but not one whose `type` is another string: a frontmatter record whose `type` is `WrongFrontmatter` passes."
+      }
+    },
+    {
+      "block": "packages/spec/docs/ast.md:f0c74c563542",
+      "diagrams": [
+        "agentflow",
+        "architecture",
+        "block",
+        "c4",
+        "class",
+        "cynefin",
+        "er",
+        "eventmodeling",
+        "flowchart",
+        "gantt",
+        "gitgraph",
+        "info",
+        "ishikawa",
+        "journey",
+        "kanban",
+        "mindmap",
+        "packet",
+        "pie",
+        "quadrant",
+        "radar",
+        "railroad",
+        "requirement",
+        "sankey",
+        "sequence",
+        "state",
+        "timeline",
+        "treemap",
+        "treeview",
+        "usecase",
+        "venn",
+        "wardley",
+        "xychart",
+        "error"
+      ],
+      "about": "| `value` | string | The YAML text between the delimiter lin",
+      "judgment": {
+        "status": "shown",
+        "cases": [
+          {
+            "file": "check-tree-fields.test.ts",
+            "text": "Frontmatter.value"
+          },
+          {
+            "file": "check-tree-shared-ast.test.ts",
+            "text": "fails a frontmatter value that is an object"
+          }
+        ]
+      }
+    },
+    {
+      "block": "packages/spec/docs/ast.md:34918df761c6",
+      "diagrams": [
+        "agentflow",
+        "architecture",
+        "block",
+        "c4",
+        "class",
+        "cynefin",
+        "er",
+        "eventmodeling",
+        "flowchart",
+        "gantt",
+        "gitgraph",
+        "info",
+        "ishikawa",
+        "journey",
+        "kanban",
+        "mindmap",
+        "packet",
+        "pie",
+        "quadrant",
+        "radar",
+        "railroad",
+        "requirement",
+        "sankey",
+        "sequence",
+        "state",
+        "timeline",
+        "treemap",
+        "treeview",
+        "usecase",
+        "venn",
+        "wardley",
+        "xychart",
+        "error"
+      ],
+      "about": "`type` is `Root`.",
+      "judgment": {
+        "status": "shown",
+        "cases": [
+          {
+            "file": "check-tree-shape.test.ts",
+            "text": "sequence/db-message-activate-target"
+          }
+        ]
+      }
+    },
+    {
+      "block": "packages/spec/docs/ast.md:853ae84025e0",
+      "diagrams": [
+        "agentflow",
+        "architecture",
+        "block",
+        "c4",
+        "class",
+        "cynefin",
+        "er",
+        "eventmodeling",
+        "gantt",
+        "gitgraph",
+        "info",
+        "ishikawa",
+        "journey",
+        "kanban",
+        "mindmap",
+        "packet",
+        "pie",
+        "quadrant",
+        "radar",
+        "requirement",
+        "sankey",
+        "sequence",
+        "state",
+        "timeline",
+        "treemap",
+        "treeview",
+        "usecase",
+        "venn",
+        "wardley",
+        "xychart",
+        "error"
+      ],
+      "about": "| `diagramType` | DiagramType | The diagram type id as merma",
+      "judgment": {
+        "status": "shown",
+        "cases": [
+          {
+            "file": "check-tree-fields.test.ts",
+            "text": "Root.diagramType"
+          },
+          {
+            "file": "check-tree-leaves.test.ts",
+            "text": "db-message-activate-target"
+          }
+        ]
+      }
+    },
+    {
+      "block": "packages/spec/docs/ast.md:853ae84025e0",
+      "diagrams": ["flowchart", "railroad"],
+      "about": "| `diagramType` | DiagramType | The diagram type id as merma",
+      "judgment": {
+        "status": "not-shown",
+        "reason": "rule-misses-condition",
+        "note": "The check of the diagram type takes any id of the body type: flowchart-v2, flowchart-elk, or swimlane for a FlowchartDiagram, and railroad, railroadEbnf, railroadAbnf, or railroadPeg for a RailroadDiagram, whatever the header; a tree of the header `flowchart` recorded as flowchart-elk passes."
+      }
+    },
+    {
+      "block": "packages/spec/docs/ast.md:da0b9106d062",
+      "diagrams": [
+        "agentflow",
+        "architecture",
+        "block",
+        "c4",
+        "class",
+        "cynefin",
+        "er",
+        "eventmodeling",
+        "flowchart",
+        "gantt",
+        "gitgraph",
+        "info",
+        "ishikawa",
+        "journey",
+        "kanban",
+        "mindmap",
+        "packet",
+        "pie",
+        "quadrant",
+        "radar",
+        "railroad",
+        "requirement",
+        "sankey",
+        "sequence",
+        "state",
+        "timeline",
+        "treemap",
+        "treeview",
+        "usecase",
+        "venn",
+        "wardley",
+        "xychart",
+        "error"
+      ],
+      "about": "| `body` | DiagramBody | The diagram body. |",
+      "judgment": {
+        "status": "shown",
+        "cases": [
+          {
+            "file": "check-tree-shape.test.ts",
+            "text": "sequence/db-message-activate-target"
+          },
+          {
+            "file": "check-tree-node-ranges.test.ts",
+            "text": "fails a body of a type that is no diagram"
+          }
+        ]
+      }
+    },
+    {
+      "block": "packages/spec/docs/ast.md:da2e0d4740c1",
+      "diagrams": [
+        "agentflow",
+        "architecture",
+        "block",
+        "c4",
+        "class",
+        "cynefin",
+        "er",
+        "eventmodeling",
+        "flowchart",
+        "gantt",
+        "gitgraph",
+        "info",
+        "ishikawa",
+        "journey",
+        "kanban",
+        "mindmap",
+        "packet",
+        "pie",
+        "quadrant",
+        "radar",
+        "railroad",
+        "requirement",
+        "sankey",
+        "sequence",
+        "state",
+        "timeline",
+        "treemap",
+        "treeview",
+        "usecase",
+        "venn",
+        "wardley",
+        "xychart",
+        "error"
+      ],
+      "about": "| `directives` | list of Directive | Every directive, in sou",
+      "judgment": {
+        "status": "shown",
+        "cases": [
+          {
+            "file": "check-tree-shape.test.ts",
+            "text": "sequence/db-message-activate-target"
+          },
+          {
+            "file": "check-tree.test.ts",
+            "text": "fails a directive that the tree lacks, an extra one, one with another `closed`, and one with whitespace at its end"
+          },
+          {
+            "file": "check-tree-shared-ast.test.ts",
+            "text": "fails directives listed in reverse source order"
+          }
+        ]
+      }
+    },
+    {
+      "block": "packages/spec/docs/ast.md:9905c2c75f77",
+      "diagrams": [
+        "agentflow",
+        "architecture",
+        "block",
+        "c4",
+        "class",
+        "cynefin",
+        "er",
+        "eventmodeling",
+        "gantt",
+        "gitgraph",
+        "info",
+        "ishikawa",
+        "journey",
+        "kanban",
+        "mindmap",
+        "packet",
+        "pie",
+        "quadrant",
+        "radar",
+        "requirement",
+        "sankey",
+        "sequence",
+        "state",
+        "timeline",
+        "treemap",
+        "treeview",
+        "usecase",
+        "venn",
+        "wardley",
+        "xychart",
+        "error"
+      ],
+      "about": "`diagramType` is the id that [`mermaid.parse()`](https://git",
+      "judgment": {
+        "status": "shown",
+        "cases": [
+          {
+            "file": "check-tree-leaves.test.ts",
+            "text": "db-message-activate-target"
+          }
+        ]
+      }
+    },
+    {
+      "block": "packages/spec/docs/ast.md:9905c2c75f77",
+      "diagrams": ["flowchart", "railroad"],
+      "about": "`diagramType` is the id that [`mermaid.parse()`](https://git",
+      "judgment": {
+        "status": "not-shown",
+        "reason": "rule-misses-condition",
+        "note": "The check of the diagram type takes any id of the body type: flowchart-v2, flowchart-elk, or swimlane for a FlowchartDiagram, and railroad, railroadEbnf, railroadAbnf, or railroadPeg for a RailroadDiagram, whatever the header; a tree of the header `flowchart` recorded as flowchart-elk passes."
+      }
+    },
+    {
+      "block": "packages/spec/docs/ast.md:9a1650555e93",
+      "diagrams": [
+        "agentflow",
+        "architecture",
+        "block",
+        "c4",
+        "class",
+        "cynefin",
+        "er",
+        "eventmodeling",
+        "flowchart",
+        "gantt",
+        "gitgraph",
+        "info",
+        "ishikawa",
+        "journey",
+        "kanban",
+        "mindmap",
+        "packet",
+        "pie",
+        "quadrant",
+        "radar",
+        "railroad",
+        "requirement",
+        "sankey",
+        "sequence",
+        "state",
+        "timeline",
+        "treemap",
+        "treeview",
+        "usecase",
+        "venn",
+        "wardley",
+        "xychart",
+        "error"
+      ],
+      "about": "**DiagramType** is one of these 38 strings, in the order in ",
+      "judgment": {
+        "status": "shown",
+        "cases": [
+          {
+            "file": "check-tree-fields.test.ts",
+            "text": "Root.diagramType"
+          }
+        ]
+      }
+    },
+    {
+      "block": "packages/spec/docs/ast.md:cf8a25d43915",
+      "diagrams": [
+        "agentflow",
+        "architecture",
+        "block",
+        "c4",
+        "class",
+        "cynefin",
+        "er",
+        "eventmodeling",
+        "flowchart",
+        "gantt",
+        "gitgraph",
+        "info",
+        "ishikawa",
+        "journey",
+        "kanban",
+        "mindmap",
+        "packet",
+        "pie",
+        "quadrant",
+        "radar",
+        "railroad",
+        "requirement",
+        "sankey",
+        "sequence",
+        "state",
+        "timeline",
+        "treemap",
+        "treeview",
+        "usecase",
+        "venn",
+        "wardley",
+        "xychart",
+        "error"
+      ],
+      "about": "mermaid.js also registers a `---` pseudo-diagram, but its pa",
+      "judgment": {
+        "status": "shown",
+        "cases": [
+          {
+            "file": "check-tree-shared-ast.test.ts",
+            "text": "fails a pseudo-diagram id of three dashes"
+          }
+        ]
+      }
+    },
+    {
+      "block": "packages/spec/docs/ast.md:b92a221b53a9",
+      "diagrams": [
+        "agentflow",
+        "architecture",
+        "block",
+        "c4",
+        "class",
+        "cynefin",
+        "er",
+        "eventmodeling",
+        "flowchart",
+        "gantt",
+        "gitgraph",
+        "info",
+        "ishikawa",
+        "journey",
+        "kanban",
+        "mindmap",
+        "packet",
+        "pie",
+        "quadrant",
+        "radar",
+        "railroad",
+        "requirement",
+        "sankey",
+        "sequence",
+        "state",
+        "timeline",
+        "treemap",
+        "treeview",
+        "usecase",
+        "venn",
+        "wardley",
+        "xychart",
+        "error"
+      ],
+      "about": "**DiagramBody** is an `ErrorDiagram` or one of the body node",
+      "judgment": {
+        "status": "shown",
+        "cases": [
+          {
+            "file": "check-tree-node-ranges.test.ts",
+            "text": "fails a body of a type that is no diagram"
+          }
+        ]
+      }
+    },
+    {
+      "block": "packages/spec/docs/ast.md:bdccb6fd1349",
+      "diagrams": [
+        "agentflow",
+        "architecture",
+        "block",
+        "c4",
+        "class",
+        "cynefin",
+        "er",
+        "eventmodeling",
+        "flowchart",
+        "gantt",
+        "gitgraph",
+        "info",
+        "ishikawa",
+        "journey",
+        "kanban",
+        "mindmap",
+        "packet",
+        "pie",
+        "quadrant",
+        "radar",
+        "railroad",
+        "requirement",
+        "sankey",
+        "sequence",
+        "state",
+        "timeline",
+        "treemap",
+        "treeview",
+        "usecase",
+        "venn",
+        "wardley",
+        "xychart",
+        "error"
+      ],
+      "about": "`type` is `ErrorDiagram`. No child fields. It has no other f",
+      "judgment": {
+        "status": "shown",
+        "cases": [
+          {
+            "file": "check-tree-shared-ast.test.ts",
+            "text": "fails an ErrorDiagram replaced by a catch-all Node"
+          },
+          {
+            "file": "check-tree-shared-ast.test.ts",
+            "text": "fails a generic children list added to ErrorDiagram"
+          }
+        ]
+      }
+    },
+    {
+      "block": "packages/spec/docs/ast.md:3a141d70c7a5",
+      "diagrams": [
+        "agentflow",
+        "architecture",
+        "block",
+        "c4",
+        "class",
+        "cynefin",
+        "er",
+        "eventmodeling",
+        "flowchart",
+        "gantt",
+        "gitgraph",
+        "info",
+        "ishikawa",
+        "journey",
+        "kanban",
+        "mindmap",
+        "packet",
+        "pie",
+        "quadrant",
+        "radar",
+        "railroad",
+        "requirement",
+        "sankey",
+        "sequence",
+        "state",
+        "timeline",
+        "treemap",
+        "treeview",
+        "usecase",
+        "venn",
+        "wardley",
+        "xychart",
+        "error"
+      ],
+      "about": "The body of the `error` pseudo-diagram (see [common.md](./co",
+      "judgment": {
+        "status": "shown",
+        "cases": [
+          {
+            "file": "check-tree.test.ts",
+            "text": "reports every condition that does not hold, not only the first"
+          }
+        ]
+      }
+    },
+    {
+      "block": "packages/spec/docs/ast.md:cf2348b2dd4a",
+      "diagrams": [
+        "agentflow",
+        "architecture",
+        "block",
+        "c4",
+        "class",
+        "cynefin",
+        "er",
+        "eventmodeling",
+        "flowchart",
+        "gantt",
+        "gitgraph",
+        "info",
+        "ishikawa",
+        "journey",
+        "kanban",
+        "mindmap",
+        "packet",
+        "pie",
+        "quadrant",
+        "radar",
+        "railroad",
+        "requirement",
+        "sankey",
+        "sequence",
+        "state",
+        "timeline",
+        "treemap",
+        "treeview",
+        "usecase",
+        "venn",
+        "wardley",
+        "xychart",
+        "error"
+      ],
+      "about": "The first three have the same form in every diagram type, so",
+      "judgment": {
+        "status": "shown",
+        "cases": [
+          {
+            "file": "check-tree-values.test.ts",
+            "text": "FlowchartArrow"
+          },
+          {
+            "file": "check-tree-values.test.ts",
+            "text": "SequenceArrow"
+          },
+          {
+            "file": "check-tree-fields.test.ts",
+            "text": "SequenceArrow.line"
+          },
+          {
+            "file": "check-tree-shared-ast.test.ts",
+            "text": "fails a shared Identifier with a diagram-specific field"
+          },
+          {
+            "file": "check-tree-shared-ast.test.ts",
+            "text": "fails a shared StringLiteral with a diagram-specific field"
+          },
+          {
+            "file": "check-tree-shared-ast.test.ts",
+            "text": "fails a shared NumericLiteral with a diagram-specific field"
+          },
+          {
+            "file": "check-tree-shared-ast.test.ts",
+            "text": "fails an arrow line word replaced by a node"
+          },
+          {
+            "file": "check-tree-shared-ast.test.ts",
+            "text": "fails an arrow replaced by its text"
+          },
+          {
+            "file": "check-tree-shared-ast.test.ts",
+            "text": "fails an arrow with a renamed marker field"
+          }
+        ]
+      }
+    },
+    {
+      "block": "packages/spec/docs/ast.md:1350f7746f11",
+      "diagrams": [
+        "agentflow",
+        "architecture",
+        "block",
+        "c4",
+        "class",
+        "cynefin",
+        "er",
+        "eventmodeling",
+        "flowchart",
+        "gantt",
+        "gitgraph",
+        "info",
+        "ishikawa",
+        "journey",
+        "kanban",
+        "mindmap",
+        "packet",
+        "pie",
+        "quadrant",
+        "radar",
+        "railroad",
+        "requirement",
+        "sankey",
+        "sequence",
+        "state",
+        "timeline",
+        "treemap",
+        "treeview",
+        "usecase",
+        "venn",
+        "wardley",
+        "xychart",
+        "error"
+      ],
+      "about": "Text that the author writes but that the diagram does not re",
+      "judgment": {
+        "status": "shown",
+        "cases": [
+          {
+            "file": "check-tree-shared-ast.test.ts",
+            "text": "fails an authored ignored-text node replaced by its text"
+          }
+        ]
+      }
+    },
+    {
+      "block": "packages/spec/docs/ast.md:b0ed7ba56d08",
+      "diagrams": [
+        "agentflow",
+        "architecture",
+        "block",
+        "c4",
+        "class",
+        "cynefin",
+        "er",
+        "eventmodeling",
+        "flowchart",
+        "gantt",
+        "gitgraph",
+        "info",
+        "ishikawa",
+        "journey",
+        "kanban",
+        "mindmap",
+        "packet",
+        "pie",
+        "quadrant",
+        "radar",
+        "railroad",
+        "requirement",
+        "sankey",
+        "sequence",
+        "state",
+        "timeline",
+        "treemap",
+        "treeview",
+        "usecase",
+        "venn",
+        "wardley",
+        "xychart",
+        "error"
+      ],
+      "about": "| `name` | string | The texts of its units, joined in order ",
+      "judgment": {
+        "status": "shown",
+        "cases": [
+          {
+            "file": "check-tree-block.test.ts",
+            "text": "an Identifier value unlike its token"
+          },
+          {
+            "file": "check-tree-shared-ast.test.ts",
+            "text": "fails an Identifier name that is a number"
+          }
+        ]
+      }
+    },
+    {
+      "block": "packages/spec/docs/ast.md:61954f816b60",
+      "diagrams": [
+        "agentflow",
+        "architecture",
+        "block",
+        "c4",
+        "class",
+        "cynefin",
+        "er",
+        "eventmodeling",
+        "flowchart",
+        "gantt",
+        "gitgraph",
+        "info",
+        "ishikawa",
+        "journey",
+        "kanban",
+        "mindmap",
+        "packet",
+        "pie",
+        "quadrant",
+        "radar",
+        "railroad",
+        "requirement",
+        "sankey",
+        "sequence",
+        "state",
+        "timeline",
+        "treemap",
+        "treeview",
+        "usecase",
+        "venn",
+        "wardley",
+        "xychart",
+        "error"
+      ],
+      "about": "No child fields.",
+      "judgment": {
+        "status": "shown",
+        "cases": [
+          {
+            "file": "check-tree-shared-ast.test.ts",
+            "text": "fails children added to an Identifier"
+          }
+        ]
+      }
+    },
+    {
+      "block": "packages/spec/docs/ast.md:ea4795895c5a",
+      "diagrams": [
+        "agentflow",
+        "architecture",
+        "block",
+        "c4",
+        "class",
+        "cynefin",
+        "er",
+        "eventmodeling",
+        "flowchart",
+        "gantt",
+        "gitgraph",
+        "info",
+        "ishikawa",
+        "journey",
+        "kanban",
+        "mindmap",
+        "packet",
+        "pie",
+        "quadrant",
+        "radar",
+        "railroad",
+        "requirement",
+        "sankey",
+        "sequence",
+        "state",
+        "timeline",
+        "treemap",
+        "treeview",
+        "usecase",
+        "venn",
+        "wardley",
+        "xychart",
+        "error"
+      ],
+      "about": "Its `name` is made from the units of the diagram's lexer tha",
+      "judgment": {
+        "status": "shown",
+        "cases": [
+          {
+            "file": "check-tree-block.test.ts",
+            "text": "an Identifier value unlike its token"
+          },
+          {
+            "file": "check-tree-shared-ast.test.ts",
+            "text": "fails whitespace added to an Identifier name"
+          }
+        ]
+      }
+    },
+    {
+      "block": "packages/spec/docs/ast.md:2ab41875f11f",
+      "diagrams": [
+        "agentflow",
+        "architecture",
+        "block",
+        "c4",
+        "class",
+        "cynefin",
+        "er",
+        "eventmodeling",
+        "flowchart",
+        "gantt",
+        "gitgraph",
+        "info",
+        "ishikawa",
+        "journey",
+        "kanban",
+        "mindmap",
+        "packet",
+        "pie",
+        "quadrant",
+        "radar",
+        "railroad",
+        "requirement",
+        "sankey",
+        "sequence",
+        "state",
+        "timeline",
+        "treemap",
+        "treeview",
+        "usecase",
+        "venn",
+        "wardley",
+        "xychart",
+        "error"
+      ],
+      "about": "| `value` | string | Its content: what the diagram's string ",
+      "judgment": {
+        "status": "shown",
+        "cases": [
+          {
+            "file": "check-tree-class.test.ts",
+            "text": "a StringLiteral value that is not its text"
+          },
+          {
+            "file": "check-tree-shared-ast.test.ts",
+            "text": "fails a StringLiteral value that is a number"
+          },
+          {
+            "file": "check-tree-shared-ast.test.ts",
+            "text": "fails a StringLiteral value that retains nested delimiters"
+          }
+        ]
+      }
+    },
+    {
+      "block": "packages/spec/docs/ast.md:b6e62017ae2c",
+      "diagrams": [
+        "agentflow",
+        "architecture",
+        "block",
+        "c4",
+        "class",
+        "cynefin",
+        "er",
+        "eventmodeling",
+        "flowchart",
+        "gantt",
+        "gitgraph",
+        "info",
+        "ishikawa",
+        "journey",
+        "kanban",
+        "mindmap",
+        "packet",
+        "pie",
+        "quadrant",
+        "radar",
+        "railroad",
+        "requirement",
+        "sankey",
+        "sequence",
+        "state",
+        "timeline",
+        "treemap",
+        "treeview",
+        "usecase",
+        "venn",
+        "wardley",
+        "xychart",
+        "error"
+      ],
+      "about": "| `raw` | string | The source text of the string from its op",
+      "judgment": {
+        "status": "shown",
+        "cases": [
+          {
+            "file": "check-tree-literals.test.ts",
+            "text": "a StringLiteral whose raw is not its text"
+          },
+          {
+            "file": "check-tree-shared-ast.test.ts",
+            "text": "fails a StringLiteral raw value that is a number"
+          }
+        ]
+      }
+    },
+    {
+      "block": "packages/spec/docs/ast.md:1633796fe39f",
+      "diagrams": [
+        "agentflow",
+        "architecture",
+        "block",
+        "c4",
+        "class",
+        "cynefin",
+        "er",
+        "eventmodeling",
+        "flowchart",
+        "gantt",
+        "gitgraph",
+        "info",
+        "ishikawa",
+        "journey",
+        "kanban",
+        "mindmap",
+        "packet",
+        "pie",
+        "quadrant",
+        "radar",
+        "railroad",
+        "requirement",
+        "sankey",
+        "sequence",
+        "state",
+        "timeline",
+        "treemap",
+        "treeview",
+        "usecase",
+        "venn",
+        "wardley",
+        "xychart",
+        "error"
+      ],
+      "about": "| `closed` | boolean | Whether the string ends with its clos",
+      "judgment": {
+        "status": "shown",
+        "cases": [
+          {
+            "file": "check-tree-literals.test.ts",
+            "text": "a closed StringLiteral recorded as not closed"
+          },
+          {
+            "file": "check-tree-shared-ast.test.ts",
+            "text": "fails a StringLiteral closed flag that is a string"
+          }
+        ]
+      }
+    },
+    {
+      "block": "packages/spec/docs/ast.md:a7cf69fc4426",
+      "diagrams": [
+        "agentflow",
+        "architecture",
+        "block",
+        "c4",
+        "class",
+        "cynefin",
+        "er",
+        "eventmodeling",
+        "flowchart",
+        "gantt",
+        "gitgraph",
+        "info",
+        "ishikawa",
+        "journey",
+        "kanban",
+        "mindmap",
+        "packet",
+        "pie",
+        "quadrant",
+        "radar",
+        "railroad",
+        "requirement",
+        "sankey",
+        "sequence",
+        "state",
+        "timeline",
+        "treemap",
+        "treeview",
+        "usecase",
+        "venn",
+        "wardley",
+        "xychart",
+        "error"
+      ],
+      "about": "No child fields.",
+      "judgment": {
+        "status": "shown",
+        "cases": [
+          {
+            "file": "check-tree-shared-ast.test.ts",
+            "text": "fails children added to a StringLiteral"
+          }
+        ]
+      }
+    },
+    {
+      "block": "packages/spec/docs/ast.md:3722935b6bda",
+      "diagrams": [
+        "agentflow",
+        "architecture",
+        "block",
+        "c4",
+        "class",
+        "cynefin",
+        "er",
+        "eventmodeling",
+        "flowchart",
+        "gantt",
+        "gitgraph",
+        "info",
+        "ishikawa",
+        "journey",
+        "kanban",
+        "mindmap",
+        "packet",
+        "pie",
+        "quadrant",
+        "radar",
+        "railroad",
+        "requirement",
+        "sankey",
+        "sequence",
+        "state",
+        "timeline",
+        "treemap",
+        "treeview",
+        "usecase",
+        "venn",
+        "wardley",
+        "xychart",
+        "error"
+      ],
+      "about": "A number.",
+      "judgment": {
+        "status": "shown",
+        "cases": [
+          {
+            "file": "check-tree-sequence.test.ts",
+            "text": "a NumericLiteral whose value is not the number that its written text writes"
+          }
+        ]
+      }
+    },
+    {
+      "block": "packages/spec/docs/ast.md:731dd7a581f4",
+      "diagrams": [
+        "agentflow",
+        "architecture",
+        "block",
+        "c4",
+        "class",
+        "cynefin",
+        "er",
+        "eventmodeling",
+        "flowchart",
+        "gantt",
+        "gitgraph",
+        "info",
+        "ishikawa",
+        "journey",
+        "kanban",
+        "mindmap",
+        "packet",
+        "pie",
+        "quadrant",
+        "radar",
+        "railroad",
+        "requirement",
+        "sankey",
+        "sequence",
+        "state",
+        "timeline",
+        "treemap",
+        "treeview",
+        "usecase",
+        "venn",
+        "wardley",
+        "xychart",
+        "error"
+      ],
+      "about": "| `value` | number | The number that its written text writes",
+      "judgment": {
+        "status": "shown",
+        "cases": [
+          {
+            "file": "check-tree-sequence.test.ts",
+            "text": "a NumericLiteral whose value is not the number that its written text writes"
+          },
+          {
+            "file": "check-tree-xychart.test.ts",
+            "text": "tells Infinity from -Infinity in a tree in memory"
+          },
+          {
+            "file": "check-tree-shared-ast.test.ts",
+            "text": "fails a NumericLiteral value that is a string"
+          }
+        ]
+      }
+    },
+    {
+      "block": "packages/spec/docs/ast.md:e7b6e1c056dd",
+      "diagrams": [
+        "agentflow",
+        "architecture",
+        "block",
+        "c4",
+        "class",
+        "cynefin",
+        "er",
+        "eventmodeling",
+        "flowchart",
+        "gantt",
+        "gitgraph",
+        "info",
+        "ishikawa",
+        "journey",
+        "kanban",
+        "mindmap",
+        "packet",
+        "pie",
+        "quadrant",
+        "radar",
+        "railroad",
+        "requirement",
+        "sankey",
+        "sequence",
+        "state",
+        "timeline",
+        "treemap",
+        "treeview",
+        "usecase",
+        "venn",
+        "wardley",
+        "xychart",
+        "error"
+      ],
+      "about": "| `raw` | string | The number as written, with nothing left ",
+      "judgment": {
+        "status": "shown",
+        "cases": [
+          {
+            "file": "check-tree-literals.test.ts",
+            "text": "a NumericLiteral whose raw is not its text"
+          },
+          {
+            "file": "check-tree-shared-ast.test.ts",
+            "text": "fails a NumericLiteral raw value that is a number"
+          }
+        ]
+      }
+    },
+    {
+      "block": "packages/spec/docs/ast.md:3c5ad8f880b7",
+      "diagrams": [
+        "agentflow",
+        "architecture",
+        "block",
+        "c4",
+        "class",
+        "cynefin",
+        "er",
+        "eventmodeling",
+        "flowchart",
+        "gantt",
+        "gitgraph",
+        "info",
+        "ishikawa",
+        "journey",
+        "kanban",
+        "mindmap",
+        "packet",
+        "pie",
+        "quadrant",
+        "radar",
+        "railroad",
+        "requirement",
+        "sankey",
+        "sequence",
+        "state",
+        "timeline",
+        "treemap",
+        "treeview",
+        "usecase",
+        "venn",
+        "wardley",
+        "xychart",
+        "error"
+      ],
+      "about": "No child fields.",
+      "judgment": {
+        "status": "shown",
+        "cases": [
+          {
+            "file": "check-tree-shared-ast.test.ts",
+            "text": "fails children added to a NumericLiteral"
+          }
+        ]
+      }
+    },
+    {
+      "block": "packages/spec/docs/ast.md:2b0429e3030e",
+      "diagrams": [
+        "agentflow",
+        "architecture",
+        "block",
+        "c4",
+        "class",
+        "cynefin",
+        "er",
+        "eventmodeling",
+        "flowchart",
+        "gantt",
+        "gitgraph",
+        "info",
+        "ishikawa",
+        "journey",
+        "kanban",
+        "mindmap",
+        "packet",
+        "pie",
+        "quadrant",
+        "radar",
+        "railroad",
+        "requirement",
+        "sankey",
+        "sequence",
+        "state",
+        "timeline",
+        "treemap",
+        "treeview",
+        "usecase",
+        "venn",
+        "wardley",
+        "xychart",
+        "error"
+      ],
+      "about": "At a treemap leaf value, the position permits digits, unders",
+      "judgment": {
+        "status": "shown",
+        "cases": [
+          {
+            "file": "check-tree-treemap.test.ts",
+            "text": "number field converted with Number"
+          },
+          {
+            "file": "check-tree-shared-ast.test.ts",
+            "text": "fails a treemap value read past its first underscore"
+          },
+          {
+            "file": "check-tree-shared-ast.test.ts",
+            "text": "fails a treemap value read past its second dot"
+          },
+          {
+            "file": "check-tree-shared-ast.test.ts",
+            "text": "fails a treemap dot without a digit read as zero"
+          },
+          {
+            "file": "check-tree-shared-ast.test.ts",
+            "text": "fails a treemap raw value with its unread suffix omitted"
+          }
+        ]
+      }
+    },
+    {
+      "block": "packages/spec/docs/ast.md:cd38f25bcd19",
+      "diagrams": [
+        "agentflow",
+        "architecture",
+        "block",
+        "c4",
+        "class",
+        "cynefin",
+        "er",
+        "eventmodeling",
+        "flowchart",
+        "gantt",
+        "gitgraph",
+        "info",
+        "ishikawa",
+        "journey",
+        "kanban",
+        "mindmap",
+        "packet",
+        "pie",
+        "quadrant",
+        "radar",
+        "railroad",
+        "requirement",
+        "sankey",
+        "sequence",
+        "state",
+        "timeline",
+        "treemap",
+        "treeview",
+        "usecase",
+        "venn",
+        "wardley",
+        "xychart",
+        "error"
+      ],
+      "about": "The nodes of each diagram type, with their fields and child ",
+      "judgment": {
+        "status": "no-condition",
+        "kind": "pointer",
+        "note": "It points to the documents of the diagram types under `ast/`, which state their node types."
+      }
+    },
+    {
+      "block": "packages/spec/docs/ast.md:ea1f9c520807",
+      "diagrams": [
+        "agentflow",
+        "architecture",
+        "block",
+        "c4",
+        "class",
+        "cynefin",
+        "er",
+        "eventmodeling",
+        "flowchart",
+        "gantt",
+        "gitgraph",
+        "info",
+        "ishikawa",
+        "journey",
+        "kanban",
+        "mindmap",
+        "packet",
+        "pie",
+        "quadrant",
+        "radar",
+        "railroad",
+        "requirement",
+        "sankey",
+        "sequence",
+        "state",
+        "timeline",
+        "treemap",
+        "treeview",
+        "usecase",
+        "venn",
+        "wardley",
+        "xychart",
+        "error"
+      ],
+      "about": "The name of every node type of a diagram type starts with th",
+      "judgment": {
+        "status": "shown",
+        "cases": [
+          {
+            "file": "check-tree-shared-ast.test.ts",
+            "text": "fails a diagram node without its diagram prefix"
+          },
+          {
+            "file": "check-tree-shared-ast.test.ts",
+            "text": "fails a diagram prefix added to the shared Identifier type"
+          },
+          {
+            "file": "check-tree-shared-ast.test.ts",
+            "text": "fails an ignored-text node without its IgnoredText suffix"
+          },
+          {
+            "file": "check-tree-shared-ast.test.ts",
+            "text": "fails an ignored statement without its IgnoredStatement suffix"
+          },
+          {
+            "file": "check-tree-shared-ast.test.ts",
+            "text": "fails a normal diagram node with an IgnoredText suffix"
+          },
+          {
+            "file": "check-tree-shared-ast.test.ts",
+            "text": "fails a normal diagram node with an IgnoredStatement suffix"
+          }
+        ]
+      }
+    }
+  ]
+}

@@ -1,16 +1,28 @@
+import { execFileSync } from "node:child_process"
 import {
+  copyFileSync,
   mkdirSync,
   mkdtempSync,
-  readdirSync,
   rmSync,
   writeFileSync,
 } from "node:fs"
 import os from "node:os"
 import path from "node:path"
 import { afterEach, beforeEach, describe, expect, it } from "vitest"
-import type { CoverageRow } from "../src/check-tree/coverage-table/index.ts"
 import type { CheckedRoot } from "../src/check-tree/types.ts"
 import { nodesOf } from "../src/check-tree/walk.ts"
+import { getFixturesRoot } from "../src/index.ts"
+import {
+  COVERAGE_TABLE,
+  coverageOf,
+  isRead,
+  readCoverageTable,
+} from "../../../tools/src/coverage-table.ts"
+import type { CoverageRow } from "../../../tools/src/coverage-table.ts"
+import {
+  citationsIn,
+  withoutCitations,
+} from "../../../tools/src/fixture-citations.ts"
 import {
   LinkedSections,
   blocksOf,
@@ -24,17 +36,19 @@ import type {
   DocumentReader,
 } from "../../../tools/src/recorded-tree-documents.ts"
 import {
+  ANSWERS,
   answersOf,
+  changeSince,
   changedItemsOf,
   changedRecordsOf,
-  coverageOf,
+  checkRecordedTrees,
+  citationsOf,
   documentBlocksOf,
+  everyTreeReasonFrom,
   placesOf,
 } from "../../../tools/src/recorded-trees.ts"
-import {
-  runtimeReadsOf,
-  runtimeReadsOfSource,
-} from "../../../tools/src/runtime-imports.ts"
+import { failsOf } from "../../../tools/src/recorded-trees-report.ts"
+import { runtimeReadsOfSource } from "../../../tools/src/runtime-imports.ts"
 
 /** A reader of documents held in memory, by path from the root of the repository. */
 function memoryReader(files: Record<string, string>): DocumentReader {
@@ -80,11 +94,12 @@ describe("runtimeReadsOfSource", () => {
     )
     expect(reads).toEqual({
       relative: ["./a.ts", "./c.ts", "./d.ts"],
-      untraceable: [],
+      modules: [],
+      dynamic: [],
     })
   })
 
-  it("names every read that is not a relative path of a module", () => {
+  it("names the modules of a path that is not relative, and every read whose file cannot be known", () => {
     const reads = runtimeReadsOfSource(
       "a.ts",
       [
@@ -99,23 +114,137 @@ describe("runtimeReadsOfSource", () => {
     )
     expect(reads).toEqual({
       relative: ["./m.ts"],
-      untraceable: [
-        'an import of "node:fs"',
-        'an import of "typescript"',
-        'an export of "pkg"',
+      modules: ["node:fs", "typescript", "pkg"],
+      dynamic: [
         "a call of import() at line 4",
         "a call of import() at line 5",
-        "a call of require() at line 6",
+        "the global require at line 6",
         "import.meta at line 7",
       ],
     })
   })
 
-  it("takes a method named require for no read", () => {
+  it("names a reference to a global through which a module reads what no file holds", () => {
     expect(
-      runtimeReadsOfSource("a.ts", 'this.require("x")\nobject.require("y")\n')
-        .untraceable,
+      runtimeReadsOfSource(
+        "a.ts",
+        [
+          "const a = process.env.X",
+          'const fs = process.getBuiltinModule("fs")',
+          "const f = globalThis.fetch",
+          'eval("1")',
+          'const g = new Function("")',
+          "const h = global.x",
+        ].join("\n"),
+      ).dynamic,
+    ).toEqual([
+      "the global process at line 1",
+      "the global process at line 2",
+      "the global globalThis at line 3",
+      "the global eval at line 4",
+      "the global Function at line 5",
+      "the global global at line 6",
+    ])
+  })
+
+  it("takes a member or a property named as a global for no read", () => {
+    expect(
+      runtimeReadsOfSource(
+        "a.ts",
+        [
+          'this.require("x")',
+          'object.process("y")',
+          "const o = { process: 1, eval() {} }",
+          "class C { require(): void {} }",
+          "type T = { process: string }",
+        ].join("\n"),
+      ).dynamic,
     ).toEqual([])
+  })
+})
+
+describe("everyTreeReasonFrom", () => {
+  const runner = {
+    file: "/r/tools/src/run.ts",
+    modules: ["node:fs"],
+    dynamic: [],
+  }
+  const rule = {
+    file: "/r/packages/tests/src/rule.ts",
+    modules: [],
+    dynamic: [],
+  }
+
+  it("checks only the changed trees when the change changes no file that decides the result", () => {
+    expect(
+      everyTreeReasonFrom([runner, rule], runner.file, "/r", [
+        "packages/tests/src/other.ts",
+      ]),
+    ).toBeUndefined()
+  })
+
+  it("checks every tree when the change changes the runner or a file that it reaches", () => {
+    expect(
+      everyTreeReasonFrom([runner, rule], runner.file, "/r", [
+        "tools/src/run.ts",
+        "packages/tests/src/rule.ts",
+      ]),
+    ).toEqual({
+      changedFiles: ["tools/src/run.ts", "packages/tests/src/rule.ts"],
+      untraceable: [],
+    })
+  })
+
+  it("lets the runner import built-in modules, and nothing else that cannot be followed", () => {
+    expect(
+      everyTreeReasonFrom(
+        [
+          {
+            ...runner,
+            modules: ["node:fs", "pkg"],
+            dynamic: ["the global process at line 9"],
+          },
+          {
+            ...rule,
+            modules: ["node:path"],
+            dynamic: ["import.meta at line 3"],
+          },
+        ],
+        runner.file,
+        "/r",
+        [],
+      ),
+    ).toEqual({
+      changedFiles: [],
+      untraceable: [
+        { file: "tools/src/run.ts", read: 'an import of "pkg"' },
+        { file: "tools/src/run.ts", read: "the global process at line 9" },
+        {
+          file: "packages/tests/src/rule.ts",
+          read: 'an import of "node:path"',
+        },
+        { file: "packages/tests/src/rule.ts", read: "import.meta at line 3" },
+      ],
+    })
+  })
+})
+
+describe("citationsIn and withoutCitations", () => {
+  const text =
+    "A [fixture: er/a] and [fixture:\n  er/b], not [fixture: <diagram>/<name>]; [corpus\nfixture: er/c]."
+
+  it("reads the citations of a form across line breaks, and no placeholder", () => {
+    expect(citationsIn(text).map((citation) => citation.fixture)).toEqual([
+      "er/a",
+      "er/b",
+    ])
+    expect(
+      citationsIn(text, "corpus fixture").map((citation) => citation.fixture),
+    ).toEqual(["er/c"])
+  })
+
+  it("takes the citations out after making the whitespace one space", () => {
+    expect(withoutCitations("One [fixture:\n  er/b]  two.")).toBe("One two.")
   })
 })
 
@@ -443,6 +572,175 @@ describe("coverageOf", () => {
   })
 })
 
+describe("coverageOf with a block that states no condition", () => {
+  const [block] = blocks("This document defines the tree.\n")
+  it("takes the judgment for the diagram types named", () => {
+    const coverage = coverageOf(
+      [
+        {
+          block: block.key,
+          diagrams: ["er"],
+          about: "",
+          judgment: { status: "no-condition", kind: "introduction", note: "" },
+        },
+      ],
+      new Map([[block.key, { block, diagrams: ["er"] }]]),
+      () => undefined,
+    )
+    expect(coverage.staleRows).toEqual([])
+    expect(coverage.judgments.get(`${block.key}@er`)?.status).toBe(
+      "no-condition",
+    )
+  })
+})
+
+describe("readCoverageTable", () => {
+  const diagrams = new Set(["er", "gantt", "error"])
+  const row = {
+    block: "packages/spec/docs/ast/er.md:0123456789ab",
+    diagrams: ["er"],
+    about: "A condition.",
+    judgment: {
+      status: "no-condition",
+      kind: "introduction",
+      note: "It introduces the document.",
+    },
+  }
+
+  /** The table of the files `files`, each of them under the table's folder. */
+  function tableOf(files: Record<string, unknown>) {
+    return readCoverageTable(
+      memoryReader(
+        Object.fromEntries(
+          Object.entries(files).map(([name, value]) => [
+            `${COVERAGE_TABLE}/${name}`,
+            typeof value === "string" ? value : JSON.stringify(value),
+          ]),
+        ),
+      ),
+      diagrams,
+    )
+  }
+
+  it("reads the rows of every file in the order of their names", () => {
+    const second = {
+      ...row,
+      block: "packages/spec/docs/ast/er.md:ba9876543210",
+    }
+    expect(
+      tableOf({ "b.json": { rows: [second] }, "a.json": { rows: [row] } }),
+    ).toEqual({
+      rows: [row, second],
+      unreadable: [],
+    })
+  })
+
+  it("names a file that is not of the form of the table, and takes no row of it", () => {
+    const table = tableOf({
+      "a.json": "{",
+      "b.json": { rows: [{ ...row, diagrams: ["er", "flowchart"] }] },
+      "c.json": { rows: [{ ...row, diagrams: [] }] },
+      "d.json": {
+        rows: [{ ...row, judgment: { status: "shown", cases: [] } }],
+      },
+      "e.json": {
+        rows: [
+          {
+            ...row,
+            judgment: { status: "not-shown", reason: "unknown", note: "" },
+          },
+        ],
+      },
+      "f.json": {
+        rows: [{ ...row, judgment: { status: "no-condition", note: "" } }],
+      },
+      "g.json": { rows: [{ ...row, judgment: { status: "maybe" } }] },
+      "h.json": { items: [] },
+    })
+    expect(table).toEqual({
+      rows: [],
+      unreadable: [
+        { file: `${COVERAGE_TABLE}/a.json`, reason: "it is not JSON" },
+        {
+          file: `${COVERAGE_TABLE}/b.json`,
+          reason: 'rows[0] names "flowchart", which is no diagram type',
+        },
+        {
+          file: `${COVERAGE_TABLE}/c.json`,
+          reason: "rows[0] names no diagram types",
+        },
+        {
+          file: `${COVERAGE_TABLE}/d.json`,
+          reason: "rows[0] is shown without cases of { file, text }",
+        },
+        {
+          file: `${COVERAGE_TABLE}/e.json`,
+          reason:
+            "rows[0] is not shown without a reason (no-rule or rule-misses-condition) and a note",
+        },
+        {
+          file: `${COVERAGE_TABLE}/f.json`,
+          reason:
+            "rows[0] states no condition without a kind (introduction, pointer or reason) and a note",
+        },
+        {
+          file: `${COVERAGE_TABLE}/g.json`,
+          reason:
+            "rows[0] has a status other than shown, not-shown and no-condition",
+        },
+        {
+          file: `${COVERAGE_TABLE}/h.json`,
+          reason: "it is not a JSON object with a list `rows`",
+        },
+      ],
+    })
+  })
+
+  it("reads an item as one to read only when it is not shown or not judged", () => {
+    expect(isRead(undefined)).toBe(true)
+    expect(isRead({ status: "not-shown", reason: "no-rule", note: "" })).toBe(
+      true,
+    )
+    expect(
+      isRead({ status: "shown", cases: [{ file: "a.test.ts", text: "a" }] }),
+    ).toBe(false)
+    expect(isRead({ status: "no-condition", kind: "pointer", note: "" })).toBe(
+      false,
+    )
+  })
+})
+
+describe("citationsOf", () => {
+  let root: string
+  beforeEach(() => {
+    root = mkdtempSync(path.join(os.tmpdir(), "recorded-trees-"))
+    const files: Record<string, string> = {
+      "packages/spec/docs/diagrams/er.md":
+        "One.\n[fixture: er/a]\nTwo [fixture:\n  er/b].\n",
+      "packages/spec/docs/diagrams/er.ja.md": "[fixture: er/a]\n",
+      "packages/prettier-plugin-mmd/docs/er.md":
+        "\n[corpus fixture: er/a] [fixture: er/own]\n",
+    }
+    for (const [file, text] of Object.entries(files)) {
+      mkdirSync(path.dirname(path.join(root, file)), { recursive: true })
+      writeFileSync(path.join(root, file), text)
+    }
+  })
+  afterEach(() => {
+    rmSync(root, { recursive: true, force: true })
+  })
+
+  it("finds the sentences that cite a fixture by line, the corpus citations of the formatter, and no Japanese version", () => {
+    expect(Object.fromEntries(citationsOf(root))).toEqual({
+      "er/a": [
+        "packages/spec/docs/diagrams/er.md:2",
+        "packages/prettier-plugin-mmd/docs/er.md:2",
+      ],
+      "er/b": ["packages/spec/docs/diagrams/er.md:3"],
+    })
+  })
+})
+
 describe("answersOf", () => {
   it("reads the pairs of item and tree, and the trees, that the answers cover", () => {
     const answers = answersOf([
@@ -462,6 +760,23 @@ describe("answersOf", () => {
     ])
     expect([...answers.items]).toEqual(["d.md:abc@er 1:2", "d.md:abc@er 3:4"])
     expect([...answers.trees]).toEqual(["1:2"])
+    expect(answers.unreadable).toEqual([])
+  })
+
+  it("counts no answer whose text is empty or whitespace only, as the template gives it", () => {
+    const answers = answersOf([
+      {
+        file: "a.json",
+        text: JSON.stringify({
+          items: [
+            { item: "d.md:abc@er", trees: [{ key: "1:2" }], answer: "" },
+            { item: "d.md:def@er", trees: [{ key: "1:2" }], answer: " \n" },
+          ],
+          trees: [{ key: "1:2", answer: "\t" }],
+        }),
+      },
+    ])
+    expect(answers.items.size + answers.trees.size).toBe(0)
     expect(answers.unreadable).toEqual([])
   })
 
@@ -626,27 +941,113 @@ describe("keyTextOf", () => {
   })
 })
 
-describe("the coverage table", () => {
-  it("imports nothing outside its directory, so that the table of a commit can be taken out and imported", () => {
-    const directory = path.join(
-      import.meta.dirname,
-      "../src/check-tree/coverage-table",
+describe("checkRecordedTrees and failsOf, on a repository of one change", () => {
+  // A repository with no documents of the tree: the changed tree has no item,
+  // and the reading of it against the sentences that cite it needs an answer.
+  let root: string
+  const changedFixture = "packages/tests/fixtures/pie/header-only"
+
+  /** Runs git in the repository. */
+  function git(...args: string[]): string {
+    return execFileSync(
+      "git",
+      [
+        "-c",
+        "user.name=test",
+        "-c",
+        "user.email=test@example.invalid",
+        ...args,
+      ],
+      { cwd: root, encoding: "utf8", stdio: ["ignore", "pipe", "pipe"] },
     )
-    const outside: string[] = []
-    for (const name of readdirSync(directory, {
+  }
+
+  /** Copies a fixture of the corpus into the repository. */
+  function copyFixture(fixture: string): void {
+    mkdirSync(path.join(root, "packages/tests/fixtures", fixture), {
       recursive: true,
-      encoding: "utf8",
-    })) {
-      if (!name.endsWith(".ts")) continue
-      const file = path.join(directory, name)
-      const reads = runtimeReadsOf(file)
-      for (const imported of reads.relative) {
-        const target = path.resolve(path.dirname(file), imported)
-        if (!target.startsWith(`${directory}${path.sep}`))
-          outside.push(`${name}: ${imported}`)
-      }
-      for (const read of reads.untraceable) outside.push(`${name}: ${read}`)
+    })
+    for (const name of ["input.mmd", "ast.json"]) {
+      copyFileSync(
+        path.join(getFixturesRoot(), fixture, name),
+        path.join(root, "packages/tests/fixtures", fixture, name),
+      )
     }
-    expect(outside).toEqual([])
+  }
+
+  /** The report of the change since HEAD. */
+  function check(): ReturnType<typeof checkRecordedTrees> {
+    const { base, changed } = changeSince(root, "HEAD")
+    return checkRecordedTrees(root, base, changed, { places: false })
+  }
+
+  beforeEach(() => {
+    root = mkdtempSync(path.join(os.tmpdir(), "recorded-trees-"))
+    git("init", "--quiet")
+    copyFixture("info/header-lf")
+    git("add", ".")
+    git("commit", "--quiet", "-m", "base")
+    copyFixture("pie/header-only")
+  })
+  afterEach(() => {
+    rmSync(root, { recursive: true, force: true })
+  })
+
+  it("fails a changed tree that no answer reads against the sentences that cite it", () => {
+    const report = check()
+    expect(report.changedTrees.map((tree) => tree.fixture)).toEqual([
+      "pie/header-only",
+    ])
+    expect(report.unansweredTrees.map((tree) => tree.fixture)).toEqual([
+      "pie/header-only",
+    ])
+    expect(failsOf(report)).toBe(true)
+  })
+
+  it("passes when an answer file of the change covers its content, and fails when the answer is empty", () => {
+    const [tree] = check().changedTrees
+    mkdirSync(path.join(root, ANSWERS), { recursive: true })
+
+    /** Writes the answer file of the change, with `text` for the tree. */
+    function answer(text: string): void {
+      writeFileSync(
+        path.join(root, ANSWERS, "change.json"),
+        JSON.stringify({
+          items: [],
+          trees: [{ key: tree.contentKey, answer: text }],
+        }),
+      )
+    }
+
+    answer("Read against the sentences that cite it.")
+    expect(failsOf(check())).toBe(false)
+    answer("")
+    expect(failsOf(check())).toBe(true)
+  })
+
+  it("fails, and does not stop, when the tree is no JSON or the input is missing", () => {
+    writeFileSync(path.join(root, changedFixture, "ast.json"), "{")
+    const unreadable = check()
+    expect(unreadable.checked.map(({ result }) => result.kind)).toEqual([
+      "unreadable",
+    ])
+    expect(failsOf(unreadable)).toBe(true)
+    copyFixture("pie/header-only")
+    rmSync(path.join(root, changedFixture, "input.mmd"))
+    const missing = check()
+    expect(missing.checked.map(({ result }) => result)).toEqual([
+      { kind: "unreadable", reason: "input.mmd cannot be read" },
+    ])
+    expect(failsOf(missing)).toBe(true)
+  })
+
+  it("fails a file of the coverage table that cannot be read", () => {
+    mkdirSync(path.join(root, COVERAGE_TABLE), { recursive: true })
+    writeFileSync(path.join(root, COVERAGE_TABLE, "a.json"), "{")
+    const report = check()
+    expect(report.unreadableTable).toEqual([
+      { file: `${COVERAGE_TABLE}/a.json`, reason: "it is not JSON" },
+    ])
+    expect(failsOf(report)).toBe(true)
   })
 })

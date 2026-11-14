@@ -13,25 +13,25 @@ import {
   changeSince,
   checkRecordedTrees,
 } from "./src/recorded-trees.ts"
-import { formatReport } from "./src/recorded-trees-report.ts"
+import { failsOf, formatReport } from "./src/recorded-trees-report.ts"
 
 /** Runs the command and returns its exit code. */
-async function main(): Promise<number> {
-  let values: { base?: string; places?: boolean }
+function main(): number {
+  let parsed: ReturnType<typeof parseOptions>
   try {
-    ;({ values } = parseArgs({
-      options: {
-        base: { type: "string" },
-        places: { type: "boolean", default: false },
-      },
-      strict: true,
-    }))
+    parsed = parseOptions()
   } catch (error) {
     console.error((error as Error).message)
     return 2
   }
-  if (values.base === undefined) {
-    console.error("usage: node tools/recorded-trees.ts --base <ref> [--places]")
+  const { values, tokens } = parsed
+  const bases = tokens.filter(
+    (token) => token.kind === "option" && token.name === "base",
+  )
+  if (values.base === undefined || bases.length !== 1) {
+    console.error(
+      "usage: node tools/recorded-trees.ts --base <ref> [--places], with --base once",
+    )
     return 2
   }
   try {
@@ -39,17 +39,17 @@ async function main(): Promise<number> {
     try {
       root = execFileSync("git", ["rev-parse", "--show-toplevel"], {
         encoding: "utf8",
+        stdio: ["ignore", "pipe", "ignore"],
       }).trim()
     } catch {
       throw new RecordedTreesUsageError("not in a git repository")
     }
     const { base, changed } = changeSince(root, values.base)
-    const report = await checkRecordedTrees(root, base, changed, {
-      places: values.places === true,
+    const report = checkRecordedTrees(root, base, changed, {
+      places: values.places,
     })
-    const { text, fails } = formatReport(report, values.places === true)
-    process.stdout.write(text)
-    return fails ? 1 : 0
+    process.stdout.write(formatReport(report, values.places))
+    return failsOf(report) ? 1 : 0
   } catch (error) {
     if (error instanceof RecordedTreesUsageError) {
       console.error(error.message)
@@ -59,6 +59,18 @@ async function main(): Promise<number> {
   }
 }
 
-process.exitCode = await main()
+/** The options of the command, with the tokens that say how often each is given. */
+function parseOptions() {
+  return parseArgs({
+    options: {
+      base: { type: "string" },
+      places: { type: "boolean", default: false },
+    },
+    strict: true,
+    tokens: true,
+  })
+}
+
+process.exitCode = main()
 
 /* eslint-enable no-console -- end of the command-line tool */

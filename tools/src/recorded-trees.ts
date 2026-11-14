@@ -7,23 +7,8 @@
  * report; `packages/tests/docs/recorded-trees.md` defines what it holds.
  */
 import { execFileSync } from "node:child_process"
-import {
-  existsSync,
-  mkdirSync,
-  mkdtempSync,
-  readFileSync,
-  readdirSync,
-  rmSync,
-  writeFileSync,
-} from "node:fs"
-import os from "node:os"
+import { existsSync, readFileSync, readdirSync } from "node:fs"
 import path from "node:path"
-import { pathToFileURL } from "node:url"
-import { COVERAGE } from "../../packages/tests/src/check-tree/coverage-table/index.ts"
-import type {
-  CoverageJudgment,
-  CoverageRow,
-} from "../../packages/tests/src/check-tree/coverage-table/index.ts"
 import {
   STRUCTURE_NODE_TYPES,
   VALUE_NODE_TYPES,
@@ -33,6 +18,21 @@ import type {
   CheckedRoot,
 } from "../../packages/tests/src/check-tree/types.ts"
 import { nodesOf } from "../../packages/tests/src/check-tree/walk.ts"
+import { getFixturesRoot } from "../../packages/tests/src/index.ts"
+import {
+  COVERAGE_TABLE,
+  coverageOf,
+  isRead,
+  readCoverageTable,
+} from "./coverage-table.ts"
+import type {
+  Coverage,
+  CoverageJudgment,
+  CoverageTable,
+  StaleRow,
+} from "./coverage-table.ts"
+import { citationsIn, withoutCitations } from "./fixture-citations.ts"
+import type { CitationForm } from "./fixture-citations.ts"
 import {
   ERROR_DIAGRAM,
   LinkedSections,
@@ -42,7 +42,6 @@ import {
   tokenKindsOf,
   treeDocuments,
   workingTreeReader,
-  withoutCitations,
 } from "./recorded-tree-documents.ts"
 import type {
   BlockVocabulary,
@@ -53,13 +52,19 @@ import type {
 import { checkRecordedTree } from "./recorded-trees-run.ts"
 import type { RecordedTreeResult } from "./recorded-trees-run.ts"
 import { runtimeClosureOf } from "./runtime-imports.ts"
+import type { ReachedFile } from "./runtime-imports.ts"
 
-/** The fixtures of the corpus, relative to the root of the repository. */
-const FIXTURES = "packages/tests/fixtures"
+/** The root of this repository, which holds these tools. */
+const REPOSITORY = path.join(import.meta.dirname, "..", "..")
+/** The fixtures of the corpus, relative to the root of the repository, as `@mmd-toolkit/tests` places them. */
+const FIXTURES = path
+  .relative(REPOSITORY, getFixturesRoot())
+  .split(path.sep)
+  .join("/")
 /** The answer files, relative to the root of the repository. */
 export const ANSWERS = "packages/tests/recorded-trees/answers"
 /** The module that runs the check on one tree; what it reaches decides the result. */
-const RUNNER = "tools/src/recorded-trees-run.ts"
+const RUNNER = path.join(import.meta.dirname, "recorded-trees-run.ts")
 /** The directories of the documents of the tree and of the sections they link to. */
 const DOCUMENT_DIRECTORIES: readonly string[] = [
   "packages/spec/docs",
@@ -67,12 +72,10 @@ const DOCUMENT_DIRECTORIES: readonly string[] = [
 ]
 /** The test files that the cases of the coverage table are in. */
 const COVERAGE_TESTS = "packages/tests/tests"
-/** The coverage table, whose files import nothing outside this directory. */
-export const COVERAGE_DIRECTORY = "packages/tests/src/check-tree/coverage-table"
 /** The documents searched for the sentences that cite a fixture, and the form of their citation. */
 const CITING_DOCUMENTS: readonly {
   readonly directory: string
-  readonly form: string
+  readonly form: CitationForm
 }[] = [
   { directory: "packages/spec/docs", form: "fixture" },
   { directory: "packages/parser/docs", form: "fixture" },
@@ -212,15 +215,34 @@ export interface EveryTreeReason {
 
 /**
  * Whether the change checks every recorded tree: when it changes the runner
- * or a file that the runner reaches (the files of the rules), or when a file
- * of the rules reads something that cannot be followed to a file.
+ * or a file that the runner reaches (the files of the rules), or when one of
+ * them reads something that cannot be followed to a file. The paths of
+ * `changed` are relative to the root of this repository.
  */
 export function everyTreeReasonOf(
+  changed: readonly string[],
+): EveryTreeReason | undefined {
+  return everyTreeReasonFrom(
+    runtimeClosureOf(RUNNER),
+    RUNNER,
+    REPOSITORY,
+    changed,
+  )
+}
+
+/**
+ * Whether the change checks every recorded tree, from `closure`, the files
+ * that the runner `runner` reaches, under the root `root`. The runner reads
+ * the files of the trees, so it may import built-in modules of Node.js; any
+ * other read that cannot be followed, in it or in a file it reaches, makes the
+ * files that decide the result unknown.
+ */
+export function everyTreeReasonFrom(
+  closure: readonly ReachedFile[],
+  runner: string,
   root: string,
   changed: readonly string[],
 ): EveryTreeReason | undefined {
-  const closure = runtimeClosureOf(path.join(root, RUNNER))
-
   /** The path of `file` relative to the root, with slashes. */
   function relativeOf(file: string): string {
     return path.relative(root, file).split(path.sep).join("/")
@@ -229,16 +251,16 @@ export function everyTreeReasonOf(
   const changedFiles = closure
     .map((reached) => relativeOf(reached.file))
     .filter((file) => changed.includes(file))
-  // The runner reads the files of the trees, so it imports a built-in module;
-  // the rule applies to the files that it reaches.
-  const untraceable = closure
-    .filter((reached) => relativeOf(reached.file) !== RUNNER)
-    .flatMap((reached) =>
-      reached.untraceable.map((read) => ({
-        file: relativeOf(reached.file),
-        read,
-      })),
-    )
+  const untraceable = closure.flatMap((reached) =>
+    [
+      ...reached.modules
+        .filter(
+          (module) => reached.file !== runner || !module.startsWith("node:"),
+        )
+        .map((module) => `an import of "${module}"`),
+      ...reached.dynamic,
+    ].map((read) => ({ file: relativeOf(reached.file), read })),
+  )
   return changedFiles.length === 0 && untraceable.length === 0
     ? undefined
     : { changedFiles, untraceable }
@@ -260,8 +282,16 @@ export interface ChangedTree {
   readonly root: CheckedRoot | undefined
   /** The diagram type of its items, or undefined when it has none. */
   readonly diagram: string | undefined
-  /** The key of its content: the git blob ids of its `input.mmd` and `ast.json`. */
-  readonly contentKey: string
+  /** The key of its content: the git blob ids of its `input.mmd` and `ast.json`; undefined when one of them is missing. */
+  readonly contentKey: string | undefined
+}
+
+/** A changed tree whose content has a key: its `input.mmd` and its `ast.json` are there. */
+export type KeyedTree = ChangedTree & { readonly contentKey: string }
+
+/** Whether `tree` has a content key. */
+function hasContentKey(tree: ChangedTree): tree is KeyedTree {
+  return tree.contentKey !== undefined
 }
 
 /** The diagram type whose items hold for a tree whose body has `bodyType`. */
@@ -276,11 +306,16 @@ function diagramOfBody(
   )
 }
 
-/** The content keys of the fixtures `fixtures`, by fixture. */
+/** The content keys of those of the fixtures `fixtures` that have both an `input.mmd` and an `ast.json`, by fixture. */
 function contentKeysOf(
   root: string,
-  fixtures: readonly string[],
+  candidates: readonly string[],
 ): Map<string, string> {
+  const fixtures = candidates.filter((fixture) =>
+    ["input.mmd", "ast.json"].every((name) =>
+      existsSync(path.join(root, FIXTURES, fixture, name)),
+    ),
+  )
   const files = fixtures.flatMap((fixture) => [
     `${FIXTURES}/${fixture}/input.mmd`,
     `${FIXTURES}/${fixture}/ast.json`,
@@ -313,124 +348,14 @@ function readTree(root: string, fixture: string): CheckedRoot | undefined {
 // ---------------------------------------------------------------------------
 // The coverage table
 
-/** A row of the coverage table that does not count, and why. */
-export interface StaleRow {
-  readonly row: CoverageRow
-  readonly reason: string
-}
-
-/** The judgments of the items, as the coverage table gives them. */
-export interface Coverage {
-  /** The judgment of each item that a row that counts covers, by the key of the item. */
-  readonly judgments: ReadonlyMap<string, CoverageJudgment>
-  readonly staleRows: readonly StaleRow[]
-}
-
 /** The key of the item of `block` for `diagram`. */
 export function itemKeyOf(block: DocumentBlock, diagram: string): string {
   return `${block.key}@${diagram}`
 }
 
-/**
- * Reads the coverage table against the blocks of now: a row counts when its
- * block is still there with the same key, its diagram types are among those
- * the block holds for, every case it names is still in its test file, and no
- * earlier row covers one of its items.
- */
-export function coverageOf(
-  rows: readonly CoverageRow[],
-  blocks: ReadonlyMap<
-    string,
-    { block: DocumentBlock; diagrams: readonly string[] }
-  >,
-  testFile: (file: string) => string | undefined,
-): Coverage {
-  const judgments = new Map<string, CoverageJudgment>()
-  const staleRows: StaleRow[] = []
-  for (const row of rows) {
-    const current = blocks.get(row.block)
-    const missingCase =
-      row.judgment.status === "shown"
-        ? row.judgment.cases.find(
-            (testCase) =>
-              testFile(testCase.file)?.includes(testCase.text) !== true,
-          )
-        : undefined
-    const otherDiagram = row.diagrams.find(
-      (diagram) => current?.diagrams.includes(diagram) !== true,
-    )
-    const covered = row.diagrams.find((diagram) =>
-      judgments.has(`${row.block}@${diagram}`),
-    )
-    const reason =
-      current === undefined
-        ? "no block has this key now: its text, its node type, or a section it links to changed, or it was removed"
-        : missingCase !== undefined
-          ? `the test file ${missingCase.file} no longer holds ${JSON.stringify(missingCase.text)}`
-          : otherDiagram !== undefined
-            ? `the block does not hold for the diagram type ${otherDiagram}`
-            : covered !== undefined
-              ? `an earlier row covers the diagram type ${covered}`
-              : undefined
-    if (reason !== undefined) {
-      staleRows.push({ row, reason })
-      continue
-    }
-    for (const diagram of row.diagrams) {
-      judgments.set(`${row.block}@${diagram}`, row.judgment)
-    }
-  }
-  return { judgments, staleRows }
-}
-
-/**
- * The rows of the coverage table at the commit `commit`, none when it has no
- * table.
- */
-export async function coverageRowsAt(
-  root: string,
-  commit: string,
-): Promise<readonly CoverageRow[]> {
-  const reader = commitReader(root, commit)
-  const files = lines(
-    git(root, [
-      "ls-tree",
-      "-r",
-      "--name-only",
-      commit,
-      `${COVERAGE_DIRECTORY}/`,
-    ]),
-  ).map((file) => ({
-    file: file.slice(COVERAGE_DIRECTORY.length + 1),
-    text: reader.read(file) ?? "",
-  }))
-  return coverageRowsOf(files)
-}
-
-/**
- * The rows of a coverage table whose files, relative to its directory, are
- * `files`, none when it has no `index.ts`. The files are written to a
- * directory of their own and imported from there: they import nothing
- * outside it.
- */
-export async function coverageRowsOf(
-  files: readonly { readonly file: string; readonly text: string }[],
-): Promise<readonly CoverageRow[]> {
-  if (!files.some(({ file }) => file === "index.ts")) return []
-  const directory = mkdtempSync(path.join(os.tmpdir(), "recorded-trees-"))
-  try {
-    for (const { file, text } of files) {
-      const target = path.join(directory, file)
-      mkdirSync(path.dirname(target), { recursive: true })
-      writeFileSync(target, text)
-    }
-    const table = (await import(
-      pathToFileURL(path.join(directory, "index.ts")).href
-    )) as { readonly COVERAGE: readonly CoverageRow[] }
-    return table.COVERAGE
-  } finally {
-    rmSync(directory, { recursive: true, force: true })
-  }
+/** The diagram types that the documents of a version know, with `error`: the names a row may give. */
+function allDiagramsOf(blocks: DocumentBlocks): string[] {
+  return [...blocks.diagrams, ERROR_DIAGRAM]
 }
 
 /** The blocks with the diagram types whose items a coverage table does not judge. */
@@ -497,10 +422,14 @@ export function answersOf(
       continue
     }
     const answers = JSON.parse(text!) as AnswerFile
+    // An answer whose text is empty, as the template gives it, answers nothing.
     for (const answer of answers.items) {
+      if (answer.answer.trim() === "") continue
       for (const tree of answer.trees) items.add(`${answer.item} ${tree.key}`)
     }
-    for (const answer of answers.trees) trees.add(answer.key)
+    for (const answer of answers.trees) {
+      if (answer.answer.trim() !== "") trees.add(answer.key)
+    }
   }
   return { items, trees, unreadable }
 }
@@ -786,26 +715,22 @@ function englishDocumentsUnder(root: string, directory: string): string[] {
  * `[fixture: …]` names fixtures of its own. Prettier may break a citation
  * across lines.
  */
-function citationsOf(root: string): Map<string, string[]> {
+export function citationsOf(root: string): Map<string, string[]> {
   const citations = new Map<string, string[]>()
   for (const { directory, form } of CITING_DOCUMENTS) {
-    const pattern = new RegExp(
-      `\\[${form.split(" ").join("\\s+")}:\\s+([^\\]\\s]+)\\s*\\]`,
-      "gu",
-    )
     for (const file of englishDocumentsUnder(root, directory)) {
       const text = readFileSync(path.join(root, file), "utf8")
-      // The matches come in order, so the lines are counted on from the last.
+      // The citations come in order, so the lines are counted on from the last.
       let line = 1
       let counted = 0
-      for (const match of text.matchAll(pattern)) {
-        for (let index = counted; index < match.index; index++) {
+      for (const { fixture, offset } of citationsIn(text, form)) {
+        for (let index = counted; index < offset; index++) {
           if (text[index] === "\n") line++
         }
-        counted = match.index
-        const list = citations.get(match[1]) ?? []
+        counted = offset
+        const list = citations.get(fixture) ?? []
         list.push(`${file}:${line}`)
-        citations.set(match[1], list)
+        citations.set(fixture, list)
       }
     }
   }
@@ -817,7 +742,7 @@ function citationsOf(root: string): Map<string, string[]> {
 
 /** A changed tree for one item, with its places. */
 export interface ItemTree {
-  readonly tree: ChangedTree
+  readonly tree: KeyedTree
   readonly places: readonly Place[]
 }
 
@@ -831,7 +756,7 @@ export interface ReadItem {
   /** The changed trees of its diagram type that no answer of the base covers, with the places in each. */
   readonly trees: readonly ItemTree[]
   /** Those of `trees` that an answer of this change covers. */
-  readonly answeredHere: readonly ChangedTree[]
+  readonly answeredHere: readonly KeyedTree[]
 }
 
 /** A fixture that a changed item asks to read. */
@@ -860,8 +785,10 @@ export interface RecordedTreesReport {
   /** The changed trees whose fixture the base does not have. */
   readonly newFixtures: ReadonlySet<string>
   /** The changed trees that no answer of the reading by citing sentences covers. */
-  readonly unansweredTrees: readonly ChangedTree[]
+  readonly unansweredTrees: readonly KeyedTree[]
   readonly unreadableAnswers: Answers["unreadable"]
+  /** The files of the coverage table of the working tree that cannot be read, with why. */
+  readonly unreadableTable: CoverageTable["unreadable"]
   /** The stale rows, each with whether the base has it as a stale row too. */
   readonly staleRows: readonly (StaleRow & { readonly atBase: boolean })[]
   /** The blocks of every document with the diagram types that the coverage table does not judge and the base judged or did not have. */
@@ -907,14 +834,14 @@ export function changeSince(
  * `root` change since the commit `base`; with `places`, the report holds
  * every place of the fixtures of the changed items as well.
  */
-export async function checkRecordedTrees(
+export function checkRecordedTrees(
   root: string,
   base: string,
   changed: readonly string[],
   options: { readonly places: boolean },
-): Promise<RecordedTreesReport> {
+): RecordedTreesReport {
   const records = changedRecordsOf(root, changed)
-  const everyTree = everyTreeReasonOf(root, changed)
+  const everyTree = everyTreeReasonOf(changed)
   const checked = (
     everyTree === undefined ? records.trees : everyTreeIn(root)
   ).map((fixture) => ({
@@ -955,24 +882,27 @@ export async function checkRecordedTrees(
         tree === undefined
           ? undefined
           : diagramOfBody(tree.body.type, now.diagrams),
-      contentKey: contentKeys.get(fixture)!,
+      contentKey: contentKeys.get(fixture),
     }
   })
 
-  const coverage = coverageOf(COVERAGE, now.byKey, (file) =>
+  const table = readCoverageTable(working, new Set(allDiagramsOf(now)))
+  const coverage = coverageOf(table.rows, now.byKey, (file) =>
     working.read(`${COVERAGE_TESTS}/${file}`),
   )
   // A stale row or an item that is not judged is the change's own only when
   // the base does not have it so. Without a change to the documents, the
   // table, or the test files, the base has the same ones.
   const tableChanged = changed.some((file) =>
-    [...DOCUMENT_DIRECTORIES, COVERAGE_DIRECTORY, COVERAGE_TESTS].some(
+    [...DOCUMENT_DIRECTORIES, COVERAGE_TABLE, COVERAGE_TESTS].some(
       (directory) => file.startsWith(`${directory}/`),
     ),
   )
   const baseCoverage = tableChanged
-    ? coverageOf(await coverageRowsAt(root, base), before.byKey, (file) =>
-        atBase.read(`${COVERAGE_TESTS}/${file}`),
+    ? coverageOf(
+        readCoverageTable(atBase, new Set(allDiagramsOf(before))).rows,
+        before.byKey,
+        (file) => atBase.read(`${COVERAGE_TESTS}/${file}`),
       )
     : coverage
   const baseStale = new Set(
@@ -1011,8 +941,10 @@ export async function checkRecordedTrees(
     for (const diagram of diagrams) {
       const key = itemKeyOf(block, diagram)
       const judgment = coverage.judgments.get(key)
-      if (judgment?.status === "shown") continue
-      const trees = changedTrees.filter((tree) => tree.diagram === diagram)
+      if (!isRead(judgment)) continue
+      const trees = changedTrees
+        .filter(hasContentKey)
+        .filter((tree) => tree.diagram === diagram)
       if (trees.length === 0) continue
       const notAtBase = trees.filter(
         (tree) => !baseAnswers.items.has(`${key} ${tree.contentKey}`),
@@ -1082,12 +1014,17 @@ export async function checkRecordedTrees(
     newFixtures: new Set(
       records.trees.filter((fixture) => !baseFixtures.has(fixture)),
     ),
-    unansweredTrees: changedTrees.filter(
-      (tree) =>
-        !baseAnswers.trees.has(tree.contentKey) &&
-        !workingAnswers.trees.has(tree.contentKey),
-    ),
+    // A tree without a content key cannot be read, which fails the check
+    // already.
+    unansweredTrees: changedTrees
+      .filter(hasContentKey)
+      .filter(
+        (tree) =>
+          !baseAnswers.trees.has(tree.contentKey) &&
+          !workingAnswers.trees.has(tree.contentKey),
+      ),
     unreadableAnswers: workingAnswers.unreadable,
+    unreadableTable: table.unreadable,
     staleRows: coverage.staleRows.map((stale) => ({
       ...stale,
       atBase: baseStale.has(JSON.stringify(stale.row)),

@@ -9,6 +9,7 @@ import { existsSync, readFileSync, readdirSync } from "node:fs"
 import path from "node:path"
 import markdown from "@eslint/markdown"
 import GithubSlugger from "github-slugger"
+import { citationsIn, withoutCitations } from "./fixture-citations.ts"
 
 /** A node of the Markdown syntax tree, as far as these functions read it. */
 interface MarkdownNode {
@@ -155,28 +156,6 @@ function parseMarkdown(text: string, document: string): MarkdownNode {
 function plainText(node: MarkdownNode): string {
   if (node.value !== undefined) return node.value
   return (node.children ?? []).map(plainText).join("")
-}
-
-/** `text` with every run of whitespace made one space, as Prettier may wrap it. */
-export function normalizeSpace(text: string): string {
-  return text
-    .split(/\s+/u)
-    .filter((part) => part !== "")
-    .join(" ")
-}
-
-/** The fixture citations of a text whose whitespace is normalized, as `<directory>/<name>`. */
-function citationsIn(normalized: string): string[] {
-  return [...normalized.matchAll(/\[fixture: ([^\s\]]+)\]/gu)].map(
-    (match) => match[1],
-  )
-}
-
-/** A text without its fixture citations, with its whitespace normalized. */
-export function withoutCitations(text: string): string {
-  return normalizeSpace(
-    normalizeSpace(text).replaceAll(/\[fixture: [^\]]*\]/gu, " "),
-  )
 }
 
 /**
@@ -390,7 +369,7 @@ export function sectionsOf(
         .filter((block) => block.offset >= start && block.offset < end)
         .map((block) => ({
           ownKeyText: withoutCitations(block.text),
-          cases: citationsIn(normalizeSpace(block.text)),
+          cases: citationsIn(block.text).map((citation) => citation.fixture),
         })),
     })
   })
@@ -425,7 +404,7 @@ export function blocksOf(
             ? { kind: "token", tokenKind: raw.kindCell }
             : { kind: "other" },
       sections: linked,
-      cases: citationsIn(normalizeSpace(raw.text)),
+      cases: citationsIn(raw.text).map((citation) => citation.fixture),
       ownKeyText: keyTextOf(nodeType, raw.text, []),
       // Two blocks of one document with the same key text are told apart by
       // their order.

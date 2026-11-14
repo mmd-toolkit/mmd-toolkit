@@ -1,0 +1,2056 @@
+{
+  "rows": [
+    {
+      "block": "packages/parser/docs/tokens.md:6e612643412b",
+      "diagrams": [
+        "agentflow",
+        "architecture",
+        "block",
+        "c4",
+        "class",
+        "cynefin",
+        "er",
+        "eventmodeling",
+        "flowchart",
+        "gantt",
+        "gitgraph",
+        "info",
+        "ishikawa",
+        "journey",
+        "kanban",
+        "mindmap",
+        "packet",
+        "pie",
+        "quadrant",
+        "radar",
+        "railroad",
+        "requirement",
+        "sankey",
+        "sequence",
+        "state",
+        "timeline",
+        "treemap",
+        "treeview",
+        "usecase",
+        "venn",
+        "wardley",
+        "xychart",
+        "error"
+      ],
+      "about": "This document defines the tokens in the tree that `@mmd-tool",
+      "judgment": {
+        "status": "no-condition",
+        "kind": "introduction",
+        "note": "It introduces the document: the tokens and the lists of the root."
+      }
+    },
+    {
+      "block": "packages/parser/docs/tokens.md:fa1555f63f7d",
+      "diagrams": [
+        "agentflow",
+        "architecture",
+        "block",
+        "c4",
+        "class",
+        "cynefin",
+        "er",
+        "eventmodeling",
+        "flowchart",
+        "gantt",
+        "gitgraph",
+        "info",
+        "ishikawa",
+        "journey",
+        "kanban",
+        "mindmap",
+        "packet",
+        "pie",
+        "quadrant",
+        "radar",
+        "railroad",
+        "requirement",
+        "sankey",
+        "sequence",
+        "state",
+        "timeline",
+        "treemap",
+        "treeview",
+        "usecase",
+        "venn",
+        "wardley",
+        "xychart",
+        "error"
+      ],
+      "about": "**Lists of tokens and comments.** As in ESLint, the root hol",
+      "judgment": {
+        "status": "shown",
+        "cases": [
+          {
+            "file": "check-tree.test.ts",
+            "text": "fails when a token is missing"
+          },
+          {
+            "file": "check-tree.test.ts",
+            "text": "fails when a comment, or the token of a directive or of the frontmatter, is missing"
+          },
+          {
+            "file": "check-tree.test.ts",
+            "text": "fails when tokens overlap or are out of order"
+          },
+          {
+            "file": "check-tree.test.ts",
+            "text": "fails a comment line of the text that is no comment of the tree"
+          },
+          {
+            "file": "check-tree.test.ts",
+            "text": "fails when comments or directives overlap"
+          },
+          {
+            "file": "check-tree.test.ts",
+            "text": "fails when a Directive token has no directive"
+          },
+          {
+            "file": "check-tree.test.ts",
+            "text": "fails when the frontmatter is not divided into its delimiters and its body"
+          },
+          {
+            "file": "check-tree.test.ts",
+            "text": "fails a directive that the tree lacks, an extra one, one with another `closed`, and one with whitespace at its end"
+          },
+          {
+            "file": "check-tree.test.ts",
+            "text": "fails when a comment region lies inside a token"
+          },
+          {
+            "file": "check-tree.test.ts",
+            "text": "fails when a comment lies partly inside a token"
+          },
+          {
+            "file": "check-tree-shared-tokens.test.ts",
+            "text": "fails a frontmatter field that holds text instead of its record"
+          }
+        ]
+      }
+    },
+    {
+      "block": "packages/parser/docs/tokens.md:f2e784212a9e",
+      "diagrams": [
+        "agentflow",
+        "architecture",
+        "block",
+        "c4",
+        "class",
+        "cynefin",
+        "er",
+        "eventmodeling",
+        "flowchart",
+        "gantt",
+        "gitgraph",
+        "info",
+        "ishikawa",
+        "journey",
+        "kanban",
+        "mindmap",
+        "packet",
+        "pie",
+        "quadrant",
+        "radar",
+        "railroad",
+        "requirement",
+        "sankey",
+        "sequence",
+        "state",
+        "timeline",
+        "treemap",
+        "treeview",
+        "usecase",
+        "venn",
+        "wardley",
+        "xychart",
+        "error"
+      ],
+      "about": "A token is one lexical unit of the diagram, as the diagram's",
+      "judgment": {
+        "status": "shown",
+        "cases": [
+          {
+            "file": "check-tree-cut-tokens.test.ts",
+            "text": "is reported when a directive cuts it into two"
+          },
+          {
+            "file": "check-tree-cut-tokens.test.ts",
+            "text": "is reported when a directive cuts a number of a sequence diagram into two"
+          },
+          {
+            "file": "check-tree-cut-tokens.test.ts",
+            "text": "is reported in a flowchart when a directive cuts `subgraph` into two"
+          },
+          {
+            "file": "check-tree-cut-tokens.test.ts",
+            "text": "is reported in a flowchart when a directive cuts `(((` into `(` and `((`"
+          },
+          {
+            "file": "check-tree-cut-tokens.test.ts",
+            "text": "is reported when a directive cuts it: the second fragment starts with no quote and the first is not closed"
+          },
+          {
+            "file": "check-tree.test.ts",
+            "text": "fails when the frontmatter is not divided into its delimiters and its body"
+          },
+          {
+            "file": "check-tree-shape.test.ts",
+            "text": "reports the records of the root that are missing or of another kind, without throwing"
+          },
+          {
+            "file": "check-tree-shared-tokens.test.ts",
+            "text": "fails a token used as the diagram node"
+          },
+          {
+            "file": "check-tree-shared-tokens.test.ts",
+            "text": "fails a token stored in an extra field of a node"
+          }
+        ]
+      }
+    },
+    {
+      "block": "packages/parser/docs/tokens.md:363de3bd7acf",
+      "diagrams": [
+        "agentflow",
+        "architecture",
+        "block",
+        "c4",
+        "class",
+        "cynefin",
+        "er",
+        "eventmodeling",
+        "flowchart",
+        "gantt",
+        "gitgraph",
+        "info",
+        "ishikawa",
+        "journey",
+        "kanban",
+        "mindmap",
+        "packet",
+        "pie",
+        "quadrant",
+        "radar",
+        "railroad",
+        "requirement",
+        "sankey",
+        "sequence",
+        "state",
+        "timeline",
+        "treemap",
+        "treeview",
+        "usecase",
+        "venn",
+        "wardley",
+        "xychart",
+        "error"
+      ],
+      "about": "| `value` | string | The source text of `range`, as written.",
+      "judgment": {
+        "status": "shown",
+        "cases": [
+          {
+            "file": "check-tree-shape.test.ts",
+            "text": "reports a record of the root whose fields are wrong"
+          },
+          {
+            "file": "check-tree.test.ts",
+            "text": "fails when a token's range is shifted, or its value is not the source text of its range"
+          }
+        ]
+      }
+    },
+    {
+      "block": "packages/parser/docs/tokens.md:5901c6a1b803",
+      "diagrams": [
+        "agentflow",
+        "architecture",
+        "block",
+        "c4",
+        "class",
+        "cynefin",
+        "er",
+        "eventmodeling",
+        "flowchart",
+        "gantt",
+        "gitgraph",
+        "info",
+        "ishikawa",
+        "journey",
+        "kanban",
+        "mindmap",
+        "packet",
+        "pie",
+        "quadrant",
+        "radar",
+        "railroad",
+        "requirement",
+        "sankey",
+        "sequence",
+        "state",
+        "timeline",
+        "treemap",
+        "treeview",
+        "usecase",
+        "venn",
+        "wardley",
+        "xychart",
+        "error"
+      ],
+      "about": "| `range` | offset pair | Where the token is in the source. ",
+      "judgment": {
+        "status": "shown",
+        "cases": [
+          {
+            "file": "check-tree.test.ts",
+            "text": "fails when a range lies outside the input"
+          },
+          {
+            "file": "check-tree-shared-tokens.test.ts",
+            "text": "fails a token range that is not an offset pair"
+          }
+        ]
+      }
+    },
+    {
+      "block": "packages/parser/docs/tokens.md:c8a24dcc9a26",
+      "diagrams": [
+        "agentflow",
+        "architecture",
+        "block",
+        "c4",
+        "class",
+        "cynefin",
+        "er",
+        "eventmodeling",
+        "flowchart",
+        "gantt",
+        "gitgraph",
+        "info",
+        "ishikawa",
+        "journey",
+        "kanban",
+        "mindmap",
+        "packet",
+        "pie",
+        "quadrant",
+        "radar",
+        "railroad",
+        "requirement",
+        "sankey",
+        "sequence",
+        "state",
+        "timeline",
+        "treemap",
+        "treeview",
+        "usecase",
+        "venn",
+        "wardley",
+        "xychart",
+        "error"
+      ],
+      "about": "| `loc` | location | The same place as lines and columns. |",
+      "judgment": {
+        "status": "shown",
+        "cases": [
+          {
+            "file": "check-tree.test.ts",
+            "text": "fails when a token's range is shifted, or its value is not the source text of its range"
+          },
+          {
+            "file": "check-tree-shared-tokens.test.ts",
+            "text": "fails a token loc that has no end position"
+          }
+        ]
+      }
+    },
+    {
+      "block": "packages/parser/docs/tokens.md:c4dc66fa965f",
+      "diagrams": [
+        "agentflow",
+        "architecture",
+        "block",
+        "c4",
+        "class",
+        "cynefin",
+        "er",
+        "eventmodeling",
+        "flowchart",
+        "gantt",
+        "gitgraph",
+        "info",
+        "ishikawa",
+        "journey",
+        "kanban",
+        "mindmap",
+        "packet",
+        "pie",
+        "quadrant",
+        "radar",
+        "railroad",
+        "requirement",
+        "sankey",
+        "sequence",
+        "state",
+        "timeline",
+        "treemap",
+        "treeview",
+        "usecase",
+        "venn",
+        "wardley",
+        "xychart",
+        "error"
+      ],
+      "about": "`value` is the source text of the token's range, as ESLint's",
+      "judgment": {
+        "status": "shown",
+        "cases": [
+          {
+            "file": "check-tree.test.ts",
+            "text": "fails when a token's range is shifted, or its value is not the source text of its range"
+          },
+          {
+            "file": "check-tree.test.ts",
+            "text": "fails when a comment region lies inside a token"
+          },
+          {
+            "file": "check-tree-shared-tokens.test.ts",
+            "text": "fails a string fragment spanning its ignored semicolon"
+          },
+          {
+            "file": "check-tree-shared-tokens.test.ts",
+            "text": "fails a string value whose written CRLF is converted to LF"
+          },
+          {
+            "file": "check-tree-shared-tokens.test.ts",
+            "text": "fails a string value retaining its comment region"
+          },
+          {
+            "file": "check-tree-shared-tokens.test.ts",
+            "text": "fails an ignored semicolon included in a label value"
+          },
+          {
+            "file": "check-tree-shared-tokens.test.ts",
+            "text": "fails a node value whose attribute quotes are converted"
+          },
+          {
+            "file": "check-tree-shared-tokens.test.ts",
+            "text": "fails a node value whose entity is converted to its placeholder"
+          }
+        ]
+      }
+    },
+    {
+      "block": "packages/parser/docs/tokens.md:f1a9e13a3e3a",
+      "diagrams": [
+        "agentflow",
+        "architecture",
+        "block",
+        "c4",
+        "class",
+        "cynefin",
+        "er",
+        "eventmodeling",
+        "flowchart",
+        "gantt",
+        "gitgraph",
+        "info",
+        "ishikawa",
+        "journey",
+        "kanban",
+        "mindmap",
+        "packet",
+        "pie",
+        "quadrant",
+        "radar",
+        "railroad",
+        "requirement",
+        "sankey",
+        "sequence",
+        "state",
+        "timeline",
+        "treemap",
+        "treeview",
+        "usecase",
+        "venn",
+        "wardley",
+        "xychart",
+        "error"
+      ],
+      "about": "| `IgnoredSemicolon` | every diagram, the `error` pseudo-dia",
+      "judgment": {
+        "status": "not-shown",
+        "reason": "no-rule",
+        "note": "No check compares the IgnoredSemicolon tokens with the `;` that the line rule ignores: in an error diagram, `error x y` with `x` as an IgnoredSemicolon token passes."
+      }
+    },
+    {
+      "block": "packages/parser/docs/tokens.md:04be495d4305",
+      "diagrams": [
+        "agentflow",
+        "architecture",
+        "block",
+        "c4",
+        "class",
+        "cynefin",
+        "er",
+        "eventmodeling",
+        "flowchart",
+        "gantt",
+        "gitgraph",
+        "info",
+        "ishikawa",
+        "journey",
+        "kanban",
+        "mindmap",
+        "packet",
+        "pie",
+        "quadrant",
+        "radar",
+        "railroad",
+        "requirement",
+        "sankey",
+        "sequence",
+        "state",
+        "timeline",
+        "treemap",
+        "treeview",
+        "usecase",
+        "venn",
+        "wardley",
+        "xychart",
+        "error"
+      ],
+      "about": "Which characters form a token, and of which kind, is defined",
+      "judgment": {
+        "status": "shown",
+        "cases": [
+          {
+            "file": "check-tree-literals.test.ts",
+            "text": "a closed StringLiteral recorded as not closed"
+          }
+        ]
+      }
+    },
+    {
+      "block": "packages/parser/docs/tokens.md:15df1be7773f",
+      "diagrams": [
+        "agentflow",
+        "architecture",
+        "block",
+        "c4",
+        "class",
+        "cynefin",
+        "er",
+        "eventmodeling",
+        "flowchart",
+        "gantt",
+        "gitgraph",
+        "info",
+        "ishikawa",
+        "journey",
+        "kanban",
+        "mindmap",
+        "packet",
+        "pie",
+        "quadrant",
+        "radar",
+        "railroad",
+        "requirement",
+        "sankey",
+        "sequence",
+        "state",
+        "timeline",
+        "treemap",
+        "treeview",
+        "usecase",
+        "venn",
+        "wardley",
+        "xychart",
+        "error"
+      ],
+      "about": "Whitespace and line terminators are a token on their own onl",
+      "judgment": {
+        "status": "shown",
+        "cases": [
+          {
+            "file": "check-tree.test.ts",
+            "text": "fails when a token starts or ends with whitespace or a line terminator where no value starts or ends"
+          },
+          {
+            "file": "check-tree.test.ts",
+            "text": "fails when a token's range is shifted, or its value is not the source text of its range"
+          },
+          {
+            "file": "check-tree-shared-tokens.test.ts",
+            "text": "fails a whitespace-only token outside every value"
+          },
+          {
+            "file": "check-tree-shared-tokens.test.ts",
+            "text": "fails a line terminator represented by an extra node field"
+          }
+        ]
+      }
+    },
+    {
+      "block": "packages/parser/docs/tokens.md:8a36630bf64b",
+      "diagrams": [
+        "agentflow",
+        "architecture",
+        "block",
+        "c4",
+        "class",
+        "cynefin",
+        "er",
+        "eventmodeling",
+        "flowchart",
+        "gantt",
+        "gitgraph",
+        "info",
+        "ishikawa",
+        "journey",
+        "kanban",
+        "mindmap",
+        "packet",
+        "pie",
+        "quadrant",
+        "radar",
+        "railroad",
+        "requirement",
+        "sankey",
+        "sequence",
+        "state",
+        "timeline",
+        "treemap",
+        "treeview",
+        "usecase",
+        "venn",
+        "wardley",
+        "xychart",
+        "error"
+      ],
+      "about": "`Root` has these fields besides those of [`ast.md`](../../sp",
+      "judgment": {
+        "status": "no-condition",
+        "kind": "introduction",
+        "note": "It leads in to the table of the fields of `Root` below it; the conditions are in those rows, which have rows of their own."
+      }
+    },
+    {
+      "block": "packages/parser/docs/tokens.md:d8eda7c90753",
+      "diagrams": [
+        "agentflow",
+        "architecture",
+        "block",
+        "c4",
+        "class",
+        "cynefin",
+        "er",
+        "eventmodeling",
+        "flowchart",
+        "gantt",
+        "gitgraph",
+        "info",
+        "ishikawa",
+        "journey",
+        "kanban",
+        "mindmap",
+        "packet",
+        "pie",
+        "quadrant",
+        "radar",
+        "railroad",
+        "requirement",
+        "sankey",
+        "sequence",
+        "state",
+        "timeline",
+        "treemap",
+        "treeview",
+        "usecase",
+        "venn",
+        "wardley",
+        "xychart",
+        "error"
+      ],
+      "about": "| `comments` | list of Comment | Every comment, in source or",
+      "judgment": {
+        "status": "shown",
+        "cases": [
+          {
+            "file": "check-tree-shape.test.ts",
+            "text": "reports the records of the root that are missing or of another kind, without throwing"
+          },
+          {
+            "file": "check-tree.test.ts",
+            "text": "fails a comment line of the text that is no comment of the tree"
+          },
+          {
+            "file": "check-tree.test.ts",
+            "text": "fails when comments or directives overlap"
+          }
+        ]
+      }
+    },
+    {
+      "block": "packages/parser/docs/tokens.md:b2fe5a640524",
+      "diagrams": [
+        "agentflow",
+        "architecture",
+        "block",
+        "c4",
+        "class",
+        "cynefin",
+        "er",
+        "eventmodeling",
+        "flowchart",
+        "gantt",
+        "gitgraph",
+        "info",
+        "ishikawa",
+        "journey",
+        "kanban",
+        "mindmap",
+        "packet",
+        "pie",
+        "quadrant",
+        "radar",
+        "railroad",
+        "requirement",
+        "sankey",
+        "sequence",
+        "state",
+        "timeline",
+        "treemap",
+        "treeview",
+        "usecase",
+        "venn",
+        "wardley",
+        "xychart",
+        "error"
+      ],
+      "about": "| `tokens` | list of Token | Every token, `Directive` tokens",
+      "judgment": {
+        "status": "shown",
+        "cases": [
+          {
+            "file": "check-tree-shape.test.ts",
+            "text": "reports the records of the root that are missing or of another kind, without throwing"
+          },
+          {
+            "file": "check-tree.test.ts",
+            "text": "fails when a token is missing"
+          },
+          {
+            "file": "check-tree.test.ts",
+            "text": "fails when a comment, or the token of a directive or of the frontmatter, is missing"
+          },
+          {
+            "file": "check-tree.test.ts",
+            "text": "fails when a Directive token has no directive"
+          },
+          {
+            "file": "check-tree.test.ts",
+            "text": "fails when the frontmatter is not divided into its delimiters and its body"
+          },
+          {
+            "file": "check-tree.test.ts",
+            "text": "fails when tokens overlap or are out of order"
+          }
+        ]
+      }
+    },
+    {
+      "block": "packages/parser/docs/tokens.md:57c5f1cbd0d4",
+      "diagrams": [
+        "agentflow",
+        "architecture",
+        "block",
+        "c4",
+        "class",
+        "cynefin",
+        "er",
+        "eventmodeling",
+        "flowchart",
+        "gantt",
+        "gitgraph",
+        "info",
+        "ishikawa",
+        "journey",
+        "kanban",
+        "mindmap",
+        "packet",
+        "pie",
+        "quadrant",
+        "radar",
+        "railroad",
+        "requirement",
+        "sankey",
+        "sequence",
+        "state",
+        "timeline",
+        "treemap",
+        "treeview",
+        "usecase",
+        "venn",
+        "wardley",
+        "xychart",
+        "error"
+      ],
+      "about": "`comments` and `tokens` are lists, not child fields. Every c",
+      "judgment": {
+        "status": "shown",
+        "cases": [
+          {
+            "file": "check-tree.test.ts",
+            "text": "fails when a comment, or the token of a directive or of the frontmatter, is missing"
+          },
+          {
+            "file": "check-tree-shared-tokens.test.ts",
+            "text": "fails Root.comments represented as one child record"
+          },
+          {
+            "file": "check-tree-shared-tokens.test.ts",
+            "text": "fails Root.tokens represented as one child record"
+          }
+        ]
+      }
+    },
+    {
+      "block": "packages/parser/docs/tokens.md:8624eccd18f2",
+      "diagrams": [
+        "agentflow",
+        "architecture",
+        "block",
+        "c4",
+        "class",
+        "cynefin",
+        "er",
+        "eventmodeling",
+        "flowchart",
+        "gantt",
+        "gitgraph",
+        "info",
+        "ishikawa",
+        "journey",
+        "kanban",
+        "mindmap",
+        "packet",
+        "pie",
+        "quadrant",
+        "radar",
+        "railroad",
+        "requirement",
+        "sankey",
+        "sequence",
+        "state",
+        "timeline",
+        "treemap",
+        "treeview",
+        "usecase",
+        "venn",
+        "wardley",
+        "xychart",
+        "error"
+      ],
+      "about": "Comments are records in `Root.comments`: no node holds them,",
+      "judgment": {
+        "status": "shown",
+        "cases": [
+          {
+            "file": "check-tree-shape.test.ts",
+            "text": "reports the records of the root that are missing or of another kind, without throwing"
+          },
+          {
+            "file": "check-tree.test.ts",
+            "text": "fails when the content fields of a comment, a directive, or the frontmatter are not the text of their ranges"
+          },
+          {
+            "file": "check-tree.test.ts",
+            "text": "fails a directive that the tree lacks, an extra one, one with another `closed`, and one with whitespace at its end"
+          },
+          {
+            "file": "check-tree.test.ts",
+            "text": "fails when a comment region lies inside a token"
+          },
+          {
+            "file": "check-tree.test.ts",
+            "text": "fails when a Directive token has no directive"
+          },
+          {
+            "file": "check-tree.test.ts",
+            "text": "fails when the frontmatter is not divided into its delimiters and its body"
+          },
+          {
+            "file": "check-tree.test.ts",
+            "text": "fails when a token's range is shifted, or its value is not the source text of its range"
+          },
+          {
+            "file": "check-tree-shared-tokens.test.ts",
+            "text": "fails a comment stored as a child of a diagram node"
+          },
+          {
+            "file": "check-tree-shared-tokens.test.ts",
+            "text": "fails a comment record without a range"
+          },
+          {
+            "file": "check-tree-shared-tokens.test.ts",
+            "text": "fails a directive record without a range"
+          },
+          {
+            "file": "check-tree-shared-tokens.test.ts",
+            "text": "fails a frontmatter record without a range"
+          },
+          {
+            "file": "check-tree-shared-tokens.test.ts",
+            "text": "fails a comment record without a loc"
+          },
+          {
+            "file": "check-tree-shared-tokens.test.ts",
+            "text": "fails a directive record without a loc"
+          },
+          {
+            "file": "check-tree-shared-tokens.test.ts",
+            "text": "fails a frontmatter record without a loc"
+          }
+        ]
+      }
+    },
+    {
+      "block": "packages/parser/docs/tokens.md:86758b237005",
+      "diagrams": [
+        "agentflow",
+        "architecture",
+        "block",
+        "c4",
+        "class",
+        "cynefin",
+        "er",
+        "eventmodeling",
+        "flowchart",
+        "gantt",
+        "gitgraph",
+        "info",
+        "ishikawa",
+        "journey",
+        "kanban",
+        "mindmap",
+        "packet",
+        "pie",
+        "quadrant",
+        "radar",
+        "railroad",
+        "requirement",
+        "sankey",
+        "sequence",
+        "state",
+        "timeline",
+        "treemap",
+        "treeview",
+        "usecase",
+        "venn",
+        "wardley",
+        "xychart",
+        "error"
+      ],
+      "about": "`type` is `Comment`.",
+      "judgment": {
+        "status": "not-shown",
+        "reason": "rule-misses-condition",
+        "note": "The check of the shape reports a comment record without its `type`, but not one whose `type` is another string: a comment record whose `type` is `OtherComment` passes."
+      }
+    },
+    {
+      "block": "packages/parser/docs/tokens.md:50942040c40d",
+      "diagrams": [
+        "agentflow",
+        "architecture",
+        "block",
+        "c4",
+        "class",
+        "cynefin",
+        "er",
+        "eventmodeling",
+        "flowchart",
+        "gantt",
+        "gitgraph",
+        "info",
+        "ishikawa",
+        "journey",
+        "kanban",
+        "mindmap",
+        "packet",
+        "pie",
+        "quadrant",
+        "radar",
+        "railroad",
+        "requirement",
+        "sankey",
+        "sequence",
+        "state",
+        "timeline",
+        "treemap",
+        "treeview",
+        "usecase",
+        "venn",
+        "wardley",
+        "xychart",
+        "error"
+      ],
+      "about": "| `mark` | one of `%%`, `#`, `%`, `/*`, `//`, `(*`, `;`, or ",
+      "judgment": {
+        "status": "shown",
+        "cases": [
+          {
+            "file": "check-tree-fields.test.ts",
+            "text": "fixture: \"comment-after-directive\""
+          },
+          {
+            "file": "check-tree-comments.test.ts",
+            "text": "fails a mark that a flowchart or a class diagram does not have"
+          },
+          {
+            "file": "check-tree-comments.test.ts",
+            "text": "fails a sequence comment whose mark is not the one that the text writes"
+          },
+          {
+            "file": "check-tree-comments.test.ts",
+            "text": "fails a fragment without a mark that follows no comment region, or with whitespace before the region, and comments that overlap"
+          }
+        ]
+      }
+    },
+    {
+      "block": "packages/parser/docs/tokens.md:a5293b3057c9",
+      "diagrams": [
+        "agentflow",
+        "architecture",
+        "block",
+        "c4",
+        "class",
+        "cynefin",
+        "er",
+        "eventmodeling",
+        "flowchart",
+        "gantt",
+        "gitgraph",
+        "info",
+        "ishikawa",
+        "journey",
+        "kanban",
+        "mindmap",
+        "packet",
+        "pie",
+        "quadrant",
+        "radar",
+        "railroad",
+        "requirement",
+        "sankey",
+        "sequence",
+        "state",
+        "timeline",
+        "treemap",
+        "treeview",
+        "usecase",
+        "venn",
+        "wardley",
+        "xychart",
+        "error"
+      ],
+      "about": "| `value` | string | The source text of the comment's conten",
+      "judgment": {
+        "status": "shown",
+        "cases": [
+          {
+            "file": "check-tree.test.ts",
+            "text": "fails when the content fields of a comment, a directive, or the frontmatter are not the text of their ranges"
+          },
+          {
+            "file": "check-tree-comments.test.ts",
+            "text": "fails a diagram comment whose value is not the text after its mark"
+          },
+          {
+            "file": "check-tree-railroad.test.ts",
+            "text": "C closer joined by a directive"
+          },
+          {
+            "file": "check-tree-shared-tokens.test.ts",
+            "text": "fails a comment value that is not a string"
+          }
+        ]
+      }
+    },
+    {
+      "block": "packages/parser/docs/tokens.md:6526c9f8e392",
+      "diagrams": [
+        "agentflow",
+        "architecture",
+        "block",
+        "c4",
+        "class",
+        "cynefin",
+        "er",
+        "eventmodeling",
+        "flowchart",
+        "gantt",
+        "gitgraph",
+        "info",
+        "ishikawa",
+        "journey",
+        "kanban",
+        "mindmap",
+        "packet",
+        "pie",
+        "quadrant",
+        "radar",
+        "railroad",
+        "requirement",
+        "sankey",
+        "sequence",
+        "state",
+        "timeline",
+        "treemap",
+        "treeview",
+        "usecase",
+        "venn",
+        "wardley",
+        "xychart",
+        "error"
+      ],
+      "about": "`mark` holds the characters of the mark, which are not alway",
+      "judgment": {
+        "status": "shown",
+        "cases": [
+          {
+            "file": "check-tree-comments.test.ts",
+            "text": "fails a mark that a flowchart or a class diagram does not have"
+          },
+          {
+            "file": "check-tree-shared-tokens.test.ts",
+            "text": "fails a comment mark containing its intervening directive"
+          }
+        ]
+      }
+    },
+    {
+      "block": "packages/parser/docs/tokens.md:9c3736f0aeec",
+      "diagrams": [
+        "agentflow",
+        "architecture",
+        "block",
+        "c4",
+        "class",
+        "cynefin",
+        "er",
+        "eventmodeling",
+        "flowchart",
+        "gantt",
+        "gitgraph",
+        "info",
+        "ishikawa",
+        "journey",
+        "kanban",
+        "mindmap",
+        "packet",
+        "pie",
+        "quadrant",
+        "radar",
+        "railroad",
+        "requirement",
+        "sankey",
+        "sequence",
+        "state",
+        "timeline",
+        "treemap",
+        "treeview",
+        "usecase",
+        "venn",
+        "wardley",
+        "xychart",
+        "error"
+      ],
+      "about": "Shared directives inside marks and closers remain shared rec",
+      "judgment": {
+        "status": "shown",
+        "cases": [
+          {
+            "file": "check-tree-shared-tokens.test.ts",
+            "text": "fails a shared directive record omitted from a native comment mark"
+          },
+          {
+            "file": "check-tree-shared-tokens.test.ts",
+            "text": "fails a shared directive record omitted from a native comment closer"
+          }
+        ]
+      }
+    },
+    {
+      "block": "packages/parser/docs/tokens.md:427b7885a595",
+      "diagrams": [
+        "agentflow",
+        "architecture",
+        "block",
+        "c4",
+        "class",
+        "cynefin",
+        "er",
+        "eventmodeling",
+        "flowchart",
+        "gantt",
+        "gitgraph",
+        "info",
+        "ishikawa",
+        "journey",
+        "kanban",
+        "mindmap",
+        "packet",
+        "pie",
+        "quadrant",
+        "radar",
+        "railroad",
+        "requirement",
+        "sankey",
+        "sequence",
+        "state",
+        "timeline",
+        "treemap",
+        "treeview",
+        "usecase",
+        "venn",
+        "wardley",
+        "xychart",
+        "error"
+      ],
+      "about": "A directive after the `%%` of a comment line lies inside the",
+      "judgment": {
+        "status": "shown",
+        "cases": [
+          {
+            "file": "check-tree-shared-tokens.test.ts",
+            "text": "fails a comment range ending before its internal directive"
+          },
+          {
+            "file": "check-tree-shared-tokens.test.ts",
+            "text": "fails a comment range including a preceding directive"
+          },
+          {
+            "file": "check-tree-shared-tokens.test.ts",
+            "text": "fails a split comment mark whose value starts after the first percent"
+          },
+          {
+            "file": "check-tree-shared-tokens.test.ts",
+            "text": "fails a diagram-comment mark retaining a directive in its spelling"
+          },
+          {
+            "file": "check-tree-shared-tokens.test.ts",
+            "text": "fails a directive token inside a diagram comment"
+          }
+        ]
+      }
+    },
+    {
+      "block": "packages/parser/docs/tokens.md:f2c3de71f23f",
+      "diagrams": [
+        "agentflow",
+        "architecture",
+        "block",
+        "c4",
+        "class",
+        "cynefin",
+        "er",
+        "eventmodeling",
+        "flowchart",
+        "gantt",
+        "gitgraph",
+        "info",
+        "ishikawa",
+        "journey",
+        "kanban",
+        "mindmap",
+        "packet",
+        "pie",
+        "quadrant",
+        "radar",
+        "railroad",
+        "requirement",
+        "sankey",
+        "sequence",
+        "state",
+        "timeline",
+        "treemap",
+        "treeview",
+        "usecase",
+        "venn",
+        "wardley",
+        "xychart",
+        "error"
+      ],
+      "about": "A directive is a token boundary (see [common.md](../../spec/",
+      "judgment": {
+        "status": "shown",
+        "cases": [
+          {
+            "file": "check-tree.test.ts",
+            "text": "fails when a directive lies inside a token"
+          },
+          {
+            "file": "check-tree-shared-tokens.test.ts",
+            "text": "fails a Directive token added inside a common comment"
+          },
+          {
+            "file": "check-tree-shared-tokens.test.ts",
+            "text": "fails a directive in a comment region included in a string token"
+          },
+          {
+            "file": "check-tree-shared-tokens.test.ts",
+            "text": "fails a comment region record starting at its preceding directive"
+          },
+          {
+            "file": "check-tree-shared-tokens.test.ts",
+            "text": "fails a directive token omitted before a comment mark in a string"
+          }
+        ]
+      }
+    },
+    {
+      "block": "packages/parser/docs/tokens.md:d52c87a966e0",
+      "diagrams": [
+        "agentflow",
+        "architecture",
+        "block",
+        "c4",
+        "class",
+        "cynefin",
+        "er",
+        "eventmodeling",
+        "flowchart",
+        "gantt",
+        "gitgraph",
+        "info",
+        "ishikawa",
+        "journey",
+        "kanban",
+        "mindmap",
+        "packet",
+        "pie",
+        "quadrant",
+        "radar",
+        "railroad",
+        "requirement",
+        "sankey",
+        "sequence",
+        "state",
+        "timeline",
+        "treemap",
+        "treeview",
+        "usecase",
+        "venn",
+        "wardley",
+        "xychart",
+        "error"
+      ],
+      "about": "The frontmatter record has this field besides those of [`ast",
+      "judgment": {
+        "status": "no-condition",
+        "kind": "introduction",
+        "note": "It leads in to the table of the field of the frontmatter record below it; the conditions are in those rows, which have rows of their own."
+      }
+    },
+    {
+      "block": "packages/parser/docs/tokens.md:7ac90be4f98a",
+      "diagrams": [
+        "agentflow",
+        "architecture",
+        "block",
+        "c4",
+        "class",
+        "cynefin",
+        "er",
+        "eventmodeling",
+        "flowchart",
+        "gantt",
+        "gitgraph",
+        "info",
+        "ishikawa",
+        "journey",
+        "kanban",
+        "mindmap",
+        "packet",
+        "pie",
+        "quadrant",
+        "radar",
+        "railroad",
+        "requirement",
+        "sankey",
+        "sequence",
+        "state",
+        "timeline",
+        "treemap",
+        "treeview",
+        "usecase",
+        "venn",
+        "wardley",
+        "xychart",
+        "error"
+      ],
+      "about": "| `valueRange` | offset pair | Where `value` is in the sourc",
+      "judgment": {
+        "status": "shown",
+        "cases": [
+          {
+            "file": "check-tree.test.ts",
+            "text": "fails when the content fields of a comment, a directive, or the frontmatter are not the text of their ranges"
+          },
+          {
+            "file": "check-tree-shared-tokens.test.ts",
+            "text": "fails a frontmatter valueRange that is not an offset pair"
+          }
+        ]
+      }
+    },
+    {
+      "block": "packages/parser/docs/tokens.md:2f6c580e2499",
+      "diagrams": [
+        "agentflow",
+        "architecture",
+        "block",
+        "c4",
+        "class",
+        "cynefin",
+        "er",
+        "eventmodeling",
+        "flowchart",
+        "gantt",
+        "gitgraph",
+        "info",
+        "ishikawa",
+        "journey",
+        "kanban",
+        "mindmap",
+        "packet",
+        "pie",
+        "quadrant",
+        "radar",
+        "railroad",
+        "requirement",
+        "sankey",
+        "sequence",
+        "state",
+        "timeline",
+        "treemap",
+        "treeview",
+        "usecase",
+        "venn",
+        "wardley",
+        "xychart",
+        "error"
+      ],
+      "about": "The range runs from the `---` of the opening delimiter line ",
+      "judgment": {
+        "status": "shown",
+        "cases": [
+          {
+            "file": "check-tree.test.ts",
+            "text": "fails when the frontmatter is not divided into its delimiters and its body"
+          },
+          {
+            "file": "check-tree-shared-tokens.test.ts",
+            "text": "fails frontmatter opening indentation included in its token"
+          },
+          {
+            "file": "check-tree-shared-tokens.test.ts",
+            "text": "fails whitespace after frontmatter closing delimiter included in its token"
+          },
+          {
+            "file": "check-tree-shared-tokens.test.ts",
+            "text": "fails blank lines after frontmatter included in the closing token"
+          }
+        ]
+      }
+    },
+    {
+      "block": "packages/parser/docs/tokens.md:d80233e1d8f3",
+      "diagrams": [
+        "agentflow",
+        "architecture",
+        "block",
+        "c4",
+        "class",
+        "cynefin",
+        "er",
+        "eventmodeling",
+        "flowchart",
+        "gantt",
+        "gitgraph",
+        "info",
+        "ishikawa",
+        "journey",
+        "kanban",
+        "mindmap",
+        "packet",
+        "pie",
+        "quadrant",
+        "radar",
+        "railroad",
+        "requirement",
+        "sankey",
+        "sequence",
+        "state",
+        "timeline",
+        "treemap",
+        "treeview",
+        "usecase",
+        "venn",
+        "wardley",
+        "xychart",
+        "error"
+      ],
+      "about": "The delimiters and the body are separate tokens because they",
+      "judgment": {
+        "status": "shown",
+        "cases": [
+          {
+            "file": "check-tree.test.ts",
+            "text": "fails when the frontmatter is not divided into its delimiters and its body"
+          },
+          {
+            "file": "check-tree.test.ts",
+            "text": "fails when a Directive token has no directive"
+          },
+          {
+            "file": "check-tree.test.ts",
+            "text": "fails a directive that the tree lacks, an extra one, one with another `closed`, and one with whitespace at its end"
+          },
+          {
+            "file": "check-tree-shared-tokens.test.ts",
+            "text": "fails a directive record without its name field"
+          },
+          {
+            "file": "check-tree-shared-tokens.test.ts",
+            "text": "fails a diagram range including frontmatter tokens"
+          }
+        ]
+      }
+    },
+    {
+      "block": "packages/parser/docs/tokens.md:8eb63c7bb3c1",
+      "diagrams": [
+        "agentflow",
+        "architecture",
+        "block",
+        "c4",
+        "class",
+        "cynefin",
+        "er",
+        "eventmodeling",
+        "flowchart",
+        "gantt",
+        "gitgraph",
+        "info",
+        "ishikawa",
+        "journey",
+        "kanban",
+        "mindmap",
+        "packet",
+        "pie",
+        "quadrant",
+        "radar",
+        "railroad",
+        "requirement",
+        "sankey",
+        "sequence",
+        "state",
+        "timeline",
+        "treemap",
+        "treeview",
+        "usecase",
+        "venn",
+        "wardley",
+        "xychart",
+        "error"
+      ],
+      "about": "A StringLiteral's token is one `String` token, quotes includ",
+      "judgment": {
+        "status": "shown",
+        "cases": [
+          {
+            "file": "check-tree-string-tokens.test.ts",
+            "text": "click-callback-tooltip"
+          },
+          {
+            "file": "check-tree-literals.test.ts",
+            "text": "a StringLiteral whose raw is not its text"
+          },
+          {
+            "file": "check-tree-string-tokens.test.ts",
+            "text": "db-directive-in-quotes"
+          },
+          {
+            "file": "check-tree-cut-tokens.test.ts",
+            "text": "is reported when a directive cuts it: the second fragment starts with no quote and the first is not closed"
+          },
+          {
+            "file": "check-tree-cut-tokens.test.ts",
+            "text": "is reported when a `;` cuts it: the second fragment starts with no quote and the first is not closed"
+          },
+          {
+            "file": "check-tree-shared-tokens.test.ts",
+            "text": "fails an uncut string split into two String tokens"
+          },
+          {
+            "file": "check-tree-shared-tokens.test.ts",
+            "text": "fails a String token missing its opening quote"
+          },
+          {
+            "file": "check-tree-shared-tokens.test.ts",
+            "text": "fails a String token missing its closing quote"
+          },
+          {
+            "file": "check-tree-shared-tokens.test.ts",
+            "text": "fails an uncut StringLiteral range omitting its closing quote"
+          },
+          {
+            "file": "check-tree-shared-tokens.test.ts",
+            "text": "fails a string node ending before its final comment-cut fragment"
+          },
+          {
+            "file": "check-tree-shared-tokens.test.ts",
+            "text": "fails a cut string node starting at its last fragment"
+          }
+        ]
+      }
+    },
+    {
+      "block": "packages/parser/docs/tokens.md:94e742a7de04",
+      "diagrams": [
+        "agentflow",
+        "architecture",
+        "block",
+        "c4",
+        "class",
+        "cynefin",
+        "er",
+        "eventmodeling",
+        "flowchart",
+        "gantt",
+        "gitgraph",
+        "info",
+        "ishikawa",
+        "journey",
+        "kanban",
+        "mindmap",
+        "packet",
+        "pie",
+        "quadrant",
+        "radar",
+        "railroad",
+        "requirement",
+        "sankey",
+        "sequence",
+        "state",
+        "timeline",
+        "treemap",
+        "treeview",
+        "usecase",
+        "venn",
+        "wardley",
+        "xychart",
+        "error"
+      ],
+      "about": "The token and the range of a string that is not closed run t",
+      "judgment": {
+        "status": "shown",
+        "cases": [
+          {
+            "file": "check-tree-string-tokens.test.ts",
+            "text": "db-directive-in-quotes"
+          },
+          {
+            "file": "check-tree-cut-tokens.test.ts",
+            "text": "is reported when a directive cuts it: the second fragment starts with no quote and the first is not closed"
+          },
+          {
+            "file": "check-tree-shared-tokens.test.ts",
+            "text": "fails an unclosed string token shortened before its written end"
+          },
+          {
+            "file": "check-tree-shared-tokens.test.ts",
+            "text": "fails an unclosed StringLiteral range shortened before its written end"
+          },
+          {
+            "file": "check-tree-shared-tokens.test.ts",
+            "text": "fails an unclosed string range including a following directive"
+          },
+          {
+            "file": "check-tree-shared-tokens.test.ts",
+            "text": "fails an unclosed string fragment missing its space after a directive"
+          },
+          {
+            "file": "check-tree-shared-tokens.test.ts",
+            "text": "fails an unclosed string fragment missing its final line feed"
+          }
+        ]
+      }
+    },
+    {
+      "block": "packages/parser/docs/tokens.md:d80f378253ec",
+      "diagrams": [
+        "agentflow",
+        "architecture",
+        "block",
+        "c4",
+        "class",
+        "cynefin",
+        "er",
+        "eventmodeling",
+        "flowchart",
+        "gantt",
+        "gitgraph",
+        "info",
+        "ishikawa",
+        "journey",
+        "kanban",
+        "mindmap",
+        "packet",
+        "pie",
+        "quadrant",
+        "radar",
+        "railroad",
+        "requirement",
+        "sankey",
+        "sequence",
+        "state",
+        "timeline",
+        "treemap",
+        "treeview",
+        "usecase",
+        "venn",
+        "wardley",
+        "xychart",
+        "error"
+      ],
+      "about": "`%%`, a line break, and `error` give the tokens `%%` and `er",
+      "judgment": {
+        "status": "shown",
+        "cases": [
+          {
+            "file": "check-tree-shared-tokens.test.ts",
+            "text": "fails a bare percent line omitted from error tokens"
+          }
+        ]
+      }
+    },
+    {
+      "block": "packages/parser/docs/tokens.md:c5d06db21dfd",
+      "diagrams": [
+        "agentflow",
+        "architecture",
+        "block",
+        "c4",
+        "class",
+        "cynefin",
+        "er",
+        "eventmodeling",
+        "flowchart",
+        "gantt",
+        "gitgraph",
+        "info",
+        "ishikawa",
+        "journey",
+        "kanban",
+        "mindmap",
+        "packet",
+        "pie",
+        "quadrant",
+        "radar",
+        "railroad",
+        "requirement",
+        "sankey",
+        "sequence",
+        "state",
+        "timeline",
+        "treemap",
+        "treeview",
+        "usecase",
+        "venn",
+        "wardley",
+        "xychart",
+        "error"
+      ],
+      "about": "`error %% x` followed by a line break gives `error`, `%%`, a",
+      "judgment": {
+        "status": "shown",
+        "cases": [
+          {
+            "file": "check-tree-shared-tokens.test.ts",
+            "text": "fails two whitespace-separated error runs merged into one token"
+          },
+          {
+            "file": "check-tree-shared-tokens.test.ts",
+            "text": "fails trailing error text misrepresented as a comment"
+          }
+        ]
+      }
+    },
+    {
+      "block": "packages/parser/docs/tokens.md:b7ffc597fe7a",
+      "diagrams": [
+        "agentflow",
+        "architecture",
+        "block",
+        "c4",
+        "class",
+        "cynefin",
+        "er",
+        "eventmodeling",
+        "flowchart",
+        "gantt",
+        "gitgraph",
+        "info",
+        "ishikawa",
+        "journey",
+        "kanban",
+        "mindmap",
+        "packet",
+        "pie",
+        "quadrant",
+        "radar",
+        "railroad",
+        "requirement",
+        "sankey",
+        "sequence",
+        "state",
+        "timeline",
+        "treemap",
+        "treeview",
+        "usecase",
+        "venn",
+        "wardley",
+        "xychart",
+        "error"
+      ],
+      "about": "`error%%{wrap}%%` gives the one token `error`, followed by t",
+      "judgment": {
+        "status": "shown",
+        "cases": [
+          {
+            "file": "check-tree-shared-tokens.test.ts",
+            "text": "fails an error directive retyped as RawText"
+          }
+        ]
+      }
+    },
+    {
+      "block": "packages/parser/docs/tokens.md:eb3ad5e4e0ea",
+      "diagrams": [
+        "agentflow",
+        "architecture",
+        "block",
+        "c4",
+        "class",
+        "cynefin",
+        "er",
+        "eventmodeling",
+        "flowchart",
+        "gantt",
+        "gitgraph",
+        "info",
+        "ishikawa",
+        "journey",
+        "kanban",
+        "mindmap",
+        "packet",
+        "pie",
+        "quadrant",
+        "radar",
+        "railroad",
+        "requirement",
+        "sankey",
+        "sequence",
+        "state",
+        "timeline",
+        "treemap",
+        "treeview",
+        "usecase",
+        "venn",
+        "wardley",
+        "xychart",
+        "error"
+      ],
+      "about": "`error %%{init: {}}%% %% x` followed by a line break gives `",
+      "judgment": {
+        "status": "shown",
+        "cases": [
+          {
+            "file": "check-tree-shared-tokens.test.ts",
+            "text": "fails error tokens ordered before their preceding directive"
+          }
+        ]
+      }
+    },
+    {
+      "block": "packages/parser/docs/tokens.md:9c6e1b38af70",
+      "diagrams": [
+        "agentflow",
+        "architecture",
+        "block",
+        "c4",
+        "class",
+        "cynefin",
+        "er",
+        "eventmodeling",
+        "flowchart",
+        "gantt",
+        "gitgraph",
+        "info",
+        "ishikawa",
+        "journey",
+        "kanban",
+        "mindmap",
+        "packet",
+        "pie",
+        "quadrant",
+        "radar",
+        "railroad",
+        "requirement",
+        "sankey",
+        "sequence",
+        "state",
+        "timeline",
+        "treemap",
+        "treeview",
+        "usecase",
+        "venn",
+        "wardley",
+        "xychart",
+        "error"
+      ],
+      "about": "`error`, a line break, `%% c`, a line break, and `%%{ }` fol",
+      "judgment": {
+        "status": "shown",
+        "cases": [
+          {
+            "file": "check-tree-shared-tokens.test.ts",
+            "text": "fails an error comment line omitted from its comments"
+          },
+          {
+            "file": "check-tree-shared-tokens.test.ts",
+            "text": "fails malformed directive-like error text recorded as a directive"
+          }
+        ]
+      }
+    },
+    {
+      "block": "packages/parser/docs/tokens.md:0118ba1f30ac",
+      "diagrams": [
+        "agentflow",
+        "architecture",
+        "block",
+        "c4",
+        "class",
+        "cynefin",
+        "er",
+        "eventmodeling",
+        "flowchart",
+        "gantt",
+        "gitgraph",
+        "info",
+        "ishikawa",
+        "journey",
+        "kanban",
+        "mindmap",
+        "packet",
+        "pie",
+        "quadrant",
+        "radar",
+        "railroad",
+        "requirement",
+        "sankey",
+        "sequence",
+        "state",
+        "timeline",
+        "treemap",
+        "treeview",
+        "usecase",
+        "venn",
+        "wardley",
+        "xychart",
+        "error"
+      ],
+      "about": "A directive inside the word, as in `err%%{init: {}}%%or`, is",
+      "judgment": {
+        "status": "shown",
+        "cases": [
+          {
+            "file": "check-tree-shared-tokens.test.ts",
+            "text": "fails the Directive token omitted between error word fragments"
+          }
+        ]
+      }
+    },
+    {
+      "block": "packages/parser/docs/tokens.md:d43b67d087a9",
+      "diagrams": [
+        "agentflow",
+        "architecture",
+        "block",
+        "c4",
+        "class",
+        "cynefin",
+        "er",
+        "eventmodeling",
+        "flowchart",
+        "gantt",
+        "gitgraph",
+        "info",
+        "ishikawa",
+        "journey",
+        "kanban",
+        "mindmap",
+        "packet",
+        "pie",
+        "quadrant",
+        "radar",
+        "railroad",
+        "requirement",
+        "sankey",
+        "sequence",
+        "state",
+        "timeline",
+        "treemap",
+        "treeview",
+        "usecase",
+        "venn",
+        "wardley",
+        "xychart",
+        "error"
+      ],
+      "about": "`Identifier` is also the name of a token kind, as in ESTree ",
+      "judgment": {
+        "status": "shown",
+        "cases": [
+          {
+            "file": "check-tree-values.test.ts",
+            "text": "Identifier"
+          },
+          {
+            "file": "check-tree.test.ts",
+            "text": "fails when a token's range is shifted, or its value is not the source text of its range"
+          },
+          {
+            "file": "check-tree-shared-tokens.test.ts",
+            "text": "fails an Identifier stored outside the body child fields"
+          },
+          {
+            "file": "check-tree-shared-tokens.test.ts",
+            "text": "fails a token stored in an extra field of a node"
+          }
+        ]
+      }
+    }
+  ]
+}

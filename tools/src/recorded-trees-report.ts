@@ -3,13 +3,13 @@
  * (`packages/tests/docs/recorded-trees.md`, What it prints).
  */
 import { appendItems } from "../../packages/tests/src/collections.ts"
-import { normalizeSpace } from "./recorded-tree-documents.ts"
+import { normalizeSpace } from "./fixture-citations.ts"
 import type { DocumentBlock } from "./recorded-tree-documents.ts"
 import { ANSWERS } from "./recorded-trees.ts"
 import type {
   AnswerFile,
-  ChangedTree,
   HeldBlock,
+  KeyedTree,
   Place,
   ReadItem,
   RecordedTreesReport,
@@ -101,7 +101,7 @@ function unjudgedLines(unjudged: readonly HeldBlock[]): string[] {
 /** The template of an answer file for what no answer covers. */
 function answerTemplate(report: RecordedTreesReport): AnswerFile {
   /** The tree of an answer for `changed`. */
-  function tree(changed: ChangedTree): { key: string; fixture: string } {
+  function tree(changed: KeyedTree): { key: string; fixture: string } {
     return { key: changed.contentKey, fixture: changed.fixture }
   }
 
@@ -122,21 +122,48 @@ function answerTemplate(report: RecordedTreesReport): AnswerFile {
   }
 }
 
-/** The report as Markdown, and whether it fails the check. */
-export function formatReport(
+/** The checked trees that have a problem: they cannot be read, break a condition, or have a node type that is not classified. */
+function treesWithProblems(
   report: RecordedTreesReport,
-  places: boolean,
-): { text: string; fails: boolean } {
-  const out: string[] = []
-  const problems = report.checked.filter(
+): RecordedTreesReport["checked"] {
+  return report.checked.filter(
     ({ result }) =>
       result.kind === "unreadable" ||
       result.problems.length > 0 ||
       result.unclassified.length > 0,
   )
-  const unansweredItems = report.readItems.filter(
+}
+
+/** The items to read that some changed tree has no answer for. */
+function unansweredItemsOf(report: RecordedTreesReport): ReadItem[] {
+  return report.readItems.filter(
     (item) => item.answeredHere.length < item.trees.length,
   )
+}
+
+/**
+ * Whether the report fails the check: a checked tree has a problem, an answer
+ * file or a file of the coverage table cannot be read, or an item or a
+ * changed tree has no answer.
+ */
+export function failsOf(report: RecordedTreesReport): boolean {
+  return (
+    treesWithProblems(report).length > 0 ||
+    report.unreadableAnswers.length > 0 ||
+    report.unreadableTable.length > 0 ||
+    unansweredItemsOf(report).length > 0 ||
+    report.unansweredTrees.length > 0
+  )
+}
+
+/** The report as Markdown. */
+export function formatReport(
+  report: RecordedTreesReport,
+  places: boolean,
+): string {
+  const out: string[] = []
+  const problems = treesWithProblems(report)
+  const unansweredItems = unansweredItemsOf(report)
 
   out.push(`# Recorded trees since ${report.base}`, "", "## Trees checked", "")
   if (report.everyTree === undefined) {
@@ -171,7 +198,13 @@ export function formatReport(
   )
 
   out.push("", "## Problems", "")
-  if (problems.length === 0) out.push("None.")
+  if (
+    problems.length === 0 &&
+    report.unreadableAnswers.length === 0 &&
+    report.unreadableTable.length === 0
+  ) {
+    out.push("None.")
+  }
   for (const { fixture, result } of problems) {
     if (result.kind === "unreadable") {
       out.push(`- ${fixture}: ${result.reason}`)
@@ -186,7 +219,10 @@ export function formatReport(
       )
     }
   }
-  for (const { file, reason } of report.unreadableAnswers) {
+  for (const { file, reason } of [
+    ...report.unreadableAnswers,
+    ...report.unreadableTable,
+  ]) {
     out.push(`- ${file}: ${reason}`)
   }
 
@@ -283,12 +319,5 @@ export function formatReport(
     out.push(`- ${fixture}/parse-error.json`)
   }
 
-  return {
-    text: `${out.join("\n")}\n`,
-    fails:
-      problems.length > 0 ||
-      report.unreadableAnswers.length > 0 ||
-      unansweredItems.length > 0 ||
-      report.unansweredTrees.length > 0,
-  }
+  return `${out.join("\n")}\n`
 }
