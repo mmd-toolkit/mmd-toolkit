@@ -451,6 +451,38 @@ for acceptance without adding configuration parameters or options to `parse()`.
    side in the result, fixture by fixture. When a fixture that should be
    accepted is rejected, or the reverse, do not keep its file, and show that.
 
+   Read each new tree also against the sentences that cite its fixture, so that
+   every tree is read for the case that it was added for. Find the citations at
+   the root of the repository; `grep` also finds a document that is not
+   committed yet, and runs in a copy without `.git`:
+
+   ```sh
+   grep -rn -F --include='*.md' --exclude='*.ja.md' "<diagram>/<fixture>]" packages/spec/docs packages/parser/docs packages/tests/docs packages/prettier-plugin-mmd/docs
+   ```
+
+   A citation that runs over two lines is found on the line that holds the name.
+   In the documents of the formatter, only `[corpus fixture: ...]` cites a
+   fixture of the corpus; a `[fixture: ...]` there names a fixture of the
+   formatter, and a line that holds one is no citation of this fixture. The
+   sentence that cites the fixture is the paragraph, the list item, or the table
+   row that holds the citation; read it whole. For each such sentence, say which
+   case the fixture shows (what is accepted, what is read as what, or how a text
+   is printed), and compare the parts of the tree that the case touches (nodes,
+   tokens, comments, positions) with what the sentence says of them and with
+   what the documents of the tree say of those node types and token kinds:
+   `packages/spec/docs/ast.md` and `ast/<diagram>.md`, and this package's
+   `docs/tokens.md`, `docs/tokens/<diagram>.md`, `docs/positions.md`, and
+   `docs/positions/<diagram>.md`. The diagram is that of the body node of the
+   tree (`FlowchartDiagram` is `flowchart`), also for a fixture of `common/`.
+   When the case touches no part of the tree, as a sentence of the formatter on
+   how a text is printed may, say so. Show one answer for each tree in the
+   result: the sentences, the case, the parts compared, the paragraphs compared
+   with, and whether they agree; that a tree was read is no answer. A tree that
+   no sentence cites gets an answer that says so, and is not compared. When the
+   work added its fixture (its `input.mmd` is not on `origin/main`), report the
+   missing sentence to the specification: a fixture is written with the sentence
+   that cites it (the skill `conventions`, Running tests).
+
 4. Use `-u` only for a change that changes existing results. Before such a
    change, copy the fixtures to a new directory outside the repository; after
    the change, rewrite the files with `pnpm run test:update`, which runs
@@ -469,21 +501,22 @@ for acceptance without adding configuration parameters or options to `parse()`.
    It prints the files that are new or removed, how many fixtures have each kind
    of difference, the same field of the same node type or of the error, and then
    each difference. Every kind must be explained by the change; if one is not,
-   do not accept the result of `-u`, and look into it. A fixture that the change
-   makes rejected gets a `parse-error.json`, and its old `ast.json` is left
-   behind, which the test that looks for files left behind names; delete it with
-   `rm` (and the reverse for a fixture that becomes accepted). `-u` also writes
-   the result of every fixture that has none, including fixtures added meanwhile
-   for rules not implemented yet; each `new:` line must be a fixture whose rule
-   is implemented, and the file of any other is deleted (step 1). Show the
-   number of fixtures of each kind in the result. A node whose fields the Db
-   does not read shows a wrong change only here (in state, an edit that makes a
-   floating note id end at its first character; the value strings of the leaf
-   nodes and the position of a state note are such fields). A snapshot
-   comparison alone establishes repeatability, so retain independent
-   tree-condition and Db checks when records are rewritten. Complete the parser
-   build before starting checks that import its `lib` output, then run the
-   corpus checks in `packages/tests`:
+   do not accept the result of `-u`, and look into it. Read each rewritten tree
+   against the sentences that cite its fixture, as the last paragraphs of step 3
+   say. A fixture that the change makes rejected gets a `parse-error.json`, and
+   its old `ast.json` is left behind, which the test that looks for files left
+   behind names; delete it with `rm` (and the reverse for a fixture that becomes
+   accepted). `-u` also writes the result of every fixture that has none,
+   including fixtures added meanwhile for rules not implemented yet; each `new:`
+   line must be a fixture whose rule is implemented, and the file of any other
+   is deleted (step 1). Show the number of fixtures of each kind in the result.
+   A node whose fields the Db does not read shows a wrong change only here (in
+   state, an edit that makes a floating note id end at its first character; the
+   value strings of the leaf nodes and the position of a state note are such
+   fields). A snapshot comparison alone establishes repeatability, so retain
+   independent tree-condition and Db checks when records are rewritten. Complete
+   the parser build before starting checks that import its `lib` output, then
+   run the corpus checks in `packages/tests`:
 
    ```sh
    npx vitest run tests/check-tree-corpus.test.ts tests/db-from-tree.test.ts
@@ -519,8 +552,9 @@ change.
 
 The work is done when every fixture passes the fixture test, the recorded trees
 pass the tree check of `@mmd-toolkit/tests` and give the Db that the corpus
-records, and every sentence that the work wrote or changed has a fixture for
-each of its cases (section 3).
+records, each new or rewritten tree has its answer (4.7, step 3), and every
+sentence that the work wrote or changed has a fixture for each of its cases
+(section 3).
 
 ### 4.9 Documents
 
@@ -542,7 +576,8 @@ Run `npx prettier --write` on them, and pass `pnpm run lint:docs` and
 Show as the result: what was implemented, file by file; the gaps in the
 specification that were found, and which of them are still open; the number of
 tests and their results; the number of recorded results (new, and changed, by
-kind); the exported types; the changed documents.
+kind); the answer for each new or rewritten tree (4.7, step 3); the exported
+types; the changed documents.
 
 ## 5. First-match lexical rules, hidden forms and semantic acceptance
 
