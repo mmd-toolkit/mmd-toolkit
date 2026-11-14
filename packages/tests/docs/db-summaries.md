@@ -50,13 +50,17 @@ what `FlowDB` exposes through its getters and drops the following, each for the
 reason given:
 
 - `vertices[].domId`: a DOM id built from a counter, used only for rendering.
+
 - `classDefs[].textStyles`: derived from `styles` for rendering (the entries
   containing `color`, with `fill` replaced by `bgFill`).
+
 - `textBefore` and `textAfter` of a
   [FlowchartDirectionStatement](../../spec/docs/ast/flowchart.md#flowchartdirectionstatement):
   the text of a direction line that mermaid.js does not read.
+
 - `vertices[].haveCallback`: set only under `securityLevel: loose`, a site
   setting; the click itself shows as the class `clickable`.
+
 - Click callback names and arguments are not in the state of the Db, which keeps
   them only inside closures, and only under `securityLevel: loose`. The summary
   has them as `clickCalls` instead: a patch of `FlowDB.setClickFun`
@@ -65,12 +69,14 @@ reason given:
   `loose`). `id` is the id as passed, `name` the name of the function, and
   `args` the text between the parentheses as written, whitespace at its ends
   too, or null when the call has no parentheses or only whitespace between them.
+
   [fixture: flowchart/gram-click-call] [fixture:
   flowchart/db-click-callback-whitespace-arguments] [fixture:
   flowchart/lex-callback-blank-parentheses] [fixture:
   class/lex-callback-blank-parentheses] [fixture:
   flowchart/tokens-callback-name-trailing-space] [fixture:
   flowchart/tokens-callback-arguments-spaces-at-ends]
+
 - Internal bookkeeping (`vertexCounter`, `subCount`, `posCrossRef`, ...).
 
 Other values of the summary:
@@ -87,52 +93,67 @@ Other values of the summary:
   tree, trailing whitespace lies outside the style range (see **Style
   statements** in [db-from-tree/flowchart.md](./db-from-tree/flowchart.md)).
   Leading whitespace is also significant: `linkStyle` adds `fill:none` when no
-  value starts with `fill`. [fixture:
-  flowchart/db-style-trailing-whitespace-characters] [fixture:
+  value starts with `fill`.
+
+  [fixture: flowchart/db-style-trailing-whitespace-characters] [fixture:
   flowchart/db-linkstyle-default-trailing-whitespace]
 
 - Texts (labels, subgraph and diagram titles, `accTitle`, `accDescr`, tooltips)
   are recorded before HTML sanitization, and `vertices[].link` is the URL as
-  written (trimmed); see [expected-results.md](./expected-results.md). [fixture:
-  flowchart/db-text-unsanitized-edge-label] [fixture:
+  written (trimmed); see [expected-results.md](./expected-results.md).
+
+  [fixture: flowchart/db-text-unsanitized-edge-label] [fixture:
   flowchart/db-text-unsanitized-subgraph-title] [fixture:
   flowchart/db-text-unsanitized-diagram-title] [fixture:
   flowchart/db-text-unsanitized-acc-title] [fixture:
   flowchart/db-text-unsanitized-acc-descr] [fixture:
   flowchart/db-text-unsanitized-tooltip]
+
 - A style that is all whitespace gives the empty text: `style A fill:#f00, ` has
-  the styles `fill:#f00` and the empty text. [fixture:
-  flowchart/gram-style-whitespace] [fixture:
+  the styles `fill:#f00` and the empty text.
+
+  [fixture: flowchart/gram-style-whitespace] [fixture:
   flowchart/db-style-whitespace-only-value] [fixture:
   flowchart/db-style-trailing-comma]
+
 - With these choices the summary does not depend on `securityLevel`, as long as
-  it is one of `strict`, `loose`, `antiscript`, and `sandbox`. [fixture:
-  flowchart/config-security-level-loose-click-call] [fixture:
+  it is one of `strict`, `loose`, `antiscript`, and `sandbox`.
+
+  [fixture: flowchart/config-security-level-loose-click-call] [fixture:
   flowchart/config-security-level-loose-click-link-javascript]
+
 - A subgraph with the id of an earlier subgraph is not added to the list: its
   members are added to the earlier one, which keeps its title, direction and
   place, and a class or a data block for the id applies to the earlier one. A
   subgraph is never its own member, so its id written in its own body is not in
-  `nodes`. [fixture: flowchart/db-class-last-subgraph-with-id] [fixture:
+  `nodes`.
+
+  [fixture: flowchart/db-class-last-subgraph-with-id] [fixture:
   flowchart/db-data-block-last-subgraph-with-id] [fixture:
   flowchart/db-subgraph-body-data-block-own-id] [fixture:
   flowchart/spec-subgraph-57671598]
+
 - `icon`, `form`, `pos`, `img`, `constraint`, `assetWidth` and `assetHeight` of
   vertices, `animate`, `animation` and `step` of edges, and `metadata` of
   subgraphs are set only by `@{ ... }` data blocks; see
-  [embedded-data.md](./embedded-data.md). [fixture:
-  flowchart/db-data-block-asset-width]
+  [embedded-data.md](./embedded-data.md).
+
+  [fixture: flowchart/db-data-block-asset-width]
+
 - An edge gets `step` only when its data block gives a positive integer.
-  `step: 0`, `step: 1.5` and `step: "2"` leave the edge without it. [fixture:
-  flowchart/db-data-block-edge-step] [fixture:
+  `step: 0`, `step: 1.5` and `step: "2"` leave the edge without it.
+
+  [fixture: flowchart/db-data-block-edge-step] [fixture:
   flowchart/db-data-block-edge-step-zero] [fixture:
   flowchart/db-data-block-edge-step-fraction] [fixture:
   flowchart/db-data-block-edge-step-string]
+
 - mermaid.js drops the keys `laneRole`, `laneIndex` and `drawnExtent` from a
   data block before it reads the block. A subgraph whose block has no other key
   therefore has no `metadata`, as a subgraph with an empty block has none;
-  another key stays in `metadata`. [fixture:
-  flowchart/db-data-block-subgraph-internal-key-only] [fixture:
+  another key stays in `metadata`.
+
+  [fixture: flowchart/db-data-block-subgraph-internal-key-only] [fixture:
   flowchart/db-data-block-subgraph-internal-keys-all] [fixture:
   flowchart/db-data-block-subgraph-internal-key-and-other] [fixture:
   flowchart/db-data-block-subgraph-empty-block]
@@ -140,7 +161,9 @@ Other values of the summary:
 On a vertex, YAML anchors and aliases in unknown data-block keys are accepted
 and then discarded with those keys. This includes a shared mapping and a
 self-referencing mapping: neither adds a summary field or a nonempty data-block
-effect. [fixture: flowchart/db-data-block-yaml-shared-alias] [fixture:
+effect.
+
+[fixture: flowchart/db-data-block-yaml-shared-alias] [fixture:
 flowchart/db-data-block-yaml-self-alias]
 
 ## sequence
@@ -183,18 +206,24 @@ Other values of the summary:
 
 - `wrap` of actors, boxes and messages follows the `wrap:` and `nowrap:`
   prefixes, and otherwise the configuration (`wrap` or `sequence.wrap`, from the
-  site, the frontmatter or a directive). [fixture:
-  sequence/config-wrap-frontmatter] [fixture:
+  site, the frontmatter or a directive).
+
+  [fixture: sequence/config-wrap-frontmatter] [fixture:
   sequence/config-sequence-wrap-frontmatter] [fixture:
   sequence/config-wrap-init-directive]
+
 - The numbers of an `autonumber` (`start` and `step`) are numbers, and the text
   `"Infinity"` where a number is too large for a double, since JSON has no such
-  number. [fixture: sequence/db-autonumber-start-overflow] [fixture:
+  number.
+
+  [fixture: sequence/db-autonumber-start-overflow] [fixture:
   sequence/db-autonumber-step-overflow]
+
 - The title is kept as the grammar passes it, with the whitespace after the
   first space following `title` and at the end of the line. A title of only
   whitespace still counts as a title for the renderer, which reserves room for
   it, so the whitespace is not dropped.
+
 - The links and properties of an actor are the keys an author wrote in JSON.
   `SequenceDB` copies them into the actor key by key
   ([`insertLinks`](https://github.com/mermaid-js/mermaid/blob/2086904e76c692331e34a45d7cc3bc30860d040e/packages/mermaid/src/diagrams/sequence/sequenceDb.ts#L488-L496),
@@ -202,8 +231,10 @@ Other values of the summary:
   so a key `__proto__` sets the prototype of the object instead of adding an
   entry, and mermaid.js then reads the prototype's entries too. The summary
   records such a prototype as a first entry `__proto__`.
+
 - An actor's `type` and description can be set by its `@{ ... }` data block. See
   [embedded-data.md](./embedded-data.md).
+
 - A participant id may be `link` (`participant link as Channel`,
   `link->>A: message`, `link link: Help @ https://example.com/channel`). The
   words `link`, `links`, `properties` and `details` begin a statement only when
@@ -213,8 +244,9 @@ Other values of the summary:
   elsewhere they start an id, so `link->>A` is a message from the participant
   `link`, and `A->>link : x` is a message to it. An id may contain `-` or `=`
   and may be followed by spaces or tabs before its `@{ ... }` data block
-  (`participant A-B@{ "type": "queue" }`). [fixture:
-  sequence/spec-sequence-diagram-106df33f] [fixture:
+  (`participant A-B@{ "type": "queue" }`).
+
+  [fixture: sequence/spec-sequence-diagram-106df33f] [fixture:
   sequence/spec-sequence-diagram-4c18d4c4] [fixture:
   sequence/spec-sequence-diagram-cd0728ae] [fixture:
   sequence/spec-sequence-diagram-22f2f841] [fixture:
@@ -262,18 +294,23 @@ reason given:
 
 - `classes[].domId` and `namespaces[].domId`: DOM ids built from counters, used
   only for rendering.
+
 - The display text of a member or a method (`text`), built from its other
   fields.
+
 - `notes[].index`: the number in the note's id.
+
 - The class definitions (`classDef`): the Db keeps them in a private map that
   nothing reads
   ([`ClassDB`](https://github.com/mermaid-js/mermaid/blob/2086904e76c692331e34a45d7cc3bc30860d040e/packages/mermaid/src/diagrams/class/classDb.ts#L40-L40));
   what they change shows in `classes[].styles`.
+
 - Click callbacks: the Db keeps the function name and arguments only inside
   closures, and only under `securityLevel: loose`. The summary has them as
   `clickCalls` instead, recorded as for flowchart by a patch of
-  `ClassDB.setClickFunc`, also for a name that is no class. [fixture:
-  class/db-callback-names-comma] [fixture:
+  `ClassDB.setClickFunc`, also for a name that is no class.
+
+  [fixture: class/db-callback-names-comma] [fixture:
   class/tokens-callback-name-trailing-space]
 
 Other values of the summary:
@@ -289,8 +326,9 @@ Other values of the summary:
   and for the keys it uses it
   [splits each style at `:` and trims the key and the value](https://github.com/mermaid-js/mermaid/blob/2086904e76c692331e34a45d7cc3bc30860d040e/packages/mermaid/src/rendering-util/rendering-elements/shapes/handDrawnShapeStyles.ts#L44-L51).
   It is not shown that none of these reads the whitespace at the ends, which
-  reaches the `style` attributes as written, so it is kept. [fixture:
-  class/db-style-trailing-whitespace-eol] [fixture:
+  reaches the `style` attributes as written, so it is kept.
+
+  [fixture: class/db-style-trailing-whitespace-eol] [fixture:
   class/db-class-def-trailing-whitespace]
 
 - `classes[].text` is kept, although it is built from the label and the type:
@@ -300,11 +338,14 @@ Other values of the summary:
 - `classes[].haveCallback` is kept: unlike flowchart, `setClickEvent` sets it
   under every `securityLevel`
   ([`setClickEvent`](https://github.com/mermaid-js/mermaid/blob/2086904e76c692331e34a45d7cc3bc30860d040e/packages/mermaid/src/diagrams/class/classDb.ts#L434-L444)).
+
   [fixture: class/config-security-level-loose-click]
+
 - `classes[].link` is the URL as written (trimmed), and `classes[].linkTarget`
   the target as written, or `_blank`, under every `securityLevel` (see
-  [expected-results.md](./expected-results.md)). [fixture:
-  class/config-security-level-loose-click]
+  [expected-results.md](./expected-results.md)).
+
+  [fixture: class/config-security-level-loose-click]
 
 ## state
 
@@ -385,8 +426,9 @@ the same under `look`, under `securityLevel` when it is one of `strict`,
 not make mermaid.js replace characters; for another `securityLevel`, with HTML
 labels enabled, the labels and descriptions of the states, the text of a note,
 and the labels of transitions hold the replaced characters (see
-[db-from-tree.md](./db-from-tree.md), the replacement of characters). [fixture:
-state/config-security-level-sandbox-click] [fixture:
+[db-from-tree.md](./db-from-tree.md), the replacement of characters).
+
+[fixture: state/config-security-level-sandbox-click] [fixture:
 state/config-look-hand-drawn] [fixture: state/config-html-labels-false]
 [fixture: state/config-security-level-other-description] [fixture:
 state/config-security-level-other-note] [fixture:
@@ -448,31 +490,42 @@ Values of the summary, by field:
   existed when this one was made. The entities are therefore numbered from 0 in
   the order of their first appearance, wherever it is: a relationship, a block,
   a `:::` statement, or the body of a subgraph. A relationship refers to an
-  entity by its `id`. [fixture: er/basic-entity] [fixture:
-  er/db-entity-ids-first-appearance]
+  entity by its `id`.
+
+  [fixture: er/basic-entity] [fixture: er/db-entity-ids-first-appearance]
+
 - `name` is the name as written, without quotes. A quoted name keeps its spaces,
   also in the `id`. The quoted and the bare form of a name are one entity, and
-  names are case-sensitive. [fixture: er/db-entity-name-quoted-spaces] [fixture:
+  names are case-sensitive.
+
+  [fixture: er/db-entity-name-quoted-spaces] [fixture:
   er/db-entity-name-quoted-same-as-bare] [fixture: er/db-entity-names-case]
   [fixture: er/db-relationship-quoted-entities]
+
 - A name is recorded as the lexer reads it. It can be made of digits, hold `-`,
   `.`, `*`, and non-ASCII letters, and U+2028, U+2029 and U+00A0 are part of it:
-  between the units of a statement they are not whitespace. [fixture:
-  er/db-entity-name-numbers] [fixture: er/db-entity-name-characters] [fixture:
-  er/db-entity-name-line-separator] [fixture:
+  between the units of a statement they are not whitespace.
+
+  [fixture: er/db-entity-name-numbers] [fixture: er/db-entity-name-characters]
+  [fixture: er/db-entity-name-line-separator] [fixture:
   er/db-entity-name-paragraph-separator] [fixture:
   er/db-entity-name-no-break-space] [fixture:
   er/db-entity-name-quoted-line-separator]
+
 - A relationship from an entity to itself has the same `id` at both ends.
+
   [fixture: er/db-entity-relationship-self]
+
 - `alias` is the text of `[alias]`, or the empty text. The first non-empty alias
   is kept: a later `A[second]`, and a later `A` without an alias, change
   nothing. An entity made without an alias gets the alias of a later statement,
   also when a relationship made it. An alias is a name: quoted, a number, or
-  with a hyphen. [fixture: er/db-alias-first-kept] [fixture:
-  er/db-alias-set-after-entity] [fixture: er/db-alias-after-relationship]
-  [fixture: er/db-alias-with-attributes] [fixture: er/db-alias-with-class]
-  [fixture: er/db-alias-empty-block] [fixture: er/db-alias-forms] [fixture:
+  with a hyphen.
+
+  [fixture: er/db-alias-first-kept] [fixture: er/db-alias-set-after-entity]
+  [fixture: er/db-alias-after-relationship] [fixture:
+  er/db-alias-with-attributes] [fixture: er/db-alias-with-class] [fixture:
+  er/db-alias-empty-block] [fixture: er/db-alias-forms] [fixture:
   er/db-alias-first-kept-directive-line]
 
 **Attributes**
@@ -481,84 +534,111 @@ Values of the summary, by field:
   backwards and
   [`addAttributes`](https://github.com/mermaid-js/mermaid/blob/2086904e76c692331e34a45d7cc3bc30860d040e/packages/mermaid/src/diagrams/er/erDb.ts#L95-L110)
   reads it backwards, so the summary has the written order. A name written twice
-  is kept twice. [fixture: er/db-attribute-order] [fixture:
-  er/db-attribute-keys]
+  is kept twice.
+
+  [fixture: er/db-attribute-order] [fixture: er/db-attribute-keys]
+
 - Blocks of one entity add up: a later block adds its attributes after the
   earlier ones, also an attribute of the same name. An empty block, written as
   `{}`, with a line feed, or with a space, makes the entity and adds nothing,
   also after a block with attributes. A block may come after the relationship
-  that made the entity, and a block may be written on one line. [fixture:
-  er/db-attribute-blocks-add-up] [fixture: er/db-attribute-block-empty]
-  [fixture: er/db-attribute-block-empty-after-attributes] [fixture:
+  that made the entity, and a block may be written on one line.
+
+  [fixture: er/db-attribute-blocks-add-up] [fixture:
+  er/db-attribute-block-empty] [fixture:
+  er/db-attribute-block-empty-after-attributes] [fixture:
   er/db-attribute-block-entity-from-relationship] [fixture:
   er/db-attribute-block-one-line] [fixture:
   er/db-attribute-blocks-add-up-comment-line]
+
 - `keys` is the list of the keys `PK`, `FK` and `UK` in the written order, as
   written in any case, a repeated key twice; it is the empty list when the
   attribute has none. `comment` is the text between the double quotes, without
   them and with its spaces, or the empty text when the attribute has none or an
-  empty one. [fixture: er/db-attribute-keys] [fixture:
-  er/db-attribute-keys-case] [fixture: er/db-attribute-defaults] [fixture:
-  er/db-attribute-comment-with-keys] [fixture: er/db-attribute-comment-spaces]
-  [fixture: er/db-attribute-comment-empty]
+  empty one.
+
+  [fixture: er/db-attribute-keys] [fixture: er/db-attribute-keys-case] [fixture:
+  er/db-attribute-defaults] [fixture: er/db-attribute-comment-with-keys]
+  [fixture: er/db-attribute-comment-spaces] [fixture:
+  er/db-attribute-comment-empty]
+
 - `type` and `name` are the words as read. A type may carry a length
   (`string(30)`, `decimal(10,2)`), a `?`, generic marks (`List~int~`, also with
   a space inside), and brackets; a word may hold `_`, `-`, `.`, and start with
   `*`. In backquotes it may hold spaces, and the backquotes are not part of it.
-  U+2028 inside a word is part of it. [fixture: er/db-attribute-type-length]
-  [fixture: er/db-attribute-type-question-mark] [fixture:
-  er/db-attribute-type-generic] [fixture: er/db-attribute-type-brackets]
-  [fixture: er/db-attribute-name-characters] [fixture:
-  er/db-attribute-backquoted] [fixture: er/db-attribute-name-line-separator]
+  U+2028 inside a word is part of it.
+
+  [fixture: er/db-attribute-type-length] [fixture:
+  er/db-attribute-type-question-mark] [fixture: er/db-attribute-type-generic]
+  [fixture: er/db-attribute-type-brackets] [fixture:
+  er/db-attribute-name-characters] [fixture: er/db-attribute-backquoted]
+  [fixture: er/db-attribute-name-line-separator]
+
 - Inside a block, a comment line, a directive line, an empty line, and a line of
   whitespace are no text, and CRLF and a lone CR end a line. The words
   `direction RL` there are an attribute with the type `direction` and the name
-  `RL`, not a direction statement. [fixture: er/db-attribute-block-comment-line]
-  [fixture: er/db-attribute-block-directive-line] [fixture:
+  `RL`, not a direction statement.
+
+  [fixture: er/db-attribute-block-comment-line] [fixture:
+  er/db-attribute-block-directive-line] [fixture:
   er/db-attribute-block-empty-line] [fixture:
   er/db-attribute-block-whitespace-line] [fixture: er/db-attribute-block-crlf]
   [fixture: er/db-attribute-block-cr] [fixture:
   er/db-attribute-block-direction-text]
+
 - A line with `style`, then a `:` followed by `#`, then a `;` has its last `;`
   ignored by the line rule of [common.md](../../spec/docs/common.md), also
   inside the comment of an attribute: the comment `"style:#x;"` is `style:#x`.
+
   [fixture: er/db-attribute-comment-ignored-semicolon]
 
 **Classes and styles of an entity**
 
 - `classes` are the names that `class` statements and `:::` gave the entity, in
   the order of the statements, a name given twice kept twice. No `classDef` is
-  needed. [fixture: er/db-class-statement-ids] [fixture:
-  er/db-class-statement-repeat] [fixture: er/db-class-without-class-def]
+  needed.
+
+  [fixture: er/db-class-statement-ids] [fixture: er/db-class-statement-repeat]
+  [fixture: er/db-class-without-class-def]
+
 - `class A,B c` gives `c` to each entity of its list. A name that is no entity
   gets nothing and is not made, and an entity made after the statement does not
   have the class. Spaces around the commas of a list do not matter, and a class
-  named `default` is recorded like any other. [fixture:
-  er/db-class-undefined-entity] [fixture: er/db-class-before-entity] [fixture:
-  er/db-class-list-spaces] [fixture: er/db-class-named-default] [fixture:
-  er/db-class-name-line-separator]
+  named `default` is recorded like any other.
+
+  [fixture: er/db-class-undefined-entity] [fixture: er/db-class-before-entity]
+  [fixture: er/db-class-list-spaces] [fixture: er/db-class-named-default]
+  [fixture: er/db-class-name-line-separator]
+
 - `A:::c1,c2` makes the entity A and gives it the classes of the list. It also
   gives them to the first entity of a relationship, to the second, or to both,
-  and it may come after an alias and before a block. [fixture:
-  er/db-class-separator] [fixture: er/db-class-separator-relationship-first]
-  [fixture: er/db-class-separator-relationship-second] [fixture:
+  and it may come after an alias and before a block.
+
+  [fixture: er/db-class-separator] [fixture:
+  er/db-class-separator-relationship-first] [fixture:
+  er/db-class-separator-relationship-second] [fixture:
   er/db-class-separator-relationship-both] [fixture:
   er/db-class-separator-block]
+
 - `cssStyles` are the styles of the `style` statements of the entity, split at
   commas, in the order of the statements, over all statements. A statement with
   a list of names gives its styles to each, and a name that is no entity gets
   nothing and is not made, also when the statement comes before the entity.
+
   [fixture: er/db-style-statement] [fixture: er/db-style-id-list-spaces]
   [fixture: er/db-style-undefined-entity] [fixture: er/db-style-before-entity]
   [fixture: er/db-style-non-ascii] [fixture: er/db-style-line-separator]
+
 - A `;` after the styles ends the statement. When the line has `style`, then a
   `:` followed by `#`, then a `;`, as in `style A fill:#f00;`, the last `;` is
   ignored by the line rule, as if it were not there. Only the last one is: in
   `style A fill:#f00;stroke:#00f;` the `#f00;` before it is read as a character
   entity and replaced by a placeholder (see
-  [Entities](../../spec/docs/common.md#entities)). [fixture:
-  er/db-style-semicolon-separator] [fixture: er/db-style-ignored-semicolon]
-  [fixture: er/db-style-ignored-semicolon-last-only] [fixture:
+  [Entities](../../spec/docs/common.md#entities)).
+
+  [fixture: er/db-style-semicolon-separator] [fixture:
+  er/db-style-ignored-semicolon] [fixture:
+  er/db-style-ignored-semicolon-last-only] [fixture:
   er/db-style-ignored-semicolon-two-statements]
 
 **Relationships**
@@ -567,49 +647,75 @@ Values of the summary, by field:
   the entities that do not exist yet. When a subgraph with the name was closed
   before the statement, the end is the id of the subgraph instead (see
   **Subgraphs**). The relationships are in source order, and one written twice
-  is kept twice. [fixture: er/db-relationship-source-order]
+  is kept twice.
+
+  [fixture: er/db-relationship-source-order]
+
 - `cardA` is the cardinality written right of the line and `cardB` the one
   written left of it, as mermaid.js names them: in `||--o{`, `cardA` is
   `ZERO_OR_MORE` and `cardB` is `ONLY_ONE`. A spelling means the same on either
-  side. [fixture: er/db-cardinality-sides] [fixture:
+  side.
+
+  [fixture: er/db-cardinality-sides] [fixture:
   er/db-cardinality-symbol-either-side]
+
 - The spellings of a cardinality, each case-insensitive for words:
-  - `ONLY_ONE`: `||`, `one`, `only one`, and `1`. [fixture:
-    er/db-cardinality-symbols-only-one] [fixture:
+  - `ONLY_ONE`: `||`, `one`, `only one`, and `1`.
+
+    [fixture: er/db-cardinality-symbols-only-one] [fixture:
     er/db-cardinality-words-only-one] [fixture: er/db-cardinality-digit-one]
-  - `ZERO_OR_ONE`: `|o`, `o|`, `zero or one`, and `one or zero`. [fixture:
-    er/db-cardinality-symbols-zero-or-one] [fixture:
+
+  - `ZERO_OR_ONE`: `|o`, `o|`, `zero or one`, and `one or zero`.
+
+    [fixture: er/db-cardinality-symbols-zero-or-one] [fixture:
     er/db-cardinality-words-zero-or-one]
+
   - `ZERO_OR_MORE`: `}o`, `o{`, `zero or more`, `zero or many`, `0+`, `many(0)`,
-    and `many`. [fixture: er/db-cardinality-symbols-zero-or-more] [fixture:
+    and `many`.
+
+    [fixture: er/db-cardinality-symbols-zero-or-more] [fixture:
     er/db-cardinality-words-zero-or-more] [fixture: er/db-cardinality-plus]
     [fixture: er/db-cardinality-many-with-count] [fixture:
     er/db-cardinality-many]
+
   - `ONE_OR_MORE`: `}|`, `|{`, `one or more`, `one or many`, `1+`, and
-    `many(1)`. [fixture: er/db-cardinality-symbols-one-or-more] [fixture:
+    `many(1)`.
+
+    [fixture: er/db-cardinality-symbols-one-or-more] [fixture:
     er/db-cardinality-words-one-or-more] [fixture: er/db-cardinality-plus]
     [fixture: er/db-cardinality-many-with-count]
+
   - `MD_PARENT`: `u` directly before `-`, `.`, or `|`, as in `u--` and `u..`,
     and `U`, on either side. On the right side the character after it starts the
     next name: `A ||--u-B : x` has the cardinality `MD_PARENT` on the right and
-    the entity `-B`. [fixture: er/db-cardinality-parent] [fixture:
+    the entity `-B`.
+
+    [fixture: er/db-cardinality-parent] [fixture:
     er/db-cardinality-parent-uppercase] [fixture: er/lex-md-parent-right]
     [fixture: er/lex-md-parent-right-glued-name] [fixture:
     er/lex-md-parent-right-glued-dot] [fixture: er/lex-md-parent-both-glued]
-  - Words in capitals or mixed case are the same. [fixture:
-    er/db-cardinality-words-case]
+
+  - Words in capitals or mixed case are the same.
+
+    [fixture: er/db-cardinality-words-case]
+
 - `relType` is `IDENTIFYING` for `--` and `to`, and `NON_IDENTIFYING` for `..`,
-  `.-`, `-.`, and `optionally to`. [fixture: er/db-cardinality-symbols-only-one]
-  [fixture: er/db-relationship-type-to] [fixture: er/db-relationship-type-dots]
-  [fixture: er/db-relationship-type-dot-dash] [fixture:
-  er/db-relationship-type-dash-dot] [fixture:
-  er/db-relationship-type-optionally-to] [fixture: er/db-relationship-words-to]
+  `.-`, `-.`, and `optionally to`.
+
+  [fixture: er/db-cardinality-symbols-only-one] [fixture:
+  er/db-relationship-type-to] [fixture: er/db-relationship-type-dots] [fixture:
+  er/db-relationship-type-dot-dash] [fixture: er/db-relationship-type-dash-dot]
+  [fixture: er/db-relationship-type-optionally-to] [fixture:
+  er/db-relationship-words-to]
+
 - `roleA` is the role, which every relationship has: a bare word, or a quoted
   text without its quotes and with its spaces, also the empty text, a `%`, an
   apostrophe, and non-ASCII letters. U+2028 is part of a bare role, and is kept
-  in a quoted one. [fixture: er/db-role-word] [fixture: er/db-role-quoted]
-  [fixture: er/db-role-quoted-empty] [fixture: er/db-role-quoted-percent]
-  [fixture: er/db-role-non-ascii] [fixture: er/db-role-line-separator] [fixture:
+  in a quoted one.
+
+  [fixture: er/db-role-word] [fixture: er/db-role-quoted] [fixture:
+  er/db-role-quoted-empty] [fixture: er/db-role-quoted-percent] [fixture:
+  er/db-role-non-ascii] [fixture: er/db-role-line-separator] [fixture:
   er/db-role-quoted-line-separator]
 
 **Class definitions**
@@ -619,42 +725,53 @@ Values of the summary, by field:
   order, also those with `color`. A second `classDef` of the name adds its
   styles to the first and does not move it. A `classDef` with a list of names
   defines each. A definition that no entity uses is kept. A name `default` is
-  kept. [fixture: er/db-class-def-styles] [fixture:
-  er/db-class-def-several-styles] [fixture: er/db-class-def-twice] [fixture:
-  er/db-class-def-ids] [fixture: er/db-class-def-unused] [fixture:
-  er/db-class-def-default] [fixture: er/db-class-def-twice-empty-line]
+  kept.
+
+  [fixture: er/db-class-def-styles] [fixture: er/db-class-def-several-styles]
+  [fixture: er/db-class-def-twice] [fixture: er/db-class-def-ids] [fixture:
+  er/db-class-def-unused] [fixture: er/db-class-def-default] [fixture:
+  er/db-class-def-twice-empty-line]
+
 - As for `style`, a `;` after the styles ends the statement, and the last `;` of
   a line with `classDef`, then a `:` followed by `#`, then a `;` is ignored by
-  the line rule. U+2028 is part of a style. [fixture:
-  er/db-class-def-semicolon-separator] [fixture:
+  the line rule. U+2028 is part of a style.
+
+  [fixture: er/db-class-def-semicolon-separator] [fixture:
   er/db-class-def-ignored-semicolon] [fixture: er/db-class-def-line-separator]
 
 **Subgraphs**
 
 - `id` is the id of the header, without quotes and trimmed. A quoted id keeps
   its spaces. Two subgraphs may have the same id, and both are in the list.
+
   [fixture: er/db-subgraph-id-quoted] [fixture: er/db-subgraph-id-trimmed]
   [fixture: er/db-subgraph-same-id-twice] [fixture:
   er/db-subgraph-nested-same-id]
+
 - `title` is the words of the bracket joined by a space, each a name that may be
   quoted, with spaces between them reduced to one, and trimmed after the
-  replacement of characters; without a bracket it is the id. [fixture:
-  er/db-subgraph-title-words] [fixture: er/db-subgraph-title-quoted] [fixture:
-  er/db-subgraph-title-spaces-collapse] [fixture:
+  replacement of characters; without a bracket it is the id.
+
+  [fixture: er/db-subgraph-title-words] [fixture: er/db-subgraph-title-quoted]
+  [fixture: er/db-subgraph-title-spaces-collapse] [fixture:
   er/db-subgraph-title-quoted-and-bare] [fixture: er/db-subgraph-title-trimmed]
   [fixture: er/db-subgraph-title-line-separator] [fixture:
   er/db-subgraph-no-title]
+
 - `nodes` are the names of the entities in the body, and the ids of the
   subgraphs in it, in order. A nested subgraph ends first, so it is in the list
-  before the subgraph around it, and its id is a node of that one. [fixture:
-  er/db-subgraph-empty] [fixture: er/db-subgraph-nested]
+  before the subgraph around it, and its id is a node of that one.
+
+  [fixture: er/db-subgraph-empty] [fixture: er/db-subgraph-nested]
+
 - A node is the value of a statement of the body. A relationship gives both
   names, and an entity with an alias, a block or `:::` gives its name. Other
   statements give a value too: `class`, `classDef` and `style` give their own
   word, and `accTitle`, `accDescr` and an `accDescr` block give their text
-  trimmed. A `direction` statement gives none. [fixture:
-  er/db-subgraph-nodes-relationship] [fixture: er/db-subgraph-nodes-block]
-  [fixture: er/db-subgraph-nodes-alias] [fixture:
+  trimmed. A `direction` statement gives none.
+
+  [fixture: er/db-subgraph-nodes-relationship] [fixture:
+  er/db-subgraph-nodes-block] [fixture: er/db-subgraph-nodes-alias] [fixture:
   er/db-subgraph-nodes-class-separator] [fixture:
   er/db-subgraph-nodes-class-statement] [fixture:
   er/db-subgraph-nodes-class-def-statement] [fixture:
@@ -662,42 +779,56 @@ Values of the summary, by field:
   er/db-subgraph-nodes-acc-title] [fixture: er/db-subgraph-nodes-acc-descr-line]
   [fixture: er/db-subgraph-nodes-acc-descr-block] [fixture:
   er/db-subgraph-nodes-all-statements] [fixture: er/db-subgraph-direction-only]
+
 - A node is kept as written, with its spaces, and quotes removed. It is dropped
   when its trimmed text is empty or equals the trimmed text of an earlier node
   of the body, and when an earlier subgraph already has it. Nested subgraphs
   close first, so a name in a nested subgraph is not a node of the one around it
-  even when that one names it too. [fixture: er/db-subgraph-nodes-untrimmed]
-  [fixture: er/db-subgraph-nodes-blank-name] [fixture:
-  er/db-subgraph-nodes-quoted-name] [fixture: er/db-subgraph-member-repeated]
-  [fixture: er/db-subgraph-member-in-earlier] [fixture:
+  even when that one names it too.
+
+  [fixture: er/db-subgraph-nodes-untrimmed] [fixture:
+  er/db-subgraph-nodes-blank-name] [fixture: er/db-subgraph-nodes-quoted-name]
+  [fixture: er/db-subgraph-member-repeated] [fixture:
+  er/db-subgraph-member-in-earlier] [fixture:
   er/db-subgraph-member-nested-and-outer]
+
 - A comment line, a directive line, an empty line, and a line of whitespace in
-  the body are no text. [fixture: er/db-subgraph-nodes-comment-line] [fixture:
+  the body are no text.
+
+  [fixture: er/db-subgraph-nodes-comment-line] [fixture:
   er/db-subgraph-nodes-directive-line] [fixture:
   er/db-subgraph-nodes-empty-line] [fixture:
   er/db-subgraph-nodes-whitespace-line]
+
 - `dir` is the value of the last `direction` statement of the body, and is
   absent when there is none. A nested subgraph has its own. A `direction`
   statement inside a subgraph does not set the direction of the diagram.
+
   [fixture: er/db-subgraph-direction] [fixture:
   er/db-subgraph-direction-top-level] [fixture: er/db-subgraph-direction-nested]
+
 - A relationship ends at the id of a subgraph when a subgraph with the name was
   closed before the statement: the relationship in its own body does not, as the
   subgraph is added when it ends. The statement also makes an entity with that
   name, so the entity stays in `entities`, although the renderer does not draw
   it. A subgraph without nodes counts as well. When the subgraph comes after the
-  statement, the end is the entity. [fixture: er/db-subgraph-relationship-after]
-  [fixture: er/db-subgraph-relationship-before] [fixture:
+  statement, the end is the entity.
+
+  [fixture: er/db-subgraph-relationship-after] [fixture:
+  er/db-subgraph-relationship-before] [fixture:
   er/db-subgraph-relationship-inside] [fixture:
   er/db-subgraph-relationship-two-subgraphs] [fixture:
   er/db-subgraph-relationship-empty-subgraph]
+
 - `classes` and `cssStyles` of a subgraph come from `class` statements, `:::`,
   and `style` statements that follow its end, and are applied to every entity or
   subgraph that has the name: when two subgraphs have the same id, the last one;
   when an entity has it too, also the entity. A statement before the subgraph
-  does nothing for it, and a `style` statement makes no entity. [fixture:
-  er/db-subgraph-class-statement] [fixture: er/db-subgraph-style-statement]
-  [fixture: er/db-subgraph-class-before-definition] [fixture:
+  does nothing for it, and a `style` statement makes no entity.
+
+  [fixture: er/db-subgraph-class-statement] [fixture:
+  er/db-subgraph-style-statement] [fixture:
+  er/db-subgraph-class-before-definition] [fixture:
   er/db-subgraph-entity-and-subgraph-style] [fixture:
   er/db-subgraph-same-id-class-last]
 
@@ -707,43 +838,56 @@ Values of the summary, by field:
   outside the subgraphs. The word and the value may be in any case, and the
   value is recorded in capitals. The statement is the line that holds them: text
   before the word or after the value is part of the statement, and makes no
-  entity. [fixture: er/db-direction-values] [fixture: er/db-direction-case]
-  [fixture: er/db-direction-line-text-before] [fixture:
-  er/db-direction-line-text-after]
+  entity.
+
+  [fixture: er/db-direction-values] [fixture: er/db-direction-case] [fixture:
+  er/db-direction-line-text-before] [fixture: er/db-direction-line-text-after]
+
 - `title` comes from the frontmatter only. The grammar has a rule for a `title`
   statement but no token for it, so a line `title My ER` makes the entities
-  `title`, `My` and `ER`. [fixture: er/db-title-frontmatter] [fixture:
-  er/db-title-frontmatter-quoted] [fixture: er/db-title-line-is-entities]
+  `title`, `My` and `ER`.
+
+  [fixture: er/db-title-frontmatter] [fixture: er/db-title-frontmatter-quoted]
+  [fixture: er/db-title-line-is-entities]
+
 - `accTitle` is the text after `accTitle:`, trimmed; a later one replaces the
   earlier. The white space after the colon includes line terminators, so an
   `accTitle:` with no text on its line takes the next line. A directive inside
-  the text is not part of it. [fixture: er/db-acc-title-line] [fixture:
-  er/db-acc-title-spaces] [fixture: er/db-acc-title-replaces] [fixture:
-  er/db-acc-title-empty-takes-next-line] [fixture:
-  er/db-acc-title-directive-in-text]
+  the text is not part of it.
+
+  [fixture: er/db-acc-title-line] [fixture: er/db-acc-title-spaces] [fixture:
+  er/db-acc-title-replaces] [fixture: er/db-acc-title-empty-takes-next-line]
+  [fixture: er/db-acc-title-directive-in-text]
+
 - `accDescr` is the text after `accDescr:`, or the text of an `accDescr { }`
   block, trimmed; a later one of either form replaces the earlier, but an empty
   block changes nothing and leaves the description before it. The lines of a
   block are joined by a line feed with the white space at the start of each line
   removed, so an empty line and a line of whitespace leave no extra line feed. A
   comment line and a directive line inside the block are no text, and U+2028 is
-  kept. [fixture: er/db-acc-descr-line] [fixture: er/db-acc-descr-block]
-  [fixture: er/db-acc-descr-replaces] [fixture:
-  er/db-acc-descr-block-comment-line] [fixture:
-  er/db-acc-descr-block-then-empty] [fixture:
+  kept.
+
+  [fixture: er/db-acc-descr-line] [fixture: er/db-acc-descr-block] [fixture:
+  er/db-acc-descr-replaces] [fixture: er/db-acc-descr-block-comment-line]
+  [fixture: er/db-acc-descr-block-then-empty] [fixture:
   er/db-acc-descr-block-directive-line] [fixture:
   er/db-acc-descr-block-empty-line] [fixture:
   er/db-acc-descr-block-whitespace-line] [fixture:
   er/db-acc-descr-block-line-separator]
+
 - The line rule applies to these lines like to any other: in
   `accTitle: style:#x;y;` the last `;` is ignored and `#x;` is read as a
   character entity, replaced by a placeholder, in the title as in the
-  description. [fixture: er/db-acc-title-ignored-semicolon] [fixture:
+  description.
+
+  [fixture: er/db-acc-title-ignored-semicolon] [fixture:
   er/db-acc-descr-block-ignored-semicolon]
+
 - A comment line, a directive line, an empty line, and a line of whitespace
-  between statements are no text. [fixture: er/db-comment-line] [fixture:
-  er/db-directive-line] [fixture: er/db-empty-line] [fixture:
-  er/db-whitespace-line]
+  between statements are no text.
+
+  [fixture: er/db-comment-line] [fixture: er/db-directive-line] [fixture:
+  er/db-empty-line] [fixture: er/db-whitespace-line]
 
 Values are recorded as the Db holds them. mermaid.js passes four texts through
 [`sanitizeText`](https://github.com/mermaid-js/mermaid/blob/2086904e76c692331e34a45d7cc3bc30860d040e/packages/mermaid/src/diagrams/er/erDb.ts#L351-L353):
@@ -754,10 +898,11 @@ are as written. The summary is the same under `look` (`classic`, `handDrawn`,
 `antiscript` and `sandbox`. For another `securityLevel`, with HTML labels
 enabled, those four texts hold the replaced characters (see
 [db-from-tree.md](./db-from-tree.md#the-replacement-of-characters)); with HTML
-labels disabled they do not. [fixture: er/config-look-classic] [fixture:
-er/config-look-hand-drawn] [fixture: er/config-look-neo] [fixture:
-er/config-security-level-strict-subgraph-title] [fixture:
-er/config-security-level-loose-subgraph-title] [fixture:
+labels disabled they do not.
+
+[fixture: er/config-look-classic] [fixture: er/config-look-hand-drawn] [fixture:
+er/config-look-neo] [fixture: er/config-security-level-strict-subgraph-title]
+[fixture: er/config-security-level-loose-subgraph-title] [fixture:
 er/config-security-level-antiscript-subgraph-title] [fixture:
 er/config-security-level-sandbox-subgraph-title] [fixture:
 er/config-security-level-other-subgraph-title] [fixture:
@@ -813,24 +958,29 @@ or gives back changed:
   the tasks as
   [`addTask()`](https://github.com/mermaid-js/mermaid/blob/2086904e76c692331e34a45d7cc3bc30860d040e/packages/mermaid/src/diagrams/gantt/ganttDb.js#L596-L630)
   made them.
+
 - The ids of the tasks. `clear()` resets the tasks but not the table from an id
   to the position of its task, so an id that a text does not define would find
   the task that has the position of an old id of an earlier text, and a `click`
   on it would link that task. Before `clear()`, the patch moves the positions of
   the ids of the earlier text beyond every task, so that the Db of a text does
   not depend on the texts parsed before it.
+
 - The links. `setLink()` stores what `@braintree/sanitize-url` makes of the URL
   unless `securityLevel` is `loose`, which is not what the text says, and the
   summary is the same under every `securityLevel` (see
   [expected-results.md](./expected-results.md)). The patch stores the URL as
-  written, which is what the Db stores under `loose`. [fixture:
-  gantt/config-security-level-strict-click-href] [fixture:
+  written, which is what the Db stores under `loose`.
+
+  [fixture: gantt/config-security-level-strict-click-href] [fixture:
   gantt/config-security-level-sandbox-click-href]
+
 - The calls that bind a click callback. The Db keeps the function name and the
   arguments in a closure, and only under `securityLevel: loose`. The patch
   records each call as the grammar makes it (see
-  `src/normalizers/click-calls.ts`). [fixture:
-  gantt/config-security-level-loose-click-call] [fixture:
+  `src/normalizers/click-calls.ts`).
+
+  [fixture: gantt/config-security-level-loose-click-call] [fixture:
   gantt/config-security-level-antiscript-click-call]
 
 `weekend` has no getter. It is read through
@@ -854,18 +1004,23 @@ It drops the following, each for the reason given:
   ([`Invalid date`](https://github.com/mermaid-js/mermaid/blob/2086904e76c692331e34a45d7cc3bc30860d040e/packages/mermaid/src/diagrams/gantt/ganttDb.js#L371-L371)),
   although the text is accepted. What the text determines is how the dates are
   given, which is `raw`; it does not determine the dates. The summary is
-  therefore the same on every day and in every time zone. [fixture:
-  gantt/db-task-start-after-unknown] [fixture: gantt/db-task-start-not-a-date]
-  [fixture: gantt/db-task-end-until-unknown]
+  therefore the same on every day and in every time zone.
+
+  [fixture: gantt/db-task-start-after-unknown] [fixture:
+  gantt/db-task-start-not-a-date] [fixture: gantt/db-task-end-until-unknown]
+
 - `type`: the section again. `prevTaskId`: the id of the task before, which
   `raw.startTime` and the order of the tasks give. `raw.data`: the text of the
   data, of which `raw`, `id`, and the tags are the reading.
+
 - `topAxis`: only the method `enableTopAxis()` sets it, but the statement
   `topAxis` calls
   [`yy.TopAxis()`](https://github.com/mermaid-js/mermaid/blob/2086904e76c692331e34a45d7cc3bc30860d040e/packages/mermaid/src/diagrams/gantt/parser/gantt.jison#L141-L141),
   which the Db does not have, so mermaid.js rejects the statement with a
-  `TypeError` and no accepted text sets the flag. [fixture:
-  gantt/db-top-axis-statement]
+  `TypeError` and no accepted text sets the flag.
+
+  [fixture: gantt/db-top-axis-statement]
+
 - `displayMode`, which no statement sets (the renderer reads it from the
   configuration), and `diagramId` and the functions of the click statements,
   which are set when the diagram is drawn.
@@ -880,8 +1035,9 @@ Values of the summary, by field:
   line break, except for `todayMarker`, which ends before a `;` or the line
   break and holds a `#`; what follows is read as a statement of its own. The
   same end holds for the tokens of `includes` and `excludes` (below). A later
-  statement replaces an earlier one. [fixture:
-  gantt/db-date-format-ends-at-hash] [fixture:
+  statement replaces an earlier one.
+
+  [fixture: gantt/db-date-format-ends-at-hash] [fixture:
   gantt/db-date-format-ends-at-semicolon] [fixture:
   gantt/db-axis-format-ends-at-hash] [fixture:
   gantt/db-axis-format-ends-at-semicolon] [fixture:
@@ -896,36 +1052,48 @@ Values of the summary, by field:
   gantt/db-date-format-last-wins] [fixture: gantt/db-axis-format] [fixture:
   gantt/db-tick-interval] [fixture: gantt/db-today-marker] [fixture:
   gantt/db-today-marker-off]
+
 - `includes` and `excludes` are lists of tokens, which
   [`mergeTokens`](https://github.com/mermaid-js/mermaid/blob/2086904e76c692331e34a45d7cc3bc30860d040e/packages/mermaid/src/diagrams/gantt/ganttDb.js#L133-L139)
   makes: the text of each statement in lower case, split at whitespace and
   commas, added to the tokens of the earlier statements, a token only once, at
-  its first place. [fixture: gantt/db-excludes-tokens] [fixture:
-  gantt/db-excludes-merged-lines] [fixture: gantt/db-excludes-duplicates]
-  [fixture: gantt/db-includes-tokens]
-- `inclusiveEndDates` is true with the statement. [fixture:
-  gantt/db-inclusive-end-dates]
+  its first place.
+
+  [fixture: gantt/db-excludes-tokens] [fixture: gantt/db-excludes-merged-lines]
+  [fixture: gantt/db-excludes-duplicates] [fixture: gantt/db-includes-tokens]
+
+- `inclusiveEndDates` is true with the statement.
+
+  [fixture: gantt/db-inclusive-end-dates]
+
 - `weekday` is the day of the last `weekday` statement, and `weekend` the day of
   the last `weekend` statement, in lower case, whatever the case in the text.
+
   [fixture: gantt/db-weekday-last-wins] [fixture: gantt/db-weekend-friday]
   [fixture: gantt/db-weekend-saturday]
 
 **Texts**
 
 - `title` is the text after `title` and its whitespace, with `#` and `;`. A
-  `title` statement replaces the title of the frontmatter. [fixture:
-  gantt/db-title-statement] [fixture: gantt/db-title-frontmatter] [fixture:
-  gantt/db-title-statement-after-frontmatter]
+  `title` statement replaces the title of the frontmatter.
+
+  [fixture: gantt/db-title-statement] [fixture: gantt/db-title-frontmatter]
+  [fixture: gantt/db-title-statement-after-frontmatter]
+
 - `accTitle` and `accDescr` are the text of the statement, trimmed. The text of
   a description in a block has its line breaks, and the whitespace after each of
-  them is left out. [fixture: gantt/db-acc-title] [fixture: gantt/db-acc-descr]
-  [fixture: gantt/db-acc-descr-block]
+  them is left out.
+
+  [fixture: gantt/db-acc-title] [fixture: gantt/db-acc-descr] [fixture:
+  gantt/db-acc-descr-block]
+
 - The title and the accessibility texts pass through `sanitizeText` and, under a
   `securityLevel` that is not one of mermaid.js's values with HTML labels
   enabled, hold the replaced characters (see
   [db-from-tree.md](./db-from-tree.md), the replacement of characters). The
-  names of sections and the descriptions of tasks are not changed. [fixture:
-  gantt/config-security-level-other-title] [fixture:
+  names of sections and the descriptions of tasks are not changed.
+
+  [fixture: gantt/config-security-level-other-title] [fixture:
   gantt/config-security-level-other-acc-title] [fixture:
   gantt/config-security-level-other-acc-descr] [fixture:
   gantt/config-security-level-other-names-as-written]
@@ -934,57 +1102,85 @@ Values of the summary, by field:
 
 - `sections` has the text of each `section` statement without the keyword and
   the one whitespace character after it, also when a name repeats. A task before
-  the first section has the empty `section`. [fixture: gantt/db-sections]
-  [fixture: gantt/db-task-before-section]
-- `task` is the text before the colon, with the spaces before it. [fixture:
-  gantt/db-task-description-spaces]
+  the first section has the empty `section`.
+
+  [fixture: gantt/db-sections] [fixture: gantt/db-task-before-section]
+
+- `task` is the text before the colon, with the spaces before it.
+
+  [fixture: gantt/db-task-description-spaces]
+
 - The data after the colon is split at commas into items, after the tags (see
   below), and
   [`parseData`](https://github.com/mermaid-js/mermaid/blob/2086904e76c692331e34a45d7cc3bc30860d040e/packages/mermaid/src/diagrams/gantt/ganttDb.js#L536-L590)
   reads one item as the end, two as the start and the end, and three as the id,
   the start, and the end. With one item the start is `prevTaskEnd`, with the id
-  of the task before, and without an id for the first task. [fixture:
-  gantt/db-task-id-written] [fixture: gantt/db-task-forms] [fixture:
+  of the task before, and without an id for the first task.
+
+  [fixture: gantt/db-task-id-written] [fixture: gantt/db-task-forms] [fixture:
   gantt/db-task-empty-data]
+
 - With four items or more, the task has no `id`, and `raw` has neither a start
-  nor an end. [fixture: gantt/db-task-four-items]
+  nor an end.
+
+  [fixture: gantt/db-task-four-items]
+
 - The items are trimmed and kept as written: a start after ids (`after a b`), an
-  end until an id, and an end that is a date or a length. [fixture:
-  gantt/db-task-after-ids] [fixture: gantt/db-task-end-until] [fixture:
-  gantt/db-task-end-date]
+  end until an id, and an end that is a date or a length.
+
+  [fixture: gantt/db-task-after-ids] [fixture: gantt/db-task-end-until]
+  [fixture: gantt/db-task-end-date]
+
 - A task without an id is
   [numbered](https://github.com/mermaid-js/mermaid/blob/2086904e76c692331e34a45d7cc3bc30860d040e/packages/mermaid/src/diagrams/gantt/ganttDb.js#L469-L475)
   `task1`, `task2`, ... among the tasks without one, from one in each text.
+
   [fixture: gantt/db-task-id-numbered]
+
 - A tag is one of `active`, `done`, `crit`, `milestone`, and `vert`, written in
   lower case, and
   [taken from the front](https://github.com/mermaid-js/mermaid/blob/2086904e76c692331e34a45d7cc3bc30860d040e/packages/mermaid/src/diagrams/gantt/ganttDb.js#L885-L899)
   of the items as long as the first item is one; it sets its flag, once for a
   repeated tag, and is not an item. A tag in another place, or in another case,
-  is an item. [fixture: gantt/db-task-tags] [fixture: gantt/db-task-tag-case]
-  [fixture: gantt/db-task-tag-after-item] [fixture: gantt/db-task-tag-repeated]
+  is an item.
+
+  [fixture: gantt/db-task-tags] [fixture: gantt/db-task-tag-case] [fixture:
+  gantt/db-task-tag-after-item] [fixture: gantt/db-task-tag-repeated]
+
 - `order` is the number of the task among the tasks, from 0; a `vert` task has
-  -1 and takes no number. [fixture: gantt/db-task-vert]
+  -1 and takes no number.
+
+  [fixture: gantt/db-task-vert]
+
 - `id` is not unique. A later task with the same id is the one that `click`
-  finds. [fixture: gantt/db-task-duplicate-id]
+  finds.
+
+  [fixture: gantt/db-task-duplicate-id]
 
 **Links and clicks**
 
 - A `click` statement gives the tasks of its ids the class `clickable` once for
   each of its two parts, `href` and `call`, in `classes`. An id that is no task
-  at that point (an unknown id, a task that comes later) gets nothing. [fixture:
-  gantt/db-click-href] [fixture: gantt/db-click-call] [fixture:
+  at that point (an unknown id, a task that comes later) gets nothing.
+
+  [fixture: gantt/db-click-href] [fixture: gantt/db-click-call] [fixture:
   gantt/db-click-href-then-call] [fixture: gantt/db-click-call-then-href]
   [fixture: gantt/db-click-unknown-id] [fixture: gantt/db-click-before-task]
-- The ids of a `click` are a list separated by commas. [fixture:
-  gantt/db-click-ids-list]
+
+- The ids of a `click` are a list separated by commas.
+
+  [fixture: gantt/db-click-ids-list]
+
 - `links` has the URL of `href` as written, once for each task, at the place of
-  its first link, with the URL of its last. [fixture:
-  gantt/db-click-links-order]
+  its first link, with the URL of its last.
+
+  [fixture: gantt/db-click-links-order]
+
 - `clickCalls` has each call as the grammar made it: `id` is the list of ids as
   written, also with an id that is no task, `name` the function, and `args` the
-  text between the parentheses as written, or null. [fixture:
-  gantt/db-click-call-args] [fixture: gantt/db-click-ids-list]
+  text between the parentheses as written, or null.
+
+  [fixture: gantt/db-click-call-args] [fixture: gantt/db-click-ids-list]
 
 Values are recorded as the Db holds them, whitespace included.
 
@@ -1024,71 +1220,94 @@ Values of the summary, by field:
   the end of the line. The whitespace at its ends stays: `title  T`, with two
   spaces, has the title ` T`. A `;` after the text makes the input rejected,
   because it ends the text and no rule takes it. A `title` statement replaces
-  the title of the frontmatter. [fixture: journey/db-title-statement] [fixture:
-  journey/lex-title-two-spaces] [fixture: journey/lex-title-trailing-spaces]
-  [fixture: journey/db-title-ends-at-hash] [fixture:
-  journey/lex-title-semicolon] [fixture: journey/db-title-frontmatter] [fixture:
+  the title of the frontmatter.
+
+  [fixture: journey/db-title-statement] [fixture: journey/lex-title-two-spaces]
+  [fixture: journey/lex-title-trailing-spaces] [fixture:
+  journey/db-title-ends-at-hash] [fixture: journey/lex-title-semicolon]
+  [fixture: journey/db-title-frontmatter] [fixture:
   journey/db-title-statement-after-frontmatter]
+
 - `accTitle` and `accDescr` are the text of the statement, trimmed. The text of
   a description in a block has its line breaks, and the whitespace after each of
-  them is left out. [fixture: journey/db-acc-title] [fixture:
-  journey/db-acc-descr] [fixture: journey/db-acc-descr-block]
+  them is left out.
+
+  [fixture: journey/db-acc-title] [fixture: journey/db-acc-descr] [fixture:
+  journey/db-acc-descr-block]
+
 - The title and the accessibility texts pass through `sanitizeText` and, under a
   `securityLevel` that is not one of mermaid.js's values with HTML labels
   enabled, hold the replaced characters (see
   [db-from-tree.md](./db-from-tree.md), the replacement of characters). The
   names of sections, the descriptions of tasks, and the people are not changed.
+
   [fixture: journey/config-security-level-other-title] [fixture:
   journey/config-security-level-other-diagram-title] [fixture:
   journey/config-security-level-other-acc-title] [fixture:
   journey/config-security-level-other-acc-descr] [fixture:
   journey/config-security-level-other-acc-descr-block] [fixture:
   journey/config-security-level-other-names-as-written]
+
 - `sections` has the text of each `section` statement without the keyword and
   the one whitespace character after it, also when a name repeats. A task before
   the first section has the empty `section`. The name ends before a `#`, which
   starts a comment to the end of the line; the space before it stays, and so
   does the whitespace at its start, a name of whitespace only included. A `;`
   after the name and a `:` after it make the input rejected, because they end
-  the text and no rule takes what follows. [fixture: journey/db-sections]
-  [fixture: journey/db-task-before-section] [fixture:
-  journey/db-section-ends-at-hash] [fixture: journey/lex-section-two-spaces]
-  [fixture: journey/lex-section-whitespace-only] [fixture:
-  journey/lex-section-semicolon] [fixture: journey/lex-section-colon]
+  the text and no rule takes what follows.
+
+  [fixture: journey/db-sections] [fixture: journey/db-task-before-section]
+  [fixture: journey/db-section-ends-at-hash] [fixture:
+  journey/lex-section-two-spaces] [fixture: journey/lex-section-whitespace-only]
+  [fixture: journey/lex-section-semicolon] [fixture: journey/lex-section-colon]
+
 - `task` is the text before the first colon, with the whitespace that stands
-  before the colon; the whitespace before the text is not part of it. [fixture:
-  journey/db-task-description-spaces] [fixture:
+  before the colon; the whitespace before the text is not part of it.
+
+  [fixture: journey/db-task-description-spaces] [fixture:
   journey/lex-whitespace-ideographic-space-around-task]
+
 - [`addTask`](https://github.com/mermaid-js/mermaid/blob/2086904e76c692331e34a45d7cc3bc30860d040e/packages/mermaid/src/diagrams/user-journey/journeyDb.js#L61-L84)
   splits the text after the first colon at each colon. `score` is the number
   that JavaScript makes of the first piece, so a decimal, a hexadecimal number,
   an exponent, and a negative number are numbers, the spaces around the number
   are not part of it, and an empty piece and a piece of whitespace only are 0.
   `-0` is the number -0 in the Db, and the summary holds 0, since JSON has no
-  -0. [fixture: journey/db-task-score-decimal] [fixture:
+  -0.
+
+  [fixture: journey/db-task-score-decimal] [fixture:
   journey/db-task-score-hexadecimal] [fixture: journey/db-task-score-exponent]
   [fixture: journey/db-task-score-negative] [fixture:
   journey/db-task-score-negative-zero] [fixture: journey/db-task-score-spaces]
   [fixture: journey/db-task-score-empty] [fixture:
-  journey/gram-task-data-whitespace-only] A score that is no finite number is
-  recorded as the text of the number, since JSON has no such number: `NaN` for a
-  piece that is no number, and `Infinity` or `-Infinity` for the pieces
-  `Infinity` and `-Infinity` and for a number too large for a double, such as
-  `1e400`. [fixture: journey/db-task-score-not-a-number] [fixture:
+  journey/gram-task-data-whitespace-only]
+
+  A score that is no finite number is recorded as the text of the number, since
+  JSON has no such number: `NaN` for a piece that is no number, and `Infinity`
+  or `-Infinity` for the pieces `Infinity` and `-Infinity` and for a number too
+  large for a double, such as `1e400`.
+
+  [fixture: journey/db-task-score-not-a-number] [fixture:
   journey/db-task-score-infinity] [fixture:
   journey/db-task-score-negative-infinity] [fixture:
   journey/db-task-score-overflow]
+
 - `people` is the second piece split at each comma and trimmed, one name more
   than there are commas, so an empty item is an empty name and a blank piece is
   one empty name. Without a second colon there are no people, while a second
   colon with nothing after it gives one empty name. The text from the third
-  colon is left out. [fixture: journey/db-task-people] [fixture:
-  journey/db-task-people-empty-item] [fixture: journey/db-task-people-blank]
-  [fixture: journey/gram-task-people-trailing-comma] [fixture:
+  colon is left out.
+
+  [fixture: journey/db-task-people] [fixture: journey/db-task-people-empty-item]
+  [fixture: journey/db-task-people-blank] [fixture:
+  journey/gram-task-people-trailing-comma] [fixture:
   journey/gram-task-second-colon-at-end] [fixture: journey/db-task-score-only]
-  [fixture: journey/db-task-extra-colon] The data of a task ends before a `#` as
-  well, and the rest of the line is a comment: `A: 1: x #y, z` has the people
-  `x`. [fixture: journey/db-task-data-ends-at-hash]
+  [fixture: journey/db-task-extra-colon]
+
+  The data of a task ends before a `#` as well, and the rest of the line is a
+  comment: `A: 1: x #y, z` has the people `x`.
+
+  [fixture: journey/db-task-data-ends-at-hash]
 
 Values are recorded as the Db holds them, whitespace included.
 
@@ -1136,58 +1355,69 @@ for the reason given:
 Values of the summary, by field:
 
 - `direction` is `TB` without a direction statement. The last direction
-  statement gives it, written in any case and recorded in upper case. [fixture:
-  requirement/db-direction-last-wins] [fixture:
+  statement gives it, written in any case and recorded in upper case.
+
+  [fixture: requirement/db-direction-last-wins] [fixture:
   requirement/db-direction-lower-case] [fixture:
   requirement/spec-requirement-diagram-7522200d] [fixture:
   requirement/spec-requirement-diagram-08cfba06] [fixture:
   requirement/spec-requirement-diagram-34fcfcee] [fixture:
   requirement/spec-requirement-diagram-6d165a76]
+
 - `title` is the title of the frontmatter; the diagram has no statement for it.
   `accTitle` and `accDescr` are the text of the last statement of their kind,
   trimmed, but for an empty description block, which changes nothing and leaves
   the description before it. The text of a description in a block has its line
-  breaks, and the whitespace after each of them is left out. [fixture:
-  requirement/db-frontmatter-title] [fixture: requirement/db-acc-title-descr]
-  [fixture: requirement/db-acc-descr-block] [fixture:
-  requirement/db-empty-description-block-keeps-acc-descr-line] [fixture:
-  requirement/db-empty-description-block-keeps-acc-descr-block] [fixture:
-  requirement/spec-requirement-diagram-e5ae8f38] [fixture:
+  breaks, and the whitespace after each of them is left out.
+
+  [fixture: requirement/db-frontmatter-title] [fixture:
+  requirement/db-acc-title-descr] [fixture: requirement/db-acc-descr-block]
+  [fixture: requirement/db-empty-description-block-keeps-acc-descr-line]
+  [fixture: requirement/db-empty-description-block-keeps-acc-descr-block]
+  [fixture: requirement/spec-requirement-diagram-e5ae8f38] [fixture:
   requirement/spec-requirement-diagram-27be7222]
+
 - The title and the accessibility texts pass through `sanitizeText` and, under a
   `securityLevel` that is not one of mermaid.js's values with HTML labels
   enabled, hold the replaced characters (see
   [db-from-tree.md](./db-from-tree.md), the replacement of characters). The
   names, ids, texts, types and references of requirements and elements, the
-  names of relationships and the classes are not changed. [fixture:
-  requirement/config-security-level-other-title] [fixture:
+  names of relationships and the classes are not changed.
+
+  [fixture: requirement/config-security-level-other-title] [fixture:
   requirement/config-security-level-other-acc-title] [fixture:
   requirement/config-security-level-other-acc-descr] [fixture:
   requirement/config-security-level-other-acc-descr-block] [fixture:
   requirement/config-security-level-other-html-labels-false] [fixture:
   requirement/config-security-level-other-names-as-written]
+
 - Each value is read in
   [converted form](../../spec/docs/common.md#reading-a-source), so an entity is
   its placeholder in a name, an id, a text, a type, a reference, the name of a
-  relationship and the accessibility texts. [fixture:
-  requirement/entity-placeholder-in-requirement-fields] [fixture:
+  relationship and the accessibility texts.
+
+  [fixture: requirement/entity-placeholder-in-requirement-fields] [fixture:
   requirement/entity-placeholder-in-element-fields] [fixture:
   requirement/entity-placeholder-in-relationship] [fixture:
   requirement/entity-placeholder-in-acc-title] [fixture:
   requirement/entity-placeholder-in-acc-descr] [fixture:
   requirement/entity-placeholder-in-acc-descr-block]
+
 - `requirements` has a requirement for each name, in the order of the first
-  definitions. A field that the body does not set is the empty text. [fixture:
-  requirement/db-requirement-defaults] [fixture:
+  definitions. A field that the body does not set is the empty text.
+
+  [fixture: requirement/db-requirement-defaults] [fixture:
   requirement/db-requirement-all-fields] [fixture:
   requirement/db-requirement-order]
+
 - The `type` of a requirement is the name of the word that starts the
   definition: `Requirement`, `Functional Requirement`, `Interface Requirement`,
   `Performance Requirement`, `Physical Requirement` or `Design Constraint`. The
   `risk` is `Low`, `Medium` or `High`, and the `verifyMethod` is `Analysis`,
   `Demonstration`, `Inspection` or `Test`. The words of the syntax are read
-  without regard to case, and the Db names them as given here. [fixture:
-  requirement/spec-requirement-diagram-54ea0a9d] [fixture:
+  without regard to case, and the Db names them as given here.
+
+  [fixture: requirement/spec-requirement-diagram-54ea0a9d] [fixture:
   requirement/spec-requirement-diagram-d1dc0373] [fixture:
   requirement/spec-requirement-diagram-17e0a905] [fixture:
   requirement/spec-requirement-diagram-f221edee] [fixture:
@@ -1198,44 +1428,57 @@ Values of the summary, by field:
   requirement/spec-requirement-diagram-1a2f68fa] [fixture:
   requirement/spec-requirement-diagram-1e009b06] [fixture:
   requirement/db-keywords-upper-case]
+
 - An unquoted name or value loses the whitespace at its ends and may hold spaces
   inside. A quoted one keeps every character between the quotes, also those an
-  unquoted one cannot hold, and the whitespace. [fixture:
-  requirement/db-requirement-value-spaces] [fixture:
+  unquoted one cannot hold, and the whitespace.
+
+  [fixture: requirement/db-requirement-value-spaces] [fixture:
   requirement/db-requirement-name-spaces] [fixture:
   requirement/db-requirement-quoted-values]
+
 - A field set more than once keeps the first value, since the Db applies the
-  fields of a body from the last to the first. [fixture:
-  requirement/db-requirement-fields-repeated] [fixture:
+  fields of a body from the last to the first.
+
+  [fixture: requirement/db-requirement-fields-repeated] [fixture:
   requirement/db-element-fields-repeated]
+
 - A name defined again, as a requirement of any type or as an element, leaves
   the fields of the first definition as they were, the second body included, but
   the classes after `:::` in the head of the second definition are given: to the
   requirement of that name, or to the element of that name when there is no
   requirement of it, whichever the second definition is. A requirement and an
   element may have the same name, and a statement that names it applies to the
-  requirement only. [fixture:
-  requirement/db-requirement-definition-again-with-class] [fixture:
+  requirement only.
+
+  [fixture: requirement/db-requirement-definition-again-with-class] [fixture:
   requirement/db-element-definition-with-class-of-requirement] [fixture:
   requirement/db-element-definition-again-with-class] [fixture:
   requirement/db-requirement-name-repeated] [fixture:
   requirement/db-element-name-repeated] [fixture:
-  requirement/db-requirement-and-element-same-name] A name is any name,
-  `__proto__` and `constructor` too. [fixture:
-  requirement/spec-requirement-diagram-7e4de658] [fixture:
+  requirement/db-requirement-and-element-same-name]
+
+  A name is any name, `__proto__` and `constructor` too.
+
+  [fixture: requirement/spec-requirement-diagram-7e4de658] [fixture:
   requirement/spec-requirement-diagram-dec8a0d9] [fixture:
   requirement/spec-requirement-diagram-29c59902] [fixture:
   requirement/spec-requirement-diagram-20d637a1]
+
 - `elements` has an element for each name. Its `type` and `docRef` are any text,
-  and the empty text where the body does not set them. [fixture:
-  requirement/db-element-defaults] [fixture: requirement/db-element-fields]
-  [fixture: requirement/spec-requirement-diagram-aa701d4f]
+  and the empty text where the body does not set them.
+
+  [fixture: requirement/db-element-defaults] [fixture:
+  requirement/db-element-fields] [fixture:
+  requirement/spec-requirement-diagram-aa701d4f]
+
 - `relationships` has one relationship for each relationship statement, also for
   one written again. `type` is `contains`, `copies`, `derives`, `satisfies`,
   `verifies`, `refines` or `traces`. `src` is the name at the line and `dst` the
   name at the arrowhead, whichever side of the word it is written on. The names
-  need not be those of a requirement or an element, and may be quoted. [fixture:
-  requirement/spec-requirement-diagram-ef787489] [fixture:
+  need not be those of a requirement or an element, and may be quoted.
+
+  [fixture: requirement/spec-requirement-diagram-ef787489] [fixture:
   requirement/spec-requirement-diagram-50b3d65a] [fixture:
   requirement/spec-requirement-diagram-7dfbfd0b] [fixture:
   requirement/spec-requirement-diagram-bbf167e5] [fixture:
@@ -1246,21 +1489,25 @@ Values of the summary, by field:
   requirement/db-relationship-quoted-names] [fixture:
   requirement/db-relationship-undefined-names] [fixture:
   requirement/db-relationships-repeated]
+
 - `cssStyles` is the styles that statements gave the requirement or element, in
   the order they were given. A `style` statement adds each of its styles, one
   for each comma, to each name it lists; at the first name that is no
   requirement or element it stops, so that the names after it get nothing.
+
   [fixture: requirement/db-style-statement] [fixture:
   requirement/db-style-unknown-name] [fixture:
   requirement/db-class-statement-unknown-name-first] [fixture:
   requirement/spec-requirement-diagram-5305b791] [fixture:
   requirement/spec-requirement-diagram-e39bdc99] [fixture:
   requirement/spec-requirement-diagram-5ee6d26d]
+
 - `classes` of a requirement or an element is the class names that statements
   gave it, in order: a `class` statement, `:::` after a name, and `:::` in the
   head of a definition. A name in a `class` statement that is no requirement or
-  element is skipped, and the names after it still get the classes. [fixture:
-  requirement/db-class-statement] [fixture:
+  element is skipped, and the names after it still get the classes.
+
+  [fixture: requirement/db-class-statement] [fixture:
   requirement/db-class-statement-unknown-name-first] [fixture:
   requirement/db-class-colon-form] [fixture: requirement/db-class-in-definition]
   [fixture: requirement/db-class-default-name] [fixture:
@@ -1269,19 +1516,23 @@ Values of the summary, by field:
   requirement/spec-requirement-diagram-a55d1b35] [fixture:
   requirement/spec-requirement-diagram-a8854583] [fixture:
   requirement/spec-requirement-diagram-0799fd14]
+
 - A class gives its styles to a requirement or an element in two ways: when the
   member joins the class, if the class is defined by then, and when the class is
   defined, to the members it has at that time. Every requirement and element is
   a member of `default` from the start, so a definition of `default` adds its
-  styles to all those defined before it. [fixture:
-  requirement/db-class-styles-order] [fixture:
+  styles to all those defined before it.
+
+  [fixture: requirement/db-class-styles-order] [fixture:
   requirement/db-class-styles-order-defined-first] [fixture:
   requirement/db-class-statement-before-def] [fixture:
   requirement/db-class-def-default-all]
+
 - `classes` of the summary has a class definition for each id, in the order of
   the first definition, with `styles` in the order given. A definition of an id
-  again adds its styles; one statement may define several ids. [fixture:
-  requirement/db-class-def] [fixture:
+  again adds its styles; one statement may define several ids.
+
+  [fixture: requirement/db-class-def] [fixture:
   requirement/spec-requirement-diagram-7ee9ffc8] [fixture:
   requirement/spec-requirement-diagram-f9464f3d]
 
@@ -1310,10 +1561,14 @@ them. It drops the following, each for the reason given:
 
 - `id`: the number of the node in the order it was added, which is the order of
   the tree walked from the root, children after their parent.
+
 - `isRoot`: true for the root and for no other node.
+
 - `width` and `padding`: values of the site configuration
   (`mindmap.maxNodeWidth` and `mindmap.padding`, the padding doubled for some
-  shapes). [fixture: mindmap/config-mindmap-padding-and-width]
+  shapes).
+
+  [fixture: mindmap/config-mindmap-padding-and-width]
 
 The layout and `getData()` put more fields on a node (`section`, `height`, `x`,
 and `y`); the Db that is read has none of them.
@@ -1322,43 +1577,56 @@ Values of the summary, by field:
 
 - `root` is `null` for a header with nothing after it, also when whitespace or a
   comment line follows. The first node is the root. A header that has no line
-  feed after it is rejected. [fixture: mindmap/db-header-only] [fixture:
+  feed after it is rejected.
+
+  [fixture: mindmap/db-header-only] [fixture:
   mindmap/db-header-only-trailing-spaces] [fixture:
   mindmap/db-header-then-comment-line-only] [fixture:
   mindmap/db-header-without-line-feed]
+
 - The root is the first node whatever its indentation, and the whitespace before
   the header does not change the levels: a node after the header on its line is
   the root, with the whole run of whitespace after the header as its
   indentation, so that a child must be indented by more characters than that run
-  has. [fixture: mindmap/db-first-node-unindented] [fixture:
+  has.
+
+  [fixture: mindmap/db-first-node-unindented] [fixture:
   mindmap/db-header-indented] [fixture: mindmap/db-first-node-on-header-line]
   [fixture: mindmap/db-first-node-on-header-line-wide-gap] [fixture:
   mindmap/db-first-node-on-header-line-child-too-shallow] [fixture:
   mindmap/db-first-node-after-header-tab] [fixture:
   mindmap/spec-mindmap-903e1973] [fixture: mindmap/spec-mindmap-54e233b2]
+
 - `level` is the number of characters of the indentation of the node minus that
   of the root. Every whitespace character is one character: a space, a tab
   (which is not expanded to a tab stop), a fullwidth space, and a no-break
-  space. [fixture: mindmap/db-indent-tab-levels] [fixture:
+  space.
+
+  [fixture: mindmap/db-indent-tab-levels] [fixture:
   mindmap/db-indent-tab-counts-as-one-char] [fixture:
   mindmap/db-indent-fullwidth-space] [fixture: mindmap/db-indent-no-break-space]
   [fixture: mindmap/db-indent-mixed-whitespace-kinds] [fixture:
   mindmap/db-indent-root-offset] [fixture: mindmap/db-indent-skips-levels]
+
 - The parent of a node is the nearest node before it whose level is less than
   its own, so a node as indented as an earlier one is its sibling, after the
   nodes below that one. A node that is not the first and has no such node is
-  rejected: one as indented as the root, or less. [fixture:
-  mindmap/db-indent-parent-is-nearest-shallower] [fixture:
+  rejected: one as indented as the root, or less.
+
+  [fixture: mindmap/db-indent-parent-is-nearest-shallower] [fixture:
   mindmap/db-indent-sibling-after-deeper] [fixture:
   mindmap/db-indent-less-than-root] [fixture: mindmap/db-indent-same-as-root]
   [fixture: mindmap/db-indent-tab-not-expanded-below-root] [fixture:
   mindmap/docs-syntax-mindmap-5106c1aa] [fixture:
   mindmap/docs-syntax-mindmap-50120b03] [fixture: mindmap/spec-mindmap-53c49526]
   [fixture: mindmap/spec-mindmap-bc95ec97]
+
 - An empty line, a line of whitespace, and a line break that is a CRLF or a lone
   CR between nodes change nothing, and an empty line or a line of whitespace
   between the header and the first node is rejected. Whitespace after the last
-  node changes nothing. [fixture: mindmap/db-blank-line-between-nodes] [fixture:
+  node changes nothing.
+
+  [fixture: mindmap/db-blank-line-between-nodes] [fixture:
   mindmap/db-whitespace-only-line-between-nodes] [fixture:
   mindmap/db-tab-only-line-between-nodes] [fixture:
   mindmap/db-blank-line-after-header] [fixture:
@@ -1366,6 +1634,7 @@ Values of the summary, by field:
   mindmap/db-whitespace-after-last-node] [fixture: mindmap/db-crlf-line-ends]
   [fixture: mindmap/db-lone-cr-line-ends] [fixture:
   mindmap/spec-mindmap-c6c76671] [fixture: mindmap/spec-mindmap-931bf91d]
+
 - A comment line, `%%` with the whitespace before it, changes nothing wherever
   it stands, also between the header and the first node and before the header,
   and its indentation changes no level. `%%` after the text of a node is part of
@@ -1373,6 +1642,7 @@ Values of the summary, by field:
   header and the first node leaves an empty line there and is rejected, while
   one between nodes changes nothing; a directive after the text of a node is not
   part of it. The frontmatter changes nothing, and the diagram keeps no title.
+
   [fixture: mindmap/db-comment-line-between-nodes] [fixture:
   mindmap/db-comment-line-indented-deeper] [fixture:
   mindmap/db-comment-line-after-header] [fixture:
@@ -1384,13 +1654,16 @@ Values of the summary, by field:
   mindmap/db-directive-after-node-text] [fixture:
   mindmap/db-frontmatter-before-header] [fixture: mindmap/spec-mindmap-32c71b33]
   [fixture: mindmap/spec-mindmap-f8ad2bf0]
+
 - A node without a shape has the whole line after its indentation as `nodeId`
   and as `descr`, the whitespace at its end included, and a colon, a hash, a
   quote, and spaces are characters of it. Two nodes may have the same text.
+
   [fixture: mindmap/db-node-trailing-whitespace] [fixture:
   mindmap/db-text-with-colon-and-hash] [fixture: mindmap/db-text-with-quote]
   [fixture: mindmap/db-same-text-twice] [fixture:
   mindmap/docs-syntax-mindmap-85604c12]
+
 - A shape is a delimiter pair after the id (or without an id, then the text is
   the id) and gives `type`: 0 for no shape, 1 for `( )`, 2 for `[ ]`, 3 for
   `(( ))`, 4 for `) (`, 5 for `)) ((`, and 6 for `{{ }}`. `descr` is the text
@@ -1398,8 +1671,9 @@ Values of the summary, by field:
   the opening one, the forms `(-text-)` and `-)text(-` follow the lexer and not
   the pairs, and a string between the delimiters holds delimiter characters; a
   markdown string is the text without its backquotes. A shape with no text, and
-  text after the closing delimiter, are rejected. [fixture:
-  mindmap/db-shape-rect] [fixture: mindmap/db-shape-rounded] [fixture:
+  text after the closing delimiter, are rejected.
+
+  [fixture: mindmap/db-shape-rect] [fixture: mindmap/db-shape-rounded] [fixture:
   mindmap/db-shape-circle] [fixture: mindmap/db-shape-cloud] [fixture:
   mindmap/db-shape-bang] [fixture: mindmap/db-shape-hexagon] [fixture:
   mindmap/db-shape-cloud-dash-form] [fixture:
@@ -1413,15 +1687,17 @@ Values of the summary, by field:
   [fixture: mindmap/spec-mindmap-5ccc3578] [fixture:
   mindmap/spec-mindmap-20bffa18] [fixture: mindmap/spec-mindmap-042bfdb5]
   [fixture: mindmap/spec-mindmap-3a9de64e]
+
 - A line `::icon(text)` gives `icon` to the last node added, and a line
   `:::text` gives `class`, whatever their indentation; a second line replaces
   the first. An icon on the line of a node is no icon, and a class there is part
   of the text of the node. The word `icon` is read without regard to case, an
   icon with nothing in the parentheses gives none, and the whitespace inside the
   parentheses of an icon and at both ends of a class stays. An icon line or a
-  class line before the first node is rejected. [fixture: mindmap/db-icon-line]
-  [fixture: mindmap/db-icon-same-line] [fixture: mindmap/db-icon-twice]
-  [fixture: mindmap/db-icon-and-class-on-child] [fixture:
+  class line before the first node is rejected.
+
+  [fixture: mindmap/db-icon-line] [fixture: mindmap/db-icon-same-line] [fixture:
+  mindmap/db-icon-twice] [fixture: mindmap/db-icon-and-class-on-child] [fixture:
   mindmap/db-icon-indent-ignored] [fixture: mindmap/db-icon-before-node]
   [fixture: mindmap/db-icon-case-insensitive] [fixture: mindmap/db-icon-empty]
   [fixture: mindmap/db-class-line] [fixture: mindmap/db-class-twice] [fixture:
@@ -1432,11 +1708,13 @@ Values of the summary, by field:
   [fixture: mindmap/spec-mindmap-2b7307a0] [fixture:
   mindmap/spec-mindmap-4755cd73] [fixture: mindmap/spec-mindmap-c9bb7eac]
   [fixture: mindmap/spec-mindmap-da41aead]
+
 - Each value is read in
   [converted form](../../spec/docs/common.md#reading-a-source), so an entity is
   its placeholder in the text of a node and of a shape, in an icon, and in a
   class. A line feed inside a string stays in the text, a CRLF there is a line
   feed, and an attribute quote in the text of a shape is a single quote.
+
   [fixture: mindmap/entity-placeholder-in-node-text] [fixture:
   mindmap/entity-placeholder-numeric] [fixture:
   mindmap/entity-placeholder-in-description] [fixture:
@@ -1446,10 +1724,12 @@ Values of the summary, by field:
   mindmap/lex-string-line-feed] [fixture: mindmap/lex-string-crlf] [fixture:
   mindmap/lex-markdown-string-line-feed] [fixture:
   mindmap/docs-syntax-mindmap-d3468819]
+
 - `nodeId`, `descr`, `icon`, and `class` pass through `sanitizeText` and, under
   a `securityLevel` that is not one of mermaid.js's values with HTML labels
   enabled, hold the replaced characters (see
   [db-from-tree.md](./db-from-tree.md), the replacement of characters).
+
   [fixture: mindmap/config-security-level-other-texts] [fixture:
   mindmap/config-security-level-other-html-labels-false]
 
@@ -1497,8 +1777,10 @@ Values of the summary, by field:
   `TDx` and `LRx` are the period of a task, and the direction stays `LR`. Only a
   space or a tab separates the header and the direction: any other whitespace, a
   line feed included, leaves the direction to be the period of a task. A second
-  direction is a period as well. [fixture: timeline/db-header-only] [fixture:
-  timeline/db-direction-lr] [fixture: timeline/db-direction-td] [fixture:
+  direction is a period as well.
+
+  [fixture: timeline/db-header-only] [fixture: timeline/db-direction-lr]
+  [fixture: timeline/db-direction-td] [fixture:
   timeline/db-direction-lower-case] [fixture: timeline/db-direction-mixed-case]
   [fixture: timeline/db-direction-two-spaces] [fixture:
   timeline/db-direction-tab] [fixture: timeline/db-direction-trailing-space]
@@ -1508,14 +1790,17 @@ Values of the summary, by field:
   timeline/header-direction-word-suffix] [fixture:
   timeline/header-direction-word-suffix-lr] [fixture:
   timeline/header-direction-twice]
+
 - The header is detected in lower case only. What follows the header on its line
   is read as lines are: a period, a title, a section, an accessibility title, a
   `#` or `%` comment, and a directive that is removed; an event has no task
   there and is rejected. A word glued to the header is not the header, a dash
   after the header starts the period `-x`, and a colon after it is an event with
-  no task. A second header is rejected. [fixture:
-  timeline/header-without-line-feed] [fixture: timeline/header-trailing-spaces]
-  [fixture: timeline/header-direction-then-colon] [fixture:
+  no task. A second header is rejected.
+
+  [fixture: timeline/header-without-line-feed] [fixture:
+  timeline/header-trailing-spaces] [fixture:
+  timeline/header-direction-then-colon] [fixture:
   timeline/header-direction-glued-colon] [fixture:
   timeline/header-glued-direction] [fixture: timeline/header-word-suffix]
   [fixture: timeline/header-dash-suffix] [fixture: timeline/header-colon-suffix]
@@ -1534,6 +1819,7 @@ Values of the summary, by field:
   timeline/header-directive-before-direction] [fixture:
   timeline/header-directive-after-header] [fixture: timeline/header-twice]
   [fixture: timeline/header-twice-with-directions]
+
 - `title` is the text of a
   [`title` statement](https://github.com/mermaid-js/mermaid/blob/2086904e76c692331e34a45d7cc3bc30860d040e/packages/mermaid/src/diagrams/timeline/parser/timeline.jison#L23),
   after the keyword and one whitespace character, to the end of the line. The
@@ -1543,15 +1829,17 @@ Values of the summary, by field:
   that the line rule of `style` lines drops (see below). The last `title`
   statement is the title. Any whitespace character can follow the keyword and is
   no part of the title, a line feed included, so that `title` at the end of a
-  line takes the next line as its title, whatever that line says. [fixture:
-  timeline/db-title-statement] [fixture: timeline/db-title-upper-case] [fixture:
-  timeline/db-title-two-spaces] [fixture: timeline/db-title-three-spaces]
-  [fixture: timeline/db-title-trailing-spaces] [fixture:
-  timeline/db-title-only-space] [fixture: timeline/db-title-colon] [fixture:
-  timeline/db-title-hash] [fixture: timeline/db-title-percent] [fixture:
-  timeline/db-title-semicolon] [fixture: timeline/db-title-twice] [fixture:
-  timeline/db-title-with-tags] [fixture: timeline/lex-title-separator-tab]
-  [fixture: timeline/lex-title-separator-no-break-space] [fixture:
+  line takes the next line as its title, whatever that line says.
+
+  [fixture: timeline/db-title-statement] [fixture: timeline/db-title-upper-case]
+  [fixture: timeline/db-title-two-spaces] [fixture:
+  timeline/db-title-three-spaces] [fixture: timeline/db-title-trailing-spaces]
+  [fixture: timeline/db-title-only-space] [fixture: timeline/db-title-colon]
+  [fixture: timeline/db-title-hash] [fixture: timeline/db-title-percent]
+  [fixture: timeline/db-title-semicolon] [fixture: timeline/db-title-twice]
+  [fixture: timeline/db-title-with-tags] [fixture:
+  timeline/lex-title-separator-tab] [fixture:
+  timeline/lex-title-separator-no-break-space] [fixture:
   timeline/lex-title-separator-ideographic-space] [fixture:
   timeline/lex-title-separator-line-separator] [fixture:
   timeline/lex-title-separator-paragraph-separator] [fixture:
@@ -1560,20 +1848,25 @@ Values of the summary, by field:
   timeline/lex-title-separator-carriage-return] [fixture:
   timeline/lex-title-line-separator-inside] [fixture:
   timeline/db-period-title-then-section-lines]
+
 - A title statement needs a character after the whitespace that follows the
   keyword, on the same line. The keyword alone at the end of the text, or with
   one space before the end of the line, is the period of a task, as are the
   words that start with `title`. A colon right after the keyword is rejected,
-  since a colon needs whitespace after it. [fixture:
-  timeline/gram-title-keyword-alone] [fixture:
+  since a colon needs whitespace after it.
+
+  [fixture: timeline/gram-title-keyword-alone] [fixture:
   timeline/gram-title-keyword-trailing-space] [fixture:
   timeline/gram-title-word-suffix] [fixture: timeline/gram-title-colon-glued]
+
 - The title of the frontmatter is not the title of the diagram:
   [the Diagram](https://github.com/mermaid-js/mermaid/blob/2086904e76c692331e34a45d7cc3bc30860d040e/packages/mermaid/src/Diagram.ts#L52-L54)
   gives it to a Db that has `setDiagramTitle`, and the Db of the timeline has no
-  such method. A `title` statement is the title in either case. [fixture:
-  timeline/db-title-frontmatter] [fixture:
+  such method. A `title` statement is the title in either case.
+
+  [fixture: timeline/db-title-frontmatter] [fixture:
   timeline/db-title-frontmatter-and-statement]
+
 - `accTitle` and `accDescr` after a `:` are the text of the line, trimmed. The
   whitespace around the colon, a line feed included, is not part of the text, so
   that the colon, or the text, can be on the next line; the keywords are read in
@@ -1581,9 +1874,11 @@ Values of the summary, by field:
   but for the one that the line rule of `style` lines drops. A statement with no
   text is rejected. The last statement of each kind is the value, and a
   description in a block and a description on a line replace each other, but for
-  an empty block, which replaces nothing. [fixture:
-  timeline/db-acc-title-statement] [fixture: timeline/db-acc-title-glued]
-  [fixture: timeline/db-acc-title-space-before-colon] [fixture:
+  an empty block, which replaces nothing.
+
+  [fixture: timeline/db-acc-title-statement] [fixture:
+  timeline/db-acc-title-glued] [fixture:
+  timeline/db-acc-title-space-before-colon] [fixture:
   timeline/db-acc-title-upper-case] [fixture: timeline/db-acc-title-many-spaces]
   [fixture: timeline/db-acc-title-trailing-spaces] [fixture:
   timeline/db-acc-title-colon] [fixture: timeline/db-acc-title-hash] [fixture:
@@ -1601,6 +1896,7 @@ Values of the summary, by field:
   [fixture: timeline/db-acc-descr-block-then-line] [fixture:
   timeline/lex-acc-descr-line-separator-inside] [fixture:
   timeline/db-acc-all-statements]
+
 - The text of a description in a block runs to the first `}`, and a description
   is changed by
   [`setAccDescription`](https://github.com/mermaid-js/mermaid/blob/2086904e76c692331e34a45d7cc3bc30860d040e/packages/mermaid/src/diagrams/common/commonDb.ts#L22-L24):
@@ -1612,9 +1908,11 @@ Values of the summary, by field:
   block changes nothing: it leaves the description before it, of a line or of a
   block, and without one the description stays empty. A block with no `}` is
   rejected, and what follows the first `}` is read as a line. A line that starts
-  with `%%` inside a block is a comment line and is removed. [fixture:
-  timeline/db-acc-descr-block] [fixture: timeline/db-acc-descr-block-glued]
-  [fixture: timeline/db-acc-descr-block-spaces] [fixture:
+  with `%%` inside a block is a comment line and is removed.
+
+  [fixture: timeline/db-acc-descr-block] [fixture:
+  timeline/db-acc-descr-block-glued] [fixture:
+  timeline/db-acc-descr-block-spaces] [fixture:
   timeline/db-acc-descr-block-empty] [fixture:
   timeline/db-acc-descr-block-braces-only] [fixture:
   timeline/db-acc-descr-block-then-empty-block] [fixture:
@@ -1638,8 +1936,12 @@ Values of the summary, by field:
   timeline/db-acc-descr-block-brace-inside] [fixture:
   timeline/db-acc-descr-block-then-text] [fixture:
   timeline/lex-acc-descr-block-line-separator-inside]
+
 - The keywords `accTitle` and `accDescr` alone on a line, with no colon or
-  brace, are periods. [fixture: timeline/db-period-acc-keywords-alone]
+  brace, are periods.
+
+  [fixture: timeline/db-period-acc-keywords-alone]
+
 - `sections` has the text of each
   [`section` statement](https://github.com/mermaid-js/mermaid/blob/2086904e76c692331e34a45d7cc3bc30860d040e/packages/mermaid/src/diagrams/timeline/parser/timeline.jison#L31)
   without the keyword and the one whitespace character after it, also when a
@@ -1650,14 +1952,16 @@ Values of the summary, by field:
   ends the text, and the event after it belongs to the last task before the
   section, so it is rejected where there is none; a colon right after the
   keyword is rejected. The keyword alone, the keyword and one space, and the
-  words that start with `section` are periods. [fixture:
-  timeline/db-section-statement] [fixture: timeline/db-section-upper-case]
-  [fixture: timeline/db-section-two-spaces] [fixture:
-  timeline/db-section-trailing-spaces] [fixture: timeline/db-section-only-space]
-  [fixture: timeline/db-section-hash] [fixture: timeline/db-section-percent]
-  [fixture: timeline/db-section-twice-same-name] [fixture:
-  timeline/db-section-with-tags] [fixture: timeline/lex-section-separator-tab]
-  [fixture: timeline/lex-section-separator-ideographic-space] [fixture:
+  words that start with `section` are periods.
+
+  [fixture: timeline/db-section-statement] [fixture:
+  timeline/db-section-upper-case] [fixture: timeline/db-section-two-spaces]
+  [fixture: timeline/db-section-trailing-spaces] [fixture:
+  timeline/db-section-only-space] [fixture: timeline/db-section-hash] [fixture:
+  timeline/db-section-percent] [fixture: timeline/db-section-twice-same-name]
+  [fixture: timeline/db-section-with-tags] [fixture:
+  timeline/lex-section-separator-tab] [fixture:
+  timeline/lex-section-separator-ideographic-space] [fixture:
   timeline/lex-section-separator-line-feed] [fixture:
   timeline/lex-section-separator-line-separator] [fixture:
   timeline/lex-section-line-separator-inside] [fixture:
@@ -1668,22 +1972,27 @@ Values of the summary, by field:
   timeline/db-section-with-event-after-task] [fixture:
   timeline/gram-section-with-event] [fixture:
   timeline/gram-section-then-event-line]
+
 - A task takes the section before it, and the empty `section` before the first
-  section. A title between a section and a task changes nothing. [fixture:
-  timeline/db-section-two-with-tasks] [fixture: timeline/db-section-after-tasks]
-  [fixture: timeline/db-section-then-title]
+  section. A title between a section and a task changes nothing.
+
+  [fixture: timeline/db-section-two-with-tasks] [fixture:
+  timeline/db-section-after-tasks] [fixture: timeline/db-section-then-title]
+
 - `task` is the period, the text of a line that is no other statement, to a `:`
   or a `#` or the end of the line. The whitespace before it is not part of it,
   and the whitespace after it stays. A line is a task of its own whatever its
-  indentation, and a text can repeat. [fixture: timeline/db-period-only]
-  [fixture: timeline/db-period-trailing-spaces] [fixture:
-  timeline/db-period-with-spaces] [fixture:
-  timeline/db-period-leading-whitespace] [fixture:
+  indentation, and a text can repeat.
+
+  [fixture: timeline/db-period-only] [fixture:
+  timeline/db-period-trailing-spaces] [fixture: timeline/db-period-with-spaces]
+  [fixture: timeline/db-period-leading-whitespace] [fixture:
   timeline/db-period-leading-ideographic-space] [fixture:
   timeline/db-period-two-lines] [fixture: timeline/db-period-same-text-twice]
   [fixture: timeline/db-indentation-does-not-nest] [fixture:
   timeline/db-tab-indentation] [fixture: timeline/db-names-of-object-prototype]
   [fixture: timeline/db-period-cjk]
+
 - An
   [event](https://github.com/mermaid-js/mermaid/blob/2086904e76c692331e34a45d7cc3bc30860d040e/packages/mermaid/src/diagrams/timeline/parser/timeline.jison#L34)
   is the text after a `:` and one whitespace character, of the task before it,
@@ -1692,8 +2001,9 @@ Values of the summary, by field:
   after it ends the event, whatever lies before it, and starts the next event of
   the same task. The whitespace before the colon is part of the previous text,
   and the whitespace after it, but the first character, is part of the event.
-  Any whitespace character can follow the colon. [fixture:
-  timeline/db-period-and-event] [fixture:
+  Any whitespace character can follow the colon.
+
+  [fixture: timeline/db-period-and-event] [fixture:
   timeline/db-period-colon-glued-to-period] [fixture:
   timeline/db-event-two-spaces] [fixture: timeline/db-event-leading-spaces]
   [fixture: timeline/db-event-trailing-spaces] [fixture:
@@ -1707,21 +2017,26 @@ Values of the summary, by field:
   timeline/lex-event-separator-line-separator] [fixture:
   timeline/lex-event-separator-paragraph-separator] [fixture:
   timeline/lex-event-separator-byte-order-mark]
+
 - A `:` right after a period with no whitespace after it is rejected. So is a
   `:` with nothing after it, or with one whitespace character and nothing after
-  it, at the end of the text, whether it follows a period or an event. [fixture:
-  timeline/gram-event-colon-glued-to-event] [fixture:
+  it, at the end of the text, whether it follows a period or an event.
+
+  [fixture: timeline/gram-event-colon-glued-to-event] [fixture:
   timeline/gram-event-colon-space-glued] [fixture:
   timeline/gram-event-empty-after-colon] [fixture:
   timeline/gram-event-empty-after-colon-space] [fixture:
   timeline/gram-event-trailing-colon] [fixture:
   timeline/gram-event-trailing-colon-space] [fixture:
   timeline/gram-event-colon-at-end-glued]
+
 - An event on a line of its own belongs to the last task before it. Empty lines,
   lines of whitespace, comment lines, directive lines, a title, an accessibility
   title and description, and a section between them do not end the task. An
   event before every task has no task, and the Db throws a `TypeError`, so the
-  input is rejected. [fixture: timeline/db-event-own-line] [fixture:
+  input is rejected.
+
+  [fixture: timeline/db-event-own-line] [fixture:
   timeline/db-event-own-line-after-event] [fixture:
   timeline/db-event-own-line-two-tasks] [fixture:
   timeline/db-event-own-line-after-blank-line] [fixture:
@@ -1735,39 +2050,47 @@ Values of the summary, by field:
   timeline/db-event-after-section-joins-earlier-task] [fixture:
   timeline/gram-event-first] [fixture: timeline/gram-event-after-title]
   [fixture: timeline/gram-event-after-section-only]
+
 - Whitespace after a `:` includes the line feed, so a `:` at the end of a line
   takes the next line as the event, with its indentation, and the same holds for
   a line with only a `:`. An empty line after it is rejected, and a line of
-  spaces is an event of those spaces, whose next line is a task. [fixture:
-  timeline/db-event-line-feed-after-colon] [fixture:
+  spaces is an event of those spaces, whose next line is a task.
+
+  [fixture: timeline/db-event-line-feed-after-colon] [fixture:
   timeline/db-event-line-feed-after-colon-indented] [fixture:
   timeline/db-event-line-feed-after-second-colon] [fixture:
   timeline/db-event-own-line-colon-then-line-feed] [fixture:
   timeline/gram-event-line-feed-then-empty-line] [fixture:
   timeline/db-event-line-feed-then-whitespace-line] [fixture:
   timeline/db-event-colon-only-twice]
+
 - Quotes, brackets, arrows, markup, links, a backslash, and characters outside
   the Basic Multilingual Plane are characters of the text, and so is a `;` but
-  for the one that the line rule of `style` lines drops. [fixture:
-  timeline/db-event-semicolons] [fixture: timeline/db-event-links-and-tags]
-  [fixture: timeline/db-event-quotes-and-brackets] [fixture:
-  timeline/db-event-arrows] [fixture: timeline/db-event-backslash-n] [fixture:
-  timeline/db-event-non-bmp]
+  for the one that the line rule of `style` lines drops.
+
+  [fixture: timeline/db-event-semicolons] [fixture:
+  timeline/db-event-links-and-tags] [fixture:
+  timeline/db-event-quotes-and-brackets] [fixture: timeline/db-event-arrows]
+  [fixture: timeline/db-event-backslash-n] [fixture: timeline/db-event-non-bmp]
+
 - A `#` or `%%` inside an event, a `#` or `%%` alone as an event, and `%%` glued
-  to an event are characters of the event. [fixture: timeline/db-event-hash]
-  [fixture: timeline/db-event-percent] [fixture:
-  timeline/db-event-percent-glued] [fixture: timeline/db-event-only-hash]
-  [fixture: timeline/db-event-only-percent]
+  to an event are characters of the event.
+
+  [fixture: timeline/db-event-hash] [fixture: timeline/db-event-percent]
+  [fixture: timeline/db-event-percent-glued] [fixture:
+  timeline/db-event-only-hash] [fixture: timeline/db-event-only-percent]
+
 - A line that starts with `#` or with a `%` that no `{` follows is a comment
   line: `% c`, `%c`, `%`, and `%% c` are comments, and `%{x}` is a period. A `%`
   inside a period or a title, or at the start of an event, is part of the text.
   The indentation of a comment line changes nothing, and a comment line can
   stand between a task and its events, and right after the header. A `#` after a
   period starts a comment that runs to the end of the line, so an event after it
-  is lost, and the whitespace before it stays in the period. [fixture:
-  timeline/db-comment-hash-line] [fixture: timeline/db-comment-percent-line]
-  [fixture: timeline/db-comment-hash-only] [fixture:
-  timeline/db-comment-percent-only] [fixture:
+  is lost, and the whitespace before it stays in the period.
+
+  [fixture: timeline/db-comment-hash-line] [fixture:
+  timeline/db-comment-percent-line] [fixture: timeline/db-comment-hash-only]
+  [fixture: timeline/db-comment-percent-only] [fixture:
   timeline/db-comment-hash-line-at-end] [fixture:
   timeline/db-comment-hash-line-indented] [fixture:
   timeline/db-comment-before-event-line] [fixture:
@@ -1783,17 +2106,21 @@ Values of the summary, by field:
   timeline/lex-percent-brace-period] [fixture:
   timeline/db-period-percent-inside] [fixture: timeline/db-title-single-percent]
   [fixture: timeline/db-event-single-percent]
+
 - `%%` after a period and whitespace is part of the period. `%%` glued to a
   period of one character starts a comment that takes that character, since the
   [rule of the comment](https://github.com/mermaid-js/mermaid/blob/2086904e76c692331e34a45d7cc3bc30860d040e/packages/mermaid/src/diagrams/timeline/parser/timeline.jison#L15)
   takes one character of any kind but `}` before the `%%`, at the start of a
   token: the task is lost. After two characters or more, or after a `}`, it is
-  part of the period. [fixture: timeline/db-comment-percent-after-period]
-  [fixture: timeline/db-comment-percent-after-period-glued] [fixture:
+  part of the period.
+
+  [fixture: timeline/db-comment-percent-after-period] [fixture:
+  timeline/db-comment-percent-after-period-glued] [fixture:
   timeline/db-comment-percent-after-period-glued-no-space] [fixture:
   timeline/db-comment-percent-glued-after-two-characters] [fixture:
   timeline/db-comment-percent-after-closing-brace] [fixture:
   timeline/db-comment-percent-glued-in-event]
+
 - The common line rule of
   [`style` and `classDef` lines](../../spec/docs/common.md#style-and-classdef-lines)
   acts on the text of a timeline as on that of every diagram: on a line that has
@@ -1806,7 +2133,9 @@ Values of the summary, by field:
   the Db shows the placeholder and no `;`. The rule reaches the title, the
   accessibility texts, and the events; a section and a period end at the `:`
   that follows `style`, which has no whitespace after it, so such a line is
-  rejected. [fixture: timeline/lex-title-semicolon-in-style-line] [fixture:
+  rejected.
+
+  [fixture: timeline/lex-title-semicolon-in-style-line] [fixture:
   timeline/lex-title-semicolon-in-style-line-last-only] [fixture:
   timeline/lex-title-semicolon-in-classdef-line] [fixture:
   timeline/lex-title-semicolon-after-text-before-style] [fixture:
@@ -1820,6 +2149,7 @@ Values of the summary, by field:
   timeline/lex-event-semicolon-in-style-line] [fixture:
   timeline/lex-event-semicolon-in-style-line-second-event] [fixture:
   timeline/gram-section-style-line] [fixture: timeline/gram-period-style-line]
+
 - Where a keyword or a `:` at the end of a line takes the next line, the lines
   between are read first. A `%%` comment line is removed, so the line after it
   is taken. A `#` line is no comment line there: it is taken as the text of a
@@ -1828,8 +2158,9 @@ Values of the summary, by field:
   the next line is a task; with none, it leaves an empty line, which an empty
   line in the text does as well, so `title` and `section` are periods and the
   `:` is rejected. After `accTitle:` and `accDescr:`, the whitespace takes
-  directive lines and empty lines, so the text is the next line. [fixture:
-  timeline/lex-title-line-feed-comment-line] [fixture:
+  directive lines and empty lines, so the text is the next line.
+
+  [fixture: timeline/lex-title-line-feed-comment-line] [fixture:
   timeline/lex-title-line-feed-two-comment-lines] [fixture:
   timeline/lex-title-line-feed-hash-line] [fixture:
   timeline/lex-title-line-feed-directive-line] [fixture:
@@ -1848,33 +2179,40 @@ Values of the summary, by field:
   timeline/lex-event-line-feed-directive-line-unindented] [fixture:
   timeline/lex-event-own-line-colon-comment-line] [fixture:
   timeline/lex-event-own-line-colon-directive-line-unindented]
+
 - A directive is removed before the text is read, and the whitespace around it
   stays, so that the parts around it join: in a period, an event, a title, a
-  section, and the accessibility texts. [fixture:
-  timeline/db-period-directive-before-colon] [fixture:
+  section, and the accessibility texts.
+
+  [fixture: timeline/db-period-directive-before-colon] [fixture:
   timeline/db-period-directive-glued] [fixture: timeline/db-event-directive]
   [fixture: timeline/db-title-directive] [fixture:
   timeline/db-section-directive] [fixture: timeline/db-acc-title-directive]
   [fixture: timeline/db-acc-descr-block-directive]
+
 - Each value is read in
   [converted form](../../spec/docs/common.md#reading-a-source), so a character
   reference is its placeholder in every text. The `#` of a reference starts no
-  comment, and a `#` that starts no reference does. [fixture:
-  timeline/db-title-entity] [fixture: timeline/db-section-entity] [fixture:
-  timeline/db-event-entity] [fixture: timeline/db-event-entity-named] [fixture:
-  timeline/db-event-entity-hex] [fixture:
+  comment, and a `#` that starts no reference does.
+
+  [fixture: timeline/db-title-entity] [fixture: timeline/db-section-entity]
+  [fixture: timeline/db-event-entity] [fixture: timeline/db-event-entity-named]
+  [fixture: timeline/db-event-entity-hex] [fixture:
   timeline/db-event-entity-is-no-comment] [fixture:
   timeline/db-period-unclosed-reference] [fixture: timeline/db-acc-title-entity]
   [fixture: timeline/db-acc-descr-entity] [fixture:
   timeline/db-acc-descr-block-entity]
+
 - A CRLF and a lone CR end a line as a line feed does. A U+2028 and a U+2029 end
   no line: they are part of a period, an event, a section, a title, and the
   accessibility texts, and the whitespace before a period includes them. Other
   whitespace, a no-break space and a U+3000 among it, is indentation before a
   period, and a no-break space and a U+3000 at the end of a period are part of
-  it. [fixture: timeline/db-crlf-line-ends] [fixture:
-  timeline/db-lone-cr-line-ends] [fixture: timeline/db-blank-line-between-tasks]
-  [fixture: timeline/db-whitespace-only-line] [fixture:
+  it.
+
+  [fixture: timeline/db-crlf-line-ends] [fixture: timeline/db-lone-cr-line-ends]
+  [fixture: timeline/db-blank-line-between-tasks] [fixture:
+  timeline/db-whitespace-only-line] [fixture:
   timeline/db-whitespace-after-last-line] [fixture:
   timeline/lex-period-line-separator-inside] [fixture:
   timeline/lex-period-paragraph-separator-inside] [fixture:
@@ -1887,21 +2225,26 @@ Values of the summary, by field:
   timeline/lex-ideographic-space-at-end-of-period] [fixture:
   timeline/lex-ideographic-space-indentation] [fixture:
   timeline/lex-no-break-space-around-period-and-event]
+
 - `title`, `accTitle`, and `accDescr` pass through `sanitizeText` and, under a
   `securityLevel` that is not one of mermaid.js's values with HTML labels
   enabled, hold the replaced characters (see
   [db-from-tree.md](./db-from-tree.md), the replacement of characters). The
   sections, the periods, and the events are not changed. The theme and the
-  settings of the timeline change nothing. [fixture:
-  timeline/config-security-level-other-title-and-accessibility] [fixture:
-  timeline/config-security-level-other-accessibility-block] [fixture:
+  settings of the timeline change nothing.
+
+  [fixture: timeline/config-security-level-other-title-and-accessibility]
+  [fixture: timeline/config-security-level-other-accessibility-block] [fixture:
   timeline/config-security-level-other-html-labels-false] [fixture:
   timeline/config-security-level-other-flowchart-html-labels-false] [fixture:
   timeline/config-security-level-other-sections-periods-events] [fixture:
   timeline/config-security-level-loose-title] [fixture:
   timeline/config-security-level-sandbox-title] [fixture:
   timeline/config-theme-and-timeline-settings]
-- All the fields at once. [fixture: timeline/db-everything]
+
+- All the fields at once.
+
+  [fixture: timeline/db-everything]
 
 Values are recorded as the Db holds them, whitespace included.
 
@@ -1948,19 +2291,24 @@ frontmatter are removed before it, as for every diagram.
   reads it in lower case only, and the lexer reads the `-beta` in any case. The
   whitespace before the header is removed, and so are empty lines, comment
   lines, and directive lines before it. A word, a dash, or a character outside
-  ASCII glued to the header is not the header. [fixture:
-  sankey/header-non-ascii-suffix] [fixture: sankey/header-beta-non-ascii-suffix]
-  [fixture: sankey/db-header-beta] [fixture: sankey/db-header-beta-upper-case]
-  [fixture: sankey/header-upper-case] [fixture: sankey/header-capitalized]
-  [fixture: sankey/header-word-suffix] [fixture: sankey/header-beta-suffix]
-  [fixture: sankey/header-dash-suffix] [fixture: sankey/header-indented]
-  [fixture: sankey/header-tab-indented] [fixture: sankey/header-nbsp-before]
+  ASCII glued to the header is not the header.
+
+  [fixture: sankey/header-non-ascii-suffix] [fixture:
+  sankey/header-beta-non-ascii-suffix] [fixture: sankey/db-header-beta]
+  [fixture: sankey/db-header-beta-upper-case] [fixture:
+  sankey/header-upper-case] [fixture: sankey/header-capitalized] [fixture:
+  sankey/header-word-suffix] [fixture: sankey/header-beta-suffix] [fixture:
+  sankey/header-dash-suffix] [fixture: sankey/header-indented] [fixture:
+  sankey/header-tab-indented] [fixture: sankey/header-nbsp-before]
+
 - The header ends its line: the lexer then needs a line feed, so that text,
   spaces, a tab, or a `%%` after the header on its line is rejected. A directive
   is removed, and what it leaves decides: glued to the header it leaves the
   header, and after a space it leaves the space, which is rejected. Comment
   lines, directive lines, and empty lines after the header are removed, and
-  change nothing. [fixture: sankey/header-record-on-header-line] [fixture:
+  change nothing.
+
+  [fixture: sankey/header-record-on-header-line] [fixture:
   sankey/header-trailing-spaces] [fixture: sankey/header-trailing-tab] [fixture:
   sankey/header-comment-on-header-line] [fixture:
   sankey/header-after-blank-lines] [fixture: sankey/header-after-comment-line]
@@ -1968,33 +2316,42 @@ frontmatter are removed before it, as for every diagram.
   sankey/header-then-directive-line] [fixture:
   sankey/header-directive-glued-to-header] [fixture:
   sankey/header-directive-after-space-on-header-line]
+
 - A diagram needs at least one record: a header with no record, or with only
-  empty lines or comment lines after it, is rejected. [fixture:
-  sankey/header-only] [fixture: sankey/header-without-line-feed] [fixture:
-  sankey/header-blank-line-only] [fixture: sankey/header-beta-only] [fixture:
-  sankey/header-then-comment-line-only] [fixture:
+  empty lines or comment lines after it, is rejected.
+
+  [fixture: sankey/header-only] [fixture: sankey/header-without-line-feed]
+  [fixture: sankey/header-blank-line-only] [fixture: sankey/header-beta-only]
+  [fixture: sankey/header-then-comment-line-only] [fixture:
   sankey/header-only-after-frontmatter]
+
 - Each line is a record, and a record is a link from the first field to the
   second with the number of the third. The links are in source order. The last
   line needs no line feed, empty lines change nothing, and the spaces before and
-  after a record are no part of it. [fixture: sankey/db-link-basic] [fixture:
-  sankey/db-two-links] [fixture: sankey/db-no-line-feed-at-end] [fixture:
-  sankey/db-blank-lines-between] [fixture: sankey/db-indented-records] [fixture:
+  after a record are no part of it.
+
+  [fixture: sankey/db-link-basic] [fixture: sankey/db-two-links] [fixture:
+  sankey/db-no-line-feed-at-end] [fixture: sankey/db-blank-lines-between]
+  [fixture: sankey/db-indented-records] [fixture:
   sankey/db-trailing-spaces-line]
+
 - A line of spaces is a field, so that between two records or after the header
   it is rejected, and at the end of the text it is removed with the end.
+
   [fixture: sankey/gram-whitespace-line-between] [fixture:
   sankey/gram-whitespace-line-after-header] [fixture:
   sankey/db-whitespace-line-at-end]
+
 - A CRLF and a lone CR end a line as a line feed does. A U+2028 and a U+2029 end
   no line: between records, or before the first record, they are rejected, and
   at the end of the text they are whitespace and are removed, as are a no-break
   space, a U+3000, a U+FEFF, and a tab. A U+FEFF before the header is removed in
   the same way. Before a record, inside a field, after the header, and after a
   value that another record follows, a no-break space, a U+FEFF, and a tab are
-  rejected, since the lexer takes them as no character of a field. [fixture:
-  sankey/db-crlf-line-ends] [fixture: sankey/db-lone-cr-line-ends] [fixture:
-  sankey/db-trailing-nbsp-at-end] [fixture:
+  rejected, since the lexer takes them as no character of a field.
+
+  [fixture: sankey/db-crlf-line-ends] [fixture: sankey/db-lone-cr-line-ends]
+  [fixture: sankey/db-trailing-nbsp-at-end] [fixture:
   sankey/db-trailing-line-separator-at-end] [fixture:
   sankey/db-trailing-ideographic-space-at-end] [fixture:
   sankey/gram-line-separator-between-records] [fixture:
@@ -2009,6 +2366,7 @@ frontmatter are removed before it, as for every diagram.
   sankey/gram-byte-order-mark-between-records] [fixture:
   sankey/db-byte-order-mark-at-end] [fixture: sankey/db-tab-at-end-of-text]
   [fixture: sankey/gram-tab-after-value-before-record]
+
 - A field that is not in quotes runs to the next comma or line end, and the
   spaces around it are no part of it. It may hold the characters of
   [the lexer](https://github.com/mermaid-js/mermaid/blob/2086904e76c692331e34a45d7cc3bc30860d040e/packages/mermaid/src/diagrams/sankey/parser/sankey.jison#L25)
@@ -2017,8 +2375,10 @@ frontmatter are removed before it, as for every diagram.
   inside the text are characters of the field, but for the `;` that the next
   item drops. Markup is kept as written, and so is a `#` that does not start a
   character reference (`a#35` has no `;`). A quote inside a field that does not
-  start with one is rejected. [fixture: sankey/db-fields-trimmed] [fixture:
-  sankey/db-text-with-spaces] [fixture: sankey/db-text-punctuation] [fixture:
+  start with one is rejected.
+
+  [fixture: sankey/db-fields-trimmed] [fixture: sankey/db-text-with-spaces]
+  [fixture: sankey/db-text-punctuation] [fixture:
   sankey/db-text-semicolon-and-hash] [fixture: sankey/db-text-hash-leading]
   [fixture: sankey/db-text-slashes] [fixture:
   sankey/db-text-ampersand-and-angle] [fixture: sankey/db-text-html-tags]
@@ -2028,6 +2388,7 @@ frontmatter are removed before it, as for every diagram.
   sankey/gram-doubled-quote-in-unquoted-field] [fixture:
   sankey/db-text-reference-without-semicolon] [fixture:
   sankey/db-text-semicolon-at-end-of-field]
+
 - A `;` is dropped by
   [the line rule of `style` and `classDef` lines](../../spec/docs/common.md#style-and-classdef-lines),
   which every diagram type has. A line of the text that has `style`, later a `:`
@@ -2035,8 +2396,9 @@ frontmatter are removed before it, as for every diagram.
   `;`, loses its last `;`; then the same is done with `classDef`. The line is a
   line of the text, so that a line inside quotes is a line of its own, and the
   rule reads all the fields of the line, in quotes or not, and drops the last
-  `;` of the line wherever it is. [fixture:
-  sankey/lex-style-line-semicolon-source] [fixture:
+  `;` of the line wherever it is.
+
+  [fixture: sankey/lex-style-line-semicolon-source] [fixture:
   sankey/lex-style-line-semicolon-target] [fixture:
   sankey/lex-style-line-semicolon-in-quotes] [fixture:
   sankey/lex-style-line-semicolon-in-second-line-of-quotes] [fixture:
@@ -2045,28 +2407,33 @@ frontmatter are removed before it, as for every diagram.
   sankey/lex-style-line-semicolon-in-other-field] [fixture:
   sankey/lex-style-line-semicolon-at-end-of-field] [fixture:
   sankey/lex-style-line-space-before-colon] [fixture:
-  sankey/lex-style-line-text-between-colon-and-hash] The rule is textual and
-  does not match every line. Where the `:` has no `#` after it, or whitespace
-  stands between the `:` and the `#`, or the keyword is `Style` or `classdef`,
-  the `;` stays, and a `;` that follows a `#` and word characters ends a
-  character reference, whose placeholder is rejected (see the next item); so is
-  a line with a second `;` after the first, since the first stays. The rule
-  reads one line: a `;` on another line stays. [fixture:
-  sankey/lex-style-line-without-hash-keeps-semicolon] [fixture:
+  sankey/lex-style-line-text-between-colon-and-hash]
+
+  The rule is textual and does not match every line. Where the `:` has no `#`
+  after it, or whitespace stands between the `:` and the `#`, or the keyword is
+  `Style` or `classdef`, the `;` stays, and a `;` that follows a `#` and word
+  characters ends a character reference, whose placeholder is rejected (see the
+  next item); so is a line with a second `;` after the first, since the first
+  stays. The rule reads one line: a `;` on another line stays.
+
+  [fixture: sankey/lex-style-line-without-hash-keeps-semicolon] [fixture:
   sankey/lex-style-line-does-not-cross-lines] [fixture:
   sankey/lex-style-line-does-not-cross-lines-in-quotes] [fixture:
   sankey/lex-style-upper-case-entity] [fixture:
   sankey/lex-classdef-lower-case-entity] [fixture:
   sankey/lex-style-line-last-semicolon-of-two] [fixture:
   sankey/lex-style-line-space-after-colon]
+
 - Only the characters of that set are allowed, in or out of quotes: a character
   outside ASCII, a tab, a no-break space, a U+3000, a U+2028, a U+2029 are
   rejected, wherever they stand in a field and before a record or a field. A
   character reference such as `#35;` or `#amp;` is replaced by a placeholder
   before the parse, and the placeholder is outside ASCII, so a field that holds
-  one is rejected. [fixture: sankey/gram-non-ascii] [fixture: sankey/gram-cjk]
-  [fixture: sankey/gram-emoji] [fixture: sankey/gram-no-break-space-in-field]
-  [fixture: sankey/gram-ideographic-space-in-field] [fixture:
+  one is rejected.
+
+  [fixture: sankey/gram-non-ascii] [fixture: sankey/gram-cjk] [fixture:
+  sankey/gram-emoji] [fixture: sankey/gram-no-break-space-in-field] [fixture:
+  sankey/gram-ideographic-space-in-field] [fixture:
   sankey/gram-line-separator-in-field] [fixture:
   sankey/gram-paragraph-separator-in-field] [fixture: sankey/gram-tab-in-field]
   [fixture: sankey/gram-tab-before-record] [fixture:
@@ -2076,46 +2443,60 @@ frontmatter are removed before it, as for every diagram.
   sankey/gram-entity-numeric] [fixture: sankey/gram-entity-named] [fixture:
   sankey/gram-entity-in-quoted-field] [fixture:
   sankey/gram-entity-in-quoted-value]
+
 - A field in quotes
   ([`escaped`](https://github.com/mermaid-js/mermaid/blob/2086904e76c692331e34a45d7cc3bc30860d040e/packages/mermaid/src/diagrams/sankey/parser/sankey.jison#L65))
   may hold commas, and two quotes in it are one quote of the field. The quotes
   around it are no part of it. The quotes are read from left to right: a quote
   that is not followed by a quote closes the field, so that five quotes after a
-  letter are two quotes of the field and the closing quote. [fixture:
-  sankey/db-quoted-fields] [fixture: sankey/db-quoted-comma] [fixture:
+  letter are two quotes of the field and the closing quote.
+
+  [fixture: sankey/db-quoted-fields] [fixture: sankey/db-quoted-comma] [fixture:
   sankey/db-quoted-doubled-quote] [fixture: sankey/db-quoted-four-quotes]
   [fixture: sankey/db-quoted-doubled-quote-at-end] [fixture:
   sankey/db-quoted-doubled-quote-at-start] [fixture:
   sankey/db-quoted-only-quote] [fixture: sankey/db-quoted-two-quotes-at-end]
   [fixture: sankey/db-id-quote-and-comma] [fixture:
   sankey/db-quoted-and-unquoted-same-id]
+
 - A line feed inside quotes is part of the field. A CRLF, a lone CR, and a run
   of empty lines are one line feed there, by `prepareTextForParsing()`; the
-  spaces before and after a line feed, and a line of spaces, stay. [fixture:
-  sankey/db-quoted-line-feed] [fixture: sankey/db-quoted-crlf] [fixture:
-  sankey/db-quoted-cr] [fixture: sankey/db-quoted-blank-line-collapses]
-  [fixture: sankey/db-quoted-crlf-blank-line-collapses] [fixture:
+  spaces before and after a line feed, and a line of spaces, stay.
+
+  [fixture: sankey/db-quoted-line-feed] [fixture: sankey/db-quoted-crlf]
+  [fixture: sankey/db-quoted-cr] [fixture:
+  sankey/db-quoted-blank-line-collapses] [fixture:
+  sankey/db-quoted-crlf-blank-line-collapses] [fixture:
   sankey/db-quoted-space-line-kept] [fixture:
   sankey/db-quoted-trailing-spaces-before-line-feed] [fixture:
   sankey/db-quoted-leading-spaces-after-line-feed]
+
 - The field is then trimmed, as every field is, so that the spaces and line
   feeds at the ends of a quoted field are no part of the id. A value in quotes
-  is trimmed as well. [fixture: sankey/db-quoted-leading-line-feed] [fixture:
+  is trimmed as well.
+
+  [fixture: sankey/db-quoted-leading-line-feed] [fixture:
   sankey/db-quoted-trailing-line-feed] [fixture:
   sankey/db-quoted-both-line-feed-ids] [fixture:
   sankey/db-quoted-line-feeds-only] [fixture: sankey/db-quoted-space-only]
   [fixture: sankey/db-quoted-spaces-trimmed] [fixture:
   sankey/db-quoted-space-before-value]
+
 - A field of spaces only, or of spaces and line feeds in quotes, is the empty
   id, and a node is made for it. A field with nothing in it, with or without
-  quotes, is rejected: the empty id has to be written with a space. [fixture:
-  sankey/db-spaces-only-source-id] [fixture: sankey/db-spaces-only-target-id]
-  [fixture: sankey/db-spaces-only-source-id-first-record]
+  quotes, is rejected: the empty id has to be written with a space.
+
+  [fixture: sankey/db-spaces-only-source-id] [fixture:
+  sankey/db-spaces-only-target-id] [fixture:
+  sankey/db-spaces-only-source-id-first-record]
+
 - A quote that is not closed, text before the opening quote or after the closing
   quote, spaces on either side of the quotes, and a quoted field that is empty
-  are rejected. [fixture: sankey/gram-quoted-empty] [fixture:
-  sankey/gram-quoted-empty-value] [fixture: sankey/gram-quoted-unclosed]
-  [fixture: sankey/gram-quoted-value-unclosed] [fixture:
+  are rejected.
+
+  [fixture: sankey/gram-quoted-empty] [fixture: sankey/gram-quoted-empty-value]
+  [fixture: sankey/gram-quoted-unclosed] [fixture:
+  sankey/gram-quoted-value-unclosed] [fixture:
   sankey/gram-text-after-closing-quote] [fixture:
   sankey/gram-text-before-opening-quote] [fixture:
   sankey/gram-space-before-opening-quote] [fixture:
@@ -2125,16 +2506,19 @@ frontmatter are removed before it, as for every diagram.
   sankey/gram-quote-after-space-in-field] [fixture:
   sankey/gram-quoted-then-trailing-comma] [fixture:
   sankey/gram-quoted-unclosed-at-end-of-text]
+
 - A record has exactly three fields, as
   [the grammar](https://github.com/mermaid-js/mermaid/blob/2086904e76c692331e34a45d7cc3bc30860d040e/packages/mermaid/src/diagrams/sankey/parser/sankey.jison#L51-L58)
   says: fewer, more, a comma after the third field, and an empty field are
-  rejected. [fixture: sankey/gram-two-columns] [fixture: sankey/gram-one-column]
-  [fixture: sankey/gram-four-columns] [fixture: sankey/gram-trailing-comma]
-  [fixture: sankey/gram-empty-source] [fixture: sankey/gram-empty-target]
-  [fixture: sankey/gram-empty-value] [fixture: sankey/gram-commas-only]
-  [fixture: sankey/gram-comma-only-line] [fixture:
-  sankey/gram-short-line-after-record] [fixture:
-  sankey/gram-one-field-after-record]
+  rejected.
+
+  [fixture: sankey/gram-two-columns] [fixture: sankey/gram-one-column] [fixture:
+  sankey/gram-four-columns] [fixture: sankey/gram-trailing-comma] [fixture:
+  sankey/gram-empty-source] [fixture: sankey/gram-empty-target] [fixture:
+  sankey/gram-empty-value] [fixture: sankey/gram-commas-only] [fixture:
+  sankey/gram-comma-only-line] [fixture: sankey/gram-short-line-after-record]
+  [fixture: sankey/gram-one-field-after-record]
+
 - `value` is
   [`parseFloat()`](https://github.com/mermaid-js/mermaid/blob/2086904e76c692331e34a45d7cc3bc30860d040e/packages/mermaid/src/diagrams/sankey/parser/sankey.jison#L55)
   of the third field, after the trim, so that the number is read as the
@@ -2143,14 +2527,16 @@ frontmatter are removed before it, as for every diagram.
   `1.2.3`, `0x10` is `0`, and a `%%`, a `#`, a `;`, or a space and a `;` after
   the number is part of the text that is dropped). A negative value is accepted,
   and `-0` is the number -0 in the Db, and the summary holds 0, since JSON has
-  no -0. [fixture: sankey/db-value-negative] [fixture:
-  sankey/db-value-plus-sign] [fixture: sankey/db-value-zero] [fixture:
-  sankey/db-value-decimal] [fixture: sankey/db-value-leading-dot] [fixture:
-  sankey/db-value-trailing-dot] [fixture: sankey/db-value-exponent] [fixture:
-  sankey/db-value-exponent-negative] [fixture: sankey/db-value-hexadecimal]
-  [fixture: sankey/db-value-text-after-number] [fixture:
-  sankey/db-value-two-numbers] [fixture: sankey/db-value-underscore] [fixture:
-  sankey/db-value-two-dots] [fixture: sankey/db-value-spaces] [fixture:
+  no -0.
+
+  [fixture: sankey/db-value-negative] [fixture: sankey/db-value-plus-sign]
+  [fixture: sankey/db-value-zero] [fixture: sankey/db-value-decimal] [fixture:
+  sankey/db-value-leading-dot] [fixture: sankey/db-value-trailing-dot] [fixture:
+  sankey/db-value-exponent] [fixture: sankey/db-value-exponent-negative]
+  [fixture: sankey/db-value-hexadecimal] [fixture:
+  sankey/db-value-text-after-number] [fixture: sankey/db-value-two-numbers]
+  [fixture: sankey/db-value-underscore] [fixture: sankey/db-value-two-dots]
+  [fixture: sankey/db-value-spaces] [fixture:
   sankey/db-value-percent-after-number] [fixture:
   sankey/db-value-hash-after-number] [fixture: sankey/db-quoted-value] [fixture:
   sankey/db-quoted-value-with-comma] [fixture:
@@ -2158,18 +2544,25 @@ frontmatter are removed before it, as for every diagram.
   [fixture: sankey/db-value-semicolon-after-number] [fixture:
   sankey/db-value-space-semicolon-after-number] [fixture:
   sankey/db-value-two-semicolons-after-number]
+
 - A value that starts with no number is `NaN`, and the record is accepted; `NaN`
   is recorded as the text `"NaN"`. A value of spaces only is such a value,
   unless it ends the text, where the spaces are removed and the record is
-  rejected for its columns. [fixture: sankey/db-value-not-a-number] [fixture:
+  rejected for its columns.
+
+  [fixture: sankey/db-value-not-a-number] [fixture:
   sankey/db-value-number-after-text] [fixture: sankey/db-value-nan-text]
   [fixture: sankey/db-quoted-value-not-a-number] [fixture:
   sankey/db-spaces-only-value] [fixture:
   sankey/gram-spaces-only-value-at-end-of-text]
+
 - `Infinity` and `-Infinity` are read as those numbers, and so is a number too
   large for a double (`1e999`). They are recorded as the text `"Infinity"` and
-  `"-Infinity"`. [fixture: sankey/db-value-infinity] [fixture:
+  `"-Infinity"`.
+
+  [fixture: sankey/db-value-infinity] [fixture:
   sankey/db-value-negative-infinity] [fixture: sankey/db-value-overflow]
+
 - A node is
   [found or created](https://github.com/mermaid-js/mermaid/blob/2086904e76c692331e34a45d7cc3bc30860d040e/packages/mermaid/src/diagrams/sankey/sankeyDB.ts#L48-L58)
   by its id after the trim and the replacement of two quotes by one. Ids are
@@ -2177,21 +2570,26 @@ frontmatter are removed before it, as for every diagram.
   is first named by the source of its first link, then by the target. A link
   from a node to itself, two links with the same nodes, and a link back are all
   accepted, and a link is added for each. The names of the properties of objects
-  are ids like any other. [fixture: sankey/db-self-link] [fixture:
-  sankey/db-duplicate-link] [fixture: sankey/db-reverse-link] [fixture:
-  sankey/db-node-order] [fixture: sankey/db-ids-case-sensitive] [fixture:
-  sankey/db-ids-compared-after-trim] [fixture:
-  sankey/db-ids-of-object-prototype]
+  are ids like any other.
+
+  [fixture: sankey/db-self-link] [fixture: sankey/db-duplicate-link] [fixture:
+  sankey/db-reverse-link] [fixture: sankey/db-node-order] [fixture:
+  sankey/db-ids-case-sensitive] [fixture: sankey/db-ids-compared-after-trim]
+  [fixture: sankey/db-ids-of-object-prototype]
+
 - A line that starts, after its indentation, with `%%` is a comment line and is
   removed, also inside quotes, so that the lines around it join into one field
   with a line feed. A line of `%%` alone is no comment line, and a `#` starts no
-  comment: both are fields, and are rejected for their columns. [fixture:
-  sankey/db-comment-line] [fixture: sankey/db-comment-line-between-records]
-  [fixture: sankey/db-comment-line-with-blank-lines] [fixture:
+  comment: both are fields, and are rejected for their columns.
+
+  [fixture: sankey/db-comment-line] [fixture:
+  sankey/db-comment-line-between-records] [fixture:
+  sankey/db-comment-line-with-blank-lines] [fixture:
   sankey/db-comment-line-at-end] [fixture: sankey/db-comment-line-indented]
   [fixture: sankey/gram-percent-line-alone] [fixture:
   sankey/gram-hash-line-alone] [fixture: sankey/db-quoted-comment-line]
   [fixture: sankey/db-quoted-directive-line]
+
 - A directive is removed before the text is read, wherever it stands, so that
   the parts around it join: in a field, after the value, at the start of a
   record, and in quotes. A directive with settings of the diagram changes
@@ -2200,34 +2598,43 @@ frontmatter are removed before it, as for every diagram.
   the start of the next line
   ([Directives](../../spec/docs/common.md#directives)): `a,b,1 %%{init` and the
   line `c,d,2` leave `a,b,1 ,d,2`, four fields, which is rejected, while at the
-  end of the text it takes nothing and the record stays. [fixture:
-  sankey/db-directive-in-field] [fixture:
+  end of the text it takes nothing and the record stays.
+
+  [fixture: sankey/db-directive-in-field] [fixture:
   sankey/db-directive-at-start-of-record] [fixture:
   sankey/db-directive-after-value] [fixture: sankey/db-directive-in-quotes]
   [fixture: sankey/db-directive-sankey-settings] [fixture:
   sankey/gram-directive-unclosed-takes-next-line] [fixture:
   sankey/db-directive-unclosed-at-end]
+
 - `title` is the title of the frontmatter, which the Diagram gives to the Db
   with `setDiagramTitle`; the spaces of the title stay. The grammar has no
   `title` statement and no accessibility statements, so such a line is read as a
   record and is rejected for its columns. The settings of the frontmatter change
-  nothing in the Db. [fixture: sankey/db-title-frontmatter] [fixture:
+  nothing in the Db.
+
+  [fixture: sankey/db-title-frontmatter] [fixture:
   sankey/db-title-frontmatter-spaces] [fixture: sankey/gram-title-statement]
   [fixture: sankey/gram-acc-title-statement] [fixture:
   sankey/db-frontmatter-config]
+
 - `title` and the ids pass through `sanitizeText` and, under a `securityLevel`
   that is not one of mermaid.js's values with HTML labels enabled, hold the
   replaced characters (see [db-from-tree.md](./db-from-tree.md), the replacement
   of characters). Under `loose` and `sandbox`, or with `htmlLabels` false at the
   top of the settings or in `flowchart`, they are as written. The theme and the
-  settings of the diagram change nothing. [fixture:
-  sankey/config-security-level-other-title-and-ids] [fixture:
+  settings of the diagram change nothing.
+
+  [fixture: sankey/config-security-level-other-title-and-ids] [fixture:
   sankey/config-security-level-other-html-labels-false] [fixture:
   sankey/config-security-level-other-flowchart-html-labels-false] [fixture:
   sankey/config-security-level-loose-ids] [fixture:
   sankey/config-security-level-sandbox-ids] [fixture:
   sankey/config-sankey-settings]
-- All the fields at once. [fixture: sankey/db-everything]
+
+- All the fields at once.
+
+  [fixture: sankey/db-everything]
 
 Values are recorded as the Db holds them, whitespace included.
 
@@ -2295,6 +2702,7 @@ and
   brace, a `#`, a quote, a digit, a comma, or a bracket after the header is
   rejected, and a line that starts with `#` before it too: no detector reads the
   text. A header with no statement after it is accepted: the chart is empty.
+
   [fixture: xychart/db-header-beta-only] [fixture: xychart/db-header-plain]
   [fixture: xychart/header-upper-case] [fixture:
   xychart/header-beta-capitalized] [fixture: xychart/header-word-suffix]
@@ -2307,29 +2715,35 @@ and
   xychart/gram-header-colon-suffix] [fixture: xychart/gram-header-comma-suffix]
   [fixture: xychart/gram-header-digit-suffix] [fixture:
   xychart/gram-header-hash-suffix] [fixture: xychart/gram-header-quote-suffix]
+
 - Spaces, tabs, empty lines, a no-break space, a U+FEFF, a comment line, and a
   directive line before the header change nothing. A directive glued to the
   header is removed, and a comment after it, with a space or glued, is skipped.
   A line of `%%` alone, or `%%{ }%%`, before the header or after it is a comment
-  line. [fixture: xychart/header-indented] [fixture:
-  xychart/header-tab-indented] [fixture: xychart/header-after-bare-percent-line]
-  [fixture: xychart/header-after-bare-percent-line-and-whitespace-line]
-  [fixture: xychart/header-after-blank-lines] [fixture:
-  xychart/header-after-comment-line] [fixture:
-  xychart/header-after-directive-line] [fixture:
+  line.
+
+  [fixture: xychart/header-indented] [fixture: xychart/header-tab-indented]
+  [fixture: xychart/header-after-bare-percent-line] [fixture:
+  xychart/header-after-bare-percent-line-and-whitespace-line] [fixture:
+  xychart/header-after-blank-lines] [fixture: xychart/header-after-comment-line]
+  [fixture: xychart/header-after-directive-line] [fixture:
   xychart/header-after-empty-braces-line] [fixture: xychart/header-nbsp-before]
   [fixture: xychart/header-bom-before] [fixture:
   xychart/header-directive-glued-after-header] [fixture:
   xychart/header-comment-on-header-line] [fixture:
   xychart/header-comment-glued-to-header] [fixture:
   xychart/header-bare-percent-line-after-header]
+
 - A statement can follow the header on its line, and so can a `;`, which ends
   the line. A second header, on a line of its own or after the first, is read as
-  a header again. [fixture: xychart/header-statement-on-header-line] [fixture:
+  a header again.
+
+  [fixture: xychart/header-statement-on-header-line] [fixture:
   xychart/header-line-on-header-line] [fixture: xychart/header-semicolon]
   [fixture: xychart/header-semicolon-only] [fixture:
   xychart/header-semicolon-spaced] [fixture: xychart/header-leading-semicolon]
   [fixture: xychart/header-twice] [fixture: xychart/header-twice-same-line]
+
 - `orientation` is `vertical`, or `horizontal` where the header is followed by
   the word `horizontal`. The word is read in any case by the lexer, but the Db
   takes any word other than `horizontal` as vertical: `HORIZONTAL` and
@@ -2337,7 +2751,9 @@ and
   word, and a statement can follow it on the line. The word is no statement and
   no text: on the next line, twice, glued to another word, after a statement, or
   as a title, a category, or the title of an axis, it is rejected; in quotes it
-  is a text. [fixture: xychart/db-orientation-capitalized] [fixture:
+  is a text.
+
+  [fixture: xychart/db-orientation-capitalized] [fixture:
   xychart/db-orientation-horizontal] [fixture: xychart/db-orientation-in-quotes]
   [fixture: xychart/db-orientation-plain-header] [fixture:
   xychart/db-orientation-tab] [fixture: xychart/db-orientation-two-spaces]
@@ -2352,22 +2768,26 @@ and
   xychart/gram-orientation-on-next-line] [fixture:
   xychart/gram-orientation-twice] [fixture:
   xychart/gram-orientation-word-suffix]
+
 - Where the header has no orientation word, `orientation` is the setting
   `xyChart.chartOrientation`, which `vertical` is by default, whether it comes
   from the site, the frontmatter, or a directive; the word of the header wins
   over the setting. The other settings of the chart, the theme, and the colours
-  of the palette change nothing in the Db. [fixture:
-  xychart/config-orientation-directive] [fixture:
+  of the palette change nothing in the Db.
+
+  [fixture: xychart/config-orientation-directive] [fixture:
   xychart/config-orientation-frontmatter] [fixture:
   xychart/config-orientation-frontmatter-header-wins] [fixture:
   xychart/config-orientation-header-wins] [fixture:
   xychart/config-orientation-setting-horizontal] [fixture:
   xychart/config-settings-do-not-change-db]
+
 - A statement ends at a line end, a `;`, or the end of the text; empty lines and
   empty statements change nothing, and so do spaces, a tab, a vertical tab, a
   form feed, a no-break space, a U+FEFF, and a U+3000 around a statement. A CRLF
   and a lone CR end a line as a line feed does. A U+2028 or a U+2029 after a
   word is whitespace. A statement needs no line feed at the end of the text.
+
   [fixture: xychart/db-statement-blank-lines] [fixture:
   xychart/db-statement-leading-semicolon] [fixture:
   xychart/db-statement-tab-indented] [fixture:
@@ -2393,15 +2813,18 @@ and
   xychart/db-title-form-feed-after-word] [fixture:
   xychart/db-title-nbsp-before-keyword] [fixture:
   xychart/db-title-ideographic-space]
+
 - A title is a text: text in quotes, which is what lies between the quotes,
   without the spaces at its ends, or words without quotes, which are joined
   without the spaces between them. A word holds letters, digits, and `-`, `_`,
   `.`, `+`, `=`, `*`, `&`, `#`; a `#` starts no comment, so `T # c` is the title
   `T#c`. Text in quotes can hold punctuation, a keyword, a `%%` after a space,
   markup, characters outside ASCII, backquotes, and line feeds, a CRLF being one
-  line feed. [fixture: xychart/db-title-quoted] [fixture:
-  xychart/db-title-bare-word] [fixture: xychart/db-title-bare-digit] [fixture:
-  xychart/db-title-bare-number] [fixture: xychart/db-title-bare-words] [fixture:
+  line feed.
+
+  [fixture: xychart/db-title-quoted] [fixture: xychart/db-title-bare-word]
+  [fixture: xychart/db-title-bare-digit] [fixture: xychart/db-title-bare-number]
+  [fixture: xychart/db-title-bare-words] [fixture:
   xychart/db-title-bare-characters] [fixture:
   xychart/db-title-quoted-spaces-trimmed] [fixture:
   xychart/db-title-quoted-special] [fixture: xychart/db-title-quoted-line-feed]
@@ -2416,14 +2839,17 @@ and
   xychart/db-title-nbsp-between-words] [fixture:
   xychart/db-title-quoted-semicolon] [fixture: xychart/db-title-bare-semicolon]
   [fixture: xychart/db-title-semicolon-empty-statements]
+
 - The last `title` statement is the title, and it replaces the title of the
   frontmatter, which is the title where no statement gives one, with the spaces
   it has. The keyword is read in any case, and a tab can follow it; a word that
   starts with `title` is a text, while a word glued to the keyword, `titles`,
-  and `title` or `Title` as the text are rejected. [fixture:
-  xychart/db-title-twice] [fixture: xychart/db-title-three-times] [fixture:
-  xychart/db-title-bare-then-quoted] [fixture: xychart/db-title-frontmatter]
-  [fixture: xychart/db-title-frontmatter-and-statement] [fixture:
+  and `title` or `Title` as the text are rejected.
+
+  [fixture: xychart/db-title-twice] [fixture: xychart/db-title-three-times]
+  [fixture: xychart/db-title-bare-then-quoted] [fixture:
+  xychart/db-title-frontmatter] [fixture:
+  xychart/db-title-frontmatter-and-statement] [fixture:
   xychart/db-title-frontmatter-spaces] [fixture:
   xychart/db-title-at-end-of-text] [fixture:
   xychart/db-title-upper-case-keyword] [fixture:
@@ -2433,28 +2859,33 @@ and
   [fixture: xychart/gram-title-plural] [fixture:
   xychart/gram-title-keyword-as-text] [fixture:
   xychart/gram-title-bare-title-keyword]
+
 - A character reference in a text in quotes or in an accessibility text is its
   placeholder: `#35;`, and also `#b;` in `a#b;c`; a `#` and a `;` that no word
   joins are characters of the text. In a title, the title of an axis, a
   category, and the title of a plot without quotes, a reference is rejected,
   since its placeholder is outside ASCII. The quotes of an HTML tag are read as
-  `'`. [fixture: xychart/lex-title-entity-in-quotes] [fixture:
+  `'`.
+
+  [fixture: xychart/lex-title-entity-in-quotes] [fixture:
   xychart/gram-title-entity-bare] [fixture:
   xychart/lex-title-quoted-hash-word-semicolon-entity] [fixture:
   xychart/lex-acc-descr-block-entity] [fixture: xychart/lex-acc-descr-entity]
   [fixture: xychart/lex-acc-title-entity] [fixture:
   xychart/db-title-html-tag-in-quotes]
+
 - A title with no text, with two quotes and nothing between them, with its text
   on the next line, or with text after the text in quotes is rejected. So is a
   quote that is not closed, also at the end of the text. A title without quotes
   holds none of `,`, `:`, `/`, `(`, `)`, `'`, `<`, `>`, `[`, `]` and no
   character outside ASCII, and a `%%` glued to a word takes the character before
-  it, so that the title is rejected. [fixture: xychart/gram-title-after-quoted]
-  [fixture: xychart/gram-title-bare-angle] [fixture:
-  xychart/gram-title-bare-apostrophe] [fixture: xychart/gram-title-bare-colon]
-  [fixture: xychart/gram-title-bare-comma] [fixture:
-  xychart/gram-title-bare-non-ascii] [fixture:
-  xychart/gram-title-bare-parenthesis] [fixture:
+  it, so that the title is rejected.
+
+  [fixture: xychart/gram-title-after-quoted] [fixture:
+  xychart/gram-title-bare-angle] [fixture: xychart/gram-title-bare-apostrophe]
+  [fixture: xychart/gram-title-bare-colon] [fixture:
+  xychart/gram-title-bare-comma] [fixture: xychart/gram-title-bare-non-ascii]
+  [fixture: xychart/gram-title-bare-parenthesis] [fixture:
   xychart/gram-title-bare-percent-at-end] [fixture:
   xychart/gram-title-bare-percent-inside] [fixture:
   xychart/gram-title-bare-slash] [fixture: xychart/gram-title-bare-square]
@@ -2465,13 +2896,16 @@ and
   [fixture: xychart/gram-title-quoted-unclosed] [fixture:
   xychart/gram-title-quoted-unclosed-at-end] [fixture:
   xychart/gram-title-text-on-next-line]
+
 - The line rule of `style` and `classDef` lines drops the last `;` of a line
   that has `style:` or `classDef:`, later a `#`, and later a `;`, from any text
   in quotes: a title, the title of an axis, a category, the title of a plot, a
   label, and an accessibility text. Two `;` leave the first, which ends a
   character reference; `Style` in another case, no `#`, and whitespace between
   the `:` and the `#` keep the `;`, and a line inside quotes is a line of its
-  own. [fixture: xychart/lex-title-style-line-semicolon] [fixture:
+  own.
+
+  [fixture: xychart/lex-title-style-line-semicolon] [fixture:
   xychart/lex-style-line-classdef] [fixture:
   xychart/lex-style-line-does-not-cross-lines-in-quotes] [fixture:
   xychart/lex-style-line-no-hash] [fixture:
@@ -2488,14 +2922,16 @@ and
   xychart/lex-acc-descr-block-style-line-semicolon] [fixture:
   xychart/lex-acc-descr-style-line-semicolon] [fixture:
   xychart/lex-acc-title-style-line-semicolon]
+
 - A directive is removed before the text is read and the parts around it join:
   inside a title in quotes, between and after the words of a title, before a
   keyword, between the categories and inside a word, inside a number, a range,
   and an arrow, and between a keyword and a bracket. A comment line and a
   directive line inside a text in quotes are removed with their lines. A
   directive that is not closed takes nothing at the end of the text, and takes
-  the word at the start of the next line, which is then rejected. [fixture:
-  xychart/db-title-directive-after-bare] [fixture:
+  the word at the start of the next line, which is then rejected.
+
+  [fixture: xychart/db-title-directive-after-bare] [fixture:
   xychart/db-title-directive-before-keyword] [fixture:
   xychart/db-title-directive-in-quotes] [fixture:
   xychart/db-title-quoted-comment-line-inside] [fixture:
@@ -2514,14 +2950,16 @@ and
   xychart/db-x-axis-band-directive-in-word] [fixture:
   xychart/db-plot-directive-in-number] [fixture:
   xychart/db-plot-directive-inside]
+
 - A comment is a `%%` and runs to the end of its line: a comment line, and a
   comment after a statement, are skipped. A `%%` glued to the character before
   it takes that character: after the closing bracket of values or categories, a
   number, or a word, the statement is rejected, while after the closing quote of
   a text in quotes the comment is skipped and the text is kept, and after a
   space nothing is taken. A `#` starts no comment, so a line that starts with it
-  is rejected, and neither does a single `%`. [fixture:
-  xychart/db-comment-after-bracket-line] [fixture:
+  is rejected, and neither does a single `%`.
+
+  [fixture: xychart/db-comment-after-bracket-line] [fixture:
   xychart/db-comment-after-statement] [fixture: xychart/db-comment-at-end]
   [fixture: xychart/db-comment-glued-after-quote] [fixture:
   xychart/db-comment-glued-after-quoted-axis-title] [fixture:
@@ -2539,6 +2977,7 @@ and
   xychart/div-comment-glued-after-title-word] [fixture:
   xychart/gram-plot-comment-inside] [fixture: xychart/db-plot-comment-after]
   [fixture: xychart/db-x-axis-band-comment-after]
+
 - `xAxis` is `{ type: "band", title, categories }` until a statement gives a
   range. The text after `x-axis` is its title, in quotes or words, and the title
   is empty where there is none. A later `x-axis` replaces the earlier axis, its
@@ -2551,8 +2990,9 @@ and
   line: a comment or a line feed between the keyword and the text or the
   brackets does not join them, and the statement is rejected. The keyword is
   read in any case; a bracket or a quote can follow it with no space; a letter
-  glued to it is rejected, and `x-axis` alone is rejected. [fixture:
-  xychart/db-x-axis-title-at-end-of-text] [fixture:
+  glued to it is rejected, and `x-axis` alone is rejected.
+
+  [fixture: xychart/db-x-axis-title-at-end-of-text] [fixture:
   xychart/db-x-axis-title-bare-characters] [fixture:
   xychart/db-x-axis-title-bare-hyphen] [fixture:
   xychart/db-x-axis-title-bare-word] [fixture:
@@ -2577,16 +3017,19 @@ and
   [fixture: xychart/gram-x-axis-keyword-suffix] [fixture:
   xychart/gram-x-axis-band-after-string-title] [fixture:
   xychart/db-x-axis-range-then-band]
+
 - A range is two numbers and `-->`: `{ type: "linear", title, min, max }`. A
   number is digits with an optional fraction, or a fraction with no integer
   part, and an optional sign; leading zeros are read as digits. The first can be
   greater than the second or equal to it, spaces around the arrow are not
   needed, `-0` is 0, and a number too large for an exact double is the number
   the Db holds. An exponent, `->`, a third number, a number with no arrow or
-  with no second or first number, a word, and `1.` are rejected. [fixture:
-  xychart/db-x-axis-range] [fixture: xychart/db-x-axis-range-decimal] [fixture:
-  xychart/db-x-axis-range-equal] [fixture: xychart/db-x-axis-range-large]
-  [fixture: xychart/db-x-axis-range-leading-zeros] [fixture:
+  with no second or first number, a word, and `1.` are rejected.
+
+  [fixture: xychart/db-x-axis-range] [fixture: xychart/db-x-axis-range-decimal]
+  [fixture: xychart/db-x-axis-range-equal] [fixture:
+  xychart/db-x-axis-range-large] [fixture:
+  xychart/db-x-axis-range-leading-zeros] [fixture:
   xychart/db-x-axis-range-negative] [fixture:
   xychart/db-x-axis-range-negative-zero] [fixture:
   xychart/db-x-axis-range-no-spaces] [fixture: xychart/db-x-axis-range-plus]
@@ -2599,6 +3042,7 @@ and
   xychart/gram-x-axis-range-short-arrow] [fixture:
   xychart/gram-x-axis-range-text] [fixture: xychart/gram-x-axis-range-third]
   [fixture: xychart/gram-x-axis-range-trailing-dot]
+
 - A list of categories is texts between `[` and `]` separated by commas: words,
   which are joined without the spaces between them, or text in quotes, which
   holds spaces, commas, and line feeds and loses the spaces at its ends.
@@ -2608,9 +3052,11 @@ and
   A list with a comma before the closing bracket, with nothing, with a space
   only, with an empty text in quotes, with a line feed between its items, with a
   character outside ASCII or a single `%` in a word, twice, with text after it,
-  or not closed is rejected. [fixture: xychart/db-x-axis-band] [fixture:
-  xychart/db-x-axis-band-characters] [fixture: xychart/db-x-axis-band-digit]
-  [fixture: xychart/db-x-axis-band-entity] [fixture:
+  or not closed is rejected.
+
+  [fixture: xychart/db-x-axis-band] [fixture: xychart/db-x-axis-band-characters]
+  [fixture: xychart/db-x-axis-band-digit] [fixture:
+  xychart/db-x-axis-band-entity] [fixture:
   xychart/db-x-axis-band-line-separator-inside] [fixture:
   xychart/db-x-axis-band-nbsp-inside] [fixture: xychart/db-x-axis-band-negative]
   [fixture: xychart/db-x-axis-band-no-spaces] [fixture:
@@ -2639,13 +3085,16 @@ and
   [fixture: xychart/gram-x-axis-band-unclosed-string] [fixture:
   xychart/db-category-quoted-line-separator] [fixture:
   xychart/db-title-quoted-crlf-category]
+
 - `yAxis` is `{ type: "linear", title, min, max }`; the range is `Infinity` and
   `-Infinity` where no statement gives one and no plot adds values. The text
   before the range is the title; a later `y-axis` with a range only gives the
   empty title, and one with a title only changes the title and keeps the range.
   A range written before or after the plots wins over the one the plots give.
   Categories, a third number, one number, the brackets around a range, and
-  `y-axis` alone are rejected. [fixture: xychart/db-y-axis-after-plot] [fixture:
+  `y-axis` alone are rejected.
+
+  [fixture: xychart/db-y-axis-after-plot] [fixture:
   xychart/db-y-axis-before-plot] [fixture: xychart/db-y-axis-no-range-no-plot]
   [fixture: xychart/db-y-axis-range] [fixture:
   xychart/db-y-axis-range-negative-decimal] [fixture:
@@ -2662,13 +3111,16 @@ and
   xychart/gram-y-axis-title-bare-digit-before-range] [fixture:
   xychart/gram-y-axis-title-bare-letters-digits] [fixture:
   xychart/gram-y-axis-title-bare-title-keyword]
+
 - A plot is `line` or `bar`, an optional title (in quotes, or words), and values
   between `[` and `]` separated by commas: `{ type, title, data }`. The keyword
   is read in any case, a bracket can follow it with no space, and a tab can
   separate them; a word glued to it, values with no brackets, empty brackets,
   and values on the next line are rejected. The plots are in the order of the
   text; two plots can have one title. A title that is a letter or a property
-  name of objects is a title. [fixture: xychart/db-line-title-bare] [fixture:
+  name of objects is a title.
+
+  [fixture: xychart/db-line-title-bare] [fixture:
   xychart/db-line-title-bare-digit] [fixture: xychart/db-line-title-quoted]
   [fixture: xychart/db-line-title-words] [fixture: xychart/db-line-values]
   [fixture: xychart/db-bar-title-bare] [fixture:
@@ -2697,6 +3149,7 @@ and
   xychart/gram-plot-values-line-feed-before-bracket] [fixture:
   xychart/gram-plot-values-title-line-feed-before-bracket] [fixture:
   xychart/gram-plot-values-extra-text]
+
 - A value is a number as the range of an axis writes it: digits with an optional
   fraction, or a fraction with no integer part, and an optional sign; `-0` is 0
   and a number too large for an exact double is the number the Db holds. Spaces,
@@ -2704,9 +3157,11 @@ and
   commas change nothing; a line feed or a CRLF does not. An exponent, a word,
   `NaN`, `Infinity`, `5.`, `1.5.2`, an underscore, two commas, a comma before
   the first value or the closing bracket, two values with no comma, a line feed
-  inside the brackets, and brackets that are not closed are rejected. [fixture:
-  xychart/db-plot-values-bom-inside] [fixture: xychart/db-plot-values-decimal]
-  [fixture: xychart/db-plot-values-decimal-division] [fixture:
+  inside the brackets, and brackets that are not closed are rejected.
+
+  [fixture: xychart/db-plot-values-bom-inside] [fixture:
+  xychart/db-plot-values-decimal] [fixture:
+  xychart/db-plot-values-decimal-division] [fixture:
   xychart/db-plot-values-form-feed-inside] [fixture:
   xychart/db-plot-values-large] [fixture: xychart/db-plot-values-leading-zeros]
   [fixture: xychart/db-plot-values-line-separator-inside] [fixture:
@@ -2729,21 +3184,25 @@ and
   xychart/gram-plot-values-two-dots] [fixture:
   xychart/gram-plot-values-unclosed] [fixture:
   xychart/gram-plot-values-underscore] [fixture: xychart/gram-plot-values-word]
+
 - A value of a line can be followed by a label, a text in quotes, with or
   without a space: `pointLabels` lists the label of each value, the empty text
   for a value with none, and is there only when a label is written. A label that
   is empty gives no label. A label holds punctuation and line feeds, and loses
   the spaces at its ends. A label on a bar is accepted and not kept. A label
   without quotes, before the value, twice, with two quotes inside it, or not
-  closed is rejected. [fixture: xychart/db-label-all] [fixture:
-  xychart/db-label-empty-string] [fixture: xychart/db-label-entity] [fixture:
-  xychart/db-label-last] [fixture: xychart/db-label-line-feed] [fixture:
-  xychart/db-label-no-space] [fixture: xychart/db-label-on-bar] [fixture:
-  xychart/db-label-one] [fixture: xychart/db-label-quoted-crlf] [fixture:
-  xychart/db-label-spaces-trimmed] [fixture: xychart/db-label-special] [fixture:
-  xychart/gram-label-bare] [fixture: xychart/gram-label-before-value] [fixture:
+  closed is rejected.
+
+  [fixture: xychart/db-label-all] [fixture: xychart/db-label-empty-string]
+  [fixture: xychart/db-label-entity] [fixture: xychart/db-label-last] [fixture:
+  xychart/db-label-line-feed] [fixture: xychart/db-label-no-space] [fixture:
+  xychart/db-label-on-bar] [fixture: xychart/db-label-one] [fixture:
+  xychart/db-label-quoted-crlf] [fixture: xychart/db-label-spaces-trimmed]
+  [fixture: xychart/db-label-special] [fixture: xychart/gram-label-bare]
+  [fixture: xychart/gram-label-before-value] [fixture:
   xychart/gram-label-doubled-quote] [fixture: xychart/gram-label-twice]
   [fixture: xychart/gram-label-unclosed]
+
 - `data` is the list of the pairs `[x, y]` that the Db makes where the plot is
   added, from the x axis at that point of the text: with a list of categories,
   one pair for each category, the values beyond the categories dropped and a
@@ -2752,8 +3211,9 @@ and
   values evenly over the range, the first at its start. Where no x-axis
   statement comes before the first plot, the x axis becomes the range from 1 to
   the number of its values, and a later plot is spread over that range. An x
-  axis written after a plot does not change its pairs. [fixture:
-  xychart/db-data-band-after-plot] [fixture:
+  axis written after a plot does not change its pairs.
+
+  [fixture: xychart/db-data-band-after-plot] [fixture:
   xychart/db-data-band-after-plot-longer] [fixture: xychart/db-data-band-equal]
   [fixture: xychart/db-data-band-fewer-values] [fixture:
   xychart/db-data-band-more-values] [fixture: xychart/db-data-band-two-plots]
@@ -2765,15 +3225,22 @@ and
   xychart/db-data-range-integers] [fixture: xychart/db-data-range-negative]
   [fixture: xychart/db-data-range-one-value] [fixture:
   xychart/db-data-range-reversed] [fixture: xychart/db-data-range-three]
+
 - The range of the y axis that no statement gives is computed from the values of
   the plots: the smallest and the greatest value of every plot, without the
   values that a list of categories drops; it is the range of one value for a
-  plot of one value. [fixture: xychart/db-data-y-range-band-truncation]
-  [fixture: xychart/db-data-y-range-from-plots] [fixture:
+  plot of one value.
+
+  [fixture: xychart/db-data-y-range-band-truncation] [fixture:
+  xychart/db-data-y-range-from-plots] [fixture:
   xychart/db-data-y-range-negative-zero] [fixture:
   xychart/db-data-y-range-single-value]
-- All the fields at once. [fixture: xychart/db-data-everything] [fixture:
+
+- All the fields at once.
+
+  [fixture: xychart/db-data-everything] [fixture:
   xychart/db-data-xy-title-and-plots]
+
 - `accTitle` is the text after `accTitle:` to the end of its line, without the
   spaces at its ends; `accDescr` is the text after `accDescr:`, or the lines
   between `accDescr {` and `}`. No space is needed after the colon or before the
@@ -2791,7 +3258,9 @@ and
   nothing and keeps the description before it, a description on a line and a
   block replace each other, and a `}` ends a block, after which the text is read
   as statements. A CRLF in a block joins the lines with a line feed, and a
-  U+2028 is a character of the text. [fixture: xychart/db-acc-descr] [fixture:
+  U+2028 is a character of the text.
+
+  [fixture: xychart/db-acc-descr] [fixture:
   xychart/db-acc-descr-blank-lines-then-text] [fixture:
   xychart/db-acc-descr-block] [fixture:
   xychart/db-acc-descr-block-comment-line-inside] [fixture:
@@ -2860,19 +3329,22 @@ and
   xychart/div-empty-description-block-inside-plot] [fixture:
   xychart/div-empty-description-block-inside-title-text] [fixture:
   xychart/div-empty-description-block-inside-values]
+
 - `title`, `accTitle`, the titles of the axes, the categories, the titles of the
   plots, and the labels pass through `sanitizeText` and, under a `securityLevel`
   that is not one of mermaid.js's values with HTML labels enabled, hold the
   replaced characters (see [db-from-tree.md](./db-from-tree.md), the replacement
   of characters); the pairs of the plots hold the replaced categories. Under
   `loose` and `sandbox`, or with `htmlLabels` false at the top of the settings
-  or in `flowchart`, they are as written. [fixture:
-  xychart/config-security-level-loose-all] [fixture:
+  or in `flowchart`, they are as written.
+
+  [fixture: xychart/config-security-level-loose-all] [fixture:
   xychart/config-security-level-other-all] [fixture:
   xychart/config-security-level-other-flowchart-html-labels-false] [fixture:
   xychart/config-security-level-other-html-labels-false] [fixture:
   xychart/config-security-level-other-orientation-horizontal] [fixture:
   xychart/config-security-level-sandbox-all]
+
 - The places that hold a text are a title, the accessibility title, a
   description on a line and in braces, the title of the x axis, a category, the
   title of the y axis, the title of a plot, and a label; all but the
@@ -2881,7 +3353,9 @@ and
   Whitespace of any kind (a tab, a U+FEFF, a no-break space, a U+3000, a U+2028,
   a U+2029) separates the words of a text without quotes and is skipped, so that
   the words join; in quotes and in an accessibility text it is a character of
-  the text. [fixture: xychart/db-grid-tab-acc-descr] [fixture:
+  the text.
+
+  [fixture: xychart/db-grid-tab-acc-descr] [fixture:
   xychart/db-grid-tab-acc-descr-block] [fixture: xychart/db-grid-tab-acc-title]
   [fixture: xychart/db-grid-tab-category-bare] [fixture:
   xychart/db-grid-tab-category-quoted] [fixture: xychart/db-grid-tab-label]
@@ -2943,10 +3417,13 @@ and
   xychart/db-grid-ps-x-title-bare] [fixture: xychart/db-grid-ps-x-title-quoted]
   [fixture: xychart/db-grid-ps-y-title-bare] [fixture:
   xychart/db-grid-ps-y-title-quoted]
+
 - A line feed, a CRLF, and a lone CR inside a text: in quotes and in braces they
   are one line feed in the text; without quotes and on the line of `accTitle:`
   or `accDescr:` they end the line, and the rest is read as the next statement,
-  which is rejected. [fixture: xychart/db-grid-crlf-acc-descr-block] [fixture:
+  which is rejected.
+
+  [fixture: xychart/db-grid-crlf-acc-descr-block] [fixture:
   xychart/db-grid-crlf-category-quoted] [fixture: xychart/db-grid-crlf-label]
   [fixture: xychart/db-grid-crlf-plot-title-quoted] [fixture:
   xychart/db-grid-crlf-title-quoted] [fixture:
@@ -2977,12 +3454,15 @@ and
   xychart/gram-grid-lf-plot-title-bare] [fixture:
   xychart/gram-grid-lf-title-bare] [fixture: xychart/gram-grid-lf-x-title-bare]
   [fixture: xychart/gram-grid-lf-y-title-bare]
+
 - A directive inside a text is removed in every place and the parts join. A `%%`
   after a space inside a text is a character of the text in quotes, in the
   accessibility texts, and in a label; without quotes it starts a comment that
   ends the text in a title and in the title of an axis, and, since a category
   and the title of a plot are followed by more of the statement, it is rejected
-  there. [fixture: xychart/db-grid-directive-acc-descr] [fixture:
+  there.
+
+  [fixture: xychart/db-grid-directive-acc-descr] [fixture:
   xychart/db-grid-directive-acc-descr-block] [fixture:
   xychart/db-grid-directive-acc-title] [fixture:
   xychart/db-grid-directive-category-bare] [fixture:
@@ -3009,12 +3489,15 @@ and
   xychart/db-grid-comment-y-title-quoted] [fixture:
   xychart/gram-grid-comment-category-bare] [fixture:
   xychart/gram-grid-comment-plot-title-bare]
+
 - A `;` that the line rule drops, a character reference, a keyword, a character
   outside ASCII, an HTML tag, and punctuation are texts in quotes, in the
   accessibility texts, and in a label (the tag with its attribute quotes read as
   `'`); without quotes they are rejected, since a text without quotes holds the
-  characters of a word only. [fixture: xychart/db-grid-style-acc-descr]
-  [fixture: xychart/db-grid-style-acc-descr-block] [fixture:
+  characters of a word only.
+
+  [fixture: xychart/db-grid-style-acc-descr] [fixture:
+  xychart/db-grid-style-acc-descr-block] [fixture:
   xychart/db-grid-style-acc-title] [fixture:
   xychart/db-grid-style-x-title-quoted] [fixture:
   xychart/gram-grid-style-category-bare] [fixture:
@@ -3085,11 +3568,14 @@ and
   xychart/gram-grid-punct-title-bare] [fixture:
   xychart/gram-grid-punct-x-title-bare] [fixture:
   xychart/gram-grid-punct-y-title-bare]
+
 - The name `__proto__` and a `#` inside a word are texts in every place. An
   empty text is rejected as a title, the title of an axis, and a category, in
   quotes or not; it is the empty text in the accessibility texts and the title
-  of a plot, and no label in a label. [fixture: xychart/db-grid-proto-acc-descr]
-  [fixture: xychart/db-grid-proto-acc-descr-block] [fixture:
+  of a plot, and no label in a label.
+
+  [fixture: xychart/db-grid-proto-acc-descr] [fixture:
+  xychart/db-grid-proto-acc-descr-block] [fixture:
   xychart/db-grid-proto-acc-title] [fixture:
   xychart/db-grid-proto-category-bare] [fixture:
   xychart/db-grid-proto-category-quoted] [fixture: xychart/db-grid-proto-label]
@@ -3203,22 +3689,26 @@ which rejects what it does not know
   character outside ASCII glued to the header is a text where no statement
   starts, so the text is rejected, while a keyword glued to it, `title`, is read
   as the keyword. A second header, on a line of its own, after spaces, or on the
-  header line, is rejected. [fixture: quadrant/spec-quadrant-jison-fe2d2340]
-  [fixture: quadrant/header-upper-case] [fixture: quadrant/header-lower-case]
-  [fixture: quadrant/header-capitalized] [fixture: quadrant/header-word-suffix]
-  [fixture: quadrant/header-spaced-word-suffix] [fixture:
-  quadrant/header-dash-suffix] [fixture: quadrant/header-non-ascii-suffix]
-  [fixture: quadrant/header-digit-suffix] [fixture: quadrant/header-title-glued]
-  [fixture: quadrant/header-twice] [fixture: quadrant/header-twice-indented]
-  [fixture: quadrant/header-twice-same-line]
+  header line, is rejected.
+
+  [fixture: quadrant/spec-quadrant-jison-fe2d2340] [fixture:
+  quadrant/header-upper-case] [fixture: quadrant/header-lower-case] [fixture:
+  quadrant/header-capitalized] [fixture: quadrant/header-word-suffix] [fixture:
+  quadrant/header-spaced-word-suffix] [fixture: quadrant/header-dash-suffix]
+  [fixture: quadrant/header-non-ascii-suffix] [fixture:
+  quadrant/header-digit-suffix] [fixture: quadrant/header-title-glued] [fixture:
+  quadrant/header-twice] [fixture: quadrant/header-twice-indented] [fixture:
+  quadrant/header-twice-same-line]
+
 - Spaces, tabs, empty lines, a line of spaces and tabs, a no-break space, a
   U+FEFF, an ideographic space, a U+2028, a comment line, a line of `%%` alone,
   a directive line, and `%%{ }%%` before the header change nothing, and neither
   does a frontmatter, with a comment line after it. A line that starts with `#`,
   a `;`, a statement, or a text of nothing but a comment line before the header
-  is not detected. [fixture: quadrant/header-indented] [fixture:
-  quadrant/header-tab-indented] [fixture:
-  quadrant/header-after-bare-percent-line] [fixture:
+  is not detected.
+
+  [fixture: quadrant/header-indented] [fixture: quadrant/header-tab-indented]
+  [fixture: quadrant/header-after-bare-percent-line] [fixture:
   quadrant/header-after-blank-lines] [fixture:
   quadrant/header-after-comment-line] [fixture:
   quadrant/header-after-directive-line] [fixture:
@@ -3232,6 +3722,7 @@ which rejects what it does not know
   quadrant/header-ideographic-space-before] [fixture: quadrant/header-ls-before]
   [fixture: quadrant/header-leading-semicolon] [fixture:
   quadrant/header-only-comment] [fixture: quadrant/header-statement-first]
+
 - After the header, a comment after a space or glued to it is skipped, a
   directive glued to it or inside it is removed, and a line of `%%` alone is a
   comment line. A statement can follow the header on its line, separated by a
@@ -3239,8 +3730,9 @@ which rejects what it does not know
   the header are skipped; a CRLF or a CR alone ends the line, and so do the line
   feeds in the other forms; a vertical tab and a form feed are white space,
   while a no-break space, a U+2028, a U+2029, and a U+0085 are a text where no
-  statement starts, and the text is rejected. [fixture:
-  quadrant/header-comment-on-header-line] [fixture:
+  statement starts, and the text is rejected.
+
+  [fixture: quadrant/header-comment-on-header-line] [fixture:
   quadrant/header-comment-glued] [fixture: quadrant/header-directive-glued]
   [fixture: quadrant/div-directive-inside] [fixture:
   quadrant/header-bare-percent-line-after-header] [fixture:
@@ -3253,6 +3745,7 @@ which rejects what it does not know
   [fixture: quadrant/header-cr] [fixture: quadrant/header-ls-after] [fixture:
   quadrant/header-ps-after] [fixture: quadrant/header-vt-after] [fixture:
   quadrant/header-ff-after] [fixture: quadrant/header-nel-after]
+
 - The last `title` statement is the title of the chart, and it replaces the
   title of the frontmatter, which is the title where no statement gives one; an
   empty `title` statement replaces it with the empty text too. The keyword is
@@ -3262,8 +3755,9 @@ which rejects what it does not know
   that starts with `title` and goes on as a word is a text, `Titles: [0.3, 0.6]`
   being a point, while the word `title` inside a text is the keyword, so that
   `My title: [0.3, 0.6]` and `x-axis A title T` are rejected. A line feed ends a
-  title, and the next line is a statement. [fixture:
-  quadrant/db-title-keyword-capitalized] [fixture:
+  title, and the next line is a statement.
+
+  [fixture: quadrant/db-title-keyword-capitalized] [fixture:
   quadrant/db-title-keyword-upper-case] [fixture:
   quadrant/db-title-keyword-alone] [fixture:
   quadrant/db-title-keyword-trailing-space] [fixture:
@@ -3277,17 +3771,19 @@ which rejects what it does not know
   quadrant/db-title-prefix-of-name] [fixture:
   quadrant/gram-title-in-name-middle] [fixture: quadrant/gram-title-lf-ends]
   [fixture: quadrant/gram-title-after-axis-text]
+
 - A title takes the rest of its line, without the spaces and tabs at its ends:
   every character of the line is text, the quotes, a `;`, a `#`, a single `%`, a
   `%%` and what follows it, a colon, a dash, characters outside ASCII, and a
   tag, so that the statements after a `;` are part of the title. The comment
   rules do not apply to it. A directive inside it is removed before the lexer
   reads the text. A title can look like a point: `title: [0.3, 0.6]` is a title.
-  A title of digits is a title, also after another statement or a `;`. [fixture:
-  quadrant/db-title-spaces-trimmed] [fixture: quadrant/db-title-tab-trailing]
-  [fixture: quadrant/db-title-inner-spaces] [fixture: quadrant/db-title-colon]
-  [fixture: quadrant/db-title-quotes-kept] [fixture:
-  quadrant/db-title-semicolon-kept] [fixture:
+  A title of digits is a title, also after another statement or a `;`.
+
+  [fixture: quadrant/db-title-spaces-trimmed] [fixture:
+  quadrant/db-title-tab-trailing] [fixture: quadrant/db-title-inner-spaces]
+  [fixture: quadrant/db-title-colon] [fixture: quadrant/db-title-quotes-kept]
+  [fixture: quadrant/db-title-semicolon-kept] [fixture:
   quadrant/db-title-semicolon-then-statement] [fixture:
   quadrant/db-acc-title-after-semicolon] [fixture: quadrant/db-title-hash-kept]
   [fixture: quadrant/db-title-leading-dash] [fixture:
@@ -3308,13 +3804,16 @@ which rejects what it does not know
   quadrant/db-title-digit-after-x-axis] [fixture:
   quadrant/db-title-digit-after-x-axis-arrow] [fixture:
   quadrant/db-title-digit-alone] [fixture: quadrant/db-title-digits-with-space]
+
 - `accTitle:` and `accDescr:` set the accessibility title and description. The
   keyword is read in any case, spaces or a tab can stand between it and the
   colon, the text can follow the colon with no space, and the colon is needed.
   The text is the rest of the line without the spaces at its ends, the last
   statement wins, and the two statements do not touch each other. A word glued
   to the keyword is not the keyword. The frontmatter fields `accTitle` and
-  `accDescr` set nothing. [fixture: quadrant/db-acc-title-plain] [fixture:
+  `accDescr` set nothing.
+
+  [fixture: quadrant/db-acc-title-plain] [fixture:
   quadrant/db-acc-title-glued-colon] [fixture:
   quadrant/db-acc-title-space-before-colon] [fixture:
   quadrant/db-acc-title-tab-before-colon] [fixture:
@@ -3330,14 +3829,17 @@ which rejects what it does not know
   quadrant/db-acc-descr-twice] [fixture:
   quadrant/db-acc-descr-frontmatter-like-yaml] [fixture:
   quadrant/gram-acc-descr-glued-word] [fixture: quadrant/db-acc-both]
+
 - The text of an accessibility line is, like a title, the rest of its line: a
   `;`, a `#`, a colon, quotes, and a `%%` with what follows are part of the
   text, a directive inside it is removed, and a directive inside the keyword is
   removed so that the keyword is whole. The white space after the colon includes
   the line feeds, so a line with no text takes the next line that has one as its
   text, a keyword on it being text, and at the end of the text it is rejected,
-  also after an earlier text. [fixture: quadrant/db-acc-title-semicolon-kept]
-  [fixture: quadrant/db-acc-title-semicolon-only] [fixture:
+  also after an earlier text.
+
+  [fixture: quadrant/db-acc-title-semicolon-kept] [fixture:
+  quadrant/db-acc-title-semicolon-only] [fixture:
   quadrant/db-acc-title-semicolon-then-statement] [fixture:
   quadrant/db-acc-title-hash-kept] [fixture: quadrant/db-acc-title-comment-kept]
   [fixture: quadrant/db-acc-title-quotes-kept] [fixture:
@@ -3358,6 +3860,7 @@ which rejects what it does not know
   quadrant/db-acc-title-next-line-no-line-feed-at-end] [fixture:
   quadrant/db-acc-descr-next-line] [fixture:
   quadrant/db-acc-descr-next-line-tab]
+
 - `accDescr {` starts a block that ends at the first `}`, and the description is
   the text of the block without the spaces at its ends and without the white
   space after a line feed, so that the lines are joined with single line feeds
@@ -3367,7 +3870,9 @@ which rejects what it does not know
   blank lines set the empty text. Inside a block a `;`, a `#`, quotes, a
   keyword, and a `%%` with what follows are text, a directive is removed, and a
   CRLF and a CR alone are line feeds. A later block or `accDescr:` line replaces
-  the description. [fixture: quadrant/db-acc-descr-block] [fixture:
+  the description.
+
+  [fixture: quadrant/db-acc-descr-block] [fixture:
   quadrant/db-acc-descr-block-glued-brace] [fixture:
   quadrant/db-acc-descr-block-lines] [fixture:
   quadrant/db-acc-descr-block-indented-lines] [fixture:
@@ -3391,12 +3896,15 @@ which rejects what it does not know
   quadrant/db-acc-descr-block-empty-braces] [fixture:
   quadrant/db-acc-descr-block-spaces-only] [fixture:
   quadrant/db-acc-descr-block-only-blank-lines]
+
 - A block is a statement that needs the end of its line or a `;` right after the
   closing brace: `} ;`, a space and anything after the brace but a `;`, a text
   glued to the brace, a second `}`, and a block with no closing brace are
   rejected, as is text after the brace that is read as statements, such as
   `D}E`. A comment glued to the brace, and a `;` with a statement after it, are
-  fine. [fixture: quadrant/db-acc-descr-block-closing-brace-same-line] [fixture:
+  fine.
+
+  [fixture: quadrant/db-acc-descr-block-closing-brace-same-line] [fixture:
   quadrant/gram-acc-descr-block-braces-inside] [fixture:
   quadrant/gram-acc-descr-block-unclosed] [fixture:
   quadrant/gram-acc-descr-block-unclosed-no-line-feed] [fixture:
@@ -3407,6 +3915,7 @@ which rejects what it does not know
   quadrant/gram-acc-descr-block-text-after-brace] [fixture:
   quadrant/gram-acc-descr-block-semicolon-spaced-after-brace] [fixture:
   quadrant/db-comment-after-statement-brace]
+
 - `x-axis` and `y-axis` take one text or two. `x-axis L --> R` sets the left and
   the right text of the x axis, and `y-axis B --> T` the bottom and the top text
   of the y axis. A text with no arrow sets the first text only, and a text with
@@ -3417,8 +3926,10 @@ which rejects what it does not know
   an axis sets what it names and keeps the rest: a later `x-axis M` changes the
   left text and keeps the right one, a later `x-axis M -->` sets the left text
   with the arrow and keeps the right one, and a later statement with two texts
-  sets both. [fixture: quadrant/db-x-axis-both] [fixture:
-  quadrant/db-y-axis-both] [fixture: quadrant/db-x-axis-left-only] [fixture:
+  sets both.
+
+  [fixture: quadrant/db-x-axis-both] [fixture: quadrant/db-y-axis-both]
+  [fixture: quadrant/db-x-axis-left-only] [fixture:
   quadrant/db-y-axis-bottom-only] [fixture: quadrant/db-x-axis-left-with-arrow]
   [fixture: quadrant/db-y-axis-bottom-with-arrow] [fixture:
   quadrant/gram-x-axis-right-only] [fixture: quadrant/gram-y-axis-top-only]
@@ -3448,6 +3959,7 @@ which rejects what it does not know
   quadrant/db-y-axis-dash-before-arrow] [fixture:
   quadrant/db-x-axis-dashes-after-text] [fixture:
   quadrant/db-y-axis-dashes-after-text]
+
 - A text of an axis is bare or in quotes. A bare text is words, the characters
   `!?$&=+*_./\',` with the backtick, `#`, and dashes inside, and characters
   outside ASCII, with spaces between the words, and it may not start with a
@@ -3460,7 +3972,9 @@ which rejects what it does not know
   is not closed are rejected. Backticks inside the quotes make a markdown
   string, the text without them, also with a line feed in it, while backticks
   without quotes are part of the text and an unclosed markdown string is
-  rejected. [fixture: quadrant/db-x-axis-quoted-both] [fixture:
+  rejected.
+
+  [fixture: quadrant/db-x-axis-quoted-both] [fixture:
   quadrant/db-y-axis-quoted-both] [fixture: quadrant/db-x-axis-quoted-left-only]
   [fixture: quadrant/db-y-axis-quoted-bottom-only] [fixture:
   quadrant/db-x-axis-quoted-arrow] [fixture: quadrant/db-y-axis-quoted-arrow]
@@ -3504,12 +4018,15 @@ which rejects what it does not know
   quadrant/gram-x-axis-two-quoted] [fixture: quadrant/gram-y-axis-two-quoted]
   [fixture: quadrant/gram-x-axis-markdown-unclosed] [fixture:
   quadrant/gram-y-axis-markdown-unclosed]
+
 - An empty string in quotes is rejected where the statement starts with it
   (`x-axis ""` and `x-axis "" --> R`), while after the arrow it is dropped and
   the statement is the text and the arrow with nothing after them. A string of
   spaces is a text that the Db trims to nothing: `x-axis "  " --> R` leaves the
   left text empty and sets the right one, and `x-axis "  "` sets the empty left
-  text. [fixture: quadrant/gram-x-axis-empty-string] [fixture:
+  text.
+
+  [fixture: quadrant/gram-x-axis-empty-string] [fixture:
   quadrant/gram-y-axis-empty-string] [fixture:
   quadrant/gram-x-axis-empty-string-with-arrow] [fixture:
   quadrant/gram-y-axis-empty-string-with-arrow] [fixture:
@@ -3519,13 +4036,16 @@ which rejects what it does not know
   quadrant/db-y-axis-spaces-only-string] [fixture:
   quadrant/db-x-axis-spaces-only-string-alone] [fixture:
   quadrant/db-y-axis-spaces-only-string-alone]
+
 - The keyword is read in any case, spaces can come before it, and the text can
   be glued to it (`x-axisL`), while a dash after it, a tab between the keyword
   and the text, and a tab around the arrow are rejected. Extra spaces around the
   texts and the arrow are removed; a no-break space around the arrow is part of
   the text and the Db trims it. The x axis and the y axis are separate
   statements, in either order, and a `;` ends a statement so that another can
-  follow. [fixture: quadrant/db-x-axis-upper-case] [fixture:
+  follow.
+
+  [fixture: quadrant/db-x-axis-upper-case] [fixture:
   quadrant/db-y-axis-upper-case] [fixture: quadrant/db-x-axis-extra-spaces]
   [fixture: quadrant/db-y-axis-extra-spaces] [fixture:
   quadrant/db-x-axis-glued-text] [fixture: quadrant/db-y-axis-glued-text]
@@ -3543,6 +4063,7 @@ which rejects what it does not know
   quadrant/db-axes-semicolon-y-then-x] [fixture:
   quadrant/db-x-axis-trailing-semicolon] [fixture:
   quadrant/db-y-axis-trailing-semicolon]
+
 - A comment after a space is skipped, and so is a directive; a directive inside
   the keyword, the text, or the arrow is removed. A comment glued to the text
   takes the character before it where that character is a unit of one character
@@ -3550,6 +4071,7 @@ which rejects what it does not know
   rejected, `x-axis L --> R%% c` is the left text with the arrow,
   `x-axis Lm-%% c` loses the dash and `x-axis L --> Rm1%% c` the digit, while a
   comment glued to a word of two characters or more takes nothing of it.
+
   [fixture: quadrant/db-x-axis-comment-after-text] [fixture:
   quadrant/db-y-axis-comment-after-text] [fixture:
   quadrant/div-x-axis-comment-glued-text] [fixture:
@@ -3570,6 +4092,7 @@ which rejects what it does not know
   quadrant/div-y-axis-directive-in-arrow] [fixture:
   quadrant/div-x-axis-directive-in-keyword] [fixture:
   quadrant/div-y-axis-directive-in-keyword]
+
 - `quadrant-1` to `quadrant-4` set the four texts, and `quadrants` lists them in
   the order of the numbers whatever the order of the statements; a quadrant that
   no statement names has the empty text, and the last statement for a quadrant
@@ -3577,7 +4100,9 @@ which rejects what it does not know
   case, the text can be glued to it, and `quadrant-10` is `quadrant-1` with the
   text `0 …`. `quadrant-0`, `quadrant-5`, the keyword alone, and an empty string
   are rejected. The spaces around the text are removed, and those inside it are
-  kept. [fixture: quadrant/db-quadrant-all-four] [fixture:
+  kept.
+
+  [fixture: quadrant/db-quadrant-all-four] [fixture:
   quadrant/db-quadrant-reverse-order] [fixture: quadrant/db-quadrant-1-alone]
   [fixture: quadrant/db-quadrant-2-alone] [fixture:
   quadrant/db-quadrant-3-alone] [fixture: quadrant/db-quadrant-4-alone]
@@ -3588,6 +4113,7 @@ which rejects what it does not know
   quadrant/db-quadrant-glued-text] [fixture: quadrant/db-quadrant-twice]
   [fixture: quadrant/db-quadrant-twice-empty-spaces] [fixture:
   quadrant/db-quadrant-spaces-trimmed]
+
 - A text of a quadrant is bare or in quotes, as a text of an axis is, with the
   same characters: words, `-` inside, `#`, the punctuation `!?$&=+*_./\',` and
   the backtick, characters outside ASCII, a tab, a no-break space, an
@@ -3598,8 +4124,9 @@ which rejects what it does not know
   bare text after a string is joined to it, a string after a bare text is not
   allowed, and markdown strings are the text without the backticks. A keyword
   inside a text, `quadrant-2`, `title`, is the keyword, and a point-like
-  `A: [0.3, 0.6]` after the keyword is rejected. [fixture:
-  quadrant/gram-quadrant-tab-after-keyword] [fixture:
+  `A: [0.3, 0.6]` after the keyword is rejected.
+
+  [fixture: quadrant/gram-quadrant-tab-after-keyword] [fixture:
   quadrant/db-quadrant-tab-inside] [fixture: quadrant/db-quadrant-dash-inside]
   [fixture: quadrant/gram-quadrant-leading-dash] [fixture:
   quadrant/gram-quadrant-colon] [fixture: quadrant/db-quadrant-colon-in-quotes]
@@ -3636,6 +4163,7 @@ which rejects what it does not know
   quadrant/db-quadrant-constructor-text] [fixture:
   quadrant/db-quadrant-trailing-tab] [fixture:
   quadrant/db-quadrant-markdown-then-title]
+
 - A comment after a space is skipped, a directive is removed, also inside the
   keyword or the text, and a comment glued to a unit of one character takes that
   character (see the comments below) and leaves the statement with no text where
@@ -3643,8 +4171,9 @@ which rejects what it does not know
   ends the statement, with or without spaces around it, and another statement
   can follow it. Blank lines, lines of spaces, and trailing spaces change
   nothing, a CRLF and a CR alone end a statement, and a U+2028 and a vertical
-  tab do not; two statements on a line with no `;` are rejected. [fixture:
-  quadrant/db-quadrant-comment-after-space] [fixture:
+  tab do not; two statements on a line with no `;` are rejected.
+
+  [fixture: quadrant/db-quadrant-comment-after-space] [fixture:
   quadrant/div-quadrant-comment-glued] [fixture:
   quadrant/db-quadrant-comment-glued-longer] [fixture:
   quadrant/db-quadrant-directive-inside] [fixture:
@@ -3659,6 +4188,7 @@ which rejects what it does not know
   quadrant/gram-quadrant-ls-between] [fixture:
   quadrant/gram-quadrant-vt-between] [fixture:
   quadrant/gram-quadrant-keyword-in-text]
+
 - A point is a name, a colon, and two coordinates in brackets, `A: [0.3, 0.6]`.
   The spaces, tabs, and line feeds (a CRLF too) around the colon, inside the
   brackets, and around the comma are white space, and none of them is needed. A
@@ -3670,9 +4200,10 @@ which rejects what it does not know
   coordinate over 1, one with no leading zero or with a leading zero, a negative
   one, a sign, a point with no digit after it, an exponent, one or three
   coordinates, a missing comma or brackets or colon, a `;` for the comma, a
-  word, and an empty or unclosed pair of brackets are rejected. [fixture:
-  quadrant/db-point-plain] [fixture: quadrant/db-point-glued] [fixture:
-  quadrant/db-point-spaces-everywhere] [fixture:
+  word, and an empty or unclosed pair of brackets are rejected.
+
+  [fixture: quadrant/db-point-plain] [fixture: quadrant/db-point-glued]
+  [fixture: quadrant/db-point-spaces-everywhere] [fixture:
   quadrant/db-point-tab-around-colon] [fixture:
   quadrant/db-point-tab-inside-brackets] [fixture:
   quadrant/db-point-nbsp-inside-brackets] [fixture:
@@ -3711,6 +4242,7 @@ which rejects what it does not know
   quadrant/db-point-coordinate-space-in-x] [fixture:
   quadrant/db-point-coordinate-tab-in-x] [fixture:
   quadrant/gram-point-coordinate-line-feed]
+
 - A point ends at its closing bracket; spaces after it are skipped, and a tab
   after it is read as a style with no name and rejected. A `;` ends the point,
   with a statement after it, and `;;` or `; ;` between statements are empty
@@ -3719,10 +4251,11 @@ which rejects what it does not know
   glued to the closing bracket is skipped, while a comment inside the brackets
   is not, since `%` is no character of a coordinate; a directive inside the
   brackets, between the colon and the bracket, or in the name is removed. A CRLF
-  and a CR alone end a point. [fixture: quadrant/db-point-trailing-space]
-  [fixture: quadrant/gram-point-trailing-tab] [fixture:
-  quadrant/db-point-semicolon] [fixture:
-  quadrant/db-point-semicolon-spaced-next] [fixture:
+  and a CR alone end a point.
+
+  [fixture: quadrant/db-point-trailing-space] [fixture:
+  quadrant/gram-point-trailing-tab] [fixture: quadrant/db-point-semicolon]
+  [fixture: quadrant/db-point-semicolon-spaced-next] [fixture:
   quadrant/db-point-semicolon-twice] [fixture: quadrant/db-point-semicolon-gap]
   [fixture: quadrant/gram-point-two-on-line] [fixture:
   quadrant/gram-point-text-after] [fixture:
@@ -3733,13 +4266,16 @@ which rejects what it does not know
   quadrant/db-point-directive-after-colon] [fixture:
   quadrant/db-point-directive-in-name] [fixture: quadrant/db-point-crlf-between]
   [fixture: quadrant/db-point-cr-between]
+
 - `points` lists the points in the order the Db holds them, which is the reverse
   of the order of the text, since each new point is put first. Two points with
   the same name, the same position, or both are two points, and the other
-  statements between the points change nothing in their order. [fixture:
-  quadrant/db-points-three] [fixture: quadrant/db-points-same-name] [fixture:
-  quadrant/db-points-same-position] [fixture: quadrant/db-points-identical]
-  [fixture: quadrant/db-points-between-statements]
+  statements between the points change nothing in their order.
+
+  [fixture: quadrant/db-points-three] [fixture: quadrant/db-points-same-name]
+  [fixture: quadrant/db-points-same-position] [fixture:
+  quadrant/db-points-identical] [fixture: quadrant/db-points-between-statements]
+
 - The name of a point is a text like those of a quadrant: bare or in quotes,
   spaces inside it kept and around it removed, a comma, a `#`, a dash inside,
   digits, and characters outside ASCII are part of it; a leading dash, a colon,
@@ -3756,7 +4292,9 @@ which rejects what it does not know
   comment glued to a name takes its last character when that is a unit of one
   character, and the rest of the line, so that `A1%% c: [0.3, 0.6]` has no point
   and is rejected, while a one-character name leaves a line that is all comment
-  and is accepted. [fixture: quadrant/db-name-acc-descr-word] [fixture:
+  and is accepted.
+
+  [fixture: quadrant/db-name-acc-descr-word] [fixture:
   quadrant/db-name-acc-title-word] [fixture: quadrant/db-name-backticks]
   [fixture: quadrant/db-name-comma] [fixture: quadrant/div-name-comment-glued]
   [fixture: quadrant/db-name-constructor] [fixture: quadrant/db-name-dash]
@@ -3783,6 +4321,7 @@ which rejects what it does not know
   quadrant/gram-name-quadrant-keyword] [fixture:
   quadrant/gram-name-quoted-empty] [fixture: quadrant/gram-name-semicolon]
   [fixture: quadrant/gram-name-x-axis]
+
 - The styles of a point follow its closing bracket, separated by commas:
   `radius` (digits only, held as a number, so that `007` is 7), `color` and
   `stroke-color` (a hex code of three or six digits, with or without `#`, held
@@ -3796,9 +4335,10 @@ which rejects what it does not know
   stroke width with no `px`, in upper case `PX`, or with a space before it, a
   missing value or colon, an empty style, two values with a space and no comma,
   a trailing, leading, or double comma, a style that goes on the next line, a
-  keyword in a value, and a no-break space in a value. [fixture:
-  quadrant/db-style-radius] [fixture: quadrant/db-style-radius-glued] [fixture:
-  quadrant/db-style-radius-spaced-colon] [fixture:
+  keyword in a value, and a no-break space in a value.
+
+  [fixture: quadrant/db-style-radius] [fixture: quadrant/db-style-radius-glued]
+  [fixture: quadrant/db-style-radius-spaced-colon] [fixture:
   quadrant/db-style-radius-zero] [fixture:
   quadrant/db-style-radius-leading-zeros] [fixture:
   quadrant/db-style-radius-big] [fixture: quadrant/db-style-radius-overflow]
@@ -3844,15 +4384,19 @@ which rejects what it does not know
   quadrant/gram-style-non-ascii-key] [fixture:
   quadrant/db-style-colon-in-point-name] [fixture:
   quadrant/db-classdef-with-point-radius-overflow]
+
 - A comment, a directive, and a `;` after the styles end the point as they end a
   point with no style, and a directive inside a value is removed; a comment
   glued to a number of two digits takes nothing of it, while one glued to a
   number of one digit takes that digit and leaves the style with no value, which
-  is rejected. [fixture: quadrant/db-style-radius-semicolon] [fixture:
+  is rejected.
+
+  [fixture: quadrant/db-style-radius-semicolon] [fixture:
   quadrant/db-style-radius-comment] [fixture:
   quadrant/db-style-radius-comment-glued] [fixture:
   quadrant/div-style-radius-comment-glued-one-digit] [fixture:
   quadrant/db-style-radius-directive-inside]
+
 - `:::` after the name gives a point a class name, `A:::c1: [0.3, 0.6]`, with
   spaces allowed before the `:::` and the colon, and styles after the point
   still allowed. A class name is ASCII word characters (letters, digits, `_`),
@@ -3860,9 +4404,10 @@ which rejects what it does not know
   the point. A space after `:::`, an empty name, a dash, a character outside
   ASCII, a second `:::`, a name with no colon after it, and a class with no name
   before it are rejected. The names of `Object.prototype` are plain class names,
-  and a directive inside the name is removed. [fixture:
-  quadrant/db-class-constructor] [fixture: quadrant/db-class-digits] [fixture:
-  quadrant/div-class-directive-inside] [fixture:
+  and a directive inside the name is removed.
+
+  [fixture: quadrant/db-class-constructor] [fixture: quadrant/db-class-digits]
+  [fixture: quadrant/div-class-directive-inside] [fixture:
   quadrant/db-class-has-own-property] [fixture:
   quadrant/db-class-marker-in-bare-name] [fixture:
   quadrant/db-class-marker-with-comment] [fixture:
@@ -3876,6 +4421,7 @@ which rejects what it does not know
   quadrant/gram-class-non-ascii] [fixture:
   quadrant/gram-class-space-after-marker] [fixture:
   quadrant/gram-class-two-markers]
+
 - `classDef name styles` defines a class: a name, a space, and the styles of a
   point. A class has the styles of its last definition only, and a second
   definition replaces the first with no merge; `classes` lists the classes in
@@ -3885,6 +4431,7 @@ which rejects what it does not know
   in any case, and a word glued to it, two spaces before the name, a name in
   quotes, and the keyword as the name are rejected; two spaces after the name
   are fine. A directive inside the keyword, the name, or a value is removed.
+
   [fixture: quadrant/db-classdef-color] [fixture:
   quadrant/db-classdef-two-styles] [fixture: quadrant/db-classdef-all-four]
   [fixture: quadrant/db-classdef-twice-replaces] [fixture:
@@ -3907,6 +4454,7 @@ which rejects what it does not know
   [fixture: quadrant/gram-classdef-keyword-as-class] [fixture:
   quadrant/gram-classdef-name-keyword-title] [fixture:
   quadrant/db-classdef-blank-line-between]
+
 - The name of a class is digits and letters, a dash, a colon, a comma, an `&`, a
   `#`, a `*`, and characters outside ASCII; an underscore, a dot, and a space
   are not allowed (a space ends the name, and the next word is read as a style),
@@ -3916,8 +4464,9 @@ which rejects what it does not know
   next line is an empty statement. A comment after the styles is skipped; one
   glued to a colour that ends in a single digit (`#ff0`) takes the digit, and
   the colour is rejected, while one glued to `#f00` takes nothing, and a tab
-  between styles belongs to the value, which is rejected. [fixture:
-  quadrant/db-classdef-comment-after] [fixture:
+  between styles belongs to the value, which is rejected.
+
+  [fixture: quadrant/db-classdef-comment-after] [fixture:
   quadrant/db-classdef-comment-glued] [fixture:
   quadrant/db-classdef-constructor-name] [fixture:
   quadrant/db-classdef-dash-name] [fixture: quadrant/db-classdef-digit-name]
@@ -3936,6 +4485,7 @@ which rejects what it does not know
   quadrant/gram-classdef-space-in-name] [fixture:
   quadrant/gram-classdef-tab-between-styles] [fixture:
   quadrant/gram-classdef-underscore-name]
+
 - A comment line is a line that starts, after spaces or a tab, with `%%`, and it
   runs to the end of the line: a `;`, a keyword, or a `#` in it is part of it,
   and a line of `%%` alone and `%%%` are comments too. A comment line before the
@@ -3943,8 +4493,9 @@ which rejects what it does not know
   text, with or without a line feed, changes nothing, and a CRLF or a CR alone
   ends it, while a U+2028 is part of it. A single `%` starts no comment, and
   `%%{` with no closing `}%%` is no comment: both lines are rejected; `}%% c` is
-  rejected because the comment would take the brace. [fixture:
-  quadrant/db-comment-line] [fixture:
+  rejected because the comment would take the brace.
+
+  [fixture: quadrant/db-comment-line] [fixture:
   quadrant/header-bare-percent-line-after-header] [fixture:
   quadrant/db-comment-line-last] [fixture:
   quadrant/db-comment-line-no-line-feed] [fixture:
@@ -3959,19 +4510,22 @@ which rejects what it does not know
   [fixture: quadrant/db-comment-cr] [fixture: quadrant/db-comment-ls] [fixture:
   quadrant/db-comment-two-lines] [fixture:
   quadrant/db-comment-between-point-lines]
+
 - A `%%` glued to what comes before it takes the character before it where the
   lexer reads that character as a unit of one character. The lexer reads a run
   of letters, a run of digits, a run of characters outside ASCII, or any other
   character alone: the comment takes the `1` of `ab1`, the `é` of `aé`, the `,`
   of `ab,`, and the `-` of `Lm-`, and the `b` of `a b`, while it takes nothing
-  of `ab12` or `a日本`. What it takes goes with the rest of the line. [fixture:
-  quadrant/div-comment-unit-letter-then-non-ascii] [fixture:
+  of `ab12` or `a日本`. What it takes goes with the rest of the line.
+
+  [fixture: quadrant/div-comment-unit-letter-then-non-ascii] [fixture:
   quadrant/div-comment-unit-letters-then-digit] [fixture:
   quadrant/db-comment-unit-non-ascii-run] [fixture:
   quadrant/div-comment-unit-non-ascii-single] [fixture:
   quadrant/div-comment-unit-punctuation] [fixture:
   quadrant/db-comment-unit-two-digits] [fixture:
   quadrant/div-comment-unit-word-after-space]
+
 - A directive is removed before the text is read, wherever it stands: on a line
   of its own, before a statement on its line, after a statement, glued to a
   word, inside a keyword, a name, a number, or a text in quotes, between the
@@ -3979,8 +4533,9 @@ which rejects what it does not know
   ([Directives](../../spec/docs/common.md#directives)). A directive with
   settings of the chart changes nothing in the Db. A directive with no closing
   `}%%` takes the rest of the text, so the statements after it are not read, and
-  at the end of the text it takes nothing; so does `%%{ c }`. [fixture:
-  quadrant/db-directive-after-statement] [fixture:
+  at the end of the text it takes nothing; so does `%%{ c }`.
+
+  [fixture: quadrant/db-directive-after-statement] [fixture:
   quadrant/db-directive-before-statement-same-line] [fixture:
   quadrant/db-directive-between-statements] [fixture:
   quadrant/db-directive-config-width] [fixture:
@@ -4000,13 +4555,16 @@ which rejects what it does not know
   quadrant/db-directive-unclosed-last-line] [fixture:
   quadrant/db-directive-wrap-statement] [fixture:
   quadrant/db-comment-line-brace-closed-wrong]
+
 - A `%%` inside quotes, in a markdown string too, is part of the text, also
-  glued to a word; a `%%` after a space outside quotes is a comment. [fixture:
-  quadrant/db-quoted-comment-glued-kept] [fixture:
+  glued to a word; a `%%` after a space outside quotes is a comment.
+
+  [fixture: quadrant/db-quoted-comment-glued-kept] [fixture:
   quadrant/db-quoted-comment-mark-kept-axis] [fixture:
   quadrant/db-quoted-comment-mark-kept-point] [fixture:
   quadrant/db-quoted-comment-mark-kept-quadrant] [fixture:
   quadrant/db-quoted-comment-mark-markdown]
+
 - What follows a statement on its line decides how it ends. Spaces, a comment
   after a space, a `;`, a `;` with a comment, a directive, a CRLF, and a CR
   alone end a title, an accessibility line, an axis, a quadrant, a point, and a
@@ -4020,7 +4578,9 @@ which rejects what it does not know
   digit, and rejects the statement, and it takes the right text of an axis when
   that is one character, which leaves the left text with the arrow; after the
   closing bracket of a point, or after a unit of two characters or more, it
-  takes nothing. [fixture: quadrant/db-after-acc-descr-cr] [fixture:
+  takes nothing.
+
+  [fixture: quadrant/db-after-acc-descr-cr] [fixture:
   quadrant/db-after-acc-descr-crlf] [fixture:
   quadrant/db-after-acc-descr-directive] [fixture:
   quadrant/db-after-acc-descr-directive-glued] [fixture:
@@ -4113,12 +4673,14 @@ which rejects what it does not know
   quadrant/div-after-point-style-glued-comment] [fixture:
   quadrant/gram-after-point-trailing-tab] [fixture:
   quadrant/div-after-quadrant-glued-comment]
+
 - A style line rule of mermaid.js applies to any text: from a line that has
   `style:` or `classDef:`, later a `#`, and later a `;`, the last `;` is
   dropped, so that `style:#x;y` is `style:#xy` in a title, an accessibility
   text, a text in quotes, and the name of a class of `classDef`. A bare text of
   an axis or a quadrant and a name of a point do not take the colon, and the
   class name of a point is word characters only, so those places reject it.
+
   [fixture: quadrant/db-grid-style-acc-descr] [fixture:
   quadrant/db-grid-style-acc-descr-block] [fixture:
   quadrant/db-grid-style-acc-title] [fixture:
@@ -4136,6 +4698,7 @@ which rejects what it does not know
   quadrant/gram-grid-style-x-axis-right-bare] [fixture:
   quadrant/gram-grid-style-y-axis-bare] [fixture:
   quadrant/gram-grid-style-y-axis-top-bare]
+
 - A character reference such as `#35;` is its placeholder (`ﬂ°°35¶ß`, which the
   Db turns back when it draws) in a title, an accessibility text, a text of an
   axis or a quadrant, bare or in quotes, a name of a point, and the name of a
@@ -4144,8 +4707,9 @@ which rejects what it does not know
   every one of these texts and not of the class name of a point. A reference is
   `#`, a word or digits, and `;`, so `#b;` is one; `#35` with no `;` is none,
   and `&amp;` is no reference and stays as written, while the `#35;` of `&#35;`
-  is one. Two references in a row are two placeholders. [fixture:
-  quadrant/db-grid-entity-acc-descr] [fixture:
+  is one. Two references in a row are two placeholders.
+
+  [fixture: quadrant/db-grid-entity-acc-descr] [fixture:
   quadrant/db-grid-entity-acc-descr-block] [fixture:
   quadrant/db-grid-entity-acc-title] [fixture:
   quadrant/db-grid-entity-classdef-name] [fixture:
@@ -4183,6 +4747,7 @@ which rejects what it does not know
   quadrant/db-entity-html-named] [fixture: quadrant/db-entity-html-numeric]
   [fixture: quadrant/db-entity-numeric-quadrant-quoted-two] [fixture:
   quadrant/db-entity-without-semicolon]
+
 - The same characters stand in every place that takes a text. A tab, a U+FEFF, a
   no-break space, an ideographic space, a U+2028, and a U+2029 are characters of
   a title, an accessibility text, a text of an axis or a quadrant, bare or in
@@ -4191,7 +4756,9 @@ which rejects what it does not know
   them. A line feed, a CR, and a CRLF end the statement in the places that are
   not quoted, and the next line is then read as a statement, which is rejected;
   in a text in quotes and in the block of an accessibility description they are
-  a line feed of the text. [fixture: quadrant/db-grid-tab-acc-descr] [fixture:
+  a line feed of the text.
+
+  [fixture: quadrant/db-grid-tab-acc-descr] [fixture:
   quadrant/db-grid-tab-acc-descr-block] [fixture:
   quadrant/db-grid-tab-acc-title] [fixture: quadrant/db-grid-tab-point-bare]
   [fixture: quadrant/db-grid-tab-point-quoted] [fixture:
@@ -4333,14 +4900,16 @@ which rejects what it does not know
   [fixture: quadrant/gram-grid-crlf-x-axis-right-bare] [fixture:
   quadrant/gram-grid-crlf-y-axis-bare] [fixture:
   quadrant/gram-grid-crlf-y-axis-top-bare]
+
 - A directive inside a text is removed in every place, the class names included.
   The names of `Object.prototype` are plain names in every place that takes a
   name, but `__proto__` as the name of a class of `classDef`, where the
   underscore is not allowed. The keyword `title` is text in a title, an
   accessibility text, a text in quotes, and the class name of a point; a bare
   text of an axis or a quadrant and the name of a class of `classDef` do not
-  take it, and a name of a point that is `title` is the title. [fixture:
-  quadrant/db-grid-directive-acc-descr] [fixture:
+  take it, and a name of a point that is `title` is the title.
+
+  [fixture: quadrant/db-grid-directive-acc-descr] [fixture:
   quadrant/db-grid-directive-acc-descr-block] [fixture:
   quadrant/db-grid-directive-acc-title] [fixture:
   quadrant/div-grid-directive-class-name] [fixture:
@@ -4407,6 +4976,7 @@ which rejects what it does not know
   quadrant/gram-grid-keyword-y-axis-top-bare] [fixture:
   quadrant/gram-classdef-name-keyword-title] [fixture:
   quadrant/db-title-with-colon-point-like]
+
 - A `%%` after a space is part of the text in a title, an accessibility text,
   the block of a description, and a text in quotes, and a comment outside them:
   the comment is skipped and the text before it stays in a bare text of an axis
@@ -4415,8 +4985,9 @@ which rejects what it does not know
   rejected. A `%%` glued to a unit of one character takes the character: a bare
   text of an axis or a quadrant is then empty and rejected, the right text of an
   axis is dropped, a name of a point leaves a line that is all comment and is
-  accepted, and the class names are rejected. [fixture:
-  quadrant/db-grid-comment-acc-descr] [fixture:
+  accepted, and the class names are rejected.
+
+  [fixture: quadrant/db-grid-comment-acc-descr] [fixture:
   quadrant/db-grid-comment-acc-descr-block] [fixture:
   quadrant/db-grid-comment-acc-title] [fixture:
   quadrant/db-grid-comment-glued-acc-descr] [fixture:
@@ -4452,6 +5023,7 @@ which rejects what it does not know
   quadrant/div-grid-comment-glued-x-axis-bare] [fixture:
   quadrant/div-grid-comment-glued-y-axis-bare] [fixture:
   quadrant/gram-grid-comment-point-bare]
+
 - Punctuation and markup follow the rules of each place. A colon, a `;`,
   brackets, a tag, an arrow, and the other punctuation are text in a title, an
   accessibility text, and a text in quotes (the quotes of a tag are read as
@@ -4464,7 +5036,9 @@ which rejects what it does not know
   takes text, except the names of classes, which take no backtick and no `%`. An
   empty text sets the empty text in a title and in the block of a description,
   is rejected in the other places that need a text, and is dropped as the right
-  text of an axis. [fixture: quadrant/db-grid-nonascii-acc-descr] [fixture:
+  text of an axis.
+
+  [fixture: quadrant/db-grid-nonascii-acc-descr] [fixture:
   quadrant/db-grid-nonascii-acc-descr-block] [fixture:
   quadrant/db-grid-nonascii-acc-title] [fixture:
   quadrant/db-grid-nonascii-point-quoted] [fixture:
@@ -4626,6 +5200,7 @@ which rejects what it does not know
   quadrant/gram-grid-empty-quadrant-quoted] [fixture:
   quadrant/gram-grid-empty-x-axis-bare] [fixture:
   quadrant/gram-grid-empty-y-axis-bare]
+
 - The title of the frontmatter is the title of the chart, a quoted string or a
   number being the text, and the empty title being the empty text; the
   delimiters can be indented, and the lines can end with a CRLF. A frontmatter
@@ -4635,7 +5210,9 @@ which rejects what it does not know
   feed at its end, and a U+FEFF before the header after the frontmatter changes
   nothing. A frontmatter that is not valid YAML is rejected, and a tag that
   starts in a field of the frontmatter and ends in the diagram has its quotes
-  changed as one tag. [fixture: quadrant/db-frontmatter-crlf] [fixture:
+  changed as one tag.
+
+  [fixture: quadrant/db-frontmatter-crlf] [fixture:
   quadrant/div-frontmatter-html-tag-starts-in-field] [fixture:
   quadrant/db-frontmatter-indented-delimiters] [fixture:
   quadrant/db-frontmatter-no-title] [fixture:
@@ -4649,6 +5226,7 @@ which rejects what it does not know
   quadrant/db-frontmatter-with-quadrant-config] [fixture:
   quadrant/db-frontmatter-with-theme] [fixture:
   quadrant/div-frontmatter-invalid-yaml]
+
 - The settings of the chart (`quadrantChart`: the width and the height, the
   paddings and font sizes, the position of the axes, the radius of the points),
   the theme, and its variables change nothing in the Db, whether the site, the
@@ -4658,15 +5236,18 @@ which rejects what it does not know
   and the summary reads the texts of the axes from the labels; where a site sets
   one of them false and the text sets a text of that axis, the summary would
   lose the text, so `runMermaid()` stops with a `MermaidEnvironmentError` (a
-  directive and the frontmatter do not change these settings). [fixture:
-  quadrant/config-settings-chart] [fixture:
+  directive and the frontmatter do not change these settings).
+
+  [fixture: quadrant/config-settings-chart] [fixture:
   quadrant/config-settings-max-text-size] [fixture:
   quadrant/config-settings-point-radius]
+
 - The texts hold the characters replaced under a securityLevel that is not one
   of mermaid.js's values (`other`) with `htmlLabels` unset, in the title, the
   accessibility title, the texts of the axes and the quadrants, and the names of
   the points; with `htmlLabels` false, under `loose`, and under `sandbox` they
   are as written, and with the default settings a tag is kept as it is.
+
   [fixture: quadrant/config-security-level-default-script] [fixture:
   quadrant/config-security-level-loose-all] [fixture:
   quadrant/config-security-level-other-all] [fixture:
@@ -4674,6 +5255,7 @@ which rejects what it does not know
   quadrant/config-security-level-other-html-labels-false] [fixture:
   quadrant/config-security-level-other-script] [fixture:
   quadrant/config-security-level-sandbox-all]
+
 - The style line rule has the forms that it had in other diagrams. The keyword
   in another case (`Style:#x;y`), a space between the `:` and the `#`, and no
   `#` keep the `;`, which then ends a character reference where a `#` stands
@@ -4684,8 +5266,9 @@ which rejects what it does not know
   `quadrant-1 "style:#a"; quadrant-2 B` and two axis statements with a `;`
   between them are joined and rejected, while the `;` that ends a point is
   dropped and the point still ends at the end of its line, and a `;` in a title
-  is dropped, so that the title holds the rest of the line. [fixture:
-  quadrant/db-style-line-classdef-keyword-acc-title] [fixture:
+  is dropped, so that the title holds the rest of the line.
+
+  [fixture: quadrant/db-style-line-classdef-keyword-acc-title] [fixture:
   quadrant/db-style-line-classdef-keyword-quadrant-quoted] [fixture:
   quadrant/db-style-line-classdef-keyword-title] [fixture:
   quadrant/db-style-line-hash-on-another-line-quoted] [fixture:
@@ -4708,13 +5291,16 @@ which rejects what it does not know
   quadrant/db-style-line-upper-case-title] [fixture:
   quadrant/gram-style-line-ignored-between-axis-statements] [fixture:
   quadrant/gram-style-line-ignored-between-statements]
+
 - A keyword with its text on the next line is rejected: `x-axis`, `y-axis`,
   `quadrant-1`, `classDef`, and `title`, whether a blank line, a comment line,
   or a directive line stands between, since the text is a statement of its own.
   The accessibility keywords take the next line as their text: comment lines and
   directive lines between are removed, and the line may say anything, a point, a
   quadrant statement, a `classDef` line, or a `title` line, which then sets no
-  title. [fixture: quadrant/gram-keyword-line-feed-classdef] [fixture:
+  title.
+
+  [fixture: quadrant/gram-keyword-line-feed-classdef] [fixture:
   quadrant/gram-keyword-line-feed-quadrant] [fixture:
   quadrant/gram-keyword-line-feed-title] [fixture:
   quadrant/gram-keyword-line-feed-x-axis] [fixture:
@@ -4739,6 +5325,7 @@ which rejects what it does not know
   quadrant/db-acc-descr-comment-line-before-text] [fixture:
   quadrant/db-acc-descr-classdef-as-text] [fixture:
   quadrant/db-acc-descr-title-text-keeps-title]
+
 - What follows a keyword glued to it: after `title`, a character outside ASCII
   or a dash is the start of the title (`titleé` is the title `é`), while a digit
   or an underscore makes a word and the line is rejected; `accTitle` and
@@ -4746,8 +5333,9 @@ which rejects what it does not know
   suffix is rejected; `x-axis`, `y-axis`, and `quadrant-1` are followed by the
   text, which may start with a character outside ASCII, a digit, or an
   underscore, but not with a dash. An underscore or a U+FEFF after the header is
-  a text where no statement starts. [fixture:
-  quadrant/db-keyword-suffix-quadrant-digit] [fixture:
+  a text where no statement starts.
+
+  [fixture: quadrant/db-keyword-suffix-quadrant-digit] [fixture:
   quadrant/db-keyword-suffix-quadrant-non-ascii] [fixture:
   quadrant/db-keyword-suffix-quadrant-underscore] [fixture:
   quadrant/db-keyword-suffix-title-dash] [fixture:
@@ -4777,12 +5365,14 @@ which rejects what it does not know
   quadrant/gram-keyword-suffix-y-axis-dash] [fixture:
   quadrant/header-underscore-suffix] [fixture: quadrant/header-bom-after]
   [fixture: quadrant/header-bom-after-statement]
+
 - The keywords `title`, `x-axis`, and `classDef` need no boundary before them:
   after a `.`, a dash, an underscore, or a digit inside a bare text or a name
   they are the keyword, and the line is rejected, while inside a title `title`
   is text. The word `quadrantChart` inside a bare text is the header, and the
-  line is rejected, while inside a title it is text. [fixture:
-  quadrant/db-keyword-after-dot-in-title] [fixture:
+  line is rejected, while inside a title it is text.
+
+  [fixture: quadrant/db-keyword-after-dot-in-title] [fixture:
   quadrant/gram-keyword-after-dash-in-name] [fixture:
   quadrant/gram-keyword-after-dash-in-quadrant-text] [fixture:
   quadrant/gram-keyword-after-digit-in-name] [fixture:
@@ -4795,10 +5385,12 @@ which rejects what it does not know
   quadrant/gram-keyword-classdef-after-dot-in-name] [fixture:
   quadrant/db-keyword-header-in-word] [fixture:
   quadrant/gram-keyword-header-in-quadrant-text]
+
 - The names of `Object.prototype` are plain names of points and of classes, a
   class named `constructor` is defined and used like any other, and a second
-  definition replaces the first. [fixture:
-  quadrant/db-name-prototype-definegetter] [fixture:
+  definition replaces the first.
+
+  [fixture: quadrant/db-name-prototype-definegetter] [fixture:
   quadrant/db-name-prototype-isprototypeof] [fixture:
   quadrant/db-name-prototype-lookupgetter] [fixture:
   quadrant/db-name-prototype-propertyisenumerable] [fixture:
@@ -4808,6 +5400,7 @@ which rejects what it does not know
   quadrant/db-classdef-prototype-to-string-redefined] [fixture:
   quadrant/db-classdef-prototype-twice] [fixture:
   quadrant/db-classdef-prototype-used]
+
 - Several definitions of one name: the last of three titles, or of three texts
   of a quadrant, is the value; two quadrants set in turn each keep their last
   text; for an axis, the third statement sets what it names, so that a left text
@@ -4815,6 +5408,7 @@ which rejects what it does not know
   first stays, and a third statement with two texts sets both; the third
   definition of a class replaces the second, and with a partner class in between
   each class keeps its last styles and the order of first definitions stays.
+
   [fixture: quadrant/db-title-three-times] [fixture:
   quadrant/db-quadrant-three-times] [fixture:
   quadrant/db-quadrant-three-times-with-partner] [fixture:
@@ -4823,10 +5417,12 @@ which rejects what it does not know
   quadrant/db-y-axis-three-times-arrow-forms] [fixture:
   quadrant/db-classdef-three-times] [fixture:
   quadrant/db-classdef-three-times-partner]
+
 - An empty block (`{}`, a line feed, a space, blank lines, or a tab inside it)
   sets nothing, so the description that a line or a block set before it stays,
   also after two empty blocks; it does not touch the accessibility title. An
   `accDescr:` with no text at the end of the text is rejected even after a text.
+
   [fixture: quadrant/db-acc-descr-empty-block-keeps-block] [fixture:
   quadrant/db-acc-descr-empty-block-keeps-line-blank-line] [fixture:
   quadrant/db-acc-descr-empty-block-keeps-line-braces] [fixture:
@@ -4836,14 +5432,16 @@ which rejects what it does not know
   quadrant/db-acc-descr-empty-block-twice-keeps] [fixture:
   quadrant/db-acc-title-then-empty-block] [fixture:
   quadrant/gram-acc-descr-empty-line-after-text]
+
 - An empty block inside a statement is skipped: in a text of an axis or a
   quadrant, in a name, after a point, in a `classDef` line, at the start of a
   statement, and on the header line, where a block with text sets the
   description. The spaces around the block stay in the text. Right after the
   keyword of an axis it leaves a space before the text, and the line is
   rejected, and a block with text inside a statement is a statement of its own,
-  which ends the line before it, so the line is rejected. [fixture:
-  quadrant/db-empty-block-after-point] [fixture:
+  which ends the line before it, so the line is rejected.
+
+  [fixture: quadrant/db-empty-block-after-point] [fixture:
   quadrant/db-empty-block-before-statement] [fixture:
   quadrant/div-empty-block-in-classdef] [fixture:
   quadrant/div-empty-block-in-name] [fixture:
@@ -4853,13 +5451,15 @@ which rejects what it does not know
   quadrant/gram-empty-block-before-x-axis-text] [fixture:
   quadrant/gram-block-with-text-in-quadrant-text] [fixture:
   quadrant/db-block-on-header-line]
+
 - An empty string is dropped wherever it stands: at the start of a statement or
   on a line of its own, after or before a text, a word, or a name (the spaces
   around it stay and a word is joined), among the styles of a point or a class.
   A statement of nothing but empty strings has no text and is rejected, and so
   is an empty string between the colon and the bracket of a point or inside the
-  brackets; in a title it is text. [fixture:
-  quadrant/div-empty-string-after-name] [fixture:
+  brackets; in a title it is text.
+
+  [fixture: quadrant/div-empty-string-after-name] [fixture:
   quadrant/div-empty-string-before-name] [fixture:
   quadrant/div-empty-string-before-quadrant-text] [fixture:
   quadrant/div-empty-string-before-statement] [fixture:
@@ -4874,16 +5474,20 @@ which rejects what it does not know
   quadrant/gram-empty-string-after-colon] [fixture:
   quadrant/gram-empty-string-in-brackets] [fixture:
   quadrant/gram-empty-string-twice-quadrant]
+
 - Where the word `C4Container`, `C4Component`, `C4Dynamic`, or `C4Deployment`
   stands in the text, mermaid.js detects a C4 diagram, which rejects the text:
   in a title, an accessibility text, a text of a quadrant, a name in quotes, and
   a class name. `C4Context` is detected only at the start of the text, so a name
-  that is `C4Context` is a name. [fixture: quadrant/db-c4-context-in-name]
-  [fixture: quadrant/div-c4-keyword-in-acc-title] [fixture:
+  that is `C4Context` is a name.
+
+  [fixture: quadrant/db-c4-context-in-name] [fixture:
+  quadrant/div-c4-keyword-in-acc-title] [fixture:
   quadrant/div-c4-keyword-in-class-name] [fixture:
   quadrant/div-c4-keyword-in-quadrant-text] [fixture:
   quadrant/div-c4-keyword-in-quoted-name] [fixture:
   quadrant/div-c4-keyword-in-title]
+
 - A statement is followed by a CRLF, a CR alone, or the end of the text with no
   line feed. A tab, a U+FEFF, a no-break space, an ideographic space, a U+2028,
   and a U+2029 at the end of the line or of the text are skipped after a title,
@@ -4892,7 +5496,9 @@ which rejects what it does not know
   being skipped, and after a `classDef` line only a tab is skipped. A tab before
   a statement is skipped, and a U+FEFF before a statement that starts with a
   keyword is rejected, while a point that starts with it holds it in its name,
-  trimmed. [fixture: quadrant/db-ends-acc-descr-bom-end] [fixture:
+  trimmed.
+
+  [fixture: quadrant/db-ends-acc-descr-bom-end] [fixture:
   quadrant/db-ends-acc-descr-bom-end-of-text] [fixture:
   quadrant/db-ends-acc-descr-cr-end-of-text] [fixture:
   quadrant/db-ends-acc-descr-crlf-end-of-text] [fixture:
@@ -5036,11 +5642,13 @@ which rejects what it does not know
   quadrant/gram-ends-title-bom-start] [fixture:
   quadrant/gram-ends-x-axis-bom-start] [fixture:
   quadrant/gram-ends-y-axis-bom-start]
+
 - A line of nothing but white space stands before the first statement, between
   statements, and at the end of the text when it is spaces and tabs; a line of a
   no-break space, an ideographic space, a U+FEFF, or a U+2028 is a text where no
-  statement starts, and the text is rejected. [fixture:
-  quadrant/db-whitespace-line-between-spaces-and-tab] [fixture:
+  statement starts, and the text is rejected.
+
+  [fixture: quadrant/db-whitespace-line-between-spaces-and-tab] [fixture:
   quadrant/db-whitespace-line-between-tab] [fixture:
   quadrant/db-whitespace-line-first-spaces-and-tab] [fixture:
   quadrant/db-whitespace-line-first-tab] [fixture:
@@ -5058,6 +5666,7 @@ which rejects what it does not know
   quadrant/gram-whitespace-line-last-ideographic] [fixture:
   quadrant/gram-whitespace-line-last-ls] [fixture:
   quadrant/gram-whitespace-line-last-nbsp]
+
 - A comment, a `;`, or a directive after a statement has the further forms of
   the earlier diagrams: a space and a `;`, two `;`, two `;` with spaces, and two
   directives end every statement as one does, except that `;;` after a
@@ -5065,7 +5674,9 @@ which rejects what it does not know
   text, so the lines after it are not read, and a directive that is just
   `%%{init` takes the word at the start of the next line, which joins that
   line's rest to the text (`R U`, `T -1 U`), or to the styles, which are then
-  rejected. [fixture: quadrant/db-after-acc-descr-space-semicolon] [fixture:
+  rejected.
+
+  [fixture: quadrant/db-after-acc-descr-space-semicolon] [fixture:
   quadrant/db-after-acc-title-space-semicolon] [fixture:
   quadrant/db-after-classdef-space-semicolon] [fixture:
   quadrant/db-after-point-class-space-semicolon] [fixture:
@@ -5125,14 +5736,16 @@ which rejects what it does not know
   quadrant/gram-after-point-class-directive-word-unclosed] [fixture:
   quadrant/gram-after-point-directive-word-unclosed] [fixture:
   quadrant/gram-after-point-style-directive-word-unclosed]
+
 - A directive that is cut off takes more than its own text: `%%{init` at the
   start of a line takes the word at the start of the next line, which is the
   keyword, and the rest of that line is rejected; so does `%%{init:`, while
   `%%{init: x` takes `x` and leaves the next line, and `%%{ init }%%` with its
   closing is removed. A directive is removed at the start of a title, a text of
   an axis or a quadrant, a name, and the styles of a class, and between a
-  keyword and its text. [fixture:
-  quadrant/gram-directive-word-unclosed-takes-keyword] [fixture:
+  keyword and its text.
+
+  [fixture: quadrant/gram-directive-word-unclosed-takes-keyword] [fixture:
   quadrant/gram-directive-colon-unclosed-takes-keyword] [fixture:
   quadrant/db-directive-argument-word-unclosed] [fixture:
   quadrant/db-directive-name-only-closed] [fixture:
@@ -5145,13 +5758,15 @@ which rejects what it does not know
   quadrant/db-directive-glued-before-quadrant-text] [fixture:
   quadrant/db-directive-glued-before-title-text] [fixture:
   quadrant/db-directive-glued-after-classdef]
+
 - A comment line and a directive line inside a value that runs over several
   lines are removed as lines of their own: inside a block of a description, a
   text in quotes, a markdown string, the name of a point in quotes, and the
   brackets of a point, the lines before and after them are joined by a line
   feed, a directive line leaving an empty line; a `%%` after a space inside
-  quotes is part of the text. [fixture:
-  quadrant/db-comment-line-inside-acc-block] [fixture:
+  quotes is part of the text.
+
+  [fixture: quadrant/db-comment-line-inside-acc-block] [fixture:
   quadrant/db-comment-line-inside-brackets] [fixture:
   quadrant/db-comment-line-inside-markdown] [fixture:
   quadrant/db-comment-line-inside-quoted-axis] [fixture:
@@ -5161,14 +5776,16 @@ which rejects what it does not know
   quadrant/db-directive-inside-quoted-multiline] [fixture:
   quadrant/db-directive-inside-acc-block-line] [fixture:
   quadrant/db-comment-inline-in-quoted-block]
+
 - The numbers that the Db reads from text are only the digits of a radius: `-0`,
   `NaN`, `Infinity`, `1e3`, `0x10`, a number followed by text, a plus sign, an
   underscore, a digit outside ASCII, and fullwidth digits are rejected; a radius
   above the safe integers is the number a double holds, 309 digits that a double
   still holds are a number, and 310 are infinite and the text `Infinity` in the
   summary. A stroke width that is negative or has text after the unit is
-  rejected, and `0px` is kept as written. [fixture:
-  quadrant/db-radius-above-safe-integer] [fixture:
+  rejected, and `0px` is kept as written.
+
+  [fixture: quadrant/db-radius-above-safe-integer] [fixture:
   quadrant/db-radius-first-infinite] [fixture:
   quadrant/db-radius-largest-finite] [fixture:
   quadrant/gram-radius-arabic-digit] [fixture: quadrant/gram-radius-exponent]
@@ -5182,14 +5799,16 @@ which rejects what it does not know
   quadrant/gram-stroke-width-negative] [fixture:
   quadrant/gram-stroke-width-text-after-unit] [fixture:
   quadrant/db-stroke-width-zero]
+
 - A text that ends inside a context that is not closed is rejected where the
   context needs more: a name or a text in quotes with no closing quote, a
   markdown string with no closing, a point cut after the comma or the bracket, a
   class marker or a class name with no point, `accTitle:` and `accDescr:` at the
   end, a block with no closing brace, and `classDef` cut after a colon; an arrow
   at the end is the arrow with no right text, `title` at the end is the empty
-  title, and a directive cut at the end takes nothing. [fixture:
-  quadrant/db-unclosed-axis-arrow-at-end] [fixture:
+  title, and a directive cut at the end takes nothing.
+
+  [fixture: quadrant/db-unclosed-axis-arrow-at-end] [fixture:
   quadrant/db-unclosed-directive-at-end] [fixture:
   quadrant/db-unclosed-title-keyword-at-end] [fixture:
   quadrant/gram-unclosed-acc-block-after-text] [fixture:
@@ -5297,9 +5916,10 @@ Values of the summary, by field.
   header, so `blockx`, `block_beta`, `block2`, `block-betax`, and `block-alpha`
   are rejected, while a character outside ASCII is no word character, so
   `blocké` is the header and the node `é`. A header and nothing else is
-  rejected, with or without a line feed. [fixture: block/header-block-beta]
-  [fixture: block/header-block] [fixture: block/header-only-block-beta]
-  [fixture: block/header-only-block] [fixture:
+  rejected, with or without a line feed.
+
+  [fixture: block/header-block-beta] [fixture: block/header-block] [fixture:
+  block/header-only-block-beta] [fixture: block/header-only-block] [fixture:
   block/header-only-block-beta-no-line-break] [fixture:
   block/header-capitalized] [fixture: block/header-upper-case] [fixture:
   block/header-capitalized-block] [fixture: block/header-word-suffix] [fixture:
@@ -5307,10 +5927,12 @@ Values of the summary, by field.
   block/header-underscore-suffix] [fixture: block/header-digit-suffix] [fixture:
   block/header-non-ascii-suffix] [fixture: block/header-beta-capital] [fixture:
   block/header-beta-upper]
+
 - A statement may follow the header on its line, separated by a space or a tab,
   and so may `columns`. A `;` and a `%%` with the text after it are nodes there,
   not a separator or a comment. A second header opens a composite, which `end`
   must close: on a line of its own, after the header line, or as `block`.
+
   [fixture: block/header-spaced-word-suffix] [fixture:
   block/header-statement-on-header-line] [fixture:
   block/header-statement-on-header-line-tab] [fixture:
@@ -5320,12 +5942,14 @@ Values of the summary, by field.
   [fixture: block/header-twice] [fixture: block/header-twice-closed] [fixture:
   block/header-twice-same-line] [fixture: block/header-twice-block] [fixture:
   block/header-keyword-header-in-text]
+
 - Spaces, tabs, blank lines, a no-break space, a U+3000, a U+FEFF, and a U+2028
   before the header change nothing, and neither does a frontmatter, a comment
   line, or a directive line, whose title and configuration the summary does not
   keep. A line that starts with `#`, a `;`, or a statement before the header is
   not detected. A line of `%%` alone or `%%{ }%%` before the header is not
   removed, and the lexer reads it as a node before the header: rejected.
+
   [fixture: block/header-indented] [fixture: block/header-tab-indented]
   [fixture: block/header-blank-lines-before] [fixture: block/header-nbsp-before]
   [fixture: block/header-ideographic-space-before] [fixture:
@@ -5339,17 +5963,20 @@ Values of the summary, by field.
   block/header-statement-first] [fixture: block/div-after-bare-percent-line]
   [fixture: block/div-after-bare-percent-line-and-whitespace-line] [fixture:
   block/div-after-empty-braces-line]
+
 - After the header, spaces and tabs and a no-break space, a U+FEFF, an
   ideographic space, a U+2028, a U+2029, a vertical tab, and a form feed are
   white space, a CR alone and a CRLF end the line, and a directive glued to the
   header is removed. A U+0085 is no white space for the lexer: it joins the id
-  after it. [fixture: block/header-trailing-spaces] [fixture:
-  block/header-trailing-tab] [fixture: block/header-trailing-nbsp] [fixture:
-  block/header-bom-after] [fixture: block/header-ls-after] [fixture:
-  block/header-ps-after] [fixture: block/header-nel-after] [fixture:
-  block/header-vt-after] [fixture: block/header-ff-after] [fixture:
-  block/header-cr] [fixture: block/header-crlf] [fixture:
-  block/header-directive-glued]
+  after it.
+
+  [fixture: block/header-trailing-spaces] [fixture: block/header-trailing-tab]
+  [fixture: block/header-trailing-nbsp] [fixture: block/header-bom-after]
+  [fixture: block/header-ls-after] [fixture: block/header-ps-after] [fixture:
+  block/header-nel-after] [fixture: block/header-vt-after] [fixture:
+  block/header-ff-after] [fixture: block/header-cr] [fixture: block/header-crlf]
+  [fixture: block/header-directive-glued]
+
 - `columns N` sets the columns of the block it stands in, the root or a
   composite, and the last `columns` of a block is its columns, wherever in the
   block it stands. The number is read as a decimal number, so `007` is 7, and
@@ -5357,6 +5984,7 @@ Values of the summary, by field.
   `columns`, and a number of so many digits that the double is infinite is
   recorded as the text `Infinity`. The Db keeps the number as it is: `0` is
   stored as `0`, while `getColumns()` gives the number of children for it.
+
   [fixture: block/db-columns-plain] [fixture: block/db-columns-auto] [fixture:
   block/db-columns-zero] [fixture: block/db-columns-double-zero] [fixture:
   block/db-columns-leading-zeros] [fixture: block/db-columns-one] [fixture:
@@ -5367,17 +5995,21 @@ Values of the summary, by field.
   [fixture: block/db-columns-between-nodes] [fixture: block/db-columns-only]
   [fixture: block/db-columns-only-auto] [fixture: block/db-columns-after-block]
   [fixture: block/db-columns-after-end]
+
 - A composite has its own columns, apart from those of the root and of the
   composite around it: `columns` inside a composite with an id, with none, or
   inside a nested one sets the columns of the innermost composite, and a
   composite that holds only `columns` has no children. A `columns` after the id
-  of a composite on its line is a statement of the composite. [fixture:
-  block/db-columns-in-block] [fixture: block/db-columns-in-block-and-root]
-  [fixture: block/db-columns-in-block-auto] [fixture:
-  block/db-columns-in-block-only] [fixture: block/db-columns-in-anonymous-block]
-  [fixture: block/db-columns-in-nested-block] [fixture:
+  of a composite on its line is a statement of the composite.
+
+  [fixture: block/db-columns-in-block] [fixture:
+  block/db-columns-in-block-and-root] [fixture: block/db-columns-in-block-auto]
+  [fixture: block/db-columns-in-block-only] [fixture:
+  block/db-columns-in-anonymous-block] [fixture:
+  block/db-columns-in-nested-block] [fixture:
   block/db-columns-in-block-header-line] [fixture:
   block/db-composite-width-and-columns]
+
 - What is not a number after `columns` does not make one: a sign (`+2`, `-1`), a
   decimal point, an exponent, a hexadecimal prefix, and a digit outside ASCII
   end the number or stop it from starting, and the rest is read as nodes
@@ -5385,9 +6017,11 @@ Values of the summary, by field.
   `columns 2:3` are rejected. A word after `columns`, `AUTO`, and `auto2` are
   nodes with `columns` itself a node, and so are `Columns 2`, `COLUMNS 2`,
   `columns2`, and `columnsauto`: the keyword is read in lower case, followed by
-  white space. [fixture: block/db-columns-plus] [fixture:
-  block/gram-columns-negative] [fixture: block/db-columns-decimal] [fixture:
-  block/db-columns-exponent] [fixture: block/db-columns-hexadecimal] [fixture:
+  white space.
+
+  [fixture: block/db-columns-plus] [fixture: block/gram-columns-negative]
+  [fixture: block/db-columns-decimal] [fixture: block/db-columns-exponent]
+  [fixture: block/db-columns-hexadecimal] [fixture:
   block/db-columns-fullwidth-digit] [fixture: block/db-columns-arabic-digit]
   [fixture: block/gram-columns-colon-number] [fixture:
   block/db-columns-no-number] [fixture: block/db-columns-no-number-last]
@@ -5396,18 +6030,21 @@ Values of the summary, by field.
   [fixture: block/db-columns-glued-number] [fixture:
   block/db-columns-upper-case] [fixture: block/db-columns-upper-case-all]
   [fixture: block/db-columns-two-numbers]
+
 - The white space between `columns` and its number is any white space of the
   lexer, a line feed and blank lines included, and a node may follow the number
   on its line. A `;` after the number is a node. The width of a node is kept
-  whatever the columns: a wider one than `columns` is not changed. [fixture:
-  block/db-columns-tab] [fixture: block/db-columns-line-feed] [fixture:
-  block/db-columns-blank-line] [fixture: block/db-columns-nbsp] [fixture:
-  block/db-columns-ideographic] [fixture: block/db-columns-ls] [fixture:
-  block/db-columns-bom] [fixture: block/db-columns-crlf] [fixture:
+  whatever the columns: a wider one than `columns` is not changed.
+
+  [fixture: block/db-columns-tab] [fixture: block/db-columns-line-feed]
+  [fixture: block/db-columns-blank-line] [fixture: block/db-columns-nbsp]
+  [fixture: block/db-columns-ideographic] [fixture: block/db-columns-ls]
+  [fixture: block/db-columns-bom] [fixture: block/db-columns-crlf] [fixture:
   block/db-columns-two-spaces] [fixture: block/db-columns-trailing] [fixture:
   block/db-columns-then-word] [fixture: block/db-columns-semicolon] [fixture:
   block/db-columns-with-width] [fixture: block/db-columns-width-exceeds-zero]
   [fixture: block/db-columns-auto-then-width]
+
 - A word is a node, whose id and label are the word, and a line may hold any
   number of them, separated by white space. The word holds any character but
   white space and `(`, `)`, `[`, `{`, `}`, `<`, `>`, `:`, `=`, and `-`, which
@@ -5416,6 +6053,7 @@ Values of the summary, by field.
   character, or emoji are part of an id, `%%` inside a word is part of it, and
   an id may start with a digit, `%`, `#`, `;`, or `_`. Ids keep their case, and
   an id that is used again is the same block, in the place of the first.
+
   [fixture: block/db-name-two] [fixture: block/db-name-three-lines] [fixture:
   block/db-name-digits] [fixture: block/db-name-digits-and-letters] [fixture:
   block/db-name-underscore] [fixture: block/db-name-underscore-first] [fixture:
@@ -5440,19 +6078,22 @@ Values of the summary, by field.
   block/gram-name-equals] [fixture: block/gram-name-less-than] [fixture:
   block/gram-name-greater-than] [fixture: block/gram-name-brace] [fixture:
   block/gram-name-close-paren]
+
 - Tabs, vertical tabs, form feeds, CRs, CRLFs, no-break spaces, U+3000, U+FEFF,
   U+2028, and U+2029 separate two ids, while a U+0085 does not, and joins the
   two words into one id. Spaces after a node, the indentation of a line, blank
-  lines, and a missing final line feed change nothing. [fixture:
-  block/db-name-tab-between] [fixture: block/db-name-nbsp-between] [fixture:
-  block/db-name-ideographic-between] [fixture: block/db-name-bom-between]
-  [fixture: block/db-name-ls-between] [fixture: block/db-name-ps-between]
-  [fixture: block/db-name-nel-between] [fixture: block/db-name-vt-between]
-  [fixture: block/db-name-ff-between] [fixture: block/db-name-cr-between]
-  [fixture: block/db-name-crlf-between] [fixture: block/db-name-ls-around]
-  [fixture: block/db-name-trailing-spaces] [fixture:
+  lines, and a missing final line feed change nothing.
+
+  [fixture: block/db-name-tab-between] [fixture: block/db-name-nbsp-between]
+  [fixture: block/db-name-ideographic-between] [fixture:
+  block/db-name-bom-between] [fixture: block/db-name-ls-between] [fixture:
+  block/db-name-ps-between] [fixture: block/db-name-nel-between] [fixture:
+  block/db-name-vt-between] [fixture: block/db-name-ff-between] [fixture:
+  block/db-name-cr-between] [fixture: block/db-name-crlf-between] [fixture:
+  block/db-name-ls-around] [fixture: block/db-name-trailing-spaces] [fixture:
   block/db-name-indented-more] [fixture: block/db-name-blank-lines] [fixture:
   block/db-name-no-final-line-feed]
+
 - `:N` after an id, after a shape, or after the directions of a block arrow is
   the width of the node in columns, and a node with no `:N` has the width 1. The
   number is read as a decimal number, so `:007` is 7 and `:0` is 0, and a number
@@ -5461,9 +6102,11 @@ Values of the summary, by field.
   a `:` with no number, a sign, a letter, a digit outside ASCII, and two widths
   are rejected. What follows a number is read on its own: `A:2.5` is the width 2
   and the node `.5`, and `A:3B`, `A:3,B`, `A:3#`, and `A:3;` are the node A and
-  another node. [fixture: block/db-width-plain] [fixture: block/db-width-one]
-  [fixture: block/db-width-zero] [fixture: block/db-width-leading-zeros]
-  [fixture: block/db-width-large] [fixture: block/db-width-overflow] [fixture:
+  another node.
+
+  [fixture: block/db-width-plain] [fixture: block/db-width-one] [fixture:
+  block/db-width-zero] [fixture: block/db-width-leading-zeros] [fixture:
+  block/db-width-large] [fixture: block/db-width-overflow] [fixture:
   block/db-width-space-before] [fixture: block/db-width-tab-before] [fixture:
   block/db-width-line-feed-before] [fixture: block/gram-width-space-after]
   [fixture: block/gram-width-colon-only] [fixture: block/gram-width-negative]
@@ -5473,24 +6116,28 @@ Values of the summary, by field.
   block/db-width-hash] [fixture: block/db-width-semicolon] [fixture:
   block/db-width-on-two-nodes] [fixture: block/db-width-with-label] [fixture:
   block/db-width-label-then-space] [fixture: block/db-width-with-block-arrow]
+
 - A node that is used again keeps the width of its first use, whether that use
   gave a width or not. The node at the start of an edge has no width in the Db,
   and the node at its end cannot have one: the width of the start is lost, and a
   width at the end is rejected, but a node defined before the edge keeps its
-  width. [fixture: block/db-width-redefine] [fixture:
-  block/db-width-redefine-without] [fixture: block/db-width-redefine-first]
-  [fixture: block/db-width-on-edge-source] [fixture:
-  block/gram-width-on-edge-target] [fixture: block/db-width-before-edge]
-  [fixture: block/db-edge-keeps-width] [fixture:
-  block/db-definitions-three-widths]
+  width.
+
+  [fixture: block/db-width-redefine] [fixture: block/db-width-redefine-without]
+  [fixture: block/db-width-redefine-first] [fixture:
+  block/db-width-on-edge-source] [fixture: block/gram-width-on-edge-target]
+  [fixture: block/db-width-before-edge] [fixture: block/db-edge-keeps-width]
+  [fixture: block/db-definitions-three-widths]
+
 - A shape after an id gives the node its type, and its text between the quotes
   the label: `[ ]` is `square`, `( )` is `round`, `(( ))` is `circle`, `((( )))`
   is `doublecircle`, `([ ])` is `stadium`, `[[ ]]` is `subroutine`, `[( )]` is
   `cylinder`, `{ }` is `diamond`, `{{ }}` is `hexagon`, `> ]` is
   `rect_left_inv_arrow`, `[/ /]` is `lean_right`, `[\ \]` is `lean_left`,
   `[/ \]` is `trapezoid`, `[\ /]` is `inv_trapezoid`, and `<[ ]>( )` is
-  `block_arrow`. A node with no shape has the type `na`. [fixture:
-  block/db-shape-square] [fixture: block/db-shape-round] [fixture:
+  `block_arrow`. A node with no shape has the type `na`.
+
+  [fixture: block/db-shape-square] [fixture: block/db-shape-round] [fixture:
   block/db-shape-circle] [fixture: block/db-shape-doublecircle] [fixture:
   block/db-shape-stadium] [fixture: block/db-shape-subroutine] [fixture:
   block/db-shape-cylinder] [fixture: block/db-shape-diamond] [fixture:
@@ -5498,40 +6145,46 @@ Values of the summary, by field.
   [fixture: block/db-shape-lean-right] [fixture: block/db-shape-lean-left]
   [fixture: block/db-shape-trapezoid] [fixture: block/db-shape-inv-trapezoid]
   [fixture: block/db-shape-block-arrow]
+
 - A pair of opening and closing characters that is none of these has no type:
   the Db gives `na`, and the label stays. This is so for `) (`, `)) ((`,
   `(- -)`, `-) (-`, a mismatched pair such as `( ]`, `[ )`, `> }`, `{ ]`, and
   `(( )`, and an extra `]`. `[| |]` and `[[[ ]]]` are not shapes: rejected. A
   space or a line feed may stand between the id and the shape, and a shape with
-  no id is rejected. [fixture: block/db-shape-odd-left] [fixture:
-  block/db-shape-odd-double] [fixture: block/db-shape-minus-round] [fixture:
-  block/db-shape-minus-reverse] [fixture: block/db-shape-mixed-round-square]
-  [fixture: block/db-shape-mixed-square-round] [fixture:
-  block/db-shape-mixed-arrow-brace] [fixture: block/db-shape-mixed-brace-square]
-  [fixture: block/db-shape-mixed-double] [fixture:
-  block/db-shape-mixed-circle-stadium] [fixture: block/db-shape-extra-close]
-  [fixture: block/gram-shape-pipe] [fixture: block/gram-shape-triple-square]
-  [fixture: block/db-shape-space-before] [fixture:
-  block/db-shape-line-feed-before] [fixture: block/gram-shape-shape-only]
-  [fixture: block/gram-shape-shape-only-round] [fixture:
-  block/db-shape-two-defs-line] [fixture: block/db-shape-no-space-between]
+  no id is rejected.
+
+  [fixture: block/db-shape-odd-left] [fixture: block/db-shape-odd-double]
+  [fixture: block/db-shape-minus-round] [fixture: block/db-shape-minus-reverse]
+  [fixture: block/db-shape-mixed-round-square] [fixture:
+  block/db-shape-mixed-square-round] [fixture: block/db-shape-mixed-arrow-brace]
+  [fixture: block/db-shape-mixed-brace-square] [fixture:
+  block/db-shape-mixed-double] [fixture: block/db-shape-mixed-circle-stadium]
+  [fixture: block/db-shape-extra-close] [fixture: block/gram-shape-pipe]
+  [fixture: block/gram-shape-triple-square] [fixture:
+  block/db-shape-space-before] [fixture: block/db-shape-line-feed-before]
+  [fixture: block/gram-shape-shape-only] [fixture:
+  block/gram-shape-shape-only-round] [fixture: block/db-shape-two-defs-line]
+  [fixture: block/db-shape-no-space-between]
+
 - When a node is defined again, the Db takes the type of the new definition if
   it has one (a shape with no type, or no shape, leaves the type), and the label
   if it differs from the id, but it keeps the first width and the first
   directions, and the node stays in the place of the first. A label that equals
   the id does not replace a label. A third definition meets the second, and a
-  use with no shape between two with shapes changes nothing. [fixture:
-  block/db-shape-redefine-shape] [fixture: block/db-shape-redefine-to-na]
-  [fixture: block/db-shape-redefine-from-na] [fixture:
-  block/db-shape-redefine-same-label] [fixture: block/db-shape-redefine-to-odd]
-  [fixture: block/db-shape-redefine-width] [fixture:
-  block/db-shape-redefine-label-only] [fixture:
+  use with no shape between two with shapes changes nothing.
+
+  [fixture: block/db-shape-redefine-shape] [fixture:
+  block/db-shape-redefine-to-na] [fixture: block/db-shape-redefine-from-na]
+  [fixture: block/db-shape-redefine-same-label] [fixture:
+  block/db-shape-redefine-to-odd] [fixture: block/db-shape-redefine-width]
+  [fixture: block/db-shape-redefine-label-only] [fixture:
   block/db-definitions-three-shapes] [fixture:
   block/db-definitions-three-labels-first-equal] [fixture:
   block/db-definitions-three-na-in-the-middle] [fixture:
   block/db-definitions-three-edge-ends] [fixture:
   block/db-definitions-three-edge-and-node] [fixture:
   block/db-edge-redefine-by-edge] [fixture: block/db-edge-keeps-shape]
+
 - The label is the text between the quotes. It is not empty: `""` is rejected. A
   string of spaces is a label with its spaces, and the spaces around a text
   stay. Single quotes, a text without quotes, and a string that is not closed
@@ -5540,8 +6193,9 @@ Values of the summary, by field.
   are part of the label: brackets and braces, `<` and `>`, an arrow, `:`, `;`,
   `#`, `%`, `%%`, an apostrophe, a backtick or a backslash, a letter outside
   ASCII, an emoji, keywords such as `end` and `columns 2`, and `__proto__`. A
-  string that starts with a backtick (a markdown string) is rejected. [fixture:
-  block/db-label-plain] [fixture: block/gram-label-empty] [fixture:
+  string that starts with a backtick (a markdown string) is rejected.
+
+  [fixture: block/db-label-plain] [fixture: block/gram-label-empty] [fixture:
   block/db-label-spaces] [fixture: block/db-label-padded] [fixture:
   block/gram-label-single-quote] [fixture: block/gram-label-unquoted] [fixture:
   block/gram-label-unquoted-space] [fixture: block/gram-label-unclosed]
@@ -5561,6 +6215,7 @@ Values of the summary, by field.
   block/db-label-keyword] [fixture: block/db-label-keyword-columns] [fixture:
   block/db-label-proto] [fixture: block/db-label-constructor] [fixture:
   block/db-label-equals-id]
+
 - A line feed, a tab, a U+2028, a U+2029, a no-break space, an ideographic
   space, a U+FEFF, and a U+0085 in a string are part of the label, but a CR
   alone and a CRLF become a line feed. A comment line inside a string is removed
@@ -5569,22 +6224,25 @@ Values of the summary, by field.
   character reference is read as its placeholder, a `#` and digits without a `;`
   are not one, and a `"` that is the quote of an attribute of an HTML tag is
   read as `'`, so it does not end the string. HTML tags, `<br>`, and `&amp;` are
-  kept as they are. [fixture: block/db-label-line-feed] [fixture:
-  block/db-label-crlf] [fixture: block/db-label-cr] [fixture:
-  block/db-label-tab] [fixture: block/db-label-ls] [fixture: block/db-label-ps]
-  [fixture: block/db-label-nbsp] [fixture: block/db-label-ideographic] [fixture:
-  block/db-label-bom] [fixture: block/db-label-nel] [fixture:
-  block/db-label-comment-line] [fixture: block/db-label-comment-line-spaced]
-  [fixture: block/db-label-directive] [fixture: block/db-label-directive-line]
-  [fixture: block/db-label-entity-numeric] [fixture:
-  block/db-label-entity-named] [fixture: block/db-label-entity-no-semicolon]
-  [fixture: block/db-label-html-tag] [fixture: block/db-label-html-br] [fixture:
+  kept as they are.
+
+  [fixture: block/db-label-line-feed] [fixture: block/db-label-crlf] [fixture:
+  block/db-label-cr] [fixture: block/db-label-tab] [fixture: block/db-label-ls]
+  [fixture: block/db-label-ps] [fixture: block/db-label-nbsp] [fixture:
+  block/db-label-ideographic] [fixture: block/db-label-bom] [fixture:
+  block/db-label-nel] [fixture: block/db-label-comment-line] [fixture:
+  block/db-label-comment-line-spaced] [fixture: block/db-label-directive]
+  [fixture: block/db-label-directive-line] [fixture:
+  block/db-label-entity-numeric] [fixture: block/db-label-entity-named]
+  [fixture: block/db-label-entity-no-semicolon] [fixture:
+  block/db-label-html-tag] [fixture: block/db-label-html-br] [fixture:
   block/db-label-html-br-slash] [fixture: block/db-label-html-script] [fixture:
   block/db-label-html-attribute] [fixture: block/db-label-html-attribute-double]
   [fixture: block/db-label-ampersand] [fixture: block/db-label-after-string]
   [fixture: block/db-label-after-string-glued] [fixture:
   block/gram-label-string-only] [fixture: block/db-label-string-after-id]
   [fixture: block/gram-label-string-after-space]
+
 - A block arrow `<[ "text" ]>( directions )` has the directions after the `]>`,
   a space or a line feed between them being allowed. A direction is `right`,
   `left`, `up`, `down`, `x`, or `y`, in lower case, separated by commas, and the
@@ -5602,8 +6260,9 @@ Values of the summary, by field.
   `updown`, is read as the directions in it. An unknown word, upper case, no
   directions, a comma at the end or two in a row, a keyword, a closing without
   `>`, a list that is not closed, and a label without quotes or with none are
-  rejected. The label may be a space or `&nbsp;`. [fixture:
-  block/db-shape-block-arrow] [fixture: block/db-arrow-left] [fixture:
+  rejected. The label may be a space or `&nbsp;`.
+
+  [fixture: block/db-shape-block-arrow] [fixture: block/db-arrow-left] [fixture:
   block/db-arrow-up] [fixture: block/db-arrow-down] [fixture: block/db-arrow-x]
   [fixture: block/db-arrow-y] [fixture: block/db-arrow-two] [fixture:
   block/db-arrow-all] [fixture: block/db-arrow-no-space] [fixture:
@@ -5629,16 +6288,19 @@ Values of the summary, by field.
   block/db-arrow-spaces-label] [fixture: block/db-arrow-nbsp-label] [fixture:
   block/db-arrow-with-width] [fixture: block/db-arrow-two-lines] [fixture:
   block/db-arrow-class] [fixture: block/db-arrow-proto]
+
 - A block arrow defined again keeps its first directions and takes the new
   label, a block arrow given to a node with another shape takes the type
   `block_arrow` and has no directions, and a shape given to a block arrow takes
   the type of the shape and keeps the directions. A block arrow at the end of an
   edge gives the directions to the edge too, while one at its start does not.
+
   [fixture: block/db-arrow-redefine] [fixture:
   block/db-arrow-redefine-from-square] [fixture:
   block/db-arrow-redefine-to-square] [fixture:
   block/db-definitions-three-arrows] [fixture: block/db-edge-to-block-arrow]
   [fixture: block/db-edge-from-block-arrow] [fixture: block/db-arrow-after-edge]
+
 - `space` is a keyword and not an id: it makes `space` blocks, with the type
   `space` and the width 1, and `space:N` makes N of them, each with the width N,
   which the summary lists as N entries. `space:0` makes none, and the leading
@@ -5651,11 +6313,12 @@ Values of the summary, by field.
   `space_a`, `aspace`), while `space.a`, `space;`, and `space#` are a `space`
   block and a node. A `space` cannot start or end an edge, take a shape, or be
   named by a `class` or `style` statement: `class space c` makes a block of the
-  id `space` that is not in the diagram. [fixture: block/db-space-plain]
-  [fixture: block/db-space-width] [fixture: block/db-space-width-one] [fixture:
-  block/db-space-width-zero] [fixture: block/db-space-zero-before-node]
-  [fixture: block/db-space-leading-zeros] [fixture:
-  block/gram-space-space-before-colon] [fixture:
+  id `space` that is not in the diagram.
+
+  [fixture: block/db-space-plain] [fixture: block/db-space-width] [fixture:
+  block/db-space-width-one] [fixture: block/db-space-width-zero] [fixture:
+  block/db-space-zero-before-node] [fixture: block/db-space-leading-zeros]
+  [fixture: block/gram-space-space-before-colon] [fixture:
   block/gram-space-space-after-colon] [fixture: block/gram-space-no-number]
   [fixture: block/gram-space-letters] [fixture: block/gram-space-negative]
   [fixture: block/db-space-decimal] [fixture: block/gram-space-twice-width]
@@ -5669,14 +6332,18 @@ Values of the summary, by field.
   block/gram-space-edge-start] [fixture: block/gram-edge-to-space] [fixture:
   block/gram-space-shape] [fixture: block/gram-space-quoted] [fixture:
   block/db-space-class]
+
 - `space` blocks stand among the other blocks in the order of the text: before,
   between, and after nodes, two in a row, with a width of their own, in a row of
-  columns, and inside a composite. [fixture: block/db-space-then-node] [fixture:
-  block/db-space-node-then] [fixture: block/db-space-between] [fixture:
-  block/db-space-two] [fixture: block/db-space-two-widths] [fixture:
-  block/db-space-with-columns] [fixture: block/db-space-in-composite] [fixture:
-  block/db-space-in-named-composite] [fixture: block/db-space-label-in-line]
-  [fixture: block/db-space-crlf] [fixture: block/db-definitions-space-three]
+  columns, and inside a composite.
+
+  [fixture: block/db-space-then-node] [fixture: block/db-space-node-then]
+  [fixture: block/db-space-between] [fixture: block/db-space-two] [fixture:
+  block/db-space-two-widths] [fixture: block/db-space-with-columns] [fixture:
+  block/db-space-in-composite] [fixture: block/db-space-in-named-composite]
+  [fixture: block/db-space-label-in-line] [fixture: block/db-space-crlf]
+  [fixture: block/db-definitions-space-three]
+
 - `block:G` opens a composite with the id `G`, which `end` closes, and `block`
   or `block-beta` with no id opens one that has no id. A composite has the type
   `composite`, the label `""`, and its `children`, and its id may be followed by
@@ -5684,10 +6351,12 @@ Values of the summary, by field.
   label is kept while its shape and its type are not: the type stays
   `composite`. Composites nest to any depth, follow one another, and may stand
   on a line with other statements. A composite with the label of a block arrow
-  keeps the directions. [fixture: block/db-composite-plain] [fixture:
-  block/db-composite-no-id] [fixture: block/db-composite-no-id-beta] [fixture:
-  block/db-composite-width] [fixture: block/db-composite-width-zero] [fixture:
-  block/db-composite-label] [fixture: block/db-composite-label-shapes] [fixture:
+  keeps the directions.
+
+  [fixture: block/db-composite-plain] [fixture: block/db-composite-no-id]
+  [fixture: block/db-composite-no-id-beta] [fixture: block/db-composite-width]
+  [fixture: block/db-composite-width-zero] [fixture: block/db-composite-label]
+  [fixture: block/db-composite-label-shapes] [fixture:
   block/db-composite-label-and-width] [fixture: block/db-composite-block-arrow]
   [fixture: block/db-composite-nested] [fixture:
   block/db-composite-nested-no-id] [fixture: block/db-composite-nested-three]
@@ -5699,6 +6368,7 @@ Values of the summary, by field.
   [fixture: block/db-composite-child-width-in] [fixture:
   block/db-composite-columns-id] [fixture: block/db-composite-proto-id]
   [fixture: block/db-composite-constructor-id]
+
 - A composite needs a statement that makes a block, and `end` must close it: an
   empty composite, a composite that is not closed, an `end` with nothing to
   close, an `end` at the start, and an `end` as an id are rejected, while a
@@ -5706,10 +6376,11 @@ Values of the summary, by field.
   children. `end` is read in lower case, and as a word of its own: `END`, `End`,
   `endx`, `end_`, and `end:2` are rejected, and `end.x`, `end#`, `end;`, and
   `end` followed by a node are the keyword and a node. `end` inside a label is
-  text, and a directive inside the word `end` is removed. [fixture:
-  block/gram-composite-empty] [fixture: block/gram-composite-empty-no-id]
-  [fixture: block/gram-composite-not-closed] [fixture:
-  block/gram-composite-not-closed-nested] [fixture:
+  text, and a directive inside the word `end` is removed.
+
+  [fixture: block/gram-composite-empty] [fixture:
+  block/gram-composite-empty-no-id] [fixture: block/gram-composite-not-closed]
+  [fixture: block/gram-composite-not-closed-nested] [fixture:
   block/gram-composite-extra-end] [fixture: block/gram-composite-end-first]
   [fixture: block/gram-composite-end-as-id] [fixture:
   block/gram-composite-end-as-node-in-block] [fixture:
@@ -5726,12 +6397,14 @@ Values of the summary, by field.
   block/db-composite-end-glued] [fixture: block/db-composite-end-tab] [fixture:
   block/db-composite-end-crlf] [fixture: block/db-composite-end-nbsp] [fixture:
   block/div-directive-inside-end]
+
 - The id after `block:` is a word as an id of a node is, with the white space
   before it allowed: `block: G` is `block:G`. A quoted id, no id, a space before
   the colon, a dash, `Block:G`, and `space` as the id are rejected, while
   `columns` is an id. `blockx`, `block2`, and `block_a` are nodes, and
-  `block-a`, `block-betax`, and `blockx:G` are rejected. [fixture:
-  block/db-composite-space-after-colon] [fixture:
+  `block-a`, `block-betax`, and `blockx:G` are rejected.
+
+  [fixture: block/db-composite-space-after-colon] [fixture:
   block/gram-composite-id-quoted] [fixture:
   block/gram-composite-no-id-after-colon] [fixture:
   block/gram-composite-space-before-colon] [fixture:
@@ -5741,6 +6414,7 @@ Values of the summary, by field.
   block/db-composite-underscore-suffix] [fixture:
   block/gram-composite-dash-suffix] [fixture: block/gram-composite-beta-suffix]
   [fixture: block/gram-composite-colon-suffix]
+
 - A composite whose id is that of a block the Db already has does not make a new
   block: the old block takes the type `composite` and the label `""`, it keeps
   its place, its width, and no children, and the blocks inside the new composite
@@ -5748,7 +6422,9 @@ Values of the summary, by field.
   composite, unless it has a shape, which gives the block the shape's type and
   label, and the children stay. A node with the id of its own composite is the
   composite. A node used again inside a composite stays in its first place,
-  outside it. [fixture: block/db-composite-id-same-as-node-before] [fixture:
+  outside it.
+
+  [fixture: block/db-composite-id-same-as-node-before] [fixture:
   block/db-composite-id-same-as-node-after] [fixture:
   block/db-composite-id-same-as-node-after-shape] [fixture:
   block/db-composite-id-same-composite] [fixture:
@@ -5760,14 +6436,16 @@ Values of the summary, by field.
   block/db-definitions-composite-then-shape-then-composite] [fixture:
   block/db-definitions-shape-then-composite-then-shape] [fixture:
   block/db-composite-root-id]
+
 - An edge statement after `block:` is a statement of the composite and not of
   its id: the composite takes the three blocks of the statement as fields and
   has no id, which the summary leaves out. An edge cannot end at a composite
   that is opened on the edge. A `style` on the first or the last node of that
   statement throws in the Db, since the statement makes no block for them, and
   so does a `style` on a node inside the composite that stands before the
-  statement that makes it; after it the `style` is accepted. [fixture:
-  block/db-composite-edge-header] [fixture:
+  statement that makes it; after it the `style` is accepted.
+
+  [fixture: block/db-composite-edge-header] [fixture:
   block/db-composite-edge-header-width] [fixture:
   block/db-composite-shape-edge-header] [fixture: block/gram-composite-in-edge]
   [fixture: block/gram-style-on-composite-edge-head-start] [fixture:
@@ -5775,6 +6453,7 @@ Values of the summary, by field.
   block/gram-style-in-composite-edge-head-before-child] [fixture:
   block/db-style-on-composite-edge-head-child] [fixture:
   block/db-style-in-composite-edge-head-after-child]
+
 - An edge is a link between two nodes. `-->` is a normal solid edge with an
   arrow at its end (`arrow_point`), `---` has none, `==>` and `===` are thick,
   `-.->` and `-.-` are dotted, `--x` ends with a cross (`arrow_cross`), `--o`
@@ -5787,8 +6466,9 @@ Values of the summary, by field.
   invisible line takes no start marker. `x` and `o` glued before an arrow are
   nodes, so `A x--x B` is the node A and an edge from `x`. The edge needs no
   space around it: `A-->B`, `A--xB`, and `A--oB` are edges, and tabs, several
-  spaces, and line feeds around it are white space. [fixture:
-  block/db-edge-arrow] [fixture: block/db-edge-open] [fixture:
+  spaces, and line feeds around it are white space.
+
+  [fixture: block/db-edge-arrow] [fixture: block/db-edge-open] [fixture:
   block/db-edge-thick] [fixture: block/db-edge-thick-open] [fixture:
   block/db-edge-dotted] [fixture: block/db-edge-dotted-open] [fixture:
   block/db-edge-dotted-long] [fixture: block/db-edge-cross] [fixture:
@@ -5810,6 +6490,7 @@ Values of the summary, by field.
   block/db-edge-digit] [fixture: block/db-edge-unicode] [fixture:
   block/db-edge-same-line-statements] [fixture: block/db-edge-then-columns]
   [fixture: block/db-edge-spaces-in-id]
+
 - An edge may carry a label, `-- "text" -->`, with `==` for a thick edge and
   `-.` for a dotted one, and the quotes may touch the dashes. The label is a
   string like that of a node: it is not empty, it has no markdown, and a comment
@@ -5819,20 +6500,23 @@ Values of the summary, by field.
   and `<-- "t" -->` has no arrow at the start. A label with no end of the edge,
   a label without quotes, and a start followed by a wrong end are rejected.
   `-->|text|` is no label: `|text|` is the node at the end of the edge, and B is
-  another node. [fixture: block/db-edge-label] [fixture:
-  block/db-edge-label-open] [fixture: block/db-edge-label-thick] [fixture:
-  block/db-edge-label-dotted] [fixture: block/db-edge-label-glued] [fixture:
-  block/gram-edge-label-empty] [fixture: block/db-edge-label-spaces] [fixture:
-  block/gram-edge-label-unquoted] [fixture: block/db-edge-label-pipe] [fixture:
-  block/db-edge-label-pipe-spaced] [fixture: block/gram-edge-label-markdown]
-  [fixture: block/db-edge-label-line-feed] [fixture:
-  block/db-edge-label-comment-line] [fixture: block/db-edge-label-directive]
-  [fixture: block/db-edge-label-html] [fixture: block/db-edge-label-entity]
-  [fixture: block/gram-edge-label-start-without-end] [fixture:
+  another node.
+
+  [fixture: block/db-edge-label] [fixture: block/db-edge-label-open] [fixture:
+  block/db-edge-label-thick] [fixture: block/db-edge-label-dotted] [fixture:
+  block/db-edge-label-glued] [fixture: block/gram-edge-label-empty] [fixture:
+  block/db-edge-label-spaces] [fixture: block/gram-edge-label-unquoted]
+  [fixture: block/db-edge-label-pipe] [fixture: block/db-edge-label-pipe-spaced]
+  [fixture: block/gram-edge-label-markdown] [fixture:
+  block/db-edge-label-line-feed] [fixture: block/db-edge-label-comment-line]
+  [fixture: block/db-edge-label-directive] [fixture: block/db-edge-label-html]
+  [fixture: block/db-edge-label-entity] [fixture:
+  block/gram-edge-label-start-without-end] [fixture:
   block/gram-edge-label-wrong-end] [fixture: block/db-edge-label-mismatched]
   [fixture: block/db-edge-label-mismatched-dotted] [fixture:
   block/db-edge-label-cross] [fixture: block/db-edge-label-bidirectional]
   [fixture: block/db-edge-label-start-cross]
+
 - Edges are listed in the order of the text, those inside a composite at the
   place of the composite, and the same edge twice is two edges. An edge may join
   nodes of two composites, a composite and a node, a node and itself, and the
@@ -5840,32 +6524,37 @@ Values of the summary, by field.
   an earlier definition gave them (shape, label, width), and a shape at either
   end defines the block as a node does. `A --> end`, `A --> space`, and
   `A --> block:G` are rejected, while `A --> columns` is an edge to a node named
-  `columns`. [fixture: block/db-edge-twice] [fixture: block/db-edge-opposite]
-  [fixture: block/db-edge-self] [fixture: block/db-edge-different-kinds]
-  [fixture: block/db-edge-defined-before] [fixture: block/db-edge-new-shape]
-  [fixture: block/db-edge-start-shape] [fixture: block/db-edge-both-shapes]
-  [fixture: block/db-edge-to-composite] [fixture:
-  block/db-edge-from-composite-child] [fixture: block/db-edge-inside-composite]
-  [fixture: block/db-edge-across-composites] [fixture:
+  `columns`.
+
+  [fixture: block/db-edge-twice] [fixture: block/db-edge-opposite] [fixture:
+  block/db-edge-self] [fixture: block/db-edge-different-kinds] [fixture:
+  block/db-edge-defined-before] [fixture: block/db-edge-new-shape] [fixture:
+  block/db-edge-start-shape] [fixture: block/db-edge-both-shapes] [fixture:
+  block/db-edge-to-composite] [fixture: block/db-edge-from-composite-child]
+  [fixture: block/db-edge-inside-composite] [fixture:
+  block/db-edge-across-composites] [fixture:
   block/db-edge-edge-in-composite-order] [fixture: block/db-edge-proto]
   [fixture: block/db-edge-root] [fixture: block/db-edge-to-columns] [fixture:
   block/gram-edge-to-end] [fixture: block/gram-edge-start-lt-invisible]
   [fixture: block/gram-edge-start-lt-invisible-glued] [fixture:
   block/db-definitions-edges-three] [fixture: block/db-proto-proto-edge]
   [fixture: block/db-proto-root-edge-end]
+
 - A chain of edges, `A --> B --> C`, is read badly: the grammar takes the first
   edge as the start of the next, which has no `id`, so the Db keeps a block with
   no field, no start for the edge, and only the last node `C`. The nodes before
   it are lost, with the edges between them. The label and the arrows of the last
   edge are kept, two chains give one block with no field, and a node used after
   a chain is a block of its own. A `style` on the middle of a chain throws, too.
-  The summary shows the block as `{}` and the edge with no `start`. [fixture:
-  block/db-edge-chain] [fixture: block/db-edge-chain-open] [fixture:
+  The summary shows the block as `{}` and the edge with no `start`.
+
+  [fixture: block/db-edge-chain] [fixture: block/db-edge-chain-open] [fixture:
   block/db-edge-chain-four] [fixture: block/db-edge-chain-labels] [fixture:
   block/db-edge-chain-twice] [fixture: block/db-edge-chain-then-node] [fixture:
   block/db-edge-chain-in-block] [fixture: block/gram-style-on-chain] [fixture:
   block/gram-style-on-chain-middle] [fixture:
   block/db-style-on-undefined-chain-end]
+
 - `classDef name styles` defines a class: the name is one or more word
   characters (ASCII letters, digits, and `_`), and the styles are the rest of
   the line, split at each `,`, each trimmed. `default`, `class`, `end`,
@@ -5877,7 +6566,9 @@ Values of the summary, by field.
   defined again, at any distance, keeps the styles of every definition in order,
   and keeps its place in the order of the classes; the same style twice is kept
   twice. A class is the same for the whole diagram, wherever its `classDef`
-  stands, also in a composite. [fixture: block/db-class-def-and-apply] [fixture:
+  stands, also in a composite.
+
+  [fixture: block/db-class-def-and-apply] [fixture:
   block/db-class-def-two-styles] [fixture:
   block/db-class-def-spaces-around-styles] [fixture:
   block/db-class-def-directive-before-comma] [fixture:
@@ -5903,6 +6594,7 @@ Values of the summary, by field.
   block/db-definitions-class-def-three-others] [fixture:
   block/db-proto-proto-class-def] [fixture: block/db-proto-proto-class-twice]
   [fixture: block/db-proto-constructor-class-def]
+
 - In the styles of a `classDef`, a `#`, quotes, HTML, and `%%` are text, a
   directive is removed, and a character reference is read as its placeholder.
   The Db removes the first `;` of each style. The line rule of mermaid.js, which
@@ -5911,7 +6603,9 @@ Values of the summary, by field.
   end of `fill:#f00;` is gone, the `;` between two styles joins them,
   `fill:#f00;,stroke:#000` stays two styles, a space and a `;` at the end are
   dropped, and a second `;` after `#f00` is read as the end of a character
-  reference. [fixture: block/db-class-def-semicolon-end] [fixture:
+  reference.
+
+  [fixture: block/db-class-def-semicolon-end] [fixture:
   block/db-class-def-semicolon-middle] [fixture:
   block/db-class-def-semicolon-comma] [fixture:
   block/db-class-def-two-semicolons] [fixture:
@@ -5922,6 +6616,7 @@ Values of the summary, by field.
   block/db-class-def-colon-hash-semicolon] [fixture: block/db-class-def-nbsp]
   [fixture: block/db-semicolon-in-class-def] [fixture:
   block/db-semicolon-class-def-then-node]
+
 - `class ids name` applies a class to the nodes of the ids, which are one or
   more word characters, split at each `,` with no space before the comma: the
   class name is kept in the `classes` of each node, in the order of the
@@ -5931,13 +6626,14 @@ Values of the summary, by field.
   no name gives the empty name. The ids and the name are read on the same line,
   and the keyword may be followed by tabs and line feeds; in another case, or
   glued to a word, it is not the keyword, and `class` alone is rejected. A name
-  that is `__proto__` or `constructor` is a name like another. [fixture:
-  block/db-class-apply-two] [fixture: block/db-class-apply-same-twice] [fixture:
-  block/db-class-apply-names-list] [fixture: block/db-class-apply-names-spaces]
-  [fixture: block/db-class-apply-no-name] [fixture:
-  block/db-class-apply-no-name-spaces] [fixture: block/gram-class-apply-no-id]
-  [fixture: block/db-class-apply-name-upper] [fixture:
-  block/db-class-apply-proto-class] [fixture:
+  that is `__proto__` or `constructor` is a name like another.
+
+  [fixture: block/db-class-apply-two] [fixture: block/db-class-apply-same-twice]
+  [fixture: block/db-class-apply-names-list] [fixture:
+  block/db-class-apply-names-spaces] [fixture: block/db-class-apply-no-name]
+  [fixture: block/db-class-apply-no-name-spaces] [fixture:
+  block/gram-class-apply-no-id] [fixture: block/db-class-apply-name-upper]
+  [fixture: block/db-class-apply-proto-class] [fixture:
   block/db-class-apply-constructor-class] [fixture:
   block/db-class-apply-semicolon] [fixture: block/db-class-apply-hash] [fixture:
   block/db-class-apply-comment] [fixture: block/db-class-apply-directive]
@@ -5951,6 +6647,7 @@ Values of the summary, by field.
   [fixture: block/db-definitions-class-three] [fixture:
   block/db-definitions-class-three-ids] [fixture:
   block/db-proto-to-string-class] [fixture: block/db-proto-proto-directions]
+
 - The ids of a `class` statement are split at each comma and looked up as they
   are, with no trimming: `class A,B c` and `class A,B,C c` apply the class to
   each, while `class A, B c` looks up ` B`, finds no block, and makes a new
@@ -5963,9 +6660,11 @@ Values of the summary, by field.
   rejected. A comment line or a directive after the comma is left out of the id,
   which keeps the white space before it. The id `root` is the block that holds
   the diagram, and a class on a composite or on a node inside a composite is
-  kept there, also from a statement inside another composite. [fixture:
-  block/db-class-apply-list] [fixture: block/db-class-apply-list-spaces]
-  [fixture: block/db-class-apply-list-space-before-comma] [fixture:
+  kept there, also from a statement inside another composite.
+
+  [fixture: block/db-class-apply-list] [fixture:
+  block/db-class-apply-list-spaces] [fixture:
+  block/db-class-apply-list-space-before-comma] [fixture:
   block/db-class-apply-list-three] [fixture:
   block/db-class-apply-list-trailing-comma] [fixture:
   block/db-class-apply-list-spaces-then-style] [fixture:
@@ -5981,6 +6680,7 @@ Values of the summary, by field.
   block/db-composite-class-on] [fixture: block/db-composite-class-inside]
   [fixture: block/db-class-apply-in-block] [fixture:
   block/db-class-apply-in-block-outer]
+
 - A `class` statement for an id that no statement has defined yet makes a block
   of that id with the type `na`, which the summary lists in `unplaced`: the
   later definition of the id (a node, a shape, an edge, or a composite) does not
@@ -5989,9 +6689,11 @@ Values of the summary, by field.
   classes on such an id are kept in order, and a `class` for two such ids makes
   two blocks, in the order of the ids. A `class` for a node defined before it is
   in the diagram, also inside a composite, while a `class` inside a composite
-  for a node defined after it makes a block that stays out. [fixture:
-  block/db-class-apply-undefined-id] [fixture: block/db-class-apply-before-node]
-  [fixture: block/db-class-apply-before-node-shape] [fixture:
+  for a node defined after it makes a block that stays out.
+
+  [fixture: block/db-class-apply-undefined-id] [fixture:
+  block/db-class-apply-before-node] [fixture:
+  block/db-class-apply-before-node-shape] [fixture:
   block/db-class-apply-before-node-width] [fixture:
   block/db-class-apply-before-edge] [fixture: block/db-class-apply-before-block]
   [fixture: block/db-class-apply-undefined-twice] [fixture:
@@ -5999,6 +6701,7 @@ Values of the summary, by field.
   block/db-class-apply-mixed-list] [fixture:
   block/db-class-apply-in-block-later] [fixture:
   block/db-definitions-composite-then-shape-then-composite]
+
 - `style id styles` sets the styles of the node `id`: the styles are the rest of
   the line, split at each `,` and not trimmed, so the spaces around a comma stay
   in the styles, and a style that starts with a space is another style for the
@@ -6020,9 +6723,11 @@ Values of the summary, by field.
   node outside it is accepted. The keyword may be followed by tabs and line
   feeds, and the styles must be on the line of the id; in upper case or glued to
   a word it is not the keyword. A `style` with no id before the end of the text
-  is rejected. [fixture: block/db-style-plain] [fixture: block/db-style-two]
-  [fixture: block/db-style-spaces] [fixture: block/db-style-spaces-at-line-ends]
-  [fixture: block/db-style-whitespace-only-between-commas] [fixture:
+  is rejected.
+
+  [fixture: block/db-style-plain] [fixture: block/db-style-two] [fixture:
+  block/db-style-spaces] [fixture: block/db-style-spaces-at-line-ends] [fixture:
+  block/db-style-whitespace-only-between-commas] [fixture:
   block/db-style-tab-only-between-commas] [fixture:
   block/db-style-whitespace-only-first] [fixture:
   block/db-style-whitespace-only-last] [fixture:
@@ -6051,42 +6756,49 @@ Values of the summary, by field.
   block/db-style-line-feed-after-keyword] [fixture:
   block/gram-style-line-feed-after-id] [fixture: block/gram-style-upper-case]
   [fixture: block/gram-style-glued]
+
 - In the styles of a `style`, a `#` with a word, quotes, HTML, and `%%` are
   text, a directive is removed, and a character reference is read as its
   placeholder. The line rule drops the last `;` of the line that has a `:` and a
   `#`, so `fill:#f00;` is `fill:#f00`, `fill:#f00;stroke:#333` is one style,
   `fill:#f00;,stroke:#333` is two, a space and a `;` at the end are dropped, and
-  a line with no `#` keeps its `;`. [fixture: block/db-style-semicolon-end]
-  [fixture: block/db-style-semicolon-middle] [fixture:
-  block/db-style-semicolon-comma] [fixture: block/db-style-empty-style]
-  [fixture: block/db-style-line-rule-hash] [fixture: block/db-style-entity]
-  [fixture: block/db-style-comment] [fixture: block/db-style-directive]
-  [fixture: block/db-style-quotes] [fixture: block/db-style-nbsp] [fixture:
-  block/db-semicolon-in-style]
+  a line with no `#` keeps its `;`.
+
+  [fixture: block/db-style-semicolon-end] [fixture:
+  block/db-style-semicolon-middle] [fixture: block/db-style-semicolon-comma]
+  [fixture: block/db-style-empty-style] [fixture: block/db-style-line-rule-hash]
+  [fixture: block/db-style-entity] [fixture: block/db-style-comment] [fixture:
+  block/db-style-directive] [fixture: block/db-style-quotes] [fixture:
+  block/db-style-nbsp] [fixture: block/db-semicolon-in-style]
+
 - The id `root` is the id of the block that holds the diagram, so a statement
   for that id acts on it. A node `root`, with a width, or inside a composite
   changes nothing; `root["x"]` gives the block that holds the diagram the label
   `x` and the type of the shape, and it keeps its `columns` and its children;
   `block:root` gives it the label `""` and holds the blocks of the composite
   apart in `unplaced`; `class root c` gives it the class, `style root` the
-  styles; and an edge may start or end at `root`. [fixture: block/db-proto-root]
-  [fixture: block/db-proto-root-twice] [fixture: block/db-proto-root-width]
-  [fixture: block/db-proto-root-label] [fixture: block/db-proto-root-columns]
-  [fixture: block/db-proto-root-composite-child] [fixture:
-  block/db-composite-root-id] [fixture: block/db-class-apply-root] [fixture:
-  block/db-proto-root-style] [fixture: block/db-edge-root] [fixture:
+  styles; and an edge may start or end at `root`.
+
+  [fixture: block/db-proto-root] [fixture: block/db-proto-root-twice] [fixture:
+  block/db-proto-root-width] [fixture: block/db-proto-root-label] [fixture:
+  block/db-proto-root-columns] [fixture: block/db-proto-root-composite-child]
+  [fixture: block/db-composite-root-id] [fixture: block/db-class-apply-root]
+  [fixture: block/db-proto-root-style] [fixture: block/db-edge-root] [fixture:
   block/db-proto-root-edge-end]
+
 - The names of `Object.prototype` are ids like any other: `__proto__`,
   `constructor`, `toString`, `hasOwnProperty`, and `valueOf` as the id of a
   node, with a shape, a width, or a class, as the id of a composite, as an end
   of an edge, in a label, as the name of a class and the name in `class`, and in
   a `style`. The Db keeps its blocks and classes in `Map`s, so none of them acts
-  on a prototype. [fixture: block/db-proto-proto] [fixture:
-  block/db-proto-constructor] [fixture: block/db-proto-to-string] [fixture:
-  block/db-proto-has-own-property] [fixture: block/db-proto-value-of] [fixture:
-  block/db-proto-proto-twice] [fixture: block/db-proto-proto-shape] [fixture:
-  block/db-proto-proto-width] [fixture: block/db-proto-proto-composite-child]
-  [fixture: block/db-proto-proto-edge-label] [fixture:
+  on a prototype.
+
+  [fixture: block/db-proto-proto] [fixture: block/db-proto-constructor]
+  [fixture: block/db-proto-to-string] [fixture: block/db-proto-has-own-property]
+  [fixture: block/db-proto-value-of] [fixture: block/db-proto-proto-twice]
+  [fixture: block/db-proto-proto-shape] [fixture: block/db-proto-proto-width]
+  [fixture: block/db-proto-proto-composite-child] [fixture:
+  block/db-proto-proto-edge-label] [fixture:
   block/db-proto-proto-undefined-class] [fixture: block/db-label-proto]
   [fixture: block/db-label-constructor] [fixture: block/db-composite-proto-id]
   [fixture: block/db-composite-constructor-id] [fixture: block/db-arrow-proto]
@@ -6095,6 +6807,7 @@ Values of the summary, by field.
   block/db-class-apply-constructor-class] [fixture: block/db-style-proto-id]
   [fixture: block/db-style-constructor-id] [fixture: block/db-class-def-proto]
   [fixture: block/db-class-def-constructor] [fixture: block/db-edge-proto]
+
 - A comment line starts, after white space of any kind (a U+FEFF, a no-break
   space, an ideographic space, and a U+2028 included), with `%%` and at least
   one character after it, and it is removed with its line feed wherever it
@@ -6103,10 +6816,12 @@ Values of the summary, by field.
   string. It ends at a line feed, a CRLF, or a CR; a U+2028, a U+2029, and a
   U+0085 do not end it. `%%` alone, `%` and a word, and `#` and a word are not
   comments: they are nodes. What a comment line holds is not read: quotes,
-  arrows, and keywords in it do nothing. [fixture: block/db-comment-line]
-  [fixture: block/db-comment-line-indented] [fixture: block/db-comment-line-tab]
-  [fixture: block/db-comment-line-glued] [fixture: block/db-comment-line-bare]
-  [fixture: block/db-comment-line-bare-spaces] [fixture:
+  arrows, and keywords in it do nothing.
+
+  [fixture: block/db-comment-line] [fixture: block/db-comment-line-indented]
+  [fixture: block/db-comment-line-tab] [fixture: block/db-comment-line-glued]
+  [fixture: block/db-comment-line-bare] [fixture:
+  block/db-comment-line-bare-spaces] [fixture:
   block/db-comment-line-single-percent] [fixture: block/db-comment-line-hash]
   [fixture: block/db-comment-line-triple] [fixture: block/db-comment-line-first]
   [fixture: block/db-comment-line-last] [fixture:
@@ -6127,10 +6842,12 @@ Values of the summary, by field.
   block/db-comment-quote-unclosed-inside] [fixture: block/db-label-comment-line]
   [fixture: block/db-label-comment-line-spaced] [fixture:
   block/db-edge-label-comment-line]
+
 - A `%%` that does not start a line is not a comment: after a node, an edge,
   `columns`, or `end` it is a node, with the text after it, glued to a word it
   is part of the id, and inside a string it is part of the label. After `class`
   and `style` and in `classDef` it is part of the class name or the styles.
+
   [fixture: block/db-comment-after-node] [fixture:
   block/db-comment-after-node-glued] [fixture: block/db-comment-after-edge]
   [fixture: block/db-comment-after-columns] [fixture:
@@ -6142,6 +6859,7 @@ Values of the summary, by field.
   block/db-tail-node-comment] [fixture: block/db-tail-columns-comment] [fixture:
   block/db-tail-space-comment] [fixture: block/db-tail-class-comment] [fixture:
   block/db-tail-class-def-comment] [fixture: block/db-tail-style-comment]
+
 - A `;` is not a separator, and a `#` starts no comment: a `;` is part of the id
   it touches, a node of its own after a space, a shape, a width, a block arrow,
   `columns`, `space`, or `end`, and part of a class name or a style, and so is a
@@ -6150,12 +6868,14 @@ Values of the summary, by field.
   `%%`, and a `#` are part of the class name or the styles, apart from the `;`
   that the line rule or the Db removes. The line rule drops that `;` also inside
   an id or a keyword: `A["style:#a"] B;C` has the id `BC`, and
-  `A["style:#a"] col;umns 2` is `columns 2`. [fixture:
-  block/db-semicolon-after-node] [fixture: block/db-semicolon-between] [fixture:
-  block/db-semicolon-space-before] [fixture: block/db-semicolon-alone] [fixture:
-  block/db-semicolon-double] [fixture: block/db-semicolon-after-width] [fixture:
-  block/db-semicolon-after-shape] [fixture: block/db-semicolon-after-edge]
-  [fixture: block/db-semicolon-separates-statements-line] [fixture:
+  `A["style:#a"] col;umns 2` is `columns 2`.
+
+  [fixture: block/db-semicolon-after-node] [fixture: block/db-semicolon-between]
+  [fixture: block/db-semicolon-space-before] [fixture: block/db-semicolon-alone]
+  [fixture: block/db-semicolon-double] [fixture: block/db-semicolon-after-width]
+  [fixture: block/db-semicolon-after-shape] [fixture:
+  block/db-semicolon-after-edge] [fixture:
+  block/db-semicolon-separates-statements-line] [fixture:
   block/db-tail-node-semicolon] [fixture: block/div-ignored-semicolon-in-id]
   [fixture: block/div-ignored-semicolon-in-keyword] [fixture:
   block/db-tail-node-space-semicolon] [fixture: block/db-tail-node-hash]
@@ -6189,6 +6909,7 @@ Values of the summary, by field.
   block/db-tail-composite-end-keyword-semicolon] [fixture:
   block/db-tail-composite-end-keyword-hash] [fixture:
   block/gram-tail-composite-line-semicolon]
+
 - A directive `%%{...}%%` is removed wherever it stands, and the pieces on its
   two sides join: inside an id, a string, the header, and the keywords
   `columns`, `class`, and `end`, a direction of a block arrow, between an id and
@@ -6200,10 +6921,12 @@ Values of the summary, by field.
   text with it: at the end of the text it takes nothing else, and before a
   statement it leaves no statement in the diagram, which is rejected. A
   directive on a line of its own inside a string leaves the line breaks around
-  it. A text of only a directive after the header is rejected. [fixture:
-  block/db-directive-init-line] [fixture: block/db-directive-init-before-header]
-  [fixture: block/db-directive-init-block-config] [fixture:
-  block/db-directive-wrap] [fixture: block/db-directive-not-init] [fixture:
+  it. A text of only a directive after the header is rejected.
+
+  [fixture: block/db-directive-init-line] [fixture:
+  block/db-directive-init-before-header] [fixture:
+  block/db-directive-init-block-config] [fixture: block/db-directive-wrap]
+  [fixture: block/db-directive-not-init] [fixture:
   block/db-directive-multi-line] [fixture: block/db-directive-two] [fixture:
   block/div-directive-in-id] [fixture: block/db-directive-between-ids] [fixture:
   block/db-directive-at-end-of-line] [fixture: block/db-directive-inside-string]
@@ -6239,10 +6962,12 @@ Values of the summary, by field.
   block/db-tail-class-def-directive-unclosed] [fixture:
   block/db-tail-composite-end-directive] [fixture:
   block/db-tail-composite-end-keyword-directive]
+
 - A frontmatter before the header is removed: its `title` is not kept, since the
   Db has no title, and its configuration, `block` included, changes nothing in
   the summary. A frontmatter that is empty, not closed, indented, after a
   comment, or after the header is no frontmatter, and the text is rejected.
+
   [fixture: block/db-frontmatter-config-block] [fixture:
   block/db-frontmatter-look] [fixture: block/db-frontmatter-html-in-title]
   [fixture: block/db-frontmatter-crlf] [fixture: block/header-after-frontmatter]
@@ -6251,15 +6976,19 @@ Values of the summary, by field.
   [fixture: block/gram-frontmatter-indented] [fixture:
   block/gram-frontmatter-comment-before] [fixture:
   block/gram-frontmatter-after-header]
+
 - `accTitle:`, `accDescr:`, and `accDescr {` are not statements of a block
   diagram: the lexer reads them as keywords for which the grammar has no rule,
   and the text is rejected. `accTitle` alone is a node, `title t` is the nodes
-  `title` and `t`, and `title: t` is rejected. [fixture:
-  block/gram-acc-acc-title] [fixture: block/gram-acc-acc-descr] [fixture:
-  block/gram-acc-acc-descr-block] [fixture: block/db-acc-acc-title-word]
-  [fixture: block/gram-acc-acc-title-space] [fixture:
-  block/gram-acc-acc-title-upper] [fixture: block/gram-acc-acc-title-glued]
-  [fixture: block/db-acc-title-word] [fixture: block/gram-acc-title-colon]
+  `title` and `t`, and `title: t` is rejected.
+
+  [fixture: block/gram-acc-acc-title] [fixture: block/gram-acc-acc-descr]
+  [fixture: block/gram-acc-acc-descr-block] [fixture:
+  block/db-acc-acc-title-word] [fixture: block/gram-acc-acc-title-space]
+  [fixture: block/gram-acc-acc-title-upper] [fixture:
+  block/gram-acc-acc-title-glued] [fixture: block/db-acc-title-word] [fixture:
+  block/gram-acc-title-colon]
+
 - Statements follow one another with nothing between them but white space: any
   number of nodes, edges, `columns`, `space` blocks, and composites on a line,
   in any order, and `class`, `style`, and `classDef` take the rest of their
@@ -6268,6 +6997,7 @@ Values of the summary, by field.
   the text. A word that holds a keyword is a node (`friend`, `endless`,
   `mycolumns`, `blockade`, `classy`, `styled`), `columns:2` is a node `columns`
   of width 2, and a control character or a delete character is part of an id.
+
   [fixture: block/db-statement-many-line] [fixture:
   block/db-statement-mixed-line] [fixture: block/db-statement-columns-between]
   [fixture: block/db-statement-statements-then-class] [fixture:
@@ -6288,25 +7018,28 @@ Values of the summary, by field.
   block/db-statement-end-keyword-inside-id] [fixture:
   block/db-statement-end-prefix-id] [fixture:
   block/db-statement-keywords-inside-ids]
+
 - White space in the id of a node: a tab, a line feed, a CR, a CRLF, a no-break
   space, an ideographic space, a U+FEFF, a U+2028, a U+2029, a form feed, a
   vertical tab, and spaces separate two ids, while a U+0085 does not, and joins
   the two words into one id. In the id of a composite, white space ends the id,
-  and the rest is a node inside the composite. [fixture: block/db-grid-tab-id]
-  [fixture: block/db-grid-tab-composite-id] [fixture: block/db-grid-lf-id]
-  [fixture: block/db-grid-lf-composite-id] [fixture: block/db-grid-cr-id]
-  [fixture: block/db-grid-cr-composite-id] [fixture: block/db-grid-crlf-id]
-  [fixture: block/db-grid-crlf-composite-id] [fixture: block/db-grid-ls-id]
-  [fixture: block/db-grid-ls-composite-id] [fixture: block/db-grid-ps-id]
-  [fixture: block/db-grid-ps-composite-id] [fixture: block/db-grid-nbsp-id]
-  [fixture: block/db-grid-nbsp-composite-id] [fixture: block/db-grid-bom-id]
-  [fixture: block/db-grid-bom-composite-id] [fixture:
-  block/db-grid-ideographic-id] [fixture:
+  and the rest is a node inside the composite.
+
+  [fixture: block/db-grid-tab-id] [fixture: block/db-grid-tab-composite-id]
+  [fixture: block/db-grid-lf-id] [fixture: block/db-grid-lf-composite-id]
+  [fixture: block/db-grid-cr-id] [fixture: block/db-grid-cr-composite-id]
+  [fixture: block/db-grid-crlf-id] [fixture: block/db-grid-crlf-composite-id]
+  [fixture: block/db-grid-ls-id] [fixture: block/db-grid-ls-composite-id]
+  [fixture: block/db-grid-ps-id] [fixture: block/db-grid-ps-composite-id]
+  [fixture: block/db-grid-nbsp-id] [fixture: block/db-grid-nbsp-composite-id]
+  [fixture: block/db-grid-bom-id] [fixture: block/db-grid-bom-composite-id]
+  [fixture: block/db-grid-ideographic-id] [fixture:
   block/db-grid-ideographic-composite-id] [fixture: block/db-grid-ff-id]
   [fixture: block/db-grid-ff-composite-id] [fixture: block/db-grid-vt-id]
   [fixture: block/db-grid-vt-composite-id] [fixture: block/db-grid-spaces-id]
   [fixture: block/db-grid-spaces-composite-id] [fixture: block/db-grid-nel-id]
   [fixture: block/db-grid-nel-composite-id]
+
 - White space in a string, in the label of a node, of a block arrow, of an edge,
   or of a composite, is part of the text, but a CR alone and a CRLF become a
   line feed. A `;`, a `#`, a `%`, a `:`, a `,`, a `-`, a `|`, a `'`, a backtick,
@@ -6317,28 +7050,29 @@ Values of the summary, by field.
   string is removed, a directive is removed, a directive on a line of its own
   leaves the line breaks around it, a character reference is read as its
   placeholder, the quote of an HTML attribute is read as `'`, and the line rule
-  drops the last `;` of `style:#x;y` and of `classDef:#x;y`. [fixture:
-  block/db-label-tab] [fixture: block/db-grid-tab-block-arrow-label] [fixture:
-  block/db-grid-tab-edge-label] [fixture: block/db-grid-tab-composite-label]
-  [fixture: block/db-label-line-feed] [fixture:
-  block/db-grid-lf-block-arrow-label] [fixture: block/db-edge-label-line-feed]
-  [fixture: block/db-grid-lf-composite-label] [fixture: block/db-label-cr]
-  [fixture: block/db-grid-cr-block-arrow-label] [fixture:
-  block/db-grid-cr-edge-label] [fixture: block/db-grid-cr-composite-label]
-  [fixture: block/db-label-crlf] [fixture: block/db-grid-crlf-block-arrow-label]
-  [fixture: block/db-grid-crlf-edge-label] [fixture:
-  block/db-grid-crlf-composite-label] [fixture: block/db-label-ls] [fixture:
-  block/db-grid-ls-block-arrow-label] [fixture: block/db-grid-ls-edge-label]
-  [fixture: block/db-grid-ls-composite-label] [fixture: block/db-label-ps]
-  [fixture: block/db-grid-ps-block-arrow-label] [fixture:
-  block/db-grid-ps-edge-label] [fixture: block/db-grid-ps-composite-label]
-  [fixture: block/db-label-nbsp] [fixture: block/db-grid-nbsp-block-arrow-label]
-  [fixture: block/db-grid-nbsp-edge-label] [fixture:
-  block/db-grid-nbsp-composite-label] [fixture: block/db-grid-bom-label]
-  [fixture: block/db-grid-bom-block-arrow-label] [fixture:
-  block/db-grid-bom-edge-label] [fixture: block/db-grid-bom-composite-label]
-  [fixture: block/db-label-ideographic] [fixture:
-  block/db-grid-ideographic-block-arrow-label] [fixture:
+  drops the last `;` of `style:#x;y` and of `classDef:#x;y`.
+
+  [fixture: block/db-label-tab] [fixture: block/db-grid-tab-block-arrow-label]
+  [fixture: block/db-grid-tab-edge-label] [fixture:
+  block/db-grid-tab-composite-label] [fixture: block/db-label-line-feed]
+  [fixture: block/db-grid-lf-block-arrow-label] [fixture:
+  block/db-edge-label-line-feed] [fixture: block/db-grid-lf-composite-label]
+  [fixture: block/db-label-cr] [fixture: block/db-grid-cr-block-arrow-label]
+  [fixture: block/db-grid-cr-edge-label] [fixture:
+  block/db-grid-cr-composite-label] [fixture: block/db-label-crlf] [fixture:
+  block/db-grid-crlf-block-arrow-label] [fixture: block/db-grid-crlf-edge-label]
+  [fixture: block/db-grid-crlf-composite-label] [fixture: block/db-label-ls]
+  [fixture: block/db-grid-ls-block-arrow-label] [fixture:
+  block/db-grid-ls-edge-label] [fixture: block/db-grid-ls-composite-label]
+  [fixture: block/db-label-ps] [fixture: block/db-grid-ps-block-arrow-label]
+  [fixture: block/db-grid-ps-edge-label] [fixture:
+  block/db-grid-ps-composite-label] [fixture: block/db-label-nbsp] [fixture:
+  block/db-grid-nbsp-block-arrow-label] [fixture: block/db-grid-nbsp-edge-label]
+  [fixture: block/db-grid-nbsp-composite-label] [fixture:
+  block/db-grid-bom-label] [fixture: block/db-grid-bom-block-arrow-label]
+  [fixture: block/db-grid-bom-edge-label] [fixture:
+  block/db-grid-bom-composite-label] [fixture: block/db-label-ideographic]
+  [fixture: block/db-grid-ideographic-block-arrow-label] [fixture:
   block/db-grid-ideographic-edge-label] [fixture:
   block/db-grid-ideographic-composite-label] [fixture: block/db-grid-ff-label]
   [fixture: block/db-grid-ff-block-arrow-label] [fixture:
@@ -6526,6 +7260,7 @@ Values of the summary, by field.
   block/db-grid-classdef-rule-block-arrow-label] [fixture:
   block/db-grid-classdef-rule-edge-label] [fixture:
   block/db-grid-classdef-rule-composite-label]
+
 - In the id of a node, a `;`, a `#`, a `%`, a `,`, a `|`, a `'`, a `"`, a
   backtick, a backslash, a `]`, `%%`, a character reference, `&amp;`,
   `__proto__`, `constructor`, `root`, a letter outside ASCII, an emoji, digits,
@@ -6535,8 +7270,9 @@ Values of the summary, by field.
   line rule are rejected, `a-->b` is an edge, `end` and `block-beta` after the
   id open or close composites and are rejected, and `columns 2`, `space`,
   `class A c`, and `classDef c fill:red` are statements, while
-  `style A fill:red` makes a `style` of an id that is not there. [fixture:
-  block/db-name-semicolon] [fixture: block/db-name-hash] [fixture:
+  `style A fill:red` makes a `style` of an id that is not there.
+
+  [fixture: block/db-name-semicolon] [fixture: block/db-name-hash] [fixture:
   block/db-name-percent] [fixture: block/gram-name-colon] [fixture:
   block/db-name-comma] [fixture: block/gram-name-dash] [fixture:
   block/db-name-pipe] [fixture: block/db-name-quote] [fixture:
@@ -6563,6 +7299,7 @@ Values of the summary, by field.
   [fixture: block/db-grid-nonascii-id] [fixture: block/db-grid-emoji-id]
   [fixture: block/db-grid-digits-id] [fixture: block/db-grid-empty-id] [fixture:
   block/gram-grid-style-rule-id] [fixture: block/gram-grid-classdef-rule-id]
+
 - Where an id of a `class` or `style` statement, the name of a class, or the
   name of a `classDef` holds one of these characters: in `classDef`, the name is
   one or more word characters, and white space ends it, so the rest is the first
@@ -6571,7 +7308,9 @@ Values of the summary, by field.
   digits, and nothing are word characters or no character. The ids of `class`
   and `style` are word characters too, so a character that is none ends the id
   and the rest is the class name or the styles; a `style` for an id that is not
-  there is rejected. [fixture: block/db-grid-tab-class-def-name] [fixture:
+  there is rejected.
+
+  [fixture: block/db-grid-tab-class-def-name] [fixture:
   block/db-grid-tab-class-apply-id] [fixture: block/db-grid-tab-style-id]
   [fixture: block/db-grid-lf-class-def-name] [fixture:
   block/db-grid-lf-class-apply-id] [fixture: block/gram-grid-lf-style-id]
@@ -6736,13 +7475,16 @@ Values of the summary, by field.
   block/gram-grid-classdef-rule-class-def-name] [fixture:
   block/gram-grid-classdef-rule-class-apply-id] [fixture:
   block/gram-grid-classdef-rule-style-id]
+
 - In the styles of `classDef` and `style` and in the name of a class of `class`,
   white space other than a line terminator is part of the text, and a line
   terminator ends it, so the rest of the text is read as statements; the other
   characters are part of the text, the Db drops the first `;` of a style of
   `classDef`, the line rule drops the last `;` of a line that has a `:` and a
   `#`, a comment line is removed, and a directive is removed. A U+0085 is part
-  of the text. [fixture: block/db-grid-tab-class-def-style] [fixture:
+  of the text.
+
+  [fixture: block/db-grid-tab-class-def-style] [fixture:
   block/db-grid-tab-class-apply-name] [fixture: block/db-grid-tab-style-text]
   [fixture: block/db-grid-lf-class-def-style] [fixture:
   block/db-grid-lf-class-apply-name] [fixture: block/db-grid-lf-style-text]
@@ -6912,6 +7654,7 @@ Values of the summary, by field.
   block/db-grid-classdef-rule-class-def-style] [fixture:
   block/db-grid-classdef-rule-class-apply-name] [fixture:
   block/db-grid-classdef-rule-style-text]
+
 - After `columns`, only digits make the number of columns; every other character
   makes `columns` a node, followed by what the character makes, or makes the
   text rejected. As the width of a node or of a `space`, only digits make a
@@ -6921,9 +7664,11 @@ Values of the summary, by field.
   header on its line, white space, a `;`, a `#`, a `%`, a `,`, a `|`, a `'`, a
   backtick, a backslash, a `]`, a comment, a character reference, `&amp;`, and a
   non-ASCII letter make a node that starts with the character, and keywords make
-  the statement they start. [fixture: block/db-grid-tab-columns] [fixture:
-  block/gram-grid-tab-width] [fixture: block/gram-grid-tab-space-width]
-  [fixture: block/db-grid-tab-directions] [fixture:
+  the statement they start.
+
+  [fixture: block/db-grid-tab-columns] [fixture: block/gram-grid-tab-width]
+  [fixture: block/gram-grid-tab-space-width] [fixture:
+  block/db-grid-tab-directions] [fixture:
   block/header-statement-on-header-line-tab] [fixture: block/db-grid-lf-columns]
   [fixture: block/gram-grid-lf-width] [fixture: block/gram-grid-lf-space-width]
   [fixture: block/db-grid-lf-directions] [fixture: block/db-grid-lf-header-line]
@@ -7170,6 +7915,7 @@ Values of the summary, by field.
   block/gram-grid-classdef-rule-space-width] [fixture:
   block/gram-grid-classdef-rule-directions] [fixture:
   block/gram-grid-classdef-rule-header-line]
+
 - White space and comments inside a statement: a statement whose parts are
   separated by white space in the lexer (`columns` and its number, `classDef`
   and its name or its styles, `class` and its ids, `style` and its ids, `block:`
@@ -7178,8 +7924,9 @@ Values of the summary, by field.
   line between the parts, and the Db reads them as if they were not there. The
   exceptions are the ids of `class` and `style` from their styles or class name:
   after the class ids `class A` a line feed ends the statement, and the name is
-  empty, and after `style A` the styles must be on its line: rejected. [fixture:
-  block/db-between-columns-comment-line] [fixture:
+  empty, and after `style A` the styles must be on its line: rejected.
+
+  [fixture: block/db-between-columns-comment-line] [fixture:
   block/db-between-columns-directive-line] [fixture:
   block/db-between-columns-empty-line] [fixture:
   block/db-between-columns-spaces-line] [fixture:
@@ -7230,6 +7977,7 @@ Values of the summary, by field.
   block/db-between-directions-directive-line] [fixture:
   block/db-between-directions-empty-line] [fixture:
   block/db-between-directions-spaces-line]
+
 - What stands after a statement at the end of its line: a `;`, a space and a
   `;`, two `;`, a `%%` comment, a directive, a directive that is not closed,
   trailing spaces, a tab, a no-break space, and `# c`. After a node, a shape, a
@@ -7238,7 +7986,9 @@ Values of the summary, by field.
   (a node, or the end of an edge) is part of the id, and the directive and the
   trailing white space are not read. After `class`, `style`, and `classDef` they
   are part of the class name or the styles, except the ones that the line rule
-  and the Db remove. [fixture: block/db-tail-node-semicolon] [fixture:
+  and the Db remove.
+
+  [fixture: block/db-tail-node-semicolon] [fixture:
   block/db-tail-node-space-semicolon] [fixture: block/db-semicolon-double]
   [fixture: block/db-tail-node-comment] [fixture:
   block/db-tail-node-comment-glued] [fixture: block/db-tail-node-directive]
@@ -7379,6 +8129,7 @@ Values of the summary, by field.
   block/db-tail-composite-end-keyword-trailing-tab] [fixture:
   block/db-tail-composite-end-keyword-trailing-nbsp] [fixture:
   block/db-tail-composite-end-keyword-hash]
+
 - The summary is the same under every `securityLevel` that mermaid.js has
   (`strict`, `loose`, `antiscript`, and `sandbox`), and under the settings of
   the site (the `block` settings `padding` and `useMaxWidth`, the theme, the
@@ -7388,7 +8139,9 @@ Values of the summary, by field.
   labels of the nodes, of the block arrows, of the composites, and of the edges,
   hold the replaced characters (`<` as `&lt;`, `>` as `&gt;`, and `<br>` as
   `<br/>`), while the ids, the styles, the classes, and the directions are as
-  written. [fixture: block/config-block-padding] [fixture:
+  written.
+
+  [fixture: block/config-block-padding] [fixture:
   block/config-block-use-max-width] [fixture: block/config-deterministic-ids]
   [fixture: block/config-flowchart-html-labels-false] [fixture:
   block/config-html-labels-false] [fixture: block/config-look-neo] [fixture:
@@ -7408,6 +8161,7 @@ Values of the summary, by field.
   block/config-security-level-other-style] [fixture:
   block/config-security-level-sandbox-all] [fixture:
   block/config-security-level-strict-all] [fixture: block/config-theme-dark]
+
 - In the id after `block:`, the characters other than white space are read as in
   the id of a node: a `;`, a `#`, a `%`, a `,`, a `|`, a `'`, a `"`, a backtick,
   a backslash, a `]`, `%%`, a character reference, `&amp;`, `__proto__`,
@@ -7417,8 +8171,9 @@ Values of the summary, by field.
   `columns 2`, `space`, `class A c`, and `classDef c fill:red` after the id are
   statements of the composite, and `style A fill:red` is rejected, as are `[`,
   `(`, `{`, `)`, `}`, `<`, `>`, `=`, `:`, HTML, a run of punctuation, the line
-  rule, `end`, `block`, and `block-beta`. [fixture:
-  block/db-grid-semicolon-composite-id] [fixture:
+  rule, `end`, `block`, and `block-beta`.
+
+  [fixture: block/db-grid-semicolon-composite-id] [fixture:
   block/db-grid-hash-composite-id] [fixture: block/db-grid-percent-composite-id]
   [fixture: block/gram-grid-colon-composite-id] [fixture:
   block/db-grid-comma-composite-id] [fixture: block/gram-composite-id-with-dash]
@@ -7465,10 +8220,12 @@ Values of the summary, by field.
   [fixture: block/db-grid-empty-composite-id] [fixture:
   block/gram-grid-style-rule-composite-id] [fixture:
   block/gram-grid-classdef-rule-composite-id]
+
 - A composite opened on a line with a node and not closed with `end`, with a
   `;`, a comment, a directive, a `#`, or trailing white space after the node, is
-  rejected like one without them. [fixture:
-  block/gram-tail-composite-line-comment] [fixture:
+  rejected like one without them.
+
+  [fixture: block/gram-tail-composite-line-comment] [fixture:
   block/gram-tail-composite-line-comment-glued] [fixture:
   block/gram-tail-composite-line-directive] [fixture:
   block/gram-tail-composite-line-directive-glued] [fixture:
@@ -7480,15 +8237,18 @@ Values of the summary, by field.
   block/gram-tail-composite-line-trailing-spaces] [fixture:
   block/gram-tail-composite-line-trailing-tab] [fixture:
   block/gram-tail-composite-line-two-semicolons]
+
 - The inputs of the tests, the documentation, and the demos of mermaid.js are
   accepted. They show the forms that its authors write: nodes, widths, the
   shapes, block arrows, `space`, composites with `columns`, edges with labels,
-  and the classes and styles. [fixture: block/demo-block-0f7b1b81] [fixture:
-  block/demo-block-2472aba6] [fixture: block/demo-block-44d70be5] [fixture:
-  block/demo-block-7d24edf7] [fixture: block/demo-block-8b6e7c41] [fixture:
-  block/demo-block-a8323c64] [fixture: block/demo-block-b3231b02] [fixture:
-  block/demo-block-b4d9a28a] [fixture: block/demo-block-ca540acf] [fixture:
-  block/demo-block-f71819c7] [fixture: block/demo-block-fbbaee87] [fixture:
+  and the classes and styles.
+
+  [fixture: block/demo-block-0f7b1b81] [fixture: block/demo-block-2472aba6]
+  [fixture: block/demo-block-44d70be5] [fixture: block/demo-block-7d24edf7]
+  [fixture: block/demo-block-8b6e7c41] [fixture: block/demo-block-a8323c64]
+  [fixture: block/demo-block-b3231b02] [fixture: block/demo-block-b4d9a28a]
+  [fixture: block/demo-block-ca540acf] [fixture: block/demo-block-f71819c7]
+  [fixture: block/demo-block-fbbaee87] [fixture:
   block/docs-syntax-block-0c75f481] [fixture: block/docs-syntax-block-0eeed10a]
   [fixture: block/docs-syntax-block-1493c734] [fixture:
   block/docs-syntax-block-1d2ef9d1] [fixture: block/docs-syntax-block-24e2536f]
@@ -7526,6 +8286,7 @@ Values of the summary, by field.
   [fixture: block/spec-block-d1395cc6] [fixture: block/spec-block-ee611de8]
   [fixture: block/spec-block-f4c30090] [fixture: block/spec-block-f6ceb4d8]
   [fixture: block/spec-block-fd3dd910] [fixture: block/spec-block-ff426370]
+
 - The detector of the C4 diagrams reads `C4Container`, `C4Component`,
   `C4Dynamic`, and `C4Deployment` anywhere in the text, and the other detectors
   read the text only after the C4 one, so a text that holds one of them
@@ -7535,9 +8296,11 @@ Values of the summary, by field.
   C4 diagrams. `C4Context` is detected only at the start of the text, so it is
   an id in a block diagram. A comment line, a directive, and a frontmatter are
   removed before the detectors read the text, so the words in them do nothing,
-  and the words are read in this exact case. [fixture:
-  block/div-c4-component-in-id] [fixture: block/div-c4-container-after-node]
-  [fixture: block/gram-c4-container-before-header] [fixture:
+  and the words are read in this exact case.
+
+  [fixture: block/div-c4-component-in-id] [fixture:
+  block/div-c4-container-after-node] [fixture:
+  block/gram-c4-container-before-header] [fixture:
   block/div-c4-container-in-class-def-name] [fixture:
   block/div-c4-container-in-class-def-style] [fixture:
   block/div-c4-container-in-class-name] [fixture:
@@ -7552,12 +8315,15 @@ Values of the summary, by field.
   [fixture: block/div-c4-container-with-context] [fixture:
   block/db-c4-context-in-id] [fixture: block/db-c4-context-lower-case] [fixture:
   block/div-c4-deployment-in-id] [fixture: block/div-c4-dynamic-in-id]
+
 - `default`, `linkStyle`, and `interpolate` are words of the lexer that no
   statement of a block diagram accepts: as an id, after a node, and as a
   `linkStyle` statement, they are rejected, while `DEFAULT`, `defaultx`,
   `linkStylex`, and `interpolatex` are ids, and the three words are text inside
   a label, a class name, and a style. `default` is a name of a class in
-  `classDef`. [fixture: block/gram-name-reserved-default] [fixture:
+  `classDef`.
+
+  [fixture: block/gram-name-reserved-default] [fixture:
   block/gram-name-reserved-default-after-node] [fixture:
   block/db-name-reserved-default-in-class-def] [fixture:
   block/db-name-reserved-default-in-label] [fixture:
@@ -7572,6 +8338,7 @@ Values of the summary, by field.
   block/db-name-reserved-link-style-in-label] [fixture:
   block/db-name-reserved-link-style-prefix] [fixture:
   block/gram-name-reserved-link-style-statement]
+
 - An empty string `""` and an empty markdown string `"``"` read no token, so
   they are skipped wherever a statement may stand: between statements, before
   and after an id, an edge, a shape, a width, or `end`, before a composite, and
@@ -7580,9 +8347,11 @@ Values of the summary, by field.
   a row (an empty string and a quote), a markdown string of a space, and a
   second string after the empty label that starts an edge label. Between
   `columns` and its number, an empty string is skipped, but the white space
-  around it makes `columns` a node and the number another. [fixture:
-  block/div-empty-string-after-edge] [fixture: block/div-empty-string-after-id]
-  [fixture: block/div-empty-string-before-block-key] [fixture:
+  around it makes `columns` a node and the number another.
+
+  [fixture: block/div-empty-string-after-edge] [fixture:
+  block/div-empty-string-after-id] [fixture:
+  block/div-empty-string-before-block-key] [fixture:
   block/div-empty-string-before-columns-number] [fixture:
   block/div-empty-string-before-edge] [fixture:
   block/div-empty-string-before-end] [fixture:
@@ -7597,6 +8366,7 @@ Values of the summary, by field.
   [fixture: block/div-empty-markdown-between] [fixture:
   block/div-empty-markdown-line] [fixture: block/gram-empty-markdown-only]
   [fixture: block/gram-empty-markdown-spaces]
+
 - An empty `accDescr` block, `accDescr {}`, with spaces, a line feed, or a
   comment line inside, or with no space before the brace, reads no token either:
   it is skipped between statements, between two ids, after an edge, before
@@ -7606,8 +8376,9 @@ Values of the summary, by field.
   that is not closed are rejected, and `accDescr {}` inside a string is text. On
   the line of the header it is skipped, and a block with text is rejected.
   Between `columns` and its number it is skipped, and the white space around it
-  makes `columns` a node. [fixture:
-  block/gram-empty-block-as-only-statement-in-composite] [fixture:
+  makes `columns` a node.
+
+  [fixture: block/gram-empty-block-as-only-statement-in-composite] [fixture:
   block/db-empty-block-before-columns] [fixture:
   block/db-empty-block-before-end] [fixture: block/db-empty-block-between]
   [fixture: block/db-empty-block-between-columns-and-number] [fixture:
@@ -7623,13 +8394,16 @@ Values of the summary, by field.
   block/db-empty-block-on-header-line] [fixture:
   block/gram-description-block-on-header-line] [fixture:
   block/gram-empty-block-with-text]
+
 - A shape takes no white space inside its brackets: `A[ "x" ]`, `A[ "x"]`,
   `A["x" ]`, a line feed inside the brackets, `A<[ "x" ]>(right)`, and two
   strings are rejected, while a space before the shape is allowed (`A ("x")`),
   and so is a space inside the parentheses of the directions, which is part of
   the texts of the directions, with a line feed. `[|` with the end `]` has no
   type, `)))` is read as `))` and `)` and rejected, and an unknown direction is
-  rejected. [fixture: block/db-spec-bracket-pipe] [fixture:
+  rejected.
+
+  [fixture: block/db-spec-bracket-pipe] [fixture:
   block/gram-spec-triple-round-start] [fixture:
   block/db-spec-space-before-round] [fixture:
   block/gram-spec-spaces-inside-square] [fixture:
@@ -7641,13 +8415,16 @@ Values of the summary, by field.
   block/db-spec-spaces-around-directions] [fixture:
   block/db-spec-directions-line-feeds] [fixture:
   block/gram-spec-directions-unknown]
+
 - `->` is not an edge, `A --> block` opens a composite and is rejected, and
   `:::`, `::`, and a class name after `A:::` are rejected: the lexer stops at
   the `:`. A directive is removed inside an arrow, after the `<`, before the
   head, inside the dashes that start a label, and the pieces join, while one
   between the two dashes of `--` leaves `A -- B`, which is rejected. The spaces
   around the label of an edge change nothing, and two strings in the label are
-  rejected. [fixture: block/gram-spec-single-dash-arrow] [fixture:
+  rejected.
+
+  [fixture: block/gram-spec-single-dash-arrow] [fixture:
   block/gram-spec-edge-to-block-keyword] [fixture:
   block/gram-spec-colon-colon-colon] [fixture: block/gram-spec-colon-colon]
   [fixture: block/gram-spec-colon-colon-colon-two] [fixture:
@@ -7658,18 +8435,22 @@ Values of the summary, by field.
   block/div-spec-edge-directive-in-label-start] [fixture:
   block/db-spec-edge-label-spaces-around] [fixture:
   block/gram-spec-edge-label-two-strings]
+
 - The id after `block:` may be on the next line, since the white space after
   `block:` includes the line feed. The styles of a `classDef` may be on the line
   after its name for the same reason, and when they are, the line is the styles
   even if it is a statement: `classDef c` and `class A c` on the next line make
   the class `c` with the style `class A c`. A quote inside an id is part of it
   and the white space after the quote ends the id, `%%` and `%` are part of an
-  id when glued to it. [fixture: block/db-spec-composite-lf-id] [fixture:
+  id when glued to it.
+
+  [fixture: block/db-spec-composite-lf-id] [fixture:
   block/db-spec-class-def-next-line-styles] [fixture:
   block/db-spec-class-def-next-line-two] [fixture:
   block/db-spec-class-def-name-only-then-class] [fixture:
   block/db-spec-id-with-quoted-part] [fixture: block/db-spec-id-comment-glued]
   [fixture: block/db-spec-percent-id]
+
 - How the Db collects the blocks. After the whole text is parsed, the Db walks
   the statements in the order of the text, one list of children at a time, and
   it enters a composite when it meets it: a composite is put in the table of
@@ -7684,6 +8465,7 @@ Values of the summary, by field.
   children of a composite. An edge is added to the list of edges when the walk
   meets it, also inside a composite, whatever the blocks at its ends are. A
   block used inside a composite and again outside stays where it was first used.
+
   [fixture: block/db-collecting-child-first-then-outer] [fixture:
   block/db-collecting-columns-per-composite] [fixture:
   block/db-collecting-composite-then-node-shape-width] [fixture:
@@ -7730,6 +8512,7 @@ Values of the summary, by field.
   block/db-arrow-redefine-to-square] [fixture: block/db-edge-keeps-shape]
   [fixture: block/db-edge-keeps-width] [fixture: block/db-edge-redefine-by-edge]
   [fixture: block/db-edge-edge-in-composite-order]
+
 - The table of blocks holds the blocks in the order they were put in it, the
   block of the diagram first. `unplaced` lists the entries of the table that the
   walk from the block of the diagram does not reach through lists of children,
@@ -7743,7 +8526,9 @@ Values of the summary, by field.
   the block a later definition of that id updated are unplaced; an edge, a
   `class`, and a `style` find them as they find any block. What is lost with a
   dropped composite is its `columns` and its width, which the old block does not
-  take. [fixture: block/db-unplaced-class-on-unplaced-child] [fixture:
+  take.
+
+  [fixture: block/db-unplaced-class-on-unplaced-child] [fixture:
   block/db-unplaced-columns-in-dropped] [fixture:
   block/db-unplaced-dropped-with-label] [fixture:
   block/db-unplaced-dropped-with-width] [fixture:
@@ -7764,6 +8549,7 @@ Values of the summary, by field.
   block/db-composite-id-same-composite] [fixture:
   block/db-composite-id-same-nested] [fixture: block/db-space-class] [fixture:
   block/db-space-width-zero] [fixture: block/db-space-in-composite]
+
 - The type of a shape is decided by the pair of the text that opens it and the
   text that closes it, which the lexer reads one after the other: the opening is
   one of `(((`... in the order of its rules (`-)`, `(-`, `))`, `)`, `(((`, `((`,
@@ -7775,8 +8561,9 @@ Values of the summary, by field.
   `[\` and `\]`, `[/` and `\]`, `[\` and `/]` have a type, and any other pair
   has none (`na`), whichever closing token it ends with, while the label stays.
   A shape that is closed by `]>` with no directions after it is not a block
-  arrow, and `<[` closed by a plain `]` is rejected. [fixture:
-  block/db-closer-arrow-open-with-bracket] [fixture:
+  arrow, and `<[` closed by a plain `]` is rejected.
+
+  [fixture: block/db-closer-arrow-open-with-bracket] [fixture:
   block/db-closer-backslash-open-with-bracket] [fixture:
   block/gram-closer-block-arrow-open-with-bracket] [fixture:
   block/db-closer-brace-brace-pair] [fixture:
@@ -7819,27 +8606,34 @@ Values of the summary, by field.
 `normalizeKanban()` (`src/normalizers/kanban.ts`) reads
 [`getData()`](https://github.com/mermaid-js/mermaid/blob/2086904e76c692331e34a45d7cc3bc30860d040e/packages/mermaid/src/diagrams/kanban/kanbanDb.ts#L54-L97),
 the form the renderer consumes, rather than merging it with the separate
-internal section list. [fixture: kanban/db-metadata-all] [fixture:
-kanban/db-decoration-class-item] [fixture: kanban/db-decoration-icon-section]
+internal section list.
+
+[fixture: kanban/db-metadata-all] [fixture: kanban/db-decoration-class-item]
+[fixture: kanban/db-decoration-icon-section]
 
 The summary is `{ nodes }`, with a section followed by its items, sections in
-declaration order and items in the order of the internal node list. [fixture:
-kanban/db-sections-items]
+declaration order and items in the order of the internal node list.
+
+[fixture: kanban/db-sections-items]
 
 Each node keeps `id`, `label`, and `isGroup`; an item also keeps `parentId`, and
-the optional fields are omitted when undefined. [fixture:
-kanban/db-sections-items] [fixture: kanban/db-metadata-all]
+the optional fields are omitted when undefined.
+
+[fixture: kanban/db-sections-items] [fixture: kanban/db-metadata-all]
 
 `id` is the sanitized written id, or the description when no id precedes the
 shape; spaces before a shape and trailing spaces in bare ids remain part of the
-id. [fixture: kanban/db-name-no-id] [fixture: kanban/db-name-space-before-shape]
+id.
+
+[fixture: kanban/db-name-no-id] [fixture: kanban/db-name-space-before-shape]
 [fixture: kanban/db-name-trailing-space]
 
 `label` is the sanitized description, or the bare id when there is no
 description, with surrounding string and markdown delimiters removed but
-internal whitespace retained. [fixture: kanban/db-name-two-words] [fixture:
-kanban/db-markdown-label] [fixture: kanban/db-label-multiline] [fixture:
-kanban/db-spaces-label]
+internal whitespace retained.
+
+[fixture: kanban/db-name-two-words] [fixture: kanban/db-markdown-label]
+[fixture: kanban/db-label-multiline] [fixture: kanban/db-spaces-label]
 
 The indentation decides the structure: a tab counts as one character, the first
 node establishes the section indentation, a node with an equal indentation
@@ -7847,99 +8641,120 @@ starts a section, and every other node is attached to the most recent section.
 The summary does not keep the indentation itself (`level`):
 [the renderer](https://github.com/mermaid-js/mermaid/blob/2086904e76c692331e34a45d7cc3bc30860d040e/packages/mermaid/src/diagrams/kanban/kanbanRenderer.ts#L16-L73)
 tells a section from an item by `isGroup` and `parentId` and does not read
-`level`. [fixture: kanban/db-indent-tabs] [fixture: kanban/db-indent-unindented]
+`level`.
+
+[fixture: kanban/db-indent-tabs] [fixture: kanban/db-indent-unindented]
 [fixture: kanban/db-indent-deeper] [fixture: kanban/db-indent-shallower-last]
 
 [`getSection()`](https://github.com/mermaid-js/mermaid/blob/2086904e76c692331e34a45d7cc3bc30860d040e/packages/mermaid/src/diagrams/kanban/kanbanDb.ts#L25-L48)
 checks already stored nodes for indentation below the first section level, so a
 final shallower item is accepted and a further node then causes rejection.
+
 [fixture: kanban/db-indent-shallower-last] [fixture:
 kanban/gram-indent-shallower-followed]
 
 `isGroup` is true for a section and false for an item, and `parentId` is the
 section id used by the Db's equality filter, rather than a reconstructed tree
-parent. [fixture: kanban/db-sections-items] [fixture:
-kanban/db-section-item-same-id]
+parent.
+
+[fixture: kanban/db-sections-items] [fixture: kanban/db-section-item-same-id]
 
 Duplicate ids are not merged: repeated item definitions remain separate, and
 each repeated section lists every item whose `parentId` equals that section id,
-including items written under its other definitions. [fixture:
-kanban/db-section-three-definitions] [fixture: kanban/db-item-three-definitions]
-[fixture: kanban/db-metadata-repeated-id]
+including items written under its other definitions.
+
+[fixture: kanban/db-section-three-definitions] [fixture:
+kanban/db-item-three-definitions] [fixture: kanban/db-metadata-repeated-id]
 
 The names of `Object.prototype` and different letter cases remain ordinary,
-distinct ids. [fixture: kanban/db-object-prototype-ids] [fixture:
-kanban/db-name-case]
+distinct ids.
+
+[fixture: kanban/db-object-prototype-ids] [fixture: kanban/db-name-case]
 
 Both sections and items keep `ticket`, while only items expose `assigned`,
-`priority`, and `icon` through `getData()`. [fixture: kanban/db-metadata-all]
-[fixture: kanban/db-metadata-section-ticket] [fixture:
-kanban/db-metadata-section-assigned] [fixture:
+`priority`, and `icon` through `getData()`.
+
+[fixture: kanban/db-metadata-all] [fixture: kanban/db-metadata-section-ticket]
+[fixture: kanban/db-metadata-section-assigned] [fixture:
 kanban/db-metadata-section-priority] [fixture: kanban/db-metadata-section-icon]
 
 [`addNode()`](https://github.com/mermaid-js/mermaid/blob/2086904e76c692331e34a45d7cc3bc30860d040e/packages/mermaid/src/diagrams/kanban/kanbanDb.ts#L99-L165)
 reads metadata with YAML's JSON schema, applies only truthy values, converts
 `ticket`, `assigned`, and `icon` with `toString()`, and retains `priority` as
-its YAML value without checking the documented priority enumeration. [fixture:
-kanban/db-metadata-ticket-number] [fixture: kanban/db-metadata-assigned-list]
-[fixture: kanban/db-metadata-icon-true] [fixture:
-kanban/db-metadata-priority-number] [fixture: kanban/db-metadata-priority-list]
-[fixture: kanban/db-metadata-priorities] [fixture:
-kanban/db-metadata-priority-zero] [fixture: kanban/db-metadata-priority-null]
-[fixture: kanban/db-metadata-priority-overflow-word]
+its YAML value without checking the documented priority enumeration.
+
+[fixture: kanban/db-metadata-ticket-number] [fixture:
+kanban/db-metadata-assigned-list] [fixture: kanban/db-metadata-icon-true]
+[fixture: kanban/db-metadata-priority-number] [fixture:
+kanban/db-metadata-priority-list] [fixture: kanban/db-metadata-priorities]
+[fixture: kanban/db-metadata-priority-zero] [fixture:
+kanban/db-metadata-priority-null] [fixture:
+kanban/db-metadata-priority-overflow-word]
 
 Infinite scalar priorities are recorded as `"Infinity"` or `"-Infinity"`, while
 a scalar YAML `.nan` is falsy and is not assigned; non-finite values in a nested
 list or mapping become `"Infinity"`, `"-Infinity"`, or `"NaN"`, and own keys
-such as `__proto__` remain own keys. [fixture:
-kanban/db-metadata-priority-non-finite] [fixture:
+such as `__proto__` remain own keys.
+
+[fixture: kanban/db-metadata-priority-non-finite] [fixture:
 kanban/db-metadata-priority-nested-non-finite] [fixture:
 kanban/db-metadata-priority-own-prototype-key]
 
 A truthy metadata `label` replaces the description and is converted to text by
 `getData()`; a false, zero, null, or empty label leaves the original
-description. [fixture: kanban/db-metadata-label-number] [fixture:
+description.
+
+[fixture: kanban/db-metadata-label-number] [fixture:
 kanban/db-metadata-label-list] [fixture: kanban/db-metadata-label-false]
 [fixture: kanban/db-metadata-label-zero] [fixture:
 kanban/db-metadata-label-null] [fixture: kanban/db-metadata-label-empty-string]
 
 Metadata keys are case-sensitive, unknown keys have no effect, duplicate keys
 are rejected by YAML, and inline mapping braces can end the lexer block before
-YAML reads the nested value. [fixture: kanban/db-metadata-assigned-upper-key]
-[fixture: kanban/db-metadata-unknown-key] [fixture:
+YAML reads the nested value.
+
+[fixture: kanban/db-metadata-assigned-upper-key] [fixture:
+kanban/db-metadata-unknown-key] [fixture:
 kanban/gram-metadata-assigned-duplicate] [fixture:
 kanban/gram-metadata-assigned-mapping]
 
 An inline metadata block is wrapped in braces for YAML, while a block containing
 a line feed is passed as a block mapping; a double-quoted line feed and
 subsequent whitespace become `<br/>` before YAML parsing. A YAML comment on a
-line of the block is ignored. [fixture: kanban/db-metadata-multiline] [fixture:
+line of the block is ignored.
+
+[fixture: kanban/db-metadata-multiline] [fixture:
 kanban/db-metadata-quoted-newline] [fixture:
 kanban/db-metadata-single-quoted-newline] [fixture:
 kanban/db-metadata-yaml-comment] [fixture: kanban/gram-metadata-two-blocks]
 
 YAML anchors and aliases in unknown data-block keys are accepted and then
 discarded with those keys. This includes a shared mapping and a self-referencing
-mapping: neither adds a summary field or a nonempty data-block effect. [fixture:
-kanban/db-metadata-yaml-shared-alias] [fixture:
+mapping: neither adds a summary field or a nonempty data-block effect.
+
+[fixture: kanban/db-metadata-yaml-shared-alias] [fixture:
 kanban/db-metadata-yaml-self-alias]
 
 Adjacent `@{ ... }` blocks of one kanban node are read as one suffix whose
-contents are concatenated, and one effect is recorded for the group. [fixture:
-kanban/db-metadata-adjacent-comma] [fixture: kanban/db-metadata-adjacent-empty]
-[fixture: kanban/db-metadata-two-items] [fixture:
-kanban/gram-metadata-two-blocks] [fixture: kanban/db-metadata-all]
+contents are concatenated, and one effect is recorded for the group.
+
+[fixture: kanban/db-metadata-adjacent-comma] [fixture:
+kanban/db-metadata-adjacent-empty] [fixture: kanban/db-metadata-two-items]
+[fixture: kanban/gram-metadata-two-blocks] [fixture: kanban/db-metadata-all]
 
 A lower-case shape value without underscores is accepted without changing the
 fixed kanban shape, but `kanbanItem` is rejected by the preceding lower-case
-check, and a truthy non-string shape throws a TypeError. [fixture:
-kanban/db-metadata-shape-lower] [fixture: kanban/db-metadata-shape-known-other]
-[fixture: kanban/gram-metadata-shape-camel] [fixture:
+check, and a truthy non-string shape throws a TypeError.
+
+[fixture: kanban/db-metadata-shape-lower] [fixture:
+kanban/db-metadata-shape-known-other] [fixture:
+kanban/gram-metadata-shape-camel] [fixture:
 kanban/gram-metadata-shape-underscore] [fixture:
 kanban/gram-metadata-shape-number]
 
 The last icon decoration replaces the previous item's icon, while empty icon and
 class forms have no effect and a decoration before any node throws a TypeError.
+
 [fixture: kanban/db-decoration-icon-twice] [fixture:
 kanban/db-decoration-empty-icon] [fixture: kanban/db-decoration-empty-class]
 [fixture: kanban/gram-decoration-before-node] [fixture:
@@ -7949,16 +8764,18 @@ The summary drops `shape` and `labelType`, whose values follow from `isGroup`
 and are fixed to the kanban shapes and markdown labels, and drops the fixed
 `rx`, `ry`, and `cssStyles`, the empty `edges` and `other`, and the
 configuration and layout values `look`, `width`, `padding`, and the renderer's
-element table. [fixture: kanban/db-metadata-all] [fixture:
-kanban/db-shape-square] [fixture: kanban/db-shape-round] [fixture:
-kanban/db-shape-circle] [fixture: kanban/db-shape-hexagon] [fixture:
-kanban/db-frontmatter-drawing-config] [fixture:
-kanban/db-directive-drawing-config]
+element table.
+
+[fixture: kanban/db-metadata-all] [fixture: kanban/db-shape-square] [fixture:
+kanban/db-shape-round] [fixture: kanban/db-shape-circle] [fixture:
+kanban/db-shape-hexagon] [fixture: kanban/db-frontmatter-drawing-config]
+[fixture: kanban/db-directive-drawing-config]
 
 It also leaves out the section-only internal `assigned`, `priority`, `icon`, and
 `cssClasses`, and item `cssClasses`, because `getData()` does not expose them;
-this choice deliberately compares the renderer's Db reading. [fixture:
-kanban/db-metadata-section-assigned] [fixture:
+this choice deliberately compares the renderer's Db reading.
+
+[fixture: kanban/db-metadata-section-assigned] [fixture:
 kanban/db-metadata-section-priority] [fixture: kanban/db-metadata-section-icon]
 [fixture: kanban/db-decoration-class-section] [fixture:
 kanban/db-decoration-class-item]
@@ -7966,6 +8783,7 @@ kanban/db-decoration-class-item]
 There are no title or accessibility setters in this Db: frontmatter titles add
 no summary field, `title`, `accTitle:`, and `accDescr:` are ordinary node text,
 and `accDescr {}` is rejected rather than acting as an empty description block.
+
 [fixture: kanban/header-after-frontmatter] [fixture:
 kanban/db-frontmatter-accessibility] [fixture: kanban/db-title-not-statement]
 [fixture: kanban/db-acc-title-not-statement] [fixture:
@@ -7978,33 +8796,37 @@ kanban/db-frontmatter-crlf] [fixture: kanban/db-frontmatter-title-number]
 
 `patchKanbanDb()` records each accepted data block as `{ id, set }` in
 `dataBlockEffects`, in application order, keeping separate entries for repeated
-item ids. [fixture: kanban/db-metadata-all] [fixture:
-kanban/db-metadata-repeated-id]
+item ids.
+
+[fixture: kanban/db-metadata-all] [fixture: kanban/db-metadata-repeated-id]
 
 `set` contains the node summary fields changed by the block: `label` and
 `ticket` for columns and items, and `assigned`, `priority`, and `icon` for
-items; unexposed column metadata contributes no fields. [fixture:
-kanban/db-metadata-all] [fixture: kanban/db-metadata-section-label] [fixture:
-kanban/db-metadata-section-ticket] [fixture:
+items; unexposed column metadata contributes no fields.
+
+[fixture: kanban/db-metadata-all] [fixture: kanban/db-metadata-section-label]
+[fixture: kanban/db-metadata-section-ticket] [fixture:
 kanban/db-metadata-section-assigned] [fixture:
 kanban/db-metadata-section-priority] [fixture: kanban/db-metadata-section-icon]
 
 The effects keep mermaid.js's conversions even for values outside the documented
 types: a numeric `ticket` becomes text, a list of assignees becomes comma-joined
 text, a boolean icon becomes text, and a priority list stays a list, with nested
-non-finite numbers represented as above. [fixture:
-kanban/db-metadata-ticket-number] [fixture: kanban/db-metadata-assigned-list]
-[fixture: kanban/db-metadata-icon-true] [fixture:
-kanban/db-metadata-priority-list] [fixture:
+non-finite numbers represented as above.
+
+[fixture: kanban/db-metadata-ticket-number] [fixture:
+kanban/db-metadata-assigned-list] [fixture: kanban/db-metadata-icon-true]
+[fixture: kanban/db-metadata-priority-list] [fixture:
 kanban/db-metadata-priority-nested-non-finite]
 
 An empty inline block, ignored keys, falsy values, and accepted `shape` values
 record `set: {}` when they change no kept field; rejected shape values produce
-no embedded effects. [fixture: kanban/db-metadata-empty] [fixture:
-kanban/db-metadata-unknown-key] [fixture: kanban/db-metadata-assigned-upper-key]
-[fixture: kanban/db-metadata-ticket-false] [fixture:
-kanban/db-metadata-assigned-null] [fixture:
-kanban/db-metadata-icon-empty-string] [fixture:
+no embedded effects.
+
+[fixture: kanban/db-metadata-empty] [fixture: kanban/db-metadata-unknown-key]
+[fixture: kanban/db-metadata-assigned-upper-key] [fixture:
+kanban/db-metadata-ticket-false] [fixture: kanban/db-metadata-assigned-null]
+[fixture: kanban/db-metadata-icon-empty-string] [fixture:
 kanban/db-metadata-priority-zero] [fixture: kanban/db-metadata-label-false]
 [fixture: kanban/db-metadata-shape-lower] [fixture:
 kanban/db-metadata-shape-known-other] [fixture:
@@ -8012,9 +8834,11 @@ kanban/gram-metadata-shape-camel] [fixture: kanban/gram-metadata-shape-number]
 
 A multiline block records the same changed fields, including the lexer's `<br/>`
 conversion inside a double-quoted label; an empty multiline document and
-duplicate keys are rejected and have no embedded effects. [fixture:
-kanban/db-metadata-multiline] [fixture: kanban/db-metadata-quoted-newline]
-[fixture: kanban/gram-metadata-empty-multiline] [fixture:
+duplicate keys are rejected and have no embedded effects.
+
+[fixture: kanban/db-metadata-multiline] [fixture:
+kanban/db-metadata-quoted-newline] [fixture:
+kanban/gram-metadata-empty-multiline] [fixture:
 kanban/gram-metadata-label-duplicate] [fixture:
 kanban/gram-metadata-ticket-duplicate] [fixture:
 kanban/gram-metadata-assigned-duplicate] [fixture:
@@ -8026,52 +8850,62 @@ The patch compares the summaries after adding a node without and with its block
 using the shared `blockEffect` mechanism; because the Db's state is private to
 its module, it restores the prefix with the original node and decoration calls
 after `clear()`, and resets the recorded effects and problems when the shared Db
-is cleared for the next parse. [fixture: kanban/db-metadata-all] [fixture:
-kanban/db-metadata-repeated-id] [fixture: kanban/db-decoration-icon-twice]
-[fixture: kanban/header-only-lf]
+is cleared for the next parse.
+
+[fixture: kanban/db-metadata-all] [fixture: kanban/db-metadata-repeated-id]
+[fixture: kanban/db-decoration-icon-twice] [fixture: kanban/header-only-lf]
 
 The default, `strict`, `loose`, `antiscript`, and `sandbox` settings preserve
-the same text with the shared sanitizers disabled. [fixture:
-kanban/config-security-level-other-html-labels-false]
+the same text with the shared sanitizers disabled.
+
+[fixture: kanban/config-security-level-other-html-labels-false]
 
 An unsupported `securityLevel` with HTML labels enabled replaces `<`, `>`, and
 `=`, and normalizes break tags, while `htmlLabels` and its `flowchart` fallback
-control whether this replacement occurs. [fixture:
-kanban/config-security-level-other] [fixture:
+control whether this replacement occurs.
+
+[fixture: kanban/config-security-level-other] [fixture:
 kanban/config-security-level-other-html-labels-false] [fixture:
 kanban/config-security-level-other-flowchart-html-labels-false] [fixture:
 kanban/config-security-level-other-root-overrides-flowchart]
 
 Kanban drawing settings, including `ticketBaseUrl`, and the mindmap width and
 padding read while adding nodes change no kept field, so a ticket stays the
-ticket text rather than becoming a URL. [fixture:
-kanban/db-frontmatter-drawing-config] [fixture:
+ticket text rather than becoming a URL.
+
+[fixture: kanban/db-frontmatter-drawing-config] [fixture:
 kanban/db-directive-drawing-config]
 
 The detector requires lower-case `kanban`, while the case-insensitive lexer
 reserves that word inside the document too; word characters glued to the header
 can make an unrecognized first node, but a dash or a non-ASCII suffix can start
-the first section. [fixture: kanban/header-upper-case] [fixture:
-kanban/header-mixed-case] [fixture: kanban/header-word-suffix] [fixture:
-kanban/header-digit-suffix] [fixture: kanban/header-dash-suffix] [fixture:
-kanban/header-non-ascii-suffix] [fixture: kanban/lex-keyword-kanban-upper]
+the first section.
+
+[fixture: kanban/header-upper-case] [fixture: kanban/header-mixed-case]
+[fixture: kanban/header-word-suffix] [fixture: kanban/header-digit-suffix]
+[fixture: kanban/header-dash-suffix] [fixture: kanban/header-non-ascii-suffix]
+[fixture: kanban/lex-keyword-kanban-upper]
 
 A header without a final line feed is rejected, while a line feed or a comment
 supplies an empty document, and trailing whitespace on a header line can change
-which lexer rule wins. [fixture: kanban/header-only] [fixture:
-kanban/header-only-lf] [fixture: kanban/db-empty-board-comment] [fixture:
-kanban/header-tab-trailing] [fixture: kanban/header-crlf-trailing]
+which lexer rule wins.
+
+[fixture: kanban/header-only] [fixture: kanban/header-only-lf] [fixture:
+kanban/db-empty-board-comment] [fixture: kanban/header-tab-trailing] [fixture:
+kanban/header-crlf-trailing]
 
 A bare node consumes its line, including spaces, punctuation, and semicolons,
 but a shaped node needs a statement stop after its closing delimiter and rejects
-a semicolon suffix. [fixture: kanban/db-name-two-words] [fixture:
-kanban/db-semicolon-bare-node] [fixture: kanban/lex-after-shape-semicolon]
-[fixture: kanban/lex-after-bare-semicolon] [fixture:
-kanban/gram-two-shapes-on-line]
+a semicolon suffix.
+
+[fixture: kanban/db-name-two-words] [fixture: kanban/db-semicolon-bare-node]
+[fixture: kanban/lex-after-shape-semicolon] [fixture:
+kanban/lex-after-bare-semicolon] [fixture: kanban/gram-two-shapes-on-line]
 
 Square, round, circle, hexagon, cloud, bang, and mismatched delimiters provide
 descriptions without changing the fixed output shape; an empty bracketed or
 quoted description is rejected, whereas a bare empty-string spelling is an id.
+
 [fixture: kanban/db-shape-square] [fixture: kanban/db-shape-round] [fixture:
 kanban/db-shape-circle] [fixture: kanban/db-shape-hexagon] [fixture:
 kanban/db-shape-cloud] [fixture: kanban/db-shape-bang] [fixture:
@@ -8081,16 +8915,20 @@ kanban/gram-empty-quoted-label] [fixture: kanban/db-empty-string-node]
 CRLF and lone CR are normalized to line feeds, while tabs, BOM, no-break and
 ideographic spaces, and Unicode line and paragraph separators can participate in
 indentation or in values rather than behaving as interchangeable statement
-stops. [fixture: kanban/lex-crlf-quoted-value] [fixture:
-kanban/lex-cr-quoted-value] [fixture: kanban/lex-tab-line-start] [fixture:
-kanban/lex-bom-line-start] [fixture: kanban/lex-nbsp-line-start] [fixture:
+stops.
+
+[fixture: kanban/lex-crlf-quoted-value] [fixture: kanban/lex-cr-quoted-value]
+[fixture: kanban/lex-tab-line-start] [fixture: kanban/lex-bom-line-start]
+[fixture: kanban/lex-nbsp-line-start] [fixture:
 kanban/lex-ideographic-line-start] [fixture: kanban/lex-ls-bare-value] [fixture:
 kanban/lex-ps-bare-value]
 
 Comment lines are removed even inside multiline descriptions and metadata,
 inline percent pairs in quoted labels stay text, and closed directives are
 removed with their surrounding fragments joined, while unclosed directives can
-remove subsequent text. [fixture: kanban/lex-comment-quoted-line] [fixture:
+remove subsequent text.
+
+[fixture: kanban/lex-comment-quoted-line] [fixture:
 kanban/lex-comment-quoted-inline] [fixture: kanban/db-metadata-comment-line]
 [fixture: kanban/header-directive-inside] [fixture:
 kanban/lex-directive-at-value-start] [fixture:
@@ -8101,10 +8939,11 @@ kanban/lex-directive-colon-unclosed-next-line]
 The shared preprocessing also replaces character references with placeholders
 and removes the last semicolon of a matching `style:` or `classDef:` line,
 including inside labels and metadata, while the spelling and line boundaries of
-that rule determine when the semicolon stays. [fixture:
-kanban/db-grid-entity-item-label-quoted] [fixture: kanban/lex-label-style-rule]
-[fixture: kanban/lex-label-style-rule-upper] [fixture:
-kanban/lex-label-style-rule-space] [fixture:
+that rule determine when the semicolon stays.
+
+[fixture: kanban/db-grid-entity-item-label-quoted] [fixture:
+kanban/lex-label-style-rule] [fixture: kanban/lex-label-style-rule-upper]
+[fixture: kanban/lex-label-style-rule-space] [fixture:
 kanban/lex-label-style-rule-no-hash] [fixture:
 kanban/lex-label-style-rule-two-semicolons] [fixture:
 kanban/lex-label-classdef-rule] [fixture:
@@ -8113,12 +8952,13 @@ kanban/lex-style-entity-two-semicolons]
 
 C4 detector words in ids, labels, and metadata can select a C4 diagram before
 the kanban lexer runs, whereas those words in removed comments or frontmatter do
-not; no fixture here assigns a divergence for this behavior. [fixture:
-kanban/lex-c4-c4container-id] [fixture: kanban/lex-c4-c4component-label]
-[fixture: kanban/lex-c4-c4dynamic-metadata] [fixture:
-kanban/lex-c4-c4deployment-id] [fixture: kanban/lex-c4-c4container-comment]
-[fixture: kanban/lex-c4-c4container-frontmatter] [fixture:
-kanban/lex-c4-c4context-id]
+not; no fixture here assigns a divergence for this behavior.
+
+[fixture: kanban/lex-c4-c4container-id] [fixture:
+kanban/lex-c4-c4component-label] [fixture: kanban/lex-c4-c4dynamic-metadata]
+[fixture: kanban/lex-c4-c4deployment-id] [fixture:
+kanban/lex-c4-c4container-comment] [fixture:
+kanban/lex-c4-c4container-frontmatter] [fixture: kanban/lex-c4-c4context-id]
 
 The following fixtures write one text, a kind, in each of 33 places of a kanban
 text, and record what the Db reads from it. A kind is named for the text that it
@@ -8198,8 +9038,9 @@ In each place below, the kinds that are not named are kept as written.
 first section. Kept as the text of the first section: `ampersand-entity`,
 `arrow`, `backslash`, `backtick`, `close-square`, `colon`, `comma`, `dash`,
 `emoji`, `equals`, `greater-than`, `hash`, `html`, `html-br`, `less-than`,
-`percent`, `pipe`, `quote`, `single-quote`. [fixture:
-kanban/db-grid-ampersand-entity-header-line] [fixture:
+`percent`, `pipe`, `quote`, `single-quote`.
+
+[fixture: kanban/db-grid-ampersand-entity-header-line] [fixture:
 kanban/db-grid-arrow-header-line] [fixture:
 kanban/db-grid-backslash-header-line] [fixture:
 kanban/db-grid-backtick-header-line] [fixture:
@@ -8213,30 +9054,48 @@ kanban/db-grid-hash-header-line] [fixture: kanban/db-grid-html-header-line]
 kanban/db-grid-less-than-header-line] [fixture:
 kanban/db-grid-percent-header-line] [fixture: kanban/db-grid-pipe-header-line]
 [fixture: kanban/db-grid-quote-header-line] [fixture:
-kanban/db-grid-single-quote-header-line] The whitespace before the text is
-dropped and the rest kept: `arrow-spaced`, `keyword-block`, `keyword-class`,
-`keyword-classdef`, `keyword-columns`, `keyword-end`, `keyword-space`,
-`keyword-style`. [fixture: kanban/db-grid-arrow-spaced-header-line] [fixture:
+kanban/db-grid-single-quote-header-line]
+
+The whitespace before the text is dropped and the rest kept: `arrow-spaced`,
+`keyword-block`, `keyword-class`, `keyword-classdef`, `keyword-columns`,
+`keyword-end`, `keyword-space`, `keyword-style`.
+
+[fixture: kanban/db-grid-arrow-spaced-header-line] [fixture:
 kanban/db-grid-keyword-block-header-line] [fixture:
 kanban/db-grid-keyword-class-header-line] [fixture:
 kanban/db-grid-keyword-classdef-header-line] [fixture:
 kanban/db-grid-keyword-columns-header-line] [fixture:
 kanban/db-grid-keyword-end-header-line] [fixture:
 kanban/db-grid-keyword-space-header-line] [fixture:
-kanban/db-grid-keyword-style-header-line] No text, so the first section is the
-one on the next line: `empty`. [fixture: kanban/db-grid-empty-header-line] The
-double quotes of the HTML attribute are read as single quotes: `html-attribute`.
-[fixture: kanban/db-grid-html-attribute-header-line] Read as the placeholder of
-the entity (common.md, Entities): `entity`, `entity-named`. [fixture:
-kanban/db-grid-entity-header-line] [fixture:
-kanban/db-grid-entity-named-header-line] Rejected by the lexer: `close-brace`,
-`open-brace`, `punct`. [fixture: kanban/gram-grid-close-brace-header-line]
-[fixture: kanban/gram-grid-open-brace-header-line] [fixture:
-kanban/gram-grid-punct-header-line] Rejected by the grammar: `classdef-rule`,
-`close-round`, `comment-line`, `constructor`, `digits`, `directive-line`,
-`keyword`, `keyword-header`, `lf`, `open-round`, `open-square`, `proto`, `root`,
-`spaces`, `style-rule`. [fixture: kanban/gram-grid-classdef-rule-header-line]
-[fixture: kanban/gram-grid-close-round-header-line] [fixture:
+kanban/db-grid-keyword-style-header-line]
+
+No text, so the first section is the one on the next line: `empty`.
+
+[fixture: kanban/db-grid-empty-header-line]
+
+The double quotes of the HTML attribute are read as single quotes:
+`html-attribute`.
+
+[fixture: kanban/db-grid-html-attribute-header-line]
+
+Read as the placeholder of the entity (common.md, Entities): `entity`,
+`entity-named`.
+
+[fixture: kanban/db-grid-entity-header-line] [fixture:
+kanban/db-grid-entity-named-header-line]
+
+Rejected by the lexer: `close-brace`, `open-brace`, `punct`.
+
+[fixture: kanban/gram-grid-close-brace-header-line] [fixture:
+kanban/gram-grid-open-brace-header-line] [fixture:
+kanban/gram-grid-punct-header-line]
+
+Rejected by the grammar: `classdef-rule`, `close-round`, `comment-line`,
+`constructor`, `digits`, `directive-line`, `keyword`, `keyword-header`, `lf`,
+`open-round`, `open-square`, `proto`, `root`, `spaces`, `style-rule`.
+
+[fixture: kanban/gram-grid-classdef-rule-header-line] [fixture:
+kanban/gram-grid-close-round-header-line] [fixture:
 kanban/gram-grid-comment-line-header-line] [fixture:
 kanban/gram-grid-constructor-header-line] [fixture:
 kanban/gram-grid-digits-header-line] [fixture:
@@ -8251,29 +9110,49 @@ kanban/gram-grid-proto-header-line] [fixture: kanban/gram-grid-root-header-line]
 kanban/gram-grid-style-rule-header-line]
 
 `section-id` is the id of a section, before its `[`. The double quotes of the
-HTML attribute are read as single quotes: `html-attribute`. [fixture:
-kanban/db-grid-html-attribute-section-id] Read as the placeholder of the entity
-(common.md, Entities): `entity`, `entity-named`. [fixture:
-kanban/db-grid-entity-section-id] [fixture:
-kanban/db-grid-entity-named-section-id] Removed as a directive: `directive`.
-[fixture: kanban/db-grid-directive-section-id] The first `;` is dropped by the
-line rule: `classdef-rule`, `style-rule`. [fixture:
-kanban/db-grid-classdef-rule-section-id] [fixture:
-kanban/db-grid-style-rule-section-id] The value ends there and is `a`:
-`close-round`, `open-round`, `open-square`. [fixture:
-kanban/db-grid-close-round-section-id] [fixture:
+HTML attribute are read as single quotes: `html-attribute`.
+
+[fixture: kanban/db-grid-html-attribute-section-id]
+
+Read as the placeholder of the entity (common.md, Entities): `entity`,
+`entity-named`.
+
+[fixture: kanban/db-grid-entity-section-id] [fixture:
+kanban/db-grid-entity-named-section-id]
+
+Removed as a directive: `directive`.
+
+[fixture: kanban/db-grid-directive-section-id]
+
+The first `;` is dropped by the line rule: `classdef-rule`, `style-rule`.
+
+[fixture: kanban/db-grid-classdef-rule-section-id] [fixture:
+kanban/db-grid-style-rule-section-id]
+
+The value ends there and is `a`: `close-round`, `open-round`, `open-square`.
+
+[fixture: kanban/db-grid-close-round-section-id] [fixture:
 kanban/db-grid-open-round-section-id] [fixture:
-kanban/db-grid-open-square-section-id] Rejected by the lexer: `close-brace`,
-`open-brace`, `punct`. [fixture: kanban/gram-grid-close-brace-section-id]
-[fixture: kanban/gram-grid-open-brace-section-id] [fixture:
-kanban/gram-grid-punct-section-id] Rejected by the Db: the items have no section
-before them (`Items without section detected`): `comment-line`, `cr`, `crlf`,
-`directive-line`, `lf`. [fixture: kanban/gram-grid-comment-line-section-id]
-[fixture: kanban/gram-grid-cr-section-id] [fixture:
-kanban/gram-grid-crlf-section-id] [fixture:
-kanban/gram-grid-directive-line-section-id] [fixture:
-kanban/gram-grid-lf-section-id] Kept as written: the other kinds. [fixture:
-kanban/db-grid-ampersand-entity-section-id] [fixture:
+kanban/db-grid-open-square-section-id]
+
+Rejected by the lexer: `close-brace`, `open-brace`, `punct`.
+
+[fixture: kanban/gram-grid-close-brace-section-id] [fixture:
+kanban/gram-grid-open-brace-section-id] [fixture:
+kanban/gram-grid-punct-section-id]
+
+Rejected by the Db: the items have no section before them
+(`Items without section detected`): `comment-line`, `cr`, `crlf`,
+`directive-line`, `lf`.
+
+[fixture: kanban/gram-grid-comment-line-section-id] [fixture:
+kanban/gram-grid-cr-section-id] [fixture: kanban/gram-grid-crlf-section-id]
+[fixture: kanban/gram-grid-directive-line-section-id] [fixture:
+kanban/gram-grid-lf-section-id]
+
+Kept as written: the other kinds.
+
+[fixture: kanban/db-grid-ampersand-entity-section-id] [fixture:
 kanban/db-grid-arrow-section-id] [fixture:
 kanban/db-grid-arrow-spaced-section-id] [fixture:
 kanban/db-grid-backslash-section-id] [fixture:
@@ -8311,28 +9190,46 @@ kanban/db-grid-spaces-section-id] [fixture: kanban/db-grid-tab-section-id]
 [fixture: kanban/db-grid-vt-section-id]
 
 `item-id` is the id of an item, before its `[`. The double quotes of the HTML
-attribute are read as single quotes: `html-attribute`. [fixture:
-kanban/db-grid-html-attribute-item-id] Read as the placeholder of the entity
-(common.md, Entities): `entity`, `entity-named`. [fixture:
-kanban/db-grid-entity-item-id] [fixture: kanban/db-grid-entity-named-item-id]
-Removed as a directive: `directive`. [fixture: kanban/db-grid-directive-item-id]
+attribute are read as single quotes: `html-attribute`.
+
+[fixture: kanban/db-grid-html-attribute-item-id]
+
+Read as the placeholder of the entity (common.md, Entities): `entity`,
+`entity-named`.
+
+[fixture: kanban/db-grid-entity-item-id] [fixture:
+kanban/db-grid-entity-named-item-id]
+
+Removed as a directive: `directive`.
+
+[fixture: kanban/db-grid-directive-item-id]
+
 The first `;` is dropped by the line rule: `classdef-rule`, `style-rule`.
+
 [fixture: kanban/db-grid-classdef-rule-item-id] [fixture:
-kanban/db-grid-style-rule-item-id] The value ends there and is `a`:
-`close-round`, `comment-line`, `cr`, `crlf`, `directive-line`, `lf`,
-`open-round`, `open-square`. [fixture: kanban/db-grid-close-round-item-id]
-[fixture: kanban/db-grid-comment-line-item-id] [fixture:
-kanban/db-grid-cr-item-id] [fixture: kanban/db-grid-crlf-item-id] [fixture:
+kanban/db-grid-style-rule-item-id]
+
+The value ends there and is `a`: `close-round`, `comment-line`, `cr`, `crlf`,
+`directive-line`, `lf`, `open-round`, `open-square`.
+
+[fixture: kanban/db-grid-close-round-item-id] [fixture:
+kanban/db-grid-comment-line-item-id] [fixture: kanban/db-grid-cr-item-id]
+[fixture: kanban/db-grid-crlf-item-id] [fixture:
 kanban/db-grid-directive-line-item-id] [fixture: kanban/db-grid-lf-item-id]
 [fixture: kanban/db-grid-open-round-item-id] [fixture:
-kanban/db-grid-open-square-item-id] Rejected by the lexer: `close-brace`,
-`open-brace`, `punct`. [fixture: kanban/gram-grid-close-brace-item-id] [fixture:
+kanban/db-grid-open-square-item-id]
+
+Rejected by the lexer: `close-brace`, `open-brace`, `punct`.
+
+[fixture: kanban/gram-grid-close-brace-item-id] [fixture:
 kanban/gram-grid-open-brace-item-id] [fixture: kanban/gram-grid-punct-item-id]
-Kept as written: the other kinds. [fixture:
-kanban/db-grid-ampersand-entity-item-id] [fixture: kanban/db-grid-arrow-item-id]
-[fixture: kanban/db-grid-arrow-spaced-item-id] [fixture:
-kanban/db-grid-backslash-item-id] [fixture: kanban/db-grid-backtick-item-id]
-[fixture: kanban/db-grid-bom-item-id] [fixture:
+
+Kept as written: the other kinds.
+
+[fixture: kanban/db-grid-ampersand-entity-item-id] [fixture:
+kanban/db-grid-arrow-item-id] [fixture: kanban/db-grid-arrow-spaced-item-id]
+[fixture: kanban/db-grid-backslash-item-id] [fixture:
+kanban/db-grid-backtick-item-id] [fixture: kanban/db-grid-bom-item-id] [fixture:
 kanban/db-grid-close-square-item-id] [fixture: kanban/db-grid-colon-item-id]
 [fixture: kanban/db-grid-comma-item-id] [fixture:
 kanban/db-grid-comment-item-id] [fixture: kanban/db-grid-constructor-item-id]
@@ -8363,25 +9260,45 @@ kanban/db-grid-semicolon-item-id] [fixture: kanban/db-grid-single-quote-item-id]
 
 `section-label-bare` is the label of a section in `[ ]`, without quotes. The
 double quotes of the HTML attribute are read as single quotes: `html-attribute`.
-[fixture: kanban/db-grid-html-attribute-section-label-bare] Read as the
-placeholder of the entity (common.md, Entities): `entity`, `entity-named`.
+
+[fixture: kanban/db-grid-html-attribute-section-label-bare]
+
+Read as the placeholder of the entity (common.md, Entities): `entity`,
+`entity-named`.
+
 [fixture: kanban/db-grid-entity-section-label-bare] [fixture:
-kanban/db-grid-entity-named-section-label-bare] Removed as a directive:
-`directive`. [fixture: kanban/db-grid-directive-section-label-bare] The first
-`;` is dropped by the line rule: `classdef-rule`, `style-rule`. [fixture:
-kanban/db-grid-classdef-rule-section-label-bare] [fixture:
-kanban/db-grid-style-rule-section-label-bare] Read as one line feed:
-`comment-line`, `cr`, `crlf`. [fixture:
-kanban/db-grid-comment-line-section-label-bare] [fixture:
+kanban/db-grid-entity-named-section-label-bare]
+
+Removed as a directive: `directive`.
+
+[fixture: kanban/db-grid-directive-section-label-bare]
+
+The first `;` is dropped by the line rule: `classdef-rule`, `style-rule`.
+
+[fixture: kanban/db-grid-classdef-rule-section-label-bare] [fixture:
+kanban/db-grid-style-rule-section-label-bare]
+
+Read as one line feed: `comment-line`, `cr`, `crlf`.
+
+[fixture: kanban/db-grid-comment-line-section-label-bare] [fixture:
 kanban/db-grid-cr-section-label-bare] [fixture:
-kanban/db-grid-crlf-section-label-bare] Read as two line feeds:
-`directive-line`. [fixture: kanban/db-grid-directive-line-section-label-bare]
+kanban/db-grid-crlf-section-label-bare]
+
+Read as two line feeds: `directive-line`.
+
+[fixture: kanban/db-grid-directive-line-section-label-bare]
+
 Rejected by the grammar: `close-brace`, `close-round`, `close-square`,
-`open-round`. [fixture: kanban/gram-grid-close-brace-section-label-bare]
-[fixture: kanban/gram-grid-close-round-section-label-bare] [fixture:
+`open-round`.
+
+[fixture: kanban/gram-grid-close-brace-section-label-bare] [fixture:
+kanban/gram-grid-close-round-section-label-bare] [fixture:
 kanban/gram-grid-close-square-section-label-bare] [fixture:
-kanban/gram-grid-open-round-section-label-bare] Kept as written: the other
-kinds. [fixture: kanban/db-grid-ampersand-entity-section-label-bare] [fixture:
+kanban/gram-grid-open-round-section-label-bare]
+
+Kept as written: the other kinds.
+
+[fixture: kanban/db-grid-ampersand-entity-section-label-bare] [fixture:
 kanban/db-grid-arrow-section-label-bare] [fixture:
 kanban/db-grid-arrow-spaced-section-label-bare] [fixture:
 kanban/db-grid-backslash-section-label-bare] [fixture:
@@ -8433,22 +9350,41 @@ kanban/db-grid-tab-section-label-bare] [fixture:
 kanban/db-grid-vt-section-label-bare]
 
 `section-label-quoted` is the label of a section in `[" "]`. The double quotes
-of the HTML attribute are read as single quotes: `html-attribute`. [fixture:
-kanban/db-grid-html-attribute-section-label-quoted] Read as the placeholder of
-the entity (common.md, Entities): `entity`, `entity-named`. [fixture:
-kanban/db-grid-entity-section-label-quoted] [fixture:
-kanban/db-grid-entity-named-section-label-quoted] Removed as a directive:
-`directive`. [fixture: kanban/db-grid-directive-section-label-quoted] The first
-`;` is dropped by the line rule: `classdef-rule`, `style-rule`. [fixture:
-kanban/db-grid-classdef-rule-section-label-quoted] [fixture:
-kanban/db-grid-style-rule-section-label-quoted] Read as one line feed:
-`comment-line`, `cr`, `crlf`. [fixture:
-kanban/db-grid-comment-line-section-label-quoted] [fixture:
+of the HTML attribute are read as single quotes: `html-attribute`.
+
+[fixture: kanban/db-grid-html-attribute-section-label-quoted]
+
+Read as the placeholder of the entity (common.md, Entities): `entity`,
+`entity-named`.
+
+[fixture: kanban/db-grid-entity-section-label-quoted] [fixture:
+kanban/db-grid-entity-named-section-label-quoted]
+
+Removed as a directive: `directive`.
+
+[fixture: kanban/db-grid-directive-section-label-quoted]
+
+The first `;` is dropped by the line rule: `classdef-rule`, `style-rule`.
+
+[fixture: kanban/db-grid-classdef-rule-section-label-quoted] [fixture:
+kanban/db-grid-style-rule-section-label-quoted]
+
+Read as one line feed: `comment-line`, `cr`, `crlf`.
+
+[fixture: kanban/db-grid-comment-line-section-label-quoted] [fixture:
 kanban/db-grid-cr-section-label-quoted] [fixture:
-kanban/db-grid-crlf-section-label-quoted] Read as two line feeds:
-`directive-line`. [fixture: kanban/db-grid-directive-line-section-label-quoted]
-Rejected by the grammar: `quote`. [fixture:
-kanban/gram-grid-quote-section-label-quoted] Kept as written: the other kinds.
+kanban/db-grid-crlf-section-label-quoted]
+
+Read as two line feeds: `directive-line`.
+
+[fixture: kanban/db-grid-directive-line-section-label-quoted]
+
+Rejected by the grammar: `quote`.
+
+[fixture: kanban/gram-grid-quote-section-label-quoted]
+
+Kept as written: the other kinds.
+
 [fixture: kanban/db-grid-ampersand-entity-section-label-quoted] [fixture:
 kanban/db-grid-arrow-section-label-quoted] [fixture:
 kanban/db-grid-arrow-spaced-section-label-quoted] [fixture:
@@ -8505,25 +9441,44 @@ kanban/db-grid-vt-section-label-quoted]
 
 `section-label-markdown` is the label of a section in `["` `"]`, a markdown
 string. The double quotes of the HTML attribute are read as single quotes:
-`html-attribute`. [fixture:
-kanban/db-grid-html-attribute-section-label-markdown] Read as the placeholder of
-the entity (common.md, Entities): `entity`, `entity-named`. [fixture:
-kanban/db-grid-entity-section-label-markdown] [fixture:
-kanban/db-grid-entity-named-section-label-markdown] Removed as a directive:
-`directive`. [fixture: kanban/db-grid-directive-section-label-markdown] The
-first `;` is dropped by the line rule: `classdef-rule`, `style-rule`. [fixture:
-kanban/db-grid-classdef-rule-section-label-markdown] [fixture:
-kanban/db-grid-style-rule-section-label-markdown] Read as one line feed:
-`comment-line`, `cr`, `crlf`. [fixture:
-kanban/db-grid-comment-line-section-label-markdown] [fixture:
+`html-attribute`.
+
+[fixture: kanban/db-grid-html-attribute-section-label-markdown]
+
+Read as the placeholder of the entity (common.md, Entities): `entity`,
+`entity-named`.
+
+[fixture: kanban/db-grid-entity-section-label-markdown] [fixture:
+kanban/db-grid-entity-named-section-label-markdown]
+
+Removed as a directive: `directive`.
+
+[fixture: kanban/db-grid-directive-section-label-markdown]
+
+The first `;` is dropped by the line rule: `classdef-rule`, `style-rule`.
+
+[fixture: kanban/db-grid-classdef-rule-section-label-markdown] [fixture:
+kanban/db-grid-style-rule-section-label-markdown]
+
+Read as one line feed: `comment-line`, `cr`, `crlf`.
+
+[fixture: kanban/db-grid-comment-line-section-label-markdown] [fixture:
 kanban/db-grid-cr-section-label-markdown] [fixture:
-kanban/db-grid-crlf-section-label-markdown] Read as two line feeds:
-`directive-line`. [fixture:
-kanban/db-grid-directive-line-section-label-markdown] Rejected by the lexer:
-`backtick`, `quote`. [fixture: kanban/gram-grid-backtick-section-label-markdown]
-[fixture: kanban/gram-grid-quote-section-label-markdown] Kept as written: the
-other kinds. [fixture: kanban/db-grid-ampersand-entity-section-label-markdown]
-[fixture: kanban/db-grid-arrow-section-label-markdown] [fixture:
+kanban/db-grid-crlf-section-label-markdown]
+
+Read as two line feeds: `directive-line`.
+
+[fixture: kanban/db-grid-directive-line-section-label-markdown]
+
+Rejected by the lexer: `backtick`, `quote`.
+
+[fixture: kanban/gram-grid-backtick-section-label-markdown] [fixture:
+kanban/gram-grid-quote-section-label-markdown]
+
+Kept as written: the other kinds.
+
+[fixture: kanban/db-grid-ampersand-entity-section-label-markdown] [fixture:
+kanban/db-grid-arrow-section-label-markdown] [fixture:
 kanban/db-grid-arrow-spaced-section-label-markdown] [fixture:
 kanban/db-grid-backslash-section-label-markdown] [fixture:
 kanban/db-grid-bom-section-label-markdown] [fixture:
@@ -8577,24 +9532,44 @@ kanban/db-grid-vt-section-label-markdown]
 
 `item-label-bare` is the label of an item in `[ ]`, without quotes. The double
 quotes of the HTML attribute are read as single quotes: `html-attribute`.
-[fixture: kanban/db-grid-html-attribute-item-label-bare] Read as the placeholder
-of the entity (common.md, Entities): `entity`, `entity-named`. [fixture:
-kanban/db-grid-entity-item-label-bare] [fixture:
-kanban/db-grid-entity-named-item-label-bare] Removed as a directive:
-`directive`. [fixture: kanban/db-grid-directive-item-label-bare] The first `;`
-is dropped by the line rule: `classdef-rule`, `style-rule`. [fixture:
-kanban/db-grid-classdef-rule-item-label-bare] [fixture:
-kanban/db-grid-style-rule-item-label-bare] Read as one line feed:
-`comment-line`, `cr`, `crlf`. [fixture:
-kanban/db-grid-comment-line-item-label-bare] [fixture:
+
+[fixture: kanban/db-grid-html-attribute-item-label-bare]
+
+Read as the placeholder of the entity (common.md, Entities): `entity`,
+`entity-named`.
+
+[fixture: kanban/db-grid-entity-item-label-bare] [fixture:
+kanban/db-grid-entity-named-item-label-bare]
+
+Removed as a directive: `directive`.
+
+[fixture: kanban/db-grid-directive-item-label-bare]
+
+The first `;` is dropped by the line rule: `classdef-rule`, `style-rule`.
+
+[fixture: kanban/db-grid-classdef-rule-item-label-bare] [fixture:
+kanban/db-grid-style-rule-item-label-bare]
+
+Read as one line feed: `comment-line`, `cr`, `crlf`.
+
+[fixture: kanban/db-grid-comment-line-item-label-bare] [fixture:
 kanban/db-grid-cr-item-label-bare] [fixture:
-kanban/db-grid-crlf-item-label-bare] Read as two line feeds: `directive-line`.
-[fixture: kanban/db-grid-directive-line-item-label-bare] Rejected by the
-grammar: `close-brace`, `close-round`, `close-square`, `open-round`. [fixture:
-kanban/gram-grid-close-brace-item-label-bare] [fixture:
+kanban/db-grid-crlf-item-label-bare]
+
+Read as two line feeds: `directive-line`.
+
+[fixture: kanban/db-grid-directive-line-item-label-bare]
+
+Rejected by the grammar: `close-brace`, `close-round`, `close-square`,
+`open-round`.
+
+[fixture: kanban/gram-grid-close-brace-item-label-bare] [fixture:
 kanban/gram-grid-close-round-item-label-bare] [fixture:
 kanban/gram-grid-close-square-item-label-bare] [fixture:
-kanban/gram-grid-open-round-item-label-bare] Kept as written: the other kinds.
+kanban/gram-grid-open-round-item-label-bare]
+
+Kept as written: the other kinds.
+
 [fixture: kanban/db-grid-ampersand-entity-item-label-bare] [fixture:
 kanban/db-grid-arrow-item-label-bare] [fixture:
 kanban/db-grid-arrow-spaced-item-label-bare] [fixture:
@@ -8645,23 +9620,42 @@ kanban/db-grid-spaces-item-label-bare] [fixture:
 kanban/db-grid-tab-item-label-bare] [fixture: kanban/db-grid-vt-item-label-bare]
 
 `item-label-quoted` is the label of an item in `[" "]`. The double quotes of the
-HTML attribute are read as single quotes: `html-attribute`. [fixture:
-kanban/db-grid-html-attribute-item-label-quoted] Read as the placeholder of the
-entity (common.md, Entities): `entity`, `entity-named`. [fixture:
-kanban/db-grid-entity-item-label-quoted] [fixture:
-kanban/db-grid-entity-named-item-label-quoted] Removed as a directive:
-`directive`. [fixture: kanban/db-grid-directive-item-label-quoted] The first `;`
-is dropped by the line rule: `classdef-rule`, `style-rule`. [fixture:
-kanban/db-grid-classdef-rule-item-label-quoted] [fixture:
-kanban/db-grid-style-rule-item-label-quoted] Read as one line feed:
-`comment-line`, `cr`, `crlf`. [fixture:
-kanban/db-grid-comment-line-item-label-quoted] [fixture:
+HTML attribute are read as single quotes: `html-attribute`.
+
+[fixture: kanban/db-grid-html-attribute-item-label-quoted]
+
+Read as the placeholder of the entity (common.md, Entities): `entity`,
+`entity-named`.
+
+[fixture: kanban/db-grid-entity-item-label-quoted] [fixture:
+kanban/db-grid-entity-named-item-label-quoted]
+
+Removed as a directive: `directive`.
+
+[fixture: kanban/db-grid-directive-item-label-quoted]
+
+The first `;` is dropped by the line rule: `classdef-rule`, `style-rule`.
+
+[fixture: kanban/db-grid-classdef-rule-item-label-quoted] [fixture:
+kanban/db-grid-style-rule-item-label-quoted]
+
+Read as one line feed: `comment-line`, `cr`, `crlf`.
+
+[fixture: kanban/db-grid-comment-line-item-label-quoted] [fixture:
 kanban/db-grid-cr-item-label-quoted] [fixture:
-kanban/db-grid-crlf-item-label-quoted] Read as two line feeds: `directive-line`.
-[fixture: kanban/db-grid-directive-line-item-label-quoted] Rejected by the
-grammar: `quote`. [fixture: kanban/gram-grid-quote-item-label-quoted] Kept as
-written: the other kinds. [fixture:
-kanban/db-grid-ampersand-entity-item-label-quoted] [fixture:
+kanban/db-grid-crlf-item-label-quoted]
+
+Read as two line feeds: `directive-line`.
+
+[fixture: kanban/db-grid-directive-line-item-label-quoted]
+
+Rejected by the grammar: `quote`.
+
+[fixture: kanban/gram-grid-quote-item-label-quoted]
+
+Kept as written: the other kinds.
+
+[fixture: kanban/db-grid-ampersand-entity-item-label-quoted] [fixture:
 kanban/db-grid-arrow-item-label-quoted] [fixture:
 kanban/db-grid-arrow-spaced-item-label-quoted] [fixture:
 kanban/db-grid-backslash-item-label-quoted] [fixture:
@@ -8717,22 +9711,42 @@ kanban/db-grid-vt-item-label-quoted]
 
 `item-label-markdown` is the label of an item in `["` `"]`, a markdown string.
 The double quotes of the HTML attribute are read as single quotes:
-`html-attribute`. [fixture: kanban/db-grid-html-attribute-item-label-markdown]
+`html-attribute`.
+
+[fixture: kanban/db-grid-html-attribute-item-label-markdown]
+
 Read as the placeholder of the entity (common.md, Entities): `entity`,
-`entity-named`. [fixture: kanban/db-grid-entity-item-label-markdown] [fixture:
-kanban/db-grid-entity-named-item-label-markdown] Removed as a directive:
-`directive`. [fixture: kanban/db-grid-directive-item-label-markdown] The first
-`;` is dropped by the line rule: `classdef-rule`, `style-rule`. [fixture:
-kanban/db-grid-classdef-rule-item-label-markdown] [fixture:
-kanban/db-grid-style-rule-item-label-markdown] Read as one line feed:
-`comment-line`, `cr`, `crlf`. [fixture:
-kanban/db-grid-comment-line-item-label-markdown] [fixture:
+`entity-named`.
+
+[fixture: kanban/db-grid-entity-item-label-markdown] [fixture:
+kanban/db-grid-entity-named-item-label-markdown]
+
+Removed as a directive: `directive`.
+
+[fixture: kanban/db-grid-directive-item-label-markdown]
+
+The first `;` is dropped by the line rule: `classdef-rule`, `style-rule`.
+
+[fixture: kanban/db-grid-classdef-rule-item-label-markdown] [fixture:
+kanban/db-grid-style-rule-item-label-markdown]
+
+Read as one line feed: `comment-line`, `cr`, `crlf`.
+
+[fixture: kanban/db-grid-comment-line-item-label-markdown] [fixture:
 kanban/db-grid-cr-item-label-markdown] [fixture:
-kanban/db-grid-crlf-item-label-markdown] Read as two line feeds:
-`directive-line`. [fixture: kanban/db-grid-directive-line-item-label-markdown]
-Rejected by the lexer: `backtick`, `quote`. [fixture:
-kanban/gram-grid-backtick-item-label-markdown] [fixture:
-kanban/gram-grid-quote-item-label-markdown] Kept as written: the other kinds.
+kanban/db-grid-crlf-item-label-markdown]
+
+Read as two line feeds: `directive-line`.
+
+[fixture: kanban/db-grid-directive-line-item-label-markdown]
+
+Rejected by the lexer: `backtick`, `quote`.
+
+[fixture: kanban/gram-grid-backtick-item-label-markdown] [fixture:
+kanban/gram-grid-quote-item-label-markdown]
+
+Kept as written: the other kinds.
+
 [fixture: kanban/db-grid-ampersand-entity-item-label-markdown] [fixture:
 kanban/db-grid-arrow-item-label-markdown] [fixture:
 kanban/db-grid-arrow-spaced-item-label-markdown] [fixture:
@@ -8797,8 +9811,9 @@ the summary does not change: `ampersand-entity`, `arrow`, `arrow-spaced`,
 `keyword-header`, `keyword-space`, `keyword-style`, `less-than`, `lf`, `ls`,
 `nbsp`, `nel`, `nonascii`, `open-brace`, `open-round`, `open-square`, `percent`,
 `pipe`, `proto`, `ps`, `punct`, `quote`, `root`, `semicolon`, `single-quote`,
-`spaces`, `style-rule`, `tab`, `vt`. [fixture:
-kanban/db-grid-ampersand-entity-section-icon] [fixture:
+`spaces`, `style-rule`, `tab`, `vt`.
+
+[fixture: kanban/db-grid-ampersand-entity-section-icon] [fixture:
 kanban/db-grid-arrow-section-icon] [fixture:
 kanban/db-grid-arrow-spaced-section-icon] [fixture:
 kanban/db-grid-backslash-section-icon] [fixture:
@@ -8850,25 +9865,47 @@ kanban/db-grid-single-quote-section-icon] [fixture:
 kanban/db-grid-spaces-section-icon] [fixture:
 kanban/db-grid-style-rule-section-icon] [fixture:
 kanban/db-grid-tab-section-icon] [fixture: kanban/db-grid-vt-section-icon]
-Rejected by the grammar: `close-round`. [fixture:
-kanban/gram-grid-close-round-section-icon]
+
+Rejected by the grammar: `close-round`.
+
+[fixture: kanban/gram-grid-close-round-section-icon]
 
 `item-icon` is the name in the `::icon( )` line after an item. The double quotes
-of the HTML attribute are read as single quotes: `html-attribute`. [fixture:
-kanban/db-grid-html-attribute-item-icon] Read as the placeholder of the entity
-(common.md, Entities): `entity`, `entity-named`. [fixture:
-kanban/db-grid-entity-item-icon] [fixture:
-kanban/db-grid-entity-named-item-icon] Removed as a directive: `directive`.
-[fixture: kanban/db-grid-directive-item-icon] The first `;` is dropped by the
-line rule: `classdef-rule`, `style-rule`. [fixture:
-kanban/db-grid-classdef-rule-item-icon] [fixture:
-kanban/db-grid-style-rule-item-icon] Read as one line feed: `comment-line`,
-`cr`, `crlf`. [fixture: kanban/db-grid-comment-line-item-icon] [fixture:
-kanban/db-grid-cr-item-icon] [fixture: kanban/db-grid-crlf-item-icon] Read as
-two line feeds: `directive-line`. [fixture:
-kanban/db-grid-directive-line-item-icon] Rejected by the grammar: `close-round`.
-[fixture: kanban/gram-grid-close-round-item-icon] Kept as written: the other
-kinds. [fixture: kanban/db-grid-ampersand-entity-item-icon] [fixture:
+of the HTML attribute are read as single quotes: `html-attribute`.
+
+[fixture: kanban/db-grid-html-attribute-item-icon]
+
+Read as the placeholder of the entity (common.md, Entities): `entity`,
+`entity-named`.
+
+[fixture: kanban/db-grid-entity-item-icon] [fixture:
+kanban/db-grid-entity-named-item-icon]
+
+Removed as a directive: `directive`.
+
+[fixture: kanban/db-grid-directive-item-icon]
+
+The first `;` is dropped by the line rule: `classdef-rule`, `style-rule`.
+
+[fixture: kanban/db-grid-classdef-rule-item-icon] [fixture:
+kanban/db-grid-style-rule-item-icon]
+
+Read as one line feed: `comment-line`, `cr`, `crlf`.
+
+[fixture: kanban/db-grid-comment-line-item-icon] [fixture:
+kanban/db-grid-cr-item-icon] [fixture: kanban/db-grid-crlf-item-icon]
+
+Read as two line feeds: `directive-line`.
+
+[fixture: kanban/db-grid-directive-line-item-icon]
+
+Rejected by the grammar: `close-round`.
+
+[fixture: kanban/gram-grid-close-round-item-icon]
+
+Kept as written: the other kinds.
+
+[fixture: kanban/db-grid-ampersand-entity-item-icon] [fixture:
 kanban/db-grid-arrow-item-icon] [fixture: kanban/db-grid-arrow-spaced-item-icon]
 [fixture: kanban/db-grid-backslash-item-icon] [fixture:
 kanban/db-grid-backtick-item-icon] [fixture: kanban/db-grid-bom-item-icon]
@@ -8920,6 +9957,7 @@ summary does not change: `ampersand-entity`, `arrow`, `arrow-spaced`,
 `keyword-style`, `less-than`, `nbsp`, `nel`, `nonascii`, `open-brace`,
 `open-round`, `open-square`, `percent`, `pipe`, `proto`, `punct`, `quote`,
 `root`, `semicolon`, `single-quote`, `spaces`, `style-rule`, `tab`, `vt`.
+
 [fixture: kanban/db-grid-ampersand-entity-section-class] [fixture:
 kanban/db-grid-arrow-section-class] [fixture:
 kanban/db-grid-arrow-spaced-section-class] [fixture:
@@ -8971,12 +10009,18 @@ kanban/db-grid-single-quote-section-class] [fixture:
 kanban/db-grid-spaces-section-class] [fixture:
 kanban/db-grid-style-rule-section-class] [fixture:
 kanban/db-grid-tab-section-class] [fixture: kanban/db-grid-vt-section-class]
-Rejected by the grammar: `ls`, `ps`. [fixture:
-kanban/gram-grid-ls-section-class] [fixture: kanban/gram-grid-ps-section-class]
+
+Rejected by the grammar: `ls`, `ps`.
+
+[fixture: kanban/gram-grid-ls-section-class] [fixture:
+kanban/gram-grid-ps-section-class]
+
 Rejected by the Db: the items have no section before them
 (`Items without section detected`): `comment-line`, `cr`, `crlf`,
-`directive-line`, `lf`. [fixture: kanban/gram-grid-comment-line-section-class]
-[fixture: kanban/gram-grid-cr-section-class] [fixture:
+`directive-line`, `lf`.
+
+[fixture: kanban/gram-grid-comment-line-section-class] [fixture:
+kanban/gram-grid-cr-section-class] [fixture:
 kanban/gram-grid-crlf-section-class] [fixture:
 kanban/gram-grid-directive-line-section-class] [fixture:
 kanban/gram-grid-lf-section-class]
@@ -8992,8 +10036,10 @@ does not change: `ampersand-entity`, `arrow`, `arrow-spaced`, `backslash`,
 `keyword-header`, `keyword-space`, `keyword-style`, `less-than`, `lf`, `nbsp`,
 `nel`, `nonascii`, `open-brace`, `open-round`, `open-square`, `percent`, `pipe`,
 `proto`, `punct`, `quote`, `root`, `semicolon`, `single-quote`, `spaces`,
-`style-rule`, `tab`, `vt`. [fixture: kanban/db-grid-ampersand-entity-item-class]
-[fixture: kanban/db-grid-arrow-item-class] [fixture:
+`style-rule`, `tab`, `vt`.
+
+[fixture: kanban/db-grid-ampersand-entity-item-class] [fixture:
+kanban/db-grid-arrow-item-class] [fixture:
 kanban/db-grid-arrow-spaced-item-class] [fixture:
 kanban/db-grid-backslash-item-class] [fixture:
 kanban/db-grid-backtick-item-class] [fixture: kanban/db-grid-bom-item-class]
@@ -9041,7 +10087,10 @@ kanban/db-grid-semicolon-item-class] [fixture:
 kanban/db-grid-single-quote-item-class] [fixture:
 kanban/db-grid-spaces-item-class] [fixture:
 kanban/db-grid-style-rule-item-class] [fixture: kanban/db-grid-tab-item-class]
-[fixture: kanban/db-grid-vt-item-class] Rejected by the grammar: `ls`, `ps`.
+[fixture: kanban/db-grid-vt-item-class]
+
+Rejected by the grammar: `ls`, `ps`.
+
 [fixture: kanban/gram-grid-ls-item-class] [fixture:
 kanban/gram-grid-ps-item-class]
 
@@ -9054,8 +10103,9 @@ summary does not change: `ampersand-entity`, `arrow`, `arrow-spaced`,
 `keyword-class`, `keyword-classdef`, `keyword-columns`, `keyword-end`,
 `keyword-header`, `keyword-space`, `keyword-style`, `less-than`, `ls`, `nbsp`,
 `nel`, `nonascii`, `open-round`, `percent`, `pipe`, `proto`, `ps`, `root`,
-`semicolon`, `single-quote`, `spaces`, `style-rule`, `tab`. [fixture:
-kanban/db-grid-ampersand-entity-metadata-key] [fixture:
+`semicolon`, `single-quote`, `spaces`, `style-rule`, `tab`.
+
+[fixture: kanban/db-grid-ampersand-entity-metadata-key] [fixture:
 kanban/db-grid-arrow-metadata-key] [fixture:
 kanban/db-grid-arrow-spaced-metadata-key] [fixture:
 kanban/db-grid-backslash-metadata-key] [fixture:
@@ -9096,13 +10146,21 @@ kanban/db-grid-ps-metadata-key] [fixture: kanban/db-grid-root-metadata-key]
 kanban/db-grid-single-quote-metadata-key] [fixture:
 kanban/db-grid-spaces-metadata-key] [fixture:
 kanban/db-grid-style-rule-metadata-key] [fixture:
-kanban/db-grid-tab-metadata-key] Rejected by the lexer: `punct`. [fixture:
-kanban/gram-grid-punct-metadata-key] Rejected by the grammar: `close-brace`,
-`quote`. [fixture: kanban/gram-grid-close-brace-metadata-key] [fixture:
-kanban/gram-grid-quote-metadata-key] Rejected by the YAML of the data block:
-`close-square`, `comment-line`, `cr`, `crlf`, `directive-line`, `ff`, `lf`,
-`open-brace`, `open-square`, `vt`. [fixture:
-kanban/gram-grid-close-square-metadata-key] [fixture:
+kanban/db-grid-tab-metadata-key]
+
+Rejected by the lexer: `punct`.
+
+[fixture: kanban/gram-grid-punct-metadata-key]
+
+Rejected by the grammar: `close-brace`, `quote`.
+
+[fixture: kanban/gram-grid-close-brace-metadata-key] [fixture:
+kanban/gram-grid-quote-metadata-key]
+
+Rejected by the YAML of the data block: `close-square`, `comment-line`, `cr`,
+`crlf`, `directive-line`, `ff`, `lf`, `open-brace`, `open-square`, `vt`.
+
+[fixture: kanban/gram-grid-close-square-metadata-key] [fixture:
 kanban/gram-grid-comment-line-metadata-key] [fixture:
 kanban/gram-grid-cr-metadata-key] [fixture: kanban/gram-grid-crlf-metadata-key]
 [fixture: kanban/gram-grid-directive-line-metadata-key] [fixture:
@@ -9113,26 +10171,47 @@ kanban/gram-grid-vt-metadata-key]
 
 `metadata-multiline` is the value of `label` in a data block of an item that
 spans lines. The double quotes of the HTML attribute are read as single quotes:
-`html-attribute`. [fixture: kanban/db-grid-html-attribute-metadata-multiline]
+`html-attribute`.
+
+[fixture: kanban/db-grid-html-attribute-metadata-multiline]
+
 Read as the placeholder of the entity (common.md, Entities): `entity`,
-`entity-named`. [fixture: kanban/db-grid-entity-metadata-multiline] [fixture:
-kanban/db-grid-entity-named-metadata-multiline] Removed as a directive:
-`directive`. [fixture: kanban/db-grid-directive-metadata-multiline] The first
-`;` is dropped by the line rule: `classdef-rule`, `style-rule`. [fixture:
-kanban/db-grid-classdef-rule-metadata-multiline] [fixture:
-kanban/db-grid-style-rule-metadata-multiline] Rejected by the lexer: `punct`.
-[fixture: kanban/gram-grid-punct-metadata-multiline] Rejected by the grammar:
-`close-brace`, `quote`. [fixture:
-kanban/gram-grid-close-brace-metadata-multiline] [fixture:
-kanban/gram-grid-quote-metadata-multiline] Rejected by the YAML of the data
-block: `comment-line`, `cr`, `crlf`, `directive-line`, `ff`, `lf`, `vt`.
+`entity-named`.
+
+[fixture: kanban/db-grid-entity-metadata-multiline] [fixture:
+kanban/db-grid-entity-named-metadata-multiline]
+
+Removed as a directive: `directive`.
+
+[fixture: kanban/db-grid-directive-metadata-multiline]
+
+The first `;` is dropped by the line rule: `classdef-rule`, `style-rule`.
+
+[fixture: kanban/db-grid-classdef-rule-metadata-multiline] [fixture:
+kanban/db-grid-style-rule-metadata-multiline]
+
+Rejected by the lexer: `punct`.
+
+[fixture: kanban/gram-grid-punct-metadata-multiline]
+
+Rejected by the grammar: `close-brace`, `quote`.
+
+[fixture: kanban/gram-grid-close-brace-metadata-multiline] [fixture:
+kanban/gram-grid-quote-metadata-multiline]
+
+Rejected by the YAML of the data block: `comment-line`, `cr`, `crlf`,
+`directive-line`, `ff`, `lf`, `vt`.
+
 [fixture: kanban/gram-grid-comment-line-metadata-multiline] [fixture:
 kanban/gram-grid-cr-metadata-multiline] [fixture:
 kanban/gram-grid-crlf-metadata-multiline] [fixture:
 kanban/gram-grid-directive-line-metadata-multiline] [fixture:
 kanban/gram-grid-ff-metadata-multiline] [fixture:
 kanban/gram-grid-lf-metadata-multiline] [fixture:
-kanban/gram-grid-vt-metadata-multiline] Kept as written: the other kinds.
+kanban/gram-grid-vt-metadata-multiline]
+
+Kept as written: the other kinds.
+
 [fixture: kanban/db-grid-ampersand-entity-metadata-multiline] [fixture:
 kanban/db-grid-arrow-metadata-multiline] [fixture:
 kanban/db-grid-arrow-spaced-metadata-multiline] [fixture:
@@ -9184,23 +10263,42 @@ kanban/db-grid-tab-metadata-multiline]
 
 `metadata-label-bare` is the value of `label` in the data block of an item,
 written without quotes. The double quotes of the HTML attribute are read as
-single quotes: `html-attribute`. [fixture:
-kanban/db-grid-html-attribute-metadata-label-bare] Read as the placeholder of
-the entity (common.md, Entities): `entity`, `entity-named`. [fixture:
-kanban/db-grid-entity-metadata-label-bare] [fixture:
-kanban/db-grid-entity-named-metadata-label-bare] Removed as a directive:
-`directive`. [fixture: kanban/db-grid-directive-metadata-label-bare] The first
-`;` is dropped by the line rule: `classdef-rule`, `style-rule`. [fixture:
-kanban/db-grid-classdef-rule-metadata-label-bare] [fixture:
-kanban/db-grid-style-rule-metadata-label-bare] The value ends there and is `a`:
-`comma`. [fixture: kanban/db-grid-comma-metadata-label-bare] Rejected by the
-lexer: `punct`. [fixture: kanban/gram-grid-punct-metadata-label-bare] Rejected
-by the grammar: `close-brace`, `quote`. [fixture:
-kanban/gram-grid-close-brace-metadata-label-bare] [fixture:
-kanban/gram-grid-quote-metadata-label-bare] Rejected by the YAML of the data
-block: `close-square`, `comment-line`, `cr`, `crlf`, `directive-line`, `ff`,
-`lf`, `open-brace`, `open-square`, `vt`. [fixture:
-kanban/gram-grid-close-square-metadata-label-bare] [fixture:
+single quotes: `html-attribute`.
+
+[fixture: kanban/db-grid-html-attribute-metadata-label-bare]
+
+Read as the placeholder of the entity (common.md, Entities): `entity`,
+`entity-named`.
+
+[fixture: kanban/db-grid-entity-metadata-label-bare] [fixture:
+kanban/db-grid-entity-named-metadata-label-bare]
+
+Removed as a directive: `directive`.
+
+[fixture: kanban/db-grid-directive-metadata-label-bare]
+
+The first `;` is dropped by the line rule: `classdef-rule`, `style-rule`.
+
+[fixture: kanban/db-grid-classdef-rule-metadata-label-bare] [fixture:
+kanban/db-grid-style-rule-metadata-label-bare]
+
+The value ends there and is `a`: `comma`.
+
+[fixture: kanban/db-grid-comma-metadata-label-bare]
+
+Rejected by the lexer: `punct`.
+
+[fixture: kanban/gram-grid-punct-metadata-label-bare]
+
+Rejected by the grammar: `close-brace`, `quote`.
+
+[fixture: kanban/gram-grid-close-brace-metadata-label-bare] [fixture:
+kanban/gram-grid-quote-metadata-label-bare]
+
+Rejected by the YAML of the data block: `close-square`, `comment-line`, `cr`,
+`crlf`, `directive-line`, `ff`, `lf`, `open-brace`, `open-square`, `vt`.
+
+[fixture: kanban/gram-grid-close-square-metadata-label-bare] [fixture:
 kanban/gram-grid-comment-line-metadata-label-bare] [fixture:
 kanban/gram-grid-cr-metadata-label-bare] [fixture:
 kanban/gram-grid-crlf-metadata-label-bare] [fixture:
@@ -9209,7 +10307,10 @@ kanban/gram-grid-ff-metadata-label-bare] [fixture:
 kanban/gram-grid-lf-metadata-label-bare] [fixture:
 kanban/gram-grid-open-brace-metadata-label-bare] [fixture:
 kanban/gram-grid-open-square-metadata-label-bare] [fixture:
-kanban/gram-grid-vt-metadata-label-bare] Kept as written: the other kinds.
+kanban/gram-grid-vt-metadata-label-bare]
+
+Kept as written: the other kinds.
+
 [fixture: kanban/db-grid-ampersand-entity-metadata-label-bare] [fixture:
 kanban/db-grid-arrow-metadata-label-bare] [fixture:
 kanban/db-grid-arrow-spaced-metadata-label-bare] [fixture:
@@ -9257,28 +10358,51 @@ kanban/db-grid-tab-metadata-label-bare]
 
 `metadata-label-single` is the value of `label` in the data block of an item, in
 single quotes. Read as the placeholder of the entity (common.md, Entities):
-`entity`, `entity-named`. [fixture: kanban/db-grid-entity-metadata-label-single]
-[fixture: kanban/db-grid-entity-named-metadata-label-single] Removed as a
-directive: `directive`. [fixture:
-kanban/db-grid-directive-metadata-label-single] The first `;` is dropped by the
-line rule: `classdef-rule`, `style-rule`. [fixture:
-kanban/db-grid-classdef-rule-metadata-label-single] [fixture:
-kanban/db-grid-style-rule-metadata-label-single] Read as one line feed:
-`directive-line`. [fixture: kanban/db-grid-directive-line-metadata-label-single]
+`entity`, `entity-named`.
+
+[fixture: kanban/db-grid-entity-metadata-label-single] [fixture:
+kanban/db-grid-entity-named-metadata-label-single]
+
+Removed as a directive: `directive`.
+
+[fixture: kanban/db-grid-directive-metadata-label-single]
+
+The first `;` is dropped by the line rule: `classdef-rule`, `style-rule`.
+
+[fixture: kanban/db-grid-classdef-rule-metadata-label-single] [fixture:
+kanban/db-grid-style-rule-metadata-label-single]
+
+Read as one line feed: `directive-line`.
+
+[fixture: kanban/db-grid-directive-line-metadata-label-single]
+
 Read as one space, as YAML folds the line break: `comment-line`, `cr`, `crlf`,
-`lf`. [fixture: kanban/db-grid-comment-line-metadata-label-single] [fixture:
+`lf`.
+
+[fixture: kanban/db-grid-comment-line-metadata-label-single] [fixture:
 kanban/db-grid-cr-metadata-label-single] [fixture:
 kanban/db-grid-crlf-metadata-label-single] [fixture:
-kanban/db-grid-lf-metadata-label-single] Rejected by the lexer: `punct`.
-[fixture: kanban/gram-grid-punct-metadata-label-single] Rejected by the grammar:
-`close-brace`, `quote`. [fixture:
-kanban/gram-grid-close-brace-metadata-label-single] [fixture:
-kanban/gram-grid-quote-metadata-label-single] Rejected by the YAML of the data
-block: `ff`, `html-attribute`, `single-quote`, `vt`. [fixture:
-kanban/gram-grid-ff-metadata-label-single] [fixture:
+kanban/db-grid-lf-metadata-label-single]
+
+Rejected by the lexer: `punct`.
+
+[fixture: kanban/gram-grid-punct-metadata-label-single]
+
+Rejected by the grammar: `close-brace`, `quote`.
+
+[fixture: kanban/gram-grid-close-brace-metadata-label-single] [fixture:
+kanban/gram-grid-quote-metadata-label-single]
+
+Rejected by the YAML of the data block: `ff`, `html-attribute`, `single-quote`,
+`vt`.
+
+[fixture: kanban/gram-grid-ff-metadata-label-single] [fixture:
 kanban/gram-grid-html-attribute-metadata-label-single] [fixture:
 kanban/gram-grid-single-quote-metadata-label-single] [fixture:
-kanban/gram-grid-vt-metadata-label-single] Kept as written: the other kinds.
+kanban/gram-grid-vt-metadata-label-single]
+
+Kept as written: the other kinds.
+
 [fixture: kanban/db-grid-ampersand-entity-metadata-label-single] [fixture:
 kanban/db-grid-arrow-metadata-label-single] [fixture:
 kanban/db-grid-arrow-spaced-metadata-label-single] [fixture:
@@ -9329,28 +10453,50 @@ kanban/db-grid-tab-metadata-label-single]
 
 `metadata-label-quoted` is the value of `label` in the data block of an item, in
 double quotes. The double quotes of the HTML attribute are read as single
-quotes: `html-attribute`. [fixture:
-kanban/db-grid-html-attribute-metadata-label-quoted] Read as the placeholder of
-the entity (common.md, Entities): `entity`, `entity-named`. [fixture:
-kanban/db-grid-entity-metadata-label-quoted] [fixture:
-kanban/db-grid-entity-named-metadata-label-quoted] Removed as a directive:
-`directive`. [fixture: kanban/db-grid-directive-metadata-label-quoted] The first
-`;` is dropped by the line rule: `classdef-rule`, `style-rule`. [fixture:
-kanban/db-grid-classdef-rule-metadata-label-quoted] [fixture:
-kanban/db-grid-style-rule-metadata-label-quoted] Read as `<br/>`:
-`comment-line`, `cr`, `crlf`, `directive-line`, `lf`. [fixture:
-kanban/db-grid-comment-line-metadata-label-quoted] [fixture:
+quotes: `html-attribute`.
+
+[fixture: kanban/db-grid-html-attribute-metadata-label-quoted]
+
+Read as the placeholder of the entity (common.md, Entities): `entity`,
+`entity-named`.
+
+[fixture: kanban/db-grid-entity-metadata-label-quoted] [fixture:
+kanban/db-grid-entity-named-metadata-label-quoted]
+
+Removed as a directive: `directive`.
+
+[fixture: kanban/db-grid-directive-metadata-label-quoted]
+
+The first `;` is dropped by the line rule: `classdef-rule`, `style-rule`.
+
+[fixture: kanban/db-grid-classdef-rule-metadata-label-quoted] [fixture:
+kanban/db-grid-style-rule-metadata-label-quoted]
+
+Read as `<br/>`: `comment-line`, `cr`, `crlf`, `directive-line`, `lf`.
+
+[fixture: kanban/db-grid-comment-line-metadata-label-quoted] [fixture:
 kanban/db-grid-cr-metadata-label-quoted] [fixture:
 kanban/db-grid-crlf-metadata-label-quoted] [fixture:
 kanban/db-grid-directive-line-metadata-label-quoted] [fixture:
-kanban/db-grid-lf-metadata-label-quoted] Read as a backspace, the YAML escape
-`\b`: `backslash`. [fixture: kanban/db-grid-backslash-metadata-label-quoted]
-Rejected by the grammar: `quote`. [fixture:
-kanban/gram-grid-quote-metadata-label-quoted] Rejected by the YAML of the data
-block: `ff`, `vt`. [fixture: kanban/gram-grid-ff-metadata-label-quoted]
-[fixture: kanban/gram-grid-vt-metadata-label-quoted] Kept as written: the other
-kinds. [fixture: kanban/db-grid-ampersand-entity-metadata-label-quoted]
-[fixture: kanban/db-grid-arrow-metadata-label-quoted] [fixture:
+kanban/db-grid-lf-metadata-label-quoted]
+
+Read as a backspace, the YAML escape `\b`: `backslash`.
+
+[fixture: kanban/db-grid-backslash-metadata-label-quoted]
+
+Rejected by the grammar: `quote`.
+
+[fixture: kanban/gram-grid-quote-metadata-label-quoted]
+
+Rejected by the YAML of the data block: `ff`, `vt`.
+
+[fixture: kanban/gram-grid-ff-metadata-label-quoted] [fixture:
+kanban/gram-grid-vt-metadata-label-quoted]
+
+Kept as written: the other kinds.
+
+[fixture: kanban/db-grid-ampersand-entity-metadata-label-quoted] [fixture:
+kanban/db-grid-arrow-metadata-label-quoted] [fixture:
 kanban/db-grid-arrow-spaced-metadata-label-quoted] [fixture:
 kanban/db-grid-backtick-metadata-label-quoted] [fixture:
 kanban/db-grid-bom-metadata-label-quoted] [fixture:
@@ -9401,23 +10547,42 @@ kanban/db-grid-tab-metadata-label-quoted]
 
 `metadata-assigned-bare` is the value of `assigned` in the data block of an
 item, written without quotes. The double quotes of the HTML attribute are read
-as single quotes: `html-attribute`. [fixture:
-kanban/db-grid-html-attribute-metadata-assigned-bare] Read as the placeholder of
-the entity (common.md, Entities): `entity`, `entity-named`. [fixture:
-kanban/db-grid-entity-metadata-assigned-bare] [fixture:
-kanban/db-grid-entity-named-metadata-assigned-bare] Removed as a directive:
-`directive`. [fixture: kanban/db-grid-directive-metadata-assigned-bare] The
-first `;` is dropped by the line rule: `classdef-rule`, `style-rule`. [fixture:
-kanban/db-grid-classdef-rule-metadata-assigned-bare] [fixture:
-kanban/db-grid-style-rule-metadata-assigned-bare] The value ends there and is
-`a`: `comma`. [fixture: kanban/db-grid-comma-metadata-assigned-bare] Rejected by
-the lexer: `punct`. [fixture: kanban/gram-grid-punct-metadata-assigned-bare]
-Rejected by the grammar: `close-brace`, `quote`. [fixture:
-kanban/gram-grid-close-brace-metadata-assigned-bare] [fixture:
-kanban/gram-grid-quote-metadata-assigned-bare] Rejected by the YAML of the data
-block: `close-square`, `comment-line`, `cr`, `crlf`, `directive-line`, `ff`,
-`lf`, `open-brace`, `open-square`, `vt`. [fixture:
-kanban/gram-grid-close-square-metadata-assigned-bare] [fixture:
+as single quotes: `html-attribute`.
+
+[fixture: kanban/db-grid-html-attribute-metadata-assigned-bare]
+
+Read as the placeholder of the entity (common.md, Entities): `entity`,
+`entity-named`.
+
+[fixture: kanban/db-grid-entity-metadata-assigned-bare] [fixture:
+kanban/db-grid-entity-named-metadata-assigned-bare]
+
+Removed as a directive: `directive`.
+
+[fixture: kanban/db-grid-directive-metadata-assigned-bare]
+
+The first `;` is dropped by the line rule: `classdef-rule`, `style-rule`.
+
+[fixture: kanban/db-grid-classdef-rule-metadata-assigned-bare] [fixture:
+kanban/db-grid-style-rule-metadata-assigned-bare]
+
+The value ends there and is `a`: `comma`.
+
+[fixture: kanban/db-grid-comma-metadata-assigned-bare]
+
+Rejected by the lexer: `punct`.
+
+[fixture: kanban/gram-grid-punct-metadata-assigned-bare]
+
+Rejected by the grammar: `close-brace`, `quote`.
+
+[fixture: kanban/gram-grid-close-brace-metadata-assigned-bare] [fixture:
+kanban/gram-grid-quote-metadata-assigned-bare]
+
+Rejected by the YAML of the data block: `close-square`, `comment-line`, `cr`,
+`crlf`, `directive-line`, `ff`, `lf`, `open-brace`, `open-square`, `vt`.
+
+[fixture: kanban/gram-grid-close-square-metadata-assigned-bare] [fixture:
 kanban/gram-grid-comment-line-metadata-assigned-bare] [fixture:
 kanban/gram-grid-cr-metadata-assigned-bare] [fixture:
 kanban/gram-grid-crlf-metadata-assigned-bare] [fixture:
@@ -9426,7 +10591,10 @@ kanban/gram-grid-ff-metadata-assigned-bare] [fixture:
 kanban/gram-grid-lf-metadata-assigned-bare] [fixture:
 kanban/gram-grid-open-brace-metadata-assigned-bare] [fixture:
 kanban/gram-grid-open-square-metadata-assigned-bare] [fixture:
-kanban/gram-grid-vt-metadata-assigned-bare] Kept as written: the other kinds.
+kanban/gram-grid-vt-metadata-assigned-bare]
+
+Kept as written: the other kinds.
+
 [fixture: kanban/db-grid-ampersand-entity-metadata-assigned-bare] [fixture:
 kanban/db-grid-arrow-metadata-assigned-bare] [fixture:
 kanban/db-grid-arrow-spaced-metadata-assigned-bare] [fixture:
@@ -9474,29 +10642,51 @@ kanban/db-grid-tab-metadata-assigned-bare]
 
 `metadata-assigned-single` is the value of `assigned` in the data block of an
 item, in single quotes. Read as the placeholder of the entity (common.md,
-Entities): `entity`, `entity-named`. [fixture:
-kanban/db-grid-entity-metadata-assigned-single] [fixture:
-kanban/db-grid-entity-named-metadata-assigned-single] Removed as a directive:
-`directive`. [fixture: kanban/db-grid-directive-metadata-assigned-single] The
-first `;` is dropped by the line rule: `classdef-rule`, `style-rule`. [fixture:
-kanban/db-grid-classdef-rule-metadata-assigned-single] [fixture:
-kanban/db-grid-style-rule-metadata-assigned-single] Read as one line feed:
-`directive-line`. [fixture:
-kanban/db-grid-directive-line-metadata-assigned-single] Read as one space, as
-YAML folds the line break: `comment-line`, `cr`, `crlf`, `lf`. [fixture:
-kanban/db-grid-comment-line-metadata-assigned-single] [fixture:
+Entities): `entity`, `entity-named`.
+
+[fixture: kanban/db-grid-entity-metadata-assigned-single] [fixture:
+kanban/db-grid-entity-named-metadata-assigned-single]
+
+Removed as a directive: `directive`.
+
+[fixture: kanban/db-grid-directive-metadata-assigned-single]
+
+The first `;` is dropped by the line rule: `classdef-rule`, `style-rule`.
+
+[fixture: kanban/db-grid-classdef-rule-metadata-assigned-single] [fixture:
+kanban/db-grid-style-rule-metadata-assigned-single]
+
+Read as one line feed: `directive-line`.
+
+[fixture: kanban/db-grid-directive-line-metadata-assigned-single]
+
+Read as one space, as YAML folds the line break: `comment-line`, `cr`, `crlf`,
+`lf`.
+
+[fixture: kanban/db-grid-comment-line-metadata-assigned-single] [fixture:
 kanban/db-grid-cr-metadata-assigned-single] [fixture:
 kanban/db-grid-crlf-metadata-assigned-single] [fixture:
-kanban/db-grid-lf-metadata-assigned-single] Rejected by the lexer: `punct`.
-[fixture: kanban/gram-grid-punct-metadata-assigned-single] Rejected by the
-grammar: `close-brace`, `quote`. [fixture:
-kanban/gram-grid-close-brace-metadata-assigned-single] [fixture:
-kanban/gram-grid-quote-metadata-assigned-single] Rejected by the YAML of the
-data block: `ff`, `html-attribute`, `single-quote`, `vt`. [fixture:
-kanban/gram-grid-ff-metadata-assigned-single] [fixture:
+kanban/db-grid-lf-metadata-assigned-single]
+
+Rejected by the lexer: `punct`.
+
+[fixture: kanban/gram-grid-punct-metadata-assigned-single]
+
+Rejected by the grammar: `close-brace`, `quote`.
+
+[fixture: kanban/gram-grid-close-brace-metadata-assigned-single] [fixture:
+kanban/gram-grid-quote-metadata-assigned-single]
+
+Rejected by the YAML of the data block: `ff`, `html-attribute`, `single-quote`,
+`vt`.
+
+[fixture: kanban/gram-grid-ff-metadata-assigned-single] [fixture:
 kanban/gram-grid-html-attribute-metadata-assigned-single] [fixture:
 kanban/gram-grid-single-quote-metadata-assigned-single] [fixture:
-kanban/gram-grid-vt-metadata-assigned-single] Kept as written: the other kinds.
+kanban/gram-grid-vt-metadata-assigned-single]
+
+Kept as written: the other kinds.
+
 [fixture: kanban/db-grid-ampersand-entity-metadata-assigned-single] [fixture:
 kanban/db-grid-arrow-metadata-assigned-single] [fixture:
 kanban/db-grid-arrow-spaced-metadata-assigned-single] [fixture:
@@ -9547,28 +10737,50 @@ kanban/db-grid-tab-metadata-assigned-single]
 
 `metadata-assigned-quoted` is the value of `assigned` in the data block of an
 item, in double quotes. The double quotes of the HTML attribute are read as
-single quotes: `html-attribute`. [fixture:
-kanban/db-grid-html-attribute-metadata-assigned-quoted] Read as the placeholder
-of the entity (common.md, Entities): `entity`, `entity-named`. [fixture:
-kanban/db-grid-entity-metadata-assigned-quoted] [fixture:
-kanban/db-grid-entity-named-metadata-assigned-quoted] Removed as a directive:
-`directive`. [fixture: kanban/db-grid-directive-metadata-assigned-quoted] The
-first `;` is dropped by the line rule: `classdef-rule`, `style-rule`. [fixture:
-kanban/db-grid-classdef-rule-metadata-assigned-quoted] [fixture:
-kanban/db-grid-style-rule-metadata-assigned-quoted] Read as `<br/>`:
-`comment-line`, `cr`, `crlf`, `directive-line`, `lf`. [fixture:
-kanban/db-grid-comment-line-metadata-assigned-quoted] [fixture:
+single quotes: `html-attribute`.
+
+[fixture: kanban/db-grid-html-attribute-metadata-assigned-quoted]
+
+Read as the placeholder of the entity (common.md, Entities): `entity`,
+`entity-named`.
+
+[fixture: kanban/db-grid-entity-metadata-assigned-quoted] [fixture:
+kanban/db-grid-entity-named-metadata-assigned-quoted]
+
+Removed as a directive: `directive`.
+
+[fixture: kanban/db-grid-directive-metadata-assigned-quoted]
+
+The first `;` is dropped by the line rule: `classdef-rule`, `style-rule`.
+
+[fixture: kanban/db-grid-classdef-rule-metadata-assigned-quoted] [fixture:
+kanban/db-grid-style-rule-metadata-assigned-quoted]
+
+Read as `<br/>`: `comment-line`, `cr`, `crlf`, `directive-line`, `lf`.
+
+[fixture: kanban/db-grid-comment-line-metadata-assigned-quoted] [fixture:
 kanban/db-grid-cr-metadata-assigned-quoted] [fixture:
 kanban/db-grid-crlf-metadata-assigned-quoted] [fixture:
 kanban/db-grid-directive-line-metadata-assigned-quoted] [fixture:
-kanban/db-grid-lf-metadata-assigned-quoted] Read as a backspace, the YAML escape
-`\b`: `backslash`. [fixture: kanban/db-grid-backslash-metadata-assigned-quoted]
-Rejected by the grammar: `quote`. [fixture:
-kanban/gram-grid-quote-metadata-assigned-quoted] Rejected by the YAML of the
-data block: `ff`, `vt`. [fixture: kanban/gram-grid-ff-metadata-assigned-quoted]
-[fixture: kanban/gram-grid-vt-metadata-assigned-quoted] Kept as written: the
-other kinds. [fixture: kanban/db-grid-ampersand-entity-metadata-assigned-quoted]
-[fixture: kanban/db-grid-arrow-metadata-assigned-quoted] [fixture:
+kanban/db-grid-lf-metadata-assigned-quoted]
+
+Read as a backspace, the YAML escape `\b`: `backslash`.
+
+[fixture: kanban/db-grid-backslash-metadata-assigned-quoted]
+
+Rejected by the grammar: `quote`.
+
+[fixture: kanban/gram-grid-quote-metadata-assigned-quoted]
+
+Rejected by the YAML of the data block: `ff`, `vt`.
+
+[fixture: kanban/gram-grid-ff-metadata-assigned-quoted] [fixture:
+kanban/gram-grid-vt-metadata-assigned-quoted]
+
+Kept as written: the other kinds.
+
+[fixture: kanban/db-grid-ampersand-entity-metadata-assigned-quoted] [fixture:
+kanban/db-grid-arrow-metadata-assigned-quoted] [fixture:
 kanban/db-grid-arrow-spaced-metadata-assigned-quoted] [fixture:
 kanban/db-grid-backtick-metadata-assigned-quoted] [fixture:
 kanban/db-grid-bom-metadata-assigned-quoted] [fixture:
@@ -9619,23 +10831,42 @@ kanban/db-grid-tab-metadata-assigned-quoted]
 
 `metadata-ticket-bare` is the value of `ticket` in the data block of an item,
 written without quotes. The double quotes of the HTML attribute are read as
-single quotes: `html-attribute`. [fixture:
-kanban/db-grid-html-attribute-metadata-ticket-bare] Read as the placeholder of
-the entity (common.md, Entities): `entity`, `entity-named`. [fixture:
-kanban/db-grid-entity-metadata-ticket-bare] [fixture:
-kanban/db-grid-entity-named-metadata-ticket-bare] Removed as a directive:
-`directive`. [fixture: kanban/db-grid-directive-metadata-ticket-bare] The first
-`;` is dropped by the line rule: `classdef-rule`, `style-rule`. [fixture:
-kanban/db-grid-classdef-rule-metadata-ticket-bare] [fixture:
-kanban/db-grid-style-rule-metadata-ticket-bare] The value ends there and is `a`:
-`comma`. [fixture: kanban/db-grid-comma-metadata-ticket-bare] Rejected by the
-lexer: `punct`. [fixture: kanban/gram-grid-punct-metadata-ticket-bare] Rejected
-by the grammar: `close-brace`, `quote`. [fixture:
-kanban/gram-grid-close-brace-metadata-ticket-bare] [fixture:
-kanban/gram-grid-quote-metadata-ticket-bare] Rejected by the YAML of the data
-block: `close-square`, `comment-line`, `cr`, `crlf`, `directive-line`, `ff`,
-`lf`, `open-brace`, `open-square`, `vt`. [fixture:
-kanban/gram-grid-close-square-metadata-ticket-bare] [fixture:
+single quotes: `html-attribute`.
+
+[fixture: kanban/db-grid-html-attribute-metadata-ticket-bare]
+
+Read as the placeholder of the entity (common.md, Entities): `entity`,
+`entity-named`.
+
+[fixture: kanban/db-grid-entity-metadata-ticket-bare] [fixture:
+kanban/db-grid-entity-named-metadata-ticket-bare]
+
+Removed as a directive: `directive`.
+
+[fixture: kanban/db-grid-directive-metadata-ticket-bare]
+
+The first `;` is dropped by the line rule: `classdef-rule`, `style-rule`.
+
+[fixture: kanban/db-grid-classdef-rule-metadata-ticket-bare] [fixture:
+kanban/db-grid-style-rule-metadata-ticket-bare]
+
+The value ends there and is `a`: `comma`.
+
+[fixture: kanban/db-grid-comma-metadata-ticket-bare]
+
+Rejected by the lexer: `punct`.
+
+[fixture: kanban/gram-grid-punct-metadata-ticket-bare]
+
+Rejected by the grammar: `close-brace`, `quote`.
+
+[fixture: kanban/gram-grid-close-brace-metadata-ticket-bare] [fixture:
+kanban/gram-grid-quote-metadata-ticket-bare]
+
+Rejected by the YAML of the data block: `close-square`, `comment-line`, `cr`,
+`crlf`, `directive-line`, `ff`, `lf`, `open-brace`, `open-square`, `vt`.
+
+[fixture: kanban/gram-grid-close-square-metadata-ticket-bare] [fixture:
 kanban/gram-grid-comment-line-metadata-ticket-bare] [fixture:
 kanban/gram-grid-cr-metadata-ticket-bare] [fixture:
 kanban/gram-grid-crlf-metadata-ticket-bare] [fixture:
@@ -9644,7 +10875,10 @@ kanban/gram-grid-ff-metadata-ticket-bare] [fixture:
 kanban/gram-grid-lf-metadata-ticket-bare] [fixture:
 kanban/gram-grid-open-brace-metadata-ticket-bare] [fixture:
 kanban/gram-grid-open-square-metadata-ticket-bare] [fixture:
-kanban/gram-grid-vt-metadata-ticket-bare] Kept as written: the other kinds.
+kanban/gram-grid-vt-metadata-ticket-bare]
+
+Kept as written: the other kinds.
+
 [fixture: kanban/db-grid-ampersand-entity-metadata-ticket-bare] [fixture:
 kanban/db-grid-arrow-metadata-ticket-bare] [fixture:
 kanban/db-grid-arrow-spaced-metadata-ticket-bare] [fixture:
@@ -9692,29 +10926,51 @@ kanban/db-grid-tab-metadata-ticket-bare]
 
 `metadata-ticket-single` is the value of `ticket` in the data block of an item,
 in single quotes. Read as the placeholder of the entity (common.md, Entities):
-`entity`, `entity-named`. [fixture:
-kanban/db-grid-entity-metadata-ticket-single] [fixture:
-kanban/db-grid-entity-named-metadata-ticket-single] Removed as a directive:
-`directive`. [fixture: kanban/db-grid-directive-metadata-ticket-single] The
-first `;` is dropped by the line rule: `classdef-rule`, `style-rule`. [fixture:
-kanban/db-grid-classdef-rule-metadata-ticket-single] [fixture:
-kanban/db-grid-style-rule-metadata-ticket-single] Read as one line feed:
-`directive-line`. [fixture:
-kanban/db-grid-directive-line-metadata-ticket-single] Read as one space, as YAML
-folds the line break: `comment-line`, `cr`, `crlf`, `lf`. [fixture:
-kanban/db-grid-comment-line-metadata-ticket-single] [fixture:
+`entity`, `entity-named`.
+
+[fixture: kanban/db-grid-entity-metadata-ticket-single] [fixture:
+kanban/db-grid-entity-named-metadata-ticket-single]
+
+Removed as a directive: `directive`.
+
+[fixture: kanban/db-grid-directive-metadata-ticket-single]
+
+The first `;` is dropped by the line rule: `classdef-rule`, `style-rule`.
+
+[fixture: kanban/db-grid-classdef-rule-metadata-ticket-single] [fixture:
+kanban/db-grid-style-rule-metadata-ticket-single]
+
+Read as one line feed: `directive-line`.
+
+[fixture: kanban/db-grid-directive-line-metadata-ticket-single]
+
+Read as one space, as YAML folds the line break: `comment-line`, `cr`, `crlf`,
+`lf`.
+
+[fixture: kanban/db-grid-comment-line-metadata-ticket-single] [fixture:
 kanban/db-grid-cr-metadata-ticket-single] [fixture:
 kanban/db-grid-crlf-metadata-ticket-single] [fixture:
-kanban/db-grid-lf-metadata-ticket-single] Rejected by the lexer: `punct`.
-[fixture: kanban/gram-grid-punct-metadata-ticket-single] Rejected by the
-grammar: `close-brace`, `quote`. [fixture:
-kanban/gram-grid-close-brace-metadata-ticket-single] [fixture:
-kanban/gram-grid-quote-metadata-ticket-single] Rejected by the YAML of the data
-block: `ff`, `html-attribute`, `single-quote`, `vt`. [fixture:
-kanban/gram-grid-ff-metadata-ticket-single] [fixture:
+kanban/db-grid-lf-metadata-ticket-single]
+
+Rejected by the lexer: `punct`.
+
+[fixture: kanban/gram-grid-punct-metadata-ticket-single]
+
+Rejected by the grammar: `close-brace`, `quote`.
+
+[fixture: kanban/gram-grid-close-brace-metadata-ticket-single] [fixture:
+kanban/gram-grid-quote-metadata-ticket-single]
+
+Rejected by the YAML of the data block: `ff`, `html-attribute`, `single-quote`,
+`vt`.
+
+[fixture: kanban/gram-grid-ff-metadata-ticket-single] [fixture:
 kanban/gram-grid-html-attribute-metadata-ticket-single] [fixture:
 kanban/gram-grid-single-quote-metadata-ticket-single] [fixture:
-kanban/gram-grid-vt-metadata-ticket-single] Kept as written: the other kinds.
+kanban/gram-grid-vt-metadata-ticket-single]
+
+Kept as written: the other kinds.
+
 [fixture: kanban/db-grid-ampersand-entity-metadata-ticket-single] [fixture:
 kanban/db-grid-arrow-metadata-ticket-single] [fixture:
 kanban/db-grid-arrow-spaced-metadata-ticket-single] [fixture:
@@ -9765,28 +11021,50 @@ kanban/db-grid-tab-metadata-ticket-single]
 
 `metadata-ticket-quoted` is the value of `ticket` in the data block of an item,
 in double quotes. The double quotes of the HTML attribute are read as single
-quotes: `html-attribute`. [fixture:
-kanban/db-grid-html-attribute-metadata-ticket-quoted] Read as the placeholder of
-the entity (common.md, Entities): `entity`, `entity-named`. [fixture:
-kanban/db-grid-entity-metadata-ticket-quoted] [fixture:
-kanban/db-grid-entity-named-metadata-ticket-quoted] Removed as a directive:
-`directive`. [fixture: kanban/db-grid-directive-metadata-ticket-quoted] The
-first `;` is dropped by the line rule: `classdef-rule`, `style-rule`. [fixture:
-kanban/db-grid-classdef-rule-metadata-ticket-quoted] [fixture:
-kanban/db-grid-style-rule-metadata-ticket-quoted] Read as `<br/>`:
-`comment-line`, `cr`, `crlf`, `directive-line`, `lf`. [fixture:
-kanban/db-grid-comment-line-metadata-ticket-quoted] [fixture:
+quotes: `html-attribute`.
+
+[fixture: kanban/db-grid-html-attribute-metadata-ticket-quoted]
+
+Read as the placeholder of the entity (common.md, Entities): `entity`,
+`entity-named`.
+
+[fixture: kanban/db-grid-entity-metadata-ticket-quoted] [fixture:
+kanban/db-grid-entity-named-metadata-ticket-quoted]
+
+Removed as a directive: `directive`.
+
+[fixture: kanban/db-grid-directive-metadata-ticket-quoted]
+
+The first `;` is dropped by the line rule: `classdef-rule`, `style-rule`.
+
+[fixture: kanban/db-grid-classdef-rule-metadata-ticket-quoted] [fixture:
+kanban/db-grid-style-rule-metadata-ticket-quoted]
+
+Read as `<br/>`: `comment-line`, `cr`, `crlf`, `directive-line`, `lf`.
+
+[fixture: kanban/db-grid-comment-line-metadata-ticket-quoted] [fixture:
 kanban/db-grid-cr-metadata-ticket-quoted] [fixture:
 kanban/db-grid-crlf-metadata-ticket-quoted] [fixture:
 kanban/db-grid-directive-line-metadata-ticket-quoted] [fixture:
-kanban/db-grid-lf-metadata-ticket-quoted] Read as a backspace, the YAML escape
-`\b`: `backslash`. [fixture: kanban/db-grid-backslash-metadata-ticket-quoted]
-Rejected by the grammar: `quote`. [fixture:
-kanban/gram-grid-quote-metadata-ticket-quoted] Rejected by the YAML of the data
-block: `ff`, `vt`. [fixture: kanban/gram-grid-ff-metadata-ticket-quoted]
-[fixture: kanban/gram-grid-vt-metadata-ticket-quoted] Kept as written: the other
-kinds. [fixture: kanban/db-grid-ampersand-entity-metadata-ticket-quoted]
-[fixture: kanban/db-grid-arrow-metadata-ticket-quoted] [fixture:
+kanban/db-grid-lf-metadata-ticket-quoted]
+
+Read as a backspace, the YAML escape `\b`: `backslash`.
+
+[fixture: kanban/db-grid-backslash-metadata-ticket-quoted]
+
+Rejected by the grammar: `quote`.
+
+[fixture: kanban/gram-grid-quote-metadata-ticket-quoted]
+
+Rejected by the YAML of the data block: `ff`, `vt`.
+
+[fixture: kanban/gram-grid-ff-metadata-ticket-quoted] [fixture:
+kanban/gram-grid-vt-metadata-ticket-quoted]
+
+Kept as written: the other kinds.
+
+[fixture: kanban/db-grid-ampersand-entity-metadata-ticket-quoted] [fixture:
+kanban/db-grid-arrow-metadata-ticket-quoted] [fixture:
 kanban/db-grid-arrow-spaced-metadata-ticket-quoted] [fixture:
 kanban/db-grid-backtick-metadata-ticket-quoted] [fixture:
 kanban/db-grid-bom-metadata-ticket-quoted] [fixture:
@@ -9837,23 +11115,42 @@ kanban/db-grid-tab-metadata-ticket-quoted]
 
 `metadata-priority-bare` is the value of `priority` in the data block of an
 item, written without quotes. The double quotes of the HTML attribute are read
-as single quotes: `html-attribute`. [fixture:
-kanban/db-grid-html-attribute-metadata-priority-bare] Read as the placeholder of
-the entity (common.md, Entities): `entity`, `entity-named`. [fixture:
-kanban/db-grid-entity-metadata-priority-bare] [fixture:
-kanban/db-grid-entity-named-metadata-priority-bare] Removed as a directive:
-`directive`. [fixture: kanban/db-grid-directive-metadata-priority-bare] The
-first `;` is dropped by the line rule: `classdef-rule`, `style-rule`. [fixture:
-kanban/db-grid-classdef-rule-metadata-priority-bare] [fixture:
-kanban/db-grid-style-rule-metadata-priority-bare] The value ends there and is
-`a`: `comma`. [fixture: kanban/db-grid-comma-metadata-priority-bare] Rejected by
-the lexer: `punct`. [fixture: kanban/gram-grid-punct-metadata-priority-bare]
-Rejected by the grammar: `close-brace`, `quote`. [fixture:
-kanban/gram-grid-close-brace-metadata-priority-bare] [fixture:
-kanban/gram-grid-quote-metadata-priority-bare] Rejected by the YAML of the data
-block: `close-square`, `comment-line`, `cr`, `crlf`, `directive-line`, `ff`,
-`lf`, `open-brace`, `open-square`, `vt`. [fixture:
-kanban/gram-grid-close-square-metadata-priority-bare] [fixture:
+as single quotes: `html-attribute`.
+
+[fixture: kanban/db-grid-html-attribute-metadata-priority-bare]
+
+Read as the placeholder of the entity (common.md, Entities): `entity`,
+`entity-named`.
+
+[fixture: kanban/db-grid-entity-metadata-priority-bare] [fixture:
+kanban/db-grid-entity-named-metadata-priority-bare]
+
+Removed as a directive: `directive`.
+
+[fixture: kanban/db-grid-directive-metadata-priority-bare]
+
+The first `;` is dropped by the line rule: `classdef-rule`, `style-rule`.
+
+[fixture: kanban/db-grid-classdef-rule-metadata-priority-bare] [fixture:
+kanban/db-grid-style-rule-metadata-priority-bare]
+
+The value ends there and is `a`: `comma`.
+
+[fixture: kanban/db-grid-comma-metadata-priority-bare]
+
+Rejected by the lexer: `punct`.
+
+[fixture: kanban/gram-grid-punct-metadata-priority-bare]
+
+Rejected by the grammar: `close-brace`, `quote`.
+
+[fixture: kanban/gram-grid-close-brace-metadata-priority-bare] [fixture:
+kanban/gram-grid-quote-metadata-priority-bare]
+
+Rejected by the YAML of the data block: `close-square`, `comment-line`, `cr`,
+`crlf`, `directive-line`, `ff`, `lf`, `open-brace`, `open-square`, `vt`.
+
+[fixture: kanban/gram-grid-close-square-metadata-priority-bare] [fixture:
 kanban/gram-grid-comment-line-metadata-priority-bare] [fixture:
 kanban/gram-grid-cr-metadata-priority-bare] [fixture:
 kanban/gram-grid-crlf-metadata-priority-bare] [fixture:
@@ -9862,7 +11159,10 @@ kanban/gram-grid-ff-metadata-priority-bare] [fixture:
 kanban/gram-grid-lf-metadata-priority-bare] [fixture:
 kanban/gram-grid-open-brace-metadata-priority-bare] [fixture:
 kanban/gram-grid-open-square-metadata-priority-bare] [fixture:
-kanban/gram-grid-vt-metadata-priority-bare] Kept as written: the other kinds.
+kanban/gram-grid-vt-metadata-priority-bare]
+
+Kept as written: the other kinds.
+
 [fixture: kanban/db-grid-ampersand-entity-metadata-priority-bare] [fixture:
 kanban/db-grid-arrow-metadata-priority-bare] [fixture:
 kanban/db-grid-arrow-spaced-metadata-priority-bare] [fixture:
@@ -9910,29 +11210,51 @@ kanban/db-grid-tab-metadata-priority-bare]
 
 `metadata-priority-single` is the value of `priority` in the data block of an
 item, in single quotes. Read as the placeholder of the entity (common.md,
-Entities): `entity`, `entity-named`. [fixture:
-kanban/db-grid-entity-metadata-priority-single] [fixture:
-kanban/db-grid-entity-named-metadata-priority-single] Removed as a directive:
-`directive`. [fixture: kanban/db-grid-directive-metadata-priority-single] The
-first `;` is dropped by the line rule: `classdef-rule`, `style-rule`. [fixture:
-kanban/db-grid-classdef-rule-metadata-priority-single] [fixture:
-kanban/db-grid-style-rule-metadata-priority-single] Read as one line feed:
-`directive-line`. [fixture:
-kanban/db-grid-directive-line-metadata-priority-single] Read as one space, as
-YAML folds the line break: `comment-line`, `cr`, `crlf`, `lf`. [fixture:
-kanban/db-grid-comment-line-metadata-priority-single] [fixture:
+Entities): `entity`, `entity-named`.
+
+[fixture: kanban/db-grid-entity-metadata-priority-single] [fixture:
+kanban/db-grid-entity-named-metadata-priority-single]
+
+Removed as a directive: `directive`.
+
+[fixture: kanban/db-grid-directive-metadata-priority-single]
+
+The first `;` is dropped by the line rule: `classdef-rule`, `style-rule`.
+
+[fixture: kanban/db-grid-classdef-rule-metadata-priority-single] [fixture:
+kanban/db-grid-style-rule-metadata-priority-single]
+
+Read as one line feed: `directive-line`.
+
+[fixture: kanban/db-grid-directive-line-metadata-priority-single]
+
+Read as one space, as YAML folds the line break: `comment-line`, `cr`, `crlf`,
+`lf`.
+
+[fixture: kanban/db-grid-comment-line-metadata-priority-single] [fixture:
 kanban/db-grid-cr-metadata-priority-single] [fixture:
 kanban/db-grid-crlf-metadata-priority-single] [fixture:
-kanban/db-grid-lf-metadata-priority-single] Rejected by the lexer: `punct`.
-[fixture: kanban/gram-grid-punct-metadata-priority-single] Rejected by the
-grammar: `close-brace`, `quote`. [fixture:
-kanban/gram-grid-close-brace-metadata-priority-single] [fixture:
-kanban/gram-grid-quote-metadata-priority-single] Rejected by the YAML of the
-data block: `ff`, `html-attribute`, `single-quote`, `vt`. [fixture:
-kanban/gram-grid-ff-metadata-priority-single] [fixture:
+kanban/db-grid-lf-metadata-priority-single]
+
+Rejected by the lexer: `punct`.
+
+[fixture: kanban/gram-grid-punct-metadata-priority-single]
+
+Rejected by the grammar: `close-brace`, `quote`.
+
+[fixture: kanban/gram-grid-close-brace-metadata-priority-single] [fixture:
+kanban/gram-grid-quote-metadata-priority-single]
+
+Rejected by the YAML of the data block: `ff`, `html-attribute`, `single-quote`,
+`vt`.
+
+[fixture: kanban/gram-grid-ff-metadata-priority-single] [fixture:
 kanban/gram-grid-html-attribute-metadata-priority-single] [fixture:
 kanban/gram-grid-single-quote-metadata-priority-single] [fixture:
-kanban/gram-grid-vt-metadata-priority-single] Kept as written: the other kinds.
+kanban/gram-grid-vt-metadata-priority-single]
+
+Kept as written: the other kinds.
+
 [fixture: kanban/db-grid-ampersand-entity-metadata-priority-single] [fixture:
 kanban/db-grid-arrow-metadata-priority-single] [fixture:
 kanban/db-grid-arrow-spaced-metadata-priority-single] [fixture:
@@ -9983,28 +11305,50 @@ kanban/db-grid-tab-metadata-priority-single]
 
 `metadata-priority-quoted` is the value of `priority` in the data block of an
 item, in double quotes. The double quotes of the HTML attribute are read as
-single quotes: `html-attribute`. [fixture:
-kanban/db-grid-html-attribute-metadata-priority-quoted] Read as the placeholder
-of the entity (common.md, Entities): `entity`, `entity-named`. [fixture:
-kanban/db-grid-entity-metadata-priority-quoted] [fixture:
-kanban/db-grid-entity-named-metadata-priority-quoted] Removed as a directive:
-`directive`. [fixture: kanban/db-grid-directive-metadata-priority-quoted] The
-first `;` is dropped by the line rule: `classdef-rule`, `style-rule`. [fixture:
-kanban/db-grid-classdef-rule-metadata-priority-quoted] [fixture:
-kanban/db-grid-style-rule-metadata-priority-quoted] Read as `<br/>`:
-`comment-line`, `cr`, `crlf`, `directive-line`, `lf`. [fixture:
-kanban/db-grid-comment-line-metadata-priority-quoted] [fixture:
+single quotes: `html-attribute`.
+
+[fixture: kanban/db-grid-html-attribute-metadata-priority-quoted]
+
+Read as the placeholder of the entity (common.md, Entities): `entity`,
+`entity-named`.
+
+[fixture: kanban/db-grid-entity-metadata-priority-quoted] [fixture:
+kanban/db-grid-entity-named-metadata-priority-quoted]
+
+Removed as a directive: `directive`.
+
+[fixture: kanban/db-grid-directive-metadata-priority-quoted]
+
+The first `;` is dropped by the line rule: `classdef-rule`, `style-rule`.
+
+[fixture: kanban/db-grid-classdef-rule-metadata-priority-quoted] [fixture:
+kanban/db-grid-style-rule-metadata-priority-quoted]
+
+Read as `<br/>`: `comment-line`, `cr`, `crlf`, `directive-line`, `lf`.
+
+[fixture: kanban/db-grid-comment-line-metadata-priority-quoted] [fixture:
 kanban/db-grid-cr-metadata-priority-quoted] [fixture:
 kanban/db-grid-crlf-metadata-priority-quoted] [fixture:
 kanban/db-grid-directive-line-metadata-priority-quoted] [fixture:
-kanban/db-grid-lf-metadata-priority-quoted] Read as a backspace, the YAML escape
-`\b`: `backslash`. [fixture: kanban/db-grid-backslash-metadata-priority-quoted]
-Rejected by the grammar: `quote`. [fixture:
-kanban/gram-grid-quote-metadata-priority-quoted] Rejected by the YAML of the
-data block: `ff`, `vt`. [fixture: kanban/gram-grid-ff-metadata-priority-quoted]
-[fixture: kanban/gram-grid-vt-metadata-priority-quoted] Kept as written: the
-other kinds. [fixture: kanban/db-grid-ampersand-entity-metadata-priority-quoted]
-[fixture: kanban/db-grid-arrow-metadata-priority-quoted] [fixture:
+kanban/db-grid-lf-metadata-priority-quoted]
+
+Read as a backspace, the YAML escape `\b`: `backslash`.
+
+[fixture: kanban/db-grid-backslash-metadata-priority-quoted]
+
+Rejected by the grammar: `quote`.
+
+[fixture: kanban/gram-grid-quote-metadata-priority-quoted]
+
+Rejected by the YAML of the data block: `ff`, `vt`.
+
+[fixture: kanban/gram-grid-ff-metadata-priority-quoted] [fixture:
+kanban/gram-grid-vt-metadata-priority-quoted]
+
+Kept as written: the other kinds.
+
+[fixture: kanban/db-grid-ampersand-entity-metadata-priority-quoted] [fixture:
+kanban/db-grid-arrow-metadata-priority-quoted] [fixture:
 kanban/db-grid-arrow-spaced-metadata-priority-quoted] [fixture:
 kanban/db-grid-backtick-metadata-priority-quoted] [fixture:
 kanban/db-grid-bom-metadata-priority-quoted] [fixture:
@@ -10055,23 +11399,42 @@ kanban/db-grid-tab-metadata-priority-quoted]
 
 `metadata-icon-bare` is the value of `icon` in the data block of an item,
 written without quotes. The double quotes of the HTML attribute are read as
-single quotes: `html-attribute`. [fixture:
-kanban/db-grid-html-attribute-metadata-icon-bare] Read as the placeholder of the
-entity (common.md, Entities): `entity`, `entity-named`. [fixture:
-kanban/db-grid-entity-metadata-icon-bare] [fixture:
-kanban/db-grid-entity-named-metadata-icon-bare] Removed as a directive:
-`directive`. [fixture: kanban/db-grid-directive-metadata-icon-bare] The first
-`;` is dropped by the line rule: `classdef-rule`, `style-rule`. [fixture:
-kanban/db-grid-classdef-rule-metadata-icon-bare] [fixture:
-kanban/db-grid-style-rule-metadata-icon-bare] The value ends there and is `a`:
-`comma`. [fixture: kanban/db-grid-comma-metadata-icon-bare] Rejected by the
-lexer: `punct`. [fixture: kanban/gram-grid-punct-metadata-icon-bare] Rejected by
-the grammar: `close-brace`, `quote`. [fixture:
-kanban/gram-grid-close-brace-metadata-icon-bare] [fixture:
-kanban/gram-grid-quote-metadata-icon-bare] Rejected by the YAML of the data
-block: `close-square`, `comment-line`, `cr`, `crlf`, `directive-line`, `ff`,
-`lf`, `open-brace`, `open-square`, `vt`. [fixture:
-kanban/gram-grid-close-square-metadata-icon-bare] [fixture:
+single quotes: `html-attribute`.
+
+[fixture: kanban/db-grid-html-attribute-metadata-icon-bare]
+
+Read as the placeholder of the entity (common.md, Entities): `entity`,
+`entity-named`.
+
+[fixture: kanban/db-grid-entity-metadata-icon-bare] [fixture:
+kanban/db-grid-entity-named-metadata-icon-bare]
+
+Removed as a directive: `directive`.
+
+[fixture: kanban/db-grid-directive-metadata-icon-bare]
+
+The first `;` is dropped by the line rule: `classdef-rule`, `style-rule`.
+
+[fixture: kanban/db-grid-classdef-rule-metadata-icon-bare] [fixture:
+kanban/db-grid-style-rule-metadata-icon-bare]
+
+The value ends there and is `a`: `comma`.
+
+[fixture: kanban/db-grid-comma-metadata-icon-bare]
+
+Rejected by the lexer: `punct`.
+
+[fixture: kanban/gram-grid-punct-metadata-icon-bare]
+
+Rejected by the grammar: `close-brace`, `quote`.
+
+[fixture: kanban/gram-grid-close-brace-metadata-icon-bare] [fixture:
+kanban/gram-grid-quote-metadata-icon-bare]
+
+Rejected by the YAML of the data block: `close-square`, `comment-line`, `cr`,
+`crlf`, `directive-line`, `ff`, `lf`, `open-brace`, `open-square`, `vt`.
+
+[fixture: kanban/gram-grid-close-square-metadata-icon-bare] [fixture:
 kanban/gram-grid-comment-line-metadata-icon-bare] [fixture:
 kanban/gram-grid-cr-metadata-icon-bare] [fixture:
 kanban/gram-grid-crlf-metadata-icon-bare] [fixture:
@@ -10080,7 +11443,10 @@ kanban/gram-grid-ff-metadata-icon-bare] [fixture:
 kanban/gram-grid-lf-metadata-icon-bare] [fixture:
 kanban/gram-grid-open-brace-metadata-icon-bare] [fixture:
 kanban/gram-grid-open-square-metadata-icon-bare] [fixture:
-kanban/gram-grid-vt-metadata-icon-bare] Kept as written: the other kinds.
+kanban/gram-grid-vt-metadata-icon-bare]
+
+Kept as written: the other kinds.
+
 [fixture: kanban/db-grid-ampersand-entity-metadata-icon-bare] [fixture:
 kanban/db-grid-arrow-metadata-icon-bare] [fixture:
 kanban/db-grid-arrow-spaced-metadata-icon-bare] [fixture:
@@ -10128,27 +11494,51 @@ kanban/db-grid-tab-metadata-icon-bare]
 
 `metadata-icon-single` is the value of `icon` in the data block of an item, in
 single quotes. Read as the placeholder of the entity (common.md, Entities):
-`entity`, `entity-named`. [fixture: kanban/db-grid-entity-metadata-icon-single]
-[fixture: kanban/db-grid-entity-named-metadata-icon-single] Removed as a
-directive: `directive`. [fixture: kanban/db-grid-directive-metadata-icon-single]
+`entity`, `entity-named`.
+
+[fixture: kanban/db-grid-entity-metadata-icon-single] [fixture:
+kanban/db-grid-entity-named-metadata-icon-single]
+
+Removed as a directive: `directive`.
+
+[fixture: kanban/db-grid-directive-metadata-icon-single]
+
 The first `;` is dropped by the line rule: `classdef-rule`, `style-rule`.
+
 [fixture: kanban/db-grid-classdef-rule-metadata-icon-single] [fixture:
-kanban/db-grid-style-rule-metadata-icon-single] Read as one line feed:
-`directive-line`. [fixture: kanban/db-grid-directive-line-metadata-icon-single]
+kanban/db-grid-style-rule-metadata-icon-single]
+
+Read as one line feed: `directive-line`.
+
+[fixture: kanban/db-grid-directive-line-metadata-icon-single]
+
 Read as one space, as YAML folds the line break: `comment-line`, `cr`, `crlf`,
-`lf`. [fixture: kanban/db-grid-comment-line-metadata-icon-single] [fixture:
+`lf`.
+
+[fixture: kanban/db-grid-comment-line-metadata-icon-single] [fixture:
 kanban/db-grid-cr-metadata-icon-single] [fixture:
 kanban/db-grid-crlf-metadata-icon-single] [fixture:
-kanban/db-grid-lf-metadata-icon-single] Rejected by the lexer: `punct`.
-[fixture: kanban/gram-grid-punct-metadata-icon-single] Rejected by the grammar:
-`close-brace`, `quote`. [fixture:
-kanban/gram-grid-close-brace-metadata-icon-single] [fixture:
-kanban/gram-grid-quote-metadata-icon-single] Rejected by the YAML of the data
-block: `ff`, `html-attribute`, `single-quote`, `vt`. [fixture:
-kanban/gram-grid-ff-metadata-icon-single] [fixture:
+kanban/db-grid-lf-metadata-icon-single]
+
+Rejected by the lexer: `punct`.
+
+[fixture: kanban/gram-grid-punct-metadata-icon-single]
+
+Rejected by the grammar: `close-brace`, `quote`.
+
+[fixture: kanban/gram-grid-close-brace-metadata-icon-single] [fixture:
+kanban/gram-grid-quote-metadata-icon-single]
+
+Rejected by the YAML of the data block: `ff`, `html-attribute`, `single-quote`,
+`vt`.
+
+[fixture: kanban/gram-grid-ff-metadata-icon-single] [fixture:
 kanban/gram-grid-html-attribute-metadata-icon-single] [fixture:
 kanban/gram-grid-single-quote-metadata-icon-single] [fixture:
-kanban/gram-grid-vt-metadata-icon-single] Kept as written: the other kinds.
+kanban/gram-grid-vt-metadata-icon-single]
+
+Kept as written: the other kinds.
+
 [fixture: kanban/db-grid-ampersand-entity-metadata-icon-single] [fixture:
 kanban/db-grid-arrow-metadata-icon-single] [fixture:
 kanban/db-grid-arrow-spaced-metadata-icon-single] [fixture:
@@ -10199,26 +11589,48 @@ kanban/db-grid-tab-metadata-icon-single]
 
 `metadata-icon-quoted` is the value of `icon` in the data block of an item, in
 double quotes. The double quotes of the HTML attribute are read as single
-quotes: `html-attribute`. [fixture:
-kanban/db-grid-html-attribute-metadata-icon-quoted] Read as the placeholder of
-the entity (common.md, Entities): `entity`, `entity-named`. [fixture:
-kanban/db-grid-entity-metadata-icon-quoted] [fixture:
-kanban/db-grid-entity-named-metadata-icon-quoted] Removed as a directive:
-`directive`. [fixture: kanban/db-grid-directive-metadata-icon-quoted] The first
-`;` is dropped by the line rule: `classdef-rule`, `style-rule`. [fixture:
-kanban/db-grid-classdef-rule-metadata-icon-quoted] [fixture:
-kanban/db-grid-style-rule-metadata-icon-quoted] Read as `<br/>`: `comment-line`,
-`cr`, `crlf`, `directive-line`, `lf`. [fixture:
-kanban/db-grid-comment-line-metadata-icon-quoted] [fixture:
+quotes: `html-attribute`.
+
+[fixture: kanban/db-grid-html-attribute-metadata-icon-quoted]
+
+Read as the placeholder of the entity (common.md, Entities): `entity`,
+`entity-named`.
+
+[fixture: kanban/db-grid-entity-metadata-icon-quoted] [fixture:
+kanban/db-grid-entity-named-metadata-icon-quoted]
+
+Removed as a directive: `directive`.
+
+[fixture: kanban/db-grid-directive-metadata-icon-quoted]
+
+The first `;` is dropped by the line rule: `classdef-rule`, `style-rule`.
+
+[fixture: kanban/db-grid-classdef-rule-metadata-icon-quoted] [fixture:
+kanban/db-grid-style-rule-metadata-icon-quoted]
+
+Read as `<br/>`: `comment-line`, `cr`, `crlf`, `directive-line`, `lf`.
+
+[fixture: kanban/db-grid-comment-line-metadata-icon-quoted] [fixture:
 kanban/db-grid-cr-metadata-icon-quoted] [fixture:
 kanban/db-grid-crlf-metadata-icon-quoted] [fixture:
 kanban/db-grid-directive-line-metadata-icon-quoted] [fixture:
-kanban/db-grid-lf-metadata-icon-quoted] Read as a backspace, the YAML escape
-`\b`: `backslash`. [fixture: kanban/db-grid-backslash-metadata-icon-quoted]
-Rejected by the grammar: `quote`. [fixture:
-kanban/gram-grid-quote-metadata-icon-quoted] Rejected by the YAML of the data
-block: `ff`, `vt`. [fixture: kanban/gram-grid-ff-metadata-icon-quoted] [fixture:
-kanban/gram-grid-vt-metadata-icon-quoted] Kept as written: the other kinds.
+kanban/db-grid-lf-metadata-icon-quoted]
+
+Read as a backspace, the YAML escape `\b`: `backslash`.
+
+[fixture: kanban/db-grid-backslash-metadata-icon-quoted]
+
+Rejected by the grammar: `quote`.
+
+[fixture: kanban/gram-grid-quote-metadata-icon-quoted]
+
+Rejected by the YAML of the data block: `ff`, `vt`.
+
+[fixture: kanban/gram-grid-ff-metadata-icon-quoted] [fixture:
+kanban/gram-grid-vt-metadata-icon-quoted]
+
+Kept as written: the other kinds.
+
 [fixture: kanban/db-grid-ampersand-entity-metadata-icon-quoted] [fixture:
 kanban/db-grid-arrow-metadata-icon-quoted] [fixture:
 kanban/db-grid-arrow-spaced-metadata-icon-quoted] [fixture:
@@ -10278,8 +11690,9 @@ written without quotes. Read, and the summary does not change:
 `keyword`, `keyword-block`, `keyword-columns`, `keyword-end`, `keyword-header`,
 `keyword-space`, `less-than`, `ls`, `nbsp`, `nel`, `nonascii`, `open-round`,
 `percent`, `pipe`, `ps`, `root`, `semicolon`, `single-quote`, `spaces`,
-`style-rule`, `tab`. [fixture:
-kanban/db-grid-ampersand-entity-metadata-shape-bare] [fixture:
+`style-rule`, `tab`.
+
+[fixture: kanban/db-grid-ampersand-entity-metadata-shape-bare] [fixture:
 kanban/db-grid-arrow-metadata-shape-bare] [fixture:
 kanban/db-grid-arrow-spaced-metadata-shape-bare] [fixture:
 kanban/db-grid-backslash-metadata-shape-bare] [fixture:
@@ -10324,14 +11737,21 @@ kanban/db-grid-semicolon-metadata-shape-bare] [fixture:
 kanban/db-grid-single-quote-metadata-shape-bare] [fixture:
 kanban/db-grid-spaces-metadata-shape-bare] [fixture:
 kanban/db-grid-style-rule-metadata-shape-bare] [fixture:
-kanban/db-grid-tab-metadata-shape-bare] Rejected by the lexer: `punct`.
-[fixture: kanban/gram-grid-punct-metadata-shape-bare] Rejected by the grammar:
-`close-brace`, `quote`. [fixture:
-kanban/gram-grid-close-brace-metadata-shape-bare] [fixture:
-kanban/gram-grid-quote-metadata-shape-bare] Rejected by the YAML of the data
-block: `close-square`, `comment-line`, `cr`, `crlf`, `directive-line`, `ff`,
-`lf`, `open-brace`, `open-square`, `vt`. [fixture:
-kanban/gram-grid-close-square-metadata-shape-bare] [fixture:
+kanban/db-grid-tab-metadata-shape-bare]
+
+Rejected by the lexer: `punct`.
+
+[fixture: kanban/gram-grid-punct-metadata-shape-bare]
+
+Rejected by the grammar: `close-brace`, `quote`.
+
+[fixture: kanban/gram-grid-close-brace-metadata-shape-bare] [fixture:
+kanban/gram-grid-quote-metadata-shape-bare]
+
+Rejected by the YAML of the data block: `close-square`, `comment-line`, `cr`,
+`crlf`, `directive-line`, `ff`, `lf`, `open-brace`, `open-square`, `vt`.
+
+[fixture: kanban/gram-grid-close-square-metadata-shape-bare] [fixture:
 kanban/gram-grid-comment-line-metadata-shape-bare] [fixture:
 kanban/gram-grid-cr-metadata-shape-bare] [fixture:
 kanban/gram-grid-crlf-metadata-shape-bare] [fixture:
@@ -10340,10 +11760,13 @@ kanban/gram-grid-ff-metadata-shape-bare] [fixture:
 kanban/gram-grid-lf-metadata-shape-bare] [fixture:
 kanban/gram-grid-open-brace-metadata-shape-bare] [fixture:
 kanban/gram-grid-open-square-metadata-shape-bare] [fixture:
-kanban/gram-grid-vt-metadata-shape-bare] Rejected by the Db: the shape name has
-an upper-case letter or a `_` (`No such shape`): `classdef-rule`,
-`keyword-class`, `keyword-classdef`, `keyword-style`, `proto`. [fixture:
-kanban/gram-grid-classdef-rule-metadata-shape-bare] [fixture:
+kanban/gram-grid-vt-metadata-shape-bare]
+
+Rejected by the Db: the shape name has an upper-case letter or a `_`
+(`No such shape`): `classdef-rule`, `keyword-class`, `keyword-classdef`,
+`keyword-style`, `proto`.
+
+[fixture: kanban/gram-grid-classdef-rule-metadata-shape-bare] [fixture:
 kanban/gram-grid-keyword-class-metadata-shape-bare] [fixture:
 kanban/gram-grid-keyword-classdef-metadata-shape-bare] [fixture:
 kanban/gram-grid-keyword-style-metadata-shape-bare] [fixture:
@@ -10358,8 +11781,9 @@ single quotes. Read, and the summary does not change: `ampersand-entity`,
 `ideographic`, `keyword`, `keyword-block`, `keyword-columns`, `keyword-end`,
 `keyword-header`, `keyword-space`, `less-than`, `lf`, `ls`, `nbsp`, `nel`,
 `nonascii`, `open-brace`, `open-round`, `open-square`, `percent`, `pipe`, `ps`,
-`root`, `semicolon`, `spaces`, `style-rule`, `tab`. [fixture:
-kanban/db-grid-ampersand-entity-metadata-shape-single] [fixture:
+`root`, `semicolon`, `spaces`, `style-rule`, `tab`.
+
+[fixture: kanban/db-grid-ampersand-entity-metadata-shape-single] [fixture:
 kanban/db-grid-arrow-metadata-shape-single] [fixture:
 kanban/db-grid-arrow-spaced-metadata-shape-single] [fixture:
 kanban/db-grid-backslash-metadata-shape-single] [fixture:
@@ -10410,19 +11834,30 @@ kanban/db-grid-root-metadata-shape-single] [fixture:
 kanban/db-grid-semicolon-metadata-shape-single] [fixture:
 kanban/db-grid-spaces-metadata-shape-single] [fixture:
 kanban/db-grid-style-rule-metadata-shape-single] [fixture:
-kanban/db-grid-tab-metadata-shape-single] Rejected by the lexer: `punct`.
-[fixture: kanban/gram-grid-punct-metadata-shape-single] Rejected by the grammar:
-`close-brace`, `quote`. [fixture:
-kanban/gram-grid-close-brace-metadata-shape-single] [fixture:
-kanban/gram-grid-quote-metadata-shape-single] Rejected by the YAML of the data
-block: `ff`, `html-attribute`, `single-quote`, `vt`. [fixture:
-kanban/gram-grid-ff-metadata-shape-single] [fixture:
+kanban/db-grid-tab-metadata-shape-single]
+
+Rejected by the lexer: `punct`.
+
+[fixture: kanban/gram-grid-punct-metadata-shape-single]
+
+Rejected by the grammar: `close-brace`, `quote`.
+
+[fixture: kanban/gram-grid-close-brace-metadata-shape-single] [fixture:
+kanban/gram-grid-quote-metadata-shape-single]
+
+Rejected by the YAML of the data block: `ff`, `html-attribute`, `single-quote`,
+`vt`.
+
+[fixture: kanban/gram-grid-ff-metadata-shape-single] [fixture:
 kanban/gram-grid-html-attribute-metadata-shape-single] [fixture:
 kanban/gram-grid-single-quote-metadata-shape-single] [fixture:
-kanban/gram-grid-vt-metadata-shape-single] Rejected by the Db: the shape name
-has an upper-case letter or a `_` (`No such shape`): `classdef-rule`,
-`keyword-class`, `keyword-classdef`, `keyword-style`, `proto`. [fixture:
-kanban/gram-grid-classdef-rule-metadata-shape-single] [fixture:
+kanban/gram-grid-vt-metadata-shape-single]
+
+Rejected by the Db: the shape name has an upper-case letter or a `_`
+(`No such shape`): `classdef-rule`, `keyword-class`, `keyword-classdef`,
+`keyword-style`, `proto`.
+
+[fixture: kanban/gram-grid-classdef-rule-metadata-shape-single] [fixture:
 kanban/gram-grid-keyword-class-metadata-shape-single] [fixture:
 kanban/gram-grid-keyword-classdef-metadata-shape-single] [fixture:
 kanban/gram-grid-keyword-style-metadata-shape-single] [fixture:
@@ -10438,8 +11873,9 @@ double quotes. Read, and the summary does not change: `ampersand-entity`,
 `keyword-columns`, `keyword-end`, `keyword-header`, `keyword-space`,
 `less-than`, `lf`, `ls`, `nbsp`, `nel`, `nonascii`, `open-brace`, `open-round`,
 `open-square`, `percent`, `pipe`, `ps`, `root`, `semicolon`, `single-quote`,
-`spaces`, `style-rule`, `tab`. [fixture:
-kanban/db-grid-ampersand-entity-metadata-shape-quoted] [fixture:
+`spaces`, `style-rule`, `tab`.
+
+[fixture: kanban/db-grid-ampersand-entity-metadata-shape-quoted] [fixture:
 kanban/db-grid-arrow-metadata-shape-quoted] [fixture:
 kanban/db-grid-arrow-spaced-metadata-shape-quoted] [fixture:
 kanban/db-grid-backslash-metadata-shape-quoted] [fixture:
@@ -10493,12 +11929,21 @@ kanban/db-grid-semicolon-metadata-shape-quoted] [fixture:
 kanban/db-grid-single-quote-metadata-shape-quoted] [fixture:
 kanban/db-grid-spaces-metadata-shape-quoted] [fixture:
 kanban/db-grid-style-rule-metadata-shape-quoted] [fixture:
-kanban/db-grid-tab-metadata-shape-quoted] Rejected by the grammar: `quote`.
-[fixture: kanban/gram-grid-quote-metadata-shape-quoted] Rejected by the YAML of
-the data block: `ff`, `vt`. [fixture: kanban/gram-grid-ff-metadata-shape-quoted]
-[fixture: kanban/gram-grid-vt-metadata-shape-quoted] Rejected by the Db: the
-shape name has an upper-case letter or a `_` (`No such shape`): `classdef-rule`,
-`keyword-class`, `keyword-classdef`, `keyword-style`, `proto`, `punct`.
+kanban/db-grid-tab-metadata-shape-quoted]
+
+Rejected by the grammar: `quote`.
+
+[fixture: kanban/gram-grid-quote-metadata-shape-quoted]
+
+Rejected by the YAML of the data block: `ff`, `vt`.
+
+[fixture: kanban/gram-grid-ff-metadata-shape-quoted] [fixture:
+kanban/gram-grid-vt-metadata-shape-quoted]
+
+Rejected by the Db: the shape name has an upper-case letter or a `_`
+(`No such shape`): `classdef-rule`, `keyword-class`, `keyword-classdef`,
+`keyword-style`, `proto`, `punct`.
+
 [fixture: kanban/gram-grid-classdef-rule-metadata-shape-quoted] [fixture:
 kanban/gram-grid-keyword-class-metadata-shape-quoted] [fixture:
 kanban/gram-grid-keyword-classdef-metadata-shape-quoted] [fixture:
@@ -10512,7 +11957,9 @@ each key reads from each kind of value, the keys being `label`, `assigned`,
 
 A value in plain, single-quoted, or double-quoted YAML text sets `label`,
 `assigned`, `ticket`, `icon`, and `priority` to that text, and `label` replaces
-the written label. [fixture: kanban/db-metadata-label-plain] [fixture:
+the written label.
+
+[fixture: kanban/db-metadata-label-plain] [fixture:
 kanban/db-metadata-assigned-plain] [fixture: kanban/db-metadata-ticket-plain]
 [fixture: kanban/db-metadata-icon-plain] [fixture:
 kanban/db-metadata-priority-plain] [fixture:
@@ -10527,17 +11974,21 @@ kanban/db-metadata-ticket-double-quoted] [fixture:
 kanban/db-metadata-icon-double-quoted] [fixture:
 kanban/db-metadata-priority-double-quoted]
 
-A quoted value of spaces only is kept as the value. [fixture:
-kanban/db-metadata-label-spaces] [fixture: kanban/db-metadata-assigned-spaces]
-[fixture: kanban/db-metadata-ticket-spaces] [fixture:
-kanban/db-metadata-icon-spaces] [fixture: kanban/db-metadata-priority-spaces]
+A quoted value of spaces only is kept as the value.
+
+[fixture: kanban/db-metadata-label-spaces] [fixture:
+kanban/db-metadata-assigned-spaces] [fixture: kanban/db-metadata-ticket-spaces]
+[fixture: kanban/db-metadata-icon-spaces] [fixture:
+kanban/db-metadata-priority-spaces]
 
 An empty value, an empty string, `null`, `false`, `0`, and `-0` set nothing:
-`label` keeps the written label and the other fields are absent. [fixture:
-kanban/db-metadata-label-empty] [fixture: kanban/db-metadata-assigned-empty]
-[fixture: kanban/db-metadata-ticket-empty] [fixture:
-kanban/db-metadata-icon-empty] [fixture: kanban/db-metadata-priority-empty]
-[fixture: kanban/db-metadata-label-empty-string] [fixture:
+`label` keeps the written label and the other fields are absent.
+
+[fixture: kanban/db-metadata-label-empty] [fixture:
+kanban/db-metadata-assigned-empty] [fixture: kanban/db-metadata-ticket-empty]
+[fixture: kanban/db-metadata-icon-empty] [fixture:
+kanban/db-metadata-priority-empty] [fixture:
+kanban/db-metadata-label-empty-string] [fixture:
 kanban/db-metadata-assigned-empty-string] [fixture:
 kanban/db-metadata-ticket-empty-string] [fixture:
 kanban/db-metadata-icon-empty-string] [fixture:
@@ -10561,7 +12012,9 @@ kanban/db-metadata-priority-negative-zero]
 A number, a negative number, and a number with a sign are read as their text by
 `label`, `assigned`, `ticket`, and `icon` (`23`, `-2`, `2`), and `priority`
 keeps the number, `true` is read as the text `true` and `priority` keeps the
-boolean. [fixture: kanban/db-metadata-label-number] [fixture:
+boolean.
+
+[fixture: kanban/db-metadata-label-number] [fixture:
 kanban/db-metadata-assigned-number] [fixture: kanban/db-metadata-ticket-number]
 [fixture: kanban/db-metadata-icon-number] [fixture:
 kanban/db-metadata-priority-number] [fixture: kanban/db-metadata-label-negative]
@@ -10577,7 +12030,9 @@ kanban/db-metadata-assigned-true] [fixture: kanban/db-metadata-ticket-true]
 kanban/db-metadata-priority-true]
 
 A number with a suffix (`12px`) and the words `Infinity` and `NaN` are text in
-every field. [fixture: kanban/db-metadata-label-number-suffix] [fixture:
+every field.
+
+[fixture: kanban/db-metadata-label-number-suffix] [fixture:
 kanban/db-metadata-assigned-number-suffix] [fixture:
 kanban/db-metadata-ticket-number-suffix] [fixture:
 kanban/db-metadata-icon-number-suffix] [fixture:
@@ -10593,13 +12048,17 @@ kanban/db-metadata-ticket-nan-word] [fixture: kanban/db-metadata-icon-nan-word]
 [fixture: kanban/db-metadata-priority-nan-word]
 
 A list `[a, b]` is joined with a comma by `label`, `assigned`, `ticket`, and
-`icon` (`a,b`), and `priority` keeps the list. [fixture:
-kanban/db-metadata-label-list] [fixture: kanban/db-metadata-assigned-list]
-[fixture: kanban/db-metadata-ticket-list] [fixture:
-kanban/db-metadata-icon-list] [fixture: kanban/db-metadata-priority-list]
+`icon` (`a,b`), and `priority` keeps the list.
+
+[fixture: kanban/db-metadata-label-list] [fixture:
+kanban/db-metadata-assigned-list] [fixture: kanban/db-metadata-ticket-list]
+[fixture: kanban/db-metadata-icon-list] [fixture:
+kanban/db-metadata-priority-list]
 
 A key is case sensitive: `ASSIGNED`, `ICON`, `LABEL`, `PRIORITY`, `SHAPE`, and
-`TICKET` set nothing. [fixture: kanban/db-metadata-label-upper-key] [fixture:
+`TICKET` set nothing.
+
+[fixture: kanban/db-metadata-label-upper-key] [fixture:
 kanban/db-metadata-assigned-upper-key] [fixture:
 kanban/db-metadata-ticket-upper-key] [fixture:
 kanban/db-metadata-icon-upper-key] [fixture:
@@ -10609,15 +12068,18 @@ kanban/db-metadata-shape-upper-key]
 The values of `.inf`, `-.inf`, and `.nan` in `priority` are read as the text
 `Infinity` and `-Infinity`, and `.nan` sets nothing; the same words in a list
 are texts, `1e400` is the text `1e400`, and the keys `__proto__` and
-`constructor` of a mapping are kept as own keys. [fixture:
-kanban/db-metadata-priority-non-finite] [fixture:
+`constructor` of a mapping are kept as own keys.
+
+[fixture: kanban/db-metadata-priority-non-finite] [fixture:
 kanban/db-metadata-priority-nested-non-finite] [fixture:
 kanban/db-metadata-priority-overflow-word] [fixture:
 kanban/db-metadata-priority-own-prototype-key]
 
 The key `shape` is not read: every value of it, including an empty value, a
 number with a suffix, a name of a shape, and an upper-case key, changes nothing
-in the summary. [fixture: kanban/db-metadata-shape-empty] [fixture:
+in the summary.
+
+[fixture: kanban/db-metadata-shape-empty] [fixture:
 kanban/db-metadata-shape-empty-string] [fixture: kanban/db-metadata-shape-false]
 [fixture: kanban/db-metadata-shape-known-other] [fixture:
 kanban/db-metadata-shape-lower] [fixture:
@@ -10629,50 +12091,64 @@ kanban/db-metadata-shape-spaces] [fixture: kanban/db-metadata-shape-upper-key]
 ## c4
 
 `normalizeC4()` (`src/normalizers/c4.ts`) reads the shared C4 Db immediately
-after parsing, before rendering. [fixture: c4/db-all-fields]
+after parsing, before rendering.
+
+[fixture: c4/db-all-fields]
 
 The summary keeps `type` from
 [`getC4Type()`](https://github.com/mermaid-js/mermaid/blob/2086904e76c692331e34a45d7cc3bc30860d040e/packages/mermaid/src/diagrams/c4/c4Db.ts#L76-L78).
+
 [fixture: c4/db-all-fields]
 
 The summary keeps `title` from
 [`getTitle()`](https://github.com/mermaid-js/mermaid/blob/2086904e76c692331e34a45d7cc3bc30860d040e/packages/mermaid/src/diagrams/c4/c4Db.ts#L722-L724).
+
 [fixture: c4/db-all-fields]
 
 The summary keeps `accTitle` from
 [`getAccTitle()`](https://github.com/mermaid-js/mermaid/blob/2086904e76c692331e34a45d7cc3bc30860d040e/packages/mermaid/src/diagrams/common/commonDb.ts#L20-L20).
+
 [fixture: c4/db-acc-title]
 
 The summary keeps `accDescr` from
 [`getAccDescription()`](https://github.com/mermaid-js/mermaid/blob/2086904e76c692331e34a45d7cc3bc30860d040e/packages/mermaid/src/diagrams/common/commonDb.ts#L26-L26).
+
 [fixture: c4/db-all-fields]
 
 `shapes`, `boundaries`, and `rels` are the complete own attribute bags from
 [`getC4ShapeArray()`, `getBoundaries()`, and `getRels()`](https://github.com/mermaid-js/mermaid/blob/2086904e76c692331e34a45d7cc3bc30860d040e/packages/mermaid/src/diagrams/c4/c4Db.ts#L684-L720),
-in first-insertion order. [fixture: c4/db-shape-three-definitions] [fixture:
+in first-insertion order.
+
+[fixture: c4/db-shape-three-definitions] [fixture:
 c4/db-boundary-three-definitions] [fixture: c4/db-rel-three-definitions]
 
 A shape keeps `alias`, `label`, `descr`, `techn`, `typeC4Shape`,
 `parentBoundary`, `wrap`, `sprite`, `tags`, `link`, and every other assigned
-attribute, with undefined fields omitted. [fixture: c4/db-all-fields] [fixture:
-c4/db-named-text-fields] [fixture: c4/db-style-layout-key-attributes]
+attribute, with undefined fields omitted.
+
+[fixture: c4/db-all-fields] [fixture: c4/db-named-text-fields] [fixture:
+c4/db-style-layout-key-attributes]
 
 A boundary keeps `alias`, `label`, `type`, `parentBoundary`, `wrap`, `tags`,
 `link`, and every other assigned attribute; deployment nodes also keep
-`nodeType` and their assigned description. [fixture: c4/db-all-fields] [fixture:
-c4/db-keyword-node-l] [fixture: c4/db-keyword-node-r]
+`nodeType` and their assigned description.
+
+[fixture: c4/db-all-fields] [fixture: c4/db-keyword-node-l] [fixture:
+c4/db-keyword-node-r]
 
 The first boundary is the initial `global` boundary, whose label and type are
 `{ text: "global" }`, whose parent is the empty text, and whose tags and link
-are null; declarations and style updates can update this entry. [fixture:
-c4/db-number-layout-zero] [fixture: c4/gram-boundary-global-alias]
+are null; declarations and style updates can update this entry.
+
+[fixture: c4/db-number-layout-zero] [fixture: c4/gram-boundary-global-alias]
 
 `parentBoundary` is the alias selected by the parsing stack at the declaration,
 including repeated aliases, object-valued aliases, and aliases shared with a
-shape; the summary does not rebuild a hierarchy. [fixture:
-c4/gram-boundary-nested] [fixture: c4/db-boundary-alias-named-change] [fixture:
-c4/gram-boundary-reused-alias] [fixture: c4/db-parent-c4container] [fixture:
-c4/db-parent-c4context] [fixture: c4/db-parent-constructor] [fixture:
+shape; the summary does not rebuild a hierarchy.
+
+[fixture: c4/gram-boundary-nested] [fixture: c4/db-boundary-alias-named-change]
+[fixture: c4/gram-boundary-reused-alias] [fixture: c4/db-parent-c4container]
+[fixture: c4/db-parent-c4context] [fixture: c4/db-parent-constructor] [fixture:
 c4/db-parent-global] [fixture: c4/db-parent-hasownproperty] [fixture:
 c4/db-parent-person] [fixture: c4/db-parent-proto] [fixture: c4/db-parent-title]
 [fixture: c4/db-parent-tostring] [fixture: c4/demo-c4context-1d531a27] [fixture:
@@ -10682,43 +12158,52 @@ c4/docs-syntax-c4-90f106b9] [fixture: c4/docs-syntax-c4-f96d2403]
 
 A relationship keeps `type`, `from`, `to`, `label`, `techn`, `descr`, `wrap`,
 `sprite`, `tags`, `link`, its assigned style and offset fields, and every other
-assigned attribute, without resolving its endpoints. [fixture: c4/db-all-fields]
-[fixture: c4/db-alias-constructor] [fixture: c4/db-rel-named-endpoints]
-[fixture: c4/db-rel-self] [fixture: c4/db-alias-c4container] [fixture:
-c4/db-alias-c4context] [fixture: c4/db-alias-global] [fixture:
-c4/db-alias-hasownproperty] [fixture: c4/db-alias-person] [fixture:
-c4/db-alias-proto] [fixture: c4/db-alias-title] [fixture: c4/db-alias-tostring]
+assigned attribute, without resolving its endpoints.
+
+[fixture: c4/db-all-fields] [fixture: c4/db-alias-constructor] [fixture:
+c4/db-rel-named-endpoints] [fixture: c4/db-rel-self] [fixture:
+c4/db-alias-c4container] [fixture: c4/db-alias-c4context] [fixture:
+c4/db-alias-global] [fixture: c4/db-alias-hasownproperty] [fixture:
+c4/db-alias-person] [fixture: c4/db-alias-proto] [fixture: c4/db-alias-title]
+[fixture: c4/db-alias-tostring]
 
 Shape and boundary aliases use strict equality, while relationships use the
 ordered pair of endpoints; repeated definitions update the first matching entry
 without moving it, and separate object-valued aliases or endpoints remain
-separate entries. [fixture: c4/db-shape-three-definitions] [fixture:
+separate entries.
+
+[fixture: c4/db-shape-three-definitions] [fixture:
 c4/db-boundary-three-definitions] [fixture: c4/db-rel-three-definitions]
 [fixture: c4/db-required-named-alias-repeat] [fixture:
 c4/db-rel-object-endpoint-repeat] [fixture: c4/db-shape-case-sensitive]
 
 A repeated shape resets its label, shape kind, parent and wrap; absent optional
 technology, description and other attributes keep their earlier values.
+
 [fixture: c4/db-shape-three-definitions]
 
 A repeated boundary resets its label, type, parent and wrap, while absent tags,
-links and deployment descriptions keep their earlier values. [fixture:
-c4/db-boundary-three-definitions]
+links and deployment descriptions keep their earlier values.
+
+[fixture: c4/db-boundary-three-definitions]
 
 A repeated relationship resets type, endpoints, label and wrap, while absent
-optional attributes keep their earlier values. [fixture:
-c4/db-rel-three-definitions]
+optional attributes keep their earlier values.
+
+[fixture: c4/db-rel-three-definitions]
 
 The grammar trims positional strings and named keys and values, including quoted
 strings, and preserves their internal text; an empty positional string is an
-empty argument, while an empty named value is rejected. [fixture:
-c4/db-named-key-whitespace] [fixture: c4/db-required-label-empty] [fixture:
-c4/db-required-alias-empty] [fixture: c4/gram-named-empty-value] [fixture:
-c4/lex-empty-strings] [fixture: c4/lex-empty-comma] [fixture:
+empty argument, while an empty named value is rejected.
+
+[fixture: c4/db-named-key-whitespace] [fixture: c4/db-required-label-empty]
+[fixture: c4/db-required-alias-empty] [fixture: c4/gram-named-empty-value]
+[fixture: c4/lex-empty-strings] [fixture: c4/lex-empty-comma] [fixture:
 c4/lex-bare-whitespace-only] [fixture: c4/lex-named-whitespace-value]
 
 Named arguments in required slots remain object-valued aliases or endpoints, or
 the object inside a label's `text`; optional slots dispatch by the named key.
+
 [fixture: c4/db-named-person-unknown-slot-1] [fixture:
 c4/db-named-person-unknown-slot-2] [fixture: c4/db-rel-named-endpoints]
 [fixture: c4/db-named-repeat] [fixture: c4/db-named-boundary-link-slot-1]
@@ -10822,12 +12307,13 @@ c4/spec-c4-person-ext-8bf8e3f1] [fixture: c4/spec-c4-person-ext-dea72a2a]
 
 Optional named `label`, `descr`, `techn`, and `type` values are stored as
 `{ text }`, while other named values are plain strings, and later assignments to
-the same key replace earlier assignments. [fixture: c4/db-named-text-fields]
-[fixture: c4/db-named-repeat] [fixture: c4/db-named-case-sensitive] [fixture:
-c4/db-named-boundary-link-slot-3] [fixture: c4/db-named-boundary-link-slot-4]
-[fixture: c4/db-named-boundary-link-slot-5] [fixture:
-c4/db-named-boundary-sprite-slot-3] [fixture:
-c4/db-named-boundary-sprite-slot-4] [fixture:
+the same key replace earlier assignments.
+
+[fixture: c4/db-named-text-fields] [fixture: c4/db-named-repeat] [fixture:
+c4/db-named-case-sensitive] [fixture: c4/db-named-boundary-link-slot-3]
+[fixture: c4/db-named-boundary-link-slot-4] [fixture:
+c4/db-named-boundary-link-slot-5] [fixture: c4/db-named-boundary-sprite-slot-3]
+[fixture: c4/db-named-boundary-sprite-slot-4] [fixture:
 c4/db-named-boundary-sprite-slot-5] [fixture: c4/db-named-boundary-tags-slot-3]
 [fixture: c4/db-named-boundary-tags-slot-4] [fixture:
 c4/db-named-boundary-tags-slot-5] [fixture: c4/db-named-boundary-unknown-slot-3]
@@ -10981,25 +12467,30 @@ c4/spec-c4-named-attributes-fb9b339a] [fixture:
 c4/spec-c4-named-attributes-fe324471] [fixture: c4/spec-c4-person-1505b32b]
 
 Fixed boundary keywords insert their type before the optional written arguments,
-and a later named `$type` can replace it. [fixture:
-c4/db-boundary-style-named-type] [fixture: c4/spec-c4-named-attributes-5d8133dd]
-[fixture: c4/spec-c4-named-attributes-cdf4c373]
+and a later named `$type` can replace it.
+
+[fixture: c4/db-boundary-style-named-type] [fixture:
+c4/spec-c4-named-attributes-5d8133dd] [fixture:
+c4/spec-c4-named-attributes-cdf4c373]
 
 The deployment node's positional sprite slot is ignored, including a named
 attribute in that slot, while a `$sprite` in another consumed optional slot can
-set the sprite. [fixture: c4/db-node-sprite] [fixture:
-c4/db-named-node-sprite-slot-3] [fixture: c4/db-named-node-sprite-slot-5]
-[fixture: c4/db-named-node-link-slot-5] [fixture: c4/db-named-node-tags-slot-5]
-[fixture: c4/db-named-node-unknown-slot-5] [fixture:
+set the sprite.
+
+[fixture: c4/db-node-sprite] [fixture: c4/db-named-node-sprite-slot-3] [fixture:
+c4/db-named-node-sprite-slot-5] [fixture: c4/db-named-node-link-slot-5]
+[fixture: c4/db-named-node-tags-slot-5] [fixture:
+c4/db-named-node-unknown-slot-5] [fixture:
 c4/gram-named-proto-node-ignored-sprite] [fixture:
 c4/spec-c4-named-attributes-8fe1ed13]
 
 `RelIndex` drops its first written argument and otherwise uses the ordinary
-relationship arguments and type. [fixture: c4/db-keyword-relindex] [fixture:
-c4/db-named-index-link-slot-1] [fixture: c4/db-named-index-sprite-slot-1]
-[fixture: c4/db-named-index-tags-slot-1] [fixture:
-c4/db-named-index-unknown-slot-1] [fixture:
-c4/db-grid-ampersand-entity-index-argument-bare] [fixture:
+relationship arguments and type.
+
+[fixture: c4/db-keyword-relindex] [fixture: c4/db-named-index-link-slot-1]
+[fixture: c4/db-named-index-sprite-slot-1] [fixture:
+c4/db-named-index-tags-slot-1] [fixture: c4/db-named-index-unknown-slot-1]
+[fixture: c4/db-grid-ampersand-entity-index-argument-bare] [fixture:
 c4/db-grid-arrow-index-argument-bare] [fixture:
 c4/db-grid-arrow-spaced-index-argument-bare] [fixture:
 c4/db-grid-backslash-index-argument-bare] [fixture:
@@ -11125,10 +12616,12 @@ c4/db-grid-vt-index-argument-quoted]
 
 [`UpdateElementStyle`](https://github.com/mermaid-js/mermaid/blob/2086904e76c692331e34a45d7cc3bc30860d040e/packages/mermaid/src/diagrams/c4/c4Db.ts#L494-L590)
 updates the first matching shape, or the first matching boundary when no shape
-matches, and a missing target changes nothing. [fixture:
-c4/gram-boundary-reused-alias] [fixture: c4/db-style-boundary] [fixture:
-c4/db-style-before-definition] [fixture: c4/db-named-element-style-link-slot-1]
-[fixture: c4/db-named-element-style-sprite-slot-1] [fixture:
+matches, and a missing target changes nothing.
+
+[fixture: c4/gram-boundary-reused-alias] [fixture: c4/db-style-boundary]
+[fixture: c4/db-style-before-definition] [fixture:
+c4/db-named-element-style-link-slot-1] [fixture:
+c4/db-named-element-style-sprite-slot-1] [fixture:
 c4/db-named-element-style-tags-slot-1] [fixture:
 c4/db-named-element-style-unknown-slot-1] [fixture:
 c4/db-style-required-named-target]
@@ -11136,10 +12629,11 @@ c4/db-style-required-named-target]
 Element styles keep `bgColor`, `fontColor`, `borderColor`, `shadowing`, `shape`,
 `sprite`, `techn`, `legendText`, and `legendSprite`; named style arguments write
 plain values even for text fields and arbitrary keys, and later updates replace
-only the supplied fields. [fixture: c4/db-all-fields] [fixture:
-c4/db-style-text-replacement] [fixture: c4/db-style-three-updates] [fixture:
-c4/db-named-element-style-link-slot-10] [fixture:
-c4/db-named-element-style-link-slot-2] [fixture:
+only the supplied fields.
+
+[fixture: c4/db-all-fields] [fixture: c4/db-style-text-replacement] [fixture:
+c4/db-style-three-updates] [fixture: c4/db-named-element-style-link-slot-10]
+[fixture: c4/db-named-element-style-link-slot-2] [fixture:
 c4/db-named-element-style-link-slot-3] [fixture:
 c4/db-named-element-style-link-slot-4] [fixture:
 c4/db-named-element-style-link-slot-5] [fixture:
@@ -11178,12 +12672,13 @@ c4/db-named-element-style-unknown-slot-9] [fixture: c4/demo-c4context-61e43307]
 
 `UpdateRelStyle` updates only an already stored ordered endpoint pair, retaining
 `textColor`, `lineColor`, `offsetX`, `offsetY`, and arbitrary named fields, with
-later updates replacing only supplied fields. [fixture:
-c4/db-style-before-definition] [fixture: c4/db-update-rel-style-three-times]
-[fixture: c4/db-update-rel-style-named-text] [fixture:
-c4/db-named-rel-style-link-slot-1] [fixture: c4/db-named-rel-style-link-slot-2]
-[fixture: c4/db-named-rel-style-link-slot-3] [fixture:
-c4/db-named-rel-style-link-slot-4] [fixture:
+later updates replacing only supplied fields.
+
+[fixture: c4/db-style-before-definition] [fixture:
+c4/db-update-rel-style-three-times] [fixture: c4/db-update-rel-style-named-text]
+[fixture: c4/db-named-rel-style-link-slot-1] [fixture:
+c4/db-named-rel-style-link-slot-2] [fixture: c4/db-named-rel-style-link-slot-3]
+[fixture: c4/db-named-rel-style-link-slot-4] [fixture:
 c4/db-named-rel-style-sprite-slot-1] [fixture:
 c4/db-named-rel-style-sprite-slot-2] [fixture:
 c4/db-named-rel-style-sprite-slot-3] [fixture:
@@ -11199,9 +12694,10 @@ c4/db-named-rel-style-unknown-slot-4] [fixture: c4/demo-c4context-3c40673b]
 
 Offset slots use `parseInt()` on the supplied value, even when the named key
 selects another field; non-finite numbers are recorded as `"NaN"`, `"Infinity"`,
-or `"-Infinity"`, and negative zero as zero. [fixture:
-c4/db-number-rel-style-negative-zero] [fixture: c4/db-number-rel-style-nan]
-[fixture: c4/db-number-rel-style-overflow] [fixture:
+or `"-Infinity"`, and negative zero as zero.
+
+[fixture: c4/db-number-rel-style-negative-zero] [fixture:
+c4/db-number-rel-style-nan] [fixture: c4/db-number-rel-style-overflow] [fixture:
 c4/db-update-rel-style-named-number-key] [fixture: c4/db-number-rel-style-empty]
 [fixture: c4/db-number-rel-style-exponent] [fixture:
 c4/db-number-rel-style-fraction] [fixture: c4/db-number-rel-style-fullwidth]
@@ -11221,38 +12717,41 @@ c4/db-named-rel-style-unknown-slot-6] [fixture: c4/demo-c4context-61e43307]
 
 In `UpdateRelStyle`, named `offsetX` and `offsetY` values supplied in the
 `textColor` or `lineColor` slots remain strings; only the offset slots parse
-numbers. [fixture: c4/demo-c4context-1d531a27] [fixture:
-c4/demo-c4context-3c40673b] [fixture: c4/demo-c4context-49481a12] [fixture:
-c4/demo-c4context-b284cb21] [fixture: c4/docs-syntax-c4-5f697bdc] [fixture:
-c4/docs-syntax-c4-90f106b9] [fixture: c4/docs-syntax-c4-96b1a834] [fixture:
-c4/docs-syntax-c4-e233a726]
+numbers.
+
+[fixture: c4/demo-c4context-1d531a27] [fixture: c4/demo-c4context-3c40673b]
+[fixture: c4/demo-c4context-49481a12] [fixture: c4/demo-c4context-b284cb21]
+[fixture: c4/docs-syntax-c4-5f697bdc] [fixture: c4/docs-syntax-c4-90f106b9]
+[fixture: c4/docs-syntax-c4-96b1a834] [fixture: c4/docs-syntax-c4-e233a726]
 
 `c4ShapeInRow` and `c4BoundaryInRow` come from their Db getters, start at 4 and
 2, and change independently when the corresponding `UpdateLayoutConfig`
 argument's `parseInt()` value is at least one; argument position selects the
-counter even for named arguments. [fixture: c4/db-number-layout-zero] [fixture:
-c4/db-named-layout-order] [fixture: c4/db-named-layout-key] [fixture:
-c4/db-update-layout-three-times] [fixture: c4/db-number-layout-exponent]
-[fixture: c4/db-number-layout-fraction] [fixture: c4/db-number-layout-fullwidth]
-[fixture: c4/db-number-layout-hex] [fixture: c4/db-number-layout-infinity]
-[fixture: c4/db-number-layout-nan] [fixture: c4/db-number-layout-negative]
-[fixture: c4/db-number-layout-negative-zero] [fixture:
-c4/db-number-layout-non-ascii] [fixture: c4/db-number-layout-overflow] [fixture:
-c4/db-number-layout-plus] [fixture: c4/db-number-layout-space-text-after]
-[fixture: c4/db-number-layout-text-after] [fixture:
-c4/db-named-layout-link-slot-1] [fixture: c4/db-named-layout-link-slot-2]
-[fixture: c4/db-named-layout-sprite-slot-1] [fixture:
-c4/db-named-layout-sprite-slot-2] [fixture: c4/db-named-layout-tags-slot-1]
-[fixture: c4/db-named-layout-tags-slot-2] [fixture:
-c4/db-named-layout-unknown-slot-1] [fixture: c4/db-named-layout-unknown-slot-2]
-[fixture: c4/gram-proto-layout] [fixture: c4/gram-update-empty-string] [fixture:
-c4/demo-c4context-61e43307] [fixture: c4/docs-syntax-c4-bc80e69a] [fixture:
-c4/docs-syntax-c4-f96d2403]
+counter even for named arguments.
+
+[fixture: c4/db-number-layout-zero] [fixture: c4/db-named-layout-order]
+[fixture: c4/db-named-layout-key] [fixture: c4/db-update-layout-three-times]
+[fixture: c4/db-number-layout-exponent] [fixture: c4/db-number-layout-fraction]
+[fixture: c4/db-number-layout-fullwidth] [fixture: c4/db-number-layout-hex]
+[fixture: c4/db-number-layout-infinity] [fixture: c4/db-number-layout-nan]
+[fixture: c4/db-number-layout-negative] [fixture:
+c4/db-number-layout-negative-zero] [fixture: c4/db-number-layout-non-ascii]
+[fixture: c4/db-number-layout-overflow] [fixture: c4/db-number-layout-plus]
+[fixture: c4/db-number-layout-space-text-after] [fixture:
+c4/db-number-layout-text-after] [fixture: c4/db-named-layout-link-slot-1]
+[fixture: c4/db-named-layout-link-slot-2] [fixture:
+c4/db-named-layout-sprite-slot-1] [fixture: c4/db-named-layout-sprite-slot-2]
+[fixture: c4/db-named-layout-tags-slot-1] [fixture:
+c4/db-named-layout-tags-slot-2] [fixture: c4/db-named-layout-unknown-slot-1]
+[fixture: c4/db-named-layout-unknown-slot-2] [fixture: c4/gram-proto-layout]
+[fixture: c4/gram-update-empty-string] [fixture: c4/demo-c4context-61e43307]
+[fixture: c4/docs-syntax-c4-bc80e69a] [fixture: c4/docs-syntax-c4-f96d2403]
 
 The grammar accepts an unbounded sequence of attributes; the Db ignores those
-past the called function's parameters. [fixture: c4/gram-arguments-person-above]
-[fixture: c4/gram-arguments-rel-above] [fixture:
-c4/gram-arguments-element-style-above] [fixture:
+past the called function's parameters.
+
+[fixture: c4/gram-arguments-person-above] [fixture: c4/gram-arguments-rel-above]
+[fixture: c4/gram-arguments-element-style-above] [fixture:
 c4/gram-arguments-boundary-above] [fixture: c4/gram-arguments-component-above]
 [fixture: c4/gram-arguments-container-above] [fixture:
 c4/gram-arguments-index-above] [fixture: c4/gram-arguments-layout-above]
@@ -11260,10 +12759,11 @@ c4/gram-arguments-index-above] [fixture: c4/gram-arguments-layout-above]
 c4/gram-arguments-rel-style-above] [fixture: c4/gram-proto-unused-extra]
 
 The five exact header words set `type`, require a line break before statements,
-and require a nonempty statement list. [fixture: c4/header-context-minimal]
-[fixture: c4/header-container-minimal] [fixture: c4/header-component-minimal]
-[fixture: c4/header-dynamic-minimal] [fixture: c4/header-deployment-minimal]
-[fixture: c4/db-empty-board] [fixture:
+and require a nonempty statement list.
+
+[fixture: c4/header-context-minimal] [fixture: c4/header-container-minimal]
+[fixture: c4/header-component-minimal] [fixture: c4/header-dynamic-minimal]
+[fixture: c4/header-deployment-minimal] [fixture: c4/db-empty-board] [fixture:
 c4/header-context-statement-on-header-line] [fixture:
 c4/db-grid-empty-header-line] [fixture: c4/header-component-only] [fixture:
 c4/header-component-only-lf] [fixture:
@@ -11288,15 +12788,17 @@ c4/header-dynamic-title-on-header-line] [fixture: c4/header-dynamic-twice]
 [fixture: c4/header-header-semicolon]
 
 All five headers use the same statement grammar, including every element,
-boundary, node, relationship and update family. [fixture:
-c4/db-keyword-person-ext] [fixture: c4/db-keyword-systemqueue-ext] [fixture:
-c4/db-keyword-containerqueue-ext] [fixture: c4/db-keyword-componentqueue-ext]
-[fixture: c4/db-keyword-rel-back]
+boundary, node, relationship and update family.
+
+[fixture: c4/db-keyword-person-ext] [fixture: c4/db-keyword-systemqueue-ext]
+[fixture: c4/db-keyword-containerqueue-ext] [fixture:
+c4/db-keyword-componentqueue-ext] [fixture: c4/db-keyword-rel-back]
 
 `title` takes the text after its first separator, keeping additional leading and
 trailing spaces; `accTitle:` trims its value and sets the same title, leaving
-`accTitle` empty, and the last such statement wins. [fixture:
-c4/db-title-whitespace] [fixture: c4/db-acc-title] [fixture:
+`accTitle` empty, and the last such statement wins.
+
+[fixture: c4/db-title-whitespace] [fixture: c4/db-acc-title] [fixture:
 c4/db-title-acc-order] [fixture: c4/db-title-frontmatter] [fixture:
 c4/db-title-plain] [fixture: c4/db-title-spaces] [fixture:
 c4/db-title-spaces-only] [fixture: c4/db-title-tab] [fixture:
@@ -11312,15 +12814,17 @@ c4/spec-c4-component-f06e3225] [fixture: c4/spec-c4-diagram-a95fd4b0]
 
 `accDescription` keeps the text after its first separator, while `accDescr:`
 trims its value and a nonempty `accDescr { ... }` trims the block; all three set
-`accDescr`, whose setter removes whitespace following line feeds. [fixture:
-c4/db-acc-description-whitespace] [fixture: c4/db-acc-description-order]
-[fixture: c4/gram-acc-descr-block-text] [fixture: c4/db-accdescription-plain]
-[fixture: c4/db-accdescription-spaces] [fixture: c4/db-accdescription-tab]
-[fixture: c4/db-accdescription-three-times] [fixture: c4/db-accdescr-empty]
-[fixture: c4/db-accdescr-plain] [fixture: c4/db-accdescr-spaces] [fixture:
-c4/db-accdescr-tab] [fixture: c4/db-accdescr-three-times] [fixture:
-c4/db-acc-descr-tab-before-colon] [fixture: c4/db-acc-description-spaces-only]
-[fixture: c4/gram-acc-descr-block-after-text-text] [fixture:
+`accDescr`, whose setter removes whitespace following line feeds.
+
+[fixture: c4/db-acc-description-whitespace] [fixture:
+c4/db-acc-description-order] [fixture: c4/gram-acc-descr-block-text] [fixture:
+c4/db-accdescription-plain] [fixture: c4/db-accdescription-spaces] [fixture:
+c4/db-accdescription-tab] [fixture: c4/db-accdescription-three-times] [fixture:
+c4/db-accdescr-empty] [fixture: c4/db-accdescr-plain] [fixture:
+c4/db-accdescr-spaces] [fixture: c4/db-accdescr-tab] [fixture:
+c4/db-accdescr-three-times] [fixture: c4/db-acc-descr-tab-before-colon]
+[fixture: c4/db-acc-description-spaces-only] [fixture:
+c4/gram-acc-descr-block-after-text-text] [fixture:
 c4/gram-acc-descr-block-comment-line] [fixture:
 c4/gram-acc-descr-block-after-text-comment-line] [fixture:
 c4/gram-acc-descr-block-directive-line] [fixture:
@@ -11329,8 +12833,9 @@ c4/demo-c4context-61e43307]
 
 An empty description block emits no statement and keeps the preceding value when
 inline with a diagram statement, while a line break after it can leave an extra
-newline that the grammar rejects. [fixture:
-c4/db-empty-block-inline-before-shape] [fixture:
+newline that the grammar rejects.
+
+[fixture: c4/db-empty-block-inline-before-shape] [fixture:
 c4/db-empty-block-inline-after-shape] [fixture: c4/db-empty-block-inline-two]
 [fixture: c4/db-empty-description-block-after-value] [fixture:
 c4/gram-block-with-comment-only] [fixture: c4/db-empty-block-inline-blank-lines]
@@ -11344,12 +12849,15 @@ c4/gram-empty-block-boundary-between-line-brace] [fixture:
 c4/gram-grid-empty-acc-descr-block]
 
 Frontmatter title and accessibility fields do not set these C4 getters.
+
 [fixture: c4/db-title-frontmatter] [fixture: c4/db-frontmatter-drawing-config]
 
 The root `wrap` configuration is copied to shapes, boundaries and relationships;
 undefined wrap and a null configuration value are omitted, false and other
 supplied values are kept, and `wrap:` and `nowrap:` in labels remain literal
-text. [fixture: c4/db-wrap-directive] [fixture: c4/config-wrap-true] [fixture:
+text.
+
+[fixture: c4/db-wrap-directive] [fixture: c4/config-wrap-true] [fixture:
 c4/config-wrap-false] [fixture: c4/config-wrap-null] [fixture:
 c4/config-wrap-text] [fixture: c4/db-wrap-frontmatter] [fixture:
 c4/db-wrap-init-directive]
@@ -11357,7 +12865,9 @@ c4/db-wrap-init-directive]
 Theme settings, `c4.wrap`, and C4 row settings do not change the parse-time Db
 fields, while an unsupported `securityLevel` with HTML labels enabled replaces
 characters in title and accessibility text; root `htmlLabels` takes precedence
-over `flowchart.htmlLabels`. [fixture: c4/db-directive-drawing-config] [fixture:
+over `flowchart.htmlLabels`.
+
+[fixture: c4/db-directive-drawing-config] [fixture:
 c4/db-frontmatter-drawing-config] [fixture: c4/config-security-level-other]
 [fixture: c4/config-security-level-other-html-labels-false] [fixture:
 c4/config-security-level-other-flowchart-html-labels-false] [fixture:
@@ -11365,28 +12875,35 @@ c4/config-security-level-other-root-overrides-flowchart]
 
 The summary drops the configuration object, renderer constants, redundant shape
 keys, and the boundary parsing stack; renderer geometry is not populated during
-parsing, and geometry-like named attributes remain written attributes. [fixture:
-c4/db-number-layout-zero] [fixture: c4/gram-boundary-nested] [fixture:
+parsing, and geometry-like named attributes remain written attributes.
+
+[fixture: c4/db-number-layout-zero] [fixture: c4/gram-boundary-nested] [fixture:
 c4/db-style-layout-key-attributes]
 
 `patchC4Db()` clears the shared accessibility texts through their setters when
 C4 clears its own fields, so each input starts with empty accessibility texts.
+
 [fixture: c4/db-all-fields] [fixture: c4/header-context-minimal]
 
-C4 has no `@{ ... }` data block production. [fixture: c4/gram-data-block]
+C4 has no `@{ ... }` data block production.
+
+[fixture: c4/gram-data-block]
 
 The unanchored direction lexer rule can consume arbitrary preceding text on the
 same line; a direction token inside a diagram's statement list is rejected, and
 one that replaces the header calls the absent `setDirection` method and throws a
-TypeError. [fixture: c4/gram-direction-tb-prefix] [fixture:
-c4/gram-header-direction-tb] [fixture: c4/gram-header-direction-bt] [fixture:
-c4/gram-header-direction-rl] [fixture: c4/gram-header-direction-lr]
+TypeError.
+
+[fixture: c4/gram-direction-tb-prefix] [fixture: c4/gram-header-direction-tb]
+[fixture: c4/gram-header-direction-bt] [fixture: c4/gram-header-direction-rl]
+[fixture: c4/gram-header-direction-lr]
 
 ### Headers and statement boundaries
 
 After directive removal, a call keyword must touch its opening `(`; spaces,
-tabs, line breaks, or comment lines between them are rejected. [fixture:
-c4/lex-keyword-gap-birel-blank-line] [fixture:
+tabs, line breaks, or comment lines between them are rejected.
+
+[fixture: c4/lex-keyword-gap-birel-blank-line] [fixture:
 c4/lex-keyword-gap-birel-comment-line] [fixture:
 c4/lex-keyword-gap-birel-directive-line] [fixture: c4/lex-keyword-gap-birel-lf]
 [fixture: c4/lex-keyword-gap-birel-space] [fixture:
@@ -11617,13 +13134,14 @@ c4/lex-keyword-gap-updaterelstyle-tab] [fixture: c4/lex-keyword-eof] [fixture:
 c4/gram-empty-block-in-keyword-gap]
 
 Call and text keywords require their exact spelling; changed case or a glued
-letter, digit, underscore, dash, or non-ASCII suffix is rejected. [fixture:
-c4/lex-keyword-accdescr-dash] [fixture: c4/lex-keyword-accdescr-digit] [fixture:
-c4/lex-keyword-accdescr-letter] [fixture: c4/lex-keyword-accdescr-lower]
-[fixture: c4/lex-keyword-accdescr-non-ascii] [fixture:
-c4/lex-keyword-accdescr-underscore] [fixture: c4/lex-keyword-accdescr-upper]
-[fixture: c4/lex-keyword-accdescription-dash] [fixture:
-c4/lex-keyword-accdescription-digit] [fixture:
+letter, digit, underscore, dash, or non-ASCII suffix is rejected.
+
+[fixture: c4/lex-keyword-accdescr-dash] [fixture: c4/lex-keyword-accdescr-digit]
+[fixture: c4/lex-keyword-accdescr-letter] [fixture:
+c4/lex-keyword-accdescr-lower] [fixture: c4/lex-keyword-accdescr-non-ascii]
+[fixture: c4/lex-keyword-accdescr-underscore] [fixture:
+c4/lex-keyword-accdescr-upper] [fixture: c4/lex-keyword-accdescription-dash]
+[fixture: c4/lex-keyword-accdescription-digit] [fixture:
 c4/lex-keyword-accdescription-letter] [fixture:
 c4/lex-keyword-accdescription-lower] [fixture:
 c4/lex-keyword-accdescription-non-ascii] [fixture:
@@ -11861,9 +13379,11 @@ c4/lex-keyword-updaterelstyle-underscore] [fixture:
 c4/lex-keyword-updaterelstyle-upper]
 
 An unmatched closing brace, another call or word immediately after a complete
-call, or a semicolon after a complete statement is rejected. [fixture:
-c4/lex-after-boundary-call] [fixture: c4/lex-after-boundary-double-close]
-[fixture: c4/lex-after-boundary-double-semicolon] [fixture:
+call, or a semicolon after a complete statement is rejected.
+
+[fixture: c4/lex-after-boundary-call] [fixture:
+c4/lex-after-boundary-double-close] [fixture:
+c4/lex-after-boundary-double-semicolon] [fixture:
 c4/lex-after-boundary-semicolon] [fixture:
 c4/lex-after-boundary-semicolon-spaced] [fixture: c4/lex-after-boundary-word]
 [fixture: c4/lex-after-component-call] [fixture:
@@ -11910,7 +13430,9 @@ c4/gram-two-statements-on-line] [fixture: c4/gram-title-adjacent-person]
 
 A closed directive or a percent-pair comment after the final call or boundary
 does not change its Db, and an unclosed percent-brace suffix can be removed
-through end of input. [fixture: c4/lex-after-boundary-comment] [fixture:
+through end of input.
+
+[fixture: c4/lex-after-boundary-comment] [fixture:
 c4/lex-after-boundary-comment-glued] [fixture: c4/lex-after-boundary-directive]
 [fixture: c4/lex-after-boundary-directive-unclosed] [fixture:
 c4/lex-after-boundary-directive-word-unclosed] [fixture:
@@ -11953,12 +13475,13 @@ c4/db-unclosed-directive-at-end] [fixture:
 c4/lex-comment-unclosed-percent-brace]
 
 A nonempty word or punctuation fragment between the header and its required line
-break is rejected. [fixture: c4/gram-grid-ampersand-entity-header-line]
-[fixture: c4/gram-grid-arrow-header-line] [fixture:
-c4/gram-grid-arrow-spaced-header-line] [fixture:
-c4/gram-grid-backslash-header-line] [fixture: c4/gram-grid-backtick-header-line]
-[fixture: c4/gram-grid-bom-header-line] [fixture:
-c4/gram-grid-classdef-rule-header-line] [fixture:
+break is rejected.
+
+[fixture: c4/gram-grid-ampersand-entity-header-line] [fixture:
+c4/gram-grid-arrow-header-line] [fixture: c4/gram-grid-arrow-spaced-header-line]
+[fixture: c4/gram-grid-backslash-header-line] [fixture:
+c4/gram-grid-backtick-header-line] [fixture: c4/gram-grid-bom-header-line]
+[fixture: c4/gram-grid-classdef-rule-header-line] [fixture:
 c4/gram-grid-close-brace-header-line] [fixture:
 c4/gram-grid-close-round-header-line] [fixture:
 c4/gram-grid-close-square-header-line] [fixture: c4/gram-grid-colon-header-line]
@@ -12005,6 +13528,7 @@ c4/gram-grid-spaces-header-line] [fixture: c4/gram-grid-style-rule-header-line]
 
 A direction token in the statement list is rejected even when its line also
 contains words, punctuation, whitespace, quotes, entities, or directives.
+
 [fixture: c4/gram-grid-ampersand-entity-direction-line] [fixture:
 c4/gram-grid-arrow-direction-line] [fixture:
 c4/gram-grid-arrow-spaced-direction-line] [fixture:
@@ -12061,6 +13585,7 @@ c4/gram-grid-tab-direction-line] [fixture: c4/gram-grid-vt-direction-line]
 
 Header spelling is case sensitive; lowercase, uppercase, or mixed-case spellings
 and glued word, digit, underscore, dash, or non-ASCII suffixes are rejected.
+
 [fixture: c4/header-component-dash-suffix] [fixture:
 c4/header-component-digit-suffix] [fixture:
 c4/header-component-glued-keyword-suffix] [fixture: c4/header-component-lower]
@@ -12095,6 +13620,7 @@ c4/header-dynamic-underscore-suffix] [fixture: c4/header-dynamic-upper]
 
 Blank lines, whitespace-only lines, comment lines, directive lines and valid
 frontmatter before the header leave the diagram and its C4 type unchanged.
+
 [fixture: c4/header-after-bare-percent-line] [fixture:
 c4/header-after-blank-lines] [fixture: c4/header-after-comment-line] [fixture:
 c4/header-after-directive-line] [fixture: c4/header-after-empty-braces-line]
@@ -12102,41 +13628,47 @@ c4/header-after-directive-line] [fixture: c4/header-after-empty-braces-line]
 c4/header-after-whitespace-line]
 
 A leading hash line, semicolon line or single-percent line is not a C4 comment
-and rejects the input. [fixture: c4/header-after-hash-line] [fixture:
-c4/header-after-semicolon-line] [fixture: c4/lex-comment-hash] [fixture:
-c4/lex-comment-single-percent]
+and rejects the input.
+
+[fixture: c4/header-after-hash-line] [fixture: c4/header-after-semicolon-line]
+[fixture: c4/lex-comment-hash] [fixture: c4/lex-comment-single-percent]
 
 Invalid frontmatter YAML rejects the input before any C4 summary is made.
+
 [fixture: c4/div-frontmatter-invalid-yaml]
 
 A bare percent-pair line before the header is accepted when followed by the
 header or an empty line, but a following line containing spaces can leave it
-unremoved and reject the input. [fixture: c4/header-after-bare-percent-line]
-[fixture: c4/header-leading-percent-before-different-header] [fixture:
+unremoved and reject the input.
+
+[fixture: c4/header-after-bare-percent-line] [fixture:
+c4/header-leading-percent-before-different-header] [fixture:
 c4/header-leading-percent-blank] [fixture: c4/div-leading-percent-space-blank]
 
 Tabs, form feeds, vertical tabs, NBSP, U+3000, U+FEFF, U+2028 and U+2029 around
 statements or on whitespace-only lines are ignored, while CR and CRLF can
-separate statements. [fixture: c4/lex-bom-after-header] [fixture:
-c4/lex-bom-before-header] [fixture: c4/lex-bom-line-end] [fixture:
-c4/lex-bom-line-start] [fixture: c4/lex-bom-text-end] [fixture:
-c4/lex-bom-whitespace-between] [fixture: c4/lex-bom-whitespace-first] [fixture:
-c4/lex-bom-whitespace-last] [fixture: c4/lex-cr-after-header] [fixture:
-c4/lex-cr-before-header] [fixture: c4/lex-cr-between-statements] [fixture:
-c4/lex-cr-line-end] [fixture: c4/lex-cr-line-start] [fixture:
-c4/lex-cr-text-end] [fixture: c4/lex-cr-whitespace-between] [fixture:
-c4/lex-cr-whitespace-first] [fixture: c4/lex-cr-whitespace-last] [fixture:
-c4/lex-crlf-after-header] [fixture: c4/lex-crlf-before-header] [fixture:
-c4/lex-crlf-line-end] [fixture: c4/lex-crlf-text-end] [fixture:
-c4/lex-crlf-whitespace-between] [fixture: c4/lex-crlf-whitespace-first]
-[fixture: c4/lex-crlf-whitespace-last] [fixture: c4/lex-ff-after-header]
-[fixture: c4/lex-ff-before-header] [fixture: c4/lex-ff-line-end] [fixture:
-c4/lex-ff-line-start] [fixture: c4/lex-ff-text-end] [fixture:
-c4/lex-ff-whitespace-between] [fixture: c4/lex-ff-whitespace-first] [fixture:
-c4/lex-ff-whitespace-last] [fixture: c4/lex-ideographic-after-header] [fixture:
-c4/lex-ideographic-before-header] [fixture: c4/lex-ideographic-line-end]
-[fixture: c4/lex-ideographic-line-start] [fixture: c4/lex-ideographic-text-end]
-[fixture: c4/lex-ideographic-whitespace-between] [fixture:
+separate statements.
+
+[fixture: c4/lex-bom-after-header] [fixture: c4/lex-bom-before-header] [fixture:
+c4/lex-bom-line-end] [fixture: c4/lex-bom-line-start] [fixture:
+c4/lex-bom-text-end] [fixture: c4/lex-bom-whitespace-between] [fixture:
+c4/lex-bom-whitespace-first] [fixture: c4/lex-bom-whitespace-last] [fixture:
+c4/lex-cr-after-header] [fixture: c4/lex-cr-before-header] [fixture:
+c4/lex-cr-between-statements] [fixture: c4/lex-cr-line-end] [fixture:
+c4/lex-cr-line-start] [fixture: c4/lex-cr-text-end] [fixture:
+c4/lex-cr-whitespace-between] [fixture: c4/lex-cr-whitespace-first] [fixture:
+c4/lex-cr-whitespace-last] [fixture: c4/lex-crlf-after-header] [fixture:
+c4/lex-crlf-before-header] [fixture: c4/lex-crlf-line-end] [fixture:
+c4/lex-crlf-text-end] [fixture: c4/lex-crlf-whitespace-between] [fixture:
+c4/lex-crlf-whitespace-first] [fixture: c4/lex-crlf-whitespace-last] [fixture:
+c4/lex-ff-after-header] [fixture: c4/lex-ff-before-header] [fixture:
+c4/lex-ff-line-end] [fixture: c4/lex-ff-line-start] [fixture:
+c4/lex-ff-text-end] [fixture: c4/lex-ff-whitespace-between] [fixture:
+c4/lex-ff-whitespace-first] [fixture: c4/lex-ff-whitespace-last] [fixture:
+c4/lex-ideographic-after-header] [fixture: c4/lex-ideographic-before-header]
+[fixture: c4/lex-ideographic-line-end] [fixture: c4/lex-ideographic-line-start]
+[fixture: c4/lex-ideographic-text-end] [fixture:
+c4/lex-ideographic-whitespace-between] [fixture:
 c4/lex-ideographic-whitespace-first] [fixture:
 c4/lex-ideographic-whitespace-last] [fixture: c4/lex-ls-after-header] [fixture:
 c4/lex-ls-before-header] [fixture: c4/lex-ls-line-end] [fixture:
@@ -12161,16 +13693,18 @@ c4/lex-vt-whitespace-between] [fixture: c4/lex-vt-whitespace-first] [fixture:
 c4/lex-vt-whitespace-last]
 
 A tab, form feed, vertical tab, NBSP, U+3000, U+FEFF, U+2028 or U+2029 alone
-does not separate two diagram statements. [fixture:
-c4/lex-bom-between-statements] [fixture: c4/lex-ff-between-statements] [fixture:
-c4/lex-ideographic-between-statements] [fixture: c4/lex-ls-between-statements]
-[fixture: c4/lex-nbsp-between-statements] [fixture:
-c4/lex-ps-between-statements] [fixture: c4/lex-tab-between-statements] [fixture:
-c4/lex-vt-between-statements]
+does not separate two diagram statements.
+
+[fixture: c4/lex-bom-between-statements] [fixture: c4/lex-ff-between-statements]
+[fixture: c4/lex-ideographic-between-statements] [fixture:
+c4/lex-ls-between-statements] [fixture: c4/lex-nbsp-between-statements]
+[fixture: c4/lex-ps-between-statements] [fixture: c4/lex-tab-between-statements]
+[fixture: c4/lex-vt-between-statements]
 
 U+0085 outside a text argument is not whitespace and rejects the input,
-including before the header or on an otherwise empty line. [fixture:
-c4/lex-nel-after-header] [fixture: c4/lex-nel-before-header] [fixture:
+including before the header or on an otherwise empty line.
+
+[fixture: c4/lex-nel-after-header] [fixture: c4/lex-nel-before-header] [fixture:
 c4/lex-nel-between-statements] [fixture: c4/lex-nel-line-end] [fixture:
 c4/lex-nel-line-start] [fixture: c4/lex-nel-text-end] [fixture:
 c4/lex-nel-whitespace-between] [fixture: c4/lex-nel-whitespace-first] [fixture:
@@ -12178,8 +13712,10 @@ c4/lex-nel-whitespace-last]
 
 An inline percent-pair comment after a header or diagram statement consumes its
 line break, so a following statement or boundary opening can be rejected even
-with an empty line between them. [fixture: c4/header-component-comment-glued]
-[fixture: c4/header-component-comment-on-header-line] [fixture:
+with an empty line between them.
+
+[fixture: c4/header-component-comment-glued] [fixture:
+c4/header-component-comment-on-header-line] [fixture:
 c4/header-container-comment-glued] [fixture:
 c4/header-container-comment-on-header-line] [fixture:
 c4/header-context-comment-glued] [fixture:
@@ -12196,18 +13732,23 @@ c4/div-boundary-comment-before-next-statement] [fixture:
 c4/div-diagram-comment-u2028] [fixture: c4/div-diagram-comment-u2029]
 
 A whitespace-only line after an inline comment can supply the missing line break
-and restore the following statement. [fixture:
-c4/header-header-comment-spaces-recovery] [fixture:
+and restore the following statement.
+
+[fixture: c4/header-header-comment-spaces-recovery] [fixture:
 c4/lex-comment-between-spaces-recovery]
 
 A boundary closing brace may follow a child directly, or after a comment that
-consumed the intervening line break. [fixture:
-c4/gram-boundary-close-without-newline] [fixture: c4/lex-comment-before-close]
+consumed the intervening line break.
+
+[fixture: c4/gram-boundary-close-without-newline] [fixture:
+c4/lex-comment-before-close]
 
 On an ordinary statement line, lowercase `direction` followed by whitespace and
 `TB`, `BT`, `RL` or `LR` takes precedence over a title, element, boundary,
 description opening or inline comment, including inside longer words and with
-trailing text. [fixture: c4/gram-direction-bt-inside-label] [fixture:
+trailing text.
+
+[fixture: c4/gram-direction-bt-inside-label] [fixture:
 c4/gram-direction-bt-line] [fixture: c4/gram-direction-bt-prefix] [fixture:
 c4/gram-direction-comment] [fixture:
 c4/gram-direction-in-description-opening-line] [fixture:
@@ -12224,7 +13765,9 @@ c4/gram-boundary-next-line-direction]
 
 Uppercase DIRECTION, a lowercase direction value or a value on the next line
 also fails to form a diagram statement, while lowercase `direction tb` stays
-literal inside a title. [fixture: c4/gram-direction-bt-lower-value] [fixture:
+literal inside a title.
+
+[fixture: c4/gram-direction-bt-lower-value] [fixture:
 c4/gram-direction-bt-upper] [fixture: c4/gram-direction-lr-lower-value]
 [fixture: c4/gram-direction-lr-upper] [fixture:
 c4/gram-direction-rl-lower-value] [fixture: c4/gram-direction-rl-upper]
@@ -12234,63 +13777,78 @@ c4/gram-direction-tb-upper] [fixture: c4/gram-direction-value-next-line]
 
 Direction text on a later line of an already open quoted or bare argument or
 description block stays literal, and a whole direction comment line removed
-before parsing changes nothing. [fixture: c4/lex-quote-multiline-direction]
-[fixture: c4/lex-bare-multiline-direction] [fixture:
+before parsing changes nothing.
+
+[fixture: c4/lex-quote-multiline-direction] [fixture:
+c4/lex-bare-multiline-direction] [fixture:
 c4/lex-direction-in-multiline-description-block] [fixture:
 c4/gram-direction-comment-removed]
 
 U+2028 or U+2029 before direction text prevents its same-line prefix match, so
 title and quoted-argument text after that separator can keep `direction TB`
-literally. [fixture: c4/gram-title-direction-after-ls] [fixture:
+literally.
+
+[fixture: c4/gram-title-direction-after-ls] [fixture:
 c4/gram-title-direction-after-ps] [fixture: c4/lex-quoted-direction-after-ls]
 [fixture: c4/lex-title-value-ls]
 
 An unclosed init directive on a line before a call is rejected, with or without
-a colon after init. [fixture: c4/lex-directive-unclosed-next-line] [fixture:
+a colon after init.
+
+[fixture: c4/lex-directive-unclosed-next-line] [fixture:
 c4/lex-directive-colon-unclosed-next-line]
 
 ### Positional arguments and named attributes
 
 A named alias or endpoint override changes the key used by later definitions,
 while a boundary child keeps the parent alias selected before the override.
+
 [fixture: c4/db-shape-alias-named-change] [fixture:
 c4/db-rel-endpoint-named-change] [fixture: c4/db-boundary-alias-named-change]
 
 Named keys are case sensitive, so `$Tags` and `$tags` remain separate
-attributes. [fixture: c4/db-named-case-sensitive]
+attributes.
+
+[fixture: c4/db-named-case-sensitive]
 
 The Person and System families, including their external, database and queue
 forms, take positional arguments in the order `alias`, `label.text`,
-`descr.text`, `sprite`, `tags`, `link`. [fixture: c4/db-keyword-person-ext]
-[fixture: c4/db-keyword-person] [fixture: c4/db-keyword-systemqueue-ext]
-[fixture: c4/db-keyword-systemdb-ext] [fixture: c4/db-keyword-system-ext]
-[fixture: c4/db-keyword-systemqueue] [fixture: c4/db-keyword-systemdb] [fixture:
-c4/db-keyword-system] [fixture: c4/spec-c4-diagram-f0d3f937] [fixture:
-c4/spec-c4-person-658cf221] [fixture: c4/spec-c4-person-a1d68b7d] [fixture:
-c4/spec-c4-person-ext-31a32f69] [fixture: c4/spec-c4-person-ext-cde14a2b]
-[fixture: c4/spec-c4-system-4d9f1bce] [fixture: c4/spec-c4-system-553fd5b2]
-[fixture: c4/spec-c4-system-5e851605] [fixture: c4/spec-c4-system-61b143cb]
-[fixture: c4/spec-c4-system-62c3dca2] [fixture: c4/spec-c4-system-7e1bd7e9]
-[fixture: c4/spec-c4-system-7f4c3d18] [fixture: c4/spec-c4-system-84ca45f9]
-[fixture: c4/spec-c4-system-af636454] [fixture: c4/spec-c4-system-b5a30fc8]
-[fixture: c4/spec-c4-system-ca506508] [fixture: c4/spec-c4-system-f240d0bd]
+`descr.text`, `sprite`, `tags`, `link`.
+
+[fixture: c4/db-keyword-person-ext] [fixture: c4/db-keyword-person] [fixture:
+c4/db-keyword-systemqueue-ext] [fixture: c4/db-keyword-systemdb-ext] [fixture:
+c4/db-keyword-system-ext] [fixture: c4/db-keyword-systemqueue] [fixture:
+c4/db-keyword-systemdb] [fixture: c4/db-keyword-system] [fixture:
+c4/spec-c4-diagram-f0d3f937] [fixture: c4/spec-c4-person-658cf221] [fixture:
+c4/spec-c4-person-a1d68b7d] [fixture: c4/spec-c4-person-ext-31a32f69] [fixture:
+c4/spec-c4-person-ext-cde14a2b] [fixture: c4/spec-c4-system-4d9f1bce] [fixture:
+c4/spec-c4-system-553fd5b2] [fixture: c4/spec-c4-system-5e851605] [fixture:
+c4/spec-c4-system-61b143cb] [fixture: c4/spec-c4-system-62c3dca2] [fixture:
+c4/spec-c4-system-7e1bd7e9] [fixture: c4/spec-c4-system-7f4c3d18] [fixture:
+c4/spec-c4-system-84ca45f9] [fixture: c4/spec-c4-system-af636454] [fixture:
+c4/spec-c4-system-b5a30fc8] [fixture: c4/spec-c4-system-ca506508] [fixture:
+c4/spec-c4-system-f240d0bd]
 
 `Boundary` takes positional arguments in the order `alias`, `label.text`,
-`type.text`, `tags`, `link`. [fixture: c4/db-keyword-boundary] [fixture:
-c4/spec-c4-boundary-08686298] [fixture: c4/spec-c4-boundary-8c562ee4]
+`type.text`, `tags`, `link`.
+
+[fixture: c4/db-keyword-boundary] [fixture: c4/spec-c4-boundary-08686298]
+[fixture: c4/spec-c4-boundary-8c562ee4]
 
 `Enterprise_Boundary`, `System_Boundary`, `Container_Boundary` take positional
-arguments in the order `alias`, `label.text`, `tags`, `link`. [fixture:
-c4/db-keyword-enterprise-boundary] [fixture: c4/db-keyword-system-boundary]
-[fixture: c4/db-keyword-container-boundary]
+arguments in the order `alias`, `label.text`, `tags`, `link`.
+
+[fixture: c4/db-keyword-enterprise-boundary] [fixture:
+c4/db-keyword-system-boundary] [fixture: c4/db-keyword-container-boundary]
 
 The Container and Component families, including their external, database and
 queue forms, take positional arguments in the order `alias`, `label.text`,
-`techn.text`, `descr.text`, `sprite`, `tags`, `link`. [fixture:
-c4/db-keyword-containerqueue-ext] [fixture: c4/db-keyword-containerdb-ext]
-[fixture: c4/db-keyword-container-ext] [fixture: c4/db-keyword-containerqueue]
-[fixture: c4/db-keyword-containerdb] [fixture: c4/db-keyword-container]
-[fixture: c4/db-keyword-componentqueue-ext] [fixture:
+`techn.text`, `descr.text`, `sprite`, `tags`, `link`.
+
+[fixture: c4/db-keyword-containerqueue-ext] [fixture:
+c4/db-keyword-containerdb-ext] [fixture: c4/db-keyword-container-ext] [fixture:
+c4/db-keyword-containerqueue] [fixture: c4/db-keyword-containerdb] [fixture:
+c4/db-keyword-container] [fixture: c4/db-keyword-componentqueue-ext] [fixture:
 c4/db-keyword-componentdb-ext] [fixture: c4/db-keyword-component-ext] [fixture:
 c4/db-keyword-componentqueue] [fixture: c4/db-keyword-componentdb] [fixture:
 c4/db-keyword-component] [fixture: c4/docs-syntax-c4-e233a726] [fixture:
@@ -12317,14 +13875,17 @@ c4/spec-c4-container-e58a9a00] [fixture: c4/spec-c4-container-eae6e364]
 
 `Deployment_Node`, `Node`, `Node_L`, `Node_R` take positional arguments in the
 order `alias`, `label.text`, `type.text`, `descr.text`, `ignored sprite`,
-`tags`, `link`. [fixture: c4/db-keyword-deployment-node] [fixture:
-c4/db-keyword-node] [fixture: c4/db-keyword-node-l] [fixture:
-c4/db-keyword-node-r] [fixture: c4/demo-c4context-1d531a27] [fixture:
-c4/docs-syntax-c4-90f106b9]
+`tags`, `link`.
+
+[fixture: c4/db-keyword-deployment-node] [fixture: c4/db-keyword-node] [fixture:
+c4/db-keyword-node-l] [fixture: c4/db-keyword-node-r] [fixture:
+c4/demo-c4context-1d531a27] [fixture: c4/docs-syntax-c4-90f106b9]
 
 Relationship keywords other than RelIndex take positional arguments in the order
 `from`, `to`, `label.text`, `techn.text`, `descr.text`, `sprite`, `tags`,
-`link`. [fixture: c4/db-keyword-rel] [fixture: c4/db-keyword-birel] [fixture:
+`link`.
+
+[fixture: c4/db-keyword-rel] [fixture: c4/db-keyword-birel] [fixture:
 c4/db-keyword-rel-up] [fixture: c4/db-keyword-rel-u] [fixture:
 c4/db-keyword-rel-down] [fixture: c4/db-keyword-rel-d] [fixture:
 c4/db-keyword-rel-left] [fixture: c4/db-keyword-rel-l] [fixture:
@@ -12333,46 +13894,59 @@ c4/db-keyword-rel-back] [fixture: c4/spec-c4-boundary-e7bc47fe]
 
 `RelIndex` takes positional arguments in the order `discarded index`, `from`,
 `to`, `label.text`, `techn.text`, `descr.text`, `sprite`, `tags`, `link`.
+
 [fixture: c4/db-keyword-relindex]
 
 `UpdateElementStyle` takes positional arguments in the order `target alias`,
 `bgColor`, `fontColor`, `borderColor`, `shadowing`, `shape`, `sprite`, `techn`,
-`legendText`, `legendSprite`. [fixture: c4/db-keyword-updateelementstyle]
+`legendText`, `legendSprite`.
+
+[fixture: c4/db-keyword-updateelementstyle]
 
 `UpdateRelStyle` takes positional arguments in the order `target from`,
-`target to`, `textColor`, `lineColor`, `offsetX`, `offsetY`. [fixture:
-c4/db-keyword-updaterelstyle]
+`target to`, `textColor`, `lineColor`, `offsetX`, `offsetY`.
+
+[fixture: c4/db-keyword-updaterelstyle]
 
 `UpdateLayoutConfig` takes positional arguments in the order `c4ShapeInRow`,
-`c4BoundaryInRow`. [fixture: c4/db-keyword-updatelayoutconfig]
+`c4BoundaryInRow`.
+
+[fixture: c4/db-keyword-updatelayoutconfig]
 
 Fixed boundary keywords set their type to `ENTERPRISE`, `SYSTEM`, or
 `CONTAINER`, while `Node` and `Deployment_Node` use nodeType `node`, `Node_L`
-uses `nodeL`, and `Node_R` uses `nodeR`. [fixture:
-c4/db-keyword-enterprise-boundary] [fixture: c4/db-keyword-system-boundary]
-[fixture: c4/db-keyword-container-boundary] [fixture: c4/db-keyword-node]
-[fixture: c4/db-keyword-deployment-node] [fixture: c4/db-keyword-node-l]
-[fixture: c4/db-keyword-node-r] [fixture: c4/docs-syntax-c4-bc80e69a]
+uses `nodeL`, and `Node_R` uses `nodeR`.
+
+[fixture: c4/db-keyword-enterprise-boundary] [fixture:
+c4/db-keyword-system-boundary] [fixture: c4/db-keyword-container-boundary]
+[fixture: c4/db-keyword-node] [fixture: c4/db-keyword-deployment-node] [fixture:
+c4/db-keyword-node-l] [fixture: c4/db-keyword-node-r] [fixture:
+c4/docs-syntax-c4-bc80e69a]
 
 `Person` and `Person_Ext` set `typeC4Shape.text` to `person` and
-`external_person` respectively. [fixture: c4/db-keyword-person] [fixture:
-c4/db-keyword-person-ext] [fixture: c4/spec-c4-person-c3534964] [fixture:
-c4/spec-c4-person-ext-403c6383]
+`external_person` respectively.
+
+[fixture: c4/db-keyword-person] [fixture: c4/db-keyword-person-ext] [fixture:
+c4/spec-c4-person-c3534964] [fixture: c4/spec-c4-person-ext-403c6383]
 
 `System`, `SystemDb`, `SystemQueue` set their shape kinds to `system`,
 `system_db`, and `system_queue`, and their `_Ext` forms prefix that kind with
-`external_`. [fixture: c4/db-keyword-system] [fixture: c4/db-keyword-systemdb]
-[fixture: c4/db-keyword-systemqueue] [fixture: c4/db-keyword-system-ext]
-[fixture: c4/db-keyword-systemdb-ext] [fixture: c4/db-keyword-systemqueue-ext]
-[fixture: c4/spec-c4-system-4c688f50] [fixture: c4/spec-c4-system-6500d002]
-[fixture: c4/spec-c4-system-8ae77b48] [fixture: c4/spec-c4-system-9c3b4db9]
-[fixture: c4/spec-c4-system-cb5e70a4] [fixture: c4/spec-c4-system-eb1a0dc9]
+`external_`.
+
+[fixture: c4/db-keyword-system] [fixture: c4/db-keyword-systemdb] [fixture:
+c4/db-keyword-systemqueue] [fixture: c4/db-keyword-system-ext] [fixture:
+c4/db-keyword-systemdb-ext] [fixture: c4/db-keyword-systemqueue-ext] [fixture:
+c4/spec-c4-system-4c688f50] [fixture: c4/spec-c4-system-6500d002] [fixture:
+c4/spec-c4-system-8ae77b48] [fixture: c4/spec-c4-system-9c3b4db9] [fixture:
+c4/spec-c4-system-cb5e70a4] [fixture: c4/spec-c4-system-eb1a0dc9]
 
 `Container`, `ContainerDb`, `ContainerQueue` set their shape kinds to
 `container`, `container_db`, and `container_queue`, and their `_Ext` forms
-prefix that kind with `external_`. [fixture: c4/db-keyword-container] [fixture:
-c4/db-keyword-containerdb] [fixture: c4/db-keyword-containerqueue] [fixture:
-c4/db-keyword-container-ext] [fixture: c4/db-keyword-containerdb-ext] [fixture:
+prefix that kind with `external_`.
+
+[fixture: c4/db-keyword-container] [fixture: c4/db-keyword-containerdb]
+[fixture: c4/db-keyword-containerqueue] [fixture: c4/db-keyword-container-ext]
+[fixture: c4/db-keyword-containerdb-ext] [fixture:
 c4/db-keyword-containerqueue-ext] [fixture: c4/demo-c4context-b284cb21]
 [fixture: c4/docs-syntax-c4-96b1a834] [fixture: c4/spec-c4-container-40136510]
 [fixture: c4/spec-c4-container-7a65e408] [fixture:
@@ -12382,9 +13956,11 @@ c4/spec-c4-container-e58a9a00]
 
 `Component`, `ComponentDb`, `ComponentQueue` set their shape kinds to
 `component`, `component_db`, and `component_queue`, and their `_Ext` forms
-prefix that kind with `external_`. [fixture: c4/db-keyword-component] [fixture:
-c4/db-keyword-componentdb] [fixture: c4/db-keyword-componentqueue] [fixture:
-c4/db-keyword-component-ext] [fixture: c4/db-keyword-componentdb-ext] [fixture:
+prefix that kind with `external_`.
+
+[fixture: c4/db-keyword-component] [fixture: c4/db-keyword-componentdb]
+[fixture: c4/db-keyword-componentqueue] [fixture: c4/db-keyword-component-ext]
+[fixture: c4/db-keyword-componentdb-ext] [fixture:
 c4/db-keyword-componentqueue-ext] [fixture: c4/docs-syntax-c4-e233a726]
 [fixture: c4/spec-c4-component-0da5aed2] [fixture:
 c4/spec-c4-component-469fb648] [fixture: c4/spec-c4-component-67febb82]
@@ -12397,8 +13973,10 @@ c4/spec-c4-component-f06e3225] [fixture: c4/spec-c4-component-f8fbb57a]
 
 `Rel` and `RelIndex` set type `rel`, `BiRel` sets `birel`, each short or long
 directional form sets `rel_u`, `rel_d`, `rel_l`, or `rel_r`, and `Rel_Back` sets
-`rel_b`. [fixture: c4/db-keyword-rel] [fixture: c4/db-keyword-relindex]
-[fixture: c4/db-keyword-birel] [fixture: c4/db-keyword-rel-u] [fixture:
+`rel_b`.
+
+[fixture: c4/db-keyword-rel] [fixture: c4/db-keyword-relindex] [fixture:
+c4/db-keyword-birel] [fixture: c4/db-keyword-rel-u] [fixture:
 c4/db-keyword-rel-up] [fixture: c4/db-keyword-rel-d] [fixture:
 c4/db-keyword-rel-down] [fixture: c4/db-keyword-rel-l] [fixture:
 c4/db-keyword-rel-left] [fixture: c4/db-keyword-rel-r] [fixture:
@@ -12406,15 +13984,17 @@ c4/db-keyword-rel-right] [fixture: c4/db-keyword-rel-back] [fixture:
 c4/demo-c4context-49481a12]
 
 Single commas separate arguments, an opening comma or a `,,` token supplies an
-empty argument, and adjacent quoted or named arguments need no comma. [fixture:
-c4/lex-arguments-no-comma] [fixture: c4/lex-arguments-spaces-between-strings]
-[fixture: c4/lex-arguments-many-commas] [fixture: c4/lex-double-comma] [fixture:
-c4/lex-trailing-comma] [fixture: c4/lex-empty-before-named] [fixture:
-c4/lex-quoted-empty-before-bare] [fixture: c4/gram-person-comma-only] [fixture:
-c4/gram-person-one-empty-string]
+empty argument, and adjacent quoted or named arguments need no comma.
+
+[fixture: c4/lex-arguments-no-comma] [fixture:
+c4/lex-arguments-spaces-between-strings] [fixture: c4/lex-arguments-many-commas]
+[fixture: c4/lex-double-comma] [fixture: c4/lex-trailing-comma] [fixture:
+c4/lex-empty-before-named] [fixture: c4/lex-quoted-empty-before-bare] [fixture:
+c4/gram-person-comma-only] [fixture: c4/gram-person-one-empty-string]
 
 A bare argument consumes text through the next comma, including a closing
 parenthesis or a line break, so a final bare argument needs a following comma.
+
 [fixture: c4/gram-arguments-bare-final] [fixture:
 c4/gram-arguments-bare-final-before-comma] [fixture:
 c4/lex-bare-last-with-comma] [fixture: c4/lex-bare-across-close-and-line]
@@ -12427,12 +14007,15 @@ c4/gram-arguments-boundary-bare] [fixture: c4/gram-arguments-node-bare]
 c4/gram-arguments-rel-style-bare] [fixture: c4/gram-arguments-layout-bare]
 
 A leading tab or a longer bare fragment wins over a following quote or dollar
-sign, which remains part of the bare text. [fixture:
-c4/lex-bare-tab-before-quote] [fixture: c4/lex-bare-before-dollar-is-text]
-[fixture: c4/lex-empty-description-form-in-bare-argument]
+sign, which remains part of the bare text.
+
+[fixture: c4/lex-bare-tab-before-quote] [fixture:
+c4/lex-bare-before-dollar-is-text] [fixture:
+c4/lex-empty-description-form-in-bare-argument]
 
 Omitted optional arguments keep the Db defaults, an empty required label stays
 empty, and a relationship with a missing endpoint or label adds no entry.
+
 [fixture: c4/gram-rel-too-few-quoted] [fixture: c4/gram-rel-empty-label]
 [fixture: c4/gram-arguments-boundary-below] [fixture:
 c4/gram-arguments-boundary-empty] [fixture: c4/gram-arguments-component-below]
@@ -12449,13 +14032,15 @@ c4/gram-arguments-node-empty] [fixture: c4/gram-arguments-person-below]
 c4/gram-arguments-rel-style-below] [fixture: c4/gram-arguments-rel-style-empty]
 
 The check for a missing endpoint or label also applies after `RelIndex` discards
-its index; supplied empty strings count as arguments. [fixture:
-c4/gram-arguments-index-one] [fixture: c4/gram-rel-too-few-quoted] [fixture:
-c4/gram-rel-empty-label] [fixture: c4/gram-arguments-rel-empty]
+its index; supplied empty strings count as arguments.
+
+[fixture: c4/gram-arguments-index-one] [fixture: c4/gram-rel-too-few-quoted]
+[fixture: c4/gram-rel-empty-label] [fixture: c4/gram-arguments-rel-empty]
 
 A missing call parenthesis or quote is rejected unless a preceding bare argument
-absorbs the apparent call as text. [fixture:
-c4/gram-arguments-boundary-missing-close] [fixture:
+absorbs the apparent call as text.
+
+[fixture: c4/gram-arguments-boundary-missing-close] [fixture:
 c4/gram-arguments-component-missing-close] [fixture:
 c4/gram-arguments-container-missing-close] [fixture:
 c4/gram-arguments-element-style-missing-close] [fixture:
@@ -12468,8 +14053,9 @@ c4/gram-arguments-rel-style-missing-close] [fixture: c4/lex-missing-open]
 [fixture: c4/lex-unclosed-quote] [fixture: c4/lex-unclosed-named]
 
 A comma ends a bare positional argument and shifts the remaining arguments,
-including endpoints after a RelIndex index. [fixture:
-c4/db-grid-comma-text-argument-bare] [fixture:
+including endpoints after a RelIndex index.
+
+[fixture: c4/db-grid-comma-text-argument-bare] [fixture:
 c4/db-grid-punct-text-argument-bare] [fixture:
 c4/db-grid-comma-alias-argument-bare] [fixture:
 c4/db-grid-punct-alias-argument-bare] [fixture:
@@ -12480,21 +14066,26 @@ c4/db-grid-punct-index-argument-bare]
 
 The first equals sign ends a named key, so an equals sign or an HTML attribute
 assignment inserted into that key is rejected rather than kept in its name.
+
 [fixture: c4/gram-grid-equals-named-key] [fixture:
 c4/gram-grid-html-attribute-named-key] [fixture: c4/gram-grid-punct-named-key]
 
 A double quote ends a quoted positional argument, and the following bare
-fragment becomes another argument even without a comma. [fixture:
-c4/db-grid-quote-text-argument-quoted] [fixture:
+fragment becomes another argument even without a comma.
+
+[fixture: c4/db-grid-quote-text-argument-quoted] [fixture:
 c4/db-grid-quote-alias-argument-quoted] [fixture:
 c4/db-grid-quote-plain-argument-quoted] [fixture:
 c4/db-grid-quote-index-argument-quoted]
 
 A double quote ends a named value; a following bare fragment is not a
-continuation of that value and is rejected. [fixture:
-c4/gram-grid-quote-named-value] [fixture: c4/gram-grid-quote-style-value]
+continuation of that value and is rejected.
+
+[fixture: c4/gram-grid-quote-named-value] [fixture:
+c4/gram-grid-quote-style-value]
 
 An empty positional argument is kept as the empty string rather than dropped.
+
 [fixture: c4/db-grid-empty-text-argument-bare] [fixture:
 c4/db-grid-empty-alias-argument-bare] [fixture:
 c4/db-grid-empty-plain-argument-bare] [fixture:
@@ -12511,46 +14102,57 @@ c4/spec-c4-container-a5b85126] [fixture: c4/spec-c4-container-cef673d4]
 c4/spec-c4-container-e174083e] [fixture: c4/spec-c4-container-eae6e364]
 
 An empty named key is allowed and selects the attribute whose name is the empty
-string. [fixture: c4/db-grid-empty-named-key] [fixture: c4/lex-named-empty-key]
+string.
+
+[fixture: c4/db-grid-empty-named-key] [fixture: c4/lex-named-empty-key]
 
 A literally empty named value is rejected, while a nonempty value containing
-only whitespace is trimmed to an empty string. [fixture:
-c4/gram-grid-empty-named-value] [fixture: c4/gram-grid-empty-style-value]
-[fixture: c4/gram-named-empty-value] [fixture: c4/lex-named-whitespace-value]
+only whitespace is trimmed to an empty string.
+
+[fixture: c4/gram-grid-empty-named-value] [fixture:
+c4/gram-grid-empty-style-value] [fixture: c4/gram-named-empty-value] [fixture:
+c4/lex-named-whitespace-value]
 
 An empty call or a call with only an unterminated bare argument has no complete
-attribute list and is rejected. [fixture: c4/gram-arguments-boundary-none]
-[fixture: c4/gram-arguments-boundary-one] [fixture:
-c4/gram-arguments-component-none] [fixture: c4/gram-arguments-component-one]
-[fixture: c4/gram-arguments-container-none] [fixture:
-c4/gram-arguments-container-one] [fixture: c4/gram-arguments-element-style-none]
-[fixture: c4/gram-arguments-element-style-one] [fixture:
-c4/gram-arguments-index-none] [fixture: c4/gram-arguments-layout-none] [fixture:
-c4/gram-arguments-node-none] [fixture: c4/gram-arguments-node-one] [fixture:
-c4/gram-arguments-person-none] [fixture: c4/gram-arguments-person-one] [fixture:
-c4/gram-arguments-rel-none] [fixture: c4/gram-arguments-rel-one] [fixture:
-c4/gram-arguments-rel-style-none] [fixture: c4/gram-arguments-rel-style-one]
+attribute list and is rejected.
+
+[fixture: c4/gram-arguments-boundary-none] [fixture:
+c4/gram-arguments-boundary-one] [fixture: c4/gram-arguments-component-none]
+[fixture: c4/gram-arguments-component-one] [fixture:
+c4/gram-arguments-container-none] [fixture: c4/gram-arguments-container-one]
+[fixture: c4/gram-arguments-element-style-none] [fixture:
+c4/gram-arguments-element-style-one] [fixture: c4/gram-arguments-index-none]
+[fixture: c4/gram-arguments-layout-none] [fixture: c4/gram-arguments-node-none]
+[fixture: c4/gram-arguments-node-one] [fixture: c4/gram-arguments-person-none]
+[fixture: c4/gram-arguments-person-one] [fixture: c4/gram-arguments-rel-none]
+[fixture: c4/gram-arguments-rel-one] [fixture: c4/gram-arguments-rel-style-none]
+[fixture: c4/gram-arguments-rel-style-one]
 
 Whitespace after a quoted argument or a line break immediately after `(` can
 start a bare fragment that absorbs the closing parenthesis and rejects the call.
+
 [fixture: c4/lex-bare-after-quoted-spaces] [fixture:
 c4/gram-statement-newline-in-call]
 
 A backslash does not escape a double quote in a quoted argument, so the quote
-closes the value and can leave an invalid suffix. [fixture:
-c4/lex-quote-backslash]
+closes the value and can leave an invalid suffix.
+
+[fixture: c4/lex-quote-backslash]
 
 A named argument requires a double-quoted value after `=`; bare or single-quoted
-values and an unfinished `$` argument are rejected. [fixture:
-c4/gram-named-bare-value] [fixture: c4/gram-named-single-quote] [fixture:
-c4/lex-named-open-eof]
+values and an unfinished `$` argument are rejected.
+
+[fixture: c4/gram-named-bare-value] [fixture: c4/gram-named-single-quote]
+[fixture: c4/lex-named-open-eof]
 
 A named key keeps internal commas, closing parentheses, line feeds and
-indentation until its first equals sign. [fixture: c4/lex-named-key-comma-close]
-[fixture: c4/lex-named-key-multiline]
+indentation until its first equals sign.
+
+[fixture: c4/lex-named-key-comma-close] [fixture: c4/lex-named-key-multiline]
 
 Assigning a string to the named key `__proto__` leaves an argument object with
 no own entry, and consuming that object as an optional field throws a TypeError.
+
 [fixture: c4/gram-named-proto] [fixture: c4/gram-named-proto-boundary-type]
 [fixture: c4/gram-named-proto-container-technology] [fixture:
 c4/gram-named-proto-existing-relationship-style] [fixture:
@@ -12560,41 +14162,53 @@ c4/gram-named-proto-node-type] [fixture: c4/gram-named-proto-person-description]
 c4/gram-named-proto-system-boundary-tags]
 
 In a required alias slot, a named `__proto__` argument is retained as a fresh
-empty object `{}`. [fixture: c4/gram-proto-required-alias]
+empty object `{}`.
+
+[fixture: c4/gram-proto-required-alias]
 
 An `UpdateLayoutConfig` argument named `__proto__` has no own value, so
 `parseInt(undefined)` yields `NaN` and leaves its row counter unchanged, while
-the other argument is still processed. [fixture: c4/gram-proto-layout]
+the other argument is still processed.
+
+[fixture: c4/gram-proto-layout]
 
 An empty-entry named object in an unused extra argument or in a style call with
-no matching target is not consumed and does not throw. [fixture:
-c4/gram-proto-unused-extra] [fixture: c4/gram-proto-rel-missing-target]
+no matching target is not consumed and does not throw.
+
+[fixture: c4/gram-proto-unused-extra] [fixture:
+c4/gram-proto-rel-missing-target]
 
 A new Person, deployment node or relationship with no description keeps
 `{ text: "" }`, and a Container with no technology keeps the same empty-text
-wrapper for techn. [fixture: c4/header-context-minimal] [fixture:
-c4/gram-boundary-nested] [fixture: c4/db-rel-self] [fixture:
-c4/spec-c4-named-attributes-bd7f9fb7]
+wrapper for techn.
+
+[fixture: c4/header-context-minimal] [fixture: c4/gram-boundary-nested]
+[fixture: c4/db-rel-self] [fixture: c4/spec-c4-named-attributes-bd7f9fb7]
 
 On a new Container or Component, an omitted description becomes `{ text: "" }`.
+
 [fixture: c4/spec-c4-named-attributes-19f2c0e1] [fixture:
 c4/spec-c4-named-attributes-af0fa0d8]
 
 An omitted Boundary type becomes `{ text: "system" }`, while an omitted
-deployment-node type becomes `{ text: "node" }`. [fixture:
-c4/gram-boundary-nested] [fixture: c4/spec-c4-boundary-826935af]
+deployment-node type becomes `{ text: "node" }`.
+
+[fixture: c4/gram-boundary-nested] [fixture: c4/spec-c4-boundary-826935af]
 
 On newly declared entries, absent sprite, tags and link are omitted rather than
 filled with empty strings; the initial global boundary retains its own null
-defaults. [fixture: c4/header-context-minimal] [fixture:
-c4/gram-boundary-nested] [fixture: c4/db-rel-self]
+defaults.
+
+[fixture: c4/header-context-minimal] [fixture: c4/gram-boundary-nested]
+[fixture: c4/db-rel-self]
 
 ### Text values
 
 Internal spaces, tabs, form feeds, vertical tabs, NBSP, U+3000, U+FEFF, U+2028,
 U+2029, and U+0085 are kept in argument, named-key, title, and accessibility
-text, apart from trimmed ends and accDescr indentation after LF. [fixture:
-c4/db-grid-bom-title] [fixture: c4/db-grid-ff-title] [fixture:
+text, apart from trimmed ends and accDescr indentation after LF.
+
+[fixture: c4/db-grid-bom-title] [fixture: c4/db-grid-ff-title] [fixture:
 c4/db-grid-ideographic-title] [fixture: c4/db-grid-ls-title] [fixture:
 c4/db-grid-nbsp-title] [fixture: c4/db-grid-nel-title] [fixture:
 c4/db-grid-ps-title] [fixture: c4/db-grid-spaces-title] [fixture:
@@ -12691,8 +14305,9 @@ c4/db-grid-ideographic-style-value] [fixture: c4/db-grid-ls-style-value]
 [fixture: c4/db-grid-ps-style-value] [fixture: c4/db-grid-spaces-style-value]
 [fixture: c4/db-grid-tab-style-value] [fixture: c4/db-grid-vt-style-value]
 
-Non-ASCII letters and emoji are kept in text values and named keys. [fixture:
-c4/db-grid-emoji-title] [fixture: c4/db-grid-nonascii-title] [fixture:
+Non-ASCII letters and emoji are kept in text values and named keys.
+
+[fixture: c4/db-grid-emoji-title] [fixture: c4/db-grid-nonascii-title] [fixture:
 c4/db-grid-emoji-acc-description] [fixture: c4/db-grid-nonascii-acc-description]
 [fixture: c4/db-grid-emoji-acc-title] [fixture: c4/db-grid-nonascii-acc-title]
 [fixture: c4/db-grid-emoji-acc-descr] [fixture: c4/db-grid-nonascii-acc-descr]
@@ -12717,9 +14332,10 @@ c4/db-grid-emoji-style-value] [fixture: c4/db-grid-nonascii-style-value]
 c4/db-accdescription-non-ascii] [fixture: c4/db-accdescr-non-ascii]
 
 Digits, `root`, and the words `constructor` and `__proto__` inside a longer text
-stay literal in text values and named keys. [fixture:
-c4/db-grid-constructor-title] [fixture: c4/db-grid-digits-title] [fixture:
-c4/db-grid-proto-title] [fixture: c4/db-grid-root-title] [fixture:
+stay literal in text values and named keys.
+
+[fixture: c4/db-grid-constructor-title] [fixture: c4/db-grid-digits-title]
+[fixture: c4/db-grid-proto-title] [fixture: c4/db-grid-root-title] [fixture:
 c4/db-grid-constructor-acc-description] [fixture:
 c4/db-grid-digits-acc-description] [fixture: c4/db-grid-proto-acc-description]
 [fixture: c4/db-grid-root-acc-description] [fixture:
@@ -12764,14 +14380,16 @@ c4/db-grid-root-named-value] [fixture: c4/db-grid-constructor-style-value]
 
 C4 headers and element keywords, and words from other diagram types such as
 `block`, `class`, `columns`, `end`, `space`, `style`, and `classDef`, stay
-literal inside text values and named keys. [fixture: c4/db-grid-keyword-title]
-[fixture: c4/db-grid-keyword-block-title] [fixture:
-c4/db-grid-keyword-class-title] [fixture: c4/db-grid-keyword-classdef-title]
-[fixture: c4/db-grid-keyword-columns-title] [fixture:
-c4/db-grid-keyword-end-title] [fixture: c4/db-grid-keyword-header-title]
-[fixture: c4/db-grid-keyword-space-title] [fixture:
-c4/db-grid-keyword-style-title] [fixture: c4/db-grid-keyword-acc-description]
-[fixture: c4/db-grid-keyword-block-acc-description] [fixture:
+literal inside text values and named keys.
+
+[fixture: c4/db-grid-keyword-title] [fixture: c4/db-grid-keyword-block-title]
+[fixture: c4/db-grid-keyword-class-title] [fixture:
+c4/db-grid-keyword-classdef-title] [fixture: c4/db-grid-keyword-columns-title]
+[fixture: c4/db-grid-keyword-end-title] [fixture:
+c4/db-grid-keyword-header-title] [fixture: c4/db-grid-keyword-space-title]
+[fixture: c4/db-grid-keyword-style-title] [fixture:
+c4/db-grid-keyword-acc-description] [fixture:
+c4/db-grid-keyword-block-acc-description] [fixture:
 c4/db-grid-keyword-class-acc-description] [fixture:
 c4/db-grid-keyword-classdef-acc-description] [fixture:
 c4/db-grid-keyword-columns-acc-description] [fixture:
@@ -12882,16 +14500,18 @@ c4/db-grid-keyword-style-style-value] [fixture: c4/spec-c4-diagram-e515e297]
 
 Arrows, hyphens, parentheses, square brackets, opening braces, angle brackets,
 colons, pipes, percent signs, single quotes, backslashes, and backticks are kept
-inside text values and named keys. [fixture: c4/db-grid-arrow-title] [fixture:
-c4/db-grid-arrow-spaced-title] [fixture: c4/db-grid-backslash-title] [fixture:
-c4/db-grid-backtick-title] [fixture: c4/db-grid-close-round-title] [fixture:
-c4/db-grid-close-square-title] [fixture: c4/db-grid-colon-title] [fixture:
-c4/db-grid-dash-title] [fixture: c4/db-grid-greater-than-title] [fixture:
-c4/db-grid-less-than-title] [fixture: c4/db-grid-open-brace-title] [fixture:
-c4/db-grid-open-round-title] [fixture: c4/db-grid-open-square-title] [fixture:
-c4/db-grid-percent-title] [fixture: c4/db-grid-pipe-title] [fixture:
-c4/db-grid-single-quote-title] [fixture: c4/db-grid-arrow-acc-description]
-[fixture: c4/db-grid-arrow-spaced-acc-description] [fixture:
+inside text values and named keys.
+
+[fixture: c4/db-grid-arrow-title] [fixture: c4/db-grid-arrow-spaced-title]
+[fixture: c4/db-grid-backslash-title] [fixture: c4/db-grid-backtick-title]
+[fixture: c4/db-grid-close-round-title] [fixture: c4/db-grid-close-square-title]
+[fixture: c4/db-grid-colon-title] [fixture: c4/db-grid-dash-title] [fixture:
+c4/db-grid-greater-than-title] [fixture: c4/db-grid-less-than-title] [fixture:
+c4/db-grid-open-brace-title] [fixture: c4/db-grid-open-round-title] [fixture:
+c4/db-grid-open-square-title] [fixture: c4/db-grid-percent-title] [fixture:
+c4/db-grid-pipe-title] [fixture: c4/db-grid-single-quote-title] [fixture:
+c4/db-grid-arrow-acc-description] [fixture:
+c4/db-grid-arrow-spaced-acc-description] [fixture:
 c4/db-grid-backslash-acc-description] [fixture:
 c4/db-grid-backtick-acc-description] [fixture:
 c4/db-grid-close-round-acc-description] [fixture:
@@ -13066,11 +14686,12 @@ c4/db-grid-open-round-style-value] [fixture: c4/db-grid-open-square-style-value]
 [fixture: c4/db-grid-single-quote-style-value]
 
 A closing brace stays literal in arguments, keys, and line texts, but ends an
-accDescr block and leaves any following text to the statement grammar. [fixture:
-c4/db-grid-close-brace-title] [fixture: c4/db-grid-close-brace-acc-description]
-[fixture: c4/db-grid-close-brace-acc-title] [fixture:
-c4/db-grid-close-brace-acc-descr] [fixture:
-c4/db-grid-close-brace-text-argument-bare] [fixture:
+accDescr block and leaves any following text to the statement grammar.
+
+[fixture: c4/db-grid-close-brace-title] [fixture:
+c4/db-grid-close-brace-acc-description] [fixture:
+c4/db-grid-close-brace-acc-title] [fixture: c4/db-grid-close-brace-acc-descr]
+[fixture: c4/db-grid-close-brace-text-argument-bare] [fixture:
 c4/db-grid-close-brace-alias-argument-bare] [fixture:
 c4/db-grid-close-brace-plain-argument-bare] [fixture:
 c4/db-grid-close-brace-text-argument-quoted] [fixture:
@@ -13083,10 +14704,11 @@ c4/gram-acc-descr-block-braces-inside] [fixture:
 c4/gram-acc-descr-block-after-text-braces-inside]
 
 Commas and punctuation containing commas stay literal in quoted arguments, named
-values, title and accessibility text; commas also stay in named keys. [fixture:
-c4/db-grid-comma-title] [fixture: c4/db-grid-comma-acc-description] [fixture:
-c4/db-grid-comma-acc-title] [fixture: c4/db-grid-comma-acc-descr] [fixture:
-c4/db-grid-comma-acc-descr-block] [fixture:
+values, title and accessibility text; commas also stay in named keys.
+
+[fixture: c4/db-grid-comma-title] [fixture: c4/db-grid-comma-acc-description]
+[fixture: c4/db-grid-comma-acc-title] [fixture: c4/db-grid-comma-acc-descr]
+[fixture: c4/db-grid-comma-acc-descr-block] [fixture:
 c4/db-grid-comma-text-argument-quoted] [fixture:
 c4/db-grid-comma-alias-argument-quoted] [fixture:
 c4/db-grid-comma-plain-argument-quoted] [fixture: c4/db-grid-comma-named-key]
@@ -13099,10 +14721,11 @@ c4/db-grid-punct-alias-argument-quoted] [fixture:
 c4/db-grid-punct-plain-argument-quoted] [fixture: c4/db-grid-punct-named-value]
 [fixture: c4/db-grid-punct-style-value]
 
-An equals sign outside a named-key delimiter is kept in text. [fixture:
-c4/db-grid-equals-title] [fixture: c4/db-grid-equals-acc-description] [fixture:
-c4/db-grid-equals-acc-title] [fixture: c4/db-grid-equals-acc-descr] [fixture:
-c4/db-grid-equals-acc-descr-block] [fixture:
+An equals sign outside a named-key delimiter is kept in text.
+
+[fixture: c4/db-grid-equals-title] [fixture: c4/db-grid-equals-acc-description]
+[fixture: c4/db-grid-equals-acc-title] [fixture: c4/db-grid-equals-acc-descr]
+[fixture: c4/db-grid-equals-acc-descr-block] [fixture:
 c4/db-grid-equals-text-argument-bare] [fixture:
 c4/db-grid-equals-alias-argument-bare] [fixture:
 c4/db-grid-equals-plain-argument-bare] [fixture:
@@ -13112,22 +14735,25 @@ c4/db-grid-equals-plain-argument-quoted] [fixture:
 c4/db-grid-equals-named-value] [fixture: c4/db-grid-equals-style-value]
 
 A double quote stays literal inside a bare argument, a named key, a title, or
-accessibility text. [fixture: c4/db-grid-quote-title] [fixture:
-c4/db-grid-quote-acc-description] [fixture: c4/db-grid-quote-acc-title]
-[fixture: c4/db-grid-quote-acc-descr] [fixture:
-c4/db-grid-quote-acc-descr-block] [fixture: c4/db-grid-quote-text-argument-bare]
-[fixture: c4/db-grid-quote-alias-argument-bare] [fixture:
+accessibility text.
+
+[fixture: c4/db-grid-quote-title] [fixture: c4/db-grid-quote-acc-description]
+[fixture: c4/db-grid-quote-acc-title] [fixture: c4/db-grid-quote-acc-descr]
+[fixture: c4/db-grid-quote-acc-descr-block] [fixture:
+c4/db-grid-quote-text-argument-bare] [fixture:
+c4/db-grid-quote-alias-argument-bare] [fixture:
 c4/db-grid-quote-plain-argument-bare] [fixture: c4/db-grid-quote-named-key]
 [fixture: c4/db-title-quotes] [fixture: c4/db-acctitle-quotes] [fixture:
 c4/db-accdescription-quotes] [fixture: c4/db-accdescr-quotes]
 
 LF is kept inside arguments, named keys and values, and description blocks; CR
-and CRLF there become LF before the Db reads them. [fixture:
-c4/db-grid-cr-acc-descr-block] [fixture: c4/db-grid-crlf-acc-descr-block]
-[fixture: c4/db-grid-lf-acc-descr-block] [fixture:
-c4/db-grid-cr-text-argument-bare] [fixture: c4/db-grid-crlf-text-argument-bare]
-[fixture: c4/db-grid-lf-text-argument-bare] [fixture:
-c4/db-grid-cr-alias-argument-bare] [fixture:
+and CRLF there become LF before the Db reads them.
+
+[fixture: c4/db-grid-cr-acc-descr-block] [fixture:
+c4/db-grid-crlf-acc-descr-block] [fixture: c4/db-grid-lf-acc-descr-block]
+[fixture: c4/db-grid-cr-text-argument-bare] [fixture:
+c4/db-grid-crlf-text-argument-bare] [fixture: c4/db-grid-lf-text-argument-bare]
+[fixture: c4/db-grid-cr-alias-argument-bare] [fixture:
 c4/db-grid-crlf-alias-argument-bare] [fixture:
 c4/db-grid-lf-alias-argument-bare] [fixture: c4/db-grid-cr-plain-argument-bare]
 [fixture: c4/db-grid-crlf-plain-argument-bare] [fixture:
@@ -13146,13 +14772,14 @@ c4/db-grid-lf-plain-argument-quoted] [fixture: c4/db-grid-cr-named-key]
 [fixture: c4/db-grid-crlf-style-value] [fixture: c4/db-grid-lf-style-value]
 
 An LF inside title, accDescription, accTitle, or accDescr line text ends that
-value, and the leftover bare word in these inputs is rejected. [fixture:
-c4/gram-grid-comment-line-title] [fixture: c4/gram-grid-cr-title] [fixture:
-c4/gram-grid-crlf-title] [fixture: c4/gram-grid-directive-line-title] [fixture:
-c4/gram-grid-lf-title] [fixture: c4/gram-grid-comment-line-acc-description]
-[fixture: c4/gram-grid-cr-acc-description] [fixture:
-c4/gram-grid-crlf-acc-description] [fixture:
-c4/gram-grid-directive-line-acc-description] [fixture:
+value, and the leftover bare word in these inputs is rejected.
+
+[fixture: c4/gram-grid-comment-line-title] [fixture: c4/gram-grid-cr-title]
+[fixture: c4/gram-grid-crlf-title] [fixture: c4/gram-grid-directive-line-title]
+[fixture: c4/gram-grid-lf-title] [fixture:
+c4/gram-grid-comment-line-acc-description] [fixture:
+c4/gram-grid-cr-acc-description] [fixture: c4/gram-grid-crlf-acc-description]
+[fixture: c4/gram-grid-directive-line-acc-description] [fixture:
 c4/gram-grid-lf-acc-description] [fixture: c4/gram-grid-comment-line-acc-title]
 [fixture: c4/gram-grid-cr-acc-title] [fixture: c4/gram-grid-crlf-acc-title]
 [fixture: c4/gram-grid-directive-line-acc-title] [fixture:
@@ -13162,7 +14789,9 @@ c4/gram-grid-lf-acc-title] [fixture: c4/gram-grid-comment-line-acc-descr]
 c4/gram-grid-lf-acc-descr]
 
 A closed directive is removed even inside a header, keyword, title, argument,
-named key, or named value. [fixture: c4/db-grid-directive-title] [fixture:
+named key, or named value.
+
+[fixture: c4/db-grid-directive-title] [fixture:
 c4/db-grid-directive-acc-description] [fixture: c4/db-grid-directive-acc-title]
 [fixture: c4/db-grid-directive-acc-descr] [fixture:
 c4/db-grid-directive-acc-descr-block] [fixture:
@@ -13183,8 +14812,10 @@ c4/lex-directive-named-equals-quote] [fixture: c4/lex-directive-quoted]
 
 Removing a directive on its own line leaves the surrounding line feeds in
 arguments and named keys and values, while the accDescr setter folds consecutive
-whitespace after an LF. [fixture: c4/db-grid-directive-line-text-argument-bare]
-[fixture: c4/db-grid-directive-line-alias-argument-bare] [fixture:
+whitespace after an LF.
+
+[fixture: c4/db-grid-directive-line-text-argument-bare] [fixture:
+c4/db-grid-directive-line-alias-argument-bare] [fixture:
 c4/db-grid-directive-line-plain-argument-bare] [fixture:
 c4/db-grid-directive-line-text-argument-quoted] [fixture:
 c4/db-grid-directive-line-alias-argument-quoted] [fixture:
@@ -13196,8 +14827,9 @@ c4/db-grid-directive-line-acc-descr-block] [fixture: c4/lex-bare-crlf-directive]
 [fixture: c4/lex-quote-crlf-directive]
 
 A comment line inside an argument, named key or value, or description block is
-removed, joining the surrounding text with one LF. [fixture:
-c4/db-grid-comment-line-acc-descr-block] [fixture:
+removed, joining the surrounding text with one LF.
+
+[fixture: c4/db-grid-comment-line-acc-descr-block] [fixture:
 c4/db-grid-comment-line-text-argument-bare] [fixture:
 c4/db-grid-comment-line-alias-argument-bare] [fixture:
 c4/db-grid-comment-line-plain-argument-bare] [fixture:
@@ -13210,10 +14842,12 @@ c4/db-grid-comment-line-style-value] [fixture: c4/lex-bare-comment-line]
 [fixture: c4/lex-named-value-comment-line] [fixture: c4/lex-comment-line]
 
 An inline percent-pair fragment inside a text value or named key stays literal,
-as does a bare percent-pair line inside a longer bare argument. [fixture:
-c4/db-grid-comment-title] [fixture: c4/db-grid-comment-acc-description]
-[fixture: c4/db-grid-comment-acc-title] [fixture: c4/db-grid-comment-acc-descr]
-[fixture: c4/db-grid-comment-acc-descr-block] [fixture:
+as does a bare percent-pair line inside a longer bare argument.
+
+[fixture: c4/db-grid-comment-title] [fixture:
+c4/db-grid-comment-acc-description] [fixture: c4/db-grid-comment-acc-title]
+[fixture: c4/db-grid-comment-acc-descr] [fixture:
+c4/db-grid-comment-acc-descr-block] [fixture:
 c4/db-grid-comment-text-argument-bare] [fixture:
 c4/db-grid-comment-alias-argument-bare] [fixture:
 c4/db-grid-comment-plain-argument-bare] [fixture:
@@ -13227,11 +14861,13 @@ c4/db-title-comment] [fixture: c4/db-acctitle-comment] [fixture:
 c4/db-accdescription-comment] [fixture: c4/db-accdescr-comment]
 
 Hashes and semicolons stay literal in arguments, named keys and values,
-colon-line accessibility text and description blocks. [fixture:
-c4/db-grid-hash-acc-title] [fixture: c4/db-grid-semicolon-acc-title] [fixture:
-c4/db-grid-hash-acc-descr] [fixture: c4/db-grid-semicolon-acc-descr] [fixture:
-c4/db-grid-hash-acc-descr-block] [fixture: c4/db-grid-semicolon-acc-descr-block]
-[fixture: c4/db-grid-hash-text-argument-bare] [fixture:
+colon-line accessibility text and description blocks.
+
+[fixture: c4/db-grid-hash-acc-title] [fixture: c4/db-grid-semicolon-acc-title]
+[fixture: c4/db-grid-hash-acc-descr] [fixture: c4/db-grid-semicolon-acc-descr]
+[fixture: c4/db-grid-hash-acc-descr-block] [fixture:
+c4/db-grid-semicolon-acc-descr-block] [fixture:
+c4/db-grid-hash-text-argument-bare] [fixture:
 c4/db-grid-semicolon-text-argument-bare] [fixture:
 c4/db-grid-hash-alias-argument-bare] [fixture:
 c4/db-grid-semicolon-alias-argument-bare] [fixture:
@@ -13250,9 +14886,10 @@ c4/db-grid-hash-style-value] [fixture: c4/db-grid-semicolon-style-value]
 c4/db-acctitle-semicolon] [fixture: c4/db-accdescr-semicolon]
 
 A hash or semicolon ends title and accDescription text, so a following bare
-fragment, including the tail of `&amp;`, is rejected. [fixture:
-c4/gram-grid-ampersand-entity-title] [fixture: c4/gram-grid-hash-title]
-[fixture: c4/gram-grid-semicolon-title] [fixture:
+fragment, including the tail of `&amp;`, is rejected.
+
+[fixture: c4/gram-grid-ampersand-entity-title] [fixture:
+c4/gram-grid-hash-title] [fixture: c4/gram-grid-semicolon-title] [fixture:
 c4/gram-grid-ampersand-entity-acc-description] [fixture:
 c4/gram-grid-hash-acc-description] [fixture:
 c4/gram-grid-semicolon-acc-description] [fixture: c4/lex-title-hash-first]
@@ -13262,8 +14899,9 @@ c4/db-accdescription-hash] [fixture: c4/db-title-semicolon] [fixture:
 c4/db-accdescription-semicolon]
 
 HTML-style `&amp;` stays literal in arguments, named keys and values, colon-line
-accessibility text and description blocks. [fixture:
-c4/db-grid-ampersand-entity-acc-title] [fixture:
+accessibility text and description blocks.
+
+[fixture: c4/db-grid-ampersand-entity-acc-title] [fixture:
 c4/db-grid-ampersand-entity-acc-descr] [fixture:
 c4/db-grid-ampersand-entity-acc-descr-block] [fixture:
 c4/db-grid-ampersand-entity-text-argument-bare] [fixture:
@@ -13278,13 +14916,15 @@ c4/db-grid-ampersand-entity-style-value]
 
 Mermaid character references are kept as placeholders: `#N;` becomes
 `\ufb02\u00b0\u00b0N\u00b6\u00df`, and `#name;` becomes
-`\ufb02\u00b0name\u00b6\u00df`. [fixture: c4/db-grid-entity-title] [fixture:
-c4/db-grid-entity-named-title] [fixture: c4/db-grid-entity-acc-description]
-[fixture: c4/db-grid-entity-named-acc-description] [fixture:
-c4/db-grid-entity-acc-title] [fixture: c4/db-grid-entity-named-acc-title]
-[fixture: c4/db-grid-entity-acc-descr] [fixture:
-c4/db-grid-entity-named-acc-descr] [fixture: c4/db-grid-entity-acc-descr-block]
-[fixture: c4/db-grid-entity-named-acc-descr-block] [fixture:
+`\ufb02\u00b0name\u00b6\u00df`.
+
+[fixture: c4/db-grid-entity-title] [fixture: c4/db-grid-entity-named-title]
+[fixture: c4/db-grid-entity-acc-description] [fixture:
+c4/db-grid-entity-named-acc-description] [fixture: c4/db-grid-entity-acc-title]
+[fixture: c4/db-grid-entity-named-acc-title] [fixture:
+c4/db-grid-entity-acc-descr] [fixture: c4/db-grid-entity-named-acc-descr]
+[fixture: c4/db-grid-entity-acc-descr-block] [fixture:
+c4/db-grid-entity-named-acc-descr-block] [fixture:
 c4/db-grid-entity-text-argument-bare] [fixture:
 c4/db-grid-entity-named-text-argument-bare] [fixture:
 c4/db-grid-entity-alias-argument-bare] [fixture:
@@ -13305,13 +14945,15 @@ c4/db-grid-entity-named-named-value] [fixture: c4/db-grid-entity-style-value]
 [fixture: c4/db-accdescr-entity]
 
 HTML tag and break fragments stay in the stored text rather than being
-interpreted as C4 syntax. [fixture: c4/db-grid-html-title] [fixture:
-c4/db-grid-html-br-title] [fixture: c4/db-grid-html-acc-description] [fixture:
-c4/db-grid-html-br-acc-description] [fixture: c4/db-grid-html-acc-title]
-[fixture: c4/db-grid-html-br-acc-title] [fixture: c4/db-grid-html-acc-descr]
-[fixture: c4/db-grid-html-br-acc-descr] [fixture:
-c4/db-grid-html-acc-descr-block] [fixture: c4/db-grid-html-br-acc-descr-block]
-[fixture: c4/db-grid-html-text-argument-bare] [fixture:
+interpreted as C4 syntax.
+
+[fixture: c4/db-grid-html-title] [fixture: c4/db-grid-html-br-title] [fixture:
+c4/db-grid-html-acc-description] [fixture: c4/db-grid-html-br-acc-description]
+[fixture: c4/db-grid-html-acc-title] [fixture: c4/db-grid-html-br-acc-title]
+[fixture: c4/db-grid-html-acc-descr] [fixture: c4/db-grid-html-br-acc-descr]
+[fixture: c4/db-grid-html-acc-descr-block] [fixture:
+c4/db-grid-html-br-acc-descr-block] [fixture:
+c4/db-grid-html-text-argument-bare] [fixture:
 c4/db-grid-html-br-text-argument-bare] [fixture:
 c4/db-grid-html-alias-argument-bare] [fixture:
 c4/db-grid-html-br-alias-argument-bare] [fixture:
@@ -13331,8 +14973,9 @@ c4/db-accdescr-html] [fixture: c4/demo-c4context-1d531a27] [fixture:
 c4/docs-syntax-c4-90f106b9] [fixture: c4/docs-syntax-c4-bc80e69a]
 
 Double quotes inside HTML attribute text become single quotes before C4 reads
-the argument, title, or accessibility value. [fixture:
-c4/db-grid-html-attribute-title] [fixture:
+the argument, title, or accessibility value.
+
+[fixture: c4/db-grid-html-attribute-title] [fixture:
 c4/db-grid-html-attribute-acc-description] [fixture:
 c4/db-grid-html-attribute-acc-title] [fixture:
 c4/db-grid-html-attribute-acc-descr] [fixture:
@@ -13348,10 +14991,11 @@ c4/db-grid-html-attribute-style-value] [fixture: c4/div-frontmatter-open-tag]
 
 A `style` or `classDef` fragment in that exact case, followed on the same line
 by a colon and a hash with no whitespace between them, removes the last
-semicolon after that hash, even inside a later argument or keyword. [fixture:
-c4/db-grid-classdef-rule-acc-title] [fixture: c4/db-grid-style-rule-acc-title]
-[fixture: c4/db-grid-classdef-rule-acc-descr] [fixture:
-c4/db-grid-style-rule-acc-descr] [fixture:
+semicolon after that hash, even inside a later argument or keyword.
+
+[fixture: c4/db-grid-classdef-rule-acc-title] [fixture:
+c4/db-grid-style-rule-acc-title] [fixture: c4/db-grid-classdef-rule-acc-descr]
+[fixture: c4/db-grid-style-rule-acc-descr] [fixture:
 c4/db-grid-classdef-rule-acc-descr-block] [fixture:
 c4/db-grid-style-rule-acc-descr-block] [fixture:
 c4/db-grid-classdef-rule-text-argument-bare] [fixture:
@@ -13378,51 +15022,63 @@ c4/lex-semicolon-key-selected] [fixture: c4/lex-semicolon-text-selected]
 [fixture: c4/div-semicolon-call-keyword-after-block]
 
 Removing a semicolon from a style-like fragment does not remove its hash, so
-that fragment is still rejected inside title or accDescription text. [fixture:
-c4/gram-grid-classdef-rule-title] [fixture: c4/gram-grid-style-rule-title]
-[fixture: c4/gram-grid-classdef-rule-acc-description] [fixture:
+that fragment is still rejected inside title or accDescription text.
+
+[fixture: c4/gram-grid-classdef-rule-title] [fixture:
+c4/gram-grid-style-rule-title] [fixture:
+c4/gram-grid-classdef-rule-acc-description] [fixture:
 c4/gram-grid-style-rule-acc-description]
 
 An uppercase `Style`, a missing hash, whitespace or LF between the colon and
 hash, or a semicolon before the style-like fragment does not trigger that
-removal, while character-reference encoding still applies. [fixture:
-c4/db-preprocessing-space] [fixture: c4/db-preprocessing-upper] [fixture:
-c4/db-preprocessing-no-hash] [fixture: c4/db-preprocessing-other-line] [fixture:
-c4/lex-semicolon-bare-alias] [fixture: c4/lex-semicolon-keyword] [fixture:
-c4/lex-semicolon-keyword-selected] [fixture:
+removal, while character-reference encoding still applies.
+
+[fixture: c4/db-preprocessing-space] [fixture: c4/db-preprocessing-upper]
+[fixture: c4/db-preprocessing-no-hash] [fixture: c4/db-preprocessing-other-line]
+[fixture: c4/lex-semicolon-bare-alias] [fixture: c4/lex-semicolon-keyword]
+[fixture: c4/lex-semicolon-keyword-selected] [fixture:
 c4/lex-semicolon-keyword-selected-same-line] [fixture:
 c4/lex-semicolon-named-delimiter]
 
 Under an unsupported securityLevel, disabling HTML labels leaves title and
 accessibility markup literal but stores the label `<b>A</b> = value` as `A`.
+
 [fixture: c4/config-security-level-other-html-labels-false] [fixture:
 c4/config-security-level-other-flowchart-html-labels-false]
 
 ### Titles, descriptions, and boundary bodies
 
 An empty title or accDescription value is rejected, while an empty accTitle or
-accDescr colon line can consume the following statement as its value. [fixture:
-c4/db-title-empty] [fixture: c4/db-accdescription-empty] [fixture:
+accDescr colon line can consume the following statement as its value.
+
+[fixture: c4/db-title-empty] [fixture: c4/db-accdescription-empty] [fixture:
 c4/db-acctitle-empty] [fixture: c4/db-accdescr-empty]
 
 A boundary or deployment node needs braces and a first diagram statement in its
 body; an empty body, a title first, a title-only body or an empty description
-block alone is rejected. [fixture: c4/gram-boundary-no-brace] [fixture:
-c4/gram-boundary-empty] [fixture: c4/gram-boundary-empty-same-line] [fixture:
-c4/gram-boundary-only-title] [fixture: c4/gram-boundary-title-first] [fixture:
+block alone is rejected.
+
+[fixture: c4/gram-boundary-no-brace] [fixture: c4/gram-boundary-empty] [fixture:
+c4/gram-boundary-empty-same-line] [fixture: c4/gram-boundary-only-title]
+[fixture: c4/gram-boundary-title-first] [fixture:
 c4/gram-boundary-empty-block-body-only] [fixture: c4/gram-boundary-unclosed]
 
 A boundary opening brace on its declaration line requires a following line
 break, while a brace on the next line may have its first child immediately after
-it. [fixture: c4/gram-boundary-same-line] [fixture: c4/gram-boundary-next-line]
+it.
+
+[fixture: c4/gram-boundary-same-line] [fixture: c4/gram-boundary-next-line]
 [fixture: c4/gram-boundary-next-line-inline-child]
 
 Title and accessibility statements may follow a diagram statement, including
-inside a boundary, and update the shared diagram fields. [fixture:
-c4/gram-other-statements-after-shape] [fixture: c4/gram-title-inside-boundary]
+inside a boundary, and update the shared diagram fields.
+
+[fixture: c4/gram-other-statements-after-shape] [fixture:
+c4/gram-title-inside-boundary]
 
 A nonempty accDescr block may start its brace on the same or next line, may form
 the whole body, and may be followed immediately by a diagram statement.
+
 [fixture: c4/gram-acc-descr-block-same-line] [fixture:
 c4/gram-acc-descr-block-next-line] [fixture:
 c4/gram-acc-descr-block-after-text-same-line] [fixture:
@@ -13433,7 +15089,9 @@ c4/gram-body-only-description-block]
 
 An empty or whitespace-only accDescr block emits no value token, so a standalone
 empty block or two empty blocks before another statement can leave a rejected
-newline. [fixture: c4/gram-acc-descr-block-after-text-blank-lines] [fixture:
+newline.
+
+[fixture: c4/gram-acc-descr-block-after-text-blank-lines] [fixture:
 c4/gram-acc-descr-block-after-text-space] [fixture:
 c4/gram-acc-descr-block-after-text-tab] [fixture:
 c4/gram-acc-descr-block-after-text-two-empty] [fixture:
@@ -13444,12 +15102,14 @@ c4/gram-empty-block-alone-before-person] [fixture: c4/gram-empty-block-only]
 
 A tokenless empty accDescr block can stand between the header and its line
 break, including before a removed directive, without setting a description.
+
 [fixture: c4/gram-empty-block-header-gap] [fixture:
 c4/gram-empty-block-header-followed-directive]
 
 An unclosed description block or plain text after its closing brace is rejected,
-and accTitle and accDescription do not have a multiline block form. [fixture:
-c4/gram-acc-descr-block-after-text-text-after-brace] [fixture:
+and accTitle and accDescription do not have a multiline block form.
+
+[fixture: c4/gram-acc-descr-block-after-text-text-after-brace] [fixture:
 c4/gram-acc-descr-block-after-text-unclosed] [fixture:
 c4/gram-acc-descr-block-text-after-brace] [fixture:
 c4/gram-acc-descr-block-unclosed] [fixture:
@@ -13458,8 +15118,10 @@ c4/lex-acc-block-unclosed-after-text] [fixture: c4/gram-acc-title-block]
 
 `title` and `accDescription` can take one LF, CRLF or U+2028 separator before
 the value, but an additional blank or directive line can leave them without a
-value and reject the input. [fixture: c4/lex-title-newline-value] [fixture:
-c4/lex-title-separator-crlf] [fixture: c4/lex-title-separator-ls] [fixture:
+value and reject the input.
+
+[fixture: c4/lex-title-newline-value] [fixture: c4/lex-title-separator-crlf]
+[fixture: c4/lex-title-separator-ls] [fixture:
 c4/lex-keyword-gap-accdescription-blank-line] [fixture:
 c4/lex-keyword-gap-accdescription-comment-line] [fixture:
 c4/lex-keyword-gap-accdescription-directive-line] [fixture:
@@ -13470,7 +15132,9 @@ c4/lex-keyword-gap-title-directive-line] [fixture: c4/lex-keyword-gap-title-lf]
 
 Whitespace after an accTitle or accDescr colon can include line feeds, blank
 lines and removed comment or directive lines, so the next nonempty line becomes
-its value. [fixture: c4/lex-keyword-gap-accdescr-blank-line] [fixture:
+its value.
+
+[fixture: c4/lex-keyword-gap-accdescr-blank-line] [fixture:
 c4/lex-keyword-gap-accdescr-comment-line] [fixture:
 c4/lex-keyword-gap-accdescr-directive-line] [fixture:
 c4/lex-keyword-gap-accdescr-lf] [fixture:
@@ -13483,14 +15147,17 @@ c4/lex-acc-title-empty-before-semicolon] [fixture:
 c4/lex-acc-title-direction-next-line]
 
 End of input before a title or accessibility value is complete is rejected.
+
 [fixture: c4/gram-unclosed-accdescr] [fixture: c4/gram-unclosed-accdescription]
 [fixture: c4/gram-unclosed-acctitle] [fixture: c4/gram-unclosed-title]
 
 ### Layout and offsets
 
 An empty offset argument or one with no numeric prefix becomes `NaN`, whether
-bare or quoted. [fixture: c4/db-grid-ampersand-entity-offset-argument-bare]
-[fixture: c4/db-grid-arrow-offset-argument-bare] [fixture:
+bare or quoted.
+
+[fixture: c4/db-grid-ampersand-entity-offset-argument-bare] [fixture:
+c4/db-grid-arrow-offset-argument-bare] [fixture:
 c4/db-grid-arrow-spaced-offset-argument-bare] [fixture:
 c4/db-grid-backslash-offset-argument-bare] [fixture:
 c4/db-grid-backtick-offset-argument-bare] [fixture:
@@ -13619,8 +15286,9 @@ c4/db-grid-tab-offset-argument-quoted] [fixture:
 c4/db-grid-vt-offset-argument-quoted]
 
 An empty layout argument or one with no numeric prefix leaves its row counter
-unchanged, whether bare or quoted. [fixture:
-c4/db-grid-ampersand-entity-layout-argument-bare] [fixture:
+unchanged, whether bare or quoted.
+
+[fixture: c4/db-grid-ampersand-entity-layout-argument-bare] [fixture:
 c4/db-grid-arrow-layout-argument-bare] [fixture:
 c4/db-grid-arrow-spaced-layout-argument-bare] [fixture:
 c4/db-grid-backslash-layout-argument-bare] [fixture:
@@ -13751,7 +15419,9 @@ c4/db-grid-vt-layout-argument-quoted]
 
 A bare comma or an early closing quote can shift a nonnumeric fragment into the
 second numeric slot, making offsetY `NaN` but leaving c4BoundaryInRow at its
-previous value. [fixture: c4/db-grid-comma-offset-argument-bare] [fixture:
+previous value.
+
+[fixture: c4/db-grid-comma-offset-argument-bare] [fixture:
 c4/db-grid-punct-offset-argument-bare] [fixture:
 c4/db-grid-quote-offset-argument-quoted] [fixture:
 c4/db-grid-comma-layout-argument-bare] [fixture:
@@ -13762,33 +15432,41 @@ c4/db-grid-quote-layout-argument-quoted]
 
 `normalizeVenn()` (`src/normalizers/venn.ts`) summarizes the shared Db in
 [vennDB.ts](https://github.com/mermaid-js/mermaid/blob/2086904e76c692331e34a45d7cc3bc30860d040e/packages/mermaid/src/diagrams/venn/vennDB.ts#L22-L133).
+
 [fixture: venn/db-all-fields]
 
 The summary keeps `title` from
 [`getDiagramTitle()`](https://github.com/mermaid-js/mermaid/blob/2086904e76c692331e34a45d7cc3bc30860d040e/packages/mermaid/src/diagrams/common/commonDb.ts#L32-L32).
+
 [fixture: venn/db-all-fields] [fixture: venn/db-frontmatter-title]
 
 The summary keeps `accTitle` from
 [`getAccTitle()`](https://github.com/mermaid-js/mermaid/blob/2086904e76c692331e34a45d7cc3bc30860d040e/packages/mermaid/src/diagrams/common/commonDb.ts#L20-L20).
+
 [fixture: venn/db-frontmatter-accessibility] [fixture: venn/header-only]
 
 The summary keeps `accDescr` from
 [`getAccDescription()`](https://github.com/mermaid-js/mermaid/blob/2086904e76c692331e34a45d7cc3bc30860d040e/packages/mermaid/src/diagrams/common/commonDb.ts#L26-L26).
+
 [fixture: venn/db-frontmatter-accessibility] [fixture: venn/header-only]
 
 `subsets` comes from
 [`getSubsetData()`](https://github.com/mermaid-js/mermaid/blob/2086904e76c692331e34a45d7cc3bc30860d040e/packages/mermaid/src/diagrams/venn/vennDB.ts#L38-L40).
+
 [fixture: venn/db-all-fields]
 
 `texts` comes from
 [`getTextData()`](https://github.com/mermaid-js/mermaid/blob/2086904e76c692331e34a45d7cc3bc30860d040e/packages/mermaid/src/diagrams/venn/vennDB.ts#L88-L90).
+
 [fixture: venn/db-all-fields]
 
 `styles` comes from
 [`getStyleData()`](https://github.com/mermaid-js/mermaid/blob/2086904e76c692331e34a45d7cc3bc30860d040e/packages/mermaid/src/diagrams/venn/vennDB.ts#L72-L74).
+
 [fixture: venn/db-all-fields]
 
 The three arrays retain declaration order, including duplicate declarations.
+
 [fixture: venn/db-style-three-definitions] [fixture:
 venn/db-text-three-definitions] [fixture: venn/db-three-definitions] [fixture:
 venn/demo-venn-0d817555] [fixture: venn/demo-venn-30b70b4c] [fixture:
@@ -13811,49 +15489,63 @@ venn/spec-venn-aa7d1ad8] [fixture: venn/spec-venn-ab635fc5] [fixture:
 venn/spec-venn-ef1992f9]
 
 A third union with the same sorted members appends another subset with its own
-size. [fixture: venn/db-union-three-definitions]
+size.
+
+[fixture: venn/db-union-three-definitions]
 
 A third style statement for the same targets appends another entry containing
-only its own properties. [fixture: venn/db-style-three-definitions-same-target]
+only its own properties.
+
+[fixture: venn/db-style-three-definitions-same-target]
 
 A subset keeps `{ sets, size, label? }`, a text node keeps
 `{ sets, id, label? }`, and a style entry keeps `{ targets, styles }`; undefined
-labels are omitted. [fixture: venn/db-form-set] [fixture: venn/db-form-style-id]
-[fixture: venn/db-form-text-id] [fixture: venn/db-label-empty]
+labels are omitted.
+
+[fixture: venn/db-form-set] [fixture: venn/db-form-style-id] [fixture:
+venn/db-form-text-id] [fixture: venn/db-label-empty]
 
 The summary drops
 [`getConfig()`](https://github.com/mermaid-js/mermaid/blob/2086904e76c692331e34a45d7cc3bc30860d040e/packages/mermaid/src/diagrams/venn/vennDB.ts#L100-L102)
 because it supplies drawing settings, and the known-set table, current sets,
 indentation mode, and temporary indent flag because they are parsing state; it
 adds no renderer geometry, palette values, generated ids, or implied pairwise
-overlaps. [fixture: venn/db-form-union] [fixture: venn/db-indent-width]
-[fixture: venn/db-union-repeated-member]
+overlaps.
+
+[fixture: venn/db-form-union] [fixture: venn/db-indent-width] [fixture:
+venn/db-union-repeated-member]
 
 The Db's
 [`customClear()`](https://github.com/mermaid-js/mermaid/blob/2086904e76c692331e34a45d7cc3bc30860d040e/packages/mermaid/src/diagrams/venn/vennDB.ts#L104-L112)
 calls the common
 [`clear()`](https://github.com/mermaid-js/mermaid/blob/2086904e76c692331e34a45d7cc3bc30860d040e/packages/mermaid/src/diagrams/common/commonDb.ts#L10-L14)
-and resets declarations and parsing state. [fixture: venn/db-all-fields]
-[fixture: venn/header-only]
+and resets declarations and parsing state.
+
+[fixture: venn/db-all-fields] [fixture: venn/header-only]
 
 No title, accessibility text, declaration, or indentation state survives the
-previous input. [fixture: venn/db-all-fields] [fixture: venn/header-only]
+previous input.
+
+[fixture: venn/db-all-fields] [fixture: venn/header-only]
 
 `set` adds one identifier with an optional bracket label and optional numeric
 size, while `union` adds a sorted identifier list with the same two optional
-arguments. [fixture: venn/db-form-set] [fixture: venn/db-form-set-label]
-[fixture: venn/db-form-set-label-size] [fixture: venn/db-form-set-size]
-[fixture: venn/db-form-union] [fixture: venn/db-form-union-label] [fixture:
+arguments.
+
+[fixture: venn/db-form-set] [fixture: venn/db-form-set-label] [fixture:
+venn/db-form-set-label-size] [fixture: venn/db-form-set-size] [fixture:
+venn/db-form-union] [fixture: venn/db-form-union-label] [fixture:
 venn/db-form-union-label-size] [fixture: venn/db-form-union-size]
 
 Spaces and tabs may separate the arguments and optional label or size suffixes
-of set, union, text, and style statements. [fixture: venn/db-set-label-space]
-[fixture: venn/db-set-label-tab] [fixture: venn/db-set-label-size-label-space]
-[fixture: venn/db-set-label-size-label-tab] [fixture: venn/db-set-size-space]
-[fixture: venn/db-set-size-tab] [fixture: venn/db-set-label-size-size-space]
-[fixture: venn/db-set-label-size-size-tab] [fixture: venn/db-union-label-space]
-[fixture: venn/db-union-label-tab] [fixture:
-venn/db-union-label-size-label-space] [fixture:
+of set, union, text, and style statements.
+
+[fixture: venn/db-set-label-space] [fixture: venn/db-set-label-tab] [fixture:
+venn/db-set-label-size-label-space] [fixture: venn/db-set-label-size-label-tab]
+[fixture: venn/db-set-size-space] [fixture: venn/db-set-size-tab] [fixture:
+venn/db-set-label-size-size-space] [fixture: venn/db-set-label-size-size-tab]
+[fixture: venn/db-union-label-space] [fixture: venn/db-union-label-tab]
+[fixture: venn/db-union-label-size-label-space] [fixture:
 venn/db-union-label-size-label-tab] [fixture: venn/db-union-size-space]
 [fixture: venn/db-union-size-tab] [fixture: venn/db-union-label-size-size-space]
 [fixture: venn/db-union-label-size-size-tab] [fixture: venn/db-form-text-id]
@@ -13880,11 +15572,12 @@ venn/db-style-target-property-tab] [fixture: venn/db-style-property-colon-space]
 venn/db-style-colon-value-space] [fixture: venn/db-style-colon-value-tab]
 
 An LF or CRLF at those argument boundaries is rejected, including when a blank,
-comment, or directive line intervenes. [fixture: venn/gram-set-label-next-line]
-[fixture: venn/gram-set-label-comment-gap] [fixture:
-venn/gram-set-label-directive-gap] [fixture: venn/gram-set-label-blank-gap]
-[fixture: venn/gram-set-label-crlf-gap] [fixture:
-venn/gram-set-label-size-label-next-line] [fixture:
+comment, or directive line intervenes.
+
+[fixture: venn/gram-set-label-next-line] [fixture:
+venn/gram-set-label-comment-gap] [fixture: venn/gram-set-label-directive-gap]
+[fixture: venn/gram-set-label-blank-gap] [fixture: venn/gram-set-label-crlf-gap]
+[fixture: venn/gram-set-label-size-label-next-line] [fixture:
 venn/gram-set-label-size-label-comment-gap] [fixture:
 venn/gram-set-label-size-label-directive-gap] [fixture:
 venn/gram-set-label-size-label-blank-gap] [fixture:
@@ -13996,7 +15689,9 @@ venn/gram-style-colon-value-blank-gap] [fixture:
 venn/gram-style-colon-value-crlf-gap]
 
 A closed directive at an argument boundary is removed without supplying a
-separating space. [fixture: venn/db-set-label-inline-directive] [fixture:
+separating space.
+
+[fixture: venn/db-set-label-inline-directive] [fixture:
 venn/db-set-label-size-label-inline-directive] [fixture:
 venn/db-set-size-inline-directive] [fixture:
 venn/db-set-label-size-size-inline-directive] [fixture:
@@ -14023,8 +15718,9 @@ venn/db-style-property-colon-inline-directive] [fixture:
 venn/db-style-colon-value-inline-directive]
 
 When removal of an unclosed directive deletes an optional suffix, the preceding
-complete declaration remains. [fixture:
-venn/db-set-label-unclosed-directive-gap] [fixture:
+complete declaration remains.
+
+[fixture: venn/db-set-label-unclosed-directive-gap] [fixture:
 venn/db-set-label-size-label-unclosed-directive-gap] [fixture:
 venn/db-set-size-unclosed-directive-gap] [fixture:
 venn/db-set-label-size-size-unclosed-directive-gap] [fixture:
@@ -14038,8 +15734,9 @@ venn/db-indent-id-label-unclosed-directive-gap] [fixture:
 venn/db-indent-string-label-unclosed-directive-gap]
 
 When that removal leaves a required id, property, or numeric argument missing,
-the statement is rejected. [fixture:
-venn/gram-text-target-id-unclosed-directive-gap] [fixture:
+the statement is rejected.
+
+[fixture: venn/gram-text-target-id-unclosed-directive-gap] [fixture:
 venn/gram-text-target-string-unclosed-directive-gap] [fixture:
 venn/gram-text-target-number-unclosed-directive-gap] [fixture:
 venn/gram-indent-keyword-id-unclosed-directive-gap] [fixture:
@@ -14055,27 +15752,36 @@ venn/gram-style-colon-value-unclosed-directive-gap]
 
 A union requires at least two written identifiers, all declared by earlier `set`
 statements; repeated members remain repeated and count toward the default size
-`10 / arity²`, while a set defaults to 10. [fixture:
-venn/db-union-repeated-member] [fixture: venn/gram-union-before-definitions]
-[fixture: venn/gram-union-one] [fixture: venn/gram-union-unknown] [fixture:
-venn/spec-venn-a30f032a] [fixture: venn/spec-venn-d0c4cd0d]
+`10 / arity²`, while a set defaults to 10.
+
+[fixture: venn/db-union-repeated-member] [fixture:
+venn/gram-union-before-definitions] [fixture: venn/gram-union-one] [fixture:
+venn/gram-union-unknown] [fixture: venn/spec-venn-a30f032a] [fixture:
+venn/spec-venn-d0c4cd0d]
 
 Sizes accept signed decimal integers and fractions, including leading zeros and
-a leading decimal point. [fixture: venn/db-size-fraction] [fixture:
-venn/db-size-leading-zeros] [fixture: venn/db-size-negative] [fixture:
-venn/db-size-negative-zero] [fixture: venn/db-size-plus] [fixture:
-venn/db-size-signed-fraction] [fixture: venn/db-size-space] [fixture:
-venn/db-size-zero]
+a leading decimal point.
 
-Negative zero is recorded as zero. [fixture: venn/db-size-negative-zero]
+[fixture: venn/db-size-fraction] [fixture: venn/db-size-leading-zeros] [fixture:
+venn/db-size-negative] [fixture: venn/db-size-negative-zero] [fixture:
+venn/db-size-plus] [fixture: venn/db-size-signed-fraction] [fixture:
+venn/db-size-space] [fixture: venn/db-size-zero]
 
-Positive overflow is recorded as `"Infinity"`. [fixture: venn/db-size-overflow]
+Negative zero is recorded as zero.
 
-Negative overflow is recorded as `"-Infinity"`. [fixture:
-venn/db-size-negative-overflow]
+[fixture: venn/db-size-negative-zero]
+
+Positive overflow is recorded as `"Infinity"`.
+
+[fixture: venn/db-size-overflow]
+
+Negative overflow is recorded as `"-Infinity"`.
+
+[fixture: venn/db-size-negative-overflow]
 
 A missing size, exponent, trailing decimal point, hexadecimal prefix, `NaN`,
 `Infinity`, non-ASCII digit, or trailing identifier fails to form one size.
+
 [fixture: venn/gram-size-empty] [fixture: venn/gram-size-exponent] [fixture:
 venn/gram-size-fullwidth] [fixture: venn/gram-size-hex] [fixture:
 venn/gram-size-infinity] [fixture: venn/gram-size-nan] [fixture:
@@ -14084,16 +15790,19 @@ venn/gram-size-trailing-point]
 
 Explicit `text` supplies a target list and an identifier, quoted string, or
 numeric spelling as its id; only identifier and string ids can take a bracket
-label, and targets need not exist. [fixture: venn/db-form-text-id] [fixture:
-venn/db-form-text-id-label] [fixture: venn/db-form-text-number] [fixture:
-venn/db-form-text-string] [fixture: venn/db-form-text-string-label] [fixture:
-venn/db-text-comma-list] [fixture: venn/db-text-numeric-fraction] [fixture:
-venn/db-text-numeric-positive] [fixture: venn/db-text-unknown] [fixture:
-venn/gram-size-numeric-label] [fixture: venn/gram-text-no-id]
+label, and targets need not exist.
+
+[fixture: venn/db-form-text-id] [fixture: venn/db-form-text-id-label] [fixture:
+venn/db-form-text-number] [fixture: venn/db-form-text-string] [fixture:
+venn/db-form-text-string-label] [fixture: venn/db-text-comma-list] [fixture:
+venn/db-text-numeric-fraction] [fixture: venn/db-text-numeric-positive]
+[fixture: venn/db-text-unknown] [fixture: venn/gram-size-numeric-label]
+[fixture: venn/gram-text-no-id]
 
 An indented `text` with a word boundary uses the most recent set or union, with
 any positive space or tab indentation rather than relative depth; blank,
 whitespace-only, removed comment, and directive lines preserve this mode.
+
 [fixture: venn/db-form-indent-id] [fixture: venn/db-form-indent-id-label]
 [fixture: venn/db-form-indent-number] [fixture: venn/db-form-indent-string]
 [fixture: venn/db-form-indent-string-label] [fixture:
@@ -14103,171 +15812,217 @@ venn/db-indent-empty-id] [fixture: venn/db-indent-width]
 
 Before the next statement after a NEWLINE token, the line-start rule clears
 implicit text mode unless leading spaces or tabs select an enabled implicit text
-marker. [fixture: venn/gram-extra-indent-indented-style] [fixture:
+marker.
+
+[fixture: venn/gram-extra-indent-indented-style] [fixture:
 venn/gram-extra-indent-nonindent-text] [fixture: venn/gram-indent-after-style]
 [fixture: venn/gram-indent-after-title] [fixture:
 venn/gram-indent-after-indented-title] [fixture: venn/db-indent-width]
 
 Every completed `set` or `union` enables implicit text mode with its own
-targets. [fixture: venn/db-indent-after-set] [fixture:
-venn/db-indent-after-indented-set] [fixture: venn/db-indent-after-union]
-[fixture: venn/db-indent-after-indented-union] [fixture:
-venn/db-indent-after-header-set] [fixture: venn/spec-venn-0cf96be0]
+targets.
+
+[fixture: venn/db-indent-after-set] [fixture: venn/db-indent-after-indented-set]
+[fixture: venn/db-indent-after-union] [fixture:
+venn/db-indent-after-indented-union] [fixture: venn/db-indent-after-header-set]
+[fixture: venn/spec-venn-0cf96be0]
 
 A style, explicit text, or title after that declaration on the same line leaves
-the mode enabled. [fixture: venn/db-indent-after-same-line-style] [fixture:
+the mode enabled.
+
+[fixture: venn/db-indent-after-same-line-style] [fixture:
 venn/db-indent-after-same-line-explicit-text] [fixture:
 venn/db-indent-after-same-line-title]
 
 Without an enabled mode and current targets, indented text cannot use an
-implicit target list. [fixture: venn/gram-indent-without-set] [fixture:
-venn/gram-indent-after-style]
+implicit target list.
+
+[fixture: venn/gram-indent-without-set] [fixture: venn/gram-indent-after-style]
 
 A word suffix glued to the indented `text` marker prevents that marker from
-supplying implicit targets. [fixture: venn/gram-indent-text-prefix]
+supplying implicit targets.
+
+[fixture: venn/gram-indent-text-prefix]
 
 Identifiers and text ids preserve case, empty quoted strings, and the whitespace
 inside quotes; the Db trims outside the quotes and removes one surrounding pair
-of double quotes. [fixture: venn/db-case-distinct-ids] [fixture:
-venn/db-empty-identifiers] [fixture: venn/db-prototype-ids] [fixture:
-venn/db-quoted-padding] [fixture: venn/gram-union-inner-space]
+of double quotes.
+
+[fixture: venn/db-case-distinct-ids] [fixture: venn/db-empty-identifiers]
+[fixture: venn/db-prototype-ids] [fixture: venn/db-quoted-padding] [fixture:
+venn/gram-union-inner-space]
 
 Bracket labels lose their bracket and quote delimiters before Db trimming, so
 padded quoted labels are trimmed again; an empty lexer label is omitted, a
 quoted whitespace label becomes an empty string, and a bare whitespace label is
-omitted. [fixture: venn/db-label-double-normalization] [fixture:
-venn/db-label-empty] [fixture: venn/db-label-spaces] [fixture:
-venn/db-set-label] [fixture: venn/db-text-label] [fixture: venn/lex-label-empty]
+omitted.
+
+[fixture: venn/db-label-double-normalization] [fixture: venn/db-label-empty]
+[fixture: venn/db-label-spaces] [fixture: venn/db-set-label] [fixture:
+venn/db-text-label] [fixture: venn/lex-label-empty]
 
 Backticks and single quotes are literal label text; a bare empty bracket, a
 quote inside a bracket value, adjacent label strings, and unclosed delimiters
-are rejected. [fixture: venn/db-label-backticks] [fixture:
-venn/db-label-inner-quotes] [fixture: venn/gram-label-bare-empty] [fixture:
-venn/gram-label-two-strings] [fixture: venn/gram-nested-label-quotes] [fixture:
+are rejected.
+
+[fixture: venn/db-label-backticks] [fixture: venn/db-label-inner-quotes]
+[fixture: venn/gram-label-bare-empty] [fixture: venn/gram-label-two-strings]
+[fixture: venn/gram-nested-label-quotes] [fixture:
 venn/gram-string-escape-quote] [fixture: venn/gram-unclosed-id] [fixture:
 venn/gram-unclosed-label] [fixture: venn/gram-unclosed-style]
 
 `style` stores the sorted targets and arbitrary case-sensitive property names,
 even for unknown targets; the last occurrence of a property in one statement
-wins, while separate statements remain separate entries. [fixture:
-venn/db-style-case-and-order] [fixture: venn/db-style-duplicate-key] [fixture:
-venn/db-style-three-definitions] [fixture: venn/db-style-unknown]
+wins, while separate statements remain separate entries.
 
-A style target can be the id of a text node. [fixture: venn/spec-venn-ed0d6591]
+[fixture: venn/db-style-case-and-order] [fixture: venn/db-style-duplicate-key]
+[fixture: venn/db-style-three-definitions] [fixture: venn/db-style-unknown]
+
+A style target can be the id of a text node.
+
+[fixture: venn/spec-venn-ed0d6591]
 
 A style value is either one quoted string or a nonempty sequence of identifier,
-numeric, hex, rgb, or rgba tokens. [fixture:
-venn/db-form-style-documented-properties] [fixture: venn/db-form-style-hex]
-[fixture: venn/db-form-style-id] [fixture: venn/db-form-style-multiple]
-[fixture: venn/db-form-style-number] [fixture: venn/db-form-style-rgb] [fixture:
-venn/db-form-style-rgba] [fixture: venn/db-form-style-string] [fixture:
-venn/db-form-style-tokens] [fixture: venn/lex-style-empty]
+numeric, hex, rgb, or rgba tokens.
+
+[fixture: venn/db-form-style-documented-properties] [fixture:
+venn/db-form-style-hex] [fixture: venn/db-form-style-id] [fixture:
+venn/db-form-style-multiple] [fixture: venn/db-form-style-number] [fixture:
+venn/db-form-style-rgb] [fixture: venn/db-form-style-rgba] [fixture:
+venn/db-form-style-string] [fixture: venn/db-form-style-tokens] [fixture:
+venn/lex-style-empty]
 
 The Db joins separate unquoted value tokens with one space, even when no
-whitespace separated their spellings. [fixture: venn/db-form-style-tokens]
-[fixture: venn/db-style-adjacent-numeric-tokens] [fixture:
+whitespace separated their spellings.
+
+[fixture: venn/db-form-style-tokens] [fixture:
+venn/db-style-adjacent-numeric-tokens] [fixture:
 venn/db-grid-spaces-style-value] [fixture: venn/db-grid-tab-style-value]
 
 Quoted style values lose one surrounding pair of quotes and retain the
-whitespace inside it. [fixture: venn/db-form-style-string] [fixture:
-venn/db-quoted-padding] [fixture: venn/lex-style-spaces]
+whitespace inside it.
 
-A quoted style string cannot be followed by another value token. [fixture:
-venn/gram-style-string-followed-token] [fixture:
+[fixture: venn/db-form-style-string] [fixture: venn/db-quoted-padding] [fixture:
+venn/lex-style-spaces]
+
+A quoted style string cannot be followed by another value token.
+
+[fixture: venn/gram-style-string-followed-token] [fixture:
 venn/gram-style-empty-string-followed-token]
 
 An rgb token keeps its written case and component spelling, without validating
-numeric ranges or the placement of decimal points. [fixture:
-venn/db-style-rgb-uppercase] [fixture: venn/db-style-rgb-dot-components]
+numeric ranges or the placement of decimal points.
+
+[fixture: venn/db-style-rgb-uppercase] [fixture:
+venn/db-style-rgb-dot-components]
 
 An empty component or a minus sign in an rgb or rgba component prevents a color
-token from forming. [fixture: venn/gram-style-rgb-empty-component] [fixture:
+token from forming.
+
+[fixture: venn/gram-style-rgb-empty-component] [fixture:
 venn/gram-style-rgba-empty-component] [fixture:
 venn/gram-style-rgb-negative-component] [fixture:
 venn/gram-style-rgba-negative-component]
 
 U+2028, U+2029, and NBSP inside rgb and rgba tokens remain in the stored value.
+
 [fixture: venn/db-style-rgb-line-separator] [fixture:
 venn/db-style-rgb-paragraph-separator] [fixture: venn/db-style-rgb-nbsp]
 [fixture: venn/db-style-rgba-line-separator] [fixture:
 venn/db-style-rgba-paragraph-separator] [fixture: venn/db-style-rgba-nbsp]
 
 CR and CRLF inside a color token become LF, which remains inside that token.
+
 [fixture: venn/db-style-rgb-cr] [fixture: venn/db-style-rgb-crlf] [fixture:
 venn/db-style-rgba-crlf]
 
 Removing a comment line inside rgb or rgba leaves one LF in the color token.
+
 [fixture: venn/db-style-rgb-comment-line] [fixture:
 venn/db-style-rgba-comment-line]
 
 Removing a closed directive inside rgb or rgba joins the surrounding color
-fragments. [fixture: venn/db-style-rgb-directive] [fixture:
-venn/db-style-rgba-directive]
+fragments.
 
-A hex color token contains three through eight hexadecimal digits. [fixture:
-venn/db-style-hex-three] [fixture: venn/db-style-hex-four] [fixture:
+[fixture: venn/db-style-rgb-directive] [fixture: venn/db-style-rgba-directive]
+
+A hex color token contains three through eight hexadecimal digits.
+
+[fixture: venn/db-style-hex-three] [fixture: venn/db-style-hex-four] [fixture:
 venn/db-style-hex-five] [fixture: venn/db-style-hex-six] [fixture:
 venn/db-style-hex-seven] [fixture: venn/db-style-hex-eight] [fixture:
 venn/gram-style-hex-short]
 
 A ninth digit or a following identifier becomes a separate token joined by one
-space. [fixture: venn/db-style-hex-trailing-numeric-token] [fixture:
+space.
+
+[fixture: venn/db-style-hex-trailing-numeric-token] [fixture:
 venn/db-style-hex-trailing-identifier]
 
-A closed directive can join hex fragments into one token. [fixture:
-venn/db-style-hex-directive]
+A closed directive can join hex fragments into one token.
+
+[fixture: venn/db-style-hex-directive]
 
 A line separator, comment line, or CRLF between hex fragments prevents one hex
-value from spanning them and is rejected. [fixture:
-venn/gram-style-hex-line-separator] [fixture: venn/gram-style-hex-comment-line]
-[fixture: venn/gram-style-hex-crlf]
+value from spanning them and is rejected.
+
+[fixture: venn/gram-style-hex-line-separator] [fixture:
+venn/gram-style-hex-comment-line] [fixture: venn/gram-style-hex-crlf]
 
 Assigning a string to the style key `__proto__` creates no own property, while
 `constructor`, `hasOwnProperty`, and `toString` remain own properties; these
-names are ordinary set and text identifiers. [fixture: venn/db-prototype-ids]
-[fixture: venn/db-style-prototype-keys]
+names are ordinary set and text identifiers.
+
+[fixture: venn/db-prototype-ids] [fixture: venn/db-style-prototype-keys]
 
 Missing properties or values, trailing property commas, single-quoted style
-values, and quoted style keys are rejected. [fixture:
-venn/gram-extra-style-no-target] [fixture: venn/gram-extra-style-quoted-key]
-[fixture: venn/gram-style-empty] [fixture: venn/gram-style-missing-value]
-[fixture: venn/gram-style-single-quoted] [fixture:
-venn/gram-style-trailing-comma]
+values, and quoted style keys are rejected.
+
+[fixture: venn/gram-extra-style-no-target] [fixture:
+venn/gram-extra-style-quoted-key] [fixture: venn/gram-style-empty] [fixture:
+venn/gram-style-missing-value] [fixture: venn/gram-style-single-quoted]
+[fixture: venn/gram-style-trailing-comma]
 
 `title` keeps the text after its first whitespace separator, including quotes
 and further leading and trailing whitespace, and the last title wins;
-frontmatter supplies an initial title that a statement can replace. [fixture:
-venn/db-frontmatter-title] [fixture: venn/db-frontmatter-title-overridden]
-[fixture: venn/db-title-last] [fixture: venn/db-title-on-header] [fixture:
-venn/db-title-only-whitespace] [fixture: venn/db-title-padding] [fixture:
-venn/db-title-quotes] [fixture: venn/lex-title-spaces]
+frontmatter supplies an initial title that a statement can replace.
+
+[fixture: venn/db-frontmatter-title] [fixture:
+venn/db-frontmatter-title-overridden] [fixture: venn/db-title-last] [fixture:
+venn/db-title-on-header] [fixture: venn/db-title-only-whitespace] [fixture:
+venn/db-title-padding] [fixture: venn/db-title-quotes] [fixture:
+venn/lex-title-spaces]
 
 A single line break, or a removed comment line after it, can separate `title`
 from its value, while an additional blank or directive line leaves an invalid
-title; missing title text at end of input is rejected. [fixture:
-venn/db-title-value-next-line] [fixture: venn/gram-title-empty] [fixture:
-venn/gram-title-space-end] [fixture: venn/lex-gap-title-blank] [fixture:
-venn/lex-gap-title-comment] [fixture: venn/lex-gap-title-directive] [fixture:
-venn/lex-gap-title-lf]
+title; missing title text at end of input is rejected.
+
+[fixture: venn/db-title-value-next-line] [fixture: venn/gram-title-empty]
+[fixture: venn/gram-title-space-end] [fixture: venn/lex-gap-title-blank]
+[fixture: venn/lex-gap-title-comment] [fixture: venn/lex-gap-title-directive]
+[fixture: venn/lex-gap-title-lf]
 
 Venn has no accessibility-line, accessibility-block, or `@{ ... }` data-block
 production, and frontmatter accessibility keys do not populate the common
-getters. [fixture: venn/db-frontmatter-accessibility] [fixture:
-venn/gram-acc-block] [fixture: venn/gram-acc-descr] [fixture:
-venn/gram-acc-title] [fixture: venn/gram-accdescr-blank] [fixture:
-venn/gram-accdescr-comment] [fixture: venn/gram-accdescr-directive] [fixture:
-venn/gram-accdescr-end] [fixture: venn/gram-accdescr-statement] [fixture:
-venn/gram-acctitle-blank] [fixture: venn/gram-acctitle-comment] [fixture:
-venn/gram-acctitle-directive] [fixture: venn/gram-acctitle-end] [fixture:
-venn/gram-acctitle-statement] [fixture: venn/gram-data-block] [fixture:
-venn/gram-empty-acc-block] [fixture: venn/gram-unclosed-acc-block] [fixture:
-venn/lex-empty-description-after-set]
+getters.
+
+[fixture: venn/db-frontmatter-accessibility] [fixture: venn/gram-acc-block]
+[fixture: venn/gram-acc-descr] [fixture: venn/gram-acc-title] [fixture:
+venn/gram-accdescr-blank] [fixture: venn/gram-accdescr-comment] [fixture:
+venn/gram-accdescr-directive] [fixture: venn/gram-accdescr-end] [fixture:
+venn/gram-accdescr-statement] [fixture: venn/gram-acctitle-blank] [fixture:
+venn/gram-acctitle-comment] [fixture: venn/gram-acctitle-directive] [fixture:
+venn/gram-acctitle-end] [fixture: venn/gram-acctitle-statement] [fixture:
+venn/gram-data-block] [fixture: venn/gram-empty-acc-block] [fixture:
+venn/gram-unclosed-acc-block] [fixture: venn/lex-empty-description-after-set]
 
 Supported security levels and venn drawing configuration leave the summary
 unchanged; an unsupported `securityLevel` replaces `<`, `>`, and `=` in the
 common title when HTML labels are enabled, with root `htmlLabels` taking
-precedence over `flowchart.htmlLabels`. [fixture: venn/config-security-other]
-[fixture: venn/config-security-other-flowchart-false] [fixture:
+precedence over `flowchart.htmlLabels`.
+
+[fixture: venn/config-security-other] [fixture:
+venn/config-security-other-flowchart-false] [fixture:
 venn/config-security-other-html-false] [fixture:
 venn/config-security-other-root-false-flowchart-true] [fixture:
 venn/config-security-other-root-true-flowchart-false] [fixture: venn/db-markup]
@@ -14275,49 +16030,53 @@ venn/config-security-other-root-true-flowchart-false] [fixture: venn/db-markup]
 The detector requires exact lower-case `venn-beta` at the start after
 preprocessing, but imposes no suffix boundary; the parser accepts the empty
 document and complete statements on the header line, while extra headers or
-ordinary glued suffixes are rejected. [fixture: venn/db-same-line-statements]
-[fixture: venn/header-capitalized] [fixture: venn/header-comment-glued]
-[fixture: venn/header-dash-suffix] [fixture: venn/header-digit-suffix] [fixture:
-venn/header-directive-glued] [fixture: venn/header-directive-inside] [fixture:
-venn/header-mixed] [fixture: venn/header-nonascii-suffix] [fixture:
-venn/header-only] [fixture: venn/header-only-lf] [fixture:
-venn/header-semicolon] [fixture: venn/header-semicolon-spaced] [fixture:
-venn/header-statement-glued] [fixture: venn/header-statement-on-line] [fixture:
-venn/header-statement-tab] [fixture: venn/header-twice] [fixture:
-venn/header-twice-same-line] [fixture: venn/header-underscore-suffix] [fixture:
-venn/header-upper] [fixture: venn/header-word-suffix]
+ordinary glued suffixes are rejected.
+
+[fixture: venn/db-same-line-statements] [fixture: venn/header-capitalized]
+[fixture: venn/header-comment-glued] [fixture: venn/header-dash-suffix]
+[fixture: venn/header-digit-suffix] [fixture: venn/header-directive-glued]
+[fixture: venn/header-directive-inside] [fixture: venn/header-mixed] [fixture:
+venn/header-nonascii-suffix] [fixture: venn/header-only] [fixture:
+venn/header-only-lf] [fixture: venn/header-semicolon] [fixture:
+venn/header-semicolon-spaced] [fixture: venn/header-statement-glued] [fixture:
+venn/header-statement-on-line] [fixture: venn/header-statement-tab] [fixture:
+venn/header-twice] [fixture: venn/header-twice-same-line] [fixture:
+venn/header-underscore-suffix] [fixture: venn/header-upper] [fixture:
+venn/header-word-suffix]
 
 Leading blank lines, spaces, comments, directives, frontmatter, bare percent
 pairs and empty-brace percent lines can precede the header, while a hash, single
-percent, semicolon, or diagram statement before it prevents detection. [fixture:
-venn/header-before-bare-percent] [fixture: venn/header-before-blank] [fixture:
-venn/header-before-comment] [fixture: venn/header-before-directive] [fixture:
-venn/header-before-empty-braces] [fixture: venn/header-before-frontmatter]
-[fixture: venn/header-before-frontmatter-comment] [fixture:
-venn/header-before-hash] [fixture: venn/header-before-percent] [fixture:
-venn/header-before-semicolon] [fixture: venn/header-before-spaces] [fixture:
-venn/header-before-statement]
+percent, semicolon, or diagram statement before it prevents detection.
+
+[fixture: venn/header-before-bare-percent] [fixture: venn/header-before-blank]
+[fixture: venn/header-before-comment] [fixture: venn/header-before-directive]
+[fixture: venn/header-before-empty-braces] [fixture:
+venn/header-before-frontmatter] [fixture:
+venn/header-before-frontmatter-comment] [fixture: venn/header-before-hash]
+[fixture: venn/header-before-percent] [fixture: venn/header-before-semicolon]
+[fixture: venn/header-before-spaces] [fixture: venn/header-before-statement]
 
 Statement keywords are case-insensitive, but glued letters, digits, underscores,
 dashes, and non-ASCII suffixes do not form those statements; a line break, blank
 line, comment line, or directive line between a non-title keyword and its first
-argument is rejected. [fixture: venn/lex-gap-set-blank] [fixture:
-venn/lex-gap-set-comment] [fixture: venn/lex-gap-set-directive] [fixture:
-venn/lex-gap-set-lf] [fixture: venn/lex-gap-style-blank] [fixture:
-venn/lex-gap-style-comment] [fixture: venn/lex-gap-style-directive] [fixture:
-venn/lex-gap-style-lf] [fixture: venn/lex-gap-text-blank] [fixture:
-venn/lex-gap-text-comment] [fixture: venn/lex-gap-text-directive] [fixture:
-venn/lex-gap-text-lf] [fixture: venn/lex-gap-union-blank] [fixture:
-venn/lex-gap-union-comment] [fixture: venn/lex-gap-union-directive] [fixture:
-venn/lex-gap-union-lf] [fixture: venn/lex-keyword-set-dash] [fixture:
-venn/lex-keyword-set-digit] [fixture: venn/lex-keyword-set-letter] [fixture:
-venn/lex-keyword-set-nonascii] [fixture: venn/lex-keyword-set-underscore]
-[fixture: venn/lex-keyword-set-upper] [fixture: venn/lex-keyword-style-dash]
-[fixture: venn/lex-keyword-style-digit] [fixture: venn/lex-keyword-style-letter]
-[fixture: venn/lex-keyword-style-nonascii] [fixture:
-venn/lex-keyword-style-underscore] [fixture: venn/lex-keyword-style-upper]
-[fixture: venn/lex-keyword-text-dash] [fixture: venn/lex-keyword-text-digit]
-[fixture: venn/lex-keyword-text-letter] [fixture:
+argument is rejected.
+
+[fixture: venn/lex-gap-set-blank] [fixture: venn/lex-gap-set-comment] [fixture:
+venn/lex-gap-set-directive] [fixture: venn/lex-gap-set-lf] [fixture:
+venn/lex-gap-style-blank] [fixture: venn/lex-gap-style-comment] [fixture:
+venn/lex-gap-style-directive] [fixture: venn/lex-gap-style-lf] [fixture:
+venn/lex-gap-text-blank] [fixture: venn/lex-gap-text-comment] [fixture:
+venn/lex-gap-text-directive] [fixture: venn/lex-gap-text-lf] [fixture:
+venn/lex-gap-union-blank] [fixture: venn/lex-gap-union-comment] [fixture:
+venn/lex-gap-union-directive] [fixture: venn/lex-gap-union-lf] [fixture:
+venn/lex-keyword-set-dash] [fixture: venn/lex-keyword-set-digit] [fixture:
+venn/lex-keyword-set-letter] [fixture: venn/lex-keyword-set-nonascii] [fixture:
+venn/lex-keyword-set-underscore] [fixture: venn/lex-keyword-set-upper] [fixture:
+venn/lex-keyword-style-dash] [fixture: venn/lex-keyword-style-digit] [fixture:
+venn/lex-keyword-style-letter] [fixture: venn/lex-keyword-style-nonascii]
+[fixture: venn/lex-keyword-style-underscore] [fixture:
+venn/lex-keyword-style-upper] [fixture: venn/lex-keyword-text-dash] [fixture:
+venn/lex-keyword-text-digit] [fixture: venn/lex-keyword-text-letter] [fixture:
 venn/lex-keyword-text-nonascii] [fixture: venn/lex-keyword-text-underscore]
 [fixture: venn/lex-keyword-text-upper] [fixture: venn/lex-keyword-title-dash]
 [fixture: venn/lex-keyword-title-digit] [fixture: venn/lex-keyword-title-letter]
@@ -14331,7 +16090,9 @@ venn/lex-keyword-union-nonascii] [fixture: venn/lex-keyword-union-underscore]
 The reserved `venn-beta`, `set`, `union`, `text`, and `style` tokens are
 rejected as bare identifiers, text ids, style keys, and style values, while
 quoting them makes identifiers; `title` without its following whitespace is an
-identifier. [fixture: venn/lex-reserved-set-identifier] [fixture:
+identifier.
+
+[fixture: venn/lex-reserved-set-identifier] [fixture:
 venn/lex-reserved-set-quoted-identifier] [fixture:
 venn/lex-reserved-set-style-key] [fixture: venn/lex-reserved-set-style-value]
 [fixture: venn/lex-reserved-set-text-id] [fixture:
@@ -14360,9 +16121,10 @@ venn/lex-reserved-venn-beta-text-id]
 Spaces and tabs are the lexer whitespace, CR and CRLF become LF separators, and
 leading JavaScript whitespace can be removed before detection; BOM, NBSP,
 U+3000, U+2028, U+2029, vertical tab, form feed, and U+0085 inside the document
-are not interchangeable with those separators. [fixture:
-venn/lex-bom-header-after] [fixture: venn/lex-bom-header-before] [fixture:
-venn/lex-bom-line-end] [fixture: venn/lex-bom-line-start] [fixture:
+are not interchangeable with those separators.
+
+[fixture: venn/lex-bom-header-after] [fixture: venn/lex-bom-header-before]
+[fixture: venn/lex-bom-line-end] [fixture: venn/lex-bom-line-start] [fixture:
 venn/lex-bom-text-end] [fixture: venn/lex-bom-whitespace-line] [fixture:
 venn/lex-cr-header-after] [fixture: venn/lex-cr-header-before] [fixture:
 venn/lex-cr-line-end] [fixture: venn/lex-cr-line-start] [fixture:
@@ -14397,7 +16159,9 @@ venn/lex-vt-text-end] [fixture: venn/lex-vt-whitespace-line]
 
 Whitespace inside a quoted identifier remains part of that identifier, with CR
 and CRLF normalized to LF; even leading or trailing whitespace inside the quotes
-remains. [fixture: venn/lex-bom-quoted-end] [fixture: venn/lex-bom-quoted-start]
+remains.
+
+[fixture: venn/lex-bom-quoted-end] [fixture: venn/lex-bom-quoted-start]
 [fixture: venn/lex-bom-quoted-value] [fixture: venn/lex-cr-quoted-end] [fixture:
 venn/lex-cr-quoted-start] [fixture: venn/lex-cr-quoted-value] [fixture:
 venn/lex-crlf-quoted-end] [fixture: venn/lex-crlf-quoted-start] [fixture:
@@ -14416,10 +16180,11 @@ venn/lex-vt-quoted-end] [fixture: venn/lex-vt-quoted-start] [fixture:
 venn/lex-vt-quoted-value]
 
 After preprocessing, the suffixes ` ;`, `;`, `;;`, and `; ;` are rejected after
-a complete set, union, text, or style statement. [fixture:
-venn/lex-after-set-semicolon-spaced] [fixture: venn/lex-after-set-semicolon]
-[fixture: venn/lex-after-set-double-semicolon] [fixture:
-venn/gram-after-set-spaced-semicolons] [fixture:
+a complete set, union, text, or style statement.
+
+[fixture: venn/lex-after-set-semicolon-spaced] [fixture:
+venn/lex-after-set-semicolon] [fixture: venn/lex-after-set-double-semicolon]
+[fixture: venn/gram-after-set-spaced-semicolons] [fixture:
 venn/lex-after-set-label-semicolon-spaced] [fixture:
 venn/lex-after-set-label-semicolon] [fixture:
 venn/lex-after-set-label-double-semicolon] [fixture:
@@ -14501,7 +16266,9 @@ venn/gram-after-style-hex-double-semicolon] [fixture:
 venn/gram-after-style-hex-spaced-semicolons]
 
 An extra colon followed only by a space supplies no required argument and is
-rejected. [fixture: venn/gram-after-set-colon-space] [fixture:
+rejected.
+
+[fixture: venn/gram-after-set-colon-space] [fixture:
 venn/gram-after-set-label-colon-space] [fixture:
 venn/gram-after-set-size-colon-space] [fixture:
 venn/gram-after-set-label-size-colon-space] [fixture:
@@ -14524,26 +16291,27 @@ venn/gram-after-style-string-colon-space] [fixture:
 venn/gram-after-style-list-colon-space]
 
 A complete non-title statement accepts a trailing space, tab, blank line, CRLF,
-or EOF without changing its Db fields. [fixture: venn/db-after-set-space]
-[fixture: venn/lex-after-set-tab] [fixture: venn/db-after-set-blank] [fixture:
-venn/db-after-set-crlf] [fixture: venn/db-set-eof] [fixture:
-venn/db-after-set-label-space] [fixture: venn/lex-after-set-label-tab] [fixture:
-venn/db-after-set-label-blank] [fixture: venn/db-after-set-label-crlf] [fixture:
-venn/db-set-label-eof] [fixture: venn/db-after-set-size-space] [fixture:
-venn/lex-after-set-size-tab] [fixture: venn/db-after-set-size-blank] [fixture:
-venn/db-after-set-size-crlf] [fixture: venn/db-set-size-eof] [fixture:
-venn/db-after-set-label-size-space] [fixture: venn/db-after-set-label-size-tab]
-[fixture: venn/db-after-set-label-size-blank] [fixture:
-venn/db-after-set-label-size-crlf] [fixture: venn/db-set-label-size-eof]
-[fixture: venn/db-after-union-space] [fixture: venn/lex-after-union-tab]
-[fixture: venn/db-after-union-blank] [fixture: venn/db-after-union-crlf]
-[fixture: venn/db-union-eof] [fixture: venn/db-after-union-label-space]
-[fixture: venn/db-after-union-label-tab] [fixture:
-venn/db-after-union-label-blank] [fixture: venn/db-after-union-label-crlf]
-[fixture: venn/db-union-label-eof] [fixture: venn/db-after-union-size-space]
-[fixture: venn/db-after-union-size-tab] [fixture:
-venn/db-after-union-size-blank] [fixture: venn/db-after-union-size-crlf]
-[fixture: venn/db-union-size-eof] [fixture:
+or EOF without changing its Db fields.
+
+[fixture: venn/db-after-set-space] [fixture: venn/lex-after-set-tab] [fixture:
+venn/db-after-set-blank] [fixture: venn/db-after-set-crlf] [fixture:
+venn/db-set-eof] [fixture: venn/db-after-set-label-space] [fixture:
+venn/lex-after-set-label-tab] [fixture: venn/db-after-set-label-blank] [fixture:
+venn/db-after-set-label-crlf] [fixture: venn/db-set-label-eof] [fixture:
+venn/db-after-set-size-space] [fixture: venn/lex-after-set-size-tab] [fixture:
+venn/db-after-set-size-blank] [fixture: venn/db-after-set-size-crlf] [fixture:
+venn/db-set-size-eof] [fixture: venn/db-after-set-label-size-space] [fixture:
+venn/db-after-set-label-size-tab] [fixture: venn/db-after-set-label-size-blank]
+[fixture: venn/db-after-set-label-size-crlf] [fixture:
+venn/db-set-label-size-eof] [fixture: venn/db-after-union-space] [fixture:
+venn/lex-after-union-tab] [fixture: venn/db-after-union-blank] [fixture:
+venn/db-after-union-crlf] [fixture: venn/db-union-eof] [fixture:
+venn/db-after-union-label-space] [fixture: venn/db-after-union-label-tab]
+[fixture: venn/db-after-union-label-blank] [fixture:
+venn/db-after-union-label-crlf] [fixture: venn/db-union-label-eof] [fixture:
+venn/db-after-union-size-space] [fixture: venn/db-after-union-size-tab]
+[fixture: venn/db-after-union-size-blank] [fixture:
+venn/db-after-union-size-crlf] [fixture: venn/db-union-size-eof] [fixture:
 venn/db-after-union-label-size-space] [fixture:
 venn/lex-after-union-label-size-tab] [fixture:
 venn/db-after-union-label-size-blank] [fixture:
@@ -14600,7 +16368,9 @@ venn/lex-after-text-spaces] [fixture: venn/lex-after-text-string-spaces]
 venn/lex-after-union-spaces]
 
 A percent-pair comment separated from a complete statement by a space leaves
-that statement unchanged. [fixture: venn/lex-after-set-comment] [fixture:
+that statement unchanged.
+
+[fixture: venn/lex-after-set-comment] [fixture:
 venn/lex-after-set-label-comment] [fixture: venn/lex-after-set-size-comment]
 [fixture: venn/db-after-set-label-size-comment] [fixture:
 venn/lex-after-union-comment] [fixture: venn/db-after-union-label-comment]
@@ -14618,6 +16388,7 @@ venn/lex-after-style-comment] [fixture: venn/lex-after-style-string-comment]
 
 A closed directive or an unclosed object-argument directive after a complete
 statement can be removed through its end without changing that statement.
+
 [fixture: venn/lex-after-set-directive] [fixture:
 venn/lex-after-set-directive-unclosed] [fixture:
 venn/lex-after-set-label-directive] [fixture:
@@ -14673,12 +16444,14 @@ venn/lex-after-union-directive-word-unclosed] [fixture:
 venn/lex-after-union-label-size-directive-word-unclosed]
 
 NBSP and BOM after a non-title statement are not trailing lexer whitespace and
-are rejected. [fixture: venn/lex-after-indent-bom] [fixture:
-venn/lex-after-indent-nbsp] [fixture: venn/lex-after-set-bom] [fixture:
-venn/lex-after-set-label-bom] [fixture: venn/lex-after-set-label-nbsp] [fixture:
-venn/lex-after-set-nbsp] [fixture: venn/lex-after-set-size-bom] [fixture:
-venn/lex-after-set-size-nbsp] [fixture: venn/lex-after-style-bom] [fixture:
-venn/lex-after-style-nbsp] [fixture: venn/lex-after-style-string-bom] [fixture:
+are rejected.
+
+[fixture: venn/lex-after-indent-bom] [fixture: venn/lex-after-indent-nbsp]
+[fixture: venn/lex-after-set-bom] [fixture: venn/lex-after-set-label-bom]
+[fixture: venn/lex-after-set-label-nbsp] [fixture: venn/lex-after-set-nbsp]
+[fixture: venn/lex-after-set-size-bom] [fixture: venn/lex-after-set-size-nbsp]
+[fixture: venn/lex-after-style-bom] [fixture: venn/lex-after-style-nbsp]
+[fixture: venn/lex-after-style-string-bom] [fixture:
 venn/lex-after-style-string-nbsp] [fixture: venn/lex-after-text-bom] [fixture:
 venn/lex-after-text-label-bom] [fixture: venn/lex-after-text-label-nbsp]
 [fixture: venn/lex-after-text-nbsp] [fixture: venn/lex-after-text-number-bom]
@@ -14691,7 +16464,9 @@ venn/lex-after-union-label-size-nbsp] [fixture: venn/lex-after-union-nbsp]
 A glued percent-pair comment can consume the final character of a bare set
 identifier, size, or numeric text id, rejecting an incomplete statement, while a
 text id, style value, or bracket label can be completed before that comment
-token is tried. [fixture: venn/lex-after-indent-comment-glued] [fixture:
+token is tried.
+
+[fixture: venn/lex-after-indent-comment-glued] [fixture:
 venn/lex-after-set-comment-glued] [fixture:
 venn/lex-after-set-label-comment-glued] [fixture:
 venn/lex-after-set-size-comment-glued] [fixture:
@@ -14706,46 +16481,57 @@ venn/lex-after-union-label-size-comment-glued] [fixture:
 venn/lex-inline-comment-eats-id] [fixture: venn/lex-inline-comment-spaced]
 
 Title text keeps inline percent pairs and its trailing spaces, tabs, NBSP, and
-BOM. [fixture: venn/lex-after-title-bom] [fixture: venn/lex-after-title-comment]
+BOM.
+
+[fixture: venn/lex-after-title-bom] [fixture: venn/lex-after-title-comment]
 [fixture: venn/lex-after-title-comment-glued] [fixture:
 venn/lex-after-title-nbsp] [fixture: venn/lex-after-title-spaces] [fixture:
 venn/lex-after-title-tab] [fixture: venn/db-after-title-space]
 
-A colon and space at the end of a title remain title text. [fixture:
-venn/db-after-title-colon-space]
+A colon and space at the end of a title remain title text.
 
-A completed title may end at LF, a blank line, CRLF, or EOF. [fixture:
-venn/db-after-title-blank] [fixture: venn/db-after-title-crlf] [fixture:
-venn/db-title-eof]
+[fixture: venn/db-after-title-colon-space]
+
+A completed title may end at LF, a blank line, CRLF, or EOF.
+
+[fixture: venn/db-after-title-blank] [fixture: venn/db-after-title-crlf]
+[fixture: venn/db-title-eof]
 
 Closed and unclosed directive suffixes can be removed from a completed title.
+
 [fixture: venn/lex-after-title-directive] [fixture:
 venn/lex-after-title-directive-unclosed] [fixture:
 venn/lex-after-title-directive-word-unclosed]
 
 The semicolon suffixes ` ;`, `;`, `;;`, and `; ;` remaining after preprocessing
-are rejected after a title. [fixture: venn/lex-after-title-double-semicolon]
-[fixture: venn/lex-after-title-semicolon] [fixture:
-venn/lex-after-title-semicolon-spaced] [fixture:
-venn/gram-after-title-spaced-semicolons]
+are rejected after a title.
+
+[fixture: venn/lex-after-title-double-semicolon] [fixture:
+venn/lex-after-title-semicolon] [fixture: venn/lex-after-title-semicolon-spaced]
+[fixture: venn/gram-after-title-spaced-semicolons]
 
 Hash and single-percent lines are not comments, an unclosed directive can remove
 the following line or the header itself, and U+2028 inside a percent-pair
-comment does not end that comment. [fixture: venn/db-indent-comment-ls]
-[fixture: venn/lex-hash-comment] [fixture: venn/lex-single-percent-comment]
-[fixture: venn/lex-unclosed-directive-only] [fixture:
-venn/lex-unterminated-colon-directive-next-line] [fixture:
+comment does not end that comment.
+
+[fixture: venn/db-indent-comment-ls] [fixture: venn/lex-hash-comment] [fixture:
+venn/lex-single-percent-comment] [fixture: venn/lex-unclosed-directive-only]
+[fixture: venn/lex-unterminated-colon-directive-next-line] [fixture:
 venn/lex-unterminated-directive-next-line]
 
 Closed directives inside statement keywords are removed before the lexer reads
-the joined keyword. [fixture: venn/lex-directive-in-set] [fixture:
-venn/lex-directive-in-style] [fixture: venn/lex-directive-in-text] [fixture:
-venn/lex-directive-in-title] [fixture: venn/lex-directive-in-union]
+the joined keyword.
+
+[fixture: venn/lex-directive-in-set] [fixture: venn/lex-directive-in-style]
+[fixture: venn/lex-directive-in-text] [fixture: venn/lex-directive-in-title]
+[fixture: venn/lex-directive-in-union]
 
 An unanchored C4 detector word in a venn identifier, label, title, or style
 string can select C4 and reject the input, but `C4Context` in those positions
 stays in venn; removed comments and frontmatter do not expose C4 words to
-detection. [fixture: venn/lex-c4-c4component-comment] [fixture:
+detection.
+
+[fixture: venn/lex-c4-c4component-comment] [fixture:
 venn/lex-c4-c4component-frontmatter] [fixture:
 venn/lex-c4-c4component-identifier] [fixture: venn/lex-c4-c4component-label]
 [fixture: venn/lex-c4-c4component-style] [fixture:
@@ -14767,90 +16553,108 @@ venn/lex-c4-c4dynamic-identifier] [fixture: venn/lex-c4-c4dynamic-label]
 [fixture: venn/lex-c4-c4dynamic-style] [fixture: venn/lex-c4-c4dynamic-title]
 
 Closed directives inside identifiers, labels, text ids, quoted style values, and
-titles are removed, joining the remaining fragments. [fixture:
-venn/lex-identifier-directive-start] [fixture: venn/lex-label-directive-start]
-[fixture: venn/lex-text-directive-start] [fixture:
-venn/lex-style-directive-start] [fixture: venn/lex-title-directive-start]
-[fixture: venn/lex-identifier-directive-middle] [fixture:
-venn/lex-label-directive-middle] [fixture: venn/lex-text-directive-middle]
-[fixture: venn/lex-style-directive-middle] [fixture:
-venn/lex-title-directive-middle] [fixture: venn/lex-identifier-directive-end]
-[fixture: venn/lex-label-directive-end] [fixture: venn/lex-text-directive-end]
-[fixture: venn/lex-style-directive-end] [fixture: venn/lex-title-directive-end]
+titles are removed, joining the remaining fragments.
+
+[fixture: venn/lex-identifier-directive-start] [fixture:
+venn/lex-label-directive-start] [fixture: venn/lex-text-directive-start]
+[fixture: venn/lex-style-directive-start] [fixture:
+venn/lex-title-directive-start] [fixture: venn/lex-identifier-directive-middle]
+[fixture: venn/lex-label-directive-middle] [fixture:
+venn/lex-text-directive-middle] [fixture: venn/lex-style-directive-middle]
+[fixture: venn/lex-title-directive-middle] [fixture:
+venn/lex-identifier-directive-end] [fixture: venn/lex-label-directive-end]
+[fixture: venn/lex-text-directive-end] [fixture: venn/lex-style-directive-end]
+[fixture: venn/lex-title-directive-end]
 
 A directive on its own line inside a multiline quoted value leaves the
-surrounding two LFs. [fixture: venn/lex-identifier-directive-line] [fixture:
+surrounding two LFs.
+
+[fixture: venn/lex-identifier-directive-line] [fixture:
 venn/lex-label-directive-line] [fixture: venn/lex-text-directive-line] [fixture:
 venn/lex-style-directive-line]
 
 Removing a comment line inside a multiline quoted value leaves one LF between
-its neighboring text fragments. [fixture: venn/lex-identifier-comment-line]
-[fixture: venn/lex-label-comment-line] [fixture: venn/lex-text-comment-line]
-[fixture: venn/lex-style-comment-line]
+its neighboring text fragments.
+
+[fixture: venn/lex-identifier-comment-line] [fixture:
+venn/lex-label-comment-line] [fixture: venn/lex-text-comment-line] [fixture:
+venn/lex-style-comment-line]
 
 An empty line inside a quoted identifier, label, text id, or style value remains
-two LFs. [fixture: venn/lex-identifier-blank-line] [fixture:
-venn/lex-label-blank-line] [fixture: venn/lex-text-blank-line] [fixture:
-venn/lex-style-blank-line]
+two LFs.
+
+[fixture: venn/lex-identifier-blank-line] [fixture: venn/lex-label-blank-line]
+[fixture: venn/lex-text-blank-line] [fixture: venn/lex-style-blank-line]
 
 Numeric and named character references in identifiers, labels, text ids, and
-titles become the shared preprocessing placeholders. [fixture:
-venn/lex-identifier-entity-numeric] [fixture: venn/lex-label-entity-numeric]
-[fixture: venn/lex-text-entity-numeric] [fixture: venn/lex-title-entity-numeric]
-[fixture: venn/lex-identifier-entity-named] [fixture:
-venn/lex-label-entity-named] [fixture: venn/lex-text-entity-named] [fixture:
-venn/lex-title-entity-named]
+titles become the shared preprocessing placeholders.
+
+[fixture: venn/lex-identifier-entity-numeric] [fixture:
+venn/lex-label-entity-numeric] [fixture: venn/lex-text-entity-numeric] [fixture:
+venn/lex-title-entity-numeric] [fixture: venn/lex-identifier-entity-named]
+[fixture: venn/lex-label-entity-named] [fixture: venn/lex-text-entity-named]
+[fixture: venn/lex-title-entity-named]
 
 In quoted style values, the line rule removes the semicolon of `a#35;b` and
-`a#amp;b`, leaving `a#35b` and `a#ampb`. [fixture:
-venn/lex-style-entity-numeric] [fixture: venn/lex-style-entity-named]
+`a#amp;b`, leaving `a#35b` and `a#ampb`.
+
+[fixture: venn/lex-style-entity-numeric] [fixture: venn/lex-style-entity-named]
 
 The unquoted style value `a#35;b` is stored as `a #35b` after semicolon removal
-and token joining. [fixture: venn/db-grid-entity-style-value]
+and token joining.
+
+[fixture: venn/db-grid-entity-style-value]
 
 A hash reference without a semicolon stays literal in quoted identifiers,
-labels, text ids, and style values. [fixture:
-venn/lex-identifier-entity-no-semicolon] [fixture:
+labels, text ids, and style values.
+
+[fixture: venn/lex-identifier-entity-no-semicolon] [fixture:
 venn/lex-label-entity-no-semicolon] [fixture: venn/lex-text-entity-no-semicolon]
 [fixture: venn/lex-style-entity-no-semicolon]
 
 Double quotes around HTML attribute values become single quotes before venn
-reads the surrounding value. [fixture: venn/lex-identifier-html-attribute]
-[fixture: venn/lex-label-html-attribute] [fixture: venn/lex-text-html-attribute]
-[fixture: venn/lex-style-html-attribute] [fixture:
-venn/lex-title-html-attribute]
+reads the surrounding value.
+
+[fixture: venn/lex-identifier-html-attribute] [fixture:
+venn/lex-label-html-attribute] [fixture: venn/lex-text-html-attribute] [fixture:
+venn/lex-style-html-attribute] [fixture: venn/lex-title-html-attribute]
 
 A `style` or `classDef` fragment in that exact case, followed on its line by a
 colon and a hash with no intervening whitespace, triggers the shared semicolon
-rule. [fixture: venn/lex-identifier-style-rule] [fixture:
-venn/lex-label-style-rule] [fixture: venn/lex-text-style-rule] [fixture:
-venn/lex-style-style-rule] [fixture: venn/lex-identifier-classdef-rule]
-[fixture: venn/lex-label-classdef-rule] [fixture: venn/lex-text-classdef-rule]
-[fixture: venn/lex-style-classdef-rule]
+rule.
+
+[fixture: venn/lex-identifier-style-rule] [fixture: venn/lex-label-style-rule]
+[fixture: venn/lex-text-style-rule] [fixture: venn/lex-style-style-rule]
+[fixture: venn/lex-identifier-classdef-rule] [fixture:
+venn/lex-label-classdef-rule] [fixture: venn/lex-text-classdef-rule] [fixture:
+venn/lex-style-classdef-rule]
 
 That rule drops the last semicolon after the hash, including inside quoted
-values. [fixture: venn/lex-identifier-style-rule] [fixture:
-venn/lex-label-style-rule] [fixture: venn/lex-text-style-rule] [fixture:
-venn/lex-style-style-rule] [fixture: venn/lex-identifier-classdef-rule]
-[fixture: venn/lex-label-classdef-rule] [fixture: venn/lex-text-classdef-rule]
-[fixture: venn/lex-style-classdef-rule] [fixture:
-venn/db-after-style-hex-semicolon] [fixture:
-venn/db-after-style-hex-semicolon-spaced]
+values.
 
-A remaining reference semicolon is still encoded after that removal. [fixture:
-venn/lex-identifier-style-rule-two-semicolons] [fixture:
+[fixture: venn/lex-identifier-style-rule] [fixture: venn/lex-label-style-rule]
+[fixture: venn/lex-text-style-rule] [fixture: venn/lex-style-style-rule]
+[fixture: venn/lex-identifier-classdef-rule] [fixture:
+venn/lex-label-classdef-rule] [fixture: venn/lex-text-classdef-rule] [fixture:
+venn/lex-style-classdef-rule] [fixture: venn/db-after-style-hex-semicolon]
+[fixture: venn/db-after-style-hex-semicolon-spaced]
+
+A remaining reference semicolon is still encoded after that removal.
+
+[fixture: venn/lex-identifier-style-rule-two-semicolons] [fixture:
 venn/lex-label-style-rule-two-semicolons] [fixture:
 venn/lex-text-style-rule-two-semicolons] [fixture:
 venn/lex-style-style-rule-two-semicolons] [fixture:
 venn/lex-title-style-rule-two-semicolons]
 
 Without the matching spelling and line condition, the semicolon stays;
-character-reference encoding can still apply. [fixture:
-venn/lex-identifier-style-rule-upper] [fixture: venn/lex-label-style-rule-upper]
-[fixture: venn/lex-text-style-rule-upper] [fixture:
-venn/lex-identifier-style-rule-space] [fixture: venn/lex-label-style-rule-space]
-[fixture: venn/lex-text-style-rule-space] [fixture:
-venn/lex-identifier-style-rule-no-hash] [fixture:
+character-reference encoding can still apply.
+
+[fixture: venn/lex-identifier-style-rule-upper] [fixture:
+venn/lex-label-style-rule-upper] [fixture: venn/lex-text-style-rule-upper]
+[fixture: venn/lex-identifier-style-rule-space] [fixture:
+venn/lex-label-style-rule-space] [fixture: venn/lex-text-style-rule-space]
+[fixture: venn/lex-identifier-style-rule-no-hash] [fixture:
 venn/lex-label-style-rule-no-hash] [fixture: venn/lex-text-style-rule-no-hash]
 [fixture: venn/lex-identifier-style-rule-other-line] [fixture:
 venn/lex-label-style-rule-other-line] [fixture:
@@ -14860,42 +16664,52 @@ venn/lex-style-style-rule-other-line] [fixture: venn/lex-title-style-rule-space]
 [fixture: venn/lex-title-style-rule-upper]
 
 The outer style statement can trigger semicolon removal even when an inner
-`Style` fragment starts with an uppercase letter. [fixture:
-venn/lex-style-style-rule-upper]
+`Style` fragment starts with an uppercase letter.
+
+[fixture: venn/lex-style-style-rule-upper]
 
 Quoted identifiers, text ids, and style values keep their inner padding, while
-bracket labels trim it. [fixture: venn/lex-identifier-spaces] [fixture:
-venn/lex-label-spaces] [fixture: venn/lex-text-spaces] [fixture:
-venn/lex-style-spaces]
+bracket labels trim it.
+
+[fixture: venn/lex-identifier-spaces] [fixture: venn/lex-label-spaces] [fixture:
+venn/lex-text-spaces] [fixture: venn/lex-style-spaces]
 
 An empty quoted identifier, text id, or style string remains an empty string.
+
 [fixture: venn/lex-identifier-empty] [fixture: venn/lex-text-empty] [fixture:
 venn/lex-style-empty]
 
-An empty quoted bracket label is omitted. [fixture: venn/lex-label-empty]
+An empty quoted bracket label is omitted.
+
+[fixture: venn/lex-label-empty]
 
 The literal values `a#b` and `a;b` remain inside quoted identifiers, labels,
-text ids, and style strings. [fixture: venn/db-grid-hash-identifier-quoted]
-[fixture: venn/db-grid-semicolon-identifier-quoted] [fixture:
+text ids, and style strings.
+
+[fixture: venn/db-grid-hash-identifier-quoted] [fixture:
+venn/db-grid-semicolon-identifier-quoted] [fixture:
 venn/db-grid-hash-label-quoted] [fixture: venn/db-grid-semicolon-label-quoted]
 [fixture: venn/db-text-quoted-hash] [fixture: venn/db-text-quoted-semicolon]
 [fixture: venn/db-style-quoted-hash] [fixture: venn/db-style-quoted-semicolon]
 
 Without a closing `}%%`, the fragment `%%{init: {}` consumes through EOF when no
-U+2028 or U+2029 interrupts its free-text argument. [fixture:
-venn/lex-identifier-unclosed-directive] [fixture:
+U+2028 or U+2029 interrupts its free-text argument.
+
+[fixture: venn/lex-identifier-unclosed-directive] [fixture:
 venn/lex-label-unclosed-directive] [fixture: venn/lex-text-unclosed-directive]
 [fixture: venn/lex-style-unclosed-directive]
 
 In a quoted identifier, label, text id, or style string, that removal takes the
-closing delimiter and rejects the unclosed value. [fixture:
-venn/lex-identifier-unclosed-directive] [fixture:
+closing delimiter and rejects the unclosed value.
+
+[fixture: venn/lex-identifier-unclosed-directive] [fixture:
 venn/lex-label-unclosed-directive] [fixture: venn/lex-text-unclosed-directive]
 [fixture: venn/lex-style-unclosed-directive]
 
 A word argument ends before the closing delimiter, which remains available even
-when the directive is unclosed. [fixture:
-venn/lex-identifier-word-unclosed-directive] [fixture:
+when the directive is unclosed.
+
+[fixture: venn/lex-identifier-word-unclosed-directive] [fixture:
 venn/lex-label-word-unclosed-directive] [fixture:
 venn/lex-text-word-unclosed-directive] [fixture:
 venn/lex-style-word-unclosed-directive] [fixture:
@@ -14905,8 +16719,9 @@ venn/db-text-unclosed-directive-word-argument] [fixture:
 venn/db-style-unclosed-directive-word-argument]
 
 A U+2028 or U+2029 before that delimiter stops the free-text argument and is
-itself removed, leaving the following text and delimiter. [fixture:
-venn/db-identifier-unclosed-directive-line-separator] [fixture:
+itself removed, leaving the following text and delimiter.
+
+[fixture: venn/db-identifier-unclosed-directive-line-separator] [fixture:
 venn/db-label-unclosed-directive-line-separator] [fixture:
 venn/db-text-unclosed-directive-line-separator] [fixture:
 venn/db-style-unclosed-directive-line-separator] [fixture:
@@ -14916,52 +16731,67 @@ venn/db-text-unclosed-directive-paragraph-separator] [fixture:
 venn/db-style-unclosed-directive-paragraph-separator]
 
 A title needs no closing delimiter, so an unclosed object-argument directive can
-remove its suffix and leave its earlier text as the title. [fixture:
-venn/lex-title-unclosed-directive]
+remove its suffix and leave its earlier text as the title.
+
+[fixture: venn/lex-title-unclosed-directive]
 
 An unclosed word-argument directive in a title removes its next word and leaves
-the preceding title text. [fixture: venn/lex-title-word-unclosed-directive]
+the preceding title text.
+
+[fixture: venn/lex-title-word-unclosed-directive]
 
 LF ends title text, so a remaining bare line is rejected even after an
-intervening blank, comment, or directive line. [fixture:
-venn/lex-title-blank-line] [fixture: venn/lex-title-comment-line] [fixture:
-venn/lex-title-directive-line] [fixture: venn/lex-title-style-rule-other-line]
+intervening blank, comment, or directive line.
+
+[fixture: venn/lex-title-blank-line] [fixture: venn/lex-title-comment-line]
+[fixture: venn/lex-title-directive-line] [fixture:
+venn/lex-title-style-rule-other-line]
 
 An unencoded hash or semicolon in title text ends its token and rejects a
-leftover fragment. [fixture: venn/lex-title-classdef-rule] [fixture:
+leftover fragment.
+
+[fixture: venn/lex-title-classdef-rule] [fixture:
 venn/lex-title-entity-no-semicolon] [fixture: venn/lex-title-style-rule]
 [fixture: venn/lex-title-style-rule-no-hash]
 
 A set requires one identifier, a union requires an identifier list, and a style
 statement requires targets; single-quoted set identifiers are rejected.
+
 [fixture: venn/gram-extra-set-no-id] [fixture:
 venn/gram-extra-set-single-quoted] [fixture: venn/gram-extra-union-no-id]
 [fixture: venn/gram-set-list] [fixture: venn/spec-venn-a50620dc]
 
 Indented and CRLF frontmatter supply the title, and HTML attribute quotes in
 that title become single quotes; empty, malformed, unclosed, misplaced, or
-comment-prefixed frontmatter is rejected in these forms. [fixture:
-venn/frontmatter-after-header] [fixture: venn/frontmatter-comment-before]
-[fixture: venn/frontmatter-crlf] [fixture: venn/frontmatter-empty] [fixture:
-venn/frontmatter-html-title] [fixture: venn/frontmatter-indented] [fixture:
-venn/frontmatter-invalid] [fixture: venn/frontmatter-unclosed]
+comment-prefixed frontmatter is rejected in these forms.
+
+[fixture: venn/frontmatter-after-header] [fixture:
+venn/frontmatter-comment-before] [fixture: venn/frontmatter-crlf] [fixture:
+venn/frontmatter-empty] [fixture: venn/frontmatter-html-title] [fixture:
+venn/frontmatter-indented] [fixture: venn/frontmatter-invalid] [fixture:
+venn/frontmatter-unclosed]
 
 A numeric text id keeps leading zeros, while a bare identifier or empty string
-cannot start a venn statement. [fixture: venn/db-text-leading-zeros] [fixture:
-venn/gram-bare-empty-string] [fixture: venn/gram-bare-word]
+cannot start a venn statement.
+
+[fixture: venn/db-text-leading-zeros] [fixture: venn/gram-bare-empty-string]
+[fixture: venn/gram-bare-word]
 
 A comment or directive alone supplies no diagram header, and an indented comment
-line preserves implicit text mode. [fixture: venn/lex-comment-line-before-text]
-[fixture: venn/lex-comment-only] [fixture: venn/lex-directive-only]
+line preserves implicit text mode.
+
+[fixture: venn/lex-comment-line-before-text] [fixture: venn/lex-comment-only]
+[fixture: venn/lex-directive-only]
 
 The title separator accepts a tab, BOM, NBSP, U+3000, U+2028, U+2029, CR, CRLF,
-vertical tab, or form feed, but not U+0085. [fixture:
-venn/lex-title-separator-bom] [fixture: venn/lex-title-separator-cr] [fixture:
-venn/lex-title-separator-crlf] [fixture: venn/lex-title-separator-ff] [fixture:
-venn/lex-title-separator-ideographic] [fixture: venn/lex-title-separator-ls]
-[fixture: venn/lex-title-separator-nbsp] [fixture: venn/lex-title-separator-nel]
-[fixture: venn/lex-title-separator-ps] [fixture: venn/lex-title-separator-tab]
-[fixture: venn/lex-title-separator-vt]
+vertical tab, or form feed, but not U+0085.
+
+[fixture: venn/lex-title-separator-bom] [fixture: venn/lex-title-separator-cr]
+[fixture: venn/lex-title-separator-crlf] [fixture: venn/lex-title-separator-ff]
+[fixture: venn/lex-title-separator-ideographic] [fixture:
+venn/lex-title-separator-ls] [fixture: venn/lex-title-separator-nbsp] [fixture:
+venn/lex-title-separator-nel] [fixture: venn/lex-title-separator-ps] [fixture:
+venn/lex-title-separator-tab] [fixture: venn/lex-title-separator-vt]
 
 ### Text positions
 
@@ -14983,8 +16813,9 @@ The grammar rejects these inserted fragments: `ampersand-entity`, `arrow`,
 `keyword-header`, `keyword-space`, `keyword-style`, `less-than`, `lf`, `ls`,
 `nbsp`, `nel`, `nonascii`, `open-brace`, `open-round`, `open-square`, `percent`,
 `pipe`, `proto`, `ps`, `punct`, `quote`, `root`, `semicolon`, `single-quote`,
-`spaces`, `style-rule`, `tab`, `vt`. [fixture:
-venn/gram-grid-ampersand-entity-header-line] [fixture:
+`spaces`, `style-rule`, `tab`, `vt`.
+
+[fixture: venn/gram-grid-ampersand-entity-header-line] [fixture:
 venn/gram-grid-arrow-header-line] [fixture:
 venn/gram-grid-arrow-spaced-header-line] [fixture:
 venn/gram-grid-backslash-header-line] [fixture:
@@ -15036,7 +16867,9 @@ venn/gram-grid-style-rule-header-line] [fixture: venn/gram-grid-tab-header-line]
 [fixture: venn/gram-grid-vt-header-line]
 
 The comment token consumes the preceding bare fragment, leaving only set Z:
-`comment`. [fixture: venn/db-grid-comment-header-line]
+`comment`.
+
+[fixture: venn/db-grid-comment-header-line]
 
 `identifier-bare` uses the ASCII identifier lexer and normalization shared by
 set ids, union members, text targets and bare text ids, and style targets.
@@ -15047,8 +16880,9 @@ The lexer rejects these inserted fragments: `ampersand-entity`, `arrow`,
 `ff`, `greater-than`, `hash`, `html`, `html-attribute`, `html-br`,
 `ideographic`, `less-than`, `ls`, `nbsp`, `nel`, `nonascii`, `open-brace`,
 `open-round`, `open-square`, `percent`, `pipe`, `ps`, `punct`, `quote`,
-`semicolon`, `single-quote`, `style-rule`, `vt`. [fixture:
-venn/gram-grid-ampersand-entity-identifier-bare] [fixture:
+`semicolon`, `single-quote`, `style-rule`, `vt`.
+
+[fixture: venn/gram-grid-ampersand-entity-identifier-bare] [fixture:
 venn/gram-grid-arrow-identifier-bare] [fixture:
 venn/gram-grid-arrow-spaced-identifier-bare] [fixture:
 venn/gram-grid-backslash-identifier-bare] [fixture:
@@ -15090,8 +16924,9 @@ venn/gram-grid-vt-identifier-bare]
 The grammar rejects these inserted fragments: `colon`, `comma`, `comment`,
 `comment-line`, `cr`, `crlf`, `directive-line`, `keyword-block`,
 `keyword-class`, `keyword-classdef`, `keyword-columns`, `keyword-end`,
-`keyword-header`, `keyword-space`, `lf`, `spaces`, `tab`. [fixture:
-venn/gram-grid-colon-identifier-bare] [fixture:
+`keyword-header`, `keyword-space`, `lf`, `spaces`, `tab`.
+
+[fixture: venn/gram-grid-colon-identifier-bare] [fixture:
 venn/gram-grid-comma-identifier-bare] [fixture:
 venn/gram-grid-comment-identifier-bare] [fixture:
 venn/gram-grid-comment-line-identifier-bare] [fixture:
@@ -15110,8 +16945,9 @@ venn/gram-grid-spaces-identifier-bare] [fixture:
 venn/gram-grid-tab-identifier-bare]
 
 The inserted fragments remain literal in this value: `constructor`, `dash`,
-`digits`, `empty`, `keyword`, `proto`, `root`. [fixture:
-venn/db-grid-constructor-identifier-bare] [fixture:
+`digits`, `empty`, `keyword`, `proto`, `root`.
+
+[fixture: venn/db-grid-constructor-identifier-bare] [fixture:
 venn/db-grid-dash-identifier-bare] [fixture:
 venn/db-grid-digits-identifier-bare] [fixture:
 venn/db-grid-empty-identifier-bare] [fixture:
@@ -15119,11 +16955,13 @@ venn/db-grid-keyword-identifier-bare] [fixture:
 venn/db-grid-proto-identifier-bare] [fixture: venn/db-grid-root-identifier-bare]
 
 The directive is removed and the surrounding fragments join: `directive`.
+
 [fixture: venn/db-grid-directive-identifier-bare]
 
 The inserted style keyword starts a separate statement and the earlier value
-ends before it: `keyword-style`. [fixture:
-venn/db-grid-keyword-style-identifier-bare]
+ends before it: `keyword-style`.
+
+[fixture: venn/db-grid-keyword-style-identifier-bare]
 
 `identifier-quoted` uses the string lexer and one-pair quote removal shared by
 quoted identifiers, quoted text ids, and quoted style values.
@@ -15137,7 +16975,9 @@ The inserted fragments remain literal in this value: `ampersand-entity`,
 `keyword-space`, `keyword-style`, `less-than`, `lf`, `ls`, `nbsp`, `nel`,
 `nonascii`, `open-brace`, `open-round`, `open-square`, `percent`, `pipe`,
 `proto`, `ps`, `punct`, `root`, `semicolon`, `single-quote`, `spaces`, `tab`,
-`vt`. [fixture: venn/db-grid-ampersand-entity-identifier-quoted] [fixture:
+`vt`.
+
+[fixture: venn/db-grid-ampersand-entity-identifier-quoted] [fixture:
 venn/db-grid-arrow-identifier-quoted] [fixture:
 venn/db-grid-arrow-spaced-identifier-quoted] [fixture:
 venn/db-grid-backslash-identifier-quoted] [fixture:
@@ -15187,28 +17027,38 @@ venn/db-grid-spaces-identifier-quoted] [fixture: venn/lex-bom-quoted-value]
 [fixture: venn/lex-tab-quoted-value] [fixture: venn/lex-vt-quoted-value]
 
 The matching style or classDef line loses its last semicolon: `classdef-rule`,
-`style-rule`. [fixture: venn/db-grid-classdef-rule-identifier-quoted] [fixture:
+`style-rule`.
+
+[fixture: venn/db-grid-classdef-rule-identifier-quoted] [fixture:
 venn/db-grid-style-rule-identifier-quoted]
 
 The inserted line ending or removed comment line becomes one LF: `comment-line`,
-`cr`, `crlf`. [fixture: venn/lex-cr-quoted-value] [fixture:
-venn/lex-crlf-quoted-value] [fixture: venn/lex-identifier-comment-line]
+`cr`, `crlf`.
+
+[fixture: venn/lex-cr-quoted-value] [fixture: venn/lex-crlf-quoted-value]
+[fixture: venn/lex-identifier-comment-line]
 
 The directive is removed and the surrounding fragments join: `directive`.
+
 [fixture: venn/lex-identifier-directive-middle]
 
-The removed directive line leaves two LFs: `directive-line`. [fixture:
-venn/lex-identifier-directive-line]
+The removed directive line leaves two LFs: `directive-line`.
+
+[fixture: venn/lex-identifier-directive-line]
 
 The character reference becomes its shared preprocessing placeholder: `entity`,
-`entity-named`. [fixture: venn/lex-identifier-entity-named] [fixture:
+`entity-named`.
+
+[fixture: venn/lex-identifier-entity-named] [fixture:
 venn/lex-identifier-entity-numeric]
 
 Double quotes of the HTML attribute become single quotes: `html-attribute`.
+
 [fixture: venn/lex-identifier-html-attribute]
 
-The grammar rejects these inserted fragments: `quote`. [fixture:
-venn/gram-grid-quote-identifier-quoted]
+The grammar rejects these inserted fragments: `quote`.
+
+[fixture: venn/gram-grid-quote-identifier-quoted]
 
 `label-bare` uses the unquoted bracket-label lexer, which trims before Db
 normalization.
@@ -15221,8 +17071,9 @@ The inserted fragments remain literal in this value: `ampersand-entity`,
 `keyword-columns`, `keyword-end`, `keyword-header`, `keyword-space`,
 `keyword-style`, `less-than`, `lf`, `ls`, `nbsp`, `nel`, `nonascii`,
 `open-brace`, `open-round`, `open-square`, `percent`, `pipe`, `proto`, `ps`,
-`punct`, `root`, `semicolon`, `single-quote`, `spaces`, `tab`, `vt`. [fixture:
-venn/db-grid-ampersand-entity-label-bare] [fixture:
+`punct`, `root`, `semicolon`, `single-quote`, `spaces`, `tab`, `vt`.
+
+[fixture: venn/db-grid-ampersand-entity-label-bare] [fixture:
 venn/db-grid-arrow-label-bare] [fixture: venn/db-grid-arrow-spaced-label-bare]
 [fixture: venn/db-grid-backslash-label-bare] [fixture:
 venn/db-grid-backtick-label-bare] [fixture: venn/db-grid-bom-label-bare]
@@ -15260,31 +17111,42 @@ venn/db-grid-single-quote-label-bare] [fixture: venn/db-grid-spaces-label-bare]
 [fixture: venn/db-grid-tab-label-bare] [fixture: venn/db-grid-vt-label-bare]
 
 The matching style or classDef line loses its last semicolon: `classdef-rule`,
-`style-rule`. [fixture: venn/db-grid-classdef-rule-label-bare] [fixture:
+`style-rule`.
+
+[fixture: venn/db-grid-classdef-rule-label-bare] [fixture:
 venn/db-grid-style-rule-label-bare]
 
-The grammar rejects these inserted fragments: `close-square`. [fixture:
-venn/gram-grid-close-square-label-bare]
+The grammar rejects these inserted fragments: `close-square`.
+
+[fixture: venn/gram-grid-close-square-label-bare]
 
 The inserted line ending or removed comment line becomes one LF: `comment-line`,
-`cr`, `crlf`. [fixture: venn/db-grid-comment-line-label-bare] [fixture:
+`cr`, `crlf`.
+
+[fixture: venn/db-grid-comment-line-label-bare] [fixture:
 venn/db-grid-cr-label-bare] [fixture: venn/db-grid-crlf-label-bare]
 
 The directive is removed and the surrounding fragments join: `directive`.
+
 [fixture: venn/db-grid-directive-label-bare]
 
-The removed directive line leaves two LFs: `directive-line`. [fixture:
-venn/db-grid-directive-line-label-bare]
+The removed directive line leaves two LFs: `directive-line`.
+
+[fixture: venn/db-grid-directive-line-label-bare]
 
 The character reference becomes its shared preprocessing placeholder: `entity`,
-`entity-named`. [fixture: venn/db-grid-entity-label-bare] [fixture:
+`entity-named`.
+
+[fixture: venn/db-grid-entity-label-bare] [fixture:
 venn/db-grid-entity-named-label-bare]
 
 Double quotes of the HTML attribute become single quotes: `html-attribute`.
+
 [fixture: venn/db-grid-html-attribute-label-bare]
 
-The lexer rejects these inserted fragments: `quote`. [fixture:
-venn/gram-grid-quote-label-bare]
+The lexer rejects these inserted fragments: `quote`.
+
+[fixture: venn/gram-grid-quote-label-bare]
 
 `label-quoted` removes bracket-string delimiters before Db normalization, so
 interior whitespace can be trimmed.
@@ -15298,7 +17160,9 @@ The inserted fragments remain literal in this value: `ampersand-entity`,
 `keyword-space`, `keyword-style`, `less-than`, `lf`, `ls`, `nbsp`, `nel`,
 `nonascii`, `open-brace`, `open-round`, `open-square`, `percent`, `pipe`,
 `proto`, `ps`, `punct`, `root`, `semicolon`, `single-quote`, `spaces`, `tab`,
-`vt`. [fixture: venn/db-grid-ampersand-entity-label-quoted] [fixture:
+`vt`.
+
+[fixture: venn/db-grid-ampersand-entity-label-quoted] [fixture:
 venn/db-grid-arrow-label-quoted] [fixture:
 venn/db-grid-arrow-spaced-label-quoted] [fixture:
 venn/db-grid-backslash-label-quoted] [fixture:
@@ -15342,28 +17206,37 @@ venn/db-grid-spaces-label-quoted] [fixture: venn/db-grid-tab-label-quoted]
 [fixture: venn/db-grid-vt-label-quoted]
 
 The matching style or classDef line loses its last semicolon: `classdef-rule`,
-`style-rule`. [fixture: venn/db-grid-classdef-rule-label-quoted] [fixture:
+`style-rule`.
+
+[fixture: venn/db-grid-classdef-rule-label-quoted] [fixture:
 venn/db-grid-style-rule-label-quoted]
 
 The inserted line ending or removed comment line becomes one LF: `comment-line`,
-`cr`, `crlf`. [fixture: venn/db-grid-cr-label-quoted] [fixture:
+`cr`, `crlf`.
+
+[fixture: venn/db-grid-cr-label-quoted] [fixture:
 venn/db-grid-crlf-label-quoted] [fixture: venn/lex-label-comment-line]
 
 The directive is removed and the surrounding fragments join: `directive`.
+
 [fixture: venn/lex-label-directive-middle]
 
-The removed directive line leaves two LFs: `directive-line`. [fixture:
-venn/lex-label-directive-line]
+The removed directive line leaves two LFs: `directive-line`.
+
+[fixture: venn/lex-label-directive-line]
 
 The character reference becomes its shared preprocessing placeholder: `entity`,
-`entity-named`. [fixture: venn/lex-label-entity-named] [fixture:
-venn/lex-label-entity-numeric]
+`entity-named`.
+
+[fixture: venn/lex-label-entity-named] [fixture: venn/lex-label-entity-numeric]
 
 Double quotes of the HTML attribute become single quotes: `html-attribute`.
+
 [fixture: venn/lex-label-html-attribute]
 
-The lexer rejects these inserted fragments: `quote`. [fixture:
-venn/gram-grid-quote-label-quoted]
+The lexer rejects these inserted fragments: `quote`.
+
+[fixture: venn/gram-grid-quote-label-quoted]
 
 `size` converts a numeric token with `parseFloat()` for a set or union.
 
@@ -15373,7 +17246,9 @@ The lexer rejects these inserted fragments: `ampersand-entity`, `arrow`,
 `greater-than`, `hash`, `html`, `html-attribute`, `html-br`, `ideographic`,
 `less-than`, `ls`, `nbsp`, `nel`, `nonascii`, `open-brace`, `open-round`,
 `open-square`, `percent`, `pipe`, `ps`, `punct`, `quote`, `semicolon`,
-`single-quote`, `vt`. [fixture: venn/gram-grid-ampersand-entity-size] [fixture:
+`single-quote`, `vt`.
+
+[fixture: venn/gram-grid-ampersand-entity-size] [fixture:
 venn/gram-grid-arrow-size] [fixture: venn/gram-grid-arrow-spaced-size] [fixture:
 venn/gram-grid-backslash-size] [fixture: venn/gram-grid-backtick-size] [fixture:
 venn/gram-grid-bom-size] [fixture: venn/gram-grid-close-brace-size] [fixture:
@@ -15398,15 +17273,16 @@ The grammar rejects these inserted fragments: `classdef-rule`, `colon`, `comma`,
 `comment`, `comment-line`, `constructor`, `cr`, `crlf`, `dash`,
 `directive-line`, `keyword`, `keyword-block`, `keyword-class`,
 `keyword-classdef`, `keyword-columns`, `keyword-end`, `keyword-header`,
-`keyword-space`, `lf`, `proto`, `root`, `spaces`, `style-rule`, `tab`. [fixture:
-venn/gram-grid-classdef-rule-size] [fixture: venn/gram-grid-colon-size]
-[fixture: venn/gram-grid-comma-size] [fixture: venn/gram-grid-comment-line-size]
-[fixture: venn/gram-grid-comment-size] [fixture:
-venn/gram-grid-constructor-size] [fixture: venn/gram-grid-cr-size] [fixture:
-venn/gram-grid-crlf-size] [fixture: venn/gram-grid-dash-size] [fixture:
-venn/gram-grid-directive-line-size] [fixture: venn/gram-grid-keyword-block-size]
-[fixture: venn/gram-grid-keyword-class-size] [fixture:
-venn/gram-grid-keyword-classdef-size] [fixture:
+`keyword-space`, `lf`, `proto`, `root`, `spaces`, `style-rule`, `tab`.
+
+[fixture: venn/gram-grid-classdef-rule-size] [fixture:
+venn/gram-grid-colon-size] [fixture: venn/gram-grid-comma-size] [fixture:
+venn/gram-grid-comment-line-size] [fixture: venn/gram-grid-comment-size]
+[fixture: venn/gram-grid-constructor-size] [fixture: venn/gram-grid-cr-size]
+[fixture: venn/gram-grid-crlf-size] [fixture: venn/gram-grid-dash-size]
+[fixture: venn/gram-grid-directive-line-size] [fixture:
+venn/gram-grid-keyword-block-size] [fixture: venn/gram-grid-keyword-class-size]
+[fixture: venn/gram-grid-keyword-classdef-size] [fixture:
 venn/gram-grid-keyword-columns-size] [fixture: venn/gram-grid-keyword-end-size]
 [fixture: venn/gram-grid-keyword-header-size] [fixture:
 venn/gram-grid-keyword-size] [fixture: venn/gram-grid-keyword-space-size]
@@ -15415,12 +17291,17 @@ venn/gram-grid-root-size] [fixture: venn/gram-grid-spaces-size] [fixture:
 venn/gram-grid-style-rule-size] [fixture: venn/gram-grid-tab-size]
 
 The inserted fragments remain literal in this value: `digits`, `empty`.
+
 [fixture: venn/db-grid-digits-size] [fixture: venn/db-grid-empty-size]
 
-The size is 12: `directive`. [fixture: venn/db-grid-directive-size]
+The size is 12: `directive`.
+
+[fixture: venn/db-grid-directive-size]
 
 The inserted style keyword starts a separate statement and the earlier value
-ends before it: `keyword-style`. [fixture: venn/db-grid-keyword-style-size]
+ends before it: `keyword-style`.
+
+[fixture: venn/db-grid-keyword-style-size]
 
 `text-number` keeps a numeric token as text instead of converting it to a size.
 
@@ -15430,8 +17311,10 @@ The lexer rejects these inserted fragments: `ampersand-entity`, `arrow`,
 `greater-than`, `hash`, `html`, `html-attribute`, `html-br`, `ideographic`,
 `less-than`, `ls`, `nbsp`, `nel`, `nonascii`, `open-brace`, `open-round`,
 `open-square`, `percent`, `pipe`, `ps`, `punct`, `quote`, `semicolon`,
-`single-quote`, `vt`. [fixture: venn/gram-grid-ampersand-entity-text-number]
-[fixture: venn/gram-grid-arrow-spaced-text-number] [fixture:
+`single-quote`, `vt`.
+
+[fixture: venn/gram-grid-ampersand-entity-text-number] [fixture:
+venn/gram-grid-arrow-spaced-text-number] [fixture:
 venn/gram-grid-arrow-text-number] [fixture:
 venn/gram-grid-backslash-text-number] [fixture:
 venn/gram-grid-backtick-text-number] [fixture: venn/gram-grid-bom-text-number]
@@ -15464,8 +17347,9 @@ The grammar rejects these inserted fragments: `classdef-rule`, `colon`, `comma`,
 `comment`, `comment-line`, `constructor`, `cr`, `crlf`, `dash`,
 `directive-line`, `keyword`, `keyword-block`, `keyword-class`,
 `keyword-classdef`, `keyword-columns`, `keyword-end`, `keyword-header`,
-`keyword-space`, `lf`, `proto`, `root`, `spaces`, `style-rule`, `tab`. [fixture:
-venn/gram-grid-classdef-rule-text-number] [fixture:
+`keyword-space`, `lf`, `proto`, `root`, `spaces`, `style-rule`, `tab`.
+
+[fixture: venn/gram-grid-classdef-rule-text-number] [fixture:
 venn/gram-grid-colon-text-number] [fixture: venn/gram-grid-comma-text-number]
 [fixture: venn/gram-grid-comment-line-text-number] [fixture:
 venn/gram-grid-comment-text-number] [fixture:
@@ -15487,15 +17371,18 @@ venn/gram-grid-root-text-number] [fixture: venn/gram-grid-spaces-text-number]
 venn/gram-grid-tab-text-number]
 
 The inserted fragments remain literal in this value: `digits`, `empty`.
+
 [fixture: venn/db-grid-digits-text-number] [fixture:
 venn/db-grid-empty-text-number]
 
 The directive is removed and the surrounding fragments join: `directive`.
+
 [fixture: venn/db-grid-directive-text-number]
 
 The inserted style keyword starts a separate statement and the earlier value
-ends before it: `keyword-style`. [fixture:
-venn/db-grid-keyword-style-text-number]
+ends before it: `keyword-style`.
+
+[fixture: venn/db-grid-keyword-style-text-number]
 
 `style-key` uses the identifier lexer and assigns its raw spelling into an
 ordinary property object.
@@ -15506,8 +17393,9 @@ The lexer rejects these inserted fragments: `ampersand-entity`, `arrow`,
 `ff`, `greater-than`, `hash`, `html`, `html-attribute`, `html-br`,
 `ideographic`, `less-than`, `ls`, `nbsp`, `nel`, `nonascii`, `open-brace`,
 `open-round`, `open-square`, `percent`, `pipe`, `ps`, `punct`, `quote`,
-`semicolon`, `single-quote`, `style-rule`, `vt`. [fixture:
-venn/gram-grid-ampersand-entity-style-key] [fixture:
+`semicolon`, `single-quote`, `style-rule`, `vt`.
+
+[fixture: venn/gram-grid-ampersand-entity-style-key] [fixture:
 venn/gram-grid-arrow-spaced-style-key] [fixture: venn/gram-grid-arrow-style-key]
 [fixture: venn/gram-grid-backslash-style-key] [fixture:
 venn/gram-grid-backtick-style-key] [fixture: venn/gram-grid-bom-style-key]
@@ -15539,6 +17427,7 @@ The grammar rejects these inserted fragments: `colon`, `comma`, `comment`,
 `comment-line`, `cr`, `crlf`, `directive-line`, `keyword-block`,
 `keyword-class`, `keyword-classdef`, `keyword-columns`, `keyword-end`,
 `keyword-header`, `keyword-space`, `keyword-style`, `lf`, `spaces`, `tab`.
+
 [fixture: venn/gram-grid-colon-style-key] [fixture:
 venn/gram-grid-comma-style-key] [fixture: venn/gram-grid-comment-line-style-key]
 [fixture: venn/gram-grid-comment-style-key] [fixture:
@@ -15556,27 +17445,31 @@ venn/gram-grid-keyword-style-style-key] [fixture: venn/gram-grid-lf-style-key]
 venn/gram-grid-tab-style-key]
 
 The inserted fragments remain literal in this value: `constructor`, `dash`,
-`digits`, `empty`, `keyword`, `proto`, `root`. [fixture:
-venn/db-grid-constructor-style-key] [fixture: venn/db-grid-dash-style-key]
-[fixture: venn/db-grid-digits-style-key] [fixture: venn/db-grid-empty-style-key]
-[fixture: venn/db-grid-keyword-style-key] [fixture:
-venn/db-grid-proto-style-key] [fixture: venn/db-grid-root-style-key]
+`digits`, `empty`, `keyword`, `proto`, `root`.
+
+[fixture: venn/db-grid-constructor-style-key] [fixture:
+venn/db-grid-dash-style-key] [fixture: venn/db-grid-digits-style-key] [fixture:
+venn/db-grid-empty-style-key] [fixture: venn/db-grid-keyword-style-key]
+[fixture: venn/db-grid-proto-style-key] [fixture: venn/db-grid-root-style-key]
 
 The directive is removed and the surrounding fragments join: `directive`.
+
 [fixture: venn/db-grid-directive-style-key]
 
 `style-value` inserts fragments between bare value words; the color-token
-readings above cover rgb, rgba, and hex interiors separately. [fixture:
-venn/db-grid-spaces-style-value] [fixture: venn/db-style-rgb-line-separator]
-[fixture: venn/db-style-hex-five]
+readings above cover rgb, rgba, and hex interiors separately.
+
+[fixture: venn/db-grid-spaces-style-value] [fixture:
+venn/db-style-rgb-line-separator] [fixture: venn/db-style-hex-five]
 
 The lexer rejects these inserted fragments: `ampersand-entity`, `arrow`,
 `arrow-spaced`, `backslash`, `backtick`, `bom`, `close-brace`, `close-round`,
 `close-square`, `emoji`, `entity-named`, `equals`, `ff`, `greater-than`, `hash`,
 `html`, `html-attribute`, `html-br`, `ideographic`, `less-than`, `ls`, `nbsp`,
 `nel`, `nonascii`, `open-brace`, `open-round`, `open-square`, `percent`, `pipe`,
-`ps`, `punct`, `quote`, `semicolon`, `single-quote`, `vt`. [fixture:
-venn/gram-grid-ampersand-entity-style-value] [fixture:
+`ps`, `punct`, `quote`, `semicolon`, `single-quote`, `vt`.
+
+[fixture: venn/gram-grid-ampersand-entity-style-value] [fixture:
 venn/gram-grid-arrow-spaced-style-value] [fixture:
 venn/gram-grid-arrow-style-value] [fixture:
 venn/gram-grid-backslash-style-value] [fixture:
@@ -15607,8 +17500,9 @@ venn/gram-grid-vt-style-value]
 
 The grammar rejects these inserted fragments: `classdef-rule`, `colon`, `comma`,
 `comment`, `comment-line`, `cr`, `crlf`, `directive-line`, `keyword-classdef`,
-`keyword-header`, `lf`, `style-rule`. [fixture:
-venn/gram-grid-classdef-rule-style-value] [fixture:
+`keyword-header`, `lf`, `style-rule`.
+
+[fixture: venn/gram-grid-classdef-rule-style-value] [fixture:
 venn/gram-grid-colon-style-value] [fixture: venn/gram-grid-comma-style-value]
 [fixture: venn/gram-grid-comment-line-style-value] [fixture:
 venn/gram-grid-comment-style-value] [fixture: venn/gram-grid-cr-style-value]
@@ -15620,10 +17514,11 @@ venn/gram-grid-lf-style-value] [fixture: venn/gram-grid-style-rule-style-value]
 
 The inserted fragments remain literal in this value: `constructor`, `dash`,
 `digits`, `empty`, `keyword`, `keyword-block`, `keyword-class`,
-`keyword-columns`, `keyword-end`, `keyword-space`, `proto`, `root`. [fixture:
-venn/db-grid-constructor-style-value] [fixture: venn/db-grid-dash-style-value]
-[fixture: venn/db-grid-digits-style-value] [fixture:
-venn/db-grid-empty-style-value] [fixture:
+`keyword-columns`, `keyword-end`, `keyword-space`, `proto`, `root`.
+
+[fixture: venn/db-grid-constructor-style-value] [fixture:
+venn/db-grid-dash-style-value] [fixture: venn/db-grid-digits-style-value]
+[fixture: venn/db-grid-empty-style-value] [fixture:
 venn/db-grid-keyword-block-style-value] [fixture:
 venn/db-grid-keyword-class-style-value] [fixture:
 venn/db-grid-keyword-columns-style-value] [fixture:
@@ -15633,16 +17528,20 @@ venn/db-grid-keyword-style-value] [fixture: venn/db-grid-proto-style-value]
 [fixture: venn/db-grid-root-style-value]
 
 The directive is removed and the surrounding fragments join: `directive`.
+
 [fixture: venn/db-grid-directive-style-value]
 
-The stored value is `"a #35b"`: `entity`. [fixture:
-venn/db-grid-entity-style-value]
+The stored value is `"a #35b"`: `entity`.
+
+[fixture: venn/db-grid-entity-style-value]
 
 The inserted style keyword starts a separate statement and the earlier value
-ends before it: `keyword-style`. [fixture:
-venn/db-grid-keyword-style-style-value]
+ends before it: `keyword-style`.
+
+[fixture: venn/db-grid-keyword-style-style-value]
 
 Whitespace between unquoted value tokens becomes one space: `spaces`, `tab`.
+
 [fixture: venn/db-grid-spaces-style-value] [fixture:
 venn/db-grid-tab-style-value]
 
@@ -15650,8 +17549,9 @@ venn/db-grid-tab-style-value]
 string normalization.
 
 The lexer rejects these inserted fragments: `ampersand-entity`, `classdef-rule`,
-`hash`, `semicolon`, `style-rule`. [fixture:
-venn/gram-grid-ampersand-entity-title] [fixture:
+`hash`, `semicolon`, `style-rule`.
+
+[fixture: venn/gram-grid-ampersand-entity-title] [fixture:
 venn/gram-grid-classdef-rule-title] [fixture: venn/gram-grid-hash-title]
 [fixture: venn/gram-grid-semicolon-title] [fixture:
 venn/gram-grid-style-rule-title]
@@ -15664,20 +17564,22 @@ The inserted fragments remain literal in this value: `arrow`, `arrow-spaced`,
 `keyword-end`, `keyword-header`, `keyword-space`, `keyword-style`, `less-than`,
 `ls`, `nbsp`, `nel`, `nonascii`, `open-brace`, `open-round`, `open-square`,
 `percent`, `pipe`, `proto`, `ps`, `punct`, `quote`, `root`, `single-quote`,
-`spaces`, `tab`, `vt`. [fixture: venn/db-grid-arrow-spaced-title] [fixture:
-venn/db-grid-arrow-title] [fixture: venn/db-grid-backslash-title] [fixture:
-venn/db-grid-backtick-title] [fixture: venn/db-grid-bom-title] [fixture:
-venn/db-grid-close-brace-title] [fixture: venn/db-grid-close-round-title]
-[fixture: venn/db-grid-close-square-title] [fixture: venn/db-grid-colon-title]
-[fixture: venn/db-grid-comma-title] [fixture: venn/db-grid-comment-title]
-[fixture: venn/db-grid-constructor-title] [fixture: venn/db-grid-dash-title]
-[fixture: venn/db-grid-digits-title] [fixture: venn/db-grid-emoji-title]
-[fixture: venn/db-grid-empty-title] [fixture: venn/db-grid-equals-title]
-[fixture: venn/db-grid-ff-title] [fixture: venn/db-grid-greater-than-title]
-[fixture: venn/db-grid-html-br-title] [fixture: venn/db-grid-html-title]
-[fixture: venn/db-grid-ideographic-title] [fixture:
-venn/db-grid-keyword-block-title] [fixture: venn/db-grid-keyword-class-title]
-[fixture: venn/db-grid-keyword-classdef-title] [fixture:
+`spaces`, `tab`, `vt`.
+
+[fixture: venn/db-grid-arrow-spaced-title] [fixture: venn/db-grid-arrow-title]
+[fixture: venn/db-grid-backslash-title] [fixture: venn/db-grid-backtick-title]
+[fixture: venn/db-grid-bom-title] [fixture: venn/db-grid-close-brace-title]
+[fixture: venn/db-grid-close-round-title] [fixture:
+venn/db-grid-close-square-title] [fixture: venn/db-grid-colon-title] [fixture:
+venn/db-grid-comma-title] [fixture: venn/db-grid-comment-title] [fixture:
+venn/db-grid-constructor-title] [fixture: venn/db-grid-dash-title] [fixture:
+venn/db-grid-digits-title] [fixture: venn/db-grid-emoji-title] [fixture:
+venn/db-grid-empty-title] [fixture: venn/db-grid-equals-title] [fixture:
+venn/db-grid-ff-title] [fixture: venn/db-grid-greater-than-title] [fixture:
+venn/db-grid-html-br-title] [fixture: venn/db-grid-html-title] [fixture:
+venn/db-grid-ideographic-title] [fixture: venn/db-grid-keyword-block-title]
+[fixture: venn/db-grid-keyword-class-title] [fixture:
+venn/db-grid-keyword-classdef-title] [fixture:
 venn/db-grid-keyword-columns-title] [fixture: venn/db-grid-keyword-end-title]
 [fixture: venn/db-grid-keyword-header-title] [fixture:
 venn/db-grid-keyword-space-title] [fixture: venn/db-grid-keyword-style-title]
@@ -15693,27 +17595,33 @@ venn/db-grid-single-quote-title] [fixture: venn/db-grid-spaces-title] [fixture:
 venn/db-grid-tab-title] [fixture: venn/db-grid-vt-title]
 
 The grammar rejects these inserted fragments: `comment-line`, `cr`, `crlf`,
-`directive-line`, `lf`. [fixture: venn/gram-grid-cr-title] [fixture:
-venn/gram-grid-crlf-title] [fixture: venn/gram-grid-lf-title] [fixture:
-venn/lex-title-comment-line] [fixture: venn/lex-title-directive-line]
+`directive-line`, `lf`.
+
+[fixture: venn/gram-grid-cr-title] [fixture: venn/gram-grid-crlf-title]
+[fixture: venn/gram-grid-lf-title] [fixture: venn/lex-title-comment-line]
+[fixture: venn/lex-title-directive-line]
 
 The directive is removed and the surrounding fragments join: `directive`.
+
 [fixture: venn/lex-title-directive-middle]
 
 The character reference becomes its shared preprocessing placeholder: `entity`,
-`entity-named`. [fixture: venn/lex-title-entity-named] [fixture:
-venn/lex-title-entity-numeric]
+`entity-named`.
+
+[fixture: venn/lex-title-entity-named] [fixture: venn/lex-title-entity-numeric]
 
 Double quotes of the HTML attribute become single quotes: `html-attribute`.
+
 [fixture: venn/lex-title-html-attribute]
 
 ## agentflow
 
 `normalizeAgentflow()` (`src/normalizers/agentflow.ts`) summarizes
 [`AgentFlowDB`](https://github.com/mermaid-js/mermaid/blob/2086904e76c692331e34a45d7cc3bc30860d040e/packages/mermaid/src/diagrams/agentflow/agentflowDb.ts#L213-L265).
-The header `agentflow-beta` has the detector id `agentflow`. [fixture:
-agentflow/header-lf] [fixture: agentflow/header-without-beta] [fixture:
-agentflow/detect-letter-suffix]
+The header `agentflow-beta` has the detector id `agentflow`.
+
+[fixture: agentflow/header-lf] [fixture: agentflow/header-without-beta]
+[fixture: agentflow/detect-letter-suffix]
 
 | Field                   | Content                                                                |
 | ----------------------- | ---------------------------------------------------------------------- |
@@ -15733,8 +17641,9 @@ getters, record shapes and metadata-call argument positions agree.
 [`draw()`](https://github.com/mermaid-js/mermaid/blob/2086904e76c692331e34a45d7cc3bc30860d040e/packages/mermaid/src/diagrams/agentflow/renderer.ts#L17-L61)
 reads `direction` for layout and `title` for title insertion; the common
 [`mermaidAPI`](https://github.com/mermaid-js/mermaid/blob/2086904e76c692331e34a45d7cc3bc30860d040e/packages/mermaid/src/mermaidAPI.ts#L628-L630)
-reads `accTitle` and `accDescr` for accessibility. [fixture:
-agentflow/db-all-fields]
+reads `accTitle` and `accDescr` for accessibility.
+
+[fixture: agentflow/db-all-fields]
 
 A vertex keeps `id`, `text`, `labelType`, `type`, `styles`, `classes`, `props`,
 and optional `dir`, `link`, `linkTarget`, `metadata`, `isConnector`.
@@ -15746,14 +17655,16 @@ chooses the shape from `type`. The map order determines node order.
 `isConnector` preserves the declaration kind needed to reconstruct the
 connector-id index that
 [`getData()`](https://github.com/mermaid-js/mermaid/blob/2086904e76c692331e34a45d7cc3bc30860d040e/packages/mermaid/src/diagrams/agentflow/agentflowDb.ts#L1696-L1972)
-uses for palette selection; drawing does not read that boolean itself. [fixture:
-agentflow/db-all-fields] [fixture: agentflow/gram-connector-all-forms]
+uses for palette selection; drawing does not read that boolean itself.
+
+[fixture: agentflow/db-all-fields] [fixture: agentflow/gram-connector-all-forms]
 
 `props` keeps the authored property-bracket key/value pairs although layout
 nodes do not receive it. A new props object can keep an own `__proto__` entry;
 updating the props of an already bare vertex with that key loses the entry,
-while updating an existing own entry replaces its value. [fixture:
-agentflow/db-props-proto-after-bare] [fixture:
+while updating an existing own entry replaces its value.
+
+[fixture: agentflow/db-props-proto-after-bare] [fixture:
 agentflow/db-props-proto-repeated] [fixture: agentflow/gram-props] [fixture:
 agentflow/gram-props-repeated]
 
@@ -15766,9 +17677,10 @@ uses endpoints and order to connect layout edges, `type` for arrowheads,
 labels, classes for compiled CSS, and interpolation/style/animation fields for
 shared edge rendering. Ids, including generated ids, identify rendered edges and
 subsequent metadata targets. Defaults provide curve/style fallbacks, including
-for existing edges, so `edgeDefaults` stays separate. [fixture:
-agentflow/gram-three-edge-kinds] [fixture: agentflow/gram-edge-id] [fixture:
-agentflow/gram-linkstyle-interpolate-default]
+for existing edges, so `edgeDefaults` stays separate.
+
+[fixture: agentflow/gram-three-edge-kinds] [fixture: agentflow/gram-edge-id]
+[fixture: agentflow/gram-linkstyle-interpolate-default]
 
 `classDefs.id` and `styles`, in definition order, supply
 [`getClasses()`](https://github.com/mermaid-js/mermaid/blob/2086904e76c692331e34a45d7cc3bc30860d040e/packages/mermaid/src/diagrams/agentflow/renderer.ts#L10-L16)
@@ -15781,8 +17693,9 @@ and node tooltip binding; the summary preserves the Map's first-id order.
 settings discard browser callback closures; the closures are consumed by
 [`setClickFun()`](https://github.com/mermaid-js/mermaid/blob/2086904e76c692331e34a45d7cc3bc30860d040e/packages/mermaid/src/diagrams/agentflow/agentflowDb.ts#L955-L1001)
 and post-render binding, rather than drawing reading the summary's `clickCalls`
-array. [fixture: agentflow/db-all-fields] [fixture:
-agentflow/db-click-missing-id]
+array.
+
+[fixture: agentflow/db-all-fields] [fixture: agentflow/db-click-missing-id]
 
 A container keeps `id`, `title`, `labelType`, `type`, `nodes`, `classes`, and
 optional `dir`, `metadata`.
@@ -15792,8 +17705,10 @@ traversal/palette order, title/type for the group label and shape, classes for
 CSS, direction for layout, and `metadata.view` for collapsed view. `global`
 changes membership without emitting a container. A vertex with the same
 container id stays because its styles/classes can update the group's drawing
-record. [fixture: agentflow/gram-flow-nested] [fixture: agentflow/gram-global]
-[fixture: agentflow/gram-global-after-flow] [fixture: agentflow/db-all-fields]
+record.
+
+[fixture: agentflow/gram-flow-nested] [fixture: agentflow/gram-global] [fixture:
+agentflow/gram-global-after-flow] [fixture: agentflow/db-all-fields]
 
 Raw records keep nested collapsed descendants and original edge endpoints,
 including hidden unsupported shapes. Global flow and connector ids remain
@@ -15801,6 +17716,7 @@ excluded from later container membership. A later flow declaration without a
 title preserves the earlier title and merges membership. Empty lines, comments
 and directives before `end` leave the membership intact. An empty quoted flow
 title is rejected; a whitespace-only connector title falls back to its id.
+
 [fixture: agentflow/db-hidden-unsupported-shape] [fixture:
 agentflow/db-nested-collapse-descendants] [fixture: agentflow/db-global-flow-id]
 [fixture: agentflow/db-global-connector-membership] [fixture:
@@ -15813,6 +17729,7 @@ The summary takes stored records rather than layout data, which hides
 descendants, redirects boundary endpoints and drops induced self-loops, or
 [`getSemanticModel()`](https://github.com/mermaid-js/mermaid/blob/2086904e76c692331e34a45d7cc3bc30860d040e/packages/mermaid/src/diagrams/agentflow/agentflowDb.ts#L2017-L2145),
 which drops presentation metadata, class definitions and interactivity.
+
 [fixture: agentflow/db-flow-collapse] [fixture:
 agentflow/db-data-block-presentation-metadata]
 
@@ -15831,8 +17748,9 @@ of
 in `dataBlockEffects`, without reading YAML or reproducing routing. `animate`
 and `animation` are block-only promoted fields; icon/image controls remain
 metadata without flowchart's promoted asset fields. See
-[embedded-data.md](./embedded-data.md). [fixture:
-agentflow/db-data-block-routing] [fixture:
+[embedded-data.md](./embedded-data.md).
+
+[fixture: agentflow/db-data-block-routing] [fixture:
 agentflow/db-data-block-presentation-metadata] [fixture: agentflow/gram-edge-id]
 [fixture: agentflow/docs-syntax-agentflow-69451cfd] [fixture:
 agentflow/db-flow-collapse]
@@ -15842,8 +17760,9 @@ shared `numberOrText()` summary rule: text `"Infinity"`, `"-Infinity"`, `"NaN"`.
 The numeric values remain accepted by Mermaid on nodes, edges, flows and
 connectors. YAML `1e999` is a string and stays `"1e999"`. Instrumentation
 records extraction problems for reporting after parsing; it never turns its own
-extraction error into a parse rejection. [fixture:
-agentflow/db-metadata-positive-infinity] [fixture:
+extraction error into a parse rejection.
+
+[fixture: agentflow/db-metadata-positive-infinity] [fixture:
 agentflow/db-metadata-negative-infinity] [fixture: agentflow/db-metadata-nan]
 [fixture: agentflow/db-metadata-overflow] [fixture:
 agentflow/db-metadata-edge-infinity] [fixture:
@@ -15856,8 +17775,9 @@ Routing prefers an existing flow, then connector, then edge (including a
 generated edge id), then vertex; prototype-shaped metadata keys are stripped
 recursively. A block before a flow remains on its vertex descriptor; a later
 connector declaration replaces its earlier vertex metadata. Connector/edge and
-flow/connector id collisions follow the same priority. [fixture:
-agentflow/db-connector-edge-id-collision] [fixture:
+flow/connector id collisions follow the same priority.
+
+[fixture: agentflow/db-connector-edge-id-collision] [fixture:
 agentflow/db-flow-connector-collision] [fixture:
 agentflow/db-generated-edge-id-metadata-target] [fixture:
 agentflow/db-metadata-before-flow] [fixture:
@@ -15870,9 +17790,10 @@ or array becomes metadata with character/index keys; a YAML comment-only body
 adds no metadata. An empty-array label becomes empty text. Escaped quotes can
 end the lexer state early and reject the input. Directives inside multiline
 bodies disappear before YAML; a quoted multiline value folds to `<br/>`, while a
-comma on a valid plain scalar remains part of that scalar. [fixture:
-agentflow/db-metadata-scalar] [fixture: agentflow/db-metadata-array] [fixture:
-agentflow/db-metadata-single-line-comment] [fixture:
+comma on a valid plain scalar remains part of that scalar.
+
+[fixture: agentflow/db-metadata-scalar] [fixture: agentflow/db-metadata-array]
+[fixture: agentflow/db-metadata-single-line-comment] [fixture:
 agentflow/db-metadata-empty-array-label] [fixture:
 agentflow/db-metadata-escaped-quote] [fixture:
 agentflow/db-metadata-comment-directive-body] [fixture:
@@ -15886,7 +17807,9 @@ mapping are kept as values in metadata and `dataBlockEffects`. The alias making
 Mermaid's recursive
 [`stripPrototypeKeys()`](https://github.com/mermaid-js/mermaid/blob/2086904e76c692331e34a45d7cc3bc30860d040e/packages/mermaid/src/diagrams/agentflow/agentflowDb.ts#L124-L139)
 before summary extraction; the same rejection occurs without the Db
-instrumentation. [fixture: agentflow/db-metadata-yaml-shared-alias] [fixture:
+instrumentation.
+
+[fixture: agentflow/db-metadata-yaml-shared-alias] [fixture:
 agentflow/div-metadata-yaml-self-alias]
 
 Shape aliases resolve before storage. The six domain aliases and `round`, and
@@ -15899,7 +17822,9 @@ before drawing. Authored camel-case or underscore names reject, even when an
 internal resolved name or removed-shape entry has that spelling. `ellipse` and
 `connector` reject through the shape catalogue although inline ellipse syntax
 and the connector declaration parse. Empty text and zero do not set the type; a
-shape array rejects. [fixture: agentflow/db-alias-round] [fixture:
+shape array rejects.
+
+[fixture: agentflow/db-alias-round] [fixture:
 agentflow/db-shape-collapsed-group-lowercase-rule] [fixture:
 agentflow/db-shape-canonical-roundedrect-lowercase-rule] [fixture:
 agentflow/db-removed-shape-type-declaration] [fixture:
@@ -15912,6 +17837,7 @@ agentflow/gram-bracket-shapes] [fixture: agentflow/gram-connector-all-forms]
 
 The accepted canonical metadata names `subproc`, `lean-right`, `lin-doc`,
 `lined-document`, `hexagon` and `hex` stay as written on the raw vertex.
+
 [fixture: agentflow/db-shape-subproc] [fixture: agentflow/db-shape-lean-right]
 [fixture: agentflow/db-shape-lin-doc] [fixture:
 agentflow/db-shape-lined-document] [fixture: agentflow/db-shape-hexagon]
@@ -15922,8 +17848,9 @@ type/metadata stay, while
 [`normaliseNodeShapes()`](https://github.com/mermaid-js/mermaid/blob/2086904e76c692331e34a45d7cc3bc30860d040e/packages/mermaid/src/diagrams/agentflow/shapes.ts#L114-L148)
 emits `SHAPE_REMOVED` and substitutes `roundedRect` in layout data. This
 includes `doublecircle`, document/terminal/circle/trapezoid variants,
-lean-left/in-out/odd/procs, and the removed instance shapes. [fixture:
-agentflow/db-removed-shape-doublecircle] [fixture:
+lean-left/in-out/odd/procs, and the removed instance shapes.
+
+[fixture: agentflow/db-removed-shape-doublecircle] [fixture:
 agentflow/db-shape-removed-doc] [fixture: agentflow/db-shape-removed-stadium]
 [fixture: agentflow/db-shape-removed-terminal] [fixture:
 agentflow/db-shape-removed-circle] [fixture:
@@ -15955,8 +17882,9 @@ summary. The
 distinguish these checks from external semantic checks: reference labels,
 missing connector references and flows without inputs do not emit the reserved
 ids here. Diagnostic records are outputs, not inputs to drawing, and are
-omitted; the normalizer does not call `getData()`. [fixture:
-agentflow/db-data-block-removed-shape] [fixture:
+omitted; the normalizer does not call `getData()`.
+
+[fixture: agentflow/db-data-block-removed-shape] [fixture:
 agentflow/db-data-block-unsupported-shape] [fixture:
 agentflow/db-flow-collapsed-removed-shape] [fixture:
 agentflow/db-data-block-unknown-shape] [fixture:
@@ -15973,8 +17901,10 @@ closures already captured as authored calls. `frontmatterLineOffset`,
 `elementMappings`, `bareVertexMappings` and `preserveCommentsWhenParsing`
 concern source positions. `postParseValidationRun` guards the currently empty
 post-parse validator. DOM ids, `haveCallback`, derived class `textStyles` and
-layout geometry add no independent authored information. [fixture:
-agentflow/db-all-fields] [fixture: agentflow/db-diagnostic-position-variant]
+layout geometry add no independent authored information.
+
+[fixture: agentflow/db-all-fields] [fixture:
+agentflow/db-diagnostic-position-variant]
 
 Trailing style whitespace is kept, as in flowchart: style strings can give
 different arrowhead colours when that whitespace changes. Text is recorded
@@ -15984,7 +17914,9 @@ same summary. Unsupported levels still use common `htmlLabels` processing,
 including `flowchart.htmlLabels` fallback; inherited flow directions use
 `flowchart.inheritDir`. Layout selection, including elk, adds no summary field.
 No time, random id or browser stand-in beyond the existing sanitizer setup is
-needed. [fixture: agentflow/config-security-strict] [fixture:
+needed.
+
+[fixture: agentflow/config-security-strict] [fixture:
 agentflow/config-security-loose] [fixture: agentflow/config-security-antiscript]
 [fixture: agentflow/config-security-sandbox] [fixture:
 agentflow/lex-style-whitespace-complete] [fixture:
@@ -15997,8 +17929,9 @@ agentflow/config-other-root-true] [fixture: agentflow/config-other-root-false]
 Shared preprocessing removes directives even inside the `flow`, `connector`,
 `global`, `end`, `style`, `classDef`, `class`, `linkStyle`, `click`, `call`,
 `href`, `direction`, accessibility, `default` and `interpolate` keywords; the
-fragments join into the keyword before lexing. [fixture:
-agentflow/div-directive-in-flow-keyword] [fixture:
+fragments join into the keyword before lexing.
+
+[fixture: agentflow/div-directive-in-flow-keyword] [fixture:
 agentflow/div-directive-in-connector-keyword] [fixture:
 agentflow/div-directive-in-global-keyword] [fixture:
 agentflow/div-directive-in-end-keyword] [fixture:
@@ -16017,7 +17950,9 @@ agentflow/div-directive-in-interpolate-keyword]
 
 A directive between a keyword and its value disappears without replacing the
 value. After an empty `accTitle:`, the next line's `A` becomes the title rather
-than a vertex. [fixture: agentflow/lex-directive-between-flow-value] [fixture:
+than a vertex.
+
+[fixture: agentflow/lex-directive-between-flow-value] [fixture:
 agentflow/lex-directive-between-connector-value] [fixture:
 agentflow/lex-directive-between-classdef-value] [fixture:
 agentflow/lex-directive-between-class-value] [fixture:
@@ -16030,7 +17965,9 @@ agentflow/lex-directive-acctitle-next-line]
 
 Directives within accessibility text, props keys/values, class names,
 class-definition styles and edge styles disappear and join the surrounding value
-fragments. [fixture: agentflow/lex-directive-in-description-value] [fixture:
+fragments.
+
+[fixture: agentflow/lex-directive-in-description-value] [fixture:
 agentflow/lex-directive-in-title-value] [fixture:
 agentflow/div-directive-in-props-field] [fixture:
 agentflow/div-directive-in-props-value] [fixture:
@@ -16041,6 +17978,7 @@ agentflow/lex-directive-in-linkstyle-value]
 At EOF, a closed or open directive after a header/node is removed; open
 directives truncate accessibility values to the preceding text. An inline
 comment after whitespace leaves the node, whereas glued `A%%tail` remains an id.
+
 [fixture: agentflow/lex-directive-open-node-eof] [fixture:
 agentflow/lex-directive-closed-node-eof] [fixture:
 agentflow/lex-directive-open-header-eof] [fixture:
@@ -16051,10 +17989,11 @@ agentflow/lex-comment-node-eof] [fixture: agentflow/lex-comment-glued-id-eof]
 
 A closed description block, style, class definition, class assignment or click
 callback can end at EOF; an unclosed square, ellipse or trapezoid label still
-rejects when a comment runs to EOF. [fixture:
-agentflow/lex-description-closed-eof] [fixture: agentflow/lex-style-eof]
-[fixture: agentflow/lex-classdef-eof] [fixture: agentflow/lex-class-eof]
-[fixture: agentflow/lex-click-callback-eof] [fixture:
+rejects when a comment runs to EOF.
+
+[fixture: agentflow/lex-description-closed-eof] [fixture:
+agentflow/lex-style-eof] [fixture: agentflow/lex-classdef-eof] [fixture:
+agentflow/lex-class-eof] [fixture: agentflow/lex-click-callback-eof] [fixture:
 agentflow/lex-comment-unclosed-square-eof] [fixture:
 agentflow/lex-comment-unclosed-ellipse-eof] [fixture:
 agentflow/lex-comment-unclosed-trap-eof]
@@ -16063,7 +18002,9 @@ Spaced repeated semicolons separate nodes, edges, class/style/linkStyle/click
 statements, metadata, connectors, flow/global endings and closed descriptions
 without creating records for the separators. A colon before trailing space
 belongs to a node/edge/connector id; after flow/global `end` it becomes a
-separate colon vertex. [fixture: agentflow/lex-node-spaced-semis] [fixture:
+separate colon vertex.
+
+[fixture: agentflow/lex-node-spaced-semis] [fixture:
 agentflow/lex-edge-spaced-semis] [fixture: agentflow/lex-class-spaced-semis]
 [fixture: agentflow/lex-style-spaced-semis] [fixture:
 agentflow/lex-classdef-spaced-semis] [fixture:
@@ -16082,6 +18023,7 @@ A trailing tab rejects after a class name or bare click callback, but is
 accepted after a connector or edge; an edge also accepts trailing space.
 Header/edge trailing space lists accept a space followed by a tab. A space
 before the header's semicolon rejects because that branch requires a newline.
+
 [fixture: agentflow/lex-class-trailing-tab] [fixture:
 agentflow/lex-click-trailing-tab] [fixture:
 agentflow/lex-connector-trailing-tab] [fixture:
@@ -16093,7 +18035,9 @@ agentflow/lex-header-space-then-semicolon]
 Comments and closed directives after a closed description or direction leave
 following statements. An open directive after a description consumes the
 following node; after a flow direction it also consumes the closing `end`, so
-the flow rejects. [fixture: agentflow/lex-description-tail-comment] [fixture:
+the flow rejects.
+
+[fixture: agentflow/lex-description-tail-comment] [fixture:
 agentflow/lex-description-tail-directive] [fixture:
 agentflow/lex-description-tail-open-directive] [fixture:
 agentflow/lex-direction-tail-comment] [fixture:
@@ -16102,20 +18046,23 @@ agentflow/lex-direction-tail-open-directive]
 
 CRLF works across the statement families. Shared preprocessing normalizes CR and
 CRLF: single-line accessibility values stop at them, description blocks keep
-normalized LF, and comment lines leave the following nodes. [fixture:
-agentflow/lex-all-statements-crlf] [fixture: agentflow/lex-description-line-cr]
-[fixture: agentflow/lex-description-line-crlf] [fixture:
-agentflow/lex-title-line-cr] [fixture: agentflow/lex-description-block-cr]
-[fixture: agentflow/lex-description-block-crlf] [fixture:
-agentflow/lex-comment-cr] [fixture: agentflow/lex-comment-crlf]
+normalized LF, and comment lines leave the following nodes.
+
+[fixture: agentflow/lex-all-statements-crlf] [fixture:
+agentflow/lex-description-line-cr] [fixture:
+agentflow/lex-description-line-crlf] [fixture: agentflow/lex-title-line-cr]
+[fixture: agentflow/lex-description-block-cr] [fixture:
+agentflow/lex-description-block-crlf] [fixture: agentflow/lex-comment-cr]
+[fixture: agentflow/lex-comment-crlf]
 
 The common style-line preprocessing also acts inside quoted node labels, edge
 labels, flow names/titles, connector names/titles, tooltips and accessibility
 values. With `style` or `classDef` before `:` and `#`, it removes one semicolon:
 three leave an encoded character reference plus one semicolon, even with
 trailing padding; one leaves none and two leave the encoded reference. Having
-both trigger keywords removes twice. [fixture:
-agentflow/lex-style-trigger-three] [fixture:
+both trigger keywords removes twice.
+
+[fixture: agentflow/lex-style-trigger-three] [fixture:
 agentflow/lex-style-trigger-one-padding] [fixture:
 agentflow/lex-style-trigger-two-padding] [fixture:
 agentflow/lex-style-trigger-three-padding] [fixture:
@@ -16131,8 +18078,9 @@ agentflow/lex-connector-name-style-trigger]
 
 With three semicolons, actual style/classDef/linkStyle statements reject on the
 encoded text. Without the style trigger, accessibility values keep one, two or
-three trailing semicolons and trim trailing space. [fixture:
-agentflow/lex-style-statement-three-semis] [fixture:
+three trailing semicolons and trim trailing space.
+
+[fixture: agentflow/lex-style-statement-three-semis] [fixture:
 agentflow/lex-classdef-three-semis] [fixture:
 agentflow/lex-linkstyle-three-semis] [fixture:
 agentflow/lex-description-end-semicolon] [fixture:
@@ -16144,7 +18092,9 @@ agentflow/lex-title-end-semicolon] [fixture: agentflow/lex-title-end-two-semis]
 A directive can join `sty` and `le` to make the style trigger before it runs.
 U+2028/U+2029 bound the trigger's dot-matched segment, so a later semicolon
 stays. A comment beginning after U+2028 can change which earlier semicolon is
-removed. [fixture: agentflow/lex-directive-in-style-trigger] [fixture:
+removed.
+
+[fixture: agentflow/lex-directive-in-style-trigger] [fixture:
 agentflow/lex-style-trigger-ls-segment] [fixture:
 agentflow/lex-style-trigger-ps-segment] [fixture:
 agentflow/lex-style-trigger-ls-comment]
@@ -16153,9 +18103,10 @@ NBSP after a directionless header is whitespace; VT/FF inside quoted labels
 remain text. NEL before the header prevents detection and on its own line is a
 lexical error. Supplementary and combining characters reject in bare ids, while
 quoted and unquoted labels accept supplementary characters. A props value must
-be one `NODE_STRING`, so the Unicode token there rejects. [fixture:
-agentflow/lex-header-nbsp-only] [fixture: agentflow/lex-node-vt-inside]
-[fixture: agentflow/lex-node-ff-inside] [fixture:
+be one `NODE_STRING`, so the Unicode token there rejects.
+
+[fixture: agentflow/lex-header-nbsp-only] [fixture:
+agentflow/lex-node-vt-inside] [fixture: agentflow/lex-node-ff-inside] [fixture:
 agentflow/lex-nel-before-header] [fixture: agentflow/lex-nel-only-line]
 [fixture: agentflow/lex-supplementary-id] [fixture: agentflow/lex-combining-id]
 [fixture: agentflow/lex-quoted-supplementary-label] [fixture:
@@ -16164,6 +18115,7 @@ agentflow/lex-props-unicode-value]
 
 U+2028/U+2029 within quoted flow/connector names, flow titles, accessibility
 values and metadata scalars stay inside those values rather than becoming LF.
+
 [fixture: agentflow/lex-flow-name-u2029] [fixture:
 agentflow/lex-flow-title-u2028] [fixture: agentflow/lex-connector-name-u2028]
 [fixture: agentflow/lex-connector-name-u2029] [fixture:
@@ -16174,8 +18126,9 @@ Directive removal between percent signs can expose a comment. After
 U+2028/U+2029, comment regions leave preceding/following nodes; inside a label
 the removed comment leaves the separator and LF. Open object directives ending
 at these separators join `A` to `B`; a closed multiline directive does so too. A
-CR/directive/LF boundary leaves `A` and `B` separate. [fixture:
-agentflow/lex-comment-directive-between-marks] [fixture:
+CR/directive/LF boundary leaves `A` and `B` separate.
+
+[fixture: agentflow/lex-comment-directive-between-marks] [fixture:
 agentflow/lex-comment-ls-region] [fixture: agentflow/lex-comment-ps-bare-region]
 [fixture: agentflow/lex-comment-ls-eof] [fixture:
 agentflow/lex-comment-in-label-after-ls] [fixture:
@@ -16186,8 +18139,9 @@ agentflow/lex-directive-cr-lf-separated]
 
 A directive inside percent text can leave adjacent node tokens that reject. The
 `%%{}%%` text after a header is not a valid recognized directive here; following
-U+2028/U+2029 at EOF does not make it parse. [fixture:
-agentflow/lex-directive-inside-percent-text] [fixture:
+U+2028/U+2029 at EOF does not make it parse.
+
+[fixture: agentflow/lex-directive-inside-percent-text] [fixture:
 agentflow/lex-header-comment-ls-eof] [fixture:
 agentflow/lex-header-comment-ps-eof]
 
@@ -16195,8 +18149,9 @@ The lexer returns one `SPACE` at a time: two spaces reject after
 style/classDef/class/linkStyle keywords, before a class value, after
 `interpolate`, and before a click tooltip. Flow/connector names absorb a second
 space and trim it. NBSP after `end` can precede a separate node; `global`
-accepts tab then space before LF. [fixture:
-agentflow/lex-style-double-space-keyword] [fixture:
+accepts tab then space before LF.
+
+[fixture: agentflow/lex-style-double-space-keyword] [fixture:
 agentflow/lex-classdef-double-space-keyword] [fixture:
 agentflow/lex-class-double-space-keyword] [fixture:
 agentflow/lex-linkstyle-double-space-keyword] [fixture:
@@ -16210,7 +18165,9 @@ agentflow/lex-global-tab-space]
 Ellipse labels accept `/)` and `))` as closers. Trapezoid labels accept `(]` and
 `]]`, reject `?]` and `=]`, and keep interior slash/backslash when they do not
 close the shape. A whitespace-only quoted node label is accepted and trimmed to
-empty text. [fixture: agentflow/lex-ellipse-close-slash] [fixture:
+empty text.
+
+[fixture: agentflow/lex-ellipse-close-slash] [fixture:
 agentflow/lex-ellipse-close-paren] [fixture: agentflow/lex-trap-close-question]
 [fixture: agentflow/lex-trap-close-equals] [fixture:
 agentflow/lex-trap-close-paren] [fixture:
@@ -16224,7 +18181,9 @@ keyword tokens, including `global`, style/class/container words, rare
 header/direction words and combinations of them. Former flowchart
 header/container words are ordinary bare vertex ids. A leading link token as a
 flow name and a standalone escaped pipe reject; `style` itself can be a style
-value. [fixture: agentflow/lex-flow-name-other-keywords] [fixture:
+value.
+
+[fixture: agentflow/lex-flow-name-other-keywords] [fixture:
 agentflow/lex-flow-name-start-link] [fixture: agentflow/lex-escaped-pipe-token]
 [fixture: agentflow/lex-style-keyword-as-value] [fixture:
 agentflow/lex-id-token-punctuation-base] [fixture:
@@ -16238,6 +18197,7 @@ agentflow/lex-legacy-header-words-as-ids]
 The `click` token in a flow/connector name changes lexer state: the next line's
 `B` joins `A`, and neither is a vertex. A connector name ending after `click A`
 reaches the EOF separator because the click state consumes the appended LF.
+
 [fixture: agentflow/lex-flow-name-click-state] [fixture:
 agentflow/lex-connector-name-click-state] [fixture:
 agentflow/lex-connector-click-eof-separator]
@@ -16248,8 +18208,9 @@ metadata label then leave no node or edge. Flow names/titles, connector titles
 and tooltips instead reject after the line is consumed. At column zero
 accessibility values keep that text, but indentation lets the direction rule
 consume the line. After a semicolon the preceding node disappears; after
-U+2028/U+2029 the input rejects. [fixture:
-agentflow/lex-direction-greedy-square] [fixture:
+U+2028/U+2029 the input rejects.
+
+[fixture: agentflow/lex-direction-greedy-square] [fixture:
 agentflow/lex-direction-greedy-string] [fixture:
 agentflow/lex-direction-greedy-markdown] [fixture:
 agentflow/lex-direction-greedy-edge] [fixture:
@@ -16268,8 +18229,9 @@ agentflow/lex-direction-in-tooltip]
 Agentflow detection precedes C4 in
 [`addDiagrams()`](https://github.com/mermaid-js/mermaid/blob/2086904e76c692331e34a45d7cc3bc30860d040e/packages/mermaid/src/diagram-api/diagram-orchestration.ts#L44-L126):
 C4 words in ids, plain/quoted labels, comments, frontmatter and directives do
-not change the diagram id. A leading semicolon prevents detection. [fixture:
-agentflow/lex-detect-c4-container-label] [fixture:
+not change the diagram id. A leading semicolon prevents detection.
+
+[fixture: agentflow/lex-detect-c4-container-label] [fixture:
 agentflow/lex-detect-c4-component-id] [fixture:
 agentflow/lex-detect-c4-context-label] [fixture:
 agentflow/lex-detect-c4-deployment-suffix] [fixture:
@@ -16283,8 +18245,9 @@ Frontmatter after a comment or after the header rejects, as does an unclosed
 frontmatter block. Initial indentation and CRLF still allow frontmatter. Null
 titles, array roots and scalar roots leave the diagram title empty. HTML
 attribute quotes in a frontmatter title become single quotes. An invalid
-directive YAML body can be ignored while the diagram parses. [fixture:
-agentflow/db-frontmatter-null-title] [fixture:
+directive YAML body can be ignored while the diagram parses.
+
+[fixture: agentflow/db-frontmatter-null-title] [fixture:
 agentflow/db-frontmatter-title-html-quotes] [fixture:
 agentflow/db-frontmatter-root-array] [fixture:
 agentflow/db-frontmatter-root-scalar] [fixture:
@@ -16298,8 +18261,9 @@ Quoted edge ids reject. Normal and reference link lengths reach the cap of ten.
 Empty string and markdown edge labels reject, but a whitespace-only quoted edge
 label is accepted as empty text. Signed zero, exponent and hexadecimal-looking
 linkStyle indices reject syntactically; `00` and an out-of-range large integer
-reach a string-key array lookup and throw a TypeError. [fixture:
-agentflow/lex-edge-link-id-quoted] [fixture:
+reach a string-key array lookup and throw a TypeError.
+
+[fixture: agentflow/lex-edge-link-id-quoted] [fixture:
 agentflow/lex-reference-long-length-at-cap] [fixture:
 agentflow/lex-normal-long-length-at-cap] [fixture:
 agentflow/lex-edge-empty-string-label] [fixture:
@@ -16316,8 +18280,10 @@ A whitespace-only URL is omitted after trimming while its target remains.
 Tooltip redefinitions replace text without moving the first-id order. Href and
 call names can begin on the next line. Call names keep space before parentheses
 and embedded semicolons; bare callback names accept numeric/Unicode/punctuation
-tokens, including a hash. [fixture: agentflow/db-trailing-click-url-whitespace]
-[fixture: agentflow/db-tooltip-three-definitions] [fixture:
+tokens, including a hash.
+
+[fixture: agentflow/db-trailing-click-url-whitespace] [fixture:
+agentflow/db-tooltip-three-definitions] [fixture:
 agentflow/db-href-newline-value] [fixture: agentflow/db-call-newline-name]
 [fixture: agentflow/db-call-name-space-before-parentheses] [fixture:
 agentflow/db-callback-name-semicolon] [fixture:
@@ -16326,8 +18292,9 @@ agentflow/db-callback-hash-name]
 
 Directive removal reconstructs the sequence, failure and reference operators,
 extended arrow length, and the `--` opening a split edge label, including an
-arrow immediately before a pipe label. [fixture:
-agentflow/div-directive-in-arrow-length] [fixture:
+arrow immediately before a pipe label.
+
+[fixture: agentflow/div-directive-in-arrow-length] [fixture:
 agentflow/div-directive-in-opening-arrow] [fixture:
 agentflow/div-directive-inside-arrow] [fixture:
 agentflow/div-directive-in-arrow] [fixture:
@@ -16337,20 +18304,25 @@ agentflow/div-directive-in-arrow-before-pipe]
 
 A directive inside either double-parenthesis circle delimiter, either
 double-brace hexagon delimiter, or the cylinder opener is removed before the
-shape is recognized. [fixture: agentflow/div-directive-in-circle-closing]
-[fixture: agentflow/div-directive-in-circle-opening] [fixture:
+shape is recognized.
+
+[fixture: agentflow/div-directive-in-circle-closing] [fixture:
+agentflow/div-directive-in-circle-opening] [fixture:
 agentflow/div-directive-in-hexagon-closing] [fixture:
 agentflow/div-directive-in-hexagon-opening] [fixture:
 agentflow/div-directive-in-cylinder-opening]
 
 A directive after the first or second colon joins the three characters of `:::`
-into the class delimiter. [fixture: agentflow/div-directive-in-style-separator]
-[fixture: agentflow/div-directive-in-triple-colon]
+into the class delimiter.
+
+[fixture: agentflow/div-directive-in-style-separator] [fixture:
+agentflow/div-directive-in-triple-colon]
 
 Directive removal joins vertex ids (also ids beginning with `style`), click and
 edge ids, class-definition and class-target names, interpolation names, decimal
-linkStyle indices, and both id runs of property brackets. [fixture:
-agentflow/div-directive-in-id] [fixture:
+linkStyle indices, and both id runs of property brackets.
+
+[fixture: agentflow/div-directive-in-id] [fixture:
 agentflow/div-directive-in-id-starting-with-style] [fixture:
 agentflow/div-directive-in-click-id] [fixture:
 agentflow/div-directive-in-edge-id] [fixture:
@@ -16362,38 +18334,45 @@ agentflow/div-directive-in-bar-rectangle-first-id-run] [fixture:
 agentflow/div-directive-in-bar-rectangle-second-id-run]
 
 Directives inside `href`, `interpolate` and `flow` reconstruct the keywords,
-with `flow` taking the place of flowchart's `subgraph`. [fixture:
-agentflow/div-directive-in-keyword-href] [fixture:
+with `flow` taking the place of flowchart's `subgraph`.
+
+[fixture: agentflow/div-directive-in-keyword-href] [fixture:
 agentflow/div-directive-in-keyword-interpolate] [fixture:
 agentflow/div-directive-in-subgraph-keyword]
 
 Before YAML is read, directive removal joins the two characters of `@{` and
-fragments of a metadata key. [fixture:
-agentflow/div-directive-in-data-block-start] [fixture:
+fragments of a metadata key.
+
+[fixture: agentflow/div-directive-in-data-block-start] [fixture:
 agentflow/lex-directive-in-metadata-key]
 
 A directive between `L` and `R` in the header direction leaves direction `LR`.
+
 [fixture: agentflow/div-directive-in-header-direction]
 
 On a line containing the `A[style:#x]` carrier, the style line rule can remove a
 semicolon inside a sequence, failure or reference operator, or the opening `--`
 of a split label; this also reconstructs the arrow immediately before a pipe
-label. [fixture: agentflow/div-ignored-semicolon-in-arrow] [fixture:
+label.
+
+[fixture: agentflow/div-ignored-semicolon-in-arrow] [fixture:
 agentflow/div-ignored-semicolon-in-arrow-failure] [fixture:
 agentflow/div-ignored-semicolon-in-arrow-reference] [fixture:
 agentflow/div-ignored-semicolon-in-opening-arrow] [fixture:
 agentflow/div-ignored-semicolon-in-arrow-before-pipe]
 
 The same line rule reconstructs circle, cylinder and hexagon openers from
-delimiters split by a semicolon. [fixture:
-agentflow/div-ignored-semicolon-in-circle-opening] [fixture:
+delimiters split by a semicolon.
+
+[fixture: agentflow/div-ignored-semicolon-in-circle-opening] [fixture:
 agentflow/div-ignored-semicolon-in-cylinder-opening] [fixture:
 agentflow/div-ignored-semicolon-in-hexagon-opening]
 
 It joins either split of the triple-colon delimiter, and joins
 vertex/group/click/edge/style ids, class-definition and class-target names, CSS
-class names and decimal linkStyle indices. [fixture:
-agentflow/div-ignored-semicolon-in-triple-colon] [fixture:
+class names and decimal linkStyle indices.
+
+[fixture: agentflow/div-ignored-semicolon-in-triple-colon] [fixture:
 agentflow/div-ignored-semicolon-in-style-separator] [fixture:
 agentflow/div-ignored-semicolon-in-id] [fixture:
 agentflow/div-ignored-semicolon-in-id-in-group] [fixture:
@@ -16406,14 +18385,16 @@ agentflow/div-ignored-semicolon-in-css-class] [fixture:
 agentflow/div-ignored-semicolon-in-linkstyle-number]
 
 It also reconstructs a split `flow` keyword and metadata opener, and removes the
-semicolon inside a metadata key before YAML sees it. [fixture:
-agentflow/div-ignored-semicolon-in-keyword] [fixture:
+semicolon inside a metadata key before YAML sees it.
+
+[fixture: agentflow/div-ignored-semicolon-in-keyword] [fixture:
 agentflow/div-ignored-semicolon-in-data-block-start] [fixture:
 agentflow/lex-ignored-semicolon-in-metadata-key]
 
 As boundary controls, a directive or an ignored semicolon between a complete
-arrow and its opening label pipe also leaves a labeled edge. [fixture:
-agentflow/lex-directive-in-pipe-boundary] [fixture:
+arrow and its opening label pipe also leaves a labeled edge.
+
+[fixture: agentflow/lex-directive-in-pipe-boundary] [fixture:
 agentflow/lex-ignored-semicolon-in-pipe-boundary]
 
 ## ishikawa
@@ -16421,21 +18402,26 @@ agentflow/lex-ignored-semicolon-in-pipe-boundary]
 `normalizeIshikawa()` (`src/normalizers/ishikawa.ts`) summarizes
 [`IshikawaDB`](https://github.com/mermaid-js/mermaid/blob/2086904e76c692331e34a45d7cc3bc30860d040e/packages/mermaid/src/diagrams/ishikawa/ishikawaDb.ts#L20-L96).
 Both headers, `ishikawa` and `ishikawa-beta`, use the diagram id `ishikawa`.
+
 [fixture: ishikawa/gram-root-eof] [fixture: ishikawa/spec-ishikawa-36b2cea5]
 
 `root` is the ordered tree from
 [`getRoot()`](https://github.com/mermaid-js/mermaid/blob/2086904e76c692331e34a45d7cc3bc30860d040e/packages/mermaid/src/diagrams/ishikawa/ishikawaDb.ts#L38-L40),
-or `null` when absent. [fixture: ishikawa/header-only-lf] [fixture:
-ishikawa/header-beta-only-lf] [fixture: ishikawa/gram-whitespace-only-document]
+or `null` when absent.
+
+[fixture: ishikawa/header-only-lf] [fixture: ishikawa/header-beta-only-lf]
+[fixture: ishikawa/gram-whitespace-only-document]
 
 Each node keeps exactly `text` and `children`, recursively, including repeated
 labels and the order of siblings. This is the representation the
 [`draw()`, `drawBranch()` and `flattenTree()` functions](https://github.com/mermaid-js/mermaid/blob/2086904e76c692331e34a45d7cc3bc30860d040e/packages/mermaid/src/diagrams/ishikawa/ishikawaRenderer.ts#L36-L445)
 read: root text draws the head, root children are causes, and descendants draw
-the smaller branches. No second representation of the nodes is needed. [fixture:
-ishikawa/db-all-fields] [fixture: ishikawa/db-three-definitions] [fixture:
-ishikawa/demo-ishikawa-116a5f27] [fixture: ishikawa/spec-ishikawa-45c4f88f]
-[fixture: ishikawa/docs-syntax-ishikawa-b3ea7b01] [fixture:
+the smaller branches. No second representation of the nodes is needed.
+
+[fixture: ishikawa/db-all-fields] [fixture: ishikawa/db-three-definitions]
+[fixture: ishikawa/demo-ishikawa-116a5f27] [fixture:
+ishikawa/spec-ishikawa-45c4f88f] [fixture:
+ishikawa/docs-syntax-ishikawa-b3ea7b01] [fixture:
 ishikawa/demo-ishikawa-224017d7] [fixture: ishikawa/demo-ishikawa-6040395b]
 [fixture: ishikawa/demo-ishikawa-611b5c9d] [fixture:
 ishikawa/demo-ishikawa-6d142918]
@@ -16446,25 +18432,37 @@ The generic rendering path reads both accessibility getters in
 [`mermaidAPI`](https://github.com/mermaid-js/mermaid/blob/2086904e76c692331e34a45d7cc3bc30860d040e/packages/mermaid/src/mermaidAPI.ts#L628-L630).
 The first node sets `title` to its sanitized label, replacing a frontmatter
 title set before parsing; with no node, a nonempty frontmatter title remains.
-[fixture: ishikawa/db-frontmatter-title] [fixture:
-ishikawa/db-frontmatter-rootless] An empty frontmatter title does not replace
-the root-derived title. [fixture: ishikawa/frontmatter-empty-title]
 
-With no root, an empty or null frontmatter title leaves `title` empty. [fixture:
-ishikawa/frontmatter-empty-title-rootless] [fixture:
-ishikawa/frontmatter-null-title-rootless] A frontmatter title of two spaces
-keeps both spaces, rather than undergoing node-text trimming. [fixture:
-ishikawa/frontmatter-whitespace-title-rootless] A numeric frontmatter title of
-`7` becomes the text `"7"`. [fixture:
-ishikawa/frontmatter-numeric-title-rootless]
+[fixture: ishikawa/db-frontmatter-title] [fixture:
+ishikawa/db-frontmatter-rootless]
+
+An empty frontmatter title does not replace the root-derived title.
+
+[fixture: ishikawa/frontmatter-empty-title]
+
+With no root, an empty or null frontmatter title leaves `title` empty.
+
+[fixture: ishikawa/frontmatter-empty-title-rootless] [fixture:
+ishikawa/frontmatter-null-title-rootless]
+
+A frontmatter title of two spaces keeps both spaces, rather than undergoing
+node-text trimming.
+
+[fixture: ishikawa/frontmatter-whitespace-title-rootless]
+
+A numeric frontmatter title of `7` becomes the text `"7"`.
+
+[fixture: ishikawa/frontmatter-numeric-title-rootless]
 
 The grammar calls only
 [`addNode()`](https://github.com/mermaid-js/mermaid/blob/2086904e76c692331e34a45d7cc3bc30860d040e/packages/mermaid/src/diagrams/ishikawa/parser/ishikawa.jison#L50-L55).
 Accessibility-looking lines and blocks are ordinary node text, and frontmatter
 accessibility keys do not set the common getters, so `accTitle` and `accDescr`
-stay empty for these inputs. [fixture: ishikawa/db-acctitle-is-node] [fixture:
-ishikawa/db-accdescr-is-node] [fixture: ishikawa/db-accdescr-block-is-nodes]
-[fixture: ishikawa/db-accdescr-empty-keeps-node] [fixture:
+stay empty for these inputs.
+
+[fixture: ishikawa/db-acctitle-is-node] [fixture: ishikawa/db-accdescr-is-node]
+[fixture: ishikawa/db-accdescr-block-is-nodes] [fixture:
+ishikawa/db-accdescr-empty-keeps-node] [fixture:
 ishikawa/db-frontmatter-accessibility]
 
 The private fields are `root`, `stack` and `baseLevel`. The summary keeps `root`
@@ -16472,19 +18470,29 @@ and drops the following:
 
 - `stack` and its numeric `level` values: temporary state for choosing a node's
   parent; the resulting parent-child relationship is already in the tree.
+
   [fixture: ishikawa/db-indent-jump] [fixture: ishikawa/db-indent-pop-several]
+
 - `baseLevel`: the raw indentation of the first cause, used only to derive
   relative levels, with nonpositive levels clamped to one. Root indentation does
-  not set this base. [fixture: ishikawa/db-indent-first-cause] [fixture:
+  not set this base.
+
+  [fixture: ishikawa/db-indent-first-cause] [fixture:
   ishikawa/db-indent-root-deeper] [fixture: ishikawa/db-indent-root-shallower]
   [fixture: ishikawa/db-indent-clamped] [fixture:
   ishikawa/db-indent-clamp-below-base] [fixture:
-  ishikawa/spec-ishikawa-c5953a5f] An exactly zero relative level also becomes a
-  level-one root child, so a following level-one cause is its sibling. [fixture:
-  ishikawa/db-indent-relative-zero]
+  ishikawa/spec-ishikawa-c5953a5f]
+
+  An exactly zero relative level also becomes a level-one root child, so a
+  following level-one cause is its sibling.
+
+  [fixture: ishikawa/db-indent-relative-zero]
+
 - Renderer geometry, marker ids, colors, font metrics and drawing settings:
   these are made or read only while drawing, not stored syntax. The summary adds
-  none of them. [fixture: ishikawa/config-drawing-only]
+  none of them.
+
+  [fixture: ishikawa/config-drawing-only]
 
 Node text is trimmed by the grammar and then passed through the common
 [`sanitizeText`](https://github.com/mermaid-js/mermaid/blob/2086904e76c692331e34a45d7cc3bc30860d040e/packages/mermaid/src/diagrams/common/common.ts#L85-L97);
@@ -16492,56 +18500,81 @@ the common
 [`setDiagramTitle()`](https://github.com/mermaid-js/mermaid/blob/2086904e76c692331e34a45d7cc3bc30860d040e/packages/mermaid/src/diagrams/common/commonDb.ts#L28-L30)
 sanitizes the root label again. DOMPurify is disabled as described in
 [expected-results.md](./expected-results.md). Internal whitespace and literal
-quotes remain. [fixture: ishikawa/gram-root-trailing-space] [fixture:
+quotes remain.
+
+[fixture: ishikawa/gram-root-trailing-space] [fixture:
 ishikawa/gram-child-trailing-space] [fixture: ishikawa/gram-spaces-inside-text]
 [fixture: ishikawa/gram-quotes-padding] [fixture: ishikawa/db-markup] [fixture:
 ishikawa/lex-header-quoted-label] [fixture: ishikawa/lex-quoted-crlf] [fixture:
 ishikawa/lex-quoted-u2028] [fixture: ishikawa/lex-quoted-u2029]
 
 A colon followed by a trailing space keeps the colon but loses the space, in
-both root and child text. [fixture: ishikawa/gram-after-root-colon-space]
-[fixture: ishikawa/gram-after-child-colon-space] An internal VT or FF in root
-text also remains in `title`. [fixture: ishikawa/lex-root-vt-inside] [fixture:
-ishikawa/lex-root-ff-inside] U+0085 (NEL) is retained as node text even on a
-line by itself. [fixture: ishikawa/lex-nel-only-line]
+both root and child text.
+
+[fixture: ishikawa/gram-after-root-colon-space] [fixture:
+ishikawa/gram-after-child-colon-space]
+
+An internal VT or FF in root text also remains in `title`.
+
+[fixture: ishikawa/lex-root-vt-inside] [fixture: ishikawa/lex-root-ff-inside]
+
+U+0085 (NEL) is retained as node text even on a line by itself.
+
+[fixture: ishikawa/lex-nel-only-line]
 
 In root `R; ;` and child `A; ;` text, the separated semicolons remain literal.
+
 [fixture: ishikawa/gram-after-root-spaced-semicolons] [fixture:
-ishikawa/gram-after-child-spaced-semicolons] Before text reaches the Db, the
-shared
+ishikawa/gram-after-child-spaced-semicolons]
+
+Before text reaches the Db, the shared
 [`encodeEntities()`](https://github.com/mermaid-js/mermaid/blob/2086904e76c692331e34a45d7cc3bc30860d040e/packages/mermaid/src/utils.ts#L895-L916)
 preprocessing removes the last semicolon after a hash when a `style` or
 `classDef` fragment, in that exact case, precedes a colon and a hash on its line
-with no whitespace between the colon and hash. [fixture:
-ishikawa/lex-root-style-semicolon] [fixture:
+with no whitespace between the colon and hash.
+
+[fixture: ishikawa/lex-root-style-semicolon] [fixture:
 ishikawa/lex-child-classdef-semicolon] [fixture:
 ishikawa/lex-style-uppercase-semicolon] [fixture:
 ishikawa/lex-style-colon-space-semicolon] [fixture:
-ishikawa/lex-style-no-hash-semicolon] With `fill:#abc;;`, the remaining `#abc;`
-is encoded as a shared reference placeholder; with three semicolons, one literal
-semicolon follows that placeholder. The root reading also supplies the common
-title. [fixture: ishikawa/lex-style-two-semicolons] [fixture:
+ishikawa/lex-style-no-hash-semicolon]
+
+With `fill:#abc;;`, the remaining `#abc;` is encoded as a shared reference
+placeholder; with three semicolons, one literal semicolon follows that
+placeholder. The root reading also supplies the common title.
+
+[fixture: ishikawa/lex-style-two-semicolons] [fixture:
 ishikawa/lex-style-three-semicolons] [fixture:
 ishikawa/lex-root-style-two-semicolons] [fixture:
-ishikawa/lex-root-style-three-semicolons] Trailing spaces do not change these
-readings for one, two or three semicolons, because node-text trimming removes
-those spaces. [fixture: ishikawa/lex-style-semicolon-padding] [fixture:
+ishikawa/lex-root-style-three-semicolons]
+
+Trailing spaces do not change these readings for one, two or three semicolons,
+because node-text trimming removes those spaces.
+
+[fixture: ishikawa/lex-style-semicolon-padding] [fixture:
 ishikawa/lex-style-two-semicolons-padding] [fixture:
 ishikawa/lex-style-three-semicolons-padding] [fixture:
 ishikawa/lex-root-style-semicolon-padding] [fixture:
 ishikawa/lex-root-style-two-semicolons-padding] [fixture:
-ishikawa/lex-root-style-three-semicolons-padding] With `text:#35;;;`, the
-numeric hash reference is encoded and one literal semicolon remains, in both
-child and root text. [fixture: ishikawa/lex-style-reference-three-semicolons]
-[fixture: ishikawa/lex-root-style-reference-three-semicolons] When both
-fragments occur in `style classDef A fill:#abc;;`, their two replacements each
-remove one semicolon, leaving `style classDef A fill:#abc` as the child text.
+ishikawa/lex-root-style-three-semicolons-padding]
+
+With `text:#35;;;`, the numeric hash reference is encoded and one literal
+semicolon remains, in both child and root text.
+
+[fixture: ishikawa/lex-style-reference-three-semicolons] [fixture:
+ishikawa/lex-root-style-reference-three-semicolons]
+
+When both fragments occur in `style classDef A fill:#abc;;`, their two
+replacements each remove one semicolon, leaving `style classDef A fill:#abc` as
+the child text.
+
 [fixture: ishikawa/lex-style-and-classdef-semicolons]
 
 The summary is unchanged under the four supported security levels and ishikawa
 drawing settings. With an unsupported `securityLevel`, character replacement
-depends on root `htmlLabels`, falling back to `flowchart.htmlLabels`. [fixture:
-ishikawa/config-security-other] [fixture:
+depends on root `htmlLabels`, falling back to `flowchart.htmlLabels`.
+
+[fixture: ishikawa/config-security-other] [fixture:
 ishikawa/config-security-other-html-false] [fixture:
 ishikawa/config-security-other-flowchart-html-false] [fixture:
 ishikawa/config-security-other-root-true] [fixture:
@@ -16551,16 +18584,28 @@ ishikawa/config-drawing-only]
 No Db patch is needed: parsing reads no browser global beyond the common
 sanitizer already handled by the runner, and has no URL or data-block action.
 Data-block-looking text is a label, with no recorded data-block effect.
-[fixture: ishikawa/db-data-block-is-text] A data-block-looking suffix on the
-root, or a closed suffix containing invalid YAML on a child, likewise remains
-literal text. [fixture: ishikawa/db-data-block-root-is-text] [fixture:
-ishikawa/db-invalid-data-block-is-text] A multiline form produces ordinary nodes
-from its text lines and their indentation, without parsing the apparent YAML.
-[fixture: ishikawa/db-data-block-multiline-is-nodes] No node id, random value,
-clock value or time zone enters the summary. [fixture: ishikawa/db-all-fields]
+
+[fixture: ishikawa/db-data-block-is-text]
+
+A data-block-looking suffix on the root, or a closed suffix containing invalid
+YAML on a child, likewise remains literal text.
+
+[fixture: ishikawa/db-data-block-root-is-text] [fixture:
+ishikawa/db-invalid-data-block-is-text]
+
+A multiline form produces ordinary nodes from its text lines and their
+indentation, without parsing the apparent YAML.
+
+[fixture: ishikawa/db-data-block-multiline-is-nodes]
+
+No node id, random value, clock value or time zone enters the summary.
+
+[fixture: ishikawa/db-all-fields]
+
 [`clear()`](https://github.com/mermaid-js/mermaid/blob/2086904e76c692331e34a45d7cc3bc30860d040e/packages/mermaid/src/diagrams/ishikawa/ishikawaDb.ts#L31-L36)
-resets the tree, parsing state and common strings between calls. [fixture:
-ishikawa/db-all-fields] [fixture: ishikawa/header-only-lf]
+resets the tree, parsing state and common strings between calls.
+
+[fixture: ishikawa/db-all-fields] [fixture: ishikawa/header-only-lf]
 
 ## usecase
 
@@ -16568,9 +18613,11 @@ ishikawa/db-all-fields] [fixture: ishikawa/header-only-lf]
 [`db`](https://github.com/mermaid-js/mermaid/blob/2086904e76c692331e34a45d7cc3bc30860d040e/packages/mermaid/src/diagrams/usecase/usecaseDb.ts#L35-L116).
 The header `usecase-beta` has the detector id `usecase`; the
 [`detector`](https://github.com/mermaid-js/mermaid/blob/2086904e76c692331e34a45d7cc3bc30860d040e/packages/mermaid/src/diagrams/usecase/usecaseDetector.ts#L7-L11)
-requires whitespace or end of text after the keyword. [fixture:
-usecase/spec-usecase-parser-7ae00acb] [fixture: usecase/header-letter-suffix]
-[fixture: usecase/header-semicolon] [fixture: usecase/header-spaced-semicolon]
+requires whitespace or end of text after the keyword.
+
+[fixture: usecase/spec-usecase-parser-7ae00acb] [fixture:
+usecase/header-letter-suffix] [fixture: usecase/header-semicolon] [fixture:
+usecase/header-spaced-semicolon]
 
 | Field                   | Content                                                            |
 | ----------------------- | ------------------------------------------------------------------ |
@@ -16588,7 +18635,9 @@ usecase/spec-usecase-parser-7ae00acb] [fixture: usecase/header-letter-suffix]
 The normalizer reads the stored getters rather than `getAST()` or `getData()`.
 The AST duplicates the model and adds source/statement spans; layout data adds
 sanitization, geometry and compiled styles. The stored records retain authored
-text once, before those conversions. [fixture: usecase/db-all-fields]
+text once, before those conversions.
+
+[fixture: usecase/db-all-fields]
 
 Actors keep `id`, `label`, `labelType`, `type`, `business`, `classes`, `styles`
 and optional `icon`, `stereotype`, `parentId`. Use cases keep `id`, `label`,
@@ -16598,6 +18647,7 @@ and optional `icon`, `stereotype`, `parentId`. Use cases keep `id`, `label`,
 use ids for endpoints, labels/types for text, type/shape/business/icon for
 geometry, stereotypes for visible and accessible names, parent ids for grouping,
 and classes/styles for presentation. Map order supplies layout node order.
+
 [fixture: usecase/db-all-fields] [fixture: usecase/db-actor-variants]
 
 Boundary records keep `id`, `label`, `labelType`, `type`, `classes`, `styles`.
@@ -16605,8 +18655,10 @@ The
 [`boundary loop`](https://github.com/mermaid-js/mermaid/blob/2086904e76c692331e34a45d7cc3bc30860d040e/packages/mermaid/src/diagrams/usecase/usecaseDb.ts#L427-L447)
 uses these for group identity, title, rect/package geometry and CSS. `members`
 is omitted: drawing reads each actor/use case's `parentId` instead, and the
-member list adds a second representation of containment. [fixture:
-usecase/db-all-fields] [fixture: usecase/db-boundary-three-definitions]
+member list adds a second representation of containment.
+
+[fixture: usecase/db-all-fields] [fixture:
+usecase/db-boundary-three-definitions]
 
 Relationships keep `source`, `target`, `type`, `arrowType`, `minlen`, `classes`,
 `styles`, `animate`, optional `animation`, `label`, `labelType`, and `id` only
@@ -16616,16 +18668,19 @@ selects solid/dotted patterns, arrow markers and semantic labels; the
 [`edge loop`](https://github.com/mermaid-js/mermaid/blob/2086904e76c692331e34a45d7cc3bc30860d040e/packages/mermaid/src/diagrams/usecase/usecaseDb.ts#L449-L481)
 reads endpoints, labels, length, CSS and animation. Explicit ids are authored
 class/style/metadata targets. Anonymous ids and `explicitId` are omitted; the
-presence of `id` already identifies an explicit id. [fixture: usecase/db-arrows]
-[fixture: usecase/db-labeled-arrows] [fixture: usecase/db-arrow-length]
-[fixture: usecase/db-edge-id-style]
+presence of `id` already identifies an explicit id.
+
+[fixture: usecase/db-arrows] [fixture: usecase/db-labeled-arrows] [fixture:
+usecase/db-arrow-length] [fixture: usecase/db-edge-id-style]
 
 Notes retain their target and text/type for the
 [`note node loop`](https://github.com/mermaid-js/mermaid/blob/2086904e76c692331e34a45d7cc3bc30860d040e/packages/mermaid/src/diagrams/usecase/usecaseDb.ts#L389-L409).
 The
 [`note connector loop`](https://github.com/mermaid-js/mermaid/blob/2086904e76c692331e34a45d7cc3bc30860d040e/packages/mermaid/src/diagrams/usecase/usecaseDb.ts#L483-L508)
 uses the same targets. Generated note ids and derived dotted connector edges are
-omitted. [fixture: usecase/db-note-order]
+omitted.
+
+[fixture: usecase/db-note-order]
 
 JSON tables retain values and source property order because the
 [`JSON row conversion`](https://github.com/mermaid-js/mermaid/blob/2086904e76c692331e34a45d7cc3bc30860d040e/packages/mermaid/src/diagrams/usecase/usecaseDb.ts#L139-L219)
@@ -16635,10 +18690,11 @@ and styles feed the
 Class definitions feed
 [`getCompiledStyles()`](https://github.com/mermaid-js/mermaid/blob/2086904e76c692331e34a45d7cc3bc30860d040e/packages/mermaid/src/diagrams/usecase/usecaseDb.ts#L118-L134).
 Rows and compiled CSS are derived and omitted. The shared number conversion
-writes non-finite JSON numbers as text and negative zero as zero. [fixture:
-usecase/db-json-integer-order] [fixture: usecase/db-json-duplicate-order]
-[fixture: usecase/db-json-pointer] [fixture: usecase/db-json-overflow] [fixture:
-usecase/db-classdef-replace]
+writes non-finite JSON numbers as text and negative zero as zero.
+
+[fixture: usecase/db-json-integer-order] [fixture:
+usecase/db-json-duplicate-order] [fixture: usecase/db-json-pointer] [fixture:
+usecase/db-json-overflow] [fixture: usecase/db-classdef-replace]
 
 `direction` is the layout direction from
 [`getData()`](https://github.com/mermaid-js/mermaid/blob/2086904e76c692331e34a45d7cc3bc30860d040e/packages/mermaid/src/diagrams/usecase/usecaseDb.ts#L525-L545).
@@ -16646,6 +18702,7 @@ usecase/db-classdef-replace]
 [`draw()`](https://github.com/mermaid-js/mermaid/blob/2086904e76c692331e34a45d7cc3bc30860d040e/packages/mermaid/src/diagrams/usecase/usecaseRenderer.ts#L287-L295).
 The common accessibility getters are consumed by
 [`mermaidAPI`](https://github.com/mermaid-js/mermaid/blob/2086904e76c692331e34a45d7cc3bc30860d040e/packages/mermaid/src/mermaidAPI.ts#L628-L630).
+
 [fixture: usecase/db-all-fields] [fixture: usecase/db-direction-td]
 
 The remaining model state is omitted: `symbols` is a resolution index;
@@ -16656,8 +18713,10 @@ shapes derived from type/business, marker names, layout coordinates and font
 metrics add no independent syntax. Drawing reads no diagnostic records. Semantic
 ids derived from quoted element labels remain because relationship, class/style
 and metadata references can address them; these are model ids, rather than
-internal rendering ids. [fixture: usecase/db-all-fields] [fixture:
-usecase/gram-metadata-target-plain] [fixture: usecase/config-drawing-only]
+internal rendering ids.
+
+[fixture: usecase/db-all-fields] [fixture: usecase/gram-metadata-target-plain]
+[fixture: usecase/config-drawing-only]
 
 The Db patch records each JSON table's Mermaid-read `value` and `propertyOrder`
 as `{ id, set: { value, propertyOrder } }` in `dataBlockEffects`, in authored
@@ -16665,13 +18724,16 @@ declaration order. It intercepts `commit` and uses the published statement list
 to locate each JSON reading; the JSON map may have a different order because a
 relationship referenced a table before its declaration. The tree holds the JSON
 interior opaquely, so `dbFromTree` consumes these effects without a JSON reader.
+
 [fixture: usecase/db-json-source-map-order] [fixture: usecase/gram-json-empty]
 
 The
 [`metadata rules`](https://github.com/mermaid-js/mermaid/blob/2086904e76c692331e34a45d7cc3bc30860d040e/packages/mermaid/src/diagrams/usecase/parser/usecase.parser.ts#L418-L460)
 parse a closed native property grammar, not opaque YAML, and produce no data
 block effects. Parsing requires no browser stand-in, URL sanitizer patch, time
-or random-id replacement. [fixture: usecase/gram-metadata-comma] [fixture:
+or random-id replacement.
+
+[fixture: usecase/gram-metadata-comma] [fixture:
 usecase/db-native-metadata-not-yaml]
 
 Stored element text bypasses layout-time sanitization. Common title and
@@ -16679,11 +18741,13 @@ accessibility setters still use the shared sanitizer with DOMPurify disabled.
 The four supported security levels give the same summary; an unsupported level
 can change the common strings according to root `htmlLabels`, falling back to
 `flowchart.htmlLabels`. Usecase drawing settings leave the stored model
-unchanged. [fixture: usecase/html-all-texts] [fixture:
-usecase/config-security-strict] [fixture: usecase/config-security-loose]
-[fixture: usecase/config-security-antiscript] [fixture:
-usecase/config-security-sandbox] [fixture: usecase/config-security-other]
-[fixture: usecase/config-security-other-html-false] [fixture:
+unchanged.
+
+[fixture: usecase/html-all-texts] [fixture: usecase/config-security-strict]
+[fixture: usecase/config-security-loose] [fixture:
+usecase/config-security-antiscript] [fixture: usecase/config-security-sandbox]
+[fixture: usecase/config-security-other] [fixture:
+usecase/config-security-other-html-false] [fixture:
 usecase/config-security-other-flowchart-false] [fixture:
 usecase/config-security-other-usecase-false] [fixture:
 usecase/config-security-other-root-true] [fixture:
@@ -16695,352 +18759,449 @@ after the outer
 [`Diagram.fromText()`](https://github.com/mermaid-js/mermaid/blob/2086904e76c692331e34a45d7cc3bc30860d040e/packages/mermaid/src/Diagram.ts#L47-L54)
 sets a frontmatter title. Consequently `title` is empty even for nonempty,
 whitespace-only and numeric frontmatter titles; `embedded.title` still records
-the supplied title. The normalizer preserves that result. [fixture:
-usecase/frontmatter-title] [fixture: usecase/frontmatter-space-title] [fixture:
-usecase/frontmatter-number-title]
+the supplied title. The normalizer preserves that result.
+
+[fixture: usecase/frontmatter-title] [fixture: usecase/frontmatter-space-title]
+[fixture: usecase/frontmatter-number-title]
 
 Directive removal can rejoin the `json` and `extend` keywords and the `TB`
 direction value; the resulting JSON node, extend label and direction reach the
-Db. [fixture: usecase/div-lex-directive-in-json-keyword] [fixture:
+Db.
+
+[fixture: usecase/div-lex-directive-in-json-keyword] [fixture:
 usecase/div-lex-directive-in-extend-keyword] [fixture:
 usecase/div-lex-directive-in-direction-value]
 
 Removal also allows a directive between `actor` or `systemBoundary` and its
 name, between `note` and `for`, and between the note target and its label.
+
 [fixture: usecase/lex-directive-between-actor-name] [fixture:
 usecase/lex-directive-between-boundary-name] [fixture:
 usecase/lex-directive-between-note-for] [fixture:
 usecase/lex-directive-between-note-target-label]
 
 Class targets and suffix names can be rejoined across a directive, and removal
-before a target-list comma still assigns the class to both nodes. [fixture:
-usecase/div-lex-directive-in-class-target] [fixture:
+before a target-list comma still assigns the class to both nodes.
+
+[fixture: usecase/div-lex-directive-in-class-target] [fixture:
 usecase/div-lex-directive-in-class-suffix] [fixture:
 usecase/lex-directive-in-class-list-separator]
 
 Directives before a class-definition id, class target or style target are
-removed before those statements are read. [fixture:
-usecase/lex-directive-between-classdef-id] [fixture:
+removed before those statements are read.
+
+[fixture: usecase/lex-directive-between-classdef-id] [fixture:
 usecase/lex-directive-between-class-target] [fixture:
 usecase/lex-directive-between-style-target]
 
 A directive before a direction value or JSON id is removed, as is one before an
-accessibility title or description value. [fixture:
-usecase/lex-directive-between-direction-value] [fixture:
+accessibility title or description value.
+
+[fixture: usecase/lex-directive-between-direction-value] [fixture:
 usecase/lex-directive-between-json-id] [fixture:
 usecase/lex-directive-between-acctitle-value] [fixture:
 usecase/lex-directive-between-accdescr-value]
 
 Metadata keys can be rejoined across a directive; directives immediately before
-or after a metadata value leave that value intact. [fixture:
-usecase/div-lex-directive-in-metadata-key] [fixture:
+or after a metadata value leave that value intact.
+
+[fixture: usecase/div-lex-directive-in-metadata-key] [fixture:
 usecase/lex-directive-before-metadata-value] [fixture:
 usecase/lex-directive-after-metadata-value]
 
 Removal can reconstruct `@{` for metadata, `<<` for a stereotype, `:::` for a
-class suffix and the `@{` part of a JSON declaration. [fixture:
-usecase/div-lex-directive-in-metadata-opener] [fixture:
+class suffix and the `@{` part of a JSON declaration.
+
+[fixture: usecase/div-lex-directive-in-metadata-opener] [fixture:
 usecase/div-lex-directive-in-stereotype-opener] [fixture:
 usecase/div-lex-directive-in-class-delimiter] [fixture:
 usecase/lex-directive-in-json-declaration-at]
 
 Inside a JSON body, removal rejoins a quoted property name and removes a
 directive-only line between properties; `propertyOrder` follows the resulting
-keys. [fixture: usecase/lex-directive-in-json-key] [fixture:
+keys.
+
+[fixture: usecase/lex-directive-in-json-key] [fixture:
 usecase/lex-directive-json-comment-line]
 
 Removal does not join the line after `actor` to its name, whether the gap
-contains a comment or an empty line. [fixture: usecase/lex-actor-comment-gap]
-[fixture: usecase/lex-actor-empty-gap]
+contains a comment or an empty line.
+
+[fixture: usecase/lex-actor-comment-gap] [fixture: usecase/lex-actor-empty-gap]
 
 A comment gap after `direction`, after a note target, or between `json` and its
 id still leaves a rejected line break; a directive-only line after
-`systemBoundary` does the same. [fixture: usecase/lex-direction-comment-gap]
-[fixture: usecase/lex-note-label-comment-gap] [fixture:
-usecase/lex-json-id-comment-gap] [fixture:
-usecase/lex-boundary-name-directive-gap]
+`systemBoundary` does the same.
+
+[fixture: usecase/lex-direction-comment-gap] [fixture:
+usecase/lex-note-label-comment-gap] [fixture: usecase/lex-json-id-comment-gap]
+[fixture: usecase/lex-boundary-name-directive-gap]
 
 A blank line before class-definition values and a comment line before style
-values do not make those values continue the preceding statement. [fixture:
-usecase/lex-classdef-value-empty-gap] [fixture:
+values do not make those values continue the preceding statement.
+
+[fixture: usecase/lex-classdef-value-empty-gap] [fixture:
 usecase/lex-style-value-comment-gap]
 
 The tested directive forms containing U+2028 or U+2029 inside the object are not
-removed into a valid declaration; both inputs are rejected. [fixture:
-usecase/lex-directive-open-object-ls] [fixture:
+removed into a valid declaration; both inputs are rejected.
+
+[fixture: usecase/lex-directive-open-object-ls] [fixture:
 usecase/lex-directive-open-object-ps]
 
 An unclosed directive at end of text is dropped after an accessibility line,
-retaining its title or description. [fixture:
-usecase/lex-directive-open-acctitle-eof] [fixture:
+retaining its title or description.
+
+[fixture: usecase/lex-directive-open-acctitle-eof] [fixture:
 usecase/lex-directive-open-accdescr-eof]
 
 Removal between percent signs can create a whole-line comment; a closed or
 unclosed directive immediately after the header at end of text leaves an
-accepted empty diagram. [fixture: usecase/lex-directive-between-percent-signs]
-[fixture: usecase/lex-header-closed-directive-eof] [fixture:
+accepted empty diagram.
+
+[fixture: usecase/lex-directive-between-percent-signs] [fixture:
+usecase/lex-header-closed-directive-eof] [fixture:
 usecase/lex-header-open-directive-eof]
 
 Two semicolons after an actor declaration are rejected, including when spaces
-separate them. [fixture: usecase/lex-actor-two-semis] [fixture:
-usecase/lex-actor-spaced-semis]
+separate them.
+
+[fixture: usecase/lex-actor-two-semis] [fixture: usecase/lex-actor-spaced-semis]
 
 Two trailing semicolons and a trailing colon followed by a space are rejected
-after a boundary header or `end`. [fixture: usecase/lex-boundary-two-semis]
-[fixture: usecase/lex-boundary-colon-space] [fixture: usecase/lex-end-two-semis]
-[fixture: usecase/lex-end-colon-space]
+after a boundary header or `end`.
+
+[fixture: usecase/lex-boundary-two-semis] [fixture:
+usecase/lex-boundary-colon-space] [fixture: usecase/lex-end-two-semis] [fixture:
+usecase/lex-end-colon-space]
 
 A relationship rejects two trailing semicolons or a colon followed by a space; a
-standalone entity also rejects the colon form. [fixture:
-usecase/lex-edge-two-semis] [fixture: usecase/lex-edge-colon-space] [fixture:
-usecase/lex-entity-colon-space]
+standalone entity also rejects the colon form.
+
+[fixture: usecase/lex-edge-two-semis] [fixture: usecase/lex-edge-colon-space]
+[fixture: usecase/lex-entity-colon-space]
 
 Class assignments and standalone metadata reject both two trailing semicolons
-and a trailing colon followed by a space. [fixture: usecase/lex-class-two-semis]
-[fixture: usecase/lex-class-colon-space] [fixture:
-usecase/lex-metadata-two-semis] [fixture: usecase/lex-metadata-colon-space]
+and a trailing colon followed by a space.
+
+[fixture: usecase/lex-class-two-semis] [fixture: usecase/lex-class-colon-space]
+[fixture: usecase/lex-metadata-two-semis] [fixture:
+usecase/lex-metadata-colon-space]
 
 JSON declarations and direction statements reject both two trailing semicolons
-and a trailing colon followed by a space. [fixture: usecase/lex-json-two-semis]
-[fixture: usecase/lex-json-colon-space] [fixture:
-usecase/lex-direction-two-semis] [fixture: usecase/lex-direction-colon-space]
+and a trailing colon followed by a space.
+
+[fixture: usecase/lex-json-two-semis] [fixture: usecase/lex-json-colon-space]
+[fixture: usecase/lex-direction-two-semis] [fixture:
+usecase/lex-direction-colon-space]
 
 A closed accessibility description block likewise rejects two semicolons or a
-colon followed by a space after its closing brace. [fixture:
-usecase/lex-accdescr-block-two-semis] [fixture:
+colon followed by a space after its closing brace.
+
+[fixture: usecase/lex-accdescr-block-two-semis] [fixture:
 usecase/lex-accdescr-block-colon-space]
 
 An unquoted note stores `" text; ;"` for the spaced-semicolon example and
 `"text:"` for the colon example, dropping the final space; a semicolon after a
-quoted note is rejected. [fixture: usecase/lex-note-plain-spaced-semis]
-[fixture: usecase/lex-note-plain-colon-space] [fixture:
-usecase/lex-note-quoted-semicolon]
+quoted note is rejected.
 
-Style and class-definition values reject the spaced suffix `; ;`. [fixture:
-usecase/lex-style-spaced-semis] [fixture: usecase/lex-classdef-spaced-semis]
+[fixture: usecase/lex-note-plain-spaced-semis] [fixture:
+usecase/lex-note-plain-colon-space] [fixture: usecase/lex-note-quoted-semicolon]
+
+Style and class-definition values reject the spaced suffix `; ;`.
+
+[fixture: usecase/lex-style-spaced-semis] [fixture:
+usecase/lex-classdef-spaced-semis]
 
 A final TAB is accepted after an actor or class assignment, and after a boundary
-header and its final `end`. [fixture: usecase/lex-actor-final-tab] [fixture:
-usecase/lex-class-final-tab] [fixture: usecase/lex-boundary-final-tab]
+header and its final `end`.
+
+[fixture: usecase/lex-actor-final-tab] [fixture: usecase/lex-class-final-tab]
+[fixture: usecase/lex-boundary-final-tab]
 
 A closed directive at end of text after an actor is removed; closed directives
 after accessibility title/block values and an unclosed final directive after a
-description block also leave the values intact. [fixture:
-usecase/lex-actor-directive-final-eof] [fixture:
+description block also leave the values intact.
+
+[fixture: usecase/lex-actor-directive-final-eof] [fixture:
 usecase/lex-accessibility-tail-directives] [fixture:
 usecase/lex-accessibility-tail-open-directive]
 
 Shared style-line preprocessing runs before the usecase lexer. With `fill:#abc`,
 the tested two/three-semicolon style endings with trailing padding, and the
 tested class-definition endings, produce encoded entity markers that are
-rejected as CSS components. [fixture: usecase/lex-style-three-padding] [fixture:
+rejected as CSS components.
+
+[fixture: usecase/lex-style-three-padding] [fixture:
 usecase/lex-style-two-padding] [fixture: usecase/lex-classdef-hash-three]
 [fixture: usecase/lex-classdef-hash-two-padding]
 
 The same preprocessing changes the text `style fill:#abc;;;` inside actor and
 boundary labels to `style fill:\uFB02\u00B0abc\u00B6\u00DF;` (escape notation).
+
 [fixture: usecase/lex-style-trigger-actor] [fixture:
 usecase/lex-style-trigger-boundary]
 
 Relationship labels and note labels keep that same preprocessed marker text,
-rather than decoding it in the stored Db. [fixture:
-usecase/lex-style-trigger-edge] [fixture: usecase/lex-style-trigger-note]
+rather than decoding it in the stored Db.
+
+[fixture: usecase/lex-style-trigger-edge] [fixture:
+usecase/lex-style-trigger-note]
 
 Accessibility titles and description blocks also receive that style-triggered
-text change. [fixture: usecase/lex-style-trigger-a11y-title] [fixture:
+text change.
+
+[fixture: usecase/lex-style-trigger-a11y-title] [fixture:
 usecase/lex-style-trigger-a11y-description]
 
 Stereotypes, JSON string values and actor icon metadata also keep the
 style-triggered entity markers; the JSON example triggers across its quoted
-key/value separator. [fixture: usecase/lex-style-trigger-stereotype] [fixture:
+key/value separator.
+
+[fixture: usecase/lex-style-trigger-stereotype] [fixture:
 usecase/lex-style-trigger-json] [fixture:
 usecase/lex-style-trigger-metadata-icon]
 
 A frontmatter title with that text remains unchanged in `embedded.title`, while
-the common title is cleared as described above. [fixture:
-usecase/lex-style-trigger-frontmatter]
+the common title is cleared as described above.
+
+[fixture: usecase/lex-style-trigger-frontmatter]
 
 U+2028 and U+2029 between the color and semicolon prevent the tested style-line
-match, so these label strings are preserved. [fixture:
-usecase/lex-style-trigger-ls] [fixture: usecase/lex-style-trigger-ps]
+match, so these label strings are preserved.
+
+[fixture: usecase/lex-style-trigger-ls] [fixture: usecase/lex-style-trigger-ps]
 
 Directive removal precedes that style-line preprocessing: rejoining `sty` and
-`le` inside a label can trigger it and remove the color semicolon. [fixture:
-usecase/lex-style-trigger-directive]
+`le` inside a label can trigger it and remove the color semicolon.
+
+[fixture: usecase/lex-style-trigger-directive]
 
 Detection accepts U+2003 after the header keyword, but parsing the header
 followed only by that character is rejected; U+0085 before or immediately after
 the keyword does not detect usecase, and a U+0085-only body line is rejected.
+
 [fixture: usecase/lex-header-emspace-eof] [fixture: usecase/lex-header-nel-eof]
 [fixture: usecase/lex-nel-before-header] [fixture: usecase/lex-nel-only-line]
 
 Quoted metadata icon values preserve internal U+00A0, a trailing U+FEFF and
-U+2029; U+2028 between unquoted metadata entries is rejected. [fixture:
-usecase/lex-metadata-unicode-value] [fixture: usecase/lex-metadata-ps-string]
-[fixture: usecase/lex-metadata-ls-separator]
+U+2029; U+2028 between unquoted metadata entries is rejected.
+
+[fixture: usecase/lex-metadata-unicode-value] [fixture:
+usecase/lex-metadata-ps-string] [fixture: usecase/lex-metadata-ls-separator]
 
 JSON rejects U+2029 as object whitespace but preserves U+2028 inside a quoted
-value. [fixture: usecase/div-lex-json-ps-whitespace] [fixture:
+value.
+
+[fixture: usecase/div-lex-json-ps-whitespace] [fixture:
 usecase/lex-json-ls-string]
 
 Actor labels preserve surrounding U+00A0, boundary labels preserve surrounding
 U+FEFF, relationship labels preserve surrounding U+3000, and note labels
-preserve surrounding U+00A0. [fixture: usecase/lex-actor-label-unicode-padding]
-[fixture: usecase/lex-boundary-label-unicode-padding] [fixture:
+preserve surrounding U+00A0.
+
+[fixture: usecase/lex-actor-label-unicode-padding] [fixture:
+usecase/lex-boundary-label-unicode-padding] [fixture:
 usecase/lex-edge-label-unicode-padding] [fixture:
 usecase/lex-note-label-unicode-padding]
 
 Stereotype trimming removes surrounding U+FEFF, while a CR or CRLF inside a
-stereotype is rejected. [fixture: usecase/lex-stereotype-bom-padding] [fixture:
+stereotype is rejected.
+
+[fixture: usecase/lex-stereotype-bom-padding] [fixture:
 usecase/lex-stereotype-cr] [fixture: usecase/lex-stereotype-crlf]
 
 CR and CRLF separate accessibility, direction, actor, boundary, entity,
 relationship, note, JSON, metadata, class-definition, class-assignment and style
-statements in the tested complete diagrams. [fixture: usecase/lex-statements-cr]
-[fixture: usecase/lex-statements-crlf]
+statements in the tested complete diagrams.
+
+[fixture: usecase/lex-statements-cr] [fixture: usecase/lex-statements-crlf]
 
 Whole-line comments terminate at either CR or CRLF; shared comment removal also
-accepts the tested U+00A0 indentation. [fixture: usecase/lex-comment-cr]
-[fixture: usecase/lex-comment-crlf] [fixture: usecase/lex-comment-nbsp-indent]
+accepts the tested U+00A0 indentation.
+
+[fixture: usecase/lex-comment-cr] [fixture: usecase/lex-comment-crlf] [fixture:
+usecase/lex-comment-nbsp-indent]
 
 A supplementary character and a combining sequence are rejected as ids in the
-tested forms, but both are preserved in an element label. [fixture:
-usecase/lex-supplementary-id] [fixture: usecase/lex-combining-id] [fixture:
-usecase/lex-supplementary-label]
+tested forms, but both are preserved in an element label.
+
+[fixture: usecase/lex-supplementary-id] [fixture: usecase/lex-combining-id]
+[fixture: usecase/lex-supplementary-label]
 
 A markdown string closes at the first backtick followed by a double quote, even
 after a backslash; trailing label text after that close makes the tested inputs
 fail. Double quotes without that backtick are retained inside markdown text.
+
 [fixture: usecase/lex-markdown-earliest-close] [fixture:
 usecase/lex-markdown-close-backslash] [fixture:
 usecase/lex-markdown-embedded-double]
 
 A backslash does not escape an apostrophe in the tested single-quoted label.
+
 [fixture: usecase/lex-plain-single-apostrophe]
 
 Stereotype mode closes at the first `>>`, rejects a newline before its text, and
-preserves a nested `<<` as text. [fixture: usecase/lex-stereotype-first-close]
-[fixture: usecase/lex-stereotype-newline-before-close] [fixture:
+preserves a nested `<<` as text.
+
+[fixture: usecase/lex-stereotype-first-close] [fixture:
+usecase/lex-stereotype-newline-before-close] [fixture:
 usecase/lex-stereotype-nested-open]
 
 An unclosed quoted JSON value consumes the following line into the
 unclosed-object token and is rejected; U+00A0 between `json` and its id does not
-form the JSON declaration mode-push token. [fixture:
-usecase/lex-json-mode-unclosed-string] [fixture: usecase/lex-json-nbsp-gap]
+form the JSON declaration mode-push token.
+
+[fixture: usecase/lex-json-mode-unclosed-string] [fixture:
+usecase/lex-json-nbsp-gap]
 
 Keyword priority splits `actor-name` in a CSS property and rejects it, while
 `actor-name actorName` is preserved in a label; `style:include` is accepted as
-CSS through the word category. [fixture: usecase/lex-css-hyphen-keyword-style]
-[fixture: usecase/lex-css-keyword-prefix-label-control] [fixture:
+CSS through the word category.
+
+[fixture: usecase/lex-css-hyphen-keyword-style] [fixture:
+usecase/lex-css-keyword-prefix-label-control] [fixture:
 usecase/lex-keyword-style-word-category]
 
 At statement start, `o--word` and `x--word` begin with backward-marker arrow
-tokens and are rejected as declarations. [fixture:
-usecase/lex-back-circle-id-prefix] [fixture: usecase/lex-back-cross-id-prefix]
+tokens and are rejected as declarations.
+
+[fixture: usecase/lex-back-circle-id-prefix] [fixture:
+usecase/lex-back-cross-id-prefix]
+
 Forward markers `--o` and `--x` take the leading `o` or `x` of the following id:
 `A --order` and `A --xray` are accepted as circle and cross associations with
-target ids `rder` and `ray`, respectively. [fixture:
-usecase/lex-forward-circle-id-prefix] [fixture:
-usecase/lex-forward-cross-id-prefix] `A --oB` leaves the one-letter target `B`.
+target ids `rder` and `ray`, respectively.
+
+[fixture: usecase/lex-forward-circle-id-prefix] [fixture:
+usecase/lex-forward-cross-id-prefix]
+
+`A --oB` leaves the one-letter target `B`.
+
 [fixture: usecase/lex-forward-circle-id-prefix-one-letter]
 
 The header keyword can be label text. A decimal with a unit is a single number
 token and is rejected as an id, while `1.5px_tail` is accepted as a CSS value.
+
 [fixture: usecase/lex-keyword-header-label] [fixture:
 usecase/lex-number-decimal-id-unit] [fixture:
 usecase/lex-number-suffix-boundary]
 
 The tested label fallback preserves semicolon, angle brackets, backslash,
-backtick, and the other punctuation and symbols shown in the fixtures. [fixture:
-usecase/lex-label-fallback-punctuation] [fixture:
+backtick, and the other punctuation and symbols shown in the fixtures.
+
+[fixture: usecase/lex-label-fallback-punctuation] [fixture:
 usecase/lex-label-fallback-symbols]
 
 A metadata block containing only a comma is rejected; a newline followed by a
-comma and another property is accepted. [fixture:
-usecase/gram-metadata-empty-comma-only] [fixture:
+comma and another property is accepted.
+
+[fixture: usecase/gram-metadata-empty-comma-only] [fixture:
 usecase/gram-metadata-newline-comma-same-line]
 
 Conflicting repeated inline `type` or `business` properties are rejected. A
 standalone `type:awesome` before an actor declaration takes precedence over its
-inline `type:hollow`. [fixture: usecase/gram-metadata-duplicate-inline-conflict]
-[fixture: usecase/gram-metadata-duplicate-inline-business] [fixture:
+inline `type:hollow`.
+
+[fixture: usecase/gram-metadata-duplicate-inline-conflict] [fixture:
+usecase/gram-metadata-duplicate-inline-business] [fixture:
 usecase/gram-metadata-standalone-before-inline]
 
 Empty standalone metadata is accepted for a JSON node, but `business:true` is
-invalid for that target. [fixture: usecase/gram-metadata-json-empty] [fixture:
+invalid for that target.
+
+[fixture: usecase/gram-metadata-json-empty] [fixture:
 usecase/gram-metadata-json-nonempty]
 
 Metadata rejects a space between `@` and `{`, an actor metadata block after its
-stereotype, and an entity metadata block after its class suffix. [fixture:
-usecase/gram-metadata-space-before-brace] [fixture:
+stereotype, and an entity metadata block after its class suffix.
+
+[fixture: usecase/gram-metadata-space-before-brace] [fixture:
 usecase/gram-actor-suffix-metadata-after-stereotype] [fixture:
 usecase/gram-entity-class-before-metadata]
 
 The keyword `actor` is rejected as either a class suffix name or a
-class-definition id. [fixture: usecase/gram-class-keyword-name] [fixture:
+class-definition id.
+
+[fixture: usecase/gram-class-keyword-name] [fixture:
 usecase/gram-classdef-keyword-id]
 
 Standalone metadata inside a boundary can create a use case with that
 `parentId`; an `actor` declaration followed by a relationship on the same line
-is rejected there. [fixture: usecase/gram-boundary-standalone-metadata-inside]
-[fixture: usecase/gram-boundary-actor-relation]
+is rejected there.
+
+[fixture: usecase/gram-boundary-standalone-metadata-inside] [fixture:
+usecase/gram-boundary-actor-relation]
 
 Repeating an actor label or boundary title with identical text but a different
-label type is a conflict. [fixture:
-usecase/gram-boundary-repeat-labeltype-conflict] [fixture:
+label type is a conflict.
+
+[fixture: usecase/gram-boundary-repeat-labeltype-conflict] [fixture:
 usecase/gram-actor-repeat-labeltype-conflict]
 
 Repeating the same quoted declaration collides on its generated semantic id.
 Referencing that id explicitly from a relationship, style and metadata instead
-updates the original node. [fixture: usecase/gram-generated-label-repeat]
-[fixture: usecase/gram-generated-reference-suffix]
+updates the original node.
+
+[fixture: usecase/gram-generated-label-repeat] [fixture:
+usecase/gram-generated-reference-suffix]
 
 A class suffix on a relationship endpoint that only references a node is
-rejected, both for a declared actor id and for a quoted endpoint. [fixture:
-usecase/gram-classes-on-reference-only] [fixture:
+rejected, both for a declared actor id and for a quoted endpoint.
+
+[fixture: usecase/gram-classes-on-reference-only] [fixture:
 usecase/gram-classes-on-quoted-reference-only]
 
 The uppercase forbidden word `NEWPAGE` is rejected as a standalone entity.
+
 [fixture: usecase/gram-forbidden-uppercase]
 
 A longer left side in `A <--- text -- B` is rejected; longer right sides in
-labeled backward circle/cross arrows are accepted with `minlen: 1`. [fixture:
-usecase/gram-backward-long-labeled-left] [fixture:
+labeled backward circle/cross arrows are accepted with `minlen: 1`.
+
+[fixture: usecase/gram-backward-long-labeled-left] [fixture:
 usecase/gram-back-circle-long-right-label] [fixture:
 usecase/gram-back-cross-long-right-label]
 
 A quoted whitespace-only relationship label retains its spaces, and an empty
 markdown relationship label retains an empty string with `labelType: markdown`.
+
 [fixture: usecase/gram-edge-whitespace-label] [fixture:
 usecase/gram-edge-empty-markdown-label]
 
 Class assignment order remains separate from class-definition order and direct
 styles; the stored node does not merge the class definitions into its styles.
+
 [fixture: usecase/gram-class-styles-resolution-order]
 
 Capitalized `True` and `False` are invalid business metadata values; a quoted
-empty property name is also invalid. [fixture:
-usecase/gram-metadata-uppercase-boolean] [fixture:
+empty property name is also invalid.
+
+[fixture: usecase/gram-metadata-uppercase-boolean] [fixture:
 usecase/gram-metadata-uppercase-false] [fixture:
 usecase/gram-metadata-empty-key]
 
 An integer icon value is stored as text and selects the icon actor type, but a
 decimal icon value is rejected. Updating an icon to an empty string clears it
-and restores the normal actor type. [fixture: usecase/gram-metadata-number-icon]
-[fixture: usecase/gram-metadata-decimal-icon] [fixture:
-usecase/gram-actor-icon-clear]
+and restores the normal actor type.
+
+[fixture: usecase/gram-metadata-number-icon] [fixture:
+usecase/gram-metadata-decimal-icon] [fixture: usecase/gram-actor-icon-clear]
 
 Three declarations of the same boundary accumulate class suffixes and members;
-the tested package then rect updates finish with type `rect`. [fixture:
-usecase/gram-boundary-three-classes-types]
+the tested package then rect updates finish with type `rect`.
 
-Lowercase `td`, `tb`, `bt` and `rl` are rejected as direction values. [fixture:
-usecase/gram-direction-lower-td] [fixture: usecase/gram-direction-lower-tb]
-[fixture: usecase/gram-direction-lower-bt] [fixture:
-usecase/gram-direction-lower-rl]
+[fixture: usecase/gram-boundary-three-classes-types]
+
+Lowercase `td`, `tb`, `bt` and `rl` are rejected as direction values.
+
+[fixture: usecase/gram-direction-lower-td] [fixture:
+usecase/gram-direction-lower-tb] [fixture: usecase/gram-direction-lower-bt]
+[fixture: usecase/gram-direction-lower-rl]
 
 Null, boolean, object and array frontmatter titles leave the common Db title
 empty; scalar and array frontmatter roots are also accepted with an empty title.
+
 [fixture: usecase/gram-frontmatter-null-title] [fixture:
 usecase/gram-frontmatter-bool-title] [fixture:
 usecase/gram-frontmatter-object-title] [fixture:
@@ -17050,55 +19211,73 @@ usecase/gram-frontmatter-array-root]
 
 Indented frontmatter is accepted. The tested frontmatter title containing a
 double-quoted HTML attribute is changed by preprocessing into invalid YAML and
-is rejected. [fixture: usecase/gram-frontmatter-indented] [fixture:
+is rejected.
+
+[fixture: usecase/gram-frontmatter-indented] [fixture:
 usecase/div-gram-frontmatter-html-attribute-quotes]
 
 The tested invalid-YAML init directive is removed without rejecting the diagram
-or changing its node. [fixture: usecase/gram-directive-invalid-yaml]
+or changing its node.
+
+[fixture: usecase/gram-directive-invalid-yaml]
 
 `C4Context` inside a label and `C4Container` in frontmatter do not steal
 detection from usecase; U+00A0 after the header passes detection but does not
-separate a following actor statement. [fixture:
-usecase/gram-detect-c4-context-label] [fixture:
+separate a following actor statement.
+
+[fixture: usecase/gram-detect-c4-context-label] [fixture:
 usecase/gram-detect-c4-frontmatter] [fixture:
 usecase/gram-header-unicode-space-statement]
 
 With an unsupported security level and root `htmlLabels: false`, both the
 description-block markup and stored element markup are preserved in the tested
-input. [fixture: usecase/gram-accessibility-unsupported-description]
+input.
+
+[fixture: usecase/gram-accessibility-unsupported-description]
 
 Actor icon metadata preserves HTML markup and stores `#amp;` as the entity
 marker `\uFB02\u00B0amp\u00B6\u00DF` (escape notation). A quoted entity label
-uses the encoded text to derive the addressable id `__amp___name`. [fixture:
-usecase/gram-html-actor-icon] [fixture: usecase/gram-entity-metadata-icon]
-[fixture: usecase/gram-entity-derived-id]
+uses the encoded text to derive the addressable id `__amp___name`.
+
+[fixture: usecase/gram-html-actor-icon] [fixture:
+usecase/gram-entity-metadata-icon] [fixture: usecase/gram-entity-derived-id]
 
 Preprocessing converts double-quoted HTML attribute delimiters to single quotes
 inside the tested double-quoted label; the corresponding single-quoted outer
-label is rejected. [fixture: usecase/gram-html-double-attribute] [fixture:
+label is rejected.
+
+[fixture: usecase/gram-html-double-attribute] [fixture:
 usecase/gram-html-single-attribute]
 
-JSON preserves an empty string property value. [fixture:
-usecase/gram-json-empty-string-value]
+JSON preserves an empty string property value.
+
+[fixture: usecase/gram-json-empty-string-value]
 
 When a repeated property replaces an object with a scalar, `value` keeps the
-scalar and `propertyOrder` drops the overwritten object paths. [fixture:
-usecase/gram-json-object-scalar-overwrite]
+scalar and `propertyOrder` drops the overwritten object paths.
+
+[fixture: usecase/gram-json-object-scalar-overwrite]
 
 JSON decodes the tested control, slash and Unicode escapes in keys and values;
 `propertyOrder` records the decoded key, while a malformed `\q` escape is
-rejected. [fixture: usecase/gram-json-control-escapes] [fixture:
+rejected.
+
+[fixture: usecase/gram-json-control-escapes] [fixture:
 usecase/div-gram-json-malformed-escape]
 
 A pair of backslashes before a JSON closing quote represents one backslash
 without hiding that quote; the following object and its property-order entry are
-retained. [fixture: usecase/gram-json-double-backslash-before-quote]
+retained.
+
+[fixture: usecase/gram-json-double-backslash-before-quote]
 
 ## pie
 
 `normalizePie()` (`src/normalizers/pie.ts`) summarizes the stored
 [`db`](https://github.com/mermaid-js/mermaid/blob/2086904e76c692331e34a45d7cc3bc30860d040e/packages/mermaid/src/diagrams/pie/pieDb.ts#L18-L71).
-The header `pie` has detector id `pie`. [fixture: pie/header-only]
+The header `pie` has detector id `pie`.
+
+[fixture: pie/header-only]
 
 | Field                   | Content                                             |
 | ----------------------- | --------------------------------------------------- |
@@ -17113,20 +19292,25 @@ reads values for slice proportions and preserves section order. Its
 [`legend`](https://github.com/mermaid-js/mermaid/blob/2086904e76c692331e34a45d7cc3bc30860d040e/packages/mermaid/src/diagrams/pie/pieRenderer.ts#L149-L180)
 reads every label and value, including zero and small sections omitted from the
 arcs; `showData` selects whether values are appended to labels. The summary
-therefore keeps every stored section without sorting or filtering. [fixture:
-pie/db-slice-order] [fixture: pie/db-small-slice] [fixture: pie/db-all-fields]
+therefore keeps every stored section without sorting or filtering.
+
+[fixture: pie/db-slice-order] [fixture: pie/db-small-slice] [fixture:
+pie/db-all-fields]
 
 [`addSection()`](https://github.com/mermaid-js/mermaid/blob/2086904e76c692331e34a45d7cc3bc30860d040e/packages/mermaid/src/diagrams/pie/pieDb.ts#L36-L48)
 keeps the first value of each converted label, using a Map. Prototype-shaped
 labels are ordinary keys. Non-finite numbers use the shared summary convention:
-text `"Infinity"`; negative zero becomes zero. [fixture:
-pie/db-three-definitions] [fixture: pie/db-prototype-labels] [fixture:
+text `"Infinity"`; negative zero becomes zero.
+
+[fixture: pie/db-three-definitions] [fixture: pie/db-prototype-labels] [fixture:
 pie/number-overflow] [fixture: pie/number-negative-zero]
 
 A duplicate `-0` after a positive value is accepted: `-0 < 0` is false, and the
 Map retains the first value. When `-0` is first, a later positive duplicate
-leaves it in place and the summary records zero. [fixture:
-pie/db-duplicate-negative-zero] [fixture: pie/db-duplicate-first-negative-zero]
+leaves it in place and the summary records zero.
+
+[fixture: pie/db-duplicate-negative-zero] [fixture:
+pie/db-duplicate-first-negative-zero]
 
 The renderer reads `title` for its
 [`title text`](https://github.com/mermaid-js/mermaid/blob/2086904e76c692331e34a45d7cc3bc30860d040e/packages/mermaid/src/diagrams/pie/pieRenderer.ts#L142-L147).
@@ -17135,9 +19319,10 @@ The common accessibility getters supply
 Frontmatter supplies a title before the parsed statements populate the Db;
 [`populateCommonDb()`](https://github.com/mermaid-js/mermaid/blob/2086904e76c692331e34a45d7cc3bc30860d040e/packages/mermaid/src/diagrams/common/populateCommonDb.ts#L4-L14)
 applies only nonempty final AST strings. The summary takes these getters rather
-than the AST or source positions. [fixture: pie/db-all-fields] [fixture:
-pie/frontmatter-title] [fixture: pie/frontmatter-title-overridden] [fixture:
-pie/frontmatter-empty-title-body]
+than the AST or source positions.
+
+[fixture: pie/db-all-fields] [fixture: pie/frontmatter-title] [fixture:
+pie/frontmatter-title-overridden] [fixture: pie/frontmatter-empty-title-body]
 
 The remaining drawing inputs are omitted from the Db summary:
 
@@ -17147,18 +19332,23 @@ The remaining drawing inputs are omitted from the Db summary:
   separately, including `textPosition`, `donutHole`, `legendPosition` and
   `highlightSlice`. Site settings and text configuration are already recorded as
   `config` and `embedded.config`; none changes stored sections or `showData`.
+
   [fixture: pie/config-drawing-only] [fixture: pie/frontmatter-config] [fixture:
   pie/directive-before-header]
+
 - Totals, percentages, filtered arc lists, colors, angles, centroids, legend
   positions, SVG dimensions and font measurements are derived during drawing.
-  They add no independent authored Db state. [fixture: pie/db-all-fields]
+  They add no independent authored Db state.
+
+  [fixture: pie/db-all-fields]
 
 Section labels bypass the common sanitizer. Common title and accessibility
 strings use it with DOMPurify disabled. All four supported security levels give
 the same summary; unsupported levels can still escape common strings according
 to root `htmlLabels`, with `flowchart.htmlLabels` as fallback. The summary
-retains Mermaid's stored entity markers, without decoding them. [fixture:
-pie/html-all-texts] [fixture: pie/config-security-strict] [fixture:
+retains Mermaid's stored entity markers, without decoding them.
+
+[fixture: pie/html-all-texts] [fixture: pie/config-security-strict] [fixture:
 pie/config-security-loose] [fixture: pie/config-security-antiscript] [fixture:
 pie/config-security-sandbox] [fixture: pie/config-security-other] [fixture:
 pie/config-other-html-false] [fixture: pie/config-other-flowchart-false]
@@ -17184,75 +19374,100 @@ uses the
 the hidden terminal is a separate lexer rule.
 
 Global directive removal can join `accTitle` to its colon and `accDescr` to its
-block opener. [fixture: pie/review-directive-acc-title-colon] [fixture:
+block opener.
+
+[fixture: pie/review-directive-acc-title-colon] [fixture:
 pie/review-directive-acc-descr-block-opener]
 
 Removal at the start or end of a description block value preserves the remaining
-text and closing brace. [fixture: pie/review-directive-block-value-start]
-[fixture: pie/review-directive-block-value-end]
+text and closing brace.
+
+[fixture: pie/review-directive-block-value-start] [fixture:
+pie/review-directive-block-value-end]
 
 Removal can rejoin a minus sign with zero, or a decimal point with its
-fractional digits. [fixture: pie/div-review-directive-number-sign] [fixture:
+fractional digits.
+
+[fixture: pie/div-review-directive-number-sign] [fixture:
 pie/div-review-directive-number-decimal]
 
 A directive-only line between label and colon or between colon and number does
-not remove the preceding LF, so these sections are rejected. [fixture:
-pie/review-directive-number-line-gap] [fixture:
+not remove the preceding LF, so these sections are rejected.
+
+[fixture: pie/review-directive-number-line-gap] [fixture:
 pie/review-directive-label-colon-line-gap]
 
 The tested unknown-type directive and malformed init contents are removed
-without changing the stored pie values. [fixture:
-pie/review-directive-unknown-type] [fixture: pie/review-directive-invalid-init]
+without changing the stored pie values.
+
+[fixture: pie/review-directive-unknown-type] [fixture:
+pie/review-directive-invalid-init]
 
 An unclosed directive inside `pie`, `showData`, `title`, `accTitle` or
 `accDescr` leaves a prefix that is rejected, with the incomplete header failing
-detection. [fixture: pie/review-directive-open-inside-header] [fixture:
+detection.
+
+[fixture: pie/review-directive-open-inside-header] [fixture:
 pie/review-directive-open-inside-showdata] [fixture:
 pie/review-directive-open-inside-title] [fixture:
 pie/review-directive-open-inside-acctitle] [fixture:
 pie/review-directive-open-inside-accdescr]
 
 An unclosed word-type directive after an accessibility title or line description
-removes the following section in the tested inputs. [fixture:
-pie/review-directive-open-acctitle-word] [fixture:
+removes the following section in the tested inputs.
+
+[fixture: pie/review-directive-open-acctitle-word] [fixture:
 pie/review-directive-open-accdescr-word]
 
 The typeless unclosed `%%{` instead acts as a comment ending before LF: it
 preserves a later section after a complete value, but cannot bridge a colon to a
-later number. [fixture: pie/review-directive-open-no-type] [fixture:
+later number.
+
+[fixture: pie/review-directive-open-no-type] [fixture:
 pie/review-directive-hidden-unclosed]
 
 Empty `%%{}%%` and punctuation-only `%%{!}%%` survive global removal and are
 read by the hidden `DIRECTIVE` terminal, which consumes a following LF,
 including a normalized CRLF, and can join a colon to a number on the next
-physical line. [fixture: pie/review-directive-empty-body] [fixture:
+physical line.
+
+[fixture: pie/review-directive-empty-body] [fixture:
 pie/review-directive-punctuation-body] [fixture:
 pie/review-directive-hidden-crlf]
 
 A hidden directive closes before a whitespace boundary, but when a digit follows
 `}%%` directly the comment fallback consumes that digit and the section is
-rejected for its missing number. [fixture:
-pie/review-directive-hidden-word-boundary] [fixture:
+rejected for its missing number.
+
+[fixture: pie/review-directive-hidden-word-boundary] [fixture:
 pie/review-directive-hidden-space-boundary]
 
 U+2028 satisfies that closing boundary but remains unlexable between tokens, so
-it still causes rejection. [fixture: pie/review-hidden-directive-ls-boundary]
+it still causes rejection.
+
+[fixture: pie/review-hidden-directive-ls-boundary]
 
 A hidden directive immediately after the header can consume LF and let
 `showData` occupy the next physical line while remaining the next token.
+
 [fixture: pie/review-hidden-directive-before-showdata]
 
 A directive-looking form that survives global removal remains label text when
-`STRING` has already started. [fixture: pie/review-hidden-directive-in-string]
+`STRING` has already started.
+
+[fixture: pie/review-hidden-directive-in-string]
 
 Inside a description block, `A%%{}%% B` instead ends the `ACC_DESCR` token at
 its first `}`, leaving the stored description `A%%{` while the following comment
-consumes the rest. [fixture: pie/review-hidden-directive-in-block]
+consumes the rest.
+
+[fixture: pie/review-hidden-directive-in-block]
 
 After a title, accessibility title, line description, block or section, a
 trailing hidden directive can consume its required EOL newline and cause
-rejection at the next section. [fixture:
-pie/review-hidden-directive-after-title] [fixture:
+rejection at the next section.
+
+[fixture: pie/review-hidden-directive-after-title] [fixture:
 pie/review-hidden-directive-after-acctitle] [fixture:
 pie/review-hidden-directive-after-accdescr] [fixture:
 pie/review-hidden-directive-after-block] [fixture:
@@ -17260,6 +19475,7 @@ pie/review-hidden-directive-after-section]
 
 At original EOF the same hidden terminal can consume the LF appended for
 parsing, and each of those five statement forms then satisfies EOL through EOF.
+
 [fixture: pie/review-directive-hidden-eof] [fixture:
 pie/review-hidden-directive-title-eof] [fixture:
 pie/review-hidden-directive-acctitle-eof] [fixture:
@@ -17269,64 +19485,83 @@ pie/review-hidden-directive-block-eof]
 ### Statement endings
 
 A comment between a section label and its colon leaves a line break where the
-grammar permits none, so the section is rejected. [fixture:
-pie/comment-between-label-colon]
+grammar permits none, so the section is rejected.
+
+[fixture: pie/comment-between-label-colon]
 
 After a whitespace-bounded header, `;;`, `; ;` and a colon followed by a space
-are rejected rather than terminating a statement. [fixture:
-pie/review-eol-header-two-semicolons] [fixture:
+are rejected rather than terminating a statement.
+
+[fixture: pie/review-eol-header-two-semicolons] [fixture:
 pie/review-eol-header-spaced-semicolons] [fixture: pie/review-eol-header-colon]
 
 A glued semicolon prevents `showData` keyword recognition, whereas a separated
-semicolon is rejected after the keyword has been read. [fixture:
-pie/review-eol-showdata-semicolon] [fixture:
+semicolon is rejected after the keyword has been read.
+
+[fixture: pie/review-eol-showdata-semicolon] [fixture:
 pie/review-eol-showdata-space-semicolon]
 
 Two semicolons, spaced semicolons and a colon followed by a space are also
-rejected after `showData`. [fixture: pie/review-eol-showdata-two-semicolons]
-[fixture: pie/review-eol-showdata-spaced-semicolons] [fixture:
+rejected after `showData`.
+
+[fixture: pie/review-eol-showdata-two-semicolons] [fixture:
+pie/review-eol-showdata-spaced-semicolons] [fixture:
 pie/review-eol-showdata-colon]
 
 A complete section rejects a trailing colon, and a completed description block
-rejects `; ;` or a trailing colon at EOL. [fixture:
-pie/review-eol-section-colon] [fixture: pie/review-eol-block-spaced-semicolons]
-[fixture: pie/review-eol-block-colon]
+rejects `; ;` or a trailing colon at EOL.
+
+[fixture: pie/review-eol-section-colon] [fixture:
+pie/review-eol-block-spaced-semicolons] [fixture: pie/review-eol-block-colon]
 
 ASCII space and TAB after a block are hidden, while U+2028 after its closing
-brace is rejected. [fixture: pie/review-eol-block-space-tab] [fixture:
-pie/review-eol-block-ls]
+brace is rejected.
+
+[fixture: pie/review-eol-block-space-tab] [fixture: pie/review-eol-block-ls]
 
 A title keeps `; ;` and a trailing colon as text, trimming the space after the
-colon. [fixture: pie/review-eol-title-spaced-semicolons] [fixture:
+colon.
+
+[fixture: pie/review-eol-title-spaced-semicolons] [fixture:
 pie/review-eol-title-colon]
 
 An accessibility title keeps a glued semicolon, a separated semicolon, `; ;` and
-glued `;;` as value text. [fixture: pie/review-eol-acctitle-semicolon] [fixture:
+glued `;;` as value text.
+
+[fixture: pie/review-eol-acctitle-semicolon] [fixture:
 pie/review-eol-acctitle-space-semicolon] [fixture:
 pie/review-eol-acctitle-spaced-semicolons] [fixture:
 pie/review-eol-acctitle-two-glued]
 
 A line description likewise keeps a glued semicolon, a separated semicolon,
-`; ;` and glued `;;` as value text. [fixture: pie/review-eol-accdescr-semicolon]
-[fixture: pie/review-eol-accdescr-space-semicolon] [fixture:
+`; ;` and glued `;;` as value text.
+
+[fixture: pie/review-eol-accdescr-semicolon] [fixture:
+pie/review-eol-accdescr-space-semicolon] [fixture:
 pie/review-eol-accdescr-spaced-semicolons] [fixture:
 pie/review-eol-accdescr-two-glued]
 
 Accessibility titles and line descriptions retain a trailing colon but trim its
-following space. [fixture: pie/review-eol-acctitle-colon] [fixture:
+following space.
+
+[fixture: pie/review-eol-acctitle-colon] [fixture:
 pie/review-eol-accdescr-colon]
 
-The three common line converters trim a final TAB. [fixture:
-pie/review-eol-title-tab] [fixture: pie/review-eol-acctitle-tab] [fixture:
-pie/review-eol-accdescr-tab]
+The three common line converters trim a final TAB.
+
+[fixture: pie/review-eol-title-tab] [fixture: pie/review-eol-acctitle-tab]
+[fixture: pie/review-eol-accdescr-tab]
 
 At original EOF, title text trims U+2029, accessibility title text trims U+2028,
-and line description text trims U+2029. [fixture: pie/review-title-eof-ps]
-[fixture: pie/review-acctitle-eof-ls] [fixture: pie/review-accdescr-eof-ps]
+and line description text trims U+2029.
+
+[fixture: pie/review-title-eof-ps] [fixture: pie/review-acctitle-eof-ls]
+[fixture: pie/review-accdescr-eof-ps]
 
 A header ending in TAB at EOF or space before LF, and a `showData` header ending
-in space at EOF or TAB before LF, remain accepted. [fixture:
-pie/review-header-trailing-tab-eof] [fixture:
+in space at EOF or TAB before LF, remain accepted.
+
+[fixture: pie/review-header-trailing-tab-eof] [fixture:
 pie/review-showdata-trailing-space-eof] [fixture: pie/review-eol-header-space]
 [fixture: pie/review-eol-showdata-tab]
 
@@ -17337,77 +19572,101 @@ reads only leading frontmatter, before body lexing.
 
 Malformed YAML in a delimited leading frontmatter block is rejected, while the
 same malformed body after `pie` is skipped by the hidden `YAML` terminal without
-being parsed as YAML. [fixture: pie/div-review-yaml-leading-invalid] [fixture:
+being parsed as YAML.
+
+[fixture: pie/div-review-yaml-leading-invalid] [fixture:
 pie/review-yaml-hidden-invalid]
 
 Leading empty frontmatter requires a blank body line between the delimiters,
-whereas a body hidden YAML block accepts adjacent delimiter lines. [fixture:
-pie/frontmatter-empty] [fixture: pie/review-yaml-hidden-empty] [fixture:
-pie/review-frontmatter-empty-blank-body]
+whereas a body hidden YAML block accepts adjacent delimiter lines.
+
+[fixture: pie/frontmatter-empty] [fixture: pie/review-yaml-hidden-empty]
+[fixture: pie/review-frontmatter-empty-blank-body]
 
 A body YAML token can consume LF between the header and `showData`, or between a
-label and its colon. [fixture: pie/review-yaml-before-showdata] [fixture:
+label and its colon.
+
+[fixture: pie/review-yaml-before-showdata] [fixture:
 pie/review-yaml-between-label-colon]
 
 Immediately after a section or description block on the same line, a hidden YAML
 block consumes the LF immediately after its closing `---`. With no remaining EOL
-newline, a following statement is rejected, whereas EOF satisfies EOL. [fixture:
-pie/review-yaml-after-section] [fixture: pie/review-yaml-after-block] [fixture:
-pie/gram-section-eof-hidden-yaml] [fixture: pie/gram-block-eof-hidden-yaml]
+newline, a following statement is rejected, whereas EOF satisfies EOL.
+
+[fixture: pie/review-yaml-after-section] [fixture: pie/review-yaml-after-block]
+[fixture: pie/gram-section-eof-hidden-yaml] [fixture:
+pie/gram-block-eof-hidden-yaml]
 
 A space after the closing fence makes the YAML token stop before that space,
 leaving LF for EOL after either statement form; an extra blank line also
-supplies EOL after a section. [fixture: pie/review-yaml-after-section-space]
-[fixture: pie/review-yaml-after-block-space] [fixture:
+supplies EOL after a section.
+
+[fixture: pie/review-yaml-after-section-space] [fixture:
+pie/review-yaml-after-block-space] [fixture:
 pie/review-yaml-after-section-blank-line]
 
 After a title, accessibility title or line description, a glued `---` belongs to
 the one-line value rather than a hidden YAML token; the following `x: y` line is
-rejected with a lexer error. [fixture: pie/review-yaml-after-title] [fixture:
-pie/review-yaml-after-acctitle] [fixture: pie/review-yaml-after-accdescr]
+rejected with a lexer error.
+
+[fixture: pie/review-yaml-after-title] [fixture: pie/review-yaml-after-acctitle]
+[fixture: pie/review-yaml-after-accdescr]
 
 CRLF and lone CR in hidden YAML fences and contents work after common
-line-ending normalization. [fixture: pie/review-yaml-hidden-crlf] [fixture:
-pie/review-yaml-hidden-cr]
+line-ending normalization.
+
+[fixture: pie/review-yaml-hidden-crlf] [fixture: pie/review-yaml-hidden-cr]
 
 Tabs and spaces after the opening body YAML delimiter are allowed, but
 indentation before the closing delimiter prevents the token from closing.
+
 [fixture: pie/review-yaml-opening-tabs] [fixture:
 pie/review-yaml-closing-indent]
 
 Whitespace after the closing body YAML delimiter permits a following colon on
-the same line or a final TAB before the appended LF. [fixture:
-pie/review-yaml-closing-space-boundary] [fixture:
+the same line or a final TAB before the appended LF.
+
+[fixture: pie/review-yaml-closing-space-boundary] [fixture:
 pie/review-yaml-closing-tab-eof]
 
 Leading frontmatter with matching TAB indentation is dedented and supplies its
-title. [fixture: pie/review-yaml-frontmatter-indented]
+title.
 
-An array or scalar frontmatter root supplies no title. [fixture:
-pie/review-yaml-frontmatter-root-array] [fixture:
+[fixture: pie/review-yaml-frontmatter-indented]
+
+An array or scalar frontmatter root supplies no title.
+
+[fixture: pie/review-yaml-frontmatter-root-array] [fixture:
 pie/review-yaml-frontmatter-root-scalar]
 
 Null, false, zero and empty-string frontmatter titles supply no Db title.
+
 [fixture: pie/review-yaml-frontmatter-null-title] [fixture:
 pie/review-frontmatter-false-title] [fixture: pie/review-frontmatter-zero-title]
 [fixture: pie/review-frontmatter-empty-string-title]
 
 True, object and array frontmatter titles become `true`, `[object Object]` and
-`A,B` in the tested inputs. [fixture: pie/review-frontmatter-true-title]
-[fixture: pie/review-frontmatter-object-title] [fixture:
+`A,B` in the tested inputs.
+
+[fixture: pie/review-frontmatter-true-title] [fixture:
+pie/review-frontmatter-object-title] [fixture:
 pie/review-frontmatter-array-title]
 
 YAML-looking fences inside an already started `STRING` or description block
-remain text rather than hidden YAML tokens. [fixture:
-pie/review-label-hidden-yaml-text] [fixture: pie/review-block-hidden-yaml-text]
+remain text rather than hidden YAML tokens.
+
+[fixture: pie/review-label-hidden-yaml-text] [fixture:
+pie/review-block-hidden-yaml-text]
 
 HTML attribute quote cleanup can span from an open tag in frontmatter into a
-later label, changing that label to `A='B'>C` in the tested input. [fixture:
-pie/div-review-frontmatter-html-cross-label]
+later label, changing that label to `A='B'>C` in the tested input.
+
+[fixture: pie/div-review-frontmatter-html-cross-label]
 
 The same cleanup can introduce single quotes into a single-quoted YAML title and
-make leading frontmatter invalid. [fixture:
-pie/div-review-frontmatter-html-invalid-yaml]
+make leading frontmatter invalid.
+
+[fixture: pie/div-review-frontmatter-html-invalid-yaml]
 
 ### Stored values and conversion
 
@@ -17416,107 +19675,144 @@ The
 treats line and block values separately.
 
 A section can follow `pie showData` on the same line, separated from `showData`
-by an ASCII space. [fixture: pie/showdata-section-inline]
+by an ASCII space.
+
+[fixture: pie/showdata-section-inline]
 
 A digit glued after `showData` fails its keyword boundary and leaves a number
-token in the rejected input. [fixture: pie/review-showdata-digit-suffix]
+token in the rejected input.
+
+[fixture: pie/review-showdata-digit-suffix]
 
 `showData` after title text is part of that title and leaves the flag false.
+
 [fixture: pie/review-showdata-after-title]
 
 `showData` cannot start after a section, a header/comment newline gap or a
-header/global-directive newline gap. [fixture:
-pie/review-showdata-after-section] [fixture: pie/review-showdata-comment-gap]
-[fixture: pie/review-showdata-directive-gap]
+header/global-directive newline gap.
+
+[fixture: pie/review-showdata-after-section] [fixture:
+pie/review-showdata-comment-gap] [fixture: pie/review-showdata-directive-gap]
 
 `title2` leaves a TITLE prefix followed by a number that fails EOL, while
-`accTitle2:` and `accDescr2:` fail their common terminal recognition. [fixture:
-pie/review-title-digit-suffix] [fixture: pie/review-acc-title-digit-suffix]
-[fixture: pie/review-acc-descr-digit-suffix]
+`accTitle2:` and `accDescr2:` fail their common terminal recognition.
+
+[fixture: pie/review-title-digit-suffix] [fixture:
+pie/review-acc-title-digit-suffix] [fixture: pie/review-acc-descr-digit-suffix]
 
 A title before the mandatory `pie` header prevents detection, but a bare title
-after the header at EOF is accepted with empty title text. [fixture:
-pie/review-title-bare-before-pie] [fixture: pie/review-title-bare-lone-eof]
+after the header at EOF is accepted with empty title text.
+
+[fixture: pie/review-title-bare-before-pie] [fixture:
+pie/review-title-bare-lone-eof]
 
 Single-quoted empty and whitespace-only labels remain actual Map keys, with
-whitespace preserved. [fixture: pie/review-label-empty-single] [fixture:
+whitespace preserved.
+
+[fixture: pie/review-label-empty-single] [fixture:
 pie/review-label-space-single]
 
 STRING preserves every ECMAScript whitespace character in the tested label,
-including U+2028 and U+2029. [fixture: pie/review-label-whitespace-boundaries]
+including U+2028 and U+2029.
+
+[fixture: pie/review-label-whitespace-boundaries]
 
 Single-quoted labels normalize literal CRLF to LF while preserving literal
-U+2028 and U+2029. [fixture: pie/review-label-single-crlf] [fixture:
-pie/review-label-single-ls] [fixture: pie/review-label-single-ps]
+U+2028 and U+2029.
+
+[fixture: pie/review-label-single-crlf] [fixture: pie/review-label-single-ls]
+[fixture: pie/review-label-single-ps]
 
 A backslash before literal U+2029 or normalized CRLF cannot form a STRING
 escape, and an escaped final single quote leaves the string unclosed; these
-inputs are rejected. [fixture: pie/review-label-single-escaped-ps] [fixture:
+inputs are rejected.
+
+[fixture: pie/review-label-single-escaped-ps] [fixture:
 pie/review-label-escaped-crlf] [fixture:
 pie/review-label-lone-escaped-quote-single]
 
 HTML attribute quote cleanup can make a single-quoted label invalid by inserting
-unescaped single quotes. [fixture: pie/review-html-single-attribute-cleanup]
+unescaped single quotes.
+
+[fixture: pie/review-html-single-attribute-cleanup]
 
 The common line converters trim every ECMAScript whitespace character admitted
 at their value edges; CR and LF are line separators outside those value tokens.
+
 [fixture: pie/review-common-all-whitespace-trim]
 
 A single interior TAB remains in title, accessibility title, line description
-and block description values. [fixture: pie/review-common-single-tab-lines]
-[fixture: pie/review-common-tab-alone]
+and block description values.
+
+[fixture: pie/review-common-single-tab-lines] [fixture:
+pie/review-common-tab-alone]
 
 Quotes and backslash escape spellings in the three common line fields and in
-description blocks remain text without STRING conversion. [fixture:
-pie/review-common-quotes-backslashes] [fixture:
+description blocks remain text without STRING conversion.
+
+[fixture: pie/review-common-quotes-backslashes] [fixture:
 pie/review-block-quotes-backslashes]
 
 Whitespace-only block lines collapse, and either a blank line or U+2028/U+2029
-between `accDescr` and `{` can be consumed inside the block terminal. [fixture:
-pie/review-block-whitespace-only-lines] [fixture:
+between `accDescr` and `{` can be consumed inside the block terminal.
+
+[fixture: pie/review-block-whitespace-only-lines] [fixture:
 pie/review-block-unicode-opener-separators] [fixture:
 pie/review-accdescr-block-blank-before-opener]
 
 A colon after `accDescr` selects the line form with literal brace text, whereas
-common keyword spellings inside a block are ordinary description text. [fixture:
-pie/review-block-brace-colon-priority] [fixture: pie/review-block-metadata-text]
+common keyword spellings inside a block are ordinary description text.
+
+[fixture: pie/review-block-brace-colon-priority] [fixture:
+pie/review-block-metadata-text]
 
 The tested leading-zero negative fraction reaches the Db as `-1.2` and is
 rejected, while long finite fractions are rounded to JavaScript number
-precision. [fixture: pie/review-number-minus-decimal-leading-zero] [fixture:
+precision.
+
+[fixture: pie/review-number-minus-decimal-leading-zero] [fixture:
 pie/review-number-fraction-precision]
 
 Fractions below the subnormal range round to zero or negative zero before the Db
-comparison, so both signs are accepted and summarized as zero. [fixture:
-pie/review-number-positive-underflow-final] [fixture:
+comparison, so both signs are accepted and summarized as zero.
+
+[fixture: pie/review-number-positive-underflow-final] [fixture:
 pie/review-number-negative-underflow-final]
 
 An all-zero section list remains intact even though no arc survives the
-renderer's proportion filter. [fixture: pie/review-number-all-zero-sections]
+renderer's proportion filter.
+
+[fixture: pie/review-number-all-zero-sections]
 
 Single- and double-quoted spellings of the same converted label collide and
-retain the first value. [fixture:
-pie/review-db-converted-duplicate-single-double]
+retain the first value.
+
+[fixture: pie/review-db-converted-duplicate-single-double]
 
 A third nonempty accessibility definition after a section and an empty
-description block supplies the final common value. [fixture:
-pie/review-db-common-third-definitions]
+description block supplies the final common value.
+
+[fixture: pie/review-db-common-third-definitions]
 
 A whitespace-only final accessibility value clears the earlier AST value, while
 a whitespace-only final body title leaves the frontmatter title in the Db.
+
 [fixture: pie/review-acctitle-whitespace-final] [fixture:
 pie/review-accdescr-whitespace-final] [fixture:
 pie/review-frontmatter-whitespace-body-final]
 
 A percent pair at the start of accessibility line values leaves them empty,
 while a bare comment before the header, a triple-percent comment line and a
-spaced comment after a block are accepted. [fixture:
-pie/review-common-comment-value-start] [fixture:
+spaced comment after a block are accepted.
+
+[fixture: pie/review-common-comment-value-start] [fixture:
 pie/review-comment-bare-header-eof] [fixture: pie/review-comment-triple-percent]
 [fixture: pie/review-comment-marker-after-block-space]
 
 An empty description block may also start the body before any nonempty
-description or section. [fixture: pie/review-accdescr-empty-block-first]
+description or section.
+
+[fixture: pie/review-accdescr-empty-block-first]
 
 ### Entity preprocessing in each text field
 
@@ -17527,100 +19823,131 @@ before parsing.
 
 Its two semicolon-removal patterns are `style.*:\S*#.*;` and
 `classDef.*:\S*#.*;`; each match loses only its last semicolon before entity
-encoding. [fixture: pie/style-label-trigger] [fixture:
-pie/style-acctitle-trigger]
+encoding.
+
+[fixture: pie/style-label-trigger] [fixture: pie/style-acctitle-trigger]
 
 In a quoted label, the style preprocessing pass removes only the last of one,
 two or three semicolons before entity encoding and preserves the following
-padding. [fixture: pie/review-style-label-trailing-spaces] [fixture:
+padding.
+
+[fixture: pie/review-style-label-trailing-spaces] [fixture:
 pie/review-style-label-two-padding] [fixture:
 pie/review-style-label-three-padding]
 
 In title text, two or three semicolons likewise lose only the last one before
-entity encoding. [fixture: pie/review-style-title-two] [fixture:
-pie/review-style-title-three]
+entity encoding.
+
+[fixture: pie/review-style-title-two] [fixture: pie/review-style-title-three]
 
 The title converter trims the padding left after preprocessing one, two or three
-semicolons. [fixture: pie/review-style-title-one-padding] [fixture:
+semicolons.
+
+[fixture: pie/review-style-title-one-padding] [fixture:
 pie/review-style-title-two-padding] [fixture:
 pie/review-style-title-trailing-spaces]
 
 Uppercase STYLE and a space between colon and hash prevent title style removal;
-without a hash, the literal semicolon also remains. [fixture:
-pie/review-style-title-upper] [fixture: pie/review-style-title-space] [fixture:
-pie/review-style-title-nohash]
+without a hash, the literal semicolon also remains.
+
+[fixture: pie/review-style-title-upper] [fixture: pie/review-style-title-space]
+[fixture: pie/review-style-title-nohash]
 
 In accessibility title text, the classDef pass removes only the last of two or
-three semicolons before encoding. [fixture: pie/review-style-acctitle-two]
-[fixture: pie/review-style-acctitle-three]
+three semicolons before encoding.
+
+[fixture: pie/review-style-acctitle-two] [fixture:
+pie/review-style-acctitle-three]
 
 The accessibility title converter trims padding after one-, two- and
-three-semicolon classDef forms. [fixture: pie/review-style-acctitle-one-padding]
-[fixture: pie/review-style-acctitle-two-padding] [fixture:
+three-semicolon classDef forms.
+
+[fixture: pie/review-style-acctitle-one-padding] [fixture:
+pie/review-style-acctitle-two-padding] [fixture:
 pie/review-style-acctitle-trailing-spaces]
 
 Uppercase CLASSDEF, colon-space-hash and no-hash controls prevent classDef
-removal in accessibility titles. [fixture: pie/review-style-acctitle-upper]
-[fixture: pie/review-style-acctitle-space] [fixture:
-pie/review-style-acctitle-nohash]
+removal in accessibility titles.
+
+[fixture: pie/review-style-acctitle-upper] [fixture:
+pie/review-style-acctitle-space] [fixture: pie/review-style-acctitle-nohash]
 
 In line description text, the style pass removes only the last of two or three
-semicolons before encoding. [fixture: pie/review-style-accdescr-two] [fixture:
+semicolons before encoding.
+
+[fixture: pie/review-style-accdescr-two] [fixture:
 pie/review-style-accdescr-three]
 
 The line description converter trims padding after one-, two- and
-three-semicolon style forms. [fixture: pie/review-style-accdescr-one-padding]
-[fixture: pie/review-style-accdescr-two-padding] [fixture:
+three-semicolon style forms.
+
+[fixture: pie/review-style-accdescr-one-padding] [fixture:
+pie/review-style-accdescr-two-padding] [fixture:
 pie/review-style-accdescr-trailing-spaces]
 
 Uppercase STYLE, colon-space-hash and no-hash controls prevent style removal in
-line descriptions. [fixture: pie/review-style-accdescr-upper] [fixture:
+line descriptions.
+
+[fixture: pie/review-style-accdescr-upper] [fixture:
 pie/review-style-accdescr-space] [fixture: pie/review-style-accdescr-nohash]
 
 On a description block line, the style pass removes only the last of two or
-three semicolons before encoding. [fixture: pie/review-style-block-two]
-[fixture: pie/review-style-block-three]
+three semicolons before encoding.
+
+[fixture: pie/review-style-block-two] [fixture: pie/review-style-block-three]
 
 The block converter trims padding after one-, two- and three-semicolon style
-forms. [fixture: pie/review-style-block-one-padding] [fixture:
+forms.
+
+[fixture: pie/review-style-block-one-padding] [fixture:
 pie/review-style-block-two-padding] [fixture:
 pie/review-style-block-trailing-spaces]
 
 Uppercase STYLE, colon-space-hash, no hash and a hash on a separate line prevent
-style removal in description blocks. [fixture: pie/review-style-block-upper]
-[fixture: pie/review-style-block-space] [fixture: pie/review-style-block-nohash]
-[fixture: pie/review-style-block-hash-other-line]
+style removal in description blocks.
+
+[fixture: pie/review-style-block-upper] [fixture: pie/review-style-block-space]
+[fixture: pie/review-style-block-nohash] [fixture:
+pie/review-style-block-hash-other-line]
 
 When both style and classDef triggers occur, their separate passes remove two
 final semicolons in label, title, accessibility title, line description and
-block text. [fixture: pie/review-style-both-triggers-label] [fixture:
+block text.
+
+[fixture: pie/review-style-both-triggers-label] [fixture:
 pie/review-style-both-triggers-title] [fixture:
 pie/review-style-both-triggers-acctitle] [fixture:
 pie/review-style-both-triggers-accdescr] [fixture:
 pie/review-style-both-triggers-block]
 
 Global directive removal runs first and can recreate the style trigger in each
-of those five text consumers. [fixture: pie/review-style-directive-rejoin-label]
-[fixture: pie/review-style-directive-rejoin-title] [fixture:
+of those five text consumers.
+
+[fixture: pie/review-style-directive-rejoin-label] [fixture:
+pie/review-style-directive-rejoin-title] [fixture:
 pie/review-style-directive-rejoin-acctitle] [fixture:
 pie/review-style-directive-rejoin-accdescr] [fixture:
 pie/review-style-directive-rejoin-block]
 
 U+2028 and U+2029 split the style matcher segment, preserving a semicolon beyond
 the separator in labels, the three common line fields and description blocks.
+
 [fixture: pie/review-style-ls-boundaries] [fixture:
 pie/review-style-ps-boundaries] [fixture:
 pie/review-style-block-separator-boundaries]
 
 A frontmatter title bypasses this entity-preprocessing stage and retains its
-style-looking semicolons as written. [fixture:
-pie/review-style-frontmatter-title]
+style-looking semicolons as written.
+
+[fixture: pie/review-style-frontmatter-title]
 
 ## gitgraph
 
 `normalizeGitgraph()` (`src/normalizers/gitgraph.ts`) summarizes the shared
 [`db`](https://github.com/mermaid-js/mermaid/blob/2086904e76c692331e34a45d7cc3bc30860d040e/packages/mermaid/src/diagrams/git/gitGraphAst.ts#L28-L68).
-The detector id is `gitGraph`. [fixture: gitgraph/header-only]
+The detector id is `gitGraph`.
+
+[fixture: gitgraph/header-only]
 
 | Field                           | Content                                                                                                                             |
 | ------------------------------- | ----------------------------------------------------------------------------------------------------------------------------------- |
@@ -17637,6 +19964,7 @@ and
 Commit messages, branch tips, HEAD and the selected branch are omitted because
 the renderer reads none of them. Earlier branch selection is reflected in later
 commits' parents and creating branch; a final checkout adds no summary field.
+
 [fixture: gitgraph/gram-all-fields] [fixture: gitgraph/gram-checkout] [fixture:
 gitgraph/gram-cherry-pick] [fixture: gitgraph/gram-switch]
 
@@ -17647,6 +19975,7 @@ object: the reachable grammar never calls `setOptions()`, and the renderer does
 not read it. Configuration is recorded by the shared `config` and
 `embedded.config` interface; its effects on the initial branch name and order
 remain in the summary. Drawing-only options do not change stored commits.
+
 [fixture: gitgraph/header-only] [fixture: gitgraph/config-main-branch] [fixture:
 gitgraph/config-main-order-negative] [fixture: gitgraph/frontmatter-config]
 [fixture: gitgraph/config-drawing-only]
@@ -17659,9 +19988,10 @@ publishes common values, direction, then statements in source order. A normal
 commit gets type 0, 1 or 2 for NORMAL, REVERSE or HIGHLIGHT; tags append in
 source order, while repeated id and type options take the final value. An empty
 id generates an id; empty tags remain stored. Message options are accepted but
-omitted from the summary. [fixture: gitgraph/gram-commit-repeated-options]
-[fixture: gitgraph/gram-commit-empty-values] [fixture:
-gitgraph/gram-commit-space-values]
+omitted from the summary.
+
+[fixture: gitgraph/gram-commit-repeated-options] [fixture:
+gitgraph/gram-commit-empty-values] [fixture: gitgraph/gram-commit-space-values]
 
 `commit()` replaces a duplicate id rather than rejecting it, preserving that
 id's first Map position. The value carries its later sequence and parents, which
@@ -17669,6 +19999,7 @@ can include its own id. Three definitions can leave sequence gaps and change the
 sequence order used for commit positioning. Maps keep prototype-shaped ids and
 branch names normally.
 [`commit()`](https://github.com/mermaid-js/mermaid/blob/2086904e76c692331e34a45d7cc3bc30860d040e/packages/mermaid/src/diagrams/git/gitGraphAst.ts#L114-L147)
+
 [fixture: gitgraph/db-duplicate-id] [fixture: gitgraph/db-three-definitions]
 [fixture: gitgraph/db-prototype-ids] [fixture:
 gitgraph/db-converted-duplicate-id]
@@ -17678,6 +20009,7 @@ Map keys in first-id insertion order. The summary keeps that Map order together
 with each commit's latest `seq`; the derived sorting of `getCommitsArray()` is
 not recorded separately.
 [drawArrows()](https://github.com/mermaid-js/mermaid/blob/2086904e76c692331e34a45d7cc3bc30860d040e/packages/mermaid/src/diagrams/git/gitGraphRenderer.ts#L851-L865)
+
 [fixture: gitgraph/db-three-definitions]
 
 A publication-only object patch observes which ids Mermaid generates, without
@@ -17687,8 +20019,10 @@ skipping names used by authored ids. It renames commit ids and parent
 references; tags are copied as stored. Authored ids, including random-looking
 ids, remain unchanged. `seq` starts at zero on every Db clear and advances for
 every created commit, including overwritten commits; it is syntax-dependent
-ordering, not a run-dependent counter. [fixture: gitgraph/db-generated-ids]
-[fixture: gitgraph/db-generated-name-collision] [fixture:
+ordering, not a run-dependent counter.
+
+[fixture: gitgraph/db-generated-ids] [fixture:
+gitgraph/db-generated-name-collision] [fixture:
 gitgraph/db-random-shaped-custom-id] [fixture: gitgraph/db-three-definitions]
 
 [`branch()`](https://github.com/mermaid-js/mermaid/blob/2086904e76c692331e34a45d7cc3bc30860d040e/packages/mermaid/src/diagrams/git/gitGraphAst.ts#L149-L164)
@@ -17698,22 +20032,27 @@ create/select branches for later commit publication, including empty branches;
 `switch` is the same operation as checkout. Branches sort by numeric order,
 defaulting to zero for authored branches, with creation order breaking ties.
 Empty and whitespace-only quoted names remain keys. The configured initial
-branch name is stored directly. [fixture: gitgraph/gram-branch-order] [fixture:
-gitgraph/gram-branch-order-tie] [fixture: gitgraph/gram-branch-empty] [fixture:
-gitgraph/gram-branch-whitespace] [fixture: gitgraph/gram-switch] [fixture:
-gitgraph/config-main-empty-name] [fixture: gitgraph/config-main-html]
+branch name is stored directly.
+
+[fixture: gitgraph/gram-branch-order] [fixture: gitgraph/gram-branch-order-tie]
+[fixture: gitgraph/gram-branch-empty] [fixture: gitgraph/gram-branch-whitespace]
+[fixture: gitgraph/gram-switch] [fixture: gitgraph/config-main-empty-name]
+[fixture: gitgraph/config-main-html]
 
 [`merge()`](https://github.com/mermaid-js/mermaid/blob/2086904e76c692331e34a45d7cc3bc30860d040e/packages/mermaid/src/diagrams/git/gitGraphAst.ts#L166-L258)
 creates type 3 with ordered current/source parents, optional custom type and a
 custom-id flag. Repeated scalar options take the last value; an empty id
-generates an id with `customId: false`. [fixture: gitgraph/gram-merge-options]
-[fixture: gitgraph/gram-merge-repeated-options] [fixture:
-gitgraph/gram-merge-empty-id]
+generates an id with `customId: false`.
+
+[fixture: gitgraph/gram-merge-options] [fixture:
+gitgraph/gram-merge-repeated-options] [fixture: gitgraph/gram-merge-empty-id]
 
 Merge rejects the current branch itself, a current tip created on the source
 branch, missing or empty branches, a shared head, and an existing custom id.
 Branch creation rejects an existing name, and checkout/switch reject an unknown
-name. [fixture: gitgraph/db-merge-self-empty] [fixture: gitgraph/db-merge-self]
+name.
+
+[fixture: gitgraph/db-merge-self-empty] [fixture: gitgraph/db-merge-self]
 [fixture: gitgraph/db-merge-current-created-on-source] [fixture:
 gitgraph/db-merge-empty-current] [fixture: gitgraph/db-merge-empty-other]
 [fixture: gitgraph/db-merge-unknown] [fixture: gitgraph/db-merge-same-head]
@@ -17727,16 +20066,19 @@ gitgraph/db-merge-unknown-generated-prefix]
 creates type 4 with a generated id and current/source parents. Without authored
 tags its tag names the source, and for a merge source its parent; explicit tags
 suppress this default and filter empty strings. Scalar options use their last
-assignment. An empty parent is absent for an ordinary source. [fixture:
-gitgraph/gram-cherry-pick] [fixture: gitgraph/gram-cherry-pick-tags] [fixture:
-gitgraph/gram-cherry-pick-merge-parent] [fixture:
+assignment. An empty parent is absent for an ordinary source.
+
+[fixture: gitgraph/gram-cherry-pick] [fixture: gitgraph/gram-cherry-pick-tags]
+[fixture: gitgraph/gram-cherry-pick-merge-parent] [fixture:
 gitgraph/gram-cherry-pick-repeated-options] [fixture:
 gitgraph/gram-cherry-pick-empty-parent]
 
 Cherry-pick rejects an absent, empty or unknown source id, a source created on
 the current branch, an empty destination, a supplied non-immediate parent, or a
 merge source without a parent. These are Db rejections after successful grammar
-parsing. [fixture: gitgraph/db-cherry-pick-missing] [fixture:
+parsing.
+
+[fixture: gitgraph/db-cherry-pick-missing] [fixture:
 gitgraph/db-cherry-pick-empty-id] [fixture: gitgraph/db-cherry-pick-unknown]
 [fixture: gitgraph/db-cherry-pick-same-branch] [fixture:
 gitgraph/db-cherry-pick-empty-current] [fixture:
@@ -17751,8 +20093,10 @@ allow `gitGraph`, `gitGraph:`, a separated colon, or LR/TB/BT with a required
 colon. A statement or common value may start on the header line; ordinary body
 statements require NEWLINE or EOF, not semicolons. A lone CR and CRLF are
 normalized to LF; LS and PS are not NEWLINE. Blank lines and ASCII space/TAB are
-allowed. [fixture: gitgraph/header-only] [fixture: gitgraph/header-colon]
-[fixture: gitgraph/header-spaced-colon] [fixture: gitgraph/header-lr] [fixture:
+allowed.
+
+[fixture: gitgraph/header-only] [fixture: gitgraph/header-colon] [fixture:
+gitgraph/header-spaced-colon] [fixture: gitgraph/header-lr] [fixture:
 gitgraph/header-tb] [fixture: gitgraph/header-bt] [fixture:
 gitgraph/header-direction-no-colon] [fixture:
 gitgraph/header-colon-commit-inline] [fixture: gitgraph/header-commit-inline]
@@ -17813,12 +20157,13 @@ adds JavaScript-whitespace/EOF-or-percent-pair lookahead only to `gitGraph`, not
 to `gitGraph:`. Other keyword prefixes can yield a longer REFERENCE alternative;
 there is no general longest-match rule. Detection itself tests only the exact
 case-sensitive `gitGraph` prefix, so a suffix can detect and then fail lexing or
-parsing. [fixture: gitgraph/detect-lowercase] [fixture:
-gitgraph/detect-uppercase] [fixture: gitgraph/detect-letter-suffix] [fixture:
-gitgraph/detect-digit-suffix] [fixture: gitgraph/detect-dash-suffix] [fixture:
-gitgraph/detect-unicode-suffix] [fixture: gitgraph/lex-header-bom] [fixture:
-gitgraph/comment-header-glued] [fixture:
-gitgraph/lex-reference-keyword-prefixes] [fixture:
+parsing.
+
+[fixture: gitgraph/detect-lowercase] [fixture: gitgraph/detect-uppercase]
+[fixture: gitgraph/detect-letter-suffix] [fixture: gitgraph/detect-digit-suffix]
+[fixture: gitgraph/detect-dash-suffix] [fixture: gitgraph/detect-unicode-suffix]
+[fixture: gitgraph/lex-header-bom] [fixture: gitgraph/comment-header-glued]
+[fixture: gitgraph/lex-reference-keyword-prefixes] [fixture:
 gitgraph/lex-keyword-commit-case] [fixture: gitgraph/lex-keyword-branch-case]
 [fixture: gitgraph/lex-keyword-checkout-case] [fixture:
 gitgraph/lex-keyword-switch-case] [fixture: gitgraph/lex-keyword-merge-case]
@@ -17859,13 +20204,14 @@ Thus INT can split a digit-prefixed name, while its dot boundary lets a
 version-like name reach REFERENCE; TITLE can take a name's prefix. A reference
 starts with an ASCII word character, permits interior dot/slash/dash, and can
 end with a dash despite the source comment, but not dot/slash. Quotes allow
-reserved words, numbers, Unicode and whitespace as names. [fixture:
-gitgraph/lex-reference-digit] [fixture: gitgraph/lex-reference-digit-prefix]
-[fixture: gitgraph/lex-reference-zero-prefix] [fixture:
-gitgraph/lex-reference-digit-dot] [fixture:
-gitgraph/lex-reference-common-prefix] [fixture: gitgraph/lex-reference-shape]
-[fixture: gitgraph/lex-reference-trailing-dash] [fixture:
-gitgraph/lex-reference-trailing-dot] [fixture:
+reserved words, numbers, Unicode and whitespace as names.
+
+[fixture: gitgraph/lex-reference-digit] [fixture:
+gitgraph/lex-reference-digit-prefix] [fixture:
+gitgraph/lex-reference-zero-prefix] [fixture: gitgraph/lex-reference-digit-dot]
+[fixture: gitgraph/lex-reference-common-prefix] [fixture:
+gitgraph/lex-reference-shape] [fixture: gitgraph/lex-reference-trailing-dash]
+[fixture: gitgraph/lex-reference-trailing-dot] [fixture:
 gitgraph/lex-reference-trailing-slash] [fixture:
 gitgraph/lex-reference-leading-dash] [fixture: gitgraph/lex-reference-unicode]
 [fixture: gitgraph/lex-reference-reserved] [fixture:
@@ -17877,8 +20223,9 @@ gitgraph/lex-branch-unicode-quoted]
 INT order is unsigned decimal, zero or a nonzero first digit. Signs, leading
 zeros, fractions, exponents, NaN and Infinity spellings reject; conversion uses
 `parseInt` and double precision, including overflow for a sufficiently long
-integer. Only the resulting branch order is summarized. [fixture:
-gitgraph/number-zero] [fixture: gitgraph/number-negative] [fixture:
+integer. Only the resulting branch order is summarized.
+
+[fixture: gitgraph/number-zero] [fixture: gitgraph/number-negative] [fixture:
 gitgraph/number-negative-zero] [fixture: gitgraph/number-plus] [fixture:
 gitgraph/number-leading-zero] [fixture: gitgraph/number-decimal] [fixture:
 gitgraph/number-exponent] [fixture: gitgraph/number-nan] [fixture:
@@ -17893,6 +20240,7 @@ quotes close the string; raw line breaks are allowed, but a backslash escape
 cannot cross LF, CR, LS or PS. The escapes b/f/n/r/t/v/0 become control
 characters; an unknown escape loses its slash, without hex or Unicode-code
 decoding. The same branch reads every string option and quoted branch reference.
+
 [fixture: gitgraph/gram-commit-single-quotes] [fixture:
 gitgraph/lex-string-escapes] [fixture: gitgraph/lex-string-multiline] [fixture:
 gitgraph/lex-string-single-multiline] [fixture: gitgraph/lex-string-unclosed]
@@ -17909,6 +20257,7 @@ protection; conversion trims each line's edges, collapses ASCII runs and
 repeated CR/LF. The final AST assignment wins, even when empty; only a nonempty
 final converted string reaches the common Db, so an empty final title preserves
 frontmatter and an empty final accessibility value leaves the cleared default.
+
 [fixture: gitgraph/title-conversion] [fixture: gitgraph/common-interior-unicode]
 [fixture: gitgraph/accdescr-block] [fixture:
 gitgraph/accdescr-block-first-brace] [fixture:
@@ -17925,22 +20274,25 @@ Title takes one space/TAB separator; accessibility line values start after a
 colon with only space/TAB before it. They do not take a later line as value.
 Only the block opener permits common whitespace, including LF and NBSP, between
 keyword and brace. Line values keep semicolons and colons as text; a completed
-block rejects them. [fixture: gitgraph/title-tab] [fixture: gitgraph/title-nbsp]
-[fixture: gitgraph/acctitle-nbsp-colon] [fixture: gitgraph/accdescr-nbsp-colon]
-[fixture: gitgraph/title-next-line] [fixture: gitgraph/acctitle-next-line]
-[fixture: gitgraph/accdescr-next-line] [fixture: gitgraph/accdescr-block-gap]
-[fixture: gitgraph/accdescr-block-nbsp-gap] [fixture:
-gitgraph/eol-title-semicolons] [fixture: gitgraph/eol-acctitle-semicolons]
-[fixture: gitgraph/eol-accdescr-semicolons] [fixture: gitgraph/eol-title-colon]
-[fixture: gitgraph/eol-acctitle-colon] [fixture: gitgraph/eol-accdescr-colon]
-[fixture: gitgraph/eol-block-semicolon] [fixture: gitgraph/eol-block-colon]
+block rejects them.
+
+[fixture: gitgraph/title-tab] [fixture: gitgraph/title-nbsp] [fixture:
+gitgraph/acctitle-nbsp-colon] [fixture: gitgraph/accdescr-nbsp-colon] [fixture:
+gitgraph/title-next-line] [fixture: gitgraph/acctitle-next-line] [fixture:
+gitgraph/accdescr-next-line] [fixture: gitgraph/accdescr-block-gap] [fixture:
+gitgraph/accdescr-block-nbsp-gap] [fixture: gitgraph/eol-title-semicolons]
+[fixture: gitgraph/eol-acctitle-semicolons] [fixture:
+gitgraph/eol-accdescr-semicolons] [fixture: gitgraph/eol-title-colon] [fixture:
+gitgraph/eol-acctitle-colon] [fixture: gitgraph/eol-accdescr-colon] [fixture:
+gitgraph/eol-block-semicolon] [fixture: gitgraph/eol-block-colon]
 
 The
 [public parse gate](https://github.com/mermaid-js/mermaid/blob/2086904e76c692331e34a45d7cc3bc30860d040e/packages/parser/src/parse.ts#L134-L150)
 rejects any lexer or parser error, even after recovery or a valid prefix.
 Missing required arguments, unsupported statements/options and separated option
-colons are rejected before Db publication. [fixture:
-gitgraph/lex-error-before-statement] [fixture:
+colons are rejected before Db publication.
+
+[fixture: gitgraph/lex-error-before-statement] [fixture:
 gitgraph/lex-error-after-valid-prefix] [fixture:
 gitgraph/gram-error-recovered-statement] [fixture:
 gitgraph/gram-commit-msg-missing] [fixture: gitgraph/gram-branch-missing]
@@ -17962,10 +20314,11 @@ hides. Adjacent body fences can match hidden YAML although adjacent leading
 fences are not real frontmatter; unclosed blocks and indented hidden closers
 reject. An opening hidden fence permits only space/TAB before LF, and its closer
 needs LF or a common-whitespace/EOF boundary. STRING and ACC_DESCR already
-enclosing a form take priority over a hidden opener in their interior. [fixture:
-gitgraph/lex-yaml-after-comment] [fixture: gitgraph/lex-yaml-invalid-body]
-[fixture: gitgraph/lex-yaml-empty-body] [fixture:
-gitgraph/frontmatter-empty-adjacent] [fixture:
+enclosing a form take priority over a hidden opener in their interior.
+
+[fixture: gitgraph/lex-yaml-after-comment] [fixture:
+gitgraph/lex-yaml-invalid-body] [fixture: gitgraph/lex-yaml-empty-body]
+[fixture: gitgraph/frontmatter-empty-adjacent] [fixture:
 gitgraph/frontmatter-empty-blank-line] [fixture: gitgraph/lex-yaml-unclosed]
 [fixture: gitgraph/lex-yaml-indented-closer] [fixture:
 gitgraph/lex-hidden-yaml-opener-tab] [fixture:
@@ -17979,7 +20332,9 @@ The one retained-block skip occurs before bare percent lines and second-scan
 directives. A second block, a block after a bare brace line or after a
 second-scan directive, and equal indentation on both retained fences prevent
 this skip; a block after real frontmatter or before a second-scan directive can
-be passed. [fixture: gitgraph/detect-two-nonleading-blocks] [fixture:
+be passed.
+
+[fixture: gitgraph/detect-two-nonleading-blocks] [fixture:
 gitgraph/detect-block-after-bare-brace-line] [fixture:
 gitgraph/detect-second-scan-directive-before-block] [fixture:
 gitgraph/detect-block-equally-indented-fences] [fixture:
@@ -17992,6 +20347,7 @@ whitespace/EOF. A missing closing boundary falls back to the native percent
 comment. A second-scan preheader directive is hidden too, but a header glued to
 its closer rejects. Hidden forms can bridge a keyword/option to a value by
 consuming LF; LS/NBSP satisfying a closer remain unlexable ordinary gaps.
+
 [fixture: gitgraph/lex-hidden-directive-between-option-value] [fixture:
 gitgraph/lex-hidden-directive-boundary-word] [fixture:
 gitgraph/lex-hidden-directive-boundary-space] [fixture:
@@ -18017,7 +20373,9 @@ EOL instead. Hidden YAML has the same effect after commit, branch, checkout,
 switch, merge, cherry-pick and description block; after a one-line common value
 its `---` opener is value text instead. Bare references can absorb opener
 dashes. The header itself requires no EOL, so hiding its LF does not block the
-first statement. [fixture: gitgraph/lex-hidden-directive-after-commit] [fixture:
+first statement.
+
+[fixture: gitgraph/lex-hidden-directive-after-commit] [fixture:
 gitgraph/lex-hidden-directive-after-branch] [fixture:
 gitgraph/lex-hidden-directive-after-checkout] [fixture:
 gitgraph/lex-hidden-directive-after-switch] [fixture:
@@ -18099,12 +20457,13 @@ colons and quoted/common values. Glued removal after the header or a statement
 keyword can eliminate its required boundary; a directive-only line does not
 erase an earlier LF. Unclosed forms can take a following word or the rest of the
 source, including a closing quote or brace. Invalid init JSON and unknown
-directive types can be removed without configuration. [fixture:
-gitgraph/div-directive-in-header] [fixture: gitgraph/div-directive-in-commit]
-[fixture: gitgraph/div-directive-in-branch] [fixture:
-gitgraph/div-directive-in-checkout] [fixture: gitgraph/div-directive-in-switch]
-[fixture: gitgraph/div-directive-in-merge] [fixture:
-gitgraph/div-directive-in-cherry-pick] [fixture:
+directive types can be removed without configuration.
+
+[fixture: gitgraph/div-directive-in-header] [fixture:
+gitgraph/div-directive-in-commit] [fixture: gitgraph/div-directive-in-branch]
+[fixture: gitgraph/div-directive-in-checkout] [fixture:
+gitgraph/div-directive-in-switch] [fixture: gitgraph/div-directive-in-merge]
+[fixture: gitgraph/div-directive-in-cherry-pick] [fixture:
 gitgraph/div-directive-in-option-keyword] [fixture:
 gitgraph/div-directive-in-type] [fixture: gitgraph/div-directive-in-reference]
 [fixture: gitgraph/div-directive-in-number] [fixture:
@@ -18125,11 +20484,13 @@ after a retained bare percent line detection's passed whitespace still reaches
 Mermaid's lexer: ASCII space/TAB succeeds; VT, FF, NBSP, BOM, U+1680,
 U+2000–U+200A, U+202F, U+205F, U+3000, LS and PS reject both immediately before
 the header and on their own line. This also applies after retained YAML or a
-second-scan directive. [fixture: gitgraph/comment-string] [fixture:
-gitgraph/comment-block] [fixture: gitgraph/comment-bare-string] [fixture:
-gitgraph/comment-block-bare-percent] [fixture: gitgraph/comment-commit-glued]
-[fixture: gitgraph/comment-between-option-value] [fixture:
-gitgraph/lex-leading-bom] [fixture: gitgraph/lex-leading-ls-ps] [fixture:
+second-scan directive.
+
+[fixture: gitgraph/comment-string] [fixture: gitgraph/comment-block] [fixture:
+gitgraph/comment-bare-string] [fixture: gitgraph/comment-block-bare-percent]
+[fixture: gitgraph/comment-commit-glued] [fixture:
+gitgraph/comment-between-option-value] [fixture: gitgraph/lex-leading-bom]
+[fixture: gitgraph/lex-leading-ls-ps] [fixture:
 gitgraph/detect-bare-before-header-space] [fixture:
 gitgraph/detect-bare-before-header-tab] [fixture:
 gitgraph/div-detect-bare-before-header-vt] [fixture:
@@ -18198,18 +20559,21 @@ gitgraph/lex-body-vt]
 Leading frontmatter uses the shared YAML reading, including HTML attribute-quote
 cleanup before extraction; malformed YAML can reject even when valid as written
 before that cleanup. Truthy non-string titles are stringified, false supplies no
-title. Body hidden YAML has no such parsing. [fixture:
-gitgraph/frontmatter-title] [fixture: gitgraph/frontmatter-override] [fixture:
-gitgraph/div-frontmatter-invalid-yaml] [fixture: gitgraph/frontmatter-html]
-[fixture: gitgraph/div-frontmatter-html-invalid-yaml] [fixture:
-gitgraph/frontmatter-title-number] [fixture: gitgraph/frontmatter-title-list]
-[fixture: gitgraph/frontmatter-title-false] [fixture:
-gitgraph/lex-yaml-invalid-body]
+title. Body hidden YAML has no such parsing.
+
+[fixture: gitgraph/frontmatter-title] [fixture: gitgraph/frontmatter-override]
+[fixture: gitgraph/div-frontmatter-invalid-yaml] [fixture:
+gitgraph/frontmatter-html] [fixture: gitgraph/div-frontmatter-html-invalid-yaml]
+[fixture: gitgraph/frontmatter-title-number] [fixture:
+gitgraph/frontmatter-title-list] [fixture: gitgraph/frontmatter-title-false]
+[fixture: gitgraph/lex-yaml-invalid-body]
 
 Mermaid's four C4-anywhere words can redirect detection from any diagram text
 field, including a header or statement EOF comment; a written final LF protects
 such a native comment from that scan. C4Context does not redirect an interior
-value. [fixture: gitgraph/div-detect-c4container-id] [fixture:
+value.
+
+[fixture: gitgraph/div-detect-c4container-id] [fixture:
 gitgraph/div-detect-c4component-message] [fixture:
 gitgraph/div-detect-c4dynamic-tag] [fixture:
 gitgraph/div-detect-c4deployment-branch] [fixture:
@@ -18267,22 +20631,24 @@ root securityLevel changes alone give identical summaries. Root htmlLabels false
 does not disable that branch, while gitGraph.htmlLabels false or
 gitGraph.securityLevel loose does. Merge tags bypass that sanitizer; cherry-pick
 tags pass through it. The configured initial branch name bypasses branch-name
-sanitization. [fixture: gitgraph/html-all-texts] [fixture:
-gitgraph/config-security-strict] [fixture: gitgraph/config-security-loose]
-[fixture: gitgraph/config-security-antiscript] [fixture:
-gitgraph/config-security-sandbox] [fixture: gitgraph/config-security-other]
-[fixture: gitgraph/config-html-false] [fixture:
-gitgraph/config-gitgraph-html-false] [fixture: gitgraph/config-gitgraph-loose]
-[fixture: gitgraph/config-common-html-false] [fixture:
-gitgraph/config-common-html-true] [fixture:
+sanitization.
+
+[fixture: gitgraph/html-all-texts] [fixture: gitgraph/config-security-strict]
+[fixture: gitgraph/config-security-loose] [fixture:
+gitgraph/config-security-antiscript] [fixture: gitgraph/config-security-sandbox]
+[fixture: gitgraph/config-security-other] [fixture: gitgraph/config-html-false]
+[fixture: gitgraph/config-gitgraph-html-false] [fixture:
+gitgraph/config-gitgraph-loose] [fixture: gitgraph/config-common-html-false]
+[fixture: gitgraph/config-common-html-true] [fixture:
 gitgraph/config-merge-tag-escape-difference] [fixture:
 gitgraph/html-cherry-pick-tags] [fixture: gitgraph/config-main-html]
 
 HTML attribute quotes are cleaned before string tokenization, even when a tag
 begins on a comment line and reaches a later message. HTML ampersand entities
 stay literal; Mermaid's hash entities stay as encoded markers in every
-summarized text; message text is accepted but omitted. [fixture:
-gitgraph/lex-html-attribute-quotes] [fixture:
+summarized text; message text is accepted but omitted.
+
+[fixture: gitgraph/lex-html-attribute-quotes] [fixture:
 gitgraph/lex-html-comment-reaches-message] [fixture: gitgraph/entity-all-fields]
 [fixture: gitgraph/entity-ampersand-html]
 
@@ -18291,10 +20657,12 @@ any text consumer, including quoted ids, messages, tags, branch names and all
 common forms. It removes only the final semicolon per trigger; two triggers can
 remove two. Case changes, missing hash, whitespace after the colon, or a
 separate LF/LS/PS segment prevent a trigger; directive removal can recreate one.
-Frontmatter titles do not pass through this stage. [fixture:
-gitgraph/style-id-two-semicolons] [fixture: gitgraph/style-label-one-semicolon]
-[fixture: gitgraph/style-tag-three-semicolons] [fixture: gitgraph/style-branch]
-[fixture: gitgraph/style-title] [fixture: gitgraph/style-acctitle] [fixture:
+Frontmatter titles do not pass through this stage.
+
+[fixture: gitgraph/style-id-two-semicolons] [fixture:
+gitgraph/style-label-one-semicolon] [fixture:
+gitgraph/style-tag-three-semicolons] [fixture: gitgraph/style-branch] [fixture:
+gitgraph/style-title] [fixture: gitgraph/style-acctitle] [fixture:
 gitgraph/style-accdescr] [fixture: gitgraph/style-block] [fixture:
 gitgraph/style-both-words] [fixture: gitgraph/style-uppercase] [fixture:
 gitgraph/style-no-hash] [fixture: gitgraph/style-colon-space] [fixture:
@@ -18304,14 +20672,16 @@ gitgraph/style-message-separate-hash] [fixture: gitgraph/style-ls-segment]
 [fixture: gitgraph/style-cherry-pick-tag]
 
 The same preprocessing can remove a semicolon between order digits or inside the
-order keyword, rejoining the integer or keyword before lexing. [fixture:
-gitgraph/div-style-semicolon-in-order-number] [fixture:
+order keyword, rejoining the integer or keyword before lexing.
+
+[fixture: gitgraph/div-style-semicolon-in-order-number] [fixture:
 gitgraph/div-style-semicolon-in-order-keyword]
 
 TITLE, ACC_TITLE and line/block ACC_DESCR are not STRING calls: quotes and
 written backslash escapes in their values remain literal, and a quote within a
-title value need not close before EOL. [fixture:
-gitgraph/common-title-quoted-escape] [fixture:
+title value need not close before EOL.
+
+[fixture: gitgraph/common-title-quoted-escape] [fixture:
 gitgraph/common-acctitle-quoted-escape] [fixture:
 gitgraph/common-accdescr-quoted-escape] [fixture:
 gitgraph/common-block-quoted-escape] [fixture: gitgraph/common-title-open-quote]
@@ -18319,8 +20689,9 @@ gitgraph/common-block-quoted-escape] [fixture: gitgraph/common-title-open-quote]
 Native comments and globally removed closed directives preserve the EOL LF after
 each statement/common form. An unclosed free-text directive removes following
 statements while the completed prefix can end at EOF. Even after a bounded
-header, `; ;` is not a statement. [fixture:
-gitgraph/directive-eol-commit-closed] [fixture:
+header, `; ;` is not a statement.
+
+[fixture: gitgraph/directive-eol-commit-closed] [fixture:
 gitgraph/directive-eol-branch-closed] [fixture:
 gitgraph/directive-eol-checkout-closed] [fixture:
 gitgraph/directive-eol-switch-closed] [fixture:
@@ -18347,14 +20718,17 @@ gitgraph/comment-eol-cherry-pick] [fixture: gitgraph/comment-eol-block]
 A dot in a numeric bare name does not guarantee REFERENCE: the zero INT
 alternative takes `0` immediately, and a multi-digit nonzero INT can backtrack
 to a shorter prefix before a dot. Thus bare `0.1` and `12.3` reject, unlike
-`1.2.3`. [fixture: gitgraph/lex-reference-zero-before-dot] [fixture:
+`1.2.3`.
+
+[fixture: gitgraph/lex-reference-zero-before-dot] [fixture:
 gitgraph/lex-reference-multiple-digits-before-dot] [fixture:
 gitgraph/lex-reference-digit-dot]
 
 Because FLOAT/NUMBER are not reachable lexer terminals, bare `1.5` reaches
 REFERENCE. The unused BOOLEAN terminal likewise does not capture `true` or
-`false`; both remain string reference names. [fixture:
-gitgraph/lex-reference-float-spelling] [fixture:
+`false`; both remain string reference names.
+
+[fixture: gitgraph/lex-reference-float-spelling] [fixture:
 gitgraph/lex-reference-boolean-spellings]
 
 ## info
@@ -18363,11 +20737,14 @@ The summary is `{}` for every accepted info input. The optional `showInfo`
 keyword does not create an AST field, and
 [infoParser.parse()](https://github.com/mermaid-js/mermaid/blob/2086904e76c692331e34a45d7cc3bc30860d040e/packages/mermaid/src/diagrams/info/infoParser.ts#L6-L11)
 only logs the parsed AST; it publishes no common title or accessibility values.
+
 [fixture: info/header-lf] [fixture: info/header-inline-flag] [fixture:
 info/common-all] [fixture: info/common-flag-all]
 
 The upstream minimal header and header-with-flag examples also produce the empty
-summary. [fixture: info/spec-info-06271baf] [fixture: info/spec-info-df27ef00]
+summary.
+
+[fixture: info/spec-info-06271baf] [fixture: info/spec-info-df27ef00]
 
 The version returned by
 [getVersion()](https://github.com/mermaid-js/mermaid/blob/2086904e76c692331e34a45d7cc3bc30860d040e/packages/mermaid/src/diagrams/info/infoDb.ts#L3-L11)
@@ -18376,11 +20753,15 @@ is a build constant, including the optional tiny-build suffix. The
 displays its version argument and reads no Db field. Version, fixed dimensions,
 font settings and SVG positions are omitted because the input determines none of
 them. Frontmatter title/configuration stays in the shared embedded reading; info
-has no title setter. [fixture: info/frontmatter-title] [fixture:
-info/frontmatter-config] [fixture: info/frontmatter-html]
+has no title setter.
+
+[fixture: info/frontmatter-title] [fixture: info/frontmatter-config] [fixture:
+info/frontmatter-html]
 
 A leading init directive can change the shared embedded configuration without
-adding Db fields. [fixture: info/directive-config]
+adding Db fields.
+
+[fixture: info/directive-config]
 
 ### Entry and keyword boundaries
 
@@ -18389,10 +20770,11 @@ The
 takes `info`, an optional `showInfo`, and an optional common fragment, in that
 order. Newlines may precede the header and surround the flag; the first common
 form may share the header or flag line. A repeated header, repeated flag, flag
-before the header or flag after a common form rejects. [fixture:
-info/header-blank-lines] [fixture: info/header-flag-next-line] [fixture:
-info/header-common-inline] [fixture: info/header-flag-common-inline] [fixture:
-info/header-repeated] [fixture: info/header-repeated-flag] [fixture:
+before the header or flag after a common form rejects.
+
+[fixture: info/header-blank-lines] [fixture: info/header-flag-next-line]
+[fixture: info/header-common-inline] [fixture: info/header-flag-common-inline]
+[fixture: info/header-repeated] [fixture: info/header-repeated-flag] [fixture:
 info/header-flag-before] [fixture: info/header-common-then-flag]
 
 The
@@ -18401,24 +20783,26 @@ matches the lowercase prefix `info`, but the
 [token builder](https://github.com/mermaid-js/mermaid/blob/2086904e76c692331e34a45d7cc3bc30860d040e/packages/parser/src/language/info/tokenBuilder.ts#L1-L7)
 requires JavaScript whitespace, EOF or `%%` after both keywords. A letter,
 digit, underscore, hyphen, Unicode letter or colon suffix rejects; header case
-variants and a split header reject too. [fixture: info/detect-lower-suffix]
-[fixture: info/detect-digit-suffix] [fixture: info/detect-underscore-suffix]
-[fixture: info/detect-dash-suffix] [fixture: info/detect-unicode-suffix]
-[fixture: info/detect-colon] [fixture: info/detect-uppercase] [fixture:
-info/detect-titlecase] [fixture: info/detect-header-split] [fixture:
-info/flag-letter-suffix] [fixture: info/flag-digit-suffix] [fixture:
-info/flag-underscore-suffix] [fixture: info/flag-dash-suffix] [fixture:
-info/flag-unicode-suffix] [fixture: info/flag-colon-suffix] [fixture:
-info/flag-uppercase] [fixture: info/flag-lowercase] [fixture:
-info/flag-glued-header]
+variants and a split header reject too.
+
+[fixture: info/detect-lower-suffix] [fixture: info/detect-digit-suffix]
+[fixture: info/detect-underscore-suffix] [fixture: info/detect-dash-suffix]
+[fixture: info/detect-unicode-suffix] [fixture: info/detect-colon] [fixture:
+info/detect-uppercase] [fixture: info/detect-titlecase] [fixture:
+info/detect-header-split] [fixture: info/flag-letter-suffix] [fixture:
+info/flag-digit-suffix] [fixture: info/flag-underscore-suffix] [fixture:
+info/flag-dash-suffix] [fixture: info/flag-unicode-suffix] [fixture:
+info/flag-colon-suffix] [fixture: info/flag-uppercase] [fixture:
+info/flag-lowercase] [fixture: info/flag-glued-header]
 
 Only ACC_DESCR, ACC_TITLE, TITLE, NEWLINE and the four hidden common terminals
 are reachable; imported STRING, BOOLEAN, ID and number terminals are not units
 of this grammar. Standalone quoted strings, boolean words, numbers and names
 reject. The public parse gate rejects any lexer or parser error, including one
-after a valid prefix or before a recovered common form. [fixture:
-info/terminal-string-double] [fixture: info/terminal-string-single] [fixture:
-info/terminal-boolean] [fixture: info/terminal-number] [fixture:
+after a valid prefix or before a recovered common form.
+
+[fixture: info/terminal-string-double] [fixture: info/terminal-string-single]
+[fixture: info/terminal-boolean] [fixture: info/terminal-number] [fixture:
 info/terminal-id] [fixture: info/error-before-header] [fixture:
 info/error-after-prefix] [fixture: info/error-after-common] [fixture:
 info/spec-info-1b111b64]
@@ -18434,6 +20818,7 @@ ASCII-space/tab colon gap, and description blocks after JavaScript whitespace.
 Empty values, third assignments, whitespace-only final values and either quote
 kind remain accepted, with no published Db value. Quotes and backslashes are
 common text, so an open quote in a line value does not require closing.
+
 [fixture: info/title-empty] [fixture: info/title-repeat-empty] [fixture:
 info/title-tabs] [fixture: info/title-double-quotes] [fixture:
 info/title-single-quotes] [fixture: info/title-open-quote] [fixture:
@@ -18446,13 +20831,16 @@ info/common-title-nbsp-only] [fixture: info/space-common-interior] [fixture:
 info/space-block-interior]
 
 Multiline description blocks accept indentation and blank lines without adding
-Db fields. [fixture: info/accdescr-block-lines]
+Db fields.
+
+[fixture: info/accdescr-block-lines]
 
 Colonless accessibility titles, `title:` and incorrect common keyword suffixes
 or case reject. NBSP cannot replace the title separator or the accessibility
 colon gap, and LS cannot appear in a line description's colon gap. LF, blank
-lines, LS and BOM may instead stand before a block brace. [fixture:
-info/acctitle-no-colon] [fixture: info/title-colon] [fixture:
+lines, LS and BOM may instead stand before a block brace.
+
+[fixture: info/acctitle-no-colon] [fixture: info/title-colon] [fixture:
 info/title-digit-suffix] [fixture: info/title-letter-suffix] [fixture:
 info/title-dash-suffix] [fixture: info/title-unicode-suffix] [fixture:
 info/title-uppercase] [fixture: info/acctitle-digit-suffix] [fixture:
@@ -18469,6 +20857,7 @@ A block ends at the first `}`; nested braces, quotes and backslashes do not
 protect a closer. An unclosed block rejects. A block requires a visible EOL or
 EOF before another common form, while a line value takes later same-line
 keywords as text. Empty line values never take a later line as their value.
+
 [fixture: info/accdescr-block-first-close] [fixture: info/accdescr-block-nested]
 [fixture: info/common-block-closer-quoted] [fixture:
 info/accdescr-block-escaped-brace] [fixture: info/accdescr-block-open] [fixture:
@@ -18479,8 +20868,9 @@ info/common-acctitle-comment-gap]
 Blank lines between common forms and a final block or line value at EOF are
 accepted. Semicolons and colon-space after header, flag or block reject;
 semicolon text inside common line values is accepted. A tab after a block is
-hidden whitespace, whereas LS and PS there reject. [fixture:
-info/common-blank-lines] [fixture: info/end-block-eof] [fixture:
+hidden whitespace, whereas LS and PS there reject.
+
+[fixture: info/common-blank-lines] [fixture: info/end-block-eof] [fixture:
 info/end-common-eof] [fixture: info/end-header-semicolon] [fixture:
 info/end-header-spaced-semicolon] [fixture: info/end-header-double-semicolon]
 [fixture: info/end-header-colon-space] [fixture: info/end-flag-semicolon]
@@ -18493,9 +20883,11 @@ info/end-block-spaced-semicolons] [fixture: info/end-block-colon-space]
 info/end-block-ls] [fixture: info/end-block-ps]
 
 CR and CRLF normalize to LF. LS/PS are not native newlines or body gaps, though
-common line/block values can contain them. [fixture: info/line-cr] [fixture:
-info/line-crlf] [fixture: info/line-ls-between] [fixture: info/line-ps-between]
-[fixture: info/line-ls-in-value] [fixture: info/line-ps-in-value] [fixture:
+common line/block values can contain them.
+
+[fixture: info/line-cr] [fixture: info/line-crlf] [fixture:
+info/line-ls-between] [fixture: info/line-ps-between] [fixture:
+info/line-ls-in-value] [fixture: info/line-ps-in-value] [fixture:
 info/line-ls-block] [fixture: info/line-ls-eof] [fixture: info/line-ps-eof]
 
 ### Removals, hidden forms and detection
@@ -18504,14 +20896,16 @@ Global directive removal can rejoin a keyword, keyword/colon boundary, block
 brace or text value. It can also destroy the boundary between two keywords; a
 surviving space controls that case. An unclosed directive can remove the rest of
 the source or take a later word and its LF. Unknown directive types and invalid
-init content are accepted in the recorded cases. [fixture:
-info/div-directive-header-middle] [fixture: info/directive-header-glued]
-[fixture: info/directive-header-space-control] [fixture:
-info/div-directive-flag-middle] [fixture: info/directive-flag-glued] [fixture:
-info/div-directive-title-middle] [fixture: info/div-directive-acctitle-middle]
-[fixture: info/div-directive-accdescr-middle] [fixture:
-info/directive-acctitle-colon] [fixture: info/directive-block-brace] [fixture:
-info/directive-title-value] [fixture: info/directive-acctitle-value] [fixture:
+init content are accepted in the recorded cases.
+
+[fixture: info/div-directive-header-middle] [fixture:
+info/directive-header-glued] [fixture: info/directive-header-space-control]
+[fixture: info/div-directive-flag-middle] [fixture: info/directive-flag-glued]
+[fixture: info/div-directive-title-middle] [fixture:
+info/div-directive-acctitle-middle] [fixture:
+info/div-directive-accdescr-middle] [fixture: info/directive-acctitle-colon]
+[fixture: info/directive-block-brace] [fixture: info/directive-title-value]
+[fixture: info/directive-acctitle-value] [fixture:
 info/directive-accdescr-value] [fixture: info/directive-block-value] [fixture:
 info/directive-unclosed-after-header] [fixture:
 info/directive-unclosed-inside-header] [fixture:
@@ -18524,6 +20918,7 @@ frontmatter. Each consumes LF immediately after its qualifying closer; another
 whitespace boundary is only looked at. After header/flag this needs no surviving
 EOL. After every common line value or a description block a consumed sole LF
 prevents the next statement, while a spare LF, closing space or EOF is accepted.
+
 [fixture: info/hidden-directive-body] [fixture:
 info/hidden-directive-glued-header] [fixture:
 info/hidden-directive-flag-next-common] [fixture:
@@ -18553,16 +20948,17 @@ line. An already visible EOL before a hidden form still separates statements.
 Hidden YAML does not decode its body, accepts adjacent fences and ASCII opener
 padding, and rejects an unclosed block, indented closer, Unicode opener padding,
 four dashes or a closer suffix with no later qualifying closer. An earlier
-nonqualifying closer may be passed. [fixture: info/hidden-yaml-after-header]
-[fixture: info/hidden-yaml-flag-glued] [fixture: info/hidden-yaml-after-title]
-[fixture: info/hidden-yaml-after-acctitle] [fixture:
-info/hidden-yaml-after-accdescr] [fixture: info/hidden-directive-between-common]
-[fixture: info/hidden-yaml-between-common] [fixture: info/hidden-yaml-invalid]
-[fixture: info/hidden-yaml-empty] [fixture: info/hidden-yaml-open-padding]
-[fixture: info/hidden-yaml-unclosed] [fixture: info/hidden-yaml-indent]
-[fixture: info/hidden-yaml-open-nbsp] [fixture: info/hidden-yaml-four-dashes]
-[fixture: info/hidden-yaml-close-suffix] [fixture:
-info/hidden-yaml-nonqualifying-closer]
+nonqualifying closer may be passed.
+
+[fixture: info/hidden-yaml-after-header] [fixture: info/hidden-yaml-flag-glued]
+[fixture: info/hidden-yaml-after-title] [fixture:
+info/hidden-yaml-after-acctitle] [fixture: info/hidden-yaml-after-accdescr]
+[fixture: info/hidden-directive-between-common] [fixture:
+info/hidden-yaml-between-common] [fixture: info/hidden-yaml-invalid] [fixture:
+info/hidden-yaml-empty] [fixture: info/hidden-yaml-open-padding] [fixture:
+info/hidden-yaml-unclosed] [fixture: info/hidden-yaml-indent] [fixture:
+info/hidden-yaml-open-nbsp] [fixture: info/hidden-yaml-four-dashes] [fixture:
+info/hidden-yaml-close-suffix] [fixture: info/hidden-yaml-nonqualifying-closer]
 
 Hidden DIRECTIVE precedes native comments: nonword content and ASCII leading
 padding can match it. If unclosed or glued at its closer it instead becomes a
@@ -18570,7 +20966,9 @@ native comment, keeping LF and swallowing same-line text. A later qualifying
 closer can follow a failed earlier one. YAML-looking text inside a block stays
 block text, but the `}` of a directive-looking form closes the description
 first; the remaining `%%` is a native comment. CR/CRLF normalization preserves
-the hidden LF consequences. [fixture: info/hidden-directive-padding] [fixture:
+the hidden LF consequences.
+
+[fixture: info/hidden-directive-padding] [fixture:
 info/hidden-directive-unclosed] [fixture: info/hidden-directive-close-glued]
 [fixture: info/hidden-directive-close-tab] [fixture:
 info/hidden-directive-first-close] [fixture:
@@ -18584,8 +20982,9 @@ Global comment lines disappear; trailing or bare native `%%` comments keep LF.
 Common line values stop before the percent pair, including at an empty value.
 Comment regions can disappear inside blocks, but a bare percent line inside an
 enclosing block is its text. A native comment cannot join the authored
-keyword/colon or block-opening components across a visible LF. [fixture:
-info/comment-leading] [fixture: info/comment-header] [fixture:
+keyword/colon or block-opening components across a visible LF.
+
+[fixture: info/comment-leading] [fixture: info/comment-header] [fixture:
 info/comment-flag] [fixture: info/comment-between-header-flag] [fixture:
 info/comment-bare-body] [fixture: info/comment-triple] [fixture:
 info/comment-title] [fixture: info/comment-acctitle] [fixture:
@@ -18599,8 +20998,9 @@ Leading frontmatter applies the shared title/config reading; adjacent fences,
 unclosed blocks, LS/PS delimiters or closing-only indentation reject. An empty
 body line, CR/CRLF and equal indentation are accepted. Malformed YAML, including
 YAML invalidated by attribute-quote cleanup, rejects. The two malformed-YAML
-fixtures carry `embedded-data-opaque` and have no comparison Db. [fixture:
-info/frontmatter-empty] [fixture: info/frontmatter-unclosed] [fixture:
+fixtures carry `embedded-data-opaque` and have no comparison Db.
+
+[fixture: info/frontmatter-empty] [fixture: info/frontmatter-unclosed] [fixture:
 info/frontmatter-ls-fences] [fixture: info/frontmatter-ps-fences] [fixture:
 info/frontmatter-indent-close] [fixture: info/frontmatter-empty-line] [fixture:
 info/frontmatter-cr] [fixture: info/frontmatter-crlf] [fixture:
@@ -18609,21 +21009,24 @@ info/frontmatter-indent-both] [fixture: info/div-frontmatter-invalid-yaml]
 
 Numeric, false, null, array and empty-string frontmatter titles affect only the
 shared reading, with no info Db value. BOM on only the opener exposes retained
-YAML, while matching BOMs can provide real frontmatter. [fixture:
-info/frontmatter-title-zero] [fixture: info/frontmatter-title-number] [fixture:
-info/frontmatter-title-false] [fixture: info/frontmatter-title-null] [fixture:
-info/frontmatter-title-array] [fixture: info/frontmatter-title-empty-string]
-[fixture: info/frontmatter-bom-opening] [fixture: info/frontmatter-bom-both]
+YAML, while matching BOMs can provide real frontmatter.
+
+[fixture: info/frontmatter-title-zero] [fixture: info/frontmatter-title-number]
+[fixture: info/frontmatter-title-false] [fixture: info/frontmatter-title-null]
+[fixture: info/frontmatter-title-array] [fixture:
+info/frontmatter-title-empty-string] [fixture: info/frontmatter-bom-opening]
+[fixture: info/frontmatter-bom-both]
 
 Detection skips one nonleading frontmatter-shaped block, then info's hidden YAML
 reads it without applying title/config or decoding YAML. Real frontmatter can
 precede it, and a second-scan directive can follow it. A second block, a block
 after a bare percent-brace line or second-scan directive, and equally indented
 nonleading fences reject. A recreated second-scan directive itself is accepted
-only with a qualifying hidden closer. [fixture:
-info/frontmatter-nonleading-comment] [fixture: info/frontmatter-nonleading-lf]
-[fixture: info/hidden-yaml-config-ignored] [fixture:
-info/hidden-yaml-preheader-invalid] [fixture:
+only with a qualifying hidden closer.
+
+[fixture: info/frontmatter-nonleading-comment] [fixture:
+info/frontmatter-nonleading-lf] [fixture: info/hidden-yaml-config-ignored]
+[fixture: info/hidden-yaml-preheader-invalid] [fixture:
 info/detect-block-after-real-frontmatter] [fixture:
 info/detect-block-before-second-scan] [fixture: info/detect-two-blocks]
 [fixture: info/detect-block-after-bare-brace] [fixture:
@@ -18635,54 +21038,56 @@ info/detect-block-equally-indented] [fixture: info/detect-second-scan-directive]
 
 Only ASCII space/tab are native hidden gaps. JavaScript whitespace before the
 first diagram unit is globally trimmed, but the same non-ASCII blanks after the
-header, at EOF or after a hidden closer reject. [fixture: info/space-header-tab]
-[fixture: info/space-header-vt] [fixture: info/space-header-ff] [fixture:
-info/space-header-nbsp] [fixture: info/space-header-bom] [fixture:
-info/space-header-1680] [fixture: info/space-header-2000] [fixture:
-info/space-header-2001] [fixture: info/space-header-2002] [fixture:
-info/space-header-2003] [fixture: info/space-header-2004] [fixture:
-info/space-header-2005] [fixture: info/space-header-2006] [fixture:
-info/space-header-2007] [fixture: info/space-header-2008] [fixture:
-info/space-header-2009] [fixture: info/space-header-200a] [fixture:
-info/space-header-202f] [fixture: info/space-header-205f] [fixture:
-info/space-header-3000] [fixture: info/space-leading-unicode] [fixture:
-info/space-trailing-unicode] [fixture: info/hidden-directive-close-ls] [fixture:
-info/hidden-yaml-close-ls]
+header, at EOF or after a hidden closer reject.
+
+[fixture: info/space-header-tab] [fixture: info/space-header-vt] [fixture:
+info/space-header-ff] [fixture: info/space-header-nbsp] [fixture:
+info/space-header-bom] [fixture: info/space-header-1680] [fixture:
+info/space-header-2000] [fixture: info/space-header-2001] [fixture:
+info/space-header-2002] [fixture: info/space-header-2003] [fixture:
+info/space-header-2004] [fixture: info/space-header-2005] [fixture:
+info/space-header-2006] [fixture: info/space-header-2007] [fixture:
+info/space-header-2008] [fixture: info/space-header-2009] [fixture:
+info/space-header-200a] [fixture: info/space-header-202f] [fixture:
+info/space-header-205f] [fixture: info/space-header-3000] [fixture:
+info/space-leading-unicode] [fixture: info/space-trailing-unicode] [fixture:
+info/hidden-directive-close-ls] [fixture: info/hidden-yaml-close-ls]
 
 After a detection-passed bare `%%` line, ASCII space/tab still work, but VT, FF,
 NBSP, BOM, U+1680, U+2000–U+200A, U+202F, U+205F, U+3000, LS and PS reject, both
 immediately before the header and on a whitespace-only line. Retained
 YAML/directive prefixes have the same LS/BOM and LS-only-line rejections, with
 accepted ASCII controls. A bare line alone has no header, and a bare
-percent-brace line can hide a same-line header from detection. [fixture:
-info/bare-before-header-space] [fixture: info/bare-before-header-tab] [fixture:
-info/div-bare-before-header-vt] [fixture: info/div-bare-before-header-ff]
-[fixture: info/div-bare-before-header-nbsp] [fixture:
-info/div-bare-before-header-bom] [fixture: info/div-bare-before-header-1680]
-[fixture: info/div-bare-before-header-2000] [fixture:
-info/div-bare-before-header-2001] [fixture: info/div-bare-before-header-2002]
-[fixture: info/div-bare-before-header-2003] [fixture:
-info/div-bare-before-header-2004] [fixture: info/div-bare-before-header-2005]
-[fixture: info/div-bare-before-header-2006] [fixture:
-info/div-bare-before-header-2007] [fixture: info/div-bare-before-header-2008]
-[fixture: info/div-bare-before-header-2009] [fixture:
-info/div-bare-before-header-200a] [fixture: info/div-bare-before-header-202f]
-[fixture: info/div-bare-before-header-205f] [fixture:
-info/div-bare-before-header-3000] [fixture: info/div-bare-before-header-ls]
-[fixture: info/div-bare-before-header-ps] [fixture: info/bare-line-space]
-[fixture: info/bare-line-tab] [fixture: info/div-bare-line-vt] [fixture:
-info/div-bare-line-ff] [fixture: info/div-bare-line-nbsp] [fixture:
-info/div-bare-line-bom] [fixture: info/div-bare-line-1680] [fixture:
-info/div-bare-line-2000] [fixture: info/div-bare-line-2001] [fixture:
-info/div-bare-line-2002] [fixture: info/div-bare-line-2003] [fixture:
-info/div-bare-line-2004] [fixture: info/div-bare-line-2005] [fixture:
-info/div-bare-line-2006] [fixture: info/div-bare-line-2007] [fixture:
-info/div-bare-line-2008] [fixture: info/div-bare-line-2009] [fixture:
-info/div-bare-line-200a] [fixture: info/div-bare-line-202f] [fixture:
-info/div-bare-line-205f] [fixture: info/div-bare-line-3000] [fixture:
-info/div-bare-line-ls] [fixture: info/div-bare-line-ps] [fixture:
-info/div-detect-retained-yaml-bare-ls] [fixture:
-info/div-detect-retained-directive-bare-ls] [fixture:
+percent-brace line can hide a same-line header from detection.
+
+[fixture: info/bare-before-header-space] [fixture: info/bare-before-header-tab]
+[fixture: info/div-bare-before-header-vt] [fixture:
+info/div-bare-before-header-ff] [fixture: info/div-bare-before-header-nbsp]
+[fixture: info/div-bare-before-header-bom] [fixture:
+info/div-bare-before-header-1680] [fixture: info/div-bare-before-header-2000]
+[fixture: info/div-bare-before-header-2001] [fixture:
+info/div-bare-before-header-2002] [fixture: info/div-bare-before-header-2003]
+[fixture: info/div-bare-before-header-2004] [fixture:
+info/div-bare-before-header-2005] [fixture: info/div-bare-before-header-2006]
+[fixture: info/div-bare-before-header-2007] [fixture:
+info/div-bare-before-header-2008] [fixture: info/div-bare-before-header-2009]
+[fixture: info/div-bare-before-header-200a] [fixture:
+info/div-bare-before-header-202f] [fixture: info/div-bare-before-header-205f]
+[fixture: info/div-bare-before-header-3000] [fixture:
+info/div-bare-before-header-ls] [fixture: info/div-bare-before-header-ps]
+[fixture: info/bare-line-space] [fixture: info/bare-line-tab] [fixture:
+info/div-bare-line-vt] [fixture: info/div-bare-line-ff] [fixture:
+info/div-bare-line-nbsp] [fixture: info/div-bare-line-bom] [fixture:
+info/div-bare-line-1680] [fixture: info/div-bare-line-2000] [fixture:
+info/div-bare-line-2001] [fixture: info/div-bare-line-2002] [fixture:
+info/div-bare-line-2003] [fixture: info/div-bare-line-2004] [fixture:
+info/div-bare-line-2005] [fixture: info/div-bare-line-2006] [fixture:
+info/div-bare-line-2007] [fixture: info/div-bare-line-2008] [fixture:
+info/div-bare-line-2009] [fixture: info/div-bare-line-200a] [fixture:
+info/div-bare-line-202f] [fixture: info/div-bare-line-205f] [fixture:
+info/div-bare-line-3000] [fixture: info/div-bare-line-ls] [fixture:
+info/div-bare-line-ps] [fixture: info/div-detect-retained-yaml-bare-ls]
+[fixture: info/div-detect-retained-directive-bare-ls] [fixture:
 info/div-detect-retained-yaml-bare-bom] [fixture:
 info/div-detect-retained-directive-bare-bom] [fixture:
 info/div-detect-retained-yaml-bare-ls-line] [fixture:
@@ -18694,31 +21099,35 @@ info/detect-percent-brace-inline-header]
 HTML, quote cleanup, named/numeric entities and the style/classDef passes can
 reach common text, but no common field is published under htmlLabels false,
 loose or sandbox settings either. An entity cannot supply a header or a
-standalone statement. [fixture: info/html-all-common] [fixture: info/html-false]
-[fixture: info/html-loose] [fixture: info/html-sandbox] [fixture:
-info/entity-keyword] [fixture: info/entity-standalone] [fixture:
-info/style-title] [fixture: info/style-acctitle] [fixture: info/style-accdescr]
-[fixture: info/style-block] [fixture: info/style-block-two] [fixture:
-info/style-block-three] [fixture: info/style-uppercase] [fixture:
-info/style-nohash] [fixture: info/style-colon-space] [fixture:
-info/style-hash-other-line] [fixture: info/style-both] [fixture:
-info/style-directive-rejoin] [fixture: info/style-ls] [fixture: info/style-ps]
-[fixture: info/style-frontmatter]
+standalone statement.
+
+[fixture: info/html-all-common] [fixture: info/html-false] [fixture:
+info/html-loose] [fixture: info/html-sandbox] [fixture: info/entity-keyword]
+[fixture: info/entity-standalone] [fixture: info/style-title] [fixture:
+info/style-acctitle] [fixture: info/style-accdescr] [fixture: info/style-block]
+[fixture: info/style-block-two] [fixture: info/style-block-three] [fixture:
+info/style-uppercase] [fixture: info/style-nohash] [fixture:
+info/style-colon-space] [fixture: info/style-hash-other-line] [fixture:
+info/style-both] [fixture: info/style-directive-rejoin] [fixture: info/style-ls]
+[fixture: info/style-ps] [fixture: info/style-frontmatter]
 
 Style preprocessing can remove a rejecting semicolon after a block. Two
 semicolons leave one rejecting suffix; uppercase, no-hash, colon-space-hash, LS
 and PS controls keep the suffix. Global directive removal can recreate the
-trigger. [fixture: info/style-block-end-semicolon] [fixture:
-info/style-block-end-double] [fixture: info/style-block-end-upper] [fixture:
-info/style-block-end-nohash] [fixture: info/style-block-end-colon-space]
-[fixture: info/style-block-end-ls] [fixture: info/style-block-end-ps] [fixture:
-info/style-block-end-directive]
+trigger.
+
+[fixture: info/style-block-end-semicolon] [fixture: info/style-block-end-double]
+[fixture: info/style-block-end-upper] [fixture: info/style-block-end-nohash]
+[fixture: info/style-block-end-colon-space] [fixture: info/style-block-end-ls]
+[fixture: info/style-block-end-ps] [fixture: info/style-block-end-directive]
 
 The four C4 detection words in any common text field, or in native header/flag
 comments at EOF, select the rejecting C4 path; LF-terminated comment controls
-are accepted as info. [fixture: info/div-c4container-title] [fixture:
-info/div-c4component-title] [fixture: info/div-c4dynamic-title] [fixture:
-info/div-c4deployment-title] [fixture: info/div-c4container-acctitle] [fixture:
+are accepted as info.
+
+[fixture: info/div-c4container-title] [fixture: info/div-c4component-title]
+[fixture: info/div-c4dynamic-title] [fixture: info/div-c4deployment-title]
+[fixture: info/div-c4container-acctitle] [fixture:
 info/div-c4component-acctitle] [fixture: info/div-c4dynamic-acctitle] [fixture:
 info/div-c4deployment-acctitle] [fixture: info/div-c4container-line] [fixture:
 info/div-c4component-line] [fixture: info/div-c4dynamic-line] [fixture:
@@ -18760,9 +21169,11 @@ The
 [adapter](https://github.com/mermaid-js/mermaid/blob/2086904e76c692331e34a45d7cc3bc30860d040e/packages/mermaid/src/diagrams/packet/parser.ts#L18-L90)
 fills omitted endpoints and splits blocks at `packet.bitsPerRow` boundaries
 before publishing them; the summary keeps those endpoints and repeated labels.
-An exact boundary creates no empty final row. [fixture: packet/gram-mixed]
-[fixture: packet/db-row-split] [fixture: packet/db-row-exact] [fixture:
-packet/db-same-label] [fixture: packet/config-rows-eight]
+An exact boundary creates no empty final row.
+
+[fixture: packet/gram-mixed] [fixture: packet/db-row-split] [fixture:
+packet/db-row-exact] [fixture: packet/db-same-label] [fixture:
+packet/config-rows-eight]
 
 The summary drops `bits`, which the renderer never reads. In particular, the
 adapter's split-block counts need not equal `end - start + 1`; the normalizer
@@ -18771,14 +21182,17 @@ the working word and the fixed row cap), and the configuration returned by
 [`getConfig()`](https://github.com/mermaid-js/mermaid/blob/2086904e76c692331e34a45d7cc3bc30860d040e/packages/mermaid/src/diagrams/packet/db.ts#L16-L29).
 Drawing dimensions and `showBits` do not change the summary. The row width's
 effect remains in the published rows, and configuration travels through the
-existing site and embedded-value fields. [fixture: packet/db-row-split]
-[fixture: packet/config-drawing-only] [fixture: packet/config-row-frontmatter]
+existing site and embedded-value fields.
+
+[fixture: packet/db-row-split] [fixture: packet/config-drawing-only] [fixture:
+packet/config-row-frontmatter]
 
 Published rows need not correspond to written blocks. With a row width of `-4`,
 YAML `.nan`, or a nonnumeric string, a written block can produce `packet: []`. A
 zero width instead publishes 10,000 rows whose block has start `0` and end `-1`.
-Both frontmatter and init can supply negative, zero and string values. [fixture:
-packet/config-frontmatter-row-negative] [fixture:
+Both frontmatter and init can supply negative, zero and string values.
+
+[fixture: packet/config-frontmatter-row-negative] [fixture:
 packet/config-init-row-negative] [fixture: packet/config-frontmatter-row-nan]
 [fixture: packet/config-frontmatter-row-text] [fixture:
 packet/config-init-row-text] [fixture: packet/config-frontmatter-row-zero]
@@ -18788,8 +21202,10 @@ A numeric string such as `"8"` splits the range 0-9 into 0-7 and 8-9. The
 adapter multiplies that string by the row number for endpoints, but concatenates
 it with `1` for the loop bound (`"81"`). A width of `2.5` can be accepted and
 publish fractional endpoints; `true` publishes one-bit rows, and `null` leaves
-the default width of 32. [fixture: packet/config-frontmatter-row-numeric-string]
-[fixture: packet/config-init-row-numeric-string] [fixture:
+the default width of 32.
+
+[fixture: packet/config-frontmatter-row-numeric-string] [fixture:
+packet/config-init-row-numeric-string] [fixture:
 packet/config-frontmatter-row-fraction-accepted] [fixture:
 packet/config-init-row-fraction-accepted] [fixture:
 packet/config-frontmatter-row-true] [fixture: packet/config-init-row-true]
@@ -18801,8 +21217,9 @@ init is infinite. All three let a finite range fit one row. Bare `.nan` and
 `.inf` are invalid JSON in init, so
 [`detectDirective()`](https://github.com/mermaid-js/mermaid/blob/2086904e76c692331e34a45d7cc3bc30860d040e/packages/mermaid/src/utils.ts#L175-L203)
 ignores those arguments and the default width remains. Quoting either value in
-init instead supplies a nonnumeric string and publishes no rows. [fixture:
-packet/config-frontmatter-row-infinity] [fixture:
+init instead supplies a nonnumeric string and publishes no rows.
+
+[fixture: packet/config-frontmatter-row-infinity] [fixture:
 packet/config-frontmatter-row-overflow] [fixture:
 packet/config-init-row-overflow] [fixture: packet/config-init-row-nan-token]
 [fixture: packet/config-init-row-infinity-token] [fixture:
@@ -18814,8 +21231,9 @@ cap. A following contiguous block is accepted without being published, while a
 noncontiguous block still rejects after the cap. Finite numeric endpoints are
 JSON numbers; a nonfinite endpoint uses the shared `numberOrText()`
 representation. An infinite width and an overflowing count in the source alone
-can publish an infinite endpoint, without site configuration. [fixture:
-packet/db-precision-rounded] [fixture:
+can publish an infinite endpoint, without site configuration.
+
+[fixture: packet/db-precision-rounded] [fixture:
 packet/db-cap-following-block-unpublished] [fixture:
 packet/error-cap-following-noncontiguous] [fixture: packet/db-overflow-wide]
 [fixture: packet/db-frontmatter-infinite-endpoint]
@@ -18828,10 +21246,12 @@ empty final title leaves a frontmatter title in place. Accessibility fields are
 consumed by the
 [common rendering path](https://github.com/mermaid-js/mermaid/blob/2086904e76c692331e34a45d7cc3bc30860d040e/packages/mermaid/src/mermaidAPI.ts#L626-L630).
 Empty labels are published and retained. There are no random ids or diagram
-patches. [fixture: packet/title-repeat] [fixture: packet/title-repeat-empty]
-[fixture: packet/acctitle-repeat-empty] [fixture: packet/accdescr-block-repeat]
-[fixture: packet/frontmatter-empty-body-title] [fixture:
-packet/db-label-empty-double] [fixture: packet/db-label-empty-single]
+patches.
+
+[fixture: packet/title-repeat] [fixture: packet/title-repeat-empty] [fixture:
+packet/acctitle-repeat-empty] [fixture: packet/accdescr-block-repeat] [fixture:
+packet/frontmatter-empty-body-title] [fixture: packet/db-label-empty-double]
+[fixture: packet/db-label-empty-single]
 
 A schema-valid fractional `bitsPerRow` can also cause splitting to reject. For
 fixtures marked `embedded-data-opaque`, the shared comparison reading removes
@@ -18839,6 +21259,7 @@ only text configuration's `packet.bitsPerRow`, preserving title, other settings
 and site configuration. This records both a rejected input with an accepted
 reference and an accepted input with a rejected reference. A rejected opaque
 frontmatter is omitted while a valid `showBits` directive beside it remains.
+
 [fixture: packet/config-frontmatter-fraction] [fixture:
 packet/config-directive-fraction] [fixture:
 packet/config-frontmatter-overrides-site] [fixture:
@@ -18851,8 +21272,9 @@ packet/frontmatter-invalid-keeps-config]
 [detector](https://github.com/mermaid-js/mermaid/blob/2086904e76c692331e34a45d7cc3bc30860d040e/packages/mermaid/src/diagrams/architecture/architectureDetector.ts#L7-L11)
 recognizes the `architecture` prefix, while the
 [grammar](https://github.com/mermaid-js/mermaid/blob/2086904e76c692331e34a45d7cc3bc30860d040e/packages/parser/src/language/architecture/architecture.langium#L5-L13)
-requires `architecture-beta`. [fixture: architecture/header-beta] [fixture:
-architecture/header-bare-rejected]
+requires `architecture-beta`.
+
+[fixture: architecture/header-beta] [fixture: architecture/header-bare-rejected]
 
 | Field         | Content                                                                                                                    |
 | ------------- | -------------------------------------------------------------------------------------------------------------------------- |
@@ -18873,10 +21295,12 @@ and
 without sorting. Optional absent values are omitted; published false flags and
 empty strings remain. Repeated edges and alignment declarations remain. The `in`
 references express the hierarchy without a second list of children. An empty
-diagram has four empty arrays. [fixture: architecture/db-mixed] [fixture:
-architecture/db-empty-values] [fixture: architecture/db-duplicate-edges]
-[fixture: architecture/db-align-forward-repeat] [fixture:
-architecture/db-junction-order] [fixture: architecture/header-beta]
+diagram has four empty arrays.
+
+[fixture: architecture/db-mixed] [fixture: architecture/db-empty-values]
+[fixture: architecture/db-duplicate-edges] [fixture:
+architecture/db-align-forward-repeat] [fixture: architecture/db-junction-order]
+[fixture: architecture/header-beta]
 
 The
 [renderer](https://github.com/mermaid-js/mermaid/blob/2086904e76c692331e34a45d7cc3bc30860d040e/packages/mermaid/src/diagrams/architecture/architectureRenderer.ts#L40-L152)
@@ -18889,6 +21313,7 @@ Alignment direction and member order feed the renderer's
 [alignment and relative-placement constraints](https://github.com/mermaid-js/mermaid/blob/2086904e76c692331e34a45d7cc3bc30860d040e/packages/mermaid/src/diagrams/architecture/architectureRenderer.ts#L261-L320).
 Accessibility fields feed the
 [common rendering path](https://github.com/mermaid-js/mermaid/blob/2086904e76c692331e34a45d7cc3bc30860d040e/packages/mermaid/src/mermaidAPI.ts#L626-L630).
+
 [fixture: architecture/db-mixed] [fixture: architecture/db-unknown-icon]
 [fixture: architecture/lex-string-conversion]
 
@@ -18897,34 +21322,46 @@ The summary drops the following:
 - The diagram title. The common adapter publishes it, but architecture's
   [`draw()`](https://github.com/mermaid-js/mermaid/blob/2086904e76c692331e34a45d7cc3bc30860d040e/packages/mermaid/src/diagrams/architecture/architectureRenderer.ts#L610-L642)
   explicitly leaves title drawing unimplemented and never reads it. Frontmatter
-  title remains available in `embedded.title`. [fixture:
-  architecture/frontmatter-title] [fixture:
+  title remains available in `embedded.title`.
+
+  [fixture: architecture/frontmatter-title] [fixture:
   architecture/frontmatter-title-empty-body]
+
 - Per-node `edges`, which duplicate the global edge references, and the
   `getServices()` and `getJunctions()` views, which filter `nodes` by type.
+
 - `registeredIds`, used only for validation. Identities are authored, stored in
   maps, and need no generated-id replacement. Prototype-shaped IDs remain
-  ordinary IDs. [fixture: architecture/db-prototype-ids] [fixture:
+  ordinary IDs.
+
+  [fixture: architecture/db-prototype-ids] [fixture:
   architecture/db-prototype-services]
+
 - `dataStructures`: adjacency lists, spatial maps and group alignments
   [derived from nodes and edges](https://github.com/mermaid-js/mermaid/blob/2086904e76c692331e34a45d7cc3bc30860d040e/packages/mermaid/src/diagrams/architecture/architectureDb.ts#L290-L384)
   when drawing starts. The normalizer never calls `getDataStructures()`.
+
 - `elements`, `diagramId`, DOM ids, coordinates, widths, heights and resolved
   icon SVGs. They are drawing state, depend on configuration or measurement, or
   are derived from the retained fields.
+
 - The Db's
   [configuration getters](https://github.com/mermaid-js/mermaid/blob/2086904e76c692331e34a45d7cc3bc30860d040e/packages/mermaid/src/diagrams/architecture/architectureDb.ts#L395-L405).
   Configuration stays in site and embedded configuration, outside the summary.
   No architecture setting is read during publication, and no Db patch or data
-  block recorder is needed. [fixture: architecture/config-drawing-only]
-  [fixture: architecture/frontmatter-config] [fixture:
+  block recorder is needed.
+
+  [fixture: architecture/config-drawing-only] [fixture:
+  architecture/frontmatter-config] [fixture:
   architecture/config-invalid-cannot-rescue]
 
 The common adapter publishes only truthy final accessibility values; an empty
 final assignment suppresses earlier body assignments. Architecture titles trim
 outer whitespace and unescape quotes, while text icons use the reachable
 `STRING` rule's default conversion; the converter's `ARCH_TEXT_ICON` branch is
-unreachable. [fixture: architecture/common-repeat-empty] [fixture:
+unreachable.
+
+[fixture: architecture/common-repeat-empty] [fixture:
 architecture/common-empty-block-after-value] [fixture:
 architecture/lex-title-conversion] [fixture: architecture/lex-string-conversion]
 
@@ -18934,9 +21371,10 @@ architecture/lex-title-conversion] [fixture: architecture/lex-string-conversion]
 [detector](https://github.com/mermaid-js/mermaid/blob/2086904e76c692331e34a45d7cc3bc30860d040e/packages/mermaid/src/diagrams/radar/detector.ts#L7-L11)
 recognizes `radar-beta`. The
 [grammar](https://github.com/mermaid-js/mermaid/blob/2086904e76c692331e34a45d7cc3bc30860d040e/packages/parser/src/language/radar/radar.langium#L4-L17)
-also permits `radar-beta:` and `radar-beta :`. [fixture:
-radar/spec-radar-test-ts-f0c0291e] [fixture: radar/header-colon-inline]
-[fixture: radar/header-separated-colon]
+also permits `radar-beta:` and `radar-beta :`.
+
+[fixture: radar/spec-radar-test-ts-f0c0291e] [fixture:
+radar/header-colon-inline] [fixture: radar/header-separated-colon]
 
 | Field      | Content                                                                       |
 | ---------- | ----------------------------------------------------------------------------- |
@@ -18957,6 +21395,7 @@ and curve labels feed
 [`drawLegend()`](https://github.com/mermaid-js/mermaid/blob/2086904e76c692331e34a45d7cc3bc30860d040e/packages/mermaid/src/diagrams/radar/renderer.ts#L209-L243).
 Accessibility values feed the
 [common rendering path](https://github.com/mermaid-js/mermaid/blob/2086904e76c692331e34a45d7cc3bc30860d040e/packages/mermaid/src/mermaidAPI.ts#L626-L630).
+
 [fixture: radar/db-all-fields]
 
 The
@@ -18969,12 +21408,13 @@ written order and need not match the axis count: the renderer can skip such a
 curve, but its published values remain in the summary. Named entries become a
 numeric array in axis order, using the first matching entry for each axis;
 entries for other names are not published. A missing axis entry, or named
-entries with no axes, rejects. [fixture: radar/db-forward-axis] [fixture:
-radar/db-empty-labels] [fixture: radar/db-duplicate-axes] [fixture:
-radar/db-duplicate-curves] [fixture: radar/db-positional-no-axis] [fixture:
-radar/db-positional-short] [fixture: radar/db-positional-long] [fixture:
-radar/db-extra-detailed-entry] [fixture: radar/error-reference-missing]
-[fixture: radar/error-reference-no-axes]
+entries with no axes, rejects.
+
+[fixture: radar/db-forward-axis] [fixture: radar/db-empty-labels] [fixture:
+radar/db-duplicate-axes] [fixture: radar/db-duplicate-curves] [fixture:
+radar/db-positional-no-axis] [fixture: radar/db-positional-short] [fixture:
+radar/db-positional-long] [fixture: radar/db-extra-detailed-entry] [fixture:
+radar/error-reference-missing] [fixture: radar/error-reference-no-axes]
 
 The last occurrence of each option wins. The
 [defaults](https://github.com/mermaid-js/mermaid/blob/2086904e76c692331e34a45d7cc3bc30860d040e/packages/mermaid/src/diagrams/radar/db.ts#L23-L40)
@@ -18983,16 +21423,18 @@ are `showLegend: true`, `ticks: 5`, `max: null`, `min: 0` and
 [`setOptions()`](https://github.com/mermaid-js/mermaid/blob/2086904e76c692331e34a45d7cc3bc30860d040e/packages/mermaid/src/diagrams/radar/db.ts#L93-L117)
 caps the final tick value at 32; zero and fractional values remain. The summary
 keeps a null maximum rather than calculating the renderer's automatic maximum,
-and does not clip entries to the bounds. [fixture: radar/db-options-repeat]
-[fixture: radar/db-ticks-cap-last] [fixture: radar/db-ticks-cap-before-final]
-[fixture: radar/db-all-fields] [fixture: radar/db-min-above-max] [fixture:
-radar/spec-radar-test-ts-f0c0291e]
+and does not clip entries to the bounds.
+
+[fixture: radar/db-options-repeat] [fixture: radar/db-ticks-cap-last] [fixture:
+radar/db-ticks-cap-before-final] [fixture: radar/db-all-fields] [fixture:
+radar/db-min-above-max] [fixture: radar/spec-radar-test-ts-f0c0291e]
 
 Finite numbers remain JSON numbers. Non-finite numbers use the shared summary
 convention: recorded as the text `"Infinity"`, `"-Infinity"` or `"NaN"` by
 `numberOrText()`; negative zero becomes zero. The reachable unsigned decimal
 `NUMBER` can overflow to positive infinity or underflow to zero; signs, `NaN`,
 `Infinity` and exponent notation are not written numbers in this grammar.
+
 [fixture: radar/db-number-overflow] [fixture: radar/db-option-overflow]
 [fixture: radar/db-number-underflow] [fixture: radar/number-plus] [fixture:
 radar/number-negative] [fixture: radar/number-negative-zero] [fixture:
@@ -19003,17 +21445,24 @@ The common
 [publication helper](https://github.com/mermaid-js/mermaid/blob/2086904e76c692331e34a45d7cc3bc30860d040e/packages/mermaid/src/diagrams/common/populateCommonDb.ts#L4-L13)
 sets only truthy final AST values. An empty final common assignment suppresses
 earlier body values, and an empty final title leaves a frontmatter title in
-place. [fixture: radar/common-repeat] [fixture: radar/common-repeat-empty]
-[fixture: radar/frontmatter-empty-body-title]
+place.
+
+[fixture: radar/common-repeat] [fixture: radar/common-repeat-empty] [fixture:
+radar/frontmatter-empty-body-title]
 
 The summary drops the following:
 
 - Axis and curve `name`. The renderer never reads these reference names. Their
   effects remain in fallback labels and reordered entries; keeping them would
-  duplicate reference-resolution state. [fixture: radar/db-all-fields] [fixture:
-  radar/db-prototype-names]
+  duplicate reference-resolution state.
+
+  [fixture: radar/db-all-fields] [fixture: radar/db-prototype-names]
+
 - The original detailed entries and references, which the Db replaces with the
-  published numeric array. [fixture: radar/db-extra-detailed-entry]
+  published numeric array.
+
+  [fixture: radar/db-extra-detailed-entry]
+
 - The configuration returned by
   [`getConfig()`](https://github.com/mermaid-js/mermaid/blob/2086904e76c692331e34a45d7cc3bc30860d040e/packages/mermaid/src/diagrams/radar/db.ts#L42-L54).
   Publication never reads it. `radar.width`, `height`, margins,
@@ -19021,22 +21470,28 @@ The summary drops the following:
   drawing only. Even configuration keys named `showLegend`, `ticks`, `max`,
   `min` or `graticule` do not feed Db options. Configuration stays in the site
   and embedded fields. No radar acceptance key needs removal in the opaque-data
-  comparison. [fixture: radar/config-drawing-only] [fixture:
-  radar/config-options-site] [fixture: radar/config-frontmatter-options]
-  [fixture: radar/config-init-options] [fixture:
-  radar/config-frontmatter-drawing] [fixture: radar/config-init-drawing]
-  [fixture: radar/config-invalid-cannot-rescue]
+  comparison.
+
+  [fixture: radar/config-drawing-only] [fixture: radar/config-options-site]
+  [fixture: radar/config-frontmatter-options] [fixture:
+  radar/config-init-options] [fixture: radar/config-frontmatter-drawing]
+  [fixture: radar/config-init-drawing] [fixture:
+  radar/config-invalid-cannot-rescue]
+
 - The automatic maximum, radius, coordinates, paths, viewBox and CSS classes
   [derived while drawing](https://github.com/mermaid-js/mermaid/blob/2086904e76c692331e34a45d7cc3bc30860d040e/packages/mermaid/src/diagrams/radar/renderer.ts#L21-L173),
   and colors
   [derived from theme variables](https://github.com/mermaid-js/mermaid/blob/2086904e76c692331e34a45d7cc3bc30860d040e/packages/mermaid/src/diagrams/radar/styles.ts#L8-L46).
   There are no generated identities, browser-dependent publication calls or Db
-  patches. [fixture: radar/config-drawing-only]
+  patches.
+
+  [fixture: radar/config-drawing-only]
 
 ## treemap
 
 `normalizeTreemap()` summarizes detector id `treemap`, shared by the
 [`treemap` and `treemap-beta` headers](https://github.com/mermaid-js/mermaid/blob/2086904e76c692331e34a45d7cc3bc30860d040e/packages/parser/src/language/treemap/treemap.langium#L44-L49).
+
 [fixture: treemap/header-beta] [fixture: treemap/spec-treemap-test-ts-892fa294]
 
 | Field       | Content                                                                                 |
@@ -19056,8 +21511,9 @@ their hierarchy with
 [`buildHierarchy()`](https://github.com/mermaid-js/mermaid/blob/2086904e76c692331e34a45d7cc3bc30860d040e/packages/mermaid/src/diagrams/treemap/utils.ts#L8-L64)
 before adding them to the Db. Order and duplicate names stay as published.
 Sections have `children`, including an empty array; leaves have `value` and no
-`children`. The summary keeps multiple outer nodes and empty names. [fixture:
-treemap/db-all-fields] [fixture: treemap/db-indent-pop] [fixture:
+`children`. The summary keeps multiple outer nodes and empty names.
+
+[fixture: treemap/db-all-fields] [fixture: treemap/db-indent-pop] [fixture:
 treemap/db-first-indented] [fixture: treemap/db-leaf-not-parent] [fixture:
 treemap/db-duplicate-names] [fixture: treemap/db-empty-names]
 
@@ -19070,6 +21526,7 @@ own, Mermaid rejects the two separate whitespace runs. This follows the
 [row grammar](https://github.com/mermaid-js/mermaid/blob/2086904e76c692331e34a45d7cc3bc30860d040e/packages/parser/src/language/treemap/treemap.langium#L57-L70)
 and the
 [published indentation](https://github.com/mermaid-js/mermaid/blob/2086904e76c692331e34a45d7cc3bc30860d040e/packages/mermaid/src/diagrams/treemap/parser.ts#L34-L55).
+
 [fixture: treemap/db-section-tail-no-space] [fixture:
 treemap/db-section-tail-space] [fixture: treemap/db-section-tail-tab] [fixture:
 treemap/db-leaf-tail-no-space] [fixture: treemap/db-leaf-tail-space] [fixture:
@@ -19095,11 +21552,12 @@ nonoverlapping `§§§` groups with commas from left to right, before splitting 
 `;`. Authored `§§§` therefore becomes an internal comma too: `a§§§b` becomes
 `a,b`, `a§§§§b` becomes `a,§b`, and `§§\,x` becomes `,§§x`. Empty entries
 remain. Each style keeps its leading and trailing whitespace, as do the other
-style summaries. [fixture: treemap/db-class-forward] [fixture:
-treemap/db-class-repeat] [fixture: treemap/db-class-unused] [fixture:
-treemap/db-class-missing] [fixture: treemap/db-prototype-names] [fixture:
-treemap/db-class-empty-final] [fixture: treemap/db-class-escaped-comma]
-[fixture: treemap/db-style-whitespace] [fixture:
+style summaries.
+
+[fixture: treemap/db-class-forward] [fixture: treemap/db-class-repeat] [fixture:
+treemap/db-class-unused] [fixture: treemap/db-class-missing] [fixture:
+treemap/db-prototype-names] [fixture: treemap/db-class-empty-final] [fixture:
+treemap/db-class-escaped-comma] [fixture: treemap/db-style-whitespace] [fixture:
 treemap/space-style-all-trailing] [fixture: treemap/db-class-style-marker]
 [fixture: treemap/db-class-style-marker-four] [fixture:
 treemap/db-class-style-marker-escaped-comma]
@@ -19111,12 +21569,13 @@ numbers; `numberOrText()` records non-finite values as `"NaN"`, `"Infinity"` or
 `"-Infinity"`, and negative zero as zero. The reachable values include NaN,
 positive overflow, subnormals and underflow to zero; signs, exponent notation,
 `NaN` and `Infinity` are not numeric input forms. `STRING2` drops the
-surrounding quotes without interpreting backslash escapes. [fixture:
-treemap/db-number-comma] [fixture: treemap/db-number-underscore] [fixture:
-treemap/db-number-multiple-dots] [fixture: treemap/db-number-nan] [fixture:
-treemap/db-number-overflow] [fixture: treemap/db-number-subnormal] [fixture:
-treemap/db-number-underflow] [fixture: treemap/number-negative-zero] [fixture:
-treemap/number-plus] [fixture: treemap/number-exponent] [fixture:
+surrounding quotes without interpreting backslash escapes.
+
+[fixture: treemap/db-number-comma] [fixture: treemap/db-number-underscore]
+[fixture: treemap/db-number-multiple-dots] [fixture: treemap/db-number-nan]
+[fixture: treemap/db-number-overflow] [fixture: treemap/db-number-subnormal]
+[fixture: treemap/db-number-underflow] [fixture: treemap/number-negative-zero]
+[fixture: treemap/number-plus] [fixture: treemap/number-exponent] [fixture:
 treemap/number-nan] [fixture: treemap/number-infinity] [fixture:
 treemap/lex-string-conversion]
 
@@ -19126,6 +21585,7 @@ sets only truthy final AST values. An empty final common value suppresses the
 previous body assignment; an empty final title leaves the frontmatter title.
 Accessibility values go to the
 [common rendering path](https://github.com/mermaid-js/mermaid/blob/2086904e76c692331e34a45d7cc3bc30860d040e/packages/mermaid/src/mermaidAPI.ts#L626-L630).
+
 [fixture: treemap/common-repeat] [fixture: treemap/common-repeat-empty]
 [fixture: treemap/frontmatter-empty-body-title]
 
@@ -19134,27 +21594,35 @@ The summary drops:
 - The artificial root's empty name, the duplicate flat node list, private
   `levels` and `root`, and the original indentation widths. The published forest
   already holds the hierarchy once.
+
 - Node `cssCompiledStyles` and class `textStyles`, derived from the selector and
   class definitions. Drawing reads the compiled styles through
   [`styles2String()`](https://github.com/mermaid-js/mermaid/blob/2086904e76c692331e34a45d7cc3bc30860d040e/packages/mermaid/src/diagrams/treemap/renderer.ts#L210-L240),
   and exposes classes through
   [`getClasses()`](https://github.com/mermaid-js/mermaid/blob/2086904e76c692331e34a45d7cc3bc30860d040e/packages/mermaid/src/diagrams/treemap/renderer.ts#L529-L535).
+
   [fixture: treemap/db-class-forward] [fixture: treemap/db-class-repeat]
+
 - [`getConfig()`](https://github.com/mermaid-js/mermaid/blob/2086904e76c692331e34a45d7cc3bc30860d040e/packages/mermaid/src/diagrams/treemap/db.ts#L28-L35).
   Publication reads no treemap settings. Padding, dimensions, value display and
   formatting, and `useMaxWidth` affect drawing only. The renderer does not read
   `borderWidth`, `valueFontSize` or `labelFontSize`. Settings stay in site or
   embedded configuration. There are no treemap acceptance keys to remove for
-  opaque-data comparison. [fixture: treemap/config-drawing-only] [fixture:
+  opaque-data comparison.
+
+  [fixture: treemap/config-drawing-only] [fixture:
   treemap/config-frontmatter-drawing] [fixture: treemap/config-init-drawing]
   [fixture: treemap/config-frontmatter-cannot-rescue] [fixture:
   treemap/config-init-cannot-rescue]
+
 - Aggregated section values, sorted drawing order, coordinates, dimensions,
   colours and drawing ids. The renderer derives
   [sums, sorting and layout](https://github.com/mermaid-js/mermaid/blob/2086904e76c692331e34a45d7cc3bc30860d040e/packages/mermaid/src/diagrams/treemap/renderer.ts#L141-L175)
   and
   [theme colours](https://github.com/mermaid-js/mermaid/blob/2086904e76c692331e34a45d7cc3bc30860d040e/packages/mermaid/src/diagrams/treemap/renderer.ts#L79-L126)
-  when drawing. [fixture: treemap/db-all-fields]
+  when drawing.
+
+  [fixture: treemap/db-all-fields]
 
 The Db needs no patch: publication reads no browser globals, time or random
 values, and has no links or data blocks.
@@ -19164,9 +21632,10 @@ values, and has no links or data blocks.
 `normalizeRailroad()` summarizes `railroad`, `railroadEbnf`, `railroadAbnf` and
 `railroadPeg` in one shape. The four
 [diagram definitions](https://github.com/mermaid-js/mermaid/blob/2086904e76c692331e34a45d7cc3bc30860d040e/packages/mermaid/src/diagrams/railroad/railroadDiagram.ts#L12-L17)
-share the same Db and renderer. `diagramType` keeps the detected id. [fixture:
-railroad/ir-header-only] [fixture: railroad/ebnf-header-only] [fixture:
-railroad/abnf-header-only] [fixture: railroad/peg-header-only]
+share the same Db and renderer. `diagramType` keeps the detected id.
+
+[fixture: railroad/ir-header-only] [fixture: railroad/ebnf-header-only]
+[fixture: railroad/abnf-header-only] [fixture: railroad/peg-header-only]
 
 | Field      | Content                                                        |
 | ---------- | -------------------------------------------------------------- |
@@ -19180,18 +21649,20 @@ which the
 [renderer reads](https://github.com/mermaid-js/mermaid/blob/2086904e76c692331e34a45d7cc3bc30860d040e/packages/mermaid/src/diagrams/railroad/railroadRenderer.ts#L647-L657).
 Repeated names remain separate rules; the private `ruleMap` replaces its lookup
 entry but does not replace or move a declaration in the array. The summary drops
-that duplicate index. [fixture: railroad/ir-db-duplicates] [fixture:
-railroad/ebnf-db-duplicates] [fixture: railroad/abnf-db-duplicates] [fixture:
-railroad/peg-db-duplicates]
+that duplicate index.
+
+[fixture: railroad/ir-db-duplicates] [fixture: railroad/ebnf-db-duplicates]
+[fixture: railroad/abnf-db-duplicates] [fixture: railroad/peg-db-duplicates]
 
 An expression has `type` and the fields in the following table, recursively.
 Array order stays as published. The
 [expression renderer](https://github.com/mermaid-js/mermaid/blob/2086904e76c692331e34a45d7cc3bc30860d040e/packages/mermaid/src/diagrams/railroad/railroadRenderer.ts#L504-L525)
 reads every listed field except `max`. That upper bound remains because the ABNF
 syntax independently determines it; it is neither derived from `min` nor parsing
-or validation state. [fixture: railroad/ir-db-all-fields] [fixture:
-railroad/ebnf-db-all-fields] [fixture: railroad/abnf-db-all-fields] [fixture:
-railroad/peg-db-all-fields]
+or validation state.
+
+[fixture: railroad/ir-db-all-fields] [fixture: railroad/ebnf-db-all-fields]
+[fixture: railroad/abnf-db-all-fields] [fixture: railroad/peg-db-all-fields]
 
 | `type`        | Fields                  |
 | ------------- | ----------------------- |
@@ -19208,29 +21679,36 @@ The four adapters publish these values:
 - [IR](https://github.com/mermaid-js/mermaid/blob/2086904e76c692331e34a45d7cc3bc30860d040e/packages/mermaid/src/diagrams/railroad/parser/railroadParser.ts#L28-L80):
   constructors map to the corresponding expression kinds. A single-element
   sequence or choice collapses to its element. `zeroOrMore` and `oneOrMore` give
-  minimum 0 and 1, respectively, with maximum Infinity. [fixture:
-  railroad/ir-db-singletons] [fixture: railroad/ir-db-all-fields]
+  minimum 0 and 1, respectively, with maximum Infinity.
+
+  [fixture: railroad/ir-db-singletons] [fixture: railroad/ir-db-all-fields]
+
 - [EBNF](https://github.com/mermaid-js/mermaid/blob/2086904e76c692331e34a45d7cc3bc30860d040e/packages/mermaid/src/diagrams/railroad/parser/ebnfParser.ts#L30-L156):
   single-element sequences, choices and groups collapse. Brackets and postfix
   `?` give `optional`; braces and `*` give repetition from 0, and `+` from 1,
   with maximum Infinity. Postfixes fold in source order. An exception `A - B`
-  becomes a sequence of A, terminal `-`, and B. [fixture:
-  railroad/ebnf-db-singletons] [fixture: railroad/ebnf-db-all-fields] [fixture:
-  railroad/ebnf-db-postfix-order]
+  becomes a sequence of A, terminal `-`, and B.
+
+  [fixture: railroad/ebnf-db-singletons] [fixture: railroad/ebnf-db-all-fields]
+  [fixture: railroad/ebnf-db-postfix-order]
+
 - [ABNF](https://github.com/mermaid-js/mermaid/blob/2086904e76c692331e34a45d7cc3bc30860d040e/packages/mermaid/src/diagrams/railroad/parser/abnfParser.ts#L26-L120):
   single-element concatenations, alternatives and groups collapse. Numeric
   terminals remain strings such as `%x41`. Repeat bounds use decimal `parseInt`;
   a converted lower bound of 0 and upper bound of 1 give `optional`; all other
   repeat bounds give `repetition`. The adapter does not reject reversed bounds.
   Finite bounds stay numbers; `numberOrText()` records non-finite bounds as
-  strings such as `"Infinity"`. [fixture: railroad/abnf-db-singletons] [fixture:
-  railroad/abnf-db-all-fields] [fixture: railroad/abnf-db-repeat-optional]
-  [fixture: railroad/abnf-db-repeat-implicit-optional] [fixture:
+  strings such as `"Infinity"`.
+
+  [fixture: railroad/abnf-db-singletons] [fixture: railroad/abnf-db-all-fields]
+  [fixture: railroad/abnf-db-repeat-optional] [fixture:
+  railroad/abnf-db-repeat-implicit-optional] [fixture:
   railroad/abnf-db-repeat-implicit-zero] [fixture:
   railroad/abnf-db-repeat-zero-padded-optional] [fixture:
   railroad/abnf-db-repeat-reversed] [fixture: railroad/abnf-db-repeat-precision]
   [fixture: railroad/abnf-db-repeat-overflow] [fixture:
   railroad/abnf-db-repeat-max-overflow]
+
 - [PEG](https://github.com/mermaid-js/mermaid/blob/2086904e76c692331e34a45d7cc3bc30860d040e/packages/mermaid/src/diagrams/railroad/parser/pegParser.ts#L27-L148):
   single-element sequences, choices and groups collapse. Suffix `?`, `*` and `+`
   give the same optional and repetition forms. Dot becomes special text `.`. A
@@ -19238,9 +21716,10 @@ The four adapters publish these values:
   terminal in double quotes, reference name or special text. An operand that is
   neither a terminal, a nonterminal nor special text after collapsing becomes
   `(...)`; its original operand tree is not published. Quotes and line breaks
-  inside terminal values are not escaped in the predicate label. [fixture:
-  railroad/peg-db-singletons] [fixture: railroad/peg-db-all-fields] [fixture:
-  railroad/peg-db-predicates] [fixture:
+  inside terminal values are not escaped in the predicate label.
+
+  [fixture: railroad/peg-db-singletons] [fixture: railroad/peg-db-all-fields]
+  [fixture: railroad/peg-db-predicates] [fixture:
   railroad/peg-db-predicate-singleton-group] [fixture:
   railroad/peg-db-predicate-predicate] [fixture:
   railroad/peg-db-predicate-quote-newline]
@@ -19252,15 +21731,21 @@ and
 [PEG](https://github.com/mermaid-js/mermaid/blob/2086904e76c692331e34a45d7cc3bc30860d040e/packages/parser/src/language/railroad-peg/valueConverter.ts#L5-L34)
 remove the surrounding single or double quotes, decode `\n`, `\r` and `\t` to
 their control characters, and turn every other backslash escape `\x` into `x`.
+
 [fixture: railroad/ir-lex-string-conversion] [fixture:
 railroad/ebnf-lex-string-conversion] [fixture:
 railroad/peg-lex-string-conversion]
+
 [ABNF strings](https://github.com/mermaid-js/mermaid/blob/2086904e76c692331e34a45d7cc3bc30860d040e/packages/parser/src/language/railroad-abnf/valueConverter.ts#L26-L33)
 use double quotes and drop only the surrounding quotes, keeping backslashes
-without interpreting escapes. [fixture: railroad/abnf-lex-string-conversion]
+without interpreting escapes.
+
+[fixture: railroad/abnf-lex-string-conversion]
+
 [EBNF special text](https://github.com/mermaid-js/mermaid/blob/2086904e76c692331e34a45d7cc3bc30860d040e/packages/parser/src/language/railroad-ebnf/valueConverter.ts#L66-L68)
-drops its surrounding `?` and trims whitespace from both ends. [fixture:
-railroad/ebnf-special-whitespace]
+drops its surrounding `?` and trims whitespace from both ends.
+
+[fixture: railroad/ebnf-special-whitespace]
 
 The
 [common publication helper](https://github.com/mermaid-js/mermaid/blob/2086904e76c692331e34a45d7cc3bc30860d040e/packages/mermaid/src/diagrams/common/populateCommonDb.ts#L4-L13)
@@ -19268,10 +21753,11 @@ sets accessibility values only when the final AST value is truthy. An empty
 final assignment suppresses previous body values. The
 [Db](https://github.com/mermaid-js/mermaid/blob/2086904e76c692331e34a45d7cc3bc30860d040e/packages/mermaid/src/diagrams/railroad/railroadDb.ts#L107-L135)
 further removes leading whitespace from the accessibility title and whitespace
-following LF in the description. [fixture: railroad/ir-common-repeat] [fixture:
-railroad/ir-common-repeat-empty] [fixture: railroad/ebnf-common-repeat-empty]
-[fixture: railroad/abnf-common-repeat-empty] [fixture:
-railroad/peg-common-repeat-empty]
+following LF in the description.
+
+[fixture: railroad/ir-common-repeat] [fixture: railroad/ir-common-repeat-empty]
+[fixture: railroad/ebnf-common-repeat-empty] [fixture:
+railroad/abnf-common-repeat-empty] [fixture: railroad/peg-common-repeat-empty]
 
 The summary also drops:
 
@@ -19283,14 +21769,18 @@ The summary also drops:
   frontmatter title remains available in `embedded.title`. Each adapter clears
   the Db at parse entry, after
   [`Diagram.fromText()` sets the frontmatter title](https://github.com/mermaid-js/mermaid/blob/2086904e76c692331e34a45d7cc3bc30860d040e/packages/mermaid/src/Diagram.ts#L49-L54),
-  so that title is already absent from the Db before normalization. [fixture:
-  railroad/ir-db-all-fields] [fixture: railroad/ir-frontmatter-empty-body-title]
-  [fixture: railroad/ebnf-frontmatter-empty-body-title] [fixture:
+  so that title is already absent from the Db before normalization.
+
+  [fixture: railroad/ir-db-all-fields] [fixture:
+  railroad/ir-frontmatter-empty-body-title] [fixture:
+  railroad/ebnf-frontmatter-empty-body-title] [fixture:
   railroad/abnf-frontmatter-empty-body-title] [fixture:
   railroad/peg-frontmatter-empty-body-title]
+
 - Rule `comment` and repetition `separator`: declared in the
   [types](https://github.com/mermaid-js/mermaid/blob/2086904e76c692331e34a45d7cc3bc30860d040e/packages/mermaid/src/diagrams/railroad/railroadTypes.ts#L33-L69),
   but none of the adapters assigns them and the renderer does not read them.
+
 - Railroad configuration, consumed by
   [drawing](https://github.com/mermaid-js/mermaid/blob/2086904e76c692331e34a45d7cc3bc30860d040e/packages/mermaid/src/diagrams/railroad/railroadRenderer.ts#L637-L667)
   and
@@ -19301,6 +21791,7 @@ The summary also drops:
   [configuration sanitization](https://github.com/mermaid-js/mermaid/blob/2086904e76c692331e34a45d7cc3bc30860d040e/packages/mermaid/src/utils/sanitizeDirective.ts#L65-L85),
   before publication; those fixtures carry `embedded-data-opaque`. No railroad
   semantic acceptance key needs removal from otherwise valid configuration.
+
   [fixture: railroad/ir-config-drawing-site] [fixture:
   railroad/ir-config-frontmatter-drawing] [fixture:
   railroad/ebnf-config-init-drawing] [fixture:
@@ -19308,6 +21799,7 @@ The summary also drops:
   railroad/peg-config-init-drawing] [fixture:
   railroad/ir-config-frontmatter-fontfamily-number] [fixture:
   railroad/ebnf-config-init-fontfamily-number]
+
 - Measurements, coordinates, SVG paths, dimensions and drawing ids, computed
   [while rendering](https://github.com/mermaid-js/mermaid/blob/2086904e76c692331e34a45d7cc3bc30860d040e/packages/mermaid/src/diagrams/railroad/railroadRenderer.ts#L535-L624).
 
@@ -19319,8 +21811,9 @@ values, and has no links or data blocks.
 `normalizeWardley()` summarizes the `wardley` diagram id. It reads the
 [builder's published data](https://github.com/mermaid-js/mermaid/blob/2086904e76c692331e34a45d7cc3bc30860d040e/packages/mermaid/src/diagrams/wardley/wardleyBuilder.ts#L187-L207)
 once, before drawing. Empty collections remain arrays; absent optional fields
-are omitted, and absent evolution settings give `axes: {}`. [fixture:
-wardley/header-only]
+are omitted, and absent evolution settings give `axes: {}`.
+
+[fixture: wardley/header-only]
 
 | Field                            | Content                                                                                                         |
 | -------------------------------- | --------------------------------------------------------------------------------------------------------------- |
@@ -19347,6 +21840,7 @@ The
 [common publication helper](https://github.com/mermaid-js/mermaid/blob/2086904e76c692331e34a45d7cc3bc30860d040e/packages/mermaid/src/diagrams/common/populateCommonDb.ts#L4-L13)
 sets only truthy final AST values: an empty final assignment suppresses earlier
 body values, while an empty final body title leaves the frontmatter title.
+
 [fixture: wardley/db-all-fields] [fixture: wardley/common-repeat] [fixture:
 wardley/common-repeat-empty] [fixture: wardley/frontmatter-empty-body-title]
 
@@ -19357,6 +21851,7 @@ source order stays. Nodes use their name as both id and label; pipeline child
 ids are the deterministic `${parent}_${name}` and their labels are the child
 names. A child inherits its parent's published `y`. Links resolve an exact id
 first, then the first matching label, otherwise keeping the unresolved name.
+
 [fixture: wardley/db-publication-order] [fixture: wardley/db-link-resolution]
 [fixture: wardley/db-link-exact-id] [fixture:
 wardley/db-pipeline-forward-parent] [fixture: wardley/db-pipeline-nested-parent]
@@ -19370,8 +21865,10 @@ Components publish `inertia: false` when absent; anchors and pipeline children
 omit it. A repeated pipeline replaces its membership array but leaves earlier
 child nodes. Repeated child ids can remain in the membership array, and a
 synthetic id can collide with an authored node id. Prototype names are ordinary
-Map keys. [fixture: wardley/db-node-duplicates] [fixture:
-wardley/db-trend-duplicates] [fixture: wardley/db-pipeline-duplicates] [fixture:
+Map keys.
+
+[fixture: wardley/db-node-duplicates] [fixture: wardley/db-trend-duplicates]
+[fixture: wardley/db-pipeline-duplicates] [fixture:
 wardley/db-pipeline-collision] [fixture: wardley/db-pipeline-label-inheritance]
 [fixture: wardley/db-prototype-names] [fixture: wardley/db-zero-first] [fixture:
 wardley/db-zero-last]
@@ -19380,7 +21877,9 @@ wardley/db-zero-last]
 keep duplicates, self links and unresolved endpoints. Dashed arrows set
 `dashed`; a source port takes priority over a target port, then the arrow's
 flow. A flow-arrow label, even an empty one, takes priority over the semicolon
-label. [fixture: wardley/db-link-forms] [fixture:
+label.
+
+[fixture: wardley/db-link-forms] [fixture:
 wardley/db-link-unresolved-duplicates]
 
 [Coordinate conversion](https://github.com/mermaid-js/mermaid/blob/2086904e76c692331e34a45d7cc3bc30860d040e/packages/mermaid/src/diagrams/wardley/wardleyParser.ts#L9-L30)
@@ -19390,6 +21889,7 @@ percentages. The resulting double must be between 0 and 100. This also swaps the
 two written values of annotation coordinates and force positions. Label offsets
 keep their signed integer values. These values precede the renderer's
 [screen projection](https://github.com/mermaid-js/mermaid/blob/2086904e76c692331e34a45d7cc3bc30860d040e/packages/mermaid/src/diagrams/wardley/wardleyRenderer.ts#L183-L184).
+
 [fixture: wardley/db-all-fields] [fixture: wardley/db-coordinate-boundary]
 [fixture: wardley/db-coordinate-rounding] [fixture:
 wardley/db-coordinate-double-one] [fixture:
@@ -19403,10 +21903,11 @@ keeps notes, annotations, accelerators and deaccelerators in their respective
 source order, including duplicates and empty texts. An evolve of a missing id
 publishes nothing, without checking its target range. Size and evolution use
 their final AST assignment; only the first annotations box is converted and
-published. [fixture: wardley/db-array-duplicates] [fixture:
-wardley/db-empty-texts] [fixture: wardley/db-empty-pipeline-names] [fixture:
-wardley/db-trend-missing] [fixture: wardley/db-singletons-last] [fixture:
-wardley/db-later-invalid-box]
+published.
+
+[fixture: wardley/db-array-duplicates] [fixture: wardley/db-empty-texts]
+[fixture: wardley/db-empty-pipeline-names] [fixture: wardley/db-trend-missing]
+[fixture: wardley/db-singletons-last] [fixture: wardley/db-later-invalid-box]
 
 [Evolution publication](https://github.com/mermaid-js/mermaid/blob/2086904e76c692331e34a45d7cc3bc30860d040e/packages/mermaid/src/diagrams/wardley/wardleyParser.ts#L76-L90)
 trims stage names and joins a truthy second name with a slash surrounded by one
@@ -19417,7 +21918,9 @@ uses shared `numberOrText()` for non-finite values (`"Infinity"`, `"-Infinity"`)
 and negative zero (0). Coordinate overflow rejects before normalization, but
 size, label offsets, stage boundaries and annotation numbers can overflow.
 Decimal precision, subnormals and underflow follow the injected converter's
-default numeric conversion. [fixture: wardley/db-stages-boundaries] [fixture:
+default numeric conversion.
+
+[fixture: wardley/db-stages-boundaries] [fixture:
 wardley/db-stage-empty-second-name] [fixture: wardley/db-number-overflow]
 [fixture: wardley/number-coordinate-overflow] [fixture:
 wardley/db-number-int-precision] [fixture: wardley/db-number-subnormal]
@@ -19431,15 +21934,22 @@ The summary drops:
   but which is true for exactly the nodes that `pipelines[].nodeId` names, so a
   change of it shows in `pipelines`. The builder
   [sets those flags](https://github.com/mermaid-js/mermaid/blob/2086904e76c692331e34a45d7cc3bc30860d040e/packages/mermaid/src/diagrams/wardley/wardleyBuilder.ts#L112-L133).
+
   [fixture: wardley/db-pipeline-duplicates] [fixture:
   wardley/db-pipeline-forward-parent]
+
 - Trend `targetY`, copied from its node after all nodes are published. The
   [adapter](https://github.com/mermaid-js/mermaid/blob/2086904e76c692331e34a45d7cc3bc30860d040e/packages/mermaid/src/diagrams/wardley/wardleyParser.ts#L189-L197)
-  never changes nodes afterward. [fixture: wardley/db-all-fields]
+  never changes nodes afterward.
+
+  [fixture: wardley/db-all-fields]
+
 - Axis `xLabel` and `yLabel`, which the adapter never assigns; default stage
   names and equal stage widths are
   [drawing defaults](https://github.com/mermaid-js/mermaid/blob/2086904e76c692331e34a45d7cc3bc30860d040e/packages/mermaid/src/diagrams/wardley/wardleyRenderer.ts#L205-L256).
+
   [fixture: wardley/header-only]
+
 - Configuration, colours, drawing ids, screen coordinates and dimensions, and
   the renderer's repositioning of pipeline parents. The renderer reads
   [`wardley-beta` options and theme](https://github.com/mermaid-js/mermaid/blob/2086904e76c692331e34a45d7cc3bc30860d040e/packages/mermaid/src/diagrams/wardley/wardleyRenderer.ts#L32-L63);
@@ -19448,6 +21958,7 @@ The summary drops:
   numeric embedded `wardley.fontFamily` does reject during common recursive
   configuration sanitization; those fixtures carry `embedded-data-opaque`. No
   Wardley acceptance key needs removal from otherwise valid configuration.
+
   [fixture: wardley/config-drawing-site] [fixture:
   wardley/config-frontmatter-drawing] [fixture: wardley/config-init-drawing]
   [fixture: wardley/config-frontmatter-cannot-rescue] [fixture:
@@ -19457,16 +21968,21 @@ The summary drops:
 
 Standard security levels give the same summary. The site value `other` with
 `htmlLabels: true` replaces characters in common metadata, while Wardley's own
-text fields remain unchanged. [fixture: wardley/config-security-level-other] The
-Db needs no patch: publication reads no browser globals, time or randomness, and
-has no external links or data blocks.
+text fields remain unchanged.
+
+[fixture: wardley/config-security-level-other]
+
+The Db needs no patch: publication reads no browser globals, time or randomness,
+and has no external links or data blocks.
 
 ## cynefin
 
 `normalizeCynefin()` summarizes the `cynefin` diagram id. It reads the
 [published Db](https://github.com/mermaid-js/mermaid/blob/2086904e76c692331e34a45d7cc3bc30860d040e/packages/mermaid/src/diagrams/cynefin/cynefinDb.ts#L17-L69)
 before drawing. Empty collections remain arrays; absent transition labels are
-omitted. [fixture: cynefin/header-only] [fixture: cynefin/db-empty-texts]
+omitted.
+
+[fixture: cynefin/header-only] [fixture: cynefin/db-empty-texts]
 
 | Field                  | Content                                                                               |
 | ---------------------- | ------------------------------------------------------------------------------------- |
@@ -19483,6 +21999,7 @@ The
 [common publication helper](https://github.com/mermaid-js/mermaid/blob/2086904e76c692331e34a45d7cc3bc30860d040e/packages/mermaid/src/diagrams/common/populateCommonDb.ts#L4-L13)
 publishes only truthy final AST assignments. A final empty value suppresses an
 earlier body value; a final empty body title leaves the frontmatter title.
+
 [fixture: cynefin/db-all-fields] [fixture: cynefin/common-repeat] [fixture:
 cynefin/common-repeat-empty] [fixture: cynefin/common-empty-interleaved]
 [fixture: cynefin/frontmatter-empty-body-title]
@@ -19497,12 +22014,13 @@ order is not consumed. A repeated domain replaces its entire item list; if its
 final block is empty, the domain is omitted from the summary. Item order,
 duplicates, empty labels and whitespace are retained: an empty label still
 counts as an item. All confusion items remain in the summary, including those
-represented by the renderer's overflow badge. [fixture: cynefin/header-only]
-[fixture: cynefin/spec-cynefin-integration-d626b3bc] [fixture:
-cynefin/gram-glued-domains] [fixture: cynefin/db-all-fields] [fixture:
-cynefin/db-domain-duplicates] [fixture: cynefin/db-domain-empty-first] [fixture:
-cynefin/db-domain-empty-last] [fixture: cynefin/db-empty-texts] [fixture:
-cynefin/gram-inline-items]
+represented by the renderer's overflow badge.
+
+[fixture: cynefin/header-only] [fixture:
+cynefin/spec-cynefin-integration-d626b3bc] [fixture: cynefin/gram-glued-domains]
+[fixture: cynefin/db-all-fields] [fixture: cynefin/db-domain-duplicates]
+[fixture: cynefin/db-domain-empty-first] [fixture: cynefin/db-domain-empty-last]
+[fixture: cynefin/db-empty-texts] [fixture: cynefin/gram-inline-items]
 
 The
 [adapter](https://github.com/mermaid-js/mermaid/blob/2086904e76c692331e34a45d7cc3bc30860d040e/packages/mermaid/src/diagrams/cynefin/cynefinParser.ts#L8-L19)
@@ -19510,6 +22028,7 @@ publishes all domains, then all transitions. Transition duplicates and
 references to undeclared domains remain; self loops are discarded by the
 [Db](https://github.com/mermaid-js/mermaid/blob/2086904e76c692331e34a45d7cc3bc30860d040e/packages/mermaid/src/diagrams/cynefin/cynefinDb.ts#L48-L69).
 An empty transition label becomes absent; a whitespace-only label remains.
+
 [fixture: cynefin/gram-transition-first] [fixture:
 cynefin/db-transition-duplicates] [fixture: cynefin/db-self-loops] [fixture:
 cynefin/db-self-loop-empty-label] [fixture: cynefin/db-empty-texts]
@@ -19522,8 +22041,10 @@ Cynefin's
 [reachable value rules](https://github.com/mermaid-js/mermaid/blob/2086904e76c692331e34a45d7cc3bc30860d040e/packages/parser/src/language/cynefin/cynefin.langium#L17-L30)
 include no numeric terminal: numeric spellings in strings remain text, and
 unquoted numbers are rejected before conversion. There are no numeric comparison
-or rounding boundaries to normalize. [fixture: cynefin/lex-string-conversion]
-[fixture: cynefin/lex-transition-string-conversion] [fixture:
+or rounding boundaries to normalize.
+
+[fixture: cynefin/lex-string-conversion] [fixture:
+cynefin/lex-transition-string-conversion] [fixture:
 cynefin/common-line-whitespace] [fixture: cynefin/common-block-whitespace]
 [fixture: cynefin/db-number-strings] [fixture: cynefin/number-plus] [fixture:
 cynefin/number-negative-zero] [fixture: cynefin/number-nan] [fixture:
@@ -19540,22 +22061,29 @@ The summary drops:
   [boundary helpers](https://github.com/mermaid-js/mermaid/blob/2086904e76c692331e34a45d7cc3bc30860d040e/packages/mermaid/src/diagrams/cynefin/cynefinBoundaries.ts#L31-L79)
   use the drawing id or configured seed only during rendering. Neither the
   adapter nor publication reads `cynefin.*`; valid diagram drawing settings
-  change neither acceptance nor published values. [fixture:
-  cynefin/config-drawing-site] [fixture: cynefin/config-frontmatter-drawing]
-  [fixture: cynefin/config-init-drawing] [fixture:
-  cynefin/config-frontmatter-cannot-rescue] [fixture:
+  change neither acceptance nor published values.
+
+  [fixture: cynefin/config-drawing-site] [fixture:
+  cynefin/config-frontmatter-drawing] [fixture: cynefin/config-init-drawing]
+  [fixture: cynefin/config-frontmatter-cannot-rescue] [fixture:
   cynefin/config-init-cannot-rescue]
+
 - Fixed domain subtitles, display limits and overflow labels. These are
   [drawing constants](https://github.com/mermaid-js/mermaid/blob/2086904e76c692331e34a45d7cc3bc30860d040e/packages/mermaid/src/diagrams/cynefin/cynefinRenderer.ts#L23-L29)
-  or derived from the retained item list. [fixture: cynefin/db-all-fields]
+  or derived from the retained item list.
+
+  [fixture: cynefin/db-all-fields]
+
 - The Map key as a second identity alongside `domains[].name`, and insertion
-  positions, because the renderer looks domains up by name. [fixture:
-  cynefin/db-domain-duplicates]
+  positions, because the renderer looks domains up by name.
+
+  [fixture: cynefin/db-domain-duplicates]
 
 A numeric embedded `cynefin.fontFamily` rejects during the common recursive
 configuration check, so these cases carry `embedded-data-opaque`. No
 Cynefin-specific acceptance key needs removing from otherwise valid text
 configuration. The reference retains valid settings and the frontmatter title.
+
 [fixture: cynefin/config-frontmatter-fontfamily-number] [fixture:
 cynefin/config-init-fontfamily-number] [fixture:
 cynefin/config-fontfamily-keeps-title] [fixture:
@@ -19564,9 +22092,12 @@ cynefin/config-frontmatter-nonfinite]
 
 Standard security levels give the same summary. The site value `other` with
 `htmlLabels: true` replaces characters in common metadata, while item and
-transition strings remain unchanged. [fixture:
-cynefin/config-security-level-other] The Db needs no patch: publication reads no
-browser globals, time or randomness, and has no links or data blocks.
+transition strings remain unchanged.
+
+[fixture: cynefin/config-security-level-other]
+
+The Db needs no patch: publication reads no browser globals, time or randomness,
+and has no links or data blocks.
 
 ## eventmodeling
 
@@ -19576,8 +22107,9 @@ adapter stores the complete AST through `setAst`. The Db has no getter for that
 AST; a patch observes `setAst` and `clear` without changing them. The summary
 reads that published object, without calling the DOM-dependent
 [`db.ts`](https://github.com/mermaid-js/mermaid/blob/2086904e76c692331e34a45d7cc3bc30860d040e/packages/mermaid/src/diagrams/eventmodeling/db.ts#L87-L153)
-builder. [fixture: eventmodeling/header-only] [fixture:
-eventmodeling/db-all-fields]
+builder.
+
+[fixture: eventmodeling/header-only] [fixture: eventmodeling/db-all-fields]
 
 | Field                       | Content                                                                                |
 | --------------------------- | -------------------------------------------------------------------------------------- |
@@ -19627,6 +22159,7 @@ empty description block remains a statement and leaves its following LF
 unconsumed; a common form can claim padding immediately after its closing brace
 on the same line. These terminal rules are in
 [`event-modeling.langium`](https://github.com/mermaid-js/mermaid/blob/2086904e76c692331e34a45d7cc3bc30860d040e/packages/parser/src/language/eventmodeling/event-modeling.langium#L1-L70).
+
 [fixture: eventmodeling/common-inline] [fixture:
 eventmodeling/common-whitespace] [fixture: eventmodeling/common-repeat]
 [fixture: eventmodeling/common-repeat-empty] [fixture:
@@ -19667,8 +22200,9 @@ closed directive, on a blank line, after a comment or after a selected semicolon
 remains; LF, LS and PS are not part of the horizontal run, and the terminal must
 still satisfy the indentation conditions above. An unselected semicolon rejects
 in that gap, and an empty description block remains a statement boundary. Do not
-join padding across either as if it were removed. [fixture:
-eventmodeling/gram-common-leading-directive-both-sides] [fixture:
+join padding across either as if it were removed.
+
+[fixture: eventmodeling/gram-common-leading-directive-both-sides] [fixture:
 eventmodeling/gram-common-leading-directive-before-padding] [fixture:
 eventmodeling/gram-common-leading-directive-after-padding] [fixture:
 eventmodeling/gram-common-leading-directive-after-header] [fixture:
@@ -19696,10 +22230,11 @@ it, like any other frame. Names are strings rather than numbers, so `1`, `01`
 and `001` are distinct. A repeated name is rejected:
 [`setAst()`](https://github.com/mermaid-js/mermaid/blob/2086904e76c692331e34a45d7cc3bc30860d040e/packages/mermaid/src/diagrams/eventmodeling/db.ts#L139-L150)
 throws `Duplicate event modeling frame ID "01" on line 3` before the Db keeps
-the AST, so the parse fails with an `Error`. [fixture:
-eventmodeling/db-all-aliases] [fixture: eventmodeling/db-qualified-names]
-[fixture: eventmodeling/db-frame-order] [fixture:
-eventmodeling/db-frame-duplicates] [fixture:
+the AST, so the parse fails with an `Error`.
+
+[fixture: eventmodeling/db-all-aliases] [fixture:
+eventmodeling/db-qualified-names] [fixture: eventmodeling/db-frame-order]
+[fixture: eventmodeling/db-frame-duplicates] [fixture:
 eventmodeling/db-source-leading-zero]
 
 Source lookup tests `$refText` membership while iterating all frames in their
@@ -19707,7 +22242,9 @@ declaration order. The authored order and repetition of references are unused,
 so the summary keeps a sorted set. An empty set permits implicit inference; a
 nonempty set with no matching frame suppresses that fallback and must remain
 distinct. Forward and self references remain strings; no Langium `.ref` value is
-read. [fixture: eventmodeling/db-source-order] [fixture:
+read.
+
+[fixture: eventmodeling/db-source-order] [fixture:
 eventmodeling/db-source-order-control] [fixture:
 eventmodeling/db-source-missing] [fixture: eventmodeling/db-source-forward]
 [fixture: eventmodeling/db-source-self]
@@ -19717,10 +22254,11 @@ uses the first data declaration whose name equals the frame's reference string.
 A match overrides inline data; an unresolved reference leaves inline data, or no
 data. The summary stores the selected terminal once per frame, preserving its
 delimiters and whitespace; it keeps neither unused data declarations nor the
-reference spelling after lookup. An empty block is still a match. [fixture:
-eventmodeling/db-data-first] [fixture: eventmodeling/db-data-empty-first]
-[fixture: eventmodeling/db-data-empty-last] [fixture:
-eventmodeling/db-data-reference-inline] [fixture:
+reference spelling after lookup. An empty block is still a match.
+
+[fixture: eventmodeling/db-data-first] [fixture:
+eventmodeling/db-data-empty-first] [fixture: eventmodeling/db-data-empty-last]
+[fixture: eventmodeling/db-data-reference-inline] [fixture:
 eventmodeling/db-data-unresolved-inline] [fixture:
 eventmodeling/db-data-unresolved] [fixture: eventmodeling/db-data-unused]
 
@@ -19733,9 +22271,11 @@ references and duplicate data definitions therefore do not reject public parse;
 a repeated frame name does, as above. Entity declarations, notes and GWT
 statements are stored in the AST but the
 [`db.ts`](https://github.com/mermaid-js/mermaid/blob/2086904e76c692331e34a45d7cc3bc30860d040e/packages/mermaid/src/diagrams/eventmodeling/db.ts#L87-L153)
-builder never reads them. [fixture: eventmodeling/error-start] [fixture:
-eventmodeling/error-recovered] [fixture: eventmodeling/error-after-prefix]
-[fixture: eventmodeling/frame-missing-name] [fixture:
+builder never reads them.
+
+[fixture: eventmodeling/error-start] [fixture: eventmodeling/error-recovered]
+[fixture: eventmodeling/error-after-prefix] [fixture:
+eventmodeling/frame-missing-name] [fixture:
 eventmodeling/validator-command-invalid] [fixture:
 eventmodeling/validator-event-invalid] [fixture:
 eventmodeling/validator-readmodel-invalid] [fixture:
@@ -19749,32 +22289,43 @@ Dropped:
 
 - The diagram title: publication stores it, but
   [`renderer.ts`](https://github.com/mermaid-js/mermaid/blob/2086904e76c692331e34a45d7cc3bc30860d040e/packages/mermaid/src/diagrams/eventmodeling/renderer.ts#L128-L163)
-  never draws it. Accessibility strings remain separately. [fixture:
-  eventmodeling/common-title-only] [fixture: eventmodeling/frontmatter-title]
+  never draws it. Accessibility strings remain separately.
+
+  [fixture: eventmodeling/common-title-only] [fixture:
+  eventmodeling/frontmatter-title]
+
 - Data-type tags:
   [`db.ts`](https://github.com/mermaid-js/mermaid/blob/2086904e76c692331e34a45d7cc3bc30860d040e/packages/mermaid/src/diagrams/eventmodeling/db.ts#L330-L378)
   selection and drawing do not inspect them or parse their contents as JSON,
   Markdown, HTML or another declared type. These are native text terminals, not
-  opaque `@{ ... }` data blocks, and have no `dataBlockEffects`. [fixture:
-  eventmodeling/data-all-types] [fixture: eventmodeling/data-block-types]
-  [fixture: eventmodeling/lex-inline-empty]
+  opaque `@{ ... }` data blocks, and have no `dataBlockEffects`.
+
+  [fixture: eventmodeling/data-all-types] [fixture:
+  eventmodeling/data-block-types] [fixture: eventmodeling/lex-inline-empty]
+
 - The remaining AST, CST, containers, reference objects, model entities, notes,
-  GWT and unused data: none supplies another drawing input. [fixture:
-  eventmodeling/db-all-fields] [fixture: eventmodeling/db-entities-notes-gwt]
+  GWT and unused data: none supplies another drawing input.
+
+  [fixture: eventmodeling/db-all-fields] [fixture:
+  eventmodeling/db-entities-notes-gwt]
+
 - Coordinates, dimensions, HTML, colours, swimlanes and inferred relations:
   [`db.ts`](https://github.com/mermaid-js/mermaid/blob/2086904e76c692331e34a45d7cc3bc30860d040e/packages/mermaid/src/diagrams/eventmodeling/db.ts#L87-L153)
   and
   [`renderer.ts`](https://github.com/mermaid-js/mermaid/blob/2086904e76c692331e34a45d7cc3bc30860d040e/packages/mermaid/src/diagrams/eventmodeling/renderer.ts#L128-L163)
   derive them from the retained fields, measurements, constants and
-  configuration. The summary does not invoke those computations. [fixture:
-  eventmodeling/config-drawing-site] [fixture:
+  configuration. The summary does not invoke those computations.
+
+  [fixture: eventmodeling/config-drawing-site] [fixture:
   eventmodeling/config-frontmatter-drawing] [fixture:
   eventmodeling/config-init-drawing]
 
 There is no numeric Db field: frame names and data numbers are strings, so
 neither nonfinite-number normalization nor a numeric rounding boundary is
-reachable. [fixture: eventmodeling/number-data-text] [fixture:
-eventmodeling/number-four] [fixture: eventmodeling/number-overflow]
+reachable.
+
+[fixture: eventmodeling/number-data-text] [fixture: eventmodeling/number-four]
+[fixture: eventmodeling/number-overflow]
 
 No eventmodeling-specific acceptance key is read during publication. Valid
 `eventmodeling.padding` and `eventmodeling.useMaxWidth` drawing settings cannot
@@ -19782,8 +22333,9 @@ rescue invalid syntax. Numeric embedded `eventmodeling.fontFamily` instead fails
 the common recursive configuration processing; its opaque-data comparison
 preserves independently valid frontmatter title and configuration. An
 unrecognized site `securityLevel` changes common accessibility sanitization,
-while the standard four levels give the same summaries. [fixture:
-eventmodeling/config-frontmatter-cannot-rescue] [fixture:
+while the standard four levels give the same summaries.
+
+[fixture: eventmodeling/config-frontmatter-cannot-rescue] [fixture:
 eventmodeling/config-init-cannot-rescue] [fixture:
 eventmodeling/config-frontmatter-fontfamily-number] [fixture:
 eventmodeling/config-init-fontfamily-number] [fixture:
@@ -19793,22 +22345,25 @@ eventmodeling/config-security-level-other]
 
 Terminal values are those published after common preprocessing and
 [`utils.ts`](https://github.com/mermaid-js/mermaid/blob/2086904e76c692331e34a45d7cc3bc30860d040e/packages/mermaid/src/utils.ts#L895-L924),
-including internal markers for numeric character references. [fixture:
-eventmodeling/entity-texts] [fixture: eventmodeling/entity-common]
+including internal markers for numeric character references.
+
+[fixture: eventmodeling/entity-texts] [fixture: eventmodeling/entity-common]
 
 [`Diagram.ts`](https://github.com/mermaid-js/mermaid/blob/2086904e76c692331e34a45d7cc3bc30860d040e/packages/mermaid/src/Diagram.ts#L77-L83)
 appends LF before parsing. A data block closed at EOF can include that appended
 LF in its published terminal; the summary keeps it. Closing whitespace can
-instead provide the lookahead boundary without consuming LF. [fixture:
-eventmodeling/data-block-close-eof] [fixture:
+instead provide the lookahead boundary without consuming LF.
+
+[fixture: eventmodeling/data-block-close-eof] [fixture:
 eventmodeling/data-block-close-space]
 
 ## treeview
 
 `normalizeTreeview()` summarizes Mermaid's `treeView` detector id, whose
 [case-sensitive header](https://github.com/mermaid-js/mermaid/blob/2086904e76c692331e34a45d7cc3bc30860d040e/packages/mermaid/src/diagrams/treeView/detector.ts#L4-L8)
-is `treeView-beta`. [fixture: treeview/header-only] [fixture:
-treeview/header-lower]
+is `treeView-beta`.
+
+[fixture: treeview/header-only] [fixture: treeview/header-lower]
 
 | Field                             | Content                                                              |
 | --------------------------------- | -------------------------------------------------------------------- |
@@ -19824,20 +22379,23 @@ which the renderer
 [visits recursively](https://github.com/mermaid-js/mermaid/blob/2086904e76c692331e34a45d7cc3bc30860d040e/packages/mermaid/src/diagrams/treeView/renderer.ts#L140-L182).
 It preserves hierarchy, order, duplicate names and empty names. Files can have
 children too. The Db pops ancestors whose indentation is at least the new node's
-indentation, then appends to the last remaining node. [fixture:
-treeview/db-indent-pop] [fixture: treeview/db-first-indented] [fixture:
-treeview/db-file-parent] [fixture: treeview/db-duplicate-names] [fixture:
-treeview/db-empty-names]
+indentation, then appends to the last remaining node.
+
+[fixture: treeview/db-indent-pop] [fixture: treeview/db-first-indented]
+[fixture: treeview/db-file-parent] [fixture: treeview/db-duplicate-names]
+[fixture: treeview/db-empty-names]
 
 The
 [adapter](https://github.com/mermaid-js/mermaid/blob/2086904e76c692331e34a45d7cc3bc30860d040e/packages/mermaid/src/diagrams/treeView/parser.ts#L11-L39)
 removes one final `/` from the converted name and publishes `"directory"`;
 otherwise it publishes `"file"`. An empty `icon()` publishes `"none"`, while an
 absent icon stays absent. An empty converted description is unpublished.
-Repeated class and icon assignments keep the last value. [fixture:
-treeview/db-directory-trailing-space] [fixture: treeview/db-icon-none] [fixture:
-treeview/db-description-empty] [fixture: treeview/db-repeat-class] [fixture:
-treeview/db-repeat-icon] [fixture: treeview/db-repeat-icon-empty-first]
+Repeated class and icon assignments keep the last value.
+
+[fixture: treeview/db-directory-trailing-space] [fixture: treeview/db-icon-none]
+[fixture: treeview/db-description-empty] [fixture: treeview/db-repeat-class]
+[fixture: treeview/db-repeat-icon] [fixture:
+treeview/db-repeat-icon-empty-first]
 
 The diagram's
 [grammar](https://github.com/mermaid-js/mermaid/blob/2086904e76c692331e34a45d7cc3bc30860d040e/packages/parser/src/language/treeView/treeView.langium#L1-L64)
@@ -19847,6 +22405,7 @@ the common converter because they are named `TITLE`, `ACC_TITLE` and
 [publication helper](https://github.com/mermaid-js/mermaid/blob/2086904e76c692331e34a45d7cc3bc30860d040e/packages/mermaid/src/diagrams/common/populateCommonDb.ts#L4-L13)
 sets only truthy final values. Accessibility strings feed the
 [common SVG rendering path](https://github.com/mermaid-js/mermaid/blob/2086904e76c692331e34a45d7cc3bc30860d040e/packages/mermaid/src/mermaidAPI.ts#L626-L630).
+
 [fixture: treeview/common-whitespace] [fixture: treeview/common-repeat]
 [fixture: treeview/common-repeat-empty]
 
@@ -19855,10 +22414,11 @@ The custom
 counts each space or tab as one indentation unit, removes quote delimiters
 without interpreting escapes, and trims only trailing ASCII spaces and tabs from
 bare names. Trailing indentation after a quoted node can become the next node's
-indentation because newlines are hidden. [fixture: treeview/db-tabs-one-unit]
-[fixture: treeview/db-quote-conversion] [fixture:
-treeview/db-bare-internal-space] [fixture: treeview/db-quoted-tail-space]
-[fixture: treeview/db-quoted-tail-tab]
+indentation because newlines are hidden.
+
+[fixture: treeview/db-tabs-one-unit] [fixture: treeview/db-quote-conversion]
+[fixture: treeview/db-bare-internal-space] [fixture:
+treeview/db-quoted-tail-space] [fixture: treeview/db-quoted-tail-tab]
 
 Before parsing,
 [`preprocessBoxDrawing()`](https://github.com/mermaid-js/mermaid/blob/2086904e76c692331e34a45d7cc3bc30860d040e/packages/mermaid/src/diagrams/treeView/boxDrawingPreprocessor.ts#L67-L208)
@@ -19871,7 +22431,9 @@ before
 calls the adapter. A box character removed with an inline directive or a
 directive-only line cannot select box mode. A numeric reference such as `#9500;`
 does not become a branch character; literal dashes beside it can still select
-box mode. [fixture: treeview/box-global-directive-line] [fixture:
+box mode.
+
+[fixture: treeview/box-global-directive-line] [fixture:
 treeview/box-global-directive-inline] [fixture: treeview/box-entity-not-branch]
 [fixture: treeview/box-entity-mixed-indent] [fixture:
 treeview/box-physical-selected-semicolon] [fixture:
@@ -19880,11 +22442,12 @@ treeview/box-physical-comment-line]
 The pass has no quote or accessibility-block state: branchless decoration-only
 physical lines inside either value disappear in box mode, and ordinary indented
 lines inside either value can reject. An empty physical line survives; U+2028
-and U+2029 do not split physical lines. [fixture: treeview/box-drop-decoration]
-[fixture: treeview/box-block-decoration] [fixture:
-treeview/box-block-decoration-plain] [fixture: treeview/box-block-indent-error]
-[fixture: treeview/box-quoted-decoration] [fixture:
-treeview/box-quoted-indent-error] [fixture:
+and U+2029 do not split physical lines.
+
+[fixture: treeview/box-drop-decoration] [fixture: treeview/box-block-decoration]
+[fixture: treeview/box-block-decoration-plain] [fixture:
+treeview/box-block-indent-error] [fixture: treeview/box-quoted-decoration]
+[fixture: treeview/box-quoted-indent-error] [fixture:
 treeview/box-physical-directive-line] [fixture:
 treeview/box-physical-directive-inline] [fixture:
 treeview/box-physical-selected-semicolon] [fixture:
@@ -19896,10 +22459,11 @@ A branch inside a name or description can discard its prefix. On rewritten
 branch lines, tabs expand to four ASCII spaces. After the branch and adjacent
 dash run, only ASCII spaces are skipped: a leading NBSP remains in the name. A
 nondecoration line containing box characters but no branch keeps its original
-text, including tabs. [fixture: treeview/box-quoted-branch] [fixture:
-treeview/box-description-branch] [fixture: treeview/box-tab-name] [fixture:
-treeview/box-branch-leading-nbsp] [fixture:
-treeview/box-branchless-tab-preserved] [fixture:
+text, including tabs.
+
+[fixture: treeview/box-quoted-branch] [fixture: treeview/box-description-branch]
+[fixture: treeview/box-tab-name] [fixture: treeview/box-branch-leading-nbsp]
+[fixture: treeview/box-branchless-tab-preserved] [fixture:
 treeview/box-tabs-after-directive-line] [fixture:
 treeview/box-tabs-after-directive-inline] [fixture:
 treeview/box-tabs-after-selected-semicolon] [fixture:
@@ -19912,10 +22476,11 @@ Blank, comment and metadata lines pass through. For other nonblank lines in box
 mode, leading whitespace without any box character rejects using JavaScript's
 `\s`, rather than the grammar's ASCII space/tab set. NBSP, U+2028 and U+2029
 before nonblank text therefore reject, while an NBSP-only line takes the
-blank-line path. [fixture: treeview/box-mixed-reject] [fixture:
-treeview/box-mixed-indent-nbsp] [fixture: treeview/box-mixed-indent-ls]
-[fixture: treeview/box-mixed-indent-ps] [fixture:
-treeview/box-mixed-indent-directive-inline] [fixture:
+blank-line path.
+
+[fixture: treeview/box-mixed-reject] [fixture: treeview/box-mixed-indent-nbsp]
+[fixture: treeview/box-mixed-indent-ls] [fixture: treeview/box-mixed-indent-ps]
+[fixture: treeview/box-mixed-indent-directive-inline] [fixture:
 treeview/box-mixed-indent-directive-line] [fixture:
 treeview/box-mixed-indent-selected-semicolon] [fixture:
 treeview/box-mixed-indent-comment-line] [fixture:
@@ -19927,29 +22492,36 @@ treeview/box-physical-empty-description] [fixture:
 treeview/box-native-comment-pass]
 
 The first positive branch column determines segment width; branch depth rounds
-the column/width ratio before adding one. [fixture:
-treeview/box-infer-first-column] [fixture: treeview/box-round-below] [fixture:
-treeview/box-round-above]
+the column/width ratio before adding one.
+
+[fixture: treeview/box-infer-first-column] [fixture: treeview/box-round-below]
+[fixture: treeview/box-round-above]
 
 The summary drops:
 
 - The fixed artificial root (`/`, directory), generated `id`, counter, stack and
   original indentation widths. The hierarchy already holds each authored node
-  once. [fixture: treeview/header-only] [fixture: treeview/db-all-fields]
+  once.
+
+  [fixture: treeview/header-only] [fixture: treeview/db-all-fields]
+
 - The diagram title: the adapter stores it, but the
   [renderer](https://github.com/mermaid-js/mermaid/blob/2086904e76c692331e34a45d7cc3bc30860d040e/packages/mermaid/src/diagrams/treeView/renderer.ts#L218-L240)
-  does not draw it. Frontmatter title remains in embedded values. [fixture:
-  treeview/db-all-fields] [fixture: treeview/frontmatter-title]
+  does not draw it. Frontmatter title remains in embedded values.
+
+  [fixture: treeview/db-all-fields] [fixture: treeview/frontmatter-title]
+
 - Configuration returned by `getConfig()`, resolved icon references and SVG,
   `BBox`, coordinates, dimensions and colours. These are drawing inputs or
   drawing-derived values. Explicit authored icons remain in the summary;
   defaults and filename/extension mappings are resolved by
   [`getNodeIcon()`](https://github.com/mermaid-js/mermaid/blob/2086904e76c692331e34a45d7cc3bc30860d040e/packages/mermaid/src/diagrams/treeView/icons.ts#L77-L100)
   during drawing. No `treeView.*` key affects parsing or publication, so none is
-  an opaque-data acceptance key. [fixture: treeview/config-drawing-site]
-  [fixture: treeview/config-frontmatter-drawing] [fixture:
-  treeview/config-init-drawing] [fixture:
-  treeview/config-frontmatter-cannot-rescue] [fixture:
+  an opaque-data acceptance key.
+
+  [fixture: treeview/config-drawing-site] [fixture:
+  treeview/config-frontmatter-drawing] [fixture: treeview/config-init-drawing]
+  [fixture: treeview/config-frontmatter-cannot-rescue] [fixture:
   treeview/config-frontmatter-cannot-reject] [fixture:
   treeview/config-init-cannot-rescue] [fixture:
   treeview/config-init-cannot-reject]
@@ -19957,7 +22529,9 @@ The summary drops:
 The adapter sanitizes description text, and common setters sanitize
 accessibility text. An unrecognized site `securityLevel` can therefore replace
 markup characters even with DOMPurify disabled; disabling `htmlLabels` bypasses
-that replacement. [fixture: treeview/config-security-level-default] [fixture:
+that replacement.
+
+[fixture: treeview/config-security-level-default] [fixture:
 treeview/config-security-level-other] [fixture:
 treeview/config-security-level-other-html-false]
 

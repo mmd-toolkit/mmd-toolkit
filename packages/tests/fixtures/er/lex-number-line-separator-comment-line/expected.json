@@ -1,0 +1,35 @@
+{
+  "source": {
+    "kind": "authored",
+    "note": "er.md Units and contexts, Comment regions inside names: a U+2028 after a number starts a name; the entities `12`, and U+2028 and `ab`."
+  },
+  "accepted": true,
+  "diagramType": "er",
+  "db": {
+    "direction": "TB",
+    "title": "",
+    "accTitle": "",
+    "accDescr": "",
+    "entities": [
+      {
+        "id": "entity-12-0",
+        "attributes": [],
+        "alias": "",
+        "cssStyles": [],
+        "name": "12",
+        "classes": []
+      },
+      {
+        "id": "entity- ab-1",
+        "attributes": [],
+        "alias": "",
+        "cssStyles": [],
+        "name": " ab",
+        "classes": []
+      }
+    ],
+    "relationships": [],
+    "classes": [],
+    "subGraphs": []
+  }
+}

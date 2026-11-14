@@ -1,0 +1,27 @@
+{
+  "source": {
+    "kind": "authored",
+    "note": "er.md Units and contexts: at the start of a line, the comment region takes a U+2029 as it takes a U+2028: the line of U+2029 and `%% c` leaves the entity `A`."
+  },
+  "accepted": true,
+  "diagramType": "er",
+  "db": {
+    "direction": "TB",
+    "title": "",
+    "accTitle": "",
+    "accDescr": "",
+    "entities": [
+      {
+        "id": "entity-A-0",
+        "attributes": [],
+        "alias": "",
+        "cssStyles": [],
+        "name": "A",
+        "classes": []
+      }
+    ],
+    "relationships": [],
+    "classes": [],
+    "subGraphs": []
+  }
+}

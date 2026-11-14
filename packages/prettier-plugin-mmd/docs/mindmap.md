@@ -34,27 +34,34 @@ characters, so the width of the step between a node and its children is part of
 the diagram (diagrams/mindmap.md, Indentation and parents). A step of 4
 characters and a step of 2 give different Db, and one diagram may use steps of
 different widths. So the printer keeps the width of every step as written, and
-the rules below change only what is not in the Db. [fixture:
-indentation/step-widths-kept] [fixture: indentation/tree-from-the-indentation]
-[fixture: indentation/siblings-after-deeper-nodes]
+the rules below change only what is not in the Db.
+
+[fixture: indentation/step-widths-kept] [fixture:
+indentation/tree-from-the-indentation] [fixture:
+indentation/siblings-after-deeper-nodes]
 
 The indentation of the root is no part of the Db. The root stands one level
 deeper than the header, as the statements of every diagram type do, and each
 other node stands as many characters deeper than the root as it was written, so
 no level changes. The indentation written in the input is not kept beyond that.
+
 [fixture: indentation/root-shifted-to-one-level] [fixture:
 indentation/root-at-the-first-column] [fixture:
-indentation/written-indentation-dropped] A level is what Prettier's `useTabs`
-and `tabWidth` options say: two spaces by default. [fixture:
-indentation/tab-width-4]
+indentation/written-indentation-dropped]
+
+A level is what Prettier's `useTabs` and `tabWidth` options say: two spaces by
+default.
+
+[fixture: indentation/tab-width-4]
 
 Every whitespace character before a node is one character of its indentation, a
 tab, a U+00A0, and a U+3000 included, and only their number counts. The printer
 writes the character of the options, a space, or a tab with `useTabs`, and keeps
 the number of characters: with `useTabs`, a step of n characters is n tabs. This
 keeps the indentation of every line to one kind of character, the one that the
-options say. [fixture: indentation/use-tabs] [fixture:
-indentation/characters-replaced]
+options say.
+
+[fixture: indentation/use-tabs] [fixture: indentation/characters-replaced]
 
 Input
 ([indentation/step-widths-kept-input.mmd](../tests/fixtures/mindmap/indentation/step-widths-kept-input.mmd)):
@@ -151,12 +158,16 @@ is the whitespace after the header, which is none for `mindmap((x))`. It is
 printed on a line of its own, one level deeper than the header, and the nodes
 below it keep their steps beyond the root (see [Indentation](#indentation)): the
 Db is the same, and the root stands as the statements of the other diagram types
-do after the header, which move to a line of their own too. [fixture:
-root-on-header-line/moved-to-its-own-line] [fixture:
+do after the header, which move to a line of their own too.
+
+[fixture: root-on-header-line/moved-to-its-own-line] [fixture:
 root-on-header-line/shape-glued-to-the-header] [fixture:
 root-on-header-line/text-after-spaces] [fixture:
-root-on-header-line/after-a-tab] A `%%` after the text of the root is part of
-the text, not a comment. [fixture: root-on-header-line/text-with-percent]
+root-on-header-line/after-a-tab]
+
+A `%%` after the text of the root is part of the text, not a comment.
+
+[fixture: root-on-header-line/text-with-percent]
 
 Input
 ([root-on-header-line/moved-to-its-own-line-input.mmd](../tests/fixtures/mindmap/root-on-header-line/moved-to-its-own-line-input.mmd)):
@@ -197,11 +208,15 @@ mindmap
 An icon line and a class line decorate the node written last before them,
 whatever their indentation, so their indentation is no part of the Db. They are
 printed at the column of the node that they decorate, as the documentation of
-mermaid.js writes them. [fixture: decorations/at-the-column-of-the-node]
-[fixture: decorations/before-and-after-children] A second class line, or a
-second icon line, replaces the first in the Db, and both are kept as written,
-since the printer drops no text that the author wrote. [fixture:
-decorations/second-class-kept]
+mermaid.js writes them.
+
+[fixture: decorations/at-the-column-of-the-node] [fixture:
+decorations/before-and-after-children]
+
+A second class line, or a second icon line, replaces the first in the Db, and
+both are kept as written, since the printer drops no text that the author wrote.
+
+[fixture: decorations/second-class-kept]
 
 The text of an icon and the text of a class are printed without the spaces and
 tabs at their ends: `::icon( fa fa-book )` is printed `::icon(fa fa-book)`, and
@@ -211,10 +226,15 @@ draws the same node (see
 The whitespace inside the text stays, and a text of nothing but spaces and tabs
 is printed as one space, which is the least that keeps the text: an empty icon
 or class is rejected, and mermaid.js reads the same empty text for any number of
-them. [fixture: decorations/padding-in-icon-and-class-dropped] [fixture:
-decorations/blank-icon-and-class-one-space] The whitespace after the closing
-parenthesis of an icon is not in the Db, and is dropped. [fixture:
-decorations/trailing-whitespace-after-icon-dropped]
+them.
+
+[fixture: decorations/padding-in-icon-and-class-dropped] [fixture:
+decorations/blank-icon-and-class-one-space]
+
+The whitespace after the closing parenthesis of an icon is not in the Db, and is
+dropped.
+
+[fixture: decorations/trailing-whitespace-after-icon-dropped]
 
 Input
 ([decorations/at-the-column-of-the-node-input.mmd](../tests/fixtures/mindmap/decorations/at-the-column-of-the-node-input.mmd)):
@@ -275,12 +295,19 @@ the whitespace as part of the id, but the node is drawn the same: the id is not
 drawn where a shape stands, and the text of a node is drawn without the
 whitespace at its end (see
 [Mindmap texts that are drawn the same](./compatibility.md#mindmap-texts-that-are-drawn-the-same)).
+
 [fixture: node-text/trailing-whitespace-dropped] [fixture:
-node-text/space-before-a-shape-dropped] The whitespace inside a node text stays.
-[fixture: node-text/inner-whitespace-kept] A node text holds `]`, `:`, `#`, `"`,
-`%%`, and `:::` as characters, and a line that starts with a single `%` is a
-node text, not a comment. [fixture: node-text/special-characters] [fixture:
-node-text/percent-in-text] [fixture: node-text/keywords-in-text]
+node-text/space-before-a-shape-dropped]
+
+The whitespace inside a node text stays.
+
+[fixture: node-text/inner-whitespace-kept]
+
+A node text holds `]`, `:`, `#`, `"`, `%%`, and `:::` as characters, and a line
+that starts with a single `%` is a node text, not a comment.
+
+[fixture: node-text/special-characters] [fixture: node-text/percent-in-text]
+[fixture: node-text/keywords-in-text]
 
 Input
 ([node-text/special-characters-input.mmd](../tests/fixtures/mindmap/node-text/special-characters-input.mmd)):
@@ -332,9 +359,14 @@ mindmap
 
 The opener and the closer of a shape are printed as written. The closer need not
 match the opener: `[text)` is a rectangle and `((x)` a circle, and writing the
-closer that matches would change the text the author wrote. [fixture:
-shapes/openers-and-closers-kept] [fixture: shapes/mismatched-closers-kept] A
-shape may stand alone, without a node text. [fixture: shapes/shape-alone]
+closer that matches would change the text the author wrote.
+
+[fixture: shapes/openers-and-closers-kept] [fixture:
+shapes/mismatched-closers-kept]
+
+A shape may stand alone, without a node text.
+
+[fixture: shapes/shape-alone]
 
 The text of a shape is printed without the spaces and tabs at its ends: `a[ x ]`
 is printed `a[x]`. mermaid.js keeps them in the Db and draws the same node. A
@@ -343,11 +375,15 @@ with its quotes, and `a["x"]` and `a[x]` have the same text, so a string whose
 text is plain is printed without its quotes (see [Quotes](#quotes)); the padding
 of a text that would start with a quote once it is gone stays. A markdown
 string, a string that is not plain, and a text over lines stay as written, and a
-text of nothing but spaces and tabs is printed as one space. [fixture:
-shapes/inner-padding-dropped] [fixture: shapes/text-and-string-forms] [fixture:
-shapes/markdown-string] [fixture: shapes/padding-kept-where-drawn-differently]
-The whitespace after a shape is not in the Db, and is dropped. [fixture:
-shapes/trailing-whitespace-dropped]
+text of nothing but spaces and tabs is printed as one space.
+
+[fixture: shapes/inner-padding-dropped] [fixture: shapes/text-and-string-forms]
+[fixture: shapes/markdown-string] [fixture:
+shapes/padding-kept-where-drawn-differently]
+
+The whitespace after a shape is not in the Db, and is dropped.
+
+[fixture: shapes/trailing-whitespace-dropped]
 
 Input
 ([shapes/mismatched-closers-kept-input.mmd](../tests/fixtures/mindmap/shapes/mismatched-closers-kept-input.mmd)):
@@ -410,9 +446,11 @@ line break; and an empty string. A string after the opener `(-` loses its
 quotes, since mermaid.js reads `f(-x)` as it reads `f(-"x")`. A markdown string
 stays as written. Directives between the string and the dash change nothing,
 since mermaid.js removes them before it reads the text: `f("x"%%{init: {}}%%-)`
-keeps its quotes, and `f(-%%{init: {}}%%"y z")` loses them. [fixture:
-quotes/labels-without-quotes] [fixture: quotes/labels-that-need-quotes]
-[fixture: quotes/dash-closer-after-a-directive-kept] [fixture:
+keeps its quotes, and `f(-%%{init: {}}%%"y z")` loses them.
+
+[fixture: quotes/labels-without-quotes] [fixture:
+quotes/labels-that-need-quotes] [fixture:
+quotes/dash-closer-after-a-directive-kept] [fixture:
 quotes/dash-opener-string-unquoted]
 
 Input
@@ -450,9 +488,11 @@ mindmap
 A shape text, a string, a markdown string, and an icon may go over lines. The
 whitespace at the start of the later lines is part of the text, not an
 indentation, so the lines are printed as written, and the nodes below keep their
-steps as the rules above say. [fixture: multi-line-texts/shape-text] [fixture:
-multi-line-texts/string] [fixture: multi-line-texts/markdown-string] [fixture:
-multi-line-texts/icon] [fixture: multi-line-texts/rest-of-the-tree-shifted]
+steps as the rules above say.
+
+[fixture: multi-line-texts/shape-text] [fixture: multi-line-texts/string]
+[fixture: multi-line-texts/markdown-string] [fixture: multi-line-texts/icon]
+[fixture: multi-line-texts/rest-of-the-tree-shifted]
 
 Input
 ([multi-line-texts/shape-text-input.mmd](../tests/fixtures/mindmap/multi-line-texts/shape-text-input.mmd)):
@@ -503,9 +543,11 @@ mindmap
 Empty lines, comment lines, and diagram comments change nothing in the Db
 wherever they stand after the header. Runs of empty lines become one empty line,
 and empty lines at the start and the end of the body are dropped, as in the
-other diagram types. [fixture: blank-lines/collapsed] [fixture:
-blank-lines/body-edges-dropped] [fixture: blank-lines/before-a-comment]
-[fixture: blank-lines/around-comment-lines-and-directives]
+other diagram types.
+
+[fixture: blank-lines/collapsed] [fixture: blank-lines/body-edges-dropped]
+[fixture: blank-lines/before-a-comment] [fixture:
+blank-lines/around-comment-lines-and-directives]
 
 mermaid.js rejects some inputs that this specification accepts, as its lexer
 reads a diagram comment together with the whitespace before it (known divergence
@@ -513,17 +555,24 @@ reads a diagram comment together with the whitespace before it (known divergence
 empty line after a diagram comment in the places that the divergence lists. The
 printer does not repair the second kind. The empty lines after the header are
 dropped, like the whitespace at the end of the header line, so the output is
-accepted by mermaid.js. [fixture: blank-lines/after-the-header-dropped]
-[fixture: blank-lines/header-trailing-whitespace-dropped] [fixture:
-blank-lines/whitespace-line-dropped-at-the-start] An empty line after a diagram
-comment between nodes, or after the comments that follow the header, stays, as
-one, and mermaid.js rejects the output as it rejects the input. [fixture:
-blank-lines/after-two-comments-after-the-header] [fixture:
+accepted by mermaid.js.
+
+[fixture: blank-lines/after-the-header-dropped] [fixture:
+blank-lines/header-trailing-whitespace-dropped] [fixture:
+blank-lines/whitespace-line-dropped-at-the-start]
+
+An empty line after a diagram comment between nodes, or after the comments that
+follow the header, stays, as one, and mermaid.js rejects the output as it
+rejects the input.
+
+[fixture: blank-lines/after-two-comments-after-the-header] [fixture:
 blank-lines/after-a-comment-between-nodes-kept] [fixture:
 blank-lines/after-a-comment-between-nodes-collapsed] [fixture:
-blank-lines/after-a-trailing-comment-kept] Where mermaid.js accepts the empty
-line, it accepts the output. [fixture:
-blank-lines/after-one-comment-after-the-header] [fixture:
+blank-lines/after-a-trailing-comment-kept]
+
+Where mermaid.js accepts the empty line, it accepts the output.
+
+[fixture: blank-lines/after-one-comment-after-the-header] [fixture:
 blank-lines/after-two-comments-between-nodes]
 
 Input
@@ -602,22 +651,30 @@ A comment line, a line `%%` alone, and a line `%%{ }%%` stand at the level of
 the line after them, and at the end of the body at that of the last line. Their
 indentation is no part of the Db and does not change what mermaid.js accepts,
 and a `%%{` line needs no particular indentation. Their text and mark are kept
-as written. This is the rule of the other diagram types. [fixture:
-comments/lines-at-the-level-of-the-next-line] [fixture: comments/at-the-end]
-[fixture: comments/bare-and-brace-lines] [fixture: comments/only-comments] A
-comment line before the header stands at the first column. [fixture:
-comments/before-the-header]
+as written. This is the rule of the other diagram types.
+
+[fixture: comments/lines-at-the-level-of-the-next-line] [fixture:
+comments/at-the-end] [fixture: comments/bare-and-brace-lines] [fixture:
+comments/only-comments]
+
+A comment line before the header stands at the first column.
+
+[fixture: comments/before-the-header]
 
 A comment after the header, a shape, or an icon stays on the line, as written:
 one space stands before it where whitespace was written, and none where it
 touches. The whitespace before such a comment is no part of the Db, so the form
 is a choice: the printer shortens a run to one space and keeps whether there is
 any, since the author decides whether a comment touches what it follows, as in
-the other diagram types. [fixture: comments/after-the-header] [fixture:
+the other diagram types.
+
+[fixture: comments/after-the-header] [fixture:
 comments/after-the-header-touching] [fixture: comments/after-a-shape] [fixture:
-comments/after-an-icon] After a node text and inside a class, `%%` is a
-character of the text. [fixture: comments/in-text-is-text] [fixture:
-comments/single-percent-is-text]
+comments/after-an-icon]
+
+After a node text and inside a class, `%%` is a character of the text.
+
+[fixture: comments/in-text-is-text] [fixture: comments/single-percent-is-text]
 
 Input
 ([comments/lines-at-the-level-of-the-next-line-input.mmd](../tests/fixtures/mindmap/comments/lines-at-the-level-of-the-next-line-input.mmd)):
@@ -677,23 +734,29 @@ with one space before each that has whitespace before it, and the whitespace
 after the last one is left out, whatever the whitespace at the end of the line
 (see
 [Texts after a keyword that are drawn the same](./compatibility.md#texts-after-a-keyword-that-are-drawn-the-same)).
+
 [fixture: node-text/directives-end-blanks-dropped] [fixture: directives/kept]
 [fixture: directives/between-nodes] [fixture: directives/before-the-header]
 [fixture: directives/after-the-header-on-the-same-line] [fixture:
 directives/after-the-header-touching] [fixture: directives/after-a-shape]
 
 A directive between two units stays where it is, and a directive inside a text
-is part of the text. [fixture: directives/between-units] [fixture:
-directives/inside-a-text] A directive that is not closed takes the rest of the
-text, and is kept as written. [fixture: directives/unclosed] [fixture:
-directives/unclosed-after-a-node]
+is part of the text.
+
+[fixture: directives/between-units] [fixture: directives/inside-a-text]
+
+A directive that is not closed takes the rest of the text, and is kept as
+written.
+
+[fixture: directives/unclosed] [fixture: directives/unclosed-after-a-node]
 
 The whitespace after a directive that starts a line counts as indentation of the
 node, since the Db reads the indentation in the text without its directives.
 Such a line is printed as written from the directive, and the printer decides
 the whitespace before the directive, so that the node has as many characters of
-indentation as the level of its step requires. [fixture:
-directives/before-a-node-on-its-line] [fixture:
+indentation as the level of its step requires.
+
+[fixture: directives/before-a-node-on-its-line] [fixture:
 directives/before-a-node-after-spaces] [fixture: directives/before-the-root]
 
 Input
@@ -744,7 +807,9 @@ mindmap
 mermaid.js write it (see
 [Spellings that are drawn the same](./compatibility.md#spellings-that-are-drawn-the-same)):
 mermaid.js reads it in any case and the Db is the same. The header is detected
-in lower case only. [fixture: keyword-case/icon-keyword]
+in lower case only.
+
+[fixture: keyword-case/icon-keyword]
 
 Input
 ([keyword-case/icon-keyword-input.mmd](../tests/fixtures/mindmap/keyword-case/icon-keyword-input.mmd)):
@@ -770,11 +835,18 @@ mindmap
 
 As in a flowchart: the YAML between the `---` lines is formatted with Prettier's
 YAML formatter, and the `---` lines are kept as written, with the spaces and
-tabs at the end of each. [fixture: frontmatter-yaml/formatted] [fixture:
-frontmatter-yaml/closing-delimiter-whitespace-kept] The YAML is kept as written
-when Prettier cannot read it. [fixture: frontmatter-yaml/malformed-kept] A
-comment line between the frontmatter and the header is kept. [fixture:
-frontmatter-yaml/comment-after-frontmatter-before-header]
+tabs at the end of each.
+
+[fixture: frontmatter-yaml/formatted] [fixture:
+frontmatter-yaml/closing-delimiter-whitespace-kept]
+
+The YAML is kept as written when Prettier cannot read it.
+
+[fixture: frontmatter-yaml/malformed-kept]
+
+A comment line between the frontmatter and the header is kept.
+
+[fixture: frontmatter-yaml/comment-after-frontmatter-before-header]
 
 Input
 ([frontmatter-yaml/formatted-input.mmd](../tests/fixtures/mindmap/frontmatter-yaml/formatted-input.mmd)):
@@ -809,21 +881,24 @@ it is a new line whose indentation starts with that character. So the printer
 writes a line break there, and the line after it has the indentation that the Db
 reads, counting the separator as one character. In a node text, a shape text,
 and an icon, they are characters of the text and stay. The examples are written
-as strings, in which `\u2028` is U+2028 and `\n` is a line break. [test: U+2028
-after a comment on the header line] [test: U+2028 after a comment after a shape]
-[test: U+2028 after a comment after an icon] [test: U+2028 after a bare comment
-between nodes] [test: U+2028 inside a node text] [test: U+2029 inside a shape
-text] [test: U+2028 inside an icon] [test: U+2028 after the header]
+as strings, in which `\u2028` is U+2028 and `\n` is a line break.
+
+[test: U+2028 after a comment on the header line] [test: U+2028 after a comment
+after a shape] [test: U+2028 after a comment after an icon] [test: U+2028 after
+a bare comment between nodes] [test: U+2028 inside a node text] [test: U+2029
+inside a shape text] [test: U+2028 inside an icon] [test: U+2028 after the
+header]
 
 A `;` beside the separator changes none of this. The `;` that the line rule
 ignores stays at the end of the comment, and a `;` in the text of the node after
 the separator is a character of that text, also after an icon. A wide
 indentation after the separator is written again at the width of its step, and
-with a tab width of 0 or with tabs the line is indented as any other. [test:
-mindmap: selected-comment-ls-kept] [test: mindmap: comment-ps-semicolon-after]
-[test: mindmap: comment-ls-semicolon-both] [test: mindmap: icon-comment-ps-kept]
-[test: mindmap: selected-comment-ps-wide] [test: mindmap:
-selected-comment-ls-zero] [test: mindmap: icon-comment-ls-tabs]
+with a tab width of 0 or with tabs the line is indented as any other.
+
+[test: mindmap: selected-comment-ls-kept] [test: mindmap:
+comment-ps-semicolon-after] [test: mindmap: comment-ls-semicolon-both] [test:
+mindmap: icon-comment-ps-kept] [test: mindmap: selected-comment-ps-wide] [test:
+mindmap: selected-comment-ls-zero] [test: mindmap: icon-comment-ls-tabs]
 
 A directive at the start of the line after the separator is the directive of a
 line like any other (see [Directives](#directives)): the line is printed as
@@ -839,15 +914,16 @@ between the directive and the text, whether the text touches the directive,
 whether a second directive, an icon, a class, or a `;` that the line rule
 ignores is there, how deep the line is, and which options are set. A separator
 after the comment of such a node starts the next line in the same way, and the
-lines after it are indented as before. [test: U+2028 before a directive that
-starts the line] [test: U+2029 before a directive that touches the text] [test:
-U+2028 and whitespace before and after a directive] [test: U+2028 before two
-directives] [test: U+2028 before a directive and an icon] [test: U+2028 before a
-directive and a class] [test: U+2028 before a directive in a deeper line] [test:
-U+2028 after a selected semicolon before a directive] [test: U+2028 before a
-directive with a tab width of 0] [test: U+2028 before a directive with tabs]
-[test: U+2028 and U+2029 before two directives in two lines] [test: U+2028
-before a directive and a sibling]
+lines after it are indented as before.
+
+[test: U+2028 before a directive that starts the line] [test: U+2029 before a
+directive that touches the text] [test: U+2028 and whitespace before and after a
+directive] [test: U+2028 before two directives] [test: U+2028 before a directive
+and an icon] [test: U+2028 before a directive and a class] [test: U+2028 before
+a directive in a deeper line] [test: U+2028 after a selected semicolon before a
+directive] [test: U+2028 before a directive with a tab width of 0] [test: U+2028
+before a directive with tabs] [test: U+2028 and U+2029 before two directives in
+two lines] [test: U+2028 before a directive and a sibling]
 
 mermaid.js removes a comment line that follows the separator, with the
 whitespace and the directives before it, and the line of the node goes on after
@@ -855,6 +931,7 @@ it (common.md, Comment), so what the comment line holds is no part of the
 indentation of the node. A directive after the comment line starts the line of
 the node, as above, and the comment line, with the directives before it, stands
 on a line of its own at the level of the node (see [Comments](#comments)).
+
 [test: U+2028 before a comment line and a directive] [test: U+2028 before a
 comment line and an indented directive] [test: U+2028 before a directive, a
 comment line, and a directive] [test: U+2028 before two comment lines and a
@@ -866,8 +943,10 @@ directive at the level of the line after it (see [Directives](#directives)) and
 the empty line as one empty line (see [Blank lines](#blank-lines)). mermaid.js
 rejects both placings (known divergence
 [`blank-line-after-header-or-comments`](../../spec/docs/known-divergences/blank-line-after-header-or-comments.md)),
-and the printer does not repair that. [test: U+2028 before a directive line of
-its own] [test: U+2028 before an empty line]
+and the printer does not repair that.
+
+[test: U+2028 before a directive line of its own] [test: U+2028 before an empty
+line]
 
 ### Whitespace characters
 
@@ -876,8 +955,9 @@ one character of the indentation, and the printer writes the character of the
 options in its place, keeping the number; after a shape they are dropped, and
 before a comment a space stands for them; in a node text and a shape text they
 are characters of the text and stay. The examples are written as strings, in
-which `\u00a0` is U+00A0, `\u3000` is U+3000, and `\ufeff` is U+FEFF. [test:
-U+00A0 in the indentation] [test: U+3000 in the indentation] [test: U+FEFF in
-the indentation] [test: U+00A0 after the header] [test: U+00A0 inside a node
-text] [test: U+00A0 inside a shape text] [test: U+00A0 and U+3000 after a shape]
-[test: U+00A0 before a comment after a shape]
+which `\u00a0` is U+00A0, `\u3000` is U+3000, and `\ufeff` is U+FEFF.
+
+[test: U+00A0 in the indentation] [test: U+3000 in the indentation] [test:
+U+FEFF in the indentation] [test: U+00A0 after the header] [test: U+00A0 inside
+a node text] [test: U+00A0 inside a shape text] [test: U+00A0 and U+3000 after a
+shape] [test: U+00A0 before a comment after a shape]

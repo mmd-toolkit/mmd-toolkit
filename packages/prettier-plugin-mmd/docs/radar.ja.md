@@ -22,10 +22,10 @@ mermaid.js は `radar-beta:` と `radar-beta` を同じ見出しとして読み�
 コロンと語の間に隠れた形か大域的なディレクティブがあるときと、
 `;` か隠れた YAML ブロックの `---` がコロンに接するときは、コロンを残します。
 隠れた形、大域的な注釈類、セミコロンの保護区間では境界を保ちます。
-空の本文は空のままです。 [fixture: radar/header/colon-removed]
-[fixture: radar/header/colon-yaml-kept]
-[fixture: radar/header/colon-directive-before-hidden-yaml-kept]
+空の本文は空のままです。
 
+[fixture: radar/header/colon-removed] [fixture: radar/header/colon-yaml-kept]
+[fixture: radar/header/colon-directive-before-hidden-yaml-kept]
 [fixture: radar/header/joined-empty]
 
 [fixture: radar/header/join-separated-empty-alternative]
@@ -439,8 +439,8 @@ U+2029、バッククォート、`&`、`#`、`<` がある場合を除き、`"` 
 （[同じに描かれる綴り](./compatibility.ja.md#同じに描かれる綴り)）。
 `singleQuote` は読みません。
 空ラベルを削除すると、代わりに ID を使う処理が変わります。
-[fixture: radar/quotes/single-quote-sensitive-kept]
 
+[fixture: radar/quotes/single-quote-sensitive-kept]
 [fixture: radar/quotes/quotes-and-empty]
 
 [fixture: radar/quotes/padding-label]
@@ -480,8 +480,8 @@ radar-beta
 題の終わりのディレクティブは、それぞれの前に空白があれば空白 1 つを置き、
 行末の空白の有無にかかわらず、最後のディレクティブの後の空白を除いて印字します。
 （[同じに描かれるキーワードの後のテキスト](./compatibility.ja.md#同じに描かれるキーワードの後のテキスト)）。
-[fixture: title/title-directives-end-blanks-dropped]
 
+[fixture: title/title-directives-end-blanks-dropped]
 [fixture: radar/title/title-edge-trim]
 
 [fixture: radar/title/title-empty]
@@ -517,8 +517,8 @@ radar-beta
 値の終わりのディレクティブは、それぞれの前に空白があれば空白 1 つを置き、
 最後のディレクティブの後の空白を除いて印字します。
 （[同じに描かれるキーワードの後のテキスト](./compatibility.ja.md#同じに描かれるキーワードの後のテキスト)）。
-[fixture: accessibility-lines/acc-directives-end-blanks-dropped]
 
+[fixture: accessibility-lines/acc-directives-end-blanks-dropped]
 [fixture: radar/accessibility-lines/a11y-lines-fixed]
 
 [fixture: radar/accessibility-lines/a11y-empty-next]
@@ -923,9 +923,11 @@ radar-beta
 行の規則が無視する `;` が変わりうる場合は、各区間の頭から最後の保つ `;` までを、
 書かれたまま残します。
 それ以外の複数行の文は、1 行の文と同じように整形します。
+
 [fixture: semicolons/stretch-kept-rest-formatted]
 [fixture: semicolons/no-stretch-formatted]
 [fixture: multi-line-statements/protected-semicolon-written-indentation]
+
 保護された見出しと最初の文の群はまとめて残します。
 style・classDef の選択、2 回の除去、大小文字・コロン・ハッシュ記号の非該当形、
 Unicode の区間境界、ディレクティブ除去後の接合を保ちます。

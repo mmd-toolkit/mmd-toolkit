@@ -36,6 +36,7 @@ Db は、ノードの level を、
 1 つの図の中で段の幅が違ってもかまいません。
 印字は、どの段の幅も書かれたまま残し、
 以下の規則は Db に入らないものだけを変えます。
+
 [fixture: indentation/step-widths-kept]
 [fixture: indentation/tree-from-the-indentation]
 [fixture: indentation/siblings-after-deeper-nodes]
@@ -44,10 +45,13 @@ Db は、ノードの level を、
 根は、どの図種の文とも同じく、ヘッダーより 1 段深く置きます。
 ほかのノードは、根より書かれた文字数だけ深く置くので、level は変わりません。
 それ以上に、入力に書かれた字下げは残しません。
+
 [fixture: indentation/root-shifted-to-one-level]
 [fixture: indentation/root-at-the-first-column]
 [fixture: indentation/written-indentation-dropped]
+
 1 段は Prettier の `useTabs` と `tabWidth` の指定どおりで、既定は空白 2 つです。
+
 [fixture: indentation/tab-width-4]
 
 ノードの前の空白文字は、タブ、U+00A0、U+3000 も含め、どれも字下げの 1 文字で、
@@ -56,6 +60,7 @@ Db は、ノードの level を、
 文字数は変えません。
 `useTabs` では、n 文字の段の幅は n 個のタブになります。
 これで、1 行の字下げが、オプションの指定する 1 種類の文字になります。
+
 [fixture: indentation/use-tabs] [fixture: indentation/characters-replaced]
 
 入力
@@ -154,11 +159,14 @@ mindmap
 その下のノードは根からの段の幅を保ちます（[インデント](#インデント)を参照）。
 Db は同じです。
 根は、他の図種でヘッダーの後の文が自分の行に移るのと同じに置きます。
+
 [fixture: root-on-header-line/moved-to-its-own-line]
 [fixture: root-on-header-line/shape-glued-to-the-header]
 [fixture: root-on-header-line/text-after-spaces]
 [fixture: root-on-header-line/after-a-tab]
+
 根のテキストの後ろの `%%` は、コメントではなくテキストの一部です。
+
 [fixture: root-on-header-line/text-with-percent]
 
 入力
@@ -201,11 +209,14 @@ mindmap
 字下げによらないので、字下げは Db に入りません。
 飾る先のノードと同じ列に置きます。
 mermaid.js の文書の例の書き方と同じです。
+
 [fixture: decorations/at-the-column-of-the-node]
 [fixture: decorations/before-and-after-children]
+
 2 つ目のクラスの行（アイコンの行も同じ）は Db で最初のものを置き換えますが、
 どちらも書かれたまま残します。
 作者が書いたテキストを、印字は落とさないからです。
+
 [fixture: decorations/second-class-kept]
 
 アイコンと class のテキストは、両端の空白とタブを除いて印字します。
@@ -217,9 +228,12 @@ mermaid.js はその空白を Db に残しますが、同じノードを描き�
 これが、テキストを保つ最小の空白です。
 空のアイコンや class は拒否され、mermaid.js は空白とタブの数によらず、
 同じ空のテキストを読むからです。
+
 [fixture: decorations/padding-in-icon-and-class-dropped]
 [fixture: decorations/blank-icon-and-class-one-space]
+
 アイコンの閉じ括弧の後ろの空白は Db に入らないので落とします。
+
 [fixture: decorations/trailing-whitespace-after-icon-dropped]
 
 入力
@@ -281,12 +295,17 @@ mindmap
 Db はその空白を id の一部として持ちますが、描かれるノードは同じです。
 形がある場合は id を描かず、ノードのテキストは末尾の空白を描かないからです。
 （[同じに描かれる mindmap のテキスト](./compatibility.ja.md#同じに描かれる-mindmap-のテキスト)）。
+
 [fixture: node-text/trailing-whitespace-dropped]
 [fixture: node-text/space-before-a-shape-dropped]
+
 ノードのテキストの中の空白は残します。
+
 [fixture: node-text/inner-whitespace-kept]
+
 ノードのテキストは、`]`、`:`、`#`、`"`、`%%`、`:::` を文字として含み、
 単独の `%` で始まる行はコメントではなくノードのテキストです。
+
 [fixture: node-text/special-characters] [fixture: node-text/percent-in-text]
 [fixture: node-text/keywords-in-text]
 
@@ -341,9 +360,13 @@ mindmap
 形の開きと閉じは、書かれたまま印字します。
 閉じは開きに合わなくてよく、`[text)` は長方形、`((x)` は円です。
 合う閉じに直すと、作者が書いたテキストを書き換えることになります。
+
 [fixture: shapes/openers-and-closers-kept]
 [fixture: shapes/mismatched-closers-kept]
-形はノードのテキストなしに単独でも書けます。 [fixture: shapes/shape-alone]
+
+形はノードのテキストなしに単独でも書けます。
+
+[fixture: shapes/shape-alone]
 
 形のテキストは、両端の空白とタブを除いて印字します。
 `a[ x ]` は `a[x]` と印字します。
@@ -355,10 +378,13 @@ mermaid.js はその空白を Db に残しますが、同じノードを描き�
 余白を除くと引用符で始まるテキストは、その余白を残します。
 markdown 文字列、平易でない文字列、複数行にまたがるテキストは、
 書かれたままにし、空白とタブだけのテキストは空白 1 つで印字します。
+
 [fixture: shapes/inner-padding-dropped] [fixture: shapes/text-and-string-forms]
 [fixture: shapes/markdown-string]
 [fixture: shapes/padding-kept-where-drawn-differently]
+
 形の後ろの空白は Db に入らないので落とします。
+
 [fixture: shapes/trailing-whitespace-dropped]
 
 入力
@@ -429,6 +455,7 @@ markdown 文字列は書かれたまま残します。
 mermaid.js は、テキストを読む前にそれらを取り除くので、
 `f("x"%%{init: {}}%%-)` は引用符を残し、
 `f(-%%{init: {}}%%"y z")` は引用符を外します。
+
 [fixture: quotes/labels-without-quotes]
 [fixture: quotes/labels-that-need-quotes]
 [fixture: quotes/dash-closer-after-a-directive-kept]
@@ -470,6 +497,7 @@ mindmap
 後の行の行頭の空白は字下げではなくテキストの一部なので、
 行は書かれたまま印字します。
 その下のノードは、上の規則のとおり段の幅を保ちます。
+
 [fixture: multi-line-texts/shape-text] [fixture: multi-line-texts/string]
 [fixture: multi-line-texts/markdown-string] [fixture: multi-line-texts/icon]
 [fixture: multi-line-texts/rest-of-the-tree-shifted]
@@ -523,8 +551,9 @@ mindmap
 空行、コメント行、図のコメントは、
 ヘッダーの後のどこにあっても Db に影響しません。
 連続する空行は 1 つにし、本体の先頭と末尾の空行は落とします。
-他の図種と同じ規則です。 [fixture: blank-lines/collapsed]
-[fixture: blank-lines/body-edges-dropped]
+他の図種と同じ規則です。
+
+[fixture: blank-lines/collapsed] [fixture: blank-lines/body-edges-dropped]
 [fixture: blank-lines/before-a-comment]
 [fixture: blank-lines/around-comment-lines-and-directives]
 
@@ -536,17 +565,22 @@ mermaid.js の字句解析器は、
 印字は、2 つ目の種類を直しません。
 ヘッダーの後の空行は、ヘッダーの行末の空白と同じく落とすので、
 出力は mermaid.js に受理されます。
+
 [fixture: blank-lines/after-the-header-dropped]
 [fixture: blank-lines/header-trailing-whitespace-dropped]
 [fixture: blank-lines/whitespace-line-dropped-at-the-start]
+
 ノードの間の図のコメントの後や、ヘッダーの後のコメントの後の空行は、
 1 つに畳んで残します。
 mermaid.js は、入力を拒否したのと同じく、出力も拒否します。
+
 [fixture: blank-lines/after-two-comments-after-the-header]
 [fixture: blank-lines/after-a-comment-between-nodes-kept]
 [fixture: blank-lines/after-a-comment-between-nodes-collapsed]
 [fixture: blank-lines/after-a-trailing-comment-kept]
+
 mermaid.js が空行を受理する形では、出力も受理します。
+
 [fixture: blank-lines/after-one-comment-after-the-header]
 [fixture: blank-lines/after-two-comments-between-nodes]
 
@@ -627,10 +661,14 @@ mindmap
 字下げは Db に入らず、mermaid.js の受理にも影響しません。
 `%%{` の行に特別な字下げは要りません。
 テキストと印は書かれたまま残します。
-他の図種と同じ規則です。 [fixture: comments/lines-at-the-level-of-the-next-line]
+他の図種と同じ規則です。
+
+[fixture: comments/lines-at-the-level-of-the-next-line]
 [fixture: comments/at-the-end] [fixture: comments/bare-and-brace-lines]
 [fixture: comments/only-comments]
+
 ヘッダーの前のコメント行は 1 桁目に置きます。
+
 [fixture: comments/before-the-header]
 
 ヘッダー、形、アイコンの後ろのコメントは、その行に書かれたまま残します。
@@ -638,10 +676,13 @@ mindmap
 そのコメントの前の空白は Db に入らないので、この形は選択です。
 空白の連なりは 1 つにし、空白があるかどうかは保ちます。
 コメントが前のものに接するかどうかは書き手が決めるからで、ほかの図種も同じです。
+
 [fixture: comments/after-the-header]
 [fixture: comments/after-the-header-touching] [fixture: comments/after-a-shape]
 [fixture: comments/after-an-icon]
+
 ノードのテキストの後ろと class の中の `%%` は、テキストの文字です。
+
 [fixture: comments/in-text-is-text] [fixture: comments/single-percent-is-text]
 
 入力
@@ -702,6 +743,7 @@ mindmap
 最後のディレクティブの後の空白は除きます。
 行末の空白の有無で印字は変わりません。
 （[同じに描かれるキーワードの後のテキスト](./compatibility.ja.md#同じに描かれるキーワードの後のテキスト)）。
+
 [fixture: node-text/directives-end-blanks-dropped] [fixture: directives/kept]
 [fixture: directives/between-nodes] [fixture: directives/before-the-header]
 [fixture: directives/after-the-header-on-the-same-line]
@@ -710,8 +752,11 @@ mindmap
 
 2 つの単位の間のディレクティブは、その場に残します。
 テキストの中のディレクティブは、テキストの一部です。
+
 [fixture: directives/between-units] [fixture: directives/inside-a-text]
+
 閉じられていないディレクティブはテキストの残りを取り、書かれたまま残します。
+
 [fixture: directives/unclosed] [fixture: directives/unclosed-after-a-node]
 
 行頭のディレクティブの後ろの空白は、ノードの字下げの数に入ります。
@@ -719,6 +764,7 @@ Db は字下げを、ディレクティブを除いたテキストで読むか�
 そのような行は、ディレクティブから書かれたまま印字し、
 ディレクティブの前の空白は、
 その段の幅に必要な字下げの文字数になるよう印字が決めます。
+
 [fixture: directives/before-a-node-on-its-line]
 [fixture: directives/before-a-node-after-spaces]
 [fixture: directives/before-the-root]
@@ -770,7 +816,9 @@ mindmap
 `::icon(` は、mermaid.js の文書の例のとおり、小文字で印字します。
 （[同じに描かれる綴り](./compatibility.ja.md#同じに描かれる綴り)）。
 mermaid.js は `::icon(` をどの大文字小文字でも読み、Db は同じです。
-ヘッダーは小文字でだけ検出されます。 [fixture: keyword-case/icon-keyword]
+ヘッダーは小文字でだけ検出されます。
+
+[fixture: keyword-case/icon-keyword]
 
 入力
 ([keyword-case/icon-keyword-input.mmd](../tests/fixtures/mindmap/keyword-case/icon-keyword-input.mmd)):
@@ -797,11 +845,16 @@ mindmap
 フローチャートと同じです。
 `---` の行の間の YAML は Prettier の YAML 整形で整形し、`---` の行は、
 行末の空白とタブも含め、書かれたまま残します。
+
 [fixture: frontmatter-yaml/formatted]
 [fixture: frontmatter-yaml/closing-delimiter-whitespace-kept]
+
 Prettier が YAML を読めないときは、書かれたまま残します。
+
 [fixture: frontmatter-yaml/malformed-kept]
+
 フロントマターとヘッダーの間のコメント行は残します。
+
 [fixture: frontmatter-yaml/comment-after-frontmatter-before-header]
 
 入力
@@ -839,6 +892,7 @@ mindmap の図のコメントは U+2028 か U+2029 で終わり、その後ろ�
 ノードのテキスト、形のテキスト、アイコンの中では、これらは文字で、
 そのまま残します。
 例は文字列で書かれていて、`\u2028` は U+2028、`\n` は改行です。
+
 [test: U+2028 after a comment on the header line]
 [test: U+2028 after a comment after a shape]
 [test: U+2028 after a comment after an icon]
@@ -852,6 +906,7 @@ mindmap の図のコメントは U+2028 か U+2029 で終わり、その後ろ�
 アイコンの後ろでもそのテキストの文字です。
 区切り文字の後ろの広い字下げは、段の幅に書き直します。
 タブ幅 0 のときもタブを使うときも、その行は他の行と同じに字下げします。
+
 [test: mindmap: selected-comment-ls-kept]
 [test: mindmap: comment-ps-semicolon-after]
 [test: mindmap: comment-ls-semicolon-both] [test: mindmap: icon-comment-ps-kept]
@@ -877,6 +932,7 @@ mindmap の図のコメントは U+2028 か U+2029 で終わり、その後ろ�
 どのオプションを指定したかは、結果を変えません。
 このようなノードのコメントの後ろの区切り文字も同じように次の行を始め、
 その後ろの行は、これまでどおり字下げします。
+
 [test: U+2028 before a directive that starts the line]
 [test: U+2029 before a directive that touches the text]
 [test: U+2028 and whitespace before and after a directive]
@@ -897,6 +953,7 @@ mermaid.js は、区切り文字の後ろのコメント行を、
 コメント行の後ろのディレクティブは、上と同じくノードの行を始めます。
 コメント行は、その前のディレクティブとともに、
 ノードの段に独立した行として置きます（[コメント](#コメント)を参照）。
+
 [test: U+2028 before a comment line and a directive]
 [test: U+2028 before a comment line and an indented directive]
 [test: U+2028 before a directive, a comment line, and a directive]
@@ -908,7 +965,9 @@ mermaid.js は、区切り文字の後ろのコメント行を、
 を参照）、空行は 1 つの空行にします（[空行](#空行) を参照）。
 mermaid.js はどちらの置き方も拒否します（既知の差異
 [`blank-line-after-header-or-comments`](../../spec/docs/known-divergences/blank-line-after-header-or-comments.ja.md)）。
-印字はそれを直しません。 [test: U+2028 before a directive line of its own]
+印字はそれを直しません。
+
+[test: U+2028 before a directive line of its own]
 [test: U+2028 before an empty line]
 
 ### 空白の文字
@@ -919,8 +978,10 @@ U+00A0、U+3000、U+FEFF は、字句解析器にとって空白です。
 形の後ろでは落とし、コメントの前では空白 1 つにします。
 ノードのテキストと形のテキストの中では、テキストの文字なので残します。
 例は文字列で書かれていて、`\u00a0` は U+00A0、`\u3000` は U+3000、
-`\ufeff` は U+FEFF です。 [test: U+00A0 in the indentation]
-[test: U+3000 in the indentation] [test: U+FEFF in the indentation]
-[test: U+00A0 after the header] [test: U+00A0 inside a node text]
-[test: U+00A0 inside a shape text] [test: U+00A0 and U+3000 after a shape]
+`\ufeff` は U+FEFF です。
+
+[test: U+00A0 in the indentation] [test: U+3000 in the indentation]
+[test: U+FEFF in the indentation] [test: U+00A0 after the header]
+[test: U+00A0 inside a node text] [test: U+00A0 inside a shape text]
+[test: U+00A0 and U+3000 after a shape]
 [test: U+00A0 before a comment after a shape]

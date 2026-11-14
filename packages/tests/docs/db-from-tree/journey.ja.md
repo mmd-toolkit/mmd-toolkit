@@ -43,6 +43,7 @@ Db は、メソッドに渡されたものを保ちます。
 `title T` の後ろが CRLF でも単独の `\r` でも、タイトルは `T` です。
 各属性の引用符は `'` として読みます。
 これはタイトルと説明の中でのことです。
+
 [fixture: journey/entity-placeholder-in-task-text]
 [fixture: journey/entity-placeholder-in-title]
 [fixture: journey/entity-placeholder-in-section]
@@ -64,12 +65,14 @@ Db は、メソッドに渡されたものを保ちます。
 - JourneyLiteral は、その範囲の変換した形を持ちます。
   `value` は木が持つ書かれたとおりのテキストで、
   Db が持つのは mermaid.js が読むとおりのテキストです。
+
 - ディレクティブがテキストの単位の中にあっても、変換した形にはないので、
   テキストにもありません。
   `a%%{init: {}}%%b: 5` はタスク `ab` で、
   `title a%%{init: {}}%%b` のタイトルは `ab`、
   `A: 1%%{init: {}}%%0` のスコアは `10` です。
   description ブロックの中のコメント行も同じです。
+
   [fixture: journey/lex-directive-in-task-text]
   [fixture: journey/lex-directive-in-score]
   [fixture: journey/lex-directive-in-person]
@@ -78,9 +81,11 @@ Db は、メソッドに渡されたものを保ちます。
   [fixture: journey/lex-directive-in-acc-title]
   [fixture: journey/lex-directive-in-acc-descr-block]
   [fixture: journey/tokens-comment-line-in-acc-block]
+
 - 行規則が無視する `;` も、テキストの中では変換した形にありません。
   そのため、説明、スコア、人、タイトル、section の名前、
   アクセシビリティのテキストは、それを除いたテキストを持ちます。
+
   [fixture: journey/tokens-ignored-semicolon-in-task-text]
   [fixture: journey/tokens-ignored-semicolon-in-score]
   [fixture: journey/tokens-ignored-semicolon-in-person]
@@ -89,10 +94,12 @@ Db は、メソッドに渡されたものを保ちます。
   [fixture: journey/tokens-ignored-semicolon-in-acc-title]
   [fixture: journey/tokens-ignored-semicolon-in-acc-descr]
   [fixture: journey/tokens-ignored-semicolon-in-acc-block]
+
 - テキストの両端の空白は、木が持つとおりに残ります。
   説明のテキストはコロンの前の空白を保ちます。
   タイトルと section の名前は両端の空白を保ち、空白だけの名前もそのままです。
   行を終えるディレクティブが続く場合も同じです。
+
   [fixture: journey/db-task-description-spaces]
   [fixture: journey/lex-whitespace-ideographic-space-around-task]
   [fixture: journey/lex-title-two-spaces]
@@ -102,10 +109,12 @@ Db は、メソッドに渡されたものを保ちます。
   [fixture: journey/lex-section-whitespace-only]
   [fixture: journey/lex-directive-at-end-of-title-line]
   [fixture: journey/lex-directive-at-end-of-section-line]
+
 - 人とアクセシビリティのテキストは、その範囲の変換した形から、
   両端の空白を除いたものです。
   mermaid.js がそう trim します。
   ディレクティブがその空白の隣にあっても同じです。
+
   [fixture: journey/gram-task-people-nbsp-trimmed]
   [fixture: journey/lex-directive-after-person]
   [fixture: journey/gram-acc-title-trailing-spaces]
@@ -118,6 +127,7 @@ Db は、メソッドに渡されたものを保ちます。
 空の description ブロック、
 つまりテキストのない JourneyAccDescrBlockStatement は、何も変えません。
 そのまわりの文は、それがないものとして実行されます。
+
 [fixture: journey/gram-acc-descr-block-empty]
 [fixture: journey/gram-acc-descr-block-whitespace-only]
 [fixture: journey/gram-empty-description-block-after-block]
@@ -127,6 +137,7 @@ Db は、メソッドに渡されたものを保ちます。
 **既定値。**
 文がなければ、Db のタイトル（フロントマターのタイトルがあればそれ）、
 `accTitle`、`accDescr` は空のテキストで、section もタスクもありません。
+
 [fixture: journey/header-only] [fixture: journey/db-title-frontmatter]
 
 **タイトルと section。**
@@ -135,8 +146,9 @@ Db は、メソッドに渡されたものを保ちます。
 その後は最後のものが勝ちます。
 タイトルには文字の置き換え（下を参照）をします。
 `section` の文は、名前のテキストを書かれたとおりに `sections` の後ろに加えます。
-繰り返しても同じです。 [fixture: journey/db-title-frontmatter]
-[fixture: journey/db-title-statement]
+繰り返しても同じです。
+
+[fixture: journey/db-title-frontmatter] [fixture: journey/db-title-statement]
 [fixture: journey/db-title-statement-after-frontmatter]
 [fixture: journey/lex-title-twice] [fixture: journey/db-sections]
 [fixture: journey/db-section-ends-at-hash]
@@ -149,10 +161,13 @@ Db は、メソッドに渡されたものを保ちます。
 - `task` は説明のテキストで、書かれたとおりです。
   `section` は、タスクより前の最後の `section` の文の名前で、
   書かれたとおりです。
-  なければ空のテキストです。 [fixture: journey/db-task-description-spaces]
+  なければ空のテキストです。
+
+  [fixture: journey/db-task-description-spaces]
   [fixture: journey/db-task-before-section]
   [fixture: journey/db-section-ends-at-hash]
   [fixture: journey/docs-intro-examples-e978837a]
+
 - `score` は、文にスコアがなければ `0` です。
   あれば、スコアのテキストから JavaScript が作る数です。
   そのため `3.5`、`-2`、`1e2`、`0x10` は数です。
@@ -160,8 +175,9 @@ Db は、メソッドに渡されたものを保ちます。
   数でないテキスト（`abc` や `5, 6`）は `NaN` です。
   テキスト `Infinity` と `-Infinity`、
   および `1e400` のように倍精度に収まらない大きな数は、
-  `Infinity` と `-Infinity` です。 [fixture: journey/db-task-score-only]
-  [fixture: journey/db-task-score-decimal]
+  `Infinity` と `-Infinity` です。
+
+  [fixture: journey/db-task-score-only] [fixture: journey/db-task-score-decimal]
   [fixture: journey/db-task-score-negative]
   [fixture: journey/db-task-score-exponent]
   [fixture: journey/db-task-score-hexadecimal]
@@ -174,16 +190,21 @@ Db は、メソッドに渡されたものを保ちます。
   [fixture: journey/lex-task-score-nbsp-trimmed]
   [fixture: journey/db-task-score-empty]
   [fixture: journey/gram-task-data-whitespace-only]
+
 - `people` は、文の `people` の要素ごとに名前を 1 つ持ちます。
   人のテキストか、null の要素なら空のテキストです。
-  2 つ目のコロンのない文は、人を持ちません。 [fixture: journey/db-task-people]
-  [fixture: journey/db-task-people-empty-item]
+  2 つ目のコロンのない文は、人を持ちません。
+
+  [fixture: journey/db-task-people] [fixture: journey/db-task-people-empty-item]
   [fixture: journey/db-task-people-blank]
   [fixture: journey/gram-task-second-colon-at-end]
   [fixture: journey/gram-task-people-trailing-comma]
   [fixture: journey/db-task-score-only]
+
 - データの 3 つ目のコロンから後のテキスト、つまり木の `textAfter` は、
-  Db にありません。 [fixture: journey/db-task-extra-colon]
+  Db にありません。
+
+  [fixture: journey/db-task-extra-colon]
   [fixture: journey/gram-task-third-colon-at-end]
   [fixture: journey/gram-task-four-colons]
 
@@ -198,6 +219,7 @@ Db は、メソッドに渡されたものを保ちます。
 テキストのない description ブロックは何も変えません。
 テキストは後の行から始まってもかまいません。
 `accTitle:` の次の行が `A` なら、タイトルは `A` です。
+
 [fixture: journey/db-acc-title] [fixture: journey/lex-acc-title-twice]
 [fixture: journey/gram-acc-title-line-feed-then-text]
 [fixture: journey/gram-acc-title-blank-lines-then-text]
@@ -223,6 +245,7 @@ Db が `sanitizeText` に通すテキストは 3 つで、タイトル、`accTit
 タイトルは、フロントマターのものでも `title` の文のものでも置き換えます。
 `accDescr` は、行をつないだあとで置き換え、
 ブロックも行と同じように置き換えます。
+
 [fixture: journey/config-security-level-other-title]
 [fixture: journey/config-security-level-other-diagram-title]
 [fixture: journey/config-security-level-other-acc-title]

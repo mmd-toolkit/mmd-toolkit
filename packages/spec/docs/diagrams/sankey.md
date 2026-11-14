@@ -19,6 +19,7 @@ Entry 23 of [detection.md](../detection.md) selects this grammar: the text
 starts with `sankey`, after whitespace, in exactly this case
 ([`sankeyDetector.ts`](https://github.com/mermaid-js/mermaid/blob/2086904e76c692331e34a45d7cc3bc30860d040e/packages/mermaid/src/diagrams/sankey/sankeyDetector.ts#L5-L7)).
 `Sankey` and `SANKEY` match no detector; U+FEFF before the header is whitespace.
+
 [fixture: sankey/db-link-basic] [fixture: sankey/db-byte-order-mark-at-start]
 [fixture: sankey/header-indented] [fixture: sankey/header-tab-indented]
 [fixture: sankey/header-nbsp-before] [fixture: sankey/header-after-blank-lines]
@@ -31,6 +32,7 @@ type and give the same Db: `sankey-beta` and `sankey-BETA` are headers, while
 `sankeyx` is detected and rejected, and `sankey-x`, `sankey-beta-x`, `sankeyé`,
 and `sankey-betaé` are a header followed by text on its line, which is rejected,
 since a letter outside ASCII is no word character and no character of a field.
+
 [fixture: sankey/db-header-beta] [fixture: sankey/db-header-beta-upper-case]
 [fixture: sankey/header-word-suffix] [fixture: sankey/header-dash-suffix]
 [fixture: sankey/header-beta-suffix] [fixture: sankey/header-non-ascii-suffix]
@@ -42,10 +44,11 @@ or a comment line after it, also after a frontmatter, is rejected, and so is a
 header followed on its line by a record, by whitespace, or by `%%`, with a space
 before it or not. A directive right after the header is a directive and nothing
 else, while a space before the directive stays on the header line, and the input
-is rejected. A directive on a line after the header changes nothing. [fixture:
-sankey/header-only] [fixture: sankey/header-without-line-feed] [fixture:
-sankey/header-beta-only] [fixture: sankey/header-blank-line-only] [fixture:
-sankey/header-then-comment-line-only] [fixture:
+is rejected. A directive on a line after the header changes nothing.
+
+[fixture: sankey/header-only] [fixture: sankey/header-without-line-feed]
+[fixture: sankey/header-beta-only] [fixture: sankey/header-blank-line-only]
+[fixture: sankey/header-then-comment-line-only] [fixture:
 sankey/header-only-after-frontmatter] [fixture:
 sankey/header-record-on-header-line] [fixture: sankey/header-trailing-spaces]
 [fixture: sankey/header-trailing-tab] [fixture:
@@ -65,8 +68,9 @@ only after the bare line, because its lexer reads the `%%` as a field before the
 header: the known divergence
 [`bare-percent-line-before-header`](#known-divergences). A comment line or a
 directive on a line before the header changes nothing, and a line `# c` before
-the header is the first text, so no detector matches. [fixture:
-sankey/header-after-bare-percent-line] [fixture:
+the header is the first text, so no detector matches.
+
+[fixture: sankey/header-after-bare-percent-line] [fixture:
 sankey/header-after-empty-braces-line] [fixture:
 sankey/header-after-bare-percent-line-and-whitespace-line] [fixture:
 sankey/header-after-comment-line] [fixture: sankey/header-after-directive-line]
@@ -90,6 +94,7 @@ U+3000, U+00A0, U+2028, U+2029, U+FEFF, or a tab, is accepted. A field at the
 end of the text is read without that whitespace, so `a,b,` and a space at the
 end of the text is a record whose value is empty, which is rejected, while the
 same line before another record is a record whose value field holds a space.
+
 [fixture: sankey/db-no-line-feed-at-end] [fixture:
 sankey/db-whitespace-line-at-end] [fixture:
 sankey/db-trailing-ideographic-space-at-end] [fixture:
@@ -119,9 +124,11 @@ current context matches, the input is rejected; the lists below do not repeat
 this.
 
 The text may end in the record context only: a string must be closed, so
-`"a,c,1`, `a,"b,1`, and `a,"b` at the end of the text are rejected. [fixture:
-sankey/gram-quoted-unclosed] [fixture: sankey/gram-quoted-value-unclosed]
-[fixture: sankey/gram-quoted-unclosed-at-end-of-text]
+`"a,c,1`, `a,"b,1`, and `a,"b` at the end of the text are rejected.
+
+[fixture: sankey/gram-quoted-unclosed] [fixture:
+sankey/gram-quoted-value-unclosed] [fixture:
+sankey/gram-quoted-unclosed-at-end-of-text]
 
 **Characters.** The units of the record context are made of the characters from
 U+0020 to U+007E: the space and the printable characters of ASCII. A tab, any
@@ -134,10 +141,12 @@ record, and between records too, but not at the end of the text (see
 [The end of the text](#lexical-structure)). An entity is read as its placeholder
 (see [Entities](../common.md#entities)), whose characters are outside ASCII, so
 a complete entity such as `#35;` or `#amp;` makes the input rejected, also
-inside a string, while `#35` without its `;` is text. [fixture:
-sankey/gram-tab-in-field] [fixture: sankey/gram-tab-after-first-field] [fixture:
-sankey/gram-tab-before-record] [fixture: sankey/gram-tab-before-second-field]
-[fixture: sankey/gram-tab-after-value-before-record] [fixture:
+inside a string, while `#35` without its `;` is text.
+
+[fixture: sankey/gram-tab-in-field] [fixture: sankey/gram-tab-after-first-field]
+[fixture: sankey/gram-tab-before-record] [fixture:
+sankey/gram-tab-before-second-field] [fixture:
+sankey/gram-tab-after-value-before-record] [fixture:
 sankey/gram-byte-order-mark-after-header] [fixture:
 sankey/gram-byte-order-mark-before-record] [fixture:
 sankey/gram-byte-order-mark-between-records] [fixture:
@@ -160,9 +169,10 @@ sankey/db-text-reference-without-semicolon]
 The attribute quotes of an HTML tag are read as `'` as in every diagram type
 (see [HTML attribute quotes](../common.md#html-attribute-quotes)), so a field
 `<a b="c">d` holds no `"` and is the text `<a b='c'>d`, and so is a tag with
-quotes inside a string. [fixture: sankey/lex-html-tag-in-unquoted-field]
-[fixture: sankey/lex-html-tag-in-quoted-field] [fixture:
-sankey/db-text-html-tags]
+quotes inside a string.
+
+[fixture: sankey/lex-html-tag-in-unquoted-field] [fixture:
+sankey/lex-html-tag-in-quoted-field] [fixture: sankey/db-text-html-tags]
 
 ### Directives inside units
 
@@ -176,14 +186,18 @@ a `string`. The other units, the header and `,`, are no text units.
 
 - `a,%%{init: {}}%%b,1` has the target `b`, `a,"b%%{init: {}}%%c",1` the target
   `bc`, and a directive at the start of a record, after a value, or on a line of
-  its own changes nothing, as in mermaid.js. [fixture:
-  sankey/db-directive-in-field] [fixture: sankey/db-directive-in-quotes]
-  [fixture: sankey/db-directive-at-start-of-record] [fixture:
+  its own changes nothing, as in mermaid.js.
+
+  [fixture: sankey/db-directive-in-field] [fixture:
+  sankey/db-directive-in-quotes] [fixture:
+  sankey/db-directive-at-start-of-record] [fixture:
   sankey/db-directive-after-value] [fixture:
   sankey/db-directive-sankey-settings]
+
 - In `san%%{init: {}}%%key` and `sankey-%%{init: {}}%%beta`, the directive lies
   inside the header keyword: the input is rejected, while mermaid.js accepts it,
   reading the two parts as one (see [Known divergences](#known-divergences)).
+
   [fixture: sankey/div-directive-in-header-keyword] [fixture:
   sankey/div-directive-in-beta-header-keyword]
 
@@ -199,9 +213,11 @@ line feed before the lexer reads the text, also when it is indented, between
 records, at the end of the text, and inside a string, where its line is no part
 of the string, while a line `%%` alone and a line `# c` are fields, which have
 no comma, so the input is rejected. A directive on a line of its own inside a
-string leaves its line empty. [fixture: sankey/db-crlf-line-ends] [fixture:
-sankey/db-lone-cr-line-ends] [fixture: sankey/db-quoted-crlf] [fixture:
-sankey/db-quoted-cr] [fixture: sankey/db-directive-unclosed-at-end] [fixture:
+string leaves its line empty.
+
+[fixture: sankey/db-crlf-line-ends] [fixture: sankey/db-lone-cr-line-ends]
+[fixture: sankey/db-quoted-crlf] [fixture: sankey/db-quoted-cr] [fixture:
+sankey/db-directive-unclosed-at-end] [fixture:
 sankey/gram-directive-unclosed-takes-next-line] [fixture:
 sankey/db-comment-line] [fixture: sankey/db-comment-line-indented] [fixture:
 sankey/db-comment-line-between-records] [fixture: sankey/db-comment-line-at-end]
@@ -221,8 +237,9 @@ not reach a `;` on the next line, also inside a string. It needs `style` or
 so `style: #x;y`, `Style:#x;y`, and `classdef:#x;y` keep their `;`, which makes
 `#x;` an entity and the input rejected, and `style:x;y` keeps its `;` as text.
 With two, only the last is ignored, and `#x;` before it is an entity. A `;` that
-the rule ignores at the end of a field leaves the field without it. [fixture:
-sankey/lex-style-line-semicolon-source] [fixture:
+the rule ignores at the end of a field leaves the field without it.
+
+[fixture: sankey/lex-style-line-semicolon-source] [fixture:
 sankey/lex-style-line-semicolon-target] [fixture:
 sankey/lex-classdef-line-semicolon] [fixture:
 sankey/lex-style-line-semicolon-in-quotes] [fixture:
@@ -244,17 +261,30 @@ sankey/lex-style-line-semicolon-at-end-of-field]
 
 In the record context, the lexer tries these rules in order:
 
-1. The keyword `sankey-beta`, where the text starts: a `header` unit. [fixture:
-   sankey/db-header-beta]
-2. The keyword `sankey`, where the text starts: a `header` unit. [fixture:
-   sankey/db-link-basic]
-3. One or more line feeds: a `newline` unit. [fixture:
-   sankey/db-blank-lines-between]
-4. `,`: a `,` unit. [fixture: sankey/db-link-basic]
-5. `"`: enters the string context (see [Strings](#strings)). [fixture:
-   sankey/db-quoted-fields]
+1. The keyword `sankey-beta`, where the text starts: a `header` unit.
+
+   [fixture: sankey/db-header-beta]
+
+2. The keyword `sankey`, where the text starts: a `header` unit.
+
+   [fixture: sankey/db-link-basic]
+
+3. One or more line feeds: a `newline` unit.
+
+   [fixture: sankey/db-blank-lines-between]
+
+4. `,`: a `,` unit.
+
+   [fixture: sankey/db-link-basic]
+
+5. `"`: enters the string context (see [Strings](#strings)).
+
+   [fixture: sankey/db-quoted-fields]
+
 6. One or more characters from U+0020 to U+007E other than `"` and `,`, as many
-   as possible: a `field-text` unit. [fixture: sankey/db-text-with-spaces]
+   as possible: a `field-text` unit.
+
+   [fixture: sankey/db-text-with-spaces]
 
 A `field-text` unit takes the spaces around a field and every printable
 character of ASCII but `"` and `,`: `%%`, `#`, `;`, `'`, `&`, `<`, `>`, `/`,
@@ -263,9 +293,11 @@ character of ASCII but `"` and `,`: `%%`, `#`, `;`, `'`, `&`, `<`, `>`, `/`,
 or a `"` after spaces before or after it stands where no unit fits the grammar,
 and the input is rejected, while spaces after the comma that follows a string
 are the next field, as in `a,"b",  1`. After the header, the word `sankey` is a
-field like any other. [fixture: sankey/db-fields-trimmed] [fixture:
-sankey/db-indented-records] [fixture: sankey/db-text-punctuation] [fixture:
-sankey/db-text-slashes] [fixture: sankey/db-text-semicolon-and-hash] [fixture:
+field like any other.
+
+[fixture: sankey/db-fields-trimmed] [fixture: sankey/db-indented-records]
+[fixture: sankey/db-text-punctuation] [fixture: sankey/db-text-slashes]
+[fixture: sankey/db-text-semicolon-and-hash] [fixture:
 sankey/db-text-semicolon-at-end-of-field] [fixture: sankey/db-text-hash-leading]
 [fixture: sankey/db-text-percent-in-field] [fixture:
 sankey/db-text-percent-in-target] [fixture: sankey/db-text-apostrophe] [fixture:
@@ -291,11 +323,12 @@ its quotes, `""` as written. With nothing between its quotes, `""` reads no
 `string` unit and is no field, and the input is rejected (see
 [Diagram and records](#diagram-and-records)). So `"a,b"` has a comma, `"a""b"` a
 doubled quote, `""""` one doubled quote, and a string may hold line feeds and
-lines. [fixture: sankey/db-quoted-fields] [fixture: sankey/db-quoted-comma]
-[fixture: sankey/db-quoted-doubled-quote] [fixture:
-sankey/db-quoted-doubled-quote-at-end] [fixture:
-sankey/db-quoted-doubled-quote-at-start] [fixture: sankey/db-quoted-only-quote]
-[fixture: sankey/db-quoted-four-quotes] [fixture:
+lines.
+
+[fixture: sankey/db-quoted-fields] [fixture: sankey/db-quoted-comma] [fixture:
+sankey/db-quoted-doubled-quote] [fixture: sankey/db-quoted-doubled-quote-at-end]
+[fixture: sankey/db-quoted-doubled-quote-at-start] [fixture:
+sankey/db-quoted-only-quote] [fixture: sankey/db-quoted-four-quotes] [fixture:
 sankey/db-quoted-two-quotes-at-end] [fixture: sankey/db-id-quote-and-comma]
 [fixture: sankey/db-quoted-line-feed] [fixture: sankey/gram-quoted-empty]
 [fixture: sankey/gram-quoted-empty-value]
@@ -304,9 +337,10 @@ sankey/db-quoted-two-quotes-at-end] [fixture: sankey/db-id-quote-and-comma]
 
 This diagram type has no diagram comments: its lexer reads `%%` and `#` as
 characters of a field or a string. A comment line is removed before the lexer
-reads the text (see [Trivia between units](#directives-inside-units)). [fixture:
-sankey/db-text-percent-in-field] [fixture: sankey/db-text-hash-leading]
-[fixture: sankey/db-comment-line]
+reads the text (see [Trivia between units](#directives-inside-units)).
+
+[fixture: sankey/db-text-percent-in-field] [fixture:
+sankey/db-text-hash-leading] [fixture: sankey/db-comment-line]
 
 ## Grammar
 
@@ -341,21 +375,24 @@ line of its own; a `newline` unit stands for one or more line feeds, so empty
 lines between records, after the header, and at the end change nothing. Every
 line after the header is a record: a line of a title, an accessibility
 statement, a line of whitespace only between records, and a line `%%` alone are
-fields without a comma, and the input is rejected. [fixture:
-sankey/db-two-links] [fixture: sankey/db-blank-lines-between] [fixture:
-sankey/gram-title-statement] [fixture: sankey/gram-acc-title-statement]
-[fixture: sankey/gram-whitespace-line-after-header] [fixture:
+fields without a comma, and the input is rejected.
+
+[fixture: sankey/db-two-links] [fixture: sankey/db-blank-lines-between]
+[fixture: sankey/gram-title-statement] [fixture:
+sankey/gram-acc-title-statement] [fixture:
+sankey/gram-whitespace-line-after-header] [fixture:
 sankey/gram-whitespace-line-between] [fixture: sankey/gram-percent-line-alone]
 
 A record is exactly three fields with a `,` between each two: one or two fields,
 four fields, a `,` at the end, and a line of commas only are rejected, and so is
 an empty field, since a field is one unit: `,b,1`, `a,,1`, and `a,b,` at the end
-of the text. A field of spaces only is a field. [fixture: sankey/db-link-basic]
-[fixture: sankey/gram-one-column] [fixture: sankey/gram-two-columns] [fixture:
-sankey/gram-four-columns] [fixture: sankey/gram-trailing-comma] [fixture:
-sankey/gram-quoted-then-trailing-comma] [fixture: sankey/gram-commas-only]
-[fixture: sankey/gram-comma-only-line] [fixture:
-sankey/gram-one-field-after-record] [fixture:
+of the text. A field of spaces only is a field.
+
+[fixture: sankey/db-link-basic] [fixture: sankey/gram-one-column] [fixture:
+sankey/gram-two-columns] [fixture: sankey/gram-four-columns] [fixture:
+sankey/gram-trailing-comma] [fixture: sankey/gram-quoted-then-trailing-comma]
+[fixture: sankey/gram-commas-only] [fixture: sankey/gram-comma-only-line]
+[fixture: sankey/gram-one-field-after-record] [fixture:
 sankey/gram-short-line-after-record] [fixture: sankey/gram-empty-source]
 [fixture: sankey/gram-empty-target] [fixture: sankey/gram-empty-value] [fixture:
 sankey/db-spaces-only-source-id] [fixture:
@@ -372,11 +409,13 @@ field with an empty text, and a string is read as its text between its quotes,
 value may be any text: the grammar asks for no number, so `abc` and a field of
 spaces only are accepted as values. How mermaid.js reads the ids, the nodes, and
 the values into its Db, and the title of the frontmatter, for which this diagram
-type has no statement, is in the summary of the tests package. [fixture:
-sankey/db-fields-trimmed] [fixture: sankey/db-spaces-only-source-id] [fixture:
-sankey/db-quoted-doubled-quote] [fixture: sankey/db-quoted-line-feed] [fixture:
-sankey/db-quoted-and-unquoted-same-id] [fixture: sankey/db-value-not-a-number]
-[fixture: sankey/db-spaces-only-value] [fixture: sankey/db-title-frontmatter]
+type has no statement, is in the summary of the tests package.
+
+[fixture: sankey/db-fields-trimmed] [fixture: sankey/db-spaces-only-source-id]
+[fixture: sankey/db-quoted-doubled-quote] [fixture: sankey/db-quoted-line-feed]
+[fixture: sankey/db-quoted-and-unquoted-same-id] [fixture:
+sankey/db-value-not-a-number] [fixture: sankey/db-spaces-only-value] [fixture:
+sankey/db-title-frontmatter]
 
 ### Rejections outside the grammar
 
@@ -385,7 +424,9 @@ None. The Db of mermaid.js throws for no input that its grammar accepts:
 and
 [`addLink()`](https://github.com/mermaid-js/mermaid/blob/2086904e76c692331e34a45d7cc3bc30860d040e/packages/mermaid/src/diagrams/sankey/sankeyDB.ts#L40-L42)
 only store their texts, and an empty id, a value that is no number, and a link
-that repeats are accepted. [fixture: sankey/db-spaces-only-source-id] [fixture:
+that repeats are accepted.
+
+[fixture: sankey/db-spaces-only-source-id] [fixture:
 sankey/db-value-not-a-number] [fixture: sankey/db-duplicate-link]
 
 ## Known divergences
@@ -394,35 +435,46 @@ sankey/db-value-not-a-number] [fixture: sankey/db-duplicate-link]
   A directive inside the header keyword makes the input rejected in this
   specification, while mermaid.js accepts it (see
   [Directives inside units](#directives-inside-units)): `san%%{init: {}}%%key`
-  and `sankey-%%{init: {}}%%beta`. [fixture:
-  sankey/div-directive-in-header-keyword] [fixture:
+  and `sankey-%%{init: {}}%%beta`.
+
+  [fixture: sankey/div-directive-in-header-keyword] [fixture:
   sankey/div-directive-in-beta-header-keyword]
+
 - **[`c4-keyword-anywhere`](../known-divergences/c4-keyword-anywhere.md).**
   `C4Container`, `C4Component`, `C4Dynamic`, or `C4Deployment` anywhere after
   the header, in a field with quotes or without, makes mermaid.js hand the text
   to the C4 parser, which rejects it; here the text is a sankey diagram.
-  `C4Context` is text in both. [fixture: sankey/div-c4-keyword-in-target]
-  [fixture: sankey/div-c4-keyword-in-quoted-source] [fixture:
+  `C4Context` is text in both.
+
+  [fixture: sankey/div-c4-keyword-in-target] [fixture:
+  sankey/div-c4-keyword-in-quoted-source] [fixture:
   sankey/lex-c4context-in-field]
+
 - **[`bare-percent-line-before-header`](../known-divergences/bare-percent-line-before-header.md).**
   A line of `%%` alone, a line `%%{ }%%`, which is no directive, and a line of
   whitespace only after such a line, before the header, are a comment or nothing
   here, while mermaid.js rejects the input, because its lexer reads the `%%` as
-  a field before the header (see [Detection](#detection)). [fixture:
-  sankey/header-after-bare-percent-line] [fixture:
+  a field before the header (see [Detection](#detection)).
+
+  [fixture: sankey/header-after-bare-percent-line] [fixture:
   sankey/header-after-empty-braces-line] [fixture:
   sankey/header-after-bare-percent-line-and-whitespace-line]
+
 - **[`html-tag-in-frontmatter`](../known-divergences/html-tag-in-frontmatter.md).**
   With `title: <a` in the frontmatter, the field `x b="c">d` is `x b='c'>d` in
   mermaid.js, which accepts it, while here the frontmatter is not searched for
   tags, the `"` stays in a field without quotes, and the input is rejected.
   Without the frontmatter, a tag that starts in the text, as in `<a b="c">d`, is
-  read in the same way by both. [fixture:
-  sankey/div-html-tag-starts-in-frontmatter-field] [fixture:
+  read in the same way by both.
+
+  [fixture: sankey/div-html-tag-starts-in-frontmatter-field] [fixture:
   sankey/lex-html-tag-in-unquoted-field]
+
 - **[`embedded-data-opaque`](../known-divergences/embedded-data-opaque.md).** A
   frontmatter that is no valid YAML is accepted in this specification, while
-  mermaid.js rejects it. [fixture: sankey/div-frontmatter-invalid-yaml]
+  mermaid.js rejects it.
+
+  [fixture: sankey/div-frontmatter-invalid-yaml]
 
 The known divergences
 [`ignored-semicolon-as-token-boundary`](../known-divergences/ignored-semicolon-as-token-boundary.md),

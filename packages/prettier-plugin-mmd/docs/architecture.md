@@ -319,8 +319,9 @@ a tab between two spaces, stay (`"A<tab>B"` is printed `A<tab>B`). The words are
 what mermaid.js keeps of the title: it takes the brackets off, trims, takes one
 pair of outer quotes off, and trims again. A quote inside the words, or beside a
 bracket inside them, is a character of a word like any other, so a tab beside it
-stays too (`["A'<tab>B"]` and `["A[<tab>B"]` are printed as written). [fixture:
-quotes/labels-without-quotes] [fixture:
+stays too (`["A'<tab>B"]` and `["A[<tab>B"]` are printed as written).
+
+[fixture: quotes/labels-without-quotes] [fixture:
 quotes/labels-with-punctuation-without-quotes] [fixture:
 quotes/labels-that-need-quotes] [fixture:
 quotes/labels-with-runs-without-quotes] [fixture:
@@ -355,12 +356,14 @@ Preserve bracket interiors, except the spaces, tabs, and no-break spaces next to
 the brackets of the title of a group or a service and of the label of an arrow
 (see [Arrow labels](#arrow-labels)): mermaid.js trims them, so
 `group a(cloud)[ API ]` is printed `group a(cloud)[API]` and
-`service s(server)["x" ]` is printed `service s(server)["x"]`. [fixture:
-label-content/title-edge-whitespace-dropped] This holds on a line with a kept
-`;` too, apart from the stretch read by the line rule (see
-[Semicolons](#semicolons)): dropping the padding outside that stretch moves no
-`;`, adds none and removes none, so the line rule selects the same `;`.
-`group g(cloud)[ a;b ]` is printed `group g(cloud)[a;b]`, and
+`service s(server)["x" ]` is printed `service s(server)["x"]`.
+
+[fixture: label-content/title-edge-whitespace-dropped]
+
+This holds on a line with a kept `;` too, apart from the stretch read by the
+line rule (see [Semicolons](#semicolons)): dropping the padding outside that
+stretch moves no `;`, adds none and removes none, so the line rule selects the
+same `;`. `group g(cloud)[ a;b ]` is printed `group g(cloud)[a;b]`, and
 `service s(server)[ x; ] in g` is printed `service s(server)[x;] in g`. One
 space stays where the padding lies between a `:` and a `#` of a line that the
 line rule may read, since whether it is there decides which `;` is ignored:
@@ -372,33 +375,46 @@ while `service s(logos:aws)[ #y; ]` has no `style` before the `:` and is printed
 `service %%{style}%%s0(logos:aws)[#y;]`,
 `service style1(logos:aws)[ #y ]%%{init:{"a":";"}}%%` is printed with `[#y]`,
 and the same line with a `;` outside the directive, `[ #y; ]`, keeps its space.
-[fixture: label-content/title-padding-line-rule-chars-in-directive] A `%%` in
-the middle of a line is no comment line, so the rule reads its text:
+
+[fixture: label-content/title-padding-line-rule-chars-in-directive]
+
+A `%%` in the middle of a line is no comment line, so the rule reads its text:
 `service style3(logos:aws)[ #y ] %% note;` is printed
 `service style3(logos:aws)[ #y] %% note;`, since the `;` of the note lets the
 rule match from the `:` of `logos:aws`, and
 `service classDef(logos:aws)[#a;style: ]%%#c;` is not changed, since the `#` and
-the `;` after the `%%` take part in the rule. [fixture:
-label-content/title-padding-line-rule-chars-in-comment] A U+2028 or U+2029 that
-no directive or comment holds ends the line that the rule reads, so a `:` before
-it and a `;` after it make no stretch. [test:
-architecture/label-content/title-style-rule-ends-at-u2028] [test:
-architecture/label-content/title-style-rule-ends-at-u2029] A title with a
-comment or a directive stays as written, and so does a padding with a U+2028 or
-U+2029 in it. [fixture: label-content/title-padding-with-directive-or-semicolon]
-[fixture: label-content/title-padding-in-style-rule-stretch] [fixture:
+the `;` after the `%%` take part in the rule.
+
+[fixture: label-content/title-padding-line-rule-chars-in-comment]
+
+A U+2028 or U+2029 that no directive or comment holds ends the line that the
+rule reads, so a `:` before it and a `;` after it make no stretch.
+
+[test: architecture/label-content/title-style-rule-ends-at-u2028] [test:
+architecture/label-content/title-style-rule-ends-at-u2029]
+
+A title with a comment or a directive stays as written, and so does a padding
+with a U+2028 or U+2029 in it.
+
+[fixture: label-content/title-padding-with-directive-or-semicolon] [fixture:
+label-content/title-padding-in-style-rule-stretch] [fixture:
 label-content/title-padding-after-colon-without-style] [test:
 architecture/label-content/title-u2028] [test:
 architecture/label-content/title-u2029] [test:
 architecture/label-content/title-with-semicolon-u2028] [test:
-architecture/label-content/title-with-semicolon-u2029] A run of spaces and tabs
-inside the text is printed as one space, since the figure is the same (see
+architecture/label-content/title-with-semicolon-u2029]
+
+A run of spaces and tabs inside the text is printed as one space, since the
+figure is the same (see
 [Runs of whitespace in a text that are drawn the same](./compatibility.md#runs-of-whitespace-in-a-text-that-are-drawn-the-same)):
-`group labels[A  B]` is printed `group labels[A B]`. [fixture:
-label-content/bare-padding] Whitespace-only and quoted-empty content, escapes,
-HTML, entities and hidden-looking text stay: the Db can distinguish these
-values, and a title with a comment or a directive stays as written. Physical
-CR/CRLF alone follow the shared host policy.
+`group labels[A  B]` is printed `group labels[A B]`.
+
+[fixture: label-content/bare-padding]
+
+Whitespace-only and quoted-empty content, escapes, HTML, entities and
+hidden-looking text stay: the Db can distinguish these values, and a title with
+a comment or a directive stays as written. Physical CR/CRLF alone follow the
+shared host policy.
 
 [fixture: architecture/label-content/bare-padding]
 
@@ -602,9 +618,9 @@ gaps. The directives that end a title are printed with one space before each
 that has whitespace before it, and the whitespace after the last one is left
 out, whatever the whitespace at the end of the line (see
 [Texts after a keyword that are drawn the same](./compatibility.md#texts-after-a-keyword-that-are-drawn-the-same)).
-[fixture: title/title-directives-end-blanks-dropped]
 
-[corpus fixture: architecture/directive-fields]
+[fixture: title/title-directives-end-blanks-dropped] [corpus fixture:
+architecture/directive-fields]
 
 [fixture: architecture/title/empty-next-statement]
 
@@ -646,9 +662,9 @@ precedence. The directives that end the value are printed with one space before
 each that has whitespace before it, and the whitespace after the last one is
 left out (see
 [Texts after a keyword that are drawn the same](./compatibility.md#texts-after-a-keyword-that-are-drawn-the-same)).
-[fixture: accessibility-lines/acc-directives-end-blanks-dropped]
 
-[fixture: architecture/accessibility-lines/a11y-empty-comment-gap]
+[fixture: accessibility-lines/acc-directives-end-blanks-dropped] [fixture:
+architecture/accessibility-lines/a11y-empty-comment-gap]
 
 [fixture: architecture/accessibility-lines/accdescr-spacing]
 
@@ -1155,12 +1171,15 @@ diagram. Text that no part of the layout holds stays as written. A statement
 over several lines whose lines, joined with one space or with nothing, could
 change which `;` the line rule ignores keeps the text of each segment, up to its
 last kept `;`, as written; any other statement over several lines is formatted
-like one on a single line. [fixture: semicolons/stretch-kept-rest-formatted]
-[fixture: semicolons/no-stretch-formatted] [fixture:
-semicolons/crossing-comment] Protected header/first-statement groups stay
-together. Removing one selected semicolon or moving style/classDef triggers can
-select another and change the Db, so keep both passes, nontriggers, entities,
-physical value lines and global-rejoined triggers.
+like one on a single line.
+
+[fixture: semicolons/stretch-kept-rest-formatted] [fixture:
+semicolons/no-stretch-formatted] [fixture: semicolons/crossing-comment]
+
+Protected header/first-statement groups stay together. Removing one selected
+semicolon or moving style/classDef triggers can select another and change the
+Db, so keep both passes, nontriggers, entities, physical value lines and
+global-rejoined triggers.
 
 [fixture: architecture/semicolons/native-service-value]
 

@@ -7,6 +7,7 @@
 Db の導出値は
 [tests の要約](../../../tests/docs/db-summaries.md#railroad)が定義する。
 選んだ方言の節と、後述の共通 metadata・hidden form・境界の規則を読む。
+
 [fixture: railroad/ir-gram-written-tree]
 [fixture: railroad/ebnf-gram-written-tree]
 [fixture: railroad/abnf-gram-written-tree]
@@ -18,17 +19,18 @@ Db の導出値は
 次の接頭辞を大文字小文字を区別せず、接尾字の境目を検査せずに比較する。
 検出だけでは受理は決まらず、
 各文法は正確な小文字の見出しと後述の見出しの境目を要求する。
+
 [fixture: railroad/ir-header-only] [fixture: railroad/ebnf-header-only]
 [fixture: railroad/abnf-header-only] [fixture: railroad/peg-header-only]
 [fixture: railroad/ir-header-upper] [fixture: railroad/ebnf-header-upper]
 [fixture: railroad/abnf-header-upper] [fixture: railroad/peg-header-upper]
 
-| 方言・出典                             | 見出し               | Root.diagramType                                      |
-| -------------------------------------- | -------------------- | ----------------------------------------------------- |
-| IR、[railroadDetector.ts][ir-detector] | `railroad-beta`      | `railroad` [fixture: railroad/ir-header-inline]       |
-| EBNF、[ebnfDetector.ts][ebnf-detector] | `railroad-ebnf-beta` | `railroadEbnf` [fixture: railroad/ebnf-header-inline] |
-| ABNF、[abnfDetector.ts][abnf-detector] | `railroad-abnf-beta` | `railroadAbnf` [fixture: railroad/abnf-header-inline] |
-| PEG、[pegDetector.ts][peg-detector]    | `railroad-peg-beta`  | `railroadPeg` [fixture: railroad/peg-header-inline]   |
+| 方言・出典                             | 見出し               | Root.diagramType | fixture                                |
+| -------------------------------------- | -------------------- | ---------------- | -------------------------------------- |
+| IR、[railroadDetector.ts][ir-detector] | `railroad-beta`      | `railroad`       | [fixture: railroad/ir-header-inline]   |
+| EBNF、[ebnfDetector.ts][ebnf-detector] | `railroad-ebnf-beta` | `railroadEbnf`   | [fixture: railroad/ebnf-header-inline] |
+| ABNF、[abnfDetector.ts][abnf-detector] | `railroad-abnf-beta` | `railroadAbnf`   | [fixture: railroad/abnf-header-inline] |
+| PEG、[pegDetector.ts][peg-detector]    | `railroad-peg-beta`  | `railroadPeg`    | [fixture: railroad/peg-header-inline]  |
 
 [共通の前処理](../common.md#reading-a-source)を適用する。
 真の先頭 frontmatter、global directive、comment region、先頭空白、改行変換、
@@ -36,6 +38,7 @@ HTML 属性の引用符、文字参照、選ばれたセミコロンを含む。
 真の frontmatter は共有の Frontmatter record で、
 後に残る block は図のテキストである。
 先行する C4 detector には後述の共有の見出し選択の差異を適用する。
+
 [fixture: railroad/ir-frontmatter-title-only]
 [fixture: railroad/ebnf-frontmatter-title-only]
 [fixture: railroad/abnf-frontmatter-title-only]
@@ -49,6 +52,7 @@ HTML 属性の引用符、文字参照、選ばれたセミコロンを含む。
 その block は native hidden-yaml にも合う必要があり、
 RailroadDiagram.textBeforeHeader に属し、YAML の値を適用しない。
 真の frontmatter の後に、この別の block があってもよい。
+
 [fixture: railroad/ir-prefix-yaml-no-bare]
 [fixture: railroad/ebnf-retained-leading]
 [fixture: railroad/abnf-retained-leading]
@@ -64,6 +68,7 @@ RailroadDiagram.textBeforeHeader に属し、YAML の値を適用しない。
 先頭の trim が opening indent だけを除く場合もある。
 2 個目の block、passed bare line の後の block、
 第二走査 directive の後の block は通過しない。
+
 [fixture: railroad/ir-detect-block-after-directive]
 [fixture: railroad/ir-retained-no-closer]
 [fixture: railroad/ir-retained-mismatch-indent]
@@ -85,6 +90,7 @@ textBeforeHeader の native hidden-directive として読む。
 外側の残る形が 1 個の ignored-text node となる。
 複数の残る形は別々に保つ。
 native closer に見出しを直結すると拒否する。
+
 [fixture: railroad/ir-secondscan-real] [fixture: railroad/ebnf-secondscan-real]
 [fixture: railroad/abnf-secondscan-real] [fixture: railroad/peg-secondscan-real]
 [fixture: railroad/ir-secondscan-multiline]
@@ -93,6 +99,7 @@ native closer に見出しを直結すると拒否する。
 retained YAML の後に第二走査 directive を置いた形は 4 方言で読めるが、
 逆順では検出に失敗する。
 到達した見出しからだけでなく、検出点から残る形を読む。
+
 [fixture: railroad/ir-yaml-before-secondscan-real]
 [fixture: railroad/ebnf-yaml-before-secondscan-real]
 [fixture: railroad/abnf-yaml-before-secondscan-real]
@@ -107,6 +114,7 @@ nonword の percent-brace の形も含めて mark `%%` の共有 Comment。
 それに伴って通過した空白と改行は trivia で、残る形の前や間でも再び読まない。
 先頭の `%%{!}%%` はこの passed bare line であり、
 真の第二走査 directive とは区別する。
+
 [fixture: railroad/ir-prefix-retained-directive]
 [fixture: railroad/ebnf-prefix-retained-directive]
 [fixture: railroad/ebnf-directive-bare-unicode]
@@ -124,6 +132,7 @@ Mermaid の native lexer が拒否する場合でもこの仕様では受理す�
 passed bare line のない対照では、同じ後続空白は native text に残って拒否し、
 ASCII の space/tab の対照は受理する。
 残る形は常にその native closing boundary を満たす必要がある。
+
 [fixture: railroad/ir-bare-nbsp]
 [fixture: railroad/ebnf-retained-before-bare-unicode]
 [fixture: railroad/abnf-retained-before-bare-unicode]
@@ -148,7 +157,9 @@ ASCII の space/tab の対照は受理する。
 各単位の先頭で、後述する方言の順序の最初に合う規則を取り、
 その後から同じ規則を試す。
 明示した longer alternative だけが先の一致を長い一致へ置き換え、
-一般的な最長一致の規則はない。 [fixture: railroad/ir-keywords-long-rule-name]
+一般的な最長一致の規則はない。
+
+[fixture: railroad/ir-keywords-long-rule-name]
 [fixture: railroad/ir-lex-name-nonascii]
 [fixture: railroad/ebnf-postfix-special-priority]
 [fixture: railroad/abnf-comment-empty-line]
@@ -162,6 +173,7 @@ custom keyword は各見出しだけで、`%%`、共通 Notation の空白、
 EOF の直前で終わる必要がある。
 境目は消費しない。
 それ以外の keyword も正確な case で比較する。
+
 [fixture: railroad/ir-header-letter] [fixture: railroad/ebnf-header-word]
 [fixture: railroad/abnf-header-dash] [fixture: railroad/peg-header-unicode]
 [fixture: railroad/ir-keyword-optional-upper]
@@ -171,6 +183,7 @@ visible EOL の単位はなく、物理改行は規則の終端にならない�
 Notation の他の空白は、見出しや hidden closer の境目になっても、
 native gap にはならない。
 共通の先頭 trivia と検出が通過する trivia は別の規則である。
+
 [fixture: railroad/ir-space-tabs] [fixture: railroad/ir-line-crlf]
 [fixture: railroad/ebnf-line-cr] [fixture: railroad/abnf-line-crlf]
 [fixture: railroad/peg-line-cr] [fixture: railroad/ir-line-ls-gap]
@@ -182,6 +195,7 @@ global directive と選ばれたセミコロンを除いた後で見出しの境
 次の規則までに space が残る directive の対照は各方言で受理し、
 space がないと除去後の見出しと規則名が接合して拒否し得る。
 EOF に付加される LF は書かれた値には含めない。
+
 [fixture: railroad/ir-directive-header-glued]
 [fixture: railroad/ebnf-header-global-boundary]
 [fixture: railroad/abnf-header-global-boundary]
@@ -200,8 +214,9 @@ IR の順序は、見出し、constructor の `nonterminal`、`zeroOrMore`、`on
 ir-name、ir-string、native padding、hidden-yaml、hidden-directive、
 native-percent-comment、C-comment。
 見出しと constructor の longer alternative は ir-name で、
-それ以外の句読点にはない。 [fixture: railroad/ir-db-all-fields]
-[fixture: railroad/ir-keywords-rule-name]
+それ以外の句読点にはない。
+
+[fixture: railroad/ir-db-all-fields] [fixture: railroad/ir-keywords-rule-name]
 [fixture: railroad/ir-keywords-long-rule-name]
 [fixture: railroad/ir-keywords-all-calls]
 [fixture: railroad/ir-native-ownership]
@@ -212,6 +227,7 @@ constructor の接頭辞に名前の字が続けば名前となり、
 constructor と完全に同じ語は規則名にできない。
 ただし先行する metadata の title 接頭辞は、
 後述のとおり長い名前からも `title` を取る。
+
 [fixture: railroad/ir-keywords-long-rule-name]
 [fixture: railroad/ir-keywords-rule-name]
 [fixture: railroad/ir-db-prototype-names]
@@ -224,7 +240,9 @@ ir-string は対応する単一引用符か二重引用符を使う。
 escape されない同じ引用符で終わる。
 backslash の直後には CR、LF、U+2028、U+2029 を置けない。
 閉じる引用符の欠落は拒否する。
-IR に数の単位はない。 [fixture: railroad/ir-db-empty-strings]
+IR に数の単位はない。
+
+[fixture: railroad/ir-db-empty-strings]
 [fixture: railroad/ir-lex-string-conversion]
 [fixture: railroad/ir-line-string-values]
 [fixture: railroad/ir-string-escaped-lf]
@@ -240,8 +258,9 @@ ebnf-name、ebnf-string、special-sequence、native padding、hidden-yaml、
 hidden-directive、native-percent-comment、C-comment、ISO-comment。
 見出しの longer alternative は ebnf-name、`(` は ISO-comment、
 `?` は special-sequence、`-` は hidden-yaml。
-それ以外の EBNF の句読点にはない。 [fixture: railroad/ebnf-db-all-fields]
-[fixture: railroad/ebnf-comment-iso]
+それ以外の EBNF の句読点にはない。
+
+[fixture: railroad/ebnf-db-all-fields] [fixture: railroad/ebnf-comment-iso]
 [fixture: railroad/ebnf-postfix-special-priority]
 [fixture: railroad/ebnf-hidden-yaml-unit-gap]
 [fixture: railroad/ebnf-native-ownership]
@@ -252,6 +271,7 @@ word character または hyphen を最大限続ける。
 特に `A-B` は 1 個の名前で、`A - B` には例外の演算子がある。
 必要な colon か brace がなければ accTitle/accDescr の接頭辞は名前になれるが、
 先行する title 接頭辞は長い名前からも取られる。
+
 [fixture: railroad/ebnf-name-dash] [fixture: railroad/ebnf-lex-name-nonascii]
 [fixture: railroad/ebnf-exception-dash-name]
 [fixture: railroad/ebnf-reference-acctitle-prefix]
@@ -266,7 +286,9 @@ ebnf-string は対応する単一引用符か二重引用符を使い、空で�
 backslash は直後の CR、LF、U+2028、U+2029 以外の 1 字を取り、
 escape されない同じ引用符で閉じる。
 未閉鎖の文字列は拒否する。
-独立した EBNF の数の単位はない。 [fixture: railroad/ebnf-db-empty-string]
+独立した EBNF の数の単位はない。
+
+[fixture: railroad/ebnf-db-empty-string]
 [fixture: railroad/ebnf-lex-string-conversion]
 [fixture: railroad/ebnf-line-string-values]
 [fixture: railroad/ebnf-string-escaped-lf]
@@ -281,7 +303,9 @@ backslash と引用符は closer を保護しない。
 空か whitespace-only の内容はこの単位にならない。
 長い special-sequence は後置の `?` より優先するので、
 `"a"? "b"?` は文字列と special sequence の並びであり、
-2 個の optional string ではない。 [fixture: railroad/ebnf-special-whitespace]
+2 個の optional string ではない。
+
+[fixture: railroad/ebnf-special-whitespace]
 [fixture: railroad/ebnf-special-empty]
 [fixture: railroad/ebnf-special-whitespace-only]
 [fixture: railroad/ebnf-special-semicolon]
@@ -295,7 +319,9 @@ ABNF の順序は、見出し、`= ; / ( ) [ ]`、metadata、abnf-name、abnf-st
 abnf-numeric-value、star-repeat、exact-repeat、native padding、hidden-yaml、
 hidden-directive、native-percent-comment、semicolon-comment。
 見出しの longer alternative は abnf-name、`;` は semicolon-comment。
-それ以外にはない。 [fixture: railroad/abnf-db-all-fields]
+それ以外にはない。
+
+[fixture: railroad/abnf-db-all-fields]
 [fixture: railroad/abnf-comment-empty-line]
 [fixture: railroad/abnf-comment-before-rule]
 [fixture: railroad/abnf-comment-terminator-space]
@@ -304,6 +330,7 @@ hidden-directive、native-percent-comment、semicolon-comment。
 abnf-name は ASCII 英字で始まり、ASCII 英字、数字、hyphen を最大限続ける。
 underscore と非 ASCII 英字は名前の字ではない。
 metadata の先行する接頭辞の規則は、参照も含めて名前より先に適用する。
+
 [fixture: railroad/abnf-name-underscore]
 [fixture: railroad/abnf-lex-name-nonascii]
 [fixture: railroad/abnf-db-prototype-names]
@@ -315,6 +342,7 @@ abnf-string は二重引用符で始まり、次の二重引用符までのす�
 空でもよく、物理改行、U+2028、U+2029 も内容に入る。
 backslash は普通の字で、引用符を保護しない。
 単一引用符と、閉じる二重引用符の欠落は拒否する。
+
 [fixture: railroad/abnf-db-empty-string]
 [fixture: railroad/abnf-line-string-values]
 [fixture: railroad/abnf-lex-string-conversion]
@@ -328,6 +356,7 @@ abnf-numeric-value は `%`、`x X d D b B` のどれか、
 十六進の字は ASCII の `0`〜`9`、`A`〜`F`、`a`〜`f`。
 base の字に対する桁や range の大小を検査しない。
 全綴りを text として保ち、`%x41Z` の Z は別の参照になる。
+
 [fixture: railroad/abnf-numval-boundaries] [fixture: railroad/abnf-numval-empty]
 [fixture: railroad/abnf-numval-suffix]
 [fixture: railroad/abnf-gram-written-tree]
@@ -336,7 +365,9 @@ abnf-count は ASCII 十進数字の空でない最大の並び。
 star-repeat は任意の count、`*`、任意の count で、exact-repeat は 1 個の count。
 通常の空白と native hidden form は repeat の内部に置けないが、
 完成した repeat と primary の間には置ける。
-両方の count を省略でき、先頭ゼロも許す。 [fixture: railroad/abnf-db-all-fields]
+両方の count を省略でき、先頭ゼロも許す。
+
+[fixture: railroad/abnf-db-all-fields]
 [fixture: railroad/abnf-db-repeat-leading-zero]
 [fixture: railroad/abnf-db-repeat-implicit-optional]
 [fixture: railroad/abnf-db-repeat-implicit-zero]
@@ -352,6 +383,7 @@ hash-comment。
 longer alternative があるのは見出しだけで、peg-name を指定する。
 代入の矢印は 1 個の書かれた delimiter、
 前置と後置の演算子はそれぞれ別の句読点である。
+
 [fixture: railroad/peg-db-all-fields] [fixture: railroad/peg-native-ownership]
 [fixture: railroad/peg-arrow-hidden] [fixture: railroad/peg-directive-operator]
 
@@ -359,6 +391,7 @@ peg-name は ASCII 英字か underscore で始まり、
 word character または hyphen を最大限続ける。
 metadata は名前より先に試すため、title 接頭辞の参照は拒否するが、
 colon のない accTitle 接頭辞の参照は名前になれる。
+
 [fixture: railroad/peg-db-prototype-names]
 [fixture: railroad/peg-lex-name-nonascii]
 [fixture: railroad/peg-reference-title-prefix]
@@ -371,7 +404,9 @@ U+2028、U+2029 も内容に入る。
 escape の組は backslash と、その直後の CR、LF、U+2028、
 U+2029 以外のちょうど 1 字。
 escape されない同じ引用符で閉じ、未閉鎖なら拒否する。
-PEG に数の単位はない。 [fixture: railroad/peg-db-empty-string]
+PEG に数の単位はない。
+
+[fixture: railroad/peg-db-empty-string]
 [fixture: railroad/peg-line-string-values]
 [fixture: railroad/peg-lex-string-conversion]
 [fixture: railroad/peg-string-escaped-lf]
@@ -389,6 +424,7 @@ title-line は `title` と、任意の、
 内容は CR/LF か最初の `%%` の、先に現れる方の直前まで。
 空でない title の内容には separator が要るが、
 裸の `title` も完成した単位であり、単語の境目はない。
+
 [fixture: railroad/ir-common-title-eof]
 [fixture: railroad/ir-common-title-comment]
 [fixture: railroad/ir-common-title-colon]
@@ -406,6 +442,7 @@ CR/LF か最初の `%%` の直前までの、空でもよい内容。
 colon は次の行に置けない。
 accDescr の colon 形も同じ規則で、block 形より優先する。
 colon 後の brace に見える text は行の内容である。
+
 [fixture: railroad/ir-common-acctitle-eof]
 [fixture: railroad/ir-common-acctitle-gap-blank]
 [fixture: railroad/ir-common-acctitle-comment]
@@ -424,6 +461,7 @@ acc-descr-block は `accDescr`、Notation の空白の 0 個以上、`{`、
 closer の欠落は拒否する。
 keyword から brace への gap が合うかを決める前に、
 共通 directive と comment region の読取りを適用する。
+
 [fixture: railroad/ir-common-block-empty-interleaved]
 [fixture: railroad/ir-line-block-values]
 [fixture: railroad/ir-common-block-first-close]
@@ -440,6 +478,7 @@ metadata の keyword は大文字小文字を区別する。
 規則の後の同じ接頭辞は拒否する。
 title 後に space があると、規則に見える行全体が title の内容になる場合もある。
 これらは書かれた文を保つ読取りであり、新たな差異にはしない。
+
 [fixture: railroad/ir-common-uppercase]
 [fixture: railroad/ir-name-title-prefix-first]
 [fixture: railroad/ebnf-name-reserved-title]
@@ -461,7 +500,9 @@ metadata の値は、引用文字列に見える場合も、閉じていない�
 [RailroadEbnfValueConverter][ebnf-converter]、
 [RailroadAbnfValueConverter][abnf-converter]、
 [RailroadPegValueConverter][peg-converter]の後の公開値は、
-tests の要約が定義する。 [fixture: railroad/ir-common-title-open-quote]
+tests の要約が定義する。
+
+[fixture: railroad/ir-common-title-open-quote]
 [fixture: railroad/ir-common-quoted-title-escape]
 [fixture: railroad/ebnf-common-quoted-title-escape]
 [fixture: railroad/abnf-common-quoted-title-escape]
@@ -479,7 +520,9 @@ raw の CRLF も共通改行変換の後は同じ。
 本文のある選択肢を先に試し、条件に合う closer が成立する最小の本文を取る。
 それが失敗したときだけ空本文の選択肢を使う。
 このため、後方に closer があると、隣接 fence が closer に見える部分を通過し、
-途中の規則も隠す。 [fixture: railroad/ir-hidden-separator-content]
+途中の規則も隠す。
+
+[fixture: railroad/ir-hidden-separator-content]
 [fixture: railroad/ebnf-hidden-separator-content]
 [fixture: railroad/abnf-hidden-separator-content]
 [fixture: railroad/peg-hidden-separator-content]
@@ -498,6 +541,7 @@ opening padding は ASCII space/tab だけで、
 indent された closer は closing fence にならない。
 opener 前の source padding と、
 消費した直後の LF は RailroadIgnoredText の外に置く。
+
 [fixture: railroad/ir-hidden-yaml-unit-gap]
 [fixture: railroad/ebnf-hidden-yaml-unit-gap]
 [fixture: railroad/abnf-hidden-yaml-unit-gap]
@@ -518,6 +562,7 @@ EOF のいずれかが続く最初の `}%%` で終わる。
 境目のない closer は通過し、後の条件に合う closer を探す。
 native directive に合わなければ、
 代わりに native-percent-comment が opening line を取る場合がある。
+
 [fixture: railroad/ir-hidden-directive-closing-space]
 [fixture: railroad/ebnf-hidden-directive-closing-space]
 [fixture: railroad/abnf-hidden-directive-closing-space]
@@ -534,6 +579,7 @@ hidden YAML と directive の内部には物理改行、U+2028、U+2029 が入�
 closer 後の space、EOF の形を全方言で許す。
 [名前つき owner](../ast/railroad.md#gap-ownership)の中の whole
 RailroadIgnoredText node として保ち、消費した後続 LF は range の外に置く。
+
 [fixture: railroad/ir-hidden-yaml-sole-lf]
 [fixture: railroad/ir-hidden-yaml-spare-lf]
 [fixture: railroad/ebnf-hidden-yaml-sole-lf]
@@ -555,9 +601,11 @@ RailroadIgnoredText node として保ち、消費した後続 LF は range の�
 先に始まった文字列、special sequence、metadata は、
 hidden に見える内容をその値として所有する。
 通常の word-start global directive は native の照合より先に読む共有 trivia で、
-追加の ignored-text node にはしない。 [fixture: railroad/ir-native-in-atom]
-[fixture: railroad/ebnf-native-in-atom] [fixture: railroad/abnf-native-in-atom]
-[fixture: railroad/peg-native-in-atom] [fixture: railroad/ir-hidden-yaml-string]
+追加の ignored-text node にはしない。
+
+[fixture: railroad/ir-native-in-atom] [fixture: railroad/ebnf-native-in-atom]
+[fixture: railroad/abnf-native-in-atom] [fixture: railroad/peg-native-in-atom]
+[fixture: railroad/ir-hidden-yaml-string]
 [fixture: railroad/ir-hidden-directive-string]
 [fixture: railroad/ebnf-enclosing-string-hidden]
 [fixture: railroad/abnf-enclosing-string-hidden]
@@ -574,7 +622,9 @@ native-percent-comment は `%%` で始まり、CR/LF か EOF の直前まで読�
 IR と EBNF の C-comment は `/*` から最初の `*/` まで。
 EBNF の ISO-comment は `(*` から最初の `*)` まで。
 block comment は入れ子にならず、すべての改行字を内容に含められ、
-closer を必須とする。 [fixture: railroad/ir-comment-percent-ls]
+closer を必須とする。
+
+[fixture: railroad/ir-comment-percent-ls]
 [fixture: railroad/ir-comment-bare-percent-body]
 [fixture: railroad/ebnf-comment-bare-percent-body]
 [fixture: railroad/abnf-comment-bare-percent-body]
@@ -591,6 +641,7 @@ ABNF の semicolon-comment は `;` で始まり、CR/LF か EOF の直前まで�
 1 字の終端記号より長い一致だけが longer alternative として優先する。
 したがって裸の `;` は句読点だが、後に space か他の行内 text が続く `;` は、
 規則の終端を意図した位置でも comment となる。
+
 [fixture: railroad/abnf-comment-semicolon-ls]
 [fixture: railroad/abnf-comment-empty-line]
 [fixture: railroad/abnf-comment-before-rule]
@@ -604,6 +655,7 @@ PEG の hash-comment は `#` で始まり、CR/LF か EOF の直前まで読み�
 U+2028 と U+2029 は native line comment を終えない。
 hash comment は IR、EBNF、ABNF の comment ではない。
 C comment は ABNF、PEG の comment ではなく、ISO comment は EBNF だけにある。
+
 [fixture: railroad/peg-comment-hash-ps]
 [fixture: railroad/peg-comment-bare-hash] [fixture: railroad/peg-comment-hash]
 [fixture: railroad/ir-comment-hash-foreign]
@@ -620,58 +672,61 @@ body の文や RailroadIgnoredText にはしない。
 その先行する単位が包んだ comment に見える text を所有する。
 共通 comment region は別の規則で、
 この native の読取りより先に source の行を除く場合がある。
+
 [fixture: railroad/ir-comment-string]
 [fixture: railroad/ebnf-enclosing-string-hidden]
 [fixture: railroad/abnf-enclosing-string-hidden]
 [fixture: railroad/peg-comment-in-literal]
 [fixture: railroad/ir-common-block-comment]
 [fixture: railroad/ir-common-block-gap-comment]
+
 値の中の U+2028 か U+2029 の後の物理行の残りは、その改行も含めて、
 共通のコメント領域が取り除くことがある。
 そのとき値は次の物理行へ続くので、行の値はそこで終わらない。
 `accTitle: A`、U+2028、`%% c`、改行、`B` のアクセシビリティタイトルは `A`、
-U+2028、`B` である。 [fixture:
-railroad/lex-string-line-separator-then-comment-line] [fixture:
-railroad/lex-string-paragraph-separator-then-comment-line] [fixture:
-railroad/lex-title-line-separator-then-comment-line] [fixture:
-railroad/lex-acc-title-line-separator-then-comment-line] [fixture:
-railroad/lex-acc-descr-line-separator-then-comment-line] [fixture:
-railroad/lex-acc-descr-block-line-separator-then-comment-line] [fixture:
-railroad/lex-string-line-separator-comment-line-directive-next] [fixture:
-railroad/lex-string-line-separator-comment-line-space-next] [fixture:
-railroad/lex-string-line-separator-comment-line-separator-next] [fixture:
-railroad/lex-string-line-separator-comment-line-empty-line] [fixture:
-railroad/lex-string-line-separator-comment-line-end-of-text] [fixture:
-railroad/lex-acc-title-line-separator-comment-line-end-of-text] [fixture:
-railroad/lex-string-line-separator-comment-line-cr] [fixture:
-railroad/lex-string-line-separator-comment-line-crlf] [fixture:
-railroad/lex-string-line-separator-comment-line-two-comment-lines] [fixture:
-railroad/lex-string-line-separator-comment-line-two-regions] [fixture:
-railroad/lex-string-line-separator-comment-line-spaces-before] [fixture:
-railroad/lex-string-line-separator-comment-line-line-feed-before] [fixture:
-railroad/lex-string-line-separator-comment-line-directive-before] [fixture:
-railroad/lex-string-line-separator-comment-line-line-rule-before] [fixture:
-railroad/lex-string-line-separator-comment-line-bare-percent] [fixture:
-railroad/lex-string-line-separator-comment-line-percent-brace] [fixture:
-railroad/lex-ir-nonterminal-string-line-separator-then-comment-line] [fixture:
-railroad/lex-ir-special-string-line-separator-then-comment-line] [fixture:
-railroad/lex-ebnf-string-line-separator-then-comment-line] [fixture:
-railroad/lex-abnf-string-line-separator-then-comment-line] [fixture:
-railroad/lex-peg-string-line-separator-then-comment-line] [fixture:
-railroad/db-ebnf-special-sequence-line-separator-then-comment-line] [fixture:
-railroad/lex-ebnf-title-line-separator-then-comment-line] [fixture:
-railroad/lex-ebnf-acc-title-line-separator-then-comment-line] [fixture:
-railroad/lex-ebnf-acc-descr-line-separator-then-comment-line] [fixture:
-railroad/lex-ebnf-acc-descr-block-line-separator-then-comment-line] [fixture:
-railroad/lex-abnf-title-line-separator-then-comment-line] [fixture:
-railroad/lex-abnf-acc-title-line-separator-then-comment-line] [fixture:
-railroad/lex-abnf-acc-descr-line-separator-then-comment-line] [fixture:
-railroad/lex-abnf-acc-descr-block-line-separator-then-comment-line] [fixture:
-railroad/lex-peg-title-line-separator-then-comment-line] [fixture:
-railroad/lex-peg-acc-title-line-separator-then-comment-line] [fixture:
-railroad/lex-peg-acc-descr-line-separator-then-comment-line] [fixture:
-railroad/lex-peg-acc-descr-block-line-separator-then-comment-line] [fixture:
-railroad/lex-string-line-separator-comment-line-line-rule-after]
+U+2028、`B` である。
+
+[fixture: railroad/lex-string-line-separator-then-comment-line]
+[fixture: railroad/lex-string-paragraph-separator-then-comment-line]
+[fixture: railroad/lex-title-line-separator-then-comment-line]
+[fixture: railroad/lex-acc-title-line-separator-then-comment-line]
+[fixture: railroad/lex-acc-descr-line-separator-then-comment-line]
+[fixture: railroad/lex-acc-descr-block-line-separator-then-comment-line]
+[fixture: railroad/lex-string-line-separator-comment-line-directive-next]
+[fixture: railroad/lex-string-line-separator-comment-line-space-next]
+[fixture: railroad/lex-string-line-separator-comment-line-separator-next]
+[fixture: railroad/lex-string-line-separator-comment-line-empty-line]
+[fixture: railroad/lex-string-line-separator-comment-line-end-of-text]
+[fixture: railroad/lex-acc-title-line-separator-comment-line-end-of-text]
+[fixture: railroad/lex-string-line-separator-comment-line-cr]
+[fixture: railroad/lex-string-line-separator-comment-line-crlf]
+[fixture: railroad/lex-string-line-separator-comment-line-two-comment-lines]
+[fixture: railroad/lex-string-line-separator-comment-line-two-regions]
+[fixture: railroad/lex-string-line-separator-comment-line-spaces-before]
+[fixture: railroad/lex-string-line-separator-comment-line-line-feed-before]
+[fixture: railroad/lex-string-line-separator-comment-line-directive-before]
+[fixture: railroad/lex-string-line-separator-comment-line-line-rule-before]
+[fixture: railroad/lex-string-line-separator-comment-line-bare-percent]
+[fixture: railroad/lex-string-line-separator-comment-line-percent-brace]
+[fixture: railroad/lex-ir-nonterminal-string-line-separator-then-comment-line]
+[fixture: railroad/lex-ir-special-string-line-separator-then-comment-line]
+[fixture: railroad/lex-ebnf-string-line-separator-then-comment-line]
+[fixture: railroad/lex-abnf-string-line-separator-then-comment-line]
+[fixture: railroad/lex-peg-string-line-separator-then-comment-line]
+[fixture: railroad/db-ebnf-special-sequence-line-separator-then-comment-line]
+[fixture: railroad/lex-ebnf-title-line-separator-then-comment-line]
+[fixture: railroad/lex-ebnf-acc-title-line-separator-then-comment-line]
+[fixture: railroad/lex-ebnf-acc-descr-line-separator-then-comment-line]
+[fixture: railroad/lex-ebnf-acc-descr-block-line-separator-then-comment-line]
+[fixture: railroad/lex-abnf-title-line-separator-then-comment-line]
+[fixture: railroad/lex-abnf-acc-title-line-separator-then-comment-line]
+[fixture: railroad/lex-abnf-acc-descr-line-separator-then-comment-line]
+[fixture: railroad/lex-abnf-acc-descr-block-line-separator-then-comment-line]
+[fixture: railroad/lex-peg-title-line-separator-then-comment-line]
+[fixture: railroad/lex-peg-acc-title-line-separator-then-comment-line]
+[fixture: railroad/lex-peg-acc-descr-line-separator-then-comment-line]
+[fixture: railroad/lex-peg-acc-descr-block-line-separator-then-comment-line]
+[fixture: railroad/lex-string-line-separator-comment-line-line-rule-after]
 
 ### 共通 directive とセミコロンの境界
 
@@ -681,7 +736,9 @@ IR constructor の語、metadata keyword、名前、十進の count、`::=`、
 `<-` を atom とする。
 metadata の keyword、colon または brace、値は別の書かれた部品。
 ABNF repeat の部品は十進の両端値と star で、native の照合で隣接が必須でも、
-その部品を区別する。 [fixture: railroad/ir-div-directive-header]
+その部品を区別する。
+
+[fixture: railroad/ir-div-directive-header]
 [fixture: railroad/ir-directive-keyword-glued]
 [fixture: railroad/ir-directive-description-keyword]
 [fixture: railroad/ir-directive-name] [fixture: railroad/peg-directive-operator]
@@ -703,6 +760,7 @@ metadata keyword と colon の間、repeat の bound と star の間の directiv
 完成した repeat と primary の間では部品を分断しない。
 完成した repeat と primary の間の directive も許す。
 通常の native hidden form に同じ接合を許すわけではない。
+
 [fixture: railroad/ir-directive-common-colon]
 [fixture: railroad/ir-directive-string-middle]
 [fixture: railroad/ebnf-directive-string]
@@ -739,7 +797,9 @@ repeat の内部を除き、完成した native の単位の間には native pad
 合う hidden form を置ける。
 metadata は任意の順で繰り返せるが、最初の規則より前に限る。
 空の metadata block も文であり、式の内部の hidden gap にはできない。
-見出しに flag はない。 [fixture: railroad/ir-native-ownership]
+見出しに flag はない。
+
+[fixture: railroad/ir-native-ownership]
 [fixture: railroad/ebnf-native-ownership]
 [fixture: railroad/abnf-native-ownership]
 [fixture: railroad/peg-native-ownership] [fixture: railroad/ir-common-repeat]
@@ -760,11 +820,13 @@ body は空でも、metadata と残る形だけでもよい。
 見出しの境目と行の内容の規則を満たせば、
 見出し後や文の間に visible newline は要らない。
 規則には visible なセミコロンが常に要り、
-余分な単独のセミコロンは空の文にはならない。 [fixture: railroad/ir-header-only]
-[fixture: railroad/ebnf-header-only] [fixture: railroad/abnf-header-only]
-[fixture: railroad/peg-header-only] [fixture: railroad/ir-header-inline]
-[fixture: railroad/ebnf-header-inline] [fixture: railroad/abnf-header-inline]
-[fixture: railroad/peg-header-inline] [fixture: railroad/ir-rule-tail-semicolon]
+余分な単独のセミコロンは空の文にはならない。
+
+[fixture: railroad/ir-header-only] [fixture: railroad/ebnf-header-only]
+[fixture: railroad/abnf-header-only] [fixture: railroad/peg-header-only]
+[fixture: railroad/ir-header-inline] [fixture: railroad/ebnf-header-inline]
+[fixture: railroad/abnf-header-inline] [fixture: railroad/peg-header-inline]
+[fixture: railroad/ir-rule-tail-semicolon]
 [fixture: railroad/ebnf-rule-tail-semicolon]
 [fixture: railroad/abnf-comment-double-terminator]
 [fixture: railroad/peg-rule-tail-semicolon]
@@ -792,6 +854,7 @@ sequence と choice は 1 個以上の引数、
 空 call、末尾の comma、余分な引数、裸の文字列、裸の参照、
 未知の constructor は拒否する。
 1 引数の sequence と choice も、木では書かれた call のまま保つ。
+
 [fixture: railroad/ir-gram-written-tree] [fixture: railroad/ir-error-empty-call]
 [fixture: railroad/ir-error-empty-choice]
 [fixture: railroad/ir-error-empty-optional]
@@ -825,8 +888,9 @@ ebnf-postfix = "?" | "*" | "+" | "-" ebnf-primary
 後置演算を持つ term、最も内側の primary の順。
 sequence の各境目の comma は任意だが、項の欠落は許さない。
 空の definition、alternative、group、optional group、
-repetition group は拒否する。 [fixture: railroad/ebnf-gram-written-tree]
-[fixture: railroad/ebnf-rhs-empty]
+repetition group は拒否する。
+
+[fixture: railroad/ebnf-gram-written-tree] [fixture: railroad/ebnf-rhs-empty]
 [fixture: railroad/ebnf-alternative-empty-first]
 [fixture: railroad/ebnf-alternative-empty-last]
 [fixture: railroad/ebnf-comma-trailing]
@@ -838,6 +902,7 @@ repetition group は拒否する。 [fixture: railroad/ebnf-gram-written-tree]
 `A - B - C+` の最後の plus は、先の 2 個の例外全体へ掛かる。
 字句の special-sequence の規則を先に決めるため、
 後置の question mark に見える部分がその primary に入る場合もある。
+
 [fixture: railroad/ebnf-exception-leftfold]
 [fixture: railroad/ebnf-db-postfix-order]
 [fixture: railroad/ebnf-postfix-special-priority]
@@ -861,6 +926,7 @@ native の repeat の部品は前述のとおり隣接する必要がある。
 空の definition、alternative、group、optional group と、
 追加定義の `=/` は拒否する。
 count と参照は別で、符号や小数の count は扱わない。
+
 [fixture: railroad/abnf-gram-written-tree] [fixture: railroad/abnf-rhs-empty]
 [fixture: railroad/abnf-alternative-empty-first]
 [fixture: railroad/abnf-alternative-empty-last]
@@ -874,6 +940,7 @@ native comment が取ったセミコロンは規則を終えない。
 そのセミコロンの後の同じ行に書いた次の規則は、
 別の規則でなく comment の内容となる。
 直後が LF か EOF の終端記号は visible のままである。
+
 [fixture: railroad/abnf-comment-terminator]
 [fixture: railroad/abnf-comment-terminator-control]
 [fixture: railroad/abnf-comment-two-rules-line]
@@ -897,6 +964,7 @@ group は choice 全体を囲む。
 各項の prefix と suffix はそれぞれ 1 個までで、
 括弧の内側にはさらに式を入れられる。
 空の definition、alternative、group、operand のない prefix は拒否する。
+
 [fixture: railroad/peg-gram-written-tree]
 [fixture: railroad/peg-gram-double-prefix]
 [fixture: railroad/peg-gram-double-suffix] [fixture: railroad/peg-rhs-empty]
@@ -909,36 +977,38 @@ group は choice 全体を囲む。
 dot は独立した primary で、predicate は group と postfix も含めて、
 suffix operand 全体を保つ。
 書かれた predicate の operand を公開 label に置き換えたり、
-singleton group を除いたりしない。 [fixture: railroad/peg-gram-written-tree]
-[fixture: railroad/peg-db-predicates]
+singleton group を除いたりしない。
+
+[fixture: railroad/peg-gram-written-tree] [fixture: railroad/peg-db-predicates]
 [fixture: railroad/peg-db-predicate-singleton-group]
 [fixture: railroad/peg-db-predicate-quote-newline]
 
 ### 文法と木のノード
 
-| 生成規則                                        | ノード                                                                                                                                                                                    |
-| ----------------------------------------------- | ----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
-| 各 diagram                                      | RailroadDiagram [fixture: railroad/ir-header-only] [fixture: railroad/ebnf-header-only] [fixture: railroad/abnf-header-only] [fixture: railroad/peg-header-only]                          |
-| 各 rule                                         | RailroadRule [fixture: railroad/ir-gram-written-tree] [fixture: railroad/ebnf-gram-written-tree] [fixture: railroad/abnf-gram-written-tree] [fixture: railroad/peg-gram-written-tree]     |
-| title-line / acc-title-line                     | RailroadTitleStatement / RailroadAccTitleStatement [fixture: railroad/ir-common-repeat-empty]                                                                                             |
-| acc-descr-line / acc-descr-block                | RailroadAccDescrStatement / RailroadAccDescrBlockStatement [fixture: railroad/ir-common-block-empty-interleaved]                                                                          |
-| ir-sequence / ir-choice                         | RailroadSequenceCall / RailroadChoiceCall [fixture: railroad/ir-db-singletons] [fixture: railroad/ir-gram-written-tree]                                                                   |
-| ir-optional / ir-one-or-more / ir-zero-or-more  | RailroadOptionalCall / RailroadOneOrMoreCall / RailroadZeroOrMoreCall [fixture: railroad/ir-gram-written-tree]                                                                            |
-| ir-terminal / ir-nonterminal / ir-special       | RailroadTerminalCall / RailroadNonterminalCall / RailroadSpecialCall [fixture: railroad/ir-db-empty-strings]                                                                              |
-| 複数要素の自然記法の choice / sequence          | RailroadChoiceExpression / RailroadSequenceExpression [fixture: railroad/ebnf-gram-written-tree] [fixture: railroad/abnf-gram-written-tree] [fixture: railroad/peg-gram-written-tree]     |
-| 括弧・角括弧の group                            | RailroadGroupExpression / RailroadOptionalGroupExpression [fixture: railroad/ebnf-gram-written-tree] [fixture: railroad/abnf-gram-written-tree] [fixture: railroad/peg-gram-written-tree] |
-| EBNF brace group / special sequence / exception | RailroadRepetitionGroupExpression / RailroadSpecialSequence / RailroadExceptionExpression [fixture: railroad/ebnf-gram-written-tree]                                                      |
-| EBNF・PEG の postfix                            | RailroadPostfixExpression [fixture: railroad/ebnf-db-postfix-order] [fixture: railroad/peg-gram-written-tree]                                                                             |
-| ABNF repeat / star-repeat                       | RailroadRepeatExpression / RailroadRepeatRange [fixture: railroad/abnf-gram-written-tree]                                                                                                 |
-| abnf-numeric-value                              | RailroadNumericValue [fixture: railroad/abnf-numval-boundaries]                                                                                                                           |
-| PEG predicate / dot                             | RailroadPredicateExpression / RailroadAnyExpression [fixture: railroad/peg-gram-written-tree]                                                                                             |
-| 名前・引用文字列・十進 count                    | Identifier / StringLiteral / NumericLiteral [fixture: railroad/ir-db-empty-strings] [fixture: railroad/abnf-gram-written-tree]                                                            |
-| metadata の値・native hidden form               | RailroadLiteral / RailroadIgnoredText [fixture: railroad/ir-common-whitespace-shapes] [fixture: railroad/ir-native-ownership]                                                             |
+| 生成規則                                        | ノード                                                                                    | fixture                                                                                                                                                                  |
+| ----------------------------------------------- | ----------------------------------------------------------------------------------------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------ |
+| 各 diagram                                      | RailroadDiagram                                                                           | [fixture: railroad/ir-header-only] [fixture: railroad/ebnf-header-only] [fixture: railroad/abnf-header-only] [fixture: railroad/peg-header-only]                         |
+| 各 rule                                         | RailroadRule                                                                              | [fixture: railroad/ir-gram-written-tree] [fixture: railroad/ebnf-gram-written-tree] [fixture: railroad/abnf-gram-written-tree] [fixture: railroad/peg-gram-written-tree] |
+| title-line / acc-title-line                     | RailroadTitleStatement / RailroadAccTitleStatement                                        | [fixture: railroad/ir-common-repeat-empty]                                                                                                                               |
+| acc-descr-line / acc-descr-block                | RailroadAccDescrStatement / RailroadAccDescrBlockStatement                                | [fixture: railroad/ir-common-block-empty-interleaved]                                                                                                                    |
+| ir-sequence / ir-choice                         | RailroadSequenceCall / RailroadChoiceCall                                                 | [fixture: railroad/ir-db-singletons] [fixture: railroad/ir-gram-written-tree]                                                                                            |
+| ir-optional / ir-one-or-more / ir-zero-or-more  | RailroadOptionalCall / RailroadOneOrMoreCall / RailroadZeroOrMoreCall                     | [fixture: railroad/ir-gram-written-tree]                                                                                                                                 |
+| ir-terminal / ir-nonterminal / ir-special       | RailroadTerminalCall / RailroadNonterminalCall / RailroadSpecialCall                      | [fixture: railroad/ir-db-empty-strings]                                                                                                                                  |
+| 複数要素の自然記法の choice / sequence          | RailroadChoiceExpression / RailroadSequenceExpression                                     | [fixture: railroad/ebnf-gram-written-tree] [fixture: railroad/abnf-gram-written-tree] [fixture: railroad/peg-gram-written-tree]                                          |
+| 括弧・角括弧の group                            | RailroadGroupExpression / RailroadOptionalGroupExpression                                 | [fixture: railroad/ebnf-gram-written-tree] [fixture: railroad/abnf-gram-written-tree] [fixture: railroad/peg-gram-written-tree]                                          |
+| EBNF brace group / special sequence / exception | RailroadRepetitionGroupExpression / RailroadSpecialSequence / RailroadExceptionExpression | [fixture: railroad/ebnf-gram-written-tree]                                                                                                                               |
+| EBNF・PEG の postfix                            | RailroadPostfixExpression                                                                 | [fixture: railroad/ebnf-db-postfix-order] [fixture: railroad/peg-gram-written-tree]                                                                                      |
+| ABNF repeat / star-repeat                       | RailroadRepeatExpression / RailroadRepeatRange                                            | [fixture: railroad/abnf-gram-written-tree]                                                                                                                               |
+| abnf-numeric-value                              | RailroadNumericValue                                                                      | [fixture: railroad/abnf-numval-boundaries]                                                                                                                               |
+| PEG predicate / dot                             | RailroadPredicateExpression / RailroadAnyExpression                                       | [fixture: railroad/peg-gram-written-tree]                                                                                                                                |
+| 名前・引用文字列・十進 count                    | Identifier / StringLiteral / NumericLiteral                                               | [fixture: railroad/ir-db-empty-strings] [fixture: railroad/abnf-gram-written-tree]                                                                                       |
+| metadata の値・native hidden form               | RailroadLiteral / RailroadIgnoredText                                                     | [fixture: railroad/ir-common-whitespace-shapes] [fixture: railroad/ir-native-ownership]                                                                                  |
 
 自然記法の 1 要素の choice と sequence は wrapper を作らず、その要素にする。
 明示された call と書かれたすべての group は、子が 1 個でもノードとして保つ。
 list の member は、
 木の文書の名前つき hidden ownership のために RailroadExpressionMember を使う。
+
 [fixture: railroad/ir-db-singletons] [fixture: railroad/ebnf-db-singletons]
 [fixture: railroad/abnf-db-singletons] [fixture: railroad/peg-db-singletons]
 [fixture: railroad/ir-native-ownership]
@@ -953,6 +1023,7 @@ list の member は、
 追加の意味的な受理条件はなく、重複名、前方参照、未定義参照、再帰、
 repeat の逆順の両端値、有限の double を超える count も許す。
 規則名の一意性や base ごとの numeric value の検証は要求しない。
+
 [fixture: railroad/ir-error-before-rule]
 [fixture: railroad/ir-gram-reference-resolution]
 [fixture: railroad/ebnf-gram-reference-resolution]
@@ -974,6 +1045,7 @@ repeat の逆順の両端値、有限の double を超える count も許す。
 有効な `railroad.*` の設定は描画に作用し、構文受理には作用せず、
 semantic acceptance key を追加しない。
 埋込みデータの導出の失敗には、共通の opaque-data の規則を適用する。
+
 [fixture: railroad/ir-config-drawing-site]
 [fixture: railroad/ir-config-frontmatter-drawing]
 [fixture: railroad/ebnf-config-init-drawing]
@@ -996,6 +1068,7 @@ semantic acceptance key を追加しない。
 frontmatter の title は共有の embedded values に残る。
 group、call の構文、引用符、repeat の綴り、predicate の全 operand も、
 正規化後の Db にかかわらず書かれた構造として保つ。
+
 [fixture: railroad/ir-frontmatter-empty-body-title]
 [fixture: railroad/ebnf-frontmatter-empty-body-title]
 [fixture: railroad/abnf-frontmatter-empty-body-title]
@@ -1011,6 +1084,7 @@ group、call の構文、引用符、repeat の綴り、predicate の全 operand
 tokenless-empty-forms は適用しない。
 native hidden form には owner があり、
 Mermaid が公開しないことだけを理由に拒否しない。
+
 [fixture: railroad/ir-db-empty-strings] [fixture: railroad/ebnf-db-empty-string]
 [fixture: railroad/abnf-db-empty-string] [fixture: railroad/peg-db-empty-string]
 [fixture: railroad/ir-error-empty-call] [fixture: railroad/ir-native-ownership]
@@ -1022,7 +1096,9 @@ Mermaid が公開しないことだけを理由に拒否しない。
 前述の書かれた atom の内部の directive は拒否する。
 repeat の bound と star の間、numeric value の text の内部では引き続き許す。
 共有 Directive record は source を保つが、分断した名前、keyword、delimiter、
-十進 count を 1 atom にはしない。 [fixture: railroad/ir-div-directive-header]
+十進 count を 1 atom にはしない。
+
+[fixture: railroad/ir-div-directive-header]
 [fixture: railroad/ir-directive-keyword-glued]
 [fixture: railroad/ebnf-div-directive-assignment]
 [fixture: railroad/abnf-directive-repeat-number]
@@ -1035,6 +1111,7 @@ repeat の bound と star の間、numeric value の text の内部では引き�
 複合 delimiter の内部にあると、その atom を分断する。
 numeric value の text も含め、text の値では選ばれたセミコロンを引き続き許す。
 元の句読点は共通の trivia として残る。
+
 [fixture: railroad/ir-div-semicolon-rule-name]
 [fixture: railroad/ir-div-semicolon-constructor-keyword]
 [fixture: railroad/ir-div-semicolon-title-keyword]
@@ -1048,6 +1125,7 @@ frontmatter の開いた tag を body の文字列や共通値へ持ち越さな
 Frontmatter と値のノードは source を保つが、
 ignored-text の兄弟ノードでは fence を跨ぐ引用符の文脈を表せない。
 各方言に Mermaid だけの受理、仕様だけの受理、両受理の値の差がある。
+
 [fixture: railroad/ir-div-html-frontmatter-rule-accept]
 [fixture: railroad/ir-div-html-frontmatter-rule-reject]
 [fixture: railroad/ir-div-html-frontmatter-acctitle]
@@ -1066,6 +1144,7 @@ frontmatter と global directive の内容を、YAML、JSON、設定の型を検
 有効な設定から railroad の acceptance key は除かない。
 数の railroad font family を埋め込むと Mermaid の設定導出が失敗し得るが、
 この仕様は適切な delimiter を持つ図を受理する。
+
 [fixture: railroad/ir-div-frontmatter-invalid]
 [fixture: railroad/ir-config-frontmatter-fontfamily-number]
 [fixture: railroad/ebnf-config-init-fontfamily-number]
@@ -1076,6 +1155,7 @@ frontmatter と global directive の内容を、YAML、JSON、設定の型を検
 通過した bare line と伴う trivia を再び読まない。
 Comment record と空白として原文を保ち、共有の直接規則により、
 その Unicode padding を拒否する native lexer へ渡し直さない。
+
 [fixture: railroad/ir-bare-nbsp] [fixture: railroad/ebnf-bare-unicode]
 [fixture: railroad/abnf-bare-unicode] [fixture: railroad/peg-bare-unicode]
 [fixture: railroad/ir-secondscan-between-bares-unicode]
@@ -1085,6 +1165,7 @@ text に C4Container、C4Component、C4Dynamic、
 C4Deployment があるため C4 に切り替えるのでなく、
 見出しで railroad の方言を選ぶ。
 書かれた名前、文字列、special の形は、それぞれの自然なノードにその語を保つ。
+
 [fixture: railroad/ir-c4-container-terminal]
 [fixture: railroad/ebnf-c4-component-special]
 [fixture: railroad/abnf-c4-dynamic-string]

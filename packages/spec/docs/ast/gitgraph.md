@@ -7,9 +7,11 @@ defines shared leaves and [diagrams/gitgraph.md](../diagrams/gitgraph.md)
 defines acceptance. Fields keep written values, without string escape decoding
 or Db normalization. Optional fields are present as null, missing lists are
 empty, and all lists retain source order, including repeated statements/options.
-Child fields below give visitor order. [fixture: gitgraph/gram-all-fields]
-[fixture: gitgraph/header-only] [fixture: gitgraph/gram-commit-repeated-options]
-[fixture: gitgraph/gram-cherry-pick-repeated-options] [fixture:
+Child fields below give visitor order.
+
+[fixture: gitgraph/gram-all-fields] [fixture: gitgraph/header-only] [fixture:
+gitgraph/gram-commit-repeated-options] [fixture:
+gitgraph/gram-cherry-pick-repeated-options] [fixture:
 gitgraph/lex-string-escapes]
 
 ## Nodes
@@ -28,19 +30,21 @@ Child fields: `textBeforeHeader`, `textBeforeDirection`, `textBeforeColon`,
 `body`. Range: the first retained pre-header form, or the header word if none,
 through the last written header/body component. Exclude unrelated outside
 padding. There is no header node, inferred direction, colon flag or
-effective-title field. [fixture: gitgraph/header-only] [fixture:
-gitgraph/header-tb] [fixture: gitgraph/header-colon] [fixture:
-gitgraph/header-spaced-colon] [fixture: gitgraph/lex-yaml-after-comment]
-[fixture: gitgraph/header-hidden-before-colon] [fixture:
-gitgraph/header-hidden-before-direction]
+effective-title field.
+
+[fixture: gitgraph/header-only] [fixture: gitgraph/header-tb] [fixture:
+gitgraph/header-colon] [fixture: gitgraph/header-spaced-colon] [fixture:
+gitgraph/lex-yaml-after-comment] [fixture: gitgraph/header-hidden-before-colon]
+[fixture: gitgraph/header-hidden-before-direction]
 
 textBeforeHeader contains only native hidden forms remaining from the detection
 point, including a retained YAML block and second-scan directives.
 Detection-passed bare percent-pair lines are shared Comments, not these nodes,
 and do not extend the diagram range. Their accompanying passed whitespace and
 line breaks are trivia and are not read again, also between retained forms.
-Native hidden-form boundaries still decide acceptance. [fixture:
-gitgraph/lex-yaml-after-comment] [fixture:
+Native hidden-form boundaries still decide acceptance.
+
+[fixture: gitgraph/lex-yaml-after-comment] [fixture:
 gitgraph/lex-hidden-directive-second-scan] [fixture:
 gitgraph/detect-two-second-scan-forms] [fixture:
 gitgraph/detect-bare-brace-eof-header] [fixture:
@@ -53,9 +57,11 @@ direction is null unless LR/TB/BT is written. textBeforeDirection is empty
 without a written direction. textBeforeColon is empty without a separated colon;
 the colon joined to gitGraph has no intervening gap. Hidden forms after the last
 written header component start body. Two hidden forms in one gap remain two
-nodes. [fixture: gitgraph/header-only] [fixture: gitgraph/header-colon]
-[fixture: gitgraph/header-bt] [fixture: gitgraph/header-hidden-before-colon]
-[fixture: gitgraph/header-hidden-before-direction] [fixture:
+nodes.
+
+[fixture: gitgraph/header-only] [fixture: gitgraph/header-colon] [fixture:
+gitgraph/header-bt] [fixture: gitgraph/header-hidden-before-colon] [fixture:
+gitgraph/header-hidden-before-direction] [fixture:
 gitgraph/header-two-hidden-forms] [fixture:
 gitgraph/lex-hidden-directive-unknown-content] [fixture:
 gitgraph/lex-hidden-directive-before-branch-name]
@@ -65,8 +71,10 @@ GitgraphCheckoutStatement, GitgraphMergeStatement, GitgraphCherryPickStatement,
 GitgraphTitleStatement, GitgraphAccTitleStatement, GitgraphAccDescrStatement,
 GitgraphAccDescrBlockStatement or GitgraphIgnoredText. Empty/comment-only lines
 make no body item. Duplicate ids and repeated common statements remain distinct
-source occurrences. [fixture: gitgraph/gram-all-fields] [fixture:
-gitgraph/db-duplicate-id] [fixture: gitgraph/common-third-values] [fixture:
+source occurrences.
+
+[fixture: gitgraph/gram-all-fields] [fixture: gitgraph/db-duplicate-id]
+[fixture: gitgraph/common-third-values] [fixture:
 gitgraph/comment-before-header]
 
 ### GitgraphCommitStatement
@@ -79,9 +87,11 @@ gitgraph/comment-before-header]
 Options are GitgraphIdOption, GitgraphMessageOption, GitgraphTagOption or
 GitgraphTypeOption, in source order. Child fields: `options`, `textAfter`.
 Range: commit through its last option or hidden suffix, or the keyword alone;
-exclude EOL. An empty option list is valid. [fixture:
-gitgraph/header-commit-inline] [fixture: gitgraph/gram-commit-repeated-options]
-[fixture: gitgraph/lex-hidden-directive-commit-eof]
+exclude EOL. An empty option list is valid.
+
+[fixture: gitgraph/header-commit-inline] [fixture:
+gitgraph/gram-commit-repeated-options] [fixture:
+gitgraph/lex-hidden-directive-commit-eof]
 
 ### GitgraphBranchStatement
 
@@ -96,6 +106,7 @@ Child fields: `textBeforeName`, `name`, `order`, `textAfter`. Range: branch
 through the last name/order/suffix component, excluding EOL. order is null when
 absent. The name accepts either quote style, even an empty or whitespace-only
 quoted name; never replace its written form with the effective comparison name.
+
 [fixture: gitgraph/gram-branch-order] [fixture: gitgraph/gram-branch-empty]
 [fixture: gitgraph/gram-branch-whitespace] [fixture:
 gitgraph/gram-branch-single-quotes] [fixture:
@@ -113,8 +124,9 @@ gitgraph/lex-branch-between-name-order-hidden]
 
 Child fields: `textBeforeBranch`, `branch`, `textAfter`. Range: checkout or
 switch through the branch or last hidden suffix, excluding EOL. keyword
-preserves which alias was written and is not a child. [fixture:
-gitgraph/gram-checkout] [fixture: gitgraph/gram-switch] [fixture:
+preserves which alias was written and is not a child.
+
+[fixture: gitgraph/gram-checkout] [fixture: gitgraph/gram-switch] [fixture:
 gitgraph/lex-hidden-directive-before-checkout-name] [fixture:
 gitgraph/lex-hidden-directive-checkout-eof]
 
@@ -130,8 +142,10 @@ gitgraph/lex-hidden-directive-checkout-eof]
 Options are GitgraphIdOption, GitgraphTagOption or GitgraphTypeOption. Child
 fields: `textBeforeBranch`, `branch`, `options`, `textAfter`. Range: merge
 through the last branch/option/suffix component, excluding EOL. Keep repeated id
-and type assignments separately. [fixture: gitgraph/gram-merge-options]
-[fixture: gitgraph/gram-merge-repeated-options] [fixture:
+and type assignments separately.
+
+[fixture: gitgraph/gram-merge-options] [fixture:
+gitgraph/gram-merge-repeated-options] [fixture:
 gitgraph/lex-hidden-directive-before-merge-name] [fixture:
 gitgraph/lex-hidden-directive-merge-eof]
 
@@ -145,8 +159,9 @@ gitgraph/lex-hidden-directive-merge-eof]
 Options are GitgraphIdOption, GitgraphParentOption or GitgraphTagOption. Child
 fields: `options`, `textAfter`. Range: cherry-pick through the last option or
 hidden suffix, excluding EOL. The written grammar permits no options, but
-semantic acceptance still requires an effective source id. [fixture:
-gitgraph/gram-cherry-pick-repeated-options] [fixture:
+semantic acceptance still requires an effective source id.
+
+[fixture: gitgraph/gram-cherry-pick-repeated-options] [fixture:
 gitgraph/lex-hidden-directive-cherry-pick-eof] [fixture:
 gitgraph/db-cherry-pick-missing]
 
@@ -162,13 +177,17 @@ Child fields: `textBefore`, `textBeforeValue`, `value`. Range: the first
 textBefore form, or the `id` word if none, through the closing quote of its
 value. textBefore holds hidden forms between the preceding component and this
 option; textBeforeValue holds forms after the complete introducer. A missing gap
-is empty. [fixture: gitgraph/gram-commit-repeated-options] [fixture:
+is empty.
+
+[fixture: gitgraph/gram-commit-repeated-options] [fixture:
 gitgraph/lex-hidden-directive-between-option-value] [fixture:
 gitgraph/lex-option-between-options-hidden]
 
 StringLiteral keeps its quoted raw source and the written interior in value,
 without decoding escapes; closed is true. Empty values remain StringLiteral
-nodes. [fixture: gitgraph/gram-commit-empty-values] [fixture:
+nodes.
+
+[fixture: gitgraph/gram-commit-empty-values] [fixture:
 gitgraph/lex-string-escapes]
 
 ### GitgraphMessageOption
@@ -184,13 +203,16 @@ Child fields: `textBefore`, `textBeforeValue`, `value`. Range: the first
 textBefore form, or the option word/opening quote if none, through the end of
 its value. textBefore holds hidden forms between the preceding component and
 this option; textBeforeValue holds forms after the complete introducer. A
-missing gap is empty. [fixture: gitgraph/gram-commit-repeated-options] [fixture:
+missing gap is empty.
+
+[fixture: gitgraph/gram-commit-repeated-options] [fixture:
 gitgraph/lex-option-before-message-hidden] [fixture:
 gitgraph/lex-hidden-between-id-message-global-control]
 
 keyword is msg for an explicit `msg:` and null for a bare string. With no
 introducer textBeforeValue is empty, and hidden forms before the quote belong to
 textBefore. Both forms and every repeated message remain separate options.
+
 [fixture: gitgraph/gram-commit-repeated-options] [fixture:
 gitgraph/lex-option-before-message-hidden] [fixture:
 gitgraph/lex-hidden-between-id-message-global-control]
@@ -207,13 +229,17 @@ Child fields: `textBefore`, `textBeforeValue`, `value`. Range: the first
 textBefore form, or the `tag` word if none, through the closing quote of its
 value. textBefore holds hidden forms between the preceding component and this
 option; textBeforeValue holds forms after the complete introducer. A missing gap
-is empty. [fixture: gitgraph/gram-cherry-pick-tags] [fixture:
+is empty.
+
+[fixture: gitgraph/gram-cherry-pick-tags] [fixture:
 gitgraph/gram-commit-empty-values] [fixture:
 gitgraph/lex-option-between-options-hidden]
 
 StringLiteral keeps its quoted raw source and the written interior in value,
 without decoding escapes; closed is true. Empty values remain StringLiteral
-nodes. [fixture: gitgraph/gram-commit-empty-values] [fixture:
+nodes.
+
+[fixture: gitgraph/gram-commit-empty-values] [fixture:
 gitgraph/lex-string-escapes]
 
 ### GitgraphTypeOption
@@ -228,13 +254,17 @@ Child fields: `textBefore`, `textBeforeValue`. Range: the first textBefore form,
 or the `type` word if none, through the end of the written NORMAL, REVERSE or
 HIGHLIGHT keyword. textBefore holds hidden forms between the preceding component
 and this option; textBeforeValue holds forms after the complete introducer. A
-missing gap is empty. [fixture: gitgraph/gram-merge-repeated-options] [fixture:
+missing gap is empty.
+
+[fixture: gitgraph/gram-merge-repeated-options] [fixture:
 gitgraph/lex-option-before-type-value-hidden] [fixture:
 gitgraph/lex-option-type-hidden-tail]
 
 value is the written fixed keyword, not a numeric Db type and not a child node.
-No other spelling is allowed. [fixture: gitgraph/gram-commit-type-lowercase]
-[fixture: gitgraph/gram-commit-type-unknown] [fixture:
+No other spelling is allowed.
+
+[fixture: gitgraph/gram-commit-type-lowercase] [fixture:
+gitgraph/gram-commit-type-unknown] [fixture:
 gitgraph/lex-type-longer-reference-control] [fixture: gitgraph/gram-all-fields]
 
 ### GitgraphParentOption
@@ -249,13 +279,17 @@ Child fields: `textBefore`, `textBeforeValue`, `value`. Range: the first
 textBefore form, or the `parent` word if none, through the closing quote of its
 value. textBefore holds hidden forms between the preceding component and this
 option; textBeforeValue holds forms after the complete introducer. A missing gap
-is empty. [fixture: gitgraph/gram-cherry-pick-merge-parent] [fixture:
+is empty.
+
+[fixture: gitgraph/gram-cherry-pick-merge-parent] [fixture:
 gitgraph/gram-cherry-pick-repeated-options] [fixture:
 gitgraph/lex-parent-global-before-colon]
 
 StringLiteral keeps its quoted raw source and the written interior in value,
 without decoding escapes; closed is true. Empty values remain StringLiteral
-nodes. [fixture: gitgraph/gram-cherry-pick-empty-parent] [fixture:
+nodes.
+
+[fixture: gitgraph/gram-cherry-pick-empty-parent] [fixture:
 gitgraph/gram-cherry-pick-merge-parent]
 
 ### GitgraphOrderOption
@@ -270,14 +304,18 @@ Child fields: `textBefore`, `textBeforeValue`, `value`. Range: the first
 textBefore form, or the `order` word if none, through the last digit of its
 value. textBefore holds hidden forms between the preceding component and this
 option; textBeforeValue holds forms after the complete introducer. A missing gap
-is empty. [fixture: gitgraph/gram-branch-order] [fixture:
+is empty.
+
+[fixture: gitgraph/gram-branch-order] [fixture:
 gitgraph/lex-branch-between-name-order-hidden] [fixture:
 gitgraph/lex-hidden-directive-before-order] [fixture: gitgraph/number-overflow]
 
 NumericLiteral keeps the complete written digits in raw and the shared double in
 value, including precision loss or overflow. No effective branch order is
-substituted. [fixture: gitgraph/number-zero] [fixture:
-gitgraph/number-precision] [fixture: gitgraph/number-overflow]
+substituted.
+
+[fixture: gitgraph/number-zero] [fixture: gitgraph/number-precision] [fixture:
+gitgraph/number-overflow]
 
 ### Statement gap ownership
 
@@ -286,8 +324,9 @@ including between a branch name and order. After the final option/name it
 belongs to the statement’s textAfter until a visible EOL; after that EOL it is a
 body item. No occurrence is duplicated. A native comment is a shared Comment.
 Identifier holds a bare branch reference as written; StringLiteral holds a
-quoted one, with no escape decoding. [fixture:
-gitgraph/lex-option-between-options-hidden] [fixture:
+quoted one, with no escape decoding.
+
+[fixture: gitgraph/lex-option-between-options-hidden] [fixture:
 gitgraph/lex-branch-between-name-order-hidden] [fixture:
 gitgraph/lex-hidden-directive-commit-eof] [fixture:
 gitgraph/lex-hidden-directive-before-branch-name] [fixture:
@@ -303,8 +342,9 @@ gitgraph/comment-commit-glued] [fixture: gitgraph/gram-branch-single-quotes]
 
 value is the text after title and exactly one ASCII space/tab, through the
 line-value end, retaining all remaining padding. It is null when there is no
-separator or no content after that separator. [fixture:
-gitgraph/lex-title-bare-hidden-tail] [fixture:
+separator or no content after that separator.
+
+[fixture: gitgraph/lex-title-bare-hidden-tail] [fixture:
 gitgraph/lex-title-tab-hidden-tail] [fixture: gitgraph/title-tab] [fixture:
 gitgraph/title-conversion] [fixture: gitgraph/common-title-only-whitespace]
 
@@ -312,8 +352,9 @@ Child fields: `value`, `textAfter`. Range: title through its last value
 character, or the keyword/colon/closing brace that completes its empty form,
 extended through the last textAfter form. Exclude EOL and unrelated outside
 padding. Hidden forms after a visible EOL are body items, not suffixes. Keep
-repeated and empty common statements. [fixture:
-gitgraph/lex-title-bare-hidden-tail] [fixture:
+repeated and empty common statements.
+
+[fixture: gitgraph/lex-title-bare-hidden-tail] [fixture:
 gitgraph/lex-title-tab-hidden-tail] [fixture: gitgraph/title-tab] [fixture:
 gitgraph/title-conversion] [fixture: gitgraph/common-title-only-whitespace]
 [fixture: gitgraph/common-third-values] [fixture:
@@ -328,8 +369,9 @@ gitgraph/lex-hidden-directive-title-eof]
 
 value is the text immediately after the colon through the line-value end,
 including padding at both ends. It is null only when there is no content;
-whitespace-only content is a literal. [fixture:
-gitgraph/lex-acctitle-empty-hidden-tail] [fixture:
+whitespace-only content is a literal.
+
+[fixture: gitgraph/lex-acctitle-empty-hidden-tail] [fixture:
 gitgraph/common-acctitle-only-whitespace] [fixture:
 gitgraph/acctitle-unicode-trim]
 
@@ -337,8 +379,9 @@ Child fields: `value`, `textAfter`. Range: accTitle through its last value
 character, or the keyword/colon/closing brace that completes its empty form,
 extended through the last textAfter form. Exclude EOL and unrelated outside
 padding. Hidden forms after a visible EOL are body items, not suffixes. Keep
-repeated and empty common statements. [fixture:
-gitgraph/lex-acctitle-empty-hidden-tail] [fixture:
+repeated and empty common statements.
+
+[fixture: gitgraph/lex-acctitle-empty-hidden-tail] [fixture:
 gitgraph/common-acctitle-only-whitespace] [fixture:
 gitgraph/acctitle-unicode-trim] [fixture: gitgraph/common-third-values]
 [fixture: gitgraph/lex-hidden-directive-acctitle-eof]
@@ -352,8 +395,9 @@ gitgraph/acctitle-unicode-trim] [fixture: gitgraph/common-third-values]
 
 value is the text immediately after the colon through the line-value end,
 including padding at both ends. It is null only when there is no content;
-whitespace-only content is a literal. [fixture:
-gitgraph/lex-description-line-null] [fixture:
+whitespace-only content is a literal.
+
+[fixture: gitgraph/lex-description-line-null] [fixture:
 gitgraph/common-accdescr-only-whitespace] [fixture:
 gitgraph/accdescr-unicode-trim]
 
@@ -361,8 +405,9 @@ Child fields: `value`, `textAfter`. Range: accDescr through its last value
 character, or the keyword/colon/closing brace that completes its empty form,
 extended through the last textAfter form. Exclude EOL and unrelated outside
 padding. Hidden forms after a visible EOL are body items, not suffixes. Keep
-repeated and empty common statements. [fixture:
-gitgraph/lex-description-line-null] [fixture:
+repeated and empty common statements.
+
+[fixture: gitgraph/lex-description-line-null] [fixture:
 gitgraph/common-accdescr-only-whitespace] [fixture:
 gitgraph/accdescr-unicode-trim] [fixture: gitgraph/common-third-values]
 [fixture: gitgraph/lex-hidden-directive-accdescr-eof]
@@ -377,20 +422,22 @@ gitgraph/accdescr-unicode-trim] [fixture: gitgraph/common-third-values]
 value is the brace interior with common whitespace removed only at its outer
 ends. It is null for whitespace/common-trivia-only content. Internal
 indentation, physical line endings, quotes and backslashes remain written text.
-The first closing brace is required, so no closed field is needed. [fixture:
-gitgraph/lex-description-empty-hidden-tail] [fixture: gitgraph/accdescr-block]
-[fixture: gitgraph/common-block-only-whitespace] [fixture:
-gitgraph/lex-description-block-only-directive] [fixture:
+The first closing brace is required, so no closed field is needed.
+
+[fixture: gitgraph/lex-description-empty-hidden-tail] [fixture:
+gitgraph/accdescr-block] [fixture: gitgraph/common-block-only-whitespace]
+[fixture: gitgraph/lex-description-block-only-directive] [fixture:
 gitgraph/lex-description-block-only-comment]
 
 Child fields: `value`, `textAfter`. Range: accDescr through its last value
 character, or the keyword/colon/closing brace that completes its empty form,
 extended through the last textAfter form. Exclude EOL and unrelated outside
 padding. Hidden forms after a visible EOL are body items, not suffixes. Keep
-repeated and empty common statements. [fixture:
-gitgraph/lex-description-empty-hidden-tail] [fixture: gitgraph/accdescr-block]
-[fixture: gitgraph/common-block-only-whitespace] [fixture:
-gitgraph/lex-description-block-only-directive] [fixture:
+repeated and empty common statements.
+
+[fixture: gitgraph/lex-description-empty-hidden-tail] [fixture:
+gitgraph/accdescr-block] [fixture: gitgraph/common-block-only-whitespace]
+[fixture: gitgraph/lex-description-block-only-directive] [fixture:
 gitgraph/lex-description-block-only-comment] [fixture:
 gitgraph/common-third-values] [fixture: gitgraph/lex-hidden-directive-block-eof]
 
@@ -404,11 +451,12 @@ No child fields. Range: the first through last source character of the value
 defined by its statement, spanning internal common trivia. Exclude common
 directives, comment regions and selected semicolons from value; retain all other
 source text, including whitespace that the statement owns. Do not make an empty
-literal for null. Quotes remain literal content, not StringLiteral. [fixture:
-gitgraph/common-title-quoted-escape] [fixture: gitgraph/common-title-open-quote]
-[fixture: gitgraph/directive-title] [fixture: gitgraph/comment-block] [fixture:
-gitgraph/title-conversion] [fixture: gitgraph/style-acctitle] [fixture:
-gitgraph/lex-description-line-null]
+literal for null. Quotes remain literal content, not StringLiteral.
+
+[fixture: gitgraph/common-title-quoted-escape] [fixture:
+gitgraph/common-title-open-quote] [fixture: gitgraph/directive-title] [fixture:
+gitgraph/comment-block] [fixture: gitgraph/title-conversion] [fixture:
+gitgraph/style-acctitle] [fixture: gitgraph/lex-description-line-null]
 
 ### GitgraphIgnoredText
 
@@ -421,7 +469,9 @@ No child fields. Range: the recognized `---` or `%%{` opener through its
 selected closer. Exclude optional preceding ASCII padding and the LF consumed
 immediately after the closer. Retain internal written line endings, LS/PS and
 padding. The appended LF never enters a range or value. Empty bodies still have
-nonempty fence text. [fixture: gitgraph/lex-yaml-empty-body] [fixture:
+nonempty fence text.
+
+[fixture: gitgraph/lex-yaml-empty-body] [fixture:
 gitgraph/lex-yaml-three-adjacent-fences] [fixture: gitgraph/lex-yaml-body-ls-ps]
 [fixture: gitgraph/lex-hidden-directive-commit-eof] [fixture:
 gitgraph/lex-hidden-yaml-block-eof] [fixture:
@@ -434,7 +484,9 @@ frontmatter/directives. A global directive inside one still has its common
 effect. An earlier string/common block owns hidden-looking text as content; a
 line value owns apparent YAML but ends before a percent pair, whose hidden form
 can be textAfter. Failed hidden forms falling back to native comments are shared
-Comments. [fixture: gitgraph/lex-hidden-yaml-global-directive-body] [fixture:
+Comments.
+
+[fixture: gitgraph/lex-hidden-yaml-global-directive-body] [fixture:
 gitgraph/lex-hidden-yaml-global-comment-body] [fixture:
 gitgraph/lex-hidden-directive-global-comment-body] [fixture:
 gitgraph/lex-yaml-common-init-effect] [fixture:

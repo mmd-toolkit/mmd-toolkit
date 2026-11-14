@@ -21,6 +21,7 @@ mermaid.js もこの仕様も、それを読みません。
 その後、`style` の規則が無視した `;` を除いた行に対して、
 `style` を `classDef` に替えて同じことを行うので、
 1 つの行に無視される `;` が 2 つあることもあります。
+
 [fixture: common/entity-style-then-classdef-rule]
 
 この規則は、`style A fill:#f00;` のように色を終える `;` によって、
@@ -36,6 +37,7 @@ U+00A0 を含みうる ER の実体の名前も、その 1 つです。
 sequence 図の参加者の id、クラスの名前、`~` を使って書いた ER の属性の語、
 要求図の引用符なしの名前、マインドマップのノードのテキストのように、
 図の文書がテキストの単位と数える名前は、無視される `;` を持てます。
+
 [fixture: sequence/tokens-ignored-semicolon-separator-line-feed]
 [fixture: class/tokens-ignored-semicolon-in-relation-name]
 [fixture: er/div-ignored-semicolon-in-name]
@@ -102,6 +104,7 @@ sequence 図の参加者の id、クラスの名前、`~` を使って書いた 
 | 6   | ラベル `style:#x`、空白 2 つ、`y` を持つ頂点 A | 同じ     |
 
 表で比較した読みを次の fixture が記録します。
+
 [fixture: flowchart/div-ignored-semicolon-in-id]
 [fixture: sequence/div-ignored-semicolon-in-autonumber-start]
 [fixture: flowchart/div-ignored-semicolon-in-keyword]
@@ -121,6 +124,7 @@ state 図では、無視される `;` は、`style`、`:`、
 `#` を持てる `state` の後の名前の中に置けます。
 mermaid.js は、本体の続く `state style:#x;B` を合成状態 `style:#xB` と読み、
 この仕様はそれを拒否します。
+
 [fixture: state/div-ignored-semicolon-in-state-name]
 [fixture: state/div-ignored-semicolon-in-state-name-without-body]
 
@@ -131,7 +135,9 @@ ER 図では、`style`、`:`、`#` は、`;` より前の行のどこにあっ�
 そのため、無視される `;` は、名前、数、濃度、関係の線、キーワード、`:::`、
 属性ブロックの語やキーの中に置けます。
 mermaid.js は `A ||--o{ Bstyle :"#" C;D` を Bstyle への関係と実体 `CD` と読み、
-この仕様はそれを拒否します。 [fixture: er/div-ignored-semicolon-in-name]
+この仕様はそれを拒否します。
+
+[fixture: er/div-ignored-semicolon-in-name]
 [fixture: er/div-ignored-semicolon-in-attribute-word]
 [fixture: er/div-ignored-semicolon-in-relationship-line]
 
@@ -142,6 +148,7 @@ click の id そのものに置けるので、無視される `;` は click の 
 mermaid.js は `click style:#y,id;1 href "u"` を `id1` のリンクと読み、
 `click id1 href "style:#x" ca;ll f()` を call と読み、
 この仕様はそれらを拒否します。
+
 [fixture: gantt/div-ignored-semicolon-in-click-id]
 [fixture: gantt/div-ignored-semicolon-in-call-keyword]
 [fixture: gantt/div-ignored-semicolon-in-list-item]
@@ -153,6 +160,7 @@ mermaid.js は `click style:#y,id;1 href "u"` を `id1` のリンクと読み、
 mermaid.js は `accDescr { style:#x } ti;tle T` をタイトル `T` と読み、
 `accDescr { style:#x } sec;tion S` を section `S` と読み、
 この仕様はそれらを拒否します。
+
 [fixture: journey/div-ignored-semicolon-in-title-keyword]
 [fixture: journey/div-ignored-semicolon-in-section-keyword]
 
@@ -161,19 +169,23 @@ mermaid.js は `accDescr { style:#x } ti;tle T` をタイトル `T` と読み、
 無視される `;` はキーワードの中に置けます。
 mermaid.js は `"style:#x" - sati;sfies -> b` を関係 `satisfies` の関係と読み、
 この仕様はそれを拒否します。
+
 [fixture: requirement/div-ignored-semicolon-in-relationship-keyword]
 
 マインドマップでは、`style`、`:`、
 `#` は `;` の前のノードのテキストに置けるので、
 無視される `;` は開きか閉じの中に置けます。
 mermaid.js は `style:#x{;{b}}` を六角形の形でテキスト `b` のノードと読み、
-この仕様はそれを拒否します。 [fixture: mindmap/div-ignored-semicolon-in-opener]
+この仕様はそれを拒否します。
+
+[fixture: mindmap/div-ignored-semicolon-in-opener]
 
 timeline では、ユーザージャーニー図と同じく、`style`、`:`、
 `#` はその行の文の前の説明ブロックにあり、
 無視される `;` はキーワードの中に置けます。
 mermaid.js は `accDescr { style:#x } ti;tle T` をタイトル `T` と読み、
 `sec;tion S` と `accTi;tle: T` も同じで、この仕様はそれらを拒否します。
+
 [fixture: timeline/div-ignored-semicolon-in-title-keyword]
 [fixture: timeline/div-ignored-semicolon-in-section-keyword]
 [fixture: timeline/div-ignored-semicolon-in-acc-title-keyword]
@@ -183,20 +195,25 @@ XY chart では、`style`、`:`、
 無視される `;` は値やキーワードの中に置けます。
 mermaid.js は `line "style:#a" [1;2]` を値 12 の line として、
 `title "style:#a" li;ne [1]` をタイトルと line として読み、
-この仕様はそれらを拒否します。 [fixture: xychart/div-ignored-semicolon-in-value]
+この仕様はそれらを拒否します。
+
+[fixture: xychart/div-ignored-semicolon-in-value]
 [fixture: xychart/div-ignored-semicolon-in-keyword]
 
 quadrant chart では、`style` か `classDef`、`:`、`#` は、
 名前である `classDef` のクラスの名前の中に置けるので、
 無視される `;` は名前の中に置かれます。
 mermaid.js は `classDef style:#x;y color: #f00` をクラス `style:#xy` と読み、
-この仕様はそれを拒否します。 [fixture: quadrant/div-grid-style-classdef-name]
+この仕様はそれを拒否します。
+
+[fixture: quadrant/div-grid-style-classdef-name]
 
 block diagram では、`style`、`:`、`#` は、
 ラベル `"style:#a"` のように `;` の前の文字列の中に置けるので、
 無視される `;` は id やキーワードの中に置けます。
 mermaid.js は `A["style:#a"] B;C` を id `BC` で、
 `A["style:#a"] col;umns 2` を `columns 2` で読み、この仕様はそれらを拒否します。
+
 [fixture: block/div-ignored-semicolon-in-id]
 [fixture: block/div-ignored-semicolon-in-keyword]
 
@@ -219,34 +236,41 @@ kanban では開きと閉じの中で選ばれたセミコロンは区切りを�
 入力を拒否させます。
 mermaid.js は `style:#x{;{b}}` と `style:#x{{b};}` を、
 `style:#x{{b}}` と同じ形として受理します。
+
 [fixture: kanban/div-semicolon-opener] [fixture: kanban/div-semicolon-closer]
 [fixture: kanban/gram-semicolon-text-reference]
 
 ノード本文、ラベル本文、文字列、データ本文の中では、
-選ばれたセミコロンを無視します。 [fixture: kanban/lex-id-style-rule]
-[fixture: kanban/lex-id-classdef-rule] [fixture: kanban/lex-label-style-rule]
-[fixture: kanban/lex-metadata-style-rule]
+選ばれたセミコロンを無視します。
+
+[fixture: kanban/lex-id-style-rule] [fixture: kanban/lex-id-classdef-rule]
+[fixture: kanban/lex-label-style-rule] [fixture: kanban/lex-metadata-style-rule]
 
 次の行のセミコロンは選びません。
 `style:#x` の行の後の `::ic;on` はノード本文です。
+
 [fixture: kanban/lex-label-style-rule-other-line]
 [fixture: kanban/lex-semicolon-icon-marker]
+
 [単位の中のディレクティブ](../diagrams/kanban.ja.md#単位の中のディレクティブ)
 を参照してください。
 
 C4 の `accDescr { style:#x }Pers;on(a,"A")` は、
 選択された `;` が呼び出し語の内部にあるためここでは拒否し、
 mermaid.js は除いて呼び出しを受理します。
+
 [fixture: c4/div-semicolon-call-keyword-after-block]
 
 裸の引数や名前付きキーの内部の選択された `;` は前置きとなり、
 `=` と開き引用符の間のものは区切りの間の前置きとなります。
+
 [fixture: c4/lex-semicolon-text-selected]
 [fixture: c4/lex-semicolon-key-selected]
 [fixture: c4/lex-semicolon-delimiter-selected]
 
 venn では、名前、size、text id、文のキーワード、プロパティキー、
 裸の style 値の識別子か数の中の選ばれたセミコロンをここでは拒否します。
+
 [fixture: venn/div-ignored-semicolon-set-name-selected]
 [fixture: venn/div-ignored-semicolon-size]
 [fixture: venn/div-ignored-semicolon-text-id-selected]
@@ -257,6 +281,7 @@ venn では、名前、size、text id、文のキーワード、プロパティ�
 [fixture: venn/div-ignored-semicolon-style-value-selected]
 
 mermaid.js はその前後を連結します。
+
 [fixture: venn/div-ignored-semicolon-set-name-selected]
 [fixture: venn/div-ignored-semicolon-size]
 [fixture: venn/div-ignored-semicolon-text-id-selected]
@@ -268,7 +293,9 @@ mermaid.js はその前後を連結します。
 [fixture: venn/div-ignored-semicolon-style-value-number-selected]
 
 venn の色全体の単位の内部で選ばれたセミコロンは trivia で、
-この差異を生じません。 [fixture: venn/lex-style-hex-ignored-semicolon]
+この差異を生じません。
+
+[fixture: venn/lex-style-hex-ignored-semicolon]
 [fixture: venn/lex-style-rgb-ignored-semicolon]
 
 ## 書き手にとっての結果
@@ -320,6 +347,7 @@ EmptyStatement では保持できません。
 その不可分の単位を分けるか、値を変える必要があるためです。
 mermaid.js は両側を結合しますが、
 既存の全体の単位の直接の規則は理由 2 で拒否します。
+
 [fixture: agentflow/div-ignored-semicolon-in-id]
 [fixture: agentflow/div-ignored-semicolon-in-css-class]
 [fixture: agentflow/div-ignored-semicolon-in-click-id]
@@ -334,6 +362,7 @@ mermaid.js は両側を結合しますが、
 その位置では Identifier の境界ではありません。
 完全な縦棒の境界のセミコロンも単位を変えません。
 これらの対照例に印は付けません。
+
 [fixture: agentflow/lex-ignored-semicolon-in-flow-name-text]
 [fixture: agentflow/lex-ignored-semicolon-in-metadata-key]
 [fixture: agentflow/lex-ignored-semicolon-in-pipe-boundary]
@@ -346,6 +375,7 @@ usecase で対象となるテキストは、CSS プロパティ名の語を含�
 mermaid は結合した id、include、矢印、metadata のキーと値、区切りを受理します。
 直接の完全な単位の規則により理由 2 で拒否します。
 この規則によって mermaid の拒否が受理に変わることはありません。
+
 [fixture: usecase/div-semicolon-identifier-selected]
 [fixture: usecase/div-semicolon-keyword-selected]
 [fixture: usecase/div-semicolon-joins-arrow-selected]
@@ -361,6 +391,7 @@ mermaid は結合した id、include、矢印、metadata のキーと値、区�
 UsecaseIdentifier に前後のテキストを保持できます。
 セミコロンの有無によらず `--` と語は別々の単位なので、
 結合するものがなく理由 2 を適用しません。
+
 [fixture: usecase/lex-semicolon-css-name-gap]
 [fixture: usecase/lex-semicolon-classdef-css-name-gap]
 
@@ -369,6 +400,7 @@ UsecaseIdentifier に前後のテキストを保持できます。
 完全な単位間でも許します。
 選択の引き金より前のセミコロンや、結合後も別の理由で無効な図は、
 差異の印を付けない通常の拒否です。
+
 [fixture: usecase/lex-semicolon-complete-unit-boundary]
 [fixture: usecase/lex-semicolon-css-number-text]
 [fixture: usecase/lex-semicolon-joins-id-selected]
@@ -390,6 +422,7 @@ mermaid.js はつないだ原子を受理し、この仕様は拒否します。
 書かれたテキストを保ちます。
 隠れたブロック内の無視するセミコロンは、ブロックを分割しません。
 結果が一致するこれらの形には印を付けません。
+
 [fixture: pie/div-atomic-semicolon-number]
 [fixture: pie/div-selected-semicolon-title-keyword]
 [fixture: pie/div-selected-semicolon-showdata]
@@ -407,6 +440,7 @@ mermaid.js はつないだ原子を受理し、この仕様は拒否します。
 理由 2 によりこの仕様では拒否し、逆方向の受理はありません。
 option の語とコロンの境界や完全な数の後なら trivia です。
 選択されないセミコロンは両方で拒否します。
+
 [fixture: gitgraph/div-style-semicolon-in-order-keyword]
 [fixture: gitgraph/div-style-semicolon-in-order-number]
 [fixture: gitgraph/div-lex-selected-semicolon-type-word]
@@ -424,9 +458,10 @@ option の語とコロンの境界や完全な数の後なら trivia です。
 逆方向の受理はありません。
 完全な構成要素の境界や隠れたテキスト・値では一致します。
 選ばれないセミコロン、選択前に拒否される分割した見出し、
-別の不正な接尾には印を付けません。 [fixture: info/div-selected-showinfo]
-[fixture: info/div-selected-title] [fixture: info/div-selected-acctitle]
-[fixture: info/div-selected-accdescr-line]
+別の不正な接尾には印を付けません。
+
+[fixture: info/div-selected-showinfo] [fixture: info/div-selected-title]
+[fixture: info/div-selected-acctitle] [fixture: info/div-selected-accdescr-line]
 [fixture: info/div-selected-accdescr-block]
 [fixture: info/lex-selected-colon-boundary]
 [fixture: info/lex-selected-brace-boundary]
@@ -439,6 +474,7 @@ option の語とコロンの境界や完全な数の後なら trivia です。
 選ばれた文字は trivia だが、固定語や整数を分割できない。
 完全な構成要素の境界や hidden な句読点には置ける。
 検出は選択より先なので、分割された見出しは差異に至る前に拒否され得る。
+
 [fixture: packet/div-selected-title-interior]
 [fixture: packet/div-selected-acctitle-interior]
 [fixture: packet/div-selected-accdescr-line-interior]
@@ -456,7 +492,9 @@ architecture では、style と色を含む service の label により、
 mermaid は id/keyword をつなぐが、本仕様は切れた atom を拒否する。
 名前や keyword の内部には ArchitectureIgnoredText を置けない。
 text の値の内部で選ばれた semicolon は共通の読みに従い、
-原文の範囲は元の文字を覆う。 [fixture: architecture/div-semicolon-parent-id]
+原文の範囲は元の文字を覆う。
+
+[fixture: architecture/div-semicolon-parent-id]
 [fixture: architecture/div-semicolon-in-keyword]
 [fixture: architecture/gram-semicolon-parent-reference]
 [fixture: architecture/style-fields]
@@ -470,6 +508,7 @@ boolean・graticule の語の内部も該当します。
 atom の内部には無視するテキストの node を置けません。
 仕様は前処理順による連結を再現せず、その atom の分割を拒否します。
 既存の境界の差異であり、新規の識別子ではありません。
+
 [fixture: radar/div-semicolon-id] [fixture: radar/div-semicolon-number]
 [fixture: radar/div-semicolon-keyword]
 [fixture: radar/div-semicolon-boolean-atom]
@@ -480,6 +519,7 @@ atom の内部には無視するテキストの node を置けません。
 native な形全体には RadarIgnoredText の所有先があり、受理します。
 残る通常の semicolon は radar の文の区切りにはなりません。
 hidden テキストの置き場所があっても、atom の分割を受理する理由にはなりません。
+
 [fixture: radar/gram-semicolon-between-units]
 [fixture: radar/lex-hidden-yaml-opener-selected-control]
 [fixture: radar/lex-hidden-native-opener-selected] [fixture: radar/style-fields]
@@ -497,6 +537,7 @@ treemap は string・text のソース範囲に ignored semicolon を保ちま�
 必須の hash より前の semicolon は選ばれず、両方で拒否します。
 class style は一つの literal のままで、
 text 内の ignored semicolon に新たな拒否を加えません。
+
 [fixture: treemap/div-semicolon-selector-atom]
 [fixture: treemap/div-semicolon-number-atom]
 [fixture: treemap/div-semicolon-style-marker]
@@ -517,6 +558,7 @@ repeat の bound と star の間や、完成した repeat と primary の間で�
 選ばれたセミコロンは部品を分断せず、受理を変えません。
 これらは共通の trivia であり、
 ABNF の native semicolon comment と visible な規則の終端記号とは別です。
+
 [fixture: railroad/ir-div-semicolon-rule-name]
 [fixture: railroad/ir-div-semicolon-constructor-keyword]
 [fixture: railroad/ir-div-semicolon-title-keyword]
@@ -536,6 +578,7 @@ text の値を書かれた葉に保ちます。
 第 2 の問いの答えは理由 2 で、
 Mermaid の前処理順の代わりに直接の境界規則を使います。
 その規則で異なる読みになる入力だけを既存の識別子で記録します。
+
 [fixture: railroad/ir-native-ownership]
 [fixture: railroad/ebnf-native-ownership]
 [fixture: railroad/abnf-native-ownership]
@@ -553,6 +596,7 @@ text・文字列・native hidden の原文は各 node に持てます。
 label つき flow も plus、引用した label、完全な終端 marker の間に、
 選択済み trivia を許します。
 選ばれない semicolon は separator ではありません。
+
 [fixture: wardley/lex-selected-decimal-inside]
 [fixture: wardley/lex-selected-label-keyword]
 [fixture: wardley/lex-selected-strategy-inside]
@@ -574,6 +618,7 @@ label つき flow も plus、引用した label、完全な終端 marker の間�
 共有の trivia に句読を持てても、固定語や --> の内部に gap は作れない。
 部品の境目、文字列の文字、native fence の句読は許す。
 任意の semicolon が区切りになるわけではない。
+
 [fixture: cynefin/semicolon-complex-inside]
 [fixture: cynefin/semicolon-clear-inside]
 [fixture: cynefin/semicolon-arrow-inside]
@@ -595,6 +640,7 @@ label つき flow も plus、引用した label、完全な終端 marker の間�
 は、共通の前処理と検出の結果を読みます。
 [Cynefin の構文](../diagrams/cynefin.ja.md)に直接の規則を定め、
 [木](../ast/cynefin.ja.md)に書かれた形を保ちます。
+
 [fixture: cynefin/db-all-fields]
 
 ### eventmodeling
@@ -608,6 +654,7 @@ dot と完全な名前の間、参照の部品間、
 type tag の部品間の選ばれた semicolon は atom を割らず許します。
 普通の semicolon は拒否したままで、
 最後の semicolon を選んでも前のものは除きません。
+
 [fixture: eventmodeling/lex-semicolon-identifier-inside]
 [fixture: eventmodeling/lex-semicolon-frame-id-inside]
 [fixture: eventmodeling/semicolon-arrow-inside]
@@ -636,6 +683,7 @@ Mermaid は両側を結びます。
 選ばれないセミコロンは通常の字です。
 セミコロンで割れた見出しは通常、先の検出で失敗し、差異の印を付けません。
 [図の構文](../diagrams/treeview.ja.md)が範囲を定めます。
+
 [fixture: treeview/semicolon-class-inside]
 [fixture: treeview/semicolon-description-inside]
 [fixture: treeview/semicolon-class-value-inside]

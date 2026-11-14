@@ -21,8 +21,9 @@ A **period** is a point of the timeline, such as a year, with the **events**
 written for it; a **section** groups the periods after it.
 
 This diagram type has no strings in quotes, so no node of it is a StringLiteral:
-a `"` in a period or an event is a character of the text. [fixture:
-timeline/db-event-quotes-and-brackets]
+a `"` in a period or an event is a character of the text.
+
+[fixture: timeline/db-event-quotes-and-brackets]
 
 ## Nodes
 
@@ -36,8 +37,10 @@ timeline/db-event-quotes-and-brackets]
 Child fields: `body`. The header keyword is not a field. The direction is the
 keyword after `timeline` and spaces or tabs on the header line, without
 whitespace, as written: `timeline td` has the direction `td`; without one, the
-direction is null. [fixture: timeline/db-direction-td] [fixture:
-timeline/db-direction-lower-case] [fixture: timeline/db-header-only]
+direction is null.
+
+[fixture: timeline/db-direction-td] [fixture: timeline/db-direction-lower-case]
+[fixture: timeline/db-header-only]
 
 **TimelineStatement** is a TimelinePeriodStatement, TimelineEventStatement,
 TimelineTitleStatement, TimelineSectionStatement, TimelineAccTitleStatement,
@@ -62,9 +65,10 @@ follow its period with nothing between them but whitespace, line breaks, and
 comments: on the line of the period, as in `a : e1 : e2`, and on the lines after
 it, as in `a` followed by lines `: e1` and `: e2`, also after an empty line, a
 comment line, or a line `# c`. An event after any other statement is a
-[TimelineEventStatement](#timelineeventstatement). [fixture:
-timeline/db-event-two-on-a-line] [fixture: timeline/db-event-own-line] [fixture:
-timeline/db-event-own-line-after-event] [fixture:
+[TimelineEventStatement](#timelineeventstatement).
+
+[fixture: timeline/db-event-two-on-a-line] [fixture: timeline/db-event-own-line]
+[fixture: timeline/db-event-own-line-after-event] [fixture:
 timeline/db-event-own-line-after-blank-line] [fixture:
 timeline/db-event-own-line-after-comment-line] [fixture:
 timeline/db-event-own-line-after-hash-line] [fixture: timeline/db-everything]
@@ -74,8 +78,9 @@ it: `a : e` has the period `a `, `a: e` the period `a`. An event is the text
 after its colon and one whitespace character, which may be a line feed, and
 keeps the rest of the whitespace at its ends; it may be whitespace only, and it
 holds `:` where no whitespace follows it: `a :   e` has the event `  e`, `a :`
-and two spaces the event of one space, and `a : b:c` the event `b:c`. [fixture:
-timeline/db-period-and-event] [fixture:
+and two spaces the event of one space, and `a : b:c` the event `b:c`.
+
+[fixture: timeline/db-period-and-event] [fixture:
 timeline/db-period-colon-glued-to-period] [fixture:
 timeline/db-event-leading-spaces] [fixture: timeline/db-event-two-spaces]
 [fixture: timeline/db-event-colon-glued-inside] [fixture:
@@ -98,6 +103,7 @@ an event statement, and so is `: x` in `section S : x`. To which period
 mermaid.js gives them is in the summary of the tests package. An event statement
 before the first period makes the input rejected (see
 [Rejections outside the grammar](../diagrams/timeline.md#rejections-outside-the-grammar)).
+
 [fixture: timeline/db-event-after-section-joins-earlier-task] [fixture:
 timeline/db-section-with-event-after-task] [fixture:
 timeline/db-event-own-line-after-title] [fixture:
@@ -115,10 +121,11 @@ A `title` statement.
 | `value` | TimelineLiteral | The text after `title` and one whitespace character, up to a line feed. |
 
 Child fields: `value`. The value keeps the whitespace at its ends and holds `:`,
-`#`, and `%%` as characters. [fixture: timeline/db-title-statement] [fixture:
-timeline/db-title-two-spaces] [fixture: timeline/db-title-trailing-spaces]
-[fixture: timeline/db-title-colon] [fixture: timeline/db-title-hash] [fixture:
-timeline/db-title-percent]
+`#`, and `%%` as characters.
+
+[fixture: timeline/db-title-statement] [fixture: timeline/db-title-two-spaces]
+[fixture: timeline/db-title-trailing-spaces] [fixture: timeline/db-title-colon]
+[fixture: timeline/db-title-hash] [fixture: timeline/db-title-percent]
 
 ### TimelineSectionStatement
 
@@ -130,10 +137,12 @@ A `section` statement.
 
 Child fields: `name`. The name is a text that may contain whitespace, which
 nothing refers to, so it is a TimelineLiteral; it keeps the whitespace at its
-ends, and a name of whitespace only is a value of that whitespace. [fixture:
-timeline/db-section-statement] [fixture: timeline/db-section-two-spaces]
-[fixture: timeline/db-section-trailing-spaces] [fixture:
-timeline/db-section-only-space] [fixture: timeline/db-section-two-with-tasks]
+ends, and a name of whitespace only is a value of that whitespace.
+
+[fixture: timeline/db-section-statement] [fixture:
+timeline/db-section-two-spaces] [fixture: timeline/db-section-trailing-spaces]
+[fixture: timeline/db-section-only-space] [fixture:
+timeline/db-section-two-with-tasks]
 
 ### TimelineAccTitleStatement
 
@@ -146,8 +155,10 @@ An `accTitle:` statement with its text.
 Child fields: `value`. The whitespace after the `:` is read with it, line feeds
 included, so the text starts on the first line that has one, and the value is
 never null: `accTitle:` with nothing after it is rejected. The value is the text
-without the whitespace at its ends. [fixture: timeline/db-acc-title-statement]
-[fixture: timeline/lex-acc-title-value-on-next-line] [fixture:
+without the whitespace at its ends.
+
+[fixture: timeline/db-acc-title-statement] [fixture:
+timeline/lex-acc-title-value-on-next-line] [fixture:
 timeline/gram-acc-title-empty] [fixture: timeline/db-acc-title-trailing-spaces]
 
 ### TimelineAccDescrStatement
@@ -159,7 +170,9 @@ An `accDescr:` statement with its text.
 | `value` | TimelineLiteral | The text after `accDescr:`, up to the end of its line. |
 
 Child fields: `value`. As for TimelineAccTitleStatement, the value is never
-null. [fixture: timeline/db-acc-descr-statement] [fixture:
+null.
+
+[fixture: timeline/db-acc-descr-statement] [fixture:
 timeline/gram-acc-descr-empty]
 
 ### TimelineAccDescrBlockStatement
@@ -174,8 +187,9 @@ may not end inside it.
 
 Child fields: `value`. `accDescr {}`, a block of whitespace and line breaks
 only, and a block of directives or comment lines only have the value null and
-change nothing: a description written before such a block stays. [fixture:
-timeline/gram-empty-description-block-directive-only] [fixture:
+change nothing: a description written before such a block stays.
+
+[fixture: timeline/gram-empty-description-block-directive-only] [fixture:
 timeline/gram-empty-description-block-comment-line-only] [fixture:
 timeline/gram-empty-description-block-keeps-description] [fixture:
 timeline/db-acc-descr-block] [fixture: timeline/db-acc-descr-block-braces-only]
@@ -195,8 +209,9 @@ No child fields. Each TimelineLiteral is one unit, so its value is the text of
 that unit as written: a period keeps the whitespace before what ends it, an
 event, a title, and a section name keep the whitespace at their ends, and an
 accessibility text is read without the whitespace at its ends, which mermaid.js
-trims. A line feed inside a description block is part of the value. [fixture:
-timeline/db-period-trailing-spaces] [fixture: timeline/db-event-trailing-spaces]
-[fixture: timeline/db-title-trailing-spaces] [fixture:
-timeline/db-section-trailing-spaces] [fixture:
+trims. A line feed inside a description block is part of the value.
+
+[fixture: timeline/db-period-trailing-spaces] [fixture:
+timeline/db-event-trailing-spaces] [fixture: timeline/db-title-trailing-spaces]
+[fixture: timeline/db-section-trailing-spaces] [fixture:
 timeline/db-acc-title-trailing-spaces] [fixture: timeline/db-acc-descr-block]

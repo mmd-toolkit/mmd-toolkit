@@ -7,6 +7,7 @@
 導出する値は
 [tests の要約](../../../tests/docs/db-summaries.ja.md#treeview)が定める。
 [treeView.langium][grammar] と[罫線の読み][box]に従う。
+
 [fixture: treeview/gram-written-tree] [fixture: treeview/box-written-tree]
 
 ## 検出
@@ -15,18 +16,21 @@
 大文字小文字を区別する接頭辞 `treeView-beta` を選び、その後に境目を要求しない。
 文法の見出しも同じ綴りであり、`treeview-beta`、`TREEVIEW-BETA`、
 `treeView` はこの図種を選ばない。
-検出だけでは受理は決まらない。 [fixture: treeview/header-only]
-[fixture: treeview/header-letter] [fixture: treeview/header-lower]
-[fixture: treeview/header-upper] [fixture: treeview/header-no-beta]
+検出だけでは受理は決まらない。
+
+[fixture: treeview/header-only] [fixture: treeview/header-letter]
+[fixture: treeview/header-lower] [fixture: treeview/header-upper]
+[fixture: treeview/header-no-beta]
 
 real な先頭の frontmatter、directive、コメント領域、先頭の trivia、改行、
 HTML 属性の引用符、文字参照、
 選択されたセミコロンには[共通の読み](../common.ja.md)を適用する。
 frontmatter の記録は Root に属し、treeview の文ではない。
-先にある C4 の検出器とその差異も適用する。 [fixture: treeview/frontmatter-title]
-[fixture: treeview/line-cr] [fixture: treeview/line-crlf]
-[fixture: treeview/html-bare] [fixture: treeview/entity-bare]
-[fixture: treeview/semicolon-selected]
+先にある C4 の検出器とその差異も適用する。
+
+[fixture: treeview/frontmatter-title] [fixture: treeview/line-cr]
+[fixture: treeview/line-crlf] [fixture: treeview/html-bare]
+[fixture: treeview/entity-bare] [fixture: treeview/semicolon-selected]
 [fixture: treeview/c4-component-header-eof]
 
 検出点では、裸の percent-pair 行と 2 回目の directive scan より前に、
@@ -36,6 +40,7 @@ native な YAML の規則は無いため、検出が通過しても拒否する�
 2 個目、裸の行の後、2 回目の scan の directive の後では、
 その通過をやり直さない。
 real な frontmatter が保持ブロックに先行してよい。
+
 [fixture: treeview/detect-block-after-directive]
 [fixture: treeview/detect-retained-two-blocks]
 [fixture: treeview/detect-bare-before-retained]
@@ -47,6 +52,7 @@ real な frontmatter が保持ブロックに先行してよい。
 閉じ fence の接尾テキスト、その後の改行の欠落は、ブロックの通過を止める。
 先頭の trim で開き fence だけの字下げが無くなり、不一致になることもある。
 空白と LF が続く閉じ fence は検出が通過しても native な読みで拒否する。
+
 [fixture: treeview/detect-retained-adjacent]
 [fixture: treeview/detect-retained-missing-close]
 [fixture: treeview/detect-retained-mismatch]
@@ -61,6 +67,7 @@ hidden な Directive の node にしない。
 コメントでない閉じの行が残る複数行の形は拒否する。
 裸の行は保持されたコメントに先行してよい。
 その形の内側の source directive は共有 Directive のままである。
+
 [fixture: treeview/detect-secondscan-singleline]
 [fixture: treeview/detect-secondscan-multiline]
 [fixture: treeview/detect-bare-before-secondscan]
@@ -72,6 +79,7 @@ Mermaid が拒否する ASCII と Unicode の空白を受理する場合があ�
 ASCII space は可視の字下げ、NBSP や U+2028 は bare 名を始めうるが、
 いずれも見出しの前では許されない。
 本当の先頭の Unicode 空白は先頭の trivia となる。
+
 [fixture: treeview/bare-line-space] [fixture: treeview/bare-line-ls]
 [fixture: treeview/bare-line-ps]
 [fixture: treeview/detect-secondscan-bare-ascii]
@@ -90,8 +98,9 @@ ASCII space は可視の字下げ、NBSP や U+2028 は bare 名を始めうる�
 一般の最長一致ではない。
 見出しだけに長い代案があり、
 同じ位置の bare-name がより多くの文字を読むなら代わりに bare-name を取る。
-読めない文字は拒否する。 [fixture: treeview/header-only]
-[fixture: treeview/header-nbsp-custom-boundary]
+読めない文字は拒否する。
+
+[fixture: treeview/header-only] [fixture: treeview/header-nbsp-custom-boundary]
 [fixture: treeview/header-annotation-shorter-bare]
 [fixture: treeview/error-after-prefix]
 
@@ -116,6 +125,7 @@ native YAML、hidden directive、可視の EOL の unit は無い。
 hidden な ASCII 空白が indentation に優先することはない。
 本文の fence は bare 名であり、hidden YAML ではない。
 通常の source directive は共通規則で既に読みから外れている。
+
 [fixture: treeview/gram-body-yaml] [fixture: treeview/gram-body-directive]
 [fixture: treeview/gram-quoted-tail-space-next-indent]
 
@@ -126,6 +136,7 @@ hidden な ASCII 空白が indentation に優先することはない。
 テキストの終端を要求する。
 ここでの空白は ASCII space/tab だけでなく、common の Notation の集合全体である。
 word character、数字、dash、colon、非 ASCII の文字はその境目を満たさない。
+
 [fixture: treeview/header-letter] [fixture: treeview/header-digit]
 [fixture: treeview/header-word] [fixture: treeview/header-dash]
 [fixture: treeview/header-colon] [fixture: treeview/header-unicode]
@@ -138,6 +149,7 @@ word character、数字、dash、colon、非 ASCII の文字はその境目を�
 LF は bare-name を延ばさない。
 keyword に接する directive は、除去後に LF が残るなら許すが、
 欠けた空白を補わず、長い bare 名の読みも止めない。
+
 [fixture: treeview/db-header-tail-space] [fixture: treeview/db-header-tail-tab]
 [fixture: treeview/header-nbsp-custom-boundary]
 [fixture: treeview/header-formfeed-custom-boundary]
@@ -156,6 +168,7 @@ hidden な改行で分かれた二つの列は結合せず、
 両方が次の名前の前にあれば文法が拒否する。
 この拒否条件では、
 [branch の prefix](#列と-prefix-の字下げ)が表す字下げも別の列として数える。
+
 [fixture: treeview/db-tabs-one-unit] [fixture: treeview/db-quoted-tail-space]
 [fixture: treeview/db-class-tail-space] [fixture: treeview/db-icon-tail-space]
 [fixture: treeview/space-line-tab] [fixture: treeview/box-blank-space-indent]
@@ -177,7 +190,9 @@ hidden な改行で分かれた二つの列は結合せず、
 [fixture: treeview/box-tail-collision-empty-block]
 
 [branch 行の規則](#列と-prefix-の字下げ)が読みから外す行末の空白は、
-次の node の字下げにはならない。 [fixture: treeview/box-tail-branch-no-carry]
+次の node の字下げにはならない。
+
+[fixture: treeview/box-tail-branch-no-carry]
 [fixture: treeview/box-tail-trim-directive-inline]
 [fixture: treeview/box-tail-trim-directive-line]
 [fixture: treeview/box-tail-trim-selected-semicolon]
@@ -189,6 +204,7 @@ hidden な改行で分かれた二つの列は結合せず、
 
 間の[罫線の装飾](#行の分類と拒否)は、
 通常の行から次の名前へ渡る列を消費も解消もしない。
+
 [fixture: treeview/box-tail-decoration-carry]
 [fixture: treeview/box-tail-decoration-directive-inline]
 [fixture: treeview/box-tail-decoration-directive-line]
@@ -205,7 +221,9 @@ bare 名と description-annotation の本文は、
 directive だけの行の後には可視の字下げが残りうる。
 共通のコメント領域には共有の除去規則を適用する。
 Unicode 空白は通常の字下げではなく bare 名の字になりうる。
-U+2028・U+2029 は行を終えない。 [fixture: treeview/db-bare-tail-space]
+U+2028・U+2029 は行を終えない。
+
+[fixture: treeview/db-bare-tail-space]
 [fixture: treeview/db-description-tail-space]
 [fixture: treeview/nested-child-directive-line]
 [fixture: treeview/nested-child-directive-unindented]
@@ -220,6 +238,7 @@ quoted-name は一重または二重の引用符で始まり、
 内側は空でもよく、改行を越え、U+2028・U+2029 を含めてよい。
 backslash は引用符を保護せず、escape の decode もしない。
 既に始まった bare 名の内側の引用符は通常の文字である。
+
 [fixture: treeview/db-empty-names] [fixture: treeview/db-quote-conversion]
 [fixture: treeview/text-double-crlf] [fixture: treeview/text-single-ls]
 [fixture: treeview/text-double-ps] [fixture: treeview/lex-bare-quote-interior]
@@ -230,9 +249,10 @@ CR・LF の直前まで読むが、ASCII space/tab に続いて次の形が来�
 `:::` と任意の ASCII space/tab と ASCII letter または underscore、`icon(`、
 `##` のいずれかである。
 それ以外の空白、引用符、percent のテキスト、句読記号、
-Unicode の文字を名前に含めてよい。 [fixture: treeview/db-bare-internal-space]
-[fixture: treeview/comment-in-bare] [fixture: treeview/gram-class-no-space]
-[fixture: treeview/gram-icon-no-space]
+Unicode の文字を名前に含めてよい。
+
+[fixture: treeview/db-bare-internal-space] [fixture: treeview/comment-in-bare]
+[fixture: treeview/gram-class-no-space] [fixture: treeview/gram-icon-no-space]
 [fixture: treeview/gram-description-no-space]
 [fixture: treeview/gram-invalid-class]
 [fixture: treeview/bare-invalid-class-zero]
@@ -242,6 +262,7 @@ Unicode の文字を名前に含めてよい。 [fixture: treeview/db-bare-inter
 引用名の後で新しい bare 名を始めることはできない。
 `icon(` で bare-name が止まった後、icon 参照の失敗で拒否する場合もある。
 class の接尾が句読記号の前で終わり、別の bare node が残ることもある。
+
 [fixture: treeview/gram-invalid-class]
 [fixture: treeview/quoted-invalid-class-fallback]
 [fixture: treeview/icon-pack-empty-tail] [fixture: treeview/gram-invalid-icon]
@@ -254,7 +275,9 @@ class の接尾が句読記号の前で終わり、別の bare node が残るこ
 class-annotation は続いて `:::`、任意個の ASCII space/tab、
 ASCII letter または underscore、
 任意個の ASCII word character または dash を読む。
-名前は 1 字でもよい。 [fixture: treeview/annotation-class-space]
+名前は 1 字でもよい。
+
+[fixture: treeview/annotation-class-space]
 [fixture: treeview/annotation-class-digit]
 [fixture: treeview/annotation-class-hyphen]
 [fixture: treeview/annotation-class-uppercase]
@@ -265,7 +288,9 @@ icon-annotation は正確な小文字の `icon`、`(`、参照、`)` を内側�
 それに続く任意の一つの colon と 1 個以上の同じ文字からなる。
 空の参照と `:file` を許す。
 末尾の colon、2 個目の colon、引用付きの参照、内側の空白は許さない。
-接尾が別の node を始めることもある。 [fixture: treeview/db-icon-none]
+接尾が別の node を始めることもある。
+
+[fixture: treeview/db-icon-none]
 [fixture: treeview/annotation-icon-leading-colon]
 [fixture: treeview/annotation-icon-hyphen]
 [fixture: treeview/annotation-icon-underscore]
@@ -279,6 +304,7 @@ description-annotation は `##` と CR・LF の直前までの全字を読み、
 U+2028・U+2029、percent のテキスト、同じ行の後の注釈らしい字も含める。
 注釈の反復と任意の順を許し、後の行の description は別の注釈になる。
 hidden な改行や除去されたコメント行は注釈を直前の node から切り離さない。
+
 [fixture: treeview/spec-parser-ab2c8458]
 [fixture: treeview/db-description-empty] [fixture: treeview/text-description-ls]
 [fixture: treeview/text-description-ps]
@@ -296,6 +322,7 @@ title-line は `title` と正確に 1 個の ASCII space/tab と空でもよい�
 または裸の keyword を読む。
 word boundary は無い。
 `titlex` は空の title と名前に、`title"node"` は空の title と引用名になりうる。
+
 [fixture: treeview/common-whitespace] [fixture: treeview/common-title-eof]
 [fixture: treeview/common-title-prefix]
 [fixture: treeview/common-title-quoted-next]
@@ -306,6 +333,7 @@ description は block より colon 形を先に試す。
 3 種の行本文はいずれも最初の `%%` または CR・LF の直前で止まり、
 U+2028・U+2029 を含める。
 共通値の引用符はテキストであり、閉じなくてよい。
+
 [fixture: treeview/common-acctitle-eof] [fixture: treeview/common-accline-eof]
 [fixture: treeview/common-colon-block-priority]
 [fixture: treeview/common-title-percent-boundary]
@@ -319,6 +347,7 @@ acc-descr-block は `accDescr`、任意個の common の Notation の空白、`{
 空と空白だけの block も文になる。
 閉じない block の形が失敗したときは、
 閉じない block node ではなく bare-name へ戻りうる。
+
 [fixture: treeview/common-whitespace] [fixture: treeview/common-repeat-empty]
 [fixture: treeview/common-block-whitespace-raw]
 [fixture: treeview/common-block-first-close]
@@ -337,6 +366,7 @@ native な unit の先頭では、`%%` から次の LF の直前までを共有 
 mark は `%%`、value は mark を含めず、range は mark を含め LF を含めない。
 U+2028・U+2029 と `}%%` らしい閉じもコメント内に残る。
 hidden な改行は EOF の論理的な LF も含め、LF を別に読む。
+
 [fixture: treeview/tail-quoted-comment]
 [fixture: treeview/native-comment-closer-greedy]
 [fixture: treeview/native-comment-ls] [fixture: treeview/native-comment-ps]
@@ -350,47 +380,46 @@ hidden な改行は EOF の論理的な LF も含め、LF を別に読む。
 共通の行本文は `%%` の直前で止まる。
 共通の source directive とコメント領域は、
 除去で native な percent mark がつながる場合も共有の所有に従い、
-native の hidden directive node にはしない。 [fixture: treeview/comment-in-bare]
-[fixture: treeview/comment-in-quotes]
+native の hidden directive node にはしない。
+
+[fixture: treeview/comment-in-bare] [fixture: treeview/comment-in-quotes]
 [fixture: treeview/tail-description-comment]
 [fixture: treeview/common-block-bare-percent]
 [fixture: treeview/common-title-percent-boundary]
 [fixture: treeview/detect-secondscan-singleline]
 [fixture: treeview/comment-native-mark-directive]
+
 値の中の U+2028 か U+2029 の後の物理行の残りは、その改行も含めて、
 共通のコメント領域が取り除くことがある。
 そのとき値は次の物理行へ続くので、行の値はそこで終わらない。
 `accTitle: A`、U+2028、`%% c`、改行、`B` のアクセシビリティタイトルは `A`、
-U+2028、`B` である。 [fixture:
-treeview/gram-quoted-name-line-separator-then-comment-line] [fixture:
-treeview/gram-quoted-name-paragraph-separator-then-comment-line] [fixture:
-treeview/gram-bare-name-line-separator-then-comment-line] [fixture:
-treeview/gram-description-line-separator-then-comment-line] [fixture:
-treeview/gram-title-line-separator-then-comment-line] [fixture:
-treeview/gram-acc-title-line-separator-then-comment-line] [fixture:
-treeview/gram-acc-descr-line-separator-then-comment-line] [fixture:
-treeview/gram-acc-descr-block-line-separator-then-comment-line] [fixture:
-treeview/gram-quoted-name-line-separator-comment-line-directive-next] [fixture:
-treeview/gram-quoted-name-line-separator-comment-line-space-next] [fixture:
-treeview/gram-quoted-name-line-separator-comment-line-separator-next] [fixture:
-treeview/gram-quoted-name-line-separator-comment-line-empty-line] [fixture:
-treeview/lex-quoted-name-line-separator-comment-line-end-of-text] [fixture:
-treeview/gram-bare-name-line-separator-comment-line-end-of-text] [fixture:
-treeview/gram-quoted-name-line-separator-comment-line-cr] [fixture:
-treeview/gram-quoted-name-line-separator-comment-line-crlf] [fixture:
-treeview/gram-quoted-name-line-separator-comment-line-two-comment-lines]
-[fixture:
-treeview/gram-quoted-name-line-separator-comment-line-two-regions] [fixture:
-treeview/gram-quoted-name-line-separator-comment-line-spaces-before] [fixture:
-treeview/gram-quoted-name-line-separator-comment-line-line-feed-before]
-[fixture:
-treeview/gram-quoted-name-line-separator-comment-line-directive-before]
-[fixture:
-treeview/gram-quoted-name-line-separator-comment-line-line-rule-before]
-[fixture:
-treeview/gram-quoted-name-line-separator-comment-line-line-rule-after] [fixture:
-treeview/gram-quoted-name-line-separator-comment-line-bare-percent] [fixture:
-treeview/gram-quoted-name-line-separator-comment-line-percent-brace]
+U+2028、`B` である。
+
+[fixture: treeview/gram-quoted-name-line-separator-then-comment-line]
+[fixture: treeview/gram-quoted-name-paragraph-separator-then-comment-line]
+[fixture: treeview/gram-bare-name-line-separator-then-comment-line]
+[fixture: treeview/gram-description-line-separator-then-comment-line]
+[fixture: treeview/gram-title-line-separator-then-comment-line]
+[fixture: treeview/gram-acc-title-line-separator-then-comment-line]
+[fixture: treeview/gram-acc-descr-line-separator-then-comment-line]
+[fixture: treeview/gram-acc-descr-block-line-separator-then-comment-line]
+[fixture: treeview/gram-quoted-name-line-separator-comment-line-directive-next]
+[fixture: treeview/gram-quoted-name-line-separator-comment-line-space-next]
+[fixture: treeview/gram-quoted-name-line-separator-comment-line-separator-next]
+[fixture: treeview/gram-quoted-name-line-separator-comment-line-empty-line]
+[fixture: treeview/lex-quoted-name-line-separator-comment-line-end-of-text]
+[fixture: treeview/gram-bare-name-line-separator-comment-line-end-of-text]
+[fixture: treeview/gram-quoted-name-line-separator-comment-line-cr]
+[fixture: treeview/gram-quoted-name-line-separator-comment-line-crlf]
+[fixture: treeview/gram-quoted-name-line-separator-comment-line-two-comment-lines]
+[fixture: treeview/gram-quoted-name-line-separator-comment-line-two-regions]
+[fixture: treeview/gram-quoted-name-line-separator-comment-line-spaces-before]
+[fixture: treeview/gram-quoted-name-line-separator-comment-line-line-feed-before]
+[fixture: treeview/gram-quoted-name-line-separator-comment-line-directive-before]
+[fixture: treeview/gram-quoted-name-line-separator-comment-line-line-rule-before]
+[fixture: treeview/gram-quoted-name-line-separator-comment-line-line-rule-after]
+[fixture: treeview/gram-quoted-name-line-separator-comment-line-bare-percent]
+[fixture: treeview/gram-quoted-name-line-separator-comment-line-percent-brace]
 
 directive と選択されたセミコロンについて、
 見出し・共通 keyword・語 `icon`・class 名・icon 参照全体は atom とする。
@@ -399,6 +428,7 @@ bare 名・文字列の内側・共通値・description 本文は text/string �
 空白は透明である。
 keyword と colon、`icon` と `(`、marker と名前、参照と `)` など、
 書かれた完成部品の間に共通 trivia を許すが、欠けた空白は補わない。
+
 [fixture: treeview/directive-header-inside]
 [fixture: treeview/directive-acctitle-inside]
 [fixture: treeview/directive-icon-word-inside]
@@ -428,8 +458,9 @@ keyword と colon、`icon` と `(`、marker と名前、参照と `)` など、
 その後だけに罫線規則を適用する。
 その行が無ければ罫線の読みは無い。
 境界は共通の改行の読みの後の LF であり、U+2028・U+2029 ではない。
-共通 directive 内の改行も境界ではない。 [fixture: treeview/box-written-tree]
-[fixture: treeview/box-header-same-line]
+共通 directive 内の改行も境界ではない。
+
+[fixture: treeview/box-written-tree] [fixture: treeview/box-header-same-line]
 [fixture: treeview/box-physical-directive-inline]
 [fixture: treeview/box-physical-directive-line]
 [fixture: treeview/box-physical-ls] [fixture: treeview/box-physical-ps]
@@ -452,8 +483,10 @@ metadata 形の行、common の空白と縦線 `│`・`┃` だけの行を除�
 metadata 形は common の空白の後で、`title` と ASCII space/tab、
 `accTitle` と任意の ASCII space/tab と `:`、
 または `accDescr` と任意の ASCII space/tab と `:` か `{` が始まる行である。
-裸の `title` だけは当たらない。 [fixture: treeview/box-comment-only]
-[fixture: treeview/box-metadata-only] [fixture: treeview/box-decoration-only]
+裸の `title` だけは当たらない。
+
+[fixture: treeview/box-comment-only] [fixture: treeview/box-metadata-only]
+[fixture: treeview/box-decoration-only]
 [fixture: treeview/box-title-bare-not-metadata]
 [fixture: treeview/box-title-inside-string]
 
@@ -462,6 +495,7 @@ metadata 形は common の空白の後で、`title` と ASCII space/tab、
 この判定と下記の物理的な行の規則は、引用符や block の境界を区別しない。
 数値の文字参照は branch へ decode せず、共通の placeholder として読む。
 共通 directive とともに除かれる罫線の字は、モードを開始できない。
+
 [fixture: treeview/box-quoted-dash] [fixture: treeview/box-mode-dash-only]
 [fixture: treeview/box-mode-vertical-with-text]
 [fixture: treeview/box-entity-not-branch]
@@ -477,6 +511,7 @@ branch は `└`、`┗`、`├`、`┣` の一つである。
 converted diagram text の UTF-16 code unit で 0 始まりの列を測り、
 tab は tab stop ではなく常に ASCII space 4 個として数える。
 共通規則で除かれる形は数えず、文字参照は placeholder の綴りを数える。
+
 [fixture: treeview/box-heavy] [fixture: treeview/box-prefix-directive-column]
 [fixture: treeview/box-column-nonbmp-discriminating]
 [fixture: treeview/box-entity-not-branch] [fixture: treeview/box-tab-quoted]
@@ -485,6 +520,7 @@ tab は tab stop ではなく常に ASCII space 4 個として数える。
 幅の選択では列 0 を飛ばす。
 最小の列を選んだり、均等な間隔を推測したりしない。
 後の行や引用名らしい prefix が、前の行にも使う幅を決めうる。
+
 [fixture: treeview/box-infer-first-column]
 [fixture: treeview/box-first-width-from-name]
 [fixture: treeview/box-first-branch-leading-text]
@@ -494,6 +530,7 @@ branch 行では、その列を幅で割り、最も近い非負整数へ丸め�
 ちょうど半分なら大きい方を取り、1 を加える。
 これを prefix の深さとする。
 prefix はその 4 倍の字下げ単位を表すが、仮想の空白や原文の token は作らない。
+
 [fixture: treeview/box-infer-first-column] [fixture: treeview/box-round-below]
 [fixture: treeview/box-round-above] [fixture: treeview/box-written-tree]
 
@@ -503,7 +540,9 @@ prefix は最初の branch までの全字、その直後に接する最大の `
 先頭の NBSP・U+2028・U+2029 は区切りではなく内容。
 branch 行の残る内容中の tab も全て 4 空白として読み、
 末尾の common の空白を読みから外す。
-原文の綴りは source tree に保つ。 [fixture: treeview/box-branch-quoted-second]
+原文の綴りは source tree に保つ。
+
+[fixture: treeview/box-branch-quoted-second]
 [fixture: treeview/box-skip-space-before-dash]
 [fixture: treeview/box-branch-leading-nbsp]
 [fixture: treeview/box-branch-leading-ls]
@@ -518,6 +557,7 @@ branch 行の残る内容中の tab も全て 4 空白として読み、
 有効な罫線モードでは、見出しの行の後の各行へ、
 複数行引用名や accessibility block の中でも次の順で場合を適用する。
 無効なモードでは、これらの文字は通常の unit の規則で読む。
+
 [fixture: treeview/box-quoted-decoration]
 [fixture: treeview/box-block-decoration]
 [fixture: treeview/box-block-decoration-plain]
@@ -573,8 +613,9 @@ branch 行の残る内容中の tab も全て 4 空白として読み、
 モード判定と装飾の分類は異なる。
 縦線だけではモードを選ばないが、横線だけならモードを選んだ後で装飾になりうる。
 prefix と末尾空白の読みの後に内容が無い branch は、装飾となる前に拒否する。
-引用された空名は空でない内容である。 [fixture: treeview/box-decoration-only]
-[fixture: treeview/box-mode-dash-only]
+引用された空名は空でない内容である。
+
+[fixture: treeview/box-decoration-only] [fixture: treeview/box-mode-dash-only]
 [fixture: treeview/box-empty-branch-after-decoration]
 [fixture: treeview/box-prefixed-directive] [fixture: treeview/box-empty-quoted]
 
@@ -584,6 +625,7 @@ ASCII 空白だけの行や prefix 付きの native comment は、
 NBSP だけの行はそのまま通り bare node になりうるが、
 罫線の無い非空の内容の前の NBSP・U+2028・U+2029 は拒否する。
 そのままの罫線入りの行は、根になるのではなく深い字下げを保つこともある。
+
 [fixture: treeview/box-blank-space-indent]
 [fixture: treeview/box-comment-indentation-error]
 [fixture: treeview/box-prefixed-comment] [fixture: treeview/box-blank-nbsp-line]
@@ -599,6 +641,7 @@ prefix は node の前の共通文、直前 node の注釈、
 後の node へ字下げを渡す native comment、
 accessibility block の開きの前の空白を始めうる。
 必ず新しい node を始めるとは限らない。
+
 [fixture: treeview/box-prefixed-empty-block]
 [fixture: treeview/box-decoration-annotation-gap]
 [fixture: treeview/box-metadata-after-node]
@@ -613,6 +656,7 @@ prefix のテキストには開きの引用符やその行の前の名前・desc
 既に開いた値の内側では、prefix と装飾をその値の原綴に残し、
 そこで prefix が表す空白で注釈を始めない。
 この形は直接の読みで受理し、新しい差異として拒否しない。
+
 [fixture: treeview/box-multiline-annotation-space]
 [fixture: treeview/box-quoted-branch] [fixture: treeview/box-description-branch]
 [fixture: treeview/box-prefix-arbitrary]
@@ -627,6 +671,7 @@ prefix のテキストには開きの引用符やその行の前の名前・desc
 空の accessibility block は preamble では文だが、
 引用名に包まれればテキストであり、node 列に割り込めない。
 値の中の共通 directive は共有 trivia のままである。
+
 [fixture: treeview/nested-child-selected-semicolon]
 [fixture: treeview/nested-box-directive-line]
 [fixture: treeview/nested-box-selected-semicolon]
@@ -652,6 +697,7 @@ branch と可変長の列の各 dash は別の作者の部品であり、
 branch より前の prefix のテキストを、
 見かけの keyword や注釈として判定し直さない。
 選ばれていないセミコロンは dash 列を止め、内容に残る。
+
 [fixture: treeview/box-branch-directive-parts]
 [fixture: treeview/box-dash-directive-inside]
 [fixture: treeview/box-branch-selected-semicolon]
@@ -663,7 +709,9 @@ branch より前の prefix のテキストを、
 空の branch と混在した字下げの条件は字句解析とは独立に拒否する。
 間の装飾の後でもエラーの行は原文の行を参照するが、この仕様は、
 Mermaid の書換え後の offset、列、message の語句、
-行番号の対応の実装を要求しない。 [fixture: treeview/box-error-remap]
+行番号の対応の実装を要求しない。
+
+[fixture: treeview/box-error-remap]
 [fixture: treeview/box-empty-branch-after-decoration]
 [fixture: treeview/box-mixed-reject]
 
@@ -682,6 +730,7 @@ hidden な改行と Comment は区切りではない。
 罫線 prefix はその位置の字下げや前置空白を表し、装飾は文法上の文を加えず、
 共通文の preamble も終わらせない。
 入力の全字は source tree または共有 trivia に残す。
+
 [fixture: treeview/gram-written-tree] [fixture: treeview/box-written-tree]
 [fixture: treeview/box-decoration-preamble-body]
 [fixture: treeview/box-decoration-pending-name-gap]
@@ -693,6 +742,7 @@ hidden な改行と Comment は区切りではない。
 bare の行は同じ行の引用符らしい字を包める。
 node の無い注釈、繰り返す見出し、余分の字下げは拒否する。
 セミコロンは一般の区切りではなく、選ばれなければ bare 名の一部や全体になりうる。
+
 [fixture: treeview/header-only] [fixture: treeview/common-repeat]
 [fixture: treeview/common-repeat-empty]
 [fixture: treeview/gram-title-after-node]
@@ -730,8 +780,9 @@ node の無い注釈、繰り返す見出し、余分の字下げは拒否する
 新しい node の字下げ以上の node を開いている列の末尾から外す。
 最後に残る node が親であり、残らなければ別の根となる。
 現在の node を開いている列へ加える。
-共通文と装飾は参加しない。 [fixture: treeview/db-indent-pop]
-[fixture: treeview/box-written-tree]
+共通文と装飾は参加しない。
+
+[fixture: treeview/db-indent-pop] [fixture: treeview/box-written-tree]
 [fixture: treeview/box-decoration-trailing-body]
 [fixture: treeview/gram-written-tree]
 
@@ -739,6 +790,7 @@ file と directory らしい名前のどちらも親になれる。
 最初の node の字下げ、複数の根、任意の字下げの増減、重複名、空の引用名を許す。
 通常の字下げと branch が表す字下げを同じ比較に使う。
 根はそれぞれ図の body に保ち、人工の根、親への参照、導出した深さは加えない。
+
 [fixture: treeview/db-file-parent] [fixture: treeview/db-first-indented]
 [fixture: treeview/db-duplicate-names] [fixture: treeview/db-empty-names]
 [fixture: treeview/box-indented-box-text] [fixture: treeview/box-round-below]
@@ -749,6 +801,7 @@ file と directory らしい名前のどちらも親になれる。
 LS・PS は名前やコメントの内容としての字句の読みを保ち、
 階層の行区切りを増やさない。
 node の後の空の description block も、gap の要素にはせず拒否する。
+
 [fixture: treeview/nested-child-directive-unindented]
 [fixture: treeview/nested-child-directive-line]
 [fixture: treeview/box-tail-decoration-directive-inline]
@@ -765,6 +818,7 @@ node の後の空の description block も、gap の要素にはせず拒否す�
 accessibility block の中の空の description らしい行も、
 最初の閉じ brace までは本文であり、その brace が包む block を閉じる。
 後の行のテキストは通常の node になりうる。
+
 [fixture: treeview/block-physical-empty-description]
 
 ### 意味上の受理条件
@@ -776,6 +830,7 @@ lexer error と parser error のどちらか一つでもあれば拒否する。
 や意味上の拒否は無い。
 共通規則と字句・文法の拒否に加え、
 上記の罫線の二つの Error だけが図種固有の gate である。
+
 [fixture: treeview/error-after-prefix] [fixture: treeview/gram-invalid-icon]
 [fixture: treeview/gram-accessibility-after-node]
 [fixture: treeview/box-empty-branch-after-decoration]
@@ -784,16 +839,19 @@ lexer error と parser error のどちらか一つでもあれば拒否する。
 単根、均等な字下げ、親が directory だけであること、名前の一意性、class の登録、
 icon pack の導入を条件として足さない。
 空の引用名と明示的な空の注釈は構文のままであり、
-tokenless-empty-forms の差異にしない。 [fixture: treeview/db-first-indented]
-[fixture: treeview/db-file-parent] [fixture: treeview/db-prototype-names]
-[fixture: treeview/db-duplicate-names] [fixture: treeview/db-empty-names]
-[fixture: treeview/db-icon-none] [fixture: treeview/spec-parser-ab2c8458]
+tokenless-empty-forms の差異にしない。
+
+[fixture: treeview/db-first-indented] [fixture: treeview/db-file-parent]
+[fixture: treeview/db-prototype-names] [fixture: treeview/db-duplicate-names]
+[fixture: treeview/db-empty-names] [fixture: treeview/db-icon-none]
+[fixture: treeview/spec-parser-ab2c8458]
 
 ### 全出現・設定・正規化
 
 空や上書き前も含め、書かれた共通文と注釈を全て独立に保つ。
 引用符の両形、元の slash、description の空白、tab、prefix、装飾も保つ。
 [木の文書](../ast/treeview.ja.md)が範囲と所有を定める。
+
 [fixture: treeview/gram-written-tree] [fixture: treeview/common-repeat-empty]
 [fixture: treeview/db-repeat-class] [fixture: treeview/db-repeat-icon]
 [fixture: treeview/annotation-description-repeat-empty]
@@ -804,6 +862,7 @@ site・frontmatter・init の設定は不正な構文を救わず、
 正しい treeview の構文を拒否させない。
 icon の解決は描画の処理であり、参照の妥当性の gate ではない。
 不正な埋込みデータには共有の opaque-data の差異を適用する。
+
 [fixture: treeview/config-drawing-site]
 [fixture: treeview/config-frontmatter-drawing]
 [fixture: treeview/config-init-drawing]
@@ -819,6 +878,7 @@ icon の解決は描画の処理であり、参照の妥当性の gate ではな
 導出される森を扱う。
 設定依存の sanitize は外から与える Db の条件であり、
 書かれた葉の値や treeview 固有の受理条件を変えない。
+
 [fixture: treeview/db-all-fields]
 [fixture: treeview/db-directory-trailing-space]
 [fixture: treeview/config-security-level-default]
@@ -831,6 +891,7 @@ icon の解決は描画の処理であり、参照の妥当性の gate ではな
 不可分の見出し、keyword、marker、class 名、
 icon 参照全体の内側の directive は拒否する。
 text、文字列の内側、完成部品の間では許される読みを保つ。
+
 [fixture: treeview/directive-header-inside]
 [fixture: treeview/directive-class-inside]
 [fixture: treeview/directive-class-value-inside]
@@ -842,6 +903,7 @@ text、文字列の内側、完成部品の間では許される読みを保つ�
 共通の行規則が実際に選ぶセミコロンにだけ、同じ原子の境目を適用する。
 選ばれないセミコロンはこの差異ではない。
 分かれた見出しは通常、その行規則より前の検出で失敗する。
+
 [fixture: treeview/semicolon-class-inside]
 [fixture: treeview/semicolon-class-value-inside]
 [fixture: treeview/semicolon-icon-value-inside]
@@ -852,6 +914,7 @@ text、文字列の内側、完成部品の間では許される読みを保つ�
 **[`html-tag-in-frontmatter`](../known-divergences/html-tag-in-frontmatter.ja.md)。**
 開いた frontmatter の tag は、ここでは本文の引用符の境界を変えない。
 受理が変わる両方向と、値だけの違いを指定読みで記録する。
+
 [fixture: treeview/div-html-frontmatter-accept]
 [fixture: treeview/div-html-frontmatter-reject]
 [fixture: treeview/div-html-frontmatter-value]
@@ -859,6 +922,7 @@ text、文字列の内側、完成部品の間では許される読みを保つ�
 **[`embedded-data-opaque`](../known-divergences/embedded-data-opaque.ja.md)。
 ** 共有の埋込み本文は opaque とし、保持すべき treeview の受理の鍵は無い。
 隣の有効な title や設定は比較に残す。
+
 [fixture: treeview/div-frontmatter-invalid]
 [fixture: treeview/config-fontfamily-keeps-title]
 [fixture: treeview/div-invalid-keeps-config]
@@ -868,6 +932,7 @@ text、文字列の内側、完成部品の間では許される読みを保つ�
 通過した裸の行と付随する trivia は再び読まない。
 保持された形自体は native に読めなければならない。
 Unicode の空白だけでなく ASCII の字下げも対象となる。
+
 [fixture: treeview/bare-line-space] [fixture: treeview/bare-line-nbsp]
 [fixture: treeview/detect-secondscan-bare-ascii]
 [fixture: treeview/detect-secondscan-bare-unicode]
@@ -876,6 +941,7 @@ Unicode の空白だけでなく ASCII の字下げも対象となる。
 **[`c4-keyword-anywhere`](../known-divergences/c4-keyword-anywhere.ja.md)。
 ** 後の書かれた値、コメント、
 directive に C4 の四つの anywhere keyword があっても、見出しで treeview を選ぶ。
+
 [fixture: treeview/c4-component-header-eof]
 [fixture: treeview/c4-container-bare] [fixture: treeview/c4-dynamic-title]
 [fixture: treeview/c4-deployment-block]

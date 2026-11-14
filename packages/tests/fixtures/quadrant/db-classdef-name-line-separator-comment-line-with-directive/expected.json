@@ -1,0 +1,34 @@
+{
+  "source": {
+    "kind": "authored",
+    "note": "quadrant.md Classes: a directive inside the comment is part of the region; the class `a`, U+2028, and `b`."
+  },
+  "accepted": true,
+  "diagramType": "quadrantChart",
+  "db": {
+    "title": "",
+    "accTitle": "",
+    "accDescr": "",
+    "quadrants": [
+      "",
+      "",
+      "",
+      ""
+    ],
+    "xAxis": {
+      "left": "",
+      "right": ""
+    },
+    "yAxis": {
+      "bottom": "",
+      "top": ""
+    },
+    "points": [],
+    "classes": [
+      {
+        "name": "a b",
+        "color": "#109060"
+      }
+    ]
+  }
+}

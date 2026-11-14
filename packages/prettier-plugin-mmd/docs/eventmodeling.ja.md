@@ -425,8 +425,16 @@ GWT の見出しがコメントやディレクティブの後に続く場合、�
 書かれた順序とコメントの形は保ちます。
 節キーワードは引き続き 1 段、項目は 2 段です。
 参照元フレームの行は新たなトップレベルの文ではありません。
+
 [fixture: eventmodeling/gwt-clauses-and-items/header-completion-comment]
 [fixture: eventmodeling/gwt-clauses-and-items/header-directive-continuation]
+
+続いた GWT の見出しのディレクティブの後にある節は、
+その前の空白を書かれたままにします。
+同じ行で項目の後ろにあるディレクティブは、その行に残ります。
+`given evt A %%{{tail}}%%` は 1 行のままです。
+
+[fixture: eventmodeling/gwt-clauses-and-items/clause-after-header-directive-with-tail-directive]
 
 `gwt 99` は第 1 列、節キーワードはさらに 1 段、各項目はさらに 1 段深くします。
 架空の閉じ記号を足さず、書かれた節と項目の関係を見せます。
@@ -844,6 +852,12 @@ GWT 節・項目の隙間を保ちます。
 見出しと入れ子の本文で同じ判断を使い、
 項目の移動によって次の整形で外側の開きの保護が失われないようにします。
 
+説明ブロックが複数行にわたるとき、その `}` の後ろにある隠れた形は、
+同じ行に残ります。
+`eventmodeling accDescr {A`、改行、`B} %%{{native}}%%` は、そのまま残ります。
+以前は、その形が自分の行に移っていました。
+
+[fixture: eventmodeling/hidden-forms/native-after-description-block-end-stays-on-its-line]
 [fixture: eventmodeling/hidden-forms/header-inline-gwt-item-directive]
 
 [fixture: eventmodeling/hidden-forms/header-inline-gwt-item-yaml]
@@ -975,19 +989,26 @@ agentflow も同じ上限を持ちます（詳しくは、
 [既定のサイズによる分岐](./agentflow.ja.md#default-size-branches) を参照）。
 フロントマター、その後ろの空白だけの行、ディレクティブを除いた後で測り、
 CRLF は 1 単位、サロゲートペアは 2 単位と数えます。
+
 [fixture: default-size-branches/size-frontmatter-not-counted]
 [fixture: default-size-branches/size-frontmatter-trivia-not-counted]
 [fixture: default-size-branches/size-directive-not-counted]
 [fixture: default-size-branches/size-utf16-surrogate]
+
 50000 以上のときは、図のテキスト全体とその終わりを保ちます。
+
 [fixture: default-size-branches/size-preserving-to-fallback-unsafe]
+
 それ未満のときは、印字する計画の長さも 50000 未満に収まる場合だけ、
 通常の整形を行い、そうでなければ図のテキスト全体とその終わりを保ちます。
+
 [fixture: default-size-branches/size-below-planned-crossing]
+
 字下げや末尾の改行で上限を越えると、
 値の中のコメント行が除かれて Db が変わるので、それを防ぎます。
 境界そのものはコーパスが、CRLF、行の中のディレクティブ、
 フロントマターの場合も含めて確かめます。
+
 [corpus fixture: eventmodeling/comment-default-size-equal]
 [corpus fixture: eventmodeling/comment-default-size-above]
 [corpus fixture: eventmodeling/comment-default-size-equal-crlf]
@@ -1013,6 +1034,15 @@ CRLF は 1 単位、サロゲートペアは 2 単位と数えます。
 共通文の境界は普通の空白規則でなく原文隙間全体を保ちます。
 除去されるディレクティブ自体は必要な空白の代わりになりません。
 
+閉じていないディレクティブは、引数の後の空白を、改行も含めて取ります。
+そのため次の行はその行に続き、その行は書かれたまま印字します（詳しくは、
+[閉じていないディレクティブがつなぐ行](./compatibility.ja.md#閉じていないディレクティブがつなぐ行)
+を参照）。
+複数行の description block の `}` の後にそのディレクティブがあるときも同じで、
+`accDescr {alpha`、改行、`beta} %%{wrap foo`、改行、` tf 23 evt End` は、
+`tf` の前の空白も含めて、そのまま残ります。
+
+[fixture: eventmodeling/global-directives/description-block-end-line-with-unclosed-directive-kept]
 [fixture: eventmodeling/global-directives/directive-same-line-contacts]
 
 [fixture: eventmodeling/global-directives/directive-follows-split-next-statement]
@@ -1059,16 +1089,24 @@ tf %%{wrap}%%01 evt Alpha %%{wrap}%%->> %%{wrap}%%02
 その両側のトークンが接していれば 1 つのトークンになります。
 `;` の後の隙間は空白の有無を保ち、`/*style:#x*/;title` は書かれたまま残します。
 `/*style:#x*/ title` は拒否されるためです。
+
 [fixture: semicolons/stretch-kept-rest-formatted]
 [fixture: semicolons/ignored-semicolon-touches-next-atom]
 [fixture: semicolons/no-stretch-formatted]
 [fixture: semicolons/protected-gwt-title-hidden-gap-remains-zero]
+
 最初の保護された本文行は所属の段に揃え、内容と後続列は書かれたままです。
 必須の識別子と共通値の空白は構造上の字下げより優先します。
 子の本文の開始境界も保護行に残し、次の整形で分かれ方が変わるのを防ぎます。
 文法上のセミコロンがないため `verbatimStyleLines` は `false` です。
 `style` や `classDef` だけでは行全体を固定しません。
 
+`;` を含む行は、その行の文をまとめて残します。
+複数行の description block の最後の行に `;` があり、
+その `}` の後ろに文が続くときも同じです。
+`accDescr {x`、改行、`y;}` は、`tf 17 evt End` と同じ行に残ります。
+
+[fixture: eventmodeling/semicolons/description-block-end-line-keeps-next-statement]
 [fixture: eventmodeling/semicolons/native-gwt-value]
 
 [fixture: eventmodeling/semicolons/native-frame-value]
@@ -1201,7 +1239,9 @@ tf 001 evt VeryLongNamespace.VeryLongEventName ->> 002 ->> 003 ->> 004 [[LongDat
 Db は、データ `{"x"}` には `{"x"}` を、`{x}` には `{x}` を保持し、
 `accTitle: "T"` と書かれたタイトルには `accTitle: "T"` を保持します。
 そのため、引用符の有無を変えて同じテキストとして書けるものはなく、
-どのテキストも変えません。 [fixture: quotes/quotes-as-written]
+どのテキストも変えません。
+
+[fixture: quotes/quotes-as-written]
 
 入力
 ([quotes/quotes-as-written-input.mmd](../tests/fixtures/eventmodeling/quotes/quotes-as-written-input.mmd)):

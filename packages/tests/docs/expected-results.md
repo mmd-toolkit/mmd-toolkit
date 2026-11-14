@@ -48,8 +48,9 @@ remain JSON numbers, and strings remain strings. `embeddedValuesOf()` restores
 the tagged values to numbers before Db construction; see
 [embedded-data.md](./embedded-data.md). Summary endpoints keep the
 `numberOrText` form, where a non-finite number is a string because the position
-already identifies it as numeric. [fixture:
-packet/config-frontmatter-row-infinity] [fixture:
+already identifies it as numeric.
+
+[fixture: packet/config-frontmatter-row-infinity] [fixture:
 packet/config-frontmatter-row-infinity-string] [fixture:
 packet/db-frontmatter-infinite-endpoint]
 
@@ -71,22 +72,29 @@ With DOMPurify disabled,
 [`sanitizeMore`](https://github.com/mermaid-js/mermaid/blob/2086904e76c692331e34a45d7cc3bc30860d040e/packages/mermaid/src/diagrams/common/common.ts#L69-L83))
 leaves text unchanged as long as `securityLevel` is one of mermaid.js's values
 (`strict`, `loose`, `antiscript`, `sandbox`), and whatever the value when
-`htmlLabels` is disabled. [fixture: flowchart/db-vertex-label-markup-as-written]
-[fixture: flowchart/config-security-level-loose-line-breaks] For any other
-value, with `htmlLabels` enabled, it turns `<`, `>` and `=` into character
-references (`&lt;`, `&gt;`, `&equals;`) [fixture:
-flowchart/config-security-level-other-label-characters] and writes every form of
-the line break tag as `<br/>`: `<br>`, `<br/>`, `<br />`, `</br>`, `<BR>`, and
-the `#br#` that an author writes. [fixture:
-flowchart/config-security-level-other-line-breaks] Summaries rely on that:
-within those values, they do not depend on `securityLevel`.
+`htmlLabels` is disabled.
+
+[fixture: flowchart/db-vertex-label-markup-as-written] [fixture:
+flowchart/config-security-level-loose-line-breaks]
+
+For any other value, with `htmlLabels` enabled, it turns `<`, `>` and `=` into
+character references (`&lt;`, `&gt;`, `&equals;`) and writes every form of the
+line break tag as `<br/>`: `<br>`, `<br/>`, `<br />`, `</br>`, `<BR>`, and the
+`#br#` that an author writes.
+
+[fixture: flowchart/config-security-level-other-label-characters] [fixture:
+flowchart/config-security-level-other-line-breaks]
+
+Summaries rely on that: within those values, they do not depend on
+`securityLevel`.
 
 Whether `htmlLabels` is enabled is decided by the root `htmlLabels` of the
 configuration when that is set, and by `flowchart.htmlLabels` only when it is
 not; with neither set, it is enabled. So `flowchart.htmlLabels: false` disables
 it only while the root `htmlLabels` is unset, and the root `htmlLabels: true`
-enables it whatever `flowchart.htmlLabels` is. [fixture:
-flowchart/config-security-level-other-html-labels-false] [fixture:
+enables it whatever `flowchart.htmlLabels` is.
+
+[fixture: flowchart/config-security-level-other-html-labels-false] [fixture:
 flowchart/config-security-level-other-flowchart-html-labels-false] [fixture:
 flowchart/config-security-level-other-html-labels-true-flowchart-false]
 [fixture:
@@ -98,18 +106,26 @@ which Db classes call when they store a link. It cannot be replaced from
 outside, so a Db patch registered for the diagram type (`getDbPatches()` in
 `src/normalizers/index.ts`) changes the Db class, before any input is parsed, to
 store the URL as written (trimmed), which is what `formatUrl()` returns under
-`securityLevel: loose`. [fixture: flowchart/db-click-link-trimmed] [fixture:
-class/db-click-link-trimmed] For flowchart
+`securityLevel: loose`.
+
+[fixture: flowchart/db-click-link-trimmed] [fixture:
+class/db-click-link-trimmed]
+
+For flowchart
 ([`FlowDB.setLink`](https://github.com/mermaid-js/mermaid/blob/2086904e76c692331e34a45d7cc3bc30860d040e/packages/mermaid/src/diagrams/flowchart/flowDb.ts#L579-L588)),
 `javascript:alert(1)` therefore stays as is and `https://example.com` gets no
 trailing slash. The class Db does the same
 ([`ClassDB.setLink`](https://github.com/mermaid-js/mermaid/blob/2086904e76c692331e34a45d7cc3bc30860d040e/packages/mermaid/src/diagrams/class/classDb.ts#L404-L425)).
-[fixture: class/db-click-link-javascript-url-as-written] It also sets the link
-target to `_top` under `securityLevel: sandbox`; its patch stores the target as
-written (or `_blank`), as the other levels give. [fixture:
-class/config-security-level-sandbox-link-target] [fixture:
-class/config-security-level-sandbox-link-default-target] In mermaid@12.3.0,
-`formatUrl()` is also called by the Db of agentflow
+
+[fixture: class/db-click-link-javascript-url-as-written]
+
+It also sets the link target to `_top` under `securityLevel: sandbox`; its patch
+stores the target as written (or `_blank`), as the other levels give.
+
+[fixture: class/config-security-level-sandbox-link-target] [fixture:
+class/config-security-level-sandbox-link-default-target]
+
+In mermaid@12.3.0, `formatUrl()` is also called by the Db of agentflow
 ([`agentflowDb.ts`](https://github.com/mermaid-js/mermaid/blob/2086904e76c692331e34a45d7cc3bc30860d040e/packages/mermaid/src/diagrams/agentflow/agentflowDb.ts#L1014-L1014)),
 which needs the same patch when its normalizer is added.
 
@@ -117,8 +133,9 @@ The gantt Db does not reach `@braintree/sanitize-url` through `formatUrl()`:
 [`setLink`](https://github.com/mermaid-js/mermaid/blob/2086904e76c692331e34a45d7cc3bc30860d040e/packages/mermaid/src/diagrams/gantt/ganttDb.js#L712-L727)
 calls it itself unless `securityLevel` is `loose`. The Db is one object that all
 gantt diagrams share, so its patch is applied to the object, and it stores the
-URL as written, which is what `setLink` stores under `loose`. [fixture:
-gantt/config-security-level-strict-click-href] [fixture:
+URL as written, which is what `setLink` stores under `loose`.
+
+[fixture: gantt/config-security-level-strict-click-href] [fixture:
 gantt/config-security-level-sandbox-click-href]
 
 ## Label text is recorded before HTML sanitization
@@ -139,36 +156,46 @@ recorded Db is the Db mermaid.js builds when DOMPurify changes nothing:
 
 - **Affected fields**: every value that goes through `sanitizeText()`. For
   flowchart that is the vertex and edge labels, subgraph titles, tooltips, and
-  the title, `accTitle` and `accDescr` (one line or a block). [fixture:
-  flowchart/db-edge-label-markup-as-written] [fixture:
+  the title, `accTitle` and `accDescr` (one line or a block).
+
+  [fixture: flowchart/db-edge-label-markup-as-written] [fixture:
   flowchart/db-subgraph-title-markup-as-written] [fixture:
   flowchart/db-tooltip-markup-as-written] [fixture:
   flowchart/db-title-markup-as-written] [fixture:
   flowchart/db-acc-title-markup-as-written] [fixture:
   flowchart/db-acc-descr-markup-as-written] [fixture:
-  flowchart/db-acc-descr-block-markup-as-written] The same holds in the other
-  diagram types, for example for the message of a sequence diagram, the label of
-  a class and the description of a state. [fixture:
-  sequence/db-message-markup-as-written] [fixture:
+  flowchart/db-acc-descr-block-markup-as-written]
+
+  The same holds in the other diagram types, for example for the message of a
+  sequence diagram, the label of a class and the description of a state.
+
+  [fixture: sequence/db-message-markup-as-written] [fixture:
   class/db-label-markup-as-written] [fixture:
   state/db-description-markup-as-written]
+
 - **Affected inputs**: only text that DOMPurify would alter, i.e. text
   containing HTML markup or `&`, `<`, `>`. For example,
   `A["a & <b onclick=x>b</b>"]` is recorded as `a & <b onclick=x>b</b>`.
-  [fixture: flowchart/db-vertex-label-markup-as-written] From the source of
-  mermaid.js and DOMPurify, a browser would store `a &amp; <b>b</b>`; this has
-  not been checked in a browser.
+
+  [fixture: flowchart/db-vertex-label-markup-as-written]
+
+  From the source of mermaid.js and DOMPurify, a browser would store
+  `a &amp; <b>b</b>`; this has not been checked in a browser.
+
 - **What remains**: the rest of `sanitizeText()`
   ([`sanitizeMore`](https://github.com/mermaid-js/mermaid/blob/2086904e76c692331e34a45d7cc3bc30860d040e/packages/mermaid/src/diagrams/common/common.ts#L70-L83))
   still runs. With `htmlLabels` enabled (see above for how that is decided) and
   a `securityLevel` other than `strict`, `loose`, `antiscript` or `sandbox`, it
   still replaces `<`, `>` and `=` with entities, and every form of the line
   break tag with `<br/>`. The fixtures that use such a `securityLevel` record
-  the replaced text. [fixture:
-  flowchart/config-security-level-other-label-characters] [fixture:
+  the replaced text.
+
+  [fixture: flowchart/config-security-level-other-label-characters] [fixture:
   flowchart/config-security-level-other-line-breaks]
+
   [db-from-tree.md](./db-from-tree.md), The replacement of characters, states
   which texts of each diagram it reaches.
+
 - **What implementations compare against**: the parser's Db-equivalent JSON is
   compared with these values, i.e. with text before HTML sanitization. It does
   not need to reproduce DOMPurify.
@@ -186,12 +213,14 @@ that shows mermaid.js reached for a browser feature Node lacks. Two kinds of
 error count as such:
 
 - any `ReferenceError`, since only a reference to an undefined global throws it;
+
 - an error whose message matches `ENVIRONMENT_SIGNATURES` in `src/rejections.ts`
   (DOMPurify, `document`, `window`, `Option`, and other DOM names). The
   signatures are checked only for errors outside the four names mermaid.js
   throws on purpose (`Error`, `MermaidParseError`, `UnknownDiagramError`,
-  `YAMLException`), because their messages quote the input. [fixture:
-  flowchart/rejection-parse-error-quotes-browser-word] [fixture:
+  `YAMLException`), because their messages quote the input.
+
+  [fixture: flowchart/rejection-parse-error-quotes-browser-word] [fixture:
   common/rejection-unknown-diagram-quotes-browser-word] [fixture:
   common/rejection-yaml-error-quotes-browser-word]
 
@@ -225,31 +254,41 @@ no input meets an unpatched Db. In mermaid@12.3.0:
   fill is `transparent` and the whole line is the name. The stand-in answers
   whether the value is a valid value of the `color` property. It is for the
   CSS-wide keywords, `currentcolor` and the system colors, current and
-  deprecated, from lists in the module. [fixture:
-  sequence/db-box-colour-css-wide-keyword] [fixture:
+  deprecated, from lists in the module.
+
+  [fixture: sequence/db-box-colour-css-wide-keyword] [fixture:
   sequence/db-box-colour-currentcolor] [fixture:
   sequence/db-box-colour-system-colour] [fixture:
-  sequence/db-box-colour-deprecated-system-colour] It is for any value that
-  holds a substitution function (`var()`, `env()`, `attr()`). [fixture:
-  sequence/db-box-colour-function-substitution] It is for any other value that
-  `@csstools/css-color-parser` reads as one color, such as the space-separated
-  form with a slash before the alpha. [fixture:
-  sequence/db-box-colour-function-space-separated-alpha] It is not for a color
-  function with too few arguments, nor for the comma-separated form that mixes
-  numbers and percentages. [fixture:
-  sequence/db-box-colour-function-too-few-arguments] [fixture:
-  sequence/db-box-colour-function-mixed-percentages] Its answers were compared
-  with `CSS.supports("color", value)` of Chromium 152 for 309 values: the first
-  words of the `box` lines in the collected inputs, the named colors in several
-  cases, the keywords, the current and deprecated system colors, words that are
-  not colors, and right and wrong forms of `rgb()`, `rgba()`, `hsl()` and
-  `hsla()` (commas and spaces, percentages, angles, `none`, alpha, missing or
-  extra arguments, `calc()`, substitution functions, relative colors). All of
-  them agree. Where browsers may differ (newer system colors, relative colors,
-  `none`, substitution functions), the stand-in follows Chromium; Firefox and
-  Safari were not checked. The same function is exported as `cssSupportsColor`
-  from `@mmd-toolkit/tests`, which runs no mermaid.js, for an implementation
-  that takes the answer from outside.
+  sequence/db-box-colour-deprecated-system-colour]
+
+  It is for any value that holds a substitution function (`var()`, `env()`,
+  `attr()`).
+
+  [fixture: sequence/db-box-colour-function-substitution]
+
+  It is for any other value that `@csstools/css-color-parser` reads as one
+  color, such as the space-separated form with a slash before the alpha.
+
+  [fixture: sequence/db-box-colour-function-space-separated-alpha]
+
+  It is not for a color function with too few arguments, nor for the
+  comma-separated form that mixes numbers and percentages.
+
+  [fixture: sequence/db-box-colour-function-too-few-arguments] [fixture:
+  sequence/db-box-colour-function-mixed-percentages]
+
+  Its answers were compared with `CSS.supports("color", value)` of Chromium 152
+  for 309 values: the first words of the `box` lines in the collected inputs,
+  the named colors in several cases, the keywords, the current and deprecated
+  system colors, words that are not colors, and right and wrong forms of
+  `rgb()`, `rgba()`, `hsl()` and `hsla()` (commas and spaces, percentages,
+  angles, `none`, alpha, missing or extra arguments, `calc()`, substitution
+  functions, relative colors). All of them agree. Where browsers may differ
+  (newer system colors, relative colors, `none`, substitution functions), the
+  stand-in follows Chromium; Firefox and Safari were not checked. The same
+  function is exported as `cssSupportsColor` from `@mmd-toolkit/tests`, which
+  runs no mermaid.js, for an implementation that takes the answer from outside.
+
 - [`SequenceDB.addDetails`](https://github.com/mermaid-js/mermaid/blob/2086904e76c692331e34a45d7cc3bc30860d040e/packages/mermaid/src/diagrams/sequence/sequenceDb.ts#L526-L546)
   reads an element of the page with `document.getElementById`. A Db method that
   reads the page is treated as on a page without the element, since the page is
@@ -302,52 +341,64 @@ of the marks; for the two that change the xychart lexer,
 `comment-takes-character` and `title-digit-after-axis-statement`, without both,
 since a text with a title that holds a digit after an axis statement can have a
 comment glued to a word; for `c4-keyword-anywhere`, with the detector of C4
-replaced, so that the text is read as the diagram of its header). [fixture:
-class/div-comment-then-statement-with-backquote-keyword] [fixture:
+replaced, so that the text is read as the diagram of its header).
+
+[fixture: class/div-comment-then-statement-with-backquote-keyword] [fixture:
 class/div-backquote-starts-with-keyword-then-comment] [fixture:
 common/detect-c4-anywhere] [fixture: flowchart/div-c4-keyword-in-label]
 [fixture: class/div-c4-keyword-as-class-name] [fixture:
-state/div-c4-keyword-as-state-id] [fixture: block/div-c4-container-in-label] For
-`html-tag-in-frontmatter` it is mermaid.js reading the input whose frontmatter
-has `(` where it has `<`, so that no HTML tag starts in it. The tag may start in
-any key of the frontmatter, not only in `title`; the frontmatter is found as
-mermaid.js finds it, which includes a closing `---` line with blanks after it
-and CRLF line breaks. [fixture:
-flowchart/html-tag-starts-in-frontmatter-other-key] [fixture:
+state/div-c4-keyword-as-state-id] [fixture: block/div-c4-container-in-label]
+
+For `html-tag-in-frontmatter` it is mermaid.js reading the input whose
+frontmatter has `(` where it has `<`, so that no HTML tag starts in it. The tag
+may start in any key of the frontmatter, not only in `title`; the frontmatter is
+found as mermaid.js finds it, which includes a closing `---` line with blanks
+after it and CRLF line breaks.
+
+[fixture: flowchart/html-tag-starts-in-frontmatter-other-key] [fixture:
 flowchart/html-tag-starts-in-frontmatter-crlf] [fixture:
-flowchart/html-tag-starts-in-frontmatter-closing-line-blank] The frontmatter
-title in the specified reading is Mermaid's converted value in every diagram
-type, as `extractFrontmatterTitle` gives it after
+flowchart/html-tag-starts-in-frontmatter-closing-line-blank]
+
+The frontmatter title in the specified reading is Mermaid's converted value in
+every diagram type, as `extractFrontmatterTitle` gives it after
 [`cleanupText()`](https://github.com/mermaid-js/mermaid/blob/2086904e76c692331e34a45d7cc3bc30860d040e/packages/mermaid/src/preprocess.ts#L6-L17).
 In a tag, a `"` after an `=` becomes `'`. The same derived title supplies the Db
 and `embedded.title`; a body title that overrides it in the Db stays in place.
+
 [fixture: flowchart/html-tag-starts-in-frontmatter-value] [fixture:
-pie/frontmatter-html] [fixture: pie/frontmatter-title-overridden] The values in
-`embedded` are those that mermaid.js gives for the input as written, and, where
-it rejects that input, those it gives for the input with `(`: a `<` in a value
-of the configuration is then recorded as `(`. The frontmatter title in
-`embedded` uses the same title reader as the Db. [fixture:
-flowchart/html-tag-starts-in-frontmatter-config-value] Where mermaid.js accepts
-the input as written, they are the values of the written input, and the input
-with `(` is not read: mermaid.js leaves a value that holds `<` out of the
-configuration, so `embedded` has none, and not the value with `(`. [fixture:
-flowchart/html-tag-starts-in-frontmatter-config-value-accepted] When mermaid.js
-rejects the input with `(`, the specified reading is the rejection
-(`accepted: false` and the error). If the replacement itself made the YAML of
-the frontmatter invalid, the generator stops: how that reading is made has to be
-decided for the fixture. For `bare-percent-line-before-header` it is mermaid.js
-reading the input without the bare `%%` lines before its header and the lines of
-whitespace only among them: the specification reads them as trivia in every
-diagram type, and mermaid.js hands them to the lexer of the diagram type, which
-does not read them so in flowchart (a line `%%` alone, `%%{ }%%`, `%%{}`, or
-`%%{-x}%%`), in state (the same lines but `%%`), in class (a line of whitespace
-only, a tab included, or a directive with whitespace around it, after such a
-line), and in block (a line `%%` alone or `%%{ }%%`, which the lexer reads as an
-id). A comment line and a directive among them stay, a directive with the lines
-it spans and without the whitespace around it on its line, which mermaid.js
-would leave as a line of whitespace only; the frontmatter is passed over. The
-title and the values in `embedded` do not depend on those lines. [fixture:
-flowchart/header-after-bare-percent-line] [fixture:
+pie/frontmatter-html] [fixture: pie/frontmatter-title-overridden]
+
+The values in `embedded` are those that mermaid.js gives for the input as
+written, and, where it rejects that input, those it gives for the input with
+`(`: a `<` in a value of the configuration is then recorded as `(`. The
+frontmatter title in `embedded` uses the same title reader as the Db.
+
+[fixture: flowchart/html-tag-starts-in-frontmatter-config-value]
+
+Where mermaid.js accepts the input as written, they are the values of the
+written input, and the input with `(` is not read: mermaid.js leaves a value
+that holds `<` out of the configuration, so `embedded` has none, and not the
+value with `(`.
+
+[fixture: flowchart/html-tag-starts-in-frontmatter-config-value-accepted]
+
+When mermaid.js rejects the input with `(`, the specified reading is the
+rejection (`accepted: false` and the error). If the replacement itself made the
+YAML of the frontmatter invalid, the generator stops: how that reading is made
+has to be decided for the fixture. For `bare-percent-line-before-header` it is
+mermaid.js reading the input without the bare `%%` lines before its header and
+the lines of whitespace only among them: the specification reads them as trivia
+in every diagram type, and mermaid.js hands them to the lexer of the diagram
+type, which does not read them so in flowchart (a line `%%` alone, `%%{ }%%`,
+`%%{}`, or `%%{-x}%%`), in state (the same lines but `%%`), in class (a line of
+whitespace only, a tab included, or a directive with whitespace around it, after
+such a line), and in block (a line `%%` alone or `%%{ }%%`, which the lexer
+reads as an id). A comment line and a directive among them stay, a directive
+with the lines it spans and without the whitespace around it on its line, which
+mermaid.js would leave as a line of whitespace only; the frontmatter is passed
+over. The title and the values in `embedded` do not depend on those lines.
+
+[fixture: flowchart/header-after-bare-percent-line] [fixture:
 flowchart/header-after-empty-braces-line] [fixture:
 flowchart/header-after-non-word-brace-line] [fixture:
 flowchart/header-after-empty-braces-no-space] [fixture:
@@ -360,26 +411,29 @@ class/header-after-bare-percent-then-tab-line] [fixture:
 class/header-after-bare-percent-then-indented-directive-line] [fixture:
 block/div-after-bare-percent-line] [fixture:
 block/div-after-bare-percent-line-and-whitespace-line] [fixture:
-block/div-after-empty-braces-line] For `blank-line-after-header-or-comments` it
-is mermaid.js reading the input without the empty lines and the lines of
-whitespace only after its header, and without the whitespace that ends the
-header line: the specification reads them as trivia wherever they stand, and
-mermaid.js takes the token of a line break with the whitespace lines around it
-only at the end of a line of its own, so it rejects them after the header, after
-a comment line, and before a node. A line is of whitespace only when nothing but
-whitespace is left of it once the directives are taken out, since mermaid.js
-removes a directive before it reads the text. The directives after the header
-move to lines of their own before it, so that the title and the values in
-`embedded` do not change and no line is left with a directive alone. A line feed
-goes before a U+2028 or a U+2029 that ends a comment when a statement follows it
-on its line, since mermaid.js's grammar needs one there and the indentation of
-the statement stays; a separator that ends a comment with only whitespace after
-it goes with that whitespace. The comment lines, the lines before the header,
-and the node lines stay as they are. The generator stops where a line to take
-out stands inside the text of a node that is not closed, since a blank line is
-then a character of the text. The kanban has the same divergence and the same
-rule as the mindmap: a line feed goes before a statement after the U+2028 or the
-U+2029 that ends a comment on the header line, and also between statements.
+block/div-after-empty-braces-line]
+
+For `blank-line-after-header-or-comments` it is mermaid.js reading the input
+without the empty lines and the lines of whitespace only after its header, and
+without the whitespace that ends the header line: the specification reads them
+as trivia wherever they stand, and mermaid.js takes the token of a line break
+with the whitespace lines around it only at the end of a line of its own, so it
+rejects them after the header, after a comment line, and before a node. A line
+is of whitespace only when nothing but whitespace is left of it once the
+directives are taken out, since mermaid.js removes a directive before it reads
+the text. The directives after the header move to lines of their own before it,
+so that the title and the values in `embedded` do not change and no line is left
+with a directive alone. A line feed goes before a U+2028 or a U+2029 that ends a
+comment when a statement follows it on its line, since mermaid.js's grammar
+needs one there and the indentation of the statement stays; a separator that
+ends a comment with only whitespace after it goes with that whitespace. The
+comment lines, the lines before the header, and the node lines stay as they are.
+The generator stops where a line to take out stands inside the text of a node
+that is not closed, since a blank line is then a character of the text. The
+kanban has the same divergence and the same rule as the mindmap: a line feed
+goes before a statement after the U+2028 or the U+2029 that ends a comment on
+the header line, and also between statements.
+
 [fixture: kanban/div-header-comment-ls-node] [fixture:
 kanban/div-header-comment-ps-node] [fixture:
 mindmap/div-header-trailing-spaces-then-node] [fixture:
@@ -398,9 +452,10 @@ mindmap/div-class-then-comment-then-blank] [fixture:
 mindmap/div-percent-brace-then-blank-between-nodes] [fixture:
 mindmap/db-blank-line-after-header] [fixture:
 mindmap/db-whitespace-line-after-header] [fixture:
-mindmap/db-directive-between-header-and-first-node] The other marks need no such
-file: the specification rejects what mermaid.js accepts
-(`directive-as-token-boundary`, `ignored-semicolon-as-token-boundary`,
+mindmap/db-directive-between-header-and-first-node]
+
+The other marks need no such file: the specification rejects what mermaid.js
+accepts (`directive-as-token-boundary`, `ignored-semicolon-as-token-boundary`,
 `click-reserved-word`, `tokenless-empty-forms`, `headerless-empty-ending`). None
 of them has a removal here, so mermaid.js is not run to read the input as the
 specification does, and what the specification gives is stated by the document
@@ -414,8 +469,9 @@ no-op; opaque statement contents cannot prevent configuration from being read.
 On a derivation failure, blocks are taken in source order and a block whose
 addition rejects is omitted. This also handles frontmatter YAML made invalid by
 HTML attribute-quote conversion. Hidden YAML in the diagram body and other
-diagram syntax stay in place. [fixture:
-usecase/div-gram-frontmatter-html-attribute-quotes] [fixture:
+diagram syntax stay in place.
+
+[fixture: usecase/div-gram-frontmatter-html-attribute-quotes] [fixture:
 pie/div-review-frontmatter-html-invalid-yaml] [fixture:
 pie/lex-yaml-three-adjacent-fences]
 
@@ -429,6 +485,7 @@ title. The source directives have already contributed to that configuration and
 are removed from the reference body so that they cannot reapply the deleted
 keys. Other configuration, including Db-only settings such as `wrap`, remains;
 the external site configuration still applies through the ordinary runner.
+
 [fixture: gitgraph/div-frontmatter-main-branch-preserves-title] [fixture:
 sequence/div-invalid-frontmatter-preserves-wrap-directive] [fixture:
 gitgraph/div-frontmatter-html-labels-default-comparison] [fixture:
@@ -436,8 +493,9 @@ gitgraph/div-init-html-labels-default-comparison]
 
 An accepted reference supplies its Db and embedded values. The frontmatter title
 is Mermaid's converted value, using the same reader as
-`html-tag-in-frontmatter`. [fixture:
-gitgraph/div-frontmatter-main-branch-preserves-title]
+`html-tag-in-frontmatter`.
+
+[fixture: gitgraph/div-frontmatter-main-branch-preserves-title]
 
 If the written input accepts and the reference rejects, record the reference
 rejection. If a marked opaque-data failure persists as the same rejection in
@@ -445,14 +503,17 @@ both runs, there is no comparison Db: record acceptance with `db: null`, use the
 reference's detected diagram type, and invent no embedded values. This includes
 malformed data blocks that the reference leaves in place. The existing
 normalizer checks for `expected.json` are unchanged. An opaque specified reading
-may lack a comparison Db even for a diagram type with a normalizer. [fixture:
-flowchart/div-data-unknown-shape] [fixture: kanban/gram-metadata-bad-yaml]
-[fixture: usecase/div-gram-json-unquoted-key]
+may lack a comparison Db even for a diagram type with a normalizer.
+
+[fixture: flowchart/div-data-unknown-shape] [fixture:
+kanban/gram-metadata-bad-yaml] [fixture: usecase/div-gram-json-unquoted-key]
 
 Where configuration inside the text changes acceptance, the specified reading
 uses the default acceptance rules without applying those named embedded keys.
 This can reject an input that mermaid.js accepts or accept one that mermaid.js
-rejects. [fixture: gitgraph/docs-community-contributing-05cdc44b] [fixture:
+rejects.
+
+[fixture: gitgraph/docs-community-contributing-05cdc44b] [fixture:
 gitgraph/docs-syntax-gitgraph-2ea99686] [fixture:
 gitgraph/div-frontmatter-main-branch-duplicate-default-accepted] [fixture:
 gitgraph/div-frontmatter-main-branch-checkout-default-accepted] [fixture:
@@ -471,11 +532,15 @@ A rule may also be replaced by two patterns, of which the lexer uses one when it
 has read only whitespace of the current line, and the other otherwise. A line
 here is a line of the text after mermaid's preprocessing, which the lexer reads:
 line breaks made line feeds, and the frontmatter, directives and comment lines
-taken out. [fixture: class/div-comment-then-statement-crlf] [fixture:
-class/div-comment-then-statement-cr] What the lexer has read is the text it was
-given without what is left of it; when what is left is not an end of that text,
-because the lexer put back text that it had not read, the call stops with
-`MermaidEnvironmentError` instead of returning a result that may be wrong.
+taken out.
+
+[fixture: class/div-comment-then-statement-crlf] [fixture:
+class/div-comment-then-statement-cr]
+
+What the lexer has read is the text it was given without what is left of it;
+when what is left is not an end of that text, because the lexer put back text
+that it had not read, the call stops with `MermaidEnvironmentError` instead of
+returning a result that may be wrong.
 
 In a start state of the lexer, the rules may also be tried in another order,
 with the rules that read as the specification does first; the rules themselves
@@ -507,7 +572,9 @@ and the original detector is registered again when the call ends. Before any
 input, `runMermaid()` makes this replacement once, and stops with
 `MermaidEnvironmentError` unless the detectors give the diagram ids that the
 removal lists for its probe texts: before the replacement, during it, and after
-it. [fixture: common/detect-c4-anywhere] [fixture: common/detect-minimal-c4]
+it.
+
+[fixture: common/detect-c4-anywhere] [fixture: common/detect-minimal-c4]
 
 - `comment-takes-character`, in the sequence lexer
   ([`sequenceDiagram.jison`](https://github.com/mermaid-js/mermaid/blob/2086904e76c692331e34a45d7cc3bc30860d040e/packages/mermaid/src/diagrams/sequence/parser/sequenceDiagram.jison#L29-L30)):
@@ -518,51 +585,61 @@ it. [fixture: common/detect-c4-anywhere] [fixture: common/detect-minimal-c4]
   one: its statement state reads a character followed by `%%` as a comment
   before any rule for ids, so no input gives it an id run, as in a message,
   whose second and third characters are `%%`.
+
 - `comment-takes-character`, in the gantt lexer
   ([`gantt.jison`](https://github.com/mermaid-js/mermaid/blob/2086904e76c692331e34a45d7cc3bc30860d040e/packages/mermaid/src/diagrams/gantt/parser/gantt.jison#L29-L29)):
   the rule that reads a character other than `}` before `%` together with the
   comment is taken out, so a comment starts at a `%` where a unit starts, and
-  any other `%` is a character of the unit that holds it. [fixture:
-  gantt/div-comment-after-task-text-start] [fixture:
+  any other `%` is a character of the unit that holds it.
+
+  [fixture: gantt/div-comment-after-task-text-start] [fixture:
   gantt/div-comment-after-keyword-start] [fixture:
   gantt/div-comment-after-semicolon-after-data] [fixture:
   gantt/lex-comment-after-two-characters] [fixture:
   gantt/lex-brace-before-percent] [fixture: gantt/lex-colon-then-percent]
+
 - `comment-takes-character`, in the journey lexer
   ([`journey.jison`](https://github.com/mermaid-js/mermaid/blob/2086904e76c692331e34a45d7cc3bc30860d040e/packages/mermaid/src/diagrams/user-journey/parser/journey.jison#L15-L15)):
   the rule that reads a character other than `}` before `%%` together with the
   comment is taken out, so a comment starts at a `%` where a unit starts, and
-  any other `%%` is part of the unit that holds it. [fixture:
-  journey/div-comment-after-task-text-start] [fixture:
+  any other `%%` is part of the unit that holds it.
+
+  [fixture: journey/div-comment-after-task-text-start] [fixture:
   journey/div-comment-after-colon-after-section] [fixture:
   journey/div-comment-after-task-colon]
+
 - `comment-takes-character`, in the timeline lexer
   ([`timeline.jison`](https://github.com/mermaid-js/mermaid/blob/2086904e76c692331e34a45d7cc3bc30860d040e/packages/mermaid/src/diagrams/timeline/parser/timeline.jison#L15-L15)):
   the rule that reads a character other than `}` before `%%` together with the
   comment is taken out, so a comment starts at a `%` where a unit starts, and
-  any other `%%` is part of the unit that holds it. [fixture:
-  timeline/db-comment-percent-after-period-glued] [fixture:
+  any other `%%` is part of the unit that holds it.
+
+  [fixture: timeline/db-comment-percent-after-period-glued] [fixture:
   timeline/div-comment-after-period-start] [fixture:
   timeline/div-comment-after-non-ascii-letter] [fixture:
   timeline/div-comment-after-colon] [fixture:
   timeline/div-comment-after-block-character] [fixture:
   timeline/div-comment-after-semicolon-after-header] [fixture:
   timeline/div-comment-after-semicolon]
+
 - `comment-takes-character`, in the xychart lexer
   ([`xychart.jison`](https://github.com/mermaid-js/mermaid/blob/2086904e76c692331e34a45d7cc3bc30860d040e/packages/mermaid/src/diagrams/xychart/parser/xychart.jison#L16-L16)):
   the rule that reads a character other than `}` before `%%` together with the
-  comment is taken out, so a comment starts at its `%%`. [fixture:
-  xychart/div-comment-glued-after-title-word] [fixture:
+  comment is taken out, so a comment starts at its `%%`.
+
+  [fixture: xychart/div-comment-glued-after-title-word] [fixture:
   xychart/div-comment-glued-after-range] [fixture:
   xychart/div-comment-takes-hyphen] [fixture:
   xychart/div-comment-takes-one-letter-word]
+
 - `comment-takes-character`, in the quadrant lexer
   ([`quadrant.jison`](https://github.com/mermaid-js/mermaid/blob/2086904e76c692331e34a45d7cc3bc30860d040e/packages/mermaid/src/diagrams/quadrant-chart/parser/quadrant.jison#L17-L17)):
   the rule that reads a character other than `}` before `%%` together with the
   comment is taken out, so a comment starts at its `%%`. A space or a tab before
   the `%%` is then a space that no statement takes after a point or after the
-  closing brace of a block, so such a line is rejected. [fixture:
-  quadrant/div-quadrant-comment-glued] [fixture:
+  closing brace of a block, so such a line is rejected.
+
+  [fixture: quadrant/div-quadrant-comment-glued] [fixture:
   quadrant/div-comment-unit-letters-then-digit] [fixture:
   quadrant/div-x-axis-comment-unit-dash] [fixture:
   quadrant/div-name-comment-glued] [fixture:
@@ -570,47 +647,60 @@ it. [fixture: common/detect-c4-anywhere] [fixture: common/detect-minimal-c4]
   quadrant/div-comment-glued-digit-in-quadrant-text] [fixture:
   quadrant/div-acc-descr-block-space-and-comment-after-brace] [fixture:
   quadrant/div-comment-glued-tab-after-point]
+
 - `comment-takes-line-break`, in the class lexer
   ([`classDiagram.jison`](https://github.com/mermaid-js/mermaid/blob/2086904e76c692331e34a45d7cc3bc30860d040e/packages/mermaid/src/diagrams/class/parser/classDiagram.jison#L28-L28)):
   the rule that reads `%%`, the rest of the line and the line feeds after it
   keeps that reading only for a comment with only whitespace before it on its
   line; a comment after a unit ends at the end of its line, and the line feed
-  after it is read as a line feed. [fixture:
-  class/div-comment-after-name-then-statement] [fixture:
+  after it is read as a line feed.
+
+  [fixture: class/div-comment-after-name-then-statement] [fixture:
   class/div-comment-after-note-string-then-statement] [fixture:
   class/div-comment-after-click-string-then-statement]
+
 - `comment-takes-line-break`, in the gantt lexer
   ([`gantt.jison`](https://github.com/mermaid-js/mermaid/blob/2086904e76c692331e34a45d7cc3bc30860d040e/packages/mermaid/src/diagrams/gantt/parser/gantt.jison#L30-L30)):
   the rule that reads `%`, the rest of the line and the line feeds after it ends
   at the end of the line, so the line feed after a comment is read as a line
-  feed. [fixture: gantt/div-percent-comment-takes-line-feed-after-href]
-  [fixture: gantt/div-percent-comment-takes-line-feeds-after-call] [fixture:
+  feed.
+
+  [fixture: gantt/div-percent-comment-takes-line-feed-after-href] [fixture:
+  gantt/div-percent-comment-takes-line-feeds-after-call] [fixture:
   gantt/lex-space-percent-comment-after-call-then-href-line]
+
 - `comment-takes-line-break`, in the C4 lexer
   ([`c4Diagram.jison`](https://github.com/mermaid-js/mermaid/blob/2086904e76c692331e34a45d7cc3bc30860d040e/packages/mermaid/src/diagrams/c4/parser/c4Diagram.jison#L98-L99)):
   both rules that read `%%`, the rest of the line and the line feeds after it
   end at the end of the line, so the line terminator after a diagram comment
   separates the header, call, or boundary from what follows, also with an empty
-  line after it. [fixture: c4/header-context-comment-glued] [fixture:
+  line after it.
+
+  [fixture: c4/header-context-comment-glued] [fixture:
   c4/header-context-comment-on-header-line] [fixture:
   c4/div-comment-between-joined-statements] [fixture:
   c4/div-boundary-comment-before-inline-body] [fixture:
   c4/div-boundary-comment-before-next-statement] [fixture:
   c4/div-header-comment-blank-recovery] [fixture:
   c4/div-comment-between-blank-recovery] [fixture: c4/div-diagram-comment-u2028]
-  [fixture: c4/div-diagram-comment-u2029] A spaces-only line after the comment
-  still separates the statements. [fixture:
-  c4/header-header-comment-spaces-recovery] [fixture:
+  [fixture: c4/div-diagram-comment-u2029]
+
+  A spaces-only line after the comment still separates the statements.
+
+  [fixture: c4/header-header-comment-spaces-recovery] [fixture:
   c4/lex-comment-between-spaces-recovery]
+
 - `percent-brace-after-unit`, in the gantt lexer
   ([`gantt.jison`](https://github.com/mermaid-js/mermaid/blob/2086904e76c692331e34a45d7cc3bc30860d040e/packages/mermaid/src/diagrams/gantt/parser/gantt.jison#L18-L18)):
   the rule that enters the start state `open_directive` at every `%%{` is taken
   out, so a `%%{` that starts no directive is read by the rule for comments; the
   directives themselves are taken out of the text before the lexer reads it.
+
   [fixture: gantt/div-percent-brace-glued-after-header] [fixture:
   gantt/div-percent-brace-after-two-spaces] [fixture:
   gantt/div-percent-brace-after-glued-percent-comment] [fixture:
   gantt/lex-percent-brace-after-tab]
+
 - `title-digit-after-axis-statement`, in the xychart lexer
   ([`xychart.jison`](https://github.com/mermaid-js/mermaid/blob/2086904e76c692331e34a45d7cc3bc30860d040e/packages/mermaid/src/diagrams/xychart/parser/xychart.jison#L36-L37)):
   the lexer enters the start state `axis_data` at every `x-axis` and `y-axis`,
@@ -624,10 +714,13 @@ it. [fixture: common/detect-c4-anywhere] [fixture: common/detect-minimal-c4]
   the axis context ends at the end of its statement. The rule for `accDescr {`
   does not: the lexer enters the description block state on top of `axis_data`,
   and it is in `axis_data` again after the `}`, which is how the specification
-  reads it. [fixture: xychart/div-title-digit-after-axis-semicolon] [fixture:
+  reads it.
+
+  [fixture: xychart/div-title-digit-after-axis-semicolon] [fixture:
   xychart/div-title-digit-next-line-after-axis-and-plot] [fixture:
   xychart/div-title-digit-next-line-after-two-axes] [fixture:
   xychart/div-title-digit-after-axis-and-empty-block]
+
 - `c4-keyword-anywhere`, in the detector of C4
   ([`c4Detector.ts`](https://github.com/mermaid-js/mermaid/blob/2086904e76c692331e34a45d7cc3bc30860d040e/packages/mermaid/src/diagrams/c4/c4Detector.ts#L10-L10)):
   the detector looks for each of the five keywords, `C4Context`, `C4Container`,
@@ -636,16 +729,20 @@ it. [fixture: common/detect-c4-anywhere] [fixture: common/detect-minimal-c4]
   anywhere. A text of another diagram type that holds one of the four, as a
   label, a name, or a message, is then read as the diagram of its header, as the
   specification reads it, and a text that starts with a keyword is read as
-  before. [fixture: common/detect-c4-anywhere] [fixture:
-  common/detect-minimal-c4] [fixture: flowchart/div-c4-keyword-in-label]
-  [fixture: class/div-c4-keyword-as-class-name] [fixture:
+  before.
+
+  [fixture: common/detect-c4-anywhere] [fixture: common/detect-minimal-c4]
+  [fixture: flowchart/div-c4-keyword-in-label] [fixture:
+  class/div-c4-keyword-as-class-name] [fixture:
   state/div-c4-keyword-as-state-id] [fixture: block/div-c4-container-in-label]
+
 - `name-start-reads-unit`, in the class lexer
   ([`classDiagram.jison`](https://github.com/mermaid-js/mermaid/blob/2086904e76c692331e34a45d7cc3bc30860d040e/packages/mermaid/src/diagrams/class/parser/classDiagram.jison#L106-L112)):
   inside a backquoted name and a generic type, the rule that closes it and the
   rule that reads its text are tried first, so the text is read up to the
-  closing mark whatever it starts with. [fixture:
-  class/div-backquote-starts-with-cssclass] [fixture:
+  closing mark whatever it starts with.
+
+  [fixture: class/div-backquote-starts-with-cssclass] [fixture:
   class/div-generic-starts-with-cssclass] [fixture:
   class/div-backquote-starts-with-callback] [fixture:
   class/div-generic-starts-with-callback] [fixture:
@@ -760,5 +857,6 @@ Db computes its dates from both, so its summary leaves the dates out (see
 
 `mermaid.parse()` does not apply `maxTextSize`; only rendering does
 ([`renderDiagram`](https://github.com/mermaid-js/mermaid/blob/2086904e76c692331e34a45d7cc3bc30860d040e/packages/mermaid/src/mermaidAPI.ts#L502-L505)).
-The fixtures do not apply it either. [fixture:
-flowchart/config-max-text-size-not-applied]
+The fixtures do not apply it either.
+
+[fixture: flowchart/config-max-text-size-not-applied]

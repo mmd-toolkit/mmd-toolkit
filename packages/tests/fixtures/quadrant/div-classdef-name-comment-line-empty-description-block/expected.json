@@ -1,0 +1,35 @@
+{
+  "source": {
+    "kind": "authored",
+    "note": "known-divergences.md, tokenless-empty-forms: the empty description block after the comment region lies inside the classDef statement, and this specification rejects it; mermaid.js reads no token for it and accepts the input, with the class `a` and U+2028."
+  },
+  "knownDivergence": "tokenless-empty-forms",
+  "accepted": true,
+  "diagramType": "quadrantChart",
+  "db": {
+    "title": "",
+    "accTitle": "",
+    "accDescr": "",
+    "quadrants": [
+      "",
+      "",
+      "",
+      ""
+    ],
+    "xAxis": {
+      "left": "",
+      "right": ""
+    },
+    "yAxis": {
+      "bottom": "",
+      "top": ""
+    },
+    "points": [],
+    "classes": [
+      {
+        "name": "a ",
+        "color": "#109060"
+      }
+    ]
+  }
+}

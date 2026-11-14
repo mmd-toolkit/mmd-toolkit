@@ -108,8 +108,8 @@ info
 題の終わりのディレクティブは、それぞれの前に空白があれば空白 1 つを置き、
 行末の空白の有無にかかわらず、最後のディレクティブの後の空白を除いて印字します。
 （[同じに描かれるキーワードの後のテキスト](./compatibility.ja.md#同じに描かれるキーワードの後のテキスト)）。
-[fixture: title/title-directives-end-blanks-dropped]
 
+[fixture: title/title-directives-end-blanks-dropped]
 [fixture: info/title/title-trim]
 
 [fixture: info/title/title-whitespace]
@@ -151,8 +151,8 @@ info
 値の終わりのディレクティブは、それぞれの前に空白があれば空白 1 つを置き、
 最後のディレクティブの後の空白を除いて印字します。
 （[同じに描かれるキーワードの後のテキスト](./compatibility.ja.md#同じに描かれるキーワードの後のテキスト)）。
-[fixture: accessibility-lines/acc-directives-end-blanks-dropped]
 
+[fixture: accessibility-lines/acc-directives-end-blanks-dropped]
 [fixture: info/accessibility-lines/a11y-lines]
 
 [fixture: info/accessibility-lines/a11y-empty]
@@ -487,8 +487,10 @@ info
 行の規則が無視する `;` が変わりうる場合は、各区間の頭から最後の保つ `;` までを、
 書かれたまま残します。
 それ以外の複数行の文は、1 行の文と同じように整形します。
+
 [fixture: semicolons/stretch-kept-rest-formatted]
 [fixture: semicolons/no-stretch-formatted]
+
 条件を満たす語の移動が選択と受理を変えうるため、
 保護された見出しと本文は分離しません。
 style/classDef の両 pass、大小文字、colon と hash の空白、Unicode 境界、

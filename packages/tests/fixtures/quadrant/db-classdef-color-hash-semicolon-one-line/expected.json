@@ -1,0 +1,34 @@
+{
+  "source": {
+    "kind": "authored",
+    "note": "quadrant.md Classes: on one line, `classDef ab color:#f00;` matches the line rule of style and classDef lines, so its `;` is ignored; the class `ab` with the colour `#f00`."
+  },
+  "accepted": true,
+  "diagramType": "quadrantChart",
+  "db": {
+    "title": "",
+    "accTitle": "",
+    "accDescr": "",
+    "quadrants": [
+      "",
+      "",
+      "",
+      ""
+    ],
+    "xAxis": {
+      "left": "",
+      "right": ""
+    },
+    "yAxis": {
+      "bottom": "",
+      "top": ""
+    },
+    "points": [],
+    "classes": [
+      {
+        "name": "ab",
+        "color": "#f00"
+      }
+    ]
+  }
+}

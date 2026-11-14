@@ -1,0 +1,35 @@
+{
+  "source": {
+    "kind": "authored",
+    "note": "known-divergences.md, directive-as-token-boundary: the comment region starts after the U+2029, so the directive right before it lies inside the name of the class, which this specification rejects; mermaid.js removes the directive and defines the class `a`, U+2029, and `b`."
+  },
+  "knownDivergence": "directive-as-token-boundary",
+  "accepted": true,
+  "diagramType": "quadrantChart",
+  "db": {
+    "title": "",
+    "accTitle": "",
+    "accDescr": "",
+    "quadrants": [
+      "",
+      "",
+      "",
+      ""
+    ],
+    "xAxis": {
+      "left": "",
+      "right": ""
+    },
+    "yAxis": {
+      "bottom": "",
+      "top": ""
+    },
+    "points": [],
+    "classes": [
+      {
+        "name": "a b",
+        "color": "#109060"
+      }
+    ]
+  }
+}

@@ -2,9 +2,11 @@ import type { ErIdentifier, StringLiteral } from "@mmd-toolkit/ast"
 
 /**
  * The text of a name of an ER diagram: an entity name, an alias, or the id of a
- * subgraph. It is the written name of an `ErIdentifier`, and the content of a
- * `StringLiteral` (a quoted name, without its quotes). A quoted name and the
- * bare name with the same text are one name. The conversion of entities that
+ * subgraph. It is the `name` of an `ErIdentifier`, which leaves out the comment
+ * region that a name goes on across after a U+2028 or a U+2029 (so it is not
+ * the text of the node's range), and the content of a `StringLiteral` (a quoted
+ * name, without its quotes). A quoted name and the bare name with the same text
+ * are one name. The conversion of entities that
  * mermaid.js makes on the text is not repeated: two names that differ only in
  * it compare as different.
  */

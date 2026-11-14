@@ -24,9 +24,10 @@ A StringLiteral of this diagram type is always closed. It is empty only as the
 URL or the tooltip of a click statement, as in `click A "" ""`; an empty
 description makes the input rejected, as in `state "" as A`, and an empty string
 in the state context is no StringLiteral but text that mermaid.js does not read
-(see [The state context](../diagrams/state.md#the-state-context)). [fixture:
-state/lex-click-empty-strings] [fixture: state/lex-alias-empty-string] [fixture:
-state/gram-state-empty-string-alone]
+(see [The state context](../diagrams/state.md#the-state-context)).
+
+[fixture: state/lex-click-empty-strings] [fixture: state/lex-alias-empty-string]
+[fixture: state/gram-state-empty-string-alone]
 
 ## Nodes
 
@@ -65,6 +66,7 @@ A state written by its id, alone or with a description: `A`, `A : text`, `[*]`,
 Child fields: `reference`, `description`. `A : ` has no description, as in the
 Db, and so has `A :` followed by four spaces: mermaid.js reads a description of
 only whitespace, whatever its amount, as none, so that whitespace is no value.
+
 [fixture: state/gram-description-blank] [fixture:
 state/gram-description-blank-spaces]
 
@@ -78,8 +80,9 @@ state/gram-description-blank-spaces]
 
 Child fields: `from`, `to`, `label`. The arrow `-->` is a unit and no node: a
 state diagram has this one arrow, with no marks at its ends and one kind of
-line, so a node of the arrow would have no field. [fixture:
-state/lex-percent-in-label]
+line, so a node of the arrow would have no field.
+
+[fixture: state/lex-percent-in-label]
 
 ### StateReference
 
@@ -88,15 +91,18 @@ state/lex-percent-in-label]
 | `state`    | Identifier or StateTerminal | The id of the state, or `[*]`.                      |
 | `cssClass` | Identifier or null          | The CSS class after `:::`; null when there is none. |
 
-Child fields: `state`, `cssClass`. [fixture:
-state/gram-style-separator-transition] [fixture:
+Child fields: `state`, `cssClass`.
+
+[fixture: state/gram-style-separator-transition] [fixture:
 state/gram-terminal-style-separator]
 
 ### StateTerminal
 
 `[*]`. No child fields. It has no fields. Whether it is the start or the end
 follows from where it is: before the arrow of a transition, or alone, it is a
-start, and after the arrow, an end. [fixture: state/gram-terminal-alone]
+start, and after the arrow, an end.
+
+[fixture: state/gram-terminal-alone]
 
 ### StateCompositeStatement
 
@@ -118,25 +124,34 @@ has the empty string, `state X` followed by a line `%%{}` has the `%%`, and
 `state X ""` followed by a line `%%{}` has one StateIgnoredText from the empty
 string to the `%%`. It also holds the empty description blocks before a `{` on
 the line after the name: `state X ""` followed by a line `accDescr {} {` has one
-StateIgnoredText from the empty string to the block. [fixture:
-state/gram-state-empty-string-before-name] [fixture:
+StateIgnoredText from the empty string to the block.
+
+[fixture: state/gram-state-empty-string-before-name] [fixture:
 state/gram-state-empty-string-between-name-and-body] [fixture:
 state/gram-ignored-percent-before-body-next-line] [fixture:
 state/gram-state-empty-string-then-percent-before-body] [fixture:
-state/gram-empty-description-block-after-empty-string-before-body] It also holds
-the `ignored-state` units, each a `state` on a later line that mermaid.js reads
-as no token, and the empty strings after them: `state X ""` followed by a line
-`state {` has one StateIgnoredText from the empty string to `state`, and the
-body is that of X. [fixture: state/gram-ignored-state-before-body-next-line]
+state/gram-empty-description-block-after-empty-string-before-body]
+
+It also holds the `ignored-state` units, each a `state` on a later line that
+mermaid.js reads as no token, and the empty strings after them: `state X ""`
+followed by a line `state {` has one StateIgnoredText from the empty string to
+`state`, and the body is that of X.
+
+[fixture: state/gram-ignored-state-before-body-next-line]
+
 Empty strings after `state` or after a statement, with no name, no string, and
 no `{` of a body after them, are a
 [StateIgnoredStatement](#stateignoredstatement): `state x ""` is a composite
 statement and an ignored statement, while `state x ""` followed by a line `{` is
 one composite statement, with the empty string as its `textBeforeBody`.
+
 [fixture: state/gram-state-empty-string-after-name] [fixture:
-state/gram-state-empty-string-after-name-body-next-line] With a body, the
-statement defines the composite state with the id. It may have no body:
-`state A`, `state a b`, which is two such statements, and `state` alone.
+state/gram-state-empty-string-after-name-body-next-line]
+
+With a body, the statement defines the composite state with the id. It may have
+no body: `state A`, `state a b`, which is two such statements, and `state`
+alone.
+
 [fixture: state/lex-keyword-upper-case] [fixture: state/lex-state-without-body]
 [fixture: state/lex-state-two-names] [fixture: state/lex-state-keyword-alone]
 
@@ -160,24 +175,32 @@ Child fields: `textBeforeDescription`, `description`, `textAfterDescription`,
 `id`, `secondDescription`, `textAfter`, `textBeforeBody`, `body`.
 `textBeforeDescription` and `textAfterDescription` are the empty strings of the
 state context around the description, which mermaid.js does not read:
-`state "" "y" "" as A` has both. [fixture:
-state/gram-state-empty-strings-around-alias-string] `textBeforeBody` is text
-that mermaid.js does not read: after `as`, the text from `%%` to a `{` on its
-line, without the whitespace at its end, and the alias then has no id, as in
-`state "d" as %% c {`; or the empty description blocks and a `%%` on the line
-after the alias, before a `{` that starts no directive, as in `state "d" as A`
-followed by a line `accDescr {} {`, or the `ignored-state` units with the empty
-strings after them, as in `state "d" as A` followed by a line `state {`.
+`state "" "y" "" as A` has both.
+
+[fixture: state/gram-state-empty-strings-around-alias-string]
+
+`textBeforeBody` is text that mermaid.js does not read: after `as`, the text
+from `%%` to a `{` on its line, without the whitespace at its end, and the alias
+then has no id, as in `state "d" as %% c {`; or the empty description blocks and
+a `%%` on the line after the alias, before a `{` that starts no directive, as in
+`state "d" as A` followed by a line `accDescr {} {`, or the `ignored-state`
+units with the empty strings after them, as in `state "d" as A` followed by a
+line `state {`.
+
 [fixture: state/gram-ignored-state-before-alias-body-next-line] [fixture:
 state/lex-alias-id-ignored-percent-before-body] [fixture:
 state/lex-alias-id-ignored-percent-brace] [fixture:
 state/gram-ignored-percent-before-alias-body-next-line] [fixture:
-state/gram-empty-description-block-before-alias-body-next-line] The id may hold
-whitespace, and before a body also `:`: `state "d" as my id` defines `my id`,
-and `state "d" as A : x {` the composite state `A : x`. [fixture:
-state/lex-alias-id-spaces] [fixture: state/lex-alias-second-description]
-[fixture: state/lex-alias-third-part] [fixture:
-state/lex-alias-colon-before-body] [fixture: state/lex-alias-without-id]
+state/gram-empty-description-block-before-alias-body-next-line]
+
+The id may hold whitespace, and before a body also `:`: `state "d" as my id`
+defines `my id`, and `state "d" as A : x {` the composite state `A : x`.
+
+[fixture: state/lex-alias-id-spaces] [fixture:
+state/lex-alias-second-description] [fixture: state/lex-alias-third-part]
+[fixture: state/lex-alias-colon-before-body] [fixture:
+state/lex-alias-without-id]
+
 mermaid.js reads the second description as written, whitespace included, so
 `secondDescription` is the whole unit, also when it is all whitespace:
 `state "d" as A : x  : y` has the value of a space, `x`, and two spaces, and
@@ -186,10 +209,11 @@ when there is no `:`, and when nothing follows the `:`, where mermaid.js gives
 the state the empty second description, which no field of the tree shows. The
 whitespace after a `;` that the line rule ignores stays in it:
 `state "d" as A style:#x;` followed by two spaces has the alias id `A style` and
-the second description `#x` and two spaces. [fixture:
-state/lex-alias-third-part] [fixture: state/db-alias-colon-spaces-second]
-[fixture: state/db-alias-colon-empty-second] [fixture:
-state/tokens-alias-ignored-semicolon-then-spaces]
+the second description `#x` and two spaces.
+
+[fixture: state/lex-alias-third-part] [fixture:
+state/db-alias-colon-spaces-second] [fixture: state/db-alias-colon-empty-second]
+[fixture: state/tokens-alias-ignored-semicolon-then-spaces]
 
 ### StatePseudostateDefinitionStatement
 
@@ -201,13 +225,17 @@ state/tokens-alias-ignored-semicolon-then-spaces]
 | `kind` | string               | `fork`, `join`, or `choice`.                     |
 
 Child fields: `id`. The id may hold whitespace: `state f 1 <<fork>>` is the fork
-`f 1`. `state <<join>>` has no id. [fixture: state/lex-fork-spaced-id] [fixture:
-state/lex-join-empty-id] [fixture: state/lex-choice-square-brackets]
+`f 1`. `state <<join>>` has no id.
+
+[fixture: state/lex-fork-spaced-id] [fixture: state/lex-join-empty-id] [fixture:
+state/lex-choice-square-brackets]
 
 ### StateDividerStatement
 
 `--` in the body of a composite state, which divides it into regions. No child
-fields. It has no fields. [fixture: state/lex-composite-divider]
+fields. It has no fields.
+
+[fixture: state/lex-composite-divider]
 
 ### StateNoteStatement
 
@@ -226,10 +254,14 @@ Child fields: `textBeforeState`, `state`, `textBeforeText`, `text`.
 `textBeforeState` is text that mermaid.js does not read: `%%` right after the
 position, with no whitespace between, and the characters after it other than
 `:`, line feed, whitespace, and `-`; the note id follows it, as in
-`note left of%%x A : t`. [fixture:
-state/lex-note-id-ignored-percent-after-position] The note id ends before a
-`%%`, also at its first character, and is then empty: in `note right of %% c S`,
-a line `x`, and `end note`, `state` is null and the text starts with `%%`.
+`note left of%%x A : t`.
+
+[fixture: state/lex-note-id-ignored-percent-after-position]
+
+The note id ends before a `%%`, also at its first character, and is then empty:
+in `note right of %% c S`, a line `x`, and `end note`, `state` is null and the
+text starts with `%%`.
+
 [fixture: state/lex-note-mixed-case] [fixture: state/lex-note-block] [fixture:
 state/lex-note-block-empty] [fixture: state/lex-note-id-percent-block]
 
@@ -240,25 +272,32 @@ first two characters and without the whitespace at its ends (see
 before the `:`, the `:` is part of the text: `note left of A  :hi` has the text
 `:hi`. With the `:` right after the note id, the character after the `:`, when
 it is not whitespace, is `textBeforeText`: `note left of A:hi` has it as `h` and
-the text `i`, and `note left of A:h` has it as `h` and no text. [fixture:
-state/lex-note-two-spaces-before-colon] [fixture:
+the text `i`, and `note left of A:h` has it as `h` and no text.
+
+[fixture: state/lex-note-two-spaces-before-colon] [fixture:
 state/lex-note-colon-without-space] [fixture:
 state/lex-note-colon-then-one-character]
 
 ### StateFloatingNoteStatement
 
-`note "text" as N1`. [fixture: state/lex-floating-note]
+`note "text" as N1`.
+
+[fixture: state/lex-floating-note]
 
 | Field  | Type                 | Meaning                                                                |
 | ------ | -------------------- | ---------------------------------------------------------------------- |
 | `text` | StateLiteral or null | The text between the quotes; null when it is all whitespace.           |
 | `id`   | StateLiteral or null | The text after `as`, up to the end of the line; null when it is empty. |
 
-Child fields: `text`, `id`. [fixture: state/lex-floating-note-id-spaces] The
-quotes are units of the statement and belong to no field; there may be more than
-one before and after the text (see
-[The note contexts](../diagrams/state.md#the-note-contexts)). [fixture:
-state/lex-floating-note-extra-quote-before-text] [fixture:
+Child fields: `text`, `id`.
+
+[fixture: state/lex-floating-note-id-spaces]
+
+The quotes are units of the statement and belong to no field; there may be more
+than one before and after the text (see
+[The note contexts](../diagrams/state.md#the-note-contexts)).
+
+[fixture: state/lex-floating-note-extra-quote-before-text] [fixture:
 state/lex-floating-note-whitespace-text]
 
 ### StateClickStatement
@@ -271,12 +310,16 @@ state/lex-floating-note-whitespace-text]
 | `url`       | StringLiteral         | The URL.                                       |
 | `tooltip`   | StringLiteral or null | The tooltip; null for a statement with `href`. |
 
-Child fields: `reference`, `url`, `tooltip`. [fixture: state/gram-click-tooltip]
-[fixture: state/gram-click-href] Empty description blocks between a click
-statement and its line break are StateAccDescrBlockStatement nodes after it, not
-part of it: `click A "u" "t" accDescr {}` is two statements (see
-[Click statements](../diagrams/state.md#click-statements)). [fixture:
-state/gram-click-empty-description-block-after]
+Child fields: `reference`, `url`, `tooltip`.
+
+[fixture: state/gram-click-tooltip] [fixture: state/gram-click-href]
+
+Empty description blocks between a click statement and its line break are
+StateAccDescrBlockStatement nodes after it, not part of it:
+`click A "u" "t" accDescr {}` is two statements (see
+[Click statements](../diagrams/state.md#click-statements)).
+
+[fixture: state/gram-click-empty-description-block-after]
 
 ### StateClassDefStatement
 
@@ -290,8 +333,10 @@ mermaid.js divides the text at each `,`, so there is one for each part: a part
 that is empty or all whitespace, which mermaid.js reads as the empty text, is
 null. `classDef a x,,y` has the styles `x`, null, and `y`, and `classDef a ,`
 two nulls, while a `classDef` statement without text has no styles, as
-mermaid.js adds none. [fixture: state/db-classdef-empty-items] [fixture:
-state/db-classdef-comma-only] [fixture: state/lex-classdef-percent] [fixture:
+mermaid.js adds none.
+
+[fixture: state/db-classdef-empty-items] [fixture: state/db-classdef-comma-only]
+[fixture: state/lex-classdef-percent] [fixture:
 state/lex-classdef-without-styles]
 
 ### StateClassStatement
@@ -303,8 +348,10 @@ state/lex-classdef-without-styles]
 | `states`   | list of Identifier   | The ids of the states, in source order.                     |
 | `cssClass` | StateLiteral or null | The rest of the line, the CSS class; null when it is empty. |
 
-Child fields: `states`, `cssClass`. [fixture: state/lex-class-ids-space]
-[fixture: state/lex-class-name-spaces] [fixture: state/lex-class-without-name]
+Child fields: `states`, `cssClass`.
+
+[fixture: state/lex-class-ids-space] [fixture: state/lex-class-name-spaces]
+[fixture: state/lex-class-without-name]
 
 ### StateStyleStatement
 
@@ -316,15 +363,19 @@ Child fields: `states`, `cssClass`. [fixture: state/lex-class-ids-space]
 | `styles` | list of (StateLiteral or null) | The styles, as in StateClassDefStatement.                                                     |
 
 Child fields: `states`, `styles`. `style ,A,,B, fill:red` has the states null,
-A, null, B, and null. [fixture: state/tokens-style-empty-items] The styles are
-as in StateClassDefStatement, with null for an empty part, except that a `style`
-statement without text has one null style, as mermaid.js gives it one empty
-style: `style A x, ,y` has the styles `x`, null, and `y`, and `style A` the one
-style null. The ids end at the whitespace after them: `style A ,x` has the one
-state A and the styles null and `x`. [fixture: state/db-style-comma-after-space]
-[fixture: state/lex-style-empty-id] [fixture: state/lex-style-without-styles]
-[fixture: state/db-style-empty-items] [fixture: state/db-style-whitespace-item]
-[fixture: state/db-style-without-text]
+A, null, B, and null.
+
+[fixture: state/tokens-style-empty-items]
+
+The styles are as in StateClassDefStatement, with null for an empty part, except
+that a `style` statement without text has one null style, as mermaid.js gives it
+one empty style: `style A x, ,y` has the styles `x`, null, and `y`, and
+`style A` the one style null. The ids end at the whitespace after them:
+`style A ,x` has the one state A and the styles null and `x`.
+
+[fixture: state/db-style-comma-after-space] [fixture: state/lex-style-empty-id]
+[fixture: state/lex-style-without-styles] [fixture: state/db-style-empty-items]
+[fixture: state/db-style-whitespace-item] [fixture: state/db-style-without-text]
 
 ### StateDirectionStatement
 
@@ -334,8 +385,9 @@ state A and the styles null and `x`. [fixture: state/db-style-comma-after-space]
 | `direction`  | string                   | `TB`, `BT`, `RL`, or `LR`.                                                     |
 | `textAfter`  | StateIgnoredText or null | The text of the direction line after the value, or null when there is none.    |
 
-Child fields: `textBefore`, `textAfter`. [fixture:
-state/lex-direction-line-in-description] [fixture:
+Child fields: `textBefore`, `textAfter`.
+
+[fixture: state/lex-direction-line-in-description] [fixture:
 state/lex-direction-lower-case]
 
 ### StateAccTitleStatement
@@ -348,8 +400,10 @@ An `accTitle:` statement with its text.
 
 Child fields: `value`. The whitespace after `:` is read with it, line breaks
 included, so the value is null only at the end of the text. `#`, `;`, and `%%`
-are characters of the text. [fixture: state/lex-acc-title-next-line] [fixture:
-state/lex-acc-title-at-end] [fixture: state/lex-acc-title-semicolon]
+are characters of the text.
+
+[fixture: state/lex-acc-title-next-line] [fixture: state/lex-acc-title-at-end]
+[fixture: state/lex-acc-title-semicolon]
 
 ### StateAccDescrStatement
 
@@ -360,8 +414,9 @@ An `accDescr:` statement with its text.
 | `value` | StateLiteral or null | The text after `accDescr:`, up to the end of the line; null when there is none. |
 
 Child fields: `value`. The whitespace after `:` is read with it, line breaks
-included, so the value is null only at the end of the text. [fixture:
-state/db-acc-descr-empty-replaces]
+included, so the value is null only at the end of the text.
+
+[fixture: state/db-acc-descr-empty-replaces]
 
 ### StateAccDescrBlockStatement
 
@@ -377,23 +432,29 @@ changes nothing.
 | `closed` | boolean              | Whether the block ends with `}`. It is false when the text ends inside the block.                                       |
 
 Child fields: `value`. When `accDescr {` is followed by a line `x` and the text
-ends, the value is `x`. [fixture: state/db-acc-descr-unclosed-replaces]
+ends, the value is `x`.
+
+[fixture: state/db-acc-descr-unclosed-replaces]
+
 `accDescr {` at the end of the text has the value null and is not closed.
-[fixture: state/lex-acc-descr-block-unclosed] `accDescr {  }` is a closed block
-without text, whose value is null: the whitespace after `{` is read with the
-`{`. Such a block, an empty description block, is a statement only where a
-statement starts, which is also right after another statement on the same line:
-`A --> B accDescr {}` is a transition statement and a
-StateAccDescrBlockStatement, and so is a block between a click statement and its
-line break; right after the header, where a statement starts, it is the first
-statement of the diagram's `body` (see
+
+[fixture: state/lex-acc-descr-block-unclosed]
+
+`accDescr {  }` is a closed block without text, whose value is null: the
+whitespace after `{` is read with the `{`. Such a block, an empty description
+block, is a statement only where a statement starts, which is also right after
+another statement on the same line: `A --> B accDescr {}` is a transition
+statement and a StateAccDescrBlockStatement, and so is a block between a click
+statement and its line break; right after the header, where a statement starts,
+it is the first statement of the diagram's `body` (see
 [state.md](../diagrams/state.md#empty-description-blocks-before-a-separator)). A
 block, or a run of blocks with only whitespace between them, after which a unit
 continues the statement before it lies inside that statement, as in
 `A accDescr {} --> B` and `A --> B accDescr {} : x`, and so does a block between
 the units of a statement, as in `A --> accDescr {} B`; the input is then
-rejected (see [state.md](../diagrams/state.md#other-statements)). [fixture:
-state/db-acc-descr-empty-block-keeps] [fixture:
+rejected (see [state.md](../diagrams/state.md#other-statements)).
+
+[fixture: state/db-acc-descr-empty-block-keeps] [fixture:
 state/gram-empty-description-block-statement] [fixture:
 state/gram-empty-description-block-after-transition] [fixture:
 state/div-empty-description-block-in-transition] [fixture:
@@ -409,12 +470,15 @@ state/header-empty-description-block]
 | ------- | -------------- | ----------- |
 | `width` | NumericLiteral | The number. |
 
-Child fields: `width`. [fixture: state/gram-scale]
+Child fields: `width`.
+
+[fixture: state/gram-scale]
 
 ### StateHideEmptyDescriptionStatement
 
-`hide empty description`. No child fields. It has no fields. [fixture:
-state/gram-hide-empty-description]
+`hide empty description`. No child fields. It has no fields.
+
+[fixture: state/gram-hide-empty-description]
 
 ### StateIgnoredStatement
 
@@ -423,6 +487,7 @@ after `state` or after another statement on the line, such as the `""` of
 `state ""` and of `state x ""` (see
 [Composite states, aliases, and pseudostates](../diagrams/state.md#composite-states-aliases-and-pseudostates)).
 mermaid.js does not read them, and the statement adds nothing to the Db.
+
 [fixture: state/gram-state-empty-string-alone] [fixture:
 state/gram-state-empty-string-after-name] [fixture:
 state/gram-state-empty-string-after-name-before-comment]
