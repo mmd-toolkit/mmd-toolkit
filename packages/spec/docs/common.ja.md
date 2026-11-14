@@ -982,11 +982,10 @@ mermaid.js と同じく拒否されます。
 mermaid.js はそれを受理します。
 mermaid.js は `end%%{init: {}}%%x` をキーワード `end` でなく頂点 `endx` と読み、
 ここではディレクティブは名前の中にあります。
-
-[fixture: common/directive-keyword-followed-by-text]
-
 [`directive-as-token-boundary`](./known-divergences/directive-as-token-boundary.ja.md)
 を見てください。
+
+[fixture: common/directive-keyword-followed-by-text]
 
 コメント行の上で `%%` の後にあるディレクティブはコメントの一部で、
 `%%` の前にあるものはそうではありません（[コメント行](#コメント行) を参照）。
