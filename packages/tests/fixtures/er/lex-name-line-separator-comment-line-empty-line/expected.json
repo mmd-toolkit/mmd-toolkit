@@ -1,7 +1,7 @@
 {
   "source": {
     "kind": "authored",
-    "note": "er.md Names: the comment region ends with its line feed, and the empty line after it ends the name: the entities are `A` with U+2028, and `Bar`."
+    "note": "er.md Units and contexts, Comment regions inside names: the comment region ends with its line feed, and the empty line after it ends the name: the entities are `A` with U+2028, and `Bar`."
   },
   "accepted": true,
   "diagramType": "er",

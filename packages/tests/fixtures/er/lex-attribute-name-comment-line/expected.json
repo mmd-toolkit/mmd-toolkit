@@ -1,7 +1,7 @@
 {
   "source": {
     "kind": "authored",
-    "note": "er.md Names: the name goes on across the comment region, as every unit does, also in a word of an attribute block: the attribute name is `n`, U+2028, and `m`."
+    "note": "er.md Units and contexts, Comment regions inside names: the name goes on across the comment region, as every unit does, also in a word of an attribute block: the attribute name is `n`, U+2028, and `m`."
   },
   "accepted": true,
   "diagramType": "er",

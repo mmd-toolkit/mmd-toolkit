@@ -1,7 +1,7 @@
 {
   "source": {
     "kind": "authored",
-    "note": "er.md Names: the name goes on across the comment region, as every unit does, also in a name after `class`: the entity `A`, U+2028, and `B` gets the class `c`."
+    "note": "er.md Units and contexts, Comment regions inside names: the name goes on across the comment region, as every unit does, also in a name after `class`: the entity `A`, U+2028, and `B` gets the class `c`."
   },
   "accepted": true,
   "diagramType": "er",

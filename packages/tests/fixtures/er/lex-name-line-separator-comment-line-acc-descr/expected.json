@@ -1,7 +1,7 @@
 {
   "source": {
     "kind": "authored",
-    "note": "er.md Names: the name goes on across the comment region, as every unit does with the characters of a name that follow: the entity is `A`, U+2028, and `accDescr`, and `{}` is its empty attribute block."
+    "note": "er.md Units and contexts, Comment regions inside names: the name goes on across the comment region, as every unit does with the characters of a name that follow: the entity is `A`, U+2028, and `accDescr`, and `{}` is its empty attribute block."
   },
   "accepted": true,
   "diagramType": "er",

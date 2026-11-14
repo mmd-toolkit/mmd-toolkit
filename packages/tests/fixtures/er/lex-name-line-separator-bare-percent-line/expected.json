@@ -1,7 +1,7 @@
 {
   "source": {
     "kind": "authored",
-    "note": "er.md Names: a `%%` with nothing after it is no comment, and `%` is no character of a name, so the input is rejected by both."
+    "note": "er.md Units and contexts, Comment regions inside names: a `%%` with nothing after it is no comment, and `%` is no character of a name, so the input is rejected by both."
   },
   "accepted": false,
   "error": {

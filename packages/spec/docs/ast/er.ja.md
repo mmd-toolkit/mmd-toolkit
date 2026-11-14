@@ -332,7 +332,7 @@ er/gram-attribute] [fixture: er/lex-tilde-run-two-words]
 名前の中の、U+2028 や U+2029 の後のコメント領域は、
 その書かれたテキストから除かれ、`A`、U+2028、`%% c`、改行、
 `Bar` の `name` は `A`、U+2028、
-`Bar` です（[名前](../diagrams/er.ja.md#単位と文脈) を参照）。
+`Bar` です（[名前の中のコメント領域](../diagrams/er.ja.md#単位と文脈) を参照）。
 [fixture: er/lex-name-line-separator-comment-line]
 
 ### ErLiteral

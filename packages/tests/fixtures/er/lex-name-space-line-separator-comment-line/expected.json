@@ -1,7 +1,7 @@
 {
   "source": {
     "kind": "authored",
-    "note": "er.md Names: the U+2028 after the space starts a name, which goes on across the comment region: the entities are `A`, and U+2028 with `Bar`."
+    "note": "er.md Units and contexts, Comment regions inside names: the U+2028 after the space starts a name, which goes on across the comment region: the entities are `A`, and U+2028 with `Bar`."
   },
   "accepted": true,
   "diagramType": "er",

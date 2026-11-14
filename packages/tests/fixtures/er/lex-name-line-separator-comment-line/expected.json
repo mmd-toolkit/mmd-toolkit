@@ -1,7 +1,7 @@
 {
   "source": {
     "kind": "authored",
-    "note": "er.md Names: a U+2028 is a character of the name and a comment start, and the name goes on across the comment region, as every unit does: the one entity is `A`, U+2028, and `Bar`."
+    "note": "er.md Units and contexts, Comment regions inside names: a U+2028 is a character of the name and a comment start, and the name goes on across the comment region, as every unit does: the one entity is `A`, U+2028, and `Bar`."
   },
   "accepted": true,
   "diagramType": "er",

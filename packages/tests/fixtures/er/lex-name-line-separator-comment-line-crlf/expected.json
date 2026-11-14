@@ -1,7 +1,7 @@
 {
   "source": {
     "kind": "authored",
-    "note": "er.md Names: a CRLF ends the comment, and the name goes on across the comment region, as every unit does: the one entity is `A`, U+2028, and `Bar`."
+    "note": "er.md Units and contexts, Comment regions inside names: a CRLF ends the comment, and the name goes on across the comment region, as every unit does: the one entity is `A`, U+2028, and `Bar`."
   },
   "accepted": true,
   "diagramType": "er",

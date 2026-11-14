@@ -1,7 +1,7 @@
 {
   "source": {
     "kind": "authored",
-    "note": "er.md Names: a directive alone after the U+2028 is no comment line, so the line feed after it ends the name: the entities are `A` with U+2028, and `Bar`."
+    "note": "er.md Units and contexts, Comment regions inside names: a directive alone after the U+2028 is no comment line, so the line feed after it ends the name: the entities are `A` with U+2028, and `Bar`."
   },
   "accepted": true,
   "diagramType": "er",

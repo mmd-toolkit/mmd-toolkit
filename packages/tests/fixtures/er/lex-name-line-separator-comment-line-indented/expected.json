@@ -1,7 +1,7 @@
 {
   "source": {
     "kind": "authored",
-    "note": "er.md Names: a space after the comment region is no character of a name, so the name ends there: the entities are `A` with U+2028, and `Bar`."
+    "note": "er.md Units and contexts, Comment regions inside names: a space after the comment region is no character of a name, so the name ends there: the entities are `A` with U+2028, and `Bar`."
   },
   "accepted": true,
   "diagramType": "er",

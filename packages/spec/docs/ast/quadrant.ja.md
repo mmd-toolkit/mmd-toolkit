@@ -316,6 +316,6 @@ U+00A0 など表記の空白文字も端の空白です。
 [fixture: quadrant/db-classdef-name-colon-between-letters]
 名前の中の、U+2028 や U+2029 の後のコメント領域は、
 その書かれたテキストから除かれ、`classDef a`、U+2028、`%% c`、改行、
-`b color: #f00` は、`name` が `a`、U+2028、
+`b color: #109060` は、`name` が `a`、U+2028、
 `b` のクラスを定めます（[クラス](../diagrams/quadrant.ja.md#クラス) を参照）。
 [fixture: quadrant/lex-classdef-name-line-separator-comment-line]

@@ -202,10 +202,14 @@ break of the comment, so it lies inside the name: `A`, U+2028, `%% c`, a line
 break, and `%%{init: {}}%%Bar` is rejected here, while mermaid.js reads the name
 `A`, U+2028, and `Bar` (see
 [Directives inside units](#directives-inside-units)). [fixture:
-er/div-directive-after-comment-line-in-name] So it is for every name: an entity
-of a relationship, a role, an alias, a class after `:::`, a name after
-`classDef`, `class`, or `style`, the id of a subgraph, and the name of an
-attribute. [fixture: er/lex-relationship-first-name-comment-line] [fixture:
+er/div-directive-after-comment-line-in-name] A directive followed by whitespace
+there lies between two units and ends the name: `A`, U+2028, `%% c`, a line
+break, and `%%{init: {}}%% Bar` are the entities `A` and U+2028, and `Bar`.
+[fixture: er/lex-name-line-separator-comment-line-directive-space-next] So it is
+for every name: an entity of a relationship, a role, an alias, a class after
+`:::`, a name after `classDef`, `class`, or `style`, a class of `class`, the id
+of a subgraph, and the type and the name of an attribute. [fixture:
+er/lex-relationship-first-name-comment-line] [fixture:
 er/lex-relationship-second-name-comment-line] [fixture:
 er/lex-role-name-comment-line] [fixture: er/lex-alias-name-comment-line]
 [fixture: er/lex-class-shorthand-name-comment-line] [fixture:
@@ -213,28 +217,83 @@ er/lex-classdef-name-comment-line] [fixture:
 er/lex-class-statement-name-comment-line] [fixture:
 er/lex-style-statement-name-comment-line] [fixture:
 er/lex-subgraph-id-comment-line] [fixture: er/lex-attribute-name-comment-line]
-The name goes on with the characters of a name after the region: a line
-`accDescr {}` after it gives the entity `A`, U+2028, and `accDescr` with an
-empty attribute block, and the line after the region is a segment of its own for
-the line rule of `style` and `classDef` lines, so after `classDef c`, U+2028,
-and a comment line, the line `style fill:#f00;` gives the class `c`, U+2028, and
-`style` with the style `fill:#f00`. [fixture:
+[fixture: er/lex-class-statement-class-comment-line] [fixture:
+er/lex-attribute-type-comment-line] The name goes on with the characters of a
+name after the region: a line `accDescr {}` after it gives the entity `A`,
+U+2028, and `accDescr` with an empty attribute block, and the line after the
+region is a segment of its own for the line rule of `style` and `classDef`
+lines, so after `classDef c`, U+2028, and a comment line, the line
+`style fill:#f00;` gives the class `c`, U+2028, and `style` with the style
+`fill:#f00`. The line before the region is a segment of its own too, so the line
+rule does not reach a `classDef` or `style` before the U+2028: after
+`classDef c`, U+2028, and a comment line, the `;` of the line `d fill:#f00;` is
+not ignored, and `#f00;` is read as an entity, as in mermaid.js, and so it is
+after `style A`, U+2028, and a comment line. The rule for a direction line does
+not see `direction` at the start of the line after the region, because the text
+before `direction` may hold no U+2028: `A`, U+2028, `%% c`, a line break, and
+`direction LR` are the entities `A`, U+2028, and `direction`, and `LR`, and the
+direction stays `TB`. [fixture:
 er/lex-name-line-separator-comment-line-acc-descr] [fixture:
-er/lex-classdef-name-comment-line-style-line] The name ends where no character
-of a name follows the region: with spaces at the start of the next line, an
-empty line after the comment line, or the end of the text, the name is `A` and
-U+2028. A U+2028 after a space or after a quoted name starts a name of its own:
-`A`, a space, U+2028, `%% c`, a line break, and `Bar` are the entities `A`, and
-U+2028 and `Bar`. [fixture: er/lex-name-line-separator-comment-line-indented]
+er/lex-classdef-name-comment-line-style-line] [fixture:
+er/lex-classdef-name-comment-line-hash-semicolon] [fixture:
+er/lex-style-statement-name-comment-line-hash-semicolon] [fixture:
+er/lex-name-line-separator-comment-line-direction] The name ends where no
+character of a name follows the region: with spaces at the start of the next
+line, an empty line after the comment line, or the end of the text, the name is
+`A` and U+2028. [fixture: er/lex-name-line-separator-comment-line-indented]
 [fixture: er/lex-name-line-separator-comment-line-empty-line] [fixture:
 er/lex-name-line-separator-comment-line-last-line] [fixture:
-er/lex-name-line-separator-comment-end-of-text] [fixture:
+er/lex-name-line-separator-comment-end-of-text] The statement then goes on as if
+the next line stood on the line of the name, because the line break of the
+comment line lies in the region: `A`, U+2028, `%% c`, a line break, and
+`||--o{ B : x` is a relationship from `A` and U+2028 to `B`, while a line break
+that lies in no region ends the statement, so `A`, a line break, and
+`||--o{ B : x` is rejected; so an attribute block, `:::c`, and the `,b` of the
+class names of a `classDef` on the next line belong to the name before the
+region. [fixture: er/lex-name-line-separator-comment-line-relationship]
+[fixture: er/lex-relationship-spec-next-line] [fixture:
+er/lex-name-line-separator-comment-line-attribute-block] [fixture:
+er/lex-name-line-separator-comment-line-class-shorthand] [fixture:
+er/lex-classdef-name-line-separator-comment-line-comma] In the statement
+context, a U+2028 that does not go on with a name before it starts a name,
+unless the comment region or another rule takes it: after a space, a quoted
+name, a number, the header, `:::`, and the `:` of a relationship, it starts a
+name. `A`, a space, U+2028, `%% c`, a line break, and `Bar` are the entities
+`A`, and U+2028 and `Bar`, and `12`, U+2028, `%% c`, a line break, and `ab` the
+entities `12`, and U+2028 and `ab`. [fixture:
 er/lex-name-space-line-separator-comment-line] [fixture:
-er/lex-quoted-name-line-separator-comment-line] A `%%` with nothing after it is
-no comment and makes the input rejected, since `%` is no character of a name,
-and a directive alone after the U+2028 is no comment line, so the line feed
-after it ends the name. [fixture: er/lex-name-line-separator-bare-percent-line]
-[fixture: er/lex-name-line-separator-directive-line]
+er/lex-quoted-name-line-separator-comment-line] [fixture:
+er/lex-number-line-separator-comment-line] [fixture:
+er/lex-decimal-line-separator-comment-line] [fixture:
+er/lex-header-line-separator-comment-line] [fixture:
+er/lex-class-shorthand-line-separator-comment-line] [fixture:
+er/lex-role-line-separator-comment-line] At the start of a line, the comment
+region starts at the start of the line and takes the U+2028: a line of U+2028
+and `%% c` before the line `A` leaves the entity `A`. [fixture:
+er/lex-line-separator-comment-line-at-line-start] After `end`, the U+2028 is
+whitespace that `end` reads, and after `1`, rule 11 of the cardinalities,
+numbers, and relationship lines takes the U+2028 for the whitespace it looks for
+after the `1` and looks past the region: in `A ||--1`, U+2028, `%% c`, a line
+break, and `B : x`, the `1` is `only-one`, and the U+2028 then starts the name
+of the second entity, U+2028 and `B`, while `1`, U+2028, `%% c`, a line break,
+and `B` where a statement starts is rejected. [fixture:
+er/lex-end-line-separator-comment-line] [fixture:
+er/lex-one-line-separator-comment-line-letter] [fixture:
+er/gram-one-line-separator-comment-line-statement-start] In an attribute block
+and in the style context, a U+2028 that does not go on with a word or a name
+before it is whitespace and lies between units: `string`, a space, U+2028,
+`%% c`, a line break, and `a` in a block is the attribute `a` of type `string`,
+and `classDef`, a space, U+2028, `%% c`, a line break, and `a fill:red` defines
+the class `a`, and so does `classDef a`, a space, U+2028, `%% c`, a line break,
+and `fill:red`. [fixture: er/lex-attribute-space-line-separator-comment-line]
+[fixture: er/lex-classdef-space-line-separator-comment-line] [fixture:
+er/lex-classdef-name-space-line-separator-comment-line] A `%%` with nothing
+after it, and a `%%{` that starts no directive, is no comment and makes the
+input rejected, since `%` is no character of a name, and a directive alone after
+the U+2028 is no comment line, so the line feed after it ends the name.
+[fixture: er/lex-name-line-separator-bare-percent-line] [fixture:
+er/lex-name-line-separator-directive-line] [fixture:
+er/lex-name-line-separator-percent-brace-line]
 
 ### Directives inside units
 
@@ -1518,7 +1577,8 @@ grammar accepts is accepted.
   er/div-directive-in-subgraph-keyword] [fixture:
   er/div-directive-in-cardinality-words] [fixture:
   er/div-directive-in-cardinality-symbol] [fixture:
-  er/div-directive-in-class-separator]
+  er/div-directive-in-class-separator] [fixture:
+  er/div-directive-after-comment-line-in-name]
 - **[`ignored-semicolon-as-token-boundary`](../known-divergences/ignored-semicolon-as-token-boundary.md).**
   On a line that matches the `style` rule or the `classDef` rule, an ignored `;`
   inside a unit other than a text unit and a string unit makes the input

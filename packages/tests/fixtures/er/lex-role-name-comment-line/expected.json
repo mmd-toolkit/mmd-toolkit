@@ -1,7 +1,7 @@
 {
   "source": {
     "kind": "authored",
-    "note": "er.md Names: the name goes on across the comment region, as every unit does, also in a role: the role is `r`, U+2028, and `s`."
+    "note": "er.md Units and contexts, Comment regions inside names: the name goes on across the comment region, as every unit does, also in a role: the role is `r`, U+2028, and `s`."
   },
   "accepted": true,
   "diagramType": "er",

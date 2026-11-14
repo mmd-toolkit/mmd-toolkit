@@ -1,7 +1,7 @@
 {
   "source": {
     "kind": "authored",
-    "note": "er.md Names: the name goes on across the comment region, as every unit does; the line after the region is a segment of its own for the line rule of `style` and `classDef` lines, whose ignored `;` ends the style: the class is `c`, U+2028, and `style`, with the style `fill:#f00`."
+    "note": "er.md Units and contexts, Comment regions inside names: the name goes on across the comment region, as every unit does; the line after the region is a segment of its own for the line rule of `style` and `classDef` lines, whose ignored `;` ends the style: the class is `c`, U+2028, and `style`, with the style `fill:#f00`."
   },
   "accepted": true,
   "diagramType": "er",

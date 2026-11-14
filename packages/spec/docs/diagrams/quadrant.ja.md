@@ -722,6 +722,7 @@ mermaid.js がディレクティブを除いた後のテキストを読むとお
   [fixture: quadrant/div-directive-in-keyword-title]
   [fixture: quadrant/div-grid-directive-class-name]
   [fixture: quadrant/div-grid-directive-classdef-name]
+  [fixture: quadrant/div-directive-after-comment-line-in-classdef-name]
   [fixture: quadrant/div-quadrant-directive-in-keyword]
   [fixture: quadrant/div-x-axis-directive-in-arrow]
   [fixture: quadrant/div-x-axis-directive-in-keyword]
@@ -2324,17 +2325,20 @@ class-def-name      = ( word-of-name | "-" | "," | ":" )+
 [fixture: quadrant/db-classdef-tabs]
 [fixture: quadrant/db-classdef-name-colon-between-letters]
 
-名前の中の U+2028 と U+2029 は語の文字であるとともにコメントの始まりで、名前は、
-どの単位もそうであるように、
-その後のコメント領域をまたいで続くので（[コメント行](../common.ja.md#コメント行)
-を参照）、`classDef a`、U+2028、`%% c`、改行、`b color: #109060` は、
-名前が `a`、U+2028、`b` のクラスを定め、U+2029 でも同じです。
+名前の中の U+2028 と U+2029 は語の文字であるとともにコメントの始まりで、
+名前はその後のコメント領域をまたいで続きます。
+領域は名前の 2 つの単位の間にあるか、次の行が ASCII 外の文字で始まるときには、
+その文字が U+2028 の単位につながるので 1 つの単位の中にあり、
+どちらでも単位はつながり、
+1 つの名前になります（[コメント行](../common.ja.md#コメント行) を参照）。
+`classDef a`、U+2028、`%% c`、改行、`b color: #109060` は、名前が `a`、U+2028、
+`b` のクラスを定め、U+2029 でも同じです。
 [fixture: quadrant/lex-classdef-name-line-separator-comment-line]
 [fixture: quadrant/lex-classdef-name-paragraph-separator-comment-line]
 コメント領域が U+2028 と `%%` の間で取る空白、2 つ目の U+2028、改行、
-ディレクティブ、コメントを終える CRLF、2 つ目のコメント行、
-2 つ目の U+2028 の後の 2 つ目の領域をまたぐとき、
-領域の後の名前の一部である `-`、
+ディレクティブ、コメントを終える CRLF か CR、コメントの中のディレクティブ、
+2 つ目のコメント行、2 つ目の U+2028 の後の 2 つ目の領域をまたぐとき、
+次の行の始めの U+2028、領域の後の、名前の文字である ASCII 外の文字か `-`、
 `classDef` とスペースの後の U+2028 から始まる名前でも同じです。
 [fixture: quadrant/lex-classdef-name-line-separator-spaces-comment-line]
 [fixture: quadrant/lex-classdef-name-two-line-separators-comment-line]
@@ -2345,6 +2349,10 @@ class-def-name      = ( word-of-name | "-" | "," | ":" )+
 [fixture: quadrant/lex-classdef-name-two-comment-regions]
 [fixture: quadrant/lex-classdef-name-line-separator-comment-line-dash]
 [fixture: quadrant/lex-classdef-name-starts-with-line-separator-comment-line]
+[fixture: quadrant/lex-classdef-name-line-separator-comment-line-cr]
+[fixture: quadrant/lex-classdef-name-line-separator-comment-line-with-directive]
+[fixture: quadrant/lex-classdef-name-comment-line-line-separator-next]
+[fixture: quadrant/lex-classdef-name-line-separator-comment-line-non-ascii]
 コメント行の次の行の始めのディレクティブは、
 コメントの改行で終わる領域には含まれず、名前の中にあるので、`classDef a`、
 U+2028、`%% c`、改行、
@@ -2352,17 +2360,29 @@ U+2028、`%% c`、改行、
 はここでは拒否されます（[単位の中のディレクティブ](#単位の中のディレクティブ)
 を参照）が、mermaid.js は名前が `a`、U+2028、`b` のクラスを定めます。
 [fixture: quadrant/div-directive-after-comment-line-in-classdef-name]
+そこの、後ろにスペースのあるディレクティブは名前を終え、
+そのスペースはスタイルの前の空白となるので、`classDef a`、U+2028、`%% c`、改行、
+`%%{init: {}}%% color: #109060` は名前が `a` と U+2028 のクラスを定めます。
+[fixture: quadrant/lex-classdef-name-line-separator-comment-line-directive-space-next]
 次の行の始めのスペースは名前を終え、スタイルの前の空白となるので、
 クラスは `a` と U+2028 です。
 そこの 2 つのスペース、コメント行の後の空行、テキストの終わり、
-U+2028 の前のスペースは入力を拒否させ、後ろに何もない `%%` も同じで、
-それはコメント行ではなく、その行の終わりまで続くこの図種のコメントです。
+名前と U+2028 の間のスペースは入力を拒否させ、
+後ろに何もない `%%` とディレクティブを始めない `%%{` も同じで、
+それらはコメント行ではなく、その行の終わりまで続くこの図種のコメントです。
 [fixture: quadrant/lex-classdef-name-line-separator-comment-line-space]
 [fixture: quadrant/gram-classdef-name-line-separator-comment-line-two-spaces]
 [fixture: quadrant/gram-classdef-name-line-separator-comment-line-empty-line]
 [fixture: quadrant/gram-classdef-name-line-separator-comment-line-last-line]
 [fixture: quadrant/gram-classdef-name-space-line-separator-comment-line]
 [fixture: quadrant/gram-classdef-name-line-separator-bare-percent-line]
+[fixture: quadrant/gram-classdef-name-line-separator-percent-brace-line]
+領域の後の行は `style` 行と `classDef` 行の行の規則にとって、
+領域の前の `classDef` を含まない独立した区間なので、
+そこの `b color: #f00;` の `;` は無視されず、
+スタイルの `#f00;` は mermaid.js と同じくエンティティなので、
+入力は拒否されます。
+[fixture: quadrant/gram-classdef-name-comment-line-hash-semicolon]
 領域の後の空の説明ブロックは文の中にあり、領域の後の、
 行の規則が無視する `;` は名前の中にあり、どちらもここでは入力を拒否させますが、
 mermaid.js は受理します（[既知の差異](#既知の差異) を参照）。

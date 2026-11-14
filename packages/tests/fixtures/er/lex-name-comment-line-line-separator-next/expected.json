@@ -1,7 +1,7 @@
 {
   "source": {
     "kind": "authored",
-    "note": "er.md Names: the name goes on across the comment region, as every unit does, and a U+2028 at the start of the next line is a character of the name: the one entity is `A`, two U+2028, and `B`."
+    "note": "er.md Units and contexts, Comment regions inside names: the name goes on across the comment region, as every unit does, and a U+2028 at the start of the next line is a character of the name: the one entity is `A`, two U+2028, and `B`."
   },
   "accepted": true,
   "diagramType": "er",
