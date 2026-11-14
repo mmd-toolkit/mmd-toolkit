@@ -87,17 +87,19 @@ describe("finishDiagram", () => {
     },
   )
 
-  it("cuts an Identifier token at a comment region into Identifier tokens", () => {
-    const root = finish("a\n%% c\nb", [{ kind: "Identifier", range: [0, 8] }])
+  it("cuts an Identifier token at a comment region after a U+2028 into Identifier tokens", () => {
+    const root = finish("a\u2028%% c\nb", [
+      { kind: "Identifier", range: [0, 8] },
+    ])
     expect(root.tokens.map((token) => [token.type, token.value])).toEqual([
-      ["Identifier", "a\n"],
+      ["Identifier", "a\u2028"],
       ["Identifier", "b"],
     ])
   })
 
   it("rejects a directive after a comment region inside an Identifier token at the directive", () => {
     expect(() =>
-      finish("a\n%% c\n%%{x}%%b", [{ kind: "Identifier", range: [0, 15] }]),
+      finish("a\u2028%% c\n%%{x}%%b", [{ kind: "Identifier", range: [0, 15] }]),
     ).toThrow(
       expect.objectContaining({
         constructor: ParseError,
@@ -152,6 +154,11 @@ describe("finishDiagram", () => {
       "of a kind that a comment region cuts",
       "a\n%% c\nb",
       [{ kind: "Keyword", range: [0, 8] }],
+    ],
+    [
+      "of a name that a comment region cuts after a line feed",
+      "a\n%% c\nb",
+      [{ kind: "Identifier", range: [0, 8] }],
     ],
   ])("fails as a parser bug on tokens %s", (_what, text, tokens) => {
     expect(() => finish(text, tokens)).toThrow("mmd-toolkit parser bug")

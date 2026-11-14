@@ -282,8 +282,11 @@ function mayBeCut(kind: TokenKind): boolean {
  * relied on; a token that may not be cut is whole in it, since the parser
  * rejects a tree where a directive or a `;` cuts one, except that a comment
  * region cuts an `Identifier` token into fragments ({@link fragmentsOf}).
- * A place after that region and before the next fragment lies inside the
- * token too, while a place in the region is read through with it.
+ * The fragments are one token: a place after a character of a fragment that
+ * is not whitespace and before the region, such as before the U+2028 that
+ * starts the region, and a place after the region and before the next
+ * fragment, lie inside it, while a place in the region is read through with
+ * it.
  */
 function isInsideTokenThatMayNotBeCut(
   reference: string,
@@ -299,7 +302,10 @@ function isInsideTokenThatMayNotBeCut(
   return (
     insideToken ||
     fragmentsOf(root).some(
-      (fragments) => fragments.regionEnd < at && at <= fragments.next.range[0],
+      ({ previous, regionEnd, next }) =>
+        (holdsNonWhitespace(reference, previous.range[0], at) &&
+          at < previous.range[1]) ||
+        (regionEnd < at && at <= next.range[0]),
     )
   )
 }
@@ -311,12 +317,14 @@ function isInsideTokenThatMayNotBeCut(
  * fragments, as an ER name across a comment line after a U+2028. Two
  * tokens are such fragments when both are `Identifier` tokens, follow one
  * another in `root.tokens`, lie inside the range of one node without child
- * nodes, and have a comment between them. Each place has the next fragment
- * and the end of the last comment before it.
+ * nodes, and have a comment between them. Each place has the fragments
+ * before and after it and the end of the last comment between them.
  */
-function fragmentsOf(
-  root: Root,
-): { readonly next: Root["tokens"][number]; readonly regionEnd: number }[] {
+function fragmentsOf(root: Root): {
+  readonly previous: Root["tokens"][number]
+  readonly next: Root["tokens"][number]
+  readonly regionEnd: number
+}[] {
   const leaves: Range[] = []
   const hasChild: boolean[] = []
   traverseNodes(root, {
@@ -329,6 +337,7 @@ function fragmentsOf(
     },
   })
   const found: {
+    readonly previous: Root["tokens"][number]
     readonly next: Root["tokens"][number]
     readonly regionEnd: number
   }[] = []
@@ -346,7 +355,7 @@ function fragmentsOf(
     )
     const last = between.at(-1)
     if (last === undefined) continue
-    found.push({ next, regionEnd: last.range[1] })
+    found.push({ previous: token, next, regionEnd: last.range[1] })
   }
   return found
 }

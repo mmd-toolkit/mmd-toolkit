@@ -9,7 +9,11 @@ import type {
   TokenKind,
 } from "@mmd-toolkit/ast"
 import { isWhitespace } from "./character-classes.ts"
-import { APOSTROPHE } from "./code-points.ts"
+import {
+  APOSTROPHE,
+  LINE_SEPARATOR,
+  PARAGRAPH_SEPARATOR,
+} from "./code-points.ts"
 import { ParseError } from "./errors.ts"
 import type { DiagramComment } from "./diagram-parsing.ts"
 import type { DirectiveMatch } from "./directives.ts"
@@ -145,24 +149,14 @@ interface Cut {
 
 /**
  * common.md, A directive is a token boundary, and `style` and `classDef`
- * lines: whether a token of kind `kind` may be cut, which only a `String`
- * token and a `RawText` token may. A directive or a `;` that the line rule
- * ignores inside a token of any other kind, a name, a number, a keyword, an
- * arrow, or another delimiter, makes the input rejected.
+ * lines: whether a token of kind `kind` may be cut by a directive or by a
+ * `;` that the line rule ignores, which only a `String` token and a
+ * `RawText` token may; they may hold a comment region too. A directive or
+ * an ignored `;` inside a token of any other kind, a name, a number, a
+ * keyword, an arrow, or another delimiter, makes the input rejected.
  */
 function mayBeCut(kind: DiagramTokenKind): boolean {
   return kind === "String" || kind === "RawText"
-}
-
-/**
- * `docs/tokens.md`, Comment regions in tokens: whether a token of kind
- * `kind` may hold a comment region, which only a token whose unit may span
- * lines does: a `String` token, a `RawText` token, and an `Identifier` token
- * of a name that holds a U+2028 or a U+2029, which is a comment start, as in
- * er and in quadrant.
- */
-function mayHoldCommentRegion(kind: DiagramTokenKind): boolean {
-  return mayBeCut(kind) || kind === "Identifier"
 }
 
 /** The rule of Reading a source that applies at a position, or none. */
@@ -652,15 +646,21 @@ export class SourceLexer {
    * lines: throws `ParseError` at the first of the cuts `cuts` of the token
    * `token` that its kind may not have (see {@link mayBeCut}): a directive,
    * or a `;` that the line rule ignores. A comment region cuts only tokens
-   * whose units span lines (see {@link mayHoldCommentRegion}); one inside a
-   * token of another kind is a bug of the diagram's parser.
+   * whose units span lines (see {@link mayHoldCommentRegion}); one inside
+   * another token is a bug of the diagram's parser.
    */
   private rejectCut(token: PendingToken, cuts: readonly Cut[]): void {
     if (mayBeCut(token.kind)) return
+    // The end of the comment region before, which a second comment line
+    // follows directly.
+    let regionEnd: number | null = null
     for (const cut of cuts) {
       switch (cut.cause) {
         case "comment-region":
-          if (mayHoldCommentRegion(token.kind)) break
+          if (this.mayHoldCommentRegion(token, cut.range, regionEnd)) {
+            regionEnd = cut.range[1]
+            continue
+          }
           throw new Error(
             this.bug(
               `the comment region at ${cut.range[0]} cuts the ${token.kind} token at ${token.range[0]}`,
@@ -686,6 +686,26 @@ export class SourceLexer {
           )
       }
     }
+  }
+
+  /**
+   * `docs/tokens.md`, Comment regions in tokens: whether the token `token`,
+   * of a kind that a directive may not cut (see {@link mayBeCut}), may hold
+   * the comment region at `region`: only an `Identifier` token may, and only
+   * where the region starts right after a U+2028 or a U+2029 of its name,
+   * which is a comment start, as in er and in quadrant, or right where the
+   * region before it in the token ends, `regionEnd`, as a second comment
+   * line does.
+   */
+  private mayHoldCommentRegion(
+    token: PendingToken,
+    region: Range,
+    regionEnd: number | null,
+  ): boolean {
+    if (token.kind !== "Identifier" || region[0] <= token.range[0]) return false
+    if (region[0] === regionEnd) return true
+    const before = this.text.charCodeAt(region[0] - 1)
+    return before === LINE_SEPARATOR || before === PARAGRAPH_SEPARATOR
   }
 
   /** Records the token of kind `kind` at `range`. */
