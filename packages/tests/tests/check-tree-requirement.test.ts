@@ -2388,7 +2388,7 @@ const RECORDED_CASES: readonly MutationCase[] = [
       "RawText",
     ),
     expected:
-      "the tokens of a RequirementIdentifier in names are not all of the kind Identifier: RawText",
+      "the tokens of a Identifier in names are not all of the kind Identifier: RawText",
   },
   {
     name: "the name of a requirement as an Identifier token",
